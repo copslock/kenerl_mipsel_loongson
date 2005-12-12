@@ -1,100 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Dec 2005 10:52:27 +0000 (GMT)
-Received: from mail.ttnet.net.tr ([212.175.13.129]:60842 "EHLO
-	fep01.ttnet.net.tr") by ftp.linux-mips.org with ESMTP
-	id S3466997AbVLLKwH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Dec 2005 10:52:07 +0000
-Received: from zenon ([85.100.59.84]) by fep01.ttnet.net.tr with ESMTP
-          id <20051212104755.EFHG17443.fep01.ttnet.net.tr@zenon>;
-          Mon, 12 Dec 2005 12:47:55 +0200
-Date:	Mon, 12 Dec 2005 12:51:25 +0200
-From:	Bora Sahin <bora.sahin@ttnet.net.tr>
-Reply-To: =?ISO-8859-9?B?Qm9yYSDeYWhpbg==?= <bora.sahin@ttnet.net.tr>
-X-Priority: 3 (Normal)
-Message-ID: <965523406.20051212125125@ttnet.net.tr>
-To:	"Jordan Crouse" <jordan.crouse@amd.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: ALCHEMY:  AU1200 USB Host Controller (OHCI/EHCI)
-In-Reply-To: <20051208210042.GB17458@cosmic.amd.com>
-References: <20051208210042.GB17458@cosmic.amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-9
-Content-Transfer-Encoding: 8bit
-X-NAI-Spam-Rules: 1 Rules triggered
-	BAYES_00=-2.5
-Return-Path: <bora.sahin@ttnet.net.tr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Dec 2005 20:41:19 +0000 (GMT)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:46525 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8134336AbVLLUlB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Dec 2005 20:41:01 +0000
+Received: from hulk.enneenne.com
+	([192.168.32.38] helo=localhost.localdomain ident=Debian-exim)
+	by goldrake.enneenne.com with esmtp (Exim 4.54)
+	id 1EluBf-0001kX-2v
+	for linux-mips@linux-mips.org; Mon, 12 Dec 2005 21:22:21 +0100
+Received: from giometti by localhost.localdomain with local (Exim 4.54)
+	id 1EluTL-0004oE-Iz
+	for linux-mips@linux-mips.org; Mon, 12 Dec 2005 21:40:35 +0100
+Date:	Mon, 12 Dec 2005 21:40:35 +0100
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Message-ID: <20051212204035.GL5132@hulk.enneenne.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: Programmi e soluzioni GNU/Linux
+X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
+User-Agent: Mutt/1.5.9i
+X-SA-Exim-Connect-IP: 192.168.32.38
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: advice on JTAG
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9656
+X-archive-position: 9657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bora.sahin@ttnet.net.tr
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello,
 
-Thursday, December 8, 2005, 11:00:42 PM, you wrote:
+I'm looking for a good JTAG system to debug a MIPS AU1100 based
+board.
 
-Jordan> Ok, here we go.  I give you the OHCI/EHCI host controller support for
-Jordan> the Alchemy AU1200 processor.  I'm sending this up, partly because I
-Jordan> have it ready to go, but also because it seems that enough folks are
-Jordan> getting their hands on AU1200 parts to make this a hot topic.
+I'd like to have the possibility to put hardware and software break
+points in u-boot and linux source code. Also I prefere a system who
+completely supports the GNU/Linux system as host.
 
-Especially, it's high time to me... :-)
+Can you please suggest me some links? :)
 
-Jordan> Special thanks to Pete Popov and his merry band of kernel hackers for
-Jordan> paving the way by pushing to seperate EHCI and PCI in the USB subsystem.
+Thanks in advance,
 
-Me to...
-
-I have a few comments related to the OHCI part of it...
-
-diff --git a/drivers/usb/host/ohci-au1xxx.c b/drivers/usb/host/ohci-au1xxx.c
-
-+#else   /* Au1200 */
-+
-+#define USB_HOST_CONFIG    (USB_MSR_BASE + USB_MSR_MCFG)
-+#define USB_MCFG_PFEN     (1<<31)
-+#define USB_MCFG_RDCOMB   (1<<30)
-+#define USB_MCFG_SSDEN    (1<<23)
-+#define USB_MCFG_OHCCLKEN (1<<16)
-+#define USB_MCFG_UCAM     (1<<7)
-+#define USB_MCFG_OBMEN    (1<<1)
-+#define USB_MCFG_OMEMEN   (1<<0)
-
-Maybe, the place where to put those defines is
-include/asm-mips/mach-au1x00/au1000.h? Because there are some similar defines in
-that file, actually shift values. For consistency, are they used?..
-
-+#define USBH_ENABLE_CE    USB_MCFG_OHCCLKEN
-+#ifdef CONFIG_DMA_COHERENT
-+#define USBH_ENABLE_INIT  (USB_MCFG_OHCCLKEN \
-+                         | USB_MCFG_PFEN | USB_MCFG_RDCOMB \
-+                         | USB_MCFG_SSDEN | USB_MCFG_UCAM \
-
-Aha! What I was lacking in my patch was USB_MCFG_UCAM! For test, I added it to
-my patch, and it worked! Reserved in the doc. So do USB_MCFG_PFEN and
-USB_MCFG_RDCOMB. What's the meaning of that fields? 
-
-+#else   /* Au1200 */
-+
-+       /* write HW defaults again in case Yamon cleared them */
-+       if (au_readl(USB_HOST_CONFIG) == 0) {
-+       au_writel(0x00d02000, USB_HOST_CONFIG);
-+       au_readl(USB_HOST_CONFIG);
-+       udelay(1000);
-+       }
-+       au_writel(USBH_ENABLE_CE | au_readl(USB_HOST_CONFIG), USB_HOST_CONFIG);
-+       au_readl(USB_HOST_CONFIG);
-+       udelay(1000);
-+       au_writel(USBH_ENABLE_INIT | au_readl(USB_HOST_CONFIG), USB_HOST_CONFIG);
-+       au_readl(USB_HOST_CONFIG);
-+       udelay(1000);
-
-Are au_readl() and udelay() necessary between the two au_writel()? Just for
-curiosity, I tried it without them and as it seems, it worked! 
+Rodolfo
 
 -- 
-Bora SAHIN
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

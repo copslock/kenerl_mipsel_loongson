@@ -1,61 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Dec 2005 20:41:19 +0000 (GMT)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:46525 "EHLO
-	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8134336AbVLLUlB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Dec 2005 20:41:01 +0000
-Received: from hulk.enneenne.com
-	([192.168.32.38] helo=localhost.localdomain ident=Debian-exim)
-	by goldrake.enneenne.com with esmtp (Exim 4.54)
-	id 1EluBf-0001kX-2v
-	for linux-mips@linux-mips.org; Mon, 12 Dec 2005 21:22:21 +0100
-Received: from giometti by localhost.localdomain with local (Exim 4.54)
-	id 1EluTL-0004oE-Iz
-	for linux-mips@linux-mips.org; Mon, 12 Dec 2005 21:40:35 +0100
-Date:	Mon, 12 Dec 2005 21:40:35 +0100
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20051212204035.GL5132@hulk.enneenne.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.9i
-X-SA-Exim-Connect-IP: 192.168.32.38
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: advice on JTAG
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Dec 2005 20:48:09 +0000 (GMT)
+Received: from mail-out.m-online.net ([212.18.0.9]:28623 "EHLO
+	mail-out.m-online.net") by ftp.linux-mips.org with ESMTP
+	id S8133561AbVLLUru (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Dec 2005 20:47:50 +0000
+Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
+	by mail-out.m-online.net (Postfix) with ESMTP id 29DED707DB;
+	Mon, 12 Dec 2005 21:48:09 +0100 (CET)
+X-Auth-Info: RZkLzvwwc5bJR3JRqsRUpwhQeQj5KkzHbuuowkI1cNs=
+X-Auth-Info: RZkLzvwwc5bJR3JRqsRUpwhQeQj5KkzHbuuowkI1cNs=
+Received: from mail.denx.de (p549661B8.dip.t-dialin.net [84.150.97.184])
+	by smtp-auth.mnet-online.de (Postfix) with ESMTP id 1058E93E01;
+	Mon, 12 Dec 2005 21:48:09 +0100 (CET)
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by mail.denx.de (Postfix) with ESMTP id 64D55180019;
+	Mon, 12 Dec 2005 21:48:08 +0100 (MET)
+Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP id 4A664353A44;
+	Mon, 12 Dec 2005 21:48:08 +0100 (MET)
+To:	Rodolfo Giometti <giometti@linux.it>
+cc:	linux-mips@linux-mips.org
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: advice on JTAG 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Mon, 12 Dec 2005 21:40:35 +0100."
+             <20051212204035.GL5132@hulk.enneenne.com> 
+Date:	Mon, 12 Dec 2005 21:48:08 +0100
+Message-Id: <20051212204808.4A664353A44@atlas.denx.de>
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9657
+X-archive-position: 9658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+In message <20051212204035.GL5132@hulk.enneenne.com> you wrote:
+> 
+> I'm looking for a good JTAG system to debug a MIPS AU1100 based
+> board.
 
-I'm looking for a good JTAG system to debug a MIPS AU1100 based
-board.
+Abatron BDI2000...
 
-I'd like to have the possibility to put hardware and software break
-points in u-boot and linux source code. Also I prefere a system who
-completely supports the GNU/Linux system as host.
+> I'd like to have the possibility to put hardware and software break
+> points in u-boot and linux source code. Also I prefere a system who
+> completely supports the GNU/Linux system as host.
 
-Can you please suggest me some links? :)
+...with firmware "bdiGDB".
 
-Thanks in advance,
+> Can you please suggest me some links? :)
 
-Rodolfo
+http://www.abatron.ch/products/xr/aspx/r.1/Sv.63713d7b43526570313d7b693d394f54565743484b33513244474b394a594556537d7d/rx/products_detail.htm
+
+Best regards,
+
+Wolfgang Denk
 
 -- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+Faith may be defined briefly as an illogical belief in the  occurence
+of the improbable.                                    - H. L. Mencken

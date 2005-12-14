@@ -1,88 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Dec 2005 13:46:20 +0000 (GMT)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:15831 "EHLO
-	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133589AbVLNNqD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Dec 2005 13:46:03 +0000
-Received: from hulk.enneenne.com
-	([192.168.32.38] helo=localhost.localdomain ident=Debian-exim)
-	by goldrake.enneenne.com with esmtp (Exim 4.54)
-	id 1EmWbc-00080f-5O; Wed, 14 Dec 2005 14:27:25 +0100
-Received: from giometti by localhost.localdomain with local (Exim 4.54)
-	id 1EmWt1-0001Fm-4p; Wed, 14 Dec 2005 14:41:39 +0100
-Date:	Wed, 14 Dec 2005 14:41:39 +0100
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	Jordan Crouse <jordan.crouse@amd.com>
-Cc:	linux-mips@linux-mips.org
-Message-ID: <20051214134139.GN22061@hulk.enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Dec 2005 15:52:01 +0000 (GMT)
+Received: from amdext4.amd.com ([163.181.251.6]:10150 "EHLO amdext4.amd.com")
+	by ftp.linux-mips.org with ESMTP id S8133639AbVLNPv0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Dec 2005 15:51:26 +0000
+Received: from SAUSGW01.amd.com (sausgw01.amd.com [163.181.250.21])
+	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id jBEFpIvM017645;
+	Wed, 14 Dec 2005 09:51:48 -0600
+Received: from 163.181.250.1 by SAUSGW01.amd.com with ESMTP (AMD SMTP
+ Relay (Email Firewall v6.1.0)); Wed, 14 Dec 2005 09:51:38 -0600
+X-Server-Uuid: 8C3DB987-180B-4465-9446-45C15473FD3E
+Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
+ amdint2.amd.com (8.12.8/8.12.8/AMD) with ESMTP id jBEFpbh5028177; Wed,
+ 14 Dec 2005 09:51:37 -0600 (CST)
+Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
+ ldcmail.amd.com (Postfix) with ESMTP id A90F1201E; Wed, 14 Dec 2005
+ 08:51:37 -0700 (MST)
+Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
+ (8.13.4/8.13.4) with ESMTP id jBEFrPIv021731; Wed, 14 Dec 2005 08:53:25
+ -0700
+Received: (from jcrouse@localhost) by cosmic.amd.com (
+ 8.13.4/8.13.4/Submit) id jBEFrPUr021730; Wed, 14 Dec 2005 08:53:25
+ -0700
+Date:	Wed, 14 Dec 2005 08:53:25 -0700
+From:	"Jordan Crouse" <jordan.crouse@amd.com>
+To:	"Rodolfo Giometti" <giometti@linux.it>
+cc:	linux-mips@linux-mips.org
+Subject: Re: ALCHEMY:  Add SD support to AU1200 MMC/SD driver
+Message-ID: <20051214155324.GC9734@cosmic.amd.com>
 References: <20051202190108.GF28227@cosmic.amd.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="G+DT6X5ssgZ56VG3"
+ <20051214134139.GN22061@hulk.enneenne.com>
+MIME-Version: 1.0
+In-Reply-To: <20051214134139.GN22061@hulk.enneenne.com>
+User-Agent: Mutt/1.5.11
+X-WSS-ID: 6FBEE0004KG2208181-01-01
+Content-Type: text/plain;
+ charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20051202190108.GF28227@cosmic.amd.com>
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.9i
-X-SA-Exim-Connect-IP: 192.168.32.38
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: Re: [PATCH] ALCHEMY:  Add SD support to AU1200 MMC/SD driver
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: No (on goldrake.enneenne.com); Unknown failure
-Return-Path: <giometti@enneenne.com>
+Content-Transfer-Encoding: 7bit
+Return-Path: <jcrouse@cosmic.amd.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9669
+X-archive-position: 9670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: jordan.crouse@amd.com
 Precedence: bulk
 X-list: linux-mips
 
+On 14/12/05 14:41 +0100, Rodolfo Giometti wrote:
+> On Fri, Dec 02, 2005 at 12:01:08PM -0700, Jordan Crouse wrote:
+> > Add SD support to the AU1200 MMC driver.  This can
+> > be added post 2.6.15, I'm just sending them out today so the various
+> > maintainers can get them queued up. 
+> 
+> According to AMD Application Note titled "MultiMediaCard Support Using
+> the AMD Alchemy Au1200 and Au1100 Processors" I'd like to test your
+> driver on my Au1100 based board.
+> 
+> Can you please told me the Linux kernel version where the patch apply
+> to?
 
---G+DT6X5ssgZ56VG3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch should apply to the most recent linux-mips git (at least as
+of Wednesday morning).  
 
-On Fri, Dec 02, 2005 at 12:01:08PM -0700, Jordan Crouse wrote:
-> Add SD support to the AU1200 MMC driver.  This can
-> be added post 2.6.15, I'm just sending them out today so the various
-> maintainers can get them queued up.=20
+> Do you think there should be some issue to keep in consideration
+> regarding the Au1100?
 
-According to AMD Application Note titled "MultiMediaCard Support Using
-the AMD Alchemy Au1200 and Au1100 Processors" I'd like to test your
-driver on my Au1100 based board.
+Well, hopefully everything will Just Work (TM), but you'll want to make
+sure that all the various definitions are enabled for the AU1100.  I'll
+have to give you my standard disclaimer that I haven't compiled this
+for anything but a DB1200 and PB1200, so I can't promise that it will work,
+but there is nothing in the code that says it won't.
 
-Can you please told me the Linux kernel version where the patch apply
-to?
+Regards,
+Jordan
 
-Do you think there should be some issue to keep in consideration
-regarding the Au1100?
-
-Thanks in advance,
-
-Rodolfo
-
---=20
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
-
---G+DT6X5ssgZ56VG3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-
-iD8DBQFDoCETQaTCYNJaVjMRAjl7AKCvljANJqJc7oBx0fNHn93KH/G+OgCeLTC6
-i7V30tiXdsFlnUtD9Qz7DNM=
-=MkPw
------END PGP SIGNATURE-----
-
---G+DT6X5ssgZ56VG3--
+-- 
+Jordan Crouse
+Senior Linux Engineer
+AMD - Personal Connectivity Solutions Group
+<www.amd.com/embeddedprocessors>

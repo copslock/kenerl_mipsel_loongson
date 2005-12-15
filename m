@@ -1,58 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Dec 2005 15:02:20 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:22555 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133389AbVLOPCC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Dec 2005 15:02:02 +0000
-Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jBFExZwc003526;
-	Thu, 15 Dec 2005 14:59:35 GMT
-Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jBFExLEV003489;
-	Thu, 15 Dec 2005 14:59:21 GMT
-Date:	Thu, 15 Dec 2005 14:59:21 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jordan Crouse <jordan.crouse@AMD.com>
-Cc:	bora.sahin@ttnet.net.tr, linux-mips@linux-mips.org
-Subject: Re: Au1200 & IDE
-Message-ID: <20051215145921.GB2812@linux-mips.org>
-References: <200512142356.14417.bora.sahin@ttnet.net.tr> <20051214235031.GD23276@cosmic.amd.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Dec 2005 18:48:35 +0000 (GMT)
+Received: from xproxy.gmail.com ([66.249.82.194]:38993 "EHLO xproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3467095AbVLOSsR convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Dec 2005 18:48:17 +0000
+Received: by xproxy.gmail.com with SMTP id s18so332896wxc
+        for <linux-mips@linux-mips.org>; Thu, 15 Dec 2005 10:48:52 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=dE+LBpFuMGKpGSeJCj1svWQd47UiUK3dxO0/5+X4F+fSXbxQT9LsHfEXBezzydi7LHiN4L6kAMvV+MM3+aYNQzFLEJhOCI8m8J2iHzZJhsjfSYlerZGoWTr3dLiZwyzx5UwcGjztCJBv9nxEKf+z4v+K2WQ1qhoQ0Lzfku4f9kM=
+Received: by 10.70.87.10 with SMTP id k10mr3154863wxb;
+        Thu, 15 Dec 2005 10:48:50 -0800 (PST)
+Received: by 10.70.26.3 with HTTP; Thu, 15 Dec 2005 10:48:50 -0800 (PST)
+Message-ID: <9498e5c10512151048n1e615614r7ded00ad77c48724@mail.gmail.com>
+Date:	Fri, 16 Dec 2005 00:18:50 +0530
+From:	Shireesh Annam <annamshr@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: 2.4.22 Kernel Build Error
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20051215145132.GA2812@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20051214235031.GD23276@cosmic.amd.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <9498e5c10512150449x625a7270s168d6a6339330e29@mail.gmail.com>
+	 <20051215145132.GA2812@linux-mips.org>
+Return-Path: <annamshr@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9676
+X-archive-position: 9677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: annamshr@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 14, 2005 at 04:50:31PM -0700, Jordan Crouse wrote:
+I'm now using the SDE-Linux 5.03.06 for the big-endian target. I
+started the 2.4.22 kernel build process, but soon I get the following
+compile error.
 
-> > But that directory doesnt contain "ide-timing.h" so compiler complains from 
-> > it. ide-timing.h is in ide folder. I did a grep and saw that some other 
-> > dirs under ide also includes that file in the same manner as in mips but 
-> > doesnt contain it in its own folder. After I did a sym link, compile was 
-> > successfull. What's the concept behind this? Can we move it to 
-> > include/linux.
-> 
-> I'm not sure about that - thats probably more of a question for the core
-> folks.  For your particular error, however, it should be sufficient to add
-> 
-> EXTRA_CFLAGS += -Idrivers/ide
-> 
-> To drivers/ide/mips/Makefile.  I do believe that the most recent patches
-> had that fix attached.
+**********
+make[2]: Entering directory `/root/linux/arch/mips/mm'
+mips-linux-gcc -D__KERNEL__ -I/root/linux/include -Wall
+-Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing
+-fno-common -fomit-frame-pointer -I /root/linux/include/asm/gcc -G 0
+-mno-abicalls -fno-pic -pipe  -mabi=32 -mcpu=r4600 -mips2 -Wa,--trap  
+-nostdinc -iwithprefix include -DKBUILD_BASENAME=sc_ip22  -c -o
+sc-ip22.o sc-ip22.c
+{standard input}: Assembler messages:
+{standard input}:126: Error: Number (0x9000000080000000) larger than 32 bits
+{standard input}:148: Error: Number (0x9000000080000000) larger than 32 bits
+{standard input}:168: Error: Number (0x9000000080000000) larger than 32 bits
+make[2]: *** [sc-ip22.o] Error 1
+make[2]: Leaving directory `/root/linux/arch/mips/mm'
+make[1]: *** [first_rule] Error 2
+make[1]: Leaving directory `/root/linux/arch/mips/mm'
+make: *** [_dir_arch/mips/mm] Error 2
 
-I nuked it - it just isn't necessary to force this for all drivers.  So
-if anything, make that
+**********
 
-  CFLAGS_au1xxx-ide.o += -Idrivers/ide
+I'm not able to understand these error messages. Could someone throiw
+some light on this issue? Is this because of the toolchain that I'm
+using for building the kernel?
 
-  Ralf
+Thanks,
+Shireesh
+
+On 12/15/05, Ralf Baechle <ralf@linux-mips.org> wrote:
+> You're trying to build a stoneage kernel with a much newer compiler -
+> SDE 6 uses gcc 3.4 - which doesn't work.  Use an older compiler such
+> as gcc <= 3.3.x.  SDE 5.x contains gcc 2.96 btw.
+>
+>   Ralf
+>

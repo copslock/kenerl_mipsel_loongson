@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Dec 2005 14:51:38 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:39429 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Dec 2005 15:02:20 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:22555 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133453AbVLOOvR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Dec 2005 14:51:17 +0000
+	id S8133389AbVLOPCC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Dec 2005 15:02:02 +0000
 Received: from dea.linux-mips.net (localhost.localdomain [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jBFEpY7H003147;
-	Thu, 15 Dec 2005 14:51:34 GMT
+	by bacchus.net.dhis.org (8.13.4/8.13.1) with ESMTP id jBFExZwc003526;
+	Thu, 15 Dec 2005 14:59:35 GMT
 Received: (from ralf@localhost)
-	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jBFEpWRS003146;
-	Thu, 15 Dec 2005 14:51:32 GMT
-Date:	Thu, 15 Dec 2005 14:51:32 +0000
+	by dea.linux-mips.net (8.13.4/8.13.4/Submit) id jBFExLEV003489;
+	Thu, 15 Dec 2005 14:59:21 GMT
+Date:	Thu, 15 Dec 2005 14:59:21 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Shireesh Annam <annamshr@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: 2.4.22 Kernel Build Error
-Message-ID: <20051215145132.GA2812@linux-mips.org>
-References: <9498e5c10512150449x625a7270s168d6a6339330e29@mail.gmail.com>
+To:	Jordan Crouse <jordan.crouse@AMD.com>
+Cc:	bora.sahin@ttnet.net.tr, linux-mips@linux-mips.org
+Subject: Re: Au1200 & IDE
+Message-ID: <20051215145921.GB2812@linux-mips.org>
+References: <200512142356.14417.bora.sahin@ttnet.net.tr> <20051214235031.GD23276@cosmic.amd.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9498e5c10512150449x625a7270s168d6a6339330e29@mail.gmail.com>
+In-Reply-To: <20051214235031.GD23276@cosmic.amd.com>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9675
+X-archive-position: 9676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,35 +33,26 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 15, 2005 at 06:19:44PM +0530, Shireesh Annam wrote:
+On Wed, Dec 14, 2005 at 04:50:31PM -0700, Jordan Crouse wrote:
 
-> I have an new AMD (Au1500) Bosporous Board and I intend to install
-> MIPS Kernel 2.4.22 (linux-14oct2003.tar.gz) provided on the AMD CD
-> provided along with the kit. I have been through the
-> www.linux-mips.org website.
+> > But that directory doesnt contain "ide-timing.h" so compiler complains from 
+> > it. ide-timing.h is in ide folder. I did a grep and saw that some other 
+> > dirs under ide also includes that file in the same manner as in mips but 
+> > doesnt contain it in its own folder. After I did a sym link, compile was 
+> > successfull. What's the concept behind this? Can we move it to 
+> > include/linux.
 > 
-> I have installed the Linux/386 cross for big-endian target i.e. MIPS
-> SDE 6.02.03 from ftp.mips.com on a Red Hat host.
+> I'm not sure about that - thats probably more of a question for the core
+> folks.  For your particular error, however, it should be sufficient to add
 > 
-> After that when I try to build the kernel using the following command:
-> $make ARCH=mips CROSS_COMPILE=mips-linux- zImage
+> EXTRA_CFLAGS += -Idrivers/ide
 > 
-> I get the following error.
-> 
-> mips-linux-gcc -D__KERNEL__ -I/root/MipsLinux/oct2003/linux/include
-> -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing
-> -fno-common -fomit-frame-pointer -I
-> /root/MipsLinux/oct2003/linux/include/asm/gcc -G 0 -mno-abicalls
-> -fno-pic -pipe  -mabi=32 -mcpu=r4600 -mips2 -Wa,--trap  
-> -DKBUILD_BASENAME=main -c -o init/main.o init/main.c
-> cc1: error: invalid option `-mcpu=r4600'
-> make: *** [init/main.o] Error 1
-> 
-> I have selected MIPS32 for the CPU Architecture and the toolchain
-> doesn't seem to recognize the r4600 option.
+> To drivers/ide/mips/Makefile.  I do believe that the most recent patches
+> had that fix attached.
 
-You're trying to build a stoneage kernel with a much newer compiler -
-SDE 6 uses gcc 3.4 - which doesn't work.  Use an older compiler such
-as gcc <= 3.3.x.  SDE 5.x contains gcc 2.96 btw.
+I nuked it - it just isn't necessary to force this for all drivers.  So
+if anything, make that
+
+  CFLAGS_au1xxx-ide.o += -Idrivers/ide
 
   Ralf

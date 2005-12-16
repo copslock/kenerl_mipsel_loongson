@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Dec 2005 16:25:36 +0000 (GMT)
-Received: from smtp102.biz.mail.mud.yahoo.com ([68.142.200.237]:14473 "HELO
-	smtp102.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133454AbVLPQZS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Dec 2005 16:25:18 +0000
-Received: (qmail 98646 invoked from network); 16 Dec 2005 16:25:53 -0000
-Received: from unknown (HELO ?192.168.1.110?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
-  by smtp102.biz.mail.mud.yahoo.com with SMTP; 16 Dec 2005 16:25:52 -0000
-Subject: Re: Irda support for au1100
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	Rodolfo Giometti <giometti@linux.it>
-Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-In-Reply-To: <20051216161842.GN14341@gundam.enneenne.com>
-References: <20051216161842.GN14341@gundam.enneenne.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Fri, 16 Dec 2005 08:25:54 -0800
-Message-Id: <1134750354.4900.50.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Dec 2005 16:28:28 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:62683 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133454AbVLPQ2L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 16 Dec 2005 16:28:11 +0000
+Received: (qmail 14785 invoked from network); 16 Dec 2005 16:28:47 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 16 Dec 2005 16:28:47 -0000
+Message-ID: <43A2EBC9.5040502@ru.mvista.com>
+Date:	Fri, 16 Dec 2005 19:31:05 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MostaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Linux MIPS <linux-mips@linux-mips.org>
+CC:	Rodolfo Giometti <giometti@linux.it>
+Subject: Re: Freezing & Unfreezing the au11000
+References: <20051216153203.GK14341@gundam.enneenne.com>
+In-Reply-To: <20051216153203.GK14341@gundam.enneenne.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9681
+X-archive-position: 9682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2005-12-16 at 17:18 +0100, Rodolfo Giometti wrote:
-> Doing:
+Rodolfo Giometti wrote:
+
+> in order to restore the scratch registers contents as descibed into
+> file "linux/arch/mips/au1000/common/sleeper.S":
+
+    If you're talking about 2.6, the code in that file seems very incorrect in 
+regard to how it deals wiht the stack frame, since it effectively trashes regs 
+$1 and $2 reusing their slots for saving CP0 Status and Context regs. 2.4 
+branch has more sane variant.
+
+> Thanks in advance,
 > 
->    giometti@vvonth:/home/develop/linux.git$ rgrep CONFIG_AU1000_FIR *
->    drivers/net/irda/Makefile:obj-$(CONFIG_AU1000_FIR)	+= au1k_ir.o
-> 
-> so I suppose that current Irda support for au1100 is broken... is that
-> right? :)
+> Rodolfo
 
-It hasn't been tested in a very long time. 
-
-> Some suggestions in order to help me to port it to the current kernel
-> release?
-
-Compile it, see what's broken, and fix it :) It shouldn't be that bad.
-You can see how the chip works in the current driver. All breakage
-should be related to new kernel irda apis and such.
-
-Pete
+WBR, Sergei

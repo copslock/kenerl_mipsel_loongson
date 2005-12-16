@@ -1,52 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Dec 2005 16:18:18 +0000 (GMT)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:18414 "EHLO
-	gundam.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133454AbVLPQSB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Dec 2005 16:18:01 +0000
-Received: from giometti by gundam.enneenne.com with local (Exim 3.36 #1 (Debian))
-	id 1EnII6-0007Qv-00
-	for <linux-mips@linux-mips.org>; Fri, 16 Dec 2005 17:18:42 +0100
-Date:	Fri, 16 Dec 2005 17:18:42 +0100
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Subject: Irda support for au1100
-Message-ID: <20051216161842.GN14341@gundam.enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Dec 2005 16:25:36 +0000 (GMT)
+Received: from smtp102.biz.mail.mud.yahoo.com ([68.142.200.237]:14473 "HELO
+	smtp102.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133454AbVLPQZS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 16 Dec 2005 16:25:18 +0000
+Received: (qmail 98646 invoked from network); 16 Dec 2005 16:25:53 -0000
+Received: from unknown (HELO ?192.168.1.110?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
+  by smtp102.biz.mail.mud.yahoo.com with SMTP; 16 Dec 2005 16:25:52 -0000
+Subject: Re: Irda support for au1100
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	Rodolfo Giometti <giometti@linux.it>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+In-Reply-To: <20051216161842.GN14341@gundam.enneenne.com>
+References: <20051216161842.GN14341@gundam.enneenne.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Fri, 16 Dec 2005 08:25:54 -0800
+Message-Id: <1134750354.4900.50.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: Programmi e soluzioni GNU/Linux
-X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <giometti@enneenne.com>
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9680
+X-archive-position: 9681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-Doing:
+On Fri, 2005-12-16 at 17:18 +0100, Rodolfo Giometti wrote:
+> Doing:
+> 
+>    giometti@vvonth:/home/develop/linux.git$ rgrep CONFIG_AU1000_FIR *
+>    drivers/net/irda/Makefile:obj-$(CONFIG_AU1000_FIR)	+= au1k_ir.o
+> 
+> so I suppose that current Irda support for au1100 is broken... is that
+> right? :)
 
-   giometti@vvonth:/home/develop/linux.git$ rgrep CONFIG_AU1000_FIR *
-   drivers/net/irda/Makefile:obj-$(CONFIG_AU1000_FIR)	+= au1k_ir.o
+It hasn't been tested in a very long time. 
 
-so I suppose that current Irda support for au1100 is broken... is that
-right? :)
+> Some suggestions in order to help me to port it to the current kernel
+> release?
 
-Some suggestions in order to help me to port it to the current kernel
-release?
+Compile it, see what's broken, and fix it :) It shouldn't be that bad.
+You can see how the chip works in the current driver. All breakage
+should be related to new kernel irda apis and such.
 
-Thanks in advance,
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+Pete

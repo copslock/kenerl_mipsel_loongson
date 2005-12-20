@@ -1,3 +1,70 @@
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2005 18:06:04 +0000 (GMT)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:3997 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S8133569AbVLTSFb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Dec 2005 18:05:31 +0000
+Received: from [192.168.12.17] ([10.149.0.1])
+	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id jBKI6Yt19901
+	for <linux-mips@linux-mips.org>; Tue, 20 Dec 2005 22:06:34 +0400
+Message-ID: <43A8482A.1010004@ru.mvista.com>
+Date:	Tue, 20 Dec 2005 21:06:34 +0300
+From:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
+User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: [Fwd: Re: [PATCH] PNX8550 NAND flash driver]
+Content-Type: multipart/mixed;
+ boundary="------------050100090406070005010902"
+Return-Path: <vbarinov@ru.mvista.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 9699
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: vbarinov@ru.mvista.com
+Precedence: bulk
+X-list: linux-mips
+
+This is a multi-part message in MIME format.
+--------------050100090406070005010902
+Content-Type: text/plain; charset=KOI8-R; format=flowed
+Content-Transfer-Encoding: 7bit
+
+
+
+--------------050100090406070005010902
+Content-Type: message/rfc822;
+ name="Re: [PATCH] PNX8550 NAND flash driver"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="Re: [PATCH] PNX8550 NAND flash driver"
+
+Return-Path: <vbarinov@buildserver.ru.mvista.com>
+Received: from buildserver.ru.mvista.com ([unix socket]) (authenticated user=vbarinov bits=0)
+	by buildserver.ru.mvista.com (Cyrus v2.1.11-Invoca-RPM-2.1.11-6) with LMTP; Tue, 20 Dec 2005 18:31:53 +0400
+X-Sieve: CMU Sieve 2.2
+Return-Path: <linux-mips-bounce@linux-mips.org>
+Received: from av.mvista.com ([10.0.12.39])
+	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id jBKEVot11936
+	for <vbarinov@ru.mvista.com>; Tue, 20 Dec 2005 18:31:50 +0400
+Received: from apocalypse.mvista.com (av [127.0.0.1])
+	by av.mvista.com (8.9.3/8.9.3) with ESMTP id GAA07690
+	for <vbarinov@ru.mvista.com>; Tue, 20 Dec 2005 06:30:13 -0800
+Received: (qmail 29033 invoked from network); 20 Dec 2005 14:30:12 -0000
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on thoth.mvista.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-101.5 required=5.0 tests=AWL,BAYES_00,
+	UNPARSEABLE_RELAY,USER_IN_WHITELIST autolearn=unavailable 
+	version=3.1.0
+Received: from mail.linux-mips.org (HELO ftp.linux-mips.org) (62.254.210.162)
+  by apocalypse.mvista.com with SMTP; 20 Dec 2005 14:30:08 -0000
+Received: from localhost.localdomain ([127.0.0.1]:15520 "EHLO
+	ftp.linux-mips.org") by ftp.linux-mips.org with ESMTP
+	id S8133373AbVLTO2J (ORCPT <rfc822;spodstavin@ru.mvista.com>
+	+ 2 others); Tue, 20 Dec 2005 14:28:09 +0000
 Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2005 14:27:42 +0000 (GMT)
 Received: from rtsoft3.corbina.net ([85.21.88.6]:29851 "EHLO
 	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
@@ -7,28 +74,25 @@ Received: from [192.168.12.17] ([10.149.0.1])
 	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id jBKERxt11783;
 	Tue, 20 Dec 2005 18:27:59 +0400
 Message-ID: <43A814EF.6060509@ru.mvista.com>
-Date:	Tue, 20 Dec 2005 17:27:59 +0300
-From:	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>
+Date: 	Tue, 20 Dec 2005 17:27:59 +0300
+From: "Vladimir A. Barinov" <vbarinov@ru.mvista.com>
 User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
+To: linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] PNX8550 NAND flash driver
 References: <43A2F819.1040106@ru.mvista.com>
 In-Reply-To: <43A2F819.1040106@ru.mvista.com>
 Content-Type: multipart/mixed;
  boundary="------------050702040603060002030909"
-Return-Path: <vbarinov@ru.mvista.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
 X-archive-position: 9698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: vbarinov@ru.mvista.com
 Precedence: bulk
-X-list: linux-mips
+X-list: 	linux-mips
+
 
 This is a multi-part message in MIME format.
 --------------050702040603060002030909
@@ -862,3 +926,7 @@ Index: linux-2.6.15_0/include/asm-mips/mach-pnx8550/nand.h
  #endif
 
 --------------050702040603060002030909--
+
+
+
+--------------050100090406070005010902--

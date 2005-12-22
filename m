@@ -1,61 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2005 09:44:11 +0000 (GMT)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:32214 "HELO
-	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133355AbVLVJny (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 22 Dec 2005 09:43:54 +0000
-Received: from localhost (in-3.mx.triera.net [213.161.0.27])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id BAC88C064;
-	Thu, 22 Dec 2005 10:45:03 +0100 (CET)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-3.mx.triera.net (Postfix) with SMTP id C3F221BC093;
-	Thu, 22 Dec 2005 10:45:05 +0100 (CET)
-Received: from [172.18.1.53] (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 2C0C01A18AA;
-	Thu, 22 Dec 2005 10:45:06 +0100 (CET)
-Subject: Re: does someone succeed in making the toolchain for 2.6 kernel?
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	zhuzhenhua <zzh.hust@gmail.com>
-Cc:	Jan-Benedict Glaw <jbglaw@lug-owl.de>, linux-mips@linux-mips.org
-In-Reply-To: <50c9a2250512220130k6d4330acsc8cf4325771ba73c@mail.gmail.com>
-References: <50c9a2250512210051q85f813fx27b0533fe66165e2@mail.gmail.com>
-	 <20051221085539.GS13985@lug-owl.de>
-	 <50c9a2250512210104j4a19e37cu30c795d4acc226d2@mail.gmail.com>
-	 <20051221091852.GT13985@lug-owl.de>
-	 <1135159354.5211.1.camel@localhost.localdomain>
-	 <20051221100619.GW13985@lug-owl.de>
-	 <1135161136.5211.8.camel@localhost.localdomain>
-	 <50c9a2250512211843o469601e4p557f4645dd721949@mail.gmail.com>
-	 <1135243398.6902.3.camel@localhost.localdomain>
-	 <50c9a2250512220130k6d4330acsc8cf4325771ba73c@mail.gmail.com>
-Content-Type: text/plain
-Date:	Thu, 22 Dec 2005 10:46:10 +0100
-Message-Id: <1135244770.6902.5.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2005 09:50:18 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.200]:46668 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133355AbVLVJuB convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 22 Dec 2005 09:50:01 +0000
+Received: by wproxy.gmail.com with SMTP id 36so319386wra
+        for <linux-mips@linux-mips.org>; Thu, 22 Dec 2005 01:51:15 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=ECfuB7OdgjBLugJzicMIb3e6qr3qiYoE5C7Nomst7b3belD442ueA4DktkqN6nnC1qwftT+5jaBngIsJUXBa6ZIpkNCXwJ3vzoovDYEFzX3gWxsyWYFhhe5NYEgTKfgjFHTCU/pNB6wnLp8lqiZ3c6p19pMQdFUh1qKYTlRScrQ=
+Received: by 10.54.135.7 with SMTP id i7mr1303636wrd;
+        Thu, 22 Dec 2005 01:51:15 -0800 (PST)
+Received: by 10.54.147.20 with HTTP; Thu, 22 Dec 2005 01:51:15 -0800 (PST)
+Message-ID: <f69849430512220151n5bd17c83sb30e73e5dca6d422@mail.gmail.com>
+Date:	Thu, 22 Dec 2005 01:51:15 -0800
+From:	kernel coder <lhrkernelcoder@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: IDE subsystem
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <lhrkernelcoder@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9728
+X-archive-position: 9729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: lhrkernelcoder@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+hi,
 
-> another question: do you change the demo-mipsel.sh to eval another sh or just
-> keep the
->  eval `cat mipsel.dat gcc-3.4.2-glibc-2.2.5.dat`        sh all.sh --notest
+   I was trying to figure out the control flow in IDE subsystem.I
+googled but could not get information.
+Please refer me some document about about linux IDE susbsytem
 
-eval `cat mipsel-sf.dat gcc-3.4.4-glibc-2.3.5-hdrs-2.6.11.2.dat`
-sh all.sh --notest
-
-(mipsel-sf.dat contains what I have written in a previous mail.)
-
-BR,
-Matej
+lhrkernelcoder

@@ -1,65 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2005 08:36:55 +0000 (GMT)
-Received: from 252.237.98-84.rev.gaoland.net ([84.98.237.252]:58940 "EHLO
-	serveurSMTP") by ftp.linux-mips.org with ESMTP id S8133516AbVLVIgh
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 22 Dec 2005 08:36:37 +0000
-Received: from [192.168.150.1] by serveurSMTP
-  (ArGoSoft Mail Server Freeware, Version 1.8 (1.8.8.2)); Thu, 22 Dec 2005 09:39:35 +0100
-Message-ID: <43AA653B.6050207@avilinks.com>
-Date:	Thu, 22 Dec 2005 09:35:07 +0100
-From:	Yoann Allain <yallain@avilinks.com>
-Organization: Avilinks
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
-X-Accept-Language: fr, en
-MIME-Version: 1.0
-To:	Fuxin Zhang <fxzhang@ict.ac.cn>
-CC:	Srinivas Kommu <kommu@hotmail.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Preempted interrupt handler
-References: <43A6F155.7080402@avilinks.com> <20051220131829.GB3376@linux-mips.org> <20051221193906.GB1456@sjc-xdm-007.cisco.com> <43A9F76A.4080305@ict.ac.cn>
-In-Reply-To: <43A9F76A.4080305@ict.ac.cn>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <yallain@avilinks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2005 08:56:46 +0000 (GMT)
+Received: from lug-owl.de ([195.71.106.12]:34974 "EHLO lug-owl.de")
+	by ftp.linux-mips.org with ESMTP id S8133516AbVLVI41 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Dec 2005 08:56:27 +0000
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id F093EF0047; Thu, 22 Dec 2005 09:57:36 +0100 (CET)
+Date:	Thu, 22 Dec 2005 09:57:36 +0100
+From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:	zhuzhenhua <zzh.hust@gmail.com>
+Cc:	Matej Kupljen <matej.kupljen@ultra.si>, linux-mips@linux-mips.org
+Subject: Re: does someone succeed in making the toolchain for 2.6 kernel?
+Message-ID: <20051222085736.GD13985@lug-owl.de>
+Mail-Followup-To: zhuzhenhua <zzh.hust@gmail.com>,
+	Matej Kupljen <matej.kupljen@ultra.si>, linux-mips@linux-mips.org
+References: <50c9a2250512210051q85f813fx27b0533fe66165e2@mail.gmail.com> <20051221085539.GS13985@lug-owl.de> <50c9a2250512210104j4a19e37cu30c795d4acc226d2@mail.gmail.com> <20051221091852.GT13985@lug-owl.de> <1135159354.5211.1.camel@localhost.localdomain> <20051221100619.GW13985@lug-owl.de> <1135161136.5211.8.camel@localhost.localdomain> <50c9a2250512211843o469601e4p557f4645dd721949@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="lUGOeNWztp/TKlGK"
+Content-Disposition: inline
+In-Reply-To: <50c9a2250512211843o469601e4p557f4645dd721949@mail.gmail.com>
+X-Operating-System: Linux mail 2.6.12.3lug-owl 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+User-Agent: Mutt/1.5.9i
+Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9723
+X-archive-position: 9724
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yallain@avilinks.com
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
 
-Fuxin Zhang a écrit :
+--lUGOeNWztp/TKlGK
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->>Is it normal for the modules to be loaded at 0xc0000000 (this is
->>highmem, isn't it)? I see the same on my bcm1250 box. I've been wondering
->>why they can't be loaded in kseg0. Or is it because of bad
->>modutils/compiler flags?
->>    
->>
->It is not necessary highmem. 0xc0000000 is a MAPPED(i.e. use TLB) kernel
->segment,
->used by vmalloc to allocate a large virtually continous memory area for
->modules. Use kseg0 you have to get a large physically continuous area,
->and that is difficult unless you reserve some memory.
->  
->
-I've just found in LDD 2nd version book (page 218), that on MIPS, 
-addresses returned by vmalloc belong to a completely different address 
-range from kmalloc addresses, whereas on x86 platforms they belong to 
-the same.
+On Thu, 2005-12-22 10:43:31 +0800, zhuzhenhua <zzh.hust@gmail.com> wrote:
+> On 12/21/05, Matej Kupljen <matej.kupljen@ultra.si> wrote:
+> > > > Yes, we use crosstool, but the results matrix isn't rely
+> > > > encouraging:
+> > > > http://www.kegel.com/crosstool/crosstool-0.38/buildlogs/
+>=20
+> i have use the crosstool to try,but i get a
+> "#error "glibc cannot be compiled without optimization"
+> what CFLAGS and CXXFLAGS should  to set in demo-mipsel.sh
 
-Concerning the clues given by Ralf, I've tried insmoding the module by a 
-recent version of modutils instead of using the insmod brought with 
-Busybox : the kernel behaved the same, it doesn't want to use the 
-handler of my kernel.
-I've also checked that I was compiling with the mlong-calls flag...
+At least -O I guess, or -O2.
 
-Therefore, I think I will compile my module into the kernel, until I 
-found a solution to this problem...
+MfG, JBG
 
-Thanks everyone!
+--=20
+Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
+_ O _
+"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
+_ _ O
+ f=C3=BCr einen Freien Staat voll Freier B=C3=BCrger"  | im Internet! |   i=
+m Irak!   O O O
+ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
+);
+
+--lUGOeNWztp/TKlGK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFDqmqAHb1edYOZ4bsRAt4fAJ9KOYR7/2H4kbVWJo077dlt5fVaPQCfdTQT
+5cKoKa8Pm5eIfvJBPi3kq8c=
+=gfd8
+-----END PGP SIGNATURE-----
+
+--lUGOeNWztp/TKlGK--

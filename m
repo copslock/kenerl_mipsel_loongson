@@ -1,82 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2005 08:56:46 +0000 (GMT)
-Received: from lug-owl.de ([195.71.106.12]:34974 "EHLO lug-owl.de")
-	by ftp.linux-mips.org with ESMTP id S8133516AbVLVI41 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Dec 2005 08:56:27 +0000
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id F093EF0047; Thu, 22 Dec 2005 09:57:36 +0100 (CET)
-Date:	Thu, 22 Dec 2005 09:57:36 +0100
-From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:	zhuzhenhua <zzh.hust@gmail.com>
-Cc:	Matej Kupljen <matej.kupljen@ultra.si>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2005 09:05:03 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.198]:45110 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133516AbVLVJEo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Dec 2005 09:04:44 +0000
+Received: by wproxy.gmail.com with SMTP id 36so313712wra
+        for <linux-mips@linux-mips.org>; Thu, 22 Dec 2005 01:05:58 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=jqvFDav9dXEY4J/fhtbFRKOEYigbTWOR6lN7gPzFJABnn1+8iB0AHl1BT9wSPuG7MGDdRhLbEe/Z8UCymWq0C2S9Wz4cZkQ0l+MTysMvWgbPZZMSfkK7hfv6z2soxlb75WohOm0H8FurpJjsf91s42nBTZBABAB3tLFXOGcXnds=
+Received: by 10.54.125.7 with SMTP id x7mr1825669wrc;
+        Thu, 22 Dec 2005 01:05:58 -0800 (PST)
+Received: by 10.54.156.5 with HTTP; Thu, 22 Dec 2005 01:05:58 -0800 (PST)
+Message-ID: <50c9a2250512220105s190d7f72mde52616984f3fe88@mail.gmail.com>
+Date:	Thu, 22 Dec 2005 17:05:58 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	zhuzhenhua <zzh.hust@gmail.com>,
+	Matej Kupljen <matej.kupljen@ultra.si>,
+	linux-mips@linux-mips.org
 Subject: Re: does someone succeed in making the toolchain for 2.6 kernel?
-Message-ID: <20051222085736.GD13985@lug-owl.de>
-Mail-Followup-To: zhuzhenhua <zzh.hust@gmail.com>,
-	Matej Kupljen <matej.kupljen@ultra.si>, linux-mips@linux-mips.org
-References: <50c9a2250512210051q85f813fx27b0533fe66165e2@mail.gmail.com> <20051221085539.GS13985@lug-owl.de> <50c9a2250512210104j4a19e37cu30c795d4acc226d2@mail.gmail.com> <20051221091852.GT13985@lug-owl.de> <1135159354.5211.1.camel@localhost.localdomain> <20051221100619.GW13985@lug-owl.de> <1135161136.5211.8.camel@localhost.localdomain> <50c9a2250512211843o469601e4p557f4645dd721949@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lUGOeNWztp/TKlGK"
+In-Reply-To: <20051222085736.GD13985@lug-owl.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: base64
 Content-Disposition: inline
-In-Reply-To: <50c9a2250512211843o469601e4p557f4645dd721949@mail.gmail.com>
-X-Operating-System: Linux mail 2.6.12.3lug-owl 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-User-Agent: Mutt/1.5.9i
-Return-Path: <jbglaw@lug-owl.de>
+References: <50c9a2250512210051q85f813fx27b0533fe66165e2@mail.gmail.com>
+	 <20051221085539.GS13985@lug-owl.de>
+	 <50c9a2250512210104j4a19e37cu30c795d4acc226d2@mail.gmail.com>
+	 <20051221091852.GT13985@lug-owl.de>
+	 <1135159354.5211.1.camel@localhost.localdomain>
+	 <20051221100619.GW13985@lug-owl.de>
+	 <1135161136.5211.8.camel@localhost.localdomain>
+	 <50c9a2250512211843o469601e4p557f4645dd721949@mail.gmail.com>
+	 <20051222085736.GD13985@lug-owl.de>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9724
+X-archive-position: 9725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-
---lUGOeNWztp/TKlGK
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 2005-12-22 10:43:31 +0800, zhuzhenhua <zzh.hust@gmail.com> wrote:
-> On 12/21/05, Matej Kupljen <matej.kupljen@ultra.si> wrote:
-> > > > Yes, we use crosstool, but the results matrix isn't rely
-> > > > encouraging:
-> > > > http://www.kegel.com/crosstool/crosstool-0.38/buildlogs/
->=20
-> i have use the crosstool to try,but i get a
-> "#error "glibc cannot be compiled without optimization"
-> what CFLAGS and CXXFLAGS should  to set in demo-mipsel.sh
-
-At least -O I guess, or -O2.
-
-MfG, JBG
-
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- f=C3=BCr einen Freien Staat voll Freier B=C3=BCrger"  | im Internet! |   i=
-m Irak!   O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
-
---lUGOeNWztp/TKlGK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
-
-iD8DBQFDqmqAHb1edYOZ4bsRAt4fAJ9KOYR7/2H4kbVWJo077dlt5fVaPQCfdTQT
-5cKoKa8Pm5eIfvJBPi3kq8c=
-=gfd8
------END PGP SIGNATURE-----
-
---lUGOeNWztp/TKlGK--
+T24gMTIvMjIvMDUsIEphbi1CZW5lZGljdCBHbGF3IDxqYmdsYXdAbHVnLW93bC5kZT4gd3JvdGU6
+Cj4gT24gVGh1LCAyMDA1LTEyLTIyIDEwOjQzOjMxICswODAwLCB6aHV6aGVuaHVhIDx6emguaHVz
+dEBnbWFpbC5jb20+IHdyb3RlOgo+ID4gT24gMTIvMjEvMDUsIE1hdGVqIEt1cGxqZW4gPG1hdGVq
+Lmt1cGxqZW5AdWx0cmEuc2k+IHdyb3RlOgo+ID4gPiA+ID4gWWVzLCB3ZSB1c2UgY3Jvc3N0b29s
+LCBidXQgdGhlIHJlc3VsdHMgbWF0cml4IGlzbid0IHJlbHkKPiA+ID4gPiA+IGVuY291cmFnaW5n
+Ogo+ID4gPiA+ID4gaHR0cDovL3d3dy5rZWdlbC5jb20vY3Jvc3N0b29sL2Nyb3NzdG9vbC0wLjM4
+L2J1aWxkbG9ncy8KPiA+Cj4gPiBpIGhhdmUgdXNlIHRoZSBjcm9zc3Rvb2wgdG8gdHJ5LGJ1dCBp
+IGdldCBhCj4gPiAiI2Vycm9yICJnbGliYyBjYW5ub3QgYmUgY29tcGlsZWQgd2l0aG91dCBvcHRp
+bWl6YXRpb24iCj4gPiB3aGF0IENGTEFHUyBhbmQgQ1hYRkxBR1Mgc2hvdWxkICB0byBzZXQgaW4g
+ZGVtby1taXBzZWwuc2gKPgo+IEF0IGxlYXN0IC1PIEkgZ3Vlc3MsIG9yIC1PMi4KCmluIHRoZSBt
+aXBzZWwuZGF0IGl0IGhhcyBkZWZpbmUgLU8yo6wKaSB0cnkgLU8gYW5kIC1PMixib3RoIGZhaWxl
+ZAoKPgo+IE1mRywgSkJHCj4KPiAtLQo+IEphbi1CZW5lZGljdCBHbGF3ICAgICAgIGpiZ2xhd0Bs
+dWctb3dsLmRlICAgIC4gKzQ5LTE3Mi03NjA4NDgxICAgICAgICAgICAgIF8gTyBfCj4gIkVpbmUg
+RnJlaWUgTWVpbnVuZyBpbiAgZWluZW0gRnJlaWVuIEtvcGYgICAgfCBHZWdlbiBaZW5zdXIgfCBH
+ZWdlbiBLcmllZyAgXyBfIE8KPiAgZqi5ciBlaW5lbiBGcmVpZW4gU3RhYXQgdm9sbCBGcmVpZXIg
+Qqi5cmdlciIgIHwgaW0gSW50ZXJuZXQhIHwgICBpbSBJcmFrISAgIE8gTyBPCj4gcmV0ID0gZG9f
+YWN0aW9ucygoY3VyciB8IEZSRUVfU1BFRUNIKSAmIH4oTkVXX0NPUFlSSUdIVF9MQVcgfCBEUk0g
+fCBUQ1BBKSk7Cj4KPgo+IC0tLS0tQkVHSU4gUEdQIFNJR05BVFVSRS0tLS0tCj4gVmVyc2lvbjog
+R251UEcgdjEuNC4xIChHTlUvTGludXgpCj4KPiBpRDhEQlFGRHFtcUFIYjFlZFlPWjRic1JBdDRm
+QUo5S09ZUjcvMkg0a2JWV0pvMDc3ZGx0NWZWYVBRQ2ZkVFFUCj4gNWNLb0thOFBtNWVJZnZKQlBp
+M2txOGM9Cj4gPWdmZDgKPiAtLS0tLUVORCBQR1AgU0lHTkFUVVJFLS0tLS0KPgo+Cj4KQmVzdCBy
+ZWdhcmRzCnpodXpoZW5odWEK

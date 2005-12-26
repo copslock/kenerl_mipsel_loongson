@@ -1,97 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Dec 2005 11:51:48 +0000 (GMT)
-Received: from h081217049130.dyn.cm.kabsi.at ([81.217.49.130]:21926 "EHLO
-	phobos.hvrlab.org") by ftp.linux-mips.org with ESMTP
-	id S8133369AbVLXLva (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Dec 2005 11:51:30 +0000
-Received: from mini.intra (mini.intra [10.49.1.11])
-	(authenticated bits=0)
-	by phobos.hvrlab.org (8.13.4/8.13.4/Debian-3) with ESMTP id jBOBqh9Z021904
-	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT);
-	Sat, 24 Dec 2005 12:52:54 +0100
-Subject: Re: USB on AU1550
-From:	Herbert Valerio Riedel <hvr@gnu.org>
-To:	Jay Monkman <jtm@smoothsmoothie.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <433B0299.8080507@smoothsmoothie.com>
-References: <433B0299.8080507@smoothsmoothie.com>
-Content-Type: text/plain
-Organization: Free Software Foundation
-Date:	Sat, 24 Dec 2005 12:52:42 +0100
-Message-Id: <1135425163.13029.13.camel@mini.intra>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.1 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV 0.84/1216/Sat Dec 24 11:08:45 2005 on phobos.hvrlab.org
-X-Virus-Status:	Clean
-Return-Path: <hvr@gnu.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Dec 2005 22:21:11 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:27322 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133530AbVLZWUx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Dec 2005 22:20:53 +0000
+Received: (qmail 10330 invoked from network); 26 Dec 2005 22:22:29 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 26 Dec 2005 22:22:29 -0000
+Message-ID: <43B06DB4.409@ru.mvista.com>
+Date:	Tue, 27 Dec 2005 01:24:52 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MostaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	rmk+serial@arm.linux.org.uk
+CC:	linux-mips@linux-mips.org, anemo@mba.ocn.ne.jp
+Subject: [PATCH] serial_txx9: forcibly init the spinlock for PCI UART used
+ as a console
+Content-Type: multipart/mixed;
+ boundary="------------060002020409050600060303"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9736
+X-archive-position: 9737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hvr@gnu.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-hello,
+This is a multi-part message in MIME format.
+--------------060002020409050600060303
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2005-09-28 at 15:52 -0500, Jay Monkman wrote:
-> I'm trying to get USB working on my AU1550 board, and I'm getting an error I
-> don't understand. I've searched the web and the mailing list archives, but
-> haven't found anything relevant.
+Hello.
 
-there was a post of mine, dating back to 22 Nov 2004 which could have
-been relevant to your cause :-)
+        When a system console gets assigned to the UART located on the Toshiba
+GOKU-S PCI card, the port spinlock is not initialized at all --
+uart_add_one_port() thinks it's been initialized by the console setup code
+which is called too early for being able to do that, before the PCI card is
+even detected by the driver, and therefore fails. That unitialized spinlock
+causes 3 BUG messages in the boot log with Ingo Molnar's RT preemption patch
+as uart_add_one_port() called to register PCI UART with the serial core calls
+uart_configure_port() which makes use of the port spinlock.
 
-> 
-> I'm using 2.6.12, in big-endian mode.
-[..]
-> Can anyone point me in the right direction to get this working?
+WBR, Sergei
 
-don't know whether you still require being pointed in to any direction;
-however, the following patch (against current GIT HEAD, works for me,
-YMMV :-) might provide a hint:
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index ed1899d..914b964 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -100,12 +100,14 @@ config USB_OHCI_HCD_PCI
- config USB_OHCI_BIG_ENDIAN
- 	bool
- 	depends on USB_OHCI_HCD
-+	default y if SOC_AU1X00 && CPU_BIG_ENDIAN
- 	default n
- 
- config USB_OHCI_LITTLE_ENDIAN
- 	bool
- 	depends on USB_OHCI_HCD
- 	default n if STB03xxx || PPC_MPC52xx
-+	default n if SOC_AU1X00 && CPU_BIG_ENDIAN
- 	default y
- 
- config USB_UHCI_HCD
-diff --git a/drivers/usb/host/ohci.h b/drivers/usb/host/ohci.h
-index caacf14..bf18351 100644
---- a/drivers/usb/host/ohci.h
-+++ b/drivers/usb/host/ohci.h
-@@ -462,6 +462,11 @@ static inline struct usb_hcd *ohci_to_hc
- #define writel_be(val, addr)	out_be32((__force unsigned *)addr, val)
- #endif
- 
-+#if defined(CONFIG_SOC_AU1X00)
-+#define readl_be(addr)          __raw_readl((__force u32 *)(addr))
-+#define writel_be(val, addr)    __raw_writel(val, (__force u32 *)(addr))
-+#endif
+
+
+--------------060002020409050600060303
+Content-Type: text/plain;
+ name="GOKU-console-spinlock-fix.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="GOKU-console-spinlock-fix.patch"
+
+diff --git a/drivers/serial/serial_txx9.c b/drivers/serial/serial_txx9.c
+index f10c86d..3f8dc41 100644
+--- a/drivers/serial/serial_txx9.c
++++ b/drivers/serial/serial_txx9.c
+@@ -1065,6 +1065,14 @@ static int __devinit serial_txx9_registe
+ 		uart->port.mapbase  = port->mapbase;
+ 		if (port->dev)
+ 			uart->port.dev = port->dev;
 +
- static inline unsigned int ohci_readl (const struct ohci_hcd *ohci,
- 							__hc32 __iomem * regs)
- {
++		/*
++		 * If this port is a console, its spinlock couldn't have been
++		 * initialized by serial_txx9_console_setup() and it won't be
++		 * initialized by uart_add_one_port(), so have to do it here...
++		 */
++		spin_lock_init(&uart->port.lock);
++
+ 		ret = uart_add_one_port(&serial_txx9_reg, &uart->port);
+ 		if (ret == 0)
+ 			ret = uart->port.line;
 
 
-greetings,
--- 
-Herbert Valerio Riedel <hvr@gnu.org>
-GnuPG Key Fingerprint: 7BB9 2D6C D485 CE64 4748  5F65 4981 E064 883F 4142
+
+
+
+--------------060002020409050600060303--

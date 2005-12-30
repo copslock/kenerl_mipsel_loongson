@@ -1,48 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Dec 2005 20:38:02 +0000 (GMT)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:21404 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133656AbVL3Uho (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 30 Dec 2005 20:37:44 +0000
-Received: (qmail 32235 invoked from network); 30 Dec 2005 20:39:48 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 30 Dec 2005 20:39:48 -0000
-Message-ID: <43B59BA2.2090805@ru.mvista.com>
-Date:	Fri, 30 Dec 2005 23:42:10 +0300
-From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Organization: MostaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Dec 2005 21:02:46 +0000 (GMT)
+Received: from mx01.qsc.de ([213.148.129.14]:7873 "EHLO mx01.qsc.de")
+	by ftp.linux-mips.org with ESMTP id S8133656AbVL3VC3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 30 Dec 2005 21:02:29 +0000
+Received: from port-195-158-168-159.dynamic.qsc.de ([195.158.168.159] helo=hattusa.textio)
+	by mx01.qsc.de with esmtp (Exim 3.35 #1)
+	id 1EsRQO-00009w-00; Fri, 30 Dec 2005 22:04:32 +0100
+Received: from ths by hattusa.textio with local (Exim 4.60)
+	(envelope-from <ths@hattusa.textio>)
+	id 1EsRQJ-0008WP-5T; Fri, 30 Dec 2005 22:04:27 +0100
+Date:	Fri, 30 Dec 2005 22:04:27 +0100
+To:	Adil Hafeez <adilhafeez80@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Fixed kernel entry point suggestion
+Message-ID: <20051230210427.GJ1882@hattusa.textio>
+References: <82e4189c0512272336xed0fe2ax9fee6119ea2d6b00@mail.gmail.com> <06af7c9f9f82dd2b306e02997869e709@embeddedalley.com> <82e4189c0512300136w5112edf2kf3d243ddbc9313d@mail.gmail.com> <20051230094750.GI1882@hattusa.textio> <82e4189c0512300222k426764e0ldefeafb232ad36d@mail.gmail.com>
 MIME-Version: 1.0
-To:	ppopov@embeddedalley.com
-CC:	rmk+serial@arm.linux.org.uk,
-	Manish Lachwani <mlachwani@mvista.com>,
-	Linux MIPS <linux-mips@linux-mips.org>,
-	Jordan Crouse <jordan.crouse@amd.com>
-Subject: Re: [PATCH] AMD Au1xx0 serial: claim the memory resource
-References: <43B58548.4050208@ru.mvista.com> <1135974996.7848.117.camel@localhost.localdomain>
-In-Reply-To: <1135974996.7848.117.camel@localhost.localdomain>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <82e4189c0512300222k426764e0ldefeafb232ad36d@mail.gmail.com>
+User-Agent: Mutt/1.5.11
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9759
+X-archive-position: 9760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Adil Hafeez wrote:
+> What about placing the jump instruction just after reserved space, like this
+> 
+>         .text
+>         /*
+>          * Reserved space for exception handlers.
+>          * Necessary for machines which link their kernels at KSEG0.
+>          */
+>         .fill   0x400
+> 
+>         /* The following two symbols are used for kernel profiling. */
+>         EXPORT(stext)
+>         EXPORT(_stext)
+> =>     j kernel_entry
+>         __INIT
+> 
+> I disassembled vmlinux binary and now jump instruction is placed after
+> reserved space
 
-Pete Popov wrote:
- > I think the new 8250 based driver is already upstream so this one should
- > be nuked anyway at some point.
+This only works iff the fill is done with NOPs. On a more general note,
+it is usually considered to be the bootloader's job to find the correct
+entry, not the kernel's one.
 
-    I only knew of its existence yesterday -- I'm using 2.6.10 kernel :-)
 
- > Pete
-
-WBR, Sergei
+Thiemo

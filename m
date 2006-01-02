@@ -1,158 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Dec 2005 04:04:25 +0000 (GMT)
-Received: from amdext4.amd.com ([163.181.251.6]:28341 "EHLO amdext4.amd.com")
-	by ftp.linux-mips.org with ESMTP id S8133373AbVLaEED (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 31 Dec 2005 04:04:03 +0000
-Received: from SAUSGW01.amd.com (sausgw01.amd.com [163.181.250.21])
-	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id jBV45vtJ018947;
-	Fri, 30 Dec 2005 22:06:02 -0600
-Received: from 163.181.250.1 by SAUSGW02.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Fri, 30 Dec 2005 22:05:51 -0600
-X-Server-Uuid: 5FC0E2DF-CD44-48CD-883A-0ED95B391E89
-Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
- amdint2.amd.com (8.12.8/8.12.8/AMD) with ESMTP id jBV45oh5001854; Fri,
- 30 Dec 2005 22:05:50 -0600 (CST)
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id 01F262028; Fri, 30 Dec 2005
- 21:05:50 -0700 (MST)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id jBV4Btwo005529; Fri, 30 Dec 2005 21:11:55
- -0700
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id jBV4BtJU005528; Fri, 30 Dec 2005 21:11:55
- -0700
-Date:	Fri, 30 Dec 2005 21:11:55 -0700
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Sergei Shtylylov" <sshtylyov@ru.mvista.com>
-cc:	"Andrew Morton" <akpm@osdl.org>,
-	"Linux MIPS Development" <linux-mips@linux-mips.org>,
-	ralf@linux-mips.org
-Subject: Re: Au1xx0: replace casual readl() with au_readl() in the
- drivers
-Message-ID: <20051231041155.GA5422@cosmic.amd.com>
-References: <43452054.2090305@ru.mvista.com>
- <436FB1DE.6010405@ru.mvista.com> <43B5BDCF.7010900@ru.mvista.com>
-MIME-Version: 1.0
-In-Reply-To: <43B5BDCF.7010900@ru.mvista.com>
-User-Agent: Mutt/1.5.11
-X-WSS-ID: 6FA8DC150T0670651-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jan 2006 12:58:30 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:51429 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133394AbWABM6K (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 2 Jan 2006 12:58:10 +0000
+Received: from localhost (p6207-ipad27funabasi.chiba.ocn.ne.jp [220.107.197.207])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id AD3303953; Mon,  2 Jan 2006 22:00:23 +0900 (JST)
+Date:	Mon, 02 Jan 2006 21:59:49 +0900 (JST)
+Message-Id: <20060102.215949.41198615.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	dom@mips.com, macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: ieee754[sd]p_neg workaround
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20050421.161945.79301612.nemoto@toshiba-tops.co.jp>
+References: <16998.20933.14301.397793@arsenal.mips.com>
+	<20050420131304.GF5212@linux-mips.org>
+	<20050421.161945.79301612.nemoto@toshiba-tops.co.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9762
+X-archive-position: 9763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Acked-by: Jordan CRouse <jordan.crouse@amd.com>
+>>>>> On Thu, 21 Apr 2005 16:19:45 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
 
-On 31/12/05 02:07 +0300, Sergei Shtylylov wrote:
-> Hello, I wrote:
-> 
-> >>    We have found some issues with Au1550 AC'97 OSS driver in 2.6
-> >>(sound/oss/au1550_ac97.c), though it also should concern 2.4 driver
-> >>(drivers/sound/au1550_psc.c).
-> >>    First, we don't think that using readl() calls instead of 
-> >>au_readl() is
-> >>correct -- readl() is subject to byte-swapping etc., so may not work in
-> >>BE mode anymore and au_readl() is intended for embedded Au1550 devices
-> >>for which the byte swapping issue is resolved automagically,  and BTW the 
-> >>same
-> >>PSC_AC97STAT register is read "both ways" in the driver.
-> 
-> [skipped]
-> 
->     Additionally, I've found one unjustified call to readl() in the Au1xx0 
->     USB
-> code, so adding the fix for it to the patch. Andrew, I'm sending the patch 
-> to
-> you as was advised by Ralf and Jordan...
-> 
-> WBR, Sergei
-> 
+>>> So file a bug against glibc, but we should fix the emulator so it
+>>> correctly imitates the MIPS instruction set...
 
-> diff --git a/drivers/usb/host/ohci-au1xxx.c b/drivers/usb/host/ohci-au1xxx.c
-> index 486202d..0fc728e 100644
-> --- a/drivers/usb/host/ohci-au1xxx.c
-> +++ b/drivers/usb/host/ohci-au1xxx.c
-> @@ -66,7 +66,7 @@ static void au1xxx_stop_hc(struct platfo
->  	       ": stopping Au1xxx OHCI USB Controller\n");
->  
->  	/* Disable clock */
-> -	au_writel(readl((void *)USB_HOST_CONFIG) & ~USBH_ENABLE_CE, USB_HOST_CONFIG);
-> +	au_writel(au_readl(USB_HOST_CONFIG) & ~USBH_ENABLE_CE, USB_HOST_CONFIG);
->  }
->  
->  
-> diff --git a/sound/oss/au1550_ac97.c b/sound/oss/au1550_ac97.c
-> index f70effd..64e2e46 100644
-> --- a/sound/oss/au1550_ac97.c
-> +++ b/sound/oss/au1550_ac97.c
-> @@ -463,7 +463,7 @@ stop_dac(struct au1550_state *s)
->  	/* Wait for Transmit Busy to show disabled.
->  	*/
->  	do {
-> -		stat = readl((void *)PSC_AC97STAT);
-> +		stat = au_readl(PSC_AC97STAT);
->  		au_sync();
->  	} while ((stat & PSC_AC97STAT_TB) != 0);
->  
-> @@ -492,7 +492,7 @@ stop_adc(struct au1550_state *s)
->  	/* Wait for Receive Busy to show disabled.
->  	*/
->  	do {
-> -		stat = readl((void *)PSC_AC97STAT);
-> +		stat = au_readl(PSC_AC97STAT);
->  		au_sync();
->  	} while ((stat & PSC_AC97STAT_RB) != 0);
->  
-> @@ -542,7 +542,7 @@ set_xmit_slots(int num_channels)
->  	/* Wait for Device ready.
->  	*/
->  	do {
-> -		stat = readl((void *)PSC_AC97STAT);
-> +		stat = au_readl(PSC_AC97STAT);
->  		au_sync();
->  	} while ((stat & PSC_AC97STAT_DR) == 0);
->  }
-> @@ -574,7 +574,7 @@ set_recv_slots(int num_channels)
->  	/* Wait for Device ready.
->  	*/
->  	do {
-> -		stat = readl((void *)PSC_AC97STAT);
-> +		stat = au_readl(PSC_AC97STAT);
->  		au_sync();
->  	} while ((stat & PSC_AC97STAT_DR) == 0);
->  }
-> @@ -1996,7 +1996,7 @@ au1550_probe(void)
->  	/* Wait for PSC ready.
->  	*/
->  	do {
-> -		val = readl((void *)PSC_AC97STAT);
-> +		val = au_readl(PSC_AC97STAT);
->  		au_sync();
->  	} while ((val & PSC_AC97STAT_SR) == 0);
->  
-> @@ -2019,7 +2019,7 @@ au1550_probe(void)
->  	/* Wait for Device ready.
->  	*/
->  	do {
-> -		val = readl((void *)PSC_AC97STAT);
-> +		val = au_readl(PSC_AC97STAT);
->  		au_sync();
->  	} while ((val & PSC_AC97STAT_DR) == 0);
->  
+ralf> As a matter of defensive design I think we should try to follow
+ralf> the establish behaviour if nothing more specific is defined
+ralf> anywhere.
 
+anemo> OK, I sent a bug reoport to glibc bugzilla. (Bug# 864)
 
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
+The bug was resolved ... marked as WONTFIX.
+
+glibc developers said math-emu should be fixed.  Please look at:
+
+http://sourceware.org/bugzilla/show_bug.cgi?id=864
+
+for their comments.
+
+So I send a patch for math-emu again.
+
+Description:
+
+It looks glibc's pow() assume an unary '-' operation for any number
+(including NaNs) always invert its sign bit (though IEEE754 does not
+specify the sign bit for NaNs).  This patch make the kernel math-emu
+emulates real MIPS neg.[ds] instruction.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/arch/mips/math-emu/dp_simple.c b/arch/mips/math-emu/dp_simple.c
+index 495c1ac..1c555e6 100644
+--- a/arch/mips/math-emu/dp_simple.c
++++ b/arch/mips/math-emu/dp_simple.c
+@@ -48,16 +48,22 @@ ieee754dp ieee754dp_neg(ieee754dp x)
+ 	CLEARCX;
+ 	FLUSHXDP;
+ 
++	/*
++	 * Invert the sign ALWAYS to prevent an endless recursion on
++	 * pow() in libc.
++	 */
++	/* quick fix up */
++	DPSIGN(x) ^= 1;
++
+ 	if (xc == IEEE754_CLASS_SNAN) {
++		ieee754dp y = ieee754dp_indef();
+ 		SETCX(IEEE754_INVALID_OPERATION);
+-		return ieee754dp_nanxcpt(ieee754dp_indef(), "neg");
++		DPSIGN(y) = DPSIGN(x);
++		return ieee754dp_nanxcpt(y, "neg");
+ 	}
+ 
+ 	if (ieee754dp_isnan(x))	/* but not infinity */
+ 		return ieee754dp_nanxcpt(x, "neg", x);
+-
+-	/* quick fix up */
+-	DPSIGN(x) ^= 1;
+ 	return x;
+ }
+ 
+diff --git a/arch/mips/math-emu/sp_simple.c b/arch/mips/math-emu/sp_simple.c
+index c809830..770f0f4 100644
+--- a/arch/mips/math-emu/sp_simple.c
++++ b/arch/mips/math-emu/sp_simple.c
+@@ -48,16 +48,22 @@ ieee754sp ieee754sp_neg(ieee754sp x)
+ 	CLEARCX;
+ 	FLUSHXSP;
+ 
++	/*
++	 * Invert the sign ALWAYS to prevent an endless recursion on
++	 * pow() in libc.
++	 */
++	/* quick fix up */
++	SPSIGN(x) ^= 1;
++
+ 	if (xc == IEEE754_CLASS_SNAN) {
++		ieee754sp y = ieee754sp_indef();
+ 		SETCX(IEEE754_INVALID_OPERATION);
+-		return ieee754sp_nanxcpt(ieee754sp_indef(), "neg");
++		SPSIGN(y) = SPSIGN(x);
++		return ieee754sp_nanxcpt(y, "neg");
+ 	}
+ 
+ 	if (ieee754sp_isnan(x))	/* but not infinity */
+ 		return ieee754sp_nanxcpt(x, "neg", x);
+-
+-	/* quick fix up */
+-	SPSIGN(x) ^= 1;
+ 	return x;
+ }
+ 

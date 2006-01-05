@@ -1,91 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2006 17:34:47 +0000 (GMT)
-Received: from mailout.stusta.mhn.de ([141.84.69.5]:27410 "HELO
-	mailout.stusta.mhn.de") by ftp.linux-mips.org with SMTP
-	id S8133560AbWAERe0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Jan 2006 17:34:26 +0000
-Received: (qmail 10042 invoked from network); 5 Jan 2006 17:36:57 -0000
-Received: from r063144.stusta.swh.mhn.de (10.150.63.144)
-  by mailout.stusta.mhn.de with SMTP; 5 Jan 2006 17:36:57 -0000
-Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
-	id 315FE197670; Thu,  5 Jan 2006 18:36:58 +0100 (CET)
-Date:	Thu, 5 Jan 2006 18:36:57 +0100
-From:	Adrian Bunk <bunk@stusta.de>
-To:	Andrew Morton <akpm@osdl.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Domen Puncer <domen@coderock.org>, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org, davem@davemloft.net
-Subject: [2.6 patch] Remove arch/mips/arc/salone.c
-Message-ID: <20060105173657.GA12313@stusta.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2006 22:22:58 +0000 (GMT)
+Received: from moutng.kundenserver.de ([212.227.126.171]:9414 "EHLO
+	moutng.kundenserver.de") by ftp.linux-mips.org with ESMTP
+	id S8133495AbWAEWWj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jan 2006 22:22:39 +0000
+Received: from [85.212.191.62] (helo=[10.0.0.4])
+	by mrelayeu.kundenserver.de (node=mrelayeu6) with ESMTP (Nemesis),
+	id 0ML29c-1EudXp2Loy-0001QF; Thu, 05 Jan 2006 23:25:18 +0100
+Message-ID: <43BD9D93.40005@linuxdevelopment.de>
+Date:	Thu, 05 Jan 2006 23:28:35 +0100
+From:	Robert Woerle <robert@linuxdevelopment.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; de-AT; rv:1.7.12) Gecko/20050921
+X-Accept-Language: de, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.11
-Return-Path: <bunk@stusta.de>
+To:	linux-mips@linux-mips.org
+Subject: diet-X11 fails /include/bits/types.h
+X-Enigmail-Version: 0.90.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: kundenserver.de abuse@kundenserver.de login:3a738c603c23670681f156cc7e748d26
+Return-Path: <robert@linuxdevelopment.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9781
+X-archive-position: 9782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@stusta.de
+X-original-sender: robert@linuxdevelopment.de
 Precedence: bulk
 X-list: linux-mips
 
-From: Domen Puncer <domen@coderock.org>
+Hi
 
-ArcLoad(), ArcInvoke(), ArcExecute() aren't used.
+i am new to mips and i am compiling a familiar gpe image for mips based
+systems .
+Now diet-X11 and X11 are breaking to compile on the below error.
+I googled  and found various occasions of this /include/bits/types.h
+causing problems
 
-Signed-off-by: Domen Puncer <domen@coderock.org>
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Adrian Bunk <bunk@stusta.de>
+i guess that has something todo with combination on compiler and glibc
+seems also glibc-2.3.5 fails on that
 
----
+i am using for that build
+glibc-2.3.3
+gcc-cross-3.3.4
 
-This patch was sent by Alexey Dobriyan on:
-- 8 Nov 2005
+make[2]: Entering directory
+`/home/bob/Handhelds/oe/stuff/mips-build/tmp/work/diet-x11-6.2.1cvs20050226-r5/X11/src/util'
+| if gcc -DHAVE_CONFIG_H -I.
+-I/home/bob/Handhelds/oe/stuff/mips-build/tmp/work/diet-x11-6.2.1cvs20050226-r5/X11/src/util
+-I../../src  
+-I/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include
+-Wall -Wpointer-arith -Wstrict-prototypes        -Wmissing-prototypes
+-Wmissing-declarations     -Wnested-externs -fno-strict-aliasing
+-I/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include
+-I/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/X11/Xtrans  
+-D_XOPEN_SOURCE=500
+-I/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include  
+-I/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include
+-fexpensive-optimizations -fomit-frame-pointer -frename-registers -O2
+-MT makekeys-makekeys.o -MD -MP -MF ".deps/makekeys-makekeys.Tpo" -c -o
+makekeys-makekeys.o `test -f 'makekeys.c' || echo
+'/home/bob/Handhelds/oe/stuff/mips-build/tmp/work/diet-x11-6.2.1cvs20050226-r5/X11/src/util/'`makekeys.c;
+\
+| then mv -f ".deps/makekeys-makekeys.Tpo" ".deps/makekeys-makekeys.Po";
+else rm -f ".deps/makekeys-makekeys.Tpo"; exit 1; fi
+| In file included from
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/sys/types.h:31,
+|                  from
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/X11/Xos.h:59,
+|                  from makekeys.c:34:
+|
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/bits/types.h:127:3:
+#error
+| In file included from
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/sys/types.h:31,
+|                  from
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/X11/Xos.h:59,
+|                  from makekeys.c:34:
+|
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/bits/types.h:136:
+error: syntax error before "__dev_t"
+|
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/bits/types.h:136:
+warning: type defaults to `int' in declaration of `__dev_t'
+|
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/bits/types.h:136:
+warning: data definition has no type or storage class
+|
+/home/bob/Handhelds/oe/stuff/mips-build/tmp/staging/mipsel-linux/include/bits/types.h:140:
+error: syntax error before "__ino64_t"
 
- arch/mips/arc/Makefile |    2 +-
- arch/mips/arc/salone.c |   25 -------------------------
- 2 files changed, 1 insertion(+), 26 deletions(-)
+any hint is greatly appriciated
+regards
 
---- linux-kj.orig/arch/mips/arc/Makefile	2005-11-08 20:46:24.000000000 +0300
-+++ linux-kj/arch/mips/arc/Makefile	2005-11-08 20:47:36.000000000 +0300
-@@ -3,7 +3,7 @@
- #
- 
- lib-y				+= cmdline.o env.o file.o identify.o init.o \
--				   misc.o salone.o time.o tree.o
-+				   misc.o time.o tree.o
- 
- lib-$(CONFIG_ARC_MEMORY)	+= memory.o
- lib-$(CONFIG_ARC_CONSOLE)	+= arc_con.o
-Index: linux-kj/arch/mips/arc/salone.c
-===================================================================
---- linux-kj.orig/arch/mips/arc/salone.c	2005-11-08 20:46:24.000000000 +0300
-+++ /dev/null	1970-01-01 00:00:00.000000000 +0000
-@@ -1,24 +0,0 @@
--/*
-- * Routines to load into memory and execute stand-along program images using
-- * ARCS PROM firmware.
-- *
-- * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-- */
--#include <linux/init.h>
--#include <asm/sgialib.h>
--
--LONG __init ArcLoad(CHAR *Path, ULONG TopAddr, ULONG *ExecAddr, ULONG *LowAddr)
--{
--	return ARC_CALL4(load, Path, TopAddr, ExecAddr, LowAddr);
--}
--
--LONG __init ArcInvoke(ULONG ExecAddr, ULONG StackAddr, ULONG Argc, CHAR *Argv[],
--	CHAR *Envp[])
--{
--	return ARC_CALL5(invoke, ExecAddr, StackAddr, Argc, Argv, Envp);
--}
--
--LONG __init ArcExecute(CHAR *Path, LONG Argc, CHAR *Argv[], CHAR *Envp[])
--{
--	return ARC_CALL4(exec, Path, Argc, Argv, Envp);
--}
+rob_w

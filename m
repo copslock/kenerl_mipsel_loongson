@@ -1,80 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2006 16:13:02 +0000 (GMT)
-Received: from ltrxmail.lantronix.com ([67.134.254.86]:10821 "EHLO
-	double-bogey.int.lantronix.com") by ftp.linux-mips.org with ESMTP
-	id S8133546AbWAEQMo convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Jan 2006 16:12:44 +0000
-X-MessageTextProcessor:	DisclaimIt (2.00.201) on double-bogey.int.lantronix.com
-Received: from 3putt.int.lantronix.com ([172.16.1.16]) by double-bogey.int.lantronix.com with Microsoft SMTPSVC(6.0.3790.211); Thu, 5 Jan 2006 08:15:15 -0800
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.326
-Content-Class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jan 2006 17:34:47 +0000 (GMT)
+Received: from mailout.stusta.mhn.de ([141.84.69.5]:27410 "HELO
+	mailout.stusta.mhn.de") by ftp.linux-mips.org with SMTP
+	id S8133560AbWAERe0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jan 2006 17:34:26 +0000
+Received: (qmail 10042 invoked from network); 5 Jan 2006 17:36:57 -0000
+Received: from r063144.stusta.swh.mhn.de (10.150.63.144)
+  by mailout.stusta.mhn.de with SMTP; 5 Jan 2006 17:36:57 -0000
+Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
+	id 315FE197670; Thu,  5 Jan 2006 18:36:58 +0100 (CET)
+Date:	Thu, 5 Jan 2006 18:36:57 +0100
+From:	Adrian Bunk <bunk@stusta.de>
+To:	Andrew Morton <akpm@osdl.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Domen Puncer <domen@coderock.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, davem@davemloft.net
+Subject: [2.6 patch] Remove arch/mips/arc/salone.c
+Message-ID: <20060105173657.GA12313@stusta.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: iptables/vmalloc issues on alchemy (revisited)
-Date:	Thu, 5 Jan 2006 08:15:13 -0800
-Message-ID: <2F0FC2A92C0B154BB406D5E74CB3E693010849F5@3putt.int.lantronix.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: iptables/vmalloc issues on alchemy (revisited)
-thread-index: AcYSEzU4znvuLfZaQv6+6AVntEqEWg==
-Importance: normal
-From:	"Christi Garvin" <christi.garvin@lantronix.com>
-Priority: normal
-To:	<linux-mips@linux-mips.org>
-Cc:	<dan@embeddededge.com>
-X-OriginalArrivalTime: 05 Jan 2006 16:15:15.0408 (UTC) FILETIME=[3676ED00:01C61213]
-Return-Path: <christi.garvin@lantronix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Return-Path: <bunk@stusta.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9780
+X-archive-position: 9781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: christi.garvin@lantronix.com
+X-original-sender: bunk@stusta.de
 Precedence: bulk
 X-list: linux-mips
 
-This issue was reported on this mailing list back in April '05....
+From: Domen Puncer <domen@coderock.org>
+
+ArcLoad(), ArcInvoke(), ArcExecute() aren't used.
+
+Signed-off-by: Domen Puncer <domen@coderock.org>
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Adrian Bunk <bunk@stusta.de>
+
+---
+
+This patch was sent by Alexey Dobriyan on:
+- 8 Nov 2005
+
+ arch/mips/arc/Makefile |    2 +-
+ arch/mips/arc/salone.c |   25 -------------------------
+ 2 files changed, 1 insertion(+), 26 deletions(-)
+
+--- linux-kj.orig/arch/mips/arc/Makefile	2005-11-08 20:46:24.000000000 +0300
++++ linux-kj/arch/mips/arc/Makefile	2005-11-08 20:47:36.000000000 +0300
+@@ -3,7 +3,7 @@
+ #
  
-On Tue, 2005-04-26 at 10:43 +0200, Herbert Valerio Riedel wrote:
-> ... 
-> The problem seems to be so far, that when modifying the iptables
-> structures by adding/flushing the rules, a state can be reached sooner
-> or later (indeterministic! smells like race) where the data structure
-> becomes invalid (although there are checks in the kernel which would
-> prevent that); the result is either ip_tables.c:ipt_do_tables() causing
-> an oops due to bad pointer dereferencing (or the kernel freezing w/o
-> further notice at all), or the iptables tool being unable to
-> retrieve/modify the rules from the kernel (and getting ENOMEM/EINVAL) or
-> simply segfaulting due to other inconsistencies with the data...
-it appears the problem was found...
-On Wed, 2005-04-27 at 15:06 -0400, Dan Malek wrote:
-> Oh wait ....  I found a bug a while ago from someone trying to load
-> large modules.  There is a problem if the kernel grows to need
-> additional PTE tables, the top level pointers don't get propagated
-> correctly and subsequent access by a thread that didn't actually
-> do the allocation would fail.  I'm looking into this, including your
-> past message about 64-bit PTEs.
+ lib-y				+= cmdline.o env.o file.o identify.o init.o \
+-				   misc.o salone.o time.o tree.o
++				   misc.o time.o tree.o
  
-and possibly fixed:
- 
-> From: Dan Malek [mailto:dan@embeddededge.com] 
-> Sent: Thursday, April 28, 2005 3:57 PM
-> Subject: Re: iptables/vmalloc issues on alchemy
->
-> I've just been talking about 2.6, so "long time ago" can't be
-> that long :-)  I have the updates to the exception handler so
-> the PTEs get loaded correctly, that's on the way.  I think 2.4
-> should be OK if anyone is using that.
- 
-I am encountering this same problem with 2.6.11 and iptables 1.2.11, 
-and I've searched for an appropriate patch/fix, and cannot find one....
-Can you tell me if this has been fixed, and if so, point me in the
-direction of the patch?
- 
-regards,
-christi garvin
-**********************************************************************
-This e-mail is the property of Lantronix. It is intended only for the person or entity to which it is addressed and may contain information that is privileged, confidential, or otherwise protected from disclosure. Distribution or copying of this e-mail, or the information contained herein, to anyone other than the intended recipient is prohibited.
+ lib-$(CONFIG_ARC_MEMORY)	+= memory.o
+ lib-$(CONFIG_ARC_CONSOLE)	+= arc_con.o
+Index: linux-kj/arch/mips/arc/salone.c
+===================================================================
+--- linux-kj.orig/arch/mips/arc/salone.c	2005-11-08 20:46:24.000000000 +0300
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,24 +0,0 @@
+-/*
+- * Routines to load into memory and execute stand-along program images using
+- * ARCS PROM firmware.
+- *
+- * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+- */
+-#include <linux/init.h>
+-#include <asm/sgialib.h>
+-
+-LONG __init ArcLoad(CHAR *Path, ULONG TopAddr, ULONG *ExecAddr, ULONG *LowAddr)
+-{
+-	return ARC_CALL4(load, Path, TopAddr, ExecAddr, LowAddr);
+-}
+-
+-LONG __init ArcInvoke(ULONG ExecAddr, ULONG StackAddr, ULONG Argc, CHAR *Argv[],
+-	CHAR *Envp[])
+-{
+-	return ARC_CALL5(invoke, ExecAddr, StackAddr, Argc, Argv, Envp);
+-}
+-
+-LONG __init ArcExecute(CHAR *Path, LONG Argc, CHAR *Argv[], CHAR *Envp[])
+-{
+-	return ARC_CALL4(exec, Path, Argc, Argv, Envp);
+-}

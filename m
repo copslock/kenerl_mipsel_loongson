@@ -1,71 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2006 10:39:07 +0000 (GMT)
-Received: from nproxy.gmail.com ([64.233.182.194]:5982 "EHLO nproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133370AbWAFKit convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Jan 2006 10:38:49 +0000
-Received: by nproxy.gmail.com with SMTP id k27so7427nfc
-        for <linux-mips@linux-mips.org>; Fri, 06 Jan 2006 02:41:31 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=H+zeV1IM68ru1z0EnFJ1P574MPc/WNHRLz+aqvXZHWat1Hi7BaoRTFtRUQE6XMPgLRS60eb89FTbBU/8Wh41mAZee83c2PVcrouBjpERjvfdpGAULdpAZTUDSv5dfTWaLJQS59qUc6E2XfvTxX970j9ogVfTgC1/gvTBuDpznbw=
-Received: by 10.48.249.2 with SMTP id w2mr651197nfh;
-        Fri, 06 Jan 2006 02:41:30 -0800 (PST)
-Received: by 10.48.225.20 with HTTP; Fri, 6 Jan 2006 02:41:30 -0800 (PST)
-Message-ID: <c58a7a270601060241u765acb76s61bb30d443c420f1@mail.gmail.com>
-Date:	Fri, 6 Jan 2006 10:41:30 +0000
-From:	Alex Gonzalez <langabe@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Jump/branch to external symbol
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2006 11:49:32 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:30995 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133571AbWAFLtP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Jan 2006 11:49:15 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 6A3B0E1C9B;
+	Fri,  6 Jan 2006 12:51:54 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 04961-05; Fri,  6 Jan 2006 12:51:54 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 27997E1C81;
+	Fri,  6 Jan 2006 12:51:54 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k06Bplme002297;
+	Fri, 6 Jan 2006 12:51:47 +0100
+Date:	Fri, 6 Jan 2006 11:51:56 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Alex Gonzalez <langabe@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Jump/branch to external symbol
+In-Reply-To: <c58a7a270601060241u765acb76s61bb30d443c420f1@mail.gmail.com>
+Message-ID: <Pine.LNX.4.64N.0601061147540.25759@blysk.ds.pg.gda.pl>
+References: <c58a7a270601060241u765acb76s61bb30d443c420f1@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <langabe@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87.1/1231/Thu Jan  5 23:51:25 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9785
+X-archive-position: 9786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: langabe@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Fri, 6 Jan 2006, Alex Gonzalez wrote:
 
-I am having GNU gas related problems when compiling assembler files
-which contain jumps to external symbols, for example when jumping from
-an assembler to a C function.
+> I am happy with the patch for binutils-2.15, and I would need a
+> solution for binutils-2.13.
+> 
+> Can anybody offer any help?
 
-Using binutils-2.15 GAS will produce a "Cannot branch to undefined
-symbol" error. Applying the patch at
-http://sources.redhat.com/ml/binutils/2004-04/msg00476.html, which
-creates an "allow_branch_to_undefined" option I am able to succesfully
-compile an executable. I am happy with this as I only need to apply
-the option to the problematic files and it does not change the
-behaviour of gas in general.
+ Well, the most obvious solution is upgrading to the current release, 
+which is 2.16.1 now.  Otherwise you are probably on your own -- 2.15 is 
+already somewhat old and 2.13 is ancient.
 
-Now, my crosscompiler toolchain is based on binutils-2.13. When I try
-to apply the same patch to it, I get a different error, "Can not
-represent BFD_RELOC_16_PCREL_S2 relocation in this object file
-format".
-
-There are various posts around referring to this problems. As a
-consequence I have read different opinions, solutions that apply to
-specific version or binutils, solutions more or less accepted by
-everyone, and as usual I am very confused.
-
-If I compile with "-mno-abicalls -fno-pic" gas reports no errors
-(which I believe is what the Linux kernel does), but I need to link
-with some pic libraries which use glibc, so this is not a valid
-solution for me.
-
-I am happy with the patch for binutils-2.15, and I would need a
-solution for binutils-2.13.
-
-Can anybody offer any help?
-
-Thanks,
-Alex
+  Maciej

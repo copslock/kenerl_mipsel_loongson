@@ -1,52 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2006 16:57:11 +0000 (GMT)
-Received: from caramon.arm.linux.org.uk ([212.18.232.186]:22285 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S8133583AbWAFQ4x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Jan 2006 16:56:53 +0000
-Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.52)
-	id 1Euuw8-0001Qt-UD; Fri, 06 Jan 2006 16:59:33 +0000
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
-	id 1Euuw6-0007xQ-Me; Fri, 06 Jan 2006 16:59:31 +0000
-Date:	Fri, 6 Jan 2006 16:59:30 +0000
-From:	Russell King <rmk@arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2006 17:02:01 +0000 (GMT)
+Received: from [85.8.13.51] ([85.8.13.51]:31681 "EHLO smtp.drzeus.cx")
+	by ftp.linux-mips.org with ESMTP id S8133583AbWAFRBo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2006 17:01:44 +0000
+Received: from [10.8.0.5] (apollo.drzeus.cx [::ffff:10.8.0.5])
+  (AUTH: PLAIN drzeus, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by smtp.drzeus.cx with esmtp; Fri, 06 Jan 2006 18:04:24 +0100
+  id 00062716.43BEA318.00007826
+Message-ID: <43BEA317.8010203@drzeus.cx>
+Date:	Fri, 06 Jan 2006 18:04:23 +0100
+From:	Pierre Ossman <drzeus@drzeus.cx>
+User-Agent: Mozilla Thunderbird 1.0.7-2.1.fc4.nr (X11/20051011)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
 To:	Jordan Crouse <jordan.crouse@amd.com>
-Cc:	linux-mips@linux-mips.org, drzeus@drzeus.cx
+CC:	linux-mips@linux-mips.org, rmk+lkml@arm.linux.org.uk
 Subject: Re: [PATCH]  Force MMC/SD to 512 byte block sizes
-Message-ID: <20060106165930.GC16093@flint.arm.linux.org.uk>
 References: <20060106164406.GA15617@cosmic.amd.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20060106164406.GA15617@cosmic.amd.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+X-Enigmail-Version: 0.90.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <drzeus@drzeus.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9792
+X-archive-position: 9793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk@arm.linux.org.uk
+X-original-sender: drzeus@drzeus.cx
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jan 06, 2006 at 09:44:06AM -0700, Jordan Crouse wrote:
+Jordan Crouse wrote:
 > This patch is not specific to the AU1200 SD driver, but thats what
 > we used to debug and verify this, so thats why it is applied against
 > the linux-mips tree.   Pierre, I'm sending this to you too, because I thought
 > you may be interested.
 
-NACK.  Please wait until the next round of patches get merged and then
-revalidate this.
+Much appreciated. :)
 
-It's obviously wrong in the case of cards which do not support partial
-block writes, and it does nothing to detect this (apart from violating
-their advertised capabilities.)
+> 
+> Large SD cards (>=2GB) report a physical block size greater then 512 bytes
+> (2GB reports 1024, and 4GB reports 2048).  However, a sample of different 
+> brands of USB attached SD readers have shown that the logical block size 
+> is still forced to 512 bytes.
+> 
+> The original mmc_block code was setting the block size to whatever the
+> card was reporting, thereby causing much pain and suffering when using
+> a card initialized elsewhere (bad partition tables, invalid FAT tables, etc).
+> 
+> This patch forces the block size to be 512 bytes, and adjusts the 
+> capacity accordingly.   With this you should be able to happily use very
+> large cards interchangeably between platforms.  At least, it has worked for
+> us.
+> 
+> 
+> @@ -373,7 +383,7 @@ mmc_blk_set_blksize(struct mmc_blk_data 
+>  
+>  	mmc_card_claim_host(card);
+>  	cmd.opcode = MMC_SET_BLOCKLEN;
+> -	cmd.arg = 1 << card->csd.read_blkbits;
+> +	cmd.arg = 1 << ((card->csd.read_blkbits > 9) ? 9 : card->csd.read_blkbits);
+>  	cmd.flags = MMC_RSP_R1;
+>  	err = mmc_wait_for_cmd(card->host, &cmd, 5);
+>  	mmc_card_release_host(card);
 
--- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:  2.6 Serial core
+This will not work. Some cards do not accept block sizes larger than the
+one they've specified.
+
+This issue has been discussed on the arm kernel ml and Russell has begun
+producing patches to resolve the issue.
+
+To solve the issue you're seeing we should lie to the block layer, not
+the card. Which will cause problems when the block layer issues request
+that cannot be mapped to a integer number of card blocks.
+
+The issue is more complex than your patch suggests and I do not know
+enough about the block layer to propose a way out.
+
+Rgds
+Pierre

@@ -1,84 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2006 17:02:01 +0000 (GMT)
-Received: from [85.8.13.51] ([85.8.13.51]:31681 "EHLO smtp.drzeus.cx")
-	by ftp.linux-mips.org with ESMTP id S8133583AbWAFRBo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2006 17:01:44 +0000
-Received: from [10.8.0.5] (apollo.drzeus.cx [::ffff:10.8.0.5])
-  (AUTH: PLAIN drzeus, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by smtp.drzeus.cx with esmtp; Fri, 06 Jan 2006 18:04:24 +0100
-  id 00062716.43BEA318.00007826
-Message-ID: <43BEA317.8010203@drzeus.cx>
-Date:	Fri, 06 Jan 2006 18:04:23 +0100
-From:	Pierre Ossman <drzeus@drzeus.cx>
-User-Agent: Mozilla Thunderbird 1.0.7-2.1.fc4.nr (X11/20051011)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Jordan Crouse <jordan.crouse@amd.com>
-CC:	linux-mips@linux-mips.org, rmk+lkml@arm.linux.org.uk
-Subject: Re: [PATCH]  Force MMC/SD to 512 byte block sizes
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jan 2006 17:32:46 +0000 (GMT)
+Received: from amdext4.amd.com ([163.181.251.6]:21978 "EHLO amdext4.amd.com")
+	by ftp.linux-mips.org with ESMTP id S8133821AbWAFRcX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Jan 2006 17:32:23 +0000
+Received: from SAUSGW02.amd.com (sausgw02.amd.com [163.181.250.22])
+	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k06HYWIK013993;
+	Fri, 6 Jan 2006 11:34:42 -0600
+Received: from 163.181.250.1 by SAUSGW02.amd.com with ESMTP (AMD SMTP
+ Relay (Email Firewall v6.1.0)); Fri, 06 Jan 2006 11:34:35 -0600
+X-Server-Uuid: 5FC0E2DF-CD44-48CD-883A-0ED95B391E89
+Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
+ amdint2.amd.com (8.12.8/8.12.8/AMD) with ESMTP id k06HYZh5002156; Fri,
+ 6 Jan 2006 11:34:35 -0600 (CST)
+Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
+ ldcmail.amd.com (Postfix) with ESMTP id EBF1B2028; Fri, 6 Jan 2006
+ 10:34:34 -0700 (MST)
+Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
+ (8.13.4/8.13.4) with ESMTP id k06HgO0T016686; Fri, 6 Jan 2006 10:42:24
+ -0700
+Received: (from jcrouse@localhost) by cosmic.amd.com (
+ 8.13.4/8.13.4/Submit) id k06HgNS2016685; Fri, 6 Jan 2006 10:42:23 -0700
+Date:	Fri, 6 Jan 2006 10:42:23 -0700
+From:	"Jordan Crouse" <jordan.crouse@amd.com>
+To:	"Russell King" <rmk@arm.linux.org.uk>
+cc:	linux-mips@linux-mips.org, drzeus@drzeus.cx
+Subject: Re: Force MMC/SD to 512 byte block sizes
+Message-ID: <20060106174223.GB15617@cosmic.amd.com>
 References: <20060106164406.GA15617@cosmic.amd.com>
-In-Reply-To: <20060106164406.GA15617@cosmic.amd.com>
-X-Enigmail-Version: 0.90.1.0
-X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=ISO-8859-1
+ <20060106165930.GC16093@flint.arm.linux.org.uk>
+MIME-Version: 1.0
+In-Reply-To: <20060106165930.GC16093@flint.arm.linux.org.uk>
+User-Agent: Mutt/1.5.11
+X-WSS-ID: 6FA075A10T02055239-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: 7bit
-Return-Path: <drzeus@drzeus.cx>
+Return-Path: <jcrouse@cosmic.amd.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9793
+X-archive-position: 9794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: drzeus@drzeus.cx
+X-original-sender: jordan.crouse@amd.com
 Precedence: bulk
 X-list: linux-mips
 
-Jordan Crouse wrote:
-> This patch is not specific to the AU1200 SD driver, but thats what
-> we used to debug and verify this, so thats why it is applied against
-> the linux-mips tree.   Pierre, I'm sending this to you too, because I thought
-> you may be interested.
-
-Much appreciated. :)
-
+On 06/01/06 16:59 +0000, Russell King wrote:
+> On Fri, Jan 06, 2006 at 09:44:06AM -0700, Jordan Crouse wrote:
+> > This patch is not specific to the AU1200 SD driver, but thats what
+> > we used to debug and verify this, so thats why it is applied against
+> > the linux-mips tree.   Pierre, I'm sending this to you too, because I thought
+> > you may be interested.
 > 
-> Large SD cards (>=2GB) report a physical block size greater then 512 bytes
-> (2GB reports 1024, and 4GB reports 2048).  However, a sample of different 
-> brands of USB attached SD readers have shown that the logical block size 
-> is still forced to 512 bytes.
-> 
-> The original mmc_block code was setting the block size to whatever the
-> card was reporting, thereby causing much pain and suffering when using
-> a card initialized elsewhere (bad partition tables, invalid FAT tables, etc).
-> 
-> This patch forces the block size to be 512 bytes, and adjusts the 
-> capacity accordingly.   With this you should be able to happily use very
-> large cards interchangeably between platforms.  At least, it has worked for
-> us.
-> 
-> 
-> @@ -373,7 +383,7 @@ mmc_blk_set_blksize(struct mmc_blk_data 
->  
->  	mmc_card_claim_host(card);
->  	cmd.opcode = MMC_SET_BLOCKLEN;
-> -	cmd.arg = 1 << card->csd.read_blkbits;
-> +	cmd.arg = 1 << ((card->csd.read_blkbits > 9) ? 9 : card->csd.read_blkbits);
->  	cmd.flags = MMC_RSP_R1;
->  	err = mmc_wait_for_cmd(card->host, &cmd, 5);
->  	mmc_card_release_host(card);
+> NACK.  Please wait until the next round of patches get merged and then
+> revalidate this.
 
-This will not work. Some cards do not accept block sizes larger than the
-one they've specified.
+Fair enough - I am only getting what Ralf and Linus put in their git tree -
+I probably should have checked your tree before assuming the code was
+current.
 
-This issue has been discussed on the arm kernel ml and Russell has begun
-producing patches to resolve the issue.
+> It's obviously wrong in the case of cards which do not support partial
+> block writes, and it does nothing to detect this (apart from violating
+> their advertised capabilities.)
 
-To solve the issue you're seeing we should lie to the block layer, not
-the card. Which will cause problems when the block layer issues request
-that cannot be mapped to a integer number of card blocks.
+Ok - I can understand that - its unlikely that such cards would have a 
+physical block size > 512 bytes, but its always better to be safe then sorry.
+Thats a fairly straight forward fix, and I'll do it while waiting for your
+code to bubble through.
 
-The issue is more complex than your patch suggests and I do not know
-enough about the block layer to propose a way out.
+Regards,
+Jordan
 
-Rgds
-Pierre
+-- 
+Jordan Crouse
+Senior Linux Engineer
+AMD - Personal Connectivity Solutions Group
+<www.amd.com/embeddedprocessors>

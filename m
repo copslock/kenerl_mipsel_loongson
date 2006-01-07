@@ -1,69 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jan 2006 07:35:49 +0000 (GMT)
-Received: from dragonboat.cs.uoguelph.ca ([131.104.96.108]:39624 "EHLO
-	dragonboat.cs.uoguelph.ca") by ftp.linux-mips.org with ESMTP
-	id S8126484AbWAGHf2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 7 Jan 2006 07:35:28 +0000
-Received: from beddie.cis.uoguelph.ca (marvin.cis.uoguelph.ca [131.104.48.131])
-	by dragonboat.cs.uoguelph.ca (8.13.1/8.13.1) with ESMTP id k077cDWd021183;
-	Sat, 7 Jan 2006 02:38:13 -0500
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by beddie.cis.uoguelph.ca (Postfix) with ESMTP id 53BA17E8F;
-	Sat,  7 Jan 2006 02:36:17 -0500 (EST)
-Received: from beddie.cis.uoguelph.ca ([127.0.0.1])
-	by localhost (beddie [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 21768-06; Sat, 7 Jan 2006 02:36:16 -0500 (EST)
-Received: from [192.168.0.104] (CPE001217cc2ab6-CM001371143eca.cpe.net.cable.rogers.com [70.30.137.118])
-	by beddie.cis.uoguelph.ca (Postfix) with ESMTP id 685557D0D;
-	Sat,  7 Jan 2006 02:36:16 -0500 (EST)
-Message-ID: <43BF6FE3.7030600@uoguelph.ca>
-Date:	Sat, 07 Jan 2006 02:38:11 -0500
-From:	Brett Foster <fosterb@uoguelph.ca>
-User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	kernel coder <lhrkernelcoder@gmail.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Almost 80% of UDP packets dropped
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jan 2006 09:22:25 +0000 (GMT)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:37098 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133363AbWAGJWI
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 7 Jan 2006 09:22:08 +0000
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k079Oipt001546;
+	Sat, 7 Jan 2006 01:24:44 -0800 (PST)
+Received: from Ulysses (laptop-ying-ho.mips.com [192.168.2.2] (may be forged))
+	by mercury.mips.com (8.12.9/8.12.11) with SMTP id k079OdYr004772;
+	Sat, 7 Jan 2006 01:24:40 -0800 (PST)
+Message-ID: <001d01c6136c$2a77ae40$0202a8c0@Ulysses>
+From:	"Kevin D. Kissell" <KevinK@mips.com>
+To:	"kernel coder" <lhrkernelcoder@gmail.com>,
+	<linux-mips@linux-mips.org>
 References: <f69849430601062302if424acey70e98f86e0de36e6@mail.gmail.com>
-In-Reply-To: <f69849430601062302if424acey70e98f86e0de36e6@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Subject: Re: Almost 80% of UDP packets dropped
+Date:	Sat, 7 Jan 2006 10:24:29 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at cs-club.org
-X-Scanned-By: MIMEDefang 2.52 on 131.104.96.108
-Return-Path: <fosterb@uoguelph.ca>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1506
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <KevinK@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9799
+X-archive-position: 9800
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fosterb@uoguelph.ca
+X-original-sender: KevinK@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-kernel coder wrote:
+What value of HZ are you using?  If you're still at the 2.6 default of 1000,
+try reducing it to 100 and see if things improve...
 
->hi,
->    I was trying to measure the UDP reception speed on my borad which
->has MIPS 4kc processor with 133 MHZ speed.I was transfering 10mb file
->from intel pentium 4 machine to MIPS board,but the recieved file was
->only 900kB.
->  
->
-UDP was not designed with reliability in mind -- it really isn't meant 
-for sending a 10 meg file without a packet loss.
+----- Original Message ----- 
+From: "kernel coder" <lhrkernelcoder@gmail.com>
+To: <linux-mips@linux-mips.org>
+Sent: Saturday, January 07, 2006 8:02 AM
+Subject: Almost 80% of UDP packets dropped
 
->When i further investigated the problem ,i came to know that the user
->application was not getting enough opportunities to get data from
->socket queue which caused almost 80% of packets to be dropped as
->socket queue had no free space.
->  
->
-(Among other sources) I'm pretty sure this behaviour was discussed in:
-Unix Network Programming, Vol. 1: The Sockets Networking API, Third Edition
-(Something like page 257.)
 
-I don't know if there is anything else going on with the kernel but...
-
-Brett
+> hi,
+>     I was trying to measure the UDP reception speed on my borad which
+> has MIPS 4kc processor with 133 MHZ speed.I was transfering 10mb file
+> from intel pentium 4 machine to MIPS board,but the recieved file was
+> only 900kB.
+> 
+> When i further investigated the problem ,i came to know that the user
+> application was not getting enough opportunities to get data from
+> socket queue which caused almost 80% of packets to be dropped as
+> socket queue had no free space.
+> 
+> When i increased the socket recieve buffer size,it resulted in
+> increase in no. of packets recieved .When i slow slowed down the
+> transmitter , it also caused more packets to be recieved.
+> 
+> But the above mentioned mechanism only decreased no. of lost
+> packets.But there was no way that i could increase UDP reception speed
+> because the user application was not getting enough opportunities to
+> read packets in burst of UDP packets.
+> 
+> I noticed that user application started recieveing packets after
+> Kernel had recieved all the UDP packets.
+> 
+> Please tell me how can i make sure that user application or udp client
+> running MIPS 4kc processor gets enough opportunities to dequeue
+> packets from socket buffer so that lost of packets could be reduced to
+> minimal and also the size of UDP recieved file in a specific interval
+> of time could be increased.
+> 
+> lhrkernelcoder
+> 
+> 

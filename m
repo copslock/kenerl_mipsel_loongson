@@ -1,58 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 22:42:04 +0000 (GMT)
-Received: from mail1.kontent.de ([81.88.34.36]:64898 "EHLO Mail1.KONTENT.De")
-	by ftp.linux-mips.org with ESMTP id S8133508AbWAIWlr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2006 22:41:47 +0000
-Received: from p549A1508.dip0.t-ipconnect.de (p549A1508.dip0.t-ipconnect.de [84.154.21.8])
-	by Mail1.KONTENT.De (Postfix) with ESMTP id 0AE4210D7EF6;
-	Mon,  9 Jan 2006 23:44:58 +0100 (CET)
-From:	Oliver Neukum <oliver@neukum.org>
-To:	linux-usb-devel@lists.sourceforge.net
-Subject: Re: [linux-usb-devel] [PATCH] UDC support for MIPS/AU1200 and Geode/CS5536
-Date:	Mon, 9 Jan 2006 23:44:55 +0100
-User-Agent: KMail/1.8
-Cc:	"Jordan Crouse" <jordan.crouse@amd.com>, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org, info-linux@ldcmail.amd.com,
-	thomas.dahlmann@amd.com
-References: <20060109180356.GA8855@cosmic.amd.com>
-In-Reply-To: <20060109180356.GA8855@cosmic.amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200601092344.55988.oliver@neukum.org>
-Return-Path: <oliver@neukum.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 22:59:03 +0000 (GMT)
+Received: from mail-out.m-online.net ([212.18.0.9]:3288 "EHLO
+	mail-out.m-online.net") by ftp.linux-mips.org with ESMTP
+	id S8133508AbWAIW6n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Jan 2006 22:58:43 +0000
+Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
+	by mail-out.m-online.net (Postfix) with ESMTP id C9DD170467;
+	Tue, 10 Jan 2006 00:01:42 +0100 (CET)
+X-Auth-Info: /dHVD3Y4gS4wvlw+cdjISgOenRl4Gd81VHHP7i1LL9A=
+X-Auth-Info: /dHVD3Y4gS4wvlw+cdjISgOenRl4Gd81VHHP7i1LL9A=
+X-Auth-Info: /dHVD3Y4gS4wvlw+cdjISgOenRl4Gd81VHHP7i1LL9A=
+Received: from mail.denx.de (p54966F34.dip.t-dialin.net [84.150.111.52])
+	by smtp-auth.mnet-online.de (Postfix) with ESMTP id B3C56B8F14;
+	Tue, 10 Jan 2006 00:01:42 +0100 (CET)
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by mail.denx.de (Postfix) with ESMTP id 5E9466D00A8;
+	Tue, 10 Jan 2006 00:01:42 +0100 (MET)
+Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP id 51979354115;
+	Tue, 10 Jan 2006 00:01:42 +0100 (MET)
+To:	"Kevin D. Kissell" <kevink@mips.com>
+cc:	Sathesh Babu Edara <satheshbabu.edara@analog.com>,
+	linux-mips@linux-mips.org
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: [processor frequency] 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Mon, 09 Jan 2006 22:53:37 +0100."
+             <43C2DB61.7090704@mips.com> 
+Date:	Tue, 10 Jan 2006 00:01:42 +0100
+Message-Id: <20060109230142.51979354115@atlas.denx.de>
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9829
+X-archive-position: 9830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oliver@neukum.org
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Am Montag, 9. Januar 2006 19:03 schrieb Jordan Crouse:
-> >From the "two-birds-one-stone" department, I am pleased to present USB UDC
-> support for both the MIPS Au1200 SoC and the Geode CS5535 south bridge.  
-> Also, coming soon (in the next few days), OTG, which has been removed from
-> the usb_host patch, and put into its own patch (as per David's comments).
-> 
-> This patch is against current linux-mips git, but it should apply for Linus's
-> tree as well.
-> 
-> Regards,
-> Jordan
-> 
-+        VDBG("udc_read_bytes(): %d bytes\n", bytes);
-+
-+        /* dwords first */
-+        for (i = 0; i < bytes / UDC_DWORD_BYTES; i++) {
-+               *((u32*) (buf + (i<<2))) = readl(dev->rxfifo); 
-+        }
+In message <43C2DB61.7090704@mips.com> you wrote:
+>
+> BTW, I'm puzzled by the "context switch" benchmark test results.  By what
+> mechanism - or by what definition of "context switch" - can having more
+> frequent interrupts make context switches happen more quickly?  It seems
+> to me that those results must be due to a systematic measurement error
+> being added/removed.
 
-Is there any reason you don't increment by 4?
+I have to admit that I don't have a good explanation for this either.
+It's what I got with (repeated) measurements.  Cache  (flush)  issues
+might  play  a  role  here - but without closer analysis this is just
+speculation.
 
-	Regards
-		Oliver
+Best regards,
+
+Wolfgang Denk
+
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+If you can't beat it or corrupt it, you pretend it was your  idea  in
+the first place.                 - Terry Pratchett, _Guards! Guards!_

@@ -1,80 +1,168 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 17:40:46 +0000 (GMT)
-Received: from p549F4907.dip.t-dialin.net ([84.159.73.7]:60594 "EHLO
-	p549F4907.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S8133636AbWAIRkY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Jan 2006 17:40:24 +0000
-Received: from amdext3.amd.com ([IPv6:::ffff:139.95.251.6]:16104 "EHLO
-	amdext3.amd.com") by linux-mips.net with ESMTP id <S869096AbWAIRm7>;
-	Mon, 9 Jan 2006 18:42:59 +0100
-Received: from SSVLGW02.amd.com (ssvlgw02.amd.com [139.95.250.170])
-	by amdext3.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k09HdbeW031656;
-	Mon, 9 Jan 2006 09:41:13 -0800
-Received: from 139.95.250.1 by SSVLGW01.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Mon, 09 Jan 2006 09:41:01 -0800
-X-Server-Uuid: 89466532-923C-4A88-82C1-66ACAA0041DF
-Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
- amdint.amd.com (8.12.8/8.12.8/AMD) with ESMTP id k09Hf1VP019320; Mon, 9
- Jan 2006 09:41:01 -0800 (PST)
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id E40DB2028; Mon, 9 Jan 2006
- 10:41:00 -0700 (MST)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k09Hnb4V008738; Mon, 9 Jan 2006 10:49:37
- -0700
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k09HnasZ008737; Mon, 9 Jan 2006 10:49:36 -0700
-Date:	Mon, 9 Jan 2006 10:49:36 -0700
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Russell King" <rmk@arm.linux.org.uk>
-cc:	linux-mips@linux-mips.org, drzeus@drzeus.cx
-Subject: Re: Force MMC/SD to 512 byte block sizes
-Message-ID: <20060109174936.GJ17575@cosmic.amd.com>
-References: <20060106164406.GA15617@cosmic.amd.com>
- <20060106165930.GC16093@flint.arm.linux.org.uk>
-MIME-Version: 1.0
-In-Reply-To: <20060106165930.GC16093@flint.arm.linux.org.uk>
-User-Agent: Mutt/1.5.11
-X-WSS-ID: 6FDC7FA72BK3549672-01-01
-Content-Type: text/plain;
- charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 17:44:10 +0000 (GMT)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:27809 "EHLO
+	gundam.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133636AbWAIRnw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Jan 2006 17:43:52 +0000
+Received: from giometti by gundam.enneenne.com with local (Exim 3.36 #1 (Debian))
+	id 1Ew14r-0007vB-00; Mon, 09 Jan 2006 18:45:05 +0100
+Date:	Mon, 9 Jan 2006 18:45:05 +0100
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Jordan Crouse <jordan.crouse@amd.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: ALCHEMY:  Add SD support to AU1200 MMC/SD driver
+Message-ID: <20060109174505.GD1373@gundam.enneenne.com>
+References: <20051202190108.GF28227@cosmic.amd.com> <20051214134139.GN22061@hulk.enneenne.com> <20051214155324.GC9734@cosmic.amd.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="VUDLurXRWRKrGuMn"
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+In-Reply-To: <20051214155324.GC9734@cosmic.amd.com>
+Organization: Programmi e soluzioni GNU/Linux
+X-PGP-Key: gpg --keyserver keyserver.penguin.de --recv-keys D25A5633
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9820
+X-archive-position: 9821
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On 06/01/06 16:59 +0000, Russell King wrote:
-> On Fri, Jan 06, 2006 at 09:44:06AM -0700, Jordan Crouse wrote:
-> > This patch is not specific to the AU1200 SD driver, but thats what
-> > we used to debug and verify this, so thats why it is applied against
-> > the linux-mips tree.   Pierre, I'm sending this to you too, because I thought
-> > you may be interested.
-> 
-> NACK.  Please wait until the next round of patches get merged and then
-> revalidate this.
 
-Ok - I saw your fixes.  Looks good to me.
+--VUDLurXRWRKrGuMn
+Content-Type: multipart/mixed; boundary="GpGaEY17fSl8rd50"
+Content-Disposition: inline
 
-I'm still sticking to the (assumption|hypothesis|foolish fantasy) that
-even cards that do not support partial block writes will still support
-512 byte writes - mainly because I just don't see those ASICs in the 
-el-Cheapo card readers being capable of doing the advanced buffering
-to convert 512 <-> 1024 or 2048, and hopefully one of these days I'll
-find a card to prove that.  Until then, I don't have a leg to stand on,
-so I'll quietly hang back.
 
-Jordan
+--GpGaEY17fSl8rd50
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
+On Wed, Dec 14, 2005 at 08:53:25AM -0700, Jordan Crouse wrote:
+> Well, hopefully everything will Just Work (TM), but you'll want to make
+> sure that all the various definitions are enabled for the AU1100.  I'll
+> have to give you my standard disclaimer that I haven't compiled this
+> for anything but a DB1200 and PB1200, so I can't promise that it will wor=
+k,
+> but there is nothing in the code that says it won't.
+
+I'm just trying to run your driver on a Au1100 based board and I got
+some problems...
+
+First of all I needed to disable the DMA support (dma =3D 0) and using
+the FIFO mode, since Au1100 dma support seems not well implemented (or
+not implemented at all) and my board freeze.
+
+After that, when I insert a 256MB MMC card I get the attached messages
+and the system refuses to power up the card (please, see the last
+message who reports the power status).
+
+Have you any suggestions? :)
+
+Thanks in advance,
+
+Rodolfo
+
+--=20
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
+
+--GpGaEY17fSl8rd50
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=mmc_output
+
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=1, clock=0Hz, vdd=23, mode=1)
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=2, clock=450000Hz, vdd=23, mode=1)
+Jan  1 00:01:17 hostname kernel: WWPC: power 1
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=2, clock=450000Hz, vdd=23, mode=1)
+Jan  1 00:01:17 hostname kernel: WWPC: power 1
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 00 arg 00000000 flags 00000000
+Jan  1 00:01:17 hostname kernel: MMC: req done (00): 0: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=2, clock=450000Hz, vdd=23, mode=1)
+Jan  1 00:01:17 hostname kernel: WWPC: power 1
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 2: 3fffffff 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00000000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=2, clock=450000Hz, vdd=15, mode=1)
+Jan  1 00:01:17 hostname kernel: WWPC: power 1
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=2, clock=450000Hz, vdd=15, mode=1)
+Jan  1 00:01:17 hostname kernel: WWPC: power 1
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 00 arg 00000000 flags 00000000
+Jan  1 00:01:17 hostname kernel: MMC: req done (00): 0: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=2, clock=450000Hz, vdd=15, mode=1)
+Jan  1 00:01:17 hostname kernel: WWPC: power 1
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00018000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00018000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00018000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 1: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 1: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00018000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00018000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00018000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 0: 00000120 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 29 arg 00018000 flags 00000001
+Jan  1 00:01:17 hostname kernel: MMC: req done (29): 0: 00ff8000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 1: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 1: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 1: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 37 arg 00000000 flags 00000009
+Jan  1 00:01:17 hostname kernel: MMC: req done (37): 1: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname kernel: MMC: starting cmd 02 arg 00000000 flags 0000000a
+Jan  1 00:01:17 hostname kernel: MMC: req done (02): 1: 00000000 00000000 00000000 00000000
+Jan  1 00:01:17 hostname last message repeated 3 times
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=2, clock=450000Hz, vdd=15, mode=2)
+Jan  1 00:01:17 hostname kernel: WWPC: power 1
+Jan  1 00:01:17 hostname kernel: set_ios (id=0, power=0, clock=0Hz, vdd=0, mode=1)
+Jan  1 00:01:17 hostname kernel: WWPC: power 0
+
+--GpGaEY17fSl8rd50--
+
+--VUDLurXRWRKrGuMn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFDwqEhQaTCYNJaVjMRArOqAJsFwn3pQfPW2I8+W/IGf4GU8Ad+uwCg1k7P
+3j4X9JyhxEXVrTzJydIKS5Q=
+=S5Ke
+-----END PGP SIGNATURE-----
+
+--VUDLurXRWRKrGuMn--

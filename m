@@ -1,65 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 05:17:10 +0000 (GMT)
-Received: from nwd2mail2.analog.com ([137.71.25.51]:57228 "EHLO
-	nwd2mail2.analog.com") by ftp.linux-mips.org with ESMTP
-	id S8134493AbWAIFQw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Jan 2006 05:16:52 +0000
-Received: from nwd2mhb1.analog.com (nwd2mhb1.analog.com [137.71.5.12])
-	by nwd2mail2.analog.com (8.12.10/8.12.10) with ESMTP id k095Jtai002350;
-	Mon, 9 Jan 2006 00:19:55 -0500
-Received: from lilac.hdcindia.analog.com ([10.121.13.31])
-	by nwd2mhb1.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id AAA20923;
-	Mon, 9 Jan 2006 00:19:46 -0500 (EST)
-Received: from SEdaraL01 ([10.121.13.96])
-	by lilac.hdcindia.analog.com (8.12.10+Sun/8.12.10) with ESMTP id k095JAaZ000965;
-	Mon, 9 Jan 2006 10:49:10 +0530 (IST)
-Message-Id: <200601090519.k095JAaZ000965@lilac.hdcindia.analog.com>
-From:	"Sathesh Babu Edara" <satheshbabu.edara@analog.com>
-To:	<linux-mips-bounce@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject:  LL and SC instruction simulation
-Date:	Mon, 9 Jan 2006 10:49:44 +0530
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 05:56:58 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.200]:64780 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133698AbWAIF4i convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Jan 2006 05:56:38 +0000
+Received: by wproxy.gmail.com with SMTP id 36so3227774wra
+        for <linux-mips@linux-mips.org>; Sun, 08 Jan 2006 21:59:35 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=ggurlyqscqXQNsCt0Cn2BH6NDH4/sX92fNmjp1pbOt3OSdpirlIKNgNtLTu/T6GKkoBu+vPC/uxd2l1hzIuTUvU04SIeB3yCw+2Jmxjf2bn4R6BR+1oHlMsLkfulDRpFf8yoBjw3bU10x/D3lpaxZZUxRM9Oxsvj7UbCWQf8GDU=
+Received: by 10.54.136.13 with SMTP id j13mr4808306wrd;
+        Sun, 08 Jan 2006 21:59:35 -0800 (PST)
+Received: by 10.54.156.1 with HTTP; Sun, 8 Jan 2006 21:59:34 -0800 (PST)
+Message-ID: <50c9a2250601082159p238cacd6r930709da9305479e@mail.gmail.com>
+Date:	Mon, 9 Jan 2006 13:59:34 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: why the early_initcall(au1x00_setup) do not work?
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-In-Reply-To: 
-Thread-Index: AcYRL2wEZATk27YPQauJfmdzF9yApgDpTFIAAAHm3mA=
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-X-Scanned-By: MIMEDefang 2.49 on 137.71.25.51
-Return-Path: <satheshbabu.edara@analog.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9806
+X-archive-position: 9807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: satheshbabu.edara@analog.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
- 
+i download a standard 2.6.14 kernel, and compile it for dbau1100, and
+i find the early_initcall(au1x00_setup) was not compiled into the
+vmlinux.
+and i find at the linux-mips cvs, it used plat_setup instead of early_initcall.
+does it means my toolchain is not correct to compile the
+early_initcall, or in the standard 2.6.14 kernel, the early_initcall
+do not work well?
 
- 
-Hi,
-   We have ported linux-2.4.18 and linux-2-6.12 kernel (mips.org)onto MIPS
-processor (CPU type lx4189).
+Best regards!
 
- We observed that on 2.4 kernel,ll and sc instruction exception handlers
-hitting very often.
-Where as on linux-2.6.12 this is not happening.
-
-Can anybody have idea why this instructions are hitting on 2.4.18 kernel and
-not on 2-6.12 kernel.
-
-What is the significance of these instructions?.
-
-Note :
-   For linux-2.4.18 : We use GCC version -3.3.4 binutils version -2.15 and
-uClibc version -0.9.26 For linux-2.6.12 : We use GCC version -3.4.3 binutils
-version -2.15 and uClibc version -0.9.28.
-
-Thanks in advance.
-
-Regards,
-Sathesh  
+zhuzhenhua

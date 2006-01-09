@@ -1,93 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 21:59:38 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:24559 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133508AbWAIV7V convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Jan 2006 21:59:21 +0000
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k09M1DcR013598;
-	Mon, 9 Jan 2006 14:01:14 -0800 (PST)
-Received: from exchange.MIPS.COM (exchange [192.168.20.29])
-	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id k09M1DYr015869;
-	Mon, 9 Jan 2006 14:01:14 -0800 (PST)
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 22:42:04 +0000 (GMT)
+Received: from mail1.kontent.de ([81.88.34.36]:64898 "EHLO Mail1.KONTENT.De")
+	by ftp.linux-mips.org with ESMTP id S8133508AbWAIWlr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Jan 2006 22:41:47 +0000
+Received: from p549A1508.dip0.t-ipconnect.de (p549A1508.dip0.t-ipconnect.de [84.154.21.8])
+	by Mail1.KONTENT.De (Postfix) with ESMTP id 0AE4210D7EF6;
+	Mon,  9 Jan 2006 23:44:58 +0100 (CET)
+From:	Oliver Neukum <oliver@neukum.org>
+To:	linux-usb-devel@lists.sourceforge.net
+Subject: Re: [linux-usb-devel] [PATCH] UDC support for MIPS/AU1200 and Geode/CS5536
+Date:	Mon, 9 Jan 2006 23:44:55 +0100
+User-Agent: KMail/1.8
+Cc:	"Jordan Crouse" <jordan.crouse@amd.com>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, info-linux@ldcmail.amd.com,
+	thomas.dahlmann@amd.com
+References: <20060109180356.GA8855@cosmic.amd.com>
+In-Reply-To: <20060109180356.GA8855@cosmic.amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Subject: RE: [processor frequency]
-Date:	Mon, 9 Jan 2006 14:00:50 -0800
-Message-ID: <3CB54817FDF733459B230DD27C690CEC010495E3@Exchange.MIPS.COM>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [processor frequency]
-Thread-Index: AcYVYxdD0AdhrbWSQZmY/XYAU4nEFQAAlBdg
-From:	"Mitchell, Earl" <earlm@mips.com>
-To:	"Wolfgang Denk" <wd@denx.de>, "Kevin D. Kissell" <kevink@mips.com>
-Cc:	"Sathesh Babu Edara" <satheshbabu.edara@analog.com>,
-	<linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <earlm@mips.com>
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200601092344.55988.oliver@neukum.org>
+Return-Path: <oliver@neukum.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9828
+X-archive-position: 9829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: earlm@mips.com
+X-original-sender: oliver@neukum.org
 Precedence: bulk
 X-list: linux-mips
 
+Am Montag, 9. Januar 2006 19:03 schrieb Jordan Crouse:
+> >From the "two-birds-one-stone" department, I am pleased to present USB UDC
+> support for both the MIPS Au1200 SoC and the Geode CS5535 south bridge.  
+> Also, coming soon (in the next few days), OTG, which has been removed from
+> the usb_host patch, and put into its own patch (as per David's comments).
+> 
+> This patch is against current linux-mips git, but it should apply for Linus's
+> tree as well.
+> 
+> Regards,
+> Jordan
+> 
++        VDBG("udc_read_bytes(): %d bytes\n", bytes);
++
++        /* dwords first */
++        for (i = 0; i < bytes / UDC_DWORD_BYTES; i++) {
++               *((u32*) (buf + (i<<2))) = readl(dev->rxfifo); 
++        }
 
-Wolfgang, 
+Is there any reason you don't increment by 4?
 
-In your summary you mention ...
-
- "This probably explains why many developers who never use low-end embedded processors don't care about (and usually don't even know of) these problems in the 2.6 kernel."
-
-The desktop/server guys typically use much larger caches (i.e. >= 512K)
-and most have L2, compared to embedded systems which typically use less
-without an L2. So I'd also expect embedded guys using small caches to see 
-larger decreases in performance due to more cache misses (i.e. more 
-interrupts produce more evictions). 
-
--earlm
-
-
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Wolfgang Denk
-> Sent: Monday, January 09, 2006 1:24 PM
-> To: Kevin D. Kissell
-> Cc: Sathesh Babu Edara; linux-mips@linux-mips.org
-> Subject: Re: [processor frequency]
-> 
-> 
-> In message <005a01c614fb$2fe76b00$10eca8c0@grendel> you wrote:
-> > There is no "ideal" value for a given processor frequency.
-> > The lower the value, the less interrupt processing overhead,
-> > but the slower the response time to events that are detected
-> > or serviced during clock interrupts. 1000 HZ *may* be a sensible
-> > value (I have my doubts, personally) for 2+ GHz PC processors, 
-> > but it's excessive (IMHO) for a 200MHz processor and unworkable 
-> > for a 20MHz CPU. I think that 100HZ is still a reasonable value
-> > for an embedded RISC CPU, but the "ideal" value is going to
-> > be a function of the application.
-> 
-> We did some tests of the performance impact of 100 vs. 1000 Hz  clock
-> frequency on low end systems (50 MHz PowerPC); for details please see
-> http://www.denx.de/wiki/view/Know/Clock100vs1000Hz
-> 
-> Best regards,
-> 
-> Wolfgang Denk
-> 
-> -- 
-> Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-> Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-> Our missions are peaceful -- not for conquest.  When we do battle, it
-> is only because we have no choice.
-> 	-- Kirk, "The Squire of Gothos", stardate 2124.5
-> 
-> 
+	Regards
+		Oliver

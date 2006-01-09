@@ -1,47 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 15:49:18 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:10268 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8134423AbWAIPs7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Jan 2006 15:48:59 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k09Fpqqf012712;
-	Mon, 9 Jan 2006 15:51:52 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k09FpqnB012711;
-	Mon, 9 Jan 2006 15:51:52 GMT
-Date:	Mon, 9 Jan 2006 15:51:52 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	Sathesh Babu Edara <satheshbabu.edara@analog.com>,
-	linux-mips@linux-mips.org
-Subject: Re: LL and SC instruction simulation
-Message-ID: <20060109155152.GF4286@linux-mips.org>
-References: <200601090742.k097gYaZ017304@lilac.hdcindia.analog.com> <200601090749.k097nFaZ017891@lilac.hdcindia.analog.com> <20060109145425.GA4286@linux-mips.org> <00af01c6152f$dc1863f0$10eca8c0@grendel> <20060109152148.GD4286@linux-mips.org> <20060109153028.GA6542@linux-mips.org> <00fd01c61533$ef797e30$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 17:40:46 +0000 (GMT)
+Received: from p549F4907.dip.t-dialin.net ([84.159.73.7]:60594 "EHLO
+	p549F4907.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S8133636AbWAIRkY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Jan 2006 17:40:24 +0000
+Received: from amdext3.amd.com ([IPv6:::ffff:139.95.251.6]:16104 "EHLO
+	amdext3.amd.com") by linux-mips.net with ESMTP id <S869096AbWAIRm7>;
+	Mon, 9 Jan 2006 18:42:59 +0100
+Received: from SSVLGW02.amd.com (ssvlgw02.amd.com [139.95.250.170])
+	by amdext3.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k09HdbeW031656;
+	Mon, 9 Jan 2006 09:41:13 -0800
+Received: from 139.95.250.1 by SSVLGW01.amd.com with ESMTP (AMD SMTP
+ Relay (Email Firewall v6.1.0)); Mon, 09 Jan 2006 09:41:01 -0800
+X-Server-Uuid: 89466532-923C-4A88-82C1-66ACAA0041DF
+Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
+ amdint.amd.com (8.12.8/8.12.8/AMD) with ESMTP id k09Hf1VP019320; Mon, 9
+ Jan 2006 09:41:01 -0800 (PST)
+Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
+ ldcmail.amd.com (Postfix) with ESMTP id E40DB2028; Mon, 9 Jan 2006
+ 10:41:00 -0700 (MST)
+Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
+ (8.13.4/8.13.4) with ESMTP id k09Hnb4V008738; Mon, 9 Jan 2006 10:49:37
+ -0700
+Received: (from jcrouse@localhost) by cosmic.amd.com (
+ 8.13.4/8.13.4/Submit) id k09HnasZ008737; Mon, 9 Jan 2006 10:49:36 -0700
+Date:	Mon, 9 Jan 2006 10:49:36 -0700
+From:	"Jordan Crouse" <jordan.crouse@amd.com>
+To:	"Russell King" <rmk@arm.linux.org.uk>
+cc:	linux-mips@linux-mips.org, drzeus@drzeus.cx
+Subject: Re: Force MMC/SD to 512 byte block sizes
+Message-ID: <20060109174936.GJ17575@cosmic.amd.com>
+References: <20060106164406.GA15617@cosmic.amd.com>
+ <20060106165930.GC16093@flint.arm.linux.org.uk>
+MIME-Version: 1.0
+In-Reply-To: <20060106165930.GC16093@flint.arm.linux.org.uk>
+User-Agent: Mutt/1.5.11
+X-WSS-ID: 6FDC7FA72BK3549672-01-01
+Content-Type: text/plain;
+ charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <00fd01c61533$ef797e30$10eca8c0@grendel>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Return-Path: <jcrouse@cosmic.amd.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9819
+X-archive-position: 9820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jordan.crouse@amd.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 09, 2006 at 04:47:01PM +0100, Kevin D. Kissell wrote:
+On 06/01/06 16:59 +0000, Russell King wrote:
+> On Fri, Jan 06, 2006 at 09:44:06AM -0700, Jordan Crouse wrote:
+> > This patch is not specific to the AU1200 SD driver, but thats what
+> > we used to debug and verify this, so thats why it is applied against
+> > the linux-mips tree.   Pierre, I'm sending this to you too, because I thought
+> > you may be interested.
+> 
+> NACK.  Please wait until the next round of patches get merged and then
+> revalidate this.
 
-> Hmm.  I can think of at least one *very* high volume MIPS Linux platform still
-> manufactured by a very large Japanese electronics company where LL/SC
-> either isn't implemented or doesn't work...  
+Ok - I saw your fixes.  Looks good to me.
 
-The user community of that platform of that four letter vendor still
-hasn't managed to upgrade their kernels to something that would even be
-remotely contemporary, so any 2.6 questions don't apply ...
+I'm still sticking to the (assumption|hypothesis|foolish fantasy) that
+even cards that do not support partial block writes will still support
+512 byte writes - mainly because I just don't see those ASICs in the 
+el-Cheapo card readers being capable of doing the advanced buffering
+to convert 512 <-> 1024 or 2048, and hopefully one of these days I'll
+find a card to prove that.  Until then, I don't have a leg to stand on,
+so I'll quietly hang back.
 
-  Ralf
+Jordan
+
+-- 
+Jordan Crouse
+Senior Linux Engineer
+AMD - Personal Connectivity Solutions Group
+<www.amd.com/embeddedprocessors>

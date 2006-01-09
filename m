@@ -1,114 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 01:45:09 +0000 (GMT)
-Received: from wproxy.gmail.com ([64.233.184.203]:60679 "EHLO wproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133656AbWAIBov convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Jan 2006 01:44:51 +0000
-Received: by wproxy.gmail.com with SMTP id 36so3202370wra
-        for <linux-mips@linux-mips.org>; Sun, 08 Jan 2006 17:47:47 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=rDwoPTCDVsMQMxA15EIOhSGBTNf9jU/jF1tvm/EP9gduGxN18bmTwQo2KXLAzGUZFq5Bfmr6B7hlaH86IGVw4T20+i2HZGvg1x5pvd2+9jNHYv1vuZv/z1oB4hK6fcgZXrGNJeUti6Aoiu4ui4l2jDqjTi8kZsNEMREgL5XD/D8=
-Received: by 10.54.60.10 with SMTP id i10mr5897478wra;
-        Sun, 08 Jan 2006 17:47:46 -0800 (PST)
-Received: by 10.54.156.1 with HTTP; Sun, 8 Jan 2006 17:47:46 -0800 (PST)
-Message-ID: <50c9a2250601081747l55c5b03p1601329141047c3d@mail.gmail.com>
-Date:	Mon, 9 Jan 2006 09:47:46 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: sometimes get "crc error" while uncompressed ramdisk
-In-Reply-To: <50c9a2250601061939j42c4cc85n1c0246d9f8068938@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jan 2006 04:51:43 +0000 (GMT)
+Received: from nwd2mail1.analog.com ([137.71.25.50]:5781 "EHLO
+	nwd2mail1.analog.com") by ftp.linux-mips.org with ESMTP
+	id S8133437AbWAIEvX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Jan 2006 04:51:23 +0000
+Received: from nwd2mhb1.analog.com (nwd2mhb1.analog.com [137.71.5.12])
+	by nwd2mail1.analog.com (8.12.10/8.12.10) with ESMTP id k094sSQN008663;
+	Sun, 8 Jan 2006 23:54:28 -0500
+Received: from lilac.hdcindia.analog.com ([10.121.13.31])
+	by nwd2mhb1.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id XAA15620;
+	Sun, 8 Jan 2006 23:54:17 -0500 (EST)
+Received: from SEdaraL01 ([10.121.13.96])
+	by lilac.hdcindia.analog.com (8.12.10+Sun/8.12.10) with ESMTP id k094rfaZ028956;
+	Mon, 9 Jan 2006 10:23:42 +0530 (IST)
+Message-Id: <200601090453.k094rfaZ028956@lilac.hdcindia.analog.com>
+From:	"Sathesh Babu Edara" <satheshbabu.edara@analog.com>
+To:	<linux-mips-bounce@linux-mips.org>, <linux-mips@linux-mips.org>
+Subject: LL and SC instruction simulation
+Date:	Mon, 9 Jan 2006 10:24:14 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <50c9a2250601052240n5696e353teb2b798ecbf802f0@mail.gmail.com>
-	 <1136537813.5239.23.camel@localhost.localdomain>
-	 <50c9a2250601061939j42c4cc85n1c0246d9f8068938@mail.gmail.com>
-Return-Path: <zzh.hust@gmail.com>
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+In-Reply-To: <43BBC85C.4040405@mips.com>
+Thread-Index: AcYRL2wEZATk27YPQauJfmdzF9yApgDpTFIA
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+X-Scanned-By: MIMEDefang 2.49 on 137.71.25.50
+Return-Path: <satheshbabu.edara@analog.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9804
+X-archive-position: 9805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: satheshbabu.edara@analog.com
 Precedence: bulk
 X-list: linux-mips
 
-and i find the ramdisk sometimes uncompressed correctly, sometimes not.
-if if uncorrect, if often stop at
-generic_file_write_nolock -> __grab_cache_page
-->add_to_page_cache_unique
-->__add_to_page_cache->add_page_to_hash_queue
+ 
+Hi,
+   We have ported linux-2.4.18 and linux-2-6.12 kernel (mips.org)onto MIPS
+processor (CPU type lx4189).
 
-static void add_page_to_hash_queue(struct page * page, struct page **p)
-{
-	struct page *next = *p;
+ We observed that on 2.4 kernel,ll and sc instruction exception handlers
+hitting very often.
+Where as on linux-2.6.12 this is not happening.
 
-	*p = page;
-	page->next_hash = next;
-	page->pprev_hash = p;
-	if (next)
-		next->pprev_hash = &page->next_hash;
-	if (page->buffers)
-		PAGE_BUG(page);
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-	atomic_inc(&page_cache_size);
-}
+Can anybody have idea why this instructions are hitting on 2.4.18 kernel and
+not on 2-6.12 kernel.
 
-it occur oops at
-	if (page->buffers)
-		PAGE_BUG(page);
+What is the significance of these instructions?.
 
-i am not sure it may caused by hardware or uncorrect initialized of sdram?
-or maybe uncorrect-maked ramdisk can cause this?
+Note :
+   For linux-2.4.18 : We use GCC version -3.3.4 binutils version -2.15 and
+uClibc version -0.9.26
+For linux-2.6.12 : We use GCC version -3.4.3 binutils version -2.15 and
+uClibc version -0.9.28.
 
-thanks for any hints!
+Thanks in advance.
 
-Best regards!
-
-Zhuzhenhua
-
-
-
-
-On 1/7/06, zhuzhenhua <zzh.hust@gmail.com> wrote:
-> On 1/6/06, jp <jaypee@hotpop.com> wrote:
-> > On Fri, 2006-01-06 at 14:40 +0800, zhuzhenhua wrote:
-> > > i make a ramdisk by myself, and sometimes the kernel boot the ramdisk
-> > > correctly but sometimes it printk "crc error" while uncompressed
-> > > ramdisk, did someone meet this situation?
-> > > thanks for any hints
-> > >
-> >
-> > Assuming your build and everything else is as it should be it may be a
-> > RAM fault. Are you using a custom board?
-> >
-> > I had some prototype boards here with some really long tracks to RAM.
-> > (and some really short ones too!)
-> >
-> > Memory tests such walking ones worked fine but the decompress of the
-> > ramdisk works RAM pretty hard and it showed up intermittent faults like
-> > you describe. Tended to be worse when the board was warm. I'd spray some
-> > Freezit on and it would go back to working OK.
-> >
-> > You could also try running the RAM slower and see if the fault
-> > disappears.
-> >
-> >
-> > JP
-> >
-> >
-> >
-> maybe you are right, because i work on our FPGA board, and the
-> situation is similiar as your description. i will try to slow down the
-> sdram and to see what will happen
->
-> thanks!
->
-> Best regards
->
-> zhuzhenhua
->
+Regards,
+Sathesh  

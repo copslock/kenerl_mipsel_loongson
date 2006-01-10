@@ -1,42 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2006 15:34:08 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:22811 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133442AbWAJPdv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Jan 2006 15:33:51 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0AFargA016926;
-	Tue, 10 Jan 2006 15:36:53 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0AFaqKg016925;
-	Tue, 10 Jan 2006 15:36:52 GMT
-Date:	Tue, 10 Jan 2006 15:36:52 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: QEMU and kernel 2.6.15
-Message-ID: <20060110153652.GA4871@linux-mips.org>
-References: <20060111.002431.93019846.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2006 15:37:26 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.206]:49340 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133442AbWAJPhI convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 10 Jan 2006 15:37:08 +0000
+Received: by wproxy.gmail.com with SMTP id 71so3657227wri
+        for <linux-mips@linux-mips.org>; Tue, 10 Jan 2006 07:40:14 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=rlQw1LZMfLQvP6jpTs6worMMhgMxHbvrb3B64wCgAn76qajTJCK4RgkZdNmZBVMG9sgmVMcEwPgLUNDFMm91+4gqzxzrlWbOX9wS1ZUpoBnasu5LITNaqViLyKu8Ux+MZlGYV/8VHxcGrRbfjpTS7UD7wqs9M/6cZHF/Z9lMMK4=
+Received: by 10.54.84.1 with SMTP id h1mr9604365wrb;
+        Tue, 10 Jan 2006 07:40:12 -0800 (PST)
+Received: by 10.54.69.5 with HTTP; Tue, 10 Jan 2006 07:40:12 -0800 (PST)
+Message-ID: <a59861030601100740r432904d9o@mail.gmail.com>
+Date:	Tue, 10 Jan 2006 16:40:12 +0100
+From:	Ivan Korzakow <ivan.korzakow@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: why the early_initcall(au1x00_setup) do not work?
+Cc:	zhuzhenhua <zzh.hust@gmail.com>, "P. Christeas" <p_christ@hol.gr>,
+	linux-mips@linux-mips.org
+In-Reply-To: <20060110141924.GA13779@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20060111.002431.93019846.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <50c9a2250601082159p238cacd6r930709da9305479e@mail.gmail.com>
+	 <20060109145610.GB4286@linux-mips.org>
+	 <200601091720.03822.p_christ@hol.gr>
+	 <20060109152429.GE4286@linux-mips.org>
+	 <50c9a2250601091702g7e48c75br178868a3c91d48f4@mail.gmail.com>
+	 <20060110141924.GA13779@linux-mips.org>
+Return-Path: <ivan.korzakow@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9841
+X-archive-position: 9842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ivan.korzakow@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 11, 2006 at 12:24:31AM +0900, Atsushi Nemoto wrote:
+2006/1/10, Ralf Baechle <ralf@linux-mips.org>:
+> On Tue, Jan 10, 2006 at 09:02:43AM +0800, zhuzhenhua wrote:
+>
+> > > In 2.6.15 things were alomst fully merged but several megabytes of
+> > > patches are between the linux-mips.org and kernel.org versions of 2.6.14.
+> > >
+> > >   Ralf
+> > >
+> >
+> > in linux-mips, where to download the patches for standard kernel?
+>
+> I don't publish such patches - but they're eassy to generate.
+>
+Could you be a bit more explicit about that "easy" way you generate them ?
 
-> Whant's going on ?  An interrupt is not cleared?
-
-Qemu is still work in progress and needs further debugging.
-
-  Ralf
+Ivan

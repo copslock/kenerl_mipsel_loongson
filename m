@@ -1,43 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2006 06:00:34 +0000 (GMT)
-Received: from wproxy.gmail.com ([64.233.184.206]:43376 "EHLO wproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133398AbWAJGAQ convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2006 09:33:51 +0000 (GMT)
+Received: from alg145.algor.co.uk ([62.254.210.145]:51206 "EHLO
+	dmz.algor.co.uk") by ftp.linux-mips.org with ESMTP id S8133415AbWAJJd3
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Jan 2006 06:00:16 +0000
-Received: by wproxy.gmail.com with SMTP id 36so96011wra
-        for <linux-mips@linux-mips.org>; Mon, 09 Jan 2006 22:03:19 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=CnjSUQSGiictdoYY6r8TPbMHWb/4A2a5FnDv9iX+eJR4b/SjNaCZJBx84dtjYBwlCWtyDWpRYIdnn4hRnET07U23rXupT8YgDT9xU2kGqcmU49XQEkmabl1JcHYiZ2xFYCssE5ubPPC9yceFa+gsJ/mWNiM/+1rnNJlOWbX3Nlw=
-Received: by 10.54.151.9 with SMTP id y9mr442986wrd;
-        Mon, 09 Jan 2006 22:03:19 -0800 (PST)
-Received: by 10.54.156.1 with HTTP; Mon, 9 Jan 2006 22:03:19 -0800 (PST)
-Message-ID: <50c9a2250601092203y2cd68d65rf712174e31d41806@mail.gmail.com>
-Date:	Tue, 10 Jan 2006 14:03:19 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: how to make zImage in linux 2.6?
+	Tue, 10 Jan 2006 09:33:29 +0000
+Received: from alg158.algor.co.uk ([62.254.210.158] helo=olympia.mips.com)
+	by dmz.algor.co.uk with esmtp (Exim 3.35 #1 (Debian))
+	id 1EwFsa-00040s-00; Tue, 10 Jan 2006 09:33:24 +0000
+Received: from olympia.mips.com ([192.168.192.128] helo=boris)
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1EwFvE-0005hQ-00; Tue, 10 Jan 2006 09:36:08 +0000
+From:	Dominic Sweetman <dom@mips.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <17347.32817.144103.968382@mips.com>
+Date:	Tue, 10 Jan 2006 09:36:49 +0000
+To:	"Mitchell, Earl" <earlm@mips.com>
+Cc:	"Wolfgang Denk" <wd@denx.de>, "Kevin D. Kissell" <kevink@mips.com>,
+	"Sathesh Babu Edara" <satheshbabu.edara@analog.com>,
+	<linux-mips@linux-mips.org>
+Subject: RE: [processor frequency]
+In-Reply-To: <3CB54817FDF733459B230DD27C690CEC010495E3@Exchange.MIPS.COM>
+References: <3CB54817FDF733459B230DD27C690CEC010495E3@Exchange.MIPS.COM>
+X-Mailer: VM 7.17 under 21.4 (patch 17) "Jumbo Shrimp" XEmacs Lucid
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.856,
+	required 4, AWL, BAYES_00)
+Return-Path: <dom@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9833
+X-archive-position: 9834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: dom@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-i download a 2.6.14 kernel, i find it can compile vmlinux,
-vmlinux.srec, but i can't find how to make zImage.
-In 2.4.x, there is a arch/mips/zboot/ to add board-special code to make zImage.
-and i do not find similiar codes in 2.6.does the 2.6 support zImage?
 
-Best regards
+My colleague Earl writes:
 
-zhuzhenhua
+> The desktop/server guys typically use much larger caches (i.e. >= 512K)
+> and most have L2, compared to embedded systems which typically use less
+> without an L2. So I'd also expect embedded guys using small caches to see 
+> larger decreases in performance due to more cache misses (i.e. more 
+> interrupts produce more evictions). 
+
+It's certainly true that running an interrupt routine (even one which
+doesn't lead to any scheduling activity) will cause some cache
+traffic.  But it is important to keep the relative timescales in mind.
+With an averagely bad memory system, evicting and replacing a cache
+line costs 150ns read latency, with a 100ns writeback (notionally done
+"in the background" just after the read) on about one miss in four...
+
+Let's make some pessimistic assumptions.  Suppose an interrupt routine
+displaces 2KB of code and data and uses 32-byte cache lines, and we
+assume the process happens twice as the background process refills the
+cache to its liking.  Then we'll get 120 odd reads, which will cost
+about 20us, about 2% of total time on a 1KHz clock.  That doesn't
+sound like it should be a huge effect.
+
+It would be better to measure it, though.
+
+--
+Dominic Sweetman
+MIPS Technologies.

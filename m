@@ -1,64 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 15:06:56 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:57567 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133731AbWAKPGb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2006 15:06:31 +0000
-Received: from localhost (p8236-ipad03funabasi.chiba.ocn.ne.jp [219.160.88.236])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 01BC9B12C; Thu, 12 Jan 2006 00:09:34 +0900 (JST)
-Date:	Thu, 12 Jan 2006 00:09:04 +0900 (JST)
-Message-Id: <20060112.000904.74752908.anemo@mba.ocn.ne.jp>
-To:	dan@debian.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: QEMU and kernel 2.6.15
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060111144355.GA17275@nevyn.them.org>
-References: <20060111.002431.93019846.anemo@mba.ocn.ne.jp>
-	<20060111144355.GA17275@nevyn.them.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 15:11:16 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.203]:3731 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133475AbWAKPKx convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jan 2006 15:10:53 +0000
+Received: by wproxy.gmail.com with SMTP id 71so176420wri
+        for <linux-mips@linux-mips.org>; Wed, 11 Jan 2006 07:14:05 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=InXUtVKzGoETskmJlvDMSxBC3g77aqHnhI5Sno6QiXWUXNaTh5B1ry0nAzSnYPw6yM+C8d4rZsjdtFYEe5l4FfyvehOWPTCBISGhhike8xPdzIHCUnSVbx4N8fjrSeMHXM1IXS0Q4mOU/77ClmM94EmiRdIAbut9O1+UKsb7oO0=
+Received: by 10.54.115.5 with SMTP id n5mr940737wrc;
+        Wed, 11 Jan 2006 07:14:04 -0800 (PST)
+Received: by 10.54.69.5 with HTTP; Wed, 11 Jan 2006 07:14:04 -0800 (PST)
+Message-ID: <a59861030601110714n2134ed42w@mail.gmail.com>
+Date:	Wed, 11 Jan 2006 16:14:04 +0100
+From:	Ivan Korzakow <ivan.korzakow@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: why the early_initcall(au1x00_setup) do not work?
+Cc:	"P. Christeas" <p_christ@hol.gr>, linux-mips@linux-mips.org
+In-Reply-To: <20060110215322.GA27577@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <50c9a2250601082159p238cacd6r930709da9305479e@mail.gmail.com>
+	 <200601101757.45297.p_christ@hol.gr>
+	 <a59861030601100838oa89ac84n@mail.gmail.com>
+	 <200601101857.26978.p_christ@hol.gr>
+	 <20060110215322.GA27577@linux-mips.org>
+Return-Path: <ivan.korzakow@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9858
+X-archive-position: 9859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ivan.korzakow@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 11 Jan 2006 09:43:56 -0500, Daniel Jacobowitz <dan@debian.org> said:
+2006/1/10, Ralf Baechle <ralf@linux-mips.org>:
+> It is possible to keep both Linus's and the lmo tree in the same
+> repository with a _little_ care.  I do that all the time.  When compressed
+> this will result in a bloat of just about 10-20MB.
+>
 
-dan> You've configured the kernel for QEMU, right?  And are usin QEMU
-dan> from CVS?
+well, in a MIPS repo:
 
-Yes, I configured the kernel with qemu_defconfig.  I tried both QEMU
-0.8.0 and tried current CVS today, but got same results.
+$ git repack -a -d
+$ git prune-packed
+$ git prune
+$ du .git
+266M    .git
+$ tree .git/objects/
+.git/objects/
+|-- info
+|   `-- packs
+`-- pack
+    |-- pack-77ee75692f2944708c9dd65d6ba9100f6647b414.idx
+    `-- pack-77ee75692f2944708c9dd65d6ba9100f6647b414.pack
 
-Here is my instructions:
+2 directories, 3 files
 
-kernel:
-make O=../build-qemu qemu_defconfig
-make O=../build-qemu
+What kind of magical git commands are you using ?
 
-QEMU:
-./configure --target-list=mips-softmmu --disable-gfx-check
-make
-
-Then:
-mips-softmmu/qemu-system-mips -kernel /home/git/build-qemu/arch/mips/boot/vmlinux.bin -m 16 -nographic
-
-dan> It worked for me the last time I tried, but that was a couple of
-dan> weeks ago.  The port may have gotten broken...
-
-While QEMU 0.8.0 was released on Dec 19 and it seems there was not so
-much changes on kernel's arch/mips in last few weeks, we should be
-very close ...
-
----
-Atsushi Nemoto
+Ivan

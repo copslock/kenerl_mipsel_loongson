@@ -1,83 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 20:03:49 +0000 (GMT)
-Received: from vweb.sina.net ([202.108.3.191]:58338 "EHLO vweb.sina.net")
-	by ftp.linux-mips.org with ESMTP id S8133542AbWAKUD3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2006 20:03:29 +0000
-Received: (qmail 79165 invoked by uid 99); 11 Jan 2006 20:06:32 -0000
-Message-ID: <20060111200632.79164.qmail@sina2-84.sina.net>
-From:	yzzhang@sy-imatec.com
-To:	linux-mips@linux-mips.org
-Subject: au1200 mae mmap problem
-Date:	Thu, 12 Jan 2006 04:06:32 +0800
-X-Mailer: SinaMail(3.0)
-X-Priority: 3
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="gb2312"
-Content-Transfer-Encoding: 7bit
-Return-Path: <yzzhang@sy-imatec.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 20:11:08 +0000 (GMT)
+Received: from nevyn.them.org ([66.93.172.17]:44712 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S8133429AbWAKUKn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2006 20:10:43 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.54)
+	id 1EwmLy-0005y9-Ma; Wed, 11 Jan 2006 15:13:54 -0500
+Date:	Wed, 11 Jan 2006 15:13:54 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: QEMU and kernel 2.6.15
+Message-ID: <20060111201354.GA22873@nevyn.them.org>
+References: <20060111.002431.93019846.anemo@mba.ocn.ne.jp> <20060111144355.GA17275@nevyn.them.org> <20060112.000904.74752908.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060112.000904.74752908.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9864
+X-archive-position: 9865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yzzhang@sy-imatec.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-I wrote a simple program to test Au1200 MAE.
-The result is always that program will return -1 because pmms->struct_size=0, though it is assigned
-a value of 0xdc during initialization in the kernel.
-anyone could explain the reason for me? Thanks in advance. 
------------------------------------------------------------------------
-In user space:
-  if ((fmae = open("/dev/mae", O_RDWR)) < 0) {
-        printf("mae open failed.\n");
-        return -1;
-    }
- gMemSize = ioctl(fmae, AU1XXXMAE_INIT, &ioc);
- maeaddr = mmap (0, gMemSize, PROT_READ|PROT_WRITE, MAP_SHARED | MAP_NONCACHED, fmae, 0);
- if (maeaddr == MAP_FAILED)
-    {
-        printf("mae: attempt to map memory failed.\n");
-        return -1;
-    }
- pmms = (PMAE_MASTER_T)maeaddr;
- if (pmms->struct_size < sizeof(MAE_MASTER_T))
-    {
-      printf("mae_driver, structure size mismatch: driver=%x interface=%d\n",pmms->struct_size, sizeof(MAE_MASTER_T));
-        return -1;
-    }
+On Thu, Jan 12, 2006 at 12:09:04AM +0900, Atsushi Nemoto wrote:
+> mips-softmmu/qemu-system-mips -kernel /home/git/build-qemu/arch/mips/boot/vmlinux.bin -m 16 -nographic
 
------------------------------------------------------------------------------------------
-In kernel space,au1200's driver is listed as below: 
+Just to check, could you try -m 32 or -m 128?  It shouldn't rely on
+more than 16MB, but the boundary condition may be wrong.
 
-int au1xxxmae_mmap(struct file *filp, struct vm_area_struct *vma ) 
-{
-    unsigned long size = vma->vm_end - vma->vm_start;
-    unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
-    offset += mae_phys_address;
-    vma->vm_page_prot = pgprot_cached(vma->vm_page_prot);    
-    if(remap_pfn_range(vma, vma->vm_start, offset >> PAGE_SHIFT, size, vma->vm_page_prot))    
-    {
-         DBGPRINT(ERRORS,"Could not remap the page range\n");
-         return -EFAULT;
-    }
+Beyond that, I have no idea what might be wrong.
 
-    vma->vm_flags &= ~VM_IO;
-    vma->vm_ops = &au1xxx_vmaops;
-    au1xxx_vma_open(vma);
-    return 0;
-}
-
-void init_mae_structs(void) 
-{
-    unsigned char k,x[10];
-
-    pmms = (PMAE_MASTER_T) KRNL_MAE_MASTER_STRUCT; // pmms means ptr to mae master struct
-    // initialize the master structure
-    memset((PVOID)KRNL_MAE_MASTER_STRUCT, 0, sizeof(MAE_MASTER_T));
-    pmms->struct_size=sizeof(MAE_MASTER_T);   //pmms->struct_size = 0xdc
-    ... ... 
-}
+-- 
+Daniel Jacobowitz
+CodeSourcery

@@ -1,63 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 14:41:10 +0000 (GMT)
-Received: from nevyn.them.org ([66.93.172.17]:9698 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S8133475AbWAKOkq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2006 14:40:46 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.54)
-	id 1EwhCe-0004WV-OI; Wed, 11 Jan 2006 09:43:56 -0500
-Date:	Wed, 11 Jan 2006 09:43:56 -0500
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: QEMU and kernel 2.6.15
-Message-ID: <20060111144355.GA17275@nevyn.them.org>
-References: <20060111.002431.93019846.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 15:04:42 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.194]:36220 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133542AbWAKPEU convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jan 2006 15:04:20 +0000
+Received: by wproxy.gmail.com with SMTP id 71so174746wri
+        for <linux-mips@linux-mips.org>; Wed, 11 Jan 2006 07:07:26 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=TjZf2N6P1+iBm60Ef1Bm67+hUa+ehDozsLkwHWax9t2eR3ZsUekaVRR/q0WcrLrnDurPfRsEqCuEs5J88lbU2WNaZpX7fficMt/mPxSGH2MskY4rS8mCvvJPzZf7mc5WRS6skid2fwJGLucPhuNh3EvTPJW6vgDnf30fvnk2D+A=
+Received: by 10.54.83.7 with SMTP id g7mr998314wrb;
+        Wed, 11 Jan 2006 07:07:25 -0800 (PST)
+Received: by 10.54.69.5 with HTTP; Wed, 11 Jan 2006 07:07:25 -0800 (PST)
+Message-ID: <a59861030601110707u16f5d366m@mail.gmail.com>
+Date:	Wed, 11 Jan 2006 16:07:25 +0100
+From:	Ivan Korzakow <ivan.korzakow@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: why the early_initcall(au1x00_setup) do not work?
+Cc:	"P. Christeas" <p_christ@hol.gr>, linux-mips@linux-mips.org
+In-Reply-To: <20060111112001.GA4403@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20060111.002431.93019846.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+References: <50c9a2250601082159p238cacd6r930709da9305479e@mail.gmail.com>
+	 <200601101757.45297.p_christ@hol.gr>
+	 <a59861030601100838oa89ac84n@mail.gmail.com>
+	 <200601101857.26978.p_christ@hol.gr>
+	 <20060110215322.GA27577@linux-mips.org>
+	 <a59861030601110310gca74f54o@mail.gmail.com>
+	 <20060111112001.GA4403@linux-mips.org>
+Return-Path: <ivan.korzakow@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9856
+X-archive-position: 9857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: ivan.korzakow@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 11, 2006 at 12:24:31AM +0900, Atsushi Nemoto wrote:
-> Hi.  I'm a QEMU newbie.  Does anybody tried QEMU 0.8.0 with recent
-> linux-mips kernel ?
+2006/1/11, Ralf Baechle <ralf@linux-mips.org>:
+> On Wed, Jan 11, 2006 at 12:10:05PM +0100, Ivan Korzakow wrote:
+>
+> > It would be great to be a little bit more explicit by giving some
+> > _little_ examples ! Why not enlighting us directly instead of being so
+> > vague.
+>
+> In books that kind of stuff is usually marked as "left as an exercise to
+> the reader" ;-)
 
-You've configured the kernel for QEMU, right?  And are usin QEMU from
-CVS?
+yeah, but we are chating on a forum ;0)
 
-> Checking for 'wait' instruction...  available.
-> 
-> 
-> I can get qemu prompt by typing C-a c and 'info register' shows
-> PC=0x80010d40 (qemu_handle_int+0xe0).
-> 
-> (qemu) info registers
-> pc=0x80010d40 HI=0x00000000 LO=0x00000000 ds 0000 801b6cd8 0
-> GPR00: r0 00000000 at 10008401 v0 8027fbe8 v1 00000000
-> GPR04: a0 80281f0c a1 80281e9c a2 8027fbe8 a3 80281f0c
-> GPR08: t0 10008400 t1 1000001f t2 00000000 t3 00000000
-> GPR12: t4 7fffffff t5 ffffffff t6 00100100 t7 7fffffff
-> GPR16: s0 00000002 s1 80281f08 s2 00000000 s3 00000000
-> GPR20: s4 00000000 s5 00000000 s6 00000000 s7 00000000
-> GPR24: t8 00000000 t9 00000001 k0 80281e80 k1 80281e80
-> GPR28: gp 80280000 sp 80281dd0 s8 80281e80 ra 801b74f8
-> CP0 Status  0x10008400 Cause   0x80000400 EPC    0x801b74f4
->     Config0 0x80008081 Config1 0x1e190c8a LLAddr 0x00000001
+>
+>   git-clone rsync://ftp.linux-mips.org/pub/scm/linux.git repository
+>   cd repository
+>   git-fetch git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6 master:linus
+>   git-repack -a -d
+>
 
-It worked for me the last time I tried, but that was a couple
-of weeks ago.  The port may have gotten broken...
+I know that but you miss my point. GIT is a tool to ease work on linux
+kernel, but the way you use it makes harder life of users of your
+tree. For example your tree contains more than 350 000 objects ! That
+makes a lot of git commands running slow...
 
+Let's say I'm developing a net drivers on ARM platform. I'm actually
+do not care about ARM development, but I do care about net tree. To do
+that, I just need to clone net tree because I know that ARM should be
+OK with this tree. What about MIPS ?
 
--- 
-Daniel Jacobowitz
-CodeSourcery
+I'm just wondering why not asking to Linus to pull from your tree like
+every others maintainers do ?
+
+Ivan

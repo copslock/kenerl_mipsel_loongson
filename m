@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 19:57:59 +0000 (GMT)
-Received: from vweb.sina.net ([202.108.3.191]:42231 "EHLO vweb.sina.net")
-	by ftp.linux-mips.org with ESMTP id S8133732AbWAKT5k (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2006 19:57:40 +0000
-Received: (qmail 21488 invoked by uid 99); 11 Jan 2006 20:00:35 -0000
-Message-ID: <20060111200035.21487.qmail@sina.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 19:58:54 +0000 (GMT)
+Received: from vweb.sina.net ([202.108.3.191]:52430 "EHLO vweb.sina.net")
+	by ftp.linux-mips.org with ESMTP id S8133655AbWAKT5m (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2006 19:57:42 +0000
+Received: (qmail 51146 invoked by uid 99); 11 Jan 2006 20:00:45 -0000
+Message-ID: <20060111200045.51145.qmail@sina.com>
 From:	yzzhang@sy-imatec.com
 To:	linux-mips@linux-mips.org
 CC:	linux-cvs@linux-mips.org
 Subject: au1200 mae mmap problem
-Date:	Thu, 12 Jan 2006 04:00:35 +0800
+Date:	Thu, 12 Jan 2006 04:00:45 +0800
 X-Mailer: SinaMail(3.0)
 X-Priority: 3
 MIME-Version: 1.0
@@ -19,7 +19,7 @@ Return-Path: <yzzhang@sy-imatec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9862
+X-archive-position: 9863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

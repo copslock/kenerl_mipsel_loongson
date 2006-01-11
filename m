@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 11:46:17 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:5405 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 12:14:18 +0000 (GMT)
+Received: from extgw-uk.mips.com ([62.254.210.129]:19734 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133429AbWAKLp4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jan 2006 11:45:56 +0000
+	id S8133429AbWAKMNr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jan 2006 12:13:47 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0BBmv9s005995;
-	Wed, 11 Jan 2006 11:48:57 GMT
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0BCGk8d006778;
+	Wed, 11 Jan 2006 12:16:47 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0ANK6lS003667;
-	Tue, 10 Jan 2006 23:20:06 GMT
-Date:	Tue, 10 Jan 2006 23:20:06 +0000
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0BCGjBY006776;
+	Wed, 11 Jan 2006 12:16:45 GMT
+Date:	Wed, 11 Jan 2006 12:16:45 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Ivan Korzakow <ivan.korzakow@gmail.com>
+To:	zhuzhenhua <zzh.hust@gmail.com>
 Cc:	"P. Christeas" <p_christ@hol.gr>, linux-mips@linux-mips.org
 Subject: Re: why the early_initcall(au1x00_setup) do not work?
-Message-ID: <20060110232006.GA3519@linux-mips.org>
-References: <50c9a2250601082159p238cacd6r930709da9305479e@mail.gmail.com> <200601101757.45297.p_christ@hol.gr> <a59861030601100838oa89ac84n@mail.gmail.com> <200601101857.26978.p_christ@hol.gr> <a59861030601100915q6ffb4896v@mail.gmail.com>
+Message-ID: <20060111121645.GB4403@linux-mips.org>
+References: <50c9a2250601082159p238cacd6r930709da9305479e@mail.gmail.com> <20060109145610.GB4286@linux-mips.org> <200601091720.03822.p_christ@hol.gr> <20060109152429.GE4286@linux-mips.org> <50c9a2250601091702g7e48c75br178868a3c91d48f4@mail.gmail.com> <20060110141924.GA13779@linux-mips.org> <50c9a2250601101804h73aa933dyf3434635aa7bde55@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a59861030601100915q6ffb4896v@mail.gmail.com>
+In-Reply-To: <50c9a2250601101804h73aa933dyf3434635aa7bde55@mail.gmail.com>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9854
+X-archive-position: 9855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,19 +33,31 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 10, 2006 at 06:15:18PM +0100, Ivan Korzakow wrote:
+On Wed, Jan 11, 2006 at 10:04:50AM +0800, zhuzhenhua wrote:
 
-> Why not simply keep CVS repository available for 1% of people willing
-> to browse the history ? And make life easier for 99% of people willing
-> to work on 2.6 ... (2.4 work may continue to use CVS too).
+> On 1/10/06, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > On Tue, Jan 10, 2006 at 09:02:43AM +0800, zhuzhenhua wrote:
+> >
+> > > > In 2.6.15 things were alomst fully merged but several megabytes of
+> > > > patches are between the linux-mips.org and kernel.org versions of 2.6.14.
+> > > >
+> > > >   Ralf
+> > > >
+> > >
+> > > in linux-mips, where to download the patches for standard kernel?
+> >
+> > I don't publish such patches - but they're eassy to generate.
+> i find on http://www.linux-mips.org/pub/linux/mips/kernel/v2.6/ can
+> download the kernel tarball, i compire the 2.6.14 with the stand
+> kernel, and found they are not same.
+> 
+> is the tarball in
+> http://www.linux-mips.org/pub/linux/mips/kernel/v2.6/ is tared with
+> the cvs tree code in linux-mips?
 
-The CVS repository is still available - and will stay for a long time so
-people have a chance to do diffs against their existing checked out trees.
-But no more changes.
+Some tarballs were rather old, were created before the switch to git.
+The 2.4 and 2.6 tarballs were created from the git tags.
 
-Note, this does not affect the other projects in the CVS server.  Each
-of them is maintained independantly and for each the decission to use CVS,
-git or some flying saucer technology to use is made by whoever is the
-caretaker of that project.
+In case of doubt you could always try git-get-tar-commit-id on the tarball.
 
   Ralf

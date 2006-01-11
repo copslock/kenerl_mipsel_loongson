@@ -1,58 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 19:05:07 +0000 (GMT)
-Received: from extgw-uk.mips.com ([62.254.210.129]:47624 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133424AbWAKTEo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jan 2006 19:04:44 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0BJ7j9A025388;
-	Wed, 11 Jan 2006 19:07:46 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0BJ7hEa025381;
-	Wed, 11 Jan 2006 19:07:43 GMT
-Date:	Wed, 11 Jan 2006 19:07:43 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Ivan Korzakow <ivan.korzakow@gmail.com>
-Cc:	"P. Christeas" <p_christ@hol.gr>, linux-mips@linux-mips.org
-Subject: Re: why the early_initcall(au1x00_setup) do not work?
-Message-ID: <20060111190743.GE4403@linux-mips.org>
-References: <50c9a2250601082159p238cacd6r930709da9305479e@mail.gmail.com> <200601101757.45297.p_christ@hol.gr> <a59861030601100838oa89ac84n@mail.gmail.com> <200601101857.26978.p_christ@hol.gr> <20060110215322.GA27577@linux-mips.org> <a59861030601110310gca74f54o@mail.gmail.com> <20060111112001.GA4403@linux-mips.org> <a59861030601110707u16f5d366m@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a59861030601110707u16f5d366m@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2006 19:57:59 +0000 (GMT)
+Received: from vweb.sina.net ([202.108.3.191]:42231 "EHLO vweb.sina.net")
+	by ftp.linux-mips.org with ESMTP id S8133732AbWAKT5k (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jan 2006 19:57:40 +0000
+Received: (qmail 21488 invoked by uid 99); 11 Jan 2006 20:00:35 -0000
+Message-ID: <20060111200035.21487.qmail@sina.com>
+From:	yzzhang@sy-imatec.com
+To:	linux-mips@linux-mips.org
+CC:	linux-cvs@linux-mips.org
+Subject: au1200 mae mmap problem
+Date:	Thu, 12 Jan 2006 04:00:35 +0800
+X-Mailer: SinaMail(3.0)
+X-Priority: 3
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="gb2312"
+Content-Transfer-Encoding: 7bit
+Return-Path: <yzzhang@sy-imatec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9861
+X-archive-position: 9862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yzzhang@sy-imatec.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 11, 2006 at 04:07:25PM +0100, Ivan Korzakow wrote:
+I wrote a simple program to test Au1200 MAE.
+The result is always that program will return -1 because pmms->struct_size=0, though it is assigned
+a value of 0xdc during initialization in the kernel.
+anyone could explain the reason for me? Thanks in advance. 
+-----------------------------------------------------------------------
+In user space:
+  if ((fmae = open("/dev/mae", O_RDWR)) < 0) {
+        printf("mae open failed.\n");
+        return -1;
+    }
+ gMemSize = ioctl(fmae, AU1XXXMAE_INIT, &ioc);
+ maeaddr = mmap (0, gMemSize, PROT_READ|PROT_WRITE, MAP_SHARED | MAP_NONCACHED, fmae, 0);
+ if (maeaddr == MAP_FAILED)
+    {
+        printf("mae: attempt to map memory failed.\n");
+        return -1;
+    }
+ pmms = (PMAE_MASTER_T)maeaddr;
+ if (pmms->struct_size < sizeof(MAE_MASTER_T))
+    {
+      printf("mae_driver, structure size mismatch: driver=%x interface=%d\n",pmms->struct_size, sizeof(MAE_MASTER_T));
+        return -1;
+    }
 
-> I know that but you miss my point. GIT is a tool to ease work on linux
-> kernel, but the way you use it makes harder life of users of your
-> tree. For example your tree contains more than 350 000 objects ! That
-> makes a lot of git commands running slow...
+-----------------------------------------------------------------------------------------
+In kernel space,au1200's driver is listed as below: 
 
-Linus promised too look into that.  He has too - it's what his tree would
-be facing in the not too distant future, otherwise.
+int au1xxxmae_mmap(struct file *filp, struct vm_area_struct *vma ) 
+{
+    unsigned long size = vma->vm_end - vma->vm_start;
+    unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
+    offset += mae_phys_address;
+    vma->vm_page_prot = pgprot_cached(vma->vm_page_prot);    
+    if(remap_pfn_range(vma, vma->vm_start, offset >> PAGE_SHIFT, size, vma->vm_page_prot))    
+    {
+         DBGPRINT(ERRORS,"Could not remap the page range\n");
+         return -EFAULT;
+    }
 
-> Let's say I'm developing a net drivers on ARM platform. I'm actually
-> do not care about ARM development, but I do care about net tree. To do
-> that, I just need to clone net tree because I know that ARM should be
-> OK with this tree. What about MIPS ?
-> 
-> I'm just wondering why not asking to Linus to pull from your tree like
-> every others maintainers do ?
+    vma->vm_flags &= ~VM_IO;
+    vma->vm_ops = &au1xxx_vmaops;
+    au1xxx_vma_open(vma);
+    return 0;
+}
 
-Like most other developers I create throw-away trees for that purpose, see
-the upstream-linus tree.  Due to the way the Linux release process is
-working anything else is unrealistic.
+void init_mae_structs(void) 
+{
+    unsigned char k,x[10];
 
-  Ralf
+    pmms = (PMAE_MASTER_T) KRNL_MAE_MASTER_STRUCT; // pmms means ptr to mae master struct
+    // initialize the master structure
+    memset((PVOID)KRNL_MAE_MASTER_STRUCT, 0, sizeof(MAE_MASTER_T));
+    pmms->struct_size=sizeof(MAE_MASTER_T);   //pmms->struct_size = 0xdc
+    ... ... 
+}

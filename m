@@ -1,76 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2006 10:15:14 +0000 (GMT)
-Received: from nproxy.gmail.com ([64.233.182.203]:13551 "EHLO nproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8126506AbWALKOt convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jan 2006 10:14:49 +0000
-Received: by nproxy.gmail.com with SMTP id y38so265768nfb
-        for <linux-mips@linux-mips.org>; Thu, 12 Jan 2006 02:18:03 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=gPxCBSUvwNgh9bxaqBqCk9Re1QztVkkArI9NFZTo2BGzOT3FopmT04N4xXdhs82ca7aPfEYoTeIQzuwy1DpLXhLFIsJoEl6jzDv5jZ/9TrxMVpvNHo2KsEou0vx278d1LRaPIOhBAVwWe1lmW0t6gXMEXiT6Xqd5k/D0SrZwwys=
-Received: by 10.48.238.3 with SMTP id l3mr114893nfh;
-        Thu, 12 Jan 2006 02:18:03 -0800 (PST)
-Received: by 10.48.225.20 with HTTP; Thu, 12 Jan 2006 02:18:03 -0800 (PST)
-Message-ID: <c58a7a270601120218r77ec0d8drf2d14663138a13c2@mail.gmail.com>
-Date:	Thu, 12 Jan 2006 10:18:03 +0000
-From:	Alex Gonzalez <langabe@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: Compiling a non-pic glibc
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <langabe@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jan 2006 18:03:29 +0000 (GMT)
+Received: from p549F60EF.dip.t-dialin.net ([84.159.96.239]:20106 "EHLO
+	p549F60EF.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S8133356AbWAOSCw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 15 Jan 2006 18:02:52 +0000
+Received: from [IPv6:::ffff:210.190.142.172] ([IPv6:::ffff:210.190.142.172]:62915
+	"HELO smtp.mba.ocn.ne.jp") by linux-mips.net with SMTP
+	id <S870688AbWALOmr>; Thu, 12 Jan 2006 15:42:47 +0100
+Received: from localhost (p3016-ipad205funabasi.chiba.ocn.ne.jp [222.146.98.16])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 121C384F5; Thu, 12 Jan 2006 23:41:08 +0900 (JST)
+Date:	Thu, 12 Jan 2006 23:40:38 +0900 (JST)
+Message-Id: <20060112.234038.07644223.anemo@mba.ocn.ne.jp>
+To:	dan@debian.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: QEMU and kernel 2.6.15
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060111201354.GA22873@nevyn.them.org>
+References: <20060111144355.GA17275@nevyn.them.org>
+	<20060112.000904.74752908.anemo@mba.ocn.ne.jp>
+	<20060111201354.GA22873@nevyn.them.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9866
+X-archive-position: 9867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: langabe@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> On Wed, 11 Jan 2006 15:13:54 -0500, Daniel Jacobowitz <dan@debian.org> said:
 
-What is the correct way of cross-compiling a non-pic static glibc?
+dan> Just to check, could you try -m 32 or -m 128?  It shouldn't rely
+dan> on more than 16MB, but the boundary condition may be wrong.
 
-I thought something like,
+dan> Beyond that, I have no idea what might be wrong.
 
-env CC="mips64-linux-gnu-gcc -mabi=n32 -mno-abicalls -fno-pic -mips4"
-../glibc-src/configure --host=mips64-linux-gnu
---build=i686-pc-linux-gnulibc2.2 --prefix=/usr
---with-headers=/mips64-linux-gnu/sys-root/usr/include/
---enable-add-ons=linuxthreads --without-cvs --with-fp --disable-shared
-
-and 'make' will do it, but it fails with,
-
-make[2]: Entering directory `/home/alex/projects/glibc-src/iconv'
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/bin/mips64-linux-gnu-gcc
--mabi=n32 -mno-abicalls -fno-pic -mips4 -nostdlib -nostartfiles -o
-/home/alex/projects/glibc-build/iconv/iconvconfig     
-/home/alex/projects/glibc-build/csu/crt1.o
-/home/alex/projects/glibc-build/csu/crti.o
-`/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/bin/mips64-linux-gnu-gcc
--mabi=n32 -mno-abicalls -fno-pic -mips4 --print-file-name=crtbegin.o`
-/home/alex/projects/glibc-build/iconv/iconvconfig.o
-/home/alex/projects/glibc-build/iconv/strtab.o
-/home/alex/projects/glibc-build/iconv/xmalloc.o 
-/home/alex/projects/glibc-build/libc.a  -lgcc
-/home/alex/projects/glibc-build/libc.a -lgcc
-`/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/bin/mips64-linux-gnu-gcc
--mabi=n32 -mno-abicalls -fno-pic -mips4 --print-file-name=crtend.o`
-/home/alex/projects/glibc-build/csu/crtn.o
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld:
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/32/crtbegin.o:
-warning: linking PIC files with non-PIC files
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld:
-/home/alex/projects/glibc-build/iconv/iconvconfig.o: warning: linking
-PIC files with non-PIC files
-
-Just in case, I am trying to build glibc-2.3.1 with a gcc 3.3 based toolchain.
-
-Thanks,
-Alex
+I tried both but it did not help.  Thank you anyway.
+---
+Atsushi Nemoto

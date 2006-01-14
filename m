@@ -1,46 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jan 2006 18:48:47 +0000 (GMT)
-Received: from [62.38.115.213] ([62.38.115.213]:12165 "EHLO pfn3.pefnos")
-	by ftp.linux-mips.org with ESMTP id S8126537AbWAOSsB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 15 Jan 2006 18:48:01 +0000
-Received: from xorhgos2.pefnos (xorhgos2.pefnos [192.168.0.3])
-	by pfn3.pefnos (Postfix) with ESMTP id 643501F31B;
-	Sun, 15 Jan 2006 20:51:15 +0200 (EET)
-From:	"P. Christeas" <p_christ@hol.gr>
-To:	Ivan Korzakow <ivan.korzakow@gmail.com>
-Subject: Re: How to apply 2.6.15-git7 patchset ?
-Date:	Sun, 15 Jan 2006 20:50:57 +0200
-User-Agent: KMail/1.9
-Cc:	linux-mips@linux-mips.org
-References: <a59861030601130120y3456b6dat@mail.gmail.com>
-In-Reply-To: <a59861030601130120y3456b6dat@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jan 2006 18:57:54 +0000 (GMT)
+Received: from p549F60EF.dip.t-dialin.net ([84.159.96.239]:5516 "EHLO
+	p549F60EF.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S8133455AbWAOS5c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 15 Jan 2006 18:57:32 +0000
+Received: from nevyn.them.org ([IPv6:::ffff:66.93.172.17]:9962 "EHLO
+	nevyn.them.org") by linux-mips.net with ESMTP id <S876298AbWANViF>;
+	Sat, 14 Jan 2006 22:38:05 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.54)
+	id 1Ext2x-0005Xo-MM; Sat, 14 Jan 2006 16:34:51 -0500
+Date:	Sat, 14 Jan 2006 16:34:51 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Alex Gonzalez <langabe@gmail.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Compiling a non-pic glibc
+Message-ID: <20060114213451.GA21268@nevyn.them.org>
+References: <c58a7a270601120218r77ec0d8drf2d14663138a13c2@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200601152050.59057.p_christ@hol.gr>
-Return-Path: <p_christ@hol.gr>
+In-Reply-To: <c58a7a270601120218r77ec0d8drf2d14663138a13c2@mail.gmail.com>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9875
+X-archive-position: 9876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p_christ@hol.gr
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 13 January 2006 11:20 am, Ivan Korzakow wrote:
-> Hi
->
-> Could anybody tell me why I can't apply cleanly the
-> "patch-2.6.15-git7.bz2" patchset on a mips repository ? Of course I
-> tried to apply this patch on a 2.6.15 tree...
-> Actually only mips files failed to be patched.
->
-If it's only one file, you could resolve it manually.
-It is common that, if you apply Linus' patch to a MIPS tree, sth may fail.
+On Thu, Jan 12, 2006 at 10:18:03AM +0000, Alex Gonzalez wrote:
+> Hi,
+> 
+> What is the correct way of cross-compiling a non-pic static glibc?
 
+You can't.  MIPS/Linux userspace toolchains only support PIC out of the
+box; if you want to mess around with non-PIC toolchains expect to have
+to hack glibc (and possibly other places).  In this case it looks like
+GCC's CRT files are PIC.
 
-> Ivan
+-- 
+Daniel Jacobowitz
+CodeSourcery

@@ -1,97 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jan 2006 18:45:53 +0000 (GMT)
-Received: from p549F60EF.dip.t-dialin.net ([84.159.96.239]:39307 "EHLO
-	p549F60EF.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S8133578AbWAOSp1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 15 Jan 2006 18:45:27 +0000
-Received: from mailout.stusta.mhn.de ([IPv6:::ffff:141.84.69.5]:3602 "HELO
-	mailout.stusta.mhn.de") by linux-mips.net with SMTP
-	id <S875130AbWANBfq>; Sat, 14 Jan 2006 02:35:46 +0100
-Received: (qmail 4174 invoked from network); 14 Jan 2006 01:34:40 -0000
-Received: from r063144.stusta.swh.mhn.de (10.150.63.144)
-  by mailout.stusta.mhn.de with SMTP; 14 Jan 2006 01:34:40 -0000
-Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
-	id 7CD0319F917; Sat, 14 Jan 2006 02:34:41 +0100 (CET)
-Date:	Sat, 14 Jan 2006 02:34:41 +0100
-From:	Adrian Bunk <bunk@stusta.de>
-To:	Andrew Morton <akpm@osdl.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Domen Puncer <domen@coderock.org>, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org, davem@davemloft.net
-Subject: [2.6 patch] Remove arch/mips/arc/salone.c
-Message-ID: <20060114013440.GV29663@stusta.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jan 2006 18:48:47 +0000 (GMT)
+Received: from [62.38.115.213] ([62.38.115.213]:12165 "EHLO pfn3.pefnos")
+	by ftp.linux-mips.org with ESMTP id S8126537AbWAOSsB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 15 Jan 2006 18:48:01 +0000
+Received: from xorhgos2.pefnos (xorhgos2.pefnos [192.168.0.3])
+	by pfn3.pefnos (Postfix) with ESMTP id 643501F31B;
+	Sun, 15 Jan 2006 20:51:15 +0200 (EET)
+From:	"P. Christeas" <p_christ@hol.gr>
+To:	Ivan Korzakow <ivan.korzakow@gmail.com>
+Subject: Re: How to apply 2.6.15-git7 patchset ?
+Date:	Sun, 15 Jan 2006 20:50:57 +0200
+User-Agent: KMail/1.9
+Cc:	linux-mips@linux-mips.org
+References: <a59861030601130120y3456b6dat@mail.gmail.com>
+In-Reply-To: <a59861030601130120y3456b6dat@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-User-Agent: Mutt/1.5.11
-Return-Path: <bunk@stusta.de>
+Message-Id: <200601152050.59057.p_christ@hol.gr>
+Return-Path: <p_christ@hol.gr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9874
+X-archive-position: 9875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@stusta.de
+X-original-sender: p_christ@hol.gr
 Precedence: bulk
 X-list: linux-mips
 
-From: Domen Puncer <domen@coderock.org>
+On Friday 13 January 2006 11:20 am, Ivan Korzakow wrote:
+> Hi
+>
+> Could anybody tell me why I can't apply cleanly the
+> "patch-2.6.15-git7.bz2" patchset on a mips repository ? Of course I
+> tried to apply this patch on a 2.6.15 tree...
+> Actually only mips files failed to be patched.
+>
+If it's only one file, you could resolve it manually.
+It is common that, if you apply Linus' patch to a MIPS tree, sth may fail.
 
-ArcLoad(), ArcInvoke(), ArcExecute() aren't used.
 
-Signed-off-by: Domen Puncer <domen@coderock.org>
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Adrian Bunk <bunk@stusta.de>
-
----
-
-This patch was already sent on:
-- 5 Jan 2006
-
-This patch was sent by Alexey Dobriyan on:
-- 8 Nov 2005
-
- arch/mips/arc/Makefile |    2 +-
- arch/mips/arc/salone.c |   25 -------------------------
- 2 files changed, 1 insertion(+), 26 deletions(-)
-
---- linux-kj.orig/arch/mips/arc/Makefile	2005-11-08 20:46:24.000000000 +0300
-+++ linux-kj/arch/mips/arc/Makefile	2005-11-08 20:47:36.000000000 +0300
-@@ -3,7 +3,7 @@
- #
- 
- lib-y				+= cmdline.o env.o file.o identify.o init.o \
--				   misc.o salone.o time.o tree.o
-+				   misc.o time.o tree.o
- 
- lib-$(CONFIG_ARC_MEMORY)	+= memory.o
- lib-$(CONFIG_ARC_CONSOLE)	+= arc_con.o
-Index: linux-kj/arch/mips/arc/salone.c
-===================================================================
---- linux-kj.orig/arch/mips/arc/salone.c	2005-11-08 20:46:24.000000000 +0300
-+++ /dev/null	1970-01-01 00:00:00.000000000 +0000
-@@ -1,24 +0,0 @@
--/*
-- * Routines to load into memory and execute stand-along program images using
-- * ARCS PROM firmware.
-- *
-- * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-- */
--#include <linux/init.h>
--#include <asm/sgialib.h>
--
--LONG __init ArcLoad(CHAR *Path, ULONG TopAddr, ULONG *ExecAddr, ULONG *LowAddr)
--{
--	return ARC_CALL4(load, Path, TopAddr, ExecAddr, LowAddr);
--}
--
--LONG __init ArcInvoke(ULONG ExecAddr, ULONG StackAddr, ULONG Argc, CHAR *Argv[],
--	CHAR *Envp[])
--{
--	return ARC_CALL5(invoke, ExecAddr, StackAddr, Argc, Argv, Envp);
--}
--
--LONG __init ArcExecute(CHAR *Path, LONG Argc, CHAR *Argv[], CHAR *Envp[])
--{
--	return ARC_CALL4(exec, Path, Argc, Argv, Envp);
--}
+> Ivan

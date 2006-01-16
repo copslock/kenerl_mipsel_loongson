@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 15:45:56 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:42513 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 15:48:12 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:44305 "EHLO
 	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133474AbWAPPpi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jan 2006 15:45:38 +0000
+	id S8133495AbWAPPry (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Jan 2006 15:47:54 +0000
 Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 9867F64D54; Mon, 16 Jan 2006 15:49:08 +0000 (UTC)
+	id 8232A64D54; Mon, 16 Jan 2006 15:51:23 +0000 (UTC)
 Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 306E48517; Mon, 16 Jan 2006 15:48:57 +0000 (GMT)
-Date:	Mon, 16 Jan 2006 15:48:57 +0000
+	id D70938517; Mon, 16 Jan 2006 15:51:10 +0000 (GMT)
+Date:	Mon, 16 Jan 2006 15:51:10 +0000
 From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Andrew Isaacson <adi@broadcom.com>
+To:	Kaj-Michael Lang <milang@tal.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [patch 1/5] SiByte fixes for 2.6.12
-Message-ID: <20060116154856.GB26771@deprecation.cyrius.com>
-References: <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl> <20051001092807.GD14463@linux-mips.org> <20051003131551.GA19075@nevyn.them.org> <Pine.LNX.4.61L.0510031432410.8056@blysk.ds.pg.gda.pl> <20050622230042.GA17919@broadcom.com> <Pine.LNX.4.61L.0506231153080.17155@blysk.ds.pg.gda.pl> <20051001092807.GD14463@linux-mips.org> <20051003131551.GA19075@nevyn.them.org> <20050622230003.GA17725@broadcom.com> <20050622230042.GA17919@broadcom.com>
+Subject: Re: [PATCH] Fix serial console detection
+Message-ID: <20060116155110.GC26771@deprecation.cyrius.com>
+References: <Pine.LNX.4.61.0502141602080.24829@tori.tal.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61L.0510031432410.8056@blysk.ds.pg.gda.pl> <20051003131551.GA19075@nevyn.them.org> <20050622230042.GA17919@broadcom.com>
+In-Reply-To: <Pine.LNX.4.61.0502141602080.24829@tori.tal.org>
 User-Agent: Mutt/1.5.11
 Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9892
+X-archive-position: 9893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,45 +31,60 @@ X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-* Andrew Isaacson <adi@broadcom.com> [2005-06-22 16:00]:
-> SB1 does not use the R4K TLB code.
+* Kaj-Michael Lang <milang@tal.org> [2005-02-14 16:08]:
+> In ip22-setup.c the checks for serial/graphics console logic does
+> not check if ARCS console=g but the machine is using serial console, as
+> it does if no keyboard is attached.
 > 
->  		c->cputype = CPU_SB1;
-> +		c->options &= ~MIPS_CPU_4KTLB;
-> +		c->options |= MIPS_CPU_TLB;
->  #ifdef CONFIG_SB1_PASS_1_WORKAROUNDS
+> This patch adds a check if ConsoleOut is serial. There might also be 
+> support for other graphics than Newport soon...
 
-* Daniel Jacobowitz <dan@debian.org> [2005-10-03 09:15]:
-> > >  Well, the flag is not really to specify whether the common code is to be 
-> > > used or not.  It's about whether the TLB is like that of the R4k.  
-> > > Actually it's always been a mystery for me why the common code cannot be 
-> > > used for the SB1, but perhaps there is something specific that I could 
-> > > only discover in that "SB-1 Core User Manual" that I yet have to see, 
-> > > sigh...
-> > >  Of course if your TLB is indeed different from that of the R4k, then you 
-> > > shouldn't be setting cp0.config.mt to 1 in the first place...
-> > The reason was primarily the tiny bit of extra performance because the
-> > SB1 doesn't need the hazard handling overhead.  Also tlb-sb1 has a few
-> > changes that are needed to initialize a TLB in undefined state after
-> > powerup.  That was needed to run Linux on firmware-less SB1 cores.
-> FYI, all I have is a piece of hard evidence: this patch was the
-> difference between not booting and booting for a Sentosa with CFE. 
-> Which isn't firmwareless and isn't a tiny bit of extra performance
-> issue.
+Ralf, are there any objections to this patch or did you simply forget
+to apply it?
+
+> Index: arch/mips/sgi-ip22/ip22-setup.c
+> ===================================================================
+> RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-setup.c,v
+> retrieving revision 1.44
+> diff -u -r1.44 ip22-setup.c
+> --- arch/mips/sgi-ip22/ip22-setup.c	10 Dec 2004 13:31:42 -0000	1.44
+> +++ arch/mips/sgi-ip22/ip22-setup.c	14 Feb 2005 13:57:33 -0000
+> @@ -56,6 +56,7 @@
+>  static int __init ip22_setup(void)
+>  {
+>  	char *ctype;
+> +	char *cserial;
 > 
-> I'll try to give CVS HEAD a shot this week sometime.
+>  	board_be_init = ip22_be_init;
+>  	ip22_time_init();
+> @@ -81,9 +82,14 @@
+>  	/* ARCS console environment variable is set to "g?" for
+>  	 * graphics console, it is set to "d" for the first serial
+>  	 * line and "d2" for the second serial line.
+> +	 *
+> +	 * Need to check if the case is 'g' but no keyboard:
+> +	 * (ConsoleIn/Out = serial )
+>  	 */
+>  	ctype = ArcGetEnvironmentVariable("console");
+> -	if (ctype && *ctype == 'd') {
+> +	cserial = ArcGetEnvironmentVariable("ConsoleOut");
+> +
+> +	if ( (ctype && *ctype == 'd') || (cserial && *cserial == 's')) {
+>  		static char options[8];
+>  		char *baud = ArcGetEnvironmentVariable("dbaud");
+>  		if (baud)
+> @@ -91,7 +97,7 @@
+>  		add_preferred_console("ttyS", *(ctype + 1) == '2' ? 1 : 0,
+>  				      baud ? options : NULL);
+>  	} else if (!ctype || *ctype != 'g') {
+> -		/* Use ARC if we don't want serial ('d') or Newport ('g'). */
+> +		/* Use ARC if we don't want serial ('d') or Graphics ('g'). 
+> */
+>  		prom_flags |= PROM_FLAG_USE_AS_CONSOLE;
+>  		add_preferred_console("arc", 0, NULL);
+>  	}
+> 
 
-* Maciej W. Rozycki <macro@linux-mips.org> [2005-10-03 14:35]:
-> > FYI, all I have is a piece of hard evidence: this patch was the
-> > difference between not booting and booting for a Sentosa with CFE. 
-> > Which isn't firmwareless and isn't a tiny bit of extra performance
-> > issue.
->  Actually workarounds have been floating around for some time. ;-)  But 
-> I'm glad this has now been fixed properly.
-
-There was some discussion regarding this patch but no real conclusion.
-Is it working without this patch now, or should it be applied (or
-modified? - how?).
 -- 
 Martin Michlmayr
 http://www.cyrius.com/

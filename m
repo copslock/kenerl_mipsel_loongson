@@ -1,69 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 17:06:01 +0000 (GMT)
-Received: from uproxy.gmail.com ([66.249.92.206]:5248 "EHLO uproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133509AbWAPRFo convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jan 2006 17:05:44 +0000
-Received: by uproxy.gmail.com with SMTP id u40so710688ugc
-        for <linux-mips@linux-mips.org>; Mon, 16 Jan 2006 09:09:14 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=Z7otpLGytPGl7nad/q1/Sqf/1Ryj/EcJv72QuRon9900XlqUeLFKNXGCpKFFAcBk4bj+KJBcrmomSZytY0Jew3vx3Bly20t9PWN3Uy+Z+eq2wB1DH3p1FoJ2OkxJTxn32zwl4KKXoYWTRn6hL5O8jGLSPqEPx5fjaqdpt81/iaY=
-Received: by 10.49.11.2 with SMTP id o2mr244268nfi;
-        Mon, 16 Jan 2006 09:09:14 -0800 (PST)
-Received: by 10.48.225.20 with HTTP; Mon, 16 Jan 2006 09:09:14 -0800 (PST)
-Message-ID: <c58a7a270601160909x540ef0ddn3f3772ed8a3b5fbe@mail.gmail.com>
-Date:	Mon, 16 Jan 2006 17:09:14 +0000
-From:	Alex Gonzalez <langabe@gmail.com>
-To:	Brett Foster <fosterb@uoguelph.ca>
-Subject: Re: Setting gp on pic code
-Cc:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <43CB8D89.6070308@uoguelph.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 17:30:55 +0000 (GMT)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:59414
+	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
+	id S3458552AbWAPRae (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Jan 2006 17:30:34 +0000
+Received: from [192.168.7.222] ([192.168.7.222]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 16 Jan 2006 09:34:04 -0800
+Message-ID: <43CBD91B.4020607@avtrex.com>
+Date:	Mon, 16 Jan 2006 09:34:19 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <c58a7a270601160204h41e5dca7pa9c26578b6b29f6f@mail.gmail.com>
-	 <43CB8D89.6070308@uoguelph.ca>
-Return-Path: <langabe@gmail.com>
+To:	Kishore K <hellokishore@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: gcc -3.4.4 and linux-2.4.32
+References: <f07e6e0601160423h5ce1c0d7lcb7e38f8509c4116@mail.gmail.com>
+In-Reply-To: <f07e6e0601160423h5ce1c0d7lcb7e38f8509c4116@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 16 Jan 2006 17:34:04.0360 (UTC) FILETIME=[0BAEFC80:01C61AC3]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9906
+X-archive-position: 9907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: langabe@gmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Thanks, that works.
+Kishore K wrote:
+> hi
+> When 2.4.32 kernel (from linux-mips) is compiled with the tool chain 
+> based on gcc 3.4.4 and binutils 2.16.1, the kernel crashes on malta 
+> board. The crash file is enclosed along with the mail. If the same 
+> kernel is compiled with the tool chain based on gcc 3.3.6, no problem is 
+> observed.
+> 
+> May I know, whether it is because of the changes in ABI in gcc 3.4.
 
-Just for completeness, it needed to be addiu instead of ori as follows:
+Not exactly.  It has to do with -funit-at-a-time.  In the 2.4.x kernel 
+it is assumed that gcc will not reorder top level asm statements and 
+functions.  For gcc-3.3.x and earlier this was a valid assumption.  With 
+3.4.x and later it is not.
 
-    lui     $28,%HI(_gp)
-    addiu   $28,%LO(_gp)
+> If 
+> so, has any one got the patch to make 2.4.x kernels work with gcc 3.4 
+> compilers? From the changelog, I can infer that, some changes have been 
+> done in 2.4.28 kernel to work with gcc 3.4 for i386. If so, has the same 
+> thing been done for MIPS as well.
+> 
+IIRC the patches were never applied to linux-mips.org.  If you search 
+the archives of this list for messages that I sent, you can find the 
+patches.
 
-because %LO is a signed 16 bit number.
-
-Alex
-
-On 1/16/06, Brett Foster <fosterb@uoguelph.ca> wrote:
-> Alex Gonzalez wrote:
->
-> >Hi,
-> >
-> >I am trying to set the gp register on pic code as follows:
-> >
-> >"la gp,_gp"
-> >
-> >Disassembling the resulting code,
-> >
-> >"lw gp,0(gp)"
-> >
-> >
-> Yes, this is normal... Use the following to set up the GP:
->         //init GP
->         lui     gp,%HI(_gp)
->         ori     gp,%LO(_gp)
->
+David Daney.

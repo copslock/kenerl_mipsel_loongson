@@ -1,69 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 16:55:21 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:43282 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133509AbWAPQzC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jan 2006 16:55:02 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 0D12064D54; Mon, 16 Jan 2006 16:58:33 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 475AF8517; Mon, 16 Jan 2006 16:58:25 +0000 (GMT)
-Date:	Mon, 16 Jan 2006 16:58:25 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	akpm@osdl.org
-Cc:	Linux MIPS List <linux-mips@linux-mips.org>,
-	grundler@parisc-linux.org
-Subject: Re: Tulip RaQ2 64 Bit Fix
-Message-ID: <20060116165825.GG5798@deprecation.cyrius.com>
-References: <4393CD9F.3090305@jg555.com> <20051205114456.GA2728@linux-mips.org> <20060116160355.GB28383@deprecation.cyrius.com> <43CBC97E.3090800@jg555.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 17:06:01 +0000 (GMT)
+Received: from uproxy.gmail.com ([66.249.92.206]:5248 "EHLO uproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133509AbWAPRFo convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Jan 2006 17:05:44 +0000
+Received: by uproxy.gmail.com with SMTP id u40so710688ugc
+        for <linux-mips@linux-mips.org>; Mon, 16 Jan 2006 09:09:14 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Z7otpLGytPGl7nad/q1/Sqf/1Ryj/EcJv72QuRon9900XlqUeLFKNXGCpKFFAcBk4bj+KJBcrmomSZytY0Jew3vx3Bly20t9PWN3Uy+Z+eq2wB1DH3p1FoJ2OkxJTxn32zwl4KKXoYWTRn6hL5O8jGLSPqEPx5fjaqdpt81/iaY=
+Received: by 10.49.11.2 with SMTP id o2mr244268nfi;
+        Mon, 16 Jan 2006 09:09:14 -0800 (PST)
+Received: by 10.48.225.20 with HTTP; Mon, 16 Jan 2006 09:09:14 -0800 (PST)
+Message-ID: <c58a7a270601160909x540ef0ddn3f3772ed8a3b5fbe@mail.gmail.com>
+Date:	Mon, 16 Jan 2006 17:09:14 +0000
+From:	Alex Gonzalez <langabe@gmail.com>
+To:	Brett Foster <fosterb@uoguelph.ca>
+Subject: Re: Setting gp on pic code
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <43CB8D89.6070308@uoguelph.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <43CBC97E.3090800@jg555.com>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+References: <c58a7a270601160204h41e5dca7pa9c26578b6b29f6f@mail.gmail.com>
+	 <43CB8D89.6070308@uoguelph.ca>
+Return-Path: <langabe@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9905
+X-archive-position: 9906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: langabe@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-* Jim Gifford <maillist@jg555.com> [2006-01-16 08:27]:
-> >>>The attached patch allows the tulip driver to work with the RaQ2's
-> >>>network adapter. Without the patch under a 64 bit build, it will
-> >>>never negotiate and will drop packets. This driver is part of
-> >>>Linux Parisc, by Grant Grundler. It's currently in -mm, but Jeff
-> >>>Garzick will not apply it to the main tree.
-> >>>      
-> >>Why?
-> Jeff Garzick refuses to apply it do to spinlocks. Andrew Morton is
-> including in his tree because it fixes issue with Parisc and with
-> MIPS based builds. So it's kinda of what is the right thing to do. I
-> also use this driver on my x86 builds, and it actually performs
-> better. Here is a little history of how Grant made the driver.
-> 
-> Grant Grundler is the network maintainer for Parisc Linux.  He
-> discovered that the tulip driver didn't perform that well. He
-> researched the manufactures documentation and found out how to fix
-> the driver to work to its optimum performance. He did this back in
-> 2003, has submitted it to Jeff Garzick several times with no
-> response. Around late 2004, I started to do test builds on 64 bit on
-> my RaQ2 and discovered that the driver would not auto-negotiate
-> transfer speeds. Talked to numerous people, then someone put me in
-> touch with Grant. I tested the driver for about 2 weeks, ask Grant
-> why it wasn't sent upstream, he told me about the spinlock issue. I
-> then contacted Andrew Morton, explained everything as I am here, and
-> he agreed it was needed and tried to get Jeff to add it. Jeff sends
-> back a one liner say doing to it's use of spinlocks it's not
-> accepted.
+Thanks, that works.
 
-Andrew, do you think that issue will be resolved in some way at some
-point?
+Just for completeness, it needed to be addiu instead of ori as follows:
 
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+    lui     $28,%HI(_gp)
+    addiu   $28,%LO(_gp)
+
+because %LO is a signed 16 bit number.
+
+Alex
+
+On 1/16/06, Brett Foster <fosterb@uoguelph.ca> wrote:
+> Alex Gonzalez wrote:
+>
+> >Hi,
+> >
+> >I am trying to set the gp register on pic code as follows:
+> >
+> >"la gp,_gp"
+> >
+> >Disassembling the resulting code,
+> >
+> >"lw gp,0(gp)"
+> >
+> >
+> Yes, this is normal... Use the following to set up the GP:
+>         //init GP
+>         lui     gp,%HI(_gp)
+>         ori     gp,%LO(_gp)
+>

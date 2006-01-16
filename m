@@ -1,55 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 08:14:19 +0000 (GMT)
-Received: from mf2.realtek.com.tw ([60.248.182.46]:17679 "EHLO
-	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
-	id S3457192AbWAPIN7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jan 2006 08:13:59 +0000
-Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
- (Clearswift SMTPRS 5.1.7) with ESMTP id <T75e06cae14dc803816c34@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
- Mon, 16 Jan 2006 16:19:52 +0800
-Received: from rtpdii3098 ([172.21.98.16])
-          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
-          with ESMTP id 2006011616174962-447378 ;
-          Mon, 16 Jan 2006 16:17:49 +0800 
-Message-ID: <005101c61a75$43edc6b0$106215ac@realtek.com.tw>
-From:	"colin" <colin@realtek.com.tw>
-To:	<linux-mips@linux-mips.org>
-Subject: Can I use this kind of performance counters to implement oProfile?
-Date:	Mon, 16 Jan 2006 16:17:17 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 10:01:29 +0000 (GMT)
+Received: from uproxy.gmail.com ([66.249.92.204]:19766 "EHLO uproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3458532AbWAPKBJ convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Jan 2006 10:01:09 +0000
+Received: by uproxy.gmail.com with SMTP id u40so564150ugc
+        for <linux-mips@linux-mips.org>; Mon, 16 Jan 2006 02:04:40 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=gtCIoGfHk6Ubj2h6fvo3EFsPLsc/vZEtodYZ+R3+sFegTSwL8w++jB24d+JpT5/U3fT8vKT1K1Mh2cuPtbd88Je4XJN1IgKAxYmEalwnAUGenLSnTBDgcQpYYFCM1BWdCX/nPD054TWJ5JyzdorBTX8vxohDASeM9NBj1Q1fwRs=
+Received: by 10.48.4.9 with SMTP id 9mr215207nfd;
+        Mon, 16 Jan 2006 02:04:40 -0800 (PST)
+Received: by 10.48.225.20 with HTTP; Mon, 16 Jan 2006 02:04:39 -0800 (PST)
+Message-ID: <c58a7a270601160204h41e5dca7pa9c26578b6b29f6f@mail.gmail.com>
+Date:	Mon, 16 Jan 2006 10:04:39 +0000
+From:	Alex Gonzalez <langabe@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: Setting gp on pic code
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2006/01/16 =?Bog5?B?pFWkyCAwNDoxNzo0OQ==?=,
-	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2006/01/16 =?Bog5?B?pFWkyCAwNDoxNzo1MQ==?=,
-	Serialize complete at 2006/01/16 =?Bog5?B?pFWkyCAwNDoxNzo1MQ==?=
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <langabe@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9881
+X-archive-position: 9882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: langabe@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
-Hi all,
-Our SOC has performance counters, and we would like to use oProfile on it.
-After surveying the oProfile doc, I found that the model of our performance
-counters donot seem to fit oProfile.
-This is because oProfile uses the interrupts caused by overflow of, say,
-cache miss count to estimate the probability of this event in every portion.
-Our SOC doesn't emit interrupt when event count overflow. Therefore,
-oProfile cannot be used to estimate cache miss event on our chip. Is that
-right?
+I am trying to set the gp register on pic code as follows:
 
-Regards,
-Colin
+"la gp,_gp"
+
+Disassembling the resulting code,
+
+"lw gp,0(gp)"
+
+I am confused as to why it uses a gp-relative address instead of an
+absolute address for _gp. How I am supposed to reset gp then?
+
+A bit of background. I am working on a dual core chip, with each core
+running independently. They both boot from the same startup code, then
+the second core waits until the first one sets all the hardware and
+loads a pic binary into a shared memory region.
+
+The second core is then released and should reset gp and jump to the
+new binary (which is compiled separately from the startup code).
+
+This arrangement seems to work OK if the binary is compiled non-pic,
+but for pic code  the gp register is not set to the correct value.
+
+Any insight into this appreciated.
+
+Thanks,
+Alex

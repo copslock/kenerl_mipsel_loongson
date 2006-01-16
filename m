@@ -1,29 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 15:48:12 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:44305 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 15:49:09 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:45073 "EHLO
 	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133495AbWAPPry (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jan 2006 15:47:54 +0000
+	id S8133495AbWAPPsq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Jan 2006 15:48:46 +0000
 Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 8232A64D54; Mon, 16 Jan 2006 15:51:23 +0000 (UTC)
+	id C49D264D55; Mon, 16 Jan 2006 15:52:17 +0000 (UTC)
 Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id D70938517; Mon, 16 Jan 2006 15:51:10 +0000 (GMT)
-Date:	Mon, 16 Jan 2006 15:51:10 +0000
+	id 2CD958517; Mon, 16 Jan 2006 15:52:08 +0000 (GMT)
+Date:	Mon, 16 Jan 2006 15:52:08 +0000
 From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Kaj-Michael Lang <milang@tal.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix serial console detection
-Message-ID: <20060116155110.GC26771@deprecation.cyrius.com>
-References: <Pine.LNX.4.61.0502141602080.24829@tori.tal.org>
+To:	linux-mips@linux-mips.org
+Subject: Re: make meth eht0 on IP32
+Message-ID: <20060116155208.GD26771@deprecation.cyrius.com>
+References: <41E582A0.1050407@total-knowledge.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.61.0502141602080.24829@tori.tal.org>
+In-Reply-To: <41E582A0.1050407@total-knowledge.com>
 User-Agent: Mutt/1.5.11
 Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9893
+X-archive-position: 9894
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,58 +30,38 @@ X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-* Kaj-Michael Lang <milang@tal.org> [2005-02-14 16:08]:
-> In ip22-setup.c the checks for serial/graphics console logic does
-> not check if ARCS console=g but the machine is using serial console, as
-> it does if no keyboard is attached.
+* Ilya A. Volynets-Evenbakh <ilya@total-knowledge.com> [2005-01-12 12:03]:
+> meth is built-in ethernet card on O2, and it would make sense for it to be
+> eth0, even if there is also another network card in PCI slot.
+
+This sounds like a good idea to me.  Can this patch be applied?
+
+>    Ilya.
 > 
-> This patch adds a check if ConsoleOut is serial. There might also be 
-> support for other graphics than Newport soon...
-
-Ralf, are there any objections to this patch or did you simply forget
-to apply it?
-
-> Index: arch/mips/sgi-ip22/ip22-setup.c
+> Index: drivers/net/Makefile
 > ===================================================================
-> RCS file: /home/cvs/linux/arch/mips/sgi-ip22/ip22-setup.c,v
-> retrieving revision 1.44
-> diff -u -r1.44 ip22-setup.c
-> --- arch/mips/sgi-ip22/ip22-setup.c	10 Dec 2004 13:31:42 -0000	1.44
-> +++ arch/mips/sgi-ip22/ip22-setup.c	14 Feb 2005 13:57:33 -0000
-> @@ -56,6 +56,7 @@
->  static int __init ip22_setup(void)
->  {
->  	char *ctype;
-> +	char *cserial;
+> RCS file: /home/cvs/linux/drivers/net/Makefile,v
+> retrieving revision 1.107
+> diff -u -r1.107 Makefile
+> --- drivers/net/Makefile        15 Nov 2004 11:49:28 -0000      1.107
+> +++ drivers/net/Makefile        12 Jan 2005 19:58:47 -0000
+> @@ -28,6 +28,8 @@
+> obj-$(CONFIG_MYRI_SBUS) += myri_sbus.o
+> obj-$(CONFIG_SUNGEM) += sungem.o sungem_phy.o
 > 
->  	board_be_init = ip22_be_init;
->  	ip22_time_init();
-> @@ -81,9 +82,14 @@
->  	/* ARCS console environment variable is set to "g?" for
->  	 * graphics console, it is set to "d" for the first serial
->  	 * line and "d2" for the second serial line.
-> +	 *
-> +	 * Need to check if the case is 'g' but no keyboard:
-> +	 * (ConsoleIn/Out = serial )
->  	 */
->  	ctype = ArcGetEnvironmentVariable("console");
-> -	if (ctype && *ctype == 'd') {
-> +	cserial = ArcGetEnvironmentVariable("ConsoleOut");
+> +obj-$(CONFIG_SGI_O2MACE_ETH) += meth.o
 > +
-> +	if ( (ctype && *ctype == 'd') || (cserial && *cserial == 's')) {
->  		static char options[8];
->  		char *baud = ArcGetEnvironmentVariable("dbaud");
->  		if (baud)
-> @@ -91,7 +97,7 @@
->  		add_preferred_console("ttyS", *(ctype + 1) == '2' ? 1 : 0,
->  				      baud ? options : NULL);
->  	} else if (!ctype || *ctype != 'g') {
-> -		/* Use ARC if we don't want serial ('d') or Newport ('g'). */
-> +		/* Use ARC if we don't want serial ('d') or Graphics ('g'). 
-> */
->  		prom_flags |= PROM_FLAG_USE_AS_CONSOLE;
->  		add_preferred_console("arc", 0, NULL);
->  	}
+> obj-$(CONFIG_MACE) += mace.o
+> obj-$(CONFIG_BMAC) += bmac.o
+> 
+> @@ -125,7 +127,6 @@
+> obj-$(CONFIG_SUN3LANCE) += sun3lance.o
+> obj-$(CONFIG_DEFXX) += defxx.o
+> obj-$(CONFIG_SGISEEQ) += sgiseeq.o
+> -obj-$(CONFIG_SGI_O2MACE_ETH) += meth.o
+> obj-$(CONFIG_AT1700) += at1700.o
+> obj-$(CONFIG_FMV18X) += fmv18x.o
+> obj-$(CONFIG_EL1) += 3c501.o
 > 
 
 -- 

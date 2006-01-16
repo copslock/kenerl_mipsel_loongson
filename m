@@ -1,62 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 15:16:11 +0000 (GMT)
-Received: from webmail.ict.ac.cn ([159.226.39.7]:53419 "HELO ict.ac.cn")
-	by ftp.linux-mips.org with SMTP id S8133474AbWAPPPp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Jan 2006 15:15:45 +0000
-Received: (qmail 10330 invoked by uid 507); 16 Jan 2006 14:48:21 -0000
-Received: from unknown (HELO ?192.168.2.202?) (fxzhang@222.92.8.142)
-  by ict.ac.cn with SMTP; 16 Jan 2006 14:48:21 -0000
-Message-ID: <43CBB943.7080807@ict.ac.cn>
-Date:	Mon, 16 Jan 2006 23:18:27 +0800
-From:	Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Thunderbird 1.5 (Windows/20051201)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 15:28:28 +0000 (GMT)
+Received: from midas-91-171-chn.midascomm.com ([203.196.171.91]:3296 "EHLO
+	info.midascomm.com") by ftp.linux-mips.org with ESMTP
+	id S8133443AbWAPP2J (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Jan 2006 15:28:09 +0000
+Received: from bharathi.midascomm.com ([192.168.13.175])
+	by info.midascomm.com (8.12.10/8.12.10) with ESMTP id k0GFVZkP000416
+	for <linux-mips@linux-mips.org>; Mon, 16 Jan 2006 21:01:35 +0530
+Date:	Mon, 16 Jan 2006 21:06:22 +0530 (IST)
+From:	Bharathi Subramanian <sbharathi@MidasComm.Com>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+Subject: Timer Interrupt
+Message-ID: <Pine.LNX.4.44.0601162057330.31018-100000@bharathi.midascomm.com>
 MIME-Version: 1.0
-To:	colin <colin@realtek.com.tw>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Can I use this kind of performance counters to implement oProfile?
-References: <005101c61a75$43edc6b0$106215ac@realtek.com.tw>
-In-Reply-To: <005101c61a75$43edc6b0$106215ac@realtek.com.tw>
-X-Enigmail-Version: 0.93.0.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <fxzhang@ict.ac.cn>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-midascomm.com-MailScanner-Information: Please contact the ISP for more information
+X-midascomm.com-MailScanner: Found to be clean
+X-midascomm.com-MailScanner-From: sbharathi@midascomm.com
+Return-Path: <sbharathi@MidasComm.Com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9889
+X-archive-position: 9890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: sbharathi@MidasComm.Com
 Precedence: bulk
 X-list: linux-mips
 
-You should be able to accumulate counters during process switching or a
-timer routine, I managed to implement perfctr(another profiling
-software) for godson-2 cpu, for both cases with/without interrupt
-support. You can look at generic perfctr code.
+Hi all,
 
-colin 写道:
-> Hi all,
-> Our SOC has performance counters, and we would like to use oProfile on it.
-> After surveying the oProfile doc, I found that the model of our performance
-> counters donot seem to fit oProfile.
-> This is because oProfile uses the interrupts caused by overflow of, say,
-> cache miss count to estimate the probability of this event in every portion.
-> Our SOC doesn't emit interrupt when event count overflow. Therefore,
-> oProfile cannot be used to estimate cache miss event on our chip. Is that
-> right?
-> 
-> Regards,
-> Colin
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
+We are trying to implement the CPU Clock down feature for saving the 
+power. In this process, Whenever the CPU is put in 1/2 Clock then the 
+Timer interrupt is also getting delayed.
+
+Later I found that CPU Counter is used to generate the timer intr. How 
+to make the Timer interrupt to happen at every 10ms, even if the CPU 
+is in 1/2, 1/4 or 1/8 of the original clock??
+
+Processor: MIPS 4Kc 32B
+
+Thanks :)
+-- 
+Bharathi S

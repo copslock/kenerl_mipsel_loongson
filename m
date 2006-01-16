@@ -1,65 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 14:45:44 +0000 (GMT)
-Received: from mail.ivivity.com ([64.238.111.98]:3913 "EHLO thoth.ivivity.com")
-	by ftp.linux-mips.org with ESMTP id S8126497AbWAPOp0 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jan 2006 14:45:26 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2006 15:16:11 +0000 (GMT)
+Received: from webmail.ict.ac.cn ([159.226.39.7]:53419 "HELO ict.ac.cn")
+	by ftp.linux-mips.org with SMTP id S8133474AbWAPPPp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Jan 2006 15:15:45 +0000
+Received: (qmail 10330 invoked by uid 507); 16 Jan 2006 14:48:21 -0000
+Received: from unknown (HELO ?192.168.2.202?) (fxzhang@222.92.8.142)
+  by ict.ac.cn with SMTP; 16 Jan 2006 14:48:21 -0000
+Message-ID: <43CBB943.7080807@ict.ac.cn>
+Date:	Mon, 16 Jan 2006 23:18:27 +0800
+From:	Fuxin Zhang <fxzhang@ict.ac.cn>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
-Date:	Mon, 16 Jan 2006 09:48:52 -0500
-Message-ID: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
-Thread-Index: AcYaBp5cvCKPBJABTCiDdTHIotWWwgApSvdA
-From:	"Marc Karasek" <marck@ivivity.com>
-To:	"zhuzhenhua" <zzh.hust@gmail.com>,
-	"linux-mips" <linux-mips@linux-mips.org>
-Return-Path: <marck@ivivity.com>
+To:	colin <colin@realtek.com.tw>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Can I use this kind of performance counters to implement oProfile?
+References: <005101c61a75$43edc6b0$106215ac@realtek.com.tw>
+In-Reply-To: <005101c61a75$43edc6b0$106215ac@realtek.com.tw>
+X-Enigmail-Version: 0.93.0.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9888
+X-archive-position: 9889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marck@ivivity.com
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-Look under arch/mips/ramdisk (I think).  This is where you should put the ramdisk.gz image and the compiler will pick it up and put it into the vmlinux image for you.  
+You should be able to accumulate counters during process switching or a
+timer routine, I managed to implement perfctr(another profiling
+software) for godson-2 cpu, for both cases with/without interrupt
+support. You can look at generic perfctr code.
 
-Any content within this email is provided "AS IS" for informational purposes only. No contract will be formed between the parties by virtue of this email.
-<**************************>
-Marc Karasek
-System Lead Technical Engineer
-iVivity Inc.
-PH: 678-990-1550 x238
-Fax: 678-990-1551
-<**************************>
-
-
-
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org]On Behalf Of zhuzhenhua
-Sent: Saturday, January 14, 2006 11:22 PM
-To: linux-mips
-Subject: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
-
-
-I download the kernel from linux-mips, and select to embedded
-ramdisk.gz into vmlinux.
-but  i can't find where to place the ramdisk.gz.
-I try to put ramdisk.gz  under top dir, or arch/mips/boot/, but it
-does not work.
- can someone give any hints?
-
-
-Best regards
-
-zhuzhenhua
+colin 写道:
+> Hi all,
+> Our SOC has performance counters, and we would like to use oProfile on it.
+> After surveying the oProfile doc, I found that the model of our performance
+> counters donot seem to fit oProfile.
+> This is because oProfile uses the interrupts caused by overflow of, say,
+> cache miss count to estimate the probability of this event in every portion.
+> Our SOC doesn't emit interrupt when event count overflow. Therefore,
+> oProfile cannot be used to estimate cache miss event on our chip. Is that
+> right?
+> 
+> Regards,
+> Colin
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 

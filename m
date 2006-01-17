@@ -1,67 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 12:09:03 +0000 (GMT)
-Received: from wproxy.gmail.com ([64.233.184.204]:45132 "EHLO wproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S3465570AbWAQMIq convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jan 2006 12:08:46 +0000
-Received: by wproxy.gmail.com with SMTP id 36so1398601wra
-        for <linux-mips@linux-mips.org>; Tue, 17 Jan 2006 04:12:17 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=jUZl932vBcZ6noXg4fg/cQ+Vsj+dArupcrnr6SR/rZA9iyQPGPfTjPKfSU7WqmWiCWrl+0K3p2zqmWKjc+WSn5Hqx46ZanHqnkrWiM/gZa4ZROn8agKQ9QKdUPkpW+xMcxrF8A/lHuue1/Vs8addrhIL9zFwOsVxit5dN7Bz2DA=
-Received: by 10.54.128.16 with SMTP id a16mr5550925wrd;
-        Tue, 17 Jan 2006 04:12:17 -0800 (PST)
-Received: by 10.54.132.12 with HTTP; Tue, 17 Jan 2006 04:12:17 -0800 (PST)
-Message-ID: <f69849430601170412y5d870504n55dcde38c7cce80f@mail.gmail.com>
-Date:	Tue, 17 Jan 2006 04:12:17 -0800
-From:	kernel coder <lhrkernelcoder@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Observation on IDE read operation
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 12:23:36 +0000 (GMT)
+Received: from [62.38.115.213] ([62.38.115.213]:22196 "EHLO pfn3.pefnos")
+	by ftp.linux-mips.org with ESMTP id S3465570AbWAQMXS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2006 12:23:18 +0000
+Received: from xorhgos2.pefnos (xorhgos2.pefnos [192.168.0.3])
+	by pfn3.pefnos (Postfix) with ESMTP id 649F51F31B;
+	Tue, 17 Jan 2006 14:26:27 +0200 (EET)
+From:	"P. Christeas" <p_christ@hol.gr>
+To:	David Daney <ddaney@avtrex.com>
+Subject: Re: gcc -3.4.4 and linux-2.4.32
+Date:	Tue, 17 Jan 2006 14:26:08 +0200
+User-Agent: KMail/1.9
+Cc:	Kishore K <hellokishore@gmail.com>, linux-mips@linux-mips.org
+References: <f07e6e0601160423h5ce1c0d7lcb7e38f8509c4116@mail.gmail.com> <43CBD91B.4020607@avtrex.com>
+In-Reply-To: <43CBD91B.4020607@avtrex.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Return-Path: <lhrkernelcoder@gmail.com>
+Message-Id: <200601171426.10317.p_christ@hol.gr>
+Return-Path: <p_christ@hol.gr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9925
+X-archive-position: 9926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lhrkernelcoder@gmail.com
+X-original-sender: p_christ@hol.gr
 Precedence: bulk
 X-list: linux-mips
 
-hi,
+On Monday 16 January 2006 7:34 pm, David Daney wrote:
+> Kishore K wrote:
+> > hi
+> > When 2.4.32 kernel (from linux-mips) is compiled with the tool chain
+> > based on gcc 3.4.4 and binutils 2.16.1, the kernel crashes on malta
+> > board. The crash file is enclosed along with the mail. If the same
+> > kernel is compiled with the tool chain based on gcc 3.3.6, no problem is
+> > observed.
+> >
+> > May I know, whether it is because of the changes in ABI in gcc 3.4.
+>
+> Not exactly.  It has to do with -funit-at-a-time.  In the 2.4.x kernel
+> it is assumed that gcc will not reorder top level asm statements and
+> functions.  For gcc-3.3.x and earlier this was a valid assumption.  With
+> 3.4.x and later it is not.
+>
+Does that apply to gcc-4.0.2 as well? It is mentioned in linux documentation 
+that -funit-at-a-time is safe as of gcc-4.x. Is there (I'm not a MIPS expert) 
+a way to verify whether gcc produces wrong instructions?
+I've had a similar problem (I only try with gcc 4, because I compile linux 
+2.6) and is reduced when I use -fno-unit-at-a-time. Still, I have 
+instability, which now appears less often.
+I've tried the '-fno-unit-at-a-time' solution (for the whole kernel) and the 
+'pop/push' at interrupt.h fix.
 
-I was analyzing the IDE i/o mechanism in linux kernel 2.4.32.I
-observed following sequence of read requests to read a particular file
-with size around 13kb.
+> > If
+> > so, has any one got the patch to make 2.4.x kernels work with gcc 3.4
+> > compilers? From the changelog, I can infer that, some changes have been
+> > done in 2.4.28 kernel to work with gcc 3.4 for i386. If so, has the same
+> > thing been done for MIPS as well.
+>
+> IIRC the patches were never applied to linux-mips.org.  If you search
+> the archives of this list for messages that I sent, you can find the
+> patches.
+Can you please list the necessary patches? One line for each would do, as I 
+want to check if I have them all. 
 
-1) block no=9706		 number of sectors=20
-
-2) block no=9723		 number of sectors=4
-
-3) block no=9725		 number of sectors=2
-
-4) block no=9726		 number of sectors=2
-
-As u can see 4 different requests were made to read blocks 9706 to
-9715 , 9723 to 9724 , 9725 , 9726.
-
-The function __make_request ensures that requests are rearranged and
-merged so that consective blocks are read in one request.So please
-tell me why separete requests were made for reading blocks 9723 to
-9724 , 9725 , 9726 ,when requests from 9724 to 9726 can be merged into
-one.
-
-Is it suitable that instead of generating separte requests for reading
- 9706 to 9715 and 9723 to 9726 blocks ,just one request for reading
-9706 to 9726 blocks is issued.This will cause irrelevant blocks (9716
-to 9722) to be read as well but they can be discarded.
-
- If all data blocks of that particular file are read in one
-request,will it increase  the speed of read operation on that file.
-
-shahzad
+>
+> David Daney.

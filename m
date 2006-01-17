@@ -1,60 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 03:59:34 +0000 (GMT)
-Received: from mail.soc-soft.com ([202.56.254.199]:63245 "EHLO
-	igateway.soc-soft.com") by ftp.linux-mips.org with ESMTP
-	id S8133544AbWAQD7P convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2006 03:59:15 +0000
-Received: from keys.soc-soft.com ([192.168.4.44]) by igateway.soc-soft.com with InterScan VirusWall; Tue, 17 Jan 2006 09:32:42 +0530
-Received: from soc-mail.soc-soft.com ([192.168.4.25])
-  by keys.soc-soft.com (PGP Universal service);
-  Tue, 17 Jan 2006 09:30:36 +0530
-X-PGP-Universal: processed;
-	by keys.soc-soft.com on Tue, 17 Jan 2006 09:30:36 +0530
-content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: 64-bit Linux kernel
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
-Date:	Tue, 17 Jan 2006 09:32:41 +0530
-Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902C012B2A36@soc-mail.soc-soft.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: 64-bit Linux kernel
-Thread-Index: AcYbGtxIYpn0beNAQAKGGrYHaalzQA==
-From:	<Vadivelan@soc-soft.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <Vadivelan@soc-soft.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 04:11:51 +0000 (GMT)
+Received: from smtp106.biz.mail.re2.yahoo.com ([206.190.52.175]:23692 "HELO
+	smtp106.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133354AbWAQELc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 04:11:32 +0000
+Received: (qmail 14864 invoked from network); 17 Jan 2006 04:14:58 -0000
+Received: from unknown (HELO ?192.168.2.27?) (dan@embeddedalley.com@69.21.252.132 with plain)
+  by smtp106.biz.mail.re2.yahoo.com with SMTP; 17 Jan 2006 04:14:58 -0000
+In-Reply-To: <38dc7fce0601161940s5e4375dci798f66dff58d882@mail.gmail.com>
+References: <38dc7fce0601161940s5e4375dci798f66dff58d882@mail.gmail.com>
+Mime-Version: 1.0 (Apple Message framework v623)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <0879ce9aeb3034e5a7634c72e445fa6b@embeddedalley.com>
+Content-Transfer-Encoding: 7bit
+Cc:	linux-mips@linux-mips.org
+From:	Dan Malek <dan@embeddedalley.com>
+Subject: Re: using the 36bit physical address on AMD AU1200
+Date:	Mon, 16 Jan 2006 23:14:57 -0500
+To:	Youngduk Goo <ydgoo9@gmail.com>
+X-Mailer: Apple Mail (2.623)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9916
+X-archive-position: 9917
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Vadivelan@soc-soft.com
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
 
-Hi,
-	I would like to know the differences between the 32-bit and
-64-bit Linux kernel. Also does the MIPS port of Linux have support for
-64-bit. Kindly provide me your invaluable inputs.
-Thanking you in advance.
+On Jan 16, 2006, at 10:40 PM, Youngduk Goo wrote:
 
-Regards,
-Vadi
+> I guess I need to convert this address to virtual address for access 
+> it.
 
+You have to map it, yes.
 
+> But I don't know exactly how to do it. Do I need to configure the TBL?
+> I am using the YAMON as a bootloader. and try to access the DM9000.
 
+You will have to modify the YAMON source code to map TLB entries
+for the device.  Take a look at the sys_tlb_write() function along with
+ensuring you update the CP0 wired register so they don't disappear.
+Also, you will have to check what else may be doing this so you don't
+mess up other mappings.
 
+In Linux, all you need to do is call ioremap() and use the virtual
+address returned to you.
 
-
-The information contained in this e-mail message and in any annexure is
-confidential to the  recipient and may contain privileged information. If you are not
-the intended recipient, please notify the sender and delete the message along with
-any annexure. You should not disclose, copy or otherwise use the information contained
-in the message or any annexure. Any views expressed in this e-mail are those of the
-individual sender except where the sender specifically states them to be the views of
-SoCrates Software India Pvt Ltd., Bangalore.
+	-- Dan

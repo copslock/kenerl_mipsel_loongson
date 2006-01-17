@@ -1,57 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 13:01:42 +0000 (GMT)
-Received: from smtp101.biz.mail.re2.yahoo.com ([68.142.229.215]:21585 "HELO
-	smtp101.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S3465570AbWAQNBZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jan 2006 13:01:25 +0000
-Received: (qmail 56810 invoked from network); 17 Jan 2006 13:04:56 -0000
-Received: from unknown (HELO ?192.168.2.27?) (dan@embeddedalley.com@69.21.252.132 with plain)
-  by smtp101.biz.mail.re2.yahoo.com with SMTP; 17 Jan 2006 13:04:56 -0000
-In-Reply-To: <38dc7fce0601162308m4f721bc8l548147643df81f87@mail.gmail.com>
-References: <38dc7fce0601161940s5e4375dci798f66dff58d882@mail.gmail.com> <0879ce9aeb3034e5a7634c72e445fa6b@embeddedalley.com> <38dc7fce0601162308m4f721bc8l548147643df81f87@mail.gmail.com>
-Mime-Version: 1.0 (Apple Message framework v623)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <7be90451d50dc2abeeae2310c16d3351@embeddedalley.com>
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 13:05:32 +0000 (GMT)
+Received: from mail.hot.ee ([194.126.101.116]:22475 "EHLO mail.hot.ee")
+	by ftp.linux-mips.org with ESMTP id S3465570AbWAQNFK convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 13:05:10 +0000
+References: <20060117094053.D0DFBAF060@mh3-4.hot.ee>  <20060117121018.GA3336@linux-mips.org>
+In-Reply-To: <20060117094053.D0DFBAF060@mh3-4.hot.ee> <20060117121018.GA3336@linux-mips.org>
+x-mailer: Elion E-kohvik Webmail (http://www.hot.ee)
+From:	Riisisulg <riisisulg@hot.ee>
+Date:	Tue, 17 Jan 2006 15:08:42 +0200
+To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddedalley.com>
-Subject: Re: using the 36bit physical address on AMD AU1200
-Date:	Tue, 17 Jan 2006 08:04:55 -0500
-To:	Youngduk Goo <ydgoo9@gmail.com>
-X-Mailer: Apple Mail (2.623)
-Return-Path: <dan@embeddedalley.com>
+Subject: RE: Re: atomic_add function on memory allocated with dma_alloc_coherent hangs
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8BIT
+Message-Id: <20060117130847.2F2AC4A553@mh3-6.hot.ee>
+X-Virus-Scanned: by amavisd-new-2.2.1 (20041222) (Debian) at hot.ee
+Return-Path: <riisisulg@hot.ee>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9927
+X-archive-position: 9928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddedalley.com
+X-original-sender: riisisulg@hot.ee
 Precedence: bulk
 X-list: linux-mips
 
+> On Tue, Jan 17, 2006 at 11:40:53AM +0200, Riisisulg wrote:
+> 
+> > Hello. I'm using AMD Alchemy db1550 with au1550, it has 2.6.15
+kernel
+> > patched with linux-2.6.14.5-mips-1.patch, i have compiled cross
+compiler
+> > for the platform (but not checked it for correctness)
+> > 
+> > since db1550 does not have USB2.0 but instead has two PCI slots, i
+> > installed NEC's PCI to USB 2.0 host controller board to it. I was
+able
+> > to load ehci-hcd driver with success but after the usb mass storage
+> > device was inserted the system hanged. 
+> > After debugging a while i found out that function atomic_add did
+not
+> > return. I run few tests where atomic add asm code was alerted and
+got
+> > confidence that sc instruction did not never succeed so the cycle
+was
+> > repeating forever.
+> 
+> The operation of ll/sc is undefined on uncached memory; non-coherent
+> MIPS systems - that is most embedded MIPS systems - will return non
+> cache-coherent memory for dma_alloc_coherent.  Yes, the naming sucks,
+> dma_alloc_{non}coherent do the opposite of what their name is.
+> 
+>   Ralf
 
-On Jan 17, 2006, at 2:08 AM, Youngduk Goo wrote:
+Thank you for quick answer so i will make some conclusions here
 
-> After setting, I could access DM9000 with the Base address 0xD0000000.
-> In here, I have some more questions.
-> 1. I set the 1 TLB entry, so others does not affect the address 
-> translation.
->    so Whenever I use the 0xD0000000, it always converted to 0xD 0000 
-> 0000
->    on the bootloader.
->    Am I right?
+The problem come out by using ehci-hcd, that diver uses it's own dma
+pool where it allocates structures of type ehci_qh.
+struct ehci_qh has field of kref of type struct kref
 
-Yes, looks good.
+in ehci-mem.c file there are functions qh_get(struct ehci_qh *qh),
+qh_put(struct ehci_qh *qh) that use functions kref_get and kref_put.
 
-> 2. On the linux, If I want to use ioremap for Dm9000, Do I need to set 
-> the TLB
->     and do not need to change the ioremap source code ?
+Since ehci_qh structures are allocated from dma pool and both kref_get
+and kref_put are using atomic functions that use ll sc then on
+non-coherent MIPS system both qh_get and qh_put will hang the system.
+The simplest workaround is to replace kref_get and kref_put in
+ehci-mem.c or not to use dma pool. I have not cheked other kernel
+drivers that use atomic functions on uncached memory.
 
-Make sure you have CONFIG_64BIT_PHYS_ADDR configured
-and you are using a recent kernel.  No changes to any code and ioremap()
-will ensure the TLB is set correctly.  Just use the virtual address
-returned from ioremap().
-
-
-	-- Dan
+END, i hope.

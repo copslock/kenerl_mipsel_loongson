@@ -1,85 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 09:37:47 +0000 (GMT)
-Received: from mail.hot.ee ([194.126.101.116]:14043 "EHLO mail.hot.ee")
-	by ftp.linux-mips.org with ESMTP id S8133357AbWAQJhT convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jan 2006 09:37:19 +0000
-x-mailer: Elion E-kohvik Webmail (http://www.hot.ee)
-From:	Riisisulg <riisisulg@hot.ee>
-Date:	Tue, 17 Jan 2006 11:40:53 +0200
-To:	linux-mips@linux-mips.org
-Subject: atomic_add function on memory allocated with dma_alloc_coherent hangs
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 12:04:23 +0000 (GMT)
+Received: from zproxy.gmail.com ([64.233.162.203]:7085 "EHLO zproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3465570AbWAQMEF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2006 12:04:05 +0000
+Received: by zproxy.gmail.com with SMTP id l8so1342728nzf
+        for <linux-mips@linux-mips.org>; Tue, 17 Jan 2006 04:07:42 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=Q9H3iX+LKcE3T2HYxpSwAxoPjlVABmirT4vOvYvBfek5iHODSqmx+4t4iYlY4xTlmW0YNDXQs4P0oywrrhHYySMg1A4ogzWO0ko35nlBsUSn5M6B+oyMpbOIeOWXIUznFzqBVPkl2bU6Cmo5Z15z/l8NIOFjSZ9666qeWqAw82c=
+Received: by 10.36.101.3 with SMTP id y3mr5629261nzb;
+        Tue, 17 Jan 2006 04:07:41 -0800 (PST)
+Received: by 10.36.49.4 with HTTP; Tue, 17 Jan 2006 04:07:41 -0800 (PST)
+Message-ID: <f07e6e0601170407x1d374e46i52eafb7ca697500d@mail.gmail.com>
+Date:	Tue, 17 Jan 2006 17:37:41 +0530
+From:	Kishore K <hellokishore@gmail.com>
+To:	David Daney <ddaney@avtrex.com>
+Subject: Re: gcc -3.4.4 and linux-2.4.32
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <43CBD91B.4020607@avtrex.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8BIT
-Message-Id: <20060117094053.D0DFBAF060@mh3-4.hot.ee>
-X-Virus-Scanned: by amavisd-new-2.2.1 (20041222) (Debian) at hot.ee
-Return-Path: <riisisulg@hot.ee>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_12600_14475249.1137499661943"
+References: <f07e6e0601160423h5ce1c0d7lcb7e38f8509c4116@mail.gmail.com>
+	 <43CBD91B.4020607@avtrex.com>
+Return-Path: <hellokishore@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9921
+X-archive-position: 9922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: riisisulg@hot.ee
+X-original-sender: hellokishore@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello. I'm using AMD Alchemy db1550 with au1550, it has 2.6.15 kernel
-patched with linux-2.6.14.5-mips-1.patch, i have compiled cross compiler
-for the platform (but not checked it for correctness)
+------=_Part_12600_14475249.1137499661943
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-since db1550 does not have USB2.0 but instead has two PCI slots, i
-installed NEC's PCI to USB 2.0 host controller board to it. I was able
-to load ehci-hcd driver with success but after the usb mass storage
-device was inserted the system hanged. 
-After debugging a while i found out that function atomic_add did not
-return. I run few tests where atomic add asm code was alerted and got
-confidence that sc instruction did not never succeed so the cycle was
-repeating forever.
-72                 unsigned long temp;
-73 
-74                 __asm__ __volatile__(
-75                 "1:     ll      %0, %1          # atomic_add         
-  \n"
-76                 "       addu    %0, %2                               
-  \n"
-77                 "       sc      %0, %1                               
-  \n"
-78                 "       beqz    %0, 1b                               
-  \n"
-79                 : "=&r" (temp), "=m" (v->counter)
-80                 : "Ir" (i), "m" (v->counter));
-At this point it seems like atomic_add problem but that code is old for
-ages. Next i started to make tests where atomic_add was used to get the
-cpu hanged. 
+On 1/16/06, David Daney <ddaney@avtrex.com> wrote:
+>
+> Kishore K wrote:
+> > hi
+> > When 2.4.32 kernel (from linux-mips) is compiled with the tool chain
+> > based on gcc 3.4.4 and binutils 2.16.1, the kernel crashes on malta
+> > board. The crash file is enclosed along with the mail. If the same
+> > kernel is compiled with the tool chain based on gcc 3.3.6, no problem i=
+s
+> > observed.
+> >
+> > May I know, whether it is because of the changes in ABI in gcc 3.4.
+>
+> Not exactly.  It has to do with -funit-at-a-time.  In the 2.4.x kernel
+> it is assumed that gcc will not reorder top level asm statements and
+> functions.  For gcc-3.3.x and earlier this was a valid assumption.  With
+> 3.4.x and later it is not.
 
-It appears that the atomic_add function will not work when certain
-memory allocation scheme is used. If the atomic variable is allocated
-from stack, with kmalloc or with dma_allock_noncoherent it will work
-fine, but when dma_allock_coherent or memory taken form memory pool
-atomic_add will fail (i think that all ll sc instructions can fail but i
-tested only with atomic_add)
 
-To easy the testing i wrote driver that anybody should be able to
-compile and run. For testing i used also an x86 machine and driver
-worked (Test function is in module's init functioin)
+Thanks for the information.  The board is up, when the kernel is compiled
+with the above mentioned option.
 
-Test driver available at
-http://frogman.gf.ttu.ee/kernel_test.tar.bz2
+--kishore
 
-to view the contents of the driver
-http://frogman.gf.ttu.ee/kernel_test/
+------=_Part_12600_14475249.1137499661943
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Since i have only one MIPS based system i dont know wether this problem
-is specefic to amd alchemy 1550 or the entire amd alchemy family or some
-other MIPS32 based system or is it just my cross compiler or else that
-made mistake somewhere.
+<br><div><span class=3D"gmail_quote">On 1/16/06, <b class=3D"gmail_senderna=
+me">David Daney</b> &lt;<a href=3D"mailto:ddaney@avtrex.com">ddaney@avtrex.=
+com</a>&gt; wrote:</span><blockquote class=3D"gmail_quote" style=3D"border-=
+left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left=
+: 1ex;">
+Kishore K wrote:<br>&gt; hi<br>&gt; When 2.4.32 kernel (from linux-mips) is=
+ compiled with the tool chain<br>&gt; based on gcc 3.4.4 and binutils 2.16.=
+1, the kernel crashes on malta<br>&gt; board. The crash file is enclosed al=
+ong with the mail. If the same
+<br>&gt; kernel is compiled with the tool chain based on gcc 3.3.6, no prob=
+lem is<br>&gt; observed.<br>&gt;<br>&gt; May I know, whether it is because =
+of the changes in ABI in gcc 3.4.<br><br>Not exactly.&nbsp;&nbsp;It has to =
+do with -funit-at-a-time.&nbsp;&nbsp;In the=20
+2.4.x kernel<br>it is assumed that gcc will not reorder top level asm state=
+ments and<br>functions.&nbsp;&nbsp;For gcc-3.3.x and earlier this was a val=
+id assumption.&nbsp;&nbsp;With<br>3.4.x and later it is not.</blockquote><d=
+iv><br>
+Thanks for the information.&nbsp; The board is up, when the kernel is compi=
+led with the above mentioned option.<br>
+<br>
+--kishore<br>
+<br>
+</div><br></div><br>
 
-On irc i found one guy who did use my test driver on his MIPS and the
-driver crashed (Of course probability is that the driver itself has bug
-on it, but that driver worked fine on x86)
-By saying driver works i mean kernel was able to load it without
-"crashing" (looping infinitely).
-
-jyr
+------=_Part_12600_14475249.1137499661943--

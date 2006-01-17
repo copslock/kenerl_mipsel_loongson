@@ -1,57 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 15:47:42 +0000 (GMT)
-Received: from [62.38.115.213] ([62.38.115.213]:3972 "EHLO pfn3.pefnos")
-	by ftp.linux-mips.org with ESMTP id S8133500AbWAQPrY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2006 15:47:24 +0000
-Received: from xorhgos2.pefnos (xorhgos2.pefnos [192.168.0.3])
-	by pfn3.pefnos (Postfix) with ESMTP id 4747B1F31B;
-	Tue, 17 Jan 2006 17:50:39 +0200 (EET)
-From:	"P. Christeas" <p_christ@hol.gr>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: undefined reference to `__lshrdi3' error with GCC 4.0
-Date:	Tue, 17 Jan 2006 17:50:20 +0200
-User-Agent: KMail/1.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 16:17:59 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:61464 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133500AbWAQQRm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 16:17:42 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0HGLBS6002413;
+	Tue, 17 Jan 2006 16:21:11 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0HGLBb2002412;
+	Tue, 17 Jan 2006 16:21:11 GMT
+Date:	Tue, 17 Jan 2006 16:21:11 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"P. Christeas" <p_christ@hol.gr>
 Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-References: <20060117134838.GJ27047@deprecation.cyrius.com> <200601171617.16147.p_christ@hol.gr> <20060117151449.GF3336@linux-mips.org>
-In-Reply-To: <20060117151449.GF3336@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Subject: Re: undefined reference to `__lshrdi3' error with GCC 4.0
+Message-ID: <20060117162111.GG3336@linux-mips.org>
+References: <20060117134838.GJ27047@deprecation.cyrius.com> <200601171617.16147.p_christ@hol.gr> <20060117151449.GF3336@linux-mips.org> <200601171750.22746.p_christ@hol.gr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200601171750.22746.p_christ@hol.gr>
-Return-Path: <p_christ@hol.gr>
+In-Reply-To: <200601171750.22746.p_christ@hol.gr>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9940
+X-archive-position: 9941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p_christ@hol.gr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 17 January 2006 5:14 pm, Ralf Baechle wrote:
-> On Tue, Jan 17, 2006 at 04:17:14PM +0200, P. Christeas wrote:
-> > On Tuesday 17 January 2006 3:48 pm, Martin Michlmayr wrote:
-> > > Has anyone else seen the following error when compiling a kernel with
-> > > GCC 4.0 (GCC 3.3 works) and knows what to do about it?
-> > >
-> > > arch/mips/kernel/built-in.o: In function `time_init':
-> > > : undefined reference to `__lshrdi3'
+On Tue, Jan 17, 2006 at 05:50:20PM +0200, P. Christeas wrote:
+
+> > No such files in arch/ppc/lib?  Oh well, doesn't matter.
+> It was from m68k  :S 
+> 
+> > > The patch for 2.6 is:
 > >
-> > I think I've solved it by copying the files
-> > ashldi3.c ashrdi3.c lshrdi3.c
-> > from arch/ppc/lib to arch/mips/lib
->
-> No such files in arch/ppc/lib?  Oh well, doesn't matter.
-It was from m68k  :S 
+> > struct DIstruct seems broken for little endian.
+> What consequences does that have?
 
->
-> > The patch for 2.6 is:
->
-> struct DIstruct seems broken for little endian.
-What consequences does that have?
+Wrong results of 64-bit shift operations when building with -Os.
 
->
->   Ralf
+  Ralf

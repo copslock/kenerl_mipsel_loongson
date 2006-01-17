@@ -1,75 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 13:05:32 +0000 (GMT)
-Received: from mail.hot.ee ([194.126.101.116]:22475 "EHLO mail.hot.ee")
-	by ftp.linux-mips.org with ESMTP id S3465570AbWAQNFK convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jan 2006 13:05:10 +0000
-References: <20060117094053.D0DFBAF060@mh3-4.hot.ee>  <20060117121018.GA3336@linux-mips.org>
-In-Reply-To: <20060117094053.D0DFBAF060@mh3-4.hot.ee> <20060117121018.GA3336@linux-mips.org>
-x-mailer: Elion E-kohvik Webmail (http://www.hot.ee)
-From:	Riisisulg <riisisulg@hot.ee>
-Date:	Tue, 17 Jan 2006 15:08:42 +0200
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: RE: Re: atomic_add function on memory allocated with dma_alloc_coherent hangs
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8BIT
-Message-Id: <20060117130847.2F2AC4A553@mh3-6.hot.ee>
-X-Virus-Scanned: by amavisd-new-2.2.1 (20041222) (Debian) at hot.ee
-Return-Path: <riisisulg@hot.ee>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 13:26:20 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:35100 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S3465587AbWAQN0D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 13:26:03 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0HDTWsP015605;
+	Tue, 17 Jan 2006 13:29:32 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0HDTVVP015604;
+	Tue, 17 Jan 2006 13:29:31 GMT
+Date:	Tue, 17 Jan 2006 13:29:31 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH Cobalt 1/1] 64-bit fix
+Message-ID: <20060117132931.GB3336@linux-mips.org>
+References: <20050414185949.GA5578@skeleton-jack> <20060116154543.GA26771@deprecation.cyrius.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060116154543.GA26771@deprecation.cyrius.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9928
+X-archive-position: 9929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: riisisulg@hot.ee
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> On Tue, Jan 17, 2006 at 11:40:53AM +0200, Riisisulg wrote:
+On Mon, Jan 16, 2006 at 03:45:43PM +0000, Martin Michlmayr wrote:
+
+> * Peter Horton <pdh@colonel-panic.org> [2005-04-14 19:59]:
+> > This patch adds detection of broken 64-bit mode LL/SC on Cobalt units.
+> > With this patch my Qube2700 boots a 64-bit build fine. The later units
+> > have some problems with the Tulip driver.
 > 
-> > Hello. I'm using AMD Alchemy db1550 with au1550, it has 2.6.15
-kernel
-> > patched with linux-2.6.14.5-mips-1.patch, i have compiled cross
-compiler
-> > for the platform (but not checked it for correctness)
-> > 
-> > since db1550 does not have USB2.0 but instead has two PCI slots, i
-> > installed NEC's PCI to USB 2.0 host controller board to it. I was
-able
-> > to load ehci-hcd driver with success but after the usb mass storage
-> > device was inserted the system hanged. 
-> > After debugging a while i found out that function atomic_add did
-not
-> > return. I run few tests where atomic add asm code was alerted and
-got
-> > confidence that sc instruction did not never succeed so the cycle
-was
-> > repeating forever.
-> 
-> The operation of ll/sc is undefined on uncached memory; non-coherent
-> MIPS systems - that is most embedded MIPS systems - will return non
-> cache-coherent memory for dma_alloc_coherent.  Yes, the naming sucks,
-> dma_alloc_{non}coherent do the opposite of what their name is.
-> 
->   Ralf
+> Ralf, is this patch appropriate?  Can you please apply it or provide
+> some feedback.
 
-Thank you for quick answer so i will make some conclusions here
+Runtime testing for that bug is fairly expensive as it adds a branch to
+every instance of every type of atomic operation.  So we really want
+cpu_has_llsc to be a constant so the compiler can optimize that.
 
-The problem come out by using ehci-hcd, that diver uses it's own dma
-pool where it allocates structures of type ehci_qh.
-struct ehci_qh has field of kref of type struct kref
+So I suggest something like this in cpu-feature-overrides.h:
 
-in ehci-mem.c file there are functions qh_get(struct ehci_qh *qh),
-qh_put(struct ehci_qh *qh) that use functions kref_get and kref_put.
+[...]
+/*
+ * R5000 has an interesting "restriction":  ll(d)/sc(d)
+ * instructions to XKPHYS region simply do uncached bus
+ * requests. This breaks all the atomic bitops functions.
+ * so, for 64bit IP32 kernel we just don't use ll/sc.
+ * This does not affect luserland.
+ */
+#ifdef CONFIG_64BIT
+#define cpu_has_llsc            0
+#else
+#define cpu_has_llsc            1
+#endif
+[...]
 
-Since ehci_qh structures are allocated from dma pool and both kref_get
-and kref_put are using atomic functions that use ll sc then on
-non-coherent MIPS system both qh_get and qh_put will hang the system.
-The simplest workaround is to replace kref_get and kref_put in
-ehci-mem.c or not to use dma pool. I have not cheked other kernel
-drivers that use atomic functions on uncached memory.
+The probe would upset the IP27 cache coherency logic and crash them btw.
 
-END, i hope.
+  Ralf

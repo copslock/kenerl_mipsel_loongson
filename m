@@ -1,293 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 14:15:05 +0000 (GMT)
-Received: from [62.38.115.213] ([62.38.115.213]:62867 "EHLO pfn3.pefnos")
-	by ftp.linux-mips.org with ESMTP id S3465592AbWAQOOo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2006 14:14:44 +0000
-Received: from xorhgos2.pefnos (xorhgos2.pefnos [192.168.0.3])
-	by pfn3.pefnos (Postfix) with ESMTP id 8287F1F31B;
-	Tue, 17 Jan 2006 16:17:32 +0200 (EET)
-From:	"P. Christeas" <p_christ@hol.gr>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Subject: Re: undefined reference to `__lshrdi3' error with GCC 4.0
-Date:	Tue, 17 Jan 2006 16:17:14 +0200
-User-Agent: KMail/1.9
-Cc:	linux-mips@linux-mips.org
-References: <20060117134838.GJ27047@deprecation.cyrius.com>
-In-Reply-To: <20060117134838.GJ27047@deprecation.cyrius.com>
-MIME-Version: 1.0
-Content-Type: Multipart/Mixed;
-  boundary="Boundary-00=_sxPzD6jIUozAkrU"
-Message-Id: <200601171617.16147.p_christ@hol.gr>
-Return-Path: <p_christ@hol.gr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 14:21:09 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:19908 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S3465592AbWAQOUo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2006 14:20:44 +0000
+Received: from localhost (p4109-ipad209funabasi.chiba.ocn.ne.jp [58.88.115.109])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 61574A2FB; Tue, 17 Jan 2006 23:24:18 +0900 (JST)
+Date:	Tue, 17 Jan 2006 23:23:50 +0900 (JST)
+Message-Id: <20060117.232350.93019515.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	maillist@jg555.com, tbm@cyrius.com, pdh@colonel-panic.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH Cobalt 1/1] 64-bit fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060117135145.GE3336@linux-mips.org>
+References: <20060116154543.GA26771@deprecation.cyrius.com>
+	<43CBCAAE.6030403@jg555.com>
+	<20060117135145.GE3336@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9935
+X-archive-position: 9936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p_christ@hol.gr
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
---Boundary-00=_sxPzD6jIUozAkrU
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>>>>> On Tue, 17 Jan 2006 13:51:45 +0000, Ralf Baechle <ralf@linux-mips.org> said:
 
-On Tuesday 17 January 2006 3:48 pm, Martin Michlmayr wrote:
-> Has anyone else seen the following error when compiling a kernel with GCC
-> 4.0 (GCC 3.3 works) and knows what to do about it?
->
-> arch/mips/kernel/built-in.o: In function `time_init':
-> : undefined reference to `__lshrdi3'
+>> This include the iomap.c, which is not accepted by Ralf.
 
-I think I've solved it by copying the files
-ashldi3.c ashrdi3.c lshrdi3.c
-from arch/ppc/lib to arch/mips/lib
+ralf> Yes - and the reasons are archived on this list.  Reposting the
+ralf> patch leaves me entirely unimpressed.
 
-The patch for 2.6 is:
+Ralf, is this the reason?
 
+> Subject: Re: MIPS - 64bit woes
+> From: Ralf Baechle <ralf@linux-mips.org>
+> Date:	Fri, 18 Nov 2005 17:29:48 +0000
+> 
+> No.  It's broken for machines with multiple PCI busses and I've explicitly
+> rejected the patch which is in kernel.org before.
 
---Boundary-00=_sxPzD6jIUozAkrU
-Content-Type: text/x-diff;
-  charset="iso-8859-1";
-  name="float.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename="float.patch"
+It seems a bit obscured for me --- and perhaps for some other people.
+So I asked:
 
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index cf12caf..dfa0b12 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -7,4 +7,7 @@ lib-y	+= csum_partial_copy.o memcpy.o pr
- 
- obj-y	+= iomap.o
- 
-+#ugly hack. Why is this needed?
-+lib-$(CONFIG_MIKROTIK_RB500) += ashldi3.o ashrdi3.o lshrdi3.o
-+
- EXTRA_AFLAGS := $(CFLAGS)
-diff --git a/arch/mips/lib/ashldi3.c b/arch/mips/lib/ashldi3.c
-new file mode 100644
-index 0000000..2f4a3d5
---- /dev/null
-+++ b/arch/mips/lib/ashldi3.c
-@@ -0,0 +1,66 @@
-+/* ashrdi3.c extracted from gcc-2.95.2/libgcc2.c which is: */
-+/* Copyright (C) 1989, 92-98, 1999 Free Software Foundation, Inc.
-+
-+This file is part of GNU CC.
-+
-+GNU CC is free software; you can redistribute it and/or modify
-+it under the terms of the GNU General Public License as published by
-+the Free Software Foundation; either version 2, or (at your option)
-+any later version.
-+
-+GNU CC is distributed in the hope that it will be useful,
-+but WITHOUT ANY WARRANTY; without even the implied warranty of
-+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+GNU General Public License for more details.
-+
-+You should have received a copy of the GNU General Public License
-+along with GNU CC; see the file COPYING.  If not, write to
-+the Free Software Foundation, 59 Temple Place - Suite 330,
-+Boston, MA 02111-1307, USA.  */
-+
-+#include <linux/linkage.h>
-+#include <linux/module.h>
-+#define BITS_PER_UNIT 8
-+
-+typedef		 int SItype	__attribute__ ((mode (SI)));
-+typedef unsigned int USItype	__attribute__ ((mode (SI)));
-+typedef		 int DItype	__attribute__ ((mode (DI)));
-+typedef int word_type __attribute__ ((mode (__word__)));
-+
-+struct DIstruct {SItype high, low;};
-+
-+typedef union
-+{
-+  struct DIstruct s;
-+  DItype ll;
-+} DIunion;
-+
-+DItype
-+__ashldi3 (DItype u, word_type b)
-+{
-+  DIunion w;
-+  word_type bm;
-+  DIunion uu;
-+
-+  if (b == 0)
-+    return u;
-+
-+  uu.ll = u;
-+
-+  bm = (sizeof (SItype) * BITS_PER_UNIT) - b;
-+  if (bm <= 0)
-+    {
-+      w.s.low = 0;
-+      w.s.high = (USItype)uu.s.low << -bm;
-+    }
-+  else
-+    {
-+      USItype carries = (USItype)uu.s.low >> bm;
-+      w.s.low = (USItype)uu.s.low << b;
-+      w.s.high = ((USItype)uu.s.high << b) | carries;
-+    }
-+
-+  return w.ll;
-+}
-+
-+EXPORT_SYMBOL(__ashldi3);
-diff --git a/arch/mips/lib/ashrdi3.c b/arch/mips/lib/ashrdi3.c
-new file mode 100644
-index 0000000..eb6d47d
---- /dev/null
-+++ b/arch/mips/lib/ashrdi3.c
-@@ -0,0 +1,68 @@
-+/* ashrdi3.c extracted from gcc-2.7.2/libgcc2.c which is: */
-+/* Copyright (C) 1989, 1992, 1993, 1994, 1995 Free Software Foundation, Inc.
-+
-+This file is part of GNU CC.
-+
-+GNU CC is free software; you can redistribute it and/or modify
-+it under the terms of the GNU General Public License as published by
-+the Free Software Foundation; either version 2, or (at your option)
-+any later version.
-+
-+GNU CC is distributed in the hope that it will be useful,
-+but WITHOUT ANY WARRANTY; without even the implied warranty of
-+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+GNU General Public License for more details.
-+
-+You should have received a copy of the GNU General Public License
-+along with GNU CC; see the file COPYING.  If not, write to
-+the Free Software Foundation, 59 Temple Place - Suite 330,
-+Boston, MA 02111-1307, USA.  */
-+
-+#include <linux/linkage.h>
-+#include <linux/module.h>
-+
-+#define BITS_PER_UNIT 8
-+
-+typedef		 int SItype	__attribute__ ((mode (SI)));
-+typedef unsigned int USItype	__attribute__ ((mode (SI)));
-+typedef		 int DItype	__attribute__ ((mode (DI)));
-+typedef int word_type __attribute__ ((mode (__word__)));
-+
-+struct DIstruct {SItype high, low;};
-+
-+typedef union
-+{
-+  struct DIstruct s;
-+  DItype ll;
-+} DIunion;
-+
-+DItype
-+__ashrdi3 (DItype u, word_type b)
-+{
-+  DIunion w;
-+  word_type bm;
-+  DIunion uu;
-+
-+  if (b == 0)
-+    return u;
-+
-+  uu.ll = u;
-+
-+  bm = (sizeof (SItype) * BITS_PER_UNIT) - b;
-+  if (bm <= 0)
-+    {
-+      /* w.s.high = 1..1 or 0..0 */
-+      w.s.high = uu.s.high >> (sizeof (SItype) * BITS_PER_UNIT - 1);
-+      w.s.low = uu.s.high >> -bm;
-+    }
-+  else
-+    {
-+      USItype carries = (USItype)uu.s.high << bm;
-+      w.s.high = uu.s.high >> b;
-+      w.s.low = ((USItype)uu.s.low >> b) | carries;
-+    }
-+
-+  return w.ll;
-+}
-+EXPORT_SYMBOL(__ashrdi3);
-+
-diff --git a/arch/mips/lib/lshrdi3.c b/arch/mips/lib/lshrdi3.c
-new file mode 100644
-index 0000000..c6a02d5
---- /dev/null
-+++ b/arch/mips/lib/lshrdi3.c
-@@ -0,0 +1,68 @@
-+/* lshrdi3.c extracted from gcc-2.7.2/libgcc2.c which is: */
-+/* Copyright (C) 1989, 1992, 1993, 1994, 1995 Free Software Foundation, Inc.
-+
-+This file is part of GNU CC.
-+
-+GNU CC is free software; you can redistribute it and/or modify
-+it under the terms of the GNU General Public License as published by
-+the Free Software Foundation; either version 2, or (at your option)
-+any later version.
-+
-+GNU CC is distributed in the hope that it will be useful,
-+but WITHOUT ANY WARRANTY; without even the implied warranty of
-+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+GNU General Public License for more details.
-+
-+You should have received a copy of the GNU General Public License
-+along with GNU CC; see the file COPYING.  If not, write to
-+the Free Software Foundation, 59 Temple Place - Suite 330,
-+Boston, MA 02111-1307, USA.  */
-+
-+#include <linux/linkage.h>
-+#include <linux/module.h>
-+
-+#define BITS_PER_UNIT 8
-+
-+typedef		 int SItype	__attribute__ ((mode (SI)));
-+typedef unsigned int USItype	__attribute__ ((mode (SI)));
-+typedef		 int DItype	__attribute__ ((mode (DI)));
-+typedef int word_type __attribute__ ((mode (__word__)));
-+
-+struct DIstruct {SItype high, low;};
-+
-+typedef union
-+{
-+  struct DIstruct s;
-+  DItype ll;
-+} DIunion;
-+
-+DItype
-+__lshrdi3 (DItype u, word_type b)
-+{
-+  DIunion w;
-+  word_type bm;
-+  DIunion uu;
-+
-+  if (b == 0)
-+    return u;
-+
-+  uu.ll = u;
-+
-+  bm = (sizeof (SItype) * BITS_PER_UNIT) - b;
-+  if (bm <= 0)
-+    {
-+      w.s.high = 0;
-+      w.s.low = (USItype)uu.s.high >> -bm;
-+    }
-+  else
-+    {
-+      USItype carries = (USItype)uu.s.high << bm;
-+      w.s.high = (USItype)uu.s.high >> b;
-+      w.s.low = ((USItype)uu.s.low >> b) | carries;
-+    }
-+
-+  return w.ll;
-+}
-+
-+EXPORT_SYMBOL(__lshrdi3);
-+
+> Subject: mips iomap.c (Was: Re: MIPS - 64bit woes)
+> From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> Date:	Sun, 20 Nov 2005 02:36:41 +0900 (JST)
+> 
+> Could you explain a bit _how_ broken current kernel.org's
+> arch/mips/lib/iomap.c ?  Is it a single mips_io_port_base issue?
+> 
+> I suppose it works as well as traditional way (request_region +
+> in[bwl] for IO resource, request_mem_region + iomap + read[bwl] for
+> MEM resource).
+> 
+> I think it is better than generic iomap.c (except that
+> ioremap_cacheable_cow which is not available for R3000 is used).
 
---Boundary-00=_sxPzD6jIUozAkrU--
+But got no response at that time.  So I ask again.  Could you tell us
+how the iomap patch broken verbosely, please?
+
+---
+Atsushi Nemoto

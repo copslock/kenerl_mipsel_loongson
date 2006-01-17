@@ -1,53 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 04:11:51 +0000 (GMT)
-Received: from smtp106.biz.mail.re2.yahoo.com ([206.190.52.175]:23692 "HELO
-	smtp106.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133354AbWAQELc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jan 2006 04:11:32 +0000
-Received: (qmail 14864 invoked from network); 17 Jan 2006 04:14:58 -0000
-Received: from unknown (HELO ?192.168.2.27?) (dan@embeddedalley.com@69.21.252.132 with plain)
-  by smtp106.biz.mail.re2.yahoo.com with SMTP; 17 Jan 2006 04:14:58 -0000
-In-Reply-To: <38dc7fce0601161940s5e4375dci798f66dff58d882@mail.gmail.com>
-References: <38dc7fce0601161940s5e4375dci798f66dff58d882@mail.gmail.com>
-Mime-Version: 1.0 (Apple Message framework v623)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <0879ce9aeb3034e5a7634c72e445fa6b@embeddedalley.com>
-Content-Transfer-Encoding: 7bit
-Cc:	linux-mips@linux-mips.org
-From:	Dan Malek <dan@embeddedalley.com>
-Subject: Re: using the 36bit physical address on AMD AU1200
-Date:	Mon, 16 Jan 2006 23:14:57 -0500
-To:	Youngduk Goo <ydgoo9@gmail.com>
-X-Mailer: Apple Mail (2.623)
-Return-Path: <dan@embeddedalley.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 04:25:12 +0000 (GMT)
+Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:25223 "EHLO
+	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
+	id S8133354AbWAQEYu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 04:24:50 +0000
+Received: (qmail 16288 invoked from network); 17 Jan 2006 14:28:17 +1000
+Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
+  by 192.168.5.1 with SMTP; 17 Jan 2006 14:28:17 +1000
+Message-ID: <43CC7268.9070001@gentoo.org>
+Date:	Tue, 17 Jan 2006 14:28:24 +1000
+From:	Stuart Longland <redhatter@gentoo.org>
+Organization: Gentoo Foundation
+User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Vadivelan@soc-soft.com
+CC:	linux-mips@linux-mips.org
+Subject: Re: 64-bit Linux kernel
+References: <4BF47D56A0DD2346A1B8D622C5C5902C012B2A36@soc-mail.soc-soft.com>
+In-Reply-To: <4BF47D56A0DD2346A1B8D622C5C5902C012B2A36@soc-mail.soc-soft.com>
+X-Enigmail-Version: 0.93.0.0
+OpenPGP: id=63264AB9;
+	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig93CCB30983A58A1F10CB3870"
+Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9917
+X-archive-position: 9918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddedalley.com
+X-original-sender: redhatter@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig93CCB30983A58A1F10CB3870
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Jan 16, 2006, at 10:40 PM, Youngduk Goo wrote:
+Vadivelan@soc-soft.com wrote:
+> Hi,
+> 	I would like to know the differences between the 32-bit and
+> 64-bit Linux kernel. Also does the MIPS port of Linux have support for
+> 64-bit. Kindly provide me your invaluable inputs.
+> Thanking you in advance.
 
-> I guess I need to convert this address to virtual address for access 
-> it.
+In short, yes, Linux does support 64-bit kernels on MIPS processors.
 
-You have to map it, yes.
+It entirely depends on the target machine.  Some *have* to run 64-bit
+kernels (e.g. the Octane, Indigo2 Impact...etc.), others can run either
+32-bit or 64-bit (e.g. O2, with sufficiently old kernel... Indy,
+Cobalt...etc).  Others, are strictly 32-bit only. (anything with a
+MIPS-1, MIPS-2 or MIPS32 CPU).
 
-> But I don't know exactly how to do it. Do I need to configure the TBL?
-> I am using the YAMON as a bootloader. and try to access the DM9000.
+It is worth noting that not all applications lend themselves to running
+a 64-bit kernel.  1 + 1 will take just as long to calculate in 32-bit as
+it does in 64-bit. :-)
 
-You will have to modify the YAMON source code to map TLB entries
-for the device.  Take a look at the sys_tlb_write() function along with
-ensuring you update the CP0 wired register so they don't disappear.
-Also, you will have to check what else may be doing this so you don't
-mess up other mappings.
+> The information contained in this e-mail message and in any annexure is
+> confidential to the  recipient and may contain privileged information.
 
-In Linux, all you need to do is call ioremap() and use the virtual
-address returned to you.
+In which case, why on earth did you send this email to a public email
+list? ;-)
+-- 
+Stuart Longland (aka Redhatter)              .'''.
+Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
+. . . . . . . . . . . . . . . . . . . . . .   .'.'
+http://dev.gentoo.org/~redhatter             :.'
 
-	-- Dan
+--------------enig93CCB30983A58A1F10CB3870
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFDzHJruarJ1mMmSrkRAg2yAJ4sLYTzrNX+oJH+IF3CouS+hZmOjACfVJsD
+bIfp+3fWgsEdOXpD2CFggzw=
+=M4m3
+-----END PGP SIGNATURE-----
+
+--------------enig93CCB30983A58A1F10CB3870--

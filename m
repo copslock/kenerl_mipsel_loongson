@@ -1,71 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 02:26:19 +0000 (GMT)
-Received: from smtp.osdl.org ([65.172.181.4]:3716 "EHLO smtp.osdl.org")
-	by ftp.linux-mips.org with ESMTP id S8133529AbWAQC0B (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jan 2006 02:26:01 +0000
-Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
-	by smtp.osdl.org (8.12.8/8.12.8) with ESMTP id k0H2TUDZ029481
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Mon, 16 Jan 2006 18:29:31 -0800
-Received: from bix (shell0.pdx.osdl.net [10.9.0.31])
-	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id k0H2TSLG020912;
-	Mon, 16 Jan 2006 18:29:29 -0800
-Date:	Mon, 16 Jan 2006 18:29:11 -0800
-From:	Andrew Morton <akpm@osdl.org>
-To:	Grant Grundler <grundler@parisc-linux.org>
-Cc:	jgarzik@pobox.com, tbm@cyrius.com, linux-mips@linux-mips.org,
-	grundler@parisc-linux.org, Francois Romieu <romieu@fr.zoreil.com>
-Subject: Re: Tulip RaQ2 64 Bit Fix
-Message-Id: <20060116182911.20bae624.akpm@osdl.org>
-In-Reply-To: <20060117023515.GB20607@colo.lackof.org>
-References: <4393CD9F.3090305@jg555.com>
-	<20051205114456.GA2728@linux-mips.org>
-	<20060116160355.GB28383@deprecation.cyrius.com>
-	<43CBC97E.3090800@jg555.com>
-	<20060116165825.GG5798@deprecation.cyrius.com>
-	<20060116172320.1e6d3cfd.akpm@osdl.org>
-	<43CC4A37.9050502@pobox.com>
-	<20060117023515.GB20607@colo.lackof.org>
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: osdl$Revision: 1.129 $
-X-Scanned-By: MIMEDefang 2.36
-Return-Path: <akpm@osdl.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 03:37:38 +0000 (GMT)
+Received: from uproxy.gmail.com ([66.249.92.206]:52892 "EHLO uproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133544AbWAQDhV convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 03:37:21 +0000
+Received: by uproxy.gmail.com with SMTP id m3so871508uge
+        for <linux-mips@linux-mips.org>; Mon, 16 Jan 2006 19:40:56 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=fRNX/OhDOdYqxB8QJlCvivCdFjO1qmWfzX03Hd6bBNP7lgLai5549OmlDjm8g2X2OWQQHZXwFW74j9dOXptKQgk3nt6/5mw+E/ty+lT7/DsiozoYrcbLlknfYmosA9CMZymLBvktd1n+BFwEb0xqw/vjhZe6qSmXXd97IPog8OI=
+Received: by 10.48.12.4 with SMTP id 4mr284881nfl;
+        Mon, 16 Jan 2006 19:40:56 -0800 (PST)
+Received: by 10.48.243.16 with HTTP; Mon, 16 Jan 2006 19:40:56 -0800 (PST)
+Message-ID: <38dc7fce0601161940s5e4375dci798f66dff58d882@mail.gmail.com>
+Date:	Tue, 17 Jan 2006 12:40:56 +0900
+From:	Youngduk Goo <ydgoo9@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: using the 36bit physical address on AMD AU1200
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <ydgoo9@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9914
+X-archive-position: 9915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@osdl.org
+X-original-sender: ydgoo9@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Grant Grundler <grundler@parisc-linux.org> wrote:
->
-> On Mon, Jan 16, 2006 at 08:36:55PM -0500, Jeff Garzik wrote:
-> > >Jeff, can you please suggest how this patch should be altered to make it
-> > >acceptable?
-> > 
-> > Answer hasn't changed since this was last discussed:  sleep, rather than 
-> > delay for an extra-long time.  That's the only hurdle for the tulip 
-> > patches you keep resending.
-> > 
-> > Francois Romieu even had an untested patch that attempted this, somewhere.
-> 
-> Yes, he implemented a workqueue to invoke tulip_select_media().
-> 	http://lkml.org/lkml/2005/5/21/69
-> 
-> His patch didn't deal with the same issue in tulip_restart_rxtx()
-> as noted here:
-> 	http://lkml.org/lkml/2005/5/22/6
-> 
-> Otherwise, it was mostly ok - just some other nits.
-> Last reply on that thread was Oct 2005: "an updated version is cooking".
-> 
+Hello all,
 
-Might help to cc him.
+I am trying to use the DM9000 Ethernet controller on the AU1200.
+so we connected the DM9000 on the Static bus controller #3 on the au1200.
+and we configured the RCS#3 as a I/O device.
+The Physical address of I/O device on au1200 is from the 0xD 0000 0000 to
+0xD ffff ffff.
+I guess I need to convert this address to virtual address for access it.
+But I don't know exactly how to do it. Do I need to configure the TBL?
+I am using the YAMON as a bootloader. and try to access the DM9000.
+But It is not easy for me.
 
-Look, we really don't care who writes the patch.
+Any advice or examples are welcome.
+Thanks,

@@ -1,49 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 13:49:03 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:13087 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465586AbWAQNso (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jan 2006 13:48:44 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0HDpk2p016340;
-	Tue, 17 Jan 2006 13:51:46 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0HDpjEE016339;
-	Tue, 17 Jan 2006 13:51:45 GMT
-Date:	Tue, 17 Jan 2006 13:51:45 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jim Gifford <maillist@jg555.com>
-Cc:	Martin Michlmayr <tbm@cyrius.com>,
-	Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH Cobalt 1/1] 64-bit fix
-Message-ID: <20060117135145.GE3336@linux-mips.org>
-References: <20050414185949.GA5578@skeleton-jack> <20060116154543.GA26771@deprecation.cyrius.com> <43CBCAAE.6030403@jg555.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43CBCAAE.6030403@jg555.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 14:05:55 +0000 (GMT)
+Received: from midas-91-171-chn.midascomm.com ([203.196.171.91]:1262 "EHLO
+	info.midascomm.com") by ftp.linux-mips.org with ESMTP
+	id S3465592AbWAQOFh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 14:05:37 +0000
+Received: from bharathi.midascomm.com ([192.168.13.175])
+	by info.midascomm.com (8.12.10/8.12.10) with ESMTP id k0HE8vkP029322
+	for <linux-mips@linux-mips.org>; Tue, 17 Jan 2006 19:38:59 +0530
+Date:	Tue, 17 Jan 2006 19:43:59 +0530 (IST)
+From:	Bharathi Subramanian <sbharathi@MidasComm.Com>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+Subject: Re: Timer Interrupt
+In-Reply-To: <Pine.LNX.4.44.0601171226380.1259-100000@bharathi.midascomm.com>
+Message-ID: <Pine.LNX.4.44.0601171939020.2361-100000@bharathi.midascomm.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-midascomm.com-MailScanner-Information: Please contact the ISP for more information
+X-midascomm.com-MailScanner: Found to be clean
+X-midascomm.com-MailScanner-From: sbharathi@midascomm.com
+Return-Path: <sbharathi@MidasComm.Com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9933
+X-archive-position: 9934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sbharathi@MidasComm.Com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 16, 2006 at 08:32:46AM -0800, Jim Gifford wrote:
+On Tue, 17 Jan 2006, Bharathi Subramanian wrote:
 
-> Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+> On Mon, 16 Jan 2006, Bharathi Subramanian wrote:
 > 
-> Here's a link to the updated patch. Works under 2.6.15
-> http://www.linuxfromscratch.org/patches/downloads/linux/linux-2.6.15-mips_fix-1.patch
+> > We are trying to implement the CPU Clock down feature for saving the 
+> > power. In this process, Whenever the CPU is put in 1/2 Clock then the 
+> > Timer interrupt is also getting delayed.
+> > 
+> > Later I found that CPU Counter is used to generate the timer intr. How 
+> > to make the Timer interrupt to happen at every 10ms, even if the CPU 
+> > is in 1/2, 1/4 or 1/8 of the original clock??
+> > 
+> > Processor: MIPS 4Kc 32B
+>   Kernel   : 2.4.20 with RTLinux Patch
 > 
-> This include the iomap.c, which is not accepted by Ralf.
+> In mips_timer_ack() function, the new Compare reg value loaded. Here I 
+> tried to put new counter value based on the present cpu clock divder 
+> setting. But board is getting rebooted.
+> 
+> Is it the right way to handle this issue?? Anybody faced same
+> condition, kindly share your exprience with me.
 
-Yes - and the reasons are archived on this list.  Reposting the patch
-leaves me entirely unimpressed.
+I read the Linux Porting guide by Junsun. In that,(s)he mention, "Some
+CPUs may have a variable CPU frequency which makes CPU counter not
+usable as a timer source". Does it mean that, we can't do the CPU
+Clock down in MIPS Processor??
 
-  Ralf
+Kindly CC the reply.
+
+Thanks :)
+-- 
+Bharathi S

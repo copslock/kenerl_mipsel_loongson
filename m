@@ -1,56 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 12:07:02 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:46869 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465570AbWAQMGp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jan 2006 12:06:45 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0HCAJ1P009596;
-	Tue, 17 Jan 2006 12:10:19 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0HCAIQD009595;
-	Tue, 17 Jan 2006 12:10:18 GMT
-Date:	Tue, 17 Jan 2006 12:10:18 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Riisisulg <riisisulg@hot.ee>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: atomic_add function on memory allocated with dma_alloc_coherent hangs
-Message-ID: <20060117121018.GA3336@linux-mips.org>
-References: <20060117094053.D0DFBAF060@mh3-4.hot.ee>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jan 2006 12:09:03 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.204]:45132 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3465570AbWAQMIq convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 17 Jan 2006 12:08:46 +0000
+Received: by wproxy.gmail.com with SMTP id 36so1398601wra
+        for <linux-mips@linux-mips.org>; Tue, 17 Jan 2006 04:12:17 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=jUZl932vBcZ6noXg4fg/cQ+Vsj+dArupcrnr6SR/rZA9iyQPGPfTjPKfSU7WqmWiCWrl+0K3p2zqmWKjc+WSn5Hqx46ZanHqnkrWiM/gZa4ZROn8agKQ9QKdUPkpW+xMcxrF8A/lHuue1/Vs8addrhIL9zFwOsVxit5dN7Bz2DA=
+Received: by 10.54.128.16 with SMTP id a16mr5550925wrd;
+        Tue, 17 Jan 2006 04:12:17 -0800 (PST)
+Received: by 10.54.132.12 with HTTP; Tue, 17 Jan 2006 04:12:17 -0800 (PST)
+Message-ID: <f69849430601170412y5d870504n55dcde38c7cce80f@mail.gmail.com>
+Date:	Tue, 17 Jan 2006 04:12:17 -0800
+From:	kernel coder <lhrkernelcoder@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Observation on IDE read operation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20060117094053.D0DFBAF060@mh3-4.hot.ee>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <lhrkernelcoder@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9924
+X-archive-position: 9925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: lhrkernelcoder@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 17, 2006 at 11:40:53AM +0200, Riisisulg wrote:
+hi,
 
-> Hello. I'm using AMD Alchemy db1550 with au1550, it has 2.6.15 kernel
-> patched with linux-2.6.14.5-mips-1.patch, i have compiled cross compiler
-> for the platform (but not checked it for correctness)
-> 
-> since db1550 does not have USB2.0 but instead has two PCI slots, i
-> installed NEC's PCI to USB 2.0 host controller board to it. I was able
-> to load ehci-hcd driver with success but after the usb mass storage
-> device was inserted the system hanged. 
-> After debugging a while i found out that function atomic_add did not
-> return. I run few tests where atomic add asm code was alerted and got
-> confidence that sc instruction did not never succeed so the cycle was
-> repeating forever.
+I was analyzing the IDE i/o mechanism in linux kernel 2.4.32.I
+observed following sequence of read requests to read a particular file
+with size around 13kb.
 
-The operation of ll/sc is undefined on uncached memory; non-coherent
-MIPS systems - that is most embedded MIPS systems - will return non
-cache-coherent memory for dma_alloc_coherent.  Yes, the naming sucks,
-dma_alloc_{non}coherent do the opposite of what their name is.
+1) block no=9706		 number of sectors=20
 
-  Ralf
+2) block no=9723		 number of sectors=4
+
+3) block no=9725		 number of sectors=2
+
+4) block no=9726		 number of sectors=2
+
+As u can see 4 different requests were made to read blocks 9706 to
+9715 , 9723 to 9724 , 9725 , 9726.
+
+The function __make_request ensures that requests are rearranged and
+merged so that consective blocks are read in one request.So please
+tell me why separete requests were made for reading blocks 9723 to
+9724 , 9725 , 9726 ,when requests from 9724 to 9726 can be merged into
+one.
+
+Is it suitable that instead of generating separte requests for reading
+ 9706 to 9715 and 9723 to 9726 blocks ,just one request for reading
+9706 to 9726 blocks is issued.This will cause irrelevant blocks (9716
+to 9722) to be read as well but they can be discarded.
+
+ If all data blocks of that particular file are read in one
+request,will it increase  the speed of read operation on that file.
+
+shahzad

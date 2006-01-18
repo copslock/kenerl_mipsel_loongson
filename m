@@ -1,58 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2006 17:57:10 +0000 (GMT)
-Received: from Jg555.com ([64.30.195.78]:38066 "EHLO jg555.com")
-	by ftp.linux-mips.org with ESMTP id S3468145AbWARR4v (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2006 17:56:51 +0000
-Received: from [172.16.0.55] ([::ffff:172.16.0.55])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Wed, 18 Jan 2006 10:00:28 -0800
-  id 001D9075.43CE823C.00001980
-Message-ID: <43CE821A.6060004@jg555.com>
-Date:	Wed, 18 Jan 2006 09:59:54 -0800
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Thunderbird 1.5 (Windows/20051201)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2006 21:47:27 +0000 (GMT)
+Received: from kilimandjaro.dyndns.org ([212.85.147.17]:42511 "EHLO
+	kilimandjaro.dyndns.org") by ftp.linux-mips.org with ESMTP
+	id S8133641AbWARVrI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 18 Jan 2006 21:47:08 +0000
+Received: by kilimandjaro.dyndns.org (Postfix, from userid 500)
+	id AEA83BE808; Wed, 18 Jan 2006 22:50:48 +0100 (CET)
+Received: from localhost ([127.0.0.1])
+	by saperlipopette with esmtp (Exim 4.50)
+	id 1EzLCS-0005wp-3U
+	for linux-mips@linux-mips.org; Wed, 18 Jan 2006 22:50:40 +0100
+Message-ID: <43CEB82F.6020009@kilimandjaro.dyndns.org>
+Date:	Wed, 18 Jan 2006 22:50:39 +0100
+From:	Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050802)
+X-Accept-Language: fr, en
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	ralf@linux-mips.org, tbm@cyrius.com, pdh@colonel-panic.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH Cobalt 1/1] 64-bit fix
-References: <20060116154543.GA26771@deprecation.cyrius.com>	<43CBCAAE.6030403@jg555.com>	<20060117135145.GE3336@linux-mips.org> <20060117.232350.93019515.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060117.232350.93019515.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	linux-mips@linux-mips.org
+Subject: Cobalt Raq2 HD upgrade - Advice required
+X-Enigmail-Version: 0.92.0.0
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Return-Path: <dom@kilimandjaro.dyndns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9970
+X-archive-position: 9971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: dom@kilimandjaro.dyndns.org
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> But got no response at that time.  So I ask again.  Could you tell us
-> how the iomap patch broken verbosely, please?
->
->   
-How can we get this resolved, this issue has been open a long time. Can 
-we all work together to get a working solution in place that everyone 
-will accept?
+Hi Linux-MIPS gurus,
 
-We all need to understand the concerns with the current method. The only 
-issue I see from Ralf is the following:
+First, thanks to all involved for your work on the MIPS platform. My
+trusty Cobalt Raq2 in it's colocation farm not too far away boasts 394
+days of uptime tonight, and you are the guys who made it happen.
 
-    Broken on multiple PCI busses.
+I'd like to beef up the machine, with more RAM and another HD for
+backups. I found the appropriate Wiki page
+(http://www.linux-mips.org/wiki/Cobalt) and I believe I can deal with
+the RAM part. OTOH as regards the hard drive, the page is a bit evasive:
+exactly what kind of HD can I put there (one for a laptop perhaps)? Will
+I need any duct tape to fasten the second disk? Is there anything
+special I should know about the operation?
 
-    Now the way I understand the issue is the current iomap.c only 
-handles a single bus, Ralf's point is that if there are multiple busses 
-this patch may not work properly. Is that a correct statement Ralf.
-
-    So can't we have one iomap.c for single pci bus systems and one for 
-multiple pci bus systems? Just a thought.
+Any insight would be greatly appreciated.
 
 -- 
-----
-Jim Gifford
-maillist@jg555.com
+<< Tout n'y est pas parfait, mais on y honore certainement les jardiniers >>
+
+			Dominique Quatravaux <dom@kilimandjaro.dyndns.org>

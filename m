@@ -1,52 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2006 12:30:26 +0000 (GMT)
-Received: from [213.189.19.80] ([213.189.19.80]:34058 "EHLO mail.kpsws.com")
-	by ftp.linux-mips.org with ESMTP id S8133834AbWASMaG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2006 12:30:06 +0000
-Received: (qmail 50233 invoked by uid 89); 19 Jan 2006 12:33:47 -0000
-Received: from unknown (HELO mail.kpsws.com) (127.0.0.1)
-  by localhost with SMTP; 19 Jan 2006 12:33:47 -0000
-Received: from 194.171.252.101
-        (SquirrelMail authenticated user pulsar@kpsws.com)
-        by mail.kpsws.com with HTTP;
-        Thu, 19 Jan 2006 13:33:47 +0100 (CET)
-Message-ID: <49175.194.171.252.101.1137674027.squirrel@mail.kpsws.com>
-In-Reply-To: <200601191230.59347.p_christ@hol.gr>
-References: <f07e6e0601160423h5ce1c0d7lcb7e38f8509c4116@mail.gmail.com> 
-     <200601190035.19022.p_christ@hol.gr> 
-     <Pine.LNX.4.62.0601191100001.21230@pademelon.sonytel.be> 
-     <200601191230.59347.p_christ@hol.gr>
-Date:	Thu, 19 Jan 2006 13:33:47 +0100 (CET)
-Subject: "useless" pgprot_noncached define in include/asm-mips/pgtable.h
-From:	"Niels Sterrenburg" <pulsar@kpsws.com>
-To:	"Linux/MIPS Development" <linux-mips@linux-mips.org>
-Cc:	niels.sterrenburg@philips.com
-Reply-To: pulsar@kpsws.com
-User-Agent: SquirrelMail/1.4.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2006 13:02:19 +0000 (GMT)
+Received: from relay4.aport.ru ([194.67.18.135]:59319 "HELO relay4.aport.ru")
+	by ftp.linux-mips.org with SMTP id S8134358AbWASNB7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2006 13:01:59 +0000
+Received: (qmail 24232 invoked from network); 19 Jan 2006 13:05:47 -0000
+Received: from webmail.aport.ru ([194.67.18.2]) (envelope-sender <olegol@aport.ru>)
+          by relay4.aport.ru
+          for <geoman@gentoo.org>; 19 Jan 2006 13:05:47 -0000
+Content-Type: text/plain; charset="koi8-r"
+Content-Disposition: inline
+Content-Transfer-Encoding: 7BIT
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-X-Priority: 3
-Importance: Normal
-Return-Path: <pulsar@kpsws.com>
+Message-Id: <Vy3HKuPmiEfd4pZ@aport2000.ru>
+X-Originating-Ip: [175.37.2.205, 217.147.104.220]
+Subject: Re: Re: GTK/GLIB port for mipsel
+From:	olegol@aport.ru
+References: <43CF864F.1020202@gentoo.org>
+X-Mailer: Aport Webmail 2.2
+Date:	Thu, 19 Jan 2006 16:05:48 +0300
+To:	"Stephen P. Becker" <geoman@gentoo.org>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <43CF864F.1020202@gentoo.org>
+Return-Path: <olegol@aport.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 9981
+X-archive-position: 9982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pulsar@kpsws.com
+X-original-sender: olegol@aport.ru
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>> Can anybody here point me to a source where I can 
+>> download a glib and gtk ports for mipsel, or at least 
+get 
+>> more info on this.
+>
+>Well, it wouldn't surprise me if something is broken, as 
+I get the 
+>feeling that the GNOME folks are notorious for doing 
+unportable crap in 
+>their code.  However, GTK/glib builds and works just 
+fine for me.  I 
+>suspect that either something is broken in your cross-
+compile setup, or 
+>you might be using ancient versions of these packages.  
+I have both 
+>glib-2.8.5 and gtk -2.8.10 installed on my (big-endian) 
+machines here 
+>without any problems.
 
-I'm trying to understand the vm implementation on MIPS
-and I see the following #define in include/asm-mips/pgtable.h:
+I'm trying to install glib 2.8.3 (I do not think it is 
+too much different from 2.8.5). I have little-endian mips 
+architecture (mipsel) and am installing the library on 
+the RedHat Linux with core 2.4 (both on a target and on a 
+host).
+I'm using the following parameters with configure:
+./configure --prefix=<path> --build=mipsel-linux --
+host=i686-linux --with-libiconv=gnu
 
-#define pgprot_noncached pgprot_noncached
+Do you have you gtk/glib compiled from the sources on 
+your machine or just a binaries installed? Do you have 
+a ./glib/gatomic.c file compiled? I do not quite 
+understand how that can be (I could not see there a 
+section for MIPS/MIPSEL). Also, do you have any of the 
+G_ATOMIC_<platform> macros defined in the config.h file?
 
-Was there any ideas behind this code or can it be removed ?
-
-regards,
-
-Niels Sterrenburg
+With respect,
+Oleg Kruzhkov

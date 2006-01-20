@@ -1,61 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 21:00:55 +0000 (GMT)
-Received: from [62.38.115.213] ([62.38.115.213]:62415 "EHLO pfn3.pefnos")
-	by ftp.linux-mips.org with ESMTP id S3950320AbWATVAL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2006 21:00:11 +0000
-Received: from xorhgos2.pefnos (xorhgos2.pefnos [192.168.0.3])
-	by pfn3.pefnos (Postfix) with ESMTP id A19AD1F742
-	for <linux-mips@linux-mips.org>; Fri, 20 Jan 2006 23:03:56 +0200 (EET)
-Resent-From: P. Christeas <p_christ@hol.gr>
-Resent-To: linux-mips@linux-mips.org
-Resent-Date: Fri, 20 Jan 2006 23:03:43 +0200
-Resent-Message-ID: <200601202303.43365.p_christ@hol.gr>
-From:	"P. Christeas" <p_christ@hol.gr>
-To:	Marc Karasek <marckarasek@ivivity.com>
-Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
-Date:	Fri, 20 Jan 2006 23:02:28 +0200
-User-Agent: KMail/1.9
-References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com> <200601202203.14325.p_christ@hol.gr> <1137790053.22994.58.camel@localhost.localdomain>
-In-Reply-To: <1137790053.22994.58.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 21:15:28 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:41358 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S3950749AbWATVPH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jan 2006 21:15:07 +0000
+Received: (qmail 3371 invoked from network); 20 Jan 2006 21:18:59 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 20 Jan 2006 21:18:59 -0000
+Message-ID: <43D15483.9080203@ru.mvista.com>
+Date:	Sat, 21 Jan 2006 00:22:11 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MostaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200601202302.29928.p_christ@hol.gr>
-Return-Path: <p_christ@hol.gr>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+CC:	Manish Lachwani <mlachwani@mvista.com>
+Subject: [PATCH] TX49x7: Fix timer register #define's
+Content-Type: multipart/mixed;
+ boundary="------------060606080702090105070806"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10030
+X-archive-position: 10031
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: p_christ@hol.gr
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 20 January 2006 10:47 pm, you wrote:
-> Basically due to design issues and cost issues having a flash based
-> system is not possible.  Currently we have only 16MB total of flash and
-> the biggest contiguous block avail in this is only 12MB.  Our current
-> ramdisk (uncompressed) is running at 30MB.  Basically, memory is cheaper
-> than flash.  When you have designs that are very cost sensitive (to put
-> it lightly), for example adding a 50 cent part is a major event.  You
-> cannot just say we need more flash...  If we are to continue to support
-> the embedded market for Linux,  every decision we make as too what
-> feature gets put in, which ones get dropped have to be made with
-> everyone in mind.  What is good for the desktop market, may not be the
-> best solution for the embedded market.  BTW: When I mean embedded I do
-> not mean Ipaq or Palm.  These are small computers with a completely
-> different set of requirements than a 1U pizza box headless storage
-> controller/switch/etc.
->
+This is a multi-part message in MIME format.
+--------------060606080702090105070806
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Our discussion is quite general, I don't mean to interfere with your hardware 
-design anyway. My point was just that the filesystem you mention would be 
-stored in some kind of ROM anyway (either inside the kernel ELF or outside 
-it). So, you wouldn't need to copy it to your RAM. That's the main feature of 
-squashfs/cromfs. You can still have tmpfs for some kind of read/write 
-storage.
-One drawback, however, would be that the access to the ROM (in the form of 
-mtd) could cost you some extra code that need to go into the kernel.
+Hello.
+
+    Fix the #define's for TX4927/37 timer reg's to match the datasheets (those 
+#define's don't seem to be used anywhere though...)
+
+WBR, Sergei
+
+
+--------------060606080702090105070806
+Content-Type: text/plain;
+ name="TX49x7-fix-timer-reg-defs.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="TX49x7-fix-timer-reg-defs.patch"
+
+diff --git a/include/asm-mips/tx4927/tx4927.h b/include/asm-mips/tx4927/tx4927.h
+index 3bb7f00..de85bd2 100644
+--- a/include/asm-mips/tx4927/tx4927.h
++++ b/include/asm-mips/tx4927/tx4927.h
+@@ -2,7 +2,7 @@
+  * Author: MontaVista Software, Inc.
+  *         source@mvista.com
+  *
+- * Copyright 2001-2002 MontaVista Software Inc.
++ * Copyright 2001-2006 MontaVista Software Inc.
+  *
+  *  This program is free software; you can redistribute it and/or modify it
+  *  under the terms of the GNU General Public License as published by the
+@@ -30,10 +30,10 @@
+ #include <asm/tx4927/tx4927_mips.h>
+ 
+ /*
+- This register naming came from the intergrate cpu/controoler name TX4927
++ This register naming came from the integrated CPU/controller name TX4927
+  followed by the device name from table 4.2.2 on page 4-3 and then followed
+  by the register name from table 4.2.3 on pages 4-4 to 4-8.  The manaul
+- used is "TMPR4927BT Preliminary Rev 0.1 20.Jul.2001".
++ used was "TMPR4927BT Preliminary Rev 0.1 20.Jul.2001".
+  */
+ 
+ #define TX4927_SIO_0_BASE
+@@ -251,8 +251,8 @@
+ 
+ /* TX4927 Timer 0 (32-bit registers) */
+ #define TX4927_TMR0_BASE                0xf000
+-#define TX4927_TMR0_TMTCR0              0xf004
+-#define TX4927_TMR0_TMTISR0             0xf008
++#define TX4927_TMR0_TMTCR0              0xf000
++#define TX4927_TMR0_TMTISR0             0xf004
+ #define TX4927_TMR0_TMCPRA0             0xf008
+ #define TX4927_TMR0_TMCPRB0             0xf00c
+ #define TX4927_TMR0_TMITMR0             0xf010
+@@ -264,8 +264,8 @@
+ 
+ /* TX4927 Timer 1 (32-bit registers) */
+ #define TX4927_TMR1_BASE                0xf100
+-#define TX4927_TMR1_TMTCR1              0xf104
+-#define TX4927_TMR1_TMTISR1             0xf108
++#define TX4927_TMR1_TMTCR1              0xf100
++#define TX4927_TMR1_TMTISR1             0xf104
+ #define TX4927_TMR1_TMCPRA1             0xf108
+ #define TX4927_TMR1_TMCPRB1             0xf10c
+ #define TX4927_TMR1_TMITMR1             0xf110
+@@ -277,13 +277,12 @@
+ 
+ /* TX4927 Timer 2 (32-bit registers) */
+ #define TX4927_TMR2_BASE                0xf200
+-#define TX4927_TMR2_TMTCR2              0xf104
+-#define TX4927_TMR2_TMTISR2             0xf208
++#define TX4927_TMR2_TMTCR2              0xf200
++#define TX4927_TMR2_TMTISR2             0xf204
+ #define TX4927_TMR2_TMCPRA2             0xf208
+-#define TX4927_TMR2_TMCPRB2             0xf20c
+ #define TX4927_TMR2_TMITMR2             0xf210
+ #define TX4927_TMR2_TMCCDR2             0xf220
+-#define TX4927_TMR2_TMPGMR2             0xf230
++#define TX4927_TMR2_TMWTMR2             0xf240
+ #define TX4927_TMR2_TMTRR2              0xf2f0
+ #define TX4927_TMR2_LIMIT               0xf2ff
+ 
+
+
+
+--------------060606080702090105070806--

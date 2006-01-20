@@ -1,94 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 20:44:02 +0000 (GMT)
-Received: from mail.ivivity.com ([64.238.111.98]:51014 "EHLO thoth.ivivity.com")
-	by ftp.linux-mips.org with ESMTP id S3950158AbWATUnn convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jan 2006 20:43:43 +0000
-Received: from 192.168.1.162 ([192.168.1.162]) by thoth.ivivity.com ([192.168.1.9]) with Microsoft Exchange Server HTTP-DAV ;
- Fri, 20 Jan 2006 20:47:33 +0000
-Received: from MCK_Linux_NB by mail.ivivity.com; 20 Jan 2006 15:47:33 -0500
-Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
-From:	Marc Karasek <marckarasek@ivivity.com>
-To:	"P. Christeas" <p_christ@hol.gr>
-Cc:	Linux-Mips <linux-mips@linux-mips.org>
-In-Reply-To: <200601202203.14325.p_christ@hol.gr>
-References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>
-	 <200601202129.11398.p_christ@hol.gr>
-	 <1137786593.22994.46.camel@localhost.localdomain>
-	 <200601202203.14325.p_christ@hol.gr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Date:	Fri, 20 Jan 2006 15:47:33 -0500
-Message-Id: <1137790053.22994.58.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.0.4 (2.0.4-4) 
-Return-Path: <marck@ivivity.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 20:59:59 +0000 (GMT)
+Received: from mail-out.m-online.net ([212.18.0.9]:3490 "EHLO
+	mail-out.m-online.net") by ftp.linux-mips.org with ESMTP
+	id S3950163AbWATU7g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jan 2006 20:59:36 +0000
+Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
+	by mail-out.m-online.net (Postfix) with ESMTP id 6A69270299;
+	Fri, 20 Jan 2006 22:03:33 +0100 (CET)
+X-Auth-Info: Bc1aKy2xnrwQXHNvlekoxVovonLlrU949Dl2MTRyBqU=
+X-Auth-Info: Bc1aKy2xnrwQXHNvlekoxVovonLlrU949Dl2MTRyBqU=
+X-Auth-Info: Bc1aKy2xnrwQXHNvlekoxVovonLlrU949Dl2MTRyBqU=
+Received: from mail.denx.de (p54965939.dip.t-dialin.net [84.150.89.57])
+	by smtp-auth.mnet-online.de (Postfix) with ESMTP id 53457B9629;
+	Fri, 20 Jan 2006 22:03:33 +0100 (CET)
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by mail.denx.de (Postfix) with ESMTP id D66BA6D006D;
+	Fri, 20 Jan 2006 22:03:32 +0100 (MET)
+Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP id C73F0354113;
+	Fri, 20 Jan 2006 22:03:32 +0100 (MET)
+To:	Marc Karasek <marckarasek@ivivity.com>
+cc:	"P. Christeas" <p_christ@hol.gr>,
+	Linux-Mips <linux-mips@linux-mips.org>
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14? 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Fri, 20 Jan 2006 15:47:33 EST."
+             <1137790053.22994.58.camel@localhost.localdomain> 
+Date:	Fri, 20 Jan 2006 22:03:32 +0100
+Message-Id: <20060120210332.C73F0354113@atlas.denx.de>
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10028
+X-archive-position: 10029
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marckarasek@ivivity.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-Basically due to design issues and cost issues having a flash based
-system is not possible.  Currently we have only 16MB total of flash and
-the biggest contiguous block avail in this is only 12MB.  Our current
-ramdisk (uncompressed) is running at 30MB.  Basically, memory is cheaper
-than flash.  When you have designs that are very cost sensitive (to put
-it lightly), for example adding a 50 cent part is a major event.  You
-cannot just say we need more flash...  If we are to continue to support
-the embedded market for Linux,  every decision we make as too what
-feature gets put in, which ones get dropped have to be made with
-everyone in mind.  What is good for the desktop market, may not be the
-best solution for the embedded market.  BTW: When I mean embedded I do
-not mean Ipaq or Palm.  These are small computers with a completely
-different set of requirements than a 1U pizza box headless storage
-controller/switch/etc.
+In message <1137790053.22994.58.camel@localhost.localdomain> you wrote:
+> Basically due to design issues and cost issues having a flash based
+> system is not possible.  Currently we have only 16MB total of flash and
+
+If you have enough flash to store a compressed ramdisk image, you can
+store a compressed flash file system as well. For example, you  could
+use  a  cramfs file system. In most cases the ramdisk solution is the
+worst option to chose. See for example
+http://www.denx.de/wiki/view/DULG/RootFileSystemSelection
 
 
+Best regards,
 
-On Fri, 2006-01-20 at 22:03 +0200, P. Christeas wrote:
-> On Friday 20 January 2006 9:49 pm, you wrote:
-> > Actually what we have currently done is seperate the ramdisk.gz image
-> > from the kernel. By default the kernel would combine the two images.
-> > This was done for a number of reasons,  being able to customize the
-> > ramdisk apart from the kernel (different applications),  updating the
-> > ramdisk/kernel seperate from one another, flash and memory constraints.
-> >
-> > In our process the embedded ramdisk is the filesystem.  It contains
-> > busybox, all of our applications/kernel modules, glibc, etc.  And before
-> > you ask, yes we have looked at uCLibc, but it does not fit our needs,
-> > especially now that it is coupled with its own ramdisk creation tools.
-> >
-> > One other thing that bothers me is the ability for ramfs to grow/shrink
-> > as needed.  This could be a major roadblock for us.  With an embedded
-> > system, I would be hesitant to put in a filesystem that could gobble up
-> > all of the memory.  At least with ramdisk, you would get a not enough
-> > room message, with ramfs it just keeps growing until the kernel locks-
-> > up.  (At least this is my impression.)  This is a very dangerous for an
-> > embedded application.
-> >
-> 
-> If you don't mind, you could post our conversation in public (if your layout 
-> is not something secret). Tell me if I should cc to linux-mips.
-> 
-> One point is that nowadays, systems are *not* diskless. Since flash memory can 
-> be used as a partition, there should be no reason to have a kernel with 
-> embedded rootfs.
-> Why not have sth like squashfs or jffs2 (rw) somewhere in the memory and use 
-> it (which wouldn't require any RAM)?
-> If you want, you could consider a "failsafe" ramdisk/fs that would load in 
-> special cases (explicit load or a button press at boottime) where you need to 
-> update the squashfs on the flash.
+Wolfgang Denk
+
 -- 
-Any content within this email is provided “AS IS” for informational purposes only.  No contract will be formed between the parties by virtue of this email. 
-/***********************
-Marc Karasek
-System Lead Technical Engineer
-iVivity Inc.
-T 678-990-1550 x238
-F 678-990-1551
-***********************/
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+There are bugs and then there are bugs.  And then there are bugs.
+                                                    - Karl Lehenbauer

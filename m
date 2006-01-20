@@ -1,54 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 18:28:34 +0000 (GMT)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:47331 "EHLO
-	sakura.staff.proxad.net") by ftp.linux-mips.org with ESMTP
-	id S8133389AbWATS2O (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jan 2006 18:28:14 +0000
-Received: from max by sakura.staff.proxad.net with local (Exim 3.36 #1 (Debian))
-	id 1F013R-0001Ag-00; Fri, 20 Jan 2006 19:32:09 +0100
-Subject: Re: Time slowing down while doing IDE PIO transfer
-From:	Maxime Bizon <mbizon@freebox.fr>
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1137780938.24161.25.camel@localhost.localdomain>
-References: <1137777997.16631.147.camel@sakura.staff.proxad.net>
-	 <1137780938.24161.25.camel@localhost.localdomain>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Date:	Fri, 20 Jan 2006 19:32:09 +0100
-Message-Id: <1137781929.16631.155.camel@sakura.staff.proxad.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 18:39:59 +0000 (GMT)
+Received: from mail.ivivity.com ([64.238.111.98]:22741 "EHLO thoth.ivivity.com")
+	by ftp.linux-mips.org with ESMTP id S8133389AbWATSji convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jan 2006 18:39:38 +0000
+Received: from 192.168.1.162 ([192.168.1.162]) by thoth.ivivity.com ([192.168.1.9]) with Microsoft Exchange Server HTTP-DAV ;
+ Fri, 20 Jan 2006 18:43:28 +0000
+Received: from MCK_Linux_NB by mail.ivivity.com; 20 Jan 2006 13:43:28 -0500
+Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
+From:	Marc Karasek <marckarasek@ivivity.com>
+To:	Kumba <kumba@gentoo.org>
+Cc:	linux-mips <linux-mips@linux-mips.org>,
+	zhuzhenhua <zzh.hust@gmail.com>
+In-Reply-To: <43D06305.8070908@gentoo.org>
+References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>
+	 <43CC39A0.8080704@gentoo.org>
+	 <1137515220.11738.2.camel@localhost.localdomain>
+	 <43CD9568.1000707@gentoo.org>
+	 <1137704865.22994.7.camel@localhost.localdomain>
+	 <43D06305.8070908@gentoo.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Date:	Fri, 20 Jan 2006 13:43:28 -0500
+Message-Id: <1137782608.22994.26.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.4.1 
-Return-Path: <mbizon@freebox.fr>
+X-Mailer: Evolution 2.0.4 (2.0.4-4) 
+Return-Path: <marck@ivivity.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10024
+X-archive-position: 10025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: marckarasek@ivivity.com
 Precedence: bulk
 X-list: linux-mips
 
+I am going to have to take a good look at this before making any
+changes.  There are other things we must consider.  I may still want to
+grab your patches,  if in the end we see this as adding to much
+overhead.  
 
-On Fri, 2006-01-20 at 18:15 +0000, Alan Cox wrote:
+Two things I will have to look at very closely is the size of the
+ramdisk.gz vs this cpio archive (how much bigger is one over the other?)
+and how cleanly can we seperate the cpio archive from the kernel to have
+two images instead of one big one.  If either of these items fails
+muster, then we cannot use the initramfs and must go back to ramdisk.gz.
+  
 
-> > This is I guess related to the interrupts being disabled during pio
-> > transfer (I can't use unmaskirq btw).
-
-> Silly question - but why not ?
-
-It just doesn't work :)
-
-Transfers stall and here is the kind of message I get:
-
-hdb: lost interrupt
-hdb: status error: status=0x58 { DriveReady SeekComplete DataRequest }
-ide: failed opcode was: unknown
-hdb: drive not ready for command
-hdb: status timeout: status=0xd0 { Busy }
-ide: failed opcode was: unknown
-hdb: drive not ready for command
-
+On Thu, 2006-01-19 at 23:11 -0500, Kumba wrote:
+> Marc Karasek wrote:
+> > Is the process still the same.  In that you create a ramdisk image that
+> > can be mounted, just using initramfs instead?   
+> 
+> It's actually simpler than that, insofar as creating the archive.  There are two 
+> ways that I've tried, probably another exists as well.  None involve the mess of 
+> creating a mountable image.
+> 
+> 1) In the scripts/ dir in the kernel tree, there's a script, 
+> gen_initramfs_list.sh.  chmod +x it, and pass to it (as its only argument) an 
+> absolute path pointing to a ready-to-go root file system that will be loaded by 
+> the machine that boots the subsequently produced kernel.  The output of 
+> gen_initramfs_list should be directed to a text file -- it's a text listing of 
+> every file in the directory passed, including mode params, symlink destination, 
+> whether it's a device or not (and if is, how to re-create it), etc..  This text 
+> file can then be passed to the initramfs option in menuconfig, and the kernel 
+> pulls in the files and rolls them into its initramfs cpio archive it builds.
+> 
+> 2) cpio up a ready-to-go root file system and pass that to the same initramfs 
+> option in menuconfig.
+> 
+> 
+> Provided the root filesystem is setup properly, just don't pass root= on the 
+> command line, and the kernel takes over loading and running the main startup 
+> script (it's either /init or /linuxrc that it looks for, one of the two).
+> 
+> 
+> > We will be moving to 2.6.x for our next chip and currently have scripts
+> > to create a ramdisk with busybox embedded.  If these cannot be used
+> > anymore, I may want to take over the patches for ramdisk from you and
+> > maintain them.  Otherwise our sdk would have to change and the tools,
+> > etc. and that is not a desireable option......
+> 
+> This isn't that big of a change actually.  As described above, it's decidedly 
+> simpler, as you don't have to rely on any file system (it's basically the same 
+> as the old MS-DOS ramdisks some utilities diskettes would load up and dump tools 
+> into)
+> 
+> 
+> > IMO: Fixing something that was not broken is not a very good idea. :-)
+> 
+> I thought the same initially, but in truth, initramfs is far simpler, once you 
+> figure it out.  I even fixed the embedded ramdisk to handle linking in objects 
+> files with conflicting ABIs (encountered when we built netboot images for SGI O2 
+> because at the time, we built O2's kernels with -mabi=o64 which uses some mean 
+> tricks to stuff 64bit code into a 32bit file; ld hated that).  Of course, I did 
+> this fix about an hour after Ralf removed the ramdisk code from 2.6.10 CVS. 
+> Talk about a sense of timing.
+> 
+> Especially once we found out initramfs loaded flawlessly on Origin, it was 
+> essentially deemed to become the replacement.
+> 
+> 
+> 
+> --Kumba
+> 
 -- 
-Maxime
+Any content within this email is provided “AS IS” for informational purposes only.  No contract will be formed between the parties by virtue of this email. 
+/***********************
+Marc Karasek
+System Lead Technical Engineer
+iVivity Inc.
+T 678-990-1550 x238
+F 678-990-1551
+***********************/

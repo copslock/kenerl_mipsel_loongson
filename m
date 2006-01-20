@@ -1,64 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 20:59:59 +0000 (GMT)
-Received: from mail-out.m-online.net ([212.18.0.9]:3490 "EHLO
-	mail-out.m-online.net") by ftp.linux-mips.org with ESMTP
-	id S3950163AbWATU7g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jan 2006 20:59:36 +0000
-Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
-	by mail-out.m-online.net (Postfix) with ESMTP id 6A69270299;
-	Fri, 20 Jan 2006 22:03:33 +0100 (CET)
-X-Auth-Info: Bc1aKy2xnrwQXHNvlekoxVovonLlrU949Dl2MTRyBqU=
-X-Auth-Info: Bc1aKy2xnrwQXHNvlekoxVovonLlrU949Dl2MTRyBqU=
-X-Auth-Info: Bc1aKy2xnrwQXHNvlekoxVovonLlrU949Dl2MTRyBqU=
-Received: from mail.denx.de (p54965939.dip.t-dialin.net [84.150.89.57])
-	by smtp-auth.mnet-online.de (Postfix) with ESMTP id 53457B9629;
-	Fri, 20 Jan 2006 22:03:33 +0100 (CET)
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by mail.denx.de (Postfix) with ESMTP id D66BA6D006D;
-	Fri, 20 Jan 2006 22:03:32 +0100 (MET)
-Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP id C73F0354113;
-	Fri, 20 Jan 2006 22:03:32 +0100 (MET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 21:00:55 +0000 (GMT)
+Received: from [62.38.115.213] ([62.38.115.213]:62415 "EHLO pfn3.pefnos")
+	by ftp.linux-mips.org with ESMTP id S3950320AbWATVAL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2006 21:00:11 +0000
+Received: from xorhgos2.pefnos (xorhgos2.pefnos [192.168.0.3])
+	by pfn3.pefnos (Postfix) with ESMTP id A19AD1F742
+	for <linux-mips@linux-mips.org>; Fri, 20 Jan 2006 23:03:56 +0200 (EET)
+Resent-From: P. Christeas <p_christ@hol.gr>
+Resent-To: linux-mips@linux-mips.org
+Resent-Date: Fri, 20 Jan 2006 23:03:43 +0200
+Resent-Message-ID: <200601202303.43365.p_christ@hol.gr>
+From:	"P. Christeas" <p_christ@hol.gr>
 To:	Marc Karasek <marckarasek@ivivity.com>
-cc:	"P. Christeas" <p_christ@hol.gr>,
-	Linux-Mips <linux-mips@linux-mips.org>
-From:	Wolfgang Denk <wd@denx.de>
-Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14? 
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 8bit
-In-reply-to: Your message of "Fri, 20 Jan 2006 15:47:33 EST."
-             <1137790053.22994.58.camel@localhost.localdomain> 
-Date:	Fri, 20 Jan 2006 22:03:32 +0100
-Message-Id: <20060120210332.C73F0354113@atlas.denx.de>
-Return-Path: <wd@denx.de>
+Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
+Date:	Fri, 20 Jan 2006 23:02:28 +0200
+User-Agent: KMail/1.9
+References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com> <200601202203.14325.p_christ@hol.gr> <1137790053.22994.58.camel@localhost.localdomain>
+In-Reply-To: <1137790053.22994.58.camel@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200601202302.29928.p_christ@hol.gr>
+Return-Path: <p_christ@hol.gr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10029
+X-archive-position: 10030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: p_christ@hol.gr
 Precedence: bulk
 X-list: linux-mips
 
-In message <1137790053.22994.58.camel@localhost.localdomain> you wrote:
+On Friday 20 January 2006 10:47 pm, you wrote:
 > Basically due to design issues and cost issues having a flash based
 > system is not possible.  Currently we have only 16MB total of flash and
+> the biggest contiguous block avail in this is only 12MB.  Our current
+> ramdisk (uncompressed) is running at 30MB.  Basically, memory is cheaper
+> than flash.  When you have designs that are very cost sensitive (to put
+> it lightly), for example adding a 50 cent part is a major event.  You
+> cannot just say we need more flash...  If we are to continue to support
+> the embedded market for Linux,  every decision we make as too what
+> feature gets put in, which ones get dropped have to be made with
+> everyone in mind.  What is good for the desktop market, may not be the
+> best solution for the embedded market.  BTW: When I mean embedded I do
+> not mean Ipaq or Palm.  These are small computers with a completely
+> different set of requirements than a 1U pizza box headless storage
+> controller/switch/etc.
+>
 
-If you have enough flash to store a compressed ramdisk image, you can
-store a compressed flash file system as well. For example, you  could
-use  a  cramfs file system. In most cases the ramdisk solution is the
-worst option to chose. See for example
-http://www.denx.de/wiki/view/DULG/RootFileSystemSelection
-
-
-Best regards,
-
-Wolfgang Denk
-
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-There are bugs and then there are bugs.  And then there are bugs.
-                                                    - Karl Lehenbauer
+Our discussion is quite general, I don't mean to interfere with your hardware 
+design anyway. My point was just that the filesystem you mention would be 
+stored in some kind of ROM anyway (either inside the kernel ELF or outside 
+it). So, you wouldn't need to copy it to your RAM. That's the main feature of 
+squashfs/cromfs. You can still have tmpfs for some kind of read/write 
+storage.
+One drawback, however, would be that the access to the ROM (in the form of 
+mtd) could cost you some extra code that need to go into the kernel.

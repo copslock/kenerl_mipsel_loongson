@@ -1,117 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 00:39:33 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:6159 "EHLO sorrow.cyrius.com")
-	by ftp.linux-mips.org with ESMTP id S3468186AbWATAjJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2006 00:39:09 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 766A164D54; Fri, 20 Jan 2006 00:42:24 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 96124854A; Fri, 20 Jan 2006 00:42:08 +0000 (GMT)
-Date:	Fri, 20 Jan 2006 00:42:08 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Subject: Crash on Cobalt with CONFIG_SERIO=y
-Message-ID: <20060120004208.GA18327@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 04:08:31 +0000 (GMT)
+Received: from sccrmhc11.comcast.net ([204.127.202.55]:38285 "EHLO
+	sccrmhc11.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S8126502AbWATEIK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jan 2006 04:08:10 +0000
+Received: from [192.168.1.4] (pcp04414054pcs.nrockv01.md.comcast.net[69.140.185.48])
+          by comcast.net (sccrmhc11) with ESMTP
+          id <2006012004115701100dcvk5e>; Fri, 20 Jan 2006 04:11:57 +0000
+Message-ID: <43D06305.8070908@gentoo.org>
+Date:	Thu, 19 Jan 2006 23:11:49 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+CC:	zhuzhenhua <zzh.hust@gmail.com>
+Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
+References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>	 <43CC39A0.8080704@gentoo.org>	 <1137515220.11738.2.camel@localhost.localdomain>	 <43CD9568.1000707@gentoo.org> <1137704865.22994.7.camel@localhost.localdomain>
+In-Reply-To: <1137704865.22994.7.camel@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10009
+X-archive-position: 10010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-I get the following crash on Cobalt when CONFIG_SERIO=y is set.
-I realize that this option is not really necessary on Cobalt but the
-kernel should neverless not crash if it is enabled.
+Marc Karasek wrote:
+> Is the process still the same.  In that you create a ramdisk image that
+> can be mounted, just using initramfs instead?   
+
+It's actually simpler than that, insofar as creating the archive.  There are two 
+ways that I've tried, probably another exists as well.  None involve the mess of 
+creating a mountable image.
+
+1) In the scripts/ dir in the kernel tree, there's a script, 
+gen_initramfs_list.sh.  chmod +x it, and pass to it (as its only argument) an 
+absolute path pointing to a ready-to-go root file system that will be loaded by 
+the machine that boots the subsequently produced kernel.  The output of 
+gen_initramfs_list should be directed to a text file -- it's a text listing of 
+every file in the directory passed, including mode params, symlink destination, 
+whether it's a device or not (and if is, how to re-create it), etc..  This text 
+file can then be passed to the initramfs option in menuconfig, and the kernel 
+pulls in the files and rolls them into its initramfs cpio archive it builds.
+
+2) cpio up a ready-to-go root file system and pass that to the same initramfs 
+option in menuconfig.
 
 
- Activating ISA DMA hang workarounds.
- rtc: Digital UNIX epoch (1952) detected
- Real Time Clock Driver v1.12a
- Cobalt LCD Driver v2.10
- i8042.c: i8042 controller self test timeout.
- Unhandled kernel unaligned access[#1]:
- Cpu 0
- $ 0   : 0000000000000000 ffffffff940044e0 996bffffff4093b8 0000000000000000
- $ 4   : ffffffff8026a280 ffffffffdc620028 0000000000000000 996bffffff409398
- $ 8   : 980000000032c000 980000000032fdc0 0000000000000000 ffffffff80300000
- $12   : ffffffff940044e0 000000001000001e ffffffff802a0000 ffffffff80300000
- $16   : 980000000032fdc0 ffffffff802a2408 0000000000000000 ffffffff80310000
- $20   : ffffffff802b0000 ffffffff802a0000 ffffffff802a0000 ffffffff80280000
- $24   : ffffffff80310000 ffffffff802b0000                                  
- $28   : 980000000032c000 980000000032fd90 ffffffff80270000 ffffffff8008236c
- Hi    : 000000000000007b
- Lo    : e76c8b43957fdc00
- epc   : ffffffff80089a58 do_ade+0x398/0x4a0     Not tainted
- ra    : ffffffff8008236c handle_adel_int+0x34/0x48
- Status: 940044e2    KX SX UX KERNEL EXL 
- Cause : 00808010
- BadVA : 996bffffff40939f
- PrId  : 000028a0
- Modules linked in:
- Process swapper (pid: 1, threadinfo=980000000032c000, task=9800000000331788)
- Stack : ffffffff80310000 ffffffff802a2408 ffffffff940044e1 ffffffff80310000
-         ffffffff8008236c ffffffff80300000 0000000000000000 ffffffff940044e0
-         0033ffffffc01510 996bffffff409370 ffffffff80310000 9800000001000000
-         000000000000006f ffffffff802a23f8 000000000000006f 0000000080000000
-         ffffffff80300000 ffffffff80300000 ffffffff802a0000 ffffffff80300000
-         ffffffff802a0000 ffffffff80300000 ffffffff80310000 ffffffff802a2408
-         ffffffff940044e1 ffffffff80310000 ffffffff802b0000 ffffffff802a0000
-         ffffffff802a0000 ffffffff80280000 ffffffff80310000 ffffffff802b0000
-         980000000032feb8 ffffffff801bbe70 980000000032c000 980000000032fef0
-         ffffffff80270000 ffffffff802f3944 ffffffff940044e2 000000000000007b
-         ...
- Call Trace:
-  [<ffffffff8008236c>] handle_adel_int+0x34/0x48
-  [<ffffffff801bbe70>] i8042_command+0x1e8/0x3a8
-  [<ffffffff802f3944>] i8042_init+0x11c/0xac8
-  [<ffffffff800dc878>] kfree+0x70/0x110
-  [<ffffffff802f3944>] i8042_init+0x11c/0xac8
-  [<ffffffff801c8e70>] bus_register+0x120/0x270
-  [<ffffffff80080600>] init+0x158/0x448
-  [<ffffffff80083900>] kernel_thread_helper+0x10/0x18
-  [<ffffffff800838f0>] kernel_thread_helper+0x0/0x18
- 
- 
- Code: 00621824  5460ff7d  de020100 <68e30007> 6ce30000  24020000  1440ffa0  00051402  08022657 
- Kernel panic - not syncing: Attempted to kill init!
+Provided the root filesystem is setup properly, just don't pass root= on the 
+command line, and the kernel takes over loading and running the main startup 
+script (it's either /init or /linuxrc that it looks for, one of the two).
 
 
-The only difference between a broken and working kernel is:
+> We will be moving to 2.6.x for our next chip and currently have scripts
+> to create a ramdisk with busybox embedded.  If these cannot be used
+> anymore, I may want to take over the patches for ramdisk from you and
+> maintain them.  Otherwise our sdk would have to change and the tools,
+> etc. and that is not a desireable option......
 
---- config-broken	2006-01-20 00:30:23.000000000 +0000
-+++ config-working	2006-01-20 00:30:33.000000000 +0000
-@@ -1,7 +1,7 @@
- #
- # Automatically generated make config: don't edit
- # Linux kernel version: 2.6.15
--# Fri Jan 20 00:24:47 2006
-+# Fri Jan 20 00:30:33 2006
- #
- CONFIG_MIPS=y
- 
-@@ -531,12 +531,7 @@
- #
- # Hardware I/O ports
- #
--CONFIG_SERIO=y
--CONFIG_SERIO_I8042=y
--CONFIG_SERIO_SERPORT=y
--# CONFIG_SERIO_PCIPS2 is not set
--# CONFIG_SERIO_LIBPS2 is not set
--# CONFIG_SERIO_RAW is not set
-+# CONFIG_SERIO is not set
- # CONFIG_GAMEPORT is not set
- 
- #
+This isn't that big of a change actually.  As described above, it's decidedly 
+simpler, as you don't have to rely on any file system (it's basically the same 
+as the old MS-DOS ramdisks some utilities diskettes would load up and dump tools 
+into)
+
+
+> IMO: Fixing something that was not broken is not a very good idea. :-)
+
+I thought the same initially, but in truth, initramfs is far simpler, once you 
+figure it out.  I even fixed the embedded ramdisk to handle linking in objects 
+files with conflicting ABIs (encountered when we built netboot images for SGI O2 
+because at the time, we built O2's kernels with -mabi=o64 which uses some mean 
+tricks to stuff 64bit code into a 32bit file; ld hated that).  Of course, I did 
+this fix about an hour after Ralf removed the ramdisk code from 2.6.10 CVS. 
+Talk about a sense of timing.
+
+Especially once we found out initramfs loaded flawlessly on Origin, it was 
+essentially deemed to become the replacement.
+
+
+
+--Kumba
 
 -- 
-Martin Michlmayr
-http://www.cyrius.com/
+Gentoo/MIPS Team Lead
+Gentoo Foundation Board of Trustees
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

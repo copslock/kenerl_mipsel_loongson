@@ -1,79 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 21:23:54 +0000 (GMT)
-Received: from mail.ivivity.com ([64.238.111.98]:41556 "EHLO thoth.ivivity.com")
-	by ftp.linux-mips.org with ESMTP id S3950817AbWATVXV convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jan 2006 21:23:21 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14? 
-Date:	Fri, 20 Jan 2006 16:27:12 -0500
-Message-ID: <0F31272A2BCBBE4FA01344C6E69DBF501EAB34@thoth.ivivity.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14? 
-Thread-Index: AcYeBPqm1DKZFxXlSfSXFGF8q1HmBAAAvyIA
-From:	"Marc Karasek" <marck@ivivity.com>
-To:	<wd@denx.de>
-Cc:	"P. Christeas" <p_christ@hol.gr>,
-	"Linux-Mips" <linux-mips@linux-mips.org>
-Return-Path: <marck@ivivity.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 21:48:20 +0000 (GMT)
+Received: from fw-ca-1-hme0.vitesse.com ([64.215.88.90]:44483 "EHLO
+	email.vitesse.com") by ftp.linux-mips.org with ESMTP
+	id S3950893AbWATVry (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jan 2006 21:47:54 +0000
+Received: from wilson.vitesse.com (wilson [192.9.212.7])
+	by email.vitesse.com (8.11.0/8.11.0) with ESMTP id k0KLpjh22559
+	for <linux-mips@linux-mips.org>; Fri, 20 Jan 2006 13:51:45 -0800 (PST)
+Received: from MX-COS.vsc.vitesse.com (mx-cs1 [192.9.212.67])
+	by wilson.vitesse.com (8.11.6/8.11.6) with ESMTP id k0KLpiX11470
+	for <linux-mips@linux-mips.org>; Fri, 20 Jan 2006 14:51:44 -0700 (MST)
+Received: MX-COS 192.9.212.98 from 192.9.211.152 192.9.211.152 via HTTP with MS-WebStorage 6.0.6249
+Received: from lx-kurts.vitesse.com by MX-COS; 20 Jan 2006 14:51:06 -0700
+Subject: Build errors
+From:	Kurt Schwemmer <kurts@vitesse.com>
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Date:	Fri, 20 Jan 2006 14:51:05 -0700
+Message-Id: <1137793865.15788.26.camel@lx-kurts>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.2 (2.2.2-5) 
+Return-Path: <kurts@vitesse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10032
+X-archive-position: 10033
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marck@ivivity.com
+X-original-sender: kurts@vitesse.com
 Precedence: bulk
 X-list: linux-mips
 
-I took a look at the page...
+Disclaimer: This is my first attempt to recompile the linux-mips kernel
+so these are probably just newbie problems.
 
-The one criteria, being able to update in a live system, trumps all of the other considerations.  If you cannot update a live system, then you might as well take your ball & bat and go home.  :-)
+I sync'd with git clone rsync://ftp.linux-mips.org/git/linux.git
+linux.git 2 days ago. I downloaded and installed sde:
+ftp://ftp.mips.com/pub/tools/software/sde-for-linux/6.02.03-1/mipsel-sdelinux-v6.02.03-1.i386.rpm
 
-Seriously, that is a what I would call a no-brainer decision.    
+I'm building for a Malta eval board. I'm trying to compile in oprofile
+support. I execute the following sequence:
+1. Copy the default malta config file to .config
+2. run make xconfig and add oprofile support
+3. make clean
+4. make vmlinux.srec
 
-Any content within this email is provided "AS IS" for informational purposes only. No contract will be formed between the parties by virtue of this email.
-<**************************>
-Marc Karasek
-System Lead Technical Engineer
-iVivity Inc.
-PH: 678-990-1550 x238
-Fax: 678-990-1551
-<**************************>
+I get a few warnings:
 
+kernel/pid.c: In function `pidhash_init':
+kernel/pid.c:260: warning: comparison of distinct pointer types lacks a
+cast
+  CC      kernel/rcupdate.o
+  CC      kernel/intermodule.o
+kernel/intermodule.c:178: warning: `inter_module_register' is deprecated
+(declared at kernel/intermodule.c:38)
+kernel/intermodule.c:179: warning: `inter_module_unregister' is
+deprecated (declared at kernel/intermodule.c:78)
+kernel/intermodule.c:181: warning: `inter_module_put' is deprecated
+(declared at kernel/intermodule.c:159)
 
+...but the one that kills me is:
+mm/msync.o: In function `msync_interval':
+msync.c:(.text+0x10c): unmatched HI16 relocation
+mipsel-linux-ld: final link failed: Bad value
+make[1]: *** [mm/built-in.o] Error 1
+make: *** [mm] Error 2
 
------Original Message-----
-From: wd@denx.de [mailto:wd@denx.de]
-Sent: Friday, January 20, 2006 4:04 PM
-To: Marc Karasek
-Cc: P. Christeas; Linux-Mips
-Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14? 
+Would someone tell me what I'm doing wrong? I'm pretty sure people
+wouldn't be checking in code that doesn't even build!
 
-
-In message <1137790053.22994.58.camel@localhost.localdomain> you wrote:
-> Basically due to design issues and cost issues having a flash based
-> system is not possible.  Currently we have only 16MB total of flash and
-
-If you have enough flash to store a compressed ramdisk image, you can
-store a compressed flash file system as well. For example, you  could
-use  a  cramfs file system. In most cases the ramdisk solution is the
-worst option to chose. See for example
-http://www.denx.de/wiki/view/DULG/RootFileSystemSelection
-
-
-Best regards,
-
-Wolfgang Denk
-
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-There are bugs and then there are bugs.  And then there are bugs.
-                                                    - Karl Lehenbauer
+Thanks,
+Kurt Schwemmer

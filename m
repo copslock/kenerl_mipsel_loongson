@@ -1,94 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 04:08:31 +0000 (GMT)
-Received: from sccrmhc11.comcast.net ([204.127.202.55]:38285 "EHLO
-	sccrmhc11.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S8126502AbWATEIK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jan 2006 04:08:10 +0000
-Received: from [192.168.1.4] (pcp04414054pcs.nrockv01.md.comcast.net[69.140.185.48])
-          by comcast.net (sccrmhc11) with ESMTP
-          id <2006012004115701100dcvk5e>; Fri, 20 Jan 2006 04:11:57 +0000
-Message-ID: <43D06305.8070908@gentoo.org>
-Date:	Thu, 19 Jan 2006 23:11:49 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 1.5 (Windows/20051201)
-MIME-Version: 1.0
-To:	linux-mips <linux-mips@linux-mips.org>
-CC:	zhuzhenhua <zzh.hust@gmail.com>
-Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
-References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>	 <43CC39A0.8080704@gentoo.org>	 <1137515220.11738.2.camel@localhost.localdomain>	 <43CD9568.1000707@gentoo.org> <1137704865.22994.7.camel@localhost.localdomain>
-In-Reply-To: <1137704865.22994.7.camel@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 05:38:56 +0000 (GMT)
+Received: from bay102-f41.bay102.hotmail.com ([64.4.61.51]:14755 "EHLO
+	hotmail.com") by ftp.linux-mips.org with ESMTP id S8127229AbWATFid
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jan 2006 05:38:33 +0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 19 Jan 2006 21:42:24 -0800
+Message-ID: <BAY102-F41867852507C64F046B6C59A1F0@phx.gbl>
+Received: from 64.4.61.200 by by102fd.bay102.hotmail.msn.com with HTTP;
+	Fri, 20 Jan 2006 05:42:23 GMT
+X-Originating-IP: [157.120.127.3]
+X-Originating-Email: [tefs_engine@hotmail.com]
+X-Sender: tefs_engine@hotmail.com
+From:	"tefs engine" <tefs_engine@hotmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Dbau1100. About ioremap of the physical address on the ApplicationXIP.
+Date:	Fri, 20 Jan 2006 14:42:23 +0900
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-2022-jp; format=flowed
+X-OriginalArrivalTime: 20 Jan 2006 05:42:24.0616 (UTC) FILETIME=[4A4E1E80:01C61D84]
+Return-Path: <tefs_engine@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10010
+X-archive-position: 10011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: tefs_engine@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Marc Karasek wrote:
-> Is the process still the same.  In that you create a ramdisk image that
-> can be mounted, just using initramfs instead?   
+Hello.
 
-It's actually simpler than that, insofar as creating the archive.  There are two 
-ways that I've tried, probably another exists as well.  None involve the mess of 
-creating a mountable image.
+I am operating linux-2.4.21 on Dbau1100.
+ApplicationXIP patched linux-2.4.21.
+(It is a reference as for http://tree.celinuxforum.org/)
+And, I want to make mount cramfs on flash.
 
-1) In the scripts/ dir in the kernel tree, there's a script, 
-gen_initramfs_list.sh.  chmod +x it, and pass to it (as its only argument) an 
-absolute path pointing to a ready-to-go root file system that will be loaded by 
-the machine that boots the subsequently produced kernel.  The output of 
-gen_initramfs_list should be directed to a text file -- it's a text listing of 
-every file in the directory passed, including mode params, symlink destination, 
-whether it's a device or not (and if is, how to re-create it), etc..  This text 
-file can then be passed to the initramfs option in menuconfig, and the kernel 
-pulls in the files and rolls them into its initramfs cpio archive it builds.
+The data of cramfs is stored in physical address 0xbf000000 of flash with 
+0x1000. 
+It stored it by using tftp with u-boot. 
 
-2) cpio up a ready-to-go root file system and pass that to the same initramfs 
-option in menuconfig.
+=============
+# md bf000000
+bf000000: 28cd3d45 00010000 00000000 00000000 E=.(............
+bf000010: 706d6f43 73736572 52206465 53464d4f Compressed ROMFS
+bf000020: f6fedb08 e452945a 94403278 43bdbefa ....Z.R.x2@....C
+bf000030: 706d6f43 73736572 00006465 00000000 Compressed......
+bf000040: 000041ed 00000014 000004c0 000081a4 .A..............
+bf000050: 00000457 00000602 61746164 7478742e W.......data.txt
+bf000060: 00000081 34339c78 35313632 34b0b733 ....x.3426153..4
+bf000070: 651c32e0 9947328e 302a4ca3 d37cd101 .2.e.2G..L*0..|.
+bf000080:
+=============
 
+Storage in Flash is sure to have succeeded. 
 
-Provided the root filesystem is setup properly, just don't pass root= on the 
-command line, and the kernel takes over loading and running the main startup 
-script (it's either /init or /linuxrc that it looks for, one of the two).
+And, the patch of applicationXIP is appropriated with Linux-2.4.21, and 
+when the mount is done from physaddr, magic number cannot acquire cramfs. 
 
+BF000000 has been passed to ioremap though linux-2.4.21/fs/cramfs/inode.c 
+was confirmed. 
+The data is 0 though the virtual address has come back to the return value 
+from ioremap. 
 
-> We will be moving to 2.6.x for our next chip and currently have scripts
-> to create a ramdisk with busybox embedded.  If these cannot be used
-> anymore, I may want to take over the patches for ramdisk from you and
-> maintain them.  Otherwise our sdk would have to change and the tools,
-> etc. and that is not a desireable option......
+The MTD flash driver is not operating it. 
 
-This isn't that big of a change actually.  As described above, it's decidedly 
-simpler, as you don't have to rely on any file system (it's basically the same 
-as the old MS-DOS ramdisks some utilities diskettes would load up and dump tools 
-into)
+Is it wrong something?
 
+=================
+# mount -t cramfs -o physaddr=0xbf000000 none /mnt/cramfs
+===dmesg==========
+cramfs: checking physical address 0xbf000000 for linear cramfs image
+__ioremap call phys_addr1=bf000000
+__ioremap size=1000
+cramfs: virtual address = c1038000
+cramfs: readb virt_addr = 0
+cramfs: first magic = 0
+cramfs: size = 0
+cramfs: flags = 0
+cramfs: future = 0
+cramfs: signature =
+at offset 0, no cramfs magic: trying 512...
+cramfs: second magic = 0
+cramfs: wrong magic
+=============
 
-> IMO: Fixing something that was not broken is not a very good idea. :-)
+Tefs
 
-I thought the same initially, but in truth, initramfs is far simpler, once you 
-figure it out.  I even fixed the embedded ramdisk to handle linking in objects 
-files with conflicting ABIs (encountered when we built netboot images for SGI O2 
-because at the time, we built O2's kernels with -mabi=o64 which uses some mean 
-tricks to stuff 64bit code into a 32bit file; ld hated that).  Of course, I did 
-this fix about an hour after Ralf removed the ramdisk code from 2.6.10 CVS. 
-Talk about a sense of timing.
-
-Especially once we found out initramfs loaded flawlessly on Origin, it was 
-essentially deemed to become the replacement.
-
-
-
---Kumba
-
--- 
-Gentoo/MIPS Team Lead
-Gentoo Foundation Board of Trustees
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+_________________________________________________________________
+迷惑メールやウイルスへの対策も万全「MSN Hotmail」 
+http://promotion.msn.co.jp/hotmail/ 

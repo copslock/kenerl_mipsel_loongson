@@ -1,92 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2006 22:46:13 +0000 (GMT)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:51880 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S8134414AbWASWpt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Jan 2006 22:45:49 +0000
-Received: (qmail 30256 invoked from network); 20 Jan 2006 08:49:31 +1000
-Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 20 Jan 2006 08:49:31 +1000
-Message-ID: <43D01785.1090103@gentoo.org>
-Date:	Fri, 20 Jan 2006 08:49:41 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 00:39:33 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:6159 "EHLO sorrow.cyrius.com")
+	by ftp.linux-mips.org with ESMTP id S3468186AbWATAjJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Jan 2006 00:39:09 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 766A164D54; Fri, 20 Jan 2006 00:42:24 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 96124854A; Fri, 20 Jan 2006 00:42:08 +0000 (GMT)
+Date:	Fri, 20 Jan 2006 00:42:08 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
 To:	linux-mips@linux-mips.org
-Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
-References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>	 <43CC39A0.8080704@gentoo.org>	 <1137515220.11738.2.camel@localhost.localdomain>	 <43CD9568.1000707@gentoo.org> <1137704865.22994.7.camel@localhost.localdomain>
-In-Reply-To: <1137704865.22994.7.camel@localhost.localdomain>
-X-Enigmail-Version: 0.93.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig829BCE6EB5955FF85980DE3D"
-Return-Path: <redhatter@gentoo.org>
+Subject: Crash on Cobalt with CONFIG_SERIO=y
+Message-ID: <20060120004208.GA18327@deprecation.cyrius.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10008
+X-archive-position: 10009
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig829BCE6EB5955FF85980DE3D
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+I get the following crash on Cobalt when CONFIG_SERIO=y is set.
+I realize that this option is not really necessary on Cobalt but the
+kernel should neverless not crash if it is enabled.
 
-Marc Karasek **top-posted**: (Reading emails bottom-to-top is no fun)
-> Is the process still the same.  In that you create a ramdisk image that
-> can be mounted, just using initramfs instead?   
-> 
-> We will be moving to 2.6.x for our next chip and currently have scripts
-> to create a ramdisk with busybox embedded.  If these cannot be used
-> anymore, I may want to take over the patches for ramdisk from you and
-> maintain them.  Otherwise our sdk would have to change and the tools,
-> etc. and that is not a desireable option......
 
-Initramfs works by generating a cpio archive of a directory, and
-embedding a compressed version of that.  This is unpacked at boot time,
-into something similar to a tmpfs-like filesystem.  It then starts /init
-to bring the system online (identical to /linuxrc).
+ Activating ISA DMA hang workarounds.
+ rtc: Digital UNIX epoch (1952) detected
+ Real Time Clock Driver v1.12a
+ Cobalt LCD Driver v2.10
+ i8042.c: i8042 controller self test timeout.
+ Unhandled kernel unaligned access[#1]:
+ Cpu 0
+ $ 0   : 0000000000000000 ffffffff940044e0 996bffffff4093b8 0000000000000000
+ $ 4   : ffffffff8026a280 ffffffffdc620028 0000000000000000 996bffffff409398
+ $ 8   : 980000000032c000 980000000032fdc0 0000000000000000 ffffffff80300000
+ $12   : ffffffff940044e0 000000001000001e ffffffff802a0000 ffffffff80300000
+ $16   : 980000000032fdc0 ffffffff802a2408 0000000000000000 ffffffff80310000
+ $20   : ffffffff802b0000 ffffffff802a0000 ffffffff802a0000 ffffffff80280000
+ $24   : ffffffff80310000 ffffffff802b0000                                  
+ $28   : 980000000032c000 980000000032fd90 ffffffff80270000 ffffffff8008236c
+ Hi    : 000000000000007b
+ Lo    : e76c8b43957fdc00
+ epc   : ffffffff80089a58 do_ade+0x398/0x4a0     Not tainted
+ ra    : ffffffff8008236c handle_adel_int+0x34/0x48
+ Status: 940044e2    KX SX UX KERNEL EXL 
+ Cause : 00808010
+ BadVA : 996bffffff40939f
+ PrId  : 000028a0
+ Modules linked in:
+ Process swapper (pid: 1, threadinfo=980000000032c000, task=9800000000331788)
+ Stack : ffffffff80310000 ffffffff802a2408 ffffffff940044e1 ffffffff80310000
+         ffffffff8008236c ffffffff80300000 0000000000000000 ffffffff940044e0
+         0033ffffffc01510 996bffffff409370 ffffffff80310000 9800000001000000
+         000000000000006f ffffffff802a23f8 000000000000006f 0000000080000000
+         ffffffff80300000 ffffffff80300000 ffffffff802a0000 ffffffff80300000
+         ffffffff802a0000 ffffffff80300000 ffffffff80310000 ffffffff802a2408
+         ffffffff940044e1 ffffffff80310000 ffffffff802b0000 ffffffff802a0000
+         ffffffff802a0000 ffffffff80280000 ffffffff80310000 ffffffff802b0000
+         980000000032feb8 ffffffff801bbe70 980000000032c000 980000000032fef0
+         ffffffff80270000 ffffffff802f3944 ffffffff940044e2 000000000000007b
+         ...
+ Call Trace:
+  [<ffffffff8008236c>] handle_adel_int+0x34/0x48
+  [<ffffffff801bbe70>] i8042_command+0x1e8/0x3a8
+  [<ffffffff802f3944>] i8042_init+0x11c/0xac8
+  [<ffffffff800dc878>] kfree+0x70/0x110
+  [<ffffffff802f3944>] i8042_init+0x11c/0xac8
+  [<ffffffff801c8e70>] bus_register+0x120/0x270
+  [<ffffffff80080600>] init+0x158/0x448
+  [<ffffffff80083900>] kernel_thread_helper+0x10/0x18
+  [<ffffffff800838f0>] kernel_thread_helper+0x0/0x18
+ 
+ 
+ Code: 00621824  5460ff7d  de020100 <68e30007> 6ce30000  24020000  1440ffa0  00051402  08022657 
+ Kernel panic - not syncing: Attempted to kill init!
 
-There's a couple of things you can do.  One, is to simply adapt your
-scripts to create a cpio archive directly, and then set INITRAMFS_SOURCE
-to the full path to your cpio archive.
 
-Alternatively, the kernel can create the cpio archive for you, simply
-point INITRAMFS_SOURCE at the root directory.  You can also use this
-trick to import a initrd image into initramfs ... simply loop-mount the
-initrd somewhere, then point INITRAMFS_SOURCE at the mountpoint.  (Ohh,
-and don't forget to `ln -s /linuxrc /init` in your image)
+The only difference between a broken and working kernel is:
 
-So yeah, there'll be modifications required ... but the changes should
-be minimal.  I'm guessing it'll possibly even simplify the tools -- as
-you don't have to worry about `dd`ing a ramdisk image from /dev/zero,
-running losetup, then formatting, mounting and transferring the filesystem.
+--- config-broken	2006-01-20 00:30:23.000000000 +0000
++++ config-working	2006-01-20 00:30:33.000000000 +0000
+@@ -1,7 +1,7 @@
+ #
+ # Automatically generated make config: don't edit
+ # Linux kernel version: 2.6.15
+-# Fri Jan 20 00:24:47 2006
++# Fri Jan 20 00:30:33 2006
+ #
+ CONFIG_MIPS=y
+ 
+@@ -531,12 +531,7 @@
+ #
+ # Hardware I/O ports
+ #
+-CONFIG_SERIO=y
+-CONFIG_SERIO_I8042=y
+-CONFIG_SERIO_SERPORT=y
+-# CONFIG_SERIO_PCIPS2 is not set
+-# CONFIG_SERIO_LIBPS2 is not set
+-# CONFIG_SERIO_RAW is not set
++# CONFIG_SERIO is not set
+ # CONFIG_GAMEPORT is not set
+ 
+ #
+
 -- 
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
-
---------------enig829BCE6EB5955FF85980DE3D
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFD0BeIuarJ1mMmSrkRAhEBAJ90NDQQ+t2QVs4D/c/NZ9bDde1xqgCcDW8d
-/2lZ9bXqOHaDDaEsHNF9Ekk=
-=5Jn8
------END PGP SIGNATURE-----
-
---------------enig829BCE6EB5955FF85980DE3D--
+Martin Michlmayr
+http://www.cyrius.com/

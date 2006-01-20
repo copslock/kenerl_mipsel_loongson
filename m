@@ -1,16 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 18:39:59 +0000 (GMT)
-Received: from mail.ivivity.com ([64.238.111.98]:22741 "EHLO thoth.ivivity.com")
-	by ftp.linux-mips.org with ESMTP id S8133389AbWATSji convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 18:59:01 +0000 (GMT)
+Received: from mail.ivivity.com ([64.238.111.98]:65243 "EHLO thoth.ivivity.com")
+	by ftp.linux-mips.org with ESMTP id S8133395AbWATS6l convert rfc822-to-8bit
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jan 2006 18:39:38 +0000
+	Fri, 20 Jan 2006 18:58:41 +0000
 Received: from 192.168.1.162 ([192.168.1.162]) by thoth.ivivity.com ([192.168.1.9]) with Microsoft Exchange Server HTTP-DAV ;
- Fri, 20 Jan 2006 18:43:28 +0000
-Received: from MCK_Linux_NB by mail.ivivity.com; 20 Jan 2006 13:43:28 -0500
+ Fri, 20 Jan 2006 19:02:31 +0000
+Received: from MCK_Linux_NB by mail.ivivity.com; 20 Jan 2006 14:02:31 -0500
 Subject: Re: how to emdedded ramdisk.gz in vmlinux for linux-2.6.14?
 From:	Marc Karasek <marckarasek@ivivity.com>
-To:	Kumba <kumba@gentoo.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>,
-	zhuzhenhua <zzh.hust@gmail.com>
+To:	Linux-Mips <linux-mips@linux-mips.org>
 In-Reply-To: <43D06305.8070908@gentoo.org>
 References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>
 	 <43CC39A0.8080704@gentoo.org>
@@ -18,17 +16,17 @@ References: <0F31272A2BCBBE4FA01344C6E69DBF501EAB1B@thoth.ivivity.com>
 	 <43CD9568.1000707@gentoo.org>
 	 <1137704865.22994.7.camel@localhost.localdomain>
 	 <43D06305.8070908@gentoo.org>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-Date:	Fri, 20 Jan 2006 13:43:28 -0500
-Message-Id: <1137782608.22994.26.camel@localhost.localdomain>
+Date:	Fri, 20 Jan 2006 14:02:31 -0500
+Message-Id: <1137783751.22994.31.camel@localhost.localdomain>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.0.4 (2.0.4-4) 
 Return-Path: <marck@ivivity.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10025
+X-archive-position: 10026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,17 +34,14 @@ X-original-sender: marckarasek@ivivity.com
 Precedence: bulk
 X-list: linux-mips
 
-I am going to have to take a good look at this before making any
-changes.  There are other things we must consider.  I may still want to
-grab your patches,  if in the end we see this as adding to much
-overhead.  
+I am not entirely sold on this initramfs.  
 
-Two things I will have to look at very closely is the size of the
-ramdisk.gz vs this cpio archive (how much bigger is one over the other?)
-and how cleanly can we seperate the cpio archive from the kernel to have
-two images instead of one big one.  If either of these items fails
-muster, then we cannot use the initramfs and must go back to ramdisk.gz.
-  
+I have a question:
+
+>From what I have read so far, it seems that this is meant as a stepping
+stone to booting/mounting the real system.  Has anyone used this where
+the initramfs is the filesystem and the endpoint in the boot process?  
+
 
 On Thu, 2006-01-19 at 23:11 -0500, Kumba wrote:
 > Marc Karasek wrote:

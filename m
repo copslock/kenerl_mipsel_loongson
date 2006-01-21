@@ -1,74 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jan 2006 21:48:20 +0000 (GMT)
-Received: from fw-ca-1-hme0.vitesse.com ([64.215.88.90]:44483 "EHLO
-	email.vitesse.com") by ftp.linux-mips.org with ESMTP
-	id S3950893AbWATVry (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jan 2006 21:47:54 +0000
-Received: from wilson.vitesse.com (wilson [192.9.212.7])
-	by email.vitesse.com (8.11.0/8.11.0) with ESMTP id k0KLpjh22559
-	for <linux-mips@linux-mips.org>; Fri, 20 Jan 2006 13:51:45 -0800 (PST)
-Received: from MX-COS.vsc.vitesse.com (mx-cs1 [192.9.212.67])
-	by wilson.vitesse.com (8.11.6/8.11.6) with ESMTP id k0KLpiX11470
-	for <linux-mips@linux-mips.org>; Fri, 20 Jan 2006 14:51:44 -0700 (MST)
-Received: MX-COS 192.9.212.98 from 192.9.211.152 192.9.211.152 via HTTP with MS-WebStorage 6.0.6249
-Received: from lx-kurts.vitesse.com by MX-COS; 20 Jan 2006 14:51:06 -0700
-Subject: Build errors
-From:	Kurt Schwemmer <kurts@vitesse.com>
-To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Date:	Fri, 20 Jan 2006 14:51:05 -0700
-Message-Id: <1137793865.15788.26.camel@lx-kurts>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jan 2006 01:01:31 +0000 (GMT)
+Received: from i-83-67-53-76.freedom2surf.net ([83.67.53.76]:14537 "EHLO
+	nephila.localnet") by ftp.linux-mips.org with ESMTP
+	id S3951045AbWAUBBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 21 Jan 2006 01:01:03 +0000
+Received: from pdh by nephila.localnet with local (Exim 4.50)
+	id 1F07BX-0000yf-Gh; Sat, 21 Jan 2006 01:04:55 +0000
+Date:	Sat, 21 Jan 2006 01:04:55 +0000
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+Subject: Re: Crash on Cobalt with CONFIG_SERIO=y
+Message-ID: <20060121010455.GC3514@colonel-panic.org>
+References: <20060120004208.GA18327@deprecation.cyrius.com> <20060120144710.GA30415@linux-mips.org>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.2.2 (2.2.2-5) 
-Return-Path: <kurts@vitesse.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060120144710.GA30415@linux-mips.org>
+User-Agent: Mutt/1.5.9i
+From:	Peter Horton <pdh@colonel-panic.org>
+Return-Path: <pdh@colonel-panic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10033
+X-archive-position: 10034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kurts@vitesse.com
+X-original-sender: pdh@colonel-panic.org
 Precedence: bulk
 X-list: linux-mips
 
-Disclaimer: This is my first attempt to recompile the linux-mips kernel
-so these are probably just newbie problems.
+On Fri, Jan 20, 2006 at 03:47:10PM +0100, Ralf Baechle wrote:
+> On Fri, Jan 20, 2006 at 12:42:08AM +0000, Martin Michlmayr wrote:
+> 
+> > I get the following crash on Cobalt when CONFIG_SERIO=y is set.
+> > I realize that this option is not really necessary on Cobalt but the
+> > kernel should neverless not crash if it is enabled.
+> > 
+> > 
+> >  Activating ISA DMA hang workarounds.
+> >  rtc: Digital UNIX epoch (1952) detected
+> >  Real Time Clock Driver v1.12a
+> >  Cobalt LCD Driver v2.10
+> >  i8042.c: i8042 controller self test timeout.
+> >  Unhandled kernel unaligned access[#1]:
+> 
+> The i8042 error message is a little surprising.  The Cobalt boards afair
+> have some sort of SuperIO chip on the board which includes PS/2 keyboard
+> even though that has not been wired.  I wonder if anybody can take a
+> look at the board what type of SuperIO is there?
+> 
 
-I sync'd with git clone rsync://ftp.linux-mips.org/git/linux.git
-linux.git 2 days ago. I downloaded and installed sde:
-ftp://ftp.mips.com/pub/tools/software/sde-for-linux/6.02.03-1/mipsel-sdelinux-v6.02.03-1.i386.rpm
+No SuperIO, but there is a bog standard VIA PCI-ISA bridge which
+contains a bog standard PS/2 keyboard controller, which you would have
+thought should just work ...
 
-I'm building for a Malta eval board. I'm trying to compile in oprofile
-support. I execute the following sequence:
-1. Copy the default malta config file to .config
-2. run make xconfig and add oprofile support
-3. make clean
-4. make vmlinux.srec
-
-I get a few warnings:
-
-kernel/pid.c: In function `pidhash_init':
-kernel/pid.c:260: warning: comparison of distinct pointer types lacks a
-cast
-  CC      kernel/rcupdate.o
-  CC      kernel/intermodule.o
-kernel/intermodule.c:178: warning: `inter_module_register' is deprecated
-(declared at kernel/intermodule.c:38)
-kernel/intermodule.c:179: warning: `inter_module_unregister' is
-deprecated (declared at kernel/intermodule.c:78)
-kernel/intermodule.c:181: warning: `inter_module_put' is deprecated
-(declared at kernel/intermodule.c:159)
-
-...but the one that kills me is:
-mm/msync.o: In function `msync_interval':
-msync.c:(.text+0x10c): unmatched HI16 relocation
-mipsel-linux-ld: final link failed: Bad value
-make[1]: *** [mm/built-in.o] Error 1
-make: *** [mm] Error 2
-
-Would someone tell me what I'm doing wrong? I'm pretty sure people
-wouldn't be checking in code that doesn't even build!
-
-Thanks,
-Kurt Schwemmer
+P.

@@ -1,45 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jan 2006 01:33:13 +0000 (GMT)
-Received: from smtp106.sbc.mail.mud.yahoo.com ([68.142.198.205]:48829 "HELO
-	smtp106.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S3951243AbWAUBcz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 21 Jan 2006 01:32:55 +0000
-Received: (qmail 68829 invoked from network); 21 Jan 2006 01:36:46 -0000
-Received: from unknown (HELO ?10.0.0.130?) (david-b@pacbell.net@69.226.222.36 with plain)
-  by smtp106.sbc.mail.mud.yahoo.com with SMTP; 21 Jan 2006 01:36:46 -0000
-From:	David Brownell <david-b@pacbell.net>
-To:	linux-usb-devel@lists.sourceforge.net
-Subject: Re: [linux-usb-devel] [PATCH] EHCI support for the AU1200
-Date:	Fri, 20 Jan 2006 17:36:47 -0800
-User-Agent: KMail/1.7.1
-Cc:	"Jordan Crouse" <jordan.crouse@amd.com>, linux-mips@linux-mips.org,
-	thomas.dahlmann@amd.com
-References: <20060113183038.GK8925@cosmic.amd.com>
-In-Reply-To: <20060113183038.GK8925@cosmic.amd.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2006 02:32:16 +0000 (GMT)
+Received: from p549F536B.dip.t-dialin.net ([84.159.83.107]:52929 "EHLO
+	p549F536B.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S8133437AbWAVCbM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 22 Jan 2006 02:31:12 +0000
+Received: from sorrow.cyrius.com ([IPv6:::ffff:65.19.161.204]:60429 "EHLO
+	sorrow.cyrius.com") by linux-mips.net with ESMTP id <S870937AbWAUUBa>;
+	Sat, 21 Jan 2006 21:01:30 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 83DA964D3D; Sat, 21 Jan 2006 20:00:22 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 9DF918486; Sat, 21 Jan 2006 19:59:56 +0000 (GMT)
+Date:	Sat, 21 Jan 2006 19:59:56 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: DECstation compile fails: opcode not supported (eret)
+Message-ID: <20060121195956.GA15498@deprecation.cyrius.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-Message-Id: <200601201736.47548.david-b@pacbell.net>
-Return-Path: <david-b@pacbell.net>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10035
+X-archive-position: 10036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david-b@pacbell.net
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 13 January 2006 10:30 am, Jordan Crouse wrote:
-> ALCHEMY:  Add EHCI support for AU1200
+linux-mips git with the standard DECstation config from
+arch/mips/configs/decstation_defconfig fails with the following error:
 
-Unfortunately it doesn't apply to my current tree, and I see that
-you were reverting some of the updates in current kernel GIT ...
+  AS      arch/mips/kernel/genex.o
+arch/mips/kernel/genex.S: Assembler messages:
+arch/mips/kernel/genex.S:240: Error: opcode not supported on this processor: mips1 (mips1) `eret'
+make[1]: *** [arch/mips/kernel/genex.o] Error 1
+make: *** [arch/mips/kernel] Error 2
 
-Please let me know if the updated version I'm posting does not
-behave for you.
+Toolchain used:
+gcc version 4.0.3 20051201 (prerelease) (Debian 4.0.2-5)
+binutils: 2.16.91 20051117 Debian GNU/Linux
 
-- Dave
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,72 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 12:05:57 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:23812 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S8133465AbWAWMFj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jan 2006 12:05:39 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 7ED60F5963;
-	Mon, 23 Jan 2006 13:09:49 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 05161-04; Mon, 23 Jan 2006 13:09:49 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3728AE1C6D;
-	Mon, 23 Jan 2006 13:09:49 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k0NC9gfm005017;
-	Mon, 23 Jan 2006 13:09:42 +0100
-Date:	Mon, 23 Jan 2006 12:09:50 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	tbm@cyrius.com, yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
-Subject: Re: DECstation fails to compile with iomap patch applied
-In-Reply-To: <20060123.152640.11963149.nemoto@toshiba-tops.co.jp>
-Message-ID: <Pine.LNX.4.64N.0601231204110.27141@blysk.ds.pg.gda.pl>
-References: <20060122134553.GA27266@deprecation.cyrius.com>
- <20060123.152640.11963149.nemoto@toshiba-tops.co.jp>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="328795856-2071255785-1138018190=:27141"
-X-Virus-Scanned: ClamAV 0.87.1/1247/Sat Jan 21 11:24:51 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 12:24:04 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:14101 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133465AbWAWMXp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 12:23:45 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0NCRK0f005416;
+	Mon, 23 Jan 2006 12:28:02 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0M33fnI011628;
+	Sun, 22 Jan 2006 03:03:41 GMT
+Date:	Sun, 22 Jan 2006 03:03:41 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kurt Schwemmer <kurts@vitesse.com>
+Cc:	linux-mips@linux-mips.org, sde@mips.com
+Subject: Re: Build errors
+Message-ID: <20060122030341.GB11131@linux-mips.org>
+References: <1137793865.15788.26.camel@lx-kurts>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1137793865.15788.26.camel@lx-kurts>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10050
+X-archive-position: 10051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Fri, Jan 20, 2006 at 02:51:05PM -0700, Kurt Schwemmer wrote:
 
---328795856-2071255785-1138018190=:27141
-Content-Type: TEXT/PLAIN; charset=iso-8859-7
-Content-Transfer-Encoding: 8BIT
+> I sync'd with git clone rsync://ftp.linux-mips.org/git/linux.git
+> linux.git 2 days ago. I downloaded and installed sde:
+> ftp://ftp.mips.com/pub/tools/software/sde-for-linux/6.02.03-1/mipsel-sdelinux-v6.02.03-1.i386.rpm
 
-On Mon, 23 Jan 2006, Atsushi Nemoto wrote:
+> ...but the one that kills me is:
+> mm/msync.o: In function `msync_interval':
+> msync.c:(.text+0x10c): unmatched HI16 relocation
+> mipsel-linux-ld: final link failed: Bad value
+> make[1]: *** [mm/built-in.o] Error 1
+> make: *** [mm] Error 2
 
-> tbm>   CC      arch/mips/lib/iomap.o
-> tbm> arch/mips/lib/iomap.c: In function ¡pci_iomap¢:
-> tbm> arch/mips/lib/iomap.c:66: error: ¡_CACHE_CACHABLE_COW¢ undeclared (first use in this function)
-> 
-> Yes, R3000 does not define _CACHE_CACHABLE_COW.  I suppose the line would be
-> 
-> 	return __ioremap_mode(start, len, PAGE_CACHABLE_DEFAULT);
-> 
-> or
-> 
-> 	return ioremap(start, len);
-> 
-> I doubt we can really use cacheable page for IORESOURCE_CACHEABLE
-> resource...
+This kind of problem is usually being caused by either broken inline
+assembler code or a bug in the compiler.  Since we haven't done any
+serious changes to the inline code recently I would put my bets on a gcc
+bug, so I'm putting the SDE people at MIPS on Cc.  It could be useful if
+you could post your .config kernel configuration file.  Also, which
+kernel version exactly are you building?  The command "git-describe HEAD"
+will tell you something like "linux-2.6.15-g68cabd8e", can you post that
+number?
 
- I think "iomap.o" should simply be obj-$(CONFIG_PCI) until (unless) there 
-is a use for it for other I/O buses.
+> Would someone tell me what I'm doing wrong? I'm pretty sure people
+> wouldn't be checking in code that doesn't even build!
 
-  Maciej
---328795856-2071255785-1138018190=:27141--
+We try hard - but the number of tools and configuration variants makes it
+hard to ensure that kind of thing never happens.
+
+  Ralf

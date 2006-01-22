@@ -1,28 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2006 13:09:38 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:36868 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2006 13:28:36 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:41732 "EHLO
 	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133437AbWAVNJR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Jan 2006 13:09:17 +0000
+	id S8133437AbWAVN2P (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 22 Jan 2006 13:28:15 +0000
 Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 3FFCB64D3D; Sun, 22 Jan 2006 13:13:22 +0000 (UTC)
+	id AAB8764D3D; Sun, 22 Jan 2006 13:32:21 +0000 (UTC)
 Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 5974C8545; Sun, 22 Jan 2006 13:11:54 +0000 (GMT)
-Date:	Sun, 22 Jan 2006 13:11:53 +0000
+	id 189C78545; Sun, 22 Jan 2006 13:31:47 +0000 (GMT)
+Date:	Sun, 22 Jan 2006 13:31:47 +0000
 From:	Martin Michlmayr <tbm@cyrius.com>
 To:	linux-mips@linux-mips.org
-Subject: Re: DECstation compile fails: opcode not supported (eret)
-Message-ID: <20060122131153.GB5543@deprecation.cyrius.com>
-References: <20060121195956.GA15498@deprecation.cyrius.com> <43D2F4D9.6010406@gentoo.org>
+Subject: dec_esp.c needs merging with upstream
+Message-ID: <20060122133147.GA23020@deprecation.cyrius.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <43D2F4D9.6010406@gentoo.org>
 User-Agent: Mutt/1.5.11
 Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10039
+X-archive-position: 10040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,23 +28,39 @@ X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-* Kumba <kumba@gentoo.org> [2006-01-21 21:58]:
-> >  AS      arch/mips/kernel/genex.o
-> >arch/mips/kernel/genex.S: Assembler messages:
-> >arch/mips/kernel/genex.S:240: Error: opcode not supported on this 
-> >processor: mips1 (mips1) `eret'
-> >make[1]: *** [arch/mips/kernel/genex.o] Error 1
-> >make: *** [arch/mips/kernel] Error 2
-> >
-> >Toolchain used:
-> >gcc version 4.0.3 20051201 (prerelease) (Debian 4.0.2-5)
-> >binutils: 2.16.91 20051117 Debian GNU/Linux
-> 
-> I think this broke it:
+Ralf,
 
-That's right, reverting Ralf's commit
-  Remove stray .set mips3 resulting in 64-bit instruction in 32-bit kernels.
-makes it compile.
+In October 2005, Christoph Hellwig <hch@lst.de> removed the
+Scsi_Host_Template typedef (d0be4a7d29ad0bd3ce2209dd9e46d410b632db59).
+The converted dec_esp.c is in mainline git already but it seems you
+ignored that change when you synced with mainline.  We need the
+following patch:
+
+
+--- a/drivers/scsi/dec_esp.c~	2006-01-22 13:14:35.000000000 +0000
++++ b/drivers/scsi/dec_esp.c	2006-01-22 13:19:03.000000000 +0000
+@@ -98,7 +98,7 @@
+ static irqreturn_t scsi_dma_err_int(int, void *, struct pt_regs *);
+ static irqreturn_t scsi_dma_int(int, void *, struct pt_regs *);
+ 
+-int dec_esp_detect(Scsi_Host_Template * tpnt);
++int dec_esp_detect(struct scsi_host_template * tpnt);
+ 
+ static int dec_esp_release(struct Scsi_Host *shost)
+ {
+@@ -110,7 +110,7 @@
+ 	return 0;
+ }
+ 
+-static Scsi_Host_Template driver_template = {
++static struct scsi_host_template driver_template = {
+ 	.proc_name		= "dec_esp",
+ 	.proc_info		= &esp_proc_info,
+ 	.name			= "NCR53C94",
+
+
+See
+http://www.kernel.org/git/?p=linux/kernel/git/torvalds/linux-2.6.git;a=history;h=3ee68c4af3fd7228c1be63254b9f884614f9ebb2;f=drivers/scsi/dec_esp.c
 
 -- 
 Martin Michlmayr

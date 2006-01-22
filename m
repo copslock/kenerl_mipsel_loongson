@@ -1,57 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2006 02:55:04 +0000 (GMT)
-Received: from rwcrmhc11.comcast.net ([204.127.198.35]:24494 "EHLO
-	rwcrmhc11.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S8133452AbWAVCym (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Jan 2006 02:54:42 +0000
-Received: from [192.168.1.4] (pcp04414054pcs.nrockv01.md.comcast.net[69.140.185.48])
-          by comcast.net (rwcrmhc11) with ESMTP
-          id <20060122025839013007m9nqe>; Sun, 22 Jan 2006 02:58:40 +0000
-Message-ID: <43D2F4D9.6010406@gentoo.org>
-Date:	Sat, 21 Jan 2006 21:58:33 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 1.5 (Windows/20051201)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2006 06:54:53 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.199]:60888 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133378AbWAVGya (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Jan 2006 06:54:30 +0000
+Received: by wproxy.gmail.com with SMTP id 36so709436wra
+        for <linux-mips@linux-mips.org>; Sat, 21 Jan 2006 22:58:35 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=dOdnpCD+p4sSYLlW3s/ktEPv0M2MBUK7n4D3pHcvHOmPR+ki0TczEfgNCUKocCN1lbinuH15fSdUK/bnMWV+MWPXSK/h8XQhke+Oeg6VEdKhKfwwTuPssWVa/bWVsxaxofZNgYuDfgfnkFwZdNrFMQStFOKngiVlDEuI44xRz9Y=
+Received: by 10.54.81.19 with SMTP id e19mr5989192wrb;
+        Sat, 21 Jan 2006 22:58:35 -0800 (PST)
+Received: by 10.54.156.15 with HTTP; Sat, 21 Jan 2006 22:58:35 -0800 (PST)
+Message-ID: <50c9a2250601212258s2d6bd79w24f2eaf8ff1a5cff@mail.gmail.com>
+Date:	Sun, 22 Jan 2006 14:58:35 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: invalid compressed format (err=1)<6>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: DECstation compile fails: opcode not supported (eret)
-References: <20060121195956.GA15498@deprecation.cyrius.com>
-In-Reply-To: <20060121195956.GA15498@deprecation.cyrius.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10037
+X-archive-position: 10038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Martin Michlmayr wrote:
-> linux-mips git with the standard DECstation config from
-> arch/mips/configs/decstation_defconfig fails with the following error:
-> 
->   AS      arch/mips/kernel/genex.o
-> arch/mips/kernel/genex.S: Assembler messages:
-> arch/mips/kernel/genex.S:240: Error: opcode not supported on this processor: mips1 (mips1) `eret'
-> make[1]: *** [arch/mips/kernel/genex.o] Error 1
-> make: *** [arch/mips/kernel] Error 2
-> 
-> Toolchain used:
-> gcc version 4.0.3 20051201 (prerelease) (Debian 4.0.2-5)
-> binutils: 2.16.91 20051117 Debian GNU/Linux
-
-I think this broke it:
-http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=cfbc9cac62f0438cefe171736729e786b45884b8;hp=2dcaaf2decd31ac9a21d616604c0a7c1fa65d5a4
-
-
---Kumba
-
--- 
-Gentoo/MIPS Team Lead
-Gentoo Foundation Board of Trustees
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+08nT2s7StcS/qreisOXDu9PQzfi/qCzWu8Tc08NyYW1kaXNrwLS198rUCmJlY2F1c2UgbXkgYm9h
+cmQgaGF2ZSBubyBldGhlcm5ldCBjYXJkIG5vdywgaXMgdXNlIHRoZSByYW1kaXNrIHRvIGRlYnVn
+LgpteSBib2FyZCBoYXMgNjRNIHNkcmFtLCBhbmQgdXNlIDIuNC4yMCBrZXJuZWwuCndoZW4gaSB1
+c2VkIDhNIHNpemUgcmFtZGlzaywgaXQgd29ya3MgZmluZS4KYnV0IHdoZW4gaSBpbmNyZWFzZSBt
+eSByYW1kaXNrIHRvIDE2TShpIGhhdmUgY2hhbmdlZCB0aGUgcmFtZGlzayBzaXplCnN1cHBvcnQg
+aW4gLmNvbmZpZykgaXQgb2NjdXIgImludmFsaWQgY29tcHJlc3NlZCBmb3JtYXQgKGVycj0xKTw2
+PiIKCmNhbiBzb21lb25lIGdpdmUgYW55IGhpbnRzPwp0aGFua3MhCgoKCgphcyBmb2xsb3cgaXMg
+bXkgc2NyaXB0IHRvIG1ha2UgYSByYW1kaXNrCgojISAvYmluL2Jhc2gKcm0gaW1hZ2VzL2luaXRy
+ZC4qLm9sZAptdiBpbWFnZXMvaW5pdHJkLmJpbiBpbWFnZXMvaW5pdHJkLmJpbi5vbGQKbXYgaW1h
+Z2VzL2luaXRyZC5pbWcgaW1hZ2VzL2luaXRyZC5pbWcub2xkCm1rZGlyIHRtcCBpbWFnZXMKbWtk
+aXIgdG1wL2luaXRyZApkZCBpZj0vZGV2L3plcm8gb2Y9aW1hZ2VzL2luaXRyZC5pbWcgYnM9MWsg
+Y291bnQ9ODE5Mgovc2Jpbi9ta2UyZnMgLUYgLXYgLW0wIGltYWdlcy9pbml0cmQuaW1nCi9zYmlu
+L3R1bmUyZnMgLWMgMCBpbWFnZXMvaW5pdHJkLmltZwptb3VudCAtbyBsb29wIGltYWdlcy9pbml0
+cmQuaW1nIHRtcC9pbml0cmQKCmNwIC1hdiBuZXdyb290ZnMvKiB0bXAvaW5pdHJkCnVtb3VudCB0
+bXAvaW5pdHJkCmd6aXAgLTkgPCBpbWFnZXMvaW5pdHJkLmltZyA+IGltYWdlcy9pbml0cmQuYmlu
+CgoKYXMgZm9sbG93IGlzIHRoZSBtZXNzYWdlIG9mIGxpbnV4IGJvb3RpbmcKQ1BVIHJldmlzaW9u
+IGlzOiAwMDAxOTA2OApQcmltYXJ5IGluc3RydWN0aW9uIGNhY2hlIDE2a0IsIHBoeXNpY2FsbHkg
+dGFnZ2VkLCA0LXdheSwgbGluZXNpemUgMTYgYnl0ZXMuClByaW1hcnkgZGF0YSBjYWNoZSAxNmtC
+IDQtd2F5LCBsaW5lc2l6ZSAxNiBieXRlcy4KTGludXggdmVyc2lvbiAyLjQuMjBfbXZsMzEtZGJh
+dTExMDAtbWlwc19mcF9sZSAocm9vdEB6emh1YSkgKGdjYwp2ZXJzaW9uIDMuMy4xIChNb250YVZp
+c3RhIDMuMy4xLTcuMC4zMy4wNTAxMTE2IDIwMDUtMDctMjEpNkNhbid0CmFuYWx5emUgcHJvbG9n
+dWUgY29kZSBhdCA4MDAyNzA5YwpBY3Rpb25zIEFDVDIxM1gvRVZBTCBCb2FyZApEZXRlcm1pbmVk
+IHBoeXNpY2FsIFJBTSBtYXA6Cm1lbW9yeTogMDQwMDAwMDAgQCAwMDAwMDAwMCAodXNhYmxlKQpJ
+bml0aWFsIHJhbWRpc2sgYXQ6IDB4ODAxOWIwMDAgKDM0MDM3NzYgYnl0ZXMpCk9uIG5vZGUgMCB0
+b3RhbHBhZ2VzOiAxNjM4NAp6b25lKDApOiAxNjM4NCBwYWdlcy4Kem9uZSgxKTogMCBwYWdlcy4K
+em9uZSgyKTogMCBwYWdlcy4KS2VybmVsIGNvbW1hbmQgbGluZTogY29uc29sZT10dHlTMCwxMTUy
+MDAKY2FsY3VsYXRpbmcgNGtlY29mZi4uLiAwMDAzYTk4MCgyNDAwMDApCkNQVSBmcmVxdWVuY3kg
+MjQuMDAgTUh6CkNhbGlicmF0aW5nIGRlbGF5IGxvb3AuLi4gMjMuOTEgQm9nb01JUFMKTUlQUyBD
+UFUgY291bnRlciBmcmVxdWVuY3kgaXMgZml4ZWQgYXQgMTIwMDAwMDAgSHoKTWVtb3J5OiA1NjMz
+NmsvNjU1MzZrIGF2YWlsYWJsZSAoMTQyN2sga2VybmVsIGNvZGUsIDkyMDBrIHJlc2VydmVkLAoz
+NDIwayBkYXRhLCA2OGsgaW5pdCwgMGsgaGlnaG1lbSkKRGVudHJ5IGNhY2hlIGhhc2ggdGFibGUg
+ZW50cmllczogODE5MiAob3JkZXI6IDQsIDY1NTM2IGJ5dGVzKQpJbm9kZSBjYWNoZSBoYXNoIHRh
+YmxlIGVudHJpZXM6IDQwOTYgKG9yZGVyOiAzLCAzMjc2OCBieXRlcykKTW91bnQtY2FjaGUgaGFz
+aCB0YWJsZSBlbnRyaWVzOiAxMDI0IChvcmRlcjogMSwgODE5MiBieXRlcykKQnVmZmVyLWNhY2hl
+IGhhc2ggdGFibGUgZW50cmllczogNDA5NiAob3JkZXI6IDIsIDE2Mzg0IGJ5dGVzKQpQYWdlLWNh
+Y2hlIGhhc2ggdGFibGUgZW50cmllczogMTYzODQgKG9yZGVyOiA0LCA2NTUzNiBieXRlcykKQ2hl
+Y2tpbmcgZm9yICd3YWl0JyBpbnN0cnVjdGlvbi4uLiB1bmF2YWlsYWJsZS4KUE9TSVggY29uZm9y
+bWFuY2UgdGVzdGluZyBieSBVTklGSVgKTGludXggTkVUNC4wIGZvciBMaW51eCAyLjQKQmFzZWQg
+dXBvbiBTd2Fuc2VhIFVuaXZlcnNpdHkgQ29tcHV0ZXIgU29jaWV0eSBORVQzLjAzOQpJbml0aWFs
+aXppbmcgUlQgbmV0bGluayBzb2NrZXQKTFNQIFJldmlzaW9uIDEKaWtjb25maWcgMC41IHdpdGgg
+L3Byb2MvaWtjb25maWcKU3RhcnRpbmcga3N3YXBkCkRpc2FibGluZyB0aGUgT3V0IE9mIE1lbW9y
+eSBLaWxsZXIKSm91cm5hbGxlZCBCbG9jayBEZXZpY2UgZHJpdmVyIGxvYWRlZApwdHk6IDI1NiBV
+bml4OTggcHR5cyBjb25maWd1cmVkClNlcmlhbCBkcml2ZXIgdmVyc2lvbiA1LjA1YyAoMjAwMS0w
+Ny0wOCkgd2l0aCBubyBzZXJpYWwgb3B0aW9ucyBlbmFibGVkClNlcmlhbCBkcml2ZXIgdmVyc2lv
+biAxLjAxICgyMDA1LTA5LTA0KSB3aXRoIG5vIHNlcmlhbCBvcHRpb25zIGVuYWJsZWQKdHR5UzAw
+IGF0IDB4YjAxNjAwMDAgKGlycSA9IDIwKSBpcyBhIDE2NTUwCnR0eVMwMSBhdCAweGIwMTYwMDIw
+IChpcnEgPSAxOSkgaXMgYSAxNjU1MApSQU1ESVNLIGRyaXZlciBpbml0aWFsaXplZDogMTYgUkFN
+IGRpc2tzIG9mIDE2Mzg0SyBzaXplIDEwMjQgYmxvY2tzaXplCmxvb3A6IGxvYWRlZCAobWF4IDgg
+ZGV2aWNlcykKTkVUNDogTGludXggVENQL0lQIDEuMCBmb3IgTkVUNC4wCklQIFByb3RvY29sczog
+SUNNUCwgVURQLCBUQ1AsIElHTVAKSVA6IHJvdXRpbmcgY2FjaGUgaGFzaCB0YWJsZSBvZiA1MTIg
+YnVja2V0cywgNEtieXRlcwpUQ1A6IEhhc2ggdGFibGVzIGNvbmZpZ3VyZWQgKGVzdGFibGlzaGVk
+IDQwOTYgYmluZCA4MTkyKQpJUC1Db25maWc6IE5vIG5ldHdvcmsgZGV2aWNlcyBhdmFpbGFibGUu
+Ck5FVDQ6IFVuaXggZG9tYWluIHNvY2tldHMgMS4wL1NNUCBmb3IgTGludXggTkVUNC4wLgpSQU1E
+SVNLOiBDb21wcmVzc2VkIGltYWdlIGZvdW5kIGF0IGJsb2NrIDAKaW52YWxpZCBjb21wcmVzc2Vk
+IGZvcm1hdCAoZXJyPTEpPDY+RnJlZWluZyBpbml0cmQgbWVtb3J5OiAzMzI0ayBmcmVlZApWRlM6
+IE1vdW50ZWQgcm9vdCAoZXh0MiBmaWxlc3lzdGVtKSByZWFkb25seS4KRnJlZWluZyB1bnVzZWQg
+a2VybmVsIG1lbW9yeTogNjhrIGZyZWVkCmQKZnJlZWQKZnJlZUFsZ29yaXRobWljcy9NSVBTIEZQ
+VSBFbXVsYXRvciB2MS41CkVYVDItZnMgZXJyb3IgKGRldmljZSByYW1kaXNrKDEsMCkpOiBleHQy
+X2NoZWNrX3BhZ2U6IGJhZCBlbnRyeSBpbgpkaXJlY3RvcnkgIzE1OTk6IHJlY19sZW4gaXMgc21h
+bGxlciB0aGFuIG1pbmltYWwgLSBvZmZzZTAKClBsZWFzZSBwcmVzcyBFbnRlciB0byBhY3RpdmF0
+ZSB0aGlzIGNvbnNvbGUuCgoKCgpCZXN0IHJlZ2FyZHMKClpodXpoZW5odWEK

@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2006 13:42:34 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:46340 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133437AbWAVNmO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Jan 2006 13:42:14 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 5CA8D64D3D; Sun, 22 Jan 2006 13:46:18 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 13A758545; Sun, 22 Jan 2006 13:45:53 +0000 (GMT)
-Date:	Sun, 22 Jan 2006 13:45:53 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Yoichi Yuasa <yuasa@hh.iij4u.or.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: DECstation fails to compile with iomap patch applied
-Message-ID: <20060122134553.GA27266@deprecation.cyrius.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2006 23:46:55 +0000 (GMT)
+Received: from i-83-67-53-76.freedom2surf.net ([83.67.53.76]:20866 "EHLO
+	nephila.localnet") by ftp.linux-mips.org with ESMTP
+	id S8133491AbWAVXqe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 22 Jan 2006 23:46:34 +0000
+Received: from pdh by nephila.localnet with local (Exim 4.50)
+	id 1F0oyk-0000v1-4v; Sun, 22 Jan 2006 23:50:38 +0000
+Date:	Sun, 22 Jan 2006 23:50:38 +0000
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Cobalt IDE fix
+Message-ID: <20060122235038.GA3501@colonel-panic.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+User-Agent: Mutt/1.5.9i
+From:	Peter Horton <pdh@colonel-panic.org>
+Return-Path: <pdh@colonel-panic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10041
+X-archive-position: 10042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: pdh@colonel-panic.org
 Precedence: bulk
 X-list: linux-mips
 
-DECstation fails to compile when your iomap patch is applied.  (FWIW,
-DECstations don't have PCI at all, only TurboCHANNEL).
+Fix long IDE detection delay by not scanning non-existent channels.
 
-  CC      arch/mips/lib/iomap.o
-arch/mips/lib/iomap.c: In function ‘pci_iomap’:
-arch/mips/lib/iomap.c:66: error: ‘_CACHE_CACHABLE_COW’ undeclared (first use in this function)
-arch/mips/lib/iomap.c:66: error: (Each undeclared identifier is reported only once
-arch/mips/lib/iomap.c:66: error: for each function it appears in.)
-make[1]: *** [arch/mips/lib/iomap.o] Error 1
+P.
 
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Index: linux.git/include/asm-mips/mach-cobalt/ide.h
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux.git/include/asm-mips/mach-cobalt/ide.h	2006-01-22 23:17:03.000000000 +0000
+@@ -0,0 +1,8 @@
++#ifndef __ASM_COBALT_IDE_H
++#define __ASM_COBALT_IDE_H
++
++#define MAX_HWIFS		2
++
++#include <asm/mach-generic/ide.h>
++
++#endif

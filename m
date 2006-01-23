@@ -1,60 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 15:53:57 +0000 (GMT)
-Received: from fw-ca-1-hme0.vitesse.com ([64.215.88.90]:36670 "EHLO
-	email.vitesse.com") by ftp.linux-mips.org with ESMTP
-	id S3465572AbWAWPxg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jan 2006 15:53:36 +0000
-Received: from wilson.vitesse.com (wilson [192.9.212.7])
-	by email.vitesse.com (8.11.0/8.11.0) with ESMTP id k0NFvgh19376;
-	Mon, 23 Jan 2006 07:57:42 -0800 (PST)
-Received: from MX-COS.vsc.vitesse.com (mx-cs1 [192.9.212.67])
-	by wilson.vitesse.com (8.11.6/8.11.6) with ESMTP id k0NFvfX29873;
-	Mon, 23 Jan 2006 08:57:41 -0700 (MST)
-Received: MX-COS 192.9.212.98 from 192.9.211.152 192.9.211.152 via HTTP with MS-WebStorage 6.0.6249
-Received: from lx-kurts.vitesse.com by MX-COS; 23 Jan 2006 08:57:10 -0700
-Subject: Re: Build errors
-From:	Kurt Schwemmer <kurts@vitesse.com>
-To:	Nigel Stephens <nigel@mips.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	sde@mips.com
-In-Reply-To: <43D4F1E0.1050602@mips.com>
-References: <1137793865.15788.26.camel@lx-kurts>
-	 <20060122030341.GB11131@linux-mips.org>  <43D4F1E0.1050602@mips.com>
-Content-Type: text/plain
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 16:00:19 +0000 (GMT)
+Received: from mail-out.m-online.net ([212.18.0.9]:58277 "EHLO
+	mail-out.m-online.net") by ftp.linux-mips.org with ESMTP
+	id S3465572AbWAWP75 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 15:59:57 +0000
+Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
+	by mail-out.m-online.net (Postfix) with ESMTP id BCB95707FE;
+	Mon, 23 Jan 2006 17:04:08 +0100 (CET)
+Received: from schenk.isar.de (host-82-135-47-202.customer.m-online.net [82.135.47.202])
+	by mail.m-online.net (Postfix) with ESMTP id AA18E92957;
+	Mon, 23 Jan 2006 17:04:08 +0100 (CET)
+Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id k0NG46a26735;
+	Mon, 23 Jan 2006 17:04:08 +0100
+Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
+	by gwhaus.rt.schenk (Postfix) with ESMTP id 80A16BF5BC;
+	Mon, 23 Jan 2006 17:04:06 +0100 (CET)
+Message-ID: <43D4FE76.1070805@rtschenk.de>
+Date:	Mon, 23 Jan 2006 17:04:06 +0100
+From:	Rojhalat Ibrahim <imr@rtschenk.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050919
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	MIPS Linux List <linux-mips@linux-mips.org>
+Subject: Re: Fixes for uaccess.h with gcc >= 4.0.1
+References: <20060123150507.GA18665@linux-mips.org>
+In-Reply-To: <20060123150507.GA18665@linux-mips.org>
+X-Enigmail-Version: 0.92.1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Date:	Mon, 23 Jan 2006 08:57:09 -0700
-Message-Id: <1138031829.6572.2.camel@lx-kurts>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.2 (2.2.2-5) 
-Return-Path: <kurts@vitesse.com>
+Return-Path: <imr@rtschenk.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10069
+X-archive-position: 10070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kurts@vitesse.com
+X-original-sender: imr@rtschenk.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2006-01-23 at 15:10 +0000, Nigel Stephens wrote:
-> I recommend that you download the latest version of SDE (6.03.01)
-> which fixes this, from
-> ftp://ftp.mips.com/pub/tools/software/sde-for-linux/v6.03.01-1/mipsel-sdelinux-v6.03.01-1.i386.rpm
+Ralf Baechle wrote:
 > 
-> Nigel
+> I'd appreciate if somebody with gcc 4.0.1 could test this kernel patch
+> below.
+> 
 
-Great! It builds now, albeit with warnings:
+Works for me. The compilation errors are gone and the kernel
+seems to be running fine.
 
-arch/mips/lib/uncached.c: In function `run_uncached':
-arch/mips/lib/uncached.c:47: warning: comparison is always true due to
-limited range of data type
-
-Is that normal?
-
-Anyway, is there a particular person who maintains the wiki
-( http://www.linux-mips.org/wiki/MIPS_SDE_Installation ) or should I
-give it a shot? 
-
-Thanks!,
-Kurt Schwemmer
+Thanks
+Rojhalat Ibrahim

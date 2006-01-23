@@ -1,54 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 16:10:34 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:33550 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S3465582AbWAWQJa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jan 2006 16:09:30 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id CA3BC64D3D; Mon, 23 Jan 2006 16:13:38 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 0DA6586BB; Mon, 23 Jan 2006 16:13:29 +0000 (GMT)
-Date:	Mon, 23 Jan 2006 16:13:29 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	MIPS Linux List <linux-mips@linux-mips.org>,
-	Stuart Anderson <anderson@netsweng.com>,
-	David Daney <ddaney@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 16:12:19 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:24858 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S3465592AbWAWQL7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 16:11:59 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0NGGKbU023102;
+	Mon, 23 Jan 2006 16:16:20 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0NGGKNj023101;
+	Mon, 23 Jan 2006 16:16:20 GMT
+Date:	Mon, 23 Jan 2006 16:16:20 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Rojhalat Ibrahim <imr@rtschenk.de>
+Cc:	MIPS Linux List <linux-mips@linux-mips.org>
 Subject: Re: Fixes for uaccess.h with gcc >= 4.0.1
-Message-ID: <20060123161329.GC10742@deprecation.cyrius.com>
-References: <20060123150507.GA18665@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Message-ID: <20060123161620.GB22656@linux-mips.org>
+References: <20060123150507.GA18665@linux-mips.org> <43D4FE76.1070805@rtschenk.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20060123150507.GA18665@linux-mips.org>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+In-Reply-To: <43D4FE76.1070805@rtschenk.de>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10074
+X-archive-position: 10075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-* Ralf Baechle <ralf@linux-mips.org> [2006-01-23 15:05]:
-> I'd appreciate if somebody with gcc 4.0.1 could test this kernel patch
-> below.
+On Mon, Jan 23, 2006 at 05:04:06PM +0100, Rojhalat Ibrahim wrote:
 
-I get the following warning that I didn't get with Stuart's patch but
-apart from that it compiles and boots (Cobalt 64-bit kernel, 32-bit
-userland).
+> > I'd appreciate if somebody with gcc 4.0.1 could test this kernel patch
+> > below.
+> > 
+> 
+> Works for me. The compilation errors are gone and the kernel
+> seems to be running fine.
 
+Excellent, thanks for testing.  I pushed the patch to lmo's git repository.
 
-  CC      arch/mips/kernel/linux32.o
-arch/mips/kernel/linux32.c: In function ‘sysn32_rt_sigtimedwait’:
-arch/mips/kernel/linux32.c:1464: warning: initialization discards qualifiers from pointer target type
-arch/mips/kernel/linux32.c:1465: warning: initialization discards qualifiers from pointer target type
-  CC      arch/mips/kernel/signal32.o
-
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+  Ralf

@@ -1,117 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 01:07:11 +0000 (GMT)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:40641 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S8133513AbWAWBGq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jan 2006 01:06:46 +0000
-Received: (qmail 9585 invoked from network); 23 Jan 2006 11:10:45 +1000
-Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 23 Jan 2006 11:10:45 +1000
-Message-ID: <43D42D23.8010908@gentoo.org>
-Date:	Mon, 23 Jan 2006 11:10:59 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-CC:	Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: Cobalt IDE fix
-References: <20060122235038.GA3501@colonel-panic.org> <1137976937.24808.2.camel@localhost.localdomain>
-In-Reply-To: <1137976937.24808.2.camel@localhost.localdomain>
-X-Enigmail-Version: 0.93.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig12B51E68A31C91BC857D0711"
-Return-Path: <redhatter@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 06:23:08 +0000 (GMT)
+Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:45332 "HELO
+	topsns.toshiba-tops.co.jp") by ftp.linux-mips.org with SMTP
+	id S8133574AbWAWGWd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 06:22:33 +0000
+Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with SMTP; 23 Jan 2006 06:26:44 UT
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 3217B202AD;
+	Mon, 23 Jan 2006 15:26:42 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0EA882029D;
+	Mon, 23 Jan 2006 15:26:42 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k0N6Qf4D068448;
+	Mon, 23 Jan 2006 15:26:41 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 23 Jan 2006 15:26:40 +0900 (JST)
+Message-Id: <20060123.152640.11963149.nemoto@toshiba-tops.co.jp>
+To:	tbm@cyrius.com
+Cc:	yuasa@hh.iij4u.or.jp, linux-mips@linux-mips.org
+Subject: Re: DECstation fails to compile with iomap patch applied
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060122134553.GA27266@deprecation.cyrius.com>
+References: <20060122134553.GA27266@deprecation.cyrius.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-7
+Content-Transfer-Encoding: base64
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10044
+X-archive-position: 10045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig12B51E68A31C91BC857D0711
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-Alan Cox wrote:
-> On Sul, 2006-01-22 at 23:50 +0000, Peter Horton wrote:
-> 
->>Fix long IDE detection delay by not scanning non-existent channels.
-> 
-> 
-> That just changes the number of interfaces that can be registered. The
-> right fix is to change the list of non-PCI addresses scanned for the
-> system in question and not blindly copy x86 I suspect.
-
-Actually... could a configure option in Kconfig be added to disable
-probing particular IDE busses?
-
-Or at least, it should probe once then stop when it finds nothing.  At
-the moment, both my Qube2 and my x86 desktop hangs momentarily while
-via82cxxx loads:
-
-> Linux video capture interface: v1.00
-> bttv: driver version 0.9.16 loaded
-> bttv: using 8 buffers with 2080k (520 pages) each for capture
-> Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
-> ide: Assuming 33MHz system bus speed for PIO modes; override with idebus=xx
-> VP_IDE: IDE controller at PCI slot 0000:00:04.1
-> VP_IDE: chipset revision 6
-> VP_IDE: not 100% native mode: will probe irqs later
-> VP_IDE: VIA vt82c686b (rev 40) IDE UDMA100 controller on pci0000:00:04.1
->     ide0: BM-DMA at 0xb800-0xb807, BIOS settings: hda:pio, hdb:pio
->     ide1: BM-DMA at 0xb808-0xb80f, BIOS settings: hdc:DMA, hdd:pio
-> Probing IDE interface ide0...
-> hda: IRQ probe failed (0xfff0f5fc)
-> hda: IRQ probe failed (0xfff0f5fc)
-> hda: no response (status = 0x0a), resetting drive
-> hda: IRQ probe failed (0xfff0f5fc)
-> hda: no response (status = 0x0a)
-> hdb: IRQ probe failed (0xfff0f5fc)
-> hdb: IRQ probe failed (0xfff0f5fc)
-> hdb: no response (status = 0x0a), resetting drive
-> hdb: IRQ probe failed (0xfff0f5fc)
-> hdb: no response (status = 0x0a)
-> Probing IDE interface ide1...
-> hdc: DVD-ROM DDU1621, ATAPI CD/DVD-ROM drive
-> ide1 at 0x170-0x177,0x376 on irq 15
-> Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing enabled
-> ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
-> ttyS1 at I/O 0x2f8 (irq = 3) is a 16550A
-
-Yep... you guessed it... nothing is plugged into the primary interface
-... my HDDs are SCSI.  It would be nice to be able to turn off probing
-ide0, either at compile time, or better still, on the kernel commandline.
-
-I think this would be a better fix... as the problem doesn't just exist
-on Cobalt, it's any machine with only one IDE bus in use.
--- 
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
-
---------------enig12B51E68A31C91BC857D0711
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFD1C0muarJ1mMmSrkRApL+AJ43qTxAjyMmJBTVdyYb0iW3lDApbACgjCXh
-NgZYL5Y16mua2jc4+t+xbU0=
-=XwyF
------END PGP SIGNATURE-----
-
---------------enig12B51E68A31C91BC857D0711--
+Pj4+Pj4gT24gU3VuLCAyMiBKYW4gMjAwNiAxMzo0NTo1MyArMDAwMCwgTWFydGluIE1pY2hsbWF5
+ciA8dGJtQGN5cml1cy5jb20+IHNhaWQ6DQp0Ym0+IERFQ3N0YXRpb24gZmFpbHMgdG8gY29tcGls
+ZSB3aGVuIHlvdXIgaW9tYXAgcGF0Y2ggaXMgYXBwbGllZC4gIChGV0lXLA0KdGJtPiBERUNzdGF0
+aW9ucyBkb24ndCBoYXZlIFBDSSBhdCBhbGwsIG9ubHkgVHVyYm9DSEFOTkVMKS4NCg0KdGJtPiAg
+IENDICAgICAgYXJjaC9taXBzL2xpYi9pb21hcC5vDQp0Ym0+IGFyY2gvbWlwcy9saWIvaW9tYXAu
+YzogSW4gZnVuY3Rpb24goXBjaV9pb21hcKI6DQp0Ym0+IGFyY2gvbWlwcy9saWIvaW9tYXAuYzo2
+NjogZXJyb3I6IKFfQ0FDSEVfQ0FDSEFCTEVfQ09XoiB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4g
+dGhpcyBmdW5jdGlvbikNCg0KWWVzLCBSMzAwMCBkb2VzIG5vdCBkZWZpbmUgX0NBQ0hFX0NBQ0hB
+QkxFX0NPVy4gIEkgc3VwcG9zZSB0aGUgbGluZSB3b3VsZCBiZQ0KDQoJcmV0dXJuIF9faW9yZW1h
+cF9tb2RlKHN0YXJ0LCBsZW4sIFBBR0VfQ0FDSEFCTEVfREVGQVVMVCk7DQoNCm9yDQoNCglyZXR1
+cm4gaW9yZW1hcChzdGFydCwgbGVuKTsNCg0KSSBkb3VidCB3ZSBjYW4gcmVhbGx5IHVzZSBjYWNo
+ZWFibGUgcGFnZSBmb3IgSU9SRVNPVVJDRV9DQUNIRUFCTEUNCnJlc291cmNlLi4uDQoNCi0tLQ0K
+QXRzdXNoaSBOZW1vdG8NCg==

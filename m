@@ -1,70 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 22:30:04 +0000 (GMT)
-Received: from i-83-67-53-76.freedom2surf.net ([83.67.53.76]:30148 "EHLO
-	nephila.localnet") by ftp.linux-mips.org with ESMTP
-	id S3458400AbWAWW3q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jan 2006 22:29:46 +0000
-Received: from pdh by nephila.localnet with local (Exim 4.50)
-	id 1F1AG2-0000hg-VB; Mon, 23 Jan 2006 22:33:54 +0000
-Date:	Mon, 23 Jan 2006 22:33:54 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 22:33:31 +0000 (GMT)
+Received: from smtp.gentoo.org ([134.68.220.30]:37355 "EHLO smtp.gentoo.org")
+	by ftp.linux-mips.org with ESMTP id S3458400AbWAWWdO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2006 22:33:14 +0000
+Received: from kumba by smtp.gentoo.org with local (Exim 4.54)
+	id 1F1AJP-0004uX-JD
+	for linux-mips@linux-mips.org; Mon, 23 Jan 2006 22:37:23 +0000
+Date:	Mon, 23 Jan 2006 22:37:23 +0000
+From:	Kumba <kumba@gentoo.org>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH 2.6.x] Cobalt IDE fix, take 2
-Message-ID: <20060123223354.GA2698@colonel-panic.org>
+Subject: Re: [PATCH]: Fix IP22 4k cache macro in cpu-feature-overrides.h
+Message-ID: <20060123223723.GF499@toucan.gentoo.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="vKFfOv5t3oGVpiF+"
 Content-Disposition: inline
-User-Agent: Mutt/1.5.9i
-From:	Peter Horton <pdh@colonel-panic.org>
-Return-Path: <pdh@colonel-panic.org>
+User-Agent: Mutt/1.5.11
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10082
+X-archive-position: 10083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pdh@colonel-panic.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Fix long boot delay on Cobalt scanning non-existent IDE interfaces.
 
-P.
+--vKFfOv5t3oGVpiF+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Index: linux.git/include/asm-mips/mach-cobalt/ide.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux.git/include/asm-mips/mach-cobalt/ide.h	2006-01-23 22:04:15.000000000 +0000
-@@ -0,0 +1,8 @@
-+#ifndef __ASM_COBALT_IDE_H
-+#define __ASM_COBALT_IDE_H
-+
-+#define MAX_LEGACY_HWIFS	2
-+
-+#include <asm/mach-generic/ide.h>
-+
-+#endif
-Index: linux.git/include/asm-mips/mach-generic/ide.h
-===================================================================
---- linux.git.orig/include/asm-mips/mach-generic/ide.h	2006-01-23 22:04:10.000000000 +0000
-+++ linux.git/include/asm-mips/mach-generic/ide.h	2006-01-23 22:30:38.000000000 +0000
-@@ -28,6 +28,10 @@
- # endif
- #endif
+> "cpu_has_4kcache" is used in a number of other files too.
+
+Attached is an updated patch which takes care of all of those references as well.
+
+
+--Kumba
+
+
+--
+Gentoo/MIPS Team Lead
+Gentoo Foundation Board of Trustees
+
+"Such is oft the course of deeds that move the wheels of the world: small hands do them because they must, while the
+eyes of the great are elsewhere." --Elrond
+
+
+--vKFfOv5t3oGVpiF+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="misc-2.6.15-fix-4k-cache-macros.patch"
+
+diff -Naurp linux-2.6.15.1.orig/include/asm-mips/mach-ip22/cpu-feature-overrides.h linux-2.6.15.1/include/asm-mips/mach-ip22/cpu-feature-overrides.h
+--- linux-2.6.15.1.orig/include/asm-mips/mach-ip22/cpu-feature-overrides.h	2006-01-23 16:49:30.000000000 -0500
++++ linux-2.6.15.1/include/asm-mips/mach-ip22/cpu-feature-overrides.h	2006-01-23 17:16:13.000000000 -0500
+@@ -13,7 +13,7 @@
+  */
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+-#define cpu_has_4kcache		1
++#define cpu_has_4k_cache	1
+ #define cpu_has_fpu		1
+ #define cpu_has_32fpr		1
+ #define cpu_has_counter		1
+diff -Naurp linux-2.6.15.1.orig/include/asm-mips/mach-mips/cpu-feature-overrides.h linux-2.6.15.1/include/asm-mips/mach-mips/cpu-feature-overrides.h
+--- linux-2.6.15.1.orig/include/asm-mips/mach-mips/cpu-feature-overrides.h	2006-01-02 22:21:10.000000000 -0500
++++ linux-2.6.15.1/include/asm-mips/mach-mips/cpu-feature-overrides.h	2006-01-23 17:15:57.000000000 -0500
+@@ -17,7 +17,7 @@
+ #ifdef CONFIG_CPU_MIPS32
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+-#define cpu_has_4kcache		1
++#define cpu_has_4k_cache	1
+ /* #define cpu_has_fpu		? */
+ /* #define cpu_has_32fpr	? */
+ #define cpu_has_counter		1
+@@ -43,7 +43,7 @@
+ #ifdef CONFIG_CPU_MIPS64
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+-#define cpu_has_4kcache		1
++#define cpu_has_4k_cache	1
+ /* #define cpu_has_fpu		? */
+ /* #define cpu_has_32fpr	? */
+ #define cpu_has_counter		1
+diff -Naurp linux-2.6.15.1.orig/include/asm-mips/mach-rm200/cpu-feature-overrides.h linux-2.6.15.1/include/asm-mips/mach-rm200/cpu-feature-overrides.h
+--- linux-2.6.15.1.orig/include/asm-mips/mach-rm200/cpu-feature-overrides.h	2006-01-23 16:49:30.000000000 -0500
++++ linux-2.6.15.1/include/asm-mips/mach-rm200/cpu-feature-overrides.h	2006-01-23 17:16:25.000000000 -0500
+@@ -14,7 +14,7 @@
  
-+#ifndef MAX_LEGACY_HWIFS
-+# define MAX_LEGACY_HWIFS	6
-+#endif
-+
- #define IDE_ARCH_OBSOLETE_DEFAULTS
- 
- static __inline__ int ide_probe_legacy(void)
-@@ -73,7 +77,7 @@
- 
- static __inline__ unsigned long ide_default_io_base(int index)
- {
--	if (ide_probe_legacy())
-+	if (index < MAX_LEGACY_HWIFS && ide_probe_legacy())
- 		switch (index) {
- 		case 0:
- 			return 0x1f0;
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+-#define cpu_has_4kcache		1
++#define cpu_has_4k_cache	1
+ #define cpu_has_fpu		1
+ #define cpu_has_32fpr		1
+ #define cpu_has_counter		1
+diff -Naurp linux-2.6.15.1.orig/include/asm-mips/mach-sim/cpu-feature-overrides.h linux-2.6.15.1/include/asm-mips/mach-sim/cpu-feature-overrides.h
+--- linux-2.6.15.1.orig/include/asm-mips/mach-sim/cpu-feature-overrides.h	2006-01-02 22:21:10.000000000 -0500
++++ linux-2.6.15.1/include/asm-mips/mach-sim/cpu-feature-overrides.h	2006-01-23 17:16:42.000000000 -0500
+@@ -16,7 +16,7 @@
+ #ifdef CONFIG_CPU_MIPS32
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+-#define cpu_has_4kcache		1
++#define cpu_has_4k_cache	1
+ #define cpu_has_fpu		0
+ /* #define cpu_has_32fpr	? */
+ #define cpu_has_counter		1
+@@ -41,7 +41,7 @@
+ #ifdef CONFIG_CPU_MIPS64
+ #define cpu_has_tlb		1
+ #define cpu_has_4kex		1
+-#define cpu_has_4kcache		1
++#define cpu_has_4k_cache	1
+ /* #define cpu_has_fpu		? */
+ /* #define cpu_has_32fpr	? */
+ #define cpu_has_counter		1
+
+--vKFfOv5t3oGVpiF+--

@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 20:31:25 +0000 (GMT)
-Received: from smtp.gentoo.org ([134.68.220.30]:47085 "EHLO smtp.gentoo.org")
-	by ftp.linux-mips.org with ESMTP id S3457351AbWAWUbI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2006 20:31:08 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 20:33:51 +0000 (GMT)
+Received: from smtp.gentoo.org ([134.68.220.30]:26545 "EHLO smtp.gentoo.org")
+	by ftp.linux-mips.org with ESMTP id S3457351AbWAWUde (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2006 20:33:34 +0000
 Received: from kumba by smtp.gentoo.org with local (Exim 4.54)
-	id 1F18PF-0003yG-OD
-	for linux-mips@linux-mips.org; Mon, 23 Jan 2006 20:35:17 +0000
-Date:	Mon, 23 Jan 2006 20:35:17 +0000
+	id 1F18Rb-00033t-GN
+	for linux-mips@linux-mips.org; Mon, 23 Jan 2006 20:37:43 +0000
+Date:	Mon, 23 Jan 2006 20:37:43 +0000
 From:	Kumba <kumba@gentoo.org>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH]: Fix IP22 4k cache macro in cpu-feature-overrides.h
-Message-ID: <20060123203517.GC499@toucan.gentoo.org>
+Subject: [PATCH]: IP22 HAL2 Kconfig tweaks/typo fix
+Message-ID: <20060123203743.GD499@toucan.gentoo.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="9Ek0hoCL9XbhcSqy"
+Content-Type: multipart/mixed; boundary="8nsIa27JVQLqB7/C"
 Content-Disposition: inline
 User-Agent: Mutt/1.5.11
 Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10077
+X-archive-position: 10078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,12 +27,12 @@ Precedence: bulk
 X-list: linux-mips
 
 
---9Ek0hoCL9XbhcSqy
+--8nsIa27JVQLqB7/C
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-In include/asm-mips/mach-ip22/cpu-feature-overrides.h, the macro to use R4K-style caches is mis-spelt.  This will 
-cause IP22 systems to panic early in the boot due to no cache style being defined.  The attached patch corrects this.
+In sound/oss/Kconfig, the description for the HAL2 sound driver lacks a reference to Indigo2 systems, which also have 
+this sound board, and there's a minor anomaly in grammar.  Attached patch fixes both cases.
 
 
 --Kumba
@@ -46,20 +46,22 @@ Gentoo Foundation Board of Trustees
 eyes of the great are elsewhere." --Elrond
 
 
---9Ek0hoCL9XbhcSqy
+--8nsIa27JVQLqB7/C
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="misc-2.6.15-ip22-fix-4k-cache-macro.patch"
+Content-Disposition: attachment; filename="misc-2.6.15-ip22-hal2-kconfig-tweaks.patch"
 
---- include/asm-mips/mach-ip22/cpu-feature-overrides.h.orig	2006-01-23 13:18:24.000000000 -0500
-+++ include/asm-mips/mach-ip22/cpu-feature-overrides.h	2006-01-23 13:18:53.000000000 -0500
-@@ -13,7 +13,7 @@
-  */
- #define cpu_has_tlb		1
- #define cpu_has_4kex		1
--#define cpu_has_4kcache		1
-+#define cpu_has_4k_cache	1
- #define cpu_has_fpu		1
- #define cpu_has_32fpr		1
- #define cpu_has_counter		1
+--- sound/oss/Kconfig.orig	2006-01-23 15:01:08.000000000 -0500
++++ sound/oss/Kconfig	2006-01-23 15:01:36.000000000 -0500
+@@ -216,8 +216,8 @@ config SOUND_HAL2
+ 	tristate "SGI HAL2 sound (EXPERIMENTAL)"
+ 	depends on SOUND_PRIME && SGI_IP22 && EXPERIMENTAL
+ 	help
+-	  Say Y or M if you have an SGI Indy system and want to be able to
+-	  use it's on-board A2 audio system.
++	  Say Y or M if you have an SGI Indy or Indigo2 system and want to be able to
++	  use its on-board A2 audio system.
+ 
+ config SOUND_IT8172
+ 	tristate "IT8172G Sound"
 
---9Ek0hoCL9XbhcSqy--
+--8nsIa27JVQLqB7/C--

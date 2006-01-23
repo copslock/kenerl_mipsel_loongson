@@ -1,88 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 22:40:13 +0000 (GMT)
-Received: from smtp.gentoo.org ([134.68.220.30]:12769 "EHLO smtp.gentoo.org")
-	by ftp.linux-mips.org with ESMTP id S3458470AbWAWWj4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2006 22:39:56 +0000
-Received: from kumba by smtp.gentoo.org with local (Exim 4.54)
-	id 1F1APu-0007Oo-3Y
-	for linux-mips@linux-mips.org; Mon, 23 Jan 2006 22:44:06 +0000
-Date:	Mon, 23 Jan 2006 22:44:06 +0000
-From:	Kumba <kumba@gentoo.org>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH]: Add byteorder/endianess to /proc/cpuinfo
-Message-ID: <20060123224406.GG499@toucan.gentoo.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="PyMzGVE0NRonI6bs"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 22:48:02 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:15377 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S3458400AbWAWWrn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 22:47:43 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id B7C7D64D3D; Mon, 23 Jan 2006 22:51:19 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id BFEF48D2D; Mon, 23 Jan 2006 22:50:40 +0000 (GMT)
+Date:	Mon, 23 Jan 2006 22:50:40 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: DECstation R3000 boot error
+Message-ID: <20060123225040.GA23576@deprecation.cyrius.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 User-Agent: Mutt/1.5.11
-Return-Path: <kumba@gentoo.org>
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10084
+X-archive-position: 10085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
+We're getting the following boot error on a DECstation with R3K CPU.
+It simply hangs after the "high precision timer" message.  Maciej, do
+you have some time to look into this issue, or does anyone else have
+any idea what's going on there?
 
---PyMzGVE0NRonI6bs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Attached is a patch we've been using for some time (originally posted to this list some time ago) which adds the 
-byteorder output to /proc/cpuinfo.
-
-i.e.:
-
-byteorder               : big endian
-
-or 
-
-byteorder               : little endian
+This is with current git.
 
 
+Linux version 2.6.15 (tbm@deprecation) (gcc version 4.0.3 20051201 (prerelease) (Debian 4.0.2-5)) #2 Mon Jan 23 12:41:27 GMT 2006
+This is a DECstation 5000/2x0
+CPU revision is: 00000230
+FPU revision is: 00000340
+Determined physical RAM map:
+ memory: 0c000000 @ 00000000 (usable)
+Built 1 zonelists
+Kernel command line: rd_start=2154876928 rd_size=
+Primary instruction cache 64kB, linesize 4 bytes.
+Primary data cache 64kB, linesize 4 bytes.
+Synthesized TLB refill handler (17 instructions).
+Synthesized TLB load handler fastpath (31 instructions).
+Synthesized TLB store handler fastpath (31 instructions).
+Synthesized TLB modify handler fastpath (25 instructions).
+PID hash table entries: 1024 (order: 10, 16384 bytes)
+Using 24.999 MHz high precision timer.�
 
---Kumba
-
-
---
-Gentoo/MIPS Team Lead
-Gentoo Foundation Board of Trustees
-
-"Such is oft the course of deeds that move the wheels of the world: small hands do them because they must, while the
-eyes of the great are elsewhere." --Elrond
-
-
-
---PyMzGVE0NRonI6bs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="misc-2.6.11-add-byteorder-to-proc.patch"
-
-## 11_byteorder-proc.dpatch by ???
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Add byteorder info to /proc/cpuinfo
-
-Index: arch/mips/kernel/proc.c
-===================================================================
-RCS file: /home/cvs/linux/arch/mips/kernel/proc.c,v
-retrieving revision 1.27.2.17
-diff -u -p -u -r1.27.2.17 proc.c
---- arch/mips/kernel/proc.c	27 Apr 2003 23:34:46 -0000	1.27.2.17
-+++ arch/mips/kernel/proc.c	21 Sep 2003 00:14:13 -0000
-@@ -100,6 +100,11 @@ static int show_cpuinfo(struct seq_file 
- 	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
- 	              cpu_data[n].udelay_val / (500000/HZ),
- 	              (cpu_data[n].udelay_val / (5000/HZ)) % 100);
-+#ifdef __MIPSEB__
-+	seq_printf(m, "byteorder\t\t: big endian\n");
-+#else
-+	seq_printf(m, "byteorder\t\t: little endian\n");
-+#endif
- 	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
- 	seq_printf(m, "microsecond timers\t: %s\n",
- 	              cpu_has_counter ? "yes" : "no");
-
---PyMzGVE0NRonI6bs--
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

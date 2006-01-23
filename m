@@ -1,45 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 15:50:57 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:20968 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S3465572AbWAWPuj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2006 15:50:39 +0000
-Received: from localhost (p2198-ipad02funabasi.chiba.ocn.ne.jp [61.214.22.198])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 70E2FA2B4; Tue, 24 Jan 2006 00:54:50 +0900 (JST)
-Date:	Tue, 24 Jan 2006 00:54:24 +0900 (JST)
-Message-Id: <20060124.005424.112260730.anemo@mba.ocn.ne.jp>
-To:	pulsar@kpsws.com
-Cc:	linux-mips@linux-mips.org, niels.sterrenburg@philips.com
-Subject: Re: "useless" pgprot_noncached define in include/asm-mips/pgtable.h
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <49175.194.171.252.101.1137674027.squirrel@mail.kpsws.com>
-References: <Pine.LNX.4.62.0601191100001.21230@pademelon.sonytel.be>
-	<200601191230.59347.p_christ@hol.gr>
-	<49175.194.171.252.101.1137674027.squirrel@mail.kpsws.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 15:53:57 +0000 (GMT)
+Received: from fw-ca-1-hme0.vitesse.com ([64.215.88.90]:36670 "EHLO
+	email.vitesse.com") by ftp.linux-mips.org with ESMTP
+	id S3465572AbWAWPxg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 15:53:36 +0000
+Received: from wilson.vitesse.com (wilson [192.9.212.7])
+	by email.vitesse.com (8.11.0/8.11.0) with ESMTP id k0NFvgh19376;
+	Mon, 23 Jan 2006 07:57:42 -0800 (PST)
+Received: from MX-COS.vsc.vitesse.com (mx-cs1 [192.9.212.67])
+	by wilson.vitesse.com (8.11.6/8.11.6) with ESMTP id k0NFvfX29873;
+	Mon, 23 Jan 2006 08:57:41 -0700 (MST)
+Received: MX-COS 192.9.212.98 from 192.9.211.152 192.9.211.152 via HTTP with MS-WebStorage 6.0.6249
+Received: from lx-kurts.vitesse.com by MX-COS; 23 Jan 2006 08:57:10 -0700
+Subject: Re: Build errors
+From:	Kurt Schwemmer <kurts@vitesse.com>
+To:	Nigel Stephens <nigel@mips.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	sde@mips.com
+In-Reply-To: <43D4F1E0.1050602@mips.com>
+References: <1137793865.15788.26.camel@lx-kurts>
+	 <20060122030341.GB11131@linux-mips.org>  <43D4F1E0.1050602@mips.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Date:	Mon, 23 Jan 2006 08:57:09 -0700
+Message-Id: <1138031829.6572.2.camel@lx-kurts>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.2 (2.2.2-5) 
+Return-Path: <kurts@vitesse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10068
+X-archive-position: 10069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: kurts@vitesse.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Thu, 19 Jan 2006 13:33:47 +0100 (CET), "Niels Sterrenburg" <pulsar@kpsws.com> said:
+On Mon, 2006-01-23 at 15:10 +0000, Nigel Stephens wrote:
+> I recommend that you download the latest version of SDE (6.03.01)
+> which fixes this, from
+> ftp://ftp.mips.com/pub/tools/software/sde-for-linux/v6.03.01-1/mipsel-sdelinux-v6.03.01-1.i386.rpm
+> 
+> Nigel
 
-pulsar> #define pgprot_noncached pgprot_noncached
-pulsar> Was there any ideas behind this code or can it be removed ?
+Great! It builds now, albeit with warnings:
 
-There are some codes testing whether pgprot_noncached is defined or
-not.  Please see phys_mem_access_prot() in drivers/char/mem.c.
+arch/mips/lib/uncached.c: In function `run_uncached':
+arch/mips/lib/uncached.c:47: warning: comparison is always true due to
+limited range of data type
 
----
-Atsushi Nemoto
+Is that normal?
+
+Anyway, is there a particular person who maintains the wiki
+( http://www.linux-mips.org/wiki/MIPS_SDE_Installation ) or should I
+give it a shot? 
+
+Thanks!,
+Kurt Schwemmer

@@ -1,73 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 15:00:42 +0000 (GMT)
-Received: from amdext4.amd.com ([163.181.251.6]:37017 "EHLO amdext4.amd.com")
-	by ftp.linux-mips.org with ESMTP id S3458585AbWAWPAV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2006 15:00:21 +0000
-Received: from SAUSGW01.amd.com (sausgw01.amd.com [163.181.250.21])
-	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k0NF4OB5019466;
-	Mon, 23 Jan 2006 09:04:28 -0600
-Received: from 163.181.250.1 by SAUSGW02.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Mon, 23 Jan 2006 09:04:16 -0600
-X-Server-Uuid: 5FC0E2DF-CD44-48CD-883A-0ED95B391E89
-Received: from ldcmail.amd.com (ldcmail.amd.com [147.5.200.40]) by
- amdint2.amd.com (8.12.8/8.12.8/AMD) with ESMTP id k0NF4Gh5006693; Mon,
- 23 Jan 2006 09:04:16 -0600 (CST)
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id 1825E2028; Mon, 23 Jan 2006
- 08:04:16 -0700 (MST)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k0NF5IWs004507; Mon, 23 Jan 2006 08:05:18
- -0700
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k0NF5HRr004506; Mon, 23 Jan 2006 08:05:17
- -0700
-Date:	Mon, 23 Jan 2006 08:05:17 -0700
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"David Brownell" <david-b@pacbell.net>
-cc:	linux-usb-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
-	thomas.dahlmann@amd.com
-Subject: Re: EHCI support for the AU1200
-Message-ID: <20060123150517.GD4371@cosmic.amd.com>
-References: <20060113183038.GK8925@cosmic.amd.com>
- <200601201736.47548.david-b@pacbell.net>
-MIME-Version: 1.0
-In-Reply-To: <200601201736.47548.david-b@pacbell.net>
-User-Agent: Mutt/1.5.11
-X-WSS-ID: 6FCA2FFA0BO194144-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 15:01:56 +0000 (GMT)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:13452 "EHLO
+	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
+	id S3458585AbWAWPBh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 15:01:37 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id k0NF67ob001968;
+	Mon, 23 Jan 2006 15:06:07 GMT
+Received: (from alan@localhost)
+	by localhost.localdomain (8.13.4/8.13.4/Submit) id k0NF668v001967;
+	Mon, 23 Jan 2006 15:06:06 GMT
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: Cobalt IDE fix
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Stuart Longland <redhatter@gentoo.org>
+Cc:	Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+In-Reply-To: <43D42D23.8010908@gentoo.org>
+References: <20060122235038.GA3501@colonel-panic.org>
+	 <1137976937.24808.2.camel@localhost.localdomain>
+	 <43D42D23.8010908@gentoo.org>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+Date:	Mon, 23 Jan 2006 15:06:05 +0000
+Message-Id: <1138028765.24808.14.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10059
+X-archive-position: 10060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On 20/01/06 17:36 -0800, David Brownell wrote:
-> On Friday 13 January 2006 10:30 am, Jordan Crouse wrote:
-> > ALCHEMY: ?Add EHCI support for AU1200
-> 
-> Unfortunately it doesn't apply to my current tree, and I see that
-> you were reverting some of the updates in current kernel GIT ...
+On Llu, 2006-01-23 at 11:10 +1000, Stuart Longland wrote:
+> Actually... could a configure option in Kconfig be added to disable
+> probing particular IDE busses?
 
-Doh - reverting changes is wicked bad - I must have screwed up the merge
-somewhere along the line.
+ide0=noprobe
 
-> Please let me know if the updated version I'm posting does not
-> behave for you.
+> > VP_IDE: VIA vt82c686b (rev 40) IDE UDMA100 controller on pci0000:00:04.1
+> >     ide0: BM-DMA at 0xb800-0xb807, BIOS settings: hda:pio, hdb:pio
+> >     ide1: BM-DMA at 0xb808-0xb80f, BIOS settings: hdc:DMA, hdd:pio
+> > Probing IDE interface ide0...
+> > hda: IRQ probe failed (0xfff0f5fc)
 
-Will do.
-
-Jordan
-
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
+This is probing beause the IDE enable bits have not been set correctly
+by the BIOS I think. Not much we can do if the BIOS says "yes there is a
+drive" and there is not.

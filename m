@@ -1,52 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 09:13:42 +0000 (GMT)
-Received: from mf2.realtek.com.tw ([60.248.182.46]:18451 "EHLO
-	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
-	id S3458555AbWAWJNT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jan 2006 09:13:19 +0000
-Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
- (Clearswift SMTPRS 5.1.7) with ESMTP id <T7604b02056dc803816c34@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
- Mon, 23 Jan 2006 17:19:52 +0800
-Received: from rtpdii3098 ([172.21.98.16])
-          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
-          with ESMTP id 2006012317175201-559480 ;
-          Mon, 23 Jan 2006 17:17:52 +0800 
-Message-ID: <015501c61ffd$cd41db30$106215ac@realtek.com.tw>
-From:	"colin" <colin@realtek.com.tw>
-To:	<linux-mips@linux-mips.org>
-Subject: Can somebody please send me a copy of oprofile utils?
-Date:	Mon, 23 Jan 2006 17:17:15 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 10:33:00 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:30734 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S3458572AbWAWKcj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jan 2006 10:32:39 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id DF0BAF5A57;
+	Mon, 23 Jan 2006 11:36:48 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 22692-07; Mon, 23 Jan 2006 11:36:48 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 9E25CF5A53;
+	Mon, 23 Jan 2006 11:36:48 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k0NAah8C015656;
+	Mon, 23 Jan 2006 11:36:43 +0100
+Date:	Mon, 23 Jan 2006 10:36:50 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: DECstation compile fails: opcode not supported (eret)
+In-Reply-To: <20060122131153.GB5543@deprecation.cyrius.com>
+Message-ID: <Pine.LNX.4.64N.0601231035300.27141@blysk.ds.pg.gda.pl>
+References: <20060121195956.GA15498@deprecation.cyrius.com> <43D2F4D9.6010406@gentoo.org>
+ <20060122131153.GB5543@deprecation.cyrius.com>
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2006/01/23 =?Bog5?B?pFWkyCAwNToxNzo1Mg==?=,
-	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2006/01/23 =?Bog5?B?pFWkyCAwNToxNzo1NA==?=,
-	Serialize complete at 2006/01/23 =?Bog5?B?pFWkyCAwNToxNzo1NA==?=
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87.1/1247/Sat Jan 21 11:24:51 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10046
+X-archive-position: 10047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, 22 Jan 2006, Martin Michlmayr wrote:
 
-Hi all,
-I need oprofile utils to profile kernel and now I am stuck over compiling
-C++ and some libraries.
-Could somebody please send me static compiled oprofile utils running over
-MIPS platform?
-This will save me a lot of time.
+> That's right, reverting Ralf's commit
+>   Remove stray .set mips3 resulting in 64-bit instruction in 32-bit kernels.
+> makes it compile.
 
-Thanks and regards,
-Colin
+ This ".set mips3" should protect that "eret" alone then.
+
+  Maciej

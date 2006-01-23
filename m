@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 23:35:30 +0000 (GMT)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:58295 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S3458400AbWAWXfM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jan 2006 23:35:12 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id k0NNdpEu007033;
-	Mon, 23 Jan 2006 23:39:52 GMT
-Received: (from alan@localhost)
-	by localhost.localdomain (8.13.4/8.13.4/Submit) id k0NNdpDR007029;
-	Mon, 23 Jan 2006 23:39:51 GMT
-X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: [PATCH 2.6.x] Cobalt IDE fix, take 2
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	Peter Horton <pdh@colonel-panic.org>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-In-Reply-To: <20060123223354.GA2698@colonel-panic.org>
-References: <20060123223354.GA2698@colonel-panic.org>
-Content-Type: text/plain
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2006 23:48:49 +0000 (GMT)
+Received: from xproxy.gmail.com ([66.249.82.207]:29445 "EHLO xproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3458400AbWAWXsb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2006 23:48:31 +0000
+Received: by xproxy.gmail.com with SMTP id s18so707512wxc
+        for <linux-mips@linux-mips.org>; Mon, 23 Jan 2006 15:52:40 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=MkbGFJxD9Uq8qz/3SePvCA3pe+EWvLGIcCiLuA1/uc/9RX6ZDP2/mMMIIdNMowBw1QWjNtLzLpjhQwjSRK0q0iIxM6N5DYndyGsAX74GpHpLCXrvqqmySfzRf1taWpPjy6s3l/4L2rJBGdHzWWPJ+mO+hQVsf9ydB7TCHe0h7TM=
+Received: by 10.70.45.12 with SMTP id s12mr5635326wxs;
+        Mon, 23 Jan 2006 15:52:40 -0800 (PST)
+Received: from ?192.168.232.98? ( [203.84.188.34])
+        by mx.gmail.com with ESMTP id i12sm7891388wxd.2006.01.23.15.52.37;
+        Mon, 23 Jan 2006 15:52:40 -0800 (PST)
+Message-ID: <43D56C60.4030402@gmail.com>
+Date:	Tue, 24 Jan 2006 07:53:04 +0800
+From:	"Antonino A. Daplas" <adaplas@gmail.com>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To:	linux-fbdev-devel@lists.sourceforge.net
+CC:	linux-mips@linux-mips.org, kumba@gentoo.org
+Subject: Re: [Linux-fbdev-devel] [PATCH]: Fix SGI O2 Compile error in drivers/video/gbefb.c
+References: <20060123203205.GB499@toucan.gentoo.org>
+In-Reply-To: <20060123203205.GB499@toucan.gentoo.org>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Date:	Mon, 23 Jan 2006 23:39:45 +0000
-Message-Id: <1138059585.24808.43.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <adaplas@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10087
+X-archive-position: 10088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: adaplas@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Llu, 2006-01-23 at 22:33 +0000, Peter Horton wrote:
-> Fix long boot delay on Cobalt scanning non-existent IDE interfaces.
+Kumba wrote:
+> Hi all,
+> 
+> Around line ~1247 in drivers/video/gbefb.c, gbefb_remove_sysfs uses the wrong parameter, causing an O2 kernel build 
+> to break when using this driver.  The attached patch supplies the correct parameter, allowing the build to succeed.
+> 
 
-NAK again, please just fix this properly. If you just copy the logic
-from the x86 platform it will all work without #defines and other hacks
-on the already wrong core code.
+Okay.  Thanks.
 
-Alan
+Tony

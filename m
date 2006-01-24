@@ -1,79 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 13:55:44 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:8984 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133479AbWAXNz0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Jan 2006 13:55:26 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0ODwtIH027801;
-	Tue, 24 Jan 2006 13:58:55 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0ODwrNA027800;
-	Tue, 24 Jan 2006 13:58:53 GMT
-Date:	Tue, 24 Jan 2006 13:58:53 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	linux-fbdev-devel@lists.sourceforge.net, jgarzik@pobox.com,
-	linux-mips@linux-mips.org
-Subject: Re: Compiler error in =?utf-8?Q?drivers=2F?=
-	=?utf-8?Q?video=2Fcirrusfb=2Ec=3A_syntax_error_before_=E2=80=98volatile?=
-	=?utf-8?B?4oCZ?=
-Message-ID: <20060124135853.GE3459@linux-mips.org>
-References: <20060124025130.GA8418@deprecation.cyrius.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 16:03:18 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:58887 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133507AbWAXQC7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Jan 2006 16:02:59 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id A5A2464D3D; Tue, 24 Jan 2006 16:07:14 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 8B2FB854B; Tue, 24 Jan 2006 16:06:30 +0000 (GMT)
+Date:	Tue, 24 Jan 2006 16:06:30 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, t.sailer@alumni.ethz.ch, perex@suse.cz
+Subject: Re: Ensoniq ES1371 problem on Cobalt MIPS
+Message-ID: <20060124160630.GF2924@deprecation.cyrius.com>
+References: <20060124030725.GA14063@deprecation.cyrius.com> <20060124.132832.37533152.nemoto@toshiba-tops.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20060124025130.GA8418@deprecation.cyrius.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20060124.132832.37533152.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10103
+X-archive-position: 10104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 24, 2006 at 02:51:30AM +0000, Martin Michlmayr wrote:
+* Atsushi Nemoto <anemo@mba.ocn.ne.jp> [2006-01-24 13:28]:
+> ALSA uses virt_to_page() but this is not work for buffers returned by
+> pci_alloc_consistent() on MIPS with CONFIG_DMA_NONCOHERENT.  We can
+> make virt_to_page() bulletproof but it might have some performance
+> impact.  It seems API something like dma_to_page() should be
+> introduced.
 
-> I get the following compiler error for drivers/video/cirrusfb.c on
-> mips:
-> 
->   CC      drivers/video/cirrusfb.o
-> In file included from include/video/vga.h:25,
->                  from drivers/video/cirrusfb.c:70:
-> include/asm/vga.h:29: error: syntax error before ‘volatile’
-> include/asm/vga.h:34: error: syntax error before ‘volatile’
-> make[2]: *** [drivers/video/cirrusfb.o] Error 1
-> 
-> These lines define scr_writew() and scr_readw():
-> 
-> 29:static inline void scr_writew(u16 val, volatile u16 *addr)
-> 34:static inline u16 scr_readw(volatile const u16 *addr)
-> 
-> Note that some other arches (powerpc, alpha) have the same
-> definitions in vga.h.
-> 
-> This is with 2.6.15.
+Can you start a discusion about this on lkml?  I'd assume some other
+platforms have similar problems.
 
-Interesting catch.  The reason is this code in <linux/vt_buffer.h>:
+> Anyway, here is my ugly patch against 2.6.15.  It would fix some
+> problems with ALSA on noncoherent MIPS platform.
 
-[...]
-#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_MDA_CONSOLE)
-#include <asm/vga.h>
-#endif
-
-#ifndef VT_BUF_HAVE_RW
-#define scr_writew(val, addr) (*(addr) = (val))
-#define scr_readw(addr) (*(addr))
-#define scr_memcpyw(d, s, c) memcpy(d, s, c)
-[...]
-
-But VT_BUF_HAVE_RW is defined in <asm/vga.h>, so if neither
-CONFIG_VGA_CONSOLE nor CONFIG_MDA_CONSOLE is defined compilation will
-blow up when <asm/vga.h> is being imported later.
-
-  Ralf
+This patch didn't really improve anything.
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

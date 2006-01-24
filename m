@@ -1,64 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 19:55:08 +0000 (GMT)
-Received: from smtp.gentoo.org ([134.68.220.30]:53444 "EHLO smtp.gentoo.org")
-	by ftp.linux-mips.org with ESMTP id S8133543AbWAXTyv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2006 19:54:51 +0000
-Received: from kumba by smtp.gentoo.org with local (Exim 4.54)
-	id 1F1UJm-0004Lo-07
-	for linux-mips@linux-mips.org; Tue, 24 Jan 2006 19:59:06 +0000
-Date:	Tue, 24 Jan 2006 19:59:05 +0000
-From:	Kumba <kumba@gentoo.org>
-To:	linux-mips@linux-mips.org
-Subject: Re: [PATCH]: IP22 HAL2 Kconfig tweaks/typo fix
-Message-ID: <20060124195905.GC24568@toucan.gentoo.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="1ccMZA6j1vT5UqiK"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.11
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 21:22:35 +0000 (GMT)
+Received: from mail.glaze.se ([212.209.188.162]:23311 "HELO rocket.glaze.se")
+	by ftp.linux-mips.org with SMTP id S8133553AbWAXVWR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2006 21:22:17 +0000
+Received: from IBMJP (unknown [10.42.1.6])
+	by rocket.glaze.se (Postfix) with ESMTP
+	id 6F2CD376465; Tue, 24 Jan 2006 22:26:32 +0100 (CET)
+From:	"Jan Pedersen" <jan.pedersen@glaze.dk>
+To:	"'Clem Taylor'" <clem.taylor@gmail.com>,
+	<linux-mips@linux-mips.org>
+Subject: RE: 802.11b/g mini-PCI card that is known to work with linux-mips (Au1550)
+Date:	Tue, 24 Jan 2006 22:26:29 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+In-Reply-To: <ecb4efd10601240845j515c42a1xbfe4dd7ea6857e1e@mail.gmail.com>
+Thread-Index: AcYhBbYUNwM/e6rcTNKnJVQB6Upa0AAJtohQ
+Message-Id: <20060124212632.6F2CD376465@rocket.glaze.se>
+Return-Path: <jan.pedersen@glaze.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10111
+X-archive-position: 10112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: jan.pedersen@glaze.dk
 Precedence: bulk
 X-list: linux-mips
 
-
---1ccMZA6j1vT5UqiK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Indigo2 systems also have a Hal2 sound system, so change
-sound/oss/Kconfig's help text to reflect this, and also fix a minor
-grammatical typo in the description.
-
-Signed-off-by: Joshua Kinard <kumba@gentoo.org>
----
-
- sound/oss/Kconfig |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I have used the WL-850F cards for several years. They work wery well.
 
 
---1ccMZA6j1vT5UqiK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="hal2-kconfig-tweaks.patch"
-
-diff -Naurp mipslinux/sound/oss/Kconfig mipslinux-hal2/sound/oss/Kconfig
---- mipslinux/sound/oss/Kconfig	2006-01-22 21:14:37.000000000 -0500
-+++ mipslinux-hal2/sound/oss/Kconfig	2006-01-24 13:40:21.000000000 -0500
-@@ -216,8 +216,8 @@ config SOUND_HAL2
- 	tristate "SGI HAL2 sound (EXPERIMENTAL)"
- 	depends on SOUND_PRIME && SGI_IP22 && EXPERIMENTAL
- 	help
--	  Say Y or M if you have an SGI Indy system and want to be able to
--	  use it's on-board A2 audio system.
-+	  Say Y or M if you have an SGI Indy or Indigo2 system and want to be able to
-+	  use its on-board A2 audio system.
- 
- config SOUND_IT8172
- 	tristate "IT8172G Sound"
-
---1ccMZA6j1vT5UqiK--
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-
+> mips.org] On Behalf Of Clem Taylor
+> Sent: 24. januar 2006 17:45
+> To: linux-mips@linux-mips.org
+> Subject: OT: 802.11b/g mini-PCI card that is known to work with linux-mips
+> (Au1550)
+> 
+> Hi,
+> 
+> I realize this is a bit off topic, but I was wondering if anyone has
+> any experience using 802.11 mini-PCI cards with linux-mips? It sounds
+> like many of the 802.11b/g chipsets only have closed-source drivers
+> which means I'm out of luck for linux-mips. I was wondering if anyone
+> can recommend a chipset or specific mini-PCI card that is known to
+> work with linux-mips. I'm using an AMD Alchemy Au1550.
+> 
+>                                Thanks,
+>                                Clem Taylor
+> 

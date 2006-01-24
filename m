@@ -1,65 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 11:10:13 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:29191 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S8133406AbWAXLJ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Jan 2006 11:09:56 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 0A6B1F5B01;
-	Tue, 24 Jan 2006 12:14:07 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 05014-03; Tue, 24 Jan 2006 12:14:06 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B78B6F5AFF;
-	Tue, 24 Jan 2006 12:14:06 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k0OBE1wk013624;
-	Tue, 24 Jan 2006 12:14:01 +0100
-Date:	Tue, 24 Jan 2006 11:14:10 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Kaj-Michael Lang <milang@tal.org>
-Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: DECstation R3000 boot error
-In-Reply-To: <Pine.LNX.4.61.0601241147170.19397@tori.tal.org>
-Message-ID: <Pine.LNX.4.64N.0601241058390.11021@blysk.ds.pg.gda.pl>
-References: <20060123225040.GA23576@deprecation.cyrius.com>
- <Pine.LNX.4.61.0601241147170.19397@tori.tal.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 12:09:51 +0000 (GMT)
+Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:8168 "EHLO
+	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
+	id S8133455AbWAXMJ3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Jan 2006 12:09:29 +0000
+Received: (qmail 22494 invoked from network); 24 Jan 2006 22:13:34 +1000
+Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
+  by 192.168.5.1 with SMTP; 24 Jan 2006 22:13:34 +1000
+Message-ID: <43D619FE.2090104@gentoo.org>
+Date:	Tue, 24 Jan 2006 22:13:50 +1000
+From:	Stuart Longland <redhatter@gentoo.org>
+Organization: Gentoo Foundation
+User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.87.1/1248/Tue Jan 24 11:54:38 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: [Broken PATCH]: IP32 Audio Driver
+X-Enigmail-Version: 0.93.0.0
+OpenPGP: id=63264AB9;
+	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig1DA7E2EF99B9EF9B7970BE75"
+Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10096
+X-archive-position: 10097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: redhatter@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 24 Jan 2006, Kaj-Michael Lang wrote:
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig1DA7E2EF99B9EF9B7970BE75
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> > We're getting the following boot error on a DECstation with R3K CPU.
-> > It simply hangs after the "high precision timer" message.  Maciej, do
-> 
-> It's trying to use a timer source that does not exist on the DECstation you're
-> trying to use, most likely. What model is it you have ? I've tracked it down
+Hi All...
+	A couple of weeks ago, I went digging for a patch that adds support for
+the O2's onboard sound.  Google cache (linux-mips.org was down at the
+time) managed to reveal a patch against 2.6.12-rc2[1].
 
- Well, I don't think it's possible to calculate frequency of something 
-that's inexistent, yet it does...  That's a /240.
+	Since then, snd_hidden_kcalloc and snd_hidden_kfree have disappeared.
+I can get the driver to compile and semi-work by replacing those with
+kmalloc and kfree ... but I'm not sure if that's correct or not.
 
-> when I got my first (working) DECstation (5000/133) a
-> month or so ago. Forgot all about it under the holidays. I think
-> I have a patch somewhere to fix it, I'll do some digging.
+	Under a 64-bit kernel (built with gcc 3.4.4, binutils 2.16.1), the
+driver loads, but the audio output is badly distorted.  Having never
+used an O2 before, I can't vouch for this being any better or worse than
+the original driver, although I'm told it has never worked correctly.
 
- The /133 (as all 3MINs) may have an older revision of the I/O ASIC that 
-may not have the free-running counter indeed.  It's handled correctly 
-regardless, except from missing timestamp precision, obviously.
+The patch, as it stands now, is available here:
+http://dev.gentoo.org/~redhatter/mips/sgi/ip32/patches/ip32-audio-2.6.15.diff.gz
 
- What kind of a patch do you need anyway and why isn't it yet in my mail?
+	Does anyone have any docs, or useful tidbits on how this hardware
+works?  I'd like to assist get this driver fixed if I can.  It almost
+works (for playback).
 
-  Maciej
+Regards,
+-- 
+Stuart Longland (aka Redhatter)              .'''.
+Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
+. . . . . . . . . . . . . . . . . . . . . .   .'.'
+http://dev.gentoo.org/~redhatter             :.'
+
+Footnotes:
+1. http://www.linux-mips.org/archives/linux-mips/2005-04/msg00233.html
+
+--------------enig1DA7E2EF99B9EF9B7970BE75
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFD1hoBuarJ1mMmSrkRAmGMAJ9qCGLOTvNA+vByNNs5Ha7Uq+W/6QCfaGwp
+hz1+KaE0lcNNF2DoOyu8scw=
+=4toe
+-----END PGP SIGNATURE-----
+
+--------------enig1DA7E2EF99B9EF9B7970BE75--

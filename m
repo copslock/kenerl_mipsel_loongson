@@ -1,56 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 21:22:35 +0000 (GMT)
-Received: from mail.glaze.se ([212.209.188.162]:23311 "HELO rocket.glaze.se")
-	by ftp.linux-mips.org with SMTP id S8133553AbWAXVWR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2006 21:22:17 +0000
-Received: from IBMJP (unknown [10.42.1.6])
-	by rocket.glaze.se (Postfix) with ESMTP
-	id 6F2CD376465; Tue, 24 Jan 2006 22:26:32 +0100 (CET)
-From:	"Jan Pedersen" <jan.pedersen@glaze.dk>
-To:	"'Clem Taylor'" <clem.taylor@gmail.com>,
-	<linux-mips@linux-mips.org>
-Subject: RE: 802.11b/g mini-PCI card that is known to work with linux-mips (Au1550)
-Date:	Tue, 24 Jan 2006 22:26:29 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 22:01:09 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:24074 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133553AbWAXWAv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Jan 2006 22:00:51 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id F00E264D3D; Tue, 24 Jan 2006 22:04:15 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id EE910854B; Tue, 24 Jan 2006 22:03:29 +0000 (GMT)
+Date:	Tue, 24 Jan 2006 22:03:29 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Set CONFIG_BUILD_ELF64 for defconfigs where CONFIG_64BIT is set
+Message-ID: <20060124220329.GA10421@deprecation.cyrius.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook, Build 11.0.6353
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
-In-Reply-To: <ecb4efd10601240845j515c42a1xbfe4dd7ea6857e1e@mail.gmail.com>
-Thread-Index: AcYhBbYUNwM/e6rcTNKnJVQB6Upa0AAJtohQ
-Message-Id: <20060124212632.6F2CD376465@rocket.glaze.se>
-Return-Path: <jan.pedersen@glaze.dk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10112
+X-archive-position: 10113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jan.pedersen@glaze.dk
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-I have used the WL-850F cards for several years. They work wery well.
+Modern toolchain requires you to build ELF64 objects when you build a
+64-bit kernel.  Therefore enable CONFIG_BUILD_ELF64 in all mips defconfig
+files which have CONFIG_64BIT=y.
 
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-
-> mips.org] On Behalf Of Clem Taylor
-> Sent: 24. januar 2006 17:45
-> To: linux-mips@linux-mips.org
-> Subject: OT: 802.11b/g mini-PCI card that is known to work with linux-mips
-> (Au1550)
-> 
-> Hi,
-> 
-> I realize this is a bit off topic, but I was wondering if anyone has
-> any experience using 802.11 mini-PCI cards with linux-mips? It sounds
-> like many of the 802.11b/g chipsets only have closed-source drivers
-> which means I'm out of luck for linux-mips. I was wondering if anyone
-> can recommend a chipset or specific mini-PCI card that is known to
-> work with linux-mips. I'm using an AMD Alchemy Au1550.
-> 
->                                Thanks,
->                                Clem Taylor
-> 
+---
+
+ ip32_defconfig         |    2 +-
+ ocelot_c_defconfig     |    2 +-
+ ocelot_g_defconfig     |    2 +-
+ sb1250-swarm_defconfig |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/configs/ip32_defconfig b/arch/mips/configs/ip32_defconfig
+index 23dcecc..bb06298 100644
+--- a/arch/mips/configs/ip32_defconfig
++++ b/arch/mips/configs/ip32_defconfig
+@@ -226,7 +226,7 @@ CONFIG_MMU=y
+ #
+ CONFIG_BINFMT_ELF=y
+ CONFIG_BINFMT_MISC=y
+-# CONFIG_BUILD_ELF64 is not set
++CONFIG_BUILD_ELF64=y
+ CONFIG_MIPS32_COMPAT=y
+ CONFIG_COMPAT=y
+ CONFIG_MIPS32_O32=y
+diff --git a/arch/mips/configs/ocelot_c_defconfig b/arch/mips/configs/ocelot_c_defconfig
+index bbb5316..81e6ebf 100644
+--- a/arch/mips/configs/ocelot_c_defconfig
++++ b/arch/mips/configs/ocelot_c_defconfig
+@@ -222,7 +222,7 @@ CONFIG_MMU=y
+ #
+ CONFIG_BINFMT_ELF=y
+ # CONFIG_BINFMT_MISC is not set
+-# CONFIG_BUILD_ELF64 is not set
++CONFIG_BUILD_ELF64=y
+ CONFIG_MIPS32_COMPAT=y
+ CONFIG_COMPAT=y
+ CONFIG_MIPS32_O32=y
+diff --git a/arch/mips/configs/ocelot_g_defconfig b/arch/mips/configs/ocelot_g_defconfig
+index 062e0e6..c5029b4 100644
+--- a/arch/mips/configs/ocelot_g_defconfig
++++ b/arch/mips/configs/ocelot_g_defconfig
+@@ -225,7 +225,7 @@ CONFIG_MMU=y
+ #
+ CONFIG_BINFMT_ELF=y
+ # CONFIG_BINFMT_MISC is not set
+-# CONFIG_BUILD_ELF64 is not set
++CONFIG_BUILD_ELF64=y
+ CONFIG_MIPS32_COMPAT=y
+ CONFIG_COMPAT=y
+ CONFIG_MIPS32_O32=y
+diff --git a/arch/mips/configs/sb1250-swarm_defconfig b/arch/mips/configs/sb1250-swarm_defconfig
+index bc79f49..550b6f7 100644
+--- a/arch/mips/configs/sb1250-swarm_defconfig
++++ b/arch/mips/configs/sb1250-swarm_defconfig
+@@ -249,7 +249,7 @@ CONFIG_MMU=y
+ #
+ CONFIG_BINFMT_ELF=y
+ # CONFIG_BINFMT_MISC is not set
+-# CONFIG_BUILD_ELF64 is not set
++CONFIG_BUILD_ELF64=y
+ CONFIG_MIPS32_COMPAT=y
+ CONFIG_COMPAT=y
+ CONFIG_MIPS32_O32=y
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,46 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 16:41:03 +0000 (GMT)
-Received: from uproxy.gmail.com ([66.249.92.204]:22300 "EHLO uproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133507AbWAXQkp convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Jan 2006 16:40:45 +0000
-Received: by uproxy.gmail.com with SMTP id u40so347605ugc
-        for <linux-mips@linux-mips.org>; Tue, 24 Jan 2006 08:45:02 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=K7WZ3LH20RR681AyC5CExV2n/YrZQwEm59uzp6xWQQUOj+4q5L8+I3FQduKvgCmEx+BnBwbgFXd2qSurRY/w5ByqpG6RIyShB/VGn1LH6pwyfrAYueKDC/OZHtbt7N8agg7P0f4Rzw9aDmdGxOe70UgJnSOduURwYEetlkfp8+0=
-Received: by 10.49.40.4 with SMTP id s4mr373116nfj;
-        Tue, 24 Jan 2006 08:45:02 -0800 (PST)
-Received: by 10.49.37.9 with HTTP; Tue, 24 Jan 2006 08:45:02 -0800 (PST)
-Message-ID: <ecb4efd10601240845j515c42a1xbfe4dd7ea6857e1e@mail.gmail.com>
-Date:	Tue, 24 Jan 2006 11:45:02 -0500
-From:	Clem Taylor <clem.taylor@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2006 17:54:26 +0000 (GMT)
+Received: from [195.110.64.125] ([195.110.64.125]:26106 "EHLO smtp.uk.colt.net")
+	by ftp.linux-mips.org with ESMTP id S8133532AbWAXRyI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2006 17:54:08 +0000
+Received: from [10.0.1.55] (117-21-161-212.DSL.ONCOLT.COM [212.161.21.117])
+	by smtp.uk.colt.net (Postfix) with ESMTP id AEABFE2BF2
+	for <linux-mips@linux-mips.org>; Tue, 24 Jan 2006 17:47:38 +0000 (GMT)
+From:	David Goodenough <david.goodenough@btconnect.com>
 To:	linux-mips@linux-mips.org
-Subject: OT: 802.11b/g mini-PCI card that is known to work with linux-mips (Au1550)
+Subject: Re: OT: 802.11b/g mini-PCI card that is known to work with linux-mips (Au1550)
+Date:	Tue, 24 Jan 2006 17:56:45 +0000
+User-Agent: KMail/1.8.2
+References: <ecb4efd10601240845j515c42a1xbfe4dd7ea6857e1e@mail.gmail.com>
+In-Reply-To: <ecb4efd10601240845j515c42a1xbfe4dd7ea6857e1e@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Return-Path: <clem.taylor@gmail.com>
+Message-Id: <200601241756.46331.david.goodenough@btconnect.com>
+Return-Path: <david.goodenough@btconnect.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10105
+X-archive-position: 10106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: david.goodenough@btconnect.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tuesday 24 January 2006 16:45, Clem Taylor wrote:
+> Hi,
+>
+> I realize this is a bit off topic, but I was wondering if anyone has
+> any experience using 802.11 mini-PCI cards with linux-mips? It sounds
+> like many of the 802.11b/g chipsets only have closed-source drivers
+> which means I'm out of luck for linux-mips. I was wondering if anyone
+> can recommend a chipset or specific mini-PCI card that is known to
+> work with linux-mips. I'm using an AMD Alchemy Au1550.
+>
+>                                Thanks,
+>                                Clem Taylor
+If you look at the OpenWrt project you will see that various wireless
+cards are found in the hardware that OpenWrt supports.  There are 
+Prism, Atheros, Broadcomm, TI and RaLink cards as I recall.  Almost
+all of the OpenWrt hardware is Mips based, some is I386 or AR7.
 
-I realize this is a bit off topic, but I was wondering if anyone has
-any experience using 802.11 mini-PCI cards with linux-mips? It sounds
-like many of the 802.11b/g chipsets only have closed-source drivers
-which means I'm out of luck for linux-mips. I was wondering if anyone
-can recommend a chipset or specific mini-PCI card that is known to
-work with linux-mips. I'm using an AMD Alchemy Au1550.
-
-                               Thanks,
-                               Clem Taylor
+David

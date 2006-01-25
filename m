@@ -1,19 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2006 11:50:43 +0000 (GMT)
-Received: from mail.ocs.com.au ([202.147.117.210]:61892 "EHLO mail.ocs.com.au")
-	by ftp.linux-mips.org with ESMTP id S8133488AbWAYLuY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2006 11:50:24 +0000
-Received: from ocs3.ocs.com.au (ocs3.ocs.com.au [192.168.255.3])
-	by mail.ocs.com.au (Postfix) with ESMTP id BC5E1E0B206;
-	Wed, 25 Jan 2006 22:54:43 +1100 (EST)
-Received: by ocs3.ocs.com.au (Postfix, from userid 16331)
-	id 969732E79; Wed, 25 Jan 2006 22:54:43 +1100 (EST)
-Received: from ocs3.ocs.com.au (localhost [127.0.0.1])
-	by ocs3.ocs.com.au (Postfix) with ESMTP id 918D78017F;
-	Wed, 25 Jan 2006 22:54:43 +1100 (EST)
-X-Mailer: exmh version 2.7.0 06/18/2004 with nmh-1.1-RC1
-From:	Keith Owens <kaos@sgi.com>
-To:	mita@miraclelinux.com (Akinobu Mita)
-cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2006 12:27:24 +0000 (GMT)
+Received: from witte.sonytel.be ([80.88.33.193]:29628 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S8133502AbWAYM1G (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2006 12:27:06 +0000
+Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k0PCSqYL021746;
+	Wed, 25 Jan 2006 13:28:57 +0100 (MET)
+Date:	Wed, 25 Jan 2006 13:28:51 +0100 (CET)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Akinobu Mita <mita@miraclelinux.com>
+cc:	Linux Kernel Development <linux-kernel@vger.kernel.org>,
+	Richard Henderson <rth@twiddle.net>,
 	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
 	Russell King <rmk@arm.linux.org.uk>,
 	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
@@ -21,59 +17,77 @@ cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
 	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
+	linux-m68k@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	parisc-linux@parisc-linux.org,
+	Linux/PPC Development <linuxppc-dev@ozlabs.org>,
+	linux390@de.ibm.com, linuxsh-dev@lists.sourceforge.net,
 	linuxsh-shmedia-dev@lists.sourceforge.net,
 	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
 	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
 	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
-Subject: Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h 
-In-reply-to: Your message of "Wed, 25 Jan 2006 20:32:06 +0900."
-             <20060125113206.GD18584@miraclelinux.com> 
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Date:	Wed, 25 Jan 2006 22:54:43 +1100
-Message-ID: <24086.1138190083@ocs3.ocs.com.au>
-Return-Path: <kaos@sgi.com>
+Subject: Re: [PATCH 5/6] fix warning on test_ti_thread_flag()
+In-Reply-To: <20060125113446.GF18584@miraclelinux.com>
+Message-ID: <Pine.LNX.4.62.0601251323420.19174@pademelon.sonytel.be>
+References: <20060125112625.GA18584@miraclelinux.com> <20060125113446.GF18584@miraclelinux.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10133
+X-archive-position: 10134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaos@sgi.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Akinobu Mita (on Wed, 25 Jan 2006 20:32:06 +0900) wrote:
->o generic {,test_and_}{set,clear,change}_bit() (atomic bitops)
-...
->+static __inline__ void set_bit(int nr, volatile unsigned long *addr)
->+{
->+	unsigned long mask = BITOP_MASK(nr);
->+	unsigned long *p = ((unsigned long *)addr) + BITOP_WORD(nr);
->+	unsigned long flags;
->+
->+	_atomic_spin_lock_irqsave(p, flags);
->+	*p  |= mask;
->+	_atomic_spin_unlock_irqrestore(p, flags);
->+}
+On Wed, 25 Jan 2006, Akinobu Mita wrote:
+> If the arechitecture is
+> - BITS_PER_LONG == 64
+> - struct thread_info.flag 32 is bits
+> - second argument of test_bit() was void *
+> 
+> Then compiler print error message on test_ti_thread_flags()
+> in include/linux/thread_info.h
+> 
+> Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
+> ---
+>  thread_info.h |    2 +-
+>  1 files changed, 1 insertion(+), 1 deletion(-)
+> 
+> Index: 2.6-git/include/linux/thread_info.h
+> ===================================================================
+> --- 2.6-git.orig/include/linux/thread_info.h	2006-01-25 19:07:12.000000000 +0900
+> +++ 2.6-git/include/linux/thread_info.h	2006-01-25 19:14:26.000000000 +0900
+> @@ -49,7 +49,7 @@
+>  
+>  static inline int test_ti_thread_flag(struct thread_info *ti, int flag)
+>  {
+> -	return test_bit(flag,&ti->flags);
+> +	return test_bit(flag, (void *)&ti->flags);
+>  }
 
-Be very, very careful about using these generic *_bit() routines if the
-architecture supports non-maskable interrupts.
+This is not safe. The bitops are defined to work on unsigned long only, so
+flags should be changed to unsigned long instead, or you should use a
+temporary.
 
-NMI events can occur at any time, including when interrupts have been
-disabled by *_irqsave().  So you can get NMI events occurring while a
-*_bit fucntion is holding a spin lock.  If the NMI handler also wants
-to do bit manipulation (and they do) then you can get a deadlock
-between the original caller of *_bit() and the NMI handler.
+Affected platforms:
+  - alpha: flags is unsigned int
+  - ia64, sh, x86_64: flags is __u32
 
-Doing any work that requires spinlocks in an NMI handler is just asking
-for deadlock problems.  The generic *_bit() routines add a hidden
-spinlock behind what was previously a safe operation.  I would even say
-that any arch that supports any type of NMI event _must_ define its own
-bit routines that do not rely on your _atomic_spin_lock_irqsave() and
-its hash of spinlocks.
+The only affected 64-platforms are little endian, so it will silently work
+after your change, though...
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

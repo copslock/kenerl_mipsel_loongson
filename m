@@ -1,45 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2006 22:08:58 +0000 (GMT)
-Received: from i-83-67-53-76.freedom2surf.net ([83.67.53.76]:22720 "EHLO
-	nephila.localnet") by ftp.linux-mips.org with ESMTP
-	id S8133463AbWAYWIl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 25 Jan 2006 22:08:41 +0000
-Received: from pdh by nephila.localnet with local (Exim 4.50)
-	id 1F1ssw-0000m2-TC; Wed, 25 Jan 2006 22:13:02 +0000
-Date:	Wed, 25 Jan 2006 22:13:02 +0000
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH 2.6.X] Fix SWARM IDE detection
-Message-ID: <20060125221302.GA2968@colonel-panic.org>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2006 22:25:27 +0000 (GMT)
+Received: from ozlabs.org ([203.10.76.45]:954 "EHLO ozlabs.org")
+	by ftp.linux-mips.org with ESMTP id S8133463AbWAYWZJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2006 22:25:09 +0000
+Received: by ozlabs.org (Postfix, from userid 1003)
+	id 2239A68ABD; Thu, 26 Jan 2006 09:29:32 +1100 (EST)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.9i
-From:	Peter Horton <pdh@colonel-panic.org>
-Return-Path: <pdh@colonel-panic.org>
+Content-Transfer-Encoding: 7bit
+Message-ID: <17367.64370.844350.972910@cargo.ozlabs.ibm.com>
+Date:	Thu, 26 Jan 2006 09:28:02 +1100
+From:	Paul Mackerras <paulus@samba.org>
+To:	mita@miraclelinux.com (Akinobu Mita)
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-ia64@vger.kernel.org, Ian Molton <spyro@f2s.com>,
+	David Howells <dhowells@redhat.com>, linuxppc-dev@ozlabs.org,
+	Greg Ungerer <gerg@uclinux.org>, sparclinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Linus Torvalds <torvalds@osdl.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	linux-m68k@lists.linux-m68k.org,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Richard Henderson <rth@twiddle.net>,
+	Chris Zankel <chris@zankel.net>, dev-etrax@axis.com,
+	ultralinux@vger.kernel.org, Andi Kleen <ak@suse.de>,
+	linuxsh-dev@lists.sourceforge.net, linux390@de.ibm.com,
+	Russell King <rmk@arm.linux.org.uk>,
+	parisc-linux@parisc-linux.org
+Subject: Re: [PATCH 5/6] fix warning on test_ti_thread_flag()
+In-Reply-To: <20060125113446.GF18584@miraclelinux.com>
+References: <20060125112625.GA18584@miraclelinux.com>
+	<20060125113446.GF18584@miraclelinux.com>
+X-Mailer: VM 7.19 under Emacs 21.4.1
+Return-Path: <paulus@ozlabs.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10153
+X-archive-position: 10154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pdh@colonel-panic.org
+X-original-sender: paulus@samba.org
 Precedence: bulk
 X-list: linux-mips
 
-Make sure we scan SWARM IDE interface for devices.
+Akinobu Mita writes:
 
-P.
+> If the arechitecture is
+> - BITS_PER_LONG == 64
+> - struct thread_info.flag 32 is bits
+> - second argument of test_bit() was void *
+> 
+> Then compiler print error message on test_ti_thread_flags()
+> in include/linux/thread_info.h
 
-Index: linux.git/drivers/ide/mips/swarm.c
-===================================================================
---- linux.git.orig/drivers/ide/mips/swarm.c	2006-01-23 22:48:58.000000000 +0000
-+++ linux.git/drivers/ide/mips/swarm.c	2006-01-24 08:32:45.000000000 +0000
-@@ -127,6 +127,7 @@
- 	memcpy(hwif->io_ports, hwif->hw.io_ports, sizeof(hwif->io_ports));
- 	hwif->irq = hwif->hw.irq;
- 
-+	probe_hwif_init(hwif);
- 	dev_set_drvdata(dev, hwif);
- 
- 	return 0;
+And correctly so.  The correct fix is to make thread_info.flag an
+unsigned long.  This patch is NAKed.
+
+Paul.

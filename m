@@ -1,115 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2006 17:18:20 +0000 (GMT)
-Received: from witte.sonytel.be ([80.88.33.193]:54400 "EHLO witte.sonytel.be")
-	by ftp.linux-mips.org with ESMTP id S8133444AbWAYRSB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 25 Jan 2006 17:18:01 +0000
-Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k0PHJFYL002809;
-	Wed, 25 Jan 2006 18:19:15 +0100 (MET)
-Date:	Wed, 25 Jan 2006 18:19:15 +0100 (CET)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	"Chen, Kenneth W" <kenneth.w.chen@intel.com>
-cc:	Akinobu Mita <mita@miraclelinux.com>,
-	Linux Kernel Development <linux-kernel@vger.kernel.org>,
-	Richard Henderson <rth@twiddle.net>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Russell King <rmk@arm.linux.org.uk>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	parisc-linux@parisc-linux.org,
-	Linux/PPC Development <linuxppc-dev@ozlabs.org>,
-	linux390@de.ibm.com, linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
-	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
-Subject: RE: [PATCH 5/6] fix warning on test_ti_thread_flag()
-In-Reply-To: <B05667366EE6204181EABE9C1B1C0EB509780224@scsmsx401.amr.corp.intel.com>
-Message-ID: <Pine.LNX.4.62.0601251814350.19174@pademelon.sonytel.be>
-References: <B05667366EE6204181EABE9C1B1C0EB509780224@scsmsx401.amr.corp.intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jan 2006 17:59:39 +0000 (GMT)
+Received: from zproxy.gmail.com ([64.233.162.203]:61009 "EHLO zproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133456AbWAYR7T convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 25 Jan 2006 17:59:19 +0000
+Received: by zproxy.gmail.com with SMTP id l8so174353nzf
+        for <linux-mips@linux-mips.org>; Wed, 25 Jan 2006 10:03:44 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=VWdbbwiavcJAz25wVoVXn9PPHXFRQa/ms2S/F6FkFifvmLGyLWEciukLHOtsbd7W/dsutnxqUrXpeOlzByyN+MulK3VbcomJNxayGZv2By1GjKr70hw6XZi/IRwfPoxJVz8fTZasOb+51QfX8E8o0SshQdlULVe+ug4uRrP8avU=
+Received: by 10.37.13.24 with SMTP id q24mr692279nzi;
+        Wed, 25 Jan 2006 10:03:44 -0800 (PST)
+Received: by 10.36.49.12 with HTTP; Wed, 25 Jan 2006 10:03:44 -0800 (PST)
+Message-ID: <cda58cb80601251003m6ba4379w@mail.gmail.com>
+Date:	Wed, 25 Jan 2006 19:03:44 +0100
+From:	Franck <vagabon.xyz@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
+Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+In-Reply-To: <20060125150404.GF3454@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <cda58cb80601250136p5ee350e6g@mail.gmail.com>
+	 <20060125124738.GA3454@linux-mips.org>
+	 <cda58cb80601250534r5f464fd1v@mail.gmail.com>
+	 <43D78725.6050300@mips.com> <20060125141424.GE3454@linux-mips.org>
+	 <cda58cb80601250632r3e8f7b9en@mail.gmail.com>
+	 <20060125150404.GF3454@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10147
+X-archive-position: 10148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 25 Jan 2006, Chen, Kenneth W wrote:
-> Geert Uytterhoeven wrote on Wednesday, January 25, 2006 4:29 AM
-> > On Wed, 25 Jan 2006, Akinobu Mita wrote:
-> > > If the arechitecture is
-> > > - BITS_PER_LONG == 64
-> > > - struct thread_info.flag 32 is bits
-> > > - second argument of test_bit() was void *
-> > > 
-> > > Then compiler print error message on test_ti_thread_flags()
-> > > in include/linux/thread_info.h
-> > > 
-> > > Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
-> > > ---
-> > >  thread_info.h |    2 +-
-> > >  1 files changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > Index: 2.6-git/include/linux/thread_info.h
-> > > ===================================================================
-> > > --- 2.6-git.orig/include/linux/thread_info.h	2006-01-25
-> 19:07:12.000000000 +0900
-> > > +++ 2.6-git/include/linux/thread_info.h	2006-01-25
-> 19:14:26.000000000 +0900
-> > > @@ -49,7 +49,7 @@
-> > >  
-> > >  static inline int test_ti_thread_flag(struct thread_info *ti, int
-> flag)
-> > >  {
-> > > -	return test_bit(flag,&ti->flags);
-> > > +	return test_bit(flag, (void *)&ti->flags);
-> > >  }
-> > 
-> > This is not safe. The bitops are defined to work on unsigned long
-> only, so
-> > flags should be changed to unsigned long instead, or you should use a
-> > temporary.
-> > 
-> > Affected platforms:
-> >   - alpha: flags is unsigned int
-> >   - ia64, sh, x86_64: flags is __u32
-> > 
-> > The only affected 64-platforms are little endian, so it will silently
-> work
-> > after your change, though...
-> 
-> I thought test_bit can operate on array beyond unsigned long.
-> It's perfectly legitimate to do: test_bit(999, bit_array) as
-> long as bit_array is indeed big enough to hold 999 bits.  It
-> is the responsibility of the caller to make sure that the
-> underlying array is big enough for the bit that is being tested.
+2006/1/25, Ralf Baechle <ralf@linux-mips.org>:
+> On Wed, Jan 25, 2006 at 03:32:22PM +0100, Franck wrote:
+>
+> > > We have CPU_MIPS32_R1, CPU_MIPS32_R2, CPU_MIPS64_R1, CPU_MIPS64_R2.
+> > > Based on those we also define CPU_MIPS32, CPU_MIPS64, CPU_MIPSR1,
+> > > and CPU_MIPSR2 as short cuts.
+> > >
+> >
+> > hm I should have missed something, but what about CPUs which have
+> > their own CPU_XXX (different form CPU_MIPS32_R[12]) and which are a
+> > mips32-r2 compliant for example ? (I'm thinking of 4KSD for example)
+>
+> The 4KSD is still a MIPS32 processor - just one with an ASE.
+>
+> The real bug here - and what's causing your confusion - is that the
+> processor configuration is mixing up all the architecture variants
+> (MIPS I - IV, MIPS32 and MIPS64 R1/R2, weirdo variants ...) and the
+> processor types.  Example: 4K, 4KE, 24K, 24KE, 34K, AMD Alchemy are all
+> MIPS32 (either R1 or R2).  R4000, R4400, R4600 are all MIPS III.  But
+> what we actually offer in the processor configuration is R4X00, MIPS32_R1,
+>
 
-Yes, it can operate on arrays of unsigned long.
+OK. So the patch I sent to you 3 months ago that adds support for
+4ks[cd] cpu and smartmips extension is wrong. It added new
+CONFIG_CPU_4KS[CD] macro whereas it must have used MIPS32_R[12] macros
+like Kevin suggested...
 
-> I don't think you need to change the flags size.
+BTW, any chances to get smartmips support merged into your tree ?
 
-Passing a pointer to a 32-bit entity to a function that takes a pointer to a
-64-bit entity is a classical endianness bug. So it's better to change it,
-before people copy the code to a big endian platform.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
+Thanks
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+               Franck

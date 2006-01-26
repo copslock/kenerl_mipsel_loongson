@@ -1,90 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 17:58:16 +0000 (GMT)
-Received: from zproxy.gmail.com ([64.233.162.204]:64518 "EHLO zproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133683AbWAZR56 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 17:57:58 +0000
-Received: by zproxy.gmail.com with SMTP id l8so428087nzf
-        for <linux-mips@linux-mips.org>; Thu, 26 Jan 2006 10:02:29 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=Vi4ET290iaIMDdhvY6s1w/ojaB4tN2LDEUGz8NUyTOB5uvWo99Atg17evW7y1yYyZisYzY0W5SuPaoWjeZsvFdcG5aXKrg2XIsihplaPXY/SOnxNKDsOxw5OqHhXO+fKt40pui6I0yQhWNLyhhmJYsEAb5i7rNO04kYnfwtOImw=
-Received: by 10.36.104.15 with SMTP id b15mr1652257nzc;
-        Thu, 26 Jan 2006 10:02:29 -0800 (PST)
-Received: by 10.36.49.12 with HTTP; Thu, 26 Jan 2006 10:02:29 -0800 (PST)
-Message-ID: <cda58cb80601261002w6eb02249k@mail.gmail.com>
-Date:	Thu, 26 Jan 2006 19:02:29 +0100
-From:	Franck <vagabon.xyz@gmail.com>
-To:	Nigel Stephens <nigel@mips.com>
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
-In-Reply-To: <43D8FF16.40107@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com>
-	 <cda58cb80601250632r3e8f7b9en@mail.gmail.com>
-	 <20060125150404.GF3454@linux-mips.org>
-	 <cda58cb80601251003m6ba4379w@mail.gmail.com>
-	 <43D7C050.5090607@mips.com>
-	 <cda58cb80601260702wf781e70l@mail.gmail.com>
-	 <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com>
-	 <cda58cb80601260831i61167787g@mail.gmail.com>
-	 <43D8FF16.40107@mips.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 19:11:03 +0000 (GMT)
+Received: from omx1-ext.sgi.com ([192.48.179.11]:65190 "EHLO
+	omx1.americas.sgi.com") by ftp.linux-mips.org with ESMTP
+	id S8133710AbWAZTKh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 26 Jan 2006 19:10:37 +0000
+Received: from imr2.americas.sgi.com (imr2.americas.sgi.com [198.149.16.18])
+	by omx1.americas.sgi.com (8.12.10/8.12.9/linux-outbound_gateway-1.1) with ESMTP id k0QJEOOX008860;
+	Thu, 26 Jan 2006 13:14:24 -0600
+Received: from v0 (mtv-vpn-hw-masa-1.corp.sgi.com [134.15.25.210])
+	by imr2.americas.sgi.com (8.12.9/8.12.10/SGI_generic_relay-1.2) with SMTP id k0QJUgAP10766216;
+	Thu, 26 Jan 2006 11:30:42 -0800 (PST)
+Date:	Thu, 26 Jan 2006 11:14:19 -0800
+From:	Paul Jackson <pj@sgi.com>
+To:	Pavel Machek <pavel@suse.cz>
+Cc:	mita@miraclelinux.com, linux-kernel@vger.kernel.org,
+	rth@twiddle.net, ink@jurassic.park.msu.ru, rmk@arm.linux.org.uk,
+	spyro@f2s.com, dev-etrax@axis.com, dhowells@redhat.com,
+	ysato@users.sourceforge.jp, torvalds@osdl.org,
+	linux-ia64@vger.kernel.org, takata@linux-m32r.org,
+	linux-m68k@vger.kernel.org, gerg@uclinux.org,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	uclinux-v850@lsi.nec.co.jp, ak@suse.de, chris@zankel.net
+Subject: Re: [PATCH 1/6] {set,clear,test}_bit() related cleanup
+Message-Id: <20060126111419.54b1cc56.pj@sgi.com>
+In-Reply-To: <20060126161426.GA1709@elf.ucw.cz>
+References: <20060125112625.GA18584@miraclelinux.com>
+	<20060125112857.GB18584@miraclelinux.com>
+	<20060126161426.GA1709@elf.ucw.cz>
+Organization: SGI
+X-Mailer: Sylpheed version 2.1.7 (GTK+ 2.4.9; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <pj@sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10193
+X-archive-position: 10194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: pj@sgi.com
 Precedence: bulk
 X-list: linux-mips
 
-2006/1/26, Nigel Stephens <nigel@mips.com>:
->
-> Then you'll have to have a look at the resulting disassembled code and
-> figure what's changed. :)
->
-> Thinking about this in more detail:
->
-> 1) Using -march=4ksd reduces the cost of a multiply by 1 instruction
-> (from 5 to 4 cycles), so a few more constant multiplications, previously
-> expanded into a sequence of shifts, adds and subs, may now be replaced
-> by a shorter sequence of "li" and "mul" instructions.
->
+Pavel wrote:
+> cpu_set sounds *very* ambiguous. We have thing called cpusets,
 
-Is it really specific to 4ksd cpu ? Could this behaviour be triggered
-by other options ?
+Hmmm ... you're right.  I've worked for quite some time on both
+of these, and hadn't noticed this similarity before.
 
-> 2) Enabling branch-likely may allow some instructions to be moved into a
-> branch delay slot which previously couldn't be -- but usually these are
-> duplicates of the code at the original branch target, so have little
-> effect on overall code size.
->
-> 3) Using -march=mips32r2 with -O1 and above (but not -Os) enables 64-bit
-> alignment of functions and frequently-used branch targets (e.g. loop
-> headers); whereas -march=4ksc will not do that. This will add some
-> additional "nops" to the code.
->
+Oh well.  Such is the nature of naming things.  Sometimes nice
+names resemble other nice names in unexpected ways.
 
-I noticed your last point when staring at the disassembled code. And
-it seems to be ack by these figures:
-
-   text    data     bss     dec     hex filename
-2099642  110784   81956 2292382  22fa9e vmlinux-4ksd
-2136269  110784   81956 2329009  2389b1 vmlinux-mips32r2
-1953086  110784   81956 2145826  20be22 vmlinux-4ksd-Os
-1954489  110784   81956 2147229  20c39d vmlinux-mips32r2-Os
-
-I now have to check that your first and second points don't have too
-much bad impact on the overall speed although I don't know how to
-measure that...But if so, I could safely use -march=mips32r2 -Os
-options.
-
-Thanks
---
-               Franck
+-- 
+                  I won't rest till it's the best ...
+                  Programmer, Linux Scalability
+                  Paul Jackson <pj@sgi.com> 1.925.600.0401

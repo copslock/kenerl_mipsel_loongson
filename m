@@ -1,19 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:05:11 +0000 (GMT)
-Received: from colo.lackof.org ([198.49.126.79]:6543 "EHLO colo.lackof.org")
-	by ftp.linux-mips.org with ESMTP id S8133559AbWAZQEx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 16:04:53 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by colo.lackof.org (Postfix) with ESMTP id 6F6AC360021;
-	Thu, 26 Jan 2006 09:18:51 -0700 (MST)
-Received: from colo.lackof.org ([127.0.0.1])
-	by localhost (colo.lackof.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 13278-06; Thu, 26 Jan 2006 09:18:50 -0700 (MST)
-Received: by colo.lackof.org (Postfix, from userid 27253)
-	id 051B5360002; Thu, 26 Jan 2006 09:18:50 -0700 (MST)
-Date:	Thu, 26 Jan 2006 09:18:49 -0700
-From:	Grant Grundler <grundler@parisc-linux.org>
-To:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:10:54 +0000 (GMT)
+Received: from gprs189-60.eurotel.cz ([160.218.189.60]:16825 "EHLO amd.ucw.cz")
+	by ftp.linux-mips.org with ESMTP id S8133559AbWAZQKg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 16:10:36 +0000
+Received: by amd.ucw.cz (Postfix, from userid 8)
+	id 182FE8B540; Thu, 26 Jan 2006 17:14:27 +0100 (CET)
+Date:	Thu, 26 Jan 2006 17:14:27 +0100
+From:	Pavel Machek <pavel@suse.cz>
+To:	Akinobu Mita <mita@miraclelinux.com>
+Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
 	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Russell King <rmk@arm.linux.org.uk>,
 	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
 	David Howells <dhowells@redhat.com>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -27,40 +23,57 @@ To:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
 	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
 	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
-Subject: Re: [parisc-linux] Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
-Message-ID: <20060126161849.GA13632@colo.lackof.org>
-References: <20060125112625.GA18584@miraclelinux.com> <20060125113206.GD18584@miraclelinux.com> <20060125200250.GA26443@flint.arm.linux.org.uk> <20060126000618.GA5592@twiddle.net> <20060126085540.GA15377@flint.arm.linux.org.uk>
+Subject: Re: [PATCH 1/6] {set,clear,test}_bit() related cleanup
+Message-ID: <20060126161426.GA1709@elf.ucw.cz>
+References: <20060125112625.GA18584@miraclelinux.com> <20060125112857.GB18584@miraclelinux.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060126085540.GA15377@flint.arm.linux.org.uk>
-X-Home-Page: http://www.parisc-linux.org/
+In-Reply-To: <20060125112857.GB18584@miraclelinux.com>
+X-Warning: Reading this can be dangerous to your mental health.
 User-Agent: Mutt/1.5.9i
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lackof.org
-Return-Path: <grundler@lackof.org>
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10180
+X-archive-position: 10181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grundler@parisc-linux.org
+X-original-sender: pavel@suse.cz
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 26, 2006 at 08:55:41AM +0000, Russell King wrote:
-> Unfortunately that's not correct.  You do not appear to have checked
-> the compiler output like I did - this code does _not_ generate
-> constant shifts.
+Hi!
 
-Russell,
-By "written stupidly", I thought Richard meant they could have
-used constants instead of "s".  e.g.:
-	if (word << 16 == 0) { b += 16; word >>= 16); }
-	if (word << 24 == 0) { b +=  8; word >>=  8); }
-	if (word << 28 == 0) { b +=  4; word >>=  4); }
+> While working on these patch set, I found several possible cleanup
+> on x86-64 and ia64.
 
-But I prefer what Edgar Toernig suggested.
+It is probably not your fault, but...
 
-grant
+> Index: 2.6-git/include/asm-x86_64/mmu_context.h
+> ===================================================================
+> --- 2.6-git.orig/include/asm-x86_64/mmu_context.h	2006-01-25 19:07:15.000000000 +0900
+> +++ 2.6-git/include/asm-x86_64/mmu_context.h	2006-01-25 19:13:59.000000000 +0900
+> @@ -34,12 +34,12 @@
+>  	unsigned cpu = smp_processor_id();
+>  	if (likely(prev != next)) {
+>  		/* stop flush ipis for the previous mm */
+> -		clear_bit(cpu, &prev->cpu_vm_mask);
+> +		cpu_clear(cpu, prev->cpu_vm_mask);
+>  #ifdef CONFIG_SMP
+>  		write_pda(mmu_state, TLBSTATE_OK);
+>  		write_pda(active_mm, next);
+>  #endif
+> -		set_bit(cpu, &next->cpu_vm_mask);
+> +		cpu_set(cpu, next->cpu_vm_mask);
+>  		load_cr3(next->pgd);
+>  
+>  		if (unlikely(next->context.ldt != prev->context.ldt)) 
+
+cpu_set sounds *very* ambiguous. We have thing called cpusets, for
+example. I'd not guess that is set_bit in cpu endianity (is it?).
+
+								Pavel
+-- 
+Thanks, Sharp!

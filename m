@@ -1,87 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 20:21:11 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:7109 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133719AbWAZUUx
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 20:20:53 +0000
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k0QKPFKX022475;
-	Thu, 26 Jan 2006 12:25:15 -0800 (PST)
-Received: from olympia.mips.com (olympia [192.168.192.128])
-	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id k0QKPDYr026730;
-	Thu, 26 Jan 2006 12:25:13 -0800 (PST)
-Received: from highbury.mips.com ([192.168.192.236])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1F2Dg6-0005vi-00; Thu, 26 Jan 2006 20:25:10 +0000
-Message-ID: <43D93025.9040800@mips.com>
-Date:	Thu, 26 Jan 2006 20:25:09 +0000
-From:	Nigel Stephens <nigel@mips.com>
-Organization: MIPS Technologies
-User-Agent: Debian Thunderbird 1.0.2 (X11/20050817)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Franck <vagabon.xyz@gmail.com>
-CC:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com>	 <cda58cb80601250632r3e8f7b9en@mail.gmail.com>	 <20060125150404.GF3454@linux-mips.org>	 <cda58cb80601251003m6ba4379w@mail.gmail.com>	 <43D7C050.5090607@mips.com>	 <cda58cb80601260702wf781e70l@mail.gmail.com>	 <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com>	 <cda58cb80601260831i61167787g@mail.gmail.com>	 <43D8FF16.40107@mips.com> <cda58cb80601261002w6eb02249k@mail.gmail.com>
-In-Reply-To: <cda58cb80601261002w6eb02249k@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.762,
-	required 4, AWL, BAYES_00)
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <nigel@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 22:51:02 +0000 (GMT)
+Received: from colo.lackof.org ([198.49.126.79]:32406 "EHLO colo.lackof.org")
+	by ftp.linux-mips.org with ESMTP id S8133722AbWAZWun (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 22:50:43 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by colo.lackof.org (Postfix) with ESMTP id 31C373600FD;
+	Thu, 26 Jan 2006 16:04:45 -0700 (MST)
+Received: from colo.lackof.org ([127.0.0.1])
+	by localhost (colo.lackof.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 12169-03; Thu, 26 Jan 2006 16:04:43 -0700 (MST)
+Received: by colo.lackof.org (Postfix, from userid 27253)
+	id 8D4A9360021; Thu, 26 Jan 2006 16:04:43 -0700 (MST)
+Date:	Thu, 26 Jan 2006 16:04:43 -0700
+From:	Grant Grundler <grundler@parisc-linux.org>
+To:	Grant Grundler <grundler@parisc-linux.org>,
+	Akinobu Mita <mita@miraclelinux.com>,
+	linux-kernel@vger.kernel.org,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
+Subject: Re: [parisc-linux] Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
+Message-ID: <20060126230443.GC13632@colo.lackof.org>
+References: <20060125112625.GA18584@miraclelinux.com> <20060125113206.GD18584@miraclelinux.com> <20060125200250.GA26443@flint.arm.linux.org.uk> <20060126000618.GA5592@twiddle.net> <20060126085540.GA15377@flint.arm.linux.org.uk> <20060126161849.GA13632@colo.lackof.org> <20060126164020.GA27222@flint.arm.linux.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060126164020.GA27222@flint.arm.linux.org.uk>
+X-Home-Page: http://www.parisc-linux.org/
+User-Agent: Mutt/1.5.9i
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lackof.org
+Return-Path: <grundler@lackof.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10195
+X-archive-position: 10196
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nigel@mips.com
+X-original-sender: grundler@parisc-linux.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Jan 26, 2006 at 04:40:21PM +0000, Russell King wrote:
+> Ok, I can see I'm going to lose this, but what the hell.
+
+Well, we agree. As Richard Henderson just pointed out, parisc
+is among those that can't load large immediate values either.
+
+> Let's compare the implementations, which are:
+...
+> int arm_ffs(unsigned long word)
+> {
+>      int k = 31;
+>      if (word & 0x0000ffff) { k -= 16; word <<= 16; }
+>      if (word & 0x00ff0000) { k -= 8;  word <<= 8;  }
+>      if (word & 0x0f000000) { k -= 4;  word <<= 4;  }
+>      if (word & 0x30000000) { k -= 2;  word <<= 2;  }
+>      if (word & 0x40000000) { k -= 1; }
+>      return k;
+> }
+
+Of those suggested, arm_ffs() is closest to what parisc
+currently has in assembly (see include/asm-parisc/bitops.h:__ffs()).
+But given how unobvious the parisc instruction nullification works,
+the rough equivalent in "C" (untested!) would look something like:
+
+	unsigned int k = 31;
+	if (word & 0x0000ffff) { k -= 16;} else { word >>= 16; }
+	if (word & 0x000000ff) { k -=  8;} else { word >>= 8; }
+	if (word & 0x0000000f) { k -=  4;} else { word >>= 4; }
+	if (word & 0x00000003) { k -=  2;} else { word >>= 2; }
+	if (word & 0x00000001) { k -=  1;}
+	return k;
+
+I doubt that's better for arm but am curious how it compares.
+You have time to try it?
+If not, no worries.
 
 
-Franck wrote:
+> 19 instructions.  2 registers.  0 register based shifts.  More reasonable
+> for inlining.
 
->2006/1/26, Nigel Stephens <nigel@mips.com>:
->  
->
->>1) Using -march=4ksd reduces the cost of a multiply by 1 instruction
->>(from 5 to 4 cycles), so a few more constant multiplications, previously
->>expanded into a sequence of shifts, adds and subs, may now be replaced
->>by a shorter sequence of "li" and "mul" instructions.
->>
->>    
->>
->
->Is it really specific to 4ksd cpu ? Could this behaviour be triggered
->by other options ?
->  
->
+Yeah, about the same for parisc.
 
-Yes, when you use -Os the compiler uses the instruction cost (1) of a 
-mul, instead of the cycle cost (4), so it will be even more likely to 
-replace the expanded shift/add sequence by a mul.
+> Clearly the smallest of the lot with the smallest register pressure,
+> being the best candidate out of the lot, whether we inline it or not.
 
->>   text    data     bss     dec     hex filename
->>2099642  110784   81956 2292382  22fa9e vmlinux-4ksd
->>2136269  110784   81956 2329009  2389b1 vmlinux-mips32r2
->>1953086  110784   81956 2145826  20be22 vmlinux-4ksd-Os
->>1954489  110784   81956 2147229  20c39d vmlinux-mips32r2-Os
->>
->>I now have to check that your first and second points don't have too
->>much bad impact on the overall speed although I don't know how to
->>measure that...But if so, I could safely use -march=mips32r2 -Os
->>options.
->>    
->>
+Agreed. But I expect parisc will have to continue using it's asm
+sequence and ignore the generic version. AFAIK, the compiler isn't that
+good with instruction nullification and I have other issues I'd
+rather work on.
 
-You could, but why not stick with -march=4ksd if that's your CPU of 
-choice? It appears to result in  marginally smaller code even when using 
--Os, and should have (slightly) better performance than a generic 
-mips32r2 kernel?
-
-Nigel
+cheers,
+grant

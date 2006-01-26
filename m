@@ -1,73 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 17:26:51 +0000 (GMT)
-Received: from are.twiddle.net ([64.81.246.98]:3221 "EHLO are.twiddle.net")
-	by ftp.linux-mips.org with ESMTP id S8133656AbWAZR0c (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 17:26:32 +0000
-Received: from are.twiddle.net (localhost.localdomain [127.0.0.1])
-	by are.twiddle.net (8.12.11/8.12.11) with ESMTP id k0QHUckg010735;
-	Thu, 26 Jan 2006 09:30:38 -0800
-Received: (from rth@localhost)
-	by are.twiddle.net (8.12.11/8.12.11/Submit) id k0QHUEL5010734;
-	Thu, 26 Jan 2006 09:30:14 -0800
-X-Authentication-Warning: are.twiddle.net: rth set sender to rth@twiddle.net using -f
-Date:	Thu, 26 Jan 2006 09:30:14 -0800
-From:	Richard Henderson <rth@twiddle.net>
-To:	Edgar Toernig <froese@gmx.de>
-Cc:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
-	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
-Subject: Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
-Message-ID: <20060126173014.GC5592@twiddle.net>
-Mail-Followup-To: Edgar Toernig <froese@gmx.de>,
-	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>, linux-m68k@vger.kernel.org,
-	Greg Ungerer <gerg@uclinux.org>, linux-mips@linux-mips.org,
-	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
-	linux390@de.ibm.com, linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>, Andi Kleen <ak@suse.de>,
-	Chris Zankel <chris@zankel.net>
-References: <20060125112625.GA18584@miraclelinux.com> <20060125113206.GD18584@miraclelinux.com> <20060125200250.GA26443@flint.arm.linux.org.uk> <20060126000618.GA5592@twiddle.net> <20060126053412.0da7f505.froese@gmx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 17:35:13 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:33041 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133683AbWAZRez (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 26 Jan 2006 17:34:55 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0QHcwdT008005;
+	Thu, 26 Jan 2006 17:38:58 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0QHcrZh008003;
+	Thu, 26 Jan 2006 17:38:53 GMT
+Date:	Thu, 26 Jan 2006 17:38:53 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Christoph Hellwig <hch@lst.de>
+Cc:	Franck <vagabon.xyz@gmail.com>,
+	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Optimize swab operations
+Message-ID: <20060126173853.GG3411@linux-mips.org>
+References: <cda58cb80601260308v3eecf0d0w@mail.gmail.com> <20060126112638.GC3411@linux-mips.org> <20060126123857.GA28043@lst.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060126053412.0da7f505.froese@gmx.de>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rth@twiddle.net>
+In-Reply-To: <20060126123857.GA28043@lst.de>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10190
+X-archive-position: 10191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rth@twiddle.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 26, 2006 at 05:34:12AM +0100, Edgar Toernig wrote:
-> Why shift at all?
+On Thu, Jan 26, 2006 at 01:38:57PM +0100, Christoph Hellwig wrote:
 
-Becuase that *is* a valid architecture tuning knob.  Most risc
-machines can't AND with arbitrary constants like that, and loading
-the constant might bulk things up more than just using the shift.
+> > > This patch uses 'wsbh' instruction to optimize swab operations. This
+> > > instruction is part of the MIPS Release 2 instructions set.
+> > 
+> > Will apply.  Small nit - you must include <linux/config.h> in every file
+> > that is refering to a CONFIG_* symbols, I'll take care of that.
+> 
+> That's not required anymore.  the build system now implicitly includes it
+> for every file.
 
+Wonderful.  Was waiting for the day when this becomes the official religion.
+No more time wasted to make configcheck ...
 
-r~
+  Ralf

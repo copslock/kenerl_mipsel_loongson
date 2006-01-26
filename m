@@ -1,27 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 02:09:04 +0000 (GMT)
-Received: from ns.miraclelinux.com ([219.118.163.66]:49878 "EHLO
-	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
-	id S8133644AbWAZCIq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 02:08:46 +0000
-Received: from mail01 (localhost.localdomain [127.0.0.1])
-	by mail01.miraclelinux.com (Postfix) with ESMTP
-	id EDE5531C180; Thu, 26 Jan 2006 11:13:11 +0900 (JST)
-Received: from localhost.localdomain (sshgate.miraclelinux.com [])
-	by mail01.miraclelinux.com ([10.1.0.10]);
-	Thu, 26 Jan 2006 02:13:11 +0000
-Received: by localhost.localdomain (Postfix, from userid 1000)
-	id 6EF5D420196; Thu, 26 Jan 2006 11:13:18 +0900 (JST)
-Date:	Thu, 26 Jan 2006 11:13:18 +0900
-To:	Keith Owens <kaos@sgi.com>
-Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 04:30:26 +0000 (GMT)
+Received: from mail.gmx.net ([213.165.64.21]:41610 "HELO mail.gmx.net")
+	by ftp.linux-mips.org with SMTP id S8133357AbWAZEaF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 04:30:05 +0000
+Received: (qmail invoked by alias); 26 Jan 2006 04:34:28 -0000
+Received: from p50900265.dip0.t-ipconnect.de (EHLO dialup) [80.144.2.101]
+  by mail.gmx.net (mp004) with SMTP; 26 Jan 2006 05:34:28 +0100
+X-Authenticated: #271361
+Date:	Thu, 26 Jan 2006 05:34:12 +0100
+From:	Edgar Toernig <froese@gmx.de>
+To:	Richard Henderson <rth@twiddle.net>
+Cc:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
 	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Russell King <rmk@arm.linux.org.uk>,
 	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
 	David Howells <dhowells@redhat.com>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
 	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-m68k@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
 	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
 	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
 	linuxsh-dev@lists.sourceforge.net,
@@ -30,62 +25,55 @@ Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
 	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
 	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
 Subject: Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
-Message-ID: <20060126021318.GB6648@miraclelinux.com>
-References: <20060125113206.GD18584@miraclelinux.com> <24086.1138190083@ocs3.ocs.com.au>
+Message-Id: <20060126053412.0da7f505.froese@gmx.de>
+In-Reply-To: <20060126000618.GA5592@twiddle.net>
+References: <20060125112625.GA18584@miraclelinux.com>
+	<20060125113206.GD18584@miraclelinux.com>
+	<20060125200250.GA26443@flint.arm.linux.org.uk>
+	<20060126000618.GA5592@twiddle.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <24086.1138190083@ocs3.ocs.com.au>
-User-Agent: Mutt/1.5.9i
-From:	mita@miraclelinux.com (Akinobu Mita)
-Return-Path: <mita@miraclelinux.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Y-GMX-Trusted: 0
+Return-Path: <froese@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10163
+X-archive-position: 10164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mita@miraclelinux.com
+X-original-sender: froese@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 25, 2006 at 10:54:43PM +1100, Keith Owens wrote:
-> Be very, very careful about using these generic *_bit() routines if the
-> architecture supports non-maskable interrupts.
+Richard Henderson wrote:
+>
+> On Wed, Jan 25, 2006 at 08:02:50PM +0000, Russell King wrote:
+> > > +	s = 16; if (word << 16 != 0) s = 0; b += s; word >>= s;
+> > > +	s =  8; if (word << 24 != 0) s = 0; b += s; word >>= s;
+> > > +	s =  4; if (word << 28 != 0) s = 0; b += s; word >>= s;
+> ...
+> > Basically, shifts which depend on a variable are more expensive than
+> > constant-based shifts.
 > 
-> NMI events can occur at any time, including when interrupts have been
-> disabled by *_irqsave().  So you can get NMI events occurring while a
-> *_bit fucntion is holding a spin lock.  If the NMI handler also wants
-> to do bit manipulation (and they do) then you can get a deadlock
-> between the original caller of *_bit() and the NMI handler.
-> 
-> Doing any work that requires spinlocks in an NMI handler is just asking
-> for deadlock problems.  The generic *_bit() routines add a hidden
-> spinlock behind what was previously a safe operation.  I would even say
-> that any arch that supports any type of NMI event _must_ define its own
-> bit routines that do not rely on your _atomic_spin_lock_irqsave() and
-> its hash of spinlocks.
+> Actually, they're all constant shifts.  Just written stupidly.
 
-At least cris and parisc are using similar *_bit function on SMP.
-I will add your advise in comment.
+Why shift at all?
 
---- ./include/asm-generic/bitops.h.orig	2006-01-26 10:56:00.000000000 +0900
-+++ ./include/asm-generic/bitops.h	2006-01-26 11:01:28.000000000 +0900
-@@ -50,6 +50,16 @@ extern raw_spinlock_t __atomic_hash[ATOM
-  * C language equivalents written by Theodore Ts'o, 9/26/92
-  */
- 
-+/*
-+ * NMI events can occur at any time, including when interrupts have been
-+ * disabled by *_irqsave().  So you can get NMI events occurring while a
-+ * *_bit fucntion is holding a spin lock.  If the NMI handler also wants
-+ * to do bit manipulation (and they do) then you can get a deadlock
-+ * between the original caller of *_bit() and the NMI handler.
-+ *
-+ * by Keith Owens
-+ */
-+
- static __inline__ void set_bit(int nr, volatile unsigned long *addr)
- {
- 	unsigned long mask = BITOP_MASK(nr);
+int ffs(u32 word)
+{
+    int bit = 0;
+
+    word &= -word; // only keep the lsb.
+
+    if (word & 0xffff0000) bit |= 16;
+    if (word & 0xff00ff00) bit |=  8;
+    if (word & 0xf0f0f0f0) bit |=  4;
+    if (word & 0xcccccccc) bit |=  2;
+    if (word & 0xaaaaaaaa) bit |=  1;
+
+    return bit;
+}
+
+Ciao, ET.

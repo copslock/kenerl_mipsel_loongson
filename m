@@ -1,80 +1,228 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:27:24 +0000 (GMT)
-Received: from zproxy.gmail.com ([64.233.162.202]:17830 "EHLO zproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133642AbWAZQ05 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 16:26:57 +0000
-Received: by zproxy.gmail.com with SMTP id l8so405284nzf
-        for <linux-mips@linux-mips.org>; Thu, 26 Jan 2006 08:31:27 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=NyG0GsrtYNZW9ADr10xYmsQoWmESjgQgzkj941ybHG1+QST0C84h9brdojIbe/iwXNL4D2xfjYXQ7X7BvVzzujJQG71UXWHbpChAt1LzObOXiGiO6RNXo77/IFt12fEoNou2eiFEmlVywqq3uN77nYSmxmFow59yUr8QAhVkFYE=
-Received: by 10.37.22.73 with SMTP id z73mr1588810nzi;
-        Thu, 26 Jan 2006 08:31:27 -0800 (PST)
-Received: by 10.36.49.12 with HTTP; Thu, 26 Jan 2006 08:31:27 -0800 (PST)
-Message-ID: <cda58cb80601260831i61167787g@mail.gmail.com>
-Date:	Thu, 26 Jan 2006 17:31:27 +0100
-From:	Franck <vagabon.xyz@gmail.com>
-To:	Nigel Stephens <nigel@mips.com>
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
-In-Reply-To: <43D8F000.9010106@mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:36:37 +0000 (GMT)
+Received: from caramon.arm.linux.org.uk ([212.18.232.186]:24075 "EHLO
+	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
+	id S8133642AbWAZQgR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 26 Jan 2006 16:36:17 +0000
+Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
+	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.52)
+	id 1F2AAa-0002lW-Nt; Thu, 26 Jan 2006 16:40:25 +0000
+Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
+	id 1F2AAX-0000Z6-C9; Thu, 26 Jan 2006 16:40:21 +0000
+Date:	Thu, 26 Jan 2006 16:40:21 +0000
+From:	Russell King <rmk+lkml@arm.linux.org.uk>
+To:	Grant Grundler <grundler@parisc-linux.org>
+Cc:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
+Subject: Re: [parisc-linux] Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
+Message-ID: <20060126164020.GA27222@flint.arm.linux.org.uk>
+Mail-Followup-To: Grant Grundler <grundler@parisc-linux.org>,
+	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>, Andi Kleen <ak@suse.de>,
+	Chris Zankel <chris@zankel.net>
+References: <20060125112625.GA18584@miraclelinux.com> <20060125113206.GD18584@miraclelinux.com> <20060125200250.GA26443@flint.arm.linux.org.uk> <20060126000618.GA5592@twiddle.net> <20060126085540.GA15377@flint.arm.linux.org.uk> <20060126161849.GA13632@colo.lackof.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com>
-	 <43D78725.6050300@mips.com> <20060125141424.GE3454@linux-mips.org>
-	 <cda58cb80601250632r3e8f7b9en@mail.gmail.com>
-	 <20060125150404.GF3454@linux-mips.org>
-	 <cda58cb80601251003m6ba4379w@mail.gmail.com>
-	 <43D7C050.5090607@mips.com>
-	 <cda58cb80601260702wf781e70l@mail.gmail.com>
-	 <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20060126161849.GA13632@colo.lackof.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10183
+X-archive-position: 10184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: rmk+lkml@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-2006/1/26, Nigel Stephens <nigel@mips.com>:
->
->
-> Kevin D. Kissell wrote:
->
-> >Could you please post your mipsel-linux-gcc -v output?   It might help.
-> >I've never tried building Linux with any of the Sc/Sd/SmartMIPS options,
-> >so I really don't know what you could be experiencing.  One thought that
-> >comes to mind is that the -march=4ksd option may be treated as a hint to
-> >generate compact code (for smart cards) in a way that -march=mips32r2
-> >is not.  I'll ask around...
-> >
-> >
->
-> Assuming that this is the SDE compiler, then I think that the only
+On Thu, Jan 26, 2006 at 09:18:49AM -0700, Grant Grundler wrote:
+> On Thu, Jan 26, 2006 at 08:55:41AM +0000, Russell King wrote:
+> > Unfortunately that's not correct.  You do not appear to have checked
+> > the compiler output like I did - this code does _not_ generate
+> > constant shifts.
+> 
+> Russell,
+> By "written stupidly", I thought Richard meant they could have
+> used constants instead of "s".  e.g.:
+> 	if (word << 16 == 0) { b += 16; word >>= 16); }
+> 	if (word << 24 == 0) { b +=  8; word >>=  8); }
+> 	if (word << 28 == 0) { b +=  4; word >>=  4); }
+> 
+> But I prefer what Edgar Toernig suggested.
 
-yes it is (see my previous post)
+Ok, I can see I'm going to lose this, but what the hell.
 
-> significant thing which -march=4ksd will do differently from
-> -march=mips32r2 is to allow the compiler to generate branch-likely
-> instructions -- they're deprecated for generic mips32 code but carry no
-> penalty on the 4K core. It will also cause the compiler's "4kc" pipeline
-> description to be used for instruction scheduling, instead of the
-> default "24kc", but that should only change the order of instructions
+Firstly though, an out of line function call on ARM clobbers six out
+of 11 CPU registers.
 
-Do you mean that the code can be run faster when using -march=4ksd ?
+Let's compare the implementations, which are:
 
-> and shouldn't really make a significant difference to the code size.
->
+int toernig_ffs(unsigned long word)
+{
+    int bit = 0;
+    word &= -word; // only keep the lsb.
+    if (word & 0xffff0000) bit |= 16;
+    if (word & 0xff00ff00) bit |=  8;
+    if (word & 0xf0f0f0f0) bit |=  4;
+    if (word & 0xcccccccc) bit |=  2;
+    if (word & 0xaaaaaaaa) bit |=  1;
+    return bit;
+}
 
-yes but I have :(
+toernig_ffs:
+        rsb     r3, r0, #0
+        and     r0, r0, r3
+        mov     r3, r0, lsr #16
+        bic     r2, r0, #16711680
+        str     lr, [sp, #-4]!
+        mov     r3, r3, asl #16
+        ldr     lr, .L7
+        ldr     r1, .L7+4
+        ldr     ip, .L7+8
+        cmp     r3, #0
+        bic     r2, r2, #255
+        and     lr, r0, lr
+        and     r1, r0, r1
+        and     ip, r0, ip
+        movne   r0, #16
+        moveq   r0, #0
+        cmp     r2, #0
+        orrne   r0, r0, #8
+        cmp     r1, #0
+        orrne   r0, r0, #4
+        cmp     ip, #0
+        orrne   r0, r0, #2
+        cmp     lr, #0
+        orrne   r0, r0, #1
+        ldr     pc, [sp], #4
+.L8:
+        .align  2
+.L7:
+        .word   -1431655766
+        .word   -252645136
+        .word   -858993460
 
-Thanks
---
-               Franck
+25 instructions.  3 words of additional data.  5 registers.  0 register
+based shifts.
+
+I feel that this is far too expensive to sanely inline - at least three
+words of additional data for a use in a function, and has a high register
+usage comparable to that of an out of line function.
+
+int mita_ffs(unsigned long word)
+{
+     int b = 0, s;
+     s = 16; if (word << 16 != 0) s = 0; b += s; word >>= s;
+     s =  8; if (word << 24 != 0) s = 0; b += s; word >>= s;
+     s =  4; if (word << 28 != 0) s = 0; b += s; word >>= s;
+     s =  2; if (word << 30 != 0) s = 0; b += s; word >>= s;
+     s =  1; if (word << 31 != 0) s = 0; b += s;
+     return b;
+}
+
+mita_ffs:
+        movs    r1, r0, asl #16
+        moveq   r2, #16
+        movne   r2, #0
+        mov     r0, r0, lsr r2		@ register-based shift
+        mov     r3, r2
+        movs    r2, r0, asl #24
+        moveq   r2, #8
+        movne   r2, #0
+        mov     r0, r0, lsr r2		@ register-based shift
+        movs    r1, r0, asl #28
+        add     r3, r3, r2
+        moveq   r2, #4
+        movne   r2, #0
+        mov     r0, r0, lsr r2		@ register-based shift
+        movs    r1, r0, asl #30
+        add     r3, r3, r2
+        moveq   r2, #2
+        movne   r2, #0
+        mov     r0, r0, lsr r2		@ register-based shift
+        tst     r0, #1
+        add     r3, r3, r2
+        moveq   r2, #1
+        movne   r2, #0
+        add     r3, r3, r2
+        mov     r0, r3
+        mov     pc, lr
+
+26 instructions.  4 registers used.  4 unconditional register-based
+shifts (expensive).
+
+Better, but uses inefficient register based shifts (which can take twice
+as many cycles as non-register based shifts depending on the CPU).  Still
+has a high usage on CPU registers though.  Could possibly be a candidate
+for inlining.
+
+int arm_ffs(unsigned long word)
+{
+     int k = 31;
+     if (word & 0x0000ffff) { k -= 16; word <<= 16; }
+     if (word & 0x00ff0000) { k -= 8;  word <<= 8;  }
+     if (word & 0x0f000000) { k -= 4;  word <<= 4;  }
+     if (word & 0x30000000) { k -= 2;  word <<= 2;  }
+     if (word & 0x40000000) { k -= 1; }
+     return k;
+}
+
+arm_ffs:
+        mov     r3, r0, asl #16
+        mov     r3, r3, lsr #16
+        cmp     r3, #0
+        movne   r0, r0, asl #16
+        mov     r3, #31
+        movne   r3, #15
+        tst     r0, #16711680
+        movne   r0, r0, asl #8
+        subne   r3, r3, #8
+        tst     r0, #251658240
+        movne   r0, r0, asl #4
+        subne   r3, r3, #4
+        tst     r0, #805306368
+        movne   r0, r0, asl #2
+        subne   r3, r3, #2
+        tst     r0, #1073741824
+        subne   r3, r3, #1
+        mov     r0, r3
+        mov     pc, lr
+
+19 instructions.  2 registers.  0 register based shifts.  More reasonable
+for inlining.
+
+Clearly the smallest of the lot with the smallest register pressure,
+being the best candidate out of the lot, whether we inline it or not.
+
+-- 
+Russell King
+ Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
+ maintainer of:  2.6 Serial core

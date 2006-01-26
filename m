@@ -1,76 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 00:02:47 +0000 (GMT)
-Received: from are.twiddle.net ([64.81.246.98]:53652 "EHLO are.twiddle.net")
-	by ftp.linux-mips.org with ESMTP id S8133496AbWAZAC3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 00:02:29 +0000
-Received: from are.twiddle.net (localhost.localdomain [127.0.0.1])
-	by are.twiddle.net (8.12.11/8.12.11) with ESMTP id k0Q06eqJ005619;
-	Wed, 25 Jan 2006 16:06:40 -0800
-Received: (from rth@localhost)
-	by are.twiddle.net (8.12.11/8.12.11/Submit) id k0Q06IZx005614;
-	Wed, 25 Jan 2006 16:06:18 -0800
-X-Authentication-Warning: are.twiddle.net: rth set sender to rth@twiddle.net using -f
-Date:	Wed, 25 Jan 2006 16:06:18 -0800
-From:	Richard Henderson <rth@twiddle.net>
-To:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
-	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
-Subject: Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
-Message-ID: <20060126000618.GA5592@twiddle.net>
-Mail-Followup-To: Akinobu Mita <mita@miraclelinux.com>,
-	linux-kernel@vger.kernel.org,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>, Andi Kleen <ak@suse.de>,
-	Chris Zankel <chris@zankel.net>
-References: <20060125112625.GA18584@miraclelinux.com> <20060125113206.GD18584@miraclelinux.com> <20060125200250.GA26443@flint.arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 01:07:28 +0000 (GMT)
+Received: from uproxy.gmail.com ([66.249.92.200]:44304 "EHLO uproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133528AbWAZBHK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 01:07:10 +0000
+Received: by uproxy.gmail.com with SMTP id m3so57106uge
+        for <linux-mips@linux-mips.org>; Wed, 25 Jan 2006 17:11:38 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
+        b=dv6RGeVsUOuJAWQgAnpd6Ks0qpkblHwbQLulaSgcIhEfFcXnJ+UxYuhMq/vLeOWUXvn9m7+r+JFOqnV7cgK8nHX80Oz7vR1G9JnV4Eh0cQX/RR6HmjCgdtajALya0PkFA+6Gsao5OIUz/GcnqZvVhHqcJ5ueThwJ4v50wBaM2og=
+Received: by 10.67.23.20 with SMTP id a20mr579026ugj;
+        Wed, 25 Jan 2006 17:11:37 -0800 (PST)
+Received: from gmail.com ( [217.10.38.130])
+        by mx.gmail.com with ESMTP id m1sm607980uge.2006.01.25.17.11.36;
+        Wed, 25 Jan 2006 17:11:37 -0800 (PST)
+Received: by gmail.com (nbSMTP-1.00) for uid 1000
+	(using TLSv1/SSLv3 with cipher DES-CBC3-SHA (168/168 bits))
+	adobriyan@gmail.com; Thu, 26 Jan 2006 04:29:28 +0300 (MSK)
+Date:	Thu, 26 Jan 2006 04:29:25 +0300
+From:	Alexey Dobriyan <adobriyan@gmail.com>
+To:	Andrew Morton <akpm@osdl.org>
+Cc:	linux-kernel@vger.kernle.org, linux-mips@linux-mips.org
+Subject: [PATCH] mips: gdb-stub.c: fix parse error before ; token
+Message-ID: <20060126012925.GB11091@mipter.zuzino.mipt.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060125200250.GA26443@flint.arm.linux.org.uk>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rth@twiddle.net>
+User-Agent: Mutt/1.5.11
+Return-Path: <adobriyan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10158
+X-archive-position: 10159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rth@twiddle.net
+X-original-sender: adobriyan@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 25, 2006 at 08:02:50PM +0000, Russell King wrote:
-> > +	s = 16; if (word << 16 != 0) s = 0; b += s; word >>= s;
-> > +	s =  8; if (word << 24 != 0) s = 0; b += s; word >>= s;
-> > +	s =  4; if (word << 28 != 0) s = 0; b += s; word >>= s;
-...
-> Basically, shifts which depend on a variable are more expensive than
-> constant-based shifts.
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+---
 
-Actually, they're all constant shifts.  Just written stupidly.
+ arch/mips/kernel/gdb-stub.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-r~
+--- a/arch/mips/kernel/gdb-stub.c
++++ b/arch/mips/kernel/gdb-stub.c
+@@ -178,7 +178,7 @@ int kgdb_enabled;
+  */
+ static DEFINE_SPINLOCK(kgdb_lock);
+ static raw_spinlock_t kgdb_cpulock[NR_CPUS] = {
+-	[0 ... NR_CPUS-1] = __RAW_SPIN_LOCK_UNLOCKED;
++	[0 ... NR_CPUS-1] = __RAW_SPIN_LOCK_UNLOCKED,
+ };
+ 
+ /*

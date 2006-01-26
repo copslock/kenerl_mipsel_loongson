@@ -1,76 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 09:11:17 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:57538 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133511AbWAZJK6
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 11:04:14 +0000 (GMT)
+Received: from zproxy.gmail.com ([64.233.162.205]:11584 "EHLO zproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133500AbWAZLD4 convert rfc822-to-8bit
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 09:10:58 +0000
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k0Q9FHQF019520;
-	Thu, 26 Jan 2006 01:15:18 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.9/8.12.11) with SMTP id k0Q9FEYr014002;
-	Thu, 26 Jan 2006 01:15:15 -0800 (PST)
-Message-ID: <000b01c62259$535f0e10$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Franck" <vagabon.xyz@gmail.com>
-Cc:	"Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com> <cda58cb80601250534r5f464fd1v@mail.gmail.com> <43D78725.6050300@mips.com> <20060125141424.GE3454@linux-mips.org> <cda58cb80601250632r3e8f7b9en@mail.gmail.com> <20060125150404.GF3454@linux-mips.org> <cda58cb80601251003m6ba4379w@mail.gmail.com> <43D7C050.5090607@mips.com> <cda58cb80601260011r6136c3fq@mail.gmail.com> <43D887BB.3030906@mips.com> <cda58cb80601260047g78ffb52cr@mail.gmail.com>
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-Date:	Thu, 26 Jan 2006 10:17:25 +0100
+	Thu, 26 Jan 2006 11:03:56 +0000
+Received: by zproxy.gmail.com with SMTP id l8so336541nzf
+        for <linux-mips@linux-mips.org>; Thu, 26 Jan 2006 03:08:25 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=ZRyUGbfzMt6qerDoRt14SZYEgKL+uVj+UJkocrrJJ5ZbokPvzlCNr3I84Zi5f09JYYYColmdCPjZ30YRNptf+XGHeSFdpLjcLRsGsWJo67DqEpcM+AVW3JDXl0NJRdOSO18v9kd4GPG7OgQrOpvlXJPGki6o/dy6ZPvUUHQsFVE=
+Received: by 10.36.86.11 with SMTP id j11mr1383738nzb;
+        Thu, 26 Jan 2006 03:08:25 -0800 (PST)
+Received: by 10.36.49.12 with HTTP; Thu, 26 Jan 2006 03:08:25 -0800 (PST)
+Message-ID: <cda58cb80601260308v3eecf0d0w@mail.gmail.com>
+Date:	Thu, 26 Jan 2006 12:08:25 +0100
+From:	Franck <vagabon.xyz@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] Optimize swab operations
+Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10169
+X-archive-position: 10170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> > Franck wrote:
-> > > Let's say that the 4KSC has "wsbh" instruction which is part of
-> > > MIPS32R2 instructrion set (I haven't checked it). The question is how
-> > > the 4KSC would use the SWAB optimizations since it doesn't define
-> > > CONFIG_CPU_MIPS32_R2  ? The 4KSC might not be the only one case...
-> >
-> > The 4KSc happens not to have the MIPS32R2 WSBH (is that pronounced
-> > "wasabi"? ;o) instruction, but it does have the MIPS32R2 ROTR, because
-> > it's part of the SmartMIPS ASE.  Our options here include:
-> >
-> > * Say "to heck with it" and deny the 4KSc use of the ROTR, and stay
-> >    with a "#ifdef CONFIG_CPU_MIPS32R2" conditional.
-> >
-> > * Define CONFIG_CPU_MIPS4KSC as an additional oddball CPU flag, and
-> >    make it "#if defined(CONFIG_CPU_MIPS32R2) || defined(CONFIG_CPU_MIPS4KSC)
-> >
-> > * Have an ASE-support flag, CONFIG_CPU_SMARTMIPS, which would cover both
-> >    the 4KSc and 4KSd.  In that case code using ROTR could be conditional on
-> >    #if defined(CPU_CONFIG_MIPS32R2) || defined(CONFIG_CPU_SMARTMIPS).
-> >
-> > I personally think that the third option is the cleanest and most conceptually
-> > correct, but I'm not the guy operationally responsible for maintaining
-> > that code.
-> 
-> I think we will have to use second _and_ third options. I can't find
-> out an example, but since 4KSC has some MIPS32_R2 instructions it will
-> need to use some specific MIPS32_R2 code sometimes.
+This patch uses 'wsbh' instruction to optimize swab operations. This
+instruction is part of the MIPS Release 2 instructions set.
 
-You don't understand. There is nothing in the 4KSc that is not in the SmartMIPS ASE.
-The 4KSc implements MIPS32+SmartMIPS.  The 4KSd implementes MIPS32R2+SmartMIPS.
-You're getting confused because some elements of SmartMIPS made it into MIPS32R2.
-If we have a CONFIG_CPU_SMARTMIPS flag, there would be no need for a
-CONFIG_CPU_MIPS4KSC flag.
+Signed-off-by: Franck BUI-HUU <vagabon.xyz@gmail.com>
+---
 
-        Regards,
+ include/asm-mips/byteorder.h |   27 +++++++++++++++++++++++++++
+ 1 files changed, 27 insertions(+), 0 deletions(-)
 
-        Kevin K.
+4dc5b8c501404d1d133e45ea99f1cd54bbb8e37f
+diff --git a/include/asm-mips/byteorder.h b/include/asm-mips/byteorder.h
+index d1fe9e5..f9f5059 100644
+--- a/include/asm-mips/byteorder.h
++++ b/include/asm-mips/byteorder.h
+@@ -8,10 +8,37 @@
+ #ifndef _ASM_BYTEORDER_H
+ #define _ASM_BYTEORDER_H
+
++#include <linux/compiler.h>
+ #include <asm/types.h>
+
+ #ifdef __GNUC__
+
++#ifdef CONFIG_CPU_MIPSR2
++
++static __inline__ __attribute_const__ __u16 ___arch__swab16(__u16 x)
++{
++	__asm__(
++		"wsbh	%0, %1\n"
++		: "=r" (x)
++		: "r" (x));
++	return x;
++}
++
++static __inline__ __attribute_const__ __u32 ___arch__swab32(__u32 x)
++{
++	__asm__(
++		"wsbh	%0, %1\n\t"
++		"rotr	%0, %0, 16\n"
++		: "=r" (x)
++		: "r" (x));
++	return x;
++}
++
++#define __arch__swab16(x)	___arch__swab16(x)
++#define __arch__swab32(x)	___arch__swab32(x)
++
++#endif /* CONFIG_CPU_MIPSR2 */
++
+ #if !defined(__STRICT_ANSI__) || defined(__KERNEL__)
+ #  define __BYTEORDER_HAS_U64__
+ #  define __SWAB_64_THRU_32__

@@ -1,73 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:47:21 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:3012 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133642AbWAZQrE
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:52:10 +0000 (GMT)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:4292 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133614AbWAZQvx
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 16:47:04 +0000
+	Thu, 26 Jan 2006 16:51:53 +0000
 Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k0QGpHiW021257;
-	Thu, 26 Jan 2006 08:51:18 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.9/8.12.11) with SMTP id k0QGpFYr021264;
-	Thu, 26 Jan 2006 08:51:15 -0800 (PST)
-Message-ID: <009c01c62299$075e9ea0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Franck" <vagabon.xyz@gmail.com>, "Nigel Stephens" <nigel@mips.com>
-Cc:	<linux-mips@linux-mips.org>
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com> <43D78725.6050300@mips.com> <20060125141424.GE3454@linux-mips.org> <cda58cb80601250632r3e8f7b9en@mail.gmail.com> <20060125150404.GF3454@linux-mips.org> <cda58cb80601251003m6ba4379w@mail.gmail.com> <43D7C050.5090607@mips.com> <cda58cb80601260702wf781e70l@mail.gmail.com> <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com> <cda58cb80601260831i61167787g@mail.gmail.com>
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-Date:	Thu, 26 Jan 2006 17:53:25 +0100
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k0QGtubW021282;
+	Thu, 26 Jan 2006 08:55:57 -0800 (PST)
+Received: from olympia.mips.com (olympia [192.168.192.128])
+	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id k0QGtuYr021349;
+	Thu, 26 Jan 2006 08:55:57 -0800 (PST)
+Received: from highbury.mips.com ([192.168.192.236])
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1F2APY-0001pT-00; Thu, 26 Jan 2006 16:55:52 +0000
+Message-ID: <43D8FF16.40107@mips.com>
+Date:	Thu, 26 Jan 2006 16:55:50 +0000
+From:	Nigel Stephens <nigel@mips.com>
+Organization: MIPS Technologies
+User-Agent: Debian Thunderbird 1.0.2 (X11/20050817)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To:	Franck <vagabon.xyz@gmail.com>
+CC:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
+References: <cda58cb80601250136p5ee350e6g@mail.gmail.com>	 <43D78725.6050300@mips.com> <20060125141424.GE3454@linux-mips.org>	 <cda58cb80601250632r3e8f7b9en@mail.gmail.com>	 <20060125150404.GF3454@linux-mips.org>	 <cda58cb80601251003m6ba4379w@mail.gmail.com>	 <43D7C050.5090607@mips.com>	 <cda58cb80601260702wf781e70l@mail.gmail.com>	 <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com> <cda58cb80601260831i61167787g@mail.gmail.com>
+In-Reply-To: <cda58cb80601260831i61167787g@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.763,
+	required 4, AWL, BAYES_00)
 X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10186
+X-archive-position: 10187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-> > ...the only significant thing which -march=4ksd will do differently from
-> > -march=mips32r2 is to allow the compiler to generate branch-likely
-> > instructions -- they're deprecated for generic mips32 code but carry no
-> > penalty on the 4K core. It will also cause the compiler's "4kc" pipeline
-> > description to be used for instruction scheduling, instead of the
-> > default "24kc", but that should only change the order of instructions
-> 
-> Do you mean that the code can be run faster when using -march=4ksd ?
 
-Not necessarily, if it's just a question of branch-likelies.  It could be a little
-faster, but it could also be a little slower.  In any case, the effect should be
-minor.
- 
-> > and shouldn't really make a significant difference to the code size.
-> 
-> yes but I have :(
 
-You report a 33K delta on the Linux kernel.  I would imagine that you're
-probably building a pretty small kernel configuration, but even if you've got
-it down to 1MB of text, that's still only about 3% bloat.  Undesirable, but
-not catastrophic.
+Franck wrote:
 
-If we want to do something about this, however, I would argue that it should
-not be strictly in the context of the 4KSd, because it's not only for that core
-that people may have an interest in having the smallest possible kernel, and
-it's not only that compiler option that could have an effect on the footprint.
-I postulate (without proposing to actually do the work ;o) some kind of
-CONFIG_<mumble>_COMPACT configuration option that would do
-things like (but not limited to) forcing the use of branch-likely where appropriate,
-regardless of the ISA level selected.
+>>-march=mips32r2 is to allow the compiler to generate branch-likely
+>>instructions -- they're deprecated for generic mips32 code but carry no
+>>penalty on the 4K core. It will also cause the compiler's "4kc" pipeline
+>>description to be used for instruction scheduling, instead of the
+>>default "24kc", but that should only change the order of instructions
+>>    
+>>
+>
+>Do you mean that the code can be run faster when using -march=4ksd ?
+>  
+>
 
-            Regards,
+Yes, though the difference is likely to be small. The -march=4ksd option 
+also enables the SmartMIPS ASE, but you've already done that explicitly 
+with -msmartmips.
 
-            Kevin K.
+>  
+>
+>>and shouldn't really make a significant difference to the code size.
+>>
+>>    
+>>
+>
+>yes but I have :(
+>  
+>
+
+Then you'll have to have a look at the resulting disassembled code and 
+figure what's changed. :)
+
+Thinking about this in more detail:
+
+1) Using -march=4ksd reduces the cost of a multiply by 1 instruction 
+(from 5 to 4 cycles), so a few more constant multiplications, previously 
+expanded into a sequence of shifts, adds and subs, may now be replaced 
+by a shorter sequence of "li" and "mul" instructions.
+
+2) Enabling branch-likely may allow some instructions to be moved into a 
+branch delay slot which previously couldn't be -- but usually these are 
+duplicates of the code at the original branch target, so have little 
+effect on overall code size.
+
+3) Using -march=mips32r2 with -O1 and above (but not -Os) enables 64-bit 
+alignment of functions and frequently-used branch targets (e.g. loop 
+headers); whereas -march=4ksc will not do that. This will add some 
+additional "nops" to the code.
+
+Nigel

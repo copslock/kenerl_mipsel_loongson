@@ -1,79 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 15:47:30 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:55747 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133559AbWAZPrM
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 15:47:12 +0000
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k0QFpXd5020988;
-	Thu, 26 Jan 2006 07:51:33 -0800 (PST)
-Received: from olympia.mips.com (olympia [192.168.192.128])
-	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id k0QFpXYr020092;
-	Thu, 26 Jan 2006 07:51:34 -0800 (PST)
-Received: from highbury.mips.com ([192.168.192.236])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1F29PF-0000YU-00; Thu, 26 Jan 2006 15:51:29 +0000
-Message-ID: <43D8F000.9010106@mips.com>
-Date:	Thu, 26 Jan 2006 15:51:28 +0000
-From:	Nigel Stephens <nigel@mips.com>
-Organization: MIPS Technologies
-User-Agent: Debian Thunderbird 1.0.2 (X11/20050817)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	"Kevin D. Kissell" <kevink@mips.com>,
-	Franck <vagabon.xyz@gmail.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com> <20060125124738.GA3454@linux-mips.org> <cda58cb80601250534r5f464fd1v@mail.gmail.com> <43D78725.6050300@mips.com> <20060125141424.GE3454@linux-mips.org> <cda58cb80601250632r3e8f7b9en@mail.gmail.com> <20060125150404.GF3454@linux-mips.org> <cda58cb80601251003m6ba4379w@mail.gmail.com> <43D7C050.5090607@mips.com> <cda58cb80601260702wf781e70l@mail.gmail.com> <005101c6228c$6ebfb0a0$10eca8c0@grendel>
-In-Reply-To: <005101c6228c$6ebfb0a0$10eca8c0@grendel>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.758,
-	required 4, AWL, BAYES_00)
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <nigel@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:05:11 +0000 (GMT)
+Received: from colo.lackof.org ([198.49.126.79]:6543 "EHLO colo.lackof.org")
+	by ftp.linux-mips.org with ESMTP id S8133559AbWAZQEx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jan 2006 16:04:53 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by colo.lackof.org (Postfix) with ESMTP id 6F6AC360021;
+	Thu, 26 Jan 2006 09:18:51 -0700 (MST)
+Received: from colo.lackof.org ([127.0.0.1])
+	by localhost (colo.lackof.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 13278-06; Thu, 26 Jan 2006 09:18:50 -0700 (MST)
+Received: by colo.lackof.org (Postfix, from userid 27253)
+	id 051B5360002; Thu, 26 Jan 2006 09:18:50 -0700 (MST)
+Date:	Thu, 26 Jan 2006 09:18:49 -0700
+From:	Grant Grundler <grundler@parisc-linux.org>
+To:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
+Subject: Re: [parisc-linux] Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
+Message-ID: <20060126161849.GA13632@colo.lackof.org>
+References: <20060125112625.GA18584@miraclelinux.com> <20060125113206.GD18584@miraclelinux.com> <20060125200250.GA26443@flint.arm.linux.org.uk> <20060126000618.GA5592@twiddle.net> <20060126085540.GA15377@flint.arm.linux.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060126085540.GA15377@flint.arm.linux.org.uk>
+X-Home-Page: http://www.parisc-linux.org/
+User-Agent: Mutt/1.5.9i
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lackof.org
+Return-Path: <grundler@lackof.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10179
+X-archive-position: 10180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nigel@mips.com
+X-original-sender: grundler@parisc-linux.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Jan 26, 2006 at 08:55:41AM +0000, Russell King wrote:
+> Unfortunately that's not correct.  You do not appear to have checked
+> the compiler output like I did - this code does _not_ generate
+> constant shifts.
 
+Russell,
+By "written stupidly", I thought Richard meant they could have
+used constants instead of "s".  e.g.:
+	if (word << 16 == 0) { b += 16; word >>= 16); }
+	if (word << 24 == 0) { b +=  8; word >>=  8); }
+	if (word << 28 == 0) { b +=  4; word >>=  4); }
 
-Kevin D. Kissell wrote:
+But I prefer what Edgar Toernig suggested.
 
->Could you please post your mipsel-linux-gcc -v output?   It might help.
->I've never tried building Linux with any of the Sc/Sd/SmartMIPS options,
->so I really don't know what you could be experiencing.  One thought that
->comes to mind is that the -march=4ksd option may be treated as a hint to
->generate compact code (for smart cards) in a way that -march=mips32r2
->is not.  I'll ask around...
->  
->
-
-Assuming that this is the SDE compiler, then I think that the only 
-significant thing which -march=4ksd will do differently from 
--march=mips32r2 is to allow the compiler to generate branch-likely 
-instructions -- they're deprecated for generic mips32 code but carry no 
-penalty on the 4K core. It will also cause the compiler's "4kc" pipeline 
-description to be used for instruction scheduling, instead of the 
-default "24kc", but that should only change the order of instructions 
-and shouldn't really make a significant difference to the code size.
-
->
->>Now the size of the kernel code is 33Ko bigger ! I have no idea
->>why...I tried to add -mips16e option but it fails to compile...Do you
->>have an idea ?
->>
->>    
->>
-
-You certainly can't compile the kernel with -mips16e: too much inline 
-asm code which won't work in mips16.
-
-Nigel
+grant

@@ -1,96 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:52:10 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:4292 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133614AbWAZQvx
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jan 2006 16:51:53 +0000
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k0QGtubW021282;
-	Thu, 26 Jan 2006 08:55:57 -0800 (PST)
-Received: from olympia.mips.com (olympia [192.168.192.128])
-	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id k0QGtuYr021349;
-	Thu, 26 Jan 2006 08:55:57 -0800 (PST)
-Received: from highbury.mips.com ([192.168.192.236])
-	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1F2APY-0001pT-00; Thu, 26 Jan 2006 16:55:52 +0000
-Message-ID: <43D8FF16.40107@mips.com>
-Date:	Thu, 26 Jan 2006 16:55:50 +0000
-From:	Nigel Stephens <nigel@mips.com>
-Organization: MIPS Technologies
-User-Agent: Debian Thunderbird 1.0.2 (X11/20050817)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jan 2006 16:56:04 +0000 (GMT)
+Received: from honk1.physik.uni-konstanz.de ([134.34.140.224]:19093 "EHLO
+	honk1.physik.uni-konstanz.de") by ftp.linux-mips.org with ESMTP
+	id S8133655AbWAZQzr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 26 Jan 2006 16:55:47 +0000
+Received: from localhost (localhost.localnet [127.0.0.1])
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id E04002BBE3;
+	Thu, 26 Jan 2006 18:00:10 +0100 (CET)
+Received: from honk1.physik.uni-konstanz.de ([127.0.0.1])
+	by localhost (honk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+	id 19939-47; Thu, 26 Jan 2006 18:00:05 +0100 (CET)
+Received: from bogon.sigxcpu.org (unknown [62.157.100.134])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by honk1.physik.uni-konstanz.de (Postfix) with ESMTP id 5A0FC2BBE2;
+	Thu, 26 Jan 2006 18:00:05 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+	id C228211E575; Thu, 26 Jan 2006 17:45:53 +0100 (CET)
+Date:	Thu, 26 Jan 2006 17:45:53 +0100
+From:	Guido Guenther <agx@sigxcpu.org>
+To:	Kumba <kumba@gentoo.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH]: Add byteorder/endianess to /proc/cpuinfo
+Message-ID: <20060126164553.GA6335@bogon.ms20.nix>
+Mail-Followup-To: Guido Guenther <agx@sigxcpu.org>,
+	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+References: <20060124195419.GB24568@toucan.gentoo.org>
 MIME-Version: 1.0
-To:	Franck <vagabon.xyz@gmail.com>
-CC:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com>	 <43D78725.6050300@mips.com> <20060125141424.GE3454@linux-mips.org>	 <cda58cb80601250632r3e8f7b9en@mail.gmail.com>	 <20060125150404.GF3454@linux-mips.org>	 <cda58cb80601251003m6ba4379w@mail.gmail.com>	 <43D7C050.5090607@mips.com>	 <cda58cb80601260702wf781e70l@mail.gmail.com>	 <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com> <cda58cb80601260831i61167787g@mail.gmail.com>
-In-Reply-To: <cda58cb80601260831i61167787g@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MTUK-Scanner:	Found to be clean
-X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.763,
-	required 4, AWL, BAYES_00)
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <nigel@mips.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
+Content-Disposition: inline
+In-Reply-To: <20060124195419.GB24568@toucan.gentoo.org>
+User-Agent: Mutt/1.5.11
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at honk.physik.uni-konstanz.de
+Return-Path: <agx@sigxcpu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10187
+X-archive-position: 10188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nigel@mips.com
+X-original-sender: agx@sigxcpu.org
 Precedence: bulk
 X-list: linux-mips
 
 
+--mP3DRpeJDSE+ciuQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Franck wrote:
+On Tue, Jan 24, 2006 at 07:54:19PM +0000, Kumba wrote:
+> Adds an additional field to /proc/cpuinfo that states the byteorder
+> of the system.  This has been floating around for some time on the
+> list, so maybe this time is the charm.
+This actually got removed from mainline ages ago. It's only being
+carried around in distribution kernels for legacy reasons - we shouldn't
+readd it.
+Cheers,
+ -- Guido
+>=20
+> Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+> ---
+>=20
+>  proc.c |    5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
 
->>-march=mips32r2 is to allow the compiler to generate branch-likely
->>instructions -- they're deprecated for generic mips32 code but carry no
->>penalty on the 4K core. It will also cause the compiler's "4kc" pipeline
->>description to be used for instruction scheduling, instead of the
->>default "24kc", but that should only change the order of instructions
->>    
->>
->
->Do you mean that the code can be run faster when using -march=4ksd ?
->  
->
+> diff -Naurp mipslinux/arch/mips/kernel/proc.c mipslinux-byteorder/arch/mi=
+ps/kernel/proc.c
+> --- mipslinux/arch/mips/kernel/proc.c	2006-01-22 21:14:11.000000000 -0500
+> +++ mipslinux-byteorder/arch/mips/kernel/proc.c	2006-01-24 13:39:47.00000=
+0000 -0500
+> @@ -114,6 +114,11 @@ static int show_cpuinfo(struct seq_file=20
+>  	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
+>  	              cpu_data[n].udelay_val / (500000/HZ),
+>  	              (cpu_data[n].udelay_val / (5000/HZ)) % 100);
+> +#ifdef __MIPSEB__
+> +	seq_printf(m, "byteorder\t\t: big endian\n");
+> +#else
+> +	seq_printf(m, "byteorder\t\t: little endian\n");
+> +#endif
+>  	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
+>  	seq_printf(m, "microsecond timers\t: %s\n",
+>  	              cpu_has_counter ? "yes" : "no");
 
-Yes, though the difference is likely to be small. The -march=4ksd option 
-also enables the SmartMIPS ASE, but you've already done that explicitly 
-with -msmartmips.
 
->  
->
->>and shouldn't really make a significant difference to the code size.
->>
->>    
->>
->
->yes but I have :(
->  
->
+--mP3DRpeJDSE+ciuQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-Then you'll have to have a look at the resulting disassembled code and 
-figure what's changed. :)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
 
-Thinking about this in more detail:
+iD8DBQFD2PzBn88szT8+ZCYRAgoYAJ99bd48SD5Io70zyQVYmtn8s0vdnwCdEEtR
+Obq2PIVz+tDKF6HI0TSQf9A=
+=rcOx
+-----END PGP SIGNATURE-----
 
-1) Using -march=4ksd reduces the cost of a multiply by 1 instruction 
-(from 5 to 4 cycles), so a few more constant multiplications, previously 
-expanded into a sequence of shifts, adds and subs, may now be replaced 
-by a shorter sequence of "li" and "mul" instructions.
-
-2) Enabling branch-likely may allow some instructions to be moved into a 
-branch delay slot which previously couldn't be -- but usually these are 
-duplicates of the code at the original branch target, so have little 
-effect on overall code size.
-
-3) Using -march=mips32r2 with -O1 and above (but not -Os) enables 64-bit 
-alignment of functions and frequently-used branch targets (e.g. loop 
-headers); whereas -march=4ksc will not do that. This will add some 
-additional "nops" to the code.
-
-Nigel
+--mP3DRpeJDSE+ciuQ--

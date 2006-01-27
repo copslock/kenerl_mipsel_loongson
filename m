@@ -1,82 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 08:21:12 +0000 (GMT)
-Received: from midas-91-171-chn.midascomm.com ([203.196.171.91]:392 "EHLO
-	info.midascomm.com") by ftp.linux-mips.org with ESMTP
-	id S3458494AbWA0IUx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Jan 2006 08:20:53 +0000
-Received: from bharathi.midascomm.com ([192.168.13.175])
-	by info.midascomm.com (8.12.10/8.12.10) with ESMTP id k0R8PF1E012328
-	for <linux-mips@linux-mips.org>; Fri, 27 Jan 2006 13:55:19 +0530
-Date:	Fri, 27 Jan 2006 14:02:36 +0530 (IST)
-From:	Bharathi Subramanian <sbharathi@MidasComm.Com>
-To:	Linux MIPS <linux-mips@linux-mips.org>
-Subject: Re: Timer Interrupt
-In-Reply-To: <00e501c61b75$a5f0c0a0$10eca8c0@grendel>
-Message-ID: <Pine.LNX.4.44.0601271349350.2185-100000@bharathi.midascomm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 08:59:11 +0000 (GMT)
+Received: from zproxy.gmail.com ([64.233.162.206]:61859 "EHLO zproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S3458493AbWA0I6w convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Jan 2006 08:58:52 +0000
+Received: by zproxy.gmail.com with SMTP id l8so571655nzf
+        for <linux-mips@linux-mips.org>; Fri, 27 Jan 2006 01:03:26 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=b2bs/vFdWMXeFXCvP+jU/gi319N3bRGn54Vz69AnPpwyXWccXNEX1voqs7k2ybis6rD81VI6iVbHMhO/koUd/EWsO+xPVyK+pTROtbNQrd+54qTqkeetiYhFqgkvFxMdlInQGqpRWbjMxRKDO8XWwqcvI1SEv8HfzgkR/4haj1M=
+Received: by 10.36.115.2 with SMTP id n2mr2265094nzc;
+        Fri, 27 Jan 2006 01:03:26 -0800 (PST)
+Received: by 10.36.49.12 with HTTP; Fri, 27 Jan 2006 01:03:25 -0800 (PST)
+Message-ID: <cda58cb80601270103t1419117cq@mail.gmail.com>
+Date:	Fri, 27 Jan 2006 10:03:25 +0100
+From:	Franck <vagabon.xyz@gmail.com>
+To:	Nigel Stephens <nigel@mips.com>
+Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
+Cc:	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
+In-Reply-To: <43D93025.9040800@mips.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-midascomm.com-MailScanner-Information: Please contact the ISP for more information
-X-midascomm.com-MailScanner: Found to be clean
-X-midascomm.com-MailScanner-From: sbharathi@midascomm.com
-Return-Path: <sbharathi@MidasComm.Com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <cda58cb80601250136p5ee350e6g@mail.gmail.com>
+	 <cda58cb80601251003m6ba4379w@mail.gmail.com>
+	 <43D7C050.5090607@mips.com>
+	 <cda58cb80601260702wf781e70l@mail.gmail.com>
+	 <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com>
+	 <cda58cb80601260831i61167787g@mail.gmail.com>
+	 <43D8FF16.40107@mips.com>
+	 <cda58cb80601261002w6eb02249k@mail.gmail.com>
+	 <43D93025.9040800@mips.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10200
+X-archive-position: 10201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sbharathi@MidasComm.Com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 17 Jan 2006, Kevin D. Kissell wrote:
+2006/1/26, Nigel Stephens <nigel@mips.com>:
+>
+> You could, but why not stick with -march=4ksd if that's your CPU of
+> choice? It appears to result in  marginally smaller code even when using
+> -Os, and should have (slightly) better performance than a generic
+> mips32r2 kernel?
+>
 
-> You were on the right track when you tried hacking mips_timer_ack(),
-> but note that both cycles_per_jiffy and mips_hpt_frequency end up
-> being used in Count-based time calculations.
+Just to avoid a new CPU_4KSD definition in the kernel code as
+suggested by Kevin. Basically all mips32r2 specific code is the same
+as 4ksd specific code (except the code that deals with SmartMIPS
+extension). So it can use CONFIG_CPU_MIPS32_R2 macro. But I was not
+aware of -march=4ksd and -march=mips32r2 differences. Maybe now it is
+needed to have a new CPU_4KSD definition ?
 
-I fixed the CPU Clock down and Timer interrupt problem like this:
-
-static void c0_timer_ack(void)
-{
-  int count;
- /* Bharathi: To maintain the Timer in clock down mode.
-  * cpu_clk_change is set by PMU Driver */
-
- if(test_and_clear_bit(0, &cpu_clk_change))
- {
-   READ_REG( PMU_CLKMODE, cpu_clk_div);
-   /* Divide the orginal timer count */
-   my_cycles_per_jiffy = cycles_per_jiffy >> (cpu_clk_divA);
- }
- /* Ack this timer interrupt and set the next one. */
- expirelo += my_cycles_per_jiffy;
- write_c0_compare(expirelo);
-
- /* Check to see if we have missed any timer interrupts. */
- count = read_c0_count();
-
- if ((count - expirelo) < 0x7fffffff) {
-    expirelo = count + my_cycles_per_jiffy;
-    write_c0_compare(expirelo);
- }
-}
-
-NOTE:
-
-0. cpu_clk_change is global, static and exported to access in PMU Drv.
-
-1. In time_init(), set my_cycles_per_jiffy = cycles_per_jiffy to
-   handle initial state.
-
-2. If needed, Change the SDRAM Refresh Rate during clk dwn.
-
-3. Force few uSec delay after clock-up for smooth & stable transition.
-
-4. I am NOT an expert in Kernel/MIPS. Feel free to correct me.
-
-Kindly CC me.
-
-Thanks :)
--- 
-Bharathi S
+Thanks
+--
+               Franck

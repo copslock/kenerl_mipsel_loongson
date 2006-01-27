@@ -1,68 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 12:47:49 +0000 (GMT)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:30664 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S3458533AbWA0MrY
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Jan 2006 12:47:24 +0000
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k0RCpoIe026882;
-	Fri, 27 Jan 2006 04:51:51 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.12.9/8.12.11) with SMTP id k0RCpkYr012763;
-	Fri, 27 Jan 2006 04:51:47 -0800 (PST)
-Message-ID: <001d01c62340$be267bb0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Franck" <vagabon.xyz@gmail.com>
-Cc:	"Nigel Stephens" <nigel@mips.com>, <linux-mips@linux-mips.org>
-References: <cda58cb80601250136p5ee350e6g@mail.gmail.com> <cda58cb80601260702wf781e70l@mail.gmail.com> <005101c6228c$6ebfb0a0$10eca8c0@grendel> <43D8F000.9010106@mips.com> <cda58cb80601260831i61167787g@mail.gmail.com> <43D8FF16.40107@mips.com> <cda58cb80601261002w6eb02249k@mail.gmail.com> <43D93025.9040800@mips.com> <cda58cb80601270103t1419117cq@mail.gmail.com> <000b01c6232a$5ea81470$10eca8c0@grendel> <cda58cb80601270245g6273ce04k@mail.gmail.com>
-Subject: Re: [RFC] Optimize swab operations on mips_r2 cpu
-Date:	Fri, 27 Jan 2006 13:53:58 +0100
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 12:48:40 +0000 (GMT)
+Received: from mail.renesas.com ([202.234.163.13]:62895 "EHLO
+	mail04.idc.renesas.com") by ftp.linux-mips.org with ESMTP
+	id S3465601AbWA0Mr2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Jan 2006 12:47:28 +0000
+Received: from mail04.idc.renesas.com ([127.0.0.1])
+ by mail04.idc.renesas.com. (SMSSMTP 4.1.9.35) with SMTP id M2006012721515601047
+ for <linux-mips@linux-mips.org>; Fri, 27 Jan 2006 21:51:56 +0900
+Received: (from root@localhost)
+	by guardian01.idc.renesas.com with  id k0RCpnXj001105;
+	Fri, 27 Jan 2006 21:51:49 +0900 (JST)
+Received: from unknown [172.20.8.73] by guardian01.idc.renesas.com with SMTP id XAA01102 ; Fri, 27 Jan 2006 21:51:49 +0900
+Received: from mrkaisv.hoku.renesas.com ([10.145.105.245])
+	by ml01.idc.renesas.com (8.12.10/8.12.10) with ESMTP id k0RCpndI018876;
+	Fri, 27 Jan 2006 21:51:49 +0900 (JST)
+Received: from localhost (pcepx10 [10.145.105.241])
+	by mrkaisv.hoku.renesas.com (Postfix) with ESMTP
+	id EBC24798071; Fri, 27 Jan 2006 21:51:47 +0900 (JST)
+Date:	Fri, 27 Jan 2006 21:51:47 +0900 (JST)
+Message-Id: <20060127.215147.670306403.takata.hirokazu@renesas.com>
+To:	mita@miraclelinux.com
+Cc:	linux-kernel@vger.kernel.org, rth@twiddle.net,
+	ink@jurassic.park.msu.ru, rmk@arm.linux.org.uk, spyro@f2s.com,
+	dev-etrax@axis.com, dhowells@redhat.com,
+	ysato@users.sourceforge.jp, torvalds@osdl.org,
+	linux-ia64@vger.kernel.org, takata@linux-m32r.org,
+	linux-m68k@lists.linux-m68k.org, gerg@uclinux.org,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	uclinux-v850@lsi.nec.co.jp, ak@suse.de, chris@zankel.net,
+	akpm@osdl.org
+Subject: Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
+From:	Hirokazu Takata <takata@linux-m32r.org>
+In-Reply-To: <20060125113206.GD18584@miraclelinux.com>
+References: <20060125112625.GA18584@miraclelinux.com>
+	<20060125113206.GD18584@miraclelinux.com>
+X-Mailer: Mew version 3.3 on XEmacs 21.4.18 (Social Property)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Return-Path: <takata@linux-m32r.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10206
+X-archive-position: 10207
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: takata@linux-m32r.org
 Precedence: bulk
 X-list: linux-mips
 
-> > Configuration hacks that are specific to a single core create cruft and
-> > maintenence problems.  As I said yesterday, I think we'd be much better
-> > off to have a CONFIG_CPU_MIPS_SMALL or some such option
-> > that could cause -Os to be used, allow branch-likelies, etc. The optimizations
-> > under discussion aren't at all specific to the 4KSd,
+Hello Mita-san, and folks,
+
+From: mita@miraclelinux.com (Akinobu Mita)
+Subject: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
+Date: Wed, 25 Jan 2006 20:32:06 +0900
+> o generic {,test_and_}{set,clear,change}_bit() (atomic bitops)
 > 
-> no some are. As we said previously:
+> This patch introduces the C-language equivalents of the functions below:
+> void set_bit(int nr, volatile unsigned long *addr);
+> void clear_bit(int nr, volatile unsigned long *addr);
+...
+> int test_and_change_bit(int nr, volatile unsigned long *addr);
 > 
->         1/ sizeof(vmlinux-mips32r2-Os) > sizeof(vmlinux-4ksd-Os)
->         2/ with -march=4ksd can do (slightly) better optimizations.
+> HAVE_ARCH_ATOMIC_BITOPS is defined when the architecture has its own
+> version of these functions.
+> 
+> This code largely copied from:
+> include/asm-powerpc/bitops.h
+> include/asm-parisc/bitops.h
+> include/asm-parisc/atomic.h
 
-This is very possibly due to the compiler knowing about the SmartMIPS
-scaled, indexed load instructions, which were added to improve virtual
-machine performance, but which also save on address calculation instructions.
-If -march=mips32r2 combined with -msmartmips and -Os don't produce
-pretty much the same result as -march=4ksd, I'd be interested in knowing
-why. Regardless, if this is what's going on, there really is no other core 
-in production today that will run that code.  But that doesn't mean
-that there won't be others in the future.
+Could you tell me more about the new generic {set,clear,test}_bit()
+routines?
 
-All I'm really trying to do here is to get away from core-specific config
-cruft.  If the best result under-the-hood for 4KSd is obtained by using 
--march=4ksd, that's what people should get, but I'd rather that users
-and maintainers saw that as a choice of MIPS32R2+SmartMIPS rather 
-than a choice of 4KSd as a one-off.
+Why do you copied these routines from parisc and employed them
+ as generic ones?
+I'm not sure whether these generic {set,clear,test}_bit() routines
+are really generic or not.
 
-        Regards,
+> +/* Can't use raw_spin_lock_irq because of #include problems, so
+> + * this is the substitute */
+> +#define _atomic_spin_lock_irqsave(l,f) do {	\
+> +	raw_spinlock_t *s = ATOMIC_HASH(l);	\
+> +	local_irq_save(f);			\
+> +	__raw_spin_lock(s);			\
+> +} while(0)
+> +
+> +#define _atomic_spin_unlock_irqrestore(l,f) do {	\
+> +	raw_spinlock_t *s = ATOMIC_HASH(l);		\
+> +	__raw_spin_unlock(s);				\
+> +	local_irq_restore(f);				\
+> +} while(0)
 
-        Kevin K.
+Is there a possibility that these routines affect for archs
+with no HAVE_ARCH_ATOMIC_BITOPS for SMP ?
+I think __raw_spin_lock() is sufficient and local_irqsave() is 
+not necessary in general atomic routines.
+
+If the parisc's LDCW instruction required disabling interrupts,
+it would be parisc specific and not generic case, I think, 
+although I'm not familier with the parisc architecture...
+
+-- Takata

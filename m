@@ -1,59 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 03:36:07 +0000 (GMT)
-Received: from bay20-f13.bay20.hotmail.com ([64.4.54.102]:27471 "EHLO
-	hotmail.com") by ftp.linux-mips.org with ESMTP id S8133461AbWA0Dfu
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Jan 2006 03:35:50 +0000
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Thu, 26 Jan 2006 19:40:17 -0800
-Message-ID: <BAY20-F13B86868EF8BF340B9B3CBEC140@phx.gbl>
-Received: from 202.124.146.103 by by20fd.bay20.hotmail.msn.com with HTTP;
-	Fri, 27 Jan 2006 03:40:17 GMT
-X-Originating-IP: [202.124.146.103]
-X-Originating-Email: [merlin002@hotmail.com]
-X-Sender: merlin002@hotmail.com
-From:	"Hal -" <merlin002@hotmail.com>
-To:	linux-mips@linux-mips.org
-Subject: VR5701 GPIO trouble
-Date:	Fri, 27 Jan 2006 03:40:17 +0000
-Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-OriginalArrivalTime: 27 Jan 2006 03:40:17.0895 (UTC) FILETIME=[64217770:01C622F3]
-Return-Path: <merlin002@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 08:21:12 +0000 (GMT)
+Received: from midas-91-171-chn.midascomm.com ([203.196.171.91]:392 "EHLO
+	info.midascomm.com") by ftp.linux-mips.org with ESMTP
+	id S3458494AbWA0IUx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Jan 2006 08:20:53 +0000
+Received: from bharathi.midascomm.com ([192.168.13.175])
+	by info.midascomm.com (8.12.10/8.12.10) with ESMTP id k0R8PF1E012328
+	for <linux-mips@linux-mips.org>; Fri, 27 Jan 2006 13:55:19 +0530
+Date:	Fri, 27 Jan 2006 14:02:36 +0530 (IST)
+From:	Bharathi Subramanian <sbharathi@MidasComm.Com>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+Subject: Re: Timer Interrupt
+In-Reply-To: <00e501c61b75$a5f0c0a0$10eca8c0@grendel>
+Message-ID: <Pine.LNX.4.44.0601271349350.2185-100000@bharathi.midascomm.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-midascomm.com-MailScanner-Information: Please contact the ISP for more information
+X-midascomm.com-MailScanner: Found to be clean
+X-midascomm.com-MailScanner-From: sbharathi@midascomm.com
+Return-Path: <sbharathi@MidasComm.Com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10199
+X-archive-position: 10200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: merlin002@hotmail.com
+X-original-sender: sbharathi@MidasComm.Com
 Precedence: bulk
 X-list: linux-mips
 
-What is the kernel interrupt number for the GPIO ports of the VR5701?
+On Tue, 17 Jan 2006, Kevin D. Kissell wrote:
 
-I am making a driver for a VR5701 board and am having trouble with 
-interrupts. I've set up a pushbutton on GPIO pin 29. When I press a button, 
-the CPU registers GIU_PIO0, nothing happens when it's supposed to call the 
-interrupt handler and do a printk();
+> You were on the right track when you tried hacking mips_timer_ack(),
+> but note that both cycles_per_jiffy and mips_hpt_frequency end up
+> being used in Count-based time calculations.
 
-The initialization function first sets bit 4 of INT_MASK (not GIU_INTMASK), 
-defined in asm/vr5701.h, to 1 because I want to enable interrupt 4.
+I fixed the CPU Clock down and Timer interrupt problem like this:
 
-It then sets INT_ROUTE0's bits 19:16 to 0100 to route device 4 (GPIO) to 
-interrupt 4. It clears all gpio interrupts, all cpu interrupts, sets 
-interrupt type to edge trigger, proper polarity, gpio interrupt mask, and 
-gpio direction register (GIU_INTCLR, INT_CLR, GIU_INTTYPE, GIU_INTPOL, 
-GIU_INTMASK, GIU_DIR0, respectively).
+static void c0_timer_ack(void)
+{
+  int count;
+ /* Bharathi: To maintain the Timer in clock down mode.
+  * cpu_clk_change is set by PMU Driver */
 
-It then does a request_irq with IRQ 4, SA_INTERRUPT flag, and device ID of 
-4.
+ if(test_and_clear_bit(0, &cpu_clk_change))
+ {
+   READ_REG( PMU_CLKMODE, cpu_clk_div);
+   /* Divide the orginal timer count */
+   my_cycles_per_jiffy = cycles_per_jiffy >> (cpu_clk_divA);
+ }
+ /* Ack this timer interrupt and set the next one. */
+ expirelo += my_cycles_per_jiffy;
+ write_c0_compare(expirelo);
 
-Did I miss anything? What else should be done to get the pushbutton working 
-properly?
+ /* Check to see if we have missed any timer interrupts. */
+ count = read_c0_count();
 
-Thank you.
+ if ((count - expirelo) < 0x7fffffff) {
+    expirelo = count + my_cycles_per_jiffy;
+    write_c0_compare(expirelo);
+ }
+}
 
-_________________________________________________________________
-Don't just search. Find. Check out the new MSN Search! 
-http://search.msn.click-url.com/go/onm00200636ave/direct/01/
+NOTE:
+
+0. cpu_clk_change is global, static and exported to access in PMU Drv.
+
+1. In time_init(), set my_cycles_per_jiffy = cycles_per_jiffy to
+   handle initial state.
+
+2. If needed, Change the SDRAM Refresh Rate during clk dwn.
+
+3. Force few uSec delay after clock-up for smooth & stable transition.
+
+4. I am NOT an expert in Kernel/MIPS. Feel free to correct me.
+
+Kindly CC me.
+
+Thanks :)
+-- 
+Bharathi S

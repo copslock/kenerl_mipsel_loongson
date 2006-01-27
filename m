@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 12:48:40 +0000 (GMT)
-Received: from mail.renesas.com ([202.234.163.13]:62895 "EHLO
-	mail04.idc.renesas.com") by ftp.linux-mips.org with ESMTP
-	id S3465601AbWA0Mr2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Jan 2006 12:47:28 +0000
-Received: from mail04.idc.renesas.com ([127.0.0.1])
- by mail04.idc.renesas.com. (SMSSMTP 4.1.9.35) with SMTP id M2006012721515601047
- for <linux-mips@linux-mips.org>; Fri, 27 Jan 2006 21:51:56 +0900
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jan 2006 12:59:55 +0000 (GMT)
+Received: from mail.renesas.com ([202.234.163.13]:58878 "EHLO
+	mail03.idc.renesas.com") by ftp.linux-mips.org with ESMTP
+	id S3465601AbWA0M7h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Jan 2006 12:59:37 +0000
+Received: from mail03.idc.renesas.com ([127.0.0.1])
+ by mail03.idc.renesas.com. (SMSSMTP 4.1.9.35) with SMTP id M2006012722040626942
+ for <linux-mips@linux-mips.org>; Fri, 27 Jan 2006 22:04:06 +0900
 Received: (from root@localhost)
-	by guardian01.idc.renesas.com with  id k0RCpnXj001105;
-	Fri, 27 Jan 2006 21:51:49 +0900 (JST)
-Received: from unknown [172.20.8.73] by guardian01.idc.renesas.com with SMTP id XAA01102 ; Fri, 27 Jan 2006 21:51:49 +0900
+	by guardian03.idc.renesas.com with  id k0RD42Zn007409;
+	Fri, 27 Jan 2006 22:04:02 +0900 (JST)
+Received: from unknown [172.20.8.73] by guardian03.idc.renesas.com with SMTP id YAA07408 ; Fri, 27 Jan 2006 22:04:02 +0900
 Received: from mrkaisv.hoku.renesas.com ([10.145.105.245])
-	by ml01.idc.renesas.com (8.12.10/8.12.10) with ESMTP id k0RCpndI018876;
-	Fri, 27 Jan 2006 21:51:49 +0900 (JST)
+	by ml01.idc.renesas.com (8.12.10/8.12.10) with ESMTP id k0RD42dI019742;
+	Fri, 27 Jan 2006 22:04:02 +0900 (JST)
 Received: from localhost (pcepx10 [10.145.105.241])
 	by mrkaisv.hoku.renesas.com (Postfix) with ESMTP
-	id EBC24798071; Fri, 27 Jan 2006 21:51:47 +0900 (JST)
-Date:	Fri, 27 Jan 2006 21:51:47 +0900 (JST)
-Message-Id: <20060127.215147.670306403.takata.hirokazu@renesas.com>
+	id 3BD26798071; Fri, 27 Jan 2006 22:04:02 +0900 (JST)
+Date:	Fri, 27 Jan 2006 22:04:01 +0900 (JST)
+Message-Id: <20060127.220401.356433243.takata.hirokazu@renesas.com>
 To:	mita@miraclelinux.com
 Cc:	linux-kernel@vger.kernel.org, rth@twiddle.net,
 	ink@jurassic.park.msu.ru, rmk@arm.linux.org.uk, spyro@f2s.com,
@@ -32,11 +32,13 @@ Cc:	linux-kernel@vger.kernel.org, rth@twiddle.net,
 	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
 	uclinux-v850@lsi.nec.co.jp, ak@suse.de, chris@zankel.net,
 	akpm@osdl.org
-Subject: Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
+Subject: Re: [PATCH 4/6] use include/asm-generic/bitops for each
+ architecture
 From:	Hirokazu Takata <takata@linux-m32r.org>
-In-Reply-To: <20060125113206.GD18584@miraclelinux.com>
+In-Reply-To: <20060126014934.GA6648@miraclelinux.com>
 References: <20060125112625.GA18584@miraclelinux.com>
-	<20060125113206.GD18584@miraclelinux.com>
+	<20060125113336.GE18584@miraclelinux.com>
+	<20060126014934.GA6648@miraclelinux.com>
 X-Mailer: Mew version 3.3 on XEmacs 21.4.18 (Social Property)
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
@@ -45,7 +47,7 @@ Return-Path: <takata@linux-m32r.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10207
+X-archive-position: 10208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,56 +55,38 @@ X-original-sender: takata@linux-m32r.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Mita-san, and folks,
-
 From: mita@miraclelinux.com (Akinobu Mita)
-Subject: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
-Date: Wed, 25 Jan 2006 20:32:06 +0900
-> o generic {,test_and_}{set,clear,change}_bit() (atomic bitops)
-> 
-> This patch introduces the C-language equivalents of the functions below:
-> void set_bit(int nr, volatile unsigned long *addr);
-> void clear_bit(int nr, volatile unsigned long *addr);
+Subject: Re: [PATCH 4/6] use include/asm-generic/bitops for each architecture
+Date: Thu, 26 Jan 2006 10:49:34 +0900
+> On Wed, Jan 25, 2006 at 08:33:37PM +0900, mita wrote:
+> > compile test on i386, x86_64, ppc, sparc, sparc64, alpha
+> > boot test on i386, x86_64, ppc
 ...
-> int test_and_change_bit(int nr, volatile unsigned long *addr);
+>
+> o m32r
 > 
-> HAVE_ARCH_ATOMIC_BITOPS is defined when the architecture has its own
-> version of these functions.
+> - remove __{,test_and_}{set,clear,change}_bit() and test_bit()
+> - remove ffz()
+> - remove find_{next,first}{,_zero}_bit()
+> - remove __ffs()
+> - remove fls()
+> - remove fls64()
+> - remove sched_find_first_bit()
+> - remove ffs()
+> - remove hweight()
+> - remove ext2_{set,clear,test,find_first_zero,find_next_zero}_bit()
+> - remove ext2_{set,clear}_bit_atomic()
+> - remove minix_{test,set,test_and_clear,test,find_first_zero}_bit()
+> - define HAVE_ARCH_ATOMIC_BITOPS
 > 
-> This code largely copied from:
-> include/asm-powerpc/bitops.h
-> include/asm-parisc/bitops.h
-> include/asm-parisc/atomic.h
 
-Could you tell me more about the new generic {set,clear,test}_bit()
-routines?
+compile and boot test on m32r: OK
 
-Why do you copied these routines from parisc and employed them
- as generic ones?
-I'm not sure whether these generic {set,clear,test}_bit() routines
-are really generic or not.
+Code size became a little bigger...  ;-)
 
-> +/* Can't use raw_spin_lock_irq because of #include problems, so
-> + * this is the substitute */
-> +#define _atomic_spin_lock_irqsave(l,f) do {	\
-> +	raw_spinlock_t *s = ATOMIC_HASH(l);	\
-> +	local_irq_save(f);			\
-> +	__raw_spin_lock(s);			\
-> +} while(0)
-> +
-> +#define _atomic_spin_unlock_irqrestore(l,f) do {	\
-> +	raw_spinlock_t *s = ATOMIC_HASH(l);		\
-> +	__raw_spin_unlock(s);				\
-> +	local_irq_restore(f);				\
-> +} while(0)
-
-Is there a possibility that these routines affect for archs
-with no HAVE_ARCH_ATOMIC_BITOPS for SMP ?
-I think __raw_spin_lock() is sufficient and local_irqsave() is 
-not necessary in general atomic routines.
-
-If the parisc's LDCW instruction required disabling interrupts,
-it would be parisc specific and not generic case, I think, 
-although I'm not familier with the parisc architecture...
+$ size linux-2.6.16-rc1*/vmlinux
+   text    data     bss     dec     hex filename
+1768030  124412  721632 2614074  27e33a linux-2.6.16-rc1.bitops/vmlinux
+1755010  124412  721632 2601054  27b05e linux-2.6.16-rc1.org/vmlinux
 
 -- Takata

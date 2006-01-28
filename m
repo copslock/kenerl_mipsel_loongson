@@ -1,86 +1,131 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 00:47:55 +0000 (GMT)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:44454 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S8133423AbWAaArh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Jan 2006 00:47:37 +0000
-Received: (qmail 999 invoked from network); 31 Jan 2006 10:52:24 +1000
-Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 31 Jan 2006 10:52:24 +1000
-Message-ID: <43DEB4DF.3010906@gentoo.org>
-Date:	Tue, 31 Jan 2006 10:52:47 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 01:26:04 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:64650 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133514AbWAaBZq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Jan 2006 01:25:46 +0000
+Received: (qmail 12734 invoked from network); 28 Jan 2006 09:30:33 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 28 Jan 2006 09:30:33 -0000
+Message-ID: <43DB3A78.9000803@ru.mvista.com>
+Date:	Sat, 28 Jan 2006 12:33:44 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MostaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Kernel git repository
-References: <20060130210837.GA11232@linux-mips.org> <43DE8559.5060408@total-knowledge.com>
-In-Reply-To: <43DE8559.5060408@total-knowledge.com>
-X-Enigmail-Version: 0.93.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigF9FBE669E4177B0BE86BC817"
-Return-Path: <redhatter@gentoo.org>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+CC:	ralf@linux-mips.org
+Subject: Re: [PATCH] TX49x7: Fix timer register #define's
+References: <43D7C279.70807@ru.mvista.com>
+In-Reply-To: <43D7C279.70807@ru.mvista.com>
+Content-Type: multipart/mixed;
+ boundary="------------080409020802020708020107"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10248
+X-archive-position: 10249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigF9FBE669E4177B0BE86BC817
-Content-Type: text/plain; charset=UTF-8
+This is a multi-part message in MIME format.
+--------------080409020802020708020107
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Ilya A. Volynets-Evenbakh wrote:
-> Ralf Baechle wrote:
-> 
->>As some of you have been complained - the kernel git repository has become
->>rather large with it's currently slightly over 200MB.  Since most users
->>are not interested in the full 12 year project history I've prepared a
->>second, slimmed down repository.  It can be cloned at:
->>
->> git clone git://www.linux-mips.org/git/linux-2.6.15.git linux.git
->>
->>This tree is just about 62MB in size and starts at 2.6.15.
->>
->> Ralf
->
-> How about making it linux-nohist.git or something like that,
-> to make it less misleading?
+Hello, I wrote:
 
-Or rename the full-history one to linux-old.git -- since I presume
-future commits will be going to the new one now?  Either that, or
-linux-fullhist.git.
+>    Resending with signoffs (tend to forget about them).
 
-Otherwise, I love the idea. :-)  I can't say I've ever used any of the
-v1.1 kernels...
--- 
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
+     ... and again, with the copyright years fixed.
 
---------------enigF9FBE669E4177B0BE86BC817
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+>    Fix the #define's for TX4927/37 timer reg's to match the datasheets 
+> (those
+> #define's don't seem to be used anywhere though...)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+WBR, Sergei
 
-iD8DBQFD3rTiuarJ1mMmSrkRApokAKCPwmXm1cPzB7Zi1pr3BbUTv2P7OgCfWejx
-YwW3b4YcBc9vXB5cNLwozg0=
-=RJ1K
------END PGP SIGNATURE-----
+Signed-off-by: Konstantin Baydarov <kbaidarov@mvista.com>
+Signed-off-by: Sergei Shtylyov <sshtylyov@mvista.com>
 
---------------enigF9FBE669E4177B0BE86BC817--
+
+
+--------------080409020802020708020107
+Content-Type: text/plain;
+ name="TX49x7-fix-timer-reg-defs.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="TX49x7-fix-timer-reg-defs.patch"
+
+diff --git a/include/asm-mips/tx4927/tx4927.h b/include/asm-mips/tx4927/tx4927.h
+index 3bb7f00..de85bd2 100644
+--- a/include/asm-mips/tx4927/tx4927.h
++++ b/include/asm-mips/tx4927/tx4927.h
+@@ -2,7 +2,7 @@
+  * Author: MontaVista Software, Inc.
+  *         source@mvista.com
+  *
+- * Copyright 2001-2002 MontaVista Software Inc.
++ * Copyright 2001-2002, 2004, 2006 MontaVista Software Inc.
+  *
+  *  This program is free software; you can redistribute it and/or modify it
+  *  under the terms of the GNU General Public License as published by the
+@@ -30,10 +30,10 @@
+ #include <asm/tx4927/tx4927_mips.h>
+ 
+ /*
+- This register naming came from the intergrate cpu/controoler name TX4927
++ This register naming came from the integrated CPU/controller name TX4927
+  followed by the device name from table 4.2.2 on page 4-3 and then followed
+  by the register name from table 4.2.3 on pages 4-4 to 4-8.  The manaul
+- used is "TMPR4927BT Preliminary Rev 0.1 20.Jul.2001".
++ used was "TMPR4927BT Preliminary Rev 0.1 20.Jul.2001".
+  */
+ 
+ #define TX4927_SIO_0_BASE
+@@ -251,8 +251,8 @@
+ 
+ /* TX4927 Timer 0 (32-bit registers) */
+ #define TX4927_TMR0_BASE                0xf000
+-#define TX4927_TMR0_TMTCR0              0xf004
+-#define TX4927_TMR0_TMTISR0             0xf008
++#define TX4927_TMR0_TMTCR0              0xf000
++#define TX4927_TMR0_TMTISR0             0xf004
+ #define TX4927_TMR0_TMCPRA0             0xf008
+ #define TX4927_TMR0_TMCPRB0             0xf00c
+ #define TX4927_TMR0_TMITMR0             0xf010
+@@ -264,8 +264,8 @@
+ 
+ /* TX4927 Timer 1 (32-bit registers) */
+ #define TX4927_TMR1_BASE                0xf100
+-#define TX4927_TMR1_TMTCR1              0xf104
+-#define TX4927_TMR1_TMTISR1             0xf108
++#define TX4927_TMR1_TMTCR1              0xf100
++#define TX4927_TMR1_TMTISR1             0xf104
+ #define TX4927_TMR1_TMCPRA1             0xf108
+ #define TX4927_TMR1_TMCPRB1             0xf10c
+ #define TX4927_TMR1_TMITMR1             0xf110
+@@ -277,13 +277,12 @@
+ 
+ /* TX4927 Timer 2 (32-bit registers) */
+ #define TX4927_TMR2_BASE                0xf200
+-#define TX4927_TMR2_TMTCR2              0xf104
+-#define TX4927_TMR2_TMTISR2             0xf208
++#define TX4927_TMR2_TMTCR2              0xf200
++#define TX4927_TMR2_TMTISR2             0xf204
+ #define TX4927_TMR2_TMCPRA2             0xf208
+-#define TX4927_TMR2_TMCPRB2             0xf20c
+ #define TX4927_TMR2_TMITMR2             0xf210
+ #define TX4927_TMR2_TMCCDR2             0xf220
+-#define TX4927_TMR2_TMPGMR2             0xf230
++#define TX4927_TMR2_TMWTMR2             0xf240
+ #define TX4927_TMR2_TMTRR2              0xf2f0
+ #define TX4927_TMR2_LIMIT               0xf2ff
+ 
+
+
+--------------080409020802020708020107--

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jan 2006 17:26:58 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:23241 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S3458491AbWA1R0i (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 28 Jan 2006 17:26:38 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jan 2006 17:27:49 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:2509 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S3458556AbWA1R07 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 28 Jan 2006 17:26:59 +0000
 Received: from localhost (p1217-ipad204funabasi.chiba.ocn.ne.jp [222.146.88.217])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id D16489C93; Sun, 29 Jan 2006 02:31:17 +0900 (JST)
-Date:	Sun, 29 Jan 2006 02:30:55 +0900 (JST)
-Message-Id: <20060129.023055.29575878.anemo@mba.ocn.ne.jp>
+	id E89F19C93; Sun, 29 Jan 2006 02:31:39 +0900 (JST)
+Date:	Sun, 29 Jan 2006 02:31:17 +0900 (JST)
+Message-Id: <20060129.023117.63742164.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH] build blast_cache routines from template
+Subject: [PATCH] more CHECKFLAGS to fix sparse warnings
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -21,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10219
+X-archive-position: 10220
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,440 +29,128 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Build blast_xxx, blast_xxx_page, blast_xxx_page_indexed from template.
-Easy to maintainance and saves 300 lines.
-Output code should not be changed.
+Add _MIPS_SZINT and _MIPS_ISA to CHECKFLAGS.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-diff --git a/include/asm-mips/r4kcache.h b/include/asm-mips/r4kcache.h
-index a5ea9d8..cc53196 100644
---- a/include/asm-mips/r4kcache.h
-+++ b/include/asm-mips/r4kcache.h
-@@ -166,123 +166,6 @@ static inline void invalidate_tcache_pag
- 		: "r" (base),						\
- 		  "i" (op));
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index bd459b5..b23ce12 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -53,14 +53,17 @@ CROSS_COMPILE		:= $(tool-prefix)
+ endif
  
--static inline void blast_dcache16(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.dcache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.dcache.waybit;
--	unsigned long ws_end = current_cpu_data.dcache.ways <<
--	                       current_cpu_data.dcache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x200)
--			cache16_unroll32(addr|ws,Index_Writeback_Inv_D);
--}
--
--static inline void blast_dcache16_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--
--	do {
--		cache16_unroll32(start,Hit_Writeback_Inv_D);
--		start += 0x200;
--	} while (start < end);
--}
--
--static inline void blast_dcache16_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.dcache.waybit;
--	unsigned long ws_end = current_cpu_data.dcache.ways <<
--	                       current_cpu_data.dcache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x200)
--			cache16_unroll32(addr|ws,Index_Writeback_Inv_D);
--}
--
--static inline void blast_icache16(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.icache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
--	unsigned long ws_end = current_cpu_data.icache.ways <<
--	                       current_cpu_data.icache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x200)
--			cache16_unroll32(addr|ws,Index_Invalidate_I);
--}
--
--static inline void blast_icache16_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--
--	do {
--		cache16_unroll32(start,Hit_Invalidate_I);
--		start += 0x200;
--	} while (start < end);
--}
--
--static inline void blast_icache16_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
--	unsigned long ws_end = current_cpu_data.icache.ways <<
--	                       current_cpu_data.icache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x200)
--			cache16_unroll32(addr|ws,Index_Invalidate_I);
--}
--
--static inline void blast_scache16(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.scache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x200)
--			cache16_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
--
--static inline void blast_scache16_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = page + PAGE_SIZE;
--
--	do {
--		cache16_unroll32(start,Hit_Writeback_Inv_SD);
--		start += 0x200;
--	} while (start < end);
--}
--
--static inline void blast_scache16_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x200)
--			cache16_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
--
- #define cache32_unroll32(base,op)					\
- 	__asm__ __volatile__(						\
- 	"	.set push					\n"	\
-@@ -309,123 +192,6 @@ static inline void blast_scache16_page_i
- 		: "r" (base),						\
- 		  "i" (op));
+ CHECKFLAGS-y				+= -D__linux__ -D__mips__ \
++					   -D_MIPS_SZINT=32 \
+ 					   -D_ABIO32=1 \
+ 					   -D_ABIN32=2 \
+ 					   -D_ABI64=3
+ CHECKFLAGS-$(CONFIG_32BIT)		+= -D_MIPS_SIM=_ABIO32 \
+ 					   -D_MIPS_SZLONG=32 \
++					   -D_MIPS_SZPTR=32 \
+ 					   -D__PTRDIFF_TYPE__=int
+ CHECKFLAGS-$(CONFIG_64BIT)		+= -m64 -D_MIPS_SIM=_ABI64 \
+ 					   -D_MIPS_SZLONG=64 \
++					   -D_MIPS_SZPTR=64 \
+ 					   -D__PTRDIFF_TYPE__="long int"
+ CHECKFLAGS-$(CONFIG_CPU_BIG_ENDIAN)	+= -D__MIPSEB__
+ CHECKFLAGS-$(CONFIG_CPU_LITTLE_ENDIAN)	+= -D__MIPSEL__
+@@ -167,79 +170,98 @@ echo $$gcc_abi $$gcc_opt$$gcc_cpu $$gcc_
+ #
+ cflags-$(CONFIG_CPU_R3000)	+= \
+ 			$(call set_gccflags,r3000,mips1,r3000,mips1,mips1)
++CHECKFLAGS-$(CONFIG_CPU_R3000)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS1
  
--static inline void blast_dcache32(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.dcache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.dcache.waybit;
--	unsigned long ws_end = current_cpu_data.dcache.ways <<
--	                       current_cpu_data.dcache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x400)
--			cache32_unroll32(addr|ws,Index_Writeback_Inv_D);
--}
--
--static inline void blast_dcache32_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--
--	do {
--		cache32_unroll32(start,Hit_Writeback_Inv_D);
--		start += 0x400;
--	} while (start < end);
--}
--
--static inline void blast_dcache32_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.dcache.waybit;
--	unsigned long ws_end = current_cpu_data.dcache.ways <<
--	                       current_cpu_data.dcache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x400)
--			cache32_unroll32(addr|ws,Index_Writeback_Inv_D);
--}
--
--static inline void blast_icache32(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.icache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
--	unsigned long ws_end = current_cpu_data.icache.ways <<
--	                       current_cpu_data.icache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x400)
--			cache32_unroll32(addr|ws,Index_Invalidate_I);
--}
--
--static inline void blast_icache32_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--
--	do {
--		cache32_unroll32(start,Hit_Invalidate_I);
--		start += 0x400;
--	} while (start < end);
--}
--
--static inline void blast_icache32_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
--	unsigned long ws_end = current_cpu_data.icache.ways <<
--	                       current_cpu_data.icache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x400)
--			cache32_unroll32(addr|ws,Index_Invalidate_I);
--}
--
--static inline void blast_scache32(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.scache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x400)
--			cache32_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
--
--static inline void blast_scache32_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = page + PAGE_SIZE;
--
--	do {
--		cache32_unroll32(start,Hit_Writeback_Inv_SD);
--		start += 0x400;
--	} while (start < end);
--}
--
--static inline void blast_scache32_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x400)
--			cache32_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
--
- #define cache64_unroll32(base,op)					\
- 	__asm__ __volatile__(						\
- 	"	.set push					\n"	\
-@@ -452,84 +218,6 @@ static inline void blast_scache32_page_i
- 		: "r" (base),						\
- 		  "i" (op));
+ cflags-$(CONFIG_CPU_TX39XX)	+= \
+ 			$(call set_gccflags,r3900,mips1,r3000,mips1,mips1)
++CHECKFLAGS-$(CONFIG_CPU_TX39XX)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS1
  
--static inline void blast_icache64(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.icache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
--	unsigned long ws_end = current_cpu_data.icache.ways <<
--	                       current_cpu_data.icache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x800)
--			cache64_unroll32(addr|ws,Index_Invalidate_I);
--}
--
--static inline void blast_icache64_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--
--	do {
--		cache64_unroll32(start,Hit_Invalidate_I);
--		start += 0x800;
--	} while (start < end);
--}
--
--static inline void blast_icache64_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
--	unsigned long ws_end = current_cpu_data.icache.ways <<
--	                       current_cpu_data.icache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x800)
--			cache64_unroll32(addr|ws,Index_Invalidate_I);
--}
--
--static inline void blast_scache64(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.scache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x800)
--			cache64_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
--
--static inline void blast_scache64_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = page + PAGE_SIZE;
--
--	do {
--		cache64_unroll32(start,Hit_Writeback_Inv_SD);
--		start += 0x800;
--	} while (start < end);
--}
--
--static inline void blast_scache64_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x800)
--			cache64_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
--
- #define cache128_unroll32(base,op)					\
- 	__asm__ __volatile__(						\
- 	"	.set push					\n"	\
-@@ -556,43 +244,55 @@ static inline void blast_scache64_page_i
- 		: "r" (base),						\
- 		  "i" (op));
+ cflags-$(CONFIG_CPU_R6000)	+= \
+ 			$(call set_gccflags,r6000,mips2,r6000,mips2,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_R6000)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS2
  
--static inline void blast_scache128(void)
--{
--	unsigned long start = INDEX_BASE;
--	unsigned long end = start + current_cpu_data.scache.waysize;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x1000)
--			cache128_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
--
--static inline void blast_scache128_page(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = page + PAGE_SIZE;
--
--	do {
--		cache128_unroll32(start,Hit_Writeback_Inv_SD);
--		start += 0x1000;
--	} while (start < end);
--}
--
--static inline void blast_scache128_page_indexed(unsigned long page)
--{
--	unsigned long start = page;
--	unsigned long end = start + PAGE_SIZE;
--	unsigned long ws_inc = 1UL << current_cpu_data.scache.waybit;
--	unsigned long ws_end = current_cpu_data.scache.ways <<
--	                       current_cpu_data.scache.waybit;
--	unsigned long ws, addr;
--
--	for (ws = 0; ws < ws_end; ws += ws_inc)
--		for (addr = start; addr < end; addr += 0x1000)
--			cache128_unroll32(addr|ws,Index_Writeback_Inv_SD);
--}
-+/* build blast_xxx, blast_xxx_page, blast_xxx_page_indexed */
-+#define __BUILD_BLAST_CACHE(pfx, desc, indexop, hitop, lsize) \
-+static inline void blast_##pfx##cache##lsize(void)			\
-+{									\
-+	unsigned long start = INDEX_BASE;				\
-+	unsigned long end = start + current_cpu_data.desc.waysize;	\
-+	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
-+	unsigned long ws_end = current_cpu_data.desc.ways <<		\
-+	                       current_cpu_data.desc.waybit;		\
-+	unsigned long ws, addr;						\
-+									\
-+	for (ws = 0; ws < ws_end; ws += ws_inc)				\
-+		for (addr = start; addr < end; addr += lsize * 32)	\
-+			cache##lsize##_unroll32(addr|ws,indexop);	\
-+}									\
-+									\
-+static inline void blast_##pfx##cache##lsize##_page(unsigned long page)	\
-+{									\
-+	unsigned long start = page;					\
-+	unsigned long end = page + PAGE_SIZE;				\
-+									\
-+	do {								\
-+		cache##lsize##_unroll32(start,hitop);			\
-+		start += lsize * 32;					\
-+	} while (start < end);						\
-+}									\
-+									\
-+static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
-+{									\
-+	unsigned long start = page;					\
-+	unsigned long end = start + PAGE_SIZE;				\
-+	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
-+	unsigned long ws_end = current_cpu_data.desc.ways <<		\
-+	                       current_cpu_data.desc.waybit;		\
-+	unsigned long ws, addr;						\
-+									\
-+	for (ws = 0; ws < ws_end; ws += ws_inc)				\
-+		for (addr = start; addr < end; addr += lsize * 32)	\
-+			cache##lsize##_unroll32(addr|ws,indexop);	\
-+}
-+
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16)
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16)
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
-+__BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32)
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32)
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
-+__BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64)
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
-+__BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
+ cflags-$(CONFIG_CPU_R4300)	+= \
+ 			$(call set_gccflags,r4300,mips3,r4300,mips3,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_R4300)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS3
  
- #endif /* _ASM_R4KCACHE_H */
+ cflags-$(CONFIG_CPU_VR41XX)	+= \
+ 			$(call set_gccflags,r4100,mips3,r4600,mips3,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_VR41XX)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS3
+ 
+ cflags-$(CONFIG_CPU_R4X00)	+= \
+ 			$(call set_gccflags,r4600,mips3,r4600,mips3,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_R4X00)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS3
+ 
+ cflags-$(CONFIG_CPU_TX49XX)	+= \
+ 			$(call set_gccflags,r4600,mips3,r4600,mips3,mips2)  \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_TX49XX)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS3
+ 
+ cflags-$(CONFIG_CPU_MIPS32_R1)	+= \
+ 			$(call set_gccflags,mips32,mips32,r4600,mips3,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_MIPS32_R1)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS32
+ 
+ cflags-$(CONFIG_CPU_MIPS32_R2)	+= \
+ 			$(call set_gccflags,mips32r2,mips32r2,r4600,mips3,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_MIPS32_R2)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS32
+ 
+ cflags-$(CONFIG_CPU_MIPS64_R1)	+= \
+ 			$(call set_gccflags,mips64,mips64,r4600,mips3,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_MIPS64_R1)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS64
+ 
+ cflags-$(CONFIG_CPU_MIPS64_R2)	+= \
+ 			$(call set_gccflags,mips64r2,mips64r2,r4600,mips3,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_MIPS64_R2)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS64
+ 
+ cflags-$(CONFIG_CPU_R5000)	+= \
+ 			$(call set_gccflags,r5000,mips4,r5000,mips4,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_R5000)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS4
+ 
+ cflags-$(CONFIG_CPU_R5432)	+= \
+ 			$(call set_gccflags,r5400,mips4,r5000,mips4,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_R5432)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS4
+ 
+ cflags-$(CONFIG_CPU_NEVADA)	+= \
+ 			$(call set_gccflags,rm5200,mips4,r5000,mips4,mips2) \
+ 			-Wa,--trap
+ #			$(call cc-option,-mmad)
++CHECKFLAGS-$(CONFIG_CPU_NEVADA)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS4
+ 
+ cflags-$(CONFIG_CPU_RM7000)	+= \
+ 			$(call set_gccflags,rm7000,mips4,r5000,mips4,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_RM7000)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS4
+ 
+ cflags-$(CONFIG_CPU_RM9000)	+= \
+ 			$(call set_gccflags,rm9000,mips4,r5000,mips4,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_RM9000)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS4
+ 
+ 
+ cflags-$(CONFIG_CPU_SB1)	+= \
+ 			$(call set_gccflags,sb1,mips64,r5000,mips4,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_SB1)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS64
+ 
+ cflags-$(CONFIG_CPU_R8000)	+= \
+ 			$(call set_gccflags,r8000,mips4,r8000,mips4,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_R8000)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS4
+ 
+ cflags-$(CONFIG_CPU_R10000)	+= \
+ 			$(call set_gccflags,r10000,mips4,r8000,mips4,mips2) \
+ 			-Wa,--trap
++CHECKFLAGS-$(CONFIG_CPU_R10000)	+= -D_MIPS_ISA=_MIPS_ISA_MIPS4
+ 
+ ifdef CONFIG_CPU_SB1
+ ifdef CONFIG_SB1_PASS_1_WORKAROUNDS

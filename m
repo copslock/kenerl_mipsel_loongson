@@ -1,57 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 21:25:43 +0000 (GMT)
-Received: from alpha.total-knowledge.com ([205.217.158.170]:25248 "EHLO
-	total-knowledge.com") by ftp.linux-mips.org with ESMTP
-	id S8133639AbWA3VZY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jan 2006 21:25:24 +0000
-Received: (qmail 5990 invoked from network); 30 Jan 2006 12:37:48 -0800
-Received: from unknown (HELO ?10.0.15.99?) (ilya@67.115.118.49)
-  by alpha.total-knowledge.com with ESMTPA; 30 Jan 2006 12:37:48 -0800
-Message-ID: <43DE8559.5060408@total-knowledge.com>
-Date:	Mon, 30 Jan 2006 13:30:01 -0800
-From:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Organization: Total Knowledge
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051015)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Kernel git repository
-References: <20060130210837.GA11232@linux-mips.org>
-In-Reply-To: <20060130210837.GA11232@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 22:59:00 +0000 (GMT)
+Received: from dsl027-180-168.sfo1.dsl.speakeasy.net ([216.27.180.168]:62932
+	"EHLO sunset.davemloft.net") by ftp.linux-mips.org with ESMTP
+	id S8133409AbWA3W6m (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 30 Jan 2006 22:58:42 +0000
+Received: from localhost ([127.0.0.1] ident=davem)
+	by sunset.davemloft.net with esmtp (Exim 4.60)
+	(envelope-from <davem@davemloft.net>)
+	id 1F3i2m-0004sw-S4; Mon, 30 Jan 2006 15:02:44 -0800
+Date:	Mon, 30 Jan 2006 15:02:44 -0800 (PST)
+Message-Id: <20060130.150244.81476469.davem@davemloft.net>
+To:	sdbrady@ntlworld.com
+Cc:	ralf@linux-mips.org, grundler@parisc-linux.org,
+	mita@miraclelinux.com, linux-kernel@vger.kernel.org,
+	ink@jurassic.park.msu.ru, spyro@f2s.com, dev-etrax@axis.com,
+	dhowells@redhat.com, ysato@users.sourceforge.jp, torvalds@osdl.org,
+	linux-ia64@vger.kernel.org, takata@linux-m32r.org,
+	linux-m68k@vger.kernel.org, gerg@uclinux.org,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	uclinux-v850@lsi.nec.co.jp, ak@suse.de, chris@zankel.net
+Subject: Re: [parisc-linux] Re: [PATCH 3/6] C-language equivalents of
+ include/asm-*/bitops.h
+From:	"David S. Miller" <davem@davemloft.net>
+In-Reply-To: <20060130195004.GA25860@miranda.arrow>
+References: <20060129071242.GA24624@miranda.arrow>
+	<20060130170647.GC3816@linux-mips.org>
+	<20060130195004.GA25860@miranda.arrow>
+X-Mailer: Mew version 4.2.53 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ilya@total-knowledge.com>
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10246
+X-archive-position: 10247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@total-knowledge.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 
-How about making it linux-nohist.git or something like that,
-to make it less misleading?
+From: Stuart Brady <sdbrady@ntlworld.com>
+Date: Mon, 30 Jan 2006 19:50:04 +0000
 
-Ralf Baechle wrote:
+> Shame about popc on SPARC.  However, ffz is cheese, regardless of pops.
+> (On sparc64, ffs is too.)  I'll wait for the generic bitops patches to
+> be dealt with (or not) and then submit a patch fixing this if needed.
 
->As some of you have been complained - the kernel git repository has become
->rather large with it's currently slightly over 200MB.  Since most users
->are not interested in the full 12 year project history I've prepared a
->second, slimmed down repository.  It can be cloned at:
->
->  git clone git://www.linux-mips.org/git/linux-2.6.15.git linux.git
->
->This tree is just about 62MB in size and starts at 2.6.15.
->
->  Ralf
->
->  
->
+I'm happy with any improvement you might make here, for sure.
 
--- 
-Ilya A. Volynets-Evenbakh
-Total Knowledge. CTO
-http://www.total-knowledge.com
+The sparc64 ffz() implementation was done so dog stupid like that
+so that the code would be small since this gets inlined all over
+the place.
+
+So if you can keep it small and improve it, or make it a bit larger
+and uninline it, that's great.

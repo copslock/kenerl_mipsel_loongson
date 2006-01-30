@@ -1,62 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 18:13:30 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:3090 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133604AbWA3SNM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jan 2006 18:13:12 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0UIHsf9032383;
-	Mon, 30 Jan 2006 18:17:54 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0UIHsMa032381;
-	Mon, 30 Jan 2006 18:17:54 GMT
-Date:	Mon, 30 Jan 2006 18:17:54 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Matt Porter <mporter@kernel.crashing.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix vgacon oops on 64-bit
-Message-ID: <20060130181754.GA29634@linux-mips.org>
-References: <20060130083321.B3098@cox.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 19:31:34 +0000 (GMT)
+Received: from shu.cs.utk.edu ([160.36.56.39]:29388 "EHLO shu.cs.utk.edu")
+	by ftp.linux-mips.org with ESMTP id S8133604AbWA3TbQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2006 19:31:16 +0000
+Received: from localhost (shu [127.0.0.1])
+	by shu.cs.utk.edu (Postfix) with ESMTP id C6F1713B3B
+	for <linux-mips@linux-mips.org>; Mon, 30 Jan 2006 14:36:06 -0500 (EST)
+Received: from shu.cs.utk.edu ([127.0.0.1])
+ by localhost (shu [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 04532-03 for <linux-mips@linux-mips.org>;
+ Mon, 30 Jan 2006 14:36:05 -0500 (EST)
+Received: from [10.113.38.86] (unknown [80.187.154.31])
+	by shu.cs.utk.edu (Postfix) with ESMTP id CAEC713B28
+	for <linux-mips@linux-mips.org>; Mon, 30 Jan 2006 14:36:04 -0500 (EST)
+Subject: /dev/cpuid or /proc/cpuinfo
+From:	Philip Mucci <mucci@cs.utk.edu>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.44.0601271349350.2185-100000@bharathi.midascomm.com>
+References: <Pine.LNX.4.44.0601271349350.2185-100000@bharathi.midascomm.com>
+Content-Type: text/plain
+Organization: Innovative Computing Laboratory
+Date:	Mon, 30 Jan 2006 18:54:29 +0000
+Message-Id: <1138647269.4077.11.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060130083321.B3098@cox.net>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.2.3 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new with ClamAV and SpamAssasin at cs.utk.edu
+Return-Path: <mucci@cs.utk.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10242
+X-archive-position: 10243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mucci@cs.utk.edu
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 30, 2006 at 08:33:21AM -0700, Matt Porter wrote:
+Hello MIPSers,
 
-> Although I'm not running a VGA card, I noticed this building
-> a working malta 32-bit defconfig (vgacon enabled) for 64-bit.
-> Without it, the vgacon probe will access unmapped space when
-> looking to see if a vga card is present.
-> 
-> Signed-off-by: Matt Porter <mporter@kernel.crashing.org>
-> 
-> diff --git a/include/asm-mips/vga.h b/include/asm-mips/vga.h
-> index ca5cec9..1390ab6 100644
-> --- a/include/asm-mips/vga.h
-> +++ b/include/asm-mips/vga.h
-> @@ -13,7 +13,11 @@
->   *	access the videoram directly without any black magic.
->   */
->  
-> +#ifdef CONFIG_64BIT
-> +#define VGA_MAP_MEM(x)	(0xffffffffb0000000UL + (unsigned long)(x))
-> +#else
->  #define VGA_MAP_MEM(x)	(0xb0000000L + (unsigned long)(x))
-> +#endif
+In reference to the performance counting thread we had going earlier,
+I've noticed a 'feature' I need out of MIPS/Linux that isn't currently
+available. This has also recently come up on the oprofile list with one
+of the oprofile/mips tools not being able to grab cpu Mhz
+from /proc/cpuinfo because it's not there.
 
-Looks like driving out the devil with beelzebub.  The 0xb0000000 address
-is totally platform specific and nobody ever noticed ...
+I have need to execute the mfc0 instruction on the config register and
+grok the results to find out things like cache size etc. In addition, it
+might be nice to also actually be able to find out the clock rate.
+(Currently I grab BogoMIPS and punt.)
 
-  Ralf
+On the intel and PPC systems, I believe you can execute similar
+instructions from user mode which makes things easy. However, of course
+an MFC0 is a privileged instruction...meaning that if the value or
+values aren't found in /proc/cpuinfo, I'm s.o.l.
+
+What does the list think about this? Making a mips /dev/cpuid is a bit
+gross but extending and grokking /proc/cpuinfo is perhaps grosser...and
+many tools do just this (like PAPI and oprofile's opreport...)
+
+Comments? I'm certainly willing to implement this, but I'd rather 'do it
+right the first time' rather than get rotten vegetables thrown my way.
+
+Phil

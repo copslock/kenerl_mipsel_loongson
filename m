@@ -1,47 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 17:06:58 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:42507 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 18:13:30 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:3090 "EHLO
 	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133594AbWA3RGj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jan 2006 17:06:39 +0000
+	id S8133604AbWA3SNM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 30 Jan 2006 18:13:12 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0UH73Yd026588;
-	Mon, 30 Jan 2006 17:07:03 GMT
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0UIHsf9032383;
+	Mon, 30 Jan 2006 18:17:54 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0UH6lI3025833;
-	Mon, 30 Jan 2006 17:06:47 GMT
-Date:	Mon, 30 Jan 2006 17:06:47 +0000
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0UIHsMa032381;
+	Mon, 30 Jan 2006 18:17:54 GMT
+Date:	Mon, 30 Jan 2006 18:17:54 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Stuart Brady <sdbrady@ntlworld.com>
-Cc:	Grant Grundler <grundler@parisc-linux.org>,
-	Akinobu Mita <mita@miraclelinux.com>,
-	linux-kernel@vger.kernel.org,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
-	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
-Subject: Re: [parisc-linux] Re: [PATCH 3/6] C-language equivalents of include/asm-*/bitops.h
-Message-ID: <20060130170647.GC3816@linux-mips.org>
-References: <20060125112625.GA18584@miraclelinux.com> <20060125113206.GD18584@miraclelinux.com> <20060125200250.GA26443@flint.arm.linux.org.uk> <20060126000618.GA5592@twiddle.net> <20060126085540.GA15377@flint.arm.linux.org.uk> <20060126161849.GA13632@colo.lackof.org> <20060126164020.GA27222@flint.arm.linux.org.uk> <20060126230443.GC13632@colo.lackof.org> <20060126230353.GC27222@flint.arm.linux.org.uk> <20060129071242.GA24624@miranda.arrow>
+To:	Matt Porter <mporter@kernel.crashing.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix vgacon oops on 64-bit
+Message-ID: <20060130181754.GA29634@linux-mips.org>
+References: <20060130083321.B3098@cox.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060129071242.GA24624@miranda.arrow>
+In-Reply-To: <20060130083321.B3098@cox.net>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10241
+X-archive-position: 10242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,16 +33,30 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jan 29, 2006 at 07:12:42AM +0000, Stuart Brady wrote:
+On Mon, Jan 30, 2006 at 08:33:21AM -0700, Matt Porter wrote:
 
-> On MIPS, fls() and flz() should probably use CLO.
+> Although I'm not running a VGA card, I noticed this building
+> a working malta 32-bit defconfig (vgacon enabled) for 64-bit.
+> Without it, the vgacon probe will access unmapped space when
+> looking to see if a vga card is present.
+> 
+> Signed-off-by: Matt Porter <mporter@kernel.crashing.org>
+> 
+> diff --git a/include/asm-mips/vga.h b/include/asm-mips/vga.h
+> index ca5cec9..1390ab6 100644
+> --- a/include/asm-mips/vga.h
+> +++ b/include/asm-mips/vga.h
+> @@ -13,7 +13,11 @@
+>   *	access the videoram directly without any black magic.
+>   */
+>  
+> +#ifdef CONFIG_64BIT
+> +#define VGA_MAP_MEM(x)	(0xffffffffb0000000UL + (unsigned long)(x))
+> +#else
+>  #define VGA_MAP_MEM(x)	(0xb0000000L + (unsigned long)(x))
+> +#endif
 
-It actually uses clz.
-
-> Curiously, MIPS is the only arch with a flz() function.
-
-No longer.  The fls implementation was based on flz and fls was the only
-user of flz.  So I cleaned that, once I commit flz will be gone.  Not
-only a cleanup but also a minor optimization.
+Looks like driving out the devil with beelzebub.  The 0xb0000000 address
+is totally platform specific and nobody ever noticed ...
 
   Ralf

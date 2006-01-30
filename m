@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 03:59:02 +0000 (GMT)
-Received: from dsl027-180-168.sfo1.dsl.speakeasy.net ([216.27.180.168]:15748
-	"EHLO sunset.davemloft.net") by ftp.linux-mips.org with ESMTP
-	id S8133522AbWA3D6p (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jan 2006 03:58:45 +0000
-Received: from localhost ([127.0.0.1] ident=davem)
-	by sunset.davemloft.net with esmtp (Exim 4.60)
-	(envelope-from <davem@davemloft.net>)
-	id 1F3QGN-00084f-P9; Sun, 29 Jan 2006 20:03:35 -0800
-Date:	Sun, 29 Jan 2006 20:03:35 -0800 (PST)
-Message-Id: <20060129.200335.69237695.davem@davemloft.net>
-To:	sdbrady@ntlworld.com
-Cc:	grundler@parisc-linux.org, mita@miraclelinux.com,
-	linux-kernel@vger.kernel.org, ink@jurassic.park.msu.ru,
-	spyro@f2s.com, dev-etrax@axis.com, dhowells@redhat.com,
-	ysato@users.sourceforge.jp, torvalds@osdl.org,
-	linux-ia64@vger.kernel.org, takata@linux-m32r.org,
-	linux-m68k@lists.linux-m68k.org, gerg@uclinux.org,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	uclinux-v850@lsi.nec.co.jp, ak@suse.de, chris@zankel.net
-Subject: Re: [parisc-linux] Re: [PATCH 3/6] C-language equivalents of
- include/asm-*/bitops.h
-From:	"David S. Miller" <davem@davemloft.net>
-In-Reply-To: <20060129071242.GA24624@miranda.arrow>
-References: <20060126230443.GC13632@colo.lackof.org>
-	<20060126230353.GC27222@flint.arm.linux.org.uk>
-	<20060129071242.GA24624@miranda.arrow>
-X-Mailer: Mew version 4.2.53 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2006 12:15:35 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:17178 "EHLO
+	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133503AbWA3MOa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 30 Jan 2006 12:14:30 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k0UCJWW6004233;
+	Mon, 30 Jan 2006 12:19:32 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k0UCJW7V004232;
+	Mon, 30 Jan 2006 12:19:32 GMT
+Date:	Mon, 30 Jan 2006 12:19:32 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Peter Horton <pdh@colonel-panic.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: help ... Galileo PCI bridge
+Message-ID: <20060130121932.GA3816@linux-mips.org>
+References: <20060129094409.GA1495@colonel-panic.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060129094409.GA1495@colonel-panic.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10227
+X-archive-position: 10228
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Stuart Brady <sdbrady@ntlworld.com>
-Date: Sun, 29 Jan 2006 07:12:42 +0000
+On Sun, Jan 29, 2006 at 09:44:09AM +0000, Peter Horton wrote:
 
-> There are versions of hweight*() for sparc64 which use POPC when
-> ULTRA_HAS_POPULATION_COUNT is defined, but AFAICS, it's never defined.
+> I'm currently struggling with a hard hang on the Cobalt hardware which
+> uses the Galileo GT64111 PCI bridge.
+> 
+> I've got the rev 11 data sheet for the bridge, I was wondering if anyone
+> knows whether there is an errata sheet for this chip, and if so whether
+> anyone has a copy ?
 
-That's right, the problem here is that no chips actually implement
-the instruction in hardware, it is software emulated, ie. useless :-)
+I recall PCI device 31 on bus 0 was magic on all Galileo.  Touching it
+results in a system hang.  Could that be what is hitting you?
+
+  Ralf

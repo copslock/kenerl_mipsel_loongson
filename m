@@ -1,63 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 19:18:43 +0000 (GMT)
-Received: from allen.werkleitz.de ([80.190.251.108]:7863 "EHLO
-	allen.werkleitz.de") by ftp.linux-mips.org with ESMTP
-	id S8133546AbWAaTS0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Jan 2006 19:18:26 +0000
-Received: from p54be8dcc.dip0.t-ipconnect.de ([84.190.141.204] helo=void.local)
-	by allen.werkleitz.de with esmtpsa (TLS-1.0:DHE_RSA_3DES_EDE_CBC_SHA1:24)
-	(Exim 4.60)
-	(envelope-from <js@linuxtv.org>)
-	id 1F415v-0007sq-3F; Tue, 31 Jan 2006 20:23:20 +0100
-Received: from js by void.local with local (Exim 3.35 #1 (Debian))
-	id 1F415u-0002Jy-00; Tue, 31 Jan 2006 20:23:14 +0100
-Date:	Tue, 31 Jan 2006 20:23:14 +0100
-From:	Johannes Stezenbach <js@linuxtv.org>
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Message-ID: <20060131192314.GB8826@linuxtv.org>
-Mail-Followup-To: Johannes Stezenbach <js@linuxtv.org>,
-	Thiemo Seufer <ths@networkno.de>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-References: <20060131171508.GB6341@linuxtv.org> <Pine.LNX.4.64N.0601311724340.31371@blysk.ds.pg.gda.pl> <20060131181414.GA8288@linuxtv.org> <20060131184253.GA23753@networkno.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060131184253.GA23753@networkno.de>
-User-Agent: Mutt/1.5.11
-X-SA-Exim-Connect-IP: 84.190.141.204
-Subject: Re: gdb vs. gdbserver with -mips3 / 32bitmode userspace
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on allen.werkleitz.de)
-Return-Path: <js@linuxtv.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 19:37:34 +0000 (GMT)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:6081 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S8133545AbWAaThR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Jan 2006 19:37:17 +0000
+Received: from localhost (in-3.mx.triera.net [213.161.0.27])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id D8BD7C039;
+	Tue, 31 Jan 2006 20:42:08 +0100 (CET)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-3.mx.triera.net (Postfix) with SMTP id 0CA5D1BC08D;
+	Tue, 31 Jan 2006 20:42:13 +0100 (CET)
+Received: from [192.168.80.29] (cmb58-52.dial-up.arnes.si [153.5.49.52])
+	by smtp.triera.net (Postfix) with ESMTP id D09101A18B0;
+	Tue, 31 Jan 2006 20:42:00 +0100 (CET)
+Subject: Re: PCMCIA on AU1200
+From:	Matej Kupljen <matej.kupljen@ultra.si>
+To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <200601311503.52130.eckhardt@satorlaser.com>
+References: <1138703953.7932.36.camel@localhost.localdomain>
+	 <200601311503.52130.eckhardt@satorlaser.com>
+Content-Type: text/plain
+Date:	Tue, 31 Jan 2006 20:41:53 +0100
+Message-Id: <1138736513.7884.16.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.4.2.1 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Triera AV Service
+Return-Path: <matej.kupljen@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10260
+X-archive-position: 10261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@linuxtv.org
+X-original-sender: matej.kupljen@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 31, 2006, Thiemo Seufer wrote:
-> On Tue, Jan 31, 2006 at 07:14:14PM +0100, Johannes Stezenbach wrote:
-> [snip]
-> > Yes, that's why I said I'm confused about mips_isa_regsize() vs.
-> > mips_abi_regsize().
-> > 
-> > mips_abi_regsize() correctly says the register size is 32bit for o32,
-> > but mips_register_type() calls mips_isa_regsize(), not
-> > mips_abi_regsize(). That's why I chose to "fix" mips_isa_regsize().
-> > 
-> > Or should mips_register_type() simply call mips_abi_regsize()?
+Hi
+
+> I'm not exactly sure what your problems are, but maybe this helps you achieve 
+> what you want.
 > 
-> Without having had a look at the code I think that's the right fix.
+> Firstly, 0xf 0000 0000 is the 36 bit physical address. This address is mapped 
+> by the driver via ioremap() into a 32 bit virtual address. 
 
-OK, I'll test if that works for me, and post results here
-and to gdb-patches@sources.redhat.com.
+Yes, in the drivers/pcmcia/au1000_generic.c.
+Also, the skt->phys_attr and the skt->phys_mem are set to
+0xF4000000 and 0xF8000000 respectively and I wonder, where they got
+those values? 
 
-Thanks,
-Johannes
+> Now, I think there 
+> are three macros for the PCMCIA memory regions (at least there were for the 
+> Au1100), which you can ioremap() separately.
+> 
+> Now, what gave me most trouble where two other things that needed to be done 
+> for my board (they might be different for you):
+> 1. configure the static bus controller
+> This mainly means selecting the right timing parameters and switching the 
+> right bits on and off. You definitely need to read the programmer's handbook 
+> from AMD/Alchemy.
+
+I am reading the specs for the CPU. 
+That is my problem, I do not to what value should I set CE[3], namely
+mem_stadd3 register. which select the physical address that asserts 
+the CE[3]. I think this should be set up by bootloader. I am using
+U-Boot, but I have checked also the Yamon and it does not work, also.
+
+> 2. turn on power
+> In my case, power on and card detect were wired to some GPIO pins, so I had to 
+> switch them to the right level. This might require additional configuration 
+> in advance, too, but you can check the results using a simple voltmeter.
+
+The power is detected and the power is turned ON (I can set the LED on
+the PCMCIA card blinking).
+
+> However: The DB boards are generally supported by Linux, so I wonder why you 
+> need to do anything at all.
+
+Yes. I am using kernel 2.6.15 and when I insert card into the slot,
+Linux detects it and turns on the power.
+I do not have the board here right now, so I'll post the messages from
+the cardmngr tomorrow.
+
+Thanks for the answers.
+
+BR,
+Matej

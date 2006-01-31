@@ -1,117 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 17:10:38 +0000 (GMT)
-Received: from allen.werkleitz.de ([80.190.251.108]:62134 "EHLO
-	allen.werkleitz.de") by ftp.linux-mips.org with ESMTP
-	id S8133537AbWAaRKT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Jan 2006 17:10:19 +0000
-Received: from p54be8dcc.dip0.t-ipconnect.de ([84.190.141.204] helo=void.local)
-	by allen.werkleitz.de with esmtpsa (TLS-1.0:DHE_RSA_3DES_EDE_CBC_SHA1:24)
-	(Exim 4.60)
-	(envelope-from <js@linuxtv.org>)
-	id 1F3z5w-0007He-TO
-	for linux-mips@linux-mips.org; Tue, 31 Jan 2006 18:15:14 +0100
-Received: from js by void.local with local (Exim 3.35 #1 (Debian))
-	id 1F3z5w-0001jm-00
-	for <linux-mips@linux-mips.org>; Tue, 31 Jan 2006 18:15:08 +0100
-Date:	Tue, 31 Jan 2006 18:15:08 +0100
-From:	Johannes Stezenbach <js@linuxtv.org>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060131171508.GB6341@linuxtv.org>
-Mail-Followup-To: Johannes Stezenbach <js@linuxtv.org>,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 17:31:32 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:61966 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133537AbWAaRbO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Jan 2006 17:31:14 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 67A79F5BBC;
+	Tue, 31 Jan 2006 18:36:11 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 20610-09; Tue, 31 Jan 2006 18:36:11 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 23A61F5BA3;
+	Tue, 31 Jan 2006 18:36:11 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k0VHZxR2029305;
+	Tue, 31 Jan 2006 18:36:01 +0100
+Date:	Tue, 31 Jan 2006 17:36:13 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Johannes Stezenbach <js@linuxtv.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: gdb vs. gdbserver with -mips3 / 32bitmode userspace
+In-Reply-To: <20060131171508.GB6341@linuxtv.org>
+Message-ID: <Pine.LNX.4.64N.0601311724340.31371@blysk.ds.pg.gda.pl>
+References: <20060131171508.GB6341@linuxtv.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.11
-X-SA-Exim-Connect-IP: 84.190.141.204
-Subject: gdb vs. gdbserver with -mips3 / 32bitmode userspace
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on allen.werkleitz.de)
-Return-Path: <js@linuxtv.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87.1/1263/Tue Jan 31 15:48:20 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10256
+X-archive-position: 10257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@linuxtv.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, 31 Jan 2006, Johannes Stezenbach wrote:
 
-I'm trying to debug a userspace application with gdb-6.3 / gdbserver.
-Objdump -p reports:
-  private flags = 20001107: [abi=O32] [mips3] [32bitmode]
+> I think (maybe in error ;-), that all binaries compiled for
+> a 32bit ABI, but a 64bit ISA, have this flag set, as the kernel
+> will refuse to execute 64bt code (i.e. not o32 or n32 ABI). Therefore,
+> shouldn't gdb also evaluate this flag when deciding about the ISA
+> register size?
 
-With gdb-6.0 from an older toolchain this works, but gdb-6.3
-reports the infamous "Reply contains invalid hex digit 59".
-The reason for this is that gdb and gdbserver disagree
-about the register size. Gdbserver seems to be hardcoded
-to 32bit register size (regformats/reg-mips.dat), while gdb-6.3 assumes
-that mips3 binaries use 64bit registers. (Actually E_MIPS_ARCH_3
-gets transformed into bfd_mach_mips4000 in bfd/elfxx-mips.c, which
-has 64bit registers according to bfd/cpu-mips.c).
+ O32 implies 32-bit registers no matter what ISA is specified (while 
+o32/MIPS-III is effectively o32/MIPS-II, o32/MIPS-IV makes a difference), 
+therefore it's a bug.  You should try sending your proposal to 
+<gdb-patches@sources.redhat.com> instead.  But I smell the problem is 
+elsewhere -- mips_isa_regsize() shouldn't be called for the "cooked" 
+registers and these are ones you should only see under Linux or, as a 
+matter of fact, any hosted environment.  See mips_register_type() for a 
+start.
 
-(I briefly checked gdb-6.4, it seems to do the same.)
-
-The workaround given in this posting seems to work for
-userspace, too:
-http://www.linux-mips.org/archives/linux-mips/2005-11/msg00154.html
-I.e. "set architecture mips:isa32" overrides the register size
-which gdb uses to talk to gdbserver.
-
-However, I wonder why gdb doesn't evaluate the 32bitmode flag
-from the ELF e_flags header. To be honest, I also wonder what
-the exact semantics of this flag are. The NUBI document says:
-
-  "32BIT_MODE: (e_flags&EF_MIPS_32BITMODE) - 1 when code assumes 32-bit
-  registers only. Always set for NUBI32, but NUBI-compliant software
-  should not rely on it."
-
-I think (maybe in error ;-), that all binaries compiled for
-a 32bit ABI, but a 64bit ISA, have this flag set, as the kernel
-will refuse to execute 64bt code (i.e. not o32 or n32 ABI). Therefore,
-shouldn't gdb also evaluate this flag when deciding about the ISA
-register size?
-
-How about this patch:
-
-
---- gdb-6.3/gdb/mips-tdep.c.orig	2004-10-15 09:25:03.000000000 +0200
-+++ gdb-6.3/gdb/mips-tdep.c	2006-01-30 21:13:09.000000000 +0100
-@@ -258,6 +258,15 @@ mips_abi (struct gdbarch *gdbarch)
- int
- mips_isa_regsize (struct gdbarch *gdbarch)
- {
-+  struct gdbarch_tdep *tdep = gdbarch_tdep (current_gdbarch);
-+  if (tdep != NULL)
-+    {
-+      int ef_mips_32bitmode;
-+      ef_mips_32bitmode = (tdep->elf_flags & EF_MIPS_32BITMODE);
-+      if (ef_mips_32bitmode)
-+        return 4;
-+    }
-+
-   return (gdbarch_bfd_arch_info (gdbarch)->bits_per_word
- 	  / gdbarch_bfd_arch_info (gdbarch)->bits_per_byte);
- }
-
-
-I also considered if adding 64bit support to gdbserver would be
-the right thing, but I think not as o32 ABI executables don't have
-64bit registers, right?
-
-Please don't be too hard on me, my understanding of gdb etc. is pretty
-limited. I'm especially confused by this ISA regsize vs. ABI regsize
-thing ;-/. Thus my patch looks at the 32bitmode flag and not at
-the o32 ABI to decide about this register size, however I'm not
-sure if any of this makes actually sense. It seems to work for me,
-though ;-)
-
-But I'd be willing to do some work to get this fixed properly in
-upstream gdb, if I get some guidance.
-
-
-Thanks,
-Johannes
+  Maciej

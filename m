@@ -1,131 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 01:26:04 +0000 (GMT)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:64650 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133514AbWAaBZq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Jan 2006 01:25:46 +0000
-Received: (qmail 12734 invoked from network); 28 Jan 2006 09:30:33 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 28 Jan 2006 09:30:33 -0000
-Message-ID: <43DB3A78.9000803@ru.mvista.com>
-Date:	Sat, 28 Jan 2006 12:33:44 +0300
-From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Organization: MostaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Linux MIPS <linux-mips@linux-mips.org>
-CC:	ralf@linux-mips.org
-Subject: Re: [PATCH] TX49x7: Fix timer register #define's
-References: <43D7C279.70807@ru.mvista.com>
-In-Reply-To: <43D7C279.70807@ru.mvista.com>
-Content-Type: multipart/mixed;
- boundary="------------080409020802020708020107"
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 06:31:19 +0000 (GMT)
+Received: from fed1rmmtao02.cox.net ([68.230.241.37]:29942 "EHLO
+	fed1rmmtao02.cox.net") by ftp.linux-mips.org with ESMTP
+	id S8133464AbWAaGaq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Jan 2006 06:30:46 +0000
+Received: from liberty.homelinux.org ([70.190.160.125])
+          by fed1rmmtao02.cox.net
+          (InterMail vM.6.01.05.02 201-2131-123-102-20050715) with ESMTP
+          id <20060131063326.RZJA17006.fed1rmmtao02.cox.net@liberty.homelinux.org>;
+          Tue, 31 Jan 2006 01:33:26 -0500
+Received: from liberty.homelinux.org (mmporter@localhost [127.0.0.1])
+	by liberty.homelinux.org (8.13.5/8.13.5/Debian-3) with ESMTP id k0V6ZbRG007490;
+	Mon, 30 Jan 2006 23:35:37 -0700
+Received: (from mmporter@localhost)
+	by liberty.homelinux.org (8.13.5/8.13.5/Submit) id k0V6Za1T007488;
+	Mon, 30 Jan 2006 23:35:36 -0700
+Date:	Mon, 30 Jan 2006 23:35:36 -0700
+From:	Matt Porter <mporter@kernel.crashing.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix vgacon oops on 64-bit
+Message-ID: <20060130233536.F4971@cox.net>
+References: <20060130083321.B3098@cox.net> <20060130181754.GA29634@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20060130181754.GA29634@linux-mips.org>; from ralf@linux-mips.org on Mon, Jan 30, 2006 at 06:17:54PM +0000
+Return-Path: <mmporter@cox.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10249
+X-archive-position: 10250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: mporter@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------080409020802020708020107
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+On Mon, Jan 30, 2006 at 06:17:54PM +0000, Ralf Baechle wrote:
+> On Mon, Jan 30, 2006 at 08:33:21AM -0700, Matt Porter wrote:
+> > +#ifdef CONFIG_64BIT
+> > +#define VGA_MAP_MEM(x)	(0xffffffffb0000000UL + (unsigned long)(x))
+> > +#else
+> >  #define VGA_MAP_MEM(x)	(0xb0000000L + (unsigned long)(x))
+> > +#endif
+> 
+> Looks like driving out the devil with beelzebub.  The 0xb0000000 address
+> is totally platform specific and nobody ever noticed ...
 
-Hello, I wrote:
+Ok, added a platform dependent hook that the setup code can
+configure appropriately.
 
->    Resending with signoffs (tend to forget about them).
+Signed-off-by: Matt Porter <mporter@kernel.crashing.org>
 
-     ... and again, with the copyright years fixed.
-
->    Fix the #define's for TX4927/37 timer reg's to match the datasheets 
-> (those
-> #define's don't seem to be used anywhere though...)
-
-WBR, Sergei
-
-Signed-off-by: Konstantin Baydarov <kbaidarov@mvista.com>
-Signed-off-by: Sergei Shtylyov <sshtylyov@mvista.com>
-
-
-
---------------080409020802020708020107
-Content-Type: text/plain;
- name="TX49x7-fix-timer-reg-defs.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="TX49x7-fix-timer-reg-defs.patch"
-
-diff --git a/include/asm-mips/tx4927/tx4927.h b/include/asm-mips/tx4927/tx4927.h
-index 3bb7f00..de85bd2 100644
---- a/include/asm-mips/tx4927/tx4927.h
-+++ b/include/asm-mips/tx4927/tx4927.h
-@@ -2,7 +2,7 @@
-  * Author: MontaVista Software, Inc.
-  *         source@mvista.com
-  *
-- * Copyright 2001-2002 MontaVista Software Inc.
-+ * Copyright 2001-2002, 2004, 2006 MontaVista Software Inc.
-  *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License as published by the
-@@ -30,10 +30,10 @@
- #include <asm/tx4927/tx4927_mips.h>
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index d86affa..5e01f53 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -51,6 +51,10 @@ EXPORT_SYMBOL(cpu_data);
+ struct screen_info screen_info;
+ #endif
  
++#ifdef CONFIG_VGA_CONSOLE
++unsigned long vgacon_remap_base;
++#endif
++
  /*
-- This register naming came from the intergrate cpu/controoler name TX4927
-+ This register naming came from the integrated CPU/controller name TX4927
-  followed by the device name from table 4.2.2 on page 4-3 and then followed
-  by the register name from table 4.2.3 on pages 4-4 to 4-8.  The manaul
-- used is "TMPR4927BT Preliminary Rev 0.1 20.Jul.2001".
-+ used was "TMPR4927BT Preliminary Rev 0.1 20.Jul.2001".
+  * Despite it's name this variable is even if we don't have PCI
+  */
+diff --git a/arch/mips/mips-boards/malta/malta_setup.c b/arch/mips/mips-boards/malta/malta_setup.c
+index 2209e8a..b344095 100644
+--- a/arch/mips/mips-boards/malta/malta_setup.c
++++ b/arch/mips/mips-boards/malta/malta_setup.c
+@@ -42,6 +42,9 @@
+ #ifdef CONFIG_VT
+ #include <linux/console.h>
+ #endif
++#ifdef CONFIG_VGA_CONSOLE
++#include <asm/vga.h>
++#endif
+ 
+ extern void mips_reboot_setup(void);
+ extern void mips_time_init(void);
+@@ -210,6 +213,12 @@ void __init plat_setup(void)
+ 		VIDEO_TYPE_VGAC,	/* orig-video-isVGA */
+ 		16			/* orig-video-points */
+ 	};
++
++#ifdef CONFIG_64BIT
++	vgacon_remap_base = 0xffffffffb0000000;
++#else
++	vgacon_remap_base = 0xb0000000;
++#endif
+ #endif
+ #endif
+ 
+diff --git a/include/asm-mips/vga.h b/include/asm-mips/vga.h
+index ca5cec9..2bedca2 100644
+--- a/include/asm-mips/vga.h
++++ b/include/asm-mips/vga.h
+@@ -13,7 +13,9 @@
+  *	access the videoram directly without any black magic.
   */
  
- #define TX4927_SIO_0_BASE
-@@ -251,8 +251,8 @@
+-#define VGA_MAP_MEM(x)	(0xb0000000L + (unsigned long)(x))
++extern unsigned long vgacon_remap_base;
++
++#define VGA_MAP_MEM(x)	(vgacon_remap_base + (unsigned long)(x))
  
- /* TX4927 Timer 0 (32-bit registers) */
- #define TX4927_TMR0_BASE                0xf000
--#define TX4927_TMR0_TMTCR0              0xf004
--#define TX4927_TMR0_TMTISR0             0xf008
-+#define TX4927_TMR0_TMTCR0              0xf000
-+#define TX4927_TMR0_TMTISR0             0xf004
- #define TX4927_TMR0_TMCPRA0             0xf008
- #define TX4927_TMR0_TMCPRB0             0xf00c
- #define TX4927_TMR0_TMITMR0             0xf010
-@@ -264,8 +264,8 @@
- 
- /* TX4927 Timer 1 (32-bit registers) */
- #define TX4927_TMR1_BASE                0xf100
--#define TX4927_TMR1_TMTCR1              0xf104
--#define TX4927_TMR1_TMTISR1             0xf108
-+#define TX4927_TMR1_TMTCR1              0xf100
-+#define TX4927_TMR1_TMTISR1             0xf104
- #define TX4927_TMR1_TMCPRA1             0xf108
- #define TX4927_TMR1_TMCPRB1             0xf10c
- #define TX4927_TMR1_TMITMR1             0xf110
-@@ -277,13 +277,12 @@
- 
- /* TX4927 Timer 2 (32-bit registers) */
- #define TX4927_TMR2_BASE                0xf200
--#define TX4927_TMR2_TMTCR2              0xf104
--#define TX4927_TMR2_TMTISR2             0xf208
-+#define TX4927_TMR2_TMTCR2              0xf200
-+#define TX4927_TMR2_TMTISR2             0xf204
- #define TX4927_TMR2_TMCPRA2             0xf208
--#define TX4927_TMR2_TMCPRB2             0xf20c
- #define TX4927_TMR2_TMITMR2             0xf210
- #define TX4927_TMR2_TMCCDR2             0xf220
--#define TX4927_TMR2_TMPGMR2             0xf230
-+#define TX4927_TMR2_TMWTMR2             0xf240
- #define TX4927_TMR2_TMTRR2              0xf2f0
- #define TX4927_TMR2_LIMIT               0xf2ff
- 
-
-
---------------080409020802020708020107--
+ #define vga_readb(x)	(*(x))
+ #define vga_writeb(x,y)	(*(y) = (x))

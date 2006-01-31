@@ -1,78 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 13:54:14 +0000 (GMT)
-Received: from mail.domino-uk.com ([193.131.116.193]:43531 "EHLO
-	vMIMEsweeper.dps.local") by ftp.linux-mips.org with ESMTP
-	id S8133485AbWAaNx5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Jan 2006 13:53:57 +0000
-Received: from dps-exchange1.dps.local (dps-exchange1) by vMIMEsweeper.dps.local
- (Clearswift SMTPRS 5.0.4) with ESMTP id <T762d2b0c80c18374c1a54@vMIMEsweeper.dps.local> for <linux-mips@linux-mips.org>;
- Tue, 31 Jan 2006 13:58:56 +0000
-Received: from emea-exchange3.emea.dps.local ([192.168.50.10]) by dps-exchange1.dps.local with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 31 Jan 2006 13:58:56 +0000
-Received: from tuxator2.emea.dps.local ([192.168.55.75]) by emea-exchange3.emea.dps.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 31 Jan 2006 14:58:55 +0100
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2006 14:59:39 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:35816 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133485AbWAaO7V (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Jan 2006 14:59:21 +0000
+Received: from localhost (p2155-ipad27funabasi.chiba.ocn.ne.jp [220.107.193.155])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A9F7AA4EC; Wed,  1 Feb 2006 00:04:17 +0900 (JST)
+Date:	Wed, 01 Feb 2006 00:03:56 +0900 (JST)
+Message-Id: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: Re: PCMCIA on AU1200
-Date:	Tue, 31 Jan 2006 15:03:52 +0100
-User-Agent: KMail/1.8.3
-References: <1138703953.7932.36.camel@localhost.localdomain>
-In-Reply-To: <1138703953.7932.36.camel@localhost.localdomain>
-Organization: Sator Laser GmbH
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] local_r4k_flush_cache_page fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200601311503.52130.eckhardt@satorlaser.com>
-X-OriginalArrivalTime: 31 Jan 2006 13:58:55.0577 (UTC) FILETIME=[79A54490:01C6266E]
-Return-Path: <Eckhardt@satorlaser.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10253
+X-archive-position: 10254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 31 January 2006 11:39, Matej Kupljen wrote:
-> I am trying to use PCMCIA on a DBAU1200 with 16bit card.
->
-> From the docs for the board, I see that the PCMCIA interface
-> is on CE[3], but the value of the mem_staddr3 is
-> 0x1000000.
->
-> Looking at the Linux source code, I see that the PCMCIA is
-> ioremap-ed to 0xf00000000 (36 bit). It also uses PSEUDO
-> addresses for the skt->phys_attr and skt->phys_mem.
->
-> At what (physical) address can I find the card's I/O space,
-> so I can use tools like devmem2 to see the cards CIS?
-> Should I configure mem_stadd3 to same other value?
-> To 0xf0000000?
+If dcache_size != icache_size or dcache_size != scache_size,
+icache/scache does not flushed properly.  Use correct cache size to
+calculate index value for scache/icache.
 
-I'm not exactly sure what your problems are, but maybe this helps you achieve 
-what you want.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Firstly, 0xf 0000 0000 is the 36 bit physical address. This address is mapped 
-by the driver via ioremap() into a 32 bit virtual address. Now, I think there 
-are three macros for the PCMCIA memory regions (at least there were for the 
-Au1100), which you can ioremap() separately.
-
-Now, what gave me most trouble where two other things that needed to be done 
-for my board (they might be different for you):
-1. configure the static bus controller
-This mainly means selecting the right timing parameters and switching the 
-right bits on and off. You definitely need to read the programmer's handbook 
-from AMD/Alchemy.
-2. turn on power
-In my case, power on and card detect were wired to some GPIO pins, so I had to 
-switch them to the right level. This might require additional configuration 
-in advance, too, but you can check the results using a simple voltmeter.
-
-However: The DB boards are generally supported by Linux, so I wonder why you 
-need to do anything at all.
-
-Uli
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index e51c38c..d70d700 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -376,6 +376,7 @@ static inline void local_r4k_flush_cache
+ 	struct flush_cache_page_args *fcp_args = args;
+ 	struct vm_area_struct *vma = fcp_args->vma;
+ 	unsigned long addr = fcp_args->addr;
++	unsigned long index;
+ 	int exec = vma->vm_flags & VM_EXEC;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pgd_t *pgdp;
+@@ -425,11 +426,13 @@ static inline void local_r4k_flush_cache
+ 	 * Do indexed flush, too much work to get the (possible) TLB refills
+ 	 * to work correctly.
+ 	 */
+-	addr = INDEX_BASE + (addr & (dcache_size - 1));
+ 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc)) {
+-		r4k_blast_dcache_page_indexed(addr);
+-		if (exec && !cpu_icache_snoops_remote_store)
+-			r4k_blast_scache_page_indexed(addr);
++		index = INDEX_BASE + (addr & (dcache_size - 1));
++		r4k_blast_dcache_page_indexed(index);
++		if (exec && !cpu_icache_snoops_remote_store) {
++			index = INDEX_BASE + (addr & (scache_size - 1));
++			r4k_blast_scache_page_indexed(index);
++		}
+ 	}
+ 	if (exec) {
+ 		if (cpu_has_vtag_icache) {
+@@ -437,8 +440,10 @@ static inline void local_r4k_flush_cache
+ 
+ 			if (cpu_context(cpu, mm) != 0)
+ 				drop_mmu_context(mm, cpu);
+-		} else
+-			r4k_blast_icache_page_indexed(addr);
++		} else {
++			index = INDEX_BASE + (addr & (icache_size - 1));
++			r4k_blast_icache_page_indexed(index);
++		}
+ 	}
+ }
+ 

@@ -1,31 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 09:04:16 +0000 (GMT)
-Received: from ns.miraclelinux.com ([219.118.163.66]:59722 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 09:05:14 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:59210 "EHLO
 	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
-	id S8133654AbWBAI60 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S8133648AbWBAI60 (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Wed, 1 Feb 2006 08:58:26 +0000
 Received: from mail01 (localhost.localdomain [127.0.0.1])
 	by mail01.miraclelinux.com (Postfix) with ESMTP
-	id 4559231C20D; Wed,  1 Feb 2006 18:03:26 +0900 (JST)
+	id 0293E31C202; Wed,  1 Feb 2006 18:03:26 +0900 (JST)
 Received: from localhost.localdomain (sshgate.miraclelinux.com [])
 	by mail01.miraclelinux.com ([10.1.0.10]);
-	Wed, 01 Feb 2006 09:03:26 +0000
+	Wed, 01 Feb 2006 09:03:25 +0000
 Received: by localhost.localdomain (Postfix, from userid 1000)
-	id D11134201E2; Wed,  1 Feb 2006 18:03:25 +0900 (JST)
-Message-Id: <20060201090325.696670000@localhost.localdomain>
+	id 6C2654201E0; Wed,  1 Feb 2006 18:03:25 +0900 (JST)
+Message-Id: <20060201090324.373982000@localhost.localdomain>
 References: <20060201090224.536581000@localhost.localdomain>
-Date:	Wed, 01 Feb 2006 18:02:37 +0900
+Date:	Wed, 01 Feb 2006 18:02:35 +0900
 From:	Akinobu Mita <mita@miraclelinux.com>
 To:	linux-kernel@vger.kernel.org
-Cc:	Greg Ungerer <gerg@uclinux.org>, linux-mips@linux-mips.org,
+Cc:	Richard Henderson <rth@twiddle.net>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	Greg Ungerer <gerg@uclinux.org>, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
 	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Chris Zankel <chris@zankel.net>,
 	Akinobu Mita <mita@miraclelinux.com>
-Subject: [patch 13/44] generic ffs()
-Content-Disposition: inline; filename=ffs-bitops.patch
+Subject: [patch 11/44] generic find_{next,first}{,_zero}_bit()
+Content-Disposition: inline; filename=find-bitops.patch
 Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10270
+X-archive-position: 10271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,63 +43,128 @@ X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch introduces the C-language equivalent of the function:
-int ffs(int x);
+This patch introduces the C-language equivalents of the functions below:
 
-In include/asm-generic/bitops/ffs.h
+unsigned logn find_next_bit(const unsigned long *addr, unsigned long size,
+                            unsigned long offset);
+unsigned long find_next_zero_bit(const unsigned long *addr, unsigned long size,
+                                 unsigned long offset);
+unsigned long find_first_zero_bit(const unsigned long *addr,
+                                  unsigned long size);
+unsigned long find_first_bit(const unsigned long *addr, unsigned long size);
+
+In include/asm-generic/bitops/find.h
 
 This code largely copied from:
-include/linux/bitops.h
+arch/powerpc/lib/bitops.c
 
 Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
- include/asm-generic/bitops/ffs.h |   41 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 41 insertions(+)
+ include/asm-generic/bitops/find.h |   99 ++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 99 insertions(+)
 
-Index: 2.6-git/include/asm-generic/bitops/ffs.h
+Index: 2.6-git/include/asm-generic/bitops/find.h
 ===================================================================
 --- /dev/null
-+++ 2.6-git/include/asm-generic/bitops/ffs.h
-@@ -0,0 +1,41 @@
-+#ifndef _ASM_GENERIC_BITOPS_FFS_H_
-+#define _ASM_GENERIC_BITOPS_FFS_H_
++++ 2.6-git/include/asm-generic/bitops/find.h
+@@ -0,0 +1,99 @@
++#ifndef _ASM_GENERIC_BITOPS_FIND_H_
++#define _ASM_GENERIC_BITOPS_FIND_H_
++
++#include <asm/types.h>
++
++#define BITOP_WORD(nr)		((nr) / BITS_PER_LONG)
 +
 +/**
-+ * ffs - find first bit set
-+ * @x: the word to search
-+ *
-+ * This is defined the same way as
-+ * the libc and compiler builtin ffs routines, therefore
-+ * differs in spirit from the above ffz (man ffs).
++ * find_next_bit - find the next set bit in a memory region
++ * @addr: The address to base the search on
++ * @offset: The bitnumber to start searching at
++ * @size: The maximum size to search
 + */
-+static inline int ffs(int x)
++static inline unsigned long find_next_bit(const unsigned long *addr,
++				unsigned long size, unsigned long offset)
 +{
-+	int r = 1;
++	const unsigned long *p = addr + BITOP_WORD(offset);
++	unsigned long result = offset & ~(BITS_PER_LONG-1);
++	unsigned long tmp;
 +
-+	if (!x)
-+		return 0;
-+	if (!(x & 0xffff)) {
-+		x >>= 16;
-+		r += 16;
++	if (offset >= size)
++		return size;
++	size -= result;
++	offset %= BITS_PER_LONG;
++	if (offset) {
++		tmp = *(p++);
++		tmp &= (~0UL << offset);
++		if (size < BITS_PER_LONG)
++			goto found_first;
++		if (tmp)
++			goto found_middle;
++		size -= BITS_PER_LONG;
++		result += BITS_PER_LONG;
 +	}
-+	if (!(x & 0xff)) {
-+		x >>= 8;
-+		r += 8;
++	while (size & ~(BITS_PER_LONG-1)) {
++		if ((tmp = *(p++)))
++			goto found_middle;
++		result += BITS_PER_LONG;
++		size -= BITS_PER_LONG;
 +	}
-+	if (!(x & 0xf)) {
-+		x >>= 4;
-+		r += 4;
-+	}
-+	if (!(x & 3)) {
-+		x >>= 2;
-+		r += 2;
-+	}
-+	if (!(x & 1)) {
-+		x >>= 1;
-+		r += 1;
-+	}
-+	return r;
++	if (!size)
++		return result;
++	tmp = *p;
++
++found_first:
++	tmp &= (~0UL >> (BITS_PER_LONG - size));
++	if (tmp == 0UL)		/* Are any bits set? */
++		return result + size;	/* Nope. */
++found_middle:
++	return result + __ffs(tmp);
 +}
 +
-+#endif /* _ASM_GENERIC_BITOPS_FFS_H_ */
++/*
++ * This implementation of find_{first,next}_zero_bit was stolen from
++ * Linus' asm-alpha/bitops.h.
++ */
++static inline unsigned long find_next_zero_bit(const unsigned long *addr,
++				unsigned long size, unsigned long offset)
++{
++	const unsigned long *p = addr + BITOP_WORD(offset);
++	unsigned long result = offset & ~(BITS_PER_LONG-1);
++	unsigned long tmp;
++
++	if (offset >= size)
++		return size;
++	size -= result;
++	offset %= BITS_PER_LONG;
++	if (offset) {
++		tmp = *(p++);
++		tmp |= ~0UL >> (BITS_PER_LONG - offset);
++		if (size < BITS_PER_LONG)
++			goto found_first;
++		if (~tmp)
++			goto found_middle;
++		size -= BITS_PER_LONG;
++		result += BITS_PER_LONG;
++	}
++	while (size & ~(BITS_PER_LONG-1)) {
++		if (~(tmp = *(p++)))
++			goto found_middle;
++		result += BITS_PER_LONG;
++		size -= BITS_PER_LONG;
++	}
++	if (!size)
++		return result;
++	tmp = *p;
++
++found_first:
++	tmp |= ~0UL << size;
++	if (tmp == ~0UL)	/* Are any bits zero? */
++		return result + size;	/* Nope. */
++found_middle:
++	return result + ffz(tmp);
++}
++
++#define find_first_zero_bit(addr, size) find_next_zero_bit((addr), (size), 0)
++#define find_first_bit(addr, size) find_next_bit((addr), (size), 0)
++
++#endif /*_ASM_GENERIC_BITOPS_FIND_H_ */
 
 --

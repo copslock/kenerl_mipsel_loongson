@@ -1,599 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 09:11:58 +0000 (GMT)
-Received: from ns.miraclelinux.com ([219.118.163.66]:7499 "EHLO
-	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
-	id S8133698AbWBAI6b (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Feb 2006 08:58:31 +0000
-Received: from mail01 (localhost.localdomain [127.0.0.1])
-	by mail01.miraclelinux.com (Postfix) with ESMTP
-	id 97FB931C20F; Wed,  1 Feb 2006 18:03:33 +0900 (JST)
-Received: from localhost.localdomain (sshgate.miraclelinux.com [])
-	by mail01.miraclelinux.com ([10.1.0.10]);
-	Wed, 01 Feb 2006 09:03:33 +0000
-Received: by localhost.localdomain (Postfix, from userid 1000)
-	id 5653B4201E1; Wed,  1 Feb 2006 18:03:33 +0900 (JST)
-Message-Id: <20060201090333.239681000@localhost.localdomain>
-References: <20060201090224.536581000@localhost.localdomain>
-Date:	Wed, 01 Feb 2006 18:02:53 +0900
-From:	Akinobu Mita <mita@miraclelinux.com>
-To:	linux-kernel@vger.kernel.org
-Cc:	linux-mips@linux-mips.org, Akinobu Mita <mita@miraclelinux.com>
-Subject: [patch 29/44] mips: use generic bitops
-Content-Disposition: inline; filename=mips.patch
-Return-Path: <mita@miraclelinux.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 09:13:04 +0000 (GMT)
+Received: from cantor2.suse.de ([195.135.220.15]:37020 "EHLO mx2.suse.de")
+	by ftp.linux-mips.org with ESMTP id S8133646AbWBAJCP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2006 09:02:15 +0000
+Received: from Relay2.suse.de (mail2.suse.de [195.135.221.8])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx2.suse.de (Postfix) with ESMTP id 45F721C591;
+	Wed,  1 Feb 2006 10:07:15 +0100 (CET)
+From:	Andi Kleen <ak@suse.de>
+To:	Akinobu Mita <mita@miraclelinux.com>
+Subject: Re: [patch 14/44] generic hweight{64,32,16,8}()
+Date:	Wed, 1 Feb 2006 10:06:07 +0100
+User-Agent: KMail/1.8.2
+Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Russell King <rmk@arm.linux.org.uk>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Chris Zankel <chris@zankel.net>
+References: <20060201090224.536581000@localhost.localdomain> <20060201090325.905071000@localhost.localdomain>
+In-Reply-To: <20060201090325.905071000@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200602011006.09596.ak@suse.de>
+Return-Path: <ak@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10277
+X-archive-position: 10278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mita@miraclelinux.com
+X-original-sender: ak@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-- remove __{,test_and_}{set,clear,change}_bit() and test_bit()
+On Wednesday 01 February 2006 10:02, Akinobu Mita wrote:
 
-- unless defined(CONFIG_CPU_MIPS32) or defined(CONFIG_CPU_MIPS64)
+> +static inline unsigned int hweight32(unsigned int w)
+> +{
+> +        unsigned int res = (w & 0x55555555) + ((w >> 1) & 0x55555555);
+> +        res = (res & 0x33333333) + ((res >> 2) & 0x33333333);
+> +        res = (res & 0x0F0F0F0F) + ((res >> 4) & 0x0F0F0F0F);
+> +        res = (res & 0x00FF00FF) + ((res >> 8) & 0x00FF00FF);
+> +        return (res & 0x0000FFFF) + ((res >> 16) & 0x0000FFFF);
+> +}
 
-  - remove __ffs()
-  - remove ffs()
-  - remove ffz()
-  - remove fls()
+How large are these functions on x86? Maybe it would be better to not inline them,
+but put it into some C file out of line.
 
-- remove fls64()
-- remove find_{next,first}{,_zero}_bit()
-- remove sched_find_first_bit()
-- remove generic_hweight64()
-- remove generic_hweight{32,16,8}()
-- remove ext2_{set,clear,test,find_first_zero,find_next_zero}_bit()
-- remove ext2_{set,clear}_bit_atomic()
-- remove minix_{test,set,test_and_clear,test,find_first_zero}_bit()
-
-Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
- include/asm-mips/bitops.h |  456 +---------------------------------------------
- 1 files changed, 17 insertions(+), 439 deletions(-)
-
-Index: 2.6-git/include/asm-mips/bitops.h
-===================================================================
---- 2.6-git.orig/include/asm-mips/bitops.h
-+++ 2.6-git/include/asm-mips/bitops.h
-@@ -105,22 +105,6 @@ static inline void set_bit(unsigned long
- }
- 
- /*
-- * __set_bit - Set a bit in memory
-- * @nr: the bit to set
-- * @addr: the address to start counting from
-- *
-- * Unlike set_bit(), this function is non-atomic and may be reordered.
-- * If it's called on the same region of memory simultaneously, the effect
-- * may be that only one operation succeeds.
-- */
--static inline void __set_bit(unsigned long nr, volatile unsigned long * addr)
--{
--	unsigned long * m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
--
--	*m |= 1UL << (nr & SZLONG_MASK);
--}
--
--/*
-  * clear_bit - Clears a bit in memory
-  * @nr: Bit to clear
-  * @addr: Address to start counting from
-@@ -169,22 +153,6 @@ static inline void clear_bit(unsigned lo
- }
- 
- /*
-- * __clear_bit - Clears a bit in memory
-- * @nr: Bit to clear
-- * @addr: Address to start counting from
-- *
-- * Unlike clear_bit(), this function is non-atomic and may be reordered.
-- * If it's called on the same region of memory simultaneously, the effect
-- * may be that only one operation succeeds.
-- */
--static inline void __clear_bit(unsigned long nr, volatile unsigned long * addr)
--{
--	unsigned long * m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
--
--	*m &= ~(1UL << (nr & SZLONG_MASK));
--}
--
--/*
-  * change_bit - Toggle a bit in memory
-  * @nr: Bit to change
-  * @addr: Address to start counting from
-@@ -235,22 +203,6 @@ static inline void change_bit(unsigned l
- }
- 
- /*
-- * __change_bit - Toggle a bit in memory
-- * @nr: the bit to change
-- * @addr: the address to start counting from
-- *
-- * Unlike change_bit(), this function is non-atomic and may be reordered.
-- * If it's called on the same region of memory simultaneously, the effect
-- * may be that only one operation succeeds.
-- */
--static inline void __change_bit(unsigned long nr, volatile unsigned long * addr)
--{
--	unsigned long * m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
--
--	*m ^= 1UL << (nr & SZLONG_MASK);
--}
--
--/*
-  * test_and_set_bit - Set a bit and return its old value
-  * @nr: Bit to set
-  * @addr: Address to count from
-@@ -321,30 +273,6 @@ static inline int test_and_set_bit(unsig
- }
- 
- /*
-- * __test_and_set_bit - Set a bit and return its old value
-- * @nr: Bit to set
-- * @addr: Address to count from
-- *
-- * This operation is non-atomic and can be reordered.
-- * If two examples of this operation race, one can appear to succeed
-- * but actually fail.  You must protect multiple accesses with a lock.
-- */
--static inline int __test_and_set_bit(unsigned long nr,
--	volatile unsigned long *addr)
--{
--	volatile unsigned long *a = addr;
--	unsigned long mask;
--	int retval;
--
--	a += nr >> SZLONG_LOG;
--	mask = 1UL << (nr & SZLONG_MASK);
--	retval = (mask & *a) != 0;
--	*a |= mask;
--
--	return retval;
--}
--
--/*
-  * test_and_clear_bit - Clear a bit and return its old value
-  * @nr: Bit to clear
-  * @addr: Address to count from
-@@ -417,30 +345,6 @@ static inline int test_and_clear_bit(uns
- }
- 
- /*
-- * __test_and_clear_bit - Clear a bit and return its old value
-- * @nr: Bit to clear
-- * @addr: Address to count from
-- *
-- * This operation is non-atomic and can be reordered.
-- * If two examples of this operation race, one can appear to succeed
-- * but actually fail.  You must protect multiple accesses with a lock.
-- */
--static inline int __test_and_clear_bit(unsigned long nr,
--	volatile unsigned long * addr)
--{
--	volatile unsigned long *a = addr;
--	unsigned long mask;
--	int retval;
--
--	a += (nr >> SZLONG_LOG);
--	mask = 1UL << (nr & SZLONG_MASK);
--	retval = ((mask & *a) != 0);
--	*a &= ~mask;
--
--	return retval;
--}
--
--/*
-  * test_and_change_bit - Change a bit and return its old value
-  * @nr: Bit to change
-  * @addr: Address to count from
-@@ -509,43 +413,11 @@ static inline int test_and_change_bit(un
- 	}
- }
- 
--/*
-- * __test_and_change_bit - Change a bit and return its old value
-- * @nr: Bit to change
-- * @addr: Address to count from
-- *
-- * This operation is non-atomic and can be reordered.
-- * If two examples of this operation race, one can appear to succeed
-- * but actually fail.  You must protect multiple accesses with a lock.
-- */
--static inline int __test_and_change_bit(unsigned long nr,
--	volatile unsigned long *addr)
--{
--	volatile unsigned long *a = addr;
--	unsigned long mask;
--	int retval;
--
--	a += (nr >> SZLONG_LOG);
--	mask = 1UL << (nr & SZLONG_MASK);
--	retval = ((mask & *a) != 0);
--	*a ^= mask;
--
--	return retval;
--}
--
- #undef __bi_flags
- #undef __bi_local_irq_save
- #undef __bi_local_irq_restore
- 
--/*
-- * test_bit - Determine whether a bit is set
-- * @nr: bit number to test
-- * @addr: Address to start counting from
-- */
--static inline int test_bit(unsigned long nr, const volatile unsigned long *addr)
--{
--	return 1UL & (addr[nr >> SZLONG_LOG] >> (nr & SZLONG_MASK));
--}
-+#include <asm-generic/bitops/non-atomic.h>
- 
- /*
-  * Return the bit position (0..63) of the most significant 1 bit in a word
-@@ -580,6 +452,8 @@ static inline int __ilog2(unsigned long 
- 	return 63 - lz;
- }
- 
-+#if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
-+
- /*
-  * __ffs - find first bit in word.
-  * @word: The word to search
-@@ -589,31 +463,7 @@ static inline int __ilog2(unsigned long 
-  */
- static inline unsigned long __ffs(unsigned long word)
- {
--#if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
- 	return __ilog2(word & -word);
--#else
--	int b = 0, s;
--
--#ifdef CONFIG_32BIT
--	s = 16; if (word << 16 != 0) s = 0; b += s; word >>= s;
--	s =  8; if (word << 24 != 0) s = 0; b += s; word >>= s;
--	s =  4; if (word << 28 != 0) s = 0; b += s; word >>= s;
--	s =  2; if (word << 30 != 0) s = 0; b += s; word >>= s;
--	s =  1; if (word << 31 != 0) s = 0; b += s;
--
--	return b;
--#endif
--#ifdef CONFIG_64BIT
--	s = 32; if (word << 32 != 0) s = 0; b += s; word >>= s;
--	s = 16; if (word << 48 != 0) s = 0; b += s; word >>= s;
--	s =  8; if (word << 56 != 0) s = 0; b += s; word >>= s;
--	s =  4; if (word << 60 != 0) s = 0; b += s; word >>= s;
--	s =  2; if (word << 62 != 0) s = 0; b += s; word >>= s;
--	s =  1; if (word << 63 != 0) s = 0; b += s;
--
--	return b;
--#endif
--#endif
- }
- 
- /*
-@@ -652,33 +502,7 @@ static inline unsigned long ffz(unsigned
-  */
- static inline unsigned long flz(unsigned long word)
- {
--#if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
- 	return __ilog2(~word);
--#else
--#ifdef CONFIG_32BIT
--	int r = 31, s;
--	word = ~word;
--	s = 16; if ((word & 0xffff0000)) s = 0; r -= s; word <<= s;
--	s = 8;  if ((word & 0xff000000)) s = 0; r -= s; word <<= s;
--	s = 4;  if ((word & 0xf0000000)) s = 0; r -= s; word <<= s;
--	s = 2;  if ((word & 0xc0000000)) s = 0; r -= s; word <<= s;
--	s = 1;  if ((word & 0x80000000)) s = 0; r -= s;
--
--	return r;
--#endif
--#ifdef CONFIG_64BIT
--	int r = 63, s;
--	word = ~word;
--	s = 32; if ((word & 0xffffffff00000000UL)) s = 0; r -= s; word <<= s;
--	s = 16; if ((word & 0xffff000000000000UL)) s = 0; r -= s; word <<= s;
--	s = 8;  if ((word & 0xff00000000000000UL)) s = 0; r -= s; word <<= s;
--	s = 4;  if ((word & 0xf000000000000000UL)) s = 0; r -= s; word <<= s;
--	s = 2;  if ((word & 0xc000000000000000UL)) s = 0; r -= s; word <<= s;
--	s = 1;  if ((word & 0x8000000000000000UL)) s = 0; r -= s;
--
--	return r;
--#endif
--#endif
- }
- 
- /*
-@@ -695,272 +519,26 @@ static inline unsigned long fls(unsigned
- 
- 	return flz(~word) + 1;
- }
--#define fls64(x)   generic_fls64(x)
- 
--/*
-- * find_next_zero_bit - find the first zero bit in a memory region
-- * @addr: The address to base the search on
-- * @offset: The bitnumber to start searching at
-- * @size: The maximum size to search
-- */
--static inline unsigned long find_next_zero_bit(const unsigned long *addr,
--	unsigned long size, unsigned long offset)
--{
--	const unsigned long *p = addr + (offset >> SZLONG_LOG);
--	unsigned long result = offset & ~SZLONG_MASK;
--	unsigned long tmp;
--
--	if (offset >= size)
--		return size;
--	size -= result;
--	offset &= SZLONG_MASK;
--	if (offset) {
--		tmp = *(p++);
--		tmp |= ~0UL >> (_MIPS_SZLONG-offset);
--		if (size < _MIPS_SZLONG)
--			goto found_first;
--		if (~tmp)
--			goto found_middle;
--		size -= _MIPS_SZLONG;
--		result += _MIPS_SZLONG;
--	}
--	while (size & ~SZLONG_MASK) {
--		if (~(tmp = *(p++)))
--			goto found_middle;
--		result += _MIPS_SZLONG;
--		size -= _MIPS_SZLONG;
--	}
--	if (!size)
--		return result;
--	tmp = *p;
--
--found_first:
--	tmp |= ~0UL << size;
--	if (tmp == ~0UL)		/* Are any bits zero? */
--		return result + size;	/* Nope. */
--found_middle:
--	return result + ffz(tmp);
--}
--
--#define find_first_zero_bit(addr, size) \
--	find_next_zero_bit((addr), (size), 0)
--
--/*
-- * find_next_bit - find the next set bit in a memory region
-- * @addr: The address to base the search on
-- * @offset: The bitnumber to start searching at
-- * @size: The maximum size to search
-- */
--static inline unsigned long find_next_bit(const unsigned long *addr,
--	unsigned long size, unsigned long offset)
--{
--	const unsigned long *p = addr + (offset >> SZLONG_LOG);
--	unsigned long result = offset & ~SZLONG_MASK;
--	unsigned long tmp;
--
--	if (offset >= size)
--		return size;
--	size -= result;
--	offset &= SZLONG_MASK;
--	if (offset) {
--		tmp = *(p++);
--		tmp &= ~0UL << offset;
--		if (size < _MIPS_SZLONG)
--			goto found_first;
--		if (tmp)
--			goto found_middle;
--		size -= _MIPS_SZLONG;
--		result += _MIPS_SZLONG;
--	}
--	while (size & ~SZLONG_MASK) {
--		if ((tmp = *(p++)))
--			goto found_middle;
--		result += _MIPS_SZLONG;
--		size -= _MIPS_SZLONG;
--	}
--	if (!size)
--		return result;
--	tmp = *p;
--
--found_first:
--	tmp &= ~0UL >> (_MIPS_SZLONG - size);
--	if (tmp == 0UL)			/* Are any bits set? */
--		return result + size;	/* Nope. */
--found_middle:
--	return result + __ffs(tmp);
--}
--
--/*
-- * find_first_bit - find the first set bit in a memory region
-- * @addr: The address to start the search at
-- * @size: The maximum size to search
-- *
-- * Returns the bit-number of the first set bit, not the number of the byte
-- * containing a bit.
-- */
--#define find_first_bit(addr, size) \
--	find_next_bit((addr), (size), 0)
--
--#ifdef __KERNEL__
--
--/*
-- * Every architecture must define this function. It's the fastest
-- * way of searching a 140-bit bitmap where the first 100 bits are
-- * unlikely to be set. It's guaranteed that at least one of the 140
-- * bits is cleared.
-- */
--static inline int sched_find_first_bit(const unsigned long *b)
--{
--#ifdef CONFIG_32BIT
--	if (unlikely(b[0]))
--		return __ffs(b[0]);
--	if (unlikely(b[1]))
--		return __ffs(b[1]) + 32;
--	if (unlikely(b[2]))
--		return __ffs(b[2]) + 64;
--	if (b[3])
--		return __ffs(b[3]) + 96;
--	return __ffs(b[4]) + 128;
--#endif
--#ifdef CONFIG_64BIT
--	if (unlikely(b[0]))
--		return __ffs(b[0]);
--	if (unlikely(b[1]))
--		return __ffs(b[1]) + 64;
--	return __ffs(b[2]) + 128;
--#endif
--}
--
--/*
-- * hweightN - returns the hamming weight of a N-bit word
-- * @x: the word to weigh
-- *
-- * The Hamming Weight of a number is the total number of bits set in it.
-- */
--
--#define hweight64(x)	generic_hweight64(x)
--#define hweight32(x)	generic_hweight32(x)
--#define hweight16(x)	generic_hweight16(x)
--#define hweight8(x)	generic_hweight8(x)
--
--static inline int __test_and_set_le_bit(unsigned long nr, unsigned long *addr)
--{
--	unsigned char	*ADDR = (unsigned char *) addr;
--	int		mask, retval;
--
--	ADDR += nr >> 3;
--	mask = 1 << (nr & 0x07);
--	retval = (mask & *ADDR) != 0;
--	*ADDR |= mask;
--
--	return retval;
--}
--
--static inline int __test_and_clear_le_bit(unsigned long nr, unsigned long *addr)
--{
--	unsigned char	*ADDR = (unsigned char *) addr;
--	int		mask, retval;
--
--	ADDR += nr >> 3;
--	mask = 1 << (nr & 0x07);
--	retval = (mask & *ADDR) != 0;
--	*ADDR &= ~mask;
--
--	return retval;
--}
--
--static inline int test_le_bit(unsigned long nr, const unsigned long * addr)
--{
--	const unsigned char	*ADDR = (const unsigned char *) addr;
--	int			mask;
-+#else
- 
--	ADDR += nr >> 3;
--	mask = 1 << (nr & 0x07);
-+#include <asm-generic/bitops/__ffs.h>
-+#include <asm-generic/bitops/ffs.h>
-+#include <asm-generic/bitops/ffz.h>
-+#include <asm-generic/bitops/fls.h>
- 
--	return ((mask & *ADDR) != 0);
--}
-+#endif /*defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64) */
- 
--static inline unsigned long find_next_zero_le_bit(unsigned long *addr,
--	unsigned long size, unsigned long offset)
--{
--	unsigned long *p = ((unsigned long *) addr) + (offset >> SZLONG_LOG);
--	unsigned long result = offset & ~SZLONG_MASK;
--	unsigned long tmp;
-+#include <asm-generic/bitops/fls64.h>
-+#include <asm-generic/bitops/find.h>
- 
--	if (offset >= size)
--		return size;
--	size -= result;
--	offset &= SZLONG_MASK;
--	if (offset) {
--		tmp = cpu_to_lelongp(p++);
--		tmp |= ~0UL >> (_MIPS_SZLONG-offset); /* bug or feature ? */
--		if (size < _MIPS_SZLONG)
--			goto found_first;
--		if (~tmp)
--			goto found_middle;
--		size -= _MIPS_SZLONG;
--		result += _MIPS_SZLONG;
--	}
--	while (size & ~SZLONG_MASK) {
--		if (~(tmp = cpu_to_lelongp(p++)))
--			goto found_middle;
--		result += _MIPS_SZLONG;
--		size -= _MIPS_SZLONG;
--	}
--	if (!size)
--		return result;
--	tmp = cpu_to_lelongp(p);
--
--found_first:
--	tmp |= ~0UL << size;
--	if (tmp == ~0UL)		/* Are any bits zero? */
--		return result + size;	/* Nope. */
--
--found_middle:
--	return result + ffz(tmp);
--}
--
--#define find_first_zero_le_bit(addr, size) \
--	find_next_zero_le_bit((addr), (size), 0)
--
--#define ext2_set_bit(nr,addr) \
--	__test_and_set_le_bit((nr),(unsigned long*)addr)
--#define ext2_clear_bit(nr, addr) \
--	__test_and_clear_le_bit((nr),(unsigned long*)addr)
-- #define ext2_set_bit_atomic(lock, nr, addr)		\
--({							\
--	int ret;					\
--	spin_lock(lock);				\
--	ret = ext2_set_bit((nr), (addr));		\
--	spin_unlock(lock);				\
--	ret;						\
--})
--
--#define ext2_clear_bit_atomic(lock, nr, addr)		\
--({							\
--	int ret;					\
--	spin_lock(lock);				\
--	ret = ext2_clear_bit((nr), (addr));		\
--	spin_unlock(lock);				\
--	ret;						\
--})
--#define ext2_test_bit(nr, addr)	test_le_bit((nr),(unsigned long*)addr)
--#define ext2_find_first_zero_bit(addr, size) \
--	find_first_zero_le_bit((unsigned long*)addr, size)
--#define ext2_find_next_zero_bit(addr, size, off) \
--	find_next_zero_le_bit((unsigned long*)addr, size, off)
-+#ifdef __KERNEL__
- 
--/*
-- * Bitmap functions for the minix filesystem.
-- *
-- * FIXME: These assume that Minix uses the native byte/bitorder.
-- * This limits the Minix filesystem's value for data exchange very much.
-- */
--#define minix_test_and_set_bit(nr,addr) __test_and_set_bit(nr,addr)
--#define minix_set_bit(nr,addr) __set_bit(nr,addr)
--#define minix_test_and_clear_bit(nr,addr) __test_and_clear_bit(nr,addr)
--#define minix_test_bit(nr,addr) test_bit(nr,addr)
--#define minix_find_first_zero_bit(addr,size) find_first_zero_bit(addr,size)
-+#include <asm-generic/bitops/sched.h>
-+#include <asm-generic/bitops/hweight.h>
-+#include <asm-generic/bitops/ext2-non-atomic.h>
-+#include <asm-generic/bitops/ext2-atomic.h>
-+#include <asm-generic/bitops/minix.h>
- 
- #endif /* __KERNEL__ */
- 
-
---
+-Andi

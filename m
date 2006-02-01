@@ -1,72 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 10:43:39 +0000 (GMT)
-Received: from cantor.suse.de ([195.135.220.2]:59810 "EHLO mx1.suse.de")
-	by ftp.linux-mips.org with ESMTP id S8133648AbWBAKnV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2006 10:43:21 +0000
-Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.suse.de (Postfix) with ESMTP id 030B5E7D1;
-	Wed,  1 Feb 2006 11:48:22 +0100 (CET)
-From:	Andi Kleen <ak@suse.de>
-To:	Michael Tokarev <mjt@tls.msk.ru>
-Subject: Re: [patch 14/44] generic hweight{64,32,16,8}()
-Date:	Wed, 1 Feb 2006 11:24:27 +0100
-User-Agent: KMail/1.8.2
-Cc:	Akinobu Mita <mita@miraclelinux.com>, linux-kernel@vger.kernel.org,
-	Richard Henderson <rth@twiddle.net>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Russell King <rmk@arm.linux.org.uk>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 11:24:28 +0000 (GMT)
+Received: from scrub.xs4all.nl ([194.109.195.176]:61914 "EHLO scrub.xs4all.nl")
+	by ftp.linux-mips.org with ESMTP id S8133658AbWBALYJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2006 11:24:09 +0000
+Received: from roman (helo=localhost)
+	by scrub.xs4all.nl with local-esmtp (Exim 3.36 #1 (Debian))
+	id 1F4G9C-0006bi-00; Wed, 01 Feb 2006 12:27:38 +0100
+Date:	Wed, 1 Feb 2006 12:27:38 +0100 (CET)
+From:	Roman Zippel <zippel@linux-m68k.org>
+X-X-Sender: roman@scrub.home
+To:	Akinobu Mita <mita@miraclelinux.com>
+cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, dev-etrax@axis.com,
 	David Howells <dhowells@redhat.com>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
 	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
+	linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, linuxsh-dev@lists.sourceforge.net,
 	linuxsh-shmedia-dev@lists.sourceforge.net,
 	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
 	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
-	Chris Zankel <chris@zankel.net>
-References: <20060201090224.536581000@localhost.localdomain> <200602011006.09596.ak@suse.de> <43E07EB2.4020409@tls.msk.ru>
-In-Reply-To: <43E07EB2.4020409@tls.msk.ru>
+	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
+Subject: Re: [patch 15/44] generic ext2_{set,clear,test,find_first_zero,find_next_zero}_bit()
+In-Reply-To: <20060201090326.139510000@localhost.localdomain>
+Message-ID: <Pine.LNX.4.61.0602011214270.12293@scrub.home>
+References: <20060201090224.536581000@localhost.localdomain>
+ <20060201090326.139510000@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200602011124.29423.ak@suse.de>
-Return-Path: <ak@suse.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <zippel@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10280
+X-archive-position: 10281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ak@suse.de
+X-original-sender: zippel@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 01 February 2006 10:26, Michael Tokarev wrote:
-> Andi Kleen wrote:
-> > On Wednesday 01 February 2006 10:02, Akinobu Mita wrote:
-> > 
-> >>+static inline unsigned int hweight32(unsigned int w)
-> []
-> > How large are these functions on x86? Maybe it would be better to not inline them,
-> > but put it into some C file out of line.
-> 
-> hweight8	47 bytes
-> hweight16	76 bytes
-> hweight32	97 bytes
-> hweight64	56 bytes (NOT inlining hweight32)
-> hweight64	197 bytes (inlining hweight32)
-> 
-> Those are when compiled as separate non-inlined functions,
-> with pushl %ebp and ret.
+Hi,
 
-This would argue for moving them out of line.
+On Wed, 1 Feb 2006, Akinobu Mita wrote:
 
--Andi
+> +static __inline__ int generic_test_le_bit(unsigned long nr,
+> +				  __const__ unsigned long *addr)
+> +{
+> +	__const__ unsigned char	*tmp = (__const__ unsigned char *) addr;
+> +	return (tmp[nr >> 3] >> (nr & 7)) & 1;
+> +}
+
+The underscores are not needed.
+
+For the inline version I would prefer this version:
+
+{
+	const unsigned char *tmp = (const unsigned char *)addr;
+	return (tmp[nr >> 3] & (unsigned char)(1 << (nr & 7))) != 0;
+}
+
+Although this would be a good alternative as well:
+
+{
+	return (addr[nr >> 5] & (1 << ((nr ^ 24) & 31))) != 0;
+}
+
+bye, Roman

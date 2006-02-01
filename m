@@ -1,45 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 09:08:34 +0000 (GMT)
-Received: from ns.miraclelinux.com ([219.118.163.66]:61770 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 09:09:40 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:60746 "EHLO
 	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
-	id S8133659AbWBAI61 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S8133657AbWBAI61 (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Wed, 1 Feb 2006 08:58:27 +0000
 Received: from mail01 (localhost.localdomain [127.0.0.1])
 	by mail01.miraclelinux.com (Postfix) with ESMTP
-	id 3AC1D31C20C; Wed,  1 Feb 2006 18:03:27 +0900 (JST)
+	id E67B431C20E; Wed,  1 Feb 2006 18:03:26 +0900 (JST)
 Received: from localhost.localdomain (sshgate.miraclelinux.com [])
 	by mail01.miraclelinux.com ([10.1.0.10]);
-	Wed, 01 Feb 2006 09:03:27 +0000
+	Wed, 01 Feb 2006 09:03:26 +0000
 Received: by localhost.localdomain (Postfix, from userid 1000)
-	id 0DD7A4201E3; Wed,  1 Feb 2006 18:03:26 +0900 (JST)
-Message-Id: <20060201090325.905071000@localhost.localdomain>
+	id 40E2E4201E0; Wed,  1 Feb 2006 18:03:26 +0900 (JST)
+Message-Id: <20060201090326.139510000@localhost.localdomain>
 References: <20060201090224.536581000@localhost.localdomain>
-Date:	Wed, 01 Feb 2006 18:02:38 +0900
+Date:	Wed, 01 Feb 2006 18:02:39 +0900
 From:	Akinobu Mita <mita@miraclelinux.com>
 To:	linux-kernel@vger.kernel.org
 Cc:	Richard Henderson <rth@twiddle.net>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Russell King <rmk@arm.linux.org.uk>,
-	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, dev-etrax@axis.com,
 	David Howells <dhowells@redhat.com>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
 	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
-	linuxsh-dev@lists.sourceforge.net,
+	linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, linuxsh-dev@lists.sourceforge.net,
 	linuxsh-shmedia-dev@lists.sourceforge.net,
 	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
 	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
 	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>,
 	Akinobu Mita <mita@miraclelinux.com>
-Subject: [patch 14/44] generic hweight{64,32,16,8}()
-Content-Disposition: inline; filename=hweight-bitops.patch
+Subject: [patch 15/44] generic ext2_{set,clear,test,find_first_zero,find_next_zero}_bit()
+Content-Disposition: inline; filename=ext2-non-atomic-bitops.patch
 Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10274
+X-archive-position: 10275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,81 +43,181 @@ X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
-
 This patch introduces the C-language equivalents of the functions below:
 
-unsigned int hweight32(unsigned int w);
-unsigned int hweight16(unsigned int w);
-unsigned int hweight8(unsigned int w);
-unsigned long hweight64(__u64 w);
+int ext2_set_bit(int nr, volatile unsigned long *addr);
+int ext2_clear_bit(int nr, volatile unsigned long *addr);
+int ext2_test_bit(int nr, const volatile unsigned long *addr);
+unsigned long ext2_find_first_zero_bit(const unsigned long *addr,
+                                       unsigned long size);
+unsinged long ext2_find_next_zero_bit(const unsigned long *addr,
+                                      unsigned long size);
 
-In include/asm-generic/bitops/hweight.h
+In include/asm-generic/bitops/ext2-non-atomic.h
 
 This code largely copied from:
-include/linux/bitops.h
+
+include/asm-powerpc/bitops.h
+include/asm-parisc/bitops.h
 
 Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
- include/asm-generic/bitops/hweight.h |   54 +++++++++++++++++++++++++++++++++++
- 1 files changed, 54 insertions(+)
+ include/asm-generic/bitops/ext2-non-atomic.h |   18 +++
+ include/asm-generic/bitops/le.h              |  126 +++++++++++++++++++++++++++
+ 2 files changed, 144 insertions(+)
 
-Index: 2.6-git/include/asm-generic/bitops/hweight.h
+Index: 2.6-git/include/asm-generic/bitops/ext2-non-atomic.h
 ===================================================================
 --- /dev/null
-+++ 2.6-git/include/asm-generic/bitops/hweight.h
-@@ -0,0 +1,54 @@
-+#ifndef _ASM_GENERIC_BITOPS_HWEIGHT_H_
-+#define _ASM_GENERIC_BITOPS_HWEIGHT_H_
++++ 2.6-git/include/asm-generic/bitops/ext2-non-atomic.h
+@@ -0,0 +1,18 @@
++#ifndef _ASM_GENERIC_BITOPS_EXT2_NON_ATOMIC_H_
++#define _ASM_GENERIC_BITOPS_EXT2_NON_ATOMIC_H_
++
++#include <asm-generic/bitops/le.h>
++
++#define ext2_set_bit(nr,addr)	\
++	generic___test_and_set_le_bit((nr),(unsigned long *)(addr))
++#define ext2_clear_bit(nr,addr)	\
++	generic___test_and_clear_le_bit((nr),(unsigned long *)(addr))
++
++#define ext2_test_bit(nr,addr)	\
++	generic_test_le_bit((nr),(unsigned long *)(addr))
++#define ext2_find_first_zero_bit(addr, size) \
++	generic_find_first_zero_le_bit((unsigned long *)(addr), (size))
++#define ext2_find_next_zero_bit(addr, size, off) \
++	generic_find_next_zero_le_bit((unsigned long *)(addr), (size), (off))
++
++#endif /* _ASM_GENERIC_BITOPS_EXT2_NON_ATOMIC_H_ */
+Index: 2.6-git/include/asm-generic/bitops/le.h
+===================================================================
+--- /dev/null
++++ 2.6-git/include/asm-generic/bitops/le.h
+@@ -0,0 +1,126 @@
++#ifndef _ASM_GENERIC_BITOPS_LE_H_
++#define _ASM_GENERIC_BITOPS_LE_H_
 +
 +#include <asm/types.h>
++#include <asm/byteorder.h>
 +
-+/**
-+ * hweightN - returns the hamming weight of a N-bit word
-+ * @x: the word to weigh
-+ *
-+ * The Hamming Weight of a number is the total number of bits set in it.
-+ */
++#define BITOP_WORD(nr)		((nr) / BITS_PER_LONG)
++#define BITOP_LE_SWIZZLE	((BITS_PER_LONG-1) & ~0x7)
 +
-+static inline unsigned int hweight32(unsigned int w)
++#if defined(__LITTLE_ENDIAN)
++
++static __inline__ int generic_test_le_bit(unsigned long nr,
++				  __const__ unsigned long *addr)
 +{
-+        unsigned int res = (w & 0x55555555) + ((w >> 1) & 0x55555555);
-+        res = (res & 0x33333333) + ((res >> 2) & 0x33333333);
-+        res = (res & 0x0F0F0F0F) + ((res >> 4) & 0x0F0F0F0F);
-+        res = (res & 0x00FF00FF) + ((res >> 8) & 0x00FF00FF);
-+        return (res & 0x0000FFFF) + ((res >> 16) & 0x0000FFFF);
++	__const__ unsigned char	*tmp = (__const__ unsigned char *) addr;
++	return (tmp[nr >> 3] >> (nr & 7)) & 1;
 +}
 +
-+static inline unsigned int hweight16(unsigned int w)
++#define generic___set_le_bit(nr, addr) __set_bit(nr, addr)
++#define generic___clear_le_bit(nr, addr) __clear_bit(nr, addr)
++
++#define generic_test_and_set_le_bit(nr, addr) test_and_set_bit(nr, addr)
++#define generic_test_and_clear_le_bit(nr, addr) test_and_clear_bit(nr, addr)
++
++#define generic___test_and_set_le_bit(nr, addr) __test_and_set_bit(nr, addr)
++#define generic___test_and_clear_le_bit(nr, addr) __test_and_clear_bit(nr, addr)
++
++#define generic_find_next_zero_le_bit(addr, size, offset) find_next_zero_bit(addr, size, offset)
++
++#elif defined(__BIG_ENDIAN)
++
++static __inline__ int generic_test_le_bit(unsigned long nr,
++				  __const__ unsigned long *addr)
 +{
-+        unsigned int res = (w & 0x5555) + ((w >> 1) & 0x5555);
-+        res = (res & 0x3333) + ((res >> 2) & 0x3333);
-+        res = (res & 0x0F0F) + ((res >> 4) & 0x0F0F);
-+        return (res & 0x00FF) + ((res >> 8) & 0x00FF);
++	__const__ unsigned char	*tmp = (__const__ unsigned char *) addr;
++	return (tmp[nr >> 3] >> (nr & 7)) & 1;
 +}
 +
-+static inline unsigned int hweight8(unsigned int w)
-+{
-+        unsigned int res = (w & 0x55) + ((w >> 1) & 0x55);
-+        res = (res & 0x33) + ((res >> 2) & 0x33);
-+        return (res & 0x0F) + ((res >> 4) & 0x0F);
-+}
++#define generic___set_le_bit(nr, addr) \
++	__set_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
++#define generic___clear_le_bit(nr, addr) \
++	__clear_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
 +
-+static inline unsigned long hweight64(__u64 w)
++#define generic_test_and_set_le_bit(nr, addr) \
++	test_and_set_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
++#define generic_test_and_clear_le_bit(nr, addr) \
++	test_and_clear_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
++
++#define generic___test_and_set_le_bit(nr, addr) \
++	__test_and_set_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
++#define generic___test_and_clear_le_bit(nr, addr) \
++	__test_and_clear_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
++
++/* include/linux/byteorder does not support "unsigned long" type */
++static inline unsigned long ext2_swabp(const unsigned long * x)
 +{
-+#if BITS_PER_LONG == 32
-+	return hweight32((unsigned int)(w >> 32)) + hweight32((unsigned int)w);
-+#elif BITS_PER_LONG == 64
-+	u64 res;
-+	res = (w & 0x5555555555555555ul) + ((w >> 1) & 0x5555555555555555ul);
-+	res = (res & 0x3333333333333333ul) + ((res >> 2) & 0x3333333333333333ul);
-+	res = (res & 0x0F0F0F0F0F0F0F0Ful) + ((res >> 4) & 0x0F0F0F0F0F0F0F0Ful);
-+	res = (res & 0x00FF00FF00FF00FFul) + ((res >> 8) & 0x00FF00FF00FF00FFul);
-+	res = (res & 0x0000FFFF0000FFFFul) + ((res >> 16) & 0x0000FFFF0000FFFFul);
-+	return (res & 0x00000000FFFFFFFFul) + ((res >> 32) & 0x00000000FFFFFFFFul);
++#if BITS_PER_LONG == 64
++	return (unsigned long) __swab64p((u64 *) x);
++#elif BITS_PER_LONG == 32
++	return (unsigned long) __swab32p((u32 *) x);
 +#else
 +#error BITS_PER_LONG not defined
 +#endif
 +}
 +
-+#endif /* _ASM_GENERIC_BITOPS_HWEIGHT_H_ */
++/* include/linux/byteorder doesn't support "unsigned long" type */
++static inline unsigned long ext2_swab(const unsigned long y)
++{
++#if BITS_PER_LONG == 64
++	return (unsigned long) __swab64((u64) y);
++#elif BITS_PER_LONG == 32
++	return (unsigned long) __swab32((u32) y);
++#else
++#error BITS_PER_LONG not defined
++#endif
++}
++
++static __inline__ unsigned long generic_find_next_zero_le_bit(const unsigned long *addr,
++				unsigned long size, unsigned long offset)
++{
++	const unsigned long *p = addr + BITOP_WORD(offset);
++	unsigned long result = offset & ~(BITS_PER_LONG - 1);
++	unsigned long tmp;
++
++	if (offset >= size)
++		return size;
++	size -= result;
++	offset &= (BITS_PER_LONG - 1UL);
++	if (offset) {
++		tmp = ext2_swabp(p++);
++		tmp |= (~0UL >> (BITS_PER_LONG - offset));
++		if (size < BITS_PER_LONG)
++			goto found_first;
++		if (~tmp)
++			goto found_middle;
++		size -= BITS_PER_LONG;
++		result += BITS_PER_LONG;
++	}
++
++	while (size & ~(BITS_PER_LONG - 1)) {
++		if (~(tmp = *(p++)))
++			goto found_middle_swap;
++		result += BITS_PER_LONG;
++		size -= BITS_PER_LONG;
++	}
++	if (!size)
++		return result;
++	tmp = ext2_swabp(p);
++found_first:
++	tmp |= ~0UL << size;
++	if (tmp == ~0UL)	/* Are any bits zero? */
++		return result + size; /* Nope. Skip ffz */
++found_middle:
++	return result + ffz(tmp);
++
++found_middle_swap:
++	return result + ffz(ext2_swab(tmp));
++}
++#else
++#error "Please fix <asm/byteorder.h>"
++#endif
++
++#define generic_find_first_zero_le_bit(addr, size) \
++        generic_find_next_zero_le_bit((addr), (size), 0)
++
++#endif /* _ASM_GENERIC_BITOPS_LE_H_ */
 
 --

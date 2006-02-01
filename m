@@ -1,52 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 19:19:20 +0000 (GMT)
-Received: from nevyn.them.org ([66.93.172.17]:479 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S3458570AbWBATTC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2006 19:19:02 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.54)
-	id 1F4NaG-00033X-MM; Wed, 01 Feb 2006 14:24:04 -0500
-Date:	Wed, 1 Feb 2006 14:24:04 -0500
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Michael Uhler <uhler@mips.com>
-Cc:	"'Maciej W. Rozycki'" <macro@linux-mips.org>,
-	'Johannes Stezenbach' <js@linuxtv.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 19:40:04 +0000 (GMT)
+Received: from allen.werkleitz.de ([80.190.251.108]:4039 "EHLO
+	allen.werkleitz.de") by ftp.linux-mips.org with ESMTP
+	id S3458570AbWBATjq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Feb 2006 19:39:46 +0000
+Received: from p54be9954.dip0.t-ipconnect.de ([84.190.153.84] helo=void.local)
+	by allen.werkleitz.de with esmtpsa (TLS-1.0:DHE_RSA_3DES_EDE_CBC_SHA1:24)
+	(Exim 4.60)
+	(envelope-from <js@linuxtv.org>)
+	id 1F4NuF-0007hI-U9; Wed, 01 Feb 2006 20:44:49 +0100
+Received: from js by void.local with local (Exim 3.35 #1 (Debian))
+	id 1F4NuF-0005oL-00; Wed, 01 Feb 2006 20:44:43 +0100
+Date:	Wed, 1 Feb 2006 20:44:43 +0100
+From:	Johannes Stezenbach <js@linuxtv.org>
+To:	Daniel Jacobowitz <dan@debian.org>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
 	linux-mips@linux-mips.org
-Subject: Re: gdb vs. gdbserver with -mips3 / 32bitmode userspace
-Message-ID: <20060201192404.GA11719@nevyn.them.org>
-References: <20060201164423.GA4891@nevyn.them.org> <005901c62754$b414dc80$bb14a8c0@MIPS.COM>
-Mime-Version: 1.0
+Message-ID: <20060201194443.GB21871@linuxtv.org>
+Mail-Followup-To: Johannes Stezenbach <js@linuxtv.org>,
+	Daniel Jacobowitz <dan@debian.org>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+References: <20060131171508.GB6341@linuxtv.org> <Pine.LNX.4.64N.0601311724340.31371@blysk.ds.pg.gda.pl> <20060201164423.GA4891@nevyn.them.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <005901c62754$b414dc80$bb14a8c0@MIPS.COM>
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+In-Reply-To: <20060201164423.GA4891@nevyn.them.org>
+User-Agent: Mutt/1.5.11
+X-SA-Exim-Connect-IP: 84.190.153.84
+Subject: Re: gdb vs. gdbserver with -mips3 / 32bitmode userspace
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on allen.werkleitz.de)
+Return-Path: <js@linuxtv.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10290
+X-archive-position: 10291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: js@linuxtv.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 01, 2006 at 09:26:57AM -0800, Michael Uhler wrote:
-> Daniel,
+On Wed, Feb 01, 2006, Daniel Jacobowitz wrote:
+> All of this code is flat-out wrong, as far as I'm concerned.  I have a
+> project underway which will fix it, as a nice side effect.
 > 
-> The O/S maybe doing something different, but the architecture has 3 bits in
-> Status: KX, SX, and UX that enable access to the address space above 32
-> bits.  With these bits off, an attempt to access these addresses causes an
-> exception.  So while 32-bit apps have the full 64-bit address space, most of
-> it is inaccessible to the 32-bit app.
+> GDB is trying to do something confusing, but admirable, here.  When
+> you're running on a 64-bit system the full 64 bits are always there:
+> even if the binary only uses half of them (is this true in Linux?  I
+> don't remember if the relevant control bits get fudged, it's been a
+> while; it's definitely true on some other systems).  Thus it's possible
+> for a bogus instruction to corrupt the top half of a register, leading
+> to otherwise inexplicable problems.
+> 
+> So if the remote stub knows about 64-bit registers, it should report
+> them to GDB, and GDB should accept and display them, and still handle
+> 32-bit frames.  If the remote stub doesn't, then there's no option but
+> to report the 32-bit registers.
+> 
+> Really, GDB ought to (and soon will I hope) autodetect which ones were
+> sent.
 
-That's not actually what I was referring to: there's at least one MIPS
-implementation where the results of 32-bit arithmetic operations are
-not just architecturally unpredictable but actually wrong if the upper
-bits are not properly sign extended (I might be misremembering, but I
-think I'm talking about the SB-1).  That's the sort of thing that can
-be basically impossible to track down if your debugger doesn't show
-you the whole register.
+If I understand this correctly, gdbserver should check the
+register size supported by the OS, and communicate this to gdb?
 
--- 
-Daniel Jacobowitz
-CodeSourcery
+I'm using a Linux kernel with CONFIG_32BIT, and if I understand
+the ptrace interface correctly, the registers as seen through
+ptrace are 32bit then, even though the CPU has 64bit registers.
+
+(I have no idea if the cp0 status suggested by others in this
+thread reflect CONFIG_32BIT vs. CONFIG_64BIT on Linux.)
+
+
+Anyway, is a better workaround _now_ for gdb-6.[34] than the patch
+to mips_register_type()?
+
+
+Thanks,
+Johannes

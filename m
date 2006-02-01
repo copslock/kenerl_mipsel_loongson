@@ -1,69 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 11:24:28 +0000 (GMT)
-Received: from scrub.xs4all.nl ([194.109.195.176]:61914 "EHLO scrub.xs4all.nl")
-	by ftp.linux-mips.org with ESMTP id S8133658AbWBALYJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2006 11:24:09 +0000
-Received: from roman (helo=localhost)
-	by scrub.xs4all.nl with local-esmtp (Exim 3.36 #1 (Debian))
-	id 1F4G9C-0006bi-00; Wed, 01 Feb 2006 12:27:38 +0100
-Date:	Wed, 1 Feb 2006 12:27:38 +0100 (CET)
-From:	Roman Zippel <zippel@linux-m68k.org>
-X-X-Sender: roman@scrub.home
-To:	Akinobu Mita <mita@miraclelinux.com>
-cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
-	parisc-linux@parisc-linux.org, linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
-	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
-Subject: Re: [patch 15/44] generic ext2_{set,clear,test,find_first_zero,find_next_zero}_bit()
-In-Reply-To: <20060201090326.139510000@localhost.localdomain>
-Message-ID: <Pine.LNX.4.61.0602011214270.12293@scrub.home>
-References: <20060201090224.536581000@localhost.localdomain>
- <20060201090326.139510000@localhost.localdomain>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <zippel@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 16:22:11 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:40183 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133730AbWBAQVw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Feb 2006 16:21:52 +0000
+Received: from localhost (p6192-ipad212funabasi.chiba.ocn.ne.jp [58.91.170.192])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 6E0B38422; Thu,  2 Feb 2006 01:26:54 +0900 (JST)
+Date:	Thu, 02 Feb 2006 01:26:34 +0900 (JST)
+Message-Id: <20060202.012634.08076945.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] fix minor sparse warnings
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10281
+X-archive-position: 10282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zippel@linux-m68k.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-On Wed, 1 Feb 2006, Akinobu Mita wrote:
-
-> +static __inline__ int generic_test_le_bit(unsigned long nr,
-> +				  __const__ unsigned long *addr)
-> +{
-> +	__const__ unsigned char	*tmp = (__const__ unsigned char *) addr;
-> +	return (tmp[nr >> 3] >> (nr & 7)) & 1;
-> +}
-
-The underscores are not needed.
-
-For the inline version I would prefer this version:
-
-{
-	const unsigned char *tmp = (const unsigned char *)addr;
-	return (tmp[nr >> 3] & (unsigned char)(1 << (nr & 7))) != 0;
-}
-
-Although this would be a good alternative as well:
-
-{
-	return (addr[nr >> 5] & (1 << ((nr ^ 24) & 31))) != 0;
-}
-
-bye, Roman
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index e8e43bd..aaec478 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -340,7 +340,7 @@ int setup_rt_frame(struct k_sigaction * 
+ 
+ 	/* Create the ucontext.  */
+ 	err |= __put_user(0, &frame->rs_uc.uc_flags);
+-	err |= __put_user(0, &frame->rs_uc.uc_link);
++	err |= __put_user(NULL, &frame->rs_uc.uc_link);
+ 	err |= __put_user((void *)current->sas_ss_sp,
+ 	                  &frame->rs_uc.uc_stack.ss_sp);
+ 	err |= __put_user(sas_ss_flags(regs->regs[29]),
+diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
+index 7c2241e..136260c 100644
+--- a/arch/mips/kernel/signal32.c
++++ b/arch/mips/kernel/signal32.c
+@@ -456,7 +456,7 @@ int copy_siginfo_to_user32(compat_siginf
+ 			err |= __put_user(from->si_uid, &to->si_uid);
+ 			break;
+ 		case __SI_FAULT >> 16:
+-			err |= __put_user((long)from->si_addr, &to->si_addr);
++			err |= __put_user((unsigned long)from->si_addr, &to->si_addr);
+ 			break;
+ 		case __SI_POLL >> 16:
+ 			err |= __put_user(from->si_band, &to->si_band);
+diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
+index 3d2f8e3..9156863 100644
+--- a/arch/mips/kernel/signal_n32.c
++++ b/arch/mips/kernel/signal_n32.c
+@@ -48,6 +48,8 @@
+ #define __NR_N32_rt_sigreturn		6211
+ #define __NR_N32_restart_syscall	6214
+ 
++#define DEBUG_SIG 0
++
+ #define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
+ 
+ /* IRIX compatible stack_t  */

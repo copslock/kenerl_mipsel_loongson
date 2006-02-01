@@ -1,58 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 06:27:20 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:39947 "HELO
-	topsns.toshiba-tops.co.jp") by ftp.linux-mips.org with SMTP
-	id S8133551AbWBAG04 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Feb 2006 06:26:56 +0000
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with SMTP; 1 Feb 2006 06:31:58 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 908112036A;
-	Wed,  1 Feb 2006 15:31:55 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 82B522036E;
-	Wed,  1 Feb 2006 15:31:55 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k116Vs4D012929;
-	Wed, 1 Feb 2006 15:31:55 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Wed, 01 Feb 2006 15:31:54 +0900 (JST)
-Message-Id: <20060201.153154.108306076.nemoto@toshiba-tops.co.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH] local_r4k_flush_cache_page fix
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
-References: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Feb 2006 08:58:42 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:2634 "EHLO
+	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
+	id S8133645AbWBAI6X (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Feb 2006 08:58:23 +0000
+Received: from mail01 (localhost.localdomain [127.0.0.1])
+	by mail01.miraclelinux.com (Postfix) with ESMTP
+	id 8B29F31C205; Wed,  1 Feb 2006 18:03:23 +0900 (JST)
+Received: from localhost.localdomain (sshgate.miraclelinux.com [])
+	by mail01.miraclelinux.com ([10.1.0.10]);
+	Wed, 01 Feb 2006 09:03:23 +0000
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 011884201E0; Wed,  1 Feb 2006 18:03:22 +0900 (JST)
+Message-Id: <20060201090322.900876000@localhost.localdomain>
+References: <20060201090224.536581000@localhost.localdomain>
+Date:	Wed, 01 Feb 2006 18:02:32 +0900
+From:	Akinobu Mita <mita@miraclelinux.com>
+To:	linux-kernel@vger.kernel.org
+Cc:	Russell King <rmk@arm.linux.org.uk>, Ian Molton <spyro@f2s.com>,
+	David Howells <dhowells@redhat.com>,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	Greg Ungerer <gerg@uclinux.org>, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, sparclinux@vger.kernel.org,
+	ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Akinobu Mita <mita@miraclelinux.com>
+Subject: [patch 08/44] generic ffz()
+Content-Disposition: inline; filename=ffz-bitops.patch
+Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10263
+X-archive-position: 10264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 01 Feb 2006 00:03:56 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
-anemo> If dcache_size != icache_size or dcache_size != scache_size,
-anemo> icache/scache does not flushed properly.  Use correct cache
-anemo> size to calculate index value for scache/icache.
+This patch introduces the C-language equivalent of the function:
 
-BTW, I wonder if current code (with or without this patch) works
-properly for physically indexed cache.  Though I do not know if there
-were physically indexed icache, there are certainly physically indexed
-dcache (ex. MIPS 20KC).
+unsigned long ffz(unsigned long word);
 
-For those physically indexed caches, we should use 'pfn' argument
-passed to flush_cache_page ?
+In include/asm-generic/bitops/ffz.h
 
----
-Atsushi Nemoto
+This code largely copied from:
+include/asm-parisc/bitops.h
+
+Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
+ include/asm-generic/bitops/ffz.h |   12 ++++++++++++
+ 1 files changed, 12 insertions(+)
+
+Index: 2.6-git/include/asm-generic/bitops/ffz.h
+===================================================================
+--- /dev/null
++++ 2.6-git/include/asm-generic/bitops/ffz.h
+@@ -0,0 +1,12 @@
++#ifndef _ASM_GENERIC_BITOPS_FFZ_H_
++#define _ASM_GENERIC_BITOPS_FFZ_H_
++
++/*
++ * ffz - find first zero in word.
++ * @word: The word to search
++ *
++ * Undefined if no zero exists, so code should check against ~0UL first.
++ */
++#define ffz(x)  __ffs(~(x))
++
++#endif /* _ASM_GENERIC_BITOPS_FFZ_H_ */
+
+--

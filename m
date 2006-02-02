@@ -1,72 +1,129 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 15:00:47 +0000 (GMT)
-Received: from smtp.innovsys.com ([66.115.232.196]:54207 "EHLO
-	mail.innovsys.com") by ftp.linux-mips.org with ESMTP
-	id S3465637AbWBBPA2 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2006 15:00:28 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: [patch 10/44] generic fls64()
-Date:	Thu, 2 Feb 2006 09:05:33 -0600
-Message-ID: <DCEAAC0833DD314AB0B58112AD99B93B859547@ismail.innsys.innovsys.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [patch 10/44] generic fls64()
-Thread-Index: AcYnkFHrC3JXjhzOTROGBLzY99BOuAAeZ/rA
-From:	"Rune Torgersen" <runet@innovsys.com>
-To:	"Akinobu Mita" <mita@miraclelinux.com>,
-	<linux-kernel@vger.kernel.org>
-Cc:	<linux-mips@linux-mips.org>, <linux-ia64@vger.kernel.org>,
-	"Ian Molton" <spyro@f2s.com>,
-	"David Howells" <dhowells@redhat.com>, <linuxppc-dev@ozlabs.org>,
-	"Greg Ungerer" <gerg@uclinux.org>, <sparclinux@vger.kernel.org>,
-	"Miles Bader" <uclinux-v850@lsi.nec.co.jp>,
-	"Linus Torvalds" <torvalds@osdl.org>,
-	"Yoshinori Sato" <ysato@users.sourceforge.jp>,
-	"Hirokazu Takata" <takata@linux-m32r.org>,
-	<linuxsh-shmedia-dev@lists.sourceforge.net>,
-	<linux-m68k@lists.linux-m68k.org>,
-	"Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
-	"Richard Henderson" <rth@twiddle.net>,
-	"Chris Zankel" <chris@zankel.net>, <dev-etrax@axis.com>,
-	<ultralinux@vger.kernel.org>, "Andi Kleen" <ak@suse.de>,
-	<linuxsh-dev@lists.sourceforge.net>, <linux390@de.ibm.com>,
-	"Russell King" <rmk@arm.linux.org.uk>,
-	<parisc-linux@parisc-linux.org>
-Return-Path: <runet@innovsys.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 16:29:31 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:42188 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S3465640AbWBBQ3N (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2006 16:29:13 +0000
+Received: from localhost (p4005-ipad24funabasi.chiba.ocn.ne.jp [220.104.82.5])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 5480D16D2; Fri,  3 Feb 2006 01:34:21 +0900 (JST)
+Date:	Fri, 03 Feb 2006 01:34:01 +0900 (JST)
+Message-Id: <20060203.013401.41198517.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] TX49 MFC0 bug workaround
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10304
+X-archive-position: 10305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: runet@innovsys.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-> From: Akinobu Mita
-> Sent: Wednesday, February 01, 2006 03:03
-> +static inline int fls64(__u64 x)
-> +{
-> +	__u32 h = x >> 32;
-> +	if (h)
-> +		return fls(x) + 32;
+If mfc0 $12 follows store and the mfc0 is last instruction of a
+page and fetching the next instruction causes TLB miss, the result
+of the mfc0 might wrongly contain EXL bit.
 
-Shouldn't this be return fls(h) + 32; ??
-                            ^^^
-> +	return fls(x);
-> +}
-> +
-> +#endif /* _ASM_GENERIC_BITOPS_FLS64_H_ */
-> 
-> --
-> _______________________________________________
-> Linuxppc-dev mailing list
-> Linuxppc-dev@ozlabs.org
-> https://ozlabs.org/mailman/listinfo/linuxppc-dev
-> 
-> 
+ERT-TX49H2-027, ERT-TX49H3-012, ERT-TX49HL3-006, ERT-TX49H4-008
+
+Workaround: mask EXL bit of the result or place a nop before mfc0.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/include/asm-mips/interrupt.h b/include/asm-mips/interrupt.h
+index 0da5818..951ee7a 100644
+--- a/include/asm-mips/interrupt.h
++++ b/include/asm-mips/interrupt.h
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/config.h>
+ #include <asm/hazards.h>
++#include <asm/war.h>
+ 
+ __asm__ (
+ 	"	.macro	local_irq_enable				\n"
+@@ -55,8 +56,13 @@ __asm__ (
+ 	"	di							\n"
+ #else
+ 	"	mfc0	$1,$12						\n"
++#if TX49XX_MFC0_WAR && defined(MODULE)
++	"	ori	$1,3						\n"
++	"	xori	$1,3						\n"
++#else
+ 	"	ori	$1,1						\n"
+ 	"	xori	$1,1						\n"
++#endif
+ 	"	.set	noreorder					\n"
+ 	"	mtc0	$1,$12						\n"
+ #endif
+@@ -96,8 +102,13 @@ __asm__ (
+ 	"	andi	\\result, 1					\n"
+ #else
+ 	"	mfc0	\\result, $12					\n"
++#if TX49XX_MFC0_WAR && defined(MODULE)
++	"	ori	$1, \\result, 3					\n"
++	"	xori	$1, 3						\n"
++#else
+ 	"	ori	$1, \\result, 1					\n"
+ 	"	xori	$1, 1						\n"
++#endif
+ 	"	.set	noreorder					\n"
+ 	"	mtc0	$1, $12						\n"
+ #endif
+@@ -136,8 +147,13 @@ __asm__ (
+ #else
+ 	"	mfc0	$1, $12						\n"
+ 	"	andi	\\flags, 1					\n"
++#if TX49XX_MFC0_WAR && defined(MODULE)
++	"	ori	$1, 3						\n"
++	"	xori	$1, 3						\n"
++#else
+ 	"	ori	$1, 1						\n"
+ 	"	xori	$1, 1						\n"
++#endif
+ 	"	or	\\flags, $1					\n"
+ 	"	mtc0	\\flags, $12					\n"
+ #endif
+diff --git a/include/asm-mips/war.h b/include/asm-mips/war.h
+index ad374bd..859520a 100644
+--- a/include/asm-mips/war.h
++++ b/include/asm-mips/war.h
+@@ -169,6 +169,19 @@
+ #endif
+ 
+ /*
++ * If mfc0 $12 follows store and the mfc0 is last instruction of a
++ * page and fetching the next instruction causes TLB miss, the result
++ * of the mfc0 might wrongly contain EXL bit.
++ *
++ * ERT-TX49H2-027, ERT-TX49H3-012, ERT-TX49HL3-006, ERT-TX49H4-008
++ *
++ * Workaround: mask EXL bit of the result or place a nop before mfc0.
++ */
++#ifdef CONFIG_CPU_TX49XX
++#define TX49XX_MFC0_WAR 1
++#endif
++
++/*
+  * On the RM9000 there is a problem which makes the CreateDirtyExclusive
+  * cache operation unusable on SMP systems.
+  */
+@@ -228,6 +241,9 @@
+ #ifndef TX49XX_ICACHE_INDEX_INV_WAR
+ #define TX49XX_ICACHE_INDEX_INV_WAR	0
+ #endif
++#ifndef TX49XX_MFC0_WAR
++#define TX49XX_MFC0_WAR	0
++#endif
+ #ifndef RM9000_CDEX_SMP_WAR
+ #define RM9000_CDEX_SMP_WAR		0
+ #endif

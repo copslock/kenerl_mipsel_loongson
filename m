@@ -1,75 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 13:39:06 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:35846 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465626AbWBBNis (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Feb 2006 13:38:48 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k12DhT4r014629;
-	Thu, 2 Feb 2006 13:43:29 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k12DhTdL014628;
-	Thu, 2 Feb 2006 13:43:29 GMT
-Date:	Thu, 2 Feb 2006 13:43:29 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Johannes Stezenbach <js@linuxtv.org>,
-	Daniel Jacobowitz <dan@debian.org>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Subject: Re: gdb vs. gdbserver with -mips3 / 32bitmode userspace
-Message-ID: <20060202134329.GD4986@linux-mips.org>
-References: <20060131171508.GB6341@linuxtv.org> <Pine.LNX.4.64N.0601311724340.31371@blysk.ds.pg.gda.pl> <20060201164423.GA4891@nevyn.them.org> <20060201194443.GB21871@linuxtv.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 14:06:41 +0000 (GMT)
+Received: from mail.renesas.com ([202.234.163.13]:20144 "EHLO
+	mail04.idc.renesas.com") by ftp.linux-mips.org with ESMTP
+	id S3465632AbWBBOFc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Feb 2006 14:05:32 +0000
+Received: from mail04.idc.renesas.com ([127.0.0.1])
+ by mail04.idc.renesas.com. (SMSSMTP 4.1.9.35) with SMTP id M2006020223103611315
+ for <linux-mips@linux-mips.org>; Thu, 02 Feb 2006 23:10:36 +0900
+Received: (from root@localhost)
+	by guardian05.idc.renesas.com with  id k12EAYui008847;
+	Thu, 2 Feb 2006 23:10:34 +0900 (JST)
+Received: from unknown [172.20.8.73] by guardian05.idc.renesas.com with SMTP id ZAA08846 ; Thu, 2 Feb 2006 23:10:34 +0900
+Received: from mrkaisv.hoku.renesas.com ([10.145.105.245])
+	by ml01.idc.renesas.com (8.12.10/8.12.10) with ESMTP id k12EAYdI001876;
+	Thu, 2 Feb 2006 23:10:34 +0900 (JST)
+Received: from localhost (pcepx10 [10.145.105.241])
+	by mrkaisv.hoku.renesas.com (Postfix) with ESMTP
+	id 2A2BE798071; Thu,  2 Feb 2006 23:10:34 +0900 (JST)
+Date:	Thu, 02 Feb 2006 23:10:33 +0900 (JST)
+Message-Id: <20060202.231033.1059963967.takata.hirokazu@renesas.com>
+To:	rmk+lkml@arm.linux.org.uk
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	linuxppc-dev@ozlabs.org, takata@linux-m32r.org, pfg@sgi.com
+Subject: Re: [CFT] Don't use ASYNC_* nor SERIAL_IO_* with serial_core
+From:	Hirokazu Takata <takata@linux-m32r.org>
+In-Reply-To: <20060202102721.GE5034@flint.arm.linux.org.uk>
+References: <20060121211407.GA19984@dyn-67.arm.linux.org.uk>
+	<20060202102721.GE5034@flint.arm.linux.org.uk>
+X-Mailer: Mew version 3.3 on XEmacs 21.4.18 (Social Property)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060201194443.GB21871@linuxtv.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <takata@linux-m32r.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10301
+X-archive-position: 10302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: takata@linux-m32r.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 01, 2006 at 08:44:43PM +0100, Johannes Stezenbach wrote:
+On m32r,
+  compile and boot test: OK
 
-> If I understand this correctly, gdbserver should check the
-> register size supported by the OS, and communicate this to gdb?
+Thank you.
+
+-- Takata
+
+From: Russell King <rmk+lkml@arm.linux.org.uk>
+Date: Thu, 02 Feb 2006 10:27:21 +0000
+> Ping?
 > 
-> I'm using a Linux kernel with CONFIG_32BIT, and if I understand
-> the ptrace interface correctly, the registers as seen through
-> ptrace are 32bit then, even though the CPU has 64bit registers.
-
-Correct.  On 32-bit kernels Linux will largely forget about the 64-bitness
-of the processor.  User processes will run with 64-bit (UX bit) disabled,
-so they're never able to anything 64-bitish.  The kernel will only save
-and restore the lower 32-bit of registers, so the upper 32-bit will be
-lost.  That means only using the $zero register as 64-bit register is safe
-and that's exploited by clear_page().  There are a few place where 64-bit
-loads and stores are needed because particular hardware doesn't like being
-talked to with 32-bit accesses; those accesses need make sure they're not
-interrupted or bad things happen.  See the code for *readq() and write()
-in <asm/io.h>.
-
-Ages ago I tried leaving all the 64-bit functionality available as far as
-possible even in 32-bit kernels.  It turned out to be example messy and I
-was happy to have gotten rid of it, I think in 2.1.14.
-
-> (I have no idea if the cp0 status suggested by others in this
-> thread reflect CONFIG_32BIT vs. CONFIG_64BIT on Linux.)
-
-On 32-bit kernels Linux will clear c0_status.kx, c0_status.ux and
-c0_status.fr - on hardware were those bits exist at all, that is.
-
-On 64-bit kernels Linux will set c0_status.kx.  It will also always set
-c0_status.ux which means 64-bit operations are legal even for 32-bit
-processes.  To my knowledge nobody is exploiting that; I guess it could
-be exploited for a faster memcpy and similar.  Finally c0_status.fr which
-will be set according to the ABI of the process, that is it'll be cleared
-for o32 and set for N32 and N64 processes.
-
-  Ralf
+> On Sat, Jan 21, 2006 at 09:14:07PM +0000, Russell King wrote:
+> > The serial_core layer has its own definitions for these, and I'd
+> > appreciate it if folk would use them instead of the old ASYNC_* and
+> > SERIAL_IO_* definitions.
+> > 
+> > They're compatible _at the moment_ but I make no guarantees that they
+> > will stay that way.  Hence, it's in your interest to ensure that you're
+> > using the correct definitions.
+> > 
+> > MIPS, PPC seem to be the architectures which are stuck in the past on
+> > this issue, as is the M32R SIO driver.
+> > 
+> > The ioc4_serial driver is worse.  It assumes that it can set/clear
+> > ASYNC_CTS_FLOW in the uart_info flags field, which is private to
+> > serial_core.  It also seems to set TTY_IO_ERROR followed by immediately
+> > clearing it (pointless), and then it writes to tty->alt_speed... which
+> > isn't used by the serial layer so is also pointless.
+> > 
+> > So, here's a patch to fix some of this crap up.  Please test and
+> > enjoy - I certainly didn't.
+...
+> >  drivers/serial/m32r_sio.c                  |    2 +-
+> >  18 files changed, 32 insertions(+), 51 deletions(-)
+...
+> > +++ b/arch/mips/cobalt/setup.c
+> > diff --git a/drivers/serial/m32r_sio.c b/drivers/serial/m32r_sio.c
+> > --- a/drivers/serial/m32r_sio.c
+> > +++ b/drivers/serial/m32r_sio.c
+> > @@ -80,7 +80,7 @@
+> >  #include <asm/serial.h>
+> >  
+> >  /* Standard COM flags */
+> > -#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
+> > +#define STD_COM_FLAGS (UPF_BOOT_AUTOCONF | UPF_SKIP_TEST)
+> >  
+> >  /*
+> >   * SERIAL_PORT_DFNS tells us about built-in ports that have no
+> 
+> -- 
+> Russell King
+>  Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
+>  maintainer of:  2.6 Serial core
+> 

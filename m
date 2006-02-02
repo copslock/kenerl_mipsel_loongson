@@ -1,129 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 16:29:31 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:42188 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S3465640AbWBBQ3N (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2006 16:29:13 +0000
-Received: from localhost (p4005-ipad24funabasi.chiba.ocn.ne.jp [220.104.82.5])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 5480D16D2; Fri,  3 Feb 2006 01:34:21 +0900 (JST)
-Date:	Fri, 03 Feb 2006 01:34:01 +0900 (JST)
-Message-Id: <20060203.013401.41198517.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] TX49 MFC0 bug workaround
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 16:33:45 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:17681 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S3465640AbWBBQd1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Feb 2006 16:33:27 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 88C4BF5A5C;
+	Thu,  2 Feb 2006 17:38:34 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 10280-04; Thu,  2 Feb 2006 17:38:34 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 26BB0E1C82;
+	Thu,  2 Feb 2006 17:38:34 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k12GcPlw009548;
+	Thu, 2 Feb 2006 17:38:25 +0100
+Date:	Thu, 2 Feb 2006 16:38:37 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] TX49 MFC0 bug workaround
+In-Reply-To: <20060203.013401.41198517.anemo@mba.ocn.ne.jp>
+Message-ID: <Pine.LNX.4.64N.0602021636380.11727@blysk.ds.pg.gda.pl>
+References: <20060203.013401.41198517.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87.1/1270/Thu Feb  2 13:47:37 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10305
+X-archive-position: 10306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-If mfc0 $12 follows store and the mfc0 is last instruction of a
-page and fetching the next instruction causes TLB miss, the result
-of the mfc0 might wrongly contain EXL bit.
+On Fri, 3 Feb 2006, Atsushi Nemoto wrote:
 
-ERT-TX49H2-027, ERT-TX49H3-012, ERT-TX49HL3-006, ERT-TX49H4-008
+> Workaround: mask EXL bit of the result or place a nop before mfc0.
+[...]
+> @@ -55,8 +56,13 @@ __asm__ (
+>  	"	di							\n"
+>  #else
+>  	"	mfc0	$1,$12						\n"
+> +#if TX49XX_MFC0_WAR && defined(MODULE)
+> +	"	ori	$1,3						\n"
+> +	"	xori	$1,3						\n"
+> +#else
+>  	"	ori	$1,1						\n"
+>  	"	xori	$1,1						\n"
+> +#endif
+>  	"	.set	noreorder					\n"
+>  	"	mtc0	$1,$12						\n"
+>  #endif
 
-Workaround: mask EXL bit of the result or place a nop before mfc0.
+ Hmm, wouldn't that "nop" alternative be simpler?
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-diff --git a/include/asm-mips/interrupt.h b/include/asm-mips/interrupt.h
-index 0da5818..951ee7a 100644
---- a/include/asm-mips/interrupt.h
-+++ b/include/asm-mips/interrupt.h
-@@ -13,6 +13,7 @@
- 
- #include <linux/config.h>
- #include <asm/hazards.h>
-+#include <asm/war.h>
- 
- __asm__ (
- 	"	.macro	local_irq_enable				\n"
-@@ -55,8 +56,13 @@ __asm__ (
- 	"	di							\n"
- #else
- 	"	mfc0	$1,$12						\n"
-+#if TX49XX_MFC0_WAR && defined(MODULE)
-+	"	ori	$1,3						\n"
-+	"	xori	$1,3						\n"
-+#else
- 	"	ori	$1,1						\n"
- 	"	xori	$1,1						\n"
-+#endif
- 	"	.set	noreorder					\n"
- 	"	mtc0	$1,$12						\n"
- #endif
-@@ -96,8 +102,13 @@ __asm__ (
- 	"	andi	\\result, 1					\n"
- #else
- 	"	mfc0	\\result, $12					\n"
-+#if TX49XX_MFC0_WAR && defined(MODULE)
-+	"	ori	$1, \\result, 3					\n"
-+	"	xori	$1, 3						\n"
-+#else
- 	"	ori	$1, \\result, 1					\n"
- 	"	xori	$1, 1						\n"
-+#endif
- 	"	.set	noreorder					\n"
- 	"	mtc0	$1, $12						\n"
- #endif
-@@ -136,8 +147,13 @@ __asm__ (
- #else
- 	"	mfc0	$1, $12						\n"
- 	"	andi	\\flags, 1					\n"
-+#if TX49XX_MFC0_WAR && defined(MODULE)
-+	"	ori	$1, 3						\n"
-+	"	xori	$1, 3						\n"
-+#else
- 	"	ori	$1, 1						\n"
- 	"	xori	$1, 1						\n"
-+#endif
- 	"	or	\\flags, $1					\n"
- 	"	mtc0	\\flags, $12					\n"
- #endif
-diff --git a/include/asm-mips/war.h b/include/asm-mips/war.h
-index ad374bd..859520a 100644
---- a/include/asm-mips/war.h
-+++ b/include/asm-mips/war.h
-@@ -169,6 +169,19 @@
- #endif
- 
- /*
-+ * If mfc0 $12 follows store and the mfc0 is last instruction of a
-+ * page and fetching the next instruction causes TLB miss, the result
-+ * of the mfc0 might wrongly contain EXL bit.
-+ *
-+ * ERT-TX49H2-027, ERT-TX49H3-012, ERT-TX49HL3-006, ERT-TX49H4-008
-+ *
-+ * Workaround: mask EXL bit of the result or place a nop before mfc0.
-+ */
-+#ifdef CONFIG_CPU_TX49XX
-+#define TX49XX_MFC0_WAR 1
-+#endif
-+
-+/*
-  * On the RM9000 there is a problem which makes the CreateDirtyExclusive
-  * cache operation unusable on SMP systems.
-  */
-@@ -228,6 +241,9 @@
- #ifndef TX49XX_ICACHE_INDEX_INV_WAR
- #define TX49XX_ICACHE_INDEX_INV_WAR	0
- #endif
-+#ifndef TX49XX_MFC0_WAR
-+#define TX49XX_MFC0_WAR	0
-+#endif
- #ifndef RM9000_CDEX_SMP_WAR
- #define RM9000_CDEX_SMP_WAR		0
- #endif
+  Maciej

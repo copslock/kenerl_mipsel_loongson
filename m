@@ -1,67 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 16:51:51 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:36363 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S3465645AbWBBQve (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Feb 2006 16:51:34 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k12Guu7n021042;
-	Thu, 2 Feb 2006 16:56:56 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k12Guuxa021041;
-	Thu, 2 Feb 2006 16:56:56 GMT
-Date:	Thu, 2 Feb 2006 16:56:56 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 16:59:58 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:52729 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S3465642AbWBBQ7k (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2006 16:59:40 +0000
+Received: from localhost (p4005-ipad24funabasi.chiba.ocn.ne.jp [220.104.82.5])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A951AB4A8; Fri,  3 Feb 2006 02:04:48 +0900 (JST)
+Date:	Fri, 03 Feb 2006 02:04:28 +0900 (JST)
+Message-Id: <20060203.020428.59032357.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] TX49 MFC0 bug workaround
-Message-ID: <20060202165656.GC17352@linux-mips.org>
-References: <20060203.013401.41198517.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0602021636380.11727@blysk.ds.pg.gda.pl>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060202165656.GC17352@linux-mips.org>
+References: <20060203.013401.41198517.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.64N.0602021636380.11727@blysk.ds.pg.gda.pl>
+	<20060202165656.GC17352@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0602021636380.11727@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10309
+X-archive-position: 10310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 02, 2006 at 04:38:37PM +0000, Maciej W. Rozycki wrote:
-> Date:	Thu, 2 Feb 2006 16:38:37 +0000 (GMT)
-> From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-> To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-> Subject: Re: [PATCH] TX49 MFC0 bug workaround
-> Content-Type: TEXT/PLAIN; charset=US-ASCII
-> 
-> On Fri, 3 Feb 2006, Atsushi Nemoto wrote:
-> 
-> > Workaround: mask EXL bit of the result or place a nop before mfc0.
-> [...]
-> > @@ -55,8 +56,13 @@ __asm__ (
-> >  	"	di							\n"
-> >  #else
-> >  	"	mfc0	$1,$12						\n"
-> > +#if TX49XX_MFC0_WAR && defined(MODULE)
-> > +	"	ori	$1,3						\n"
-> > +	"	xori	$1,3						\n"
-> > +#else
-> >  	"	ori	$1,1						\n"
-> >  	"	xori	$1,1						\n"
-> > +#endif
-> >  	"	.set	noreorder					\n"
-> >  	"	mtc0	$1,$12						\n"
-> >  #endif
-> 
->  Hmm, wouldn't that "nop" alternative be simpler?
+>>>>> On Thu, 2 Feb 2006 16:56:56 +0000, Ralf Baechle <ralf@linux-mips.org> said:
 
-Simpler maybe - but this variant has zero runtime overhead.
+>> Hmm, wouldn't that "nop" alternative be simpler?
 
-  Ralf
+ralf> Simpler maybe - but this variant has zero runtime overhead.
+
+Yes.  I do not want do add extra cycles.
+
+However, It can be more readable since we can safely mask bit[5:1] (as
+local_irq_enable() does).  Like this:
+
+__asm__ (
+	"	.macro	local_irq_disable\n"
+	"	.set	push						\n"
+	"	.set	noat						\n"
+#ifdef CONFIG_CPU_MIPSR2
+	"	di							\n"
+#else
+	"	mfc0	$1,$12						\n"
+	"	ori	$1,0x1f						\n"
+	"	xori	$1,0x1f						\n"
+	"	.set	noreorder					\n"
+	"	mtc0	$1,$12						\n"
+#endif
+	"	irq_disable_hazard					\n"
+	"	.set	pop						\n"
+	"	.endm							\n");
+
+
+Is this preferred?  We can get rid of all TX49XX_MFC0_WAR on this way.
+
+---
+Atsushi Nemoto

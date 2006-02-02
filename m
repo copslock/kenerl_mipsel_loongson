@@ -1,88 +1,211 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 11:51:18 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:60701 "EHLO
-	bacchus.net.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133406AbWBBLu6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Feb 2006 11:50:58 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.net.dhis.org (8.13.4/8.13.4) with ESMTP id k12BtXjK005974;
-	Thu, 2 Feb 2006 11:55:40 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k11BU7SJ003774;
-	Wed, 1 Feb 2006 11:30:07 GMT
-Date:	Wed, 1 Feb 2006 11:30:07 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Philip Mucci <mucci@cs.utk.edu>
-Cc:	Linux MIPS <linux-mips@linux-mips.org>
-Subject: Re: /dev/cpuid or /proc/cpuinfo
-Message-ID: <20060201113006.GA3562@linux-mips.org>
-References: <Pine.LNX.4.44.0601271349350.2185-100000@bharathi.midascomm.com> <1138647269.4077.11.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2006 12:45:20 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:290 "EHLO
+	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
+	id S8133406AbWBBMpB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Feb 2006 12:45:01 +0000
+Received: from mail01 (localhost.localdomain [127.0.0.1])
+	by mail01.miraclelinux.com (Postfix) with ESMTP
+	id EBEE831C286; Thu,  2 Feb 2006 21:50:08 +0900 (JST)
+Received: from localhost.localdomain (sshgate.miraclelinux.com [])
+	by mail01.miraclelinux.com ([10.1.0.10]);
+	Thu, 02 Feb 2006 12:50:08 +0000
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 5FE544201E0; Thu,  2 Feb 2006 21:50:07 +0900 (JST)
+Date:	Thu, 2 Feb 2006 21:50:07 +0900
+To:	Andi Kleen <ak@suse.de>
+Cc:	Michael Tokarev <mjt@tls.msk.ru>, linux-kernel@vger.kernel.org,
+	Richard Henderson <rth@twiddle.net>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Russell King <rmk@arm.linux.org.uk>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Chris Zankel <chris@zankel.net>
+Subject: Re: [patch 14/44] generic hweight{64,32,16,8}()
+Message-ID: <20060202125007.GA5918@miraclelinux.com>
+References: <20060201090224.536581000@localhost.localdomain> <200602011006.09596.ak@suse.de> <43E07EB2.4020409@tls.msk.ru> <200602011124.29423.ak@suse.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1138647269.4077.11.camel@localhost.localdomain>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <200602011124.29423.ak@suse.de>
+User-Agent: Mutt/1.5.9i
+From:	mita@miraclelinux.com (Akinobu Mita)
+Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10298
+X-archive-position: 10299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 30, 2006 at 06:54:29PM +0000, Philip Mucci wrote:
-
-> In reference to the performance counting thread we had going earlier,
-> I've noticed a 'feature' I need out of MIPS/Linux that isn't currently
-> available. This has also recently come up on the oprofile list with one
-> of the oprofile/mips tools not being able to grab cpu Mhz
-> from /proc/cpuinfo because it's not there.
-
-Surprise - the kernel doesn't actually have that information.  The closest
-available would be the counting speed of the c0 count register which - if
-something like that is available at all - could be calibrated against an
-external counter to figure out the clock speed.  To complicate matters
-not all processors have have a c0 counter, it's sometimes incrementing
-every cycle but it might just as well counting at half the clock rate and
-oh yes, more recently there is clock scaling.
-
-> I have need to execute the mfc0 instruction on the config register and
-> grok the results to find out things like cache size etc. In addition, it
-> might be nice to also actually be able to find out the clock rate.
-> (Currently I grab BogoMIPS and punt.)
-
-Considering above complexities a BogoMIPS-based approach doesn't sound too
-bad - but it has other problem to implement since it requires knowing the
-exact execution timing.  A think that could be done is meassuring two
-loops containing a different number of nops and use that to compute the
-execution time for the loop closing branch.  Now knowing that based on
-knowing the # of cycles per loop we can compute the clock speed - all it
-takes is a timer running at a known speed.
-
-A funny complexity is that some multiprocessor MIPS systems have processors
-running at different speeds.  So knowing the clock rate doesn't make life
-too much easier ;-)
-
-> On the intel and PPC systems, I believe you can execute similar
-> instructions from user mode which makes things easy. However, of course
-> an MFC0 is a privileged instruction...meaning that if the value or
-> values aren't found in /proc/cpuinfo, I'm s.o.l.
-
-We have a long tradition of emulating instructions, could use that to
-permit access to a bunch of cp0 registers from userland ;)
-
-> What does the list think about this? Making a mips /dev/cpuid is a bit
-> gross but extending and grokking /proc/cpuinfo is perhaps grosser...and
-> many tools do just this (like PAPI and oprofile's opreport...)
+On Wed, Feb 01, 2006 at 11:24:27AM +0100, Andi Kleen wrote:
+> On Wednesday 01 February 2006 10:26, Michael Tokarev wrote:
+> > Andi Kleen wrote:
+> > > On Wednesday 01 February 2006 10:02, Akinobu Mita wrote:
+> > > 
+> > >>+static inline unsigned int hweight32(unsigned int w)
+> > []
+> > > How large are these functions on x86? Maybe it would be better to not inline them,
+> > > but put it into some C file out of line.
+> > 
+> > hweight8	47 bytes
+> > hweight16	76 bytes
+> > hweight32	97 bytes
+> > hweight64	56 bytes (NOT inlining hweight32)
+> > hweight64	197 bytes (inlining hweight32)
+> > 
+> > Those are when compiled as separate non-inlined functions,
+> > with pushl %ebp and ret.
 > 
-> Comments? I'm certainly willing to implement this, but I'd rather 'do it
-> right the first time' rather than get rotten vegetables thrown my way.
+> This would argue for moving them out of line.
 
-/proc/cpuinfo is meant to have per processor information so I don't have
-a problem with adding cache configuration information.  I was considering
-to do so to make such information available for bug reports.
+This patch will put hweight*() into lib/hweight.c
 
-  Ralf
+Index: 2.6-git/include/asm-generic/bitops/hweight.h
+===================================================================
+--- 2.6-git.orig/include/asm-generic/bitops/hweight.h
++++ 2.6-git/include/asm-generic/bitops/hweight.h
+@@ -1,54 +1,9 @@
+ #ifndef _ASM_GENERIC_BITOPS_HWEIGHT_H_
+ #define _ASM_GENERIC_BITOPS_HWEIGHT_H_
+ 
+-#include <asm/types.h>
+-
+-/**
+- * hweightN - returns the hamming weight of a N-bit word
+- * @x: the word to weigh
+- *
+- * The Hamming Weight of a number is the total number of bits set in it.
+- */
+-
+-static inline unsigned int hweight32(unsigned int w)
+-{
+-        unsigned int res = (w & 0x55555555) + ((w >> 1) & 0x55555555);
+-        res = (res & 0x33333333) + ((res >> 2) & 0x33333333);
+-        res = (res & 0x0F0F0F0F) + ((res >> 4) & 0x0F0F0F0F);
+-        res = (res & 0x00FF00FF) + ((res >> 8) & 0x00FF00FF);
+-        return (res & 0x0000FFFF) + ((res >> 16) & 0x0000FFFF);
+-}
+-
+-static inline unsigned int hweight16(unsigned int w)
+-{
+-        unsigned int res = (w & 0x5555) + ((w >> 1) & 0x5555);
+-        res = (res & 0x3333) + ((res >> 2) & 0x3333);
+-        res = (res & 0x0F0F) + ((res >> 4) & 0x0F0F);
+-        return (res & 0x00FF) + ((res >> 8) & 0x00FF);
+-}
+-
+-static inline unsigned int hweight8(unsigned int w)
+-{
+-        unsigned int res = (w & 0x55) + ((w >> 1) & 0x55);
+-        res = (res & 0x33) + ((res >> 2) & 0x33);
+-        return (res & 0x0F) + ((res >> 4) & 0x0F);
+-}
+-
+-static inline unsigned long hweight64(__u64 w)
+-{
+-#if BITS_PER_LONG == 32
+-	return hweight32((unsigned int)(w >> 32)) + hweight32((unsigned int)w);
+-#elif BITS_PER_LONG == 64
+-	u64 res;
+-	res = (w & 0x5555555555555555ul) + ((w >> 1) & 0x5555555555555555ul);
+-	res = (res & 0x3333333333333333ul) + ((res >> 2) & 0x3333333333333333ul);
+-	res = (res & 0x0F0F0F0F0F0F0F0Ful) + ((res >> 4) & 0x0F0F0F0F0F0F0F0Ful);
+-	res = (res & 0x00FF00FF00FF00FFul) + ((res >> 8) & 0x00FF00FF00FF00FFul);
+-	res = (res & 0x0000FFFF0000FFFFul) + ((res >> 16) & 0x0000FFFF0000FFFFul);
+-	return (res & 0x00000000FFFFFFFFul) + ((res >> 32) & 0x00000000FFFFFFFFul);
+-#else
+-#error BITS_PER_LONG not defined
+-#endif
+-}
++extern unsigned int hweight32(unsigned int w);
++extern unsigned int hweight16(unsigned int w);
++extern unsigned int hweight8(unsigned int w);
++extern unsigned long hweight64(__u64 w);
+ 
+ #endif /* _ASM_GENERIC_BITOPS_HWEIGHT_H_ */
+Index: 2.6-git/lib/Makefile
+===================================================================
+--- 2.6-git.orig/lib/Makefile
++++ 2.6-git/lib/Makefile
+@@ -5,7 +5,7 @@
+ lib-y := errno.o ctype.o string.o vsprintf.o cmdline.o \
+ 	 bust_spinlocks.o rbtree.o radix-tree.o dump_stack.o \
+ 	 idr.o div64.o int_sqrt.o bitmap.o extable.o prio_tree.o \
+-	 sha1.o
++	 sha1.o hweight.o
+ 
+ lib-y	+= kobject.o kref.o kobject_uevent.o klist.o
+ 
+Index: 2.6-git/lib/hweight.c
+===================================================================
+--- /dev/null
++++ 2.6-git/lib/hweight.c
+@@ -0,0 +1,54 @@
++#include <linux/module.h>
++#include <asm/types.h>
++
++/**
++ * hweightN - returns the hamming weight of a N-bit word
++ * @x: the word to weigh
++ *
++ * The Hamming Weight of a number is the total number of bits set in it.
++ */
++
++unsigned int hweight32(unsigned int w)
++{
++        unsigned int res = (w & 0x55555555) + ((w >> 1) & 0x55555555);
++        res = (res & 0x33333333) + ((res >> 2) & 0x33333333);
++        res = (res & 0x0F0F0F0F) + ((res >> 4) & 0x0F0F0F0F);
++        res = (res & 0x00FF00FF) + ((res >> 8) & 0x00FF00FF);
++        return (res & 0x0000FFFF) + ((res >> 16) & 0x0000FFFF);
++}
++EXPORT_SYMBOL(hweight32);
++
++unsigned int hweight16(unsigned int w)
++{
++        unsigned int res = (w & 0x5555) + ((w >> 1) & 0x5555);
++        res = (res & 0x3333) + ((res >> 2) & 0x3333);
++        res = (res & 0x0F0F) + ((res >> 4) & 0x0F0F);
++        return (res & 0x00FF) + ((res >> 8) & 0x00FF);
++}
++EXPORT_SYMBOL(hweight16);
++
++unsigned int hweight8(unsigned int w)
++{
++        unsigned int res = (w & 0x55) + ((w >> 1) & 0x55);
++        res = (res & 0x33) + ((res >> 2) & 0x33);
++        return (res & 0x0F) + ((res >> 4) & 0x0F);
++}
++EXPORT_SYMBOL(hweight8);
++
++unsigned long hweight64(__u64 w)
++{
++#if BITS_PER_LONG == 32
++	return hweight32((unsigned int)(w >> 32)) + hweight32((unsigned int)w);
++#elif BITS_PER_LONG == 64
++	u64 res;
++	res = (w & 0x5555555555555555ul) + ((w >> 1) & 0x5555555555555555ul);
++	res = (res & 0x3333333333333333ul) + ((res >> 2) & 0x3333333333333333ul);
++	res = (res & 0x0F0F0F0F0F0F0F0Ful) + ((res >> 4) & 0x0F0F0F0F0F0F0F0Ful);
++	res = (res & 0x00FF00FF00FF00FFul) + ((res >> 8) & 0x00FF00FF00FF00FFul);
++	res = (res & 0x0000FFFF0000FFFFul) + ((res >> 16) & 0x0000FFFF0000FFFFul);
++	return (res & 0x00000000FFFFFFFFul) + ((res >> 32) & 0x00000000FFFFFFFFul);
++#else
++#error BITS_PER_LONG not defined
++#endif
++}
++EXPORT_SYMBOL(hweight64);

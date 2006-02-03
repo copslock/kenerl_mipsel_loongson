@@ -1,55 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Feb 2006 01:12:34 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:49180 "HELO
-	topsns.toshiba-tops.co.jp") by ftp.linux-mips.org with SMTP
-	id S3466500AbWBCBL5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 3 Feb 2006 01:11:57 +0000
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with SMTP; 3 Feb 2006 01:17:10 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id CBA0620336;
-	Fri,  3 Feb 2006 10:17:07 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id B730820177;
-	Fri,  3 Feb 2006 10:17:07 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k131H64D022123;
-	Fri, 3 Feb 2006 10:17:06 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 03 Feb 2006 10:17:05 +0900 (JST)
-Message-Id: <20060203.101705.41198541.nemoto@toshiba-tops.co.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] TX49 MFC0 bug workaround
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <43E25381.4060309@ru.mvista.com>
-References: <20060203.013401.41198517.anemo@mba.ocn.ne.jp>
-	<43E25381.4060309@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Feb 2006 01:23:46 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:29255 "EHLO
+	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
+	id S8133427AbWBCBW0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 3 Feb 2006 01:22:26 +0000
+Received: from mail01 (localhost.localdomain [127.0.0.1])
+	by mail01.miraclelinux.com (Postfix) with ESMTP
+	id 2D14031C2DA; Fri,  3 Feb 2006 10:27:37 +0900 (JST)
+Received: from localhost.localdomain (sshgate.miraclelinux.com [])
+	by mail01.miraclelinux.com ([10.1.0.10]);
+	Fri, 03 Feb 2006 01:27:37 +0000
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 34BC54201E0; Fri,  3 Feb 2006 10:27:35 +0900 (JST)
+Date:	Fri, 3 Feb 2006 10:27:35 +0900
+To:	Rune Torgersen <runet@innovsys.com>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-ia64@vger.kernel.org, Ian Molton <spyro@f2s.com>,
+	David Howells <dhowells@redhat.com>, linuxppc-dev@ozlabs.org,
+	Greg Ungerer <gerg@uclinux.org>, sparclinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Linus Torvalds <torvalds@osdl.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	linux-m68k@lists.linux-m68k.org,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Richard Henderson <rth@twiddle.net>,
+	Chris Zankel <chris@zankel.net>, dev-etrax@axis.com,
+	ultralinux@vger.kernel.org, Andi Kleen <ak@suse.de>,
+	linuxsh-dev@lists.sourceforge.net, linux390@de.ibm.com,
+	Russell King <rmk@arm.linux.org.uk>,
+	parisc-linux@parisc-linux.org, akpm@osdl.org,
+	Stephen Hemminger <shemminger@osdl.org>
+Subject: [PATCH] fix generic_fls64()
+Message-ID: <20060203012735.GA21567@miraclelinux.com>
+References: <DCEAAC0833DD314AB0B58112AD99B93B859547@ismail.innsys.innovsys.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DCEAAC0833DD314AB0B58112AD99B93B859547@ismail.innsys.innovsys.com>
+User-Agent: Mutt/1.5.9i
+From:	mita@miraclelinux.com (Akinobu Mita)
+Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10315
+X-archive-position: 10316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Thu, 02 Feb 2006 21:46:25 +0300, Sergei Shtylylov <sshtylyov@ru.mvista.com> said:
->> If mfc0 $12 follows store and the mfc0 is last instruction of a
->> page and fetching the next instruction causes TLB miss, the result
->> of the mfc0 might wrongly contain EXL bit.
+Noticed by Rune Torgersen.
 
-sshtylyov>     Hmm, a TLB miss in fetching from KSEG0?!
+fix generic_fls64().
+tcp_cubic is using fls64().
 
-We can call these inline functions from modules running on KSEG2.
+Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
 
----
-Atsushi Nemoto
+ include/linux/bitops.h |    2 +-
+ 1 files changed, 1 insertion(+), 1 deletion(-)
+
+Index: 2.6-git/include/linux/bitops.h
+===================================================================
+--- 2.6-git.orig/include/linux/bitops.h
++++ 2.6-git/include/linux/bitops.h
+@@ -81,7 +81,7 @@ static inline int generic_fls64(__u64 x)
+ {
+ 	__u32 h = x >> 32;
+ 	if (h)
+-		return fls(x) + 32;
++		return fls(h) + 32;
+ 	return fls(x);
+ }
+ 

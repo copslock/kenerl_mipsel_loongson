@@ -1,58 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Feb 2006 05:09:31 +0000 (GMT)
-Received: from topsns.toshiba-tops.co.jp ([202.230.225.5]:29204 "HELO
-	topsns.toshiba-tops.co.jp") by ftp.linux-mips.org with SMTP
-	id S8126537AbWBCFJN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 3 Feb 2006 05:09:13 +0000
-Received: from inside-ms1.toshiba-tops.co.jp by topsns.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with SMTP; 3 Feb 2006 05:14:27 UT
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 9DC5D203A3;
-	Fri,  3 Feb 2006 14:14:25 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 89D40201FC;
-	Fri,  3 Feb 2006 14:14:25 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k135EO4D023175;
-	Fri, 3 Feb 2006 14:14:25 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 03 Feb 2006 14:14:24 +0900 (JST)
-Message-Id: <20060203.141424.72708300.nemoto@toshiba-tops.co.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH] local_r4k_flush_cache_page fix
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
-References: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Feb 2006 08:28:29 +0000 (GMT)
+Received: from mail.domino-uk.com ([193.131.116.193]:43535 "EHLO
+	vMIMEsweeper.dps.local") by ftp.linux-mips.org with ESMTP
+	id S8133350AbWBCI2K (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 3 Feb 2006 08:28:10 +0000
+Received: from dps-exchange1.dps.local (dps-exchange1) by vMIMEsweeper.dps.local
+ (Clearswift SMTPRS 5.0.4) with ESMTP id <T763b741b76c18374c1ba8@vMIMEsweeper.dps.local>;
+ Fri, 3 Feb 2006 08:33:25 +0000
+Received: from emea-exchange3.emea.dps.local ([192.168.50.10]) by dps-exchange1.dps.local with Microsoft SMTPSVC(5.0.2195.6713);
+	 Fri, 3 Feb 2006 08:33:25 +0000
+Received: from tuxator2.emea.dps.local ([192.168.55.75]) by emea-exchange3.emea.dps.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 3 Feb 2006 09:26:27 +0100
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	Akinobu Mita <mita@miraclelinux.com>
+Subject: Re: [patch 14/44] generic hweight{64,32,16,8}()
+Date:	Fri, 3 Feb 2006 09:31:42 +0100
+User-Agent: KMail/1.8.3
+Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Russell King <rmk@arm.linux.org.uk>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@lists.linux-m68k.org, Greg Ungerer <gerg@uclinux.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linux390@de.ibm.com,
+	linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
+References: <20060201090224.536581000@localhost.localdomain> <20060201090325.905071000@localhost.localdomain>
+In-Reply-To: <20060201090325.905071000@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+Message-Id: <200602030931.43686.eckhardt@satorlaser.com>
+X-OriginalArrivalTime: 03 Feb 2006 08:26:27.0578 (UTC) FILETIME=[86F36DA0:01C6289B]
+Return-Path: <Eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10323
+X-archive-position: 10324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 01 Feb 2006 00:03:56 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
-anemo> If dcache_size != icache_size or dcache_size != scache_size,
-anemo> icache/scache does not flushed properly.  Use correct cache
-anemo> size to calculate index value for scache/icache.
+On Wednesday 01 February 2006 10:02, Akinobu Mita wrote:
+> unsigned int hweight32(unsigned int w);
+> unsigned int hweight16(unsigned int w);
+> unsigned int hweight8(unsigned int w);
+> unsigned long hweight64(__u64 w);
 
-Sorry, this patch was wrong !
+IMHO, this should use explicitly sized integers like __u8, __u16 etc, unless 
+there are stringent reasons like better register use - which is hard to tell 
+for generic C code. Also, why on earth is the returntype for hweight64 a 
+long?
 
-We should use mask value based on the waysize (not whole cache size).
+> +static inline unsigned int hweight32(unsigned int w)
+> +{
+> +        unsigned int res = (w & 0x55555555) + ((w >> 1) & 0x55555555);
+> +        res = (res & 0x33333333) + ((res >> 2) & 0x33333333);
+[...]
 
-And now I think it would be better to do it in __BUILD_BLAST_CACHE().
+Why not use unsigned constants here?
 
-I'll post a new patch later.
+> +static inline unsigned long hweight64(__u64 w)
+> +{
+[..]
+> +	u64 res;
+> +	res = (w & 0x5555555555555555ul) + ((w >> 1) & 0x5555555555555555ul);
 
----
-Atsushi Nemoto
+Why not use initialisation here, too?
+
+just my 2c
+
+Uli

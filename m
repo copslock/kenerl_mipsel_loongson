@@ -1,65 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 17:32:53 +0000 (GMT)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:55991 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S3458530AbWBFRc2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Feb 2006 17:32:28 +0000
-Received: (qmail 11102 invoked from network); 6 Feb 2006 17:37:41 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 6 Feb 2006 17:37:41 -0000
-Message-ID: <43E78A2C.2000104@ru.mvista.com>
-Date:	Mon, 06 Feb 2006 20:41:00 +0300
-From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 18:06:40 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:38414 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S3458582AbWBFSGI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Feb 2006 18:06:08 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 86AE564D3D; Mon,  6 Feb 2006 18:11:39 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id CD2198D2D; Mon,  6 Feb 2006 18:11:17 +0000 (GMT)
+Date:	Mon, 6 Feb 2006 18:11:17 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	"Stephen P. Becker" <geoman@gentoo.org>
+Cc:	'Linux/MIPS Development' <linux-mips@linux-mips.org>
+Subject: Re: Has anyone seen O2 crashes?
+Message-ID: <20060206181117.GD25192@deprecation.cyrius.com>
+References: <20060206151754.GA22181@deprecation.cyrius.com> <43E7735B.4050307@gentoo.org>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-CC:	Jordan Crouse <jordan.crouse@amd.com>,
-	David Sanchez <david.sanchez@lexbox.fr>,
-	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Subject: Re: Au1xx0: really set KSEG0 to uncached on reboot
-References: <17AB476A04B7C842887E0EB1F268111E027447@xpserver.intra.lexbox.org> <20060206152516.GA10615@cosmic.amd.com>
-In-Reply-To: <20060206152516.GA10615@cosmic.amd.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <43E7735B.4050307@gentoo.org>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10350
+X-archive-position: 10351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+* Stephen P. Becker <geoman@gentoo.org> [2006-02-06 11:03]:
+> I had over 60 days of uptime recently with some variant of 2.6.15 (-rc5 
+> I think), and the machine was hammered fairly hard during that time with 
+> plenty of compiling, including significant portions of KDE.  I have run 
+> both the 2.6.15 tag from lmo git, and now I'm on 2.6.16-rc1.  It still 
 
-Jordan Crouse wrote:
-> On 06/02/06 09:10 +0100, David Sanchez wrote:
-> 
->>Hi,
->>
->>This is exactly what I did...
->>But I notice that sometimes it works and sometimes the kernel frees when 
-
-    You mean "freezes" probably? :-)
-
->>"** Resetting Integrated Peripherals"
-
-    This is not kernel's msg, but YAMON's one...
-
-> We'll need to nail this down before we go any further.  Can we get a trace
-> of what happens when it crashes?
-
-    David, do you have BCSR fix from:
-
-http://www.linux-mips.org/archives/linux-mips/2005-10/msg00236.html
-
-applied (the recent kernel has it but which one are you using?)?
-DBAu1550 reset may not work as expeceted otherwise indeed...
-
-> Jordan
-
-WBR, Sergei
+OK, thanks for the confirmation.  I'll see what's going on here.
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

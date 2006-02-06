@@ -1,63 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 10:21:01 +0000 (GMT)
-Received: from mx1.redhat.com ([66.187.233.31]:54198 "EHLO mx1.redhat.com")
-	by ftp.linux-mips.org with ESMTP id S3458455AbWBFKUx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Feb 2006 10:20:53 +0000
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.11/8.12.11) with ESMTP id k16AQHTE016876;
-	Mon, 6 Feb 2006 05:26:17 -0500
-Received: from file.cambridge.redhat.com (file.cambridge.redhat.com [172.16.18.10])
-	by int-mx1.corp.redhat.com (8.11.6/8.11.6) with ESMTP id k16AQC112662;
-	Mon, 6 Feb 2006 05:26:13 -0500
-Received: from warthog.cambridge.redhat.com (warthog.cambridge.redhat.com [172.16.18.73])
-	by file.cambridge.redhat.com (8.11.6/8.11.6) with ESMTP id k16AQB118919;
-	Mon, 6 Feb 2006 10:26:11 GMT
-Received: from warthog.cambridge.redhat.com (localhost.localdomain [127.0.0.1])
-	by warthog.cambridge.redhat.com (8.13.4/8.13.4) with ESMTP id k16AQ0kQ012368;
-	Mon, 6 Feb 2006 10:26:01 GMT
-From:	David Howells <dhowells@redhat.com>
-In-Reply-To: <20060201090324.373982000@localhost.localdomain> 
-References: <20060201090324.373982000@localhost.localdomain>  <20060201090224.536581000@localhost.localdomain> 
-To:	Akinobu Mita <mita@miraclelinux.com>
-Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, dev-etrax@axis.com,
-	David Howells <dhowells@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	linux-ia64@vger.kernel.org,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	Greg Ungerer <gerg@uclinux.org>, linux-mips@linux-mips.org,
-	parisc-linux@parisc-linux.org, linuxsh-dev@lists.sourceforge.net,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
-	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
-	Chris Zankel <chris@zankel.net>
-Subject: Re: [patch 11/44] generic find_{next,first}{,_zero}_bit() 
-X-Mailer: MH-E 7.84; nmh 1.1; GNU Emacs 22.0.50.1
-Date:	Mon, 06 Feb 2006 10:26:00 +0000
-Message-ID: <12367.1139221560@warthog.cambridge.redhat.com>
-Return-Path: <dhowells@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 10:32:40 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:48645 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S3458326AbWBFKcc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Feb 2006 10:32:32 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 4FCBFF59E9;
+	Mon,  6 Feb 2006 11:38:03 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 06087-04; Mon,  6 Feb 2006 11:38:03 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 043B5E1C7A;
+	Mon,  6 Feb 2006 11:38:02 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k16Abtl9012177;
+	Mon, 6 Feb 2006 11:37:55 +0100
+Date:	Mon, 6 Feb 2006 10:38:02 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	"Peter 'p2' De Schrijver" <p2@mind.be>, linux-mips@linux-mips.org
+Subject: Re: DECstation R3000 boot error
+In-Reply-To: <20060203150232.GA25701@deprecation.cyrius.com>
+Message-ID: <Pine.LNX.4.64N.0602061021110.32080@blysk.ds.pg.gda.pl>
+References: <20060123225040.GA23576@deprecation.cyrius.com>
+ <Pine.LNX.4.64N.0601241059140.11021@blysk.ds.pg.gda.pl>
+ <20060124122700.GA8527@deprecation.cyrius.com>
+ <Pine.LNX.4.64N.0601241227290.11021@blysk.ds.pg.gda.pl> <20060124232117.GA4165@codecarver>
+ <Pine.LNX.4.64N.0601251103020.7675@blysk.ds.pg.gda.pl>
+ <20060203150232.GA25701@deprecation.cyrius.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87.1/1277/Sun Feb  5 14:22:21 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10341
+X-archive-position: 10342
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Akinobu Mita <mita@miraclelinux.com> wrote:
+On Fri, 3 Feb 2006, Martin Michlmayr wrote:
 
-> This patch introduces the C-language equivalents of the functions below:
+> > and it obviously cannot work on a MIPS I processor.  That's probably from 
+> > broken assembly code somewhere -- I should have my sources updated within 
+> > a few days and I'll see if I can reproduce the problem.
 > 
-> unsigned logn find_next_bit(const unsigned long *addr, unsigned long size,
->                             unsigned long offset);
-> unsigned long find_next_zero_bit(const unsigned long *addr, unsigned long size,
->                                  unsigned long offset);
-> unsigned long find_first_zero_bit(const unsigned long *addr,
->                                   unsigned long size);
-> unsigned long find_first_bit(const unsigned long *addr, unsigned long size);
+> Did you have a chance to look at this?
 
-These big functions should perhaps be out of line.
+ Not yet, sorry.  I have updated my tree and most of my local patches, but 
+I have a few to go yet.  My time is limited these days, but I'll try hard 
+to get at the problems you reported by the coming weekend at the very 
+latest.
 
-David
+  Maciej

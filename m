@@ -1,43 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 18:06:40 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:38414 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S3458582AbWBFSGI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Feb 2006 18:06:08 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 86AE564D3D; Mon,  6 Feb 2006 18:11:39 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id CD2198D2D; Mon,  6 Feb 2006 18:11:17 +0000 (GMT)
-Date:	Mon, 6 Feb 2006 18:11:17 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	"Stephen P. Becker" <geoman@gentoo.org>
-Cc:	'Linux/MIPS Development' <linux-mips@linux-mips.org>
-Subject: Re: Has anyone seen O2 crashes?
-Message-ID: <20060206181117.GD25192@deprecation.cyrius.com>
-References: <20060206151754.GA22181@deprecation.cyrius.com> <43E7735B.4050307@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 21:49:47 +0000 (GMT)
+Received: from [64.215.88.90] ([64.215.88.90]:50503 "EHLO email.vitesse.com")
+	by ftp.linux-mips.org with ESMTP id S3458325AbWBFVtY convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Feb 2006 21:49:24 +0000
+Received: from wilson.vitesse.com (wilson [10.9.72.71])
+	by email.vitesse.com (8.11.0/8.11.0) with ESMTP id k16Ls2h24377
+	for <linux-mips@linux-mips.org>; Mon, 6 Feb 2006 13:54:02 -0800 (PST)
+Received: from MX-COS.vsc.vitesse.com (mx-cs1 [10.9.72.41])
+	by wilson.vitesse.com (8.11.6/8.11.6) with ESMTP id k16Ls6b06925
+	for <linux-mips@linux-mips.org>; Mon, 6 Feb 2006 14:54:07 -0700 (MST)
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43E7735B.4050307@gentoo.org>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6556.0
+Subject: oprofile gets only kernel samples?
+Date:	Mon, 6 Feb 2006 14:54:00 -0700
+Message-ID: <389E6A416914954182ECDFCD844D8269434D89@MX-COS.vsc.vitesse.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: oprofile gets only kernel samples?
+Thread-Index: AcYrZ9Y+7vt2h705RpmPJBZLmay+PA==
+From:	"Kurt Schwemmer" <kurts@vitesse.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <kurts@vitesse.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10351
+X-archive-position: 10352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: kurts@vitesse.com
 Precedence: bulk
 X-list: linux-mips
 
-* Stephen P. Becker <geoman@gentoo.org> [2006-02-06 11:03]:
-> I had over 60 days of uptime recently with some variant of 2.6.15 (-rc5 
-> I think), and the machine was hammered fairly hard during that time with 
-> plenty of compiling, including significant portions of KDE.  I have run 
-> both the 2.6.15 tag from lmo git, and now I'm on 2.6.16-rc1.  It still 
+I've got oprofile working sort of with 2.6.15 kernel on a 24Kc processor
+using just timer interrupts. I only get samples within vmlinux.out
+though. When I look at top output during the period of time there is
+definitely some significant user mode time. Before digging too deep into
+the problem I thought I'd ask to see if this is a known limitation and
+if everyone is seeing this.
 
-OK, thanks for the confirmation.  I'll see what's going on here.
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Thanks,
+Kurt Schwemmer

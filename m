@@ -1,68 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 01:29:36 +0000 (GMT)
-Received: from mail.renesas.com ([202.234.163.13]:47506 "EHLO
-	mail04.idc.renesas.com") by ftp.linux-mips.org with ESMTP
-	id S8133565AbWBFB3Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Feb 2006 01:29:24 +0000
-Received: from mail04.idc.renesas.com ([127.0.0.1])
- by mail04.idc.renesas.com. (SMSSMTP 4.1.9.35) with SMTP id M2006020610344704680
- for <linux-mips@linux-mips.org>; Mon, 06 Feb 2006 10:34:47 +0900
-Received: (from root@localhost)
-	by guardian04.idc.renesas.com with  id k161YjTT025197;
-	Mon, 6 Feb 2006 10:34:45 +0900 (JST)
-Received: from unknown [172.20.8.73] by guardian04.idc.renesas.com with SMTP id LAA25196 ; Mon, 6 Feb 2006 10:34:45 +0900
-Received: from mrkaisv.hoku.renesas.com ([10.145.105.245])
-	by ml01.idc.renesas.com (8.12.10/8.12.10) with ESMTP id k161YhdI011969;
-	Mon, 6 Feb 2006 10:34:44 +0900 (JST)
-Received: from localhost (pcepx10 [10.145.105.241])
-	by mrkaisv.hoku.renesas.com (Postfix) with ESMTP
-	id 7E45D798071; Mon,  6 Feb 2006 10:34:43 +0900 (JST)
-Date:	Mon, 06 Feb 2006 10:34:43 +0900 (JST)
-Message-Id: <20060206.103443.608416320.takata.hirokazu@renesas.com>
-To:	rmk+lkml@arm.linux.org.uk
-Cc:	takata@linux-m32r.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org, linuxppc-dev@ozlabs.org, pfg@sgi.com
-Subject: Re: [CFT] Don't use ASYNC_* nor SERIAL_IO_* with serial_core
-From:	Hirokazu Takata <takata@linux-m32r.org>
-In-Reply-To: <20060205000136.GF24887@flint.arm.linux.org.uk>
-References: <20060202102721.GE5034@flint.arm.linux.org.uk>
-	<20060202.231033.1059963967.takata.hirokazu@renesas.com>
-	<20060205000136.GF24887@flint.arm.linux.org.uk>
-X-Mailer: Mew version 3.3 on XEmacs 21.4.18 (Social Property)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <takata@linux-m32r.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 08:08:36 +0000 (GMT)
+Received: from smtp4.wanadoo.fr ([193.252.22.27]:18501 "EHLO smtp4.wanadoo.fr")
+	by ftp.linux-mips.org with ESMTP id S8133462AbWBFII1 convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Feb 2006 08:08:27 +0000
+Received: from me-wanadoo.net (localhost [127.0.0.1])
+	by mwinf0401.wanadoo.fr (SMTP Server) with ESMTP id DBF171C00313
+	for <linux-mips@linux-mips.org>; Mon,  6 Feb 2006 09:13:53 +0100 (CET)
+Received: from lexbox.fr (AToulouse-254-1-22-161.w81-250.abo.wanadoo.fr [81.250.29.161])
+	by mwinf0401.wanadoo.fr (SMTP Server) with ESMTP id C01B71C002EE;
+	Mon,  6 Feb 2006 09:13:53 +0100 (CET)
+X-ME-UUID: 20060206081353786.C01B71C002EE@mwinf0401.wanadoo.fr
+Subject: RE: [PATCH] Au1xx0: really set KSEG0 to uncached on reboot
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Date:	Mon, 6 Feb 2006 09:10:37 +0100
+Content-class: urn:content-classes:message
+Message-ID: <17AB476A04B7C842887E0EB1F268111E027447@xpserver.intra.lexbox.org>
+X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH] Au1xx0: really set KSEG0 to uncached on reboot
+Thread-Index: AcYpIisf4ajWFKCtRBS4mw0e3t+cvwB0Tsog
+From:	"David Sanchez" <david.sanchez@lexbox.fr>
+To:	"Sergei Shtylylov" <sshtylyov@ru.mvista.com>
+Cc:	<linux-mips@linux-mips.org>
+Return-Path: <david.sanchez@lexbox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10338
+X-archive-position: 10339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: takata@linux-m32r.org
+X-original-sender: david.sanchez@lexbox.fr
 Precedence: bulk
 X-list: linux-mips
 
-From: Russell King <rmk+lkml@arm.linux.org.uk>
-Subject: Re: [CFT] Don't use ASYNC_* nor SERIAL_IO_* with serial_core
-Date: Sun, 05 Feb 2006 00:01:36 +0000
-> On Thu, Feb 02, 2006 at 11:10:33PM +0900, Hirokazu Takata wrote:
-> > On m32r,
-> >   compile and boot test: OK
-> 
-> Is that an Acked-by ?
-> 
-> -- 
-> Russell King
->  Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
->  maintainer of:  2.6 Serial core
-> 
+Hi,
 
-Yes.
+This is exactly what I did...
+But I notice that sometimes it works and sometimes the kernel frees when 
+"** Resetting Integrated Peripherals"
 
-Acked-by: Hirokazu Takata <takata@linux-m32r.org>
+Regards,
 
-Thanks,
---
-Hirokazu Takata <takata@linux-m32r.org>
-Linux/M32R Project:  http://www.linux-m32r.org/
+David SANCHEZ
+ LexBox, The Digital Evidence
+
+Parc d'Activités de Basso Cambo
+42, Avenue du Général de Croutte
+31100 TOULOUSE / FRANCE
+
+david.sanchez@lexbox.fr
+Tél :     +33 (0)5 62 47 15 81
+Fax :    +33 (0)5 62 47 15 84
+
+
+
+-----Message d'origine-----
+De : Sergei Shtylylov [mailto:sshtylyov@ru.mvista.com] 
+Envoyé : samedi 4 février 2006 01:30
+À : David Sanchez
+Cc : linux-mips@linux-mips.org
+Objet : Re: [PATCH] Au1xx0: really set KSEG0 to uncached on reboot
+
+Hello.
+
+David Sanchez wrote:
+
+> The patch doesn't work for Au1550. Since I apply it my DbAu1550 frees on
+> restart.
+
+    Just tried 'reboot' command on a fresh kernel with this patch and NFP 
+userland -- it worked well.
+
+> David
+
+WBR, Sergei

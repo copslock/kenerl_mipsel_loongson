@@ -1,81 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 08:08:36 +0000 (GMT)
-Received: from smtp4.wanadoo.fr ([193.252.22.27]:18501 "EHLO smtp4.wanadoo.fr")
-	by ftp.linux-mips.org with ESMTP id S8133462AbWBFII1 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Feb 2006 08:08:27 +0000
-Received: from me-wanadoo.net (localhost [127.0.0.1])
-	by mwinf0401.wanadoo.fr (SMTP Server) with ESMTP id DBF171C00313
-	for <linux-mips@linux-mips.org>; Mon,  6 Feb 2006 09:13:53 +0100 (CET)
-Received: from lexbox.fr (AToulouse-254-1-22-161.w81-250.abo.wanadoo.fr [81.250.29.161])
-	by mwinf0401.wanadoo.fr (SMTP Server) with ESMTP id C01B71C002EE;
-	Mon,  6 Feb 2006 09:13:53 +0100 (CET)
-X-ME-UUID: 20060206081353786.C01B71C002EE@mwinf0401.wanadoo.fr
-Subject: RE: [PATCH] Au1xx0: really set KSEG0 to uncached on reboot
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Date:	Mon, 6 Feb 2006 09:10:37 +0100
-Content-class: urn:content-classes:message
-Message-ID: <17AB476A04B7C842887E0EB1F268111E027447@xpserver.intra.lexbox.org>
-X-MimeOLE: Produced By Microsoft Exchange V6.5.6944.0
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [PATCH] Au1xx0: really set KSEG0 to uncached on reboot
-Thread-Index: AcYpIisf4ajWFKCtRBS4mw0e3t+cvwB0Tsog
-From:	"David Sanchez" <david.sanchez@lexbox.fr>
-To:	"Sergei Shtylylov" <sshtylyov@ru.mvista.com>
-Cc:	<linux-mips@linux-mips.org>
-Return-Path: <david.sanchez@lexbox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 09:31:40 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:14883 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S3458260AbWBFJbb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Feb 2006 09:31:31 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 6 Feb 2006 18:37:04 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id BF95B2033E;
+	Mon,  6 Feb 2006 18:36:56 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id B37BD20041;
+	Mon,  6 Feb 2006 18:36:56 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k169at4D037481;
+	Mon, 6 Feb 2006 18:36:56 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 06 Feb 2006 18:36:55 +0900 (JST)
+Message-Id: <20060206.183655.129447619.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] TX49 MFC0 bug workaround
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060203144420.GA3375@linux-mips.org>
+References: <20060202172434.GE17352@linux-mips.org>
+	<20060203.111012.130238823.nemoto@toshiba-tops.co.jp>
+	<20060203144420.GA3375@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10339
+X-archive-position: 10340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.sanchez@lexbox.fr
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> On Fri, 3 Feb 2006 14:44:20 +0000, Ralf Baechle <ralf@linux-mips.org> said:
+>> So here is a patch against current GIT.
 
-This is exactly what I did...
-But I notice that sometimes it works and sometimes the kernel frees when 
-"** Resetting Integrated Peripherals"
+ralf> Okay, applied.
 
-Regards,
-
-David SANCHEZ
- LexBox, The Digital Evidence
-
-Parc d'Activités de Basso Cambo
-42, Avenue du Général de Croutte
-31100 TOULOUSE / FRANCE
-
-david.sanchez@lexbox.fr
-Tél :     +33 (0)5 62 47 15 81
-Fax :    +33 (0)5 62 47 15 84
+Thanks.  And please apply this also...
 
 
+Remove TX49XX_MFC0_WAR completely.
 
------Message d'origine-----
-De : Sergei Shtylylov [mailto:sshtylyov@ru.mvista.com] 
-Envoyé : samedi 4 février 2006 01:30
-À : David Sanchez
-Cc : linux-mips@linux-mips.org
-Objet : Re: [PATCH] Au1xx0: really set KSEG0 to uncached on reboot
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Hello.
-
-David Sanchez wrote:
-
-> The patch doesn't work for Au1550. Since I apply it my DbAu1550 frees on
-> restart.
-
-    Just tried 'reboot' command on a fresh kernel with this patch and NFP 
-userland -- it worked well.
-
-> David
-
-WBR, Sergei
+diff --git a/include/asm-mips/war.h b/include/asm-mips/war.h
+index 229afaa..ad374bd 100644
+--- a/include/asm-mips/war.h
++++ b/include/asm-mips/war.h
+@@ -228,9 +228,6 @@
+ #ifndef TX49XX_ICACHE_INDEX_INV_WAR
+ #define TX49XX_ICACHE_INDEX_INV_WAR	0
+ #endif
+-#ifndef TX49XX_MFC0_WAR
+-#define TX49XX_MFC0_WAR	0
+-#endif
+ #ifndef RM9000_CDEX_SMP_WAR
+ #define RM9000_CDEX_SMP_WAR		0
+ #endif

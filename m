@@ -1,47 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2006 21:49:47 +0000 (GMT)
-Received: from [64.215.88.90] ([64.215.88.90]:50503 "EHLO email.vitesse.com")
-	by ftp.linux-mips.org with ESMTP id S3458325AbWBFVtY convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Feb 2006 21:49:24 +0000
-Received: from wilson.vitesse.com (wilson [10.9.72.71])
-	by email.vitesse.com (8.11.0/8.11.0) with ESMTP id k16Ls2h24377
-	for <linux-mips@linux-mips.org>; Mon, 6 Feb 2006 13:54:02 -0800 (PST)
-Received: from MX-COS.vsc.vitesse.com (mx-cs1 [10.9.72.41])
-	by wilson.vitesse.com (8.11.6/8.11.6) with ESMTP id k16Ls6b06925
-	for <linux-mips@linux-mips.org>; Mon, 6 Feb 2006 14:54:07 -0700 (MST)
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.0.6556.0
-Subject: oprofile gets only kernel samples?
-Date:	Mon, 6 Feb 2006 14:54:00 -0700
-Message-ID: <389E6A416914954182ECDFCD844D8269434D89@MX-COS.vsc.vitesse.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: oprofile gets only kernel samples?
-Thread-Index: AcYrZ9Y+7vt2h705RpmPJBZLmay+PA==
-From:	"Kurt Schwemmer" <kurts@vitesse.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <kurts@vitesse.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Feb 2006 01:56:52 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:41381 "EHLO
+	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
+	id S3458530AbWBGB4n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 7 Feb 2006 01:56:43 +0000
+Received: from mail01 (localhost.localdomain [127.0.0.1])
+	by mail01.miraclelinux.com (Postfix) with ESMTP
+	id EA7BB31C2E8; Tue,  7 Feb 2006 11:02:17 +0900 (JST)
+Received: from localhost.localdomain (sshgate.miraclelinux.com [])
+	by mail01.miraclelinux.com ([10.1.0.10]);
+	Tue, 07 Feb 2006 02:02:16 +0000
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id C6BF142022F; Tue,  7 Feb 2006 11:02:16 +0900 (JST)
+Date:	Tue, 7 Feb 2006 11:02:16 +0900
+To:	David Howells <dhowells@redhat.com>
+Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, dev-etrax@axis.com,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	Greg Ungerer <gerg@uclinux.org>, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Chris Zankel <chris@zankel.net>
+Subject: Re: [patch 11/44] generic find_{next,first}{,_zero}_bit()
+Message-ID: <20060207020216.GA9323@miraclelinux.com>
+References: <20060201090324.373982000@localhost.localdomain> <20060201090224.536581000@localhost.localdomain> <12367.1139221560@warthog.cambridge.redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12367.1139221560@warthog.cambridge.redhat.com>
+User-Agent: Mutt/1.5.9i
+From:	mita@miraclelinux.com (Akinobu Mita)
+Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10352
+X-archive-position: 10353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kurts@vitesse.com
+X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
-I've got oprofile working sort of with 2.6.15 kernel on a 24Kc processor
-using just timer interrupts. I only get samples within vmlinux.out
-though. When I look at top output during the period of time there is
-definitely some significant user mode time. Before digging too deep into
-the problem I thought I'd ask to see if this is a known limitation and
-if everyone is seeing this.
+On Mon, Feb 06, 2006 at 10:26:00AM +0000, David Howells wrote:
+> Akinobu Mita <mita@miraclelinux.com> wrote:
+> 
+> > This patch introduces the C-language equivalents of the functions below:
+> > 
+> > unsigned logn find_next_bit(const unsigned long *addr, unsigned long size,
+> >                             unsigned long offset);
+> > unsigned long find_next_zero_bit(const unsigned long *addr, unsigned long size,
+> >                                  unsigned long offset);
+> > unsigned long find_first_zero_bit(const unsigned long *addr,
+> >                                   unsigned long size);
+> > unsigned long find_first_bit(const unsigned long *addr, unsigned long size);
+> 
+> These big functions should perhaps be out of line.
 
-Thanks,
-Kurt Schwemmer
+Yes. I'll make them and below out of line.
+
+- hweight*()
+- ext2_find_*_zero_bit()
+- minix_find_first_zero_bit()

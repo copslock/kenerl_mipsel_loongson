@@ -1,59 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2006 01:04:26 +0000 (GMT)
-Received: from web81603.mail.mud.yahoo.com ([68.142.199.155]:10114 "HELO
-	web81603.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133750AbWBHBEN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 8 Feb 2006 01:04:13 +0000
-Received: (qmail 16658 invoked by uid 60001); 8 Feb 2006 01:09:48 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=zPW0ceyHLuOJnjcYyul0fSwMp6TsgF/esiTjAevHJ7/QwS54OldG8zATfRLzVoJ50z4Zs+7DZKx7lNkAmgFExTtiWg5Kwfc37n4sbe53Xc9kghGOyFDTeyAcswy+qVbzG3qFYJBSSjfGZp87dHcjWng1XjetrMfHD5phL9aa/Os=  ;
-Message-ID: <20060208010948.16656.qmail@web81603.mail.mud.yahoo.com>
-Received: from [68.126.220.7] by web81603.mail.mud.yahoo.com via HTTP; Tue, 07 Feb 2006 17:09:48 PST
-Date:	Tue, 7 Feb 2006 17:09:48 -0800 (PST)
-From:	vasant kanchan <v_kanchan@yahoo.com>
-Subject: Openembedded build for AMD's DBAU1200
-To:	linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <v_kanchan@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Feb 2006 10:35:48 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:10607 "EHLO
+	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
+	id S3457885AbWBHKfj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 8 Feb 2006 10:35:39 +0000
+Received: from mail01 (localhost.localdomain [127.0.0.1])
+	by mail01.miraclelinux.com (Postfix) with ESMTP
+	id 4396731C2E8; Wed,  8 Feb 2006 19:41:21 +0900 (JST)
+Received: from localhost.localdomain (sshgate.miraclelinux.com [])
+	by mail01.miraclelinux.com ([10.1.0.10]);
+	Wed, 08 Feb 2006 10:41:21 +0000
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 722FD42022F; Wed,  8 Feb 2006 19:41:21 +0900 (JST)
+Date:	Wed, 8 Feb 2006 19:41:21 +0900
+To:	Roman Zippel <zippel@linux-m68k.org>
+Cc:	linux-kernel@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, dev-etrax@axis.com,
+	David Howells <dhowells@redhat.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Linus Torvalds <torvalds@osdl.org>, linux-ia64@vger.kernel.org,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Andi Kleen <ak@suse.de>, Chris Zankel <chris@zankel.net>
+Subject: Re: [patch 15/44] generic ext2_{set,clear,test,find_first_zero,find_next_zero}_bit()
+Message-ID: <20060208104121.GB27490@miraclelinux.com>
+References: <20060201090224.536581000@localhost.localdomain> <20060201090326.139510000@localhost.localdomain> <Pine.LNX.4.61.0602011214270.12293@scrub.home>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.61.0602011214270.12293@scrub.home>
+User-Agent: Mutt/1.5.9i
+From:	mita@miraclelinux.com (Akinobu Mita)
+Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10366
+X-archive-position: 10367
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: v_kanchan@yahoo.com
+X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Wed, Feb 01, 2006 at 12:27:38PM +0100, Roman Zippel wrote:
 
-This is more of an openembedded question than a MIPS
-one.
-However I was hoping someone could help me.
+> For the inline version I would prefer this version:
+> 
+> {
+> 	const unsigned char *tmp = (const unsigned char *)addr;
+> 	return (tmp[nr >> 3] & (unsigned char)(1 << (nr & 7))) != 0;
+> }
+> 
+> Although this would be a good alternative as well:
+> 
+> {
+> 	return (addr[nr >> 5] & (1 << ((nr ^ 24) & 31))) != 0;
+> }
 
-I just downloaded the instructions from AMD's
-developer
-website and it talks about getting OE snapshot and
-Bitbake
-snapshot. As follows:
+Thanks, maybe I could use BITOP_LE_SWIZZLE similar to other *_le_bit().
 
-OE Snapshot - Please acquire OE using monotone as per:
-
-http://oe.handhelds.org/cgi-bin/moin.cgi/GettingStarted#head-1c5adf3b1f1467ec9bcb48b5a34c18632557c3c4
-
-BitBake Snapshot - Please acquire Bitbake using
-subversion as per: 
-http://oe.handhelds.org/cgi-bin/moin.cgi/GettingStarted#head-edc470c3655ac7ebac7ae7928ea574819170fa1b
-
-
-I have read through the Monotone/Svn documentation and
-I am not sure how to do get both the above snapshots.
-Any help is appreciated. I have installed the latest
-version of both.
-
-Regards
-Kanchan
+#define BITOP_LE_SWIZZLE       ((BITS_PER_LONG-1) & ~0x7)
+ :
+#define generic_test_le_bit(nr, addr) test_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
+ :
+#endif /* __BIG_ENDIAN */

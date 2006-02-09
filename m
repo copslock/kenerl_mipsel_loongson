@@ -1,180 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Feb 2006 01:12:43 +0000 (GMT)
-Received: from mms3.broadcom.com ([216.31.210.19]:33804 "EHLO
-	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133409AbWBIBLm convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Feb 2006 01:11:42 +0000
-Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Wed, 08 Feb 2006 17:17:14 -0800
-X-Server-Uuid: B238DE4C-2139-4D32-96A8-DD564EF2313E
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 7C3D32AF; Wed, 8 Feb 2006 17:17:14 -0800 (PST)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 680C82AE for
- <linux-mips@linux-mips.org>; Wed, 8 Feb 2006 17:17:14 -0800 (PST)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.3a-GA) with ESMTP
- id CWR96137; Wed, 8 Feb 2006 17:17:14 -0800 (PST)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 2E0A920501 for <linux-mips@linux-mips.org>; Wed, 8 Feb 2006 17:17:14
- -0800 (PST)
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Feb 2006 06:29:53 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.204]:18525 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133435AbWBIG3Y convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 9 Feb 2006 06:29:24 +0000
+Received: by wproxy.gmail.com with SMTP id i3so236190wra
+        for <linux-mips@linux-mips.org>; Wed, 08 Feb 2006 22:35:14 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=BH/egFK0ZohYoPmqheX/1VdYliLKzRn3lx8lKbKe8ZwHl9dCX3DxZpobmYF7eDhsH1yh/hJTfLDQ7Ek7MeTBIh/YzBJJ2lQOzo/7/9lPrMABOR6tYrJz4q0r8nbVJ4+Ph/O5SXKX8kYW0LYtHVZ9YrWcd5SPjyA5pJhuilxphl8=
+Received: by 10.54.135.1 with SMTP id i1mr1107756wrd;
+        Wed, 08 Feb 2006 22:35:14 -0800 (PST)
+Received: by 10.54.128.6 with HTTP; Wed, 8 Feb 2006 22:35:14 -0800 (PST)
+Message-ID: <50c9a2250602082235k1add529ctff120d0184425048@mail.gmail.com>
+Date:	Thu, 9 Feb 2006 14:35:14 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: how to use sde toolchain to compile a hello world?
 MIME-Version: 1.0
-Subject: RE: SB1 broken on lmo tip
-Date:	Wed, 8 Feb 2006 17:17:13 -0800
-Message-ID: <7E000E7F06B05C49BDBB769ADAF44D0773A39C@NT-SJCA-0750.brcm.ad.broadcom.com>
-Thread-Topic: SB1 broken on lmo tip
-Thread-Index: AcYtEr/bSiRQd6srR76aPQRB4ka0cwAA5bBw
-From:	"Mark E Mason" <mark.e.mason@broadcom.com>
-To:	linux-mips@linux-mips.org
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006020810; IFV=2.0.6,4.0-7;
- RPD=4.00.0004;
- RPDID=303030312E30413039303230352E34334541393634432E303034322D412D;
- ENG=IBF; TS=20060209011718; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006020810_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 6FF4479041W8629740-01-01
-Content-Type: text/plain;
- charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <mark.e.mason@broadcom.com>
+Content-Disposition: inline
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10375
+X-archive-position: 10376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.e.mason@broadcom.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-And a quick follow-up.  Turning off SMP gets past the problem first
-reported, and triggers the following one a little while later in the
-boot process:
+some toolchain can use as "xxx-gcc -o hello hello.c" to compile, but
+sde toolchain can't find the printf function, does it means sde is not
+a complete toolchain to compile applications?
 
 
-INIT: version 2.86 booting
-[4294679.530000] CPU 0 Unable to handle kernel paging request at virtual
-address 0000000000000100, epc == ffffffff801100cc, 0[4294679.531000]
-Oops[#1]:
-[4294679.531000] Cpu 0
-[4294679.531000] $ 0   : 0000000000000000 0000000010001fe1
-a8000000cfc892c0 ffffffff803ae430
-[4294679.531000] $ 4   : a8000000cfcffeb0 0000000000000000
-0000000000000004 0000000000000000
-[4294679.531000] $ 8   : a8000000cfcffe30 a8000000cfcffe40
-0000000000000000 0000000000443388
-[4294679.531000] $12   : 0000000000000000 0000000000000000
-0000000000000003 0000000000100100
-[4294679.531000] $16   : ffffffffffffffff 0000000000000000
-0000000000000000 00000000100096b0
-[4294679.531000] $20   : 0000000000000000 0000000000000014
-0000000000440000 0000000010008064
-[4294679.531000] $24   : 0000000000000000 ffffffff801100b0
-[4294679.531000] $28   : a8000000cfcfc000 a8000000cfcffde0
-0000000010001390 ffffffff80102280
-[4294679.531000] Hi    : 0000000000000000
-[4294679.531000] Lo    : 0000000000000018
-[4294679.531000] epc   : ffffffff801100cc do_signal32+0x1c/0x2a0     Not
-tainted
-[4294679.531000] ra    : ffffffff80102280 work_notifysig+0xc/0x14
-[4294679.531000] Status: 10001fe2    KX SX UX KERNEL EXL
-[4294679.531000] Cause : 00808008
-[4294679.531000] BadVA : 0000000000000100
-[4294679.531000] PrId  : 01041100
-[4294679.531000] Modules linked in:
-[4294679.531000] Process rc (pid: 19, threadinfo=a8000000cfcfc000,
-task=a8000000cfc892c0)
-[4294679.531000] Stack : 0000000000030002 000000000000001c
-0000000000020000 0000000000000000
-[4294679.531000]         0000000000000000 ffffff0000000000
-ffffffff8013e830 000000007ff968d4
-[4294679.531000]         0000000000020000 0000000000000000
-0000000000000000 0000000000000000
-[4294679.531000]         0000000000000000 ffffffff80110940
-0000000000000000 0000000000000001
-[4294679.531000]         0000000000000000 0000000000000000
-0000000000000000 0000000000000000
-[4294679.531000]         ffffffffffffffff 0000000000000000
-0000000000000000 00000000100096b0
-[4294679.531000]         0000000000000000 ffffffff80102280
-0000000000000000 0000000010001fe0
-[4294679.531000]         0000000000000000 0000000000000000
-0000000000000003 000000007ff969b0
-[4294679.531000]         0000000000000000 0000000000000000
-000000001000e22a 000000000000007f
-[4294679.531000]         0000000000000000 0000000000000000
-0000000000000000 0000000000000018
-[4294679.531000]         ...
-[4294679.531000] Call Trace:
-[4294679.531000]  [<ffffffff8013e830>] sys_rt_sigprocmask+0x98/0x130
-[4294679.531000]  [<ffffffff80110940>] sys32_rt_sigprocmask+0xd0/0x198
-[4294679.531000]  [<ffffffff80102280>] work_notifysig+0xc/0x14
-[4294679.531000]
-[4294679.531000]
-[4294679.531000] Code: ffb400c0  ffb300b8  ffb200b0 <dca30100> 24020010
-0080882d  30630018  00a0802d  1062000b
-[4294679.534000] CPU 0 Unable to handle kernel paging request at virtual
-address 0000000000000100, epc == ffffffff801100cc, 0[4294679.535000]
-Oops[#2]:
-[4294679.535000] Cpu 0
-[4294679.535000] $ 0   : 0000000000000000 0000000010001fe0
-a800000000483868 ffffffff803ae430
-[4294679.535000] $ 4   : a800000000487eb0 0000000000000000
-0000000000000004 fffffffffffffdfe
-[4294679.535000] $ 8   : 0000000400038e28 000000007f933978
-0000000000000000 fffffffffffff7ff
-[4294679.535000] $12   : 0000000000000000 0000000000000018
-0000000000200200 0000000000100100
-[4294679.535000] $16   : 0000000000410000 000000007f9339f8
-000000007f933a88 0000000000000001
-[4294679.535000] $20   : 000000007f933970 000000000044b0e8
-000000007f933978 000000007f935f44
-[4294679.535000] $24   : 0000000000000000 ffffffff801100b0
-[4294679.535000] $28   : a800000000484000 a800000000487de0
-0000000000000000 ffffffff80102280
-[4294679.535000] Hi    : 00000000000000e9
-[4294679.535000] Lo    : 0000000000000004
-[4294679.535000] epc   : ffffffff801100cc do_signal32+0x1c/0x2a0     Not
-tainted
-[4294679.535000] ra    : ffffffff80102280 work_notifysig+0xc/0x14
-[4294679.535000] Status: 10001fe2    KX SX UX KERNEL EXL
-[4294679.535000] Cause : 00808008
-[4294679.535000] BadVA : 0000000000000100
-[4294679.535000] PrId  : 01041100
-[4294679.535000] Modules linked in:
-[4294679.535000] Process init (pid: 1, threadinfo=a800000000484000,
-task=a800000000483868)
-[4294679.535000] Stack : a8000000cfe4eee0 a8000000cfe4eee8
-a8000000cfe4eef0 a8000000cfe4eef8
-[4294679.535000]         a8000000cfe4ef00 a8000000cfe4ef08
-0000000000000000 0000000000000000
-[4294679.535000]         a800000000487e90 0000000000489b70
-000000007f933970 000000007f9339f8
-[4294679.535000]         000000007f933a88 0000000000000001
-000000007f933970 000000000044b0e8
-[4294679.535000]         000000007f933978 000000007f935f44
-0000000000000000 ffffffff801b88ec
-[4294679.535000]         0000000000410000 000000007f9339f8
-000000007f933a88 0000000000000001
-[4294679.535000]         000000007f933970 ffffffff80102280
-0000000000000202 0000000000000008
-[4294679.535000]         0000000000000202 0000000000000400
-000000000000000b 000000007f933978
-[4294679.535000]         0000000000000000 0000000000000001
-0000000000000000 000000002aaff1c0
-[4294679.535000]         0000100000000008 0000000000000000
-0000000000000000 0000000000000000
-[4294679.535000]         ...
-[4294679.535000] Call Trace:
-[4294679.535000]  [<ffffffff801b88ec>] compat_sys_select+0xbc/0x1a0
-[4294679.535000]  [<ffffffff80102280>] work_notifysig+0xc/0x14
-[4294679.535000]  [<ffffffff80198190>] sys_dup+0x28/0x40
-[4294679.535000]
-[4294679.535000]
-[4294679.535000] Code: ffb400c0  ffb300b8  ffb200b0 <dca30100> 24020010
-0080882d  30630018  00a0802d  1062000b
-[4294679.536000] Kernel panic - not syncing: Attempted to kill init!
-[4294679.537000]  <0>Rebooting in 5 seconds..Passing control back to
-CFE... 
+Best regards
+
+Zhuzhenhua

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Feb 2006 00:44:40 +0000 (GMT)
-Received: from mms2.broadcom.com ([216.31.210.18]:27401 "EHLO
-	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133409AbWBIAoa convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Feb 2006 00:44:30 +0000
-Received: from 10.10.64.154 by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Wed, 08 Feb 2006 16:50:02 -0800
-X-Server-Uuid: D9EB6F12-1469-4C1C-87A2-5E4C0D6F9D06
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Feb 2006 01:12:43 +0000 (GMT)
+Received: from mms3.broadcom.com ([216.31.210.19]:33804 "EHLO
+	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S8133409AbWBIBLm convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Feb 2006 01:11:42 +0000
+Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.2.0)); Wed, 08 Feb 2006 17:17:14 -0800
+X-Server-Uuid: B238DE4C-2139-4D32-96A8-DD564EF2313E
 Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 61E802B4; Wed, 8 Feb 2006 16:50:02 -0800 (PST)
+ 7C3D32AF; Wed, 8 Feb 2006 17:17:14 -0800 (PST)
 Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 4CADC2AF for
- <linux-mips@linux-mips.org>; Wed, 8 Feb 2006 16:50:02 -0800 (PST)
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 680C82AE for
+ <linux-mips@linux-mips.org>; Wed, 8 Feb 2006 17:17:14 -0800 (PST)
 Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
  [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.3a-GA) with ESMTP
- id CWR84704; Wed, 8 Feb 2006 16:49:58 -0800 (PST)
+ id CWR96137; Wed, 8 Feb 2006 17:17:14 -0800 (PST)
 Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
  [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 3EFD220501 for <linux-mips@linux-mips.org>; Wed, 8 Feb 2006 16:49:59
+ 2E0A920501 for <linux-mips@linux-mips.org>; Wed, 8 Feb 2006 17:17:14
  -0800 (PST)
 X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
 Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Subject: SB1 broken on lmo tip
-Date:	Wed, 8 Feb 2006 16:49:57 -0800
-Message-ID: <7E000E7F06B05C49BDBB769ADAF44D0773A392@NT-SJCA-0750.brcm.ad.broadcom.com>
+Subject: RE: SB1 broken on lmo tip
+Date:	Wed, 8 Feb 2006 17:17:13 -0800
+Message-ID: <7E000E7F06B05C49BDBB769ADAF44D0773A39C@NT-SJCA-0750.brcm.ad.broadcom.com>
 Thread-Topic: SB1 broken on lmo tip
-Thread-Index: AcYtEr/bSiRQd6srR76aPQRB4ka0cw==
+Thread-Index: AcYtEr/bSiRQd6srR76aPQRB4ka0cwAA5bBw
 From:	"Mark E Mason" <mark.e.mason@broadcom.com>
 To:	linux-mips@linux-mips.org
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006020809; IFV=2.0.6,4.0-7;
+X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006020810; IFV=2.0.6,4.0-7;
  RPD=4.00.0004;
- RPDID=303030312E30413039303230382E34334541384645392E303031312D412D;
- ENG=IBF; TS=20060209005003; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006020809_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 6FF44E301SC4905762-01-01
+ RPDID=303030312E30413039303230352E34334541393634432E303034322D412D;
+ ENG=IBF; TS=20060209011718; CAT=NONE; CON=NONE;
+X-MMS-Spam-Filter-ID: A2006020810_4.00.0004_2.0.6,4.0-7
+X-WSS-ID: 6FF4479041W8629740-01-01
 Content-Type: text/plain;
  charset=us-ascii
 Content-Transfer-Encoding: 8BIT
@@ -41,7 +41,7 @@ Return-Path: <mark.e.mason@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10374
+X-archive-position: 10375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,100 +49,132 @@ X-original-sender: mark.e.mason@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
- 
-It looks like the following merge broke the SB1 ports in linux-mips.org:
- 
-	Merge with e3f749c4af69c4344d89f11e2293e3790eb4eaca from Linus.
- 
-Specifically:
-    d166b5a220813a08a79312fc384d11e1c57e9072    works, and it's child
-    a7900c9bdb64c11688719bef9f6373fbc4c276ab    does not.
+And a quick follow-up.  Turning off SMP gets past the problem first
+reported, and triggers the following one a little while later in the
+boot process:
 
-Unfortunately, the diffs between the two are about 19,000 lines...
-And they're neighbors, so 'git bisect' will do no good.
 
-The failure mode is the following exceptions on boot (using the
-bigsur_defconfig):
-
-294667.532000] Detected 3 available secondary CPU(s)
-[4294667.534000] CPU revision is: 03041100
-[4294667.534000] FPU revision is: 000f0103
-[4294667.534000] Primary instruction cache 32kB, 4-way, linesize 32
-bytes.
-[4294667.534000] Primary data cache 32kB, 4-way, linesize 32 bytes.
-[4294667.534000] Synthesized TLB refill handler (35 instructions).
-[4294667.554000] CPU 0 Unable to handle kernel paging request at virtual
-address 0000000000000028, epc == ffffffff80129740, 0[4294667.554000]
+INIT: version 2.86 booting
+[4294679.530000] CPU 0 Unable to handle kernel paging request at virtual
+address 0000000000000100, epc == ffffffff801100cc, 0[4294679.531000]
 Oops[#1]:
-[4294667.554000] Cpu 0
-[4294667.554000] $ 0   : 0000000000000000 ffffffff804552e0
-0000000000000020 0000000000000000
-[4294667.554000] $ 4   : a8000000043da048 0000000000000000
-0000000000000000 0000000000000001
-[4294667.554000] $ 8   : ffffffff8045b790 ffffffff8feef420
-ffffffff80424108 0000000000000000
-[4294667.554000] $12   : ffffffffffffffff ffffffff8026be28
-a8000000004ac630 ffffffffffffffff
-[4294667.554000] $16   : 0000000000000000 a8000000043da048
-a800000003da1300 0000000000000000
-[4294667.554000] $20   : 0000000000000000 a800000003da1300
-0000000000000001 ffffffff804552e0
-[4294667.554000] $24   : 0000000000000000 ffffffff8fe94dc8
-[4294667.554000] $28   : a8000000043dc000 a8000000043dfe20
-a8000000043dfe30 ffffffff80129bc0
-[4294667.554000] Hi    : 0000000000005a99
-[4294667.554000] Lo    : 9999999998bf9800
-[4294667.554000] epc   : ffffffff80129740 enqueue_task+0x18/0x88     Not
+[4294679.531000] Cpu 0
+[4294679.531000] $ 0   : 0000000000000000 0000000010001fe1
+a8000000cfc892c0 ffffffff803ae430
+[4294679.531000] $ 4   : a8000000cfcffeb0 0000000000000000
+0000000000000004 0000000000000000
+[4294679.531000] $ 8   : a8000000cfcffe30 a8000000cfcffe40
+0000000000000000 0000000000443388
+[4294679.531000] $12   : 0000000000000000 0000000000000000
+0000000000000003 0000000000100100
+[4294679.531000] $16   : ffffffffffffffff 0000000000000000
+0000000000000000 00000000100096b0
+[4294679.531000] $20   : 0000000000000000 0000000000000014
+0000000000440000 0000000010008064
+[4294679.531000] $24   : 0000000000000000 ffffffff801100b0
+[4294679.531000] $28   : a8000000cfcfc000 a8000000cfcffde0
+0000000010001390 ffffffff80102280
+[4294679.531000] Hi    : 0000000000000000
+[4294679.531000] Lo    : 0000000000000018
+[4294679.531000] epc   : ffffffff801100cc do_signal32+0x1c/0x2a0     Not
 tainted
-[4294667.554000] ra    : ffffffff80129bc0 activate_task+0xe0/0x158
-[4294667.554000] Status: 14001fe2    KX SX UX KERNEL EXL
-[4294667.554000] Cause : 00808008
-[4294667.554000] BadVA : 0000000000000028
-[4294667.554000] PrId  : 01041100
-[4294667.554000] Modules linked in:
-[4294667.554000] Process swapper (pid: 1, threadinfo=a8000000043dc000,
-task=a8000000043db8a8)
-[4294667.554000] Stack : a8000000043dfe30 ffffffff8045aca0
-a800000003da1300 ffffffff804552e0
-[4294667.554000]         a8000000043da048 0000000000000001
-a8000000043dfe60 ffffffff8012ad70
-[4294667.554000]         0000000014001fe1 0000000000000000
+[4294679.531000] ra    : ffffffff80102280 work_notifysig+0xc/0x14
+[4294679.531000] Status: 10001fe2    KX SX UX KERNEL EXL
+[4294679.531000] Cause : 00808008
+[4294679.531000] BadVA : 0000000000000100
+[4294679.531000] PrId  : 01041100
+[4294679.531000] Modules linked in:
+[4294679.531000] Process rc (pid: 19, threadinfo=a8000000cfcfc000,
+task=a8000000cfc892c0)
+[4294679.531000] Stack : 0000000000030002 000000000000001c
+0000000000020000 0000000000000000
+[4294679.531000]         0000000000000000 ffffff0000000000
+ffffffff8013e830 000000007ff968d4
+[4294679.531000]         0000000000020000 0000000000000000
 0000000000000000 0000000000000000
-[4294667.554000]         ffffffffffffffff 000000000000000f
-0000000000000000 ffffffffffffffff
-[4294667.554000]         ffffffff80451b38 0000000000000001
-0000000000000001 ffffffff8045b758
-[4294667.554000]         0000000000000000 0000000000000000
+[4294679.531000]         0000000000000000 ffffffff80110940
+0000000000000000 0000000000000001
+[4294679.531000]         0000000000000000 0000000000000000
 0000000000000000 0000000000000000
-[4294667.554000]         a8000000043dfef0 ffffffff80130bd8
-a8000000043f4000 a8000000043f7fe0
-[4294667.554000]         ffffffff80451b38 0000000000000001
-0000000000000002 ffffffff8045b758
-[4294667.554000]         0000000000000000 0000000000000000
+[4294679.531000]         ffffffffffffffff 0000000000000000
+0000000000000000 00000000100096b0
+[4294679.531000]         0000000000000000 ffffffff80102280
+0000000000000000 0000000010001fe0
+[4294679.531000]         0000000000000000 0000000000000000
+0000000000000003 000000007ff969b0
+[4294679.531000]         0000000000000000 0000000000000000
+000000001000e22a 000000000000007f
+[4294679.531000]         0000000000000000 0000000000000000
+0000000000000000 0000000000000018
+[4294679.531000]         ...
+[4294679.531000] Call Trace:
+[4294679.531000]  [<ffffffff8013e830>] sys_rt_sigprocmask+0x98/0x130
+[4294679.531000]  [<ffffffff80110940>] sys32_rt_sigprocmask+0xd0/0x198
+[4294679.531000]  [<ffffffff80102280>] work_notifysig+0xc/0x14
+[4294679.531000]
+[4294679.531000]
+[4294679.531000] Code: ffb400c0  ffb300b8  ffb200b0 <dca30100> 24020010
+0080882d  30630018  00a0802d  1062000b
+[4294679.534000] CPU 0 Unable to handle kernel paging request at virtual
+address 0000000000000100, epc == ffffffff801100cc, 0[4294679.535000]
+Oops[#2]:
+[4294679.535000] Cpu 0
+[4294679.535000] $ 0   : 0000000000000000 0000000010001fe0
+a800000000483868 ffffffff803ae430
+[4294679.535000] $ 4   : a800000000487eb0 0000000000000000
+0000000000000004 fffffffffffffdfe
+[4294679.535000] $ 8   : 0000000400038e28 000000007f933978
+0000000000000000 fffffffffffff7ff
+[4294679.535000] $12   : 0000000000000000 0000000000000018
+0000000000200200 0000000000100100
+[4294679.535000] $16   : 0000000000410000 000000007f9339f8
+000000007f933a88 0000000000000001
+[4294679.535000] $20   : 000000007f933970 000000000044b0e8
+000000007f933978 000000007f935f44
+[4294679.535000] $24   : 0000000000000000 ffffffff801100b0
+[4294679.535000] $28   : a800000000484000 a800000000487de0
+0000000000000000 ffffffff80102280
+[4294679.535000] Hi    : 00000000000000e9
+[4294679.535000] Lo    : 0000000000000004
+[4294679.535000] epc   : ffffffff801100cc do_signal32+0x1c/0x2a0     Not
+tainted
+[4294679.535000] ra    : ffffffff80102280 work_notifysig+0xc/0x14
+[4294679.535000] Status: 10001fe2    KX SX UX KERNEL EXL
+[4294679.535000] Cause : 00808008
+[4294679.535000] BadVA : 0000000000000100
+[4294679.535000] PrId  : 01041100
+[4294679.535000] Modules linked in:
+[4294679.535000] Process init (pid: 1, threadinfo=a800000000484000,
+task=a800000000483868)
+[4294679.535000] Stack : a8000000cfe4eee0 a8000000cfe4eee8
+a8000000cfe4eef0 a8000000cfe4eef8
+[4294679.535000]         a8000000cfe4ef00 a8000000cfe4ef08
 0000000000000000 0000000000000000
-[4294667.554000]         0000000000000000 ffffffff8014c308
-0000000000000001 0000000000000001
-[4294667.554000]         ...
-[4294667.554000] Call Trace:
-[4294667.554000]  [<ffffffff8012ad70>] try_to_wake_up+0x530/0x600
-[4294667.554000]  [<ffffffff80130bd8>] migration_call+0x210/0x228
-[4294667.554000]  [<ffffffff8014c308>] notifier_call_chain+0x38/0x78
-[4294667.554000]  [<ffffffff80435e6c>] cpu_up+0x13c/0x1c8
-[4294667.554000]  [<ffffffff80100e90>] init+0x9b0/0xb20
-[4294667.554000]  [<ffffffff80100570>] init+0x90/0xb20
-[4294667.554000]  [<ffffffff80104fc0>] kernel_thread_helper+0x10/0x18
-[4294667.554000]  [<ffffffff80104fb0>] kernel_thread_helper+0x0/0x18
-[4294667.554000]
-[4294667.554000]
-[4294667.554000] Code: 00021138  0045102d  64420020 <dc470008> 64830040
-fc430008  fc820040  fc670008  fce30000
-[4294667.555000] Kernel panic - not syncing: Attempted to kill init!
-[4294667.556000]  <0>Rebooting in 5 seconds..Passing control back to
-CFE...
-
-I'm going to start looking into it, but any & all suggestions on where
-to look are most welcome.
-
-Cheers,
-Mark
+[4294679.535000]         a800000000487e90 0000000000489b70
+000000007f933970 000000007f9339f8
+[4294679.535000]         000000007f933a88 0000000000000001
+000000007f933970 000000000044b0e8
+[4294679.535000]         000000007f933978 000000007f935f44
+0000000000000000 ffffffff801b88ec
+[4294679.535000]         0000000000410000 000000007f9339f8
+000000007f933a88 0000000000000001
+[4294679.535000]         000000007f933970 ffffffff80102280
+0000000000000202 0000000000000008
+[4294679.535000]         0000000000000202 0000000000000400
+000000000000000b 000000007f933978
+[4294679.535000]         0000000000000000 0000000000000001
+0000000000000000 000000002aaff1c0
+[4294679.535000]         0000100000000008 0000000000000000
+0000000000000000 0000000000000000
+[4294679.535000]         ...
+[4294679.535000] Call Trace:
+[4294679.535000]  [<ffffffff801b88ec>] compat_sys_select+0xbc/0x1a0
+[4294679.535000]  [<ffffffff80102280>] work_notifysig+0xc/0x14
+[4294679.535000]  [<ffffffff80198190>] sys_dup+0x28/0x40
+[4294679.535000]
+[4294679.535000]
+[4294679.535000] Code: ffb400c0  ffb300b8  ffb200b0 <dca30100> 24020010
+0080882d  30630018  00a0802d  1062000b
+[4294679.536000] Kernel panic - not syncing: Attempted to kill init!
+[4294679.537000]  <0>Rebooting in 5 seconds..Passing control back to
+CFE... 

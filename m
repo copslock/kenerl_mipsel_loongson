@@ -1,86 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 08:39:04 +0000 (GMT)
-Received: from caramon.arm.linux.org.uk ([212.18.232.186]:33805 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S8133361AbWBJIiy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Feb 2006 08:38:54 +0000
-Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.52)
-	id 1F7TtE-0007pV-5i; Fri, 10 Feb 2006 08:44:28 +0000
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
-	id 1F7TtV-0000Va-Pd; Fri, 10 Feb 2006 08:44:45 +0000
-Date:	Fri, 10 Feb 2006 08:44:45 +0000
-From:	Russell King <rmk+lkml@arm.linux.org.uk>
-To:	Linux Kernel List <linux-kernel@vger.kernel.org>,
-	linux-mips@linux-mips.org, linuxppc-dev@ozlabs.org, pfg@sgi.com
-Subject: Re: [CFT] Don't use ASYNC_* nor SERIAL_IO_* with serial_core
-Message-ID: <20060210084445.GA1947@flint.arm.linux.org.uk>
-Mail-Followup-To: Linux Kernel List <linux-kernel@vger.kernel.org>,
-	linux-mips@linux-mips.org, linuxppc-dev@ozlabs.org, pfg@sgi.com
-References: <20060121211407.GA19984@dyn-67.arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 11:37:43 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:4868 "EHLO
+	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133571AbWBJLh1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Feb 2006 11:37:27 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1ABh8PT005779;
+	Fri, 10 Feb 2006 11:43:10 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k19KrcV2003597;
+	Thu, 9 Feb 2006 20:53:38 GMT
+Date:	Thu, 9 Feb 2006 20:53:38 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix build error by removal of obsoleted au1x00_uart driver.
+Message-ID: <20060209205338.GA3508@linux-mips.org>
+References: <20060210.004302.96686142.anemo@mba.ocn.ne.jp> <20060209154959.GA3558@linux-mips.org> <20060210.012559.89066702.anemo@mba.ocn.ne.jp> <20060209164412.GB3558@linux-mips.org> <cda58cb80602090954s46ba0d78s@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060121211407.GA19984@dyn-67.arm.linux.org.uk>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+In-Reply-To: <cda58cb80602090954s46ba0d78s@mail.gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10389
+X-archive-position: 10390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk+lkml@arm.linux.org.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jan 21, 2006 at 09:14:07PM +0000, Russell King wrote:
-> The ioc4_serial driver is worse.  It assumes that it can set/clear
-> ASYNC_CTS_FLOW in the uart_info flags field, which is private to
-> serial_core.  It also seems to set TTY_IO_ERROR followed by immediately
-> clearing it (pointless), and then it writes to tty->alt_speed... which
-> isn't used by the serial layer so is also pointless.
+On Thu, Feb 09, 2006 at 06:54:05PM +0100, Franck Bui-Huu wrote:
 
-Okay, the only remaining part of this patch which hasn't been applied
-is this - can anyone ack it?
+> 2006/2/9, Ralf Baechle <ralf@linux-mips.org>:
+> > When cloning such a repository git isn't actually downloading the
+> > .git/info/grafts file.  This results in such errors.  I don't know of a
+> > way to get git to do this right.  You may download the file manually
+> 
+> you can't. It seems that graft thing is, for now, only used to change
+> your _own_ repository's history. Fetching from a "cautorized"
+> repository is a risky job and you might have bad results.
 
-diff --git a/drivers/serial/ioc4_serial.c b/drivers/serial/ioc4_serial.c
---- a/drivers/serial/ioc4_serial.c
-+++ b/drivers/serial/ioc4_serial.c
-@@ -1717,11 +1717,9 @@ ioc4_change_speed(struct uart_port *the_
- 	}
- 
- 	if (cflag & CRTSCTS) {
--		info->flags |= ASYNC_CTS_FLOW;
- 		port->ip_sscr |= IOC4_SSCR_HFC_EN;
- 	}
- 	else {
--		info->flags &= ~ASYNC_CTS_FLOW;
- 		port->ip_sscr &= ~IOC4_SSCR_HFC_EN;
- 	}
- 	writel(port->ip_sscr, &port->ip_serial_regs->sscr);
-@@ -1760,18 +1758,6 @@ static inline int ic4_startup_local(stru
- 
- 	info = the_port->info;
- 
--	if (info->tty) {
--		set_bit(TTY_IO_ERROR, &info->tty->flags);
--		clear_bit(TTY_IO_ERROR, &info->tty->flags);
--		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_HI)
--			info->tty->alt_speed = 57600;
--		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_VHI)
--			info->tty->alt_speed = 115200;
--		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_SHI)
--			info->tty->alt_speed = 230400;
--		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_WARP)
--			info->tty->alt_speed = 460800;
--	}
- 	local_open(port);
- 
- 	/* set the speed of the serial port */
+It works for me (TM).
 
--- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:  2.6 Serial core
+> It's going to change with the "shallow-clone" thing, but I don't know
+> when it will come out...
+
+There are many problems with "cautorized" repositories, some with the
+current implementation, some more fundamental ones.  Such as what is
+the cut-off criterium?  The MIPS git repository also contains the objects
+of Linus's tree [1].  So a tag like linux-2.6.15 as the line for truncation
+isn't working too well because I'll only truncate the Linux/MIPS history
+but that'll still leave all of Linus's tree - well over 130,000 objects -
+in the tree.
+
+Anyway, I'm trying to maintain a homebrew shallow variant of the tree
+for the time being until git provides a better instrument for the job.
+
+  Ralf
+
+[1] Not Linus's tags to avoid confusion.  They could easily be pulled from
+    Linus tree into a separate branch.  Similar for Marcelo's 2.4 tree.

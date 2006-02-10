@@ -1,57 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 15:52:44 +0000 (GMT)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:38310 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S3467599AbWBJPwg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Feb 2006 15:52:36 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id k1AG169K013129;
-	Fri, 10 Feb 2006 16:01:06 GMT
-Received: (from alan@localhost)
-	by localhost.localdomain (8.13.4/8.13.4/Submit) id k1AG13n2013128;
-	Fri, 10 Feb 2006 16:01:03 GMT
-X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: changing the page properties to cached/uncached
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	pulsar@kpsws.com
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <13126.194.171.252.101.1139502756.squirrel@mail.kpsws.com>
-References: <20060210.005104.63742308.anemo@mba.ocn.ne.jp>
-	 <13126.194.171.252.101.1139502756.squirrel@mail.kpsws.com>
-Content-Type: text/plain
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 16:30:47 +0000 (GMT)
+Received: from mail.baslerweb.com ([145.253.187.130]:10541 "EHLO
+	mail.baslerweb.com") by ftp.linux-mips.org with ESMTP
+	id S3467599AbWBJQaf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Feb 2006 16:30:35 +0000
+Received: (from mail@localhost)
+	by mail.baslerweb.com (8.12.10/8.12.10) id k1AGZ2cn019249
+	for <linux-mips@linux-mips.org>; Fri, 10 Feb 2006 17:35:02 +0100
+Received: from unknown by gateway id /processing/kwHJ5xVG; Fri Feb 10 17:34:51 2006
+Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
+	id 1TF84RSD; Fri, 10 Feb 2006 17:36:23 +0100
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To:	linux-mips@linux-mips.org
+Date:	Fri, 10 Feb 2006 17:36:27 +0100
+User-Agent: KMail/1.6.2
+MIME-Version: 1.0
+Message-Id: <200602101736.27563.thomas.koeller@baslerweb.com>
+Subject: [PATCH] RM9000 icache problem
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Date:	Fri, 10 Feb 2006 16:01:02 +0000
-Message-Id: <1139587262.12521.12.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10393
+X-archive-position: 10394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Iau, 2006-02-09 at 17:32 +0100, Niels Sterrenburg wrote:
-> - Do not use swapping in the system
-> - Limit Linux memory usage via the mem= option in the kernel command line.
-> - From MIPS user space: do a mmap for the shared memory area.
-> - From MIPS user space: call (our selfwritten) shmemipc driver with the
-> request to set the mapped pages to cached (by passing virtual address and
-> length).
-> - From kernel space: find the vma for the supplied virtual address range
-> and change cache properties of all pages in that virtual range.
+The code to work around the RM9000 icache problems is wrong and
+ineffective. The patch below fixes that.
 
-You don't need to worry about swapping. You can simply mark the pages in
-question reserved just as i386 does with the 640K-1Mb hole or since when
-a page has a use count it won't swap out, mark it as having a user. In
-your case the "user" is the DSP so you just need to account fine
+Signed-off-by: Thomas Koeller  <thomas.koeller@baslerweb.com>
 
-> - As we mmap outside the kernel sdram (<48MB), mmap creates new pages
-> which are initialized to uncached, e.g. it assumes I/O)
+--- linux.git/arch/mips/kernel/signal-common.h	2005-11-02 13:21:29.000000000 +0100
++++ linux-2.6.14-5/arch/mips/kernel/signal-common.h	2006-02-10 12:48:50.000000000 +0100
+@@ -176,7 +176,7 @@
+ 	if ((ka->sa.sa_flags & SA_ONSTACK) && (sas_ss_flags (sp) == 0))
+ 		sp = current->sas_ss_sp + current->sas_ss_size;
+ 
+-	return (void *)((sp - frame_size) & (ICACHE_REFILLS_WORKAROUND_WAR ? 32 : ALMASK));
++	return (void *)((sp - frame_size) & (ICACHE_REFILLS_WORKAROUND_WAR ? ~(cpu_icache_line_size()-1) : ALMASK));
+ }
+ 
+ static inline int install_sigtramp(unsigned int __user *tramp,
 
-You can provide your own "nopage" method. Good example is
-sound/oss/via82cxxx_audio.c 
+
+
+-- 
+--------------------------------------------------
+
+Thomas Koeller, Software Development
+Basler Vision Technologies
+
+thomas dot koeller at baslerweb dot com
+http://www.baslerweb.com
+
+==============================

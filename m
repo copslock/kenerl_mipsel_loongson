@@ -1,65 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 03:03:53 +0000 (GMT)
-Received: from wproxy.gmail.com ([64.233.184.197]:60617 "EHLO wproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133541AbWBJDDp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 10 Feb 2006 03:03:45 +0000
-Received: by wproxy.gmail.com with SMTP id 36so462528wra
-        for <linux-mips@linux-mips.org>; Thu, 09 Feb 2006 19:09:40 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:user-agent:x-accept-language:mime-version:to:subject:content-type:content-transfer-encoding;
-        b=XRvE8K8P7vbg6YLPfz01YC7kqJuCLg4JAK7PKZ695hJx/VxvQsx2FPnhOO88HX1JoKOuFZRI+buWM6LERPEQSPW2lf6/JrIYtahpd3nfCps62Dwotb3CopaSy2Gxb5KXapgNGuTsjyPRyiU3gzvWtuABBTiirv8lxWpgVa+LTgE=
-Received: by 10.54.65.6 with SMTP id n6mr2349103wra;
-        Thu, 09 Feb 2006 19:09:40 -0800 (PST)
-Received: from ?192.168.2.99? ( [24.184.9.219])
-        by mx.gmail.com with ESMTP id 34sm2046954wra.2006.02.09.19.09.39;
-        Thu, 09 Feb 2006 19:09:40 -0800 (PST)
-Message-ID: <43EC03F4.4040805@gmail.com>
-Date:	Thu, 09 Feb 2006 22:09:40 -0500
-From:	Don Imus <donimus@gmail.com>
-User-Agent: Mozilla Thunderbird 0.9 (Windows/20041103)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 08:30:29 +0000 (GMT)
+Received: from outmx017.isp.belgacom.be ([195.238.4.116]:37310 "EHLO
+	outmx017.isp.belgacom.be") by ftp.linux-mips.org with ESMTP
+	id S8133361AbWBJIaU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Feb 2006 08:30:20 +0000
+Received: from outmx017.isp.belgacom.be (localhost [127.0.0.1])
+        by outmx017.isp.belgacom.be (8.12.11/8.12.11/Skynet-OUT-2.22) with ESMTP id k1A8a01M015963
+        for <linux-mips@linux-mips.org>; Fri, 10 Feb 2006 09:36:01 +0100
+        (envelope-from <tnt@246tNt.com>)
+Received: from [10.0.0.132] (161-134.245.81.adsl.skynet.be [81.245.134.161])
+        by outmx017.isp.belgacom.be (8.12.11/8.12.11/Skynet-OUT-2.22) with ESMTP id k1A8ZuRU015915;
+	Fri, 10 Feb 2006 09:35:56 +0100
+        (envelope-from <tnt@246tNt.com>)
+Message-ID: <43EC50A3.1090007@246tNt.com>
+Date:	Fri, 10 Feb 2006 09:36:51 +0100
+From:	Sylvain Munaut <tnt@246tNt.com>
+User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050610)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Rogue Branch - can git help here?
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Herbert Valerio Riedel <hvr@gnu.org>
+CC:	Jay Monkman <jtm@smoothsmoothie.com>, linux-mips@linux-mips.org
+Subject: Re: USB on AU1550
+References: <433B0299.8080507@smoothsmoothie.com> <1135425163.13029.13.camel@mini.intra>
+In-Reply-To: <1135425163.13029.13.camel@mini.intra>
+X-Enigmail-Version: 0.90.0.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <donimus@gmail.com>
+Return-Path: <tnt@246tNt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10387
+X-archive-position: 10388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: donimus@gmail.com
+X-original-sender: tnt@246tNt.com
 Precedence: bulk
 X-list: linux-mips
 
-I've got an old Linux 2.4.18 source tree I downloaded from a vendor who 
-sells devices using MIPS processors with embedded Linux running on them.
+Maybe it's already in the code but That patch also activates the
+OHCI_BIG_ENDIAN flag in the struct ohci_hcd. If not big endian mode
+will be choosed only if USB_OHCI_LITTLE_ENDIAN is not selected as well
+(both can be selected at once and if they are, it's that plag in the
+hcd sruct that selects what to use)
 
-There are clearly places in the code where the vendor has made changes. 
-  Unfotunately, the vendor used their own CVS and every tagged file 
-shows revision 1.1.1.1.
+	Sylvain
 
-Can GIT help me determine on which date the vendor's tree was originally 
-pulled?
-
-I thought of a script call GIT to diff the file against all revisions in 
-the repo, possibly creating patch files, and then I could look at the 
-number of changes for each as a measure of "closeness".  Doing this for 
-several files and finding commonality in the dates would increase the 
-probability of finding the right one.
-
-If I copy the vendor source tree into the local GIT tree and commit a 
-new branch are there any facilitites in GIT that would tell me which 
-older revision, prior to a given date, is the best "match" on the files 
-in the tree?
-
-I just started using GIT and maybe the question is better for the GIT 
-mailing list but I figured I'd ask it here first and see if anyone has 
-already done something like this.
-
-In case anyone's wondering the device ships with a binary-only device 
-driver module that will only work with a 2.4.18 kernel and that's why 
-I'm stuck in the past on this.
+Herbert Valerio Riedel wrote:
+> hello,
+> 
+> On Wed, 2005-09-28 at 15:52 -0500, Jay Monkman wrote:
+> 
+>>I'm trying to get USB working on my AU1550 board, and I'm getting an error I
+>>don't understand. I've searched the web and the mailing list archives, but
+>>haven't found anything relevant.
+> 
+> 
+> there was a post of mine, dating back to 22 Nov 2004 which could have
+> been relevant to your cause :-)
+> 
+> 
+>>I'm using 2.6.12, in big-endian mode.
+> 
+> [..]
+> 
+>>Can anyone point me in the right direction to get this working?
+> 
+> 
+> don't know whether you still require being pointed in to any direction;
+> however, the following patch (against current GIT HEAD, works for me,
+> YMMV :-) might provide a hint:
+> 
+> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+> index ed1899d..914b964 100644
+> --- a/drivers/usb/host/Kconfig
+> +++ b/drivers/usb/host/Kconfig
+> @@ -100,12 +100,14 @@ config USB_OHCI_HCD_PCI
+>  config USB_OHCI_BIG_ENDIAN
+>  	bool
+>  	depends on USB_OHCI_HCD
+> +	default y if SOC_AU1X00 && CPU_BIG_ENDIAN
+>  	default n
+>  
+>  config USB_OHCI_LITTLE_ENDIAN
+>  	bool
+>  	depends on USB_OHCI_HCD
+>  	default n if STB03xxx || PPC_MPC52xx
+> +	default n if SOC_AU1X00 && CPU_BIG_ENDIAN
+>  	default y
+>  
+>  config USB_UHCI_HCD
+> diff --git a/drivers/usb/host/ohci.h b/drivers/usb/host/ohci.h
+> index caacf14..bf18351 100644
+> --- a/drivers/usb/host/ohci.h
+> +++ b/drivers/usb/host/ohci.h
+> @@ -462,6 +462,11 @@ static inline struct usb_hcd *ohci_to_hc
+>  #define writel_be(val, addr)	out_be32((__force unsigned *)addr, val)
+>  #endif
+>  
+> +#if defined(CONFIG_SOC_AU1X00)
+> +#define readl_be(addr)          __raw_readl((__force u32 *)(addr))
+> +#define writel_be(val, addr)    __raw_writel(val, (__force u32 *)(addr))
+> +#endif
+> +
+>  static inline unsigned int ohci_readl (const struct ohci_hcd *ohci,
+>  							__hc32 __iomem * regs)
+>  {
+> 
+> 
+> greetings,

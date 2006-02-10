@@ -1,177 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 18:10:18 +0000 (GMT)
-Received: from amdext4.amd.com ([163.181.251.6]:13978 "EHLO amdext4.amd.com")
-	by ftp.linux-mips.org with ESMTP id S8133472AbWBJSKG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 10 Feb 2006 18:10:06 +0000
-Received: from SAUSGW02.amd.com (sausgw02.amd.com [163.181.250.22])
-	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k1AIFx7W021270;
-	Fri, 10 Feb 2006 12:15:59 -0600
-Received: from 163.181.22.101 by SAUSGW01.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Fri, 10 Feb 2006 12:15:53 -0600
-X-Server-Uuid: 8C3DB987-180B-4465-9446-45C15473FD3E
-Received: from ldcmail.amd.com ([147.5.200.40]) by sausexbh1.amd.com
- with Microsoft SMTPSVC(6.0.3790.0); Fri, 10 Feb 2006 10:15:52 -0800
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id 7F1082028; Fri, 10 Feb 2006
- 11:15:52 -0700 (MST)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k1AIKYkR027535; Fri, 10 Feb 2006 11:20:34
- -0700
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k1AIKXkC027534; Fri, 10 Feb 2006 11:20:33
- -0700
-Date:	Fri, 10 Feb 2006 11:20:33 -0700
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org
-cc:	enrico.walther@amd.com
-Subject: [PATCH] Enable MwDMA for AU1200 IDE driver
-Message-ID: <20060210182033.GA24353@cosmic.amd.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Feb 2006 20:54:54 +0000 (GMT)
+Received: from omx1-ext.sgi.com ([192.48.179.11]:28119 "EHLO
+	omx1.americas.sgi.com") by ftp.linux-mips.org with ESMTP
+	id S8133592AbWBJUyp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Feb 2006 20:54:45 +0000
+Received: from imr2.americas.sgi.com (imr2.americas.sgi.com [198.149.16.18])
+	by omx1.americas.sgi.com (8.12.10/8.12.9/linux-outbound_gateway-1.1) with ESMTP id k1AL0EOX003774;
+	Fri, 10 Feb 2006 15:00:15 -0600
+Received: from poppy-e236.americas.sgi.com (poppy-e236.americas.sgi.com [128.162.236.207])
+	by imr2.americas.sgi.com (8.12.9/8.12.10/SGI_generic_relay-1.2) with ESMTP id k1ALH0a513825180;
+	Fri, 10 Feb 2006 13:17:00 -0800 (PST)
+Received: from eagdhcp-232-152.americas.sgi.com (eagdhcp-232-152.americas.sgi.com [128.162.232.152]) by poppy-e236.americas.sgi.com (8.12.9/ASC-news-1.4) with ESMTP id k1AL0BSQ682424; Fri, 10 Feb 2006 15:00:13 -0600 (CST)
+From:	Pat Gefre <pfg@sgi.com>
+Organization: SGI
+To:	Russell King <rmk+lkml@arm.linux.org.uk>
+Subject: Re: [CFT] Don't use ASYNC_* nor SERIAL_IO_* with serial_core
+Date:	Fri, 10 Feb 2006 14:57:45 -0600
+User-Agent: KMail/1.7.1
+Cc:	Linux Kernel List <linux-kernel@vger.kernel.org>,
+	linux-mips@linux-mips.org, linuxppc-dev@ozlabs.org
+References: <20060121211407.GA19984@dyn-67.arm.linux.org.uk> <20060210084445.GA1947@flint.arm.linux.org.uk>
+In-Reply-To: <20060210084445.GA1947@flint.arm.linux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mutt/1.5.11
-X-OriginalArrivalTime: 10 Feb 2006 18:15:52.0938 (UTC)
- FILETIME=[073D5CA0:01C62E6E]
-X-WSS-ID: 6FF207D30MS4470519-01-01
-Content-Type: multipart/mixed;
- boundary=dDRMvlgZJXvWKvBx
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Return-Path: <jcrouse@cosmic.amd.com>
+Message-Id: <200602101457.45847.pfg@sgi.com>
+Return-Path: <pfg@sgi.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10396
+X-archive-position: 10397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: pfg@sgi.com
 Precedence: bulk
 X-list: linux-mips
 
-
---dDRMvlgZJXvWKvBx
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-
-Greetings all - the attached patch enables MwDMA mode for the AU1200
-IDE driver.  If one heavily uses the USB on the DB1200 board with IDE
-in PIO mode, you may experience hangs from overloading the bus with
-interrupts - this should help.  Since it is obvious that this is the
-desired mode, I'm adding it to the defconfig to enable by default.
-
-Also, I snuck in a fix for a warning (mixed code and declarations = evil!).
-Applies against latest lmo git, but it should work for linux-ide as well.
-
-Regards,
-Jordan
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
-
---dDRMvlgZJXvWKvBx
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline;
- filename=auide-fixes.patch
-Content-Transfer-Encoding: 7bit
-
-[PATCH] Enable MWDMA mode for the AU1200 IDE driver
-
-This enables MwDMA mode for the AU1200 driver - this will benefit
-anybody using IDE + USB, which together seem to cause hangs when IDE is 
-in PIO due to the large number of interrupts on the same bus.
-
-Signed-off-by: Jordan Crouse <jordan.crouse@amd.com>
----
-
- arch/mips/configs/db1200_defconfig        |    4 ++--
- drivers/ide/mips/au1xxx-ide.c             |   14 ++++++++++++--
- include/asm-mips/mach-au1x00/au1xxx_ide.h |    9 ---------
- 3 files changed, 14 insertions(+), 13 deletions(-)
-
-diff --git a/arch/mips/configs/db1200_defconfig b/arch/mips/configs/db1200_defconfig
-index 9288847..355b32f 100644
---- a/arch/mips/configs/db1200_defconfig
-+++ b/arch/mips/configs/db1200_defconfig
-@@ -497,8 +497,8 @@ CONFIG_BLK_DEV_IDECS=m
- #
- CONFIG_IDE_GENERIC=y
- CONFIG_BLK_DEV_IDE_AU1XXX=y
--CONFIG_BLK_DEV_IDE_AU1XXX_PIO_DBDMA=y
--# CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA is not set
-+#CONFIG_BLK_DEV_IDE_AU1XXX_PIO_DBDMA is not set
-+CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA=y
- CONFIG_BLK_DEV_IDE_AU1XXX_SEQTS_PER_RQ=128
- # CONFIG_IDE_ARM is not set
- # CONFIG_BLK_DEV_IDEDMA is not set
-diff --git a/drivers/ide/mips/au1xxx-ide.c b/drivers/ide/mips/au1xxx-ide.c
-index 32431dc..c2bf766 100644
---- a/drivers/ide/mips/au1xxx-ide.c
-+++ b/drivers/ide/mips/au1xxx-ide.c
-@@ -652,6 +652,7 @@ static int au_ide_probe(struct device *d
- 	struct platform_device *pdev = to_platform_device(dev);
- 	_auide_hwif *ahwif = &auide_hwif;
- 	ide_hwif_t *hwif;
-+	hw_regs_t *hw;
- 	struct resource *res;
- 	int ret = 0;
  
-@@ -690,17 +691,26 @@ static int au_ide_probe(struct device *d
- 	/* FIXME:  This might possibly break PCMCIA IDE devices */
- 
- 	hwif                            = &ide_hwifs[pdev->id];
--	hw_regs_t *hw 			= &hwif->hw;
-+	hw				= &hwif->hw;
- 	hwif->irq = hw->irq             = ahwif->irq;
- 	hwif->chipset                   = ide_au1xxx;
- 
- 	auide_setup_ports(hw, ahwif);
- 	memcpy(hwif->io_ports, hw->io_ports, sizeof(hwif->io_ports));
- 
-+#ifdef CONFIG_BLK_DEV_IDE_AU1XXX_SEQTS_PER_RQ
-+	hwif->rqsize = CONFIG_BLK_DEV_IDE_AU1XXX_SEQTS_PER_RQ;
-+	hwif->rqsize = ((hwif->rqsize > AU1XXX_ATA_RQSIZE)
-+			|| (hwif->rqsize < 32)) 
-+                        ? AU1XXX_ATA_RQSIZE : hwif->rqsize;
-+#else /* if kernel config is not set */
-+	hwif->rqsize                    = AU1XXX_ATA_RQSIZE;
-+#endif
-+			
- 	hwif->ultra_mask                = 0x0;  /* Disable Ultra DMA */
- #ifdef CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA
- 	hwif->mwdma_mask                = 0x07; /* Multimode-2 DMA  */
--	hwif->swdma_mask                = 0x00;
-+	hwif->swdma_mask                = 0x07;
- #else
- 	hwif->mwdma_mask                = 0x0;
- 	hwif->swdma_mask                = 0x0;
-diff --git a/include/asm-mips/mach-au1x00/au1xxx_ide.h b/include/asm-mips/mach-au1x00/au1xxx_ide.h
-index 5dab100..b9713c3 100644
---- a/include/asm-mips/mach-au1x00/au1xxx_ide.h
-+++ b/include/asm-mips/mach-au1x00/au1xxx_ide.h
-@@ -42,11 +42,6 @@
-         #define AU1XXX_ATA_RQSIZE       128
- #endif
- 
--/* Disable Burstable-Support for DBDMA */
--#ifndef CONFIG_BLK_DEV_IDE_AU1XXX_BURSTABLE_ON
--        #define CONFIG_BLK_DEV_IDE_AU1XXX_BURSTABLE_ON  0
--#endif
--
- typedef struct
- {
-         u32                     tx_dev_id, rx_dev_id, target_dev_id;
-@@ -65,10 +60,6 @@ typedef struct
- } _auide_hwif;
- 
- #ifdef CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA
--struct drive_list_entry {
--	const char *id_model;
--	const char *id_firmware;
--};
- 
- /* HD white list */
- static const struct drive_list_entry dma_white_list [] = {
+Yeah this is something I should've fixed up... thanks
 
---dDRMvlgZJXvWKvBx--
+Acked-by: pfg@sgi.com
+
+
+
+On Fri February 10 2006 2:44 am, Russell King wrote:
+> On Sat, Jan 21, 2006 at 09:14:07PM +0000, Russell King wrote:
+> > The ioc4_serial driver is worse.  It assumes that it can set/clear
+> > ASYNC_CTS_FLOW in the uart_info flags field, which is private to
+> > serial_core.  It also seems to set TTY_IO_ERROR followed by immediately
+> > clearing it (pointless), and then it writes to tty->alt_speed... which
+> > isn't used by the serial layer so is also pointless.
+>
+> Okay, the only remaining part of this patch which hasn't been applied
+> is this - can anyone ack it?
+>
+> diff --git a/drivers/serial/ioc4_serial.c b/drivers/serial/ioc4_serial.c
+> --- a/drivers/serial/ioc4_serial.c
+> +++ b/drivers/serial/ioc4_serial.c
+> @@ -1717,11 +1717,9 @@ ioc4_change_speed(struct uart_port *the_
+>  	}
+>
+>  	if (cflag & CRTSCTS) {
+> -		info->flags |= ASYNC_CTS_FLOW;
+>  		port->ip_sscr |= IOC4_SSCR_HFC_EN;
+>  	}
+>  	else {
+> -		info->flags &= ~ASYNC_CTS_FLOW;
+>  		port->ip_sscr &= ~IOC4_SSCR_HFC_EN;
+>  	}
+>  	writel(port->ip_sscr, &port->ip_serial_regs->sscr);
+> @@ -1760,18 +1758,6 @@ static inline int ic4_startup_local(stru
+>
+>  	info = the_port->info;
+>
+> -	if (info->tty) {
+> -		set_bit(TTY_IO_ERROR, &info->tty->flags);
+> -		clear_bit(TTY_IO_ERROR, &info->tty->flags);
+> -		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_HI)
+> -			info->tty->alt_speed = 57600;
+> -		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_VHI)
+> -			info->tty->alt_speed = 115200;
+> -		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_SHI)
+> -			info->tty->alt_speed = 230400;
+> -		if ((info->flags & ASYNC_SPD_MASK) == ASYNC_SPD_WARP)
+> -			info->tty->alt_speed = 460800;
+> -	}
+>  	local_open(port);
+>
+>  	/* set the speed of the serial port */

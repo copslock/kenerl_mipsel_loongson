@@ -1,77 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Feb 2006 21:42:16 +0000 (GMT)
-Received: from networks.syneticon.net ([213.239.212.131]:22674 "EHLO
-	mail2.syneticon.net") by ftp.linux-mips.org with ESMTP
-	id S8133496AbWBLVmG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 12 Feb 2006 21:42:06 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by mail2.syneticon.net (Postfix) with ESMTP id AF93B3C71C;
-	Sun, 12 Feb 2006 22:48:17 +0100 (CET)
-Received: from mail2.syneticon.net ([127.0.0.1])
- by localhost (linux [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 04334-13; Sun, 12 Feb 2006 22:48:15 +0100 (CET)
-Received: from [84.44.217.177] (xdsl-84-44-217-177.netcologne.de [84.44.217.177])
-	by mail2.syneticon.net (Postfix) with ESMTP;
-	Sun, 12 Feb 2006 22:48:14 +0100 (CET)
-Message-ID: <43EFAD1D.9010100@wpkg.org>
-Date:	Sun, 12 Feb 2006 22:48:13 +0100
-From:	Tomasz Chmielewski <mangoo@wpkg.org>
-User-Agent: Mail/News 1.5 (X11/20060210)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2006 00:39:33 +0000 (GMT)
+Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:36899
+	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
+	id S3465640AbWBLVZn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 12 Feb 2006 21:25:43 +0000
+Received: from [192.168.7.26] ([192.168.7.3]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 12 Feb 2006 13:31:51 -0800
+Message-ID: <43EFA945.1030906@avtrex.com>
+Date:	Sun, 12 Feb 2006 13:31:49 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	David Daney <ddaney@avtrex.com>
-Cc:	linux-mips@linux-mips.org
+To:	Tomasz Chmielewski <mangoo@wpkg.org>
+CC:	linux-mips@linux-mips.org
 Subject: Re: native gcc for mipsel / uClibc (building or binaries)?
-References: <43EF7C06.3080006@wpkg.org> <43EFA945.1030906@avtrex.com>
-In-Reply-To: <43EFA945.1030906@avtrex.com>
+References: <43EF7C06.3080006@wpkg.org>
+In-Reply-To: <43EF7C06.3080006@wpkg.org>
 Content-Type: text/plain; charset=ISO-8859-2; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: amavisd-new at syneticon.de
-Return-Path: <mangoo@wpkg.org>
+X-OriginalArrivalTime: 12 Feb 2006 21:31:51.0780 (UTC) FILETIME=[BCE1C240:01C6301B]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10408
+X-archive-position: 10409
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mangoo@wpkg.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-
-> I have done it for mipsel-linux-glibc, however until last week gcc had 
-> no support for uClibc, so it will probably not work with uClibc without 
-> some patching to gcc.
+Tomasz Chmielewski wrote:
+> I'm trying to cross-compile gcc to work on mipsel / uClibc, to run there 
+> natively (that is, I want to compile on this mipsel / uClibc machine).
 > 
-> The basic idea is that once you have a working cross toolchain just 
-> configure gcc and binutils with: --build=i686-pc-linux-glibc 
-> --target=mipsel-linux --host=mipsel-linux.  This will produce a native 
-> toolchain.  You will have to copy the compile time portions of the C 
-> library (include files and link time libraries) to the target, then you 
-> should be all set.
+> So far I have a cross compiler that builds binaries for mipsel/uClibc on 
+> a x86 machine.
+> 
+> 
+> According to crosstool HOWTO, "to do a Canadian Cross build with 
+> crosstool, you have to run it three times:
+> 
+>    1. once to build a toolchain that runs on the build system and 
+> generates code for the host system
+>    2. once to build a toolchain that runs on the build system and 
+> generates code for the target system
+>    3. once to build a toolchain that runs on the host system and 
+> generates code for the target system".
+> 
+> So I guess the first step is behind me, but I'm not sure how to do steps 
+> 2 and 3.
+> 
+> Anyone knows how to do it?
+> Or perhaps, there are already gcc binaries available for mipsel / uClibc?
+> 
 
-Exactly that's my problem.
+I have done it for mipsel-linux-glibc, however until last week gcc had 
+no support for uClibc, so it will probably not work with uClibc without 
+some patching to gcc.
 
-I have a compiler that generates binaries for mipsel/uclibc.
+The basic idea is that once you have a working cross toolchain just 
+configure gcc and binutils with: --build=i686-pc-linux-glibc 
+--target=mipsel-linux --host=mipsel-linux.  This will produce a native 
+toolchain.  You will have to copy the compile time portions of the C 
+library (include files and link time libraries) to the target, then you 
+should be all set.
 
-I compiled lots of software with it, so we can say it's functional.
-
-
-Now, when I try to compile gcc (--build=i686-pc-linux-glibc
- > --target=mipsel-linux --host=mipsel-linux), it breaks, as during the 
-build process gcc's ./configure has a schizophrenia: it tries to compile 
-some parts for mipsel (as I'd expect), but it also tries to compile and 
-execute the binaries during the build process.
-
-This means, it creates some binaries/libs needed for the build process 
-(like libiberty), then tries to run/use them, but as they are mipsel 
-binaries, the build process breaks.
-
-I tried that with gcc-4.0.2, and some earlier 3.3.6 and 3.4.5, without a 
-success.
-
-
--- 
-Tomasz Chmielewski
-Software deployment with Samba
-http://wpkg.org
+David Daney.

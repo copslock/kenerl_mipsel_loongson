@@ -1,49 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2006 09:50:47 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:46617 "EHLO
-	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133461AbWBMJuj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 13 Feb 2006 09:50:39 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1D9v0XE005665;
-	Mon, 13 Feb 2006 09:57:00 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1D9uwb7005663;
-	Mon, 13 Feb 2006 09:56:58 GMT
-Date:	Mon, 13 Feb 2006 09:56:58 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Peter Horton <pdh@colonel-panic.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6.X] Early console for Cobalt
-Message-ID: <20060213095658.GA3720@linux-mips.org>
-References: <20060212171025.GB1562@colonel-panic.org>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2006 10:29:52 +0000 (GMT)
+Received: from voldemort.codesourcery.com ([65.74.133.5]:15029 "EHLO
+	mail.codesourcery.com") by ftp.linux-mips.org with ESMTP
+	id S8133511AbWBMK3n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 13 Feb 2006 10:29:43 +0000
+Received: (qmail 5583 invoked by uid 1010); 13 Feb 2006 10:35:56 -0000
+From:	Richard Sandiford <richard@codesourcery.com>
+To:	Tomasz Chmielewski <mangoo@wpkg.org>
+Mail-Followup-To: Tomasz Chmielewski <mangoo@wpkg.org>,David Daney <ddaney@avtrex.com>,  linux-mips@linux-mips.org, richard@codesourcery.com
+Cc:	David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
+Subject: Re: native gcc for mipsel / uClibc (building or binaries)?
+References: <43EF7C06.3080006@wpkg.org> <43EFA945.1030906@avtrex.com>
+	<43EFAD1D.9010100@wpkg.org>
+Date:	Mon, 13 Feb 2006 10:35:54 +0000
+In-Reply-To: <43EFAD1D.9010100@wpkg.org> (Tomasz Chmielewski's message of
+	"Sun, 12 Feb 2006 22:48:13 +0100")
+Message-ID: <87slqnczqt.fsf@talisman.home>
+User-Agent: Gnus/5.110003 (No Gnus v0.3) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060212171025.GB1562@colonel-panic.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <richard@codesourcery.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10417
+X-archive-position: 10418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: richard@codesourcery.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 12, 2006 at 05:10:25PM +0000, Peter Horton wrote:
+Tomasz Chmielewski <mangoo@wpkg.org> writes:
+> Now, when I try to compile gcc (--build=i686-pc-linux-glibc
+>  > --target=mipsel-linux --host=mipsel-linux), it breaks, as during the 
+> build process gcc's ./configure has a schizophrenia: it tries to compile
+> some parts for mipsel (as I'd expect), but it also tries to compile and
+> execute the binaries during the build process.
 
-> Adds early console support for Cobalts.
-> 
-> Signed-off-by: Peter Horton <pdh@colonel-panic.org>
+Just to rule out one possibility, were the x86-hosted tools in
+your path when you ran configure and make?  They need to be.
 
-Queued for 2.6.17.
+> This means, it creates some binaries/libs needed for the build process
+> (like libiberty), then tries to run/use them, but as they are mipsel
+> binaries, the build process breaks.
 
-Please never include pathnames using the asm symlink like
-linux.git/include/asm/mach-cobalt/cobalt.h in patches.  They do cause
-rejects and are generally a PITA.  I also sent the #if 0'ed code in
-console.c to /dev/hell.
+Recent versions compile two versions of libiberty, one for the build
+machine and one for the host.  The build version is used for things
+like genattrtab (a build-time tool used only to build gcc itself)
+while the host version is linked into the final compilers.
 
-  Ralf
+Richard

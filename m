@@ -1,31 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 05:01:09 +0000 (GMT)
-Received: from ns.miraclelinux.com ([219.118.163.66]:46542 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 05:02:02 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:39374 "EHLO
 	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
-	id S8133438AbWBNE6g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Feb 2006 04:58:36 +0000
+	id S8133459AbWBNE6h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Feb 2006 04:58:37 +0000
 Received: from mail01 (localhost.localdomain [127.0.0.1])
 	by mail01.miraclelinux.com (Postfix) with ESMTP
-	id 7059D31C336; Tue, 14 Feb 2006 14:04:46 +0900 (JST)
+	id EEBCE31C332; Tue, 14 Feb 2006 14:04:45 +0900 (JST)
 Received: from localhost.localdomain (sshgate.miraclelinux.com [])
 	by mail01.miraclelinux.com ([10.1.0.10]);
-	Tue, 14 Feb 2006 05:04:46 +0000
+	Tue, 14 Feb 2006 05:04:45 +0000
 Received: by localhost.localdomain (Postfix, from userid 1000)
-	id 8AC3D42023B; Tue, 14 Feb 2006 14:04:44 +0900 (JST)
-Message-Id: <20060214050444.425684000@localhost.localdomain>
+	id 967CA420238; Tue, 14 Feb 2006 14:04:43 +0900 (JST)
+Message-Id: <20060214050443.468528000@localhost.localdomain>
 References: <20060214050351.252615000@localhost.localdomain>
-Date:	Tue, 14 Feb 2006 14:04:05 +0900
+Date:	Tue, 14 Feb 2006 14:04:00 +0900
 From:	Akinobu Mita <mita@miraclelinux.com>
 To:	linux-kernel@vger.kernel.org
-Cc:	akpm@osdl.org, Greg Ungerer <gerg@uclinux.org>,
-	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
-	ultralinux@vger.kernel.org, Akinobu Mita <mita@miraclelinux.com>
-Subject: [patch 14/47] generic ffs()
-Content-Disposition: inline; filename=ffs-bitops.patch
+Cc:	akpm@osdl.org, Russell King <rmk@arm.linux.org.uk>,
+	Ian Molton <spyro@f2s.com>,
+	David Howells <dhowells@redhat.com>,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	Greg Ungerer <gerg@uclinux.org>, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, sparclinux@vger.kernel.org,
+	ultralinux@vger.kernel.org,
+	Miles Bader <uclinux-v850@lsi.nec.co.jp>,
+	Akinobu Mita <mita@miraclelinux.com>
+Subject: [patch 09/47] generic ffz()
+Content-Disposition: inline; filename=ffz-bitops.patch
 Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10436
+X-archive-position: 10437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,62 +40,33 @@ Precedence: bulk
 X-list: linux-mips
 
 This patch introduces the C-language equivalent of the function:
-int ffs(int x);
+unsigned long ffz(unsigned long word);
 
-In include/asm-generic/bitops/ffs.h
+In include/asm-generic/bitops/ffz.h
 
 This code largely copied from:
-include/linux/bitops.h
+include/asm-parisc/bitops.h
 
 Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
- include/asm-generic/bitops/ffs.h |   41 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 41 insertions(+)
+ include/asm-generic/bitops/ffz.h |   12 ++++++++++++
+ 1 files changed, 12 insertions(+)
 
-Index: 2.6-rc/include/asm-generic/bitops/ffs.h
+Index: 2.6-rc/include/asm-generic/bitops/ffz.h
 ===================================================================
 --- /dev/null
-+++ 2.6-rc/include/asm-generic/bitops/ffs.h
-@@ -0,0 +1,41 @@
-+#ifndef _ASM_GENERIC_BITOPS_FFS_H_
-+#define _ASM_GENERIC_BITOPS_FFS_H_
++++ 2.6-rc/include/asm-generic/bitops/ffz.h
+@@ -0,0 +1,12 @@
++#ifndef _ASM_GENERIC_BITOPS_FFZ_H_
++#define _ASM_GENERIC_BITOPS_FFZ_H_
 +
-+/**
-+ * ffs - find first bit set
-+ * @x: the word to search
++/*
++ * ffz - find first zero in word.
++ * @word: The word to search
 + *
-+ * This is defined the same way as
-+ * the libc and compiler builtin ffs routines, therefore
-+ * differs in spirit from the above ffz (man ffs).
++ * Undefined if no zero exists, so code should check against ~0UL first.
 + */
-+static inline int ffs(int x)
-+{
-+	int r = 1;
++#define ffz(x)  __ffs(~(x))
 +
-+	if (!x)
-+		return 0;
-+	if (!(x & 0xffff)) {
-+		x >>= 16;
-+		r += 16;
-+	}
-+	if (!(x & 0xff)) {
-+		x >>= 8;
-+		r += 8;
-+	}
-+	if (!(x & 0xf)) {
-+		x >>= 4;
-+		r += 4;
-+	}
-+	if (!(x & 3)) {
-+		x >>= 2;
-+		r += 2;
-+	}
-+	if (!(x & 1)) {
-+		x >>= 1;
-+		r += 1;
-+	}
-+	return r;
-+}
-+
-+#endif /* _ASM_GENERIC_BITOPS_FFS_H_ */
++#endif /* _ASM_GENERIC_BITOPS_FFZ_H_ */
 
 --

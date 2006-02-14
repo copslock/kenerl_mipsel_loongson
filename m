@@ -1,90 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 06:51:47 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:54662 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133421AbWBNGvf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Feb 2006 06:51:35 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 14 Feb 2006 15:57:54 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 41862203DE;
-	Tue, 14 Feb 2006 15:57:52 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 3400F203D8;
-	Tue, 14 Feb 2006 15:57:52 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k1E6vp4D075145;
-	Tue, 14 Feb 2006 15:57:51 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 14 Feb 2006 15:57:50 +0900 (JST)
-Message-Id: <20060214.155750.93206425.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
-Cc:	tbm@cyrius.com, linux-mips@linux-mips.org, anderson@netsweng.com,
-	ddaney@avtrex.com, richard@codesourcery.com
-Subject: Re: Fixes for uaccess.h with gcc >= 4.0.1
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060211.224420.25910222.anemo@mba.ocn.ne.jp>
-References: <87wtg6c43s.fsf@talisman.home>
-	<20060210013440.GA5436@linux-mips.org>
-	<20060211.224420.25910222.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 07:01:27 +0000 (GMT)
+Received: from mo01.po.2iij.net ([210.130.202.205]:50657 "EHLO
+	mo01.po.2iij.net") by ftp.linux-mips.org with ESMTP
+	id S3465560AbWBNHBM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Feb 2006 07:01:12 +0000
+Received: NPO MO01 id k1E77Une013870; Tue, 14 Feb 2006 16:07:30 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (NPO-MR/mbox00) id k1E77Tah013064
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Tue, 14 Feb 2006 16:07:29 +0900 (JST)
+Message-Id: <200602140707.k1E77Tah013064@mbox00.po.2iij.net>
+Date:	Tue, 14 Feb 2006 16:07:29 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] fix cache coherency issues
+In-Reply-To: <20060214.120846.15248106.nemoto@toshiba-tops.co.jp>
+References: <20060214105928.0cd46e6f.yoichi_yuasa@tripeaks.co.jp>
+	<20060214.111547.21591480.nemoto@toshiba-tops.co.jp>
+	<20060214112653.25ed3e05.yoichi_yuasa@tripeaks.co.jp>
+	<20060214.120846.15248106.nemoto@toshiba-tops.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10448
+X-Envid: tripeaks.co.jp
+Envelope-Id: tripeaks.co.jp
+X-archive-position: 10449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Sat, 11 Feb 2006 22:44:20 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
-anemo> Please add this cast to fix compiler/sparse warnings?
+Hi,
 
-Sorry, please ignore this patch.  It would be wrong.
+On Tue, 14 Feb 2006 12:08:46 +0900 (JST)
+Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
 
+> >>>>> On Tue, 14 Feb 2006 11:26:53 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> said:
+> yuasa> Here is the boot log.
+> 
+> Thanks.  Could you try with this patch?
+> 
+> http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20060204.015356.74753400.anemo%40mba.ocn.ne.jp
 
-It seems current get_user() incorrectly sign-extend an unsigned int
-value on 64bit kernel.  I think this is because '(__typeof__(val))'
-cast in final assignment.  I suppose the cast should be
-'(__typeof__(*(addr))'.
+I added the patch and tested it.
+It has same problem.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-diff --git a/include/asm-mips/uaccess.h b/include/asm-mips/uaccess.h
-index 7a553e9..b96f3e0 100644
---- a/include/asm-mips/uaccess.h
-+++ b/include/asm-mips/uaccess.h
-@@ -233,7 +233,7 @@ do {									\
- #define __get_user_check(x,ptr,size)					\
- ({									\
- 	long __gu_err = -EFAULT;					\
--	const void __user * __gu_ptr = (ptr);				\
-+	const __typeof__(*(ptr)) __user * __gu_ptr = (ptr);		\
- 									\
- 	if (likely(access_ok(VERIFY_READ,  __gu_ptr, size)))		\
- 		__get_user_common((x), size, __gu_ptr);			\
-@@ -258,7 +258,7 @@ do {									\
- 	: "=r" (__gu_err), "=r" (__gu_tmp)				\
- 	: "0" (0), "o" (__m(addr)), "i" (-EFAULT));			\
- 									\
--	(val) = (__typeof__(val)) __gu_tmp;				\
-+	(val) = (__typeof__(*(addr))) __gu_tmp;				\
- }
- 
- /*
-@@ -284,7 +284,7 @@ do {									\
- 	"	.previous					\n"	\
- 	: "=r" (__gu_err), "=&r" (__gu_tmp)				\
- 	: "0" (0), "r" (addr), "i" (-EFAULT));				\
--	(val) = __gu_tmp;						\
-+	(val) = (__typeof__(*(addr))) __gu_tmp;				\
- }
- 
- /*
+Yoichi

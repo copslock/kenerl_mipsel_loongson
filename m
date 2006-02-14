@@ -1,67 +1,178 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 03:02:54 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:58865 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S3467615AbWBNDCi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Feb 2006 03:02:38 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 14 Feb 2006 12:08:57 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 27858203DB;
-	Tue, 14 Feb 2006 12:08:48 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 1C6CB1FDD7;
-	Tue, 14 Feb 2006 12:08:48 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k1E38l4D074215;
-	Tue, 14 Feb 2006 12:08:47 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 14 Feb 2006 12:08:46 +0900 (JST)
-Message-Id: <20060214.120846.15248106.nemoto@toshiba-tops.co.jp>
-To:	yoichi_yuasa@tripeaks.co.jp
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] fix cache coherency issues
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060214112653.25ed3e05.yoichi_yuasa@tripeaks.co.jp>
-References: <20060214105928.0cd46e6f.yoichi_yuasa@tripeaks.co.jp>
-	<20060214.111547.21591480.nemoto@toshiba-tops.co.jp>
-	<20060214112653.25ed3e05.yoichi_yuasa@tripeaks.co.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 04:58:45 +0000 (GMT)
+Received: from ns.miraclelinux.com ([219.118.163.66]:36046 "EHLO
+	mail01.miraclelinux.com") by ftp.linux-mips.org with ESMTP
+	id S8133381AbWBNE6b (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Feb 2006 04:58:31 +0000
+Received: from mail01 (localhost.localdomain [127.0.0.1])
+	by mail01.miraclelinux.com (Postfix) with ESMTP
+	id 76BF331C329; Tue, 14 Feb 2006 14:04:45 +0900 (JST)
+Received: from localhost.localdomain (sshgate.miraclelinux.com [])
+	by mail01.miraclelinux.com ([10.1.0.10]);
+	Tue, 14 Feb 2006 05:04:45 +0000
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 36BC4420236; Tue, 14 Feb 2006 14:04:43 +0900 (JST)
+Message-Id: <20060214050443.068971000@localhost.localdomain>
+References: <20060214050351.252615000@localhost.localdomain>
+Date:	Tue, 14 Feb 2006 14:03:58 +0900
+From:	Akinobu Mita <mita@miraclelinux.com>
+To:	linux-kernel@vger.kernel.org
+Cc:	akpm@osdl.org, Russell King <rmk@arm.linux.org.uk>,
+	Ian Molton <spyro@f2s.com>, dev-etrax@axis.com,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	linux-mips@linux-mips.org, parisc-linux@parisc-linux.org,
+	linuxppc-dev@ozlabs.org, linuxsh-dev@lists.sourceforge.net,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	sparclinux@vger.kernel.org, ultralinux@vger.kernel.org,
+	Chris Zankel <chris@zankel.net>,
+	Akinobu Mita <mita@miraclelinux.com>
+Subject: [patch 07/47] generic __{,test_and_}{set,clear,change}_bit() and test_bit()
+Content-Disposition: inline; filename=non-atomic-bitops.patch
+Return-Path: <mita@miraclelinux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10432
+X-archive-position: 10433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: mita@miraclelinux.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 14 Feb 2006 11:26:53 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> said:
-yuasa> Here is the boot log.
+This patch introduces the C-language equivalents of the functions below:
 
-Thanks.  Could you try with this patch?
+void __set_bit(int nr, volatile unsigned long *addr);
+void __clear_bit(int nr, volatile unsigned long *addr);
+void __change_bit(int nr, volatile unsigned long *addr);
+int __test_and_set_bit(int nr, volatile unsigned long *addr);
+int __test_and_clear_bit(int nr, volatile unsigned long *addr);
+int __test_and_change_bit(int nr, volatile unsigned long *addr);
+int test_bit(int nr, const volatile unsigned long *addr);
 
-http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20060204.015356.74753400.anemo%40mba.ocn.ne.jp
+In include/asm-generic/bitops/non-atomic.h
 
-Or this quick workaround?
+This code largely copied from:
+asm-powerpc/bitops.h
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 1b71d91..5bd413f 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -425,7 +425,7 @@ static inline void local_r4k_flush_cache
- 	 * Do indexed flush, too much work to get the (possible) TLB refills
- 	 * to work correctly.
- 	 */
--	addr = INDEX_BASE + (addr & (dcache_size - 1));
-+	addr = INDEX_BASE + (addr & (current_cpu_data.dcache.waysize - 1));
- 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc)) {
- 		r4k_blast_dcache_page_indexed(addr);
- 		if (exec && !cpu_icache_snoops_remote_store)
+Signed-off-by: Akinobu Mita <mita@miraclelinux.com>
+ include/asm-generic/bitops/non-atomic.h |  111 ++++++++++++++++++++++++++++++++
+ 1 files changed, 111 insertions(+)
+
+Index: 2.6-rc/include/asm-generic/bitops/non-atomic.h
+===================================================================
+--- /dev/null
++++ 2.6-rc/include/asm-generic/bitops/non-atomic.h
+@@ -0,0 +1,111 @@
++#ifndef _ASM_GENERIC_BITOPS_NON_ATOMIC_H_
++#define _ASM_GENERIC_BITOPS_NON_ATOMIC_H_
++
++#include <asm/types.h>
++
++#define BITOP_MASK(nr)		(1UL << ((nr) % BITS_PER_LONG))
++#define BITOP_WORD(nr)		((nr) / BITS_PER_LONG)
++
++/**
++ * __set_bit - Set a bit in memory
++ * @nr: the bit to set
++ * @addr: the address to start counting from
++ *
++ * Unlike set_bit(), this function is non-atomic and may be reordered.
++ * If it's called on the same region of memory simultaneously, the effect
++ * may be that only one operation succeeds.
++ */
++static inline void __set_bit(int nr, volatile unsigned long *addr)
++{
++	unsigned long mask = BITOP_MASK(nr);
++	unsigned long *p = ((unsigned long *)addr) + BITOP_WORD(nr);
++
++	*p  |= mask;
++}
++
++static inline void __clear_bit(int nr, volatile unsigned long *addr)
++{
++	unsigned long mask = BITOP_MASK(nr);
++	unsigned long *p = ((unsigned long *)addr) + BITOP_WORD(nr);
++
++	*p &= ~mask;
++}
++
++/**
++ * __change_bit - Toggle a bit in memory
++ * @nr: the bit to change
++ * @addr: the address to start counting from
++ *
++ * Unlike change_bit(), this function is non-atomic and may be reordered.
++ * If it's called on the same region of memory simultaneously, the effect
++ * may be that only one operation succeeds.
++ */
++static inline void __change_bit(int nr, volatile unsigned long *addr)
++{
++	unsigned long mask = BITOP_MASK(nr);
++	unsigned long *p = ((unsigned long *)addr) + BITOP_WORD(nr);
++
++	*p ^= mask;
++}
++
++/**
++ * __test_and_set_bit - Set a bit and return its old value
++ * @nr: Bit to set
++ * @addr: Address to count from
++ *
++ * This operation is non-atomic and can be reordered.  
++ * If two examples of this operation race, one can appear to succeed
++ * but actually fail.  You must protect multiple accesses with a lock.
++ */
++static inline int __test_and_set_bit(int nr, volatile unsigned long *addr)
++{
++	unsigned long mask = BITOP_MASK(nr);
++	unsigned long *p = ((unsigned long *)addr) + BITOP_WORD(nr);
++	unsigned long old = *p;
++
++	*p = old | mask;
++	return (old & mask) != 0;
++}
++
++/**
++ * __test_and_clear_bit - Clear a bit and return its old value
++ * @nr: Bit to clear
++ * @addr: Address to count from
++ *
++ * This operation is non-atomic and can be reordered.  
++ * If two examples of this operation race, one can appear to succeed
++ * but actually fail.  You must protect multiple accesses with a lock.
++ */
++static inline int __test_and_clear_bit(int nr, volatile unsigned long *addr)
++{
++	unsigned long mask = BITOP_MASK(nr);
++	unsigned long *p = ((unsigned long *)addr) + BITOP_WORD(nr);
++	unsigned long old = *p;
++
++	*p = old & ~mask;
++	return (old & mask) != 0;
++}
++
++/* WARNING: non atomic and it can be reordered! */
++static inline int __test_and_change_bit(int nr,
++					    volatile unsigned long *addr)
++{
++	unsigned long mask = BITOP_MASK(nr);
++	unsigned long *p = ((unsigned long *)addr) + BITOP_WORD(nr);
++	unsigned long old = *p;
++
++	*p = old ^ mask;
++	return (old & mask) != 0;
++}
++
++/**
++ * test_bit - Determine whether a bit is set
++ * @nr: bit number to test
++ * @addr: Address to start counting from
++ */
++static inline int test_bit(int nr, const volatile unsigned long *addr)
++{
++	return 1UL & (addr[BITOP_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
++}
++
++#endif /* _ASM_GENERIC_BITOPS_NON_ATOMIC_H_ */
+
+--

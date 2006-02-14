@@ -1,77 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 08:51:49 +0000 (GMT)
-Received: from mo00.po.2iij.net ([210.130.202.204]:58347 "EHLO
-	mo00.po.2iij.net") by ftp.linux-mips.org with ESMTP
-	id S8133381AbWBNIuk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Feb 2006 08:50:40 +0000
-Received: NPO MO00 id k1E8uwNw019520; Tue, 14 Feb 2006 17:56:58 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (NPO-MR/mbox03) id k1E8uvm1021728
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
-	Tue, 14 Feb 2006 17:56:57 +0900 (JST)
-Message-Id: <200602140856.k1E8uvm1021728@mbox03.po.2iij.net>
-Date:	Tue, 14 Feb 2006 17:56:57 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [PATCH] fix cache coherency issues
-In-Reply-To: <20060214.164216.48797359.nemoto@toshiba-tops.co.jp>
-References: <20060214112653.25ed3e05.yoichi_yuasa@tripeaks.co.jp>
-	<20060214.120846.15248106.nemoto@toshiba-tops.co.jp>
-	<200602140707.k1E77Tah013064@mbox00.po.2iij.net>
-	<20060214.164216.48797359.nemoto@toshiba-tops.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 09:50:36 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:10001 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133421AbWBNJu2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Feb 2006 09:50:28 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 234C1F5CE7;
+	Tue, 14 Feb 2006 10:56:27 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 03833-02-2; Tue, 14 Feb 2006 10:56:26 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 05D19F6256;
+	Tue, 14 Feb 2006 10:53:22 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k1E9mXRe015620;
+	Tue, 14 Feb 2006 10:49:19 +0100
+Date:	Tue, 14 Feb 2006 09:48:19 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	"Peter 'p2' De Schrijver" <p2@mind.be>, linux-mips@linux-mips.org
+Subject: Re: DECstation R3000 boot error
+In-Reply-To: <20060213225927.GB4226@deprecation.cyrius.com>
+Message-ID: <Pine.LNX.4.64N.0602140946470.14255@blysk.ds.pg.gda.pl>
+References: <20060123225040.GA23576@deprecation.cyrius.com>
+ <Pine.LNX.4.64N.0601241059140.11021@blysk.ds.pg.gda.pl>
+ <20060124122700.GA8527@deprecation.cyrius.com>
+ <Pine.LNX.4.64N.0601241227290.11021@blysk.ds.pg.gda.pl> <20060124232117.GA4165@codecarver>
+ <Pine.LNX.4.64N.0601251103020.7675@blysk.ds.pg.gda.pl>
+ <20060203150232.GA25701@deprecation.cyrius.com>
+ <Pine.LNX.4.64N.0602061021110.32080@blysk.ds.pg.gda.pl>
+ <Pine.LNX.4.64N.0602130911260.17051@blysk.ds.pg.gda.pl>
+ <20060213225927.GB4226@deprecation.cyrius.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.87.1/1287/Mon Feb 13 22:29:18 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-Envid: tripeaks.co.jp
-Envelope-Id: tripeaks.co.jp
-X-archive-position: 10451
+X-archive-position: 10452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 14 Feb 2006 16:42:16 +0900 (JST)
-Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+On Mon, 13 Feb 2006, Martin Michlmayr wrote:
 
-> >>>>> On Tue, 14 Feb 2006 16:07:29 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> said:
-> yuasa> I added the patch and tested it.  It has same problem.
-> 
-> Thank you.  I realize the reason just now.  VR41XX's PTE format is a
-> bit different from others.  I should use mk_pte() to wrap these
-> difference.
-> 
-> Could you try this patch?  64BIT_PHYS_ADDR + MIPS32_R1 part are not
-> tested ;-)
+> @@ -631,6 +633,13 @@
+>  # CONFIG_FB_VIRTUAL is not set
+>  
+>  #
+> +# Console display driver support
+> +#
+> +CONFIG_VGA_CONSOLE=y
+> +CONFIG_DUMMY_CONSOLE=y
+> +# CONFIG_FRAMEBUFFER_CONSOLE is not set
+> +
+> +#
+>  # Logo configuration
+>  #
+>  CONFIG_LOGO=y
 
-This patch fixed the boot problem, but the kernel still has cache coherency problem.
+ Hmm, VGA_CONSOLE doesn't make much sense for the DECstation, does it?  
+You might want to select FRAMEBUFFER_CONSOLE instead.
 
-~# ./cachetest 
-Test separation: 4096 bytes: FAIL - cache not coherent
-Test separation: 8192 bytes: pass
-Test separation: 16384 bytes: pass
-Test separation: 32768 bytes: pass
-Test separation: 65536 bytes: pass
-Test separation: 131072 bytes: pass
-Test separation: 262144 bytes: pass
-Test separation: 524288 bytes: pass
-Test separation: 1048576 bytes: pass
-Test separation: 2097152 bytes: pass
-Test separation: 4194304 bytes: pass
-Test separation: 8388608 bytes: pass
-Test separation: 16777216 bytes: pass
-VM page alias coherency test: minimum fast spacing: 8192 (2 pages)
-
-I'm using the following test program.
-
-http://lkml.org/lkml/2003/8/29/6
-
-Yoichi
+  Maciej

@@ -1,86 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 09:55:41 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:24584 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S8133421AbWBNJzc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Feb 2006 09:55:32 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 5308DF5A2C;
-	Tue, 14 Feb 2006 11:01:52 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 13880-09; Tue, 14 Feb 2006 11:01:52 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 1350DE1C65;
-	Tue, 14 Feb 2006 11:01:52 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k1EA1iEn018207;
-	Tue, 14 Feb 2006 11:01:45 +0100
-Date:	Tue, 14 Feb 2006 10:01:51 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-cc:	linux-mips@linux-mips.org
-Subject: Re: DECstation R3000 boot error
-In-Reply-To: <20060213232329.GA8286@deprecation.cyrius.com>
-Message-ID: <Pine.LNX.4.64N.0602140950200.14255@blysk.ds.pg.gda.pl>
-References: <20060123225040.GA23576@deprecation.cyrius.com>
- <Pine.LNX.4.64N.0601241059140.11021@blysk.ds.pg.gda.pl>
- <20060124122700.GA8527@deprecation.cyrius.com>
- <Pine.LNX.4.64N.0601241227290.11021@blysk.ds.pg.gda.pl> <20060124232117.GA4165@codecarver>
- <Pine.LNX.4.64N.0601251103020.7675@blysk.ds.pg.gda.pl>
- <20060203150232.GA25701@deprecation.cyrius.com>
- <Pine.LNX.4.64N.0602061021110.32080@blysk.ds.pg.gda.pl>
- <Pine.LNX.4.64N.0602130911260.17051@blysk.ds.pg.gda.pl>
- <20060213225927.GB4226@deprecation.cyrius.com> <20060213232329.GA8286@deprecation.cyrius.com>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="328795856-308165493-1139911311=:14255"
-X-Virus-Scanned: ClamAV 0.87.1/1287/Mon Feb 13 22:29:18 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 10:06:08 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:36046 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133421AbWBNKF6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Feb 2006 10:05:58 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 14 Feb 2006 19:12:18 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id CD5C4200BA;
+	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id C0DE31F4B9;
+	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k1EACF4D076129;
+	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
+Message-Id: <20060214.191215.115641299.nemoto@toshiba-tops.co.jp>
+To:	yoichi_yuasa@tripeaks.co.jp
+Cc:	anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] fix cache coherency issues
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <200602140856.k1E8uvm1021728@mbox03.po.2iij.net>
+References: <200602140707.k1E77Tah013064@mbox00.po.2iij.net>
+	<20060214.164216.48797359.nemoto@toshiba-tops.co.jp>
+	<200602140856.k1E8uvm1021728@mbox03.po.2iij.net>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10453
+X-archive-position: 10454
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+>>>>> On Tue, 14 Feb 2006 17:56:57 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> said:
+yuasa> This patch fixed the boot problem, but the kernel still has
+yuasa> cache coherency problem.
 
---328795856-308165493-1139911311=:14255
-Content-Type: TEXT/PLAIN; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+yuasa> ~# ./cachetest 
+yuasa> Test separation: 4096 bytes: FAIL - cache not coherent
 
-On Mon, 13 Feb 2006, Martin Michlmayr wrote:
+Thank you for testing.
 
-> OK, I got it down to:
-> 
->   CC      drivers/tc/lk201.o
-> drivers/tc/lk201.c: In function ‘lk201_rx_char’:
-> drivers/tc/lk201.c:361: warning: implicit declaration of function ‘handle_scancode’
-> drivers/tc/lk201.c: In function ‘lk201_init’:
-> drivers/tc/lk201.c:405: error: invalid lvalue in assignment
-> drivers/tc/lk201.c:406: error: invalid lvalue in assignment
-> make[2]: *** [drivers/tc/lk201.o] Error 1
-> 
-> But this driver really needs to be ported to the new input interface.
+As for the cachetest program, I think the test program is wrong.
 
- The driver has been ported by JBG (thanks!) -- it's the zs.c driver that 
-needs to be ported to the new serial infrastructure.  But that's tough if 
-to be done properly (DMA and synchronous modes are not handled well by the 
-serial core), so not at the moment, sorry.  I'll think about minimal 
-functionality to keep it going though and perhaps lk201.c could be changed 
-to work with current zs.c as is (dz.c has already been ported -- I have no 
-way of testing it, so I somewhat lack incentive to go through it and 
-verify if it's at least as good as the old driver in 2.4.)...
+It try to mmap offset 0 of a shared file to odd address page with
+MAP_FIXED.  It means "I want non-coherent mapping if dcache alias
+exists".  Currently the kernel surely gives what the program want.
 
- I'm not sure what your patch is meant to do, but if changing rate to 
-period you need to invert the values as well -- period = 1 / rate -- and 
-the hardware expects rates in cps IIRC; mind the units, though.
+The kernel might have to return EINVAL in such case, but I'm not sure
+which is the right behavior.  Please look at David S. Miller's
+comments, for example, http://lkml.org/lkml/2003/9/1/48
 
-  Maciej
---328795856-308165493-1139911311=:14255--
+---
+Atsushi Nemoto

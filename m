@@ -1,66 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 10:06:08 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:36046 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133421AbWBNKF6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Feb 2006 10:05:58 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 14 Feb 2006 19:12:18 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id CD5C4200BA;
-	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id C0DE31F4B9;
-	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k1EACF4D076129;
-	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 14 Feb 2006 19:12:15 +0900 (JST)
-Message-Id: <20060214.191215.115641299.nemoto@toshiba-tops.co.jp>
-To:	yoichi_yuasa@tripeaks.co.jp
-Cc:	anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] fix cache coherency issues
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <200602140856.k1E8uvm1021728@mbox03.po.2iij.net>
-References: <200602140707.k1E77Tah013064@mbox00.po.2iij.net>
-	<20060214.164216.48797359.nemoto@toshiba-tops.co.jp>
-	<200602140856.k1E8uvm1021728@mbox03.po.2iij.net>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 10:28:37 +0000 (GMT)
+Received: from fgwmail5.fujitsu.co.jp ([192.51.44.35]:10904 "EHLO
+	fgwmail5.fujitsu.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133421AbWBNK22 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Feb 2006 10:28:28 +0000
+Received: from m2.gw.fujitsu.co.jp ([10.0.50.72])
+        by fgwmail5.fujitsu.co.jp (Fujitsu Gateway)
+        with ESMTP id k1EAYfwM030035; Tue, 14 Feb 2006 19:34:41 +0900
+        (envelope-from kamezawa.hiroyu@jp.fujitsu.com)
+Received: from s5.gw.fujitsu.co.jp by m2.gw.fujitsu.co.jp (8.12.10/Fujitsu Domain Master)
+	id k1EAYdY7027268; Tue, 14 Feb 2006 19:34:40 +0900
+	(envelope-from kamezawa.hiroyu@jp.fujitsu.com)
+Received: from s5.gw.fujitsu.co.jp (s5 [127.0.0.1])
+	by s5.gw.fujitsu.co.jp (Postfix) with ESMTP id CCD1D1B8057;
+	Tue, 14 Feb 2006 19:34:39 +0900 (JST)
+Received: from fjm503.ms.jp.fujitsu.com (fjm503.ms.jp.fujitsu.com [10.56.99.77])
+	by s5.gw.fujitsu.co.jp (Postfix) with ESMTP id 186131B805C;
+	Tue, 14 Feb 2006 19:34:39 +0900 (JST)
+Received: from [127.0.0.1] (fjmscan501.ms.jp.fujitsu.com [10.56.99.141])by fjm503.ms.jp.fujitsu.com with ESMTP id k1EAYYg7006708;
+	Tue, 14 Feb 2006 19:34:36 +0900
+Message-ID: <43F1B29B.3030909@jp.fujitsu.com>
+Date:	Tue, 14 Feb 2006 19:36:11 +0900
+From:	KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
+MIME-Version: 1.0
+To:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+CC:	Andrew Morton <akpm@osdl.org>, linux-mips@linux-mips.org
+Subject: [PATCH] unify pfn_to_page take3 [12/23] mips pfn_to_page
+References: <43F1A753.2020003@jp.fujitsu.com>
+In-Reply-To: <43F1A753.2020003@jp.fujitsu.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <kamezawa.hiroyu@jp.fujitsu.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10454
+X-archive-position: 10455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: kamezawa.hiroyu@jp.fujitsu.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 14 Feb 2006 17:56:57 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> said:
-yuasa> This patch fixed the boot problem, but the kernel still has
-yuasa> cache coherency problem.
+MIPS can use generic funcs.
 
-yuasa> ~# ./cachetest 
-yuasa> Test separation: 4096 bytes: FAIL - cache not coherent
+Signed-Off-By: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
 
-Thank you for testing.
+Index: testtree/include/asm-mips/mmzone.h
+===================================================================
+--- testtree.orig/include/asm-mips/mmzone.h
++++ testtree/include/asm-mips/mmzone.h
+@@ -22,20 +22,6 @@
+  		       NODE_DATA(__n)->node_spanned_pages) : 0);\
+  })
 
-As for the cachetest program, I think the test program is wrong.
+-#define pfn_to_page(pfn)					\
+-({								\
+- 	unsigned long __pfn = (pfn);				\
+-	pg_data_t *__pg = NODE_DATA(pfn_to_nid(__pfn));		\
+-	__pg->node_mem_map + (__pfn - __pg->node_start_pfn);	\
+-})
+-
+-#define page_to_pfn(p)						\
+-({								\
+-	struct page *__p = (p);					\
+-	struct zone *__z = page_zone(__p);			\
+-	((__p - __z->zone_mem_map) + __z->zone_start_pfn);	\
+-})
+-
+  /* XXX: FIXME -- wli */
+  #define kern_addr_valid(addr)	(0)
 
-It try to mmap offset 0 of a shared file to odd address page with
-MAP_FIXED.  It means "I want non-coherent mapping if dcache alias
-exists".  Currently the kernel surely gives what the program want.
+Index: testtree/include/asm-mips/page.h
+===================================================================
+--- testtree.orig/include/asm-mips/page.h
++++ testtree/include/asm-mips/page.h
+@@ -17,6 +17,7 @@
 
-The kernel might have to return EINVAL in such case, but I'm not sure
-which is the right behavior.  Please look at David S. Miller's
-comments, for example, http://lkml.org/lkml/2003/9/1/48
+  #endif
 
----
-Atsushi Nemoto
++
+  /*
+   * PAGE_SHIFT determines the page size
+   */
+@@ -140,8 +141,6 @@ typedef struct { unsigned long pgprot; }
+  #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
+
+  #ifndef CONFIG_NEED_MULTIPLE_NODES
+-#define pfn_to_page(pfn)	(mem_map + (pfn))
+-#define page_to_pfn(page)	((unsigned long)((page) - mem_map))
+  #define pfn_valid(pfn)		((pfn) < max_mapnr)
+  #endif
+
+@@ -160,6 +159,7 @@ typedef struct { unsigned long pgprot; }
+  #define WANT_PAGE_VIRTUAL
+  #endif
+
++#include <asm-generic/memory_model.h>
+  #include <asm-generic/page.h>
+
+  #endif /* _ASM_PAGE_H */

@@ -1,52 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 16:26:06 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:52505 "EHLO
-	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133476AbWBNQZ5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Feb 2006 16:25:57 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1EGRMJ0030836;
-	Tue, 14 Feb 2006 16:27:22 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1EGRMwf030835;
-	Tue, 14 Feb 2006 16:27:22 GMT
-Date:	Tue, 14 Feb 2006 16:27:22 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	"Peter 'p2' De Schrijver" <p2@mind.be>, linux-mips@linux-mips.org
-Subject: Re: DECstation R3000 boot error
-Message-ID: <20060214162722.GD21016@linux-mips.org>
-References: <Pine.LNX.4.64N.0601241059140.11021@blysk.ds.pg.gda.pl> <20060124122700.GA8527@deprecation.cyrius.com> <Pine.LNX.4.64N.0601241227290.11021@blysk.ds.pg.gda.pl> <20060124232117.GA4165@codecarver> <Pine.LNX.4.64N.0601251103020.7675@blysk.ds.pg.gda.pl> <20060203150232.GA25701@deprecation.cyrius.com> <Pine.LNX.4.64N.0602061021110.32080@blysk.ds.pg.gda.pl> <Pine.LNX.4.64N.0602130911260.17051@blysk.ds.pg.gda.pl> <20060213223951.GA4226@deprecation.cyrius.com> <20060213224733.GA4983@deprecation.cyrius.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060213224733.GA4983@deprecation.cyrius.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 18:54:59 +0000 (GMT)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:27054 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133495AbWBNSyu
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Feb 2006 18:54:50 +0000
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k1EJ12Ns015196;
+	Tue, 14 Feb 2006 11:01:03 -0800 (PST)
+Received: from olympia.mips.com (olympia [192.168.192.128])
+	by mercury.mips.com (8.12.9/8.12.11) with ESMTP id k1EJ1189020181;
+	Tue, 14 Feb 2006 11:01:01 -0800 (PST)
+Received: from officemobile.mips-dk.mips.com ([192.168.192.20] helo=[127.0.0.1])
+	by olympia.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1F95Px-0006BW-00; Tue, 14 Feb 2006 19:00:53 +0000
+Message-ID: <43F228E4.40200@mips.com>
+Date:	Tue, 14 Feb 2006 19:00:52 +0000
+From:	Nigel Stephens <nigel@mips.com>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
+MIME-Version: 1.0
+To:	zhuzhenhua <zzh.hust@gmail.com>
+CC:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: does any other cross-tool support UID instruction?
+References: <50c9a2250602121738r59f5fed0s800e43f9d232c6eb@mail.gmail.com>
+In-Reply-To: <50c9a2250602121738r59f5fed0s800e43f9d232c6eb@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MTUK-Scanner:	Found to be clean
+X-MTUK-SpamCheck: not spam (whitelisted), SpamAssassin (score=-4.809,
+	required 4, AWL, BAYES_00)
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10462
+X-archive-position: 10463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 13, 2006 at 10:47:33PM +0000, Martin Michlmayr wrote:
+zhuzhenhua wrote:
+> i want to use the UID instruction in my application or library, but
+> the sde toolchain on support to compile bootloader or kernel.
+> how to use it to compile a application or library?
+> or does any other cross-tool support UID instruction?
+> thanks for any hints
+>
+>   
 
-> >   LD      .tmp_vmlinux1
-> > arch/mips/kernel/built-in.o: In function `einval':arch/mips/kernel/scall32-o32.S:(.text+0xb6c0): undefined reference to `sys_newfstatat'
-> > 
-> > This is with binutils 2.16.1cvs20060117-1 and gcc 4.0.3 20051201.
-> 
-> I see a fix for this just went into Linus' git tree.  Can we have this
-> in the linux-mips tree too please.
-> 
-> http://www.kernel.org/git/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=326a625748535c4cdb1c632b1dcb07030989a393
+I assume that you mean the UDI instruction. You could consider the 
+TimeSys Linuxlink MIPS distribution see 
+http://www.timesys.com/releases/home_bdy_news.php?show_article=1265 
+which will include MIPS SDE configured as a full Linux MIPS cross-toolchain.
 
-Ah, Yoichi at it again.  He really loves sending patches upstream without
-letting me know.
-
-  Ralf
+Nigel

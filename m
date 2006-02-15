@@ -1,68 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2006 22:57:54 +0000 (GMT)
-Received: from mo00.po.2iij.net ([210.130.202.204]:7917 "EHLO mo00.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8133507AbWBNW5p (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Feb 2006 22:57:45 +0000
-Received: NPO MO00 id k1EN422E017301; Wed, 15 Feb 2006 08:04:02 +0900 (JST)
-Received: from stratos (87.26.30.125.dy.iij4u.or.jp [125.30.26.87])
-	by mbox.po.2iij.net (NPO-MR/mbox01) id k1EN41T8007816
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
-	Wed, 15 Feb 2006 08:04:01 +0900 (JST)
-Date:	Wed, 15 Feb 2006 08:04:00 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, tbm@cyrius.com, macro@linux-mips.org,
-	p2@mind.be, linux-mips@linux-mips.org
-Subject: Re: DECstation R3000 boot error
-Message-Id: <20060215080400.0e523f60.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20060214162722.GD21016@linux-mips.org>
-References: <Pine.LNX.4.64N.0601241059140.11021@blysk.ds.pg.gda.pl>
-	<20060124122700.GA8527@deprecation.cyrius.com>
-	<Pine.LNX.4.64N.0601241227290.11021@blysk.ds.pg.gda.pl>
-	<20060124232117.GA4165@codecarver>
-	<Pine.LNX.4.64N.0601251103020.7675@blysk.ds.pg.gda.pl>
-	<20060203150232.GA25701@deprecation.cyrius.com>
-	<Pine.LNX.4.64N.0602061021110.32080@blysk.ds.pg.gda.pl>
-	<Pine.LNX.4.64N.0602130911260.17051@blysk.ds.pg.gda.pl>
-	<20060213223951.GA4226@deprecation.cyrius.com>
-	<20060213224733.GA4983@deprecation.cyrius.com>
-	<20060214162722.GD21016@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Feb 2006 09:19:36 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:32619 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133478AbWBOJTZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 15 Feb 2006 09:19:25 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 15 Feb 2006 18:25:51 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 84BBD20011;
+	Wed, 15 Feb 2006 18:25:49 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 786B11F54C;
+	Wed, 15 Feb 2006 18:25:49 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k1F9Pn4D081047;
+	Wed, 15 Feb 2006 18:25:49 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 15 Feb 2006 18:25:48 +0900 (JST)
+Message-Id: <20060215.182548.118975142.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] sc-rm7k.c cleanup
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-Envid: tripeaks.co.jp
-Envelope-Id: tripeaks.co.jp
-X-archive-position: 10465
+X-archive-position: 10466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 14 Feb 2006 16:27:22 +0000
-Ralf Baechle <ralf@linux-mips.org> wrote:
+Use blast_scache_range, blast_inv_scache_range for rm7k scache routine.
+Output code should be logically same.
 
-> On Mon, Feb 13, 2006 at 10:47:33PM +0000, Martin Michlmayr wrote:
-> 
-> > >   LD      .tmp_vmlinux1
-> > > arch/mips/kernel/built-in.o: In function `einval':arch/mips/kernel/scall32-o32.S:(.text+0xb6c0): undefined reference to `sys_newfstatat'
-> > > 
-> > > This is with binutils 2.16.1cvs20060117-1 and gcc 4.0.3 20051201.
-> > 
-> > I see a fix for this just went into Linus' git tree.  Can we have this
-> > in the linux-mips tree too please.
-> > 
-> > http://www.kernel.org/git/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=326a625748535c4cdb1c632b1dcb07030989a393
-> 
-> Ah, Yoichi at it again.  He really loves sending patches upstream without
-> letting me know.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Sorry, I forgot add Cc: .
-
-Yoichi
+diff --git a/arch/mips/mm/sc-rm7k.c b/arch/mips/mm/sc-rm7k.c
+index 9e8ff8b..3b6cc9b 100644
+--- a/arch/mips/mm/sc-rm7k.c
++++ b/arch/mips/mm/sc-rm7k.c
+@@ -9,6 +9,7 @@
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
++#include <linux/bitops.h>
+ 
+ #include <asm/addrspace.h>
+ #include <asm/bcache.h>
+@@ -43,14 +44,7 @@ static void rm7k_sc_wback_inv(unsigned l
+ 	/* Catch bad driver code */
+ 	BUG_ON(size == 0);
+ 
+-	a = addr & ~(sc_lsize - 1);
+-	end = (addr + size - 1) & ~(sc_lsize - 1);
+-	while (1) {
+-		flush_scache_line(a);	/* Hit_Writeback_Inv_SD */
+-		if (a == end)
+-			break;
+-		a += sc_lsize;
+-	}
++	blast_scache_range(addr, addr + size);
+ 
+ 	if (!rm7k_tcache_enabled)
+ 		return;
+@@ -74,14 +68,7 @@ static void rm7k_sc_inv(unsigned long ad
+ 	/* Catch bad driver code */
+ 	BUG_ON(size == 0);
+ 
+-	a = addr & ~(sc_lsize - 1);
+-	end = (addr + size - 1) & ~(sc_lsize - 1);
+-	while (1) {
+-		invalidate_scache_line(a);	/* Hit_Invalidate_SD */
+-		if (a == end)
+-			break;
+-		a += sc_lsize;
+-	}
++	blast_inv_scache_range(addr, addr + size);
+ 
+ 	if (!rm7k_tcache_enabled)
+ 		return;
+@@ -143,11 +130,17 @@ struct bcache_ops rm7k_sc_ops = {
+ 
+ void __init rm7k_sc_init(void)
+ {
++	struct cpuinfo_mips *c = &current_cpu_data;
+ 	unsigned int config = read_c0_config();
+ 
+ 	if ((config & RM7K_CONF_SC))
+ 		return;
+ 
++	c->scache.linesz = sc_lsize;
++	c->scache.ways = 4;
++	c->scache.waybit= ffs(scache_size / c->scache.ways) - 1;
++	c->scache.waysize = scache_size / c->scache.ways;
++	c->scache.sets = scache_size / (c->scache.linesz * c->scache.ways);
+ 	printk(KERN_INFO "Secondary cache size %dK, linesize %d bytes.\n",
+ 	       (scache_size >> 10), sc_lsize);
+ 
+diff --git a/include/asm-mips/r4kcache.h b/include/asm-mips/r4kcache.h
+index 9632c27..42f7be2 100644
+--- a/include/asm-mips/r4kcache.h
++++ b/include/asm-mips/r4kcache.h
+@@ -302,5 +302,6 @@ __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit
+ __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, )
+ /* blast_inv_dcache_range */
+ __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, )
++__BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, )
+ 
+ #endif /* _ASM_R4KCACHE_H */

@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 22:57:42 +0000 (GMT)
-Received: from mms1.broadcom.com ([216.31.210.17]:26634 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 23:19:52 +0000 (GMT)
+Received: from mms1.broadcom.com ([216.31.210.17]:60430 "EHLO
 	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133520AbWBPW5c (ORCPT <rfc822;linux-mips@www.linux-mips.org>);
-	Thu, 16 Feb 2006 22:57:32 +0000
+	id S8133520AbWBPXTe (ORCPT <rfc822;linux-mips@www.linux-mips.org>);
+	Thu, 16 Feb 2006 23:19:34 +0000
 Received: from 10.10.64.154 by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Thu, 16 Feb 2006 15:03:57 -0800
+ SMTP Relay (Email Firewall v6.2.0)); Thu, 16 Feb 2006 15:26:06 -0800
 X-Server-Uuid: F962EFE0-448C-40EE-8100-87DF498ED0EA
 Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 595B52B0; Thu, 16 Feb 2006 15:03:47 -0800 (PST)
+ A51732AE; Thu, 16 Feb 2006 15:25:56 -0800 (PST)
 Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 2352E2AE for
- <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006 15:03:47 -0800 (PST)
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 304552B0 for
+ <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006 15:25:56 -0800 (PST)
 Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
  [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.3a-GA) with ESMTP
- id CYD21449; Thu, 16 Feb 2006 15:03:46 -0800 (PST)
+ id CYD28611; Thu, 16 Feb 2006 15:25:55 -0800 (PST)
 Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
  [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- C278120501 for <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006
- 15:03:46 -0800 (PST)
+ 6670020501 for <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006
+ 15:25:55 -0800 (PST)
 Received: from localhost.localdomain ([10.136.253.1]) by
  NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Thu, 16 Feb 2006 15:03:46 -0800
+ SMTPSVC(6.0.3790.1830); Thu, 16 Feb 2006 15:25:55 -0800
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
- by localhost.localdomain (8.13.4/8.13.4) with ESMTP id k1GN3Kun011998
- for <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006 15:03:24 -0800
+ by localhost.localdomain (8.13.4/8.13.4) with ESMTP id k1GNPeaW012310
+ for <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006 15:25:41 -0800
 Received: (from mason@localhost) by localhost.localdomain (
- 8.13.4/8.13.4/Submit) id k1GN34KT011995 for
- linux-mips@www.linux-mips.org; Thu, 16 Feb 2006 15:03:04 -0800
-Date:	Thu, 16 Feb 2006 15:03:04 -0800
+ 8.13.4/8.13.4/Submit) id k1GNPc3H012309 for
+ linux-mips@www.linux-mips.org; Thu, 16 Feb 2006 15:25:38 -0800
+Date:	Thu, 16 Feb 2006 15:25:38 -0800
 From:	"Mark Mason" <mason@broadcom.com>
 To:	linux-mips@www.linux-mips.org
-Subject: Patches for BCM1250/BCM1480 header files.
-Message-ID: <20060216230304.GA11952@localhost.localdomain>
+Subject: Correct patch for BCM1250/BCM1480 header files.
+Message-ID: <20060216232538.GA12285@localhost.localdomain>
 MIME-Version: 1.0
 User-Agent: Mutt/1.4.2.1i
-X-OriginalArrivalTime: 16 Feb 2006 23:03:46.0583 (UTC)
- FILETIME=[3D9CEA70:01C6334D]
+X-OriginalArrivalTime: 16 Feb 2006 23:25:55.0185 (UTC)
+ FILETIME=[55857E10:01C63350]
 X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006021609; IFV=2.0.6,4.0-7;
  RPD=4.00.0004;
- RPDID=303030312E30413039303230372E34334635303243332E303035312D412D;
- ENG=IBF; TS=20060216230400; CAT=NONE; CON=NONE;
+ RPDID=303030312E30413039303230372E34334635303746352E303031322D412D;
+ ENG=IBF; TS=20060216232609; CAT=NONE; CON=NONE;
 X-MMS-Spam-Filter-ID: A2006021609_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 6FEBDB5710G11239986-01-01
+X-WSS-ID: 6FEBD58410G11243700-01-01
 Content-Type: text/plain;
  charset=us-ascii
 Content-Disposition: inline
@@ -50,7 +50,7 @@ Return-Path: <mark.e.mason@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@www.linux-mips.org
 Original-Recipient: rfc822;linux-mips@www.linux-mips.org
-X-archive-position: 10479
+X-archive-position: 10480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -60,8 +60,10 @@ X-list: linux-mips
 
 Hello all,
 
-The following patch makes some minor feature updates to the BCM1250/BCM1480
-header files.
+This is the *CORRECT* patch.  The previous one got mangled at the last
+moment (I hate it when that happens). Sorry about that.
+
+The following patch makes some minor feature updates to the BCM1250/BCM1480 header files.
 
 Please apply.
 

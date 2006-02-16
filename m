@@ -1,78 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 12:40:42 +0000 (GMT)
-Received: from wip-ec-wd.wipro.com ([203.91.193.32]:25512 "EHLO
-	wip-ec-wd.wipro.com") by ftp.linux-mips.org with ESMTP
-	id S8133398AbWBPMkd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Feb 2006 12:40:33 +0000
-Received: from wip-ec-wd.wipro.com (localhost.wipro.com [127.0.0.1])
-	by localhost (Postfix) with ESMTP id B000D20618
-	for <linux-mips@linux-mips.org>; Thu, 16 Feb 2006 18:01:52 +0530 (IST)
-Received: from blr-ec-bh01.wipro.com (blr-ec-bh01.wipro.com [10.201.50.91])
-	by wip-ec-wd.wipro.com (Postfix) with ESMTP id 92DA4205DA
-	for <linux-mips@linux-mips.org>; Thu, 16 Feb 2006 18:01:52 +0530 (IST)
-Received: from PNE-HJN-MBX01.wipro.com ([10.111.50.182]) by blr-ec-bh01.wipro.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 16 Feb 2006 18:16:58 +0530
-Received: from [10.111.17.97] ([10.111.17.97]) by PNE-HJN-MBX01.wipro.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 16 Feb 2006 18:16:57 +0530
-Message-ID: <43F47420.9080708@wipro.com>
-Date:	Thu, 16 Feb 2006 18:16:24 +0530
-From:	Hemant Mohan <hemant.mohan@wipro.com>
-Reply-To:  hemant.mohan@wipro.com
-Organization: Wipro Technologies
-User-Agent: Thunderbird 1.5 (X11/20051201)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 12:56:18 +0000 (GMT)
+Received: from web36102.mail.mud.yahoo.com ([66.163.179.216]:21651 "HELO
+	web36102.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133398AbWBPM4J (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Feb 2006 12:56:09 +0000
+Received: (qmail 72705 invoked by uid 60001); 16 Feb 2006 13:02:36 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=1pSn8h6I6X9K95NH5r8sQ1KzUpTQLEqzyUhEGyT3nYN6gWUdpLRfoB8l25nHbbmtyeIp7VoQH8m6/A5CcUBzG6oJ3Ur83FrNMT+RWOdyUJI2KjGVGZYzajnCXgISmzMv1qgziIQcE8tFaanls/ngKVnWjsBUBsOlir076LO0fwE=  ;
+Message-ID: <20060216130236.72703.qmail@web36102.mail.mud.yahoo.com>
+Received: from [81.240.203.107] by web36102.mail.mud.yahoo.com via HTTP; Thu, 16 Feb 2006 13:02:36 GMT
+Date:	Thu, 16 Feb 2006 13:02:36 +0000 (GMT)
+From:	joris lijssens <joris_lijssens1980@yahoo.com>
+Subject: patch to increase stack size 
 To:	linux-mips@linux-mips.org
-Subject: [PATCH] - PMC Titan network controller - compilation problem with
- gcc4.0.2
-Content-Type: multipart/mixed;
- boundary="------------000605000809020206090109"
-X-OriginalArrivalTime: 16 Feb 2006 12:46:57.0895 (UTC) FILETIME=[12B74770:01C632F7]
-Return-Path: <hemant.mohan@wipro.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <joris_lijssens1980@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10471
+X-archive-position: 10472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hemant.mohan@wipro.com
+X-original-sender: joris_lijssens1980@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------000605000809020206090109
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Hello,
 
-This fixes the compilation error in PMC Titan network Controller, with 
-gcc 4.0.2.
-
-Thanks,
-Hemant
+I was wondering if there is a patch avaible to
+increase the stack size on a mips 2.6 linux kernel. I
+have found one for the i386 that sets the stack size
+from 4K to 16K. But I don't find anything for the mips
+kernel. I would like it if somebody has some info on
+this topic.
 
 
---------------000605000809020206090109
-Content-Type: text/plain;
- name="linux-2.6.15-net-titan.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="linux-2.6.15-net-titan.patch"
+regards
 
-Submitted By: Hemant Mohan (hemant dot mohan at wipro dot com)
-Date: 2006-02-16
-Initial Package Version: 2.6.15
-Origin: Linux-MIPS
-Description:  Fixes compilation error with PMC Titan network controller with gcc4.0.2
+Joris
 
-diff -Naur linux-2.6.15-mips-orig/drivers/net/titan_ge.h linux-mips-hemant-2.6.15/drivers/net/titan_ge.h
---- linux-2.6.15-mips-orig/drivers/net/titan_ge.h	2006-01-09 21:57:29.000000000 +0530
-+++ linux-mips-hemant-2.6.15/drivers/net/titan_ge.h	2006-02-14 17:33:50.000000000 +0530
-@@ -44,7 +44,6 @@
- #define	TITAN_SRAM_BASE		((OCD_READ(RM9000x2_OCD_LKB13) & ~1) << 4)
- #define	TITAN_SRAM_SIZE		0x2000UL
- 
--extern unsigned long titan_ge_sram;
- 
- /*
-  * We may need these constants
 
---------------000605000809020206090109--
+		
+___________________________________________________________ 
+To help you stay safe and secure online, we've developed the all new Yahoo! Security Centre. http://uk.security.yahoo.com

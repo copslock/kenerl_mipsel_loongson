@@ -1,184 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 14:39:11 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:51698 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133398AbWBPOjB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 16 Feb 2006 14:39:01 +0000
-Received: from localhost (p6076-ipad212funabasi.chiba.ocn.ne.jp [58.91.170.76])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id E88CBB43E; Thu, 16 Feb 2006 23:45:31 +0900 (JST)
-Date:	Thu, 16 Feb 2006 23:45:19 +0900 (JST)
-Message-Id: <20060216.234519.82087885.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] oprofile cleanups
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 14:54:02 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:23300 "EHLO
+	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133413AbWBPOxx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Feb 2006 14:53:53 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1GExVY7004216;
+	Thu, 16 Feb 2006 14:59:31 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1GExVu2004215;
+	Thu, 16 Feb 2006 14:59:31 GMT
+Date:	Thu, 16 Feb 2006 14:59:31 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
+Message-ID: <20060216145931.GA1633@linux-mips.org>
+References: <20060213225331.GA5315@deprecation.cyrius.com> <20060215150839.GA27719@linux-mips.org> <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10474
+X-archive-position: 10475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-1. Use CONFIG_OPROFILE to get rid of overhead for null_perf_irq() call.
-2. Call perf_irq from timer_interrupt instead of ll_timer_interrupt.
-   Most (non-SMP) boards will use timer_interrupt (instead of
-   ll_timer_interrupt), so it would be better to move calling of
-   perf_irq() to timer_interrupt().
-3. Use jiffies instead of local timer_tick_count.
+On Thu, Feb 16, 2006 at 10:17:38AM +0000, Maciej W. Rozycki wrote:
+> Date:	Thu, 16 Feb 2006 10:17:38 +0000 (GMT)
+> From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+> To:	Ralf Baechle <ralf@linux-mips.org>
+> cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+> Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
+> Content-Type: TEXT/PLAIN; charset=US-ASCII
+> 
+> On Wed, 15 Feb 2006, Ralf Baechle wrote:
+> 
+> > > @@ -230,7 +230,7 @@
+> > >  			mem_start = get_tc_base_addr(slot);
+> > >  
+> > >  			/* Store base addr into esp struct */
+> > > -			esp->slot = mem_start;
+> > > +			esp->slot = CPHYSADDR(mem_start);
+> > >  
+> > >  			esp->dregs = 0;
+> > >  			esp->eregs = (void *)CKSEG1ADDR(mem_start +
+> > 
+> > I merged allmost all of the differences from mainline except this one.
+> > 
+> > Maciej, does this need the CPHYSADDR() op or not here?
+> 
+>  Of course not as get_tc_base_addr() returns a physical address these 
+> days.  Thanks for spotting this bit.
 
-I can not test it by myself for now while I do not have any
-MIPS32/MIPS64 board.
+Ok, I sent this bit upstream.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+That still leaves below gem to sort out.
 
-diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
-index 7050b4f..7b5c5b9 100644
---- a/arch/mips/kernel/time.c
-+++ b/arch/mips/kernel/time.c
-@@ -414,6 +414,18 @@ void local_timer_interrupt(int irq, void
- 	update_process_times(user_mode(regs));
- }
+  Ralf
+
+diff --git a/drivers/scsi/NCR53C9x.h b/drivers/scsi/NCR53C9x.h
+index 65a9b37..81d03d1 100644
+--- a/drivers/scsi/NCR53C9x.h
++++ b/drivers/scsi/NCR53C9x.h
+@@ -145,12 +145,7 @@
  
-+#if defined(CONFIG_OPROFILE) || defined(CONFIG_OPROFILE_MODULE)
-+int null_perf_irq(struct pt_regs *regs)
-+{
-+	return 0;
-+}
-+
-+int (*perf_irq)(struct pt_regs *regs) = null_perf_irq;
-+
-+EXPORT_SYMBOL(null_perf_irq);
-+EXPORT_SYMBOL(perf_irq);
-+#endif
-+
- /*
-  * High-level timer interrupt service routines.  This function
-  * is set as irqaction->handler and is invoked through do_IRQ.
-@@ -422,6 +434,22 @@ irqreturn_t timer_interrupt(int irq, voi
- {
- 	unsigned long j;
- 	unsigned int count;
-+#if defined(CONFIG_OPROFILE) || defined(CONFIG_OPROFILE_MODULE)
-+	int r2 = cpu_has_mips_r2;
-+
-+	/*
-+	 * Suckage alert:
-+	 * Before R2 of the architecture there was no way to see if a
-+	 * performance counter interrupt was pending, so we have to run the
-+	 * performance counter interrupt handler anyway.
-+	 */
-+	if (!r2 || (read_c0_cause() & (1 << 26)))
-+		if (perf_irq(regs))
-+			return IRQ_HANDLED;
-+
-+	if (r2 && !(read_c0_cause() & (1 << 30)))
-+		return IRQ_HANDLED;
-+#endif
+ #ifndef MULTIPLE_PAD_SIZES
  
- 	count = mips_hpt_read();
- 	mips_timer_ack();
-@@ -507,38 +535,14 @@ irqreturn_t timer_interrupt(int irq, voi
- 	return IRQ_HANDLED;
- }
+-#ifdef CONFIG_CPU_HAS_WB
+-#include <asm/wbflush.h>
+-#define esp_write(__reg, __val) do{(__reg) = (__val); wbflush();} while(0)
+-#else
+-#define esp_write(__reg, __val) ((__reg) = (__val))
+-#endif
++#define esp_write(__reg, __val) do{(__reg) = (__val); iob();} while(0)
+ #define esp_read(__reg) (__reg)
  
--int null_perf_irq(struct pt_regs *regs)
--{
--	return 0;
--}
--
--int (*perf_irq)(struct pt_regs *regs) = null_perf_irq;
--
--EXPORT_SYMBOL(null_perf_irq);
--EXPORT_SYMBOL(perf_irq);
--
- asmlinkage void ll_timer_interrupt(int irq, struct pt_regs *regs)
- {
--	int r2 = cpu_has_mips_r2;
--
- 	irq_enter();
- 	kstat_this_cpu.irqs[irq]++;
- 
--	/*
--	 * Suckage alert:
--	 * Before R2 of the architecture there was no way to see if a
--	 * performance counter interrupt was pending, so we have to run the
--	 * performance counter interrupt handler anyway.
--	 */
--	if (!r2 || (read_c0_cause() & (1 << 26)))
--		if (perf_irq(regs))
--			goto out;
--
- 	/* we keep interrupt disabled all the time */
--	if (!r2 || (read_c0_cause() & (1 << 30)))
--		timer_interrupt(irq, NULL, regs);
-+	timer_interrupt(irq, NULL, regs);
- 
--out:
- 	irq_exit();
- }
- 
-diff --git a/arch/mips/mips-boards/generic/time.c b/arch/mips/mips-boards/generic/time.c
-index 93f3bf2..f9471de 100644
---- a/arch/mips/mips-boards/generic/time.c
-+++ b/arch/mips/mips-boards/generic/time.c
-@@ -58,12 +58,11 @@ static char display_string[] = "        
- static unsigned int display_count = 0;
- #define MAX_DISPLAY_COUNT (sizeof(display_string) - 8)
- 
--static unsigned int timer_tick_count=0;
- static int mips_cpu_timer_irq;
- 
- static inline void scroll_display_message(void)
- {
--	if ((timer_tick_count++ % HZ) == 0) {
-+	if ((jiffies % HZ) == 0) {
- 		mips_display_message(&display_string[display_count++]);
- 		if (display_count == MAX_DISPLAY_COUNT)
- 			display_count = 0;
-@@ -75,13 +74,8 @@ static void mips_timer_dispatch (struct 
- 	do_IRQ (mips_cpu_timer_irq, regs);
- }
- 
--extern int null_perf_irq(struct pt_regs *regs);
--
--extern int (*perf_irq)(struct pt_regs *regs);
--
- irqreturn_t mips_timer_interrupt(int irq, void *dev_id, struct pt_regs *regs)
- {
--	int r2 = cpu_has_mips_r2;
- 	int cpu = smp_processor_id();
- 
- 	if (cpu == 0) {
-@@ -90,13 +84,7 @@ irqreturn_t mips_timer_interrupt(int irq
- 		 * accounting resets count/compare registers to trigger next
- 		 * timer int.
- 		 */
--		if (!r2 || (read_c0_cause() & (1 << 26)))
--			if (perf_irq(regs))
--				goto out;
--
--		/* we keep interrupt disabled all the time */
--		if (!r2 || (read_c0_cause() & (1 << 30)))
--			timer_interrupt(irq, NULL, regs);
-+		timer_interrupt(irq, NULL, regs);
- 
- 		scroll_display_message();
- 	} else {
-@@ -114,7 +102,6 @@ irqreturn_t mips_timer_interrupt(int irq
- 		local_timer_interrupt (irq, dev_id, regs);
- 	}
- 
--out:
- 	return IRQ_HANDLED;
- }
- 
+ struct ESP_regs {

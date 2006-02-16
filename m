@@ -1,86 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 14:54:02 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:23300 "EHLO
-	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133413AbWBPOxx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Feb 2006 14:53:53 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1GExVY7004216;
-	Thu, 16 Feb 2006 14:59:31 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1GExVu2004215;
-	Thu, 16 Feb 2006 14:59:31 GMT
-Date:	Thu, 16 Feb 2006 14:59:31 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 15:42:29 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:9229 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133413AbWBPPmU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Feb 2006 15:42:20 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 6AC5DF5BCD;
+	Thu, 16 Feb 2006 16:48:48 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 00755-03; Thu, 16 Feb 2006 16:48:48 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 264A5F59E3;
+	Thu, 16 Feb 2006 16:48:48 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k1GFmlgo008987;
+	Thu, 16 Feb 2006 16:48:47 +0100
+Date:	Thu, 16 Feb 2006 15:48:52 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
 Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
-Message-ID: <20060216145931.GA1633@linux-mips.org>
-References: <20060213225331.GA5315@deprecation.cyrius.com> <20060215150839.GA27719@linux-mips.org> <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20060216145931.GA1633@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0602161504230.7169@blysk.ds.pg.gda.pl>
+References: <20060213225331.GA5315@deprecation.cyrius.com>
+ <20060215150839.GA27719@linux-mips.org> <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
+ <20060216145931.GA1633@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88/1290/Thu Feb 16 10:14:53 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10475
+X-archive-position: 10476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 16, 2006 at 10:17:38AM +0000, Maciej W. Rozycki wrote:
-> Date:	Thu, 16 Feb 2006 10:17:38 +0000 (GMT)
-> From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-> To:	Ralf Baechle <ralf@linux-mips.org>
-> cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-> Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
-> Content-Type: TEXT/PLAIN; charset=US-ASCII
-> 
-> On Wed, 15 Feb 2006, Ralf Baechle wrote:
-> 
-> > > @@ -230,7 +230,7 @@
-> > >  			mem_start = get_tc_base_addr(slot);
-> > >  
-> > >  			/* Store base addr into esp struct */
-> > > -			esp->slot = mem_start;
-> > > +			esp->slot = CPHYSADDR(mem_start);
-> > >  
-> > >  			esp->dregs = 0;
-> > >  			esp->eregs = (void *)CKSEG1ADDR(mem_start +
-> > 
-> > I merged allmost all of the differences from mainline except this one.
-> > 
-> > Maciej, does this need the CPHYSADDR() op or not here?
-> 
->  Of course not as get_tc_base_addr() returns a physical address these 
-> days.  Thanks for spotting this bit.
+On Thu, 16 Feb 2006, Ralf Baechle wrote:
 
-Ok, I sent this bit upstream.
+> That still leaves below gem to sort out.
 
-That still leaves below gem to sort out.
+ Yeah -- there is that mmiowb() macro that is supposed to fit here, but 
+some MIPS-based hardware is ordered weakly (and strangely) enough for this 
+single macro to be a bit insufficient.  I think we should have at least 
+mmiowb() and mmiob() (corresponding to wmb() and mb(), respectively) as 
+there is a system we support that does writes in order, but snoops the 
+writeback buffer (the R3220).  Another one is worse yet as does all of 
+that plus byte gathering (the R2020).  At least the latter cannot have the 
+NCR/Emulex SCSI chip and uses DEC's own design instead (a DC7061 gate 
+array highly suspected to also support DSSI if appropriately configured).
 
-  Ralf
+ I'm not sure if we really need mmiorb() -- probably not.
 
-diff --git a/drivers/scsi/NCR53C9x.h b/drivers/scsi/NCR53C9x.h
-index 65a9b37..81d03d1 100644
---- a/drivers/scsi/NCR53C9x.h
-+++ b/drivers/scsi/NCR53C9x.h
-@@ -145,12 +145,7 @@
- 
- #ifndef MULTIPLE_PAD_SIZES
- 
--#ifdef CONFIG_CPU_HAS_WB
--#include <asm/wbflush.h>
--#define esp_write(__reg, __val) do{(__reg) = (__val); wbflush();} while(0)
--#else
--#define esp_write(__reg, __val) ((__reg) = (__val))
--#endif
-+#define esp_write(__reg, __val) do{(__reg) = (__val); iob();} while(0)
- #define esp_read(__reg) (__reg)
- 
- struct ESP_regs {
+  Maciej

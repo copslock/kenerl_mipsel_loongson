@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 12:56:18 +0000 (GMT)
-Received: from web36102.mail.mud.yahoo.com ([66.163.179.216]:21651 "HELO
-	web36102.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133398AbWBPM4J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Feb 2006 12:56:09 +0000
-Received: (qmail 72705 invoked by uid 60001); 16 Feb 2006 13:02:36 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=1pSn8h6I6X9K95NH5r8sQ1KzUpTQLEqzyUhEGyT3nYN6gWUdpLRfoB8l25nHbbmtyeIp7VoQH8m6/A5CcUBzG6oJ3Ur83FrNMT+RWOdyUJI2KjGVGZYzajnCXgISmzMv1qgziIQcE8tFaanls/ngKVnWjsBUBsOlir076LO0fwE=  ;
-Message-ID: <20060216130236.72703.qmail@web36102.mail.mud.yahoo.com>
-Received: from [81.240.203.107] by web36102.mail.mud.yahoo.com via HTTP; Thu, 16 Feb 2006 13:02:36 GMT
-Date:	Thu, 16 Feb 2006 13:02:36 +0000 (GMT)
-From:	joris lijssens <joris_lijssens1980@yahoo.com>
-Subject: patch to increase stack size 
-To:	linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <joris_lijssens1980@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 14:33:51 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:35333 "EHLO
+	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
+	id S8133398AbWBPOdn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Feb 2006 14:33:43 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1GEeKgF003469;
+	Thu, 16 Feb 2006 14:40:20 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1GEeJM3003467;
+	Thu, 16 Feb 2006 14:40:19 GMT
+Date:	Thu, 16 Feb 2006 14:40:19 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] make qemu buildable without CONFIG_VT
+Message-ID: <20060216144019.GA2034@linux-mips.org>
+References: <20060210.005104.63742308.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060210.005104.63742308.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10472
+X-archive-position: 10473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joris_lijssens1980@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Fri, Feb 10, 2006 at 12:51:04AM +0900, Atsushi Nemoto wrote:
 
-I was wondering if there is a patch avaible to
-increase the stack size on a mips 2.6 linux kernel. I
-have found one for the i386 that sets the stack size
-from 4K to 16K. But I don't find anything for the mips
-kernel. I would like it if somebody has some info on
-this topic.
+> Subject: [PATCH] make qemu buildable without CONFIG_VT
 
+Applied.
 
-regards
-
-Joris
-
-
-		
-___________________________________________________________ 
-To help you stay safe and secure online, we've developed the all new Yahoo! Security Centre. http://uk.security.yahoo.com
+  Ralf

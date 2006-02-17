@@ -1,234 +1,143 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Feb 2006 23:19:52 +0000 (GMT)
-Received: from mms1.broadcom.com ([216.31.210.17]:60430 "EHLO
-	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133520AbWBPXTe (ORCPT <rfc822;linux-mips@www.linux-mips.org>);
-	Thu, 16 Feb 2006 23:19:34 +0000
-Received: from 10.10.64.154 by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Thu, 16 Feb 2006 15:26:06 -0800
-X-Server-Uuid: F962EFE0-448C-40EE-8100-87DF498ED0EA
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- A51732AE; Thu, 16 Feb 2006 15:25:56 -0800 (PST)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 304552B0 for
- <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006 15:25:56 -0800 (PST)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.3a-GA) with ESMTP
- id CYD28611; Thu, 16 Feb 2006 15:25:55 -0800 (PST)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 6670020501 for <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006
- 15:25:55 -0800 (PST)
-Received: from localhost.localdomain ([10.136.253.1]) by
- NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Thu, 16 Feb 2006 15:25:55 -0800
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
- by localhost.localdomain (8.13.4/8.13.4) with ESMTP id k1GNPeaW012310
- for <linux-mips@www.linux-mips.org>; Thu, 16 Feb 2006 15:25:41 -0800
-Received: (from mason@localhost) by localhost.localdomain (
- 8.13.4/8.13.4/Submit) id k1GNPc3H012309 for
- linux-mips@www.linux-mips.org; Thu, 16 Feb 2006 15:25:38 -0800
-Date:	Thu, 16 Feb 2006 15:25:38 -0800
-From:	"Mark Mason" <mason@broadcom.com>
-To:	linux-mips@www.linux-mips.org
-Subject: Correct patch for BCM1250/BCM1480 header files.
-Message-ID: <20060216232538.GA12285@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 03:07:04 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:61202 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133620AbWBQDGw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 17 Feb 2006 03:06:52 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 1CD4464D3F; Fri, 17 Feb 2006 03:13:27 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id EEF068F77; Fri, 17 Feb 2006 03:13:24 +0000 (GMT)
+Date:	Fri, 17 Feb 2006 03:13:24 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.6] Cobalt IDE fix, again
+Message-ID: <20060217031324.GJ23441@deprecation.cyrius.com>
+References: <20060125001303.GA2569@colonel-panic.org> <20060126171904.GA12850@deprecation.cyrius.com> <20060126175725.GA409@colonel-panic.org>
 MIME-Version: 1.0
-User-Agent: Mutt/1.4.2.1i
-X-OriginalArrivalTime: 16 Feb 2006 23:25:55.0185 (UTC)
- FILETIME=[55857E10:01C63350]
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006021609; IFV=2.0.6,4.0-7;
- RPD=4.00.0004;
- RPDID=303030312E30413039303230372E34334635303746352E303031322D412D;
- ENG=IBF; TS=20060216232609; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006021609_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 6FEBD58410G11243700-01-01
-Content-Type: text/plain;
- charset=us-ascii
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <mark.e.mason@broadcom.com>
+In-Reply-To: <20060126175725.GA409@colonel-panic.org>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@www.linux-mips.org
-Original-Recipient: rfc822;linux-mips@www.linux-mips.org
-X-archive-position: 10480
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 10481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mason@broadcom.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello all,
+Resending a patch that still needs to be applied.
 
-This is the *CORRECT* patch.  The previous one got mangled at the last
-moment (I hate it when that happens). Sorry about that.
 
-The following patch makes some minor feature updates to the BCM1250/BCM1480 header files.
+From: Peter Horton <pdh@colonel-panic.org>
 
-Please apply.
+[MIPS] Fix long IDE detection delay by not scanning non-existent channels.
 
-Thanks,
-Mark
+Fix long delay during Cobalt boot whilst scanning non-existent interfaces.
+The logic is copied from i386 i.e. we only scan 2 legacy ports if we have
+PCI IDE.
 
-Signed-off-by: Mark Mason <mason@broadcom.com>
+Signed-off-by: Peter Horton <pdh@colonel-panic.org>
+Acked-by: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
 
-diff --git a/include/asm-mips/sibyte/bcm1480_mc.h b/include/asm-mips/sibyte/bcm1480_mc.h
-index 6bdc941..262690b 100644
---- a/include/asm-mips/sibyte/bcm1480_mc.h
-+++ b/include/asm-mips/sibyte/bcm1480_mc.h
-@@ -410,7 +410,9 @@
+---
+
+ ide.h |   49 +++++++++++++++++++++----------------------------
+ 1 file changed, 21 insertions(+), 28 deletions(-)
+
+--- linux.git.orig/include/asm-mips/mach-generic/ide.h	2006-01-24 22:07:36.000000000 +0000
++++ linux.git/include/asm-mips/mach-generic/ide.h	2006-01-24 23:41:19.000000000 +0000
+@@ -30,7 +30,7 @@
  
- #if SIBYTE_HDR_FEATURE(1480, PASS2)
- #define K_BCM1480_MC_DRAM_TYPE_DDR2	    2
--#endif
-+#endif			
-+
-+#define K_BCM1480_MC_DRAM_TYPE_DDR2_PASS1   4	
+ #define IDE_ARCH_OBSOLETE_DEFAULTS
  
- #define V_BCM1480_MC_DRAM_TYPE_JEDEC        V_BCM1480_MC_DRAM_TYPE(K_BCM1480_MC_DRAM_TYPE_JEDEC)
- #define V_BCM1480_MC_DRAM_TYPE_FCRAM        V_BCM1480_MC_DRAM_TYPE(K_BCM1480_MC_DRAM_TYPE_FCRAM)
-@@ -511,6 +513,22 @@
- #define M_BCM1480_MC_WR_ODT6_CS6	    _SB_MAKEMASK1(31)
+-static __inline__ int ide_probe_legacy(void)
++static __inline__ int ide_legacy_ports(void)
+ {
+ #ifdef CONFIG_PCI
+ 	struct pci_dev *dev;
+@@ -38,11 +38,11 @@
+ 	    (dev = pci_get_class(PCI_CLASS_BRIDGE_ISA << 8, NULL)) != NULL) {
+ 		pci_dev_put(dev);
  
- #define M_BCM1480_MC_CS_ODD_ODT_EN	    _SB_MAKEMASK1(32)
-+
-+#define S_BCM1480_MC_ODT0	            0
-+#define M_BCM1480_MC_ODT0		    _SB_MAKEMASK(8,S_BCM1480_MC_ODT0)
-+#define V_BCM1480_MC_ODT0(x)		    _SB_MAKEVALUE(x,S_BCM1480_MC_ODT0)
-+		    
-+#define S_BCM1480_MC_ODT2	            8
-+#define M_BCM1480_MC_ODT2		    _SB_MAKEMASK(8,S_BCM1480_MC_ODT2)
-+#define V_BCM1480_MC_ODT2(x)		    _SB_MAKEVALUE(x,S_BCM1480_MC_ODT2)
-+
-+#define S_BCM1480_MC_ODT4	            16
-+#define M_BCM1480_MC_ODT4		    _SB_MAKEMASK(8,S_BCM1480_MC_ODT4)
-+#define V_BCM1480_MC_ODT4(x)		    _SB_MAKEVALUE(x,S_BCM1480_MC_ODT4)
-+
-+#define S_BCM1480_MC_ODT6	            24
-+#define M_BCM1480_MC_ODT6		    _SB_MAKEMASK(8,S_BCM1480_MC_ODT6)
-+#define V_BCM1480_MC_ODT6(x)		    _SB_MAKEVALUE(x,S_BCM1480_MC_ODT6)
+-		return 1;
++		return 2;
+ 	}
+ 	return 0;
+ #elif defined(CONFIG_EISA) || defined(CONFIG_ISA)
+-	return 1;
++	return 6;
+ #else
+ 	return 0;
  #endif
+@@ -50,30 +50,26 @@
  
- /*
-diff --git a/include/asm-mips/sibyte/sb1250_mac.h b/include/asm-mips/sibyte/sb1250_mac.h
-index adfc688..833c8b5 100644
---- a/include/asm-mips/sibyte/sb1250_mac.h
-+++ b/include/asm-mips/sibyte/sb1250_mac.h
-@@ -129,9 +129,9 @@
- #define M_MAC_BYPASS_16             _SB_MAKEMASK1(42)
- #define M_MAC_BYPASS_FCS_CHK	    _SB_MAKEMASK1(43)
+ static __inline__ int ide_default_irq(unsigned long base)
+ {
+-	if (ide_probe_legacy())
+-		switch (base) {
+-		case 0x1f0:
+-			return 14;
+-		case 0x170:
+-			return 15;
+-		case 0x1e8:
+-			return 11;
+-		case 0x168:
+-			return 10;
+-		case 0x1e0:
+-			return 8;
+-		case 0x160:
+-			return 12;
+-		default:
+-			return 0;
+-		}
+-	else
+-		return 0;
++	switch (base) {
++	case 0x1f0:
++		return 14;
++	case 0x170:
++		return 15;
++	case 0x1e8:
++		return 11;
++	case 0x168:
++		return 10;
++	case 0x1e0:
++		return 8;
++	case 0x160:
++		return 12;
++	}
++	return 0;
+ }
  
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define M_MAC_RX_CH_SEL_MSB	    _SB_MAKEMASK1(44)
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480*/
+ static __inline__ unsigned long ide_default_io_base(int index)
+ {
+-	if (ide_probe_legacy())
++	if (index < ide_legacy_ports())
+ 		switch (index) {
+ 		case 0:
+ 			return 0x1f0;
+@@ -87,11 +83,8 @@
+ 			return 0x1e0;
+ 		case 5:
+ 			return 0x160;
+-		default:
+-			return 0;
+-		}
+-	else
+-		return 0;
++	}
++	return 0;
+ }
  
- #if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define M_MAC_SPLIT_CH_SEL	    _SB_MAKEMASK1(45)
-@@ -223,9 +223,9 @@
- /* XXX: Can't enable, as it has the same name as a pass2+ define below.  */
- /* #define M_MAC_TX_WR_THRSH           _SB_MAKEMASK(6,S_MAC_TX_WR_THRSH) */
- #endif /* up to 1250 PASS1 */
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define M_MAC_TX_WR_THRSH           _SB_MAKEMASK(7,S_MAC_TX_WR_THRSH)
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480 */
- #define V_MAC_TX_WR_THRSH(x)        _SB_MAKEVALUE(x,S_MAC_TX_WR_THRSH)
- #define G_MAC_TX_WR_THRSH(x)        _SB_GETVALUE(x,S_MAC_TX_WR_THRSH,M_MAC_TX_WR_THRSH)
- 
-@@ -234,9 +234,9 @@
- /* XXX: Can't enable, as it has the same name as a pass2+ define below.  */
- /* #define M_MAC_TX_RD_THRSH           _SB_MAKEMASK(6,S_MAC_TX_RD_THRSH) */
- #endif /* up to 1250 PASS1 */
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define M_MAC_TX_RD_THRSH           _SB_MAKEMASK(7,S_MAC_TX_RD_THRSH)
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480 */
- #define V_MAC_TX_RD_THRSH(x)        _SB_MAKEVALUE(x,S_MAC_TX_RD_THRSH)
- #define G_MAC_TX_RD_THRSH(x)        _SB_GETVALUE(x,S_MAC_TX_RD_THRSH,M_MAC_TX_RD_THRSH)
- 
-@@ -260,12 +260,12 @@
- #define V_MAC_RX_RL_THRSH(x)        _SB_MAKEVALUE(x,S_MAC_RX_RL_THRSH)
- #define G_MAC_RX_RL_THRSH(x)        _SB_GETVALUE(x,S_MAC_RX_RL_THRSH,M_MAC_RX_RL_THRSH)
- 
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define S_MAC_ENC_FC_THRSH           _SB_MAKE64(56)
- #define M_MAC_ENC_FC_THRSH           _SB_MAKEMASK(6,S_MAC_ENC_FC_THRSH)
- #define V_MAC_ENC_FC_THRSH(x)        _SB_MAKEVALUE(x,S_MAC_ENC_FC_THRSH)
- #define G_MAC_ENC_FC_THRSH(x)        _SB_GETVALUE(x,S_MAC_ENC_FC_THRSH,M_MAC_ENC_FC_THRSH)
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480 */
- 
- /*
-  * MAC Frame Configuration Registers (Table 9-15)
-@@ -462,9 +462,9 @@
- #define M_MAC_LTCOL_ERR             _SB_MAKEMASK1(44)
- #define M_MAC_EXCOL_ERR             _SB_MAKEMASK1(45)
- #define M_MAC_CNTR_OVRFL_ERR        _SB_MAKEMASK1(46)
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define M_MAC_SPLIT_EN		    _SB_MAKEMASK1(47) 	/* interrupt mask only */
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480 */
- 
- #define S_MAC_COUNTER_ADDR          _SB_MAKE64(47)
- #define M_MAC_COUNTER_ADDR          _SB_MAKEMASK(5,S_MAC_COUNTER_ADDR)
-@@ -598,9 +598,9 @@
- #define M_MAC_MCAST_INV         _SB_MAKEMASK1(4)
- #define M_MAC_BCAST_EN          _SB_MAKEMASK1(5)
- #define M_MAC_DIRECT_INV        _SB_MAKEMASK1(6)
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define M_MAC_ALLMCAST_EN	_SB_MAKEMASK1(7)
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480 */
- 
- #define S_MAC_IPHDR_OFFSET      _SB_MAKE64(8)
- #define M_MAC_IPHDR_OFFSET      _SB_MAKEMASK(8,S_MAC_IPHDR_OFFSET)
-diff --git a/include/asm-mips/sibyte/sb1250_regs.h b/include/asm-mips/sibyte/sb1250_regs.h
-index bab3a45..ace20d0 100644
---- a/include/asm-mips/sibyte/sb1250_regs.h
-+++ b/include/asm-mips/sibyte/sb1250_regs.h
-@@ -243,10 +243,10 @@
- #define R_MAC_ADFILTER_CFG              0x00000200
- #define R_MAC_ETHERNET_ADDR             0x00000208
- #define R_MAC_PKT_TYPE                  0x00000210
--#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define R_MAC_ADMASK0			0x00000218
- #define R_MAC_ADMASK1			0x00000220
--#endif /* 1250 PASS3 || 112x PASS1 */
-+#endif /* 1250 PASS3 || 112x PASS1 || 1480 */
- #define R_MAC_HASH_BASE                 0x00000240
- #define R_MAC_ADDR_BASE                 0x00000280
- #define R_MAC_CHLO0_BASE                0x00000300
-@@ -256,9 +256,9 @@
- #define R_MAC_INT_MASK                  0x00000410
- #define R_MAC_TXD_CTL                   0x00000420
- #define R_MAC_MDIO                      0x00000428
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define R_MAC_STATUS1		        0x00000430
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480 */
- #define R_MAC_DEBUG_STATUS              0x00000448
- 
- #define MAC_HASH_COUNT			8
-@@ -289,11 +289,11 @@
- #define R_DUART_RX_HOLD             0x160
- #define R_DUART_TX_HOLD             0x170
- 
--#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1)
-+#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1) || SIBYTE_HDR_FEATURE_CHIP(1480)
- #define R_DUART_FULL_CTL	    0x140
- #define R_DUART_OPCR_X		    0x180
- #define R_DUART_AUXCTL_X	    0x190
--#endif /* 1250 PASS2 || 112x PASS1 */
-+#endif /* 1250 PASS2 || 112x PASS1 || 1480*/
- 
- 
- /*
+ #define IDE_ARCH_OBSOLETE_INIT
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

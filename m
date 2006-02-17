@@ -1,63 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 12:44:54 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:33550 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S8133636AbWBQMop (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Feb 2006 12:44:45 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id BBE43F5C14;
-	Fri, 17 Feb 2006 13:51:14 +0100 (CET)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 00783-05; Fri, 17 Feb 2006 13:51:14 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 55AFDF5C0F;
-	Fri, 17 Feb 2006 13:51:14 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k1HCpIRX014997;
-	Fri, 17 Feb 2006 13:51:18 +0100
-Date:	Fri, 17 Feb 2006 12:51:21 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Jes Sorensen <jes@sgi.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
-In-Reply-To: <43F5C300.10108@sgi.com>
-Message-ID: <Pine.LNX.4.64N.0602171245580.7169@blysk.ds.pg.gda.pl>
-References: <20060213225331.GA5315@deprecation.cyrius.com>
- <20060215150839.GA27719@linux-mips.org> <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
- <20060216145931.GA1633@linux-mips.org> <Pine.LNX.4.64N.0602161504230.7169@blysk.ds.pg.gda.pl>
- <yq0pslmxsb7.fsf@jaguar.mkp.net> <Pine.LNX.4.64N.0602171039320.7169@blysk.ds.pg.gda.pl>
- <43F5C300.10108@sgi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 13:51:46 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:6407 "EHLO sorrow.cyrius.com")
+	by ftp.linux-mips.org with ESMTP id S8133654AbWBQNve (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Feb 2006 13:51:34 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id E9D8A64D59; Fri, 17 Feb 2006 13:57:55 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id EE53F8F77; Fri, 17 Feb 2006 13:57:48 +0000 (GMT)
+Date:	Fri, 17 Feb 2006 13:57:48 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: undefined reference to `__lshrdi3' error with GCC 4.0
+Message-ID: <20060217135748.GA28319@deprecation.cyrius.com>
+References: <20060117134838.GJ27047@deprecation.cyrius.com> <200601171617.16147.p_christ@hol.gr> <20060117190859.GA2061@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88/1292/Fri Feb 17 10:39:02 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060117190859.GA2061@linux-mips.org>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10486
+X-archive-position: 10487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 17 Feb 2006, Jes Sorensen wrote:
-
-> > It's just horribly slow and an overkill if it's only ordering of consecutive
-> > writes rather than ordering of a read after a write that has to be
-> > guaranteed.  But perhaps we could keep abusing wmb() for the former...
+* Ralf Baechle <ralf@linux-mips.org> [2006-01-17 19:08]:
+> > > arch/mips/kernel/built-in.o: In function `time_init':
+> > > : undefined reference to `__lshrdi3'
 > 
-> Depends on where it's happening. If it's the CPU doing it before it hits
-> the bus then wmb() would probably be ok.
+> Thanks to Martin Michlmayr's testing I now know this problem is limited
+> to kernels built with gcc 4.0 and newer when optimizing for size.
+...
+> There is an awful lot of libgcc bits flying around in the kernel and I guess
+> I'd be flamed for submitting even more ;-)  so I tried to come up with
+> something to make most if not all unnecessary.  Still needs a little
+> polishing but below for testing and commenting.
 
- These systems only allow the CPU to access devices other than RAM.  But 
-consistency between platforms is important as the same drivers may be used 
-for systems that have different access rules.  Examples are currently the 
-defxx and the tgafb drivers.  They should work correctly with the R3220 
-writeback buffer as well as with PCI.
-
-  Maciej
+I think you've cleaned it up in the meantime.  Can you please send the
+patch to lkml as a RFC?
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,93 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 14:48:15 +0000 (GMT)
-Received: from tool.snarl.nl ([213.84.251.124]:32676 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S8133656AbWBQOr2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Feb 2006 14:47:28 +0000
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id DAE7A5DF5B
-	for <linux-mips@linux-mips.org>; Fri, 17 Feb 2006 15:54:06 +0100 (CET)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id 29617-03-2 for <linux-mips@linux-mips.org>;
-	Fri, 17 Feb 2006 15:54:06 +0100 (CET)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 8A8865DF4D; Fri, 17 Feb 2006 15:54:06 +0100 (CET)
-Date:	Fri, 17 Feb 2006 15:54:06 +0100
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] Small time UART configuration fix for AU1100 processor
-Message-ID: <20060217145406.GE14066@dusktilldawn.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 15:10:33 +0000 (GMT)
+Received: from jaguar.mkp.net ([192.139.46.146]:2278 "EHLO jaguar.mkp.net")
+	by ftp.linux-mips.org with ESMTP id S8133657AbWBQPKX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Feb 2006 15:10:23 +0000
+Received: by jaguar.mkp.net (Postfix, from userid 1655)
+	id AA956286D89; Fri, 17 Feb 2006 10:17:00 -0500 (EST)
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
+References: <20060213225331.GA5315@deprecation.cyrius.com>
+	<20060215150839.GA27719@linux-mips.org>
+	<Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
+	<20060216145931.GA1633@linux-mips.org>
+	<Pine.LNX.4.64N.0602161504230.7169@blysk.ds.pg.gda.pl>
+	<yq0pslmxsb7.fsf@jaguar.mkp.net>
+	<Pine.LNX.4.64N.0602171039320.7169@blysk.ds.pg.gda.pl>
+	<43F5C300.10108@sgi.com>
+	<Pine.LNX.4.64N.0602171245580.7169@blysk.ds.pg.gda.pl>
+From:	Jes Sorensen <jes@sgi.com>
+Date:	17 Feb 2006 10:17:00 -0500
+In-Reply-To: <Pine.LNX.4.64N.0602171245580.7169@blysk.ds.pg.gda.pl>
+Message-ID: <yq0d5hmxbf7.fsf@jaguar.mkp.net>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="h3LYUU6HlUDSAOzy"
-Content-Disposition: inline
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.11
-Return-Path: <freddy@dusktilldawn.nl>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <jes@trained-monkey.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10489
+X-archive-position: 10490
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: jes@sgi.com
 Precedence: bulk
 X-list: linux-mips
 
+>>>>> "Maciej" == Maciej W Rozycki <macro@linux-mips.org> writes:
 
---h3LYUU6HlUDSAOzy
-Content-Type: multipart/mixed; boundary="f5QefDQHtn8hx44O"
-Content-Disposition: inline
+Maciej>  These systems only allow the CPU to access devices other than
+Maciej> RAM.  But consistency between platforms is important as the
+Maciej> same drivers may be used for systems that have different
+Maciej> access rules.  Examples are currently the defxx and the tgafb
+Maciej> drivers.  They should work correctly with the R3220 writeback
+Maciej> buffer as well as with PCI.
 
+So just change the implementation of mmiowb depending on whether it's
+on an R3220 or a PCI system.
 
---f5QefDQHtn8hx44O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-The AU1100 processor does not have an internal UART2. Only
-UART0, UART1 and UART3 exist. This patch removes the non existing
-UART2 and replaces it with a descriptive comment.
-
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl> http://snarl.nl/~freddy/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
-
---f5QefDQHtn8hx44O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="uart2.patch"
-
-diff -Naur master.orig/drivers/serial/8250_au1x00.c master.good/drivers/serial/8250_au1x00.c
---- master.orig/drivers/serial/8250_au1x00.c	2006-02-17 10:57:28.000000000 +0000
-+++ master.good/drivers/serial/8250_au1x00.c	2006-02-17 14:02:38.000000000 +0000
-@@ -51,7 +51,7 @@
- #elif defined(CONFIG_SOC_AU1100)
- 	PORT(UART0_ADDR, AU1100_UART0_INT),
- 	PORT(UART1_ADDR, AU1100_UART1_INT),
--	PORT(UART2_ADDR, AU1100_UART2_INT),
-+	/* The internal UART2 does not exist on the AU1100 processor. */
- 	PORT(UART3_ADDR, AU1100_UART3_INT),
- #elif defined(CONFIG_SOC_AU1550)
- 	PORT(UART0_ADDR, AU1550_UART0_INT),
-
---f5QefDQHtn8hx44O--
-
---h3LYUU6HlUDSAOzy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-
-iD8DBQFD9eOObxf9XXlB0eERAm6xAJ9tfIcSuMhg27t1QhnThmFsO4Aj+gCfS60V
-J3YWh12F1UKObLTo+YKoKbI=
-=k/9W
------END PGP SIGNATURE-----
-
---h3LYUU6HlUDSAOzy--
+Cheers,
+Jes

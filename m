@@ -1,143 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 03:07:04 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:61202 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133620AbWBQDGw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Feb 2006 03:06:52 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 1CD4464D3F; Fri, 17 Feb 2006 03:13:27 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id EEF068F77; Fri, 17 Feb 2006 03:13:24 +0000 (GMT)
-Date:	Fri, 17 Feb 2006 03:13:24 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6] Cobalt IDE fix, again
-Message-ID: <20060217031324.GJ23441@deprecation.cyrius.com>
-References: <20060125001303.GA2569@colonel-panic.org> <20060126171904.GA12850@deprecation.cyrius.com> <20060126175725.GA409@colonel-panic.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 09:05:49 +0000 (GMT)
+Received: from jaguar.mkp.net ([192.139.46.146]:62946 "EHLO jaguar.mkp.net")
+	by ftp.linux-mips.org with ESMTP id S8133370AbWBQJFh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Feb 2006 09:05:37 +0000
+Received: by jaguar.mkp.net (Postfix, from userid 1655)
+	id D464B286DAD; Fri, 17 Feb 2006 04:12:12 -0500 (EST)
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
+References: <20060213225331.GA5315@deprecation.cyrius.com>
+	<20060215150839.GA27719@linux-mips.org>
+	<Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
+	<20060216145931.GA1633@linux-mips.org>
+	<Pine.LNX.4.64N.0602161504230.7169@blysk.ds.pg.gda.pl>
+From:	Jes Sorensen <jes@sgi.com>
+Date:	17 Feb 2006 04:12:12 -0500
+In-Reply-To: <Pine.LNX.4.64N.0602161504230.7169@blysk.ds.pg.gda.pl>
+Message-ID: <yq0pslmxsb7.fsf@jaguar.mkp.net>
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.4
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060126175725.GA409@colonel-panic.org>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+Return-Path: <jes@trained-monkey.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10481
+X-archive-position: 10482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: jes@sgi.com
 Precedence: bulk
 X-list: linux-mips
 
-Resending a patch that still needs to be applied.
+>>>>> "Maciej" == Maciej W Rozycki <macro@linux-mips.org> writes:
 
+Maciej> On Thu, 16 Feb 2006, Ralf Baechle wrote:
+>> That still leaves below gem to sort out.
 
-From: Peter Horton <pdh@colonel-panic.org>
+Maciej>  Yeah -- there is that mmiowb() macro that is supposed to fit
+Maciej> here, but some MIPS-based hardware is ordered weakly (and
+Maciej> strangely) enough for this single macro to be a bit
+Maciej> insufficient.  I think we should have at least mmiowb() and
+Maciej> mmiob() (corresponding to wmb() and mb(), respectively) as
+Maciej> there is a system we support that does writes in order, but
+Maciej> snoops the writeback buffer (the R3220).  Another one is worse
+Maciej> yet as does all of that plus byte gathering (the R2020).  At
+Maciej> least the latter cannot have the NCR/Emulex SCSI chip and uses
+Maciej> DEC's own design instead (a DC7061 gate array highly suspected
+Maciej> to also support DSSI if appropriately configured).
 
-[MIPS] Fix long IDE detection delay by not scanning non-existent channels.
+Maciej>  I'm not sure if we really need mmiorb() -- probably not.
 
-Fix long delay during Cobalt boot whilst scanning non-existent interfaces.
-The logic is copied from i386 i.e. we only scan 2 legacy ports if we have
-PCI IDE.
+Just make mmiowb() strong enough on those platforms. There's really no
+reason to introduce yet another variation at this point.
 
-Signed-off-by: Peter Horton <pdh@colonel-panic.org>
-Acked-by: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
-
----
-
- ide.h |   49 +++++++++++++++++++++----------------------------
- 1 file changed, 21 insertions(+), 28 deletions(-)
-
---- linux.git.orig/include/asm-mips/mach-generic/ide.h	2006-01-24 22:07:36.000000000 +0000
-+++ linux.git/include/asm-mips/mach-generic/ide.h	2006-01-24 23:41:19.000000000 +0000
-@@ -30,7 +30,7 @@
- 
- #define IDE_ARCH_OBSOLETE_DEFAULTS
- 
--static __inline__ int ide_probe_legacy(void)
-+static __inline__ int ide_legacy_ports(void)
- {
- #ifdef CONFIG_PCI
- 	struct pci_dev *dev;
-@@ -38,11 +38,11 @@
- 	    (dev = pci_get_class(PCI_CLASS_BRIDGE_ISA << 8, NULL)) != NULL) {
- 		pci_dev_put(dev);
- 
--		return 1;
-+		return 2;
- 	}
- 	return 0;
- #elif defined(CONFIG_EISA) || defined(CONFIG_ISA)
--	return 1;
-+	return 6;
- #else
- 	return 0;
- #endif
-@@ -50,30 +50,26 @@
- 
- static __inline__ int ide_default_irq(unsigned long base)
- {
--	if (ide_probe_legacy())
--		switch (base) {
--		case 0x1f0:
--			return 14;
--		case 0x170:
--			return 15;
--		case 0x1e8:
--			return 11;
--		case 0x168:
--			return 10;
--		case 0x1e0:
--			return 8;
--		case 0x160:
--			return 12;
--		default:
--			return 0;
--		}
--	else
--		return 0;
-+	switch (base) {
-+	case 0x1f0:
-+		return 14;
-+	case 0x170:
-+		return 15;
-+	case 0x1e8:
-+		return 11;
-+	case 0x168:
-+		return 10;
-+	case 0x1e0:
-+		return 8;
-+	case 0x160:
-+		return 12;
-+	}
-+	return 0;
- }
- 
- static __inline__ unsigned long ide_default_io_base(int index)
- {
--	if (ide_probe_legacy())
-+	if (index < ide_legacy_ports())
- 		switch (index) {
- 		case 0:
- 			return 0x1f0;
-@@ -87,11 +83,8 @@
- 			return 0x1e0;
- 		case 5:
- 			return 0x160;
--		default:
--			return 0;
--		}
--	else
--		return 0;
-+	}
-+	return 0;
- }
- 
- #define IDE_ARCH_OBSOLETE_INIT
-
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Jes

@@ -1,55 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 12:32:13 +0000 (GMT)
-Received: from omx1-ext.sgi.com ([192.48.179.11]:33701 "EHLO
-	omx1.americas.sgi.com") by ftp.linux-mips.org with ESMTP
-	id S8133645AbWBQMcF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Feb 2006 12:32:05 +0000
-Received: from imr2.americas.sgi.com (imr2.americas.sgi.com [198.149.16.18])
-	by omx1.americas.sgi.com (8.12.10/8.12.9/linux-outbound_gateway-1.1) with ESMTP id k1HCcdOX002728;
-	Fri, 17 Feb 2006 06:38:40 -0600
-Received: from daisy-e236.americas.sgi.com (daisy-e236.americas.sgi.com [128.162.236.214])
-	by imr2.americas.sgi.com (8.12.9/8.12.10/SGI_generic_relay-1.2) with ESMTP id k1HCtXa514804457;
-	Fri, 17 Feb 2006 04:55:33 -0800 (PST)
-Received: from [127.0.0.1] (daisy-e236.americas.sgi.com [128.162.236.214]) by daisy-e236.americas.sgi.com (8.12.9/SGI-server-1.8) with ESMTP id k1HCcaQq1630112; Fri, 17 Feb 2006 06:38:37 -0600 (CST)
-Message-ID: <43F5C300.10108@sgi.com>
-Date:	Fri, 17 Feb 2006 13:35:12 +0100
-From:	Jes Sorensen <jes@sgi.com>
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051013)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2006 12:44:54 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:33550 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S8133636AbWBQMop (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 17 Feb 2006 12:44:45 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id BBE43F5C14;
+	Fri, 17 Feb 2006 13:51:14 +0100 (CET)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 00783-05; Fri, 17 Feb 2006 13:51:14 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 55AFDF5C0F;
+	Fri, 17 Feb 2006 13:51:14 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.3/8.13.1) with ESMTP id k1HCpIRX014997;
+	Fri, 17 Feb 2006 13:51:18 +0100
+Date:	Fri, 17 Feb 2006 12:51:21 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Jes Sorensen <jes@sgi.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
 	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
 Subject: Re: Please pull drivers/scsi/dec_esp.c from Linus' git
-References: <20060213225331.GA5315@deprecation.cyrius.com> <20060215150839.GA27719@linux-mips.org> <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl> <20060216145931.GA1633@linux-mips.org> <Pine.LNX.4.64N.0602161504230.7169@blysk.ds.pg.gda.pl> <yq0pslmxsb7.fsf@jaguar.mkp.net> <Pine.LNX.4.64N.0602171039320.7169@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0602171039320.7169@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jes@sgi.com>
+In-Reply-To: <43F5C300.10108@sgi.com>
+Message-ID: <Pine.LNX.4.64N.0602171245580.7169@blysk.ds.pg.gda.pl>
+References: <20060213225331.GA5315@deprecation.cyrius.com>
+ <20060215150839.GA27719@linux-mips.org> <Pine.LNX.4.64N.0602161016260.7169@blysk.ds.pg.gda.pl>
+ <20060216145931.GA1633@linux-mips.org> <Pine.LNX.4.64N.0602161504230.7169@blysk.ds.pg.gda.pl>
+ <yq0pslmxsb7.fsf@jaguar.mkp.net> <Pine.LNX.4.64N.0602171039320.7169@blysk.ds.pg.gda.pl>
+ <43F5C300.10108@sgi.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88/1292/Fri Feb 17 10:39:02 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10485
+X-archive-position: 10486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jes@sgi.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Fri, 17 Feb 2006, Jes Sorensen wrote:
-> 
-> 
->>Just make mmiowb() strong enough on those platforms. There's really no
->>reason to introduce yet another variation at this point.
-> 
-> 
->  It's just horribly slow and an overkill if it's only ordering of 
-> consecutive writes rather than ordering of a read after a write that has 
-> to be guaranteed.  But perhaps we could keep abusing wmb() for the 
-> former...
+On Fri, 17 Feb 2006, Jes Sorensen wrote:
 
-Depends on where it's happening. If it's the CPU doing it before it hits
-the bus then wmb() would probably be ok.
+> > It's just horribly slow and an overkill if it's only ordering of consecutive
+> > writes rather than ordering of a read after a write that has to be
+> > guaranteed.  But perhaps we could keep abusing wmb() for the former...
+> 
+> Depends on where it's happening. If it's the CPU doing it before it hits
+> the bus then wmb() would probably be ok.
 
-Jes
+ These systems only allow the CPU to access devices other than RAM.  But 
+consistency between platforms is important as the same drivers may be used 
+for systems that have different access rules.  Examples are currently the 
+defxx and the tgafb drivers.  They should work correctly with the R3220 
+writeback buffer as well as with PCI.
+
+  Maciej

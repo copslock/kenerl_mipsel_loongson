@@ -1,122 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2006 22:00:46 +0000 (GMT)
-Received: from caramon.arm.linux.org.uk ([212.18.232.186]:4111 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S8133618AbWBSWAf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 19 Feb 2006 22:00:35 +0000
-Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.52)
-	id 1FAwiD-0000ge-Hj; Sun, 19 Feb 2006 22:07:26 +0000
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
-	id 1FAwiB-0004Do-6W; Sun, 19 Feb 2006 22:07:23 +0000
-Date:	Sun, 19 Feb 2006 22:07:22 +0000
-From:	Russell King <rmk@arm.linux.org.uk>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2006 22:03:59 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:52748 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133724AbWBSWDu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 19 Feb 2006 22:03:50 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 3203264D3D; Sun, 19 Feb 2006 22:10:43 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 014368D5D; Sun, 19 Feb 2006 22:10:35 +0000 (GMT)
+Date:	Sun, 19 Feb 2006 22:10:35 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org,
 	Stanislaw Skowronek <skylark@linux-mips.org>
 Subject: Re: Merging Skylark's IOC3 patch
-Message-ID: <20060219220722.GB968@flint.arm.linux.org.uk>
-References: <20060219211527.GA12848@deprecation.cyrius.com> <20060219215740.GQ10266@deprecation.cyrius.com>
-Mime-Version: 1.0
+Message-ID: <20060219221035.GA14314@deprecation.cyrius.com>
+References: <20060219211527.GA12848@deprecation.cyrius.com> <20060219215804.GR10266@deprecation.cyrius.com> <20060219220132.GT10266@deprecation.cyrius.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060219215740.GQ10266@deprecation.cyrius.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+In-Reply-To: <20060219220132.GT10266@deprecation.cyrius.com>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10524
+X-archive-position: 10525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk@arm.linux.org.uk
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 19, 2006 at 09:57:40PM +0000, Martin Michlmayr wrote:
-> --- a/drivers/serial/8250.c
-> +++ b/drivers/serial/8250.c
-> @@ -310,6 +310,9 @@ static unsigned int serial_in(struct uar
->  	case UPIO_MEM:
->  		return readb(up->port.membase + offset);
->  
-> +	case UPIO_IOC3:
-> +		return readb(up->port.membase + (offset^3));
-> +
->  	case UPIO_MEM32:
->  		return readl(up->port.membase + offset);
->  
-> @@ -338,6 +341,10 @@ serial_out(struct uart_8250_port *up, in
->  		writeb(value, up->port.membase + offset);
->  		break;
->  
-> +	case UPIO_IOC3:
-> +		writeb(value, up->port.membase + (offset^3));
-> +		break;
-> +
->  	case UPIO_MEM32:
->  		writel(value, up->port.membase + offset);
->  		break;
+* Martin Michlmayr <tbm@cyrius.com> [2006-02-19 22:01]:
+> 21:59 < Skylark> The 6/6 isn't exactly right
+> 22:00 < Skylark> It should be a part of the 5/6, really (making it 5/5)
+> 22:00 < Skylark> And dependent on 4/6
 
-Hmm, this starts to open up the question of whether having an array
-of register pointers becomes cheaper.
+Updated patch, merged 5/6 and 6/6 into 5/5.
 
-> @@ -2300,8 +2311,10 @@ int __init serial8250_start_console(stru
->  
->  	add_preferred_console("ttyS", line, options);
->  	printk("Adding console on ttyS%d at %s 0x%lx (options '%s')\n",
-> -		line, port->iotype == UPIO_MEM ? "MMIO" : "I/O port",
-> -		port->iotype == UPIO_MEM ? (unsigned long) port->mapbase :
-> +		line, port->iotype == UPIO_MEM ? "MMIO" : 
-> +		port->iotype == UPIO_IOC3 ? "IOC3" : "I/O port",
-> +		(port->iotype == UPIO_MEM || port->iotype == UPIO_IOC3) ?
-> +		    (unsigned long) port->mapbase :
->  		    (unsigned long) port->iobase, options);
 
-Maybe the "iotype" should index an array?
+From: Stanislaw Skowronek <skylark@linux-mips.org>
 
-> diff --git a/include/linux/serial.h b/include/linux/serial.h
-> index c69c6b9..a3ee515 100644
-> --- a/include/linux/serial.h
-> +++ b/include/linux/serial.h
-> @@ -82,6 +82,7 @@ struct serial_struct {
->  #define SERIAL_IO_PORT	0
->  #define SERIAL_IO_HUB6	1
->  #define SERIAL_IO_MEM	2
-> +#define SERIAL_IO_IOC3	3
->  
->  struct serial_uart_config {
->  	char	*name;
-> diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-> index 4041122..9441c90 100644
-> --- a/include/linux/serial_core.h
-> +++ b/include/linux/serial_core.h
-> @@ -221,6 +221,7 @@ struct uart_port {
->  #define UPIO_MEM		(2)
->  #define UPIO_MEM32		(3)
->  #define UPIO_AU			(4)			/* Au1x00 type IO */
-> +#define UPIO_IOC3		(5)
+[PATCH 5/5] [MIPS] Switch IP27 to the new IOC3 UART driver
 
-Comparing SERIAL_IO_* and UPIO_*, I have to say no here.  Always ensure
-that they end up with the same number.  SERIAL_IO_* is the current
-userland version of UPIO_*.  At some point in the future (once the
-pipedream of having _all_ serial drivers updated becomes reality) this
-can be sorted out sanely.
+Switch IP27 to the new IOC3 UART driver.  Also now that IOC3 swapping
+has been moved to where it belongs, namely into the serial layer, make
+IP27 swizzle the 8-bit accesses in the correct way.
 
-> +	port.membase = (unsigned char *) &idd->vma->sregs.uarta;
-> +	port.mapbase = ((unsigned long) port.membase) & 0xFFFFFFFFFF;
-> +	d->line_a = serial8250_register_port(&port);
+Signed-off-by: Stanislaw Skowronek <skylark@linux-mips.org>
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
 
-mapbase is supposed to be the physical address, whereas membase is what is
-used to access the register, and should be something compatible with MMIO
-accessors.  Is the cast really required here?
+---
 
-Are you tagging MMIO stuff with __iomem ?
+ arch/mips/sgi-ip27/ip27-console.c        |    2 +-
+ include/asm-mips/mach-ip27/mangle-port.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Apart from that, I don't have any further comments at present.
+diff --git a/include/asm-mips/mach-ip27/mangle-port.h b/include/asm-mips/mach-ip27/mangle-port.h
+index f76c448..83e12e3 100644
+--- a/include/asm-mips/mach-ip27/mangle-port.h
++++ b/include/asm-mips/mach-ip27/mangle-port.h
+@@ -8,7 +8,7 @@
+ #ifndef __ASM_MACH_IP27_MANGLE_PORT_H
+ #define __ASM_MACH_IP27_MANGLE_PORT_H
+ 
+-#define __swizzle_addr_b(port)	(port)
++#define __swizzle_addr_b(port)	((port) ^ 3)
+ #define __swizzle_addr_w(port)	((port) ^ 2)
+ #define __swizzle_addr_l(port)	(port)
+ #define __swizzle_addr_q(port)	(port)
+diff --git a/arch/mips/sgi-ip27/ip27-console.c b/arch/mips/sgi-ip27/ip27-console.c
+index 3e1ac29..a973610 100644
+--- a/arch/mips/sgi-ip27/ip27-console.c
++++ b/arch/mips/sgi-ip27/ip27-console.c
+@@ -64,7 +64,7 @@ static void inline ioc3_console_probe(vo
+ 	up.irq		= 0;
+ 	up.uartclk	= IOC3_CLK;
+ 	up.regshift	= 0;
+-	up.iotype	= UPIO_MEM;
++	up.iotype	= UPIO_IOC3;
+ 	up.flags	= IOC3_FLAGS;
+ 	up.line		= 0;
+ 
+
 
 -- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:  2.6 Serial core
+Martin Michlmayr
+http://www.cyrius.com/

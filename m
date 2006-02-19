@@ -1,19 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2006 21:51:57 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:38668 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2006 21:52:42 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:40460 "EHLO
 	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133588AbWBSVvT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 19 Feb 2006 21:51:19 +0000
+	id S8133569AbWBSVvr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 19 Feb 2006 21:51:47 +0000
 Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id F238164D59; Sun, 19 Feb 2006 21:58:11 +0000 (UTC)
+	id DF04C64D3D; Sun, 19 Feb 2006 21:58:39 +0000 (UTC)
 Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id DB5348D5D; Sun, 19 Feb 2006 21:58:04 +0000 (GMT)
-Date:	Sun, 19 Feb 2006 21:58:04 +0000
+	id 47F308D5D; Sun, 19 Feb 2006 21:58:32 +0000 (GMT)
+Date:	Sun, 19 Feb 2006 21:58:32 +0000
 From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org,
+To:	linux-mips@linux-mips.org,
 	Stanislaw Skowronek <skylark@linux-mips.org>
 Subject: Re: Merging Skylark's IOC3 patch
-Message-ID: <20060219215804.GR10266@deprecation.cyrius.com>
+Message-ID: <20060219215832.GS10266@deprecation.cyrius.com>
 References: <20060219211527.GA12848@deprecation.cyrius.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -24,7 +23,7 @@ Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10520
+X-archive-position: 10521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,38 +31,34 @@ X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf, please apply.
+To be applied after the IOC3 UART driver has been accepted.
 
 
 From: Stanislaw Skowronek <skylark@linux-mips.org>
 
-[PATCH 5/6] [MIPS] Make 8-bit devices on PCI work on IP27
-
-Fix the definition of __swizzle_addr_b and make 8-bit PCI devices work
-on IP27.
+[PATCH 6/6] [MIPS] Switch IP27 to the new IOC3 UART driver
 
 Signed-off-by: Stanislaw Skowronek <skylark@linux-mips.org>
 Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
 
 ---
 
- mangle-port.h |    2 +-
+ ip27-console.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/asm-mips/mach-ip27/mangle-port.h b/include/asm-mips/mach-ip27/mangle-port.h
-index f76c448..83e12e3 100644
---- a/include/asm-mips/mach-ip27/mangle-port.h
-+++ b/include/asm-mips/mach-ip27/mangle-port.h
-@@ -8,7 +8,7 @@
- #ifndef __ASM_MACH_IP27_MANGLE_PORT_H
- #define __ASM_MACH_IP27_MANGLE_PORT_H
+diff --git a/arch/mips/sgi-ip27/ip27-console.c b/arch/mips/sgi-ip27/ip27-console.c
+index 3e1ac29..a973610 100644
+--- a/arch/mips/sgi-ip27/ip27-console.c
++++ b/arch/mips/sgi-ip27/ip27-console.c
+@@ -64,7 +64,7 @@ static void inline ioc3_console_probe(vo
+ 	up.irq		= 0;
+ 	up.uartclk	= IOC3_CLK;
+ 	up.regshift	= 0;
+-	up.iotype	= UPIO_MEM;
++	up.iotype	= UPIO_IOC3;
+ 	up.flags	= IOC3_FLAGS;
+ 	up.line		= 0;
  
--#define __swizzle_addr_b(port)	(port)
-+#define __swizzle_addr_b(port)	((port) ^ 3)
- #define __swizzle_addr_w(port)	((port) ^ 2)
- #define __swizzle_addr_l(port)	(port)
- #define __swizzle_addr_q(port)	(port)
-
 -- 
 Martin Michlmayr
 http://www.cyrius.com/

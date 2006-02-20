@@ -1,92 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 14:21:31 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:1811 "EHLO sorrow.cyrius.com")
-	by ftp.linux-mips.org with ESMTP id S8133758AbWBTOVW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2006 14:21:22 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id ACE9D64D3D; Mon, 20 Feb 2006 14:28:15 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 16B899011; Mon, 20 Feb 2006 14:28:07 +0000 (GMT)
-Date:	Mon, 20 Feb 2006 14:28:07 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Diff between Linus' and linux-mips git: trivial changes
-Message-ID: <20060220142807.GM29098@deprecation.cyrius.com>
-References: <20060219234318.GA16311@deprecation.cyrius.com> <20060219234757.GW10266@deprecation.cyrius.com> <Pine.LNX.4.64N.0602201329100.13723@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 14:22:14 +0000 (GMT)
+Received: from mail-out.m-online.net ([212.18.0.9]:42715 "EHLO
+	mail-out.m-online.net") by ftp.linux-mips.org with ESMTP
+	id S8133767AbWBTOVl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Feb 2006 14:21:41 +0000
+Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
+	by mail-out.m-online.net (Postfix) with ESMTP id 8789E706AF;
+	Mon, 20 Feb 2006 15:28:38 +0100 (CET)
+Received: from schenk.isar.de (host-82-135-47-202.customer.m-online.net [82.135.47.202])
+	by mail.m-online.net (Postfix) with ESMTP id 6BE41936AF;
+	Mon, 20 Feb 2006 15:28:38 +0100 (CET)
+Received: from gwhaus.rt.schenk (gwhaus.rt.schenk [172.22.0.4])
+	by schenk.isar.de (8.11.6/8.11.6/SuSE Linux 0.5) with ESMTP id k1KESca00985;
+	Mon, 20 Feb 2006 15:28:38 +0100
+Received: from [172.22.10.24] (pcimr4.rt.schenk [172.22.10.24])
+	by gwhaus.rt.schenk (Postfix) with ESMTP id 01DEE9CA10;
+	Mon, 20 Feb 2006 15:28:37 +0100 (CET)
+Message-ID: <43F9D215.3090506@rtschenk.de>
+Date:	Mon, 20 Feb 2006 15:28:37 +0100
+From:	Rojhalat Ibrahim <imr@rtschenk.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050919
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
+To:	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	Mark E Mason <mark.e.mason@broadcom.com>, linux-mips@linux-mips.org
+Subject: Re: Tracking down exception in sched.c
+References: <7E000E7F06B05C49BDBB769ADAF44D0773A636@NT-SJCA-0750.brcm.ad.broadcom.com> <43F9B168.6090105@rtschenk.de> <43F9C58E.4020606@mips.com>
+In-Reply-To: <43F9C58E.4020606@mips.com>
+X-Enigmail-Version: 0.92.1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0602201329100.13723@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+Content-Transfer-Encoding: 7bit
+Return-Path: <imr@rtschenk.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10564
+X-archive-position: 10565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: imr@rtschenk.de
 Precedence: bulk
 X-list: linux-mips
 
-* Maciej W. Rozycki <macro@linux-mips.org> [2006-02-20 13:33]:
-> > -	  If you want to compile this driver as a module ( = code which can be
-> > -	  inserted in and removed from the running kernel whenever you want),
-> > -	  say M here and read <file:Documentation/modules.txt>.  The module will
-> > -	  be called ms02-nv.o.
-> > -
->  NAK.
-
-I disagree with you - it's obvious from the name of the config option
-(MTD_MS02NV) what the module will be called and people who compile
-their own kernels should know.  More importantly, no other description
-in this Kconfig file mentions anything like this.  However, since
-there seems to be no Kconfig "writing style", I guess it must as well
-be added.  But I guess the MTD folks removed it for a reason.
-
-Still NAK, i.e. should I send the following patch to the MTD list, or
-ok to remove?
-
-
-[PATCH] Add information about modules to MTD_MS02NV - sync with linux-mips tree
-
-This synces drivers/mtd/devices/Kconfig with the linux-mips tree by adding
-some description about modules to MTD_MS02NV.
-
-Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
-Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
-
----
-
---- a/drivers/mtd/devices/Kconfig	2006-02-03 03:07:01.000000000 +0000
-+++ b/drivers/mtd/devices/Kconfig	2006-02-19 23:50:11.000000000 +0000
-@@ -47,6 +47,11 @@
- 	  accelerator.  Say Y here if you have a DECstation 5000/2x0 or a
- 	  DECsystem 5900 equipped with such a module.
- 
-+	  If you want to compile this driver as a module ( = code which can be
-+	  inserted in and removed from the running kernel whenever you want),
-+	  say M here and read <file:Documentation/modules.txt>.  The module will
-+	  be called ms02-nv.o.
-+
- config MTD_DATAFLASH
- 	tristate "Support for AT45xxx DataFlash"
- 	depends on MTD && SPI_MASTER && EXPERIMENTAL
-
-
-> >  		struct net_device *dev = root_lance_dev;
-> >  		struct lance_private *lp = netdev_priv(dev);
-> > -
-> >  		unregister_netdev(dev);
-> >  #ifdef CONFIG_TC
-> >  		if (lp->slot >= 0)
+Kevin D. Kissell wrote:
+> The "for" loop is what used to be there, but if you use it in
+> a system with "hot-pluggable" CPUs, I could imagine that there
+> would be problems.  While for_each_cpu is pathetically inefficient
+> as it gets expanded and compiled for MIPS, if your phys_cpu_present_map
+> (which is by default what gets used in MIPS as cpu_possible_map
+> for the purposes of sched.c) is being properly initialized and
+> maintained, the behavior of the two loops should be the same.
+> Have you double-checked that?  Secondary CPUs turn generally
+> set their bits in that mask in prom_build_cpu_map().
 > 
->  NAK.
 
-Upated patch sent to netdev.
+The behavior of the two loops is not the same because sched_init
+is called long before smp_prepare_cpus. Therefore for_each_cpu
+only loops once for CPU 0. I know this is not a great fix.
+I simply reverted the code to what's worked before.
 
-Thanks.
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Rojhalat Ibrahim

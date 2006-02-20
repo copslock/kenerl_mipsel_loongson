@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 16:18:31 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:35803 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133390AbWBTQSW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2006 16:18:22 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 16:21:23 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:14276 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133390AbWBTQVP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2006 16:21:15 +0000
 Received: from localhost (p8134-ipad206funabasi.chiba.ocn.ne.jp [222.145.82.134])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 54BC8AB73; Tue, 21 Feb 2006 01:25:16 +0900 (JST)
-Date:	Tue, 21 Feb 2006 01:25:06 +0900 (JST)
-Message-Id: <20060221.012506.25910204.anemo@mba.ocn.ne.jp>
+	id BE35E8BEC; Tue, 21 Feb 2006 01:28:08 +0900 (JST)
+Date:	Tue, 21 Feb 2006 01:27:59 +0900 (JST)
+Message-Id: <20060221.012759.41630456.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH] jiffies_to_compat_timeval fix
+Subject: [PATCH] fix wrong __user usage in  _sysn32_rt_sigsuspend
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -21,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10572
+X-archive-position: 10573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,39 +29,19 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-The last argument of div_long_long_rem() must be long.
-
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-diff --git a/arch/mips/kernel/binfmt_elfn32.c b/arch/mips/kernel/binfmt_elfn32.c
-index d8e2674..4a9f1ec 100644
---- a/arch/mips/kernel/binfmt_elfn32.c
-+++ b/arch/mips/kernel/binfmt_elfn32.c
-@@ -103,8 +103,9 @@ jiffies_to_compat_timeval(unsigned long 
- 	 * one divide.
- 	 */
- 	u64 nsec = (u64)jiffies * TICK_NSEC;
--	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &value->tv_usec);
--	value->tv_usec /= NSEC_PER_USEC;
-+	long rem;
-+	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &rem);
-+	value->tv_usec = rem / NSEC_PER_USEC;
- }
+diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
+index 3e168c0..84d1009 100644
+--- a/arch/mips/kernel/signal_n32.c
++++ b/arch/mips/kernel/signal_n32.c
+@@ -87,7 +87,8 @@ save_static_function(sysn32_rt_sigsuspen
+ __attribute_used__ noinline static int
+ _sysn32_rt_sigsuspend(nabi_no_regargs struct pt_regs regs)
+ {
+-	compat_sigset_t __user *unewset, uset;
++	compat_sigset_t __user *unewset;
++	compat_sigset_t uset;
+ 	size_t sigsetsize;
+ 	sigset_t newset;
  
- #define ELF_CORE_EFLAGS EF_MIPS_ABI2
-diff --git a/arch/mips/kernel/binfmt_elfo32.c b/arch/mips/kernel/binfmt_elfo32.c
-index cec5f32..e318137 100644
---- a/arch/mips/kernel/binfmt_elfo32.c
-+++ b/arch/mips/kernel/binfmt_elfo32.c
-@@ -105,8 +105,9 @@ jiffies_to_compat_timeval(unsigned long 
- 	 * one divide.
- 	 */
- 	u64 nsec = (u64)jiffies * TICK_NSEC;
--	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &value->tv_usec);
--	value->tv_usec /= NSEC_PER_USEC;
-+	long rem;
-+	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &rem);
-+	value->tv_usec = rem / NSEC_PER_USEC;
- }
- 
- #undef ELF_CORE_COPY_REGS

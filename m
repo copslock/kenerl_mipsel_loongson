@@ -1,51 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 15:21:04 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:24324 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133390AbWBTPUw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Feb 2006 15:20:52 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 9BC9564D3D; Mon, 20 Feb 2006 15:27:43 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 4F2688DC5; Mon, 20 Feb 2006 15:27:36 +0000 (GMT)
-Date:	Mon, 20 Feb 2006 15:27:36 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 15:45:26 +0000 (GMT)
+Received: from verein.lst.de ([213.95.11.210]:6807 "EHLO mail.lst.de")
+	by ftp.linux-mips.org with ESMTP id S8133436AbWBTPpP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2006 15:45:15 +0000
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id k1KFq0RT006084
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Mon, 20 Feb 2006 16:52:01 +0100
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id k1KFq00l006082;
+	Mon, 20 Feb 2006 16:52:00 +0100
+Date:	Mon, 20 Feb 2006 16:52:00 +0100
+From:	Christoph Hellwig <hch@lst.de>
 To:	Jordan Crouse <jordan.crouse@amd.com>
-Cc:	linux-mips@linux-mips.org
+Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
 Subject: Re: Diff between Linus' and linux-mips git: drivers!
-Message-ID: <20060220152736.GB4796@deprecation.cyrius.com>
+Message-ID: <20060220155200.GA5999@lst.de>
 References: <20060219234318.GA16311@deprecation.cyrius.com> <20060220152734.GM30429@cosmic.amd.com>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20060220152734.GM30429@cosmic.amd.com>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10570
+X-archive-position: 10571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-* Jordan Crouse <jordan.crouse@amd.com> [2006-02-20 08:27]:
+On Mon, Feb 20, 2006 at 08:27:34AM -0700, Jordan Crouse wrote:
+> On 19/02/06 23:43 +0000, Martin Michlmayr wrote:
+> > We should find out whether these drivers are still needed, and if so,
+> > send them to the appropriate sub-system maintainer.  If they're no
+> > longer useful, they should be removed from the linux-mips tree.
+> 
 > Meh - I think there's something to be said for platform specific trees.
-> Why bother Linus with code that 99% of the users will never compile?
 
-If there are any major changes to the video layer, people will fix
-your driver if it's in mainline; but not if it's in some obscure tree.
-Also, peer review, etc.
-
-> >  sound/oss/au1550_i2s.c                     | 2029  ++++++++++++++++++++++++++++
-> I thought we agreed that this would stay in linux-mips until such
-> time that somebody (probably me) got annoyed enough to write an ALSA
-> driver.
-
-lkml people seem to be trying hard recently to finally get rid of OSS,
-so that would be nice.
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+There's shouldn't be any platform-specific trees at all.  just staging
+trees for subsystem maintainers.  For linux-mips that would be just
+arch/mips/ and include/asm-mips/.  Having the common tree not compile
+is a complete pain in the ass for distributors, and that includes
+embedded SDK vendors.

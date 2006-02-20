@@ -1,49 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 15:45:26 +0000 (GMT)
-Received: from verein.lst.de ([213.95.11.210]:6807 "EHLO mail.lst.de")
-	by ftp.linux-mips.org with ESMTP id S8133436AbWBTPpP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2006 15:45:15 +0000
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id k1KFq0RT006084
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Mon, 20 Feb 2006 16:52:01 +0100
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id k1KFq00l006082;
-	Mon, 20 Feb 2006 16:52:00 +0100
-Date:	Mon, 20 Feb 2006 16:52:00 +0100
-From:	Christoph Hellwig <hch@lst.de>
-To:	Jordan Crouse <jordan.crouse@amd.com>
-Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: Diff between Linus' and linux-mips git: drivers!
-Message-ID: <20060220155200.GA5999@lst.de>
-References: <20060219234318.GA16311@deprecation.cyrius.com> <20060220152734.GM30429@cosmic.amd.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 16:18:31 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:35803 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133390AbWBTQSW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2006 16:18:22 +0000
+Received: from localhost (p8134-ipad206funabasi.chiba.ocn.ne.jp [222.145.82.134])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 54BC8AB73; Tue, 21 Feb 2006 01:25:16 +0900 (JST)
+Date:	Tue, 21 Feb 2006 01:25:06 +0900 (JST)
+Message-Id: <20060221.012506.25910204.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] jiffies_to_compat_timeval fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060220152734.GM30429@cosmic.amd.com>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10571
+X-archive-position: 10572
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 20, 2006 at 08:27:34AM -0700, Jordan Crouse wrote:
-> On 19/02/06 23:43 +0000, Martin Michlmayr wrote:
-> > We should find out whether these drivers are still needed, and if so,
-> > send them to the appropriate sub-system maintainer.  If they're no
-> > longer useful, they should be removed from the linux-mips tree.
-> 
-> Meh - I think there's something to be said for platform specific trees.
+The last argument of div_long_long_rem() must be long.
 
-There's shouldn't be any platform-specific trees at all.  just staging
-trees for subsystem maintainers.  For linux-mips that would be just
-arch/mips/ and include/asm-mips/.  Having the common tree not compile
-is a complete pain in the ass for distributors, and that includes
-embedded SDK vendors.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/arch/mips/kernel/binfmt_elfn32.c b/arch/mips/kernel/binfmt_elfn32.c
+index d8e2674..4a9f1ec 100644
+--- a/arch/mips/kernel/binfmt_elfn32.c
++++ b/arch/mips/kernel/binfmt_elfn32.c
+@@ -103,8 +103,9 @@ jiffies_to_compat_timeval(unsigned long 
+ 	 * one divide.
+ 	 */
+ 	u64 nsec = (u64)jiffies * TICK_NSEC;
+-	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &value->tv_usec);
+-	value->tv_usec /= NSEC_PER_USEC;
++	long rem;
++	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &rem);
++	value->tv_usec = rem / NSEC_PER_USEC;
+ }
+ 
+ #define ELF_CORE_EFLAGS EF_MIPS_ABI2
+diff --git a/arch/mips/kernel/binfmt_elfo32.c b/arch/mips/kernel/binfmt_elfo32.c
+index cec5f32..e318137 100644
+--- a/arch/mips/kernel/binfmt_elfo32.c
++++ b/arch/mips/kernel/binfmt_elfo32.c
+@@ -105,8 +105,9 @@ jiffies_to_compat_timeval(unsigned long 
+ 	 * one divide.
+ 	 */
+ 	u64 nsec = (u64)jiffies * TICK_NSEC;
+-	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &value->tv_usec);
+-	value->tv_usec /= NSEC_PER_USEC;
++	long rem;
++	value->tv_sec = div_long_long_rem(nsec, NSEC_PER_SEC, &rem);
++	value->tv_usec = rem / NSEC_PER_USEC;
+ }
+ 
+ #undef ELF_CORE_COPY_REGS

@@ -1,176 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 01:43:58 +0000 (GMT)
-Received: from mo01.po.2iij.Net ([210.130.202.205]:28128 "EHLO
-	mo01.po.2iij.net") by ftp.linux-mips.org with ESMTP
-	id S8133729AbWBTBnt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Feb 2006 01:43:49 +0000
-Received: NPO MO01 id k1K1oecL007341; Mon, 20 Feb 2006 10:50:40 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (NPO-MR/mbox01) id k1K1ocVR022089
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
-	Mon, 20 Feb 2006 10:50:39 +0900 (JST)
-Message-Id: <200602200150.k1K1ocVR022089@mbox01.po.2iij.net>
-Date:	Mon, 20 Feb 2006 10:50:38 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
-Subject: Re: Diff between Linus' and linux-mips git: VR4181
-In-Reply-To: <20060220014121.GC18438@deprecation.cyrius.com>
-References: <20060219234318.GA16311@deprecation.cyrius.com>
-	<20060220000141.GX10266@deprecation.cyrius.com>
-	<20060220001126.GA17967@deprecation.cyrius.com>
-	<200602200107.k1K17suB021247@mbox03.po.2iij.net>
-	<20060220012116.GB18438@deprecation.cyrius.com>
-	<200602200132.k1K1WKtV023245@mbox02.po.2iij.net>
-	<20060220014121.GC18438@deprecation.cyrius.com>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2006 04:50:28 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:38671 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133385AbWBTEuS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Feb 2006 04:50:18 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 4AC5B64D3D; Mon, 20 Feb 2006 04:57:08 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 0C0E78DB3; Mon, 20 Feb 2006 04:57:00 +0000 (GMT)
+Date:	Mon, 20 Feb 2006 04:57:00 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, mark.e.mason@broadcom.com
+Subject: [MIPS] Fix compiler warnings in arch/mips/sibyte/bcm1480/irq.c
+Message-ID: <20060220045700.GA2519@deprecation.cyrius.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-Envid: tripeaks.co.jp
-Envelope-Id: tripeaks.co.jp
-X-archive-position: 10542
+X-archive-position: 10543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
+Fix the following compiler warnings:
 
-Acked-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+  CC      arch/mips/sibyte/bcm1480/irq.o
+arch/mips/sibyte/bcm1480/irq.c: In function ‘bcm1480_set_affinity’:
+arch/mips/sibyte/bcm1480/irq.c:168: warning: ISO C90 forbids mixed declarations and code
+arch/mips/sibyte/bcm1480/irq.c: In function ‘ack_bcm1480_irq’:
+arch/mips/sibyte/bcm1480/irq.c:230: warning: ISO C90 forbids mixed declarations and code
 
-On Mon, 20 Feb 2006 01:41:21 +0000
-Martin Michlmayr <tbm@cyrius.com> wrote:
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
 
-> * Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> [2006-02-20 10:32]:
-> > VR4181 and VR4181A are different.
-> > Please don't remove VR4181A. 
-> 
-> OK, this one doesn't touch VR4181A.
-> 
-> 
-> [MIPS] Remove last portions of incomplete VR4181 support
-> 
-> Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 4ca93ff..b89088e 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -503,7 +503,8 @@ config DDB5477
->  	  ether port USB, AC97, PCI, etc.
->  
->  config MACH_VR41XX
-> -	bool "Support for NEC VR41XX-based machines"
-> +	bool "Support for NEC VR41XX based machines"
-> +	select SYS_HAS_CPU_VR41XX
->  
->  config PMC_YOSEMITE
->  	bool "Support for PMC-Sierra Yosemite eval board"
-> @@ -1016,9 +1017,6 @@ config MIPS_L1_CACHE_SHIFT
->  config HAVE_STD_PC_SERIAL_PORT
->  	bool
->  
-> -config VR4181
-> -	bool
-> -
->  config ARC_CONSOLE
->  	bool "ARC console support"
->  	depends on SGI_IP22 || SNI_RM200_PCI
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index c6363ff..292f8b2 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -242,15 +242,9 @@ static inline void cpu_probe_legacy(stru
->  		break;
->  	case PRID_IMP_VR41XX:
->  		switch (c->processor_id & 0xf0) {
-> -#ifndef CONFIG_VR4181
->  		case PRID_REV_VR4111:
->  			c->cputype = CPU_VR4111;
->  			break;
-> -#else
-> -		case PRID_REV_VR4181:
-> -			c->cputype = CPU_VR4181;
-> -			break;
-> -#endif
->  		case PRID_REV_VR4121:
->  			c->cputype = CPU_VR4121;
->  			break;
-> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-> index 86fe15b..0fbf450 100644
-> --- a/arch/mips/kernel/proc.c
-> +++ b/arch/mips/kernel/proc.c
-> @@ -79,7 +79,6 @@ static const char *cpu_name[] = {
->  	[CPU_VR4122]	= "NEC VR4122",
->  	[CPU_VR4131]	= "NEC VR4131",
->  	[CPU_VR4133]	= "NEC VR4133",
-> -	[CPU_VR4181]	= "NEC VR4181",
->  	[CPU_VR4181A]	= "NEC VR4181A",
->  	[CPU_SR71000]	= "Sandcraft SR71000",
->  	[CPU_PR4450]	= "Philips PR4450",
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 1b71d91..28a3b33 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -840,7 +840,6 @@ static void __init probe_pcache(void)
->  	case CPU_VR4111:
->  	case CPU_VR4121:
->  	case CPU_VR4122:
-> -	case CPU_VR4181:
->  	case CPU_VR4181A:
->  		icache_size = 1 << (10 + ((config & CONF_IC) >> 9));
->  		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 0f94858..5a7e0a6 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -908,7 +908,6 @@ static __init void build_tlb_write_entry
->  	case CPU_VR4111:
->  	case CPU_VR4121:
->  	case CPU_VR4122:
-> -	case CPU_VR4181:
->  	case CPU_VR4181A:
->  		i_nop(p);
->  		i_nop(p);
-> @@ -1054,9 +1053,8 @@ static __init void build_adjust_context(
->  	case CPU_VR4121:
->  	case CPU_VR4122:
->  	case CPU_VR4131:
-> -	case CPU_VR4181:
-> -	case CPU_VR4181A:
->  	case CPU_VR4133:
-> +	case CPU_VR4181A:
->  		shift += 2;
->  		break;
->  
-> diff --git a/include/asm-mips/cpu.h b/include/asm-mips/cpu.h
-> index 818b9a9..ef72bcd 100644
-> --- a/include/asm-mips/cpu.h
-> +++ b/include/asm-mips/cpu.h
-> @@ -116,7 +116,6 @@
->  #define PRID_REV_TX3922 	0x0030
->  #define PRID_REV_TX3927 	0x0040
->  #define PRID_REV_VR4111		0x0050
-> -#define PRID_REV_VR4181		0x0050	/* Same as VR4111 */
->  #define PRID_REV_VR4121		0x0060
->  #define PRID_REV_VR4122		0x0070
->  #define PRID_REV_VR4181A	0x0070	/* Same as VR4122 */
-> @@ -183,7 +182,6 @@
->  #define CPU_VR4121		47
->  #define CPU_VR4122		48
->  #define CPU_VR4131		49
-> -#define CPU_VR4181		50
->  #define CPU_VR4181A		51
->  #define CPU_AU1100		52
->  #define CPU_SR71000		53
-> diff --git a/include/asm-mips/vr41xx/vr41xx.h b/include/asm-mips/vr41xx/vr41xx.h
-> 
-> -- 
-> Martin Michlmayr
-> http://www.cyrius.com/
+
+--- a/arch/mips/sibyte/bcm1480/irq.c	2006-02-20 04:51:41.000000000 +0000
++++ b/arch/mips/sibyte/bcm1480/irq.c	2006-02-20 04:52:39.000000000 +0000
+@@ -139,7 +139,7 @@
+ #ifdef CONFIG_SMP
+ static void bcm1480_set_affinity(unsigned int irq, cpumask_t mask)
+ {
+-	int i = 0, old_cpu, cpu, int_on;
++	int i = 0, old_cpu, cpu, int_on, k;
+ 	u64 cur_ints;
+ 	irq_desc_t *desc = irq_desc + irq;
+ 	unsigned long flags;
+@@ -165,7 +165,6 @@
+ 		irq_dirty -= BCM1480_NR_IRQS_HALF;
+ 	}
+ 
+-	int k;
+ 	for (k=0; k<2; k++) { /* Loop through high and low interrupt mask register */
+ 		cur_ints = ____raw_readq(IOADDR(A_BCM1480_IMR_MAPPER(old_cpu) + R_BCM1480_IMR_INTERRUPT_MASK_H + (k*BCM1480_IMR_HL_SPACING)));
+ 		int_on = !(cur_ints & (((u64) 1) << irq_dirty));
+@@ -216,6 +215,7 @@
+ {
+ 	u64 pending;
+ 	unsigned int irq_dirty;
++	int k;
+ 
+ 	/*
+ 	 * If the interrupt was an HT interrupt, now is the time to
+@@ -227,7 +227,6 @@
+ 	if ((irq_dirty >= BCM1480_NR_IRQS_HALF) && (irq_dirty <= BCM1480_NR_IRQS)) {
+ 		irq_dirty -= BCM1480_NR_IRQS_HALF;
+ 	}
+-	int k;
+ 	for (k=0; k<2; k++) { /* Loop through high and low LDT interrupts */
+ 		pending = __raw_readq(IOADDR(A_BCM1480_IMR_REGISTER(bcm1480_irq_owner[irq],
+ 						R_BCM1480_IMR_LDT_INTERRUPT_H + (k*BCM1480_IMR_HL_SPACING))));
+
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

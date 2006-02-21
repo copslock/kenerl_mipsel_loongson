@@ -1,71 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Feb 2006 10:39:14 +0000 (GMT)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:63406 "HELO
-	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133374AbWBUKjF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 21 Feb 2006 10:39:05 +0000
-Received: from localhost (in-1.mx.triera.net [213.161.0.25])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 801C2C01C;
-	Tue, 21 Feb 2006 11:46:02 +0100 (CET)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-1.mx.triera.net (Postfix) with SMTP id 42D8C1BC085;
-	Tue, 21 Feb 2006 11:46:04 +0100 (CET)
-Received: from localhost (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id B491F1A18A5;
-	Tue, 21 Feb 2006 11:46:04 +0100 (CET)
-Date:	Tue, 21 Feb 2006 11:46:19 +0100
-From:	Domen Puncer <domen.puncer@ultra.si>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [patch] au1xmmc: fix mmc_rsp_type typo
-Message-ID: <20060221104619.GD5120@domen.ultra.si>
-References: <20060221093834.GA5120@domen.ultra.si>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060221093834.GA5120@domen.ultra.si>
-User-Agent: Mutt/1.5.11
-X-Virus-Scanned: Triera AV Service
-Return-Path: <domen.puncer@ultra.si>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Feb 2006 11:33:22 +0000 (GMT)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:55227 "EHLO
+	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
+	id S8133394AbWBULdO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 21 Feb 2006 11:33:14 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id k1LBiJV3001123;
+	Tue, 21 Feb 2006 11:44:19 GMT
+Received: (from alan@localhost)
+	by localhost.localdomain (8.13.4/8.13.4/Submit) id k1LBiJKD001122;
+	Tue, 21 Feb 2006 11:44:19 GMT
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
+Subject: Re: "Hw. address read/write mismap 0" or RTL8019 ethernet in linux
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	zhuzhenhua <zzh.hust@gmail.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <50c9a2250602202133g2e7350aesdaf1df810c90cef8@mail.gmail.com>
+References: <50c9a2250602202133g2e7350aesdaf1df810c90cef8@mail.gmail.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Date:	Tue, 21 Feb 2006 11:44:18 +0000
+Message-Id: <1140522258.840.16.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10590
+X-archive-position: 10591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: domen.puncer@ultra.si
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On 21/02/06 10:38 +0100, Domen Puncer wrote:
-> Patch that added this suggests mmc_rsp_type should be mmc_resp_type.
+On Maw, 2006-02-21 at 13:33 +0800, zhuzhenhua wrote:
+> then i check the code and find it's in 8390.c, caused by uncorrect
+> write of MAC addr, and now i repalce all the inb,outb,inb_p, outb_p
+> with get_reg and put_reg in the 8390.c.as follow:
+> 
+> static unsigned char get_reg (unsigned int regno)
+> {
+> 	return (*(volatile unsigned char *) regno);
+> }
+> 
+> static void put_reg (unsigned int regno, unsigned char val)
+> {
+> 	*(volatile unsigned char *) regno = val;
+> }
 
-Ouch, I thought I compile tested.
-Here's a fixed version:
+Should be
 
+	return readb(regno);
 
-There's no mmc_rsp_type
+and
 
-Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
+	writeb(val, regno)
 
-Index: linux-2.6.16-rc4.git/drivers/mmc/au1xmmc.c
-===================================================================
---- linux-2.6.16-rc4.git.orig/drivers/mmc/au1xmmc.c
-+++ linux-2.6.16-rc4.git/drivers/mmc/au1xmmc.c
-@@ -41,6 +41,7 @@
- #include <linux/mm.h>
- #include <linux/interrupt.h>
- #include <linux/dma-mapping.h>
-+#include <linux/platform_device.h>
- 
- #include <linux/mmc/host.h>
- #include <linux/mmc/protocol.h>
-@@ -195,7 +195,7 @@ static int au1xmmc_send_command(struct a
- 
- 	u32 mmccmd = (cmd->opcode << SD_CMD_CI_SHIFT);
- 
--	switch (mmc_rsp_type(cmd->flags)) {
-+	switch (mmc_resp_type(cmd)) {
- 	case MMC_RSP_R1:
- 		mmccmd |= SD_CMD_RT_1;
- 		break;
+if regno holds the ioremap result of the memory mapped address of the
+8019. Right now 8390.c assumes PIO mappings and you hardware appears to
+be MMIO ?
+
+> does someone have any idea of this situation?
+
+If the card is MMIO then make sure you are using readb/writeb and
+ioremap properly, otherwise you may get cache consistency and other
+strange errors.

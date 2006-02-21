@@ -1,75 +1,145 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Feb 2006 05:26:12 +0000 (GMT)
-Received: from nproxy.gmail.com ([64.233.182.198]:44707 "EHLO nproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8127231AbWBUF0C convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 21 Feb 2006 05:26:02 +0000
-Received: by nproxy.gmail.com with SMTP id x30so696188nfb
-        for <linux-mips@linux-mips.org>; Mon, 20 Feb 2006 21:33:03 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Wu0h4EB13IToimQz0+FfJZcoDbDBZdPqXTB0qifOrr3+SV++sOu4OUHsZyZsbRUjaKUewqKVWYCToTLUFxdjNsQPqVurZtCr7g4i7Zm6xs4ORfXBUjca6tjg3Jy3UC1WxqQRqIAREPKhYqOeD4Vyg1Hdnq57vEgt0FasiYEHlWU=
-Received: by 10.48.238.3 with SMTP id l3mr1413915nfh;
-        Mon, 20 Feb 2006 21:33:03 -0800 (PST)
-Received: by 10.48.250.13 with HTTP; Mon, 20 Feb 2006 21:33:03 -0800 (PST)
-Message-ID: <50c9a2250602202133g2e7350aesdaf1df810c90cef8@mail.gmail.com>
-Date:	Tue, 21 Feb 2006 13:33:03 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: "Hw. address read/write mismap 0" or RTL8019 ethernet in linux
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Feb 2006 06:52:14 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:28689 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8127231AbWBUGwE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 21 Feb 2006 06:52:04 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 21 Feb 2006 15:59:04 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 09B7820445;
+	Tue, 21 Feb 2006 15:59:02 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id F32DE20444;
+	Tue, 21 Feb 2006 15:59:01 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k1L6x14D010243;
+	Tue, 21 Feb 2006 15:59:01 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 21 Feb 2006 15:59:00 +0900 (JST)
+Message-Id: <20060221.155900.45517504.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] use generic compat routines for readdir, getdents
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10586
+X-archive-position: 10587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-i want to add a RTL8019 ethernet driver for my board, when i run the
-linux, at the init of ethernet, it get
+Not just cleanup but also fixes O32 readdir(2) emulation.
 
-eth0: trigger_send() called with the transmitter busy.
-.<6>NETDEV WATCHDOG: eth0: transmit timed out
-Hw. address read/write mismap 0
-Hw. address read/write mismap 1
-Hw. address read/write mismap 2
-Hw. address read/write mismap 3
-Hw. address read/write mismap 4
-Hw. address read/write mismap 5
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-then i check the code and find it's in 8390.c, caused by uncorrect
-write of MAC addr, and now i repalce all the inb,outb,inb_p, outb_p
-with get_reg and put_reg in the 8390.c.as follow:
-
-static unsigned char get_reg (unsigned int regno)
-{
-	return (*(volatile unsigned char *) regno);
-}
-
-static void put_reg (unsigned int regno, unsigned char val)
-{
-	*(volatile unsigned char *) regno = val;
-}
-
- it can run over t he ethernet init, and it also can mount nfs root
-fs, it can ping and responding to ping, and also can do copy,delete in
-the nfs root.
- but when i run  application in nfs root, it get message as follow,
-and hang on it
-"nfs: server 192.168.81.142 not responding, still trying"
-
-does someone have any idea of this situation?
-
-thanks for any hints
-
-Best regards
-
-zhuzhenhua
+diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
+index 5f68b22..e00e5f6 100644
+--- a/arch/mips/kernel/linux32.c
++++ b/arch/mips/kernel/linux32.c
+@@ -161,60 +161,6 @@ out:
+ 	return error;
+ }
+ 
+-struct dirent32 {
+-	unsigned int	d_ino;
+-	unsigned int	d_off;
+-	unsigned short	d_reclen;
+-	char		d_name[NAME_MAX + 1];
+-};
+-
+-static void
+-xlate_dirent(void *dirent64, void *dirent32, long n)
+-{
+-	long off;
+-	struct dirent *dirp;
+-	struct dirent32 *dirp32;
+-
+-	off = 0;
+-	while (off < n) {
+-		dirp = (struct dirent *)(dirent64 + off);
+-		dirp32 = (struct dirent32 *)(dirent32 + off);
+-		off += dirp->d_reclen;
+-		dirp32->d_ino = dirp->d_ino;
+-		dirp32->d_off = (unsigned int)dirp->d_off;
+-		dirp32->d_reclen = dirp->d_reclen;
+-		strncpy(dirp32->d_name, dirp->d_name, dirp->d_reclen - ((3 * 4) + 2));
+-	}
+-	return;
+-}
+-
+-asmlinkage long
+-sys32_getdents(unsigned int fd, void * dirent32, unsigned int count)
+-{
+-	long n;
+-	void *dirent64;
+-
+-	dirent64 = (void *)((unsigned long)(dirent32 + (sizeof(long) - 1)) & ~(sizeof(long) - 1));
+-	if ((n = sys_getdents(fd, dirent64, count - (dirent64 - dirent32))) < 0)
+-		return(n);
+-	xlate_dirent(dirent64, dirent32, n);
+-	return(n);
+-}
+-
+-asmlinkage int old_readdir(unsigned int fd, void * dirent, unsigned int count);
+-
+-asmlinkage int
+-sys32_readdir(unsigned int fd, void * dirent32, unsigned int count)
+-{
+-	int n;
+-	struct dirent dirent64;
+-
+-	if ((n = old_readdir(fd, &dirent64, count)) < 0)
+-		return(n);
+-	xlate_dirent(&dirent64, dirent32, dirent64.d_reclen);
+-	return(n);
+-}
+-
+ asmlinkage int
+ sys32_waitpid(compat_pid_t pid, unsigned int *stat_addr, int options)
+ {
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index d87b544..02c8267 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -195,7 +195,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_fdatasync
+ 	PTR	sys_truncate
+ 	PTR	sys_ftruncate			/* 6075 */
+-	PTR	sys32_getdents
++	PTR	compat_sys_getdents
+ 	PTR	sys_getcwd
+ 	PTR	sys_chdir
+ 	PTR	sys_fchdir
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 5b04140..797e0d8 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -293,7 +293,7 @@ sys_call_table:
+ 	PTR	sys_uselib
+ 	PTR	sys_swapon
+ 	PTR	sys_reboot
+-	PTR	sys32_readdir
++	PTR	compat_sys_old_readdir
+ 	PTR	old_mmap			/* 4090 */
+ 	PTR	sys_munmap
+ 	PTR	sys_truncate
+@@ -345,7 +345,7 @@ sys_call_table:
+ 	PTR	sys_setfsuid
+ 	PTR	sys_setfsgid
+ 	PTR	sys32_llseek			/* 4140 */
+-	PTR	sys32_getdents
++	PTR	compat_sys_getdents
+ 	PTR	compat_sys_select
+ 	PTR	sys_flock
+ 	PTR	sys_msync

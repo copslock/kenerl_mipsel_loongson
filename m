@@ -1,151 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Feb 2006 20:18:42 +0000 (GMT)
-Received: from mail.baslerweb.com ([145.253.187.130]:38533 "EHLO
-	mail.baslerweb.com") by ftp.linux-mips.org with ESMTP
-	id S8133726AbWBVUSc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Feb 2006 20:18:32 +0000
-Received: (from mail@localhost)
-	by mail.baslerweb.com (8.12.10/8.12.10) id k1MKO3W9002351
-	for <linux-mips@linux-mips.org>; Wed, 22 Feb 2006 21:24:03 +0100
-Received: from unknown by gateway id /processing/kwXQEIae; Wed Feb 22 21:24:01 2006
-Received: from vclinux-1.basler.corp (localhost [172.16.13.253]) by comm1.baslerweb.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2657.72)
-	id 18J3BJNC; Wed, 22 Feb 2006 21:25:40 +0100
-From:	Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Feb 2006 21:35:01 +0000 (GMT)
+Received: from grayson.netsweng.com ([207.235.77.11]:3037 "EHLO
+	grayson.netsweng.com") by ftp.linux-mips.org with ESMTP
+	id S8133731AbWBVVen (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Feb 2006 21:34:43 +0000
+Received: from amavis by grayson.netsweng.com with scanned-ok (Exim 3.36 #1 (Debian))
+	id 1FC1k9-0002n1-00
+	for <linux-mips@linux-mips.org>; Wed, 22 Feb 2006 16:41:53 -0500
+Received: from grayson.netsweng.com ([127.0.0.1])
+	by localhost (grayson [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 10644-03 for <linux-mips@linux-mips.org>;
+	Wed, 22 Feb 2006 16:41:45 -0500 (EST)
+Received: from h181.242.141.67.ip.alltel.net ([67.141.242.181] helo=trantor.stuart.netsweng.com)
+	by grayson.netsweng.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1FC1k1-0002mw-00
+	for <linux-mips@linux-mips.org>; Wed, 22 Feb 2006 16:41:45 -0500
+Date:	Wed, 22 Feb 2006 16:41:43 -0500 (EST)
+From:	Stuart Anderson <anderson@netsweng.com>
+X-X-Sender: anderson@trantor.stuart.netsweng.com
 To:	linux-mips@linux-mips.org
-Date:	Wed, 22 Feb 2006 21:25:39 +0100
-User-Agent: KMail/1.6.2
+Subject: Re: [RFC] SMP initialization order fixes.
+In-Reply-To: <20060222190940.GA29967@linux-mips.org>
+Message-ID: <Pine.LNX.4.64.0602221636300.5110@trantor.stuart.netsweng.com>
+References: <20060222190940.GA29967@linux-mips.org>
 MIME-Version: 1.0
-Message-Id: <200602222125.39999.thomas.koeller@baslerweb.com>
-Subject: [PATCH] atomic functions broken
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Return-Path: <thomas.koeller@baslerweb.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at netsweng.com
+Return-Path: <anderson@netsweng.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10606
+X-archive-position: 10607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: anderson@netsweng.com
 Precedence: bulk
 X-list: linux-mips
 
-The ll/sc versions of atomic_sub_if_positive(), and the corresponding 64-bit functions,
-are broken. The value returned by those functions is always one, no matter what.
+On Wed, 22 Feb 2006, Ralf Baechle wrote:
+
+> This one should hopefully fix the SMP problems of the resent times.  It
+> works on Malta with 34K, it seems to work on IP27 (the kernel is
+> presumably failing due to other issues), so now I'd ask especially
+> RM9000 & BCM1250 users for testing.  This really needs to be fixed for
+> 2.6.16.
+
+I'm not sure if this is the specific fix or not, but I can report that git
+as of today (approx 2pm est) is working better than is has since 2.6.14 for
+me on a bcm1480. I had tried git a couple of weeks ago, and it still hung
+when I stressed it.
+
+I use NFS root, and the stress test that would hang the system is simply
+"make -j 4" of the kernel. Previously this would hang the syste before
+finishing.
+
+Now that things seem to be better, I'll leave this looping for a while,
+and then run some other tests. It's time to run the ltp on the 3 different
+ABIs again anyway.
 
 
-Signed-off-by: Thomas Koeller  <thomas.koeller@baslerweb.com>
+                                  Stuart
 
-
-
-
-diff --git a/include/asm-mips/atomic.h b/include/asm-mips/atomic.h
-index 654b97d..472e855 100644
---- a/include/asm-mips/atomic.h
-+++ b/include/asm-mips/atomic.h
-@@ -247,15 +247,16 @@ static __inline__ int atomic_sub_if_posi
- 		__asm__ __volatile__(
- 		"	.set	mips3					\n"
- 		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
--		"	subu	%0, %1, %3				\n"
--		"	bltz	%0, 1f					\n"
--		"	sc	%0, %2					\n"
--		"	beqzl	%0, 1b					\n"
-+		"	subu	%1, %1, %3				\n"
-+		"	addi	%0, %1, 0				\n"
-+		"	bltz	%1, 1f					\n"
-+		"	sc	%1, %2					\n"
-+		"	beqzl	%1, 1b					\n"
- 		"	sync						\n"
- 		"1:							\n"
- 		"	.set	mips0					\n"
--		: "=&r" (result), "=&r" (temp), "=m" (v->counter)
--		: "Ir" (i), "m" (v->counter)
-+		: "=&r" (result), "=&r" (temp), "+m" (v->counter)
-+		: "Ir" (i)
- 		: "memory");
- 	} else if (cpu_has_llsc) {
- 		unsigned long temp;
-@@ -263,15 +264,16 @@ static __inline__ int atomic_sub_if_posi
- 		__asm__ __volatile__(
- 		"	.set	mips3					\n"
- 		"1:	ll	%1, %2		# atomic_sub_if_positive\n"
--		"	subu	%0, %1, %3				\n"
--		"	bltz	%0, 1f					\n"
--		"	sc	%0, %2					\n"
--		"	beqz	%0, 1b					\n"
-+		"	subu	%1, %1, %3				\n"
-+		"	addi	%0, %1, 0				\n"
-+		"	bltz	%1, 1f					\n"
-+		"	sc	%1, %2					\n"
-+		"	beqz	%1, 1b					\n"
- 		"	sync						\n"
- 		"1:							\n"
- 		"	.set	mips0					\n"
--		: "=&r" (result), "=&r" (temp), "=m" (v->counter)
--		: "Ir" (i), "m" (v->counter)
-+		: "=&r" (result), "=&r" (temp), "+m" (v->counter)
-+		: "Ir" (i)
- 		: "memory");
- 	} else {
- 		unsigned long flags;
-@@ -595,15 +597,16 @@ static __inline__ long atomic64_sub_if_p
- 		__asm__ __volatile__(
- 		"	.set	mips3					\n"
- 		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
--		"	dsubu	%0, %1, %3				\n"
--		"	bltz	%0, 1f					\n"
--		"	scd	%0, %2					\n"
--		"	beqzl	%0, 1b					\n"
-+		"	dsubu	%1, %1, %3				\n"
-+		"	daddi	%0, %1, 0				\n"
-+		"	bltz	%1, 1f					\n"
-+		"	scd	%1, %2					\n"
-+		"	beqzl	%1, 1b					\n"
- 		"	sync						\n"
- 		"1:							\n"
- 		"	.set	mips0					\n"
--		: "=&r" (result), "=&r" (temp), "=m" (v->counter)
--		: "Ir" (i), "m" (v->counter)
-+		: "=&r" (result), "=&r" (temp), "+m" (v->counter)
-+		: "Ir" (i)
- 		: "memory");
- 	} else if (cpu_has_llsc) {
- 		unsigned long temp;
-@@ -611,15 +614,16 @@ static __inline__ long atomic64_sub_if_p
- 		__asm__ __volatile__(
- 		"	.set	mips3					\n"
- 		"1:	lld	%1, %2		# atomic64_sub_if_positive\n"
--		"	dsubu	%0, %1, %3				\n"
--		"	bltz	%0, 1f					\n"
--		"	scd	%0, %2					\n"
--		"	beqz	%0, 1b					\n"
-+		"	dsubu	%1, %1, %3				\n"
-+		"	daddi	%0, %1, 0				\n"
-+		"	bltz	%1, 1f					\n"
-+		"	scd	%1, %2					\n"
-+		"	beqz	%1, 1b					\n"
- 		"	sync						\n"
- 		"1:							\n"
- 		"	.set	mips0					\n"
--		: "=&r" (result), "=&r" (temp), "=m" (v->counter)
--		: "Ir" (i), "m" (v->counter)
-+		: "=&r" (result), "=&r" (temp), "+m" (v->counter)
-+		: "Ir" (i)
- 		: "memory");
- 	} else {
- 		unsigned long flags;
-
--- 
---------------------------------------------------
-
-Thomas Koeller, Software Development
-Basler Vision Technologies
-
-thomas dot koeller at baslerweb dot com
-http://www.baslerweb.com
-
-==============================
+Stuart R. Anderson                               anderson@netsweng.com
+Network & Software Engineering                   http://www.netsweng.com/
+1024D/37A79149:                                  0791 D3B8 9A4C 2CDC A31F
+                                                   BD03 0A62 E534 37A7 9149

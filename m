@@ -1,59 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2006 11:48:24 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:53510 "EHLO
-	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133438AbWBWLsQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Feb 2006 11:48:16 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1NBtSiP006850;
-	Thu, 23 Feb 2006 11:55:28 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1NBtR3u006849;
-	Thu, 23 Feb 2006 11:55:27 GMT
-Date:	Thu, 23 Feb 2006 11:55:27 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Rojhalat Ibrahim <imr@rtschenk.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [RFC] SMP initialization order fixes.
-Message-ID: <20060223115527.GA6272@linux-mips.org>
-References: <20060222190940.GA29967@linux-mips.org> <43FD85C8.5040801@rtschenk.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2006 13:25:10 +0000 (GMT)
+Received: from wproxy.gmail.com ([64.233.184.201]:15523 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133438AbWBWNZB convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Feb 2006 13:25:01 +0000
+Received: by wproxy.gmail.com with SMTP id i14so362968wra
+        for <linux-mips@linux-mips.org>; Thu, 23 Feb 2006 05:32:08 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=HPnhcVdavEeTt2Qs5yS3e03HSbpk0tR/DxY4WVjHGHxb4wyo9t6iVj81/jLnItJbLWoNcB2jvDYPwKGv3xHvT6x24IlUGnP6PSlQezG9Ucd2gU74Afo3LRN36HXo7GUb+0zV/eOZBcq5EG5dg2xoqQSsJI9t8FQo9bkblvtiiew=
+Received: by 10.54.105.12 with SMTP id d12mr223383wrc;
+        Thu, 23 Feb 2006 05:32:08 -0800 (PST)
+Received: by 10.54.133.18 with HTTP; Thu, 23 Feb 2006 05:32:08 -0800 (PST)
+Message-ID: <f69849430602230532uc1ac687t773f261a34abab9b@mail.gmail.com>
+Date:	Thu, 23 Feb 2006 05:32:08 -0800
+From:	"kernel coder" <lhrkernelcoder@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Programmed ide transfer size
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <43FD85C8.5040801@rtschenk.de>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <lhrkernelcoder@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10612
+X-archive-position: 10613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: lhrkernelcoder@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 23, 2006 at 10:52:08AM +0100, Rojhalat Ibrahim wrote:
+hi,
 
-> Works for me with a little fix. You need to set phys_cpu_present_map
-> in yosemite/smp.c. Therefore the following two lines in the patch
-> are unnecessary.
-> 
-> > -		cpu_set(i, phys_cpu_present_map);
-> > +		cpu_set(i, cpu_present_map);
+I'm working on an ide driver.Whenever a DMA read operation is
+started,i never recieve the DMA interrupt.The staus register at offset
+00h shows value ' 0 ',which means that the descriptor table specified
+a smaller buffer size than the programmed IDE transfer size.
+But occassionaly i recieved the DMA interrupt.
 
-In include/asm-mips/smp.h we have the define:
+Actually this driver works well on another board.On that board
+whenever i reduced the buffer size in physical region descriptor table
+to less than the current size in the PRDT table,i again got the same
+error.
 
-  #define cpu_possible_map        phys_cpu_present_map
+I think this confirms that whenever we give smaller size in PRDT than
+the programmed IDE transfer size,status register shows ' 0 ' value.
 
-I meant to get rid of direct references to phys_cpu_present_map so really
-should have done this:
+Please tell me where in kernel that programmed IDE transfer size is
+being set.The transfer size in PRDT on the other board(on which driver
+shows no problem) varied from 4k to 1k ,which means it is changed
+frequently.
 
-> > -		cpu_set(i, phys_cpu_present_map);
-> > +		cpu_set(i, cpu_possible_map);
-
-Anyway, I dropped this for now and will commit the patch.
-
-Thanks for testing & fix.
-
-  Ralf
+shahzad

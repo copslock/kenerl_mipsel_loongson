@@ -1,67 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Feb 2006 21:35:01 +0000 (GMT)
-Received: from grayson.netsweng.com ([207.235.77.11]:3037 "EHLO
-	grayson.netsweng.com") by ftp.linux-mips.org with ESMTP
-	id S8133731AbWBVVen (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Feb 2006 21:34:43 +0000
-Received: from amavis by grayson.netsweng.com with scanned-ok (Exim 3.36 #1 (Debian))
-	id 1FC1k9-0002n1-00
-	for <linux-mips@linux-mips.org>; Wed, 22 Feb 2006 16:41:53 -0500
-Received: from grayson.netsweng.com ([127.0.0.1])
-	by localhost (grayson [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 10644-03 for <linux-mips@linux-mips.org>;
-	Wed, 22 Feb 2006 16:41:45 -0500 (EST)
-Received: from h181.242.141.67.ip.alltel.net ([67.141.242.181] helo=trantor.stuart.netsweng.com)
-	by grayson.netsweng.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1FC1k1-0002mw-00
-	for <linux-mips@linux-mips.org>; Wed, 22 Feb 2006 16:41:45 -0500
-Date:	Wed, 22 Feb 2006 16:41:43 -0500 (EST)
-From:	Stuart Anderson <anderson@netsweng.com>
-X-X-Sender: anderson@trantor.stuart.netsweng.com
-To:	linux-mips@linux-mips.org
-Subject: Re: [RFC] SMP initialization order fixes.
-In-Reply-To: <20060222190940.GA29967@linux-mips.org>
-Message-ID: <Pine.LNX.4.64.0602221636300.5110@trantor.stuart.netsweng.com>
-References: <20060222190940.GA29967@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2006 02:33:45 +0000 (GMT)
+Received: from mail8.fw-bc.sony.com ([160.33.98.75]:31895 "EHLO
+	mail8.fw-bc.sony.com") by ftp.linux-mips.org with ESMTP
+	id S8133740AbWBWCdh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Feb 2006 02:33:37 +0000
+Received: from mail3.sjc.in.sel.sony.com (mail3.sjc.in.sel.sony.com [43.134.1.211])
+	by mail8.fw-bc.sony.com (8.12.11/8.12.11) with ESMTP id k1N2ehD7001148;
+	Thu, 23 Feb 2006 02:40:43 GMT
+Received: from [192.168.1.10] ([43.134.85.105])
+	by mail3.sjc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id k1N2egnr002419;
+	Thu, 23 Feb 2006 02:40:42 GMT
+Message-ID: <43FD20F7.4090401@am.sony.com>
+Date:	Wed, 22 Feb 2006 18:41:59 -0800
+From:	Geoff Levand <geoffrey.levand@am.sony.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc4 (X11/20050929)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at netsweng.com
-Return-Path: <anderson@netsweng.com>
+To:	anemo@mba.ocn.ne.jp
+CC:	linux-mips@linux-mips.org
+Subject: SERIAL_TXX9 && BROKEN
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <geoffrey.levand@am.sony.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10607
+X-archive-position: 10608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anderson@netsweng.com
+X-original-sender: geoffrey.levand@am.sony.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 22 Feb 2006, Ralf Baechle wrote:
+Nemoto-san,
 
-> This one should hopefully fix the SMP problems of the resent times.  It
-> works on Malta with 34K, it seems to work on IP27 (the kernel is
-> presumably failing due to other issues), so now I'd ask especially
-> RM9000 & BCM1250 users for testing.  This really needs to be fixed for
-> 2.6.16.
+I see this in the 2.6.15 drivers/serial/Kconfig:
 
-I'm not sure if this is the specific fix or not, but I can report that git
-as of today (approx 2pm est) is working better than is has since 2.6.14 for
-me on a bcm1480. I had tried git a couple of weeks ago, and it still hung
-when I stressed it.
+config SERIAL_TXX9
+	bool "TMPTX39XX/49XX SIO support"
+	depends HAS_TXX9_SERIAL && BROKEN
 
-I use NFS root, and the stress test that would hang the system is simply
-"make -j 4" of the kernel. Previously this would hang the syste before
-finishing.
+What's needed to get this to work?
 
-Now that things seem to be better, I'll leave this looping for a while,
-and then run some other tests. It's time to run the ltp on the 3 different
-ABIs again anyway.
-
-
-                                  Stuart
-
-Stuart R. Anderson                               anderson@netsweng.com
-Network & Software Engineering                   http://www.netsweng.com/
-1024D/37A79149:                                  0791 D3B8 9A4C 2CDC A31F
-                                                   BD03 0A62 E534 37A7 9149
+-Geoff

@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2006 15:39:23 +0000 (GMT)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:56384 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2006 15:40:12 +0000 (GMT)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:56640 "EHLO
 	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S8133762AbWBWPhk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Feb 2006 15:37:40 +0000
+	id S8133754AbWBWPiN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Feb 2006 15:38:13 +0000
 Received: from 192.168.1.104 ([10.150.0.9])
-	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id k1NFiUt16549
-	for <linux-mips@linux-mips.org>; Thu, 23 Feb 2006 19:44:30 +0400
+	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id k1NFjEt16556
+	for <linux-mips@linux-mips.org>; Thu, 23 Feb 2006 19:45:14 +0400
 Subject: NEC VR5701 support
 From:	Sergey Podstavin <spodstavin@ru.mvista.com>
 Reply-To: spodstavin@ru.mvista.com
 To:	linux-mips <linux-mips@linux-mips.org>
-Content-Type: multipart/mixed; boundary="=-TrXcrVge0OF6kM7XvovN"
+Content-Type: multipart/mixed; boundary="=-00L1rH500cG3JDghjOz8"
 Organization: MontaVista
-Date:	Thu, 23 Feb 2006 18:44:31 +0300
-Message-Id: <1140709471.5741.17.camel@localhost.localdomain>
+Date:	Thu, 23 Feb 2006 18:45:15 +0300
+Message-Id: <1140709515.5741.19.camel@localhost.localdomain>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.0.2 (2.0.2-3) 
 Return-Path: <spodstavin@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10623
+X-archive-position: 10624
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,25 +29,43 @@ Precedence: bulk
 X-list: linux-mips
 
 
---=-TrXcrVge0OF6kM7XvovN
+--=-00L1rH500cG3JDghjOz8
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
 
 
---=-TrXcrVge0OF6kM7XvovN
-Content-Disposition: attachment; filename=pro_mips_nec_vr5701_sound_recording_fix.patch
-Content-Type: text/x-patch; name=pro_mips_nec_vr5701_sound_recording_fix.patch; charset=UTF-8
+--=-00L1rH500cG3JDghjOz8
+Content-Disposition: attachment; filename=pro_mips_nec_vr5701_usb_fix.patch
+Content-Type: text/x-patch; name=pro_mips_nec_vr5701_usb_fix.patch; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Source: MontaVista Software, Inc. Igor Goryachev <igoryachev@ru.mvista.com>
-MR: 16114
+MR: 15905
 Type: Defect Fix
 Disposition: needs submitting to linuxmips-embedded mailing list
 Signed-off-by: Igor Goryachev <igoryachev@ru.mvista.com>
 Description:
-    Fixes bug with sound recording on NEC vr5701.
+    Fixes USB host behaviour on NEC vr5701.
 
+Index: linux-2.6.10/arch/mips/vr5701/tcube/setup.c
+===================================================================
+--- linux-2.6.10.orig/arch/mips/vr5701/tcube/setup.c
++++ linux-2.6.10/arch/mips/vr5701/tcube/setup.c
+@@ -136,11 +136,11 @@ static void __init tcube_board_init(void
+ 	/* setup GPIO */
+ 	ddb_out32(GIU_DIR0, 0xf7ebffdf);
+ 	ddb_out32(GIU_DIR1, 0x000007fa);
+-	ddb_out32(GIU_FUNCSEL0, 0xf1c1ffff);
++	ddb_out32(GIU_FUNCSEL0, 0xf1c07fff);
+ 	ddb_out32(GIU_FUNCSEL1, 0x000007f0);
+ 	chk_init_5701_reg(GIU_DIR0, 0xf7ebffdf);
+ 	chk_init_5701_reg(GIU_DIR1, 0x000007fa);
+-	chk_init_5701_reg(GIU_FUNCSEL0, 0xf1c1ffff);
++	chk_init_5701_reg(GIU_FUNCSEL0, 0xf1c07fff);
+ 	chk_init_5701_reg(GIU_FUNCSEL1, 0x000007f0);
+ 
+ 	/* enable USB input buffers */
 Index: linux-2.6.10/include/linux/lsppatchlevel.h
 ===================================================================
 --- linux-2.6.10.orig/include/linux/lsppatchlevel.h
@@ -56,12 +74,12 @@ Index: linux-2.6.10/include/linux/lsppatchlevel.h
   * is licensed "as is" without any warranty of any kind, whether express
   * or implied.
   */
--#define LSP_PATCH_LEVEL "10"
-+#define LSP_PATCH_LEVEL "11"
-Index: linux-2.6.10/mvl_patches/pro-0011.c
+-#define LSP_PATCH_LEVEL "8"
++#define LSP_PATCH_LEVEL "9"
+Index: linux-2.6.10/mvl_patches/pro-0009.c
 ===================================================================
 --- /dev/null
-+++ linux-2.6.10/mvl_patches/pro-0011.c
++++ linux-2.6.10/mvl_patches/pro-0009.c
 @@ -0,0 +1,16 @@
 +/*
 + * Author: MontaVista Software, Inc. <source@mvista.com>
@@ -76,21 +94,8 @@ Index: linux-2.6.10/mvl_patches/pro-0011.c
 +
 +static __init int regpatch(void)
 +{
-+        return mvl_register_patch(11);
++        return mvl_register_patch(9);
 +}
 +module_init(regpatch);
-Index: linux-2.6.10/sound/pci/vr5701/nec_vr5701_sg2.h
-===================================================================
---- linux-2.6.10.orig/sound/pci/vr5701/nec_vr5701_sg2.h
-+++ linux-2.6.10/sound/pci/vr5701/nec_vr5701_sg2.h
-@@ -138,7 +138,7 @@ static snd_pcm_hardware_t snd_vr5701_pla
- /* hardware definition */
- static snd_pcm_hardware_t snd_vr5701_capture_hw = {
- 	.info = (SNDRV_PCM_INFO_MMAP |
--                   SNDRV_PCM_INFO_INTERLEAVED |
-+                   SNDRV_PCM_INFO_NONINTERLEAVED |
-                    SNDRV_PCM_INFO_BLOCK_TRANSFER |
-                    SNDRV_PCM_INFO_MMAP_VALID),
- 	.formats =          SNDRV_PCM_FMTBIT_S16_LE,
 
---=-TrXcrVge0OF6kM7XvovN--
+--=-00L1rH500cG3JDghjOz8--

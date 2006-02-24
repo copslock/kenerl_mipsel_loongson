@@ -1,67 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2006 01:43:07 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:25362 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133753AbWBXBm6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Feb 2006 01:42:58 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id E7D5964D3E; Fri, 24 Feb 2006 01:50:13 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id C18DA8DC5; Fri, 24 Feb 2006 01:49:57 +0000 (GMT)
-Date:	Fri, 24 Feb 2006 01:49:57 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Diff between Linus' and linux-mips git: tulip
-Message-ID: <20060224014957.GB26157@deprecation.cyrius.com>
-References: <20060219234318.GA16311@deprecation.cyrius.com> <20060220000141.GX10266@deprecation.cyrius.com> <20060220001907.GC17967@deprecation.cyrius.com> <20060220230349.GB1122@colonel-panic.org> <20060224011324.GN9704@deprecation.cyrius.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2006 08:24:42 +0000 (GMT)
+Received: from caramon.arm.linux.org.uk ([212.18.232.186]:41230 "EHLO
+	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
+	id S8133465AbWBXIYc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Feb 2006 08:24:32 +0000
+Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
+	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.52)
+	id 1FCYMb-0003kI-HK; Fri, 24 Feb 2006 08:31:46 +0000
+Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
+	id 1FCYMX-0008RL-K3; Fri, 24 Feb 2006 08:31:41 +0000
+Date:	Fri, 24 Feb 2006 08:31:41 +0000
+From:	Russell King <rmk@arm.linux.org.uk>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	linux-mips@linux-mips.org, jblache@debian.org
+Subject: Re: IP22 doesn't shutdown properly
+Message-ID: <20060224083141.GA32080@flint.arm.linux.org.uk>
+References: <20060217225824.GE20785@deprecation.cyrius.com> <20060223221350.GA5239@deprecation.cyrius.com> <20060223224346.GA7536@flint.arm.linux.org.uk> <20060224003947.GJ9704@deprecation.cyrius.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060224011324.GN9704@deprecation.cyrius.com>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+In-Reply-To: <20060224003947.GJ9704@deprecation.cyrius.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10637
+X-archive-position: 10638
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: rmk@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-* Martin Michlmayr <tbm@cyrius.com> [2006-02-24 01:13]:
->  - should the CONFIG_DDB5477 change be reverted (probably)
+On Fri, Feb 24, 2006 at 12:39:47AM +0000, Martin Michlmayr wrote:
+> * Russell King <rmk@arm.linux.org.uk> [2006-02-23 22:43]:
+> > Looking at the ip22 driver, it seems that if shutdown() is called for
+> > the console port, the driver does _nothing_.
+> 
+> sunzilog.c does the same, and it's based on a comment by you (quoted
+> right before shutdown()).  Anyway, I don't quite understand the
+> comment but maybe Ralf (or you) can write a patch.
 
-OK, I managed to track down when this change was introduced, namely in
-the merge with Linux 2.6.13-rc1.  See
-http://www.linux-mips.org/git?p=linux.git;a=blobdiff;h=e6781ea5ba055ec445f35c734a59db24e748be3a;hp=cfc346e72d6234ae37ee11b794791ee99fcec24e;hb=aa5fcc48f9ae2887b6c570411e73ef965f72a746;f=drivers/net/tulip/tulip_core.c
+Not quite - I didn't say "do absolutely nothing" - I did explicitly say
+that something should happen on the software side, and gave the example
+that the IRQ should be freed.  The intention of that comment was to
+satisfy the requirement I mentioned in my previous mail in this thread.
 
-Ralf, please apply this to the mips-tree only (not for-linus).
+At a guess, for the console port, you want to disable the receiver, leave
+the transmitter enabled, and disable all interrupts originating from the
+port.
 
-
-[MIPS] Revert bogus tulip_core/DDB5477 change introduced in 2.6.13-rc1 merge
-
-Merging with 2.6.13-rc1 introduced a change in the DDB5477 section of
-tulip_core.c that was really meant for Cobalt (and was there already).
-Revert this change, thereby syncing with Linus' tree.
-
-Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
-
---- mips.git/drivers/net/tulip/tulip_core.c	2006-02-23 22:05:30.000000000 +0000
-+++ linux.git/drivers/net/tulip/tulip_core.c	2006-02-03 03:07:03.000000000 +0000
-@@ -1495,8 +1495,8 @@
-                if ((pdev->bus->number == 0) && (PCI_SLOT(pdev->devfn) == 4)) {
-                        /* DDB5477 MAC address in first EEPROM locations. */
-                        sa_offset = 0;
--		       /* Ensure our media table fixup get's applied */
--		       memcpy(ee_data + 16, ee_data, 8);
-+                       /* No media table either */
-+                       tp->flags &= ~HAS_MEDIA_TABLE;
-                }
- #endif
- #ifdef CONFIG_MIPS_COBALT
+How other drivers do it is that they do a normal shutdown in every case,
+but the console code explicitly re-enables the transmitter.  I don't
+understand why these two drivers can't do it the same way.
 
 -- 
-Martin Michlmayr
-http://www.cyrius.com/
+Russell King
+ Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
+ maintainer of:  2.6 Serial core

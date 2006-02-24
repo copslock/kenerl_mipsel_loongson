@@ -1,64 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2006 00:50:01 +0000 (GMT)
-Received: from grayson.netsweng.com ([207.235.77.11]:17061 "EHLO
-	grayson.netsweng.com") by ftp.linux-mips.org with ESMTP
-	id S8133749AbWBXAtp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Feb 2006 00:49:45 +0000
-Received: from amavis by grayson.netsweng.com with scanned-ok (Exim 3.36 #1 (Debian))
-	id 1FCRGU-0003RK-00; Thu, 23 Feb 2006 19:56:58 -0500
-Received: from grayson.netsweng.com ([127.0.0.1])
-	by localhost (grayson [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 12970-10; Thu, 23 Feb 2006 19:56:43 -0500 (EST)
-Received: from h181.242.141.67.ip.alltel.net ([67.141.242.181] helo=trantor.stuart.netsweng.com)
-	by grayson.netsweng.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1FCRGF-0003RF-00; Thu, 23 Feb 2006 19:56:43 -0500
-Date:	Thu, 23 Feb 2006 19:56:40 -0500 (EST)
-From:	Stuart Anderson <anderson@netsweng.com>
-X-X-Sender: anderson@trantor.stuart.netsweng.com
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: [RFC] SMP initialization order fixes.
-In-Reply-To: <20060223113115.GA3728@linux-mips.org>
-Message-ID: <Pine.LNX.4.64.0602231954380.5110@trantor.stuart.netsweng.com>
-References: <20060222190940.GA29967@linux-mips.org>
- <Pine.LNX.4.64.0602221636300.5110@trantor.stuart.netsweng.com>
- <20060223113115.GA3728@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2006 01:24:19 +0000 (GMT)
+Received: from rwcrmhc12.comcast.net ([216.148.227.152]:34728 "EHLO
+	rwcrmhc12.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S8133748AbWBXBX4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Feb 2006 01:23:56 +0000
+Received: from [192.168.1.4] (unknown[69.140.185.48])
+          by comcast.net (rwcrmhc12) with ESMTP
+          id <20060224013028m12001gumle>; Fri, 24 Feb 2006 01:30:28 +0000
+Message-ID: <43FE61AD.1010802@gentoo.org>
+Date:	Thu, 23 Feb 2006 20:30:21 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at netsweng.com
-Return-Path: <anderson@netsweng.com>
+To:	linux-mips@linux-mips.org
+CC:	jblache@debian.org
+Subject: Re: IP22 doesn't shutdown properly
+References: <20060217225824.GE20785@deprecation.cyrius.com> <20060223221350.GA5239@deprecation.cyrius.com> <20060223224346.GA7536@flint.arm.linux.org.uk> <20060224003947.GJ9704@deprecation.cyrius.com>
+In-Reply-To: <20060224003947.GJ9704@deprecation.cyrius.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10632
+X-archive-position: 10633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anderson@netsweng.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 23 Feb 2006, Ralf Baechle wrote:
+Martin Michlmayr wrote:
+> * Russell King <rmk@arm.linux.org.uk> [2006-02-23 22:43]:
+>> Looking at the ip22 driver, it seems that if shutdown() is called for
+>> the console port, the driver does _nothing_.
+> 
+> sunzilog.c does the same, and it's based on a comment by you (quoted
+> right before shutdown()).  Anyway, I don't quite understand the
+> comment but maybe Ralf (or you) can write a patch.
 
->> I'm not sure if this is the specific fix or not, but I can report that git
->> as of today (approx 2pm est) is working better than is has since 2.6.14 for
->> me on a bcm1480. I had tried git a couple of weeks ago, and it still hung
->> when I stressed it.
->
-> Seems unrelated then.  This fix should make the difference between working
-> perfectly or not at all.  There have been numerous other fixes since 2.6.14
-> so hard to say what made the difference.
-
-You're right, it is unrelated. Shortly after this message wnet out & came
-back, it hung up again like it had been doing 8-(. I should have just kept my
-mouth shut and then it would still be working.
-
-It really did run much longer that one time, but I haven't been able to
-reproduce a run that lasted that long again. Sigh....
+iirc, ip22zilog was based heavily off of sunzilog in the early days of the 2.6.x 
+port.  So I wouldn't be surprised if both contain similar sets of bugs. 
+Probably be interesting to see if the Sparc people found any more and fixed that 
+might still exist in ip22zilog.
 
 
-                                 Stuart
+--Kumba
 
-Stuart R. Anderson                               anderson@netsweng.com
-Network & Software Engineering                   http://www.netsweng.com/
-1024D/37A79149:                                  0791 D3B8 9A4C 2CDC A31F
-                                                  BD03 0A62 E534 37A7 9149
+-- 
+Gentoo/MIPS Team Lead
+Gentoo Foundation Board of Trustees
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

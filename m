@@ -1,92 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Feb 2006 00:56:46 +0000 (GMT)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:44444 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S8133777AbWBYA4h (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 25 Feb 2006 00:56:37 +0000
-Received: (qmail 30467 invoked from network); 25 Feb 2006 11:03:51 +1000
-Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 25 Feb 2006 11:03:51 +1000
-Message-ID: <43FFADF7.6040305@gentoo.org>
-Date:	Sat, 25 Feb 2006 11:08:07 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Feb 2006 05:13:17 +0000 (GMT)
+Received: from terminus.zytor.com ([192.83.249.54]:23759 "EHLO
+	terminus.zytor.com") by ftp.linux-mips.org with ESMTP
+	id S8126502AbWBYFNH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 25 Feb 2006 05:13:07 +0000
+Received: from [172.27.0.16] (c-67-180-238-27.hsd1.ca.comcast.net [67.180.238.27])
+	(authenticated bits=0)
+	by terminus.zytor.com (8.13.4/8.13.4) with ESMTP id k1P5KR2O008234
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 24 Feb 2006 21:20:28 -0800
+Message-ID: <43FFE91D.7020905@zytor.com>
+Date:	Fri, 24 Feb 2006 21:20:29 -0800
+From:	"H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc4 (X11/20050929)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	J S <js_proj@yahoo.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
 CC:	linux-mips@linux-mips.org
-Subject: Re: adding HD video to a MIPS board
-References: <20060224222531.70940.qmail@web37612.mail.mud.yahoo.com>
-In-Reply-To: <20060224222531.70940.qmail@web37612.mail.mud.yahoo.com>
-X-Enigmail-Version: 0.93.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig069F408AE1EDFDFB669EF4FC"
-Return-Path: <redhatter@gentoo.org>
+Subject: [PATCH] sys_mmap2 offset argument should always be shifted 12, not
+ PAGE_SHIFT
+Content-Type: multipart/mixed;
+ boundary="------------020906030804010508050306"
+X-Virus-Scanned: ClamAV version 0.88, clamav-milter version 0.87 on localhost
+X-Virus-Status:	Clean
+Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10645
+X-archive-position: 10646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig069F408AE1EDFDFB669EF4FC
-Content-Type: text/plain; charset=UTF-8
+This is a multi-part message in MIME format.
+--------------020906030804010508050306
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-J S wrote:
-> I was wondering if anyone has ever attempted some
-> version of the "MythTV" project (DIY Linux-based
-> version of TIVO) with a basic MIPS board such as a
-> MALTA (but something quicker would probably be needed)
-> and an off-the-shelf PCI encoder/decoder card? What
-> hardware did you use? 
-> 
-> Did you use this Linux distribution or another?  
-> 
-> Thanks for any help you can provide,
+This patch adjusts the offset argument passed into sys_mmap2 to be 
+always shifted 12, even when the native page size isn't 4K.  This is 
+what all existing userspace libraries expect.
 
-I'm tempted to try this with my SGI O2 and a Brooktree BT848 capture
-card ... but to gain full benefit, it'd need to wait for the sound card
-driver to get fixed, and for some VICE firmware to be written.
+Signed-off-by: H. Peter Anvin <hpa@zytor.com>
 
-The thought I had, was to use VICE to do hardware Vorbis and perhaps
-Theora compression (if there's sufficient grunt), and turn my O2 into a
-small video capture box.  MythTV was an option there ... but as I say,
-180MHz is a bit slow to do this without hardware acceleration, plus the
-lack of a working sound card practically rules it out.
+--------------020906030804010508050306
+Content-Type: text/plain;
+ name="diff"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="diff"
 
-You could probably do it with a hardware-encoding MPEG TV card, and make
-a decent MythTV backend.  Or if you look around, there are actual MIPS
-boards with exactly this sort of functionality built in. :-)
--- 
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
-
-International Asperger's Year (1906 ~ 2006)
-http://dev.gentoo.org/~redhatter/iay
-
---------------enig069F408AE1EDFDFB669EF4FC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
-
-iD8DBQFD/636uarJ1mMmSrkRAhaGAJ9xYKj92ip5N2OOyUfRVJbAK6bENgCfQMLd
-Ehqgni1KPZ2bSh3wTjbQIeI=
-=XTlV
------END PGP SIGNATURE-----
-
---------------enig069F408AE1EDFDFB669EF4FC--
+ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9rZXJuZWwvbGludXgzMi5jIGIvYXJjaC9taXBzL2tl
+cm5lbC9saW51eDMyLmMKaW5kZXggNWY2OGIyMi4uNzJlYTVkNSAxMDA2NDQKLS0tIGEvYXJj
+aC9taXBzL2tlcm5lbC9saW51eDMyLmMKKysrIGIvYXJjaC9taXBzL2tlcm5lbC9saW51eDMy
+LmMKQEAgLTEwNiw2ICsxMDYsMTAgQEAgc3lzMzJfbW1hcDIodW5zaWduZWQgbG9uZyBhZGRy
+LCB1bnNpZ25lZAogCXVuc2lnbmVkIGxvbmcgZXJyb3I7CiAKIAllcnJvciA9IC1FSU5WQUw7
+CisJaWYgKHBnb2ZmICYgKH5QQUdFX01BU0sgPj4gMTIpKQorCQlnb3RvIG91dDsKKwlwZ29m
+ZiA+Pj0gUEFHRV9TSElGVC0xMjsKKwogCWlmICghKGZsYWdzICYgTUFQX0FOT05ZTU9VUykp
+IHsKIAkJZXJyb3IgPSAtRUJBREY7CiAJCWZpbGUgPSBmZ2V0KGZkKTsKZGlmZiAtLWdpdCBh
+L2FyY2gvbWlwcy9rZXJuZWwvc3lzY2FsbC5jIGIvYXJjaC9taXBzL2tlcm5lbC9zeXNjYWxs
+LmMKaW5kZXggMWRhMmVlYi4uMWQyODRmYiAxMDA2NDQKLS0tIGEvYXJjaC9taXBzL2tlcm5l
+bC9zeXNjYWxsLmMKKysrIGIvYXJjaC9taXBzL2tlcm5lbC9zeXNjYWxsLmMKQEAgLTE2Miw3
+ICsxNjIsMTAgQEAgYXNtbGlua2FnZSB1bnNpZ25lZCBsb25nCiBzeXNfbW1hcDIodW5zaWdu
+ZWQgbG9uZyBhZGRyLCB1bnNpZ25lZCBsb25nIGxlbiwgdW5zaWduZWQgbG9uZyBwcm90LAog
+ICAgICAgICAgIHVuc2lnbmVkIGxvbmcgZmxhZ3MsIHVuc2lnbmVkIGxvbmcgZmQsIHVuc2ln
+bmVkIGxvbmcgcGdvZmYpCiB7Ci0JcmV0dXJuIGRvX21tYXAyKGFkZHIsIGxlbiwgcHJvdCwg
+ZmxhZ3MsIGZkLCBwZ29mZik7CisJaWYgKHBnb2ZmICYgKH5QQUdFX01BU0sgPj4gMTIpKQor
+CQlyZXR1cm4gLUVJTlZBTDsKKworCXJldHVybiBkb19tbWFwMihhZGRyLCBsZW4sIHByb3Qs
+IGZsYWdzLCBmZCwgcGdvZmYgPj4gKFBBR0VfU0hJRlQtMTIpKTsKIH0KIAogc2F2ZV9zdGF0
+aWNfZnVuY3Rpb24oc3lzX2ZvcmspOwo=
+--------------020906030804010508050306--

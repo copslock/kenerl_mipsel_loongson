@@ -1,54 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 22:54:16 +0000 (GMT)
-Received: from kilimandjaro.dyndns.org ([212.85.147.17]:32527 "EHLO
-	kilimandjaro.dyndns.org") by ftp.linux-mips.org with ESMTP
-	id S8133513AbWB0WyI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Feb 2006 22:54:08 +0000
-Received: by kilimandjaro.dyndns.org (Postfix, from userid 500)
-	id A62AEBE867; Tue, 28 Feb 2006 00:01:41 +0100 (CET)
-Received: from saperlipopette ([127.0.0.1])
-	by saperlipopette with esmtp (Exim 4.50)
-	id 1FDrN5-0005GF-1B
-	for linux-mips@linux-mips.org; Tue, 28 Feb 2006 00:01:39 +0100
-Message-ID: <440384D2.5040109@kilimandjaro.dyndns.org>
-Date:	Tue, 28 Feb 2006 00:01:38 +0100
-From:	Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050802)
-X-Accept-Language: fr, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 22:57:15 +0000 (GMT)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:27860 "EHLO
+	duck.specifix.com") by ftp.linux-mips.org with ESMTP
+	id S8133513AbWB0W5F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 27 Feb 2006 22:57:05 +0000
+Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
+	by duck.specifix.com (Postfix) with ESMTP id 93D5CFC77
+	for <linux-mips@linux-mips.org>; Mon, 27 Feb 2006 15:04:38 -0800 (PST)
+Subject: bcm1480 doubled process accounting times
+From:	James E Wilson <wilson@specifix.com>
 To:	linux-mips@linux-mips.org
-Subject: Error trying to update www.linux-mips.org/wiki
-X-Enigmail-Version: 0.92.0.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dom@kilimandjaro.dyndns.org>
+Content-Type: multipart/mixed; boundary="=-e+AEUvUxNwuRV6Csdt8I"
+Message-Id: <1141081478.9097.42.camel@aretha.corp.specifix.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 
+Date:	Mon, 27 Feb 2006 15:04:38 -0800
+Return-Path: <wilson@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10666
+X-archive-position: 10667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dom@kilimandjaro.dyndns.org
+X-original-sender: wilson@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, while trying to reorganize information a bit in the Linux-Mips wiki,
-I came across the following error when I try to save my changes. This
-apparently happens on all pages.
 
-Best regards, Dom
+--=-e+AEUvUxNwuRV6Csdt8I
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-== 8< == 8< ==
+Running a UP kernel on a bcm1480 board, I get nonsensical timing
+results, like this:
+release@unknown:~/tmp$ time ./a.out
+real    0m22.906s
+user    0m45.792s
+sys     0m0.010s
+According to my watch, this program took 23 seconds to run, so the real
+time clock is OK.  It is process accounting that is broken.
 
-A database query syntax error has occurred. This may indicate a bug in
-the software. The last attempted database query was:
+I tracked this down to a problem with the function
+bcm1480_timer_interrupt in the file sibyte/bcm1480/time.c.  This
+function calls ll_timer_interrupt for cpu0, and ll_local_timer_interrupt
+for all cpus.  However, both of these functions do process accounting. 
+Thus processes running on cpu0 end up with doubled times.  This is very
+obvious in a UP kernel where all processes run on cpu0.
 
-    (SQL query hidden)
+The correct way to do this is to only call ll_local_timer interrupt if
+this is not cpu0.  This can be seen in the mips-board/generic/time.c
+file, and also in the sibyte/sb1250/time.c file, both of which handle
+this correctly.  I fixed the bcm1480/time.c file by copying over the
+correct code from the sb1250/time.c file.
 
-from within function "SearchUpdate::doUpdate". MySQL returned error
-"1016: Can't open file: 'searchindex.MYI' (errno: 145) (localhost)".
-
+With this fix, I now get sensible results.
+release@unknown:~/tmp$ time ./a.out
+real    0m22.903s
+user    0m22.894s
+sys     0m0.006s
 -- 
-<< Tout n'y est pas parfait, mais on y honore certainement les jardiniers >>
+Jim Wilson, GNU Tools Support, http://www.specifix.com
 
-			Dominique Quatravaux <dom@kilimandjaro.dyndns.org>
+--=-e+AEUvUxNwuRV6Csdt8I
+Content-Disposition: attachment; filename=patch.double.time
+Content-Type: text/x-patch; name=patch.double.time; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+diff --git a/arch/mips/sibyte/bcm1480/setup.c b/arch/mips/sibyte/bcm1480/setup.c
+diff --git a/arch/mips/sibyte/bcm1480/time.c b/arch/mips/sibyte/bcm1480/time.c
+index e545752..efaf83e 100644
+--- a/arch/mips/sibyte/bcm1480/time.c
++++ b/arch/mips/sibyte/bcm1480/time.c
+@@ -110,17 +110,18 @@ void bcm1480_timer_interrupt(struct pt_r
+ 	__raw_writeq(M_SCD_TIMER_ENABLE|M_SCD_TIMER_MODE_CONTINUOUS,
+ 	      IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG)));
+ 
+-	/*
+-	 * CPU 0 handles the global timer interrupt job
+-	 */
+ 	if (cpu == 0) {
++		/*
++		 * CPU 0 handles the global timer interrupt job
++		 */
+ 		ll_timer_interrupt(irq, regs);
+ 	}
+-
+-	/*
+-	 * every CPU should do profiling and process accouting
+-	 */
+-	ll_local_timer_interrupt(irq, regs);
++	else {
++		/*
++		 * other CPUs should just do profiling and process accounting
++		 */
++		ll_local_timer_interrupt(irq, regs);
++	}
+ }
+ 
+ /*
+
+--=-e+AEUvUxNwuRV6Csdt8I--

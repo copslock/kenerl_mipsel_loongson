@@ -1,41 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 06:33:48 +0000 (GMT)
-Received: from nproxy.gmail.com ([64.233.182.193]:46731 "EHLO nproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8126552AbWB0Gdf convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Feb 2006 06:33:35 +0000
-Received: by nproxy.gmail.com with SMTP id a27so514440nfc
-        for <linux-mips@linux-mips.org>; Sun, 26 Feb 2006 22:41:12 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=ibtl8E7S9gtmjyVI4c/DKDjTIUPiVwo8fLwrJgkFfhPRhyhbQ+nLsZXLzsnjRh7t4xlgDGoQ1dbQ9f46I9/Fed5PB+vvODnuFLin/LUbNfPVlXvhrBwZgoSJgptszFYK3f7ajouVkKhWF0w90tGII805WGuLu5AFyBKKYfI1x7c=
-Received: by 10.48.225.15 with SMTP id x15mr32176nfg;
-        Sun, 26 Feb 2006 22:41:11 -0800 (PST)
-Received: by 10.48.249.14 with HTTP; Sun, 26 Feb 2006 22:41:11 -0800 (PST)
-Message-ID: <50c9a2250602262241n4ba31d4fm2ac55ded4619b355@mail.gmail.com>
-Date:	Mon, 27 Feb 2006 14:41:11 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: about the ioport_resource and iomem_resource setting
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 10:44:21 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:36614 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133378AbWB0KoL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 27 Feb 2006 10:44:11 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 946F664D3D; Mon, 27 Feb 2006 10:51:46 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 2AE608D59; Mon, 27 Feb 2006 11:51:33 +0100 (CET)
+Date:	Mon, 27 Feb 2006 10:51:33 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	linux-mips@linux-mips.org, jblache@debian.org,
+	rmk+serial@arm.linux.org.uk
+Subject: Re: IP22 doesn't shutdown properly
+Message-ID: <20060227105132.GH12044@deprecation.cyrius.com>
+References: <20060217225824.GE20785@deprecation.cyrius.com> <20060223221350.GA5239@deprecation.cyrius.com> <20060224190517.GA28013@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+In-Reply-To: <20060224190517.GA28013@lst.de>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10653
+X-archive-position: 10654
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-if i have not the PCI system, need i set the ioport_resource and
-iomem_resource start and end in my board setup function?
+* Christoph Hellwig <hch@lst.de> [2006-02-24 20:05]:
+> This patch was dropped when a real fix went into one of the sun serial
+> drivers with which this issue was seen before.  Please look through
+> the drivers/serial/sun* changelogs and see what fix needs to be
+> ported to the ip22zilog driver.
 
-Best Regards
+Thanks for the hint, Christoph.  Russell, please apply the following
+patch for 2.6.16.  Tested on IP22 (Indy).
 
-zhuzhenhua
+
+[serial] ip22zilog: Fix oops on runlevel change with serial console
+
+Incorrect uart_write_wakeup() calls cause reference to a NULL tty
+pointer.  This has been fixed in the sunsab and sunzilog serial drivers
+in October 2005.  Update the ip22zilog, which is based on sunzilog,
+accordingly.
+
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
+
+
+--- a/drivers/serial/ip22zilog.c	2006-02-23 22:05:49.000000000 +0000
++++ b/drivers/serial/ip22zilog.c	2006-02-27 09:51:38.000000000 +0000
+@@ -420,10 +420,8 @@
+ 	if (up->port.info == NULL)
+ 		goto ack_tx_int;
+ 	xmit = &up->port.info->xmit;
+-	if (uart_circ_empty(xmit)) {
+-		uart_write_wakeup(&up->port);
++	if (uart_circ_empty(xmit))
+ 		goto ack_tx_int;
+-	}
+ 	if (uart_tx_stopped(&up->port))
+ 		goto ack_tx_int;
+ 
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

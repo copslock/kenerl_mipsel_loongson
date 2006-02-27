@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 13:02:02 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:49435 "EHLO
-	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133484AbWB0NBx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Feb 2006 13:01:53 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1RD4j1Q005378;
-	Mon, 27 Feb 2006 13:05:25 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1RCrhR0004989;
-	Mon, 27 Feb 2006 12:53:43 GMT
-Date:	Mon, 27 Feb 2006 12:53:43 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	Martin Michlmayr <tbm@cyrius.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	jblache@debian.org, rmk+serial@arm.linux.org.uk
-Subject: Re: IP22 doesn't shutdown properly
-Message-ID: <20060227125342.GA924@linux-mips.org>
-References: <20060217225824.GE20785@deprecation.cyrius.com> <20060223221350.GA5239@deprecation.cyrius.com> <20060224190517.GA28013@lst.de> <20060227105236.GI12044@deprecation.cyrius.com> <Pine.LNX.4.62.0602271222120.18095@pademelon.sonytel.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 13:33:25 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:50147 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133487AbWB0NdR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Feb 2006 13:33:17 +0000
+Received: from localhost (p7028-ipad211funabasi.chiba.ocn.ne.jp [58.91.163.28])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 3758FAF92; Mon, 27 Feb 2006 22:40:51 +0900 (JST)
+Date:	Mon, 27 Feb 2006 22:40:45 +0900 (JST)
+Message-Id: <20060227.224045.93021902.anemo@mba.ocn.ne.jp>
+To:	zzh.hust@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: bogus packet in ei_receive of 8390.c
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <50c9a2250602261910t2241cd14ue877361310e29136@mail.gmail.com>
+References: <50c9a2250602261729q543eb515hff7af85153ac779@mail.gmail.com>
+	<20060227.111020.74752419.nemoto@toshiba-tops.co.jp>
+	<50c9a2250602261910t2241cd14ue877361310e29136@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.62.0602271222120.18095@pademelon.sonytel.be>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10659
+X-archive-position: 10660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 27, 2006 at 12:22:57PM +0100, Geert Uytterhoeven wrote:
+>>>>> On Mon, 27 Feb 2006 11:10:50 +0800, zhuzhenhua <zzh.hust@gmail.com> said:
 
-> On Mon, 27 Feb 2006, Martin Michlmayr wrote:
-> > * Christoph Hellwig <hch@lst.de> [2006-02-24 20:05]:
-> > > This patch was dropped when a real fix went into one of the sun serial
-> > > drivers with which this issue was seen before.  Please look through
-> > > the drivers/serial/sun* changelogs and see what fix needs to be
-> > > ported to the ip22zilog driver.
-> > 
-> > Ralf suggested to see what other changes have been made to the
-> > sunzilog driver recently and update the ip22zilog driver accordingly.
-> > Russell, please queue the following patch for 2.6.17.
-> 
-> Any chance they can be merged, to avoid such missed updates in the future?
+>> Even if it is not true ISA, your FPGA should drive ISA-like signals
+>> for the chip.  AC timings of these signals should meet the
+>> requirements of the chip.  I do not know they are configurable or
+>> not.  Do cross-check the 8019 datasheet and the FPGA specification.
 
-I'm somewhat pessimistic on mergin.  I don't have a Sparc to test this and
-in the past it didn't happen either - instead the kernel was living with
-a bucketload of Zilog UART drivers.  Yet it's something that really should
-be done.
+zzh> the ethernet just use the sram interface to control IO
 
-  Ralf
+So you can check the sram interface's timing satisfy the ethernet
+chip's AC timings.  I have no more idea ...
+
+---
+Atsushi Nemoto

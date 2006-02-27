@@ -1,122 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 10:47:16 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:43782 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133410AbWB0KrF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Feb 2006 10:47:05 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 3BD0C64D3D; Mon, 27 Feb 2006 10:54:41 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 826EB8D59; Mon, 27 Feb 2006 11:54:33 +0100 (CET)
-Date:	Mon, 27 Feb 2006 10:54:33 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Russell King <rmk@arm.linux.org.uk>
-Cc:	linux-mips@linux-mips.org, jblache@debian.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 11:15:41 +0000 (GMT)
+Received: from witte.sonytel.be ([80.88.33.193]:7126 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S8133455AbWB0LPd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Feb 2006 11:15:33 +0000
+Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k1RBMwlR016317;
+	Mon, 27 Feb 2006 12:22:58 +0100 (MET)
+Date:	Mon, 27 Feb 2006 12:22:57 +0100 (CET)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	jblache@debian.org, rmk+serial@arm.linux.org.uk
 Subject: Re: IP22 doesn't shutdown properly
-Message-ID: <20060227105433.GJ12044@deprecation.cyrius.com>
-References: <20060217225824.GE20785@deprecation.cyrius.com> <20060223221350.GA5239@deprecation.cyrius.com> <20060223224346.GA7536@flint.arm.linux.org.uk> <20060224003947.GJ9704@deprecation.cyrius.com> <20060224083141.GA32080@flint.arm.linux.org.uk>
+In-Reply-To: <20060227105236.GI12044@deprecation.cyrius.com>
+Message-ID: <Pine.LNX.4.62.0602271222120.18095@pademelon.sonytel.be>
+References: <20060217225824.GE20785@deprecation.cyrius.com>
+ <20060223221350.GA5239@deprecation.cyrius.com> <20060224190517.GA28013@lst.de>
+ <20060227105236.GI12044@deprecation.cyrius.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060224083141.GA32080@flint.arm.linux.org.uk>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10656
+X-archive-position: 10657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-* Russell King <rmk@arm.linux.org.uk> [2006-02-24 08:31]:
-> Not quite - I didn't say "do absolutely nothing" - I did explicitly say
-...
-> At a guess, for the console port, you want to disable the receiver, leave
-> the transmitter enabled, and disable all interrupts originating from the
-> port.
+On Mon, 27 Feb 2006, Martin Michlmayr wrote:
+> * Christoph Hellwig <hch@lst.de> [2006-02-24 20:05]:
+> > This patch was dropped when a real fix went into one of the sun serial
+> > drivers with which this issue was seen before.  Please look through
+> > the drivers/serial/sun* changelogs and see what fix needs to be
+> > ported to the ip22zilog driver.
+> 
+> Ralf suggested to see what other changes have been made to the
+> sunzilog driver recently and update the ip22zilog driver accordingly.
+> Russell, please queue the following patch for 2.6.17.
 
-I tried to implement this suggestion but it still fails.  Note that
-I'm a complete kernel newbie so maybe I just did something wrong.  In
-any case, the other fix I just sent (taken from sunzilog) works.
+Any chance they can be merged, to avoid such missed updates in the future?
 
-For the record, what I initially tried (but which doesn't work) was:
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/serial/ip22zilog.c b/drivers/serial/ip22zilog.c
-index 419dd3c..2bda770 100644
---- a/drivers/serial/ip22zilog.c
-+++ b/drivers/serial/ip22zilog.c
-@@ -747,20 +747,23 @@ static void ip22zilog_shutdown(struct ua
- 	struct zilog_channel *channel;
- 	unsigned long flags;
- 
--	if (ZS_IS_CONS(up))
--		return;
--
- 	spin_lock_irqsave(&port->lock, flags);
- 
- 	channel = ZILOG_CHANNEL_FROM_PORT(port);
- 
--	/* Disable receiver and transmitter.  */
-+	/* Disable receiver. */
- 	up->curregs[R3] &= ~RxENAB;
--	up->curregs[R5] &= ~TxENAB;
--
--	/* Disable all interrupts and BRK assertion.  */
-+	/* Disable all interrupts. */
- 	up->curregs[R1] &= ~(EXT_INT_ENAB | TxINT_ENAB | RxINT_MASK);
--	up->curregs[R5] &= ~SND_BRK;
-+	/* For the console port, we want to disable the receiver, leave
-+	 * the transmitter enabled, and disable all interrupts originating
-+	 * from the port. */
-+	if (!ZS_IS_CONS(up)) {
-+		/* Disable transmitter. */
-+		up->curregs[R5] &= ~TxENAB;
-+		/* Disable BRK assertion. */
-+		up->curregs[R5] &= ~SND_BRK;
-+	}
- 	ip22zilog_maybe_update_regs(up, channel);
- 
- 	spin_unlock_irqrestore(&port->lock, flags);
-diff --git a/drivers/serial/sunzilog.c b/drivers/serial/sunzilog.c
-index 5cc4d4c..63cdf9d 100644
---- a/drivers/serial/sunzilog.c
-+++ b/drivers/serial/sunzilog.c
-@@ -834,20 +834,23 @@ static void sunzilog_shutdown(struct uar
- 	struct zilog_channel __iomem *channel;
- 	unsigned long flags;
- 
--	if (ZS_IS_CONS(up))
--		return;
--
- 	spin_lock_irqsave(&port->lock, flags);
- 
- 	channel = ZILOG_CHANNEL_FROM_PORT(port);
- 
--	/* Disable receiver and transmitter.  */
-+	/* Disable receiver. */
- 	up->curregs[R3] &= ~RxENAB;
--	up->curregs[R5] &= ~TxENAB;
--
--	/* Disable all interrupts and BRK assertion.  */
-+	/* Disable all interrupts. */
- 	up->curregs[R1] &= ~(EXT_INT_ENAB | TxINT_ENAB | RxINT_MASK);
--	up->curregs[R5] &= ~SND_BRK;
-+	/* For the console port, we want to disable the receiver, leave
-+	 * the transmitter enabled, and disable all interrupts originating
-+	 * from the port. */
-+	if (!ZS_IS_CONS(up)) {
-+		/* Disable transmitter. */
-+		up->curregs[R5] &= ~TxENAB;
-+		/* Disable BRK assertion. */
-+		up->curregs[R5] &= ~SND_BRK;
-+	}
- 	sunzilog_maybe_update_regs(up, channel);
- 
- 	spin_unlock_irqrestore(&port->lock, flags);
+						Geert
 
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

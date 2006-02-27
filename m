@@ -1,46 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 18:05:45 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:4883 "EHLO
-	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133464AbWB0SFd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Feb 2006 18:05:33 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k1RIC3ic019045;
-	Mon, 27 Feb 2006 18:12:03 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k1RIC1Hp019044;
-	Mon, 27 Feb 2006 18:12:01 GMT
-Date:	Mon, 27 Feb 2006 18:12:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Diff between Linus' and linux-mips git: tulip
-Message-ID: <20060227181201.GA16801@linux-mips.org>
-References: <20060219234318.GA16311@deprecation.cyrius.com> <20060220000141.GX10266@deprecation.cyrius.com> <20060220001907.GC17967@deprecation.cyrius.com> <20060220230349.GB1122@colonel-panic.org> <20060224011324.GN9704@deprecation.cyrius.com> <20060224014957.GB26157@deprecation.cyrius.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 18:23:13 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:4107 "EHLO sorrow.cyrius.com")
+	by ftp.linux-mips.org with ESMTP id S8133464AbWB0SXC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Feb 2006 18:23:02 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 9CD8D64D3D; Mon, 27 Feb 2006 18:30:35 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 17DDF8FD8; Mon, 27 Feb 2006 19:30:26 +0100 (CET)
+Date:	Mon, 27 Feb 2006 18:30:26 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	jblache@debian.org, rmk+serial@arm.linux.org.uk
+Subject: Re: IP22 doesn't shutdown properly
+Message-ID: <20060227183026.GA21752@deprecation.cyrius.com>
+References: <20060217225824.GE20785@deprecation.cyrius.com> <20060223221350.GA5239@deprecation.cyrius.com> <20060224190517.GA28013@lst.de> <20060227105236.GI12044@deprecation.cyrius.com> <Pine.LNX.4.62.0602271222120.18095@pademelon.sonytel.be>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060224014957.GB26157@deprecation.cyrius.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.62.0602271222120.18095@pademelon.sonytel.be>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10661
+X-archive-position: 10662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 24, 2006 at 01:49:57AM +0000, Martin Michlmayr wrote:
+* Geert Uytterhoeven <geert@linux-m68k.org> [2006-02-27 12:22]:
+> > Ralf suggested to see what other changes have been made to the
+> > sunzilog driver recently and update the ip22zilog driver accordingly.
+> > Russell, please queue the following patch for 2.6.17.
+> Any chance they can be merged, to avoid such missed updates in the future?
 
-> OK, I managed to track down when this change was introduced, namely in
-> the merge with Linux 2.6.13-rc1.  See
-> http://www.linux-mips.org/git?p=linux.git;a=blobdiff;h=e6781ea5ba055ec445f35c734a59db24e748be3a;hp=cfc346e72d6234ae37ee11b794791ee99fcec24e;hb=aa5fcc48f9ae2887b6c570411e73ef965f72a746;f=drivers/net/tulip/tulip_core.c
-> 
-> Ralf, please apply this to the mips-tree only (not for-linus).
+Ladislav Michl mentioned on IRC that he made some progress towards a
+unified driver a few months ago; but it seems that he currently
+doesn't have time to finish it (nor can he test it on sparc).  Maybe
+someone can do some work based on that patch.
 
-Applied,
+ftp://ftp.linux-mips.org/pub/linux/mips/people/ladis/generic_zilog_driver.mbox
 
-  Ralf
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

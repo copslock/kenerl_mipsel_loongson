@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2006 21:34:21 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:25604 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2006 21:39:08 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:27908 "EHLO
 	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133627AbWB1VeL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 28 Feb 2006 21:34:11 +0000
+	id S8133623AbWB1VjA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 28 Feb 2006 21:39:00 +0000
 Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id A59F964D3D; Tue, 28 Feb 2006 21:41:52 +0000 (UTC)
+	id D62C464D3D; Tue, 28 Feb 2006 21:46:43 +0000 (UTC)
 Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 5D43B81F5; Tue, 28 Feb 2006 22:41:44 +0100 (CET)
-Date:	Tue, 28 Feb 2006 21:41:44 +0000
+	id 9349281F5; Tue, 28 Feb 2006 22:46:36 +0100 (CET)
+Date:	Tue, 28 Feb 2006 21:46:36 +0000
 From:	Martin Michlmayr <tbm@cyrius.com>
 To:	linux-mips@linux-mips.org
-Subject: MIPS kernel status as of 2.6.16-rc5
-Message-ID: <20060228214144.GA6615@deprecation.cyrius.com>
+Subject: BCM91x80A/B PCI DMA problems
+Message-ID: <20060228214636.GA6711@deprecation.cyrius.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -20,7 +20,7 @@ Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10681
+X-archive-position: 10682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,101 +28,27 @@ X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-I did some tests with 2.6.16-rc5 on a number of platforms and here's
-a status report.
-
-Problems first. ;-)
-
-Generic:
- - The iomap patch is not in the mips-linux tree yet.  Needs support for
-   multiple PCI busses (as well for non-PCI busses?), see discussion at
-   http://www.linux-mips.org/archives/linux-mips/2005-02/msg00023.html
-   http://www.linux-mips.org/archives/linux-mips/2005-11/msg00124.html
-   http://www.linux-mips.org/archives/linux-mips/2006-01/msg00172.html
-   http://www.linux-mips.org/archives/linux-mips/2006-01/msg00232.html
-
-Cobalt:
- - >2 min delay probing for hard drives.  The following patch still
-   needs to be applied by Ralf:
-   http://www.linux-mips.org/archives/linux-mips/2006-02/msg00218.html
- - The IDE/network interaction crash has been greatly improved by
-   http://marc.theaimsgroup.com/?l=linux-netdev&m=114030066124134&w=2
-   but is not 100% gone.  Nobody on netdev commented on the patch yet.
- - Possible corruption with USB (regression from 2.4) but I have
-   not had a chance to reproduce this yet; possibly related to
-   64-bit.  Will ask bug reporter to test with a 32-bit kernel.
-   http://lists.debian.org/debian-mips/2006/02/msg00095.html
-
-Cobalt (64-bit):
-64-bit has a number of problems.  Peter Horton says "What surprises me
-is that all the problems appear to be timing related rather than 32/64
-bit portability issues. Maybe this is 'cos the RM5231 has such small
-caches; doubling the size of all the kernel's pointers probably impacts
-us badly and slows everything down."
-
- - Tulip driver thinks MAC address on Qube 2700 is "ff:ff:ff:ff:ff:ff"
- - Tulip driver needs fix from Grant Grundler that has been nacked by
-   Jeff Garzik.
- - PCI audio with ALSA doesn't work.  In the past it failed with:
-   http://www.linux-mips.org/archives/linux-mips/2006-01/msg00325.html
-   now we get:
-   http://www.linux-mips.org/archives/linux-mips/2006-02/msg00413.html
-
-SGI:
- - IP22 doesn't shutdown due to a oops in the serial driver.  Patch at
-   http://www.linux-mips.org/archives/linux-mips/2006-02/msg00391.html
- - IP22: Indigo2 with > 256 MB fails to boot (regression from 2.4;
-   while 2.4 would only see 256 MB, it would at least boot)
- - IP22: VINO support is broken on 64-bit:
-   http://www.linux-mips.org/archives/linux-mips/2006-02/msg00414.html
- - IP32: Apparently O2 with 384 MB RAM doesn't load, see
-   http://lists.debian.org/debian-mips/2006/02/msg00031.html
-   Kumba said IP32 works "only, it seems, on multiples like 64, 128, 256,
-   and 512, based on issues we've seen gentoo-side"
- - IP32: FB doesn't work when you use > 4 MB RAM for it.
-
-Broadcom:
- - The duart driver for SWARM is not in mainline anymore; a regression
-   from 2.4.
- - Apparently USB hid is broken (says p2); a regression from 2.4.
- - There are a number of time related problems; patches available:
-    - gettimeofday jumps backwards then forwards (generic plus SB1250)
-      http://www.linux-mips.org/archives/linux-mips/2005-07/msg00295.html
-    - fix lost ticks on SB1250
-      http://www.linux-mips.org/archives/linux-mips/2006-01/msg00144.html
-    - bcm1480 doubled process accounting times
-      http://www.linux-mips.org/archives/linux-mips/2006-02/msg00404.html
- - Minor feature updates to the BCM1250/BCM1480 header files
-   http://www.linux-mips.org/archives/linux-mips/2006-02/msg00217.html
- - bcm1x80: while 4 CPUs are found, Bogomips are never displayed.  So
-   maybe something with the recent SMP change is still not 100% right.
-   [Actually, it seems this is not reported in non-SMP either]
- - bcm1x80: PCI DMA seems completely broken.
+Has anyone here successfully used a PCI IDE card on BCM91x80?
+I immediately get lots of PCI DMA problems, e.g:
 
 
-What works:
-
-Cobalt (32-bit):
- - boots
- - loading an initrd works (needs CoLo 1.21)
- - PCI works: SCSI, USB, audio and network tested
-
-SGI IP22:
- - boots
- - loading of initrd image generated by tip22 works
- - HAL2 (sound) works, but driver should be converted to ALSA
- - VINO: supposedly works with a 32-bit kernel
- - fb: unknown
-
-SGI IP32:
- - boots
- - loading of initrd image generated by tip32 works
- - fb works (with 4 MB)
-
-Broadcom SWARM (1250):
- - boots
- - loading an initrd works
- - IDE works
+SiI680: IDE controller at PCI slot 0000:00:01.0
+SiI680: chipset revision 2
+SiI680: BASE CLOCK == 133
+SiI680: 100% native mode on irq 8
+    ide0: MMIO-DMA , BIOS settings: hda:pio, hdb:pio
+    ide1: MMIO-DMA , BIOS settings: hdc:pio, hdd:pio
+hda: FUJITSU MPB3043ATU E, ATA DISK drive
+isa bounce pool size: 16 pages
+ide0 at 0x9000000031080080-0x9000000031080087,0x900000003108008a on irq 8
+hda: max request size: 64KiB
+hda: 8448300 sectors (4325 MB), CHS=8940/15/63, UDMA(33)
+ hda:<4>hda: dma_timer_expiry: dma status == 0x22
+hda: DMA timeout error
+hda: dma timeout error: status=0x01 { Error }
+hda: dma timeout error: error=0x7f { DriveStatusError UncorrectableError SectorIdNotFound TrackZeroNotFound AddrMarkNotFound }, LBAsect=260013951, sector=0
+ide: failed opcode was: unknown
+end_request: I/O error, dev hda, sector 0
 
 -- 
 Martin Michlmayr

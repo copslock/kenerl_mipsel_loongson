@@ -1,102 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Feb 2006 22:57:15 +0000 (GMT)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:27860 "EHLO
-	duck.specifix.com") by ftp.linux-mips.org with ESMTP
-	id S8133513AbWB0W5F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Feb 2006 22:57:05 +0000
-Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
-	by duck.specifix.com (Postfix) with ESMTP id 93D5CFC77
-	for <linux-mips@linux-mips.org>; Mon, 27 Feb 2006 15:04:38 -0800 (PST)
-Subject: bcm1480 doubled process accounting times
-From:	James E Wilson <wilson@specifix.com>
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/mixed; boundary="=-e+AEUvUxNwuRV6Csdt8I"
-Message-Id: <1141081478.9097.42.camel@aretha.corp.specifix.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date:	Mon, 27 Feb 2006 15:04:38 -0800
-Return-Path: <wilson@specifix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2006 00:32:28 +0000 (GMT)
+Received: from nproxy.gmail.com ([64.233.182.200]:22724 "EHLO nproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133532AbWB1AcV convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 28 Feb 2006 00:32:21 +0000
+Received: by nproxy.gmail.com with SMTP id l36so650594nfa
+        for <linux-mips@linux-mips.org>; Mon, 27 Feb 2006 16:40:01 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Cs5mtQyb0Wcle4gB5YEMF+HOGLkegKDbkd+ph369d+bprbGRTGdO2uDjl9BVSpC02J5ek+JM4bMy000vPagoeXkbca6af7FiXVo9Gv1OnbIYrY9eElngGvLU/ifxC/YbJqqIqAGxCGGORuFfIba+k5Kk+5ewtIg1c/xGtZKiCko=
+Received: by 10.49.17.2 with SMTP id u2mr403310nfi;
+        Mon, 27 Feb 2006 16:40:00 -0800 (PST)
+Received: by 10.48.249.14 with HTTP; Mon, 27 Feb 2006 16:40:00 -0800 (PST)
+Message-ID: <50c9a2250602271640n719af36vbb28b2a55da73617@mail.gmail.com>
+Date:	Tue, 28 Feb 2006 08:40:00 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: bogus packet in ei_receive of 8390.c
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20060227.224045.93021902.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <50c9a2250602261729q543eb515hff7af85153ac779@mail.gmail.com>
+	 <20060227.111020.74752419.nemoto@toshiba-tops.co.jp>
+	 <50c9a2250602261910t2241cd14ue877361310e29136@mail.gmail.com>
+	 <20060227.224045.93021902.anemo@mba.ocn.ne.jp>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10667
+X-archive-position: 10668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+On 2/27/06, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> >>>>> On Mon, 27 Feb 2006 11:10:50 +0800, zhuzhenhua <zzh.hust@gmail.com> said:
+>
+> >> Even if it is not true ISA, your FPGA should drive ISA-like signals
+> >> for the chip.  AC timings of these signals should meet the
+> >> requirements of the chip.  I do not know they are configurable or
+> >> not.  Do cross-check the 8019 datasheet and the FPGA specification.
+>
+> zzh> the ethernet just use the sram interface to control IO
+>
+> So you can check the sram interface's timing satisfy the ethernet
+> chip's AC timings.  I have no more idea ...
+>
+> ---
+> Atsushi Nemoto
+>
 
---=-e+AEUvUxNwuRV6Csdt8I
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+thanks for your advice
+i add wsize,rsize =1024 to nfs option now.
+though it get bogus packet sometimes, it can work at most time now, i
+can run my qt demo via nfs.
 
-Running a UP kernel on a bcm1480 board, I get nonsensical timing
-results, like this:
-release@unknown:~/tmp$ time ./a.out
-real    0m22.906s
-user    0m45.792s
-sys     0m0.010s
-According to my watch, this program took 23 seconds to run, so the real
-time clock is OK.  It is process accounting that is broken.
-
-I tracked this down to a problem with the function
-bcm1480_timer_interrupt in the file sibyte/bcm1480/time.c.  This
-function calls ll_timer_interrupt for cpu0, and ll_local_timer_interrupt
-for all cpus.  However, both of these functions do process accounting. 
-Thus processes running on cpu0 end up with doubled times.  This is very
-obvious in a UP kernel where all processes run on cpu0.
-
-The correct way to do this is to only call ll_local_timer interrupt if
-this is not cpu0.  This can be seen in the mips-board/generic/time.c
-file, and also in the sibyte/sb1250/time.c file, both of which handle
-this correctly.  I fixed the bcm1480/time.c file by copying over the
-correct code from the sb1250/time.c file.
-
-With this fix, I now get sensible results.
-release@unknown:~/tmp$ time ./a.out
-real    0m22.903s
-user    0m22.894s
-sys     0m0.006s
--- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
-
---=-e+AEUvUxNwuRV6Csdt8I
-Content-Disposition: attachment; filename=patch.double.time
-Content-Type: text/x-patch; name=patch.double.time; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-diff --git a/arch/mips/sibyte/bcm1480/setup.c b/arch/mips/sibyte/bcm1480/setup.c
-diff --git a/arch/mips/sibyte/bcm1480/time.c b/arch/mips/sibyte/bcm1480/time.c
-index e545752..efaf83e 100644
---- a/arch/mips/sibyte/bcm1480/time.c
-+++ b/arch/mips/sibyte/bcm1480/time.c
-@@ -110,17 +110,18 @@ void bcm1480_timer_interrupt(struct pt_r
- 	__raw_writeq(M_SCD_TIMER_ENABLE|M_SCD_TIMER_MODE_CONTINUOUS,
- 	      IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG)));
- 
--	/*
--	 * CPU 0 handles the global timer interrupt job
--	 */
- 	if (cpu == 0) {
-+		/*
-+		 * CPU 0 handles the global timer interrupt job
-+		 */
- 		ll_timer_interrupt(irq, regs);
- 	}
--
--	/*
--	 * every CPU should do profiling and process accouting
--	 */
--	ll_local_timer_interrupt(irq, regs);
-+	else {
-+		/*
-+		 * other CPUs should just do profiling and process accounting
-+		 */
-+		ll_local_timer_interrupt(irq, regs);
-+	}
- }
- 
- /*
-
---=-e+AEUvUxNwuRV6Csdt8I--
+zhuzhenhua

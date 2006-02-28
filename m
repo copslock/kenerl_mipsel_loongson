@@ -1,46 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2006 20:19:37 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:24083 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133623AbWB1UT1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 28 Feb 2006 20:19:27 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id BA0D464D3D; Tue, 28 Feb 2006 20:27:06 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 1220981F5; Tue, 28 Feb 2006 21:26:59 +0100 (CET)
-Date:	Tue, 28 Feb 2006 20:26:59 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: [RFC] SMP initialization order fixes.
-Message-ID: <20060228202658.GA22394@deprecation.cyrius.com>
-References: <20060222190940.GA29967@linux-mips.org> <Pine.LNX.4.64.0602221636300.5110@trantor.stuart.netsweng.com> <20060224014226.GA26064@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Feb 2006 20:53:28 +0000 (GMT)
+Received: from amdext4.amd.com ([163.181.251.6]:53646 "EHLO amdext4.amd.com")
+	by ftp.linux-mips.org with ESMTP id S8133623AbWB1UxR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Feb 2006 20:53:17 +0000
+Received: from SAUSGW02.amd.com (sausgw02.amd.com [163.181.250.22])
+	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k1SL0sR8028411;
+	Tue, 28 Feb 2006 15:00:55 -0600
+Received: from 163.181.22.101 by SAUSGW01.amd.com with ESMTP (AMD SMTP
+ Relay (Email Firewall v6.1.0)); Tue, 28 Feb 2006 15:00:38 -0600
+X-Server-Uuid: 8C3DB987-180B-4465-9446-45C15473FD3E
+Received: from ldcmail.amd.com ([147.5.200.40]) by sausexbh1.amd.com
+ with Microsoft SMTPSVC(6.0.3790.0); Tue, 28 Feb 2006 13:00:38 -0800
+Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
+ ldcmail.amd.com (Postfix) with ESMTP id E90232028; Tue, 28 Feb 2006
+ 14:00:37 -0700 (MST)
+Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
+ (8.13.4/8.13.4) with ESMTP id k1SLA24m031395; Tue, 28 Feb 2006 14:10:02
+ -0700
+Received: (from jcrouse@localhost) by cosmic.amd.com (
+ 8.13.4/8.13.4/Submit) id k1SLA23c031394; Tue, 28 Feb 2006 14:10:02
+ -0700
+Date:	Tue, 28 Feb 2006 14:10:02 -0700
+From:	"Jordan Crouse" <jordan.crouse@amd.com>
+To:	"Martin Michlmayr" <tbm@cyrius.com>
+cc:	"Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Diff between Linus' and linux-mips git: trivial changes
+Message-ID: <20060228211002.GC27822@cosmic.amd.com>
+References: <20060219234318.GA16311@deprecation.cyrius.com>
+ <20060219234757.GW10266@deprecation.cyrius.com>
+ <20060227223401.GA7986@deprecation.cyrius.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060224014226.GA26064@deprecation.cyrius.com>
+In-Reply-To: <20060227223401.GA7986@deprecation.cyrius.com>
 User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+X-OriginalArrivalTime: 28 Feb 2006 21:00:38.0412 (UTC)
+ FILETIME=[06E07CC0:01C63CAA]
+X-WSS-ID: 681A667C3103418568-02-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Return-Path: <jcrouse@cosmic.amd.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10679
+X-archive-position: 10680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: jordan.crouse@amd.com
 Precedence: bulk
 X-list: linux-mips
 
-* Martin Michlmayr <tbm@cyrius.com> [2006-02-24 01:42]:
-> > I'm not sure if this is the specific fix or not, but I can report that git
-> > as of today (approx 2pm est) is working better than is has since 2.6.14 for
-> > me on a bcm1480.
-> 
-> Strange, I get the following oops during boot with latest git:
+> [IDE] au1xxx_ide.h: Remove redefinition of drive_list_entry
+ 
+> The mips tree (but not mainline) contains a definition of
+> drive_list_entry in include/asm-mips/mach-au1x00/au1xxx_ide.h 
 
-I upgraded CFE (to 1.2.5) and now the kernel boots.
+Right - Bart took this a while back - not sure how it hasn't made it down
+from Ralfs periodic pulls from Linus.
 
-Mark, it seems the CFE you ship 1480 boards with cannot boot current
-kernels.  Maybe you want to check this out.
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Jordan
+
+--
+Jordan Crouse
+Senior Linux Engineer
+AMD - Personal Connectivity Solutions Group
+<www.amd.com/embeddedprocessors>

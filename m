@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 12:38:19 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:43529 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133138AbWCAMiL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Mar 2006 12:38:11 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id EC92A64D3D; Wed,  1 Mar 2006 12:45:59 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id AE55A9028; Wed,  1 Mar 2006 13:45:52 +0100 (CET)
-Date:	Wed, 1 Mar 2006 12:45:52 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] fix lost ticks on SB1250
-Message-ID: <20060301124552.GA5831@deprecation.cyrius.com>
-References: <17118.25343.948383.547250@cortez.sw.starentnetworks.com> <20060116160031.GA28383@deprecation.cyrius.com> <17355.52046.456176.406834@cortez.sw.starentnetworks.com> <17355.59571.567485.592914@cortez.sw.starentnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 12:45:16 +0000 (GMT)
+Received: from smtp101.mail.mud.yahoo.com ([209.191.85.211]:30080 "HELO
+	smtp101.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133138AbWCAMpD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Mar 2006 12:45:03 +0000
+Received: (qmail 70651 invoked from network); 1 Mar 2006 12:52:46 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com.au;
+  h=Received:Message-ID:Date:From:User-Agent:X-Accept-Language:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+  b=Vck0wRFnynPksIlhpHe0MFKs/xq7qDi0cE9Km5oWL70gXP7FHZBc4mK9G0N34I3olj9P2qljwgDS3GTqayRbt8zwE7vLySqPA6uBAyE7PXiX3+rZZw7EYwei+GA+zItMkVp+iOmYE2Q4blfipvCQwsWlIoow0ADLdkM/wcOEHtg=  ;
+Received: from unknown (HELO ?192.168.0.1?) (nickpiggin@203.173.4.201 with plain)
+  by smtp101.mail.mud.yahoo.com with SMTP; 1 Mar 2006 12:52:46 -0000
+Message-ID: <44059915.3010800@yahoo.com.au>
+Date:	Wed, 01 Mar 2006 23:52:37 +1100
+From:	Nick Piggin <nickpiggin@yahoo.com.au>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20051007 Debian/1.7.12-1
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17355.59571.567485.592914@cortez.sw.starentnetworks.com>
-User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: jiffies_64 vs. jiffies
+References: <20060301.144442.118975101.nemoto@toshiba-tops.co.jp> <20060301.210541.30439818.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20060301.210541.30439818.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <nickpiggin@yahoo.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10699
+X-archive-position: 10700
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: nickpiggin@yahoo.com.au
 Precedence: bulk
 X-list: linux-mips
 
-* Dave Johnson <djohnson+linuxmips@sw.starentnetworks.com> [2006-01-16 13:40]:
-> Patch is against 2.6.12 with some other patches unfortunatly (only
-> the gettimeofday one should matter as far as merging)
+Atsushi Nemoto wrote:
 
-Do you think you can update the patch for 2.6.16 and clean it up for
-submission?
+> @@ -924,8 +924,7 @@ static inline void update_times(void)
+>  
+>  void do_timer(struct pt_regs *regs)
+>  {
+> -	jiffies_64++;
+> -	update_times();
+> +	update_times(++jiffies_64);
+>  	softlockup_tick(regs);
+>  }
+>  
+
+jiffies_64 is not volatile so you should not have to obfuscate
+the code like this.
 
 -- 
-Martin Michlmayr
-http://www.cyrius.com/
+Send instant messages to your online friends http://au.messenger.yahoo.com 

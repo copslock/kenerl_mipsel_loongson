@@ -1,45 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 23:07:09 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:35598 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133712AbWCAXGf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Mar 2006 23:06:35 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 36B1764D3D; Wed,  1 Mar 2006 23:14:27 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id D28CA86BB; Thu,  2 Mar 2006 00:14:19 +0100 (CET)
-Date:	Wed, 1 Mar 2006 23:14:19 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Peter Horton <pdh@colonel-panic.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Crash on Cobalt with CONFIG_SERIO=y
-Message-ID: <20060301231419.GS26088@deprecation.cyrius.com>
-References: <20060120004208.GA18327@deprecation.cyrius.com> <20060120144710.GA30415@linux-mips.org> <20060121010455.GC3514@colonel-panic.org> <20060228165404.GA8442@deprecation.cyrius.com> <20060301224001.GA719@colonel-panic.org>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 23:14:38 +0000 (GMT)
+Received: from dsl093-040-174.pdx1.dsl.speakeasy.net ([66.93.40.174]:44768
+	"EHLO aria.kroah.org") by ftp.linux-mips.org with ESMTP
+	id S8133711AbWCAXOa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Mar 2006 23:14:30 +0000
+Received: from press.kroah.org ([192.168.0.25] helo=localhost)
+	by aria.kroah.org with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.54)
+	id 1FEadZ-00058S-7x; Wed, 01 Mar 2006 15:21:41 -0800
+Date:	Wed, 1 Mar 2006 15:21:54 -0800
+From:	Greg KH <greg@kroah.com>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	Jordan Crouse <jordan.crouse@amd.com>,
+	linux-usb-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
+	gregkh@suse.de
+Subject: Re: [PATCH] Buglet in Alchemy OHCI driver
+Message-ID: <20060301232154.GA13698@kroah.com>
+References: <20060301183026.GL31957@cosmic.amd.com> <20060301183735.GA28491@deprecation.cyrius.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060301224001.GA719@colonel-panic.org>
+In-Reply-To: <20060301183735.GA28491@deprecation.cyrius.com>
 User-Agent: Mutt/1.5.11
-Return-Path: <tbm@cyrius.com>
+Return-Path: <greg@kroah.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10712
+X-archive-position: 10713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: greg@kroah.com
 Precedence: bulk
 X-list: linux-mips
 
-* Peter Horton <pdh@colonel-panic.org> [2006-03-01 22:40]:
-> Those addresses that begin 9b640000 (including the fault address) look
-> very strange. The low 32-bits look like a valid physical address in the
-> PCI space but the top bits definitely don't look right (unless the
-> kernel's playing tricks with unused address bits; I'll have to check the
-> RM523x data sheet to see if they have any effect). Have any of the MIPs
-> experts commented ?
+On Wed, Mar 01, 2006 at 06:37:35PM +0000, Martin Michlmayr wrote:
+> * Jordan Crouse <jordan.crouse@amd.com> [2006-03-01 11:30]:
+> > Martin Michlmayr spotted this potentially serious bug.  Please apply.
+> 
+> Please don't send patches as MIME attachments.  Here it is again (with
+> a better summary too):
+> 
+> 
+> [PATCH] Alchemy OCHI: return if right resources cannot be obtained
+> 
+> From: Jordan Crouse <jordan.crouse@amd.com>
+> 
+> Failure to get the right resources should immediately return.  Current
+> code has the possiblity of running off into the weeds. Spotted by
+> Martin Michlmayr.
+> 
+> Signed-off-by: Jordan Crouse <jordan.crouse@amd.com>
+> Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
 
-Raaalf? ;-)
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+This patch is already in my tree, in the other patch from Jordan, so it
+will make it in after 2.6.16-final is out.
+
+thanks,
+
+greg k-h

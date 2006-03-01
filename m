@@ -1,82 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 18:24:53 +0000 (GMT)
-Received: from amdext3.amd.com ([139.95.251.6]:41633 "EHLO amdext3.amd.com")
-	by ftp.linux-mips.org with ESMTP id S8133618AbWCASYj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Mar 2006 18:24:39 +0000
-Received: from SSVLGW01.amd.com (ssvlgw01.amd.com [139.95.250.169])
-	by amdext3.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k21IS8Vk022206;
-	Wed, 1 Mar 2006 10:32:25 -0800
-Received: from 139.95.53.182 by SSVLGW02.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Wed, 01 Mar 2006 10:20:48 -0800
-X-Server-Uuid: 519AC16A-9632-469E-B354-112C592D09E8
-Received: from ldcmail.amd.com ([147.5.200.40]) by SSVLEXBH1.amd.com
- with Microsoft SMTPSVC(6.0.3790.0); Wed, 1 Mar 2006 10:20:48 -0800
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id BD5142028; Wed, 1 Mar 2006
- 11:20:47 -0700 (MST)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k21IUQXI020952; Wed, 1 Mar 2006 11:30:26
- -0700
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k21IUQ1n020951; Wed, 1 Mar 2006 11:30:26 -0700
-Date:	Wed, 1 Mar 2006 11:30:26 -0700
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	linux-usb-devel@lists.sourceforge.net
-cc:	linux-mips@linux-mips.org, gregkh@suse.de, tbm@cyrius.com
-Subject: [PATCH] Buglet in Alchemy OHCI driver
-Message-ID: <20060301183026.GL31957@cosmic.amd.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 18:30:08 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:27148 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133619AbWCAS35 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Mar 2006 18:29:57 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 4C9F464D3D; Wed,  1 Mar 2006 18:37:45 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 775D89025; Wed,  1 Mar 2006 19:37:35 +0100 (CET)
+Date:	Wed, 1 Mar 2006 18:37:35 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Jordan Crouse <jordan.crouse@amd.com>
+Cc:	linux-usb-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
+	gregkh@suse.de
+Subject: Re: [PATCH] Buglet in Alchemy OHCI driver
+Message-ID: <20060301183735.GA28491@deprecation.cyrius.com>
+References: <20060301183026.GL31957@cosmic.amd.com>
 MIME-Version: 1.0
-User-Agent: Mutt/1.5.11
-X-OriginalArrivalTime: 01 Mar 2006 18:20:48.0528 (UTC)
- FILETIME=[DD461100:01C63D5C]
-X-WSS-ID: 681B398A1V04264282-01-01
-Content-Type: multipart/mixed;
- boundary=5vNYLRcllDrimb99
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <jcrouse@cosmic.amd.com>
+In-Reply-To: <20060301183026.GL31957@cosmic.amd.com>
+User-Agent: Mutt/1.5.11
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10708
+X-archive-position: 10709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
+* Jordan Crouse <jordan.crouse@amd.com> [2006-03-01 11:30]:
+> Martin Michlmayr spotted this potentially serious bug.  Please apply.
 
---5vNYLRcllDrimb99
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
+Please don't send patches as MIME attachments.  Here it is again (with
+a better summary too):
 
-Martin Michlmayr spotted this potentially serious bug.  Please apply.
 
-Jordan
-
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
-
---5vNYLRcllDrimb99
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline;
- filename=ohci-fix.patch
-Content-Transfer-Encoding: 7bit
-
-[PATCH] Buglet in Alchemy OCHI
+[PATCH] Alchemy OCHI: return if right resources cannot be obtained
 
 From: Jordan Crouse <jordan.crouse@amd.com>
 
-Failure to get the right resources should immediately return. 
-Current code has the possiblity of running off into the weeds. Spotted by 
+Failure to get the right resources should immediately return.  Current
+code has the possiblity of running off into the weeds. Spotted by
 Martin Michlmayr.
 
 Signed-off-by: Jordan Crouse <jordan.crouse@amd.com>
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
+
 ---
 
  drivers/usb/host/ohci-au1xxx.c |    2 +-
@@ -96,4 +69,6 @@ index aa4d0cd..d8fb1bb 100644
  
  	hcd = usb_create_hcd(driver, &dev->dev, "Au1xxx");
 
---5vNYLRcllDrimb99--
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

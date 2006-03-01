@@ -1,53 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 11:53:01 +0000 (GMT)
-Received: from mipsfw.mips-uk.com ([194.74.144.146]:27154 "EHLO
-	bacchus.dhis.org") by ftp.linux-mips.org with ESMTP
-	id S8133385AbWCALwi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Mar 2006 11:52:38 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k21BxLmd004628;
-	Wed, 1 Mar 2006 11:59:21 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k21BxLZe004627;
-	Wed, 1 Mar 2006 11:59:21 GMT
-Date:	Wed, 1 Mar 2006 11:59:21 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	Mark E Mason <mark.e.mason@broadcom.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Offer Sibyte IDE driver only on platforms that have IDE
-Message-ID: <20060301115921.GB3779@linux-mips.org>
-References: <20060301014723.GA16315@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Mar 2006 12:00:12 +0000 (GMT)
+Received: from p549F6BF0.dip.t-dialin.net ([84.159.107.240]:62851 "EHLO
+	p549F6BF0.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S8133138AbWCAL7o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Mar 2006 11:59:44 +0000
+Received: from [IPv6:::ffff:202.230.225.126] ([IPv6:::ffff:202.230.225.126]:50519
+	"EHLO topsns2.toshiba-tops.co.jp") by linux-mips.net with ESMTP
+	id <S869099AbWCAMG4>; Wed, 1 Mar 2006 13:06:56 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for p549F6BF0.dip.t-dialin.net [84.159.107.240]) with ESMTP; Wed, 1 Mar 2006 21:06:46 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 067E020404;
+	Wed,  1 Mar 2006 21:05:42 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id E6C7820341;
+	Wed,  1 Mar 2006 21:05:41 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k21C5f4D053710;
+	Wed, 1 Mar 2006 21:05:41 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 01 Mar 2006 21:05:41 +0900 (JST)
+Message-Id: <20060301.210541.30439818.nemoto@toshiba-tops.co.jp>
+To:	linux-kernel@vger.kernel.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: jiffies_64 vs. jiffies
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060301.144442.118975101.nemoto@toshiba-tops.co.jp>
+References: <20060301.144442.118975101.nemoto@toshiba-tops.co.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060301014723.GA16315@deprecation.cyrius.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10695
+X-archive-position: 10696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 01, 2006 at 01:47:23AM +0000, Martin Michlmayr wrote:
+>>>>> On Wed, 01 Mar 2006 14:44:42 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+anemo> Hi.  I noticed that the 'jiffies' variable has 'wall_jiffies +
+anemo> 1' value in most of time.  I'm using MIPS platform but I think
+anemo> this is same for other platforms.
 
-> [PATCH] Offer Sibyte IDE driver only on platforms that have IDE
-> 
-> Currently Kconfig allows you to select the Sibyte IDE driver on
-> any SB1 based SOC platform.  However, not all of them actually
-> have IDE.  Nor do they import the correct files needed to compile
-> the Sibyte (SWARM) IDE driver, leading to the compilation failure
-> below on a SB1A 1480 board.
-> 
-> The situation can be improved by adding a SIBYTE_HAS_IDE Kconfig
-> variable and change the dependency of the Sibyte IDE driver
-> accordingly.
+anemo> I suppose this is due to gcc does not know that jiffies_64 and
+anemo> jiffies share same place.
+...
+anemo> Is this really expected code?  If no, how it can be fixed?
+anemo> Insert "barrier()" right after "jiffies_64++" ?
 
-I would really prefer to see runtime probing etc. as step towards a
-generic Sibyte kernel.
+I suppose passing updated jiffies to update_times() would be more
+efficient than barrier().  Here is a patch.
 
-  Ralf
+
+Pass updated jiffies to update_times() to avoid jiffies/jiffies_64
+aliasing.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/kernel/timer.c b/kernel/timer.c
+index fe3a9a9..7734788 100644
+--- a/kernel/timer.c
++++ b/kernel/timer.c
+@@ -904,11 +904,11 @@ void run_local_timers(void)
+  * Called by the timer interrupt. xtime_lock must already be taken
+  * by the timer IRQ!
+  */
+-static inline void update_times(void)
++static inline void update_times(unsigned long jif)
+ {
+ 	unsigned long ticks;
+ 
+-	ticks = jiffies - wall_jiffies;
++	ticks = jif - wall_jiffies;
+ 	if (ticks) {
+ 		wall_jiffies += ticks;
+ 		update_wall_time(ticks);
+@@ -924,8 +924,7 @@ static inline void update_times(void)
+ 
+ void do_timer(struct pt_regs *regs)
+ {
+-	jiffies_64++;
+-	update_times();
++	update_times(++jiffies_64);
+ 	softlockup_tick(regs);
+ }
+ 
+---
+Atsushi Nemoto

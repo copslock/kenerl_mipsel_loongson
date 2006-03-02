@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2006 16:21:52 +0000 (GMT)
-Received: from dsl093-040-174.pdx1.dsl.speakeasy.net ([66.93.40.174]:7897 "EHLO
-	aria.kroah.org") by ftp.linux-mips.org with ESMTP id S8133795AbWCBQVm
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Mar 2006 16:21:42 +0000
-Received: from press.kroah.org ([192.168.0.25] helo=localhost)
-	by aria.kroah.org with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.54)
-	id 1FEqff-0007m0-HV; Thu, 02 Mar 2006 08:28:55 -0800
-Date:	Thu, 2 Mar 2006 08:28:51 -0800
-From:	Greg KH <gregkh@suse.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Jordan Crouse <jordan.crouse@amd.com>,
-	linux-usb-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
-	tbm@cyrius.com
-Subject: Re: [PATCH] Buglet in Alchemy OHCI driver
-Message-ID: <20060302162851.GA30455@suse.de>
-References: <20060301183026.GL31957@cosmic.amd.com> <20060302153344.GA8487@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2006 16:22:35 +0000 (GMT)
+Received: from mipsfw.mips-uk.com ([194.74.144.146]:263 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133801AbWCBQWQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2006 16:22:16 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k22GTgWb013062;
+	Thu, 2 Mar 2006 16:29:42 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k22GTgA8013061;
+	Thu, 2 Mar 2006 16:29:42 GMT
+Date:	Thu, 2 Mar 2006 16:29:42 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: DDB5074 and DDB5476 eval boards
+Message-ID: <20060302162942.GB8487@linux-mips.org>
+References: <20060302161136.GA12460@linux-mips.org> <Pine.LNX.4.62.0603021717360.22852@pademelon.sonytel.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060302153344.GA8487@linux-mips.org>
-User-Agent: Mutt/1.5.11
-Return-Path: <greg@kroah.org>
+In-Reply-To: <Pine.LNX.4.62.0603021717360.22852@pademelon.sonytel.be>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10722
+X-archive-position: 10723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 02, 2006 at 03:33:44PM +0000, Ralf Baechle wrote:
-> On Wed, Mar 01, 2006 at 11:30:26AM -0700, Jordan Crouse wrote:
-> > Date:	Wed, 1 Mar 2006 11:30:26 -0700
-> > From:	"Jordan Crouse" <jordan.crouse@amd.com>
-> > To:	linux-usb-devel@lists.sourceforge.net
-> > cc:	linux-mips@linux-mips.org, gregkh@suse.de, tbm@cyrius.com
-> > Subject: [PATCH] Buglet in Alchemy OHCI driver
-> > Content-Type: multipart/mixed;
-> >  boundary=5vNYLRcllDrimb99
-> > 
-> > Martin Michlmayr spotted this potentially serious bug.  Please apply.
+On Thu, Mar 02, 2006 at 05:18:59PM +0100, Geert Uytterhoeven wrote:
+
+> On Thu, 2 Mar 2006, Ralf Baechle wrote:
+> > Both boards don't compile anymore since include/linux/kbd_ll.h was removed
+> > and nobody did complain making them perfect candidates for somebody who
+> > either wants to take over maintenance or alternatively, removal of the
+> > code.  Anybody still interested?
 > 
-> Ehh...  This problem doesn't exist on kernel.org.  Greg, can you ignore
-> this one, please?
+> Since I finally moved last week, I hope to have more spare time in the future
+> and revive my DDB5074. So please don't remove it yet.
 
-Consider it ignored :)
+If anything I'd be planning to remove the code after 2.6.17 has been
+released which would leave several months.  But of course until then
+you and Peter De Schrijver who also raised his hand for the DDB5074
+will have fixed things ;-)
 
-thanks,
+Any takers for the DDB5476?
 
-greg k-h
+  Ralf

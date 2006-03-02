@@ -1,62 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2006 17:02:44 +0000 (GMT)
-Received: from mail8.fw-bc.sony.com ([160.33.98.75]:47869 "EHLO
-	mail8.fw-bc.sony.com") by ftp.linux-mips.org with ESMTP
-	id S8133799AbWCBRCa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Mar 2006 17:02:30 +0000
-Received: from mail3.sjc.in.sel.sony.com (mail3.sjc.in.sel.sony.com [43.134.1.211])
-	by mail8.fw-bc.sony.com (8.12.11/8.12.11) with ESMTP id k22HAHBF009283;
-	Thu, 2 Mar 2006 17:10:18 GMT
-Received: from [192.168.1.10] ([43.134.85.105])
-	by mail3.sjc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id k22HAHMr018391;
-	Thu, 2 Mar 2006 17:10:17 GMT
-Message-ID: <440726F9.7090000@am.sony.com>
-Date:	Thu, 02 Mar 2006 09:10:17 -0800
-From:	Geoff Levand <geoffrey.levand@am.sony.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc4 (X11/20050929)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2006 21:16:12 +0000 (GMT)
+Received: from sardaukar.technologeek.org ([213.41.134.240]:17024 "EHLO
+	frigate.technologeek.org") by ftp.linux-mips.org with ESMTP
+	id S8133815AbWCBVP5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Mar 2006 21:15:57 +0000
+Received: by frigate.technologeek.org (Postfix, from userid 1000)
+	id 86B011474E17; Thu,  2 Mar 2006 22:23:39 +0100 (CET)
+From:	Julien BLACHE <jb@jblache.org>
+To:	Michael Dosser <mic@nethack.at>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: MIPS kernel status as of 2.6.16-rc5
+References: <20060228214144.GA6615@deprecation.cyrius.com>
+	<20060301100817.GB928@nethack.at>
+Date:	Thu, 02 Mar 2006 22:23:39 +0100
+In-Reply-To: <20060301100817.GB928@nethack.at> (Michael Dosser's message of
+	"Wed, 1 Mar 2006 11:08:18 +0100")
+Message-ID: <87d5h4wnfo.fsf@frigate.technologeek.org>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) XEmacs/21.4.17 (linux)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: DDB5074 and DDB5476 eval boards
-References: <20060302161136.GA12460@linux-mips.org> <Pine.LNX.4.62.0603021717360.22852@pademelon.sonytel.be> <20060302162942.GB8487@linux-mips.org>
-In-Reply-To: <20060302162942.GB8487@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <geoffrey.levand@am.sony.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <jb@jblache.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10724
+X-archive-position: 10725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoffrey.levand@am.sony.com
+X-original-sender: jb@jblache.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Thu, Mar 02, 2006 at 05:18:59PM +0100, Geert Uytterhoeven wrote:
-> 
->> On Thu, 2 Mar 2006, Ralf Baechle wrote:
->> > Both boards don't compile anymore since include/linux/kbd_ll.h was removed
->> > and nobody did complain making them perfect candidates for somebody who
->> > either wants to take over maintenance or alternatively, removal of the
->> > code.  Anybody still interested?
->> 
->> Since I finally moved last week, I hope to have more spare time in the future
->> and revive my DDB5074. So please don't remove it yet.
-> 
-> If anything I'd be planning to remove the code after 2.6.17 has been
-> released which would leave several months.  But of course until then
-> you and Peter De Schrijver who also raised his hand for the DDB5074
-> will have fixed things ;-)
-> 
-> Any takers for the DDB5476?
-> 
+Michael Dosser <mic@nethack.at> wrote:
 
-I have a DDB5476, and if someone wants to maintain the code, can help
-with testing, etc.  I was just thinking of throwing it in the trash a
-week or so ago...
+Hi,
 
--Geoff
+>>  - IP22: Indigo2 with > 256 MB fails to boot (regression from 2.4;
+>>    while 2.4 would only see 256 MB, it would at least boot)
+>
+> Is there a chance, that even if it would boot with > 256 MB linux could
+> actually use all 384 MB of RAM? If not, does anybody know why and can
+> explain it (I am no kernel developer and know only very little about the
+> I2 hardware)?
+
+IIRC, a discontig memory implementation is needed for the I2 to use
+more than 256 MB, due to the memory layout on this machine (with
+aliased memory etc -- see the R3000 MC spec).
+
+I kind of lost track of this issue recently, so I may have forgotten
+some details and got part of the above totally wrong :)
+
+JB.
+
+-- 
+Julien BLACHE                                   <http://www.jblache.org> 
+<jb@jblache.org>                                  GPG KeyID 0xF5D65169

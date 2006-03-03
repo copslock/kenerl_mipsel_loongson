@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Mar 2006 23:37:37 +0000 (GMT)
-Received: from xrelay03.mail2web.com ([168.144.1.54]:42963 "EHLO
-	xrelay03.mail2web.com") by ftp.linux-mips.org with ESMTP
-	id S8133813AbWCBXh2 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Mar 2006 23:37:28 +0000
-Received: from [168.144.251.152] (helo=M2W046.mail2web.com)
-	by xrelay03.mail2web.com with smtp (Exim 4.50)
-	id 1FExTz-0005Pu-Ih
-	for linux-mips@linux-mips.org; Thu, 02 Mar 2006 18:45:20 -0500
-Message-ID: <380-22006342234519512@M2W046.mail2web.com>
-X-Priority: 3
-Reply-To: dan.mcgee@ntsoc.com
-X-Originating-IP: 64.241.199.88
-X-URL:	http://mail2web.com/
-From:	"dan.mcgee@ntsoc.com" <dan.mcgee@ntsoc.com>
-To:	linux-mips@linux-mips.org
-Date:	Thu, 2 Mar 2006 18:45:19 -0500
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Mar 2006 03:58:53 +0000 (GMT)
+Received: from ozlabs.org ([203.10.76.45]:58794 "EHLO ozlabs.org")
+	by ftp.linux-mips.org with ESMTP id S8133825AbWCCD6p (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 3 Mar 2006 03:58:45 +0000
+Received: by ozlabs.org (Postfix, from userid 1003)
+	id E8B4467A04; Fri,  3 Mar 2006 15:06:40 +1100 (EST)
 MIME-Version: 1.0
-Content-type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Subject: nfs network timeout on bcm1480 BigSur
-Return-Path: <dan.mcgee@ntsoc.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <17415.49336.31224.641069@cargo.ozlabs.ibm.com>
+Date:	Fri, 3 Mar 2006 15:06:16 +1100
+From:	Paul Mackerras <paulus@samba.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	akpm@osdl.org
+Subject: Re: jiffies_64 vs. jiffies
+In-Reply-To: <20060301.144442.118975101.nemoto@toshiba-tops.co.jp>
+References: <20060301.144442.118975101.nemoto@toshiba-tops.co.jp>
+X-Mailer: VM 7.19 under Emacs 21.4.1
+Return-Path: <paulus@ozlabs.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10727
+X-archive-position: 10728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan.mcgee@ntsoc.com
+X-original-sender: paulus@samba.org
 Precedence: bulk
 X-list: linux-mips
 
-With kernel 2.6.15 from linux-mips respository. I'm seeing a nfs server
-timeout error, during heavy network traffic. Example make -j 5 will lock
-the system up anywhere from 3 to 15 minutes after start the make process.
-I built the kernel with the default arch/mips/configs/bigsur_defconfig. I
-have tried to increase the RPC timeout, which didn't help. The following is
-the output from the console 
-before the network locks up.
+Atsushi Nemoto writes:
 
+> Hi.  I noticed that the 'jiffies' variable has 'wall_jiffies + 1'
+> value in most of time.  I'm using MIPS platform but I think this is
+> same for other platforms.
+> 
+> I suppose this is due to gcc does not know that jiffies_64 and jiffies
+> share same place.
 
-172.22.250.195 login: [4295020.091000] nfs: server 172.22.250.78 not
-respondingg[4295021.251000] nfs: server 172.22.250.78 not responding, still
-trying
-[4295038.852000] nfs: server 172.22.250.78 not responding, still trying
-[4295056.452000] nfs: server 172.22.250.78 not responding, still trying
+I can confirm that the same thing happens on powerpc, both 32-bit and
+64-bit.  The compiler loads up jiffies, jiffies_64 and wall_jiffies
+into registers before storing back the incremented value into
+jiffies_64 and then updating wall_jiffies.
 
-Thanks Dan McGee.
+Thanks for finding that, it explains some other strange things that I
+have seen happen.
 
---------------------------------------------------------------------
-mail2web - Check your email from the web at
-http://mail2web.com/ .
+Paul.

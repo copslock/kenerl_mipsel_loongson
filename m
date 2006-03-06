@@ -1,91 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2006 11:24:27 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:11207 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133371AbWCFLYN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Mar 2006 11:24:13 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 6 Mar 2006 20:32:28 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 12BE1204EF;
-	Mon,  6 Mar 2006 20:32:19 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0529C20006;
-	Mon,  6 Mar 2006 20:32:19 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k26BWI4D077675;
-	Mon, 6 Mar 2006 20:32:18 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 06 Mar 2006 20:32:18 +0900 (JST)
-Message-Id: <20060306.203218.69025300.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
-Cc:	akpm@osdl.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] 64bit unaligned access on 32bit kernel
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20050830104056.GA4710@linux-mips.org>
-References: <20050830104056.GA4710@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2006 12:24:25 +0000 (GMT)
+Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:37859 "EHLO
+	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
+	id S8133371AbWCFMYD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Mar 2006 12:24:03 +0000
+Received: (qmail 7240 invoked from network); 6 Mar 2006 22:32:13 +1000
+Received: from beast.redhatters.home (HELO ?10.0.0.251?) (10.0.0.251)
+  by 192.168.5.1 with SMTP; 6 Mar 2006 22:32:13 +1000
+Message-ID: <440C2CE8.9090204@gentoo.org>
+Date:	Mon, 06 Mar 2006 22:36:56 +1000
+From:	Stuart Longland <redhatter@gentoo.org>
+Organization: Gentoo Foundation
+User-Agent: Mozilla Thunderbird 1.0.7 (X11/20051029)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: does the linux support rootfs on vfat?
+References: <50c9a2250603042217l475e84pc9ab7ce87c40eb76@mail.gmail.com>
+In-Reply-To: <50c9a2250603042217l475e84pc9ab7ce87c40eb76@mail.gmail.com>
+X-Enigmail-Version: 0.93.0.0
+OpenPGP: id=63264AB9;
+	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigCC11A17E0815C80708E22A58"
+Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10733
+X-archive-position: 10734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: redhatter@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Tue, 30 Aug 2005 11:40:56 +0100, Ralf Baechle <ralf@linux-mips.org> said:
-> I've rewriten Atushi's fix for the 64-bit put_unaligned on 32-bit
-> systems bug to generate more efficient code.
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigCC11A17E0815C80708E22A58
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> This case has buzilla URL http://bugzilla.kernel.org/show_bug.cgi?id=5138.
+(Gah... I meant this to be sent publically, not just privately ;-)
 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-...
->  #define __get_unaligned(ptr, size) ({		\
->  	const void *__gu_p = ptr;		\
-> -	unsigned long val;			\
-> +	__typeof__(*(ptr)) val;			\
->  	switch (size) {				\
->  	case 1:					\
->  		val = *(const __u8 *)__gu_p;	\
+zhuzhenhua wrote:
+> if in my product based ide disk, i want to it to support the
+> u-disk(with vfat fs), and can i set the root fs as vfat too?
+> if use vfat as rootfs, what's disadvantage of the selection?
 
-It looks gcc 4.x strike back.  If the 'ptr' is a const, this code
-cause "assignment of read-only variable" error on gcc 4.x.  Let's step
-a back, or do you have any other good idea?
+In theory, you could... BUT... FAT32 (and every other FAT variant) lacks:
+
+- Ownership metadata (uid/gid fields)
+- Permissions (mode: read/write/execute/sticky/suid/sgid)
+- Links (both hard-links and symbolic links)
+... probably character devices, block devices, pipes and other numerous
+devices that 99.999999% of distributions rely on.
+
+Now, there is UMSDOS, which uses additional special files to emulate
+these on top of a standard MS-DOS filesystem ... mind you, it predates
+VFAT by many years, and so I'm not sure what it's support is like for
+long filenames.  I also haven't seen it in the kernel File System menu
+for some time now.
+
+I'd recommend using an external initrd... or an initramfs-based kernel.
+ That way it's just one or two files, not one or two hundred. ;-)
+-- 
+Stuart Longland (aka Redhatter)              .'''.
+Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
+. . . . . . . . . . . . . . . . . . . . . .   .'.'
+http://dev.gentoo.org/~redhatter             :.'
+
+International Asperger's Year (1906 ~ 2006)
+http://dev.gentoo.org/~redhatter/iay
 
 
-Use __u64 instead of __typeof__(*(ptr)) for temporary variable to get
-rid of errors on gcc 4.x.
+--------------enigCC11A17E0815C80708E22A58
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
 
-diff --git a/include/asm-generic/unaligned.h b/include/asm-generic/unaligned.h
-index 4dc8ddb..09ec447 100644
---- a/include/asm-generic/unaligned.h
-+++ b/include/asm-generic/unaligned.h
-@@ -78,7 +78,7 @@ static inline void __ustw(__u16 val, __u
- 
- #define __get_unaligned(ptr, size) ({		\
- 	const void *__gu_p = ptr;		\
--	__typeof__(*(ptr)) val;			\
-+	__u64 val;				\
- 	switch (size) {				\
- 	case 1:					\
- 		val = *(const __u8 *)__gu_p;	\
-@@ -95,7 +95,7 @@ static inline void __ustw(__u16 val, __u
- 	default:				\
- 		bad_unaligned_access_length();	\
- 	};					\
--	val;					\
-+	(__typeof__(*(ptr)))val;		\
- })
- 
- #define __put_unaligned(val, ptr, size)		\
+iD8DBQFEDCzruarJ1mMmSrkRAvY1AJ4jJDt6iJ0uaZPT+zqhHrYSdZIZJACfb5YK
+o29h1orWv/OFvji4gCJ/f+M=
+=Hw/J
+-----END PGP SIGNATURE-----
+
+--------------enigCC11A17E0815C80708E22A58--

@@ -1,52 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Mar 2006 11:14:59 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:57810 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133518AbWCELOv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 5 Mar 2006 11:14:51 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k25BN08m004871;
-	Sun, 5 Mar 2006 11:23:00 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k25BMll2004869;
-	Sun, 5 Mar 2006 11:22:47 GMT
-Date:	Sun, 5 Mar 2006 11:22:47 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	zhuzhenhua <zzh.hust@gmail.com>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: does the linux support rootfs on vfat?
-Message-ID: <20060305112247.GA4243@linux-mips.org>
-References: <50c9a2250603042217l475e84pc9ab7ce87c40eb76@mail.gmail.com> <20060305080958.GX19232@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Mar 2006 11:24:27 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:11207 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133371AbWCFLYN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Mar 2006 11:24:13 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 6 Mar 2006 20:32:28 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 12BE1204EF;
+	Mon,  6 Mar 2006 20:32:19 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0529C20006;
+	Mon,  6 Mar 2006 20:32:19 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k26BWI4D077675;
+	Mon, 6 Mar 2006 20:32:18 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 06 Mar 2006 20:32:18 +0900 (JST)
+Message-Id: <20060306.203218.69025300.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	akpm@osdl.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] 64bit unaligned access on 32bit kernel
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20050830104056.GA4710@linux-mips.org>
+References: <20050830104056.GA4710@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060305080958.GX19232@lug-owl.de>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10732
+X-archive-position: 10733
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Mar 05, 2006 at 09:09:58AM +0100, Jan-Benedict Glaw wrote:
+>>>>> On Tue, 30 Aug 2005 11:40:56 +0100, Ralf Baechle <ralf@linux-mips.org> said:
+> I've rewriten Atushi's fix for the 64-bit put_unaligned on 32-bit
+> systems bug to generate more efficient code.
 
-> On Sun, 2006-03-05 14:17:56 +0800, zhuzhenhua <zzh.hust@gmail.com> wrote:
-> > if in my product based ide disk, i want to it to support the
-> > u-disk(with vfat fs), and can i set the root fs as vfat too?
-> > if use vfat as rootfs, what's disadvantage of the selection?
-> 
-> Well, most notably you won't have device nodes. Maybe a ram-backed
-> filesystem mounted to /dev/ could solve that, but you'd probably need
-> an initrd for that to do.
+> This case has buzilla URL http://bugzilla.kernel.org/show_bug.cgi?id=5138.
 
-It's anso case-insensitive which may cause some further troubles.  It's
-doesn't have proper inodes, no UNIX file modes, no UID / GID support (These
-two can be kludges in awfully insufficient way through mount options), not
-only lacks device special files but also no FIFO, no UNIX domain sockets,
-no hard or soft links.  It's simply a sorry excuse for a useful filesystem.
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+...
+>  #define __get_unaligned(ptr, size) ({		\
+>  	const void *__gu_p = ptr;		\
+> -	unsigned long val;			\
+> +	__typeof__(*(ptr)) val;			\
+>  	switch (size) {				\
+>  	case 1:					\
+>  		val = *(const __u8 *)__gu_p;	\
 
-  Ralf
+It looks gcc 4.x strike back.  If the 'ptr' is a const, this code
+cause "assignment of read-only variable" error on gcc 4.x.  Let's step
+a back, or do you have any other good idea?
+
+
+Use __u64 instead of __typeof__(*(ptr)) for temporary variable to get
+rid of errors on gcc 4.x.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/include/asm-generic/unaligned.h b/include/asm-generic/unaligned.h
+index 4dc8ddb..09ec447 100644
+--- a/include/asm-generic/unaligned.h
++++ b/include/asm-generic/unaligned.h
+@@ -78,7 +78,7 @@ static inline void __ustw(__u16 val, __u
+ 
+ #define __get_unaligned(ptr, size) ({		\
+ 	const void *__gu_p = ptr;		\
+-	__typeof__(*(ptr)) val;			\
++	__u64 val;				\
+ 	switch (size) {				\
+ 	case 1:					\
+ 		val = *(const __u8 *)__gu_p;	\
+@@ -95,7 +95,7 @@ static inline void __ustw(__u16 val, __u
+ 	default:				\
+ 		bad_unaligned_access_length();	\
+ 	};					\
+-	val;					\
++	(__typeof__(*(ptr)))val;		\
+ })
+ 
+ #define __put_unaligned(val, ptr, size)		\

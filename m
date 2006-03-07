@@ -1,98 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2006 05:54:49 +0000 (GMT)
-Received: from smtp-out-0101.amazon.com ([207.171.180.182]:15069 "EHLO
-	smtp-out-0101.amazon.com") by ftp.linux-mips.org with ESMTP
-	id S8127233AbWCGFyf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Mar 2006 05:54:35 +0000
-X-Amazon-Corporate-Relay: smtp-out-0101.sea3.amazon.com
-X-AMAZON-TRACK:	ralf@linux-mips.org
-Received: from smtp-in-2001.iad2.amazon.com by smtp-out-0101.amazon.com with ESMTP 
-          (peer crosscheck: smtp-in-2001.iad2.amazon.com)
-Received: from ex-gate-01.ant.amazon.com (ex-gate-01.ant.amazon.com [172.20.21.33])
-	by smtp-in-2001.iad2.amazon.com (8.12.10/8.12.10) with ESMTP id k275xnRn025797;
-	Tue, 7 Mar 2006 06:02:55 GMT
-Received: from mail pickup service by ex-gate-01.ant.amazon.com with Microsoft SMTPSVC;
-	 Mon, 6 Mar 2006 22:02:21 -0800
-Received: from smtp-in-1001.vdc.amazon.com ([10.130.7.44]) by ex-gate-01.ant.amazon.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 6 Mar 2006 18:05:51 -0800
-Received: from smtp-border-fw-1101.amazon.com (smtp-border-fw-1101.vdc.amazon.com [10.30.167.40])
-	by smtp-in-1001.vdc.amazon.com (8.12.10/8.12.10) with ESMTP id k2724ch2017391
-	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=FAIL)
-	for <psubash@amazon.com>; Tue, 7 Mar 2006 02:05:47 GMT
-Received: from vger.kernel.org ([209.132.176.167])
-  by smtp-border-fw-1101.amazon.com with ESMTP; 07 Mar 2006 02:05:36 +0000
-X-Amazon-External-Envelope-Sender: linux-kernel-owner+psubash=40amazon.com-S1752474AbWCGCDS@vger.kernel.org
-X-Amazon-External-Envelope-Recipient: psubash@amazon.com
-X-Amazon-External-Source: yes
-X-Amazon-Approved-Domain: no
-X-BrightmailFiltered: true
-X-Brightmail-Tracker: AAAAAA==
-X-IronPort-AV: i="4.02,169,1139184000"; 
-   d="scan'208"; a="179720437:sNHT27854144"
-Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-	id S1752474AbWCGCDS (ORCPT <rfc822;psubash@amazon.com>);
-	Mon, 6 Mar 2006 21:03:18 -0500
-Received: (majordomo@vger.kernel.org) by vger.kernel.org id S1752477AbWCGCDS
-	(ORCPT <rfc822;linux-kernel-outgoing>);
-	Mon, 6 Mar 2006 21:03:18 -0500
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:64767 "EHLO
-	topsns2.toshiba-tops.co.jp") by vger.kernel.org with ESMTP
-	id S1752474AbWCGCDR (ORCPT <rfc822;linux-kernel@vger.kernel.org>);
-	Mon, 6 Mar 2006 21:03:17 -0500
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for vger.kernel.org [209.132.176.167]) with ESMTP; Tue, 7 Mar 2006 11:03:16 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id F25C820686;
-	Tue,  7 Mar 2006 11:03:14 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id E7C8E20040;
-	Tue,  7 Mar 2006 11:03:14 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k2723E4D080974;
-	Tue, 7 Mar 2006 11:03:14 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 07 Mar 2006 11:03:14 +0900 (JST)
-Message-Id: <20060307.110314.00927749.nemoto@toshiba-tops.co.jp>
-To:	akpm@osdl.org
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] 64bit unaligned access on 32bit kernel
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060306170552.0aab29c5.akpm@osdl.org>
-References: <20050830104056.GA4710@linux-mips.org>
-	<20060306.203218.69025300.nemoto@toshiba-tops.co.jp>
-	<20060306170552.0aab29c5.akpm@osdl.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Precedence: bulk
-X-Mailing-List:		linux-kernel@vger.kernel.org
-X-OriginalArrivalTime: 07 Mar 2006 02:05:51.0394 (UTC) FILETIME=[A8BE4820:01C6418B]
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Mar 2006 09:24:05 +0000 (GMT)
+Received: from witte.sonytel.be ([80.88.33.193]:61898 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S8133353AbWCGJX5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Mar 2006 09:23:57 +0000
+Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k279WDlR002769;
+	Tue, 7 Mar 2006 10:32:13 +0100 (MET)
+Date:	Tue, 7 Mar 2006 10:32:13 +0100 (CET)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Francois Romieu <romieu@fr.zoreil.com>,
+	Martin Michlmayr <tbm@cyrius.com>, netdev@vger.kernel.org,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: Re: [PATCH, RESEND] Add MWI workaround for Tulip DC21143
+In-Reply-To: <20060307035824.GA24018@linux-mips.org>
+Message-ID: <Pine.LNX.4.62.0603071031520.5292@pademelon.sonytel.be>
+References: <20060129230816.GD4094@colonel-panic.org> <20060218220851.GA1601@colonel-panic.org>
+ <20060306225131.GA23327@unjust.cyrius.com> <20060306231530.GB16082@electric-eye.fr.zoreil.com>
+ <20060307035824.GA24018@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10743
+X-archive-position: 10744
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 6 Mar 2006 17:05:52 -0800, Andrew Morton <akpm@osdl.org> said:
->> Use __u64 instead of __typeof__(*(ptr)) for temporary variable to
->> get rid of errors on gcc 4.x.
+On Tue, 7 Mar 2006, Ralf Baechle wrote:
+> On Tue, Mar 07, 2006 at 12:15:30AM +0100, Francois Romieu wrote:
+> 
+> > [...]
+> > > Does anyone have comments regarding this patch?  I received
+> > > confirmation from a number of Debian users that this patch
+> > > significantly improves the lockup situation on Cobalt, so
+> > > it would be nice if it could go in.
+> > 
+> > I'll queue it with the pending de2104x fix(es ?) during my next
+> > upkeep.
+> 
+> I'm just not convinced of having such a workaround as a build option.
+> The average person building a a kernel will probably not know if the
+> option needs to be enabled or not.
 
-akpm> I worry about what impact that change might have on code
-akpm> generation.  Hopefully none, if gcc is good enough.
+Indeed, if it's mentioned in the errata of the chip, the driver should take
+care of it.
 
-akpm> But I cannot think of a better fix.
+Gr{oetje,eeting}s,
 
-As I tested on MIPS gcc 3.x, the impact is not none, but not so huge.
-And it becomes much smaller with gcc 4.x.
+						Geert
 
----
-Atsushi Nemoto
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

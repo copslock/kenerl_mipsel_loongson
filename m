@@ -1,77 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Mar 2006 17:50:39 +0000 (GMT)
-Received: from lug-owl.de ([195.71.106.12]:18669 "EHLO lug-owl.de")
-	by ftp.linux-mips.org with ESMTP id S8133866AbWCHRub (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 8 Mar 2006 17:50:31 +0000
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id B0C46F003B; Wed,  8 Mar 2006 18:59:00 +0100 (CET)
-Date:	Wed, 8 Mar 2006 18:59:00 +0100
-From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Always pass -msoft-float.
-Message-ID: <20060308175900.GM12575@lug-owl.de>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <S8133817AbWCHRGj/20060308170640Z+412@ftp.linux-mips.org> <20060308173825.GJ12575@lug-owl.de> <20060308174609.GF8033@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Mar 2006 18:04:58 +0000 (GMT)
+Received: from mailfe05.tele2.fr ([212.247.154.140]:59059 "EHLO swip.net")
+	by ftp.linux-mips.org with ESMTP id S8133888AbWCHSEq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 8 Mar 2006 18:04:46 +0000
+X-T2-Posting-ID: g63wq726D5fsXb2UbU6LU0KOXzHnTHjCzHZ35sC2MDs=
+X-Cloudmark-Score: 0.000000 []
+Received: from [83.179.129.29] (HELO [192.168.0.32])
+  by mailfe05.swip.net (CommuniGate Pro SMTP 5.0.8)
+  with ESMTP id 46425844; Wed, 08 Mar 2006 19:13:08 +0100
+Received: from 127.0.0.1 (AVG SMTP 7.1.375 [268.2.1/277]); Wed, 08 Mar 2006 19:13:08 +0100
+Message-ID: <440F1EB2.8050605@tele2.fr>
+Date:	Wed, 08 Mar 2006 19:13:06 +0100
+From:	Frederic Temporelli <frederic.temporelli@tele2.fr>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.7.12) Gecko/20050915
+X-Accept-Language: fr, en
+To:	iet-dev <iscsitarget-devel@lists.sourceforge.net>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: mips kernel 2.6.16rc1 + IET 0.4.13 -  /dev/ietctl - ioctl unknown
+ command
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="OGLMwEELQbPC02lM"
-Content-Disposition: inline
-In-Reply-To: <20060308174609.GF8033@networkno.de>
-X-Operating-System: Linux mail 2.6.12.3lug-owl 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-User-Agent: Mutt/1.5.9i
-Return-Path: <jbglaw@lug-owl.de>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Return-Path: <frederic.temporelli@tele2.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10755
+X-archive-position: 10756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: frederic.temporelli@tele2.fr
 Precedence: bulk
 X-list: linux-mips
 
+Hello,
 
---OGLMwEELQbPC02lM
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I would like to report an ioctl issue using IET 0.4.13 (iSCSI target) 
+and kernel 2.6.16-rc1, running on mips / SGI O2
 
-On Wed, 2006-03-08 17:46:09 +0000, Thiemo Seufer <ths@networkno.de> wrote:
-> On Wed, Mar 08, 2006 at 06:38:25PM +0100, Jan-Benedict Glaw wrote:
-> > Is there any chance that you'd also include the diff in these emails?
-> > Maybe that's not a good idea for merges from Linus' repo, though:-)
->=20
-> RTFWiki. :-)
+The driver seems to load nicely, but there was no way to do ioctl on the 
+userspace device /dev/ietctl.
+I got such messages in syslog:
+Mar  4 16:47:16 o2 kernel: [4303606.514000] ioctl32(ietd:3448): Unknown 
+cmd fd(4) cmd(81046900){01} arg(7f942ab0) on /dev/ietctl
 
-Thanks, I'm taking the well-known brown paper bag...
+=> I've been able to resolve the issue by adding a by-pass (goto 
+do_ioctl) in kernel compat_sys_ioctl function (fs/compat.c)  and all is 
+working fine now.
 
-MfG, JBG
+I don't know if such issue is related to mips only or is due to changes 
+2.6.16 kernel
+I've also did some tries on x86 with linux 2.6.15.5, all was working 
+fine without needing to change anything in the kernel.
 
---=20
-Jan-Benedict Glaw       jbglaw@lug-owl.de    . +49-172-7608481             =
-_ O _
-"Eine Freie Meinung in  einem Freien Kopf    | Gegen Zensur | Gegen Krieg  =
-_ _ O
- f=C3=BCr einen Freien Staat voll Freier B=C3=BCrger"  | im Internet! |   i=
-m Irak!   O O O
-ret =3D do_actions((curr | FREE_SPEECH) & ~(NEW_COPYRIGHT_LAW | DRM | TCPA)=
-);
+Did somebody report such issue with IET and recent kernel ?
+May some people from linux-mips tell if such issue is mips specific ?
 
---OGLMwEELQbPC02lM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+Best regards.
+--
+Fred
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.1 (GNU/Linux)
 
-iD8DBQFEDxtkHb1edYOZ4bsRAlPQAJ0QAlgk65mQJ4H8Lt+0eMWFXtqshQCeIhRi
-+a/UJGzhHJKFGiquQGEFdZ0=
-=nNdO
------END PGP SIGNATURE-----
-
---OGLMwEELQbPC02lM--
+-- 
+No virus found in this outgoing message.
+Checked by AVG Free Edition.
+Version: 7.1.375 / Virus Database: 268.2.1/277 - Release Date: 08/03/2006

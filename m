@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2006 09:43:37 +0000 (GMT)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:50314 "HELO
-	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133398AbWCIJn3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 9 Mar 2006 09:43:29 +0000
-Received: from localhost (in-2.mx.triera.net [213.161.0.26])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id EBCAEC01B;
-	Thu,  9 Mar 2006 10:51:59 +0100 (CET)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-2.mx.triera.net (Postfix) with SMTP id 746851BC089;
-	Thu,  9 Mar 2006 10:52:02 +0100 (CET)
-Received: from kupljenlap (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id DA3C11A18B2;
-	Thu,  9 Mar 2006 10:52:01 +0100 (CET)
-Subject: Re: help
-From:	Matej Kupljen <matej.kupljen@ultra.si>
-To:	zhaoyw <zhaoyw@langchao.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <440F999F.4040703@langchao.com>
-References: <440F999F.4040703@langchao.com>
-Content-Type: text/plain
-Date:	Thu, 09 Mar 2006 10:51:59 +0100
-Message-Id: <1141897920.7135.1.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Triera AV Service
-Return-Path: <matej.kupljen@ultra.si>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2006 09:53:57 +0000 (GMT)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:19592 "EHLO
+	duck.specifix.com") by ftp.linux-mips.org with ESMTP
+	id S8133426AbWCIJxs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 9 Mar 2006 09:53:48 +0000
+Received: from localhost.localdomain (duck.corp.specifix.com [192.168.1.1])
+	by duck.specifix.com (Postfix) with ESMTP
+	id D5B56FC4F; Thu,  9 Mar 2006 02:02:21 -0800 (PST)
+Date:	Thu, 09 Mar 2006 04:05:15 -0600
+To:	"Martin Michlmayr" <tbm@cyrius.com>, linux-mips@linux-mips.org
+Subject: Re: 1480: ethernet stops working, box okay
+References: <20060309060606.GA16963@deprecation.cyrius.com>
+From:	"Tom Rix" <trix@specifix.com>
+Organization: specifix
+Content-Type: text/plain; format=flowed; delsp=yes; charset=utf-8
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Message-ID: <op.s544y1x4thfl8t@localhost.localdomain>
+In-Reply-To: <20060309060606.GA16963@deprecation.cyrius.com>
+User-Agent: Opera M2/8.51 (Linux, build 1462)
+Return-Path: <trix@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10768
+X-archive-position: 10769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matej.kupljen@ultra.si
+X-original-sender: trix@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+I have seen something similar on my 1250.  I have a patch that should  
+help.  I am cleaning it up and will post it shortly.
 
-> I seem to get cross-compile using Buildroot . And tinyx included .
-> But when I nfs program to my target board. It can not run.
-> Prompt is : /usr/X11R6/bin/Xfbdev:1: syntax error : " ( " unexpected.
+Tom
 
-Are you sure, this is a cross compiled binary?
-Check it with the file command on the host machine, like:
-# file Xfbdev
 
-BR,
-Matej
+On Thu, 09 Mar 2006 00:06:06 -0600, Martin Michlmayr <tbm@cyrius.com>  
+wrote:
+
+> I just thought that my 1480 box had crashed, but as it turns out I
+> could still issue commands on the serial console - however, the
+> network wasn't working anymore.  There was nothing in dmesg and
+> bringing the interface down and up again didn't help.  I've seen this
+> twice now while compiling lots of stuff in parallel.
+>
+> Has anyone else seen this?
+
+
+
+-- 
+Using Opera's revolutionary e-mail client: http://www.opera.com/mail/

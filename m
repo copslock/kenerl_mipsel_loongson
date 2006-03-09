@@ -1,35 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2006 02:46:40 +0000 (GMT)
-Received: from [218.57.135.52] ([218.57.135.52]:14090 "EHLO mail.langchao.com")
-	by ftp.linux-mips.org with ESMTP id S8133924AbWCICqc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Mar 2006 02:46:32 +0000
-Received: from [10.30.11.17] ([192.168.1.1]) by mail.langchao.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 9 Mar 2006 10:53:29 +0800
-Message-ID: <440F999F.4040703@langchao.com>
-Date:	Thu, 09 Mar 2006 10:57:35 +0800
-From:	zhaoyw <zhaoyw@langchao.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.7) Gecko/20050422 Red Hat/1.7.7-1.4.2
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Mar 2006 05:58:01 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:778 "EHLO sorrow.cyrius.com")
+	by ftp.linux-mips.org with ESMTP id S8133408AbWCIF5s (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Mar 2006 05:57:48 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 9EC6F64D3D; Thu,  9 Mar 2006 06:06:21 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id DE41266EA8; Thu,  9 Mar 2006 06:06:06 +0000 (GMT)
+Date:	Thu, 9 Mar 2006 06:06:06 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
 To:	linux-mips@linux-mips.org
-Subject: help
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 09 Mar 2006 02:53:29.0609 (UTC) FILETIME=[A532C790:01C64324]
-Return-Path: <zhaoyw@langchao.com>
+Subject: 1480: ethernet stops working, box okay
+Message-ID: <20060309060606.GA16963@deprecation.cyrius.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11+cvs20060126
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10765
+X-archive-position: 10766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhaoyw@langchao.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-I seem to get cross-compile using Buildroot . And tinyx included .
-But when I nfs program to my target board. It can not run.
-Prompt is : /usr/X11R6/bin/Xfbdev:1: syntax error : " ( " unexpected.
-PS: my target board is mips arch.
-Any suggestion.
-Thanks in advance.
+I just thought that my 1480 box had crashed, but as it turns out I
+could still issue commands on the serial console - however, the
+network wasn't working anymore.  There was nothing in dmesg and
+bringing the interface down and up again didn't help.  I've seen this
+twice now while compiling lots of stuff in parallel.
+
+Has anyone else seen this?
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,63 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2006 16:30:04 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:3542 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133959AbWCJQ3z (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2006 16:29:55 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k2AGcdLK014285;
-	Fri, 10 Mar 2006 16:38:39 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k2AGcaWn014281;
-	Fri, 10 Mar 2006 16:38:36 GMT
-Date:	Fri, 10 Mar 2006 16:38:36 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Fuxin Zhang <fxzhang@ict.ac.cn>
-Cc:	Thiemo Seufer <ths@networkno.de>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: tools to convert debian sarge to 16K page size
-Message-ID: <20060310163836.GA13976@linux-mips.org>
-References: <44113DC6.1010607@ict.ac.cn> <20060310131625.GA4821@networkno.de> <44118268.5030109@ict.ac.cn>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2006 17:37:16 +0000 (GMT)
+Received: from smtp110.sbc.mail.mud.yahoo.com ([68.142.198.209]:50879 "HELO
+	smtp110.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133967AbWCJRhG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Mar 2006 17:37:06 +0000
+Received: (qmail 61932 invoked from network); 10 Mar 2006 17:45:40 -0000
+Received: from unknown (HELO stupidest.org) (cwedgwood@sbcglobal.net@70.231.226.182 with login)
+  by smtp110.sbc.mail.mud.yahoo.com with SMTP; 10 Mar 2006 17:45:40 -0000
+Received: by taniwha.stupidest.org (Postfix, from userid 38689)
+	id 0EFE551FAC0; Fri, 10 Mar 2006 09:45:36 -0800 (PST)
+Date:	Fri, 10 Mar 2006 09:45:35 -0800
+From:	Chris Wedgwood <cw@f00f.org>
+To:	"Tiwari, Rakesh" <Rakesh.Tiwari@idt.com>
+Cc:	'Ralf Baechle' <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] IDT Interprise Processor Support for Linux  2.6.x
+Message-ID: <20060310174535.GA9040@taniwha.stupidest.org>
+References: <73943A6B3BEAA1468EE1A4A090129F4316B15A73@corpbridge.corp.idt.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <44118268.5030109@ict.ac.cn>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <73943A6B3BEAA1468EE1A4A090129F4316B15A73@corpbridge.corp.idt.com>
+Return-Path: <cw@f00f.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10781
+X-archive-position: 10782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: cw@f00f.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 10, 2006 at 09:43:04PM +0800, Fuxin Zhang wrote:
+Additional comments:
 
-> Thiemo Seufer 写道:
-> > Can you provide information about the performance impact? That is,
-> > what system(s) you use, and some basic benchmark numbers. Did you also
-> > try 64k pages?
-> The system is running debian sarge,with a mips like Chinese 4-way
-> superscalar CPU and marvell 64240 system bridge, 256M sdram.Maybe
-> related information: this CPU has 64K 4-way dcache/icache，so cache
-> alias exists with 4K configuration.
-> 
-> Big page size helps a bit with at least computational programs, such as
-> SPEC CPU2000 benchmarks. The attached jpg is a graph showing the results
-> of some SPEC programs under different page sizes. But we have not
-> benchmarked other workloads. 16K page size is used mainly to avoid cache
-> alias, which caused us too much time.
-> 
-> Yes, with 64k more patches needed(some "short" field overflow?I don't
-> remember the exact modifications,other guys did it)
+  * Firstly, it's really great to see this!
 
-There is more to large pages than just improved performance.  They'll
-also save 75% memory for mem_map, will eleminate cache aliases in a
-bulletproof way.  And will make allocation of memory larger than 4kB
-reliable - this especially is a big bonus with ethernet jumboframes with
-some NICs.
+  * A single 1.6MB patch is far from ideal, please try to break it
+    into a series of smaller logically separate patches.  It's hard to
+    comment on a giant patch.  Perhaps something like:
+      - a patch for each CPU
+      - a patch for each driver
+      - a patch for each platform/eval-board
+    and see what you have left. Each patch should have a suitable
+    description.  Also put "Signed-off-by:" lines on your patches.
 
-  Ralf
+  * You shouldn't be removing .gitignore :-)
+
+  * The Ethernet drivers should probably go jeff@garzik.org and cc
+    netdev@vger.kernel.org
+
+  * The code contains unreferenced functions?  Without even looking
+    hard I can see rc32434_mii_handler is declared and not used for
+    example.
+
+  * It might be that some of the CPU-level code should be platform
+    level.  For example having two UARTs is a feature of the EB434 not
+    the rc32434 so EB434_UART1_IRQ is misplaced I would argue.
+
+  * Some init code should probably be declared __init and similar
+
+  * There is quite a bit of extraneous white-space that could be
+    cleaned up and some minor indentation cleanups to match what is
+    elsewhere in the kernel.
+
+Sorry this is a little vague and 'hand-wavy', if you post smaller
+logically complete patches I think you'll get better feedback where
+people can comment more easily.  Ideally inline to the email if you
+can, m$ lookout/$exchange as that just makes a mess, if you have to
+use that then attach them as you did.

@@ -1,197 +1,153 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2006 18:12:08 +0000 (GMT)
-Received: from mxout.mainstreet.net ([199.245.73.25]:20120 "EHLO
-	mxout.mainstreet.net") by ftp.linux-mips.org with ESMTP
-	id S8133952AbWCJSLs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Mar 2006 18:11:48 +0000
-Received: from mail.idt.com (mail.idt.com [157.165.5.20])
-	by mxout.mainstreet.net (8.13.4/8.13.4) with ESMTP id k2AIKSlS013271;
-	Fri, 10 Mar 2006 10:20:31 -0800 (PST)
-Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
-	by mail.idt.com (8.13.4/8.13.4) with ESMTP id k2AIKPII012302;
-	Fri, 10 Mar 2006 10:20:25 -0800 (PST)
-Received: from CORPBRIDGE.corp.idt.com (localhost [127.0.0.1])
-	by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id k2AIKOQ05017;
-	Fri, 10 Mar 2006 10:20:24 -0800 (PST)
-Received: by corpbridge.corp.idt.com with Internet Mail Service (5.5.2658.3)
-	id <1X0B044Y>; Fri, 10 Mar 2006 10:20:23 -0800
-Message-ID: <73943A6B3BEAA1468EE1A4A090129F4316B15A76@corpbridge.corp.idt.com>
-From:	"Tiwari, Rakesh" <Rakesh.Tiwari@idt.com>
-To:	"'Robin H. Johnson'" <robbat2@orbis-terrarum.net>,
-	linux-mips@linux-mips.org
-Subject: RE: [PATCH] IDT Interprise Processor Support for Linux  2.6.x
-Date:	Fri, 10 Mar 2006 10:20:16 -0800
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2658.3)
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C6446F.47A114CC"
-X-Scanned-By: MIMEDefang 2.43
-Return-Path: <Rakesh.Tiwari@idt.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2006 19:26:38 +0000 (GMT)
+Received: from mailfe05.tele2.fr ([212.247.154.140]:58010 "EHLO swip.net")
+	by ftp.linux-mips.org with ESMTP id S8133967AbWCJT02 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2006 19:26:28 +0000
+X-T2-Posting-ID: g63wq726D5fsXb2UbU6LU0KOXzHnTHjCzHZ35sC2MDs=
+X-Cloudmark-Score: 0.000000 []
+Received: from [83.179.129.29] (HELO [192.168.0.32])
+  by mailfe05.swip.net (CommuniGate Pro SMTP 5.0.8)
+  with ESMTP id 49065700; Fri, 10 Mar 2006 20:35:04 +0100
+Received: from 127.0.0.1 (AVG SMTP 7.1.375 [268.2.1/279]); Fri, 10 Mar 2006 20:35:05 +0100
+Message-ID: <4411D4E8.4060001@tele2.fr>
+Date:	Fri, 10 Mar 2006 20:35:04 +0100
+From:	Frederic Temporelli <frederic.temporelli@tele2.fr>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.7.12) Gecko/20050915
+X-Accept-Language: fr, en
+To:	mingz@ele.uri.edu
+CC:	"Shanthi Kiran Pendyala (skiranp)" <skiranp@cisco.com>,
+	iet-dev <iscsitarget-devel@lists.sourceforge.net>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [Iscsitarget-devel] RE: mips kernel 2.6.16rc1 + IET 0.4.13 -
+ 	/dev/ietctl - ioctl unknown command
+References: <5547014632ED654F971D7E1E0C2E0C3E016546DF@xmb-sjc-215.amer.cisco.com> <1141913962.7361.39.camel@localhost.localdomain>
+In-Reply-To: <1141913962.7361.39.camel@localhost.localdomain>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Return-Path: <frederic.temporelli@tele2.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10783
+X-archive-position: 10784
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Rakesh.Tiwari@idt.com
+X-original-sender: frederic.temporelli@tele2.fr
 Precedence: bulk
 X-list: linux-mips
 
-This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+Hi,
 
-------_=_NextPart_001_01C6446F.47A114CC
-Content-Type: text/plain
+Sorry, I'm not able to build 64 bits user space binaries (Debian distro, 
+where all binaries are 32 bits... ld is reporting errors when I try to 
+link using o64 and n64 ABIs, seems that only the kernel can be 64 bits).
 
-Hi Robin,
+But don't care, on my side it was just to do a test to IET.
+I'll try do test it at work on IA64...
+--
+Fred
 
-Thanks for reviewing the patch. 
+Ming Zhang a écrit :
 
-I like your idea of having a single kernel which can boot on any board
-and also agree with you that code duplication is not a good thing.
+>thanks. i guess this is the reason.
+>
+>@Frederic, could you confirm this? also if you compile u user space as
+>64bit, it should be ok then.
+>
+>ming
+>
+>On Wed, 2006-03-08 at 10:18 -0800, Shanthi Kiran Pendyala (skiranp)
+>wrote:
+>  
+>
+>>I have seen such error messages when userspace app is built in 32bit
+>>mode
+>>And kernel is built in 64 bit mode. Does this apply to your setup ?
+>>
+>>The way to fix this is to register a ioctl32 conversion routine in
+>>The driver. Google is your friend..
+>>
+>>Thx
+>>Kiran  
+>>
+>>    
+>>
+>>>-----Original Message-----
+>>>From: linux-mips-bounce@linux-mips.org 
+>>>[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of 
+>>>Frederic Temporelli
+>>>Sent: Wednesday, March 08, 2006 10:13 AM
+>>>To: iet-dev; linux-mips
+>>>Subject: mips kernel 2.6.16rc1 + IET 0.4.13 - /dev/ietctl - 
+>>>ioctl unknown command
+>>>
+>>>Hello,
+>>>
+>>>I would like to report an ioctl issue using IET 0.4.13 (iSCSI 
+>>>target) and kernel 2.6.16-rc1, running on mips / SGI O2
+>>>
+>>>The driver seems to load nicely, but there was no way to do 
+>>>ioctl on the userspace device /dev/ietctl.
+>>>I got such messages in syslog:
+>>>Mar  4 16:47:16 o2 kernel: [4303606.514000] 
+>>>ioctl32(ietd:3448): Unknown cmd fd(4) cmd(81046900){01} 
+>>>arg(7f942ab0) on /dev/ietctl
+>>>
+>>>=> I've been able to resolve the issue by adding a by-pass (goto
+>>>do_ioctl) in kernel compat_sys_ioctl function (fs/compat.c)  
+>>>and all is working fine now.
+>>>
+>>>I don't know if such issue is related to mips only or is due to changes
+>>>2.6.16 kernel
+>>>I've also did some tries on x86 with linux 2.6.15.5, all was 
+>>>working fine without needing to change anything in the kernel.
+>>>
+>>>Did somebody report such issue with IET and recent kernel ?
+>>>May some people from linux-mips tell if such issue is mips specific ?
+>>>
+>>>Best regards.
+>>>--
+>>>Fred
+>>>
+>>>
+>>>--
+>>>No virus found in this outgoing message.
+>>>Checked by AVG Free Edition.
+>>>Version: 7.1.375 / Virus Database: 268.2.1/277 - Release Date: 
+>>>08/03/2006
+>>>
+>>>      
+>>>
+>>-------------------------------------------------------
+>>This SF.Net email is sponsored by xPML, a groundbreaking scripting language
+>>that extends applications into web and mobile media. Attend the live webcast
+>>and join the prime developer group breaking into this new coding territory!
+>>http://sel.as-us.falkag.net/sel?cmd=lnk&kid0944&bid$1720&dat1642
+>>_______________________________________________
+>>Iscsitarget-devel mailing list
+>>Iscsitarget-devel@lists.sourceforge.net
+>>https://lists.sourceforge.net/lists/listinfo/iscsitarget-devel
+>>    
+>>
+>
+>
+>
+>-------------------------------------------------------
+>This SF.Net email is sponsored by xPML, a groundbreaking scripting language
+>that extends applications into web and mobile media. Attend the live webcast
+>and join the prime developer group breaking into this new coding territory!
+>http://sel.as-us.falkag.net/sel?cmd=lnk&kid=110944&bid=241720&dat=121642
+>_______________________________________________
+>Iscsitarget-devel mailing list
+>Iscsitarget-devel@lists.sourceforge.net
+>https://lists.sourceforge.net/lists/listinfo/iscsitarget-devel
+>
+>  
+>
 
-However, based on our customer's feedback so far, we prefer to keep it
-separate
-for each board, so that code doesn't get to messy or people don't have to
-look at unwanted code. 
 
-Also since IDT's processors are SoC's and do undergo various rev's for the
-chips,
-in which certain feature (hardware) are fixed/removed/added. In this case
-having
-a separate directory (at the cost of code duplication) is easier to
-maintain.
-
-
-Regards
-Rakesh
-
-
-
------Original Message-----
-From: linux-mips-bounce@linux-mips.org
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Robin H. Johnson
-Sent: Thursday, March 09, 2006 9:15 PM
-To: linux-mips@linux-mips.org
-Subject: Re: [PATCH] IDT Interprise Processor Support for Linux 2.6.x
-
-
-On Thu, Mar 09, 2006 at 05:08:49PM -0800, Tiwari, Rakesh wrote:
-> The attached patch adds support for the IDT Interprise series of 
-> processor
-> based on the MIPS 4KC and Cronus (RC32300) core.
-I'm not Ralf, but I gave your patch a quick once-over anyway for the hell of
-it.
-
-I see a lot of duplicated code, esp in arch/mips/idt-boards and the network
-drivers.
-
-Is it possible to have a kernel capable of booting on all IDT boards? Could
-such a kernel detect what board it's actually running on - or enough
-elements of the board configuration to provide more generic drivers?
 
 -- 
-Robin Hugh Johnson
-E-Mail     : robbat2@orbis-terrarum.net
-Home Page  : http://www.orbis-terrarum.net/?l=people.robbat2
-ICQ#       : 30269588 or 41961639
-GnuPG FP   : 11AC BA4F 4778 E3F6 E4ED  F38E B27B 944E 3488 4E85
-
-------_=_NextPart_001_01C6446F.47A114CC
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-5.5.2658.2">
-<TITLE>RE: [PATCH] IDT Interprise Processor Support for Linux  =
-2.6.x</TITLE>
-</HEAD>
-<BODY>
-
-<P><FONT SIZE=3D2>Hi Robin,</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Thanks for reviewing the patch. </FONT>
-</P>
-
-<P><FONT SIZE=3D2>I like your idea of having a single kernel which can =
-boot on any board</FONT>
-<BR><FONT SIZE=3D2>and also agree with you that code duplication is not =
-a good thing.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>However, based on our customer's feedback so far, we =
-prefer to keep it separate</FONT>
-<BR><FONT SIZE=3D2>for each board, so that code doesn't get to messy or =
-people don't have to</FONT>
-<BR><FONT SIZE=3D2>look at unwanted code. </FONT>
-</P>
-
-<P><FONT SIZE=3D2>Also since IDT's processors are SoC's and do undergo =
-various rev's for the chips,</FONT>
-<BR><FONT SIZE=3D2>in which certain feature (hardware) are =
-fixed/removed/added. In this case having</FONT>
-<BR><FONT SIZE=3D2>a separate directory (at the cost of code =
-duplication) is easier to maintain.</FONT>
-</P>
-<BR>
-
-<P><FONT SIZE=3D2>Regards</FONT>
-<BR><FONT SIZE=3D2>Rakesh</FONT>
-</P>
-<BR>
-<BR>
-
-<P><FONT SIZE=3D2>-----Original Message-----</FONT>
-<BR><FONT SIZE=3D2>From: linux-mips-bounce@linux-mips.org [<A =
-HREF=3D"mailto:linux-mips-bounce@linux-mips.org">mailto:linux-mips-bounc=
-e@linux-mips.org</A>] On Behalf Of Robin H. Johnson</FONT>
-<BR><FONT SIZE=3D2>Sent: Thursday, March 09, 2006 9:15 PM</FONT>
-<BR><FONT SIZE=3D2>To: linux-mips@linux-mips.org</FONT>
-<BR><FONT SIZE=3D2>Subject: Re: [PATCH] IDT Interprise Processor =
-Support for Linux 2.6.x</FONT>
-</P>
-<BR>
-
-<P><FONT SIZE=3D2>On Thu, Mar 09, 2006 at 05:08:49PM -0800, Tiwari, =
-Rakesh wrote:</FONT>
-<BR><FONT SIZE=3D2>&gt; The attached patch adds support for the IDT =
-Interprise series of </FONT>
-<BR><FONT SIZE=3D2>&gt; processor</FONT>
-<BR><FONT SIZE=3D2>&gt; based on the MIPS 4KC and Cronus (RC32300) =
-core.</FONT>
-<BR><FONT SIZE=3D2>I'm not Ralf, but I gave your patch a quick =
-once-over anyway for the hell of it.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>I see a lot of duplicated code, esp in =
-arch/mips/idt-boards and the network drivers.</FONT>
-</P>
-
-<P><FONT SIZE=3D2>Is it possible to have a kernel capable of booting on =
-all IDT boards? Could such a kernel detect what board it's actually =
-running on - or enough elements of the board configuration to provide =
-more generic drivers?</FONT></P>
-
-<P><FONT SIZE=3D2>-- </FONT>
-<BR><FONT SIZE=3D2>Robin Hugh Johnson</FONT>
-<BR><FONT SIZE=3D2>E-Mail&nbsp;&nbsp;&nbsp;&nbsp; : =
-robbat2@orbis-terrarum.net</FONT>
-<BR><FONT SIZE=3D2>Home Page&nbsp; : <A =
-HREF=3D"http://www.orbis-terrarum.net/?l=3Dpeople.robbat2" =
-TARGET=3D"_blank">http://www.orbis-terrarum.net/?l=3Dpeople.robbat2</A><=
-/FONT>
-<BR><FONT SIZE=3D2>ICQ#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 30269588 =
-or 41961639</FONT>
-<BR><FONT SIZE=3D2>GnuPG FP&nbsp;&nbsp; : 11AC BA4F 4778 E3F6 =
-E4ED&nbsp; F38E B27B 944E 3488 4E85</FONT>
-</P>
-
-</BODY>
-</HTML>
-------_=_NextPart_001_01C6446F.47A114CC--
+No virus found in this outgoing message.
+Checked by AVG Free Edition.
+Version: 7.1.375 / Virus Database: 268.2.1/279 - Release Date: 10/03/2006

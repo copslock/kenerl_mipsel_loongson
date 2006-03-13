@@ -1,153 +1,165 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Mar 2006 19:26:38 +0000 (GMT)
-Received: from mailfe05.tele2.fr ([212.247.154.140]:58010 "EHLO swip.net")
-	by ftp.linux-mips.org with ESMTP id S8133967AbWCJT02 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 10 Mar 2006 19:26:28 +0000
-X-T2-Posting-ID: g63wq726D5fsXb2UbU6LU0KOXzHnTHjCzHZ35sC2MDs=
-X-Cloudmark-Score: 0.000000 []
-Received: from [83.179.129.29] (HELO [192.168.0.32])
-  by mailfe05.swip.net (CommuniGate Pro SMTP 5.0.8)
-  with ESMTP id 49065700; Fri, 10 Mar 2006 20:35:04 +0100
-Received: from 127.0.0.1 (AVG SMTP 7.1.375 [268.2.1/279]); Fri, 10 Mar 2006 20:35:05 +0100
-Message-ID: <4411D4E8.4060001@tele2.fr>
-Date:	Fri, 10 Mar 2006 20:35:04 +0100
-From:	Frederic Temporelli <frederic.temporelli@tele2.fr>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.7.12) Gecko/20050915
-X-Accept-Language: fr, en
-To:	mingz@ele.uri.edu
-CC:	"Shanthi Kiran Pendyala (skiranp)" <skiranp@cisco.com>,
-	iet-dev <iscsitarget-devel@lists.sourceforge.net>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [Iscsitarget-devel] RE: mips kernel 2.6.16rc1 + IET 0.4.13 -
- 	/dev/ietctl - ioctl unknown command
-References: <5547014632ED654F971D7E1E0C2E0C3E016546DF@xmb-sjc-215.amer.cisco.com> <1141913962.7361.39.camel@localhost.localdomain>
-In-Reply-To: <1141913962.7361.39.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2006 09:14:22 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:8750 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133515AbWCMJOL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 13 Mar 2006 09:14:11 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 13 Mar 2006 18:23:09 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 17C23203CE;
+	Mon, 13 Mar 2006 18:23:05 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0428A202E8;
+	Mon, 13 Mar 2006 18:23:05 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k2D9N44D012644;
+	Mon, 13 Mar 2006 18:23:04 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 13 Mar 2006 18:23:03 +0900 (JST)
+Message-Id: <20060313.182303.115641770.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] local_r4k_flush_cache_page fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
+References: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Return-Path: <frederic.temporelli@tele2.fr>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10784
+X-archive-position: 10785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frederic.temporelli@tele2.fr
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+>>>>> On Wed, 01 Feb 2006 00:03:56 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
+anemo> If dcache_size != icache_size or dcache_size != scache_size,
+anemo> icache/scache does not flushed properly.  Use correct cache size to
+anemo> calculate index value for scache/icache.
 
-Sorry, I'm not able to build 64 bits user space binaries (Debian distro, 
-where all binaries are 32 bits... ld is reporting errors when I try to 
-link using o64 and n64 ABIs, seems that only the kernel can be 64 bits).
-
-But don't care, on my side it was just to do a test to IET.
-I'll try do test it at work on IA64...
---
-Fred
-
-Ming Zhang a écrit :
-
->thanks. i guess this is the reason.
->
->@Frederic, could you confirm this? also if you compile u user space as
->64bit, it should be ok then.
->
->ming
->
->On Wed, 2006-03-08 at 10:18 -0800, Shanthi Kiran Pendyala (skiranp)
->wrote:
->  
->
->>I have seen such error messages when userspace app is built in 32bit
->>mode
->>And kernel is built in 64 bit mode. Does this apply to your setup ?
->>
->>The way to fix this is to register a ioctl32 conversion routine in
->>The driver. Google is your friend..
->>
->>Thx
->>Kiran  
->>
->>    
->>
->>>-----Original Message-----
->>>From: linux-mips-bounce@linux-mips.org 
->>>[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of 
->>>Frederic Temporelli
->>>Sent: Wednesday, March 08, 2006 10:13 AM
->>>To: iet-dev; linux-mips
->>>Subject: mips kernel 2.6.16rc1 + IET 0.4.13 - /dev/ietctl - 
->>>ioctl unknown command
->>>
->>>Hello,
->>>
->>>I would like to report an ioctl issue using IET 0.4.13 (iSCSI 
->>>target) and kernel 2.6.16-rc1, running on mips / SGI O2
->>>
->>>The driver seems to load nicely, but there was no way to do 
->>>ioctl on the userspace device /dev/ietctl.
->>>I got such messages in syslog:
->>>Mar  4 16:47:16 o2 kernel: [4303606.514000] 
->>>ioctl32(ietd:3448): Unknown cmd fd(4) cmd(81046900){01} 
->>>arg(7f942ab0) on /dev/ietctl
->>>
->>>=> I've been able to resolve the issue by adding a by-pass (goto
->>>do_ioctl) in kernel compat_sys_ioctl function (fs/compat.c)  
->>>and all is working fine now.
->>>
->>>I don't know if such issue is related to mips only or is due to changes
->>>2.6.16 kernel
->>>I've also did some tries on x86 with linux 2.6.15.5, all was 
->>>working fine without needing to change anything in the kernel.
->>>
->>>Did somebody report such issue with IET and recent kernel ?
->>>May some people from linux-mips tell if such issue is mips specific ?
->>>
->>>Best regards.
->>>--
->>>Fred
->>>
->>>
->>>--
->>>No virus found in this outgoing message.
->>>Checked by AVG Free Edition.
->>>Version: 7.1.375 / Virus Database: 268.2.1/277 - Release Date: 
->>>08/03/2006
->>>
->>>      
->>>
->>-------------------------------------------------------
->>This SF.Net email is sponsored by xPML, a groundbreaking scripting language
->>that extends applications into web and mobile media. Attend the live webcast
->>and join the prime developer group breaking into this new coding territory!
->>http://sel.as-us.falkag.net/sel?cmd=lnk&kid0944&bid$1720&dat1642
->>_______________________________________________
->>Iscsitarget-devel mailing list
->>Iscsitarget-devel@lists.sourceforge.net
->>https://lists.sourceforge.net/lists/listinfo/iscsitarget-devel
->>    
->>
->
->
->
->-------------------------------------------------------
->This SF.Net email is sponsored by xPML, a groundbreaking scripting language
->that extends applications into web and mobile media. Attend the live webcast
->and join the prime developer group breaking into this new coding territory!
->http://sel.as-us.falkag.net/sel?cmd=lnk&kid=110944&bid=241720&dat=121642
->_______________________________________________
->Iscsitarget-devel mailing list
->Iscsitarget-devel@lists.sourceforge.net
->https://lists.sourceforge.net/lists/listinfo/iscsitarget-devel
->
->  
->
+Ping.  I believe current c-r4k.c still broken for CPUs with large
+set-assotiative cache or physically indexed cache.  Here is a patch
+against current GIT tree.
 
 
+If dcache_size != icache_size or dcache_size != scache_size, or
+set-associative cache, icache/scache does not flushed properly.  Make
+blast_?cache_page_indexed() masks its index value correctly.  Also,
+use physical address for physically indexed pcache/scache.
 
--- 
-No virus found in this outgoing message.
-Checked by AVG Free Edition.
-Version: 7.1.375 / Virus Database: 268.2.1/279 - Release Date: 10/03/2006
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 0668e9b..9572ed4 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -375,6 +375,7 @@ static void r4k_flush_cache_mm(struct mm
+ struct flush_cache_page_args {
+ 	struct vm_area_struct *vma;
+ 	unsigned long addr;
++	unsigned long pfn;
+ };
+ 
+ static inline void local_r4k_flush_cache_page(void *args)
+@@ -382,6 +383,7 @@ static inline void local_r4k_flush_cache
+ 	struct flush_cache_page_args *fcp_args = args;
+ 	struct vm_area_struct *vma = fcp_args->vma;
+ 	unsigned long addr = fcp_args->addr;
++	unsigned long paddr = fcp_args->pfn << PAGE_SHIFT;
+ 	int exec = vma->vm_flags & VM_EXEC;
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pgd_t *pgdp;
+@@ -431,11 +433,12 @@ static inline void local_r4k_flush_cache
+ 	 * Do indexed flush, too much work to get the (possible) TLB refills
+ 	 * to work correctly.
+ 	 */
+-	addr = INDEX_BASE + (addr & (dcache_size - 1));
+ 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc)) {
+-		r4k_blast_dcache_page_indexed(addr);
+-		if (exec && !cpu_icache_snoops_remote_store)
+-			r4k_blast_scache_page_indexed(addr);
++		r4k_blast_dcache_page_indexed(cpu_has_pindexed_dcache ?
++					      paddr : addr);
++		if (exec && !cpu_icache_snoops_remote_store) {
++			r4k_blast_scache_page_indexed(paddr);
++		}
+ 	}
+ 	if (exec) {
+ 		if (cpu_has_vtag_icache) {
+@@ -455,6 +458,7 @@ static void r4k_flush_cache_page(struct 
+ 
+ 	args.vma = vma;
+ 	args.addr = addr;
++	args.pfn = pfn;
+ 
+ 	on_each_cpu(local_r4k_flush_cache_page, &args, 1, 1);
+ }
+@@ -956,6 +960,7 @@ static void __init probe_pcache(void)
+ 	switch (c->cputype) {
+ 	case CPU_20KC:
+ 	case CPU_25KF:
++		c->dcache.flags |= MIPS_CACHE_PINDEX;
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_SB1:
+diff --git a/arch/mips/mm/c-tx39.c b/arch/mips/mm/c-tx39.c
+index 7c572be..fe232e3 100644
+--- a/arch/mips/mm/c-tx39.c
++++ b/arch/mips/mm/c-tx39.c
+@@ -210,7 +210,6 @@ static void tx39_flush_cache_page(struct
+ 	 * Do indexed flush, too much work to get the (possible) TLB refills
+ 	 * to work correctly.
+ 	 */
+-	page = (KSEG0 + (page & (dcache_size - 1)));
+ 	if (cpu_has_dc_aliases || exec)
+ 		tx39_blast_dcache_page_indexed(page);
+ 	if (exec)
+diff --git a/include/asm-mips/cpu-features.h b/include/asm-mips/cpu-features.h
+index 78c9cc2..3f2b6d9 100644
+--- a/include/asm-mips/cpu-features.h
++++ b/include/asm-mips/cpu-features.h
+@@ -96,6 +96,9 @@
+ #ifndef cpu_has_ic_fills_f_dc
+ #define cpu_has_ic_fills_f_dc	(cpu_data[0].icache.flags & MIPS_CACHE_IC_F_DC)
+ #endif
++#ifndef cpu_has_pindexed_dcache
++#define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
++#endif
+ 
+ /*
+  * I-Cache snoops remote store.  This only matters on SMP.  Some multiprocessors
+diff --git a/include/asm-mips/cpu-info.h b/include/asm-mips/cpu-info.h
+index d5cf519..140be1c 100644
+--- a/include/asm-mips/cpu-info.h
++++ b/include/asm-mips/cpu-info.h
+@@ -39,6 +39,7 @@ struct cache_desc {
+ #define MIPS_CACHE_ALIASES	0x00000004	/* Cache could have aliases */
+ #define MIPS_CACHE_IC_F_DC	0x00000008	/* Ic can refill from D-cache */
+ #define MIPS_IC_SNOOPS_REMOTE	0x00000010	/* Ic snoops remote stores */
++#define MIPS_CACHE_PINDEX	0x00000020	/* Physically indexed cache */
+ 
+ struct cpuinfo_mips {
+ 	unsigned long		udelay_val;
+diff --git a/include/asm-mips/r4kcache.h b/include/asm-mips/r4kcache.h
+index 9632c27..0bcb79a 100644
+--- a/include/asm-mips/r4kcache.h
++++ b/include/asm-mips/r4kcache.h
+@@ -257,7 +257,8 @@ static inline void blast_##pfx##cache##l
+ 									\
+ static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
+ {									\
+-	unsigned long start = page;					\
++	unsigned long indexmask = current_cpu_data.desc.waysize - 1;	\
++	unsigned long start = INDEX_BASE + (page & indexmask);		\
+ 	unsigned long end = start + PAGE_SIZE;				\
+ 	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
+ 	unsigned long ws_end = current_cpu_data.desc.ways <<		\

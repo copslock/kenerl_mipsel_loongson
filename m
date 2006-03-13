@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2006 21:10:41 +0000 (GMT)
-Received: from adsl-67-116-42-147.dsl.sntc01.pacbell.net ([67.116.42.147]:29728
-	"EHLO avtrex.com") by ftp.linux-mips.org with ESMTP
-	id S8133524AbWCMVHb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 13 Mar 2006 21:07:31 +0000
-Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 13 Mar 2006 13:16:31 -0800
-Message-ID: <4415E12F.1050603@avtrex.com>
-Date:	Mon, 13 Mar 2006 13:16:31 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2006 21:16:20 +0000 (GMT)
+Received: from bender.bawue.de ([193.7.176.20]:26258 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S8133524AbWCMVQK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2006 21:16:10 +0000
+Received: from lagash (unknown [194.74.144.146])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id 1B2AA456D5; Mon, 13 Mar 2006 22:25:13 +0100 (MET)
+Received: from ths by lagash with local (Exim 4.60)
+	(envelope-from <ths@networkno.de>)
+	id 1FIuXo-0005YP-J0; Mon, 13 Mar 2006 21:25:36 +0000
+Date:	Mon, 13 Mar 2006 21:25:36 +0000
 To:	Kurt Schwemmer <kurts@vitesse.com>
-CC:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: Cross compile kernel w/ buildroot toolchain
+Message-ID: <20060313212535.GF15212@networkno.de>
 References: <389E6A416914954182ECDFCD844D8269434FC1@MX-COS.vsc.vitesse.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <389E6A416914954182ECDFCD844D8269434FC1@MX-COS.vsc.vitesse.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Mar 2006 21:16:31.0669 (UTC) FILETIME=[666EB650:01C646E3]
-Return-Path: <ddaney@avtrex.com>
+User-Agent: Mutt/1.5.11+cvs20060126
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10798
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 10799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Kurt Schwemmer wrote:
+On Mon, Mar 13, 2006 at 02:07:34PM -0700, Kurt Schwemmer wrote:
 > I didn't touch any of the source yet. 
-> 
-> I'm downloading the 1/10/05 2.6.15 tarball (
-> ftp://ftp.linux-mips.org/pub/linux/mips/kernel/v2.6/linux-2.6.15.tar.gz
-> )now to see if that fixes things.
-> 
-> In response to Thiemo's message the error with (V=1) is:
-> 
+
+Hm, are you sure? Because...
+
 > make -f scripts/Makefile.build obj=arch/mips/kernel
 >   /klocal/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-gcc
 > -Wp,-MD,arch/mips/kernel/.entry.o.d  -nostdinc -isystem
@@ -60,20 +58,19 @@ Kurt Schwemmer wrote:
 > arch/mips/kernel/entry.S: Assembler messages:
 > arch/mips/kernel/entry.S:157: Error: opcode not supported on this
 > processor: mips32 (mips32) `jr.hb $31'
+
+... arch/mips/kernel/entry.S has only 147 lines in the copy I see.
+
 > make[1]: *** [arch/mips/kernel/entry.o] Error 1
 > make: *** [arch/mips/kernel] Error 2
 > 
 > Also, assembler -v output:
 > GNU assembler version 2.16.1 (mipsel-linux-uclibc) using BFD version
 > 2.16.1
-> 
-> Thanks,
-> Kurt Schwemmer
-> 
 
-You could try using crosstool to generate the compiler instead of buildroot.
+What's also weird is that gas gets the mips32r2 option fed four times
+(just to make sure?) and still claims it got mips32 (r1) in the error
+message.
 
-Also try passing -v to gcc, that will cause it to show the exact options 
-that it is passing to gas.  Perhaps that would shed some light on things.
 
-David Daney
+Thiemo

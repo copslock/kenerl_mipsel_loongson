@@ -1,165 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2006 09:14:22 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:8750 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133515AbWCMJOL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 13 Mar 2006 09:14:11 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 13 Mar 2006 18:23:09 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 17C23203CE;
-	Mon, 13 Mar 2006 18:23:05 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0428A202E8;
-	Mon, 13 Mar 2006 18:23:05 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k2D9N44D012644;
-	Mon, 13 Mar 2006 18:23:04 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 13 Mar 2006 18:23:03 +0900 (JST)
-Message-Id: <20060313.182303.115641770.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] local_r4k_flush_cache_page fix
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
-References: <20060201.000356.25911337.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2006 17:56:31 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:16069 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133732AbWCMR4W (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 13 Mar 2006 17:56:22 +0000
+Received: (qmail 2223 invoked from network); 13 Mar 2006 18:05:14 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 13 Mar 2006 18:05:14 -0000
+Message-ID: <4415B3EB.3010102@ru.mvista.com>
+Date:	Mon, 13 Mar 2006 21:03:23 +0300
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Linux MIPS <linux-mips@linux-mips.org>
+CC:	Manish Lachwani <mlachwani@mvista.com>,
+	Jordan Crouse <jordan.crouse@amd.com>
+Subject: [PATCH] Au1550/1200: add missing PSC #define's and make OSS drivers
+ use the proper ones
+Content-Type: multipart/mixed;
+ boundary="------------040304030603040905020009"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10785
+X-archive-position: 10786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 01 Feb 2006 00:03:56 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> said:
-anemo> If dcache_size != icache_size or dcache_size != scache_size,
-anemo> icache/scache does not flushed properly.  Use correct cache size to
-anemo> calculate index value for scache/icache.
+This is a multi-part message in MIME format.
+--------------040304030603040905020009
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Ping.  I believe current c-r4k.c still broken for CPUs with large
-set-assotiative cache or physically indexed cache.  Here is a patch
-against current GIT tree.
+Hello.
+
+     Add missing PSC #define's required for the drivers using PSC on DBAu1550
+board and all Au1200-based boards as well. Make OSS drivers use the correct
+PSC definitions fo each board.
+
+WBR, Sergei
 
 
-If dcache_size != icache_size or dcache_size != scache_size, or
-set-associative cache, icache/scache does not flushed properly.  Make
-blast_?cache_page_indexed() masks its index value correctly.  Also,
-use physical address for physically indexed pcache/scache.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+--------------040304030603040905020009
+Content-Type: text/plain;
+ name="DBAu1550-and-Au1200-PSC-defs.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="DBAu1550-and-Au1200-PSC-defs.patch"
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 0668e9b..9572ed4 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -375,6 +375,7 @@ static void r4k_flush_cache_mm(struct mm
- struct flush_cache_page_args {
- 	struct vm_area_struct *vma;
- 	unsigned long addr;
-+	unsigned long pfn;
- };
+diff --git a/include/asm-mips/mach-au1x00/au1xxx_psc.h b/include/asm-mips/mach-au1x00/au1xxx_psc.h
+index 8e5fb3c..8d1f3d1 100644
+--- a/include/asm-mips/mach-au1x00/au1xxx_psc.h
++++ b/include/asm-mips/mach-au1x00/au1xxx_psc.h
+@@ -36,11 +36,14 @@
+ #include <linux/config.h>
  
- static inline void local_r4k_flush_cache_page(void *args)
-@@ -382,6 +383,7 @@ static inline void local_r4k_flush_cache
- 	struct flush_cache_page_args *fcp_args = args;
- 	struct vm_area_struct *vma = fcp_args->vma;
- 	unsigned long addr = fcp_args->addr;
-+	unsigned long paddr = fcp_args->pfn << PAGE_SHIFT;
- 	int exec = vma->vm_flags & VM_EXEC;
- 	struct mm_struct *mm = vma->vm_mm;
- 	pgd_t *pgdp;
-@@ -431,11 +433,12 @@ static inline void local_r4k_flush_cache
- 	 * Do indexed flush, too much work to get the (possible) TLB refills
- 	 * to work correctly.
- 	 */
--	addr = INDEX_BASE + (addr & (dcache_size - 1));
- 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc)) {
--		r4k_blast_dcache_page_indexed(addr);
--		if (exec && !cpu_icache_snoops_remote_store)
--			r4k_blast_scache_page_indexed(addr);
-+		r4k_blast_dcache_page_indexed(cpu_has_pindexed_dcache ?
-+					      paddr : addr);
-+		if (exec && !cpu_icache_snoops_remote_store) {
-+			r4k_blast_scache_page_indexed(paddr);
-+		}
- 	}
- 	if (exec) {
- 		if (cpu_has_vtag_icache) {
-@@ -455,6 +458,7 @@ static void r4k_flush_cache_page(struct 
- 
- 	args.vma = vma;
- 	args.addr = addr;
-+	args.pfn = pfn;
- 
- 	on_each_cpu(local_r4k_flush_cache_page, &args, 1, 1);
- }
-@@ -956,6 +960,7 @@ static void __init probe_pcache(void)
- 	switch (c->cputype) {
- 	case CPU_20KC:
- 	case CPU_25KF:
-+		c->dcache.flags |= MIPS_CACHE_PINDEX;
- 	case CPU_R10000:
- 	case CPU_R12000:
- 	case CPU_SB1:
-diff --git a/arch/mips/mm/c-tx39.c b/arch/mips/mm/c-tx39.c
-index 7c572be..fe232e3 100644
---- a/arch/mips/mm/c-tx39.c
-+++ b/arch/mips/mm/c-tx39.c
-@@ -210,7 +210,6 @@ static void tx39_flush_cache_page(struct
- 	 * Do indexed flush, too much work to get the (possible) TLB refills
- 	 * to work correctly.
- 	 */
--	page = (KSEG0 + (page & (dcache_size - 1)));
- 	if (cpu_has_dc_aliases || exec)
- 		tx39_blast_dcache_page_indexed(page);
- 	if (exec)
-diff --git a/include/asm-mips/cpu-features.h b/include/asm-mips/cpu-features.h
-index 78c9cc2..3f2b6d9 100644
---- a/include/asm-mips/cpu-features.h
-+++ b/include/asm-mips/cpu-features.h
-@@ -96,6 +96,9 @@
- #ifndef cpu_has_ic_fills_f_dc
- #define cpu_has_ic_fills_f_dc	(cpu_data[0].icache.flags & MIPS_CACHE_IC_F_DC)
+ /* The PSC base addresses.  */
+-#ifdef CONFIG_SOC_AU1550
++#if defined(CONFIG_SOC_AU1550)
+ #define PSC0_BASE_ADDR		0xb1a00000
+ #define PSC1_BASE_ADDR		0xb1b00000
+ #define PSC2_BASE_ADDR		0xb0a00000
+ #define PSC3_BASE_ADDR		0xb0d00000
++#elif defined(CONFIG_SOC_AU1200)
++#define PSC0_BASE_ADDR		0xb1a00000
++#define PSC1_BASE_ADDR		0xb1b00000
  #endif
-+#ifndef cpu_has_pindexed_dcache
-+#define cpu_has_pindexed_dcache	(cpu_data[0].dcache.flags & MIPS_CACHE_PINDEX)
-+#endif
  
- /*
-  * I-Cache snoops remote store.  This only matters on SMP.  Some multiprocessors
-diff --git a/include/asm-mips/cpu-info.h b/include/asm-mips/cpu-info.h
-index d5cf519..140be1c 100644
---- a/include/asm-mips/cpu-info.h
-+++ b/include/asm-mips/cpu-info.h
-@@ -39,6 +39,7 @@ struct cache_desc {
- #define MIPS_CACHE_ALIASES	0x00000004	/* Cache could have aliases */
- #define MIPS_CACHE_IC_F_DC	0x00000008	/* Ic can refill from D-cache */
- #define MIPS_IC_SNOOPS_REMOTE	0x00000010	/* Ic snoops remote stores */
-+#define MIPS_CACHE_PINDEX	0x00000020	/* Physically indexed cache */
+ /* The PSC select and control registers are common to
+diff --git a/include/asm-mips/mach-db1x00/db1x00.h b/include/asm-mips/mach-db1x00/db1x00.h
+index 7b28b23..4bbfcaf 100644
+--- a/include/asm-mips/mach-db1x00/db1x00.h
++++ b/include/asm-mips/mach-db1x00/db1x00.h
+@@ -31,8 +31,20 @@
+ #include <linux/config.h>
  
- struct cpuinfo_mips {
- 	unsigned long		udelay_val;
-diff --git a/include/asm-mips/r4kcache.h b/include/asm-mips/r4kcache.h
-index 9632c27..0bcb79a 100644
---- a/include/asm-mips/r4kcache.h
-+++ b/include/asm-mips/r4kcache.h
-@@ -257,7 +257,8 @@ static inline void blast_##pfx##cache##l
- 									\
- static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page) \
- {									\
--	unsigned long start = page;					\
-+	unsigned long indexmask = current_cpu_data.desc.waysize - 1;	\
-+	unsigned long start = INDEX_BASE + (page & indexmask);		\
- 	unsigned long end = start + PAGE_SIZE;				\
- 	unsigned long ws_inc = 1UL << current_cpu_data.desc.waybit;	\
- 	unsigned long ws_end = current_cpu_data.desc.ways <<		\
+ #ifdef CONFIG_MIPS_DB1550
++
++#define DBDMA_AC97_TX_CHAN DSCR_CMD0_PSC1_TX
++#define DBDMA_AC97_RX_CHAN DSCR_CMD0_PSC1_RX
++#define DBDMA_I2S_TX_CHAN  DSCR_CMD0_PSC3_TX
++#define DBDMA_I2S_RX_CHAN  DSCR_CMD0_PSC3_RX
++
++#define SPI_PSC_BASE       PSC0_BASE_ADDR
++#define AC97_PSC_BASE      PSC1_BASE_ADDR
++#define SMBUS_PSC_BASE     PSC2_BASE_ADDR
++#define I2S_PSC_BASE       PSC3_BASE_ADDR
++
+ #define BCSR_KSEG1_ADDR 0xAF000000
+ #define NAND_PHYS_ADDR  0x20000000
++
+ #else
+ #define BCSR_KSEG1_ADDR 0xAE000000
+ #endif
+diff --git a/sound/oss/au1550_ac97.c b/sound/oss/au1550_ac97.c
+index 64e2e46..fd40962 100644
+--- a/sound/oss/au1550_ac97.c
++++ b/sound/oss/au1550_ac97.c
+@@ -55,10 +55,9 @@
+ #include <asm/io.h>
+ #include <asm/uaccess.h>
+ #include <asm/hardirq.h>
+-#include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_psc.h>
+ #include <asm/mach-au1x00/au1xxx_dbdma.h>
+-#include <asm/mach-pb1x00/pb1550.h>
++#include <asm/mach-au1x00/au1xxx.h>
+ 
+ #undef OSS_DOCUMENTED_MIXER_SEMANTICS
+ 
+diff --git a/sound/oss/au1550_i2s.c b/sound/oss/au1550_i2s.c
+index 529b625..8addad2 100644
+--- a/sound/oss/au1550_i2s.c
++++ b/sound/oss/au1550_i2s.c
+@@ -63,10 +63,9 @@
+ #include <asm/uaccess.h>
+ #include <asm/hardirq.h>
+ 
+-#include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_psc.h>
+ #include <asm/mach-au1x00/au1xxx_dbdma.h>
+-#include <asm/mach-pb1x00/pb1550.h>
++#include <asm/mach-au1x00/au1xxx.h>
+ 
+ #undef OSS_DOCUMENTED_MIXER_SEMANTICS
+ 
+
+
+
+
+--------------040304030603040905020009--

@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Mar 2006 23:15:28 +0000 (GMT)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:994 "HELO mail.dev.rtsoft.ru")
-	by ftp.linux-mips.org with SMTP id S8134475AbWCMXPT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Mar 2006 23:15:19 +0000
-Received: (qmail 4793 invoked from network); 13 Mar 2006 23:24:21 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2006 02:14:33 +0000 (GMT)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:25067 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8134488AbWCNCOY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Mar 2006 02:14:24 +0000
+Received: (qmail 6525 invoked from network); 14 Mar 2006 02:23:27 -0000
 Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 13 Mar 2006 23:24:21 -0000
-Message-ID: <4415FEB5.10904@ru.mvista.com>
-Date:	Tue, 14 Mar 2006 02:22:29 +0300
+  by mail.dev.rtsoft.ru with SMTP; 14 Mar 2006 02:23:27 -0000
+Message-ID: <441628AF.2000300@ru.mvista.com>
+Date:	Tue, 14 Mar 2006 05:21:35 +0300
 From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
 X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Linux MIPS <linux-mips@linux-mips.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: Au1550/1200: add missing PSC #define's and make OSS drivers use
- the proper ones
-References: <4415B3EB.3010102@ru.mvista.com> <20060313183849.GL29879@cosmic.amd.com>
-In-Reply-To: <20060313183849.GL29879@cosmic.amd.com>
+To:	linux-mips@linux-mips.org
+CC:	Jordan Crouse <jordan.crouse@amd.com>
+Subject: Re: [PATCH] Fix for Au1x00 ethernet tx stats
+References: <41F11AB7.3010105@corelatus.se>
+In-Reply-To: <41F11AB7.3010105@corelatus.se>
 Content-Type: multipart/mixed;
- boundary="------------040006090109050808030602"
+ boundary="------------080502030207000009010206"
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10802
+X-archive-position: 10803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,136 +33,107 @@ Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
---------------040006090109050808030602
+--------------080502030207000009010206
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hello.
 
-   Forgot the darn signoff line, reporting... :-(
-
-Jordan Crouse wrote:
-
-> Looks good to me as a quick glance.  I'll trust that Sergei got the addresses
-> right, so..
-
-      Well, they weren't right but that wasn't my fault. :-)
-      I guess nobody tried using I2S driver on Au1550 so far -- if they did, it
-wouldn't work because the PSC3 address #define was initially wrong.
-
-> Acked-by: Jordan Crouse <jordan.crouse@amd.com>
+Thomas Lange wrote:
+> With current CVS head, ethernet TX bytes always remain zero.
 > 
-> On 13/03/06 21:03 +0300, Sergei Shtylylov wrote:
+> The problem seems to be that when packet has been transmitted,
+> the len word in DMA buffer is zero.
 > 
->>Hello.
->>
->>    Add missing PSC #define's required for the drivers using PSC on DBAu1550
->>board and all Au1200-based boards as well.
+> Attached is a patch against 2_4 HEAD that updates the stats when
+> DMA buffer is written to fix this.
+> 
+> * Patch by Thomas Lange, 21 Jan 2005:
+>  Fix update of ethernet tx bytes stats for au1x00
 
-      Now I've copied Au1200 part from 2.4 tree where this have been already 
-fixed.
+      More than a year ago, this is still an issue with both 2.4 and 2.6 driver.
+Here's the 2.6 patch...
 
->>Make OSS drivers use the correct PSC definitions fo each board.
-
-      And fix PSC3 address for Au1550.
+> /Thomas
 
 WBR, Sergei
 
+Signed-off-by: Thomas Lange <thomas@corelatus.se>
 Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
 
---------------040006090109050808030602
+--------------080502030207000009010206
 Content-Type: text/plain;
- name="Au1550-Au1200-PSC-defs.patch"
+ name="Au1xx0-ETH-fix-TX-stats.patch"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline;
- filename="Au1550-Au1200-PSC-defs.patch"
+ filename="Au1xx0-ETH-fix-TX-stats.patch"
 
-diff --git a/include/asm-mips/mach-au1x00/au1xxx_psc.h b/include/asm-mips/mach-au1x00/au1xxx_psc.h
-index 8e5fb3c..faa5ffe 100644
---- a/include/asm-mips/mach-au1x00/au1xxx_psc.h
-+++ b/include/asm-mips/mach-au1x00/au1xxx_psc.h
-@@ -40,7 +40,12 @@
- #define PSC0_BASE_ADDR		0xb1a00000
- #define PSC1_BASE_ADDR		0xb1b00000
- #define PSC2_BASE_ADDR		0xb0a00000
--#define PSC3_BASE_ADDR		0xb0d00000
-+#define PSC3_BASE_ADDR		0xb0b00000
-+#endif
+diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
+index cd0b1dc..a4df316 100644
+--- a/drivers/net/au1000_eth.c
++++ b/drivers/net/au1000_eth.c
+@@ -90,7 +90,7 @@ static void au1000_tx_timeout(struct net
+ static int au1000_set_config(struct net_device *dev, struct ifmap *map);
+ static void set_rx_mode(struct net_device *);
+ static struct net_device_stats *au1000_get_stats(struct net_device *);
+-static inline void update_tx_stats(struct net_device *, u32, u32);
++static inline void update_tx_stats(struct net_device *, u32);
+ static inline void update_rx_stats(struct net_device *, u32);
+ static void au1000_timer(unsigned long);
+ static int au1000_ioctl(struct net_device *, struct ifreq *, int);
+@@ -1827,14 +1827,11 @@ static void __exit au1000_cleanup_module
+ 
+ 
+ static inline void 
+-update_tx_stats(struct net_device *dev, u32 status, u32 pkt_len)
++update_tx_stats(struct net_device *dev, u32 status)
+ {
+ 	struct au1000_private *aup = (struct au1000_private *) dev->priv;
+ 	struct net_device_stats *ps = &aup->stats;
+ 
+-	ps->tx_packets++;
+-	ps->tx_bytes += pkt_len;
+-
+ 	if (status & TX_FRAME_ABORTED) {
+ 		if (dev->if_port == IF_PORT_100BASEFX) {
+ 			if (status & (TX_JAB_TIMEOUT | TX_UNDERRUN)) {
+@@ -1867,7 +1864,7 @@ static void au1000_tx_ack(struct net_dev
+ 	ptxd = aup->tx_dma_ring[aup->tx_tail];
+ 
+ 	while (ptxd->buff_stat & TX_T_DONE) {
+-		update_tx_stats(dev, ptxd->status, ptxd->len & 0x3ff);
++		update_tx_stats(dev, ptxd->status);
+ 		ptxd->buff_stat &= ~TX_T_DONE;
+ 		ptxd->len = 0;
+ 		au_sync();
+@@ -1889,6 +1886,7 @@ static void au1000_tx_ack(struct net_dev
+ static int au1000_tx(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct au1000_private *aup = (struct au1000_private *) dev->priv;
++	struct net_device_stats *ps = &aup->stats;
+ 	volatile tx_dma_t *ptxd;
+ 	u32 buff_stat;
+ 	db_dest_t *pDB;
+@@ -1908,7 +1906,7 @@ static int au1000_tx(struct sk_buff *skb
+ 		return 1;
+ 	}
+ 	else if (buff_stat & TX_T_DONE) {
+-		update_tx_stats(dev, ptxd->status, ptxd->len & 0x3ff);
++		update_tx_stats(dev, ptxd->status);
+ 		ptxd->len = 0;
+ 	}
+ 
+@@ -1928,6 +1926,9 @@ static int au1000_tx(struct sk_buff *skb
+ 	else
+ 		ptxd->len = skb->len;
+ 
++	ps->tx_packets++;
++	ps->tx_bytes += ptxd->len;
 +
-+#ifdef CONFIG_SOC_AU1200
-+#define PSC0_BASE_ADDR		0xb1a00000
-+#define PSC1_BASE_ADDR		0xb1b00000
- #endif
- 
- /* The PSC select and control registers are common to
-@@ -228,6 +233,8 @@ typedef struct	psc_i2s {
- #define PSC_I2SCFG_DD_DISABLE	(1 << 27)
- #define PSC_I2SCFG_DE_ENABLE	(1 << 26)
- #define PSC_I2SCFG_SET_WS(x)	(((((x) / 2) - 1) & 0x7f) << 16)
-+#define PSC_I2SCFG_WS(n)	((n & 0xFF) << 16)
-+#define PSC_I2SCFG_WS_MASK	(PSC_I2SCFG_WS(0x3F))
- #define PSC_I2SCFG_WI		(1 << 15)
- 
- #define PSC_I2SCFG_DIV_MASK	(3 << 13)
-diff --git a/include/asm-mips/mach-db1x00/db1x00.h b/include/asm-mips/mach-db1x00/db1x00.h
-index 7b28b23..4bbfcaf 100644
---- a/include/asm-mips/mach-db1x00/db1x00.h
-+++ b/include/asm-mips/mach-db1x00/db1x00.h
-@@ -31,8 +31,20 @@
- #include <linux/config.h>
- 
- #ifdef CONFIG_MIPS_DB1550
-+
-+#define DBDMA_AC97_TX_CHAN DSCR_CMD0_PSC1_TX
-+#define DBDMA_AC97_RX_CHAN DSCR_CMD0_PSC1_RX
-+#define DBDMA_I2S_TX_CHAN  DSCR_CMD0_PSC3_TX
-+#define DBDMA_I2S_RX_CHAN  DSCR_CMD0_PSC3_RX
-+
-+#define SPI_PSC_BASE       PSC0_BASE_ADDR
-+#define AC97_PSC_BASE      PSC1_BASE_ADDR
-+#define SMBUS_PSC_BASE     PSC2_BASE_ADDR
-+#define I2S_PSC_BASE       PSC3_BASE_ADDR
-+
- #define BCSR_KSEG1_ADDR 0xAF000000
- #define NAND_PHYS_ADDR  0x20000000
-+
- #else
- #define BCSR_KSEG1_ADDR 0xAE000000
- #endif
-diff --git a/sound/oss/au1550_ac97.c b/sound/oss/au1550_ac97.c
-index 64e2e46..fd40962 100644
---- a/sound/oss/au1550_ac97.c
-+++ b/sound/oss/au1550_ac97.c
-@@ -55,10 +55,9 @@
- #include <asm/io.h>
- #include <asm/uaccess.h>
- #include <asm/hardirq.h>
--#include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1xxx_psc.h>
- #include <asm/mach-au1x00/au1xxx_dbdma.h>
--#include <asm/mach-pb1x00/pb1550.h>
-+#include <asm/mach-au1x00/au1xxx.h>
- 
- #undef OSS_DOCUMENTED_MIXER_SEMANTICS
- 
-diff --git a/sound/oss/au1550_i2s.c b/sound/oss/au1550_i2s.c
-index 529b625..8addad2 100644
---- a/sound/oss/au1550_i2s.c
-+++ b/sound/oss/au1550_i2s.c
-@@ -63,10 +63,9 @@
- #include <asm/uaccess.h>
- #include <asm/hardirq.h>
- 
--#include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1xxx_psc.h>
- #include <asm/mach-au1x00/au1xxx_dbdma.h>
--#include <asm/mach-pb1x00/pb1550.h>
-+#include <asm/mach-au1x00/au1xxx.h>
- 
- #undef OSS_DOCUMENTED_MIXER_SEMANTICS
- 
+ 	ptxd->buff_stat = pDB->dma_addr | TX_DMA_ENABLE;
+ 	au_sync();
+ 	dev_kfree_skb(skb);
 
 
-
---------------040006090109050808030602--
+--------------080502030207000009010206--

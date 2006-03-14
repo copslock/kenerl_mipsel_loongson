@@ -1,47 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2006 11:59:05 +0000 (GMT)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:22431 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S8133528AbWCNL6x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Mar 2006 11:58:53 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id k2ECEF4f001552;
-	Tue, 14 Mar 2006 12:14:15 GMT
-Received: (from alan@localhost)
-	by localhost.localdomain (8.13.4/8.13.4/Submit) id k2ECED1n001550;
-	Tue, 14 Mar 2006 12:14:13 GMT
-X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: BCM91x80A/B PCI DMA problems
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	Mark E Mason <mark.e.mason@broadcom.com>, linux-mips@linux-mips.org
-In-Reply-To: <20060314033439.GP29285@deprecation.cyrius.com>
-References: <7E000E7F06B05C49BDBB769ADAF44D07868120@NT-SJCA-0750.brcm.ad.broadcom.com>
-	 <20060314033439.GP29285@deprecation.cyrius.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Date:	Tue, 14 Mar 2006 12:14:12 +0000
-Message-Id: <1142338452.1510.1.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2006 12:32:04 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:24512 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133528AbWCNMb4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2006 12:31:56 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k2ECf0sM004621;
+	Tue, 14 Mar 2006 12:41:00 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k2ECf0KK004620;
+	Tue, 14 Mar 2006 12:41:00 GMT
+Date:	Tue, 14 Mar 2006 12:41:00 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	zhuzhenhua <zzh.hust@gmail.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: is there a way to read cp0_performance in user space?
+Message-ID: <20060314124100.GA4438@linux-mips.org>
+References: <50c9a2250603131856n61c75573w99b4e5f4e3bbce10@mail.gmail.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <50c9a2250603131856n61c75573w99b4e5f4e3bbce10@mail.gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10808
+X-archive-position: 10809
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Maw, 2006-03-14 at 03:34 +0000, Martin Michlmayr wrote:
-> Does this information help?  Also, we were wondering how to find out
-> whether a driver is okay with 64-bit dma addresses.
+On Tue, Mar 14, 2006 at 10:56:57AM +0800, zhuzhenhua wrote:
 
-All drivers set a PCI DMA mask. If the kernel is not bouncing buffers
-and ensuring the buffers are below the 32bit bus address limit by
-default then the architecture kernel code needs fixing. The drivers
-don't deal with this matter beyond setting their PCI DMA range mask.
+> to test my deocder program, i want read cp0_performance, is there a
+> way to do that in linux?
 
-Alan
+There is no interface to directly access the performance counter registers
+from an application as it is a priviledged CPU resource.  You can
+however use oprofile's kernel interfaces.
+
+  Ralf

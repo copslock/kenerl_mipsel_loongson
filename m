@@ -1,67 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2006 16:47:07 +0000 (GMT)
-Received: from mms3.broadcom.com ([216.31.210.19]:36619 "EHLO
-	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133603AbWCNQq7 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Mar 2006 16:46:59 +0000
-Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Tue, 14 Mar 2006 08:57:46 -0800
-X-Server-Uuid: B238DE4C-2139-4D32-96A8-DD564EF2313E
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- BF00B2AF; Tue, 14 Mar 2006 08:55:48 -0800 (PST)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 9A7F42AE; Tue, 14 Mar
- 2006 08:55:48 -0800 (PST)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.3a-GA) with ESMTP
- id DCE25737; Tue, 14 Mar 2006 08:55:48 -0800 (PST)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- F3CF920501; Tue, 14 Mar 2006 08:55:47 -0800 (PST)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Mar 2006 19:45:16 +0000 (GMT)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:49326 "EHLO
+	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
+	id S8133734AbWCNTpH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Mar 2006 19:45:07 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.13.4/8.13.4) with ESMTP id k2EK0XaQ003815;
+	Tue, 14 Mar 2006 20:00:33 GMT
+Received: (from alan@localhost)
+	by localhost.localdomain (8.13.4/8.13.4/Submit) id k2EK0Wx3003814;
+	Tue, 14 Mar 2006 20:00:32 GMT
+X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
 Subject: RE: BCM91x80A/B PCI DMA problems
-Date:	Tue, 14 Mar 2006 08:55:31 -0800
-Message-ID: <7E000E7F06B05C49BDBB769ADAF44D07868182@NT-SJCA-0750.brcm.ad.broadcom.com>
-Thread-Topic: BCM91x80A/B PCI DMA problems
-Thread-Index: AcZHX/ZufVEYAD+0S7OKc9dHk+WzCgAJ9W4w
-From:	"Mark E Mason" <mark.e.mason@broadcom.com>
-To:	"Alan Cox" <alan@lxorguk.ukuu.org.uk>,
-	"Martin Michlmayr" <tbm@cyrius.com>
-cc:	linux-mips@linux-mips.org
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006031405; IFV=2.0.6,4.0-7;
- RPD=4.00.0004;
- RPDID=303030312E30413039303230342E34343136463534332E303033312D412D;
- ENG=IBF; TS=20060314165750; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006031405_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 6808298036W6783102-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mark.e.mason@broadcom.com>
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Mark E Mason <mark.e.mason@broadcom.com>
+Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
+In-Reply-To: <7E000E7F06B05C49BDBB769ADAF44D07868182@NT-SJCA-0750.brcm.ad.broadcom.com>
+References: <7E000E7F06B05C49BDBB769ADAF44D07868182@NT-SJCA-0750.brcm.ad.broadcom.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Date:	Tue, 14 Mar 2006 20:00:28 +0000
+Message-Id: <1142366428.3623.12.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10813
+X-archive-position: 10814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.e.mason@broadcom.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hello Alan,
- 
-> All drivers set a PCI DMA mask. If the kernel is not bouncing 
-> buffers and ensuring the buffers are below the 32bit bus 
-> address limit by default then the architecture kernel code 
-> needs fixing. The drivers don't deal with this matter beyond 
-> setting their PCI DMA range mask.
+On Maw, 2006-03-14 at 08:55 -0800, Mark E Mason wrote:
+> > needs fixing. The drivers don't deal with this matter beyond 
+> > setting their PCI DMA range mask.
+> 
+> Thanks!
+> 
+> I'm not that familiar with all parts of the Linux kernel.  What should I
+> be looking for in order to find the relevant bits in the arch-port code?
 
-Thanks!
+At the heart of it you need to look at the PCI DMA API. 
 
-I'm not that familiar with all parts of the Linux kernel.  What should I
-be looking for in order to find the relevant bits in the arch-port code?
+[Documentation/DMA-mapping.txt]
 
-Thanks,
-Mark
+Linux uses three kinds of address: virtual and physical are the usual
+expected CPU view, bus is the view from the I/O side. On most platforms
+physical == bus but not all.
+
+These are mapped onto the dma_* functions of the same name for most
+platforms (see include/asm-generic/pci-dma-compat.h) but need not be.
+The allocators then grab memory from the right memory pool (16Mb, 32bit,
+highmem ..).
+
+For mapping of pages this isn't so simple as the page might be above the
+DMA limit of a device. dma_map_* gives you the bus address of a
+something relative to the device. This is arch implemented and can
+return an address out of the device range.
+
+For a block device that is misbehaving you want to check
+
+1. That the DMA allocations done by the driver (eg the IDE PRD) are
+coming in below 4GB as expected
+
+2. Take a look then at block/ll_rw_blk.c which deals with the block
+layer. Dump the calls to blk_queue_block_limit and make sure the things
+it does are looking sane. 
+
+3. Take a look at what is going on in blk_rq_map_sg which deals with
+mapping scatter gather lists to the device, while handling the bounce
+limits. (dma_unmap_sg is the clean up end of this)
+
+4. This lot then gets used by ide_build_sglist in drivers/ide/ide-dma.c
+and the related ide_build_dmatable function. These might also be worth
+dropping debug into to see what is cooking.
+
+Alan

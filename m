@@ -1,47 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2006 07:33:41 +0000 (GMT)
-Received: from zproxy.gmail.com ([64.233.162.200]:4283 "EHLO zproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8127173AbWCPHdd convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Mar 2006 07:33:33 +0000
-Received: by zproxy.gmail.com with SMTP id l8so315240nzf
-        for <linux-mips@linux-mips.org>; Wed, 15 Mar 2006 23:42:47 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=lebpyRzEtUPa9gpzsFjNZosOkv+f40O2VBhjom0grF99zqrvFnMUyPAUFvTJNpcDWdTnex0dJA5R5XarETMJAlmml1f99CAd73I4F5GymFm7gp/xnayf1DB2bKpSxce7wU16BksjG9c357fvYbnWYJiJvbLZejdZUUzJ2DZOAHU=
-Received: by 10.36.221.24 with SMTP id t24mr726242nzg;
-        Wed, 15 Mar 2006 23:42:47 -0800 (PST)
-Received: by 10.36.49.14 with HTTP; Wed, 15 Mar 2006 23:42:47 -0800 (PST)
-Message-ID: <cda58cb80603152342wcf14e48n@mail.gmail.com>
-Date:	Thu, 16 Mar 2006 08:42:47 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	zhuzhenhua <zzh.hust@gmail.com>
-Subject: Re: how to use telnetd of busybox
-Cc:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <50c9a2250603152248s4e0343ccwfb44f9ad30300f67@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2006 14:02:55 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:41735 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S8133710AbWCPOCo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Mar 2006 14:02:44 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 63DD664D3D; Thu, 16 Mar 2006 14:11:57 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 257EA66ED5; Thu, 16 Mar 2006 14:11:27 +0000 (GMT)
+Date:	Thu, 16 Mar 2006 14:11:27 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: [MIPS] Sibyte: Fix race in sb1250_gettimeoffset().
+Message-ID: <20060316141127.GS25322@deprecation.cyrius.com>
+References: <S8133620AbWCPM6I/20060316125808Z+139@ftp.linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <50c9a2250603152248s4e0343ccwfb44f9ad30300f67@mail.gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <S8133620AbWCPM6I/20060316125808Z+139@ftp.linux-mips.org>
+User-Agent: Mutt/1.5.11+cvs20060126
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10819
+X-archive-position: 10820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-2006/3/16, zhuzhenhua <zzh.hust@gmail.com>:
->
-> do i miss something? maybe need any other service for telnetd?
->
+* linux-mips@linux-mips.org <linux-mips@linux-mips.org> [2006-03-16 12:57]:
+> Commit: 186326fa1e0360450b927ee5b21fb8db028fe7ba
+> 
+> +void __init swarm_time_init(void)
+> +{
+> +	/* Setup HPT */
+> +	sb1250_hpt_setup();
+> +}
 
-Did you enable pty support in your kernel ?
+This leads to compiler errors on 1480 because sb1250_hpt_setup() is
+not defined.  We need something like the patch below (or possibly a
+proper fix?):
 
---
-               Franck
+
+[MIPS] don't call sb1250_hpt_setup on 1480
+
+sb1250_hpt_setup() should not be called on the 1480 board since it's
+note defined there, leading to a linking error.
+
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
+
+
+diff --git a/arch/mips/sibyte/swarm/setup.c b/arch/mips/sibyte/swarm/setup.c
+index b661d24..4a93f1d 100644
+--- a/arch/mips/sibyte/swarm/setup.c
++++ b/arch/mips/sibyte/swarm/setup.c
+@@ -72,8 +72,10 @@ const char *get_system_type(void)
+ 
+ void __init swarm_time_init(void)
+ {
++#if defined(CONFIG_SIBYTE_SB1250) || defined(CONFIG_SIBYTE_BCM112X)
+ 	/* Setup HPT */
+ 	sb1250_hpt_setup();
++#endif
+ }
+ 
+ void __init swarm_timer_setup(struct irqaction *irq)
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

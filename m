@@ -1,46 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 14:47:45 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:2177 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133519AbWCQOrh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Mar 2006 14:47:37 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k2HEv0jl009573;
-	Fri, 17 Mar 2006 14:57:00 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k2HEuvuD009572;
-	Fri, 17 Mar 2006 14:56:57 GMT
-Date:	Fri, 17 Mar 2006 14:56:57 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Steve Lazaridis <slaz@fortresstech.com>
-Cc:	oprofile-list@lists.sourceforge.net, linux-mips@linux-mips.org
-Subject: Re: au1550 oprofile
-Message-ID: <20060317145657.GD3771@linux-mips.org>
-References: <441A1D53.6080305@fortresstech.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 16:18:19 +0000 (GMT)
+Received: from amdext4.amd.com ([163.181.251.6]:19408 "EHLO amdext4.amd.com")
+	by ftp.linux-mips.org with ESMTP id S8133525AbWCQQSH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Mar 2006 16:18:07 +0000
+Received: from SAUSGW02.amd.com (sausgw02.amd.com [163.181.250.22])
+	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k2HGPpeT015693;
+	Fri, 17 Mar 2006 10:27:23 -0600
+Received: from 163.181.22.101 by SAUSGW02.amd.com with ESMTP (AMD SMTP
+ Relay (Email Firewall v6.1.0)); Fri, 17 Mar 2006 10:27:15 -0600
+X-Server-Uuid: 5FC0E2DF-CD44-48CD-883A-0ED95B391E89
+Received: from ldcmail.amd.com ([147.5.200.40]) by sausexbh1.amd.com
+ with Microsoft SMTPSVC(6.0.3790.0); Fri, 17 Mar 2006 08:27:13 -0800
+Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
+ ldcmail.amd.com (Postfix) with ESMTP id 8F9732028; Fri, 17 Mar 2006
+ 09:27:13 -0700 (MST)
+Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
+ (8.13.4/8.13.4) with ESMTP id k2HGc7jW003893; Fri, 17 Mar 2006 09:38:07
+ -0700
+Received: (from jcrouse@localhost) by cosmic.amd.com (
+ 8.13.4/8.13.4/Submit) id k2HGc6Wc003892; Fri, 17 Mar 2006 09:38:06
+ -0700
+Date:	Fri, 17 Mar 2006 09:38:06 -0700
+From:	"Jordan Crouse" <jordan.crouse@amd.com>
+To:	"elmar gerdes" <elmar.gerdes@engel-kg.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: au1000_tx_timeout and promiscuous mode
+Message-ID: <20060317163806.GA3679@cosmic.amd.com>
+References: <20060317010227.GA16575@engel-kg.com>
+MIME-Version: 1.0
+In-Reply-To: <20060317010227.GA16575@engel-kg.com>
+User-Agent: Mutt/1.5.11
+X-OriginalArrivalTime: 17 Mar 2006 16:27:14.0083 (UTC)
+ FILETIME=[A6284730:01C649DF]
+X-WSS-ID: 68043CE81VK9489160-03-01
+Content-Type: text/plain;
+ charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <441A1D53.6080305@fortresstech.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Return-Path: <jcrouse@cosmic.amd.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10834
+X-archive-position: 10835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jordan.crouse@amd.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 16, 2006 at 09:22:11PM -0500, Steve Lazaridis wrote:
-
-> Has anyone successfully ran oprofile on an au1550?
-> If so, was it in BigEndian mode?
+On 17/03/06 02:02 +0100, elmar gerdes wrote:
 > 
-> Are there any known issues with oprofile on au1xxx platforms?
+> hi folks,
 
-Alchemy processors don't implement performance counters, so there are
-by definition no issues ;-)  That unfortunately means you're stuck
-with timer mode.
+Greetings Elmar.
 
-  Ralf
+> @@ -2070,6 +2070,7 @@
+>  	printk(KERN_ERR "%s: au1000_tx_timeout: dev=%p\n", dev->name, dev);
+>  	reset_mac(dev);
+>  	au1000_init(dev);
+> +	set_rx_mode(dev);	// EG 2006-03-15: set promiscuous mode
+>  	dev->trans_start = jiffies;
+>  	netif_wake_queue(dev);
+
+I would move the comment to the previous line, use standard /* */ notation,
+and your name and the date isn't really needed, as that information will
+be stored in the GIT log.
+
+Also, don't forget your Signed-off-by line and a short description of the
+patch for posterity.
+
+Other then that, I have no problems with the bug - unless Pete wants to
+object, I think you should send the fixed-up patch to netdev@vger.kernel.org 
+and CC this list. 
+
+Regards,
+Jordan
+
+--
+Jordan Crouse
+Senior Linux Engineer
+AMD - Personal Connectivity Solutions Group
+<www.amd.com/embeddedprocessors>

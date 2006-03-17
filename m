@@ -1,47 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Mar 2006 14:05:53 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:44551 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133710AbWCPOFp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Mar 2006 14:05:45 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 5507C64D3D; Thu, 16 Mar 2006 14:15:01 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 7F36A66ED5; Thu, 16 Mar 2006 14:14:47 +0000 (GMT)
-Date:	Thu, 16 Mar 2006 14:14:47 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Sibyte: Fix race in sb1250_gettimeoffset().
-Message-ID: <20060316141447.GV25322@deprecation.cyrius.com>
-References: <S8133620AbWCPM6I/20060316125808Z+139@ftp.linux-mips.org> <20060316141127.GS25322@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 00:45:17 +0000 (GMT)
+Received: from nproxy.gmail.com ([64.233.182.206]:50325 "EHLO nproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133445AbWCQApJ convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 17 Mar 2006 00:45:09 +0000
+Received: by nproxy.gmail.com with SMTP id i2so355038nfe
+        for <linux-mips@linux-mips.org>; Thu, 16 Mar 2006 16:54:26 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=VJhPKkV8+e/qFZmfJ1VrV3//FZ3KICft9OkoiUd4jbme7eskqs9rrGk/i01XEwcVVMcwo9FeG5frR3/bIDDlLjZRbqGhmYmj7NwqhpAFjczMHtPkAbh/e/co5vnOfW9phhz0Y3qyr0ka5qllVqSExc94Wj8e1bEJEk1veEKtHyY=
+Received: by 10.48.224.18 with SMTP id w18mr1119915nfg;
+        Thu, 16 Mar 2006 16:54:25 -0800 (PST)
+Received: by 10.48.144.19 with HTTP; Thu, 16 Mar 2006 16:54:25 -0800 (PST)
+Message-ID: <50c9a2250603161654u52f6f5dbkddbc582bdc58b942@mail.gmail.com>
+Date:	Fri, 17 Mar 2006 08:54:25 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+Subject: Re: how to use telnetd of busybox
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <cda58cb80603152342wcf14e48n@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20060316141127.GS25322@deprecation.cyrius.com>
-User-Agent: Mutt/1.5.11+cvs20060126
-Return-Path: <tbm@cyrius.com>
+References: <50c9a2250603152248s4e0343ccwfb44f9ad30300f67@mail.gmail.com>
+	 <cda58cb80603152342wcf14e48n@mail.gmail.com>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10821
+X-archive-position: 10822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-* Martin Michlmayr <tbm@cyrius.com> [2006-03-16 14:11]:
-> This leads to compiler errors on 1480 because sb1250_hpt_setup() is
+On 3/16/06, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> 2006/3/16, zhuzhenhua <zzh.hust@gmail.com>:
+> >
+> > do i miss something? maybe need any other service for telnetd?
+> >
+>
+> Did you enable pty support in your kernel ?
+i add the pty support both in kernel and busybox
 
-linker
-
-> [MIPS] don't call sb1250_hpt_setup on 1480
-> 
-> sb1250_hpt_setup() should not be called on the 1480 board since it's
-> note defined there, leading to a linking error.
-
-s/note/not/
-
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+>
+> --
+>                Franck
+>

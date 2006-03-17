@@ -1,239 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 12:09:55 +0000 (GMT)
-Received: from twilight.cs.hut.fi ([130.233.40.5]:10922 "EHLO
-	twilight.cs.hut.fi") by ftp.linux-mips.org with ESMTP
-	id S8133397AbWCQMJq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Mar 2006 12:09:46 +0000
-Received: by twilight.cs.hut.fi (Postfix, from userid 60001)
-	id 4BDF23013; Fri, 17 Mar 2006 14:19:02 +0200 (EET)
-Received: from kekkonen.cs.hut.fi (kekkonen.cs.hut.fi [130.233.41.50])
-	by twilight.cs.hut.fi (Postfix) with ESMTP id 9DF8B2FED
-	for <linux-mips@linux-mips.org>; Fri, 17 Mar 2006 14:19:01 +0200 (EET)
-Received: (from tmnousia@localhost)
-	by kekkonen.cs.hut.fi (8.11.7p1+Sun/8.10.2) id k2HCJ0912160;
-	Fri, 17 Mar 2006 14:19:00 +0200 (EET)
-Date:	Fri, 17 Mar 2006 14:19:00 +0200 (EET)
-From:	turja@mbnet.fi
-X-X-Sender: tmnousia@kekkonen.cs.hut.fi
-Reply-To: turja@mbnet.fi
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] SGI VINO driver 64-bit fix / V4L ioctl compatibility layer
- needs fixes
-Message-ID: <Pine.GSO.4.58.0603171412170.11482@kekkonen.cs.hut.fi>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="-559023410-851401618-1142597940=:11482"
-Return-Path: <tmnousia@twilight.cs.hut.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 13:09:37 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:42686 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133395AbWCQNJ3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Mar 2006 13:09:29 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k2HDIpwn004937;
+	Fri, 17 Mar 2006 13:18:51 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k2HDIoTF004935;
+	Fri, 17 Mar 2006 13:18:50 GMT
+Date:	Fri, 17 Mar 2006 13:18:50 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Vadivelan@soc-soft.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Init not working in 64-bit kernel
+Message-ID: <20060317131850.GA3771@linux-mips.org>
+References: <4BF47D56A0DD2346A1B8D622C5C5902C01524CFE@soc-mail.soc-soft.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4BF47D56A0DD2346A1B8D622C5C5902C01524CFE@soc-mail.soc-soft.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10829
+X-archive-position: 10830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: turja@mbnet.fi
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-  Send mail to mime@docserver.cac.washington.edu for more info.
+On Fri, Mar 17, 2006 at 03:36:50PM +0530, Vadivelan@soc-soft.com wrote:
 
----559023410-851401618-1142597940=:11482
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+> 	I'm porting a 64-bit linux kernel provided for a mips4
+> architecture to a mips3 target board. The existing NFS root file system
+> has been compiled for a 64-bit mips4 architecture.
+> If I mount this file system, the init does not run.
+> After mounting the filesystem, I get the following messages and the
+> kernel hangs.
+> 
+> -------------------------------------------------
+> Looking up port of RPC 100003/2 on 192.168.5.93
+> Looking up port of RPC 100005/1 on 192.168.5.93
+> VFS: Mounted root (nfs filesystem).
+> Freeing unused kernel memory: 132k freed
 
-This patch should fix problems with VINO drivers when using a 64-bit
-kernel.
+That's a rather generic kind of death uppon entry of userspace sympthom,
+so I cannot really give alot of advice other than below:
 
-There are also other bugs which prevent V4L drivers from functioning
-correctly when using 32-bit userland with a 64-bit kernel as the ioctl
-compatibility layer (in drivers/media/video/compat_ioctl32.c) doesn't seem
-to handle VIDIOC_CROPCAP. I'm not sure if any other ioctls are missing.
+> I also tried to mount a 32-bit working NFS root filesystem.
+> Still I get the same problem. I thought 32-bit binaries will execute
+> fine in 64-bit kernel.
 
+They do - but you need to enable 32-bit compatibility:
 
-Mikael Nousiainen
----559023410-851401618-1142597940=:11482
-Content-Type: TEXT/PLAIN; charset=US-ASCII; name="vino-64-bit-fix-kernel.diff"
-Content-Transfer-Encoding: BASE64
-Content-ID: <Pine.GSO.4.58.0603171419000.11482@kekkonen.cs.hut.fi>
-Content-Description: 
-Content-Disposition: attachment; filename="vino-64-bit-fix-kernel.diff"
+CONFIG_MIPS32_COMPAT=y
+CONFIG_MIPS32_O32=y
 
-ZGlmZiAtdXJOIGEvZHJpdmVycy9tZWRpYS92aWRlby9pbmR5Y2FtLmMgYi9k
-cml2ZXJzL21lZGlhL3ZpZGVvL2luZHljYW0uYw0KLS0tIGEvZHJpdmVycy9t
-ZWRpYS92aWRlby9pbmR5Y2FtLmMJMjAwNi0wMy0xNyAxNDowNDo0Mi4wMDAw
-MDAwMDAgKzAyMDANCisrKyBiL2RyaXZlcnMvbWVkaWEvdmlkZW8vaW5keWNh
-bS5jCTIwMDYtMDMtMTcgMTQ6MDQ6NTUuMDAwMDAwMDAwICswMjAwDQpAQCAt
-Miw3ICsyLDcgQEANCiAgKiAgaW5keWNhbS5jIC0gU2lsaWNvbiBHcmFwaGlj
-cyBJbmR5Q2FtIGRpZ2l0YWwgY2FtZXJhIGRyaXZlcg0KICAqDQogICogIENv
-cHlyaWdodCAoQykgMjAwMyBMYWRpc2xhdiBNaWNobCA8bGFkaXNAbGludXgt
-bWlwcy5vcmc+DQotICogIENvcHlyaWdodCAoQykgMjAwNCwyMDA1IE1pa2Fl
-bCBOb3VzaWFpbmVuIDx0bW5vdXNpYUBjYy5odXQuZmk+DQorICogIENvcHly
-aWdodCAoQykgMjAwNCwyMDA1LDIwMDYgTWlrYWVsIE5vdXNpYWluZW4gPHRt
-bm91c2lhQGNjLmh1dC5maT4NCiAgKg0KICAqICBUaGlzIHByb2dyYW0gaXMg
-ZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29y
-IG1vZGlmeQ0KICAqICBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBH
-ZW5lcmFsIFB1YmxpYyBMaWNlbnNlIHZlcnNpb24gMiBhcw0KQEAgLTI3LDcg
-KzI3LDcgQEANCiANCiAjaW5jbHVkZSAiaW5keWNhbS5oIg0KIA0KLSNkZWZp
-bmUgSU5EWUNBTV9NT0RVTEVfVkVSU0lPTiAiMC4wLjUiDQorI2RlZmluZSBJ
-TkRZQ0FNX01PRFVMRV9WRVJTSU9OICIwLjAuNiINCiANCiBNT0RVTEVfREVT
-Q1JJUFRJT04oIlNHSSBJbmR5Q2FtIGRyaXZlciIpOw0KIE1PRFVMRV9WRVJT
-SU9OKElORFlDQU1fTU9EVUxFX1ZFUlNJT04pOw0KZGlmZiAtdXJOIGEvZHJp
-dmVycy9tZWRpYS92aWRlby9zYWE3MTkxLmMgYi9kcml2ZXJzL21lZGlhL3Zp
-ZGVvL3NhYTcxOTEuYw0KLS0tIGEvZHJpdmVycy9tZWRpYS92aWRlby9zYWE3
-MTkxLmMJMjAwNi0wMy0xNyAxNDowNDo0Mi4wMDAwMDAwMDAgKzAyMDANCisr
-KyBiL2RyaXZlcnMvbWVkaWEvdmlkZW8vc2FhNzE5MS5jCTIwMDYtMDMtMTcg
-MTQ6MDQ6NTUuMDAwMDAwMDAwICswMjAwDQpAQCAtMiw3ICsyLDcgQEANCiAg
-KiAgc2FhNzE5MS5jIC0gUGhpbGlwcyBTQUE3MTkxIHZpZGVvIGRlY29kZXIg
-ZHJpdmVyDQogICoNCiAgKiAgQ29weXJpZ2h0IChDKSAyMDAzIExhZGlzbGF2
-IE1pY2hsIDxsYWRpc0BsaW51eC1taXBzLm9yZz4NCi0gKiAgQ29weXJpZ2h0
-IChDKSAyMDA0LDIwMDUgTWlrYWVsIE5vdXNpYWluZW4gPHRtbm91c2lhQGNj
-Lmh1dC5maT4NCisgKiAgQ29weXJpZ2h0IChDKSAyMDA0LDIwMDUsMjAwNiBN
-aWthZWwgTm91c2lhaW5lbiA8dG1ub3VzaWFAY2MuaHV0LmZpPg0KICAqDQog
-ICogIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJl
-ZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5DQogICogIGl0IHVuZGVyIHRo
-ZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVy
-c2lvbiAyIGFzDQpAQCAtMjYsNyArMjYsNyBAQA0KIA0KICNpbmNsdWRlICJz
-YWE3MTkxLmgiDQogDQotI2RlZmluZSBTQUE3MTkxX01PRFVMRV9WRVJTSU9O
-CSIwLjAuNSINCisjZGVmaW5lIFNBQTcxOTFfTU9EVUxFX1ZFUlNJT04JIjAu
-MC42Ig0KIA0KIE1PRFVMRV9ERVNDUklQVElPTigiUGhpbGlwcyBTQUE3MTkx
-IHZpZGVvIGRlY29kZXIgZHJpdmVyIik7DQogTU9EVUxFX1ZFUlNJT04oU0FB
-NzE5MV9NT0RVTEVfVkVSU0lPTik7DQpkaWZmIC11ck4gYS9kcml2ZXJzL21l
-ZGlhL3ZpZGVvL3Zpbm8uYyBiL2RyaXZlcnMvbWVkaWEvdmlkZW8vdmluby5j
-DQotLS0gYS9kcml2ZXJzL21lZGlhL3ZpZGVvL3Zpbm8uYwkyMDA2LTAzLTE3
-IDE0OjA0OjQyLjAwMDAwMDAwMCArMDIwMA0KKysrIGIvZHJpdmVycy9tZWRp
-YS92aWRlby92aW5vLmMJMjAwNi0wMy0xNyAxNDowNDo1NS4wMDAwMDAwMDAg
-KzAyMDANCkBAIC00LDcgKzQsNyBAQA0KICAqIFRoaXMgZmlsZSBpcyBzdWJq
-ZWN0IHRvIHRoZSB0ZXJtcyBhbmQgY29uZGl0aW9ucyBvZiB0aGUgR05VIEdl
-bmVyYWwgUHVibGljDQogICogTGljZW5zZSB2ZXJzaW9uIDIgYXMgcHVibGlz
-aGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24uDQogICoNCi0g
-KiBDb3B5cmlnaHQgKEMpIDIwMDQsMjAwNSBNaWthZWwgTm91c2lhaW5lbiA8
-dG1ub3VzaWFAY2MuaHV0LmZpPg0KKyAqIENvcHlyaWdodCAoQykgMjAwNCwy
-MDA1LDIwMDYgTWlrYWVsIE5vdXNpYWluZW4gPHRtbm91c2lhQGNjLmh1dC5m
-aT4NCiAgKg0KICAqIEJhc2VkIG9uIHRoZSBwcmV2aW91cyB2ZXJzaW9uIG9m
-IHRoZSBkcml2ZXIgZm9yIDIuNCBrZXJuZWxzIGJ5Og0KICAqIENvcHlyaWdo
-dCAoQykgMjAwMyBMYWRpc2xhdiBNaWNobCA8bGFkaXNAbGludXgtbWlwcy5v
-cmc+DQpAQCAtNTgsOCArNTgsOCBAQA0KIC8vICNkZWZpbmUgVklOT19ERUJV
-Rw0KIC8vICNkZWZpbmUgVklOT19ERUJVR19JTlQNCiANCi0jZGVmaW5lIFZJ
-Tk9fTU9EVUxFX1ZFUlNJT04gIjAuMC41Ig0KLSNkZWZpbmUgVklOT19WRVJT
-SU9OX0NPREUgS0VSTkVMX1ZFUlNJT04oMCwgMCwgNSkNCisjZGVmaW5lIFZJ
-Tk9fTU9EVUxFX1ZFUlNJT04gIjAuMC42Ig0KKyNkZWZpbmUgVklOT19WRVJT
-SU9OX0NPREUgS0VSTkVMX1ZFUlNJT04oMCwgMCwgNikNCiANCiBNT0RVTEVf
-REVTQ1JJUFRJT04oIlNHSSBWSU5PIFZpZGVvNExpbnV4MiBkcml2ZXIiKTsN
-CiBNT0RVTEVfVkVSU0lPTihWSU5PX01PRFVMRV9WRVJTSU9OKTsNCkBAIC0x
-NTAsNiArMTUwLDkgQEANCiANCiAvKiBJbnRlcm5hbCBkYXRhIHN0cnVjdHVy
-ZSBkZWZpbml0aW9ucyAqLw0KIA0KKy8qIERNQSBhZGRyZXNzZXMgaW4gVklO
-TyBkZXNjcmlwdG9yIHRhYmxlIGFyZSBhbHdheXMgMzItYml0ICovDQordHlw
-ZWRlZiB1MzIgdmlub19kbWFfYWRkcl90Ow0KKw0KIHN0cnVjdCB2aW5vX2lu
-cHV0IHsNCiAJY2hhciAqbmFtZTsNCiAJdjRsMl9zdGRfaWQgc3RkOw0KQEAg
-LTE5MCw3ICsxOTMsNyBAQA0KIA0KIAkvKiBjcHUgYWRkcmVzcyBmb3IgdGhl
-IFZJTk8gZGVzY3JpcHRvciB0YWJsZQ0KIAkgKiAoY29udGFpbnMgRE1BIGFk
-ZHJlc3NlcywgVklOT19QQUdFX1NJWkUgY2h1bmtzKSAqLw0KLQl1bnNpZ25l
-ZCBsb25nICpkbWFfY3B1Ow0KKwl2aW5vX2RtYV9hZGRyX3QgKmRtYV9jcHU7
-DQogCS8qIGRtYSBhZGRyZXNzIGZvciB0aGUgVklOTyBkZXNjcmlwdG9yIHRh
-YmxlDQogCSAqIChjb250YWlucyBETUEgYWRkcmVzc2VzLCBWSU5PX1BBR0Vf
-U0laRSBjaHVua3MpICovDQogCWRtYV9hZGRyX3QgZG1hOw0KQEAgLTgxNyw3
-ICs4MjAsNyBAQA0KIA0KIAlkbWFfZnJlZV9jb2hlcmVudChOVUxMLA0KIAkJ
-CSAgVklOT19QQUdFX1JBVElPICogKGZiLT5kZXNjX3RhYmxlLnBhZ2VfY291
-bnQgKyA0KSAqDQotCQkJICBzaXplb2YoZG1hX2FkZHJfdCksICh2b2lkICop
-ZmItPmRlc2NfdGFibGUuZG1hX2NwdSwNCisJCQkgIHNpemVvZih2aW5vX2Rt
-YV9hZGRyX3QpLCAodm9pZCAqKWZiLT5kZXNjX3RhYmxlLmRtYV9jcHUsDQog
-CQkJICBmYi0+ZGVzY190YWJsZS5kbWEpOw0KIAlrZnJlZShmYi0+ZGVzY190
-YWJsZS52aXJ0dWFsKTsNCiANCkBAIC04NTcsNyArODYwLDcgQEANCiAJICog
-KGhhcyBzcGFjZSBmb3IgZm91ciBleHRyYSBkZXNjcmlwdG9ycykgKi8NCiAJ
-ZmItPmRlc2NfdGFibGUuZG1hX2NwdSA9DQogCQlkbWFfYWxsb2NfY29oZXJl
-bnQoTlVMTCwgVklOT19QQUdFX1JBVElPICogKGNvdW50ICsgNCkgKg0KLQkJ
-CQkgICBzaXplb2YoZG1hX2FkZHJfdCksICZmYi0+ZGVzY190YWJsZS5kbWEs
-DQorCQkJCSAgIHNpemVvZih2aW5vX2RtYV9hZGRyX3QpLCAmZmItPmRlc2Nf
-dGFibGUuZG1hLA0KIAkJCQkgICBHRlBfS0VSTkVMIHwgR0ZQX0RNQSk7DQog
-CWlmICghZmItPmRlc2NfdGFibGUuZG1hX2NwdSkgew0KIAkJcmV0ID0gLUVO
-T01FTTsNCkBAIC05MTMsOTMgKzkxNiw2IEBADQogCXJldHVybiByZXQ7DQog
-fQ0KIA0KLSNpZiAwDQotLyogdXNlciBidWZmZXJzIG5vdCBmdWxseSBpbXBs
-ZW1lbnRlZCB5ZXQgKi8NCi1zdGF0aWMgaW50IHZpbm9fcHJlcGFyZV91c2Vy
-X2J1ZmZlcihzdHJ1Y3Qgdmlub19mcmFtZWJ1ZmZlciAqZmIsDQotCQkJCSAg
-ICAgdm9pZCAqdXNlciwNCi0JCQkJICAgICB1bnNpZ25lZCBpbnQgc2l6ZSkN
-Ci17DQotCXVuc2lnbmVkIGludCBjb3VudCwgaSwgajsNCi0JaW50IHJldCA9
-IDA7DQotDQotCWRwcmludGsoInZpbm9fcHJlcGFyZV91c2VyX2J1ZmZlcigp
-OlxuIik7DQotDQotCWlmIChzaXplIDwgMSkNCi0JCXJldHVybiAtRUlOVkFM
-Ow0KLQ0KLQltZW1zZXQoZmIsIDAsIHNpemVvZihzdHJ1Y3Qgdmlub19mcmFt
-ZWJ1ZmZlcikpOw0KLQ0KLQljb3VudCA9ICgoc2l6ZSAvIFBBR0VfU0laRSkp
-ICYgfjM7DQotDQotCWRwcmludGsoInZpbm9fcHJlcGFyZV91c2VyX2J1ZmZl
-cigpOiBzaXplID0gJWQsIGNvdW50ID0gJWRcbiIsDQotCQlzaXplLCBjb3Vu
-dCk7DQotDQotCS8qIGFsbG9jYXRlIG1lbW9yeSBmb3IgdGFibGUgd2l0aCB2
-aXJ0dWFsIChwYWdlKSBhZGRyZXNzZXMgKi8NCi0JZmItPmRlc2NfdGFibGUu
-dmlydHVhbCA9ICh1bnNpZ25lZCBsb25nICopDQotCQlrbWFsbG9jKGNvdW50
-ICogc2l6ZW9mKHVuc2lnbmVkIGxvbmcpLCBHRlBfS0VSTkVMKTsNCi0JaWYg
-KCFmYi0+ZGVzY190YWJsZS52aXJ0dWFsKQ0KLQkJcmV0dXJuIC1FTk9NRU07
-DQotDQotCS8qIGFsbG9jYXRlIG1lbW9yeSBmb3IgdGFibGUgd2l0aCBkbWEg
-YWRkcmVzc2VzDQotCSAqIChoYXMgc3BhY2UgZm9yIGZvdXIgZXh0cmEgZGVz
-Y3JpcHRvcnMpICovDQotCWZiLT5kZXNjX3RhYmxlLmRtYV9jcHUgPQ0KLQkJ
-ZG1hX2FsbG9jX2NvaGVyZW50KE5VTEwsIFZJTk9fUEFHRV9SQVRJTyAqIChj
-b3VudCArIDQpICoNCi0JCQkJICAgc2l6ZW9mKGRtYV9hZGRyX3QpLCAmZmIt
-PmRlc2NfdGFibGUuZG1hLA0KLQkJCQkgICBHRlBfS0VSTkVMIHwgR0ZQX0RN
-QSk7DQotCWlmICghZmItPmRlc2NfdGFibGUuZG1hX2NwdSkgew0KLQkJcmV0
-ID0gLUVOT01FTTsNCi0JCWdvdG8gb3V0X2ZyZWVfdmlydHVhbDsNCi0JfQ0K
-LQ0KLQkvKiBhbGxvY2F0ZSBwYWdlcyBmb3IgdGhlIGJ1ZmZlciBhbmQgYWNx
-dWlyZSB0aGUgYWNjb3JkaW5nDQotCSAqIGRtYSBhZGRyZXNzZXMgKi8NCi0J
-Zm9yIChpID0gMDsgaSA8IGNvdW50OyBpKyspIHsNCi0JCWRtYV9hZGRyX3Qg
-ZG1hX2RhdGFfYWRkcjsNCi0NCi0JCWZiLT5kZXNjX3RhYmxlLnZpcnR1YWxb
-aV0gPQ0KLQkJCWdldF96ZXJvZWRfcGFnZShHRlBfS0VSTkVMIHwgR0ZQX0RN
-QSk7DQotCQlpZiAoIWZiLT5kZXNjX3RhYmxlLnZpcnR1YWxbaV0pIHsNCi0J
-CQlyZXQgPSAtRU5PQlVGUzsNCi0JCQlicmVhazsNCi0JCX0NCi0NCi0JCWRt
-YV9kYXRhX2FkZHIgPQ0KLQkJCWRtYV9tYXBfc2luZ2xlKE5VTEwsDQotCQkJ
-CSAgICAgICAodm9pZCAqKWZiLT5kZXNjX3RhYmxlLnZpcnR1YWxbaV0sDQot
-CQkJCSAgICAgICBQQUdFX1NJWkUsIERNQV9GUk9NX0RFVklDRSk7DQotDQot
-CQlmb3IgKGogPSAwOyBqIDwgVklOT19QQUdFX1JBVElPOyBqKyspIHsNCi0J
-CQlmYi0+ZGVzY190YWJsZS5kbWFfY3B1W1ZJTk9fUEFHRV9SQVRJTyAqIGkg
-KyBqXSA9DQotCQkJCWRtYV9kYXRhX2FkZHIgKyBWSU5PX1BBR0VfU0laRSAq
-IGo7DQotCQl9DQotDQotCQlTZXRQYWdlUmVzZXJ2ZWQodmlydF90b19wYWdl
-KGZiLT5kZXNjX3RhYmxlLnZpcnR1YWxbaV0pKTsNCi0JfQ0KLQ0KLQkvKiBw
-YWdlX2NvdW50IG5lZWRzIHRvIGJlIHNldCBhbnl3YXksIGJlY2F1c2UgdGhl
-IGRlc2NyaXB0b3IgdGFibGUgaGFzDQotCSAqIGJlZW4gYWxsb2NhdGVkIGFj
-Y29yZGluZyB0byB0aGlzIG51bWJlciAqLw0KLQlmYi0+ZGVzY190YWJsZS5w
-YWdlX2NvdW50ID0gY291bnQ7DQotDQotCWlmIChyZXQpIHsNCi0JCS8qIHRo
-ZSBkZXNjcmlwdG9yIHdpdGggaW5kZXggaSBkb2Vzbid0IGNvbnRhaW4NCi0J
-CSAqIGEgdmFsaWQgYWRkcmVzcyB5ZXQgKi8NCi0JCXZpbm9fZnJlZV9idWZm
-ZXJfd2l0aF9jb3VudChmYiwgaSk7DQotCQlyZXR1cm4gcmV0Ow0KLQl9DQot
-DQotCS8vZmItPnNpemUgPSBzaXplOw0KLQlmYi0+c2l6ZSA9IGNvdW50ICog
-UEFHRV9TSVpFOw0KLQ0KLQkvKiBzZXQgdGhlIGRtYSBzdG9wLWJpdCBmb3Ig
-dGhlIGxhc3QgKGNvdW50KzEpdGggZGVzY3JpcHRvciAqLw0KLQlmYi0+ZGVz
-Y190YWJsZS5kbWFfY3B1W1ZJTk9fUEFHRV9SQVRJTyAqIGNvdW50XSA9IFZJ
-Tk9fREVTQ19TVE9QOw0KLQlyZXR1cm4gMDsNCi0NCi0gb3V0X2ZyZWVfdmly
-dHVhbDoNCi0Ja2ZyZWUoZmItPmRlc2NfdGFibGUudmlydHVhbCk7DQotCXJl
-dHVybiByZXQ7DQotfQ0KLSNlbmRpZg0KLQ0KIHN0YXRpYyB2b2lkIHZpbm9f
-c3luY19idWZmZXIoc3RydWN0IHZpbm9fZnJhbWVidWZmZXIgKmZiKQ0KIHsN
-CiAJaW50IGk7DQpAQCAtNDM5NCw2ICs0MzEwLDcgQEANCiAJLm9wZW4JCT0g
-dmlub19vcGVuLA0KIAkucmVsZWFzZQk9IHZpbm9fY2xvc2UsDQogCS5pb2N0
-bAkJPSB2aW5vX2lvY3RsLA0KKwkuY29tcGF0X2lvY3RsCT0gdjRsX2NvbXBh
-dF9pb2N0bDMyLA0KIAkubW1hcAkJPSB2aW5vX21tYXAsDQogCS5wb2xsCQk9
-IHZpbm9fcG9sbCwNCiAJLmxsc2VlawkJPSBub19sbHNlZWssDQpAQCAtNDQz
-Niw4ICs0MzUzLDggQEANCiAJCWRtYV91bm1hcF9zaW5nbGUoTlVMTCwNCiAJ
-CQkJIHZpbm9fZHJ2ZGF0YS0+ZHVtbXlfZGVzY190YWJsZS5kbWFfY3B1WzBd
-LA0KIAkJCQkgUEFHRV9TSVpFLCBETUFfRlJPTV9ERVZJQ0UpOw0KLQkJZG1h
-X2ZyZWVfY29oZXJlbnQoTlVMTCwgVklOT19EVU1NWV9ERVNDX0NPVU5UDQot
-CQkJCSAgKiBzaXplb2YoZG1hX2FkZHJfdCksDQorCQlkbWFfZnJlZV9jb2hl
-cmVudChOVUxMLCB2aW5vX2RydmRhdGEtPmR1bW15X2Rlc2NfdGFibGUucGFn
-ZV9jb3VudA0KKwkJCQkgICogc2l6ZW9mKHZpbm9fZG1hX2FkZHJfdCksDQog
-CQkJCSAgKHZvaWQgKil2aW5vX2RydmRhdGEtPg0KIAkJCQkgIGR1bW15X2Rl
-c2NfdGFibGUuZG1hX2NwdSwNCiAJCQkJICB2aW5vX2RydmRhdGEtPmR1bW15
-X2Rlc2NfdGFibGUuZG1hKTsNCkBAIC00NTE0LDExICs0NDMxLDEzIEBADQog
-CX0NCiAJdmlub19pbml0X3N0YWdlKys7DQogDQotCS8vIFRPRE86IHVzZSBw
-YWdlX2NvdW50IGluIGR1bW15X2Rlc2NfdGFibGUNCisJdmlub19kcnZkYXRh
-LT5kdW1teV9kZXNjX3RhYmxlLnBhZ2VfY291bnQgPQ0KKwkJVklOT19EVU1N
-WV9ERVNDX0NPVU5UOw0KIA0KIAl2aW5vX2RydmRhdGEtPmR1bW15X2Rlc2Nf
-dGFibGUuZG1hX2NwdSA9DQogCQlkbWFfYWxsb2NfY29oZXJlbnQoTlVMTCwN
-Ci0JCVZJTk9fRFVNTVlfREVTQ19DT1VOVCAqIHNpemVvZihkbWFfYWRkcl90
-KSwNCisJCXZpbm9fZHJ2ZGF0YS0+ZHVtbXlfZGVzY190YWJsZS5wYWdlX2Nv
-dW50ICoNCisJCQkJICAgc2l6ZW9mKHZpbm9fZG1hX2FkZHJfdCksDQogCQkm
-dmlub19kcnZkYXRhLT5kdW1teV9kZXNjX3RhYmxlLmRtYSwNCiAJCUdGUF9L
-RVJORUwgfCBHRlBfRE1BKTsNCiAJaWYgKCF2aW5vX2RydmRhdGEtPmR1bW15
-X2Rlc2NfdGFibGUuZG1hX2NwdSkgew0KQEAgLTQ1MjksOCArNDQ0OCw4IEBA
-DQogDQogCWRtYV9kdW1teV9hZGRyZXNzID0gZG1hX21hcF9zaW5nbGUoTlVM
-TCwNCiAJCQkJCSAgICh2b2lkICopdmlub19kcnZkYXRhLT5kdW1teV9wYWdl
-LA0KLQkJCQkJUEFHRV9TSVpFLCBETUFfRlJPTV9ERVZJQ0UpOw0KLQlmb3Ig
-KGkgPSAwOyBpIDwgVklOT19EVU1NWV9ERVNDX0NPVU5UOyBpKyspIHsNCisJ
-CQkJCSAgIFBBR0VfU0laRSwgRE1BX0ZST01fREVWSUNFKTsNCisJZm9yIChp
-ID0gMDsgaSA8IHZpbm9fZHJ2ZGF0YS0+ZHVtbXlfZGVzY190YWJsZS5wYWdl
-X2NvdW50OyBpKyspIHsNCiAJCXZpbm9fZHJ2ZGF0YS0+ZHVtbXlfZGVzY190
-YWJsZS5kbWFfY3B1W2ldID0gZG1hX2R1bW15X2FkZHJlc3M7DQogCX0NCiAN
-Cg==
+And if you have an N32 root filesystem (unlikely) you also have to set
+CONFIG_MIPS32_N32=y.
 
----559023410-851401618-1142597940=:11482--
+> Do I have to recompile the binutils and glibc for my target file system?
+
+No.  The entire software should just work.
+
+> Kindly ignore the confidentiality notice attached at the end of the
+> mail. It is an automatically generated one and I cannot remove it.I'm
+> extremely sorry for the inconvenience.
+
+We're fabulous at ignoring things ;-)
+
+  Ralf

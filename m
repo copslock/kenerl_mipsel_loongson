@@ -1,64 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 18:22:25 +0000 (GMT)
-Received: from smtp104.biz.mail.mud.yahoo.com ([68.142.200.252]:43368 "HELO
-	smtp104.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133418AbWCQSWQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Mar 2006 18:22:16 +0000
-Received: (qmail 2866 invoked from network); 17 Mar 2006 18:31:30 -0000
-Received: from unknown (HELO ?192.168.1.103?) (ppopov@embeddedalley.com@71.128.175.242 with plain)
-  by smtp104.biz.mail.mud.yahoo.com with SMTP; 17 Mar 2006 18:31:29 -0000
-Subject: Re: au1000_tx_timeout and promiscuous mode
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	Jordan Crouse <jordan.crouse@amd.com>
-Cc:	elmar gerdes <elmar.gerdes@engel-kg.com>, linux-mips@linux-mips.org
-In-Reply-To: <20060317163806.GA3679@cosmic.amd.com>
-References: <20060317010227.GA16575@engel-kg.com>
-	 <20060317163806.GA3679@cosmic.amd.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Fri, 17 Mar 2006 10:31:05 -0800
-Message-Id: <1142620265.8348.24.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 18:29:41 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:63900 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133418AbWCQS3c (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Mar 2006 18:29:32 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k2HIcuSp003711;
+	Fri, 17 Mar 2006 18:38:56 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k2HIcuix003710;
+	Fri, 17 Mar 2006 18:38:56 GMT
+Date:	Fri, 17 Mar 2006 18:38:56 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: 1480: "bad address" instead of "argument list too"
+Message-ID: <20060317183856.GA3689@linux-mips.org>
+References: <20060317165629.GX18750@deprecation.cyrius.com> <20060317170242.GA13850@linux-mips.org> <20060317172127.GZ18750@deprecation.cyrius.com> <20060317173521.GA12862@linux-mips.org> <20060317181153.GA1874@deprecation.cyrius.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.4.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060317181153.GA1874@deprecation.cyrius.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10841
+X-archive-position: 10842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2006-03-17 at 09:38 -0700, Jordan Crouse wrote:
-> On 17/03/06 02:02 +0100, elmar gerdes wrote:
-> > 
-> > hi folks,
-> 
-> Greetings Elmar.
-> 
-> > @@ -2070,6 +2070,7 @@
-> >  	printk(KERN_ERR "%s: au1000_tx_timeout: dev=%p\n", dev->name, dev);
-> >  	reset_mac(dev);
-> >  	au1000_init(dev);
-> > +	set_rx_mode(dev);	// EG 2006-03-15: set promiscuous mode
-> >  	dev->trans_start = jiffies;
-> >  	netif_wake_queue(dev);
-> 
-> I would move the comment to the previous line, use standard /* */ notation,
-> and your name and the date isn't really needed, as that information will
-> be stored in the GIT log.
-> 
-> Also, don't forget your Signed-off-by line and a short description of the
-> patch for posterity.
-> 
-> Other then that, I have no problems with the bug - unless Pete wants to
-> object, I think you should send the fixed-up patch to netdev@vger.kernel.org 
-> and CC this list. 
+On Fri, Mar 17, 2006 at 06:11:53PM +0000, Martin Michlmayr wrote:
 
-Nah, you're owner/reviewer now ;)
+> * Ralf Baechle <ralf@linux-mips.org> [2006-03-17 17:35]:
+> > Log into a second shell from another tty, find out the PID of the first
+> > shell.  Then do an strace -ff -v -p <PID of first shell> in the second
+> > shell, go back to the first shell and do your echo *.  You now should
+> > have the interesting bits of the log in the second window.
+> 
+> Doh, I could've thought of that myself.  The strace is attached.
 
-Pete
+No smoking gun in that trace, I'm afraid.
+
+  Ralf

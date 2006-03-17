@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 18:29:41 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:63900 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133418AbWCQS3c (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Mar 2006 18:29:32 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.4/8.13.4) with ESMTP id k2HIcuSp003711;
-	Fri, 17 Mar 2006 18:38:56 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.4/8.13.4/Submit) id k2HIcuix003710;
-	Fri, 17 Mar 2006 18:38:56 GMT
-Date:	Fri, 17 Mar 2006 18:38:56 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: 1480: "bad address" instead of "argument list too"
-Message-ID: <20060317183856.GA3689@linux-mips.org>
-References: <20060317165629.GX18750@deprecation.cyrius.com> <20060317170242.GA13850@linux-mips.org> <20060317172127.GZ18750@deprecation.cyrius.com> <20060317173521.GA12862@linux-mips.org> <20060317181153.GA1874@deprecation.cyrius.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060317181153.GA1874@deprecation.cyrius.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Mar 2006 18:40:15 +0000 (GMT)
+Received: from 67-129-173-13.dia.static.qwest.net ([67.129.173.13]:54909 "EHLO
+	alfalfa.fortresstech.com") by ftp.linux-mips.org with ESMTP
+	id S8133418AbWCQSj7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 17 Mar 2006 18:39:59 +0000
+Received: from [172.26.52.4] ([172.26.52.4]) by alfalfa.fortresstech.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 17 Mar 2006 13:49:22 -0500
+Message-ID: <441B04AC.3090406@fortresstech.com>
+Date:	Fri, 17 Mar 2006 13:49:16 -0500
+From:	Steve Lazaridis <slaz@fortresstech.com>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	oprofile-list@lists.sourceforge.net, linux-mips@linux-mips.org
+Subject: Re: au1550 oprofile
+References: <441A1D53.6080305@fortresstech.com> <20060317145657.GD3771@linux-mips.org>
+In-Reply-To: <20060317145657.GD3771@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 17 Mar 2006 18:49:22.0128 (UTC) FILETIME=[8144AD00:01C649F3]
+Return-Path: <SLaz@fortresstech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10842
+X-archive-position: 10843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: slaz@fortresstech.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 17, 2006 at 06:11:53PM +0000, Martin Michlmayr wrote:
+Thats true,
+But my problem is that timer mode isn't even working
 
-> * Ralf Baechle <ralf@linux-mips.org> [2006-03-17 17:35]:
-> > Log into a second shell from another tty, find out the PID of the first
-> > shell.  Then do an strace -ff -v -p <PID of first shell> in the second
-> > shell, go back to the first shell and do your echo *.  You now should
-> > have the interesting bits of the log in the second window.
+Ralf Baechle wrote:
+> On Thu, Mar 16, 2006 at 09:22:11PM -0500, Steve Lazaridis wrote:
 > 
-> Doh, I could've thought of that myself.  The strace is attached.
-
-No smoking gun in that trace, I'm afraid.
-
-  Ralf
+>> Has anyone successfully ran oprofile on an au1550?
+>> If so, was it in BigEndian mode?
+>>
+>> Are there any known issues with oprofile on au1xxx platforms?
+> 
+> Alchemy processors don't implement performance counters, so there are
+> by definition no issues ;-)  That unfortunately means you're stuck
+> with timer mode.
+> 
+>   Ralf

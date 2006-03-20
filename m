@@ -1,29 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2006 04:30:18 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:40207 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2006 04:31:12 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:43791 "EHLO
 	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133372AbWCTE12 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Mar 2006 04:27:28 +0000
+	id S8133393AbWCTE2l (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Mar 2006 04:28:41 +0000
 Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 8BFE864D3D; Mon, 20 Mar 2006 04:37:05 +0000 (UTC)
+	id 29D7064D3D; Mon, 20 Mar 2006 04:38:19 +0000 (UTC)
 Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id C849766ED5; Mon, 20 Mar 2006 04:36:46 +0000 (GMT)
-Date:	Mon, 20 Mar 2006 04:36:46 +0000
+	id 0A37266ED5; Mon, 20 Mar 2006 04:38:03 +0000 (GMT)
+Date:	Mon, 20 Mar 2006 04:38:03 +0000
 From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, akpm@osdl.org
-Subject: [PATCH 6/6] [MTD] Remove typecast from drivers/mtd/maps/lasat.c
-Message-ID: <20060320043646.GF20200@deprecation.cyrius.com>
-References: <20060320043445.GA20171@deprecation.cyrius.com>
+To:	akpm@osdl.org
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Bring mainline in sync with the linux-mips tree
+Message-ID: <20060320043802.GA20389@deprecation.cyrius.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060320043445.GA20171@deprecation.cyrius.com>
 User-Agent: Mutt/1.5.11+cvs20060126
 Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10857
+X-archive-position: 10858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,33 +29,24 @@ X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Remove an unneeded typecast from drivers/mtd/maps/lasat.c, thereby
-bringing the file in sync with Linus' tree.
+The following is a series of twelve patches to bring mainline in
+sync with the linux-mips tree.  These are changes that have to be
+made in mainline.  Another series has already been posted to
+the linux-mips list to bring linux-mips in sync with Linus' tree
+where necessary.
 
-Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
-
-
---- a/drivers/mtd/maps/lasat.c
-+++ b/drivers/mtd/maps/lasat.c
-@@ -7,7 +7,8 @@
-  * modify it under the terms of the GNU General Public License version
-  * 2 as published by the Free Software Foundation.
-  *
-- * $Id: lasat.c,v 1.7 2004/07/12 21:59:44 dwmw2 Exp $
-+ * $Id: lasat.c,v 1.9 2004/11/04 13:24:15 gleixner Exp $
-+ *
-  *
-  */
- 
-@@ -50,7 +51,7 @@ static int __init init_lasat(void)
- 	ENABLE_VPP((&lasat_map));
- 
- 	lasat_map.phys = lasat_flash_partition_start(LASAT_MTD_BOOTLOADER);
--	lasat_map.virt = (unsigned long)ioremap_nocache(
-+	lasat_map.virt = ioremap_nocache(
- 		        lasat_map.phys, lasat_board_info.li_flash_size);
- 	lasat_map.size = lasat_board_info.li_flash_size;
- 
+[PATCH 1/12] [MIPS] Improve description of VR41xx based machines
+[PATCH 2/12] [MIPS] Cosmetic updates to sync with linux-mips
+[PATCH 3/12] [MIPS] Remove tb0287_defconfig
+[PATCH 4/12] [NET] Improve description of MV643XX_ETH
+[PATCH 5/12] [NET] Bring declance.c in sync with linux-mips tree
+[PATCH 6/12] [NET] Support the BCM1x55 and BCM1x80 chips
+[PATCH 7/12] [IDE] Set CFLAGS only for au1xxx-ide
+[PATCH 8/12] [MTD] Re-add module description for ms02-nv to Kconfig
+[PATCH 9/12] [MTD] Fix #else directive in the docprobe driver
+[PATCH 10/12] [MTD] LASAT depends on MTD_CFI
+[PATCH 11/12] [USB] Cosmetic changes to bring ohci-au1xxx.c in sync with linux-mips
+[PATCH 12/12] [SCSI] mem_start is a physical address already
 
 -- 
 Martin Michlmayr

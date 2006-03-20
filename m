@@ -1,43 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2006 02:37:15 +0000 (GMT)
-Received: from nproxy.gmail.com ([64.233.182.199]:35398 "EHLO nproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133737AbWCTChH convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Mar 2006 02:37:07 +0000
-Received: by nproxy.gmail.com with SMTP id l36so745455nfa
-        for <linux-mips@linux-mips.org>; Sun, 19 Mar 2006 18:46:45 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=kIBqHFOaJXL8tX1mH/mag3d/IbkGBtrOqiaS5xqwqI91Trdc2NIVICyJxTxKECQegjpNCAPVQ21LpbiIVwDxXNUJVaW1FwJPdhDVGV33pGuLnjAc8W+3VYBhCQjdtjvoOJ0WSpZbIBVortGiaF+V3HdY2HMKr4bPWHrB+R03JBU=
-Received: by 10.48.12.12 with SMTP id 12mr2521202nfl;
-        Sun, 19 Mar 2006 18:46:44 -0800 (PST)
-Received: by 10.48.143.15 with HTTP; Sun, 19 Mar 2006 18:46:44 -0800 (PST)
-Message-ID: <50c9a2250603191846g42ed20e4r87aa14e5bef1efe2@mail.gmail.com>
-Date:	Mon, 20 Mar 2006 10:46:44 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: does any gnu toolchain support mips udi instruction?
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2006 02:42:14 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:7951 "EHLO sorrow.cyrius.com")
+	by ftp.linux-mips.org with ESMTP id S8133730AbWCTCmE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Mar 2006 02:42:04 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 3606164D3D; Mon, 20 Mar 2006 02:51:38 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id E211B66ED5; Mon, 20 Mar 2006 02:51:20 +0000 (GMT)
+Date:	Mon, 20 Mar 2006 02:51:20 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [MIPS] Separate CPU entries in /proc/cpuinfo with a blank line
+Message-ID: <20060320025120.GA18414@deprecation.cyrius.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+User-Agent: Mutt/1.5.11+cvs20060126
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10848
+X-archive-position: 10849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-for now, i can use the sde toolchain to compile for udi instruction,
-but it can not compile application for linux, did someone generate a
-gnu toolchain to compile the udi instruction?
+Put in a blank line between CPU entries in /proc/cpuinfo, just like
+most other architectures (i386, ia64, x86_64) do.
 
-thanks
+Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
 
-Best Regards
-zhuzhenhua
+
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -135,6 +135,7 @@ static int show_cpuinfo(struct seq_file 
+ 	        cpu_has_vce ? "%u" : "not available");
+ 	seq_printf(m, fmt, 'D', vced_count);
+ 	seq_printf(m, fmt, 'I', vcei_count);
++	seq_printf(m, "\n");
+ 
+ 	return 0;
+ }
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

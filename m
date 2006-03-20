@@ -1,52 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2006 14:28:56 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:40955 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133839AbWCTO2r (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Mar 2006 14:28:47 +0000
-Received: from localhost (p1007-ipad203funabasi.chiba.ocn.ne.jp [222.146.80.7])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 53BA6AADC; Mon, 20 Mar 2006 23:38:23 +0900 (JST)
-Date:	Mon, 20 Mar 2006 23:38:29 +0900 (JST)
-Message-Id: <20060320.233829.92585823.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	Vadivelan@soc-soft.com, linux-mips@linux-mips.org
-Subject: Re: Init not working in 64-bit kernel
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060320131452.GA4491@linux-mips.org>
-References: <4BF47D56A0DD2346A1B8D622C5C5902C01525385@soc-mail.soc-soft.com>
-	<20060320131452.GA4491@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Mar 2006 15:50:39 +0000 (GMT)
+Received: from mo01.po.2iij.Net ([210.130.202.205]:60408 "EHLO
+	mo01.po.2iij.net") by ftp.linux-mips.org with ESMTP
+	id S8133390AbWCTPuS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Mar 2006 15:50:18 +0000
+Received: NPO MO01 id k2KFxj8f025420; Tue, 21 Mar 2006 00:59:45 +0900 (JST)
+Received: from localhost.localdomain (249.29.30.125.dy.iij4u.or.jp [125.30.29.249])
+	by mbox.po.2iij.net (NPO-MR/mbox03) id k2KFxgLI029875
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Tue, 21 Mar 2006 00:59:44 +0900 (JST)
+Date:	Tue, 21 Mar 2006 00:59:40 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	akpm@osdl.org, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org, yoichi_yuasa@tripeaks.co.jp
+Subject: Re: [PATCH 1/12] [MIPS] Improve description of VR41xx based
+ machines
+Message-Id: <20060321005940.35ce09f9.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060320131053.GA29434@deprecation.cyrius.com>
+References: <20060320043802.GA20389@deprecation.cyrius.com>
+	<20060320043902.GA20416@deprecation.cyrius.com>
+	<20060320152646.1c5690e3.yoichi_yuasa@tripeaks.co.jp>
+	<20060320131053.GA29434@deprecation.cyrius.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10882
+X-Envid: tripeaks.co.jp
+Envelope-Id: tripeaks.co.jp
+X-archive-position: 10883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Mon, 20 Mar 2006 13:14:52 +0000, Ralf Baechle <ralf@linux-mips.org> said:
+On Mon, 20 Mar 2006 13:10:53 +0000
+Martin Michlmayr <tbm@cyrius.com> wrote:
 
-ralf> This kernel is already 15 months old and there have been a vast
-ralf> number of bug fixes since.  And god knows what Montavista
-ralf> changed in their kernel - I don't have the faintest idea.  In
-ralf> short, try a modern kernel.  Btw, Linux 2.6.16 was released
-ralf> today and chances are it'll solve alot of your issues.
+> * Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> [2006-03-20 15:26]:
+> > > MIPS supports various NEC VR41XX chips and not just the VR4100.
+> > > Update Kconfig accordingly, thereby bringing the file in sync with
+> > > the linux-mips tree.
+> > The linux-mips tree is older than kernel.org about this part.
+> 
+> Have you looked at the exact change I sent (I know that linux-mips has
+> some older stuff, but the patch I sent was against linux-mips+new).
+> IOW, is it more correct to say "VR4100" in Kconfig rather than
+> "VR41XX", even though more CPUs than the VR4100 are supported?
+> 
+> All my patch does is a a/VR4100/VR41XX/, really.
 
-I suppose he is trying 64bit kernel on RBTX4938 board, but the board
-dependent code seems not ready for 64bit.  For example, there are some
-0xff1fXXXX constants there and all these constants must be sign
-extended (0xffffffffff1fXXXX) for 64bit.  Also these virtual address
-are mapped to 36bit physical address 0xfff1fXXXX so some assumption in
-the 32bit kernel (virt==phys for TX49 internal regs) is not true in
-64bit kernel.
+VR4131 and VR4133, .... are included in NEC VR4100 series.
+These entry have no problem.
 
----
-Atsushi Nemoto
+Yoichi
+
+see:
+http://www.necel.com/micro/english/product/vr/vr.html
+
+> 
+> 
+> > > -	bool "Support for NEC VR4100 series based machines"
+> > > +	bool "Support for NEC VR41XX-based machines"
+> ...
+> > > -	  The options selects support for the NEC VR4100 series of processors.
+> > > +	  The options selects support for the NEC VR41xx series of processors.
+> > >  	  Only choose this option if you have one of these processors as a

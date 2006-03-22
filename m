@@ -1,49 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Mar 2006 23:53:13 +0000 (GMT)
-Received: from sj-iport-5.cisco.com ([171.68.10.87]:1858 "EHLO
-	sj-iport-5.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S8133613AbWCUXxF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 21 Mar 2006 23:53:05 +0000
-Received: from sj-core-3.cisco.com ([171.68.223.137])
-  by sj-iport-5.cisco.com with ESMTP; 21 Mar 2006 16:02:24 -0800
-X-IronPort-AV: i="4.03,116,1141632000"; 
-   d="scan'208"; a="263339714:sNHT26945740"
-Received: from xbh-sjc-221.amer.cisco.com (xbh-sjc-221.cisco.com [128.107.191.63])
-	by sj-core-3.cisco.com (8.12.10/8.12.6) with ESMTP id k2M02L1j013404
-	for <linux-mips@linux-mips.org>; Tue, 21 Mar 2006 16:02:23 -0800 (PST)
-Received: from xfe-sjc-211.amer.cisco.com ([171.70.151.174]) by xbh-sjc-221.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.211);
-	 Tue, 21 Mar 2006 16:02:20 -0800
-Received: from [171.69.51.240] ([171.69.51.240]) by xfe-sjc-211.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.211);
-	 Tue, 21 Mar 2006 16:02:20 -0800
-Message-ID: <4420940B.9030605@hotmail.com>
-Date:	Tue, 21 Mar 2006 16:02:19 -0800
-From:	Srinivas Kommu <kommu@hotmail.com>
-User-Agent: Thunderbird 1.4 (Windows/20050908)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: how to get a process backtrace from kernel gdb?
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Mar 2006 07:43:30 +0000 (GMT)
+Received: from mo01.po.2iij.Net ([210.130.202.205]:36035 "EHLO
+	mo01.po.2iij.net") by ftp.linux-mips.org with ESMTP
+	id S8133430AbWCVHnW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Mar 2006 07:43:22 +0000
+Received: NPO MO01 id k2M7r7d8010867; Wed, 22 Mar 2006 16:53:07 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (NPO-MR/mbox03) id k2M7r5H4018280
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
+	Wed, 22 Mar 2006 16:53:06 +0900 (JST)
+Date:	Wed, 22 Mar 2006 16:53:05 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	yoichi_yuasa@tripeaks.co.jp, akpm@osdl.org,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/12] [MIPS] Improve description of VR41xx based
+ machines
+Message-Id: <20060322165305.172ea9ec.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060321021826.GU12676@deprecation.cyrius.com>
+References: <20060320043802.GA20389@deprecation.cyrius.com>
+	<20060320043902.GA20416@deprecation.cyrius.com>
+	<20060320152646.1c5690e3.yoichi_yuasa@tripeaks.co.jp>
+	<20060320131053.GA29434@deprecation.cyrius.com>
+	<20060321005940.35ce09f9.yoichi_yuasa@tripeaks.co.jp>
+	<20060320162919.GP29434@deprecation.cyrius.com>
+	<20060321111034.16ffa0bc.yoichi_yuasa@tripeaks.co.jp>
+	<20060321021826.GU12676@deprecation.cyrius.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Mar 2006 00:02:20.0586 (UTC) FILETIME=[E3C0F8A0:01C64D43]
-Return-Path: <kommu@hotmail.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10898
+X-Envid: tripeaks.co.jp
+Envelope-Id: tripeaks.co.jp
+X-archive-position: 10899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kommu@hotmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-I'm running gdb on vmlinux connected to a remote target (2.4 kernel). I 
-have the task_struct address of 'current' and other processes. Is it 
-possible to get a symbolic stack trace of the kernel stack? Where is the 
-kernel stack located? I tried to print (task_struct->reg29)[13]. Is this 
-the PC?
+On Tue, 21 Mar 2006 02:18:26 +0000
+Martin Michlmayr <tbm@cyrius.com> wrote:
 
-thanks
-srini
+> * Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> [2006-03-21 11:10]:
+> > > > VR4131 and VR4133, .... are included in NEC VR4100 series.
+> > > > These entry have no problem.
+> > > 
+> > > Right, so your're taking the NACK of this patch back?
+> > 
+> > Yes, NACK.
+> > These entries are right.
+> 
+> s/NACK/ACK/ surely ;-)
 
-PS. I broke into gdb using a hotkey on the serial console; so the gdb 
-backtrace shows the serial driver.
+Sorry, what meaning is it?
+
+I think that "VR4100 series" is better than "VR41XX",
+because NECEL is writing "VR4100 series".
+
+Yoichi

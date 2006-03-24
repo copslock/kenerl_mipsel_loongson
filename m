@@ -1,76 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2006 11:01:50 +0000 (GMT)
-Received: from bender.bawue.de ([193.7.176.20]:28803 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S8133895AbWCXLBk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2006 11:01:40 +0000
-Received: from lagash (unknown [194.74.144.146])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 153BB448E7; Fri, 24 Mar 2006 12:11:43 +0100 (MET)
-Received: from ths by lagash with local (Exim 4.60)
-	(envelope-from <ths@networkno.de>)
-	id 1FMkDF-0002aC-8E; Fri, 24 Mar 2006 11:12:13 +0000
-Date:	Fri, 24 Mar 2006 11:12:13 +0000
-To:	Gowri Satish Adimulam <gowri@bitel.co.kr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2006 11:25:34 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:33157 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133898AbWCXLZZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Mar 2006 11:25:25 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k2OBZRjt003720;
+	Fri, 24 Mar 2006 11:35:27 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k2OBZQIP003719;
+	Fri, 24 Mar 2006 11:35:26 GMT
+Date:	Fri, 24 Mar 2006 11:35:26 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	dhunjukrishna@gmail.com
 Cc:	linux-mips@linux-mips.org
-Subject: Re: compilartion error   : label at end of compound statement
-Message-ID: <20060324111213.GA7829@networkno.de>
-References: <20060216.234519.82087885.anemo@mba.ocn.ne.jp> <20060324.131809.115639866.nemoto@toshiba-tops.co.jp> <1143184072.3249.26.camel@localhost.localdomain>
-MIME-Version: 1.0
+Subject: Re: Compilation problem with kernel 2.4.16
+Message-ID: <20060324113525.GA3250@linux-mips.org>
+References: <20060324083141.GB3170@linux-mips.org> <20060324094916.96936.qmail@web53503.mail.yahoo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1143184072.3249.26.camel@localhost.localdomain>
-User-Agent: Mutt/1.5.11+cvs20060126
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+In-Reply-To: <20060324094916.96936.qmail@web53503.mail.yahoo.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10924
+X-archive-position: 10925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 24, 2006 at 04:07:52PM +0900, Gowri Satish Adimulam wrote:
-> Hi ,
-> Iam trying to compile simple application with mips cross compiler ,
-> Iam getting the below error , 
-> i tried to google but unable to find relavent solution
-> 
-> any pointers will be helpful , 
-> 
-> ===============error==========
-> 
-> mipsel-linux-uclibc-gcc -Wall    -c -o ls.o ls.c
-> ls.c: In function `donlist':
-> ls.c:591: error: label at end of compound statement
-> 
-> ==============end of error============
+On Fri, Mar 24, 2006 at 01:49:16AM -0800, Krishna wrote:
 
-The compiler got pickier about such empty statements some years
-ago, you'll have to update your source from .e.g.
+> Sorry I mentioned version incorrectly. It is 2.6.14. The compiler i m using
+> is sb1-elf-gcc (which i downloaded from
+> www.broadcom.com/products/sibyte_downloads.php#toolchain). Her is the error description:
 
-	switch (.....) {
-	case 1:
-		.....
-		break;
+The *-elf gcc configuration will not work for compiling Linux/MIPS or
+applications; you need a mips-linux target.
 
-	default:
-	}
+>   **********************************************
+>   Makefile:489: .config: No such file or directory
+>   scripts/basic/fixdep.c: In function `parse_config_file':
+>   scripts/basic/fixdep.c:228: warning: implicit declaration of function `ntohl'
+>   scripts/basic/fixdep.c: In function `print_deps':
+>   scripts/basic/fixdep.c:336: warning: unused variable `map'
+>   /home1/guest/vikram/COMPILER/specifix/broadcom_2004e_341/i686-pc-linux-gnu/bin/../lib/gcc/sb1-elf/3.4.1/../../../../sb1-elf/bin/ld: warning: cannot find entry symbol _start; defaulting to 0000000000400040
+>   /tmp/ccb1vCvc.o(.text+0x4): In function `usage':
+>   : undefined reference to `_impure_ptr'
+>   /tmp/ccb1vCvc.o(.text+0x4): In function `usage':
+>   : relocation truncated to fit: R_MIPS_GPREL16 _impure_ptr
 
-to
+These messages seem to indicate you did something bad to the makefiles.
+The crosscompiler is being invoked where the target compiler should be.
 
-	switch (.....) {
-	case 1:
-		.....
-		break;
-
-	default:
-		break;
-	}
-
-
-Thiemo
+  Ralf

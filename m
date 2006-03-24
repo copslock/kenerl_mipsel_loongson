@@ -1,60 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2006 08:00:25 +0000 (GMT)
-Received: from www.haninternet.co.kr ([211.63.64.4]:31760 "EHLO
-	www.haninternet.co.kr") by ftp.linux-mips.org with ESMTP
-	id S8133596AbWCXIAP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Mar 2006 08:00:15 +0000
-Received: from [211.63.70.179] ([211.63.70.179])
-	by www.haninternet.co.kr (8.9.3/8.9.3) with ESMTP id RAA22206;
-	Fri, 24 Mar 2006 17:07:54 +0900
-Subject: Re: Compilation problem with kernel 2.4.16
-From:	Gowri Satish Adimulam <gowri@bitel.co.kr>
-Reply-To: gowri@bitel.co.kr
-To:	dhunjukrishna@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Mar 2006 08:14:23 +0000 (GMT)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:39602 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S8133529AbWCXIOO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Mar 2006 08:14:14 +0000
+Received: from localhost (in-3.mx.triera.net [213.161.0.27])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 19545C0F4;
+	Fri, 24 Mar 2006 09:24:11 +0100 (CET)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-3.mx.triera.net (Postfix) with SMTP id E80801BC090;
+	Fri, 24 Mar 2006 09:24:12 +0100 (CET)
+Received: from localhost (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id 446681A18DD;
+	Fri, 24 Mar 2006 09:22:58 +0100 (CET)
+Date:	Fri, 24 Mar 2006 09:23:00 +0100
+From:	Domen Puncer <domen.puncer@ultra.si>
+To:	Jordan Crouse <jordan.crouse@amd.com>
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20060324074521.53361.qmail@web53506.mail.yahoo.com>
-References: <20060324074521.53361.qmail@web53506.mail.yahoo.com>
-Content-Type: text/plain
-Organization: Bitel Co Ltd
-Date:	Fri, 24 Mar 2006 17:09:50 +0900
-Message-Id: <1143187790.3249.28.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <gowri@bitel.co.kr>
+Subject: [patch] au1200fb: fix ioctl, mmap and pm declarations
+Message-ID: <20060324082300.GD5195@domen.ultra.si>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+X-Virus-Scanned: Triera AV Service
+Return-Path: <domen.puncer@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10918
+X-archive-position: 10919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gowri@bitel.co.kr
+X-original-sender: domen.puncer@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-could you post the error message , so that group members can analyse and
-post you correct solution.
+Fix warnings and make ioctl and mmap work again.
 
-Gowri
-On Thu, 2006-03-23 at 23:45 -0800, Krishna wrote:
-> Hi,
->  
-> I have been trying to cross compile Linux/MIPS kernel verison 2.4.16
-> with the specifix's sibyte cross compiler (sb1-elf cross compilers for
-> x86 linux hosts) for BCM 1480 Broadcom board. I have set the path for
-> cross compiler properly in make file even then the compilation failed.
-> Then we tried adding parameter " -Tcfe.ld" (which is must for
-> compilation) in compilation command (as has been suggested by
-> broadcom) still unble to get it done correctly. Wondering what else we
-> need to change in make file. Or else is there any other cross compiler
-> for BCM 1480 (than specifix one) that we can use. Anyone suggest me
-> the proper way for compiling the kernel with the above cross
-> compiler. 
->  
-> Thanks and Regards
-> Krishna
-> 
-> ______________________________________________________________________
-> New Yahoo! Messenger with Voice. Call regular phones from your PC and
-> save big.
+Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
+
+
+ drivers/video/au1200fb.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+Index: linux-2.6.16.git/drivers/video/au1200fb.c
+===================================================================
+--- linux-2.6.16.git.orig/drivers/video/au1200fb.c
++++ linux-2.6.16.git/drivers/video/au1200fb.c
+@@ -1246,7 +1246,7 @@ int au1200fb_fb_blank(int blank_mode, st
+  * Map video memory in user space. We don't use the generic fb_mmap
+  * method mainly to allow the use of the TLB streaming flag (CCA=6)
+  */
+-int au1200fb_fb_mmap(struct fb_info *fbi, struct file *file, struct vm_area_struct *vma)
++int au1200fb_fb_mmap(struct fb_info *fbi, struct vm_area_struct *vma)
+ {
+ 	unsigned int len;
+ 	unsigned long start=0, off;
+@@ -1465,8 +1465,7 @@ void get_window(unsigned int plane, au12
+ 	au_sync();
+ }
+ 
+-static int au1200fb_ioctl(struct inode *inode, struct file *file, u_int cmd,
+-			  u_long arg, struct fb_info *info)
++static int au1200fb_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
+ {
+ 	int plane;
+ 	int val;
+@@ -1763,13 +1763,13 @@ int au1200fb_drv_remove(struct device *d
+ 	return 0;
+ }
+ 
+-int au1200fb_drv_suspend(struct device *dev, u32 state, u32 level)
++int au1200fb_drv_suspend(struct device *dev, pm_message_t state)
+ {
+ 	/* TODO */
+ 	return 0;
+ }
+ 
+-int au1200fb_drv_resume(struct device *dev, u32 level)
++int au1200fb_drv_resume(struct device *dev)
+ {
+ 	/* TODO */
+ 	return 0;

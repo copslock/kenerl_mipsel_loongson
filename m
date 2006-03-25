@@ -1,181 +1,229 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Mar 2006 09:12:18 +0000 (GMT)
-Received: from zproxy.gmail.com ([64.233.162.196]:46505 "EHLO zproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133409AbWCYJMG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 25 Mar 2006 09:12:06 +0000
-Received: by zproxy.gmail.com with SMTP id 14so1051890nzn
-        for <linux-mips@linux-mips.org>; Sat, 25 Mar 2006 01:22:13 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=kgsFcV303KiL6b1gL8NzxxVpr5NbEl7Y3umINT2RciodSjh1E3Nsv7n4khNup2giNEKjXUClIYLmCH9u2nIhzU+8GoMCCvw9kFUMqEDqhTzI18TRWOqE2B0sNuBSRWh8s7kmE/nfIMqLyzboQye3qPFRV+5QtsjWAw9TjKOkJ5w=
-Received: by 10.36.49.6 with SMTP id w6mr2395402nzw;
-        Sat, 25 Mar 2006 01:22:13 -0800 (PST)
-Received: by 10.36.49.7 with HTTP; Sat, 25 Mar 2006 01:22:13 -0800 (PST)
-Message-ID: <f07e6e0603250122t6328c09coe37141d14396dc12@mail.gmail.com>
-Date:	Sat, 25 Mar 2006 15:22:13 +0600
-From:	"Kishore K" <hellokishore@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Mar 2006 15:28:32 +0000 (GMT)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:63412 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133714AbWCYP2W
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 25 Mar 2006 15:28:22 +0000
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k2PFcJil022262;
+	Sat, 25 Mar 2006 07:38:20 -0800 (PST)
+Received: from grendel (grendel [192.168.236.16])
+	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k2PFcHY0027937;
+	Sat, 25 Mar 2006 07:38:18 -0800 (PST)
+Message-ID: <000d01c65022$90d758a0$10eca8c0@grendel>
+From:	"Kevin D. Kissell" <kevink@mips.com>
+To:	"Kishore K" <hellokishore@gmail.com>,
+	"Ralf Baechle" <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+References: <f07e6e0603240636x5e496cd2g29316d73490aa300@mail.gmail.com> <20060324165518.GA16567@linux-mips.org> <f07e6e0603250122t6328c09coe37141d14396dc12@mail.gmail.com>
 Subject: Re: 2.6.14 - problem with malta
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <20060324165518.GA16567@linux-mips.org>
+Date:	Sat, 25 Mar 2006 16:41:19 +0100
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_16593_24122964.1143278533541"
-References: <f07e6e0603240636x5e496cd2g29316d73490aa300@mail.gmail.com>
-	 <20060324165518.GA16567@linux-mips.org>
-Return-Path: <hellokishore@gmail.com>
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_000A_01C6502A.F13D4210"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1506
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10936
+X-archive-position: 10937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hellokishore@gmail.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_16593_24122964.1143278533541
-Content-Type: text/plain; charset=ISO-8859-1
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_000A_01C6502A.F13D4210
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
 
-On 3/24/06, Ralf Baechle <ralf@linux-mips.org> wrote:
->
-> On Fri, Mar 24, 2006 at 08:06:43PM +0530, Kishore K wrote:
->
-> > hi
-> > I am trying to bring up the malta board (MIPS 4kec), using the 2.6.14ke=
-rnel
-> > downloaded from linux-mips. The kernel is built with malta_defconfig
-> located
-> > in arch/mips/configs. After loading this kernel, board halts after
-> printing
-> > "Linux Started
-> > Config serial console: console=3DttyS0, 38400n8r"
-> >
-> > Kernel is built with the tool chain based on gcc 3.3.6, binutils
-> 2.14.90.0.8
-> > .
->
-> Note I generally don't test with HJ.Lu's toolchain at all.  It may be
-> broken for MIPS, I don't know.  Also due to known bugs in older toolchain=
-s
-> the minimal requirement is binutils 2.16; the vanilla FSF version from
-> ftp.gnu.org will do.
->
-> (2.15 will core dump for some configurations but if it doesn't die, it
-> seems
-> to do just fine)
+See below...
+  ----- Original Message -----=20
+  From: Kishore K=20
+  To: Ralf Baechle=20
+  Cc: linux-mips@linux-mips.org=20
+  Sent: Saturday, March 25, 2006 10:22 AM
+  Subject: Re: 2.6.14 - problem with malta
 
 
-Thanks for the reply. I observed the same problem  even when compiled with
-tool chain based on gcc 3.4.4 binutils 2.15.97 and uclibc- 0.9.27. I 'll tr=
-y
-with binutils 2.16. Please note that my malta is based on 4kc but not 4kec.
+  On 3/24/06, Ralf Baechle <ralf@linux-mips.org> wrote:
+    On Fri, Mar 24, 2006 at 08:06:43PM +0530, Kishore K wrote:
 
-> Could any one tell me what the problem is .
->
-> Let's see.  What CPU card are you using on your Malta?  And if it's an
-> FPGA card, what bitfile is loaded?  Yamon will print information on the
-> CPU after powerup or reset.
->
->   Ralf
->
+    > hi
+    > I am trying to bring up the malta board (MIPS 4kec), using the =
+2.6.14 kernel
+    > downloaded from linux-mips. The kernel is built with =
+malta_defconfig located=20
+    > in arch/mips/configs. After loading this kernel, board halts after =
+printing
+    > "Linux Started
+    > Config serial console: console=3DttyS0, 38400n8r"
+    >
+    > Kernel is built with the tool chain based on gcc 3.3.6, binutils =
+2.14.90.0.8
+    > .
 
-Here are the details of my malta board.
+    Note I generally don't test with HJ.Lu's toolchain at all.  It may =
+be
+    broken for MIPS, I don't know.  Also due to known bugs in older =
+toolchains
+    the minimal requirement is binutils 2.16; the vanilla FSF version =
+from
+    ftp.gnu.org will do.
 
-Board type/revision =3D           0x02 (Malta) / 0x00
-Core board type/revision =3D      0x01 (CoreLV) / 0x01
-FPGA revision =3D                 0x0001
-MAC address =3D                   00.d0.a0.00.03.22
-Board S/N =3D                     0000000554
-PCI bus frequency =3D             33.33 MHz
-Processor Company ID/options =3D  0x01 (MIPS Technologies, Inc.) / 0x00
-Processor ID/revision =3D         0x80 (MIPS 4Kc) / 0x05
-Endianness =3D                    Big
-CPU/Bus frequency =3D             125 MHz / 63 MHz
-Flash memory size =3D             4 MByte
-SDRAM size =3D                    64 MByte
-First free SDRAM address =3D      0x8009e380
+    (2.15 will core dump for some configurations but if it doesn't die, =
+it seems
+    to do just fine)
 
-thanks,
---kishore
+  Thanks for the reply. I observed the same problem  even when compiled =
+with tool chain based on gcc 3.4.4 binutils 2.15.97 and uclibc- 0.9.27. =
+I 'll try with binutils 2.16. Please note that my malta is based on 4kc =
+but not 4kec.
+Ah.  That makes a difference.  In your earlier mssage, you said you had =
+a 4KEc.
+The malta_defconfig file by default configures the kernel to be built =
+assuming
+MIPS32 Release 2.  The 4KEc is Release 2 compatible, but the older 4Kc =
+and
+5K cores are not.   You need to tweak the configuration such that=20
+CONFIG_CPU_MIPS32_R1=3Dy but CONFIG_CPU_MIPS32_R2 is not set
+(it's the other way around in the malta_defconfig in the linux-mips =
+git),
+and, to be on the safe side, such that CONFIG_SYS_HAS_CPU_MIPS32_R2
+isn't set.
 
-------=_Part_16593_24122964.1143278533541
-Content-Type: text/html; charset=ISO-8859-1
+Your failure was so early that I was wondering what on earth could have
+nailed you, but if the kernel was built for Release 2, you would have =
+had
+"DI" (disable interrupts) instructions very early on, and these could =
+have
+caused a fatal early exception on a Release 1 part.
+
+            Regards,
+
+            Kevin K.
+------=_NextPart_000_000A_01C6502A.F13D4210
+Content-Type: text/html;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
 
-On 3/24/06, <b class=3D"gmail_sendername">Ralf Baechle</b> &lt;<a href=3D"m=
-ailto:ralf@linux-mips.org">ralf@linux-mips.org</a>&gt; wrote:<div><span cla=
-ss=3D"gmail_quote"></span><blockquote class=3D"gmail_quote" style=3D"border=
--left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-lef=
-t: 1ex;">
-On Fri, Mar 24, 2006 at 08:06:43PM +0530, Kishore K wrote:<br><br>&gt; hi<b=
-r>&gt; I am trying to bring up the malta board (MIPS 4kec), using the 2.6.1=
-4 kernel<br>&gt; downloaded from linux-mips. The kernel is built with malta=
-_defconfig located
-<br>&gt; in arch/mips/configs. After loading this kernel, board halts after=
- printing<br>&gt; &quot;Linux Started<br>&gt; Config serial console: consol=
-e=3DttyS0, 38400n8r&quot;<br>&gt;<br>&gt; Kernel is built with the tool cha=
-in based on gcc=20
-3.3.6, binutils 2.14.90.0.8<br>&gt; .<br><br>Note I generally don't test wi=
-th HJ.Lu's toolchain at all.&nbsp;&nbsp;It may be<br>broken for MIPS, I don=
-'t know.&nbsp;&nbsp;Also due to known bugs in older toolchains<br>the minim=
-al requirement is binutils=20
-2.16; the vanilla FSF version from<br><a href=3D"http://ftp.gnu.org">ftp.gn=
-u.org</a> will do.<br><br>(2.15 will core dump for some configurations but =
-if it doesn't die, it seems<br>to do just fine)</blockquote><div><br>
-Thanks for the reply. I observed the same problem&nbsp; even when
-compiled with tool chain based on gcc 3.4.4 binutils 2.15.97 and
-uclibc- 0.9.27. I 'll try with binutils 2.16. Please note that my malta
-is based on 4kc but not 4kec.<br>
-</div><br><blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid=
- rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">&gt; Co=
-uld any one tell me what the problem is .<br><br>Let's see.&nbsp;&nbsp;What=
- CPU card are you using on your Malta?&nbsp;&nbsp;And if it's an
-<br>FPGA card, what bitfile is loaded?&nbsp;&nbsp;Yamon will print informat=
-ion on the<br>CPU after powerup or reset.<br><br>&nbsp;&nbsp;Ralf<br></bloc=
-kquote></div><br>
-Here are the details of my malta board.<br>
-<br>
-Board type/revision =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp; 0x02 (Malta) / 0x00<br>
-Core board type/revision =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0x01 (CoreLV) / =
-0x01<br>
-FPGA revision =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0x0001<br>
-MAC address
-=3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-00.d0.a0.00.03.22<br>
-Board S/N
-=3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-0000000554<br>
-PCI bus frequency =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp; 33.33 MHz<br>
-Processor Company ID/options =3D&nbsp; 0x01 (MIPS Technologies, Inc.) / 0x0=
-0<br>
-Processor ID/revision =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0=
-x80 (MIPS 4Kc) / 0x05<br>
-Endianness
-=3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Big<br>
-CPU/Bus frequency =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp; 125 MHz / 63 MHz<br>
-Flash memory size =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp; 4 MByte<br>
-SDRAM size
-=3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-64 MByte<br>
-First free SDRAM address =3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0x8009e380<br>
-<br>
-thanks,<br>
---kishore<br>
-<br>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2800.1528" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>See below...</FONT></DIV>
+<BLOCKQUOTE=20
+style=3D"PADDING-RIGHT: 0px; PADDING-LEFT: 5px; MARGIN-LEFT: 5px; =
+BORDER-LEFT: #000000 2px solid; MARGIN-RIGHT: 0px">
+  <DIV style=3D"FONT: 10pt arial">----- Original Message ----- </DIV>
+  <DIV=20
+  style=3D"BACKGROUND: #e4e4e4; FONT: 10pt arial; font-color: =
+black"><B>From:</B>=20
+  <A title=3Dhellokishore@gmail.com =
+href=3D"mailto:hellokishore@gmail.com">Kishore=20
+  K</A> </DIV>
+  <DIV style=3D"FONT: 10pt arial"><B>To:</B> <A =
+title=3Dralf@linux-mips.org=20
+  href=3D"mailto:ralf@linux-mips.org">Ralf Baechle</A> </DIV>
+  <DIV style=3D"FONT: 10pt arial"><B>Cc:</B> <A =
+title=3Dlinux-mips@linux-mips.org=20
+  =
+href=3D"mailto:linux-mips@linux-mips.org">linux-mips@linux-mips.org</A> =
+</DIV>
+  <DIV style=3D"FONT: 10pt arial"><B>Sent:</B> Saturday, March 25, 2006 =
+10:22=20
+  AM</DIV>
+  <DIV style=3D"FONT: 10pt arial"><B>Subject:</B> Re: 2.6.14 - problem =
+with=20
+  malta</DIV>
+  <DIV><BR></DIV>On 3/24/06, <B class=3Dgmail_sendername>Ralf =
+Baechle</B> &lt;<A=20
+  href=3D"mailto:ralf@linux-mips.org">ralf@linux-mips.org</A>&gt; wrote:
+  <DIV><SPAN class=3Dgmail_quote></SPAN>
+  <BLOCKQUOTE class=3Dgmail_quote=20
+  style=3D"PADDING-LEFT: 1ex; MARGIN: 0pt 0pt 0pt 0.8ex; BORDER-LEFT: =
+rgb(204,204,204) 1px solid">On=20
+    Fri, Mar 24, 2006 at 08:06:43PM +0530, Kishore K wrote:<BR><BR>&gt;=20
+    hi<BR>&gt; I am trying to bring up the malta board (MIPS 4kec), =
+using the=20
+    2.6.14 kernel<BR>&gt; downloaded from linux-mips. The kernel is =
+built with=20
+    malta_defconfig located <BR>&gt; in arch/mips/configs. After loading =
+this=20
+    kernel, board halts after printing<BR>&gt; "Linux Started<BR>&gt; =
+Config=20
+    serial console: console=3DttyS0, 38400n8r"<BR>&gt;<BR>&gt; Kernel is =
+built=20
+    with the tool chain based on gcc 3.3.6, binutils 2.14.90.0.8<BR>&gt; =
 
-------=_Part_16593_24122964.1143278533541--
+    .<BR><BR>Note I generally don't test with HJ.Lu's toolchain at=20
+    all.&nbsp;&nbsp;It may be<BR>broken for MIPS, I don't =
+know.&nbsp;&nbsp;Also=20
+    due to known bugs in older toolchains<BR>the minimal requirement is =
+binutils=20
+    2.16; the vanilla FSF version from<BR><A=20
+    href=3D"http://ftp.gnu.org">ftp.gnu.org</A> will do.<BR><BR>(2.15 =
+will core=20
+    dump for some configurations but if it doesn't die, it seems<BR>to =
+do just=20
+    fine)</BLOCKQUOTE>
+  <DIV><BR>Thanks for the reply. I observed the same problem&nbsp; even =
+when=20
+  compiled with tool chain based on gcc 3.4.4 binutils 2.15.97 and =
+uclibc-=20
+  0.9.27. I 'll try with binutils 2.16. Please note that my malta is =
+based on=20
+  4kc but not 4kec.</DIV></DIV></BLOCKQUOTE>
+<DIV><FONT face=3DArial size=3D2>Ah.&nbsp; That makes a =
+difference.&nbsp; In your=20
+earlier mssage, you said you had a 4KEc.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>The malta_defconfig file by default =
+configures the=20
+kernel to be built assuming</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>MIPS32 Release 2.&nbsp; The 4KEc is =
+Release 2=20
+compatible, but the older 4Kc and</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>5K cores are not.&nbsp;&nbsp; You need =
+to tweak the=20
+configuration such that </FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>CONFIG_CPU_MIPS32_R1=3Dy but =
+CONFIG_CPU_MIPS32_R2 is=20
+not set</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>(it's the other way around in the =
+malta_defconfig=20
+in the linux-mips git),</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>and, to be on the safe side, such that=20
+CONFIG_SYS_HAS_CPU_MIPS32_R2</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>isn't set.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Your failure was so early that I was =
+wondering what=20
+on earth could have</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>nailed you, but if the kernel was built =
+for Release=20
+2, you would have had</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>"DI" (disable interrupts) instructions =
+very early=20
+on, and these could have</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>caused a fatal early exception on a =
+Release 1=20
+part.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;=20
+&nbsp;&nbsp;&nbsp; Regards,</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;=20
+&nbsp;&nbsp;&nbsp; Kevin K.</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_000A_01C6502A.F13D4210--

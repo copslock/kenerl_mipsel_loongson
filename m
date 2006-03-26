@@ -1,61 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Mar 2006 17:40:52 +0000 (GMT)
-Received: from caramon.arm.linux.org.uk ([212.18.232.186]:42001 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S8133787AbWCYRkm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 25 Mar 2006 17:40:42 +0000
-Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.52)
-	id 1FNCuU-0001sO-BK; Sat, 25 Mar 2006 17:50:46 +0000
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
-	id 1FNCuS-0006Un-ND; Sat, 25 Mar 2006 17:50:44 +0000
-Date:	Sat, 25 Mar 2006 17:50:43 +0000
-From:	Russell King <rmk@arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Mar 2006 04:14:12 +0100 (BST)
+Received: from firewall.dcbnet.com ([12.96.67.19]:51655 "EHLO
+	firewall.dcbnet.com") by ftp.linux-mips.org with ESMTP
+	id S8126484AbWCZDN7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 26 Mar 2006 04:13:59 +0100
+Received: from [205.166.54.127] (mschank1.dcbnet.com [205.166.54.127])
+	by firewall.dcbnet.com (8.12.10/8.12.10) with ESMTP id k2Q3O4i4024501;
+	Sat, 25 Mar 2006 21:24:05 -0600
+Message-ID: <44260954.5010707@dcbnet.com>
+Date:	Sat, 25 Mar 2006 21:24:04 -0600
+From:	Mark Schank <mschank@dcbnet.com>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
 To:	Jon Anders Haugum <jonah@omegav.ntnu.no>
-Cc:	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] serial8250: set divisor register correctly for AMD Alchemy SoC uart
-Message-ID: <20060325175042.GH6100@flint.arm.linux.org.uk>
-References: <20060303140428.T96056@invalid.ed.ntnu.no>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060303140428.T96056@invalid.ed.ntnu.no>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Alchemy Au1550 Early Console
+References: <5.1.0.14.2.20060322165104.02a32800@205.166.54.3> <20060324114653.S15728@invalid.ed.ntnu.no>
+In-Reply-To: <20060324114653.S15728@invalid.ed.ntnu.no>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mschank@dcbnet.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10939
+X-archive-position: 10940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk@arm.linux.org.uk
+X-original-sender: mschank@dcbnet.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 03, 2006 at 02:56:38PM +0100, Jon Anders Haugum wrote:
-> Alchemy SoC uart have got a non-standard divisor register that needs some 
-> special handling.
-> 
-> This patch adds divisor read/write functions with test and special 
-> handling for Alchemy internal uart.
+Hi Jon,
 
-This doesn't apply to mainline anymore.
+Thanks for the reply. I do have CONFIG_SERIAL_8250_CONSOLE enabled.
+The console does work once the kernel boots and the driver init routines 
+run.
+However, if the kernel crashes before the driver init routines are run, 
+then I wasn't
+getting any output. The old au1x00_uart.c driver was able to support an 
+early console,
+console_init() in start_kernel(), on the Alchemy uart. However, after 
+looking at the new
+8250 driver more closely, I see that it can not support the Alchemy uart 
+until after the
+driver init routines are run.
 
-patching file drivers/serial/8250.c
-Hunk #1 succeeded at 362 with fuzz 2.
-Hunk #2 FAILED at 528.
-Hunk #3 FAILED at 540.
-Hunk #4 FAILED at 552.
-Hunk #5 FAILED at 565.
-Hunk #6 FAILED at 780.
-Hunk #7 FAILED at 788.
-Hunk #8 succeeded at 1890 with fuzz 2.
-6 out of 8 hunks FAILED -- saving rejects to file drivers/serial/8250.c.rej
+I finally wrote a simple early console driver that relied on the boot 
+monitor setting up
+the uart. This enabled me to figure out why the kernel was crashing 
+during boot.
 
-Please resend.
+Thanks again,
+Mark
 
--- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:  2.6 Serial core
+Jon Anders Haugum wrote:
+> On Wed, 22 Mar 2006, Mark Schank wrote:
+>
+>> I am working with a Au1550 based system an am trying to upgrade
+>> from the 2.6.12 kernel to the 2.6.16 kernel . I have noticed that the
+>> au1x00_uart.c driver has been remove and replaced with functionality in
+>> 8250.c and 8250_au1x00.c. So far, I have been unable to get the early
+>> console running. Under this new driver model, what is the proper
+>> way to bring up an early console on a Au1550 internal serial port?
+>
+> Have you enabled the console for 8250-based serial ports?
+> (CONFIG_SERIAL_8250_CONSOLE)
+>
+> Another issue might be if you have got some PCI-based serial ports in 
+> the system, because they will be assigned before the internal ones. So 
+> you might end up having the console on a PCI serial port.
+>
+> Third: There is a bug in the new driver regarding divisor settings, 
+> but the console should still be working since the boot loader will 
+> init the uart properly. (I've posted a patch for this bug earlier: 
+> http://www.linux-mips.org/archives/linux-mips/2006-03/msg00041.html).
+>
+>
+> Jon
+>

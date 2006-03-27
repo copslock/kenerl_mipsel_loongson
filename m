@@ -1,66 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2006 13:29:11 +0100 (BST)
-Received: from no-dns-yet.demon.co.uk ([80.176.203.50]:15339 "EHLO
-	pangolin.localnet") by ftp.linux-mips.org with ESMTP
-	id S8133487AbWC0M3D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Mar 2006 13:29:03 +0100
-Received: from hylobates.localnet ([192.168.1.21])
-	by pangolin.localnet with esmtp (Exim 3.36 #1 (Debian))
-	id 1FNqzp-0006pZ-00; Mon, 27 Mar 2006 13:38:57 +0100
-Message-ID: <4427DCE4.4000807@bitbox.co.uk>
-Date:	Mon, 27 Mar 2006 13:39:00 +0100
-From:	Peter Horton <phorton@bitbox.co.uk>
-User-Agent: Thunderbird 1.5 (Windows/20051201)
-MIME-Version: 1.0
-To:	Martin Michlmayr <tbm@cyrius.com>
-CC:	"P. Horton" <pdh@colonel-panic.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	netdev@vger.kernel.org,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	Francois Romieu <romieu@fr.zoreil.com>
-Subject: Re: [PATCH, RESEND] Add MWI workaround for Tulip DC21143
-References: <20060129230816.GD4094@colonel-panic.org> <20060218220851.GA1601@colonel-panic.org> <20060306225131.GA23327@unjust.cyrius.com> <20060306231530.GB16082@electric-eye.fr.zoreil.com> <20060307035824.GA24018@linux-mips.org> <Pine.LNX.4.62.0603071031520.5292@pademelon.sonytel.be> <20060308224139.GA7536@electric-eye.fr.zoreil.com> <Pine.LNX.4.62.0603091032490.9741@pademelon.sonytel.be> <20060309224456.GB9103@electric-eye.fr.zoreil.com> <20060327070112.GA10906@deprecation.cyrius.com>
-In-Reply-To: <20060327070112.GA10906@deprecation.cyrius.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <phorton@bitbox.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2006 13:44:31 +0100 (BST)
+Received: from caramon.arm.linux.org.uk ([212.18.232.186]:62472 "EHLO
+	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
+	id S8133487AbWC0MoO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 27 Mar 2006 13:44:14 +0100
+Received: from flint.arm.linux.org.uk ([2002:d412:e8ba:1:201:2ff:fe14:8fad])
+	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.52)
+	id 1FNrEn-00038c-Qh; Mon, 27 Mar 2006 13:54:26 +0100
+Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
+	id 1FNrEl-0006V9-MD; Mon, 27 Mar 2006 13:54:23 +0100
+Date:	Mon, 27 Mar 2006 13:54:23 +0100
+From:	Russell King <rmk@arm.linux.org.uk>
+To:	Jon Anders Haugum <jonah@omegav.ntnu.no>
+Cc:	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] serial8250: set divisor register correctly for AMD Alchemy SoC uart. Re-posted.
+Message-ID: <20060327125423.GA24311@flint.arm.linux.org.uk>
+References: <20060327131437.P55909@invalid.ed.ntnu.no>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060327131437.P55909@invalid.ed.ntnu.no>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10948
+X-archive-position: 10949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: phorton@bitbox.co.uk
+X-original-sender: rmk@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Martin Michlmayr wrote:
-> * Francois Romieu <romieu@fr.zoreil.com> [2006-03-09 23:44]:
->   
->>> So when compiling for Cobalt, we work around the hardware bug, while for other
->>> platforms, we just disable MWI?
->>>
->>> Wouldn't it be possible to always (I mean, when a rev 65 chip is detected)
->>> work around the bug?
->>>       
->> Of course it is possible but it is not the same semantic as the initial
->> patch (not that I know if it is right or not).
->>
->> So:
->> - does the issue exist beyond Cobalt hosts ?
->> - is the fix Cobalt-only ?
->>     
+On Mon, Mar 27, 2006 at 01:27:34PM +0200, Jon Anders Haugum wrote:
+> Alchemy SoC uart have got a non-standard divisor register that needs some 
+> special handling.
+> 
+> This patch adds divisor read/write functions with test and special 
+> handling for Alchemy internal uart.
 >
-> I don't think anyone has replied to this message yet.  My
-> understanding is that it's not Cobalt only but a problem in a specific
-> revision of the chip, which the Cobalt happens to use.  However, I'd
-> be glad if somone else could comment.  Peter, you read the errata
-> right?
->   
+> @@ -533,22 +565,20 @@ static int size_fifo(struct uart_8250_po
+>   */
+>  static unsigned int autoconfig_read_divisor_id(struct uart_8250_port *p)
+>  {
+> -	unsigned char old_dll, old_dlm, old_lcr;
+> +	unsigned char old_lcr;
+>  	unsigned int id;
+> +	unsigned short old_dl;
+>  
+>  	old_lcr = serial_inp(p, UART_LCR);
+>  	serial_outp(p, UART_LCR, UART_LCR_DLAB);
+>  
+> -	old_dll = serial_inp(p, UART_DLL);
+> -	old_dlm = serial_inp(p, UART_DLM);
+> +	old_dl = serial_dl_read(p);
+>  
+> -	serial_outp(p, UART_DLL, 0);
+> -	serial_outp(p, UART_DLM, 0);
+> +	serial_dl_write(p, 0);
+>  
+> -	id = serial_inp(p, UART_DLL) | serial_inp(p, UART_DLM) << 8;
+> +	id = serial_dl_read(p);
+>  
+> -	serial_outp(p, UART_DLL, old_dll);
+> -	serial_outp(p, UART_DLM, old_dlm);
+> +	serial_dl_write(p, old_dl);
+>  	serial_outp(p, UART_LCR, old_lcr);
+>  
+>  	return id;
 
-According to the errata it applies to all DEC 21143-PD and 21143-TD 
-which are the chips with the revision code 0x41 (65). The errata states 
-the receive buffers should not end on a cache aligned boundary when 
-using MWI otherwise the receiver will not close the last descriptor.
+I'm not sure whether this is a good idea - this is used to detect
+an 16C850 UART, so probably should be kept as is.
 
-P.
+In other words, we should use serial_dl_read() / serial_dl_write()
+when we're actually wanting to read or set the actual divisor, but
+not for the autoconfiguration stuff.
+
+-- 
+Russell King
+ Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
+ maintainer of:  2.6 Serial core

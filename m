@@ -1,24 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2006 02:04:57 +0100 (BST)
-Received: from www.haninternet.co.kr ([211.63.64.4]:10259 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2006 03:11:39 +0100 (BST)
+Received: from www.haninternet.co.kr ([211.63.64.4]:27908 "EHLO
 	www.haninternet.co.kr") by ftp.linux-mips.org with ESMTP
-	id S8133572AbWC0BEs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Mar 2006 02:04:48 +0100
+	id S8133522AbWC0CLa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 27 Mar 2006 03:11:30 +0100
 Received: from [211.63.70.179] ([211.63.70.179])
-	by www.haninternet.co.kr (8.9.3/8.9.3) with ESMTP id KAA19329
-	for <linux-mips@linux-mips.org>; Mon, 27 Mar 2006 10:12:49 +0900
-Subject: Re: compilartion error   : label at end of compound statement
+	by www.haninternet.co.kr (8.9.3/8.9.3) with ESMTP id LAA31496
+	for <linux-mips@linux-mips.org>; Mon, 27 Mar 2006 11:19:32 +0900
+Subject: socket error
 From:	Gowri Satish Adimulam <gowri@bitel.co.kr>
 Reply-To: gowri@bitel.co.kr
 To:	linux-mips@linux-mips.org
-In-Reply-To: <20060324081829.GA3170@linux-mips.org>
-References: <20060216.234519.82087885.anemo@mba.ocn.ne.jp>
-	 <20060324.131809.115639866.nemoto@toshiba-tops.co.jp>
-	 <1143184072.3249.26.camel@localhost.localdomain>
-	 <20060324081829.GA3170@linux-mips.org>
+In-Reply-To: <20060325175042.GH6100@flint.arm.linux.org.uk>
+References: <20060303140428.T96056@invalid.ed.ntnu.no>
+	 <20060325175042.GH6100@flint.arm.linux.org.uk>
 Content-Type: text/plain
 Organization: Bitel Co Ltd
-Date:	Mon, 27 Mar 2006 10:15:02 +0900
-Message-Id: <1143422102.3028.0.camel@localhost.localdomain>
+Date:	Mon, 27 Mar 2006 11:21:41 +0900
+Message-Id: <1143426101.3028.9.camel@localhost.localdomain>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4) 
 Content-Transfer-Encoding: 7bit
@@ -26,7 +24,7 @@ Return-Path: <gowri@bitel.co.kr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10941
+X-archive-position: 10942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,45 +32,16 @@ X-original-sender: gowri@bitel.co.kr
 Precedence: bulk
 X-list: linux-mips
 
-Thanks every body 
+Hi all ,
+Below iam trying to run ftp server daemon , 
+it gave below message , 
 
-On Fri, 2006-03-24 at 08:18 +0000, Ralf Baechle wrote:
-> On Fri, Mar 24, 2006 at 04:07:52PM +0900, Gowri Satish Adimulam wrote:
-> 
-> > Hi ,
-> > Iam trying to compile simple application with mips cross compiler ,
-> 
-> You didn't say which one.
-> 
-> (Fortunately it's obvious enough in this case)
-> 
-> > Iam getting the below error , 
-> > i tried to google but unable to find relavent solution
-> > 
-> > any pointers will be helpful , 
-> > 
-> > ===============error==========
-> > 
-> > mipsel-linux-uclibc-gcc -Wall    -c -o ls.o ls.c
-> > ls.c: In function `donlist':
-> > ls.c:591: error: label at end of compound statement
-> 
-> Something like:
-> 
->         switch (x) {
->         case 3:
->         }
-> 
-> will result in this error message in C9x.  Solution:  insert a semicolon
-> like:
-> 
->         switch (x) {
->         case 3:
-> 	;
->         }
-> 
-> The reason is that the C stanadard requires - and thus gcc since 3.4 (?) -
-> a label to be followed by a statement and a semicolon alone is already
-> an statement.
-> 
->   Ralf
+# ./ftpd
+421 Cannot getsockname( STDIN ), errno=95
+May  6 05:55:54 in.ftpd[48]: Cannot getsockname( STDIN ): Socket
+operation on nt#
+
+any idea about this error .
+
+Regards
+Gowri 

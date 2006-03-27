@@ -1,125 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2006 17:10:29 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:38085 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133487AbWC0QKV
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Mar 2006 17:10:21 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k2RGKWQf007504;
-	Mon, 27 Mar 2006 08:20:32 -0800 (PST)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k2RGKURp011968;
-	Mon, 27 Mar 2006 08:20:30 -0800 (PST)
-Message-ID: <00d501c651ba$ccae9c00$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Kishore K" <hellokishore@gmail.com>
-Cc:	"Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-References: <f07e6e0603240636x5e496cd2g29316d73490aa300@mail.gmail.com> <20060324165518.GA16567@linux-mips.org> <f07e6e0603250122t6328c09coe37141d14396dc12@mail.gmail.com> <000d01c65022$90d758a0$10eca8c0@grendel> <f07e6e0603270326s7acb75e4x3000bb08de93ffc5@mail.gmail.com> <005901c6519f$b226e060$10eca8c0@grendel> <f07e6e0603270612k39c91d01wa0e08c35fee1922c@mail.gmail.com>
-Subject: Re: 2.6.14 - problem with malta
-Date:	Mon, 27 Mar 2006 18:23:34 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Mar 2006 19:36:16 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:2222 "HELO mail.dev.rtsoft.ru")
+	by ftp.linux-mips.org with SMTP id S8133653AbWC0SgH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Mar 2006 19:36:07 +0100
+Received: (qmail 19118 invoked from network); 27 Mar 2006 22:46:28 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 27 Mar 2006 22:46:28 -0000
+Message-ID: <44283299.1080308@ru.mvista.com>
+Date:	Mon, 27 Mar 2006 22:44:41 +0400
+From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_00D2_01C651CB.8F1496E0"
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+To:	linux-mips@linux-mips.org
+CC:	Freddy Spierenburg <freddy@dusktilldawn.nl>,
+	Jordan Crouse <jordan.crouse@amd.com>,
+	Manish Lachwani <mlachwani@mvista.com>
+Subject: [PATCH] Au1xx0: fix prom_getenv() to handle YAMON style environment
+References: <20060327074352.GC4781@dusktilldawn.nl> <4427A31F.9080801@ru.mvista.com>
+In-Reply-To: <4427A31F.9080801@ru.mvista.com>
+Content-Type: multipart/mixed;
+ boundary="------------090307050401070306010703"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10953
+X-archive-position: 10954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
+--------------090307050401070306010703
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-------=_NextPart_000_00D2_01C651CB.8F1496E0
+Hello.
+
+     Alchemy boards use YAMON which passes the environment variables as the
+tuples of strings (the name followed by the value) unlike PMON which passes
+"name=<val>" strings.
+
+WBR, Sergei
+
+
+
+--------------090307050401070306010703
 Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ name="Au1xx0-fix-prom_getenv.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="Au1xx0-fix-prom_getenv.patch"
+
+diff --git a/arch/mips/au1000/common/prom.c b/arch/mips/au1000/common/prom.c
+index 9c171af..ae7d8c5 100644
+--- a/arch/mips/au1000/common/prom.c
++++ b/arch/mips/au1000/common/prom.c
+@@ -1,10 +1,9 @@
+ /*
+  *
+  * BRIEF MODULE DESCRIPTION
+- *    PROM library initialisation code, assuming a version of
+- *    pmon is the boot code.
++ *    PROM library initialisation code, assuming YAMON is the boot loader.
+  *
+- * Copyright 2000,2001 MontaVista Software Inc.
++ * Copyright 2000, 2001, 2006 MontaVista Software Inc.
+  * Author: MontaVista Software, Inc.
+  *         	ppopov@mvista.com or source@mvista.com
+  *
+@@ -49,9 +48,9 @@ extern char **prom_argv, **prom_envp;
+ 
+ typedef struct
+ {
+-    char *name;
+-/*    char *val; */
+-}t_env_var;
++	char *name;
++	char *val;
++} t_env_var;
+ 
+ 
+ char * prom_getcmdline(void)
+@@ -85,21 +84,16 @@ char *prom_getenv(char *envname)
+ {
+ 	/*
+ 	 * Return a pointer to the given environment variable.
+-	 * Environment variables are stored in the form of "memsize=64".
+ 	 */
+ 
+ 	t_env_var *env = (t_env_var *)prom_envp;
+-	int i;
+-
+-	i = strlen(envname);
+ 
+-	while(env->name) {
+-		if(strncmp(envname, env->name, i) == 0) {
+-			return(env->name + strlen(envname) + 1);
+-		}
++	while (env->name) {
++		if (strcmp(envname, env->name) == 0)
++			return env->val;
+ 		env++;
+ 	}
+-	return(NULL);
++	return NULL;
+ }
+ 
+ inline unsigned char str2hexnum(unsigned char c)
 
 
-  ----- Original Message -----=20
-  From: Kishore K=20
-  ...
 
-
-  I reset the above options, but the same problem persists. If I =
-compiled 2.6.10 with default configuration (endian is changed to big =
-endian), the board comes up without any problem.
-
-
-
-Then the first thing to do is look at the diff between the 2.6.10 =
-.config file
-and the 2.6.14 .config file and elminate all possible differences.  The =
-diff
-with my 2.6.9+ .config for Malta could be deceptive, because I've got a
-totally hacked up SMTC configuration for the 34K.
-
-        Regards,
-
-        Kevin K.
-------=_NextPart_000_00D2_01C651CB.8F1496E0
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Diso-8859-1">
-<META content=3D"MSHTML 6.00.2800.1528" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT face=3DArial size=3D2>
-<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
-<BLOCKQUOTE=20
-style=3D"PADDING-RIGHT: 0px; PADDING-LEFT: 5px; MARGIN-LEFT: 5px; =
-BORDER-LEFT: #000000 2px solid; MARGIN-RIGHT: 0px">
-  <DIV style=3D"FONT: 10pt arial">----- Original Message ----- </DIV>
-  <DIV=20
-  style=3D"BACKGROUND: #e4e4e4; FONT: 10pt arial; font-color: =
-black"><B>From:</B>=20
-  <A title=3Dhellokishore@gmail.com =
-href=3D"mailto:hellokishore@gmail.com">Kishore=20
-  K</A> </DIV>
-  <DIV style=3D"FONT: 10pt arial"><FONT=20
-  style=3D"BACKGROUND-COLOR: #e4e4e4">...</FONT></DIV><FONT face=3DArial =
-size=3D2>
-  <DIV><BR></DIV>
-  <DIV></FONT><FONT face=3D"Times New Roman" size=3D3>I reset the above =
-options, but=20
-  the same problem persists. If I compiled 2.6.10 with default =
-configuration=20
-  (endian is changed to big endian), the board comes up without any=20
-  problem.<BR></FONT></DIV></BLOCKQUOTE>
-<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Then the first thing to do is look at =
-the diff=20
-between the 2.6.10 .config file</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>and the 2.6.14 .config file and =
-elminate all=20
-possible differences.&nbsp; The diff</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>with my 2.6.9+ .config for Malta could =
-be=20
-deceptive, because I've got a</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2>totally hacked up SMTC configuration =
-for the=20
-34K.</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;=20
-Regards,</FONT></DIV>
-<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial=20
-size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kevin=20
-K.</FONT></DIV></FONT></DIV></BODY></HTML>
-
-------=_NextPart_000_00D2_01C651CB.8F1496E0--
+--------------090307050401070306010703--

@@ -1,41 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2006 16:05:58 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:6107 "HELO mail.dev.rtsoft.ru")
-	by ftp.linux-mips.org with SMTP id S8133720AbWC1PFs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Mar 2006 16:05:48 +0100
-Received: (qmail 31535 invoked from network); 28 Mar 2006 19:16:23 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 28 Mar 2006 19:16:23 -0000
-Message-ID: <442952D5.7010409@ru.mvista.com>
-Date:	Tue, 28 Mar 2006 19:14:29 +0400
-From:	Sergei Shtylylov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	=?ISO-8859-1?Q?Ralf_R=F6sch?= <ralf.roesch@rw-gmbh.de>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] rtc.h: fixes to make genrtc.c compilable
-References: <20060327074352.GC4781@dusktilldawn.nl> <4427A31F.9080801@ru.mvista.com> <44295272.5000006@rw-gmbh.de>
-In-Reply-To: <44295272.5000006@rw-gmbh.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2006 19:59:10 +0100 (BST)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:7634 "EHLO
+	duck.specifix.com") by ftp.linux-mips.org with ESMTP
+	id S8133559AbWC1S7A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 28 Mar 2006 19:59:00 +0100
+Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
+	by duck.specifix.com (Postfix) with ESMTP
+	id E34E7FA8B; Tue, 28 Mar 2006 11:09:22 -0800 (PST)
+Subject: Re: compilation problem with kernel 2.6.15
+From:	James E Wilson <wilson@specifix.com>
+To:	dhunjukrishna@gmail.com
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20060328143708.57991.qmail@web53507.mail.yahoo.com>
+References: <20060328143708.57991.qmail@web53507.mail.yahoo.com>
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <1143572962.13954.8.camel@aretha.corp.specifix.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 
+Date:	Tue, 28 Mar 2006 11:09:22 -0800
 Content-Transfer-Encoding: 8bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <wilson@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10963
+X-archive-position: 10964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: wilson@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Tue, 2006-03-28 at 06:37, Krishna wrote:
+>  err
+> or: read-only variable ΓÇÿ__gu_valΓÇÖ used as ΓÇÿasmΓÇÖ output
 
-Ralf R�sch wrote:
-> !please ignore attached patch from mail before!
+This means a new error check in gcc has found a latent kernel bug.
 
-    Please don't follow up with unrelated patches, start another thered. :-)
+It is also sometimes the case that a new linux kernel finds a latent gcc
+bug.
 
-WBR, Sergei
+Note, in general, key parts of linux such as the kernel, glibc, and gcc,
+often have such heavy dependencies on each other that you can not pick
+and choose random versions.  If you want to use a particular kernel
+version, then there are often particular glibc and gcc versions you
+should use with it, otherwise you are likely to run into trouble.
+
+This link:
+    http://www.linux-mips.org/wiki/Toolchains#Prologue
+recommends gcc-3.4.  And if you follow the "recommended" link to
+    http://www.linux-mips.org/wiki/GCC
+it specifically recommends against use of gcc-4.1 for compiling the
+linux kernel, as this hasn't been well tested yet.
+-- 
+Jim Wilson, GNU Tools Support, http://www.specifix.com

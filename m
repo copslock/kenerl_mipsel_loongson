@@ -1,55 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2006 19:59:10 +0100 (BST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:7634 "EHLO
-	duck.specifix.com") by ftp.linux-mips.org with ESMTP
-	id S8133559AbWC1S7A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 28 Mar 2006 19:59:00 +0100
-Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
-	by duck.specifix.com (Postfix) with ESMTP
-	id E34E7FA8B; Tue, 28 Mar 2006 11:09:22 -0800 (PST)
-Subject: Re: compilation problem with kernel 2.6.15
-From:	James E Wilson <wilson@specifix.com>
-To:	dhunjukrishna@gmail.com
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20060328143708.57991.qmail@web53507.mail.yahoo.com>
-References: <20060328143708.57991.qmail@web53507.mail.yahoo.com>
-Content-Type: text/plain; charset=UTF-8
-Message-Id: <1143572962.13954.8.camel@aretha.corp.specifix.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date:	Tue, 28 Mar 2006 11:09:22 -0800
-Content-Transfer-Encoding: 8bit
-Return-Path: <wilson@specifix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2006 21:28:47 +0100 (BST)
+Received: from baldrick.bootc.net ([83.142.228.48]:22492 "EHLO
+	baldrick.bootc.net") by ftp.linux-mips.org with ESMTP
+	id S8133559AbWC1U2h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 28 Mar 2006 21:28:37 +0100
+Received: from [192.168.1.3] (cpc3-hudd6-0-0-cust471.hudd.cable.ntl.com [86.3.1.216])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by baldrick.bootc.net (Postfix) with ESMTP id 930821400BE9
+	for <linux-mips@linux-mips.org>; Tue, 28 Mar 2006 21:39:03 +0100 (BST)
+Message-ID: <44299EE6.7010309@bootc.net>
+Date:	Tue, 28 Mar 2006 21:39:02 +0100
+From:	Chris Boot <bootc@bootc.net>
+User-Agent: Thunderbird 1.5 (X11/20060309)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Emulating MIPS -- please help!
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at bootc.plus.com
+Return-Path: <bootc@bootc.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10964
+X-archive-position: 10965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: bootc@bootc.net
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2006-03-28 at 06:37, Krishna wrote:
->  err
-> or: read-only variable ΓÇÿ__gu_valΓÇÖ used as ΓÇÿasmΓÇÖ output
+Hi all,
 
-This means a new error check in gcc has found a latent kernel bug.
+I'm desperately trying to get a MIPS emulator running Linux, and while 
+I've managed to get gxemul and (I think) qemu running, I can't for the 
+life of me get them to (1) output anything or (2) use an initrd.
 
-It is also sometimes the case that a new linux kernel finds a latent gcc
-bug.
+Can anyone post some instructions and, perhaps, a .config for 2.6.16 so 
+I can get some output like kernel boot messages and a login screen?
 
-Note, in general, key parts of linux such as the kernel, glibc, and gcc,
-often have such heavy dependencies on each other that you can not pick
-and choose random versions.  If you want to use a particular kernel
-version, then there are often particular glibc and gcc versions you
-should use with it, otherwise you are likely to run into trouble.
+I've got gxemul emulating code and running a kernel, which I can test by 
+stopping emulation and stepping the code. Qemu seems to boot my 
+qemu-specific kernel but I get no output and qemu appears to hang (won't 
+take keyboard input). I can't seem to get either emulator to load my 
+initrd, but that doesn't really matter at this stage since I can't see 
+anything anyway (I have no idea how to using gxemul, and qemu refuses to 
+load the image).
 
-This link:
-    http://www.linux-mips.org/wiki/Toolchains#Prologue
-recommends gcc-3.4.  And if you follow the "recommended" link to
-    http://www.linux-mips.org/wiki/GCC
-it specifically recommends against use of gcc-4.1 for compiling the
-linux kernel, as this hasn't been well tested yet.
+Something that could emulate a NEC VR41xx chip would be icing on the 
+cake, but I'll take anything I can get at this stage.
+
+Many thanks in advance,
+Chris
+
 -- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+Chris Boot
+bootc@bootc.net
+http://www.bootc.net/

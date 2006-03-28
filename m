@@ -1,129 +1,139 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2006 15:26:56 +0100 (BST)
-Received: from web53507.mail.yahoo.com ([206.190.37.68]:12435 "HELO
-	web53507.mail.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8126480AbWC1O0r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 28 Mar 2006 15:26:47 +0100
-Received: (qmail 57993 invoked by uid 60001); 28 Mar 2006 14:37:08 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Reply-To:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=G7SapihgKSlwgyfa7f4CmZU+AUqsLtN4JB0DA/PBJSvrdpzZ/rIIvCpjE8sUpHGC5IIZ7GWq1cmfquppwoxPYMr0z53RsXHIiJxVcXmVB04ts1+LlbqNNrIkfkK59T7FYUtc7+wlgzCJPwkmuTZ5+R6FAx3Q8LFAh2yeoDPlbcw=  ;
-Message-ID: <20060328143708.57991.qmail@web53507.mail.yahoo.com>
-Received: from [203.145.155.11] by web53507.mail.yahoo.com via HTTP; Tue, 28 Mar 2006 06:37:08 PST
-Date:	Tue, 28 Mar 2006 06:37:08 -0800 (PST)
-From:	Krishna <dhunjukrishna@yahoo.com>
-Reply-To: dhunjukrishna@gmail.com
-Subject: compilation problem with kernel 2.6.15 
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Mar 2006 15:44:43 +0100 (BST)
+Received: from fw01.bwg.de ([213.144.14.242]:34123 "EHLO fw01.bwg.de")
+	by ftp.linux-mips.org with ESMTP id S8133536AbWC1Ooe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Mar 2006 15:44:34 +0100
+Received: from fw01.bwg.de (localhost [127.0.0.1])
+	by fw01.bwg.de (8.13.3/8.13.3) with ESMTP id k2SEt2wT023615
+	for <linux-mips@linux-mips.org>; Tue, 28 Mar 2006 16:55:02 +0200 (CEST)
+Received: from kundenmail (193.47.152.5) by fw01-4.bwg.de (smtprelay) with ESMTP Tue Mar 28 16:54:55 2006.
+Received: from ximap.arbeitsgruppe (217.81.172.162)
+          by kundenmail with MERCUR Mailserver (v4.03.15 MTI1LTI0MzctNDg3Nw==)
+          for <linux-mips@linux-mips.org>; Tue, 28 Mar 2006 16:56:24 +0200
+Received: from [192.168.178.44] (rr-2600 [192.168.178.44])
+	by ximap.arbeitsgruppe (Postfix) with ESMTP id C5F8F174B2E
+	for <linux-mips@linux-mips.org>; Tue, 28 Mar 2006 16:55:24 +0200 (CEST)
+Message-ID: <44294E3C.8010602@rw-gmbh.de>
+Date:	Tue, 28 Mar 2006 16:54:52 +0200
+From:	=?ISO-8859-1?Q?Ralf_R=F6sch?= <ralf.roesch@rw-gmbh.de>
+User-Agent: Thunderbird 1.5 (Windows/20051201)
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-351059717-1143556628=:53650"
-Content-Transfer-Encoding: 8bit
-Return-Path: <dhunjukrishna@yahoo.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] rtc.h: fixes to make genrtc.c compilable
+References: <20060327074352.GC4781@dusktilldawn.nl> <4427A31F.9080801@ru.mvista.com>
+In-Reply-To: <4427A31F.9080801@ru.mvista.com>
+Content-Type: multipart/mixed;
+ boundary="------------000600010901030809020408"
+Return-Path: <ralf.roesch@rw-gmbh.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10960
+X-archive-position: 10961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhunjukrishna@yahoo.com
+X-original-sender: ralf.roesch@rw-gmbh.de
 Precedence: bulk
 X-list: linux-mips
 
---0-351059717-1143556628=:53650
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+This is a multi-part message in MIME format.
+--------------000600010901030809020408
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I tried to cross compile kernel 2.6.15 for BCM1480. Please tell me what the following error indicates:
-   
-    Using /home/ssf/bdcom/linux-mips-kernels/linux-2.6.15 as source for kernel
-  GEN    /home/ssf/bdcom/linux-mips-kernels/linux-mips-kernel-2.6.15/Makefile
-  CHK     include/linux/version.h
-  UPD     include/linux/version.h
-  SYMLINK include/asm -> include/asm-mips
-  HOSTCC  scripts/basic/fixdep
-  HOSTCC  scripts/basic/split-include
-  HOSTCC  scripts/basic/docproc
-  GEN    /home/ssf/bdcom/linux-mips-kernels/linux-mips-kernel-2.6.15/Makefile
-  HOSTCC  scripts/kconfig/conf.o
-  HOSTCC  scripts/kconfig/kxgettext.o
-  HOSTCC  scripts/kconfig/mconf.o
-  SHIPPED scripts/kconfig/zconf.tab.c
-  SHIPPED scripts/kconfig/lex.zconf.c
-  SHIPPED scripts/kconfig/zconf.hash.c
-  HOSTCC  scripts/kconfig/zconf.tab.o
-  HOSTLD  scripts/kconfig/conf
-scripts/kconfig/conf -s arch/mips/Kconfig
-#
-# using defaults found in .config
-#
-  SPLIT   include/linux/autoconf.h -> include/config/*
-  CC      arch/mips/kernel/asm-offsets.s
-  GEN     include/asm-mips/asm-offsets.h
-  HOSTCC  scripts/genksyms/genksyms.o
-  SHIPPED scripts/genksyms/lex.c
-  SHIPPED scripts/genksyms/parse.h
-  SHIPPED scripts/genksyms/keywords.c
-  HOSTCC  scripts/genksyms/lex.o
-  SHIPPED scripts/genksyms/parse.c
-  HOSTCC  scripts/genksyms/parse.o
-  HOSTLD  scripts/genksyms/genksyms
-  CC      scripts/mod/empty.o
-  HOSTCC  scripts/mod/mk_elfconfig
-  MKELF   scripts/mod/elfconfig.h
-  HOSTCC  scripts/mod/file2alias.o
-  HOSTCC  scripts/mod/modpost.o
-  HOSTCC  scripts/mod/sumversion.o
-  HOSTLD  scripts/mod/modpost
-  HOSTCC  scripts/kallsyms
-  HOSTCC  scripts/pnmtologo
-  HOSTCC  scripts/conmakehash
-  HOSTCC  scripts/bin2c
-  CC      init/main.o
-  CHK     include/linux/compile.h
-  UPD     include/linux/compile.h
-  CC      init/version.o
-  CC      init/do_mounts.o
-In file included from /home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/li
-nux/nfs_fs.h:15,
-                 from /home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/init/do_mo
-unts.c:12:
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h: In func
-tion &#915;Çÿfault_in_pages_readable&#915;ÇÖ:
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err
-or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output
-make[2]: *** [init/do_mounts.o] Error 1
-make[1]: *** [init] Error 2
-make: *** [_all] Error 2
-   
-  Thanks and Regards,
-  Krishna
+patch below makes genrtc.c compilable again
+--
+Ralf Roesch
 
-		
----------------------------------
-Yahoo! Messenger with Voice. Make PC-to-Phone Calls to the US (and 30+ countries) for 2¢/min or less.
---0-351059717-1143556628=:53650
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
 
-<div>I tried to cross compile kernel 2.6.15 for BCM1480.&nbsp;Please tell me what the following error indicates:</div>  <div>&nbsp;</div>  <div>&nbsp; Using /home/ssf/bdcom/linux-mips-kernels/linux-2.6.15 as source for kernel<BR>&nbsp; GEN&nbsp;&nbsp;&nbsp; /home/ssf/bdcom/linux-mips-kernels/linux-mips-kernel-2.6.15/Makefile<BR>&nbsp; CHK&nbsp;&nbsp;&nbsp;&nbsp; include/linux/version.h<BR>&nbsp; UPD&nbsp;&nbsp;&nbsp;&nbsp; include/linux/version.h<BR>&nbsp; SYMLINK include/asm -&gt; include/asm-mips<BR>&nbsp; HOSTCC&nbsp; scripts/basic/fixdep<BR>&nbsp; HOSTCC&nbsp; scripts/basic/split-include<BR>&nbsp; HOSTCC&nbsp; scripts/basic/docproc<BR>&nbsp; GEN&nbsp;&nbsp;&nbsp; /home/ssf/bdcom/linux-mips-kernels/linux-mips-kernel-2.6.15/Makefile<BR>&nbsp; HOSTCC&nbsp; scripts/kconfig/conf.o<BR>&nbsp; HOSTCC&nbsp; scripts/kconfig/kxgettext.o<BR>&nbsp; HOSTCC&nbsp; scripts/kconfig/mconf.o<BR>&nbsp; SHIPPED scripts/kconfig/zconf.tab.c<BR>&nbsp; SHIPPED scripts/kconfig/lex.zconf.c<BR>&nbsp; SHIPPED
- scripts/kconfig/zconf.hash.c<BR>&nbsp; HOSTCC&nbsp; scripts/kconfig/zconf.tab.o<BR>&nbsp; HOSTLD&nbsp; scripts/kconfig/conf<BR>scripts/kconfig/conf -s arch/mips/Kconfig<BR>#<BR># using defaults found in .config<BR>#<BR>&nbsp; SPLIT&nbsp;&nbsp; include/linux/autoconf.h -&gt; include/config/*<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/asm-offsets.s<BR>&nbsp; GEN&nbsp;&nbsp;&nbsp;&nbsp; include/asm-mips/asm-offsets.h<BR>&nbsp; HOSTCC&nbsp; scripts/genksyms/genksyms.o<BR>&nbsp; SHIPPED scripts/genksyms/lex.c<BR>&nbsp; SHIPPED scripts/genksyms/parse.h<BR>&nbsp; SHIPPED scripts/genksyms/keywords.c<BR>&nbsp; HOSTCC&nbsp; scripts/genksyms/lex.o<BR>&nbsp; SHIPPED scripts/genksyms/parse.c<BR>&nbsp; HOSTCC&nbsp; scripts/genksyms/parse.o<BR>&nbsp; HOSTLD&nbsp; scripts/genksyms/genksyms<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scripts/mod/empty.o<BR>&nbsp; HOSTCC&nbsp; scripts/mod/mk_elfconfig<BR>&nbsp; MKELF&nbsp;&nbsp; scripts/mod/elfconfig.h<BR>&nbsp; HOSTCC&nbsp;
- scripts/mod/file2alias.o<BR>&nbsp; HOSTCC&nbsp; scripts/mod/modpost.o<BR>&nbsp; HOSTCC&nbsp; scripts/mod/sumversion.o<BR>&nbsp; HOSTLD&nbsp; scripts/mod/modpost<BR>&nbsp; HOSTCC&nbsp; scripts/kallsyms<BR>&nbsp; HOSTCC&nbsp; scripts/pnmtologo<BR>&nbsp; HOSTCC&nbsp; scripts/conmakehash<BR>&nbsp; HOSTCC&nbsp; scripts/bin2c<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; init/main.o<BR>&nbsp; CHK&nbsp;&nbsp;&nbsp;&nbsp; include/linux/compile.h<BR>&nbsp; UPD&nbsp;&nbsp;&nbsp;&nbsp; include/linux/compile.h<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; init/version.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; init/do_mounts.o<BR>In file included from /home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/li<BR>nux/nfs_fs.h:15,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from /home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/init/do_mo<BR>unts.c:12:<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h: In func<BR>tion
- &#915;Çÿfault_in_pages_readable&#915;ÇÖ:<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err<BR>or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err<BR>or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err<BR>or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:237: err<BR>or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err<BR>or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err<BR>or: read-only
- variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err<BR>or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/include/linux/pagemap.h:243: err<BR>or: read-only variable &#915;Çÿ__gu_val&#915;ÇÖ used as &#915;Çÿasm&#915;ÇÖ output<BR>make[2]: *** [init/do_mounts.o] Error 1<BR>make[1]: *** [init] Error 2<BR>make: *** [_all] Error 2</div>  <div>&nbsp;</div>  <div>Thanks and Regards,</div>  <div>Krishna</div><p>
-		<hr size=1>Yahoo! Messenger with Voice. <a href="http://us.rd.yahoo.com/mail_us/taglines/postman1/*http://us.rd.yahoo.com/evt=39663/*http://voice.yahoo.com">Make PC-to-Phone Calls</a> to the US (and 30+ countries) for 2¢/min or less.
---0-351059717-1143556628=:53650--
+diff --git a/include/asm-mips/rtc.h b/include/asm-mips/rtc.h
+index a2abc45..82ad401 100644
+--- a/include/asm-mips/rtc.h
++++ b/include/asm-mips/rtc.h
+@@ -32,7 +32,7 @@ static inline unsigned int get_rtc_time(
+  {
+         unsigned long nowtime;
+
+-       nowtime = rtc_get_time();
++       nowtime = rtc_mips_get_time();
+         to_tm(nowtime, time);
+         time->tm_year -= 1900;
+
+@@ -47,7 +47,7 @@ static inline int set_rtc_time(struct rt
+         nowtime = mktime(time->tm_year+1900, time->tm_mon+1,
+                         time->tm_mday, time->tm_hour, time->tm_min,
+                         time->tm_sec);
+-       ret = rtc_set_time(nowtime);
++       ret = rtc_mips_set_time(nowtime);
+
+         return ret;
+  }
+
+
+--------------000600010901030809020408
+Content-Type: text/plain;
+ name="Au1xx0-fix-prom_getenv.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="Au1xx0-fix-prom_getenv.patch"
+
+diff --git a/arch/mips/au1000/common/prom.c b/arch/mips/au1000/common/prom.c
+index 9c171af..ae7d8c5 100644
+--- a/arch/mips/au1000/common/prom.c
++++ b/arch/mips/au1000/common/prom.c
+@@ -1,10 +1,9 @@
+ /*
+  *
+  * BRIEF MODULE DESCRIPTION
+- *    PROM library initialisation code, assuming a version of
+- *    pmon is the boot code.
++ *    PROM library initialisation code, assuming YAMON is the boot loader.
+  *
+- * Copyright 2000,2001 MontaVista Software Inc.
++ * Copyright 2000, 2001, 2006 MontaVista Software Inc.
+  * Author: MontaVista Software, Inc.
+  *         	ppopov@mvista.com or source@mvista.com
+  *
+@@ -49,9 +48,9 @@ extern char **prom_argv, **prom_envp;
+ 
+ typedef struct
+ {
+-    char *name;
+-/*    char *val; */
+-}t_env_var;
++	char *name;
++	char *val;
++} t_env_var;
+ 
+ 
+ char * prom_getcmdline(void)
+@@ -85,21 +84,16 @@ char *prom_getenv(char *envname)
+ {
+ 	/*
+ 	 * Return a pointer to the given environment variable.
+-	 * Environment variables are stored in the form of "memsize=64".
+ 	 */
+ 
+ 	t_env_var *env = (t_env_var *)prom_envp;
+-	int i;
+-
+-	i = strlen(envname);
+ 
+-	while(env->name) {
+-		if(strncmp(envname, env->name, i) == 0) {
+-			return(env->name + strlen(envname) + 1);
+-		}
++	while (env->name) {
++		if (strcmp(envname, env->name) == 0)
++			return env->val;
+ 		env++;
+ 	}
+-	return(NULL);
++	return NULL;
+ }
+ 
+ inline unsigned char str2hexnum(unsigned char c)
+
+
+
+
+--------------000600010901030809020408--

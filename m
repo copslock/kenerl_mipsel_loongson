@@ -1,38 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 15:24:34 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:49627 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 16:26:20 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:62172 "EHLO
 	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133728AbWC2OYY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 29 Mar 2006 15:24:24 +0100
+	id S8133728AbWC2P0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Mar 2006 16:26:11 +0100
 Received: from zaigor.enneenne.com ([192.168.32.1])
 	by goldrake.enneenne.com with esmtp (Exim 4.50)
-	id 1FObj1-0003SR-Vl; Wed, 29 Mar 2006 16:32:44 +0200
+	id 1FOcgp-0003j5-Tl
+	for linux-mips@linux-mips.org; Wed, 29 Mar 2006 17:34:32 +0200
 Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
 	(envelope-from <giometti@enneenne.com>)
-	id 1FObmC-0008MI-0Q; Wed, 29 Mar 2006 16:36:00 +0200
-Date:	Wed, 29 Mar 2006 16:36:00 +0200
+	id 1FOck0-0008Rt-4k
+	for linux-mips@linux-mips.org; Wed, 29 Mar 2006 17:37:48 +0200
+Date:	Wed, 29 Mar 2006 17:37:48 +0200
 From:	Rodolfo Giometti <giometti@linux.it>
-To:	dan@embeddededge.com
-Cc:	Linux MIPS <linux-mips@linux-mips.org>
-Message-ID: <20060329143559.GS10460@enneenne.com>
-References: <20051216153203.GK14341@gundam.enneenne.com> <43A2EBC9.5040502@ru.mvista.com>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+Message-ID: <20060329153748.GU10460@enneenne.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+epxrXWOh++2HLjY"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <43A2EBC9.5040502@ru.mvista.com>
 Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
 X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
 User-Agent: Mutt/1.5.11+cvs20060126
 X-SA-Exim-Connect-IP: 192.168.32.1
 X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: Re: Freezing & Unfreezing the au11000
+Subject: [PATCH] Timing with TOY on Au1100
 X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
 X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
 Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10979
+X-archive-position: 10980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,59 +38,90 @@ X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
+I've checked the TOY programming on a board Au1100 based and I notice
+that the frequency is not correct. Infact the TOY frequency is just
+HZ/2... I suggest this patch that should fix this topic. 
 
---+epxrXWOh++2HLjY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch also try to fix (in a poor manner) a problem related with
+the jiffie_drift and the fact that HZ may be in the range [100:1000].
 
-On Fri, Dec 16, 2005 at 07:31:05PM +0300, Sergei Shtylylov wrote:
-> Rodolfo Giometti wrote:
->=20
-> >in order to restore the scratch registers contents as descibed into
-> >file "linux/arch/mips/au1000/common/sleeper.S":
->=20
->    If you're talking about 2.6, the code in that file seems very incorrec=
-t=20
->    in regard to how it deals wiht the stack frame, since it effectively=
-=20
-> trashes regs $1 and $2 reusing their slots for saving CP0 Status and=20
-> Context regs. 2.4 branch has more sane variant.
+The last block (@@ -189,15 +196,11 @@) remove a bug during system wake
+up when HZ is 1000. The while() may loose too much time computing the
+last_match20 parameter and if TOY must run at 1K the system hangs
+since the TOY is programmed with an alredy passed time stamp.
 
-I'm trying to use code into sleeper.S from kernel 2.4 but I still have
-a problem. The system corrctly wake up and linux restart but the
-problem is that after about 600-800mS the system hangs! I've just the
-time to press 2 or three times the enter key and see the console
-prompt.
-
-I've checked also the interrupts from TOY and I noticed that it stop
-working!
-
-Has anybody used the sleep mode for Au1xxx processor? Which version of
-sleeper.S file has been used?
-
-Thanks in advance,
+Ciao,
 
 Rodolfo
 
---=20
+Index: common/time.c
+===================================================================
+RCS file: /home/develop/cvs_private/linux-mips-exadron/arch/mips/au1000/common/time.c,v
+retrieving revision 1.3
+diff -u -r1.3 time.c
+--- a/common/time.c	26 Jul 2005 21:33:32 -0000	1.3
++++ b/common/time.c	29 Mar 2006 15:26:03 -0000
+@@ -142,7 +143,7 @@
+ 		time_elapsed = pc0 - last_match20;
+ 	}
+ 
+-	while (time_elapsed > 0) {
++	do {
+ 		do_timer(regs);
+ #ifndef CONFIG_SMP
+ 		update_process_times(user_mode(regs));
+@@ -150,14 +151,19 @@
+ 		time_elapsed -= MATCH20_INC;
+ 		last_match20 += MATCH20_INC;
+ 		jiffie_drift++;
+-	}
++	} while (time_elapsed > MATCH20_INC);
+ 
+ 	last_pc0 = pc0;
+ 	au_writel(last_match20 + MATCH20_INC, SYS_TOYMATCH2);
+ 	au_sync();
+ 
+-	/* our counter ticks at 10.009765625 ms/tick, we we're running
+-	 * almost 10uS too slow per tick.
++#if HZ < 400
++	/* our counter ticks at 
++	 *   HZ =  100 -> 10.009765625    ms/tick
++	 *   HZ =  400 ->  2.50244140625  ms/tick
++	 *   HZ =  500 ->  1.983642578125 ms/tick
++	 *   HZ = 1000 ->  0.9765625      ms/tick
++	 * so HZ = 400 may be a good discriminating point...
+ 	 */
+ 
+ 	if (jiffie_drift >= 999) {
+@@ -167,6 +173,7 @@
+ 		update_process_times(user_mode(regs));
+ #endif
+ 	}
++#endif
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -189,15 +196,11 @@
+ 		time_elapsed = pc0 - last_match20;
+ 	}
+ 
+-	while (time_elapsed > 0) {
+-		time_elapsed -= MATCH20_INC;
+-		last_match20 += MATCH20_INC;
+-	}
++	last_match20 += time_elapsed - time_elapsed%MATCH20_INC;
+ 
+ 	last_pc0 = pc0;
+ 	au_writel(last_match20 + MATCH20_INC, SYS_TOYMATCH2);
+ 	au_sync();
+-
+ }
+ 
+ /* This is just for debugging to set the timer for a sleep delay.
+
+-- 
 
 GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
 Linux Device Driver                             giometti@gnudd.com
 Embedded Systems                     		giometti@linux.it
 UNIX programming                     phone:     +39 349 2432127
-
---+epxrXWOh++2HLjY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-
-iD8DBQFEKptPQaTCYNJaVjMRAsVKAJ9375dPyS2RfUsL/RVAIhJ5SwOQwwCgjmRR
-PTKgiOUTFmNLm1+v/uAF4Gs=
-=mrwU
------END PGP SIGNATURE-----
-
---+epxrXWOh++2HLjY--

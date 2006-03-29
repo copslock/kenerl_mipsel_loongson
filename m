@@ -1,73 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 00:48:28 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:42723 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S8133724AbWC1XsT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Mar 2006 00:48:19 +0100
-Received: from lagash (88-106-238-34.dynamic.dsl.as9105.com [88.106.238.34])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 34F984403D; Wed, 29 Mar 2006 01:58:49 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.60)
-	(envelope-from <ths@networkno.de>)
-	id 1FOO57-0007bY-Rx; Wed, 29 Mar 2006 00:58:37 +0100
-Date:	Wed, 29 Mar 2006 00:58:27 +0100
-To:	Chris Boot <bootc@bootc.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 01:49:59 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:19864 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133727AbWC2Atu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Mar 2006 01:49:50 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 29 Mar 2006 10:00:20 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 1F9DA204BC;
+	Wed, 29 Mar 2006 10:00:18 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0C7F1202ED;
+	Wed, 29 Mar 2006 10:00:18 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k2T10G4D089546;
+	Wed, 29 Mar 2006 10:00:17 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 29 Mar 2006 10:00:16 +0900 (JST)
+Message-Id: <20060329.100016.74752734.nemoto@toshiba-tops.co.jp>
+To:	pf@net.alphadv.de
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Emulating MIPS -- please help!
-Message-ID: <20060328235827.GC31939@networkno.de>
-References: <44299EE6.7010309@bootc.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44299EE6.7010309@bootc.net>
-User-Agent: Mutt/1.5.11+cvs20060126
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Subject: Re: compilation problem with kernel 2.6.15 
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.58.0603290104010.634@Indigo2.Peter>
+References: <20060328143708.57991.qmail@web53507.mail.yahoo.com>
+	<Pine.LNX.4.58.0603290104010.634@Indigo2.Peter>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10971
+X-archive-position: 10972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 28, 2006 at 09:39:02PM +0100, Chris Boot wrote:
-> Hi all,
-> 
-> I'm desperately trying to get a MIPS emulator running Linux, and while 
-> I've managed to get gxemul and (I think) qemu running, I can't for the 
-> life of me get them to (1) output anything or (2) use an initrd.
-> 
-> Can anyone post some instructions and, perhaps, a .config for 2.6.16 so 
-> I can get some output like kernel boot messages and a login screen?
-> 
-> I've got gxemul emulating code and running a kernel, which I can test by 
-> stopping emulation and stepping the code. Qemu seems to boot my 
-> qemu-specific kernel but I get no output and qemu appears to hang (won't 
-> take keyboard input).
+>>>>> On Wed, 29 Mar 2006 01:06:48 +0200 (CEST), peter fuerst <pf@net.alphadv.de> said:
+> defining `__gu_val' of type `const char', which gcc 4.2 (don't know
+> about 4.1) no longer accepts as asm-output (lvalue).  At least until
+> this macro will be changed, you should switch back to gcc 4.0.
 
-VGA support for qemu isn't there yet, use -nographics to get the serial
-console output.
+This is same as gcc 4.1 and the macro in kernel 2.6.16 has been fixed
+already.  This issue was discussed several times in linux-mips ML.
 
-> I can't seem to get either emulator to load my 
-> initrd, but that doesn't really matter at this stage since I can't see 
-> anything anyway (I have no idea how to using gxemul, and qemu refuses to 
-> load the image).
-
-Current qemu confuses virtual and physical adresses when loading initrds,
-this and a bunch of other bugs are fixed in a set of patches I have.
-Note that these are work in progress, and may cause different bugs.
-Notably, the gcc4 support patch won't work on x86, and probably only on
-powerpc. It has, however, emulated IDE support, I use a self-compiled
-qemu kernel and a Debian/mips image to boot from, no ramdisk. The
-patchset is available at
-
-http://people.debian.org/~ths/qemu-patches-bogus/
-
-Use at your own risk.
-
-
-Thiemo
+---
+Atsushi Nemoto

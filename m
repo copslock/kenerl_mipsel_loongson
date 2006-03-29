@@ -1,127 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 16:26:20 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:62172 "EHLO
-	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133728AbWC2P0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 29 Mar 2006 16:26:11 +0100
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by goldrake.enneenne.com with esmtp (Exim 4.50)
-	id 1FOcgp-0003j5-Tl
-	for linux-mips@linux-mips.org; Wed, 29 Mar 2006 17:34:32 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1FOck0-0008Rt-4k
-	for linux-mips@linux-mips.org; Wed, 29 Mar 2006 17:37:48 +0200
-Date:	Wed, 29 Mar 2006 17:37:48 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	Linux MIPS <linux-mips@linux-mips.org>
-Message-ID: <20060329153748.GU10460@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 16:35:13 +0100 (BST)
+Received: from web31912.mail.mud.yahoo.com ([68.142.207.92]:21893 "HELO
+	web31912.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133768AbWC2PfE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Mar 2006 16:35:04 +0100
+Received: (qmail 46530 invoked by uid 60001); 29 Mar 2006 15:45:31 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=AHhwaiLSdn8szXJwEtSYckUeSCpeOASR1oxfDxuGMLRSXymfxexwBtGgDbOUQ15Rb6zQtQTCnK3HQmeVZC+r+9fZAOSt4wIX4382kYgVTL7S0pRdNu3ODPc62sRQRVuevZoucWXNB8gayzyrGwVH1uwmRqmK9qxRue8Uh5pU9nc=  ;
+Message-ID: <20060329154531.46528.qmail@web31912.mail.mud.yahoo.com>
+Received: from [129.188.33.221] by web31912.mail.mud.yahoo.com via HTTP; Wed, 29 Mar 2006 07:45:31 PST
+Date:	Wed, 29 Mar 2006 07:45:31 -0800 (PST)
+From:	Kumaraswamy Mudide <kumara_mudide@yahoo.com>
+Subject: Re: gdb info threads with core files
+To:	linux-mips@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20060328223757.GB12609@nevyn.them.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.11+cvs20060126
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: [PATCH] Timing with TOY on Au1100
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Content-Type: multipart/alternative; boundary="0-567865972-1143647131=:44340"
+Content-Transfer-Encoding: 8bit
+Return-Path: <kumara_mudide@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10980
+X-archive-position: 10981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: kumara_mudide@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-I've checked the TOY programming on a board Au1100 based and I notice
-that the frequency is not correct. Infact the TOY frequency is just
-HZ/2... I suggest this patch that should fix this topic. 
+--0-567865972-1143647131=:44340
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-The patch also try to fix (in a poor manner) a problem related with
-the jiffie_drift and the fact that HZ may be in the range [100:1000].
+Hi Everyone,
+   
+       We are using 2.4.25and gdb 6.4 version. "info threads" with core file, it does always shows only one thread.
+   
+  Any ideas???
+  
 
-The last block (@@ -189,15 +196,11 @@) remove a bug during system wake
-up when HZ is 1000. The while() may loose too much time computing the
-last_match20 parameter and if TOY must run at 1K the system hangs
-since the TOY is programmed with an alredy passed time stamp.
+Daniel Jacobowitz <dan@debian.org> wrote:
+  On Tue, Mar 28, 2006 at 02:28:35PM -0800, Kumaraswamy Mudide wrote:
+> Hi Everyone,
+> 
+> We are using linux 2.4.25 and gdb 6.4, info threads with the core files always shows only single thread. This threads is same as to which we have sent segv or abort signal. 
+> 
+> bt and info reg seems to be working fine. but not info threads.
+> 
+> Any idea??
 
-Ciao,
-
-Rodolfo
-
-Index: common/time.c
-===================================================================
-RCS file: /home/develop/cvs_private/linux-mips-exadron/arch/mips/au1000/common/time.c,v
-retrieving revision 1.3
-diff -u -r1.3 time.c
---- a/common/time.c	26 Jul 2005 21:33:32 -0000	1.3
-+++ b/common/time.c	29 Mar 2006 15:26:03 -0000
-@@ -142,7 +143,7 @@
- 		time_elapsed = pc0 - last_match20;
- 	}
- 
--	while (time_elapsed > 0) {
-+	do {
- 		do_timer(regs);
- #ifndef CONFIG_SMP
- 		update_process_times(user_mode(regs));
-@@ -150,14 +151,19 @@
- 		time_elapsed -= MATCH20_INC;
- 		last_match20 += MATCH20_INC;
- 		jiffie_drift++;
--	}
-+	} while (time_elapsed > MATCH20_INC);
- 
- 	last_pc0 = pc0;
- 	au_writel(last_match20 + MATCH20_INC, SYS_TOYMATCH2);
- 	au_sync();
- 
--	/* our counter ticks at 10.009765625 ms/tick, we we're running
--	 * almost 10uS too slow per tick.
-+#if HZ < 400
-+	/* our counter ticks at 
-+	 *   HZ =  100 -> 10.009765625    ms/tick
-+	 *   HZ =  400 ->  2.50244140625  ms/tick
-+	 *   HZ =  500 ->  1.983642578125 ms/tick
-+	 *   HZ = 1000 ->  0.9765625      ms/tick
-+	 * so HZ = 400 may be a good discriminating point...
- 	 */
- 
- 	if (jiffie_drift >= 999) {
-@@ -167,6 +173,7 @@
- 		update_process_times(user_mode(regs));
- #endif
- 	}
-+#endif
- 
- 	return IRQ_HANDLED;
- }
-@@ -189,15 +196,11 @@
- 		time_elapsed = pc0 - last_match20;
- 	}
- 
--	while (time_elapsed > 0) {
--		time_elapsed -= MATCH20_INC;
--		last_match20 += MATCH20_INC;
--	}
-+	last_match20 += time_elapsed - time_elapsed%MATCH20_INC;
- 
- 	last_pc0 = pc0;
- 	au_writel(last_match20 + MATCH20_INC, SYS_TOYMATCH2);
- 	au_sync();
--
- }
- 
- /* This is just for debugging to set the timer for a sleep delay.
+Then your kernel probably does not support multithreaded core dumping.
 
 -- 
+Daniel Jacobowitz
+CodeSourcery
 
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+
+
+Thanks & Regards,
+Kumar
+603-542-4834
+		
+---------------------------------
+Talk is cheap. Use Yahoo! Messenger to make PC-to-Phone calls.  Great rates starting at 1&cent;/min.
+--0-567865972-1143647131=:44340
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<div>Hi Everyone,</div>  <div>&nbsp;</div>  <div>&nbsp;&nbsp; &nbsp;&nbsp;We are using 2.4.25and gdb 6.4 version. "info threads" with core file, it does always shows only one thread.</div>  <div>&nbsp;</div>  <div>Any ideas???</div>  <div><BR><BR><B><I>Daniel Jacobowitz &lt;dan@debian.org&gt;</I></B> wrote:</div>  <BLOCKQUOTE class=replbq style="PADDING-LEFT: 5px; MARGIN-LEFT: 5px; BORDER-LEFT: #1010ff 2px solid">On Tue, Mar 28, 2006 at 02:28:35PM -0800, Kumaraswamy Mudide wrote:<BR>&gt; Hi Everyone,<BR>&gt; <BR>&gt; We are using linux 2.4.25 and gdb 6.4, info threads with the core files always shows only single thread. This threads is same as to which we have sent segv or abort signal. <BR>&gt; <BR>&gt; bt and info reg seems to be working fine. but not info threads.<BR>&gt; <BR>&gt; Any idea??<BR><BR>Then your kernel probably does not support multithreaded core dumping.<BR><BR>-- <BR>Daniel Jacobowitz<BR>CodeSourcery<BR></BLOCKQUOTE><BR><BR><BR>Thanks &amp;
+ Regards,<br>Kumar<br>603-542-4834<p>
+		<hr size=1>Talk is cheap. Use Yahoo! Messenger to make PC-to-Phone calls. <a href="http://us.rd.yahoo.com/mail_us/taglines/postman7/*http://us.rd.yahoo.com/evt=39666/*http://beta.messenger.yahoo.com"> Great rates starting at 1&cent;/min.
+--0-567865972-1143647131=:44340--

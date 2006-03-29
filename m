@@ -1,61 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 14:29:45 +0100 (BST)
-Received: from fri.itea.ntnu.no ([129.241.7.60]:46301 "EHLO fri.itea.ntnu.no")
-	by ftp.linux-mips.org with ESMTP id S8133764AbWC2N32 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Mar 2006 14:29:28 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by fri.itea.ntnu.no (Postfix) with ESMTP id 440E782AF;
-	Wed, 29 Mar 2006 15:39:48 +0200 (CEST)
-Received: from invalid.ed.ntnu.no (invalid.ed.ntnu.no [129.241.205.150])
-	by fri.itea.ntnu.no (Postfix) with ESMTP;
-	Wed, 29 Mar 2006 15:39:47 +0200 (CEST)
-Received: from invalid.ed.ntnu.no (jonah@localhost.ed.ntnu.no [127.0.0.1])
-	by invalid.ed.ntnu.no (8.13.3/8.13.3) with ESMTP id k2TDdlWa086559
-	(version=TLSv1/SSLv3 cipher=DHE-DSS-AES256-SHA bits=256 verify=NO);
-	Wed, 29 Mar 2006 15:39:47 +0200 (CEST)
-	(envelope-from jonah@omegav.ntnu.no)
-Received: from localhost (jonah@localhost)
-	by invalid.ed.ntnu.no (8.13.3/8.13.3/Submit) with ESMTP id k2TDdkls086556;
-	Wed, 29 Mar 2006 15:39:46 +0200 (CEST)
-	(envelope-from jonah@omegav.ntnu.no)
-X-Authentication-Warning: invalid.ed.ntnu.no: jonah owned process doing -bs
-Date:	Wed, 29 Mar 2006 15:39:46 +0200 (CEST)
-From:	Jon Anders Haugum <jonah@omegav.ntnu.no>
-X-X-Sender: jonah@invalid.ed.ntnu.no
-To:	Russell King <rmk@arm.linux.org.uk>
-Cc:	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] serial8250: set divisor register correctly for AMD
- Alchemy SoC uart. Re-posted.
-In-Reply-To: <20060327125423.GA24311@flint.arm.linux.org.uk>
-Message-ID: <20060329153513.L86511@invalid.ed.ntnu.no>
-References: <20060327131437.P55909@invalid.ed.ntnu.no>
- <20060327125423.GA24311@flint.arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 14:37:44 +0100 (BST)
+Received: from mf2.realtek.com.tw ([60.248.182.46]:28176 "EHLO
+	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
+	id S8133762AbWC2Nhg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Mar 2006 14:37:36 +0100
+Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
+ (Clearswift SMTPRS 5.1.7) with ESMTP id <T7754657d1bdc803816a88@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
+ Wed, 29 Mar 2006 21:50:45 +0800
+Received: from rtpdii3098 ([172.21.98.16])
+          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
+          with ESMTP id 2006032921475844-85722 ;
+          Wed, 29 Mar 2006 21:47:58 +0800 
+Message-ID: <024c01c65337$63931c90$106215ac@realtek.com.tw>
+From:	"colin" <colin@realtek.com.tw>
+To:	<linux-mips@linux-mips.org>
+Subject: Using hardware watchpoint for applications debugging
+Date:	Wed, 29 Mar 2006 21:47:58 +0800
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Content-Scanned: with sophos and spamassassin at mailgw.ntnu.no.
-Return-Path: <jonah@omegav.ntnu.no>
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1506
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
+X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2006/03/29 =?Bog5?B?pFWkyCAwOTo0Nzo1OA==?=,
+	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
+ 2006/03/29 =?Bog5?B?pFWkyCAwOTo0ODowMA==?=,
+	Serialize complete at 2006/03/29 =?Bog5?B?pFWkyCAwOTo0ODowMA==?=
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="big5"
+Return-Path: <colin@realtek.com.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10975
+X-archive-position: 10976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonah@omegav.ntnu.no
+X-original-sender: colin@realtek.com.tw
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 27 Mar 2006, Russell King wrote:
-> I'm not sure whether this is a good idea - this is used to detect
-> an 16C850 UART, so probably should be kept as is.
-> 
-> In other words, we should use serial_dl_read() / serial_dl_write()
-> when we're actually wanting to read or set the actual divisor, but
-> not for the autoconfiguration stuff.
 
-Agree.
+Hi all,
+Our applications encounter memory crash very often. Thus we would like to
+use hardware watchpoint on our platform, MIPS 4KEc.
+After starting to design it, more and more issues emerge. They are listed
+below:
+    1. WatchLo Register only has 29 bits to indicate the VAddr. Therefore,
+it will also trigger exceptions when accessing nearby addresses.
+    2. When an exception happens and we find that it's not touching the righ
+address, we will discard it. However, exception will happen again because
+the former instruction will be re-executed when the exception is finished.
 
-Should I send you a updated patch?
+Is there any easy way to solve these problems?
 
-
--- 
-Jon Anders Haugum
+Regards,
+Colin

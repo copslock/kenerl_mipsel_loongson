@@ -1,54 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 01:49:59 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:19864 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133727AbWC2Atu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 29 Mar 2006 01:49:50 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 29 Mar 2006 10:00:20 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 1F9DA204BC;
-	Wed, 29 Mar 2006 10:00:18 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0C7F1202ED;
-	Wed, 29 Mar 2006 10:00:18 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k2T10G4D089546;
-	Wed, 29 Mar 2006 10:00:17 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Wed, 29 Mar 2006 10:00:16 +0900 (JST)
-Message-Id: <20060329.100016.74752734.nemoto@toshiba-tops.co.jp>
-To:	pf@net.alphadv.de
-Cc:	linux-mips@linux-mips.org
-Subject: Re: compilation problem with kernel 2.6.15 
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.58.0603290104010.634@Indigo2.Peter>
-References: <20060328143708.57991.qmail@web53507.mail.yahoo.com>
-	<Pine.LNX.4.58.0603290104010.634@Indigo2.Peter>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Mar 2006 07:47:48 +0100 (BST)
+Received: from mx.globalone.ru ([194.84.254.251]:24338 "EHLO mx.globalone.ru")
+	by ftp.linux-mips.org with ESMTP id S8133517AbWC2Grg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Mar 2006 07:47:36 +0100
+Received: from mx.globalone.ru (localhost [127.0.0.1])
+	by mx.globalone.ru (8.12.10/8.12.8) with ESMTP id k2T6vxIl022410
+	for <linux-mips@linux-mips.org>; Wed, 29 Mar 2006 10:57:59 +0400
+Received: from smtp.globalone.ru (smtp.globalone.ru [172.16.38.5])
+	by mx.globalone.ru (8.12.10/8.12.8) with ESMTP id k2T6vpuZ022397
+	for <linux-mips@linux-mips.org>; Wed, 29 Mar 2006 10:57:51 +0400
+Received: from voropaya ([172.16.38.7]) by smtp.globalone.ru
+          (Netscape Messaging Server 4.15) with SMTP id IWVNCE00.QE7; Wed,
+          29 Mar 2006 10:57:50 +0400 
+Message-ID: <0f1501c652fe$650d2950$e90d11ac@spb.in.rosprint.ru>
+Reply-To: "Alexander Voropay" <a.voropay@equant.ru>
+From:	"Alexander Voropay" <a.voropay@equant.ru>
+To:	"Chris Boot" <bootc@bootc.net>, <linux-mips@linux-mips.org>
+References: <44299EE6.7010309@bootc.net>
+Subject: Re: Emulating MIPS -- please help!
+Date:	Wed, 29 Mar 2006 10:59:13 +0400
+Organization: &Equant
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=response
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2180
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Return-Path: <a.voropay@equant.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10972
+X-archive-position: 10973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: a.voropay@equant.ru
 Precedence: bulk
 X-list: linux-mips
 
->>>>> On Wed, 29 Mar 2006 01:06:48 +0200 (CEST), peter fuerst <pf@net.alphadv.de> said:
-> defining `__gu_val' of type `const char', which gcc 4.2 (don't know
-> about 4.1) no longer accepts as asm-output (lvalue).  At least until
-> this macro will be changed, you should switch back to gcc 4.0.
+From: "Chris Boot" <bootc@bootc.net>
 
-This is same as gcc 4.1 and the macro in kernel 2.6.16 has been fixed
-already.  This issue was discussed several times in linux-mips ML.
+> Can anyone post some instructions and, perhaps, a .config for 2.6.16 so 
+> I can get some output like kernel boot messages and a login screen?
 
----
-Atsushi Nemoto
+ I've spent some time playing with GXEmul and Linux kernel.
+The Linux 2.4.x under GXEemul 0.3.8 works fine.
+The UART, timer, VGA/pckbd and IDE are working.
+You could find a precompiled 2.4 kernel with built-in ramdisk there:
+http://www.nwpi.ru/~alec/mips/
+One kernel is compiled with GCC2.9.6 while another with
+GCC 3.3.5. They shows different CPU frequency under
+emulator due to the tricky "loop optimization" in the GXEmul/mips.
+
+ You could use DISK-debian image with pivot_root also to
+get a mips/debian with glibc and GCC. Use a -di: option
+to attach an IDE disk image.
+
+ To run this kernels, use Malta mode:
+$ ./gxemul -E evbmips -e malta vmlinux_2_4_32-malta-ide-pci-ramdisk.elf.gz
+
+ Wait a minute to fill GXEmul translation cache. PCI stuff in the
+GXEmul does not work (try lspci).
+
+ Unfortunately, I still can't get Linux 2.6.x working under GXEmul.
+The interrupt routines in the 2.6 was massively changed
+and this produces IRQ16 spurious interrupt infinity loop.
+It's reasonable difficult to find such sort of bugs.
+
+--
+-=AV=-

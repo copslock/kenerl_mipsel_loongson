@@ -1,89 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2006 03:09:30 +0100 (BST)
-Received: from mf2.realtek.com.tw ([60.248.182.46]:30483 "EHLO
-	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
-	id S8133814AbWC3CJV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 30 Mar 2006 03:09:21 +0100
-Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
- (Clearswift SMTPRS 5.1.7) with ESMTP id <T775715cbe4dc803816a88@mf2.realtek.com.tw>;
- Thu, 30 Mar 2006 10:22:34 +0800
-Received: from rtpdii3098 ([172.21.98.16])
-          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
-          with ESMTP id 2006033010194768-94962 ;
-          Thu, 30 Mar 2006 10:19:47 +0800 
-Message-ID: <003701c653a0$6ab38320$106215ac@realtek.com.tw>
-From:	"colin" <colin@realtek.com.tw>
-To:	"Kevin D. Kissell" <kevink@mips.com>,
-	"Nigel Stephens" <nigel@mips.com>
-Cc:	<linux-mips@linux-mips.org>
-References: <024c01c65337$63931c90$106215ac@realtek.com.tw> <442A94D0.1020106@mips.com> <06d301c6533d$9c3c0f10$10eca8c0@grendel>
-Subject: Re: Using hardware watchpoint for applications debugging
-Date:	Thu, 30 Mar 2006 10:19:47 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2006 07:09:28 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:3033 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S8127173AbWC3GJP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 30 Mar 2006 07:09:15 +0100
+Received: from localhost (in-3.mx.triera.net [213.161.0.27])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 7DE23C0B3;
+	Thu, 30 Mar 2006 08:19:47 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-3.mx.triera.net (Postfix) with SMTP id 656961BC08E;
+	Thu, 30 Mar 2006 08:19:48 +0200 (CEST)
+Received: from localhost (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id BD99B1A18BC;
+	Thu, 30 Mar 2006 08:19:48 +0200 (CEST)
+Date:	Thu, 30 Mar 2006 08:19:50 +0200
+From:	Domen Puncer <domen.puncer@ultra.si>
+To:	Chris Boot <bootc@bootc.net>
+Cc:	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: Emulating MIPS -- please help!
+Message-ID: <20060330061950.GA29489@domen.ultra.si>
+References: <44299EE6.7010309@bootc.net> <20060328235827.GC31939@networkno.de> <671FD00E-F2EB-4D8C-A391-5393096BC43D@bootc.net> <20060329160337.GI31939@networkno.de> <E9A44E96-DD59-4543-AC62-586BFDB6E720@bootc.net>
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2006/03/30 =?Bog5?B?pFekyCAxMDoxOTo0Nw==?=,
-	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2006/03/30 =?Bog5?B?pFekyCAxMDoxOTo0OQ==?=,
-	Serialize complete at 2006/03/30 =?Bog5?B?pFekyCAxMDoxOTo0OQ==?=
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E9A44E96-DD59-4543-AC62-586BFDB6E720@bootc.net>
+User-Agent: Mutt/1.5.11
+X-Virus-Scanned: Triera AV Service
+Return-Path: <domen.puncer@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10987
+X-archive-position: 10988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: domen.puncer@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-
-Hi Kevin,
-After looking into function compute_return_epc(regs), we find that it can
-just skip an instruction.
-But the instruction that cause exceptions should not be skipped.
-
-Regards,
-Colin
-
-
------ Original Message ----- 
-From: "Kevin D. Kissell" <kevink@mips.com>
-To: "Nigel Stephens" <nigel@mips.com>; "colin" <colin@realtek.com.tw>
-Cc: <linux-mips@linux-mips.org>
-Sent: Wednesday, March 29, 2006 10:32 PM
-Subject: Re: Using hardware watchpoint for applications debugging
-
-
-> > colin wrote:.
-> > >     2. When an exception happens and we find that it's not touching
-the righ
-> > > address, we will discard it. However, exception will happen again
-because
-> > > the former instruction will be re-executed when the exception is
-finished.
-> > >
+On 29/03/06 22:31 +0100, Chris Boot wrote:
+> On 29 Mar 2006, at 17:03, Thiemo Seufer wrote:
+> 
+> >On Wed, Mar 29, 2006 at 04:47:23PM +0100, Chris Boot wrote:
+> >[snip]
+> >>Dentry cache hash table entries: 32768 (order: 5, 131072 bytes)
+> >>Inode-cache hash table entries: 16384 (order: 4, 65536 bytes)
+> >>Memory: 128480k/131072k available (907k kernel code, 2556k reserved,
+> >>172k data, 96k init, 0k highmem)
+> >>Mount-cache hash table entries: 512
+> >>Checking for 'wait' instruction...  available.
+> >>
+> >>At this stage it gets stuck and I have to kill qemu. Any ideas how to
+> >>debug this?
 > >
-> > You'll need to single-step over the instruction which generated the
-> > unwanted watchpoint exception, with the watchpoint disabled. Then after
-> > handling the single step reenable the watchpoint and resume normal
-> > execution.
->
-> There's actually a simpler and more efficient approach in Linux.  The code
-> already exists in the MIPS Linux kernel to "skip" the instruction
-responsible
-> for the current exception, because the situation also arises for emulated
-> instructions.   In do_watch(), in the cases where you want to ignore the
-> watchpoint, you should be able to just invoke compute_return_epc(regs)
-> and return.  There should be no need to handle single-step exceptions
-> or disable/reenable the watchpoint.
->
->             Regards,
->
->             Kevin K.
+> >Familiar symptom, I fixed it but don't remember offhand which patch
+> >contains the fix. It was either related to TLB emulation or to
+> >kernel-mode/user-mode mismatch.
+> 
+> Well, I added a few more patches and it finally boots now, but it  
+> can't mount the root FS off the RAMDISK. I'm not sure if this is a  
+> side-effect of the previous initrd problem or what, but it feels good  
+> to be getting further...
+
+I was unable to boot userspace from initrd too. It was loaded to the
+wrong address or something. "Fixing" that didn't work either.
+
+OTOH initramfs worked fine for me. Maybe you can live with that.
+
+
+	Domen
+
+> 
+> >>I've only applied the elf-loader patch since I was having
+> >>trouble applying some of the others to my Ubuntu qemu 0.8.0.
+> >
+> >The patches are for upstream CVS.
+> 
+> Hmm, well I might give it a shot and see what happens. I'd rather  
+> stick with a stable version, but if it gets me somewhere it's  
+> probably worth it.
+> 
+> Thanks very much,
+> Chris
+> 
+> -- 
+> Chris Boot
+> bootc@bootc.net
+> http://www.bootc.net/
+> 
+> 

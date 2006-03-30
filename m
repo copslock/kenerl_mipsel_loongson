@@ -1,69 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2006 08:57:46 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:16544 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S8133353AbWC3H5h (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2006 08:57:37 +0100
-Received: from lagash (88-106-238-34.dynamic.dsl.as9105.com [88.106.238.34])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 670D644441; Thu, 30 Mar 2006 10:08:12 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.60)
-	(envelope-from <ths@networkno.de>)
-	id 1FOsCD-0002yv-19; Thu, 30 Mar 2006 09:07:57 +0100
-Date:	Thu, 30 Mar 2006 09:07:47 +0100
-To:	Domen Puncer <domen.puncer@ultra.si>
-Cc:	Chris Boot <bootc@bootc.net>, linux-mips@linux-mips.org
-Subject: Re: Emulating MIPS -- please help!
-Message-ID: <20060330080746.GM31939@networkno.de>
-References: <44299EE6.7010309@bootc.net> <20060328235827.GC31939@networkno.de> <671FD00E-F2EB-4D8C-A391-5393096BC43D@bootc.net> <20060329160337.GI31939@networkno.de> <E9A44E96-DD59-4543-AC62-586BFDB6E720@bootc.net> <20060330061950.GA29489@domen.ultra.si>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2006 10:02:52 +0100 (BST)
+Received: from web53504.mail.yahoo.com ([206.190.37.65]:35668 "HELO
+	web53504.mail.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133370AbWC3JCn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 30 Mar 2006 10:02:43 +0100
+Received: (qmail 44806 invoked by uid 60001); 30 Mar 2006 09:13:13 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Reply-To:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=ilQ/bEqVQx5yq1MAomPk1y+Enxhgg+SKC7K8N0XZR7fURyKHmxLIDy9/3Yrwcp8Fb3PYtvg/uNzF+sNSkmk9FWJ/JGGOxr2OPCg2fCjVHdYLvMhyKtCJoCERsdBYODE/s9ILWKMYywBX7PwIPVWGcfp0ODKwddvfOxxXjzNHcFg=  ;
+Message-ID: <20060330091313.44804.qmail@web53504.mail.yahoo.com>
+Received: from [203.145.155.11] by web53504.mail.yahoo.com via HTTP; Thu, 30 Mar 2006 01:13:13 PST
+Date:	Thu, 30 Mar 2006 01:13:13 -0800 (PST)
+From:	Krishna <dhunjukrishna@yahoo.com>
+Reply-To: dhunjukrishna@gmail.com
+Subject: compilation problem with kernel 2.6.15 
+To:	Linux-MIPS <linux-mips@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060330061950.GA29489@domen.ultra.si>
-User-Agent: Mutt/1.5.11+cvs20060126
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Content-Type: multipart/alternative; boundary="0-1100918324-1143709993=:43114"
+Content-Transfer-Encoding: 8bit
+Return-Path: <dhunjukrishna@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10989
+X-archive-position: 10990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: dhunjukrishna@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 30, 2006 at 08:19:50AM +0200, Domen Puncer wrote:
-> On 29/03/06 22:31 +0100, Chris Boot wrote:
-> > On 29 Mar 2006, at 17:03, Thiemo Seufer wrote:
-> > 
-> > >On Wed, Mar 29, 2006 at 04:47:23PM +0100, Chris Boot wrote:
-> > >[snip]
-> > >>Dentry cache hash table entries: 32768 (order: 5, 131072 bytes)
-> > >>Inode-cache hash table entries: 16384 (order: 4, 65536 bytes)
-> > >>Memory: 128480k/131072k available (907k kernel code, 2556k reserved,
-> > >>172k data, 96k init, 0k highmem)
-> > >>Mount-cache hash table entries: 512
-> > >>Checking for 'wait' instruction...  available.
-> > >>
-> > >>At this stage it gets stuck and I have to kill qemu. Any ideas how to
-> > >>debug this?
-> > >
-> > >Familiar symptom, I fixed it but don't remember offhand which patch
-> > >contains the fix. It was either related to TLB emulation or to
-> > >kernel-mode/user-mode mismatch.
-> > 
-> > Well, I added a few more patches and it finally boots now, but it  
-> > can't mount the root FS off the RAMDISK. I'm not sure if this is a  
-> > side-effect of the previous initrd problem or what, but it feels good  
-> > to be getting further...
-> 
-> I was unable to boot userspace from initrd too. It was loaded to the
-> wrong address or something. "Fixing" that didn't work either.
+--0-1100918324-1143709993=:43114
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-It gets loaded to 0x80800000, feeding rd_start/rd_size derived from
-that address as kernel parameters should work.
+While trying to cross compile kernel 2.6.15 for BCM1480 
+  Ii got the following error:
+   
+    CC      arch/mips/kernel/signal.o
+  CC      arch/mips/kernel/syscall.o
+  CC      arch/mips/kernel/time.o
+  CC      arch/mips/kernel/traps.o
+  CC      arch/mips/kernel/unaligned.o
+  CC      arch/mips/kernel/mips_ksyms.o
+  CC      arch/mips/kernel/module.o
+  AS      arch/mips/kernel/r4k_fpu.o
+  AS      arch/mips/kernel/r4k_switch.o
+  CC      arch/mips/kernel/smp.o
+  CC      arch/mips/kernel/smp_mt.o
+/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c: In fu
+nction `prom_prepare_cpus':
+/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c:276: e
+rror: `IRQ_PER_CPU' undeclared (first use in this function)
+/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c:276: e
+rror: (Each undeclared identifier is reported only once
+/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c:276: e
+rror: for each function it appears in.)
+make[2]: *** [arch/mips/kernel/smp_mt.o] Error 1
+make[1]: *** [arch/mips/kernel] Error 2
+make: *** [_all] Error 2
+  
+Please anyone help me to solve this problem.
+   
+  Krishna
 
+			
+---------------------------------
+Yahoo! Messenger with Voice. PC-to-Phone calls for ridiculously low rates.
+--0-1100918324-1143709993=:43114
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Thiemo
+<div>While trying to cross compile kernel 2.6.15 for BCM1480&nbsp;</div>  <div>Ii got the following error:</div>  <div>&nbsp;</div>  <div>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/signal.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/syscall.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/time.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/traps.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/unaligned.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/mips_ksyms.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/module.o<BR>&nbsp; AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/r4k_fpu.o<BR>&nbsp; AS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/r4k_switch.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/smp.o<BR>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/kernel/smp_mt.o<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c: In fu<BR>nction
+ `prom_prepare_cpus':<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c:276: e<BR>rror: `IRQ_PER_CPU' undeclared (first use in this function)<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c:276: e<BR>rror: (Each undeclared identifier is reported only once<BR>/home/ssf/bdcom/linux-mips-kernels/linux-2.6.15/arch/mips/kernel/smp_mt.c:276: e<BR>rror: for each function it appears in.)<BR>make[2]: *** [arch/mips/kernel/smp_mt.o] Error 1<BR>make[1]: *** [arch/mips/kernel] Error 2<BR>make: *** [_all] Error 2</div>  <div><BR>Please anyone help&nbsp;me to solve this problem.</div>  <div>&nbsp;</div>  <div>Krishna</div><p>
+	
+		<hr size=1><a href="http://us.rd.yahoo.com/mail_us/taglines/postman3/*http://us.rd.yahoo.com/evt=39666/*http://beta.messenger.yahoo.com">Yahoo! Messenger with Voice.</a> PC-to-Phone calls for ridiculously low rates.
+--0-1100918324-1143709993=:43114--

@@ -1,51 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Mar 2006 19:46:51 +0100 (BST)
-Received: from nevyn.them.org ([66.93.172.17]:53206 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S8133445AbWC3Sqc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Mar 2006 19:46:32 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.54)
-	id 1FP2KO-0001KL-TW; Thu, 30 Mar 2006 13:57:05 -0500
-Date:	Thu, 30 Mar 2006 13:57:04 -0500
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Nigel Stephens <nigel@mips.com>
-Cc:	colin <colin@realtek.com.tw>, linux-mips@linux-mips.org
-Subject: Re: Using hardware watchpoint for applications debugging
-Message-ID: <20060330185704.GA5063@nevyn.them.org>
-References: <024c01c65337$63931c90$106215ac@realtek.com.tw> <442A94D0.1020106@mips.com> <002d01c6539f$d040a200$106215ac@realtek.com.tw> <442BB7B2.1010204@mips.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Mar 2006 11:19:59 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:54927 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133524AbWCaKTv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 31 Mar 2006 11:19:51 +0100
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by goldrake.enneenne.com with esmtp (Exim 4.50)
+	id 1FPGrb-0005pT-1F; Fri, 31 Mar 2006 12:28:19 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1FPGtn-0005bE-Jq; Fri, 31 Mar 2006 12:30:35 +0200
+Date:	Fri, 31 Mar 2006 12:30:35 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Linux MIPS <linux-mips@linux-mips.org>
+Cc:	ppopov@mvista.com
+Message-ID: <20060331103035.GH7029@enneenne.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <442BB7B2.1010204@mips.com>
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.11+cvs20060126
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: PM support for au1000_eth.c
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 10996
+X-archive-position: 10997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 30, 2006 at 11:49:22AM +0100, Nigel Stephens wrote:
-> They're variable, but not very variable: the PID->ASID mapping will only
-> change when the ASIDs roll over and the ASID gets reallocated to a
-> different process, which will only happen after another 256 processes
-> have been created. But in that case your watched process will have to be
-> allocated a new ASID before it can run again. So you could, perhaps,
-> modify the TLB management code to clear the Watch registers whenever an
-> ASID belong to a process with watchpoints is recycled, and then
-> reprogram the Watch registers when such a process is allocated a new
-> ASID. Alternatively you could maintain pre-process copies of the Watch
-> registers, and context switch them along with other per-process register
-> state -- though that is adding context switch overhead to processes
-> which don't use watchpoints, and might not be popular with the maintainer.
+Hello,
 
-If you want GDB to use them, you almost certainly want them to be
-per-process.  You can context switch them lazily, though.  We've solved
-this problem before plenty of times...
+I'd like to add a power management support to this driver. That is I'd
+like to suspend and resume this device during sleep.Which should be
+the better way to do it?
+
+I think it should be correct adding this driver into file
+arch/mips/au1000/common/platform.c and then definying the suspend()
+and resume() functions, but I'm not sure...
+
+Suggestions?
+
+Thanks,
+
+Rodolfo
 
 -- 
-Daniel Jacobowitz
-CodeSourcery
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

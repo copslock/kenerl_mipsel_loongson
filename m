@@ -1,68 +1,180 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Apr 2006 19:39:21 +0100 (BST)
-Received: from web86301.mail.ukl.yahoo.com ([217.12.12.60]:34126 "HELO
-	web86301.mail.ukl.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133541AbWDASjL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 1 Apr 2006 19:39:11 +0100
-Received: (qmail 35185 invoked by uid 60001); 1 Apr 2006 18:50:03 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Apr 2006 20:58:03 +0100 (BST)
+Received: from wproxy.gmail.com ([64.233.184.239]:34991 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133554AbWDAT5w convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 1 Apr 2006 20:57:52 +0100
+Received: by wproxy.gmail.com with SMTP id 36so1049793wra
+        for <linux-mips@linux-mips.org>; Sat, 01 Apr 2006 12:08:44 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=talk21.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=FL4eC7FqU1pJ2jIBYHA74o8xmcP9qlefmz4QorGy012f95tTPgmnPKmmKYYz2puiSmH++5lrE2CNcfF5XiW1i9/bX+5pyWtqwAc+RUbkmvgv5Pto6VU4E0euJT7hJFKY2/9NweSTr///Q662f6OQ/1nUUY2pSlRpqI26Wjm2t0M=  ;
-Message-ID: <20060401185003.35183.qmail@web86301.mail.ukl.yahoo.com>
-Received: from [62.190.246.49] by web86301.mail.ukl.yahoo.com via HTTP; Sat, 01 Apr 2006 19:50:03 BST
-Date:	Sat, 1 Apr 2006 19:50:03 +0100 (BST)
-From:	Scott Ashcroft <scott.ashcroft@talk21.com>
-Subject: [PATCH] Typo in arch/mips/Makefile breaks build on Cobalt
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Q5Vq70zZGkc5cNMKh027fPOI3Vqe2KZ4Uk48VM75Y0ia1XLYZypDAiU8gdzEK+Vda2vRCefEGlcrs/j1t1gHwN7BtBvtDnH4gacliNG/Fo6dQrKgfbX90A7QiXLdveoEoN1upLFQRgG+NsN0IvAVZKAN4p8lp054mqlWfV+e7MQ=
+Received: by 10.65.205.15 with SMTP id h15mr96510qbq;
+        Sat, 01 Apr 2006 12:08:44 -0800 (PST)
+Received: by 10.64.131.15 with HTTP; Sat, 1 Apr 2006 12:08:44 -0800 (PST)
+Message-ID: <85e0e3140604011208o20155cfblcadae4b19e8360dc@mail.gmail.com>
+Date:	Sun, 2 Apr 2006 01:38:44 +0530
+From:	Niklaus <niklaus@gmail.com>
 To:	linux-mips@linux-mips.org
+Subject: elocation truncated relocation truncated to fit: R_MIPS_GOT16
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="0-6929233-1143917403=:33506"
-Content-Transfer-Encoding: 8bit
-Return-Path: <scott.ashcroft@talk21.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <niklaus@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11001
+X-archive-position: 11002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: scott.ashcroft@talk21.com
+X-original-sender: niklaus@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---0-6929233-1143917403=:33506
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Content-Id: 
-Content-Disposition: inline
+ Hi,
 
-There appears to be a couple of typos in the clean up
-of the Makefile.
+ I setup cross compilation environment for mips and did a make . Why do
+ i get the last following error relocation truncated to fit errors.
 
-The cflags lines for NEVADA and R5432 have
-'cc-options' rather than 'cc-option'.
-Attached patch fixes it up.
+ http://www.toppers.jp/download.cgi/jsp-1.4.1.tar.gz is the place where
+ i got the file.
+ The first steps are
+ tar xvzf jsp-1.4.1.tar.gz
+ cd jsp
+ ./configure -C mips3 -S vr4131
+ cd cfg
+ make
+ cd ..
+ make depend
+ make
 
-Signed-Off-by: scott.ashcroft@talk21.com
---0-6929233-1143917403=:33506
-Content-Type: text/plain; name="Makefile.diff"
-Content-Description: 3766969591-Makefile.diff
-Content-Disposition: inline; filename="Makefile.diff"
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 7bb0296..c254f4f 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -114,9 +114,9 @@ cflags-$(CONFIG_CPU_MIPS64_R1)	+= $(call
- cflags-$(CONFIG_CPU_MIPS64_R2)	+= $(call cc-option,-march=mips64r2,-mips2 -mtune=r4600 ) \
- 			-Wa,-mips64r2 -Wa,--trap
- cflags-$(CONFIG_CPU_R5000)	+= -march=r5000 -Wa,--trap
--cflags-$(CONFIG_CPU_R5432)	+= $(call cc-options,-march=r5400,-march=r5000) \
-+cflags-$(CONFIG_CPU_R5432)	+= $(call cc-option,-march=r5400,-march=r5000) \
- 			-Wa,--trap
--cflags-$(CONFIG_CPU_NEVADA)	+= $(call cc-options,-march=rm5200,-march=r5000) \
-+cflags-$(CONFIG_CPU_NEVADA)	+= $(call cc-option,-march=rm5200,-march=r5000) \
- 			-Wa,--trap
- cflags-$(CONFIG_CPU_RM7000)	+= $(call cc-option,-march=rm7000,-march=r5000) \
- 			-Wa,--trap
+ pro@deb:~/jsp$ make
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./kernel ./config/mips3/exception_vector.S
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ sample1.c
+ sample1.c: In function `task':
+ sample1.c:160: warning: division by zero
+ sample1.c:165: warning: division by zero
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./systask ./systask/timer.c
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./systask ./systask/serial.c
+ In file included from ./systask/serial.c:45:
+ ./config/mips3/vr4131/hw_serial.h: In function `sio_cls_por':
+ ./config/mips3/vr4131/hw_serial.h:115: warning: the address of
+ `vr4131_dsiu_openflag', will always evaluate as `true'
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./systask ./systask/logtask.c
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./systask ./library/log_output.c
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./systask ./library/vasyslog.c
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./systask ./library/t_perror.c
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./systask ./library/strerror.c
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ kernel_cfg.c
+ In file included from kernel_cfg.c:27:
+ ./config/mips3/vr4131/hw_serial.h: In function `sio_cls_por':
+ ./config/mips3/vr4131/hw_serial.h:115: warning: the address of
+ `vr4131_dsiu_openflag', will always evaluate as `true'
+ mips-deb-linux-gcc -S  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./kernel ./config/mips3/makeoffset.c
+ ./utils/genoffset makeoffset.s > tmpfile3
+ mv tmpfile3 offset.h
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./kernel ./config/mips3/vr4131/sys_support.S
+ mips-deb-linux-gcc -c  -msoft-float -mgp32 -g -O2 -mips3 -G 0
+ -DGDB_STUB -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3
+ -I./kernel ./config/mips3/cpu_support.S
+ ./config/mips3/cpu_support.S: Assembler messages:
+ ./config/mips3/cpu_support.S:133: Warning: No .cprestore pseudo-op
+ used in PIC code
+ ./config/mips3/cpu_support.S:148: Warning: No .cprestore pseudo-op
+ used in PIC code
+ ./config/mips3/cpu_support.S:378: Warning: No .cprestore pseudo-op
+ used in PIC code
+ ./config/mips3/cpu_support.S:238: Warning: Pretending global symbol
+ used as branch target is local.
+ ./config/mips3/cpu_support.S:267: Warning: Pretending global symbol
+ used as branch target is local.
+ ./config/mips3/cpu_support.S:561: Error: Cannot branch to undefined symbol.
+ make: *** [cpu_support.o] Error 1
 
---0-6929233-1143917403=:33506--
+
+ the file cpu_support.S :561
+ i have  the instruction
+ j       call_texrtn
+
+ I commented it. I was not sure what i was doing.
+
+ Then i got some error saying "elf32-littlemips" , i changed it to
+ elf32-tradlittlemips because that was what ld supported as a target.
+ I got the following error . Can anyone help me why this occurs and how
+ to resolve this .
+
+
+
+ mips-deb-linux-gcc  -msoft-float -mgp32 -g -O2 -mips3 -G 0  -DGDB_STUB
+ -I. -I./include  -I./config/mips3/vr4131 -I./config/mips3 -nostdlib
+ -T ./config/mips3/vr4131/vr4131_elf_gdb.ld -o jsp \
+                         exception_vector.o  sample1.o     timer.o
+ serial.o logtask.o log_output.o vasyslog.o t_perror.o strerror.o
+ kernel_cfg.o   libkernel.a   -lgcc
+ /home/pro/crossenv/bin/../lib/gcc/mips-deb-linux/3.4.6/../../../../mips-deb-linux/bin/ld:
+ region ROM0 is full (jsp section .rodata.str1.4)
+ /home/pro/crossenv/bin/../lib/gcc/mips-deb-linux/3.4.6/../../../../mips-deb-linux/bin/ld:
+ section .rodata.str1.4 [00000000a00004dc -> 00000000a0001046] overlaps
+ section .text [00000000a0000700 -> 00000000a0007faf]
+ /home/pro/crossenv/bin/../lib/gcc/mips-deb-linux/3.4.6/../../../../mips-deb-linux/bin/ld:
+ jsp: section .text lma 0xa0000700 overlaps previous sections
+ /home/pro/crossenv/bin/../lib/gcc/mips-deb-linux/3.4.6/../../../../mips-deb-linux/bin/ld:
+ jsp: section .rodata lma 0xa0007fb0 overlaps previous sections
+ exception_vector.o:./config/mips3/exception_vector.S:74: relocation
+ truncated to fit: R_MIPS_GOT16 against `reset'
+ exception_vector.o:./config/mips3/exception_vector.S:80: relocation
+ truncated to fit: R_MIPS_GOT16 against `reset'
+ exception_vector.o:./config/mips3/exception_vector.S:96: relocation
+ truncated to fit: R_MIPS_GOT16 against `_kernel_cpu_experr'
+ exception_vector.o:./config/mips3/exception_vector.S:112: relocation
+ truncated to fit: R_MIPS_GOT16 against `_kernel_cpu_experr'
+ exception_vector.o:./config/mips3/exception_vector.S:128: relocation
+ truncated to fit: R_MIPS_GOT16 against `_kernel_cpu_experr'
+ exception_vector.o:./config/mips3/exception_vector.S:144: relocation
+ truncated to fit: R_MIPS_GOT16 against `_kernel_general_exception'
+ libkernel.a(start.o):./config/mips3/start.S:69: relocation truncated
+ to fit: R_MIPS_GOT16 against `_stack_top'
+ libkernel.a(start.o):./config/mips3/start.S:73: relocation truncated
+ to fit: R_MIPS_GOT16 against `_gp'
+ libkernel.a(start.o):./config/mips3/start.S:114: relocation truncated
+ to fit: R_MIPS_GOT16 against `hardware_init_hook'
+ libkernel.a(start.o):./config/mips3/start.S:124: relocation truncated
+ to fit: R_MIPS_GOT16 against `__bss_start'
+ libkernel.a(start.o):./config/mips3/start.S:125: additional relocation
+ overflows omitted from the output
+ collect2: ld returned 1 exit status
+ make: *** [jsp] Error 1
+
+Please note i used the -Wa,-xgot options to compile still it failed.
+Can someone suggest me a work around. Is there anyway i can increase
+the size. If yes where in gcc . Any help would be greatly appreciated.
+
+ Regards
+ Nik

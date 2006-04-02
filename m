@@ -1,69 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2006 15:52:41 +0100 (BST)
-Received: from webmail.ict.ac.cn ([159.226.39.7]:46541 "HELO ict.ac.cn")
-	by ftp.linux-mips.org with SMTP id S8133535AbWDBOwd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2006 15:52:33 +0100
-Received: (qmail 12695 invoked by uid 507); 2 Apr 2006 14:15:11 -0000
-Received: from unknown (HELO ?192.168.2.202?) (fxzhang@222.92.8.142)
-  by ict.ac.cn with SMTP; 2 Apr 2006 14:15:11 -0000
-Message-ID: <442FE7B0.1070209@ict.ac.cn>
-Date:	Sun, 02 Apr 2006 23:03:12 +0800
-From:	Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Thunderbird 1.5 (Windows/20051201)
-MIME-Version: 1.0
-To:	Fuxin Zhang <fxzhang@ict.ac.cn>
-CC:	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Anyone using marvell 64420 system controller
-References: <442FE669.8060606@ict.ac.cn>
-In-Reply-To: <442FE669.8060606@ict.ac.cn>
-X-Enigmail-Version: 0.93.0.0
-Content-Type: text/plain; charset=gb18030
-Content-Transfer-Encoding: 8bit
-Return-Path: <fxzhang@ict.ac.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Apr 2006 17:06:16 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:3070 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133594AbWDBQGD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 2 Apr 2006 17:06:03 +0100
+Received: from localhost (p6135-ipad211funabasi.chiba.ocn.ne.jp [58.91.162.135])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 77F469EDF; Mon,  3 Apr 2006 01:16:55 +0900 (JST)
+Date:	Mon, 03 Apr 2006 01:17:11 +0900 (JST)
+Message-Id: <20060403.011711.74751665.anemo@mba.ocn.ne.jp>
+To:	fxzhang@ict.ac.cn
+Cc:	linux-mips@linux-mips.org
+Subject: Re: stack backtrace
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <442FE1CA.4030905@ict.ac.cn>
+References: <442FE1CA.4030905@ict.ac.cn>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11006
+X-archive-position: 11007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-I forget to mention that in boot loader things look like quite stable:
-memory test is ok(we ported memtest86), loading big files over the
-network is ok, gzip/unzip/diff a 40MB file is ok too.
+>>>>> On Sun, 02 Apr 2006 22:38:02 +0800, Fuxin Zhang <fxzhang@ict.ac.cn> said:
 
-And if we turn on memory debug for slab allocator on 2.6, we often meet
-random slab corruptions. It looks like some memory area will be
-mysteriously changed.
+>     Instead for my need I just hack up a simple version of way 1, with
+> frame pointer kept on: CONFIG_FRAME_POINTER.
 
-Fuxin Zhang Ð´µÀ:
-> hi,
-> 
->   We have been puzzled by the strange problems with our new board with
-> marvell 64420 for nearly one month.
-> 
-> The board is unstable in linux. Using a 2.6.14 kernel it dies very
-> easily with file system operations;with a 2.4.22 kernel it can survive
-> a "cp -a /usr /usr1", but diffing two identical files with sizes > 50M
-> often mistakely reports difference.The diff result is often 32 bytes,but
-> the first byte is not cache line aligned(in fact,almost always
-> %cachelinesize == 1).
-> 
-> The results remain true even with ramdisk only and any other pci device
-> removed from the board. The same mips CPU works well on other boards,
-> the same kernel with different platform chosen is very stable too. So I
-> tend to doubt the bridge or its DDR controller.( Is there any possiblity
-> of platform related code that lead to such problem? )
-> 
-> 
-> If anyone has experiences on this chip, could you point us some way out?
-> It seems we cannot easily reach the marvell's core developers.
-> 
-> Thanks a lot.
-> 
-> 
-> 
-> 
-> 
+> BTW:It seems nobody use this option for MIPS? Is it dangerous? The size
+> and performance overhead should be barable at most time for debugging?
+
+> here is the code patch(just for reference), it depends on
+> CONFIG_KALLSYMS too.
+
+The get_frame_info() in process.c in kernel 2.6.16 no longer depends
+on a frame pointer.  It would fit your needs better.  I think you can
+use it with slight modifications.
+
+BTW, Is there any point using -fno-omit-frame-pointer on MIPS now?
+CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y is better for MIPS, isn't it?
+
+---
+Atsushi Nemoto

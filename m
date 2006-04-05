@@ -1,76 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Apr 2006 01:33:32 +0100 (BST)
-Received: from mail8.fw-sd.sony.com ([160.33.66.75]:3249 "EHLO
-	mail8.fw-sd.sony.com") by ftp.linux-mips.org with ESMTP
-	id S8133829AbWDEAaL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Apr 2006 01:30:11 +0100
-Received: from mail3.sjc.in.sel.sony.com (mail3.sjc.in.sel.sony.com [43.134.1.211])
-	by mail8.fw-sd.sony.com (8.12.11/8.12.11) with ESMTP id k350fD6i019530;
-	Wed, 5 Apr 2006 00:41:13 GMT
-Received: from [192.168.1.10] ([43.134.85.105])
-	by mail3.sjc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id k350fC89008838;
-	Wed, 5 Apr 2006 00:41:12 GMT
-Message-ID: <44331228.5020707@am.sony.com>
-Date:	Tue, 04 Apr 2006 17:41:12 -0700
-From:	Geoff Levand <geoffrey.levand@am.sony.com>
-User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc4 (X11/20050929)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	ralf@linux-mips.org
-CC:	linux-mips@linux-mips.org
-Subject: [PATCH 3/4] fix tx4927 header dep
-Content-Type: multipart/mixed;
- boundary="------------050703010509030407050801"
-Return-Path: <geoffrey.levand@am.sony.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Apr 2006 14:19:40 +0100 (BST)
+Received: from pqueuea.post.tele.dk ([193.162.153.9]:5913 "HELO
+	pqueuea.post.tele.dk") by ftp.linux-mips.org with SMTP
+	id S8133357AbWDENTa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 5 Apr 2006 14:19:30 +0100
+Received: from pasmtp.tele.dk (pasmtp.tele.dk [193.162.159.95])
+	by pqueuea.post.tele.dk (Postfix) with ESMTP id 993583758F9;
+	Wed,  5 Apr 2006 13:00:10 +0200 (CEST)
+Received: from mars.ravnborg.org (0x50a0757d.hrnxx9.adsl-dhcp.tele.dk [80.160.117.125])
+	by pasmtp.tele.dk (Postfix) with ESMTP id A2D351EC342;
+	Wed,  5 Apr 2006 13:00:04 +0200 (CEST)
+Received: by mars.ravnborg.org (Postfix, from userid 1000)
+	id E913243C21C; Wed,  5 Apr 2006 13:00:02 +0200 (CEST)
+Date:	Wed, 5 Apr 2006 13:00:02 +0200
+From:	Sam Ravnborg <sam@ravnborg.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	ralf@linux-mips.org, akpm@osdl.org
+Subject: Re: [PATCH] Fix sed regexp to generate asm-offset.h
+Message-ID: <20060405110002.GA22508@mars.ravnborg.org>
+References: <20060328.001854.93020330.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060328.001854.93020330.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.11
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11034
+X-archive-position: 11035
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geoffrey.levand@am.sony.com
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------050703010509030407050801
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On Tue, Mar 28, 2006 at 12:18:54AM +0900, Atsushi Nemoto wrote:
+> Changes to Makefile.kbuild ("kbuild: add -fverbose-asm to i386
+> Makefile") breaks asm-offset.h file on MIPS.  Other archs possibly
+> suffer this change too but I'm not sure.
+> 
+> Here is a fix just for MIPS.  
+Thanks, applied to the kbuild bugfix tree.
 
-
-
-
---------------050703010509030407050801
-Content-Type: text/x-patch;
- name="fix-tx4927-header-dep.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="fix-tx4927-header-dep.patch"
-
-fix-tx4927-header-dep.patch:
-
-This patch fixes a header dependency problem in tx4927_mips.h.
-
-tx4927_mips.h:58: error: parse error before "s08"
-tx4927_mips.h:58: warning: type defaults to `int' in declaration of `s08'
-
-
-Signed-off-by: Geoff Levand <geoffrey.levand@am.sony.com>
-
-
-Index: linux-2.6.16.1/include/asm-mips/tx4927/tx4927_mips.h
-===================================================================
---- linux-2.6.16.1.orig/include/asm-mips/tx4927/tx4927_mips.h	2006-01-02 19:21:10.000000000 -0800
-+++ linux-2.6.16.1/include/asm-mips/tx4927/tx4927_mips.h	2006-03-23 10:49:24.000000000 -0800
-@@ -28,6 +28,7 @@
- #define __ASM_TX4927_TX4927_MIPS_H
- 
- #ifndef __ASSEMBLY__
-+#include <linux/types.h>
- 
- static inline void asm_wait(void)
- {
-
-
-
---------------050703010509030407050801--
+	Sam

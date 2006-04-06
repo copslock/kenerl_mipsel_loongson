@@ -1,82 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2006 17:29:51 +0100 (BST)
-Received: from amdext4.amd.com ([163.181.251.6]:22737 "EHLO amdext4.amd.com")
-	by ftp.linux-mips.org with ESMTP id S8133525AbWDFQ3m (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2006 17:29:42 +0100
-Received: from SAUSGW01.amd.com (sausgw01.amd.com [163.181.250.21])
-	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k36Gew1b006061;
-	Thu, 6 Apr 2006 11:40:59 -0500
-Received: from 139.95.53.182 by SAUSGW02.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Thu, 06 Apr 2006 11:40:47 -0500
-X-Server-Uuid: 5FC0E2DF-CD44-48CD-883A-0ED95B391E89
-Received: from ldcmail.amd.com ([147.5.200.40]) by SSVLEXBH1.amd.com
- with Microsoft SMTPSVC(6.0.3790.0); Thu, 6 Apr 2006 09:40:45 -0700
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id BF22C2028; Thu, 6 Apr 2006
- 10:40:44 -0600 (MDT)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k36HGjXD002073; Thu, 6 Apr 2006 11:16:45
- -0600
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k36HGjsJ002072; Thu, 6 Apr 2006 11:16:45 -0600
-Date:	Thu, 6 Apr 2006 11:16:45 -0600
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Rodolfo Giometti" <giometti@linux.it>
-cc:	"Linux MIPS" <linux-mips@linux-mips.org>
-Subject: Re: sysfs interface for Au1xxx power management
-Message-ID: <20060406171645.GL22446@cosmic.amd.com>
-References: <20060405221933.GN7029@enneenne.com>
-MIME-Version: 1.0
-In-Reply-To: <20060405221933.GN7029@enneenne.com>
-User-Agent: Mutt/1.5.11
-X-OriginalArrivalTime: 06 Apr 2006 16:40:45.0530 (UTC)
- FILETIME=[DA1443A0:01C65998]
-X-WSS-ID: 682B9B053H42812326-01-01
-Content-Type: text/plain;
- charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2006 18:51:36 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:22953 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133539AbWDFRv2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2006 18:51:28 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k36I2mKQ021296;
+	Thu, 6 Apr 2006 19:02:49 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k36I2l5p021295;
+	Thu, 6 Apr 2006 19:02:47 +0100
+Date:	Thu, 6 Apr 2006 19:02:47 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] use CONFIG_HZ
+Message-ID: <20060406180247.GA20449@linux-mips.org>
+References: <20060407.011000.77652835.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+In-Reply-To: <20060407.011000.77652835.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11053
+X-archive-position: 11054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 06/04/06 00:19 +0200, Rodolfo Giometti wrote:
-> Hello,
-> 
-> here a patch to support new sysfs interface for Au1xxx's power
-> management. Now we can put the system into sleeping mode by using:
-> 
->    hostname:~# echo mem > /sys/power/state 
-> 
-> The patch keeps also the file "/proc/sys/pm/freq" from the old
-> interface.
+On Fri, Apr 07, 2006 at 01:10:00AM +0900, Atsushi Nemoto wrote:
 
-Generally looks good, thought I just glanced it over and I didn't take
-it for a test run.
+> Make HZ configurable (except for DECSTATION which is using special HZ
+> value which is out of choice).  Also remove some param.h files and
+> update all defconfigs according to current HZ value (except for JAZZ
+> which does not have defconfig).
 
->  /* Quick acpi hack. This will have to change! */
-> -#define	CTL_ACPI 9999
-> -#define	ACPI_S1_SLP_TYP 19
-> -#define	ACPI_SLEEP 21
-> +#define	CTL_ACPI	9999
-> +#define	ACPI_S1_SLP_TYP	19
-> +#define	ACPI_SLEEP	21
+Looking good except for Jazz which because it currently isn't using the
+count/compare timer is limited to 100Hz only.
 
-Code review comment - you have lots of minor typo fixes and whitespace
-changes.  You should Keep whitespace changes to a minimum, or better yet
-put then in a separate  patch.  They detract from the actual meat of your 
-effort, and makes it tough to code review.
-
-Jordan
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
+  Ralf

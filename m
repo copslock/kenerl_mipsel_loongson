@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2006 14:04:59 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:22173 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133515AbWDFNEt (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2006 14:04:49 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Apr 2006 14:14:51 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:14279 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133515AbWDFNOe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Apr 2006 14:14:34 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k36DG7W4001520;
-	Thu, 6 Apr 2006 14:16:07 +0100
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k366s8oi028333
+	for <linux-mips@linux-mips.org>; Thu, 6 Apr 2006 07:54:08 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k36DG6xb001519;
-	Thu, 6 Apr 2006 14:16:06 +0100
-Date:	Thu, 6 Apr 2006 14:16:06 +0100
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k366r3FF028324;
+	Thu, 6 Apr 2006 07:53:03 +0100
+Date:	Thu, 6 Apr 2006 07:53:03 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] MT: Improved multithreading support.
-Message-ID: <20060406131606.GA31552@linux-mips.org>
-References: <S8133460AbWDEPzw/20060405155552Z+40@ftp.linux-mips.org> <4955666b0604060047x42cdc3e3kefb1d95737cc08e7@mail.gmail.com> <200604060755.k367tQOw024524@mbox02.po.2iij.net>
+Subject: Re: [PATCH] vr41xx: fix plat_irq_dispatch()
+Message-ID: <20060406065303.GA28314@linux-mips.org>
+References: <20060406120737.689accd3.yoichi_yuasa@tripeaks.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200604060755.k367tQOw024524@mbox02.po.2iij.net>
+In-Reply-To: <20060406120737.689accd3.yoichi_yuasa@tripeaks.co.jp>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11045
+X-archive-position: 11046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,11 +32,11 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 06, 2006 at 04:55:26PM +0900, Yoichi Yuasa wrote:
+On Thu, Apr 06, 2006 at 12:07:37PM +0900, Yoichi Yuasa wrote:
 
-> I think it's maybe typo.
+> This patch has fixed the wrong conversion of plat_irq_dispatch() for vr41xx.
+> Please apply.
 
-Yes, a mistake when fixing up the rejects in forward porting the 34k-merge
-branch.
+Thanks, applied.  Let's hope this is all that broke in the rewrite ...
 
   Ralf

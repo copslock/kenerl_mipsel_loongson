@@ -1,79 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Apr 2006 00:00:04 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:27091 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133623AbWDGW7z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Apr 2006 23:59:55 +0100
-Received: (qmail 21725 invoked from network); 8 Apr 2006 03:12:52 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 8 Apr 2006 03:12:52 -0000
-Message-ID: <4436F140.3030007@ru.mvista.com>
-Date:	Sat, 08 Apr 2006 03:09:52 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	linux-mips <linux-mips@linux-mips.org>
-CC:	Clem Taylor <clem.taylor@gmail.com>,
-	Jordan Crouse <jordan.crouse@amd.com>,
-	Manish Lachwani <mlachwani@mvista.com>
-Subject: [PATCH] FIx mprotect() syscall for MIPS32 w/36-bit physical address
- support
-References: <ecb4efd10512071351scea736fg8d026e3fa3c54c79@mail.gmail.com> <20060202165436.GB17352@linux-mips.org>
-In-Reply-To: <20060202165436.GB17352@linux-mips.org>
-Content-Type: multipart/mixed;
- boundary="------------000004060904030800020404"
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Apr 2006 00:08:50 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:4750 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133617AbWDGXIm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 8 Apr 2006 00:08:42 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k37NKAsO026851;
+	Sat, 8 Apr 2006 00:20:10 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k37NK8LD026850;
+	Sat, 8 Apr 2006 00:20:08 +0100
+Date:	Sat, 8 Apr 2006 00:20:08 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Shanthi Kiran Pendyala (skiranp)" <skiranp@cisco.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Oprofile on sibyte 2.4.18 kernel
+Message-ID: <20060407232008.GB26104@linux-mips.org>
+References: <5547014632ED654F971D7E1E0C2E0C3E018DAFBB@xmb-sjc-215.amer.cisco.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5547014632ED654F971D7E1E0C2E0C3E018DAFBB@xmb-sjc-215.amer.cisco.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11073
+X-archive-position: 11074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------000004060904030800020404
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
+On Fri, Apr 07, 2006 at 01:38:54PM -0700, Shanthi Kiran Pendyala (skiranp) wrote:
 
-Hello.
+> Did anyone port oprofile to 2.4.x kernel on sibyte ?.
+> 
+> Looking over the mailing list threads it looks like it has been given up
+> as a lost cause.
 
-     Fix mprotect() syscall for MIPS32 CPUs with 36-bit physical address
-support: pte_modify() macro didn't clear the hardware page protection bits
-before modifying...
+Correct.  So if at all you would have to rip oprofile from the 2.6 kernel
+and bolt that code back into the old kernel which would seem doable.  The
+MIPS bits certainly don't rely on much 2.6 infrastructure.
 
-WBR, Sergei
+> But business reasons require us to work with 2.4.18 kernel for the next
+> 9-12 months and We really would like explore a port.
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+You at least want a newer 2.4 variant; 2.4.18 is now over 4 years old, is
+from before the point where 2.4 really became stable and contains a number
+of security revelant holes.
 
+> Or are there other tools that I can use ?
 
---------------000004060904030800020404
-Content-Type: text/plain;
- name="MIPS32-36bit-phys-addr-mprotect-fix.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="MIPS32-36bit-phys-addr-mprotect-fix.patch"
+Gprof, perfex 2 - not sure if the MIPS port of it was ever published though.
+But nothing really that provides the same kind of information as oprofile.
 
-diff --git a/include/asm-mips/pgtable.h b/include/asm-mips/pgtable.h
-index 702a28f..80b3605 100644
---- a/include/asm-mips/pgtable.h
-+++ b/include/asm-mips/pgtable.h
-@@ -335,8 +335,9 @@ static inline pgprot_t pgprot_noncached(
- #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
--	pte.pte_low &= _PAGE_CHG_MASK;
--	pte.pte_low |= pgprot_val(newprot);
-+	pte.pte_low  &= _PAGE_CHG_MASK;
-+	pte.pte_high &= ~0x3f;
-+	pte.pte_low  |= pgprot_val(newprot);
- 	pte.pte_high |= pgprot_val(newprot) & 0x3f;
- 	return pte;
- }
-
-
---------------000004060904030800020404--
+  Ralf

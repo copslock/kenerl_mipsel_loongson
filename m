@@ -1,52 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2006 17:52:42 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:17099 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133569AbWDGQwe (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 7 Apr 2006 17:52:34 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k37H41jD018636;
-	Fri, 7 Apr 2006 18:04:01 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k37H414k018635;
-	Fri, 7 Apr 2006 18:04:01 +0100
-Date:	Fri, 7 Apr 2006 18:04:01 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] use CONFIG_HZ
-Message-ID: <20060407170401.GA17163@linux-mips.org>
-References: <20060407.011000.77652835.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0604071156350.25570@blysk.ds.pg.gda.pl> <20060407115323.GB5909@linux-mips.org> <20060408.010348.41197502.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0604071742220.12718@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2006 18:08:10 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:35345 "HELO
+	sorrow.cyrius.com") by ftp.linux-mips.org with SMTP
+	id S8133536AbWDGRIB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Apr 2006 18:08:01 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 6CC2564D3F; Fri,  7 Apr 2006 17:19:19 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 60FB466B69; Fri,  7 Apr 2006 19:19:10 +0200 (CEST)
+Date:	Fri, 7 Apr 2006 19:19:10 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Diff between Linus' and linux-mips git: elf.h
+Message-ID: <20060407171910.GU6869@deprecation.cyrius.com>
+References: <20060219234318.GA16311@deprecation.cyrius.com> <20060220000141.GX10266@deprecation.cyrius.com> <20060220001126.GA17967@deprecation.cyrius.com> <20060220003128.GD17967@deprecation.cyrius.com> <20060220113420.GB5594@linux-mips.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0604071742220.12718@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20060220113420.GB5594@linux-mips.org>
+User-Agent: Mutt/1.5.11+cvs20060330
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11064
+X-archive-position: 11065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 07, 2006 at 05:46:06PM +0100, Maciej W. Rozycki wrote:
-
-> > Make HZ configurable (DECSTATION can select 128/256/1024 HZ, JAZZ can
-> > only select 100 HZ, others can select 48/100/128/250/256/1000/1024
-> > HZ).  Also remove all mach-xxx/param.h files and update all defconfigs
-> > according to current HZ value.
+* Ralf Baechle <ralf@linux-mips.org> [2006-02-20 11:34]:
+> > Can we agree?
+> > -#define EM_MIPS_RS4_BE 10	/* MIPS R4000 big-endian */
+> > +#define EM_MIPS_RS3_LE 10	/* MIPS R3000 little-endian */
+> Not really :-)
 > 
->  Thanks.  I've got a suggestion SEAD (sead_defconfig) should use 100Hz by 
-> default too and given its usual setup I can't agree more.
+> I've dug deep into history - but it seems nobody remembers the reason for
+> this change anymore.  I suspect actually both constant names might
+> historically have been in use.  For the purposes of Linux it's probably
+> best to dump the whole number - it never had any relevance.
 
-I think I'll apply Atsushi's patch with two changes:
-
- o SYS_SUPPORT_* -> SYS_SUPPORTS_*
- o 48Hz is a very extreme setting and I don't think it's useful for
-   anything but very slow simulators, so I think I'm going to restrict
-   this setting by a dependency on something like CONFIG_EXPERIMENTAL.
-
-  Ralf
+Maybe you can remove it, or at least bring it in sync.
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

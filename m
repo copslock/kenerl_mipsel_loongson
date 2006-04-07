@@ -1,48 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Apr 2006 23:10:30 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:36824 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133622AbWDGWKW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 7 Apr 2006 23:10:22 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k37MLoCT026146;
-	Fri, 7 Apr 2006 23:21:50 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k37MLgCW026144;
-	Fri, 7 Apr 2006 23:21:42 +0100
-Date:	Fri, 7 Apr 2006 23:21:42 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: Diff between Linus' and linux-mips git: elf.h
-Message-ID: <20060407222142.GA26104@linux-mips.org>
-References: <20060219234318.GA16311@deprecation.cyrius.com> <20060220000141.GX10266@deprecation.cyrius.com> <20060220001126.GA17967@deprecation.cyrius.com> <20060220003128.GD17967@deprecation.cyrius.com> <20060220113420.GB5594@linux-mips.org> <20060407171910.GU6869@deprecation.cyrius.com> <090d01c65a6b$623f6480$10eca8c0@grendel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <090d01c65a6b$623f6480$10eca8c0@grendel>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Apr 2006 00:00:04 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:27091 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133623AbWDGW7z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Apr 2006 23:59:55 +0100
+Received: (qmail 21725 invoked from network); 8 Apr 2006 03:12:52 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 8 Apr 2006 03:12:52 -0000
+Message-ID: <4436F140.3030007@ru.mvista.com>
+Date:	Sat, 08 Apr 2006 03:09:52 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	linux-mips <linux-mips@linux-mips.org>
+CC:	Clem Taylor <clem.taylor@gmail.com>,
+	Jordan Crouse <jordan.crouse@amd.com>,
+	Manish Lachwani <mlachwani@mvista.com>
+Subject: [PATCH] FIx mprotect() syscall for MIPS32 w/36-bit physical address
+ support
+References: <ecb4efd10512071351scea736fg8d026e3fa3c54c79@mail.gmail.com> <20060202165436.GB17352@linux-mips.org>
+In-Reply-To: <20060202165436.GB17352@linux-mips.org>
+Content-Type: multipart/mixed;
+ boundary="------------000004060904030800020404"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11072
+X-archive-position: 11073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 07, 2006 at 07:47:40PM +0200, Kevin D. Kissell wrote:
+This is a multi-part message in MIME format.
+--------------000004060904030800020404
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Arguably, whatever's used by binutils should be the tie-breaker.
-> Googling around, I see that the EM_MIPS_RS3_LE value was
-> added in the October 4, 1999 draft of the ELF spec, but inexplicably
-> the alias with EM_MIPS_RS4_BE was left in place - perhaps they
-> were supposed to be disambiguated by some 32-vs-64-bit flag
-> somewhere.  A random sampling of ELF documents on the web
-> shows the vast majority calling out RS3_LE and not RS4_BE.
+Hello.
 
-No way to actually resolve this one; not even binutils oldtimer
-Ian Lance Taylor can remember the reasons for the change anymore.
+     Fix mprotect() syscall for MIPS32 CPUs with 36-bit physical address
+support: pte_modify() macro didn't clear the hardware page protection bits
+before modifying...
 
-  Ralf
+WBR, Sergei
+
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+
+
+--------------000004060904030800020404
+Content-Type: text/plain;
+ name="MIPS32-36bit-phys-addr-mprotect-fix.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="MIPS32-36bit-phys-addr-mprotect-fix.patch"
+
+diff --git a/include/asm-mips/pgtable.h b/include/asm-mips/pgtable.h
+index 702a28f..80b3605 100644
+--- a/include/asm-mips/pgtable.h
++++ b/include/asm-mips/pgtable.h
+@@ -335,8 +335,9 @@ static inline pgprot_t pgprot_noncached(
+ #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
+ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
+ {
+-	pte.pte_low &= _PAGE_CHG_MASK;
+-	pte.pte_low |= pgprot_val(newprot);
++	pte.pte_low  &= _PAGE_CHG_MASK;
++	pte.pte_high &= ~0x3f;
++	pte.pte_low  |= pgprot_val(newprot);
+ 	pte.pte_high |= pgprot_val(newprot) & 0x3f;
+ 	return pte;
+ }
+
+
+--------------000004060904030800020404--

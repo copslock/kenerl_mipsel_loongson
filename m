@@ -1,32 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Apr 2006 04:46:23 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:18135 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Apr 2006 10:41:20 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:25052 "HELO
 	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133352AbWDHDqK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Apr 2006 04:46:10 +0100
-Received: (qmail 23491 invoked from network); 8 Apr 2006 07:59:09 -0000
+	id S8133380AbWDHJlK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Apr 2006 10:41:10 +0100
+Received: (qmail 25267 invoked from network); 8 Apr 2006 13:54:13 -0000
 Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 8 Apr 2006 07:59:09 -0000
-Message-ID: <44373456.2070107@ru.mvista.com>
-Date:	Sat, 08 Apr 2006 07:56:06 +0400
+  by mail.dev.rtsoft.ru with SMTP; 8 Apr 2006 13:54:13 -0000
+Message-ID: <4437878C.3000603@ru.mvista.com>
+Date:	Sat, 08 Apr 2006 13:51:08 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
 X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-CC:	Manish Lachwani <mlachwani@mvista.com>,
+CC:	Bob Breuer <bbreuer@righthandtech.com>,
 	Jordan Crouse <jordan.crouse@amd.com>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] Enable 36-bit physical address on MIPS32R2 also
-References: <B482D8AA59BF244F99AFE7520D74BF9609D4F2@server1.RightHand.righthandtech.com> <4433C9EE.8030402@ru.mvista.com> <4436C301.2060001@ru.mvista.com>
-In-Reply-To: <4436C301.2060001@ru.mvista.com>
+	Konstantin Baidarov <kbaidarov@ru.mvista.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Pete Popov <ppopov@embeddedalley.com>,
+	Manish Lachwani <mlachwani@mvista.com>
+Subject: [PATCH] Fix swap entry for MIPS32 with 36-bit physical address
+References: <B482D8AA59BF244F99AFE7520D74BF9609D4F2@server1.RightHand.righthandtech.com> <4433C9EE.8030402@ru.mvista.com> <4436C301.2060001@ru.mvista.com> <4436D793.6080701@ru.mvista.com> <4436E201.4090409@ru.mvista.com>
+In-Reply-To: <4436E201.4090409@ru.mvista.com>
 Content-Type: multipart/mixed;
- boundary="------------050807040407080201000703"
+ boundary="------------090903080109000601080707"
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11075
+X-archive-position: 11076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,124 +38,67 @@ Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
---------------050807040407080201000703
+--------------090903080109000601080707
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hello.
 
-    PTEs in MIPS32R2 have the same layout for the 36-bit physical address case
-as in MIPS32R1, according to the architecture manuals -- so, fix the #if's.
-    Not sure that we need that #if defined(CONFIG_CPU_MIPS32) at all though...
+     With 64-bit physical address enabled, 'swapon' was causing kernel oops on
+Alchemy CPUs (MIPS32) because of the swap entry type field corrupting the
+_PAGE_FILE bit in 'pte_low' field. So, switch to storing the swap entry in
+'pte_high' field using all its bits except _PAGE_GLOBAL and _PAGE_VALID which
+gives 25 bits for the swap entry offset.
 
 WBR, Sergei
 
 Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
 
---------------050807040407080201000703
+--------------090903080109000601080707
 Content-Type: text/plain;
- name="MIPS32R2-36bit-phys-addr.patch"
+ name="MIPS32-36bit-phys-addr-swap-entry-fix.patch"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline;
- filename="MIPS32R2-36bit-phys-addr.patch"
+ filename="MIPS32-36bit-phys-addr-swap-entry-fix.patch"
 
 diff --git a/include/asm-mips/pgtable-32.h b/include/asm-mips/pgtable-32.h
-index 4d6bc45..5f31351 100644
+index 4d6bc45..a5ce3f1 100644
 --- a/include/asm-mips/pgtable-32.h
 +++ b/include/asm-mips/pgtable-32.h
-@@ -116,7 +116,7 @@ static inline void pmd_clear(pmd_t *pmdp
- 	pmd_val(*pmdp) = ((unsigned long) invalid_pte_table);
- }
- 
--#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
-+#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
- #define pte_page(x)		pfn_to_page(pte_pfn(x))
- #define pte_pfn(x)		((unsigned long)((x).pte_high >> 6))
- static inline pte_t
-@@ -137,9 +137,9 @@ pfn_pte(unsigned long pfn, pgprot_t prot
- #define pfn_pte(pfn, prot)	__pte(((pfn) << (PAGE_SHIFT + 2)) | pgprot_val(prot))
+@@ -191,10 +191,17 @@ pfn_pte(unsigned long pfn, pgprot_t prot
  #else
- #define pte_pfn(x)		((unsigned long)((x).pte >> PAGE_SHIFT))
--#define pfn_pte(pfn, prot)	__pte(((unsigned long long)(pfn) << PAGE_SHIFT) | pgprot_val(prot))
-+#define pfn_pte(pfn, prot)	__pte(((pfn) << PAGE_SHIFT) | pgprot_val(prot))
- #endif
--#endif /* defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1) */
+ 
+ /* Swap entries must have VALID and GLOBAL bits cleared. */
++#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
++#define __swp_type(x)		(((x).val >> 2) & 0x1f)
++#define __swp_offset(x) 	 ((x).val >> 7)
++#define __swp_entry(type,offset)	\
++		((swp_entry_t)  { ((type) << 2) | ((offset) << 7) })
++#else
+ #define __swp_type(x)		(((x).val >> 8) & 0x1f)
+-#define __swp_offset(x)		((x).val >> 13)
++#define __swp_offset(x) 	 ((x).val >> 13)
+ #define __swp_entry(type,offset)	\
+-		((swp_entry_t) { ((type) << 8) | ((offset) << 13) })
++		((swp_entry_t)  { ((type) << 8) | ((offset) << 13) })
 +#endif /* defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32) */
  
- #define __pgd_offset(address)	pgd_index(address)
- #define __pud_offset(address)	(((address) >> PUD_SHIFT) & (PTRS_PER_PUD-1))
-@@ -202,7 +202,7 @@ pfn_pte(unsigned long pfn, pgprot_t prot
-  */
- #define PTE_FILE_MAX_BITS	27
- 
--#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
-+#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
- 	/* fixme */
- #define pte_to_pgoff(_pte) (((_pte).pte_high >> 6) + ((_pte).pte_high & 0x3f))
- #define pgoff_to_pte(off) \
-diff --git a/include/asm-mips/pgtable-bits.h b/include/asm-mips/pgtable-bits.h
-index 01e76e9..3aad751 100644
---- a/include/asm-mips/pgtable-bits.h
-+++ b/include/asm-mips/pgtable-bits.h
-@@ -33,7 +33,7 @@
-  * unpredictable things.  The code (when it is written) to deal with
-  * this problem will be in the update_mmu_cache() code for the r4k.
-  */
--#if defined(CONFIG_CPU_MIPS32_R1) && defined(CONFIG_64BIT_PHYS_ADDR)
-+#if defined(CONFIG_CPU_MIPS32) && defined(CONFIG_64BIT_PHYS_ADDR)
- 
- #define _PAGE_PRESENT               (1<<6)  /* implemented in software */
- #define _PAGE_READ                  (1<<7)  /* implemented in software */
-@@ -123,7 +123,7 @@
+ /*
+  * Bits 0, 1, 2, 7 and 8 are taken, split up the 27 bits of offset
+@@ -218,7 +225,12 @@ pfn_pte(unsigned long pfn, pgprot_t prot
  
  #endif
- #endif
--#endif /* defined(CONFIG_CPU_MIPS32_R1) && defined(CONFIG_64BIT_PHYS_ADDR) */
-+#endif /* defined(CONFIG_CPU_MIPS32) && defined(CONFIG_64BIT_PHYS_ADDR) */
  
- #define __READABLE	(_PAGE_READ | _PAGE_SILENT_READ | _PAGE_ACCESSED)
- #define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
-@@ -140,7 +140,7 @@
- #define PAGE_CACHABLE_DEFAULT	_CACHE_CACHABLE_COW
- #endif
- 
--#if defined(CONFIG_CPU_MIPS32_R1) && defined(CONFIG_64BIT_PHYS_ADDR)
-+#if defined(CONFIG_CPU_MIPS32) && defined(CONFIG_64BIT_PHYS_ADDR)
- #define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT >> 3)
- #else
- #define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT >> 9)
-diff --git a/include/asm-mips/pgtable.h b/include/asm-mips/pgtable.h
-index 702a28f..925211d 100644
---- a/include/asm-mips/pgtable.h
-+++ b/include/asm-mips/pgtable.h
-@@ -85,7 +85,7 @@ extern void paging_init(void);
- #define pte_none(pte)		(!(pte_val(pte) & ~_PAGE_GLOBAL))
- #define pte_present(pte)	(pte_val(pte) & _PAGE_PRESENT)
- 
--#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
 +#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
- static inline void set_pte(pte_t *ptep, pte_t pte)
- {
- 	ptep->pte_high = pte.pte_high;
-@@ -173,7 +173,7 @@ extern pgd_t swapper_pg_dir[PTRS_PER_PGD
-  * Undefined behaviour if not..
-  */
- static inline int pte_user(pte_t pte)	{ BUG(); return 0; }
--#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
-+#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
- static inline int pte_read(pte_t pte)	{ return (pte).pte_low & _PAGE_READ; }
- static inline int pte_write(pte_t pte)	{ return (pte).pte_low & _PAGE_WRITE; }
- static inline int pte_dirty(pte_t pte)	{ return (pte).pte_low & _PAGE_MODIFIED; }
-@@ -332,7 +332,7 @@ static inline pgprot_t pgprot_noncached(
-  */
- #define mk_pte(page, pgprot)	pfn_pte(page_to_pfn(page), (pgprot))
++#define __pte_to_swp_entry(pte) ((swp_entry_t) { (pte).pte_high })
++#define __swp_entry_to_pte(x)	((pte_t) { 0, (x).val })
++#else
+ #define __pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
+ #define __swp_entry_to_pte(x)	((pte_t) { (x).val })
++#endif
  
--#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
-+#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
- 	pte.pte_low &= _PAGE_CHG_MASK;
+ #endif /* _ASM_PGTABLE_32_H */
 
 
---------------050807040407080201000703--
+
+--------------090903080109000601080707--

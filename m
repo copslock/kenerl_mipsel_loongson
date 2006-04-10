@@ -1,88 +1,161 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2006 18:25:58 +0100 (BST)
-Received: from mms3.broadcom.com ([216.31.210.19]:27402 "EHLO
-	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133481AbWDJRZt convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Apr 2006 18:25:49 +0100
-Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Mon, 10 Apr 2006 10:37:15 -0700
-X-Server-Uuid: B238DE4C-2139-4D32-96A8-DD564EF2313E
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 3D3822B0; Mon, 10 Apr 2006 10:37:15 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 0FF452AE; Mon, 10 Apr
- 2006 10:37:15 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5-GA) with ESMTP
- id DGV78001; Mon, 10 Apr 2006 10:37:12 -0700 (PDT)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- EB9D520501; Mon, 10 Apr 2006 10:37:11 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Apr 2006 21:14:03 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:36053 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133481AbWDJUNy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 10 Apr 2006 21:13:54 +0100
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by goldrake.enneenne.com with esmtp (Exim 4.50)
+	id 1FT2uW-0005Vs-If; Mon, 10 Apr 2006 22:22:58 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1FT2xS-0005c8-Qg; Mon, 10 Apr 2006 22:25:58 +0200
+Date:	Mon, 10 Apr 2006 22:25:58 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Cc:	source@embeddedalley.com
+Message-ID: <20060410202558.GS23424@enneenne.com>
 MIME-Version: 1.0
-Subject: RE: Oprofile on sibyte 2.4.18 kernel
-Date:	Mon, 10 Apr 2006 10:37:10 -0700
-Message-ID: <7E000E7F06B05C49BDBB769ADAF44D07989970@NT-SJCA-0750.brcm.ad.broadcom.com>
-Thread-Topic: Oprofile on sibyte 2.4.18 kernel
-Thread-Index: AcZag0lud8MhRbSARI6GHA+OQL7jGwCQb5sQ
-From:	"Mark E Mason" <mark.e.mason@broadcom.com>
-To:	"Shanthi Kiran Pendyala (skiranp)" <skiranp@cisco.com>,
-	"linux-mips" <linux-mips@linux-mips.org>
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006041005; IFV=2.0.6,4.0-7;
- RPD=4.00.0004;
- RPDID=303030312E30413039303230372E34343341393641392E303036362D412D;
- ENG=IBF; TS=20060410173718; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006041005_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 682448413NG6720318-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mark.e.mason@broadcom.com>
+Content-Type: multipart/mixed; boundary="f4arffV+Mc+T1KhS"
+Content-Disposition: inline
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.11+cvs20060126
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: [PATCH] au1100fb suspend/resume support
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11081
+X-archive-position: 11082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.e.mason@broadcom.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Hello Shanthi,
 
-The Sibyte group at broadcom has a set profiling tools for Linux 2.4
-which provide basically the same functionality as oprofile.  Simply
-contact your FAE or email sibyte-software@broadcom.com to get a copy.
+--f4arffV+Mc+T1KhS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks,
-Mark Mason
-mason@broadcom.com 
+Hello,
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org 
-> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of 
-> Shanthi Kiran Pendyala (skiranp)
-> Sent: Friday, April 07, 2006 1:39 PM
-> To: linux-mips
-> Subject: Oprofile on sibyte 2.4.18 kernel
-> 
-> Hi,
-> 
-> Did anyone port oprofile to 2.4.x kernel on sibyte ?.
-> 
-> Looking over the mailing list threads it looks like it has 
-> been given up as a lost cause.
-> 
-> But business reasons require us to work with 2.4.18 kernel 
-> for the next
-> 9-12 months and
-> We really would like explore a port.
-> 
-> Or are there other tools that I can use ?
-> 
-> Thank you
-> Shanthi kiran 
-> 
-> 
-> 
+here a patch for au1100fb.c in order to add suspend/resume support.
+
+Ciao,
+
+Rodolfo
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
+
+--f4arffV+Mc+T1KhS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=patch-au1100fb-pm
+
+Index: drivers/video/au1100fb.c
+===================================================================
+RCS file: /home/develop/cvs_private/linux-mips-exadron/drivers/video/au1100fb.c,v
+retrieving revision 1.7
+diff -u -r1.7 au1100fb.c
+--- a/drivers/video/au1100fb.c	2 Jan 2006 16:53:11 -0000	1.7
++++ b/drivers/video/au1100fb.c	10 Apr 2006 20:18:40 -0000
+@@ -7,6 +7,8 @@
+  *  	Karl Lessard <klessard@sunrisetelecom.com>
+  *  	<c.pellegrin@exadron.com>
+  *
++ * PM support added by Rodolfo Giometti <giometti@linux.it>
++ *
+  * Copyright 2002 MontaVista Software
+  * Author: MontaVista Software, Inc.
+  *		ppopov@mvista.com or source@mvista.com
+@@ -648,17 +650,66 @@
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PM
++static u32 sys_clksrc;
++static struct au1100fb_regs fbregs;
+ int au1100fb_drv_suspend(struct device *dev, u32 state, u32 level)
+ {
+-	/* TODO */
++	struct au1100fb_device *fbdev = (struct au1100fb_device*) dev_get_drvdata(dev);
++
++	if (!fbdev)
++		return 0;
++
++	switch (level) {
++	case SUSPEND_DISABLE :
++		/* Save the clock source state */
++		sys_clksrc = au_readl(SYS_CLKSRC);
++
++		/* Blank the LCD */
++		au1100fb_fb_blank(VESA_POWERDOWN, &fbdev->info);
++
++		/* Stop LCD clocking */
++		au_writel(sys_clksrc & ~SYS_CS_MUD_MASK, SYS_CLKSRC);
++
++		break;
++
++	case SUSPEND_SAVE_STATE :
++		memcpy(&fbregs, fbdev->regs, sizeof(struct au1100fb_regs));
++
++		break;
++
++	case SUSPEND_POWER_DOWN :
++
++		break;
++	}
++
+ 	return 0;
+ }
+ 
+ int au1100fb_drv_resume(struct device *dev, u32 level)
+ {
+-	/* TODO */
++	struct au1100fb_device *fbdev = (struct au1100fb_device*) dev_get_drvdata(dev);
++
++	if (!fbdev)
++		return 0;
++
++	switch (level) {
++	case RESUME_RESTORE_STATE :
++		memcpy(fbdev->regs, &fbregs, sizeof(struct au1100fb_regs));
++
++		break;
++
++	case RESUME_ENABLE :
++		au_writel(sys_clksrc, SYS_CLKSRC);
++
++		au1100fb_fb_blank(VESA_NO_BLANKING, &fbdev->info);
++
++		break;
++	}
++
+ 	return 0;
+ }
++#endif
+ 
+ static struct device_driver au1100fb_driver = {
+ 	.name		= "au1100-lcd",
+@@ -666,8 +717,10 @@
+ 
+ 	.probe		= au1100fb_drv_probe,
+         .remove		= au1100fb_drv_remove,
++#ifdef CONFIG_PM
+ 	.suspend	= au1100fb_drv_suspend,
+         .resume		= au1100fb_drv_resume,
++#endif
+ };
+     
+ /*-------------------------------------------------------------------------*/
+
+--f4arffV+Mc+T1KhS--

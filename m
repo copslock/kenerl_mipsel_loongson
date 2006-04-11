@@ -1,75 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Apr 2006 02:44:22 +0100 (BST)
-Received: from test-iport-3.cisco.com ([171.71.176.78]:33390 "EHLO
-	test-iport-3.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S8133642AbWDKBoN convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Apr 2006 02:44:13 +0100
-Received: from sj-core-2.cisco.com ([171.71.177.254])
-  by test-iport-3.cisco.com with ESMTP; 10 Apr 2006 18:55:51 -0700
-Received: from xbh-sjc-211.amer.cisco.com (xbh-sjc-211.cisco.com [171.70.151.144])
-	by sj-core-2.cisco.com (8.12.10/8.12.6) with ESMTP id k3B1toGv029388;
-	Mon, 10 Apr 2006 18:55:51 -0700 (PDT)
-Received: from xmb-sjc-215.amer.cisco.com ([171.70.151.169]) by xbh-sjc-211.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.211);
-	 Mon, 10 Apr 2006 18:55:47 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Apr 2006 05:08:46 +0100 (BST)
+Received: from mail.soc-soft.com ([202.56.254.199]:48139 "EHLO
+	igateway.soc-soft.com") by ftp.linux-mips.org with ESMTP
+	id S8133382AbWDKEIg convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Apr 2006 05:08:36 +0100
+Received: from keys.soc-soft.com ([192.168.4.44]) by igateway.soc-soft.com with InterScan VirusWall; Tue, 11 Apr 2006 09:50:15 +0530
+Received: from soc-mail.soc-soft.com ([192.168.4.25])
+  by keys.soc-soft.com (PGP Universal service);
+  Tue, 11 Apr 2006 09:46:30 +0530
+X-PGP-Universal: processed;
+	by keys.soc-soft.com on Tue, 11 Apr 2006 09:46:30 +0530
 Content-class: urn:content-classes:message
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="us-ascii"
+	charset="US-ASCII"
 Content-Transfer-Encoding: 8BIT
-Subject: RE: Oprofile on sibyte 2.4.18 kernel
-Date:	Mon, 10 Apr 2006 18:55:46 -0700
-Message-ID: <5547014632ED654F971D7E1E0C2E0C3E018DB5D0@xmb-sjc-215.amer.cisco.com>
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Subject: RE: Init not working in 64-bit kernel
+Date:	Tue, 11 Apr 2006 09:50:14 +0530
+Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902C015D8605@soc-mail.soc-soft.com>
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-Thread-Topic: Oprofile on sibyte 2.4.18 kernel
-Thread-Index: AcZamdRoKUMjWTsKT5ersblLdXL9owCa8JOQ
-From:	"Shanthi Kiran Pendyala \(skiranp\)" <skiranp@cisco.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Cc:	"linux-mips" <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 11 Apr 2006 01:55:47.0356 (UTC) FILETIME=[0D2AA5C0:01C65D0B]
-Return-Path: <skiranp@cisco.com>
+Thread-Topic: Init not working in 64-bit kernel
+Thread-Index: AcZMK/OMEVIBy6A9QvKes6ftrrvuVgQ8q/Gw
+From:	<Vadivelan@soc-soft.com>
+To:	<anemo@mba.ocn.ne.jp>, <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+Return-Path: <Vadivelan@soc-soft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11083
+X-archive-position: 11084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skiranp@cisco.com
+X-original-sender: Vadivelan@soc-soft.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
 
-Thanks for the reply.
+Hi,
+	I'm sry.  I couldn't reply immediately.
+I've fixed the problem. U'r suggestion was valuable. I've signed
+extended the addresses required and I'm able to boot the board.
 
->Correct.  So if at all you would have to rip oprofile from the 
->2.6 kernel and bolt that code back into the old kernel which 
->would seem doable.  The MIPS bits certainly don't rely on much 
->2.6 infrastructure.
+Thanking u.
 
-#1: I looked at oprofile-0.9.1 and it lists this event for SB1 in the
-events/mips/sb1 directory
-------------------------------------------------------------------------
+Regards,
+Vadi.
+
+-----Original Message-----
+From: Atsushi Nemoto [mailto:anemo@mba.ocn.ne.jp]
+Sent: Monday, March 20, 2006 8:08 PM
+To: ralf@linux-mips.org
+Cc: Vadivelan M; linux-mips@linux-mips.org
+Subject: Re: Init not working in 64-bit kernel
+
+
+>>>>> On Mon, 20 Mar 2006 13:14:52 +0000, Ralf Baechle
+>>>>> <ralf@linux-mips.org> said:
+
+ralf> This kernel is already 15 months old and there have been a vast
+ralf> number of bug fixes since.  And god knows what Montavista changed
+ralf> in their kernel - I don't have the faintest idea.  In short, try a
+
+ralf> modern kernel.  Btw, Linux 2.6.16 was released today and chances
+ralf> are it'll solve alot of your issues.
+
+I suppose he is trying 64bit kernel on RBTX4938 board, but the board
+dependent code seems not ready for 64bit.  For example, there are some
+0xff1fXXXX constants there and all these constants must be sign extended
+(0xffffffffff1fXXXX) for 64bit.  Also these virtual address are mapped
+to 36bit physical address 0xfff1fXXXX so some assumption in the 32bit
+kernel (virt==phys for TX49 internal regs) is not true in 64bit kernel.
+
 ---
-event:10 counters:1,2,3 um:zero minimum:500
-name:DCACHE_FILLED_SHD_NONC_EXC :Dcache is filled (shared, nonc,
-exclusive)
-----------------------------------------------------------------
-
-However this doesn't have an equivalent performance source
-Listed in the sibyte manual (table 33 system performance counter
-sources). 
+Atsushi Nemoto
 
 
-#2: how does the mapping from event numbers to performance sources work
-for sibyte ?
 
-I looked at the op_model_mipsxx.c file in the 2.6 CVS tree and the macro
-it uses doesn't seem to match the
-format specified for perf_cnt_cfg register in sibyte. 
 
-What am I missing ? 
 
-Thx
-Kiran 
+
+The information contained in this e-mail message and in any annexure is
+confidential to the  recipient and may contain privileged information. If you are not
+the intended recipient, please notify the sender and delete the message along with
+any annexure. You should not disclose, copy or otherwise use the information contained
+in the message or any annexure. Any views expressed in this e-mail are those of the
+individual sender except where the sender specifically states them to be the views of
+SoCrates Software India Pvt Ltd., Bangalore.

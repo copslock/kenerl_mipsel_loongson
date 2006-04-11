@@ -1,93 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Apr 2006 00:17:43 +0100 (BST)
-Received: from mms2.broadcom.com ([216.31.210.18]:28939 "EHLO
-	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133594AbWDKXRe convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Apr 2006 00:17:34 +0100
-Received: from 10.10.64.154 by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Tue, 11 Apr 2006 16:29:08 -0700
-X-Server-Uuid: D9EB6F12-1469-4C1C-87A2-5E4C0D6F9D06
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- AC7F42B0; Tue, 11 Apr 2006 16:29:07 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 169172B3; Tue, 11 Apr
- 2006 16:29:06 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5-GA) with ESMTP
- id DHC57767; Tue, 11 Apr 2006 16:29:05 -0700 (PDT)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 4D85C20501; Tue, 11 Apr 2006 16:29:05 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Subject: RE: Oprofile on sibyte 2.4.18 kernel
-Date:	Tue, 11 Apr 2006 16:29:03 -0700
-Message-ID: <7E000E7F06B05C49BDBB769ADAF44D07989B22@NT-SJCA-0750.brcm.ad.broadcom.com>
-Thread-Topic: Oprofile on sibyte 2.4.18 kernel
-Thread-Index: AcZamdRoKUMjWTsKT5ersblLdXL9owCa8JOQACmOKlAAA+V1oAAA4vMQ
-From:	"Mark E Mason" <mark.e.mason@broadcom.com>
-To:	"Shanthi Kiran Pendyala (skiranp)" <skiranp@cisco.com>
-cc:	"linux-mips" <linux-mips@linux-mips.org>
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006041109; IFV=2.0.6,4.0-7;
- RPD=4.00.0004;
- RPDID=303030312E30413039303230362E34343343334139372E303031452D412D;
- ENG=IBF; TS=20060411232909; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006041109_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 6822E44E1744900368-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mark.e.mason@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Apr 2006 15:05:40 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:214 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133625AbWDLOFc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Apr 2006 15:05:32 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k3BMO71f015577;
+	Wed, 12 Apr 2006 00:24:07 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k3BMO6Ew015575;
+	Wed, 12 Apr 2006 00:24:06 +0200
+Date:	Wed, 12 Apr 2006 00:24:05 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Mark E Mason <mark.e.mason@broadcom.com>
+Cc:	"Shanthi Kiran Pendyala (skiranp)" <skiranp@cisco.com>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Oprofile on sibyte 2.4.18 kernel
+Message-ID: <20060411222405.GA14848@linux-mips.org>
+References: <7E000E7F06B05C49BDBB769ADAF44D07989B08@NT-SJCA-0750.brcm.ad.broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7E000E7F06B05C49BDBB769ADAF44D07989B08@NT-SJCA-0750.brcm.ad.broadcom.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11088
+X-archive-position: 11089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.e.mason@broadcom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Tue, Apr 11, 2006 at 02:42:06PM -0700, Mark E Mason wrote:
 
-> -----Original Message-----
-> From: Shanthi Kiran Pendyala (skiranp) [mailto:skiranp@cisco.com] 
-> Sent: Tuesday, April 11, 2006 4:09 PM
-> To: Mark E Mason
-> Cc: linux-mips
-> Subject: RE: Oprofile on sibyte 2.4.18 kernel
-> 
-> Hi Mark,
-> 
-> Thx for the info.
-> 
-> The doc I have has the title 1250_1125-UM100-RDS.pdf. I went 
-> back to docsafe And looked for the sb1-um100-rds.pdf doc that 
-> you mention. 
+> FYI: don't use the oprofile tools tarball - use the latest from the CVS
+> site on sourceforge.  The last tarball on the website is more than a bit
+> out of date.
 
-Ah - got it.  What you're looking at here is the table for the SOC
-performance counters, which aren't currently supported by oprofile.  If
-you compare the two, the SOC performance counters deal with activity on
-the system Z-bus, the core performance counters deal with processor
-cycles, instruction execution, L1 cache activity and the like.
+That's documented in the wiki btw :-)
 
-> I thought sb1 is the core and if two of these cores are 
-> present it is labelled 1250 and If only one is present it is 
-> marketed as 1125 ? Is my understanding wrong ?
-
-This is correct.  From the documentation port of view, all of the "core
-stuff" is in the SB1-UM100-RDS.pdf manual, the "SOC stuff" is in the
-1250_1125_UM100-RDS.pdf manual.  At this point, oprofile only supports
-the core performance counters.
-
-> 
-> Let me look at this document and see if it answers my questions.
-> 
-> Also, yes I was looking at 2.6 git tree, not the CVS tree as 
-> I said below.. Sorry about That.
-
-Not a problem.  Please let us know if you have any more questions.
-
-Thanks,
-Mark
+  Ralf

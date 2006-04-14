@@ -1,67 +1,172 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Apr 2006 06:54:55 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:35548 "HELO
-	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133355AbWDNFyn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Apr 2006 06:54:43 +0100
-Received: from localhost (in-3.mx.triera.net [213.161.0.27])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 16ED6C052;
-	Fri, 14 Apr 2006 08:06:39 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-3.mx.triera.net (Postfix) with SMTP id 250381BC091;
-	Fri, 14 Apr 2006 08:06:39 +0200 (CEST)
-Received: from localhost (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 5DFC21A18BC;
-	Fri, 14 Apr 2006 08:06:39 +0200 (CEST)
-Date:	Fri, 14 Apr 2006 08:06:41 +0200
-From:	Domen Puncer <domen.puncer@ultra.si>
-To:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Apr 2006 10:38:32 +0100 (BST)
+Received: from smtp103.biz.mail.mud.yahoo.com ([68.142.200.238]:19037 "HELO
+	smtp103.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133376AbWDNJiW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Apr 2006 10:38:22 +0100
+Received: (qmail 47557 invoked from network); 14 Apr 2006 09:50:22 -0000
+Received: from unknown (HELO ?192.168.1.102?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp103.biz.mail.mud.yahoo.com with SMTP; 14 Apr 2006 09:50:22 -0000
+Subject: Re: mips64 kgdb fpu access bug
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: UART trouble on the DBAu1100
-Message-ID: <20060414060640.GE29489@domen.ultra.si>
-References: <20060413131117.GP11097@dusktilldawn.nl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060413131117.GP11097@dusktilldawn.nl>
-User-Agent: Mutt/1.5.11
-X-Virus-Scanned: Triera AV Service
-Return-Path: <domen.puncer@ultra.si>
+In-Reply-To: <20060414.120944.25476367.nemoto@toshiba-tops.co.jp>
+References: <1144961699.8372.127.camel@localhost.localdomain>
+	 <20060414.120944.25476367.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Fri, 14 Apr 2006 02:50:20 -0700
+Message-Id: <1145008220.11383.26.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.4.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11096
+X-archive-position: 11097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: domen.puncer@ultra.si
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On 13/04/06 15:11 +0200, Freddy Spierenburg wrote:
-> Hi,
+
+Looks good on inspection and my kernel boots fine now. It used to crash
+consistently with this particular configuration and root file system.
+
+Now I need to cook up something similar for the kgdb support :)
+
+Thanks!
+
+Pete
+
+On Fri, 2006-04-14 at 12:09 +0900, Atsushi Nemoto wrote:
+> On Thu, 13 Apr 2006 13:54:59 -0700, Pete Popov <ppopov@embeddedalley.com> wrote:
+> > .macro  fpu_save_double thread status tmp1 tmp2
+> >         sll     \tmp2, \tmp1, 5
+> >         bgez    \tmp2, 2f
+> >         fpu_save_16odd \thread
+> > 2:
+> >         fpu_save_16even \thread \tmp1                   # clobbers t1
+> >         .endm
+> > 
+> > tmp1 is "t0" and it's not clear to me why we're checking t0 instead of
+> > status in order to decide whether to save the odd registers or not. I
+> > must be missing something because others would have hit this bug by now.
+> > Any clues would be appreciated.
 > 
-> I have a problem and yet am not sure where to look. It's a
-> problem in the serial driver for the internal UART's of the
-> AU1100. It appeared ever since 2.6.15. 2.6.14 is working like a
-> charm, but 2.6.15 gives me the trouble.
+> It seems commit d0fd5c21d07d6e13993a77f4471d8003a271a12b was somewhat
+> broken.
 > 
-> When I open a tty with the open(2) system call (see attached open.c)
-> I see that the UART sends a 0x36 byte on the line.
-
-We had the same problem on Au1200, applying
-http://www.linux-mips.org/archives/linux-mips/2006-03/msg00259.html
-(or maybe a different version of this patch) fixed it.
-
+> Could you try this patch?
 > 
-> But that's not the only trouble. I also do not receive any
-> bytes received by the UART. All the received bytes stay
-> in the input buffer of the UART only to be send up to userland
-> as soon as the UART is asked to send a byte on the line itself.
-> Then in one take all the bytes are received by the application
-> listening.
-
-I may be way off, but maybe it's just flow control that needs
-to be turned off.
-
-
-	Domen
+> 
+> fix register usage in fpu_save_double() and make fpu_restore_double()
+> more symmetric with fpu_save_double().
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> 
+> diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
+> index 0b1b54a..db94e55 100644
+> --- a/arch/mips/kernel/r4k_switch.S
+> +++ b/arch/mips/kernel/r4k_switch.S
+> @@ -75,8 +75,8 @@
+>  	and	t0, t0, t1
+>  	LONG_S	t0, ST_OFF(t3)
+>  
+> -	fpu_save_double a0 t1 t0 t2		# c0_status passed in t1
+> -						# clobbers t0 and t2
+> +	fpu_save_double a0 t0 t1		# c0_status passed in t0
+> +						# clobbers t1
+>  1:
+>  
+>  	/*
+> @@ -129,9 +129,9 @@
+>   */
+>  LEAF(_save_fp)
+>  #ifdef CONFIG_64BIT
+> -	mfc0	t1, CP0_STATUS
+> +	mfc0	t0, CP0_STATUS
+>  #endif
+> -	fpu_save_double a0 t1 t0 t2		# clobbers t1
+> +	fpu_save_double a0 t0 t1		# clobbers t1
+>  	jr	ra
+>  	END(_save_fp)
+>  
+> @@ -139,7 +139,10 @@ LEAF(_save_fp)
+>   * Restore a thread's fp context.
+>   */
+>  LEAF(_restore_fp)
+> -	fpu_restore_double a0, t1		# clobbers t1
+> +#ifdef CONFIG_64BIT
+> +	mfc0	t0, CP0_STATUS
+> +#endif
+> +	fpu_restore_double a0 t0 t1		# clobbers t1
+>  	jr	ra
+>  	END(_restore_fp)
+>  
+> diff --git a/include/asm-mips/asmmacro-32.h b/include/asm-mips/asmmacro-32.h
+> index 11daf5c..5de3963 100644
+> --- a/include/asm-mips/asmmacro-32.h
+> +++ b/include/asm-mips/asmmacro-32.h
+> @@ -12,7 +12,7 @@
+>  #include <asm/fpregdef.h>
+>  #include <asm/mipsregs.h>
+>  
+> -	.macro	fpu_save_double thread status tmp1=t0 tmp2
+> +	.macro	fpu_save_double thread status tmp1=t0
+>  	cfc1	\tmp1,  fcr31
+>  	sdc1	$f0,  THREAD_FPR0(\thread)
+>  	sdc1	$f2,  THREAD_FPR2(\thread)
+> @@ -70,7 +70,7 @@
+>  	sw	\tmp, THREAD_FCR31(\thread)
+>  	.endm
+>  
+> -	.macro	fpu_restore_double thread tmp=t0
+> +	.macro	fpu_restore_double thread status tmp=t0
+>  	lw	\tmp, THREAD_FCR31(\thread)
+>  	ldc1	$f0,  THREAD_FPR0(\thread)
+>  	ldc1	$f2,  THREAD_FPR2(\thread)
+> diff --git a/include/asm-mips/asmmacro-64.h b/include/asm-mips/asmmacro-64.h
+> index 559c355..225feef 100644
+> --- a/include/asm-mips/asmmacro-64.h
+> +++ b/include/asm-mips/asmmacro-64.h
+> @@ -53,12 +53,12 @@
+>  	sdc1	$f31, THREAD_FPR31(\thread)
+>  	.endm
+>  
+> -	.macro	fpu_save_double thread status tmp1 tmp2
+> -	sll	\tmp2, \tmp1, 5
+> -	bgez	\tmp2, 2f
+> +	.macro	fpu_save_double thread status tmp
+> +	sll	\tmp, \status, 5
+> +	bgez	\tmp, 2f
+>  	fpu_save_16odd \thread
+>  2:
+> -	fpu_save_16even \thread \tmp1			# clobbers t1
+> +	fpu_save_16even \thread \tmp
+>  	.endm
+>  
+>  	.macro	fpu_restore_16even thread tmp=t0
+> @@ -101,13 +101,12 @@
+>  	ldc1	$f31, THREAD_FPR31(\thread)
+>  	.endm
+>  
+> -	.macro	fpu_restore_double thread tmp
+> -	mfc0	t0, CP0_STATUS
+> -	sll	t1, t0, 5
+> -	bgez	t1, 1f				# 16 register mode?
+> +	.macro	fpu_restore_double thread status tmp
+> +	sll	\tmp, \status, 5
+> +	bgez	\tmp, 1f				# 16 register mode?
+>  
+> -	fpu_restore_16odd a0
+> -1:	fpu_restore_16even a0, t0		# clobbers t0
+> +	fpu_restore_16odd \thread
+> +1:	fpu_restore_16even \thread \tmp
+>  	.endm
+>  
+>  	.macro	cpu_save_nonscratch thread

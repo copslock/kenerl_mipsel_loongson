@@ -1,77 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Apr 2006 21:07:18 +0100 (BST)
-Received: from ms-smtp-04.nyroc.rr.com ([24.24.2.58]:63105 "EHLO
-	ms-smtp-04.nyroc.rr.com") by ftp.linux-mips.org with ESMTP
-	id S8133543AbWDOUGB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 15 Apr 2006 21:06:01 +0100
-Received: from [192.168.23.10] (cpe-24-94-51-176.stny.res.rr.com [24.94.51.176])
-	by ms-smtp-04.nyroc.rr.com (8.13.4/8.13.4) with ESMTP id k3FKH17L021633;
-	Sat, 15 Apr 2006 16:17:01 -0400 (EDT)
-Date:	Sat, 15 Apr 2006 16:17:01 -0400 (EDT)
-From:	Steven Rostedt <rostedt@goodmis.org>
-X-X-Sender: rostedt@gandalf.stny.rr.com
-To:	Nick Piggin <nickpiggin@yahoo.com.au>
-cc:	LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@osdl.org>,
-	Linus Torvalds <torvalds@osdl.org>,
-	Ingo Molnar <mingo@elte.hu>,
-	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
-	Martin Mares <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
-	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
-	lethal@linux-sh.org, Chris Zankel <chris@zankel.net>,
-	Marc Gauthier <marc@tensilica.com>,
-	Joe Taylor <joe@tensilica.com>,
-	David Mosberger-Tang <davidm@hpl.hp.com>, rth@twiddle.net,
-	spyro@f2s.com, starvik@axis.com, tony.luck@intel.com,
-	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org, grundler@parisc-linux.org,
-	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
-	paulus@samba.org, linux390@de.ibm.com, davem@davemloft.net
-Subject: Re: [PATCH 00/05] robust per_cpu allocation for modules
-In-Reply-To: <4440855A.7040203@yahoo.com.au>
-Message-ID: <Pine.LNX.4.58.0604151609340.11302@gandalf.stny.rr.com>
-References: <1145049535.1336.128.camel@localhost.localdomain>
- <4440855A.7040203@yahoo.com.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Apr 2006 21:41:51 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:17065 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133543AbWDOUld (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 15 Apr 2006 21:41:33 +0100
+Received: (qmail 5600 invoked from network); 16 Apr 2006 00:56:13 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 16 Apr 2006 00:56:13 -0000
+Message-ID: <44415D17.1070005@ru.mvista.com>
+Date:	Sun, 16 Apr 2006 00:52:39 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: Symantec AntiVirus Scan Engine
-Return-Path: <rostedt@goodmis.org>
+To:	Geoff Levand <geoffrey.levand@am.sony.com>
+CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: tx49 Ether problems
+References: <20060415.010518.126141918.anemo@mba.ocn.ne.jp> <444032A5.3030304@am.sony.com>
+In-Reply-To: <444032A5.3030304@am.sony.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11110
+X-archive-position: 11111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
 
-On Sat, 15 Apr 2006, Nick Piggin wrote:
+Geoff Levand wrote:
 
-> Steven Rostedt wrote:
->
-> >  would now create a variable called per_cpu_offset__myint in
-> > the .data.percpu_offset section.  This variable will point to the (if
-> > defined in the kernel) __per_cpu_offset[] array.  If this was a module
-> > variable, it would point to the module per_cpu_offset[] array which is
-> > created when the modules is loaded.
->
-> If I'm following you correctly, this adds another dependent load
-> to a per-CPU data access, and from memory that isn't node-affine.
->
-> If so, I think people with SMP and NUMA kernels would care more
-> about performance and scalability than the few k of memory this
-> saves.
+>>On Fri, 14 Apr 2006 08:38:00 -0700, Geoff Levand
+>><geoffrey.levand@am.sony.com> wrote:
 
-It's not just about saving memory, but also to make it more robust. But
-that's another story.
+>>>I seem to get a lot of problems with an nfs root fs
+>>>on tx4937 board.  I haven't looked at it closely yet,
+>>>but I guess its some problem with the ne2000 driver.
+>>>I wanted to know if you know anything about this.
 
-Since both the offset array, and the variables are mainly read only (only
-written on boot up), added the fact that the added variables are in their
-own section.  Couldn't something be done to help pre load this in a local
-cache, or something similar?
+>>Please look at:
 
-I understand SMP issues pretty well, but NUMA is still somewhat foreign to
-me.
+>>http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20060226.23054
+>>1.75185772.anemo%40mba.ocn.ne.jp
 
--- Steve
+>>With a quick glance of ne.c, it seems ei_status.stop_page should be
+>>changed to 0x60 on the board.  Please confirm its value.
+
+> Yes, this seems to fix the problem.
+
+> Index: 2.6.16.1/drivers/net/ne.c
+> ===================================================================
+> --- 2.6.16.1.orig/drivers/net/ne.c	2006-04-14 15:54:41.000000000 -0700
+> +++ 2.6.16.1/drivers/net/ne.c	2006-04-14 16:27:51.000000000 -0700
+> @@ -140,7 +140,8 @@
+>  #define NE1SM_START_PG	0x20	/* First page of TX buffer */
+>  #define NE1SM_STOP_PG 	0x40	/* Last page +1 of RX ring */
+>  #define NESM_START_PG	0x40	/* First page of TX buffer */
+> -#define NESM_STOP_PG	0x80	/* Last page +1 of RX ring */
+> +#define NESM_8_STOP_PG	0x60	/* Last page +1 of RX ring, RTL8019 8 bit mode */
+> +#define NESM_STOP_PG	0x80	/* Last page +1 of RX ring */
+> 
+>  #if defined(CONFIG_PLAT_MAPPI)
+>  #  define DCR_VAL 0x4b
+> @@ -516,6 +517,7 @@
+>  	ei_status.tx_start_page = start_page;
+>  	ei_status.stop_page = stop_page;
+>  #if defined(CONFIG_TOSHIBA_RBTX4927) || defined(CONFIG_TOSHIBA_RBTX4938)
+> +	ei_status.stop_page = NESM_8_STOP_PG;
+>  	wordlength = 1;
+>  #endif
+
+    This is really strange place for that #ifdef -- 'wordlength' is determined 
+much earlier in this function (and stop_page is set to 0x40 for 8-bit case), 
+shouldn't #ifdef be moved instead?
+
+WBR, Sergei

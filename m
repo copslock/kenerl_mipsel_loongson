@@ -1,115 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 11:01:58 +0100 (BST)
-Received: from ms-smtp-01.nyroc.rr.com ([24.24.2.55]:7560 "EHLO
-	ms-smtp-01.nyroc.rr.com") by ftp.linux-mips.org with ESMTP
-	id S8133138AbWDQKBt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Apr 2006 11:01:49 +0100
-Received: from [192.168.23.10] (cpe-24-94-51-176.stny.res.rr.com [24.94.51.176])
-	by ms-smtp-01.nyroc.rr.com (8.13.4/8.13.4) with ESMTP id k3H0joEj019170;
-	Sun, 16 Apr 2006 20:45:51 -0400 (EDT)
-Subject: Re: [PATCH 00/05] robust per_cpu allocation for modules
-From:	Steven Rostedt <rostedt@goodmis.org>
-To:	Arnd Bergmann <arnd@arndb.de>
-Cc:	Paul Mackerras <paulus@samba.org>,
-	Nick Piggin <nickpiggin@yahoo.com.au>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@osdl.org>,
-	Linus Torvalds <torvalds@osdl.org>,
-	Ingo Molnar <mingo@elte.hu>,
-	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
-	Martin Mares <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
-	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
-	lethal@linux-sh.org, Chris Zankel <chris@zankel.net>,
-	Marc Gauthier <marc@tensilica.com>,
-	Joe Taylor <joe@tensilica.com>,
-	David Mosberger-Tang <davidm@hpl.hp.com>, rth@twiddle.net,
-	spyro@f2s.com, starvik@axis.com, tony.luck@intel.com,
-	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org, grundler@parisc-linux.org,
-	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
-	linux390@de.ibm.com, davem@davemloft.net, rusty@rustcorp.com.au
-In-Reply-To: <200604161734.20256.arnd@arndb.de>
-References: <1145049535.1336.128.camel@localhost.localdomain>
-	 <17473.60411.690686.714791@cargo.ozlabs.ibm.com>
-	 <1145194804.27407.103.camel@localhost.localdomain>
-	 <200604161734.20256.arnd@arndb.de>
-Content-Type: text/plain
-Date:	Sun, 16 Apr 2006 20:45:50 -0400
-Message-Id: <1145234750.27828.8.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Symantec AntiVirus Scan Engine
-Return-Path: <rostedt@goodmis.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 11:18:01 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:40879 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133403AbWDQKRx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Apr 2006 11:17:53 +0100
+Received: (qmail 9892 invoked from network); 16 Apr 2006 19:46:16 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 16 Apr 2006 19:46:16 -0000
+Message-ID: <444265EB.50503@ru.mvista.com>
+Date:	Sun, 16 Apr 2006 19:42:35 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	jgarzik@pobox.com
+CC:	linux-net@vger.kernel.org, Linux-MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH] NEx000: fix RTL8019AS base address for RBTX4938
+Content-Type: multipart/mixed;
+ boundary="------------080305010002070700050107"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11126
+X-archive-position: 11127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 2006-04-16 at 17:34 +0200, Arnd Bergmann wrote:
-> On Sunday 16 April 2006 15:40, Steven Rostedt wrote:
-> > I'll think more about this, but maybe someone else has some crazy ideas
-> > that can find a solution to this that is both fast and robust.
-> 
-> Ok, you asked for a crazy idea, you're going to get it ;-)
-> 
-> You could take a fixed range from the vmalloc area (e.g. 1MB per cpu)
-> and use that to remap pages on demand when you need per cpu data.
-> 
-> #define PER_CPU_BASE 0xe000000000000000UL /* arch dependant */
-> #define PER_CPU_SHIFT 0x100000UL
-> #define __per_cpu_offset(__cpu) (PER_CPU_BASE + PER_CPU_STRIDE * (__cpu))
-> #define per_cpu(var, cpu) (*RELOC_HIDE(&per_cpu__##var, __per_cpu_offset(cpu)))
-> #define __get_cpu_var(var) per_cpu(var, smp_processor_id())
-> 
-> This is a lot like the current sparc64 implementation already is.
-> 
+This is a multi-part message in MIME format.
+--------------080305010002070700050107
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hmm, interesting idea.
+Correct the base address of the Realtek RTL8019AS chip on the Toshiba RBTX4938
+board -- this should make the driver work at least when CONFIG_PCI is enabled.
 
-> The tricky part here is the remapping of pages. You'd need to 
-> alloc_pages_node() new pages whenever the already reserved space is
-> not enough for the module you want to load and then map_vm_area()
-> them into the space reserved for them.
-> 
-> Advantages of this solution are:
-> - no dependant load access for per_cpu()
-> - might be flexible enough to implement a faster per_cpu_ptr()
-> - can be combined with ia64-style per-cpu remapping
-> 
-> Disadvantages are:
-> - you can't use huge tlbs for mapping per cpu data like the
->   regular linear mapping -> may be slower on some archs
+Signed-off-by: Yuri Shpilevsky <yshpilevsky@ru.mvista.com>
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-> - does not work in real mode, so percpu data can't be used
->   inside exception handlers on some architectures.
 
-This is probably a big issue.  I believe interrupt context in hrtimers
-uses per_cpu variables.
+--------------080305010002070700050107
+Content-Type: text/plain;
+ name="RBTX4938-fix-RTL8019AS-base-addr.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="RBTX4938-fix-RTL8019AS-base-addr.patch"
 
-> - memory consumption is rather high when PAGE_SIZE is large
+diff --git a/drivers/net/ne.c b/drivers/net/ne.c
+index 08b218c..93c494b 100644
+--- a/drivers/net/ne.c
++++ b/drivers/net/ne.c
+@@ -226,7 +226,7 @@ struct net_device * __init ne_probe(int 
+ 	netdev_boot_setup_check(dev);
+ 
+ #ifdef CONFIG_TOSHIBA_RBTX4938
+-	dev->base_addr = 0x07f20280;
++	dev->base_addr = RBTX4938_RTL_8019_BASE;
+ 	dev->irq = RBTX4938_RTL_8019_IRQ;
+ #endif
+ 	err = do_ne_probe(dev);
 
-That's also something that I'm trying to solve.  To use the least amount
-of memory and still have the performance.
 
-Now, I've also thought about allocating per_cpu and when a module is
-loaded, reallocate more memory and copy it again.  Use something like
-the kstopmachine to sync the system so that the CPUS don't update any
-per_cpu variables while this is happening, so that things can't get out
-of sync.
 
-This shouldn't be too much of an issue, since this would only be done
-when a module is being loaded, and that is a user event that doesn't
-happen often.
-
-We would still need to use the method of keeping track of what is
-allocated and freed, so that when a module is unloaded, we can still
-free the area in the per_cpu data. And reallocate that area if a module
-is added that uses less or the same amount of memory as what was freed.
-
--- Steve
+--------------080305010002070700050107--

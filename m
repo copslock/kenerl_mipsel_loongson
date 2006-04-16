@@ -1,84 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Apr 2006 21:41:51 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:17065 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133543AbWDOUld (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 15 Apr 2006 21:41:33 +0100
-Received: (qmail 5600 invoked from network); 16 Apr 2006 00:56:13 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 16 Apr 2006 00:56:13 -0000
-Message-ID: <44415D17.1070005@ru.mvista.com>
-Date:	Sun, 16 Apr 2006 00:52:39 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Apr 2006 03:35:36 +0100 (BST)
+Received: from smtp108.mail.mud.yahoo.com ([209.191.85.218]:63358 "HELO
+	smtp108.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133721AbWDPCf0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 16 Apr 2006 03:35:26 +0100
+Received: (qmail 48349 invoked from network); 16 Apr 2006 02:47:30 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com.au;
+  h=Received:Message-ID:Date:From:User-Agent:X-Accept-Language:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+  b=0Y0ORF1oarZ8AXm1g7Pizo0yBb+ji4fqmn0ipmML1auVaaYFtidM2OXa+tJRz02rr56cdfJ5I9Mw0ZoXbxwr38/WwDPN9eshOTe8q/u06tvAtk2U6+rh69sp0ptLAC2ERqxB27SWYwmn7qyXppBsQBpjVYyXuDnhaP+mpt3Po3U=  ;
+Received: from unknown (HELO ?192.168.0.1?) (nickpiggin@203.173.5.206 with plain)
+  by smtp108.mail.mud.yahoo.com with SMTP; 16 Apr 2006 02:47:29 -0000
+Message-ID: <4441B02D.4000405@yahoo.com.au>
+Date:	Sun, 16 Apr 2006 12:47:09 +1000
+From:	Nick Piggin <nickpiggin@yahoo.com.au>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20051007 Debian/1.7.12-1
+X-Accept-Language: en
 MIME-Version: 1.0
-To:	Geoff Levand <geoffrey.levand@am.sony.com>
-CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: tx49 Ether problems
-References: <20060415.010518.126141918.anemo@mba.ocn.ne.jp> <444032A5.3030304@am.sony.com>
-In-Reply-To: <444032A5.3030304@am.sony.com>
+To:	Steven Rostedt <rostedt@goodmis.org>
+CC:	LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@osdl.org>,
+	Linus Torvalds <torvalds@osdl.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
+	Martin Mares <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
+	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
+	lethal@linux-sh.org, Chris Zankel <chris@zankel.net>,
+	Marc Gauthier <marc@tensilica.com>,
+	Joe Taylor <joe@tensilica.com>,
+	David Mosberger-Tang <davidm@hpl.hp.com>, rth@twiddle.net,
+	spyro@f2s.com, starvik@axis.com, tony.luck@intel.com,
+	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org, grundler@parisc-linux.org,
+	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
+	paulus@samba.org, linux390@de.ibm.com, davem@davemloft.net
+Subject: Re: [PATCH 00/05] robust per_cpu allocation for modules
+References: <1145049535.1336.128.camel@localhost.localdomain> <4440855A.7040203@yahoo.com.au> <Pine.LNX.4.58.0604151609340.11302@gandalf.stny.rr.com>
+In-Reply-To: <Pine.LNX.4.58.0604151609340.11302@gandalf.stny.rr.com>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <nickpiggin@yahoo.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11111
+X-archive-position: 11112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: nickpiggin@yahoo.com.au
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
-
-Geoff Levand wrote:
-
->>On Fri, 14 Apr 2006 08:38:00 -0700, Geoff Levand
->><geoffrey.levand@am.sony.com> wrote:
-
->>>I seem to get a lot of problems with an nfs root fs
->>>on tx4937 board.  I haven't looked at it closely yet,
->>>but I guess its some problem with the ne2000 driver.
->>>I wanted to know if you know anything about this.
-
->>Please look at:
-
->>http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20060226.23054
->>1.75185772.anemo%40mba.ocn.ne.jp
-
->>With a quick glance of ne.c, it seems ei_status.stop_page should be
->>changed to 0x60 on the board.  Please confirm its value.
-
-> Yes, this seems to fix the problem.
-
-> Index: 2.6.16.1/drivers/net/ne.c
-> ===================================================================
-> --- 2.6.16.1.orig/drivers/net/ne.c	2006-04-14 15:54:41.000000000 -0700
-> +++ 2.6.16.1/drivers/net/ne.c	2006-04-14 16:27:51.000000000 -0700
-> @@ -140,7 +140,8 @@
->  #define NE1SM_START_PG	0x20	/* First page of TX buffer */
->  #define NE1SM_STOP_PG 	0x40	/* Last page +1 of RX ring */
->  #define NESM_START_PG	0x40	/* First page of TX buffer */
-> -#define NESM_STOP_PG	0x80	/* Last page +1 of RX ring */
-> +#define NESM_8_STOP_PG	0x60	/* Last page +1 of RX ring, RTL8019 8 bit mode */
-> +#define NESM_STOP_PG	0x80	/* Last page +1 of RX ring */
+Steven Rostedt wrote:
+> On Sat, 15 Apr 2006, Nick Piggin wrote:
 > 
->  #if defined(CONFIG_PLAT_MAPPI)
->  #  define DCR_VAL 0x4b
-> @@ -516,6 +517,7 @@
->  	ei_status.tx_start_page = start_page;
->  	ei_status.stop_page = stop_page;
->  #if defined(CONFIG_TOSHIBA_RBTX4927) || defined(CONFIG_TOSHIBA_RBTX4938)
-> +	ei_status.stop_page = NESM_8_STOP_PG;
->  	wordlength = 1;
->  #endif
+> 
+>>Steven Rostedt wrote:
+>>
+>>
+>>> would now create a variable called per_cpu_offset__myint in
+>>>the .data.percpu_offset section.  This variable will point to the (if
+>>>defined in the kernel) __per_cpu_offset[] array.  If this was a module
+>>>variable, it would point to the module per_cpu_offset[] array which is
+>>>created when the modules is loaded.
+>>
+>>If I'm following you correctly, this adds another dependent load
+>>to a per-CPU data access, and from memory that isn't node-affine.
+>>
+>>If so, I think people with SMP and NUMA kernels would care more
+>>about performance and scalability than the few k of memory this
+>>saves.
+> 
+> 
+> It's not just about saving memory, but also to make it more robust. But
+> that's another story.
 
-    This is really strange place for that #ifdef -- 'wordlength' is determined 
-much earlier in this function (and stop_page is set to 0x40 for 8-bit case), 
-shouldn't #ifdef be moved instead?
+But making it slower isn't going to be popular.
 
-WBR, Sergei
+Why is your module using so much per-cpu memory, anyway?
+
+> 
+> Since both the offset array, and the variables are mainly read only (only
+> written on boot up), added the fact that the added variables are in their
+> own section.  Couldn't something be done to help pre load this in a local
+> cache, or something similar?
+
+It it would still add to the dependent loads on the critical path, so
+it now prevents the compiler/programmer/oooe engine from speculatively
+loading the __per_cpu_offset.
+
+And it does increase cache footprint of per-cpu accesses, which are
+supposed to be really light and substitute for [NR_CPUS] arrays.
+
+I don't think it would have been hard for the original author to make
+it robust... just not both fast and robust. PERCPU_ENOUGH_ROOM seems
+like an ugly hack at first glance, but I'm fairly sure it was a result
+of design choices.
+
+-- 
+SUSE Labs, Novell Inc.
+Send instant messages to your online friends http://au.messenger.yahoo.com 

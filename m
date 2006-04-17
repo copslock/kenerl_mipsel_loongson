@@ -1,63 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 13:41:45 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:44510 "HELO bender.bawue.de")
-	by ftp.linux-mips.org with SMTP id S8133448AbWDQMlf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Apr 2006 13:41:35 +0100
-Received: from lagash (88-106-238-34.dynamic.dsl.as9105.com [88.106.238.34])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 298F944EE4; Mon, 17 Apr 2006 14:53:59 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.61)
-	(envelope-from <ths@networkno.de>)
-	id 1FVTEc-00048m-G0; Mon, 17 Apr 2006 13:53:42 +0100
-Date:	Mon, 17 Apr 2006 13:53:32 +0100
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org, sam@ravnborg.org
-Subject: Re: [PATCH] fix modpost segfault for 64bit mipsel kernel
-Message-ID: <20060417125332.GB28935@networkno.de>
-References: <20060417.210039.95063383.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 13:55:21 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:32940 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133415AbWDQMzM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Apr 2006 13:55:12 +0100
+Received: (qmail 19578 invoked from network); 17 Apr 2006 17:10:18 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 17 Apr 2006 17:10:18 -0000
+Message-ID: <444392CF.7070808@ru.mvista.com>
+Date:	Mon, 17 Apr 2006 17:06:23 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060417.210039.95063383.nemoto@toshiba-tops.co.jp>
-User-Agent: Mutt/1.5.11+cvs20060403
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	geoffrey.levand@am.sony.com, linux-mips@linux-mips.org
+Subject: Re: tx49 Ether problems
+References: <444032A5.3030304@am.sony.com>	<44415D17.1070005@ru.mvista.com>	<444291E9.2070407@ru.mvista.com> <20060417.110945.59031594.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20060417.110945.59031594.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11133
+X-archive-position: 11134
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
+
 Atsushi Nemoto wrote:
-> 64bit mips has different r_info layout.  This patch fixes modpost
-> segfault for 64bit little endian mips kernel.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> 
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index cd00e9f..7846600 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -712,7 +712,13 @@ static void check_sec_ref(struct module 
->  			r.r_offset = TO_NATIVE(rela->r_offset);
->  			r.r_info   = TO_NATIVE(rela->r_info);
->  			r.r_addend = TO_NATIVE(rela->r_addend);
-> +#if KERNEL_ELFCLASS == ELFCLASS64 && KERNEL_ELFDATA == ELFDATA2LSB
-> +			sym = elf->symtab_start +
-> +				(hdr->e_machine == EM_MIPS ?
-> +				 (Elf32_Word)r.r_info : ELF_R_SYM(r.r_info));
-> +#else
->  			sym = elf->symtab_start + ELF_R_SYM(r.r_info);
-> +#endif
+> On Sun, 16 Apr 2006 22:50:17 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
 
-This doesn't look right. ELF64_R_SYM/ELF64_R_TYPE should be fixed for
-mips64 instead.
+>>>   This is really strange place for that #ifdef -- 'wordlength' is 
+>>>determined much earlier in this function (and stop_page is set to 0x40 
+>>>for 8-bit case), shouldn't #ifdef be moved instead?
 
+>>     What I think we actually need is more generic fix for RTL8019AS, not the
+>>board specific hacks -- if this RX ring stop page value limitation *really*
+>>needs to be enforced.
 
-Thiemo
+> I agree with you.  Then how about something like
+> CONFIG_NE2000_RTL8019_BYTEMODE?
+
+    Have you looked at the patch? RTL8019 is easily detectable at runtime, so 
+the limitation is easily enforcable w/o extra Kconfig option, I think
+
+>  Also, setting 0xbad value to mem_end
+> can skip the Product-ID checking without inflating bad_clone_list.
+> Just a thought...
+
+    0xbad in dev->mem_end currently skips 8390 reset which is not a good thing 
+for the clones for which it does work...
+
+> ---
+> Atsushi Nemoto
+
+WBR, Sergei

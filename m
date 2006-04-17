@@ -1,64 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 13:55:21 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:32940 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133415AbWDQMzM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Apr 2006 13:55:12 +0100
-Received: (qmail 19578 invoked from network); 17 Apr 2006 17:10:18 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 17 Apr 2006 17:10:18 -0000
-Message-ID: <444392CF.7070808@ru.mvista.com>
-Date:	Mon, 17 Apr 2006 17:06:23 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 14:28:01 +0100 (BST)
+Received: from pasmtp.tele.dk ([193.162.159.95]:48396 "HELO pasmtp.tele.dk")
+	by ftp.linux-mips.org with SMTP id S8133588AbWDQN1w (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Apr 2006 14:27:52 +0100
+Received: from mars.ravnborg.org (0x50a0757d.hrnxx9.adsl-dhcp.tele.dk [80.160.117.125])
+	by pasmtp.tele.dk (Postfix) with ESMTP id 2F01E1EC308;
+	Mon, 17 Apr 2006 15:40:07 +0200 (CEST)
+Received: by mars.ravnborg.org (Postfix, from userid 1000)
+	id 88A6943C21C; Mon, 17 Apr 2006 15:40:05 +0200 (CEST)
+Date:	Mon, 17 Apr 2006 15:40:05 +0200
+From:	Sam Ravnborg <sam@ravnborg.org>
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	geoffrey.levand@am.sony.com, linux-mips@linux-mips.org
-Subject: Re: tx49 Ether problems
-References: <444032A5.3030304@am.sony.com>	<44415D17.1070005@ru.mvista.com>	<444291E9.2070407@ru.mvista.com> <20060417.110945.59031594.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20060417.110945.59031594.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] fix modpost segfault for 64bit mipsel kernel
+Message-ID: <20060417134005.GA13304@mars.ravnborg.org>
+References: <20060417.210039.95063383.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060417.210039.95063383.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.5.11
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11134
+X-archive-position: 11135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Mon, Apr 17, 2006 at 09:00:39PM +0900, Atsushi Nemoto wrote:
+> 64bit mips has different r_info layout.  This patch fixes modpost
+> segfault for 64bit little endian mips kernel.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> 
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index cd00e9f..7846600 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -712,7 +712,13 @@ static void check_sec_ref(struct module 
+>  			r.r_offset = TO_NATIVE(rela->r_offset);
+>  			r.r_info   = TO_NATIVE(rela->r_info);
+>  			r.r_addend = TO_NATIVE(rela->r_addend);
+> +#if KERNEL_ELFCLASS == ELFCLASS64 && KERNEL_ELFDATA == ELFDATA2LSB
+> +			sym = elf->symtab_start +
+> +				(hdr->e_machine == EM_MIPS ?
+> +				 (Elf32_Word)r.r_info : ELF_R_SYM(r.r_info));
+> +#else
+>  			sym = elf->symtab_start + ELF_R_SYM(r.r_info);
+> +#endif
+>  			/* Skip special sections */
+>  			if (sym->st_shndx >= SHN_LORESERVE)
+>  				continue;
 
-Atsushi Nemoto wrote:
-> On Sun, 16 Apr 2006 22:50:17 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+Hi Atsushi
 
->>>   This is really strange place for that #ifdef -- 'wordlength' is 
->>>determined much earlier in this function (and stop_page is set to 0x40 
->>>for 8-bit case), shouldn't #ifdef be moved instead?
+So with 64bit mips with the above we read r.r_info with no
+modifications. But the elf.h I have on my system looks like this:
 
->>     What I think we actually need is more generic fix for RTL8019AS, not the
->>board specific hacks -- if this RX ring stop page value limitation *really*
->>needs to be enforced.
+/* How to extract and insert information held in the r_info field.  */
 
-> I agree with you.  Then how about something like
-> CONFIG_NE2000_RTL8019_BYTEMODE?
+#define ELF32_R_SYM(val)                ((val) >> 8)
+#define ELF32_R_TYPE(val)               ((val) & 0xff)
+#define ELF32_R_INFO(sym, type)         (((sym) << 8) + ((type) & 0xff))
 
-    Have you looked at the patch? RTL8019 is easily detectable at runtime, so 
-the limitation is easily enforcable w/o extra Kconfig option, I think
+#define ELF64_R_SYM(i)                  ((i) >> 32)
+#define ELF64_R_TYPE(i)                 ((i) & 0xffffffff)
+#define ELF64_R_INFO(sym,type)          ((((Elf64_Xword) (sym)) << 32) + (type))
 
->  Also, setting 0xbad value to mem_end
-> can skip the Product-ID checking without inflating bad_clone_list.
-> Just a thought...
+So the difference between 64bit and 32bit is only the number of right
+shifts.
 
-    0xbad in dev->mem_end currently skips 8390 reset which is not a good thing 
-for the clones for which it does work...
+Maybe we need to do some simple range check also so it becomes:
+	if ((sym->st_shndx >= SHN_LORESERVE) || (sym > elf->symtab_stop))
+		continue;
 
-> ---
-> Atsushi Nemoto
+Could you try this - and if you still see the SEGVAL then try to print
+out the value of all members in 'r'.
 
-WBR, Sergei
+You can also try to add '-g' to HOSTCFLAGS in toplevel makefile.
+Then use make V=1 to see what arguments modpost is caleld with and call
+it from the commandline or from a debugger.
+
+	Sam

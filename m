@@ -1,15 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 10:24:05 +0100 (BST)
-Received: from ms-smtp-01.nyroc.rr.com ([24.24.2.55]:53191 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 11:01:58 +0100 (BST)
+Received: from ms-smtp-01.nyroc.rr.com ([24.24.2.55]:7560 "EHLO
 	ms-smtp-01.nyroc.rr.com") by ftp.linux-mips.org with ESMTP
-	id S8133138AbWDQJX4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Apr 2006 10:23:56 +0100
+	id S8133138AbWDQKBt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Apr 2006 11:01:49 +0100
 Received: from [192.168.23.10] (cpe-24-94-51-176.stny.res.rr.com [24.94.51.176])
-	by ms-smtp-01.nyroc.rr.com (8.13.4/8.13.4) with ESMTP id k3GG6Lf0013043;
-	Sun, 16 Apr 2006 12:06:22 -0400 (EDT)
+	by ms-smtp-01.nyroc.rr.com (8.13.4/8.13.4) with ESMTP id k3H0joEj019170;
+	Sun, 16 Apr 2006 20:45:51 -0400 (EDT)
 Subject: Re: [PATCH 00/05] robust per_cpu allocation for modules
 From:	Steven Rostedt <rostedt@goodmis.org>
-To:	Nick Piggin <nickpiggin@yahoo.com.au>
-Cc:	LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@osdl.org>,
+To:	Arnd Bergmann <arnd@arndb.de>
+Cc:	Paul Mackerras <paulus@samba.org>,
+	Nick Piggin <nickpiggin@yahoo.com.au>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Andrew Morton <akpm@osdl.org>,
 	Linus Torvalds <torvalds@osdl.org>,
 	Ingo Molnar <mingo@elte.hu>,
 	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
@@ -23,17 +26,15 @@ Cc:	LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@osdl.org>,
 	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
 	linux-mips@linux-mips.org, grundler@parisc-linux.org,
 	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
-	paulus@samba.org, linux390@de.ibm.com, davem@davemloft.net
-In-Reply-To: <4441ECE6.5010709@yahoo.com.au>
+	linux390@de.ibm.com, davem@davemloft.net, rusty@rustcorp.com.au
+In-Reply-To: <200604161734.20256.arnd@arndb.de>
 References: <1145049535.1336.128.camel@localhost.localdomain>
-	 <4440855A.7040203@yahoo.com.au>
-	 <Pine.LNX.4.58.0604151609340.11302@gandalf.stny.rr.com>
-	 <4441B02D.4000405@yahoo.com.au>
-	 <Pine.LNX.4.58.0604152323560.16853@gandalf.stny.rr.com>
-	 <4441ECE6.5010709@yahoo.com.au>
+	 <17473.60411.690686.714791@cargo.ozlabs.ibm.com>
+	 <1145194804.27407.103.camel@localhost.localdomain>
+	 <200604161734.20256.arnd@arndb.de>
 Content-Type: text/plain
-Date:	Sun, 16 Apr 2006 12:06:21 -0400
-Message-Id: <1145203581.27407.112.camel@localhost.localdomain>
+Date:	Sun, 16 Apr 2006 20:45:50 -0400
+Message-Id: <1145234750.27828.8.camel@localhost.localdomain>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.4.2.1 
 Content-Transfer-Encoding: 7bit
@@ -42,7 +43,7 @@ Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11125
+X-archive-position: 11126
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,91 +51,65 @@ X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 2006-04-16 at 17:06 +1000, Nick Piggin wrote:
-> Steven Rostedt wrote:
-> > On Sun, 16 Apr 2006, Nick Piggin wrote:
+On Sun, 2006-04-16 at 17:34 +0200, Arnd Bergmann wrote:
+> On Sunday 16 April 2006 15:40, Steven Rostedt wrote:
+> > I'll think more about this, but maybe someone else has some crazy ideas
+> > that can find a solution to this that is both fast and robust.
 > 
-> >>Why is your module using so much per-cpu memory, anyway?
-> > 
-> > 
-> > Wasn't my module anyway. The problem appeared in the -rt patch set, when
-> > tracing was turned on.  Some module was affected, and grew it's per_cpu
-> > size by quite a bit. In fact we had to increase PERCPU_ENOUGH_ROOM by up
-> > to something like 300K.
+> Ok, you asked for a crazy idea, you're going to get it ;-)
 > 
-> Well that's easy then, just configure PERCPU_ENOUGH_ROOM to be larger
-> when tracing is on in the -rt patchset? Or use alloc_percpu for the
-> tracing data?
+> You could take a fixed range from the vmalloc area (e.g. 1MB per cpu)
+> and use that to remap pages on demand when you need per cpu data.
 > 
-
-Yeah, we already know this.  The -rt patch was what showed the problem,
-not the reason I was writing these patches.
-
-
-> >>I don't think it would have been hard for the original author to make
-> >>it robust... just not both fast and robust. PERCPU_ENOUGH_ROOM seems
-> >>like an ugly hack at first glance, but I'm fairly sure it was a result
-> >>of design choices.
-> > 
-> > Yeah, and I discovered the reasons for those choices as I worked on this.
-> > I've put a little more thought into this and still think there's a
-> > solution to not slow things down.
-> > 
-> > Since the per_cpu_offset section is still smaller than the
-> > PERCPU_ENOUGH_ROOM and robust, I could still copy it into a per cpu memory
-> > field, and even add the __per_cpu_offset to it.  This would still save
-> > quite a bit of space.
+> #define PER_CPU_BASE 0xe000000000000000UL /* arch dependant */
+> #define PER_CPU_SHIFT 0x100000UL
+> #define __per_cpu_offset(__cpu) (PER_CPU_BASE + PER_CPU_STRIDE * (__cpu))
+> #define per_cpu(var, cpu) (*RELOC_HIDE(&per_cpu__##var, __per_cpu_offset(cpu)))
+> #define __get_cpu_var(var) per_cpu(var, smp_processor_id())
 > 
-> Well I don't think making it per-cpu would help much (presumably it
-> is not going to be written to very frequently) -- I guess it would
-> be a small advantage on NUMA. The main problem is the extra load in
-> the fastpath.
-> 
-> You can't start the next load until the results of the first come
-> back.
-
-Yep, you're right here, and it bothers me too that this slows down
-performance.
-
-> 
-> > So now I'm asking for advice on some ideas that can be a work around to
-> > keep the robustness and speed.
-> > 
-> > Is there a way (for archs that support it) to allocate memory in a per cpu
-> > manner. So each CPU would have its own variable table in the memory that
-> > is best of it.  Then have a field (like the pda in x86_64) to point to
-> > this section, and use the linker offsets to index and find the per_cpu
-> > variables.
-> > 
-> > So this solution still has one more redirection than the current solution
-> > (per_cpu_offset__##var -> __per_cpu_offset -> actual_var where as the
-> > current solution is __per_cpu_offset -> actual_var), but all the loads
-> > would be done from memory that would only be specified for a particular
-> > CPU.
-> > 
-> > The generic case would still be the same as the patches I already sent,
-> > but the archs that can support it, can have something like the above.
-> > 
-> > Would something like that be acceptible?
-> 
-> I still don't understand what the justification is for slowing down
-> this critical bit of infrastructure for something that is only a
-> problem in the -rt patchset, and even then only a problem when tracing
-> is enabled.
+> This is a lot like the current sparc64 implementation already is.
 > 
 
-It's because I'm anal retentive :-)
+Hmm, interesting idea.
 
-I noticed that the current solution is somewhat a hack, and thought
-maybe it could be done cleaner.  Perhaps I'm wrong and the hack _is_ the
-best solution, but it doesn't hurt in trying to improve it.  Or the very
-least, prove that the current solution is the way to go.
+> The tricky part here is the remapping of pages. You'd need to 
+> alloc_pages_node() new pages whenever the already reserved space is
+> not enough for the module you want to load and then map_vm_area()
+> them into the space reserved for them.
+> 
+> Advantages of this solution are:
+> - no dependant load access for per_cpu()
+> - might be flexible enough to implement a faster per_cpu_ptr()
+> - can be combined with ia64-style per-cpu remapping
+> 
+> Disadvantages are:
+> - you can't use huge tlbs for mapping per cpu data like the
+>   regular linear mapping -> may be slower on some archs
 
-I'm not trying to solve an issue with the -rt patch and tracing, I'm
-just trying to make Linux a little more efficient in saving space. And
-you may be right that we cant do that without hurting performance, and
-thus we keep things as is.  But I don't want to give up without a fight
-and miss something that can solve all this and keep Linux the best OS on
-the market! (not to say that it isn't even with the current solution)
+> - does not work in real mode, so percpu data can't be used
+>   inside exception handlers on some architectures.
+
+This is probably a big issue.  I believe interrupt context in hrtimers
+uses per_cpu variables.
+
+> - memory consumption is rather high when PAGE_SIZE is large
+
+That's also something that I'm trying to solve.  To use the least amount
+of memory and still have the performance.
+
+Now, I've also thought about allocating per_cpu and when a module is
+loaded, reallocate more memory and copy it again.  Use something like
+the kstopmachine to sync the system so that the CPUS don't update any
+per_cpu variables while this is happening, so that things can't get out
+of sync.
+
+This shouldn't be too much of an issue, since this would only be done
+when a module is being loaded, and that is a user event that doesn't
+happen often.
+
+We would still need to use the method of keeping track of what is
+allocated and freed, so that when a module is unloaded, we can still
+free the area in the per_cpu data. And reallocate that area if a module
+is added that uses less or the same amount of memory as what was freed.
 
 -- Steve

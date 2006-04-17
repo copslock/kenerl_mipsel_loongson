@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 17:59:33 +0100 (BST)
-Received: from mx2.suse.de ([195.135.220.15]:53168 "HELO mx2.suse.de")
-	by ftp.linux-mips.org with SMTP id S8133415AbWDQQ7X (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Apr 2006 17:59:23 +0100
-Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx2.suse.de (Postfix) with ESMTP id CC1C81EBCD;
-	Mon, 17 Apr 2006 19:11:36 +0200 (CEST)
-From:	Andi Kleen <ak@suse.de>
-To:	Nick Piggin <nickpiggin@yahoo.com.au>
-Subject: Re: [PATCH 00/05] robust per_cpu allocation for modules
-Date:	Mon, 17 Apr 2006 19:10:46 +0200
-User-Agent: KMail/1.9.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 20:53:11 +0100 (BST)
+Received: from ns1.siteground.net ([207.218.208.2]:25556 "EHLO
+	serv01.siteground.net") by ftp.linux-mips.org with ESMTP
+	id S8133415AbWDQTxB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Apr 2006 20:53:01 +0100
+Received: from adsl-69-227-37-145.dsl.pltn13.pacbell.net ([69.227.37.145] helo=localhost.localdomain)
+	by serv01.siteground.net with esmtpa (Exim 4.52)
+	id 1FVZy3-0005BH-7V; Mon, 17 Apr 2006 15:05:03 -0500
+Date:	Mon, 17 Apr 2006 13:06:06 -0700
+From:	Ravikiran G Thirumalai <kiran@scalex86.org>
+To:	Arnd Bergmann <arnd@arndb.de>
 Cc:	Steven Rostedt <rostedt@goodmis.org>,
+	Paul Mackerras <paulus@samba.org>,
+	Nick Piggin <nickpiggin@yahoo.com.au>,
 	LKML <linux-kernel@vger.kernel.org>,
 	Andrew Morton <akpm@osdl.org>,
 	Linus Torvalds <torvalds@osdl.org>,
 	Ingo Molnar <mingo@elte.hu>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
 	Martin Mares <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
 	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
 	lethal@linux-sh.org, Chris Zankel <chris@zankel.net>,
@@ -28,39 +27,90 @@ Cc:	Steven Rostedt <rostedt@goodmis.org>,
 	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
 	linux-mips@linux-mips.org, grundler@parisc-linux.org,
 	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
-	paulus@samba.org, linux390@de.ibm.com, davem@davemloft.net
-References: <1145049535.1336.128.camel@localhost.localdomain> <Pine.LNX.4.58.0604152323560.16853@gandalf.stny.rr.com> <4441ECE6.5010709@yahoo.com.au>
-In-Reply-To: <4441ECE6.5010709@yahoo.com.au>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+	linux390@de.ibm.com, davem@davemloft.net, rusty@rustcorp.com.au,
+	Christoph Lameter <clameter@engr.sgi.com>, dipankar@in.ibm.com
+Subject: Re: [PATCH 00/05] robust per_cpu allocation for modules
+Message-ID: <20060417200606.GA3945@localhost.localdomain>
+References: <1145049535.1336.128.camel@localhost.localdomain> <17473.60411.690686.714791@cargo.ozlabs.ibm.com> <1145194804.27407.103.camel@localhost.localdomain> <200604161734.20256.arnd@arndb.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200604171910.48838.ak@suse.de>
-Return-Path: <ak@suse.de>
+In-Reply-To: <200604161734.20256.arnd@arndb.de>
+User-Agent: Mutt/1.4.2.1i
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - serv01.siteground.net
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [47 12]
+X-AntiAbuse: Sender Address Domain - scalex86.org
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <kiran@scalex86.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11144
+X-archive-position: 11145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ak@suse.de
+X-original-sender: kiran@scalex86.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sunday 16 April 2006 09:06, Nick Piggin wrote:
+On Sun, Apr 16, 2006 at 05:34:18PM +0200, Arnd Bergmann wrote:
+> On Sunday 16 April 2006 15:40, Steven Rostedt wrote:
+> > I'll think more about this, but maybe someone else has some crazy ideas
+> > that can find a solution to this that is both fast and robust.
+> 
+> Ok, you asked for a crazy idea, you're going to get it ;-)
+> 
+> You could take a fixed range from the vmalloc area (e.g. 1MB per cpu)
+> and use that to remap pages on demand when you need per cpu data.
+> 
+> #define PER_CPU_BASE 0xe000000000000000UL /* arch dependant */
+> #define PER_CPU_SHIFT 0x100000UL
+> #define __per_cpu_offset(__cpu) (PER_CPU_BASE + PER_CPU_STRIDE * (__cpu))
+> #define per_cpu(var, cpu) (*RELOC_HIDE(&per_cpu__##var, __per_cpu_offset(cpu)))
+> #define __get_cpu_var(var) per_cpu(var, smp_processor_id())
+> 
+> This is a lot like the current sparc64 implementation already is.
+> 
+> The tricky part here is the remapping of pages. You'd need to 
+> alloc_pages_node() new pages whenever the already reserved space is
+> not enough for the module you want to load and then map_vm_area()
+> them into the space reserved for them.
+> 
+> Advantages of this solution are:
+> - no dependant load access for per_cpu()
+> - might be flexible enough to implement a faster per_cpu_ptr()
+> - can be combined with ia64-style per-cpu remapping
 
-> I still don't understand what the justification is for slowing down
-> this critical bit of infrastructure for something that is only a
-> problem in the -rt patchset, and even then only a problem when tracing
-> is enabled.
+An implemenation similar to one you are mentioning was already proposed
+sometime back.
+http://lwn.net/Articles/119532/
+The design was also meant to not restrict/limit per-cpu memory being
+allocated from modules.  Maybe it was too early then, and maybe now is the 
+right time, going by the interest in this thread :).  IMHO, a new solution
+should fix both static and dynamic per-cpu allocators, 
+- Avoid possibility of false sharing for dynamically allocated per-CPU data
+(with current alloc percpu) 
+- work early enough -- if alloc_percpu can work early enough, (we can use
+that for counters like slab cachep stats which is currently racy; using 
+atomic_t for them would be bad for performance)
 
-There are actually problems outside -rt. e.g. the Xen kernel was running
-into a near overflow and as more and more code is using per cpu variables
-others might too.
+An extra dereference in Steven's original proposal is bad, (I had done some
+measurements earlier).  My implementation had one less reference compared to
+static per-cpu allocators, but the performance of both were the same as
+the __per_cpu_offset table is always cache hot.
 
-I'm confident the problem can be solved without adding more variables
-though - e.g. in the way rusty proposed.
+> 
+> Disadvantages are:
+> - you can't use huge tlbs for mapping per cpu data like the
+>   regular linear mapping -> may be slower on some archs
 
--Andi
+Yep, we waste a few tlb entries then, which is a bit of concern, but then we
+might be able to use hugetlbs for blocks of per-cpu data and minimize the 
+impact.
+
+Thanks,
+Kiran

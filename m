@@ -1,69 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 13:12:36 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:11555 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133475AbWDQMM1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Apr 2006 13:12:27 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 17 Apr 2006 21:24:51 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id CA1CC207C0;
-	Mon, 17 Apr 2006 21:24:49 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id BE7F520728;
-	Mon, 17 Apr 2006 21:24:49 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k3HCOn4D087121;
-	Mon, 17 Apr 2006 21:24:49 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 17 Apr 2006 21:24:49 +0900 (JST)
-Message-Id: <20060417.212449.51866545.nemoto@toshiba-tops.co.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] use __ffs() instead of ffs() in ip32_irq0()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 13:41:45 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:44510 "HELO bender.bawue.de")
+	by ftp.linux-mips.org with SMTP id S8133448AbWDQMlf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Apr 2006 13:41:35 +0100
+Received: from lagash (88-106-238-34.dynamic.dsl.as9105.com [88.106.238.34])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id 298F944EE4; Mon, 17 Apr 2006 14:53:59 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.61)
+	(envelope-from <ths@networkno.de>)
+	id 1FVTEc-00048m-G0; Mon, 17 Apr 2006 13:53:42 +0100
+Date:	Mon, 17 Apr 2006 13:53:32 +0100
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org, sam@ravnborg.org
+Subject: Re: [PATCH] fix modpost segfault for 64bit mipsel kernel
+Message-ID: <20060417125332.GB28935@networkno.de>
+References: <20060417.210039.95063383.nemoto@toshiba-tops.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060417.210039.95063383.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.5.11+cvs20060403
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11132
+X-archive-position: 11133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-With recent rewrite for generic bitops, ffs() is defined the same way
-as the libc and compiler built-in routines (returns int instead of
-unsigned long).  Use __ffs() for 64bit value.
+Atsushi Nemoto wrote:
+> 64bit mips has different r_info layout.  This patch fixes modpost
+> segfault for 64bit little endian mips kernel.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> 
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index cd00e9f..7846600 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -712,7 +712,13 @@ static void check_sec_ref(struct module 
+>  			r.r_offset = TO_NATIVE(rela->r_offset);
+>  			r.r_info   = TO_NATIVE(rela->r_info);
+>  			r.r_addend = TO_NATIVE(rela->r_addend);
+> +#if KERNEL_ELFCLASS == ELFCLASS64 && KERNEL_ELFDATA == ELFDATA2LSB
+> +			sym = elf->symtab_start +
+> +				(hdr->e_machine == EM_MIPS ?
+> +				 (Elf32_Word)r.r_info : ELF_R_SYM(r.r_info));
+> +#else
+>  			sym = elf->symtab_start + ELF_R_SYM(r.r_info);
+> +#endif
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+This doesn't look right. ELF64_R_SYM/ELF64_R_TYPE should be fixed for
+mips64 instead.
 
-diff --git a/arch/mips/sgi-ip32/ip32-irq.c b/arch/mips/sgi-ip32/ip32-irq.c
-index 22a6df9..de01c98 100644
---- a/arch/mips/sgi-ip32/ip32-irq.c
-+++ b/arch/mips/sgi-ip32/ip32-irq.c
-@@ -507,13 +507,14 @@ static void ip32_irq0(struct pt_regs *re
- 	int irq = 0;
- 
- 	crime_int = crime->istat & crime_mask;
--	irq = ffs(crime_int);
--	crime_int = 1 << (irq - 1);
-+	irq = __ffs(crime_int);
-+	crime_int = 1 << irq;
- 
- 	if (crime_int & CRIME_MACEISA_INT_MASK) {
- 		unsigned long mace_int = mace->perif.ctrl.istat;
--		irq = ffs(mace_int & maceisa_mask) + 32;
-+		irq = __ffs(mace_int & maceisa_mask) + 32;
- 	}
-+	irq++;
- 	DBG("*irq %u*\n", irq);
- 	do_IRQ(irq, regs);
- }
+
+Thiemo

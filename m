@@ -1,70 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 09:14:03 +0100 (BST)
-Received: from uproxy.gmail.com ([66.249.92.175]:17758 "EHLO uproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8127231AbWDQINv convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Apr 2006 09:13:51 +0100
-Received: by uproxy.gmail.com with SMTP id u2so360082uge
-        for <linux-mips@linux-mips.org>; Mon, 17 Apr 2006 01:26:11 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:sender:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=XsJOhvzZ+2UaFIE3BGl6tmZNQcYbZ0gMOmNZVhsF3DsVarouTDFdkIA8puoO1ZrnwkWORPIczK+KjlnBxheDVE5drWZJNjLgYzSXLMeqhs+4ly34eZ6Lzcrsc9M/A7S8dUCCAN3T2lDhBXN2iEO37pBa1Ds2eJ2uB1u75HckXd4=
-Received: by 10.78.45.13 with SMTP id s13mr128771hus;
-        Sun, 16 Apr 2006 11:03:03 -0700 (PDT)
-Received: by 10.78.46.14 with HTTP; Sun, 16 Apr 2006 11:03:03 -0700 (PDT)
-Message-ID: <12c511ca0604161103l3013f5f1t99c93ee38f102e95@mail.gmail.com>
-Date:	Sun, 16 Apr 2006 11:03:03 -0700
-From:	"Tony Luck" <tony.luck@intel.com>
-To:	"Arnd Bergmann" <arnd@arndb.de>
-Subject: Re: [PATCH 00/05] robust per_cpu allocation for modules
-Cc:	"Steven Rostedt" <rostedt@goodmis.org>,
-	"Paul Mackerras" <paulus@samba.org>,
-	"Nick Piggin" <nickpiggin@yahoo.com.au>,
-	LKML <linux-kernel@vger.kernel.org>,
-	"Andrew Morton" <akpm@osdl.org>,
-	"Linus Torvalds" <torvalds@osdl.org>,
-	"Ingo Molnar" <mingo@elte.hu>,
-	"Thomas Gleixner" <tglx@linutronix.de>, "Andi Kleen" <ak@suse.de>,
-	"Martin Mares" <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
-	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
-	lethal@linux-sh.org, "Chris Zankel" <chris@zankel.net>,
-	"Marc Gauthier" <marc@tensilica.com>,
-	"Joe Taylor" <joe@tensilica.com>,
-	"David Mosberger-Tang" <davidm@hpl.hp.com>, rth@twiddle.net,
-	spyro@f2s.com, starvik@axis.com, linux-ia64@vger.kernel.org,
-	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	grundler@parisc-linux.org, parisc-linux@parisc-linux.org,
-	linuxppc-dev@ozlabs.org, linux390@de.ibm.com, davem@davemloft.net,
-	rusty@rustcorp.com.au
-In-Reply-To: <200604161734.20256.arnd@arndb.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <1145049535.1336.128.camel@localhost.localdomain>
-	 <17473.60411.690686.714791@cargo.ozlabs.ibm.com>
-	 <1145194804.27407.103.camel@localhost.localdomain>
-	 <200604161734.20256.arnd@arndb.de>
-Return-Path: <tony.luck@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Apr 2006 09:15:41 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:60193 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133728AbWDQIPb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Apr 2006 09:15:31 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 17 Apr 2006 17:27:52 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 07431207C0;
+	Mon, 17 Apr 2006 11:09:48 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id EF2542026B;
+	Mon, 17 Apr 2006 11:09:47 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k3H29j4D084555;
+	Mon, 17 Apr 2006 11:09:46 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 17 Apr 2006 11:09:45 +0900 (JST)
+Message-Id: <20060417.110945.59031594.nemoto@toshiba-tops.co.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	geoffrey.levand@am.sony.com, linux-mips@linux-mips.org
+Subject: Re: tx49 Ether problems
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <444291E9.2070407@ru.mvista.com>
+References: <444032A5.3030304@am.sony.com>
+	<44415D17.1070005@ru.mvista.com>
+	<444291E9.2070407@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11121
+X-archive-position: 11122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tony.luck@intel.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 4/16/06, Arnd Bergmann <arnd@arndb.de> wrote:
-> #define PER_CPU_BASE 0xe000000000000000UL /* arch dependant */
+On Sun, 16 Apr 2006 22:50:17 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> >    This is really strange place for that #ifdef -- 'wordlength' is 
+> > determined much earlier in this function (and stop_page is set to 0x40 
+> > for 8-bit case), shouldn't #ifdef be moved instead?
+> 
+>      What I think we actually need is more generic fix for RTL8019AS, not the
+> board specific hacks -- if this RX ring stop page value limitation *really*
+> needs to be enforced.
 
-On ia64 the percpu area is at 0xffffffffffff0000 so that it can be
-addressed without tying up another register (all percpu addresses
-are small negative offsets from "r0").  When David Mosberger
-chose this address he said that gcc 4 would actually make
-ue of this, but I haven't checked the generated code to see
-whether it really is doing so.
+I agree with you.  Then how about something like
+CONFIG_NE2000_RTL8019_BYTEMODE?  Also, setting 0xbad value to mem_end
+can skip the Product-ID checking without inflating bad_clone_list.
+Just a thought...
 
--Tony
+---
+Atsushi Nemoto

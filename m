@@ -1,85 +1,167 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Apr 2006 15:16:23 +0100 (BST)
-Received: from tool.snarl.nl ([213.84.251.124]:54693 "HELO tool.snarl.nl")
-	by ftp.linux-mips.org with SMTP id S8133547AbWDTOQO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Apr 2006 15:16:14 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id 6E1C35E58B;
-	Thu, 20 Apr 2006 16:28:49 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id 25788-01; Thu, 20 Apr 2006 16:28:48 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 89FC05DF5C; Thu, 20 Apr 2006 16:28:47 +0200 (CEST)
-Date:	Thu, 20 Apr 2006 16:28:47 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	Jon Anders Haugum <jonah@omegav.ntnu.no>
-Cc:	Domen Puncer <domen.puncer@ultra.si>, linux-mips@linux-mips.org
-Subject: Re: UART trouble on the DBAu1100
-Message-ID: <20060420142847.GR11097@dusktilldawn.nl>
-References: <20060413131117.GP11097@dusktilldawn.nl> <20060414060640.GE29489@domen.ultra.si> <20060420145753.C1601@invalid.ed.ntnu.no>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="b//ZgE2eAae+kIBt"
-Content-Disposition: inline
-In-Reply-To: <20060420145753.C1601@invalid.ed.ntnu.no>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.11+cvs20060403
-Return-Path: <freddy@dusktilldawn.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Apr 2006 16:49:43 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:45545 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133547AbWDTPtc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Apr 2006 16:49:32 +0100
+Received: from localhost (p1086-ipad27funabasi.chiba.ocn.ne.jp [220.107.192.86])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 592CBA6A4; Fri, 21 Apr 2006 01:02:08 +0900 (JST)
+Date:	Fri, 21 Apr 2006 01:02:37 +0900 (JST)
+Message-Id: <20060421.010237.25910405.anemo@mba.ocn.ne.jp>
+To:	ths@networkno.de
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org, sam@ravnborg.org
+Subject: Re: [PATCH] fix modpost segfault for 64bit mipsel kernel
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060420001900.GC30806@networkno.de>
+References: <20060417162742.GD28935@networkno.de>
+	<20060419.112228.108306767.anemo@mba.ocn.ne.jp>
+	<20060420001900.GC30806@networkno.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11165
+X-archive-position: 11166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 20 Apr 2006 01:19:00 +0100, Thiemo Seufer <ths@networkno.de> wrote:
+> > +#define ELF64_MIPS_R_TYPE(i) \
+> > +  (((_Elf64_Mips_R_Info_union)(i)).r_info_fields.r_type1 \
+> > +   | ((Elf32_Word)(__extension__ (_Elf64_Mips_R_Info_union)(i) \
+> > +		   ).r_info_fields.r_type2 << 8) \
+> > +   | ((Elf32_Word)(__extension__ (_Elf64_Mips_R_Info_union)(i) \
+> > +		   ).r_info_fields.r_type3 << 16) \
+> > +   | ((Elf32_Word)(__extension__ (_Elf64_Mips_R_Info_union)(i) \
+> > +		   ).r_info_fields.r_ssym << 24))
+> 
+> Why is it the right thing to combine the type info into a 32bit word?
 
---b//ZgE2eAae+kIBt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Well, I just take ELF64_MIPS_R_TYPE() from glibc source.
 
-Hi Jon,
+> It will never get used as such for MIPS ELF64. I would have expected
+> something like:
+> 
+> #define ELF64_MIPS_R_INFO(sym,ssym,t3,t2,t1)		\
+> {(							\
+> 	_Elf64_Mips_R_Info info = {			\
+> 		.r_sym = sym,				\
+> 		.r_ssym = ssym,				\
+> 		.r_type3 = t3,				\
+> 		.r_type2 = t2,				\
+> 		.r_type1 = t1,				\
+> 	}						\
+> 	(Elf64_Xword)info;				\
+> )}
+> 
+> without a corresponding ELF64_MIPS_R_TYPE, and then:
+> 
+> 	if (hdr->e_ident[EI_CLASS] == ELFCLASS64
+> 	    && hdr->e_machine == EM_MIPS) {
+> 		_Elf64_Mips_R_Info info = (_Elf64_Mips_R_Info)r.r_info;
+> 		r.r_info = ELF64_MIPS_R_INFO(TO_NATIVE(info.r_sym),
+> 					     info.r_ssym, info.r_type3,
+> 					     info.r_type2, info.r_type1);
+> 	}
 
-On Thu, Apr 20, 2006 at 03:11:34PM +0200, Jon Anders Haugum wrote:
-> On Fri, 14 Apr 2006, Domen Puncer wrote:
-> > On 13/04/06 15:11 +0200, Freddy Spierenburg wrote:
-> > > All the received bytes stay in the input buffer of the UART
-> > > only to be send up to userland as soon as the UART is asked
-> > > to send a byte on the line itself.
-> >=20
-> > I may be way off, but maybe it's just flow control that needs
-> > to be turned off.
->=20
-> If this is uart 0, it's probably a problem with that uart having irq=20
-> number 0. Which in the 8250 driver is interpreted as no interrupt.
-No, it was actually all caused by the incorrect usage of the
-non standard Au1x00 divisor latch. When I applied your patch all
-worked and I was once again a happy man.
+Sorry, I can not see what you mean ... it just does byte-swap only
+r_sym part, doesn't it?  It is not enough because a position of r_sym
+in MIPS ELF64 r_info is different from standard ELF64 r_info.
 
-Thanks for the work!
+And I found my previous patch does unnecessary byte-swap on r_type.
+This is a take 3.  It also checks hdr->e_ident[EI_CLASS] instead of
+KERNEL_ELFCLASS.
 
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
 
---b//ZgE2eAae+kIBt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+64bit mips has different r_info layout.  This patch fixes modpost
+segfault for 64bit little endian mips kernel.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.3 (GNU/Linux)
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-iD8DBQFER5qfbxf9XXlB0eERAv9cAKCbYr56WZPdjoEYAZqK4EO9iNjYewCg7Vro
-CQmXGOPt7JhPrVkMFkEPHbo=
-=64t0
------END PGP SIGNATURE-----
-
---b//ZgE2eAae+kIBt--
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index cd00e9f..8f5e814 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -710,7 +710,17 @@ static void check_sec_ref(struct module 
+ 			Elf_Rela r;
+ 			const char *secname;
+ 			r.r_offset = TO_NATIVE(rela->r_offset);
+-			r.r_info   = TO_NATIVE(rela->r_info);
++			if (hdr->e_ident[EI_CLASS] == ELFCLASS64 &&
++			    hdr->e_machine == EM_MIPS) {
++				unsigned int r_sym =
++					ELF64_MIPS_R_SYM(rela->r_info);
++				unsigned int r_type =
++					ELF64_MIPS_R_TYPE(rela->r_info);
++				r.r_info = ELF_R_INFO(TO_NATIVE(r_sym),
++						      r_type);
++			} else {
++				r.r_info = TO_NATIVE(rela->r_info);
++			}
+ 			r.r_addend = TO_NATIVE(rela->r_addend);
+ 			sym = elf->symtab_start + ELF_R_SYM(r.r_info);
+ 			/* Skip special sections */
+diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
+index b14255c..7d1c04d 100644
+--- a/scripts/mod/modpost.h
++++ b/scripts/mod/modpost.h
+@@ -24,6 +24,7 @@
+ #define Elf_Rela    Elf32_Rela
+ #define ELF_R_SYM   ELF32_R_SYM
+ #define ELF_R_TYPE  ELF32_R_TYPE
++#define ELF_R_INFO  ELF32_R_INFO
+ #else
+ 
+ #define Elf_Ehdr    Elf64_Ehdr
+@@ -37,8 +38,43 @@
+ #define Elf_Rela    Elf64_Rela
+ #define ELF_R_SYM   ELF64_R_SYM
+ #define ELF_R_TYPE  ELF64_R_TYPE
++#define ELF_R_INFO  ELF64_R_INFO
+ #endif
+ 
++/* The 64-bit MIPS ELF ABI uses an unusual reloc format. */
++typedef struct
++{
++  Elf32_Word    r_sym;		/* Symbol index */
++  unsigned char r_ssym;		/* Special symbol for 2nd relocation */
++  unsigned char r_type3;	/* 3rd relocation type */
++  unsigned char r_type2;	/* 2nd relocation type */
++  unsigned char r_type1;	/* 1st relocation type */
++} _Elf64_Mips_R_Info;
++
++typedef union
++{
++  Elf64_Xword	r_info_number;
++  _Elf64_Mips_R_Info r_info_fields;
++} _Elf64_Mips_R_Info_union;
++
++typedef struct
++{
++  Elf64_Addr	r_offset;		/* Address */
++  _Elf64_Mips_R_Info_union r_info;	/* Relocation type and symbol index */
++  Elf64_Sxword	r_addend;		/* Addend */
++} Elf64_Mips_Rela;
++
++#define ELF64_MIPS_R_SYM(i) \
++  ((__extension__ (_Elf64_Mips_R_Info_union)(i)).r_info_fields.r_sym)
++#define ELF64_MIPS_R_TYPE(i) \
++  (((_Elf64_Mips_R_Info_union)(i)).r_info_fields.r_type1 \
++   | ((Elf32_Word)(__extension__ (_Elf64_Mips_R_Info_union)(i) \
++		   ).r_info_fields.r_type2 << 8) \
++   | ((Elf32_Word)(__extension__ (_Elf64_Mips_R_Info_union)(i) \
++		   ).r_info_fields.r_type3 << 16) \
++   | ((Elf32_Word)(__extension__ (_Elf64_Mips_R_Info_union)(i) \
++		   ).r_info_fields.r_ssym << 24))
++
+ #if KERNEL_ELFDATA != HOST_ELFDATA
+ 
+ static inline void __endian(const void *src, void *dest, unsigned int size)

@@ -1,104 +1,289 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Apr 2006 17:52:20 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:9668 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133570AbWDTQwF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Apr 2006 17:52:05 +0100
-Received: from localhost (p1086-ipad27funabasi.chiba.ocn.ne.jp [220.107.192.86])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 602B8959F; Fri, 21 Apr 2006 02:04:45 +0900 (JST)
-Date:	Fri, 21 Apr 2006 02:05:14 +0900 (JST)
-Message-Id: <20060421.020514.96686583.anemo@mba.ocn.ne.jp>
-To:	ths@networkno.de
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org, sam@ravnborg.org
-Subject: Re: [PATCH] fix modpost segfault for 64bit mipsel kernel
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060420162319.GD10665@networkno.de>
-References: <20060420001900.GC30806@networkno.de>
-	<20060421.010237.25910405.anemo@mba.ocn.ne.jp>
-	<20060420162319.GD10665@networkno.de>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Apr 2006 14:03:19 +0100 (BST)
+Received: from wproxy.gmail.com ([64.233.184.231]:37102 "EHLO wproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133613AbWDUNDH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Apr 2006 14:03:07 +0100
+Received: by wproxy.gmail.com with SMTP id i32so374280wra
+        for <linux-mips@linux-mips.org>; Fri, 21 Apr 2006 06:15:54 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=JJZNwkJjmSYVpgP1rCAY5r+Q6oeAnUeHrHvMzMHURPT2mXxo29LjkrV9AvmO5HHlQXCF/f626n13GL3GN9sR1Gj1mwp736xasT0rznJ/UkSQr4ZiPIW+RI8ypWjaphAHKQwLvRHMdQWY72Txcev3sHaIHX8Ynr+8NIKKnWik1rI=
+Received: by 10.65.243.20 with SMTP id v20mr1011060qbr;
+        Fri, 21 Apr 2006 06:15:54 -0700 (PDT)
+Received: by 10.65.155.8 with HTTP; Fri, 21 Apr 2006 06:15:54 -0700 (PDT)
+Message-ID: <7f0c7cce0604210615s67c3f5aegc4ee3d6541f92c67@mail.gmail.com>
+Date:	Fri, 21 Apr 2006 09:15:54 -0400
+From:	"Eric Gaulin" <eric.gaulin@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Au1200 MAE drivers
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_11372_22360034.1145625354220"
+Return-Path: <eric.gaulin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11168
+X-archive-position: 11169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: eric.gaulin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 20 Apr 2006 17:23:19 +0100, Thiemo Seufer <ths@networkno.de> wrote:
-> > Well, I just take ELF64_MIPS_R_TYPE() from glibc source.
-> 
-> It is not more useful in glibc. :-)  Any use of the TYPE data will have
-> to take the MIPS64 specifics in account, and thus split it up again
-> into single characters.
+------=_Part_11372_22360034.1145625354220
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-OK, then I drop TYPE data and simplify the patch.  Take 4.
+Hi,
+
+We have the DbAu1200 evaluation board from AMD.
+
+With the help of the buildroot utility  project http://buildroot.uclibc.org
+we have  successfully:
+
+- crosscompiled / booted the Linux 2.6.11-r00058 kernel sources (from AMD
+which include patch for the db1200)
+- crosscompiled / booted the Linux 2.6.16 kernel (vanilla sources)
+
+Building the AMD Alchemy Au1200 MAE drivers and tools was also possible wit=
+h
+the same tools but when we want to start the maiplayer front end for the ma=
+e
+driver we get this message:
+
+* The source tar.gz used was: amdms2-1.0-01.02.75-src.tar.gz
+
+ MAIplayer - console-based player using MAIengine
+> MAIEngine Version 3.4     BUILD V.00010275  Date 06040501
+> MAIEngine result: 0x00000000 Success
+> Engine Command ('help' for help):
+> open "10.mp4"
+> MAIEngine result: 0x00000000 Success
+> Engine Command ('help' for help):
+> play
+>
+>
+>
+> Trying to free free IRQ9
+> Trying to free free IRQ4
+> Trying to free free IRQ31
+> Trying to free free IRQ1
+> Trying to free free IRQ30
+> open_mae_driver() version (structure size) mismatch: driver=3D0
+> interface=3D200
+>
 
 
-64bit mips has different r_info layout.  This patch fixes modpost
-segfault for 64bit little endian mips kernel.
+According to this document 40351a_dbau1200_openemb_appnote.pdf (from AMD's
+developer's website), It is possible to build en entire Linux system for
+this platform using the OpenEmbedded project http://oe.handhelds.org
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+ AMD Have on their developer's website a tool kit for the Au1200/DbAu1200
+for OpenEmbedded which is mainly a set of patches and config files for thei=
+r
+specifics hardware, processor and piece of software like mae drivers and a
+patched 2.6.11 Linux kernel sources for au1200. (the kit used was:
+au1200-dev-kit_v1.0-r3.tar.gz)
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index cd00e9f..fcd4306 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -709,10 +709,17 @@ static void check_sec_ref(struct module 
- 		for (rela = start; rela < stop; rela++) {
- 			Elf_Rela r;
- 			const char *secname;
-+			unsigned int r_sym;
- 			r.r_offset = TO_NATIVE(rela->r_offset);
--			r.r_info   = TO_NATIVE(rela->r_info);
-+			if (hdr->e_ident[EI_CLASS] == ELFCLASS64 &&
-+			    hdr->e_machine == EM_MIPS) {
-+				r_sym = ELF64_MIPS_R_SYM(rela->r_info);
-+				r_sym = TO_NATIVE(r_sym);
-+			} else {
-+				r_sym = ELF_R_SYM(TO_NATIVE(rela->r_info));
-+			}
- 			r.r_addend = TO_NATIVE(rela->r_addend);
--			sym = elf->symtab_start + ELF_R_SYM(r.r_info);
-+			sym = elf->symtab_start + r_sym;
- 			/* Skip special sections */
- 			if (sym->st_shndx >= SHN_LORESERVE)
- 				continue;
-diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-index b14255c..89b96c6 100644
---- a/scripts/mod/modpost.h
-+++ b/scripts/mod/modpost.h
-@@ -39,6 +39,25 @@
- #define ELF_R_TYPE  ELF64_R_TYPE
- #endif
- 
-+/* The 64-bit MIPS ELF ABI uses an unusual reloc format. */
-+typedef struct
-+{
-+  Elf32_Word    r_sym;		/* Symbol index */
-+  unsigned char r_ssym;		/* Special symbol for 2nd relocation */
-+  unsigned char r_type3;	/* 3rd relocation type */
-+  unsigned char r_type2;	/* 2nd relocation type */
-+  unsigned char r_type1;	/* 1st relocation type */
-+} _Elf64_Mips_R_Info;
-+
-+typedef union
-+{
-+  Elf64_Xword	r_info_number;
-+  _Elf64_Mips_R_Info r_info_fields;
-+} _Elf64_Mips_R_Info_union;
-+
-+#define ELF64_MIPS_R_SYM(i) \
-+  ((__extension__ (_Elf64_Mips_R_Info_union)(i)).r_info_fields.r_sym)
-+
- #if KERNEL_ELFDATA != HOST_ELFDATA
- 
- static inline void __endian(const void *src, void *dest, unsigned int size)
+The catch is that OpenEmbedded is a very active project and a daily snapsho=
+t
+of the development archive is available and the older snapshots are kept fo=
+r
+about 30 days. The problem is the AMD's OpenEmpedded toolkit was based on a
+quite old snapshot (oe_20050727083537.tgz) July 27th 2005 and most of the
+patches doesn't apply anymore to the current OE snapshots.
+
+We managed to manually  patch what is blocking the compilation of
+openembedded by disabling things that aren't important four our needs and
+finally we where able to boot this openembedded linux for db1200.
+
+And we had the same poor results for the MAE Driver as we had with buildroo=
+t
+earlier.  (We built OE with either glibc or uclibc)
+
+We have chosen to use OpenEmbedded for theses reasons;
+
+   1. After requesting some "support" from AMD about how they have
+   managed to compile the MAE, we where told that they use MontaVista and
+   OpenEmbedded.
+   2. AMD provide a precompiled demo image based on it.
+   3. It is open.
+   4. MontaVista preview toolkit (3.1) do not support Db1200.
+
+* MontaVista claim that they support Db1200 with their 4.x pro version but
+having tried 2 crosscompilation tool chain with the same results, we don't
+want to waste money on something that would give us the same result.
+
+I am desperately seeking help before diving into debugging this MAE thing
+(wich is supposed to work)
+
+TIA!
+
+--
+Eric Gaulin
+
+------=_Part_11372_22360034.1145625354220
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Hi,<br>
+<br>
+We have the DbAu1200 evaluation board from AMD.<br>
+
+<br>
+
+With the help of the buildroot utility&nbsp; project <a href=3D"http://buil=
+droot.uclibc.org/" target=3D"_blank" onclick=3D"return top.js.OpenExtLink(w=
+indow,event,this)">http://buildroot.uclibc.org</a>&nbsp; we have&nbsp; succ=
+essfully:&nbsp; &nbsp;  <br>
+
+
+
+
+<br>
+
+- crosscompiled / booted the Linux 2.6.11-r00058 kernel sources (from AMD w=
+hich include patch for the db1200)<br>
+
+- crosscompiled / booted the Linux 2.6.16 kernel (vanilla sources)<br>
+
+<br>
+
+Building the  AMD Alchemy Au1200 MAE drivers and
+tools was also possible with the same tools but
+when we want to start the maiplayer front end for the mae driver we get
+this message:<br>
+
+
+
+<br>
+
+* The source tar.gz used was: amdms2-1.0-01.02.75-src.tar.gz<br>
+
+<br>
+
+
+
+<blockquote style=3D"border-left: 1px solid rgb(204, 204, 204); margin: 0pt=
+ 0pt 0pt 0.8ex; padding-left: 1ex;" class=3D"gmail_quote">
+MAIplayer - console-based player using MAIengine<br>
+
+MAIEngine Version 3.4&nbsp;&nbsp;&nbsp;&nbsp; BUILD V.00010275&nbsp; Date 0=
+6040501<br>
+
+MAIEngine result: 0x00000000 Success<br>
+
+Engine Command ('help' for help):<br>
+
+open &quot;10.mp4&quot;<br>
+
+MAIEngine result: 0x00000000 Success<br>
+
+Engine Command ('help' for help):<br>
+
+play<br>
+
+  <br>
+
+  <br>
+
+  <br>
+
+Trying to free free IRQ9<br>
+
+Trying to free free IRQ4<br>
+
+Trying to free free IRQ31<br>
+
+Trying to free free IRQ1<br>
+
+Trying to free free IRQ30<br>
+
+open_mae_driver() version (structure size) mismatch: driver=3D0 interface=
+=3D200<br>
+
+</blockquote>
+
+
+
+
+<br>
+
+<br>
+
+According to this document<span> 40351a_dbau1200_openemb_appnote.pdf (from =
+AMD's developer's website)</span>, It is possible to build en entire Linux =
+system for this platform using the OpenEmbedded project <a href=3D"http://o=
+e.handhelds.org/" target=3D"_blank" onclick=3D"return top.js.OpenExtLink(wi=
+ndow,event,this)">
+
+
+
+
+
+
+
+
+http://oe.handhelds.org
+</a> <br>
+
+
+<br>
+
+
+AMD Have on their developer's website a tool kit for the
+Au1200/DbAu1200 for OpenEmbedded which is mainly a set of patches and
+config files for their specifics hardware, processor and piece of
+software like mae drivers and a patched 2.6.11 Linux kernel sources for
+au1200. (the kit used was: au1200-dev-kit_v1.0-r3.tar.gz)<br>
+
+
+<br>
+
+The catch is that OpenEmbedded is a very active project and a daily snapsho=
+t of the
+development archive is available and the older snapshots are kept
+for about 30 days. The problem is the AMD's OpenEmpedded toolkit was
+based on a quite old snapshot (oe_20050727083537.tgz) July 27th 2005
+and most of the patches doesn't apply anymore to the current OE
+snapshots.<br>
+
+
+<br>
+
+We managed to manually&nbsp; patch what is blocking the compilation of
+openembedded by disabling things that aren't important four our needs
+and finally we where able to boot this openembedded linux for db1200.<br>
+<br>
+And we had the same poor results for the MAE Driver as we had with
+buildroot earlier.&nbsp; (We built OE with either glibc or uclibc) <br>
+
+
+<br>
+
+We have chosen to use OpenEmbedded for theses reasons;<br>
+
+
+<ol>
+<li>After requesting some &quot;support&quot; from AMD about how they have
+managed to compile the MAE, we where told that they use MontaVista and
+OpenEmbedded.</li><li>AMD provide a precompiled demo image based on it.</li=
+><li>It is open.</li><li>MontaVista preview toolkit (3.1) do not support Db=
+1200.<br>
+  </li>
+</ol>
+
+* MontaVista claim that they support Db1200 with their 4.x pro version
+but having tried 2 crosscompilation tool chain with the same results,
+we don't want to waste money on something that would give us the same
+result.<br>
+<br>
+I am desperately seeking help before diving into debugging this MAE thing (=
+wich is supposed to work)<br clear=3D"all"><br>
+TIA!<br>
+<br>-- <br>Eric Gaulin<br><br>
+
+------=_Part_11372_22360034.1145625354220--

@@ -1,42 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Apr 2006 17:14:16 +0100 (BST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:24074 "HELO
-	sorrow.cyrius.com") by ftp.linux-mips.org with SMTP
-	id S8133631AbWDUQOH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Apr 2006 17:14:07 +0100
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id D4AE764D3D; Fri, 21 Apr 2006 16:26:48 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 985E566CD5; Fri, 21 Apr 2006 18:26:37 +0200 (CEST)
-Date:	Fri, 21 Apr 2006 18:26:37 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Subject: SGI Indigo2 available in Hannover, Germany
-Message-ID: <20060421162637.GN6875@deprecation.cyrius.com>
-References: <08B792FD751B0745876316F15EA1262D21E6D2@ecwserv1.ecw-weyhausen.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Apr 2006 03:49:57 +0100 (BST)
+Received: from nproxy.gmail.com ([64.233.182.186]:17401 "EHLO nproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S8133659AbWDWCtt convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 23 Apr 2006 03:49:49 +0100
+Received: by nproxy.gmail.com with SMTP id y38so569880nfb
+        for <linux-mips@linux-mips.org>; Sat, 22 Apr 2006 20:02:46 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=LxFjdRsJlNbYF+o3mWJpoyGmwlNAaC0xWdn71rtatRYQYEhnH44TTSiIqlz3BUQkZKKk+8gbVs2OadNM9/jt5YPvezajReuWjcfoaTb1aUa5DrsLTSP13eRZ5/PlFZuPiW76i2I9HSYyO2Oj3k4CeRAmUeFfYEIYQVKoQYMg+Ss=
+Received: by 10.49.88.2 with SMTP id q2mr263701nfl;
+        Sat, 22 Apr 2006 20:02:46 -0700 (PDT)
+Received: by 10.48.144.12 with HTTP; Sat, 22 Apr 2006 20:02:46 -0700 (PDT)
+Message-ID: <50c9a2250604222002x37b949fbi585ed5fb31087d5@mail.gmail.com>
+Date:	Sun, 23 Apr 2006 11:02:46 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: "relocation truncated to fit: R_MIPS_CALL16"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <08B792FD751B0745876316F15EA1262D21E6D2@ecwserv1.ecw-weyhausen.de>
-User-Agent: Mutt/1.5.11+cvs20060330
-Return-Path: <tbm@cyrius.com>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11175
+X-archive-position: 11176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Is anyone in/around Hannover, Germany interested in an Indigo2?
+i want to write a mini bootloader for my board, so i need jump to c
+code from asm code
+but when i compile and ld, i get "relocation truncated to fit:
+R_MIPS_CALL16" messages for every function call..
+i have try the mips_4KCle-gcc(worked for u-boot),
+mips_fp_le-gcc(worked for mvita linux), and also a
+mipsel-linux-gcc(worked for my linux 2.6 kernel), but they all failed,
+even i add -G0 to gcc.
+and i only compile success by using mips-elf-gcc under cygwin.
+does it be caused by binutils version? or gcc compile CFLAGS?
+thanks for any hints
 
-> have a spare SGI Indigo2 (RS440 Processor, 4Gig SCSI drive, 386MB
-> RAM, if I remenber all correct) including the 20" Monitor.
-> Is there still a need for it?
-> Would be free for pick up in Hannover, Germany
+Best Regards
 
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Zhuzhenhua

@@ -1,64 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2006 05:26:52 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:44385 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133529AbWDYE0n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Apr 2006 05:26:43 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 25 Apr 2006 13:39:51 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 1FA40203EB
-	for <linux-mips@linux-mips.org>; Tue, 25 Apr 2006 13:39:46 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 140AD2016E
-	for <linux-mips@linux-mips.org>; Tue, 25 Apr 2006 13:39:46 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k3P4dj4D026102
-	for <linux-mips@linux-mips.org>; Tue, 25 Apr 2006 13:39:45 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 25 Apr 2006 13:39:44 +0900 (JST)
-Message-Id: <20060425.133944.88701465.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2006 09:15:25 +0100 (BST)
+Received: from web51104.mail.yahoo.com ([206.190.38.146]:55146 "HELO
+	web51104.mail.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133560AbWDYIPP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Apr 2006 09:15:15 +0100
+Received: (qmail 27836 invoked by uid 60001); 25 Apr 2006 08:28:19 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Reply-To:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=bJmQ5IsXlr0cX/cKn01CH1h0Rre/W46u1YQu2pfhCTnZ3lchw3JdjZdCpLVnyyMw9XOouZAeaXzjV1NpG1LlXR4HmGIRuODNdxd2g9ky07ibaMKcrECefZdAmzBa08bE+tcYdcSwc2fZsNtZj5ZMbNqcam/TW0DaBWQULUfWdgc=  ;
+Message-ID: <20060425082819.27834.qmail@web51104.mail.yahoo.com>
+Received: from [217.37.158.157] by web51104.mail.yahoo.com via HTTP; Tue, 25 Apr 2006 01:28:19 PDT
+Date:	Tue, 25 Apr 2006 01:28:19 -0700 (PDT)
+From:	"D.J. Barrow" <barrow_dj@yahoo.com>
+Reply-To: dj_barrow@ariasoft.ie
+Subject: mips kernel modules are very big, any suggestions on reducing their size
 To:	linux-mips@linux-mips.org
-Subject: CROSS_COMPILE in environment variable
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <barrow_dj@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11196
+X-archive-position: 11197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: barrow_dj@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-In the toplevel Makefile, CROSS_COMPILE is described as:
+Hi,
+For every external symbol in a module.
+Because of the -mlong-calls gcc option you have
+2 relocation entries am R_MIPS_HI_16 R_MIPS_LO_16 entry.
+A string table entry for the symbol & three instructions
+for each jump or call. We can eliminate the string table
+entry by making as many functions as possible static
+but this means changing investigating every source file
+of which there are around 100.
 
-# CROSS_COMPILE can be set on the command line
-# make CROSS_COMPILE=ia64-linux-
-# Alternatively CROSS_COMPILE can be set in the environment.
-# Default value for CROSS_COMPILE is not to prefix executables
-# Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
+It would save a fortune in space if we were allowed
+link into the kernel but the module is from broadcom
+& we are not allowed to do this.
 
-And currently, arch/mips/Makefile assigns CROSS_COMPILE as:
+If anyone has any good suggestions I would be very greatful.
 
-CROSS_COMPILE		:= $(tool-prefix)
+D.J. Barrow Linux kernel developer
+eMail: dj_barrow@ariasoft.ie
+Work:+44-1274-538401 
+Home: +353-22-47196.
+Mobile (IRL) +353-(0)86 1715438
 
-This overrides environment variable's settings unconditionaly so we
-can no do the 'alternative' method described above (specify
-CROSS_COMPILE by shell environment variable).
-
-If arch/mips/Makefile used "?=" assigment instead of ":=", we can
-specify CROSS_COMPILE by shell environment variable.
-
-Is there any reason to using ":=" ?  If no, shouldn't we change
-arch/mips/Makefile corresponding to the description?
-
----
-Atsushi Nemoto
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

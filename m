@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2006 15:18:23 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:12256 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133813AbWDYOSB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Apr 2006 15:18:01 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Apr 2006 15:48:06 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:12253 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133813AbWDYOrx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Apr 2006 15:47:53 +0100
 Received: from localhost (p1199-ipad30funabasi.chiba.ocn.ne.jp [221.184.76.199])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 42D6CB6FE; Tue, 25 Apr 2006 23:31:06 +0900 (JST)
-Date:	Tue, 25 Apr 2006 23:31:38 +0900 (JST)
-Message-Id: <20060425.233138.72708117.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] use CONFIG_HZ
+	id 47C8E9A98; Wed, 26 Apr 2006 00:00:55 +0900 (JST)
+Date:	Wed, 26 Apr 2006 00:01:27 +0900 (JST)
+Message-Id: <20060426.000127.108120574.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Re: [PATCH] oprofile cleanups
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060409.002929.74751620.anemo@mba.ocn.ne.jp>
-References: <Pine.LNX.4.64N.0604071742220.12718@blysk.ds.pg.gda.pl>
-	<20060407170401.GA17163@linux-mips.org>
-	<20060409.002929.74751620.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060324.131809.115639866.nemoto@toshiba-tops.co.jp>
+References: <20060216.234519.82087885.anemo@mba.ocn.ne.jp>
+	<20060324.131809.115639866.nemoto@toshiba-tops.co.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
@@ -25,7 +24,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11199
+X-archive-position: 11200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,1223 +32,160 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 09 Apr 2006 00:29:29 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> OK, Take 3.  48Hz are only available if explicitly listed in board
-> definition.
+Revised for current git tree.
 
-Updated for current git tree.
 
-Make HZ configurable.  DECSTATION can select 128/256/1024 HZ, JAZZ can
-only select 100 HZ, others can select 100/128/250/256/1000/1024 HZ if
-not explicitly specified).  Also remove all mach-xxx/param.h files and
-update all defconfigs according to current HZ value.
+1. Use CONFIG_OPROFILE to get rid of overhead for null_perf_irq() call.
+2. Call perf_irq from timer_interrupt() instead of
+   ll_timer_interrupt().  Many boards are using timer_interrupt(), so
+   it would be better to call perf_irq() here.
+3. Use jiffies instead of timer_tick_count in scroll_display_message().
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
- b/arch/mips/Kconfig                         |   75 ++++++++++++++++++++++++++++
- b/arch/mips/configs/atlas_defconfig         |    9 +++
- b/arch/mips/configs/bigsur_defconfig        |    9 +++
- b/arch/mips/configs/capcella_defconfig      |    9 +++
- b/arch/mips/configs/cobalt_defconfig        |    9 +++
- b/arch/mips/configs/db1000_defconfig        |    9 +++
- b/arch/mips/configs/db1100_defconfig        |    9 +++
- b/arch/mips/configs/db1200_defconfig        |    9 +++
- b/arch/mips/configs/db1500_defconfig        |    9 +++
- b/arch/mips/configs/db1550_defconfig        |    9 +++
- b/arch/mips/configs/ddb5476_defconfig       |    9 +++
- b/arch/mips/configs/ddb5477_defconfig       |    9 +++
- b/arch/mips/configs/decstation_defconfig    |   11 ++++
- b/arch/mips/configs/e55_defconfig           |    9 +++
- b/arch/mips/configs/ev64120_defconfig       |    9 +++
- b/arch/mips/configs/ev96100_defconfig       |    9 +++
- b/arch/mips/configs/ip22_defconfig          |    9 +++
- b/arch/mips/configs/ip27_defconfig          |    9 +++
- b/arch/mips/configs/ip32_defconfig          |    9 +++
- b/arch/mips/configs/it8172_defconfig        |    9 +++
- b/arch/mips/configs/ivr_defconfig           |    9 +++
- b/arch/mips/configs/jaguar-atx_defconfig    |    9 +++
- b/arch/mips/configs/jmr3927_defconfig       |    9 +++
- b/arch/mips/configs/lasat200_defconfig      |    9 +++
- b/arch/mips/configs/malta_defconfig         |    9 +++
- b/arch/mips/configs/mipssim_defconfig       |    9 +++
- b/arch/mips/configs/mpc30x_defconfig        |    9 +++
- b/arch/mips/configs/ocelot_3_defconfig      |    9 +++
- b/arch/mips/configs/ocelot_c_defconfig      |    9 +++
- b/arch/mips/configs/ocelot_defconfig        |    9 +++
- b/arch/mips/configs/ocelot_g_defconfig      |    9 +++
- b/arch/mips/configs/pb1100_defconfig        |    9 +++
- b/arch/mips/configs/pb1500_defconfig        |    9 +++
- b/arch/mips/configs/pb1550_defconfig        |    9 +++
- b/arch/mips/configs/pnx8550-jbs_defconfig   |    9 +++
- b/arch/mips/configs/pnx8550-v2pci_defconfig |    9 +++
- b/arch/mips/configs/qemu_defconfig          |    9 +++
- b/arch/mips/configs/rbhma4500_defconfig     |    9 +++
- b/arch/mips/configs/rm200_defconfig         |    9 +++
- b/arch/mips/configs/sb1250-swarm_defconfig  |    9 +++
- b/arch/mips/configs/sead_defconfig          |    9 +++
- b/arch/mips/configs/tb0226_defconfig        |    9 +++
- b/arch/mips/configs/tb0229_defconfig        |    9 +++
- b/arch/mips/configs/tb0287_defconfig        |    9 +++
- b/arch/mips/configs/workpad_defconfig       |    9 +++
- b/arch/mips/configs/yosemite_defconfig      |    9 +++
- b/arch/mips/dec/time.c                      |    2 
- b/arch/mips/defconfig                       |    9 +++
- b/include/asm-mips/param.h                  |    2 
- include/asm-mips/mach-dec/param.h           |   18 ------
- include/asm-mips/mach-generic/param.h       |   13 ----
- include/asm-mips/mach-jazz/param.h          |   16 -----
- include/asm-mips/mach-mips/param.h          |   13 ----
- include/asm-mips/mach-qemu/param.h          |   13 ----
- 54 files changed, 493 insertions(+), 75 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b04db64..73f1514 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -142,6 +142,9 @@ config MACH_DECSTATION
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_128HZ
-+	select SYS_SUPPORTS_256HZ
-+	select SYS_SUPPORTS_1024HZ
- 	help
- 	  This enables support for DEC's MIPS based workstations.  For details
- 	  see the Linux/MIPS FAQ on <http://www.linux-mips.org/> and the
-@@ -239,6 +242,7 @@ config MACH_JAZZ
- 	select SYS_HAS_CPU_R4X00
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
-+	select SYS_SUPPORTS_100HZ
- 	help
- 	 This a family of machines based on the MIPS R4030 chipset which was
- 	 used by several vendors to build RISC/os and Windows NT workstations.
-@@ -1653,6 +1657,77 @@ config NR_CPUS
- 	  This is purely to save memory - each supported CPU adds
- 	  approximately eight kilobytes to the kernel image.
- 
-+#
-+# Timer Interrupt Frequency Configuration
-+#
-+
-+choice
-+	prompt "Timer frequency"
-+	default HZ_250
-+	help
-+	 Allows the configuration of the timer frequency.
-+
-+	config HZ_48
-+		bool "48 HZ" if SYS_SUPPORTS_48HZ
-+
-+	config HZ_100
-+		bool "100 HZ" if SYS_SUPPORTS_100HZ || SYS_SUPPORTS_ARBIT_HZ
-+
-+	config HZ_128
-+		bool "128 HZ" if SYS_SUPPORTS_128HZ || SYS_SUPPORTS_ARBIT_HZ
-+
-+	config HZ_250
-+		bool "250 HZ" if SYS_SUPPORTS_250HZ || SYS_SUPPORTS_ARBIT_HZ
-+
-+	config HZ_256
-+		bool "256 HZ" if SYS_SUPPORTS_256HZ || SYS_SUPPORTS_ARBIT_HZ
-+
-+	config HZ_1000
-+		bool "1000 HZ" if SYS_SUPPORTS_1000HZ || SYS_SUPPORTS_ARBIT_HZ
-+
-+	config HZ_1024
-+		bool "1024 HZ" if SYS_SUPPORTS_1024HZ || SYS_SUPPORTS_ARBIT_HZ
-+
-+endchoice
-+
-+config SYS_SUPPORTS_48HZ
-+	bool
-+
-+config SYS_SUPPORTS_100HZ
-+	bool
-+
-+config SYS_SUPPORTS_128HZ
-+	bool
-+
-+config SYS_SUPPORTS_250HZ
-+	bool
-+
-+config SYS_SUPPORTS_256HZ
-+	bool
-+
-+config SYS_SUPPORTS_1000HZ
-+	bool
-+
-+config SYS_SUPPORTS_1024HZ
-+	bool
-+
-+config SYS_SUPPORTS_ARBIT_HZ
-+	bool
-+	default y if !SYS_SUPPORTS_48HZ && !SYS_SUPPORTS_100HZ && \
-+		     !SYS_SUPPORTS_128HZ && !SYS_SUPPORTS_250HZ && \
-+		     !SYS_SUPPORTS_256HZ && !SYS_SUPPORTS_1000HZ && \
-+		     !SYS_SUPPORTS_1024HZ
-+
-+config HZ
-+	int
-+	default 48 if HZ_48
-+	default 100 if HZ_100
-+	default 128 if HZ_128
-+	default 250 if HZ_250
-+	default 256 if HZ_256
-+	default 1000 if HZ_1000
-+	default 1024 if HZ_1024
-+
- source "kernel/Kconfig.preempt"
- 
- config RTC_DS1742
-diff --git a/arch/mips/configs/atlas_defconfig b/arch/mips/configs/atlas_defconfig
-index 8bf4042..e958083 100644
---- a/arch/mips/configs/atlas_defconfig
-+++ b/arch/mips/configs/atlas_defconfig
-@@ -144,6 +144,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+CONFIG_HZ_100=y
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+# CONFIG_HZ_1000 is not set
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=100
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/bigsur_defconfig b/arch/mips/configs/bigsur_defconfig
-index 7b1d438..05993e4 100644
---- a/arch/mips/configs/bigsur_defconfig
-+++ b/arch/mips/configs/bigsur_defconfig
-@@ -146,6 +146,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_SMP=y
- CONFIG_NR_CPUS=4
- CONFIG_PREEMPT_NONE=y
-diff --git a/arch/mips/configs/capcella_defconfig b/arch/mips/configs/capcella_defconfig
-index 79c4d3c..f9b9132 100644
---- a/arch/mips/configs/capcella_defconfig
-+++ b/arch/mips/configs/capcella_defconfig
-@@ -133,6 +133,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/cobalt_defconfig b/arch/mips/configs/cobalt_defconfig
-index 5df5266..9875e29 100644
---- a/arch/mips/configs/cobalt_defconfig
-+++ b/arch/mips/configs/cobalt_defconfig
-@@ -130,6 +130,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/db1000_defconfig b/arch/mips/configs/db1000_defconfig
-index 778f596..8dd8682 100644
---- a/arch/mips/configs/db1000_defconfig
-+++ b/arch/mips/configs/db1000_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/db1100_defconfig b/arch/mips/configs/db1100_defconfig
-index d371351..1254394 100644
---- a/arch/mips/configs/db1100_defconfig
-+++ b/arch/mips/configs/db1100_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/db1200_defconfig b/arch/mips/configs/db1200_defconfig
-index d825973..8273604 100644
---- a/arch/mips/configs/db1200_defconfig
-+++ b/arch/mips/configs/db1200_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/db1500_defconfig b/arch/mips/configs/db1500_defconfig
-index 8af7a11..5d61284 100644
---- a/arch/mips/configs/db1500_defconfig
-+++ b/arch/mips/configs/db1500_defconfig
-@@ -133,6 +133,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/db1550_defconfig b/arch/mips/configs/db1550_defconfig
-index d332a0b..77ce177 100644
---- a/arch/mips/configs/db1550_defconfig
-+++ b/arch/mips/configs/db1550_defconfig
-@@ -132,6 +132,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ddb5476_defconfig b/arch/mips/configs/ddb5476_defconfig
-index ad818ce..433dc8e 100644
---- a/arch/mips/configs/ddb5476_defconfig
-+++ b/arch/mips/configs/ddb5476_defconfig
-@@ -130,6 +130,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ddb5477_defconfig b/arch/mips/configs/ddb5477_defconfig
-index d16ded7..5041e5b 100644
---- a/arch/mips/configs/ddb5477_defconfig
-+++ b/arch/mips/configs/ddb5477_defconfig
-@@ -130,6 +130,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/decstation_defconfig b/arch/mips/configs/decstation_defconfig
-index c2528f6..0cb0601 100644
---- a/arch/mips/configs/decstation_defconfig
-+++ b/arch/mips/configs/decstation_defconfig
-@@ -129,6 +129,17 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+CONFIG_HZ_128=y
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+# CONFIG_HZ_1000 is not set
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_128HZ=y
-+CONFIG_SYS_SUPPORTS_256HZ=y
-+CONFIG_SYS_SUPPORTS_1024HZ=y
-+CONFIG_HZ=128
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/e55_defconfig b/arch/mips/configs/e55_defconfig
-index 7ace0b3..de183c5 100644
---- a/arch/mips/configs/e55_defconfig
-+++ b/arch/mips/configs/e55_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ev64120_defconfig b/arch/mips/configs/ev64120_defconfig
-index e35fb69..7ef70f0 100644
---- a/arch/mips/configs/ev64120_defconfig
-+++ b/arch/mips/configs/ev64120_defconfig
-@@ -132,6 +132,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ev96100_defconfig b/arch/mips/configs/ev96100_defconfig
-index 050dc40..5d48000 100644
---- a/arch/mips/configs/ev96100_defconfig
-+++ b/arch/mips/configs/ev96100_defconfig
-@@ -136,6 +136,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
-index 13249e0..ad45998 100644
---- a/arch/mips/configs/ip22_defconfig
-+++ b/arch/mips/configs/ip22_defconfig
-@@ -137,6 +137,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- # CONFIG_PREEMPT_NONE is not set
- CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-index 7d881ae..2fb6625 100644
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -136,6 +136,15 @@ CONFIG_FLAT_NODE_MEM_MAP=y
- CONFIG_NEED_MULTIPLE_NODES=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_MIGRATION=y
- CONFIG_SMP=y
- CONFIG_NR_CPUS=64
-diff --git a/arch/mips/configs/ip32_defconfig b/arch/mips/configs/ip32_defconfig
-index f3ee8b5..ecd4213 100644
---- a/arch/mips/configs/ip32_defconfig
-+++ b/arch/mips/configs/ip32_defconfig
-@@ -137,6 +137,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- # CONFIG_PREEMPT_NONE is not set
- CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/it8172_defconfig b/arch/mips/configs/it8172_defconfig
-index adc9b22..d8f20e1 100644
---- a/arch/mips/configs/it8172_defconfig
-+++ b/arch/mips/configs/it8172_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ivr_defconfig b/arch/mips/configs/ivr_defconfig
-index 1090f71..f8ff5f9 100644
---- a/arch/mips/configs/ivr_defconfig
-+++ b/arch/mips/configs/ivr_defconfig
-@@ -128,6 +128,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/jaguar-atx_defconfig b/arch/mips/configs/jaguar-atx_defconfig
-index ab39cdd..00b5165 100644
---- a/arch/mips/configs/jaguar-atx_defconfig
-+++ b/arch/mips/configs/jaguar-atx_defconfig
-@@ -137,6 +137,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- # CONFIG_SMP is not set
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
-diff --git a/arch/mips/configs/jmr3927_defconfig b/arch/mips/configs/jmr3927_defconfig
-index 99b8c59..54a6dee 100644
---- a/arch/mips/configs/jmr3927_defconfig
-+++ b/arch/mips/configs/jmr3927_defconfig
-@@ -126,6 +126,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/lasat200_defconfig b/arch/mips/configs/lasat200_defconfig
-index 2b7c1ab..a87e80e 100644
---- a/arch/mips/configs/lasat200_defconfig
-+++ b/arch/mips/configs/lasat200_defconfig
-@@ -135,6 +135,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
-index e391dc6..1ee618f 100644
---- a/arch/mips/configs/malta_defconfig
-+++ b/arch/mips/configs/malta_defconfig
-@@ -155,6 +155,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+CONFIG_HZ_100=y
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+# CONFIG_HZ_1000 is not set
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=100
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/mipssim_defconfig b/arch/mips/configs/mipssim_defconfig
-index 448a967..5e5635e 100644
---- a/arch/mips/configs/mipssim_defconfig
-+++ b/arch/mips/configs/mipssim_defconfig
-@@ -139,6 +139,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/mpc30x_defconfig b/arch/mips/configs/mpc30x_defconfig
-index 022096d..d7ae7d8 100644
---- a/arch/mips/configs/mpc30x_defconfig
-+++ b/arch/mips/configs/mpc30x_defconfig
-@@ -133,6 +133,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ocelot_3_defconfig b/arch/mips/configs/ocelot_3_defconfig
-index 6b03fad..56f3169 100644
---- a/arch/mips/configs/ocelot_3_defconfig
-+++ b/arch/mips/configs/ocelot_3_defconfig
-@@ -137,6 +137,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- # CONFIG_SMP is not set
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
-diff --git a/arch/mips/configs/ocelot_c_defconfig b/arch/mips/configs/ocelot_c_defconfig
-index 98b8d71..790fb7f 100644
---- a/arch/mips/configs/ocelot_c_defconfig
-+++ b/arch/mips/configs/ocelot_c_defconfig
-@@ -134,6 +134,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ocelot_defconfig b/arch/mips/configs/ocelot_defconfig
-index 76d3529..2cf782f 100644
---- a/arch/mips/configs/ocelot_defconfig
-+++ b/arch/mips/configs/ocelot_defconfig
-@@ -138,6 +138,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/ocelot_g_defconfig b/arch/mips/configs/ocelot_g_defconfig
-index 8a34886..c782e2e 100644
---- a/arch/mips/configs/ocelot_g_defconfig
-+++ b/arch/mips/configs/ocelot_g_defconfig
-@@ -137,6 +137,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/pb1100_defconfig b/arch/mips/configs/pb1100_defconfig
-index 6ade47a..0a135d3 100644
---- a/arch/mips/configs/pb1100_defconfig
-+++ b/arch/mips/configs/pb1100_defconfig
-@@ -133,6 +133,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/pb1500_defconfig b/arch/mips/configs/pb1500_defconfig
-index b348363..70b892f 100644
---- a/arch/mips/configs/pb1500_defconfig
-+++ b/arch/mips/configs/pb1500_defconfig
-@@ -132,6 +132,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/pb1550_defconfig b/arch/mips/configs/pb1550_defconfig
-index f0b1b31..f1e1229 100644
---- a/arch/mips/configs/pb1550_defconfig
-+++ b/arch/mips/configs/pb1550_defconfig
-@@ -132,6 +132,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/pnx8550-jbs_defconfig b/arch/mips/configs/pnx8550-jbs_defconfig
-index 2cbfb2a..715e4ed 100644
---- a/arch/mips/configs/pnx8550-jbs_defconfig
-+++ b/arch/mips/configs/pnx8550-jbs_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/pnx8550-v2pci_defconfig b/arch/mips/configs/pnx8550-v2pci_defconfig
-index e0f363c..1a70524 100644
---- a/arch/mips/configs/pnx8550-v2pci_defconfig
-+++ b/arch/mips/configs/pnx8550-v2pci_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/qemu_defconfig b/arch/mips/configs/qemu_defconfig
-index 9387519..a8a1449 100644
---- a/arch/mips/configs/qemu_defconfig
-+++ b/arch/mips/configs/qemu_defconfig
-@@ -129,6 +129,15 @@ CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
- # CONFIG_SMP is not set
-+# CONFIG_HZ_48 is not set
-+CONFIG_HZ_100=y
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+# CONFIG_HZ_1000 is not set
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=100
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/rbhma4500_defconfig b/arch/mips/configs/rbhma4500_defconfig
-index 7e80dc0..69bd5c3 100644
---- a/arch/mips/configs/rbhma4500_defconfig
-+++ b/arch/mips/configs/rbhma4500_defconfig
-@@ -139,6 +139,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/rm200_defconfig b/arch/mips/configs/rm200_defconfig
-index 7a68f8a..db814f0 100644
---- a/arch/mips/configs/rm200_defconfig
-+++ b/arch/mips/configs/rm200_defconfig
-@@ -139,6 +139,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- # CONFIG_PREEMPT_NONE is not set
- CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/sb1250-swarm_defconfig b/arch/mips/configs/sb1250-swarm_defconfig
-index dda349f..d5f8c9d 100644
---- a/arch/mips/configs/sb1250-swarm_defconfig
-+++ b/arch/mips/configs/sb1250-swarm_defconfig
-@@ -150,6 +150,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_SMP=y
- CONFIG_NR_CPUS=2
- CONFIG_PREEMPT_NONE=y
-diff --git a/arch/mips/configs/sead_defconfig b/arch/mips/configs/sead_defconfig
-index 461981d..86db6ba 100644
---- a/arch/mips/configs/sead_defconfig
-+++ b/arch/mips/configs/sead_defconfig
-@@ -135,6 +135,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/tb0226_defconfig b/arch/mips/configs/tb0226_defconfig
-index 3886803..d8faadb 100644
---- a/arch/mips/configs/tb0226_defconfig
-+++ b/arch/mips/configs/tb0226_defconfig
-@@ -135,6 +135,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/tb0229_defconfig b/arch/mips/configs/tb0229_defconfig
-index 8146451..00312c7 100644
---- a/arch/mips/configs/tb0229_defconfig
-+++ b/arch/mips/configs/tb0229_defconfig
-@@ -135,6 +135,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/tb0287_defconfig b/arch/mips/configs/tb0287_defconfig
-index 9f215ea..56e6d4f 100644
---- a/arch/mips/configs/tb0287_defconfig
-+++ b/arch/mips/configs/tb0287_defconfig
-@@ -135,6 +135,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/workpad_defconfig b/arch/mips/configs/workpad_defconfig
-index e195fd4..ca7c20a 100644
---- a/arch/mips/configs/workpad_defconfig
-+++ b/arch/mips/configs/workpad_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_PREEMPT_NONE=y
- # CONFIG_PREEMPT_VOLUNTARY is not set
- # CONFIG_PREEMPT is not set
-diff --git a/arch/mips/configs/yosemite_defconfig b/arch/mips/configs/yosemite_defconfig
-index b18235f..019ba48 100644
---- a/arch/mips/configs/yosemite_defconfig
-+++ b/arch/mips/configs/yosemite_defconfig
-@@ -131,6 +131,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- CONFIG_SMP=y
- CONFIG_NR_CPUS=2
- CONFIG_PREEMPT_NONE=y
-diff --git a/arch/mips/dec/time.c b/arch/mips/dec/time.c
-index 74cb055..76e4d09 100644
---- a/arch/mips/dec/time.c
-+++ b/arch/mips/dec/time.c
-@@ -181,7 +181,7 @@ void __init dec_time_init(void)
- 	}
- 
- 	/* Set up the rate of periodic DS1287 interrupts.  */
--	CMOS_WRITE(RTC_REF_CLCK_32KHZ | (16 - LOG_2_HZ), RTC_REG_A);
-+	CMOS_WRITE(RTC_REF_CLCK_32KHZ | (16 - __ffs(HZ)), RTC_REG_A);
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index 13ff4da..f470ec5 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -414,6 +414,18 @@ void local_timer_interrupt(int irq, void
+ 	update_process_times(user_mode(regs));
  }
  
- EXPORT_SYMBOL(do_settimeofday);
-diff --git a/arch/mips/defconfig b/arch/mips/defconfig
-index 13249e0..ad45998 100644
---- a/arch/mips/defconfig
-+++ b/arch/mips/defconfig
-@@ -137,6 +137,15 @@ CONFIG_FLATMEM=y
- CONFIG_FLAT_NODE_MEM_MAP=y
- # CONFIG_SPARSEMEM_STATIC is not set
- CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+# CONFIG_HZ_250 is not set
-+# CONFIG_HZ_256 is not set
-+CONFIG_HZ_1000=y
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=1000
- # CONFIG_PREEMPT_NONE is not set
- CONFIG_PREEMPT_VOLUNTARY=y
- # CONFIG_PREEMPT is not set
-diff --git a/include/asm-mips/mach-dec/param.h b/include/asm-mips/mach-dec/param.h
-deleted file mode 100644
-index 3e4f0e3..0000000
---- a/include/asm-mips/mach-dec/param.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2003 by Ralf Baechle
-- */
--#ifndef __ASM_MACH_DEC_PARAM_H
--#define __ASM_MACH_DEC_PARAM_H
--
--/*
-- * log2(HZ), change this here if you want another HZ value. This is also
-- * used in dec_time_init.  Minimum is 1, Maximum is 15.
-- */
--#define LOG_2_HZ 7
--#define HZ (1 << LOG_2_HZ)
--
--#endif /* __ASM_MACH_DEC_PARAM_H */
-diff --git a/include/asm-mips/mach-generic/param.h b/include/asm-mips/mach-generic/param.h
-deleted file mode 100644
-index a0d12f9..0000000
---- a/include/asm-mips/mach-generic/param.h
-+++ /dev/null
-@@ -1,13 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2003 by Ralf Baechle
-- */
--#ifndef __ASM_MACH_GENERIC_PARAM_H
--#define __ASM_MACH_GENERIC_PARAM_H
--
--#define HZ		1000		/* Internal kernel timer frequency */
--
--#endif /* __ASM_MACH_GENERIC_PARAM_H */
-diff --git a/include/asm-mips/mach-jazz/param.h b/include/asm-mips/mach-jazz/param.h
-deleted file mode 100644
-index 639763a..0000000
---- a/include/asm-mips/mach-jazz/param.h
-+++ /dev/null
-@@ -1,16 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2003 by Ralf Baechle
-- */
--#ifndef __ASM_MACH_JAZZ_PARAM_H
--#define __ASM_MACH_JAZZ_PARAM_H
--
--/*
-- * Jazz is currently using the internal 100Hz timer of the R4030
-- */
--#define HZ		100		/* Internal kernel timer frequency */
--
--#endif /* __ASM_MACH_JAZZ_PARAM_H */
-diff --git a/include/asm-mips/mach-mips/param.h b/include/asm-mips/mach-mips/param.h
-deleted file mode 100644
-index 805ef6d..0000000
---- a/include/asm-mips/mach-mips/param.h
-+++ /dev/null
-@@ -1,13 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2003 by Ralf Baechle
-- */
--#ifndef __ASM_MACH_MIPS_PARAM_H
--#define __ASM_MACH_MIPS_PARAM_H
--
--#define HZ		100		/* Internal kernel timer frequency */
--
--#endif /* __ASM_MACH_MIPS_PARAM_H */
-diff --git a/include/asm-mips/mach-qemu/param.h b/include/asm-mips/mach-qemu/param.h
-deleted file mode 100644
-index cb30ee4..0000000
---- a/include/asm-mips/mach-qemu/param.h
-+++ /dev/null
-@@ -1,13 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2005 by Ralf Baechle
-- */
--#ifndef __ASM_MACH_QEMU_PARAM_H
--#define __ASM_MACH_QEMU_PARAM_H
--
--#define HZ		100		/* Internal kernel timer frequency */
--
--#endif /* __ASM_MACH_QEMU_PARAM_H */
-diff --git a/include/asm-mips/param.h b/include/asm-mips/param.h
-index 2bead82..1d9bb8c 100644
---- a/include/asm-mips/param.h
-+++ b/include/asm-mips/param.h
-@@ -11,7 +11,7 @@
++#if defined(CONFIG_OPROFILE) || defined(CONFIG_OPROFILE_MODULE)
++int null_perf_irq(struct pt_regs *regs)
++{
++	return 0;
++}
++
++int (*perf_irq)(struct pt_regs *regs) = null_perf_irq;
++
++EXPORT_SYMBOL(null_perf_irq);
++EXPORT_SYMBOL(perf_irq);
++#endif
++
+ /*
+  * High-level timer interrupt service routines.  This function
+  * is set as irqaction->handler and is invoked through do_IRQ.
+@@ -422,6 +434,22 @@ irqreturn_t timer_interrupt(int irq, voi
+ {
+ 	unsigned long j;
+ 	unsigned int count;
++#if defined(CONFIG_OPROFILE) || defined(CONFIG_OPROFILE_MODULE)
++	int r2 = cpu_has_mips_r2;
++
++	/*
++	 * Suckage alert:
++	 * Before R2 of the architecture there was no way to see if a
++	 * performance counter interrupt was pending, so we have to run the
++	 * performance counter interrupt handler anyway.
++	 */
++	if (!r2 || (read_c0_cause() & (1 << 26)))
++		if (perf_irq(regs))
++			return IRQ_HANDLED;
++
++	if (r2 && !(read_c0_cause() & (1 << 30)))
++		return IRQ_HANDLED;
++#endif
  
- #ifdef __KERNEL__
+ 	write_seqlock(&xtime_lock);
  
--# include <param.h>			/* Internal kernel timer frequency */
-+# define HZ		CONFIG_HZ	/* Internal kernel timer frequency */
- # define USER_HZ	100		/* .. some user interfaces are in "ticks" */
- # define CLOCKS_PER_SEC	(USER_HZ)	/* like times() */
- #endif
+@@ -509,38 +537,14 @@ irqreturn_t timer_interrupt(int irq, voi
+ 	return IRQ_HANDLED;
+ }
+ 
+-int null_perf_irq(struct pt_regs *regs)
+-{
+-	return 0;
+-}
+-
+-int (*perf_irq)(struct pt_regs *regs) = null_perf_irq;
+-
+-EXPORT_SYMBOL(null_perf_irq);
+-EXPORT_SYMBOL(perf_irq);
+-
+ asmlinkage void ll_timer_interrupt(int irq, struct pt_regs *regs)
+ {
+-	int r2 = cpu_has_mips_r2;
+-
+ 	irq_enter();
+ 	kstat_this_cpu.irqs[irq]++;
+ 
+-	/*
+-	 * Suckage alert:
+-	 * Before R2 of the architecture there was no way to see if a
+-	 * performance counter interrupt was pending, so we have to run the
+-	 * performance counter interrupt handler anyway.
+-	 */
+-	if (!r2 || (read_c0_cause() & (1 << 26)))
+-		if (perf_irq(regs))
+-			goto out;
+-
+ 	/* we keep interrupt disabled all the time */
+-	if (!r2 || (read_c0_cause() & (1 << 30)))
+-		timer_interrupt(irq, NULL, regs);
++	timer_interrupt(irq, NULL, regs);
+ 
+-out:
+ 	irq_exit();
+ }
+ 
+diff --git a/arch/mips/mips-boards/generic/time.c b/arch/mips/mips-boards/generic/time.c
+index a9f6124..4eb9b96 100644
+--- a/arch/mips/mips-boards/generic/time.c
++++ b/arch/mips/mips-boards/generic/time.c
+@@ -65,13 +65,12 @@ static unsigned int display_count;
+ 
+ #define CPUCTR_IMASKBIT (0x100 << MIPSCPU_INT_CPUCTR)
+ 
+-static unsigned int timer_tick_count;
+ static int mips_cpu_timer_irq;
+ extern void smtc_timer_broadcast(int);
+ 
+ static inline void scroll_display_message(void)
+ {
+-	if ((timer_tick_count++ % HZ) == 0) {
++	if ((jiffies % HZ) == 0) {
+ 		mips_display_message(&display_string[display_count++]);
+ 		if (display_count == MAX_DISPLAY_COUNT)
+ 			display_count = 0;
+@@ -83,17 +82,9 @@ static void mips_timer_dispatch (struct 
+ 	do_IRQ (mips_cpu_timer_irq, regs);
+ }
+ 
+-/*
+- * Redeclare until I get around mopping the timer code insanity on MIPS.
+- */
+-extern int null_perf_irq(struct pt_regs *regs);
+-
+-extern int (*perf_irq)(struct pt_regs *regs);
+-
+ irqreturn_t mips_timer_interrupt(int irq, void *dev_id, struct pt_regs *regs)
+ {
+ 	int cpu = smp_processor_id();
+-	int r2 = cpu_has_mips_r2;
+ 
+ #ifdef CONFIG_MIPS_MT_SMTC
+         /*
+@@ -138,13 +129,7 @@ irqreturn_t mips_timer_interrupt(int irq
+ 		 * accounting resets count/compare registers to trigger next
+ 		 * timer int.
+ 		 */
+-		if (!r2 || (read_c0_cause() & (1 << 26)))
+-			if (perf_irq(regs))
+-				goto out;
+-
+-		/* we keep interrupt disabled all the time */
+-		if (!r2 || (read_c0_cause() & (1 << 30)))
+-			timer_interrupt(irq, NULL, regs);
++		timer_interrupt(irq, NULL, regs);
+ 
+ 		scroll_display_message();
+ 	} else {
+@@ -164,7 +149,6 @@ irqreturn_t mips_timer_interrupt(int irq
+ 	}
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 
+-out:
+ 	return IRQ_HANDLED;
+ }
+ 

@@ -1,65 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Apr 2006 12:08:02 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:37552 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S4475373AbWDZLHx
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Apr 2006 12:07:53 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k3QBKxMR018548;
-	Wed, 26 Apr 2006 04:20:59 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k3QBKvkw013323;
-	Wed, 26 Apr 2006 04:20:58 -0700 (PDT)
-Message-ID: <005701c66924$00a74860$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Kim, Jong-Sung" <jsungkim@lge.com>,
-	"Thiemo Seufer" <ths@networkno.de>
-Cc:	<linux-mips@linux-mips.org>
-References: <081a01c66784$c6f7cb30$f3479696@LGE.NET> <009f01c6690e$0501a3d0$f3479696@LGE.NET> <20060426101603.GB29550@networkno.de>
-Subject: Re: Reading an entire cacheline
-Date:	Wed, 26 Apr 2006 13:24:32 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Apr 2006 12:20:00 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:45019 "HELO bender.bawue.de")
+	by ftp.linux-mips.org with SMTP id S4475374AbWDZLTu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Apr 2006 12:19:50 +0100
+Received: from lagash (unknown [194.74.144.146])
+	by bender.bawue.de (Postfix) with ESMTP
+	id 4685D44FC0; Wed, 26 Apr 2006 13:33:07 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.61)
+	(envelope-from <ths@networkno.de>)
+	id 1FYiBl-0002r6-On; Wed, 26 Apr 2006 12:28:09 +0100
+Date:	Wed, 26 Apr 2006 12:28:09 +0100
+To:	Bin Chen <binary.chen@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: why not put 64 bit value directly to register
+Message-ID: <20060426112809.GD29550@networkno.de>
+References: <5800c1cc0604252149i55ab181ax7d9355a869a9b251@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1807
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5800c1cc0604252149i55ab181ax7d9355a869a9b251@mail.gmail.com>
+User-Agent: Mutt/1.5.11+cvs20060403
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11209
+X-archive-position: 11210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-> [snip]
-> > //" bne %0, %9, 2b\n"
-> > " .set mips0\n"
-> > " .set reorder"
-> > : "=r" (tag[1][way][0]), "=r" (datalo[1][way][0]),
-> >   "=r" (datahi[1][way][0]),
-> >   "=r" (tag[1][way][1]), "=r" (datalo[1][way][1]),
-> >   "=r" (datahi[1][way][1]),
-> >   "=r" (tag[1][way][2]), "=r" (datalo[1][way][2]),
-> >   "=r" (datahi[1][way][2]),
-> >   "=r" (tag[1][way][3]), "=r" (datalo[1][way][3]),
-> >   "=r" (datahi[1][way][3])
-> > : "r" (0x80000000 | (way << 14) | (line << 5))
-> > );
+Bin Chen wrote:
+> Hi,
 > 
-> And this part may cause the problem you are seeing, I presume
-> datalo/datahi live in memory, and accesses of it change the dcache.
+> This code is snip from u-boot, I don't know why the 32bit-64bit conversion
+> is needed, why not put val directly to register but do the transform?
+> 
+> static void cvmx_write_cop0_entry_lo_0(uint64_t val)
+> {
+>     uint32_t val_low  = val & 0xffffffff;
+>     uint32_t val_high = val  >> 32;
+> 
+>     uint32_t tmp; /* temp register */
+> 
+>     asm volatile (
+>         "  .set mips64                       \n"
+>         "  .set noreorder                    \n"
+>         /* Standard twin 32 bit -> 64 bit construction */
+>         "  dsll  %[valh], 32                 \n"
+>         "  dla   %[tmp], 0xffffffff          \n"
+>         "  and   %[vall], %[tmp], %[vall]    \n"
+>         "  daddu %[valh], %[valh], %[vall]   \n"
+>         /* Combined value is in valh */
+>         "  dmtc0 %[valh],$2,0                \n"
+>         "  .set reorder                      \n"
+>          :[tmp] "=&r" (tmp) : [valh] "r" (val_high), [vall] "r" (val_low) );
+> }
 
-As I was hoping disassembly would demonstrate for you,
-declaring "=r" doesn't mean that the variable has no life
-outside a register.
+This will convert on a 64bit capable MIPS CPU an o32 ABI register pair
+holding a long long to a 64bit register value, and write that to a CP0
+register.
 
-            Regards,
+It will break if an exception happens in between unless the exception
+handlers save/restore the upper half as well.
 
-            Kevin K.
+
+Thiemo

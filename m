@@ -1,129 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Apr 2006 05:36:39 +0100 (BST)
-Received: from pproxy.gmail.com ([64.233.166.180]:56769 "EHLO pproxy.gmail.com")
-	by ftp.linux-mips.org with ESMTP id S8133403AbWDZEga (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Apr 2006 05:36:30 +0100
-Received: by pproxy.gmail.com with SMTP id d80so1688181pyd
-        for <linux-mips@linux-mips.org>; Tue, 25 Apr 2006 21:49:45 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Apr 2006 09:32:26 +0100 (BST)
+Received: from pproxy.gmail.com ([64.233.166.182]:61035 "EHLO pproxy.gmail.com")
+	by ftp.linux-mips.org with ESMTP id S4475208AbWDZIcQ convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Apr 2006 09:32:16 +0100
+Received: by pproxy.gmail.com with SMTP id d80so1732366pyd
+        for <linux-mips@linux-mips.org>; Wed, 26 Apr 2006 01:45:29 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=kyIWOFmIU/HZZz8MisF8QSHlKtL6wIoCwJN3zZOwYwAoLi1smF5UCcHsthWQjXkpIyr3PkHbsDsKlkM0spDHJLaqubKioCmGgf+z4yK5Ly+oa3qDXzp9IyNrdq64HWWhGuai+Sz//rExfDVg4+SYc7tFJNazD6/yWuDGHU/aGXg=
-Received: by 10.35.103.12 with SMTP id f12mr573628pym;
-        Tue, 25 Apr 2006 21:49:45 -0700 (PDT)
-Received: by 10.35.96.20 with HTTP; Tue, 25 Apr 2006 21:49:45 -0700 (PDT)
-Message-ID: <5800c1cc0604252149i55ab181ax7d9355a869a9b251@mail.gmail.com>
-Date:	Wed, 26 Apr 2006 12:49:45 +0800
-From:	"Bin Chen" <binary.chen@gmail.com>
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Fsuqc0KjzdH8YAXJgqE60OTx9VhGT81/MImT4kIir7OQKz78T9CTuar5Avk73OQzSecJiE2Sra4SrDWA8eJQ3VEAZYUyKkY5cFPsXC90HV/TY0uOwxeJMTki3b6hiA9xDECisHRRLiO+F6Jk83I0HyfXR2vtAflXz3JOti4EU4A=
+Received: by 10.35.77.18 with SMTP id e18mr418056pyl;
+        Wed, 26 Apr 2006 01:45:29 -0700 (PDT)
+Received: by 10.35.60.20 with HTTP; Wed, 26 Apr 2006 01:45:29 -0700 (PDT)
+Message-ID: <3857255c0604260145i65356e12w89c6667756cddd3c@mail.gmail.com>
+Date:	Wed, 26 Apr 2006 14:15:29 +0530
+From:	"Shyamal Sadanshio" <shyamal.sadanshio@gmail.com>
 To:	linux-mips@linux-mips.org
-Subject: why not put 64 bit value directly to register
+Subject: Re: Crosstools for MALTA MIPS in little endian
+Cc:	"Nigel Stephens" <nigel@mips.com>
+In-Reply-To: <4448F638.9060502@mips.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_26870_27110908.1146026985105"
-Return-Path: <binary.chen@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <3857255c0604210808y1208045by3449b003b4b2ffea@mail.gmail.com>
+	 <4448F638.9060502@mips.com>
+Return-Path: <shyamal.sadanshio@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11203
+X-archive-position: 11204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: binary.chen@gmail.com
+X-original-sender: shyamal.sadanshio@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_26870_27110908.1146026985105
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
-
 Hi,
 
-This code is snip from u-boot, I don't know why the 32bit-64bit conversion
-is needed, why not put val directly to register but do the transform?
+I am facing boot problem with the Malta specific 2.6.12-rc6 kernel.
+The kernel is not booting up on our Malta 4kc development board.
+I do not see any error messages on the minicom window.
 
-static void cvmx_write_cop0_entry_lo_0(uint64_t val)
-{
-    uint32_t val_low  =3D val & 0xffffffff;
-    uint32_t val_high =3D val  >> 32;
+Has anyone tried this kernel since it I got this kernel after cloning
+the linux-malta.git repository?
+I had build this kernel with SDE cross-toolchain in little endian mode
+(gcc-3.4.4).
 
-    uint32_t tmp; /* temp register */
+Thanks and Regards,
+Shyamal
 
-    asm volatile (
-        "  .set mips64                       \n"
-        "  .set noreorder                    \n"
-        /* Standard twin 32 bit -> 64 bit construction */
-        "  dsll  %[valh], 32                 \n"
-        "  dla   %[tmp], 0xffffffff          \n"
-        "  and   %[vall], %[tmp], %[vall]    \n"
-        "  daddu %[valh], %[valh], %[vall]   \n"
-        /* Combined value is in valh */
-        "  dmtc0 %[valh],$2,0                \n"
-        "  .set reorder                      \n"
-         :[tmp] "=3D&r" (tmp) : [valh] "r" (val_high), [vall] "r" (val_low)=
- );
-}
-
-Thanks.
-B.C
-
-------=_Part_26870_27110908.1146026985105
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
-
-Hi,<br>
-<br>
-This code is snip from u-boot, I don't know why the 32bit-64bit
-conversion is needed, why not put val directly to register but do the
-transform?<br>
-<br>
-static void cvmx_write_cop0_entry_lo_0(uint64_t val)<br>
-{<br>
-&nbsp;&nbsp;&nbsp; uint32_t val_low&nbsp; =3D val &amp; 0xffffffff;<br>
-&nbsp;&nbsp;&nbsp; uint32_t val_high =3D val&nbsp; &gt;&gt; 32;<br>
-<br>
-&nbsp;&nbsp;&nbsp; uint32_t tmp; /* temp register */<br>
-<br>
-&nbsp;&nbsp;&nbsp; asm volatile (<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; .set
-mips64&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-\n&quot;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; .set
-noreorder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-\n&quot;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Standard twin 32 bit -&gt; 64=
- bit construction */<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; dsll&nbsp; %[valh],
-32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;
-\n&quot;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; dla&nbsp;&nbsp;
-%[tmp],
-0xffffffff&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \n&quot;<b=
-r>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; and&nbsp;&nbsp; %[v=
-all], %[tmp], %[vall]&nbsp;&nbsp;&nbsp; \n&quot;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; daddu %[valh], %[va=
-lh], %[vall]&nbsp;&nbsp; \n&quot;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Combined value is in valh */<=
-br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; dmtc0
-%[valh],$2,0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;
-\n&quot;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;&nbsp; .set
-reorder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-\n&quot;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :[tmp] &quot;=3D&amp;r&quo=
-t; (tmp) : [valh] &quot;r&quot; (val_high), [vall] &quot;r&quot; (val_low) =
-);<br>
-}<br>
-<br>
-Thanks.<br>
-B.C<br>
-<br>
-
-------=_Part_26870_27110908.1146026985105--
+On 4/21/06, Nigel Stephens <nigel@mips.com> wrote:
+>
+>
+> Shyamal Sadanshio wrote:
+> > Hi,
+> >
+> > I am come across the MALTA specific stable kernel (2.6.12-rc6)
+> > available on linux-malta.git repository.
+> > I have cloned this repository and would like to build it with the
+> > compatible toolchain in little endian mode.
+> >
+> > Can anyone please let me know the toolchain specification
+> > (gcc/glibc/binutils version specifcations) that have been used or can
+> > be used for compiling the 2.6.12 kernel?
+> >
+> >
+> >
+>
+> See http://www.linux-mips.org/wiki/Toolchains#MIPS_SDE
+>
+> Regards
+>
+> Nigel
+>

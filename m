@@ -1,58 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Apr 2006 10:31:44 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:2736 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133554AbWDZJbf
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Apr 2006 10:31:35 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k3Q9iecK018159;
-	Wed, 26 Apr 2006 02:44:41 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k3Q9icLL011710;
-	Wed, 26 Apr 2006 02:44:39 -0700 (PDT)
-Message-ID: <002501c66916$8c5a4140$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Kim, Jong-Sung" <jsungkim@lge.com>, <linux-mips@linux-mips.org>
-References: <009f01c6690e$0501a3d0$f3479696@LGE.NET>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Apr 2006 11:03:34 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:32201 "HELO bender.bawue.de")
+	by ftp.linux-mips.org with SMTP id S8133554AbWDZKD0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Apr 2006 11:03:26 +0100
+Received: from lagash (unknown [194.74.144.146])
+	by bender.bawue.de (Postfix) with ESMTP
+	id 91EE144B82; Wed, 26 Apr 2006 12:16:42 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.61)
+	(envelope-from <ths@networkno.de>)
+	id 1FYh3z-0002Vb-Ba; Wed, 26 Apr 2006 11:16:03 +0100
+Date:	Wed, 26 Apr 2006 11:16:03 +0100
+To:	"Kim, Jong-Sung" <jsungkim@lge.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Reading an entire cacheline
-Date:	Wed, 26 Apr 2006 11:48:17 +0200
+Message-ID: <20060426101603.GB29550@networkno.de>
+References: <081a01c66784$c6f7cb30$f3479696@LGE.NET> <009f01c6690e$0501a3d0$f3479696@LGE.NET>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1807
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <009f01c6690e$0501a3d0$f3479696@LGE.NET>
+User-Agent: Mutt/1.5.11+cvs20060403
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11206
+X-archive-position: 11207
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-There are some things that look a little suspicious in you code below.
-Please disassemble(mips{el}-linux-objdump --disassemble) the resulting
-binary and look at what *really* gets generated. Pay special attention 
-to branch  delay slots - you've set noreorder, so it's your responsibility 
-to make sure they're handled correctly.
-
-            Regards,
-
-            Kevin K.
-
------ Original Message ----- 
-From: "Kim, Jong-Sung" <jsungkim@lge.com>
-To: <linux-mips@linux-mips.org>
-Sent: Wednesday, April 26, 2006 10:47 AM
-Subject: RE: Reading an entire cacheline
-
-
+Kim, Jong-Sung wrote:
 > Hi all,
 > 
 > Please look at following codes:
@@ -60,172 +40,42 @@ Subject: RE: Reading an entire cacheline
 > save_flags(flags);
 > cli();
 > __asm__ __volatile__(
-> " .set noreorder\n"
-> " .set mips32\n"
-> "2: .set mips3\n"
-> " cache 5, 0x00(%12)\n"
-> " .set mips0\n"
-> " mfc0 %0, $28, 0\n"
-> " mfc0 %1, $28, 1\n"
-> " mfc0 %2, $29, 1\n"
-> " .set mips3\n"
-> " cache 5, 0x08(%12)\n"
-> " .set mips0\n"
-> " mfc0 %3, $28, 0\n"
-> " mfc0 %4, $28, 1\n"
-> " mfc0 %5, $29, 1\n"
-> //" bne %0, %3, 2b\n"
-> " .set mips3\n"
-> " cache 5, 0x10(%12)\n"
-> " .set mips0\n"
-> " mfc0 %6, $28, 0\n"
-> " mfc0 %7, $28, 1\n"
-> " mfc0 %8, $29, 1\n"
-> //" bne %0, %6, 2b\n"
-> " .set mips3\n"
-> " cache 5, 0x18(%12)\n"
-> " .set mips0\n"
-> " mfc0 %9, $28, 0\n"
-> " mfc0 %10, $28, 1\n"
-> " mfc0 %11, $29, 1\n"
-> //" bne %0, %9, 2b\n"
-> " .set mips0\n"
-> " .set reorder"
-> : "=r" (tag[1][way][0]), "=r" (datalo[1][way][0]),
->   "=r" (datahi[1][way][0]),
->   "=r" (tag[1][way][1]), "=r" (datalo[1][way][1]),
->   "=r" (datahi[1][way][1]),
->   "=r" (tag[1][way][2]), "=r" (datalo[1][way][2]),
->   "=r" (datahi[1][way][2]),
->   "=r" (tag[1][way][3]), "=r" (datalo[1][way][3]),
->   "=r" (datahi[1][way][3])
-> : "r" (0x80000000 | (way << 14) | (line << 5))
+> 	"	.set	noreorder\n"
+> 	"	.set	mips32\n"
+> 	"2:	.set	mips3\n"
+> 	"	cache	5, 0x00(%12)\n"
+> 	"	.set	mips0\n"
+
+Irrelevant sidemark:
+.set mips0 resets to the original value, not to mips32. You probably want
+
+	.set	push
+	.set	noreorder
+	.set 	mips32
+
+	... <the whole code sequence>
+
+	.set	pop
+
+[snip]
+> 	//"	bne	%0, %9, 2b\n"
+> 	"	.set	mips0\n"
+> 	"	.set	reorder"
+> 	: "=r" (tag[1][way][0]), "=r" (datalo[1][way][0]),
+> 	  "=r" (datahi[1][way][0]),
+> 	  "=r" (tag[1][way][1]), "=r" (datalo[1][way][1]),
+> 	  "=r" (datahi[1][way][1]),
+> 	  "=r" (tag[1][way][2]), "=r" (datalo[1][way][2]),
+> 	  "=r" (datahi[1][way][2]),
+> 	  "=r" (tag[1][way][3]), "=r" (datalo[1][way][3]),
+> 	  "=r" (datahi[1][way][3])
+> 	: "r" (0x80000000 | (way << 14) | (line << 5))
 > );
-> restore_flags(flags);
-> 
-> Interrupt is disabled and no memory variable is touched while reading four
-> words in a cacheline. When bne instructions're activated, this code still
-> makes a infinitive loop. I don't know what does make changes in the d-cache.
-> Or.. am I doing something wrong? Any idea'll be welcomed. Thanks.
-> 
-> Regards,
-> JS.
-> 
-> 
-> PS. if you think my question is not proper in this mailing list, please let
-> me know.
-> 
-> 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Kim, Jong-Sung
-> Sent: Monday, April 24, 2006 6:52 PM
-> To: linux-mips@linux-mips.org
-> Subject: RE: Reading an entire cacheline
-> 
-> Dear Mr. Kissell and the others,
-> 
-> I apologize for my rude question if you felt like. I was first in this
-> mailing list and I didn't think I had to describe the background of my
-> problem such in depth. I have an application stored in an onboard block
-> device and it sometimes makes bus error or segmentation fault during
-> do_page_fault().
-> When the application is stored in and executed from an nfs device or an
-> ramfs or any other device, it works without any problem. So I think the
-> problem comes from the device driver or something below.
-> In some experiments, the cache invalidation in a point reduces the frequency
-> of abnormal terminations. (I don't know it's a walk-around or just reduction
-> yet) When the application was copied from the device onto the other (ram or
-> network) device, it works well. So I guess the problem is related to the
-> cache and not from just d-cache incoherency. I targeted the consistency
-> between d- and i-cache as first. If you have any idea, please let me know.
-> For the device driver for the block device is very large and not my work,
-> I'm still in the dark. ^^;
-> 
-> Thank you for your hints about the interrupt disabling and the variable
-> cachability. They could be very helpful for me. For the tag, I meant the
-> physical address field of the valid tag. Thank you again.
-> 
-> 
-> Regards,
-> JS.
-> 
-> 
-> -----Original Message-----
-> From: Kevin D. Kissell [mailto:kevink@mips.com] 
-> Sent: Monday, April 24, 2006 4:41 PM
-> To: Kim, Jong-Sung; linux-mips@linux-mips.org
-> Subject: Re: Reading an entire cacheline
-> 
-> Yes, your question was too brief the first time around - I couldn't
-> tell what you were really asking.  I'm still not 100% sure of what
-> you're doing, though.   I don't want to sound insulting, but you're
-> disabling interrupts during this operation, right?  And if you're
-> copying the values into variables in memory, you're doing nothing
-> but non-cached references, right?  When you see the tags changing
-> on you, which bits are changing, and what are they defined to mean?
-> 
->             Regards,
-> 
->             Kevin K.
-> 
-> ----- Original Message ----- 
-> From: "Kim, Jong-Sung" <jsungkim@lge.com>
-> To: <linux-mips@linux-mips.org>
-> Sent: Monday, April 24, 2006 9:23 AM
-> Subject: RE: Reading an entire cacheline
-> 
-> 
-> > Hi all,
-> > 
-> > Was my question too brief? I'm using MIPS5Kf core included in a Broadcom
-> > implemented processor and it has a 32kB d-cache and a same sized i-cache.
-> > Cache configuration is 2-way, 32-byte cacheline for both d- and i-cache
-> > without L2 cache. Of course, MIPS-port Linux as the kernel for it. And, a
-> > onboard block device has problem in its operation. I don't think it's a
-> > kernel problem. So I wanna inspect the contents of cache RAMs at the
-> device
-> > driver's context. I've added some lines of codes look like follow:
-> > 
-> > __asm__ __volatile__(
-> > ".set noreorder\n\t"
-> > ".set mips3\n\t"
-> > "cache 5, 0x00(%3)\n\t" // load d-cache tag
-> > ".set mips0\n\t" // by index
-> > ".set mips32\n\t"
-> > "mfc0 %0, $28, 0\n\t"
-> > "mfc0 %1, $28, 1\n\t"
-> > "mfc0 %2, $29, 1\n\t"
-> > .set mips0\n\t"
-> > .set reorder"
-> > : "=r" (tag), "=r" (data_lo), "=r" (data_hi)
-> > : "r" (0x80000000 | (way << 14) | (index << 5) | (word <<
-> > 3))
-> > );
-> > 
-> > This is executed for every index, every way, and every word. The thing
-> aches
-> > my head is the tags from a single cacheline differs. (very often for
-> > d-cache) So I modified the code to reread the cacheline from the first
-> word
-> > when the tag was modified before reading all four words. Then the code
-> never
-> > return. I couldn't find any related information from manual.
-> > 
-> > Please give me a hint for reading whole cacheline safely.
-> > 
-> > 
-> > -----Original Message-----
-> > From: linux-mips-bounce@linux-mips.org
-> > [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Kim, Jong-Sung
-> > Sent: Tuesday, April 18, 2006 9:37 AM
-> > To: linux-mips@linux-mips.org
-> > Subject: Reading an entire cacheline
-> > 
-> > Hi,
-> > 
-> > Is there any way to read an entire cacheline from the MIPS5Kf? Four
-> > sequential cache instructions do similarly, but sometimes the tags from a
-> > same cacheline differ. How can I read a consistent cacheline safely?
-> > 
-> > Thanks. 
+
+And this part may cause the problem you are seeing, I presume
+datalo/datahi live in memory, and accesses of it change the dcache.
+
+As Kevin mentioned, disassembling the binary might be helpful.
+
+
+Thiemo

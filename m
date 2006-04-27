@@ -1,99 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2006 06:14:00 +0100 (BST)
-Received: from mail1.lge.co.kr ([156.147.1.151]:31976 "EHLO mail1.lge.co.kr")
-	by ftp.linux-mips.org with ESMTP id S8133352AbWD0FNw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Apr 2006 06:13:52 +0100
-Received: from [150.150.71.243] (jsungkim@lge.com) by 
-          mail1.lge.co.kr (Terrace MailWatcher) 
-          with ESMTP id 2006042714:13:44:186057.280.138
-          for <linux-mips@linux-mips.org>; 
-          Thu, 27 Apr 2006 14:13:44 +0900 (KST) 
-From:	"Kim, Jong-Sung" <jsungkim@lge.com>
-To:	"'Thiemo Seufer'" <ths@networkno.de>
-Cc:	<linux-mips@linux-mips.org>
-Subject: RE: Reading an entire cacheline
-Date:	Thu, 27 Apr 2006 14:13:00 +0900
-Message-ID: <00fd01c669b9$411095b0$f3479696@LGE.NET>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Apr 2006 06:25:44 +0100 (BST)
+Received: from mail.soc-soft.com ([202.56.254.199]:52486 "EHLO
+	igateway.soc-soft.com") by ftp.linux-mips.org with ESMTP
+	id S8127208AbWD0FZe convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Apr 2006 06:25:34 +0100
+Received: from keys.soc-soft.com ([192.168.4.44]) by igateway.soc-soft.com with InterScan VirusWall; Thu, 27 Apr 2006 10:55:26 +0530
+Received: from soc-mail.soc-soft.com ([192.168.4.25])
+  by keys.soc-soft.com (PGP Universal service);
+  Thu, 27 Apr 2006 10:50:37 +0530
+X-PGP-Universal: processed;
+	by keys.soc-soft.com on Thu, 27 Apr 2006 10:50:37 +0530
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook 11
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-thread-index: AcZpGn8n6Gx6q28mTPWwTUADed6KuwAnY3gA
-In-Reply-To: <20060426101603.GB29550@networkno.de>
-X-TERRACE-SPAMMARK: NOT spam-marked.                              
-  (by Terrace)                                            
-Return-Path: <jsungkim@lge.com>
+Content-Transfer-Encoding: 8BIT
+Subject: Compiling glibc for mips64
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Date:	Thu, 27 Apr 2006 10:55:24 +0530
+Message-ID: <4BF47D56A0DD2346A1B8D622C5C5902C01666AD1@soc-mail.soc-soft.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Compiling glibc for mips64
+Thread-Index: AcZpuvwHW+ndiiiZTsqIZh+YegHgAw==
+From:	<Vadivelan@soc-soft.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <Vadivelan@soc-soft.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11218
+X-archive-position: 11219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jsungkim@lge.com
+X-original-sender: Vadivelan@soc-soft.com
 Precedence: bulk
 X-list: linux-mips
 
-Dear Mr. Seufer,
 
-Thank you for your advice about directives. That's exactly what I meant. I
-have confused them with push/pop style operations. Thanks.
+Hi,
+	I'm compiling glibc 2.4 for mips64. Here's the configuration I'm
+using.
+
+../glibc-2.4/configure
+--with-headers=/opt/optMVL4.0.1_64bit/montavista/pro/devkit/lsp/broadcom
+-bcm91250-mips64_fp_be/linux-2.6.10_mvl401/include/ --build=i386-linux
+--host=mips64-linux --enable-add-ons --prefix=/myglibc/
+--cache-file=config.cache --disable-profile --with-tls
+--enable-check-abi --enable-oldest-abi=o32
+
+Tool chain: mips64_fp_be-gcc
+
+I'm getting the following errors when I do 'make'.
+
+******************************************************
+
+
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c: In function
+`__libc_sigaction':
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:95: warning: cast from
+pointer to integer of different size
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:95: warning:
+initialization makes integer from pointer without a cast
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:95: warning: cast from
+pointer to integer of different size
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:95: warning:
+initialization makes integer from pointer without a cast
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:134: warning: cast
+from pointer to integer of different size
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:134: warning:
+initialization makes integer from pointer without a cast
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:134: warning: cast
+from pointer to integer of different size
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:134: warning:
+initialization makes integer from pointer without a cast
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:134: error:
+`__NR_sigaction' undeclared (first use in this function)
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:134: error: (Each
+undeclared identifier is reported only once
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:134: error: for each
+function it appears in.)
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:146: error: `restore'
+undeclared (first use in this function)
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c: At top level:
+../ports/sysdeps/unix/sysv/linux/mips/sigaction.c:46: warning:
+'restore_rt' declared `static' but never defined
+make[2]: ***
+[/usr/src/redhat/SOURCES/glibc/glibc-2.4_build/signal/sigaction.o] Error
+1
+make[2]: Leaving directory
+`/usr/src/redhat/SOURCES/glibc/glibc-2.4/signal'
+make[1]: *** [signal/subdir_lib] Error 2
+make[1]: Leaving directory `/usr/src/redhat/SOURCES/glibc/glibc-2.4'
+make: *** [all] Error 2
+
+******************************************************
+
+During configuration if I give --host=mips-linux, it compiles but with
+-mabi=32 option and during installation it creates only lib directory.
+
+How do I make it to create lib, lib32 and lib64 directory's.
+
+Thanking u.
 
 Regards,
-JS.
-
------Original Message-----
-From: Thiemo Seufer [mailto:ths@networkno.de] 
-Sent: Wednesday, April 26, 2006 7:16 PM
-To: Kim, Jong-Sung
-Cc: linux-mips@linux-mips.org
-Subject: Re: Reading an entire cacheline
-
-Kim, Jong-Sung wrote:
-> Hi all,
-> 
-> Please look at following codes:
-> 
-> save_flags(flags);
-> cli();
-> __asm__ __volatile__(
-> 	"	.set	noreorder\n"
-> 	"	.set	mips32\n"
-> 	"2:	.set	mips3\n"
-> 	"	cache	5, 0x00(%12)\n"
-> 	"	.set	mips0\n"
-
-Irrelevant sidemark:
-.set mips0 resets to the original value, not to mips32. You probably want
-
-	.set	push
-	.set	noreorder
-	.set 	mips32
-
-	... <the whole code sequence>
-
-	.set	pop
-
-[snip]
-> 	//"	bne	%0, %9, 2b\n"
-> 	"	.set	mips0\n"
-> 	"	.set	reorder"
-> 	: "=r" (tag[1][way][0]), "=r" (datalo[1][way][0]),
-> 	  "=r" (datahi[1][way][0]),
-> 	  "=r" (tag[1][way][1]), "=r" (datalo[1][way][1]),
-> 	  "=r" (datahi[1][way][1]),
-> 	  "=r" (tag[1][way][2]), "=r" (datalo[1][way][2]),
-> 	  "=r" (datahi[1][way][2]),
-> 	  "=r" (tag[1][way][3]), "=r" (datalo[1][way][3]),
-> 	  "=r" (datahi[1][way][3])
-> 	: "r" (0x80000000 | (way << 14) | (line << 5))
-> );
-
-And this part may cause the problem you are seeing, I presume
-datalo/datahi live in memory, and accesses of it change the dcache.
-
-As Kevin mentioned, disassembling the binary might be helpful.
+Vadi.
 
 
-Thiemo
+
+
+
+
+
+
+The information contained in this e-mail message and in any annexure is
+confidential to the  recipient and may contain privileged information. If you are not
+the intended recipient, please notify the sender and delete the message along with
+any annexure. You should not disclose, copy or otherwise use the information contained
+in the message or any annexure. Any views expressed in this e-mail are those of the
+individual sender except where the sender specifically states them to be the views of
+SoCrates Software India Pvt Ltd., Bangalore.

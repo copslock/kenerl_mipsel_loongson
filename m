@@ -1,67 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 21:03:17 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:57750 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133504AbWD1UDJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2006 21:03:09 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k3SK38dD018383;
-	Fri, 28 Apr 2006 21:03:08 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k3SK379u018382;
-	Fri, 28 Apr 2006 21:03:07 +0100
-Date:	Fri, 28 Apr 2006 21:03:07 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	moreau francis <francis_moreau2000@yahoo.fr>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: module allocation
-Message-ID: <20060428200307.GA17705@linux-mips.org>
-References: <20060428130417.71285.qmail@web25813.mail.ukl.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 21:15:50 +0100 (BST)
+Received: from nevyn.them.org ([66.93.172.17]:47302 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S8133504AbWD1UPl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2006 21:15:41 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.54)
+	id 1FZZNC-0001JU-T3; Fri, 28 Apr 2006 16:15:31 -0400
+Date:	Fri, 28 Apr 2006 16:15:30 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	James E Wilson <wilson@specifix.com>
+Cc:	dhunjukrishna@gmail.com, Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: problem with mips-linux gprof
+Message-ID: <20060428201530.GA4883@nevyn.them.org>
+References: <20060428063712.39756.qmail@web53501.mail.yahoo.com> <1146253927.15759.16.camel@aretha.corp.specifix.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060428130417.71285.qmail@web25813.mail.ukl.yahoo.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1146253927.15759.16.camel@aretha.corp.specifix.com>
+User-Agent: Mutt/1.5.8i
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11242
+X-archive-position: 11243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Apr 28, 2006 at 01:04:17PM +0000, moreau francis wrote:
+On Fri, Apr 28, 2006 at 12:52:07PM -0700, James E Wilson wrote:
+> The above assumes you don't have a profiled C library available.  If you
+> did, then you would have at least two profiled functions, main and
+> printf, and would have gotten some call graph info emitted.  If you
+> don't have a profiled C library available, you could try compiling one
+> yourself.  There is a glibc configure option --enable-profile for that. 
+> I've never tried this myself.  I'd expect this to be a non-trivial
+> exercise.  Besides the issue of compiling glibc, you also need to
+> install the profiled library, and arrange to link with it.
 
-> Maybe a silly question...why do we use mapped memory (allocated by
-> vmalloc) for inserting a module into the kernel ?
-> 
-> I can see only drawbacks:
-> 
->   - It consumes TLB entries,
-> 
->   - When accessing to the module's code, we use TLB entries which can
->     be bad for interrupt latencies. For instance: if the module has an
->     interrupt handler and the module's code in still not mapped in the
->     TLB, we got a page fault...
+Many prebuilt distributions already ship it; FWIW, if you link with
+"-profile" instead of "-pg", GCC will automatically attempt to use
+-lc_p.
 
-Not quite.  There will be a TLB reload exception but that it's.  These
-TLB entries are all marked global, dirty and valid so the overhead is
-as big as in the best case for user pages.
-
->   - Modules are usually loaded at startup, at this time the memory
->     should not be fragmented.
-
-Usually but not always and we need to guarantee that things are working
-under all circumstances.
-
-There is another reason against putting modules into mapped space and
-that's the need for -mlong-calls which generates larger, less efficient
-code.
-
-One disadvantage of using GFP allocations would be that they're rounding up
-the memory allocations to the next power of two, so a 40k module for
-example would actually allocate 64k ...
-
-  Ralf
+-- 
+Daniel Jacobowitz
+CodeSourcery

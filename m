@@ -1,59 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 20:52:33 +0100 (BST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:25833 "HELO
-	duck.specifix.com") by ftp.linux-mips.org with SMTP
-	id S8133493AbWD1TwX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Apr 2006 20:52:23 +0100
-Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
-	by duck.specifix.com (Postfix) with ESMTP
-	id E83E6FCBF; Fri, 28 Apr 2006 12:52:07 -0700 (PDT)
-Subject: Re: problem with mips-linux gprof
-From:	James E Wilson <wilson@specifix.com>
-To:	dhunjukrishna@gmail.com
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-In-Reply-To: <20060428063712.39756.qmail@web53501.mail.yahoo.com>
-References: <20060428063712.39756.qmail@web53501.mail.yahoo.com>
-Content-Type: text/plain
-Message-Id: <1146253927.15759.16.camel@aretha.corp.specifix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 21:03:17 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:57750 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133504AbWD1UDJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2006 21:03:09 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k3SK38dD018383;
+	Fri, 28 Apr 2006 21:03:08 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k3SK379u018382;
+	Fri, 28 Apr 2006 21:03:07 +0100
+Date:	Fri, 28 Apr 2006 21:03:07 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	moreau francis <francis_moreau2000@yahoo.fr>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: module allocation
+Message-ID: <20060428200307.GA17705@linux-mips.org>
+References: <20060428130417.71285.qmail@web25813.mail.ukl.yahoo.com>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date:	Fri, 28 Apr 2006 12:52:07 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <wilson@specifix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060428130417.71285.qmail@web25813.mail.ukl.yahoo.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11241
+X-archive-position: 11242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2006-04-27 at 23:37, Krishna wrote:
-> But i get the following error message
-> mips-unknown-linux-gnu-gprof: gmon.out file is missing call-graph data
+On Fri, Apr 28, 2006 at 01:04:17PM +0000, moreau francis wrote:
 
-Add a second function to your testcase.  You have to have at least two
-functions in order to have a call graph.
+> Maybe a silly question...why do we use mapped memory (allocated by
+> vmalloc) for inserting a module into the kernel ?
+> 
+> I can see only drawbacks:
+> 
+>   - It consumes TLB entries,
+> 
+>   - When accessing to the module's code, we use TLB entries which can
+>     be bad for interrupt latencies. For instance: if the module has an
+>     interrupt handler and the module's code in still not mapped in the
+>     TLB, we got a page fault...
 
-If your testcase has only one function, main, then there will be no
-useful call graph info, so the -pg library support won't bother to emit
-one, and then gprof complains that it is missing.  This is correct, but
-not very useful, and perhaps should be considered a bug.  I think gprof
-should just default to emitting a flat profile in this case, without
-giving an error, so I'd call this a binutils bug.
+Not quite.  There will be a TLB reload exception but that it's.  These
+TLB entries are all marked global, dirty and valid so the overhead is
+as big as in the best case for user pages.
 
-In the absence of call-graph info, you can use the gprof -p option to
-get a flat profile.
+>   - Modules are usually loaded at startup, at this time the memory
+>     should not be fragmented.
 
-The above assumes you don't have a profiled C library available.  If you
-did, then you would have at least two profiled functions, main and
-printf, and would have gotten some call graph info emitted.  If you
-don't have a profiled C library available, you could try compiling one
-yourself.  There is a glibc configure option --enable-profile for that. 
-I've never tried this myself.  I'd expect this to be a non-trivial
-exercise.  Besides the issue of compiling glibc, you also need to
-install the profiled library, and arrange to link with it.
--- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+Usually but not always and we need to guarantee that things are working
+under all circumstances.
+
+There is another reason against putting modules into mapped space and
+that's the need for -mlong-calls which generates larger, less efficient
+code.
+
+One disadvantage of using GFP allocations would be that they're rounding up
+the memory allocations to the next power of two, so a 40k module for
+example would actually allocate 64k ...
+
+  Ralf

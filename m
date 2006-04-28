@@ -1,193 +1,147 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 18:10:28 +0100 (BST)
-Received: from amdext4.amd.com ([163.181.251.6]:55003 "EHLO amdext4.amd.com")
-	by ftp.linux-mips.org with ESMTP id S8133421AbWD1RKQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Apr 2006 18:10:16 +0100
-Received: from SAUSGW01.amd.com (sausgw01.amd.com [163.181.250.21])
-	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k3SHANYC018586;
-	Fri, 28 Apr 2006 12:10:29 -0500
-Received: from 163.181.22.101 by SAUSGW01.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Fri, 28 Apr 2006 12:09:59 -0500
-X-Server-Uuid: 8C3DB987-180B-4465-9446-45C15473FD3E
-Received: from ldcmail.amd.com ([147.5.200.40]) by sausexbh1.amd.com
- with Microsoft SMTPSVC(6.0.3790.2499); Fri, 28 Apr 2006 12:09:59 -0500
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id 4A0C42028; Fri, 28 Apr 2006
- 11:09:59 -0600 (MDT)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k3SHJNVh018312; Fri, 28 Apr 2006 11:19:23
- -0600
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k3SHJNCL018311; Fri, 28 Apr 2006 11:19:23
- -0600
-Date:	Fri, 28 Apr 2006 11:19:23 -0600
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Freddy Spierenburg" <freddy@dusktilldawn.nl>
-cc:	"Rodolfo Giometti" <giometti@linux.it>, linux-mips@linux-mips.org,
-	linux-serial@vger.kernel.org
-Subject: Re: trouble on serial console for au1100
-Message-ID: <20060428171923.GG3314@cosmic.amd.com>
-References: <20060427154948.GI32278@enneenne.com>
- <20060428111933.GY11097@dusktilldawn.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 19:27:26 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:59856 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133421AbWD1S1R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 28 Apr 2006 19:27:17 +0100
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by goldrake.enneenne.com with esmtp (Exim 4.50)
+	id 1FZXdS-0007MR-09; Fri, 28 Apr 2006 20:24:10 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1FZXgR-0005C9-Hh; Fri, 28 Apr 2006 20:27:15 +0200
+Date:	Fri, 28 Apr 2006 20:27:15 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+Cc:	linux-mips@linux-mips.org
+Message-ID: <20060428182715.GE12157@enneenne.com>
+References: <20060427154948.GI32278@enneenne.com> <20060428111933.GY11097@dusktilldawn.nl>
 MIME-Version: 1.0
-In-Reply-To: <20060428111933.GY11097@dusktilldawn.nl>
-User-Agent: Mutt/1.5.11
-X-OriginalArrivalTime: 28 Apr 2006 17:10:00.0034 (UTC)
- FILETIME=[94EED420:01C66AE6]
-X-WSS-ID: 684C93ED4IS3817596-01-01
-Content-Type: text/plain;
- charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="IU5/I01NYhRvwH70"
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+In-Reply-To: <20060428111933.GY11097@dusktilldawn.nl>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.11+cvs20060403
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: Re: trouble on serial console for au1100
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11239
+X-archive-position: 11240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
+
+--IU5/I01NYhRvwH70
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Apr 28, 2006 at 01:19:33PM +0200, Freddy Spierenburg wrote:
+>=20
 > Can it be that you face the same problem I was facing not so long
 > ago? After I applied the patch in the email I attach to this one
 > all my serial troubles on the au1100 disappeared.
+>=20
+> At the moment I'm running kernel 2.6.16 and am using a serial
+> console and several other serial applications without any
+> problem.
 
-CCing the serial list too.  It could use more testing, but this seems
-like it might be the answer to the myriad of serial issues that have 
-been reported in the last month or so. 
+Yes, this patch fix the problem but it does it only on branch
+=ABlinux-2.6.16-stable=BB, =ABmaster=BB branch is still buggy!
 
-I'm ashamed to admit I have no idea if this patch is even in the system or
-not.  If not, I'm sure somebody
-can clean it up and send it in the proper style.
+The problem on master branch is that the console is not initializated
+at boot and also the =AB8250_early.c=BB must be modified in order to
+support au1x00 serial register... I did it (the patch is at
+http://ftp.enneenne.com/pub/misc/au1100-patches/linux/patch-8250_early.c)
+but after that I found more problems if VT support is enabled, and
+even if I disable it the last error was:
 
-Jordan
+   Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)            =
+       =20
+   Memory: 61080k/65536k available (2168k kernel code, 4400k reserved, 387k=
+ data, 124k init, 0k highmem)                                              =
+            =20
+   kmem_cache_create: Early error in slab size-32                          =
+       =20
+   Break instruction in kernel code[#1]:                                   =
+       =20
+   Cpu 0                                                                   =
+       =20
+   $ 0   : 00000000 1000fc00 00000032 80356228                             =
+       =20
+   $ 4   : 80356228 80350000 80356240 00000000                             =
+       =20
+   ...
+   epc   : 8017837c kmem_cache_create+0x74/0x600     Not tainted           =
+       =20
+   ra    : 8017837c kmem_cache_create+0x74/0x600                           =
+       =20
+   Status: 1000fc03    KERNEL EXL IE                                       =
+       =20
+   Cause : 00800024                                                        =
+       =20
+   PrId  : 02030204                                                        =
+       =20
+   Modules linked in:                                                      =
+       =20
+   Process swapper (pid: 0, threadinfo=3D80352000, task=3D80354000)        =
+           =20
+   Stack : 81062ca0 80321e44 8032bf60 00042000 0000044c 00003165 0000007c 0=
+0000183        =20
+           0021e21c 803b0000 00040000 8035849c 80358490 8035855c 8039bdb0 8=
+0360000
+   ...
+   Call Trace:                                                             =
+        =20
+   [<803915fc>] kmem_cache_init+0x194/0x51c                                =
+       =20
+   [<80387078>] mem_init+0x1f4/0x218                                       =
+       =20
+   [<8038703c>] mem_init+0x1b8/0x218                                       =
+       =20
+   [<803807dc>] start_kernel+0x1d4/0x3b4                                   =
+       =20
+   [<80380134>] unknown_bootoption+0x0/0x304                               =
+                          =20
+   Code: 24a51e44  0c04a8e0  02e03021 <0200000d> 3c058036  0c0c6ebe  24a485=
+50  3c03803b  8c70a35c
+   Kernel panic - not syncing: Aiee, killing interrupt handler!            =
+       =20
 
-> From: Jon Anders Haugum <jonah@omegav.ntnu.no>
-> Date: 	Thu, 20 Apr 2006 14:55:59 +0200 (CEST)
-> To: rmk+serial@arm.linux.org.uk
-> Cc: linux-serial@vger.kernel.org, linux-mips@linux-mips.org
-> Subject: [PATCH] serial8250: set divisor register correctly for AMD Alchemy
->  SoC uart. 3rd edition.
-> 
-> Alchemy SoC uart have got a non-standard divisor register that needs some
-> special handling.
-> 
-> This patch adds divisor read/write functions with test and special
-> handling for Alchemy internal uart.
-> 
-> Signed-off-by: Jon Anders Haugum <jonah@omegav.ntnu.no>
-> 
-> ---
-> 
-> 3rd edition:
-> - Removed section covering 16C850 autoconfig.
-> 
-> 
-> --- linux-2.6.16-rc5/drivers/serial/8250.c.orig	2006-03-03 02:12:10.000000000 +0100
-> +++ linux-2.6.16-rc5/drivers/serial/8250.c	2006-03-03 02:16:19.000000000 +0100
-> @@ -362,6 +362,40 @@ serial_out(struct uart_8250_port *up, in
->  #define serial_inp(up, offset)		serial_in(up, offset)
->  #define serial_outp(up, offset, value)	serial_out(up, offset, value)
->  
-> +/* Uart divisor latch read */
-> +static inline int _serial_dl_read(struct uart_8250_port *up)
-> +{
-> +	return serial_inp(up, UART_DLL) | serial_inp(up, UART_DLM) << 8;
-> +}
-> +
-> +/* Uart divisor latch write */
-> +static inline void _serial_dl_write(struct uart_8250_port *up, int value)
-> +{
-> +	serial_outp(up, UART_DLL, value & 0xff);
-> +	serial_outp(up, UART_DLM, value >> 8 & 0xff);
-> +}
-> +
-> +#ifdef CONFIG_SERIAL_8250_AU1X00
-> +/* Au1x00 haven't got a standard divisor latch */
-> +static int serial_dl_read(struct uart_8250_port *up)
-> +{
-> +	if (up->port.iotype == UPIO_AU)
-> +		return __raw_readl(up->port.membase + 0x28);
-> +	else
-> +		return _serial_dl_read(up);
-> +}
-> +
-> +static void serial_dl_write(struct uart_8250_port *up, int value)
-> +{
-> +	if (up->port.iotype == UPIO_AU)
-> +		__raw_writel(value, up->port.membase + 0x28);
-> +	else
-> +		_serial_dl_write(up, value);
-> +}
-> +#else
-> +#define serial_dl_read(up) _serial_dl_read(up)
-> +#define serial_dl_write(up, value) _serial_dl_write(up, value)
-> +#endif
->  
->  /*
->   * For the 16C950
-> @@ -494,7 +528,8 @@ static void disable_rsa(struct uart_8250
->   */
->  static int size_fifo(struct uart_8250_port *up)
->  {
-> -	unsigned char old_fcr, old_mcr, old_dll, old_dlm, old_lcr;
-> +	unsigned char old_fcr, old_mcr, old_lcr;
-> +	unsigned short old_dl;
->  	int count;
->  
->  	old_lcr = serial_inp(up, UART_LCR);
-> @@ -505,10 +540,8 @@ static int size_fifo(struct uart_8250_po
->  		    UART_FCR_CLEAR_RCVR | UART_FCR_CLEAR_XMIT);
->  	serial_outp(up, UART_MCR, UART_MCR_LOOP);
->  	serial_outp(up, UART_LCR, UART_LCR_DLAB);
-> -	old_dll = serial_inp(up, UART_DLL);
-> -	old_dlm = serial_inp(up, UART_DLM);
-> -	serial_outp(up, UART_DLL, 0x01);
-> -	serial_outp(up, UART_DLM, 0x00);
-> +	old_dl = serial_dl_read(up);
-> +	serial_dl_write(up, 0x0001);
->  	serial_outp(up, UART_LCR, 0x03);
->  	for (count = 0; count < 256; count++)
->  		serial_outp(up, UART_TX, count);
-> @@ -519,8 +552,7 @@ static int size_fifo(struct uart_8250_po
->  	serial_outp(up, UART_FCR, old_fcr);
->  	serial_outp(up, UART_MCR, old_mcr);
->  	serial_outp(up, UART_LCR, UART_LCR_DLAB);
-> -	serial_outp(up, UART_DLL, old_dll);
-> -	serial_outp(up, UART_DLM, old_dlm);
-> +	serial_dl_write(up, old_dl);
->  	serial_outp(up, UART_LCR, old_lcr);
->  
->  	return count;
-> @@ -750,8 +780,7 @@ static void autoconfig_16550a(struct uar
->  
->  			serial_outp(up, UART_LCR, 0xE0);
->  
-> -			quot = serial_inp(up, UART_DLM) << 8;
-> -			quot += serial_inp(up, UART_DLL);
-> +			quot = serial_dl_read(up);
->  			quot <<= 3;
->  
->  			status1 = serial_in(up, 0x04); /* EXCR1 */
-> @@ -759,8 +788,7 @@ static void autoconfig_16550a(struct uar
->  			status1 |= 0x10;  /* 1.625 divisor for baud_base --> 921600 */
->  			serial_outp(up, 0x04, status1);
->  			
-> -			serial_outp(up, UART_DLL, quot & 0xff);
-> -			serial_outp(up, UART_DLM, quot >> 8);
-> +			serial_dl_write(up, quot);
->  
->  			serial_outp(up, UART_LCR, 0);
->  
-> @@ -1862,8 +1890,7 @@ serial8250_set_termios(struct uart_port 
->  		serial_outp(up, UART_LCR, cval | UART_LCR_DLAB);/* set DLAB */
->  	}
->  
-> -	serial_outp(up, UART_DLL, quot & 0xff);		/* LS of divisor */
-> -	serial_outp(up, UART_DLM, quot >> 8);		/* MS of divisor */
-> +	serial_dl_write(up, quot);
->  
->  	/*
->  	 * LCR DLAB must be set to enable 64-byte FIFO mode. If the FCR
+so, I'll continue my work on =ABlinux-2.6.16-stable=BB branch. :)
+
+Ciao,
+
+Rodolfo
+
+--=20
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
+
+--IU5/I01NYhRvwH70
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+
+iD8DBQFEUl6DQaTCYNJaVjMRAhT2AJ9kKvq686CZdk4XKJA5Opq75MzG3wCcD0yc
+WFhIL6OJOYmnkR91qnyqSvA=
+=RVLz
+-----END PGP SIGNATURE-----
+
+--IU5/I01NYhRvwH70--

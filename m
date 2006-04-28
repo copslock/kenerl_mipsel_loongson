@@ -1,70 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 09:18:26 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:36037 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133448AbWD1ISP
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Apr 2006 09:18:15 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k3S8I0qY002474;
-	Fri, 28 Apr 2006 01:18:01 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k3S8HxsI007394;
-	Fri, 28 Apr 2006 01:18:00 -0700 (PDT)
-Message-ID: <000d01c66a9c$c6686290$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	<gowri@bitel.co.kr>, <linux-mips@linux-mips.org>
-References: <1146188366.3034.6.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Apr 2006 11:25:02 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:22027 "HELO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with SMTP
+	id S8133464AbWD1KYw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 28 Apr 2006 11:24:52 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id E7B17F5D94;
+	Fri, 28 Apr 2006 12:24:47 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 14778-08; Fri, 28 Apr 2006 12:24:47 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A5C9AF5D93;
+	Fri, 28 Apr 2006 12:24:47 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.6/8.13.1) with ESMTP id k3SAOm8T017396;
+	Fri, 28 Apr 2006 12:24:52 +0200
+Date:	Fri, 28 Apr 2006 11:24:45 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+cc:	gowri@bitel.co.kr, linux-mips@linux-mips.org
 Subject: Re: Java virtual machine on linux MIPS
-Date:	Fri, 28 Apr 2006 10:21:38 +0200
+In-Reply-To: <000d01c66a9c$c6686290$10eca8c0@grendel>
+Message-ID: <Pine.LNX.4.64N.0604281120510.32041@blysk.ds.pg.gda.pl>
+References: <1146188366.3034.6.camel@localhost.localdomain>
+ <000d01c66a9c$c6686290$10eca8c0@grendel>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1807
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.1/1428/Thu Apr 27 20:39:31 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11233
+X-archive-position: 11234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-It's been several years, but at one point I successfully tested
-and benchmarked commercail JVMs from Insignia (now part
-of Esmertec, www.esmertec.com) and Skelmir (www.skelmir.com),
-and managed to get the open source Kaffe VM (www.kaffe.org) 
-running on MIPS Linux as well.  Kaffe has a JIT that has, alas,
-been broken for MIPS and most other RISC architectures for
-the last couple of years, but the JVM still works OK in interpreted 
-mode. I'm sure that there are other options - those are just the ones
-I've had hands-on experience with.
+On Fri, 28 Apr 2006, Kevin D. Kissell wrote:
 
-            Regards,
+> It's been several years, but at one point I successfully tested
+> and benchmarked commercail JVMs from Insignia (now part
+> of Esmertec, www.esmertec.com) and Skelmir (www.skelmir.com),
+> and managed to get the open source Kaffe VM (www.kaffe.org) 
+> running on MIPS Linux as well.  Kaffe has a JIT that has, alas,
+> been broken for MIPS and most other RISC architectures for
+> the last couple of years, but the JVM still works OK in interpreted 
+> mode. I'm sure that there are other options - those are just the ones
+> I've had hands-on experience with.
 
-            Kevin K.
+ And there is of course GIJ -- a part of GCC (which is also able to 
+compile Java source code to native machine code and link it with Java 
+bytecode if necessary).  I'm not sure how capable it is these days though.
 
------ Original Message ----- 
-From: "Gowri Satish Adimulam" <gowri@bitel.co.kr>
-To: <linux-mips@linux-mips.org>
-Sent: Friday, April 28, 2006 3:39 AM
-Subject: Java virtual machine on linux MIPS
-
-
-> Hi , 
-> 
-> He is there  any java virtual machine runs on mips based linux .
-> 
-> any pointers will be helpful
-> 
-> Regards
-> Gowri 
-> 
-> 
-> 
+  Maciej

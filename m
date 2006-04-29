@@ -1,33 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Apr 2006 22:36:28 +0100 (BST)
-Received: from dsl092-144-073.wdc2.dsl.speakeasy.net ([66.92.144.73]:55723
-	"EHLO freya.pelagiris.org") by ftp.linux-mips.org with ESMTP
-	id S8133477AbWD2VgT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 29 Apr 2006 22:36:19 +0100
-Received: from nick by freya.pelagiris.org with local (Exim 3.36 #1 (Debian))
-	id 1FZx6f-0003WS-00
-	for <linux-mips@linux-mips.org>; Sat, 29 Apr 2006 17:36:01 -0400
-Date:	Sat, 29 Apr 2006 17:36:01 -0400
-To:	linux-mips@linux-mips.org
-Subject: SGI Hardware in the DC area
-Message-ID: <20060429213601.GA11574@guest>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Apr 2006 00:34:55 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:62861 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133576AbWD2Xeq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 30 Apr 2006 00:34:46 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k3TKe0do020539
+	for <linux-mips@linux-mips.org>; Sat, 29 Apr 2006 21:40:00 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k3TKe0QD020538;
+	Sat, 29 Apr 2006 21:40:00 +0100
+Date:	Sat, 29 Apr 2006 21:39:59 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	moreau francis <francis_moreau2000@yahoo.fr>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Re : module allocation
+Message-ID: <20060429203959.GA20496@linux-mips.org>
+References: <20060429094101.90843.qmail@web25806.mail.ukl.yahoo.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.10i
-From:	"Nick B." <nick@pelagiris.org>
-Return-Path: <nick@pelagiris.org>
+In-Reply-To: <20060429094101.90843.qmail@web25806.mail.ukl.yahoo.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11246
+X-archive-position: 11247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nick@pelagiris.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I've got an Octane, an O2, an Indy and a pair of I2s I'm willing to donate to
-a mips-linux developer in the DC area (or if you can convince me to ship it we
-might be able to work something out).  Email me if you're intrested.
-	Nick 
+On Sat, Apr 29, 2006 at 11:41:01AM +0200, moreau francis wrote:
+
+> maybe that would make sense to do some benchmarks ?
+
+It would be interesting to actually have some numbers, yes.  I expect the
+impact to be significantly less than of the PIC code used for userspace.
+
+  Ralf

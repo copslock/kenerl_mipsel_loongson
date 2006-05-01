@@ -1,96 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Apr 2006 22:47:47 +0100 (BST)
-Received: from godel.catalyst.net.nz ([202.78.240.40]:23727 "EHLO
-	mail1.catalyst.net.nz") by ftp.linux-mips.org with ESMTP
-	id S8133822AbWD3Vrh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 30 Apr 2006 22:47:37 +0100
-Received: from leibniz.catalyst.net.nz ([202.78.240.7] helo=pkunk.wgtn.cat-it.co.nz)
-	by mail1.catalyst.net.nz with esmtps (SSL 3.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.50)
-	id 1FaJlN-0002aU-Q3
-	for linux-mips@linux-mips.org; Mon, 01 May 2006 09:47:33 +1200
-Subject: Ugly error in dmesg
-From:	Sam Cannell <sam@catalyst.net.nz>
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-k+ZiYNlVLP2beo5KhtkD"
-Date:	Mon, 01 May 2006 09:47:33 +1200
-Message-Id: <1146433653.18721.10.camel@pkunk.wgtn.cat-it.co.nz>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
-Return-Path: <sam@catalyst.net.nz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 May 2006 14:46:11 +0100 (BST)
+Received: from fencepost.gnu.org ([199.232.76.164]:63373 "EHLO
+	fencepost.gnu.org") by ftp.linux-mips.org with ESMTP
+	id S8133397AbWEANp6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 May 2006 14:45:58 +0100
+Received: from hvr by fencepost.gnu.org with local (Exim 4.34)
+	id 1FaYil-0007A8-HB; Mon, 01 May 2006 09:45:51 -0400
+To:	jgarzik@pobox.com
+Cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+	sshtylyov@ru.mvista.com
+From:	Herbert Valerio Riedel <hvr@gnu.org>
+Date:	Mon May 1 15:37:09 2006 +0200
+Subject: [PATCH] au1000_eth.c: use ether_crc() from <linux/crc32.h>
+Message-Id: <E1FaYil-0007A8-HB@fencepost.gnu.org>
+Return-Path: <hvr@gnu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11249
+X-archive-position: 11250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@catalyst.net.nz
+X-original-sender: hvr@gnu.org
 Precedence: bulk
 X-list: linux-mips
 
+since the au1000 driver already selects the CRC32 routines, simply replace
+the internal ether_crc() implementation with the semantically equivalent
+one from <linux/crc32.h>
 
---=-k+ZiYNlVLP2beo5KhtkD
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Herbert Valerio Riedel <hvr@gnu.org>
 
-A couple of days ago I dropped Debian on an Indy I've had lying around
-for a while.  I'd done the first stage of the install, rebooted, and
-left it sitting at the last half of the Debian installer for a while.
-When I looked at it an hour or two later, the kernel had spat out the
-following:
 
-Eeek! page_mapcount(page) went negative! (-1)
-  page->flags =3D 14
-  page->count =3D 0
-  page->mapping =3D 00000000
-Break instruction in kernel code[#1]:
-Cpu 0
-$ 0   : 00000000 1000cc00 ffffffff 8820fe38
-$ 4   : 8820fe38 8820fe54 00000001 bf0f0000
-$ 8   : 00002085 88260000 0084100b 014f0000
-$12   : 89187972 ffffffff 00000029 88260000
-$16   : 89125460 1000d000 89125460 10034000
-$20   : 89d83d30 88832100 ffffffbf 00000000
-$24   : 88260000 88110960
-$28   : 89d82000 89d83d08 89333200 8805b06c
-Hi    : 00000000
-Lo    : 00000027
-epc   : 880628b8 page_remove_rmap+0xd8/0xe4     Not tainted
-ra    : 8805b06c unmap_vmas+0x508/0x680
-Status: 1000cc03    KERNEL EXL IE
-Cause : 00000024
-PrId  : 00002020
-Modules linked in: unix
-Process sh (pid: 7040, threadinfo=3D89d82000, task=3D8a114ad8)
+---
 
-[ etc .. full dmesg output is at http://plaz.net.nz/indy-dmesg.txt ]
+ drivers/net/au1000_eth.c |   18 +-----------------
+ 1 files changed, 1 insertions(+), 17 deletions(-)
 
-I think the error may have appeared when the /etc/cron.daily/ scripts
-started running.
-
-I'm running a hand-compiled 2.6.16.11 (I had to drop a new kernel on
-halfway through the installer because the Debian one has software raid
-built as modules)
-
-Is the message above common?  As I said, the Indy has been sitting
-around doing nothing for quite a while, so the hardware may be a little
-flaky.  I haven't had a chance to test the SIMMs in there, or find
-others to swap in to test.
-
-Thanks,
-
-Sam
-
---=-k+ZiYNlVLP2beo5KhtkD
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2.2 (GNU/Linux)
-
-iD8DBQBEVTB0zjWM3BBT1QARAop4AJ4xYabiTny4pgcwM6bkmLiMW6UquQCfedPk
-0+8YwQfGRD27vkWmNkhXUho=
-=1+iT
------END PGP SIGNATURE-----
-
---=-k+ZiYNlVLP2beo5KhtkD--
+9360df5368deaaaa8fc7dcaacf9b7ca446af94c4
+diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
+index 29adebb..0823cb8 100644
+--- a/drivers/net/au1000_eth.c
++++ b/drivers/net/au1000_eth.c
+@@ -52,6 +52,7 @@
+ #include <linux/mii.h>
+ #include <linux/skbuff.h>
+ #include <linux/delay.h>
++#include <linux/crc32.h>
+ #include <asm/mipsregs.h>
+ #include <asm/irq.h>
+ #include <asm/io.h>
+@@ -2070,23 +2071,6 @@ static void au1000_tx_timeout(struct net
+ 	netif_wake_queue(dev);
+ }
+ 
+-
+-static unsigned const ethernet_polynomial = 0x04c11db7U;
+-static inline u32 ether_crc(int length, unsigned char *data)
+-{
+-    int crc = -1;
+-
+-    while(--length >= 0) {
+-		unsigned char current_octet = *data++;
+-		int bit;
+-		for (bit = 0; bit < 8; bit++, current_octet >>= 1)
+-			crc = (crc << 1) ^
+-				((crc < 0) ^ (current_octet & 1) ? 
+-				 ethernet_polynomial : 0);
+-    }
+-    return crc;
+-}
+-
+ static void set_rx_mode(struct net_device *dev)
+ {
+ 	struct au1000_private *aup = (struct au1000_private *) dev->priv;
+-- 
+1.2.6

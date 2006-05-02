@@ -1,61 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 19:05:33 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:25755 "HELO bender.bawue.de")
-	by ftp.linux-mips.org with SMTP id S8133938AbWEBSFW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 2 May 2006 19:05:22 +0100
-Received: from lagash (unknown [194.74.144.146])
-	by bender.bawue.de (Postfix) with ESMTP
-	id EBFBE44BCB; Tue,  2 May 2006 20:05:21 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.61)
-	(envelope-from <ths@networkno.de>)
-	id 1FazEi-0001zm-7g; Tue, 02 May 2006 19:04:36 +0100
-Date:	Tue, 2 May 2006 19:04:36 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Make interrupt handler works for all cases
-Message-ID: <20060502180436.GH5004@networkno.de>
-References: <cda58cb80605020055r2597bf3ds9fb380aab8cbf7b3@mail.gmail.com> <20060502094123.GB4301@linux-mips.org> <cda58cb80605020330hfd0352ds11f7f80603092cde@mail.gmail.com> <20060502104441.GA5004@networkno.de> <cda58cb80605021048n14ec2aa5ldd27e0f9a6fceb8e@mail.gmail.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 20:38:48 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:35238 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133942AbWEBTij (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 2 May 2006 20:38:39 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k42JcdqK003602;
+	Tue, 2 May 2006 20:38:39 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k42Jcci7003601;
+	Tue, 2 May 2006 20:38:38 +0100
+Date:	Tue, 2 May 2006 20:38:38 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jim <jimssubs@telus.net>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: how do i get register state from process before interrupt?
+Message-ID: <20060502193838.GA3474@linux-mips.org>
+References: <4456960D.70403@telus.net>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cda58cb80605021048n14ec2aa5ldd27e0f9a6fceb8e@mail.gmail.com>
-User-Agent: Mutt/1.5.11+cvs20060403
-Return-Path: <ths@networkno.de>
+In-Reply-To: <4456960D.70403@telus.net>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11279
+X-archive-position: 11280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-> 2006/5/2, Thiemo Seufer <ths@networkno.de>:
-> >Franck Bui-Huu wrote:
-> >> 2006/5/2, Ralf Baechle <ralf@linux-mips.org>:
-> >> >On Tue, May 02, 2006 at 09:55:51AM +0200, Franck Bui-Huu wrote:
-> >> >
-> >> >> specially when the kernel is mapped.
-> >> >
-> >> >At which time you're on very fragile ice because TLB instructions should
-> >> >better be executed from an unmapped address ...
-> >> >
-> >>
-> >> well TLB entry used by the kernel is wired, so it should work fined,
-> >> shouldn't it ?
-> >
-> >The architecture spec doesn't guarantee it will.
-> 
-> having a quick look at the TLB handling code, it seems that the code
-> assumes it will...
+On Mon, May 01, 2006 at 04:13:17PM -0700, Jim wrote:
 
-I don't know which code you are looking at, but the kernel's TLB
-handling doesn't run in mapped space. (The ip27 is an exception,
-I assume the R1x000 allows for mapped TLB handling.)
+> I have a number of processes and drivers on a SB1250 card
+> and I suspect one of the drivers is misbehaving such that
+> user processes are not getting a chance to run.  I implemented
+> a rudimentary watchdog in the timer interrupt which is kicked
+> by one such user process if things when things are fine.
+> How would I capture the register state of the process
+> that was running before the interrupt is run?  I'm on
+> linux 2.4.18.
 
+You can find a struct pt_regs at
 
-Thiemo
+  (unsigned long)task_stack_page(p) + THREAD_SIZE - 32
+
+  Ralf

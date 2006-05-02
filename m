@@ -1,40 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 08:20:12 +0100 (BST)
-Received: from web25811.mail.ukl.yahoo.com ([217.146.176.244]:65442 "HELO
-	web25811.mail.ukl.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133408AbWEBHUB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 2 May 2006 08:20:01 +0100
-Received: (qmail 44640 invoked by uid 60001); 2 May 2006 07:19:49 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 08:56:02 +0100 (BST)
+Received: from nz-out-0102.google.com ([64.233.162.193]:28357 "EHLO
+	nz-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133437AbWEBHzw convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 2 May 2006 08:55:52 +0100
+Received: by nz-out-0102.google.com with SMTP id j2so2519212nzf
+        for <linux-mips@linux-mips.org>; Tue, 02 May 2006 00:55:51 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.fr;
-  h=Message-ID:Date:From:Reply-To:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type;
-  b=2iKUVKnnio8la8F9feZsOI6xYjSXzocgnEdyRayzG38LAjtd+qRCMK9RUJj5qWQS98/WuVNiBFOlWe9VTjFGNtfDQf3wxhEe+OitrDc28eTkRLDxsJZOTE4DNyaeeqYgEWatCg+ttUZuHFurknuasrqrvsxA8nQI9S2e9Q10ze4=  ;
-Message-ID: <20060502071949.44638.qmail@web25811.mail.ukl.yahoo.com>
-Date:	Tue, 2 May 2006 07:19:49 +0000 (GMT)
-From:	moreau francis <francis_moreau2000@yahoo.fr>
-Reply-To: moreau francis <francis_moreau2000@yahoo.fr>
-Subject: Re : module allocation
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20060428200307.GA17705@linux-mips.org>
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=BtVgaiK/MYWnSpKzYxQ0pxiAcdHM/AtxEriOkJ7RTW1BKbr459zrwcPOB5/bz8M7+bw3E2AJKOsqkoQb/Li7ixsnMenkU8E/CF9yFpOoQh6C5WqI3djO8TqahotmjIctVa/uIuc9wEF94hkXxbA/8J4IxbRMqM1RENY2kPgcIA4=
+Received: by 10.36.129.3 with SMTP id b3mr706761nzd;
+        Tue, 02 May 2006 00:55:51 -0700 (PDT)
+Received: by 10.36.49.2 with HTTP; Tue, 2 May 2006 00:55:51 -0700 (PDT)
+Message-ID: <cda58cb80605020055r2597bf3ds9fb380aab8cbf7b3@mail.gmail.com>
+Date:	Tue, 2 May 2006 09:55:51 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: [PATCH] Make interrupt handler works for all cases
+Cc:	linux-mips <linux-mips@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <francis_moreau2000@yahoo.fr>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11260
+X-archive-position: 11261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: francis_moreau2000@yahoo.fr
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> There is another reason against putting modules into mapped space and
-> that's the need for -mlong-calls which generates larger, less efficient
-> code.
+specially when the kernel is mapped.
 
-BTW, I don't see why -mlong-calls wouldn't be needed for GFP module
-allocation. Can you explain ?
+Signed-off-by: Franck Bui-Huu <vagabon.xyz@gmail.com>
 
-Thanks
+
+---
+
+ arch/mips/kernel/genex.S |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+72821cd1fc2a6e31e31c2babf338425b29e8f11f
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index ff7af36..50cb0c2 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -132,7 +132,8 @@ NESTED(handle_int, PT_SIZE, sp)
+
+ 	PTR_LA	ra, ret_from_irq
+ 	move	a0, sp
+-	j	plat_irq_dispatch
++	PTR_LA	k0, plat_irq_dispatch
++	jr	k0
+ 	END(handle_int)
+
+ 	__INIT
+--
+1.3.0.g2473

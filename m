@@ -1,72 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 06:46:25 +0100 (BST)
-Received: from bes.recconet.de ([212.227.59.164]:28648 "EHLO bes.recconet.de")
-	by ftp.linux-mips.org with ESMTP id S8133358AbWEBFqM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 2 May 2006 06:46:12 +0100
-Received: from trinity.recco.de (trinity.intern.recconet.de [192.168.11.241])
-	by bes.recconet.de (8.13.1/8.13.1/Recconet-2005031001) with ESMTP id k425kBE2008179
-	for <linux-mips@linux-mips.org>; Tue, 2 May 2006 07:46:11 +0200
-Received: from seneca.recco.de (seneca.recco.de [172.16.135.97])
-	by trinity.recco.de (8.13.1/8.13.1/Reccoware-2005061101) with ESMTP id k425jLl2010102
-	for <linux-mips@linux-mips.org>; Tue, 2 May 2006 07:45:21 +0200
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by seneca.recco.de (8.13.6/8.13.4/Seneca.Reccoware-2005061801) with ESMTP id k425kAqr023308
-	for <linux-mips@linux-mips.org>; Tue, 2 May 2006 07:46:10 +0200
-Subject: Au1200 MMC/SD problem
-From:	Wolfgang Ocker <weo@reccoware.de>
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 07:25:40 +0100 (BST)
+Received: from h081217049130.dyn.cm.kabsi.at ([81.217.49.130]:55767 "EHLO
+	phobos.hvrlab.org") by ftp.linux-mips.org with ESMTP
+	id S8133386AbWEBGZ1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 2 May 2006 07:25:27 +0100
+Received: from mini.intra (dhcp-1432-30.blizz.at [213.143.126.4])
+	(authenticated bits=0)
+	by phobos.hvrlab.org (8.13.4/8.13.4/Debian-3sarge1) with ESMTP id k426PAFK004037
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT);
+	Tue, 2 May 2006 08:25:11 +0200
+Subject: Re: RFC: au1000_etc.c phylib rewrite
+From:	Herbert Valerio Riedel <hvr@gnu.org>
+To:	Mark Schank <mschank@dcbnet.com>
+Cc:	ppopov@embeddedalley.com, sshtylyov@ru.mvista.com,
+	linux-mips@linux-mips.org, jgarzik@pobox.com
+In-Reply-To: <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3>
+References: <1146510542.16643.10.camel@localhost.localdomain>
+	 <1146510542.16643.10.camel@localhost.localdomain>
+	 <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3>
 Content-Type: text/plain
-Organization: Reccoware Systems
-Date:	Tue, 02 May 2006 07:46:10 +0200
-Message-Id: <1146548770.1597.43.camel@seneca.recco.de>
+Organization: Free Software Foundation
+Date:	Tue, 02 May 2006 08:23:47 +0200
+Message-Id: <1146551027.19659.12.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 (2.2.3-4.fc4) 
+X-Mailer: Evolution 2.6.1 
 Content-Transfer-Encoding: 7bit
-Return-Path: <weo@reccoware.de>
+X-Virus-Scanned: ClamAV 0.88.1/1434/Mon May  1 21:51:00 2006 on phobos.hvrlab.org
+X-Virus-Status:	Clean
+Return-Path: <hvr@gnu.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11257
+X-archive-position: 11258
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: weo@reccoware.de
+X-original-sender: hvr@gnu.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Mon, 2006-05-01 at 15:09 -0500, Mark Schank wrote:
+> The Cogent CSB655 used the Broadcom Dual Phy.  They eventually redesigned 
+> the board and switched to two single Broadcom phys, but they continued to 
+> control both phys through MAC0, which is the actual purpose of the dual-phy 
+> hack.  I am a user of the CSB655, so I sort of care.
+> 
+> Will the new PHY framework allow a second PHY for a second MAC (MAC1) be 
+> controlled from the first MAC's (MAC0) mdio interface?
 
-I'm trying to get a SD card to work on an Db1200 board. I'm using kernel
-2.6.16.11 (+ the patch from Jordan Crouse):
+should'nt be a problem (as opposed to the bosporus case... see below)...
+I assume the phy-addresses on which the boarcom dual phy is configured
+are the same for all Cogent CSB655 boards?
 
-http://www.linux-mips.org/archives/linux-mips/2005-12/msg00006.html
+does this need to be autodetected dynamically at runtime, or can we rely
+on a compile time Kconfig-conditional to set a static phy-addr<->eth%
+d-phy mapping for this board-specific case? Or de we really need such a
+complex mii_probe() function to detect weird scenarios? :)
 
-The card gets recognized and issues its relative address. Then command 9
-(send csd) times out.
+using static phy addr mappings would also allow for setting
+board-specific phy-irq assignments, which would then be handled by the
+phylib facilities, instead of polling the status of phy with a timer;
+(and in case we don't have any board-specific compile time setting, we
+can still fall back to search the phy-addresses for a PHY at runtime as
+the generic case)
 
-MMC: req done (37): 0: 00000120 00000000 00000000 00000000
-MMC: starting cmd 29 arg 00018000 flags 00000061
-MMC: req done (29): 0: 80ff8000 00000000 00000000 00000000
-MMC: starting cmd0 2 arg 00000000 flags 00000067
-MMC: req done (02): 0: 01504153 30313642 414a8be0 08004a00
-MMC: starting cmd 03 arg 00000000 flags 00000065
-MMC: req done (03): 0: e008004a 00000000 00000000 00000000
-MMC: starting cmd 02 arg 00000000 flags 00000067
-MMC: req done (02): 1: 00000000 00000000 00000000 00000000
-MMC: req done (02): 1: 00000000 00000000 00000000 00000000
-MMC: req done (02): 1: 00000000 00000000 00000000 00000000
-MMC: req done (02): 1: 00000000 00000000 00000000 00000000
-au1xx(0): DEBUG: set_ios (power=2, clock=450000Hz, vdd=15, mode=2)
-MMC: starting cmd 09 arg e0080000 flags 00000007
-MMC: req done (09): 1: 00000000 00000000 00000000 00000000
-MMC: req done (09): 1: 00000000 00000000 00000000 00000000
-MMC: req done (09): 1: 00000000 00000000 00000000 00000000
-MMC: req done (09): 1: 00000000 00000000 00000000 00000000
+while at it, what about that CONFIG_MIPS_BOSPORUS special case? why
+doesn't the 2nd MAC see any PHY? how is the 2nd MAC connected to the
+physical world?
 
-I'm new to MMC/SD and I have no idea whether this is a problem with the
-hardware, the software or the SD card (I tried two different SD cards.
-Both work on my laptop with Linux 2.6.16 and a Winbond W83L51xD).
+#ifdef CONFIG_MIPS_BOSPORUS
+        /* This is a workaround for the Micrel/Kendin 5 port switch
+           The second MAC doesn't see a PHY connected... so we need to
+           trick it into thinking we have one.
 
-Any hints are highly appreciated.
+           If this kernel is run on another Au1500 development board
+           the stub will be found as well as the actual PHY. However,
+           the last found PHY will be used... usually at Addr 31 (Db1500).
+        */
 
-Thanks,
-Wolfgang
+
+> Yes, I acknowledge this was a bad design, but its what I am stuck with.
+
+:-)
+-- 
+Herbert Valerio Riedel <hvr@gnu.org>

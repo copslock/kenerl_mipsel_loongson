@@ -1,63 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 08:56:02 +0100 (BST)
-Received: from nz-out-0102.google.com ([64.233.162.193]:28357 "EHLO
-	nz-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133437AbWEBHzw convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 2 May 2006 08:55:52 +0100
-Received: by nz-out-0102.google.com with SMTP id j2so2519212nzf
-        for <linux-mips@linux-mips.org>; Tue, 02 May 2006 00:55:51 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=BtVgaiK/MYWnSpKzYxQ0pxiAcdHM/AtxEriOkJ7RTW1BKbr459zrwcPOB5/bz8M7+bw3E2AJKOsqkoQb/Li7ixsnMenkU8E/CF9yFpOoQh6C5WqI3djO8TqahotmjIctVa/uIuc9wEF94hkXxbA/8J4IxbRMqM1RENY2kPgcIA4=
-Received: by 10.36.129.3 with SMTP id b3mr706761nzd;
-        Tue, 02 May 2006 00:55:51 -0700 (PDT)
-Received: by 10.36.49.2 with HTTP; Tue, 2 May 2006 00:55:51 -0700 (PDT)
-Message-ID: <cda58cb80605020055r2597bf3ds9fb380aab8cbf7b3@mail.gmail.com>
-Date:	Tue, 2 May 2006 09:55:51 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: [PATCH] Make interrupt handler works for all cases
-Cc:	linux-mips <linux-mips@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 May 2006 10:36:38 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:23970 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133408AbWEBJga (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 2 May 2006 10:36:30 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k429aNgt004399;
+	Tue, 2 May 2006 10:36:23 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k429aLwq004398;
+	Tue, 2 May 2006 10:36:21 +0100
+Date:	Tue, 2 May 2006 10:36:21 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	moreau francis <francis_moreau2000@yahoo.fr>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Re : module allocation
+Message-ID: <20060502093621.GA4301@linux-mips.org>
+References: <20060428200307.GA17705@linux-mips.org> <20060502071949.44638.qmail@web25811.mail.ukl.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20060502071949.44638.qmail@web25811.mail.ukl.yahoo.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11261
+X-archive-position: 11262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-specially when the kernel is mapped.
+On Tue, May 02, 2006 at 07:19:49AM +0000, moreau francis wrote:
 
-Signed-off-by: Franck Bui-Huu <vagabon.xyz@gmail.com>
+> > There is another reason against putting modules into mapped space and
+> > that's the need for -mlong-calls which generates larger, less efficient
+> > code.
+> 
+> BTW, I don't see why -mlong-calls wouldn't be needed for GFP module
+> allocation. Can you explain ?
 
+It assumes a low-memory system where the entire RAM resides within the
+range of a J/JAL instructions.
 
----
-
- arch/mips/kernel/genex.S |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
-
-72821cd1fc2a6e31e31c2babf338425b29e8f11f
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index ff7af36..50cb0c2 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -132,7 +132,8 @@ NESTED(handle_int, PT_SIZE, sp)
-
- 	PTR_LA	ra, ret_from_irq
- 	move	a0, sp
--	j	plat_irq_dispatch
-+	PTR_LA	k0, plat_irq_dispatch
-+	jr	k0
- 	END(handle_int)
-
- 	__INIT
---
-1.3.0.g2473
+  Ralf

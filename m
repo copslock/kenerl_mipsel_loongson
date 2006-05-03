@@ -1,62 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 17:11:40 +0100 (BST)
-Received: from smtp135.iad.emailsrvr.com ([207.97.245.135]:5834 "HELO
-	smtp135.iad.emailsrvr.com") by ftp.linux-mips.org with SMTP
-	id S8133465AbWECQLa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 May 2006 17:11:30 +0100
-Received: from ratin (adsl-69-233-145-110.dsl.sndg02.pacbell.net [69.233.145.110])
-	(Authenticated sender: mrahman@sypixx.com)
-	by relay3.r3.iad.emailsrvr.com (SMTP Server) with ESMTP id 625B744C6F8;
-	Wed,  3 May 2006 12:11:21 -0400 (EDT)
-Message-ID: <005501c66ecc$4b2ef470$2300a8c0@ratin>
-Reply-To: "Ratin" <mrahman@sypixx.com>
-From:	"Ratin" <mrahman@sypixx.com>
-To:	"Freddy Spierenburg" <freddy@dusktilldawn.nl>
-Cc:	<linux-mips@linux-mips.org>
-References: <4456960D.70403@telus.net> <20060502193838.GA3474@linux-mips.org> <007e01c66e2e$8008f720$2300a8c0@ratin> <20060503071103.GC11097@dusktilldawn.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 17:14:32 +0100 (BST)
+Received: from witte.sonytel.be ([80.88.33.193]:161 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S8133465AbWECQOV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 3 May 2006 17:14:21 +0100
+Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k43GEJCQ017887;
+	Wed, 3 May 2006 18:14:19 +0200 (MEST)
+Date:	Wed, 3 May 2006 18:14:18 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Ratin <mrahman@sypixx.com>
+cc:	Freddy Spierenburg <freddy@dusktilldawn.nl>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
 Subject: Re: changing IP address on mipsel-linux
-Date:	Wed, 3 May 2006 09:11:53 -0700
-Organization: Sypixx Networks
+In-Reply-To: <005501c66ecc$4b2ef470$2300a8c0@ratin>
+Message-ID: <Pine.LNX.4.62.0605031813190.11602@pademelon.sonytel.be>
+References: <4456960D.70403@telus.net> <20060502193838.GA3474@linux-mips.org>
+ <007e01c66e2e$8008f720$2300a8c0@ratin> <20060503071103.GC11097@dusktilldawn.nl>
+ <005501c66ecc$4b2ef470$2300a8c0@ratin>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-X-Virus-Scanned: OK
-Return-Path: <mrahman@sypixx.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11291
+X-archive-position: 11292
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrahman@sypixx.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Freddy, Thanks for your response, I appreciate your help. I am kind of 
-new to this version of Linux.
-The uname -a gives me this:
+On Wed, 3 May 2006, Ratin wrote:
+> Hi Freddy, Thanks for your response, I appreciate your help. I am kind of new
+> to this version of Linux.
+> The uname -a gives me this:
+> 
+> Linux 192.168.0.62 2.6.10-idt20050328 #1 Tue Dec 13 10:36:55 PST 2005 mips
+> unknown
+> 
+> But it is referred as Mipsel-Linux. It is running busybox.  I guess I have to
+> dig more into kernel code to see how the
+> kernel sets the IP address during init. I was hoping somebody here would know
+> the Mipsel-Linux IP address assignment
+> process. Thanks,
 
-Linux 192.168.0.62 2.6.10-idt20050328 #1 Tue Dec 13 10:36:55 PST 2005 mips 
-unknown
+The kernel does not set the IP address during init. That's the responsibility
+of user space, i.e. the scripts that call busybox in your case.
 
-But it is referred as Mipsel-Linux. It is running busybox.  I guess I have 
-to dig more into kernel code to see how the
-kernel sets the IP address during init. I was hoping somebody here would 
-know the Mipsel-Linux IP address assignment
-process. Thanks,
+Gr{oetje,eeting}s,
 
- Ratin
+						Geert
 
------ Original Message ----- 
-From: "Freddy Spierenburg" <freddy@dusktilldawn.nl>
-To: "Ratin" <mrahman@sypixx.com>
-Cc: <linux-mips@linux-mips.org>
-Sent: Wednesday, May 03, 2006 12:11 AM
-Subject: Re: changing IP address on mipsel-linux
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

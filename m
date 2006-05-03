@@ -1,58 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 04:17:29 +0100 (BST)
-Received: from maillog.itri.org.tw ([61.61.254.20]:33220 "EHLO
-	maillog.itri.org.tw") by ftp.linux-mips.org with ESMTP
-	id S8126480AbWECDRO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 May 2006 04:17:14 +0100
-Received: from mail.itri.org.tw (mail [140.96.157.2])
-	by maillog.itri.org.tw (8.11.6+Sun/8.11.6) with ESMTP id k433D2o10802
-	for <linux-mips@linux-mips.org>; Wed, 3 May 2006 11:13:05 +0800 (CST)
-Received: from mail.itri.org.tw (localhost [127.0.0.1])
-	by mail.itri.org.tw (8.13.4/8.13.4) with ESMTP id k433Mth5010922
-	for <linux-mips@linux-mips.org>; Wed, 3 May 2006 11:23:10 +0800 (CST)
-Received: from ms1.itri.org.tw ([140.96.147.43])
-	by mail.itri.org.tw (8.13.4/8.13.4) with ESMTP id k433MKV9010489
-	for <linux-mips@linux-mips.org>; Wed, 3 May 2006 11:22:55 +0800 (CST)
-Received: from 11088002601 ([140.96.147.156])
-          by ms1.itri.org.tw (Lotus Domino Release 5.0.13a)
-          with ESMTP id 2006050311160693:18681 ;
-          Wed, 3 May 2006 11:16:06 +0800 
-Message-ID: <00fa01c66e5f$eb0af470$8873608c@11088002601>
-Reply-To: "Charles C.K.Lai" <cklai@itri.org.tw>
-From:	"Charles C.K.Lai" <cklai@itri.org.tw>
-To:	<linux-mips@linux-mips.org>
-Subject: How can I use DBAu1550 UART3 instead of UART0?
-Date:	Wed, 3 May 2006 11:16:01 +0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 08:11:24 +0100 (BST)
+Received: from tool.snarl.nl ([213.84.251.124]:49087 "HELO tool.snarl.nl")
+	by ftp.linux-mips.org with SMTP id S8133394AbWECHLM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 3 May 2006 08:11:12 +0100
+Received: from localhost (tool.local.snarl.nl [127.0.0.1])
+	by tool.snarl.nl (Postfix) with ESMTP id 7A3195E584;
+	Wed,  3 May 2006 09:11:04 +0200 (CEST)
+Received: from tool.snarl.nl ([127.0.0.1])
+	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 06440-03; Wed, 3 May 2006 09:11:04 +0200 (CEST)
+Received: by tool.snarl.nl (Postfix, from userid 1000)
+	id 06AFF5DF61; Wed,  3 May 2006 09:11:03 +0200 (CEST)
+Date:	Wed, 3 May 2006 09:11:03 +0200
+From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+To:	Ratin <mrahman@sypixx.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: changing IP address on mipsel-linux
+Message-ID: <20060503071103.GC11097@dusktilldawn.nl>
+References: <4456960D.70403@telus.net> <20060502193838.GA3474@linux-mips.org> <007e01c66e2e$8008f720$2300a8c0@ratin>
 MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-X-MIMETrack: Itemize by SMTP Server on MS1/ITRI(Release 5.0.13a  |April 8, 2004) at 2006-05-03
- 11:16:07 AM,
-	Serialize by Router on MS1/ITRI(Release 5.0.13a  |April 8, 2004) at 2006-05-03
- 11:16:42 AM,
-	Serialize complete at 2006-05-03 11:16:42 AM
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <cklai@itri.org.tw>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="YOiw+WO4Gc95oc3L"
+Content-Disposition: inline
+In-Reply-To: <007e01c66e2e$8008f720$2300a8c0@ratin>
+X-User-Agent-Feature: All mail clients suck. This one just sucks less.
+X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
+User-Agent: Mutt/1.5.11+cvs20060403
+Return-Path: <freddy@dusktilldawn.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11284
+X-archive-position: 11285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cklai@itri.org.tw
+X-original-sender: freddy@dusktilldawn.nl
 Precedence: bulk
 X-list: linux-mips
 
-Dear All, 
 
-    I have a AMD DBAu1550 Development board, 
-    if I have to use the uart port 3 instead of uart port 0, 
-    what can I do? 
+--YOiw+WO4Gc95oc3L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-    Thanks a lot. 
+Hi Ratin,
 
-    Charles C.K. Lai
+On Tue, May 02, 2006 at 02:22:21PM -0700, Ratin wrote:
+> I am not sure if this is the right mailing list (new here) but
+> how would you change the IP address parmanently on a box having
+> IDT C32H434 CPU ?
+Changing the ip address permanently does not depend on the cpu
+used, but more on the GNU/Linux distribution used.
+
+> There seems to be no /etc/init.d/network on this box. I could
+> do it with ifconfig but I need to make parmanent change as well
+> as effective right away.
+You should first tell me which GNU/Linux distribution you use and
+then I can give you a clue on where to change it permanently. Say
+for instance Debian uses /etc/network/interfaces . S.u.S.E has a
+thing called YaST if I remember correctly and Red Hat and the
+likes use a directory called /etc/sysconfig/network-scripts/
+
+But you tell me there does exist no /etc/init.d/network. So maybe
+you are running BusyBox or something and then you are completely
+on your own how to do things. Althought conforming to well known
+practice will not hurt you. :-)
+
+The best thing to do is check out /etc/inittab and learn how it
+works ($ man inittab). Then you will be able to find out how your
+GNU/Linux system boots and after some thorough searching you will
+find where the ip address is set.
+Then there is also the possibility that the ip address is set
+using the command to boot the kernel. Well, then you know where
+to permanently change it :-)
+
+As you can see, lot's of possibilities. Good luck!
+
+> The other question is when I change the IP address on the fly
+> with ifconfig, is there a way to make the inet listener apps
+> (that are running in the background) to autometically listen on
+> the new IP address?
+This depends completely on the application used. If the
+application listens on a specific ip address, then you should
+probably restart the application to make it listen to the new ip
+address. But than you would in between the restart also have to
+configure the application to listen on the new ip address. If you
+have the application listen to INADDR_ANY (0.0.0.0) then you
+don't have to do anything.
+
+Again, good luck!
+
+--=20
+$ cat ~/.signature
+Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
+GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+
+--YOiw+WO4Gc95oc3L
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
+
+iD8DBQFEWFeHbxf9XXlB0eERAvSUAKDkbA0Q33vpKwvqRdc0sVvYyTr8awCgnkxp
+YQmJDQqafDah1S8DhNdDet8=
+=W9SC
+-----END PGP SIGNATURE-----
+
+--YOiw+WO4Gc95oc3L--

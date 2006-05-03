@@ -1,83 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 17:54:37 +0100 (BST)
-Received: from smtp125.iad.emailsrvr.com ([207.97.245.125]:23959 "HELO
-	smtp135.iad.emailsrvr.com") by ftp.linux-mips.org with SMTP
-	id S7620187AbWECQy1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 May 2006 17:54:27 +0100
-Received: from ratin (adsl-69-233-145-110.dsl.sndg02.pacbell.net [69.233.145.110])
-	(Authenticated sender: mrahman@sypixx.com)
-	by relay2.r2.iad.emailsrvr.com (SMTP Server) with ESMTP id 11B6744C45A;
-	Wed,  3 May 2006 12:54:12 -0400 (EDT)
-Message-ID: <007b01c66ed2$493622f0$2300a8c0@ratin>
-Reply-To: "Ratin" <mrahman@sypixx.com>
-From:	"Ratin" <mrahman@sypixx.com>
-To:	"Don Hiatt" <Don_Hiatt@pmc-sierra.com>
-Cc:	<linux-mips@linux-mips.org>
-References: <5C1FD43E5F1B824E83985A74F396286E01DD4E88@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-Subject: Re: changing IP address on mipsel-linux
-Date:	Wed, 3 May 2006 09:54:46 -0700
-Organization: Sypixx Networks
-MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-X-Virus-Scanned: OK
-Return-Path: <mrahman@sypixx.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 19:00:30 +0100 (BST)
+Received: from firewall.dcbnet.com ([12.96.67.19]:10470 "EHLO
+	firewall.dcbnet.com") by ftp.linux-mips.org with ESMTP
+	id S7620194AbWECSAU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 3 May 2006 19:00:20 +0100
+Received: from mschank.dcbnet.com (mschank.dcbnet.com [205.166.54.128])
+	by firewall.dcbnet.com (8.12.10/8.12.10) with ESMTP id k43I08i7013390;
+	Wed, 3 May 2006 13:00:11 -0500
+Message-Id: <5.1.0.14.2.20060503122616.0283e3b0@205.166.54.3>
+X-Sender: mschank@205.166.54.3
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Date:	Wed, 03 May 2006 13:01:02 -0500
+To:	Herbert Valerio Riedel <hvr@gnu.org>
+From:	Mark Schank <mschank@dcbnet.com>
+Subject: Re: RFC: au1000_etc.c phylib rewrite
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <1146674056.31241.18.camel@localhost.localdomain>
+References: <5.1.0.14.2.20060502095256.01fd4210@205.166.54.3>
+ <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3>
+ <1146510542.16643.10.camel@localhost.localdomain>
+ <1146510542.16643.10.camel@localhost.localdomain>
+ <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3>
+ <5.1.0.14.2.20060502095256.01fd4210@205.166.54.3>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Return-Path: <mschank@dcbnet.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11295
+X-archive-position: 11296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrahman@sypixx.com
+X-original-sender: mschank@dcbnet.com
 Precedence: bulk
 X-list: linux-mips
 
-I meant changing the IP address of the device running mipsel-linux 
-statically (not DHCP) on the fly (I am using http interface and a C handler 
-function to do so) and then keeping it for the rest of its lifetime, so have 
-to run system ( ifconfig ) or similar API call for immediate change and 
-perhaps write the new IP to a file somewhere, which I am yet to discover.
+Herbert,
 
-Ratin
+>btw, is the CSB655 supported at all in the 2.6 linux-mips branch, I
+>couldn't find any mention of it in Kconfig files either?
 
------ Original Message ----- 
-From: "Don Hiatt" <Don_Hiatt@pmc-sierra.com>
-To: "'Ratin'" <mrahman@sypixx.com>
-Cc: <linux-mips@linux-mips.org>
-Sent: Wednesday, May 03, 2006 9:21 AM
-Subject: RE: changing IP address on mipsel-linux
+The CSB655 makes use of some of these seeming "unused" options, but the 
+board specific code for the CSB655 was never submitted back to linux-mips 
+tree.  I did not develop of any of this code, so I am not sure of the 
+reason why it was not submitted back.  I received the code when I purchased 
+a CSB655/955 developers kit and have since ported portions of it forward to 
+the 2.6.16 branch.  I am willing to submit what I have done, but I don't 
+want to step on the original developers toes.  There were also several 
+changes I had to make to generic MIPs and Linux code, and I am not sure of 
+the proper way to handle them in the general linux-mips tree.
 
-
-> Perhaps you mean you want to set the IP for a NFS mounted filesystem?
->
-> If so you can pass "ip=dhcp" or ip="192.168.13.120" as a kernel argument.
->
-> Cheers,
->
-> don
->
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Ratin
-> Sent: Wednesday, May 03, 2006 9:12 AM
-> To: Freddy Spierenburg
-> Cc: linux-mips@linux-mips.org
-> Subject: Re: changing IP address on mipsel-linux
->
->
-> Hi Freddy, Thanks for your response, I appreciate your help. I am kind of
-> new to this version of Linux.
-> The uname -a gives me this:
->
-> Linux 192.168.0.62 2.6.10-idt20050328 #1 Tue Dec 13 10:36:55 PST 2005 mips
-> unknown
->
-> Ratin
-> 
+-Mark

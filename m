@@ -1,68 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 15:44:02 +0100 (BST)
-Received: from amdext3.amd.com ([139.95.251.6]:61841 "EHLO amdext3.amd.com")
-	by ftp.linux-mips.org with ESMTP id S7620188AbWECOnu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 3 May 2006 15:43:50 +0100
-Received: from SSVLGW01.amd.com (ssvlgw01.amd.com [139.95.250.169])
-	by amdext3.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k43EhQcE022418;
-	Wed, 3 May 2006 07:44:27 -0700
-Received: from 139.95.53.182 by SSVLGW02.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Wed, 03 May 2006 07:43:33 -0700
-X-Server-Uuid: 519AC16A-9632-469E-B354-112C592D09E8
-Received: from ldcmail.amd.com ([147.5.200.40]) by SSVLEXBH1.amd.com
- with Microsoft SMTPSVC(6.0.3790.2499); Wed, 3 May 2006 07:43:33 -0700
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id E66FD2028; Wed, 3 May 2006
- 08:43:32 -0600 (MDT)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k43ExRam003142; Wed, 3 May 2006 08:59:27
- -0600
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k43ExRx8003141; Wed, 3 May 2006 08:59:27 -0600
-Date:	Wed, 3 May 2006 08:59:27 -0600
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Wolfgang Ocker" <weo@reccoware.de>
-cc:	linux-mips@linux-mips.org
-Subject: Re: Au1200 MMC/SD problem
-Message-ID: <20060503145927.GD24185@cosmic.amd.com>
-References: <1146548770.1597.43.camel@seneca.recco.de>
- <20060502144314.GI22167@cosmic.amd.com>
- <1146592926.11188.12.camel@seneca.recco.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 May 2006 17:11:40 +0100 (BST)
+Received: from smtp135.iad.emailsrvr.com ([207.97.245.135]:5834 "HELO
+	smtp135.iad.emailsrvr.com") by ftp.linux-mips.org with SMTP
+	id S8133465AbWECQLa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 3 May 2006 17:11:30 +0100
+Received: from ratin (adsl-69-233-145-110.dsl.sndg02.pacbell.net [69.233.145.110])
+	(Authenticated sender: mrahman@sypixx.com)
+	by relay3.r3.iad.emailsrvr.com (SMTP Server) with ESMTP id 625B744C6F8;
+	Wed,  3 May 2006 12:11:21 -0400 (EDT)
+Message-ID: <005501c66ecc$4b2ef470$2300a8c0@ratin>
+Reply-To: "Ratin" <mrahman@sypixx.com>
+From:	"Ratin" <mrahman@sypixx.com>
+To:	"Freddy Spierenburg" <freddy@dusktilldawn.nl>
+Cc:	<linux-mips@linux-mips.org>
+References: <4456960D.70403@telus.net> <20060502193838.GA3474@linux-mips.org> <007e01c66e2e$8008f720$2300a8c0@ratin> <20060503071103.GC11097@dusktilldawn.nl>
+Subject: Re: changing IP address on mipsel-linux
+Date:	Wed, 3 May 2006 09:11:53 -0700
+Organization: Sypixx Networks
 MIME-Version: 1.0
-In-Reply-To: <1146592926.11188.12.camel@seneca.recco.de>
-User-Agent: Mutt/1.5.11
-X-OriginalArrivalTime: 03 May 2006 14:43:33.0502 (UTC)
- FILETIME=[F3D131E0:01C66EBF]
-X-WSS-ID: 68461E1F32W5755790-01-01
 Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
 Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2869
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
+X-Virus-Scanned: OK
+Return-Path: <mrahman@sypixx.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11290
+X-archive-position: 11291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: mrahman@sypixx.com
 Precedence: bulk
 X-list: linux-mips
 
-> The last one. In au1xmmc_irq() the status register is read with the
-> SD_STATUS_RAT bit set.
+Hi Freddy, Thanks for your response, I appreciate your help. I am kind of 
+new to this version of Linux.
+The uname -a gives me this:
 
-Ok - so the card is timing out.  That could be a series of problems, some
-of which could be hardware, some of which could be software.  Since you are
-using a db1200, I'll rule out hardware for the moment, unless you have a
-modified board.
+Linux 192.168.0.62 2.6.10-idt20050328 #1 Tue Dec 13 10:36:55 PST 2005 mips 
+unknown
 
-Do MMC cards work?  Try one - that will give us another data point.
+But it is referred as Mipsel-Linux. It is running busybox.  I guess I have 
+to dig more into kernel code to see how the
+kernel sets the IP address during init. I was hoping somebody here would 
+know the Mipsel-Linux IP address assignment
+process. Thanks,
 
-Jordan
+ Ratin
 
--- 
-Jordan Crouse
-Senior Linux Engineer
-AMD - Personal Connectivity Solutions Group
-<www.amd.com/embeddedprocessors>
+----- Original Message ----- 
+From: "Freddy Spierenburg" <freddy@dusktilldawn.nl>
+To: "Ratin" <mrahman@sypixx.com>
+Cc: <linux-mips@linux-mips.org>
+Sent: Wednesday, May 03, 2006 12:11 AM
+Subject: Re: changing IP address on mipsel-linux

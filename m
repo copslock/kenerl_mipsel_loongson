@@ -1,99 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 11:12:56 +0100 (BST)
-Received: from tool.snarl.nl ([213.84.251.124]:5058 "HELO tool.snarl.nl")
-	by ftp.linux-mips.org with SMTP id S8133713AbWEDKMk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 4 May 2006 11:12:40 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id 356125E5B2;
-	Thu,  4 May 2006 12:12:34 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id 09015-01-2; Thu, 4 May 2006 12:12:33 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id D28865DF61; Thu,  4 May 2006 12:12:33 +0200 (CEST)
-Date:	Thu, 4 May 2006 12:12:33 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	safiudeen Ts <safiudeen@hotmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Linux-2.6.16 on DB1100
-Message-ID: <20060504101233.GJ11097@dusktilldawn.nl>
-References: <20060504065657.GI11097@dusktilldawn.nl> <BAY18-F5B011E1AD8FC316E77126ADB40@phx.gbl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 13:45:56 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:20154 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133764AbWEDMpo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 May 2006 13:45:44 +0100
+Received: (qmail 24665 invoked from network); 4 May 2006 16:50:43 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 4 May 2006 16:50:43 -0000
+Message-ID: <4459F72D.4010408@ru.mvista.com>
+Date:	Thu, 04 May 2006 16:44:29 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="p2RPQY0WN3yNjQaZ"
-Content-Disposition: inline
-In-Reply-To: <BAY18-F5B011E1AD8FC316E77126ADB40@phx.gbl>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.11+cvs20060403
-Return-Path: <freddy@dusktilldawn.nl>
+To:	Rodolfo Giometti <giometti@linux.it>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Physical addresses fix for au1x00 serial driver
+References: <20060504101112.GC19913@gundam.enneenne.com>
+In-Reply-To: <20060504101112.GC19913@gundam.enneenne.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11304
+X-archive-position: 11305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
 
---p2RPQY0WN3yNjQaZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Rodolfo Giometti wrote:
 
-Hi Safiudeen,
+> here:
+> 
+>    http://ftp.enneenne.com/pub/misc/au1100-patches/linux/patch-au1x00-serial-phys-addr
 
-On Thu, May 04, 2006 at 09:10:34AM +0000, safiudeen Ts wrote:
-> please tell me wether I should apply any patches to this Linux-2.6.16=20
-> kernel to make it works with db1100
-There do not exist patches that will help you with your problem.
-I do not know at the moment what exactly goes wrong, but I have a
-2.6.16 kernel running on a db1100 without your problems. There do
-exist some small problems with the standard 2.6.16 git, but they
-are not related to your problem (IMHO).
+> a little patch (against «linux-2.6.16-stable» branch and tested on
+> au1100 based board) to fix the addresses specification for the serial
+> driver. With this patch at boot time we get:
 
-To help you out a bit I have put a minimal working kernel at
+>    Serial: 8250/16550 driver $Revision: 1.90 $ 3 ports, IRQ sharing disabled       
+>    serial8250.7: ttyS0 at MMIO 0x11100000 (irq = 0) is a 16550A                    
+>    serial8250.7: ttyS1 at MMIO 0x11200000 (irq = 1) is a 16550A                    
+>    serial8250.7: ttyS2 at MMIO 0x11400000 (irq = 3) is a 16550A                    
 
-	http://snarl.nl/~freddy/misc/mips.linux-2.6.16-minimal/
+    I have already noticed and fixed this. The fix is in Andrew Morton's tree 
+(unpublished yet). See this msg for the patch:
 
-Try the srec file and see what happens. Use the YAMON commands
-below, althought I tried your command's too and it booted.
-Althought it gave a kernel panic, since it was obviously not able
-to mount a root partition. This is because your command (the
-start environment variable in YAMON) is not compatible with the
-setup I have over here.
+http://www.linux-mips.org/archives/linux-mips/2006-04/msg00029.html
 
-	YAMON> load tftp://192.168.0.5/vmlinux-2.6.16-minimal.srec
-	YAMON> go .
+ >    wwpc:~# cat /proc/iomem 
 
-If this works for you, you can find at the URL mentioned above
-the config file I used to build the kernel and that should
-provide you with a starting point to continue exploring the
-system.
-At that same URL are two small patches that should solve the
-small problems with the standard 2.6.16 git I mentioned before.
+ >    10100000-10200000 : au1xxx-ohci.0 
 
-Good luck!
+ >    10500000-1050ffff : eth-base 
 
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+ >    10520000-10520003 : eth-mac 
 
---p2RPQY0WN3yNjQaZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+ >    11100000-1110001f : serial 
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.3 (GNU/Linux)
+ >    11200000-1120001f : serial 
 
-iD8DBQFEWdORbxf9XXlB0eERAuRRAKCLnQ6atPzajVM4qEop1OijmceQ8ACeO/hN
-XWtLRIi9+CfaddBVzh81BAU=
-=pwAj
------END PGP SIGNATURE-----
+ >    11400000-1140001f : serial 
 
---p2RPQY0WN3yNjQaZ--
+
+    This is not quite correct. The UARTs take up 1 MB of memory each.
+
+> Ciao,
+> 
+> Rodolfo
+
+WBR, Sergei

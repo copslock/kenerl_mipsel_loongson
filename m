@@ -1,44 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 22:29:13 +0100 (BST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:50824 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133797AbWEDV2y
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 May 2006 22:28:54 +0100
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k44LSiWd015499;
-	Thu, 4 May 2006 14:28:44 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k44LSgiR000803;
-	Thu, 4 May 2006 14:28:43 -0700 (PDT)
-Message-ID: <028901c66fc2$3ff139f0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Kevin D. Kissell" <kevink@mips.com>,
-	"Tom Rini" <trini@kernel.crashing.org>,
-	"Thiemo Seufer" <ths@networkno.de>
-Cc:	"Tim Bird" <tim.bird@am.sony.com>, <linux-mips@linux-mips.org>
-References: <445A577D.7090507@am.sony.com> <20060504205517.GF18218@networkno.de> <20060504210449.GA12676@smtp.west.cox.net> <028201c66fc1$4f724d20$10eca8c0@grendel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 22:44:35 +0100 (BST)
+Received: from fed1rmmtao11.cox.net ([68.230.241.28]:988 "HELO
+	fed1rmmtao11.cox.net") by ftp.linux-mips.org with SMTP
+	id S8133790AbWEDVoZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 May 2006 22:44:25 +0100
+Received: from opus ([68.110.9.227]) by fed1rmmtao11.cox.net
+          (InterMail vM.6.01.06.01 201-2131-130-101-20060113) with ESMTP
+          id <20060504214417.VUNH9215.fed1rmmtao11.cox.net@opus>;
+          Thu, 4 May 2006 17:44:17 -0400
+Date:	Thu, 4 May 2006 14:44:17 -0700
+From:	Tom Rini <trini@kernel.crashing.org>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	Thiemo Seufer <ths@networkno.de>, Tim Bird <tim.bird@am.sony.com>,
+	linux-mips@linux-mips.org
 Subject: Re: [PATCH] fix mips/Makefile to support CROSS_COMPILE from environment var
-Date:	Thu, 4 May 2006 23:32:29 +0200
+Message-ID: <20060504214417.GB12676@smtp.west.cox.net>
+References: <445A577D.7090507@am.sony.com> <20060504205517.GF18218@networkno.de> <20060504210449.GA12676@smtp.west.cox.net> <028201c66fc1$4f724d20$10eca8c0@grendel>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1807
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <kevink@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <028201c66fc1$4f724d20$10eca8c0@grendel>
+User-Agent: Mutt/1.5.11+cvs20060403
+Return-Path: <trini@kernel.crashing.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11326
+X-archive-position: 11327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: trini@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, May 04, 2006 at 11:25:46PM +0200, Kevin D. Kissell wrote:
 > > Let me ask a stupid question.  With all of the ways to otherwise do a
 > > cross compile, why a config option on MIPS?  ARM*/SH*, which are at
 > > least as likely to not be native-compiled, don't do that.  Just
@@ -48,10 +42,11 @@ X-list: linux-mips
 > as a workstation/server processor, and for a while there cross-compilation
 > was the exception rather than the rule.
 
-Before anyone else jumps in, yeah, ARM was sort-of a workstation processor
-to begin with, too, but I don't think the original Acorn RISC Machine was set
-up to run a "real" OS, with memory management, etc., whereas MIPS was.
+OK, PowerPC.  My kinda question/point was perhaps it's time to deprecate
+CONFIG_CROSSCOMPILE in favor of env or make to bring it in line with
+other arches (similar to how 2.4 had a few ways for
+arch/$(ARCH)/*config/ dirs, 2.6 is uniform).
 
-            Regards,
-
-            Kevin K.
+-- 
+Tom Rini
+http://gate.crashing.org/~trini/

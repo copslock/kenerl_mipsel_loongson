@@ -1,68 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 16:50:05 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:60815 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133518AbWEDPty (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 May 2006 16:49:54 +0100
-Received: (qmail 27896 invoked from network); 4 May 2006 19:54:54 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 4 May 2006 19:54:54 -0000
-Message-ID: <445A225F.7090300@ru.mvista.com>
-Date:	Thu, 04 May 2006 19:48:47 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Rodolfo Giometti <giometti@linux.it>
-CC:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 17:33:24 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:10184 "EHLO
+	gundam.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133518AbWEDQdH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 May 2006 17:33:07 +0100
+Received: from giometti by gundam.enneenne.com with local (Exim 3.36 #1 (Debian))
+	id 1FbglB-00044M-00; Thu, 04 May 2006 18:33:01 +0200
+Date:	Thu, 4 May 2006 18:33:01 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] 8250_early console support for au1x00
-References: <20060504134509.GE19913@gundam.enneenne.com> <445A114B.4040404@ru.mvista.com> <20060504152048.GG19913@gundam.enneenne.com>
-In-Reply-To: <20060504152048.GG19913@gundam.enneenne.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Message-ID: <20060504163301.GH19913@gundam.enneenne.com>
+References: <20060504134509.GE19913@gundam.enneenne.com> <445A114B.4040404@ru.mvista.com> <20060504152048.GG19913@gundam.enneenne.com> <445A225F.7090300@ru.mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="WK3l2KTTmXPVedZ6"
+Content-Disposition: inline
+In-Reply-To: <445A225F.7090300@ru.mvista.com>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11313
+X-archive-position: 11314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
 
-Rodolfo Giometti wrote:
-> On Thu, May 04, 2006 at 06:35:55PM +0400, Sergei Shtylyov wrote:
+--WK3l2KTTmXPVedZ6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->>   The following 2 fragments are kind of contradictory:
+On Thu, May 04, 2006 at 07:48:47PM +0400, Sergei Shtylyov wrote:
+>=20
+>    Yes. But the error msg emmitted by your patch would look this way, i.e=
+=2E=20
+> AU, not MMIO. No symmetry. :-)
 
-> I see, but I decided to keep it different since the kernel message is:
+Ah! Now I see... ok, I'll fix it! :)
 
->    Adding console on ttyS0 at MMIO 0x11100000 (options '115200')
+>    Wouldn't hurt, just useless. So, I think no special checks are needed =
+to=20
+> avoid it. :-)
 
-> and setting it as:
+If don't hurt I think we should use the physical address instead of
+KSEG1...
 
->    Adding console on ttyS0 at AU 0x11100000 (options '115200')
+Ciao,
 
-> sounds bad to me. :)
+Rodolfo
 
-    Yes. But the error msg emmitted by your patch would look this way, i.e. 
-AU, not MMIO. No symmetry. :-)
+--=20
 
->>And, as I said. there's not much sense in calling iomap() on Alchemy UART, 
->>UPIO_IOREMAP flag wasn't really needed...
-> 
-> 
-> Mmm... to be «coherent» I think it should be done...
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
 
-    Wouldn't hurt, just useless. So, I think no special checks are needed to 
-avoid it. :-)
+--WK3l2KTTmXPVedZ6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-> Ciao,
-> 
-> Rodolfo
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
 
-WBR, Sergei
+iD8DBQFEWiy9QaTCYNJaVjMRAhXAAJ9VMKjO+nzc0X9sZUOKh6DPg0XN8QCfUB8M
+NNVeAQUmNB2n7EE5OfWtiYA=
+=pscU
+-----END PGP SIGNATURE-----
+
+--WK3l2KTTmXPVedZ6--

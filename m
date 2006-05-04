@@ -1,78 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 13:45:56 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:20154 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133764AbWEDMpo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 May 2006 13:45:44 +0100
-Received: (qmail 24665 invoked from network); 4 May 2006 16:50:43 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 4 May 2006 16:50:43 -0000
-Message-ID: <4459F72D.4010408@ru.mvista.com>
-Date:	Thu, 04 May 2006 16:44:29 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Rodolfo Giometti <giometti@linux.it>
-CC:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 May 2006 14:24:34 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:49804 "EHLO
+	gundam.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133767AbWEDNYU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 May 2006 14:24:20 +0100
+Received: from giometti by gundam.enneenne.com with local (Exim 3.36 #1 (Debian))
+	id 1FbdoT-000730-00; Thu, 04 May 2006 15:24:13 +0200
+Date:	Thu, 4 May 2006 15:24:13 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Physical addresses fix for au1x00 serial driver
-References: <20060504101112.GC19913@gundam.enneenne.com>
-In-Reply-To: <20060504101112.GC19913@gundam.enneenne.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Message-ID: <20060504132413.GD19913@gundam.enneenne.com>
+References: <20060504101112.GC19913@gundam.enneenne.com> <4459F72D.4010408@ru.mvista.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Pd0ReVV5GZGQvF3a"
+Content-Disposition: inline
+In-Reply-To: <4459F72D.4010408@ru.mvista.com>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11305
+X-archive-position: 11306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
 
-Rodolfo Giometti wrote:
+--Pd0ReVV5GZGQvF3a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> here:
-> 
->    http://ftp.enneenne.com/pub/misc/au1100-patches/linux/patch-au1x00-serial-phys-addr
+On Thu, May 04, 2006 at 04:44:29PM +0400, Sergei Shtylyov wrote:
+>
+>    I have already noticed and fixed this. The fix is in Andrew Morton's=
+=20
+>    tree (unpublished yet). See this msg for the patch:
+>=20
+> http://www.linux-mips.org/archives/linux-mips/2006-04/msg00029.html
 
-> a little patch (against «linux-2.6.16-stable» branch and tested on
-> au1100 based board) to fix the addresses specification for the serial
-> driver. With this patch at boot time we get:
+I see. :)
 
->    Serial: 8250/16550 driver $Revision: 1.90 $ 3 ports, IRQ sharing disabled       
->    serial8250.7: ttyS0 at MMIO 0x11100000 (irq = 0) is a 16550A                    
->    serial8250.7: ttyS1 at MMIO 0x11200000 (irq = 1) is a 16550A                    
->    serial8250.7: ttyS2 at MMIO 0x11400000 (irq = 3) is a 16550A                    
+>    This is not quite correct. The UARTs take up 1 MB of memory each.
 
-    I have already noticed and fixed this. The fix is in Andrew Morton's tree 
-(unpublished yet). See this msg for the patch:
+Yes, in my patch is missing this part:
 
-http://www.linux-mips.org/archives/linux-mips/2006-04/msg00029.html
+           switch (up->port.iotype) {
+   +       case UPIO_AU:
+   +               size =3D 0x100000;
+   +               /* fall thru */
+           case UPIO_MEM:
+                   if (!up->port.mapbase)
 
- >    wwpc:~# cat /proc/iomem 
+Are you already working on 8250_early for au1x00? I'm quite ready for
+the patch. :)
 
- >    10100000-10200000 : au1xxx-ohci.0 
+Ciao,
 
- >    10500000-1050ffff : eth-base 
+Rodolfo
 
- >    10520000-10520003 : eth-mac 
+--=20
 
- >    11100000-1110001f : serial 
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
 
- >    11200000-1120001f : serial 
+--Pd0ReVV5GZGQvF3a
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
- >    11400000-1140001f : serial 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
 
+iD8DBQFEWgB9QaTCYNJaVjMRAhmAAJ4g2r+R2UAZkQSZfa3ZO5rQbmsGBgCgmAAu
+q2iDVQHJdYzBUObGT43daU8=
+=tmEV
+-----END PGP SIGNATURE-----
 
-    This is not quite correct. The UARTs take up 1 MB of memory each.
-
-> Ciao,
-> 
-> Rodolfo
-
-WBR, Sergei
+--Pd0ReVV5GZGQvF3a--

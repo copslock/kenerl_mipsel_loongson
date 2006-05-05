@@ -1,76 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 19:45:45 +0100 (BST)
-Received: from mail-out.m-online.net ([212.18.0.9]:15009 "HELO
-	mail-out.m-online.net") by ftp.linux-mips.org with SMTP
-	id S8133813AbWEESpR convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2006 19:45:17 +0100
-Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
-	by mail-out.m-online.net (Postfix) with ESMTP id 2C43772EE4;
-	Fri,  5 May 2006 20:45:11 +0200 (CEST)
-X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
-X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
-X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
-X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
-X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
-X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
-Received: from mail.denx.de (p549675E3.dip.t-dialin.net [84.150.117.227])
-	by smtp-auth.mnet-online.de (Postfix) with ESMTP id 0D6E79194F;
-	Fri,  5 May 2006 20:45:11 +0200 (CEST)
-Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
-	by mail.denx.de (Postfix) with ESMTP id 9790D6D00A8;
-	Fri,  5 May 2006 20:45:10 +0200 (CEST)
-Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
-	by atlas.denx.de (Postfix) with ESMTP id 86790353BE7;
-	Fri,  5 May 2006 20:45:10 +0200 (MEST)
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-cc:	Tom Rini <trini@kernel.crashing.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thiemo Seufer <ths@networkno.de>,
-	Tim Bird <tim.bird@am.sony.com>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-From:	Wolfgang Denk <wd@denx.de>
-Subject: Re: [PATCH] fix mips/Makefile to support CROSS_COMPILE from environment var 
-Mime-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1
-In-reply-to: Your message of "Fri, 05 May 2006 09:45:38 +0200."
-             <Pine.LNX.4.62.0605050940410.649@pademelon.sonytel.be> 
-Date:	Fri, 05 May 2006 20:45:10 +0200
-Message-Id: <20060505184510.86790353BE7@atlas.denx.de>
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wd@denx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 23:36:24 +0100 (BST)
+Received: from curley.ikanos.com ([206.40.46.115]:12140 "EHLO maple.ikanos.com")
+	by ftp.linux-mips.org with ESMTP id S8133813AbWEEWgP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2006 23:36:15 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6603.0
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C67094.952AA11C"
+Subject: Changing Kernel Frequency
+Date:	Fri, 5 May 2006 15:38:08 -0700
+Message-ID: <6D18EB74171FCF4281F8D13726E1E7B703CB7BE6@maple.ikanos.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Changing Kernel Frequency
+Thread-Index: AcZwlExYUt7CvhyPRdCN+wUlsOx7dw==
+From:	"Akshay Singh" <asingh@ikanos.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <asingh@ikanos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11345
+X-archive-position: 11346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wd@denx.de
+X-original-sender: asingh@ikanos.com
 Precedence: bulk
 X-list: linux-mips
 
-In message <Pine.LNX.4.62.0605050940410.649@pademelon.sonytel.be> you wrote:
->
-> But on second thought: config options are part of the target configuration,
-> while CROSS_COMPILE= is part of the host configuration, so IMHO it doesn't
-> belong in Kconfig. I.e. do you want to have CONFIG_CROSS_COMPILE set in your
-> defconfig? Yes or no, depending on whether you do cross-compilations or not. So
-> you cannot simply take a defconfig, you'll have to modify it for your host
-> setup.
+This is a multi-part message in MIME format.
 
-CONFIG_CROSS_COMPILE is a terrible idea. Don't do it. We may want  to
-try  different  tool  chains  which  require  different CROSS_COMPILE
-settings with exact the same default config file. Don't break this!
+------_=_NextPart_001_01C67094.952AA11C
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-> So I'd prefer to keep the CROSS_COMPILE, like other arches do.
+All,=20
 
-Me too!
+We use Linux 2.6 for VoIP solutions and I was using default kernel
+frequency (1000) and everything works good ( A very minimum jitter) but
+when I change the kernel frequency from 1000 to 100, jitter increases a
+lot !
 
-Best regards,
+Any pointers on this.=20
 
-Wolfgang Denk
+FYI , we use 200 MHz MIPS based processor.
 
--- 
-Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
-Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
-If A equals success, then the formula is A = X + Y + Z. X is work.  Y
-is play. Z is keep your mouth shut.                 - Albert Einstein
+Thanks,
+Akshay
+
+
+
+------_=_NextPart_001_01C67094.952AA11C
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.0.6617.47">
+<TITLE>Changing Kernel Frequency</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/rtf format -->
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">All, </FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">We use Linux 2.6 for VoIP solutions and =
+I was using default kernel frequency (1000) and everything works good ( =
+A very minimum jitter) but when I change the kernel frequency from 1000 =
+to 100, jitter increases a lot !</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Any pointers on this. </FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">FYI , we use 200 MHz MIPS based =
+processor.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Thanks,</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">Akshay</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C67094.952AA11C--

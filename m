@@ -1,98 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 19:18:24 +0100 (BST)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:44716 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S8133813AbWEESSH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 5 May 2006 19:18:07 +0100
-Received: (qmail 14826 invoked by uid 101); 5 May 2006 18:17:51 -0000
-Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
-  by mother.pmc-sierra.com with SMTP; 5 May 2006 18:17:51 -0000
-Received: from duval.pmc-sierra.bc.ca (duval.pmc-sierra.bc.ca [134.87.183.32])
-	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k45IHpxA010704
-	for <linux-mips@linux-mips.org>; Fri, 5 May 2006 11:17:51 -0700
-From:	Shane McDonald <mcdonald@pmc-sierra.com>
-Received: (from mcdonald@localhost)
-	by duval.pmc-sierra.bc.ca (8.12.11/8.12.11) id k45IHpkC031672
-	for linux-mips@linux-mips.org; Fri, 5 May 2006 12:17:51 -0600
-Date:	Fri, 5 May 2006 12:17:51 -0600
-Message-Id: <200605051817.k45IHpkC031672@duval.pmc-sierra.bc.ca>
-To:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] improve readability of arch/mips/Kconfig
-Return-Path: <mcdonald@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 19:45:45 +0100 (BST)
+Received: from mail-out.m-online.net ([212.18.0.9]:15009 "HELO
+	mail-out.m-online.net") by ftp.linux-mips.org with SMTP
+	id S8133813AbWEESpR convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2006 19:45:17 +0100
+Received: from mail01.m-online.net (svr21.m-online.net [192.168.3.149])
+	by mail-out.m-online.net (Postfix) with ESMTP id 2C43772EE4;
+	Fri,  5 May 2006 20:45:11 +0200 (CEST)
+X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
+X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
+X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
+X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
+X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
+X-Auth-Info: o2OpLf2+X028E3W086dSuk21T1L8H+iHadiZAilxY+o=
+Received: from mail.denx.de (p549675E3.dip.t-dialin.net [84.150.117.227])
+	by smtp-auth.mnet-online.de (Postfix) with ESMTP id 0D6E79194F;
+	Fri,  5 May 2006 20:45:11 +0200 (CEST)
+Received: from atlas.denx.de (atlas.denx.de [10.0.0.14])
+	by mail.denx.de (Postfix) with ESMTP id 9790D6D00A8;
+	Fri,  5 May 2006 20:45:10 +0200 (CEST)
+Received: from atlas.denx.de (localhost.localdomain [127.0.0.1])
+	by atlas.denx.de (Postfix) with ESMTP id 86790353BE7;
+	Fri,  5 May 2006 20:45:10 +0200 (MEST)
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+cc:	Tom Rini <trini@kernel.crashing.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thiemo Seufer <ths@networkno.de>,
+	Tim Bird <tim.bird@am.sony.com>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: [PATCH] fix mips/Makefile to support CROSS_COMPILE from environment var 
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+In-reply-to: Your message of "Fri, 05 May 2006 09:45:38 +0200."
+             <Pine.LNX.4.62.0605050940410.649@pademelon.sonytel.be> 
+Date:	Fri, 05 May 2006 20:45:10 +0200
+Message-Id: <20060505184510.86790353BE7@atlas.denx.de>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11344
+X-archive-position: 11345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald@pmc-sierra.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
-I'll try this again ... I think I've got the corrupt patch issue resolved.
+In message <Pine.LNX.4.62.0605050940410.649@pademelon.sonytel.be> you wrote:
+>
+> But on second thought: config options are part of the target configuration,
+> while CROSS_COMPILE= is part of the host configuration, so IMHO it doesn't
+> belong in Kconfig. I.e. do you want to have CONFIG_CROSS_COMPILE set in your
+> defconfig? Yes or no, depending on whether you do cross-compilations or not. So
+> you cannot simply take a defconfig, you'll have to modify it for your host
+> setup.
 
-From: Shane McDonald <shane_mcdonald@pmc-sierra.com>
+CONFIG_CROSS_COMPILE is a terrible idea. Don't do it. We may want  to
+try  different  tool  chains  which  require  different CROSS_COMPILE
+settings with exact the same default config file. Don't break this!
 
-The wording of the help entries for CPU_MIPS32_R1, CPU_MIPS32_R2,
-CPU_MIPS64_R1, and CPU_MIPS64_R2 was confusing.
-The entries have been slightly reworded to improve the readability.
+> So I'd prefer to keep the CROSS_COMPILE, like other arches do.
 
-Signed-off-by: Shane McDonald <shane_mcdonald@pmc-sierra.com>
+Me too!
 
----
+Best regards,
 
-diff -uprN a/arch/mips/Kconfig b/arch/mips/Kconfig
---- a/arch/mips/Kconfig 2006-05-04 16:25:32.000000000 -0600
-+++ b/arch/mips/Kconfig 2006-05-04 16:50:08.000000000 -0600
-@@ -1075,10 +1075,10 @@ config CPU_MIPS32_R1
-          Choose this option to build a kernel for release 1 or later of the
-          MIPS32 architecture.  Most modern embedded systems with a 32-bit
-          MIPS processor are based on a MIPS32 processor.  If you know the
--         specific type of processor in your system, choose those that one
--         otherwise CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
--         Release 2 of the MIPS32 architecture is available since several
--         years so chances are you even have a MIPS32 Release 2 processor
-+         specific type of processor in your system, choose that one;
-+         otherwise, CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
-+         Release 2 of the MIPS32 architecture has been available for
-+         several years so chances are you have a MIPS32 Release 2 processor
-          in which case you should choose CPU_MIPS32_R2 instead for better
-          performance.
+Wolfgang Denk
 
-@@ -1093,8 +1093,8 @@ config CPU_MIPS32_R2
-          Choose this option to build a kernel for release 2 or later of the
-          MIPS32 architecture.  Most modern embedded systems with a 32-bit
-          MIPS processor are based on a MIPS32 processor.  If you know the
--         specific type of processor in your system, choose those that one
--         otherwise CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
-+         specific type of processor in your system, choose that one;
-+         otherwise, CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
-
- config CPU_MIPS64_R1
-        bool "MIPS64 Release 1"
-@@ -1108,10 +1108,10 @@ config CPU_MIPS64_R1
-          Choose this option to build a kernel for release 1 or later of the
-          MIPS64 architecture.  Many modern embedded systems with a 64-bit
-          MIPS processor are based on a MIPS64 processor.  If you know the
--         specific type of processor in your system, choose those that one
--         otherwise CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
--         Release 2 of the MIPS64 architecture is available since several
--         years so chances are you even have a MIPS64 Release 2 processor
-+         specific type of processor in your system, choose that one;
-+         otherwise, CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
-+         Release 2 of the MIPS64 architecture has been available for
-+         several years so chances are you have a MIPS64 Release 2 processor
-          in which case you should choose CPU_MIPS64_R2 instead for better
-          performance.
-
-@@ -1127,8 +1127,8 @@ config CPU_MIPS64_R2
-          Choose this option to build a kernel for release 2 or later of the
-          MIPS64 architecture.  Many modern embedded systems with a 64-bit
-          MIPS processor are based on a MIPS64 processor.  If you know the
--         specific type of processor in your system, choose those that one
--         otherwise CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
-+         specific type of processor in your system, choose that one;
-+         otherwise, CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
-
- config CPU_R3000
-        bool "R3000"
+-- 
+Software Engineering:  Embedded and Realtime Systems,  Embedded Linux
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+If A equals success, then the formula is A = X + Y + Z. X is work.  Y
+is play. Z is keep your mouth shut.                 - Albert Einstein

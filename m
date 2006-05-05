@@ -1,95 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 17:07:36 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:57300 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133502AbWEEQH2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2006 17:07:28 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k45G7RB1012383;
-	Fri, 5 May 2006 17:07:27 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k45G7QCY012382;
-	Fri, 5 May 2006 17:07:26 +0100
-Date:	Fri, 5 May 2006 17:07:26 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Zhan, Rongkai" <rongkai.zhan@windriver.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] Wind River 4KC PPMC Eval Board Support
-Message-ID: <20060505160726.GA9309@linux-mips.org>
-References: <6A3254532ACD7A42805B4E1BFD18080EB307A0@ism-mail01.corp.ad.wrs.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6A3254532ACD7A42805B4E1BFD18080EB307A0@ism-mail01.corp.ad.wrs.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 19:18:24 +0100 (BST)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:44716 "HELO
+	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S8133813AbWEESSH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 May 2006 19:18:07 +0100
+Received: (qmail 14826 invoked by uid 101); 5 May 2006 18:17:51 -0000
+Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
+  by mother.pmc-sierra.com with SMTP; 5 May 2006 18:17:51 -0000
+Received: from duval.pmc-sierra.bc.ca (duval.pmc-sierra.bc.ca [134.87.183.32])
+	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k45IHpxA010704
+	for <linux-mips@linux-mips.org>; Fri, 5 May 2006 11:17:51 -0700
+From:	Shane McDonald <mcdonald@pmc-sierra.com>
+Received: (from mcdonald@localhost)
+	by duval.pmc-sierra.bc.ca (8.12.11/8.12.11) id k45IHpkC031672
+	for linux-mips@linux-mips.org; Fri, 5 May 2006 12:17:51 -0600
+Date:	Fri, 5 May 2006 12:17:51 -0600
+Message-Id: <200605051817.k45IHpkC031672@duval.pmc-sierra.bc.ca>
+To:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] improve readability of arch/mips/Kconfig
+Return-Path: <mcdonald@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11342
+X-archive-position: 11344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mcdonald@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 05, 2006 at 05:42:04PM +0200, Zhan, Rongkai wrote:
+I'll try this again ... I think I've got the corrupt patch issue resolved.
 
-> Here is a patch to add the support for Wind River 4KC PPMC Evaluation
-> board, which is based on the GT64120 bridge chip.
+From: Shane McDonald <shane_mcdonald@pmc-sierra.com>
 
-Standard problem: This patch has line-wrapped lines so can't be applied ...
+The wording of the help entries for CPU_MIPS32_R1, CPU_MIPS32_R2,
+CPU_MIPS64_R1, and CPU_MIPS64_R2 was confusing.
+The entries have been slightly reworded to improve the readability.
 
-> 1970-01-01 08:00:00.000000000 +0800
-> +++ linux-2.6.16.11-ppmc/arch/mips/gt64120/wrppmc/int-handler.S
-> 2006-05-05 16:38:12.000000000 +0800
-> @@ -0,0 +1,37 @@
-> +/*
-> + * This file is subject to the terms and conditions of the GNU General
-> Public
-> + * License.  See the file "COPYING" in the main directory of this
-> archive
-> + * for more details.
-> + *
-> + * Copyright (C) 1995, 1996, 1997, 2003 by Ralf Baechle
-> + * Copyright (C) Wind River System Inc. Rongkai.Zhan
-> <rongkai.zhan@windriver.com>
-> + */
-> +#include <asm/asm.h>
-> +#include <asm/mipsregs.h>
-> +#include <asm/addrspace.h>
-> +#include <asm/regdef.h>
-> +#include <asm/stackframe.h>
-> +
-> +	.align	5
-> +	.set	noat
-> +NESTED(handle_IRQ, PT_SIZE, sp)
-> +	SAVE_ALL
-> +	CLI				# Important: mark KERNEL mode !
-> +
-> +	mfc0	t0, CP0_CAUSE		# get pending interrupts
-> +	mfc0	t1, CP0_STATUS		# get enabled interrupts
-> +	and	t0, t0, t1		# get allowed interrupts
-> +	andi	t0, t0, 0xFF00
-> +	beqz	t0, 1f
-> +
-> +	move	a0, sp			# Prepare 'struct pt_regs *regs'
-> pointer
-> +	jal	do_wrppmc_IRQ
-> +	nop
-> +	j	ret_from_irq
-> +	nop
-> +
-> +	/* wrong alarm or masked ... */
-> +1:	j	spurious_interrupt
-> +	nop
-> +END(handle_IRQ)
+Signed-off-by: Shane McDonald <shane_mcdonald@pmc-sierra.com>
 
-Changeset e4ac58afdfac792c0583af30dbd9eae53e24c78b rewrites all interrupt
-handlers from assembler to C, so your patche does no longer work.  Can you
-create a patch against the master branch, please?
+---
 
-> +	printk(KERN_NOTICE "You can safely turn off the power\n");
+diff -uprN a/arch/mips/Kconfig b/arch/mips/Kconfig
+--- a/arch/mips/Kconfig 2006-05-04 16:25:32.000000000 -0600
++++ b/arch/mips/Kconfig 2006-05-04 16:50:08.000000000 -0600
+@@ -1075,10 +1075,10 @@ config CPU_MIPS32_R1
+          Choose this option to build a kernel for release 1 or later of the
+          MIPS32 architecture.  Most modern embedded systems with a 32-bit
+          MIPS processor are based on a MIPS32 processor.  If you know the
+-         specific type of processor in your system, choose those that one
+-         otherwise CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
+-         Release 2 of the MIPS32 architecture is available since several
+-         years so chances are you even have a MIPS32 Release 2 processor
++         specific type of processor in your system, choose that one;
++         otherwise, CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
++         Release 2 of the MIPS32 architecture has been available for
++         several years so chances are you have a MIPS32 Release 2 processor
+          in which case you should choose CPU_MIPS32_R2 instead for better
+          performance.
 
-This looks sooo windowsy ;-)
+@@ -1093,8 +1093,8 @@ config CPU_MIPS32_R2
+          Choose this option to build a kernel for release 2 or later of the
+          MIPS32 architecture.  Most modern embedded systems with a 32-bit
+          MIPS processor are based on a MIPS32 processor.  If you know the
+-         specific type of processor in your system, choose those that one
+-         otherwise CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
++         specific type of processor in your system, choose that one;
++         otherwise, CPU_MIPS32_R1 is a safe bet for any MIPS32 system.
 
-  Ralf
+ config CPU_MIPS64_R1
+        bool "MIPS64 Release 1"
+@@ -1108,10 +1108,10 @@ config CPU_MIPS64_R1
+          Choose this option to build a kernel for release 1 or later of the
+          MIPS64 architecture.  Many modern embedded systems with a 64-bit
+          MIPS processor are based on a MIPS64 processor.  If you know the
+-         specific type of processor in your system, choose those that one
+-         otherwise CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
+-         Release 2 of the MIPS64 architecture is available since several
+-         years so chances are you even have a MIPS64 Release 2 processor
++         specific type of processor in your system, choose that one;
++         otherwise, CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
++         Release 2 of the MIPS64 architecture has been available for
++         several years so chances are you have a MIPS64 Release 2 processor
+          in which case you should choose CPU_MIPS64_R2 instead for better
+          performance.
+
+@@ -1127,8 +1127,8 @@ config CPU_MIPS64_R2
+          Choose this option to build a kernel for release 2 or later of the
+          MIPS64 architecture.  Many modern embedded systems with a 64-bit
+          MIPS processor are based on a MIPS64 processor.  If you know the
+-         specific type of processor in your system, choose those that one
+-         otherwise CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
++         specific type of processor in your system, choose that one;
++         otherwise, CPU_MIPS64_R1 is a safe bet for any MIPS64 system.
+
+ config CPU_R3000
+        bool "R3000"

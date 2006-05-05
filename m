@@ -1,89 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 11:39:26 +0100 (BST)
-Received: from bes.recconet.de ([212.227.59.164]:41697 "EHLO bes.recconet.de")
-	by ftp.linux-mips.org with ESMTP id S8133404AbWEEKjQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 5 May 2006 11:39:16 +0100
-Received: from trinity.recco.de (trinity.intern.recconet.de [192.168.11.241])
-	by bes.recconet.de (8.13.1/8.13.1/Recconet-2005031001) with ESMTP id k45AdCIS029748;
-	Fri, 5 May 2006 12:39:13 +0200
-Received: from seneca.recco.de (seneca.recco.de [172.16.135.97])
-	by trinity.recco.de (8.13.1/8.13.1/Reccoware-2005061101) with ESMTP id k45AcJin007094;
-	Fri, 5 May 2006 12:38:19 +0200
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by seneca.recco.de (8.13.6/8.13.4/Seneca.Reccoware-2005061801) with ESMTP id k45AdCr0002720;
-	Fri, 5 May 2006 12:39:12 +0200
-Subject: Re: Au1200 MMC/SD problem
-From:	Wolfgang Ocker <weo@reccoware.de>
-To:	Jordan Crouse <jordan.crouse@amd.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20060503145927.GD24185@cosmic.amd.com>
-References: <1146548770.1597.43.camel@seneca.recco.de>
-	 <20060502144314.GI22167@cosmic.amd.com>
-	 <1146592926.11188.12.camel@seneca.recco.de>
-	 <20060503145927.GD24185@cosmic.amd.com>
-Content-Type: text/plain
-Organization: Reccoware Systems
-Date:	Fri, 05 May 2006 12:39:11 +0200
-Message-Id: <1146825551.15761.8.camel@seneca.recco.de>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.2.3 (2.2.3-4.fc4) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <weo@reccoware.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 May 2006 13:51:25 +0100 (BST)
+Received: from web8706.mail.in.yahoo.com ([203.84.221.127]:33136 "HELO
+	web8706.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133711AbWEEMvP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 May 2006 13:51:15 +0100
+Received: (qmail 47133 invoked by uid 60001); 5 May 2006 12:51:06 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=nzEISSSDu5nXJXDMxOv4xLK6DjTJPkAz5+Yjp7kNVYmhVUYctqz9pZohQuQxRzt3nkgfGXPAevSGZOREmUhO5poSEAkR2jQtu3ZlWQT2Rou64ql53epBiCA6040LkOMyZ6yp5YB00iQ0NYQQqef9GEAO+ck+3Cd/7gC7S0+Zo6Y=  ;
+Message-ID: <20060505125106.47131.qmail@web8706.mail.in.yahoo.com>
+Received: from [137.71.23.54] by web8706.mail.in.yahoo.com via HTTP; Fri, 05 May 2006 13:51:06 BST
+Date:	Fri, 5 May 2006 13:51:06 +0100 (BST)
+From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
+Subject: KGDB support for Linux-2.6.12 
+To:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-812703961-1146833466=:43471"
+Content-Transfer-Encoding: 8bit
+Return-Path: <sathesh_edara2003@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11336
+X-archive-position: 11337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: weo@reccoware.de
+X-original-sender: sathesh_edara2003@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2006-05-03 at 08:59 -0600, Jordan Crouse wrote:
-> > The last one. In au1xmmc_irq() the status register is read with the
-> > SD_STATUS_RAT bit set.
-> 
-> Ok - so the card is timing out.  That could be a series of problems, some
-> of which could be hardware, some of which could be software.  Since you are
-> using a db1200, I'll rule out hardware for the moment, unless you have a
-> modified board.
+--0-812703961-1146833466=:43471
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Today I tested a third SD card from SanDisk, 128MB, same problem and log
-output (time out in command 9).
+Hi,
+     I would like to know, Is KGDB support available in linux-mips-2.6.12 kernel for R3000 (lx4189 processor).
+   
+  Do we need to apply any  patches to make KGDB work on  linux-mips-2.6.12 kernel (R3000 ,lx4189 processor) ?.
+   
+  Thanks in advance.
+   
+  Regards,
+  sathesh  
 
-> Do MMC cards work?  Try one - that will give us another data point.
+				
+---------------------------------
+ Yahoo! India Answers: Share what you know. Learn something new. Click here
+--0-812703961-1146833466=:43471
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Today I received a SanDisk 64 MB MMC card, it doesn't work either. Here
-the log output:
+<div>Hi,</div>  <div>&nbsp;&nbsp; I would like to know, Is KGDB&nbsp;support available in linux-mips-2.6.12 kernel for R3000 (lx4189 processor).</div>  <div>&nbsp;</div>  <div>Do&nbsp;we need to apply any&nbsp; patches&nbsp;to make KGDB work on &nbsp;linux-mips-2.6.12 kernel (R3000&nbsp;,lx4189 processor) ?.</div>  <div>&nbsp;</div>  <div>Thanks in advance.</div>  <div>&nbsp;</div>  <div>Regards,</div>  <div>sathesh&nbsp;&nbsp;</div><p>
+	
 
-au1xx(0): DEBUG: set_ios (power=0, clock=0Hz, vdd=0, mode=1)
-au1xxx-mmc: MMC Controller 0 set up at B0600000 (mode=dma)
-au1xx(0): DEBUG: set_ios (power=1, clock=0Hz, vdd=23, mode=1)
-au1xx(0): DEBUG: set_ios (power=2, clock=450000Hz, vdd=23, mode=1)
-au1xx(0): DEBUG: set_ios (power=2, clock=450000Hz, vdd=23, mode=1)
-MMC: starting cmd 00 arg 00000000 flags 00000040
-MMC: req done (00): 0: 00000000 00000000 00000000 00000000
-au1xx(0): DEBUG: set_ios (power=2, clock=450000Hz, vdd=23, mode=1)
-MMC: starting cmd 37 arg 00000000 flags 00000015
-au1xx(0): DEBUG: au1xmmc_irq(), SD_STATUS_RAT set
-MMC: req done (37): 1: 00000000 00000000 00000000 00000000
-MMC: starting cmd 37 arg 00000000 flags 00000015
-au1xx(0): DEBUG: au1xmmc_irq(), SD_STATUS_RAT set
-MMC: req done (37): 1: 00000000 00000000 00000000 00000000
-MMC: starting cmd 37 arg 00000000 flags 00000015
-au1xx(0): DEBUG: au1xmmc_irq(), SD_STATUS_RAT set
-MMC: req done (37): 1: 00000000 00000000 00000000 00000000
-MMC: starting cmd 37 arg 00000000 flags 00000015
-au1xx(0): DEBUG: au1xmmc_irq(), SD_STATUS_RAT set
-MMC: req done (37): 1: 00000000 00000000 00000000 00000000
-MMC: mmc_setup(), send_app_op_cond, ocr = 1000fc00, err = 1
-MMC: mmc_setup(), no SD card found (1)
-MMC: starting cmd 01 arg 00000000 flags 00000061
-au1xx(0): DEBUG: au1xmmc_irq(), SD_STATUS_RAT set
-MMC: req done (01): 1: 00000000 00000000 00000000 00000000
-MMC: mmc_rescan(): no card found!
-au1xx(0): DEBUG: set_ios (power=0, clock=0Hz, vdd=0, mode=1)
-
-
-Thanks,
-Wolfgang
+	
+		<hr size=1> 
+Yahoo! India Answers: Share what you know. Learn something new. <a href="http://us.rd.yahoo.com/mail/in/mailanswers/*http://in.answers.yahoo.com">Click here</a>
+--0-812703961-1146833466=:43471--

@@ -1,122 +1,163 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2006 21:55:29 +0100 (BST)
-Received: from fmr18.intel.com ([134.134.136.17]:41658 "EHLO
-	orsfmr003.jf.intel.com") by ftp.linux-mips.org with ESMTP
-	id S8133523AbWEHUzS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 8 May 2006 21:55:18 +0100
-Received: from orsfmr100.jf.intel.com (orsfmr100.jf.intel.com [10.7.209.16])
-	by orsfmr003.jf.intel.com (8.12.10/8.12.10/d: major-outer.mc,v 1.1 2004/09/17 17:50:56 root Exp $) with ESMTP id k48KtBQ0026153;
-	Mon, 8 May 2006 20:55:11 GMT
-Received: from [134.134.3.210] (ahkok-mobl.jf.intel.com.jf.intel.com [134.134.3.210])
-	by orsfmr100.jf.intel.com (8.12.10/8.12.10/d: major-inner.mc,v 1.2 2004/09/17 18:05:01 root Exp $) with ESMTP id k48KtAT1005279;
-	Mon, 8 May 2006 20:55:10 GMT
-Message-ID: <445FB02D.3020905@intel.com>
-Date:	Mon, 08 May 2006 13:55:09 -0700
-From:	Auke Kok <auke-jan.h.kok@intel.com>
-User-Agent: Mail/News 1.5.0.2 (X11/20060424)
-MIME-Version: 1.0
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-CC:	Jeff Garzik <jgarzik@pobox.com>, linux-mips@linux-mips.org,
-	linux-net@vger.kernel.org
-Subject: Re: [PATCH] Fix RTL8019AS init for Toshiba RBTX49xx boards
-References: <444291E9.2070407@ru.mvista.com>	<20060417.110945.59031594.nemoto@toshiba-tops.co.jp>	<444392CF.7070808@ru.mvista.com> <20060418.000918.95064811.anemo@mba.ocn.ne.jp> <4443BD39.4030200@ru.mvista.com> <4443BE71.6090908@ru.mvista.com> <445FA36E.3080500@ru.mvista.com>
-In-Reply-To: <445FA36E.3080500@ru.mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2006 23:24:39 +0100 (BST)
+Received: from az33egw02.freescale.net ([192.88.158.103]:19386 "EHLO
+	az33egw02.freescale.net") by ftp.linux-mips.org with ESMTP
+	id S8133498AbWEHWY2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 8 May 2006 23:24:28 +0100
+Received: from az33smr02.freescale.net (az33smr02.freescale.net [10.64.34.200])
+	by az33egw02.freescale.net (8.12.11/az33egw02) with ESMTP id k48Me2Ef002410;
+	Mon, 8 May 2006 15:40:02 -0700 (MST)
+Received: from [10.82.17.56] ([10.82.17.56])
+	by az33smr02.freescale.net (8.13.1/8.13.0) with ESMTP id k48MZjao015113;
+	Mon, 8 May 2006 17:35:45 -0500 (CDT)
+In-Reply-To: <1146734223.31241.44.camel@localhost.localdomain>
+References: <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3> <1146510542.16643.10.camel@localhost.localdomain> <1146510542.16643.10.camel@localhost.localdomain> <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3> <5.1.0.14.2.20060502095256.01fd4210@205.166.54.3> <1146674056.31241.18.camel@localhost.localdomain> <1146734223.31241.44.camel@localhost.localdomain>
+Mime-Version: 1.0 (Apple Message framework v749.3)
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-Id: <6BF86C09-0732-4322-A43E-29705849886D@freescale.com>
+Cc:	Mark Schank <mschank@dcbnet.com>, ppopov@embeddedalley.com,
+	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org,
+	jgarzik@pobox.com, netdev@vger.kernel.org,
+	Ralf Baechle <ralf@linux-mips.org>,
+	"Robin H. Johnson" <robbat2@gentoo.org>
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.52 on 10.7.209.16
-Return-Path: <auke-jan.h.kok@intel.com>
+From:	Andy Fleming <afleming@freescale.com>
+Subject: Re: RFC: new WIP version of au1000_eth.c phylib conversion (was Re: RFC: au1000_etc.c phylib rewrite)
+Date:	Mon, 8 May 2006 17:24:13 -0500
+To:	Herbert Valerio Riedel <hvr@gnu.org>
+X-Mailer: Apple Mail (2.749.3)
+Return-Path: <afleming@freescale.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11361
+X-archive-position: 11362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: auke-jan.h.kok@intel.com
+X-original-sender: afleming@freescale.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-this won't work - first of all patches need to go to netdev and second jeff 
-Garzik is offline for another week. Stephan Hemminger is covering for the net 
-tree.
+On May 4, 2006, at 04:17, Herbert Valerio Riedel wrote:
 
-Please repost and add these people.
+> Hello,
+>
+> I've tried to adapt the PHY detection code to allow for dynamic  
+> runtime
+> configuration (with fallback to search for the 2nd MAC PHY on the 1st
+> MAC's MII bus), as well as selectable static PHY configuration through
+> Kconfig (e.g. for supporting PHYs w/o MII connection)
 
-Auke
+Comments inline, below:
+
+> diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
+> index 0823cb8..8c0b26f 100644
+> --- a/drivers/net/au1000_eth.c
+> +++ b/drivers/net/au1000_eth.c
+> @@ -9,6 +9,9 @@
+
+[snip]
+
+> -/* FIXME
+> - * All of the PHY code really should be detached from the MAC
+> - * code.
+> - */
+> -
+
+[snip]
+
+Nothing to say so far, except seeing all those "-" signs was quite  
+the thrill, since one of the goals of the phylib was to lead to  
+reduced complexity.  That said, it looked like there were about a  
+dozen PHY-specific code blocks in there.  I saw you submit one PHY  
+driver.  Were there others in there that could be ported?
+
+[snip]
+
+> +static int mdiobus_read(struct mii_bus *bus, int phy_addr, int  
+> regnum)
+> {
+> -	int i, val;
+> +	struct net_device *const dev = bus->priv; /* beware: bus->phy_map 
+> [phy_addr].attached_dev == dev does _NOT_ hold always  */
+> +	enable_mac(dev, 0); /* make sure MAC associated with this mii_bus  
+> is enabled */
+> +	return mdio_read(dev, phy_addr, regnum);
+> +}
 
 
-Sergei Shtylyov wrote:
->    Ensure that 8-bit mode is selected for the on-board Realtek RTL8019AS 
-> chip on Toshiba RBHMA4x00, get rid of the duplicate #ifdef's when setting
-> ei_status.word16.
->    The chip's datasheet says that the PSTOP register shouldn't exceed 
-> 0x60 in
-> 8-bit mode -- ensure this too.
-> 
-> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-> 
-> 
-> ------------------------------------------------------------------------
-> 
-> Index: linus/drivers/net/ne.c
-> ===================================================================
-> --- linus.orig/drivers/net/ne.c
-> +++ linus/drivers/net/ne.c
-> @@ -139,8 +139,9 @@ bad_clone_list[] __initdata = {
->  
->  #if defined(CONFIG_PLAT_MAPPI)
->  #  define DCR_VAL 0x4b
-> -#elif defined(CONFIG_PLAT_OAKS32R)
-> -#  define DCR_VAL 0x48
-> +#elif defined(CONFIG_PLAT_OAKS32R)  || \
-> +   defined(CONFIG_TOSHIBA_RBTX4927) || defined(CONFIG_TOSHIBA_RBTX4938)
-> +#  define DCR_VAL 0x48		/* 8-bit mode */
->  #else
->  #  define DCR_VAL 0x49
->  #endif
-> @@ -396,10 +397,22 @@ static int __init ne_probe1(struct net_d
->  		/* We must set the 8390 for word mode. */
->  		outb_p(DCR_VAL, ioaddr + EN0_DCFG);
->  		start_page = NESM_START_PG;
-> -		stop_page = NESM_STOP_PG;
+Why is attached_dev not always correct?  I'm not sure if I'm not  
+understanding the hardware (I'm unfamiliar with this NIC), or if  
+you've misinterpreted the meaning of the attached_dev field.  It's  
+supposed to be a connection between the network device and a PHY,  
+mainly used for allowing the PHY to signal state changes back to the  
+ethernet device.  Is it actually the case that there is one MAC being  
+used for two PHYs at the same time?  If so, how do you resolve which  
+PHY's state gets used at any given moment?
+
+The same question applies for the code in mdiobus_write()
+
+[snip]
+
+> -static int mii_probe (struct net_device * dev)
+> +static int mdiobus_reset(struct mii_bus *bus)
+> {
+> -	struct au1000_private *aup = (struct au1000_private *) dev->priv;
+> -	int phy_addr;
+> -#ifdef CONFIG_MIPS_BOSPORUS
+> -	int phy_found=0;
+> -#endif
+> +	struct net_device *dev = bus->priv;
+> -	/* search for total of 32 possible mii phy addresses */
+> -	for (phy_addr = 0; phy_addr < 32; phy_addr++) {
+> -		u16 mii_status;
+> -		u16 phy_id0, phy_id1;
+> -		int i;
+> +	enable_mac(dev, 0); /* make sure MAC associated with this mii_bus  
+> is enabled */
+>
+
+Do you need to call enable_mac() every time?  If it needs to be up,  
+wouldn't it be easier to make sure it's up during bus initialization?
+
+[snip]
+
+> 	aup->mac->control = control;
+> @@ -1685,57 +808,75 @@ static int au1000_init(struct net_device
+>
+
+[snip]
+
 > +
-> +		/*
-> +		 * Realtek RTL8019AS datasheet says that the PSTOP register
-> +		 * shouldn't exceed 0x60 in 8-bit mode.
-> +		 * This chip can be identified by reading the signature from
-> +		 * the  remote byte count registers (otherwise write-only)...
-> +		 */
-> +		if ((DCR_VAL & 0x01) == 0 &&		/* 8-bit mode */
-> +		    inb(ioaddr + EN0_RCNTLO) == 0x50 &&
-> +		    inb(ioaddr + EN0_RCNTHI) == 0x70)
-> +			stop_page = 0x60;
-> +		else
-> +			stop_page = NESM_STOP_PG;
->  	} else {
->  		start_page = NE1SM_START_PG;
-> -		stop_page = NE1SM_STOP_PG;
-> +		stop_page  = NE1SM_STOP_PG;
->  	}
->  
->  #if  defined(CONFIG_PLAT_MAPPI) || defined(CONFIG_PLAT_OAKS32R)
-> @@ -509,15 +522,9 @@ static int __init ne_probe1(struct net_d
->  	ei_status.name = name;
->  	ei_status.tx_start_page = start_page;
->  	ei_status.stop_page = stop_page;
-> -#if defined(CONFIG_TOSHIBA_RBTX4927) || defined(CONFIG_TOSHIBA_RBTX4938)
-> -	wordlength = 1;
-> -#endif
->  
-> -#ifdef CONFIG_PLAT_OAKS32R
-> -	ei_status.word16 = 0;
-> -#else
-> -	ei_status.word16 = (wordlength == 2);
-> -#endif
-> +	/* Use 16-bit mode only if this wasn't overridden by DCR_VAL */
-> +	ei_status.word16 = (wordlength == 2 && (DCR_VAL & 0x01));
->  
->  	ei_status.rx_start_page = start_page + TX_PAGES;
->  #ifdef PACKETBUF_MEMSIZE
-> 
-> 
+> +	if (phydev->link && (aup->old_speed != phydev->speed)) {
+> +		// speed changed
+> +
+> +		switch(phydev->speed) {
+> +		case 10:
+> +		case 100:
+> +			break;
+> +		default:
+> +			printk(KERN_WARNING
+> +			       "%s: Speed (%d) is not 10/100/1000 ??\n",
+> +			       dev->name, phydev->speed);
+> +			break;
+> 		}
+
+
+Might want to change that to be "...not 10/100..." or add a case for  
+1000.
+
+[snip]
+
+> +	spin_unlock_irqrestore(&aup->lock, flags);
+> +	if (status_change) {
+> +		phy_print_status(phydev);
+> +	}
+> }
+
+
+Stylistic issue (I've seen it a couple times, at least):  don't use  
+"{" and "}" if your block only has one line.
+ie:
+	if (status_change)
+		phy_print_status(phydev);

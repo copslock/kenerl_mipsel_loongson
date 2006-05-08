@@ -1,139 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2006 20:28:35 +0100 (BST)
-Received: from nevyn.them.org ([66.93.172.17]:22719 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S8133519AbWEHT2Z (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 8 May 2006 20:28:25 +0100
-Received: from drow by nevyn.them.org with local (Exim 4.54)
-	id 1FdBP4-0003fP-Lu; Mon, 08 May 2006 15:28:22 -0400
-Date:	Mon, 8 May 2006 15:28:22 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Update struct sigcontext member names
-Message-ID: <20060508192822.GA14037@nevyn.them.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.8i
-Return-Path: <drow@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2006 21:02:08 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:8147 "HELO mail.dev.rtsoft.ru")
+	by ftp.linux-mips.org with SMTP id S8133517AbWEHUB4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 8 May 2006 21:01:56 +0100
+Received: (qmail 25379 invoked from network); 9 May 2006 00:07:29 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 9 May 2006 00:07:29 -0000
+Message-ID: <445FA36E.3080500@ru.mvista.com>
+Date:	Tue, 09 May 2006 00:00:46 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Jeff Garzik <jgarzik@pobox.com>
+CC:	linux-mips@linux-mips.org, linux-net@vger.kernel.org
+Subject: [PATCH] Fix RTL8019AS init for Toshiba RBTX49xx boards
+References: <444291E9.2070407@ru.mvista.com>	<20060417.110945.59031594.nemoto@toshiba-tops.co.jp>	<444392CF.7070808@ru.mvista.com> <20060418.000918.95064811.anemo@mba.ocn.ne.jp> <4443BD39.4030200@ru.mvista.com> <4443BE71.6090908@ru.mvista.com>
+In-Reply-To: <4443BE71.6090908@ru.mvista.com>
+Content-Type: multipart/mixed;
+ boundary="------------040703070604020900060909"
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11358
+X-archive-position: 11359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Rename the MIPS64 sc_hi and sc_lo arrays to use the same names
-as the MIPS32 struct sigcontext (sc_mdhi, sc_hi1, et cetera).
+This is a multi-part message in MIME format.
+--------------040703070604020900060909
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Daniel Jacobowitz <dan@codesourcery.com>
+    Ensure that 8-bit mode is selected for the on-board Realtek RTL8019AS chip 
+on Toshiba RBHMA4x00, get rid of the duplicate #ifdef's when setting
+ei_status.word16.
+    The chip's datasheet says that the PSTOP register shouldn't exceed 0x60 in
+8-bit mode -- ensure this too.
 
----
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-As we discussed earlier - this lets glibc use the same definitions, without
-breaking source compatibility for the 64-bit sigcontext.
 
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index 92b28b6..0facfaf 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -272,8 +272,8 @@ void output_sc_defines(void)
- 	text("/* Linux sigcontext offsets. */");
- 	offset("#define SC_REGS       ", struct sigcontext, sc_regs);
- 	offset("#define SC_FPREGS     ", struct sigcontext, sc_fpregs);
--	offset("#define SC_MDHI       ", struct sigcontext, sc_hi);
--	offset("#define SC_MDLO       ", struct sigcontext, sc_lo);
-+	offset("#define SC_MDHI       ", struct sigcontext, sc_mdhi);
-+	offset("#define SC_MDLO       ", struct sigcontext, sc_mdlo);
- 	offset("#define SC_PC         ", struct sigcontext, sc_pc);
- 	offset("#define SC_FPC_CSR    ", struct sigcontext, sc_fpc_csr);
- 	linefeed;
-diff --git a/arch/mips/kernel/signal-common.h b/arch/mips/kernel/signal-common.h
-index 3ca7862..ce6cb91 100644
---- a/arch/mips/kernel/signal-common.h
-+++ b/arch/mips/kernel/signal-common.h
-@@ -31,7 +31,6 @@ #define save_gp_reg(i) do {						\
- 	save_gp_reg(31);
- #undef save_gp_reg
+--------------040703070604020900060909
+Content-Type: text/plain;
+ name="RBTX49xx-RTL8019AS-init-fix.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="RBTX49xx-RTL8019AS-init-fix.patch"
+
+Index: linus/drivers/net/ne.c
+===================================================================
+--- linus.orig/drivers/net/ne.c
++++ linus/drivers/net/ne.c
+@@ -139,8 +139,9 @@ bad_clone_list[] __initdata = {
  
--#ifdef CONFIG_32BIT
- 	err |= __put_user(regs->hi, &sc->sc_mdhi);
- 	err |= __put_user(regs->lo, &sc->sc_mdlo);
- 	if (cpu_has_dsp) {
-@@ -43,20 +42,6 @@ #ifdef CONFIG_32BIT
- 		err |= __put_user(mflo3(), &sc->sc_lo3);
- 		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
+ #if defined(CONFIG_PLAT_MAPPI)
+ #  define DCR_VAL 0x4b
+-#elif defined(CONFIG_PLAT_OAKS32R)
+-#  define DCR_VAL 0x48
++#elif defined(CONFIG_PLAT_OAKS32R)  || \
++   defined(CONFIG_TOSHIBA_RBTX4927) || defined(CONFIG_TOSHIBA_RBTX4938)
++#  define DCR_VAL 0x48		/* 8-bit mode */
+ #else
+ #  define DCR_VAL 0x49
+ #endif
+@@ -396,10 +397,22 @@ static int __init ne_probe1(struct net_d
+ 		/* We must set the 8390 for word mode. */
+ 		outb_p(DCR_VAL, ioaddr + EN0_DCFG);
+ 		start_page = NESM_START_PG;
+-		stop_page = NESM_STOP_PG;
++
++		/*
++		 * Realtek RTL8019AS datasheet says that the PSTOP register
++		 * shouldn't exceed 0x60 in 8-bit mode.
++		 * This chip can be identified by reading the signature from
++		 * the  remote byte count registers (otherwise write-only)...
++		 */
++		if ((DCR_VAL & 0x01) == 0 &&		/* 8-bit mode */
++		    inb(ioaddr + EN0_RCNTLO) == 0x50 &&
++		    inb(ioaddr + EN0_RCNTHI) == 0x70)
++			stop_page = 0x60;
++		else
++			stop_page = NESM_STOP_PG;
+ 	} else {
+ 		start_page = NE1SM_START_PG;
+-		stop_page = NE1SM_STOP_PG;
++		stop_page  = NE1SM_STOP_PG;
  	}
--#endif
--#ifdef CONFIG_64BIT
--	err |= __put_user(regs->hi, &sc->sc_hi[0]);
--	err |= __put_user(regs->lo, &sc->sc_lo[0]);
--	if (cpu_has_dsp) {
--		err |= __put_user(mfhi1(), &sc->sc_hi[1]);
--		err |= __put_user(mflo1(), &sc->sc_lo[1]);
--		err |= __put_user(mfhi2(), &sc->sc_hi[2]);
--		err |= __put_user(mflo2(), &sc->sc_lo[2]);
--		err |= __put_user(mfhi3(), &sc->sc_hi[3]);
--		err |= __put_user(mflo3(), &sc->sc_lo[3]);
--		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
--	}
+ 
+ #if  defined(CONFIG_PLAT_MAPPI) || defined(CONFIG_PLAT_OAKS32R)
+@@ -509,15 +522,9 @@ static int __init ne_probe1(struct net_d
+ 	ei_status.name = name;
+ 	ei_status.tx_start_page = start_page;
+ 	ei_status.stop_page = stop_page;
+-#if defined(CONFIG_TOSHIBA_RBTX4927) || defined(CONFIG_TOSHIBA_RBTX4938)
+-	wordlength = 1;
 -#endif
  
- 	err |= __put_user(!!used_math(), &sc->sc_used_math);
- 
-@@ -92,7 +77,6 @@ restore_sigcontext(struct pt_regs *regs,
- 	current_thread_info()->restart_block.fn = do_no_restart_syscall;
- 
- 	err |= __get_user(regs->cp0_epc, &sc->sc_pc);
--#ifdef CONFIG_32BIT
- 	err |= __get_user(regs->hi, &sc->sc_mdhi);
- 	err |= __get_user(regs->lo, &sc->sc_mdlo);
- 	if (cpu_has_dsp) {
-@@ -104,20 +88,6 @@ #ifdef CONFIG_32BIT
- 		err |= __get_user(treg, &sc->sc_lo3); mtlo3(treg);
- 		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
- 	}
+-#ifdef CONFIG_PLAT_OAKS32R
+-	ei_status.word16 = 0;
+-#else
+-	ei_status.word16 = (wordlength == 2);
 -#endif
--#ifdef CONFIG_64BIT
--	err |= __get_user(regs->hi, &sc->sc_hi[0]);
--	err |= __get_user(regs->lo, &sc->sc_lo[0]);
--	if (cpu_has_dsp) {
--		err |= __get_user(treg, &sc->sc_hi[1]); mthi1(treg);
--		err |= __get_user(treg, &sc->sc_lo[1]); mthi1(treg);
--		err |= __get_user(treg, &sc->sc_hi[2]); mthi2(treg);
--		err |= __get_user(treg, &sc->sc_lo[2]); mthi2(treg);
--		err |= __get_user(treg, &sc->sc_hi[3]); mthi3(treg);
--		err |= __get_user(treg, &sc->sc_lo[3]); mthi3(treg);
--		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
--	}
--#endif
++	/* Use 16-bit mode only if this wasn't overridden by DCR_VAL */
++	ei_status.word16 = (wordlength == 2 && (DCR_VAL & 0x01));
  
- #define restore_gp_reg(i) do {						\
- 	err |= __get_user(regs->regs[i], &sc->sc_regs[i]);		\
-diff --git a/include/asm-mips/sigcontext.h b/include/asm-mips/sigcontext.h
-index 8edabb0..cefa657 100644
---- a/include/asm-mips/sigcontext.h
-+++ b/include/asm-mips/sigcontext.h
-@@ -55,8 +55,14 @@ #if _MIPS_SIM == _MIPS_SIM_ABI64 || _MIP
- struct sigcontext {
- 	unsigned long	sc_regs[32];
- 	unsigned long	sc_fpregs[32];
--	unsigned long	sc_hi[4];
--	unsigned long	sc_lo[4];
-+	unsigned long	sc_mdhi;
-+	unsigned long	sc_hi1;
-+	unsigned long	sc_hi2;
-+	unsigned long	sc_hi3;
-+	unsigned long	sc_mdlo;
-+	unsigned long	sc_lo1;
-+	unsigned long	sc_lo2;
-+	unsigned long	sc_lo3;
- 	unsigned long	sc_pc;
- 	unsigned int	sc_fpc_csr;
- 	unsigned int	sc_used_math;
+ 	ei_status.rx_start_page = start_page + TX_PAGES;
+ #ifdef PACKETBUF_MEMSIZE
 
--- 
-Daniel Jacobowitz
-CodeSourcery
+
+
+--------------040703070604020900060909--

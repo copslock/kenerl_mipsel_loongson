@@ -1,163 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 May 2006 23:24:39 +0100 (BST)
-Received: from az33egw02.freescale.net ([192.88.158.103]:19386 "EHLO
-	az33egw02.freescale.net") by ftp.linux-mips.org with ESMTP
-	id S8133498AbWEHWY2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 8 May 2006 23:24:28 +0100
-Received: from az33smr02.freescale.net (az33smr02.freescale.net [10.64.34.200])
-	by az33egw02.freescale.net (8.12.11/az33egw02) with ESMTP id k48Me2Ef002410;
-	Mon, 8 May 2006 15:40:02 -0700 (MST)
-Received: from [10.82.17.56] ([10.82.17.56])
-	by az33smr02.freescale.net (8.13.1/8.13.0) with ESMTP id k48MZjao015113;
-	Mon, 8 May 2006 17:35:45 -0500 (CDT)
-In-Reply-To: <1146734223.31241.44.camel@localhost.localdomain>
-References: <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3> <1146510542.16643.10.camel@localhost.localdomain> <1146510542.16643.10.camel@localhost.localdomain> <5.1.0.14.2.20060501144633.025e4e20@205.166.54.3> <5.1.0.14.2.20060502095256.01fd4210@205.166.54.3> <1146674056.31241.18.camel@localhost.localdomain> <1146734223.31241.44.camel@localhost.localdomain>
-Mime-Version: 1.0 (Apple Message framework v749.3)
-Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
-Message-Id: <6BF86C09-0732-4322-A43E-29705849886D@freescale.com>
-Cc:	Mark Schank <mschank@dcbnet.com>, ppopov@embeddedalley.com,
-	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org,
-	jgarzik@pobox.com, netdev@vger.kernel.org,
-	Ralf Baechle <ralf@linux-mips.org>,
-	"Robin H. Johnson" <robbat2@gentoo.org>
-Content-Transfer-Encoding: 7bit
-From:	Andy Fleming <afleming@freescale.com>
-Subject: Re: RFC: new WIP version of au1000_eth.c phylib conversion (was Re: RFC: au1000_etc.c phylib rewrite)
-Date:	Mon, 8 May 2006 17:24:13 -0500
-To:	Herbert Valerio Riedel <hvr@gnu.org>
-X-Mailer: Apple Mail (2.749.3)
-Return-Path: <afleming@freescale.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 May 2006 02:03:11 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.189]:53115 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133850AbWEIBDB convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 9 May 2006 02:03:01 +0100
+Received: by nf-out-0910.google.com with SMTP id m19so320909nfc
+        for <linux-mips@linux-mips.org>; Mon, 08 May 2006 18:03:00 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=ueBnC8QhjO9LVR3ZWzbcdM070WWydhKUlncFjNF54wGY4EOeHQ+EefA2RuN32MhwFRWZmtkcD7fMjRzxnCkU5LK9qv8XiwB6H2hI5nexlE6+aHSc0/aYQD0lZlTXNouc0vTEc4Kx8BoIR1bVwMHwMTLnDP2raGOBKhHGHrMWmK0=
+Received: by 10.49.39.19 with SMTP id r19mr1651864nfj;
+        Mon, 08 May 2006 18:03:00 -0700 (PDT)
+Received: by 10.48.144.2 with HTTP; Mon, 8 May 2006 18:03:00 -0700 (PDT)
+Message-ID: <50c9a2250605081803l3ac0465ase56bab689d1b34e8@mail.gmail.com>
+Date:	Tue, 9 May 2006 09:03:00 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: how to reuse the initrd ram by busybox?
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11362
+X-archive-position: 11363
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: afleming@freescale.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+now i use a initrd to boot my system, then switch to the real root
+filesystem, and i want to reuse the initrd.
+i see in the redhat, it use the blockdev --flushbufs /dev/ram0 to
+flush the initrd ram.
+ and i can't find blockdev in busybox, so i use the freeramdisk
+/dev/ram0, but it seems has no effect.is there any other command to
+finish this job?
 
-On May 4, 2006, at 04:17, Herbert Valerio Riedel wrote:
+thanks for any hints
 
-> Hello,
->
-> I've tried to adapt the PHY detection code to allow for dynamic  
-> runtime
-> configuration (with fallback to search for the 2nd MAC PHY on the 1st
-> MAC's MII bus), as well as selectable static PHY configuration through
-> Kconfig (e.g. for supporting PHYs w/o MII connection)
+Best regards
 
-Comments inline, below:
-
-> diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
-> index 0823cb8..8c0b26f 100644
-> --- a/drivers/net/au1000_eth.c
-> +++ b/drivers/net/au1000_eth.c
-> @@ -9,6 +9,9 @@
-
-[snip]
-
-> -/* FIXME
-> - * All of the PHY code really should be detached from the MAC
-> - * code.
-> - */
-> -
-
-[snip]
-
-Nothing to say so far, except seeing all those "-" signs was quite  
-the thrill, since one of the goals of the phylib was to lead to  
-reduced complexity.  That said, it looked like there were about a  
-dozen PHY-specific code blocks in there.  I saw you submit one PHY  
-driver.  Were there others in there that could be ported?
-
-[snip]
-
-> +static int mdiobus_read(struct mii_bus *bus, int phy_addr, int  
-> regnum)
-> {
-> -	int i, val;
-> +	struct net_device *const dev = bus->priv; /* beware: bus->phy_map 
-> [phy_addr].attached_dev == dev does _NOT_ hold always  */
-> +	enable_mac(dev, 0); /* make sure MAC associated with this mii_bus  
-> is enabled */
-> +	return mdio_read(dev, phy_addr, regnum);
-> +}
-
-
-Why is attached_dev not always correct?  I'm not sure if I'm not  
-understanding the hardware (I'm unfamiliar with this NIC), or if  
-you've misinterpreted the meaning of the attached_dev field.  It's  
-supposed to be a connection between the network device and a PHY,  
-mainly used for allowing the PHY to signal state changes back to the  
-ethernet device.  Is it actually the case that there is one MAC being  
-used for two PHYs at the same time?  If so, how do you resolve which  
-PHY's state gets used at any given moment?
-
-The same question applies for the code in mdiobus_write()
-
-[snip]
-
-> -static int mii_probe (struct net_device * dev)
-> +static int mdiobus_reset(struct mii_bus *bus)
-> {
-> -	struct au1000_private *aup = (struct au1000_private *) dev->priv;
-> -	int phy_addr;
-> -#ifdef CONFIG_MIPS_BOSPORUS
-> -	int phy_found=0;
-> -#endif
-> +	struct net_device *dev = bus->priv;
-> -	/* search for total of 32 possible mii phy addresses */
-> -	for (phy_addr = 0; phy_addr < 32; phy_addr++) {
-> -		u16 mii_status;
-> -		u16 phy_id0, phy_id1;
-> -		int i;
-> +	enable_mac(dev, 0); /* make sure MAC associated with this mii_bus  
-> is enabled */
->
-
-Do you need to call enable_mac() every time?  If it needs to be up,  
-wouldn't it be easier to make sure it's up during bus initialization?
-
-[snip]
-
-> 	aup->mac->control = control;
-> @@ -1685,57 +808,75 @@ static int au1000_init(struct net_device
->
-
-[snip]
-
-> +
-> +	if (phydev->link && (aup->old_speed != phydev->speed)) {
-> +		// speed changed
-> +
-> +		switch(phydev->speed) {
-> +		case 10:
-> +		case 100:
-> +			break;
-> +		default:
-> +			printk(KERN_WARNING
-> +			       "%s: Speed (%d) is not 10/100/1000 ??\n",
-> +			       dev->name, phydev->speed);
-> +			break;
-> 		}
-
-
-Might want to change that to be "...not 10/100..." or add a case for  
-1000.
-
-[snip]
-
-> +	spin_unlock_irqrestore(&aup->lock, flags);
-> +	if (status_change) {
-> +		phy_print_status(phydev);
-> +	}
-> }
-
-
-Stylistic issue (I've seen it a couple times, at least):  don't use  
-"{" and "}" if your block only has one line.
-ie:
-	if (status_change)
-		phy_print_status(phydev);
+zhuzhenhua

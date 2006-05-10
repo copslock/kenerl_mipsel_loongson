@@ -1,50 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 May 2006 17:35:35 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:39392 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133647AbWEJPf2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 10 May 2006 17:35:28 +0200
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k4AFZRDv016266;
-	Wed, 10 May 2006 16:35:27 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k4AFZQes016265;
-	Wed, 10 May 2006 16:35:26 +0100
-Date:	Wed, 10 May 2006 16:35:26 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Mark.Zhan" <rongkai.zhan@windriver.com>
-Cc:	Alex Gonzalez <langabe@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: Boot time memory allocation
-Message-ID: <20060510153526.GC11961@linux-mips.org>
-References: <c58a7a270605090735t8e4f21ax6ca87f97b9143e3b@mail.gmail.com> <20060509163411.GA8528@linux-mips.org> <44614E0F.2000207@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 May 2006 17:40:58 +0200 (CEST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:22726 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133637AbWEJPku (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 May 2006 17:40:50 +0200
+Received: from localhost (p5181-ipad27funabasi.chiba.ocn.ne.jp [220.107.196.181])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C64B1B499; Thu, 11 May 2006 00:40:44 +0900 (JST)
+Date:	Thu, 11 May 2006 00:41:26 +0900 (JST)
+Message-Id: <20060511.004126.01916795.anemo@mba.ocn.ne.jp>
+To:	ths@networkno.de
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] use generic DWARF_DEBUG
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060510112423.GC7813@networkno.de>
+References: <20060510071937.GA7813@networkno.de>
+	<20060510.165616.108981664.nemoto@toshiba-tops.co.jp>
+	<20060510112423.GC7813@networkno.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44614E0F.2000207@windriver.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11392
+X-archive-position: 11393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 10, 2006 at 10:21:03AM +0800, Mark.Zhan wrote:
+On Wed, 10 May 2006 12:24:23 +0100, Thiemo Seufer <ths@networkno.de> wrote:
+> > Also, I suppose we can use STABS_DEBUG too, but not sure.  Current
+> > MIPS vmlinux.lds.S have this line:
+> > 
+> >   .comment : { *(.comment) }
+> > 
+> > and it seems conflicts with a .comment line in STABS_DEBUG.  Can we
+> > use generic STABS_DEBUG and drop the .comment line in mips
+> > vmlinux.lds.S ?
+> 
+> Isn't stabs in general deprecated by now?
 
-> >At kernel initialization time just don't tell the kernel about the
-> >existence of your memory region.  For many systems that just means you
-> >shrink the memory region passed to the add_memory_region() call to
-> >something that suits your platform.
+I think so, but someone might think it's still useful since its size
+is much smaller. (less than half or so)
 
-> Maybe it is a more flexible way to specify the memory regions via 
-> command line. You know, this will produce User-defined memory regions to 
-> kernel.
+Anyway, how about this patch?
 
-Maybe for a specific application or platform.  For a sourcebase like
-linux-mips.org's with a very large number of users on sometimes very
-complex platforms I'd never ever think of exposing such details.
 
-  Ralf
+[PATCH] use generic STABS_DEBUG macro.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 73f7aca..b84d1f9 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -151,16 +151,13 @@ SECTIONS
+ 
+   /* This is the MIPS specific mdebug section.  */
+   .mdebug : { *(.mdebug) }
+-  /* These are needed for ELF backends which have not yet been
+-     converted to the new style linker.  */
+-  .stab 0 : { *(.stab) }
+-  .stabstr 0 : { *(.stabstr) }
++
++  STABS_DEBUG
+ 
+   DWARF_DEBUG
+ 
+   /* These must appear regardless of  .  */
+   .gptab.sdata : { *(.gptab.data) *(.gptab.sdata) }
+   .gptab.sbss : { *(.gptab.bss) *(.gptab.sbss) }
+-  .comment : { *(.comment) }
+   .note : { *(.note) }
+ }

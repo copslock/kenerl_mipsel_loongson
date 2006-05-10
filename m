@@ -1,70 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 May 2006 04:41:37 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:28860 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S8126484AbWEJCl3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 10 May 2006 04:41:29 +0200
-Received: from ala-mail04.corp.ad.wrs.com (ala-mail04 [147.11.57.145])
-	by mail.wrs.com (8.13.6/8.13.3) with ESMTP id k4A2fKum009855;
-	Tue, 9 May 2006 19:41:22 -0700 (PDT)
-Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ala-mail04.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 9 May 2006 19:41:20 -0700
-Received: from [192.168.96.26] ([192.168.96.26]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 9 May 2006 19:41:19 -0700
-Message-ID: <446152CC.6020904@windriver.com>
-Date:	Wed, 10 May 2006 10:41:16 +0800
-From:	"Mark.Zhan" <rongkai.zhan@windriver.com>
-User-Agent: Thunderbird 1.5 (X11/20060313)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] Wind River 4KC PPMC Eval Board Support
-References: <445C6694.6010901@windriver.com> <20060509164127.GA10647@linux-mips.org>
-In-Reply-To: <20060509164127.GA10647@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 May 2006 08:36:22 +0200 (CEST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:60143 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133397AbWEJGgN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 May 2006 08:36:13 +0200
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 10 May 2006 15:36:12 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 66EC62045A;
+	Wed, 10 May 2006 15:36:05 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 524AD1FFEB;
+	Wed, 10 May 2006 15:36:05 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k4A6a44D099735;
+	Wed, 10 May 2006 15:36:05 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 10 May 2006 15:36:04 +0900 (JST)
+Message-Id: <20060510.153604.82350680.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] use generic DWARF_DEBUG
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 May 2006 02:41:19.0553 (UTC) FILETIME=[37A99310:01C673DB]
-Return-Path: <rongkai.zhan@windriver.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11379
+X-archive-position: 11380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rongkai.zhan@windriver.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Sat, May 06, 2006 at 05:04:20PM +0800, Mark.Zhan wrote:
-> 
->> According to your comments, I re-create the patch. Hopefully, no line-wrapped problems:-)
->> Patch 1 and 2 in the original mails are concatenated into one patch in this mail.
-> 
-> Well, this patch was still somewhat corrupt, a few spaces were missing
+When debugging a kernel compiled by gcc 4.1 with gdb 6.4, gdb could
+not show filename, linenumber, etc.  It seems fixed if I used generic
+DWARF_DEBUG macro.  Although gcc 3.x seems work without this change,
+it would be better to use the generic macro unless there were
+something MIPS specific.
 
-Huhh, I don't what's wrong with my thunderbird.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-> but I was somehow able to talk git into taking it.  So it's applied on
-> the queue branch.
-> 
->   Ralf
-
-After looking into the changeset ac58afdfac792c0583af30dbd9eae53e24c78b, 
-  I find what I want to do has been done by you:-)
-
-For those MIPS32 boards which only use IRQ_CPU, I think, we can provide 
-a default plat_irq_dispatch() implemention, maybe like this:
-
-asmlinkage plat_irq_dispatch(struct pt_regs *regs)
-{
-	unsigned int pending = read_c0_status() & read_c0_cause();
-	int irq;
-
-	irq = ffs(pending >> 8) - 1;
-	return do_IRQ(irq, regs);
-}
-
-I this it will clean up more codes......
-
-Best Regards,
-Mark.Zhan
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 14fa00e..73f7aca 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -155,16 +155,9 @@ #endif
+      converted to the new style linker.  */
+   .stab 0 : { *(.stab) }
+   .stabstr 0 : { *(.stabstr) }
+-  /* DWARF debug sections.
+-     Symbols in the .debug DWARF section are relative to the beginning of the
+-     section so we begin .debug at 0.  It's not clear yet what needs to happen
+-     for the others.   */
+-  .debug          0 : { *(.debug) }
+-  .debug_srcinfo  0 : { *(.debug_srcinfo) }
+-  .debug_aranges  0 : { *(.debug_aranges) }
+-  .debug_pubnames 0 : { *(.debug_pubnames) }
+-  .debug_sfnames  0 : { *(.debug_sfnames) }
+-  .line           0 : { *(.line) }
++
++  DWARF_DEBUG
++
+   /* These must appear regardless of  .  */
+   .gptab.sdata : { *(.gptab.data) *(.gptab.sdata) }
+   .gptab.sbss : { *(.gptab.bss) *(.gptab.sbss) }

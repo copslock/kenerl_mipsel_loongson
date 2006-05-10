@@ -1,50 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 May 2006 10:27:38 +0200 (CEST)
-Received: from witte.sonytel.be ([80.88.33.193]:6575 "EHLO witte.sonytel.be")
-	by ftp.linux-mips.org with ESMTP id S8133407AbWEJI1a (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 10 May 2006 10:27:30 +0200
-Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
-	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k4A8RPCQ015616;
-	Wed, 10 May 2006 10:27:25 +0200 (MEST)
-Date:	Wed, 10 May 2006 10:27:25 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] [MIPS] create consistency in "system type" selection
-In-Reply-To: <20060509213453.GA32050@deprecation.cyrius.com>
-Message-ID: <Pine.LNX.4.62.0605101026450.17487@pademelon.sonytel.be>
-References: <20060509213453.GA32050@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 May 2006 11:11:53 +0200 (CEST)
+Received: from ug-out-1314.google.com ([66.249.92.175]:8303 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133407AbWEJJLo convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 May 2006 11:11:44 +0200
+Received: by ug-out-1314.google.com with SMTP id e2so213029ugf
+        for <linux-mips@linux-mips.org>; Wed, 10 May 2006 02:11:44 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=e19b4B2B1d+PNv8jr4+5yZ6RtfCGU2WuuS/P2mdwkCnLtrWERkKcNsPLqhoGmiJ1cBqG3fJssk8X11tWCF68al3uFNfpzrnysd0gOlwPbcB7hAQH5bfh5J2LpR9QkLjjogmLRQg1jXh1ngSqQUxW35natS3j5657F+oCMpuZojA=
+Received: by 10.78.57.11 with SMTP id f11mr81793hua;
+        Wed, 10 May 2006 02:11:43 -0700 (PDT)
+Received: by 10.78.39.13 with HTTP; Wed, 10 May 2006 02:11:43 -0700 (PDT)
+Message-ID: <c58a7a270605100211o8181e23p5c0b1a7eb0060f90@mail.gmail.com>
+Date:	Wed, 10 May 2006 10:11:43 +0100
+From:	"Alex Gonzalez" <langabe@gmail.com>
+To:	Mark.Zhan <rongkai.zhan@windriver.com>
+Subject: Re: Boot time memory allocation
+Cc:	"Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+In-Reply-To: <44614E0F.2000207@windriver.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <c58a7a270605090735t8e4f21ax6ca87f97b9143e3b@mail.gmail.com>
+	 <20060509163411.GA8528@linux-mips.org>
+	 <44614E0F.2000207@windriver.com>
+Return-Path: <langabe@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11383
+X-archive-position: 11384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: langabe@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 9 May 2006, Martin Michlmayr wrote:
-> The "system type" Kconfig options on MIPS are not consistent.  For
-> some platforms, only the name is listed while other entries are
-> prepended with "Support for".  Remove this as it doesn't make sense
-> when describing the "system type".  This is in line with how e.g.
-> ARM handles this.
+Thanks for the answers.
 
-I guess the `Support for' prefix came from the era you could compile one kernel
-that supported multiple systems.
+I wrongly assumed I wouldn't be able to access unspecified memory
+regions, or that I'd have to tweak it somehow.
 
-Gr{oetje,eeting}s,
+Regards,
+Alex
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+On 5/10/06, Mark.Zhan <rongkai.zhan@windriver.com> wrote:
+> Ralf Baechle wrote:
+> > On Tue, May 09, 2006 at 03:35:14PM +0100, Alex Gonzalez wrote:
+> >
+> >> I have two independent processors with access to a shared memory
+> >> region, mapped in the 256MB to 512MB region (kseg0).
+> >>
+> >> One is running a propietary OS, and the second one is running Linux 2.6.12.
+> >>
+> >> How would I arrange to leave that shared memory region out of the
+> >> scope of Linux's memory management system, but at the same time make
+> >> it possible for a driver to access it?
+> >>
+> >> I have done similar things before with the help of alloc_bootmem, but
+> >> this time I don't want the kernel to reserve the memory, I want the
+> >> kernel to be completely unaware of it, and I need to specify its start
+> >> and end.
+> >
+> > At kernel initialization time just don't tell the kernel about the
+> > existence of your memory region.  For many systems that just means you
+> > shrink the memory region passed to the add_memory_region() call to
+> > something that suits your platform.
+> >
+> >   Ralf
+> >
+>
+> Maybe it is a more flexible way to specify the memory regions via
+> command line. You know, this will produce User-defined memory regions to
+> kernel.
+>

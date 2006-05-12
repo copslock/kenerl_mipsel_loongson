@@ -1,57 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 May 2006 09:52:01 +0200 (CEST)
-Received: from fw01.bwg.de ([213.144.14.242]:37734 "EHLO fw01.bwg.de")
-	by ftp.linux-mips.org with ESMTP id S8133516AbWELHvw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 12 May 2006 09:51:52 +0200
-Received: from fw01.bwg.de (localhost [127.0.0.1])
-	by fw01.bwg.de (8.13.6/8.13.6) with ESMTP id k4C7ppDI021460
-	for <linux-mips@linux-mips.org>; Fri, 12 May 2006 09:51:51 +0200 (CEST)
-Received: from kundenmail (193.47.152.5) by fw01-4.bwg.de (smtprelay) with ESMTP Fri May 12 09:51:41 2006.
-Received: from [192.168.178.2] (84.162.182.108)
-          by kundenmail with MERCUR Mailserver (v4.03.15 MTI1LTI0MzctNDg3Nw==)
-          for <linux-mips@linux-mips.org>; Fri, 12 May 2006 09:53:15 +0200
-Message-ID: <44643E46.1040309@rw-gmbh.de>
-Date:	Fri, 12 May 2006 09:50:30 +0200
-From:	Ralf Roesch <ralf.roesch@rw-gmbh.de>
-User-Agent: Thunderbird 1.5.0.2 (X11/20060501)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 May 2006 12:57:24 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:58889 "HELO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with SMTP
+	id S8133884AbWELK5L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 12 May 2006 12:57:11 +0200
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id CD157F5CD9;
+	Fri, 12 May 2006 12:57:06 +0200 (CEST)
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+ by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 01396-07; Fri, 12 May 2006 12:57:06 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 79301F5CC8;
+	Fri, 12 May 2006 12:57:06 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.6/8.13.1) with ESMTP id k4CAvCUl019261;
+	Fri, 12 May 2006 12:57:12 +0200
+Date:	Fri, 12 May 2006 11:57:08 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+cc:	Karel van Houten <Karel@vhouten.xs4all.nl>,
+	debian-mips@lists.debian.org, linux-mips@linux-mips.org
+Subject: Re: 2.6 for DECstation, d-i
+In-Reply-To: <20060511185446.GB7234@deprecation.cyrius.com>
+Message-ID: <Pine.LNX.4.64N.0605121142240.14216@blysk.ds.pg.gda.pl>
+References: <44635C0D.7040901@vhouten.xs4all.nl> <20060511173350.GM7827@deprecation.cyrius.com>
+ <Pine.LNX.4.64N.0605111853500.20004@blysk.ds.pg.gda.pl>
+ <20060511185446.GB7234@deprecation.cyrius.com>
 MIME-Version: 1.0
-To:	Ratin <mrahman@sypixx.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: SOAP
-References: <c58a7a270605090735t8e4f21ax6ca87f97b9143e3b@mail.gmail.com> <20060509163411.GA8528@linux-mips.org> <44614E0F.2000207@windriver.com> <c58a7a270605100211o8181e23p5c0b1a7eb0060f90@mail.gmail.com> <006401c6755c$c080def0$2300a8c0@ratin>
-In-Reply-To: <006401c6755c$c080def0$2300a8c0@ratin>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <ralf.roesch@rw-gmbh.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.2/1459/Thu May 11 22:46:49 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11409
+X-archive-position: 11410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf.roesch@rw-gmbh.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-we have successfully used gSOAP since years now on a mips based embedded
-target runing linux from mips-org.
-Further related information about the gSOAP project you can find at
-http://www.cs.fsu.edu/~engelen/soap.html
+On Thu, 11 May 2006, Martin Michlmayr wrote:
 
-Ralf
+> >  Well, not exactly ported, but hacked up enough it worked the last time I 
+> > tried, but you have to disable the virtual terminal (CONFIG_VT) as it is 
+> 
+> Yeah, but the problem is that ZS is not a config option anymore.  I
+> hacked up something to see if the driver works but I guess there's a
+> nicer solution.
 
-Roesch & Walter___________________________________________
-Industrie-Elektronik GmbH * Tel.: +49-7824 / 6628-0
-Im Heidenwinkel 5         * Fax:  +49-7824 / 6628-29
-D-77963 Schwanau          * mailto:ralf.roesch@rw-gmbh.de
-Germany                   * WWW: http://www.rw-gmbh.de
+ Of course there is.  Just enable SERIAL_NONSTANDARD, SERIAL_DEC, 
+SERIAL_DEC_CONSOLE and ZS.  They are all in drivers/char/Kconfig and it's 
+not a coincidence the options are the same as in 2.4.
 
+ The driver has NOT been ported to use the serial core and frankly I would 
+rather it went away and write the necessary system specific glue 
+(including that horrible stuff for incorrect wiring used in all DEC 
+systems making use of the Zilog chips) to use drivers/net/wan/z85230.c 
+instead which already has a lot of nice stuff like support for synchronous 
+operation and DMA, HDLC framing, etc.
 
-
-
-Ratin wrote:
-> Is there an implementation of SOAP (Simple Object Access Protocol) for
-> linux-mips?
->
-> Ratin
->
+  Maciej

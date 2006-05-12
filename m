@@ -1,51 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 May 2006 18:20:54 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:42404 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8126579AbWELQUq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 12 May 2006 18:20:46 +0200
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k4CGKjnR022670;
-	Fri, 12 May 2006 17:20:45 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k4CGKhYX022669;
-	Fri, 12 May 2006 17:20:43 +0100
-Date:	Fri, 12 May 2006 17:20:43 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Karel van Houten <Karel@vhouten.xs4all.nl>,
-	debian-mips@lists.debian.org, linux-mips@linux-mips.org
-Subject: Re: 2.6 for DECstation, d-i
-Message-ID: <20060512162042.GA22611@linux-mips.org>
-References: <44635C0D.7040901@vhouten.xs4all.nl> <20060511173350.GM7827@deprecation.cyrius.com> <Pine.LNX.4.64N.0605111853500.20004@blysk.ds.pg.gda.pl> <20060511185446.GB7234@deprecation.cyrius.com> <Pine.LNX.4.64N.0605121142240.14216@blysk.ds.pg.gda.pl> <20060512151201.GJ7863@deprecation.cyrius.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060512151201.GJ7863@deprecation.cyrius.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 May 2006 18:24:47 +0200 (CEST)
+Received: from sj-iport-5.cisco.com ([171.68.10.87]:1127 "EHLO
+	sj-iport-5.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S8126579AbWELQYi convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 12 May 2006 18:24:38 +0200
+Received: from sj-dkim-4.cisco.com ([171.71.179.196])
+  by sj-iport-5.cisco.com with ESMTP; 12 May 2006 09:24:27 -0700
+X-IronPort-AV: i="4.05,122,1146466800"; 
+   d="scan'208"; a="275885728:sNHT47624892"
+Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
+	by sj-dkim-4.cisco.com (8.12.11/8.12.11) with ESMTP id k4CGORvo018364;
+	Fri, 12 May 2006 09:24:27 -0700
+Received: from xbh-sjc-211.amer.cisco.com (xbh-sjc-211.cisco.com [171.70.151.144])
+	by sj-core-2.cisco.com (8.12.10/8.12.6) with ESMTP id k4CGORB9027629;
+	Fri, 12 May 2006 09:24:27 -0700 (PDT)
+Received: from xmb-sjc-237.amer.cisco.com ([128.107.191.123]) by xbh-sjc-211.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.211);
+	 Fri, 12 May 2006 09:24:26 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: SOAP
+Date:	Fri, 12 May 2006 09:24:25 -0700
+Message-ID: <27801B4D04E7CA45825B0E0CE60FE10A01E51ED3@xmb-sjc-237.amer.cisco.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: SOAP
+Thread-Index: AcZ1mPBlvPMpXG2bSsmNcKCCEepW8wAR1FYQ
+From:	"Ratin Rahman \(mratin\)" <mratin@cisco.com>
+To:	"Ralf Roesch" <ralf.roesch@rw-gmbh.de>
+Cc:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 12 May 2006 16:24:26.0960 (UTC) FILETIME=[89AD5500:01C675E0]
+DKIM-Signature:	a=rsa-sha1; q=dns; l=962; t=1147451067; x=1148315067;
+	c=relaxed/simple; s=sjdkim4001; h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=mratin@cisco.com; z=From:=22Ratin=20Rahman=20\(mratin\)=22=20<mratin@cisco.com>
+	|Subject:RE=3A=20SOAP;
+	X=v=3Dcisco.com=3B=20h=3DpkqlvQRZJCCcYqvcM/ZHl4u6qTk=3D; b=lfv+N2ghg+6t++U6yb4/hY4/w4SX5WhiRi4b1eYK1MsImjo53zGpEK0V1CA3cSfXMzDpJ1zQ
+	e+RYImcRtrnXRw3JvEh541pPGpl2zFBNRbYDXgErBRX+OG/mRM4CHDK5;
+Authentication-Results:	sj-dkim-4.cisco.com; header.From=mratin@cisco.com; dkim=pass (
+	sig from cisco.com verified; ); 
+Return-Path: <mratin@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11412
+X-archive-position: 11413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mratin@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 12, 2006 at 05:12:01PM +0200, Martin Michlmayr wrote:
+Thanks, good to know about the illegal XML serialization patent that
+Microsoft obtained from the patent office on that page. 
+Ratin
 
-> * Maciej W. Rozycki <macro@linux-mips.org> [2006-05-12 11:57]:
-> > > Yeah, but the problem is that ZS is not a config option anymore.  I
-> > > hacked up something to see if the driver works but I guess there's a
-> > > nicer solution.
-> >  Of course there is.  Just enable SERIAL_NONSTANDARD, SERIAL_DEC, 
-> > SERIAL_DEC_CONSOLE and ZS.  They are all in drivers/char/Kconfig and it's 
-> > not a coincidence the options are the same as in 2.4.
-> 
-> Hmm, okay, they are in the linux-mips tree, but not in mainline. :/
+-----Original Message-----
+From: Ralf Roesch [mailto:ralf.roesch@rw-gmbh.de] 
+Sent: Friday, May 12, 2006 12:51 AM
+To: Ratin
+Cc: linux-mips@linux-mips.org
+Subject: Re: SOAP
 
-And they won't go there just like any other drivers/char/ serial driver..
+we have successfully used gSOAP since years now on a mips based embedded
+target runing linux from mips-org.
+Further related information about the gSOAP project you can find at
+http://www.cs.fsu.edu/~engelen/soap.html
 
-  Ralf
+Ralf
+
+Roesch & Walter___________________________________________
+Industrie-Elektronik GmbH * Tel.: +49-7824 / 6628-0
+Im Heidenwinkel 5         * Fax:  +49-7824 / 6628-29
+D-77963 Schwanau          * mailto:ralf.roesch@rw-gmbh.de
+Germany                   * WWW: http://www.rw-gmbh.de
+
+
+
+
+Ratin wrote:
+> Is there an implementation of SOAP (Simple Object Access Protocol) for
+
+> linux-mips?
+>
+> Ratin
+>

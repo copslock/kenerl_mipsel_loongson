@@ -1,217 +1,162 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 May 2006 20:55:15 +0200 (CEST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:59916 "HELO
-	sorrow.cyrius.com") by ftp.linux-mips.org with SMTP
-	id S8133657AbWEKSzE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 May 2006 20:55:04 +0200
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 53B9A64D55; Thu, 11 May 2006 18:54:56 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 1FD3F66F5B; Thu, 11 May 2006 20:54:46 +0200 (CEST)
-Date:	Thu, 11 May 2006 20:54:46 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Karel van Houten <Karel@vhouten.xs4all.nl>,
-	debian-mips@lists.debian.org, linux-mips@linux-mips.org
-Subject: Re: 2.6 for DECstation, d-i
-Message-ID: <20060511185446.GB7234@deprecation.cyrius.com>
-References: <44635C0D.7040901@vhouten.xs4all.nl> <20060511173350.GM7827@deprecation.cyrius.com> <Pine.LNX.4.64N.0605111853500.20004@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 May 2006 02:26:37 +0200 (CEST)
+Received: from gateway.stellartec.com ([65.107.16.99]:1289 "EHLO
+	gateway.stellartec.com") by ftp.linux-mips.org with ESMTP
+	id S8133888AbWELA03 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 12 May 2006 02:26:29 +0200
+Content-Transfer-Encoding: 7bit
+Received: from Exchange.stellartec.com ([10.1.1.7]) by gateway.stellartec.com with Microsoft SMTPSVC(6.0.3790.1830); Thu, 11 May 2006 17:26:15 -0700
+Importance: normal
+Priority: normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.2663
+Content-Class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0605111853500.20004@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.11+cvs20060330
-Return-Path: <tbm@cyrius.com>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C6755A.AE1DEC0C"
+Subject: Nedd help burning flash using osprey vr41xx
+Date:	Thu, 11 May 2006 17:26:19 -0700
+Message-ID: <7F5F67B895426C40AC75B8290421C239D1EA62@Exchange.stellartec.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Nedd help burning flash using osprey vr41xx
+thread-index: AcZ1WrClP4hbWUWtRTqhBsLNWaBU6Q==
+From:	"Yashwant Shitoot" <yshitoot@stellartec.com>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 12 May 2006 00:26:15.0529 (UTC) FILETIME=[AE1D2590:01C6755A]
+Return-Path: <yshitoot@stellartec.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11405
+X-archive-position: 11406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: yshitoot@stellartec.com
 Precedence: bulk
 X-list: linux-mips
 
-* Maciej W. Rozycki <macro@linux-mips.org> [2006-05-11 19:14]:
-> > Zilog Z8530 support for DECstation hasn't been ported to 2.6 yet.
-> 
->  Well, not exactly ported, but hacked up enough it worked the last time I 
-> tried, but you have to disable the virtual terminal (CONFIG_VT) as it is 
+This is a multi-part message in MIME format.
 
-Yeah, but the problem is that ZS is not a config option anymore.  I
-hacked up something to see if the driver works but I guess there's a
-nicer solution.
+------_=_NextPart_001_01C6755A.AE1DEC0C
+X-EC0D2A8E-5CB7-4969-9C36-46D859D137BE-PartID: E871A6D4-809B-4F4F-9B72-2E88ABBF3B02
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+=20
+
+I do have a working system with vrboot, vmlinux and romdisk. Now I would
+like to use about 10 bytes in the unused portion of flash (at addr
+0xbfc01fc0) and put in a serial number. I have tried bin2rom
+serialNum.inf 0xbfc01fc0 0xbfc01fff (and some variations) however
+ethload hangs up at "sending jump addr".
+
+=20
+
+Any suggestions ?
+
+=20
+
+Thanks
+
+=20
+
+Yash
 
 
---- a/drivers/char/Makefile
-+++ b/drivers/char/Makefile
-@@ -51,6 +51,8 @@ obj-$(CONFIG_VIOCONS)		+= viocons.o
- obj-$(CONFIG_VIOTAPE)		+= viotape.o
- obj-$(CONFIG_HVCS)		+= hvcs.o
- obj-$(CONFIG_SGI_MBCS)		+= mbcs.o
-+obj-$(CONFIG_SERIAL_DZ)		+= decserial.o
-+obj-$(CONFIG_SERIAL_ZS)		+= decserial.o
- 
- obj-$(CONFIG_PRINTER)		+= lp.o
- obj-$(CONFIG_TIPAR)		+= tipar.o
-diff --git a/drivers/char/decserial.c b/drivers/char/decserial.c
-index aa14409..9a320c3 100644
---- a/drivers/char/decserial.c
-+++ b/drivers/char/decserial.c
-@@ -28,7 +28,7 @@ extern int zs_init(void);
- extern int dz_init(void);
- #endif
- 
--#ifdef CONFIG_SERIAL_CONSOLE
-+#ifdef CONFIG_SERIAL_CORE_CONSOLE
- 
- #ifdef CONFIG_ZS
- extern void zs_serial_console_init(void);
-@@ -43,7 +43,7 @@ extern void dz_serial_console_init(void)
- /* rs_init - starts up the serial interface -
-    handle normal case of starting up the serial interface */
- 
--#ifdef CONFIG_SERIAL
-+#ifdef CONFIG_SERIAL_CORE
- 
- int __init rs_init(void)
- {
-@@ -70,7 +70,7 @@ __initcall(rs_init);
- 
- #endif
- 
--#ifdef CONFIG_SERIAL_CONSOLE
-+#ifdef CONFIG_SERIAL_CORE_CONSOLE
- 
- /* serial_console_init handles the special case of starting
-  *   up the console on the serial port
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 7d22dc0..b16b99f 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -398,6 +398,27 @@ config SERIAL_DZ_CONSOLE
- 
- 	  If unsure, say Y.
- 
-+config SERIAL_ZS
-+	bool "DECstation Zilog Z8530 support"
-+	depends on MACH_DECSTATION && TC
-+	select SERIAL_CORE
-+	help
-+	  Zilog Z8530 serial controllers on DECstation machines using the
-+	  TurboChannel bus.
-+
-+config SERIAL_ZS_CONSOLE
-+	bool "Support console on DECstation Zilog Z8530"
-+	depends on SERIAL_ZS=y
-+	select SERIAL_CORE_CONSOLE
-+	help
-+	  If you say Y here, it will be possible to use a serial port as the
-+	  system console (the system console is the device which receives all
-+	  kernel messages and warnings and which allows logins in single user
-+	  mode).  Note that the firmware uses ttyS0 as the serial console on
-+	  the Maxine and ttyS2 on the others.
-+
-+	  If unsure, say Y.
-+
- config SERIAL_21285
- 	tristate "DC21285 serial port support"
- 	depends on ARM && FOOTBRIDGE
-diff --git a/drivers/serial/ip22zilog.c b/drivers/serial/ip22zilog.c
-diff --git a/drivers/tc/Makefile b/drivers/tc/Makefile
-index 83b5bd7..885d82f 100644
---- a/drivers/tc/Makefile
-+++ b/drivers/tc/Makefile
-@@ -5,7 +5,7 @@
- # Object file lists.
- 
- obj-$(CONFIG_TC) += tc.o
--obj-$(CONFIG_ZS) += zs.o
-+obj-$(CONFIG_SERIAL_ZS) += zs.o
- obj-$(CONFIG_VT) += lk201.o lk201-map.o lk201-remap.o
- 
- $(obj)/lk201-map.o: $(obj)/lk201-map.c
-diff --git a/drivers/tc/zs.c b/drivers/tc/zs.c
-index 2dffa8e..960f552 100644
---- a/drivers/tc/zs.c
-+++ b/drivers/tc/zs.c
-@@ -56,7 +56,7 @@
- #include <linux/init.h>
- #include <linux/ioport.h>
- #include <linux/spinlock.h>
--#ifdef CONFIG_SERIAL_DEC_CONSOLE
-+#ifdef CONFIG_SERIAL_CORE_CONSOLE
- #include <linux/console.h>
- #endif
- 
-@@ -137,10 +137,10 @@ struct dec_serial *zs_chain;	/* list of 
- 
- struct tty_struct zs_ttys[NUM_CHANNELS];
- 
--#ifdef CONFIG_SERIAL_DEC_CONSOLE
-+#ifdef CONFIG_SERIAL_CORE_CONSOLE
- static struct console sercons;
- #endif
--#if defined(CONFIG_SERIAL_DEC_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && \
-+#if defined(CONFIG_SERIAL_CORE_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && \
-    !defined(MODULE)
- static unsigned long break_pressed; /* break, really ... */
- #endif
-@@ -383,7 +383,7 @@ static void receive_chars(struct dec_ser
- 				write_zsreg(info->zs_channel, R0, ERR_RES);
- 		}
- 
--#if defined(CONFIG_SERIAL_DEC_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && \
-+#if defined(CONFIG_SERIAL_CORE_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && \
-    !defined(MODULE)
- 		if (break_pressed && info->line == sercons.index) {
- 			/* Ignore the null char got when BREAK is removed.  */
-@@ -446,7 +446,7 @@ static void status_handle(struct dec_ser
- 	stat = read_zsreg(info->zs_channel, R0);
- 
- 	if ((stat & BRK_ABRT) && !(info->read_reg_zero & BRK_ABRT)) {
--#if defined(CONFIG_SERIAL_DEC_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && \
-+#if defined(CONFIG_SERIAL_CORE_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && \
-    !defined(MODULE)
- 		if (info->line == sercons.index) {
- 			if (!break_pressed)
-@@ -1560,7 +1560,7 @@ static int rs_open(struct tty_struct *tt
- 		return retval;
- 	}
- 
--#ifdef CONFIG_SERIAL_DEC_CONSOLE
-+#ifdef CONFIG_SERIAL_CORE_CONSOLE
- 	if (sercons.cflag && sercons.index == line) {
- 		tty->termios->c_cflag = sercons.cflag;
- 		sercons.cflag = 0;
-@@ -1643,7 +1643,7 @@ static void __init probe_sccs(void)
- 			zs_channels[n_channels].data =
- 				zs_channels[n_channels].control + 4;
- 
--#ifndef CONFIG_SERIAL_DEC_CONSOLE
-+#ifndef CONFIG_SERIAL_CORE_CONSOLE
- 			/*
- 			 * We're called early and memory managment isn't up, yet.
- 			 * Thus request_region would fail.
-@@ -1894,7 +1894,7 @@ int unregister_zs_hook(unsigned int chan
-  * Serial console driver
-  * ------------------------------------------------------------
-  */
--#ifdef CONFIG_SERIAL_DEC_CONSOLE
-+#ifdef CONFIG_SERIAL_CORE_CONSOLE
- 
- 
- /*
-@@ -2090,7 +2090,7 @@ void __init zs_serial_console_init(void)
- {
- 	register_console(&sercons);
- }
--#endif /* ifdef CONFIG_SERIAL_DEC_CONSOLE */
-+#endif /* ifdef CONFIG_SERIAL_CORE_CONSOLE */
- 
- #ifdef CONFIG_KGDB
- struct dec_zschannel *zs_kgdbchan;
+------_=_NextPart_001_01C6755A.AE1DEC0C
+X-EC0D2A8E-5CB7-4969-9C36-46D859D137BE-PartID: 24C25BEB-49AF-4F02-B3C8-34A8320CCC93
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+<html>
+
+<head>
+<META http-equiv=3D"Content-Type" content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hello,</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I do have a working system with vrboot, vmlinux and =
+romdisk.
+Now I would like to use about 10 bytes in the unused portion of flash =
+(at addr
+0xbfc01fc0) and put in a serial number. I have tried bin2rom =
+serialNum.inf
+0xbfc01fc0 0xbfc01fff (and some variations) however ethload hangs up at =
+&#8220;sending
+jump addr&#8221;.</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Any suggestions ?</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Yash</span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C6755A.AE1DEC0C--

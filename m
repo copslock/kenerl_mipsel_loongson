@@ -1,71 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 May 2006 22:15:03 +0200 (CEST)
-Received: from eastrmmtao05.cox.net ([68.230.240.34]:61648 "HELO
-	eastrmmtao05.cox.net") by ftp.linux-mips.org with SMTP
-	id S8133554AbWENUOz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 14 May 2006 22:14:55 +0200
-Received: from hermes.mountolympos.net ([70.160.186.45])
-          by eastrmmtao05.cox.net
-          (InterMail vM.6.01.06.01 201-2131-130-101-20060113) with ESMTP
-          id <20060514201448.SPBZ26910.eastrmmtao05.cox.net@hermes.mountolympos.net>;
-          Sun, 14 May 2006 16:14:48 -0400
-Received: from zeus.mountolympos.net (zeus.mountolympos.net [192.168.2.2])
-	by hermes.mountolympos.net (Postfix) with ESMTP id 619081677B;
-	Sun, 14 May 2006 16:14:48 -0400 (EDT)
-Received: from [192.168.2.3] (kronos.mountolympos.net [192.168.2.3])
-	by zeus.mountolympos.net (Postfix) with ESMTP id 6A032100A11D;
-	Sun, 14 May 2006 16:14:48 -0400 (EDT)
-Message-ID: <44678FB8.4070104@mountolympos.net>
-Date:	Sun, 14 May 2006 16:14:48 -0400
-From:	John Miller <jamiller1110@cox.net>
-User-Agent: Thunderbird 1.5 (X11/20060402)
-MIME-Version: 1.0
-To:	"Kevin D. Kissell" <kevink@mips.com>
-CC:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 01:30:21 +0200 (CEST)
+Received: from bender.bawue.de ([193.7.176.20]:32912 "HELO bender.bawue.de")
+	by ftp.linux-mips.org with SMTP id S8133747AbWENXaO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 15 May 2006 01:30:14 +0200
+Received: from lagash (88-106-136-76.dynamic.dsl.as9105.com [88.106.136.76])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id C512F45597; Mon, 15 May 2006 01:30:10 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.62)
+	(envelope-from <ths@networkno.de>)
+	id 1FfQ2B-0002bi-CD; Mon, 15 May 2006 00:29:59 +0100
+Date:	Mon, 15 May 2006 00:29:59 +0100
+To:	John Miller <jamiller1110@cox.net>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Instruction error with cache opcode
-References: <446735C6.2080306@mountolympos.net> <002a01c67761$253e97f0$0202a8c0@Ulysses> <4467796E.8060000@mountolympos.net> <009501c6778e$947c3ff0$10eca8c0@grendel>
-In-Reply-To: <009501c6778e$947c3ff0$10eca8c0@grendel>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <jamiller1110@cox.net>
+Message-ID: <20060514232959.GD800@networkno.de>
+References: <446735C6.2080306@mountolympos.net> <002a01c67761$253e97f0$0202a8c0@Ulysses> <4467796E.8060000@mountolympos.net> <009501c6778e$947c3ff0$10eca8c0@grendel> <44678FB8.4070104@mountolympos.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <44678FB8.4070104@mountolympos.net>
+User-Agent: Mutt/1.5.11+cvs20060403
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11422
+X-archive-position: 11423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jamiller1110@cox.net
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
+John Miller wrote:
+[snip]
+> > [kevink@cthulhu tmp]$ mipsel-linux-gcc -I ~/smtchead/include -c cacheop.S
+> > cacheop.S: Assembler messages:
+> > cacheop.S:4: Error: Instruction cache requires absolute expression
+> > cacheop.S:4: Error: Instruction cache requires absolute expression
+> > cacheop.S:4: Error: illegal operands `cache'
+> >
+> >   
+> 
+> Well, it looks like I am missing something somewhere, just need to pin
+> down what I did wrong.
 
->
-> Have you got your sources properly installes so that include/asm is
-> a symlink to include/asm-mips?  
-Yes, include/asm is symlinked to include/asm-mips.  Let me provide a
-little more detail.  I did not want to modify head.S (since this is a
-kernel file) but I noticed an undefined macro,
+Try gcc -E to get the preprocessed source, this is what the assembler
+sees.
 
-    kernel_entry_setup            # cpu specific setup
 
-and the include #include <kernel-entry-init.h>
-
-I found at least one kernel-entry-init.h file in a hardware specific
-directory so I made my own under include/asm-mips/rb500 and added a line
-to the Makefile.  Within kernel-entry-init.h are the include for
-cacheops.h as well as the macro definition.  regdef.h is included in
-head.s.
-> I've done the experiment at my end,
-> and it builds just fine so long as regdef.h and cacheops.h are really
-> on the include path of the compilation.  If they're not, I get:
->
-> [kevink@cthulhu tmp]$ mipsel-linux-gcc -I ~/smtchead/include -c cacheop.S
-> cacheop.S: Assembler messages:
-> cacheop.S:4: Error: Instruction cache requires absolute expression
-> cacheop.S:4: Error: Instruction cache requires absolute expression
-> cacheop.S:4: Error: illegal operands `cache'
->
->   
-
-Well, it looks like I am missing something somewhere, just need to pin
-down what I did wrong.
+Thiemo

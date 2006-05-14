@@ -1,67 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 May 2006 16:24:05 +0200 (CEST)
-Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:37609 "EHLO
-	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133616AbWENOX5
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 14 May 2006 16:23:57 +0200
-Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k4EENkJi029922;
-	Sun, 14 May 2006 07:23:47 -0700 (PDT)
-Received: from Ulysses ([192.168.2.2])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k4EENjv1017693;
-	Sun, 14 May 2006 07:23:45 -0700 (PDT)
-Message-ID: <002a01c67761$253e97f0$0202a8c0@Ulysses>
-From:	"Kevin D. Kissell" <KevinK@mips.com>
-To:	"John Miller" <jamiller1110@cox.net>, <linux-mips@linux-mips.org>
-References: <446735C6.2080306@mountolympos.net>
-Subject: Re: Instruction error with cache opcode
-Date:	Sun, 14 May 2006 16:17:14 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 May 2006 18:08:14 +0200 (CEST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:60103 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133616AbWENQIH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 14 May 2006 18:08:07 +0200
+Received: from localhost (p5058-ipad30funabasi.chiba.ocn.ne.jp [221.184.80.58])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id D9379B677; Mon, 15 May 2006 01:08:02 +0900 (JST)
+Date:	Mon, 15 May 2006 01:08:46 +0900 (JST)
+Message-Id: <20060515.010846.25910142.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	Thiemo Seufer <ths@networkno.de>
+Subject: kernel patch for QEMU ?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1506
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1506
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <KevinK@mips.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11416
+X-archive-position: 11417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KevinK@mips.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-> I am attempting to write a routine to initialize the cache for a MIPS
-> 4kc core to get Linux 2.6.16.14 to compile.  I am sure someone has
-> probably already done this, but I am doing it for educational reasons. 
-> I am receiving the following error:
-> 
-> arch/mips/kernel/head.S: Assembler messages:
-> arch/mips/kernel/head.S:131: Error: Instruction cache requires absolute
-> expression
-> 
-> From the following code section:
-> 
-> li t0, 0x80000000  # start address (KSEG0)
-> addu t1,t0,0x2000 # 8KB I-cache
-> 1: addu t0,0x10 # 16B line size
-> cache Index_Store_Tag_I,-4(t0) # clear tag
-> nop
-> cache Fill_I,-4(t0) # fill line
-> nop
-> bne t0,t1,1b
-> cache Index_Store_Tag_I,-4(t0)
-> 
->  I copied the code section from See MIPS Run, so I know the code must be
-> correct.  What am I doing wrong?
+Now I'm trying QEMU 0.8.1 on mips.
 
-Where and how is the value of Index_Store_Tag_I  defined?
+I found mips-test-0.1.tar.gz on QEMU download page and can run it
+(thanks ths!), but I still can not run a kernel (current lmo git)
+compiled by myself.  My kernel stops after the famous "Checking for
+'wait' instruction...  available." message.
 
-            Regards,
+The mips-test-0.1 contains kernel 2.6.16-rc6.  Is this a stock
+kernel.org's kernel or lmo's kernel?  Or is there any patch to make
+kernel run on QEMU?
 
-            Kevin K.
+---
+Atsushi Nemoto

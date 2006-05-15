@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 19:26:43 +0200 (CEST)
-Received: from bender.bawue.de ([193.7.176.20]:170 "HELO bender.bawue.de")
-	by ftp.linux-mips.org with SMTP id S8133574AbWEOR0c (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 15 May 2006 19:26:32 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 19:27:46 +0200 (CEST)
+Received: from bender.bawue.de ([193.7.176.20]:4778 "HELO bender.bawue.de")
+	by ftp.linux-mips.org with SMTP id S8133718AbWEOR1h (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 15 May 2006 19:27:37 +0200
 Received: from lagash (unknown [194.74.144.146])
 	by bender.bawue.de (Postfix) with ESMTP
-	id 9E1C344E77; Mon, 15 May 2006 19:26:31 +0200 (MEST)
+	id B28D644D07; Mon, 15 May 2006 19:27:36 +0200 (MEST)
 Received: from ths by lagash with local (Exim 4.62)
 	(envelope-from <ths@networkno.de>)
-	id 1FfgpS-0002wm-4J; Mon, 15 May 2006 18:25:58 +0100
-Date:	Mon, 15 May 2006 18:25:58 +0100
+	id 1FfgqV-0002x8-2R; Mon, 15 May 2006 18:27:03 +0100
+Date:	Mon, 15 May 2006 18:27:03 +0100
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH] Qemu system shutdown support
-Message-ID: <20060515172558.GD9026@networkno.de>
+Subject: [PATCH] Update/Fix instruction definitions
+Message-ID: <20060515172703.GE9026@networkno.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -22,7 +22,7 @@ Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11435
+X-archive-position: 11436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,91 +30,87 @@ X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Support for qemu system shutdown.
+A small bugfix for up to now unused instruction definitions, and a
+somewhat larger update to cover MIPS32R2 instructions.
 
 
 Signed-off-by:  Thiemo Seufer <ths@networkno.de>
 
 
-diff -urpN linux-orig/arch/mips/qemu/Makefile linux-work/arch/mips/qemu/Makefile
---- linux-orig/arch/mips/qemu/Makefile	2006-04-24 12:02:26.000000000 +0100
-+++ linux-work/arch/mips/qemu/Makefile	2006-05-15 03:07:31.000000000 +0100
-@@ -2,7 +2,7 @@
- # Makefile for Qemu specific kernel interface routines under Linux.
- #
- 
--obj-y		= q-firmware.o q-irq.o q-mem.o q-setup.o
-+obj-y		= q-firmware.o q-irq.o q-mem.o q-setup.o q-reset.o
- 
- obj-$(CONFIG_VT) += q-vga.o
- obj-$(CONFIG_SMP) += q-smp.o
-diff -urpN linux-orig/arch/mips/qemu/q-reset.c linux-work/arch/mips/qemu/q-reset.c
---- linux-orig/arch/mips/qemu/q-reset.c	1970-01-01 01:00:00.000000000 +0100
-+++ linux-work/arch/mips/qemu/q-reset.c	2006-05-15 03:06:44.000000000 +0100
-@@ -0,0 +1,34 @@
-+#include <linux/config.h>
-+
-+#include <asm/io.h>
-+#include <asm/reboot.h>
-+#include <asm/cacheflush.h>
-+#include <asm/qemu.h>
-+
-+static void qemu_machine_restart(char *command)
-+{
-+        volatile unsigned int *reg = (unsigned int *)QEMU_RESTART_REG;
-+
-+	set_c0_status(ST0_BEV | ST0_ERL);
-+	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
-+	flush_cache_all();
-+	write_c0_wired(0);
-+	*reg = 42;
-+	while (1)
-+		cpu_wait();
-+}
-+
-+static void qemu_machine_halt(void)
-+{
-+        volatile unsigned int *reg = (unsigned int *)QEMU_HALT_REG;
-+
-+	*reg = 42;
-+	while (1)
-+		cpu_wait();
-+}
-+
-+void qemu_reboot_setup(void)
-+{
-+	_machine_restart = qemu_machine_restart;
-+	_machine_halt = qemu_machine_halt;
-+}
-diff -urpN linux-orig/arch/mips/qemu/q-setup.c linux-work/arch/mips/qemu/q-setup.c
---- linux-orig/arch/mips/qemu/q-setup.c	2006-04-24 12:02:26.000000000 +0100
-+++ linux-work/arch/mips/qemu/q-setup.c	2006-05-15 03:06:44.000000000 +0100
-@@ -3,6 +3,7 @@
- #include <asm/time.h>
- 
- extern void qvga_init(void);
-+extern void qemu_reboot_setup(void);
- 
- #define QEMU_PORT_BASE 0xb4000000
- 
-@@ -27,4 +28,6 @@ void __init plat_setup(void)
- 	qvga_init();
- #endif
- 	board_timer_setup = qemu_timer_setup;
-+
-+	qemu_reboot_setup();
- }
-diff -urpN linux-orig/include/asm-mips/qemu.h linux-work/include/asm-mips/qemu.h
---- linux-orig/include/asm-mips/qemu.h	2006-04-24 12:02:35.000000000 +0100
-+++ linux-work/include/asm-mips/qemu.h	2006-05-15 03:06:44.000000000 +0100
-@@ -21,4 +21,10 @@
+diff -urpN linux-orig/include/asm-mips/inst.h linux-work/include/asm-mips/inst.h
+--- linux-orig/include/asm-mips/inst.h	2006-04-24 12:02:35.000000000 +0100
++++ linux-work/include/asm-mips/inst.h	2006-05-15 03:06:31.000000000 +0100
+@@ -6,6 +6,7 @@
+  * for more details.
+  *
+  * Copyright (C) 1996, 2000 by Ralf Baechle
++ * Copyright (C) 2006 by Thiemo Seufer
   */
- #define QEMU_C0_COUNTER_CLOCK	100000000
+ #ifndef _ASM_INST_H
+ #define _ASM_INST_H
+@@ -21,14 +22,14 @@ enum major_op {
+ 	cop0_op, cop1_op, cop2_op, cop1x_op,
+ 	beql_op, bnel_op, blezl_op, bgtzl_op,
+ 	daddi_op, daddiu_op, ldl_op, ldr_op,
+-	major_1c_op, jalx_op, major_1e_op, major_1f_op,
++	spec2_op, jalx_op, mdmx_op, spec3_op,
+ 	lb_op, lh_op, lwl_op, lw_op,
+ 	lbu_op, lhu_op, lwr_op, lwu_op,
+ 	sb_op, sh_op, swl_op, sw_op,
+ 	sdl_op, sdr_op, swr_op, cache_op,
+ 	ll_op, lwc1_op, lwc2_op, pref_op,
+ 	lld_op, ldc1_op, ldc2_op, ld_op,
+-	sc_op, swc1_op, swc2_op, rdhwr_op,
++	sc_op, swc1_op, swc2_op, major_3b_op,
+ 	scd_op, sdc1_op, sdc2_op, sd_op
+ };
  
-+/*
-+ * Magic qemu system control location.
+@@ -37,7 +38,7 @@ enum major_op {
+  */
+ enum spec_op {
+ 	sll_op, movc_op, srl_op, sra_op,
+-	sllv_op, srlv_op, srav_op, spec1_unused_op, /* Opcode 0x07 is unused */
++	sllv_op, pmon_op, srlv_op, srav_op,
+ 	jr_op, jalr_op, movz_op, movn_op,
+ 	syscall_op, break_op, spim_op, sync_op,
+ 	mfhi_op, mthi_op, mflo_op, mtlo_op,
+@@ -55,6 +56,28 @@ enum spec_op {
+ };
+ 
+ /*
++ * func field of spec2 opcode.
 + */
-+#define QEMU_RESTART_REG	0xBFBF0000
-+#define QEMU_HALT_REG		0xBFBF0004
++enum spec2_op {
++	madd_op, maddu_op, mul_op, spec2_3_unused_op,
++	msub_op, msubu_op, /* more unused ops */
++	clz_op = 0x20, clo_op,
++	dclz_op = 0x24, dclo_op,
++	sdbpp_op = 0x3f
++};
 +
- #endif /* __ASM_QEMU_H */
++/*
++ * func field of spec3 opcode.
++ */
++enum spec3_op {
++	ext_op, dextm_op, dextu_op, dext_op,
++	ins_op, dinsm_op, dinsu_op, dins_op,
++	bshfl_op = 0x20,
++	dbshfl_op = 0x24,
++	rdhwr_op = 0x3f
++};
++
++/*
+  * rt field of bcond opcodes.
+  */
+ enum rt_op {
+@@ -151,8 +174,8 @@ enum cop1x_func {
+  * func field for mad opcodes (MIPS IV).
+  */
+ enum mad_func {
+-	madd_op      = 0x08, msub_op      = 0x0a,
+-	nmadd_op     = 0x0c, nmsub_op     = 0x0e
++	madd_fp_op      = 0x08, msub_fp_op      = 0x0a,
++	nmadd_fp_op     = 0x0c, nmsub_fp_op     = 0x0e
+ };
+ 
+ /*

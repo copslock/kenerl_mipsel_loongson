@@ -1,54 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 01:30:21 +0200 (CEST)
-Received: from bender.bawue.de ([193.7.176.20]:32912 "HELO bender.bawue.de")
-	by ftp.linux-mips.org with SMTP id S8133747AbWENXaO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 15 May 2006 01:30:14 +0200
-Received: from lagash (88-106-136-76.dynamic.dsl.as9105.com [88.106.136.76])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id C512F45597; Mon, 15 May 2006 01:30:10 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.62)
-	(envelope-from <ths@networkno.de>)
-	id 1FfQ2B-0002bi-CD; Mon, 15 May 2006 00:29:59 +0100
-Date:	Mon, 15 May 2006 00:29:59 +0100
-To:	John Miller <jamiller1110@cox.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 03:07:14 +0200 (CEST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:23233 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133747AbWEOBHH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 May 2006 03:07:07 +0200
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 15 May 2006 10:07:05 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 31F0A203DA;
+	Mon, 15 May 2006 10:07:00 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 1DB3C1FF09;
+	Mon, 15 May 2006 10:07:00 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k4F16x4D026239;
+	Mon, 15 May 2006 10:06:59 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 15 May 2006 10:06:59 +0900 (JST)
+Message-Id: <20060515.100659.126574393.nemoto@toshiba-tops.co.jp>
+To:	jamiller1110@cox.net
 Cc:	linux-mips@linux-mips.org
 Subject: Re: Instruction error with cache opcode
-Message-ID: <20060514232959.GD800@networkno.de>
-References: <446735C6.2080306@mountolympos.net> <002a01c67761$253e97f0$0202a8c0@Ulysses> <4467796E.8060000@mountolympos.net> <009501c6778e$947c3ff0$10eca8c0@grendel> <44678FB8.4070104@mountolympos.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44678FB8.4070104@mountolympos.net>
-User-Agent: Mutt/1.5.11+cvs20060403
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <4467796E.8060000@mountolympos.net>
+References: <446735C6.2080306@mountolympos.net>
+	<002a01c67761$253e97f0$0202a8c0@Ulysses>
+	<4467796E.8060000@mountolympos.net>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11423
+X-archive-position: 11424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-John Miller wrote:
-[snip]
-> > [kevink@cthulhu tmp]$ mipsel-linux-gcc -I ~/smtchead/include -c cacheop.S
-> > cacheop.S: Assembler messages:
-> > cacheop.S:4: Error: Instruction cache requires absolute expression
-> > cacheop.S:4: Error: Instruction cache requires absolute expression
-> > cacheop.S:4: Error: illegal operands `cache'
-> >
-> >   
+On Sun, 14 May 2006 14:39:42 -0400, John Miller <jamiller1110@cox.net> wrote:
+> I included asm/cacheops.h from the kernel tree, it is defined there as :
 > 
-> Well, it looks like I am missing something somewhere, just need to pin
-> down what I did wrong.
+> #define Index_Store_Tag_I	0x08
 
-Try gcc -E to get the preprocessed source, this is what the assembler
-sees.
+Then how about Fill_I ?
 
-
-Thiemo
+---
+Atsushi Nemoto

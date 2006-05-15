@@ -1,41 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 03:38:15 +0200 (CEST)
-Received: from eastrmmtao01.cox.net ([68.230.240.38]:11687 "HELO
-	eastrmmtao01.cox.net") by ftp.linux-mips.org with SMTP
-	id S8133760AbWEOBiI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 May 2006 03:38:08 +0200
-Received: from hermes.mountolympos.net ([70.160.186.45])
-          by eastrmmtao01.cox.net
-          (InterMail vM.6.01.06.01 201-2131-130-101-20060113) with ESMTP
-          id <20060515013801.YQMZ17255.eastrmmtao01.cox.net@hermes.mountolympos.net>
-          for <linux-mips@linux-mips.org>; Sun, 14 May 2006 21:38:01 -0400
-Received: from zeus.mountolympos.net (zeus.mountolympos.net [192.168.2.2])
-	by hermes.mountolympos.net (Postfix) with ESMTP id 5572C1677B
-	for <linux-mips@linux-mips.org>; Sun, 14 May 2006 21:38:01 -0400 (EDT)
-Received: from [192.168.2.4] (odysseus.mountolympos.net [192.168.2.4])
-	by zeus.mountolympos.net (Postfix) with ESMTP id 3438A100A118
-	for <linux-mips@linux-mips.org>; Sun, 14 May 2006 21:38:01 -0400 (EDT)
-Message-ID: <4467DB78.8030304@mountolympos.net>
-Date:	Sun, 14 May 2006 21:38:00 -0400
-From:	John Miller <jamiller1110@cox.net>
-User-Agent: Thunderbird 1.5 (X11/20060313)
-MIME-Version: 1.0
-CC:	linux-mips@linux-mips.org
-Subject: Re: Instruction error with cache opcode
-References: <446735C6.2080306@mountolympos.net>	<002a01c67761$253e97f0$0202a8c0@Ulysses>	<4467796E.8060000@mountolympos.net> <20060515.100659.126574393.nemoto@toshiba-tops.co.jp> <4467DACE.9000800@mountolympos.net>
-In-Reply-To: <4467DACE.9000800@mountolympos.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 03:55:25 +0200 (CEST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:45943 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133767AbWEOBzR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 May 2006 03:55:17 +0200
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 15 May 2006 10:55:16 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 86C892058D;
+	Mon, 15 May 2006 10:55:14 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 7B69B20579;
+	Mon, 15 May 2006 10:55:14 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k4F1tD4D026479;
+	Mon, 15 May 2006 10:55:13 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 15 May 2006 10:55:13 +0900 (JST)
+Message-Id: <20060515.105513.27954532.nemoto@toshiba-tops.co.jp>
+To:	ths@networkno.de
+Cc:	linux-mips@linux-mips.org
+Subject: Re: kernel patch for QEMU ?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060514182151.GB800@networkno.de>
+References: <20060515.010846.25910142.anemo@mba.ocn.ne.jp>
+	<20060514182151.GB800@networkno.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <jamiller1110@cox.net>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11426
+X-archive-position: 11427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jamiller1110@cox.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Sorry, I sent that last message without thanking everyone for their help.
+On Sun, 14 May 2006 19:21:51 +0100, Thiemo Seufer <ths@networkno.de> wrote:
+> > The mips-test-0.1 contains kernel 2.6.16-rc6.  Is this a stock
+> > kernel.org's kernel or lmo's kernel?  Or is there any patch to make
+> > kernel run on QEMU?
+> 
+> This kernel is stock lmo except for a small patch which allows clean
+> system shutdown (qemu 0.8.1 does not have the counterpart to it).
+> The patch should be completely irrelevant otherwise.
+> 
+> However, later kernels try to access the CP0 pagemask register which
+> is R10000 specific, IIRC Qemu throws an Reserved Instruction exception
+> on accessing it.
+
+Thanks.  I'm looking output of "git-diff linux-2.6.16-rc6" but still
+failed to find relevant changes...
+
+The stock QEMU 0.8.1 works ok with vmlinux-r1 in mips-test-0.1 so it
+should be something different on kernel side.  Hmm...
+
+---
+Atsushi Nemoto

@@ -1,132 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 20:00:17 +0200 (CEST)
-Received: from bender.bawue.de ([193.7.176.20]:21168 "HELO bender.bawue.de")
-	by ftp.linux-mips.org with SMTP id S8133677AbWEOSAJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 15 May 2006 20:00:09 +0200
-Received: from lagash (unknown [194.74.144.146])
-	by bender.bawue.de (Postfix) with ESMTP
-	id 566C744F4B; Mon, 15 May 2006 20:00:08 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.62)
-	(envelope-from <ths@networkno.de>)
-	id 1FfhLy-00033P-Qh; Mon, 15 May 2006 18:59:34 +0100
-Date:	Mon, 15 May 2006 18:59:34 +0100
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] Qemu system shutdown support
-Message-ID: <20060515175934.GA11370@networkno.de>
-References: <20060515172558.GD9026@networkno.de> <20060515173023.GA13776@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 May 2006 22:42:05 +0200 (CEST)
+Received: from nf-out-0910.google.com ([64.233.182.190]:52402 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133760AbWEOUl5 convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 15 May 2006 22:41:57 +0200
+Received: by nf-out-0910.google.com with SMTP id k27so168012nfc
+        for <linux-mips@linux-mips.org>; Mon, 15 May 2006 13:41:57 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=MmhtGKmD3SryM0t8rHCOcO4T5Yswqy5et8Ho/P0yTGM95ViVVNQczLBu6yhZCBo07c3WiSplWfTx27LwJp8Q+ZFOfK7U7CXEH4r9uhRWrkb6CaTI9jRHLR/5eBWMx0ruiWgHUyHXPX0GQxD4tIp6t89ftm4pbS4n2R1ggXdWWVk=
+Received: by 10.48.199.9 with SMTP id w9mr3815459nff;
+        Mon, 15 May 2006 13:41:57 -0700 (PDT)
+Received: by 10.49.39.16 with HTTP; Mon, 15 May 2006 13:41:57 -0700 (PDT)
+Message-ID: <ecb4efd10605151341l33f491f1ueca8a0ce609c989d@mail.gmail.com>
+Date:	Mon, 15 May 2006 16:41:57 -0400
+From:	"Clem Taylor" <clem.taylor@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: CONFIG_PRINTK_TIME and initial value for jiffies?
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20060515173023.GA13776@deprecation.cyrius.com>
-User-Agent: Mutt/1.5.11+cvs20060403
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Return-Path: <clem.taylor@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11439
+X-archive-position: 11440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: clem.taylor@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Martin Michlmayr wrote:
-> * Thiemo Seufer <ths@networkno.de> [2006-05-15 18:25]:
-> > +{
-> > +        volatile unsigned int *reg = (unsigned int *)QEMU_RESTART_REG;
-> 
-> This should be a tab.
+I just switched to 2.6.16.16 from 2.6.14 on a Au1550. I enabled
+CONFIG_PRINTK_TIME, and for some reason jiffies doesn't start out near
+zero like it does on x86. The first printk() always seems to have a
+time of 4284667.296000.
 
-Updated.
+jiffies_64 and wall_jiffies gets initialized to INITIAL_JIFFIES, but
+I'm not sure where jiffies is initialized. INITIAL_JIFFIES is -300*HZ
+(with some weird casting)
 
+The first line on the 2.6.16.16 Au1550 box is:
+[4294667.296000] Linux version 2.6.16.16 (ctaylor@gort) (gcc version
+4.1.0) #4 Mon May 15 13:06:37 EDT 2006
 
-Support for qemu system shutdown.
+The first line on a 2.6.16 x86_64 box is:
+[    0.000000] Bootdata ok (command line is ro root=/dev/md0)
+[    0.000000] Linux version 2.6.16 (ctaylor@klaatu) (gcc version
+4.1.0 20060420 (Red Hat 4.1.0-9)) #3 SMP PREEMPT Sat Apr 29 03:36:06
+EDT 2006
 
+Shouldn't the first printk() have a time at or very near zero?
 
-Signed-off-by:  Thiemo Seufer <ths@networkno.de>
-
-
-diff -urpN linux-orig/arch/mips/qemu/Makefile linux-work/arch/mips/qemu/Makefile
---- linux-orig/arch/mips/qemu/Makefile	2006-04-24 12:02:26.000000000 +0100
-+++ linux-work/arch/mips/qemu/Makefile	2006-05-15 03:07:31.000000000 +0100
-@@ -2,7 +2,7 @@
- # Makefile for Qemu specific kernel interface routines under Linux.
- #
- 
--obj-y		= q-firmware.o q-irq.o q-mem.o q-setup.o
-+obj-y		= q-firmware.o q-irq.o q-mem.o q-setup.o q-reset.o
- 
- obj-$(CONFIG_VT) += q-vga.o
- obj-$(CONFIG_SMP) += q-smp.o
-diff -urpN linux-orig/arch/mips/qemu/q-reset.c linux-work/arch/mips/qemu/q-reset.c
---- linux-orig/arch/mips/qemu/q-reset.c	1970-01-01 01:00:00.000000000 +0100
-+++ linux-work/arch/mips/qemu/q-reset.c	2006-05-15 03:06:44.000000000 +0100
-@@ -0,0 +1,34 @@
-+#include <linux/config.h>
-+
-+#include <asm/io.h>
-+#include <asm/reboot.h>
-+#include <asm/cacheflush.h>
-+#include <asm/qemu.h>
-+
-+static void qemu_machine_restart(char *command)
-+{
-+	volatile unsigned int *reg = (unsigned int *)QEMU_RESTART_REG;
-+
-+	set_c0_status(ST0_BEV | ST0_ERL);
-+	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
-+	flush_cache_all();
-+	write_c0_wired(0);
-+	*reg = 42;
-+	while (1)
-+		cpu_wait();
-+}
-+
-+static void qemu_machine_halt(void)
-+{
-+	volatile unsigned int *reg = (unsigned int *)QEMU_HALT_REG;
-+
-+	*reg = 42;
-+	while (1)
-+		cpu_wait();
-+}
-+
-+void qemu_reboot_setup(void)
-+{
-+	_machine_restart = qemu_machine_restart;
-+	_machine_halt = qemu_machine_halt;
-+}
-diff -urpN linux-orig/arch/mips/qemu/q-setup.c linux-work/arch/mips/qemu/q-setup.c
---- linux-orig/arch/mips/qemu/q-setup.c	2006-04-24 12:02:26.000000000 +0100
-+++ linux-work/arch/mips/qemu/q-setup.c	2006-05-15 03:06:44.000000000 +0100
-@@ -3,6 +3,7 @@
- #include <asm/time.h>
- 
- extern void qvga_init(void);
-+extern void qemu_reboot_setup(void);
- 
- #define QEMU_PORT_BASE 0xb4000000
- 
-@@ -27,4 +28,6 @@ void __init plat_setup(void)
- 	qvga_init();
- #endif
- 	board_timer_setup = qemu_timer_setup;
-+
-+	qemu_reboot_setup();
- }
-diff -urpN linux-orig/include/asm-mips/qemu.h linux-work/include/asm-mips/qemu.h
---- linux-orig/include/asm-mips/qemu.h	2006-04-24 12:02:35.000000000 +0100
-+++ linux-work/include/asm-mips/qemu.h	2006-05-15 03:06:44.000000000 +0100
-@@ -21,4 +21,10 @@
-  */
- #define QEMU_C0_COUNTER_CLOCK	100000000
- 
-+/*
-+ * Magic qemu system control location.
-+ */
-+#define QEMU_RESTART_REG	0xBFBF0000
-+#define QEMU_HALT_REG		0xBFBF0004
-+
- #endif /* __ASM_QEMU_H */
+                                    --Clem

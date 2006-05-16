@@ -1,80 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 May 2006 14:36:56 +0200 (CEST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:37566 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133380AbWEPMgr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 May 2006 14:36:47 +0200
-Received: (qmail 24342 invoked from network); 16 May 2006 16:43:20 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 16 May 2006 16:43:20 -0000
-Message-ID: <4469C71F.9060004@ru.mvista.com>
-Date:	Tue, 16 May 2006 16:35:43 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 May 2006 16:49:28 +0200 (CEST)
+Received: from SBA.FLIR.com ([12.164.250.85]:37579 "EHLO coral.sba.flir.net")
+	by ftp.linux-mips.org with ESMTP id S8133443AbWEPOtT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 16 May 2006 16:49:19 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Herbert Valerio Riedel <hvr@gnu.org>
-CC:	Clem Taylor <clem.taylor@gmail.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: CONFIG_PRINTK_TIME and initial value for jiffies?
-References: <ecb4efd10605151341l33f491f1ueca8a0ce609c989d@mail.gmail.com>	 <4468EE9B.4000009@ru.mvista.com>  <4468F40F.80902@ru.mvista.com> <1147759399.11301.15.camel@localhost.localdomain>
-In-Reply-To: <1147759399.11301.15.camel@localhost.localdomain>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: multipart/mixed; boundary="----=neXtPaRt_1147790958"
+Subject: RE: problem building cross compiler gcc-3.4.4
+Date:	Tue, 16 May 2006 07:49:15 -0700
+Message-ID: <D68CE2DA7B2E3C4B880DAFD4DE38EE16630B6E@coral.sba.flir.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: problem building cross compiler gcc-3.4.4
+Thread-Index: AcZ4qpak6ACT7djqRd+dkBQ0ILv95QAS9rBQ
+From:	"De Jong, Rienco" <Marinus.DeJong@flir.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <Marinus.DeJong@flir.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11446
+X-archive-position: 11447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: Marinus.DeJong@flir.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
 
-Herbert Valerio Riedel wrote:
+------=neXtPaRt_1147790958
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-> On Tue, 2006-05-16 at 01:35 +0400, Sergei Shtylyov wrote:
+Hi Shyamal,
 
->>>>I just switched to 2.6.16.16 from 2.6.14 on a Au1550. I enabled
->>>>CONFIG_PRINTK_TIME, and for some reason jiffies doesn't start out near
->>>>zero like it does on x86. The first printk() always seems to have a
->>>>time of 4284667.296000.
->>
->>>>jiffies_64 and wall_jiffies gets initialized to INITIAL_JIFFIES, but
->>>>I'm not sure where jiffies is initialized. INITIAL_JIFFIES is -300*HZ
->>>>(with some weird casting)
+I also have problems with compiling a mips platform for threads.  I used
+the buildroot environment but made no progress.  I am able to compile
+buildroot for the old/stable version of linux threads which also
+includes a version of gcc.  I also tried posting to this list but have
+heard no response as of yet so this is probably not the right list for
+this kind of question.
 
->>    Yes, the casting is weird. I somewat doubt that:
+I was trying to get the use of the NPTL. Are you trying to build for
+NPTL as well?  If not you should be able to use the previous build of
+the compiler to build the old and stable version of linux threads.
+Apparently gcc doesn't need to have the --enable_threads flag set for
+that but I can't say for sure.
 
->>#define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+Rienco De Jong
 
->>u64 jiffies_64 = INITIAL_JIFFIES;
 
->>can do the trick of wrapping around 5 mins after boot on x86... :-/
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Shyamal Sadanshio
+Sent: Monday, May 15, 2006 10:35 PM
+To: linux-mips@linux-mips.org
+Subject: Fwd: problem building cross compiler gcc-3.4.4
 
-> jfyi, starting with an offset of -300 seconds is done on purpose, to
-> expose bugs in drivers which don't handle wrapping of the jiffies;
+Hi,
 
-    Oh, thank you. I've read that in the source code. :-)
+I am facing gcc 3.4.4 build problem for mips platform with
+--enable-thread options.
 
-> and the trick to get printk to start at offset 0 is either define a
-> arch-specific printk_clock() function (it's a weak symbol in
-> kernel/printk.c) or like more drivers to it, to provide a sched_clock()
-> (which is used by the default printk_clock() function) implementation
-> which starts at offset 0...
+../gcc-3.4.4/configure --target=3D$TARGET --prefix=3D$PREFIX
+--enable-language=3Dc
+--with-headers=3D/opt/crosstool/mipsel-unknown-linux-gnu/sys-include/
+--with-gnu-ld --with-gnu-as --disable-shared --enable-threads
 
-    sched_clock() defined in arch/i386/kernel/timers/timer_tsc.c can hardly 
-provide 0-based time if it's using TSC (at least I can't see where the TSC is 
-cleared). Even if it's not using TSC, jiffies_64 is not 0-based as we saw, and 
-neither it's set to -300 secs because of the double cast to ulong and then to 
-u64 which should clear the high word. Probably something somewhere clears TSC 
-but I can see the related code only in arch/i386/kernel/smpboot.c...
+Error message are listed as below:
+************************************************************************
+*************************
+In file included from ./tm.h:13,
+                 from ../../gcc-3.4.4/gcc/libgcc2.c:43:
+../../gcc-3.4.4/gcc/config/mips/linux.h:198: error: parse error before
+"stack_t"
+../../gcc-3.4.4/gcc/config/mips/linux.h:198: warning: no semicolon at
+end of str
+uct or union
+../../gcc-3.4.4/gcc/config/mips/linux.h:201: error: parse error before
+'}' token
+../../gcc-3.4.4/gcc/config/mips/linux.h:201: warning: type defaults to
+`int' in
+declaration of `_sig_ucontext_t'
+../../gcc-3.4.4/gcc/config/mips/linux.h:201: warning: data definition
+has no typ
+e or storage class
+In file included from ./tm.h:13,
+                 from ../../gcc-3.4.4/gcc/libgcc2.c:43:
+../../gcc-3.4.4/gcc/config/mips/linux.h:198: error: parse error before
+"stack_t"
+../../gcc-3.4.4/gcc/config/mips/linux.h:198: warning: no semicolon at
+end of str
+uct or union
+../../gcc-3.4.4/gcc/config/mips/linux.h:201: error: parse error before
+'}' token
+../../gcc-3.4.4/gcc/config/mips/linux.h:201: warning: type defaults to
+`int' in
+declaration of `_sig_ucontext_t'
+../../gcc-3.4.4/gcc/config/mips/linux.h:201: warning: data definition
+has no typ
+e or storage class
+make[2]: *** [libgcc/./_muldi3.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [libgcc/./_negdi2.o] Error 1
+make[2]: Leaving directory
+`/tmp/mipsel-unknown-linux-gnu-toolchain/build-gcc-bo
+otstrap/gcc'
+make[1]: *** [libgcc.a] Error 2
+make[1]: Leaving directory
+`/tmp/mipsel-unknown-linux-gnu-toolchain/build-gcc-bo
+otstrap/gcc'
+make: *** [all-gcc] Error 2
 
-> regards,
-> hvr
+************************************************************************
+*************************
+I am able to build the minimal version of compiler for kernel build
+with config options as below:
 
-WBR, Sergei
+../gcc-3.4.4/configure --target=3D$TARGET --prefix=3D$PREFIX
+--enable-language=3Dc --without-headers --with-gnu-ld --with-gnu-as
+--disable-shared --disable-threads
+
+Has anybody faced this issue earlier?
+Will be grateful if someone could comment on this issue.
+
+Thanks and Regards,
+Shyamal
+
+
+Thanks and Regards,
+Shyamal
+
+
+------=neXtPaRt_1147790958
+Content-Type: text/plain;
+
+**********************************************************************
+Notice to recipient: This email is meant for only the intended recipient of the transmission, and may be a communication privileged by law, subject to export control restrictions or that otherwise contains proprietary information.  If you receive this email by mistake, please notify us immediately by replying to this message and then destroy it and do not review, disclose, copy or distribute it.  Thank you in advance for your cooperation.
+**********************************************************************
+
+
+------=neXtPaRt_1147790958--

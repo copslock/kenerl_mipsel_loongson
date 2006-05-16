@@ -1,35 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 May 2006 18:31:44 +0200 (CEST)
-Received: from jg555.com ([64.30.195.78]:61661 "EHLO jg555.com")
-	by ftp.linux-mips.org with ESMTP id S8133479AbWEPQbf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 16 May 2006 18:31:35 +0200
-Received: from [172.16.0.159] (W2RZ8L4S01.jg555.com [::ffff:172.16.0.159])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Tue, 16 May 2006 09:31:33 -0700
-  id 00289302.4469FE65.000068D2
-Message-ID: <4469FDEC.6060704@jg555.com>
-Date:	Tue, 16 May 2006 09:29:32 -0700
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
-MIME-Version: 1.0
-To:	Shyamal Sadanshio <shyamal.sadanshio@gmail.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Fwd: problem building cross compiler gcc-3.4.4
-References: <3857255c0605142352i6f7ed9bdh6c99eed60a80a3c4@mail.gmail.com>	 <44686874.90101@mbnet.fi>	 <3857255c0605150658h51761270s6f647ffdeda1f7fd@mail.gmail.com> <3857255c0605152234r503c959ep5d773f8a20b4b201@mail.gmail.com>
-In-Reply-To: <3857255c0605152234r503c959ep5d773f8a20b4b201@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 May 2006 19:48:56 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:18919 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133479AbWEPRst (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 16 May 2006 19:48:49 +0200
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k4GHmmat030739;
+	Tue, 16 May 2006 18:48:48 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k4GHmmO6030738;
+	Tue, 16 May 2006 18:48:48 +0100
+Date:	Tue, 16 May 2006 18:48:48 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix interrupt handling for R2 CPUs
+Message-ID: <20060516174848.GA30064@linux-mips.org>
+References: <20060515172747.GF9026@networkno.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060515172747.GF9026@networkno.de>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11448
+X-archive-position: 11449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-We cover this in cross-lfs, http://www.cross-lfs.org. We are currently 
-using GCC 4.1, but if you need the 3.4 instructions email me and I can 
-get them to you.
+On Mon, May 15, 2006 at 06:27:47PM +0100, Thiemo Seufer wrote:
+
+> a) only the low bit is used for status flags if CONFIG_CPU_MIPSR2,
+>    consistent with the use of di/ei.
+> 
+> b) the ERL/EXL bits get cleared as well.
+
+Does this patch make a difference for you anywhere?
+
+  Ralf

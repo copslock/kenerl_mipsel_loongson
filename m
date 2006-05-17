@@ -1,76 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 19:41:34 +0200 (CEST)
-Received: from omx1-ext.sgi.com ([192.48.179.11]:54680 "EHLO
-	omx1.americas.sgi.com") by ftp.linux-mips.org with ESMTP
-	id S8133816AbWEQRlY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 May 2006 19:41:24 +0200
-Received: from imr2.americas.sgi.com (imr2.americas.sgi.com [198.149.16.18])
-	by omx1.americas.sgi.com (8.12.10/8.12.9/linux-outbound_gateway-1.1) with ESMTP id k4HHe5nx000726;
-	Wed, 17 May 2006 12:40:06 -0500
-Received: from spindle.corp.sgi.com (spindle.corp.sgi.com [198.29.75.13])
-	by imr2.americas.sgi.com (8.12.9/8.12.10/SGI_generic_relay-1.2) with ESMTP id k4HHx77p29646354;
-	Wed, 17 May 2006 10:59:07 -0700 (PDT)
-Received: from schroedinger.engr.sgi.com (schroedinger.engr.sgi.com [163.154.5.55])
-	by spindle.corp.sgi.com (SGI-8.12.5/8.12.9/generic_config-1.2) with ESMTP id k4HHe4nB29472097;
-	Wed, 17 May 2006 10:40:04 -0700 (PDT)
-Received: from christoph (helo=localhost)
-	by schroedinger.engr.sgi.com with local-esmtp (Exim 3.36 #1 (Debian))
-	id 1FgQ0C-0003g3-00; Wed, 17 May 2006 10:40:04 -0700
-Date:	Wed, 17 May 2006 10:40:04 -0700 (PDT)
-From:	Christoph Lameter <clameter@sgi.com>
-To:	Steven Rostedt <rostedt@goodmis.org>
-cc:	LKML <linux-kernel@vger.kernel.org>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Paul Mackerras <paulus@samba.org>,
-	Nick Piggin <nickpiggin@yahoo.com.au>,
-	Andrew Morton <akpm@osdl.org>,
-	Linus Torvalds <torvalds@osdl.org>,
-	Ingo Molnar <mingo@elte.hu>,
-	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
-	Martin Mares <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
-	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
-	lethal@linux-sh.org, Chris Zankel <chris@zankel.net>,
-	Marc Gauthier <marc@tensilica.com>,
-	Joe Taylor <joe@tensilica.com>,
-	David Mosberger-Tang <davidm@hpl.hp.com>, rth@twiddle.net,
-	spyro@f2s.com, starvik@axis.com, tony.luck@intel.com,
-	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org, grundler@parisc-linux.org,
-	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
-	linux390@de.ibm.com, davem@davemloft.net, arnd@arndb.de,
-	kenneth.w.chen@intel.com, sam@ravnborg.org, kiran@scalex86.org
-Subject: Re: [RFC PATCH 00/09] robust VM per_cpu variables
-In-Reply-To: <Pine.LNX.4.58.0605171152190.15798@gandalf.stny.rr.com>
-Message-ID: <Pine.LNX.4.64.0605171038160.13767@schroedinger.engr.sgi.com>
-References: <Pine.LNX.4.58.0605170547490.8408@gandalf.stny.rr.com>
- <Pine.LNX.4.64.0605170744360.13021@schroedinger.engr.sgi.com>
- <Pine.LNX.4.58.0605171104100.13160@gandalf.stny.rr.com>
- <Pine.LNX.4.64.0605170846190.13337@schroedinger.engr.sgi.com>
- <Pine.LNX.4.58.0605171152190.15798@gandalf.stny.rr.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 20:40:01 +0200 (CEST)
+Received: from wx-out-0102.google.com ([66.249.82.207]:35752 "EHLO
+	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133816AbWEQSjx convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 May 2006 20:39:53 +0200
+Received: by wx-out-0102.google.com with SMTP id t13so216307wxc
+        for <linux-mips@linux-mips.org>; Wed, 17 May 2006 11:39:47 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Nz4huScarZTwaMDDqQ7yY6F+7O8EMbTG0w4rnjd4T0NfDVoX2bvAjN6u1fYUhes94IJmVBRiPdhmHWJ1aeS1KuP5p5IcJIX1g8bgGcNPHFSw8XIkQmcPqDEL7ZAh0rUTfoYAXp+c7JDCm4ElxoHYPqTUlfgXO62P2P4mhJpPlUE=
+Received: by 10.70.47.14 with SMTP id u14mr1544541wxu;
+        Wed, 17 May 2006 11:39:47 -0700 (PDT)
+Received: by 10.70.22.3 with HTTP; Wed, 17 May 2006 11:39:46 -0700 (PDT)
+Message-ID: <404548f40605171139i67084776pd9ae7c34ec19ec95@mail.gmail.com>
+Date:	Wed, 17 May 2006 11:39:47 -0700
+From:	"Tony Lin" <lin.tony@gmail.com>
+To:	"Daniel Jacobowitz" <dan@debian.org>
+Subject: Re: Can't debug core files with GDB
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20060517133402.GA2480@nevyn.them.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <christoph@schroedinger.engr.sgi.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+References: <404548f40605161702y199c34a5wa89ec5f84cdeee09@mail.gmail.com>
+	 <20060517133402.GA2480@nevyn.them.org>
+Return-Path: <lin.tony@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11478
+X-archive-position: 11479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clameter@sgi.com
+X-original-sender: lin.tony@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 17 May 2006, Steven Rostedt wrote:
+Objdump didn't yield any useful information, perhaps I didn't set the
+flags correctly to show all the private registers.
 
-> > Well I'd like to see a comprehensive solution including a fix for the
-> > problems with allocper_cpu() allocations (allocper_cpu has to allocate
-> > memory for potential processors... which could be a lot on
-> > some types of systems and its allocated somewhere not on the nodes of the
-> > processor since they may not yet be online).
-> 
-> OK, now you're beyond what I'm working with ;)  No hot plug CPUs for me.
-> Well, at least not yet!
+You may be right about the kernel generated core file though. I
+checked the registerd in gdb, everything looks good except the program
+counter was zero. I then modified the mips kernel to spit out the
+registers when doing the coredump. A valid pc (0x4008c0) was there
+when doing fs/exec.c:do_coredump()
 
-You need to at least consider how this could be handled by the per_cpu 
-memory manangement. The VM thingie with dynamic per cpu memory would allow 
-a fixup of allocpercpu.
+printks from do_coredump()
+-----------
+bash-2.05a# killall -SIGSEGV nebtest
+1:<6>
+
+printing contents of pt_regs *regs
+1:<6>cp0_status 0xdc13
+1:<6>lo 0x0
+1:<6>hi 0x0
+1:<6>cp0_badvaddr 0x803fbda0
+1:<6>cp0_cause 0x10801000
+1:<6>cp0_epc 0x4008c0
+
+
+Calling 'info registers' in gdb coredump
+----------------------
+Reading symbols from /lib/ld.so.1...done.
+Loaded symbols for /lib/ld.so.1
+#0  0x00000000 in ?? ()
+(gdb) info registers
+          zero       at       v0       v1       a0       a1       a2       a3
+ R0   00000000 1000dc00 0000000f 00000000 0000000f 2aac1000 0000000f 00000000
+            t0       t1       t2       t3       t4       t5       t6       t7
+ R8   00000000 00000001 00000003 49276d20 68697320 00000000 00000000 7468656e
+            s0       s1       s2       s3       s4       s5       s6       s7
+ R16  2ab00230 7fff7e64 2ad09f50 004008d0 00000001 004007dc 00000000 1001f328
+            t8       t9       k0       k1       gp       sp       s8       ra
+ R24  00000003 00000000 fbad2a84 00000000 10008040 7fff7de0 7fff7de0 00400898
+            sr       lo       hi      bad    cause       pc
+      10801000 0000dc13 00000000 803fbda0 004008c0 00000000
+           fsr      fir
+      00000000 00000000
+(gdb)
+
+(gdb) x/32 0x4008c0
+0x4008c0 <main+228>:    0x1000ffff      0x00000000      0x00000000
+ 0x00000000
+0x4008d0 <__libc_csu_init>:     0x3c1c0fc0      0x279c7770
+0x0399e021      0x27bdffd8
+0x4008e0 <__libc_csu_init+16>:  0xafbf0020      0xafb1001c
+0xafb00018      0xafbc0010
+0x4008f0 <__libc_csu_init+32>:  0x8f998054      0x00000000
+0x0320f809      0x00000000
+0x400900 <__libc_csu_init+48>:  0x8fbc0010      0x8f838034
+0x8f828040      0x00431023
+
+
+
+The 0x4008c0 address doesn't look half bad, pointing within main(). So
+it looks like the mips kernel had all the right registers values but
+just didn't format it correctly in the core dump? It wrote the pc into
+cause, cause into sr, and cp0_status into lo.
+
+
+Thanks much,
+- Tony
+
+On 5/17/06, Daniel Jacobowitz <dan@debian.org> wrote:
+> Check the contents of the core file with objdump?  I recall seeing at
+> least one recent MIPS kernel which failed to save registers.  Take a
+> look at the .reg section.
+>
+> --
+> Daniel Jacobowitz
+> CodeSourcery
+>

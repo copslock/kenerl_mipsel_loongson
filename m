@@ -1,23 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 17:50:46 +0200 (CEST)
-Received: from omx1-ext.sgi.com ([192.48.179.11]:25996 "EHLO
-	omx1.americas.sgi.com") by ftp.linux-mips.org with ESMTP
-	id S8133389AbWEQPui (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 May 2006 17:50:38 +0200
-Received: from imr2.americas.sgi.com (imr2.americas.sgi.com [198.149.16.18])
-	by omx1.americas.sgi.com (8.12.10/8.12.9/linux-outbound_gateway-1.1) with ESMTP id k4HFnAnx017958;
-	Wed, 17 May 2006 10:49:10 -0500
-Received: from spindle.corp.sgi.com (spindle.corp.sgi.com [198.29.75.13])
-	by imr2.americas.sgi.com (8.12.9/8.12.10/SGI_generic_relay-1.2) with ESMTP id k4HG8C7p29623903;
-	Wed, 17 May 2006 09:08:12 -0700 (PDT)
-Received: from schroedinger.engr.sgi.com (schroedinger.engr.sgi.com [163.154.5.55])
-	by spindle.corp.sgi.com (SGI-8.12.5/8.12.9/generic_config-1.2) with ESMTP id k4HFn9nB37089219;
-	Wed, 17 May 2006 08:49:09 -0700 (PDT)
-Received: from christoph (helo=localhost)
-	by schroedinger.engr.sgi.com with local-esmtp (Exim 3.36 #1 (Debian))
-	id 1FgOGq-0003T8-00; Wed, 17 May 2006 08:49:08 -0700
-Date:	Wed, 17 May 2006 08:49:08 -0700 (PDT)
-From:	Christoph Lameter <clameter@sgi.com>
-To:	Steven Rostedt <rostedt@goodmis.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 17:58:41 +0200 (CEST)
+Received: from ms-smtp-04.nyroc.rr.com ([24.24.2.58]:51948 "EHLO
+	ms-smtp-04.nyroc.rr.com") by ftp.linux-mips.org with ESMTP
+	id S8133634AbWEQP6b (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 May 2006 17:58:31 +0200
+Received: from [192.168.23.10] (cpe-24-94-51-176.stny.res.rr.com [24.94.51.176])
+	by ms-smtp-04.nyroc.rr.com (8.13.6/8.13.6) with ESMTP id k4HFuRm5025521;
+	Wed, 17 May 2006 11:56:27 -0400 (EDT)
+Date:	Wed, 17 May 2006 11:56:27 -0400 (EDT)
+From:	Steven Rostedt <rostedt@goodmis.org>
+X-X-Sender: rostedt@gandalf.stny.rr.com
+To:	Christoph Lameter <clameter@sgi.com>
 cc:	LKML <linux-kernel@vger.kernel.org>,
 	Rusty Russell <rusty@rustcorp.com.au>,
 	Paul Mackerras <paulus@samba.org>,
@@ -39,36 +31,53 @@ cc:	LKML <linux-kernel@vger.kernel.org>,
 	linux390@de.ibm.com, davem@davemloft.net, arnd@arndb.de,
 	kenneth.w.chen@intel.com, sam@ravnborg.org, kiran@scalex86.org
 Subject: Re: [RFC PATCH 00/09] robust VM per_cpu variables
-In-Reply-To: <Pine.LNX.4.58.0605171104100.13160@gandalf.stny.rr.com>
-Message-ID: <Pine.LNX.4.64.0605170846190.13337@schroedinger.engr.sgi.com>
+In-Reply-To: <Pine.LNX.4.64.0605170846190.13337@schroedinger.engr.sgi.com>
+Message-ID: <Pine.LNX.4.58.0605171152190.15798@gandalf.stny.rr.com>
 References: <Pine.LNX.4.58.0605170547490.8408@gandalf.stny.rr.com>
  <Pine.LNX.4.64.0605170744360.13021@schroedinger.engr.sgi.com>
  <Pine.LNX.4.58.0605171104100.13160@gandalf.stny.rr.com>
+ <Pine.LNX.4.64.0605170846190.13337@schroedinger.engr.sgi.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <christoph@schroedinger.engr.sgi.com>
+X-Virus-Scanned: Symantec AntiVirus Scan Engine
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11476
+X-archive-position: 11477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clameter@sgi.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 17 May 2006, Steven Rostedt wrote:
+On Wed, 17 May 2006, Christoph Lameter wrote:
 
-> OK, now I'm just rambling. I don't know,  have any other ideas on making
-> this more robust?  Or is this all in vain, and I should spend my evenings
-> walking around this beautiful town of Karlsruhe ;)
+> On Wed, 17 May 2006, Steven Rostedt wrote:
+>
+> > OK, now I'm just rambling. I don't know,  have any other ideas on making
+> > this more robust?  Or is this all in vain, and I should spend my evenings
+> > walking around this beautiful town of Karlsruhe ;)
+>
+> Well I'd like to see a comprehensive solution including a fix for the
+> problems with allocper_cpu() allocations (allocper_cpu has to allocate
+> memory for potential processors... which could be a lot on
+> some types of systems and its allocated somewhere not on the nodes of the
+> processor since they may not yet be online).
 
-Well I'd like to see a comprehensive solution including a fix for the 
-problems with allocper_cpu() allocations (allocper_cpu has to allocate 
-memory for potential processors... which could be a lot on 
-some types of systems and its allocated somewhere not on the nodes of the 
-processor since they may not yet be online).
+OK, now you're beyond what I'm working with ;)  No hot plug CPUs for me.
+Well, at least not yet!
 
-Wish I could be back home in Germany to talk a walk with you. Are you 
-coming to the OLS?
+>
+> Wish I could be back home in Germany to talk a walk with you. Are you
+> coming to the OLS?
+
+I'm just here on business. Will be back home in the States on Saturday.
+
+Yep, I'll be at OLS.  Hopefully we can get a group together to do some
+brainstorming.
+
+Thanks,
+
+-- Steve

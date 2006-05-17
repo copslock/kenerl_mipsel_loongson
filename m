@@ -1,16 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 12:47:20 +0200 (CEST)
-Received: from ms-smtp-01.nyroc.rr.com ([24.24.2.55]:54767 "EHLO
-	ms-smtp-01.nyroc.rr.com") by ftp.linux-mips.org with ESMTP
-	id S8133729AbWEQKrJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 May 2006 12:47:09 +0200
-Received: from [192.168.23.10] (cpe-24-94-51-176.stny.res.rr.com [24.94.51.176])
-	by ms-smtp-01.nyroc.rr.com (8.13.6/8.13.6) with ESMTP id k4HAk1e0004730;
-	Wed, 17 May 2006 06:46:02 -0400 (EDT)
-Date:	Wed, 17 May 2006 06:46:01 -0400 (EDT)
-From:	Steven Rostedt <rostedt@goodmis.org>
-X-X-Sender: rostedt@gandalf.stny.rr.com
-To:	Andi Kleen <ak@suse.de>
-cc:	LKML <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 13:09:47 +0200 (CEST)
+Received: from mx2.suse.de ([195.135.220.15]:10389 "HELO mx2.suse.de")
+	by ftp.linux-mips.org with SMTP id S8133729AbWEQLJi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 May 2006 13:09:38 +0200
+Received: from Relay2.suse.de (mail2.suse.de [195.135.221.8])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx2.suse.de (Postfix) with ESMTP id 999E11CC33;
+	Wed, 17 May 2006 13:09:15 +0200 (CEST)
+From:	Andi Kleen <ak@suse.de>
+To:	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [RFC PATCH 01/09] robust VM per_cpu core
+Date:	Wed, 17 May 2006 13:08:54 +0200
+User-Agent: KMail/1.9.1
+Cc:	LKML <linux-kernel@vger.kernel.org>,
 	Rusty Russell <rusty@rustcorp.com.au>,
 	Paul Mackerras <paulus@samba.org>,
 	Nick Piggin <nickpiggin@yahoo.com.au>,
@@ -29,53 +31,66 @@ cc:	LKML <linux-kernel@vger.kernel.org>,
 	linuxppc-dev@ozlabs.org, linux390@de.ibm.com, davem@davemloft.net,
 	arnd@arndb.de, kenneth.w.chen@intel.com, sam@ravnborg.org,
 	clameter@sgi.com, kiran@scalex86.org
-Subject: Re: [RFC PATCH 01/09] robust VM per_cpu core
-In-Reply-To: <200605171117.06060.ak@suse.de>
-Message-ID: <Pine.LNX.4.58.0605170640280.8408@gandalf.stny.rr.com>
-References: <Pine.LNX.4.58.0605170547490.8408@gandalf.stny.rr.com>
- <Pine.LNX.4.58.0605170555190.8408@gandalf.stny.rr.com> <200605171117.06060.ak@suse.de>
+References: <Pine.LNX.4.58.0605170547490.8408@gandalf.stny.rr.com> <200605171117.06060.ak@suse.de> <Pine.LNX.4.58.0605170640280.8408@gandalf.stny.rr.com>
+In-Reply-To: <Pine.LNX.4.58.0605170640280.8408@gandalf.stny.rr.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: Symantec AntiVirus Scan Engine
-Return-Path: <rostedt@goodmis.org>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200605171308.56203.ak@suse.de>
+Return-Path: <ak@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11470
+X-archive-position: 11471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: ak@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-
-On Wed, 17 May 2006, Andi Kleen wrote:
-
->
-> > As well as the following three functions:
+On Wednesday 17 May 2006 12:46, Steven Rostedt wrote:
+> 
+> On Wed, 17 May 2006, Andi Kleen wrote:
+> 
 > >
-> > pud_t *pud_boot_alloc(struct mm_struct *mm, pgd_t *pgd, unsigned long addr,
-> >                      int cpu);
-> > pmd_t *pmd_boot_alloc(struct mm_struct *mm, pud_t *pud, unsigned long addr,
-> >                      int cpu);
-> > pte_t *pte_boot_alloc(struct mm_struct *mm, pmd_t *pmd, unsigned long addr,
-> >                      int cpu);
->
-> I'm not sure you can just put them like this into generic code. Some
-> architectures are doing strange things with them.
+> > > As well as the following three functions:
+> > >
+> > > pud_t *pud_boot_alloc(struct mm_struct *mm, pgd_t *pgd, unsigned long addr,
+> > >                      int cpu);
+> > > pmd_t *pmd_boot_alloc(struct mm_struct *mm, pud_t *pud, unsigned long addr,
+> > >                      int cpu);
+> > > pte_t *pte_boot_alloc(struct mm_struct *mm, pmd_t *pmd, unsigned long addr,
+> > >                      int cpu);
+> >
+> > I'm not sure you can just put them like this into generic code. Some
+> > architectures are doing strange things with them.
+> 
+> Hmm, like what?
 
-Hmm, like what?
+Mostly managing their software TLBs I think.
+ 
+> >
+> > And we already have boot_ioremap on some architectures. Why is that not
+> > enough?
+> 
+> I thought about using boot_ioremap, but it seems to be an abuse.  Since
+> I'm not mapping io, but actual memory pages. 
 
->
-> And we already have boot_ioremap on some architectures. Why is that not
-> enough?
+We already use it for memory, e.g. for mapping some BIOS tables.
 
-I thought about using boot_ioremap, but it seems to be an abuse.  Since
-I'm not mapping io, but actual memory pages.  So the solution to that
-seemed more of a hack.  I then would need to worry about grabbing pages
-that were node specific and getting the physical addresses.  It just
-looked like a cleaner solution to have an API that was for exactly what it
-was meant for.
+> So the solution to that 
+> seemed more of a hack.  I then would need to worry about grabbing pages
+> that were node specific 
 
--- Steve
+alloc_bootmem_node
+
+> and getting the physical addresses.  
+
+virt_to_phys() 
+
+[ + hacks to handle 32bit NUMA unfortunately ]
+
+-Andi

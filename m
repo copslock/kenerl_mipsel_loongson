@@ -1,56 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 01:02:37 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:17170 "EHLO
-	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S8133574AbWEPXC3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 May 2006 01:02:29 +0200
-Received: from 10.10.64.154 by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Tue, 16 May 2006 16:02:12 -0700
-X-Server-Uuid: D9EB6F12-1469-4C1C-87A2-5E4C0D6F9D06
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 2BD7E2AF; Tue, 16 May 2006 16:02:12 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 075772B1 for
- <linux-mips@linux-mips.org>; Tue, 16 May 2006 16:02:12 -0700 (PDT)
-Received: from mail-irva-12.broadcom.com (mail-irva-12.broadcom.com
- [10.10.64.146]) by mail-irva-8.broadcom.com (MOS 3.7.5-GA) with ESMTP
- id DNQ08553; Tue, 16 May 2006 16:02:11 -0700 (PDT)
-Received: from dhcp-mhtb-6-13.ne.broadcom.com (
- dhcp-mhtb-6-13.ne.broadcom.com [10.28.6.13]) by
- mail-irva-12.broadcom.com (Postfix) with ESMTP id 1790E69CA3; Tue, 16
- May 2006 16:02:10 -0700 (PDT)
-Subject: 16K page size
-From:	"Jon Fraser" <jfraser@broadcom.com>
-Reply-to: jfraser@broadcom.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 02:02:47 +0200 (CEST)
+Received: from wx-out-0102.google.com ([66.249.82.199]:57962 "EHLO
+	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133627AbWEQACj convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 May 2006 02:02:39 +0200
+Received: by wx-out-0102.google.com with SMTP id t13so76812wxc
+        for <linux-mips@linux-mips.org>; Tue, 16 May 2006 17:02:35 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Rs/wj3cZhWQ5oJS+wmz+qqIotS+MLwUb6HErxJCnmsNP7liwm29CxQWKNsi49a8IOEjgD1LBqR9PFPVbNE3iTcr/a+EMUDCLNdLDIm0ZQ2QKKyaeJz51Eo2J7XQRbQhqRcQcYL9PxHob18y/xSect3csZajlRv1D8jX56p6kKf4=
+Received: by 10.70.111.12 with SMTP id j12mr387413wxc;
+        Tue, 16 May 2006 17:02:35 -0700 (PDT)
+Received: by 10.70.22.3 with HTTP; Tue, 16 May 2006 17:02:35 -0700 (PDT)
+Message-ID: <404548f40605161702y199c34a5wa89ec5f84cdeee09@mail.gmail.com>
+Date:	Tue, 16 May 2006 17:02:35 -0700
+From:	"Tony Lin" <lin.tony@gmail.com>
 To:	linux-mips@linux-mips.org
-Organization: broadcom
-Date:	Tue, 16 May 2006 19:02:10 -0400
-Message-ID: <1147820530.19832.10.camel@chaos.ne.broadcom.com>
+Subject: Can't debug core files with GDB
 MIME-Version: 1.0
-X-Mailer: Evolution 2.2.3 (2.2.3-2.fc4)
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006051607; IFV=2.0.6,4.0-7;
- RPD=4.00.0004;
- RPDID=303030312E30413039303230332E34343641353742442E303034332D412D;
- ENG=IBF; TS=20060516230213; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006051607_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 6874867E4I812331286-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Return-Path: <jfraser@broadcom.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Return-Path: <lin.tony@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11455
+X-archive-position: 11456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jfraser@broadcom.com
+X-original-sender: lin.tony@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi there,
 
-Recently, Fuxin Zhang published a set of tools to convert
-elf executables to 16k pages.  Does anyone have a pointer
-to a linux kernel source tree that has the necessary changes
-to support 16k pages?
+I have a gdb-6.4 that I cross-compiled for mips-linux. Along with my
+test program, I can use gdb to walk the code execution just fine, but
+is unable to read core dumps. Maybe you guys can spot if I did
+something wrong.
 
-   Thanks.
+Machine used to compile gdb:
+---
+i386-linux, using cross-compiled mips toolchain (gcc 3.4.3, glibc 2.3.2)
+target kernel is mips-linux-2.6.6
+
+gdb was configured with:
+---
+export CC=mipsisa32-linux-gcc
+export AR=mipsisa32-linux-ar
+../gdb/configure --build=i386-linux --host=mips-linux
+--target=mips-linux --disable-sim
+
+resulting gdb file:
+gdb: ELF 32-bit MSB executable, MIPS, version 1 (SYSV), for GNU/Linux
+2.4.3, dynamically linked (uses shared libs), not stripped
+
+
+When I force a core file and try to debug it, I get empty values:
+
+> ./gdb ./nebtest ./core.524.nebtest
+
+GNU gdb 6.4
+Copyright 2005 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "mips-linux"...Using host libthread_db
+library "/lib/libthread_db.so.1".
+
+Core was generated by `./nebtest'.
+Program terminated with signal 11, Segmentation fault.
+Reading symbols from /lib/libgcc_s.so.1...done.
+Loaded symbols for /lib/libgcc_s.so.1
+Reading symbols from /lib/libc.so.6...done.
+Loaded symbols for /lib/libc.so.6
+Reading symbols from /lib/ld.so.1...done.
+Loaded symbols for /lib/ld.so.1
+#0  0x00000000 in ?? ()
+(gdb) bt
+#0  0x00000000 in ?? ()
+#1  0x00000000 in ?? ()
+
+
+
+
+
+
+
+Any idea what this may be? It's strange because if I just do 'gdb
+nebtest' I can step through the program just fine. It's reading core
+files that fail.
+
+Thanks much!

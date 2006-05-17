@@ -1,187 +1,381 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 04:24:26 +0200 (CEST)
-Received: from rwcrmhc14.comcast.net ([216.148.227.154]:22212 "EHLO
-	rwcrmhc14.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S8133382AbWEQCYQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 May 2006 04:24:16 +0200
-Received: from [127.0.0.1] (unknown[69.140.185.48])
-          by comcast.net (rwcrmhc14) with ESMTP
-          id <20060517022408m1400kgavke>; Wed, 17 May 2006 02:24:08 +0000
-Message-ID: <446A893F.20600@gentoo.org>
-Date:	Tue, 16 May 2006 22:23:59 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 11:58:38 +0200 (CEST)
+Received: from ms-smtp-02.nyroc.rr.com ([24.24.2.56]:8643 "EHLO
+	ms-smtp-02.nyroc.rr.com") by ftp.linux-mips.org with ESMTP
+	id S8133516AbWEQJ62 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 May 2006 11:58:28 +0200
+Received: from [192.168.23.10] (cpe-24-94-51-176.stny.res.rr.com [24.94.51.176])
+	by ms-smtp-02.nyroc.rr.com (8.13.6/8.13.6) with ESMTP id k4H9u04X004237;
+	Wed, 17 May 2006 05:56:01 -0400 (EDT)
+Date:	Wed, 17 May 2006 05:56:00 -0400 (EDT)
+From:	Steven Rostedt <rostedt@goodmis.org>
+X-X-Sender: rostedt@gandalf.stny.rr.com
+To:	LKML <linux-kernel@vger.kernel.org>
+cc:	Rusty Russell <rusty@rustcorp.com.au>,
+	Paul Mackerras <paulus@samba.org>,
+	Nick Piggin <nickpiggin@yahoo.com.au>,
+	Andrew Morton <akpm@osdl.org>,
+	Linus Torvalds <torvalds@osdl.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
+	Martin Mares <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
+	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
+	lethal@linux-sh.org, Chris Zankel <chris@zankel.net>,
+	Marc Gauthier <marc@tensilica.com>,
+	Joe Taylor <joe@tensilica.com>,
+	David Mosberger-Tang <davidm@hpl.hp.com>, rth@twiddle.net,
+	spyro@f2s.com, starvik@axis.com, tony.luck@intel.com,
+	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org, grundler@parisc-linux.org,
+	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
+	linux390@de.ibm.com, davem@davemloft.net, arnd@arndb.de,
+	kenneth.w.chen@intel.com, sam@ravnborg.org, clameter@sgi.com,
+	kiran@scalex86.org
+Subject: [RFC PATCH 01/09] robust VM per_cpu core
+In-Reply-To: <Pine.LNX.4.58.0605170547490.8408@gandalf.stny.rr.com>
+Message-ID: <Pine.LNX.4.58.0605170555190.8408@gandalf.stny.rr.com>
+References: <Pine.LNX.4.58.0605170547490.8408@gandalf.stny.rr.com>
 MIME-Version: 1.0
-To:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: [PATCH]: Add support for R14K Processors
-Content-Type: multipart/mixed;
- boundary="------------040002000400080604080905"
-Return-Path: <kumba@gentoo.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: Symantec AntiVirus Scan Engine
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11458
+X-archive-position: 11459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------040002000400080604080905
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Attached is an updated patch that adds support for R14K processors.  Currently, 
-the only system that can really make use of this is an Octane, but this allows 
-the processor to at least be detectable.
+This is the VM per_cpu core patch.  It includes the mm/per_cpu.c file
+that is used to initialize and update per_cpu variables at startup
+and module load.
 
-Tested on a 2.6.16.13 kernel
+To use this, the arch must define CONFIG_HAS_VM_PERCPU and
+__ARCH_HAS_VM_PERCPU.
 
-# cat /proc/cpuinfo
-system type             : SGI Octane
-processor               : 0
-cpu model               : R14000 V2.3  FPU V0.0
-BogoMIPS                : 821.24
-byteorder               : big endian
-wait instruction        : no
-microsecond timers      : yes
-tlb_entries             : 64
-extra interrupt vector  : no
-hardware watchpoint     : yes
-ASEs implemented        :
-VCED exceptions         : not available
-VCEI exceptions         : not available
+Also the following must be defined:
 
+PERCPU_START - start of the percpu VM area
+PERCPU_SIZE - size of the percpu VM area for each CPU so that the
+		total size would be PERCPU_SIZE * NR_CPUS
 
-Signed-off-by: Joshua Kinard <kumba@gentoo.org>
----
+As well as the following three functions:
 
-  arch/mips/kernel/cpu-probe.c |    9 +++++++++
-  arch/mips/kernel/proc.c      |    1 +
-  arch/mips/mm/c-r4k.c         |    4 ++++
-  arch/mips/mm/pg-r4k.c        |    1 +
-  arch/mips/mm/tlbex.c         |    1 +
-  include/asm-mips/cpu.h       |    4 +++-
-  6 files changed, 19 insertions(+), 1 deletion(-)
+pud_t *pud_boot_alloc(struct mm_struct *mm, pgd_t *pgd, unsigned long addr,
+                     int cpu);
+pmd_t *pmd_boot_alloc(struct mm_struct *mm, pud_t *pud, unsigned long addr,
+                     int cpu);
+pte_t *pte_boot_alloc(struct mm_struct *mm, pmd_t *pmd, unsigned long addr,
+                     int cpu);
 
+The above functions are to allocate page tables from bootmem because the
+percpu is initialized right after setup_arch in init/main.c
 
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 
-
---------------040002000400080604080905
-Content-Type: text/plain;
- name="r14k-support.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="r14k-support.patch"
-
-diff -Naurp mipslinux/arch/mips/kernel/cpu-probe.c mipslinux.r14k/arch/mips/kernel/cpu-probe.c
---- mipslinux/arch/mips/kernel/cpu-probe.c	2006-05-11 16:54:33.000000000 -0400
-+++ mipslinux.r14k/arch/mips/kernel/cpu-probe.c	2006-05-16 21:08:42.000000000 -0400
-@@ -439,6 +439,15 @@ static inline void cpu_probe_legacy(stru
- 		             MIPS_CPU_LLSC;
- 		c->tlbsize = 64;
- 		break;
-+	case PRID_IMP_R14000:
-+		c->cputype = CPU_R14000;
-+		c->isa_level = MIPS_CPU_ISA_IV;
-+		c->options = MIPS_CPU_TLB | MIPS_CPU_4KEX |
-+		             MIPS_CPU_FPU | MIPS_CPU_32FPR |
-+			     MIPS_CPU_COUNTER | MIPS_CPU_WATCH |
-+		             MIPS_CPU_LLSC;
-+		c->tlbsize = 64;
-+		break;
- 	}
- }
- 
-diff -Naurp mipslinux/arch/mips/kernel/proc.c mipslinux.r14k/arch/mips/kernel/proc.c
---- mipslinux/arch/mips/kernel/proc.c	2006-05-11 16:54:33.000000000 -0400
-+++ mipslinux.r14k/arch/mips/kernel/proc.c	2006-05-16 21:08:42.000000000 -0400
-@@ -42,6 +42,7 @@ static const char *cpu_name[] = {
- 	[CPU_R8000]	= "R8000",
- 	[CPU_R10000]	= "R10000",
- 	[CPU_R12000]	= "R12000",
-+	[CPU_R14000]	= "R14000",
- 	[CPU_R4300]	= "R4300",
- 	[CPU_R4650]	= "R4650",
- 	[CPU_R4700]	= "R4700",
-diff -Naurp mipslinux/arch/mips/mm/c-r4k.c mipslinux.r14k/arch/mips/mm/c-r4k.c
---- mipslinux/arch/mips/mm/c-r4k.c	2006-05-12 13:31:39.000000000 -0400
-+++ mipslinux.r14k/arch/mips/mm/c-r4k.c	2006-05-16 21:08:42.000000000 -0400
-@@ -343,6 +343,7 @@ static inline void local_r4k___flush_cac
- 	case CPU_R4400MC:
- 	case CPU_R10000:
- 	case CPU_R12000:
-+	case CPU_R14000:
- 		r4k_blast_scache();
- 	}
- }
-@@ -841,6 +842,7 @@ static void __init probe_pcache(void)
- 
- 	case CPU_R10000:
- 	case CPU_R12000:
-+	case CPU_R14000:
- 		icache_size = 1 << (12 + ((config & R10K_CONF_IC) >> 29));
- 		c->icache.linesz = 64;
- 		c->icache.ways = 2;
-@@ -994,6 +996,7 @@ static void __init probe_pcache(void)
- 		c->dcache.flags |= MIPS_CACHE_PINDEX;
- 	case CPU_R10000:
- 	case CPU_R12000:
-+	case CPU_R14000:
- 	case CPU_SB1:
- 		break;
- 	case CPU_24K:
-@@ -1121,6 +1124,7 @@ static void __init setup_scache(void)
- 
- 	case CPU_R10000:
- 	case CPU_R12000:
-+	case CPU_R14000:
- 		scache_size = 0x80000 << ((config & R10K_CONF_SS) >> 16);
- 		c->scache.linesz = 64 << ((config >> 13) & 1);
- 		c->scache.ways = 2;
-diff -Naurp mipslinux/arch/mips/mm/pg-r4k.c mipslinux.r14k/arch/mips/mm/pg-r4k.c
---- mipslinux/arch/mips/mm/pg-r4k.c	2006-05-05 20:49:54.000000000 -0400
-+++ mipslinux.r14k/arch/mips/mm/pg-r4k.c	2006-05-16 21:08:42.000000000 -0400
-@@ -357,6 +357,7 @@ void __init build_clear_page(void)
- 
- 		case CPU_R10000:
- 		case CPU_R12000:
-+		case CPU_R14000:
- 			pref_src_mode = Pref_LoadStreamed;
- 			pref_dst_mode = Pref_StoreStreamed;
- 			break;
-diff -Naurp mipslinux/arch/mips/mm/tlbex.c mipslinux.r14k/arch/mips/mm/tlbex.c
---- mipslinux/arch/mips/mm/tlbex.c	2006-05-11 16:54:33.000000000 -0400
-+++ mipslinux.r14k/arch/mips/mm/tlbex.c	2006-05-16 21:08:42.000000000 -0400
-@@ -875,6 +875,7 @@ static __init void build_tlb_write_entry
- 
- 	case CPU_R10000:
- 	case CPU_R12000:
-+	case CPU_R14000:
- 	case CPU_4KC:
- 	case CPU_SB1:
- 	case CPU_SB1A:
-diff -Naurp mipslinux/include/asm-mips/cpu.h mipslinux.r14k/include/asm-mips/cpu.h
---- mipslinux/include/asm-mips/cpu.h	2006-05-11 16:54:36.000000000 -0400
-+++ mipslinux.r14k/include/asm-mips/cpu.h	2006-05-16 21:09:26.000000000 -0400
-@@ -51,6 +51,7 @@
- #define PRID_IMP_R4300		0x0b00
- #define PRID_IMP_VR41XX		0x0c00
- #define PRID_IMP_R12000		0x0e00
-+#define PRID_IMP_R14000		0x0f00
- #define PRID_IMP_R8000		0x1000
- #define PRID_IMP_PR4450		0x1200
- #define PRID_IMP_R4600		0x2000
-@@ -198,7 +199,8 @@
- #define CPU_PR4450		61
- #define CPU_SB1A		62
- #define CPU_74K			63
--#define CPU_LAST		63
-+#define CPU_R14000		64
-+#define CPU_LAST		64
- 
- /*
-  * ISA Level encodings
-
---------------040002000400080604080905--
+Index: linux-2.6.16-test/mm/percpu.c
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux-2.6.16-test/mm/percpu.c	2006-05-17 04:39:52.000000000 -0400
+@@ -0,0 +1,287 @@
++/*
++ *  linux/mm/percpu.c
++ *
++ *  Copyright (C) 2006 Steven Rostedt <rostedt@goodmis.org>
++ *
++ *  Some of this code was influenced by mm/vmalloc.c
++ *
++ *  The percpu variables need to always have the same offset from one CPU to
++ *  the next no matter if the percpu variable is defined in the kernel or
++ *  inside a module.  So to guarentee that the offset is the same for both,
++ *  they are mapped into virtual memory.
++ *
++ *  Since the percpu variables are used before memory is initialized, the
++ *  inital setup must be done with bootmem, and thus vmalloc code can not be
++ *  used.
++ *
++ *  Credits:
++ *  -------
++ *   This goes to lots of people that inspired me on LKML, and responded to
++ *   my first (horrible) implementation of robust per_cpu variables.
++ *
++ *   Also many thanks to Rusty Russell in his generic per_cpu implementation.
++ */
++
++#include <linux/mm.h>
++#include <linux/module.h>
++#include <linux/highmem.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
++#include <linux/interrupt.h>
++
++#include <linux/bootmem.h>
++
++#include <asm/uaccess.h>
++#include <asm/tlbflush.h>
++
++static int __init percpu_boot_alloc(unsigned long addr, unsigned long size,
++				    int node);
++
++/*
++ * percpu_allocated keeps track of the actual allocated memory. It
++ * always points to the page after the last page in VM that was allocated.
++ *
++ * Yes this is also a per_cpu variable :)
++ * It gets updated after the copys are made.
++ */
++static DEFINE_PER_CPU(unsigned long, percpu_allocated);
++
++static char * __init per_cpu_allocate_init(unsigned long size, int cpu)
++{
++	unsigned long addr;
++
++	addr = PERCPU_START+(cpu*PERCPU_SIZE);
++	BUG_ON(percpu_boot_alloc(addr, size, cpu));
++
++	return (char*)addr;
++
++}
++
++/**
++ *	setup_per_cpu_areas  - initialization of VM per_cpu variables
++ *
++ *	Allocate pages in VM for the per_cpu variables
++ *	of the kernel.
++ */
++void __init setup_per_cpu_areas(void)
++{
++	unsigned long size, i;
++	char *ptr;
++
++	/* Copy section for each CPU (we discard the original) */
++	size = ALIGN(__per_cpu_end - __per_cpu_start, SMP_CACHE_BYTES);
++
++	for (i = 0; i < NR_CPUS; i++, ptr += size) {
++		ptr = per_cpu_allocate_init(size, i);
++		memcpy(ptr, __per_cpu_start, __per_cpu_end - __per_cpu_start);
++		wmb();
++		per_cpu(percpu_allocated, i) =
++			PAGE_ALIGN((unsigned long)ptr + size);
++	}
++}
++
++static __init int percpu_boot_pte_alloc(pmd_t *pmd, unsigned long addr,
++					  unsigned long end, int node)
++{
++	pte_t *pte;
++
++	pte = pte_boot_alloc(&init_mm, pmd, addr, node);
++	if (!pte)
++		return -ENOMEM;
++	do {
++		void *page;
++		WARN_ON(!pte_none(*pte));
++		page = alloc_bootmem_pages(PAGE_SIZE);
++		if (!page)
++			return -ENOMEM;
++		set_pte_at(&init_mm, addr, pte, mk_pte(virt_to_page(page),
++						       PAGE_KERNEL));
++	} while (pte++, addr += PAGE_SIZE, addr < end);
++	return 0;
++}
++
++static __init int percpu_boot_pmd_alloc(pud_t *pud, unsigned long addr,
++					unsigned long end, int node)
++{
++	pmd_t *pmd;
++	unsigned long next;
++
++	pmd = pmd_boot_alloc(&init_mm, pud, addr, node);
++	if (!pud)
++		return -ENOMEM;
++	do {
++		next = pmd_addr_end(addr, end);
++		if (percpu_boot_pte_alloc(pmd, addr, next, node))
++			return -ENOMEM;
++	} while (pmd++, addr = next, addr < end);
++	return 0;
++}
++
++static __init int percpu_boot_pud_alloc(pgd_t *pgd, unsigned long addr,
++					unsigned long end, int node)
++{
++	pud_t *pud;
++	unsigned long next;
++
++	pud = pud_boot_alloc(&init_mm, pgd, addr, node);
++	if (!pud)
++		return -ENOMEM;
++	do {
++		next = pud_addr_end(addr, end);
++		if (percpu_boot_pmd_alloc(pud, addr, next, node))
++			return -ENOMEM;
++	} while (pud++, addr = next, addr < end);
++	return 0;
++}
++
++static int __init percpu_boot_alloc(unsigned long addr, unsigned long size,
++				    int node)
++{
++	pgd_t *pgd;
++	unsigned long end = addr + size;
++	unsigned long next;
++	int err;
++
++	pgd = pgd_offset_k(addr);
++	do {
++		next = pgd_addr_end(addr, end);
++		err = percpu_boot_pud_alloc(pgd, addr, next, node);
++		if (err)
++			break;
++	} while (pgd++, addr = next, addr < end);
++	return err;
++}
++
++static __init int percpu_pte_alloc(pmd_t *pmd, unsigned long addr,
++				   unsigned long end, int node)
++{
++	pte_t *pte;
++
++	pte = pte_alloc_kernel(pmd, addr);
++	if (!pte)
++		return -ENOMEM;
++	do {
++		void *page;
++		if (unlikely(!pte_none(*pte))) {
++			printk("bad pte: %p->%p\n", pte, (void*)pte_val(*pte));
++			BUG();
++			return -EFAULT;
++		}
++		page = (void*)__get_free_page(GFP_KERNEL);
++		if (!page)
++			return -ENOMEM;
++		set_pte_at(&init_mm, addr, pte, mk_pte(virt_to_page(page),
++						       PAGE_KERNEL));
++	} while (pte++, addr += PAGE_SIZE, addr < end);
++	__flush_tlb();
++	return 0;
++}
++
++static __init int percpu_pmd_alloc(pud_t *pud, unsigned long addr,
++				   unsigned long end, int node)
++{
++	pmd_t *pmd;
++	unsigned long next;
++
++	pmd = pmd_alloc(&init_mm, pud, addr);
++	if (!pmd)
++		return -ENOMEM;
++	do {
++		next = pmd_addr_end(addr, end);
++		if (percpu_pte_alloc(pmd, addr, next, node))
++			return -ENOMEM;
++	} while (pmd++, addr = next, addr < end);
++	return 0;
++}
++
++static __init int percpu_pud_alloc(pgd_t *pgd, unsigned long addr,
++				   unsigned long end, int node)
++{
++	pud_t *pud;
++	unsigned long next;
++
++	pud = pud_alloc(&init_mm, pgd, addr);
++	if (!pud)
++		return -ENOMEM;
++	do {
++		next = pud_addr_end(addr, end);
++		if (percpu_pmd_alloc(pud, addr, next, node))
++			return -ENOMEM;
++	} while (pud++, addr = next, addr < end);
++	return 0;
++}
++
++static int percpu_alloc(unsigned long addr, unsigned long size,
++			int node)
++{
++	pgd_t *pgd;
++	unsigned long end = addr + size;
++	unsigned long next;
++	int err;
++
++	pgd = pgd_offset_k(addr);
++	do {
++		next = pgd_addr_end(addr, end);
++		err = percpu_pud_alloc(pgd, addr, next, node);
++		if (err)
++			break;
++	} while (pgd++, addr = next, addr < end);
++	return err;
++}
++
++static int percpu_module_update(void *pcpudst, unsigned long size, int cpu)
++{
++	int err = 0;
++	/*
++	 * These two local variables are only used to keep the code
++	 * looking simpler.  Since this function is only called on
++	 * module load, it's not time critical.
++	 */
++	unsigned long needed_address = (unsigned long)
++		((pcpudst) + __PERCPU_OFFSET_ADDRESS(cpu)+size);
++	unsigned long allocated = per_cpu(percpu_allocated, cpu);
++
++	if (allocated < needed_address) {
++		unsigned long alloc = needed_address - allocated;
++		err = percpu_alloc(allocated, alloc, cpu);
++		if (!err)
++			per_cpu(percpu_allocated, cpu) =
++				PAGE_ALIGN(needed_address);
++	}
++	return err;
++}
++
++/**
++ *	per_cpu_modcopy  -  copy and allocate module VM per_cpu variables
++ *
++ *	@pcpudst:	Destination of module per_cpu section
++ *	@src:		Source of module per_cpu data section
++ *	@size:		Size of module per_cpu data section
++ *
++ *	Copy the module's data per_cpu section into each VM per_cpu section
++ *	stored in the kernel.  If need be, allocate more pages in VM
++ *	if they are not yet allocated.
++ *
++ *	protected by module_mutex
++ */
++int percpu_modcopy(void *pcpudst, void *src, unsigned long size)
++{
++	unsigned int i;
++	int err = 0;
++
++	for (i = 0; i < NR_CPUS; i++)
++		if (cpu_possible(i)) {
++			err = percpu_module_update(pcpudst, size, i);
++			if (err)
++				break;
++			memcpy((pcpudst)+__PERCPU_OFFSET_ADDRESS(i),
++			       (src), (size));
++		}
++	return err;
++}
++
++/*
++ * We use the __per_cpu_start for the indexing of
++ * per_cpu variables, even in modules.
++ */
++EXPORT_SYMBOL(__per_cpu_start);
+Index: linux-2.6.16-test/mm/Makefile
+===================================================================
+--- linux-2.6.16-test.orig/mm/Makefile	2006-05-17 04:32:27.000000000 -0400
++++ linux-2.6.16-test/mm/Makefile	2006-05-17 04:39:52.000000000 -0400
+@@ -22,3 +22,4 @@ obj-$(CONFIG_SLOB) += slob.o
+ obj-$(CONFIG_SLAB) += slab.o
+ obj-$(CONFIG_MEMORY_HOTPLUG) += memory_hotplug.o
+ obj-$(CONFIG_FS_XIP) += filemap_xip.o
++obj-$(CONFIG_HAS_VM_PERCPU) += percpu.o
+\ No newline at end of file

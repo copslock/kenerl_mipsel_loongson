@@ -1,114 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 May 2006 20:40:01 +0200 (CEST)
-Received: from wx-out-0102.google.com ([66.249.82.207]:35752 "EHLO
-	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133816AbWEQSjx convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 17 May 2006 20:39:53 +0200
-Received: by wx-out-0102.google.com with SMTP id t13so216307wxc
-        for <linux-mips@linux-mips.org>; Wed, 17 May 2006 11:39:47 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=Nz4huScarZTwaMDDqQ7yY6F+7O8EMbTG0w4rnjd4T0NfDVoX2bvAjN6u1fYUhes94IJmVBRiPdhmHWJ1aeS1KuP5p5IcJIX1g8bgGcNPHFSw8XIkQmcPqDEL7ZAh0rUTfoYAXp+c7JDCm4ElxoHYPqTUlfgXO62P2P4mhJpPlUE=
-Received: by 10.70.47.14 with SMTP id u14mr1544541wxu;
-        Wed, 17 May 2006 11:39:47 -0700 (PDT)
-Received: by 10.70.22.3 with HTTP; Wed, 17 May 2006 11:39:46 -0700 (PDT)
-Message-ID: <404548f40605171139i67084776pd9ae7c34ec19ec95@mail.gmail.com>
-Date:	Wed, 17 May 2006 11:39:47 -0700
-From:	"Tony Lin" <lin.tony@gmail.com>
-To:	"Daniel Jacobowitz" <dan@debian.org>
-Subject: Re: Can't debug core files with GDB
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20060517133402.GA2480@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 May 2006 09:01:56 +0200 (CEST)
+Received: from ms-smtp-03.nyroc.rr.com ([24.24.2.57]:22015 "EHLO
+	ms-smtp-03.nyroc.rr.com") by ftp.linux-mips.org with ESMTP
+	id S8133423AbWERHBq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 18 May 2006 09:01:46 +0200
+Received: from [192.168.23.10] (cpe-24-94-51-176.stny.res.rr.com [24.94.51.176])
+	by ms-smtp-03.nyroc.rr.com (8.13.6/8.13.6) with ESMTP id k4I7033r016856;
+	Thu, 18 May 2006 03:00:04 -0400 (EDT)
+Date:	Thu, 18 May 2006 03:00:03 -0400 (EDT)
+From:	Steven Rostedt <rostedt@goodmis.org>
+X-X-Sender: rostedt@gandalf.stny.rr.com
+To:	Christoph Lameter <clameter@sgi.com>
+cc:	LKML <linux-kernel@vger.kernel.org>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Paul Mackerras <paulus@samba.org>,
+	Nick Piggin <nickpiggin@yahoo.com.au>,
+	Andrew Morton <akpm@osdl.org>,
+	Linus Torvalds <torvalds@osdl.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Thomas Gleixner <tglx@linutronix.de>, Andi Kleen <ak@suse.de>,
+	Martin Mares <mj@atrey.karlin.mff.cuni.cz>, bjornw@axis.com,
+	schwidefsky@de.ibm.com, benedict.gaster@superh.com,
+	lethal@linux-sh.org, Chris Zankel <chris@zankel.net>,
+	Marc Gauthier <marc@tensilica.com>,
+	Joe Taylor <joe@tensilica.com>,
+	David Mosberger-Tang <davidm@hpl.hp.com>, rth@twiddle.net,
+	spyro@f2s.com, starvik@axis.com, tony.luck@intel.com,
+	linux-ia64@vger.kernel.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org, grundler@parisc-linux.org,
+	parisc-linux@parisc-linux.org, linuxppc-dev@ozlabs.org,
+	linux390@de.ibm.com, davem@davemloft.net, arnd@arndb.de,
+	kenneth.w.chen@intel.com, sam@ravnborg.org, kiran@scalex86.org
+Subject: Re: [RFC PATCH 00/09] robust VM per_cpu variables
+In-Reply-To: <Pine.LNX.4.64.0605171038160.13767@schroedinger.engr.sgi.com>
+Message-ID: <Pine.LNX.4.58.0605180229050.30044@gandalf.stny.rr.com>
+References: <Pine.LNX.4.58.0605170547490.8408@gandalf.stny.rr.com>
+ <Pine.LNX.4.64.0605170744360.13021@schroedinger.engr.sgi.com>
+ <Pine.LNX.4.58.0605171104100.13160@gandalf.stny.rr.com>
+ <Pine.LNX.4.64.0605170846190.13337@schroedinger.engr.sgi.com>
+ <Pine.LNX.4.58.0605171152190.15798@gandalf.stny.rr.com>
+ <Pine.LNX.4.64.0605171038160.13767@schroedinger.engr.sgi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <404548f40605161702y199c34a5wa89ec5f84cdeee09@mail.gmail.com>
-	 <20060517133402.GA2480@nevyn.them.org>
-Return-Path: <lin.tony@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: Symantec AntiVirus Scan Engine
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11479
+X-archive-position: 11480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lin.tony@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-Objdump didn't yield any useful information, perhaps I didn't set the
-flags correctly to show all the private registers.
 
-You may be right about the kernel generated core file though. I
-checked the registerd in gdb, everything looks good except the program
-counter was zero. I then modified the mips kernel to spit out the
-registers when doing the coredump. A valid pc (0x4008c0) was there
-when doing fs/exec.c:do_coredump()
+On Wed, 17 May 2006, Christoph Lameter wrote:
 
-printks from do_coredump()
------------
-bash-2.05a# killall -SIGSEGV nebtest
-1:<6>
-
-printing contents of pt_regs *regs
-1:<6>cp0_status 0xdc13
-1:<6>lo 0x0
-1:<6>hi 0x0
-1:<6>cp0_badvaddr 0x803fbda0
-1:<6>cp0_cause 0x10801000
-1:<6>cp0_epc 0x4008c0
-
-
-Calling 'info registers' in gdb coredump
-----------------------
-Reading symbols from /lib/ld.so.1...done.
-Loaded symbols for /lib/ld.so.1
-#0  0x00000000 in ?? ()
-(gdb) info registers
-          zero       at       v0       v1       a0       a1       a2       a3
- R0   00000000 1000dc00 0000000f 00000000 0000000f 2aac1000 0000000f 00000000
-            t0       t1       t2       t3       t4       t5       t6       t7
- R8   00000000 00000001 00000003 49276d20 68697320 00000000 00000000 7468656e
-            s0       s1       s2       s3       s4       s5       s6       s7
- R16  2ab00230 7fff7e64 2ad09f50 004008d0 00000001 004007dc 00000000 1001f328
-            t8       t9       k0       k1       gp       sp       s8       ra
- R24  00000003 00000000 fbad2a84 00000000 10008040 7fff7de0 7fff7de0 00400898
-            sr       lo       hi      bad    cause       pc
-      10801000 0000dc13 00000000 803fbda0 004008c0 00000000
-           fsr      fir
-      00000000 00000000
-(gdb)
-
-(gdb) x/32 0x4008c0
-0x4008c0 <main+228>:    0x1000ffff      0x00000000      0x00000000
- 0x00000000
-0x4008d0 <__libc_csu_init>:     0x3c1c0fc0      0x279c7770
-0x0399e021      0x27bdffd8
-0x4008e0 <__libc_csu_init+16>:  0xafbf0020      0xafb1001c
-0xafb00018      0xafbc0010
-0x4008f0 <__libc_csu_init+32>:  0x8f998054      0x00000000
-0x0320f809      0x00000000
-0x400900 <__libc_csu_init+48>:  0x8fbc0010      0x8f838034
-0x8f828040      0x00431023
-
-
-
-The 0x4008c0 address doesn't look half bad, pointing within main(). So
-it looks like the mips kernel had all the right registers values but
-just didn't format it correctly in the core dump? It wrote the pc into
-cause, cause into sr, and cp0_status into lo.
-
-
-Thanks much,
-- Tony
-
-On 5/17/06, Daniel Jacobowitz <dan@debian.org> wrote:
-> Check the contents of the core file with objdump?  I recall seeing at
-> least one recent MIPS kernel which failed to save registers.  Take a
-> look at the .reg section.
+> On Wed, 17 May 2006, Steven Rostedt wrote:
 >
-> --
-> Daniel Jacobowitz
-> CodeSourcery
+> > > Well I'd like to see a comprehensive solution including a fix for the
+> > > problems with allocper_cpu() allocations (allocper_cpu has to allocate
+> > > memory for potential processors... which could be a lot on
+> > > some types of systems and its allocated somewhere not on the nodes of the
+> > > processor since they may not yet be online).
+> >
+> > OK, now you're beyond what I'm working with ;)  No hot plug CPUs for me.
+> > Well, at least not yet!
 >
+> You need to at least consider how this could be handled by the per_cpu
+> memory manangement. The VM thingie with dynamic per cpu memory would allow
+> a fixup of allocpercpu.
+>
+
+Last night, while aimlessly wondering the streets of Karlsruhe, I thought
+of some ideas.  Maybe not very good ideas, but ideas never-the-less.
+
+How about a hybrid?  Have the normal in kernel code use what is there
+today, with the indirection.  Have modules and add on CPUs use an
+allocated vm area.
+
+Here's the thought:
+
+  Have the boot time per_cpu variables (BTPCV) allocated like it is today.
+  But make sure that they are paged align.
+
+  Store away the initial values of per_cpu variables (PCV), for systems
+  with hot pluggable CPUs.
+
+  For modules, have a VM dedicated area. The assumption is that the
+  modules will not have more PCVs than the kernel. Hopefully the PCVs
+  of a module will not strain the TLB too much.  As long as the modules
+  PCVs are separated per cpu the same as the BTPCV then this will work.
+  We can even use the extra space that was added in the alignment,
+  if the modules PCV section is small enough to fit.
+
+  Now for allocated PCV for a hot plugged CPU.  We can dynamically
+  allocate them when the CPU is loaded, and copy in the saved BTPCV.
+
+The hotplug CPU handling might be hard to work with the module handling,
+but both should be simple by themselves.  So if we concentrate on just the
+hotplug first, then this might actually benefit you.
+
+So, Allocate a page alligned BTPCV for each online CPU and copy the
+section into them.  Keep the initial section around.
+
+When a CPU comes on line, allocate the memory for the PCV in VM and copy
+the saved BTPCV into it.  Then have the indirect pointer array (or CPU
+private register/variable) point to this section.  It only puts strain on
+the TLB of the newly online CPU, but it gives us the option of placing the
+PCV into memory that we want (NUMA friendly).
+
+So I should forget about the modules for now, and get a hotplug PCV
+solution working.  All the archs would need to do is to give a VM address
+where to store these variables. Hmm...
+
+Thoughts?
+
+-- Steve

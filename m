@@ -1,78 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 May 2006 23:54:20 +0200 (CEST)
-Received: from nf-out-0910.google.com ([64.233.182.190]:28171 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133927AbWERVyM convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 18 May 2006 23:54:12 +0200
-Received: by nf-out-0910.google.com with SMTP id k27so190488nfc
-        for <linux-mips@linux-mips.org>; Thu, 18 May 2006 14:54:07 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=iVC1yKK2A6GczXIdhFG6/drRWT+DRhNWNh1h6dJDH7LpVLtekro+923A9+WVTOYwRWdoTsCFf3Xy97GPnKLWHDwIEiUDsHYWiFvdZz3jDGgAzqvEoSZxnEGutXdWitpnQgVyQXiMj/YhitoC9NvuuEVURdUvPMW2ziIOqC4rt9U=
-Received: by 10.49.27.12 with SMTP id e12mr923671nfj;
-        Thu, 18 May 2006 14:54:06 -0700 (PDT)
-Received: by 10.49.85.18 with HTTP; Thu, 18 May 2006 14:54:06 -0700 (PDT)
-Message-ID: <ecb4efd10605181454v34ef19degf2cdd2535b37fc30@mail.gmail.com>
-Date:	Thu, 18 May 2006 17:54:06 -0400
-From:	"Clem Taylor" <clem.taylor@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: I2C troubles with Au1550
-Cc:	"Jordan Crouse" <jordan.crouse@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 May 2006 12:53:01 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57477 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133650AbWESKwy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 May 2006 12:52:54 +0200
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k4JAqs7Y004940;
+	Fri, 19 May 2006 11:52:54 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k4JAqq8u004939;
+	Fri, 19 May 2006 11:52:52 +0100
+Date:	Fri, 19 May 2006 11:52:52 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	dmitry pervushin <dpervushin@ru.mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] NEC EMMA2RH support
+Message-ID: <20060519105252.GA4714@linux-mips.org>
+References: <1147946423.8223.4.camel@diimka-laptop> <20060518195404.663eba86.yoichi_yuasa@tripeaks.co.jp> <1147950509.8223.10.camel@diimka-laptop> <20060518111703.GA15601@networkno.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <clem.taylor@gmail.com>
+In-Reply-To: <20060518111703.GA15601@networkno.de>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11491
+X-archive-position: 11492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clem.taylor@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-We've been having troubles with the reliability of the I2C interface
-on the Au1550.  Basically 1% of the I2C transactions would timeout.
-Sometimes the failures would cluster in long runs which was causing
-pain.
+On Thu, May 18, 2006 at 12:17:04PM +0100, Thiemo Seufer wrote:
 
-Last night I got annoyed with the problem enough that I applied a
-portion of a Au1200 I2C patch posted by Jordan Crouse on 2005.12.02.
-This patch was not applied to the the linux-mips tree (as of
-2.6.16.16) but it seems to have fixed our timeout problems. I ran a
-I2C test for 14 hours doing constant I2C transactions from user space
-and did not see an error.
+> > May be, I have
+> > misunderstood the modern ways in linux kernel development, but I am
+> > pretty sure that assembler interrupt handler will be faster than C
+> > code.
+> 
+> Only marginally, it doesn't outweigh the maintenance trouble.
 
-Maybe Jordan could try again with a fresh patch because it really does
-seem to help...
+Actually the average interrupt handler was sufficiently badly scheduled
+such that the C written ones were usually better.  Not only, gcc knows
+alot of CPU specifics about scheduling, so the average interrupt should
+now suffer from many less taken branches.
 
-This is the subset of the patch I used:
---- drivers/i2c/busses/i2c-au1550.c	(revision 2271)
-+++ drivers/i2c/busses/i2c-au1550.c	(working copy)
-@@ -118,13 +118,19 @@
-
-  	/* Reset the FIFOs, clear events.
- 	*/
--	sp->psc_smbpcr = PSC_SMBPCR_DC;
-+	stat = sp->psc_smbstat;
-  	sp->psc_smbevnt = PSC_SMBEVNT_ALLCLR;
- 	au_sync();
--	do {
--		stat = sp->psc_smbpcr;
-+
-+	if (!(stat & PSC_SMBSTAT_TE) || !(stat & PSC_SMBSTAT_RE)) {
-+		sp->psc_smbpcr = PSC_SMBPCR_DC;
- 		au_sync();
--	} while ((stat & PSC_SMBPCR_DC) != 0);
-+		do {
-+			stat = sp->psc_smbpcr;
-+			au_sync();
-+		} while ((stat & PSC_SMBPCR_DC) != 0);
-+		udelay(50);
-+	}
-
- 	/* Write out the i2c chip address and specify operation
- 	*/
+  Ralf

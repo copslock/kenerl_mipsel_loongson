@@ -1,156 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 May 2006 17:47:08 +0200 (CEST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:28864 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8134006AbWEVPqz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 22 May 2006 17:46:55 +0200
-Received: from localhost (p3247-ipad208funabasi.chiba.ocn.ne.jp [60.43.104.247])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C28AFADCE; Tue, 23 May 2006 00:46:51 +0900 (JST)
-Date:	Tue, 23 May 2006 00:47:41 +0900 (JST)
-Message-Id: <20060523.004741.45150957.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH] fix fpu_save_double on 64-bit
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060427.232904.05599433.anemo@mba.ocn.ne.jp>
-References: <1144961699.8372.127.camel@localhost.localdomain>
-	<20060414.120944.25476367.nemoto@toshiba-tops.co.jp>
-	<20060427.232904.05599433.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 May 2006 18:27:49 +0200 (CEST)
+Received: from mail8.fw-sd.sony.com ([160.33.66.75]:2757 "EHLO
+	mail8.fw-sd.sony.com") by ftp.linux-mips.org with ESMTP
+	id S8133754AbWEVQ1l (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 22 May 2006 18:27:41 +0200
+Received: from mail3.sjc.in.sel.sony.com (mail3.sjc.in.sel.sony.com [43.134.1.211])
+	by mail8.fw-sd.sony.com (8.12.11/8.12.11) with ESMTP id k4MGRUm9010562;
+	Mon, 22 May 2006 16:27:30 GMT
+Received: from [43.134.85.135] ([43.134.85.135])
+	by mail3.sjc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id k4MGRUwQ017069;
+	Mon, 22 May 2006 16:27:30 GMT
+Message-ID: <4471E672.6000907@am.sony.com>
+Date:	Mon, 22 May 2006 09:27:30 -0700
+From:	Tim Bird <tim.bird@am.sony.com>
+User-Agent: Thunderbird 1.5 (X11/20051201)
+MIME-Version: 1.0
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+CC:	Herbert Valerio Riedel <hvr@gnu.org>,
+	Clem Taylor <clem.taylor@gmail.com>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: CONFIG_PRINTK_TIME and initial value for jiffies?
+References: <ecb4efd10605151341l33f491f1ueca8a0ce609c989d@mail.gmail.com>	 <4468EE9B.4000009@ru.mvista.com>  <4468F40F.80902@ru.mvista.com> <1147759399.11301.15.camel@localhost.localdomain> <4469C71F.9060004@ru.mvista.com>
+In-Reply-To: <4469C71F.9060004@ru.mvista.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <tim.bird@am.sony.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11514
+X-archive-position: 11515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: tim.bird@am.sony.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 27 Apr 2006 23:29:04 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> This is actually irrelevant to kgdb.  Without this fix, _save_fp() in
-> 64-bit kernel is seriously broken.
-> 
-> ffffffff8010bec0 <_save_fp>:
-> ffffffff8010bec0:       400d6000        mfc0    t1,c0_status
-> ffffffff8010bec4:       000c7140        sll     t2,t0,0x5
-> ffffffff8010bec8:       05c10011        bgez    t2,ffffffff8010bf10 <_save_fp+0x50>
-> ffffffff8010becc:       00000000        nop
-> ffffffff8010bed0:       f4810328        sdc1    $f1,808(a0)
-> ...
+Sergei Shtylyov wrote:
+>    sched_clock() defined in arch/i386/kernel/timers/timer_tsc.c can
+> hardly provide 0-based time if it's using TSC (at least I can't see
+> where the TSC is cleared). Even if it's not using TSC, jiffies_64 is not
+> 0-based as we saw, and neither it's set to -300 secs because of the
+> double cast to ulong and then to u64 which should clear the high word.
+> Probably something somewhere clears TSC but I can see the related code
+> only in arch/i386/kernel/smpboot.c...
 
-ping.
+I've worked a lot with the printk_times feature, and it's not unusual
+on many systems to see weird values before time_init().  On x86 with a
+TSC-based sched_clock() you may see values based on whatever
+the TSC happens to be after firmware initialization up until time_init().
 
+Note that you can re-base the timings to an arbitrary printk line
+using scripts/show_delta.  See
+http://tree.celinuxforum.org/CelfPubWiki/PrintkTimesSample2
 
-Fix register usage in fpu_save_double() and make fpu_restore_double()
-more symmetric with fpu_save_double().
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 0b1b54a..db94e55 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -75,8 +75,8 @@
- 	and	t0, t0, t1
- 	LONG_S	t0, ST_OFF(t3)
- 
--	fpu_save_double a0 t1 t0 t2		# c0_status passed in t1
--						# clobbers t0 and t2
-+	fpu_save_double a0 t0 t1		# c0_status passed in t0
-+						# clobbers t1
- 1:
- 
- 	/*
-@@ -129,9 +129,9 @@
-  */
- LEAF(_save_fp)
- #ifdef CONFIG_64BIT
--	mfc0	t1, CP0_STATUS
-+	mfc0	t0, CP0_STATUS
- #endif
--	fpu_save_double a0 t1 t0 t2		# clobbers t1
-+	fpu_save_double a0 t0 t1		# clobbers t1
- 	jr	ra
- 	END(_save_fp)
- 
-@@ -139,7 +139,10 @@ LEAF(_save_fp)
-  * Restore a thread's fp context.
-  */
- LEAF(_restore_fp)
--	fpu_restore_double a0, t1		# clobbers t1
-+#ifdef CONFIG_64BIT
-+	mfc0	t0, CP0_STATUS
-+#endif
-+	fpu_restore_double a0 t0 t1		# clobbers t1
- 	jr	ra
- 	END(_restore_fp)
- 
-diff --git a/include/asm-mips/asmmacro-32.h b/include/asm-mips/asmmacro-32.h
-index 11daf5c..5de3963 100644
---- a/include/asm-mips/asmmacro-32.h
-+++ b/include/asm-mips/asmmacro-32.h
-@@ -12,7 +12,7 @@
- #include <asm/fpregdef.h>
- #include <asm/mipsregs.h>
- 
--	.macro	fpu_save_double thread status tmp1=t0 tmp2
-+	.macro	fpu_save_double thread status tmp1=t0
- 	cfc1	\tmp1,  fcr31
- 	sdc1	$f0,  THREAD_FPR0(\thread)
- 	sdc1	$f2,  THREAD_FPR2(\thread)
-@@ -70,7 +70,7 @@
- 	sw	\tmp, THREAD_FCR31(\thread)
- 	.endm
- 
--	.macro	fpu_restore_double thread tmp=t0
-+	.macro	fpu_restore_double thread status tmp=t0
- 	lw	\tmp, THREAD_FCR31(\thread)
- 	ldc1	$f0,  THREAD_FPR0(\thread)
- 	ldc1	$f2,  THREAD_FPR2(\thread)
-diff --git a/include/asm-mips/asmmacro-64.h b/include/asm-mips/asmmacro-64.h
-index 559c355..225feef 100644
---- a/include/asm-mips/asmmacro-64.h
-+++ b/include/asm-mips/asmmacro-64.h
-@@ -53,12 +53,12 @@
- 	sdc1	$f31, THREAD_FPR31(\thread)
- 	.endm
- 
--	.macro	fpu_save_double thread status tmp1 tmp2
--	sll	\tmp2, \tmp1, 5
--	bgez	\tmp2, 2f
-+	.macro	fpu_save_double thread status tmp
-+	sll	\tmp, \status, 5
-+	bgez	\tmp, 2f
- 	fpu_save_16odd \thread
- 2:
--	fpu_save_16even \thread \tmp1			# clobbers t1
-+	fpu_save_16even \thread \tmp
- 	.endm
- 
- 	.macro	fpu_restore_16even thread tmp=t0
-@@ -101,13 +101,12 @@
- 	ldc1	$f31, THREAD_FPR31(\thread)
- 	.endm
- 
--	.macro	fpu_restore_double thread tmp
--	mfc0	t0, CP0_STATUS
--	sll	t1, t0, 5
--	bgez	t1, 1f				# 16 register mode?
-+	.macro	fpu_restore_double thread status tmp
-+	sll	\tmp, \status, 5
-+	bgez	\tmp, 1f				# 16 register mode?
- 
--	fpu_restore_16odd a0
--1:	fpu_restore_16even a0, t0		# clobbers t0
-+	fpu_restore_16odd \thread
-+1:	fpu_restore_16even \thread \tmp
- 	.endm
- 
- 	.macro	cpu_save_nonscratch thread
+=============================
+Tim Bird
+Architecture Group Chair, CE Linux Forum
+Senior Staff Engineer, Sony Electronics
+=============================

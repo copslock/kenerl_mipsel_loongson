@@ -1,87 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2006 15:40:04 +0200 (CEST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:925 "EHLO
-	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133732AbWEWNj4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 May 2006 15:39:56 +0200
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by goldrake.enneenne.com with esmtp (Exim 4.50)
-	id 1FiX3P-0007Am-L3
-	for linux-mips@linux-mips.org; Tue, 23 May 2006 15:36:07 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1FiX7M-00015x-7y
-	for linux-mips@linux-mips.org; Tue, 23 May 2006 15:40:12 +0200
-Date:	Tue, 23 May 2006 15:40:12 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060523134012.GB28124@enneenne.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="5vNYLRcllDrimb99"
-Content-Disposition: inline
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.11+cvs20060403
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: [PATCH] Late console
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2006 16:52:42 +0200 (CEST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:29682 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133865AbWEWOwe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2006 16:52:34 +0200
+Received: from localhost (p6133-ipad03funabasi.chiba.ocn.ne.jp [219.160.86.133])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id B2AB4B44F; Tue, 23 May 2006 23:52:30 +0900 (JST)
+Date:	Tue, 23 May 2006 23:53:20 +0900 (JST)
+Message-Id: <20060523.235320.39154614.anemo@mba.ocn.ne.jp>
+To:	mchitale@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: oprofile for mips
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <d096a3ee0605230133l60a8b5uc74fad7e479752e@mail.gmail.com>
+References: <d096a3ee0605230133l60a8b5uc74fad7e479752e@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11524
+X-archive-position: 11525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 23 May 2006 14:03:22 +0530, "Mayuresh Chitale" <mchitale@gmail.com> wrote:
+> I am trying to cross compile oprofile for mips. I get an error:
+> 
+> configure: error: bfd library not found when configuring.
 
---5vNYLRcllDrimb99
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+As shown in the error message, you need libbfd to compile oprofile.
+The libbfd is provided by binutils (or some other tools).  While you
+need objdump to run oprofile (see opcontrol script), you must have
+MIPS native binutils anyway.
 
-Hello,
-
-due my job on sleep I need the serial console till sleep time so let
-me propose this patch that disables serial port suspend if a console
-is running on it and the kernel has CONFIG_DEBUG_KERNEL flag on.
-
-Ciao,
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
-
---5vNYLRcllDrimb99
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=patch-au1x00-late-console
-
-diff --git a/drivers/serial/serial_core.c b/drivers/serial/serial_core.c
-index 9e27aee..27ed4f2 100644
---- a/drivers/serial/serial_core.c
-+++ b/drivers/serial/serial_core.c
-@@ -1919,6 +1919,14 @@ int uart_suspend_port(struct uart_driver
- {
- 	struct uart_state *state = drv->state + port->line;
- 
-+#ifdef CONFIG_DEBUG_KERNEL
-+	if (uart_console(port)) {
-+		printk(KERN_INFO "warning! Serial console %s%d is not disabled in debug kernel mode\n",
-+			drv->dev_name, port->line);
-+		return 0;
-+	}
-+#endif
-+
- 	mutex_lock(&state->mutex);
- 
- 	if (state->info && state->info->flags & UIF_INITIALIZED) {
-
---5vNYLRcllDrimb99--
+---
+Atsushi Nemoto

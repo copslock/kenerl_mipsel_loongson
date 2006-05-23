@@ -1,116 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2006 10:33:31 +0200 (CEST)
-Received: from wx-out-0102.google.com ([66.249.82.193]:23436 "EHLO
-	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133403AbWEWIdX convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2006 10:33:23 +0200
-Received: by wx-out-0102.google.com with SMTP id t15so1047499wxc
-        for <linux-mips@linux-mips.org>; Tue, 23 May 2006 01:33:22 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=pw7lntzVMHz4hw4Xj8dgGVOC7ULVRxe3nub3puAYymMUIyMAMTanRN/HHE5Uw2XxFDqM/68Jua9kRDxYuRlS4QdNYsH9ZfSKjpx5du/EpfDBXOHgQUuk/lKyIhYdX7Fle+fYhdlf/Hq0xWZVFJhL25e4gsvPumSnSYRY4GhLmCA=
-Received: by 10.70.11.20 with SMTP id 20mr6125764wxk;
-        Tue, 23 May 2006 01:33:22 -0700 (PDT)
-Received: by 10.70.124.7 with HTTP; Tue, 23 May 2006 01:33:22 -0700 (PDT)
-Message-ID: <d096a3ee0605230133l60a8b5uc74fad7e479752e@mail.gmail.com>
-Date:	Tue, 23 May 2006 14:03:22 +0530
-From:	"Mayuresh Chitale" <mchitale@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2006 15:24:11 +0200 (CEST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:58268 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133737AbWEWNYD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 May 2006 15:24:03 +0200
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by goldrake.enneenne.com with esmtp (Exim 4.50)
+	id 1FiWo2-00076g-4O
+	for linux-mips@linux-mips.org; Tue, 23 May 2006 15:20:14 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1FiWry-0000o1-Ls
+	for linux-mips@linux-mips.org; Tue, 23 May 2006 15:24:18 +0200
+Date:	Tue, 23 May 2006 15:24:18 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
 To:	linux-mips@linux-mips.org
-Subject: oprofile for mips
+Message-ID: <20060523132418.GA28124@enneenne.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <mchitale@gmail.com>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.11+cvs20060403
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: USB sleep & mount
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11522
+X-archive-position: 11523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mchitale@gmail.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+Hello,
 
-I am trying to cross compile oprofile for mips. I get an error:
+I'm working on sleep for USB host on au1x00 CPUs and I have the
+following problem.
 
-configure: error: bfd library not found when configuring.
+When I put the system to sleep and then it wakes up everything works
+well _if_ the USB key is not mounted before the sleep. For instance,
+if I mount partition "/dev/sda1" (first USB key partition) and then go
+to sleep, at wake up the system forgets device "/dev/sda" and
+registers a new device "/dev/sdb" so, obviously, the filesystem
+previously mounted is not accessible anymore.
 
-Has anyone faced a similar problem during cross compilation. ?
+My question is: is that correct since the userland, before going to
+sleep, should umount all external filesystems or it's a bug? :)
 
-Thanks in advance,
-Mayuresh.
+Thanks,
 
-mayuresh@89:~/malta/oprofile/oprofile-0.9.1-source >./configure
---host=mips-linux --target=mips-linux
---with-linux=/home/mayuresh/malta/oprofile/linux-2.6.16.12/
---with-kernel-support
---with-extra-libs=/home/mayuresh/malta/rootfs/lib/
-configure: WARNING: If you wanted to set the --build type, don't use --host.
-   If a cross compiler is detected then cross compile mode will be used.
-checking for a BSD-compatible install... /usr/bin/install -c
-checking whether build environment is sane... yes
-checking for gawk... gawk
-checking whether make sets $(MAKE)... yes
-checking for mips-linux-strip... mips-linux-strip
-checking for mips-linux-ranlib... mips-linux-ranlib
-checking for mips-linux-gcc... mips-linux-gcc
-checking for C compiler default output file name... a.out
-checking whether the C compiler works... yes
-checking whether we are cross compiling... yes
-checking for suffix of executables...
-checking for suffix of object files... o
-checking whether we are using the GNU C compiler... yes
-checking whether mips-linux-gcc accepts -g... yes
-checking whether build environment is sane... yes
-checking for gawk... gawk
-checking whether make sets $(MAKE)... yes
-checking for mips-linux-strip... mips-linux-strip
-checking for mips-linux-ranlib... mips-linux-ranlib
-checking for mips-linux-gcc... mips-linux-gcc
-checking for C compiler default output file name... a.out
-checking whether the C compiler works... yes
-checking whether we are cross compiling... yes
-checking for suffix of executables...
-checking for suffix of object files... o
-checking whether we are using the GNU C compiler... yes
-checking whether mips-linux-gcc accepts -g... yes
-checking for mips-linux-gcc option to accept ANSI C... none needed
-checking for style of include used by make... GNU
-checking dependency style of mips-linux-gcc... gcc3
-checking how to run the C preprocessor... mips-linux-gcc -E
-checking for mips-linux-g++... mips-linux-g++
-checking whether we are using the GNU C++ compiler... yes
-checking whether mips-linux-g++ accepts -g... yes
-checking dependency style of mips-linux-g++... gcc3
-checking for ld... ld
-checking for kernel OProfile support... yes
-checking whether malloc attribute is understood... yes
-checking whether __builtin_expect is understood... yes
-checking for sched_setaffinity... no
-checking for perfmonctl... no
-checking for poptGetContext in -lpopt... yes
-checking for egrep... grep -E
-checking for ANSI C header files... yes
-checking for sys/types.h... yes
-checking for sys/stat.h... yes
-checking for stdlib.h... yes
-checking for string.h... yes
-checking for memory.h... yes
-checking for strings.h... yes
-checking for inttypes.h... yes
-checking for stdint.h... yes
-checking for unistd.h... yes
-checking libiberty.h usability... no
-checking libiberty.h presence... no
-checking for libiberty.h... no
-checking for cplus_demangle in -liberty... yes
-checking for xcalloc... yes
-checking for xmemdup... yes
-checking for dlopen in -ldl... yes
-checking for main in -lintl... no
-checking for bfd_openr in -lbfd... no
-configure: error: bfd library not found
+Rodolfo
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

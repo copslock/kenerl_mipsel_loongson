@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 May 2006 19:32:38 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:27604 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133928AbWEWRcb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 23 May 2006 19:32:31 +0200
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k4NHWVkc023386;
-	Tue, 23 May 2006 18:32:31 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k4NHWVEa023385;
-	Tue, 23 May 2006 18:32:31 +0100
-Date:	Tue, 23 May 2006 18:32:31 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Rodolfo Giometti <giometti@linux.it>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Late console
-Message-ID: <20060523173231.GA23333@linux-mips.org>
-References: <20060523134012.GB28124@enneenne.com> <20060523153311.GA3260@linux-mips.org> <20060523153359.GL956@hulk.enneenne.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060523153359.GL956@hulk.enneenne.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 May 2006 07:30:00 +0200 (CEST)
+Received: from srv5.dvmed.net ([207.36.208.214]:7648 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S8133353AbWEXF3w (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 24 May 2006 07:29:52 +0200
+Received: from cpe-065-190-194-075.nc.res.rr.com ([65.190.194.75] helo=[10.10.10.99])
+	by mail.dvmed.net with esmtpsa (Exim 4.60 #1 (Red Hat Linux))
+	id 1FilwL-0005a4-63; Wed, 24 May 2006 05:29:49 +0000
+Message-ID: <4473EF4C.9010104@pobox.com>
+Date:	Wed, 24 May 2006 01:29:48 -0400
+From:	Jeff Garzik <jgarzik@pobox.com>
+User-Agent: Thunderbird 1.5.0.2 (X11/20060501)
+MIME-Version: 1.0
+To:	Herbert Valerio Riedel <hvr@gnu.org>
+CC:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+	sshtylyov@ru.mvista.com
+Subject: Re: [PATCH] au1000_eth.c: use ether_crc() from <linux/crc32.h>
+References: <E1FaYil-0007A8-HB@fencepost.gnu.org>
+In-Reply-To: <E1FaYil-0007A8-HB@fencepost.gnu.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <jgarzik@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11531
+X-archive-position: 11532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jgarzik@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 23, 2006 at 05:33:59PM +0200, Rodolfo Giometti wrote:
-
-> > 8250/16?50 (AND CLONE UARTS) SERIAL DRIVER
-> > P:      Russell King
-> > M:      rmk+serial@arm.linux.org.uk
-> > L:      linux-serial@vger.kernel.org
-> > W:      http://serial.sourceforge.net
-> > S:      Maintained
+Herbert Valerio Riedel wrote:
+> since the au1000 driver already selects the CRC32 routines, simply replace
+> the internal ether_crc() implementation with the semantically equivalent
+> one from <linux/crc32.h>
 > 
-> Yes, you are right, but before sending the patch there I'd like to
-> know what do you think about.
+> Signed-off-by: Herbert Valerio Riedel <hvr@gnu.org>
 
-Nothing wrong at a glance.
-
-  Ralf
+does not apply, please resend

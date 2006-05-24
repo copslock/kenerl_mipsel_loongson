@@ -1,133 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 May 2006 14:53:44 +0200 (CEST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:22291 "HELO
-	sorrow.cyrius.com") by ftp.linux-mips.org with SMTP
-	id S8133534AbWEXMxd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 24 May 2006 14:53:33 +0200
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 9B95F64D54; Wed, 24 May 2006 12:53:26 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id A542366AFD; Wed, 24 May 2006 14:53:12 +0200 (CEST)
-Date:	Wed, 24 May 2006 14:53:12 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Subject: Fix long IDE detection delay by not scanning non-existent channels
-Message-ID: <20060524125312.GA22947@deprecation.cyrius.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 May 2006 16:49:27 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:28118 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133677AbWEXOtS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 24 May 2006 16:49:18 +0200
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k4OEnHrZ025391;
+	Wed, 24 May 2006 15:49:17 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k4OEnHqJ025390;
+	Wed, 24 May 2006 15:49:17 +0100
+Date:	Wed, 24 May 2006 15:49:17 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	art <art@sigrand.ru>, linux-mips@linux-mips.org
+Subject: Re: Problem with TLB mcheck!
+Message-ID: <20060524144917.GA11657@linux-mips.org>
+References: <19691.060524@sigrand.ru> <Pine.LNX.4.64N.0605241304090.7887@blysk.ds.pg.gda.pl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.11+cvs20060330
-Return-Path: <tbm@cyrius.com>
+In-Reply-To: <Pine.LNX.4.64N.0605241304090.7887@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11537
+X-archive-position: 11538
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-The following patch still hasn't been applied.  Anything wrong with
-it?
+On Wed, May 24, 2006 at 01:45:26PM +0100, Maciej W. Rozycki wrote:
 
+j  The "linux-mips" mailing list (as cc-ed in this response) is a better 
+> place to ask such questions.
+> 
+>  You haven't included some important information, such as the version 
+> number of your Linux kernel and where you got your sources from.  Without 
+> that bit all I can say is there is something wrong with handling of the 
+> TLB.
+> 
+>  Ralf, BTW -- shouldn't we report the Index, EntryHi and possibly EntryLo* 
+> registers in show_regs() if the cause is a machine check?  I think it 
+> would be useful and these registers shouldn't have been corrupted since 
+> the triggering tlbw* instruction.  A call to show_code() could be useful 
+> too, to determine which kind of TLB exception has been taken originally.  
 
-From: Peter Horton <pdh@colonel-panic.org>
+Depends on when exactly a CPU will raise the machine check.  On some cores
+the information in registers is totally useless if not even missloading.
+But generally a good idea, patch below.
 
-Fix long delay during Cobalt boot whilst scanning non-existent
-interfaces. The logic is copied from i386 i.e. we only scan 2 legacy
-ports if we have PCI IDE.
+  Ralf
 
-Signed-off-by: Peter Horton <pdh@colonel-panic.org>
-Acked-by: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
---- linux.git.orig/include/asm-mips/mach-generic/ide.h	2006-01-24 22:07:36.000000000 +0000
-+++ linux.git/include/asm-mips/mach-generic/ide.h	2006-01-24 23:41:19.000000000 +0000
-@@ -30,7 +30,7 @@
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 35cb08d..44a30e6 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -819,8 +819,19 @@ asmlinkage void do_watch(struct pt_regs 
  
- #define IDE_ARCH_OBSOLETE_DEFAULTS
- 
--static __inline__ int ide_probe_legacy(void)
-+static __inline__ int ide_legacy_ports(void)
+ asmlinkage void do_mcheck(struct pt_regs *regs)
  {
- #ifdef CONFIG_PCI
- 	struct pci_dev *dev;
-@@ -38,11 +38,11 @@
- 	    (dev = pci_get_class(PCI_CLASS_BRIDGE_ISA << 8, NULL)) != NULL) {
- 		pci_dev_put(dev);
- 
--		return 1;
-+		return 2;
- 	}
- 	return 0;
- #elif defined(CONFIG_EISA) || defined(CONFIG_ISA)
--	return 1;
-+	return 6;
- #else
- 	return 0;
- #endif
-@@ -50,30 +50,26 @@
- 
- static __inline__ int ide_default_irq(unsigned long base)
- {
--	if (ide_probe_legacy())
--		switch (base) {
--		case 0x1f0:
--			return 14;
--		case 0x170:
--			return 15;
--		case 0x1e8:
--			return 11;
--		case 0x168:
--			return 10;
--		case 0x1e0:
--			return 8;
--		case 0x160:
--			return 12;
--		default:
--			return 0;
--		}
--	else
--		return 0;
-+	switch (base) {
-+	case 0x1f0:
-+		return 14;
-+	case 0x170:
-+		return 15;
-+	case 0x1e8:
-+		return 11;
-+	case 0x168:
-+		return 10;
-+	case 0x1e0:
-+		return 8;
-+	case 0x160:
-+		return 12;
-+	}
-+	return 0;
- }
- 
- static __inline__ unsigned long ide_default_io_base(int index)
- {
--	if (ide_probe_legacy())
-+	if (index < ide_legacy_ports())
- 		switch (index) {
- 		case 0:
- 			return 0x1f0;
-@@ -87,11 +83,8 @@
- 			return 0x1e0;
- 		case 5:
- 			return 0x160;
--		default:
--			return 0;
--		}
--	else
--		return 0;
-+	}
-+	return 0;
- }
- 
- #define IDE_ARCH_OBSOLETE_INIT
-
--- 
-Martin Michlmayr
-http://www.cyrius.com/
++	const int field = 2 * sizeof(unsigned long);
++
+ 	show_regs(regs);
++
++	printk("Hi    : %0*lx\n", field, regs->hi);
++	printk("Pagemask: %0*x\n", read_c0_pagemask());
++	printk("EntryHi : %0*lx\n", field, read_c0_entryhi());
++	printk("EntryLo0: %0*lx\n", field, read_c0_entrylo0());
++	printk("EntryLo1: %0*lx\n", field, read_c0_entrylo1());
++	printk("\n");
+ 	dump_tlb_all();
++	show_code((unsigned int *) regs->cp0_epc);
++
+ 	/*
+ 	 * Some chips may have other causes of machine check (e.g. SB1
+ 	 * graduation timer)

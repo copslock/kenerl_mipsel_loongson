@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 17:46:00 +0200 (CEST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:23739 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133780AbWEZPpv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 26 May 2006 17:45:51 +0200
-Received: (qmail 4880 invoked from network); 26 May 2006 19:53:42 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 17:50:16 +0200 (CEST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:1724 "HELO mail.dev.rtsoft.ru")
+	by ftp.linux-mips.org with SMTP id S8133780AbWEZPuF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 26 May 2006 17:50:05 +0200
+Received: (qmail 4953 invoked from network); 26 May 2006 19:58:00 -0000
 Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 26 May 2006 19:53:42 -0000
-Message-ID: <44772276.2020005@ru.mvista.com>
-Date:	Fri, 26 May 2006 19:44:54 +0400
+  by mail.dev.rtsoft.ru with SMTP; 26 May 2006 19:58:00 -0000
+Message-ID: <44772379.30903@ru.mvista.com>
+Date:	Fri, 26 May 2006 19:49:13 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
 X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Linux MIPS <linux-mips@linux-mips.org>
-CC:	Jordan Crouse <jordan.crouse@amd.com>, ralf@linux-mips.org
-Subject: [PATCH] Save write-only Config.OD from being clobbered (take 4)
-References: <20051122205938.GR18119@cosmic.amd.com> <43838957.2020106@ru.mvista.com> <442457A6.4080508@dev.rtsoft.ru> <44767979.6020106@ru.mvista.com>
-In-Reply-To: <44767979.6020106@ru.mvista.com>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+CC:	Manish Lachwani <mlachwani@mvista.com>,
+	Jordan Crouse <jordan.crouse@amd.com>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] Fix non-linear memory mapping on MIPS
 Content-Type: multipart/mixed;
- boundary="------------040907030909060805030307"
+ boundary="------------090503040602090601070409"
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11567
+X-archive-position: 11568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,95 +32,130 @@ Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
---------------040907030909060805030307
+--------------090503040602090601070409
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 
-    Save the Config.OD bit from being clobbered by coherency_setup(). This
-bit, when set, fixes various errata in the early steppings of Au1x00 SOCs.
-Unfortunately, the bit was write-only on the most early of them. In
-addition, also restore the bit after a wakeup from sleep.
+    Fix the non-linear memory mapping done via remap_file_pages() -- it didn't 
+work on any MIPS CPU because the page offset was clashing with _PAGE_FILE and 
+some other page protection bits which should have been left zeros for this
+kind of pages.
+    The patch has been tested on MIPS32, MIPS64, and Alchemy CPUs, only 
+R3000/TX3927 part hasn't been tested for the lack of time...
 
-WBR, Sergei
-
+Signed-off-by: Konstantin Baydarov <kbaidarov@ru.mvista.com>
 Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
 
---------------040907030909060805030307
+--------------090503040602090601070409
 Content-Type: text/plain;
- name="Au1x00-retain-OD-bit.patch"
+ name="MIPS-fix-non-linear-memory-mapping.patch"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline;
- filename="Au1x00-retain-OD-bit.patch"
+ filename="MIPS-fix-non-linear-memory-mapping.patch"
 
-Index: linux-mips/arch/mips/au1000/common/sleeper.S
-===================================================================
---- linux-mips.orig/arch/mips/au1000/common/sleeper.S
-+++ linux-mips/arch/mips/au1000/common/sleeper.S
-@@ -112,6 +112,11 @@ sdsleep:
- 	mtc0	k0, CP0_PAGEMASK
- 	lw	k0, 0x14(sp)
- 	mtc0	k0, CP0_CONFIG
-+
-+	/* We need to catch the ealry Alchemy SOCs with
-+	 * the write-only Config[OD] bit and set it back to one...
-+	 */
-+	jal	au1x00_fixup_config_od
- 	lw	$1, PT_R1(sp)
- 	lw	$2, PT_R2(sp)
- 	lw	$3, PT_R3(sp)
-Index: linux-mips/arch/mips/mm/c-r4k.c
-===================================================================
---- linux-mips.orig/arch/mips/mm/c-r4k.c
-+++ linux-mips/arch/mips/mm/c-r4k.c
-@@ -1136,6 +1136,31 @@ static void __init setup_scache(void)
- 	c->options |= MIPS_CPU_SUBSET_CACHES;
- }
+diff --git a/include/asm-mips/pgtable-32.h b/include/asm-mips/pgtable-32.h
+index 4d6bc45..e88cbd9 100644
+--- a/include/asm-mips/pgtable-32.h
++++ b/include/asm-mips/pgtable-32.h
+@@ -177,16 +177,19 @@ pfn_pte(unsigned long pfn, pgprot_t prot
+ 	((swp_entry_t) { ((type) << 10) | ((offset) << 15) })
  
-+void au1x00_fixup_config_od(void)
-+{
-+	/*
-+	 * c0_config.od (bit 19) was write only (and read as 0)
-+	 * on the early revisions of Alchemy SOCs.  It disables the bus
-+	 * transaction overlapping and needs to be set to fix various errata.
-+	 */
-+	switch (read_c0_prid()) {
-+	case 0x00030100: /* Au1000 DA */
-+	case 0x00030201: /* Au1000 HA */
-+	case 0x00030202: /* Au1000 HB */
-+	case 0x01030200: /* Au1500 AB */
-+	/*
-+	 * Au1100 errata actually keeps silence about this bit, so we set it
-+	 * just in case for those revisions that require it to be set according
-+	 * to arch/mips/au1000/common/cputable.c
-+	 */
-+	case 0x02030200: /* Au1100 AB */
-+	case 0x02030201: /* Au1100 BA */
-+	case 0x02030202: /* Au1100 BC */
-+		set_c0_config(1 << 19);
-+		break;
-+	}
-+}
-+
- static inline void coherency_setup(void)
- {
- 	change_c0_config(CONF_CM_CMASK, CONF_CM_DEFAULT);
-@@ -1156,6 +1181,15 @@ static inline void coherency_setup(void)
- 	case CPU_R4400MC:
- 		clear_c0_config(CONF_CU);
- 		break;
-+	/*
-+	 * We need to catch the ealry Alchemy SOCs with
-+	 * the write-only co_config.od bit and set it back to one...
-+	 */
-+	case CPU_AU1000: /* rev. DA, HA, HB */
-+	case CPU_AU1100: /* rev. AB, BA, BC ?? */
-+	case CPU_AU1500: /* rev. AB */
-+		au1x00_fixup_config_od();
-+		break;
- 	}
- }
+ /*
+- * Bits 0, 1, 2, 9 and 10 are taken, split up the 27 bits of offset
++ * Bits 0, 3, 4, 8, and 9 are taken, split up 27 bits of offset
+  * into this range:
+  */
+ #define PTE_FILE_MAX_BITS	27
  
+-#define pte_to_pgoff(_pte) \
+-	((((_pte).pte >> 3) & 0x3f ) + (((_pte).pte >> 11) << 8 ))
+-
+-#define pgoff_to_pte(off) \
+-	((pte_t) { (((off) & 0x3f) << 3) + (((off) >> 8) << 11) + _PAGE_FILE })
++#define pte_to_pgoff(_pte)	((((_pte).pte >> 1 ) & 0x03) | \
++				 (((_pte).pte >> 3 ) & 0x1c) | \
++				 (((_pte).pte >> 10) <<  5 ))
++
++#define pgoff_to_pte(off)	((pte_t) { (((off) & 0x03) << 1 ) | \
++					   (((off) & 0x1c) << 3 ) | \
++					   (((off) >>  5 ) << 10) | \
++					   _PAGE_FILE })
+ 
+ #else
+ 
+@@ -196,24 +199,31 @@ pfn_pte(unsigned long pfn, pgprot_t prot
+ #define __swp_entry(type,offset)	\
+ 		((swp_entry_t) { ((type) << 8) | ((offset) << 13) })
+ 
++#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
+ /*
+- * Bits 0, 1, 2, 7 and 8 are taken, split up the 27 bits of offset
++ * Bits 0 and 1 of pte_high are taken, split up 30 bits of offset
+  * into this range:
+  */
+-#define PTE_FILE_MAX_BITS	27
++#define PTE_FILE_MAX_BITS	30
+ 
+-#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32_R1)
+-	/* fixme */
+-#define pte_to_pgoff(_pte) (((_pte).pte_high >> 6) + ((_pte).pte_high & 0x3f))
+-#define pgoff_to_pte(off) \
+-	((pte_t){(((off) & 0x3f) + ((off) << 6) + _PAGE_FILE)})
++#define pte_to_pgoff(_pte)	((_pte).pte_high >> 2)
++#define pgoff_to_pte(off) 	((pte_t) { _PAGE_FILE, (off) << 2 })
+ 
+ #else
+-#define pte_to_pgoff(_pte) \
+-	((((_pte).pte >> 3) & 0x1f ) + (((_pte).pte >> 9) << 6 ))
++/*
++ * Bits 0, 3, 4, 6, and 7 are taken, split up 27 bits of offset
++ * into this range:
++ */
++#define PTE_FILE_MAX_BITS	27
+ 
+-#define pgoff_to_pte(off) \
+-	((pte_t) { (((off) & 0x1f) << 3) + (((off) >> 6) << 9) + _PAGE_FILE })
++#define pte_to_pgoff(_pte)	((((_pte).pte >> 1) & 0x3) | \
++				 (((_pte).pte >> 3) & 0x4) | \
++				 (((_pte).pte >> 8) <<  3))
++
++#define pgoff_to_pte(off)	((pte_t) { (((off) & 0x3) << 1) | \
++					   (((off) & 0x4) << 3) | \
++					   (((off) >> 3 ) << 8) | \
++					   _PAGE_FILE })
+ #endif
+ 
+ #endif
+diff --git a/include/asm-mips/pgtable-64.h b/include/asm-mips/pgtable-64.h
+index 82166b2..c0f3446 100644
+--- a/include/asm-mips/pgtable-64.h
++++ b/include/asm-mips/pgtable-64.h
+@@ -224,15 +224,12 @@ static inline pte_t mk_swap_pte(unsigned
+ #define __swp_entry_to_pte(x)	((pte_t) { (x).val })
+ 
+ /*
+- * Bits 0, 1, 2, 7 and 8 are taken, split up the 32 bits of offset
+- * into this range:
++ * Bits 0, 3, 4, 6, and 7 are taken. Let's leave bits 1, 2, and 5 alone
++ * to make things easier, and only use the upper 56 bits for the page offset...
+  */
+-#define PTE_FILE_MAX_BITS	32
++#define PTE_FILE_MAX_BITS	56
+ 
+-#define pte_to_pgoff(_pte) \
+-	((((_pte).pte >> 3) & 0x1f ) + (((_pte).pte >> 9) << 6 ))
+-
+-#define pgoff_to_pte(off) \
+-	((pte_t) { (((off) & 0x1f) << 3) + (((off) >> 6) << 9) + _PAGE_FILE })
++#define pte_to_pgoff(_pte)	((_pte).pte >> 8)
++#define pgoff_to_pte(off)	((pte_t) { ((off) << 8) | _PAGE_FILE })
+ 
+ #endif /* _ASM_PGTABLE_64_H */
 
 
---------------040907030909060805030307--
+
+
+
+
+--------------090503040602090601070409--

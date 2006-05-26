@@ -1,92 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 10:58:07 +0200 (CEST)
-Received: from [220.76.242.187] ([220.76.242.187]:4816 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S8133477AbWEZI57 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 26 May 2006 10:57:59 +0200
-Received: from mrv ([192.168.11.157])
-	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k4Q8xhEE002635
-	for <linux-mips@linux-mips.org>; Fri, 26 May 2006 17:59:46 +0900
-Message-ID: <003601c680a2$7946d3e0$9d0ba8c0@mrv>
-From:	"Roman Mashak" <mrv@corecom.co.kr>
-To:	<linux-mips@linux-mips.org>
-Subject: compiling C++ app for RM9150 board
-Date:	Fri, 26 May 2006 17:57:52 +0900
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 13:39:53 +0200 (CEST)
+Received: from allen.werkleitz.de ([80.190.251.108]:60344 "EHLO
+	allen.werkleitz.de") by ftp.linux-mips.org with ESMTP
+	id S8133356AbWEZLjm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 26 May 2006 13:39:42 +0200
+Received: from p54bdeff4.dip.t-dialin.net ([84.189.239.244] helo=void.local)
+	by allen.werkleitz.de with esmtpsa (TLS-1.0:DHE_RSA_3DES_EDE_CBC_SHA1:24)
+	(Exim 4.62)
+	(envelope-from <js@linuxtv.org>)
+	id 1Fjaf5-0004sx-5c; Fri, 26 May 2006 13:39:29 +0200
+Received: from js by void.local with local (Exim 3.35 #1 (Debian))
+	id 1FjafP-0003hO-00; Fri, 26 May 2006 13:39:43 +0200
+Date:	Fri, 26 May 2006 13:39:43 +0200
+From:	Johannes Stezenbach <js@linuxtv.org>
+To:	Daniel Jacobowitz <dan@debian.org>
+Cc:	Tony Lin <lin.tony@gmail.com>,
+	ashley jones <ashley_jones_2000@yahoo.com>,
+	linux-mips@linux-mips.org
+Message-ID: <20060526113943.GB14036@linuxtv.org>
+References: <404548f40605171139i67084776pd9ae7c34ec19ec95@mail.gmail.com> <20060524081406.90333.qmail@web38407.mail.mud.yahoo.com> <404548f40605241844y41b897b6sb8a7512feb8655f6@mail.gmail.com> <20060525133529.GA31379@nevyn.them.org> <404548f40605251750s2708df73td50a4e9db755408f@mail.gmail.com> <20060526024540.GA16815@nevyn.them.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="koi8-r";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
-Return-Path: <mrv@corecom.co.kr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060526024540.GA16815@nevyn.them.org>
+User-Agent: Mutt/1.5.11+cvs20060403
+X-SA-Exim-Connect-IP: 84.189.239.244
+Subject: Re: Can't debug core files with GDB
+X-SA-Exim-Version: 4.2.1 (built Mon, 27 Mar 2006 13:42:28 +0200)
+X-SA-Exim-Scanned: Yes (on allen.werkleitz.de)
+Return-Path: <js@linuxtv.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11562
+X-archive-position: 11563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrv@corecom.co.kr
+X-original-sender: js@linuxtv.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello!
+On Thu, May 25, 2006, Daniel Jacobowitz wrote:
+> On Thu, May 25, 2006 at 05:50:56PM -0700, Tony Lin wrote:
+> 
+> [2.4]
+> 
+> >       /*
+> >        * saved cp0 registers
+> >        */
+> >       unsigned long cp0_epc;
+> >       unsigned long cp0_badvaddr;
+> >       unsigned long cp0_status;
+> >       unsigned long cp0_cause;
+> 
+> [2.6]
+> 
+> >       /* Saved special registers. */
+> >       unsigned long cp0_status;
+> >       unsigned long lo;
+> >       unsigned long hi;
+> >       unsigned long cp0_badvaddr;
+> >       unsigned long cp0_cause;
+> >       unsigned long cp0_epc;
+> 
+> > Notice how the offsets has changed, no idea why this was done. I
+> > loaded the core file in the hex dump, and sure enough it is dumped
+> > with this new ordering.
+> > 
+> > I guess gdb is still trying to decode using the old pt_regs format. Is
+> > it correct to modify gdb to use this new format? Or modify linux to
+> > output using the old format?
 
-So, I succefully booted with PMC-sierra board RM9150. Now I need to compile 
-and test some C++ application on it. I use toolchain provided by PMC-sierra 
-and use the following compilation flags:
+BTW, buildroot has a 400-mips-coredump.patch-2.4.23-29 patch.
+http://buildroot.uclibc.org/cgi-bin/viewcvs.cgi/trunk/buildroot/toolchain/gdb/
 
-Creating .depend
-mips64-linux-gnu-g++  -Wall -mips1 -mabi=32 -M main.cpp cmd.cpp ../ep.c > 
-.depend
-Compiling main.cpp
-mips64-linux-gnu-g++ -c  -Wall -mips1 -mabi=32 main.cpp -o main.o
-Compiling cmd.cpp
-mips64-linux-gnu-g++ -c -Wall -mips1 -mabi=32 cmd.cpp -o cmd.o
-Linking linkd
-mips64-linux-gnu-g++ main.o cmd.o ../ep.c ../lib/api.a  -o linkd -m 
-elf32btsmip
+However, I've built a toolchain using gcc-3.4.4, uClibc 0.9.27-cvs,
+gdb 6.3, kernel 2.6.13, and I had to build without the
+buildroot 400-mips-coredump.patch-2.4.23-29 patch. Without
+it my gdb can read coredumps without problems.
 
-At linking stage I get whole bunch of errors:
 
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
-main.o: ABI is incompatible with that of the selected emulation
-File format not recognized: failed to merge target specific data of file 
-main.o
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
-cmdProc.o: ABI is incompatible with that of the selected emulation
-File format not recognized: failed to merge target specific data of file 
-cmdProc.o
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
-../lib/clnkapi.a(clnkethapilnx.o): ABI is incompatible with that of the 
-selected emulation
-File format not recognized: failed to merge target specific data of file 
-../lib/clnkapi.a(clnkethapilnx.o)
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
-BFD 2.13-mips64linux-031001 20020920 assertion fail 
-/es/build/mips64linux/devo/bfd/elfxx-mips.c:1775
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
-BFD 2.13-mips64linux-031001 20020920 assertion fail 
-/es/build/mips64linux/devo/bfd/elfxx-mips.c:1778
-main.o: In function `main':
-main.o(.text+0x28): relocation truncated to fit: R_MIPS_GOT16 card
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
-BFD 2.13-mips64linux-031001 20020920 assertion fail 
-/es/build/mips64linux/devo/bfd/elfxx-mips.c:1775
-/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
-BFD 2.13-mips64linux-031001 20020920 assertion fail 
-/es/build/mips64linux/devo/bfd/elfxx-mips.c:1778
-main.o(.text+0x48): relocation truncated to fit: R_MIPS_CALL16 
-getopt@@GLIBC_2.0
-
-.... and so on
-
-Seems I have some mismatch with formats?
-
-I appreciate any hints. Thanks in advance!
-
-With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 
+Johannes

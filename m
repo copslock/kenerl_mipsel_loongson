@@ -1,66 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 04:45:52 +0200 (CEST)
-Received: from nevyn.them.org ([66.93.172.17]:32389 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S8133430AbWEZCpn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 26 May 2006 04:45:43 +0200
-Received: from drow by nevyn.them.org with local (Exim 4.54)
-	id 1FjSKa-0004Nd-9S; Thu, 25 May 2006 22:45:40 -0400
-Date:	Thu, 25 May 2006 22:45:40 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Tony Lin <lin.tony@gmail.com>
-Cc:	ashley jones <ashley_jones_2000@yahoo.com>,
-	linux-mips@linux-mips.org
-Subject: Re: Can't debug core files with GDB
-Message-ID: <20060526024540.GA16815@nevyn.them.org>
-References: <404548f40605171139i67084776pd9ae7c34ec19ec95@mail.gmail.com> <20060524081406.90333.qmail@web38407.mail.mud.yahoo.com> <404548f40605241844y41b897b6sb8a7512feb8655f6@mail.gmail.com> <20060525133529.GA31379@nevyn.them.org> <404548f40605251750s2708df73td50a4e9db755408f@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 05:05:33 +0200 (CEST)
+Received: from [220.76.242.187] ([220.76.242.187]:63183 "EHLO
+	localhost.localdomain") by ftp.linux-mips.org with ESMTP
+	id S8133389AbWEZDFZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 26 May 2006 05:05:25 +0200
+Received: from mrv ([192.168.11.157])
+	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k4Q378EE031914;
+	Fri, 26 May 2006 12:07:14 +0900
+Message-ID: <002e01c68071$3ad42800$9d0ba8c0@mrv>
+From:	"Roman Mashak" <mrv@corecom.co.kr>
+To:	"Kiran Thota" <Kiran_Thota@pmc-sierra.com>
+Cc:	<linux-mips@linux-mips.org>
+References: <C28979E4F697C249ABDA83AC0C33CDF80DE0F2@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+Subject: Re: booting with NFS root
+Date:	Fri, 26 May 2006 12:05:17 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <404548f40605251750s2708df73td50a4e9db755408f@mail.gmail.com>
-User-Agent: Mutt/1.5.11+cvs20060403
-Return-Path: <drow@nevyn.them.org>
+Content-Type: text/plain;
+	format=flowed;
+	charset="koi8-r";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2869
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
+FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
+Return-Path: <mrv@corecom.co.kr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11556
+X-archive-position: 11557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: mrv@corecom.co.kr
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 25, 2006 at 05:50:56PM -0700, Tony Lin wrote:
+Hello, Kiran!
+You wrote to "Roman Mashak" <mrv@corecom.co.kr>; <linux-mips@linux-mips.org> 
+on Thu, 25 May 2006 19:07:13 -0700:
 
-[2.4]
+KT> Roman,
+KT>  You have an older version of the linux kernel. I can send you latest 
+snapshot.
+I've taken the latest 2.4.x available on ftp.pmc-sierra.com
 
->       /*
->        * saved cp0 registers
->        */
->       unsigned long cp0_epc;
->       unsigned long cp0_badvaddr;
->       unsigned long cp0_status;
->       unsigned long cp0_cause;
+KT> There was a software bug. I don't know your source version to send patch 
+but I am
+KT> attaching the source titan_ge.c
 
-[2.6]
+Thank you Kiran, I recompliled the kernel with driver you attached and now 
+there's no panic at least, kernel only hangs up waiting for reply from NFS:
 
->       /* Saved special registers. */
->       unsigned long cp0_status;
->       unsigned long lo;
->       unsigned long hi;
->       unsigned long cp0_badvaddr;
->       unsigned long cp0_cause;
->       unsigned long cp0_epc;
+NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.
+Looking up port of RPC 100003/2 on 192.168.11.43
 
-> Notice how the offsets has changed, no idea why this was done. I
-> loaded the core file in the hex dump, and sure enough it is dumped
-> with this new ordering.
-> 
-> I guess gdb is still trying to decode using the old pt_regs format. Is
-> it correct to modify gdb to use this new format? Or modify linux to
-> output using the old format?
+I ran 'tcpdump' on server's side and observed that it's unable to obtain MAC 
+address of Sequoia board. Where have I done mistake?
 
-Ralf, do you remember why this changed?  I don't.
-
--- 
-Daniel Jacobowitz
-CodeSourcery
+With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 

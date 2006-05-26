@@ -1,86 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 09:50:01 +0200 (CEST)
-Received: from wr-out-0506.google.com ([64.233.184.225]:51422 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133469AbWEZHty convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 26 May 2006 09:49:54 +0200
-Received: by wr-out-0506.google.com with SMTP id 69so10051wra
-        for <linux-mips@linux-mips.org>; Fri, 26 May 2006 00:49:53 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=RjD3o4iu6EJiykMAkpceS/9nZkWgLFNEUlCsrTMoL694o9ImX/9WMkr3R92QThToQn4bWWtOHaCeCVcvQWtEe3M84gc21MD2JXALoq5otWy+FmKyaoTfUn1dHUB2c1cVNJW85ZCAlQoOe3ziIGayl5NPjZ5RoMFsLd3EFJJ69Fc=
-Received: by 10.54.114.4 with SMTP id m4mr244281wrc;
-        Fri, 26 May 2006 00:49:52 -0700 (PDT)
-Received: by 10.54.156.9 with HTTP; Fri, 26 May 2006 00:49:52 -0700 (PDT)
-Message-ID: <5800c1cc0605260049q248c92b2k61b4727b1a782d96@mail.gmail.com>
-Date:	Fri, 26 May 2006 15:49:52 +0800
-From:	"Bin Chen" <binary.chen@gmail.com>
-To:	"Herbert Valerio Riedel" <hvr@gnu.org>
-Subject: Re: how does these two instruction mean?
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1148628040.2150.5.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 May 2006 10:58:07 +0200 (CEST)
+Received: from [220.76.242.187] ([220.76.242.187]:4816 "EHLO
+	localhost.localdomain") by ftp.linux-mips.org with ESMTP
+	id S8133477AbWEZI57 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 26 May 2006 10:57:59 +0200
+Received: from mrv ([192.168.11.157])
+	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k4Q8xhEE002635
+	for <linux-mips@linux-mips.org>; Fri, 26 May 2006 17:59:46 +0900
+Message-ID: <003601c680a2$7946d3e0$9d0ba8c0@mrv>
+From:	"Roman Mashak" <mrv@corecom.co.kr>
+To:	<linux-mips@linux-mips.org>
+Subject: compiling C++ app for RM9150 board
+Date:	Fri, 26 May 2006 17:57:52 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-References: <5800c1cc0605252319l1fe2954amcd649fd4798259a2@mail.gmail.com>
-	 <1148628040.2150.5.camel@localhost.localdomain>
-Return-Path: <binary.chen@gmail.com>
+Content-Type: text/plain;
+	format=flowed;
+	charset="koi8-r";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2869
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
+FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
+Return-Path: <mrv@corecom.co.kr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11561
+X-archive-position: 11562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: binary.chen@gmail.com
+X-original-sender: mrv@corecom.co.kr
 Precedence: bulk
 X-list: linux-mips
 
-What is dumb-mode?
+Hello!
 
-On 5/26/06, Herbert Valerio Riedel <hvr@gnu.org> wrote:
-> On Fri, 2006-05-26 at 14:19 +0800, Bin Chen wrote:
-> > In my program the gcc produce two lines of binary code:
-> >
-> > 100020e0:       ffc20000        sd      v0,0(s8)
-> > 100020e4:       dfc20000        ld      v0,0(s8)
-> >
-> > first store v0->[s8], then load from [s8]->v0, why?
->
-> without knowing the source-code that got compiled it's guessing...
->
-> and I'd guess that [s8] might have been marked as a volatile location
-> (assuming the compiler isn't set to dumb-mode wrt to optimization ;-)
->
-> e.g. a code like the following
->
-> extern int cb(void);
->
-> int set(volatile int *p)
-> {
->   return *p = cb();
-> }
->
-> will lead to something similar to the fragment below (with s0 being the
-> pointer p):
->
-> [..]
->   38:   ae020000        sw      v0,0(s0)
->   3c:   8e020000        lw      v0,0(s0)
-> [..]
->
-> regards,
-> hvr
->
->
-> -----BEGIN PGP SIGNATURE-----
-> Version: GnuPG v1.4.2.2 (GNU/Linux)
->
-> iD8DBQBEdqxHSYHgZIg/QUIRAmLNAJ9aYiVRSnr9F4A+LhZOVB8pSCYL1ACeIq48
-> Q+6zs8VJ6u0iNAVUEsVBupE=
-> =iTAC
-> -----END PGP SIGNATURE-----
->
->
->
+So, I succefully booted with PMC-sierra board RM9150. Now I need to compile 
+and test some C++ application on it. I use toolchain provided by PMC-sierra 
+and use the following compilation flags:
+
+Creating .depend
+mips64-linux-gnu-g++  -Wall -mips1 -mabi=32 -M main.cpp cmd.cpp ../ep.c > 
+.depend
+Compiling main.cpp
+mips64-linux-gnu-g++ -c  -Wall -mips1 -mabi=32 main.cpp -o main.o
+Compiling cmd.cpp
+mips64-linux-gnu-g++ -c -Wall -mips1 -mabi=32 cmd.cpp -o cmd.o
+Linking linkd
+mips64-linux-gnu-g++ main.o cmd.o ../ep.c ../lib/api.a  -o linkd -m 
+elf32btsmip
+
+At linking stage I get whole bunch of errors:
+
+/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
+main.o: ABI is incompatible with that of the selected emulation
+File format not recognized: failed to merge target specific data of file 
+main.o
+/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
+cmdProc.o: ABI is incompatible with that of the selected emulation
+File format not recognized: failed to merge target specific data of file 
+cmdProc.o
+/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
+../lib/clnkapi.a(clnkethapilnx.o): ABI is incompatible with that of the 
+selected emulation
+File format not recognized: failed to merge target specific data of file 
+../lib/clnkapi.a(clnkethapilnx.o)
+/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
+BFD 2.13-mips64linux-031001 20020920 assertion fail 
+/es/build/mips64linux/devo/bfd/elfxx-mips.c:1775
+/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
+BFD 2.13-mips64linux-031001 20020920 assertion fail 
+/es/build/mips64linux/devo/bfd/elfxx-mips.c:1778
+main.o: In function `main':
+main.o(.text+0x28): relocation truncated to fit: R_MIPS_GOT16 card
+/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
+BFD 2.13-mips64linux-031001 20020920 assertion fail 
+/es/build/mips64linux/devo/bfd/elfxx-mips.c:1775
+/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/lib/gcc-lib/mips64-linux-gnu/3.3-mips64linux-031001/../../../../mips64-linux-gnu/bin/ld: 
+BFD 2.13-mips64linux-031001 20020920 assertion fail 
+/es/build/mips64linux/devo/bfd/elfxx-mips.c:1778
+main.o(.text+0x48): relocation truncated to fit: R_MIPS_CALL16 
+getopt@@GLIBC_2.0
+
+.... and so on
+
+Seems I have some mismatch with formats?
+
+I appreciate any hints. Thanks in advance!
+
+With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 

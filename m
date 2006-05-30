@@ -1,100 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2006 04:10:56 +0200 (CEST)
-Received: from [220.76.242.187] ([220.76.242.187]:27014 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S8126480AbWE3CKq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 30 May 2006 04:10:46 +0200
-Received: from mrv ([192.168.11.157])
-	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k4U2CbEE017519
-	for <linux-mips@linux-mips.org>; Tue, 30 May 2006 11:12:40 +0900
-Message-ID: <000101c6838e$437abdf0$9d0ba8c0@mrv>
-From:	"Roman Mashak" <mrv@corecom.co.kr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2006 11:04:44 +0200 (CEST)
+Received: from maillog.itri.org.tw ([61.61.254.20]:46233 "EHLO
+	maillog.itri.org.tw") by ftp.linux-mips.org with ESMTP
+	id S8126616AbWE3JEe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 30 May 2006 11:04:34 +0200
+Received: from mail.itri.org.tw (mail [140.96.157.2])
+	by maillog.itri.org.tw (8.11.6+Sun/8.11.6) with ESMTP id k4U90fW19001
+	for <linux-mips@linux-mips.org>; Tue, 30 May 2006 17:00:46 +0800 (CST)
+Received: from mail.itri.org.tw (localhost [127.0.0.1])
+	by mail.itri.org.tw (8.13.4/8.13.4) with ESMTP id k4U9ArqG013328
+	for <linux-mips@linux-mips.org>; Tue, 30 May 2006 17:11:08 +0800 (CST)
+Received: from ms1.itri.org.tw ([140.96.147.43])
+	by mail.itri.org.tw (8.13.4/8.13.4) with ESMTP id k4U9Abmd013235
+	for <linux-mips@linux-mips.org>; Tue, 30 May 2006 17:10:53 +0800 (CST)
+Received: from 11088002601 ([140.96.147.156])
+          by ms1.itri.org.tw (Lotus Domino Release 5.0.13a)
+          with ESMTP id 2006053017033661:28662 ;
+          Tue, 30 May 2006 17:03:36 +0800 
+Message-ID: <011a01c683c7$efe74700$8873608c@11088002601>
+Reply-To: "Charles C.K.Lai" <cklai@itri.org.tw>
+From:	"Charles C.K.Lai" <cklai@itri.org.tw>
 To:	<linux-mips@linux-mips.org>
-Subject: compiling BCM5700 driver
-Date:	Tue, 30 May 2006 11:10:45 +0900
+Subject: Debug Messages lost....
+Date:	Tue, 30 May 2006 17:03:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="koi8-r";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
+X-Priority: 3 (Normal)
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2900.2869
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
-Return-Path: <mrv@corecom.co.kr>
+X-MIMETrack: Itemize by SMTP Server on MS1/ITRI(Release 5.0.13a  |April 8, 2004) at 2006-05-30
+ 05:03:36 PM,
+	Serialize by Router on MS1/ITRI(Release 5.0.13a  |April 8, 2004) at 2006-05-30
+ 05:03:53 PM,
+	Serialize complete at 2006-05-30 05:03:53 PM
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="big5"
+Return-Path: <cklai@itri.org.tw>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11594
+X-archive-position: 11595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrv@corecom.co.kr
+X-original-sender: cklai@itri.org.tw
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Dear All, 
 
-I try to compile BCM5700 driver of gigabit ethernet card for MIPS target. I 
-used both toolchains (from PMC-sierra and self-made following 
-http://www.kegel.com/crosstool recommendations). Get same errors:
+    I built my kernel for Yamon and U-Boot boot loader, 
+    while I booted my kernel 2.6.15 with Yamon, 
+    I got the system messages for kernel booting, 
+    but I lost the system messages for U-Boot kernel 2.6.15 booting. 
+    Are there some option for debug messages? 
 
-In file included from mm.h:151,
-                 from b57um.c:19:
-tigon3.h:2225: unnamed fields of type other than struct or union are not 
-allowed
-tigon3.h:2225: warning: no semicolon at end of struct or union
-tigon3.h:2225: syntax error before numeric constant
-tigon3.h:2225: warning: no semicolon at end of struct or union
-tigon3.h:2239: syntax error before '}' token
-tigon3.h:2239: warning: type defaults to `int' in declaration of `reg'
-tigon3.h:2239: warning: data definition has no type or storage class
-tigon3.h:2240: syntax error before '}' token
+    By the way, I got the system messages for Yamon, 
+    with kernel 2.6.15 booting, 
+    but I lost the system messages for Yamon with kernel 2.6.16.16 booting.
+    Would someone please tell me the answer? 
 
-Here is abstract from tigon3.h where compiler complains:
+    Thanks a lot. 
 
-typedef unsigned int   LM_UINT32,  *PLM_UINT32;
-...
-typedef volatile LM_UINT32 T3_32BIT_REGISTER, *PT3_32BIT_REGISTER;
-...
-
-typedef union T3_CPU
-{
-  struct
-  {
-    T3_32BIT_REGISTER mode;
-    #define CPU_MODE_HALT   BIT_10
-    #define CPU_MODE_RESET  BIT_0
-    T3_32BIT_REGISTER state;
-    T3_32BIT_REGISTER EventMask;
-    T3_32BIT_REGISTER reserved1[4];
-    T3_32BIT_REGISTER PC;                                /* ERROR! */
-    T3_32BIT_REGISTER Instruction;
-    T3_32BIT_REGISTER SpadUnderflow;
-    T3_32BIT_REGISTER WatchdogClear;
-    T3_32BIT_REGISTER WatchdogVector;
-    T3_32BIT_REGISTER WatchdogSavedPC;
-    T3_32BIT_REGISTER HardwareBp;
-    T3_32BIT_REGISTER reserved2[3];
-    T3_32BIT_REGISTER WatchdogSavedState;
-    T3_32BIT_REGISTER LastBrchAddr;
-    T3_32BIT_REGISTER SpadUnderflowSet;
-    T3_32BIT_REGISTER reserved3[(0x200-0x50)/4];
-    T3_32BIT_REGISTER Regs[32];
-    T3_32BIT_REGISTER reserved4[(0x400-0x280)/4];
-  }reg;
-}T3_CPU, *PT3_CPU;
-
-I used the following compiler flags:
-
-CFLAGS=-DMODULE -D__KERNEL__ -DDBG=0 -DT3_JUMBO_RCV_RCB_ENTRY_COUNT=256 -DNICE_SUPPORT 
- -DPCIX_TARGET_WORKAROUND=1 -DINCLUDE_TBI_SUPPORT -DINCLUDE_5701_AX_FIX=1 -Wall 
- -Wstrict-prototypes -mabi=32 -pipe -mips4 -mlong-calls -fno-common -fomit-frame-pointer 
- -fno-pic -mno-abicalls -G0 -I$(LINUX)/include
-
-What may be the reason?
-
-Thanks in advance for hints!
-
-With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 
+    Charles C.K. Lai
+    

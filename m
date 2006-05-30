@@ -1,52 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2006 11:15:43 +0200 (CEST)
-Received: from NS4.Sony.CO.JP ([137.153.0.44]:39858 "HELO ns4.sony.co.jp")
-	by ftp.linux-mips.org with SMTP id S8126616AbWE3JPf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2006 11:15:35 +0200
-Received: from mail5.sony.co.jp ([43.0.1.204])
-Received: from mail5.sony.co.jp (localhost [127.0.0.1])
-	by mail5.sony.co.jp (R8/Sony) with ESMTP id k4U9FV5S025436
-	for <linux-mips@linux-mips.org>; Tue, 30 May 2006 18:15:31 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
-	by mail5.sony.co.jp (R8/Sony) with ESMTP id k4U9FVcl025425
-	for <linux-mips@linux-mips.org>; Tue, 30 May 2006 18:15:31 +0900 (JST)
-Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.4.191.32]) by smail1.sm.sony.co.jp (8.11.6p2/8.11.6) with ESMTP id k4U9FUY03104 for <linux-mips@linux-mips.org>; Tue, 30 May 2006 18:15:30 +0900 (JST)
-Received: from localhost (tidal.sm.sony.co.jp [43.4.195.112])
-	by imail.sm.sony.co.jp (8.12.11/3.7W) with ESMTP id k4U9FppE007500;
-	Tue, 30 May 2006 18:15:51 +0900 (JST)
-Date:	Tue, 30 May 2006 18:12:18 +0900 (JST)
-Message-Id: <20060530.181218.74754108.kaminaga@sm.sony.co.jp>
-To:	linux-mips@linux-mips.org
-Cc:	kaminaga@sm.sony.co.jp
-Subject: SIGSTKFLT in mips
-From:	Hiroki Kaminaga <kaminaga@sm.sony.co.jp>
-X-Mailer: Mew version 4.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 May 2006 14:40:52 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:4313 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133462AbWE3Mko (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 30 May 2006 14:40:44 +0200
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k4UCeikf018334;
+	Tue, 30 May 2006 13:40:44 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k4UCehms018333;
+	Tue, 30 May 2006 13:40:43 +0100
+Date:	Tue, 30 May 2006 13:40:43 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Hiroki Kaminaga <kaminaga@sm.sony.co.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: SIGSTKFLT in mips
+Message-ID: <20060530124043.GB3185@linux-mips.org>
+References: <20060530.181218.74754108.kaminaga@sm.sony.co.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <kaminaga@sm.sony.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060530.181218.74754108.kaminaga@sm.sony.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11596
+X-archive-position: 11597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaminaga@sm.sony.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, May 30, 2006 at 06:12:18PM +0900, Hiroki Kaminaga wrote:
 
-I'm using linux 2.6.16.11, and want to use SIGSTKFLT.
+> I'm using linux 2.6.16.11, and want to use SIGSTKFLT.
+> 
+> This signal is defined in most other architectures (in
+> include/asm-xxx/signal.h) but not in mips.
 
-This signal is defined in most other architectures (in
-include/asm-xxx/signal.h) but not in mips.
+SIGSTKFLT is used for stack faults on coprocessors.  That condition
+simply doesn't exist on MIPS thus no SIGSTKFLT.
 
-Any hint?
-
-
-Thanks in Advance.
-
-(Hiroki Kaminaga)
-t
---
+  Ralf

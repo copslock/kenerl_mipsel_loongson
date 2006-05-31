@@ -1,105 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 14:47:41 +0200 (CEST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:15791 "EHLO
-	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133540AbWEaMrc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 May 2006 14:47:32 +0200
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by goldrake.enneenne.com with esmtp (Exim 4.50)
-	id 1FlQ2q-000832-QB
-	for linux-mips@linux-mips.org; Wed, 31 May 2006 14:43:29 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1FlQ73-0002gG-OJ
-	for linux-mips@linux-mips.org; Wed, 31 May 2006 14:47:49 +0200
-Date:	Wed, 31 May 2006 14:47:49 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060531124749.GE27426@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 17:02:17 +0200 (CEST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:10962 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133476AbWEaPCJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 May 2006 17:02:09 +0200
+Received: (qmail 16092 invoked from network); 31 May 2006 19:10:37 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 31 May 2006 19:10:37 -0000
+Message-ID: <447DAFAE.10503@ru.mvista.com>
+Date:	Wed, 31 May 2006 19:01:02 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="xB0nW4MQa6jZONgY"
-Content-Disposition: inline
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.11+cvs20060403
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: [PATCH] au1100fb fb_blank
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+To:	Rodolfo Giometti <giometti@linux.it>
+CC:	jgarzik@pobox.com, netdev@vger.kernel.org,
+	Linux-MIPS <linux-mips@linux-mips.org>,
+	Jordan Crouse <jordan.crouse@amd.com>
+Subject: Re: [PATCH] au1000_eth.c Power Management, driver registration and
+ module support
+References: <20060405154711.GL7029@enneenne.com> <20060405222332.GO7029@enneenne.com> <20060405222620.GP7029@enneenne.com> <4435290C.50607@ru.mvista.com> <20060406155011.GC23424@enneenne.com> <4446857D.90507@ru.mvista.com> <20060502150914.GE20543@gundam.enneenne.com>
+In-Reply-To: <20060502150914.GE20543@gundam.enneenne.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11620
+X-archive-position: 11621
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
 
---xB0nW4MQa6jZONgY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Rodolfo Giometti wrote:
 
-Hello,
+> here:
 
-since some boards need to manage GPIOs to turn on and off the LCD and
-since on shutdwon the driver does:
+>    http://ftp.enneenne.com/pub/misc/au1100-patches/linux/patch-au1000_eth-pm-and-registration
 
-   #if !defined(CONFIG_FRAMEBUFFER_CONSOLE) && defined(CONFIG_LOGO)
-           au1100fb_fb_blank(VESA_POWERDOWN, &fbdev->info);
-   #endif
-           fbdev->regs->lcd_control &= ~LCD_CONTROL_GO;
+> the new version of my patch for au1000_eth.c who should implement:
 
-I suggest the attached patch to do the same during boot.
+> Also, as suggested by Sergei it:
+> 
+> * uses physical addresses and not KSEG1-based virtual anymore and
+>   claims/releases the 4-byte MAC enable registers:
+> 
+>    wwpc:~# cat /proc/iomem
+>    10500000-1050ffff : eth-base
+>    10520000-10520003 : eth-mac
+>       
+> * assigns to the Ethernet ports two consecutive MAC addresses:
+> 
+>    -		dev->dev_addr[4] += 0x10;
+>    +				((unsigned long) macen_addr);
+>    +		memcpy(ndev->dev_addr, au1000_mac_addr, sizeof(au1000_mac_addr));
+>    +		ndev->dev_addr[5] += 0x01;
+>       
+> Ciao,
 
-Note that this prevents boards support developers to add
-specific code before the command:
+    Now that this is merged, Rodolfo's patch should probably preempt mine...
+but it looks like something was lost during the transition: I failed to see
+where SYS_PINFUNC register is actually read (the comment mentioning this was 
+retained :-) to check whether Ethernet port 1 is enabled (its pins are shared 
+w/GPIO)...
 
-   fbdev->regs->lcd_control |= LCD_CONTROL_GO;
+> Rodolfo
 
-but putting all these stuff into proper function au1100fb_fb_blank().
-
-Please, let me know what do you think about it.
-
-Ciao,
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
-
---xB0nW4MQa6jZONgY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=patch-au1100fb-fb_blank
-
-diff --git a/drivers/video/au1100fb.c b/drivers/video/au1100fb.c
-index 7c5fd9c..a59654b 100644
---- a/drivers/video/au1100fb.c
-+++ b/drivers/video/au1100fb.c
-@@ -110,6 +114,8 @@ static struct fb_var_screeninfo au1100fb
- 
- static struct au1100fb_drv_info drv_info;
- 
-+int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi);
-+
- /*
-  * Set hardware with var settings. This will enable the controller with a specific
-  * mode, normally validated with the fb_check_var method
-@@ -205,7 +211,7 @@ int au1100fb_setmode(struct au1100fb_dev
- 	fbdev->regs->lcd_pwmhi = 0;
- 
- 	/* Resume controller */
--	fbdev->regs->lcd_control |= LCD_CONTROL_GO;
-+	au1100fb_fb_blank(VESA_NO_BLANKING, &fbdev->info);
- 
- 	return 0;
- }
-
---xB0nW4MQa6jZONgY--
+WBR, Sergei

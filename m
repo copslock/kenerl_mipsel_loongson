@@ -1,62 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 13:27:40 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:42255 "HELO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with SMTP
-	id S8133506AbWEaL1c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 May 2006 13:27:32 +0200
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 24AAFF640C;
-	Wed, 31 May 2006 13:27:27 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 10498-02; Wed, 31 May 2006 13:27:26 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B838AF5BEB;
-	Wed, 31 May 2006 13:27:26 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.6/8.13.1) with ESMTP id k4VBRYqU032348;
-	Wed, 31 May 2006 13:27:34 +0200
-Date:	Wed, 31 May 2006 12:27:30 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	art <art@sigrand.ru>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	rongkai.zhan@windriver.com
-Subject: Re: Problem with TLB mcheck!
-In-Reply-To: <8751.060531@sigrand.ru>
-Message-ID: <Pine.LNX.4.64N.0605311221470.29356@blysk.ds.pg.gda.pl>
-References: <8751.060531@sigrand.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 14:47:41 +0200 (CEST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:15791 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133540AbWEaMrc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 May 2006 14:47:32 +0200
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by goldrake.enneenne.com with esmtp (Exim 4.50)
+	id 1FlQ2q-000832-QB
+	for linux-mips@linux-mips.org; Wed, 31 May 2006 14:43:29 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1FlQ73-0002gG-OJ
+	for linux-mips@linux-mips.org; Wed, 31 May 2006 14:47:49 +0200
+Date:	Wed, 31 May 2006 14:47:49 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Message-ID: <20060531124749.GE27426@enneenne.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.2/1500/Tue May 30 22:47:36 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Content-Type: multipart/mixed; boundary="xB0nW4MQa6jZONgY"
+Content-Disposition: inline
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.11+cvs20060403
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: [PATCH] au1100fb fb_blank
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11619
+X-archive-position: 11620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 31 May 2006, art wrote:
 
-> @@ -1260,7 +1260,7 @@
->         }
->  #endif
-> 
-> -       memcpy((void *)CAC_BASE, final_handler, 0x100);
-> +       memcpy((void *)ebase, final_handler, 0x100);
-> }
-> 
-> And it seem than no problem now (`cat /bin/busybox > box` work as much
-> as need!).
-> I think this is wright way, but not all - I'am not guru in memory
-> subsystem and can miss something! So wait for your advices!
+--xB0nW4MQa6jZONgY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- That change has been in the tree since Apr 16th -- there is a reason you 
-should always try the latest revision before reporting a problem.
+Hello,
 
-  Maciej
+since some boards need to manage GPIOs to turn on and off the LCD and
+since on shutdwon the driver does:
+
+   #if !defined(CONFIG_FRAMEBUFFER_CONSOLE) && defined(CONFIG_LOGO)
+           au1100fb_fb_blank(VESA_POWERDOWN, &fbdev->info);
+   #endif
+           fbdev->regs->lcd_control &= ~LCD_CONTROL_GO;
+
+I suggest the attached patch to do the same during boot.
+
+Note that this prevents boards support developers to add
+specific code before the command:
+
+   fbdev->regs->lcd_control |= LCD_CONTROL_GO;
+
+but putting all these stuff into proper function au1100fb_fb_blank().
+
+Please, let me know what do you think about it.
+
+Ciao,
+
+Rodolfo
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
+
+--xB0nW4MQa6jZONgY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=patch-au1100fb-fb_blank
+
+diff --git a/drivers/video/au1100fb.c b/drivers/video/au1100fb.c
+index 7c5fd9c..a59654b 100644
+--- a/drivers/video/au1100fb.c
++++ b/drivers/video/au1100fb.c
+@@ -110,6 +114,8 @@ static struct fb_var_screeninfo au1100fb
+ 
+ static struct au1100fb_drv_info drv_info;
+ 
++int au1100fb_fb_blank(int blank_mode, struct fb_info *fbi);
++
+ /*
+  * Set hardware with var settings. This will enable the controller with a specific
+  * mode, normally validated with the fb_check_var method
+@@ -205,7 +211,7 @@ int au1100fb_setmode(struct au1100fb_dev
+ 	fbdev->regs->lcd_pwmhi = 0;
+ 
+ 	/* Resume controller */
+-	fbdev->regs->lcd_control |= LCD_CONTROL_GO;
++	au1100fb_fb_blank(VESA_NO_BLANKING, &fbdev->info);
+ 
+ 	return 0;
+ }
+
+--xB0nW4MQa6jZONgY--

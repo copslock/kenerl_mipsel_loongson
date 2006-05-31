@@ -1,50 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 18:07:07 +0200 (CEST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:48551 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S8133490AbWEaQG5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 May 2006 18:06:57 +0200
-Received: (qmail 2068 invoked by uid 101); 31 May 2006 16:06:51 -0000
-Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
-  by father.pmc-sierra.com with SMTP; 31 May 2006 16:06:51 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by ogmios.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k4VG6owg031350;
-	Wed, 31 May 2006 09:06:50 -0700
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
-	id <JPF6RP9P>; Wed, 31 May 2006 09:06:50 -0700
-Message-ID: <478F19F21671F04298A2116393EEC3D5273E4F@sjc1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Raj Palani <Rajesh_Palani@pmc-sierra.com>
-To:	Roman Mashak <mrv@corecom.co.kr>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 18:48:04 +0200 (CEST)
+Received: from witte.sonytel.be ([80.88.33.193]:35515 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S8133490AbWEaQr4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2006 18:47:56 +0200
+Received: from chinchilla.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k4VGlsCQ016416;
+	Wed, 31 May 2006 18:47:54 +0200 (MEST)
+Date:	Wed, 31 May 2006 18:47:54 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>,
 	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: RE: compiling BCM5700 driver
-Date:	Wed, 31 May 2006 09:06:44 -0700
+Subject: Re: [PATCH] fix some compiler warnings (field width, unused variable)
+In-Reply-To: <20060601.010003.39154219.anemo@mba.ocn.ne.jp>
+Message-ID: <Pine.LNX.4.62.0605311840170.18323@chinchilla.sonytel.be>
+References: <20060601.010003.39154219.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: text/plain
-Return-Path: <Rajesh_Palani@pmc-sierra.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11625
+X-archive-position: 11626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Rajesh_Palani@pmc-sierra.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Roman, 
- 
-> I'm more concerned with Titan GE driver on "Sequoia" board 
-> (by PMC-sierra). 
-> What's the status of this driver in 2.4.26? If I understand 
-> correct - it's maintained now only in 2.6.x? Upon compilation 
-> of 2.4.26 for Sequoia" board and installation on to target, 
-> we observed a lot of CRC errors on gigabit ethernet (we used 
-> SmartBit for testing). Is the driver in this version broken?
+On Thu, 1 Jun 2006, Atsushi Nemoto wrote:
+> Fix following warnings:
+> linux/arch/mips/kernel/setup.c:432: warning: field width is not type int (arg 2)
+> linux/arch/mips/kernel/setup.c:432: warning: field width is not type int (arg 4)
+> linux/arch/mips/kernel/syscall.c:279: warning: unused variable `len'
+> linux/arch/mips/kernel/syscall.c:280: warning: unused variable `name'
+> linux/arch/mips/math-emu/dp_fint.c:32: warning: unused variable `xc'
+> linux/arch/mips/math-emu/dp_flong.c:32: warning: unused variable `xc'
+> linux/arch/mips/math-emu/sp_fint.c:32: warning: unused variable `xc'
+> linux/arch/mips/math-emu/sp_flong.c:32: warning: unused variable `xc'
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> 
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index bcf1b10..132b65d 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -426,9 +426,9 @@ static inline void bootmem_init(void)
+>  		if (CPHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
+>  			printk("initrd extends beyond end of memory "
+>  			       "(0x%0*Lx > 0x%0*Lx)\ndisabling initrd\n",
 
-Yes.  We are currently maintaining the Titan GE driver on "Sequoia" only in 2.6.x.  The GE driver in Sequoia has been renamed to msp85xx_ge.c.  We are in the process of generating a patchset to add support for Sequoia (MSP8510/MSP8520) in the Linux/MIPS 2.6 tree.
+`%L' is obsolete for long long, use `%ll' instead.
 
-Our most recent Linux 2.6 tree for Sequoia is available on our ftp site (ftp.pmc-sierra.com) under /pub/linux/2.6.12/linux-2.6.12-rc3_L002.tar.gz.
+> -			       sizeof(long) * 2,
+> +			       (int)(sizeof(long) * 2),
+>  			       (unsigned long long)CPHYSADDR(initrd_end),
 
--Raj
+As CPHYSADDR() returns a ptrdiff_t, what about using `%t' instead?
+Ah, that one doesn't print hex (hmm, C99 doesn't seem to tell).
+
+You can cast to `void *' and use `%p' to get hex, and the field width will
+automagically be `2*sizeof(void *)', according to lib/vsprintf.c.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

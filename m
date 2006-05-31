@@ -1,93 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 18:00:19 +0200 (CEST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:465 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133543AbWEaP7s (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 31 May 2006 17:59:48 +0200
-Received: from localhost (p5040-ipad30funabasi.chiba.ocn.ne.jp [221.184.80.40])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C4C97B720; Thu,  1 Jun 2006 00:59:44 +0900 (JST)
-Date:	Thu, 01 Jun 2006 01:00:39 +0900 (JST)
-Message-Id: <20060601.010039.93207406.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] fix some sparse warnings (constant is so big)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 May 2006 18:07:07 +0200 (CEST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:48551 "HELO
+	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S8133490AbWEaQG5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 May 2006 18:06:57 +0200
+Received: (qmail 2068 invoked by uid 101); 31 May 2006 16:06:51 -0000
+Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
+  by father.pmc-sierra.com with SMTP; 31 May 2006 16:06:51 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogmios.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k4VG6owg031350;
+	Wed, 31 May 2006 09:06:50 -0700
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <JPF6RP9P>; Wed, 31 May 2006 09:06:50 -0700
+Message-ID: <478F19F21671F04298A2116393EEC3D5273E4F@sjc1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
+From:	Raj Palani <Rajesh_Palani@pmc-sierra.com>
+To:	Roman Mashak <mrv@corecom.co.kr>,
+	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: RE: compiling BCM5700 driver
+Date:	Wed, 31 May 2006 09:06:44 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Rajesh_Palani@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11624
+X-archive-position: 11625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: Rajesh_Palani@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-Fix following warnings:
-linux/arch/mips/kernel/setup.c:249:12: warning: constant 0xffffffff00000000 is so big it is unsigned long
-linux/arch/mips/kernel/cpu-bugs64.c:209:10: warning: constant 0xffffffffffffdb9a is so big it is unsigned long
-linux/arch/mips/kernel/cpu-bugs64.c:227:10: warning: constant 0xffffffffffffdb9a is so big it is unsigned long
-linux/arch/mips/kernel/cpu-bugs64.c:283:10: warning: constant 0xffffffffffffdb9a is so big it is unsigned long
-linux/arch/mips/kernel/cpu-bugs64.c:299:10: warning: constant 0xffffffffffffdb9a is so big it is unsigned long
+Hi Roman, 
+ 
+> I'm more concerned with Titan GE driver on "Sequoia" board 
+> (by PMC-sierra). 
+> What's the status of this driver in 2.4.26? If I understand 
+> correct - it's maintained now only in 2.6.x? Upon compilation 
+> of 2.4.26 for Sequoia" board and installation on to target, 
+> we observed a lot of CRC errors on gigabit ethernet (we used 
+> SmartBit for testing). Is the driver in this version broken?
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Yes.  We are currently maintaining the Titan GE driver on "Sequoia" only in 2.6.x.  The GE driver in Sequoia has been renamed to msp85xx_ge.c.  We are in the process of generating a patchset to add support for Sequoia (MSP8510/MSP8520) in the Linux/MIPS 2.6 tree.
 
-diff --git a/arch/mips/kernel/cpu-bugs64.c b/arch/mips/kernel/cpu-bugs64.c
-index 47a087b..d268827 100644
---- a/arch/mips/kernel/cpu-bugs64.c
-+++ b/arch/mips/kernel/cpu-bugs64.c
-@@ -206,7 +206,7 @@ static inline void check_daddi(void)
- 		"daddi	%0, %1, %3\n\t"
- 		".set	pop"
- 		: "=r" (v), "=&r" (tmp)
--		: "I" (0xffffffffffffdb9a), "I" (0x1234));
-+		: "I" (0xffffffffffffdb9aUL), "I" (0x1234));
- 	set_except_vector(12, handler);
- 	local_irq_restore(flags);
- 
-@@ -224,7 +224,7 @@ static inline void check_daddi(void)
- 		"dsrl	%1, %1, 1\n\t"
- 		"daddi	%0, %1, %3"
- 		: "=r" (v), "=&r" (tmp)
--		: "I" (0xffffffffffffdb9a), "I" (0x1234));
-+		: "I" (0xffffffffffffdb9aUL), "I" (0x1234));
- 	set_except_vector(12, handler);
- 	local_irq_restore(flags);
- 
-@@ -280,7 +280,7 @@ static inline void check_daddiu(void)
- 		"daddu	%1, %2\n\t"
- 		".set	pop"
- 		: "=&r" (v), "=&r" (w), "=&r" (tmp)
--		: "I" (0xffffffffffffdb9a), "I" (0x1234));
-+		: "I" (0xffffffffffffdb9aUL), "I" (0x1234));
- 
- 	if (v == w) {
- 		printk("no.\n");
-@@ -296,7 +296,7 @@ static inline void check_daddiu(void)
- 		"addiu	%1, $0, %4\n\t"
- 		"daddu	%1, %2"
- 		: "=&r" (v), "=&r" (w), "=&r" (tmp)
--		: "I" (0xffffffffffffdb9a), "I" (0x1234));
-+		: "I" (0xffffffffffffdb9aUL), "I" (0x1234));
- 
- 	if (v == w) {
- 		printk("yes.\n");
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index bcf1b10..132b65d 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -246,7 +246,7 @@ static inline int parse_rd_cmdline(unsig
- #ifdef CONFIG_64BIT
- 	/* HACK: Guess if the sign extension was forgotten */
- 	if (start > 0x0000000080000000 && start < 0x00000000ffffffff)
--		start |= 0xffffffff00000000;
-+		start |= 0xffffffff00000000UL;
- #endif
- 
- 	end = start + size;
+Our most recent Linux 2.6 tree for Sequoia is available on our ftp site (ftp.pmc-sierra.com) under /pub/linux/2.6.12/linux-2.6.12-rc3_L002.tar.gz.
+
+-Raj

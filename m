@@ -1,65 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2006 21:07:16 +0200 (CEST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:14186 "EHLO
-	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S8133732AbWFATHJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Jun 2006 21:07:09 +0200
-Received: from [192.168.5.10] ([10.150.0.9])
-	by buildserver.ru.mvista.com (8.11.6/8.11.6) with ESMTP id k51J77s02204
-	for <linux-mips@linux-mips.org>; Fri, 2 Jun 2006 00:07:07 +0500
-Subject: [RFC] [PATCH] sys_shmat for 64-bits in 32-bit compat mode
-From:	dmitry pervushin <dpervushin@ru.mvista.com>
-Reply-To: dpervushin@ru.mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jun 2006 22:46:53 +0200 (CEST)
+Received: from mail01.hansenet.de ([213.191.73.61]:34715 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S8133759AbWFAUqq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Jun 2006 22:46:46 +0200
+Received: from [213.39.208.223] (213.39.208.223) by webmail.hansenet.de (7.2.059) (authenticated as mbx20228207@koeller-hh.org)
+        id 447D3FB200064FAD for linux-mips@linux-mips.org; Thu, 1 Jun 2006 22:46:40 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 8F12A10AA09
+	for <linux-mips@linux-mips.org>; Thu,  1 Jun 2006 22:46:39 +0200 (CEST)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
 To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Organization: montavista
-Date:	Thu, 01 Jun 2006 23:07:04 +0400
-Message-Id: <1149188824.6986.6.camel@diimka-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.0 
+Subject: Location of PCI setup code
+Date:	Thu, 1 Jun 2006 22:46:17 +0200
+User-Agent: KMail/1.9.1
+Organization: Basler AG
+MIME-Version: 1.0
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <dpervushin@ru.mvista.com>
+Message-Id: <200606012246.17864.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11635
+X-archive-position: 11636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dpervushin@ru.mvista.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello all,
+Hi,
 
-I would like you to comment the following patch. At the some moment, I
-was faced to problem with syscall sys_shmat in 32-bit mode on 64-bit
-platforms. I have fixed the function in the same manner as native
-sys_shmat had been: sys_shmat expects pointer to memory as the return
-value rather than put_user'ed to the memory pointed by 3rd parameter.
+the PCI setup code for a platform is conventionally located in arch/mips/pci. 
+I fail to see the benefits of separating this particular part of a platform's 
+setup from the rest. The PCI setup code will in general contain references to 
+platform-specific information, such as the overall address space layout, of 
+which the PCI memory and I/O pages are a part. If the PCI setup code were in 
+the platform subdirectory, sharing this information by means of a 
+platform-local header file would be easy. But with the PCI code in 
+arch/mips/pci, this becomes more difficult. The platform header could be 
+located somewhere outside the platform's directory, maybe under 
+'include' (where?), or referenced via an ugly relative path like 
+'../../vendor/platform/platform.h'. All this seems rather clumsy to me. No 
+other part of a platform's initialization is separated from the rest in a 
+similar way, so what is so special about PCI setup that it cannot be in the 
+platform directory, thereby avoiding all these annoyances? 
 
-Signed-off-by: dmitry pervushin <dpervushin@ru.mvista.com>
- arch/mips/kernel/linux32.c |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletion(-)
+tk
 
-Index: linux-mips/arch/mips/kernel/linux32.c
-===================================================================
---- linux-mips.orig/arch/mips/kernel/linux32.c
-+++ linux-mips/arch/mips/kernel/linux32.c
-@@ -36,6 +36,7 @@
- #include <linux/security.h>
- #include <linux/compat.h>
- #include <linux/vfs.h>
-+#include <linux/ptrace.h>
- 
- #include <net/sock.h>
- #include <net/scm.h>
-@@ -978,7 +979,8 @@ asmlinkage long sys32_shmat(int shmid, c
- 	if (err)
- 		return err;
- 
--	return put_user(raddr, addr);
-+	force_successful_syscall_return();
-+	return raddr;
- }
- 
- struct sysctl_args32
+-- 
+Thomas Koeller, Software Development
+
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
+
+Tel +49 (4102) 463-390
+Fax +49 (4102) 463-46390
+
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com

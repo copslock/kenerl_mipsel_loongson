@@ -1,59 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 21:01:53 +0200 (CEST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:63935 "HELO
-	duck.specifix.com") by ftp.linux-mips.org with SMTP
-	id S8133877AbWFBTBj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Jun 2006 21:01:39 +0200
-Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
-	by duck.specifix.com (Postfix) with ESMTP
-	id 22A75FC5E; Fri,  2 Jun 2006 12:01:24 -0700 (PDT)
-Subject: Re: where I can find a crosscompiler for BCM1255
-From:	James E Wilson <wilson@specifix.com>
-To:	richard <yczhao@hhcn.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <1149232577$80806$99988841@yczhao@hhcn.com>
-References: <1149232577$80806$99988841@yczhao@hhcn.com>
-Content-Type: text/plain
-Message-Id: <1149274883.17016.6.camel@aretha.corp.specifix.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date:	Fri, 02 Jun 2006 12:01:24 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 21:09:29 +0200 (CEST)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:63644 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133865AbWFBTJS
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Jun 2006 21:09:18 +0200
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k52J8ucQ018137;
+	Fri, 2 Jun 2006 12:09:02 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k52J8t6E020955;
+	Fri, 2 Jun 2006 12:08:55 -0700 (PDT)
+Message-ID: <01b401c68678$98199a10$10eca8c0@grendel>
+From:	"Kevin D. Kissell" <kevink@mips.com>
+To:	"Prasad Boddupalli" <bprasad@cs.arizona.edu>,
+	<linux-mips@linux-mips.org>
+References: <e8180c7f0606021139w6d26e03eice708d5076cccf64@mail.gmail.com>
+Subject: Re: replacing synthesized tlb handlers with older ones
+Date:	Fri, 2 Jun 2006 21:13:11 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <wilson@specifix.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1807
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1807
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11650
+X-archive-position: 11651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2006-06-02 at 00:16, richard wrote:
-> I download crosscompilers(sb1-elf-,mips-linux-) from broadcom website, but error occurs when compiling
+The TLB refill handler behavior for 1 CPU is fundamentally
+different than for SMP.  In the uniprocessor case, the page
+table origin is implicit, whereas in SMP it needs to be indexed
+by some per-CPU value, typically maintained in the Context
+register.  Pre-synthesed kernels set up up so that the Context
+value would be shifted left 23 bits, then right by 2 bits, to generate
+an offset.  The newer system eliminates the right shift by ensuring
+that the CPU index is stored in a pre-scaled form, and that bits
+23 and 24 are zero.  So you can't just drop the old code into
+the newer kernel, unless you also change the setup of Context.
+A single CPU would work, because 0 == 0, otherwise...
+Try nuking those right shifts.
 
-We can't help you unless you specify exactly what the error was, and
-exactly what command you typed that generated the error.  If this was a
-kernel compilation problem, you may need to specify the kernel
-configuration used.
+            Regards,
 
-By the way, there is a default kernel config that you should start with,
-and then modify as necessary.  It is in arch/mips/configs in the
-sb1250-swarm_defconfigs file.
+            Kevin K.
+ 
+----- Original Message ----- 
+From: "Prasad Boddupalli" <bprasad@cs.arizona.edu>
+To: <linux-mips@linux-mips.org>
+Sent: Friday, June 02, 2006 8:39 PM
+Subject: replacing synthesized tlb handlers with older ones
 
-> Do the compilers work for linux compiling?
 
-The sb1-elf toolchain will not work for compiling linux.  The mips-linux
-toolchain will work for compiling linux.  However, because of
-interdependencies between the linux kernel and gcc, certain gcc versions
-may be required for compiling certain linux kernel versions.
-
->  or I should download other versions of compiler for the kernel? And where?
-
-There is some useful info in the wiki about this.
-    http://www.linux-mips.org/wiki/Toolchains
-You can always start with FSF releases if you are willing to build the
-toolchains yourself.
--- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+> Hi,
+> 
+> To embed some additional functionality in the tlb refill handler, I
+> replaced the synthesized refill handlers in 2.6.16 linux with those
+> from 2.6.6 (for example tlb-r4k.S under arch/mips/mm-32). Everything
+> seem ok when I bring up one CPU, but causes unrecoverable exceptions
+> in the kernel when I bring up multiple CPUs. I explored if that could
+> be because of unflushed icaches on other CPUs. but that doesn't seem
+> to be the case.
+> 
+> Have anyone run into similar problem ?
+> 
+> thank you,
+> Prasad.
+> 
+> 

@@ -1,50 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 20:40:06 +0200 (CEST)
-Received: from wx-out-0102.google.com ([66.249.82.194]:1634 "EHLO
-	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133869AbWFBSjx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Jun 2006 20:39:53 +0200
-Received: by wx-out-0102.google.com with SMTP id t5so428867wxc
-        for <linux-mips@linux-mips.org>; Fri, 02 Jun 2006 11:39:52 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:sender:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition:x-google-sender-auth;
-        b=YXP9Qd7VY/PQdKOxuAF1odYWuePtS9XkI7KpA/SiWbKdasacF8nvcI5g5QW96pW2hiIkAxcDZ/0R8mSp9OhDTPr0HkejN1h3zZ4S4qLWUAbQYAAeI9w5ToYXiRizb0lI15eYVErfanenviLrH33CUHkYbSm1vK+UtM3AesvpwwY=
-Received: by 10.70.89.7 with SMTP id m7mr2770168wxb;
-        Fri, 02 Jun 2006 11:39:52 -0700 (PDT)
-Received: by 10.70.73.1 with HTTP; Fri, 2 Jun 2006 11:39:52 -0700 (PDT)
-Message-ID: <e8180c7f0606021139w6d26e03eice708d5076cccf64@mail.gmail.com>
-Date:	Fri, 2 Jun 2006 11:39:52 -0700
-From:	"Prasad Boddupalli" <bprasad@cs.arizona.edu>
-To:	linux-mips@linux-mips.org
-Subject: replacing synthesized tlb handlers with older ones
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 21:01:53 +0200 (CEST)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:63935 "HELO
+	duck.specifix.com") by ftp.linux-mips.org with SMTP
+	id S8133877AbWFBTBj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Jun 2006 21:01:39 +0200
+Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
+	by duck.specifix.com (Postfix) with ESMTP
+	id 22A75FC5E; Fri,  2 Jun 2006 12:01:24 -0700 (PDT)
+Subject: Re: where I can find a crosscompiler for BCM1255
+From:	James E Wilson <wilson@specifix.com>
+To:	richard <yczhao@hhcn.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <1149232577$80806$99988841@yczhao@hhcn.com>
+References: <1149232577$80806$99988841@yczhao@hhcn.com>
+Content-Type: text/plain
+Message-Id: <1149274883.17016.6.camel@aretha.corp.specifix.com>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 
+Date:	Fri, 02 Jun 2006 12:01:24 -0700
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-X-Google-Sender-Auth: 8800841dd708f49b
-Return-Path: <p.boddupalli@gmail.com>
+Return-Path: <wilson@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11649
+X-archive-position: 11650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bprasad@cs.arizona.edu
+X-original-sender: wilson@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Fri, 2006-06-02 at 00:16, richard wrote:
+> I download crosscompilers(sb1-elf-,mips-linux-) from broadcom website, but error occurs when compiling
 
-To embed some additional functionality in the tlb refill handler, I
-replaced the synthesized refill handlers in 2.6.16 linux with those
-from 2.6.6 (for example tlb-r4k.S under arch/mips/mm-32). Everything
-seem ok when I bring up one CPU, but causes unrecoverable exceptions
-in the kernel when I bring up multiple CPUs. I explored if that could
-be because of unflushed icaches on other CPUs. but that doesn't seem
-to be the case.
+We can't help you unless you specify exactly what the error was, and
+exactly what command you typed that generated the error.  If this was a
+kernel compilation problem, you may need to specify the kernel
+configuration used.
 
-Have anyone run into similar problem ?
+By the way, there is a default kernel config that you should start with,
+and then modify as necessary.  It is in arch/mips/configs in the
+sb1250-swarm_defconfigs file.
 
-thank you,
-Prasad.
+> Do the compilers work for linux compiling?
+
+The sb1-elf toolchain will not work for compiling linux.  The mips-linux
+toolchain will work for compiling linux.  However, because of
+interdependencies between the linux kernel and gcc, certain gcc versions
+may be required for compiling certain linux kernel versions.
+
+>  or I should download other versions of compiler for the kernel? And where?
+
+There is some useful info in the wiki about this.
+    http://www.linux-mips.org/wiki/Toolchains
+You can always start with FSF releases if you are willing to build the
+toolchains yourself.
+-- 
+Jim Wilson, GNU Tools Support, http://www.specifix.com

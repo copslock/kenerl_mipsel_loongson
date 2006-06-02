@@ -1,54 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 08:35:24 +0200 (CEST)
-Received: from [220.76.242.187] ([220.76.242.187]:3773 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S8133383AbWFBGfQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Jun 2006 08:35:16 +0200
-Received: from mrv ([192.168.11.157])
-	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k526arEE015823;
-	Fri, 2 Jun 2006 15:36:57 +0900
-Message-ID: <005b01c6860e$5e99ce00$9d0ba8c0@mrv>
-From:	"Roman Mashak" <mrv@corecom.co.kr>
-To:	<linux-mips@linux-mips.org>
-Cc:	"Raj Palani" <Rajesh_Palani@pmc-sierra.com>,
-	<Kiran_Thota@pmc-sierra.com>
-Subject: booting 64bit kernel on RM9150
-Date:	Fri, 2 Jun 2006 15:32:47 +0900
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 09:16:33 +0200 (CEST)
+Received: from mxvip4.hichina.com ([218.244.159.34]:323 "EHLO
+	mxvip4.hichina.com") by ftp.linux-mips.org with ESMTP
+	id S8133424AbWFBHQ0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Jun 2006 09:16:26 +0200
+Received: from 60.166.48.95 (HELO work99) (envelope-from yczhao@hhcn.com)
+	by mxvip4.hichina.com (quarkmail-1.2.1) with ESMTP id S6384198AbWFBHQR
+	for linux-mips@linux-mips.org; Fri, 2 Jun 2006 15:16:17 +0800
+Date:	Fri, 2 Jun 2006 15:16:09 +0800
+From:	"richard" <yczhao@hhcn.com>
+To:	"linux-mips" <linux-mips@linux-mips.org>
+Subject: where I can find a crosscompiler for BCM1255
+X-mailer: Foxmail 5.0 [cn]
+Mime-Version: 1.0
 Content-Type: text/plain;
-	format=flowed;
-	charset="koi8-r";
-	reply-type=original
+	charset="gb2312"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
-Return-Path: <mrv@corecom.co.kr>
+Message-ID: <1149232577$80806$99988841@yczhao@hhcn.com>
+Return-Path: <yczhao@hhcn.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11641
+X-archive-position: 11642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrv@corecom.co.kr
+X-original-sender: yczhao@hhcn.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi all,
 
-I succesfully compiled 2.6.12-rc3 (patched by PMC-sierra), but failed to 
-boot it on Sequoia evaluation board. Firmware version is: PMON2000 1.9 
-(SEQUOIA-EB).
-
-What I understood is PMON can't deal with 64-bit images, that's why kernel 
-image should be "objcopy'd" into ELF32 (so, result is two images: 64bit 
-'vmlinux' and 32bit 'vmlinux.32'). So upon booting 'vmlinux.32' - board gets 
-hang up:
-
-Loading file: tftp://192.168.11.43/vmlinux.32 (elf)
-0x80100000/2088944 + 0x80300000/774278 + 0x803bd086/139162(z) + 4044 syms-
-
-
-With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 
+I want to compile linux-2.6.15 on BCM1255 board, I download crosscompilers(sb1-elf-,mips-linux-) from broadcom website, but error occurs when compiling
+Do the compilers work for linux compiling? or I should download other versions of compiler for the kernel? And where?
+Thanks.

@@ -1,58 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 15:26:21 +0200 (CEST)
-Received: from sigrand.ru ([80.66.88.167]:24268 "HELO mail.sigrand.com")
-	by ftp.linux-mips.org with SMTP id S8133409AbWFBN0O (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 2 Jun 2006 15:26:14 +0200
-Received: from develop (unknown [192.168.2.238])
-	by mail.sigrand.com (Postfix) with ESMTP id A0B7512A0021
-	for <linux-mips@linux-mips.org>; Fri,  2 Jun 2006 20:26:12 +0700 (NOVST)
-Date:	Fri, 2 Jun 2006 20:26:16 +0700
-From:	art <art@sigrand.ru>
-X-Mailer: The Bat! (v1.38e) S/N A1D26E39 / Educational
-Reply-To: art <art@sigrand.ru>
-Organization: Sigrand LLC
-X-Priority: 3 (Normal)
-Message-ID: <6851.060602@sigrand.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jun 2006 20:40:06 +0200 (CEST)
+Received: from wx-out-0102.google.com ([66.249.82.194]:1634 "EHLO
+	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133869AbWFBSjx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Jun 2006 20:39:53 +0200
+Received: by wx-out-0102.google.com with SMTP id t5so428867wxc
+        for <linux-mips@linux-mips.org>; Fri, 02 Jun 2006 11:39:52 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:sender:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition:x-google-sender-auth;
+        b=YXP9Qd7VY/PQdKOxuAF1odYWuePtS9XkI7KpA/SiWbKdasacF8nvcI5g5QW96pW2hiIkAxcDZ/0R8mSp9OhDTPr0HkejN1h3zZ4S4qLWUAbQYAAeI9w5ToYXiRizb0lI15eYVErfanenviLrH33CUHkYbSm1vK+UtM3AesvpwwY=
+Received: by 10.70.89.7 with SMTP id m7mr2770168wxb;
+        Fri, 02 Jun 2006 11:39:52 -0700 (PDT)
+Received: by 10.70.73.1 with HTTP; Fri, 2 Jun 2006 11:39:52 -0700 (PDT)
+Message-ID: <e8180c7f0606021139w6d26e03eice708d5076cccf64@mail.gmail.com>
+Date:	Fri, 2 Jun 2006 11:39:52 -0700
+From:	"Prasad Boddupalli" <bprasad@cs.arizona.edu>
 To:	linux-mips@linux-mips.org
-Subject: Socket buffer allocation outside DMA-able memory
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Subject: replacing synthesized tlb handlers with older ones
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <art@sigrand.ru>
+Content-Disposition: inline
+X-Google-Sender-Auth: 8800841dd708f49b
+Return-Path: <p.boddupalli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11648
+X-archive-position: 11649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: art@sigrand.ru
+X-original-sender: bprasad@cs.arizona.edu
 Precedence: bulk
 X-list: linux-mips
 
-Hello all!
-I work with ADM5120 chip. it has embedded switch.
-Switch descriptor has 25-bit dma addres field - so addressible only
-32Mb!
-My system has 64Mb memory. But I have to set 32Mb to make it work!
-I thought that setting DMA mask can help. So in
-/arch/mips/adm5120/setup.c i make:
+Hi,
 
-static struct platform_device adm5120hcd_device = {
-        .name           = "adm5120-hcd",
-        .id             = -1,
-        .dev            = {
-        .dma_mask               = &hcd_dmamask,
-        .coherent_dma_mask      = 0x01ffffff,
-        },
-        .num_resources  = ARRAY_SIZE(adm5120_hcd_resources),
-        .resource       = adm5120_hcd_resources,
-};
-But It is wrong, because dev_alloc_skb dont know to which device it
-allocates buffer!
+To embed some additional functionality in the tlb refill handler, I
+replaced the synthesized refill handlers in 2.6.16 linux with those
+from 2.6.6 (for example tlb-r4k.S under arch/mips/mm-32). Everything
+seem ok when I bring up one CPU, but causes unrecoverable exceptions
+in the kernel when I bring up multiple CPUs. I explored if that could
+be because of unflushed icaches on other CPUs. but that doesn't seem
+to be the case.
 
-How to tell kernel allocate skbuffers in less then 32Mb addrspace whet
-system has 64Mb?
+Have anyone run into similar problem ?
 
--- 
-Best regards,
- art                          mailto:art@sigrand.ru
+thank you,
+Prasad.

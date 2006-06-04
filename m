@@ -1,64 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Jun 2006 00:59:05 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:19423 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133892AbWFCW65 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Jun 2006 00:58:57 +0200
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k53Mwu4x002287;
-	Sat, 3 Jun 2006 23:58:56 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k53MwtgN002286;
-	Sat, 3 Jun 2006 23:58:55 +0100
-Date:	Sat, 3 Jun 2006 23:58:55 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	gregkh@suse.de, linux-usb-devel@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net,
-	linux-usb-devel@lists.sourceforge.net, linux-mips@linux-mips.org
-Subject: [PATCH] EHCI on non-Au1200 build fix
-Message-ID: <20060603225855.GA2234@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Jun 2006 08:06:03 +0200 (CEST)
+Received: from ug-out-1314.google.com ([66.249.92.170]:26319 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133515AbWFDGFz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 4 Jun 2006 08:05:55 +0200
+Received: by ug-out-1314.google.com with SMTP id k3so1049925ugf
+        for <linux-mips@linux-mips.org>; Sat, 03 Jun 2006 23:05:55 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=HqQ6d2BleEleT8Ukz/90dNRwcOSXSWCPrwUCEtlOnTx53x5u1HWUsJW+6Ns5BCgft3nikr+fpDn7umbVRJxYeHzmSZKDzX3lLpR4xMCY6j+8tCuE1UOgdEWLB5BTOcfCAy7Kxbbb0jEDwVgsubPNo7QXLL0Etyd1JBJhIJVql8w=
+Received: by 10.67.101.10 with SMTP id d10mr2236692ugm;
+        Sat, 03 Jun 2006 23:05:55 -0700 (PDT)
+Received: by 10.66.241.4 with HTTP; Sat, 3 Jun 2006 23:05:54 -0700 (PDT)
+Message-ID: <50c9a2250606032305t12dd44d5y78ec28cc6067fa66@mail.gmail.com>
+Date:	Sun, 4 Jun 2006 14:05:54 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: how to reused the initrd ram?
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11657
+X-archive-position: 11658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Including ehci-au1xxx.c on a non-Au1200 Alchemy only to have it throw
-an error is stupid.
+my board has 64M sdram, when i boot nfs root, it show Mem total about 62M
+and if i boot initrd and then switch to nfs root, it show mem total
+about 54M,and freeramdisk does nothing to it.
 
-diff --git a/drivers/usb/host/ehci-au1xxx.c b/drivers/usb/host/ehci-au1xxx.c
-index 63eadee..9315898 100644
---- a/drivers/usb/host/ehci-au1xxx.c
-+++ b/drivers/usb/host/ehci-au1xxx.c
-@@ -16,10 +16,6 @@
- #include <linux/platform_device.h>
- #include <asm/mach-au1x00/au1000.h>
- 
--#ifndef CONFIG_SOC_AU1200
--#error "this Alchemy chip doesn't have EHCI"
--#else				/* Au1200 */
--
- #define USB_HOST_CONFIG   (USB_MSR_BASE + USB_MSR_MCFG)
- #define USB_MCFG_PFEN     (1<<31)
- #define USB_MCFG_RDCOMB   (1<<30)
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 79f2d8b..c77e527 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -897,7 +897,7 @@ #include "ehci-fsl.c"
- #define	EHCI_BUS_GLUED
- #endif
- 
--#ifdef CONFIG_SOC_AU1X00
-+#ifdef CONFIG_SOC_AU1200
- #include "ehci-au1xxx.c"
- #define	EHCI_BUS_GLUED
- #endif
+my kernel commandline is
+root=/dev/nfs init=/linuxrc rd_start=0x80a00000 rd_size=0x260000
+ramdisk_size=8192 ip=bootp
+
+and in my initrd, the linuxrc is
+#!/bin/nash
+mount -t proc /proc /proc
+echo Mounting root filesystem
+mount -o nolock,rsize=1024,wsize=1024 --ro -t nfs
+10.10.10.2:/root/nfsroot/rootfs /sysroot
+pivot_root /sysroot /sysroot/initrd
+umount /initrd/proc
+
+and in my nfs root, i type
+$umount initrd
+$freeramdisk /dev/ram0
+
+it only flushed bufferd mem, and do nothing to the mem total.
+i wonder how to reused the initrd mem?
+
+BTW, if i change the kernel comandline to root=/dev/ram0 ...
+it will show messages as
+"Failed to execute /linuxrc.  Attempting defaults...
+Kernel panic - not syncing: No init found.  Try passing init= option to kernel"
+
+
+Thanks for any hints
+Best Regards
+
+zhuzhenhua

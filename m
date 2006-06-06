@@ -1,41 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jun 2006 20:39:46 +0100 (BST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:44241 "HELO
-	duck.specifix.com") by ftp.linux-mips.org with SMTP
-	id S8133951AbWFETji (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Jun 2006 20:39:38 +0100
-Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
-	by duck.specifix.com (Postfix) with ESMTP
-	id 930DBFC7D; Mon,  5 Jun 2006 12:39:27 -0700 (PDT)
-Subject: Re: Re: where I can find a crosscompiler for BCM1255
-From:	James E Wilson <wilson@specifix.com>
-To:	richard <yczhao@hhcn.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <1149408124$86550$79346250@yczhao@hhcn.com>
-References: <1149408124$86550$79346250@yczhao@hhcn.com>
-Content-Type: text/plain
-Message-Id: <1149536367.9096.14.camel@aretha.corp.specifix.com>
-Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date:	Mon, 05 Jun 2006 12:39:27 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <wilson@specifix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jun 2006 09:20:02 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:16783 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S8133649AbWFFITu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Jun 2006 09:19:50 +0100
+Received: from hulk.enneenne.com
+	([192.168.32.38] helo=localhost.localdomain ident=Debian-exim)
+	by goldrake.enneenne.com with esmtp (Exim 4.50)
+	id 1FnWiv-0002gn-VV
+	for linux-mips@linux-mips.org; Tue, 06 Jun 2006 10:15:38 +0200
+Received: from giometti by localhost.localdomain with local (Exim 4.60)
+	(envelope-from <giometti@hulk.enneenne.com>)
+	id 1FnWmx-0003eJ-9U
+	for linux-mips@linux-mips.org; Tue, 06 Jun 2006 10:19:47 +0200
+Date:	Tue, 6 Jun 2006 10:19:47 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Message-ID: <20060606081947.GA13486@hulk.enneenne.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.11+cvs20060126
+X-SA-Exim-Connect-IP: 192.168.32.38
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: USB device status on au1x00
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11668
+X-archive-position: 11669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 2006-06-04 at 01:01, richard wrote:
-> Then which versions or kernel should I use?
+Hello,
 
-That depends on what you are trying to do.  Normally, you would pick a
-version for one, and then pick a compatible version for the other. 
-However, since your problems have nothing to do with kernel/compiler
-versions, this isn't something you need to worry about at the moment.
+I'd like to know if someone is still working on this topic in order
+to join efforts.
+
+I know au1x00 problems on USB device controller but maybe some gadget
+is usable anyway due low interrupts request... on WinCE remotesync (or
+something similar) works. :)
+
+Ciao,
+
+Rodolfo
+
 -- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

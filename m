@@ -1,57 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2006 15:57:07 +0100 (BST)
-Received: from adsl-71-128-175-242.dsl.pltn13.pacbell.net ([71.128.175.242]:33949
-	"EHLO build.embeddedalley.com") by ftp.linux-mips.org with ESMTP
-	id S8134014AbWFGO5A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Jun 2006 15:57:00 +0100
-Received: from localhost.localdomain (build.embeddedalley.com [127.0.0.1])
-	by build.embeddedalley.com (8.13.1/8.13.1) with ESMTP id k57Esc9c019601;
-	Wed, 7 Jun 2006 07:54:40 -0700
-Subject: Re: [linux-usb-devel] [PATCH] Fix OHCI HCD build for PNX 8550
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	David Brownell <david-b@pacbell.net>,
-	linux-usb-devel@lists.sourceforge.net, gregkh@suse.de,
-	linux-mips@linux-mips.org
-In-Reply-To: <20060607143721.GA31497@linux-mips.org>
-References: <20060607135922.GA26754@linux-mips.org>
-	 <200606070727.57618.david-b@pacbell.net>
-	 <20060607143721.GA31497@linux-mips.org>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Wed, 07 Jun 2006 17:56:47 +0300
-Message-Id: <1149692207.18925.259.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2006 15:58:01 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:35815 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8134013AbWFGO5x (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2006 15:57:53 +0100
+Received: from localhost (p3137-ipad208funabasi.chiba.ocn.ne.jp [60.43.104.137])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 33060A6A9; Wed,  7 Jun 2006 23:57:48 +0900 (JST)
+Date:	Wed, 07 Jun 2006 23:58:45 +0900 (JST)
+Message-Id: <20060607.235845.128616718.anemo@mba.ocn.ne.jp>
+To:	eckhardt@satorlaser.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix some compiler warnings (field width, unused
+ variable)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <200606071103.34646.eckhardt@satorlaser.com>
+References: <Pine.LNX.4.62.0605311840170.18323@chinchilla.sonytel.be>
+	<20060602.015404.93020143.anemo@mba.ocn.ne.jp>
+	<200606071103.34646.eckhardt@satorlaser.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.4.1 
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11687
+X-archive-position: 11688
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2006-06-07 at 15:37 +0100, Ralf Baechle wrote:
-> On Wed, Jun 07, 2006 at 07:27:56AM -0700, David Brownell wrote:
-> 
-> > On Wednesday 07 June 2006 6:59 am, Ralf Baechle wrote:
-> > > The PNX8550 OHCI is a platform device so we better include the necessary
-> > > headers.
-> > 
-> > PNX ohci support has not been submitted upstream yet... just merge this
-> > with that patch before submitting.
-> 
-> Whops.  Well, I discovered alot more breakage that this one so I'll
-> abstain and leave the fixing to others that actually have hardware ...
+On Wed, 7 Jun 2006 11:03:34 +0200, Ulrich Eckhardt <eckhardt@satorlaser.com> wrote:
+> I'm not so sure if this is a good idea because some systems have 36
+> bit physical addresses while they only have 32 bit void pointers, so
+> long long is probably really the better solution.
 
-I'll talk to Philips to see how they want to handle the maintenance of
-the 8550.
+In general, it would be better to use "long long" for 32bit physical
+address.  For this particular code, both values are "unsigned long" so
+casting to "void *" for printing should be safe anyway.
 
-Thanks,
+> I'm wondering if it would be worth having a special flag in printk
+> to indicate a physical address ("%lp" perhaps?) so that you don't
+> get the unimportant leading zeroes for the bits 36 to 63 for above
+> mentioned platforms.
 
-Pete
+It might raise some new gcc/sparse warnings about format strings :-)
+
+---
+Atsushi Nemoto

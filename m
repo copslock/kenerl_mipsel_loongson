@@ -1,47 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2006 07:51:59 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:11209 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8126552AbWFGGvw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Jun 2006 07:51:52 +0100
-Received: (qmail 21798 invoked from network); 7 Jun 2006 11:01:09 -0000
-Received: from laja.dev.rtsoft.ru.dev.rtsoft.ru (HELO dev.rtsoft.ru.) (192.168.1.205)
-  by mail.dev.rtsoft.ru with SMTP; 7 Jun 2006 11:01:09 -0000
-Date:	Wed, 7 Jun 2006 10:52:21 +0400
-From:	Vitaly Wool <vitalywool@gmail.com>
-To:	linux-kernel@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2006 08:37:41 +0100 (BST)
+Received: from sigrand.ru ([80.66.88.167]:31207 "HELO mail.sigrand.com")
+	by ftp.linux-mips.org with SMTP id S8126552AbWFGHhc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2006 08:37:32 +0100
+Received: from develop (unknown [192.168.2.238])
+	by mail.sigrand.com (Postfix) with ESMTP id ADE9BE8042;
+	Wed,  7 Jun 2006 14:37:30 +0700 (NOVST)
+Date:	Wed, 7 Jun 2006 14:37:30 +0700
+From:	art <art@sigrand.ru>
+X-Mailer: The Bat! (v1.38e) S/N A1D26E39 / Educational
+Reply-To: art <art@sigrand.ru>
+Organization: Sigrand LLC
+X-Priority: 3 (Normal)
+Message-ID: <12609.060607@sigrand.ru>
+To:	ashley jones <ashley_jones_2000@yahoo.com>
 Cc:	linux-mips@linux-mips.org
-Subject: PNX8550 fails to compile in 2.6.17-rc4
-Message-Id: <20060607105221.7b15b243.vitalywool@gmail.com>
-X-Mailer: Sylpheed version 2.2.1 (GTK+ 2.8.13; i486-pc-linux-gnu)
+Subject: Re[4]: Socket buffer allocation outside DMA-able memory
+In-reply-To: <20060607051756.66058.qmail@web38409.mail.mud.yahoo.com>
+References: <20060607051756.66058.qmail@web38409.mail.mud.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <vitalywool@gmail.com>
+Return-Path: <art@sigrand.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11677
+X-archive-position: 11678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vitalywool@gmail.com
+X-original-sender: art@sigrand.ru
 Precedence: bulk
 X-list: linux-mips
 
-Hi folks,
+Hello ashley,
 
-when I try to compile Linux kernel for pnx8550 in 2.6.17-rc4, I get the following error:
+Wednesday, June 07, 2006, 12:17:56 PM, you wrote:
 
-  CC      arch/mips/philips/pnx8550/common/setup.o
-/home/vital/work/opensource/mtd/arch/mips/philips/pnx8550/common/setup.c: In function `plat_setup':
-/home/vital/work/opensource/mtd/arch/mips/philips/pnx8550/common/setup.c:133: warning: implicit declaration of function `ip3106_lcr'
-/home/vital/work/opensource/mtd/arch/mips/philips/pnx8550/common/setup.c:134: error: invalid lvalue in assignment
-/home/vital/work/opensource/mtd/arch/mips/philips/pnx8550/common/setup.c:135: warning: implicit declaration of function `ip3106_baud'
-/home/vital/work/opensource/mtd/arch/mips/philips/pnx8550/common/setup.c:135: error: invalid lvalue in assignment
-make[2]: *** [arch/mips/philips/pnx8550/common/setup.o] Error 1
-make[1]: *** [arch/mips/philips/pnx8550/common] Error 2
-make: *** [vmlinux] Error 2
 
-I guess it's not what it should be ;-)
 
-Vitaly
+aj>> I guess your 25 bit dma address field will be word alligned, so ur dma engine will be able to index up to 64 MB( 25+2 = 27 bits).
+aj> Address not aligned - if I don't do anything driver work incorrect!
+   
+aj>   *** what do you mean by Address not aligned ??
+   
+aj>   *** What address you r passing to dma ? u should pass (skb->data >> 2) (if word alligned address is required for dma engine.)
+
+In adm5120 switch driver to dma passed skb->data
+
+-- 
+Best regards,
+ art                            mailto:art@sigrand.ru

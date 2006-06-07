@@ -1,51 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2006 04:48:51 +0100 (BST)
-Received: from sigrand.ru ([80.66.88.167]:62693 "HELO mail.sigrand.com")
-	by ftp.linux-mips.org with SMTP id S8133355AbWFGDsm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2006 04:48:42 +0100
-Received: from develop (unknown [192.168.2.238])
-	by mail.sigrand.com (Postfix) with ESMTP id 58F5312A0044;
-	Wed,  7 Jun 2006 10:48:35 +0700 (NOVST)
-Date:	Wed, 7 Jun 2006 10:48:34 +0700
-From:	art <art@sigrand.ru>
-X-Mailer: The Bat! (v1.38e) S/N A1D26E39 / Educational
-Reply-To: art <art@sigrand.ru>
-Organization: Sigrand LLC
-X-Priority: 3 (Normal)
-Message-ID: <15450.060607@sigrand.ru>
-To:	ashley jones <ashley_jones_2000@yahoo.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re[2]: Socket buffer allocation outside DMA-able memory
-In-reply-To: <20060606123735.19115.qmail@web38412.mail.mud.yahoo.com>
-References: <20060606123735.19115.qmail@web38412.mail.mud.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Jun 2006 05:12:13 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:676 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S8126552AbWFGEME (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Jun 2006 05:12:04 +0100
+Received: from ala-mail04.corp.ad.wrs.com (ala-mail04 [147.11.57.145])
+	by mail.wrs.com (8.13.6/8.13.3) with ESMTP id k574Bu5t018582;
+	Tue, 6 Jun 2006 21:11:56 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ala-mail04.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 6 Jun 2006 21:11:56 -0700
+Received: from [192.168.96.27] ([192.168.96.27]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 6 Jun 2006 21:11:55 -0700
+Message-ID: <44865207.9080606@windriver.com>
+Date:	Wed, 07 Jun 2006 12:11:51 +0800
+From:	"Mark.Zhan" <rongkai.zhan@windriver.com>
+User-Agent: Thunderbird 1.5.0.2 (X11/20060522)
+MIME-Version: 1.0
+To:	art <art@sigrand.ru>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Socket buffer allocation outside DMA-able memory
+References: <6A3254532ACD7A42805B4E1BFD18080EEA211B@ism-mail01.corp.ad.wrs.com> <10452.060607@sigrand.ru>
+In-Reply-To: <10452.060607@sigrand.ru>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <art@sigrand.ru>
+X-OriginalArrivalTime: 07 Jun 2006 04:11:55.0877 (UTC) FILETIME=[8387C950:01C689E8]
+Return-Path: <rongkai.zhan@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11674
+X-archive-position: 11675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: art@sigrand.ru
+X-original-sender: rongkai.zhan@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello ashley,
+Hi art,
 
-Tuesday, June 06, 2006, 7:37:35 PM, you wrote:
+I think maybe my first noise is more easy to go.
 
+As you know, sk_buff is made of a skb header and the packet data 
+container. The skb header is allocated from the slab cache, while the 
+packet data container is allocated via kmalloc().
 
-aj>          I guess your 25 bit dma address field will be word alligned, so ur dma engine will be able to index up to 64 MB( 25+2 = 27 bits).
-Address not aligned - if I don't do anything driver work incorrect!
+So if you can add your low 32MB memory into ZONE_DMA, then your can call 
+__dev_alloc_skb() with __GFP_DMA flag in your driver, which should make 
+sure that the packet data container is in ZONE_DMA.
 
-aj>     * dont give whole 64 MB to linux, give only Lower 32 MB.
-You mean with command line kernel option? If so - I already did so to
-get all work!
+Best Regards,
+Mark.Zhan
 
-aj>     * Give only upper 32 MB to linux, and give memory to ur dma engine from lower 32 MB, and once you recv any data you copy to skb and submit to linux. ( ofcourse your performance will get hit
-aj> in this case.)
-How can I do this? I have variant that if addres is upper than 32Mb then copy skbuffer to
-previously allocated memory that lower than 32Mb, but perfomance is wery Important. Maybe
-you mean this??
+art wrote:
+> Hello Rongkai,
+>
+> Thanks! Good idea!
+>
+>
+> ZR> After having a look at the latest 2.6.17-rc6 codes, __dev_alloc_skb is defined like this:
+>
+> ZR> #ifndef CONFIG_HAVE_ARCH_DEV_ALLOC_SKB
+> ZR> /**
+> ZR>  *      __dev_alloc_skb - allocate an skbuff for sending
+> ZR>  *      @length: length to allocate
+> ZR>  *      @gfp_mask: get_free_pages mask, passed to alloc_skb
+> ZR>  *
+> ZR>  *      Allocate a new &sk_buff and assign it a usage count of one. The
+> ZR>  *      buffer has unspecified headroom built in. Users should allocate
+> ZR>  *      the headroom they think they need without accounting for the
+> ZR>  *      built in space. The built in space is used for optimisations.
+> ZR>  *
+> ZR>  *      %NULL is returned in there is no free memory.
+> ZR>  */
+> ZR> static inline struct sk_buff *__dev_alloc_skb(unsigned int length,
+> ZR>                                               gfp_t gfp_mask)
+> ZR> {
+> ZR>         struct sk_buff *skb = alloc_skb(length + NET_SKB_PAD, gfp_mask);
+> ZR>         if (likely(skb))
+> ZR>                 skb_reserve(skb, NET_SKB_PAD);
+> ZR>         return skb;
+> ZR> }
+> ZR> #else
+> ZR> extern struct sk_buff *__dev_alloc_skb(unsigned int length, int gfp_mask);
+> ZR> #endif
+>
+>
+> ZR> Therefore, you also can consider to implement your machine-specific __dev_alloc_skb() function, and force the skb is allocated from your low 32MB memory zone.
+>
+>
+>
+>   

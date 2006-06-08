@@ -1,51 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2006 18:12:54 +0100 (BST)
-Received: from intranet.codesourcery.com ([65.74.133.6]:52637 "EHLO
-	mail.codesourcery.com") by ftp.linux-mips.org with ESMTP
-	id S8133492AbWFHRMq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 Jun 2006 18:12:46 +0100
-Received: (qmail 25998 invoked from network); 8 Jun 2006 17:12:39 -0000
-Received: from unknown (HELO digraph.polyomino.org.uk) (joseph@127.0.0.2)
-  by mail.codesourcery.com with ESMTPA; 8 Jun 2006 17:12:39 -0000
-Received: from jsm28 (helo=localhost)
-	by digraph.polyomino.org.uk with local-esmtp (Exim 4.52)
-	id 1FoO3i-0002OI-6Y; Thu, 08 Jun 2006 17:12:38 +0000
-Date:	Thu, 8 Jun 2006 17:12:38 +0000 (UTC)
-From:	"Joseph S. Myers" <joseph@codesourcery.com>
-X-X-Sender: jsm28@digraph.polyomino.org.uk
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jun 2006 18:37:13 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:31125 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133548AbWFHRhF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Jun 2006 18:37:05 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k58Hb1NA004403;
+	Thu, 8 Jun 2006 18:37:01 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k58HawOS004402;
+	Thu, 8 Jun 2006 18:36:58 +0100
+Date:	Thu, 8 Jun 2006 18:36:58 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Daniel Jacobowitz <dan@debian.org>
+Cc:	"Joseph S. Myers" <joseph@codesourcery.com>,
+	linux-mips@linux-mips.org
 Subject: Re: N32 sigset and __COMPAT_ENDIAN_SWAP__
-In-Reply-To: <20060608165136.GA17152@linux-mips.org>
-Message-ID: <Pine.LNX.4.64.0606081706310.7925@digraph.polyomino.org.uk>
-References: <Pine.LNX.4.64.0606080134480.26638@digraph.polyomino.org.uk>
- <20060608165136.GA17152@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <joseph@codesourcery.com>
+Message-ID: <20060608173658.GA4056@linux-mips.org>
+References: <Pine.LNX.4.64.0606080134480.26638@digraph.polyomino.org.uk> <20060608165136.GA17152@linux-mips.org> <20060608170310.GA23814@nevyn.them.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060608170310.GA23814@nevyn.them.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11703
+X-archive-position: 11704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joseph@codesourcery.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 8 Jun 2006, Ralf Baechle wrote:
+On Thu, Jun 08, 2006 at 01:03:10PM -0400, Daniel Jacobowitz wrote:
 
-> Interesting that a bug of this sort manages to survive for that long.
-> I guess it is proof that barely anybody is using 64-bit little endian,
-> yet we're cursed to support it.
+> Anyway, I was curious if you knew where this code had come from.  I
+> didn't see anything to suggest that anyone besides mipsel ever
+> used it, but it entered linux-mips.org via a merge from kernel.org,
+> just before git history.
+> 
+> Oh, right, there's a historical import:
+> 
+> http://www.kernel.org/git/?p=linux/kernel/git/torvalds/old-2.6-bkcvs.git;a=commitdiff;h=32ed691a4efbc1c43584b7b7a6d782528241bb27
 
-I might conclude that barely anybody is *yet* using NPTL on 64-bit MIPS at 
-all, for either endianness, given that most of the problems I've been 
-finding, in glibc as well as the kernel, don't seem endian-specific and 
-would probably show up in a glibc testsuite run for either endianness.  
-MIPS64 NPTL is very new and seems to do a good job of showing up bugs in 
-the three syscall interfaces.
+> It was copied from sys32_rt_sigtimedwait, which was wrong at least back
+> to the initial revision of signal32.c.  I didn't go back any further.
 
--- 
-Joseph S. Myers
-joseph@codesourcery.com
+I can further track it into 2.4 or even pre-2.4 where such
+__MIPSEB__ / __MIPSEL__ dependencies did exist under arch/mips64/.
+I think it was right until a certain point in 2.5 when
+get_sigset and put_sigset were implement in a clever way that
+automatically takes care of the endianess issue - but the swapping code
+outside arch/mips got forgotten.
+
+  Ralf

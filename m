@@ -1,54 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jun 2006 02:16:07 +0100 (BST)
-Received: from rwcrmhc12.comcast.net ([216.148.227.152]:11409 "EHLO
-	rwcrmhc12.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S8133646AbWFIBP6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Jun 2006 02:15:58 +0100
-Received: from [127.0.0.1] (unknown[69.140.185.142])
-          by comcast.net (rwcrmhc12) with ESMTP
-          id <20060609011551m1200o6511e>; Fri, 9 Jun 2006 01:15:52 +0000
-Message-ID: <4488CBCC.4090405@gentoo.org>
-Date:	Thu, 08 Jun 2006 21:15:56 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 1.5.0.4 (Windows/20060516)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jun 2006 18:25:07 +0100 (BST)
+Received: from web31505.mail.mud.yahoo.com ([68.142.198.134]:15190 "HELO
+	web31505.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133654AbWFIRY4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Jun 2006 18:24:56 +0100
+Received: (qmail 23751 invoked by uid 60001); 9 Jun 2006 17:24:43 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=6ZWLD68av36OZN6pZMvC4g3MZ/X1zb2iDNNyWtAjgvG5s2CQpSnyLtuoNotw4C3JfIMPt8ZRaXluyYrQj9i476LumgC6gv4rX6vzeXXhSruKD1pZr6KEkHnvtEvSS0ObOiSviF4g9aPCHSm3a5dvd406RE1uKekORXQGMdGRYVQ=  ;
+Message-ID: <20060609172443.23749.qmail@web31505.mail.mud.yahoo.com>
+Received: from [208.187.37.98] by web31505.mail.mud.yahoo.com via HTTP; Fri, 09 Jun 2006 10:24:43 PDT
+Date:	Fri, 9 Jun 2006 10:24:43 -0700 (PDT)
+From:	Jonathan Day <imipak@yahoo.com>
+Subject: re: where I can find a crosscompiler for BCM1255
 To:	linux-mips@linux-mips.org
-CC:	"Joseph S. Myers" <joseph@codesourcery.com>
-Subject: Re: N32 sigset and __COMPAT_ENDIAN_SWAP__
-References: <Pine.LNX.4.64.0606080134480.26638@digraph.polyomino.org.uk> <20060608165136.GA17152@linux-mips.org> <Pine.LNX.4.64.0606081706310.7925@digraph.polyomino.org.uk>
-In-Reply-To: <Pine.LNX.4.64.0606081706310.7925@digraph.polyomino.org.uk>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <imipak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11705
+X-archive-position: 11706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: imipak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Joseph S. Myers wrote:
-> 
-> I might conclude that barely anybody is *yet* using NPTL on 64-bit MIPS at 
-> all, for either endianness, given that most of the problems I've been 
-> finding, in glibc as well as the kernel, don't seem endian-specific and 
-> would probably show up in a glibc testsuite run for either endianness.  
-> MIPS64 NPTL is very new and seems to do a good job of showing up bugs in 
-> the three syscall interfaces.
+I have built cross-compilers for the Broadcom BCM1250
+using the instructions and patches on the "Linux From
+Scratch" website. You need to look for the
+cross-compiler version of their guide, then select
+"browse online" and finally "mips64" to get to the
+instructions/patches for building for the 64-bit MIPS
+platforms.
 
-I'm actually going to start running some automated builds of a nptl/o32 and 
-nptl/n32 userland over the next few days.  If you have any patches that need 
-testing to correct known oddities, I can give them a run in these builds.
+Do NOT use their kernel or kernel patches - use the
+version in the git repository on linux-mips.
+
+I personally use the binutils from CVS, rather than
+the version they have on their website, but there are
+no guarantees that their alterations to their MIPS
+code has fixed bugs or added them. This is NOT a
+well-tested or well-supported platform, even by (or
+especially by, in Broadcom's case) the manufacturers.
+
+I have the C, C++ and GFortran compilers working. It
+would appear to be much harder to get ADA to work. I
+have not tried Objective C or Objective C++.
+
+(GFortran is buggy, but efforts to get G95 to compile
+correctly are so far proving very frustrating. It
+compiles natively and cross-compiles just fine, but
+fails to generate valid code on the Broadcom 1250. The
+compiler does work, as I have got it to work just fine
+on ix86 systems and it is the recommended Fortran 95
+compiler by many organizations I've talked to.
+Obviously, if you don't have to worry about Fortran,
+this is a non-issue. For those who do, coaxing G95 to
+behave with GCC 4.1.x will be an interesting problem.)
 
 
---Kumba
-
--- 
-Gentoo/MIPS Team Lead
-Gentoo Foundation Board of Trustees
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

@@ -1,115 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jun 2006 15:29:16 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:53503 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133794AbWFKO3G (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 11 Jun 2006 15:29:06 +0100
-Received: from localhost (p4129-ipad28funabasi.chiba.ocn.ne.jp [220.107.203.129])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 4B13DA9F7; Sun, 11 Jun 2006 23:29:02 +0900 (JST)
-Date:	Sun, 11 Jun 2006 23:30:01 +0900 (JST)
-Message-Id: <20060611.233001.126141865.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH] fix futex_atomic_op_inuser
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060611.232543.59465208.anemo@mba.ocn.ne.jp>
-References: <20060611.232543.59465208.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Jun 2006 21:22:10 +0100 (BST)
+Received: from nz-out-0102.google.com ([64.233.162.195]:48372 "EHLO
+	nz-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133809AbWFKUV7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 11 Jun 2006 21:21:59 +0100
+Received: by nz-out-0102.google.com with SMTP id z3so1159072nzf
+        for <linux-mips@linux-mips.org>; Sun, 11 Jun 2006 13:21:57 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=W7zp/iYBqZBQmwbtrbdRoNysMtIJ1IDwYcL+Cikod0ccF8T455Tx5hponWiJPrEcHk1BLkAEOhRcdGHNQOYeMZgDAX74Rn+eHsVHGQFnYmwzzvDviTf9yzarTBzOrhFS6SSp0Ea+ZNp6txbV9bGNH8/rChjPhea/rLcnMcOjA14=
+Received: by 10.36.196.20 with SMTP id t20mr7553873nzf;
+        Sun, 11 Jun 2006 13:21:57 -0700 (PDT)
+Received: by 10.36.128.9 with HTTP; Sun, 11 Jun 2006 13:21:57 -0700 (PDT)
+Message-ID: <acd2a5930606111321t11c29c77p83e56615b42902f9@mail.gmail.com>
+Date:	Mon, 12 Jun 2006 00:21:57 +0400
+From:	"Vitaly Wool" <vitalywool@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: PNX8550 fails to compile in 2.6.17-rc4
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+In-Reply-To: <20060607142702.GA20184@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_2234_20641037.1150057317747"
+References: <20060607105221.7b15b243.vitalywool@gmail.com>
+	 <20060607142702.GA20184@linux-mips.org>
+Return-Path: <vitalywool@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11709
+X-archive-position: 11710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vitalywool@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 11 Jun 2006 23:25:43 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> I found that NPTL's pthread_cond_signal() does not work properly on
-> kernels compiled by gcc 4.1.x.  I suppose inline asm for
-> __futex_atomic_op() was wrong.  I suppose:
-> 
-> 1. "=&r" constraint should be used for oldval.
-> 2. Instead of "r" (uaddr), "=R" (*uaddr) for output and "R" (*uaddr)
->    for input should be used.
-> 3. "memory" should be added to the clobber list.
-> 
-> This patch solved the problem.
+------=_Part_2234_20641037.1150057317747
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-And here is a patch for 2.6.16-stable tree.
+Hello Ralf,
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+On 6/7/06, Ralf Baechle <ralf@linux-mips.org> wrote:
+> This seems to be one of the serial bits for the ip3106 which must have
+> been lost on the way to kernel.org.  Unfortunately the original author
+> does no longer take care of the code.  I just took a stab at the PNX8550
+> code and it has a significant number of other problems.  All small in
+> the sum large enough such that I will mark PNX8550 support broken.
 
-diff --git a/include/asm-mips/futex.h b/include/asm-mips/futex.h
-index 2454c44..e1f960d 100644
---- a/include/asm-mips/futex.h
-+++ b/include/asm-mips/futex.h
-@@ -20,26 +20,27 @@
- 	"	.set	push					\n"	\
- 	"	.set	noat					\n"	\
- 	"	.set	mips3					\n"	\
--	"1:	ll	%1, (%3)	# __futex_atomic_op1	\n"	\
-+	"1:	ll	%1, %4	# __futex_atomic_op1		\n"	\
- 	"	.set	mips0					\n"	\
- 	"	" insn	"					\n"	\
- 	"	.set	mips3					\n"	\
--	"2:	sc	$1, (%3)				\n"	\
-+	"2:	sc	$1, %2					\n"	\
- 	"	beqzl	$1, 1b					\n"	\
- 	__FUTEX_SMP_SYNC						\
- 	"3:							\n"	\
- 	"	.set	pop					\n"	\
- 	"	.set	mips0					\n"	\
- 	"	.section .fixup,\"ax\"				\n"	\
--	"4:	li	%0, %5					\n"	\
-+	"4:	li	%0, %6					\n"	\
- 	"	j	2b					\n"	\
- 	"	.previous					\n"	\
- 	"	.section __ex_table,\"a\"			\n"	\
- 	"	"__UA_ADDR "\t1b, 4b				\n"	\
- 	"	"__UA_ADDR "\t2b, 4b				\n"	\
- 	"	.previous					\n"	\
--	: "=r" (ret), "=r" (oldval)					\
--	: "0" (0), "r" (uaddr), "Jr" (oparg), "i" (-EFAULT));		\
-+	: "=r" (ret), "=&r" (oldval), "=R" (*uaddr)			\
-+	: "0" (0), "R" (*uaddr), "Jr" (oparg), "i" (-EFAULT)		\
-+	: "memory");							\
- }
- 
- static inline int
-@@ -60,23 +61,23 @@ futex_atomic_op_inuser (int encoded_op, 
- 
- 	switch (op) {
- 	case FUTEX_OP_SET:
--		__futex_atomic_op("move	$1, %z4", ret, oldval, uaddr, oparg);
-+		__futex_atomic_op("move	$1, %z5", ret, oldval, uaddr, oparg);
- 		break;
- 
- 	case FUTEX_OP_ADD:
--		__futex_atomic_op("addu	$1, %1, %z4",
-+		__futex_atomic_op("addu	$1, %1, %z5",
- 		                  ret, oldval, uaddr, oparg);
- 		break;
- 	case FUTEX_OP_OR:
--		__futex_atomic_op("or	$1, %1, %z4",
-+		__futex_atomic_op("or	$1, %1, %z5",
- 		                  ret, oldval, uaddr, oparg);
- 		break;
- 	case FUTEX_OP_ANDN:
--		__futex_atomic_op("and	$1, %1, %z4",
-+		__futex_atomic_op("and	$1, %1, %z5",
- 		                  ret, oldval, uaddr, ~oparg);
- 		break;
- 	case FUTEX_OP_XOR:
--		__futex_atomic_op("xor	$1, %1, %z4",
-+		__futex_atomic_op("xor	$1, %1, %z5",
- 		                  ret, oldval, uaddr, oparg);
- 		break;
- 	default:
+I took an attempt to compile 2.6.16.20 kernel from linux-mips.org for
+PNX8550 and it went a little further but also failed soon:
+
+  CC      arch/mips/philips/pnx8550/common/platform.o
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:101: error: variable
+`pnx8550_usb_ohci_device' has initializer but incomplete type
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102: error: unknown
+field `name' specified in initializer
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102: warning: excess
+elements in struct initializer
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102: warning: (near
+initialization for `pnx8550_usb_ohci_device')
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:103: error: unknown
+field `id' specified in initializer
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:103: warning: excess
+elements in struct initializer
+...
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:101: error: storage
+size of `pnx8550_usb_ohci_device' isn't known
+/home/vital/work/opensource/linux-
+2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:112: error: storage
+size of `pnx8550_uart_device' isn't known
+make[2]: *** [arch/mips/philips/pnx8550/common/platform.o] Error 1
+make[1]: *** [arch/mips/philips/pnx8550/common] Error 2
+make: *** [vmlinux] Error 2
+
+Does it make sense to try to fix those? Or will it only result in more
+errore showing up next?
+
+Best regards,
+   Vitaly
+
+------=_Part_2234_20641037.1150057317747
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Hello Ralf,<br><br>
+<div><span class="gmail_quote">On 6/7/06, <b class="gmail_sendername">Ralf Baechle</b> &lt;<a href="mailto:ralf@linux-mips.org">ralf@linux-mips.org</a>&gt; wrote:</span></div>
+<div>&gt; This seems to be one of the serial bits for the ip3106 which must have<br>&gt; been lost on the way to <a href="http://kernel.org">kernel.org</a>.&nbsp;&nbsp;Unfortunately the original author<br>&gt; does no longer take care of the code.&nbsp;&nbsp;I just took a stab at the PNX8550
+<br>&gt; code and it has a significant number of other problems.&nbsp;&nbsp;All small in<br>&gt; the sum large enough such that I will mark PNX8550 support broken.<br>&nbsp;</div>
+<div>I took an attempt to compile <a href="http://2.6.16.20">2.6.16.20</a> kernel from <a href="http://linux-mips.org">linux-mips.org</a> for PNX8550 and it went a little further but also failed soon:</div>
+<div>&nbsp;</div>
+<div>&nbsp; CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arch/mips/philips/pnx8550/common/platform.o<br>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:101">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:101
+</a>: error: variable `pnx8550_usb_ohci_device' has initializer but incomplete type<br>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102
+</a>: error: unknown field `name' specified in initializer<br>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102
+</a>: warning: excess elements in struct initializer<br>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:102
+</a>: warning: (near initialization for `pnx8550_usb_ohci_device')<br>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:103">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:103
+</a>: error: unknown field `id' specified in initializer<br>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:103">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:103
+</a>: warning: excess elements in struct initializer<br>...</div>
+<div>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:101">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:101</a>: error: storage size of `pnx8550_usb_ohci_device' isn't known
+<br>/home/vital/work/opensource/linux-<a href="http://2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:112">2.6.16.20/arch/mips/philips/pnx8550/common/platform.c:112</a>: error: storage size of `pnx8550_uart_device' isn't known
+<br>make[2]: *** [arch/mips/philips/pnx8550/common/platform.o] Error 1<br>make[1]: *** [arch/mips/philips/pnx8550/common] Error 2<br>make: *** [vmlinux] Error 2<br>&nbsp;</div>
+<div>Does it make sense to try to fix those? Or will it only result in more errore showing up next?</div>
+<div>&nbsp;</div>
+<div>Best regards,</div>
+<div>&nbsp;&nbsp; Vitaly<br><br>&nbsp;</div>
+
+------=_Part_2234_20641037.1150057317747--

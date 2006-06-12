@@ -1,81 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jun 2006 18:13:37 +0100 (BST)
-Received: from web31513.mail.mud.yahoo.com ([68.142.198.142]:9876 "HELO
-	web31513.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133494AbWFLRN1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Jun 2006 18:13:27 +0100
-Received: (qmail 65852 invoked by uid 60001); 12 Jun 2006 17:13:20 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jun 2006 21:03:53 +0100 (BST)
+Received: from wr-out-0506.google.com ([64.233.184.226]:35023 "EHLO
+	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133653AbWFLUDo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Jun 2006 21:03:44 +0100
+Received: by wr-out-0506.google.com with SMTP id 71so1202775wri
+        for <linux-mips@linux-mips.org>; Mon, 12 Jun 2006 13:03:43 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=T8abjrgaIMLE5XB73mD4rhnj1uIA/0Ri+Eq7hMa7HXSddnyXajwYCuUXS1cimGK8OuQPEl7pgtSC9Kbm7M+ZuL8jz+SRSyzJY5ZMt2gTswHigRJY2Hn1DkG2DrwqXV8D6gt1WdcZR4CjOFFHkF0knQnDpkB3vLdss991NPHN58I=  ;
-Message-ID: <20060612171320.65850.qmail@web31513.mail.mud.yahoo.com>
-Received: from [208.187.37.98] by web31513.mail.mud.yahoo.com via HTTP; Mon, 12 Jun 2006 10:13:20 PDT
-Date:	Mon, 12 Jun 2006 10:13:20 -0700 (PDT)
-From:	Jonathan Day <imipak@yahoo.com>
-Subject: Re: where I can find a crosscompiler for BCM1255
-To:	Jim Gifford <maillist@jg555.com>
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=TM6FX72IPnNiP3QO1bUHuiEuAzIiFpcVxR1iZkGo5Y4YYoGG5eNn4OEfXICvlYtBHLNVjwI+/JxeiCXHVjYQZ0aO3RjZzaxClXVC/JE6xBZDgVHnBuTptKmMkS1qor1dYh0qg5WehSBC16bqO+uPs62BeFpdydCGNniUqX9bWVI=
+Received: by 10.85.2.9 with SMTP id e9mr7245360aui;
+        Mon, 12 Jun 2006 13:03:43 -0700 (PDT)
+Received: by 10.85.9.16 with HTTP; Mon, 12 Jun 2006 13:03:43 -0700 (PDT)
+Message-ID: <816d36d30606121303u4e6529aat24bf60cd6ae8c37c@mail.gmail.com>
+Date:	Mon, 12 Jun 2006 16:03:43 -0400
+From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
+To:	"Juergen Sell" <juergen.sell@gmail.com>
+Subject: Re: Support for Vadem/Clio with NEC VR4121 anyone?
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <448A1497.3000909@jg555.com>
+In-Reply-To: <c2c892590606120819m3cf64540n7cfcc8cd0e7fa394@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <imipak@yahoo.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <c2c892590606120819m3cf64540n7cfcc8cd0e7fa394@mail.gmail.com>
+Return-Path: <mendoza.ricardo@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11715
+X-archive-position: 11716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: imipak@yahoo.com
+X-original-sender: mendoza.ricardo@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+The current 2.6 kernel has a good support base for VR41XX processors,
+I am working with a 2.6.15 on a VR4121 MobilePro. I had some problems
+booting 2.6.16, but never really looked much into it, instead im still
+working on pcmcia support on my device.
 
+Try booting one of these and hooking up a serial console, after that
+it's a matter of having the right external device drivers. Most of the
+vrc4171 function drivers are out there and can be found easily;
+although if your device uses a different set of controllers for
+peripherals such as LCD, PCMCIA and sound then it might need some more
+work on your side.
 
---- Jim Gifford <maillist@jg555.com> wrote:
+Ricardo
 
-> Jonathan Day wrote:
-> > I have built cross-compilers for the Broadcom
-> BCM1250
-> > using the instructions and patches on the "Linux
-> From
-> > Scratch" website. You need to look for the
-> > cross-compiler version of their guide, then select
-> > "browse online" and finally "mips64" to get to the
-> > instructions/patches for building for the 64-bit
-> MIPS
-> > platforms.
-> >
-> > Do NOT use their kernel or kernel patches - use
-> the
-> > version in the git repository on linux-mips.
-> >
-> >   
-> 
-> Johnathan, I'm on of the developers of CLFS, did you
->  run into a problem 
-> with the patches? The patch is diff  kernel.org and
-> linux-mips.org 
-> kernels. Just curious, if we missed something let me
-> know.
-
-No, the patches are fine. The problem is "Rapid
-Development Syndrome" - no matter how fast the patches
-are updated, critical bugfixes will likely work their
-way into the git repository before the next patch
-update. This isn't a big issue for 99.99% of the tools
-- there, updates are as likely to cause problems as
-fix them, so the delay is actually beneficial.
-
-(Now, -configuring- the Linux kernel can be
-interesting, as I've yet to get dialog to function
-correctly...)
-
-Jonathan
-
-
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+On 6/12/06, Juergen Sell <juergen.sell@gmail.com> wrote:
+> Hi,
+> I did aquire such a device, by now 5 years old. From what I found
+> searching various archives it might have had linux vr or linux mips
+> support at one point around 2001 but
+> this seem to be lost? (I even found a binay of a 2.3.99 linux kernel,
+> but no docs, no config no modules, nothing else. So that seems pretty
+> useless, right?)
+>
+> Anyway I would very much prefer Linux over the embedded win/ce.
+> Now I am wondering whether any current pointers or configuration is
+> available to get me started? A working kernel config file might be a
+> good start (for a recent kernel perhaps?).
+> By now I have a boot-loader that works under win/ce and loads from a
+> cf-card (tested with the above mentioned linux kernel binary).

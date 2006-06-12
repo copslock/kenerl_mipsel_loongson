@@ -1,52 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jun 2006 16:19:10 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.169]:65017 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133400AbWFLPTC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Jun 2006 16:19:02 +0100
-Received: by ug-out-1314.google.com with SMTP id y2so2252908uge
-        for <linux-mips@linux-mips.org>; Mon, 12 Jun 2006 08:19:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jun 2006 18:13:37 +0100 (BST)
+Received: from web31513.mail.mud.yahoo.com ([68.142.198.142]:9876 "HELO
+	web31513.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133494AbWFLRN1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Jun 2006 18:13:27 +0100
+Received: (qmail 65852 invoked by uid 60001); 12 Jun 2006 17:13:20 -0000
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=a79Tl2MNyzIj/1xQ5TFzHbXBSLnuAH3Hh8M65pkxYrLhtBVYpdXm//7msXvhhO/6r393c/PRY7So9uOYVG3ia+gWmr63g00t9xrwM9b3sZKOcNXgCrgMQli7XeCBSTAU7RyuI1LDDBAHACFd+/TgCZ6UPfdn+Egg2ZnXVgW32Tg=
-Received: by 10.67.96.14 with SMTP id y14mr5288998ugl;
-        Mon, 12 Jun 2006 08:19:01 -0700 (PDT)
-Received: by 10.66.239.13 with HTTP; Mon, 12 Jun 2006 08:19:01 -0700 (PDT)
-Message-ID: <c2c892590606120819m3cf64540n7cfcc8cd0e7fa394@mail.gmail.com>
-Date:	Mon, 12 Jun 2006 17:19:01 +0200
-From:	"Juergen Sell" <juergen.sell@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Support for Vadem/Clio with NEC VR4121 anyone?
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=T8abjrgaIMLE5XB73mD4rhnj1uIA/0Ri+Eq7hMa7HXSddnyXajwYCuUXS1cimGK8OuQPEl7pgtSC9Kbm7M+ZuL8jz+SRSyzJY5ZMt2gTswHigRJY2Hn1DkG2DrwqXV8D6gt1WdcZR4CjOFFHkF0knQnDpkB3vLdss991NPHN58I=  ;
+Message-ID: <20060612171320.65850.qmail@web31513.mail.mud.yahoo.com>
+Received: from [208.187.37.98] by web31513.mail.mud.yahoo.com via HTTP; Mon, 12 Jun 2006 10:13:20 PDT
+Date:	Mon, 12 Jun 2006 10:13:20 -0700 (PDT)
+From:	Jonathan Day <imipak@yahoo.com>
+Subject: Re: where I can find a crosscompiler for BCM1255
+To:	Jim Gifford <maillist@jg555.com>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <448A1497.3000909@jg555.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <juergen.sell@gmail.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <imipak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11714
+X-archive-position: 11715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juergen.sell@gmail.com
+X-original-sender: imipak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-I did aquire such a device, by now 5 years old. From what I found
-searching various archives it might have had linux vr or linux mips
-support at one point around 2001 but
-this seem to be lost? (I even found a binay of a 2.3.99 linux kernel,
-but no docs, no config no modules, nothing else. So that seems pretty
-useless, right?)
 
-Anyway I would very much prefer Linux over the embedded win/ce.
-Now I am wondering whether any current pointers or configuration is
-available to get me started? A working kernel config file might be a
-good start (for a recent kernel perhaps?).
-By now I have a boot-loader that works under win/ce and loads from a
-cf-card (tested with the above mentioned linux kernel binary).
 
-Any and all pointers welcome.
-Juergen
+--- Jim Gifford <maillist@jg555.com> wrote:
+
+> Jonathan Day wrote:
+> > I have built cross-compilers for the Broadcom
+> BCM1250
+> > using the instructions and patches on the "Linux
+> From
+> > Scratch" website. You need to look for the
+> > cross-compiler version of their guide, then select
+> > "browse online" and finally "mips64" to get to the
+> > instructions/patches for building for the 64-bit
+> MIPS
+> > platforms.
+> >
+> > Do NOT use their kernel or kernel patches - use
+> the
+> > version in the git repository on linux-mips.
+> >
+> >   
+> 
+> Johnathan, I'm on of the developers of CLFS, did you
+>  run into a problem 
+> with the patches? The patch is diff  kernel.org and
+> linux-mips.org 
+> kernels. Just curious, if we missed something let me
+> know.
+
+No, the patches are fine. The problem is "Rapid
+Development Syndrome" - no matter how fast the patches
+are updated, critical bugfixes will likely work their
+way into the git repository before the next patch
+update. This isn't a big issue for 99.99% of the tools
+- there, updates are as likely to cause problems as
+fix them, so the delay is actually beneficial.
+
+(Now, -configuring- the Linux kernel can be
+interesting, as I've yet to get dialog to function
+correctly...)
+
+Jonathan
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

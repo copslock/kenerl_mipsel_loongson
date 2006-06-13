@@ -1,83 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jun 2006 23:58:57 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:14556 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133885AbWFLW6t (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 12 Jun 2006 23:58:49 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5CMwnd2009189;
-	Mon, 12 Jun 2006 23:58:49 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5CMwm4m009188;
-	Mon, 12 Jun 2006 23:58:48 +0100
-Date:	Mon, 12 Jun 2006 23:58:48 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jonathan Day <imipak@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2006 08:01:27 +0100 (BST)
+Received: from wr-out-0506.google.com ([64.233.184.237]:46358 "EHLO
+	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133358AbWFMHBS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Jun 2006 08:01:18 +0100
+Received: by wr-out-0506.google.com with SMTP id 58so98125wri
+        for <linux-mips@linux-mips.org>; Tue, 13 Jun 2006 00:01:17 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=sNw7ePyI5xkl+26DOs3xOsiejZCJUGamoWbHj4kZfubo2p9tipcz58num23TIk9lvIH7ZBEPS15RYXEb7D2U429Fz+NT/LrOyDUexI0B/B51YJQ3DiiX5ZcXzlWY3KjCBV+m3zlQyiFEYw49HNceV1Vf2xJsmAdhzYFoxmSzAfM=
+Received: by 10.54.124.15 with SMTP id w15mr520446wrc;
+        Tue, 13 Jun 2006 00:01:17 -0700 (PDT)
+Received: by 10.54.156.16 with HTTP; Tue, 13 Jun 2006 00:01:17 -0700 (PDT)
+Message-ID: <cda58cb80606130001u66e96ba4vfd0324a48a0bbd44@mail.gmail.com>
+Date:	Tue, 13 Jun 2006 09:01:17 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Chad Reese" <kreese@caviumnetworks.com>
+Subject: Re: Any examples / docs for getting SPARSEMEM to work?
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Performance counters and profiling on MIPS
-Message-ID: <20060612225848.GA7163@linux-mips.org>
-References: <20060607172252.47981.qmail@web31512.mail.mud.yahoo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <446CB5D8.107@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20060607172252.47981.qmail@web31512.mail.mud.yahoo.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <446CB5D8.107@caviumnetworks.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11719
+X-archive-position: 11720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jun 07, 2006 at 10:22:52AM -0700, Jonathan Day wrote:
+Hi,
 
-> Two quick and semi-related questions for the Gurus of
-> the MIPS. First off, it would appear that profiling on
-> any of the Broadcom MIPS processors is broken. I get
-> the following warnings when compiling the
-> platform-specific irq.c file:
+2006/5/18, Chad Reese <kreese@caviumnetworks.com>:
+> Hello All,
+>
+> I've spent the last few days trying to get SPARSEMEM to work on a 64bit Mips
+> kernel. The processor I'm using has large wholes in its memory map.
+>
+> Memory layout:
+> 0 - 0x10000000                  First 256MB
+> 0x410000000 - 0x420000000       Second 256MB
 
-This is ZBus-based profiling which also isn't supported by the standard
-profiling tool oprofile.  Oprofile is using the performance counters of
-the processor itself.
+Sorry for the delay, I didn't notice your post before...
 
-> My second question is with regards to accessing the
-> performance counters and timestamp counters from
-> userspace. On some architectures, this is as simple as
-> using a single macro.
-> 
-> In the case of the ix86 architecture (yuk!), the
-> timestamp counters can be read with nothing more than
-> an rdtsc() call, as follows:
-> 
-> asm volatile ("rdtsc" : "=a"(*(elg_ui4
-> *)&clock_value),
->                 "=d"(*(((elg_ui4 *)&clock_value)+1)));
-> 
-> What is the closest equiv. for the MIPS processors?
+Just out of curiosity, what value for PAGE_OFFSET do you use ? In
+other word how do you convert a physical address into a virtual one if
+you use these two memories ?
 
-On most R4000-style processors (that includes the SB1 core of the Sibyte
-chips) applications can access the cycle counter through an
-mfc0 $reg, $c0_count instruction.  However mfc0 is a priviledged
-instruction, so that doesn't work for code that doesn't have kernel
-priviledges.
+Could you show us the virtual address ranges for each memories ?
 
-For release 2 of the MISP32 / MIPS64 architecture there is a new
-instruction, rdhwr which an application - so the OS permits it - can
-use to read c0_count.
+> 0x20000000 - ?                  The rest of memory
+>
+> Up until now I've used the flat memory model and not mapped the 2nd 256MB. This
+> is rather wasteful for boards with 512MB of memory. SPARSEMEM look like what I
+> need, but I've been unable to get it working. My attempts to configure it always
+> end with sparse_index_alloc calling alloc_bootmem_node which fails to allocate
+> 4KB. In prom_init I've added memory using add_memory_region.
+>
+> Are there any reasonably easy to follow implementations of sparsemem? I figure
+> I'm missing something very basic, but perusal of Mips and the other
+> architectures haven't helped much.
+>
+> My baseline is linux-mips 2.6.14.
+>
+> Any help would be appreciated,
+>
+> Chad
+>
 
-Now there are two problems with that approach in your case:
-
- o SB1 implements release 0.95 of the MIPS64 architecture, SB1A release 1.
-   Iow these cores don't have rdhwr.
- o In general on a multiprocessor system you don't have a guarantee that
-   the count registers of all processors are running at the same speed or
-   were set to the same value at any time.
-      This is more of a general problem; in case of the BCM1250 the cores
-   are actually running at the same speed and afair are synchronized by
-   the reset.
-
-  Ralf
+-- 
+               Franck

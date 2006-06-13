@@ -1,54 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2006 14:34:46 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:21900 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133784AbWFMNei (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 13 Jun 2006 14:34:38 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5DDYbIi009745;
-	Tue, 13 Jun 2006 14:34:37 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5DDYb8O009744;
-	Tue, 13 Jun 2006 14:34:37 +0100
-Date:	Tue, 13 Jun 2006 14:34:37 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Rodolfo Giometti <giometti@linux.it>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] APM (emu) support
-Message-ID: <20060613133437.GA9186@linux-mips.org>
-References: <20060605154310.GF27426@enneenne.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060605154310.GF27426@enneenne.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2006 18:15:09 +0100 (BST)
+Received: from mail3.extremenetworks.com ([207.179.9.4]:14928 "EHLO
+	extrgate1.extremenetworks.com") by ftp.linux-mips.org with ESMTP
+	id S8133737AbWFMRPA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Jun 2006 18:15:00 +0100
+Received: by extrgate1.extremenetworks.com with Internet Mail Service (5.5.2656.59)
+	id <GWSVLXPF>; Tue, 13 Jun 2006 10:14:52 -0700
+Message-ID: <4C8B0EA487B9554D910B0587CD91395C042F9A1F@sc-msexch-03.extremenetworks.com>
+From:	Alex Oumanski <AOumanski@extremenetworks.com>
+To:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Do I use right image?
+Date:	Tue, 13 Jun 2006 10:06:33 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <AOumanski@extremenetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11722
+X-archive-position: 11723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: AOumanski@extremenetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 05, 2006 at 05:43:10PM +0200, Rodolfo Giometti wrote:
-
-> here my proposal to add APM (emu) support into mips tree. It's just
-> the one for ARM adapted...
-> 
-> I have tested it on my au1100 based board with a battery pack. Also
-> the command:
-> 
->    $ apm --suspend
-> 
-> works correctly!
-
-Looking good, indeed.
-
-There is a sore spot though.  Your patch creates arch/mips/kernel/apm.c
-as an essentially unmodified copy of arch/arch/kernel/apm.c and the
-latter as you have found is actually portable code.  So I suggest you
-rather move that file to drivers/char/ and use it for both architectures.
-
-  Ralf
+I built linux 2.6 for sibyte1250 CPU, and see in the top directory image
+named vmlinux
+I try to boot this image by issuing:
+pboot tftp://10.211.32.100/vmlinux "root=/dev/ram0 ro init=/linuxrc
+pacman=1"
+from the boot rom prompt of my board. The board hangs and I don't see a
+single message ever coming out on my console.
+Do I use right image?

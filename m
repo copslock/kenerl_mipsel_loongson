@@ -1,75 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2006 22:44:41 +0100 (BST)
-Received: from wx-out-0102.google.com ([66.249.82.201]:22886 "EHLO
-	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133865AbWFMVoc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Jun 2006 22:44:32 +0100
-Received: by wx-out-0102.google.com with SMTP id t5so982258wxc
-        for <linux-mips@linux-mips.org>; Tue, 13 Jun 2006 14:44:29 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:sender:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;
-        b=uT/8hinHjL++OaDcBc7vASg320Vte8RbAJ1+UNZ7y+FZZdnFLg2A1kE8RAY9fGs+88y1vTIaKhqh08EGqMgPxv/cS4QiD8/IpwDET5Cd4gXZwzsHk8x5Q26NuJhlWCyyXmJBHAnCGwXM1zU4MgBF0NBmAUeKbZzKijj6gwFPmNc=
-Received: by 10.70.7.5 with SMTP id 5mr7930147wxg;
-        Tue, 13 Jun 2006 14:44:28 -0700 (PDT)
-Received: by 10.70.73.1 with HTTP; Tue, 13 Jun 2006 14:44:28 -0700 (PDT)
-Message-ID: <e8180c7f0606131444g2b9f1703s2ef21f1ff1fb0880@mail.gmail.com>
-Date:	Tue, 13 Jun 2006 14:44:28 -0700
-From:	"Prasad Boddupalli" <bprasad@cs.arizona.edu>
-To:	"Jonathan Day" <imipak@yahoo.com>
-Subject: Re: Performance counters and profiling on MIPS
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20060613212743.64709.qmail@web31506.mail.mud.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jun 2006 23:58:06 +0100 (BST)
+Received: from 209-232-97-206.ded.pacbell.net ([209.232.97.206]:163 "EHLO
+	dns0.mips.com") by ftp.linux-mips.org with ESMTP id S8133835AbWFMW55
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Jun 2006 23:57:57 +0100
+Received: from mercury.mips.com (sbcns-dmz [209.232.97.193])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k5DMvWNr011609;
+	Tue, 13 Jun 2006 15:57:33 -0700 (PDT)
+Received: from ukservices1.mips.com (ukservices1 [192.168.192.240])
+	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id k5DMvX4p027741;
+	Tue, 13 Jun 2006 15:57:33 -0700 (PDT)
+Received: from bank.mips.com ([192.168.192.132] helo=[127.0.0.1])
+	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1FqHpA-0000el-00; Tue, 13 Jun 2006 23:57:28 +0100
+Message-ID: <448F42D7.5060401@mips.com>
+Date:	Tue, 13 Jun 2006 23:57:27 +0100
+From:	Nigel Stephens <nigel@mips.com>
+Organization: MIPS Technologies Inc
+User-Agent: Thunderbird 1.5.0.4 (Windows/20060516)
 MIME-Version: 1.0
+To:	Prasad Boddupalli <bprasad@cs.arizona.edu>
+CC:	Jonathan Day <imipak@yahoo.com>, linux-mips@linux-mips.org
+Subject: Re: Performance counters and profiling on MIPS
+References: <20060612225848.GA7163@linux-mips.org>	 <20060613212743.64709.qmail@web31506.mail.mud.yahoo.com> <e8180c7f0606131444g2b9f1703s2ef21f1ff1fb0880@mail.gmail.com>
+In-Reply-To: <e8180c7f0606131444g2b9f1703s2ef21f1ff1fb0880@mail.gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20060612225848.GA7163@linux-mips.org>
-	 <20060613212743.64709.qmail@web31506.mail.mud.yahoo.com>
-X-Google-Sender-Auth: fc5e28bfe1d559bd
-Return-Path: <p.boddupalli@gmail.com>
+X-MIPS-Technologies-UK-MailScanner: Found to be clean
+X-MIPS-Technologies-UK-MailScanner-From: nigel@mips.com
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11725
+X-archive-position: 11726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bprasad@cs.arizona.edu
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Perfctr (http://user.it.uu.se/~mikpe/linux/perfctr/) and PAPI
-(http://icl.cs.utk.edu/papi/) are precisely such attempts. Except that
-MIPS ports of them do not seem to be available.
+Prasad Boddupalli wrote:
+> Perfctr (http://user.it.uu.se/~mikpe/linux/perfctr/) and PAPI
+> (http://icl.cs.utk.edu/papi/) are precisely such attempts. Except that
+> MIPS ports of them do not seem to be available.
 
-regards,
-Prasad.
+There's also perfmon2, for which a MIPS patch is available - though no 
+idea how up-to-date it is. See http://www.linux-mips.org/wiki/Perfmon2
 
-On 6/13/06, Jonathan Day <imipak@yahoo.com> wrote:
-> Thank you for the valuable information.
->
-> One thing I'd like to throw open to the list: there's
-> one way to access the counters on the R4000-type
-> processors, another on the version 2 MIPS64, yet
-> another on the ix86, and so on.
->
-> Would it make sense to place some standardised
-> interface in, say, the assembly header files and hide
-> the implementation-specific details? In the case of
-> the R4000-type cores, this would need to involve some
-> sort of counter device in the kernel which the macro
-> would call to perform the priviledged instruction. (It
-> feels a little bit of a hack, but it's the simplest
-> way to provide access to resources that aren't made
-> public.)
->
-> What I'm thinking is that this generic interface would
-> then be used on all other architectures, where such
-> counters exist. That way, implementation-specific
-> stuff can be abstracted out and programs that need
-> access to performance counters can all be coded to a
-> generic interface, rather than one interface for each
-> version of every CPU API, which is inevitably going to
-> be far more prone to error.
->
-> Jonathan
+Nigel

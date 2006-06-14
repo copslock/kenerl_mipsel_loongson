@@ -1,50 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2006 11:51:07 +0100 (BST)
-Received: from [220.76.242.187] ([220.76.242.187]:60083 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S8133478AbWFNKu6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Jun 2006 11:50:58 +0100
-Received: from mrv ([192.168.11.157])
-	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k5EAqFBb029737
-	for <linux-mips@linux-mips.org>; Wed, 14 Jun 2006 19:52:18 +0900
-Message-ID: <003401c68fa0$b60f4070$9d0ba8c0@mrv>
-From:	"Roman Mashak" <mrv@corecom.co.kr>
-To:	<linux-mips@linux-mips.org>
-Subject: "undefined symbol" on 2.6.14
-Date:	Wed, 14 Jun 2006 19:53:01 +0900
-MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="koi8-r";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
-Return-Path: <mrv@corecom.co.kr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jun 2006 12:53:56 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:10183 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133500AbWFNLxr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Jun 2006 12:53:47 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5EBrHP4004795;
+	Wed, 14 Jun 2006 12:53:17 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5EBrGRs004794;
+	Wed, 14 Jun 2006 12:53:16 +0100
+Date:	Wed, 14 Jun 2006 12:53:16 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Roman Mashak <mrv@corecom.co.kr>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: "undefined symbol" on 2.6.14
+Message-ID: <20060614115316.GA4515@linux-mips.org>
+References: <003401c68fa0$b60f4070$9d0ba8c0@mrv>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <003401c68fa0$b60f4070$9d0ba8c0@mrv>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11727
+X-archive-position: 11728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrv@corecom.co.kr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Wed, Jun 14, 2006 at 07:53:01PM +0900, Roman Mashak wrote:
 
-I compiled driver as a module (for our own device) for MIPS target. At 
-loading time get:
+> I compiled driver as a module (for our own device) for MIPS target. At 
+> loading time get:
+> 
+> unresolved symbol 'mips_hpt_frequency'
+> 
+> Modules.symvers which contains symbols doesn't have reference for 
+> 'mips_hpt_frequency'. Doesn it mean it's supposed to be exported with 
+> EXPORT_SYMBOL or my problem's reason lies on another layer?
 
-unresolved symbol 'mips_hpt_frequency'
+The symbol isn't export simply because it wasn't considered useful to
+export it.  The expected use of mips_hpt_frequency is to initialize it
+in the platform code as system startup time to the counter frequency,
+then not look at it again.
 
-Modules.symvers which contains symbols doesn't have reference for 
-'mips_hpt_frequency'. Doesn it mean it's supposed to be exported with 
-EXPORT_SYMBOL or my problem's reason lies on another layer?
+I wonder how you're using it in your module?
 
-Thanks!
+Any export I would add - as per general policy for the kernel - an
+EXPORT_SYMBOL_GPL btw.
 
-With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 
+  Ralf

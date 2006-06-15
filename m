@@ -1,95 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2006 15:29:53 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:43317 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8134062AbWFOO3o (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2006 15:29:44 +0100
-Received: by mo.po.2iij.net (mo32) id k5FETfqH029443; Thu, 15 Jun 2006 23:29:41 +0900 (JST)
-Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
-	by mbox.po.2iij.net (mbox32) id k5FETcbT088509
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 15 Jun 2006 23:29:39 +0900 (JST)
-Date:	Thu, 15 Jun 2006 23:29:37 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] vr41xx: remove unnecessay items from vr41xx/Kconfig
-Message-Id: <20060615232937.54908d91.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jun 2006 16:27:50 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:12788 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8134067AbWFOP1k (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Jun 2006 16:27:40 +0100
+Received: from localhost (p7208-ipad209funabasi.chiba.ocn.ne.jp [58.88.118.208])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id ECF7AFE; Fri, 16 Jun 2006 00:27:34 +0900 (JST)
+Date:	Fri, 16 Jun 2006 00:28:37 +0900 (JST)
+Message-Id: <20060616.002837.59465125.anemo@mba.ocn.ne.jp>
+To:	dan@debian.org
+Cc:	libc-ports@sourceware.org, linux-mips@linux-mips.org
+Subject: Re: mips RDHWR instruction in glibc
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060614165040.GA19480@nevyn.them.org>
+References: <20060615.001238.65193088.anemo@mba.ocn.ne.jp>
+	<20060614165040.GA19480@nevyn.them.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11737
+X-archive-position: 11738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Wed, 14 Jun 2006 12:50:40 -0400, Daniel Jacobowitz <dan@debian.org> wrote:
+> > For example, in the code below, RDHWR is placed _before_ checking the
+> > error.  I suppose these instructions were reordered by gcc's
+> > optimization, but the optimization would have large negative effect in
+> > this case.
+> 
+> You'd have to figure out how to get GCC not to eagerly schedule the
+> rdhwr.  This might be quite hard.  I don't know much about this part of
+> the scheduler.
 
-This patch removes unnecessary items from vr41xx/Kconfig.
-SYS_HA_CPU_VR41XX has already been selected by MACH_VR41XX.
+I really did not understand yet how errno is bound TLS.  I found some
+"rdhwr" in glibc-ports source code (tls-macros.h, nptl/tls.h).  The
+RDHWR instruction in the example code comes from one of them, no?
 
-Yoichi
+I also found a "rdhwr" in gcc's mips.md file ("tls_get_tp_<mode>").
+Is this the origin?  MD is a very foreign language for me...
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips-rc6/Documentation/dontdiff mips-rc6-orig/arch/mips/vr41xx/Kconfig mips-rc6/arch/mips/vr41xx/Kconfig
---- mips-rc6-orig/arch/mips/vr41xx/Kconfig	2006-06-13 19:08:29.234587000 +0900
-+++ mips-rc6/arch/mips/vr41xx/Kconfig	2006-06-14 09:48:08.362847750 +0900
-@@ -4,7 +4,6 @@ config CASIO_E55
- 	select DMA_NONCOHERENT
- 	select IRQ_CPU
- 	select ISA
--	select SYS_HAS_CPU_VR41XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 
-@@ -14,18 +13,15 @@ config IBM_WORKPAD
- 	select DMA_NONCOHERENT
- 	select IRQ_CPU
- 	select ISA
--	select SYS_HAS_CPU_VR41XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 
- config NEC_CMBVR4133
- 	bool "Support for NEC CMB-VR4133"
- 	depends on MACH_VR41XX
--	select CPU_VR41XX
- 	select DMA_NONCOHERENT
- 	select IRQ_CPU
- 	select HW_HAS_PCI
--	select SYS_HAS_CPU_VR41XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 
-@@ -41,7 +37,6 @@ config TANBAC_TB022X
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
--	select SYS_HAS_CPU_VR41XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	help
-@@ -74,7 +69,6 @@ config VICTOR_MPC30X
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
--	select SYS_HAS_CPU_VR41XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 
-@@ -84,7 +78,6 @@ config ZAO_CAPCELLA
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
--	select SYS_HAS_CPU_VR41XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 
+---
+Atsushi Nemoto

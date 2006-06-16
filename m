@@ -1,118 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2006 16:42:15 +0100 (BST)
-Received: from web31513.mail.mud.yahoo.com ([68.142.198.142]:63344 "HELO
-	web31513.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133788AbWFPPmF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Jun 2006 16:42:05 +0100
-Received: (qmail 74839 invoked by uid 60001); 16 Jun 2006 15:41:54 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=zIeB18by4sz1jMl/VMTheOXdD6x9OzrJmtqrDRWpiNy92Dk1t6hJFr6Xnw3GSQwoh+rSTiW52cRH66+urGmMsrjCUSiV5cwPh7WzggibOVfsdEGWhSyOY1Gk3eEj+lM9z42yzd86d1BPE4vf+Wicly9JLMwHMv1torqHaZOI94k=  ;
-Message-ID: <20060616154154.74837.qmail@web31513.mail.mud.yahoo.com>
-Received: from [208.187.37.98] by web31513.mail.mud.yahoo.com via HTTP; Fri, 16 Jun 2006 08:41:54 PDT
-Date:	Fri, 16 Jun 2006 08:41:54 -0700 (PDT)
-From:	Jonathan Day <imipak@yahoo.com>
-Subject: Re: gcc-4.1.0 cross-compile for MIPS
-To:	kernel coder <lhrkernelcoder@gmail.com>, linux-mips@linux-mips.org
-In-Reply-To: <f69849430606160522i12050d00n9a4a39810f13b8a0@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <imipak@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2006 16:57:57 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:16368 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133788AbWFPP5t (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Jun 2006 16:57:49 +0100
+Received: from localhost (p7155-ipad213funabasi.chiba.ocn.ne.jp [124.85.72.155])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C79A6A940; Sat, 17 Jun 2006 00:57:41 +0900 (JST)
+Date:	Sat, 17 Jun 2006 00:58:45 +0900 (JST)
+Message-Id: <20060617.005845.93020013.anemo@mba.ocn.ne.jp>
+To:	dan@debian.org
+Cc:	libc-ports@sourceware.org, linux-mips@linux-mips.org
+Subject: Re: mips RDHWR instruction in glibc
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060615153252.GA21598@nevyn.them.org>
+References: <20060614165040.GA19480@nevyn.them.org>
+	<20060616.002837.59465125.anemo@mba.ocn.ne.jp>
+	<20060615153252.GA21598@nevyn.them.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11746
+X-archive-position: 11747
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: imipak@yahoo.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, 15 Jun 2006 11:32:52 -0400, Daniel Jacobowitz <dan@debian.org> wrote:
+> > I also found a "rdhwr" in gcc's mips.md file ("tls_get_tp_<mode>").
+> > Is this the origin?  MD is a very foreign language for me...
+> 
+> Yes.  Compile something like this with -O2 but without -fpic:
+> 
+> __thread int x;
+> int foo() { return x; }
+> 
+> It should use the IE model, which will generate a rdhwr.
 
-Two quick questions in return! :) First, did you use
-the patches on the Linux From Scratch website, which
-fixes problems with GCC in a MIPS environment?
-(Although not using the MIPSEL environment myself, I'm
-on a big-endiam system, I learned very quickly that
-those patches really are essential.)
+Thanks.  So this must be a gcc issue, not glibc issue.
 
-The second question is why 4.1.0? 4.1.1 fixes some
-nasties, from what I understand, making that the
-better of the 4.1.x branch. On the flip-side, 4.0.3 is
-the last-known version of GCC that will compile G95
-correctly, strongly hinting at remaining issues in
-4.1.x that have the potential for generating incorrect
-code. (I've not been able to build 4.2.x from SVN for
-a while, although it adds some features I would love
-to use.)
+extern __thread int x;
+int foo(int arg)
+{
+	if (arg)
+		return x;
+	return 0;
+}
 
-Jonathan Day
+If I compiled this program with -O2 I got:
 
---- kernel coder <lhrkernelcoder@gmail.com> wrote:
+foo:
+	.frame	$sp,0,$31		# vars= 0, regs= 0/0, args= 0, gp= 0
+	.mask	0x00000000,0
+	.fmask	0x00000000,0
+	.set	noreorder
+	.cpload	$25
+	.set	nomacro
+	
+	lw	$2,%gottprel(x)($28)
+	.set	push
+	.set	mips32r2	
+	rdhwr	$3,$29
+	.set	pop
+	addu	$2,$2,$3
+	beq	$4,$0,$L4
+	move	$3,$0
 
-> hi,
->    I'm trying to cross compile gcc-4.1.0 for mipsel
-> platform.Following
-> is the sequence of commands which i'm using.My host
-> system is i686.
-> 
-> ../gcc-4.1.0/configure --target=mipsel
-> --without-headres
-> --prefix=/home/shahzad/install/ --with-newlib
-> --enable-languages=c
-> 
-> make
-> 
-> But following error is generated
-> 
-> /home/shahzad/mips_gcc/./gcc/xgcc
-> -B/home/shahzad/mips_gcc/./gcc/
-> -B/home/shahzad/install//mipsel/bin/
-> -B/home/shahzad/install//mipsel/lib/ -isystem
-> /home/shahzad/install//mipsel/include -isystem
-> /home/shahzad/install//mipsel/sys-include
-> -DHAVE_CONFIG_H -I.
-> -I../../../gcc-4.1.0/libssp -I. -Wall -O2 -g -O2 -MT
-> ssp.lo -MD -MP
-> -MF .deps/ssp.Tpo -c ../../../gcc-4.1.0/libssp/ssp.c
-> -o ssp.o
-> ../../../gcc-4.1.0/libssp/ssp.c:46:20: error:
-> fcntl.h: No such file or directory
-> ../../../gcc-4.1.0/libssp/ssp.c: In function
-> '__guard_setup':
-> ../../../gcc-4.1.0/libssp/ssp.c:70: warning:
-> implicit declaration of
-> function 'open'
-> ../../../gcc-4.1.0/libssp/ssp.c:70: error:
-> 'O_RDONLY' undeclared
-> (first use in this function)
-> ../../../gcc-4.1.0/libssp/ssp.c:70: error: (Each
-> undeclared identifier
-> is reported only once
-> ../../../gcc-4.1.0/libssp/ssp.c:70: error: for each
-> function it appears in.)
-> ../../../gcc-4.1.0/libssp/ssp.c:73: error: 'ssize_t'
-> undeclared (first
-> use in this function)
-> ../../../gcc-4.1.0/libssp/ssp.c:73: error: expected
-> ';' before 'size'
-> .........................................
-> ........................................
-> 
-> I'm using fedora 5 as development platform and
-> version of gcc
-> installed on system is 4.1.0
-> 
-> thanks,
-> shahzad
-> 
-> 
+	lw	$3,0($2)
+$L4:
+	j	$31
+	move	$2,$3
 
+It looks too bad for arg == 0 case.  I should ask on gcc list.
 
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+---
+Atsushi Nemoto

@@ -1,52 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jun 2006 23:33:50 +0100 (BST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:23696 "HELO
-	duck.specifix.com") by ftp.linux-mips.org with SMTP
-	id S8134021AbWFPWdl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Jun 2006 23:33:41 +0100
-Received: from [127.0.0.1] (duck.corp.specifix.com [192.168.1.1])
-	by duck.specifix.com (Postfix) with ESMTP
-	id 28171FC7E; Fri, 16 Jun 2006 15:33:15 -0700 (PDT)
-Subject: Re: gcc-4.1.0 cross-compile for MIPS
-From:	James E Wilson <wilson@specifix.com>
-To:	kernel coder <lhrkernelcoder@gmail.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <f69849430606160522i12050d00n9a4a39810f13b8a0@mail.gmail.com>
-References: <f69849430606160522i12050d00n9a4a39810f13b8a0@mail.gmail.com>
-Content-Type: text/plain
-Message-Id: <1150497195.17820.4.camel@aretha.corp.specifix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jun 2006 04:19:45 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:59082 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8126483AbWFRDTg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 18 Jun 2006 04:19:36 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5I3JbIR022383
+	for <linux-mips@linux-mips.org>; Sun, 18 Jun 2006 04:19:37 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5I3Jaup022382
+	for linux-mips@linux-mips.org; Sun, 18 Jun 2006 04:19:36 +0100
+Date:	Sun, 18 Jun 2006 04:19:36 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: 2.4 fixes in git
+Message-ID: <20060618031936.GA21492@linux-mips.org>
 Mime-Version: 1.0
-X-Mailer: Ximian Evolution 1.4.6 
-Date:	Fri, 16 Jun 2006 15:33:15 -0700
-Content-Transfer-Encoding: 7bit
-Return-Path: <wilson@specifix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11753
+X-archive-position: 11754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2006-06-16 at 05:22, kernel coder wrote:
-> /home/shahzad/install//mipsel/sys-include -DHAVE_CONFIG_H -I.
-> -I../../../gcc-4.1.0/libssp -I. -Wall -O2 -g -O2 -MT ssp.lo -MD -MP
-> -MF .deps/ssp.Tpo -c ../../../gcc-4.1.0/libssp/ssp.c -o ssp.o
-> ../../../gcc-4.1.0/libssp/ssp.c:46:20: error: fcntl.h: No such file or directory
+Contrary to earlier announcements I commited a few Linux 2.4 fixes into
+git.  The fixes are:
 
-You can't build target libraries like libssp in a --without-headers
-build.  It was luck that this happened to work with earlier gcc
-releases, because previously we didn't have C language target libraries
-in gcc.  The solution is to do
-  make all-gcc
-  make install-gcc
-instead of just
-  make all
-  make install
+ o Crash fixes for kernels built with gcc 3.4.
+   This does not fix all issues with gcc 3.4.  Some configuration might
+   fail to link and there might be other, yet unknown problems so using
+   an older compiler stays the safe bet.
+ o Fix ordering of serial interfaces for Malta.  This makes sure the
+   onboard serial really will be the console.
+ o Support for a few CPU cards for Atlas and Malta that are supported
+   in Linux 2.6.  Probably few people care but it's a big item for me,
+   my usual Malta configuration didn't run 2.4 ...
 
-Please see Dan Kegel's crosstools package, which already knows how to do
-this.
--- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+  Ralf

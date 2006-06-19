@@ -1,58 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2006 17:37:19 +0100 (BST)
-Received: from natreg.rzone.de ([81.169.145.183]:40861 "EHLO natreg.rzone.de")
-	by ftp.linux-mips.org with ESMTP id S8133525AbWFSQhK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 19 Jun 2006 17:37:10 +0100
-Received: from excalibur.cologne.de (cable-84-44-248-98.netcologne.de [84.44.248.98])
-	by post.webmailer.de (8.13.6/8.13.6) with ESMTP id k5JGat03027671
-	for <linux-mips@linux-mips.org>; Mon, 19 Jun 2006 18:36:55 +0200 (MEST)
-Received: from karsten by excalibur.cologne.de with local (Exim 3.36 #1 (Debian))
-	id 1FsMk8-0001FN-00
-	for <linux-mips@linux-mips.org>; Mon, 19 Jun 2006 18:36:52 +0200
-Date:	Mon, 19 Jun 2006 18:36:52 +0200
-From:	Karsten Merker <karsten@excalibur.cologne.de>
-To:	linux-mips@linux-mips.org
-Subject: Re: Merge window ...
-Message-ID: <20060619163652.GA4219@excalibur.cologne.de>
-References: <20060619103653.GA4257@linux-mips.org> <20060620000346.2b704b9b.yoichi_yuasa@tripeaks.co.jp> <20060619155001.GA12123@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jun 2006 17:46:22 +0100 (BST)
+Received: from adsl-71-128-175-242.dsl.pltn13.pacbell.net ([71.128.175.242]:16327
+	"EHLO build.embeddedalley.com") by ftp.linux-mips.org with ESMTP
+	id S8133657AbWFSQqM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Jun 2006 17:46:12 +0100
+Received: from localhost.localdomain (build.embeddedalley.com [127.0.0.1])
+	by build.embeddedalley.com (8.13.1/8.13.1) with ESMTP id k5JGfhTK009745;
+	Mon, 19 Jun 2006 09:41:45 -0700
+Subject: Re: i2c-algo-ite and i2c-ite planned for removal
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	Jean Delvare <khali@linux-fr.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20060616222908.f96e3691.khali@linux-fr.org>
+References: <20060615225723.012c82be.khali@linux-fr.org>
+	 <1150406598.1193.73.camel@localhost.localdomain>
+	 <20060616222908.f96e3691.khali@linux-fr.org>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Mon, 19 Jun 2006 19:45:58 +0300
+Message-Id: <1150735558.8413.7.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060619155001.GA12123@linux-mips.org>
-X-No-Archive: yes
-User-Agent: Mutt/1.5.9i
-Return-Path: <karsten@excalibur.cologne.de>
+X-Mailer: Evolution 2.4.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11772
+X-archive-position: 11773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: karsten@excalibur.cologne.de
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 19, 2006 at 04:50:01PM +0100, Ralf Baechle wrote:
-> On Tue, Jun 20, 2006 at 12:03:46AM +0900, Yoichi Yuasa wrote:
-
-[board list]
-> > These boards are candidate for removal.
-> > If there are none objection, we can add to feature-removal-schedule.txt.
+On Fri, 2006-06-16 at 22:29 +0200, Jean Delvare wrote:
+> Hi Pete,
 > 
-> A little too much.  Malta for example works and I'm running top of tree.
-> Jazz is happy, SNI was doing ok and received a major upgrade just on
-> the weekend  and the Broadcom stuff - aside of slight bitrot is crucially
-> important for many projects as the provider of horsepower for native
-> builds.
+> > > So basically we have two drivers in the kernel tree for 5 years or so,
+> > > which never were usable, and nobody seemed to care. 
+> > 
+> > For historical correctness, this driver was once upon a time usable,
+> > though it was a few years ago. It was written by MV for some ref board
+> > that had the ITE chip and it did work. That ref board is no longer
+> > around so it's probably safe to nuke the driver. 
+> 
+> In which kernel version? In every version I checked (2.4.12, 2.4.30,
+> 2.6.0 and 2.6.16) it wouldn't compile due to struct iic_ite being used
+> but never defined (and possibly other errors, but I can't test-compile
+> the driver.)
 
-Indeed - if you kick out the Broadcom Swarm support, you would
-effectively kill the Debian/mips(el) build farm, which relies
-heavily on this type of system.
+Honestly, I don't remember. I think it was one of the very first 2.6
+kernels because when MV first released a 2.6 product, 2.6 was still
+'experimental'. It's quite possible of course that the driver was never
+properly merged upstream in the community tree(s). But I do know that it
+worked in the internal MV tree and an effort was made to get the driver
+accepted upstream.
 
-Regards,
-Karsten
--- 
-#include <standard_disclaimer>
-Nach Paragraph 28 Abs. 3 Bundesdatenschutzgesetz widerspreche ich der Nutzung
-oder Uebermittlung meiner Daten fuer Werbezwecke oder fuer die Markt- oder
-Meinungsforschung.
+Pete

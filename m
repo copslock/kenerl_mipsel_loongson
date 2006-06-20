@@ -1,45 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 10:54:57 +0100 (BST)
-Received: from mail.windriver.com ([147.11.1.11]:58306 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S8133409AbWFTJys (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 10:54:48 +0100
-Received: from ala-mail04.corp.ad.wrs.com (ala-mail04 [147.11.57.145])
-	by mail.wrs.com (8.13.6/8.13.3) with ESMTP id k5K9se71015709;
-	Tue, 20 Jun 2006 02:54:40 -0700 (PDT)
-Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ala-mail04.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 20 Jun 2006 02:54:40 -0700
-Received: from [192.168.96.27] ([192.168.96.27]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 20 Jun 2006 02:54:39 -0700
-Message-ID: <4497C5DC.8060108@windriver.com>
-Date:	Tue, 20 Jun 2006 17:54:36 +0800
-From:	"Mark.Zhan" <rongkai.zhan@windriver.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060615)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-CC:	yoichi_yuasa@tripeaks.co.jp
-Subject: Re: Merge window ...
-Content-Type: text/plain; charset=GB2312
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 11:08:52 +0100 (BST)
+Received: from smtp-102-tuesday.noc.nerim.net ([62.4.17.102]:12039 "HELO
+	mallaury.nerim.net") by ftp.linux-mips.org with SMTP
+	id S8133456AbWFTKIm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Jun 2006 11:08:42 +0100
+Received: from arrakis.delvare (jdelvare.pck.nerim.net [62.212.121.182])
+	by mallaury.nerim.net (Postfix) with SMTP id 91C924F3E1;
+	Tue, 20 Jun 2006 12:08:26 +0200 (CEST)
+Date:	Tue, 20 Jun 2006 12:08:36 +0200
+From:	Jean Delvare <khali@linux-fr.org>
+To:	Pete Popov <ppopov@embeddedalley.com>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: i2c-algo-ite and i2c-ite planned for removal
+Message-Id: <20060620120836.628ddc79.khali@linux-fr.org>
+In-Reply-To: <1150735558.8413.7.camel@localhost.localdomain>
+References: <20060615225723.012c82be.khali@linux-fr.org>
+	<1150406598.1193.73.camel@localhost.localdomain>
+	<20060616222908.f96e3691.khali@linux-fr.org>
+	<1150735558.8413.7.camel@localhost.localdomain>
+X-Mailer: Sylpheed version 2.2.6 (GTK+ 2.6.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 Jun 2006 09:54:40.0267 (UTC) FILETIME=[8C3B6DB0:01C6944F]
-Return-Path: <rongkai.zhan@windriver.com>
+Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11775
+X-archive-position: 11776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rongkai.zhan@windriver.com
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 
-> RBHMA4500
-> SNI RM200
-> Sibyte BCM91250A-SWARM
-> Wind River PPMC(New one, It'll be fixed)
+Hi Pete,
 
-I just submitted the patch of the base support to Wind River PPMC Board a few weeks ago.
-So please don't remove this board. And I will submit another patch against the current
-Linux/MIPS git repository, to fix the build error for this board.
+> > > For historical correctness, this driver was once upon a time usable,
+> > > though it was a few years ago. It was written by MV for some ref board
+> > > that had the ITE chip and it did work. That ref board is no longer
+> > > around so it's probably safe to nuke the driver. 
+> > 
+> > In which kernel version? In every version I checked (2.4.12, 2.4.30,
+> > 2.6.0 and 2.6.16) it wouldn't compile due to struct iic_ite being used
+> > but never defined (and possibly other errors, but I can't test-compile
+> > the driver.)
+> 
+> Honestly, I don't remember. I think it was one of the very first 2.6
+> kernels because when MV first released a 2.6 product, 2.6 was still
+> 'experimental'. It's quite possible of course that the driver was never
+> properly merged upstream in the community tree(s). But I do know that it
+> worked in the internal MV tree and an effort was made to get the driver
+> accepted upstream.
 
-Best Regards,
-Mark.Zhan
+I couldn't find any evidence of this effort. Whatever, past is past, if
+someone fixes the i2c-ite and i2c-algo-ite drivers soon, fine with me,
+if not, the drivers will be deleted (which doesn't mean they can't be
+resurrected later if there is interest and someone takes over
+maintenance.) I'm setting the deadline to September 2006.
+
+-- 
+Jean Delvare

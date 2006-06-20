@@ -1,54 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:26:51 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:15127 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8133761AbWFTO0k (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 15:26:40 +0100
-Received: by mo.po.2iij.net (mo30) id k5KEQcTa050445; Tue, 20 Jun 2006 23:26:38 +0900 (JST)
-Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
-	by mbox.po.2iij.net (mbox30) id k5KEQVF7047931
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 20 Jun 2006 23:26:32 +0900 (JST)
-Date:	Tue, 20 Jun 2006 23:26:30 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:36:30 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:4501 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133761AbWFTOgW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 15:36:22 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5KEaL4G013072;
+	Tue, 20 Jun 2006 15:36:21 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5KEaHOe013071;
+	Tue, 20 Jun 2006 15:36:17 +0100
+Date:	Tue, 20 Jun 2006 15:36:17 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] remove set_c0_status(ST0_IM) form wrppmc's irq.c
-Message-Id: <20060620232630.3f2bc491.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Subject: Re: Merge window ...
+Message-ID: <20060620143617.GA11651@linux-mips.org>
+References: <20060619103653.GA4257@linux-mips.org> <20060620000346.2b704b9b.yoichi_yuasa@tripeaks.co.jp> <20060619155001.GA12123@linux-mips.org> <20060620225555.42f0246f.yoichi_yuasa@tripeaks.co.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060620225555.42f0246f.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11785
+X-archive-position: 11786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, Jun 20, 2006 at 10:55:55PM +0900, Yoichi Yuasa wrote:
 
-mips_cpu_irq_init() does clear_c0_status(ST0_IM) first.
-I think that set_c0_status(ST0_IM) isn't necessary.
+> > the hope somebody will fix the code:
+> > 
+> >   http://www.linux-mips.org/wiki/Category:Deprecated
+> >
+> > Many eval boards tend to have a short livespan unlike vintage workstation
+> > and server hardware, so I tend to be trigger happier for eval board
+> > type of stuff.
+> 
+> How about EV64120 and Momentum Ocelot-G ?
 
-Yoichi
+Ocelot G was on my to be grilled list as posted a while ago I think. I
+just created a wiki page for it, so it's now widely visible as death
+candidate.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+I'd do the same for the EV64120 - but I know nothing about that board, I
+haven't heared of anybody trying to use, so it's a candidate as well.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/wrppmc/irq.c mips/arch/mips/gt64120/wrppmc/irq.c
---- mips-orig/arch/mips/gt64120/wrppmc/irq.c	2006-06-20 21:17:36.853537000 +0900
-+++ mips/arch/mips/gt64120/wrppmc/irq.c	2006-06-20 21:36:41.949101000 +0900
-@@ -62,9 +62,6 @@ void gt64120_init_pic(void)
- 
- void __init arch_init_irq(void)
- {
--	/* enable all CPU interrupt bits. */
--	set_c0_status(ST0_IM);	/* IE bit is still 0 */
--
- 	/* IRQ 0 - 7 are for MIPS common irq_cpu controller */
- 	mips_cpu_irq_init(0);
- 
+Could anybody out there who knows enough to write a quick description of
+the EV64120 write a quick wiki page?  Thanks :-)
+
+  Ralf

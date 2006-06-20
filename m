@@ -1,57 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:36:30 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:4501 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133761AbWFTOgW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 15:36:22 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5KEaL4G013072;
-	Tue, 20 Jun 2006 15:36:21 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5KEaHOe013071;
-	Tue, 20 Jun 2006 15:36:17 +0100
-Date:	Tue, 20 Jun 2006 15:36:17 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:42:09 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:45188 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133769AbWFTOmB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Jun 2006 15:42:01 +0100
+Received: (qmail 20953 invoked from network); 20 Jun 2006 18:53:07 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 20 Jun 2006 18:53:07 -0000
+Message-ID: <449808F6.2000206@ru.mvista.com>
+Date:	Tue, 20 Jun 2006 18:40:54 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
 To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips@linux-mips.org
+CC:	linux-mips@linux-mips.org
 Subject: Re: Merge window ...
-Message-ID: <20060620143617.GA11651@linux-mips.org>
-References: <20060619103653.GA4257@linux-mips.org> <20060620000346.2b704b9b.yoichi_yuasa@tripeaks.co.jp> <20060619155001.GA12123@linux-mips.org> <20060620225555.42f0246f.yoichi_yuasa@tripeaks.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060620225555.42f0246f.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <20060619103653.GA4257@linux-mips.org>	<20060620000346.2b704b9b.yoichi_yuasa@tripeaks.co.jp>	<4496BE57.5040802@ru.mvista.com> <20060620215423.2d66bf2e.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060620215423.2d66bf2e.yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11786
+X-archive-position: 11787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 20, 2006 at 10:55:55PM +0900, Yoichi Yuasa wrote:
+Hello.
 
-> > the hope somebody will fix the code:
-> > 
-> >   http://www.linux-mips.org/wiki/Category:Deprecated
-> >
-> > Many eval boards tend to have a short livespan unlike vintage workstation
-> > and server hardware, so I tend to be trigger happier for eval board
-> > type of stuff.
-> 
-> How about EV64120 and Momentum Ocelot-G ?
+Yoichi Yuasa wrote:
+>>>Also the folowing boards don't have config file.
 
-Ocelot G was on my to be grilled list as posted a while ago I think. I
-just created a wiki page for it, so it's now widely visible as death
-candidate.
+>>>Toshiba TBTX49[23]7
 
-I'd do the same for the EV64120 - but I know nothing about that board, I
-haven't heared of anybody trying to use, so it's a candidate as well.
+>>    I've pushed some patches for those resently...
 
-Could anybody out there who knows enough to write a quick description of
-the EV64120 write a quick wiki page?  Thanks :-)
+> Can you provide config file for TBTX49[23]7 ?
 
-  Ralf
+    Maybe later -- I'M SWAMPED... :-(
+
+> How about JMR-TX3927?
+
+    Well, I've sent a patch for it last autumn but it looks like this is a 
+candidate for removal indeed. MV is not going to support that kernel anymore...
+
+> Yoichi
+
+WBR, Sergei

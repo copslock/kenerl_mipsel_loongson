@@ -1,73 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:56:20 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:20007 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8133785AbWFTOza (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 15:55:30 +0100
-Received: by mo.po.2iij.net (mo32) id k5KEtSQG007476; Tue, 20 Jun 2006 23:55:28 +0900 (JST)
-Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
-	by mbox.po.2iij.net (mbox32) id k5KEtPB6039661
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 20 Jun 2006 23:55:26 +0900 (JST)
-Date:	Tue, 20 Jun 2006 23:55:24 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] remove CONFIG_VR4181
-Message-Id: <20060620235524.4734ebb9.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:58:19 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:48600 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133798AbWFTO6J (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 15:58:09 +0100
+Received: from localhost (p6234-ipad209funabasi.chiba.ocn.ne.jp [58.88.117.234])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 3D6ACB9A7; Tue, 20 Jun 2006 23:58:05 +0900 (JST)
+Date:	Tue, 20 Jun 2006 23:59:11 +0900 (JST)
+Message-Id: <20060620.235911.132303870.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Re: fix FIXADDR_TOP for TX39/TX49
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20030517.214555.74756802.anemo@mba.ocn.ne.jp>
+References: <20030517.214555.74756802.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11789
+X-archive-position: 11790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sat, 17 May 2003 21:45:55 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> This patch fixes FIXADDR_TOP for TX39/TX49.  FIXADDR_TOP is used not
+> only if CONFIG_HIGHMEM is enabled.  It is also used for high limit
+> address for vmalloc.  
 
-This patch removes CONFIG_VR4181.
-VR4181 support was already removed.
+Now this patch is 3 years old :-)  Updated.
 
-Yoichi
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+FIXADDR_TOP is used for HIGHMEM and for upper limit of vmalloc area on
+32bit kernel.  TX39XX and TX49XX have "reserved" segment in CKSEG3
+area.  0xff000000-0xff3fffff on TX49XX and 0xff000000-0xfffeffff on
+TX39XX are reserved (unmapped, uncached) therefore can not be used as
+mapped area.
 
-diff -pruN -X mips-rc6/Documentation/dontdiff mips-rc6-orig/arch/mips/Kconfig mips-rc6/arch/mips/Kconfig
---- mips-rc6-orig/arch/mips/Kconfig	2006-06-09 00:32:57.197212500 +0900
-+++ mips-rc6/arch/mips/Kconfig	2006-06-09 00:40:07.424100000 +0900
-@@ -1040,9 +1040,6 @@ config MIPS_L1_CACHE_SHIFT
- config HAVE_STD_PC_SERIAL_PORT
- 	bool
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/include/asm-mips/fixmap.h b/include/asm-mips/fixmap.h
+index 73a3028..c7f4ee1 100644
+--- a/include/asm-mips/fixmap.h
++++ b/include/asm-mips/fixmap.h
+@@ -70,7 +70,11 @@ #define set_fixmap_nocache(idx, phys) \
+  * the start of the fixmap, and leave one page empty
+  * at the top of mem..
+  */
++#if defined(CONFIG_CPU_TX39XX) || defined(CONFIG_CPU_TX49XX)
++#define FIXADDR_TOP	(0xff000000UL - 0x2000)
++#else
+ #define FIXADDR_TOP	(0xffffe000UL)
++#endif
+ #define FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
+ #define FIXADDR_START	(FIXADDR_TOP - FIXADDR_SIZE)
  
--config VR4181
--	bool
--
- config ARC_CONSOLE
- 	bool "ARC console support"
- 	depends on SGI_IP22 || SNI_RM200_PCI
-diff -pruN -X mips-rc6/Documentation/dontdiff mips-rc6-orig/arch/mips/kernel/cpu-probe.c mips-rc6/arch/mips/kernel/cpu-probe.c
---- mips-rc6-orig/arch/mips/kernel/cpu-probe.c	2006-06-09 00:32:57.257216250 +0900
-+++ mips-rc6/arch/mips/kernel/cpu-probe.c	2006-06-09 00:41:06.347782500 +0900
-@@ -250,15 +250,9 @@ static inline void cpu_probe_legacy(stru
- 		break;
- 	case PRID_IMP_VR41XX:
- 		switch (c->processor_id & 0xf0) {
--#ifndef CONFIG_VR4181
- 		case PRID_REV_VR4111:
- 			c->cputype = CPU_VR4111;
- 			break;
--#else
--		case PRID_REV_VR4181:
--			c->cputype = CPU_VR4181;
--			break;
--#endif
- 		case PRID_REV_VR4121:
- 			c->cputype = CPU_VR4121;
- 			break;

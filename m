@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 11:15:23 +0100 (BST)
-Received: from mail.windriver.com ([147.11.1.11]:50381 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S8133534AbWFTKPM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 11:15:12 +0100
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-	by mail.wrs.com (8.13.6/8.13.3) with ESMTP id k5KAF6gV018955;
-	Tue, 20 Jun 2006 03:15:06 -0700 (PDT)
-Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 20 Jun 2006 03:15:05 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 11:40:54 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:6362 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S8133545AbWFTKkj (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 11:40:39 +0100
+Received: from ala-mail04.corp.ad.wrs.com (ala-mail04 [147.11.57.145])
+	by mail.wrs.com (8.13.6/8.13.3) with ESMTP id k5KAeWit022596;
+	Tue, 20 Jun 2006 03:40:32 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ala-mail04.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 20 Jun 2006 03:40:32 -0700
 Received: from [192.168.96.27] ([192.168.96.27]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 20 Jun 2006 03:15:04 -0700
-Message-ID: <4497CAA6.1010809@windriver.com>
-Date:	Tue, 20 Jun 2006 18:15:02 +0800
+	 Tue, 20 Jun 2006 03:40:31 -0700
+Message-ID: <4497D09D.1040205@windriver.com>
+Date:	Tue, 20 Jun 2006 18:40:29 +0800
 From:	"Mark.Zhan" <rongkai.zhan@windriver.com>
 User-Agent: Thunderbird 1.5.0.4 (X11/20060615)
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-CC:	ralf@linux-mips.org
-Subject: [PATCH] Fix the build error of Wind River PPMC board
+To:	"Mark.Zhan" <rongkai.zhan@windriver.com>
+CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] Fix the build error of Wind River PPMC board
+References: <4497CAA6.1010809@windriver.com>
+In-Reply-To: <4497CAA6.1010809@windriver.com>
 Content-Type: text/plain; charset=GB2312
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 Jun 2006 10:15:05.0056 (UTC) FILETIME=[66436600:01C69452]
+X-OriginalArrivalTime: 20 Jun 2006 10:40:32.0007 (UTC) FILETIME=[F465A170:01C69455]
 Return-Path: <rongkai.zhan@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11777
+X-archive-position: 11778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,14 +36,12 @@ X-list: linux-mips
 
 Hi,
 
-This patch will fix the build error of building wind river ppmc board,
-which is caused by the change of plat_setup hook interface. And because
-Ralf has introduced the new interrupt handling framework in 2.6.17-rc2,
-so the assembly interrupt handling codes in "int-handler.S" should be
-removed  and replaced by the new plat_irq_dispatch() hook.
+Sorry for the stupid line wrap problem, again.
+
+It is re-posted.
 
 Signed-off-by: Rongkai.Zhan <rongkai.zhan@windriver.com>
------
+------
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
 index 89ec332..e38f0cd 100644

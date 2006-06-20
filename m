@@ -1,55 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:42:09 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:45188 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133769AbWFTOmB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Jun 2006 15:42:01 +0100
-Received: (qmail 20953 invoked from network); 20 Jun 2006 18:53:07 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 20 Jun 2006 18:53:07 -0000
-Message-ID: <449808F6.2000206@ru.mvista.com>
-Date:	Tue, 20 Jun 2006 18:40:54 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Merge window ...
-References: <20060619103653.GA4257@linux-mips.org>	<20060620000346.2b704b9b.yoichi_yuasa@tripeaks.co.jp>	<4496BE57.5040802@ru.mvista.com> <20060620215423.2d66bf2e.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20060620215423.2d66bf2e.yoichi_yuasa@tripeaks.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:55:32 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:52792 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8133775AbWFTOzX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 15:55:23 +0100
+Received: by mo.po.2iij.net (mo31) id k5KEtLdV016324; Tue, 20 Jun 2006 23:55:21 +0900 (JST)
+Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
+	by mbox.po.2iij.net (mbox32) id k5KEtJV2039635
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 20 Jun 2006 23:55:19 +0900 (JST)
+Date:	Tue, 20 Jun 2006 23:55:17 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] remove first timer interrupt setup in wrppmc_timer_setup()
+Message-Id: <20060620235517.504d31a1.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11787
+X-archive-position: 11788
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hi,
 
-Yoichi Yuasa wrote:
->>>Also the folowing boards don't have config file.
+This patch removes first timer interrupt setup in wrppmc_timer_setup().
+The first timer interrupt setup already includes in time_init().
 
->>>Toshiba TBTX49[23]7
+Yoichi
 
->>    I've pushed some patches for those resently...
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-> Can you provide config file for TBTX49[23]7 ?
-
-    Maybe later -- I'M SWAMPED... :-(
-
-> How about JMR-TX3927?
-
-    Well, I've sent a patch for it last autumn but it looks like this is a 
-candidate for removal indeed. MV is not going to support that kernel anymore...
-
-> Yoichi
-
-WBR, Sergei
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/wrppmc/time.c mips/arch/mips/gt64120/wrppmc/time.c
+--- mips-orig/arch/mips/gt64120/wrppmc/time.c	2006-06-20 21:17:36.853537000 +0900
++++ mips/arch/mips/gt64120/wrppmc/time.c	2006-06-20 23:29:16.157391500 +0900
+@@ -31,10 +31,6 @@ void __init wrppmc_timer_setup(struct ir
+ {
+ 	/* Install ISR for timer interrupt */
+ 	setup_irq(WRPPMC_MIPS_TIMER_IRQ, irq);
+-
+-	/* to generate the first timer interrupt */
+-	write_c0_compare(mips_hpt_frequency/HZ);
+-	write_c0_count(0);
+ }
+ 
+ /*

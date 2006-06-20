@@ -1,65 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 15:58:19 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:48600 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133798AbWFTO6J (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jun 2006 15:58:09 +0100
-Received: from localhost (p6234-ipad209funabasi.chiba.ocn.ne.jp [58.88.117.234])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 3D6ACB9A7; Tue, 20 Jun 2006 23:58:05 +0900 (JST)
-Date:	Tue, 20 Jun 2006 23:59:11 +0900 (JST)
-Message-Id: <20060620.235911.132303870.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: fix FIXADDR_TOP for TX39/TX49
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20030517.214555.74756802.anemo@mba.ocn.ne.jp>
-References: <20030517.214555.74756802.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jun 2006 16:14:17 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.170]:46574 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8134001AbWFTPOG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Jun 2006 16:14:06 +0100
+Received: by ug-out-1314.google.com with SMTP id k3so3213992ugf
+        for <linux-mips@linux-mips.org>; Tue, 20 Jun 2006 08:14:03 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=joWs+YBjs1nG4sASRcfMyO8p1D794wybsr0uAgG5Jev+PRVuWwfsewKv0XPB1kGrPBDOHf6Uje+IGAlKoZJiJwYDlkbEjSZpIkrXhyP4aUG5mqj5G1GHZzTM4LfQW+Sjt0MO2K5sbArcohNoyxSohnLsMhKI4etFwY/07XzjhIA=
+Received: by 10.67.89.5 with SMTP id r5mr2499361ugl;
+        Tue, 20 Jun 2006 08:14:03 -0700 (PDT)
+Received: by 10.67.24.1 with HTTP; Tue, 20 Jun 2006 08:14:02 -0700 (PDT)
+Message-ID: <a59861030606200814j218ce04br44abef138c533137@mail.gmail.com>
+Date:	Tue, 20 Jun 2006 17:14:02 +0200
+From:	"Ivan Korzakow" <ivan.korzakow@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: Merge window ...
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20060619103653.GA4257@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+References: <20060619103653.GA4257@linux-mips.org>
+Return-Path: <ivan.korzakow@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11790
+X-archive-position: 11791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ivan.korzakow@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 17 May 2003 21:45:55 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> This patch fixes FIXADDR_TOP for TX39/TX49.  FIXADDR_TOP is used not
-> only if CONFIG_HIGHMEM is enabled.  It is also used for high limit
-> address for vmalloc.  
+2006/6/19, Ralf Baechle <ralf@linux-mips.org>:
+> Just a reminder that 2.6.17 is out and as usual there is now a merge
+> window of two weeks, so try anything that you wish to see to go to
+> Linus to me asap ...
 
-Now this patch is 3 years old :-)  Updated.
+Does that mean that MIPS, eventually, is doing like others arch for
+releasing ? If so does that mean that we can get a MIPS kernel from
+Linus tree without pulling from the (huge) mips repo ?
 
-
-FIXADDR_TOP is used for HIGHMEM and for upper limit of vmalloc area on
-32bit kernel.  TX39XX and TX49XX have "reserved" segment in CKSEG3
-area.  0xff000000-0xff3fffff on TX49XX and 0xff000000-0xfffeffff on
-TX39XX are reserved (unmapped, uncached) therefore can not be used as
-mapped area.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-diff --git a/include/asm-mips/fixmap.h b/include/asm-mips/fixmap.h
-index 73a3028..c7f4ee1 100644
---- a/include/asm-mips/fixmap.h
-+++ b/include/asm-mips/fixmap.h
-@@ -70,7 +70,11 @@ #define set_fixmap_nocache(idx, phys) \
-  * the start of the fixmap, and leave one page empty
-  * at the top of mem..
-  */
-+#if defined(CONFIG_CPU_TX39XX) || defined(CONFIG_CPU_TX49XX)
-+#define FIXADDR_TOP	(0xff000000UL - 0x2000)
-+#else
- #define FIXADDR_TOP	(0xffffe000UL)
-+#endif
- #define FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
- #define FIXADDR_START	(FIXADDR_TOP - FIXADDR_SIZE)
- 
+Ivan.

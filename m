@@ -1,98 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2006 06:36:41 +0100 (BST)
-Received: from dsl-KK-static-026.199.95.61.touchtelindia.net ([61.95.199.26]:17118
-	"EHLO mailsvr.procsys.com") by ftp.linux-mips.org with ESMTP
-	id S8133364AbWFUFgc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Jun 2006 06:36:32 +0100
-Received: from ankurmaheshwari ([192.168.1.243])
-	by mailsvr.procsys.com (8.12.10/8.12.10) with SMTP id k5L59hJ7030011;
-	Wed, 21 Jun 2006 10:39:44 +0530
-Message-ID: <110701c694f4$f1412fb0$f301a8c0@procsys>
-From:	"ankur maheshwari" <ankur_maheshwari@procsys.com>
-To:	"Jean Delvare" <khali@linux-fr.org>,
-	"Pete Popov" <ppopov@embeddedalley.com>
-Cc:	<linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-References: <20060615225723.012c82be.khali@linux-fr.org><1150406598.1193.73.camel@localhost.localdomain><20060616222908.f96e3691.khali@linux-fr.org><1150735558.8413.7.camel@localhost.localdomain> <20060620120836.628ddc79.khali@linux-fr.org>
-Subject: Re: i2c-algo-ite and i2c-ite planned for removal
-Date:	Wed, 21 Jun 2006 11:08:34 +0530
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2006 08:01:25 +0100 (BST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:37513 "HELO
+	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S8126482AbWFUHBP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 21 Jun 2006 08:01:15 +0100
+Received: (qmail 256 invoked by uid 101); 21 Jun 2006 07:01:04 -0000
+Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
+  by father.pmc-sierra.com with SMTP; 21 Jun 2006 07:01:04 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k5L714is023925;
+	Wed, 21 Jun 2006 00:01:04 -0700
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <JPF7G5Q3>; Wed, 21 Jun 2006 00:01:03 -0700
+Message-ID: <478F19F21671F04298A2116393EEC3D51C29CF@sjc1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
+From:	Raj Palani <Rajesh_Palani@pmc-sierra.com>
+To:	"'Roman Mashak'" <mrv@corecom.co.kr>,
+	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: RE: Ethernet bridging on 2.6.12-rc3 (PMC-sierra patched)
+Date:	Wed, 21 Jun 2006 00:01:01 -0700
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-ProcSys-Com-Anti-Virus-Mail-Filter-Virus-Found: no
-Return-Path: <ankur_maheshwari@procsys.com>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Rajesh_Palani@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11798
+X-archive-position: 11799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ankur_maheshwari@procsys.com
+X-original-sender: Rajesh_Palani@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-hi all,
+Hi Roman,
 
-I have used once i2c-adap-ite and i2c-algo-ite for ite-8712 chip and it
-worked fine for me in MV 2.4.25. Its been an year ago, I asked on same forum
-if some one has used it before but I didn't got any reply.
+   Just wanted to make sure that you had applied the patch mentioned in my earlier e-mail on top of the linux-2.6.12-rc3_L002.tar.gz release.
 
-I added this struct definition in a .h (i2c-adap-ite.h) file which we need
-to include in i2c-adap-ite.c also program ite-8712 controller pins for i2c
-use.
+-Raj 
 
-struct iic_ite {
-	int iic_base;
-	int iic_irq;
-	int iic_clock;
-	int iic_own;
-};
+-----Original Message-----
+From: Roman Mashak [mailto:mrv@corecom.co.kr] 
+Sent: Tuesday, June 20, 2006 5:35 PM
+To: Raj Palani; Ralf Baechle
+Cc: linux-mips@linux-mips.org
+Subject: Re: Ethernet bridging on 2.6.12-rc3 (PMC-sierra patched)
 
-It worked perfectly fine for me.
+Hello, Raj!
+You wrote to "Ralf Baechle" <ralf@linux-mips.org>; "Roman Mashak" 
+<mrv@corecom.co.kr> on Tue, 20 Jun 2006 09:15:56 -0700:
 
-It's just an info on ite-chip works, to remove it from kernel tree .....
-decision is up to you : ).
+ RP> I would request that you take a look at our current GE driver  RP> (msp85x0_ge.c) for the Sequoia platform and send us your feedback.
+ RP> This is currently available on our ftp site ftp.pmc-sierra.com under  RP> /pub/linux/2.6.12/linux-2.6.12-rc3_L002.tar.gz.  The driver has been  RP> completely re-written and we welcome any feedback on the same.
+As you could notice in my first message in this thread I reffered to
+2.6.12-rc3_L002 from PMC ftp site. And Ethernet bridging behavior I described is occurring at that particular kernel.
 
-thanks,
-Ankur
+ RP> The patches that have been generated for fixes that were made after  RP> this release are available under  RP> /pub/linux/2.6.12/patches-2.6.12-rc3_L002.
 
------ Original Message -----
-From: "Jean Delvare" <khali@linux-fr.org>
-To: "Pete Popov" <ppopov@embeddedalley.com>
-Cc: <linux-mips@linux-mips.org>; <linux-kernel@vger.kernel.org>
-Sent: Tuesday, June 20, 2006 3:38 PM
-Subject: Re: i2c-algo-ite and i2c-ite planned for removal
-
-
-> Hi Pete,
->
-> > > > For historical correctness, this driver was once upon a time usable,
-> > > > though it was a few years ago. It was written by MV for some ref
-board
-> > > > that had the ITE chip and it did work. That ref board is no longer
-> > > > around so it's probably safe to nuke the driver.
-> > >
-> > > In which kernel version? In every version I checked (2.4.12, 2.4.30,
-> > > 2.6.0 and 2.6.16) it wouldn't compile due to struct iic_ite being used
-> > > but never defined (and possibly other errors, but I can't test-compile
-> > > the driver.)
-> >
-> > Honestly, I don't remember. I think it was one of the very first 2.6
-> > kernels because when MV first released a 2.6 product, 2.6 was still
-> > 'experimental'. It's quite possible of course that the driver was never
-> > properly merged upstream in the community tree(s). But I do know that it
-> > worked in the internal MV tree and an effort was made to get the driver
-> > accepted upstream.
->
-> I couldn't find any evidence of this effort. Whatever, past is past, if
-> someone fixes the i2c-ite and i2c-algo-ite drivers soon, fine with me,
-> if not, the drivers will be deleted (which doesn't mean they can't be
-> resurrected later if there is interest and someone takes over
-> maintenance.) I'm setting the deadline to September 2006.
->
-> --
-> Jean Delvare
+With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 

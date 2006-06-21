@@ -1,57 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2006 01:35:16 +0100 (BST)
-Received: from [220.76.242.187] ([220.76.242.187]:20146 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S8133814AbWFUAfH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Jun 2006 01:35:07 +0100
-Received: from mrv ([192.168.11.157])
-	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k5L0a0YV002194;
-	Wed, 21 Jun 2006 09:36:18 +0900
-Message-ID: <001401c694ca$8cb8e530$9d0ba8c0@mrv>
-From:	"Roman Mashak" <mrv@corecom.co.kr>
-To:	"Raj Palani" <Rajesh_Palani@pmc-sierra.com>,
-	"Ralf Baechle" <ralf@linux-mips.org>
-Cc:	<linux-mips@linux-mips.org>
-References: <478F19F21671F04298A2116393EEC3D531D2D4@sjc1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-Subject: Re: Ethernet bridging on 2.6.12-rc3 (PMC-sierra patched)
-Date:	Wed, 21 Jun 2006 09:34:52 +0900
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Jun 2006 04:33:54 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:44450 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S8126578AbWFUDdn convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 21 Jun 2006 04:33:43 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.3) with ESMTP id k5L3XRUa013024;
+	Tue, 20 Jun 2006 20:33:27 -0700 (PDT)
+Received: from ism-mail01.corp.ad.wrs.com ([147.11.96.20]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 20 Jun 2006 20:33:27 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
 Content-Type: text/plain;
-	format=flowed;
-	charset="koi8-r";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
-Return-Path: <mrv@corecom.co.kr>
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: [PATCH] remove set_c0_status(ST0_IM) form wrppmc's irq.c
+Date:	Wed, 21 Jun 2006 05:33:24 +0200
+Message-ID: <6A3254532ACD7A42805B4E1BFD18080E01039084@ism-mail01.corp.ad.wrs.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH] remove set_c0_status(ST0_IM) form wrppmc's irq.c
+Thread-Index: AcaUdbEr7xyLSp30RouA4twIDn3CfgAbU+rQ
+From:	"Zhan, Rongkai" <rongkai.zhan@windriver.com>
+To:	"Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp>
+Cc:	"Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 21 Jun 2006 03:33:27.0814 (UTC) FILETIME=[7599D260:01C694E3]
+Return-Path: <rongkai.zhan@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11796
+X-archive-position: 11797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrv@corecom.co.kr
+X-original-sender: rongkai.zhan@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello, Raj!
-You wrote to "Ralf Baechle" <ralf@linux-mips.org>; "Roman Mashak" 
-<mrv@corecom.co.kr> on Tue, 20 Jun 2006 09:15:56 -0700:
+Hi Yiochi,
 
- RP> I would request that you take a look at our current GE driver
- RP> (msp85x0_ge.c) for the Sequoia platform and send us your feedback.
- RP> This is currently available on our ftp site ftp.pmc-sierra.com under
- RP> /pub/linux/2.6.12/linux-2.6.12-rc3_L002.tar.gz.  The driver has been
- RP> completely re-written and we welcome any feedback on the same.
-As you could notice in my first message in this thread I reffered to 
-2.6.12-rc3_L002 from PMC ftp site. And Ethernet bridging behavior I 
-described is occurring at that particular kernel.
+Yes. You are right.
 
- RP> The patches that have been generated for fixes that were made after
- RP> this release are available under
- RP> /pub/linux/2.6.12/patches-2.6.12-rc3_L002.
+To Ralf: Please consider the codes for wrppmc board go into the current merge window. Thanks.
 
-With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 
+Best Regards,
+Mark. Zhan
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Yoichi Yuasa
+Sent: Tuesday, June 20, 2006 10:27 PM
+To: Ralf Baechle
+Cc: linux-mips@linux-mips.org
+Subject: [PATCH] remove set_c0_status(ST0_IM) form wrppmc's irq.c
+
+Hi,
+
+mips_cpu_irq_init() does clear_c0_status(ST0_IM) first.
+I think that set_c0_status(ST0_IM) isn't necessary.
+
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/wrppmc/irq.c mips/arch/mips/gt64120/wrppmc/irq.c
+--- mips-orig/arch/mips/gt64120/wrppmc/irq.c	2006-06-20 21:17:36.853537000 +0900
++++ mips/arch/mips/gt64120/wrppmc/irq.c	2006-06-20 21:36:41.949101000 +0900
+@@ -62,9 +62,6 @@ void gt64120_init_pic(void)
+ 
+ void __init arch_init_irq(void)
+ {
+-	/* enable all CPU interrupt bits. */
+-	set_c0_status(ST0_IM);	/* IE bit is still 0 */
+-
+ 	/* IRQ 0 - 7 are for MIPS common irq_cpu controller */
+ 	mips_cpu_irq_init(0);
+ 

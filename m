@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 10:59:44 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:15585 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 11:00:46 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:19937 "HELO
 	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133504AbWFWJ7E (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Jun 2006 10:59:04 +0100
-Received: from localhost (in-1.mx.triera.net [213.161.0.25])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 3BE2AC03E;
-	Fri, 23 Jun 2006 11:58:54 +0200 (CEST)
+	id S8133455AbWFWJ7j (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Jun 2006 10:59:39 +0100
+Received: from localhost (in-3.mx.triera.net [213.161.0.27])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id D0CCDC026;
+	Fri, 23 Jun 2006 11:59:25 +0200 (CEST)
 Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-1.mx.triera.net (Postfix) with SMTP id 882911BC08C;
-	Fri, 23 Jun 2006 11:58:56 +0200 (CEST)
+	by in-3.mx.triera.net (Postfix) with SMTP id 61E491BC094;
+	Fri, 23 Jun 2006 11:59:26 +0200 (CEST)
 Received: from localhost (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 8398D1A18A8;
-	Fri, 23 Jun 2006 11:58:56 +0200 (CEST)
-Date:	Fri, 23 Jun 2006 11:58:58 +0200
+	by smtp.triera.net (Postfix) with ESMTP id 6C5AE1A18B7;
+	Fri, 23 Jun 2006 11:59:26 +0200 (CEST)
+Date:	Fri, 23 Jun 2006 11:59:28 +0200
 From:	Domen Puncer <domen.puncer@ultra.si>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: [patch 2/8] au1xxx: I2C fixes
-Message-ID: <20060623095858.GB31017@domen.ultra.si>
+Subject: [patch 3/8] au1xxx: I2C support for au1200
+Message-ID: <20060623095928.GC31017@domen.ultra.si>
 References: <20060623095703.GA30980@domen.ultra.si>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -29,7 +29,7 @@ Return-Path: <domen.puncer@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11814
+X-archive-position: 11815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,54 +37,26 @@ X-original-sender: domen.puncer@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-- I2C fixes from Jordan Crusoe
-- add SMBUS functionality flags
+Add I2C support for au1200.
 
 Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
 
-Index: linux-mailed/drivers/i2c/busses/i2c-au1550.c
+Index: linux-mailed/drivers/i2c/busses/Kconfig
 ===================================================================
---- linux-mailed.orig/drivers/i2c/busses/i2c-au1550.c
-+++ linux-mailed/drivers/i2c/busses/i2c-au1550.c
-@@ -35,7 +35,7 @@
- #include <linux/i2c.h>
+--- linux-mailed.orig/drivers/i2c/busses/Kconfig
++++ linux-mailed/drivers/i2c/busses/Kconfig
+@@ -75,11 +75,11 @@ config I2C_AMD8111
+ 	  will be called i2c-amd8111.
  
- #include <asm/mach-au1x00/au1000.h>
--#include <asm/mach-pb1x00/pb1550.h>
-+#include <asm/mach-au1x00/au1xxx.h>
- #include <asm/mach-au1x00/au1xxx_psc.h>
+ config I2C_AU1550
+-	tristate "Au1550 SMBus interface"
+-	depends on I2C && SOC_AU1550
++	tristate "Au1550/Au1200 SMBus interface"
++	depends on I2C && (SOC_AU1550 || SOC_AU1200)
+ 	help
+ 	  If you say yes to this option, support will be included for the
+-	  Au1550 SMBus interface.
++	  Au1550 and Au1200 SMBus interface.
  
- #include "i2c-au1550.h"
-@@ -118,13 +118,19 @@ do_address(struct i2c_au1550_data *adap,
- 
- 	/* Reset the FIFOs, clear events.
- 	*/
--	sp->psc_smbpcr = PSC_SMBPCR_DC;
-+	stat = sp->psc_smbstat;
- 	sp->psc_smbevnt = PSC_SMBEVNT_ALLCLR;
- 	au_sync();
--	do {
--		stat = sp->psc_smbpcr;
-+
-+	if (!(stat & PSC_SMBSTAT_TE) || !(stat & PSC_SMBSTAT_RE)) {
-+		sp->psc_smbpcr = PSC_SMBPCR_DC;
- 		au_sync();
--	} while ((stat & PSC_SMBPCR_DC) != 0);
-+		do {
-+			stat = sp->psc_smbpcr;
-+			au_sync();
-+		} while ((stat & PSC_SMBPCR_DC) != 0);
-+		udelay(50);
-+	}
- 
- 	/* Write out the i2c chip address and specify operation
- 	*/
-@@ -279,7 +285,7 @@ au1550_xfer(struct i2c_adapter *i2c_adap
- static u32
- au1550_func(struct i2c_adapter *adap)
- {
--	return I2C_FUNC_I2C;
-+	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
- }
- 
- static struct i2c_algorithm au1550_algo = {
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-au1550.

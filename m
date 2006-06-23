@@ -1,71 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 18:20:36 +0100 (BST)
-Received: from buzzloop.caiaq.de ([212.112.241.133]:63241 "EHLO
-	buzzloop.caiaq.de") by ftp.linux-mips.org with ESMTP
-	id S8133506AbWFWRU0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Jun 2006 18:20:26 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by buzzloop.caiaq.de (Postfix) with ESMTP id 944AA7F4028
-	for <linux-mips@linux-mips.org>; Fri, 23 Jun 2006 19:20:23 +0200 (CEST)
-Received: from buzzloop.caiaq.de ([127.0.0.1])
-	by localhost (buzzloop [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 31929-06 for <linux-mips@linux-mips.org>;
-	Fri, 23 Jun 2006 19:20:23 +0200 (CEST)
-Received: from [192.168.1.140] (port-83-236-238-37.static.qsc.de [83.236.238.37])
-	(using TLSv1 with cipher RC4-SHA (128/128 bits))
-	(No client certificate requested)
-	by buzzloop.caiaq.de (Postfix) with ESMTP id 465C27F4022
-	for <linux-mips@linux-mips.org>; Fri, 23 Jun 2006 19:20:23 +0200 (CEST)
-Mime-Version: 1.0 (Apple Message framework v750)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 18:36:43 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:51098 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133506AbWFWRge (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Jun 2006 18:36:34 +0100
+Received: (qmail 8563 invoked from network); 23 Jun 2006 21:48:09 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 23 Jun 2006 21:48:09 -0000
+Message-ID: <449C2663.4060501@ru.mvista.com>
+Date:	Fri, 23 Jun 2006 21:35:31 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Domen Puncer <domen.puncer@ultra.si>
+CC:	linux-mips@linux-mips.org
+Subject: Re: u-boot problem: Au1xx0: fix prom_getenv() to handle YAMON style
+ environment
+References: <20060623082348.GB18607@domen.ultra.si> <449C1DA8.9090800@ru.mvista.com>
+In-Reply-To: <449C1DA8.9090800@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <5B414347-B938-4E68-812E-627AED1A38B0@caiaq.de>
-Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
-To:	linux-mips@linux-mips.org
-From:	Daniel Mack <daniel@caiaq.de>
-Subject: smc91x ethernet an DBAU1200
-Date:	Fri, 23 Jun 2006 19:20:19 +0200
-X-Mailer: Apple Mail (2.750)
-Return-Path: <daniel@caiaq.de>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11835
+X-archive-position: 11836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@caiaq.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi list,
+Hello, I wrote:
 
-is there anyone out there successfully using the SMC 91C111 ethernet  
-chip
-on AMD's DBAU1200 eval kit? In my setup here, it's working fine from  
-within
-the YAMON boot loader so I can use it to download a kernel image via  
-TFTP.
-The kernel (bleeding edge linux-2.6 mips-GIT) detects the device as well
+>> I need to revert $SUBJECT patch for kernel to boot on au1200,
+>> u-boot 1.1.3.
 
-	smc91x.c: v1.1, sep 22 2004 by Nicolas Pitre <nico@cam.org>
-	eth0: SMC91C11xFD (rev 1) at b9000300 IRQ 65 [nowait]
-	eth0: Ethernet addr: 00:00:1a:19:11:8c
+>> And I could swear it worked booted yesterday without reverting (??)
 
-and is able to mount its root filesystem via NFS. However, the  
-communication
-does not seem to be sufficiently stable, messages like this occur  
-regularily:
+>    Hm, it sort of worked with YAMON before that patch (just not quite 
+> correctly) due to the fact the name strings seem to be followed by the 
+> value strings (just not '='but '\0' being between them). But obviously, 
+> the variable values could be taken for the names the way it was written. 
+> If the purpose was to support both YAMON and U-Boot, that should've been 
+> marked in the comments I think...
 
-	nfs: server 192.168.1.200 not responding, still trying
-	nfs: server 192.168.1.200 not responding, still trying
+>> Could we support yamon and u-boot style environment?
 
-As the machine acts as NFS server for several other linux embedded  
-systems,
-I don't suspect it to be the problem. Also, things like cables etc  
-have been
-properly checked.
+>    Is there a way to distinguish them?
 
-Before I'm starting research, I'd like to know whether this is a known
-issue or whether there are any mandatory settings I missed.
+   Well, I think some adaptive alogrithm using strchr(env, '=') should be 
+possible...
 
-Thanks for any hint,
-Daniel
+>>     Domen
+
+WBR, Sergei

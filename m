@@ -1,41 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 12:16:27 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:17616 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133563AbWFWLQM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Jun 2006 12:16:12 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5NBGBiG007955;
-	Fri, 23 Jun 2006 12:16:11 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5NBGBxM007954;
-	Fri, 23 Jun 2006 12:16:11 +0100
-Date:	Fri, 23 Jun 2006 12:16:11 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Domen Puncer <domen.puncer@ultra.si>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [patch 4/8] au1xxx: dbdma, no sleeping under spin_lock
-Message-ID: <20060623111611.GN5896@linux-mips.org>
-References: <20060623095703.GA30980@domen.ultra.si> <20060623095950.GD31017@domen.ultra.si>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060623095950.GD31017@domen.ultra.si>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 13:58:41 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:23732 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S8133571AbWFWM6c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Jun 2006 13:58:32 +0100
+Received: (qmail 5976 invoked from network); 23 Jun 2006 17:10:04 -0000
+Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
+  by mail.dev.rtsoft.ru with SMTP; 23 Jun 2006 17:10:04 -0000
+Message-ID: <449BE538.5030203@ru.mvista.com>
+Date:	Fri, 23 Jun 2006 16:57:28 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Domen Puncer <domen.puncer@ultra.si>,
+	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [patch 1/8] au1xxx: psc fixes + add au1200 adresses
+References: <20060623095703.GA30980@domen.ultra.si> <20060623095831.GA31017@domen.ultra.si>
+In-Reply-To: <20060623095831.GA31017@domen.ultra.si>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11827
+X-archive-position: 11828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jun 23, 2006 at 11:59:50AM +0200, Domen Puncer wrote:
+Hello.
 
-> kmalloc under spin_lock can't sleep.
+Domen Puncer wrote:
+> Based on Jordan Crusoe's i2c patch:
+> - fix PSC3_BASE_ADDR to match au1550 databook
+> - fix PSC_SMBTXRX_RSR
+> - add PSC addresses for au1200
 
-Applied.
+    That was my patch, originally. And (surprise!) it just went from the -mm 
+tree to Linus. Congrats, now we're going to have a patch conflict. :-)
 
-  Ralf
+> Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
+
+> Index: linux-mailed/include/asm-mips/mach-au1x00/au1xxx_psc.h
+> ===================================================================
+> --- linux-mailed.orig/include/asm-mips/mach-au1x00/au1xxx_psc.h
+> +++ linux-mailed/include/asm-mips/mach-au1x00/au1xxx_psc.h
+> @@ -40,7 +40,12 @@
+>  #define PSC0_BASE_ADDR		0xb1a00000
+>  #define PSC1_BASE_ADDR		0xb1b00000
+>  #define PSC2_BASE_ADDR		0xb0a00000
+> -#define PSC3_BASE_ADDR		0xb0d00000
+> +#define PSC3_BASE_ADDR		0xb0b00000
+> +#endif
+> +
+> +#ifdef CONFIG_SOC_AU1200
+> +#define PSC0_BASE_ADDR		0xb1a00000
+> +#define PSC1_BASE_ADDR		0xb1b00000
+>  #endif
+>  
+>  /* The PSC select and control registers are common to
+> @@ -506,7 +511,7 @@ typedef struct	psc_smb {
+>  
+>  /* Transmit register control.
+>  */
+> -#define PSC_SMBTXRX_RSR		(1 << 30)
+> +#define PSC_SMBTXRX_RSR		(1 << 28)
+>  #define PSC_SMBTXRX_STP		(1 << 29)
+>  #define PSC_SMBTXRX_DATAMASK	(0xff)
+
+WBR, Sergei

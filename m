@@ -1,43 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Jun 2006 17:53:52 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:65468 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133903AbWFVQxb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Jun 2006 17:53:31 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5MGrQCp003471;
-	Thu, 22 Jun 2006 17:53:26 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5MGrKdU003470;
-	Thu, 22 Jun 2006 17:53:20 +0100
-Date:	Thu, 22 Jun 2006 17:53:20 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 09:24:05 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:38098 "HELO
+	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
+	id S8133443AbWFWIX4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Jun 2006 09:23:56 +0100
+Received: from localhost (in-1.mx.triera.net [213.161.0.25])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id 1075EC03A;
+	Fri, 23 Jun 2006 10:23:46 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-1.mx.triera.net (Postfix) with SMTP id 980261BC09B;
+	Fri, 23 Jun 2006 10:23:47 +0200 (CEST)
+Received: from localhost (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id 3D3CD1A18BF;
+	Fri, 23 Jun 2006 10:23:46 +0200 (CEST)
+Date:	Fri, 23 Jun 2006 10:23:48 +0200
+From:	Domen Puncer <domen.puncer@ultra.si>
 To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Domen Puncer <domen.puncer@ultra.si>, linux-mips@linux-mips.org
-Subject: Re: [patch] au1550_ac97: spin_unlock in error path
-Message-ID: <20060622165320.GA3415@linux-mips.org>
-References: <20060622092913.GA18607@domen.ultra.si> <449AB731.40301@ru.mvista.com>
-Mime-Version: 1.0
+Cc:	linux-mips@linux-mips.org
+Subject: u-boot problem: Au1xx0: fix prom_getenv() to handle YAMON style environment
+Message-ID: <20060623082348.GB18607@domen.ultra.si>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <449AB731.40301@ru.mvista.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.5.11+cvs20060126
+X-Virus-Scanned: Triera AV Service
+Return-Path: <domen.puncer@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11810
+X-archive-position: 11811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: domen.puncer@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 22, 2006 at 07:28:49PM +0400, Sergei Shtylyov wrote:
+Hi.
 
->    Dang, we missed it while fixing the spinlocks in that driver. Thank you 
-> for noticing. Not sure if Ralf would be eaegr to apply though. :-)
+I need to revert $SUBJECT patch for kernel to boot on au1200,
+u-boot 1.1.3.
 
-I feed it to upstream, so it will eventually show up in the tree on
-the indirect path.
+And I could swear it worked booted yesterday without reverting (??)
 
-  Ralf
+Could we support yamon and u-boot style environment?
+
+
+	Domen

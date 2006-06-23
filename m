@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 11:03:48 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:30433 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 11:04:55 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:35041 "HELO
 	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133501AbWFWKBA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Jun 2006 11:01:00 +0100
-Received: from localhost (in-1.mx.triera.net [213.161.0.25])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id 5FBCDC051;
-	Fri, 23 Jun 2006 12:00:49 +0200 (CEST)
+	id S8133619AbWFWKB2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Jun 2006 11:01:28 +0100
+Received: from localhost (in-3.mx.triera.net [213.161.0.27])
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id BA6F9C05F;
+	Fri, 23 Jun 2006 12:01:17 +0200 (CEST)
 Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-1.mx.triera.net (Postfix) with SMTP id 78B9F1BC092;
-	Fri, 23 Jun 2006 12:00:51 +0200 (CEST)
+	by in-3.mx.triera.net (Postfix) with SMTP id AF04C1BC084;
+	Fri, 23 Jun 2006 12:01:18 +0200 (CEST)
 Received: from localhost (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 70D8E1A18A8;
-	Fri, 23 Jun 2006 12:00:51 +0200 (CEST)
-Date:	Fri, 23 Jun 2006 12:00:53 +0200
+	by smtp.triera.net (Postfix) with ESMTP id C23631A18AE;
+	Fri, 23 Jun 2006 12:01:18 +0200 (CEST)
+Date:	Fri, 23 Jun 2006 12:01:21 +0200
 From:	Domen Puncer <domen.puncer@ultra.si>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: [patch 6/8] au1xxx: oss sound support for au1200
-Message-ID: <20060623100053.GF31017@domen.ultra.si>
+Subject: [patch 7/8] au1xxx: compile fixes for OHCI for au1200
+Message-ID: <20060623100121.GG31017@domen.ultra.si>
 References: <20060623095703.GA30980@domen.ultra.si>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -29,7 +29,7 @@ Return-Path: <domen.puncer@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11818
+X-archive-position: 11819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,39 +37,38 @@ X-original-sender: domen.puncer@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-au1550 ac97 driver works fine on au1200 too.
+Compile fixes for au1200 ohci.
 
-Comments at the top of file state this code is GPL, so lets
-mark it as GPL too.
+First part looks a bit hackish... but it works for me.
+
 
 Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
 
-Index: linux-mailed/sound/oss/Kconfig
+Index: linux-mailed/drivers/usb/host/ohci-au1xxx.c
 ===================================================================
---- linux-mailed.orig/sound/oss/Kconfig
-+++ linux-mailed/sound/oss/Kconfig
-@@ -114,8 +114,9 @@ config SOUND_VRC5477
- 	  with the AC97 codec.
+--- linux-mailed.orig/drivers/usb/host/ohci-au1xxx.c
++++ linux-mailed/drivers/usb/host/ohci-au1xxx.c
+@@ -101,9 +101,11 @@ static void au1xxx_start_ohc(struct plat
  
- config SOUND_AU1550_AC97
--	tristate "Au1550 AC97 Sound"
--	depends on SOUND_PRIME && SOC_AU1550
-+	tristate "Au1550/Au1200 AC97 Sound"
-+	select SND_AC97_CODEC
-+	depends on SOUND_PRIME && (SOC_AU1550 || SOC_AU1200)
+ #endif  /* Au1200 */
  
- config SOUND_AU1550_I2S
- 	tristate "Au1550 I2S Sound"
-Index: linux-mailed/sound/oss/au1550_ac97.c
-===================================================================
---- linux-mailed.orig/sound/oss/au1550_ac97.c
-+++ linux-mailed/sound/oss/au1550_ac97.c
-@@ -1893,6 +1893,8 @@ static /*const */ struct file_operations
++#ifndef CONFIG_SOC_AU1200
+ 	/* wait for reset complete (read register twice; see au1500 errata) */
+ 	while (au_readl(USB_HOST_CONFIG),
+ 		!(au_readl(USB_HOST_CONFIG) & USBH_ENABLE_RD))
++#endif
+ 		udelay(1000);
  
- MODULE_AUTHOR("Advanced Micro Devices (AMD), dan@embeddededge.com");
- MODULE_DESCRIPTION("Au1550 AC97 Audio Driver");
-+MODULE_LICENSE("GPL");
-+
- 
- static int __devinit
- au1550_probe(void)
+ 	printk(KERN_DEBUG __FILE__
+@@ -157,9 +159,9 @@ static int usb_ohci_au1xxx_probe(const s
+ 	/* Au1200 AB USB does not support coherent memory */
+ 	if (!(read_c0_prid() & 0xff)) {
+ 		pr_info("%s: this is chip revision AB !!\n",
+-			dev->dev.name);
++			dev->name);
+ 		pr_info("%s: update your board or re-configure the kernel\n",
+-			dev->dev.name);
++			dev->name);
+ 		return -ENODEV;
+ 	}
+ #endif

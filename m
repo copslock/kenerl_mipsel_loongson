@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 11:04:55 +0100 (BST)
-Received: from deliver-1.mx.triera.net ([213.161.0.31]:35041 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 11:05:58 +0100 (BST)
+Received: from deliver-1.mx.triera.net ([213.161.0.31]:39393 "HELO
 	deliver-1.mx.triera.net") by ftp.linux-mips.org with SMTP
-	id S8133619AbWFWKB2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Jun 2006 11:01:28 +0100
+	id S8133643AbWFWKBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Jun 2006 11:01:55 +0100
 Received: from localhost (in-3.mx.triera.net [213.161.0.27])
-	by deliver-1.mx.triera.net (Postfix) with ESMTP id BA6F9C05F;
-	Fri, 23 Jun 2006 12:01:17 +0200 (CEST)
+	by deliver-1.mx.triera.net (Postfix) with ESMTP id B84F1C05F;
+	Fri, 23 Jun 2006 12:01:44 +0200 (CEST)
 Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-3.mx.triera.net (Postfix) with SMTP id AF04C1BC084;
-	Fri, 23 Jun 2006 12:01:18 +0200 (CEST)
+	by in-3.mx.triera.net (Postfix) with SMTP id 92D5D1BC084;
+	Fri, 23 Jun 2006 12:01:46 +0200 (CEST)
 Received: from localhost (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id C23631A18AE;
-	Fri, 23 Jun 2006 12:01:18 +0200 (CEST)
-Date:	Fri, 23 Jun 2006 12:01:21 +0200
+	by smtp.triera.net (Postfix) with ESMTP id 936E31A18AE;
+	Fri, 23 Jun 2006 12:01:46 +0200 (CEST)
+Date:	Fri, 23 Jun 2006 12:01:49 +0200
 From:	Domen Puncer <domen.puncer@ultra.si>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: [patch 7/8] au1xxx: compile fixes for OHCI for au1200
-Message-ID: <20060623100121.GG31017@domen.ultra.si>
+Subject: [patch 8/8] au1xxx: pcmcia: fix __init called from non-init
+Message-ID: <20060623100148.GH31017@domen.ultra.si>
 References: <20060623095703.GA30980@domen.ultra.si>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -29,7 +29,7 @@ Return-Path: <domen.puncer@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11819
+X-archive-position: 11820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,38 +37,22 @@ X-original-sender: domen.puncer@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-Compile fixes for au1200 ohci.
-
-First part looks a bit hackish... but it works for me.
+This must not be marked __init, as it is called from 
+au1x00_drv_pcmcia_probe.
 
 
 Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
 
-Index: linux-mailed/drivers/usb/host/ohci-au1xxx.c
+Index: linux-mailed/drivers/pcmcia/au1000_db1x00.c
 ===================================================================
---- linux-mailed.orig/drivers/usb/host/ohci-au1xxx.c
-+++ linux-mailed/drivers/usb/host/ohci-au1xxx.c
-@@ -101,9 +101,11 @@ static void au1xxx_start_ohc(struct plat
+--- linux-mailed.orig/drivers/pcmcia/au1000_db1x00.c
++++ linux-mailed/drivers/pcmcia/au1000_db1x00.c
+@@ -296,7 +296,7 @@ struct pcmcia_low_level db1x00_pcmcia_op
+ 	.socket_suspend		= db1x00_socket_suspend
+ };
  
- #endif  /* Au1200 */
- 
-+#ifndef CONFIG_SOC_AU1200
- 	/* wait for reset complete (read register twice; see au1500 errata) */
- 	while (au_readl(USB_HOST_CONFIG),
- 		!(au_readl(USB_HOST_CONFIG) & USBH_ENABLE_RD))
-+#endif
- 		udelay(1000);
- 
- 	printk(KERN_DEBUG __FILE__
-@@ -157,9 +159,9 @@ static int usb_ohci_au1xxx_probe(const s
- 	/* Au1200 AB USB does not support coherent memory */
- 	if (!(read_c0_prid() & 0xff)) {
- 		pr_info("%s: this is chip revision AB !!\n",
--			dev->dev.name);
-+			dev->name);
- 		pr_info("%s: update your board or re-configure the kernel\n",
--			dev->dev.name);
-+			dev->name);
- 		return -ENODEV;
- 	}
- #endif
+-int __init au1x_board_init(struct device *dev)
++int au1x_board_init(struct device *dev)
+ {
+ 	int ret = -ENODEV;
+ 	bcsr->pcmcia = 0; /* turn off power, if it's not already off */

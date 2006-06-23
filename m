@@ -1,76 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 13:58:41 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:23732 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S8133571AbWFWM6c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Jun 2006 13:58:32 +0100
-Received: (qmail 5976 invoked from network); 23 Jun 2006 17:10:04 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 23 Jun 2006 17:10:04 -0000
-Message-ID: <449BE538.5030203@ru.mvista.com>
-Date:	Fri, 23 Jun 2006 16:57:28 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Domen Puncer <domen.puncer@ultra.si>,
-	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [patch 1/8] au1xxx: psc fixes + add au1200 adresses
-References: <20060623095703.GA30980@domen.ultra.si> <20060623095831.GA31017@domen.ultra.si>
-In-Reply-To: <20060623095831.GA31017@domen.ultra.si>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 14:52:21 +0100 (BST)
+Received: from coderock.org ([193.77.147.115]:33987 "EHLO trashy.coderock.org")
+	by ftp.linux-mips.org with ESMTP id S8133500AbWFWNwJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Jun 2006 14:52:09 +0100
+Received: by trashy.coderock.org (Postfix, from userid 780)
+	id 7F1F31470; Fri, 23 Jun 2006 15:52:06 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by trashy.coderock.org (Postfix) with ESMTP id DEDE8146F;
+	Fri, 23 Jun 2006 15:52:05 +0200 (CEST)
+Received: from localhost (coderock.org [193.77.147.115])
+	by trashy.coderock.org (Postfix) with ESMTP id 5B36513E;
+	Fri, 23 Jun 2006 15:52:03 +0200 (CEST)
+Date:	Fri, 23 Jun 2006 15:52:02 +0200
+From:	Domen Puncer <domen@coderock.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Domen Puncer <domen.puncer@ultra.si>, linux-mips@linux-mips.org
+Subject: Re: [patch 5/8] au1xxx: export dbdma functions
+Message-ID: <20060623135202.GA9098@nd47.coderock.org>
+References: <20060623095703.GA30980@domen.ultra.si> <20060623100021.GE31017@domen.ultra.si> <20060623103343.GE5896@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060623103343.GE5896@linux-mips.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <domen@coderock.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11828
+X-archive-position: 11829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: domen@coderock.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+These are needed for au1550_ac97 module.
 
-Domen Puncer wrote:
-> Based on Jordan Crusoe's i2c patch:
-> - fix PSC3_BASE_ADDR to match au1550 databook
-> - fix PSC_SMBTXRX_RSR
-> - add PSC addresses for au1200
+Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
 
-    That was my patch, originally. And (surprise!) it just went from the -mm 
-tree to Linus. Congrats, now we're going to have a patch conflict. :-)
-
-> Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
-
-> Index: linux-mailed/include/asm-mips/mach-au1x00/au1xxx_psc.h
-> ===================================================================
-> --- linux-mailed.orig/include/asm-mips/mach-au1x00/au1xxx_psc.h
-> +++ linux-mailed/include/asm-mips/mach-au1x00/au1xxx_psc.h
-> @@ -40,7 +40,12 @@
->  #define PSC0_BASE_ADDR		0xb1a00000
->  #define PSC1_BASE_ADDR		0xb1b00000
->  #define PSC2_BASE_ADDR		0xb0a00000
-> -#define PSC3_BASE_ADDR		0xb0d00000
-> +#define PSC3_BASE_ADDR		0xb0b00000
-> +#endif
-> +
-> +#ifdef CONFIG_SOC_AU1200
-> +#define PSC0_BASE_ADDR		0xb1a00000
-> +#define PSC1_BASE_ADDR		0xb1b00000
->  #endif
->  
->  /* The PSC select and control registers are common to
-> @@ -506,7 +511,7 @@ typedef struct	psc_smb {
->  
->  /* Transmit register control.
->  */
-> -#define PSC_SMBTXRX_RSR		(1 << 30)
-> +#define PSC_SMBTXRX_RSR		(1 << 28)
->  #define PSC_SMBTXRX_STP		(1 << 29)
->  #define PSC_SMBTXRX_DATAMASK	(0xff)
-
-WBR, Sergei
+Index: linux-mailed/arch/mips/au1000/common/dbdma.c
+===================================================================
+--- linux-mailed.orig/arch/mips/au1000/common/dbdma.c
++++ linux-mailed/arch/mips/au1000/common/dbdma.c
+@@ -730,6 +730,8 @@ au1xxx_dbdma_get_dest(u32 chanid, void *
+ 	return rv;
+ }
+ 
++EXPORT_SYMBOL_GPL(au1xxx_dbdma_get_dest);
++
+ void
+ au1xxx_dbdma_stop(u32 chanid)
+ {
+@@ -821,6 +823,8 @@ au1xxx_get_dma_residue(u32 chanid)
+ 	return rv;
+ }
+ 
++EXPORT_SYMBOL_GPL(au1xxx_get_dma_residue);
++
+ void
+ au1xxx_dbdma_chan_free(u32 chanid)
+ {

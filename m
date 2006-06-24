@@ -1,73 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jun 2006 21:49:01 +0100 (BST)
-Received: from allen.werkleitz.de ([80.190.251.108]:36236 "EHLO
-	allen.werkleitz.de") by ftp.linux-mips.org with ESMTP
-	id S8133709AbWFWUsx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Jun 2006 21:48:53 +0100
-Received: from p54bde340.dip.t-dialin.net ([84.189.227.64] helo=void.local)
-	by allen.werkleitz.de with esmtpsa (TLS-1.0:DHE_RSA_3DES_EDE_CBC_SHA1:24)
-	(Exim 4.62)
-	(envelope-from <js@linuxtv.org>)
-	id 1FtsZu-0003dd-MA; Fri, 23 Jun 2006 22:48:43 +0200
-Received: from js by void.local with local (Exim 3.35 #1 (Debian))
-	id 1FtsZv-0000kJ-00; Fri, 23 Jun 2006 22:48:35 +0200
-Date:	Fri, 23 Jun 2006 22:48:35 +0200
-From:	Johannes Stezenbach <js@linuxtv.org>
-To:	Daniel Mack <daniel@caiaq.de>
-Cc:	linux-mips@linux-mips.org
-Message-ID: <20060623204835.GA2548@linuxtv.org>
-References: <5B414347-B938-4E68-812E-627AED1A38B0@caiaq.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2006 02:29:38 +0100 (BST)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:63152 "HELO
+	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S8133800AbWFXB3Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 24 Jun 2006 02:29:24 +0100
+Received: (qmail 1233 invoked by uid 101); 24 Jun 2006 01:29:12 -0000
+Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
+  by mother.pmc-sierra.com with SMTP; 24 Jun 2006 01:29:12 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k5O1TB5w028455;
+	Fri, 23 Jun 2006 18:29:12 -0700
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <JPF7KJAJ>; Fri, 23 Jun 2006 18:29:11 -0700
+Message-ID: <C28979E4F697C249ABDA83AC0C33CDF8143EF3@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+From:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH 0/6] Sequoia Patches
+Date:	Fri, 23 Jun 2006 18:29:03 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <5B414347-B938-4E68-812E-627AED1A38B0@caiaq.de>
-User-Agent: Mutt/1.5.11+cvs20060403
-X-SA-Exim-Connect-IP: 84.189.227.64
-Subject: Re: smc91x ethernet an DBAU1200
-X-SA-Exim-Version: 4.2.1 (built Mon, 27 Mar 2006 13:42:28 +0200)
-X-SA-Exim-Scanned: Yes (on allen.werkleitz.de)
-Return-Path: <js@linuxtv.org>
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Kiran_Thota@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11841
+X-archive-position: 11842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: js@linuxtv.org
+X-original-sender: Kiran_Thota@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Daniel,
 
-On Fri, Jun 23, 2006, Daniel Mack wrote:
->is there anyone out there successfully using the SMC 91C111 ethernet  
->chip
->on AMD's DBAU1200 eval kit? In my setup here, it's working fine from  
->within
->the YAMON boot loader so I can use it to download a kernel image via  
->TFTP.
->The kernel (bleeding edge linux-2.6 mips-GIT) detects the device as well
->
->	smc91x.c: v1.1, sep 22 2004 by Nicolas Pitre <nico@cam.org>
->	eth0: SMC91C11xFD (rev 1) at b9000300 IRQ 65 [nowait]
->	eth0: Ethernet addr: 00:00:1a:19:11:8c
->
->and is able to mount its root filesystem via NFS. However, the  
->communication
->does not seem to be sufficiently stable, messages like this occur  
->regularily:
->
->	nfs: server 192.168.1.200 not responding, still trying
->	nfs: server 192.168.1.200 not responding, still trying
-
-I had similar issues with smc91x.c on a different platform,
-where the bus it is connected to was rather slow (and no DMA)
--> dropped packets.
-
-Try to use NFS via TCP, or force a 10Mbit connection
-with ethtool or by hacking the driver (ctl_rspeed).
-(For me tcp works.)
+Hi Ralf and list,
+ Please merge the following patches for PMC-Sierra Sequoia platform for linux-2.6.12.
+http://www.linux-mips.org/pub/linux/mips/kernel/v2.6/linux-2.6.12.tar.gz
 
 
-HTH,
-Johannes
+Patch [1/6] - Sequoia Configs
+Patch [2/6] - Sequoia PCI
+Patch [3/6] - Sequoia Platform
+Patch [4/6] - Sequoia Serial
+Patch [5/6] - RM9000 arch
+Patch [6/6] - MSP85x0 gige Driver (also submitting to netdev mailing list)
+
+
+And the diffstat is -
+
+ arch/mips/Kconfig                                     |   22 
+ arch/mips/Makefile                                    |    4 
+ arch/mips/configs/sequoia_defconfig                   |  701 +++++
+ arch/mips/mm/c-r4k.c                                  |   11 
+ arch/mips/mm/sc-rm7k.c                                |    9 
+ arch/mips/mm/tlbex.c                                  |   50 
+ arch/mips/pci/Makefile                                |    2 
+ arch/mips/pci/fixup-sequoia.c                         |   43 
+ arch/mips/pci/ops-sequoia.c                           |  187 +
+ arch/mips/pci/pci-sequoia.c                           |   78 
+ arch/mips/pmc-sierra/sequoia/Makefile                 |    7 
+ arch/mips/pmc-sierra/sequoia/irq-handler.S            |   99 
+ arch/mips/pmc-sierra/sequoia/irq.c                    |  224 +
+ arch/mips/pmc-sierra/sequoia/prom.c                   |  140 +
+ arch/mips/pmc-sierra/sequoia/py-console.c             |  123 +
+ arch/mips/pmc-sierra/sequoia/setup.c                  |  258 ++
+ arch/mips/pmc-sierra/sequoia/setup.h                  |   17 
+ drivers/net/Kconfig                                   |    2 
+ drivers/net/Makefile                                  |    3 
+ drivers/net/msp85x0_ge.c                              | 2142 ++++++++++++++++++
+ drivers/net/msp85x0_ge.h                              |  452 +++
+ drivers/net/titan_mdio.c                              |   21 
+ drivers/net/titan_mdio.h                              |    5 
+ drivers/serial/8250.c                                 |   18 
+ include/asm-mips/bootinfo.h                           |    2 
+ include/asm-mips/mach-sequoia/cpu-feature-overrides.h |   45 
+ include/asm-mips/pmc_sequoia.h                        |  296 ++
+ include/asm-mips/serial.h                             |    5 
+ include/asm-mips/war.h                                |   11 
+ include/linux/serial_reg.h                            |   63 
+ 30 files changed, 5036 insertions(+), 4 deletions(-)
+
+
+Comments?
+
+Kiran

@@ -1,41 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2006 09:48:07 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.168]:39869 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133466AbWFXIr6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Jun 2006 09:47:58 +0100
-Received: by ug-out-1314.google.com with SMTP id k3so1374501ugf
-        for <linux-mips@linux-mips.org>; Sat, 24 Jun 2006 01:47:58 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=fuHxoNM5WV8gnkCYg1+pAI8dAgLkQBSoNOy48tuIPuGxwV+6AZdU//pfGugw0l27X+r76C2UCukbS02/E9wgFF+m6RkE8ZxKJpDqvXB70s1odh57iGk5ZA2vo0PZSdsXMq3U4LOzh7XqjqRLkWRZ/+xrTh5NKRU3SSAO17i808M=
-Received: by 10.67.101.8 with SMTP id d8mr3093480ugm;
-        Sat, 24 Jun 2006 01:47:58 -0700 (PDT)
-Received: by 10.66.242.15 with HTTP; Sat, 24 Jun 2006 01:47:58 -0700 (PDT)
-Message-ID: <50c9a2250606240147j7011cc21ke96f0ab42fd770d5@mail.gmail.com>
-Date:	Sat, 24 Jun 2006 16:47:58 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: does anyone use the ks8841 ethenet card for mips?
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2006 14:57:43 +0100 (BST)
+Received: from buzzloop.caiaq.de ([212.112.241.133]:51471 "EHLO
+	buzzloop.caiaq.de") by ftp.linux-mips.org with ESMTP
+	id S8133565AbWFXN5e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 24 Jun 2006 14:57:34 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by buzzloop.caiaq.de (Postfix) with ESMTP id C08E77F4028
+	for <linux-mips@linux-mips.org>; Sat, 24 Jun 2006 15:57:28 +0200 (CEST)
+Received: from buzzloop.caiaq.de ([127.0.0.1])
+	by localhost (buzzloop [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 17798-01 for <linux-mips@linux-mips.org>;
+	Sat, 24 Jun 2006 15:57:28 +0200 (CEST)
+Received: from [192.168.1.140] (port-83-236-238-37.static.qsc.de [83.236.238.37])
+	(using TLSv1 with cipher RC4-SHA (128/128 bits))
+	(No client certificate requested)
+	by buzzloop.caiaq.de (Postfix) with ESMTP id 5A14F7F4024
+	for <linux-mips@linux-mips.org>; Sat, 24 Jun 2006 15:57:28 +0200 (CEST)
+Mime-Version: 1.0 (Apple Message framework v750)
+In-Reply-To: <20060623204835.GA2548@linuxtv.org>
+References: <5B414347-B938-4E68-812E-627AED1A38B0@caiaq.de> <20060623204835.GA2548@linuxtv.org>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <03F81313-6053-4704-83F5-DF73BC6D1CEC@caiaq.de>
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+From:	Daniel Mack <daniel@caiaq.de>
+Subject: Re: smc91x ethernet an DBAU1200
+Date:	Sat, 24 Jun 2006 15:57:23 +0200
+To:	linux-mips@linux-mips.org
+X-Mailer: Apple Mail (2.750)
+Return-Path: <daniel@caiaq.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11849
+X-archive-position: 11850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: daniel@caiaq.de
 Precedence: bulk
 X-list: linux-mips
 
-is there any drivers for linux 2.6？
-thanks for any hints
 
-Best Regards
+On Jun 23, 2006, at 10:48 PM, Johannes Stezenbach wrote:
 
-zhuzhenhua
+>> 	nfs: server 192.168.1.200 not responding, still trying
+>> 	nfs: server 192.168.1.200 not responding, still trying
+>
+> I had similar issues with smc91x.c on a different platform,
+> where the bus it is connected to was rather slow (and no DMA)
+> -> dropped packets.
+>
+> Try to use NFS via TCP, or force a 10Mbit connection
+> with ethtool or by hacking the driver (ctl_rspeed).
+> (For me tcp works.)
+
+Thanks Johannes, using TCP works fine here, too.
+
+Daniel

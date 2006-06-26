@@ -1,86 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jun 2006 23:55:01 +0100 (BST)
-Received: from outbound-res.frontbridge.com ([63.161.60.49]:49820 "EHLO
-	outbound1-res-R.bigfish.com") by ftp.linux-mips.org with ESMTP
-	id S8133719AbWFXWyu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Jun 2006 23:54:50 +0100
-Received: from outbound1-res.bigfish.com (localhost.localdomain [127.0.0.1])
-	by outbound1-res-R.bigfish.com (Postfix) with ESMTP id 5F7E273439F;
-	Sat, 24 Jun 2006 22:54:43 +0000 (UTC)
-Received: from mail41-res-R.bigfish.com (unknown [172.18.16.1])
-	by outbound1-res.bigfish.com (Postfix) with ESMTP id 576C173439D;
-	Sat, 24 Jun 2006 22:54:43 +0000 (UTC)
-Received: from mail41-res.bigfish.com (localhost.localdomain [127.0.0.1])
-	by mail41-res-R.bigfish.com (Postfix) with ESMTP id 4C036B92F4B;
-	Sat, 24 Jun 2006 22:54:43 +0000 (UTC)
-X-BigFish: V
-Received: by mail41-res (MessageSwitch) id 1151189683219473_17845; Sat, 24 Jun 2006 22:54:43 +0000 (UCT)
-Received: from amdext4.amd.com (amdext4.amd.com [163.181.251.6])
-	by mail41-res.bigfish.com (Postfix) with ESMTP id 1CB06B92CFF;
-	Sat, 24 Jun 2006 22:54:42 +0000 (UTC)
-Received: from SAUSGW01.amd.com (sausgw01.amd.com [163.181.250.21])
-	by amdext4.amd.com (8.12.11/8.12.11/AMD) with ESMTP id k5OLt8fW004478;
-	Sat, 24 Jun 2006 16:55:23 -0500
-Received: from 163.181.22.101 by SAUSGW01.amd.com with ESMTP (AMD SMTP
- Relay (Email Firewall v6.1.0)); Sat, 24 Jun 2006 17:54:30 -0500
-X-Server-Uuid: 8C3DB987-180B-4465-9446-45C15473FD3E
-Received: from ldcmail.amd.com ([147.5.200.40]) by sausexbh1.amd.com
- with Microsoft SMTPSVC(6.0.3790.2499); Sat, 24 Jun 2006 17:54:30 -0500
-Received: from cosmic.amd.com (cosmic.amd.com [147.5.201.206]) by
- ldcmail.amd.com (Postfix) with ESMTP id 6077F2028; Sat, 24 Jun 2006
- 16:54:30 -0600 (MDT)
-Received: from cosmic.amd.com (localhost [127.0.0.1]) by cosmic.amd.com
- (8.13.4/8.13.4) with ESMTP id k5ON02wG008370; Sat, 24 Jun 2006 17:00:02
- -0600
-Received: (from jcrouse@localhost) by cosmic.amd.com (
- 8.13.4/8.13.4/Submit) id k5ON02Jj008369; Sat, 24 Jun 2006 17:00:02
- -0600
-Date:	Sat, 24 Jun 2006 17:00:02 -0600
-From:	"Jordan Crouse" <jordan.crouse@amd.com>
-To:	"Daniel Mack" <daniel@caiaq.de>
-cc:	linux-mips@linux-mips.org
-Subject: Re: Au1200 SD/MMC again
-Message-ID: <20060624230002.GA8277@cosmic.amd.com>
-References: <4C89D389-49A7-4233-BD55-0315AD423274@caiaq.de>
-MIME-Version: 1.0
-In-Reply-To: <4C89D389-49A7-4233-BD55-0315AD423274@caiaq.de>
-User-Agent: Mutt/1.5.11
-X-OriginalArrivalTime: 24 Jun 2006 22:54:31.0145 (UTC)
- FILETIME=[276BCD90:01C697E1]
-X-WSS-ID: 68831D2C40W13781164-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Disposition: inline
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jun 2006 07:19:03 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:1863 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8126579AbWFZGSv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Jun 2006 07:18:51 +0100
+Received: by mo.po.2iij.net (mo31) id k5Q6ImJT045288; Mon, 26 Jun 2006 15:18:48 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox31) id k5Q6IkLr065883
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 26 Jun 2006 15:18:46 +0900 (JST)
+Date:	Mon, 26 Jun 2006 15:18:46 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+Cc:	linux-mips@linux-mips.org, netdev@vger.kernel.org,
+	Rajesh_Palani@pmc-sierra.com, ralf@linux-mips.org
+Subject: Re: [PATCH 6/6] PMC MSP85x0 gigabit ethernet driver
+Message-Id: <20060626151846.39281449.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF8143EFB@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+References: <C28979E4F697C249ABDA83AC0C33CDF8143EFB@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <jcrouse@cosmic.amd.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11854
+X-archive-position: 11855
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jordan.crouse@amd.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 24/06/06 16:02 +0200, Daniel Mack wrote:
-> Hi there,
-> 
-> is there any progress on the work of SD/MMC support for Au1200?
-> I followed the thread at
-> 
-> 	http://www.linux-mips.org/archives/linux-mips/2006-05/msg00007.html
-> 
-> and wondered whether anyone silently got it to work since then.
-> On my board here, I have the very same effects.
+Hello Kiran,
 
-Make sure you try different cards - I have been unable to recreate this
-problem with the cards I have laying around the office.
+On Fri, 23 Jun 2006 19:19:00 -0700
+Kiran Thota <Kiran_Thota@pmc-sierra.com> wrote:
 
-Jordan
+>  
+> - Based on linux-2.6.12 from http://www.linux-mips.org/pub/linux/mips/kernel/v2.6/linux-2.6.12.tar.gz
+> - Rewritten clean driver for PMC MSP85x0 gigabit ethernet driver (planning a rewritten titan driver) \
+>   source, Kconfig and makefile. Will remove dependency on TITAN_GE flag with future titan driver.
+> 
+>  
+> Signed-off-by: Kiran Kumar Thota <Kiran_Thota@pmc-sierra.com>
+> 
+> diff -Naur a/drivers/net/Kconfig b/drivers/net/Kconfig
+> --- a/drivers/net/Kconfig	2005-07-11 11:28:10.000000000 -0700
+> +++ b/drivers/net/Kconfig	2006-06-22 11:48:21.000000000 -0700
+> @@ -2098,7 +2098,7 @@
+>  
+>  config TITAN_GE
+>  	bool "PMC-Sierra TITAN Gigabit Ethernet Support"
+> -	depends on PMC_YOSEMITE
+> +	depends on PMC_YOSEMITE || PMC_SEQUOIA
+>  	help
+>  	  This enables support for the the integrated ethernet of
+>  	  PMC-Sierra's Titan SoC.
+> diff -Naur a/drivers/net/Makefile b/drivers/net/Makefile
+> --- a/drivers/net/Makefile	2005-07-11 11:28:10.000000000 -0700
+> +++ b/drivers/net/Makefile	2006-06-22 11:48:21.000000000 -0700
+> @@ -103,7 +103,8 @@
+>  obj-$(CONFIG_GALILEO_64240_ETH) += gt64240eth.o
+>  obj-$(CONFIG_MV64340_ETH) += mv64340_eth.o
+>  obj-$(CONFIG_BIG_SUR_FE) += big_sur_ge.o
+> -obj-$(CONFIG_TITAN_GE) += titan_mdio.o titan_ge.o
+> +obj-$(CONFIG_PMC_SEQUOIA) += titan_mdio.o msp85x0_ge.o
+> +#obj-$(CONFIG_TITAN_GE) += titan_mdio.o titan_ge.o
+>  
+>  obj-$(CONFIG_PPP) += ppp_generic.o slhc.o
+>  obj-$(CONFIG_PPP_ASYNC) += ppp_async.o
 
--- 
-Jordan Crouse
-Senior Linux Engineer
-Advanced Micro Devices, Inc.
-<www.amd.com/embeddedprocessors>
+I think that you shold add a new config for msp85x0_ge.
+
+Yoichi

@@ -1,182 +1,228 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2006 16:59:21 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:44998 "EHLO
-	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133417AbWF0P7M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Jun 2006 16:59:12 +0100
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by goldrake.enneenne.com with esmtp (Exim 4.50)
-	id 1FvFtN-0000Pc-69
-	for linux-mips@linux-mips.org; Tue, 27 Jun 2006 17:54:21 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1FvFy6-0002of-5w
-	for linux-mips@linux-mips.org; Tue, 27 Jun 2006 17:59:14 +0200
-Date:	Tue, 27 Jun 2006 17:59:14 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060627155914.GD10595@enneenne.com>
-References: <20060626221441.GA10595@enneenne.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Ls2Gy6y7jbHLe9Od"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2006 00:22:08 +0100 (BST)
+Received: from electric-eye.fr.zoreil.com ([213.41.134.224]:49602 "EHLO
+	fr.zoreil.com") by ftp.linux-mips.org with ESMTP id S8133853AbWF0XV5
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Jun 2006 00:21:57 +0100
+Received: from electric-eye.fr.zoreil.com (localhost.localdomain [127.0.0.1])
+	by fr.zoreil.com (8.13.4/8.12.1) with ESMTP id k5RNKQIC016789;
+	Wed, 28 Jun 2006 01:20:26 +0200
+Received: (from romieu@localhost)
+	by electric-eye.fr.zoreil.com (8.13.4/8.12.1) id k5RNKLa4016787;
+	Wed, 28 Jun 2006 01:20:21 +0200
+Date:	Wed, 28 Jun 2006 01:20:21 +0200
+From:	Francois Romieu <romieu@fr.zoreil.com>
+To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+Cc:	"'Yoichi Yuasa'" <yoichi_yuasa@tripeaks.co.jp>,
+	linux-mips@linux-mips.org, netdev@vger.kernel.org,
+	Raj Palani <Rajesh_Palani@pmc-sierra.com>, ralf@linux-mips.org
+Subject: Re: [Repost PATCH 6/6] PMC MSP85x0 gigabit ethernet driver
+Message-ID: <20060627232021.GA9592@electric-eye.fr.zoreil.com>
+References: <C28979E4F697C249ABDA83AC0C33CDF80B6BC8@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20060626221441.GA10595@enneenne.com>
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.11+cvs20060403
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: Re: au1000_lowlevel_probe on au1000_eth.c
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF80B6BC8@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+User-Agent: Mutt/1.4.2.1i
+X-Organisation:	Land of Sunshine Inc.
+Return-Path: <romieu@fr.zoreil.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11875
+X-archive-position: 11876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: romieu@fr.zoreil.com
 Precedence: bulk
 X-list: linux-mips
 
 
---Ls2Gy6y7jbHLe9Od
-Content-Type: multipart/mixed; boundary="IU5/I01NYhRvwH70"
-Content-Disposition: inline
+Kiran Thota <Kiran_Thota@pmc-sierra.com> :
+[...]
+> +/*
+> + * Allocate the SKBs for the Rx ring. Also used
+> + * for refilling the queue
+> + */
+> +
+> +static int msp85x0_ge_rx_task(struct net_device *netdev,
+> +				msp85x0_ge_port_info *msp85x0_ge_eth)
+> +{
+> +	struct device *device = &msp85x0_ge_device[msp85x0_ge_eth->port_num]->dev;
+> +	volatile msp85x0_ge_rx_desc *rx_desc;
+> +	struct sk_buff *skb;
+> +	int rx_used_desc;
+> +	int count = 0;
+> +	oom_flag=0;
 
+Global variable.
 
---IU5/I01NYhRvwH70
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[...]
+> +		if((rx_used_desc + 1) == MSP85x0_GE_RX_QUEUE)
+> +			msp85x0_ge_eth->rx_used_desc_q =0;
+> +		else
+> +			msp85x0_ge_eth->rx_used_desc_q = (rx_used_desc + 1);	
 
-On Tue, Jun 27, 2006 at 12:14:41AM +0200, Rodolfo Giometti wrote:
->=20
-> I notice that during sleep/wakeup au1000_lowlevel_probe() tries to
-> access to variables arcs_cmdline,prom_envp & Co.. This sometime does
-> an oops.
+Consider greping drivers/net for NEXT_TX or RING_NEXT.
 
-Here my proposal to avoid oops during wake up.
+[...]
+> +static void msp85x0_port_init(struct net_device *netdev,
+> +			    msp85x0_ge_port_info * msp85x0_ge_eth)
+> +{
+> +	unsigned long reg_data;
+> +	unsigned int port_num;	
+> +
+> +	port_num = msp85x0_ge_eth->port_num;
+> +	for (port_num = 0; port_num < NO_PORTS; port_num++)
 
-Ciao,
+There is something strange with port_num here.
 
-Rodolfo
+[...]
+> +static int start_tx_and_rx_activity(struct net_device *netdev)
+> +{
 
---=20
+The returned value is not used.
 
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+[...]
+> +static int trtg_block_enable(struct net_device *netdev)
+> +{
 
---IU5/I01NYhRvwH70
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=patch-au1000_eth-pm-bugfix
-Content-Transfer-Encoding: quoted-printable
+The returned value is not used.
 
-diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
-index 341fdc4..c49004a 100644
---- a/drivers/net/au1000_eth.c
-+++ b/drivers/net/au1000_eth.c
-@@ -84,7 +84,7 @@ MODULE_LICENSE("GPL");
- // prototypes
- static void hard_stop(struct net_device *);
- static void enable_rx_tx(struct net_device *dev);
--static int au1000_lowlevel_probe(struct net_device *ndev, void *ioaddr, vo=
-id *macen_addr, int port_num);
-+static int au1000_lowlevel_probe(struct net_device *ndev, void *ioaddr, vo=
-id *macen_addr, int port_num, int skip_prom);
- static void au1000_lowlevel_remove(struct net_device *ndev);
- static int au1000_init(struct net_device *);
- static int au1000_open(struct net_device *);
-@@ -1393,7 +1393,7 @@ static struct ethtool_ops au1000_ethtool
- };
-=20
- static int=20
--au1000_lowlevel_probe(struct net_device *ndev, void *ioaddr, void *macen_a=
-ddr, int port_num)
-+au1000_lowlevel_probe(struct net_device *ndev, void *ioaddr, void *macen_a=
-ddr, int port_num, int skip_prom)
- {
- 	struct au1000_private *aup =3D ndev->priv;
- 	db_dest_t *pDB, *pDBfree;
-@@ -1419,24 +1419,25 @@ au1000_lowlevel_probe(struct net_device=20
- 	/* Setup some variables for quick register address access */
- 	if (port_num =3D=3D 0)
- 	{
--		/* check env variables first */
--		if (!get_ethernet_addr(ethaddr)) {=20
--			memcpy(au1000_mac_addr, ethaddr, sizeof(au1000_mac_addr));
--		} else {
--			/* Check command line */
--			argptr =3D prom_getcmdline();
--			if ((pmac =3D strstr(argptr, "ethaddr=3D")) =3D=3D NULL) {
--				printk(KERN_INFO "%s: No mac address found\n",=20
--						ndev->name);
--				/* use the hard coded mac addresses */
-+		if (!skip_prom) {
-+			/* check env variables first */
-+			if (!get_ethernet_addr(ethaddr)) {=20
-+				memcpy(au1000_mac_addr, ethaddr, sizeof(au1000_mac_addr));
- 			} else {
--				str2eaddr(ethaddr, pmac + strlen("ethaddr=3D"));
--				memcpy(au1000_mac_addr, ethaddr,=20
--						sizeof(au1000_mac_addr));
-+				/* Check command line */
-+				argptr =3D prom_getcmdline();
-+				if ((pmac =3D strstr(argptr, "ethaddr=3D")) =3D=3D NULL) {
-+					printk(KERN_INFO "%s: No mac address found\n",=20
-+							ndev->name);
-+					/* use the hard coded mac addresses */
-+				} else {
-+					str2eaddr(ethaddr, pmac + strlen("ethaddr=3D"));
-+					memcpy(au1000_mac_addr, ethaddr,=20
-+							sizeof(au1000_mac_addr));
-+				}
- 			}
- 		}
--			aup->enable =3D (volatile u32 *)=20
--				((unsigned long) macen_addr);
-+		aup->enable =3D (volatile u32 *) ((unsigned long) macen_addr);
- 		memcpy(ndev->dev_addr, au1000_mac_addr, sizeof(au1000_mac_addr));
- 		setup_hw_rings(aup, MAC0_RX_DMA_ADDR, MAC0_TX_DMA_ADDR);
- 		aup->mac_id =3D 0;
-@@ -2196,7 +2197,7 @@ static int au1000_drv_probe(struct devic
-=20
- 	/* Force the device name to a know state... */
- 	sprintf(ndev->name, "au1xxx_eth(%d)", pdev->id);
--	ret =3D au1000_lowlevel_probe(ndev, base_addr, macen_addr, pdev->id);
-+	ret =3D au1000_lowlevel_probe(ndev, base_addr, macen_addr, pdev->id, 0);
- 	if (ret < 0) {
- 		printk (KERN_ERR "%s: low level probe failed\n", DRV_NAME); =20
- 		goto out_free_netdev;
-@@ -2304,7 +2305,7 @@ static int au1000_drv_resume(struct devi
- 	if (!ndev)
- 		return 0;
-=20
--	ret =3D au1000_lowlevel_probe(ndev, (void *) aup->mac, (void *) aup->enab=
-le, aup->mac_id);
-+	ret =3D au1000_lowlevel_probe(ndev, (void *) aup->mac, (void *) aup->enab=
-le, aup->mac_id, ~0);
- 	if (ret < 0) {
- 		printk (KERN_ERR "%s: low level probe failed\n", DRV_NAME); =20
- 		return ret;
+[...]
+> +static int enable_tx_and_rx_interrupts(struct net_device *netdev)
+> +{
 
---IU5/I01NYhRvwH70--
+The returned value is not used.
 
---Ls2Gy6y7jbHLe9Od
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+[...]
+> +static int xdma_config(struct net_device *netdev)
+> +{
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
+The indentation of this function is mostly broken.
 
-iD8DBQFEoVXSQaTCYNJaVjMRArAqAKCH6EDPvgWf2Tst3kdXSm0Wh3WycwCdHqQz
-LCdR7pGNOpM7zyPYmFLrRko=
-=/Pt4
------END PGP SIGNATURE-----
+[...]
+> +static int msp85x0_ge_port_start(struct net_device *netdev)
+> +{
 
---Ls2Gy6y7jbHLe9Od--
+The returned value is not used.
+
+[...]
+> +static int msp85x0_eth_setup_tx_rx_fifo(struct net_device *dev)
+> +{
+
+The returned value is not used.
+
+[...]
+> +static int msp85x0_ge_eth_open(struct net_device *netdev)
+> +{
+[...]
+> +	/* Fill the Rx ring with the SKBs */
+> +	msp85x0_ge_port_start(netdev);
+[...]
+> +	if (!(phy_reg & 0x0400)) {
+> +		netif_carrier_off(netdev);
+> +		netif_stop_queue(netdev);
+> +		return MSP85x0_ERROR;
+
+skb leak
+
+[...]
+> +int msp85x0_ge_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+> +{
+
+static
+
+This function ought to use NETDEV_TX_OK/NETDEV_TX_BUSY (should not happen).
+
+[...]
+> +static int msp85x0_ge_free_tx_queue(struct net_device *netdev)
+> +{
+> +	msp85x0_ge_port_info *msp85x0_ge_eth = netdev_priv(netdev);
+> +	int pkts,port_num = msp85x0_ge_eth->port_num;
+> +	int tx_desc_used;
+> +	struct sk_buff *skb;
+> +
+> +	/* Take the lock */
+> +	pkts=get_tx_pkt_count(port_num);
+> +	while(pkts)
+> +	{
+> +		pkts--;
+> +		tx_desc_used = msp85x0_ge_eth->tx_used_desc_q;
+> +
+> +		/* return right away */
+> +		if (tx_desc_used == msp85x0_ge_eth->tx_curr_desc_q)
+> +			break;
+> +	
+> +		skb = msp85x0_ge_eth->tx_skb[tx_desc_used];
+> +		dev_kfree_skb_irq(skb);
+
+msp85x0_ge_free_tx_queue() is issued in msp85x0_ge_start_xmit(), thus
+not in irq context.
+
+[...]
+> +static int msp85x0_ge_receive_queue(struct net_device *netdev)
+> +{
+
+Indentation needs to fixed in this function.
+
+[...]
+> +		if (packet.cmd_sts & (MSP85x0_GE_RX_PERR | MSP85x0_GE_RX_OVERFLOW_ERROR | MSP85x0_GE_RX_TRUNC | MSP85x0_GE_RX_CRC_ERROR))
+> +		{
+> +			if(packet.cmd_sts & MSP85x0_GE_RX_OVERFLOW_ERROR)
+> +				stats->rx_over_errors++; 
+> +			else if(packet.cmd_sts & MSP85x0_GE_RX_TRUNC)
+> +				stats->rx_frame_errors++;
+> +			else
+> +				stats->rx_errors++;
+> +			dev_kfree_skb_any(skb);
+
+It's called in ->poll(), outside of in_irq().
+
+dev->last_rx should be updated after netif_receive_skb().
+
+[...]
+> +static int msp85x0_ge_poll(struct net_device *netdev, int *budget)
+> +{
+[...]
+> +	spin_lock_irqsave(&msp85x0_ge_eth->lock,flags);
+
+Afaik poll takes place with irq enabled: no need to save/restore.
+
+[...]
+> +/* Don't Re-Initialize the port, Just start from where it stops */ 
+> +static int msp85x0_ge_eth_reopen(struct net_device *netdev)	
+> +{
+> +	msp85x0_ge_port_info *msp85x0_ge_eth = netdev_priv(netdev);
+> +	unsigned int reg_data,irq;
+> +	int retval;
+> +
+> +        irq = MSP85x0_ETH_PORT_IRQ;
+> +
+> +	retval = request_irq(irq, INTERRUPT_HANDLER,
+> +		     SA_INTERRUPT | SA_SAMPLE_RANDOM | SA_SHIRQ, netdev->name, netdev);
+
+/me scratches head...
+
+msp85x0_ge_change_mtu() does _not_ free_irqv and it issues
+msp85x0_ge_eth_reopen().
+
+I noticed this comment in msp85x0_ge_eth_stop():
+
+/* This to work around to solve the msp85x0 shutdown and bringup sequence */
+
+Can you elaborate ?
+
+Random remarks:
+- drivers/net/msp85x0_ge.h includes a lot of
+  #define MSP85x0_GE_MSTATX_SOMETHING
+
+  Your customers would surely appreciate extended stats through ethtool.
+  grep for get_ethtool_stats in drivers/net
+
+- You should be able to sprinkle a few NET_IP_ALIGN here and there.
+
+- I won't complain if you feel an urge to remove the _ge_ part in
+  msp85x0_ge_whatever
+
+-- 
+Ueimor

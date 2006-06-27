@@ -1,339 +1,208 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jun 2006 23:34:08 +0100 (BST)
-Received: from electric-eye.fr.zoreil.com ([213.41.134.224]:14023 "EHLO
-	fr.zoreil.com") by ftp.linux-mips.org with ESMTP id S8133453AbWFZWdw
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Jun 2006 23:33:52 +0100
-Received: from electric-eye.fr.zoreil.com (localhost.localdomain [127.0.0.1])
-	by fr.zoreil.com (8.13.4/8.12.1) with ESMTP id k5QMVY8Z012914;
-	Tue, 27 Jun 2006 00:31:34 +0200
-Received: (from romieu@localhost)
-	by electric-eye.fr.zoreil.com (8.13.4/8.12.1) id k5QMVPln012913;
-	Tue, 27 Jun 2006 00:31:25 +0200
-Date:	Tue, 27 Jun 2006 00:31:25 +0200
-From:	Francois Romieu <romieu@fr.zoreil.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2006 04:52:32 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:20006 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8126483AbWF0DwV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Jun 2006 04:52:21 +0100
+Received: by mo.po.2iij.net (mo31) id k5R3qH5S098585; Tue, 27 Jun 2006 12:52:17 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox30) id k5R3qGM4029406
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 27 Jun 2006 12:52:16 +0900 (JST)
+Date:	Tue, 27 Jun 2006 12:52:16 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
-Cc:	"'Yoichi Yuasa'" <yoichi_yuasa@tripeaks.co.jp>,
-	linux-mips@linux-mips.org, netdev@vger.kernel.org,
-	Raj Palani <Rajesh_Palani@pmc-sierra.com>, ralf@linux-mips.org
-Subject: Re: [Repost PATCH 6/6] PMC MSP85x0 gigabit ethernet driver
-Message-ID: <20060626223125.GA7809@electric-eye.fr.zoreil.com>
-References: <C28979E4F697C249ABDA83AC0C33CDF80B6BC8@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	Rajesh_Palani@pmc-sierra.com
+Subject: Re: [Patch 3/6] Sequoia Platform
+Message-Id: <20060627125216.37d5d2d7.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF8143EF7@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+References: <C28979E4F697C249ABDA83AC0C33CDF8143EF7@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF80B6BC8@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-User-Agent: Mutt/1.4.2.1i
-X-Organisation:	Land of Sunshine Inc.
-Return-Path: <romieu@fr.zoreil.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11863
+X-archive-position: 11865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: romieu@fr.zoreil.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Kiran Thota <Kiran_Thota@pmc-sierra.com> :
-[...]
->  - Based on linux-2.6.12 from 
->  http://www.linux-mips.org/pub/linux/mips/kernel/v2.6/linux-2.6.12.tar.gz
+Hello Kiran,
 
-Is there a reason why the patch is not diffed against a more recent
-version of the mips tree ?
+On Fri, 23 Jun 2006 18:56:54 -0700
+Kiran Thota <Kiran_Thota@pmc-sierra.com> wrote:
 
-The patch includes ~130 lines ending with a tab or space delimiter.
-They could be removed.
+> 
+> 
+> - Add IRQ controller (hacked from irq-rm9000.c)
 
-[...]
-> diff -Naur a/drivers/net/msp85x0_ge.c b/drivers/net/msp85x0_ge.c
-> --- a/drivers/net/msp85x0_ge.c	1969-12-31 16:00:00.000000000 -0800
-> +++ b/drivers/net/msp85x0_ge.c	2006-06-26 12:12:39.000000000 -0700
-[...]
-> +/* Static Function Declarations	 */
-> +static int msp85x0_ge_eth_open(struct net_device *);
-> +static int msp85x0_ge_eth_reopen(struct net_device *netdev);
-> +static void msp85x0_ge_eth_stop(struct net_device *);
-> +static struct net_device_stats *msp85x0_ge_get_stats(struct net_device *);
-> +static int msp85x0_ge_init_rx_desc_ring(msp85x0_ge_port_info *, int, int,
-> +				      unsigned long, unsigned long,
-> +				      unsigned long);
-> +static int msp85x0_ge_init_tx_desc_ring(msp85x0_ge_port_info *, int,
-> +				      unsigned long, unsigned long);
-> +
-> +static int msp85x0_ge_open(struct net_device *);
-> +static int msp85x0_ge_start_xmit(struct sk_buff *, struct net_device *);
-> +static int msp85x0_ge_stop(struct net_device *);
-> +
-> +static unsigned int msp85x0_ge_tx_coal(int);
-> +
-> +static void msp85x0_ge_port_reset(unsigned int);
-> +static int msp85x0_ge_free_tx_queue(struct net_device *);
-> +static int msp85x0_ge_rx_task(struct net_device *, msp85x0_ge_port_info *);
-> +static int msp85x0_ge_port_start(struct net_device *);
-> +static int msp85x0_eth_setup_tx_rx_fifo(struct net_device *dev);
-> +static int msp85x0_ge_xdma_reset(void);
+If you change the IRQ numbers, I think that irq-rm9000.c and irq-rm7000.c can be used. 
 
-You should be able to remove the forward declarations by correctly
-reordering the code.
+> - Add Interrupt handlers
 
-[...]
-> +static struct platform_device *msp85x0_ge_device[NO_PORTS];
-> +static struct net_device *msp85x0_eth[NO_PORTS];
-> +static unsigned int msp85x0_ge_sram;
-> +static unsigned int port_number;
+You should rewrite the assembler interrupt handler to C code.
 
-The way it is used, port_number should be a local variable.
-
-> +
+> diff -Naur a/arch/mips/pmc-sierra/sequoia/setup.c b/arch/mips/pmc-sierra/sequoia/setup.c
+> --- a/arch/mips/pmc-sierra/sequoia/setup.c	1969-12-31 16:00:00.000000000 -0800
+> +++ b/arch/mips/pmc-sierra/sequoia/setup.c	2006-06-22 14:57:38.000000000 -0700
+> @@ -0,0 +1,258 @@
 > +/*
-> + * The MSP85x0 GE has two alignment requirements:
-> + * -> skb->data to be cacheline aligned (32 byte)
-> + * -> IP header alignment to 16 bytes
+> + *  arch/mip/pmc-sierra/sequoia/setup.c
 > + *
-> + * The latter is not implemented. So, that results in an extra copy on
-> + * the Rx. This is a big performance hog. For the former case, the
-> + * dev_alloc_skb() has been replaced with msp85x0_ge_alloc_skb(). The size
-> + * requested is calculated:
+> + *  Copyright (C) 2006 PMC-Sierra Inc.
+> + *  Author: PMC Sierra Inc (thotakir@pmc-sierra.com)
 > + *
-> + * Ethernet Frame Size : 1518
-> + * Ethernet Header     : 14
-> + * Future MSP85x0 change for IP header alignment : 2
-> + *
-> + * Hence, we allocate (1518 + 14 + 2+ 64) = 1580 bytes.  For IP header
-> + * alignment, we use skb_reserve().
 > + */
-> +#define ALIGNED_RX_SKB_ADDR(addr) \
-> +	((((unsigned long)(addr) + (32UL - 1UL)) \
-> +	& ~(32UL - 1UL)) - (unsigned long)(addr))
-> +#define msp85x0_ge_alloc_skb(__length, __gfp_flags) \
-> +({      struct sk_buff *__skb; \
-> +	__skb = alloc_skb((__length),(__gfp_flags)); \
-> +	if(__skb){ \
-> +		int __offset = (int) ALIGNED_RX_SKB_ADDR(__skb->data); \
-> +		if(__offset) \
-> +			skb_reserve(__skb, __offset); \
-> +	} \
-> +	__skb; \
-> +})
-
-Please use a function for msp85x0_ge_alloc_skb.
-
 > +
-> +int increment_tx_pkt_count(unsigned int port)
+> +#include <linux/init.h>
+> +#include <linux/kernel.h>
+> +#include <linux/types.h>
+> +#include <linux/mc146818rtc.h>
+> +#include <linux/mm.h>
+> +#include <linux/swap.h>
+> +#include <linux/ioport.h>
+> +#include <linux/console.h>
+> +#include <linux/sched.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/pci.h>
+> +#include <linux/timex.h>
+> +#include <linux/vmalloc.h>
+> +#include <asm/time.h>
+> +#include <asm/bootinfo.h>
+> +#include <asm/page.h>
+> +#include <asm/bootinfo.h>
+> +#include <asm/io.h>
+> +#include <asm/irq.h>
+> +#include <asm/processor.h>
+> +#include <asm/ptrace.h>
+> +#include <asm/reboot.h>
+> +#include <asm/traps.h>
+> +#include <linux/version.h>
+> +#include <linux/bootmem.h>
+> +
+> +#include <asm/serial.h>
+> +#include <linux/termios.h>
+> +#include <linux/tty.h>
+> +#include <linux/serial.h>
+> +#include <linux/serial_core.h>
+> +
+> +#include <linux/mm.h>
+> +
+> +#include <asm/pmc_sequoia.h>
+> +
+> +#include "setup.h"
+> +
+> +unsigned long titan_ge_base;
+> +unsigned long cpu_clock;
+> +unsigned long sequoia_memsize;
+> +
+> +/* Real Time Clock base */
+> +#define CONV_BCD_TO_BIN(val)	(((val) & 0xf) + (((val) >> 4) * 10))
+> +#define CONV_BIN_TO_BCD(val)	(((val) % 10) + (((val) / 10) << 4))
 
-static
+You should use #include <linux/bcd.h>.
 
+> +void __init bus_error_init(void) 
+> +{ 
+> +	/* Do nothing */ 
+> +}
+
+It doesn't need.
+
+> +unsigned long m48t37y_get_time(void)
 > +{
-> +	unsigned int flags;
-> +	spin_lock_irqsave(&msp85x0_lock,flags);
-> +	if(port==0){
-
-CodingStyle: if (port == 0) {
-(or 'if (!port)')
-
-> +		port0_pkt_count++;
-> +	}
-> +	else{
-
-	} else {
-
-> +		port1_pkt_count++;	
-> +	}
-> +	spin_unlock_irqrestore(&msp85x0_lock,flags);
-
-increment_tx_pkt_count() is only issued from msp85x0_ge_tx_queue(),
-itself only issued from msp85x0_ge_start_xmit and xmit handlers run
-with irq enabled. The save/restore is not needed.
-
-> +	return 0;
-
-Useless return.
-
+> +	unsigned char	*rtc_base = SEQUOIA_RTC_BASE_ADDR;
+> +	unsigned int	year, month, day, hour, min, sec;
+> +
+> +	/* Stop the update to the time */
+> +	rtc_base[0x7ff8] = 0x40;
+> +
+> +	year = CONV_BCD_TO_BIN(rtc_base[0x7fff]);
+> +	year += CONV_BCD_TO_BIN(rtc_base[0x7ff1]) * 100;
+> +
+> +	month = CONV_BCD_TO_BIN(rtc_base[0x7ffe]);
+> +	day = CONV_BCD_TO_BIN(rtc_base[0x7ffd]);
+> +	hour = CONV_BCD_TO_BIN(rtc_base[0x7ffb]);
+> +	min = CONV_BCD_TO_BIN(rtc_base[0x7ffa]);
+> +	sec = CONV_BCD_TO_BIN(rtc_base[0x7ff9]);
+> +
+> +	/* Start the update to the time again */
+> +	rtc_base[0x7ff8] = 0x00;
+> +
+> +	return mktime(year, month, day, hour, min, sec);
 > +}
 > +
-> +unsigned int get_tx_pkt_count(unsigned int port)
-
-static
-
+> +int m48t37y_set_time(unsigned long sec)
 > +{
-> +	unsigned int flags,pktCount,tx_pending_pkt;
-
-Mixed case can be avoided here.
-
-> +	spin_lock_irqsave(&msp85x0_lock,flags);
-
-See above.
-
-> +	tx_pending_pkt=MSP85x0_GE_READ(MSP85x0_GE_CHANNEL0_TX_DMA_STS + (port << XDMA_PORT_OFFSET));
-> +	if(port==0){
-> +		pktCount=port0_pkt_count - tx_pending_pkt;
-> +	}
-> +	else{
-
-Sic.
-
-> +		pktCount=port1_pkt_count - tx_pending_pkt;	
-> +	}
-> +	spin_unlock_irqrestore(&msp85x0_lock,flags);
-> +	return pktCount;	
+> +	unsigned char	*rtc_base = SEQUOIA_RTC_BASE_ADDR;
+> +        struct rtc_time tm;
+> +
+> +        /* convert to a more useful format -- note months count from 0 */
+> +        to_tm(sec, &tm);
+> +        tm.tm_mon += 1;
+> +
+> +        /* enable writing */
+> +        rtc_base[0x7ff8] = 0x80;
+> +
+> +        /* year */
+> +        rtc_base[0x7fff] = CONV_BIN_TO_BCD(tm.tm_year % 100);
+> +        rtc_base[0x7ff1] = CONV_BIN_TO_BCD(tm.tm_year / 100);
+> +
+> +        /* month */
+> +        rtc_base[0x7ffe] = CONV_BIN_TO_BCD(tm.tm_mon);
+> +
+> +        /* day */
+> +        rtc_base[0x7ffd] = CONV_BIN_TO_BCD(tm.tm_mday);
+> +
+> +        /* hour/min/sec */
+> +        rtc_base[0x7ffb] = CONV_BIN_TO_BCD(tm.tm_hour);
+> +        rtc_base[0x7ffa] = CONV_BIN_TO_BCD(tm.tm_min);
+> +        rtc_base[0x7ff9] = CONV_BIN_TO_BCD(tm.tm_sec);
+> +
+> +        /* day of week -- not really used, but let's keep it up-to-date */
+> +        rtc_base[0x7ffc] = CONV_BIN_TO_BCD(tm.tm_wday + 1);
+> +
+> +        /* disable writing */
+> +        rtc_base[0x7ff8] = 0x00;
+> +
+> +        return 0;
 > +}
+
+RTC driver is better.
+It's very simple and easy to write, see drivers/rtc .
+
+> +void __init plat_setup(void)
+
+plat_mem_setup
+
+
+> diff -Naur a/arch/mips/pmc-sierra/sequoia/setup.h b/arch/mips/pmc-sierra/sequoia/setup.h
+> --- a/arch/mips/pmc-sierra/sequoia/setup.h	1969-12-31 16:00:00.000000000 -0800
+> +++ b/arch/mips/pmc-sierra/sequoia/setup.h	2006-06-22 11:48:21.000000000 -0700
+> @@ -0,0 +1,17 @@
+> +/*
+> + * Copyright 2006 PMC-Sierra
+> + * Author: PMC Sierra Inc (thotakir@pmc-sierra.com)
+> + *
+> + * Board specific definititions for the PMC-Sierra Sequoia
+> + *
+> + */
 > +
-> +unsigned int decrement_tx_pkt_count(unsigned int port)
-
-static
-
-[...]
-> +void msp85x0_bringup_sequence(int port)
-
-static
-
-> +{
-> +   	unsigned int reg_data;
+> +#ifndef __SETUP_H__
+> +#define __SETUP_H__
 > +
-> +	/* SDQPF */
-> +	reg_data=MSP85x0_GE_READ(MSP85x0_GE_SDQPF_RXFIFO_CTL + (port << 8));
-
-reg_data = MSP85x0_GE_READ(MSP85x0_GE_...
-
-
-[...]
-> +static void msp85x0_ge_gmii_config(int port_num)
-> +{
-[...]
-> +	if (phy_reg & 0x8000) {
-> +		if (phy_reg & 0x2000) {
-> +			/* Full Duplex and 1000 Mbps */
-> +			MSP85x0_GE_WRITE((MSP85x0_GE_GMII_CONFIG_MODE +
-> +					(port_num << MII_PORT_OFFSET)), 0x201);
-> +		}  else {
-> +			/* Half Duplex and 1000 Mbps */
-> +			MSP85x0_GE_WRITE((MSP85x0_GE_GMII_CONFIG_MODE +
-> +					(port_num << MII_PORT_OFFSET)), 0x2201);
-> +			}
-> +	}
-
-:o(
-		mode = (phy_reg & 0x2000) ? 0x0201 : 0x2201;
-		MSP85x0_GE_WRITE((MSP85x0_GE_GMII_CONFIG_MODE +
-				 (port_num << MII_PORT_OFFSET)), mode);
-> +	if (phy_reg & 0x4000) {
-> +		if (phy_reg & 0x2000) {
-> +			/* Full Duplex and 100 Mbps */
-> +			MSP85x0_GE_WRITE((MSP85x0_GE_GMII_CONFIG_MODE +
-> +					(port_num << MII_PORT_OFFSET)), 0x100);
-> +		} else {
-> +			/* Half Duplex and 100 Mbps */
-> +			MSP85x0_GE_WRITE((MSP85x0_GE_GMII_CONFIG_MODE +
-> +					(port_num << MII_PORT_OFFSET)), 0x2100);
-> +		}
-> +	}
-
-I'd bet you could make a single MSP85x0_GE_WRITE for this one and the two
-above.
-
-[...]
-> +static void msp85x0_ge_update_afx(msp85x0_ge_port_info * msp85x0_ge_eth)
-> +{
-> +	int port = msp85x0_ge_eth->port_num;
-> +	unsigned int i;
-> +	volatile unsigned long reg_data = 0;
-
-Mantra: volatile is not the answer.
-
-Now, what's the question ? :o)
-
-
-[...]
-> +static void msp85x0_ge_tx_timeout_task(struct net_device *netdev)
-> +{
-> +	msp85x0_ge_port_info *msp85x0_ge_eth = netdev_priv(netdev);
-> +	int port = msp85x0_ge_eth->port_num;
+> +/* Real Time Clock base */
+> +#define CONV_BCD_TO_BIN(val)    (((val) & 0xf) + (((val) >> 4) * 10))
+> +#define CONV_BIN_TO_BCD(val)    (((val) % 10) + (((val) / 10) << 4))
 > +
-> +	printk("MSP85x0 GE: Transmit timed out. Resetting ... \n");
+> +#endif /* __SETUP_H__ */
 
-Missing KERN_xyz
+You should use #include <linux/bcd.h> .
 
-[...]
-> +static int msp85x0_ge_change_mtu(struct net_device *netdev, int new_mtu)
-> +{
-[...]
-> +	if (netif_running(netdev)) {
-> +		msp85x0_ge_eth_stop(netdev);
-> +            	MSP85x0_GE_WRITE((MSP85x0_GE_RMAC_MAX_FRAME_LEN + (msp85x0_ge_eth->port_num << MAC_PORT_OFFSET)), new_mtu + 2); // for the padded bytes
-> +
-> +		if (msp85x0_ge_eth_reopen(netdev) != 0) {
-> +			printk(KERN_ERR
-> +			       "%s: Fatal error on opening device\n",
-> +			       netdev->name);
-> +			spin_unlock_irqrestore(&msp85x0_ge_eth->lock, flags);
-> +			return -1;
-
-Please use -Esomething.
-
-You may consider goto to balance spin_{lock/unlock}.
-
-[...]
-> +static irqreturn_t msp85x0_ge_sequoia_int_handler(int irq, void *dev_id,
-> +	struct pt_regs *regs)
-> +{
-> +	struct net_device *netdev = (struct net_device *) dev_id;
-
-Useless cast from void *.
-
-[...]
-> +        /* Handle the Rx next */
-> +        if (eth_int_cause1 & (RX_INT << (port_num * 16))) {
-> +	      clear_xdma_interrupts(port_num,RX_INT);
-> +              if (netif_rx_schedule_prep(netdev)) {
-> +		   msp85x0_ge_disable_rx_int(port_num);	
-> +                   __netif_rx_schedule(netdev);			       		
-
-The indentation went badly wrong.
-
-[...]
-> +static int msp85x0_ge_open(struct net_device *netdev)
-> +{
-> +	msp85x0_ge_port_info *msp85x0_ge_eth = netdev_priv(netdev);
-> +	unsigned int port_num = msp85x0_ge_eth->port_num;
-> +	unsigned int irq;
-> +	int retval;       
-> +
-> +	spin_lock_irq(&(msp85x0_ge_eth->lock));
-> +
-> +	if (msp85x0_ge_eth_open(netdev) != MSP85x0_OK) {
-> +		spin_unlock_irq(&(msp85x0_ge_eth->lock));
-> +		printk("%s: Error opening interface \n", netdev->name);
-
-Missing KERN_xyz
-
-> +		free_irq(netdev->irq, netdev);
-
-request_irq() comes later.
-
-> +		return -EBUSY;
-
-Why not propagate an usual return status code from msp85x0_ge_eth_open ?
-
-> +	}
-> +
-> +	spin_unlock_irq(&(msp85x0_ge_eth->lock));
-> +
-> +        irq = MSP85x0_ETH_PORT_IRQ;
-> +
-> +	retval = request_irq(irq, INTERRUPT_HANDLER,
-> +		     SA_SAMPLE_RANDOM | SA_SHIRQ, netdev->name, netdev);
-> +
-> +	if (retval != 0) {
-> +		printk(KERN_ERR "Cannot assign IRQ number to MSP85x0 GE \n");
-> +		return -1;
-
-- msp85x0_ge_eth_open() should be balanced a bit (stop queuing for instance) ;
-- no need to throw away retval.
-
-(some sleep needed here, sorry)
-
--- 
-Ueimor
+Yoichi

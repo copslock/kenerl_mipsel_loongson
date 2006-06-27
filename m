@@ -1,37 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2006 04:52:32 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:20006 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8126483AbWF0DwV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Jun 2006 04:52:21 +0100
-Received: by mo.po.2iij.net (mo31) id k5R3qH5S098585; Tue, 27 Jun 2006 12:52:17 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox30) id k5R3qGM4029406
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 27 Jun 2006 12:52:16 +0900 (JST)
-Date:	Tue, 27 Jun 2006 12:52:16 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jun 2006 05:24:11 +0100 (BST)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:46470 "HELO
+	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S8133390AbWF0EYA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Jun 2006 05:24:00 +0100
+Received: (qmail 29053 invoked by uid 101); 27 Jun 2006 04:23:42 -0000
+Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
+  by mother.pmc-sierra.com with SMTP; 27 Jun 2006 04:23:42 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k5R4NfV7011078;
+	Mon, 26 Jun 2006 21:23:41 -0700
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
+	id <JPF7MQY6>; Mon, 26 Jun 2006 21:23:40 -0700
+Message-ID: <C28979E4F697C249ABDA83AC0C33CDF80B6BCA@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+From:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+To:	"'Yoichi Yuasa'" <yoichi_yuasa@tripeaks.co.jp>
 Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	Rajesh_Palani@pmc-sierra.com
-Subject: Re: [Patch 3/6] Sequoia Platform
-Message-Id: <20060627125216.37d5d2d7.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF8143EF7@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-References: <C28979E4F697C249ABDA83AC0C33CDF8143EF7@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+	Raj Palani <Rajesh_Palani@pmc-sierra.com>
+Subject: RE: [Patch 3/6] Sequoia Platform
+Date:	Mon, 26 Jun 2006 21:23:37 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2656.59)
+Content-Type: text/plain
+Return-Path: <Kiran_Thota@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11865
+X-archive-position: 11866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: Kiran_Thota@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
+
+Hello Yoichi,
+I noticed that change from 2.6.16 to 2.6.17.1 and am doing it.. Will send the update soon. 
+Thanks for the suggestions.
+
+Kiran
+
+-----Original Message-----
+From: Yoichi Yuasa [mailto:yoichi_yuasa@tripeaks.co.jp] 
+Sent: Monday, June 26, 2006 8:52 PM
+To: Kiran Thota
+Cc: ralf@linux-mips.org; linux-mips@linux-mips.org; Raj Palani
+Subject: Re: [Patch 3/6] Sequoia Platform
 
 Hello Kiran,
 
@@ -108,9 +121,9 @@ You should rewrite the assembler interrupt handler to C code.
 
 You should use #include <linux/bcd.h>.
 
-> +void __init bus_error_init(void) 
+> +void __init bus_error_init(void)
 > +{ 
-> +	/* Do nothing */ 
+> +	/* Do nothing */
 > +}
 
 It doesn't need.
@@ -135,11 +148,9 @@ It doesn't need.
 > +	/* Start the update to the time again */
 > +	rtc_base[0x7ff8] = 0x00;
 > +
-> +	return mktime(year, month, day, hour, min, sec);
-> +}
+> +	return mktime(year, month, day, hour, min, sec); }
 > +
-> +int m48t37y_set_time(unsigned long sec)
-> +{
+> +int m48t37y_set_time(unsigned long sec) {
 > +	unsigned char	*rtc_base = SEQUOIA_RTC_BASE_ADDR;
 > +        struct rtc_time tm;
 > +

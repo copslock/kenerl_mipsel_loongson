@@ -1,228 +1,218 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2006 00:22:08 +0100 (BST)
-Received: from electric-eye.fr.zoreil.com ([213.41.134.224]:49602 "EHLO
-	fr.zoreil.com") by ftp.linux-mips.org with ESMTP id S8133853AbWF0XV5
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Jun 2006 00:21:57 +0100
-Received: from electric-eye.fr.zoreil.com (localhost.localdomain [127.0.0.1])
-	by fr.zoreil.com (8.13.4/8.12.1) with ESMTP id k5RNKQIC016789;
-	Wed, 28 Jun 2006 01:20:26 +0200
-Received: (from romieu@localhost)
-	by electric-eye.fr.zoreil.com (8.13.4/8.12.1) id k5RNKLa4016787;
-	Wed, 28 Jun 2006 01:20:21 +0200
-Date:	Wed, 28 Jun 2006 01:20:21 +0200
-From:	Francois Romieu <romieu@fr.zoreil.com>
-To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
-Cc:	"'Yoichi Yuasa'" <yoichi_yuasa@tripeaks.co.jp>,
-	linux-mips@linux-mips.org, netdev@vger.kernel.org,
-	Raj Palani <Rajesh_Palani@pmc-sierra.com>, ralf@linux-mips.org
-Subject: Re: [Repost PATCH 6/6] PMC MSP85x0 gigabit ethernet driver
-Message-ID: <20060627232021.GA9592@electric-eye.fr.zoreil.com>
-References: <C28979E4F697C249ABDA83AC0C33CDF80B6BC8@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF80B6BC8@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-User-Agent: Mutt/1.4.2.1i
-X-Organisation:	Land of Sunshine Inc.
-Return-Path: <romieu@fr.zoreil.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2006 05:17:03 +0100 (BST)
+Received: from me21507.mailengine1.com ([66.59.24.112]:41661 "EHLO
+	me21507.mailengine1.com") by ftp.linux-mips.org with ESMTP
+	id S8127208AbWF1EQu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Jun 2006 05:16:50 +0100
+Received: by me21507.mailengine1.com (PowerMTA(TM) v3.0r29) id hk83si0anbg6 for <linux-mips@linux-mips.org>; Tue, 27 Jun 2006 21:29:55 -0700 (envelope-from <streamsendbouncer@me21507.mailengine1.com>)
+Content-Type: multipart/alternative; boundary="_----------=_1073964459106330"
+MIME-Version: 1.0
+X-Mailer: StreamSend
+X-Streamsendid:	3326+5+423665+4+me21507.mailengine1.com
+Date:	Tue, 27 Jun 2006 21:04:19 -0700
+From:	"CISSE" <cisse@cisse2006online.org>
+To:	linux-mips@linux-mips.org
+Subject: CISSE 2006 -- The Second International Joint Conferences on Computer, Information, and Systems Sciences, and Engineering
+Message-Id: <S8127208AbWF1EQu/20060628041650Z+4659@ftp.linux-mips.org>
+Return-Path: <streamsendbouncer@me21507.mailengine1.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11876
+X-archive-position: 11877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: romieu@fr.zoreil.com
+X-original-sender: cisse@cisse2006online.org
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
 
-Kiran Thota <Kiran_Thota@pmc-sierra.com> :
-[...]
-> +/*
-> + * Allocate the SKBs for the Rx ring. Also used
-> + * for refilling the queue
-> + */
-> +
-> +static int msp85x0_ge_rx_task(struct net_device *netdev,
-> +				msp85x0_ge_port_info *msp85x0_ge_eth)
-> +{
-> +	struct device *device = &msp85x0_ge_device[msp85x0_ge_eth->port_num]->dev;
-> +	volatile msp85x0_ge_rx_desc *rx_desc;
-> +	struct sk_buff *skb;
-> +	int rx_used_desc;
-> +	int count = 0;
-> +	oom_flag=0;
+--_----------=_1073964459106330
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Global variable.
+Dear Colleagues,
 
-[...]
-> +		if((rx_used_desc + 1) == MSP85x0_GE_RX_QUEUE)
-> +			msp85x0_ge_eth->rx_used_desc_q =0;
-> +		else
-> +			msp85x0_ge_eth->rx_used_desc_q = (rx_used_desc + 1);	
 
-Consider greping drivers/net for NEXT_TX or RING_NEXT.
 
-[...]
-> +static void msp85x0_port_init(struct net_device *netdev,
-> +			    msp85x0_ge_port_info * msp85x0_ge_eth)
-> +{
-> +	unsigned long reg_data;
-> +	unsigned int port_num;	
-> +
-> +	port_num = msp85x0_ge_eth->port_num;
-> +	for (port_num = 0; port_num < NO_PORTS; port_num++)
+If you received this email in error, please forward it to the appropriate
+department at your institution. If you wish to unsubscribe please follow
+the unsubscribe link at bottom of the email.
 
-There is something strange with port_num here.
+Please do not reply to this message. If you need to contact us please email
+us at info@cisse2006.org
 
-[...]
-> +static int start_tx_and_rx_activity(struct net_device *netdev)
-> +{
 
-The returned value is not used.
+   *********************************************************************
+   *    The Second International Joint Conferences on Computer,        *
+   *  Information, and Systems Sciences, and Engineering (CISSE 2006)  *
+   *                                                                   *
+   *                                                                   *
+   *                                                                   *
+   *                 http://www.cisse2006.org                    *
+   *                                                                   *
+   *                                                                   *
+   *                                                                   *
+   *********************************************************************
 
-[...]
-> +static int trtg_block_enable(struct net_device *netdev)
-> +{
+                        December 4-14, 2006
 
-The returned value is not used.
+Technically Co-Sponsored by:
 
-[...]
-> +static int enable_tx_and_rx_interrupts(struct net_device *netdev)
-> +{
+Institute of Electrical & Electronics Engineers (IEEE); University of
+Bridgeport
 
-The returned value is not used.
+---------------------------------------------------------------------
+CONFERENCE OVERVIEW
+---------------------------------------------------------------------
 
-[...]
-> +static int xdma_config(struct net_device *netdev)
-> +{
+CISSE 2006 provides a virtual forum for presentation and discussion of the
+state-of the-art research on computers, information and systems sciences
+and engineering. CISSE 2006 is the second conference of the CISSE series
+of
+e-conferences. CISSE 2005 was the World's first Engineering/Computing and
+Systems Research E-Conference. CISSE 2005 was the first high-caliber
+Research Conference in the world to be completely conducted online in
+real-time via the internet.
 
-The indentation of this function is mostly broken.
+The CISSE 2006 virtual conference will be conducted through the Internet
+using web-conferencing tools, made available by the conference. Authors
+will be presenting their PowerPoint, audio or video presentations using
+web-conferencing tools without the need for travel. Conference sessions
+will be broadcast to all the conference participants, where session
+participants can interact with the presenter during the presentation and
+(or) during the Q&A slot that follows the presentation. This international
+conference will be held entirely on-line. The accepted and presented
+papers
+will be made available after the conference both on a CD and as a book
+publication.
+CISSE's publisher for the book proceedings is Springer.
 
-[...]
-> +static int msp85x0_ge_port_start(struct net_device *netdev)
-> +{
+Conference participants - authors, presenters and attendees - only need an
+internet connection and sound available on their computers in order to be
+able to contribute and participate in this international ground-breaking
+conference. The on-line structure of this high-quality event will allow
+academic professionals and industry participants to contribute work and
+attend world-class technical presentations based on rigorously refereed
+submissions, live, without the need for investing significant travel funds
+or time out of the office.
 
-The returned value is not used.
+Potential non-author conference attendees who cannot make the on-line
+conference dates are encouraged to register, as the entire joint
+conferences will be archived for future viewing.
 
-[...]
-> +static int msp85x0_eth_setup_tx_rx_fifo(struct net_device *dev)
-> +{
+CISSE 2005 received 255 research paper submissions and the final program
+included 140 accepted papers, from more  than 45 countries. The concept
+and
+format of CISSE 2005 were very exciting and ground-breaking. The
+PowerPoint
+presentations, final paper manuscripts and time schedule for live
+presentations over the web had been available for 3 weeks prior to the
+start of the conference for all registrants, so they could choose the
+presentations they want to attend and think about questions that they
+might
+want to ask.
+The live audio presentations were also recorded and were part of the
+permanent CISSE archive, which also included all power point presentations
+and papers.
 
-The returned value is not used.
+The CISSE conference audio room provided superb audio even over low speed
+internet connections, the ability to display PowerPoint presentations, and
+cross-platform compatibility (the conferencing software runs on Windows,
+Mac, and any other operating system that supports Java). In addition, the
+conferencing system allowed for an unlimited number of participants, which
+in turn granted us the opportunity to allow all CISSE participants to
+attend all presentations, as opposed to limiting the number of available
+seats for each session.
 
-[...]
-> +static int msp85x0_ge_eth_open(struct net_device *netdev)
-> +{
-[...]
-> +	/* Fill the Rx ring with the SKBs */
-> +	msp85x0_ge_port_start(netdev);
-[...]
-> +	if (!(phy_reg & 0x0400)) {
-> +		netif_carrier_off(netdev);
-> +		netif_stop_queue(netdev);
-> +		return MSP85x0_ERROR;
 
-skb leak
+CISSE 2006 is composed of the following four conferences:
 
-[...]
-> +int msp85x0_ge_start_xmit(struct sk_buff *skb, struct net_device *netdev)
-> +{
 
-static
+International Conference on Industrial Electronics, Technology &
+Automation
+(IETA 06)
 
-This function ought to use NETDEV_TX_OK/NETDEV_TX_BUSY (should not happen).
+Topics: Advanced and Distributed Control Systems, Intelligent Control
+Systems (NN, FL, GA, .etc), Expert Systems, Man Machine Interaction, Data
+Fusion, Factory Automation, Robotics, Motion Control, Machine Vision, MEMS
+Sensors and Actuators, Sensors Fusion, Power Electronics, High Frequency
+Converters, Motors and Drives, Power Converters, Power Devices and
+Components, Electric Vehicles and Intelligent Transportation, Process
+Automation, Factory Communication, Manufacturing Information System
+Advances in Manufacturing Systems, Industrial Applications of Multi Media,
+Intelligent Systems Instrumentation, Industrial Instrumentation, Modeling
+and Simulation, Signal Processing, Image and Data Processing, VR and
+Parallel systems..
 
-[...]
-> +static int msp85x0_ge_free_tx_queue(struct net_device *netdev)
-> +{
-> +	msp85x0_ge_port_info *msp85x0_ge_eth = netdev_priv(netdev);
-> +	int pkts,port_num = msp85x0_ge_eth->port_num;
-> +	int tx_desc_used;
-> +	struct sk_buff *skb;
-> +
-> +	/* Take the lock */
-> +	pkts=get_tx_pkt_count(port_num);
-> +	while(pkts)
-> +	{
-> +		pkts--;
-> +		tx_desc_used = msp85x0_ge_eth->tx_used_desc_q;
-> +
-> +		/* return right away */
-> +		if (tx_desc_used == msp85x0_ge_eth->tx_curr_desc_q)
-> +			break;
-> +	
-> +		skb = msp85x0_ge_eth->tx_skb[tx_desc_used];
-> +		dev_kfree_skb_irq(skb);
 
-msp85x0_ge_free_tx_queue() is issued in msp85x0_ge_start_xmit(), thus
-not in irq context.
 
-[...]
-> +static int msp85x0_ge_receive_queue(struct net_device *netdev)
-> +{
+International Conference on Telecommunications and Networking (TeNe 06)
 
-Indentation needs to fixed in this function.
+Topics: Optical Networks and Switching, Computer Networks, Network
+architectures and Equipment, Access Technologies, Telecommunication
+Technology, Coding and Modulation technique, Modeling and Simulation,
+Spread Spectrum and CDMA Systems, OFDM technology, Space-time Coding,
+Ultra
+Wideband Communications, Medium Access Control, Spread Spectrum, Wireless
+LAN:  IEEE 802.11, HIPERLAN, Bluetooth, Cellular Wireless Networks,
+Cordless Systems and Wireless Local Loop, Mobile Network Layer, Mobile
+Transport Layer, Support for Mobility, Conventional Encryption and Message
+Confidentiality, Block Ciphers Design Principles, Block Ciphers Modes of
+Operation,  Public-Key Cryptography and Message Authentication,
+Authentication Application,  Stenography, Electronic Mail Security, Web
+Security,  IP Security,  Firewalls, Computer Forensics.
 
-[...]
-> +		if (packet.cmd_sts & (MSP85x0_GE_RX_PERR | MSP85x0_GE_RX_OVERFLOW_ERROR | MSP85x0_GE_RX_TRUNC | MSP85x0_GE_RX_CRC_ERROR))
-> +		{
-> +			if(packet.cmd_sts & MSP85x0_GE_RX_OVERFLOW_ERROR)
-> +				stats->rx_over_errors++; 
-> +			else if(packet.cmd_sts & MSP85x0_GE_RX_TRUNC)
-> +				stats->rx_frame_errors++;
-> +			else
-> +				stats->rx_errors++;
-> +			dev_kfree_skb_any(skb);
 
-It's called in ->poll(), outside of in_irq().
 
-dev->last_rx should be updated after netif_receive_skb().
+International Conference on Systems, Computing Sciences and Software
+Engineering (SCS2 06)
 
-[...]
-> +static int msp85x0_ge_poll(struct net_device *netdev, int *budget)
-> +{
-[...]
-> +	spin_lock_irqsave(&msp85x0_ge_eth->lock,flags);
+Topics: Grid Computing, Internet-based Computing Models, Resource
+Discovery, Programming Models and tools, e-Science and Virtual
+Instrumentation, Biometric Authentication, Computers for People of Special
+Needs, Human Computer Interaction, Information and Knowledge Engineering,
+Algorithms, Parallel and Distributed processing, Modeling and Simulation,
+Services and Applications, Embedded Systems and Applications, Databases,
+Programming Languages, Signal Processing Theory and Methods, Signal
+Processing for Communication, Signal Processing Architectures and
+Implementation, Information Processing, Geographical Information
+Systems,Object Based Software Engineering, Parallel and Distributed
+Computing, Real Time Systems, Multiprocessing, File Systems and I/O,
+Kernel
+and OS Structures.
 
-Afaik poll takes place with irq enabled: no need to save/restore.
 
-[...]
-> +/* Don't Re-Initialize the port, Just start from where it stops */ 
-> +static int msp85x0_ge_eth_reopen(struct net_device *netdev)	
-> +{
-> +	msp85x0_ge_port_info *msp85x0_ge_eth = netdev_priv(netdev);
-> +	unsigned int reg_data,irq;
-> +	int retval;
-> +
-> +        irq = MSP85x0_ETH_PORT_IRQ;
-> +
-> +	retval = request_irq(irq, INTERRUPT_HANDLER,
-> +		     SA_INTERRUPT | SA_SAMPLE_RANDOM | SA_SHIRQ, netdev->name, netdev);
 
-/me scratches head...
 
-msp85x0_ge_change_mtu() does _not_ free_irqv and it issues
-msp85x0_ge_eth_reopen().
+International Conference on Engineering Education, Instructional
+Technology, Assessment, and E-learning (EIAE 06)
 
-I noticed this comment in msp85x0_ge_eth_stop():
+Topics: Instructional Design, Accreditation, Curriculum Design,
+Educational
+Tools, 2-2-2 Platforms, Teaching Capstone Design, Teaching Design at the
+Lower Levels, Design and Development of e-Learning tools, Assessment
+Methods in Engineering, Development and Implementation of E-learning
+tools,
+Economical and Social Impacts of E-learning.
 
-/* This to work around to solve the msp85x0 shutdown and bringup sequence */
 
-Can you elaborate ?
 
-Random remarks:
-- drivers/net/msp85x0_ge.h includes a lot of
-  #define MSP85x0_GE_MSTATX_SOMETHING
+Paper Submission
 
-  Your customers would surely appreciate extended stats through ethtool.
-  grep for get_ethtool_stats in drivers/net
+=================
 
-- You should be able to sprinkle a few NET_IP_ALIGN here and there.
 
-- I won't complain if you feel an urge to remove the _ge_ part in
-  msp85x0_ge_whatever
+Prospective authors are invited to submit full papers electronically in
+Microsoft Word format through the website of the conference at
+http://www.cisse2006.org. Accepted papers must be presented in the
+virtual conference by one of the authors. To submit your paper, visit
+http://www.cisse2006.org.
 
--- 
-Ueimor
+Paper submission Deadline:          October 13th, 2006
+Notification of Acceptance:         November 7th, 2006
+Final Manuscript and Registration:  November 24th, 2006
+
+
+Click here on http://server1.streamsend.com/streamsend/unsubscribe.php?md=4&cd=3326&ud=c920c45418a0c868336d020fcce87bed <http://server1.streamsend.com/streamsend/unsubscribe.php?md=4&cd=3326&ud=c920c45418a0c868336d020fcce87bed> to update your profile or Unsubscribe
+--_----------=_1073964459106330--

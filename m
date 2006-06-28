@@ -1,52 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2006 21:25:55 +0100 (BST)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:45550 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S8133627AbWF1UZp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Jun 2006 21:25:45 +0100
-Received: (qmail 23736 invoked by uid 101); 28 Jun 2006 20:25:30 -0000
-Received: from unknown (HELO ogmios.pmc-sierra.bc.ca) (216.241.226.59)
-  by mother.pmc-sierra.com with SMTP; 28 Jun 2006 20:25:30 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by ogmios.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id k5SKPTgQ005729;
-	Wed, 28 Jun 2006 13:25:29 -0700
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2656.59)
-	id <JPF7334Z>; Wed, 28 Jun 2006 13:25:28 -0700
-Message-ID: <C28979E4F697C249ABDA83AC0C33CDF80B6BD3@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
-To:	"'Ralf Baechle'" <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2006 21:39:03 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:49831 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133627AbWF1Ui4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Jun 2006 21:38:56 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5SKcu0W004154;
+	Wed, 28 Jun 2006 21:38:56 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5SKcrNJ004153;
+	Wed, 28 Jun 2006 21:38:53 +0100
+Date:	Wed, 28 Jun 2006 21:38:53 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
 Cc:	linux-mips@linux-mips.org
-Subject: RE: [PATCH 0/6] Sequoia Patches
-Date:	Wed, 28 Jun 2006 13:25:24 -0700
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2656.59)
-Content-Type: text/plain
-Return-Path: <Kiran_Thota@pmc-sierra.com>
+Subject: Re: [PATCH 0/6] Sequoia Patches
+Message-ID: <20060628203853.GA4146@linux-mips.org>
+References: <C28979E4F697C249ABDA83AC0C33CDF80B6BD3@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF80B6BD3@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11883
+X-archive-position: 11884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Kiran_Thota@pmc-sierra.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I am generating a patch against  2.6.17.1
-Is that latest enough? 
+On Wed, Jun 28, 2006 at 01:25:24PM -0700, Kiran Thota wrote:
 
------Original Message-----
-From: Ralf Baechle [mailto:ralf@linux-mips.org] 
-Sent: Wednesday, June 28, 2006 12:44 PM
-To: Kiran Thota
-Cc: linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/6] Sequoia Patches
+> I am generating a patch against  2.6.17.1
+> Is that latest enough? 
 
-On Fri, Jun 23, 2006 at 06:29:03PM -0700, Kiran Thota wrote:
-
-> Hi Ralf and list,
->  Please merge the following patches for PMC-Sierra Sequoia platform for linux-2.6.12.
-
-A patch as old as this will not apply to a current kernel.
+That should do - or if you're using git preferably the master branch.
 
   Ralf

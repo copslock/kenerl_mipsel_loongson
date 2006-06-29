@@ -1,42 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jun 2006 21:39:03 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:49831 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133627AbWF1Ui4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Jun 2006 21:38:56 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k5SKcu0W004154;
-	Wed, 28 Jun 2006 21:38:56 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k5SKcrNJ004153;
-	Wed, 28 Jun 2006 21:38:53 +0100
-Date:	Wed, 28 Jun 2006 21:38:53 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kiran Thota <Kiran_Thota@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2006 07:51:33 +0100 (BST)
+Received: from deliver-2.mx.triera.net ([213.161.0.32]:38892 "EHLO
+	deliver-2.mx.triera.net") by ftp.linux-mips.org with ESMTP
+	id S8133432AbWF2GvU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Jun 2006 07:51:20 +0100
+Received: from localhost (in-2.mx.triera.net [213.161.0.26])
+	by deliver-2.mx.triera.net (Postfix) with ESMTP id 80F04165;
+	Thu, 29 Jun 2006 08:51:10 +0200 (CEST)
+Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
+	by in-2.mx.triera.net (Postfix) with SMTP id EB2581BC091;
+	Thu, 29 Jun 2006 08:51:11 +0200 (CEST)
+Received: from localhost (unknown [213.161.20.162])
+	by smtp.triera.net (Postfix) with ESMTP id 0BCA11A18B8;
+	Thu, 29 Jun 2006 08:51:11 +0200 (CEST)
+Date:	Thu, 29 Jun 2006 08:51:12 +0200
+From:	Domen Puncer <domen.puncer@ultra.si>
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/6] Sequoia Patches
-Message-ID: <20060628203853.GA4146@linux-mips.org>
-References: <C28979E4F697C249ABDA83AC0C33CDF80B6BD3@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-Mime-Version: 1.0
+Subject: Re: [patch rfc] au1xxx spi ported to spi layer
+Message-ID: <20060629065112.GG31105@domen.ultra.si>
+References: <20060628070750.GE31105@domen.ultra.si> <20060628094847.GA5310@linux-mips.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <C28979E4F697C249ABDA83AC0C33CDF80B6BD3@sjc1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20060628094847.GA5310@linux-mips.org>
+User-Agent: Mutt/1.5.11+cvs20060126
+X-Virus-Scanned: Triera AV Service
+Return-Path: <domen.puncer@ultra.si>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11884
+X-archive-position: 11885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: domen.puncer@ultra.si
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jun 28, 2006 at 01:25:24PM -0700, Kiran Thota wrote:
+On 28/06/06 10:48 +0100, Ralf Baechle wrote:
+> On Wed, Jun 28, 2006 at 09:07:50AM +0200, Domen Puncer wrote:
+> 
+> > This is a port of Jordan Crouse's SPI patch to the SPI layer.
+> > Board definitions are only for dbau1200, flash should work with
+> > in-kernel driver. If someone wants the simple tmp121 driver,
+> > i can send it.
+> > 
+> > Hopefully someone finds this useful.
+> > 
+> > Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
+> 
+> As for the arch/mips bits:
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-> I am generating a patch against  2.6.17.1
-> Is that latest enough? 
+Thanks!
 
-That should do - or if you're using git preferably the master branch.
+> 
+> About 90% of this patch are SPI specific, so please feed this patch though
+> the SPI maintainer:
 
-  Ralf
+Well... I wanted some mips/dbau1xxx audience first, to comment it.
+
+> 
+> SPI SUBSYSTEM
+> P:      David Brownell
+> M:      dbrownell@users.sourceforge.net
+> L:      spi-devel-general@lists.sourceforge.net
+> S:      Maintained
+> 
+> One thing I noticed at a glance is the use of the sysv compatibility types,
+> notably uint.  Please don't use them in new code.
+
+OK. I'll clean this up, and send to SPI guys tomorrow.
+
+
+	Domen

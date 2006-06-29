@@ -1,95 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2006 16:05:32 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:54371 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S3686488AbWF2PFY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Jun 2006 16:05:24 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id C936F3EBE; Thu, 29 Jun 2006 08:04:55 -0700 (PDT)
-Message-ID: <44A3EBD7.8090408@ru.mvista.com>
-Date:	Thu, 29 Jun 2006 19:03:51 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2006 16:11:37 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:43226 "EHLO
+	goldrake.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S3686521AbWF2PL2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Jun 2006 16:11:28 +0100
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by goldrake.enneenne.com with esmtp (Exim 4.50)
+	id 1Fvy69-0005DJ-3N; Thu, 29 Jun 2006 17:06:29 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1FvyB0-0004Je-9P; Thu, 29 Jun 2006 17:11:30 +0200
+Date:	Thu, 29 Jun 2006 17:11:30 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Message-ID: <20060629151130.GM7471@enneenne.com>
+References: <20060626221441.GA10595@enneenne.com> <20060627155914.GD10595@enneenne.com> <44A3EBD7.8090408@ru.mvista.com>
 MIME-Version: 1.0
-To:	Rodolfo Giometti <giometti@linux.it>, linux-mips@linux-mips.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="OxpYUbrsx40GOZXC"
+Content-Disposition: inline
+In-Reply-To: <44A3EBD7.8090408@ru.mvista.com>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.11+cvs20060403
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
 Subject: Re: au1000_lowlevel_probe on au1000_eth.c
-References: <20060626221441.GA10595@enneenne.com> <20060627155914.GD10595@enneenne.com>
-In-Reply-To: <20060627155914.GD10595@enneenne.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on goldrake.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11886
+X-archive-position: 11887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
 
-Rodolfo Giometti wrote:
-> On Tue, Jun 27, 2006 at 12:14:41AM +0200, Rodolfo Giometti wrote:
+--OxpYUbrsx40GOZXC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->>I notice that during sleep/wakeup au1000_lowlevel_probe() tries to
->>access to variables arcs_cmdline,prom_envp & Co.. This sometime does
->>an oops.
+On Thu, Jun 29, 2006 at 07:03:51PM +0400, Sergei Shtylyov wrote:
+>=20
+>    This is against your rewrite, if I don't mistake?
 
-> Here my proposal to avoid oops during wake up.
+Yes.
 
-    This is against your rewrite, if I don't mistake?
+>    Hrm, wouldn't it be better to put this stuff into a separate function=
+=20
+>    then?
 
-> Ciao,
+Maybe, but I considered that these stuff are dignificative only during
+boot time so I decided to do not consider them during wake up. Is that
+wrong?
 
-> Rodolfo
+Ciao,
 
-WBR, Sergei
+Rodolfo
 
-> ------------------------------------------------------------------------
-> 
-> diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
-> index 341fdc4..c49004a 100644
-> --- a/drivers/net/au1000_eth.c
-> +++ b/drivers/net/au1000_eth.c
-> @@ -1419,24 +1419,25 @@ au1000_lowlevel_probe(struct net_device 
->  	/* Setup some variables for quick register address access */
->  	if (port_num == 0)
->  	{
-> -		/* check env variables first */
-> -		if (!get_ethernet_addr(ethaddr)) { 
-> -			memcpy(au1000_mac_addr, ethaddr, sizeof(au1000_mac_addr));
-> -		} else {
-> -			/* Check command line */
-> -			argptr = prom_getcmdline();
-> -			if ((pmac = strstr(argptr, "ethaddr=")) == NULL) {
-> -				printk(KERN_INFO "%s: No mac address found\n", 
-> -						ndev->name);
-> -				/* use the hard coded mac addresses */
-> +		if (!skip_prom) {
-> +			/* check env variables first */
-> +			if (!get_ethernet_addr(ethaddr)) { 
-> +				memcpy(au1000_mac_addr, ethaddr, sizeof(au1000_mac_addr));
->  			} else {
-> -				str2eaddr(ethaddr, pmac + strlen("ethaddr="));
-> -				memcpy(au1000_mac_addr, ethaddr, 
-> -						sizeof(au1000_mac_addr));
-> +				/* Check command line */
-> +				argptr = prom_getcmdline();
-> +				if ((pmac = strstr(argptr, "ethaddr=")) == NULL) {
-> +					printk(KERN_INFO "%s: No mac address found\n", 
-> +							ndev->name);
-> +					/* use the hard coded mac addresses */
-> +				} else {
-> +					str2eaddr(ethaddr, pmac + strlen("ethaddr="));
-> +					memcpy(au1000_mac_addr, ethaddr, 
-> +							sizeof(au1000_mac_addr));
-> +				}
->  			}
+--=20
 
-    Hrm, wouldn't it be better to put this stuff into a separate function then?
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
 
-WBR, Sergei
+--OxpYUbrsx40GOZXC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+
+iD8DBQFEo+2iQaTCYNJaVjMRAtoCAKDdVDCxz0elNeqtA0x4DvZshY1VTQCfQI82
+GS1M1TPV2qmIraPLDIvCB54=
+=i/zV
+-----END PGP SIGNATURE-----
+
+--OxpYUbrsx40GOZXC--

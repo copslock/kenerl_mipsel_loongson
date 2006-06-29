@@ -1,56 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2006 16:42:08 +0100 (BST)
-Received: from emailhub.stusta.mhn.de ([141.84.69.5]:32782 "HELO
-	mailout.stusta.mhn.de") by ftp.linux-mips.org with SMTP
-	id S8133730AbWF2Plz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Jun 2006 16:41:55 +0100
-Received: (qmail 21184 invoked from network); 29 Jun 2006 15:41:48 -0000
-Received: from r063144.stusta.swh.mhn.de (10.150.63.144)
-  by mailout.stusta.mhn.de with SMTP; 29 Jun 2006 15:41:48 -0000
-Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
-	id A3470103A59; Thu, 29 Jun 2006 17:41:48 +0200 (CEST)
-Date:	Thu, 29 Jun 2006 17:41:48 +0200
-From:	Adrian Bunk <bunk@stusta.de>
-To:	Andrew Morton <akpm@osdl.org>
-Cc:	Samuel.Ortiz@nokia.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org, Jean-Luc Leger <reiga@dspnet.fr.eu.org>
-Subject: [2.6 patch] fix the AU1000_FIR dependencies
-Message-ID: <20060629154148.GA19712@stusta.de>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jun 2006 21:02:23 +0100 (BST)
+Received: from electric-eye.fr.zoreil.com ([213.41.134.224]:62172 "EHLO
+	fr.zoreil.com") by ftp.linux-mips.org with ESMTP id S8133749AbWF2UCN
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Jun 2006 21:02:13 +0100
+Received: from electric-eye.fr.zoreil.com (localhost.localdomain [127.0.0.1])
+	by fr.zoreil.com (8.13.4/8.12.1) with ESMTP id k5TK18pl009295;
+	Thu, 29 Jun 2006 22:01:08 +0200
+Received: (from romieu@localhost)
+	by electric-eye.fr.zoreil.com (8.13.4/8.12.1) id k5TK17YN009294;
+	Thu, 29 Jun 2006 22:01:07 +0200
+Date:	Thu, 29 Jun 2006 22:01:07 +0200
+From:	Francois Romieu <romieu@fr.zoreil.com>
+To:	Tom Rix <trix@specifix.com>
+Cc:	tbm@cyrius.com, jgarzik@pobox.com, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, mark.e.mason@broadcom.com
+Subject: Re: PATCH SB1250 NAPI support
+Message-ID: <20060629200107.GA8122@electric-eye.fr.zoreil.com>
+References: <20060524125512.GO12089@deprecation.cyrius.com> <op.s93yprpethfl8t@localhost.localdomain> <20060525133505.GH8746@deprecation.cyrius.com> <op.tamrhvwlthfl8t@localhost.localdomain>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.11+cvs20060403
-Return-Path: <bunk@stusta.de>
+In-Reply-To: <op.tamrhvwlthfl8t@localhost.localdomain>
+User-Agent: Mutt/1.4.2.1i
+X-Organisation:	Land of Sunshine Inc.
+Return-Path: <romieu@fr.zoreil.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11888
+X-archive-position: 11889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@stusta.de
+X-original-sender: romieu@fr.zoreil.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch fixes the AU1000_FIR dependencies.
-
-Spotted by Jean-Luc Leger.
-
-Signed-off-by: Adrian Bunk <bunk@stusta.de>
-
----
-
-This patch was already sent on:
-- 15 Apr 2006
-
---- linux-2.6.17-rc1-mm2-full/drivers/net/irda/Kconfig.old	2006-04-15 16:17:36.000000000 +0200
-+++ linux-2.6.17-rc1-mm2-full/drivers/net/irda/Kconfig	2006-04-15 16:18:06.000000000 +0200
-@@ -350,7 +350,7 @@
+Tom Rix <trix@specifix.com> :
+[...]
+diff -rup a/drivers/net/sb1250-mac.c b/drivers/net/sb1250-mac.c
+--- a/drivers/net/sb1250-mac.c	2006-03-09 04:25:41.000000000 -0600
++++ b/drivers/net/sb1250-mac.c	2006-03-09 05:30:52.000000000 -0600
+[...]
+@@ -2079,13 +2095,31 @@ static irqreturn_t sbmac_intr(int irq,vo
+ 		 * Transmits on channel 0
+ 		 */
  
- config AU1000_FIR
- 	tristate "Alchemy Au1000 SIR/FIR"
--	depends on MIPS_AU1000 && IRDA
-+	depends on SOC_AU1000 && IRDA
++#if defined(CONFIG_SBMAC_NAPI)
+ 		if (isr & (M_MAC_INT_CHANNEL << S_MAC_TX_CH0)) {
+-			sbdma_tx_process(sc,&(sc->sbm_txdma));
++			sbdma_tx_process(sc,&(sc->sbm_txdma), 0);
+ 		}
  
- config SMC_IRCC_FIR
- 	tristate "SMSC IrCC (EXPERIMENTAL)"
+ 		/*
+ 		 * Receives on channel 0
+ 		 */
++		if (isr & (M_MAC_INT_CHANNEL << S_MAC_RX_CH0)) {
++			if (netif_rx_schedule_prep(dev))
++			{
+
+An irq could appear here. I am skeptical that it is safe to write
+the irq mask register so late.
+
+One should probably consider a break in the enclosing "for" loop too.
+
+
++				__raw_writeq(0, sc->sbm_imr);
++				__netif_rx_schedule(dev);
++			}
++			else
++			{
+
+} else {, please.
+
+-- 
+Ueimor

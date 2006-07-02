@@ -1,107 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Jul 2006 14:45:58 +0100 (BST)
-Received: from 202-47-55-78.adsl.gil.com.au ([202.47.55.78]:38569 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S8133402AbWGANps (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 1 Jul 2006 14:45:48 +0100
-Received: (qmail 28996 invoked from network); 1 Jul 2006 23:45:38 +1000
-Received: from unknown (HELO ?10.0.0.251?) (10.0.0.251)
-  by 192.168.5.1 with SMTP; 1 Jul 2006 23:45:38 +1000
-Message-ID: <44A67C84.5050702@gentoo.org>
-Date:	Sat, 01 Jul 2006 23:45:40 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-Organization: Gentoo Foundation
-User-Agent: Thunderbird 1.5.0.4 (X11/20060623)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: The puzzle that is IP32 audio
-X-Enigmail-Version: 0.94.0.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/~redhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigF6C534AD88672EA71FEAE45A"
-Return-Path: <redhatter@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jul 2006 15:13:52 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:55598 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8133544AbWGBONm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 2 Jul 2006 15:13:42 +0100
+Received: by mo.po.2iij.net (mo32) id k62EDcng085474; Sun, 2 Jul 2006 23:13:38 +0900 (JST)
+Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
+	by mbox.po.2iij.net (mbox31) id k62EDZfu061870
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sun, 2 Jul 2006 23:13:35 +0900 (JST)
+Date:	Sun, 2 Jul 2006 23:13:34 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] vr41xx: removed unused definitions for NEC CMBVR4133
+Message-Id: <20060702231334.082d5374.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11896
+X-archive-position: 11897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigF6C534AD88672EA71FEAE45A
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Hi Ralf,
 
-Hi All...
+This patch has removed unused definitions for NEC CMBVR4133.
+Please apply.
 
-	I've just been tinkering with my O2's audio... and whilst looking
-around at OpenBSD... it seems I might have some pieces to the puzzle
-which may explain the rather poor audio quality one gets under Linux.
+Yoichi
 
-	The sound board is based around an Analogue Devices AD1843 codec
-(datasheet here[1]), which is a 16-bit device.  The interesting note,
-was in the OpenBSD source code for their mavb[2] driver... The mabv.c
-file[3] contains this comment:
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-> /*
->  * For some reason SGI has decided to standardize their sound hardware
->  * interfaces on 24-bit PCM even though the AD1843 codec used in the
->  * Moosehead A/V Board only supports 16-bit and 8-bit formats.
->  * Therefore we must convert everything to 24-bit samples only to have
->  * the MACE hardware convert them back into 16-bit samples again.  To
->  * complicate matters further, the 24-bit samples are embedded 32-bit
->  * integers.  The 8-bit and 16-bit samples are first converted into
->  * 24-bit samples by padding them to the right with zeroes.  Then they
->  * are sign-extended into 32-bit integers.  This conversion is
->  * conveniently done through the software encoding layer of the high
->  * level audio driver by using the functions below.  Conversion of
->  * mu-law and A-law formats is done by the hardware.
->  */
-
-	I'm wondering... I don't see any logic that does this in the ALSA
-code... Could this be the reason we get such craptastic audio from this
-device?
-
-	I'll have a tinker, and see if I can use my limited coding skills to
-fix up the current IP32 driver to the point the sound at least works...
-without sounding terrible. :-)
-
-Regards,
---=20
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-=2E . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
-
-International Asperger's Year (1906 ~ 2006)
-http://dev.gentoo.org/~redhatter/iay
-
-Footnotes:
-1. http://www.analog.com/UploadedFiles/Data_Sheets/314303384ad1843.pdf
-2. http://www.openbsd.org/cgi-bin/man.cgi?query=3Dmavb&sektion=3D4&arch=3D=
-sgi
-3.
-http://www.openbsd.org/cgi-bin/cvsweb/~checkout~/src/sys/arch/sgi/dev/mav=
-b.c?rev=3D1.6&content-type=3Dtext/plain
-
-
---------------enigF6C534AD88672EA71FEAE45A
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2.2-ecc0.1.6 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
-
-iD8DBQFEpnyIuarJ1mMmSrkRAuycAJ4vHvrYBPHcPS9f3MRjmsfBrJsU4QCgi07C
-EDyQ6YMEHKL4vi2Gp+7SRR0=
-=OH1R
------END PGP SIGNATURE-----
-
---------------enigF6C534AD88672EA71FEAE45A--
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/vr41xx/cmbvr4133.h mips/include/asm-mips/vr41xx/cmbvr4133.h
+--- mips-orig/include/asm-mips/vr41xx/cmbvr4133.h	2006-07-01 23:41:40.393059500 +0900
++++ mips/include/asm-mips/vr41xx/cmbvr4133.h	2006-07-01 23:45:11.882276750 +0900
+@@ -55,7 +55,4 @@
+ #define IDE_SECONDARY_IRQ		I8259_IRQ(15)
+ #define I8259_IRQ_LAST			IDE_SECONDARY_IRQ
+ 
+-#define RTC_PORT(x)	(0xaf000100 + (x))
+-#define RTC_IO_EXTENT	0x140
+-
+ #endif /* __NEC_CMBVR4133_H */

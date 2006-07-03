@@ -1,96 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2006 07:17:27 +0100 (BST)
-Received: from deliver-2.mx.triera.net ([213.161.0.32]:14749 "EHLO
-	deliver-2.mx.triera.net") by ftp.linux-mips.org with ESMTP
-	id S8133446AbWGCGRR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Jul 2006 07:17:17 +0100
-Received: from localhost (in-1.mx.triera.net [213.161.0.25])
-	by deliver-2.mx.triera.net (Postfix) with ESMTP id 63C9F1B5;
-	Mon,  3 Jul 2006 08:17:07 +0200 (CEST)
-Received: from smtp.triera.net (smtp.triera.net [213.161.0.30])
-	by in-1.mx.triera.net (Postfix) with SMTP id 014141BC081;
-	Mon,  3 Jul 2006 08:17:07 +0200 (CEST)
-Received: from localhost (unknown [213.161.20.162])
-	by smtp.triera.net (Postfix) with ESMTP id 0E3031A18AB;
-	Mon,  3 Jul 2006 08:17:07 +0200 (CEST)
-Date:	Mon, 3 Jul 2006 08:17:09 +0200
-From:	Domen Puncer <domen.puncer@ultra.si>
-To:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Jul 2006 13:30:25 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:49795 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S8133621AbWGCMaP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Jul 2006 13:30:15 +0100
+Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id A8C1F46220; Mon,  3 Jul 2006 14:30:10 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.62)
+	(envelope-from <ths@networkno.de>)
+	id 1FxNYv-00035Y-Nb; Mon, 03 Jul 2006 13:30:01 +0100
+Date:	Mon, 3 Jul 2006 13:30:01 +0100
+To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org
-Subject: [patch] au1xxx: support YAMON and U-Boot
-Message-ID: <20060703061709.GL31105@domen.ultra.si>
+Subject: [PATCH] Save 2k text size in cpu-probe
+Message-ID: <20060703123001.GA6625@networkno.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.11+cvs20060126
-X-Virus-Scanned: Triera AV Service
-Return-Path: <domen.puncer@ultra.si>
+User-Agent: Mutt/1.5.11+cvs20060403
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11901
+X-archive-position: 11902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: domen.puncer@ultra.si
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-After (too) many emails with Sergei Shtylyov, we came up with this
-patch to support YAMON and U-Boot style environments.
+The appended patch drops the inline for decode_configs, this saves about
+2k of text size. It also uses MIPS_CONF_AR instead of magic constants.
 
 
-Signed-off-by: Domen Puncer <domen.puncer@ultra.si>
+Thiemo
 
-Index: linux-mailed/arch/mips/au1000/common/prom.c
-===================================================================
---- linux-mailed.orig/arch/mips/au1000/common/prom.c
-+++ linux-mailed/arch/mips/au1000/common/prom.c
-@@ -1,7 +1,7 @@
- /*
-  *
-  * BRIEF MODULE DESCRIPTION
-- *    PROM library initialisation code, assuming YAMON is the boot loader.
-+ *    PROM library initialisation code, supports YAMON and U-Boot.
-  *
-  * Copyright 2000, 2001, 2006 MontaVista Software Inc.
-  * Author: MontaVista Software, Inc.
-@@ -46,12 +46,6 @@
- extern int prom_argc;
- extern char **prom_argv, **prom_envp;
+
+Signed-off-by: Thiemo Seufer <ths@networkno.de>
+
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -467,7 +467,7 @@ static inline unsigned int decode_config
+ 	isa = (config0 & MIPS_CONF_AT) >> 13;
+ 	switch (isa) {
+ 	case 0:
+-		switch ((config0 >> 10) & 7) {
++		switch ((config0 & MIPS_CONF_AR) >> 10) {
+ 		case 0:
+ 			c->isa_level = MIPS_CPU_ISA_M32R1;
+ 			break;
+@@ -479,7 +479,7 @@ static inline unsigned int decode_config
+ 		}
+ 		break;
+ 	case 2:
+-		switch ((config0 >> 10) & 7) {
++		switch ((config0 & MIPS_CONF_AR) >> 10) {
+ 		case 0:
+ 			c->isa_level = MIPS_CPU_ISA_M64R1;
+ 			break;
+@@ -556,7 +556,7 @@ static inline unsigned int decode_config
+ 	return config3 & MIPS_CONF_M;
+ }
  
--typedef struct
--{
--	char *name;
--	char *val;
--} t_env_var;
--
- 
- char * prom_getcmdline(void)
+-static inline void decode_configs(struct cpuinfo_mips *c)
++__init static void decode_configs(struct cpuinfo_mips *c)
  {
-@@ -84,13 +78,21 @@ char *prom_getenv(char *envname)
- {
- 	/*
- 	 * Return a pointer to the given environment variable.
-+	 * YAMON uses "name", "value" pairs, while U-Boot uses "name=value".
- 	 */
- 
--	t_env_var *env = (t_env_var *)prom_envp;
--
--	while (env->name) {
--		if (strcmp(envname, env->name) == 0)
--			return env->val;
-+	char **env = prom_envp;
-+	int i = strlen(envname);
-+	int yamon = (*env && strchr(*env, '=') == NULL);
-+
-+	while (*env) {
-+		if (yamon) {
-+			if (strcmp(envname, *env++) == 0)
-+				return *env;
-+		} else {
-+			if (strncmp(envname, *env, i) == 0 && (*env)[i] == '=')
-+				return *env + i + 1;
-+		}
- 		env++;
- 	}
- 	return NULL;
+ 	/* MIPS32 or MIPS64 compliant CPU.  */
+ 	c->options = MIPS_CPU_4KEX | MIPS_CPU_4K_CACHE | MIPS_CPU_COUNTER |

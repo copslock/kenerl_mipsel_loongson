@@ -1,56 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jul 2006 15:04:48 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:8460 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8133491AbWGDOEk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 4 Jul 2006 15:04:40 +0100
-Received: by mo.po.2iij.net (mo30) id k64E4chY074389; Tue, 4 Jul 2006 23:04:38 +0900 (JST)
-Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
-	by mbox.po.2iij.net (mbox32) id k64E4WdD072675
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 4 Jul 2006 23:04:32 +0900 (JST)
-Date:	Tue, 4 Jul 2006 23:04:31 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] vr41xx: VR41_CONF_BP is necessary only for processor ID
- 0xc80
-Message-Id: <20060704230431.74fbe12b.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jul 2006 17:21:46 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:39417 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S3466304AbWGDQVh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 4 Jul 2006 17:21:37 +0100
+Received: from localhost (p3208-ipad34funabasi.chiba.ocn.ne.jp [124.85.60.208])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8EF30B45E; Wed,  5 Jul 2006 01:21:30 +0900 (JST)
+Date:	Wed, 05 Jul 2006 01:22:44 +0900 (JST)
+Message-Id: <20060705.012244.96686002.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] sparsemem fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11905
+X-archive-position: 11906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+1. MIPS should select SPARSEMEM_STATIC since allocating bootmem in
+   memory_present() will corrupt bootmap area.
+2. pfn_valid() for SPARSEMEM is defined in linux/mmzone.h
 
-VR41_CONF_BP is necessary only for processor ID 0xc80. 
-Please apply.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Yoichi
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/mm/c-r4k.c mips/arch/mips/mm/c-r4k.c
---- mips-orig/arch/mips/mm/c-r4k.c	2006-07-04 11:54:18.405308250 +0900
-+++ mips/arch/mips/mm/c-r4k.c	2006-07-04 22:45:11.862517750 +0900
-@@ -848,7 +848,9 @@ static void __init probe_pcache(void)
- 		if (c->processor_id == 0x0c80U || c->processor_id == 0x0c81U ||
- 		    c->processor_id == 0x0c82U) {
- 			config &= ~0x00000030U;
--			config |= 0x00410000U;
-+			config |= 0x00400000U;
-+			if (c->processor_id == 0x0c80U)
-+				config |= VR41_CONF_BP;
- 			write_c0_config(config);
- 		}
- 		icache_size = 1 << (10 + ((config & CONF_IC) >> 9));
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index f151a7e..879a19c 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1690,6 +1690,7 @@ config ARCH_DISCONTIGMEM_ENABLE
+ 
+ config ARCH_SPARSEMEM_ENABLE
+ 	bool
++	select SPARSEMEM_STATIC
+ 
+ config NUMA
+ 	bool "NUMA Support"
+diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
+index 6b97744..6ed1151 100644
+--- a/include/asm-mips/page.h
++++ b/include/asm-mips/page.h
+@@ -138,16 +138,14 @@ #define __va(x)			((void *)((unsigned lo
+ 
+ #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
+ 
+-#ifndef CONFIG_SPARSEMEM
+-#ifndef CONFIG_NEED_MULTIPLE_NODES
+-#define pfn_valid(pfn)		((pfn) < max_mapnr)
+-#endif
+-#endif
+-
+ #ifdef CONFIG_FLATMEM
+ 
+ #define pfn_valid(pfn)		((pfn) < max_mapnr)
+ 
++#elif defined(CONFIG_SPARSEMEM)
++
++/* pfn_valid is defined in linux/mmzone.h */
++
+ #elif defined(CONFIG_NEED_MULTIPLE_NODES)
+ 
+ #define pfn_valid(pfn)							\
+@@ -159,8 +157,6 @@ ({									\
+ 	            : 0);						\
+ })
+ 
+-#else
+-#error Provide a definition of pfn_valid
+ #endif
+ 
+ #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)

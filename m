@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jul 2006 14:33:16 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:3806 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S8133380AbWGENdH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Jul 2006 14:33:07 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jul 2006 14:34:30 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:9950 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S8133380AbWGENeT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Jul 2006 14:34:19 +0100
 Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
 	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
 	(No client certificate requested)
 	by bender.bawue.de (Postfix) with ESMTP
-	id 1B17A44672; Wed,  5 Jul 2006 15:33:02 +0200 (MEST)
+	id 3E6234455E; Wed,  5 Jul 2006 15:34:18 +0200 (MEST)
 Received: from ths by lagash with local (Exim 4.62)
 	(envelope-from <ths@networkno.de>)
-	id 1Fy7Up-0008Gu-Na; Wed, 05 Jul 2006 14:32:51 +0100
-Date:	Wed, 5 Jul 2006 14:32:51 +0100
+	id 1Fy7W3-0008Hb-Qo; Wed, 05 Jul 2006 14:34:07 +0100
+Date:	Wed, 5 Jul 2006 14:34:07 +0100
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix fatal typo for bcm1480
-Message-ID: <20060705133251.GD29112@networkno.de>
+Subject: [PATCH] Fix build failure in sb1250_duart.c
+Message-ID: <20060705133407.GE29112@networkno.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -24,7 +24,7 @@ Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11915
+X-archive-position: 11916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,7 +34,7 @@ X-list: linux-mips
 
 Hello All,
 
-this fixes a fatal typo which crept in the rewritten interrupt handler.
+this fixes a build failure caused by the devfs removal.
 
 
 Thiemo
@@ -43,14 +43,13 @@ Thiemo
 Signed-off-by: Thiemo Seufer <ths@networkno.de>
 
 
---- a/arch/mips/sibyte/bcm1480/irq.c
-+++ b/arch/mips/sibyte/bcm1480/irq.c
-@@ -533,7 +533,7 @@ #endif
- 		mask_l = __raw_readq(
- 			IOADDR(base + R_BCM1480_IMR_INTERRUPT_STATUS_BASE_L));
+--- a/drivers/char/sb1250_duart.c
++++ b/drivers/char/sb1250_duart.c
+@@ -763,7 +763,6 @@ static int __init sb1250_duart_init(void
  
--		if (!mask_h) {
-+		if (mask_h) {
- 			if (mask_h ^ 1)
- 				do_IRQ(63 - dclz(mask_h), regs);
- 			else
+ 	sb1250_duart_driver->owner = THIS_MODULE;
+ 	sb1250_duart_driver->name = "duart";
+-	sb1250_duart_driver->devfs_name = "duart/";
+ 	sb1250_duart_driver->major = TTY_MAJOR;
+ 	sb1250_duart_driver->minor_start = SB1250_DUART_MINOR_BASE;
+ 	sb1250_duart_driver->type            = TTY_DRIVER_TYPE_SERIAL;

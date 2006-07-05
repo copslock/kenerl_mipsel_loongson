@@ -1,101 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jul 2006 18:03:59 +0100 (BST)
-Received: from smtp2.caviumnetworks.com ([209.113.159.134]:22584 "EHLO
-	smtp2.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S8133770AbWGDRDo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 4 Jul 2006 18:03:44 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by smtp2.caviumnetworks.com with NetIQ MailMarshal (v6,0,3,8)
-	id <B44aa9f730000>; Tue, 04 Jul 2006 13:03:47 -0400
-Received: from [192.168.111.13] ([71.202.53.57]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 4 Jul 2006 10:03:36 -0700
-Message-ID: <44AA9F67.3090309@caviumnetworks.com>
-Date:	Tue, 04 Jul 2006 10:03:35 -0700
-From:	Chad Reese <kreese@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.13) Gecko/20060620 Debian/1.7.13-0.2
-X-Accept-Language: en
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jul 2006 02:30:31 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:29333 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S3686520AbWGEBaW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 5 Jul 2006 02:30:22 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 5 Jul 2006 10:30:21 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id A9673203FB;
+	Wed,  5 Jul 2006 10:30:14 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 9C68220310;
+	Wed,  5 Jul 2006 10:30:14 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k651UDW0094787;
+	Wed, 5 Jul 2006 10:30:14 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 05 Jul 2006 10:30:13 +0900 (JST)
+Message-Id: <20060705.103013.41196866.nemoto@toshiba-tops.co.jp>
+To:	kreese@caviumnetworks.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] sparsemem fix
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44AA9F67.3090309@caviumnetworks.com>
 References: <20060705.012244.96686002.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060705.012244.96686002.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+	<44AA9F67.3090309@caviumnetworks.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 04 Jul 2006 17:03:37.0133 (UTC) FILETIME=[CA6205D0:01C69F8B]
-Return-Path: <Kenneth.Reese@caviumnetworks.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11907
+X-archive-position: 11908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kreese@caviumnetworks.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-I believe Ralf committed a cleaned up version of the patch I created 
-5/23/2006. It called memory_present() after the first bootmap memory was 
-created. I've been using this and dynamic sparsemem on Mips64 for a 
-while now.
+On Tue, 04 Jul 2006 10:03:35 -0700, Chad Reese <kreese@caviumnetworks.com> wrote:
+> I believe Ralf committed a cleaned up version of the patch I created 
+> 5/23/2006. It called memory_present() after the first bootmap memory was 
+> created. I've been using this and dynamic sparsemem on Mips64 for a 
+> while now.
 
-Hope this helps,
+It is not enough.  If you want to use SPARSEMEM_EXTREME, do not call
+memory_present() _before_ reserve_bootmem().
 
-Chad
+For SPARSEMEM_EXTREME, memory_present() try to allocate bootmem, but
+first area of bootmem must be reserved for bootmap before any
+allocation.
 
-Atsushi Nemoto wrote:
+The alloc_bootmem_node try to allocate upper (>16MB) page first, then
+try lower page.  So if the first memory area was smaller then 16MB
+SPARSEMEM_EXTREME would not work.
 
->1. MIPS should select SPARSEMEM_STATIC since allocating bootmem in
->   memory_present() will corrupt bootmap area.
->2. pfn_valid() for SPARSEMEM is defined in linux/mmzone.h
->
->Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->
->diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->index f151a7e..879a19c 100644
->--- a/arch/mips/Kconfig
->+++ b/arch/mips/Kconfig
->@@ -1690,6 +1690,7 @@ config ARCH_DISCONTIGMEM_ENABLE
-> 
-> config ARCH_SPARSEMEM_ENABLE
-> 	bool
->+	select SPARSEMEM_STATIC
-> 
-> config NUMA
-> 	bool "NUMA Support"
->diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
->index 6b97744..6ed1151 100644
->--- a/include/asm-mips/page.h
->+++ b/include/asm-mips/page.h
->@@ -138,16 +138,14 @@ #define __va(x)			((void *)((unsigned lo
-> 
-> #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
-> 
->-#ifndef CONFIG_SPARSEMEM
->-#ifndef CONFIG_NEED_MULTIPLE_NODES
->-#define pfn_valid(pfn)		((pfn) < max_mapnr)
->-#endif
->-#endif
->-
-> #ifdef CONFIG_FLATMEM
-> 
-> #define pfn_valid(pfn)		((pfn) < max_mapnr)
-> 
->+#elif defined(CONFIG_SPARSEMEM)
->+
->+/* pfn_valid is defined in linux/mmzone.h */
->+
-> #elif defined(CONFIG_NEED_MULTIPLE_NODES)
-> 
-> #define pfn_valid(pfn)							\
->@@ -159,8 +157,6 @@ ({									\
-> 	            : 0);						\
-> })
-> 
->-#else
->-#error Provide a definition of pfn_valid
-> #endif
-> 
-> #define virt_to_page(kaddr)	pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
->
->  
->
+Also, SPARSEMEM_STATIC will be a bit faster then SPARSEMEM_EXTREME.
+The mm/Kconfig warns about mem_section[] size, but static
+mem_section[] size is just 1KB for MIPS.  No problem.  :-)
+
+---
+Atsushi Nemoto

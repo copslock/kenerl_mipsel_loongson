@@ -1,71 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jul 2006 18:43:55 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:48546 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S8133778AbWGERno (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Jul 2006 18:43:44 +0100
-Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 45C88443C9; Wed,  5 Jul 2006 19:43:41 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.62)
-	(envelope-from <ths@networkno.de>)
-	id 1FyBPN-0005Ar-7O; Wed, 05 Jul 2006 18:43:29 +0100
-Date:	Wed, 5 Jul 2006 18:43:29 +0100
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Search+replace gone wrong...
-Message-ID: <20060705174329.GA15138@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2006 14:07:34 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.184]:32010 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S3466326AbWGFNHY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 6 Jul 2006 14:07:24 +0100
+Received: by nf-out-0910.google.com with SMTP id a27so79996nfc
+        for <linux-mips@linux-mips.org>; Thu, 06 Jul 2006 06:07:24 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=CLDP9vO0jhrpmySENUWO5UK5vUuT/MlvQRje0LeI5IgzYGvK5Qeiv8KuLyFhgfNe1S6CKYM95N/YqTeop2ww5V+Wr4+XKdjwDUJ+UcsN86SBtHAtYHaSPehBFr4Ng1C0EFYq4aRtuDWGkFaiyb7V2lkZlWSKyBRM8U2gAxTRz5c=
+Received: by 10.48.80.3 with SMTP id d3mr449227nfb;
+        Thu, 06 Jul 2006 06:07:23 -0700 (PDT)
+Received: from ?192.168.0.24? ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id l22sm6713706nfc.2006.07.06.06.07.22;
+        Thu, 06 Jul 2006 06:07:23 -0700 (PDT)
+Message-ID: <44AD0C2B.7060204@innova-card.com>
+Date:	Thu, 06 Jul 2006 15:12:11 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.2 (X11/20060501)
 MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] do not count pages in holes with sparsemem
+References: <20060705.221354.74751389.anemo@mba.ocn.ne.jp>	<44ABC59C.6070607@innova-card.com> <20060705.231737.59032119.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060705.231737.59032119.anemo@mba.ocn.ne.jp>
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.11+cvs20060403
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Content-Transfer-Encoding: 7bit
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11919
+X-archive-position: 11920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello All,
+Atsushi Nemoto wrote:
+> On Wed, 05 Jul 2006 15:58:52 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>> BTW why using __pa(OFFSET) ? isn't it going to yield always into 0 ?
+>> At least on MIPS, it's defined as
+>>
+>> #define __pa(x)	((unsigned long) (x) - PAGE_OFFSET)
+>>
+>> why not using ARCH_PFN_OFFSET instead ?
+> 
+> Indeed.  I copied the code from free_area_init().  I think 0 is enough
+> for MIPS.  Patch revised.  Thank you for comments.
+> 
+> 
 
-some random hit by search+replace, it seems.
+Ok thinking more about it, some platforms may have physical memory
+that doesn't start at 0. MIPS doesn't support such platform though it
+should be fairly easy. In that case __pa should be defined as:
 
+	#define __pa(x)	((unsigned long) (x) - PAGE_OFFSET + PFN_PHYS(ARCH_PFN_OFFSET))
 
-Thiemo
+and use in your patch:
 
+	free_area_init_node(0, NODE_DATA(0), zones_size, ARCH_PFN_OFFSET, zholes_size);
 
-Signed-off-by: Thiemo Seufer <ths@networkno.de>
+So I would recommend to use ARCH_PFN_OFFSET.
 
-
-diff --git a/arch/mips/sgi-ip32/ip32-irq.c b/arch/mips/sgi-ip32/ip32-irq.c
-index ac658c4..c64a820 100644
---- a/arch/mips/sgi-ip32/ip32-irq.c
-+++ b/arch/mips/sgi-ip32/ip32-irq.c
-@@ -316,9 +316,9 @@ #define MACEISA_MISC_INT	(MACEISA_RTC_IN
- 				 MACEISA_KEYB_POLL_INT |	\
- 				 MACEISA_MOUSE_INT |		\
- 				 MACEISA_MOUSE_POLL_INT |	\
--				 MACEIIRQF_TIMER0_INT |		\
--				 MACEIIRQF_TIMER1_INT |		\
--				 MACEIIRQF_TIMER2_INT)
-+				 MACEISA_TIMER0_INT |		\
-+				 MACEISA_TIMER1_INT |		\
-+				 MACEISA_TIMER2_INT)
- #define MACEISA_SUPERIO_INT	(MACEISA_PARALLEL_INT |		\
- 				 MACEISA_PAR_CTXA_INT |		\
- 				 MACEISA_PAR_CTXB_INT |		\
-@@ -349,7 +349,7 @@ static void enable_maceisa_irq (unsigned
- 	case MACEISA_AUDIO_SW_IRQ ... MACEISA_AUDIO3_MERR_IRQ:
- 		crime_int = MACE_AUDIO_INT;
- 		break;
--	case MACEISA_RTC_IRQ ... MACEIIRQF_TIMER2_IRQ:
-+	case MACEISA_RTC_IRQ ... MACEISA_TIMER2_IRQ:
- 		crime_int = MACE_MISC_INT;
- 		break;
- 	case MACEISA_PARALLEL_IRQ ... MACEISA_SERIAL2_RDMAOR_IRQ:
+		Franck

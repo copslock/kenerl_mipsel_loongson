@@ -1,171 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2006 16:25:11 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:42480 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S3466417AbWGFPY4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2006 16:24:56 +0100
-Received: from localhost (p4085-ipad209funabasi.chiba.ocn.ne.jp [58.88.115.85])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 2B3FDAE85; Fri,  7 Jul 2006 00:24:52 +0900 (JST)
-Date:	Fri, 07 Jul 2006 00:26:02 +0900 (JST)
-Message-Id: <20060707.002602.75184460.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] do not count pages in holes with sparsemem
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <cda58cb80607060805yc656114p53516b904188c20f@mail.gmail.com>
-References: <20060706.233634.59465089.anemo@mba.ocn.ne.jp>
-	<44AD2537.1030509@innova-card.com>
-	<cda58cb80607060805yc656114p53516b904188c20f@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2006 18:33:11 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:53180 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S3489795AbWGFRdD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2006 18:33:03 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k66HWrex005057;
+	Thu, 6 Jul 2006 18:32:53 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k66HWaHi005056;
+	Thu, 6 Jul 2006 18:32:36 +0100
+Date:	Thu, 6 Jul 2006 18:32:36 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH] sparsemem fix
+Message-ID: <20060706173235.GA4739@linux-mips.org>
+References: <20060705.012244.96686002.anemo@mba.ocn.ne.jp> <44AB79D0.90002@innova-card.com> <20060705.192054.128618288.nemoto@toshiba-tops.co.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060705.192054.128618288.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11924
+X-archive-position: 11925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 6 Jul 2006 17:05:35 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> >         free_area_init_node(0, NODE_DATA(0), zones_size, 0, zholes_size);
-> > +#else
-> > +       free_area_init_node(0, NODE_DATA(0), zones_size, ARCH_PFN_OFFSET, NULL);
+On Wed, Jul 05, 2006 at 07:20:54PM +0900, Atsushi Nemoto wrote:
+
+> > For now it seems to be implemented only in sgi-ip27 machine. Maybe we should
+> > make things clear by adding:
+> > 
+> > #ifdef CONFIG_SGI_IP27
+> > #define pfn_valid	[...]
+> > #else
+
+The fact that the code is only used on IP27 doesn't mean it is IP27-specific.
+
+> > #error discontigmem model is only supported by sgi-ip27 platforms.
+> > #error Please try to implement a generic solution if you plan to
+> > #error use this memory model. Good luck ;)
+> > #endif /* CONFIG_SGI_IP27 */
 > 
-> which is equivalent to:
-> 
->        free_area_init(zones_size);
+> Though the pfn_valid() is only used by ip27 for now, I suppose it
+> could be used other NUMA systems (not sure).
 
-Sure.  Then this can be a final proposal?
+Yes, and there will be one or two more NUMA systems.
 
-
-With some memory model other than FLATMEM, the single node can
-contains some holes so there might be many invalid pages.  For
-example, with two 256M memory and one 256M hole, some variables
-(num_physpage, totalpages, nr_kernel_pages, nr_all_pages, etc.) will
-indicate that there are 768MB on this system.  This is not desired
-because, for example, alloc_large_system_hash() allocates too many
-entries.
-
-Use free_area_init_node() with counted zholes_size[] instead of
-free_area_init().
-
-For num_physpages, use number of ram pages instead of max_low_pfn.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 802bdd3..c52497b 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -139,10 +139,36 @@ #endif /* CONFIG_HIGHMEM */
- #ifndef CONFIG_NEED_MULTIPLE_NODES
- extern void pagetable_init(void);
- 
-+static int __init page_is_ram(unsigned long pagenr)
-+{
-+	int i;
-+
-+	for (i = 0; i < boot_mem_map.nr_map; i++) {
-+		unsigned long addr, end;
-+
-+		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
-+			/* not usable memory */
-+			continue;
-+
-+		addr = PFN_UP(boot_mem_map.map[i].addr);
-+		end = PFN_DOWN(boot_mem_map.map[i].addr +
-+			       boot_mem_map.map[i].size);
-+
-+		if (pagenr >= addr && pagenr < end)
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
- void __init paging_init(void)
- {
--	unsigned long zones_size[MAX_NR_ZONES] = {0, 0, 0};
-+	unsigned long zones_size[] = { [0 ... MAX_NR_ZONES - 1] = 0 };
- 	unsigned long max_dma, high, low;
-+#ifndef CONFIG_FLATMEM
-+	unsigned long zholes_size[] = { [0 ... MAX_NR_ZONES - 1] = 0 };
-+	unsigned long i, j, pfn;
-+#endif
- 
- 	pagetable_init();
- 
-@@ -174,29 +200,16 @@ #ifdef CONFIG_HIGHMEM
- 		zones_size[ZONE_HIGHMEM] = high - low;
- #endif
- 
-+#ifdef CONFIG_FLATMEM
- 	free_area_init(zones_size);
--}
--
--static inline int page_is_ram(unsigned long pagenr)
--{
--	int i;
--
--	for (i = 0; i < boot_mem_map.nr_map; i++) {
--		unsigned long addr, end;
--
--		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
--			/* not usable memory */
--			continue;
--
--		addr = PFN_UP(boot_mem_map.map[i].addr);
--		end = PFN_DOWN(boot_mem_map.map[i].addr +
--			       boot_mem_map.map[i].size);
--
--		if (pagenr >= addr && pagenr < end)
--			return 1;
--	}
--
--	return 0;
-+#else
-+	pfn = 0;
-+	for (i = 0; i < MAX_NR_ZONES; i++)
-+		for (j = 0; j < zones_size[i]; j++, pfn++)
-+			if (!page_is_ram(pfn))
-+				zholes_size[i]++;
-+	free_area_init_node(0, NODE_DATA(0), zones_size, 0, zholes_size);
-+#endif
- }
- 
- static struct kcore_list kcore_mem, kcore_vmalloc;
-@@ -213,9 +226,9 @@ #ifdef CONFIG_HIGHMEM
- #ifdef CONFIG_DISCONTIGMEM
- #error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
- #endif
--	max_mapnr = num_physpages = highend_pfn;
-+	max_mapnr = highend_pfn;
- #else
--	max_mapnr = num_physpages = max_low_pfn;
-+	max_mapnr = max_low_pfn;
- #endif
- 	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
- 
-@@ -229,6 +242,7 @@ #endif
- 			if (PageReserved(pfn_to_page(tmp)))
- 				reservedpages++;
- 		}
-+	num_physpages = ram;
- 
- #ifdef CONFIG_HIGHMEM
- 	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-@@ -247,6 +261,7 @@ #endif
- 		totalhigh_pages++;
- 	}
- 	totalram_pages += totalhigh_pages;
-+	num_physpages += totalhigh_pages;
- #endif
- 
- 	codesize =  (unsigned long) &_etext - (unsigned long) &_text;
+  Ralf

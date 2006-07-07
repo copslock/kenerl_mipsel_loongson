@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jul 2006 23:57:36 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:61893 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S3489839AbWGFW50 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Jul 2006 23:57:26 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k66MvMSx018434;
-	Thu, 6 Jul 2006 23:57:22 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k66MvIG9018433;
-	Thu, 6 Jul 2006 23:57:18 +0100
-Date:	Thu, 6 Jul 2006 23:57:18 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>, a.voropay@equant.ru
-Subject: Re: [PATCH] Fix process crash in 2.4 on attempt to use FPU on MIPS32
-Message-ID: <20060706225718.GA18284@linux-mips.org>
-References: <44AD7FBA.8000203@ru.mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2006 06:12:33 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.173]:34154 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8127208AbWGGFMY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Jul 2006 06:12:24 +0100
+Received: by ug-out-1314.google.com with SMTP id k3so2416516ugf
+        for <linux-mips@linux-mips.org>; Thu, 06 Jul 2006 22:12:23 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=B9CkXO+oIzVK5npAJRsm8Ofz46Rh1YLOuGPHOixYobLSAnkQtSP/BI6JbplMEhpTvhJuzgluo/k6E3dZGvPArEXCBJ1A8CtO8wkdTWoCJfOVAb13IYimQY82T2MQfbyxo8rtrTM78Bba9wBbgEm9zlz5DBzQ39Um36x9yE8I5vQ=
+Received: by 10.67.29.12 with SMTP id g12mr1549838ugj;
+        Thu, 06 Jul 2006 22:12:23 -0700 (PDT)
+Received: by 10.66.242.15 with HTTP; Thu, 6 Jul 2006 22:12:23 -0700 (PDT)
+Message-ID: <50c9a2250607062212w70de956ax7aefd4f131ae9396@mail.gmail.com>
+Date:	Fri, 7 Jul 2006 13:12:23 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: "Error -3 while decompressing!" while use cramfs as rootfs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <44AD7FBA.8000203@ru.mvista.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11928
+X-archive-position: 11929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 07, 2006 at 01:25:14AM +0400, Sergei Shtylyov wrote:
+i have write a rootfs.cramfs to mtdblock2, and if i use nfsroot, and
+can mount /dev/mtdblock2 correctly.but if i use /dev/mtdblock2 as
+rootfs with bootargs
+"root/dev/mtdblock2 rootfstype=cramfs"
+the kernel output next messages
+....
+VFS: Mounted root (cramfs filesystem) readonly.
+Freeing unused kernel memory: 144k freed
+Error -3 while decompressing!
+805bf6a8(-2046512)->81218000(4096)
+Error -3 while decompressing!
+803cc4fc(26)->8121e000(4096)
+Error -3 while decompressing!
+803cc516(26)->8121f000(4096)
+Error -3 while decompressing!
+803cc530(26)->803a0000(4096)
+....
 
-> If there's built-in FPU in a MIPS32 CPU the first time the process tries
-> to use it, the kernel should crash with "reserved instruction" -- CPU will 
-> try
-> to execute 'dmtc1' which is a MIPS64 only insn. _init_fpu() was apprently 
-> blindly copied form arch/mips64/... :-)
-> 
-> Since this occured with GXemul recently resending this 1.5 year old patch.
+my kernel version is 2.6.14, flash is SST39VF3201, nor flash, 4M Byte
 
-I didn't like the patch back then because it drops the optimizations
-for 64-bit processors.  So I just took the 2.6 variant of the code and
-bolted it into 2.4.
+does anyone have idea about this situation?
 
-  Ralf
+thanks for any hints
+
+Best Regards
+
+zhuzhenhua

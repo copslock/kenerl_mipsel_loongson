@@ -1,79 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2006 16:22:58 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:40714 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S8133492AbWGGPWt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Jul 2006 16:22:49 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 80FC6F65E4;
-	Fri,  7 Jul 2006 17:22:42 +0200 (CEST)
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
- by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 10458-06; Fri,  7 Jul 2006 17:22:42 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 25BDCF65D9;
-	Fri,  7 Jul 2006 17:22:42 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.7/8.13.1) with ESMTP id k67FMp59004760;
-	Fri, 7 Jul 2006 17:22:51 +0200
-Date:	Fri, 7 Jul 2006 16:22:46 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
-In-Reply-To: <20060708.000032.88471510.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0607071607520.25285@blysk.ds.pg.gda.pl>
-References: <20060708.000032.88471510.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.2/1588/Fri Jul  7 15:54:23 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2006 16:42:18 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:29764 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8133495AbWGGPmJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 7 Jul 2006 16:42:09 +0100
+Received: by mo.po.2iij.net (mo30) id k67Fg64p018143; Sat, 8 Jul 2006 00:42:06 +0900 (JST)
+Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
+	by mbox.po.2iij.net (mbox32) id k67Fg234030353
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 8 Jul 2006 00:42:03 +0900 (JST)
+Date:	Sat, 8 Jul 2006 00:42:01 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 1/2] vr41xx: changed the workaround to recommended method
+Message-Id: <20060708004201.3a677b9c.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11934
+X-archive-position: 11935
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 8 Jul 2006, Atsushi Nemoto wrote:
+Hi Ralf,
 
-> Adding special short path for emulationg RDHWR which is used to
-> support TLS.
+This patch has changed the workaround to recommended method.
+Please apply.
 
- You need to take care of VIVT I-caches.
+Yoichi
 
-> @@ -369,6 +369,39 @@ #endif
->  	BUILD_HANDLER dsp dsp sti silent		/* #26 */
->  	BUILD_HANDLER reserved reserved sti verbose	/* others */
->  
-> +	.align	5
-> +	LEAF(handle_ri)
-> +	.set	push
-> +	.set	noat
-> +	mfc0	k0, CP0_CAUSE
-> +	MFC0	k1, CP0_EPC
-> +	bltz	k0, handle_ri_slow	/* if delay slot */
-> +	lw	k0, (k1)
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
- For a VIVT I-cache this can result in a TLB exception.  TLB handlers are 
-not currently prepared for being called at the exception level.
-
- Also I am fairly sure gas won't fill the branch delay slot above -- a 
-trivial rearrangement of code would save a cycle here (and this is a fast 
-path, so we do not want wasting time).
-
-> +	li	k1, 0x7c03e83b	/* rdhwr v1,$29 */
-> +	bne	k0, k1, handle_ri_slow	/* if not ours */
-> +	get_saved_sp	/* k1 := current_thread_info */
-> +	MFC0	k0, CP0_EPC
-> +	LONG_ADDIU	k0, 4
-
- I suggest moving MFC0 ahead of get_saved_sp to avoid a stall.  I would 
-fit in the branch delay slot nicely.
-
-  Maciej
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/mm/c-r4k.c mips/arch/mips/mm/c-r4k.c
+--- mips-orig/arch/mips/mm/c-r4k.c	2006-07-06 17:54:34.149940250 +0900
++++ mips/arch/mips/mm/c-r4k.c	2006-07-06 18:00:15.249128000 +0900
+@@ -867,12 +867,13 @@ static void __init probe_pcache(void)
+ 		/* Workaround for cache instruction bug of VR4131 */
+ 		if (c->processor_id == 0x0c80U || c->processor_id == 0x0c81U ||
+ 		    c->processor_id == 0x0c82U) {
+-			config &= ~0x00000030U;
+ 			config |= 0x00400000U;
+ 			if (c->processor_id == 0x0c80U)
+ 				config |= VR41_CONF_BP;
+ 			write_c0_config(config);
+-		}
++		} else
++			c->options |= MIPS_CPU_CACHE_CDEX_P;
++
+ 		icache_size = 1 << (10 + ((config & CONF_IC) >> 9));
+ 		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
+ 		c->icache.ways = 2;
+@@ -882,8 +883,6 @@ static void __init probe_pcache(void)
+ 		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
+ 		c->dcache.ways = 2;
+ 		c->dcache.waybit = __ffs(dcache_size/2);
+-
+-		c->options |= MIPS_CPU_CACHE_CDEX_P;
+ 		break;
+ 
+ 	case CPU_VR41XX:

@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jul 2006 17:11:56 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:49871 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133540AbWGHQLq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 8 Jul 2006 17:11:46 +0100
-Received: from localhost (p5177-ipad202funabasi.chiba.ocn.ne.jp [222.146.76.177])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 783C09B55; Sun,  9 Jul 2006 01:11:42 +0900 (JST)
-Date:	Sun, 09 Jul 2006 01:12:59 +0900 (JST)
-Message-Id: <20060709.011259.92587435.anemo@mba.ocn.ne.jp>
-To:	macro@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jul 2006 17:16:05 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.170]:25482 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133553AbWGHQPx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Jul 2006 17:15:53 +0100
+Received: by ug-out-1314.google.com with SMTP id k3so2926443ugf
+        for <linux-mips@linux-mips.org>; Sat, 08 Jul 2006 09:15:52 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=ATGvwD8yCwQCsxfJhUohckISBKuYuD+QkLZCGBDuduxphHE5FkQIkLiR2vlAerPSFeuGKGIe16cZfkwYR62U7iprL4c9lFoScfGY4jwHs3H1nZsuMBV6f2Ezoq/q4HgbE7NijUjfwsy26WDTB20GaZxhr5ivaSArb8M98mnlGag=
+Received: by 10.66.243.2 with SMTP id q2mr3168053ugh;
+        Sat, 08 Jul 2006 09:15:52 -0700 (PDT)
+Received: by 10.67.100.10 with HTTP; Sat, 8 Jul 2006 09:15:52 -0700 (PDT)
+Message-ID: <cda58cb80607080915h59f2fcc0yff605fb4afdf1b8b@mail.gmail.com>
+Date:	Sat, 8 Jul 2006 18:15:52 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] do not count pages in holes with sparsemem
 Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.64N.0607071715360.25285@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0607071607520.25285@blysk.ds.pg.gda.pl>
-	<20060708.011245.82794581.anemo@mba.ocn.ne.jp>
-	<Pine.LNX.4.64N.0607071715360.25285@blysk.ds.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+In-Reply-To: <20060709.010316.126574153.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+References: <cda58cb80607060805yc656114p53516b904188c20f@mail.gmail.com>
+	 <20060707.002602.75184460.anemo@mba.ocn.ne.jp>
+	 <cda58cb80607080739i772d439dqc4e06a8b275e03ee@mail.gmail.com>
+	 <20060709.010316.126574153.anemo@mba.ocn.ne.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11946
+X-archive-position: 11947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 7 Jul 2006 17:58:44 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
-> > Thanks, now I understand the problem.  Are there any good solutions?
-> > Only I can think now is using handle_ri_slow for such CPUs.
-> 
->  I have implemented an appropriate update to the TLB handlers (or actually 
-> it's enough to care for this case for the TLBL exception), but it predates 
-> the current synthesized ones.  There is a small impact resulting from 
-> this change and the synthesized handlers have the advantage of making it 
-> only necessary for these chips that do need such handling.
+2006/7/8, Atsushi Nemoto <anemo@mba.ocn.ne.jp>:
+> On Sat, 8 Jul 2006 16:39:44 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> > Did you check that show_mem() still works ? I'm not sure about that point.
+>
+> It should work, but this patch would make the output a bit better.
+>
 
-Do you still have the code?  Could you post it for reference?
+well I would say without this patch it should break.
 
->  I'd restructure the code more or less like this, taking care for (almost) 
-> all stalls resulting from interlocks on coprocessor moves and memory loads 
-> and likewise avoiding the need for "nop" fillers there for MIPS I 
-> processors:
+'pfn' takes values between 0 and max_mapnr. This range includes memory
+holes, doens't it ? In that case what does
+pfn_to_page(pfn_inside_a_hole) ?
 
-Thanks.  I'll look it deeply.
-
-> 	bne	k0, k1, handle_ri_slow	/* if not ours */
-> 	 get_saved_sp			/* k1 := current_thread_info */
-
-Unfortunately, get_saved_sp is not a single instruction...
-
----
-Atsushi Nemoto
+-- 
+               Franck

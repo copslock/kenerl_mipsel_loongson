@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jul 2006 15:39:56 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.172]:47353 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jul 2006 15:47:49 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.173]:45071 "EHLO
 	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133530AbWGHOjp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Jul 2006 15:39:45 +0100
-Received: by ug-out-1314.google.com with SMTP id k3so2904329ugf
-        for <linux-mips@linux-mips.org>; Sat, 08 Jul 2006 07:39:45 -0700 (PDT)
+	id S8133530AbWGHOrj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Jul 2006 15:47:39 +0100
+Received: by ug-out-1314.google.com with SMTP id k3so2905928ugf
+        for <linux-mips@linux-mips.org>; Sat, 08 Jul 2006 07:47:39 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=loFzxgB9Tc14mskH5WnUvVq7D7YQH+670us6Ggw9Iz/tIb4itS9i+kPTx8sOaHa+SU8pzfow5ctB8NKxAPFKj0kAZjRASuC3Q5ItWyIIsngLKYLoetBDPIQ2+AoUDuOwW9X6NqrY1ZgoIdvhAcjdG25/2LZEJnXFF3Pwb0BRFLY=
-Received: by 10.66.219.11 with SMTP id r11mr3096539ugg;
-        Sat, 08 Jul 2006 07:39:44 -0700 (PDT)
-Received: by 10.67.100.10 with HTTP; Sat, 8 Jul 2006 07:39:44 -0700 (PDT)
-Message-ID: <cda58cb80607080739i772d439dqc4e06a8b275e03ee@mail.gmail.com>
-Date:	Sat, 8 Jul 2006 16:39:44 +0200
+        b=gLqG7ppaQwyRZS1DHuyjaSSktwrHFOus3yEhxoROAX+H0/w/IyXLmtq6610GrMtC87uRUuV9VpabfqMycTW8bRnX8wAWkLk8o5O85syJf59r7odzWz1ZDJ1FlQtNcBs8popxQAyxyJTa2m+yQrl37SDeB5KmABbLHuZi167ZHDs=
+Received: by 10.67.29.12 with SMTP id g12mr3098367ugj;
+        Sat, 08 Jul 2006 07:47:39 -0700 (PDT)
+Received: by 10.67.100.10 with HTTP; Sat, 8 Jul 2006 07:47:39 -0700 (PDT)
+Message-ID: <cda58cb80607080747g66ac4357ya1f2cef89b4d868@mail.gmail.com>
+Date:	Sat, 8 Jul 2006 16:47:39 +0200
 From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH] do not count pages in holes with sparsemem
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-In-Reply-To: <20060707.002602.75184460.anemo@mba.ocn.ne.jp>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [PATCH] sparsemem fix
+Cc:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+In-Reply-To: <20060706173235.GA4739@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-References: <20060706.233634.59465089.anemo@mba.ocn.ne.jp>
-	 <44AD2537.1030509@innova-card.com>
-	 <cda58cb80607060805yc656114p53516b904188c20f@mail.gmail.com>
-	 <20060707.002602.75184460.anemo@mba.ocn.ne.jp>
+References: <20060705.012244.96686002.anemo@mba.ocn.ne.jp>
+	 <44AB79D0.90002@innova-card.com>
+	 <20060705.192054.128618288.nemoto@toshiba-tops.co.jp>
+	 <20060706173235.GA4739@linux-mips.org>
 Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11943
+X-archive-position: 11944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,23 +39,24 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-2006/7/6, Atsushi Nemoto <anemo@mba.ocn.ne.jp>:
-> On Thu, 6 Jul 2006 17:05:35 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> > >         free_area_init_node(0, NODE_DATA(0), zones_size, 0, zholes_size);
-> > > +#else
-> > > +       free_area_init_node(0, NODE_DATA(0), zones_size, ARCH_PFN_OFFSET, NULL);
-> >
-> > which is equivalent to:
-> >
-> >        free_area_init(zones_size);
+2006/7/6, Ralf Baechle <ralf@linux-mips.org>:
+> On Wed, Jul 05, 2006 at 07:20:54PM +0900, Atsushi Nemoto wrote:
 >
-> Sure.  Then this can be a final proposal?
+> > > For now it seems to be implemented only in sgi-ip27 machine. Maybe we should
+> > > make things clear by adding:
+> > >
+> > > #ifdef CONFIG_SGI_IP27
+> > > #define pfn_valid   [...]
+> > > #else
+>
+> The fact that the code is only used on IP27 doesn't mean it is IP27-specific.
 >
 
-Sorry for the late answer.
+but the code seems to be in arch/mips/sgi-ip27, no ?
 
-Did you check that show_mem() still works ? I'm not sure about that point.
+BTW, Ralf, are there any needs for MIPS to support platforms whose
+memory start is not 0 ? I have made a patch for that, and wondering if
+it's worth to post it on the list...
 
-Thanks
 -- 
                Franck

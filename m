@@ -1,50 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Jul 2006 19:58:59 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:60076 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S3466458AbWGGS6u (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 7 Jul 2006 19:58:50 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k67IMjek028773;
-	Fri, 7 Jul 2006 19:22:45 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k67IMiQe028772;
-	Fri, 7 Jul 2006 19:22:44 +0100
-Date:	Fri, 7 Jul 2006 19:22:44 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
-Message-ID: <20060707182244.GA28118@linux-mips.org>
-References: <20060708.000032.88471510.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0607071607520.25285@blysk.ds.pg.gda.pl> <20060708.011245.82794581.anemo@mba.ocn.ne.jp> <20060708.014339.89274844.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jul 2006 15:39:56 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.172]:47353 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133530AbWGHOjp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Jul 2006 15:39:45 +0100
+Received: by ug-out-1314.google.com with SMTP id k3so2904329ugf
+        for <linux-mips@linux-mips.org>; Sat, 08 Jul 2006 07:39:45 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=loFzxgB9Tc14mskH5WnUvVq7D7YQH+670us6Ggw9Iz/tIb4itS9i+kPTx8sOaHa+SU8pzfow5ctB8NKxAPFKj0kAZjRASuC3Q5ItWyIIsngLKYLoetBDPIQ2+AoUDuOwW9X6NqrY1ZgoIdvhAcjdG25/2LZEJnXFF3Pwb0BRFLY=
+Received: by 10.66.219.11 with SMTP id r11mr3096539ugg;
+        Sat, 08 Jul 2006 07:39:44 -0700 (PDT)
+Received: by 10.67.100.10 with HTTP; Sat, 8 Jul 2006 07:39:44 -0700 (PDT)
+Message-ID: <cda58cb80607080739i772d439dqc4e06a8b275e03ee@mail.gmail.com>
+Date:	Sat, 8 Jul 2006 16:39:44 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] do not count pages in holes with sparsemem
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+In-Reply-To: <20060707.002602.75184460.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20060708.014339.89274844.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <20060706.233634.59465089.anemo@mba.ocn.ne.jp>
+	 <44AD2537.1030509@innova-card.com>
+	 <cda58cb80607060805yc656114p53516b904188c20f@mail.gmail.com>
+	 <20060707.002602.75184460.anemo@mba.ocn.ne.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11942
+X-archive-position: 11943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 08, 2006 at 01:43:39AM +0900, Atsushi Nemoto wrote:
+2006/7/6, Atsushi Nemoto <anemo@mba.ocn.ne.jp>:
+> On Thu, 6 Jul 2006 17:05:35 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> > >         free_area_init_node(0, NODE_DATA(0), zones_size, 0, zholes_size);
+> > > +#else
+> > > +       free_area_init_node(0, NODE_DATA(0), zones_size, ARCH_PFN_OFFSET, NULL);
+> >
+> > which is equivalent to:
+> >
+> >        free_area_init(zones_size);
+>
+> Sure.  Then this can be a final proposal?
+>
 
-> > >  For a VIVT I-cache this can result in a TLB exception.  TLB handlers are 
-> > > not currently prepared for being called at the exception level.
-> > 
-> > Thanks, now I understand the problem.  Are there any good solutions?
-> > Only I can think now is using handle_ri_slow for such CPUs.
-> 
-> Can we use Index_Load_Data_I to load the instruction code from icache?
-> Just an idea...
+Sorry for the late answer.
 
-In addition to what Maciej said - the format of instructions in the I-cache
-is not necessarily the same as in memory.  Many processor store pre-decoded
-instructions in the I-cache.
+Did you check that show_mem() still works ? I'm not sure about that point.
 
-  Ralf
+Thanks
+-- 
+               Franck

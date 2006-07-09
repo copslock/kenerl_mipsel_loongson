@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Jul 2006 19:37:29 +0100 (BST)
-Received: from frigate.technologeek.org ([62.4.21.148]:18633 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Jul 2006 19:40:50 +0100 (BST)
+Received: from frigate.technologeek.org ([62.4.21.148]:19913 "EHLO
 	frigate.technologeek.org") by ftp.linux-mips.org with ESMTP
-	id S8133348AbWGIShU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 9 Jul 2006 19:37:20 +0100
+	id S8133350AbWGISkl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 9 Jul 2006 19:40:41 +0100
 Received: by frigate.technologeek.org (Postfix, from userid 1000)
-	id 8F7461465D70; Sun,  9 Jul 2006 20:37:22 +0200 (CEST)
+	id 1D5DA1465D70; Sun,  9 Jul 2006 20:40:44 +0200 (CEST)
 From:	Julien BLACHE <jblache@debian.org>
-To:	Kumba <kumba@gentoo.org>
-Cc:	linux-mips@linux-mips.org
+To:	linux-mips@linux-mips.org
+Cc:	debian-mips@lists.debian.org
 Subject: Re: [PATCH] IP22: fix serial console hangs
 References: <87irm6naxt.fsf@frigate.technologeek.org>
-	<44B13F02.5020002@gentoo.org>
-Date:	Sun, 09 Jul 2006 20:37:21 +0200
-In-Reply-To: <44B13F02.5020002@gentoo.org> (kumba@gentoo.org's message of
-	"Sun, 09 Jul 2006 13:38:10 -0400")
-Message-ID: <877j2mmxpa.fsf@frigate.technologeek.org>
+	<20060709175841.GB24958@deprecation.cyrius.com>
+Date:	Sun, 09 Jul 2006 20:40:44 +0200
+In-Reply-To: <20060709175841.GB24958@deprecation.cyrius.com> (Martin
+	Michlmayr's message of "Sun, 9 Jul 2006 19:58:41 +0200")
+Message-ID: <87y7v2liz7.fsf@frigate.technologeek.org>
 User-Agent: Gnus/5.110006 (No Gnus v0.6) XEmacs/21.4.19 (linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -22,7 +22,7 @@ Return-Path: <jblache@debian.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11957
+X-archive-position: 11958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,28 +30,17 @@ X-original-sender: jblache@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Kumba <kumba@gentoo.org> wrote:
+Martin Michlmayr <tbm@cyrius.com> wrote:
 
-Hi,
+> * Julien BLACHE <jblache@debian.org> [2006-07-09 15:51]:
+>> The patch below fixes serial console hangs as seen on IP22
+>> machines. Typically, while booting, the machine hangs for ~1 minute
+>
+> Thanks for tracking this down.  You've to send the patch to
+> rmk+serial@arm.linux.org.uk and linux-serial@vger.kernel.org
+> though.
 
-> Out of curiosity, don't suppose you've seen the oops on IP22 that can
-> sometimes be triggered by closing the serial client on another box?
-
-Haven't seen this one, no. I'm using a hardware console on the serial
-line most of the time (though I still haven't found the proper
-configuration and it's hardly usable for anything advanced making use
-of terminal features).
-
-> Haven't investigated it too much, but I've seen the odd case on Indy
-> and IP28 (which also uses the zilog driver) where shutting down my
-> serial client or sometimes rebooting the system running the client
-> oopses the driver.  I suspect some rogue data gets passed that zilog
-> doesn't know how to handle properly.
-
-It looks a bit like the serial driver crash on reboot which Martin
-Michlmayr fixed a couple of months back by backporting fixes from the
-sunzilog driver. But I think this one made its way into the kernel, so
-it must be something else.
+Done.
 
 JB.
 

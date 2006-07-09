@@ -1,46 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Jul 2006 13:55:47 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:6386 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133790AbWGIMzi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 9 Jul 2006 13:55:38 +0100
-Received: from localhost (p7197-ipad202funabasi.chiba.ocn.ne.jp [222.146.78.197])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 905E7A741; Sun,  9 Jul 2006 21:55:33 +0900 (JST)
-Date:	Sun, 09 Jul 2006 21:56:51 +0900 (JST)
-Message-Id: <20060709.215651.126573568.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] do not count pages in holes with sparsemem
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <cda58cb80607080915h59f2fcc0yff605fb4afdf1b8b@mail.gmail.com>
-References: <cda58cb80607080739i772d439dqc4e06a8b275e03ee@mail.gmail.com>
-	<20060709.010316.126574153.anemo@mba.ocn.ne.jp>
-	<cda58cb80607080915h59f2fcc0yff605fb4afdf1b8b@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Jul 2006 14:51:35 +0100 (BST)
+Received: from frigate.technologeek.org ([62.4.21.148]:15500 "EHLO
+	frigate.technologeek.org") by ftp.linux-mips.org with ESMTP
+	id S8133513AbWGINvZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 9 Jul 2006 14:51:25 +0100
+Received: by frigate.technologeek.org (Postfix, from userid 1000)
+	id ECF271465D70; Sun,  9 Jul 2006 15:51:26 +0200 (CEST)
+From:	Julien BLACHE <jblache@debian.org>
+To:	linux-mips@linux-mips.org
+Cc:	debian-mips@lists.debian.org
+Subject: [PATCH] IP22: fix serial console hangs
+Date:	Sun, 09 Jul 2006 15:51:26 +0200
+Message-ID: <87irm6naxt.fsf@frigate.technologeek.org>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) XEmacs/21.4.19 (linux)
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-=-="
+Return-Path: <jblache@debian.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11953
+X-archive-position: 11954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: jblache@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 8 Jul 2006 18:15:52 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> well I would say without this patch it should break.
-> 
-> 'pfn' takes values between 0 and max_mapnr. This range includes memory
-> holes, doens't it ? In that case what does
-> pfn_to_page(pfn_inside_a_hole) ?
+--=-=-=
 
-Oh, you are right.  The show_mem() must be fixed indeed.
+Hi,
+
+The patch below fixes serial console hangs as seen on IP22
+machines. Typically, while booting, the machine hangs for ~1 minute
+displaying "INIT: ", then the same thing happens again when init
+enters in the designated runlevel and finally the getty process on
+ttyS0 hangs indefinitely (though strace'ing it helps).
+
+strace (-e raw=ioctl, otherwise the ioctl() translation is utterly
+bogus) reveals that getty hangs on ioctl() 0x540f which happens to be
+TCSETSW (I saw it hang on another console ioctl() but couldn't
+reproduce that one).
+
+A diff between ip22zilog and sunzilog revealed the following
+differences:
+ 1. the channel A flag being set on up.port.flags instead of up.flags
+ 2. the channel A flag being set on what is marked as being channel B
+ 3. sunzilog has a call to uart_update_timeout(port, termios->c_cflag, baud);
+    at the end of sunzilog_set_termios(), which ip22zilog lacks (on
+    purpose ?)
+
+The patch below addresses point 1 and fixes the serial console hangs
+just fine. However point 2 should be investigated by someone familiar
+with the IP22 Zilog; it's probably OK as is but even if it is, a
+comment in ip22zilog.c is badly needed.
+
+Point 3 is left as an exercise for whoever feels like digging into
+ip22zilog :)
+
+These are the main obvious differences between ip22zilog and
+sunzilog. Newer versions of sunzilog (Linus's git tree as of today)
+are more close to ip22zilog as the sbus_{write,read}b have been
+changed into simple {write,read}b, which shrinks the diff by a fair
+amount. Resyncing both drivers should be doable in a few hours time
+now for someone familiar with the IP22 Zilog hardware.
+
+
+Additional point: the IP22 thinks it's using the console on the
+framebuffer when booting, when it's really using the serial console
+(console=ttyS passed at boot, console=d, consoleOut=serial(0))
+
+
+Please apply, along with the RTC typo fix from yesterday.
+
+Thanks,
+
+JB.
 
 ---
-Atsushi Nemoto
+IP22: fix serial console hang due to a typo in ip22zilog.c
+
+Signed-off-by: Julien BLACHE <jb@jblache.org>
+
+
+--=-=-=
+Content-Type: text/x-patch
+Content-Disposition: inline; filename=ip22zilog-channel-A-flag.patch
+Content-Description: fix serial console hangs on IP22
+
+--- source-mips-none/drivers/serial/ip22zilog.c	2006-06-18 03:49:35.000000000 +0200
++++ source/drivers/serial/ip22zilog.c	2006-07-09 14:25:11.847260358 +0200
+@@ -1145,9 +1145,8 @@
+ 		up[(chip * 2) + 1].port.fifosize = 1;
+ 		up[(chip * 2) + 1].port.ops = &ip22zilog_pops;
+ 		up[(chip * 2) + 1].port.type = PORT_IP22ZILOG;
+-		up[(chip * 2) + 1].port.flags |= IP22ZILOG_FLAG_IS_CHANNEL_A;
+ 		up[(chip * 2) + 1].port.line = (chip * 2) + 1;
+-		up[(chip * 2) + 1].flags = 0;
++		up[(chip * 2) + 1].flags |= IP22ZILOG_FLAG_IS_CHANNEL_A;
+ 	}
+ }
+ 
+
+--=-=-=
+
+
+
+-- 
+ Julien BLACHE <jblache@debian.org>  |  Debian, because code matters more 
+ Debian & GNU/Linux Developer        |       <http://www.debian.org>
+ Public key available on <http://www.jblache.org> - KeyID: F5D6 5169 
+ GPG Fingerprint : 935A 79F1 C8B3 3521 FD62 7CC7 CD61 4FD7 F5D6 5169 
+
+--=-=-=--

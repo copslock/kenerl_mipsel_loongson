@@ -1,96 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2006 09:14:39 +0100 (BST)
-Received: from mail.domino-uk.com ([193.131.116.193]:35847 "EHLO
-	vMimePS1.domino-printing.com") by ftp.linux-mips.org with ESMTP
-	id S8133396AbWGKIO3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 11 Jul 2006 09:14:29 +0100
-Received: from emea-exchange3.emea.dps.local (EMEA-EXCHANGE3) by 
-    vMimePS1.domino-printing.com (Clearswift SMTPRS 5.2.3) with ESMTP id 
-    <T79690e3921c18374c12698@vMimePS1.domino-printing.com> for 
-    <linux-mips@linux-mips.org>; Tue, 11 Jul 2006 08:13:02 +0100
-Received: from tuxator2.emea.dps.local ([192.168.55.75]) by 
-    emea-exchange3.emea.dps.local with Microsoft SMTPSVC(6.0.3790.1830); 
-    Tue, 11 Jul 2006 10:14:22 +0200
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
-Subject: Re: PCMCIA Help - AU1000 Alchemy Dev Board
-Date:	Tue, 11 Jul 2006 10:14:21 +0200
-User-Agent: KMail/1.9.1
-References: <4E35E8AD-C3ED-47AE-A738-97B7F08D946C@willmert.com>
-In-Reply-To: <4E35E8AD-C3ED-47AE-A738-97B7F08D946C@willmert.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2006 09:28:48 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.187]:18631 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133396AbWGKI2h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 11 Jul 2006 09:28:37 +0100
+Received: by nf-out-0910.google.com with SMTP id k27so141131nfc
+        for <linux-mips@linux-mips.org>; Tue, 11 Jul 2006 01:28:35 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=oWante4wEqW7XS6sFVOCCWpcwEDO6peQLed5/y20uk9+qZ2u9KEvSQgZlU7IrX2KNez10uwmE2+fSpWff4DTb+eoBotyDmAowAQuXNC0jOk5ixAL64gH+VgF/a+cM7N7yIdKnO6PjHyUBX2dCh1FjG84Vrzo0G2N4SIKDP26kc0=
+Received: by 10.48.1.4 with SMTP id 4mr280349nfa;
+        Tue, 11 Jul 2006 01:28:34 -0700 (PDT)
+Received: from ?192.168.0.24? ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id k24sm13420090nfc.2006.07.11.01.28.33;
+        Tue, 11 Jul 2006 01:28:34 -0700 (PDT)
+Message-ID: <44B3625B.7000700@innova-card.com>
+Date:	Tue, 11 Jul 2006 10:33:31 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] do not count pages in holes with sparsemem
+References: <cda58cb80607060805yc656114p53516b904188c20f@mail.gmail.com>	<20060707.002602.75184460.anemo@mba.ocn.ne.jp>	<cda58cb80607100434h13831eb7rc6eda13a0d9e373f@mail.gmail.com> <20060710.233454.39153668.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060710.233454.39153668.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200607111014.21617.eckhardt@satorlaser.com>
-X-OriginalArrivalTime: 11 Jul 2006 08:14:22.0163 (UTC) 
-    FILETIME=[03D66230:01C6A4C2]
-Return-Path: <Eckhardt@satorlaser.com>
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11971
+X-archive-position: 11972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Monday 10 July 2006 19:45, craigslist wrote:
-> I'm working on a project with linux 2.6.10 on the AMD au1000 alchemy
-> board. 
+Atsushi Nemoto wrote:
+> On Mon, 10 Jul 2006 13:34:06 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> 
+>> can we use pfn_valid() instead of page_is_ram() ? bootmem_init() and
+>> sparse_init() have already been called so pfn_valid() should be safe
+>> here....
+> 
+> We can, but we can get more precise value using page_is_ram().  The
+> pfn_valid() returns true for _all_ pages on present section, and
+> currently the section size is 256MB.
 
-I think there are two boards, called Db1000 and Pb1000. It is the processor 
-that is called Au1000. You first need to make sure which one you have.
+so your total pages of RAM in show_mem() is incorrect...
 
-> I'm attempting to get the pcmcia socket working with a 
-> wireless network card using the madwifi drivers. I have the 2.6.10
-> kernel built for the au1000 dev board and the filesystem, etc.
-> However, I'm having difficulties getting the PCMCIA socket to work
-> correctly.
->
-> At this point, i'm just working with the au1x00_ss module trying to
-> get it to recognize a card insert into socket 0 of the au1000 dev
-> board. Through debugging, I've noticed that the board_status register
-> at 0XAE000004, bit 4, is not changing whether a card is inserted or
-> not. It's my understanding that the first step to getting this
-> working is detecting the presence of a card, however, I am apparently
-> missing some detail as that register value never changes.
->
-> Does anyone have experience with this? Has anyone gotten the pcmcia
-> sockets working on the au1000 in 2.6?
-
-I haven't worked with the Au1000 but the Au1100 on a custom board, and from 
-there I have the following steps in mind:
-
-1. The system-busses are used for multiple purposes, so the first thing to do 
-is to configure the right bus for PCMCIA access (processor-specific).
-2. You need to switch on power to the PCMCIA slot. There is no standard way to 
-do that, as it depends on the board. On my board I had to read the layout to 
-find the transistors used to switch the voltage, it was via some GPIO pins. 
-These then also have to be properly configured (use a voltmeter to check 
-power is present). Also mind that these are sometimes low-active or inverted 
-along the lines - this caused confusion for me quite some times.
-You should then also be able to detect that the card is present and such 
-things. I don't remember, but I think some of those did not go through GPIO 
-so these should have fixed connections valid for all boards.
-3. You need to map the PCMCIA memory ranges into virtual memory. This is again 
-only processor-specific, see the documentation.
-
-Note that only the processor-specific part should be done by the au1x00_ss 
-driver, though I wouldn't be surprised to find some board-specific parts 
-there, too. It's not always easy to cleanly separate things.
-
-Good luck!
-
-Uli
+               if (!pfn_valid(pfn))
+                        continue;
+                page = pfn_to_page(pfn);
+                total++;
 
 
-****************************************************
-Visit our website at <http://www.domino-printing.com/>
-****************************************************
-This Email and any files transmitted with it are intended only for the person or entity to which it is addressed and may contain confidential and/or privileged material. Any reading, redistribution, disclosure or other use of, or taking of any action in reliance upon, this information by persons or entities other than the intended recipient is prohibited.  If you are not the intended recipient please contact the sender immediately and delete the material from your computer.
+I don't know SPARSEMEM a lot but is it allowed to have holes inside
+a section ? Shouldn't we tune the section size to avoid holes inside
+section ?
 
-E-mail may be susceptible to data corruption, interception, viruses and unauthorised amendment and Domino UK Limited does not accept liability for any such corruption, interception, viruses or amendment or their consequences.
-****************************************************
+> 
+>>> -       max_mapnr = num_physpages = highend_pfn;
+>>> +       max_mapnr = highend_pfn;
+>>>  #else
+>>> -       max_mapnr = num_physpages = max_low_pfn;
+>>> +       max_mapnr = max_low_pfn;
+>> this is not always true, specially if FLATMEM set and your physical mem
+>> do not start at 0.
+> 
+> Yes, and I think you are preparing a patch for these systems ;-)
+> 
+
+good point :)
+
+		Franck

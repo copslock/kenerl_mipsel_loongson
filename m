@@ -1,59 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2006 02:22:18 +0100 (BST)
-Received: from [220.76.242.187] ([220.76.242.187]:16269 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S8133892AbWGKBWK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 11 Jul 2006 02:22:10 +0100
-Received: from mrv ([192.168.11.157])
-	by localhost.localdomain (8.12.8/8.12.8) with SMTP id k6B1NhiU020256
-	for <linux-mips@linux-mips.org>; Tue, 11 Jul 2006 10:23:46 +0900
-Message-ID: <000901c6a488$6f7e1800$9d0ba8c0@mrv>
-From:	"Roman Mashak" <mrv@corecom.co.kr>
-To:	<linux-mips@linux-mips.org>
-Subject: SHT_REL bad size
-Date:	Tue, 11 Jul 2006 10:22:11 +0900
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2006 03:53:54 +0100 (BST)
+Received: from nevyn.them.org ([66.93.172.17]:50092 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S8133905AbWGKCxp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Jul 2006 03:53:45 +0100
+Received: from drow by nevyn.them.org with local (Exim 4.54)
+	id 1G08Na-0001nx-Hr; Mon, 10 Jul 2006 22:53:42 -0400
+Date:	Mon, 10 Jul 2006 22:53:42 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	macro@linux-mips.org, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
+Message-ID: <20060711025342.GA6898@nevyn.them.org>
+References: <Pine.LNX.4.64N.0607071607520.25285@blysk.ds.pg.gda.pl> <20060708.011245.82794581.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0607071715360.25285@blysk.ds.pg.gda.pl> <20060710.235553.48797818.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="windows-1251";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
-FL-Build: Fidolook 2002 (SL) 6.0.2800.86 - 14/6/2003 22:16:25
-Return-Path: <mrv@corecom.co.kr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060710.235553.48797818.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.11+cvs20060403
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11968
+X-archive-position: 11969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrv@corecom.co.kr
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Mon, Jul 10, 2006 at 11:55:53PM +0900, Atsushi Nemoto wrote:
+> On Fri, 7 Jul 2006 17:58:44 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+> > 	mfc0	k0, CP0_CAUSE
+> > 	MFC0	k1, CP0_EPC
+> > 	bltz	k0, handle_ri_slow	/* if delay slot */
+> > 	 lui	k0, 0x7c03
+> 
+> I noticed that checking for CP0_CAUSE.BD is unneeded, since we are
+> checking the instruction code anyway and "rdhwr" does not have a delay
+> slot.  I removed the checking on the "take 2" patch I just sent.
 
-I'm trying to compile application for MIPS 4km (designed by "Cavium"). Here 
-is the command line:
+Isn't BD "this instruction is in a delay slot", not "this instruction
+has a delay slot"?  It affects where we go when we return.
 
-Compiling main.cpp
-mips-g++ -c -Wall -D_GNU_SOURCE -mips32 -mtune=4kc  main.cpp -o main.o
-Compiling cmd.cpp
-mips-g++ -c -Wall -D_GNU_SOURCE -mips32 -mtune=4kc  cmdProc.cpp -o cmdProc.o
-Linking binkd
-mips-g++ main.o cmd.o ../lnkep.c ../lib/libapi.a  -o binkd
+BTW, if the fast emulation can't handle rdhwr in a delay slot, please
+report a bug on GCC asking it not to put rdhwr in delay slots by
+default.  It's probably worthwhile.
 
-Compilation is fine, but on target I ran into error launching the program:
-
-#./binkd
-SHT_REL bad size=0
-./binkd cannot execute
-
-Seems like the problem with linker?
-
-Appreciate any hints, thank you.
-
-With best regards, Roman Mashak.  E-mail: mrv@corecom.co.kr 
+-- 
+Daniel Jacobowitz
+CodeSourcery

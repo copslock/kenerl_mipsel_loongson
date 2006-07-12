@@ -1,107 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jul 2006 14:28:42 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:45535 "EHLO
-	gundam.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S3561335AbWGLN2d (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 12 Jul 2006 14:28:33 +0100
-Received: from giometti by gundam.enneenne.com with local (Exim 3.36 #1 (Debian))
-	id 1G0Yjl-000690-00; Wed, 12 Jul 2006 09:02:21 +0200
-Date:	Wed, 12 Jul 2006 09:02:21 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jul 2006 17:37:35 +0100 (BST)
+Received: from s2.ukfsn.org ([217.158.120.143]:34265 "EHLO mail.ukfsn.org")
+	by ftp.linux-mips.org with ESMTP id S3561366AbWGLQh0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Jul 2006 17:37:26 +0100
+Received: from [10.0.1.63] (84-45-236-142.no-dns-yet.enta.net [84.45.236.142])
+	by mail.ukfsn.org (Postfix) with ESMTP id C963CE6DC9
+	for <linux-mips@linux-mips.org>; Wed, 12 Jul 2006 17:34:46 +0100 (BST)
+From:	David Goodenough <david.goodenough@btconnect.com>
 To:	linux-mips@linux-mips.org
-Cc:	linux-fbdev-devel@lists.sourceforge.net
-Subject: [PATCH] au1100fb.c startup sequence
-Message-ID: <20060712070221.GI5994@gundam.enneenne.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="WHz+neNWvhIGAO8A"
+Subject: RouterBoard 532 NAND support
+Date:	Wed, 12 Jul 2006 17:37:18 +0100
+User-Agent: KMail/1.9.1
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.5.1+cvs20040105i
-Return-Path: <giometti@enneenne.com>
+Message-Id: <200607121737.18866.david.goodenough@btconnect.com>
+Return-Path: <david.goodenough@btconnect.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11976
+X-archive-position: 11977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: david.goodenough@btconnect.com
 Precedence: bulk
 X-list: linux-mips
 
+Does anyone have a patch for 2.6.17 to add NAND support for a Routerboard
+532?  I have the bits that add Yaffs, and I have some code that was a patch
+to 2.6.17-rc5 but I can not get it to work on 2.6.17 (it compiles but it 
+seems to be looking in the wrong place for the NAND as it gets back 0xff
+as the manufacturer and device id file in drivers/mtd/nand/nand_base.c in
+the routine nand_scan.  
 
---WHz+neNWvhIGAO8A
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Any help gratefully received
 
-Hello,
-
-here a patch to fix up the start up sequence.
-
-This new sequence allow you to correctly enable the LCD controller
-even if the bootloader has already did it.
-
-The patch also fixes up a wrong indentation issue.
-
-Ciao,
-
-Rodolfo
-
-
-Signed-off-by: Rodolfo Giometti <giometti@linux.it>
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
-
---WHz+neNWvhIGAO8A
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=patch-au1100fb-startup-fix
-
-diff --git a/drivers/video/au1100fb.c b/drivers/video/au1100fb.c
-index 1b9ad17..f9fcc65 100644
---- a/drivers/video/au1100fb.c
-+++ b/drivers/video/au1100fb.c
-@@ -167,7 +167,7 @@ int au1100fb_setmode(struct au1100fb_dev
- 
- 			info->fix.visual = FB_VISUAL_TRUECOLOR;
- 			info->fix.line_length = info->var.xres_virtual << 1; /* depth=16 */
--	}
-+		}
- 	} else {
- 		/* mono */
- 		info->fix.visual = FB_VISUAL_MONO10;
-@@ -180,16 +180,11 @@ int au1100fb_setmode(struct au1100fb_dev
- 
- 	/* Determine BPP mode and format */
- 	fbdev->regs->lcd_control = fbdev->panel->control_base;
--
--	fbdev->regs->lcd_intenable = 0;
--	fbdev->regs->lcd_intstatus = 0;
--
- 	fbdev->regs->lcd_horztiming = fbdev->panel->horztiming;
--
- 	fbdev->regs->lcd_verttiming = fbdev->panel->verttiming;
--
- 	fbdev->regs->lcd_clkcontrol = fbdev->panel->clkcontrol_base;
--
-+	fbdev->regs->lcd_intenable = 0;
-+	fbdev->regs->lcd_intstatus = 0;
- 	fbdev->regs->lcd_dmaaddr0 = LCD_DMA_SA_N(fbdev->fb_phys);
- 
- 	if (panel_is_dual(fbdev->panel)) {
-@@ -217,7 +212,8 @@ int au1100fb_setmode(struct au1100fb_dev
- 	fbdev->regs->lcd_pwmhi = 0;
- 
- 	/* Resume controller */
--	au1100fb_fb_blank(VESA_NO_BLANKING, &fbdev->info);
-+	mdelay(10);
-+	au1100fb_fb_blank(VESA_NO_BLANKING, info);
- 
- 	return 0;
- }
-
---WHz+neNWvhIGAO8A--
+David

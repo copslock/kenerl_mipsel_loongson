@@ -1,65 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Jul 2006 14:23:53 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:49101 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S3558331AbWGKNXo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Jul 2006 14:23:44 +0100
-Received: from localhost (p6234-ipad28funabasi.chiba.ocn.ne.jp [220.107.205.234])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 0AF9AAF65; Tue, 11 Jul 2006 22:23:39 +0900 (JST)
-Date:	Tue, 11 Jul 2006 22:24:58 +0900 (JST)
-Message-Id: <20060711.222458.74752678.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] do not count pages in holes with sparsemem
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <44B3625B.7000700@innova-card.com>
-References: <cda58cb80607100434h13831eb7rc6eda13a0d9e373f@mail.gmail.com>
-	<20060710.233454.39153668.anemo@mba.ocn.ne.jp>
-	<44B3625B.7000700@innova-card.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Jul 2006 13:34:23 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:28899 "EHLO
+	gundam.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S3561325AbWGLMeO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 12 Jul 2006 13:34:14 +0100
+Received: from giometti by gundam.enneenne.com with local (Exim 3.36 #1 (Debian))
+	id 1G0Xxf-0004di-00; Wed, 12 Jul 2006 08:12:39 +0200
+Date:	Wed, 12 Jul 2006 08:12:39 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Cc:	linux-fbdev-devel@lists.sourceforge.net
+Subject: [PATCH] au1100fb.c info->var.rotate fix
+Message-ID: <20060712061239.GF5994@gundam.enneenne.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: multipart/mixed; boundary="KJY2Ze80yH5MUxol"
+Content-Disposition: inline
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.5.1+cvs20040105i
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11973
+X-archive-position: 11974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 11 Jul 2006 10:33:31 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> > We can, but we can get more precise value using page_is_ram().  The
-> > pfn_valid() returns true for _all_ pages on present section, and
-> > currently the section size is 256MB.
-> 
-> so your total pages of RAM in show_mem() is incorrect...
-> 
->                if (!pfn_valid(pfn))
->                         continue;
->                 page = pfn_to_page(pfn);
->                 total++;
-> 
-> 
-> I don't know SPARSEMEM a lot but is it allowed to have holes inside
-> a section ? Shouldn't we tune the section size to avoid holes inside
-> section ?
 
-If holes exist in a section, show_mem() will count these pages as
-"reserved".  You can count real pages by "total - reserved".
+--KJY2Ze80yH5MUxol
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Talking about nr_kernel_pages (calculated by zones_size[] and
-zones_holes[]) and num_physpages, these values are used to determine
-sizes of some kernel data structures, it would be better to set more
-precise value for them.
+Hello,
 
-While large holes in a section wastes some memory, make the section
-size customizable might be a good idea.  Anyone?  ;-)
+here a little patch to fix "info->var.rotate" data settings.
 
----
-Atsushi Nemoto
+This info should be deduced directly from "fbdev->panel->control_base"
+defined into au1100fb.h.
+
+Ciao,
+
+Rodolfo
+
+
+Signed-off-by: Rodolfo Giometti <giometti@linux.it>
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127
+
+--KJY2Ze80yH5MUxol
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=patch-au1100fb-rotate
+
+diff --git a/drivers/video/au1100fb.c b/drivers/video/au1100fb.c
+index f492fe8..dc5a673 100644
+--- a/drivers/video/au1100fb.c
++++ b/drivers/video/au1100fb.c
+@@ -177,10 +177,11 @@ int au1100fb_setmode(struct au1100fb_dev
+ 	}
+ 
+ 	info->screen_size = info->fix.line_length * info->var.yres_virtual;
++	info->var.rotate = ((fbdev->panel->control_base&LCD_CONTROL_SM_MASK) \
++				>> LCD_CONTROL_SM_BIT) * 90;
+ 
+ 	/* Determine BPP mode and format */
+-	fbdev->regs->lcd_control = fbdev->panel->control_base |
+-			    ((info->var.rotate/90) << LCD_CONTROL_SM_BIT);
++	fbdev->regs->lcd_control = fbdev->panel->control_base;
+ 
+ 	fbdev->regs->lcd_intenable = 0;
+ 	fbdev->regs->lcd_intstatus = 0;
+
+--KJY2Ze80yH5MUxol--

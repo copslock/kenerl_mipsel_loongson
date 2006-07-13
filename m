@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2006 09:34:21 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:38406 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8133563AbWGMIdU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2006 09:33:20 +0100
-Received: by mo.po.2iij.net (mo32) id k6D8XHlC049262; Thu, 13 Jul 2006 17:33:17 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2006 09:35:05 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:22596 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8133571AbWGMId2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2006 09:33:28 +0100
+Received: by mo.po.2iij.net (mo30) id k6D8XQSc013158; Thu, 13 Jul 2006 17:33:26 +0900 (JST)
 Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox31) id k6D8XFh3006980
+	by mbox.po.2iij.net (mbox30) id k6D8XOTQ055077
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 13 Jul 2006 17:33:15 +0900 (JST)
-Date:	Thu, 13 Jul 2006 17:33:14 +0900
+	Thu, 13 Jul 2006 17:33:24 +0900 (JST)
+Date:	Thu, 13 Jul 2006 17:33:24 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] vr41xx: removed old v2.4 VRC4173 driver
-Message-Id: <20060713173314.05685c76.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH] vr41xx: updated e55 setup function
+Message-Id: <20060713173324.5499df36.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +22,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11979
+X-archive-position: 11980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,49 +32,56 @@ X-list: linux-mips
 
 Hi Ralf,
 
-This patch has removed the old v2.4 VRC4173 driver.
+This patch has updated the CASIO E55 setup function.
 Please apply.
 
 Yoichi
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/vr41xx/Kconfig mips/arch/mips/vr41xx/Kconfig
---- mips-orig/arch/mips/vr41xx/Kconfig	2006-07-12 12:13:07.314097500 +0900
-+++ mips/arch/mips/vr41xx/Kconfig	2006-07-12 13:52:20.030119000 +0900
-@@ -86,9 +86,3 @@ config PCI_VR41XX
- 	depends on MACH_VR41XX && HW_HAS_PCI
- 	default y
- 	select PCI
--
--config VRC4173
--	tristate "Add NEC VRC4173 companion chip support"
--	depends on MACH_VR41XX && PCI_VR41XX
--	help
--	  The NEC VRC4173 is a companion chip for NEC VR4122/VR4131.
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/vr41xx/common/Makefile mips/arch/mips/vr41xx/common/Makefile
---- mips-orig/arch/mips/vr41xx/common/Makefile	2006-07-12 12:13:07.314097500 +0900
-+++ mips/arch/mips/vr41xx/common/Makefile	2006-07-12 13:52:52.340138250 +0900
-@@ -2,7 +2,6 @@
- # Makefile for common code of the NEC VR4100 series.
- #
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/vr41xx/casio-e55/setup.c mips/arch/mips/vr41xx/casio-e55/setup.c
+--- mips-orig/arch/mips/vr41xx/casio-e55/setup.c	2006-07-12 12:13:07.314097500 +0900
++++ mips/arch/mips/vr41xx/casio-e55/setup.c	2006-07-12 15:31:40.894635500 +0900
+@@ -1,7 +1,7 @@
+ /*
+  *  setup.c, Setup for the CASIO CASSIOPEIA E-11/15/55/65.
+  *
+- *  Copyright (C) 2002-2005  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
++ *  Copyright (C) 2002-2006  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+  *
+  *  This program is free software; you can redistribute it and/or modify
+  *  it under the terms of the GNU General Public License as published by
+@@ -21,13 +21,18 @@
+ #include <linux/ioport.h>
  
--obj-y				+= bcu.o cmu.o icu.o init.o irq.o pmu.o type.o
--obj-$(CONFIG_VRC4173)		+= vrc4173.o
-+obj-y	+= bcu.o cmu.o icu.o init.o irq.o pmu.o type.o
+ #include <asm/io.h>
+-#include <asm/vr41xx/e55.h>
++
++#define E55_ISA_IO_BASE		0x1400c000
++#define E55_ISA_IO_SIZE		0x03ff4000
++#define E55_ISA_IO_START	0
++#define E55_ISA_IO_END		(E55_ISA_IO_SIZE - 1)
++#define E55_IO_PORT_BASE	KSEG1ADDR(E55_ISA_IO_BASE)
  
- EXTRA_AFLAGS := $(CFLAGS)
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/vr41xx/common/vrc4173.c mips/arch/mips/vr41xx/common/vrc4173.c
---- mips-orig/arch/mips/vr41xx/common/vrc4173.c	2006-07-12 13:51:13.817981000 +0900
-+++ mips/arch/mips/vr41xx/common/vrc4173.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,582 +0,0 @@
+ static int __init casio_e55_setup(void)
+ {
+-	set_io_port_base(IO_PORT_BASE);
+-	ioport_resource.start = IO_PORT_RESOURCE_START;
+-	ioport_resource.end = IO_PORT_RESOURCE_END;
++	set_io_port_base(E55_IO_PORT_BASE);
++	ioport_resource.start = E55_ISA_IO_START;
++	ioport_resource.end = E55_ISA_IO_END;
+ 
+ 	return 0;
+ }
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/vr41xx/e55.h mips/include/asm-mips/vr41xx/e55.h
+--- mips-orig/include/asm-mips/vr41xx/e55.h	2006-07-12 12:13:12.654431250 +0900
++++ mips/include/asm-mips/vr41xx/e55.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,43 +0,0 @@
 -/*
-- *  vrc4173.c, NEC VRC4173 base driver for NEC VR4122/VR4131.
+- *  e55.h, Include file for CASIO CASSIOPEIA E-10/15/55/65.
 - *
-- *  Copyright (C) 2001-2003  MontaVista Software Inc.
-- *    Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
-- *  Copyright (C) 2004  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-- *  Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
+- *  Copyright (C) 2002-2004  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 - *
 - *  This program is free software; you can redistribute it and/or modify
 - *  it under the terms of the GNU General Public License as published by
@@ -90,768 +97,27 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/vr41xx/common/vrc4
 - *  along with this program; if not, write to the Free Software
 - *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - */
--#include <linux/init.h>
--#include <linux/module.h>
--#include <linux/interrupt.h>
--#include <linux/irq.h>
--#include <linux/pci.h>
--#include <linux/spinlock.h>
--#include <linux/types.h>
+-#ifndef __CASIO_E55_H
+-#define __CASIO_E55_H
 -
--#include <asm/vr41xx/irq.h>
+-#include <asm/addrspace.h>
 -#include <asm/vr41xx/vr41xx.h>
--#include <asm/vr41xx/vrc4173.h>
--
--MODULE_DESCRIPTION("NEC VRC4173 base driver for NEC VR4122/4131");
--MODULE_AUTHOR("Yoichi Yuasa <yyuasa@mvista.com>");
--MODULE_LICENSE("GPL");
--
--#define VRC4173_CMUCLKMSK	0x040
-- #define MSKPIU			0x0001
-- #define MSKKIU			0x0002
-- #define MSKAIU			0x0004
-- #define MSKPS2CH1		0x0008
-- #define MSKPS2CH2		0x0010
-- #define MSKUSB			0x0020
-- #define MSKCARD1		0x0040
-- #define MSKCARD2		0x0080
-- #define MSKAC97		0x0100
-- #define MSK48MUSB		0x0400
-- #define MSK48MPIN		0x0800
-- #define MSK48MOSC		0x1000
--#define VRC4173_CMUSRST		0x042
-- #define USBRST			0x0001
-- #define CARD1RST		0x0002
-- #define CARD2RST		0x0004
-- #define AC97RST		0x0008
--
--#define VRC4173_SYSINT1REG	0x060
--#define VRC4173_MSYSINT1REG	0x06c
--#define VRC4173_MPIUINTREG	0x06e
--#define VRC4173_MAIUINTREG	0x070
--#define VRC4173_MKIUINTREG	0x072
--
--#define VRC4173_SELECTREG	0x09e
-- #define SEL3			0x0008
-- #define SEL2			0x0004
-- #define SEL1			0x0002
-- #define SEL0			0x0001
--
--static struct pci_device_id vrc4173_id_table[] __devinitdata = {
--	{	.vendor		= PCI_VENDOR_ID_NEC,
--		.device		= PCI_DEVICE_ID_NEC_VRC4173,
--		.subvendor	= PCI_ANY_ID,
--		.subdevice	= PCI_ANY_ID,			},
--	{	.vendor		= 0,				},
--};
--
--unsigned long vrc4173_io_offset = 0;
--
--EXPORT_SYMBOL(vrc4173_io_offset);
--
--static int vrc4173_initialized;
--static uint16_t vrc4173_cmuclkmsk;
--static uint16_t vrc4173_selectreg;
--static DEFINE_SPINLOCK(vrc4173_cmu_lock);
--static DEFINE_SPINLOCK(vrc4173_giu_lock);
--
--static inline void set_cmusrst(uint16_t val)
--{
--	uint16_t cmusrst;
--
--	cmusrst = vrc4173_inw(VRC4173_CMUSRST);
--	cmusrst |= val;
--	vrc4173_outw(cmusrst, VRC4173_CMUSRST);
--}
--
--static inline void clear_cmusrst(uint16_t val)
--{
--	uint16_t cmusrst;
--
--	cmusrst = vrc4173_inw(VRC4173_CMUSRST);
--	cmusrst &= ~val;
--	vrc4173_outw(cmusrst, VRC4173_CMUSRST);
--}
--
--void vrc4173_supply_clock(vrc4173_clock_t clock)
--{
--	if (vrc4173_initialized) {
--		spin_lock_irq(&vrc4173_cmu_lock);
--
--		switch (clock) {
--		case VRC4173_PIU_CLOCK:
--			vrc4173_cmuclkmsk |= MSKPIU;
--			break;
--		case VRC4173_KIU_CLOCK:
--			vrc4173_cmuclkmsk |= MSKKIU;
--			break;
--		case VRC4173_AIU_CLOCK:
--			vrc4173_cmuclkmsk |= MSKAIU;
--			break;
--		case VRC4173_PS2_CH1_CLOCK:
--			vrc4173_cmuclkmsk |= MSKPS2CH1;
--			break;
--		case VRC4173_PS2_CH2_CLOCK:
--			vrc4173_cmuclkmsk |= MSKPS2CH2;
--			break;
--		case VRC4173_USBU_PCI_CLOCK:
--			set_cmusrst(USBRST);
--			vrc4173_cmuclkmsk |= MSKUSB;
--			break;
--		case VRC4173_CARDU1_PCI_CLOCK:
--			set_cmusrst(CARD1RST);
--			vrc4173_cmuclkmsk |= MSKCARD1;
--			break;
--		case VRC4173_CARDU2_PCI_CLOCK:
--			set_cmusrst(CARD2RST);
--			vrc4173_cmuclkmsk |= MSKCARD2;
--			break;
--		case VRC4173_AC97U_PCI_CLOCK:
--			set_cmusrst(AC97RST);
--			vrc4173_cmuclkmsk |= MSKAC97;
--			break;
--		case VRC4173_USBU_48MHz_CLOCK:
--			set_cmusrst(USBRST);
--			vrc4173_cmuclkmsk |= MSK48MUSB;
--			break;
--		case VRC4173_EXT_48MHz_CLOCK:
--			if (vrc4173_cmuclkmsk & MSK48MOSC)
--				vrc4173_cmuclkmsk |= MSK48MPIN;
--			else
--				printk(KERN_WARNING
--				       "vrc4173_supply_clock: "
--				       "Please supply VRC4173_48MHz_CLOCK first "
--				       "rather than VRC4173_EXT_48MHz_CLOCK.\n");
--			break;
--		case VRC4173_48MHz_CLOCK:
--			vrc4173_cmuclkmsk |= MSK48MOSC;
--			break;
--		default:
--			printk(KERN_WARNING
--			       "vrc4173_supply_clock: Invalid CLOCK value %u\n", clock);
--			break;
--		}
--
--		vrc4173_outw(vrc4173_cmuclkmsk, VRC4173_CMUCLKMSK);
--
--		switch (clock) {
--		case VRC4173_USBU_PCI_CLOCK:
--		case VRC4173_USBU_48MHz_CLOCK:
--			clear_cmusrst(USBRST);
--			break;
--		case VRC4173_CARDU1_PCI_CLOCK:
--			clear_cmusrst(CARD1RST);
--			break;
--		case VRC4173_CARDU2_PCI_CLOCK:
--			clear_cmusrst(CARD2RST);
--			break;
--		case VRC4173_AC97U_PCI_CLOCK:
--			clear_cmusrst(AC97RST);
--			break;
--		default:
--			break;
--		}
--
--		spin_unlock_irq(&vrc4173_cmu_lock);
--	}
--}
--
--EXPORT_SYMBOL(vrc4173_supply_clock);
--
--void vrc4173_mask_clock(vrc4173_clock_t clock)
--{
--	if (vrc4173_initialized) {
--		spin_lock_irq(&vrc4173_cmu_lock);
--
--		switch (clock) {
--		case VRC4173_PIU_CLOCK:
--			vrc4173_cmuclkmsk &= ~MSKPIU;
--			break;
--		case VRC4173_KIU_CLOCK:
--			vrc4173_cmuclkmsk &= ~MSKKIU;
--			break;
--		case VRC4173_AIU_CLOCK:
--			vrc4173_cmuclkmsk &= ~MSKAIU;
--			break;
--		case VRC4173_PS2_CH1_CLOCK:
--			vrc4173_cmuclkmsk &= ~MSKPS2CH1;
--			break;
--		case VRC4173_PS2_CH2_CLOCK:
--			vrc4173_cmuclkmsk &= ~MSKPS2CH2;
--			break;
--		case VRC4173_USBU_PCI_CLOCK:
--			set_cmusrst(USBRST);
--			vrc4173_cmuclkmsk &= ~MSKUSB;
--			break;
--		case VRC4173_CARDU1_PCI_CLOCK:
--			set_cmusrst(CARD1RST);
--			vrc4173_cmuclkmsk &= ~MSKCARD1;
--			break;
--		case VRC4173_CARDU2_PCI_CLOCK:
--			set_cmusrst(CARD2RST);
--			vrc4173_cmuclkmsk &= ~MSKCARD2;
--			break;
--		case VRC4173_AC97U_PCI_CLOCK:
--			set_cmusrst(AC97RST);
--			vrc4173_cmuclkmsk &= ~MSKAC97;
--			break;
--		case VRC4173_USBU_48MHz_CLOCK:
--			set_cmusrst(USBRST);
--			vrc4173_cmuclkmsk &= ~MSK48MUSB;
--			break;
--		case VRC4173_EXT_48MHz_CLOCK:
--			vrc4173_cmuclkmsk &= ~MSK48MPIN;
--			break;
--		case VRC4173_48MHz_CLOCK:
--			vrc4173_cmuclkmsk &= ~MSK48MOSC;
--			break;
--		default:
--			printk(KERN_WARNING "vrc4173_mask_clock: Invalid CLOCK value %u\n", clock);
--			break;
--		}
--
--		vrc4173_outw(vrc4173_cmuclkmsk, VRC4173_CMUCLKMSK);
--
--		switch (clock) {
--		case VRC4173_USBU_PCI_CLOCK:
--		case VRC4173_USBU_48MHz_CLOCK:
--			clear_cmusrst(USBRST);
--			break;
--		case VRC4173_CARDU1_PCI_CLOCK:
--			clear_cmusrst(CARD1RST);
--			break;
--		case VRC4173_CARDU2_PCI_CLOCK:
--			clear_cmusrst(CARD2RST);
--			break;
--		case VRC4173_AC97U_PCI_CLOCK:
--			clear_cmusrst(AC97RST);
--			break;
--		default:
--			break;
--		}
--
--		spin_unlock_irq(&vrc4173_cmu_lock);
--	}
--}
--
--EXPORT_SYMBOL(vrc4173_mask_clock);
--
--static inline void vrc4173_cmu_init(void)
--{
--	vrc4173_cmuclkmsk = vrc4173_inw(VRC4173_CMUCLKMSK);
--
--	spin_lock_init(&vrc4173_cmu_lock);
--}
--
--void vrc4173_select_function(vrc4173_function_t function)
--{
--	if (vrc4173_initialized) {
--		spin_lock_irq(&vrc4173_giu_lock);
--
--		switch(function) {
--		case PS2_CHANNEL1:
--			vrc4173_selectreg |= SEL2;
--			break;
--		case PS2_CHANNEL2:
--			vrc4173_selectreg |= SEL1;
--			break;
--		case TOUCHPANEL:
--			vrc4173_selectreg &= SEL2 | SEL1 | SEL0;
--			break;
--		case KEYBOARD_8SCANLINES:
--			vrc4173_selectreg &= SEL3 | SEL2 | SEL1;
--			break;
--		case KEYBOARD_10SCANLINES:
--			vrc4173_selectreg &= SEL3 | SEL2;
--			break;
--		case KEYBOARD_12SCANLINES:
--			vrc4173_selectreg &= SEL3;
--			break;
--		case GPIO_0_15PINS:
--			vrc4173_selectreg |= SEL0;
--			break;
--		case GPIO_16_20PINS:
--			vrc4173_selectreg |= SEL3;
--			break;
--		}
--
--		vrc4173_outw(vrc4173_selectreg, VRC4173_SELECTREG);
--
--		spin_unlock_irq(&vrc4173_giu_lock);
--	}
--}
--
--EXPORT_SYMBOL(vrc4173_select_function);
--
--static inline void vrc4173_giu_init(void)
--{
--	vrc4173_selectreg = vrc4173_inw(VRC4173_SELECTREG);
--
--	spin_lock_init(&vrc4173_giu_lock);
--}
--
--void vrc4173_enable_piuint(uint16_t mask)
--{
--	struct irq_desc *desc = irq_desc + VRC4173_PIU_IRQ;
--	unsigned long flags;
--	uint16_t val;
--
--	spin_lock_irqsave(&desc->lock, flags);
--	val = vrc4173_inw(VRC4173_MPIUINTREG);
--	val |= mask;
--	vrc4173_outw(val, VRC4173_MPIUINTREG);
--	spin_unlock_irqrestore(&desc->lock, flags);
--}
--
--EXPORT_SYMBOL(vrc4173_enable_piuint);
--
--void vrc4173_disable_piuint(uint16_t mask)
--{
--	struct irq_desc *desc = irq_desc + VRC4173_PIU_IRQ;
--	unsigned long flags;
--	uint16_t val;
--
--	spin_lock_irqsave(&desc->lock, flags);
--	val = vrc4173_inw(VRC4173_MPIUINTREG);
--	val &= ~mask;
--	vrc4173_outw(val, VRC4173_MPIUINTREG);
--	spin_unlock_irqrestore(&desc->lock, flags);
--}
--
--EXPORT_SYMBOL(vrc4173_disable_piuint);
--
--void vrc4173_enable_aiuint(uint16_t mask)
--{
--	struct irq_desc *desc = irq_desc + VRC4173_AIU_IRQ;
--	unsigned long flags;
--	uint16_t val;
--
--	spin_lock_irqsave(&desc->lock, flags);
--	val = vrc4173_inw(VRC4173_MAIUINTREG);
--	val |= mask;
--	vrc4173_outw(val, VRC4173_MAIUINTREG);
--	spin_unlock_irqrestore(&desc->lock, flags);
--}
--
--EXPORT_SYMBOL(vrc4173_enable_aiuint);
--
--void vrc4173_disable_aiuint(uint16_t mask)
--{
--	struct irq_desc *desc = irq_desc + VRC4173_AIU_IRQ;
--	unsigned long flags;
--	uint16_t val;
--
--	spin_lock_irqsave(&desc->lock, flags);
--	val = vrc4173_inw(VRC4173_MAIUINTREG);
--	val &= ~mask;
--	vrc4173_outw(val, VRC4173_MAIUINTREG);
--	spin_unlock_irqrestore(&desc->lock, flags);
--}
--
--EXPORT_SYMBOL(vrc4173_disable_aiuint);
--
--void vrc4173_enable_kiuint(uint16_t mask)
--{
--	struct irq_desc *desc = irq_desc + VRC4173_KIU_IRQ;
--	unsigned long flags;
--	uint16_t val;
--
--	spin_lock_irqsave(&desc->lock, flags);
--	val = vrc4173_inw(VRC4173_MKIUINTREG);
--	val |= mask;
--	vrc4173_outw(val, VRC4173_MKIUINTREG);
--	spin_unlock_irqrestore(&desc->lock, flags);
--}
--
--EXPORT_SYMBOL(vrc4173_enable_kiuint);
--
--void vrc4173_disable_kiuint(uint16_t mask)
--{
--	struct irq_desc *desc = irq_desc + VRC4173_KIU_IRQ;
--	unsigned long flags;
--	uint16_t val;
--
--	spin_lock_irqsave(&desc->lock, flags);
--	val = vrc4173_inw(VRC4173_MKIUINTREG);
--	val &= ~mask;
--	vrc4173_outw(val, VRC4173_MKIUINTREG);
--	spin_unlock_irqrestore(&desc->lock, flags);
--}
--
--EXPORT_SYMBOL(vrc4173_disable_kiuint);
--
--static void enable_vrc4173_irq(unsigned int irq)
--{
--	uint16_t val;
--
--	val = vrc4173_inw(VRC4173_MSYSINT1REG);
--	val |= (uint16_t)1 << (irq - VRC4173_IRQ_BASE);
--	vrc4173_outw(val, VRC4173_MSYSINT1REG);
--}
--
--static void disable_vrc4173_irq(unsigned int irq)
--{
--	uint16_t val;
--
--	val = vrc4173_inw(VRC4173_MSYSINT1REG);
--	val &= ~((uint16_t)1 << (irq - VRC4173_IRQ_BASE));
--	vrc4173_outw(val, VRC4173_MSYSINT1REG);
--}
--
--static unsigned int startup_vrc4173_irq(unsigned int irq)
--{
--	enable_vrc4173_irq(irq);
--	return 0; /* never anything pending */
--}
--
--#define shutdown_vrc4173_irq	disable_vrc4173_irq
--#define ack_vrc4173_irq		disable_vrc4173_irq
--
--static void end_vrc4173_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		enable_vrc4173_irq(irq);
--}
--
--static struct irq_chip vrc4173_irq_type = {
--	.typename	= "VRC4173",
--	.startup	= startup_vrc4173_irq,
--	.shutdown	= shutdown_vrc4173_irq,
--	.enable		= enable_vrc4173_irq,
--	.disable	= disable_vrc4173_irq,
--	.ack		= ack_vrc4173_irq,
--	.end		= end_vrc4173_irq,
--};
--
--static int vrc4173_get_irq_number(int irq)
--{
--	uint16_t status, mask;
--	int i;
--
--        status = vrc4173_inw(VRC4173_SYSINT1REG);
--        mask = vrc4173_inw(VRC4173_MSYSINT1REG);
--
--	status &= mask;
--	if (status) {
--		for (i = 0; i < 16; i++)
--			if (status & (0x0001 << i))
--				return VRC4173_IRQ(i);
--	}
--
--	return -EINVAL;
--}
--
--static inline int vrc4173_icu_init(int cascade_irq)
--{
--	int i;
--
--	if (cascade_irq < GIU_IRQ(0) || cascade_irq > GIU_IRQ(15))
--		return -EINVAL;
--
--	vrc4173_outw(0, VRC4173_MSYSINT1REG);
--
--	vr41xx_set_irq_trigger(GIU_IRQ_TO_PIN(cascade_irq), TRIGGER_LEVEL, SIGNAL_THROUGH);
--	vr41xx_set_irq_level(GIU_IRQ_TO_PIN(cascade_irq), LEVEL_LOW);
--
--	for (i = VRC4173_IRQ_BASE; i <= VRC4173_IRQ_LAST; i++)
--                irq_desc[i].chip = &vrc4173_irq_type;
--
--	return 0;
--}
--
--static int __devinit vrc4173_probe(struct pci_dev *dev,
--                                   const struct pci_device_id *id)
--{
--	unsigned long start, flags;
--	int err;
--
--	err = pci_enable_device(dev);
--	if (err < 0) {
--		printk(KERN_ERR "vrc4173: Failed to enable PCI device, aborting\n");
--		return err;
--	}
--
--	pci_set_master(dev);
--
--	start = pci_resource_start(dev, 0);
--	if (start == 0) {
--		printk(KERN_ERR "vrc4173:No such PCI I/O resource, aborting\n");
--		return -ENXIO;
--	}
--
--	flags = pci_resource_flags(dev, 0);
--	if ((flags & IORESOURCE_IO) == 0) {
--		printk(KERN_ERR "vrc4173: No such PCI I/O resource, aborting\n");
--		return -ENXIO;
--	}
--
--	err = pci_request_regions(dev, "NEC VRC4173");
--	if (err < 0) {
--		printk(KERN_ERR "vrc4173: PCI resources are busy, aborting\n");
--		return err;
--	}
--
--	set_vrc4173_io_offset(start);
--
--	vrc4173_cmu_init();
--	vrc4173_giu_init();
--
--	err = vrc4173_icu_init(dev->irq);
--	if (err < 0) {
--		printk(KERN_ERR "vrc4173: Invalid IRQ %d, aborting\n", dev->irq);
--		return err;
--	}
--
--	err = vr41xx_cascade_irq(dev->irq, vrc4173_get_irq_number);
--	if (err < 0) {
--		printk(KERN_ERR "vrc4173: IRQ resource %d is busy, aborting\n", dev->irq);
--		return err;
--	}
--
--	printk(KERN_INFO
--	       "NEC VRC4173 at 0x%#08lx, IRQ is cascaded to %d\n", start, dev->irq);
--
--	return 0;
--}
--
--static void vrc4173_remove(struct pci_dev *dev)
--{
--	free_irq(dev->irq, NULL);
--
--	pci_release_regions(dev);
--}
--
--static struct pci_driver vrc4173_driver = {
--	.name		= "NEC VRC4173",
--	.probe		= vrc4173_probe,
--	.remove		= vrc4173_remove,
--	.id_table	= vrc4173_id_table,
--};
--
--static int __devinit vrc4173_init(void)
--{
--	int err;
--
--	err = pci_register_driver(&vrc4173_driver);
--	if (err < 0)
--		return err;
--
--	vrc4173_initialized = 1;
--
--	return 0;
--}
--
--static void __devexit vrc4173_exit(void)
--{
--	vrc4173_initialized = 0;
--
--	pci_unregister_driver(&vrc4173_driver);
--}
--
--module_init(vrc4173_init);
--module_exit(vrc4173_exit);
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/vr41xx/vrc4173.h mips/include/asm-mips/vr41xx/vrc4173.h
---- mips-orig/include/asm-mips/vr41xx/vrc4173.h	2006-07-12 13:51:13.825981500 +0900
-+++ mips/include/asm-mips/vr41xx/vrc4173.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,201 +0,0 @@
--/*
-- *  vrc4173.h, Include file for NEC VRC4173.
-- *
-- *  Copyright (C) 2000  Michael R. McDonald
-- *  Copyright (C) 2001-2003 Montavista Software Inc.
-- *    Author: Yoichi Yuasa <yyuasa@mvista.com, or source@mvista.com>
-- *  Copyright (C) 2004  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-- *  Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
-- *
-- *  This program is free software; you can redistribute it and/or modify
-- *  it under the terms of the GNU General Public License as published by
-- *  the Free Software Foundation; either version 2 of the License, or
-- *  (at your option) any later version.
-- *
-- *  This program is distributed in the hope that it will be useful,
-- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *  GNU General Public License for more details.
-- *
-- *  You should have received a copy of the GNU General Public License
-- *  along with this program; if not, write to the Free Software
-- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-- */
--#ifndef __NEC_VRC4173_H
--#define __NEC_VRC4173_H
--
--#include <asm/io.h>
 -
 -/*
-- * PCI I/O accesses
+- * Board specific address mapping
 - */
--#ifdef CONFIG_VRC4173
+-#define VR41XX_ISA_MEM_BASE		0x10000000
+-#define VR41XX_ISA_MEM_SIZE		0x04000000
 -
--extern unsigned long vrc4173_io_offset;
+-/* VR41XX_ISA_IO_BASE includes offset from real base. */
+-#define VR41XX_ISA_IO_BASE		0x1400c000
+-#define VR41XX_ISA_IO_SIZE		0x03ff4000
 -
--#define set_vrc4173_io_offset(offset)	do { vrc4173_io_offset = (offset); } while (0)
+-#define ISA_BUS_IO_BASE			0
+-#define ISA_BUS_IO_SIZE			VR41XX_ISA_IO_SIZE
 -
--#define vrc4173_outb(val,port)		outb((val), vrc4173_io_offset+(port))
--#define vrc4173_outw(val,port)		outw((val), vrc4173_io_offset+(port))
--#define vrc4173_outl(val,port)		outl((val), vrc4173_io_offset+(port))
--#define vrc4173_outb_p(val,port)	outb_p((val), vrc4173_io_offset+(port))
--#define vrc4173_outw_p(val,port)	outw_p((val), vrc4173_io_offset+(port))
--#define vrc4173_outl_p(val,port)	outl_p((val), vrc4173_io_offset+(port))
+-#define IO_PORT_BASE			KSEG1ADDR(VR41XX_ISA_IO_BASE)
+-#define IO_PORT_RESOURCE_START		ISA_BUS_IO_BASE
+-#define IO_PORT_RESOURCE_END		(ISA_BUS_IO_BASE + ISA_BUS_IO_SIZE - 1)
 -
--#define vrc4173_inb(port)		inb(vrc4173_io_offset+(port))
--#define vrc4173_inw(port)		inw(vrc4173_io_offset+(port))
--#define vrc4173_inl(port)		inl(vrc4173_io_offset+(port))
--#define vrc4173_inb_p(port)		inb_p(vrc4173_io_offset+(port))
--#define vrc4173_inw_p(port)		inw_p(vrc4173_io_offset+(port))
--#define vrc4173_inl_p(port)		inl_p(vrc4173_io_offset+(port))
--
--#define vrc4173_outsb(port,addr,count)	outsb(vrc4173_io_offset+(port),(addr),(count))
--#define vrc4173_outsw(port,addr,count)	outsw(vrc4173_io_offset+(port),(addr),(count))
--#define vrc4173_outsl(port,addr,count)	outsl(vrc4173_io_offset+(port),(addr),(count))
--
--#define vrc4173_insb(port,addr,count)	insb(vrc4173_io_offset+(port),(addr),(count))
--#define vrc4173_insw(port,addr,count)	insw(vrc4173_io_offset+(port),(addr),(count))
--#define vrc4173_insl(port,addr,count)	insl(vrc4173_io_offset+(port),(addr),(count))
--
--#else
--
--#define set_vrc4173_io_offset(offset)	do {} while (0)
--
--#define vrc4173_outb(val,port)		do {} while (0)
--#define vrc4173_outw(val,port)		do {} while (0)
--#define vrc4173_outl(val,port)		do {} while (0)
--#define vrc4173_outb_p(val,port)	do {} while (0)
--#define vrc4173_outw_p(val,port)	do {} while (0)
--#define vrc4173_outl_p(val,port)	do {} while (0)
--
--#define vrc4173_inb(port)		0
--#define vrc4173_inw(port)		0
--#define vrc4173_inl(port)		0
--#define vrc4173_inb_p(port)		0
--#define vrc4173_inw_p(port)		0
--#define vrc4173_inl_p(port)		0
--
--#define vrc4173_outsb(port,addr,count)	do {} while (0)
--#define vrc4173_outsw(port,addr,count)	do {} while (0)
--#define vrc4173_outsl(port,addr,count)	do {} while (0)
--
--#define vrc4173_insb(port,addr,count)	do {} while (0)
--#define vrc4173_insw(port,addr,count)	do {} while (0)
--#define vrc4173_insl(port,addr,count)	do {} while (0)
--
--#endif
--
--/*
-- * Clock Mask Unit
-- */
--typedef enum vrc4173_clock {
--	VRC4173_PIU_CLOCK,
--	VRC4173_KIU_CLOCK,
--	VRC4173_AIU_CLOCK,
--	VRC4173_PS2_CH1_CLOCK,
--	VRC4173_PS2_CH2_CLOCK,
--	VRC4173_USBU_PCI_CLOCK,
--	VRC4173_CARDU1_PCI_CLOCK,
--	VRC4173_CARDU2_PCI_CLOCK,
--	VRC4173_AC97U_PCI_CLOCK,
--	VRC4173_USBU_48MHz_CLOCK,
--	VRC4173_EXT_48MHz_CLOCK,
--	VRC4173_48MHz_CLOCK,
--} vrc4173_clock_t;
--
--#ifdef CONFIG_VRC4173
--
--extern void vrc4173_supply_clock(vrc4173_clock_t clock);
--extern void vrc4173_mask_clock(vrc4173_clock_t clock);
--
--#else
--
--static inline void vrc4173_supply_clock(vrc4173_clock_t clock) {}
--static inline void vrc4173_mask_clock(vrc4173_clock_t clock) {}
--
--#endif
--
--/*
-- * Interupt Control Unit
-- */
--
--#define VRC4173_PIUINT_COMMAND		0x0040
--#define VRC4173_PIUINT_DATA		0x0020
--#define VRC4173_PIUINT_PAGE1		0x0010
--#define VRC4173_PIUINT_PAGE0		0x0008
--#define VRC4173_PIUINT_DATALOST		0x0004
--#define VRC4173_PIUINT_STATUSCHANGE	0x0001
--
--#ifdef CONFIG_VRC4173
--
--extern void vrc4173_enable_piuint(uint16_t mask);
--extern void vrc4173_disable_piuint(uint16_t mask);
--
--#else
--
--static inline void vrc4173_enable_piuint(uint16_t mask) {}
--static inline void vrc4173_disable_piuint(uint16_t mask) {}
--
--#endif
--
--#define VRC4173_AIUINT_INPUT_DMAEND	0x0800
--#define VRC4173_AIUINT_INPUT_DMAHALT	0x0400
--#define VRC4173_AIUINT_INPUT_DATALOST	0x0200
--#define VRC4173_AIUINT_INPUT_DATA	0x0100
--#define VRC4173_AIUINT_OUTPUT_DMAEND	0x0008
--#define VRC4173_AIUINT_OUTPUT_DMAHALT	0x0004
--#define VRC4173_AIUINT_OUTPUT_NODATA	0x0002
--
--#ifdef CONFIG_VRC4173
--
--extern void vrc4173_enable_aiuint(uint16_t mask);
--extern void vrc4173_disable_aiuint(uint16_t mask);
--
--#else
--
--static inline void vrc4173_enable_aiuint(uint16_t mask) {}
--static inline void vrc4173_disable_aiuint(uint16_t mask) {}
--
--#endif
--
--#define VRC4173_KIUINT_DATALOST		0x0004
--#define VRC4173_KIUINT_DATAREADY	0x0002
--#define VRC4173_KIUINT_SCAN		0x0001
--
--#ifdef CONFIG_VRC4173
--
--extern void vrc4173_enable_kiuint(uint16_t mask);
--extern void vrc4173_disable_kiuint(uint16_t mask);
--
--#else
--
--static inline void vrc4173_enable_kiuint(uint16_t mask) {}
--static inline void vrc4173_disable_kiuint(uint16_t mask) {}
--
--#endif
--
--/*
-- * General-Purpose I/O Unit
-- */
--typedef enum vrc4173_function {
--	PS2_CHANNEL1,
--	PS2_CHANNEL2,
--	TOUCHPANEL,
--	KEYBOARD_8SCANLINES,
--	KEYBOARD_10SCANLINES,
--	KEYBOARD_12SCANLINES,
--	GPIO_0_15PINS,
--	GPIO_16_20PINS,
--} vrc4173_function_t;
--
--#ifdef CONFIG_VRC4173
--
--extern void vrc4173_select_function(vrc4173_function_t function);
--
--#else
--
--static inline void vrc4173_select_function(vrc4173_function_t function) {}
--
--#endif
--
--#endif /* __NEC_VRC4173_H */
+-#endif /* __CASIO_E55_H */

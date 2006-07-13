@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2006 15:21:54 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:11904 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133656AbWGMOVp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2006 15:21:45 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k6DELk3m026963;
-	Thu, 13 Jul 2006 15:21:46 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k6DELk6N026962;
-	Thu, 13 Jul 2006 15:21:46 +0100
-Date:	Thu, 13 Jul 2006 15:21:46 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Daniel Mack <daniel@caiaq.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] remove double entry of FB_AU1200 in drivers/video/Kconfig
-Message-ID: <20060713142146.GC24611@linux-mips.org>
-References: <B4CE0C51-47B5-4F72-8008-08549262B4F0@caiaq.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B4CE0C51-47B5-4F72-8008-08549262B4F0@caiaq.de>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2006 15:49:37 +0100 (BST)
+Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:25322 "EHLO krt.neobee.net")
+	by ftp.linux-mips.org with ESMTP id S8133643AbWGMOt2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2006 15:49:28 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id k6DGEntk018858
+	for <linux-mips@linux-mips.org>; Thu, 13 Jul 2006 18:14:49 +0200
+Received: from krt.neobee.net ([127.0.0.1])
+ by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
+ id 18071-08 for <linux-mips@linux-mips.org>;
+ Thu, 13 Jul 2006 18:14:49 +0200 (CEST)
+Received: from [192.168.0.91] ([192.168.0.91])
+	by krt.neobee.net (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id k6DGEiMQ018847
+	for <linux-mips@linux-mips.org>; Thu, 13 Jul 2006 18:14:44 +0200
+Message-ID: <44B65D71.7080905@micronasnit.com>
+Date:	Thu, 13 Jul 2006 16:49:21 +0200
+From:	Dusko Dobranic <dusko.dobranic@micronasnit.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060516)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Suspend to RAM
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new at krt.neobee.net
+Return-Path: <dusko.dobranic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11991
+X-archive-position: 11992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dusko.dobranic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 08, 2006 at 07:35:12PM +0200, Daniel Mack wrote:
+Hi all,
 
-I've sent an identical patch to Antonino, still waiting for him to apply
-it.
+Does anyone has successfully implemented Suspend to RAM feature on MIPS32R2?
+How can I restart kernel after putting system to sleep?
 
-  Ralf
+Thanks

@@ -1,52 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2006 15:00:47 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:6852 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133523AbWGMOAi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2006 15:00:38 +0100
-Received: from localhost (p7138-ipad202funabasi.chiba.ocn.ne.jp [222.146.78.138])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 6D140A9CD; Thu, 13 Jul 2006 23:00:30 +0900 (JST)
-Date:	Thu, 13 Jul 2006 23:01:50 +0900 (JST)
-Message-Id: <20060713.230150.07642847.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, vagabon.xyz@gmail.com
-Subject: [PATCH] sparsemem: fix crash in show_mem
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2006 15:15:24 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:1191 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133523AbWGMOPP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2006 15:15:15 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.6/8.13.4) with ESMTP id k6DEFHWF026818;
+	Thu, 13 Jul 2006 15:15:17 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.6/8.13.6/Submit) id k6DEFGIa026817;
+	Thu, 13 Jul 2006 15:15:16 +0100
+Date:	Thu, 13 Jul 2006 15:15:16 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] vr41xx: added #indef __KERNEL__/#endif to vr41xx header files
+Message-ID: <20060713141516.GB24611@linux-mips.org>
+References: <20060713173356.72ab52f1.yoichi_yuasa@tripeaks.co.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060713173356.72ab52f1.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11989
+X-archive-position: 11990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Resend with proper subject. (old subject was "do not count pages in
-holes with sparsemem"
+On Thu, Jul 13, 2006 at 05:33:56PM +0900, Yoichi Yuasa wrote:
 
+> This patch has added #ifdef __KERNEL__/#endif to vr41xx header files.
 
-With sparsemem, pfn should be checked by pfn_valid() before pfn_to_page().
+None of the include/asm-mips/vr41xx/ files touched by this patch is
+listed in include/asm-mips/Kbuild for installation so I don't see why
+protecting with #indef __KERNEL__ would make sense?
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-diff --git a/arch/mips/mm/pgtable.c b/arch/mips/mm/pgtable.c
-index 792c6eb..c93aa6c 100644
---- a/arch/mips/mm/pgtable.c
-+++ b/arch/mips/mm/pgtable.c
-@@ -15,6 +15,8 @@ #ifndef CONFIG_NEED_MULTIPLE_NODES  /* X
- 	printk("Free swap:       %6ldkB\n", nr_swap_pages<<(PAGE_SHIFT-10));
- 	pfn = max_mapnr;
- 	while (pfn-- > 0) {
-+		if (!pfn_valid(pfn))
-+			continue;
- 		page = pfn_to_page(pfn);
- 		total++;
- 		if (PageHighMem(page))
+  Ralf

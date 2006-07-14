@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2006 15:46:54 +0100 (BST)
-Received: from buzzloop.caiaq.de ([212.112.241.133]:21511 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2006 15:53:28 +0100 (BST)
+Received: from buzzloop.caiaq.de ([212.112.241.133]:3085 "EHLO
 	buzzloop.caiaq.de") by ftp.linux-mips.org with ESMTP
-	id S8133431AbWGNOqp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Jul 2006 15:46:45 +0100
+	id S8133431AbWGNOxT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Jul 2006 15:53:19 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by buzzloop.caiaq.de (Postfix) with ESMTP id A2C2A7F4028
-	for <linux-mips@linux-mips.org>; Fri, 14 Jul 2006 16:46:40 +0200 (CEST)
+	by buzzloop.caiaq.de (Postfix) with ESMTP id 6DB9A7F4028
+	for <linux-mips@linux-mips.org>; Fri, 14 Jul 2006 16:53:15 +0200 (CEST)
 Received: from buzzloop.caiaq.de ([127.0.0.1])
 	by localhost (buzzloop [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 10801-03 for <linux-mips@linux-mips.org>;
-	Fri, 14 Jul 2006 16:46:40 +0200 (CEST)
+	with ESMTP id 10818-04 for <linux-mips@linux-mips.org>;
+	Fri, 14 Jul 2006 16:53:15 +0200 (CEST)
 Received: from [192.168.1.100] (port-83-236-238-37.static.qsc.de [83.236.238.37])
 	(using TLSv1 with cipher RC4-SHA (128/128 bits))
 	(No client certificate requested)
-	by buzzloop.caiaq.de (Postfix) with ESMTP id 31B1D7F4024
-	for <linux-mips@linux-mips.org>; Fri, 14 Jul 2006 16:46:40 +0200 (CEST)
+	by buzzloop.caiaq.de (Postfix) with ESMTP id 1DC9E7F4024
+	for <linux-mips@linux-mips.org>; Fri, 14 Jul 2006 16:53:15 +0200 (CEST)
 Mime-Version: 1.0 (Apple Message framework v752.2)
 Content-Transfer-Encoding: 7bit
-Message-Id: <8DE93A09-CFEB-47A1-A535-F02B7F32ADB6@caiaq.de>
+Message-Id: <2F5D781B-2119-4942-82C1-70B5037F5622@caiaq.de>
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 To:	linux-mips@linux-mips.org
 From:	Daniel Mack <daniel@caiaq.de>
 Subject: [PATCH] fix irq_chip struct for Pb1200/Db1200 platform
-Date:	Fri, 14 Jul 2006 16:46:33 +0200
+Date:	Fri, 14 Jul 2006 16:53:11 +0200
 X-Mailer: Apple Mail (2.752.2)
 Return-Path: <daniel@caiaq.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12005
+X-archive-position: 12006
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,8 +42,12 @@ the following patch makes external interrupt sources work again
 on AMD's Au1200 development boards. The unnamed initialization
 of 'external_irq_type' lead to a defective function mapping.
 
+I resent it because of the missing Signed-off-by: line, sorry.
+
 Daniel
 
+
+Signed-off-by: Daniel Mack <daniel@caiaq.de>
 
 --- a/arch/mips/au1000/pb1200/irqmap.c
 +++ b/arch/mips/au1000/pb1200/irqmap.c

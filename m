@@ -1,66 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2006 02:35:40 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:40884 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S8133760AbWGNBfc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Jul 2006 02:35:32 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 14 Jul 2006 10:35:28 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id CEA3C20301;
-	Fri, 14 Jul 2006 10:35:22 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id C26851FF81;
-	Fri, 14 Jul 2006 10:35:22 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k6E1ZLW0035361;
-	Fri, 14 Jul 2006 10:35:22 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 14 Jul 2006 10:35:21 +0900 (JST)
-Message-Id: <20060714.103521.25910483.nemoto@toshiba-tops.co.jp>
-To:	giometti@linux.it
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2006 07:03:42 +0100 (BST)
+Received: from smtp106.biz.mail.mud.yahoo.com ([68.142.200.254]:61788 "HELO
+	smtp106.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S8133497AbWGNGDb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Jul 2006 07:03:31 +0100
+Received: (qmail 28648 invoked from network); 14 Jul 2006 06:03:25 -0000
+Received: from unknown (HELO ?192.168.15.100?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
+  by smtp106.biz.mail.mud.yahoo.com with SMTP; 14 Jul 2006 06:03:24 -0000
+Subject: Re: BSP: for an AU1500 board.
+From:	Pete Popov <ppopov@embeddedalley.com>
+Reply-To: ppopov@embeddedalley.com
+To:	ashlesha@kenati.com
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Problems after merge to 2.6.18-rc1
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060713163200.GA7186@gundam.enneenne.com>
-References: <20060713163200.GA7186@gundam.enneenne.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+In-Reply-To: <1152831547.7681.14.camel@sandbar.kenati.com>
+References: <1152831547.7681.14.camel@sandbar.kenati.com>
+Content-Type: text/plain
+Organization: Embedded Alley Solutions, Inc
+Date:	Thu, 13 Jul 2006 23:03:16 -0700
+Message-Id: <1152856996.18840.106.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+X-Mailer: Evolution 2.4.1 
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <ppopov@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11997
+X-archive-position: 11998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ppopov@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 13 Jul 2006 18:32:00 +0200, Rodolfo Giometti <giometti@linux.it> wrote:
-> I just finished a (big) merge with linux-mips 2.6.18-rc1 and
-> my tree and at boot I get:
+On Thu, 2006-07-13 at 15:59 -0700, Ashlesha Shintre wrote:
+> Hi,
 > 
->    Linux version 2.6.18-rc1-g2636fd13-dirty (giometti@gundam) (gcc version 3.4.3) #165 Thu Jul 13 18:13:26 CEST 2006
->    CPU revision is: 02030204
->    Board WWPC1000 version 1.0
->    WWPC-setup: uC=off 
->    (PRId 02030204) @ 396MHZ
->    BCLK switching enabled!
->    Determined physical RAM map:
->     memory: 04000000 @ 00000000 (usable)
->    Early serial console at AU 0x11100000 (options '115200')
->    Determined physical RAM map:
->     memory: 04000000 @ 00000000 (usable)
->    Built 1 zonelists.  Total pages: 16384
+> I m working with an AU-1500 MIPS processor on the EncoreM3 board and my
+> task is to write board support packages for the same.  I am very much a
+> newbie to linux and embedded systems.
+> 
+> I m not entirely sure of the sequence in which i should start doing
+> things, but here is a rough roadmap: 
+> 
+> 1) To create a config file appropriate to the board using menuconfig
+> 2) Map the VIA southbridge
+> 3) Adding IRQ Mappings
+> 4) Integration and Debugging
+> 
+> First I decided to 'do' the configuration file, but I still havent got a
+> birdseye picture of how I should proceed.  Any pointers?
 
-Two "Determined physycal RAM map:" line here.  If both were printed in
-parse_cmdline_early() (i.e. parse_cmdline_early was called twice),
-something is seriously broken.
+You said newbie to Linux _and_ embedded systems. I'm not sure a new BSP
+is the place to start. If you have access to a well supported embedded
+board, start with that by rebuilding the kernel, booting it, and getting
+familiar with making kernel changes.
 
----
-Atsushi Nemoto
+Pete
+
+> Also, when does the config file come into play during the bootup
+> process, and where will I find the addresses of different devices say on
+> the PCI bus (memory adds) that will need to be mapped at boottime?
+> 
+> Thanks,
+> Ashlesha.
+> 
+> 
+> 

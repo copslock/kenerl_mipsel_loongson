@@ -1,68 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2006 07:03:42 +0100 (BST)
-Received: from smtp106.biz.mail.mud.yahoo.com ([68.142.200.254]:61788 "HELO
-	smtp106.biz.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S8133497AbWGNGDb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Jul 2006 07:03:31 +0100
-Received: (qmail 28648 invoked from network); 14 Jul 2006 06:03:25 -0000
-Received: from unknown (HELO ?192.168.15.100?) (ppopov@embeddedalley.com@63.194.214.47 with plain)
-  by smtp106.biz.mail.mud.yahoo.com with SMTP; 14 Jul 2006 06:03:24 -0000
-Subject: Re: BSP: for an AU1500 board.
-From:	Pete Popov <ppopov@embeddedalley.com>
-Reply-To: ppopov@embeddedalley.com
-To:	ashlesha@kenati.com
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1152831547.7681.14.camel@sandbar.kenati.com>
-References: <1152831547.7681.14.camel@sandbar.kenati.com>
-Content-Type: text/plain
-Organization: Embedded Alley Solutions, Inc
-Date:	Thu, 13 Jul 2006 23:03:16 -0700
-Message-Id: <1152856996.18840.106.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2006 08:29:49 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:6436 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8133365AbWGNH3j (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 14 Jul 2006 08:29:39 +0100
+Received: by mo.po.2iij.net (mo31) id k6E7Ta9Z056434; Fri, 14 Jul 2006 16:29:36 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox32) id k6E7TZNs064507
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 14 Jul 2006 16:29:35 +0900 (JST)
+Date:	Fri, 14 Jul 2006 16:29:35 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	linux-usb-devel <linux-usb-devel@lists.sourceforge.net>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] USB: removed a unbalanced #endif from ohci-au1xxx.c
+Message-Id: <20060714162935.70502a98.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.4.1 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <ppopov@embeddedalley.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11998
+X-archive-position: 11999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ppopov@embeddedalley.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2006-07-13 at 15:59 -0700, Ashlesha Shintre wrote:
-> Hi,
-> 
-> I m working with an AU-1500 MIPS processor on the EncoreM3 board and my
-> task is to write board support packages for the same.  I am very much a
-> newbie to linux and embedded systems.
-> 
-> I m not entirely sure of the sequence in which i should start doing
-> things, but here is a rough roadmap: 
-> 
-> 1) To create a config file appropriate to the board using menuconfig
-> 2) Map the VIA southbridge
-> 3) Adding IRQ Mappings
-> 4) Integration and Debugging
-> 
-> First I decided to 'do' the configuration file, but I still havent got a
-> birdseye picture of how I should proceed.  Any pointers?
+Hi,
 
-You said newbie to Linux _and_ embedded systems. I'm not sure a new BSP
-is the place to start. If you have access to a well supported embedded
-board, start with that by rebuilding the kernel, booting it, and getting
-familiar with making kernel changes.
+This patch has removed a unbalanced #endif from ohci-au1xxx.c .
 
-Pete
+Error message was:
+In file included from drivers/usb/host/ohci-hcd.c:909:
+drivers/usb/host/ohci-au1xxx.c:113:2: #endif without #if
 
-> Also, when does the config file come into play during the bootup
-> process, and where will I find the addresses of different devices say on
-> the PCI bus (memory adds) that will need to be mapped at boottime?
-> 
-> Thanks,
-> Ashlesha.
-> 
-> 
-> 
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X 2.6.18-rc1/Documentation/dontdiff 2.6.18-rc1-orig/drivers/usb/host/ohci-au1xxx.c 2.6.18-rc1/drivers/usb/host/ohci-au1xxx.c
+--- 2.6.18-rc1-orig/drivers/usb/host/ohci-au1xxx.c	2006-07-14 11:17:34.443211500 +0900
++++ 2.6.18-rc1/drivers/usb/host/ohci-au1xxx.c	2006-07-14 10:33:47.945949750 +0900
+@@ -110,7 +110,6 @@ static void au1xxx_start_ohc(struct plat
+ 
+ 	printk(KERN_DEBUG __FILE__
+ 	": Clock to USB host has been enabled \n");
+-#endif
+ }
+ 
+ static void au1xxx_stop_ohc(struct platform_device *dev)

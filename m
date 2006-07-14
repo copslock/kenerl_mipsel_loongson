@@ -1,52 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Jul 2006 23:54:49 +0100 (BST)
-Received: from [69.90.147.196] ([69.90.147.196]:4287 "EHLO mail.kenati.com")
-	by ftp.linux-mips.org with ESMTP id S8133593AbWGMWyb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Jul 2006 23:54:31 +0100
-Received: from [192.168.1.105] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
-	by mail.kenati.com (Postfix) with ESMTP id 842F8E404D
-	for <linux-mips@linux-mips.org>; Thu, 13 Jul 2006 16:07:47 -0700 (PDT)
-Subject: BSP: for an AU1500 board.
-From:	Ashlesha Shintre <ashlesha@kenati.com>
-Reply-To: ashlesha@kenati.com
-To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Date:	Thu, 13 Jul 2006 15:59:07 -0700
-Message-Id: <1152831547.7681.14.camel@sandbar.kenati.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jul 2006 01:43:17 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:2616 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8133737AbWGNAnJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 14 Jul 2006 01:43:09 +0100
+Received: by mo.po.2iij.net (mo31) id k6E0h5r3064489; Fri, 14 Jul 2006 09:43:05 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox30) id k6E0h3ID011958
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 14 Jul 2006 09:43:03 +0900 (JST)
+Date:	Fri, 14 Jul 2006 09:43:03 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
+Subject: Re: [PATCH] vr41xx: added #indef __KERNEL__/#endif to vr41xx header
+ files
+Message-Id: <20060714094303.3b9cfab8.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060713141516.GB24611@linux-mips.org>
+References: <20060713173356.72ab52f1.yoichi_yuasa@tripeaks.co.jp>
+	<20060713141516.GB24611@linux-mips.org>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <ashlesha@kenati.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 11995
+X-archive-position: 11996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashlesha@kenati.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
 Hi,
 
-I m working with an AU-1500 MIPS processor on the EncoreM3 board and my
-task is to write board support packages for the same.  I am very much a
-newbie to linux and embedded systems.
+On Thu, 13 Jul 2006 15:15:16 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-I m not entirely sure of the sequence in which i should start doing
-things, but here is a rough roadmap: 
+> On Thu, Jul 13, 2006 at 05:33:56PM +0900, Yoichi Yuasa wrote:
+> 
+> > This patch has added #ifdef __KERNEL__/#endif to vr41xx header files.
+> 
+> None of the include/asm-mips/vr41xx/ files touched by this patch is
+> listed in include/asm-mips/Kbuild for installation so I don't see why
+> protecting with #indef __KERNEL__ would make sense?
 
-1) To create a config file appropriate to the board using menuconfig
-2) Map the VIA southbridge
-3) Adding IRQ Mappings
-4) Integration and Debugging
+I see how it is.
+Thanks for your comment.
 
-First I decided to 'do' the configuration file, but I still havent got a
-birdseye picture of how I should proceed.  Any pointers?
-
-Also, when does the config file come into play during the bootup
-process, and where will I find the addresses of different devices say on
-the PCI bus (memory adds) that will need to be mapped at boottime?
-
-Thanks,
-Ashlesha.
+Yoichi

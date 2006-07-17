@@ -1,55 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jul 2006 23:14:51 +0100 (BST)
-Received: from p549F6FFC.dip.t-dialin.net ([84.159.111.252]:55019 "EHLO
-	p549F6FFC.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S8133792AbWGPWNi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 16 Jul 2006 23:13:38 +0100
-Received: from mo31.po.2iij.net ([210.128.50.54]:40259 "EHLO mo31.po.2iij.net")
-	by lappi.linux-mips.net with ESMTP id S1099323AbWGPOkW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 16 Jul 2006 16:40:22 +0200
-Received: by mo.po.2iij.net (mo31) id k6GEe9hq017148; Sun, 16 Jul 2006 23:40:09 +0900 (JST)
-Received: from localhost.localdomain (225.29.30.125.dy.iij4u.or.jp [125.30.29.225])
-	by mbox.po.2iij.net (mbox31) id k6GEe1dl069793
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 16 Jul 2006 23:40:03 +0900 (JST)
-Date:	Sun, 16 Jul 2006 23:40:00 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] removed an undefined config symbol
-Message-Id: <20060716234000.6fb28c7e.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jul 2006 12:17:07 +0100 (BST)
+Received: from ip-217-204-115-127.easynet.co.uk ([217.204.115.127]:31498 "EHLO
+	apollo.linkchoose.co.uk") by ftp.linux-mips.org with ESMTP
+	id S8133531AbWGQLQ6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Jul 2006 12:16:58 +0100
+Received: from [10.98.1.127] (helo=galaxy.dga.co.uk)
+	by apollo.linkchoose.co.uk with esmtp (Exim 4.60)
+	(envelope-from <david.goodenough@linkchoose.co.uk>)
+	id 1G2R9T-0004QE-9o
+	for linux-mips@linux-mips.org; Mon, 17 Jul 2006 12:20:39 +0100
+Received: from [10.0.1.63]
+	by galaxy.dga.co.uk with esmtp (Exim 4.62)
+	(envelope-from <david.goodenough@linkchoose.co.uk>)
+	id 1G2R5q-0004dH-4T
+	for linux-mips@linux-mips.org; Mon, 17 Jul 2006 12:16:54 +0100
+From:	David Goodenough <david.goodenough@linkchoose.co.uk>
+To:	linux-mips@linux-mips.org
+Subject: Looking for help with an IDT RC32434 processor and Chip Select lines
+Date:	Mon, 17 Jul 2006 12:16:53 +0100
+User-Agent: KMail/1.9.1
+Organization: Linkchoose Ltd
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Disposition: inline
+Message-Id: <200607171216.54317.david.goodenough@linkchoose.co.uk>
+Return-Path: <david.goodenough@linkchoose.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12016
+X-archive-position: 12017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: david.goodenough@linkchoose.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+I am new to the MIPS world in general and the IDT chips in particular and
+I wonder if someone who is familiar with them might be able to spare a few
+minutes to help with understanding how this is supposed to work.
 
-This patch has removed an undefined config symbol in arch/mips/Kconfig.
+I have a board (a RouterBoard 532) which has one of these chips at its
+heart and also has a Hynix 64Mb NAND flash chip on it.  I have a patch
+which patches things all over the place which adds support for the chip
+to a 2.6.17-rc5 kernel, but I want to separate out just the support for
+the NAND chip as a patch on its own.  This patch successfully detects
+the NAND chip when I load it onto the board. 
 
-Yoichi
+When I take just the mods to the drivers/mtd/nand code and add them to
+2.6.17 it is as though the NAND chip is never being selected, the manufacturer
+and device id for the NAND chip come back as 0xff where with the rc5 patch
+they come back as the correct values 0xad and 0x76 respectively.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Having read the IDT documentation I think that all this is controlled by
+the Device Control Registers.  The driver seems to expect that the chips is
+accessed through DEV2, and in both cases when I boot the system up the values
+in these registers are identical, and according to the IDT docs should cause
+the chip select line to be raised.  
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
---- mips-orig/arch/mips/Kconfig	2006-07-16 23:19:10.231100750 +0900
-+++ mips/arch/mips/Kconfig	2006-07-16 23:22:32.331731250 +0900
-@@ -126,7 +126,6 @@ config BASLER_EXCITE
- 	select IRQ_CPU
- 	select IRQ_CPU_RM7K
- 	select IRQ_CPU_RM9K
--	select SERIAL_RM9000
- 	select SYS_HAS_CPU_RM9000
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
+I can not find anything else that controls the chip select lines, and I do 
+not have any hardware monitoring available to me (no oscilloscopes etc) to 
+try to see what is happening at the hardware level.
+
+So my first question is whether my assumption that I only have to bother
+myself with the DEV2 register is right, or is there another set of switches
+that control the chip select lines?
+
+Thanks in advance
+
+David

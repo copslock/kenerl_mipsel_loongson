@@ -1,51 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2006 08:18:38 +0100 (BST)
-Received: from tool.snarl.nl ([213.84.251.124]:23267 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S8133349AbWGRHS2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Jul 2006 08:18:28 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id CA92A5DFB3;
-	Tue, 18 Jul 2006 09:18:19 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id YtxDHEdGdTmV; Tue, 18 Jul 2006 09:18:19 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 6FEAA5DF86; Tue, 18 Jul 2006 09:18:19 +0200 (CEST)
-Date:	Tue, 18 Jul 2006 09:18:19 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	hemanth.venkatesh@wipro.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Mounting rootfs from Alchemy Flash fails
-Message-ID: <20060718071819.GW5162@dusktilldawn.nl>
-References: <2156B1E923F1A147AABDF4D9FDEAB4CB09D11E@blr-m2-msg.wipro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jul 2006 09:46:47 +0100 (BST)
+Received: from wip-ec-wd.wipro.com ([203.91.193.32]:13971 "EHLO
+	wip-ec-wd.wipro.com") by ftp.linux-mips.org with ESMTP
+	id S8127232AbWGRIqi convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Jul 2006 09:46:38 +0100
+Received: from wip-ec-wd.wipro.com (localhost.wipro.com [127.0.0.1])
+	by localhost (Postfix) with ESMTP id 4960D205E6
+	for <linux-mips@linux-mips.org>; Tue, 18 Jul 2006 14:13:39 +0530 (IST)
+Received: from blr-ec-bh01.wipro.com (blr-ec-bh01.wipro.com [10.201.50.91])
+	by wip-ec-wd.wipro.com (Postfix) with ESMTP id 35AF2205D9
+	for <linux-mips@linux-mips.org>; Tue, 18 Jul 2006 14:13:39 +0530 (IST)
+Received: from blr-m2-msg.wipro.com ([10.116.50.99]) by blr-ec-bh01.wipro.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 18 Jul 2006 14:16:30 +0530
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nqu5fpgjE+BQlEdo"
-Content-Disposition: inline
-In-Reply-To: <2156B1E923F1A147AABDF4D9FDEAB4CB09D11E@blr-m2-msg.wipro.com>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.11+cvs20060403
-Return-Path: <freddy@dusktilldawn.nl>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Mounting rootfs from Alchemy Flash fails
+Date:	Tue, 18 Jul 2006 14:16:23 +0530
+Message-ID: <2156B1E923F1A147AABDF4D9FDEAB4CB09D16B@blr-m2-msg.wipro.com>
+In-Reply-To: <20060718071819.GW5162@dusktilldawn.nl>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Mounting rootfs from Alchemy Flash fails
+Thread-Index: AcaqOmjJXaqvsu/lQnWwaA5KoDrEbwACjM5A
+From:	<hemanth.venkatesh@wipro.com>
+To:	<freddy@dusktilldawn.nl>
+Cc:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 18 Jul 2006 08:46:30.0474 (UTC) FILETIME=[AA178AA0:01C6AA46]
+Return-Path: <hemanth.venkatesh@wipro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12020
+X-archive-position: 12021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: hemanth.venkatesh@wipro.com
 Precedence: bulk
 X-list: linux-mips
 
+Freddy, thanks for your reply. We are not using DB1100 board, but a
+custom board which has AU1100 core. We have added the partition info
+into alchemy-flash.c but the probe is not going through. It doesnot seem
+to have the dip switches you mentioned, and we are able to boot from
+flash with a 2.4 kernel. Its only 2.6.14 that is giving problems.
 
---nqu5fpgjE+BQlEdo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks
+Hemanth
+
+-----Original Message-----
+From: Freddy Spierenburg [mailto:freddy@dusktilldawn.nl] 
+Sent: Tuesday, July 18, 2006 12:48 PM
+To: Hemanth V (WT01 - Embedded Systems)
+Cc: linux-mips@linux-mips.org
+Subject: Re: Mounting rootfs from Alchemy Flash fails
 
 Hi Hemanth,
 
-On Tue, Jul 18, 2006 at 10:47:16AM +0530, hemanth.venkatesh@wipro.com wrote:
+On Tue, Jul 18, 2006 at 10:47:16AM +0530, hemanth.venkatesh@wipro.com
+wrote:
 > We have updated Alchamy-flash.c  to specify  flash size 32 MB
 > and physical address as 0X1E000000.
 
@@ -63,23 +78,8 @@ Have you checked dip-switch S5? Both switches should be on (white
 switches both near the 1 and 2 instead of the text cts-2)
 
 
---=20
+-- 
 $ cat ~/.signature
 Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+GnuPG: 0x7941D1E1=C948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
 $ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
-
---nqu5fpgjE+BQlEdo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.3 (GNU/Linux)
-
-iD8DBQFEvIs7bxf9XXlB0eERAgB/AJ9Td9xi+HL1d4Go2clI2sifDc7Q2gCgzbrd
-Nt1A4YtljqEX1nDMqBjGZGE=
-=MHsw
------END PGP SIGNATURE-----
-
---nqu5fpgjE+BQlEdo--

@@ -1,46 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2006 04:46:08 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:58577 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8126515AbWGYDp7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2006 04:45:59 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k6P3kJq9026153;
-	Mon, 24 Jul 2006 23:46:20 -0400
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k6P3kJRt026152;
-	Mon, 24 Jul 2006 23:46:19 -0400
-Date:	Mon, 24 Jul 2006 23:46:19 -0400
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	hemanth.venkatesh@wipro.com.redhat.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Multiple page size support for AU1xxx
-Message-ID: <20060725034619.GA22617@linux-mips.org>
-References: <2156B1E923F1A147AABDF4D9FDEAB4CB09D650@blr-m2-msg.wipro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2156B1E923F1A147AABDF4D9FDEAB4CB09D650@blr-m2-msg.wipro.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@denk.linux-mips.net.redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2006 11:07:03 +0100 (BST)
+Received: from wip-ec-wd.wipro.com ([203.91.193.32]:33995 "EHLO
+	wip-ec-wd.wipro.com") by ftp.linux-mips.org with ESMTP
+	id S8133435AbWGYKGx convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2006 11:06:53 +0100
+Received: from wip-ec-wd.wipro.com (localhost.wipro.com [127.0.0.1])
+	by localhost (Postfix) with ESMTP id 98357205EF;
+	Tue, 25 Jul 2006 15:33:44 +0530 (IST)
+Received: from blr-ec-bh02.wipro.com (blr-ec-bh02.wipro.com [10.201.50.92])
+	by wip-ec-wd.wipro.com (Postfix) with ESMTP id 6E1EE205E2;
+	Tue, 25 Jul 2006 15:33:44 +0530 (IST)
+Received: from blr-m2-msg.wipro.com ([10.116.50.99]) by blr-ec-bh02.wipro.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 25 Jul 2006 15:36:45 +0530
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Multiple page size support for AU1xxx
+Date:	Tue, 25 Jul 2006 15:36:33 +0530
+Message-ID: <2156B1E923F1A147AABDF4D9FDEAB4CB09D6F3@blr-m2-msg.wipro.com>
+In-Reply-To: <20060725034619.GA22617@linux-mips.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Multiple page size support for AU1xxx
+Thread-Index: AcavnPb35TBFRvN5QpSkFe2jX1iUNwAMnsUQ
+From:	<hemanth.venkatesh@wipro.com>
+To:	<ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 25 Jul 2006 10:06:45.0930 (UTC) FILETIME=[093810A0:01C6AFD2]
+Return-Path: <hemanth.venkatesh@wipro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12061
+X-archive-position: 12062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hemanth.venkatesh@wipro.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 24, 2006 at 08:24:13PM +0530, hemanth.venkatesh@wipro.com wrote:
+Hi Ralf,
 
-> Has anyone been able to configure and boot kernel with page sizes other
-> that 4kb i.e. 16KB and 64KB on any AU1xxx based boards.
+>>Currently only 16kB works and only for 64-bit kernels.  I'm planning
+to
+>> fix that rsn.
 
-Currently only 16kB works and only for 64-bit kernels.  I'm planning to
-fix that rsn.
+Thanks for the info, did u mean 16KB would be supported for 32 bit
+kernel also. I also saw code changes in arch/mips/mm/tlb-r8k.c only, is
+there a plan to port it to r4k TLB also.
 
-64K pagesize is extremly large for embedded systems of the size of the
-typical Alchemy system due to the memory overhead.
 
-  Ralf
+Help on 2.6.14 and 2.6.17 kernels provide the below info. Does it mean
+some changes are required at user level also.
+
+config PAGE_SIZE_16KB
+        help
+          Note that you will need a suitable Linux distribution to
+support 
+          this.
+          There are also issues with compatibility of user applications
+
+Thanks
+Hemanth
+
+  

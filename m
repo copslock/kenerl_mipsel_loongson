@@ -1,56 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2006 03:53:01 +0100 (BST)
-Received: from [202.99.27.194] ([202.99.27.194]:1752 "EHLO mail1.topsec.com.cn")
-	by ftp.linux-mips.org with ESMTP id S8133966AbWGYCww (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2006 03:52:52 +0100
-Received: from codingman ([192.168.83.211])
-	by mail1.topsec.com.cn (MOS 3.7.3a-GA)
-	with ESMTP id ASF59444 (AUTH wyb);
-	Tue, 25 Jul 2006 10:42:53 +0800 (CST)
-Message-ID: <004001c6af95$14585900$0100000a@codingman>
-From:	<wyb@topsec.com.cn>
-To:	<macro@linux-mips.org>, <ralf@linux-mips.org>,
-	<sskowron@ET.PUT.Poznan.PL>, <rsandifo@redhat.com>
-Cc:	<linux-mips@linux-mips.org>
-Subject: unmatched R_MIPS_HI16/LO16 on gcc 3.4.3
-Date:	Tue, 25 Jul 2006 10:49:56 +0800
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="Windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1807
-X-Junkmail-Whitelist: YES (by domain whitelist at mail1.topsec.com.cn)
-Return-Path: <wyb@topsec.com.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2006 04:44:51 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:49575 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8126515AbWGYDom (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2006 04:44:42 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k6P3iRi4026104;
+	Mon, 24 Jul 2006 23:44:28 -0400
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k6P3iOhg026103;
+	Mon, 24 Jul 2006 23:44:24 -0400
+Date:	Mon, 24 Jul 2006 23:44:24 -0400
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	wyb@topsec.com.cn
+Cc:	macro@linux-mips.org, sskowron@ET.PUT.Poznan.PL.redhat.com,
+	rsandifo@redhat.com, linux-mips@linux-mips.org
+Subject: Re: unmatched R_MIPS_HI16/LO16 on gcc 3.4.3
+Message-ID: <20060725034424.GB22138@linux-mips.org>
+References: <004001c6af95$14585900$0100000a@codingman>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <004001c6af95$14585900$0100000a@codingman>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@denk.linux-mips.net.redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12059
+X-archive-position: 12060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wyb@topsec.com.cn
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Sorry for disturbing you.
+On Tue, Jul 25, 2006 at 10:49:56AM +0800, wyb@topsec.com.cn wrote:
 
-I met similar problem as Stanislaw Skowronek, but for gcc 3.4.3. I created a
-kernel module, when insmod, kernel reported "dangerous relocation". I traced
-the bug, found unmatched R_MIPS_HI16/LO16 in module's elf file, and kernel
-refused to relocate:
-...
-00015a5c  00039a05 R_MIPS_HI16       0000000c   tos_net_debug
-00015a68  00000204 R_MIPS_26         00000000   .text
-00015a64  00046005 R_MIPS_HI16       0006b598   arp_proxy_list
-00015a6c  00046006 R_MIPS_LO16       0006b598   arp_proxy_list
-...
+> I met similar problem as Stanislaw Skowronek, but for gcc 3.4.3. I created a
+> kernel module, when insmod, kernel reported "dangerous relocation". I traced
+> the bug, found unmatched R_MIPS_HI16/LO16 in module's elf file, and kernel
+> refused to relocate:
+> ...
+> 00015a5c  00039a05 R_MIPS_HI16       0000000c   tos_net_debug
+> 00015a68  00000204 R_MIPS_26         00000000   .text
+> 00015a64  00046005 R_MIPS_HI16       0006b598   arp_proxy_list
+> 00015a6c  00046006 R_MIPS_LO16       0006b598   arp_proxy_list
+> ...
+> 
+> My problem arised when expression on tos_net_debug could be optimized out,
+> it seemed like gcc optimized out the LO16, but left HI16.
+> 
+> The original discussion on similar problem is at
+> http://www.linux-mips.org/archives/linux-mips/2005-05/msg00097.html
 
-My problem arised when expression on tos_net_debug could be optimized out,
-it seemed like gcc optimized out the LO16, but left HI16.
+Do you have a testcase, a kernel .config file to trigger this?
 
-The original discussion on similar problem is at
-http://www.linux-mips.org/archives/linux-mips/2005-05/msg00097.html
-
-thanks very much
+  Ralf

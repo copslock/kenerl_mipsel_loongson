@@ -1,95 +1,133 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2006 15:28:46 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:36933 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8133933AbWGYO07 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2006 15:26:59 +0100
-Received: by mo.po.2iij.net (mo30) id k6PEQvWV047028; Tue, 25 Jul 2006 23:26:57 +0900 (JST)
-Received: from localhost.localdomain (203.25.30.125.dy.iij4u.or.jp [125.30.25.203])
-	by mbox.po.2iij.net (mbox32) id k6PEQr8R057544
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 25 Jul 2006 23:26:53 +0900 (JST)
-Date:	Tue, 25 Jul 2006 23:24:54 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] update workpad defconfig
-Message-Id: <20060725232454.70d5f078.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jul 2006 15:50:28 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:34800 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133455AbWGYOuO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Jul 2006 15:50:14 +0100
+Received: from localhost (p6003-ipad211funabasi.chiba.ocn.ne.jp [58.91.162.3])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 05359881E; Tue, 25 Jul 2006 23:50:07 +0900 (JST)
+Date:	Tue, 25 Jul 2006 23:51:36 +0900 (JST)
+Message-Id: <20060725.235136.92587083.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] rearrange show_stack, show_trace 
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12067
+X-archive-position: 12068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+Print call-trace in show_stack() (as like as other archs).
+Also make show_trace() static and simplify its argument list.
 
-This patch has updated workpad defconfig.
-Please apply.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Yoichi
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/workpad_defconfig mips/arch/mips/configs/workpad_defconfig
---- mips-orig/arch/mips/configs/workpad_defconfig	2006-07-25 22:52:01.587230000 +0900
-+++ mips/arch/mips/configs/workpad_defconfig	2006-07-25 23:13:22.855304250 +0900
-@@ -1,7 +1,7 @@
- #
- # Automatically generated make config: don't edit
--# Linux kernel version: 2.6.18-rc1
--# Thu Jul  6 10:04:21 2006
-+# Linux kernel version: 2.6.18-rc2
-+# Tue Jul 25 23:13:04 2006
- #
- CONFIG_MIPS=y
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 368fdb7..c6f7046 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -79,6 +79,25 @@ void (*board_bind_eic_interrupt)(int irq
+  */
+ #define MODULE_RANGE (8*1024*1024)
  
-@@ -166,6 +166,7 @@ CONFIG_SWAP=y
- CONFIG_SYSVIPC=y
- # CONFIG_POSIX_MQUEUE is not set
- # CONFIG_BSD_PROCESS_ACCT is not set
-+# CONFIG_TASKSTATS is not set
- CONFIG_SYSCTL=y
- # CONFIG_AUDIT is not set
- # CONFIG_IKCONFIG is not set
-@@ -379,6 +380,7 @@ CONFIG_CONNECTOR=m
- CONFIG_BLK_DEV_RAM=m
- CONFIG_BLK_DEV_RAM_COUNT=16
- CONFIG_BLK_DEV_RAM_SIZE=4096
-+CONFIG_BLK_DEV_RAM_BLOCKSIZE=1024
- # CONFIG_BLK_DEV_INITRD is not set
- # CONFIG_CDROM_PKTCDVD is not set
- # CONFIG_ATA_OVER_ETH is not set
-@@ -855,7 +857,6 @@ CONFIG_SUNRPC=y
- # CONFIG_RPCSEC_GSS_SPKM3 is not set
- # CONFIG_SMB_FS is not set
- # CONFIG_CIFS is not set
--# CONFIG_CIFS_DEBUG2 is not set
- # CONFIG_NCP_FS is not set
- # CONFIG_CODA_FS is not set
- # CONFIG_AFS_FS is not set
-@@ -880,6 +881,7 @@ CONFIG_MSDOS_PARTITION=y
- #
- # Kernel hacking
- #
-+CONFIG_TRACE_IRQFLAGS_SUPPORT=y
- # CONFIG_PRINTK_TIME is not set
- # CONFIG_MAGIC_SYSRQ is not set
- # CONFIG_UNUSED_SYMBOLS is not set
-@@ -887,7 +889,7 @@ CONFIG_MSDOS_PARTITION=y
- CONFIG_LOG_BUF_SHIFT=14
- # CONFIG_DEBUG_FS is not set
- CONFIG_CROSSCOMPILE=y
--CONFIG_CMDLINE="console=ttyVR0,19200 mem=16M"
-+CONFIG_CMDLINE="console=ttyVR0,19200 ide0=0x170,0x376,49 mem=16M"
++static void show_trace(unsigned long *stack)
++{
++	const int field = 2 * sizeof(unsigned long);
++	unsigned long addr;
++
++	printk("Call Trace:");
++#ifdef CONFIG_KALLSYMS
++	printk("\n");
++#endif
++	while (!kstack_end(stack)) {
++		addr = *stack++;
++		if (__kernel_text_address(addr)) {
++			printk(" [<%0*lx>] ", field, addr);
++			print_symbol("%s\n", addr);
++		}
++	}
++	printk("\n");
++}
++
+ /*
+  * This routine abuses get_user()/put_user() to reference pointers
+  * with at least a bit of error checking ...
+@@ -88,6 +107,7 @@ void show_stack(struct task_struct *task
+ 	const int field = 2 * sizeof(unsigned long);
+ 	long stackdata;
+ 	int i;
++	unsigned long *stack;
  
- #
- # Security options
+ 	if (!sp) {
+ 		if (task && task != current)
+@@ -95,6 +115,7 @@ void show_stack(struct task_struct *task
+ 		else
+ 			sp = (unsigned long *) &sp;
+ 	}
++	stack = sp;
+ 
+ 	printk("Stack :");
+ 	i = 0;
+@@ -115,32 +136,7 @@ void show_stack(struct task_struct *task
+ 		i++;
+ 	}
+ 	printk("\n");
+-}
+-
+-void show_trace(struct task_struct *task, unsigned long *stack)
+-{
+-	const int field = 2 * sizeof(unsigned long);
+-	unsigned long addr;
+-
+-	if (!stack) {
+-		if (task && task != current)
+-			stack = (unsigned long *) task->thread.reg29;
+-		else
+-			stack = (unsigned long *) &stack;
+-	}
+-
+-	printk("Call Trace:");
+-#ifdef CONFIG_KALLSYMS
+-	printk("\n");
+-#endif
+-	while (!kstack_end(stack)) {
+-		addr = *stack++;
+-		if (__kernel_text_address(addr)) {
+-			printk(" [<%0*lx>] ", field, addr);
+-			print_symbol("%s\n", addr);
+-		}
+-	}
+-	printk("\n");
++	show_trace(stack);
+ }
+ 
+ /*
+@@ -150,7 +146,7 @@ void dump_stack(void)
+ {
+ 	unsigned long stack;
+ 
+-	show_trace(current, &stack);
++	show_trace(&stack);
+ }
+ 
+ EXPORT_SYMBOL(dump_stack);
+@@ -270,7 +266,6 @@ void show_registers(struct pt_regs *regs
+ 	printk("Process %s (pid: %d, threadinfo=%p, task=%p)\n",
+ 	        current->comm, current->pid, current_thread_info(), current);
+ 	show_stack(current, (long *) regs->regs[29]);
+-	show_trace(current, (long *) regs->regs[29]);
+ 	show_code((unsigned int *) regs->cp0_epc);
+ 	printk("\n");
+ }

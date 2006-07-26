@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2006 15:40:40 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:61472 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8133832AbWGZOiZ (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2006 15:41:44 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:14143 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8133828AbWGZOiZ (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2006 15:38:25 +0100
-Received: by mo.po.2iij.net (mo31) id k6QEcMwM016987; Wed, 26 Jul 2006 23:38:22 +0900 (JST)
+Received: by mo.po.2iij.net (mo32) id k6QEcNxZ080597; Wed, 26 Jul 2006 23:38:23 +0900 (JST)
 Received: from localhost.localdomain (203.25.30.125.dy.iij4u.or.jp [125.30.25.203])
-	by mbox.po.2iij.net (mbox30) id k6QEcJ4G089718
+	by mbox.po.2iij.net (mbox30) id k6QEcLNn089729
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 26 Jul 2006 23:38:19 +0900 (JST)
-Date:	Wed, 26 Jul 2006 23:34:19 +0900
+	Wed, 26 Jul 2006 23:38:22 +0900 (JST)
+Date:	Wed, 26 Jul 2006 23:37:44 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] removed unused mirage_ts.c
-Message-Id: <20060726233419.2f24df15.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH] removed unused sibyte/swarm/time.c
+Message-Id: <20060726233744.6262ce07.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +22,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12084
+X-archive-position: 12085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,284 +32,258 @@ X-list: linux-mips
 
 Hi Ralf,
 
-This patch has removed mirage_ts.c .
-CONFIG_WM97XX_COMODULE doesn't exist.
+This patch has removed sibyte/swarm/time.c .
+This file is not used now.
 
 Yoichi
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-No config WM97XX_COMODULE
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/au1000/db1x00/Makefile mips/arch/mips/au1000/db1x00/Makefile
---- mips-orig/arch/mips/au1000/db1x00/Makefile	2006-07-26 10:34:31.764178000 +0900
-+++ mips/arch/mips/au1000/db1x00/Makefile	2006-07-26 15:22:58.350116250 +0900
-@@ -6,4 +6,3 @@
- # Makefile for the Alchemy Semiconductor Db1x00 board.
- 
- lib-y := init.o board_setup.o irqmap.o
--obj-$(CONFIG_WM97XX_COMODULE) += mirage_ts.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/au1000/db1x00/mirage_ts.c mips/arch/mips/au1000/db1x00/mirage_ts.c
---- mips-orig/arch/mips/au1000/db1x00/mirage_ts.c	2006-07-26 10:34:31.764178000 +0900
-+++ mips/arch/mips/au1000/db1x00/mirage_ts.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,260 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/sibyte/swarm/time.c mips/arch/mips/sibyte/swarm/time.c
+--- mips-orig/arch/mips/sibyte/swarm/time.c	2006-07-26 10:34:31.964190500 +0900
++++ mips/arch/mips/sibyte/swarm/time.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,244 +0,0 @@
 -/*
-- * linux/arch/mips/au1000/db1x00/mirage_ts.c
+- * Copyright (C) 2000, 2001 Broadcom Corporation
 - *
-- * BRIEF MODULE DESCRIPTION
-- *	Glue between Mirage board-specific touchscreen pieces
-- *	and generic Wolfson Codec touchscreen support.
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
 - *
-- *	Based on pb1100_ts.c used in Hydrogen II.
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
 - *
-- * Copyright (c) 2003 Embedded Edge, LLC
-- *		dan@embeddededge.com
-- *
-- *  This program is free software; you can redistribute	 it and/or modify it
-- *  under  the terms of	 the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the	License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED	  ``AS	IS'' AND   ANY	EXPRESS OR IMPLIED
-- *  WARRANTIES,	  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO	EVENT  SHALL   THE AUTHOR  BE	 LIABLE FOR ANY	  DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED	  TO, PROCUREMENT OF  SUBSTITUTE GOODS	OR SERVICES; LOSS OF
-- *  USE, DATA,	OR PROFITS; OR	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN	 CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 - */
 -
--#include <linux/types.h>
--#include <linux/module.h>
--#include <linux/sched.h>
--#include <linux/kernel.h>
+-/*
+- * Time routines for the swarm board.  We pass all the hard stuff
+- * through to the sb1250 handling code.  Only thing we really keep
+- * track of here is what time of day we think it is.  And we don't
+- * really even do a good job of that...
+- */
+-
+-
+-#include <linux/bcd.h>
 -#include <linux/init.h>
--#include <linux/fs.h>
--#include <linux/poll.h>
--#include <linux/proc_fs.h>
--#include <linux/smp.h>
--#include <linux/smp_lock.h>
--#include <linux/wait.h>
+-#include <linux/time.h>
+-#include <linux/sched.h>
+-#include <linux/spinlock.h>
+-#include <asm/system.h>
+-#include <asm/addrspace.h>
+-#include <asm/io.h>
 -
--#include <asm/segment.h>
--#include <asm/irq.h>
--#include <asm/uaccess.h>
--#include <asm/delay.h>
--#include <asm/au1000.h>
+-#include <asm/sibyte/sb1250.h>
+-#include <asm/sibyte/sb1250_regs.h>
+-#include <asm/sibyte/sb1250_smbus.h>
+-
+-static unsigned long long sec_bias = 0;
+-static unsigned int usec_bias = 0;
+-
+-/* Xicor 1241 definitions */
 -
 -/*
-- *  Imported interface to Wolfson Codec driver.
+- * Register bits
 - */
--extern void *wm97xx_ts_get_handle(int which);
--extern int wm97xx_ts_ready(void* ts_handle);
--extern void wm97xx_ts_set_cal(void* ts_handle, int xscale, int xtrans, int yscale, int ytrans);
--extern u16 wm97xx_ts_get_ac97(void* ts_handle, u8 reg);
--extern void wm97xx_ts_set_ac97(void* ts_handle, u8 reg, u16 val);
--extern int wm97xx_ts_read_data(void* ts_handle, long* x, long* y, long* pressure);
--extern void wm97xx_ts_send_data(void* ts_handle, long x, long y, long z);
 -
--int wm97xx_comodule_present = 1;
+-#define X1241REG_SR_BAT	0x80		/* currently on battery power */
+-#define X1241REG_SR_RWEL 0x04		/* r/w latch is enabled, can write RTC */
+-#define X1241REG_SR_WEL 0x02		/* r/w latch is unlocked, can enable r/w now */
+-#define X1241REG_SR_RTCF 0x01		/* clock failed */
+-#define X1241REG_BL_BP2 0x80		/* block protect 2 */
+-#define X1241REG_BL_BP1 0x40		/* block protect 1 */
+-#define X1241REG_BL_BP0 0x20		/* block protect 0 */
+-#define X1241REG_BL_WD1	0x10
+-#define X1241REG_BL_WD0	0x08
+-#define X1241REG_HR_MIL 0x80		/* military time format */
 -
+-/*
+- * Register numbers
+- */
 -
--#define TS_NAME "mirage_ts"
+-#define X1241REG_BL	0x10		/* block protect bits */
+-#define X1241REG_INT	0x11		/*  */
+-#define X1241REG_SC	0x30		/* Seconds */
+-#define X1241REG_MN	0x31		/* Minutes */
+-#define X1241REG_HR	0x32		/* Hours */
+-#define X1241REG_DT	0x33		/* Day of month */
+-#define X1241REG_MO	0x34		/* Month */
+-#define X1241REG_YR	0x35		/* Year */
+-#define X1241REG_DW	0x36		/* Day of Week */
+-#define X1241REG_Y2K	0x37		/* Year 2K */
+-#define X1241REG_SR	0x3F		/* Status register */
 -
--#define err(format, arg...) printk(KERN_ERR TS_NAME ": " format "\n" , ## arg)
--#define info(format, arg...) printk(KERN_INFO TS_NAME ": " format "\n" , ## arg)
--#define warn(format, arg...) printk(KERN_WARNING TS_NAME ": " format "\n" , ## arg)
--#define DPRINTK(format, arg...) printk("%s: " format "\n", __FUNCTION__ , ## arg)
+-#define X1241_CCR_ADDRESS	0x6F
 -
+-#define SMB_CSR(reg) (IOADDR(A_SMB_REGISTER(1, reg)))
 -
--#define PEN_DOWN_IRQ	AU1000_GPIO_7
--
--static struct task_struct *ts_task = 0;
--static DECLARE_COMPLETION(ts_complete);
--static DECLARE_WAIT_QUEUE_HEAD(pendown_wait);
--
--#ifdef CONFIG_WM97XX_FIVEWIRETS
--static int release_pressure = 1;
--#else
--static int release_pressure = 50;
--#endif
--
--typedef struct {
--   long x;
--   long y;
--} DOWN_EVENT;
--
--#define SAMPLE_RATE	50	/* samples per second */
--#define PEN_DEBOUNCE	5	/* samples for settling - fn of SAMPLE_RATE */
--#define PEN_UP_TIMEOUT	10	/* in seconds */
--#define PEN_UP_SETTLE	5	/* samples per second */
--
--static struct {
--	int xscale;
--	int xtrans;
--	int yscale;
--	int ytrans;
--} mirage_ts_cal =
+-static int xicor_read(uint8_t addr)
 -{
--#if 0
--	.xscale   = 84,
--	.xtrans = -157,
--	.yscale   = 66,
--	.ytrans = -150,
--#else
--	.xscale   = 84,
--	.xtrans = -150,
--	.yscale   = 66,
--	.ytrans = -146,
--#endif
--};
+-        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
+-                ;
 -
+-	__raw_writeq((addr >> 8) & 0x7, SMB_CSR(R_SMB_CMD));
+-	__raw_writeq(addr & 0xff, SMB_CSR(R_SMB_DATA));
+-	__raw_writeq(V_SMB_ADDR(X1241_CCR_ADDRESS) | V_SMB_TT_WR2BYTE,
+-		     SMB_CSR(R_SMB_START));
 -
--static void pendown_irq(int irqnr, void *devid, struct pt_regs *regs)
--{
--//DPRINTK("got one 0x%x", au_readl(SYS_PINSTATERD));
--	wake_up(&pendown_wait);
+-        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
+-                ;
+-
+-	__raw_writeq(V_SMB_ADDR(X1241_CCR_ADDRESS) | V_SMB_TT_RD1BYTE,
+-		     SMB_CSR(R_SMB_START));
+-
+-        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
+-                ;
+-
+-        if (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_ERROR) {
+-                /* Clear error bit by writing a 1 */
+-                __raw_writeq(M_SMB_ERROR, SMB_CSR(R_SMB_STATUS));
+-                return -1;
+-        }
+-
+-	return (__raw_readq(SMB_CSR(R_SMB_DATA)) & 0xff);
 -}
 -
--static int ts_thread(void *id)
+-static int xicor_write(uint8_t addr, int b)
 -{
--	static int pen_was_down = 0;
--	static DOWN_EVENT pen_xy;
--	long x, y, z;
--	void *ts;	/* handle */
--	struct task_struct *tsk = current;
--	int timeout = HZ / SAMPLE_RATE;
+-        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
+-                ;
 -
--	ts_task = tsk;
+-	__raw_writeq(addr, SMB_CSR(R_SMB_CMD));
+-	__raw_writeq((addr & 0xff) | ((b & 0xff) << 8), SMB_CSR(R_SMB_DATA));
+-	__raw_writeq(V_SMB_ADDR(X1241_CCR_ADDRESS) | V_SMB_TT_WR3BYTE,
+-		     SMB_CSR(R_SMB_START));
 -
--	daemonize();
--	tsk->tty = NULL;
--	tsk->policy = SCHED_FIFO;
--	tsk->rt_priority = 1;
--	strcpy(tsk->comm, "touchscreen");
+-        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
+-                ;
 -
--	/* only want to receive SIGKILL */
--	spin_lock_irq(&tsk->sigmask_lock);
--	siginitsetinv(&tsk->blocked, sigmask(SIGKILL));
--	recalc_sigpending(tsk);
--	spin_unlock_irq(&tsk->sigmask_lock);
--
--	/* get handle for codec */
--	ts = wm97xx_ts_get_handle(0);
--
--	/* proceed only after everybody is ready */
--	wait_event_timeout(pendown_wait, wm97xx_ts_ready(ts), HZ/4);
--
--	/* board-specific calibration */
--	wm97xx_ts_set_cal(ts,
--			mirage_ts_cal.xscale,
--			mirage_ts_cal.xtrans,
--			mirage_ts_cal.yscale,
--			mirage_ts_cal.ytrans);
--
--	/* route Wolfson pendown interrupts to our GPIO */
--	au_sync();
--	wm97xx_ts_set_ac97(ts, 0x4c, wm97xx_ts_get_ac97(ts, 0x4c) & ~0x0008);
--	au_sync();
--	wm97xx_ts_set_ac97(ts, 0x56, wm97xx_ts_get_ac97(ts, 0x56) & ~0x0008);
--	au_sync();
--	wm97xx_ts_set_ac97(ts, 0x52, wm97xx_ts_get_ac97(ts, 0x52) | 0x2008);
--	au_sync();
--
--	for (;;) {
--		interruptible_sleep_on_timeout(&pendown_wait, timeout);
--		disable_irq(PEN_DOWN_IRQ);
--		if (signal_pending(tsk)) {
--			break;
--		}
--
--		/* read codec */
--		if (!wm97xx_ts_read_data(ts, &x, &y, &z))
--			z = 0;	/* treat no-data and pen-up the same */
--
--		if (signal_pending(tsk)) {
--			break;
--		}
--
--		if (z >= release_pressure) {
--			y = ~y;	/* top to bottom */
--			if (pen_was_down > 1 /*&& pen_was_down < PEN_DEBOUNCE*/) {//THXXX
--				/* bounce ? */
--				x = pen_xy.x;
--				y = pen_xy.y;
--				--pen_was_down;
--			} else if (pen_was_down <= 1) {
--				pen_xy.x = x;
--				pen_xy.y = y;
--				if (pen_was_down)
--					wm97xx_ts_send_data(ts, x, y, z);
--				pen_was_down = PEN_DEBOUNCE;
--			}
--			//wm97xx_ts_send_data(ts, x, y, z);
--			timeout = HZ / SAMPLE_RATE;
--		} else {
--			if (pen_was_down) {
--				if (--pen_was_down)
--					z = release_pressure;
--				else //THXXX
--				wm97xx_ts_send_data(ts, pen_xy.x, pen_xy.y, z);
--			}
--			/* The pendown signal takes some time to settle after
--			 * reading the pen pressure so wait a little
--			 * before enabling the pen.
--			 */
--			if (! pen_was_down) {
--//				interruptible_sleep_on_timeout(&pendown_wait, HZ / PEN_UP_SETTLE);
--				timeout = HZ * PEN_UP_TIMEOUT;
--			}
--		}
--		enable_irq(PEN_DOWN_IRQ);
+-        if (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_ERROR) {
+-                /* Clear error bit by writing a 1 */
+-                __raw_writeq(M_SMB_ERROR, SMB_CSR(R_SMB_STATUS));
+-                return -1;
+-        } else {
+-		return 0;
 -	}
--	enable_irq(PEN_DOWN_IRQ);
--	ts_task = NULL;
--	complete(&ts_complete);
--	return 0;
 -}
 -
--static int __init ts_mirage_init(void)
+-/*
+- * In order to set the CMOS clock precisely, set_rtc_mmss has to be
+- * called 500 ms after the second nowtime has started, because when
+- * nowtime is written into the registers of the CMOS clock, it will
+- * jump to the next second precisely 500 ms later. Check the Motorola
+- * MC146818A or Dallas DS12887 data sheet for details.
+- *
+- * BUG: This routine does not handle hour overflow properly; it just
+- *      sets the minutes. Usually you'll only notice that after reboot!
+- */
+-int set_rtc_mmss(unsigned long nowtime)
 -{
--	int ret;
+-	int retval = 0;
+-	int real_seconds, real_minutes, cmos_minutes;
 -
--	/* pen down signal is connected to GPIO 7 */
+-	cmos_minutes = xicor_read(X1241REG_MN);
+-	cmos_minutes = BCD2BIN(cmos_minutes);
 -
--	ret = request_irq(PEN_DOWN_IRQ, pendown_irq, 0, "ts-pendown", NULL);
--	if (ret) {
--		err("unable to get pendown irq%d: [%d]", PEN_DOWN_IRQ, ret);
--		return ret;
+-	/*
+-	 * since we're only adjusting minutes and seconds,
+-	 * don't interfere with hour overflow. This avoids
+-	 * messing with unknown time zones but requires your
+-	 * RTC not to be off by more than 15 minutes
+-	 */
+-	real_seconds = nowtime % 60;
+-	real_minutes = nowtime / 60;
+-	if (((abs(real_minutes - cmos_minutes) + 15)/30) & 1)
+-		real_minutes += 30;		/* correct for half hour time zone */
+-	real_minutes %= 60;
+-
+-	/* unlock writes to the CCR */
+-	xicor_write(X1241REG_SR, X1241REG_SR_WEL);
+-	xicor_write(X1241REG_SR, X1241REG_SR_WEL | X1241REG_SR_RWEL);
+-
+-	if (abs(real_minutes - cmos_minutes) < 30) {
+-		real_seconds = BIN2BCD(real_seconds);
+-		real_minutes = BIN2BCD(real_minutes);
+-		xicor_write(X1241REG_SC, real_seconds);
+-		xicor_write(X1241REG_MN, real_minutes);
+-	} else {
+-		printk(KERN_WARNING
+-		       "set_rtc_mmss: can't update from %d to %d\n",
+-		       cmos_minutes, real_minutes);
+-		retval = -1;
 -	}
 -
--	lock_kernel();
--	ret = kernel_thread(ts_thread, NULL, CLONE_FS | CLONE_FILES);
--	if (ret < 0) {
--		unlock_kernel();
--		return ret;
--	}
--	unlock_kernel();
+-	xicor_write(X1241REG_SR, 0);
 -
--	info("Mirage touchscreen IRQ initialized.");
+-	printk("set_rtc_mmss: %02d:%02d\n", real_minutes, real_seconds);
 -
--	return 0;
+-	return retval;
 -}
 -
--static void __exit ts_mirage_exit(void)
+-static unsigned long __init get_swarm_time(void)
 -{
--	if (ts_task) {
--		send_sig(SIGKILL, ts_task, 1);
--		wait_for_completion(&ts_complete);
+-	unsigned int year, mon, day, hour, min, sec, y2k;
+-
+-	sec = xicor_read(X1241REG_SC);
+-	min = xicor_read(X1241REG_MN);
+-	hour = xicor_read(X1241REG_HR);
+-
+-	if (hour & X1241REG_HR_MIL) {
+-		hour &= 0x3f;
+-	} else {
+-		if (hour & 0x20)
+-			hour = (hour & 0xf) + 0x12;
 -	}
 -
--	free_irq(PEN_DOWN_IRQ, NULL);
+-	sec = BCD2BIN(sec);
+-	min = BCD2BIN(min);
+-	hour = BCD2BIN(hour);
+-
+-	day = xicor_read(X1241REG_DT);
+-	mon = xicor_read(X1241REG_MO);
+-	year = xicor_read(X1241REG_YR);
+-	y2k = xicor_read(X1241REG_Y2K);
+-
+-	day = BCD2BIN(day);
+-	mon = BCD2BIN(mon);
+-	year = BCD2BIN(year);
+-	y2k = BCD2BIN(y2k);
+-
+-	year += (y2k * 100);
+-
+-	return mktime(year, mon, day, hour, min, sec);
 -}
 -
--module_init(ts_mirage_init);
--module_exit(ts_mirage_exit);
+-/*
+- *  Bring up the timer at 100 Hz.
+- */
+-void __init swarm_time_init(void)
+-{
+-	unsigned int flags;
+-	int status;
 -
+-	/* Set up the scd general purpose timer 0 to cpu 0 */
+-	sb1250_time_init();
+-
+-	/* Establish communication with the Xicor 1241 RTC */
+-	/* XXXKW how do I share the SMBus with the I2C subsystem? */
+-
+-	__raw_writeq(K_SMB_FREQ_400KHZ, SMB_CSR(R_SMB_FREQ));
+-	__raw_writeq(0, SMB_CSR(R_SMB_CONTROL));
+-
+-	if ((status = xicor_read(X1241REG_SR_RTCF)) < 0) {
+-		printk("x1241: couldn't detect on SWARM SMBus 1\n");
+-	} else {
+-		if (status & X1241REG_SR_RTCF)
+-			printk("x1241: battery failed -- time is probably wrong\n");
+-		write_seqlock_irqsave(&xtime_lock, flags);
+-		xtime.tv_sec = get_swarm_time();
+-		xtime.tv_nsec = 0;
+-		write_sequnlock_irqrestore(&xtime_lock, flags);
+-	}
+-}

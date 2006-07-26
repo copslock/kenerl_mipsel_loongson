@@ -1,70 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2006 07:59:04 +0100 (BST)
-Received: from www.osadl.org ([213.239.205.134]:38376 "EHLO mail.tglx.de")
-	by ftp.linux-mips.org with ESMTP id S8133516AbWGZG6p (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2006 07:58:45 +0100
-Received: from hermes.tec.linutronix.de (unknown [192.168.0.1])
-	by mail.tglx.de (Postfix) with ESMTP id 8BA9665C003;
-	Wed, 26 Jul 2006 08:58:44 +0200 (CEST)
-Received: from tglx.tec.linutronix.de (tglx.tec.linutronix.de [192.168.0.68])
-	by hermes.tec.linutronix.de (Postfix) with ESMTP id EDA9668034;
-	Wed, 26 Jul 2006 08:58:42 +0200 (CEST)
-Subject: Re: [PATCH] PNX8550 NAND flash driver
-From:	Thomas Gleixner <tglx@linutronix.de>
-Reply-To: tglx@linutronix.de
-To:	Jurgen <jurgen.parmentier@telenet.be>
-Cc:	linux-mtd@lists.infradead.org,
-	"Vladimir A. Barinov" <vbarinov@ru.mvista.com>,
-	Todd Poynor <tpoynor@mvista.com>, linux-mips@linux-mips.org
-In-Reply-To: <44C66437.9030402@telenet.be>
-References: <43A2F819.1040106@ru.mvista.com> <43C69EC2.2070601@mvista.com>
-	 <43F1D439.60205@ru.mvista.com> <1152525196.30929.11.camel@localhost>
-	 <44C66437.9030402@telenet.be>
-Content-Type: text/plain
-Date:	Wed, 26 Jul 2006 09:02:53 +0200
-Message-Id: <1153897373.26845.77.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.6.1 
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Jul 2006 09:38:16 +0100 (BST)
+Received: from smtp2.int-evry.fr ([157.159.10.45]:8623 "EHLO smtp2.int-evry.fr")
+	by ftp.linux-mips.org with ESMTP id S8133529AbWGZIiF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Jul 2006 09:38:05 +0100
+Received: from connect.int-evry.fr (connect.int-evry.fr [157.159.10.48])
+	by smtp2.int-evry.fr (Postfix) with ESMTP id C84282FE6D
+	for <linux-mips@linux-mips.org>; Wed, 26 Jul 2006 10:37:56 +0200 (CEST)
+From:	Florian FAINELLI <florian.fainelli@int-evry.fr>
+To:	linux-mips@linux-mips.org
+Subject: YAMON and decompression from flash
+Date:	Wed, 26 Jul 2006 10:37:53 +0200
+User-Agent: KMail/1.9.1
+MIME-Version: 1.0
+Content-Type: multipart/signed;
+  boundary="nextPart1797976.nX7Jklc9tA";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-Return-Path: <tglx@linutronix.de>
+Message-Id: <200607261037.55996.florian.fainelli@int-evry.fr>
+X-INT-MailScanner-Information: Please contact the ISP for more information
+X-INT-MailScanner: Found to be clean
+X-INT-MailScanner-MCPCheck: 
+X-INT-MailScanner-SpamCheck: 
+X-MailScanner-From: florian.fainelli@int-evry.fr
+Return-Path: <florian.fainelli@int-evry.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12078
+X-archive-position: 12079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: florian.fainelli@int-evry.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2006-07-25 at 20:34 +0200, Jurgen wrote:
-> Root cause of the problem lies within the early implementation of the 
-> low-level NAND commands. There was a severe risk that the PCI accesses 
-> were stalled because of a Read Status command for the NAND Flash. This 
-> Read Status was launched immediately after program/erase command. The 
-> hardware itself will wait for the Ready/Busy to be high and only then 
-> launch the Read Status command. This behavior caused timeout on the 
-> internal bus because PCI was unable to use the pins during this wait.
+--nextPart1797976.nX7Jklc9tA
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-The hardware design is broken. Status Read can be requested while R/B is
-low. See NAND datasheets.
+Hi all,
 
-> If this problem was coinciding with an ISR that tried to perform a PCI 
-> status register, then this PCI access could possibly timeout (because 
-> the PCI pins were already claimed for the XIO access that is depending 
-> on the RBY signal).
-> 
-> Since the problem only showed during the PCI device ISR, the 
-> quick'n'dirty hack was to disable interrupts during XIO accesses.
-> 
-> A better fix that should be available somewhere, is to improve the 
-> low-level NAND driver that will first check the status of the Ready/Busy 
-> line and only THEN launch the Read NAND Status command...
+I want to use the generic LZMA decompressor we use in OpenWrt with an MTX-1=
+=20
+board. Currently, decompressing from RAM works fine. My problems are coming=
+=20
+from decompression from flash.
 
-Thats not an improvement. Thats a hack for your broken hardware. You'd
-burden the R/B check on every sane hardware out there.
+Basically, I used the same parameters for flash decompression as for RAM=20
+decompression (kernel entry point, ram start address, ram size), except tha=
+t=20
+I ran an "--adjust-vma" with the same parameters as the zlib decompressor h=
+as=20
+in the Makefile (patch can be found here :=20
+https://dev.openwrt.org/browser/branches/buildroot-ng/openwrt/target/linux/=
+au1000-2.6/patches/003-zImage.patch).
 
-You can add the R/B check to the chip->cmd_ctrl() function of your board
-driver.
+I think I am missing some ideas/concepts, and don't know why it works for=20
+zlib, and not for lzma (apart from the fact that the two decompressor may n=
+ot=20
+work the same way).
 
-	tglx
+Thank you very much in advance for any suggestion. If it is relevant I will=
+=20
+post the exception handling YAMON generates while decompressing from flash.
+=2D--
+Cordialement, Florian Fainelli
+=2D--------------------------------------------
+5, rue Charles Fourier
+Chambre 1511
+91011 Evry
+http://www.alphacore.net
+(+33) 01 60 76 64 86
+(+33) 06 09 02 64 95
+=2D--------------------------------------------
+Association MiNET
+http://www.minet.net
+=2D--------------------------------------------
+Institut National des T=E9l=E9communications
+http://www.int-evry.fr/telecomint
+=2D--------------------------------------------
+
+--nextPart1797976.nX7Jklc9tA
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2.2 (GNU/Linux)
+
+iD8DBQBExynjQ/Yr6D8A81kRAtJ9AJ9IZCAwh2nd30iRtfnzVj22umdYYwCfYDRz
+VS/zSdRFuLMnKB8TTdHiPMc=
+=8+4n
+-----END PGP SIGNATURE-----
+
+--nextPart1797976.nX7Jklc9tA--

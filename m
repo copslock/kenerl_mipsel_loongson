@@ -1,50 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 21:55:20 +0100 (BST)
-Received: from moutng.kundenserver.de ([212.227.126.177]:29143 "EHLO
-	moutng.kundenserver.de") by ftp.linux-mips.org with ESMTP
-	id S8133438AbWG0UzL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Jul 2006 21:55:11 +0100
-Received: from [89.48.106.171] (helo=thalreit.de)
-	by mrelayeu.kundenserver.de (node=mrelayeu3) with ESMTP (Nemesis),
-	id 0MKxQS-1G6Csv3TO8-0000d5; Thu, 27 Jul 2006 22:55:10 +0200
-Received: from eos.thalreit ([10.87.15.10] ident=Debian-exim)
-	by thalreit.de with esmtp (Exim 4.51 (FreeBSD))
-	id 1G6Csu-000Afm-IE
-	for linux-mips@linux-mips.org; Thu, 27 Jul 2006 22:55:08 +0200
-Received: from volker by eos.thalreit with local (Exim 4.50)
-	id 1G6Csu-0001Kp-8M
-	for linux-mips@linux-mips.org; Thu, 27 Jul 2006 22:55:08 +0200
-Date:	Thu, 27 Jul 2006 22:55:08 +0200
-From:	Volker Jahns <volker@thalreit.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 22:43:11 +0100 (BST)
+Received: from [69.90.147.196] ([69.90.147.196]:29352 "EHLO mail.kenati.com")
+	by ftp.linux-mips.org with ESMTP id S8133592AbWG0VnD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Jul 2006 22:43:03 +0100
+Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
+	by mail.kenati.com (Postfix) with ESMTP id DEDB8E4051
+	for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 14:57:56 -0700 (PDT)
+Subject: 2.6 -initramfs -bootarg root=
+From:	Ashlesha Shintre <ashlesha@kenati.com>
+Reply-To: ashlesha@kenati.com
 To:	linux-mips@linux-mips.org
-Subject: Longshine LCS-8240 / Netronix NH-240
-Message-ID: <20060727205508.GA5126@eos.thalreit>
-Mail-Followup-To: linux-mips@linux-mips.org
+Content-Type: text/plain
+Date:	Thu, 27 Jul 2006 14:48:08 -0700
+Message-Id: <1154036888.6804.8.camel@sandbar.kenati.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.9i
-X-Provags-ID: kundenserver.de abuse@kundenserver.de login:5b79f71352ef1364d4beaa70fe75636d
-Return-Path: <volker@thalreit.de>
+X-Mailer: Evolution 2.4.2.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ashlesha@kenati.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12102
+X-archive-position: 12103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: volker@thalreit.de
+X-original-sender: ashlesha@kenati.com
 Precedence: bulk
 X-list: linux-mips
 
-I do have here an Longshine LCS-8240, which seems to be a repackaged Netronix NH-240 ( MSP2006, 4M Flash, 64MB SDRAM - what Netronix claims) and which I would like to activate with homegrown Linux Firmware.
+Hi,
 
-Is there any information out there for similar devices on
-- howto to hook up a serial line
-- firmware building and uploading
+I experimenting with different boot arguments to make the 2.6 kernel
+boot on the DB1500 board (with the AU1500 MIPS processor).
 
-I have asked Netronix and Longshine for the source code, with Netronix
-redirecting me to Longshine and Longshine not answering. 
+Along with the image, the make also generated a /usr directory
+containing the initramfs_data.cpio.gz and other files, namely:
 
-Any help is much appreciated.
--- 
-Volker Jahns, volker@thalreit.de
+CVS      Makefile    gen_init_cpio    initramfs_data.S
+initramfs_data.cpio.gz  initramfs_list
+Kconfig  built-in.o  gen_init_cpio.c  initramfs_data.cpio
+initramfs_data.o
+
+During the configuration, 'Create Root File System' was selected in the
+xconfig menu.
+Therefore, I think using NFS is appropriate.  In the boot args, I ve
+written the following:
+
+root=/dev/nfs  
+nfsroot=192.168.1.8:/tftpboot/usr_as/initramfs_list 
+console=tty0,115200,n,1,none
+ip=xxx.xxx.x.146:xxx.xxx.x.8 (client: server)
+
+Please help me out here--
+Thank you..
+Ashlesha.

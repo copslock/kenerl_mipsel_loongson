@@ -1,261 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 16:54:04 +0100 (BST)
-Received: from cluster-a.mailcontroller.altohiway.com ([213.83.66.193]:26603
-	"EHLO cluster-a.mailcontroller.altohiway.com") by ftp.linux-mips.org
-	with ESMTP id S8134022AbWG0Pxy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Jul 2006 16:53:54 +0100
-Received: from efs01.eventmine.local (host-212-158-201-87.bulldogdsl.com [212.158.201.87])
-	by rlya6a.mailcontroller.altohiway.com (MailControl) with SMTP id k6RFrlTr009217
-	for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 16:53:47 +0100
-Content-class: urn:content-classes:message
-Subject: is sde lite a complete toolchain?
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 17:55:16 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:45971 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S8133592AbWG0QzH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Jul 2006 17:55:07 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 44AA5B0B4C;
+	Thu, 27 Jul 2006 13:07:48 -0400 (EDT)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Thu, 27 Jul 2006 13:07:48 -0400 (EDT)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 27 Jul 2006 09:54:58 -0700
+Message-ID: <44C8EFE2.4010102@avtrex.com>
+Date:	Thu, 27 Jul 2006 09:54:58 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C6B194.D8D498EE"
-Date:	Thu, 27 Jul 2006 16:53:47 +0100
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Message-ID: <583C102FDFBE2E4FB8ADF0D680B0798C0B53CB@efs01.eventmine.local>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: is sde lite a complete toolchain?
-Thread-Index: AcaxlNiWg1ugYcxmR2GbTjm4BJ3SKg==
-From:	"Shan Wang" <swang@eventmine.com>
-To:	<linux-mips@linux-mips.org>
-X-Scanned-By: MailControl A-06-00-05 (www.mailcontrol.com) on 10.60.0.116
-Return-Path: <swang@eventmine.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] dump_stack() based on prologue code analysis
+References: <20060726.232231.59465336.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060726.232231.59465336.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 27 Jul 2006 16:54:58.0471 (UTC) FILETIME=[64BCBB70:01C6B19D]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12093
+X-archive-position: 12095
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: swang@eventmine.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Atsushi Nemoto wrote:
+> Instead of dump all possible address in the stack, unwind the stack
+> frame based on prologue code analysis, as like as get_chan() does.
+> While the code analysis might fail for some reason, there is a new
+> kernel option "raw_show_trace" to disable this feature.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-------_=_NextPart_001_01C6B194.D8D498EE
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Let me start by saying I have not analyzed how all this code works, but 
+I have done something similar in user space.
 
-Hi all,
+Since the kernel ABI does not use gp, many functions may not have a 
+prolog (especially when compiled with newer versions of GCC).  In the 
+user space case, most leaf functions have no prolog.  For the kernel I 
+would imagine that many non-leaf functions (simple non-leaf functions 
+that do only a tail call) would also not have a prolog.
 
-=20
+I would be worried that many stack traces would become less useful.
 
-I downloaded the SDE lite toolchain from MIPS Technologies. I can use
-the makefiles to build all the examples come with the package and test
-them with the simulator. But when I tried to use sde-gcc to cross
-compile the hello world example directly:
+If this were conditional on -fno-omit-frame-pointer, then I think it 
+would be a good idea.
 
-=20
-
-sde-gcc -Wall -mips32 -mtune=3D4kc -EL hello.c -o hello
-
-=20
-
-I got errors like the following:
-
-/home/linuxdev/packages/sde-lite-linux/bin/../lib/gcc/sde/3.4.4/../../..
-/../sde/bin/ld: warning: cannot find entry symbol __start;
-
- defaulting to 0000000080020000
-
-/tmp/ccEaLxlW.o: In function `main':
-
-hello.c:(.text+0x20): undefined reference to `printf'
-
-hello.c:(.text+0x20): relocation truncated to fit: R_MIPS_26 against
-`printf'
-
-collect2: ld returned 1 exit status
-
-=20
-
-=20
-
-Does that mean the SDE lite package is not a complete cross toolchain,
-can I use it to compile my own application?=20
-
-=20
-
-Any help will be appropriated, thanks very much.
-
-=20
-
-=20
-
-Best Regards,
-
-=20
-
-Shan
-
-
-
-This message has been scanned by MailController - www.MailController.altohi=
-way.com
-
-------_=_NextPart_001_01C6B194.D8D498EE
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
-hemas-microsoft-com:office:word" xmlns=3D"http://www.w3.org/TR/REC-html40">
-
-<head>
-<meta http-equiv=3DContent-Type content=3D"text/html; charset=3Dus-ascii">
-<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
-<style>
-<!--
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:12.0pt;
-	font-family:"Times New Roman";}
-a:link, span.MsoHyperlink
-	{color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{color:purple;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:Arial;
-	color:windowtext;}
-@page Section1
-	{size:612.0pt 792.0pt;
-	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
-div.Section1
-	{page:Section1;}
--->
-</style>
-
-</head>
-
-<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
-
-<div class=3DSection1>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>Hi all,<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>I downloaded the SDE lite toolchain from MIPS
-Technologies. I can use the makefiles to build all the examples come with t=
-he
-package and test them with the simulator. But when I tried to use sde-gcc to
-cross compile the hello world example directly:<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>sde-gcc -Wall -mips32 -mtune=3D4kc -EL hello.c -o=
- hello<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>I got errors like the following:<o:p></o:p></span=
-></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>/home/linuxdev/packages/sde-lite-linux/bin/../lib=
-/gcc/sde/3.4.4/../../../../sde/bin/ld:
-warning: cannot find entry symbol __start;<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>&nbsp;defaulting to 0000000080020000<o:p></o:p></=
-span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>/tmp/ccEaLxlW.o: In function `main':<o:p></o:p></=
-span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>hello.c:(.text+0x20): undefined reference to `pri=
-ntf'<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>hello.c:(.text+0x20): relocation truncated to fit:
-R_MIPS_26 against `printf'<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>collect2: ld returned 1 exit status<o:p></o:p></s=
-pan></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>Does that mean the SDE lite package is not a comp=
-lete
-cross toolchain, can I use it to compile my own application? <o:p></o:p></s=
-pan></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>Any help will be appropriated, thanks very much.<=
-o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>Best Regards,<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
-=3D'font-size:
-10.0pt;font-family:Arial'>Shan<o:p></o:p></span></font></p>
-
-</div>
-
-<br><br>
-<P align=3Dcenter>This message has been scanned by <A href=3D"http://www.ma=
-ilcontroller.altohiway.com/">MailController</A>.</P>
-</body>
-
-</html>
-
-------_=_NextPart_001_01C6B194.D8D498EE--
+David Daney.

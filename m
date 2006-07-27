@@ -1,88 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 10:01:42 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.189]:10412 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133372AbWG0JB3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Jul 2006 10:01:29 +0100
-Received: by nf-out-0910.google.com with SMTP id q29so92478nfc
-        for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 02:01:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 12:35:36 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.175]:18181 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133452AbWG0Lf2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Jul 2006 12:35:28 +0100
+Received: by ug-out-1314.google.com with SMTP id y2so184664uge
+        for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 04:35:27 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=KXdXECXv/BUDirNB6IH8QkJ6p6acXvGrgRKoZksJOM4ekOJkJtPtIRh7SGxn3KZ9VGLsMkuxaCuK21c4c8WjFn8xiXCV60d0QlFdo3zaQQh1YfafMiPQLyuDbsYdTLUjmrrT3J54RoLbJC/EKezzQ/vOPiXaG2HmmD138aI9GXE=
-Received: by 10.48.240.10 with SMTP id n10mr1546511nfh;
-        Thu, 27 Jul 2006 02:01:27 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id p43sm448014nfa.2006.07.27.02.01.26;
-        Thu, 27 Jul 2006 02:01:27 -0700 (PDT)
-Message-ID: <44C880A9.1070402@innova-card.com>
-Date:	Thu, 27 Jul 2006 11:00:25 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
+        b=Aimc+1ifDFmRNrFxSvIhUQYw7eytev1iiDqHDxxvXQJ6Rf8l7GXSTCKc0wpiQqNQ2g4IdRSQuDwevx7TFic36Pc5IQTD+X8bDkS9YBPZ4n0ro81Fn94j9aRJ4wyIA/e2Jw+pH7IZsDOhRsRRBP6Wz6GUzHamWgjfBOmcUHgKNNk=
+Received: by 10.66.220.17 with SMTP id s17mr7074813ugg;
+        Thu, 27 Jul 2006 04:35:26 -0700 (PDT)
+Received: by 10.67.23.12 with HTTP; Thu, 27 Jul 2006 04:35:26 -0700 (PDT)
+Message-ID: <218a54980607270435y778c4b79w5b9bb0fb0a435aa@mail.gmail.com>
+Date:	Thu, 27 Jul 2006 07:35:26 -0400
+From:	"Peter Watkins" <treestem@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] For N32 rt_sigqueueinfo uses O32 padding, not N64.
+In-Reply-To: <218a54980607261642i55966303r791f29791bab5588@mail.gmail.com>
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [PATCH] do not count pages in holes with sparsemem
-References: <44B3625B.7000700@innova-card.com>	<20060711.222458.74752678.anemo@mba.ocn.ne.jp>	<44C77D49.90205@innova-card.com> <20060727.002153.41632148.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060727.002153.41632148.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_20871_31264724.1154000126872"
+References: <218a54980607261642i55966303r791f29791bab5588@mail.gmail.com>
+Return-Path: <treestem@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12089
+X-archive-position: 12090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: treestem@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Wed, 26 Jul 2006 16:33:45 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->> I don't think that's correct to mark them as "reserved". Basicaly
->> "reserved" means that it belongs to the kernel (code or data), these
->> holes are not and we will end up to have wrong value as you pointed
->> out.
->>
->> Having quick look at sparsemem code, I don't think that it expects
->> to have holes inside a section, do it ? If so you probably have to
->> fix up your section size...
-> 
-> Yes, for such small holes, sparsemem and flatmem is same.  We can use
-> smaller section size to save more memory, but I suppose it will be a
-> bit slower.
-> 
+------=_Part_20871_31264724.1154000126872
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-I'm suprised that sparsemem code doens't check for holes inside
-sections. I would feel really more confortable to use sparsemem if a
-check like the following patch exists. We could safely use pfn_valid()
-in _any_ cases and if holes exist inside sections then the user have
-to fix up its section sizes.
+ For N32 rt_sigqueueinfo uses O32 padding, not N64.
 
-what do you think ?
+------=_Part_20871_31264724.1154000126872
+Content-Type: application/octet-stream; name=patch-scall64
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_eq4cc60u
+Content-Disposition: attachment; filename="patch-scall64"
 
-		Franck
-
--- >8 --
-
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 86c52ab..4c29a13 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -119,6 +119,13 @@ void memory_present(int nid, unsigned lo
- {
- 	unsigned long pfn;
- 
-+	if (start & (PAGES_PER_SECTION-1) || end & (PAGES_PER_SECTION-1)) {
-+		printk(KERN_ERR "SPARSEMEM: memory area (%lx-%lx) creates a "
-+		       "hole inside a section, fix your SECTION_SIZE_BITS "
-+		       "value...\n", start, end);
-+		BUG();
-+	}
-+	
- 	start &= PAGE_SECTION_MASK;
- 	for (pfn = start; pfn < end; pfn += PAGES_PER_SECTION) {
- 		unsigned long section = pfn_to_section_nr(pfn);
+RGF0ZTogV2VkLCAyNiBKdWwgMjAwNiAxOToyNjoxMiAtMDQwMApTdWJqZWN0OiBGb3IgTjMyIHJ0
+X3NpZ3F1ZXVlaW5mbyB1c2VzIE8zMiBwYWRkaW5nLCBub3QgTjY0LgotLS0KIGFyY2gvbWlwcy9r
+ZXJuZWwvc2NhbGw2NC1uMzIuUyB8ICAgIDIgKy0KIDEgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRp
+b25zKCspLCAxIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9rZXJuZWwvc2Nh
+bGw2NC1uMzIuUyBiL2FyY2gvbWlwcy9rZXJuZWwvc2NhbGw2NC1uMzIuUwppbmRleCA5OGFiYmM1
+Li41NDliNGJjIDEwMDY0NAotLS0gYS9hcmNoL21pcHMva2VybmVsL3NjYWxsNjQtbjMyLlMKKysr
+IGIvYXJjaC9taXBzL2tlcm5lbC9zY2FsbDY0LW4zMi5TCkBAIC0yNDcsNyArMjQ3LDcgQEAgRVhQ
+T1JUKHN5c24zMl9jYWxsX3RhYmxlKQogCVBUUglzeXNfY2Fwc2V0CiAJUFRSCXN5czMyX3J0X3Np
+Z3BlbmRpbmcJCS8qIDYxMjUgKi8KIAlQVFIJY29tcGF0X3N5c19ydF9zaWd0aW1lZHdhaXQKLQlQ
+VFIJc3lzX3J0X3NpZ3F1ZXVlaW5mbworCVBUUglzeXMzMl9ydF9zaWdxdWV1ZWluZm8KIAlQVFIJ
+c3lzbjMyX3J0X3NpZ3N1c3BlbmQKIAlQVFIJc3lzMzJfc2lnYWx0c3RhY2sKIAlQVFIJY29tcGF0
+X3N5c191dGltZQkJLyogNjEzMCAqLwotLSAKMS40LjEKCg==
+------=_Part_20871_31264724.1154000126872--

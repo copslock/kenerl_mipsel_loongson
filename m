@@ -1,327 +1,261 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 15:34:34 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.184]:30412 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S8134016AbWG0OeW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Jul 2006 15:34:22 +0100
-Received: by nf-out-0910.google.com with SMTP id q29so188316nfc
-        for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 07:34:11 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=ULbKCUXxxgj9z8m2p1yvkYXBU8eycm6j0S3p6LwPqon4DyJ6qEymIj2aN8XPw5as88fCCfHQC4KyYWiOJG6K+Klf8oRUoWYiXUL9VfPy/BaNO+fLF0ns9zxtglj4j5Tl5bgRybpqTMCKs2jUiI6vLWXzt7m+TlN+tg64U49TEt4=
-Received: by 10.48.240.10 with SMTP id n10mr78861nfh;
-        Thu, 27 Jul 2006 07:34:11 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id p43sm814927nfa.2006.07.27.07.34.10;
-        Thu, 27 Jul 2006 07:34:11 -0700 (PDT)
-Message-ID: <44C8CEA4.20000@innova-card.com>
-Date:	Thu, 27 Jul 2006 16:33:08 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 16:54:04 +0100 (BST)
+Received: from cluster-a.mailcontroller.altohiway.com ([213.83.66.193]:26603
+	"EHLO cluster-a.mailcontroller.altohiway.com") by ftp.linux-mips.org
+	with ESMTP id S8134022AbWG0Pxy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Jul 2006 16:53:54 +0100
+Received: from efs01.eventmine.local (host-212-158-201-87.bulldogdsl.com [212.158.201.87])
+	by rlya6a.mailcontroller.altohiway.com (MailControl) with SMTP id k6RFrlTr009217
+	for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 16:53:47 +0100
+Content-class: urn:content-classes:message
+Subject: is sde lite a complete toolchain?
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] dump_stack() based on prologue code analysis
-References: <20060726.232231.59465336.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060726.232231.59465336.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C6B194.D8D498EE"
+Date:	Thu, 27 Jul 2006 16:53:47 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Message-ID: <583C102FDFBE2E4FB8ADF0D680B0798C0B53CB@efs01.eventmine.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: is sde lite a complete toolchain?
+Thread-Index: AcaxlNiWg1ugYcxmR2GbTjm4BJ3SKg==
+From:	"Shan Wang" <swang@eventmine.com>
+To:	<linux-mips@linux-mips.org>
+X-Scanned-By: MailControl A-06-00-05 (www.mailcontrol.com) on 10.60.0.116
+Return-Path: <swang@eventmine.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12092
+X-archive-position: 12093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: swang@eventmine.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Atsushi ;)
+This is a multi-part message in MIME format.
 
-Atsushi Nemoto wrote:
-> Instead of dump all possible address in the stack, unwind the stack
-> frame based on prologue code analysis, as like as get_chan() does.
-> While the code analysis might fail for some reason, there is a new
-> kernel option "raw_show_trace" to disable this feature.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> 
-> diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-> index 7ab67f7..8f1a5fe 100644
-> --- a/arch/mips/kernel/process.c
-> +++ b/arch/mips/kernel/process.c
-> @@ -281,7 +281,7 @@ static struct mips_frame_info {
->  } *schedule_frame, mfinfo[64];
->  static int mfinfo_num;
->  
-> -static int __init get_frame_info(struct mips_frame_info *info)
-> +static int get_frame_info(struct mips_frame_info *info)
->  {
->  	int i;
->  	void *func = info->func;
-> @@ -329,12 +329,6 @@ #endif
->  				ip->i_format.simmediate / sizeof(long);
->  		}
->  	}
-> -	if (info->pc_offset == -1 || info->frame_size == 0) {
-> -		if (func == schedule)
-> -			printk("Can't analyze prologue code at %p\n", func);
-> -		info->pc_offset = -1;
-> -		info->frame_size = 0;
-> -	}
->  
->  	return 0;
->  }
-> @@ -367,8 +361,17 @@ #else
->  	mfinfo[0].func = schedule;
->  	schedule_frame = &mfinfo[0];
->  #endif
-> -	for (i = 0; i < ARRAY_SIZE(mfinfo) && mfinfo[i].func; i++)
-> -		get_frame_info(&mfinfo[i]);
-> +	for (i = 0; i < ARRAY_SIZE(mfinfo) && mfinfo[i].func; i++) {
-> +		struct mips_frame_info *info = &mfinfo[i];
-> +		get_frame_info(info);
-> +		if (info->pc_offset < 0 || info->frame_size == 0) {
-> +			if (info->func == schedule)
+------_=_NextPart_001_01C6B194.D8D498EE
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-This can't happen since "schedule" is not a leaf function. Something I'm
-missing here but I would have said:
+Hi all,
 
-			if (func != schedule)
+=20
 
-instead, no ?
+I downloaded the SDE lite toolchain from MIPS Technologies. I can use
+the makefiles to build all the examples come with the package and test
+them with the simulator. But when I tried to use sde-gcc to cross
+compile the hello world example directly:
 
-> +				printk("Can't analyze prologue code at %p\n",
-> +				       info->func);
-> +			info->pc_offset = -1;
-> +			info->frame_size = 0;
-> +		}
-> +	}
->  
->  	mfinfo_num = i;
->  	return 0;
-> @@ -437,3 +440,41 @@ #endif
->  	return pc;
->  }
->  
-> +#ifdef CONFIG_KALLSYMS
-> +/* used by show_frametrace() */
-> +unsigned long unwind_stack(struct task_struct *task,
-> +			   unsigned long **sp, unsigned long pc)
-> +{
-> +	unsigned long stack_page;
-> +	struct mips_frame_info info;
-> +	char *modname;
-> +	char namebuf[KSYM_NAME_LEN + 1];
-> +	unsigned long size, ofs;
-> +
-> +	stack_page = (unsigned long)task_stack_page(task);
-> +	if (!stack_page)
-> +		return 0;
-> +
-> +	if (!kallsyms_lookup(pc, &size, &ofs, &modname, namebuf))
-> +		return 0;
-> +	if (ofs == 0)
-> +		return 0;
-> +
-> +	info.func = (void *)(pc - ofs);
-> +	info.func_size = ofs;	/* analyze from start to ofs */
-> +	get_frame_info(&info);
-> +	if (info.pc_offset < 0 || !info.frame_size) {
-> +		/* leaf? */
+=20
 
-for leaf case, can't we simply do this test:
+sde-gcc -Wall -mips32 -mtune=3D4kc -EL hello.c -o hello
 
-	if (info.pc_offset < 0) {
+=20
 
-IOW, can a leaf function move sp ? I would say yes...
+I got errors like the following:
 
-BTW why not let this logic inside get_frame_info() ? Hence this function
-could return:
+/home/linuxdev/packages/sde-lite-linux/bin/../lib/gcc/sde/3.4.4/../../..
+/../sde/bin/ld: warning: cannot find entry symbol __start;
 
-	if (info.frame_size && info.pc_offset > 0) /* nested */
-		return 0;
-	if (info.pc_offset < 0) /* leaf */
-		return 1;
-	/* prologue seems boggus... */
-	printk("Can't analyze prologue code at %p\n", info->func);
-	return -1;
+ defaulting to 0000000080020000
 
-> +		*sp += info.frame_size / sizeof(long);
-> +		return 0;
+/tmp/ccEaLxlW.o: In function `main':
 
-why not returning:
-		return regs->regs[31];
+hello.c:(.text+0x20): undefined reference to `printf'
 
-and removes the leaf detection logic in show_frametrace() ?
+hello.c:(.text+0x20): relocation truncated to fit: R_MIPS_26 against
+`printf'
 
-> +	}
-> +	if ((unsigned long)*sp < stack_page ||
-> +	    (unsigned long)*sp + info.frame_size / sizeof(long) >
-> +	    stack_page + THREAD_SIZE - 32)
-> +		return 0;
-> +
-> +	pc = (*sp)[info.pc_offset];
-> +	*sp += info.frame_size / sizeof(long);
-> +	return pc;
+collect2: ld returned 1 exit status
 
-why not directly doing:
+=20
 
-	return (*sp)[info.pc_offset];
+=20
 
-and remove:
+Does that mean the SDE lite package is not a complete cross toolchain,
+can I use it to compile my own application?=20
 
-	pc = (*sp)[info.pc_offset];
+=20
 
-> +}
-> +#endif
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index c6f7046..bf36fcc 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -98,24 +98,53 @@ #endif
->  	printk("\n");
->  }
->  
-> +#ifdef CONFIG_KALLSYMS
-> +static int raw_show_trace;
-> +static int __init set_raw_show_trace(char *str)
-> +{
-> +	raw_show_trace = 1;
-> +	return 1;
-> +}
-> +__setup("raw_show_trace", set_raw_show_trace);
-> +
-> +extern unsigned long unwind_stack(struct task_struct *task,
-> +				  unsigned long **sp, unsigned long pc);
-> +static void show_frametrace(struct task_struct *task, struct pt_regs *regs)
-> +{
-> +	const int field = 2 * sizeof(unsigned long);
-> +	unsigned long *stack = (long *)regs->regs[29];
+Any help will be appropriated, thanks very much.
 
-why not calling that "sp" ?
+=20
 
-> +	unsigned long pc = regs->cp0_epc;
-> +	int top = 1;
-> +
-> +	if (raw_show_trace || !__kernel_text_address(pc)) {
-> +		show_trace(stack);
-> +		return;
-> +	}
-> +	printk("Call Trace:\n");
-> +	while (__kernel_text_address(pc)) {
-> +		printk(" [<%0*lx>] ", field, pc);
-> +		print_symbol("%s\n", pc);
-> +		pc = unwind_stack(task, &stack, pc);
-> +		if (top && pc == 0)
-> +			pc = regs->regs[31];	/* leaf? */
-> +		top = 0;
-> +	}
-> +	printk("\n");
-> +}
-> +#else
-> +#define show_frametrace(task, r) show_trace((long *)(r)->regs[29]);
-> +#endif
-> +
->  /*
->   * This routine abuses get_user()/put_user() to reference pointers
->   * with at least a bit of error checking ...
->   */
-> -void show_stack(struct task_struct *task, unsigned long *sp)
-> +static void show_stacktrace(struct task_struct *task, struct pt_regs *regs)
->  {
->  	const int field = 2 * sizeof(unsigned long);
->  	long stackdata;
->  	int i;
-> -	unsigned long *stack;
-> -
-> -	if (!sp) {
-> -		if (task && task != current)
-> -			sp = (unsigned long *) task->thread.reg29;
-> -		else
-> -			sp = (unsigned long *) &sp;
-> -	}
-> -	stack = sp;
-> +	unsigned long *sp = (unsigned long *)regs->regs[29];
->  
->  	printk("Stack :");
->  	i = 0;
-> @@ -136,7 +165,44 @@ void show_stack(struct task_struct *task
->  		i++;
->  	}
->  	printk("\n");
-> -	show_trace(stack);
-> +	show_frametrace(task, regs);
-> +}
-> +
-> +static noinline void dump_stack_top(struct pt_regs *regs)
+=20
 
-This sounds weird, you're actually dumping v0, ra, and sp, no ?
-If so "dump_stack_top" seems not be appropriate, does it ?
+Best Regards,
 
-> +{
-> +	__asm__ __volatile__(
-> +		"1: la $2, 1b\n\t"
-> +#ifdef CONFIG_64BIT
-> +		"sd $2, %0\n\t"
-> +		"sd $29, %1\n\t"
-> +		"sd $31, %2\n\t"
-> +#else
-> +		"sw $2, %0\n\t"
-> +		"sw $29, %1\n\t"
-> +		"sw $31, %2\n\t"
-> +#endif
-> +		: "=m" (regs->cp0_epc),
-> +		"=m" (regs->regs[29]), "=m" (regs->regs[31])
-> +		: : "memory");
-> +}
-> +
-> +void show_stack(struct task_struct *task, unsigned long *sp)
-> +{
-> +	struct pt_regs regs;
-> +	if (sp) {
-> +		regs.regs[29] = (unsigned long)sp;
-> +		regs.regs[31] = 0;
-> +		regs.cp0_epc = 0;
-> +	} else {
-> +		if (task && task != current) {
-> +			regs.regs[29] = task->thread.reg29;
-> +			regs.regs[31] = 0;
-> +			regs.cp0_epc = task->thread.reg31;
-> +		} else {
-> +			dump_stack_top(&regs);
-> +		}
-> +	}
-> +	show_stacktrace(task, &regs);
->  }
->  
->  /*
-> @@ -146,6 +212,14 @@ void dump_stack(void)
->  {
->  	unsigned long stack;
->  
-> +#ifdef CONFIG_KALLSYMS
-> +	if (!raw_show_trace) {
-> +		struct pt_regs regs;
-> +		dump_stack_top(&regs);
-> +		show_frametrace(current, &regs);
-> +		return;
-> +	}
-> +#endif
->  	show_trace(&stack);
->  }
->  
-> @@ -265,7 +339,7 @@ void show_registers(struct pt_regs *regs
->  	print_modules();
->  	printk("Process %s (pid: %d, threadinfo=%p, task=%p)\n",
->  	        current->comm, current->pid, current_thread_info(), current);
-> -	show_stack(current, (long *) regs->regs[29]);
-> +	show_stacktrace(current, regs);
->  	show_code((unsigned int *) regs->cp0_epc);
->  	printk("\n");
->  }
-> 
-> 
+=20
+
+Shan
+
+
+
+This message has been scanned by MailController - www.MailController.altohi=
+way.com
+
+------_=_NextPart_001_01C6B194.D8D498EE
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
+hemas-microsoft-com:office:word" xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>Hi all,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>I downloaded the SDE lite toolchain from MIPS
+Technologies. I can use the makefiles to build all the examples come with t=
+he
+package and test them with the simulator. But when I tried to use sde-gcc to
+cross compile the hello world example directly:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>sde-gcc -Wall -mips32 -mtune=3D4kc -EL hello.c -o=
+ hello<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>I got errors like the following:<o:p></o:p></span=
+></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>/home/linuxdev/packages/sde-lite-linux/bin/../lib=
+/gcc/sde/3.4.4/../../../../sde/bin/ld:
+warning: cannot find entry symbol __start;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>&nbsp;defaulting to 0000000080020000<o:p></o:p></=
+span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>/tmp/ccEaLxlW.o: In function `main':<o:p></o:p></=
+span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>hello.c:(.text+0x20): undefined reference to `pri=
+ntf'<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>hello.c:(.text+0x20): relocation truncated to fit:
+R_MIPS_26 against `printf'<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>collect2: ld returned 1 exit status<o:p></o:p></s=
+pan></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>Does that mean the SDE lite package is not a comp=
+lete
+cross toolchain, can I use it to compile my own application? <o:p></o:p></s=
+pan></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>Any help will be appropriated, thanks very much.<=
+o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>Best Regards,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span lang=3DEN-GB style=
+=3D'font-size:
+10.0pt;font-family:Arial'>Shan<o:p></o:p></span></font></p>
+
+</div>
+
+<br><br>
+<P align=3Dcenter>This message has been scanned by <A href=3D"http://www.ma=
+ilcontroller.altohiway.com/">MailController</A>.</P>
+</body>
+
+</html>
+
+------_=_NextPart_001_01C6B194.D8D498EE--

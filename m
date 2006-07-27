@@ -1,43 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 03:32:21 +0100 (BST)
-Received: from buzzloop.caiaq.de ([212.112.241.133]:13062 "EHLO
-	buzzloop.caiaq.de") by ftp.linux-mips.org with ESMTP
-	id S8134001AbWG0CcH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Jul 2006 03:32:07 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by buzzloop.caiaq.de (Postfix) with ESMTP id 8545B7F4028;
-	Thu, 27 Jul 2006 04:32:05 +0200 (CEST)
-Received: from buzzloop.caiaq.de ([127.0.0.1])
-	by localhost (buzzloop [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 26478-05; Thu, 27 Jul 2006 04:32:05 +0200 (CEST)
-Received: by buzzloop.caiaq.de (Postfix, from userid 1000)
-	id 48C9B7F4024; Thu, 27 Jul 2006 04:32:05 +0200 (CEST)
-Date:	Thu, 27 Jul 2006 04:32:05 +0200
-From:	Daniel Mack <daniel@caiaq.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] fix irq_chip struct for Pb1200/Db1200 platform
-Message-ID: <20060727023204.GA28793@ipxXXXXX>
-References: <2F5D781B-2119-4942-82C1-70B5037F5622@caiaq.de> <20060714161128.GB15427@linux-mips.org> <20060715005747.GA21358@ipxXXXXX> <20060715043941.GA3587@linux-mips.org> <20060715091614.GB21737@ipxXXXXX>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 10:01:42 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.189]:10412 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133372AbWG0JB3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Jul 2006 10:01:29 +0100
+Received: by nf-out-0910.google.com with SMTP id q29so92478nfc
+        for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 02:01:27 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=KXdXECXv/BUDirNB6IH8QkJ6p6acXvGrgRKoZksJOM4ekOJkJtPtIRh7SGxn3KZ9VGLsMkuxaCuK21c4c8WjFn8xiXCV60d0QlFdo3zaQQh1YfafMiPQLyuDbsYdTLUjmrrT3J54RoLbJC/EKezzQ/vOPiXaG2HmmD138aI9GXE=
+Received: by 10.48.240.10 with SMTP id n10mr1546511nfh;
+        Thu, 27 Jul 2006 02:01:27 -0700 (PDT)
+Received: from ?192.168.0.24? ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id p43sm448014nfa.2006.07.27.02.01.26;
+        Thu, 27 Jul 2006 02:01:27 -0700 (PDT)
+Message-ID: <44C880A9.1070402@innova-card.com>
+Date:	Thu, 27 Jul 2006 11:00:25 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060715091614.GB21737@ipxXXXXX>
-User-Agent: Mutt/1.5.11
-Return-Path: <daniel@caiaq.de>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] do not count pages in holes with sparsemem
+References: <44B3625B.7000700@innova-card.com>	<20060711.222458.74752678.anemo@mba.ocn.ne.jp>	<44C77D49.90205@innova-card.com> <20060727.002153.41632148.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060727.002153.41632148.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12088
+X-archive-position: 12089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@caiaq.de
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 15, 2006 at 11:16:14AM +0200, Daniel Mack wrote:
-> http://caiaq.org/linux-mips/patches/irq_chip_pb1200.patch
+Atsushi Nemoto wrote:
+> On Wed, 26 Jul 2006 16:33:45 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>> I don't think that's correct to mark them as "reserved". Basicaly
+>> "reserved" means that it belongs to the kernel (code or data), these
+>> holes are not and we will end up to have wrong value as you pointed
+>> out.
+>>
+>> Having quick look at sparsemem code, I don't think that it expects
+>> to have holes inside a section, do it ? If so you probably have to
+>> fix up your section size...
+> 
+> Yes, for such small holes, sparsemem and flatmem is same.  We can use
+> smaller section size to save more memory, but I suppose it will be a
+> bit slower.
+> 
 
-What about this one? Did it apply now?
+I'm suprised that sparsemem code doens't check for holes inside
+sections. I would feel really more confortable to use sparsemem if a
+check like the following patch exists. We could safely use pfn_valid()
+in _any_ cases and if holes exist inside sections then the user have
+to fix up its section sizes.
 
-Daniel
+what do you think ?
+
+		Franck
+
+-- >8 --
+
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 86c52ab..4c29a13 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -119,6 +119,13 @@ void memory_present(int nid, unsigned lo
+ {
+ 	unsigned long pfn;
+ 
++	if (start & (PAGES_PER_SECTION-1) || end & (PAGES_PER_SECTION-1)) {
++		printk(KERN_ERR "SPARSEMEM: memory area (%lx-%lx) creates a "
++		       "hole inside a section, fix your SECTION_SIZE_BITS "
++		       "value...\n", start, end);
++		BUG();
++	}
++	
+ 	start &= PAGE_SECTION_MASK;
+ 	for (pfn = start; pfn < end; pfn += PAGES_PER_SECTION) {
+ 		unsigned long section = pfn_to_section_nr(pfn);

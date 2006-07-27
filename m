@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 12:35:36 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.175]:18181 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jul 2006 12:43:40 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.170]:50198 "EHLO
 	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133452AbWG0Lf2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Jul 2006 12:35:28 +0100
-Received: by ug-out-1314.google.com with SMTP id y2so184664uge
-        for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 04:35:27 -0700 (PDT)
+	id S8134006AbWG0Lnb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Jul 2006 12:43:31 +0100
+Received: by ug-out-1314.google.com with SMTP id y2so187402uge
+        for <linux-mips@linux-mips.org>; Thu, 27 Jul 2006 04:43:31 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
-        b=Aimc+1ifDFmRNrFxSvIhUQYw7eytev1iiDqHDxxvXQJ6Rf8l7GXSTCKc0wpiQqNQ2g4IdRSQuDwevx7TFic36Pc5IQTD+X8bDkS9YBPZ4n0ro81Fn94j9aRJ4wyIA/e2Jw+pH7IZsDOhRsRRBP6Wz6GUzHamWgjfBOmcUHgKNNk=
-Received: by 10.66.220.17 with SMTP id s17mr7074813ugg;
-        Thu, 27 Jul 2006 04:35:26 -0700 (PDT)
-Received: by 10.67.23.12 with HTTP; Thu, 27 Jul 2006 04:35:26 -0700 (PDT)
-Message-ID: <218a54980607270435y778c4b79w5b9bb0fb0a435aa@mail.gmail.com>
-Date:	Thu, 27 Jul 2006 07:35:26 -0400
+        b=CIre+qD1mvO0oduxFBqg3G/mb3L9f9+f3lyTspyuTxNK86CfjNla0UMHJ4fQ2ZXhDmralhlKbNG3vFEmK2u/80+hbIcRtgMj23dGxUavPVr/CJ2BS3R9h3/4J4U1GXODz62q9TCjVbywUOHsV3q/+H4J9rt1jNwky4G6h6Gd9PI=
+Received: by 10.66.244.10 with SMTP id r10mr6975320ugh;
+        Thu, 27 Jul 2006 04:43:31 -0700 (PDT)
+Received: by 10.67.23.12 with HTTP; Thu, 27 Jul 2006 04:43:31 -0700 (PDT)
+Message-ID: <218a54980607270443i7b896d68p2a048a6ba8b0f37e@mail.gmail.com>
+Date:	Thu, 27 Jul 2006 07:43:31 -0400
 From:	"Peter Watkins" <treestem@gmail.com>
 To:	linux-mips@linux-mips.org
 Subject: [PATCH] For N32 rt_sigqueueinfo uses O32 padding, not N64.
-In-Reply-To: <218a54980607261642i55966303r791f29791bab5588@mail.gmail.com>
+In-Reply-To: <218a54980607270435y778c4b79w5b9bb0fb0a435aa@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/mixed; 
-	boundary="----=_Part_20871_31264724.1154000126872"
+	boundary="----=_Part_21019_33340978.1154000611443"
 References: <218a54980607261642i55966303r791f29791bab5588@mail.gmail.com>
+	 <218a54980607270435y778c4b79w5b9bb0fb0a435aa@mail.gmail.com>
 Return-Path: <treestem@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12090
+X-archive-position: 12091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,14 +35,14 @@ X-original-sender: treestem@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_20871_31264724.1154000126872
+------=_Part_21019_33340978.1154000611443
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
  For N32 rt_sigqueueinfo uses O32 padding, not N64.
 
-------=_Part_20871_31264724.1154000126872
+------=_Part_21019_33340978.1154000611443
 Content-Type: application/octet-stream; name=patch-scall64
 Content-Transfer-Encoding: base64
 X-Attachment-Id: f_eq4cc60u
@@ -59,4 +60,4 @@ Z3BlbmRpbmcJCS8qIDYxMjUgKi8KIAlQVFIJY29tcGF0X3N5c19ydF9zaWd0aW1lZHdhaXQKLQlQ
 VFIJc3lzX3J0X3NpZ3F1ZXVlaW5mbworCVBUUglzeXMzMl9ydF9zaWdxdWV1ZWluZm8KIAlQVFIJ
 c3lzbjMyX3J0X3NpZ3N1c3BlbmQKIAlQVFIJc3lzMzJfc2lnYWx0c3RhY2sKIAlQVFIJY29tcGF0
 X3N5c191dGltZQkJLyogNjEzMCAqLwotLSAKMS40LjEKCg==
-------=_Part_20871_31264724.1154000126872--
+------=_Part_21019_33340978.1154000611443--

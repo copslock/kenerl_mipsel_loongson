@@ -1,175 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jul 2006 18:00:12 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.169]:59115 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133753AbWG1RAC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Jul 2006 18:00:02 +0100
-Received: by ug-out-1314.google.com with SMTP id y2so773003uge
-        for <linux-mips@linux-mips.org>; Fri, 28 Jul 2006 10:00:01 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=rYkyB4uZVvtfifzsokuStGaDHHrVDxDRsM1qbVMsN2KEvWdm0b5IrB7RxQVWjkIdvD8dGBnV1pzxdCrDDtagcow9UwEKaMxVom0HZPVs/gzNUfKHFCLEHmth9S0uq4WImz6O1zNGGVqlFKrXDzsJtw5Axyz2Y3v/CxSjhyavc/c=
-Received: by 10.66.244.10 with SMTP id r10mr8750250ugh;
-        Fri, 28 Jul 2006 10:00:01 -0700 (PDT)
-Received: by 10.67.23.12 with HTTP; Fri, 28 Jul 2006 10:00:01 -0700 (PDT)
-Message-ID: <218a54980607281000hc62b038h31e74e96400db763@mail.gmail.com>
-Date:	Fri, 28 Jul 2006 13:00:01 -0400
-From:	"Peter Watkins" <treestem@gmail.com>
-To:	"Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp>
-Subject: Re: [PATCH] Use compat code to translate siginfo_t for N32
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20060728104424.19e1bfaa.yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jul 2006 18:06:06 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:20883 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S8133936AbWG1RF5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 28 Jul 2006 18:05:57 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id D2529B0E86;
+	Fri, 28 Jul 2006 13:18:58 -0400 (EDT)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Fri, 28 Jul 2006 13:18:58 -0400 (EDT)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 28 Jul 2006 10:05:48 -0700
+Message-ID: <44CA43EC.9010904@avtrex.com>
+Date:	Fri, 28 Jul 2006 10:05:48 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Mozilla Thunderbird 1.0.7-1.1.fc3 (X11/20050929)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/mixed; 
-	boundary="----=_Part_12927_3587587.1154106001113"
-References: <44C94FEA.1010607@gmail.com>
-	 <20060728104424.19e1bfaa.yoichi_yuasa@tripeaks.co.jp>
-Return-Path: <treestem@gmail.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	ths@networkno.de, vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] dump_stack() based on prologue code analysis
+References: <20060727170305.GB4505@networkno.de>	<cda58cb80607271151n2dcfe64cn4cb1ecca3ece6b1e@mail.gmail.com>	<20060727191245.GD4505@networkno.de> <20060728.233842.41629448.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060728.233842.41629448.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 28 Jul 2006 17:05:48.0503 (UTC) FILETIME=[12997E70:01C6B268]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12112
+X-archive-position: 12113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: treestem@gmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_12927_3587587.1154106001113
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Atsushi Nemoto wrote:
+> On Thu, 27 Jul 2006 20:12:45 +0100, Thiemo Seufer <ths@networkno.de> wrote:
+> 
+>>IOW, binary analysis can't be expected to provide full accuracy, but
+>>we can live with a reasonable approximation, I think.
+> 
+> 
+> Yes, this is a starting point.
+> 
+> The patch (and current mips get_wchan() implementation) tries to do is
+> what I used to do to analyze stack dump by hand.
+> 
+> 1. Determine PC and SP.
+> 2. Disassemble a function containing the PC address.
+> 3. If the function is leaf, make use RA for new PC.
 
-Hello Yoichi,
+This was always the tricky part for me.  How do you know if the function 
+is a leaf?
 
-The attached patch addresses your points, and ends up cleaner and
-simpler. Except:
-
-> > diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
-> > index 477c533..f805bea 100644
-> > --- a/arch/mips/kernel/signal_n32.c
-> > +++ b/arch/mips/kernel/signal_n32.c
->
-> <snip>
->
-> > @@ -74,7 +76,7 @@ #if ICACHE_REFILLS_WORKAROUND_WAR
-> >  #else
-> >       u32 rs_code[2];                 /* signal trampoline */
-> >  #endif
-> > -     struct siginfo rs_info;
-> > +     compat_siginfo_t rs_info;
->
-> use struct compat_siginfo .
->
-
-I did not change this as it's currently consistent with the form used
-in signal32.c and signal_n32.c. If we want to change this, it seemed
-preferable to have another patch for just that purpose.
-
-- Peter
-
-------=_Part_12927_3587587.1154106001113
-Content-Type: text/plain; name=patch-siginfo-2.6.18-rc1.txt; 
-	charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_eq6sstla
-Content-Disposition: attachment; filename="patch-siginfo-2.6.18-rc1.txt"
-
-RnJvbSAyMTQwMDVhMzk1ZGQwOGEyMDlmMmVjMmQ5YzAzY2QwMDAzOGVjNzgzIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBQZXRlciBXYXRraW5zIDx0cmVlc3RlbUBnbWFpbC5jb20+CkRh
-dGU6IEZyaSwgMjggSnVsIDIwMDYgMTI6MTU6NTIgLTA0MDAKU3ViamVjdDogW1BBVENIXSBGaXgg
-aW5jb3JyZWN0IGRhdGEgcmV0dXJuZWQgZnJvbSB3YWl0aWQoKSBmb3IgbWlwczY0ZWwgTjMyLgpV
-c2UgY29tcGF0IGNvZGUgdG8gdHJhbnNsYXRlIHNpZ2luZm9fdCBmb3IgTjMyLgotLS0KIGFyY2gv
-bWlwcy9rZXJuZWwvbGludXgzMi5jICAgICAgIHwgICAyOCAtLS0tLS0tLS0tLS0tLS0tCiBhcmNo
-L21pcHMva2VybmVsL3NpZ25hbC1jb21tb24uaCB8ICAgNjUgKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysKIGFyY2gvbWlwcy9rZXJuZWwvc2lnbmFsX24zMi5jICAgIHwgICAz
-NiArKysrKysrKysrKysrKysrKysrLS0KIDMgZmlsZXMgY2hhbmdlZCwgOTggaW5zZXJ0aW9ucygr
-KSwgMzEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2tlcm5lbC9saW51eDMy
-LmMgYi9hcmNoL21pcHMva2VybmVsL2xpbnV4MzIuYwppbmRleCA0NTBhYzU5Li5kZDcxMDk2IDEw
-MDY0NAotLS0gYS9hcmNoL21pcHMva2VybmVsL2xpbnV4MzIuYworKysgYi9hcmNoL21pcHMva2Vy
-bmVsL2xpbnV4MzIuYwpAQCAtMTYzLDM0ICsxNjMsNiBAQCBvdXQ6CiAJcmV0dXJuIGVycm9yOwog
-fQogCi1hc21saW5rYWdlIGxvbmcKLXN5c24zMl93YWl0aWQoaW50IHdoaWNoLCBjb21wYXRfcGlk
-X3QgcGlkLAotCSAgICAgIHNpZ2luZm9fdCBfX3VzZXIgKnVpbmZvLCBpbnQgb3B0aW9ucywKLQkg
-ICAgICBzdHJ1Y3QgY29tcGF0X3J1c2FnZSBfX3VzZXIgKnVydSkKLXsKLQlzdHJ1Y3QgcnVzYWdl
-IHJ1OwotCWxvbmcgcmV0OwotCW1tX3NlZ21lbnRfdCBvbGRfZnMgPSBnZXRfZnMoKTsKLQlpbnQg
-c2lfc2lnbm87Ci0KLQlpZiAoIWFjY2Vzc19vayhWRVJJRllfV1JJVEUsIHVpbmZvLCBzaXplb2Yo
-KnVpbmZvKSkpCi0JCXJldHVybiAtRUZBVUxUOwotCi0Jc2V0X2ZzIChLRVJORUxfRFMpOwotCXJl
-dCA9IHN5c193YWl0aWQod2hpY2gsIHBpZCwgdWluZm8sIG9wdGlvbnMsCi0JCQkgdXJ1ID8gKHN0
-cnVjdCBydXNhZ2UgX191c2VyICopICZydSA6IE5VTEwpOwotCXNldF9mcyAob2xkX2ZzKTsKLQot
-CWlmIChfX2dldF91c2VyKHNpX3NpZ25vLCAmdWluZm8tPnNpX3NpZ25vKSkKLQkJcmV0dXJuIC1F
-RkFVTFQ7Ci0JaWYgKHJldCA8IDAgfHwgc2lfc2lnbm8gPT0gMCkKLQkJcmV0dXJuIHJldDsKLQot
-CWlmICh1cnUpCi0JCXJldCA9IHB1dF9jb21wYXRfcnVzYWdlKCZydSwgdXJ1KTsKLQlyZXR1cm4g
-cmV0OwotfQotCiBzdHJ1Y3Qgc3lzaW5mbzMyIHsKICAgICAgICAgczMyIHVwdGltZTsKICAgICAg
-ICAgdTMyIGxvYWRzWzNdOwpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2tlcm5lbC9zaWduYWwtY29t
-bW9uLmggYi9hcmNoL21pcHMva2VybmVsL3NpZ25hbC1jb21tb24uaAppbmRleCBiMWYwOWQ1Li5k
-NGE4MGU3IDEwMDY0NAotLS0gYS9hcmNoL21pcHMva2VybmVsL3NpZ25hbC1jb21tb24uaAorKysg
-Yi9hcmNoL21pcHMva2VybmVsL3NpZ25hbC1jb21tb24uaApAQCAtOCw2ICs4LDcgQEAKICAqIENv
-cHlyaWdodCAoQykgMTk5OSwgMjAwMCBTaWxpY29uIEdyYXBoaWNzLCBJbmMuCiAgKi8KIAorI2lu
-Y2x1ZGUgPGxpbnV4L2NvbXBhdC5oPgogCiBzdGF0aWMgaW5saW5lIGludAogc2V0dXBfc2lnY29u
-dGV4dChzdHJ1Y3QgcHRfcmVncyAqcmVncywgc3RydWN0IHNpZ2NvbnRleHQgX191c2VyICpzYykK
-QEAgLTE3NCwzICsxNzUsNjcgQEAgc3RhdGljIGlubGluZSBpbnQgaW5zdGFsbF9zaWd0cmFtcCh1
-bnNpZwogCiAJcmV0dXJuIGVycjsKIH0KKworCisjZGVmaW5lIFNJX1BBRF9TSVpFMzIgICAoKFNJ
-X01BWF9TSVpFL3NpemVvZihpbnQpKSAtIDMpCisKK3R5cGVkZWYgc3RydWN0IGNvbXBhdF9zaWdp
-bmZvIHsKKwlpbnQgc2lfc2lnbm87CisJaW50IHNpX2NvZGU7CisJaW50IHNpX2Vycm5vOworCisJ
-dW5pb24geworCQlpbnQgX3BhZFtTSV9QQURfU0laRTMyXTsKKworCQkvKiBraWxsKCkgKi8KKwkJ
-c3RydWN0IHsKKwkJCWNvbXBhdF9waWRfdCBfcGlkOwkvKiBzZW5kZXIncyBwaWQgKi8KKwkJCWNv
-bXBhdF91aWRfdCBfdWlkOwkvKiBzZW5kZXIncyB1aWQgKi8KKwkJfSBfa2lsbDsKKworCQkvKiBT
-SUdDSExEICovCisJCXN0cnVjdCB7CisJCQljb21wYXRfcGlkX3QgX3BpZDsJLyogd2hpY2ggY2hp
-bGQgKi8KKwkJCWNvbXBhdF91aWRfdCBfdWlkOwkvKiBzZW5kZXIncyB1aWQgKi8KKwkJCWludCBf
-c3RhdHVzOwkJLyogZXhpdCBjb2RlICovCisJCQljb21wYXRfY2xvY2tfdCBfdXRpbWU7CisJCQlj
-b21wYXRfY2xvY2tfdCBfc3RpbWU7CisJCX0gX3NpZ2NobGQ7CisKKwkJLyogSVJJWCBTSUdDSExE
-ICovCisJCXN0cnVjdCB7CisJCQljb21wYXRfcGlkX3QgX3BpZDsJLyogd2hpY2ggY2hpbGQgKi8K
-KwkJCWNvbXBhdF9jbG9ja190IF91dGltZTsKKwkJCWludCBfc3RhdHVzOwkJLyogZXhpdCBjb2Rl
-ICovCisJCQljb21wYXRfY2xvY2tfdCBfc3RpbWU7CisJCX0gX2lyaXhfc2lnY2hsZDsKKworCQkv
-KiBTSUdJTEwsIFNJR0ZQRSwgU0lHU0VHViwgU0lHQlVTICovCisJCXN0cnVjdCB7CisJCQlzMzIg
-X2FkZHI7IC8qIGZhdWx0aW5nIGluc24vbWVtb3J5IHJlZi4gKi8KKwkJfSBfc2lnZmF1bHQ7CisK
-KwkJLyogU0lHUE9MTCwgU0lHWEZTWiAoVG8gZG8gLi4uKSAgKi8KKwkJc3RydWN0IHsKKwkJCWlu
-dCBfYmFuZDsJLyogUE9MTF9JTiwgUE9MTF9PVVQsIFBPTExfTVNHICovCisJCQlpbnQgX2ZkOwor
-CQl9IF9zaWdwb2xsOworCisJCS8qIFBPU0lYLjFiIHRpbWVycyAqLworCQlzdHJ1Y3QgeworCQkJ
-dGltZXJfdCBfdGlkOwkJLyogdGltZXIgaWQgKi8KKwkJCWludCBfb3ZlcnJ1bjsJCS8qIG92ZXJy
-dW4gY291bnQgKi8KKwkJCWNvbXBhdF9zaWd2YWxfdCBfc2lndmFsOy8qIHNhbWUgYXMgYmVsb3cg
-Ki8KKwkJCWludCBfc3lzX3ByaXZhdGU7ICAgICAgIC8qIG5vdCB0byBiZSBwYXNzZWQgdG8gdXNl
-ciAqLworCQl9IF90aW1lcjsKKworCQkvKiBQT1NJWC4xYiBzaWduYWxzICovCisJCXN0cnVjdCB7
-CisJCQljb21wYXRfcGlkX3QgX3BpZDsJLyogc2VuZGVyJ3MgcGlkICovCisJCQljb21wYXRfdWlk
-X3QgX3VpZDsJLyogc2VuZGVyJ3MgdWlkICovCisJCQljb21wYXRfc2lndmFsX3QgX3NpZ3ZhbDsK
-KwkJfSBfcnQ7CisKKwl9IF9zaWZpZWxkczsKK30gY29tcGF0X3NpZ2luZm9fdDsKKwpkaWZmIC0t
-Z2l0IGEvYXJjaC9taXBzL2tlcm5lbC9zaWduYWxfbjMyLmMgYi9hcmNoL21pcHMva2VybmVsL3Np
-Z25hbF9uMzIuYwppbmRleCA0NzdjNTMzLi4zOTRkNGM2IDEwMDY0NAotLS0gYS9hcmNoL21pcHMv
-a2VybmVsL3NpZ25hbF9uMzIuYworKysgYi9hcmNoL21pcHMva2VybmVsL3NpZ25hbF9uMzIuYwpA
-QCAtMjMsNiArMjMsNyBAQCAjaW5jbHVkZSA8bGludXgvc21wLmg+CiAjaW5jbHVkZSA8bGludXgv
-c21wX2xvY2suaD4KICNpbmNsdWRlIDxsaW51eC9rZXJuZWwuaD4KICNpbmNsdWRlIDxsaW51eC9z
-aWduYWwuaD4KKyNpbmNsdWRlIDxsaW51eC9zeXNjYWxscy5oPgogI2luY2x1ZGUgPGxpbnV4L2Vy
-cm5vLmg+CiAjaW5jbHVkZSA8bGludXgvd2FpdC5oPgogI2luY2x1ZGUgPGxpbnV4L3B0cmFjZS5o
-PgpAQCAtNzQsNyArNzUsNyBAQCAjaWYgSUNBQ0hFX1JFRklMTFNfV09SS0FST1VORF9XQVIKICNl
-bHNlCiAJdTMyIHJzX2NvZGVbMl07CQkJLyogc2lnbmFsIHRyYW1wb2xpbmUgKi8KICNlbmRpZgot
-CXN0cnVjdCBzaWdpbmZvIHJzX2luZm87CisJY29tcGF0X3NpZ2luZm9fdCByc19pbmZvOwogCXN0
-cnVjdCB1Y29udGV4dG4zMiByc191YzsKICNpZiBJQ0FDSEVfUkVGSUxMU19XT1JLQVJPVU5EX1dB
-UgogCXUzMiByc19jb2RlWzhdIF9fX19jYWNoZWxpbmVfYWxpZ25lZDsJCS8qIHNpZ25hbCB0cmFt
-cG9saW5lICovCkBAIC0xODAsNyArMTgxLDcgQEAgaW50IHNldHVwX3J0X2ZyYW1lX24zMihzdHJ1
-Y3Qga19zaWdhY3RpbwogCWluc3RhbGxfc2lndHJhbXAoZnJhbWUtPnJzX2NvZGUsIF9fTlJfTjMy
-X3J0X3NpZ3JldHVybik7CiAKIAkvKiBDcmVhdGUgc2lnaW5mby4gICovCi0JZXJyIHw9IGNvcHlf
-c2lnaW5mb190b191c2VyKCZmcmFtZS0+cnNfaW5mbywgaW5mbyk7CisJZXJyIHw9IGNvcHlfc2ln
-aW5mb190b191c2VyMzIoJmZyYW1lLT5yc19pbmZvLCBpbmZvKTsKIAogCS8qIENyZWF0ZSB0aGUg
-dWNvbnRleHQuICAqLwogCWVyciB8PSBfX3B1dF91c2VyKDAsICZmcmFtZS0+cnNfdWMudWNfZmxh
-Z3MpOwpAQCAtMjE1LDcgKzIxNiw3IEBAIGludCBzZXR1cF9ydF9mcmFtZV9uMzIoc3RydWN0IGtf
-c2lnYWN0aW8KIAlyZWdzLT5yZWdzWzMxXSA9ICh1bnNpZ25lZCBsb25nKSBmcmFtZS0+cnNfY29k
-ZTsKIAlyZWdzLT5jcDBfZXBjID0gcmVncy0+cmVnc1syNV0gPSAodW5zaWduZWQgbG9uZykga2Et
-PnNhLnNhX2hhbmRsZXI7CiAKLSNpZiBERUJVR19TSUcKKyNpZmRlZiBERUJVR19TSUcKIAlwcmlu
-dGsoIlNJRyBkZWxpdmVyICglczolZCk6IHNwPTB4JXAgcGM9MHglbHggcmE9MHglcFxuIiwKIAkg
-ICAgICAgY3VycmVudC0+Y29tbSwgY3VycmVudC0+cGlkLAogCSAgICAgICBmcmFtZSwgcmVncy0+
-Y3AwX2VwYywgcmVncy0+cmVnc1szMV0pOwpAQCAtMjI2LDMgKzIyNywzMiBAQCBnaXZlX3NpZ3Nl
-Z3Y6CiAJZm9yY2Vfc2lnc2VndihzaWduciwgY3VycmVudCk7CiAJcmV0dXJuIC1FRkFVTFQ7CiB9
-CisKKworCithc21saW5rYWdlIGxvbmcKK3N5c24zMl93YWl0aWQoaW50IHdoaWNoLCBjb21wYXRf
-cGlkX3QgcGlkLAorCSAgICAgIGNvbXBhdF9zaWdpbmZvX3QgX191c2VyICp1aW5mbywgaW50IG9w
-dGlvbnMsCisJICAgICAgc3RydWN0IGNvbXBhdF9ydXNhZ2UgX191c2VyICp1cnUpCit7CisJc2ln
-aW5mb190IGluZm87CisJc3RydWN0IHJ1c2FnZSBydTsKKwlsb25nIHJldDsKKwltbV9zZWdtZW50
-X3Qgb2xkX2ZzID0gZ2V0X2ZzKCk7CisKKwlpbmZvLnNpX3NpZ25vID0gMDsKKwlzZXRfZnMgKEtF
-Uk5FTF9EUyk7CisJcmV0ID0gc3lzX3dhaXRpZCh3aGljaCwgcGlkLCAoc2lnaW5mb190IF9fdXNl
-ciAqKSAmaW5mbywgb3B0aW9ucywKKwkJCSB1cnUgPyAoc3RydWN0IHJ1c2FnZSBfX3VzZXIgKikg
-JnJ1IDogTlVMTCk7CisJc2V0X2ZzIChvbGRfZnMpOworCisJaWYgKHJldCA8IDAgfHwgaW5mby5z
-aV9zaWdubyA9PSAwKQorCQlyZXR1cm4gcmV0OworCisJaWYgKHVydSAmJiAocmV0ID0gcHV0X2Nv
-bXBhdF9ydXNhZ2UoJnJ1LCB1cnUpKSkKKwkJcmV0dXJuIHJldDsKKworCUJVR19PTihpbmZvLnNp
-X2NvZGUgJiBfX1NJX01BU0spOworCWluZm8uc2lfY29kZSB8PSBfX1NJX0NITEQ7CisJcmV0dXJu
-IGNvcHlfc2lnaW5mb190b191c2VyMzIodWluZm8sICZpbmZvKTsKK30KLS0gCjEuNC4xCgo=
-------=_Part_12927_3587587.1154106001113--
+.
+.
+.
+David Daney

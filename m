@@ -1,62 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Jul 2006 22:31:18 +0100 (BST)
-Received: from wr-out-0506.google.com ([64.233.184.232]:65477 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133727AbWG1VbJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Jul 2006 22:31:09 +0100
-Received: by wr-out-0506.google.com with SMTP id i23so139122wra
-        for <linux-mips@linux-mips.org>; Fri, 28 Jul 2006 14:31:07 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:date:from:to:cc:subject:message-id:in-reply-to:references:x-mailer:mime-version:content-type:content-transfer-encoding;
-        b=PaY+tdALS5e/4yLJGGfj5lft3gpWbLqq88yIqivITmOFCVaaSNqi+0yIWUsLxnyCps6Ub8VhoeHcZwja59a64ITUsXXASmJ2p1o5R1h4vMkxIYXGBVOblxI1iu3TySpBgtQA0Zsbecq7eWNi6yA6X1/jg7TfKMuoqIoUVLrvwoU=
-Received: by 10.54.66.1 with SMTP id o1mr10076117wra;
-        Fri, 28 Jul 2006 14:31:06 -0700 (PDT)
-Received: from sauron.lan.box ( [200.180.163.244])
-        by mx.gmail.com with ESMTP id 14sm386709wrl.2006.07.28.14.31.04;
-        Fri, 28 Jul 2006 14:31:06 -0700 (PDT)
-Date:	Fri, 28 Jul 2006 18:31:02 -0300
-From:	Ricardo Nabinger Sanchez <rnsanchez@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	freebsd-mips@freebsd.org, linux-mips@linux-mips.org
-Subject: Re: ld: cannot open crt1.o
-Message-Id: <20060728183102.1f08dcd4.rnsanchez@gmail.com>
-In-Reply-To: <20060728194204.GA28080@linux-mips.org>
-References: <20060728162202.4567446d.rnsanchez@gmail.com>
-	<20060728194204.GA28080@linux-mips.org>
-X-Mailer: Sylpheed version 2.2.6 (GTK+ 2.8.20; i386-portbld-freebsd6.1)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Jul 2006 15:24:08 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:24006 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133802AbWG2OX6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 29 Jul 2006 15:23:58 +0100
+Received: from localhost (p6108-ipad213funabasi.chiba.ocn.ne.jp [124.85.71.108])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 9945CB032; Sat, 29 Jul 2006 23:23:52 +0900 (JST)
+Date:	Sat, 29 Jul 2006 23:25:23 +0900 (JST)
+Message-Id: <20060729.232523.74752889.anemo@mba.ocn.ne.jp>
+To:	ddaney@avtrex.com
+Cc:	nigel@mips.com, ths@networkno.de, vagabon.xyz@gmail.com,
+	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] dump_stack() based on prologue code analysis
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44CA5837.2060502@avtrex.com>
+References: <44CA43EC.9010904@avtrex.com>
+	<44CA4AA3.8080700@mips.com>
+	<44CA5837.2060502@avtrex.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <rnsanchez@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12118
+X-archive-position: 12119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rnsanchez@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Quoting  Ralf Baechle <ralf@linux-mips.org>
-Sent on  Fri, 28 Jul 2006 15:42:04 -0400
+On Fri, 28 Jul 2006 11:32:23 -0700, David Daney <ddaney@avtrex.com> wrote:
+> >> This was always the tricky part for me.  How do you know if the 
+> >> function is a leaf?
+> > 
+> > I think that if you cannot find a store instruction which saves RA to 
+> > the stack -- either because it's a real leaf and there is no such store, 
+> > or because the PC hasn't yet reached the store instruction -- then in 
+> > both cases it can be treated as a leaf.
 
-> crt1.o is part of glibc; you only seem to have installed cross versions of
-> binutils and gcc.
+Right.
 
-Yes, I installed the mipsel-* packages from ports, on 6.1-STABLE.  Does
-it have to be glibc or can it be uClibc?
+> Presumably you are walking the code back from the PC until you find the 
+> prolog.  How would you tell if you had gone past the beginning of a leaf 
+> function?  If you find a j $31 you might assume that it was the end of 
+> the previous function.
 
-Anyway, I'll check my possibilities.  In case of further problems, I bug
-you guys again.
+I think you are misunderstanding here.
 
-Thanks.
+What the get_frame_info() doing is just searching "sw $ra, ofs($sp)"
+and "addiu sp,sp,-imm" instructions from beginning of the function.
+We can obtain the start address and size of the function by
+kallsyms_lookup().  This is why those stuff depend on CONFIG_KALLSYMS.
 
-ps: please note that I'm on a FreeBSD box.
+> I may be missing something here, if you know of a failure-proof manner 
+> to detect leaf functions I would appreciate hearing what it is.
 
--- 
-Ricardo Nabinger Sanchez     <rnsanchez@{gmail.com,wait4.org}>
-Powered by FreeBSD
+I have no good idea to do it without CONFIG_KALL_SYMS.
+I suppose there is no silver bullet here...
 
-  "Left to themselves, things tend to go from bad to worse."
+---
+Atsushi Nemoto

@@ -1,131 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Jul 2006 23:41:57 +0100 (BST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:59410 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S8133883AbWG3Wlr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 30 Jul 2006 23:41:47 +0100
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 00ED664D54; Sun, 30 Jul 2006 22:41:38 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 811BB66BCD; Mon, 31 Jul 2006 00:41:37 +0200 (CEST)
-Date:	Mon, 31 Jul 2006 00:41:37 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Cc:	Roger Leigh <rleigh@debian.org>, 380531-silent@bugs.debian.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jul 2006 00:20:25 +0100 (BST)
+Received: from s2.ukfsn.org ([217.158.120.143]:17546 "EHLO mail.ukfsn.org")
+	by ftp.linux-mips.org with ESMTP id S8133889AbWG3XUQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 31 Jul 2006 00:20:16 +0100
+Received: from hardknott.home.whinlatter.ukfsn.org (84-45-213-194.no-dns-yet.enta.net [84.45.213.194])
+	by mail.ukfsn.org (Postfix) with ESMTP
+	id 20519E714C; Mon, 31 Jul 2006 00:20:06 +0100 (BST)
+Received: from rleigh by hardknott.home.whinlatter.ukfsn.org with local (Exim 4.62)
+	(envelope-from <rleigh@whinlatter.ukfsn.org>)
+	id 1G7KZr-0006Lt-QT; Mon, 31 Jul 2006 00:20:07 +0100
+From:	Roger Leigh <rleigh@whinlatter.ukfsn.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	linux-mips@linux-mips.org, 380531-silent@bugs.debian.org
 Subject: Re: Bug#380531: linux-2.6: mips and mipsel personality(2) support is broken
-Message-ID: <20060730224137.GP17134@deprecation.cyrius.com>
 References: <20060730183939.7119.48747.reportbug@hardknott.home.whinlatter.ukfsn.org>
+	<20060730224137.GP17134@deprecation.cyrius.com>
+Date:	Mon, 31 Jul 2006 00:20:05 +0100
+In-Reply-To: <20060730224137.GP17134@deprecation.cyrius.com> (Martin
+	Michlmayr's message of "Mon, 31 Jul 2006 00:41:37 +0200")
+Message-ID: <87veper87u.fsf@hardknott.home.whinlatter.ukfsn.org>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="h31gzZEtNLTqOjlF"
-Content-Disposition: inline
-In-Reply-To: <20060730183939.7119.48747.reportbug@hardknott.home.whinlatter.ukfsn.org>
-User-Agent: Mutt/1.5.11+cvs20060403
-Return-Path: <tbm@cyrius.com>
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha1; protocol="application/pgp-signature"
+Return-Path: <rleigh@whinlatter.ukfsn.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12121
+X-archive-position: 12122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: rleigh@whinlatter.ukfsn.org
 Precedence: bulk
 X-list: linux-mips
 
+--=-=-=
+Content-Transfer-Encoding: quoted-printable
 
---h31gzZEtNLTqOjlF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Martin Michlmayr <tbm@cyrius.com> writes:
 
-FYI, but report tht "mips and mipsel personality(2) support is broken"
+> FYI, but report tht "mips and mipsel personality(2) support is broken"
+>
+> * Roger Leigh <rleigh@debian.org> [2006-07-30 19:39]:
+>> personality(2) only works the first time it is called [in the lifetime
+>> of a process/program].  All subsequent calls return EPERM, which is
+>> not a documented return value; I can see no mention of it in
+>> kernel/execdomain.c.  None of the other architectures I have tested
+>> (amd64, arm, i386, ia64, powerpc) behave this way: personality(2) is
+>> not a privileged call.
+>>=20
+>> This happens no matter what the value of persona is, even if it is
+>> just 0xffffffff to query the current personality.
 
-* Roger Leigh <rleigh@debian.org> [2006-07-30 19:39]:
-> personality(2) only works the first time it is called [in the lifetime
-> of a process/program].  All subsequent calls return EPERM, which is
-> not a documented return value; I can see no mention of it in
-> kernel/execdomain.c.  None of the other architectures I have tested
-> (amd64, arm, i386, ia64, powerpc) behave this way: personality(2) is
-> not a privileged call.
-> 
-> This happens no matter what the value of persona is, even if it is
-> just 0xffffffff to query the current personality.
-> 
-> The attached testcase demonstrates the breakage.  On a working
-> platform (powerpc), the output is like this:
-> 
-> ------------------------
-> $ ./testpersona
-> Getting personality
-> Get returned '0'
-> Setting personality '8'
-> Set OK
-> Getting personality
-> Get returned '8'
-> Setting personality '0'
-> Set OK
-> Getting personality
-> Get returned '0'
-> ------------------------
-> 
-> 0 == PER_LINUX
-> 8 == PER_LINUX32
-> 
-> It successfully switched from PER_LINUX to PER_LINUX32 and back again,
-> checking the personality before and after each change.
-> 
-> 
-> Regards,
-> Roger
+Just a follow up:
 
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+There is a twist to the behaviour:
 
---h31gzZEtNLTqOjlF
-Content-Type: text/x-csrc; charset=us-ascii
-Content-Disposition: attachment; filename="testpersona.c"
+If personality(2) is called with a personality other than 0xffffffff
+(query), and it fails, a subsequent call (any persona value) will
+succeed.
 
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <sys/personality.h>
+I can't see any reason for the behaviour looking at the
+kernel/execdomain.c or arch/mips/kernel/linux32.c.  ths believes it's
+due to a bug in the syscall interface:
 
-int
-set_persona (unsigned long p)
-{
-  fprintf (stderr, "Setting personality '%lu'\n", p);
+<ths> I believe it is related to sign extension.
+<ths> o32 queries with 0xffffffff, which is really 0xffffffffffffffff, then=
+ the kernel compares against 0xffffffff.
+<rleigh> I haven't heard of that.  Is it MIPS-specific, or a 64-bit-specifi=
+c thing?
+<ths> mips uses sign-extended registers for 32bit values.
+<ths> There's no 64bit mode switch.
+<ths> (The argument for the sys32_personality should be int, not long.)
 
-  int status = personality(p);
-  if (status == -1)
-    fprintf(stderr, "Set failed: %s\n", strerror(errno));
 
-  fprintf(stderr, "Set OK\n");
+=2D-=20
+  .''`.  Roger Leigh
+ : :' :  Debian GNU/Linux             http://people.debian.org/~rleigh/
+ `. `'   Printing on GNU/Linux?       http://gutenprint.sourceforge.net/
+   `-    GPG Public Key: 0x25BFB848   Please sign and encrypt your mail.
 
-  return status;
-}
+--=-=-=
+Content-Type: application/pgp-signature
 
-int
-get_persona (void)
-{
-  fprintf (stderr, "Getting personality\n");
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.3 (GNU/Linux)
 
-  int status = personality(0xffffffff);
-  if (status == -1)
-    fprintf(stderr, "Get failed: %s\n", strerror(errno));
-
-  fprintf(stderr, "Get returned '%d'\n", status);
-
-  return status;
-}
-
-int
-main (void)
-{
-  get_persona();
-  set_persona(PER_LINUX32);
-  get_persona();
-  set_persona(PER_LINUX);
-  get_persona();
-  return 0;
-}
-
---h31gzZEtNLTqOjlF--
+iD8DBQFEzT6nVcFcaSW/uEgRAhlYAKDwVC2cKrLiDTv6IM5vveapSt4sNACfWbGo
+Ka4e+Tgtds2j1eUFIxjsfDc=
+=yFZw
+-----END PGP SIGNATURE-----
+--=-=-=--

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jul 2006 15:05:48 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:20268 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S8126917AbWGaOFi (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jul 2006 15:06:38 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:48967 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S8126920AbWGaOFi (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Mon, 31 Jul 2006 15:05:38 +0100
-Received: by mo.po.2iij.net (mo31) id k6VE5ZNm082481; Mon, 31 Jul 2006 23:05:35 +0900 (JST)
+Received: by mo.po.2iij.net (mo31) id k6VE5YwV082474; Mon, 31 Jul 2006 23:05:34 +0900 (JST)
 Received: from localhost.localdomain (8.26.30.125.dy.iij4u.or.jp [125.30.26.8])
-	by mbox.po.2iij.net (mbox32) id k6VE5XbT094551
+	by mbox.po.2iij.net (mbox32) id k6VE5Wlt094537
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 31 Jul 2006 23:05:33 +0900 (JST)
-Date:	Mon, 31 Jul 2006 23:05:04 +0900
+	Mon, 31 Jul 2006 23:05:32 +0900 (JST)
+Date:	Mon, 31 Jul 2006 23:01:37 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] fixed Makefile about EV64120 PCI fixup
-Message-Id: <20060731230504.5f470eb6.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH] changed common definitions to using asm-generic/signal.h
+Message-Id: <20060731230137.494dfb3e.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +22,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12130
+X-archive-position: 12131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,22 +32,29 @@ X-list: linux-mips
 
 Hi Ralf,
 
-This patch has fixed Makefile about EV64120 PCI fixup.
+This patch has changed common definitions to using asm-generic/signal.h .
 Please apply.
 
 Yoichi
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/Makefile mips/arch/mips/pci/Makefile
---- mips-orig/arch/mips/pci/Makefile	2006-07-31 13:48:35.879388750 +0900
-+++ mips/arch/mips/pci/Makefile	2006-07-31 13:49:44.115653250 +0900
-@@ -28,7 +28,7 @@ obj-$(CONFIG_DDB5477)		+= fixup-ddb5477.
- obj-$(CONFIG_LASAT)		+= pci-lasat.o
- obj-$(CONFIG_MIPS_ATLAS)	+= fixup-atlas.o
- obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
--obj-$(CONFIG_MIPS_EV96100)	+= fixup-ev64120.o
-+obj-$(CONFIG_MIPS_EV64120)	+= fixup-ev64120.o
- obj-$(CONFIG_MIPS_EV96100)	+= fixup-ev96100.o pci-ev96100.o
- obj-$(CONFIG_MIPS_ITE8172)	+= fixup-ite8172g.o
- obj-$(CONFIG_MIPS_IVR)		+= fixup-ivr.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/signal.h mips/include/asm-mips/signal.h
+--- mips-orig/include/asm-mips/signal.h	2006-07-25 14:34:52.507500500 +0900
++++ mips/include/asm-mips/signal.h	2006-07-25 14:49:34.814641250 +0900
+@@ -111,14 +111,7 @@ typedef unsigned long old_sigset_t;		/* 
+ #define SIG_SETMASK32	256	/* Goodie from SGI for BSD compatibility:
+ 				   set only the low 32 bit of the sigset.  */
+ 
+-/* Type of a signal handler.  */
+-typedef void __signalfn_t(int);
+-typedef __signalfn_t __user *__sighandler_t;
+-
+-/* Fake signal functions */
+-#define SIG_DFL	((__sighandler_t)0)	/* default signal handling */
+-#define SIG_IGN	((__sighandler_t)1)	/* ignore signal */
+-#define SIG_ERR	((__sighandler_t)-1)	/* error return from signal */
++#include <asm-generic/signal.h>
+ 
+ struct sigaction {
+ 	unsigned int	sa_flags;

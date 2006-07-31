@@ -1,53 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jul 2006 17:31:25 +0100 (BST)
-Received: from wx-out-0102.google.com ([66.249.82.198]:38291 "EHLO
-	wx-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S8126944AbWGaQbO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 31 Jul 2006 17:31:14 +0100
-Received: by wx-out-0102.google.com with SMTP id h29so97936wxd
-        for <linux-mips@linux-mips.org>; Mon, 31 Jul 2006 09:31:10 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=U+xoXEpQLVJuRoi1agsT3tEfSOsk8M8tO2krJk6E6rbHB5FpaB7p+Nd/QZ+rfXab6cPWQbu8GxpWbnHqJg/aowIpHjUAbSH+NyBo1+H7GN8hKwC4TvJadmyfSbWgBlWncUC725RnyMMZ9oPVmQl519/ruaGMa5gu2QIVmzRRyv0=
-Received: by 10.70.67.4 with SMTP id p4mr2946400wxa;
-        Mon, 31 Jul 2006 09:31:10 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id i14sm1828626wxd.2006.07.31.09.31.08;
-        Mon, 31 Jul 2006 09:31:09 -0700 (PDT)
-Message-ID: <44CE3015.8040605@innova-card.com>
-Date:	Mon, 31 Jul 2006 18:30:13 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2006 00:42:14 +0100 (BST)
+Received: from sj-iport-6.cisco.com ([171.71.176.117]:31628 "EHLO
+	sj-iport-6.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S8126965AbWGaXmA convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Aug 2006 00:42:00 +0100
+Received: from sj-dkim-3.cisco.com ([171.71.179.195])
+  by sj-iport-6.cisco.com with ESMTP; 31 Jul 2006 16:41:52 -0700
+Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
+	by sj-dkim-3.cisco.com (8.12.11.20060308/8.12.11) with ESMTP id k6VNfp2A015217
+	for <linux-mips@linux-mips.org>; Mon, 31 Jul 2006 16:41:51 -0700
+Received: from xbh-sjc-221.amer.cisco.com (xbh-sjc-221.cisco.com [128.107.191.63])
+	by sj-core-2.cisco.com (8.12.10/8.12.6) with ESMTP id k6VNfp2D001857
+	for <linux-mips@linux-mips.org>; Mon, 31 Jul 2006 16:41:51 -0700 (PDT)
+Received: from xmb-sjc-237.amer.cisco.com ([128.107.191.123]) by xbh-sjc-221.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 31 Jul 2006 16:41:50 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [PATCH] dump_stack() based on prologue code analysis (take 2)
-References: <20060729.232720.108740310.anemo@mba.ocn.ne.jp>	<44CDC657.9090403@innova-card.com> <20060731.235626.86888625.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060731.235626.86888625.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: gdb
+Date:	Mon, 31 Jul 2006 16:41:50 -0700
+Message-ID: <27801B4D04E7CA45825B0E0CE60FE10A023EE440@xmb-sjc-237.amer.cisco.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: gdb
+thread-index: Aca0LvH2tOHteam8RhSZFHORKmWgVwAy4dmg
+From:	"Ratin Rahman \(mratin\)" <mratin@cisco.com>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 31 Jul 2006 23:41:50.0929 (UTC) FILETIME=[E5593410:01C6B4FA]
+DKIM-Signature:	a=rsa-sha1; q=dns; l=151; t=1154389311; x=1155253311;
+	c=relaxed/simple; s=sjdkim3002; h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=mratin@cisco.com; z=From:=22Ratin=20Rahman=20\(mratin\)=22=20<mratin@cisco.com>
+	|Subject:gdb;
+	X=v=3Dcisco.com=3B=20h=3DT4qBgmrSGp6447ZE6xNr+sPSHMU=3D; b=G0OvayJ0MKQ3/B8YQvo27eDAsqQC8MPBoySugAlCwDrtSwG8h8PGvxgYWK+x1SN7Hr0Jt3oZ
+	gLd6Uil5thvoH1L4lFsc9k5MrWw/GapT6KRD1J2AFtEhhlgseL6YwT8X;
+Authentication-Results:	sj-dkim-3.cisco.com; header.From=mratin@cisco.com; dkim=pass (
+	sig from cisco.com verified; ); 
+Return-Path: <mratin@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12137
+X-archive-position: 12138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: mratin@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Mon, 31 Jul 2006 10:59:03 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->> my comments included with this patch...(you can find the plain patch
->> at the end of this email)
->>
+Anybody use gdb with mipsel? Is there something I need to know how to
+compile gdb for mipsel
+before I get my hands dirty with it :)
 
-This time your patch a _really_ been commited. So there won't be a take 3.
-I'll start a new thread including my comments I sent tomorrow.
-
-Thanks.
-		Franck
+Ratin Rahman

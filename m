@@ -1,75 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jul 2006 10:16:58 +0100 (BST)
-Received: from wr-out-0506.google.com ([64.233.184.235]:8064 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133487AbWGaJQt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 31 Jul 2006 10:16:49 +0100
-Received: by wr-out-0506.google.com with SMTP id i31so359291wra
-        for <linux-mips@linux-mips.org>; Mon, 31 Jul 2006 02:16:47 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=W3VDaNnNEyqPGCUyYY3ku0ori+WV5QjZCd2mQgyYMa0alxnZ6JfXAKEN1UVB4FxmiMnRR+eznCZzyCVrjyttBMdgRzE1tkhvWvKk2QrkgK9d6bS1w/y0j4OC8aMzzoZ1DaG1FxWobXrFtsq7etZWbaXmD/OXUt1+rqwXAppHLyE=
-Received: by 10.54.109.3 with SMTP id h3mr2210919wrc;
-        Mon, 31 Jul 2006 02:16:47 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id 8sm3209276wrl.2006.07.31.02.16.45;
-        Mon, 31 Jul 2006 02:16:47 -0700 (PDT)
-Message-ID: <44CDCA46.3030707@innova-card.com>
-Date:	Mon, 31 Jul 2006 11:15:50 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jul 2006 14:38:16 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:47331 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8126917AbWGaNiF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 31 Jul 2006 14:38:05 +0100
+Received: from localhost (p3075-ipad208funabasi.chiba.ocn.ne.jp [60.43.104.75])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id E77AD97CB; Mon, 31 Jul 2006 22:37:50 +0900 (JST)
+Date:	Mon, 31 Jul 2006 22:39:23 +0900 (JST)
+Message-Id: <20060731.223923.115609520.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] dump_stack() based on prologue code analysis
-References: <20060726.232231.59465336.anemo@mba.ocn.ne.jp>	<44C8CEA4.20000@innova-card.com>	<cda58cb80607271203u70b26e23o65b71d3d0c900f94@mail.gmail.com> <20060729.010137.36922349.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060729.010137.36922349.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44CDCA46.3030707@innova-card.com>
+References: <cda58cb80607271203u70b26e23o65b71d3d0c900f94@mail.gmail.com>
+	<20060729.010137.36922349.anemo@mba.ocn.ne.jp>
+	<44CDCA46.3030707@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12128
+X-archive-position: 12129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Thu, 27 Jul 2006 21:03:07 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
->>>> +     info.func = (void *)(pc - ofs);
->>>> +     info.func_size = ofs;   /* analyze from start to ofs */
->> in get_frame_info(), there is the following condition to stop the
->> prologue analysis
->>
->> 		if (info->func_size && i >= info->func_size / 4)
->> 			break;
->>
->> Setting info.func_size = ofs may trigger this stop condition very
->> early, specially if "ofs" is small...I would simply remove this
->> condition since it's very empirical and IMHO not very usefull.
+On Mon, 31 Jul 2006 11:15:50 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > Yes, that is what I wanted.  Imagine if a exception happened on first
+> > place on non-leaf function.  In this case, we must assume the function
+> > is leaf since RA is not saved to the stack.
 > 
-> Yes, that is what I wanted.  Imagine if a exception happened on first
-> place on non-leaf function.  In this case, we must assume the function
-> is leaf since RA is not saved to the stack.
-> 
+> The only case I can imagine is when sp is corrupted which is unlikely.
 
-The only case I can imagine is when sp is corrupted which is unlikely.
-However an exception can occure just after a prologue of a nested
-function which is more likely. In that case you will assume wrongly
-that the function was a leaf one.
+Modern gcc somtimes do amazing optimization ;-)
 
-I don't think we gain more than we loose with this test. Maybe we can
-just leave
+> However an exception can occure just after a prologue of a nested
+> function which is more likely. In that case you will assume wrongly
+> that the function was a leaf one.
 
- 		if (i >= info->func_size)
- 			break;
+Why?  get_frame_info() should detect frame_size and pc_offset for that
+case.
 
-for safety purpose.
+Is your objection against "info->func_size / 4" part?  the "4" comes
+from size of a instruction.
 
-		Franck
+Well, using "4" instead of "sizeof(union mips_instruction)" or
+"sizeof(*ip)" was my old fault...
+
+---
+Atsushi Nemoto

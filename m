@@ -1,56 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2006 00:42:14 +0100 (BST)
-Received: from sj-iport-6.cisco.com ([171.71.176.117]:31628 "EHLO
-	sj-iport-6.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S8126965AbWGaXmA convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Aug 2006 00:42:00 +0100
-Received: from sj-dkim-3.cisco.com ([171.71.179.195])
-  by sj-iport-6.cisco.com with ESMTP; 31 Jul 2006 16:41:52 -0700
-Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
-	by sj-dkim-3.cisco.com (8.12.11.20060308/8.12.11) with ESMTP id k6VNfp2A015217
-	for <linux-mips@linux-mips.org>; Mon, 31 Jul 2006 16:41:51 -0700
-Received: from xbh-sjc-221.amer.cisco.com (xbh-sjc-221.cisco.com [128.107.191.63])
-	by sj-core-2.cisco.com (8.12.10/8.12.6) with ESMTP id k6VNfp2D001857
-	for <linux-mips@linux-mips.org>; Mon, 31 Jul 2006 16:41:51 -0700 (PDT)
-Received: from xmb-sjc-237.amer.cisco.com ([128.107.191.123]) by xbh-sjc-221.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 31 Jul 2006 16:41:50 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2006 09:38:55 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.170]:46450 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133458AbWHAIiq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 1 Aug 2006 09:38:46 +0100
+Received: by ug-out-1314.google.com with SMTP id m2so1361902ugc
+        for <linux-mips@linux-mips.org>; Tue, 01 Aug 2006 01:38:46 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=SPD8GsOvpgwP9Yqh9BUahGkELItC+lGVGI2Plu9qQqJ82qIejXcjbOLhKacQlnEhc7hVRq4clSBGOJZYwFv62xiVMlBG/w7b48/qRHQaa5gPlixZ5gDScX/zIyWBCaV307NsuAePgElm95oskVbkxFEQvT3BKw5+tcZAUWasWRo=
+Received: by 10.65.97.18 with SMTP id z18mr654644qbl;
+        Tue, 01 Aug 2006 01:38:45 -0700 (PDT)
+Received: from ?192.168.0.24? ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id f13sm1280312qba.2006.08.01.01.38.10;
+        Tue, 01 Aug 2006 01:38:12 -0700 (PDT)
+Message-ID: <44CF12BD.6010902@innova-card.com>
+Date:	Tue, 01 Aug 2006 10:37:17 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: gdb
-Date:	Mon, 31 Jul 2006 16:41:50 -0700
-Message-ID: <27801B4D04E7CA45825B0E0CE60FE10A023EE440@xmb-sjc-237.amer.cisco.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: gdb
-thread-index: Aca0LvH2tOHteam8RhSZFHORKmWgVwAy4dmg
-From:	"Ratin Rahman \(mratin\)" <mratin@cisco.com>
-To:	<linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 31 Jul 2006 23:41:50.0929 (UTC) FILETIME=[E5593410:01C6B4FA]
-DKIM-Signature:	a=rsa-sha1; q=dns; l=151; t=1154389311; x=1155253311;
-	c=relaxed/simple; s=sjdkim3002; h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=mratin@cisco.com; z=From:=22Ratin=20Rahman=20\(mratin\)=22=20<mratin@cisco.com>
-	|Subject:gdb;
-	X=v=3Dcisco.com=3B=20h=3DT4qBgmrSGp6447ZE6xNr+sPSHMU=3D; b=G0OvayJ0MKQ3/B8YQvo27eDAsqQC8MPBoySugAlCwDrtSwG8h8PGvxgYWK+x1SN7Hr0Jt3oZ
-	gLd6Uil5thvoH1L4lFsc9k5MrWw/GapT6KRD1J2AFtEhhlgseL6YwT8X;
-Authentication-Results:	sj-dkim-3.cisco.com; header.From=mratin@cisco.com; dkim=pass (
-	sig from cisco.com verified; ); 
-Return-Path: <mratin@cisco.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] dump_stack() based on prologue code analysis (take 2)
+References: <20060729.232720.108740310.anemo@mba.ocn.ne.jp>	<44CDC657.9090403@innova-card.com> <20060731.235626.86888625.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060731.235626.86888625.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12138
+X-archive-position: 12139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mratin@cisco.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Anybody use gdb with mipsel? Is there something I need to know how to
-compile gdb for mipsel
-before I get my hands dirty with it :)
+Atsushi Nemoto wrote:
+> On Mon, 31 Jul 2006 10:59:03 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>>
+>> I pass regs to unwind_stack(), that simplify the caller because
+>> it needn't to deal with leaf or nested case. Simply test for pc
+>> is 0.
+> 
+> It seems a bit fragile.  The regs->regs[31] can be used for top of
+> stack, but we should consider that get_frame_info() might return wrong
+> result (again, get_frame_info() is not perfect).  If get_frame_info()
+> returned 0 on middle level of the stack, taking regs->regs[31] leads
+> wrong trace.  Maybe you can use NULL value as regs for non-toplevel.
+> 
 
-Ratin Rahman
+Yes get_frame_info() is not perfect in sense where it can't analyses
+_all_ possible frames. But it should be able to detect these case at 
+least.
+
+		Franck

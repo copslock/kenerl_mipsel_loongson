@@ -1,69 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2006 16:38:39 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.190]:39641 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133655AbWHAPiV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 1 Aug 2006 16:38:21 +0100
-Received: by nf-out-0910.google.com with SMTP id q29so312961nfc
-        for <linux-mips@linux-mips.org>; Tue, 01 Aug 2006 08:38:14 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=sqfI4jGfmo6rqLPjAE9yv0pBuQqJWNwCsT1sZfnZ1H13gujjUnEvKcmXtkXLbJpaHl5CCKqfouDMO0s7aedUQ5d3EztheKC6Cm3gqgvBvsDrytWElNTkQiWNWg3SAQFADTC1XVEmEs727A6FAgIiaCjvJP0C1LCJunmEt8/fQXk=
-Received: by 10.49.8.4 with SMTP id l4mr921209nfi;
-        Tue, 01 Aug 2006 08:38:14 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id r33sm471316nfc.2006.08.01.08.38.13;
-        Tue, 01 Aug 2006 08:38:14 -0700 (PDT)
-Message-ID: <44CF7506.70106@innova-card.com>
-Date:	Tue, 01 Aug 2006 17:36:38 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 6/7] Fix dump_stack()
-References: <11544244373398-git-send-email-vagabon.xyz@gmail.com>	<1154424439852-git-send-email-vagabon.xyz@gmail.com> <20060802.000837.37531064.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060802.000837.37531064.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2006 16:47:30 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:43735 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133655AbWHAPrV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Aug 2006 16:47:21 +0100
+Received: from localhost (p2112-ipad209funabasi.chiba.ocn.ne.jp [58.88.113.112])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 83DA0A073; Wed,  2 Aug 2006 00:47:15 +0900 (JST)
+Date:	Wed, 02 Aug 2006 00:48:48 +0900 (JST)
+Message-Id: <20060802.004848.97296551.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 7/7] Allow unwind_stack() to return ra for leaf function
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1154424439969-git-send-email-vagabon.xyz@gmail.com>
+References: <11544244373398-git-send-email-vagabon.xyz@gmail.com>
+	<1154424439969-git-send-email-vagabon.xyz@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12150
+X-archive-position: 12151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Tue,  1 Aug 2006 11:27:16 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->> When CONFIG_KALLSYMS is not set stack local is not initialized. Therefore
->> show_trace() won't display anything useful. This patch uses
->> prepare_frametrace() to setup the stack pointer before calling
->> show_trace().
-> 
-> It's not a bug.  The original show_trace() needs an address on stack
-> and dump_stack() surely give it by taking an address of local
-> variable.
-> 
+On Tue,  1 Aug 2006 11:27:17 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> Since get_frame_info() is more robust, unwind_stack() can
+> returns ra value for leaf functions.
 
-sorry, was drunk when writing the commit message...
+I think it is still fragile.  The get_frame_info() might misdetect
+nested function as leaf.  For example, I can craft this code:
 
-> Eliminating the #ifdef itself looks good, but if you cleared contents
-> of the "regs" before prepare_frametrace, you will get less false
-> entries in the output.
-> 
+int nestfunc(int arg)
+{
+	if (arg)
+		return 0;
+	func();
+	return 1;
+}
 
-well I don't see why...show_trace() is going to only use regs[29] which
-is setup by prepare_frametrace()...
+	.set noreorder
+nestfunc:
+	beqz	a0, 1f
+	 nop
+	jr	ra
+	 move	v0, zero
+1:
+	addiu	sp, sp, -24
+	sw	ra, 16(sp)
+	jal	func
+	 nop
+	lw	ra, 16(sp)
+	li	v0, 1
+	jr	ra
+	 addiu	sp, sp, 24
 
-One other thing, why did you mark prepare_frametrace() as noinline ?
-I would mark it as always_inline to get one less false entry in the
-output.
+(Though it seems a bit artificial, who believe gcc never do it same?)
 
-		Franck
+The get_frame_info() will think this is a leaf.  With your patch,
+unwind_stack() might fall into endless loop at worst (if the "func"
+was leaf and an exception happened in the "func").
+
+I think you should ensure unwind_stack() never use regs->regs[31]
+elsewhere than top of the stack.
+
+---
+Atsushi Nemoto

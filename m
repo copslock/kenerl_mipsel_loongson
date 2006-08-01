@@ -1,38 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2006 09:38:55 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.170]:46450 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S8133458AbWHAIiq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 1 Aug 2006 09:38:46 +0100
-Received: by ug-out-1314.google.com with SMTP id m2so1361902ugc
-        for <linux-mips@linux-mips.org>; Tue, 01 Aug 2006 01:38:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Aug 2006 10:28:24 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.190]:5656 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S8133520AbWHAJ2M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 1 Aug 2006 10:28:12 +0100
+Received: by nf-out-0910.google.com with SMTP id q29so210810nfc
+        for <linux-mips@linux-mips.org>; Tue, 01 Aug 2006 02:28:12 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=SPD8GsOvpgwP9Yqh9BUahGkELItC+lGVGI2Plu9qQqJ82qIejXcjbOLhKacQlnEhc7hVRq4clSBGOJZYwFv62xiVMlBG/w7b48/qRHQaa5gPlixZ5gDScX/zIyWBCaV307NsuAePgElm95oskVbkxFEQvT3BKw5+tcZAUWasWRo=
-Received: by 10.65.97.18 with SMTP id z18mr654644qbl;
-        Tue, 01 Aug 2006 01:38:45 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id f13sm1280312qba.2006.08.01.01.38.10;
-        Tue, 01 Aug 2006 01:38:12 -0700 (PDT)
-Message-ID: <44CF12BD.6010902@innova-card.com>
-Date:	Tue, 01 Aug 2006 10:37:17 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [PATCH] dump_stack() based on prologue code analysis (take 2)
-References: <20060729.232720.108740310.anemo@mba.ocn.ne.jp>	<44CDC657.9090403@innova-card.com> <20060731.235626.86888625.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060731.235626.86888625.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=rYzHTeHf3KbZcQIiBSxiuY1aFBpQv4O0vOZC5ydjXWSRGHSGAcl+6xMsNDIZU23SY0+pqnty+MSOigXm7i6rcVSUxEYXkzFTvhIMhcrisF0nabtqx1clmdQUNyjEjBVnI9H4xxNCE/Wm0egoD7zRSeXo4yJP5pbx2xgqanpd1Hs=
+Received: by 10.49.10.3 with SMTP id n3mr391243nfi;
+        Tue, 01 Aug 2006 02:28:11 -0700 (PDT)
+Received: from spoutnik.innova-card.com ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id m16sm695230nfc.2006.08.01.02.28.11;
+        Tue, 01 Aug 2006 02:28:11 -0700 (PDT)
+Received: by spoutnik.innova-card.com (Postfix, from userid 500)
+	id 4BE7A23F759; Tue,  1 Aug 2006 11:27:18 +0200 (CEST)
 From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+To:	anemo@mba.ocn.ne.jp
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Subject: [PATCH 1/7] Make get_frame_info() more readable.
+Date:	Tue,  1 Aug 2006 11:27:11 +0200
+Message-Id: <11544244383201-git-send-email-vagabon.xyz@gmail.com>
+X-Mailer: git-send-email 1.4.2.rc2
+In-Reply-To: <11544244373398-git-send-email-vagabon.xyz@gmail.com>
+References: <11544244373398-git-send-email-vagabon.xyz@gmail.com>
 Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12139
+X-archive-position: 12140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,22 +38,96 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Mon, 31 Jul 2006 10:59:03 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->>
->> I pass regs to unwind_stack(), that simplify the caller because
->> it needn't to deal with leaf or nested case. Simply test for pc
->> is 0.
-> 
-> It seems a bit fragile.  The regs->regs[31] can be used for top of
-> stack, but we should consider that get_frame_info() might return wrong
-> result (again, get_frame_info() is not perfect).  If get_frame_info()
-> returned 0 on middle level of the stack, taking regs->regs[31] leads
-> wrong trace.  Maybe you can use NULL value as regs for non-toplevel.
-> 
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Signed-off-by: Franck Bui-Huu <vagabon.xyz@gmail.com>
+---
+ arch/mips/kernel/process.c |   63 ++++++++++++++++++++++----------------------
+ 1 files changed, 32 insertions(+), 31 deletions(-)
 
-Yes get_frame_info() is not perfect in sense where it can't analyses
-_all_ possible frames. But it should be able to detect these case at 
-least.
-
-		Franck
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 8709a46..8d0e4fa 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -281,48 +281,49 @@ static struct mips_frame_info {
+ } *schedule_frame, mfinfo[64];
+ static int mfinfo_num;
+ 
++static inline int is_ra_save_ins(union mips_instruction *pc)
++{
++	/* sw / sd $ra, offset($sp) */
++	return (pc->i_format.opcode == sw_op || pc->i_format.opcode == sd_op) &&
++		pc->i_format.rs == 29 &&
++		pc->i_format.rt == 31;
++}
++
++static inline int is_jal_jalr_jr_ins(union mips_instruction *pc)
++{
++	return pc->j_format.opcode == jal_op ||
++		(pc->r_format.opcode == spec_op &&
++			(pc->r_format.func == jalr_op || pc->r_format.func == jr_op));
++}
++
++static inline int is_sp_move_ins(union mips_instruction *pc)
++{
++	/* addiu/daddiu sp,sp,-imm */
++	return (pc->i_format.opcode == addiu_op || pc->i_format.opcode == daddiu_op) && \
++		pc->i_format.rs == 29 && \
++		pc->i_format.rt == 29;
++}
++
+ static int get_frame_info(struct mips_frame_info *info)
+ {
+-	int i;
+-	void *func = info->func;
+-	union mips_instruction *ip = (union mips_instruction *)func;
++	union mips_instruction *ip = info->func;
++	int i, max_insns =
++		min(128UL, info->func_size / sizeof(union mips_instruction));
++
+ 	info->pc_offset = -1;
+ 	info->frame_size = 0;
+-	for (i = 0; i < 128; i++, ip++) {
+-		/* if jal, jalr, jr, stop. */
+-		if (ip->j_format.opcode == jal_op ||
+-		    (ip->r_format.opcode == spec_op &&
+-		     (ip->r_format.func == jalr_op ||
+-		      ip->r_format.func == jr_op)))
+-			break;
+ 
+-		if (info->func_size && i >= info->func_size / 4)
++	for (i = 0; i < max_insns; i++, ip++) {
++
++		if (is_jal_jalr_jr_ins(ip))
+ 			break;
+-		if (
+-#ifdef CONFIG_32BIT
+-		    ip->i_format.opcode == addiu_op &&
+-#endif
+-#ifdef CONFIG_64BIT
+-		    ip->i_format.opcode == daddiu_op &&
+-#endif
+-		    ip->i_format.rs == 29 &&
+-		    ip->i_format.rt == 29) {
+-			/* addiu/daddiu sp,sp,-imm */
++		if (is_sp_move_ins(ip)) {
+ 			if (info->frame_size)
+ 				continue;
+ 			info->frame_size = - ip->i_format.simmediate;
+ 		}
+ 
+-		if (
+-#ifdef CONFIG_32BIT
+-		    ip->i_format.opcode == sw_op &&
+-#endif
+-#ifdef CONFIG_64BIT
+-		    ip->i_format.opcode == sd_op &&
+-#endif
+-		    ip->i_format.rs == 29 &&
+-		    ip->i_format.rt == 31) {
+-			/* sw / sd $ra, offset($sp) */
++		if (is_ra_save_ins(ip)) {
+ 			if (info->pc_offset != -1)
+ 				continue;
+ 			info->pc_offset =
+-- 
+1.4.2.rc2

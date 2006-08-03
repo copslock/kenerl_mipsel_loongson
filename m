@@ -1,46 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 04:23:36 +0100 (BST)
-Received: from mail2.stigp.com ([203.126.82.109]:19776 "EHLO mail2.stigp.com")
-	by ftp.linux-mips.org with ESMTP id S8133359AbWHCDX1 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 3 Aug 2006 04:23:27 +0100
-Received: from unknown (HELO ASTIEXCHG.stigp.com) ([192.168.2.250])
-  by mail2.stigp.com with ESMTP; 03 Aug 2006 11:24:18 +0800
-X-BrightmailFiltered: true
-X-Brightmail-Tracker: AAAAAQAAA+k=
-X-IronPort-AV: i="4.07,206,1151856000"; 
-   d="scan'208"; a="4054141:sNHT24366884"
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Subject: joining 
-Date:	Thu, 3 Aug 2006 11:22:27 +0800
-Message-ID: <532CBC607BEC4642A89BB3B9648A70961BEDDC@ASTIEXCHG.stigp.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: joining 
-Thread-Index: Aca2rAwGddrzp9hBRV6nBiUNvgZGWg==
-From:	"Deepak C.P" <deepak@microview-tech.com>
-To:	<linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <deepak@microview-tech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 05:52:44 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:50204 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S8133359AbWHCEwf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 3 Aug 2006 05:52:35 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 3 Aug 2006 13:52:34 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id B2ECD20474;
+	Thu,  3 Aug 2006 13:52:32 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 9EB402045A;
+	Thu,  3 Aug 2006 13:52:32 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k734qVW0024170;
+	Thu, 3 Aug 2006 13:52:32 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 03 Aug 2006 13:52:31 +0900 (JST)
+Message-Id: <20060803.135231.130240551.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 7/7] Allow unwind_stack() to return ra for leaf function
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44D0D942.5050809@innova-card.com>
+References: <44D0A3B0.40601@innova-card.com>
+	<20060803.010000.25909906.anemo@mba.ocn.ne.jp>
+	<44D0D942.5050809@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12164
+X-archive-position: 12165
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: deepak@microview-tech.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, 02 Aug 2006 18:56:34 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > Just one comment: no need to do "pc = pc != ra ? ra : 0" anymore.
+> > Just "pc = ra" is enough, isn't it?
+> 
+> Well I let it just for cases where the caller does not reset ra
+> after the first call. It should be safter. But I can remove it if
+> you want.
 
-sir i am working in Linux platform and interested to join in this group 
-This email and all contents are subject to the following disclaimer:
+OK, I see.  No problem.
 
-"The information transmitted in this  message is intended only for the person or entity to 
-which it is addressed and may contain confidential and/or privileged material.  Any review,
-retransmission,dissemination or other use of,or taking of any action in reliance upon,this 
-information by persons or entities other than the intended recipient is prohibited. If you 
-received this in error, please contact the sender and destroy this message and all copies."
+---
+Atsushi Nemoto

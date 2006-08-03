@@ -1,87 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 14:54:17 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:35026 "EHLO
-	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S8133828AbWHCNyH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 3 Aug 2006 14:54:07 +0100
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by mail.enneenne.com with esmtp (Exim 4.50)
-	id 1G8cf8-000591-9W
-	for linux-mips@linux-mips.org; Thu, 03 Aug 2006 14:50:54 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1G8df1-0005cC-OY
-	for linux-mips@linux-mips.org; Thu, 03 Aug 2006 15:54:51 +0200
-Date:	Thu, 3 Aug 2006 15:54:51 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060803135451.GC24940@enneenne.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.11+cvs20060403
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: Understanding PCMCIA layer
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 15:13:37 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:4607 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S8133870AbWHCONX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2006 15:13:23 +0100
+Received: from localhost (p5142-ipad210funabasi.chiba.ocn.ne.jp [58.88.124.142])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 271C4120B; Thu,  3 Aug 2006 23:13:18 +0900 (JST)
+Date:	Thu, 03 Aug 2006 23:14:52 +0900 (JST)
+Message-Id: <20060803.231452.89066856.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 0/7] Improve prologue analysis code (take #2)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <11545901611096-git-send-email-vagabon.xyz@gmail.com>
+References: <11545901611096-git-send-email-vagabon.xyz@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12174
+X-archive-position: 12175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Thu,  3 Aug 2006 09:29:14 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> This patch set clean up or improves this part of code. I splitted out
+> this into 7 patches to make the review easier.
+> 
+> This second try takes into account all feedbacks from Atsushi Nemoto.
 
-I'm just playing with the PCMCIA layer in order to manage a WiFi
-module.
+Thanks for your good job.  All good for me.
 
-I notice that giving the suspend/resume command sequence I get:
+Ralf, this patchset includes all floating patches from me.  Please
+take this and drop mine.
 
-   hostname:~# pccardctl suspend
-   WWPC-PCMCIA: config_skt 0 Vcc 0V Vpp 0V, flags 0 (reset 0)
-   WWPC-PCMCIA: suspend_skt 0                                                      
-   hostname:~# pccardctl resume
-   WWPC-PCMCIA: init_skt 0
-   WWPC-PCMCIA: config_skt 0 Vcc 0V Vpp 0V, flags 0 (reset 0)
-   WWPC-PCMCIA: config_skt 0 Vcc 33V Vpp 33V, flags 0 (reset 0)
-   WWPC-PCMCIA: config_skt 0 Vcc 33V Vpp 0V, flags 240 (reset 1)
-   WWPC-PCMCIA: config_skt 0 Vcc 33V Vpp 0V, flags 200 (reset 0)                   
-
-and giving the eject/insert one I get:
-
-   hostname:~# pccardctl eject
-   pccard: card ejected from slot 0
-   WWPC-PCMCIA: init_skt 0
-   WWPC-PCMCIA: config_skt 0 Vcc 0V Vpp 0V, flags 0 (reset 0)
-   hostname:~# pccardctl insert
-   WWPC-PCMCIA: config_skt 0 Vcc 33V Vpp 33V, flags 0 (reset 0)
-   WWPC-PCMCIA: config_skt 0 Vcc 33V Vpp 0V, flags 240 (reset 1)
-   WWPC-PCMCIA: config_skt 0 Vcc 33V Vpp 0V, flags 200 (reset 0)
-   pccard: PCMCIA card inserted into slot 0
-   pcmcia: registering new device pcmcia0.0                                        
-
-My module support a "sleep" mode, so I shouldn't remove power supply
-nor giving to it a reset impulse during suspend/resume stages but, on
-the other hands, I'd like to reset it when I give the "insert" command
-and turning it off when I give the "eject" command.
-
-How I can resolve the problem? =:-o
-
-Thanks in advance,
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+---
+Atsushi Nemoto

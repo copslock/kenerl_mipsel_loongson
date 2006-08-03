@@ -1,44 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 16:58:35 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:56471 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S8133884AbWHCP60 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2006 16:58:26 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k73FwTu8009876;
-	Thu, 3 Aug 2006 16:58:29 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k73FwSVB009875;
-	Thu, 3 Aug 2006 16:58:28 +0100
-Date:	Thu, 3 Aug 2006 16:58:28 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/7] Improve prologue analysis code (take #2)
-Message-ID: <20060803155828.GA9448@linux-mips.org>
-References: <11545901611096-git-send-email-vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 18:52:36 +0100 (BST)
+Received: from lug-owl.de ([195.71.106.12]:54684 "EHLO lug-owl.de")
+	by ftp.linux-mips.org with ESMTP id S8133881AbWHCRw1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2006 18:52:27 +0100
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id ACD8FF0291; Thu,  3 Aug 2006 19:52:26 +0200 (CEST)
+Date:	Thu, 3 Aug 2006 19:52:26 +0200
+From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:	linux-mips@linux-mips.org
+Subject: Re: Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6
+Message-ID: <20060803175226.GA20586@lug-owl.de>
+Mail-Followup-To: linux-mips@linux-mips.org
+References: <S8133924AbWHCQmm/20060803164242Z+747@ftp.linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="UugvWAfsgieZRqgk"
 Content-Disposition: inline
-In-Reply-To: <11545901611096-git-send-email-vagabon.xyz@gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <S8133924AbWHCQmm/20060803164242Z+747@ftp.linux-mips.org>
+X-Operating-System: Linux mail 2.6.12.3lug-owl
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+User-Agent: Mutt/1.5.9i
+Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12176
+X-archive-position: 12177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 03, 2006 at 09:29:14AM +0200, Franck Bui-Huu wrote:
 
-> This patch set clean up or improves this part of code. I splitted out
-> this into 7 patches to make the review easier.
-> 
-> This second try takes into account all feedbacks from Atsushi Nemoto.
+--UugvWAfsgieZRqgk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks, whole series queued.
+On Thu, 2006-08-03 17:42:34 +0100, linux-mips@linux-mips.org <linux-mips@li=
+nux-mips.org> wrote:
+> diff --git a/.gitignore b/.gitignore
+> index 5535e8b..d272b10 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -30,12 +30,15 @@ include/config
+>  include/linux/autoconf.h
+>  include/linux/compile.h
+>  include/linux/version.h
+> +<<<<<<< HEAD/.gitignore
+>  include/asm-*/asm-offsets.h
+> +=3D=3D=3D=3D=3D=3D=3D
+> +include/linux/utsrelease.h
+> +>>>>>>> 3f2792ffbd88dc1cd41d226674cc428914981e98/.gitignore
 
-  Ralf
+[...]
+
+I think you may want to fix this :)
+
+MfG, JBG
+
+--=20
+       Jan-Benedict Glaw       jbglaw@lug-owl.de                +49-172-760=
+8481
+Signature of:           "really soon now":       an unspecified period of t=
+ime, likly to
+the second  :                                    be greater than any reason=
+able definition
+                                                 of "soon".
+
+--UugvWAfsgieZRqgk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.1 (GNU/Linux)
+
+iD8DBQFE0jfaHb1edYOZ4bsRArRaAJ9Jj0orQug4akRyzHmVbQ09WZ/g2ACcD1j/
+p5Dd8db1p+QldrwSz1VC/II=
+=g6UH
+-----END PGP SIGNATURE-----
+
+--UugvWAfsgieZRqgk--

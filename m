@@ -1,46 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 15:13:37 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:4607 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S8133870AbWHCONX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2006 15:13:23 +0100
-Received: from localhost (p5142-ipad210funabasi.chiba.ocn.ne.jp [58.88.124.142])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 271C4120B; Thu,  3 Aug 2006 23:13:18 +0900 (JST)
-Date:	Thu, 03 Aug 2006 23:14:52 +0900 (JST)
-Message-Id: <20060803.231452.89066856.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Aug 2006 16:58:35 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:56471 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S8133884AbWHCP60 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Aug 2006 16:58:26 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k73FwTu8009876;
+	Thu, 3 Aug 2006 16:58:29 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k73FwSVB009875;
+	Thu, 3 Aug 2006 16:58:28 +0100
+Date:	Thu, 3 Aug 2006 16:58:28 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org
 Subject: Re: [PATCH 0/7] Improve prologue analysis code (take #2)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <11545901611096-git-send-email-vagabon.xyz@gmail.com>
+Message-ID: <20060803155828.GA9448@linux-mips.org>
 References: <11545901611096-git-send-email-vagabon.xyz@gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <11545901611096-git-send-email-vagabon.xyz@gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12175
+X-archive-position: 12176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu,  3 Aug 2006 09:29:14 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+On Thu, Aug 03, 2006 at 09:29:14AM +0200, Franck Bui-Huu wrote:
+
 > This patch set clean up or improves this part of code. I splitted out
 > this into 7 patches to make the review easier.
 > 
 > This second try takes into account all feedbacks from Atsushi Nemoto.
 
-Thanks for your good job.  All good for me.
+Thanks, whole series queued.
 
-Ralf, this patchset includes all floating patches from me.  Please
-take this and drop mine.
-
----
-Atsushi Nemoto
+  Ralf

@@ -1,156 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Aug 2006 07:31:49 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.179]:20924 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037748AbWHGGbs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Aug 2006 07:31:48 +0100
-Received: by py-out-1112.google.com with SMTP id m51so719240pye
-        for <linux-mips@linux-mips.org>; Sun, 06 Aug 2006 23:31:43 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=d1qI5B2HGYrdrv1nwR629jurCOq7/Jd9/owjIdMYNWmG91nbZOae6/PhwdHmALKzayaiAOihLA8f32QdT6HAKKJ041TlOny2RLSu11is8aHEmsrjvp4HrzzJKx6TrUzqhyDknOEikEPZzmcLocNPhJh0Ax0JVmZIcogg3uF2Lg0=
-Received: by 10.35.121.9 with SMTP id y9mr11486092pym;
-        Sun, 06 Aug 2006 23:31:43 -0700 (PDT)
-Received: by 10.35.30.15 with HTTP; Sun, 6 Aug 2006 23:31:43 -0700 (PDT)
-Message-ID: <f07e6e0608062331p4ef621afn67764067f5b822c2@mail.gmail.com>
-Date:	Mon, 7 Aug 2006 12:01:43 +0530
-From:	"Kishore K" <hellokishore@gmail.com>
-To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Problem booting malta with 2.4.33-rc1
-MIME-Version: 1.0
-Content-Type: multipart/mixed; 
-	boundary="----=_Part_46787_4151836.1154932303682"
-Return-Path: <hellokishore@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Aug 2006 10:10:35 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:4394 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037569AbWHGJKb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 7 Aug 2006 10:10:31 +0100
+Received: by mo.po.2iij.net (mo32) id k779AOJ1071647; Mon, 7 Aug 2006 18:10:24 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox32) id k779AKYv003840
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 7 Aug 2006 18:10:21 +0900 (JST)
+Date:	Mon, 7 Aug 2006 18:10:20 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	"Kishore K" <hellokishore@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Problem booting malta with 2.4.33-rc1
+Message-Id: <20060807181020.37d94241.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <f07e6e0608062331p4ef621afn67764067f5b822c2@mail.gmail.com>
+References: <f07e6e0608062331p4ef621afn67764067f5b822c2@mail.gmail.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12222
+X-archive-position: 12223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hellokishore@gmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_46787_4151836.1154932303682
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_46788_20244869.1154932303682"
-
-------=_Part_46788_20244869.1154932303682
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
 Hi,
-When trying to bring up Malta (4KC) board with 2.4.33-rc1 from linux-mips,
-the kernel crashes. Boot log is enclosed along with this mail. I am using
-the tool chain based on gcc 3.3.6, uClibc-0.9.27, binutils 2.14.90.0.8.
-When the same tool chain is used for 2.4.31 kernel, the board comes up
-without any issues.
 
-Observed the same issue with tool chain based on gcc 3.4.4, uClibc-0.9.28,
-binutils 2.15.94. Same result is observed even with  Malta 24KEC and
-2.4.33-rc1 kernel.
+On Mon, 7 Aug 2006 12:01:43 +0530
+"Kishore K" <hellokishore@gmail.com> wrote:
 
-Does any one observe the same behaviour ? Am I missing something obvious
-here ?
+> Hi,
+> When trying to bring up Malta (4KC) board with 2.4.33-rc1 from linux-mips,
+> the kernel crashes. Boot log is enclosed along with this mail. I am using
+> the tool chain based on gcc 3.3.6, uClibc-0.9.27, binutils 2.14.90.0.8.
+> When the same tool chain is used for 2.4.31 kernel, the board comes up
+> without any issues.
+> 
+> Observed the same issue with tool chain based on gcc 3.4.4, uClibc-0.9.28,
+> binutils 2.15.94. Same result is observed even with  Malta 24KEC and
+> 2.4.33-rc1 kernel.
+> 
+> Does any one observe the same behaviour ? Am I missing something obvious
+> here ?
 
-thanks,
---kishore
+I have seen the same problem with gcc 3.4.4 mipssde-6.03.01-20051114 and
+ binutils 2.15.94 mipssde-6.03.01-20051114 with 2.6.6 kernel.
+gcc 3.3.2 and binutils 2.14.90.0.8 20040114 has no problem with same kernel.
 
-------=_Part_46788_20244869.1154932303682
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-Hi,<br>When trying to bring up Malta (4KC) board with 2.4.33-rc1 from linux-mips, the kernel crashes. Boot log is enclosed along with this mail. I am using the tool chain based on gcc 3.3.6, uClibc-0.9.27, binutils 2.14.90.0.8
-.&nbsp; When the same tool chain is used for 2.4.31 kernel, the board comes up without any issues.<br><br>Observed the same issue with tool chain based on gcc 3.4.4, uClibc-0.9.28, binutils 2.15.94. Same result is observed even with&nbsp; Malta 24KEC and 
-2.4.33-rc1 kernel. <br><br>Does any one observe the same behaviour ? Am I missing something obvious here ?<br><br>thanks,<br>--kishore<br><br>
-
-------=_Part_46788_20244869.1154932303682--
-
-------=_Part_46787_4151836.1154932303682
-Content-Type: application/octet-stream; name=4kc-3.3.6.log
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_eqkgtywl
-Content-Disposition: attachment; filename="4kc-3.3.6.log"
-
-TElOVVggc3RhcnRlZC4uLgpDUFUgcmV2aXNpb24gaXM6IDAwMDE4MDA1ClByaW1hcnkgaW5zdHJ1
-Y3Rpb24gY2FjaGUgMTZrQiwgcGh5c2ljYWxseSB0YWdnZWQsIDQtd2F5LCBsaW5lc2l6ZSAxNiBi
-eXRlcy4KUHJpbWFyeSBkYXRhIGNhY2hlIDE2a0IsIDQtd2F5LCBsaW5lc2l6ZSAxNiBieXRlcy4K
-TGludXggdmVyc2lvbiAyLjQuMzMtcmMxIChraXNob3Jla0Bsb2NhbGhvc3QubG9jYWxkb21haW4p
-IChnY2MgdmVyc2lvbiAzLjMuNikgIzEgVHVlIEF1ZyAxIDE4OjAxOjIwIExLVCAyMDA2CkRldGVy
-bWluZWQgcGh5c2ljYWwgUkFNIG1hcDoKIG1lbW9yeTogMDAwMDEwMDAgQCAwMDAwMDAwMCAocmVz
-ZXJ2ZWQpCiBtZW1vcnk6IDAwMGVmMDAwIEAgMDAwMDEwMDAgKFJPTSBkYXRhKQogbWVtb3J5OiAw
-MDAxMDAwMCBAIDAwMGYwMDAwIChyZXNlcnZlZCkKIG1lbW9yeTogMDAxZGYwMDAgQCAwMDEwMDAw
-MCAocmVzZXJ2ZWQpCiBtZW1vcnk6IDAzZDIxMDAwIEAgMDAyZGYwMDAgKHVzYWJsZSkKT24gbm9k
-ZSAwIHRvdGFscGFnZXM6IDE2Mzg0CnpvbmUoMCk6IDE2Mzg0IHBhZ2VzLgp6b25lKDEpOiAwIHBh
-Z2VzLgp6b25lKDIpOiAwIHBhZ2VzLgpLZXJuZWwgY29tbWFuZCBsaW5lOiBpcD0xMC4xLjEuMTAx
-OjEwLjEuMS45OToxMC4xLjEuOTk6MjU1LjAuMC4wOm1hbHRhOmV0aDA6b2ZmIHJvb3Q9L2Rldi9u
-ZnMgbmZzcm9vdD0vcm9vdC9raXNob3JlL3IxLWFscGhhLTAKY2FsY3VsYXRpbmcgcjRrb2ZmLi4u
-IDAwMDk4OWExKDYyNTA1NykKQ1BVIGZyZXF1ZW5jeSAxMjUuMDEgTUh6ClVzaW5nIDYyLjUwNiBN
-SHogaGlnaCBwcmVjaXNpb24gdGltZXIuCkNhbGlicmF0aW5nIGRlbGF5IGxvb3AuLi4gMTI0LjUx
-IEJvZ29NSVBTCk1lbW9yeTogNjE4ODRrLzYyNTk2ayBhdmFpbGFibGUgKDE1MzdrIGtlcm5lbCBj
-b2RlLCA3MTJrIHJlc2VydmVkLCAxMDRrIGRhdGEsIDEwMGsgaW5pdCwgMGsgaGlnaG1lbSkKRGVu
-dHJ5IGNhY2hlIGhhc2ggdGFibGUgZW50cmllczogODE5MiAob3JkZXI6IDQsIDY1NTM2IGJ5dGVz
-KQpJbm9kZSBjYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDQwOTYgKG9yZGVyOiAzLCAzMjc2OCBi
-eXRlcykKTW91bnQgY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiA1MTIgKG9yZGVyOiAwLCA0MDk2
-IGJ5dGVzKQpCdWZmZXIgY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiA0MDk2IChvcmRlcjogMiwg
-MTYzODQgYnl0ZXMpClBhZ2UtY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiAxNjM4NCAob3JkZXI6
-IDQsIDY1NTM2IGJ5dGVzKQpDaGVja2luZyBmb3IgJ3dhaXQnIGluc3RydWN0aW9uLi4uICBhdmFp
-bGFibGUuClBPU0lYIGNvbmZvcm1hbmNlIHRlc3RpbmcgYnkgVU5JRklYClBDSTogUHJvYmluZyBQ
-Q0kgaGFyZHdhcmUgb24gaG9zdCBidXMgMC4KTGludXggTkVUNC4wIGZvciBMaW51eCAyLjQKQmFz
-ZWQgdXBvbiBTd2Fuc2VhIFVuaXZlcnNpdHkgQ29tcHV0ZXIgU29jaWV0eSBORVQzLjAzOQpJbml0
-aWFsaXppbmcgUlQgbmV0bGluayBzb2NrZXQKU3RhcnRpbmcga3N3YXBkCnB0eTogMjU2IFVuaXg5
-OCBwdHlzIGNvbmZpZ3VyZWQKU2VyaWFsIGRyaXZlciB2ZXJzaW9uIDUuMDVjICgyMDAxLTA3LTA4
-KSB3aXRoIE1BTllfUE9SVFMgU0hBUkVfSVJRIFNFUklBTF9QQ0kgZW5hYmxlZAp0dHlTMDAgYXQg
-MHgwM2Y4IChpcnEgPSA0KSBpcyBhIDE2NTUwQQp0dHlTMDEgYXQgMHgwMmY4IChpcnEgPSAzKSBp
-cyBhIDE2NTUwQQpydGM6IFNSTSAocG9zdC0yMDAwKSBlcG9jaCAoMjAwMCkgZGV0ZWN0ZWQKUmVh
-bCBUaW1lIENsb2NrIERyaXZlciB2MS4xMGYKbG9vcDogbG9hZGVkIChtYXggOCBkZXZpY2VzKQpw
-Y25ldDMyLmM6djEuMzBoIDA2LjI0LjIwMDQgdHNib2dlbmRAYWxwaGEuZnJhbmtlbi5kZQpwY25l
-dDMyOiBQQ25ldC9GQVNUIElJSSA3OUM5NzMgYXQgMHgxMzAwLCAwMCBkMCBhMCAwMCAwMyAyMiBh
-c3NpZ25lZCBJUlEgMTAuCmV0aDA6IHJlZ2lzdGVyZWQgYXMgUENuZXQvRkFTVCBJSUkgNzlDOTcz
-CnBjbmV0MzI6IDEgY2FyZHNfZm91bmQuClBQUCBnZW5lcmljIGRyaXZlciB2ZXJzaW9uIDIuNC4y
-ClBQUCBEZWZsYXRlIENvbXByZXNzaW9uIG1vZHVsZSByZWdpc3RlcmVkCnVzYi5jOiByZWdpc3Rl
-cmVkIG5ldyBkcml2ZXIgdXNiZGV2ZnMKdXNiLmM6IHJlZ2lzdGVyZWQgbmV3IGRyaXZlciBodWIK
-aG9zdC91aGNpLmM6IFVTQiBVbml2ZXJzYWwgSG9zdCBDb250cm9sbGVyIEludGVyZmFjZSBkcml2
-ZXIgdjEuMQpob3N0L3VoY2kuYzogVVNCIFVIQ0kgYXQgSS9PIDB4MTMyMCwgSVJRIDExCnVzYi5j
-OiBuZXcgVVNCIGJ1cyByZWdpc3RlcmVkLCBhc3NpZ25lZCBidXMgbnVtYmVyIDEKaHViLmM6IFVT
-QiBodWIgZm91bmQKaHViLmM6IDIgcG9ydHMgZGV0ZWN0ZWQKdXNiLmM6IHJlZ2lzdGVyZWQgbmV3
-IGRyaXZlciB1c2JscApwcmludGVyLmM6IHYwLjEzOiBVU0IgUHJpbnRlciBEZXZpY2UgQ2xhc3Mg
-ZHJpdmVyCk5FVDQ6IExpbnV4IFRDUC9JUCAxLjAgZm9yIE5FVDQuMApJUCBQcm90b2NvbHM6IElD
-TVAsIFVEUCwgVENQLCBJR01QCklQOiByb3V0aW5nIGNhY2hlIGhhc2ggdGFibGUgb2YgNTEyIGJ1
-Y2tldHMsIDRLYnl0ZXMKVENQOiBIYXNoIHRhYmxlcyBjb25maWd1cmVkIChlc3RhYmxpc2hlZCA0
-MDk2IGJpbmQgODE5MikKZXRoMDogbGluayB1cCwgMTBNYnBzLCBoYWxmLWR1cGxleCwgbHBhIDB4
-MDAyMQpJUC1Db25maWc6IENvbXBsZXRlOgogICAgICBkZXZpY2U9ZXRoMCwgYWRkcj0xMC4xLjEu
-MTAxLCBtYXNrPTI1NS4wLjAuMCwgZ3c9MTAuMS4xLjk5LAogICAgIGhvc3Q9bWFsdGEsIGRvbWFp
-bj0sIG5pcy1kb21haW49KG5vbmUpLAogICAgIGJvb3RzZXJ2ZXI9MTAuMS4xLjk5LCByb290c2Vy
-dmVyPTEwLjEuMS45OSwgcm9vdHBhdGg9Ck5FVDQ6IFVuaXggZG9tYWluIHNvY2tldHMgMS4wL1NN
-UCBmb3IgTGludXggTkVUNC4wLgpORVQ0OiBFdGhlcm5ldCBCcmlkZ2UgMDA4IGZvciBORVQ0LjAK
-TG9va2luZyB1cCBwb3J0IG9mIFJQQyAxMDAwMDMvMiBvbiAxMC4xLjEuOTkKTG9va2luZyB1cCBw
-b3J0IG9mIFJQQyAxMDAwMDUvMSBvbiAxMC4xLjEuOTkKVkZTOiBNb3VudGVkIHJvb3QgKG5mcyBm
-aWxlc3lzdGVtKS4KRnJlZWluZyBwcm9tIG1lbW9yeTogOTU2a2IgZnJlZWQKRnJlZWluZyB1bnVz
-ZWQga2VybmVsIG1lbW9yeTogMTAwayBmcmVlZApBbGdvcml0aG1pY3MvTUlQUyBGUFUgRW11bGF0
-b3IgdjEuNQpJbml0aWFsaXppbmcgcmFuZG9tIG51bWJlciBnZW5lcmF0b3IuLi4gVW5hYmxlIHRv
-IGhhbmRsZSBrZXJuZWwgcGFnaW5nIHJlcXVlc3QgYXQgdmlydHVhbCBhZGRyZXNzIDAwMDAwMDkw
-LCBlcGMgPT0gODAxNDZlNDgsIDgKT29wcyBpbiBmYXVsdC5jOjpkb19wYWdlX2ZhdWx0LCBsaW5l
-IDIwNjoKJDAgOiAwMDAwMDAwMCAxMDAwZmMwMCAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMSAw
-MDAwMDAwMSAxMDAwZmMwMSA4MTBiMWY4NAokOCA6IDEwMDBmYzAxIDgxMGIxZjk0IDgxMTY2M2U4
-IDgwMmFiYjk0IDEwMDBmYzAxIDgxMWViMDAwIDAwMDAwODlkIDgxMDAwMDFjCiQxNjogODAwOGNi
-NDAgMDAwMDAwMDAgODAwMGIwYTAgODAwMGIxMzAgMDAwMDAwOTAgMDAwMDAwMDAgMDAwMDAwMDAg
-MDAwMDAwMDAKJDI0OiA4MDJhYmM0NCBmZmZmZmUwMCAgICAgICAgICAgICAgICAgICA4MTE2NjAw
-MCA4MTE2N2VjMCAwMDAwMDAwMCA4MDE0NmVmOApIaSA6IDAwMDAwMDAwCkxvIDogMDAwMDAwMDcK
-ZXBjICAgOiA4MDE0NmU0OCAgICBOb3QgdGFpbnRlZApTdGF0dXM6IDEwMDBmYzAyCkNhdXNlIDog
-MzA4MDAwMDgKUHJJZCAgOiAwMDAxODAwNQpQcm9jZXNzIHJtIChwaWQ6IDMxLCBzdGFja3BhZ2U9
-ODExNjYwMDApClN0YWNrOiAgICA4MDE0NTQwYyA3ZmZmN2Y5MCA4MDE0NTFmYyA4MDE0NTFjYyA4
-MDA4Y2I0MCA4MTFkZjAwMCA4MDA4Y2I0MAogMDAwMDAwMDggMDAwMDAwMDMgMDAwMDAwMDAgMTAw
-MGRmYjQgODAxNDZmZmMgODAwMDEwYTAgN2ZmZjc2YzggODAxNDlmYmMKIDgwMTQ5ZmVjIDgwMmVl
-YjIwIDgxMGI3MmUwIDgxMWRmMDA1IDAwMDAwMDBiIDYyZWJmOTkyIDAwMDAwMDEwIDAwMDAwMDAw
-CiAwMDAwMDAwOCA3ZmZmN2VlYyAwMDAwMDAwOCA3ZmZmN2Y5MCA4MDEwNzdlMCAxMDAwZTgzNCAx
-MDAwZTgwNCAxMDAwZTgxNAogN2ZmZjdmYzAgZmZmZmZmZmYgMDAwMDAwMDAgMDAwMDAwMDAgODAy
-YjAwMDAgMDAwMDBmYWEgN2ZmZjdmOTAgN2ZmZjdmOTAKIDdmZmY3Y2U4IC4uLgpDYWxsIFRyYWNl
-OiAgIFs8ODAxNDU0MGM+XSBbPDgwMTQ1MWZjPl0gWzw4MDE0NTFjYz5dIFs8ODAxNDZmZmM+XSBb
-PDgwMTQ5ZmJjPl0KIFs8ODAxNDlmZWM+XSBbPDgwMTA3N2UwPl0gWzw4MDE1ZTY3ND5dCgpDb2Rl
-OiAwMDAwMDA0MCAgMDAwMDAwNDAgIDAwMDAwMDQwIDw4ZTI0MDA5MD4gOGU4MzAwMDQgIDI0ODQw
-MDAxICAwMmM0MjgyYSAgMjQ2MjAwMDEgIDAwNDUxODBhClNlZ21lbnRhdGlvbiBmYXVsdAoK
-------=_Part_46787_4151836.1154932303682--
+Yoichi

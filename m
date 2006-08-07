@@ -1,102 +1,156 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Aug 2006 03:48:06 +0100 (BST)
-Received: from venus.localdns.com ([202.190.203.180]:24248 "EHLO
-	venus.localdns.com") by ftp.linux-mips.org with ESMTP
-	id S20037713AbWHGCsA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Aug 2006 03:48:00 +0100
-Received: from [192.168.1.103] ([218.111.170.45])
- by venus.localdns.com (Sun Java System Messaging Server 6.2-4.03 (built Sep 22
- 2005)) with ESMTPA id <0J3L00HIHWDH3N80@venus.localdns.com> for
- linux-mips@linux-mips.org; Mon, 07 Aug 2006 10:32:07 +0800 (MYT)
-Date:	Mon, 07 Aug 2006 10:47:25 +0800
-From:	WCT Tang <wct_tang@yahoo.com>
-Subject: Re: EXT2-fs error
-In-reply-to: <20060806083743.8348D352625@atlas.denx.de>
-To:	Wolfgang Denk <wd@denx.de>
-Cc:	linux-mips@linux-mips.org
-Message-id: <44D6A9BD.9010100@yahoo.com>
-MIME-version: 1.0
-Content-type: text/plain; charset=ISO-8859-1; format=flowed
-Content-transfer-encoding: 7BIT
-References: <20060806083743.8348D352625@atlas.denx.de>
-User-Agent: Thunderbird 1.5.0.5 (Windows/20060719)
-Return-Path: <wct_tang@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Aug 2006 07:31:49 +0100 (BST)
+Received: from py-out-1112.google.com ([64.233.166.179]:20924 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037748AbWHGGbs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Aug 2006 07:31:48 +0100
+Received: by py-out-1112.google.com with SMTP id m51so719240pye
+        for <linux-mips@linux-mips.org>; Sun, 06 Aug 2006 23:31:43 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=d1qI5B2HGYrdrv1nwR629jurCOq7/Jd9/owjIdMYNWmG91nbZOae6/PhwdHmALKzayaiAOihLA8f32QdT6HAKKJ041TlOny2RLSu11is8aHEmsrjvp4HrzzJKx6TrUzqhyDknOEikEPZzmcLocNPhJh0Ax0JVmZIcogg3uF2Lg0=
+Received: by 10.35.121.9 with SMTP id y9mr11486092pym;
+        Sun, 06 Aug 2006 23:31:43 -0700 (PDT)
+Received: by 10.35.30.15 with HTTP; Sun, 6 Aug 2006 23:31:43 -0700 (PDT)
+Message-ID: <f07e6e0608062331p4ef621afn67764067f5b822c2@mail.gmail.com>
+Date:	Mon, 7 Aug 2006 12:01:43 +0530
+From:	"Kishore K" <hellokishore@gmail.com>
+To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Problem booting malta with 2.4.33-rc1
+MIME-Version: 1.0
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_46787_4151836.1154932303682"
+Return-Path: <hellokishore@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12221
+X-archive-position: 12222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wct_tang@yahoo.com
+X-original-sender: hellokishore@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Wolfgang,
+------=_Part_46787_4151836.1154932303682
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_46788_20244869.1154932303682"
 
-Thanks for your reply.  I have checked that my total file size is only 
-384KB, and the ramdisk I created is 4096KB, and my Kernel's ram size 
-CONFIG_BLK_DEV_RAM_SIZE is set to 4096.
+------=_Part_46788_20244869.1154932303682
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Here are the steps I used to create ramdisk:
+Hi,
+When trying to bring up Malta (4KC) board with 2.4.33-rc1 from linux-mips,
+the kernel crashes. Boot log is enclosed along with this mail. I am using
+the tool chain based on gcc 3.3.6, uClibc-0.9.27, binutils 2.14.90.0.8.
+When the same tool chain is used for 2.4.31 kernel, the board comes up
+without any issues.
 
-dd if=/dev/zero of=/dev/ram bs=1k count=4096
-mke2fs -vm0 /dev/ram 4096
-mount /dev/ram ramdisk/
-cd ramdisk/
-cp -r /home/devel/root/* .
-mkdir dev etc tmp var proc mnt home root
-cd dev/
-mknod console c 5 1
-mknod ttyS0 c 4 64
-mknod tty c 5 0
-mknod ram0 b 1 0
-mknod ram1 b 1 1
-mknod mem c 1 1
-mknod kmem c 1 2
-mknod null c 1 3
-mknod zero c 1 5
-mknod fb0 c 29 0
-ln -s fb0 fb
-ln -s ram1 ram
-ln -s ram0 ramdisk
-ln -s ../proc/kcore kcore
-ln -s ../proc/self/fd/0 stdin
-ln -s ../proc/self/fd/1 stdout
-ln -s ../proc/self/fd/2 stderr
-cd ..
-umount ramdisk
-dd if=/dev/ram bs=1k count=4096 | gzip -vf > 
-/home/devel/linux/arc/mips/ramdisk/ramdisk.gz
+Observed the same issue with tool chain based on gcc 3.4.4, uClibc-0.9.28,
+binutils 2.15.94. Same result is observed even with  Malta 24KEC and
+2.4.33-rc1 kernel.
 
+Does any one observe the same behaviour ? Am I missing something obvious
+here ?
 
-Any other suggestion?
+thanks,
+--kishore
 
+------=_Part_46788_20244869.1154932303682
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-p/s: I have got lots of junk mails sent from this mailing lists, 
-probably triggered by my email. Could the administrator do something?
+Hi,<br>When trying to bring up Malta (4KC) board with 2.4.33-rc1 from linux-mips, the kernel crashes. Boot log is enclosed along with this mail. I am using the tool chain based on gcc 3.3.6, uClibc-0.9.27, binutils 2.14.90.0.8
+.&nbsp; When the same tool chain is used for 2.4.31 kernel, the board comes up without any issues.<br><br>Observed the same issue with tool chain based on gcc 3.4.4, uClibc-0.9.28, binutils 2.15.94. Same result is observed even with&nbsp; Malta 24KEC and 
+2.4.33-rc1 kernel. <br><br>Does any one observe the same behaviour ? Am I missing something obvious here ?<br><br>thanks,<br>--kishore<br><br>
 
+------=_Part_46788_20244869.1154932303682--
 
-Wolfgang Denk wrote:
-> In message <20060806040329.51416.qmail@web27003.mail.ukl.yahoo.com> you wrote:
->
->   
->> I built Linux kernel (V2.4) as follows: 
->> - Created EXT2 ramdisk.gz as documented in Documentation/ramdisk.txt 
->> - The ramdisk contains the content of buildroot/build_mipsel/root/, which contains bin, etc, lib, linuxrc, sbin (sh.. etc), usr. I also created under /dev console null, tty*.... 
->> - Copied ramdisk.gz to /linux/arc/mips/ramdisk/ 
->>     
-> ...
->   
->> Tracing down the codes, I noticed I got EXT2-fs error. 
->>     
->
-> Your ramdisk is probably much bigger than the kernel's default of 4 MB.
->
-> Please see the FAQ at
-> http://www.denx.de/wiki/view/DULG/RamdiskGreaterThan4MBCausesProblems
->
-> Best regards,
->
-> Wolfgang Denk
->
->   
+------=_Part_46787_4151836.1154932303682
+Content-Type: application/octet-stream; name=4kc-3.3.6.log
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_eqkgtywl
+Content-Disposition: attachment; filename="4kc-3.3.6.log"
+
+TElOVVggc3RhcnRlZC4uLgpDUFUgcmV2aXNpb24gaXM6IDAwMDE4MDA1ClByaW1hcnkgaW5zdHJ1
+Y3Rpb24gY2FjaGUgMTZrQiwgcGh5c2ljYWxseSB0YWdnZWQsIDQtd2F5LCBsaW5lc2l6ZSAxNiBi
+eXRlcy4KUHJpbWFyeSBkYXRhIGNhY2hlIDE2a0IsIDQtd2F5LCBsaW5lc2l6ZSAxNiBieXRlcy4K
+TGludXggdmVyc2lvbiAyLjQuMzMtcmMxIChraXNob3Jla0Bsb2NhbGhvc3QubG9jYWxkb21haW4p
+IChnY2MgdmVyc2lvbiAzLjMuNikgIzEgVHVlIEF1ZyAxIDE4OjAxOjIwIExLVCAyMDA2CkRldGVy
+bWluZWQgcGh5c2ljYWwgUkFNIG1hcDoKIG1lbW9yeTogMDAwMDEwMDAgQCAwMDAwMDAwMCAocmVz
+ZXJ2ZWQpCiBtZW1vcnk6IDAwMGVmMDAwIEAgMDAwMDEwMDAgKFJPTSBkYXRhKQogbWVtb3J5OiAw
+MDAxMDAwMCBAIDAwMGYwMDAwIChyZXNlcnZlZCkKIG1lbW9yeTogMDAxZGYwMDAgQCAwMDEwMDAw
+MCAocmVzZXJ2ZWQpCiBtZW1vcnk6IDAzZDIxMDAwIEAgMDAyZGYwMDAgKHVzYWJsZSkKT24gbm9k
+ZSAwIHRvdGFscGFnZXM6IDE2Mzg0CnpvbmUoMCk6IDE2Mzg0IHBhZ2VzLgp6b25lKDEpOiAwIHBh
+Z2VzLgp6b25lKDIpOiAwIHBhZ2VzLgpLZXJuZWwgY29tbWFuZCBsaW5lOiBpcD0xMC4xLjEuMTAx
+OjEwLjEuMS45OToxMC4xLjEuOTk6MjU1LjAuMC4wOm1hbHRhOmV0aDA6b2ZmIHJvb3Q9L2Rldi9u
+ZnMgbmZzcm9vdD0vcm9vdC9raXNob3JlL3IxLWFscGhhLTAKY2FsY3VsYXRpbmcgcjRrb2ZmLi4u
+IDAwMDk4OWExKDYyNTA1NykKQ1BVIGZyZXF1ZW5jeSAxMjUuMDEgTUh6ClVzaW5nIDYyLjUwNiBN
+SHogaGlnaCBwcmVjaXNpb24gdGltZXIuCkNhbGlicmF0aW5nIGRlbGF5IGxvb3AuLi4gMTI0LjUx
+IEJvZ29NSVBTCk1lbW9yeTogNjE4ODRrLzYyNTk2ayBhdmFpbGFibGUgKDE1MzdrIGtlcm5lbCBj
+b2RlLCA3MTJrIHJlc2VydmVkLCAxMDRrIGRhdGEsIDEwMGsgaW5pdCwgMGsgaGlnaG1lbSkKRGVu
+dHJ5IGNhY2hlIGhhc2ggdGFibGUgZW50cmllczogODE5MiAob3JkZXI6IDQsIDY1NTM2IGJ5dGVz
+KQpJbm9kZSBjYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDQwOTYgKG9yZGVyOiAzLCAzMjc2OCBi
+eXRlcykKTW91bnQgY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiA1MTIgKG9yZGVyOiAwLCA0MDk2
+IGJ5dGVzKQpCdWZmZXIgY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiA0MDk2IChvcmRlcjogMiwg
+MTYzODQgYnl0ZXMpClBhZ2UtY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiAxNjM4NCAob3JkZXI6
+IDQsIDY1NTM2IGJ5dGVzKQpDaGVja2luZyBmb3IgJ3dhaXQnIGluc3RydWN0aW9uLi4uICBhdmFp
+bGFibGUuClBPU0lYIGNvbmZvcm1hbmNlIHRlc3RpbmcgYnkgVU5JRklYClBDSTogUHJvYmluZyBQ
+Q0kgaGFyZHdhcmUgb24gaG9zdCBidXMgMC4KTGludXggTkVUNC4wIGZvciBMaW51eCAyLjQKQmFz
+ZWQgdXBvbiBTd2Fuc2VhIFVuaXZlcnNpdHkgQ29tcHV0ZXIgU29jaWV0eSBORVQzLjAzOQpJbml0
+aWFsaXppbmcgUlQgbmV0bGluayBzb2NrZXQKU3RhcnRpbmcga3N3YXBkCnB0eTogMjU2IFVuaXg5
+OCBwdHlzIGNvbmZpZ3VyZWQKU2VyaWFsIGRyaXZlciB2ZXJzaW9uIDUuMDVjICgyMDAxLTA3LTA4
+KSB3aXRoIE1BTllfUE9SVFMgU0hBUkVfSVJRIFNFUklBTF9QQ0kgZW5hYmxlZAp0dHlTMDAgYXQg
+MHgwM2Y4IChpcnEgPSA0KSBpcyBhIDE2NTUwQQp0dHlTMDEgYXQgMHgwMmY4IChpcnEgPSAzKSBp
+cyBhIDE2NTUwQQpydGM6IFNSTSAocG9zdC0yMDAwKSBlcG9jaCAoMjAwMCkgZGV0ZWN0ZWQKUmVh
+bCBUaW1lIENsb2NrIERyaXZlciB2MS4xMGYKbG9vcDogbG9hZGVkIChtYXggOCBkZXZpY2VzKQpw
+Y25ldDMyLmM6djEuMzBoIDA2LjI0LjIwMDQgdHNib2dlbmRAYWxwaGEuZnJhbmtlbi5kZQpwY25l
+dDMyOiBQQ25ldC9GQVNUIElJSSA3OUM5NzMgYXQgMHgxMzAwLCAwMCBkMCBhMCAwMCAwMyAyMiBh
+c3NpZ25lZCBJUlEgMTAuCmV0aDA6IHJlZ2lzdGVyZWQgYXMgUENuZXQvRkFTVCBJSUkgNzlDOTcz
+CnBjbmV0MzI6IDEgY2FyZHNfZm91bmQuClBQUCBnZW5lcmljIGRyaXZlciB2ZXJzaW9uIDIuNC4y
+ClBQUCBEZWZsYXRlIENvbXByZXNzaW9uIG1vZHVsZSByZWdpc3RlcmVkCnVzYi5jOiByZWdpc3Rl
+cmVkIG5ldyBkcml2ZXIgdXNiZGV2ZnMKdXNiLmM6IHJlZ2lzdGVyZWQgbmV3IGRyaXZlciBodWIK
+aG9zdC91aGNpLmM6IFVTQiBVbml2ZXJzYWwgSG9zdCBDb250cm9sbGVyIEludGVyZmFjZSBkcml2
+ZXIgdjEuMQpob3N0L3VoY2kuYzogVVNCIFVIQ0kgYXQgSS9PIDB4MTMyMCwgSVJRIDExCnVzYi5j
+OiBuZXcgVVNCIGJ1cyByZWdpc3RlcmVkLCBhc3NpZ25lZCBidXMgbnVtYmVyIDEKaHViLmM6IFVT
+QiBodWIgZm91bmQKaHViLmM6IDIgcG9ydHMgZGV0ZWN0ZWQKdXNiLmM6IHJlZ2lzdGVyZWQgbmV3
+IGRyaXZlciB1c2JscApwcmludGVyLmM6IHYwLjEzOiBVU0IgUHJpbnRlciBEZXZpY2UgQ2xhc3Mg
+ZHJpdmVyCk5FVDQ6IExpbnV4IFRDUC9JUCAxLjAgZm9yIE5FVDQuMApJUCBQcm90b2NvbHM6IElD
+TVAsIFVEUCwgVENQLCBJR01QCklQOiByb3V0aW5nIGNhY2hlIGhhc2ggdGFibGUgb2YgNTEyIGJ1
+Y2tldHMsIDRLYnl0ZXMKVENQOiBIYXNoIHRhYmxlcyBjb25maWd1cmVkIChlc3RhYmxpc2hlZCA0
+MDk2IGJpbmQgODE5MikKZXRoMDogbGluayB1cCwgMTBNYnBzLCBoYWxmLWR1cGxleCwgbHBhIDB4
+MDAyMQpJUC1Db25maWc6IENvbXBsZXRlOgogICAgICBkZXZpY2U9ZXRoMCwgYWRkcj0xMC4xLjEu
+MTAxLCBtYXNrPTI1NS4wLjAuMCwgZ3c9MTAuMS4xLjk5LAogICAgIGhvc3Q9bWFsdGEsIGRvbWFp
+bj0sIG5pcy1kb21haW49KG5vbmUpLAogICAgIGJvb3RzZXJ2ZXI9MTAuMS4xLjk5LCByb290c2Vy
+dmVyPTEwLjEuMS45OSwgcm9vdHBhdGg9Ck5FVDQ6IFVuaXggZG9tYWluIHNvY2tldHMgMS4wL1NN
+UCBmb3IgTGludXggTkVUNC4wLgpORVQ0OiBFdGhlcm5ldCBCcmlkZ2UgMDA4IGZvciBORVQ0LjAK
+TG9va2luZyB1cCBwb3J0IG9mIFJQQyAxMDAwMDMvMiBvbiAxMC4xLjEuOTkKTG9va2luZyB1cCBw
+b3J0IG9mIFJQQyAxMDAwMDUvMSBvbiAxMC4xLjEuOTkKVkZTOiBNb3VudGVkIHJvb3QgKG5mcyBm
+aWxlc3lzdGVtKS4KRnJlZWluZyBwcm9tIG1lbW9yeTogOTU2a2IgZnJlZWQKRnJlZWluZyB1bnVz
+ZWQga2VybmVsIG1lbW9yeTogMTAwayBmcmVlZApBbGdvcml0aG1pY3MvTUlQUyBGUFUgRW11bGF0
+b3IgdjEuNQpJbml0aWFsaXppbmcgcmFuZG9tIG51bWJlciBnZW5lcmF0b3IuLi4gVW5hYmxlIHRv
+IGhhbmRsZSBrZXJuZWwgcGFnaW5nIHJlcXVlc3QgYXQgdmlydHVhbCBhZGRyZXNzIDAwMDAwMDkw
+LCBlcGMgPT0gODAxNDZlNDgsIDgKT29wcyBpbiBmYXVsdC5jOjpkb19wYWdlX2ZhdWx0LCBsaW5l
+IDIwNjoKJDAgOiAwMDAwMDAwMCAxMDAwZmMwMCAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMSAw
+MDAwMDAwMSAxMDAwZmMwMSA4MTBiMWY4NAokOCA6IDEwMDBmYzAxIDgxMGIxZjk0IDgxMTY2M2U4
+IDgwMmFiYjk0IDEwMDBmYzAxIDgxMWViMDAwIDAwMDAwODlkIDgxMDAwMDFjCiQxNjogODAwOGNi
+NDAgMDAwMDAwMDAgODAwMGIwYTAgODAwMGIxMzAgMDAwMDAwOTAgMDAwMDAwMDAgMDAwMDAwMDAg
+MDAwMDAwMDAKJDI0OiA4MDJhYmM0NCBmZmZmZmUwMCAgICAgICAgICAgICAgICAgICA4MTE2NjAw
+MCA4MTE2N2VjMCAwMDAwMDAwMCA4MDE0NmVmOApIaSA6IDAwMDAwMDAwCkxvIDogMDAwMDAwMDcK
+ZXBjICAgOiA4MDE0NmU0OCAgICBOb3QgdGFpbnRlZApTdGF0dXM6IDEwMDBmYzAyCkNhdXNlIDog
+MzA4MDAwMDgKUHJJZCAgOiAwMDAxODAwNQpQcm9jZXNzIHJtIChwaWQ6IDMxLCBzdGFja3BhZ2U9
+ODExNjYwMDApClN0YWNrOiAgICA4MDE0NTQwYyA3ZmZmN2Y5MCA4MDE0NTFmYyA4MDE0NTFjYyA4
+MDA4Y2I0MCA4MTFkZjAwMCA4MDA4Y2I0MAogMDAwMDAwMDggMDAwMDAwMDMgMDAwMDAwMDAgMTAw
+MGRmYjQgODAxNDZmZmMgODAwMDEwYTAgN2ZmZjc2YzggODAxNDlmYmMKIDgwMTQ5ZmVjIDgwMmVl
+YjIwIDgxMGI3MmUwIDgxMWRmMDA1IDAwMDAwMDBiIDYyZWJmOTkyIDAwMDAwMDEwIDAwMDAwMDAw
+CiAwMDAwMDAwOCA3ZmZmN2VlYyAwMDAwMDAwOCA3ZmZmN2Y5MCA4MDEwNzdlMCAxMDAwZTgzNCAx
+MDAwZTgwNCAxMDAwZTgxNAogN2ZmZjdmYzAgZmZmZmZmZmYgMDAwMDAwMDAgMDAwMDAwMDAgODAy
+YjAwMDAgMDAwMDBmYWEgN2ZmZjdmOTAgN2ZmZjdmOTAKIDdmZmY3Y2U4IC4uLgpDYWxsIFRyYWNl
+OiAgIFs8ODAxNDU0MGM+XSBbPDgwMTQ1MWZjPl0gWzw4MDE0NTFjYz5dIFs8ODAxNDZmZmM+XSBb
+PDgwMTQ5ZmJjPl0KIFs8ODAxNDlmZWM+XSBbPDgwMTA3N2UwPl0gWzw4MDE1ZTY3ND5dCgpDb2Rl
+OiAwMDAwMDA0MCAgMDAwMDAwNDAgIDAwMDAwMDQwIDw4ZTI0MDA5MD4gOGU4MzAwMDQgIDI0ODQw
+MDAxICAwMmM0MjgyYSAgMjQ2MjAwMDEgIDAwNDUxODBhClNlZ21lbnRhdGlvbiBmYXVsdAoK
+------=_Part_46787_4151836.1154932303682--

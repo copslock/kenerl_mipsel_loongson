@@ -1,77 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Aug 2006 22:48:59 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:25923 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20040591AbWHGVrS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 7 Aug 2006 22:47:18 +0100
-Received: by mo.po.2iij.net (mo30) id k77Ll4it082879; Tue, 8 Aug 2006 06:47:04 +0900 (JST)
-Received: from localhost.localdomain (191.28.30.125.dy.iij4u.or.jp [125.30.28.191])
-	by mbox.po.2iij.net (mbox33) id k77Ll11Y001946
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 8 Aug 2006 06:47:02 +0900 (JST)
-Date:	Tue, 8 Aug 2006 06:47:01 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
-	anemo@mba.ocn.ne.jp, ralf@linux-mips.org
-Subject: Re: [PATCH] Cleanup bootmem_init()
-Message-Id: <20060808064701.592ccaf0.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <cda58cb80608070835o37b83a5bwd4d931c9d2746a15@mail.gmail.com>
-References: <44D34C84.9090902@innova-card.com>
-	<20060807230346.2a578ba9.yoichi_yuasa@tripeaks.co.jp>
-	<cda58cb80608070835o37b83a5bwd4d931c9d2746a15@mail.gmail.com>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2006 13:01:45 +0100 (BST)
+Received: from mx.globalone.ru ([194.84.254.251]:17543 "EHLO mx.globalone.ru")
+	by ftp.linux-mips.org with ESMTP id S20041087AbWHHMBl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 8 Aug 2006 13:01:41 +0100
+Received: from mx.globalone.ru (localhost [127.0.0.1])
+	by mx.globalone.ru (8.13.1/8.13.1) with ESMTP id k78C1QYF008834
+	for <linux-mips@linux-mips.org>; Tue, 8 Aug 2006 16:01:27 +0400
+Received: from smtp.globalone.ru (smtp.globalone.ru [172.16.38.5])
+	by mx.globalone.ru (8.13.1/8.13.1) with ESMTP id k78C1JaN008810
+	for <linux-mips@linux-mips.org>; Tue, 8 Aug 2006 16:01:19 +0400
+Received: from voropaya ([172.16.38.7]) by smtp.globalone.ru
+          (Netscape Messaging Server 4.15) with SMTP id J3OHE700.JTJ; Tue,
+          8 Aug 2006 16:01:19 +0400 
+Message-ID: <0c0b01c6bae2$a464c300$e90d11ac@spb.in.rosprint.ru>
+Reply-To: "Alexander Voropay" <a.voropay@equant.ru>
+From:	"Alexander Voropay" <a.voropay@equant.ru>
+To:	"Kishore K" <hellokishore@gmail.com>, <linux-mips@linux-mips.org>
+Cc:	<yoichi_yuasa@tripeaks.co.jp>
+References: <f07e6e0608062331p4ef621afn67764067f5b822c2@mail.gmail.com> <08f801c6ba47$7ee0e4b0$e90d11ac@spb.in.rosprint.ru> <f07e6e0608080241i6a928d6dh35be89f9dfdefb65@mail.gmail.com> <f07e6e0608080250n782e50dci2dd1c61057cd72ce@mail.gmail.com>
+Subject: Re: Problem booting malta with 2.4.33-rc1
+Date:	Tue, 8 Aug 2006 16:03:19 +0400
+Organization: &Equant
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2869
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869
+X-Scanned-By: MIMEDefang 2.56 on 172.16.38.2
+Return-Path: <a.voropay@equant.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12227
+X-archive-position: 12228
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: a.voropay@equant.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 7 Aug 2006 17:35:25 +0200
-"Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+Kishore K wrote:
 
-> 2006/8/7, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>:
-> > Hi
-> >
-> > On Fri, 04 Aug 2006 15:32:52 +0200
-> > Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> >
-> > > This function although doing simple things is hard to follow. It's
-> > > mainly due to:
-> > >
-> > >     - a lot of #ifdef
-> > >     - bad local names
-> > >     - redundant tests
-> > >
-> > > So this patch try to address these issues. It also do not use
-> > > max_pfn global which is marked as an unused exported symbol.
-> > >
-> > > As a bonus side, it's now really easy to see what part of the
-> > > code is for no-numa system.
-> > >
-> > > There's also no point to make this function inline.
-> >
-> > I seem to be able to bring together two #idef CONFIG_BLK_DEV_INITRD/#endif.
-> >
+>>> When trying to bring up Malta (4KC) board with 2.4.33-rc1 from linux-mips,
+>>>the kernel crashes. Boot log is enclosed along with this mail.
+>>
+>>Could yoy try this kernel ?
+>>
+>> http://www.nwpi.ru/~alec/mips/vmlinux_2_4_33-rc2-ide-pci-ramdisk.elf.gz
+>>
+>> It known to work with GXEmul Malta emulatort and on the real Malta Bonito.
+>>
+>>What is your version of the Malta CoreCard ? See there for more info: 
+>>
+>>http://www.linux-mips.org/wiki/Mips_Malta 
+>
 > 
-> Before doing that can you wait until tomorrow ?
+>Thanks for your mail. My board is coming up with this kernel image.
+>May I know, whether you have done any changes in linux 2.4.33-rc2 ?
+>Here is the information regarding my Malta board
+>
+>
+>Compilation time =              Jul 27 2001  12:17:49
+>Board type/revision =           0x02 (Malta) / 0x00
+>Core board type/revision =      0x01 (CoreLV) / 0x01
+>FPGA revision =                 0x0001
+>MAC address =                   00.d0.a0.00.03.22
+>Board S/N =                     0000000554
+>PCI bus frequency =             33.33 MHz
+>Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
+>Processor ID/revision =         0x80 (MIPS 4Kc) / 0x05 
+>Endianness =                    Little
+>CPU/Bus frequency =             125 MHz / 63 MHz
+>Flash memory size =             4 MByte
+>SDRAM size =                    64 MByte
+>First free SDRAM address =      0x8009e0d0 
+> 
 
-Yes I can.
+ It's a latest 2.4 kernel from the linux-mips GIT w/o any modification.
+Note, it's a generic mips-linux kernel, not a special mips-malta.
 
-> I'm going to send a
-> patchset that going futher in the cleanup than this single patch but I
-> can't send it until tomorrow...
+ My toolchain is gcc 3.3.6 from the Buildroot-20060523  snapshot.
 
-OK
 
-Thanks,
+ There were some modification made between 2.4.32 and 2.4.33-pre2 :
 
-Yoichi
+1) The MIPS32 FPU save-restore support. There was no MIPS32
+support in the 2.4 before the 2.4.33-pre2.
+2) PCI and PC-style COM-port issue resolved
+
+
+--
+-=AV=-

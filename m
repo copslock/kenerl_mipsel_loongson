@@ -1,83 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2006 13:33:56 +0100 (BST)
-Received: from imf24aec.mail.bellsouth.net ([205.152.59.72]:57198 "EHLO
-	imf24aec.mail.bellsouth.net") by ftp.linux-mips.org with ESMTP
-	id S20041124AbWHHMdu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 Aug 2006 13:33:50 +0100
-Received: from ibm68aec.bellsouth.net ([74.236.202.48])
-          by imf24aec.mail.bellsouth.net with ESMTP
-          id <20060808123341.ICND25563.imf24aec.mail.bellsouth.net@ibm68aec.bellsouth.net>
-          for <linux-mips@linux-mips.org>; Tue, 8 Aug 2006 08:33:41 -0400
-Received: from [192.168.1.96] (really [74.236.202.48])
-          by ibm68aec.bellsouth.net with ESMTP
-          id <20060808123341.ZJRE1187.ibm68aec.bellsouth.net@[192.168.1.96]>
-          for <linux-mips@linux-mips.org>; Tue, 8 Aug 2006 08:33:41 -0400
-Mime-Version: 1.0 (Apple Message framework v752.2)
-In-Reply-To: <2156B1E923F1A147AABDF4D9FDEAB4CB0E0B79@blr-m2-msg.wipro.com>
-References: <2156B1E923F1A147AABDF4D9FDEAB4CB0E0B79@blr-m2-msg.wipro.com>
-Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
-Message-Id: <38B125AF-FFBC-483B-8392-802771067AA2@willmert.com>
-Content-Transfer-Encoding: 7bit
-From:	craigslist <craigslist@willmert.com>
-Subject: Re: FB Driver for DbAu1100
-Date:	Tue, 8 Aug 2006 08:33:23 -0400
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2006 13:49:24 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.190]:54711 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20041137AbWHHMtS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 Aug 2006 13:49:18 +0100
+Received: by nf-out-0910.google.com with SMTP id o60so240934nfa
+        for <linux-mips@linux-mips.org>; Tue, 08 Aug 2006 05:49:15 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=aUv/m5p+4wNnS9C2jjEbKxlr0rh9ZBSmGzM8GoSjIx7C3tzhJ4Murej14sIDeTiK3StC5id1JnK1nAfAeSyZ9RrX/zS8sbf6lxcUEE8k6ie+uiZADpdpv7esKTJq2iYbjXLEdsvn6hb89/xAHpZkhS3y/QMBxcAYKylcKqrMUIc=
+Received: by 10.48.48.15 with SMTP id v15mr400699nfv;
+        Tue, 08 Aug 2006 05:49:15 -0700 (PDT)
+Received: from spoutnik.innova-card.com ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id k24sm761650nfc.2006.08.08.05.49.13;
+        Tue, 08 Aug 2006 05:49:14 -0700 (PDT)
+Received: by spoutnik.innova-card.com (Postfix, from userid 500)
+	id 5D18B23F770; Tue,  8 Aug 2006 14:48:33 +0200 (CEST)
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
 To:	linux-mips@linux-mips.org
-X-Mailer: Apple Mail (2.752.2)
-Return-Path: <craigslist@willmert.com>
+Cc:	anemo@mba.ocn.ne.jp, ralf@linux-mips.org,
+	yoichi_yuasa@tripeaks.co.jp, Franck Bui-Huu <vagabon.xyz@gmail.com>
+Subject: [PATCH 4/6] setup.c: do not inline functions
+Date:	Tue,  8 Aug 2006 14:48:30 +0200
+Message-Id: <11550413133668-git-send-email-vagabon.xyz@gmail.com>
+X-Mailer: git-send-email 1.4.2.rc2
+In-Reply-To: <1155041312273-git-send-email-vagabon.xyz@gmail.com>
+References: <1155041312273-git-send-email-vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12231
+X-archive-position: 12232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: craigslist@willmert.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+There's no point to inline any functions in setup.c. Let's GCC
+doing its job, it's good enough for that now.
 
-On Aug 8, 2006, at 8:23 AM, <hemanth.venkatesh@wipro.com>  
-<hemanth.venkatesh@wipro.com> wrote:
+Signed-off-by: Franck Bui-Huu <vagabon.xyz@gmail.com>
+---
+ arch/mips/kernel/setup.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
->
-> We have been able to test FB driver on a custom board based on AU1100,
-> we used 2.6.14 and 2.6.17 kernels.
-
-So then there is an updated driver in 2.6.14?
-
->
-> Hemanth
->
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of craigslist
-> Sent: Tuesday, August 08, 2006 5:45 PM
-> To: linux-mips@linux-mips.org
-> Subject: FB Driver for DbAu1100
->
-> Has anyone done any work on the framebuffer driver for the DbAu1100
-> board? I'm on 2.6.10 and it appears that the code was written for a
-> 2.4 kernel and never updated, therefore, it does not compile. Some
-> data structures were apparently removed that were being used by the
-> au1100 fb driver.
->
-> Thanks
->
-> Stefan Willmert
->
->
->
-> The information contained in this electronic message and any  
-> attachments to this message are intended for the exclusive use of  
-> the addressee(s) and may contain proprietary, confidential or  
-> privileged information. If you are not the intended recipient, you  
-> should not disseminate, distribute or copy this e-mail. Please  
-> notify the sender immediately and destroy all copies of this  
-> message and any attachments.
->
-> WARNING: Computer viruses can be transmitted via email. The  
-> recipient should check this email and any attachments for the  
-> presence of viruses. The company accepts no liability for any  
-> damage caused by any virus transmitted by this email.
->
-> www.wipro.com
->
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 49a466c..47395dd 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -135,7 +135,7 @@ static void __init print_memory_map(void
+ 	}
+ }
+ 
+-static inline void parse_cmdline_early(void)
++static void __init parse_cmdline_early(void)
+ {
+ 	char c = ' ', *to = command_line, *from = saved_command_line;
+ 	unsigned long start_at, mem_size;
+@@ -477,7 +477,7 @@ static void __init arch_mem_init(char **
+ #define MAXMEM		HIGHMEM_START
+ #define MAXMEM_PFN	PFN_DOWN(MAXMEM)
+ 
+-static inline void resource_init(void)
++static void __init resource_init(void)
+ {
+ 	int i;
+ 
+-- 
+1.4.2.rc2

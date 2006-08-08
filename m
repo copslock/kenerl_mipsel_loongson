@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2006 13:50:18 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.190]:48823 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Aug 2006 13:50:49 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.187]:38327 "EHLO
 	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20041140AbWHHMtU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 Aug 2006 13:49:20 +0100
-Received: by nf-out-0910.google.com with SMTP id o60so240932nfa
-        for <linux-mips@linux-mips.org>; Tue, 08 Aug 2006 05:49:17 -0700 (PDT)
+	id S20041131AbWHHMtS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 Aug 2006 13:49:18 +0100
+Received: by nf-out-0910.google.com with SMTP id o60so240925nfa
+        for <linux-mips@linux-mips.org>; Tue, 08 Aug 2006 05:49:14 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=hkX9HfSKAj5MbeoXvT2IRE1WqmG+2WThQAaj63tKOJ67vgQoMbILLtP2ZqpbA6BDivvXPT+s9pfzNHQaCEkZo6iHpq7kcd0iSULGAjXDwguPVQ06VBHa6bZRG8sP+lnT5JmsxW7kUckJ2+1n9CjYlvtoQ4fEyhsuYcfBAuUNOSs=
-Received: by 10.49.29.3 with SMTP id g3mr400342nfj;
-        Tue, 08 Aug 2006 05:49:17 -0700 (PDT)
+        b=WS0doi4gX/6uWblOtUwuMeWp+vC5XfKFES2gEhc73LPoQ6Su6Mjkuy44x7pJd3kom2owbmnOqkeK2mIjmIq52PfW//a7v5ct1zpQN3Eik3+gVzuL9n5yBUEsNaRh19RAmvRcPKHqvwyh81lusaHt5V11Gj5zWdd36XKCJi+3lK4=
+Received: by 10.49.8.4 with SMTP id l4mr550656nfi;
+        Tue, 08 Aug 2006 05:49:14 -0700 (PDT)
 Received: from spoutnik.innova-card.com ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id h1sm760161nfe.2006.08.08.05.49.15;
-        Tue, 08 Aug 2006 05:49:16 -0700 (PDT)
+        by mx.gmail.com with ESMTP id y24sm765663nfb.2006.08.08.05.49.13;
+        Tue, 08 Aug 2006 05:49:14 -0700 (PDT)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id C5EA623F774; Tue,  8 Aug 2006 14:48:33 +0200 (CEST)
+	id B83D723F759; Tue,  8 Aug 2006 14:48:32 +0200 (CEST)
 From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
 To:	linux-mips@linux-mips.org
 Cc:	anemo@mba.ocn.ne.jp, ralf@linux-mips.org,
 	yoichi_yuasa@tripeaks.co.jp, Franck Bui-Huu <vagabon.xyz@gmail.com>
-Subject: [PATCH 6/6] setup.c: use early_param() for early command line parsing
-Date:	Tue,  8 Aug 2006 14:48:32 +0200
-Message-Id: <1155041313139-git-send-email-vagabon.xyz@gmail.com>
+Subject: [PATCH 1/6] setup.c: cleanup bootmem_init()
+Date:	Tue,  8 Aug 2006 14:48:27 +0200
+Message-Id: <1155041312225-git-send-email-vagabon.xyz@gmail.com>
 X-Mailer: git-send-email 1.4.2.rc2
 In-Reply-To: <1155041312273-git-send-email-vagabon.xyz@gmail.com>
 References: <1155041312273-git-send-email-vagabon.xyz@gmail.com>
@@ -30,7 +30,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12234
+X-archive-position: 12235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,269 +38,248 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-There's no point to rewrite some logic to parse command line
-to pass initrd parameters or to declare a user memory area.
-We could use instead parse_early_param() that does the same
-thing.
+This function although doing simple thing is hard to follow. It's
+mainly due to:
 
-NOTE ! This patch also changes the initrd semantic. Old code
-was expecting "rd_start=xxx rd_size=xxx" which uses two
-parameters. Now the code expects "initrd=xxx@yyy" which is
-really simpler to parse and to use. No default config files
-use these parameters anyways but not sure for bootloader's
-users...
+    - a lot of #ifdef
+    - bad local names
+    - redundant tests
+
+So this patch try to address these issues. It also do not use
+max_pfn global which is marked as an unused exported symbol.
+
+As a bonus side, it's now really easy to see what part of the
+code is for no-numa system.
+
+There's also no point to make this function inline.
 
 Signed-off-by: Franck Bui-Huu <vagabon.xyz@gmail.com>
 ---
- arch/mips/kernel/setup.c |  173 +++++++++++++++-------------------------------
- 1 files changed, 55 insertions(+), 118 deletions(-)
+ arch/mips/kernel/setup.c |  135 +++++++++++++++++++---------------------------
+ 1 files changed, 57 insertions(+), 78 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index e835737..ec459a1 100644
+index 8c2b596..e331e63 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -135,124 +135,29 @@ static void __init print_memory_map(void
- 	}
- }
+@@ -96,6 +96,12 @@ void __init add_memory_region(phys_t sta
+ 	int x = boot_mem_map.nr_map;
+ 	struct boot_mem_map_entry *prev = boot_mem_map.map + x - 1;
  
--static void __init parse_cmdline_early(void)
--{
--	char c = ' ', *to = command_line, *from = saved_command_line;
--	unsigned long start_at, mem_size;
--	int len = 0;
--	int usermem = 0;
--
--	printk("Determined physical RAM map:\n");
--	print_memory_map();
--
--	for (;;) {
--		/*
--		 * "mem=XXX[kKmM]" defines a memory region from
--		 * 0 to <XXX>, overriding the determined size.
--		 * "mem=XXX[KkmM]@YYY[KkmM]" defines a memory region from
--		 * <YYY> to <YYY>+<XXX>, overriding the determined size.
--		 */
--		if (c == ' ' && !memcmp(from, "mem=", 4)) {
--			if (to != command_line)
--				to--;
--			/*
--			 * If a user specifies memory size, we
--			 * blow away any automatically generated
--			 * size.
--			 */
--			if (usermem == 0) {
--				boot_mem_map.nr_map = 0;
--				usermem = 1;
--			}
--			mem_size = memparse(from + 4, &from);
--			if (*from == '@')
--				start_at = memparse(from + 1, &from);
--			else
--				start_at = 0;
--			add_memory_region(start_at, mem_size, BOOT_MEM_RAM);
--		}
--		c = *(from++);
--		if (!c)
--			break;
--		if (CL_SIZE <= ++len)
--			break;
--		*(to++) = c;
--	}
--	*to = '\0';
--
--	if (usermem) {
--		printk("User-defined physical RAM map:\n");
--		print_memory_map();
--	}
--}
--
- /*
-  * Manage initrd
-  */
- #ifdef CONFIG_BLK_DEV_INITRD
- 
--static int __init parse_rd_cmdline(unsigned long *rd_start, unsigned long *rd_end)
-+static int __init initrd_early(char *p)
- {
--	/*
--	 * "rd_start=0xNNNNNNNN" defines the memory address of an initrd
--	 * "rd_size=0xNN" it's size
--	 */
--	unsigned long start = 0;
--	unsigned long size = 0;
--	unsigned long end;
--	char cmd_line[CL_SIZE];
--	char *start_str;
--	char *size_str;
--	char *tmp;
--
--	strcpy(cmd_line, command_line);
--	*command_line = 0;
--	tmp = cmd_line;
--	/* Ignore "rd_start=" strings in other parameters. */
--	start_str = strstr(cmd_line, "rd_start=");
--	if (start_str && start_str != cmd_line && *(start_str - 1) != ' ')
--		start_str = strstr(start_str, " rd_start=");
--	while (start_str) {
--		if (start_str != cmd_line)
--			strncat(command_line, tmp, start_str - tmp);
--		start = memparse(start_str + 9, &start_str);
--		tmp = start_str + 1;
--		start_str = strstr(start_str, " rd_start=");
--	}
--	if (*tmp)
--		strcat(command_line, tmp);
--
--	strcpy(cmd_line, command_line);
--	*command_line = 0;
--	tmp = cmd_line;
--	/* Ignore "rd_size" strings in other parameters. */
--	size_str = strstr(cmd_line, "rd_size=");
--	if (size_str && size_str != cmd_line && *(size_str - 1) != ' ')
--		size_str = strstr(size_str, " rd_size=");
--	while (size_str) {
--		if (size_str != cmd_line)
--			strncat(command_line, tmp, size_str - tmp);
--		size = memparse(size_str + 8, &size_str);
--		tmp = size_str + 1;
--		size_str = strstr(size_str, " rd_size=");
--	}
--	if (*tmp)
--		strcat(command_line, tmp);
-+	unsigned long start, size;
- 
-+	size = memparse(p, &p);
-+	if (size && *p == '@') {
-+		start = memparse(p + 1, &p);
- #ifdef CONFIG_64BIT
--	/* HACK: Guess if the sign extension was forgotten */
--	if (start > 0x0000000080000000 && start < 0x00000000ffffffff)
--		start |= 0xffffffff00000000UL;
-+		/* HACK: Guess if the sign extension was forgotten */
-+		if (start > 0x0000000080000000 && start < 0x00000000ffffffff)
-+			start |= 0xffffffff00000000UL;
- #endif
--
--	end = start + size;
--	if (start && end) {
--		*rd_start = start;
--		*rd_end = end;
--		return 1;
-+		initrd_start = start;
-+		initrd_end = start + size;
- 	}
- 	return 0;
- }
-+early_param("initrd", initrd_early);
- 
- static unsigned long __init init_initrd(void)
- {
-@@ -260,7 +165,7 @@ static unsigned long __init init_initrd(
- 	u32 *initrd_header;
- 
- 	ROOT_DEV = Root_RAM0;
--	if (parse_rd_cmdline(&initrd_start, &initrd_end))
-+	if (initrd_end)
- 		return initrd_end;
- 
- 	/* 
-@@ -282,25 +187,25 @@ static unsigned long __init init_initrd(
- 
- static void __init finalize_initrd(void)
- {
--	unsigned long initrd_size = 
-+	unsigned long size =
- 		(unsigned long)initrd_end - (unsigned long)initrd_start;
- 
--	if (initrd_size == 0) {
-+	if (size == 0) {
- 		printk(KERN_INFO "Initrd not found or empty");
--		goto check_ko;
-+		goto disable;
- 	}
- 	if (CPHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
- 		printk("Initrd extends beyond end of memory");
--		goto check_ko;
-+		goto disable;
- 	}
- 
--	reserve_bootmem(CPHYSADDR(initrd_start), initrd_size);
-+	reserve_bootmem(CPHYSADDR(initrd_start), size);
- 	initrd_below_start_ok = 1;
- 
- 	printk(KERN_INFO "Initial ramdisk at: 0x%p (%lu bytes)\n",
--	       (void *)initrd_start, initrd_size);
-+	       (void *)initrd_start, size);
- 	return;
--check_ko:
-+disable:
- 	printk(" - disabling initrd\n");
- 	initrd_start = 0;
- 	initrd_end = 0;
-@@ -437,8 +342,6 @@ #endif	/* CONFIG_SGI_IP27 */
-  *
-  *  o plat_mem_setup() detects the memory configuration and will record detected
-  *    memory areas using add_memory_region.
-- *  o parse_cmdline_early() parses the command line for mem= options which,
-- *    iff detected, will override the results of the automatic detection.
-  *
-  * At this stage the memory configuration of the system is known to the
-  * kernel but generic memory managment system is still entirely uninitialized.
-@@ -456,19 +359,53 @@ #endif	/* CONFIG_SGI_IP27 */
-  * initialization hook for anything else was introduced.
-  */
- 
--extern void plat_mem_setup(void);
-+static int usermem __initdata = 0;
-+
-+static int __init early_parse_mem(char *p)
-+{
-+	unsigned long start, size;
-+
-+	/*
-+	 * If a user specifies memory size, we
-+	 * blow away any automatically generated
-+	 * size.
-+	 */
-+	if (usermem == 0) {
-+		boot_mem_map.nr_map = 0;
-+		usermem = 1;
-+ 	}
-+	start = 0;
-+	size = memparse(p, &p);
-+	if (*p == '@')
-+		start = memparse(p + 1, &p);
-+
-+	add_memory_region(start, size, BOOT_MEM_RAM);
-+	return 0;
-+}
-+early_param("mem", early_parse_mem);
- 
- static void __init arch_mem_init(char **cmdline_p)
- {
-+	extern void plat_mem_setup(void);
-+
- 	/* call board setup routine */
- 	plat_mem_setup();
- 
-+	printk("Determined physical RAM map:\n");
-+	print_memory_map();
-+
- 	strlcpy(command_line, arcs_cmdline, sizeof(command_line));
- 	strlcpy(saved_command_line, command_line, COMMAND_LINE_SIZE);
- 
- 	*cmdline_p = command_line;
- 
--	parse_cmdline_early();
-+	parse_early_param();
-+
-+	if (usermem) {
-+		printk("User-defined physical RAM map:\n");
-+		print_memory_map();
++	/* Sanity check */
++	if (start + size < start) {
++		printk("Trying to add an invalid memory region, skipped\n");
++		return;
 +	}
 +
- 	bootmem_init();
- 	sparse_init();
+ 	/*
+ 	 * Try to merge with previous entry if any.  This is far less than
+ 	 * perfect but is sufficient for most real world cases.
+@@ -257,15 +263,16 @@ #endif
+ 	return 0;
+ }
+ 
+-#define MAXMEM		HIGHMEM_START
+-#define MAXMEM_PFN	PFN_DOWN(MAXMEM)
+-
+-static inline void bootmem_init(void)
++/*
++ * Initialize the bootmem allocator. It also setup initrd related data
++ * if needed.
++ */
++static void __init bootmem_init(void)
+ {
+-	unsigned long start_pfn;
+ 	unsigned long reserved_end = (unsigned long)&_end;
+ #ifndef CONFIG_SGI_IP27
+-	unsigned long first_usable_pfn;
++	unsigned long highest = 0;
++	unsigned long mapstart = -1UL;
+ 	unsigned long bootmap_size;
+ 	int i;
+ #endif
+@@ -281,7 +288,7 @@ #ifdef CONFIG_BLK_DEV_INITRD
+ 		unsigned long tmp;
+ 		u32 *initrd_header;
+ 
+-		tmp = ((reserved_end + PAGE_SIZE-1) & PAGE_MASK) - sizeof(u32) * 2;
++		tmp = PAGE_ALIGN(reserved_end) - sizeof(u32) * 2;
+ 		if (tmp < reserved_end)
+ 			tmp += PAGE_SIZE;
+ 		initrd_header = (u32 *)tmp;
+@@ -294,16 +301,15 @@ #ifdef CONFIG_BLK_DEV_INITRD
+ 	}
+ #endif	/* CONFIG_BLK_DEV_INITRD */
+ 
++#ifndef CONFIG_SGI_IP27
+ 	/*
+-	 * Partially used pages are not usable - thus
+-	 * we are rounding upwards.
++	 * reserved_end is now a pfn
+ 	 */
+-	start_pfn = PFN_UP(CPHYSADDR(reserved_end));
++	reserved_end = PFN_UP(CPHYSADDR(reserved_end));
+ 
+-#ifndef CONFIG_SGI_IP27
+-	/* Find the highest page frame number we have available.  */
+-	max_pfn = 0;
+-	first_usable_pfn = -1UL;
++	/*
++	 * Find the highest page frame number we have available.
++	 */
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+ 		unsigned long start, end;
+ 
+@@ -312,56 +318,38 @@ #ifndef CONFIG_SGI_IP27
+ 
+ 		start = PFN_UP(boot_mem_map.map[i].addr);
+ 		end = PFN_DOWN(boot_mem_map.map[i].addr
+-		      + boot_mem_map.map[i].size);
++				+ boot_mem_map.map[i].size);
+ 
+-		if (start >= end)
++		if (end > highest)
++			highest = end;
++		if (end <= reserved_end)
+ 			continue;
+-		if (end > max_pfn)
+-			max_pfn = end;
+-		if (start < first_usable_pfn) {
+-			if (start > start_pfn) {
+-				first_usable_pfn = start;
+-			} else if (end > start_pfn) {
+-				first_usable_pfn = start_pfn;
+-			}
+-		}
++		if (start >= mapstart)
++			continue;
++		mapstart = max(reserved_end, start);
+ 	}
+ 
+ 	/*
+ 	 * Determine low and high memory ranges
+ 	 */
+-	max_low_pfn = max_pfn;
+-	if (max_low_pfn > MAXMEM_PFN) {
+-		max_low_pfn = MAXMEM_PFN;
+-#ifndef CONFIG_HIGHMEM
+-		/* Maximum memory usable is what is directly addressable */
+-		printk(KERN_WARNING "Warning only %ldMB will be used.\n",
+-		       MAXMEM >> 20);
+-		printk(KERN_WARNING "Use a HIGHMEM enabled kernel.\n");
++	if (highest > PFN_DOWN(HIGHMEM_START)) {
++#ifdef CONFIG_HIGHMEM
++		highstart_pfn = PFN_DOWN(HIGHMEM_START);
++		highend_pfn = highest;
+ #endif
++		highest = PFN_DOWN(HIGHMEM_START);
+ 	}
+ 
+-#ifdef CONFIG_HIGHMEM
+ 	/*
+-	 * Crude, we really should make a better attempt at detecting
+-	 * highstart_pfn
++	 * Initialize the boot-time allocator with low memory only.
+ 	 */
+-	highstart_pfn = highend_pfn = max_pfn;
+-	if (max_pfn > MAXMEM_PFN) {
+-		highstart_pfn = MAXMEM_PFN;
+-		printk(KERN_NOTICE "%ldMB HIGHMEM available.\n",
+-		       (highend_pfn - highstart_pfn) >> (20 - PAGE_SHIFT));
+-	}
+-#endif
+-
+-	/* Initialize the boot-time allocator with low memory only.  */
+-	bootmap_size = init_bootmem(first_usable_pfn, max_low_pfn);
++	bootmap_size = init_bootmem(mapstart, highest);
+ 
+ 	/*
+ 	 * Register fully available low RAM pages with the bootmem allocator.
+ 	 */
+ 	for (i = 0; i < boot_mem_map.nr_map; i++) {
+-		unsigned long curr_pfn, last_pfn, size;
++		unsigned long start, end, size;
+ 
+ 		/*
+ 		 * Reserve usable memory.
+@@ -369,49 +357,37 @@ #endif
+ 		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
+ 			continue;
+ 
+-		/*
+-		 * We are rounding up the start address of usable memory:
+-		 */
+-		curr_pfn = PFN_UP(boot_mem_map.map[i].addr);
+-		if (curr_pfn >= max_low_pfn)
+-			continue;
+-		if (curr_pfn < start_pfn)
+-			curr_pfn = start_pfn;
+-
+-		/*
+-		 * ... and at the end of the usable range downwards:
+-		 */
+-		last_pfn = PFN_DOWN(boot_mem_map.map[i].addr
++		start = PFN_UP(boot_mem_map.map[i].addr);
++		end   = PFN_DOWN(boot_mem_map.map[i].addr
+ 				    + boot_mem_map.map[i].size);
+-
+-		if (last_pfn > max_low_pfn)
+-			last_pfn = max_low_pfn;
+-
+ 		/*
+-		 * Only register lowmem part of lowmem segment with bootmem.
++		 * We are rounding up the start address of usable memory 
++		 * and at the end of the usable range downwards.
+ 		 */
+-		size = last_pfn - curr_pfn;
+-		if (curr_pfn > PFN_DOWN(HIGHMEM_START))
+-			continue;
+-		if (curr_pfn + size - 1 > PFN_DOWN(HIGHMEM_START))
+-			size = PFN_DOWN(HIGHMEM_START) - curr_pfn;
+-		if (!size)
++		if (start >= max_low_pfn)
+ 			continue;
++		if (start < reserved_end)
++			start = reserved_end;
++		if (end > max_low_pfn)
++			end = max_low_pfn;
+ 
+ 		/*
+-		 * ... finally, did all the rounding and playing
+-		 * around just make the area go away?
++		 * ... finally, is the area going away?
+ 		 */
+-		if (last_pfn <= curr_pfn)
++		if (end <= start)
+ 			continue;
++		size = end - start;
+ 
+ 		/* Register lowmem ranges */
+-		free_bootmem(PFN_PHYS(curr_pfn), PFN_PHYS(size));
+-		memory_present(0, curr_pfn, curr_pfn + size - 1);
++		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
++		memory_present(0, start, end);
+ 	}
+ 
+-	/* Reserve the bootmap memory.  */
+-	reserve_bootmem(PFN_PHYS(first_usable_pfn), bootmap_size);
++	/*
++	 * Reserve the bootmap memory.
++	 */
++	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size);
++
+ #endif /* CONFIG_SGI_IP27 */
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+@@ -483,6 +459,9 @@ static void __init arch_mem_init(char **
  	paging_init();
+ }
+ 
++#define MAXMEM		HIGHMEM_START
++#define MAXMEM_PFN	PFN_DOWN(MAXMEM)
++
+ static inline void resource_init(void)
+ {
+ 	int i;
 -- 
 1.4.2.rc2

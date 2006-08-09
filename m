@@ -1,78 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 14:33:28 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:12215 "EHLO
-	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S20042340AbWHINbp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 9 Aug 2006 14:31:45 +0100
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by mail.enneenne.com with esmtp (Exim 4.50)
-	id 1GAnAU-0000Af-DJ
-	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 14:28:14 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1GAoAq-0002i1-T7
-	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 15:32:40 +0200
-Date:	Wed, 9 Aug 2006 15:32:40 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060809133240.GA9690@enneenne.com>
-References: <20060809102950.GA2531@enneenne.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060809102950.GA2531@enneenne.com>
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.12-2006-07-14
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: Re: au1100 MMC support
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 15:24:52 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:9435 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20042376AbWHIOYZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 9 Aug 2006 15:24:25 +0100
+Received: from localhost (p2191-ipad201funabasi.chiba.ocn.ne.jp [222.146.65.191])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8089AA073; Wed,  9 Aug 2006 23:24:13 +0900 (JST)
+Date:	Wed, 09 Aug 2006 23:25:51 +0900 (JST)
+Message-Id: <20060809.232551.74752502.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ths@networkno.de, linux-mips@linux-mips.org, ralf@linux-mips.org,
+	yoichi_yuasa@tripeaks.co.jp
+Subject: Re: [PATCH 6/6] setup.c: use early_param() for early command line
+ parsing
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44D99B02.1070406@innova-card.com>
+References: <44D898FE.7080006@innova-card.com>
+	<20060809.010526.18607898.anemo@mba.ocn.ne.jp>
+	<44D99B02.1070406@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12247
+X-archive-position: 12248
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 09, 2006 at 12:29:50PM +0200, Rodolfo Giometti wrote:
+On Wed, 09 Aug 2006 10:21:22 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > Maybe you can add something like "initrdmem=xxx@yyy", keeping
+> > "rd_start" and "rd_size" for the backward compatibility.  Just a
+> > thought.
 > 
->    mmc0: starting CMD2 arg 00000000 flags 00000067
->    mmc0: req done (CMD2): 0/0/0: 1d41444d 494e4953 10310001 9a005500
+> Well that what I was planning when writing this patch but I didn't.
+> I think that we will end up with two different semantics and the
+> old one never replaced by the new one... Except if we mark them as
+> deprecated by showing a warning at boot. What do you think ?
 
-Ok. This the CID number.
+While the kernel command line is very limited resource (only 256
+chars), I prefer a single short option to specify initrd range, if
+available.
 
->    mmc0: starting CMD3 arg 00000000 flags 00000065
->    mmc0: req done (CMD3): 0/0/0: 019a0055 00000000 00000000 00000000
+But nothing wrong with rd_start and rd_size, and it seems there are
+some boot loader expected them already, so removing them would not be
+good (especially without some grace period).
 
-And this is the RCA.
+I don't care if there were two way to specify initrd range.  It would
+be somewhat redundant, but that is usual on "Backword compatibility"
+issue, isn't it?  ;-)
 
->    mmc0: host does not support reading read-only switch. assuming write-enable.
->    mmc0: starting CMD2 arg 00000000 flags 00000067
->    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
->    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
->    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
->    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
->    mmc0: clock 450000Hz busmode 2 powermode 2 cs 0 Vdd 15 width 0
->    mmc0: starting CMD9 arg 019a0000 flags 00000007
->    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
->    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
->    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
->    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
-
-Here is the problem! I get no answer to CMD9 (CSD request) due a
-timeout (sd0_status=0x3028080).
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+---
+Atsushi Nemoto

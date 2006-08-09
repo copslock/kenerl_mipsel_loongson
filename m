@@ -1,109 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 11:28:53 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:49845 "EHLO
-	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S20042058AbWHIK2u (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 9 Aug 2006 11:28:50 +0100
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by mail.enneenne.com with esmtp (Exim 4.50)
-	id 1GAkJY-0007oI-FE
-	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 11:25:25 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1GAlJu-0000fB-8M
-	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 12:29:50 +0200
-Date:	Wed, 9 Aug 2006 12:29:50 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060809102950.GA2531@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 13:02:17 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:37074 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S20042192AbWHIMCN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 9 Aug 2006 13:02:13 +0100
+Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id 19201461C8; Wed,  9 Aug 2006 13:59:10 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.62)
+	(envelope-from <ths@networkno.de>)
+	id 1GAlzZ-0008Gc-U3; Wed, 09 Aug 2006 12:12:53 +0100
+Date:	Wed, 9 Aug 2006 12:12:53 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Franck <vagabon.xyz@gmail.com>, franck.bui-huu@innova-card.com
+Cc:	linux-mips@linux-mips.org, anemo@mba.ocn.ne.jp,
+	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp
+Subject: Re: [PATCH 6/6] setup.c: use early_param() for early command line parsing
+Message-ID: <20060809111253.GA28128@networkno.de>
+References: <1155041312273-git-send-email-vagabon.xyz@gmail.com> <1155041313139-git-send-email-vagabon.xyz@gmail.com> <20060808125604.GI29989@networkno.de> <44D898FE.7080006@innova-card.com> <20060808151409.GA1177@networkno.de> <44D9999E.60908@innova-card.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+In-Reply-To: <44D9999E.60908@innova-card.com>
 User-Agent: Mutt/1.5.12-2006-07-14
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: au1100 MMC support
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12245
+X-archive-position: 12246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Franck Bui-Huu wrote:
+[snip]
+> >>> It also is IMHO a bad idea to overload the
+> >>> semantics of initrd= with both file names and memory locations.
+> >> I wasn't aware of any file name usages. Can you give a pointer ?
+> > 
+> > Documentation/initrd.txt
+> > Documentation/filesystems/ramfs-rootfs-initramfs.txt
+> > 
+> 
+> I was asking for pointers on MIPS bootloaders which use
+> initrd=/path/to/initrd...
 
-I'm just working on MMC support for au1100 CPUs. I patched au1xmmc.c
-in order to disable DMA support (which is different from au1200 and
-au1100) and forcing PIO mode.
+AFAIR arcboot does.
 
-Both MMC controllers of au1200 and au1100 seems similar to me...
+> Anyways, you're talking about specific bootloader's parameters,
+> aren't you ? I don't know any MIPS bootloaders, but I wouldn't 
+> expect them to pass their own parameters to the kernel, that 
+> would be surprising...
+>
+> What are you suggesting ? kernel_initrd ?
+> 
+> BTW, what do you think about rd_start/rd_size names ?
 
-Here what I get when I insert the card:
+Is there a good reason to change it?
 
-   mmc0: clock 0Hz busmode 1 powermode 0 cs 0 Vdd 0 width 0
-   mmc0: clock 0Hz busmode 1 powermode 1 cs 0 Vdd 23 width 0
-   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 23 width 0
-   mmc0: clock 450000Hz busmode 1 powermode 2 cs 1 Vdd 23 width 0
-   mmc0: starting CMD0 arg 00000000 flags 00000040
-   mmc0: req done (CMD0): 0/0/0: 00000000 00000000 00000000 00000000
-   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 23 width 0
-   mmc0: starting CMD55 arg 00000000 flags 00000015
-   mmc0: req done (CMD55): 0/0/0: 00000120 00000000 00000000 00000000
-   mmc0: starting CMD41 arg 00000000 flags 00000061
-   mmc0: req done (CMD41): 0/0/0: 00ff8000 00000000 00000000 00000000
-   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 15 width 0
-   mmc0: clock 450000Hz busmode 1 powermode 2 cs 1 Vdd 15 width 0
-   mmc0: starting CMD0 arg 00000000 flags 00000040
-   mmc0: req done (CMD0): 0/0/0: 00000000 00000000 00000000 00000000
-   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 15 width 0
-   mmc0: starting CMD55 arg 00000000 flags 00000015
-   mmc0: req done (CMD55): 0/0/0: 00000120 00000000 00000000 00000000
-   mmc0: starting CMD41 arg 00018000 flags 00000061
-   mmc0: req done (CMD41): 0/0/0: 00ff8000 00000000 00000000 00000000
-   mmc0: starting CMD55 arg 00000000 flags 00000015
-   mmc0: req done (CMD55): 0/0/0: 00000120 00000000 00000000 00000000
-   mmc0: starting CMD41 arg 00018000 flags 00000061
-   mmc0: req done (CMD41): 0/0/0: 80ff8000 00000000 00000000 00000000
-   mmc0: starting CMD2 arg 00000000 flags 00000067
-   mmc0: req done (CMD2): 0/0/0: 1d41444d 494e4953 10310001 9a005500
-   mmc0: starting CMD3 arg 00000000 flags 00000065
-   mmc0: req done (CMD3): 0/0/0: 019a0055 00000000 00000000 00000000
-   mmc0: host does not support reading read-only switch. assuming write-enable.
-   mmc0: starting CMD2 arg 00000000 flags 00000067
-   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: clock 450000Hz busmode 2 powermode 2 cs 0 Vdd 15 width 0
-   mmc0: starting CMD9 arg 019a0000 flags 00000007
-   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
-   mmc0: selected 24.000MHz transfer rate
-   mmc0: clock 24000000Hz busmode 2 powermode 2 cs 0 Vdd 15 width 0
-   mmc0: clock 0Hz busmode 1 powermode 0 cs 0 Vdd 0 width 0
 
-It seems that the driver doesn't recognize the card.
-
-Any suggestions? Do you think that the controller is talking with the
-card?
-
-Thanks,
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+Thiemo

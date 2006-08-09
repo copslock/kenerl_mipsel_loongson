@@ -1,65 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 13:02:17 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:37074 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20042192AbWHIMCN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 9 Aug 2006 13:02:13 +0100
-Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 19201461C8; Wed,  9 Aug 2006 13:59:10 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.62)
-	(envelope-from <ths@networkno.de>)
-	id 1GAlzZ-0008Gc-U3; Wed, 09 Aug 2006 12:12:53 +0100
-Date:	Wed, 9 Aug 2006 12:12:53 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Franck <vagabon.xyz@gmail.com>, franck.bui-huu@innova-card.com
-Cc:	linux-mips@linux-mips.org, anemo@mba.ocn.ne.jp,
-	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp
-Subject: Re: [PATCH 6/6] setup.c: use early_param() for early command line parsing
-Message-ID: <20060809111253.GA28128@networkno.de>
-References: <1155041312273-git-send-email-vagabon.xyz@gmail.com> <1155041313139-git-send-email-vagabon.xyz@gmail.com> <20060808125604.GI29989@networkno.de> <44D898FE.7080006@innova-card.com> <20060808151409.GA1177@networkno.de> <44D9999E.60908@innova-card.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 14:33:28 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:12215 "EHLO
+	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S20042340AbWHINbp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 9 Aug 2006 14:31:45 +0100
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by mail.enneenne.com with esmtp (Exim 4.50)
+	id 1GAnAU-0000Af-DJ
+	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 14:28:14 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1GAoAq-0002i1-T7
+	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 15:32:40 +0200
+Date:	Wed, 9 Aug 2006 15:32:40 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Message-ID: <20060809133240.GA9690@enneenne.com>
+References: <20060809102950.GA2531@enneenne.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <44D9999E.60908@innova-card.com>
+In-Reply-To: <20060809102950.GA2531@enneenne.com>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
 User-Agent: Mutt/1.5.12-2006-07-14
-Return-Path: <ths@networkno.de>
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: Re: au1100 MMC support
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12246
+X-archive-position: 12247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-[snip]
-> >>> It also is IMHO a bad idea to overload the
-> >>> semantics of initrd= with both file names and memory locations.
-> >> I wasn't aware of any file name usages. Can you give a pointer ?
-> > 
-> > Documentation/initrd.txt
-> > Documentation/filesystems/ramfs-rootfs-initramfs.txt
-> > 
+On Wed, Aug 09, 2006 at 12:29:50PM +0200, Rodolfo Giometti wrote:
 > 
-> I was asking for pointers on MIPS bootloaders which use
-> initrd=/path/to/initrd...
+>    mmc0: starting CMD2 arg 00000000 flags 00000067
+>    mmc0: req done (CMD2): 0/0/0: 1d41444d 494e4953 10310001 9a005500
 
-AFAIR arcboot does.
+Ok. This the CID number.
 
-> Anyways, you're talking about specific bootloader's parameters,
-> aren't you ? I don't know any MIPS bootloaders, but I wouldn't 
-> expect them to pass their own parameters to the kernel, that 
-> would be surprising...
->
-> What are you suggesting ? kernel_initrd ?
-> 
-> BTW, what do you think about rd_start/rd_size names ?
+>    mmc0: starting CMD3 arg 00000000 flags 00000065
+>    mmc0: req done (CMD3): 0/0/0: 019a0055 00000000 00000000 00000000
 
-Is there a good reason to change it?
+And this is the RCA.
 
+>    mmc0: host does not support reading read-only switch. assuming write-enable.
+>    mmc0: starting CMD2 arg 00000000 flags 00000067
+>    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+>    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+>    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+>    mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+>    mmc0: clock 450000Hz busmode 2 powermode 2 cs 0 Vdd 15 width 0
+>    mmc0: starting CMD9 arg 019a0000 flags 00000007
+>    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
+>    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
+>    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
+>    mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
 
-Thiemo
+Here is the problem! I get no answer to CMD9 (CSD request) due a
+timeout (sd0_status=0x3028080).
+
+Rodolfo
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

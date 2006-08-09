@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 15:55:14 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.191]:61925 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 15:55:42 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.190]:55270 "EHLO
 	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20042393AbWHIOx1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 9 Aug 2006 15:53:27 +0100
-Received: by nf-out-0910.google.com with SMTP id o60so206823nfa
-        for <linux-mips@linux-mips.org>; Wed, 09 Aug 2006 07:53:24 -0700 (PDT)
+	id S20042397AbWHIOxa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 9 Aug 2006 15:53:30 +0100
+Received: by nf-out-0910.google.com with SMTP id o60so206836nfa
+        for <linux-mips@linux-mips.org>; Wed, 09 Aug 2006 07:53:21 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=TCIYrdIvh482O70F+vgnL7prr/ae83rk6a3xOipWwD2LwXvQ1uMpqpFKz8mAuV0xl3mGInUTV3asTJb9OH3qoM2qzq/xbb532DsOuNNx9u8m7R0Iqyb7MUQPB2++VYIdnXcUKiGmVPoujH0J3BeJwMfQoDpXsX9bmLk38v9IDDM=
-Received: by 10.48.220.15 with SMTP id s15mr1619186nfg;
-        Wed, 09 Aug 2006 07:53:24 -0700 (PDT)
+        b=gtbQf3DZB7oNSLz3OpJXB8pyYfN02lusXkEe7vztswaJr0wX8fBFct4hm8KEk5OH5In2g6uPcN1CBPxs22WNjsW+UpsXPXlKwtNG1YBYMsnH9X7WkFqurtvVnwTe/5VULxDUTCcHp+wOVoZFS6rgMlVOdZ6GK/HvEOqjgv3DrSM=
+Received: by 10.49.10.3 with SMTP id n3mr1593143nfi;
+        Wed, 09 Aug 2006 07:53:21 -0700 (PDT)
 Received: from spoutnik.innova-card.com ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id k23sm2488822nfc.2006.08.09.07.53.23;
-        Wed, 09 Aug 2006 07:53:24 -0700 (PDT)
+        by mx.gmail.com with ESMTP id i1sm1445683nfe.2006.08.09.07.53.19;
+        Wed, 09 Aug 2006 07:53:21 -0700 (PDT)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 09DA823F772; Wed,  9 Aug 2006 16:52:39 +0200 (CEST)
+	id C1B9623F76A; Wed,  9 Aug 2006 16:52:39 +0200 (CEST)
 From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
 To:	linux-mips@linux-mips.org
 Cc:	anemo@mba.ocn.ne.jp, ralf@linux-mips.org,
 	yoichi_yuasa@tripeaks.co.jp, Franck Bui-Huu <vagabon.xyz@gmail.com>
-Subject: [PATCH 5/6] setup.c: remove MAXMEM macro
-Date:	Wed,  9 Aug 2006 16:52:37 +0200
-Message-Id: <11551351594099-git-send-email-vagabon.xyz@gmail.com>
+Subject: [PATCH 2/6] setup.c: move initrd code inside dedicated functions
+Date:	Wed,  9 Aug 2006 16:52:34 +0200
+Message-Id: <1155135159394-git-send-email-vagabon.xyz@gmail.com>
 X-Mailer: git-send-email 1.4.2.rc2
 In-Reply-To: <11551351581277-git-send-email-vagabon.xyz@gmail.com>
 References: <11551351581277-git-send-email-vagabon.xyz@gmail.com>
@@ -30,7 +30,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12253
+X-archive-position: 12254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,50 +38,197 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-It doens't improve readability.
+NUMA specific code could rely on them too.
 
 Signed-off-by: Franck Bui-Huu <vagabon.xyz@gmail.com>
 ---
- arch/mips/kernel/setup.c |   12 +++---------
- 1 files changed, 3 insertions(+), 9 deletions(-)
+ arch/mips/kernel/setup.c |  145 ++++++++++++++++++++++++++++------------------
+ 1 files changed, 87 insertions(+), 58 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 019b564..895a357 100644
+index e331e63..8f357c2 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -474,9 +474,6 @@ static void __init arch_mem_init(char **
- 	paging_init();
- }
- 
--#define MAXMEM		HIGHMEM_START
--#define MAXMEM_PFN	PFN_DOWN(MAXMEM)
--
- static void __init resource_init(void)
- {
- 	int i;
-@@ -498,10 +495,10 @@ static void __init resource_init(void)
- 
- 		start = boot_mem_map.map[i].addr;
- 		end = boot_mem_map.map[i].addr + boot_mem_map.map[i].size - 1;
--		if (start >= MAXMEM)
-+		if (start >= HIGHMEM_START)
- 			continue;
--		if (end >= MAXMEM)
--			end = MAXMEM - 1;
-+		if (end >= HIGHMEM_START)
-+			end = HIGHMEM_START - 1;
- 
- 		res = alloc_bootmem(sizeof(struct resource));
- 		switch (boot_mem_map.map[i].type) {
-@@ -530,9 +527,6 @@ static void __init resource_init(void)
+@@ -200,7 +200,12 @@ static inline void parse_cmdline_early(v
  	}
  }
  
--#undef MAXMEM
--#undef MAXMEM_PFN
--
- void __init setup_arch(char **cmdline_p)
+-static inline int parse_rd_cmdline(unsigned long* rd_start, unsigned long* rd_end)
++/*
++ * Manage initrd
++ */
++#ifdef CONFIG_BLK_DEV_INITRD
++
++static int __init parse_rd_cmdline(unsigned long *rd_start, unsigned long *rd_end)
  {
- 	cpu_probe();
+ 	/*
+ 	 * "rd_start=0xNNNNNNNN" defines the memory address of an initrd
+@@ -263,49 +268,94 @@ #endif
+ 	return 0;
+ }
+ 
++static unsigned long __init init_initrd(void)
++{
++	unsigned long tmp, end;
++	u32 *initrd_header;
++
++	ROOT_DEV = Root_RAM0;
++
++	if (parse_rd_cmdline(&initrd_start, &initrd_end))
++		return initrd_end;
++	/* 
++	 * Board specific code should have set up initrd_start 
++	 * and initrd_end...
++	 */
++	end = (unsigned long)&_end;
++	tmp = PAGE_ALIGN(end) - sizeof(u32) * 2;
++	if (tmp < end)
++		tmp += PAGE_SIZE;
++	
++	initrd_header = (u32 *)tmp;
++	if (initrd_header[0] == 0x494E5244) {
++		initrd_start = (unsigned long)&initrd_header[2];
++		initrd_end = initrd_start + initrd_header[1];
++	}
++	return initrd_end;
++}
++
++static void __init finalize_initrd(void)
++{
++	unsigned long initrd_size = 
++		(unsigned long)initrd_end - (unsigned long)initrd_start;
++
++	if (initrd_size == 0) {
++		printk(KERN_INFO "Initrd not found or empty");
++		goto check_ko;
++	}
++	if (CPHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
++		printk("Initrd extends beyond end of memory");
++		goto check_ko;
++	}
++
++	reserve_bootmem(CPHYSADDR(initrd_start), initrd_size);
++	initrd_below_start_ok = 1;
++
++	printk(KERN_INFO "Initial ramdisk at: 0x%p (%lu bytes)\n",
++	       (void *)initrd_start, initrd_size);
++	return;
++check_ko:
++	printk(" - disabling initrd\n");
++	initrd_start = 0;
++	initrd_end = 0;
++}
++
++#else  /* !CONFIG_BLK_DEV_INITRD */
++
++#define init_initrd()		0
++#define finalize_initrd()	do {} while (0)
++
++#endif
++
+ /*
+  * Initialize the bootmem allocator. It also setup initrd related data
+  * if needed.
+  */
++#ifdef CONFIG_SGI_IP27
++
+ static void __init bootmem_init(void)
+ {
+-	unsigned long reserved_end = (unsigned long)&_end;
+-#ifndef CONFIG_SGI_IP27
++	init_initrd();
++	finalize_initrd();
++}
++
++#else  /* !CONFIG_SGI_IP27 */
++
++static void __init bootmem_init(void)
++{
++	unsigned long reserved_end;
+ 	unsigned long highest = 0;
+ 	unsigned long mapstart = -1UL;
+ 	unsigned long bootmap_size;
+ 	int i;
+-#endif
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	int initrd_reserve_bootmem = 0;
+-
+-	/* Board specific code should have set up initrd_start and initrd_end */
+- 	ROOT_DEV = Root_RAM0;
+-	if (parse_rd_cmdline(&initrd_start, &initrd_end)) {
+-		reserved_end = max(reserved_end, initrd_end);
+-		initrd_reserve_bootmem = 1;
+-	} else {
+-		unsigned long tmp;
+-		u32 *initrd_header;
+-
+-		tmp = PAGE_ALIGN(reserved_end) - sizeof(u32) * 2;
+-		if (tmp < reserved_end)
+-			tmp += PAGE_SIZE;
+-		initrd_header = (u32 *)tmp;
+-		if (initrd_header[0] == 0x494E5244) {
+-			initrd_start = (unsigned long)&initrd_header[2];
+-			initrd_end = initrd_start + initrd_header[1];
+-			reserved_end = max(reserved_end, initrd_end);
+-			initrd_reserve_bootmem = 1;
+-		}
+-	}
+-#endif	/* CONFIG_BLK_DEV_INITRD */
+ 
+-#ifndef CONFIG_SGI_IP27
+ 	/*
+-	 * reserved_end is now a pfn
++	 * Init any data related to initrd. It's a nop if INITRD is
++	 * not selected. Once that done we can determine the low bound
++	 * of usable memory.
+ 	 */
+-	reserved_end = PFN_UP(CPHYSADDR(reserved_end));
++	reserved_end = init_initrd();
++	reserved_end = PFN_UP(CPHYSADDR(max(reserved_end, (unsigned long)&_end)));
+ 
+ 	/*
+ 	 * Find the highest page frame number we have available.
+@@ -388,35 +438,14 @@ #endif
+ 	 */
+ 	reserve_bootmem(PFN_PHYS(mapstart), bootmap_size);
+ 
+-#endif /* CONFIG_SGI_IP27 */
+-
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	initrd_below_start_ok = 1;
+-	if (initrd_start) {
+-		unsigned long initrd_size = ((unsigned char *)initrd_end) -
+-			((unsigned char *)initrd_start);
+-		const int width = sizeof(long) * 2;
+-
+-		printk("Initial ramdisk at: 0x%p (%lu bytes)\n",
+-		       (void *)initrd_start, initrd_size);
+-
+-		if (CPHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
+-			printk("initrd extends beyond end of memory "
+-			       "(0x%0*Lx > 0x%0*Lx)\ndisabling initrd\n",
+-			       width,
+-			       (unsigned long long) CPHYSADDR(initrd_end),
+-			       width,
+-			       (unsigned long long) PFN_PHYS(max_low_pfn));
+-			initrd_start = initrd_end = 0;
+-			initrd_reserve_bootmem = 0;
+-		}
+-
+-		if (initrd_reserve_bootmem)
+-			reserve_bootmem(CPHYSADDR(initrd_start), initrd_size);
+-	}
+-#endif /* CONFIG_BLK_DEV_INITRD  */
++	/*
++	 * Reserve initrd memory if needed.
++	 */
++	finalize_initrd();
+ }
+ 
++#endif	/* CONFIG_SGI_IP27 */
++
+ /*
+  * arch_mem_init - initialize memory managment subsystem
+  *
 -- 
 1.4.2.rc2

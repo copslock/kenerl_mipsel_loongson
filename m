@@ -1,68 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 09:22:13 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.190]:31203 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20041940AbWHIIWK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 9 Aug 2006 09:22:10 +0100
-Received: by nf-out-0910.google.com with SMTP id o60so81478nfa
-        for <linux-mips@linux-mips.org>; Wed, 09 Aug 2006 01:22:02 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=rX6ZQb8ycR9hqXQhjundRoMv5hDRCGjADhru5rhB8aYlvdD3LpYInf5wsSVpamoC2l80DxCPw9D5KUAaDDOVO9e3Jhr9cab0+IlKc5h1tfIiQ7DQjeB1q1jMTHdRgQmC8RFX571V+NntXmvI0d4/GpNwW8OmovpcJhqQnTaDOzQ=
-Received: by 10.48.210.20 with SMTP id i20mr1029234nfg;
-        Wed, 09 Aug 2006 01:22:02 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id x24sm1975269nfb.2006.08.09.01.22.01;
-        Wed, 09 Aug 2006 01:22:02 -0700 (PDT)
-Message-ID: <44D99B02.1070406@innova-card.com>
-Date:	Wed, 09 Aug 2006 10:21:22 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Aug 2006 11:28:53 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:49845 "EHLO
+	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S20042058AbWHIK2u (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 9 Aug 2006 11:28:50 +0100
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by mail.enneenne.com with esmtp (Exim 4.50)
+	id 1GAkJY-0007oI-FE
+	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 11:25:25 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
+	(envelope-from <giometti@enneenne.com>)
+	id 1GAlJu-0000fB-8M
+	for linux-mips@linux-mips.org; Wed, 09 Aug 2006 12:29:50 +0200
+Date:	Wed, 9 Aug 2006 12:29:50 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	linux-mips@linux-mips.org
+Message-ID: <20060809102950.GA2531@enneenne.com>
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, ths@networkno.de, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp
-Subject: Re: [PATCH 6/6] setup.c: use early_param() for early command line
- parsing
-References: <1155041313139-git-send-email-vagabon.xyz@gmail.com>	<20060808125604.GI29989@networkno.de>	<44D898FE.7080006@innova-card.com> <20060809.010526.18607898.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060809.010526.18607898.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.12-2006-07-14
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: au1100 MMC support
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12244
+X-archive-position: 12245
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-Hi Atsushi,
+Hello,
 
-Atsushi Nemoto wrote:
-> On Tue, 08 Aug 2006 16:00:30 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->>>> NOTE ! This patch also changes the initrd semantic. Old code
->>>> was expecting "rd_start=xxx rd_size=xxx" which uses two
->>>> parameters. Now the code expects "initrd=xxx@yyy" which is
->>>> really simpler to parse and to use. No default config files
->>>> use these parameters anyways but not sure for bootloader's
->>>> users...
->>> This code is there precisely because most mips bootloaders use
->>> rd_start/rd_size.
->> OK, I guess we have to stick with this weird semantic...
-> 
-> Maybe you can add something like "initrdmem=xxx@yyy", keeping
-> "rd_start" and "rd_size" for the backward compatibility.  Just a
-> thought.
-> 
+I'm just working on MMC support for au1100 CPUs. I patched au1xmmc.c
+in order to disable DMA support (which is different from au1200 and
+au1100) and forcing PIO mode.
 
-Well that what I was planning when writing this patch but I didn't.
-I think that we will end up with two different semantics and the
-old one never replaced by the new one... Except if we mark them as
-deprecated by showing a warning at boot. What do you think ?
+Both MMC controllers of au1200 and au1100 seems similar to me...
 
-		Franck
+Here what I get when I insert the card:
+
+   mmc0: clock 0Hz busmode 1 powermode 0 cs 0 Vdd 0 width 0
+   mmc0: clock 0Hz busmode 1 powermode 1 cs 0 Vdd 23 width 0
+   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 23 width 0
+   mmc0: clock 450000Hz busmode 1 powermode 2 cs 1 Vdd 23 width 0
+   mmc0: starting CMD0 arg 00000000 flags 00000040
+   mmc0: req done (CMD0): 0/0/0: 00000000 00000000 00000000 00000000
+   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 23 width 0
+   mmc0: starting CMD55 arg 00000000 flags 00000015
+   mmc0: req done (CMD55): 0/0/0: 00000120 00000000 00000000 00000000
+   mmc0: starting CMD41 arg 00000000 flags 00000061
+   mmc0: req done (CMD41): 0/0/0: 00ff8000 00000000 00000000 00000000
+   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 15 width 0
+   mmc0: clock 450000Hz busmode 1 powermode 2 cs 1 Vdd 15 width 0
+   mmc0: starting CMD0 arg 00000000 flags 00000040
+   mmc0: req done (CMD0): 0/0/0: 00000000 00000000 00000000 00000000
+   mmc0: clock 450000Hz busmode 1 powermode 2 cs 0 Vdd 15 width 0
+   mmc0: starting CMD55 arg 00000000 flags 00000015
+   mmc0: req done (CMD55): 0/0/0: 00000120 00000000 00000000 00000000
+   mmc0: starting CMD41 arg 00018000 flags 00000061
+   mmc0: req done (CMD41): 0/0/0: 00ff8000 00000000 00000000 00000000
+   mmc0: starting CMD55 arg 00000000 flags 00000015
+   mmc0: req done (CMD55): 0/0/0: 00000120 00000000 00000000 00000000
+   mmc0: starting CMD41 arg 00018000 flags 00000061
+   mmc0: req done (CMD41): 0/0/0: 80ff8000 00000000 00000000 00000000
+   mmc0: starting CMD2 arg 00000000 flags 00000067
+   mmc0: req done (CMD2): 0/0/0: 1d41444d 494e4953 10310001 9a005500
+   mmc0: starting CMD3 arg 00000000 flags 00000065
+   mmc0: req done (CMD3): 0/0/0: 019a0055 00000000 00000000 00000000
+   mmc0: host does not support reading read-only switch. assuming write-enable.
+   mmc0: starting CMD2 arg 00000000 flags 00000067
+   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: req done (CMD2): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: clock 450000Hz busmode 2 powermode 2 cs 0 Vdd 15 width 0
+   mmc0: starting CMD9 arg 019a0000 flags 00000007
+   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: req done (CMD9): 1/0/0: 00000000 00000000 00000000 00000000
+   mmc0: selected 24.000MHz transfer rate
+   mmc0: clock 24000000Hz busmode 2 powermode 2 cs 0 Vdd 15 width 0
+   mmc0: clock 0Hz busmode 1 powermode 0 cs 0 Vdd 0 width 0
+
+It seems that the driver doesn't recognize the card.
+
+Any suggestions? Do you think that the controller is talking with the
+card?
+
+Thanks,
+
+Rodolfo
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

@@ -1,46 +1,216 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 20:49:37 +0100 (BST)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:64179 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20045064AbWHKTtf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 11 Aug 2006 20:49:35 +0100
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.13.6/8.13.4) with ESMTP id k7BK9i4G004373;
-	Fri, 11 Aug 2006 21:09:44 +0100
-Received: (from alan@localhost)
-	by localhost.localdomain (8.13.6/8.13.6/Submit) id k7BK9iNY004372;
-	Fri, 11 Aug 2006 21:09:44 +0100
-X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 21:48:46 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:58508 "EHLO mx1.redhat.com")
+	by ftp.linux-mips.org with ESMTP id S20045090AbWHKUsp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 21:48:45 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7BKmaA7003754;
+	Fri, 11 Aug 2006 16:48:36 -0400
+Received: from nwo.kernelslacker.org (vpn-248-3.boston.redhat.com [10.13.248.3])
+	by int-mx1.corp.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7BKmTk0015074;
+	Fri, 11 Aug 2006 16:48:32 -0400
+Received: from nwo.kernelslacker.org (localhost.localdomain [127.0.0.1])
+	by nwo.kernelslacker.org (8.13.7/8.13.5) with ESMTP id k7BKmFoe016516;
+	Fri, 11 Aug 2006 16:48:21 -0400
+Received: (from davej@localhost)
+	by nwo.kernelslacker.org (8.13.7/8.13.7/Submit) id k7BKm3mQ016513;
+	Fri, 11 Aug 2006 16:48:03 -0400
+X-Authentication-Warning: nwo.kernelslacker.org: davej set sender to davej@redhat.com using -f
+Date:	Fri, 11 Aug 2006 16:48:03 -0400
+From:	Dave Jones <davej@redhat.com>
 To:	Thomas Koeller <thomas.koeller@baslerweb.com>
 Cc:	linux-kernel@vger.kernel.org, akpm@osdl.org,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <200608102318.04512.thomas.koeller@baslerweb.com>
+Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
+Message-ID: <20060811204803.GJ26930@redhat.com>
+Mail-Followup-To: Dave Jones <davej@redhat.com>,
+	Thomas Koeller <thomas.koeller@baslerweb.com>,
+	linux-kernel@vger.kernel.org, akpm@osdl.org,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 References: <200608102318.04512.thomas.koeller@baslerweb.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Date:	Fri, 11 Aug 2006 21:09:43 +0100
-Message-Id: <1155326983.24077.119.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.6.2 (2.6.2-1.fc5.5) 
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200608102318.04512.thomas.koeller@baslerweb.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <davej@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12300
+X-archive-position: 12301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: davej@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Ar Iau, 2006-08-10 am 23:18 +0200, ysgrifennodd Thomas Koeller:
-> This is a driver used for image capturing by the Basler eXcite smart camera
-> platform.
+On Thu, Aug 10, 2006 at 11:18:04PM +0200, Thomas Koeller wrote:
+ > This is a driver used for image capturing by the Basler eXcite smart camera
+ > platform. It utilizes the integrated GPI DMA engine of the MIPS RM9122
+ > processor. Since this driver does not fit into one of the existing categories
+ > I created a new toplevel directory for it (which may not be appropriate?).
 
-drivers/media/video and the Video4Linux2 API deal with image capture in
-Linux. It provides a common API for video and thus image capture. Any
-reason that interface is not suitable.
+Hi Thomas.
 
-Alan
+As others have pointed out, drivers/media/video is probably a better home.
+
+Some speedy mostly-nitpicking comments below. I didn't give it an indepth review,
+but this is stuff that jumped out at me from a quick skim.
+
+ > + *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ > + */
+ > +
+ > +#include <linux/config.h>
+
+Unnecessary include (kbuild does this for you now)
+
+ > +static unsigned long devnum_bitmap = 0;
+
+Unneeded initialisation. (static uninitialised vars go in .bss)
+
+ > +/* Function prototypes */
+ > +static void xicap_device_release(struct class_device *);
+ > +static long xicap_ioctl(struct file *, unsigned int, unsigned long);
+ > +static unsigned int xicap_poll(struct file *, poll_table *);
+ > +static ssize_t xicap_read(struct file *, char __user *, size_t, loff_t *);
+ > +static int xicap_open(struct inode *, struct file *);
+ > +static int xicap_release(struct inode *, struct file *);
+ > +static int xicap_queue_buffer(xicap_device_context_t *,
+ > +			      const xicap_arg_qbuf_t *);
+
+You could lose all these forward declarations if you move
+the xicap_fops after the function declarations.
+
+ > +/* A class for xicap devices */
+ > +static struct class xicap_class = {
+ > +	.name		= (char *) xicap_name,
+
+Is that cast necessary ?
+
+ > +/* Device registration */
+ > +xicap_device_context_t *
+ > +xicap_device_register(struct device *dev, const xicap_hw_driver_t *hwdrv)
+
+The typedef had me dancing around trying to find out what it was a few
+times. Can we just replace it with uses of struct xicap_devctx ?
+Ditto for xicap_frame_context_t
+
+ > +	/* Set up a device context */
+ > +	xicap_device_context_t * const dc =
+ > +		(xicap_device_context_t *) kmalloc(sizeof *dc, GFP_KERNEL);
+ > +	if (!dc) {
+ > +		res = -ENOMEM;
+ > +		goto ex;
+ > +	}
+ > +
+ > +	memset(dc, 0, sizeof *dc);
+
+You could lose the memset, and use kzalloc instead.
+
+ > +MODULE_VERSION("0.0");
+
+Heh, early days ? :-)
+
+ > +++ b/drivers/xicap/xicap_gpi.c
+ > ...
+ > +
+ > +#include <linux/config.h>
+
+Same as above. Unneeded.
+
+ > +#define VMAP_WORKAROUND			1
+
+This needs a comment to explain what its doing.
+
+ > +/*
+ > + * I/O register access macros
+ > + * Do not use __raw_writeq() and __raw_readq(), these do not seem to work!
+ > + */
+ > +#define io_writeq(__v__, __a__)	\
+ > +	*(volatile unsigned long long *) (__a__) = (__v__)
+ > +#define io_readq(__a__)		(*(volatile unsigned long long *) (__a__))
+ > +#define io_readl(__a__)		__raw_readl((__a__))
+ > +#define io_writel(__v__, __a__)	__raw_writel((__v__), (__a__))
+ > +#define io_readb(__a__)		__raw_readb((__a__))
+ > +#define io_writeb(__v__, __a__)	__raw_writeb((__v__), (__a__))
+ 
+If they don't work, it'd be nice to get them fixed instead of reinventing new ones.
+
+ > +	/* Create and set up the device context */
+ > +	dc = (xicap_gpi_device_context_t *)
+ > +	      kmalloc(sizeof (xicap_gpi_device_context_t), GFP_KERNEL);
+ > +	if (!dc) {
+ > +		res = -ENOMEM;
+ > +		goto errex;
+ > +	}
+ > +	memset(dc, 0, sizeof *dc);
+
+kzalloc.
+
+ > +	rsrc = xicap_gpi_get_resource(pdv, 0, rsrcname_gpi_slice);
+ > +	if (unlikely(!rsrc)) goto errex;
+
+	if (unlikely(!rsrc))
+		goto errex;
+
+ > +	if (unlikely(!rsrc)) goto errex;
+
+	if (unlikely(!rsrc))
+		goto errex;
+ 
+ > +	if (unlikely(!rsrc)) goto errex;
+
+	if (unlikely(!rsrc))
+		goto errex;
+
+ > +	if (unlikely(!rsrc)) goto errex;
+
+etc.
+
+ > +	if (res) {
+ > +		if (dc->regaddr_fifo_rx) iounmap(dc->regaddr_fifo_rx);
+ > +		if (dc->regaddr_fifo_tx) iounmap(dc->regaddr_fifo_tx);
+ > +		if (dc->regaddr_xdma) iounmap(dc->regaddr_xdma);
+ > +		if (dc->regaddr_pktproc) iounmap(dc->regaddr_pktproc);
+ > +		if (dc->regaddr_fpga) iounmap(dc->regaddr_fpga);
+ > +		if (dc->dmadesc) iounmap(dc->dmadesc);
+ > +		if (dc) kfree(dc);
+
+etc
+
+
+ > +	/* Set up the XDMA descriptor ring & enable the XDMA */
+ > +	dc->curdesc = dc->dmadesc;
+ > +	atomic_set(&dc->desc_cnt, XDMA_DESC_RING_SIZE);
+ > +	io_writel(dc->dmadesc_p, dc->regaddr_xdma + 0x0018);
+ > +	wmb();
+
+Uncommented wmb's are a sin :)
+This one may actually need to be a io_readl if its just to flush
+the previous io_writel ?
+
+ > +	/*
+ > +	 * Enable the rx fifo we are going to use. Disable the
+ > +	 * unused ones as well as the tx fifo.
+ > +	 */
+ > +	io_writel(0x00100000 | ((dc->fifomem_size) << 10)
+ > +		  | dc->fifomem_start,
+ > +		  dc->regaddr_fifo_rx + 0x0000);
+ > +	wmb();
+
+same again.
+
+ > +	titan_writel(0xf << (dc->slice * 4), 0x482c);
+ > +	wmb();
+
+and again for a whole bunch more writel's, which really make me wonder...
+
+Asides from all these points, the only thing that really makes me nervous
+is the amount of access_ok & __copy_*_user()/memcpy() uses we have rather than
+just doing a copy_*_user.  It's one of those "are we sure we've checked everything"
+paranoia's I have..
+
+		Dave
+
+-- 
+http://www.codemonkey.org.uk

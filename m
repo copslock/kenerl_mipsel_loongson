@@ -1,136 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 00:49:37 +0100 (BST)
-Received: from mail02.hansenet.de ([213.191.73.62]:44454 "EHLO
-	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
-	id S20045180AbWHKXtd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 12 Aug 2006 00:49:33 +0100
-Received: from [80.171.14.31] (80.171.14.31) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
-        id 44DCA1490001393E; Sat, 12 Aug 2006 01:49:24 +0200
-Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
-	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id F30261C9834;
-	Sat, 12 Aug 2006 01:49:23 +0200 (CEST)
-From:	Thomas Koeller <thomas@koeller.dyndns.org>
-To:	Dave Jones <davej@redhat.com>
-Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
-Date:	Sat, 12 Aug 2006 01:49:23 +0200
-User-Agent: KMail/1.9.3
-Cc:	wim@iguana.be, linux-kernel@vger.kernel.org,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <200608102319.13679.thomas@koeller.dyndns.org> <20060811205639.GK26930@redhat.com>
-In-Reply-To: <20060811205639.GK26930@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 01:06:58 +0100 (BST)
+Received: from raven.upol.cz ([158.194.120.4]:22746 "EHLO raven.upol.cz")
+	by ftp.linux-mips.org with ESMTP id S20037702AbWHLAG4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2006 01:06:56 +0100
+Received: from smtpgate (antivir1.upol.cz [158.194.108.127])
+	by raven.upol.cz (AIX4.3/8.9.3/8.9.3) with SMTP id CAA32954;
+	Sat, 12 Aug 2006 02:15:13 +0200
+Received: from flower (flower.upol.cz [158.194.64.22])
+ by smtpgate ([158.194.108.127]:25) (F-Secure Anti-Virus for Internet Mail 6.50.60 Release)
+ with SMTP; Sat, 12 Aug 2006 00:06:44 -0000
+ (envelope-from <olecom@flower.upol.cz>)
+Received: from [158.194.192.40] (helo=[158.194.192.40])
+	by localhost.localdomain with esmtp (Exim 4.50)
+	id 1GBhU2-0001Li-Sg; Sat, 12 Aug 2006 02:36:10 +0200
+Message-ID: <44DCFF7D.8020307@flower.upol.cz>
+Date:	Sat, 12 Aug 2006 00:06:53 +0200
+From:	Oleg Verych <olecom@flower.upol.cz>
+Organization: Palacky University in Olomouc
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.7.12) Gecko/20060607 Debian/1.7.12-1.2
+X-Accept-Language: en
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Newsgroups: gmane.linux.ports.mips.general,gmane.linux.kernel
+To:	Thomas Koeller <thomas@koeller.dyndns.org>
+CC:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
+References: <200608102319.13679.thomas@koeller.dyndns.org> <20060811205639.GK26930@redhat.com> <200608120149.23380.thomas@koeller.dyndns.org>
+In-Reply-To: <200608120149.23380.thomas@koeller.dyndns.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200608120149.23380.thomas@koeller.dyndns.org>
-Return-Path: <thomas@koeller.dyndns.org>
+Return-Path: <olecom@flower.upol.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12308
+X-archive-position: 12309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas@koeller.dyndns.org
+X-original-sender: olecom@flower.upol.cz
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 11 August 2006 22:56, Dave Jones wrote:
-> On Thu, Aug 10, 2006 at 11:19:13PM +0200, thomas@koeller.dyndns.org wrote:
->  > This is a driver for the on-chip watchdog device found on some
->  > MIPS RM9000 processors.
->  >
->  > Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+Thomas Koeller wrote:
+> On Friday 11 August 2006 22:56, Dave Jones wrote:
+> 
+>>On Thu, Aug 10, 2006 at 11:19:13PM +0200, thomas@koeller.dyndns.org wrote:
+>> > This is a driver for the on-chip watchdog device found on some
+>> > MIPS RM9000 processors.
+>> >
+>> > Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+>>
+>>Mostly same nit-picking comments as your other driver..
+> 
+> 
+> Which one?
 >
-> Mostly same nit-picking comments as your other driver..
+<http://permalink.gmane.org/gmane.linux.ports.mips.general/13500>
 
-Which one?
-
->
->  > +++ b/drivers/char/watchdog/rm9k_wdt.c
->  > ...
->  > +
->  > +#include <linux/config.h>
->
-> not needed.
-
-It is, otherwise I do not get CONFIG_WATCHDOG_NOWAYOUT.
-
->
->  > +/* Function prototypes */
->  > +static int __init wdt_gpi_probe(struct device *);
->  > +static int __exit wdt_gpi_remove(struct device *);
->  > +static void wdt_gpi_set_timeout(unsigned int);
->  > +static int wdt_gpi_open(struct inode *, struct file *);
->  > +static int wdt_gpi_release(struct inode *, struct file *);
->  > +static ssize_t wdt_gpi_write(struct file *, const char __user *,
->  > size_t, loff_t *);
->  > +static long wdt_gpi_ioctl(struct file *, unsigned int, unsigned long);
->  > +static const struct resource *wdt_gpi_get_resource(struct
->  > platform_device *, const char *, unsigned int);
->  > +static int wdt_gpi_notify(struct notifier_block *, unsigned long, void
->  > *); +static irqreturn_t wdt_gpi_irqhdl(int, void *, struct pt_regs *);
->
-> Can probably (mostly?) go away with some creative reordering.
-
-Probably, but should it? I always considered it good style to have
-prototypes for all functions.
-
->
->  > +static int locked = 0;
->
-> unneeded initialisation.
-
-Not strictly needed, that's true, but does not do any harm either
-and expresses the intention clearly.
-
->
->  > +static int nowayout =
->  > +#if defined(CONFIG_WATCHDOG_NOWAYOUT)
->  > +	1;
->  > +#else
->  > +	0;
->  > +#endif
->
-> static int nowayout = CONFIG_WATCHDOG_NOWAYOUT;
->
-> should work.
-
-Does not work. If the option is not selected, CONFIG_WATCHDOG_NOWAYOUT
-is undefined, not zero.
-
->
->  > +static void wdt_gpi_set_timeout(unsigned int to)
->  > +{
->  > +	u32 reg;
->  > +	const u32 wdval = (to * CLOCK) & ~0x0000000f;
->  > +
->  > +	lock_titan_regs();
->  > +	reg = titan_readl(CPCCR) & ~(0xf << (wd_ctr * 4));
->  > +	titan_writel(reg, CPCCR);
->  > +	wmb();
->  > +	__raw_writel(wdval, wd_regs + 0x0000);
->  > +	wmb();
->  > +	titan_writel(reg | (0x2 << (wd_ctr * 4)), CPCCR);
->  > +	wmb();
->  > +	titan_writel(reg | (0x5 << (wd_ctr * 4)), CPCCR);
->  > +	iob();
->  > +	unlock_titan_regs();
->  > +}
->
-> As in the previous driver, are these barriers strong enough?
-> Or do they need explicit reads of the written addresses to flush the write?
-
-I think they are. Remember, the entire device is integrated in the
-processor. No external buses involved.
-
->
-> 		Dave
-
-Thanks for your comments!
-
-Thomas
-
--- 
-Thomas Koeller
-thomas@koeller.dyndns.org
+--
+-o--=O`C
+  #oo'L O
+<___=E M

@@ -1,42 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 21:48:46 +0100 (BST)
-Received: from mx1.redhat.com ([66.187.233.31]:58508 "EHLO mx1.redhat.com")
-	by ftp.linux-mips.org with ESMTP id S20045090AbWHKUsp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 21:48:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 21:57:29 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:3477 "EHLO mx1.redhat.com")
+	by ftp.linux-mips.org with ESMTP id S20045097AbWHKU52 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 21:57:28 +0100
 Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7BKmaA7003754;
-	Fri, 11 Aug 2006 16:48:36 -0400
+	by mx1.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7BKvIEB007866;
+	Fri, 11 Aug 2006 16:57:18 -0400
 Received: from nwo.kernelslacker.org (vpn-248-3.boston.redhat.com [10.13.248.3])
-	by int-mx1.corp.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7BKmTk0015074;
-	Fri, 11 Aug 2006 16:48:32 -0400
+	by int-mx1.corp.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7BKv3O6018056;
+	Fri, 11 Aug 2006 16:57:06 -0400
 Received: from nwo.kernelslacker.org (localhost.localdomain [127.0.0.1])
-	by nwo.kernelslacker.org (8.13.7/8.13.5) with ESMTP id k7BKmFoe016516;
-	Fri, 11 Aug 2006 16:48:21 -0400
+	by nwo.kernelslacker.org (8.13.7/8.13.5) with ESMTP id k7BKumW6017850;
+	Fri, 11 Aug 2006 16:56:54 -0400
 Received: (from davej@localhost)
-	by nwo.kernelslacker.org (8.13.7/8.13.7/Submit) id k7BKm3mQ016513;
-	Fri, 11 Aug 2006 16:48:03 -0400
+	by nwo.kernelslacker.org (8.13.7/8.13.7/Submit) id k7BKudpF017805;
+	Fri, 11 Aug 2006 16:56:39 -0400
 X-Authentication-Warning: nwo.kernelslacker.org: davej set sender to davej@redhat.com using -f
-Date:	Fri, 11 Aug 2006 16:48:03 -0400
+Date:	Fri, 11 Aug 2006 16:56:39 -0400
 From:	Dave Jones <davej@redhat.com>
-To:	Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc:	linux-kernel@vger.kernel.org, akpm@osdl.org,
+To:	thomas@koeller.dyndns.org
+Cc:	wim@iguana.be, linux-kernel@vger.kernel.org,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
-Message-ID: <20060811204803.GJ26930@redhat.com>
-Mail-Followup-To: Dave Jones <davej@redhat.com>,
-	Thomas Koeller <thomas.koeller@baslerweb.com>,
-	linux-kernel@vger.kernel.org, akpm@osdl.org,
+Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
+Message-ID: <20060811205639.GK26930@redhat.com>
+Mail-Followup-To: Dave Jones <davej@redhat.com>, thomas@koeller.dyndns.org,
+	wim@iguana.be, linux-kernel@vger.kernel.org,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <200608102318.04512.thomas.koeller@baslerweb.com>
+References: <200608102319.13679.thomas@koeller.dyndns.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200608102318.04512.thomas.koeller@baslerweb.com>
+In-Reply-To: <200608102319.13679.thomas@koeller.dyndns.org>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <davej@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12301
+X-archive-position: 12302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,172 +43,73 @@ X-original-sender: davej@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 10, 2006 at 11:18:04PM +0200, Thomas Koeller wrote:
- > This is a driver used for image capturing by the Basler eXcite smart camera
- > platform. It utilizes the integrated GPI DMA engine of the MIPS RM9122
- > processor. Since this driver does not fit into one of the existing categories
- > I created a new toplevel directory for it (which may not be appropriate?).
+On Thu, Aug 10, 2006 at 11:19:13PM +0200, thomas@koeller.dyndns.org wrote:
+ > This is a driver for the on-chip watchdog device found on some
+ > MIPS RM9000 processors.
+ > 
+ > Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
 
-Hi Thomas.
+Mostly same nit-picking comments as your other driver..
 
-As others have pointed out, drivers/media/video is probably a better home.
-
-Some speedy mostly-nitpicking comments below. I didn't give it an indepth review,
-but this is stuff that jumped out at me from a quick skim.
-
- > + *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- > + */
- > +
+ > +++ b/drivers/char/watchdog/rm9k_wdt.c
+ > ... 
+ > + 
  > +#include <linux/config.h>
 
-Unnecessary include (kbuild does this for you now)
-
- > +static unsigned long devnum_bitmap = 0;
-
-Unneeded initialisation. (static uninitialised vars go in .bss)
+not needed.
 
  > +/* Function prototypes */
- > +static void xicap_device_release(struct class_device *);
- > +static long xicap_ioctl(struct file *, unsigned int, unsigned long);
- > +static unsigned int xicap_poll(struct file *, poll_table *);
- > +static ssize_t xicap_read(struct file *, char __user *, size_t, loff_t *);
- > +static int xicap_open(struct inode *, struct file *);
- > +static int xicap_release(struct inode *, struct file *);
- > +static int xicap_queue_buffer(xicap_device_context_t *,
- > +			      const xicap_arg_qbuf_t *);
+ > +static int __init wdt_gpi_probe(struct device *);
+ > +static int __exit wdt_gpi_remove(struct device *);
+ > +static void wdt_gpi_set_timeout(unsigned int);
+ > +static int wdt_gpi_open(struct inode *, struct file *);
+ > +static int wdt_gpi_release(struct inode *, struct file *);
+ > +static ssize_t wdt_gpi_write(struct file *, const char __user *, size_t, 
+ > loff_t *);
+ > +static long wdt_gpi_ioctl(struct file *, unsigned int, unsigned long);
+ > +static const struct resource *wdt_gpi_get_resource(struct platform_device *, 
+ > const char *, unsigned int);
+ > +static int wdt_gpi_notify(struct notifier_block *, unsigned long, void *);
+ > +static irqreturn_t wdt_gpi_irqhdl(int, void *, struct pt_regs *);
 
-You could lose all these forward declarations if you move
-the xicap_fops after the function declarations.
+Can probably (mostly?) go away with some creative reordering.
 
- > +/* A class for xicap devices */
- > +static struct class xicap_class = {
- > +	.name		= (char *) xicap_name,
+ > +static int locked = 0;
 
-Is that cast necessary ?
+unneeded initialisation.
 
- > +/* Device registration */
- > +xicap_device_context_t *
- > +xicap_device_register(struct device *dev, const xicap_hw_driver_t *hwdrv)
+ > +static int nowayout =
+ > +#if defined(CONFIG_WATCHDOG_NOWAYOUT)
+ > +	1;
+ > +#else
+ > +	0;
+ > +#endif
 
-The typedef had me dancing around trying to find out what it was a few
-times. Can we just replace it with uses of struct xicap_devctx ?
-Ditto for xicap_frame_context_t
+static int nowayout = CONFIG_WATCHDOG_NOWAYOUT;
 
- > +	/* Set up a device context */
- > +	xicap_device_context_t * const dc =
- > +		(xicap_device_context_t *) kmalloc(sizeof *dc, GFP_KERNEL);
- > +	if (!dc) {
- > +		res = -ENOMEM;
- > +		goto ex;
- > +	}
+should work.
+
+ > +static void wdt_gpi_set_timeout(unsigned int to)
+ > +{
+ > +	u32 reg;
+ > +	const u32 wdval = (to * CLOCK) & ~0x0000000f;
  > +
- > +	memset(dc, 0, sizeof *dc);
+ > +	lock_titan_regs();
+ > +	reg = titan_readl(CPCCR) & ~(0xf << (wd_ctr * 4));
+ > +	titan_writel(reg, CPCCR);
+ > +	wmb();
+ > +	__raw_writel(wdval, wd_regs + 0x0000);
+ > +	wmb();
+ > +	titan_writel(reg | (0x2 << (wd_ctr * 4)), CPCCR);
+ > +	wmb();
+ > +	titan_writel(reg | (0x5 << (wd_ctr * 4)), CPCCR);
+ > +	iob();
+ > +	unlock_titan_regs();
+ > +}
 
-You could lose the memset, and use kzalloc instead.
-
- > +MODULE_VERSION("0.0");
-
-Heh, early days ? :-)
-
- > +++ b/drivers/xicap/xicap_gpi.c
- > ...
- > +
- > +#include <linux/config.h>
-
-Same as above. Unneeded.
-
- > +#define VMAP_WORKAROUND			1
-
-This needs a comment to explain what its doing.
-
- > +/*
- > + * I/O register access macros
- > + * Do not use __raw_writeq() and __raw_readq(), these do not seem to work!
- > + */
- > +#define io_writeq(__v__, __a__)	\
- > +	*(volatile unsigned long long *) (__a__) = (__v__)
- > +#define io_readq(__a__)		(*(volatile unsigned long long *) (__a__))
- > +#define io_readl(__a__)		__raw_readl((__a__))
- > +#define io_writel(__v__, __a__)	__raw_writel((__v__), (__a__))
- > +#define io_readb(__a__)		__raw_readb((__a__))
- > +#define io_writeb(__v__, __a__)	__raw_writeb((__v__), (__a__))
+As in the previous driver, are these barriers strong enough?
+Or do they need explicit reads of the written addresses to flush the write?
  
-If they don't work, it'd be nice to get them fixed instead of reinventing new ones.
-
- > +	/* Create and set up the device context */
- > +	dc = (xicap_gpi_device_context_t *)
- > +	      kmalloc(sizeof (xicap_gpi_device_context_t), GFP_KERNEL);
- > +	if (!dc) {
- > +		res = -ENOMEM;
- > +		goto errex;
- > +	}
- > +	memset(dc, 0, sizeof *dc);
-
-kzalloc.
-
- > +	rsrc = xicap_gpi_get_resource(pdv, 0, rsrcname_gpi_slice);
- > +	if (unlikely(!rsrc)) goto errex;
-
-	if (unlikely(!rsrc))
-		goto errex;
-
- > +	if (unlikely(!rsrc)) goto errex;
-
-	if (unlikely(!rsrc))
-		goto errex;
- 
- > +	if (unlikely(!rsrc)) goto errex;
-
-	if (unlikely(!rsrc))
-		goto errex;
-
- > +	if (unlikely(!rsrc)) goto errex;
-
-etc.
-
- > +	if (res) {
- > +		if (dc->regaddr_fifo_rx) iounmap(dc->regaddr_fifo_rx);
- > +		if (dc->regaddr_fifo_tx) iounmap(dc->regaddr_fifo_tx);
- > +		if (dc->regaddr_xdma) iounmap(dc->regaddr_xdma);
- > +		if (dc->regaddr_pktproc) iounmap(dc->regaddr_pktproc);
- > +		if (dc->regaddr_fpga) iounmap(dc->regaddr_fpga);
- > +		if (dc->dmadesc) iounmap(dc->dmadesc);
- > +		if (dc) kfree(dc);
-
-etc
-
-
- > +	/* Set up the XDMA descriptor ring & enable the XDMA */
- > +	dc->curdesc = dc->dmadesc;
- > +	atomic_set(&dc->desc_cnt, XDMA_DESC_RING_SIZE);
- > +	io_writel(dc->dmadesc_p, dc->regaddr_xdma + 0x0018);
- > +	wmb();
-
-Uncommented wmb's are a sin :)
-This one may actually need to be a io_readl if its just to flush
-the previous io_writel ?
-
- > +	/*
- > +	 * Enable the rx fifo we are going to use. Disable the
- > +	 * unused ones as well as the tx fifo.
- > +	 */
- > +	io_writel(0x00100000 | ((dc->fifomem_size) << 10)
- > +		  | dc->fifomem_start,
- > +		  dc->regaddr_fifo_rx + 0x0000);
- > +	wmb();
-
-same again.
-
- > +	titan_writel(0xf << (dc->slice * 4), 0x482c);
- > +	wmb();
-
-and again for a whole bunch more writel's, which really make me wonder...
-
-Asides from all these points, the only thing that really makes me nervous
-is the amount of access_ok & __copy_*_user()/memcpy() uses we have rather than
-just doing a copy_*_user.  It's one of those "are we sure we've checked everything"
-paranoia's I have..
-
 		Dave
 
 -- 

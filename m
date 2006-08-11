@@ -1,58 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 12:56:26 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.177]:5612 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20044670AbWHKL4W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 11 Aug 2006 12:56:22 +0100
-Received: by py-out-1112.google.com with SMTP id m51so122152pye
-        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2006 04:56:19 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=G11HRnirWYnffi+/SzA8xpxu5rumJ5KHVEcNrf8AnQbzgDITvQ60YoWZ3ADeY2InAsPAucZpFvRgAPq1m44TuO27Px92SviYM73H8V5o+PIDTPU5J98XtElY1wXPdypsswsqwL/jTM8IbiVL4wosRmvjh8qk1xksSN/5heM37zY=
-Received: by 10.65.122.20 with SMTP id z20mr3888069qbm;
-        Fri, 11 Aug 2006 04:56:19 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id e19sm1436333qba.2006.08.11.04.56.17;
-        Fri, 11 Aug 2006 04:56:18 -0700 (PDT)
-Message-ID: <44DC703C.4050109@innova-card.com>
-Date:	Fri, 11 Aug 2006 13:55:40 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-CC:	linux-mips@linux-mips.org, anemo@mba.ocn.ne.jp,
-	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 15:35:30 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:59618 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20044730AbWHKOf1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 15:35:27 +0100
+Received: from localhost (p5235-ipad30funabasi.chiba.ocn.ne.jp [221.184.80.235])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 9C94DFA6; Fri, 11 Aug 2006 23:35:19 +0900 (JST)
+Date:	Fri, 11 Aug 2006 23:36:58 +0900 (JST)
+Message-Id: <20060811.233658.41198724.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ths@networkno.de, linux-mips@linux-mips.org, ralf@linux-mips.org,
+	yoichi_yuasa@tripeaks.co.jp
 Subject: Re: [PATCH 6/6] setup.c: use early_param() for early command line
  parsing
-References: <11551351581277-git-send-email-vagabon.xyz@gmail.com> <11551351592752-git-send-email-vagabon.xyz@gmail.com>
-In-Reply-To: <11551351592752-git-send-email-vagabon.xyz@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44DC338A.3070602@innova-card.com>
+References: <44D99B02.1070406@innova-card.com>
+	<20060809.232551.74752502.anemo@mba.ocn.ne.jp>
+	<44DC338A.3070602@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12280
+X-archive-position: 12281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-> There's no point to rewrite some logic to parse command line
-> to pass initrd parameters or to declare a user memory area.
-> We could use instead parse_early_param() that does the same
-> thing.
-> 
+On Fri, 11 Aug 2006 09:36:42 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> Well, I resent a new version (take #2) of the patchset that uses _only_
+> "rd_xxx" semantic. I prefer not add some code which isn't going to be
+> used. Mainly because only bootloaders use this parameter and I guess
+> they never change the way they pass initrd address. And there won't be
+> a lot of new bootloaders anyways.
 
-Funny, Rusty Russel has recently posted a patch to make all
-arch use early_param(). See
-
-http://marc.theaimsgroup.com/?l=linux-kernel&m=115528095722115&w=2
-
-So this patch seems come at the right time.
-
-		Franck
+I see.  OK for me.
+---
+Atsushi Nemoto

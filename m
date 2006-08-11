@@ -1,97 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 03:24:25 +0100 (BST)
-Received: from mms1.broadcom.com ([216.31.210.17]:47117 "EHLO
-	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S20044478AbWHKCYV convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 03:24:21 +0100
-Received: from 10.10.64.154 by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.0)); Thu, 10 Aug 2006 19:24:04 -0700
-X-Server-Uuid: F962EFE0-448C-40EE-8100-87DF498ED0EA
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 2A20F2AF; Thu, 10 Aug 2006 19:24:04 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 088A22AE; Thu, 10 Aug
- 2006 19:24:04 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id ECG97069; Thu, 10 Aug 2006 19:24:03 -0700 (PDT)
-Received: from NT-SJCA-0751.brcm.ad.broadcom.com (nt-sjca-0751
- [10.16.192.221]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- B433F20501; Thu, 10 Aug 2006 19:24:03 -0700 (PDT)
-Received: from NT-SJCA-0752.brcm.ad.broadcom.com ([10.16.192.222]) by
- NT-SJCA-0751.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Thu, 10 Aug 2006 19:24:03 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 08:37:31 +0100 (BST)
+Received: from wx-out-0506.google.com ([66.249.82.238]:4371 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20044525AbWHKHh3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 11 Aug 2006 08:37:29 +0100
+Received: by wx-out-0506.google.com with SMTP id h30so736995wxd
+        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2006 00:37:25 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=gtXTHHXZ9xZERyB5IKahatop+97B2/6QnkCvYgG7YRod0GWj6g2n+8uEisOvLsC61MbZvmpVWrFvnORdu9I44prqHDzhjLyxBJ3RqF6ybQIfrGnb7vE+mNF3M1qyRq4vv5kFkh8+Uo2hQAhwblBiMSDmBz4OJUUBKD8kscM/2t0=
+Received: by 10.70.109.12 with SMTP id h12mr4549788wxc;
+        Fri, 11 Aug 2006 00:37:25 -0700 (PDT)
+Received: from ?192.168.0.24? ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id g3sm1733620wra.2006.08.11.00.37.23;
+        Fri, 11 Aug 2006 00:37:25 -0700 (PDT)
+Message-ID: <44DC338A.3070602@innova-card.com>
+Date:	Fri, 11 Aug 2006 09:36:42 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
-Subject: RE: 2.6.17 on Broadcom BigSur (BCM91x80 A/B)
-Date:	Thu, 10 Aug 2006 19:24:02 -0700
-Message-ID: <710F16C36810444CA2F5821E5EAB7F230A0203@NT-SJCA-0752.brcm.ad.broadcom.com>
-In-Reply-To: <66910A579C9312469A7DF9ADB54A8B7D33AEC6@exchange.ZeugmaSystems.local>
-Thread-Topic: 2.6.17 on Broadcom BigSur (BCM91x80 A/B)
-Thread-Index: Aca83+BUY44lzVI3SJuaFZU85vKM6wACzYew
-From:	"Manoj Ekbote" <manoje@broadcom.com>
-To:	"Kaz Kylheku" <kaz@zeugmasystems.com>, linux-mips@linux-mips.org
-X-OriginalArrivalTime: 11 Aug 2006 02:24:03.0660 (UTC)
- FILETIME=[36A398C0:01C6BCED]
-X-TMWD-Spam-Summary: SEV=1.1; DFV=A2006081011; IFV=2.0.6,4.0-7;
- RPD=4.00.0004;
- RPDID=303030312E30413031303230322E34344442453939362E303031352D412D;
- ENG=IBF; TS=20060811022406; CAT=NONE; CON=NONE;
-X-MMS-Spam-Filter-ID: A2006081011_4.00.0004_2.0.6,4.0-7
-X-WSS-ID: 68C535CE0HW64771523-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <manoje@broadcom.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	vagabon.xyz@gmail.com, ths@networkno.de, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp
+Subject: Re: [PATCH 6/6] setup.c: use early_param() for early command line
+ parsing
+References: <44D898FE.7080006@innova-card.com>	<20060809.010526.18607898.anemo@mba.ocn.ne.jp>	<44D99B02.1070406@innova-card.com> <20060809.232551.74752502.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060809.232551.74752502.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12277
+X-archive-position: 12278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manoje@broadcom.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Atsushi Nemoto wrote:
+> On Wed, 09 Aug 2006 10:21:22 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>>> Maybe you can add something like "initrdmem=xxx@yyy", keeping
+>>> "rd_start" and "rd_size" for the backward compatibility.  Just a
+>>> thought.
+>> Well that what I was planning when writing this patch but I didn't.
+>> I think that we will end up with two different semantics and the
+>> old one never replaced by the new one... Except if we mark them as
+>> deprecated by showing a warning at boot. What do you think ?
+> 
+> While the kernel command line is very limited resource (only 256
+> chars), I prefer a single short option to specify initrd range, if
+> available.
+> 
+> But nothing wrong with rd_start and rd_size, and it seems there are
+> some boot loader expected them already, so removing them would not be
+> good (especially without some grace period).
+> 
+> I don't care if there were two way to specify initrd range.  It would
+> be somewhat redundant, but that is usual on "Backword compatibility"
+> issue, isn't it?  ;-)
+> 
 
-Hi Kaz,
+Well, I resent a new version (take #2) of the patchset that uses _only_
+"rd_xxx" semantic. I prefer not add some code which isn't going to be
+used. Mainly because only bootloaders use this parameter and I guess
+they never change the way they pass initrd address. And there won't be
+a lot of new bootloaders anyways.
 
-Kindly make sure that the below 2 patches have been applied.
- 
-http://www.linux-mips.org/archives/linux-mips/2006-07/msg00021.html
-http://www.linux-mips.org/archives/linux-mips/2006-07/msg00020.html
-
-HTH,
-/manoj
-
->-----Original Message-----
->From: linux-mips-bounce@linux-mips.org 
->[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Kaz Kylheku
->Sent: Thursday, August 10, 2006 5:49 PM
->To: linux-mips@linux-mips.org
->Subject: 2.6.17 on Broadcom BigSur (BCM91x80 A/B)
->
->Anyone running 2.6.17 on the above Broadcom board or derivative?
->
->I'm trying to run it an our hardware that is based on this 
->board. It's slightly patched so that it builds :), and so that 
->certain things work right on our board.
->
->Kernel 2.6.14 works, and the patches migrated to 2.6.17 
->without too many difficulties.
->
->It hangs on startup around the point where dynamic IP 
->configuration is done.
->
->Sometimes the last output that is seen is the printk message
->
->  Sending DHCP and RARP requests .
->
->Sometimes it doesn't appear.
->
->So before I dive into it head first, I thought I'd poke the 
->mailing list.
->
->
->
+Thanks
+		Franck

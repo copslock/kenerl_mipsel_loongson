@@ -1,75 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 00:21:22 +0100 (BST)
-Received: from [69.90.147.196] ([69.90.147.196]:16038 "EHLO mail.kenati.com")
-	by ftp.linux-mips.org with ESMTP id S20044394AbWHJXVU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 00:21:20 +0100
-Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
-	by mail.kenati.com (Postfix) with ESMTP id 54DB7E404D
-	for <linux-mips@linux-mips.org>; Thu, 10 Aug 2006 16:37:50 -0700 (PDT)
-Subject: IDE routines for the ENCM3 in 2.6
-From:	Ashlesha Shintre <ashlesha@kenati.com>
-Reply-To: ashlesha@kenati.com
-To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Date:	Thu, 10 Aug 2006 16:27:20 -0700
-Message-Id: <1155252440.7684.20.camel@sandbar.kenati.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <ashlesha@kenati.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 01:48:46 +0100 (BST)
+Received: from mail.zeugmasystems.com ([192.139.122.66]:27215 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S20044438AbWHKAsp convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 01:48:45 +0100
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: 2.6.17 on Broadcom BigSur (BCM91x80 A/B)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Date:	Thu, 10 Aug 2006 17:48:35 -0700
+Message-ID: <66910A579C9312469A7DF9ADB54A8B7D33AEC6@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 2.6.17 on Broadcom BigSur (BCM91x80 A/B)
+Thread-Index: Aca83+BUY44lzVI3SJuaFZU85vKM6w==
+From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <kaz@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12275
+X-archive-position: 12276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashlesha@kenati.com
+X-original-sender: kaz@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Anyone running 2.6.17 on the above Broadcom board or derivative?
 
-I m trying to modify the 2.4 kernel board support files for the Encore
-M3 board with the AU 1500 MIPS processor, so that they will compile for
-the 2.6 kernel.  
+I'm trying to run it an our hardware that is based on this
+board. It's slightly patched so that it builds :), and so
+that certain things work right on our board.
 
-Now, the Encore M3 has a compact flash IDE device on the VIA
-Southbridge, which in turn is on a PCI bus.  
+Kernel 2.6.14 works, and the patches migrated to 2.6.17
+without too many difficulties.
 
-In the ide.c file in the /mips/au1000/encm3/ directory, there are the
-following IDE routines:
+It hangs on startup around the point where dynamic IP
+configuration is done.
 
-1) encm3_ide_probe
-2) encm3_ide_default_irq
-3) encm3_ide_ops 
-etc.
+Sometimes the last output that is seen is the printk message
 
-Basically, all of these routines check if a base register has been
-assigned to the IDE device and if not, 
-i) call the encm3_ide_probe routine to probe for the device on the PCI
-bus using the pci_find_device function.
-ii)assign an interrupt number and a base address to the device:
+  Sending DHCP and RARP requests .
 
- regbase = pdev->resource[0].start;
- irq = pdev->irq;
+Sometimes it doesn't appear.
 
-
-I read the Documentation/pci.txt file which says that the
-pci_find_device is an obsolete function and has been superseded by the
-pci_get_device function.
-
-Also, it says that probing for the device is taken care of during the
-execution of the pci_register_driver function.  Am I confusing two
-things? 
-
-I dont think that just replacing the pci_find_device with the
-pci_get_device will work, as I m not still aware of the changed version
-of ide routines and interfaces in the 2.6 kernel.
-
-Any pointers?
-
-I m a linux newbie and apologise if my questions sound unclear -- please
-ask for clarification in that case.
-
-Thank you,
-Ashlesha.
+So before I dive into it head first, I thought I'd
+poke the mailing list.

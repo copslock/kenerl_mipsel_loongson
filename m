@@ -1,76 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 18:03:15 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:43986 "EHLO
-	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S20044886AbWHKRDO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 11 Aug 2006 18:03:14 +0100
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by mail.enneenne.com with esmtp (Exim 4.50)
-	id 1GBZQG-0007Rt-An
-	for linux-mips@linux-mips.org; Fri, 11 Aug 2006 17:59:44 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.60)
-	(envelope-from <giometti@enneenne.com>)
-	id 1GBaQm-0003o8-4e
-	for linux-mips@linux-mips.org; Fri, 11 Aug 2006 19:04:20 +0200
-Date:	Fri, 11 Aug 2006 19:04:20 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	linux-mips@linux-mips.org
-Message-ID: <20060811170419.GI11938@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Aug 2006 18:24:40 +0100 (BST)
+Received: from mail.zeugmasystems.com ([192.139.122.66]:52084 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S20044914AbWHKRYg convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Aug 2006 18:24:36 +0100
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IbA9xpzOQlG26JSn"
-Content-Disposition: inline
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.12-2006-07-14
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: USBdev on au1100
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Subject: RE: [PATCH 2/6] setup.c: move initrd code inside dedicated functions
+Date:	Fri, 11 Aug 2006 10:24:27 -0700
+Message-ID: <66910A579C9312469A7DF9ADB54A8B7D33AF4A@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH 2/6] setup.c: move initrd code inside dedicated functions
+Thread-Index: Aca9WNdqUWhur2ahRHanse+Kx+d32AADm0Xg
+From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <kaz@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12292
+X-archive-position: 12293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: kaz@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
+Franck Bui-Huu wrote:
+> Atsushi Nemoto wrote:
+> >> +	printk(KERN_INFO "Initial ramdisk at: 0x%p (%lu bytes)\n",
+> >> +	       (void *)initrd_start, initrd_size);
+> > 
+> > You can use "0x%lx" for initrd_start and remove the cast.  
+> I know this
+> > fragment are copied from corrent code as is, but it would be a good
+> > chance to clean it up.
+> > 
+> 
+> You're right.
 
---IbA9xpzOQlG26JSn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Actually the cast that is there is only pedantic. ANSI C says that
+%p must be met with a void *, which might be important on some
+exotic machine where pointers have a different representation
+based on their type. Elsewhere, it would be very surprising
+if omitting the (void *) caused a problem with %p.
 
-Hello,
+You definitely do need a cast if you are printing a pointer
+as an integer though.
 
-I'd like to know if someone is currently working on this topic.
+And you have to cast to an integer that is wide enough for the
+pointer.  If you are compiling for 64 bit, that means
+"unsigned long long", unless you are sure that the upper
+32 bits are all zero. 
 
-Thanks,
+Ideally, you should just be able to use %p to print pointers,
+and I'd love to recommend that. It should be smart enough to
+know that they are 64 bits wide. I'm looking at the vsprintf
+in 2.6.17 and see that, sadly, it converts the void * pulled
+from the va_arg to "unsigned long".
 
-Rodolfo
+Oopsies!
 
---=20
+One last note: if you are printing hex, and want that
+0x prefix, you can use the # flag, e.g.
 
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+  printk(KERN_INFO "%#lx\n", 0xdeadbeefUL);
 
---IbA9xpzOQlG26JSn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.2 (GNU/Linux)
-
-iD8DBQFE3LiTQaTCYNJaVjMRAlhFAJ9H4+LJHt+L87aACRoA5oAJu+h3EwCgjqsf
-X8ai5AO7/AktlgG3SPpOATg=
-=Hnsx
------END PGP SIGNATURE-----
-
---IbA9xpzOQlG26JSn--
+Cheers ...

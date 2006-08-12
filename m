@@ -1,49 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 03:45:32 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.187]:49944 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037712AbWHLCpb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 12 Aug 2006 03:45:31 +0100
-Received: by nf-out-0910.google.com with SMTP id o60so1234757nfa
-        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2006 19:45:28 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=l9dUZ43xHUYzL0Xl68PJs4+yeZBWo17qg9dktd1+X0/rs+eNf2+ifcEP0BBQrYA4VTAyXSBrwMWOReQvFv7HsyQrfTeM1kEffX53s0+cp5yvItSq0S9xUHKy2P4IBVleVB5gOBKFe8BMBN4xP/l3Y4qc3v65RPaAMjQOP1O8vMA=
-Received: by 10.78.142.14 with SMTP id p14mr2422448hud;
-        Fri, 11 Aug 2006 19:45:28 -0700 (PDT)
-Received: by 10.78.118.4 with HTTP; Fri, 11 Aug 2006 19:45:28 -0700 (PDT)
-Message-ID: <816d36d30608111945h13272401i31f988064181f099@mail.gmail.com>
-Date:	Fri, 11 Aug 2006 22:45:28 -0400
-From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
-To:	"Daniel Mack" <daniel@caiaq.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 05:13:34 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:9261 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037715AbWHLENJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2006 05:13:09 +0100
+Received: by mo.po.2iij.net (mo32) id k7C4CreH031790; Sat, 12 Aug 2006 13:12:53 +0900 (JST)
+Received: from localhost.localdomain (191.28.30.125.dy.iij4u.or.jp [125.30.28.191])
+	by mbox.po.2iij.net (mbox31) id k7C4CoA0007077
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 12 Aug 2006 13:12:50 +0900 (JST)
+Date:	Sat, 12 Aug 2006 13:12:49 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
+Cc:	yoichi_yuasa@tripeaks.co.jp, daniel@caiaq.de,
+	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Au1200 OHCI/EHCI fixes
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <78B291EC-774F-4FDF-AB9D-133F38A3215E@caiaq.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Message-Id: <20060812131249.0c70ddba.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <816d36d30608111945h13272401i31f988064181f099@mail.gmail.com>
 References: <20060810065337.GA8889@roarinelk.homelinux.net>
-	 <78B291EC-774F-4FDF-AB9D-133F38A3215E@caiaq.de>
-Return-Path: <mendoza.ricardo@gmail.com>
+	<78B291EC-774F-4FDF-AB9D-133F38A3215E@caiaq.de>
+	<816d36d30608111945h13272401i31f988064181f099@mail.gmail.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12314
+X-archive-position: 12315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mendoza.ricardo@gmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 8/10/06, Daniel Mack <daniel@caiaq.de> wrote:
+Hi,
 
-> This has already been fixed - a similar patch went upstream to 2.6.18-
-> rc3.
-> Did you check out the latest git?
+On Fri, 11 Aug 2006 22:45:28 -0400
+"Ricardo Mendoza" <mendoza.ricardo@gmail.com> wrote:
 
-Actually I think a problem stood alive, there is a parent-less #endif
-in -rc4 that screwed up compile. I think it has been there since -rc2.
+> On 8/10/06, Daniel Mack <daniel@caiaq.de> wrote:
+> 
+> > This has already been fixed - a similar patch went upstream to 2.6.18-
+> > rc3.
+> > Did you check out the latest git?
+> 
+> Actually I think a problem stood alive, there is a parent-less #endif
+> in -rc4 that screwed up compile. I think it has been there since -rc2.
 
-     Ricardo
+Try this git.
+Some fixes are included in it after rc4.
+Of course, #endif fix also.
+
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/linux-2.6.git/
+
+Yoichi

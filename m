@@ -1,58 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 05:13:34 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:9261 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20037715AbWHLENJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2006 05:13:09 +0100
-Received: by mo.po.2iij.net (mo32) id k7C4CreH031790; Sat, 12 Aug 2006 13:12:53 +0900 (JST)
-Received: from localhost.localdomain (191.28.30.125.dy.iij4u.or.jp [125.30.28.191])
-	by mbox.po.2iij.net (mbox31) id k7C4CoA0007077
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sat, 12 Aug 2006 13:12:50 +0900 (JST)
-Date:	Sat, 12 Aug 2006 13:12:49 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, daniel@caiaq.de,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Au1200 OHCI/EHCI fixes
-Message-Id: <20060812131249.0c70ddba.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <816d36d30608111945h13272401i31f988064181f099@mail.gmail.com>
-References: <20060810065337.GA8889@roarinelk.homelinux.net>
-	<78B291EC-774F-4FDF-AB9D-133F38A3215E@caiaq.de>
-	<816d36d30608111945h13272401i31f988064181f099@mail.gmail.com>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 17:07:16 +0100 (BST)
+Received: from mail04.hansenet.de ([213.191.73.12]:21438 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20037824AbWHLQHP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 12 Aug 2006 17:07:15 +0100
+Received: from [213.39.177.93] (213.39.177.93) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 44DC82C700039978; Sat, 12 Aug 2006 18:07:06 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 177DF1770E9;
+	Sat, 12 Aug 2006 18:07:06 +0200 (CEST)
+From:	Thomas Koeller <thomas@koeller.dyndns.org>
+To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
+Date:	Sat, 12 Aug 2006 18:06:02 +0200
+User-Agent: KMail/1.9.3
+Cc:	wim@iguana.be, linux-kernel@vger.kernel.org,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <200608102319.13679.thomas@koeller.dyndns.org> <1155326835.24077.116.camel@localhost.localdomain>
+In-Reply-To: <1155326835.24077.116.camel@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-15"
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Disposition: inline
+Message-Id: <200608121806.02844.thomas@koeller.dyndns.org>
+Return-Path: <thomas@koeller.dyndns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12315
+X-archive-position: 12316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: thomas@koeller.dyndns.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Friday 11 August 2006 22:07, Alan Cox wrote:
+> > +	printk(KERN_WARNING "%s: watchdog expired - resetting system\n",
+> > +	       wdt_gpi_name);
+> > +
+> > +	*(volatile char *) flagaddr |= 0x01;
+> > +	*(volatile char *) resetaddr = powercycle ? 0x01 : 0x2;
+> > +	iob();
+> > +	while (1) continue;
+>
+> cpu_relax();
 
-On Fri, 11 Aug 2006 22:45:28 -0400
-"Ricardo Mendoza" <mendoza.ricardo@gmail.com> wrote:
+I tried to find out about the purpose of cpu_relax(). On MIPS, at least,
+it maps to barrier(). I do not quite understand why I would need a
+barrier() in this place. Would you, or someone else, care to
+enlighten me?
 
-> On 8/10/06, Daniel Mack <daniel@caiaq.de> wrote:
-> 
-> > This has already been fixed - a similar patch went upstream to 2.6.18-
-> > rc3.
-> > Did you check out the latest git?
-> 
-> Actually I think a problem stood alive, there is a parent-less #endif
-> in -rc4 that screwed up compile. I think it has been there since -rc2.
+I am sending a revised patch in a separate mail.
 
-Try this git.
-Some fixes are included in it after rc4.
-Of course, #endif fix also.
-
-git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/linux-2.6.git/
-
-Yoichi
+Thomas
+-- 
+Thomas Koeller
+thomas@koeller.dyndns.org

@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 01:27:41 +0100 (BST)
-Received: from [69.90.147.196] ([69.90.147.196]:19339 "EHLO mail.kenati.com")
-	by ftp.linux-mips.org with ESMTP id S20045189AbWHLA1h (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2006 01:27:37 +0100
-Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
-	by mail.kenati.com (Postfix) with ESMTP id 628A5E404D;
-	Fri, 11 Aug 2006 17:44:16 -0700 (PDT)
-Subject: Re: IDE routines for the ENCM3 in 2.6
-From:	Ashlesha Shintre <ashlesha@kenati.com>
-Reply-To: ashlesha@kenati.com
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 03:45:32 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.187]:49944 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037712AbWHLCpb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 12 Aug 2006 03:45:31 +0100
+Received: by nf-out-0910.google.com with SMTP id o60so1234757nfa
+        for <linux-mips@linux-mips.org>; Fri, 11 Aug 2006 19:45:28 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=l9dUZ43xHUYzL0Xl68PJs4+yeZBWo17qg9dktd1+X0/rs+eNf2+ifcEP0BBQrYA4VTAyXSBrwMWOReQvFv7HsyQrfTeM1kEffX53s0+cp5yvItSq0S9xUHKy2P4IBVleVB5gOBKFe8BMBN4xP/l3Y4qc3v65RPaAMjQOP1O8vMA=
+Received: by 10.78.142.14 with SMTP id p14mr2422448hud;
+        Fri, 11 Aug 2006 19:45:28 -0700 (PDT)
+Received: by 10.78.118.4 with HTTP; Fri, 11 Aug 2006 19:45:28 -0700 (PDT)
+Message-ID: <816d36d30608111945h13272401i31f988064181f099@mail.gmail.com>
+Date:	Fri, 11 Aug 2006 22:45:28 -0400
+From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
+To:	"Daniel Mack" <daniel@caiaq.de>
+Subject: Re: [PATCH] Au1200 OHCI/EHCI fixes
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1155292164.24077.35.camel@localhost.localdomain>
-References: <1155252440.7684.20.camel@sandbar.kenati.com>
-	 <1155292164.24077.35.camel@localhost.localdomain>
-Content-Type: text/plain
-Date:	Fri, 11 Aug 2006 17:33:42 -0700
-Message-Id: <1155342822.7759.2.camel@sandbar.kenati.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
+In-Reply-To: <78B291EC-774F-4FDF-AB9D-133F38A3215E@caiaq.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <ashlesha@kenati.com>
+Content-Disposition: inline
+References: <20060810065337.GA8889@roarinelk.homelinux.net>
+	 <78B291EC-774F-4FDF-AB9D-133F38A3215E@caiaq.de>
+Return-Path: <mendoza.ricardo@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12313
+X-archive-position: 12314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashlesha@kenati.com
+X-original-sender: mendoza.ricardo@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2006-08-11 at 11:29 +0100, Alan Cox wrote:
-> Ar Iau, 2006-08-10 am 16:27 -0700, ysgrifennodd Ashlesha Shintre:
-> > Also, it says that probing for the device is taken care of during the
-> > execution of the pci_register_driver function.  Am I confusing two
-> > things? 
-> 
-> The existing VIA ide/pci/via82cxxx driver should support any of the
-> standard IDE components found on VIA southbridges up to and including
-> the 8237 (8237A should make 2.6.18)
-> 
-> Depending on your MIPS board arrangement you may need your early boot up
-> code to kick the chip into the right mode and allocate the PCI
-> resources. You may need the VIA BIOS programmers guide for the relevant
-> chip but if I remember rightly its all pretty trivial for the VIA.
-> 
+On 8/10/06, Daniel Mack <daniel@caiaq.de> wrote:
 
-Thanks for your inputs Alan.  I m still a bit confused though as to why
-its only the IDE routines which need to be written in a separate ide.c
-file.  My point is that there are other devices such as serial ports and
-floppy disk drives on the Southbridge too, for which there dont seem to
-be separate routines in the arch/mips/encm3 directory.
+> This has already been fixed - a similar patch went upstream to 2.6.18-
+> rc3.
+> Did you check out the latest git?
 
-> Alan
-> 
-> 
+Actually I think a problem stood alive, there is a parent-less #endif
+in -rc4 that screwed up compile. I think it has been there since -rc2.
+
+     Ricardo

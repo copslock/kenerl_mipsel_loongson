@@ -1,544 +1,194 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 17:07:42 +0100 (BST)
-Received: from mail03.hansenet.de ([213.191.73.10]:23720 "EHLO
-	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
-	id S20037826AbWHLQHP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 12 Aug 2006 17:07:15 +0100
-Received: from [213.39.177.93] (213.39.177.93) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
-        id 44DC80D000039BA6; Sat, 12 Aug 2006 18:07:06 +0200
-Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
-	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 9DE181770E8;
-	Sat, 12 Aug 2006 18:07:05 +0200 (CEST)
-X-Mailbox-Line:	From f330c2557433e99a15b5745428cb3b81ce496205 Mon Sep 17 00:00:00 2001
-From:	thomas@koeller.dyndns.org
-Date:	Sat, 12 Aug 2006 18:05:52 +0200
-Subject: [PATCH] MIPS RM9K watchdog driver
-Organization: Basler AG
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:	wim@iguana.be, linux-kernel@vger.kernel.org,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 17:34:05 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.185]:39875 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037826AbWHLQeD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 12 Aug 2006 17:34:03 +0100
+Received: by nf-out-0910.google.com with SMTP id o60so1397552nfa
+        for <linux-mips@linux-mips.org>; Sat, 12 Aug 2006 09:34:00 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:date:from:to:cc:subject:message-id:references:mime-version:content-type:content-disposition:in-reply-to:user-agent;
+        b=IUxcGctV+6etoBIkiVUF+0iDK/2aFSHgwKa7CnUjfnUCp3mY0LQ4J/HEDT7yuTA0dwO0WE/38TGHbOemzNTkexjRfjscPMeMbE9G6aGK99LHUF/F76HAA8eBNyrdQJ5AOi7pC2qyv8bzBSJX+il+PVeUs3orWBjICcmY44Lo0oY=
+Received: by 10.48.48.15 with SMTP id v15mr5104826nfv;
+        Sat, 12 Aug 2006 09:33:59 -0700 (PDT)
+Received: from gmail.com ( [217.67.117.64])
+        by mx.gmail.com with ESMTP id o9sm6055838nfa.2006.08.12.09.33.58;
+        Sat, 12 Aug 2006 09:33:59 -0700 (PDT)
+Received: by gmail.com (nbSMTP-1.00) for uid 1000
+	(using TLSv1/SSLv3 with cipher DES-CBC3-SHA (168/168 bits))
+	adobriyan@gmail.com; Sat, 12 Aug 2006 20:34:01 +0400 (MSD)
+Date:	Sat, 12 Aug 2006 20:33:59 +0400
+From:	Alexey Dobriyan <adobriyan@gmail.com>
+To:	thomas@koeller.dyndns.org
+Cc:	Alan Cox <alan@lxorguk.ukuu.org.uk>, wim@iguana.be,
+	linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS RM9K watchdog driver
+Message-ID: <20060812163359.GB6252@martell.zuzino.mipt.ru>
+References: <200608121805.52358.thomas@koeller.dyndns.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200608121805.52358.thomas@koeller.dyndns.org>
-Return-Path: <thomas@koeller.dyndns.org>
+In-Reply-To: <200608121805.52358.thomas@koeller.dyndns.org>
+User-Agent: Mutt/1.5.11
+Return-Path: <adobriyan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12317
+X-archive-position: 12318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas@koeller.dyndns.org
+X-original-sender: adobriyan@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a driver for the on-chip watchdog device found on some
-MIPS RM9000 processors.
+On Sat, Aug 12, 2006 at 06:05:52PM +0200, thomas@koeller.dyndns.org wrote:
+> This is a driver for the on-chip watchdog device found on some
+> MIPS RM9000 processors.
 
-Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
----
- drivers/char/watchdog/Kconfig    |   10 +
- drivers/char/watchdog/Makefile   |    1 
- drivers/char/watchdog/rm9k_wdt.c |  440 
-++++++++++++++++++++++++++++++++++++++
- 3 files changed, 451 insertions(+), 0 deletions(-)
+> +/* Module arguments */
+> +static int timeout = MAX_TIMEOUT_SECONDS;
+> +module_param(timeout, int, 444);
+			      ^^^
+*cough* ITYM, 0444
 
-diff --git a/drivers/char/watchdog/Kconfig b/drivers/char/watchdog/Kconfig
-index d53f664..3207299 100644
---- a/drivers/char/watchdog/Kconfig
-+++ b/drivers/char/watchdog/Kconfig
-@@ -477,6 +477,16 @@ config INDYDOG
- 	  timer expired and no process has written to /dev/watchdog during
- 	  that time.
- 
-+config WDT_RM9K_GPI
-+	tristate "RM9000/GPI hardware watchdog"
-+	depends on WATCHDOG && CPU_RM9000
-+	help
-+	  Watchdog implementation using the GPI hardware found on
-+	  PMC-Sierra RM9xxx CPUs.
-+	  
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called rm9k_wdt.
-+
- # S390 Architecture
- 
- config ZVM_WATCHDOG
-diff --git a/drivers/char/watchdog/Makefile b/drivers/char/watchdog/Makefile
-index 6ab77b6..f2a6281 100644
---- a/drivers/char/watchdog/Makefile
-+++ b/drivers/char/watchdog/Makefile
-@@ -67,6 +67,7 @@ obj-$(CONFIG_WATCHDOG_RTAS) += wdrtas.o
- 
- # MIPS Architecture
- obj-$(CONFIG_INDYDOG) += indydog.o
-+obj-$(CONFIG_WDT_RM9K_GPI) += rm9k_wdt.o
- 
- # S390 Architecture
- 
-diff --git a/drivers/char/watchdog/rm9k_wdt.c 
-b/drivers/char/watchdog/rm9k_wdt.c
-new file mode 100644
-index 0000000..8ed1c12
---- /dev/null
-+++ b/drivers/char/watchdog/rm9k_wdt.c
-@@ -0,0 +1,440 @@
-+/*
-+ *  Watchdog implementation for GPI h/w found on PMC-Sierra RM9xxx
-+ *  chips.
-+ *
-+ *  Copyright (C) 2004 by Basler Vision Technologies AG
-+ *  Author: Thomas Koeller <thomas.koeller@baslerweb.com>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+ 
-+#include <linux/platform_device.h>
-+#include <linux/module.h>
-+#include <linux/moduleparam.h>
-+#include <linux/interrupt.h>
-+#include <linux/fs.h>
-+#include <linux/reboot.h>
-+#include <linux/miscdevice.h>
-+#include <linux/watchdog.h>
-+#include <asm/io.h>
-+#include <asm/atomic.h>
-+#include <asm/processor.h>
-+#include <asm/uaccess.h>
-+#include <asm/system.h>
-+#include <asm/rm9k-ocd.h>
-+
-+#include <rm9k_wdt.h>
-+
-+
-+#define CLOCK			125000000
-+#define MAX_TIMEOUT_SECONDS	32
-+#define CPCCR			0x0080
-+#define CPGIG1SR		0x0044
-+#define CPGIG1ER		0x0054
-+
-+
-+
-+/* Function prototypes */
-+static int __init wdt_gpi_probe(struct device *);
-+static int __exit wdt_gpi_remove(struct device *);
-+static void wdt_gpi_set_timeout(unsigned int);
-+static int wdt_gpi_open(struct inode *, struct file *);
-+static int wdt_gpi_release(struct inode *, struct file *);
-+static ssize_t wdt_gpi_write(struct file *, const char __user *, size_t, 
-loff_t *);
-+static long wdt_gpi_ioctl(struct file *, unsigned int, unsigned long);
-+static const struct resource *wdt_gpi_get_resource(struct platform_device *, 
-const char *, unsigned int);
-+static int wdt_gpi_notify(struct notifier_block *, unsigned long, void *);
-+static irqreturn_t wdt_gpi_irqhdl(int, void *, struct pt_regs *);
-+
-+
-+
-+
-+static const char wdt_gpi_name[] = "wdt_gpi";
-+static atomic_t opencnt;
-+static int expect_close;
-+static int locked = 0;
-+
-+
-+
-+/* These are set from device resources */
-+static void __iomem * wd_regs;
-+static unsigned int wd_irq, wd_ctr;
-+
-+
-+
-+/* Module arguments */
-+static int timeout = MAX_TIMEOUT_SECONDS;
-+module_param(timeout, int, 444);
-+static unsigned long resetaddr = 0xbffdc200;
-+module_param(resetaddr, ulong, 444);
-+static unsigned long flagaddr = 0xbffdc104;
-+module_param(flagaddr, ulong, 444);
-+static int powercycle = 0;
-+module_param(powercycle, bool, 444);
-+
-+static int nowayout =
-+#if defined(CONFIG_WATCHDOG_NOWAYOUT)
-+	1;
-+#else
-+	0;
-+#endif
-+module_param(nowayout, bool, 444);
-+
-+
-+
-+static struct file_operations fops =
-+{
-+	.owner		= THIS_MODULE,
-+	.open		= wdt_gpi_open,
-+	.release	= wdt_gpi_release,
-+	.write		= wdt_gpi_write,
-+	.unlocked_ioctl	= wdt_gpi_ioctl
-+};
-+
-+static struct miscdevice miscdev =
-+{
-+	.minor		= WATCHDOG_MINOR,
-+	.name		= wdt_gpi_name,
-+	.fops		= &fops
-+};
-+
-+static struct device_driver wdt_gpi_driver =
-+{
-+	.name		= (char *) wdt_gpi_name,
-+	.bus		= &platform_bus_type,
-+	.owner		= THIS_MODULE,
-+	.probe		= wdt_gpi_probe,
-+	.remove		= __exit_p(wdt_gpi_remove),
-+	.shutdown	= NULL,
-+	.suspend	= NULL,
-+	.resume		= NULL
-+};
-+
-+static struct notifier_block wdt_gpi_shutdown =
-+{
-+	wdt_gpi_notify
-+};
-+
-+
-+
-+static const struct resource *
-+wdt_gpi_get_resource(struct platform_device *pdv, const char *name,
-+		     unsigned int type)
-+{
-+	char buf[80];
-+	if (snprintf(buf, sizeof buf, "%s_0", name) >= sizeof buf)
-+		return NULL;
-+	return platform_get_resource_byname(pdv, type, buf);
-+}
-+
-+
-+
-+/* No hotplugging on the platform bus - use __init */
-+static int __init wdt_gpi_probe(struct device *dev)
-+{
-+	int res;
-+	struct platform_device * const pdv = to_platform_device(dev);
-+	const struct resource
-+		* const rr = wdt_gpi_get_resource(pdv, WDT_RESOURCE_REGS,
-+						  IORESOURCE_MEM),
-+		* const ri = wdt_gpi_get_resource(pdv, WDT_RESOURCE_IRQ,
-+						  IORESOURCE_IRQ),
-+		* const rc = wdt_gpi_get_resource(pdv, WDT_RESOURCE_COUNTER,
-+						  0);
-+
-+	if (unlikely(!rr || !ri || !rc))
-+		return -ENXIO;
-+
-+	wd_regs = ioremap_nocache(rr->start, rr->end + 1 - rr->start);
-+	if (unlikely(!wd_regs))
-+		return -ENOMEM;
-+	wd_irq = ri->start;
-+	wd_ctr = rc->start;
-+	res = misc_register(&miscdev);
-+	if (res)
-+		iounmap(wd_regs);
-+	else
-+		register_reboot_notifier(&wdt_gpi_shutdown);
-+	return res;
-+}
-+
-+
-+
-+static int __exit wdt_gpi_remove(struct device *dev)
-+{
-+	int res;
-+
-+	unregister_reboot_notifier(&wdt_gpi_shutdown);
-+	res = misc_deregister(&miscdev);
-+	iounmap(wd_regs);
-+	wd_regs = NULL;
-+	return res;
-+}
-+
-+
-+static void wdt_gpi_set_timeout(unsigned int to)
-+{
-+	u32 reg;
-+	const u32 wdval = (to * CLOCK) & ~0x0000000f;
-+
-+	lock_titan_regs();
-+	reg = titan_readl(CPCCR) & ~(0xf << (wd_ctr * 4));
-+	titan_writel(reg, CPCCR);
-+	wmb();
-+	__raw_writel(wdval, wd_regs + 0x0000);
-+	wmb();
-+	titan_writel(reg | (0x2 << (wd_ctr * 4)), CPCCR);
-+	wmb();
-+	titan_writel(reg | (0x5 << (wd_ctr * 4)), CPCCR);
-+	iob();
-+	unlock_titan_regs();
-+}
-+
-+
-+
-+static int wdt_gpi_open(struct inode *i, struct file *f)
-+{
-+	int res;
-+	u32 reg;
-+
-+	if (unlikely(0 > atomic_dec_if_positive(&opencnt)))
-+		return -EBUSY;
-+
-+	expect_close = 0;
-+	if (locked) {
-+		module_put(THIS_MODULE);
-+		free_irq(wd_irq, &miscdev);
-+		locked = 0;
-+	}
-+
-+	res = request_irq(wd_irq, wdt_gpi_irqhdl, SA_SHIRQ | SA_INTERRUPT,
-+			  wdt_gpi_name, &miscdev);
-+	if (unlikely(res))
-+		return res;
-+
-+	wdt_gpi_set_timeout(timeout);
-+
-+	lock_titan_regs();
-+	reg = titan_readl(CPGIG1ER);
-+	titan_writel(reg | (0x100 << wd_ctr), CPGIG1ER);
-+	iob();
-+	unlock_titan_regs();
-+
-+	printk(KERN_INFO "%s: watchdog started, timeout = %u seconds\n",
-+	       wdt_gpi_name, timeout);
-+	return 0;
-+}
-+
-+
-+
-+static int wdt_gpi_release(struct inode *i, struct file *f)
-+{
-+	if (nowayout) {
-+		printk(KERN_NOTICE "%s: no way out - watchdog left running\n",
-+		       wdt_gpi_name);
-+		__module_get(THIS_MODULE);
-+		locked = 1;
-+	} else {
-+		if (expect_close) {
-+			u32 reg;
-+
-+			lock_titan_regs();
-+			reg = titan_readl(CPCCR) & ~(0xf << (wd_ctr * 4));
-+			titan_writel(reg, CPCCR);
-+			reg = titan_readl(CPGIG1ER);
-+			titan_writel(reg & ~(0x100 << wd_ctr), CPGIG1ER);
-+			iob();
-+			unlock_titan_regs();
-+			free_irq(wd_irq, &miscdev);
-+			printk(KERN_INFO "%s: watchdog stopped\n", wdt_gpi_name);
-+		} else {
-+			printk(KERN_NOTICE "%s: unexpected close() -"
-+			       " watchdog left running\n",
-+			       wdt_gpi_name);
-+			wdt_gpi_set_timeout(timeout);
-+			__module_get(THIS_MODULE);
-+			locked = 1;
-+		}
-+	}
-+
-+	atomic_inc(&opencnt);
-+	return 0;
-+}
-+
-+
-+
-+static ssize_t
-+wdt_gpi_write(struct file *f, const char __user *d, size_t s, loff_t *o)
-+{
-+	char val;
-+
-+	wdt_gpi_set_timeout(timeout);
-+	expect_close = (s > 0) && !get_user(val, d) && (val == 'V');
-+	return s ? 1 : 0;
-+}
-+
-+
-+
-+static long
-+wdt_gpi_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
-+{
-+	long res = -ENOTTY;
-+	const long size = _IOC_SIZE(cmd);
-+	int stat;
-+	static struct watchdog_info wdinfo = {
-+		.identity		= "RM9xxx/GPI watchdog",
-+		.firmware_version	= 0,
-+		.options		= WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING
-+	};
-+
-+	if (unlikely(_IOC_TYPE(cmd) != WATCHDOG_IOCTL_BASE))
-+		return -ENOTTY;
-+
-+	if ((_IOC_DIR(cmd) & _IOC_READ)
-+	    && !access_ok(VERIFY_WRITE, arg, size))
-+	 	return -EFAULT;
-+
-+	if ((_IOC_DIR(cmd) & _IOC_WRITE)
-+	    && !access_ok(VERIFY_READ, arg, size))
-+	 	return -EFAULT;
-+
-+	expect_close = 0;
-+
-+	switch (cmd) {
-+		case WDIOC_GETSUPPORT:
-+			wdinfo.options = nowayout ?
-+				WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING :
-+				WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE;
-+			res = __copy_to_user((void __user *)arg, &wdinfo, size) ?
-+				-EFAULT : size;
-+			break;
-+
-+		case WDIOC_GETSTATUS:
-+			break;
-+		
-+		case WDIOC_GETBOOTSTATUS:
-+			stat = (*(volatile char *) flagaddr & 0x01)
-+				? WDIOF_CARDRESET : 0;
-+			res = __copy_to_user((void __user *)arg, &stat, size) ?
-+				-EFAULT : size;
-+			break;
-+
-+		case WDIOC_SETOPTIONS:
-+			break;
-+
-+		case WDIOC_KEEPALIVE:
-+			wdt_gpi_set_timeout(timeout);
-+			res = size;
-+			break;
-+
-+		case WDIOC_SETTIMEOUT:
-+			{
-+				int val;
-+				if (unlikely(__copy_from_user(&val, (const void __user *) arg,
-+						     size))) {
-+					res = -EFAULT;
-+					break;
-+				}
-+
-+				if (val > 32)
-+					val = 32;
-+				timeout = val;
-+				wdt_gpi_set_timeout(val);
-+				res = size;
-+				printk("%s: timeout set to %u seconds\n",
-+				       wdt_gpi_name, timeout);
-+			}
-+			break;
-+
-+		case WDIOC_GETTIMEOUT:
-+			res = __copy_to_user((void __user *) arg, &timeout, size) ?
-+				-EFAULT : size;
-+			break;
-+	}
-+	
-+	return res;
-+}
-+
-+
-+
-+
-+static irqreturn_t wdt_gpi_irqhdl(int irq, void *ctxt, struct pt_regs *regs)
-+{
-+	if (!unlikely(__raw_readl(wd_regs + 0x0008) & 0x1))
-+		return IRQ_NONE;
-+	__raw_writel(0x1, wd_regs + 0x0008);
-+
-+
-+	printk(KERN_WARNING "%s: watchdog expired - resetting system\n",
-+	       wdt_gpi_name);
-+
-+	*(volatile char *) flagaddr |= 0x01;
-+	*(volatile char *) resetaddr = powercycle ? 0x01 : 0x2;
-+	iob();
-+	while (1)
-+		cpu_relax();
-+}
-+
-+
-+
-+static int
-+wdt_gpi_notify(struct notifier_block *this, unsigned long code, void *unused)
-+{
-+	if(code == SYS_DOWN || code == SYS_HALT) {
-+		u32 reg;
-+
-+		lock_titan_regs();
-+		reg = titan_readl(CPCCR) & ~(0xf << (wd_ctr * 4));
-+		titan_writel(reg, CPCCR);
-+		reg = titan_readl(CPGIG1ER);
-+		titan_writel(reg & ~(0x100 << wd_ctr), CPGIG1ER);
-+		iob();
-+		unlock_titan_regs();
-+	}
-+	return NOTIFY_DONE;
-+}
-+
-+
-+
-+static int __init wdt_gpi_init_module(void)
-+{
-+	atomic_set(&opencnt, 1);
-+	if (timeout > MAX_TIMEOUT_SECONDS)
-+		timeout = MAX_TIMEOUT_SECONDS;
-+	return driver_register(&wdt_gpi_driver);
-+}
-+
-+
-+
-+static void __exit wdt_gpi_cleanup_module(void)
-+{
-+	driver_unregister(&wdt_gpi_driver);
-+}
-+
-+module_init(wdt_gpi_init_module);
-+module_exit(wdt_gpi_cleanup_module);
-+
-+
-+
-+MODULE_AUTHOR("Thomas Koeller <thomas.koeller@baslerweb.com>");
-+MODULE_DESCRIPTION("Basler eXcite watchdog driver for gpi devices");
-+MODULE_VERSION("0.1");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);
-+MODULE_PARM_DESC(timeout, "Watchdog timeout in seconds");
-+MODULE_PARM_DESC(resetaddr, "Address to write to to force a reset");
-+MODULE_PARM_DESC(flagaddr, "Address to write to boot flags to");
-+MODULE_PARM_DESC(nowayout, "Watchdog cannot be disabled once started");
-+MODULE_PARM_DESC(powercycle, "Cycle power if watchdog expires");
--- 
-1.4.0
+> +static unsigned long resetaddr = 0xbffdc200;
+> +module_param(resetaddr, ulong, 444);
 
+0444
 
--- 
-Thomas Koeller, Software Development
+> +static unsigned long flagaddr = 0xbffdc104;
+> +module_param(flagaddr, ulong, 444);
 
-Basler Vision Technologies
-An der Strusbek 60-62
-22926 Ahrensburg
-Germany
+0444
 
-Tel +49 (4102) 463-390
-Fax +49 (4102) 463-46390
+> +static int powercycle = 0;
+> +module_param(powercycle, bool, 444);
 
-mailto:thomas.koeller@baslerweb.com
-http://www.baslerweb.com
+0444
+
+> +module_param(nowayout, bool, 444);
+
+0444
+
+> +static struct file_operations fops =
+> +{
+
+On one line, please.
+
+> +static struct miscdevice miscdev =
+> +{
+
+Ditto.
+
+> +static struct device_driver wdt_gpi_driver =
+> +{
+
+> +	.shutdown	= NULL,
+> +	.suspend	= NULL,
+> +	.resume		= NULL
+
+If you don't provide, don't write it at all and C99 compiler will DTRT.
+
+> +static struct notifier_block wdt_gpi_shutdown =
+> +{
+> +	wdt_gpi_notify
+> +};
+
+C99 initializer needed.
+
+> +static int __init wdt_gpi_probe(struct device *dev)
+> +{
+> +	int res;
+> +	struct platform_device * const pdv = to_platform_device(dev);
+> +	const struct resource
+> +		* const rr = wdt_gpi_get_resource(pdv, WDT_RESOURCE_REGS,
+> +						  IORESOURCE_MEM),
+> +		* const ri = wdt_gpi_get_resource(pdv, WDT_RESOURCE_IRQ,
+> +						  IORESOURCE_IRQ),
+> +		* const rc = wdt_gpi_get_resource(pdv, WDT_RESOURCE_COUNTER,
+> +						  0);
+
+Looks horrible. First, gcc almost certainly won't do anything useful
+with const qualifiers. Second, only short initializers are tolerated.
+That way you won't even hit 80-chars border.
+
+	struct resource *rr, *ri, *rc;
+
+	rr = wdt_gpi_get_resource(...);
+	ri = wdt_gpi_get_resource(...);
+	rc = wdt_gpi_get_resource(...);
+
+> +	if (unlikely(!rr || !ri || !rc))
+> +		return -ENXIO;
+
+Probing is hardly critical path, so code clarity wins and "unlikely"
+should be removed here and below. And give better names to these
+variables. ;-)
+
+> +static int wdt_gpi_release(struct inode *i, struct file *f)
+
+It's usually "struct inode *inode" and "struct file *file".
+
+> +	switch (cmd) {
+> +		case WDIOC_GETSUPPORT:
+
+One tab please
+
+	switch (cmd) {
+	case WDIOC_GETSUPPORT:
+		...
+	}
+
+> +			wdinfo.options = nowayout ?
+> +				WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING :
+> +				WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE;
+> +			res = __copy_to_user((void __user *)arg, &wdinfo, size) ?
+> +				-EFAULT : size;
+> +			break;
+> +
+> +		case WDIOC_GETSTATUS:
+> +			break;
+> +		
+> +		case WDIOC_GETBOOTSTATUS:
+> +			stat = (*(volatile char *) flagaddr & 0x01)
+> +				? WDIOF_CARDRESET : 0;
+> +			res = __copy_to_user((void __user *)arg, &stat, size) ?
+> +				-EFAULT : size;
+> +			break;
+> +
+> +		case WDIOC_SETOPTIONS:
+> +			break;
+> +
+> +		case WDIOC_KEEPALIVE:
+> +			wdt_gpi_set_timeout(timeout);
+> +			res = size;
+> +			break;
+> +
+> +		case WDIOC_SETTIMEOUT:
+> +			{
+> +				int val;
+> +				if (unlikely(__copy_from_user(&val, (const void __user *) arg,
+> +						     size))) {
+> +					res = -EFAULT;
+> +					break;
+> +				}
+> +
+> +				if (val > 32)
+> +					val = 32;
+> +				timeout = val;
+> +				wdt_gpi_set_timeout(val);
+> +				res = size;
+> +				printk("%s: timeout set to %u seconds\n",
+> +				       wdt_gpi_name, timeout);
+> +			}
+> +			break;
+> +
+> +		case WDIOC_GETTIMEOUT:
+> +			res = __copy_to_user((void __user *) arg, &timeout, size) ?
+> +				-EFAULT : size;
+> +			break;
+> +	}
+> +	
+> +	return res;

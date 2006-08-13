@@ -1,53 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Aug 2006 23:41:07 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:20702 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S20037879AbWHLWlG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 12 Aug 2006 23:41:06 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k7CMf4RR009435;
-	Sat, 12 Aug 2006 23:41:04 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k7CMf0m0009434;
-	Sat, 12 Aug 2006 23:41:00 +0100
-Date:	Sat, 12 Aug 2006 23:41:00 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Koeller <thomas@koeller.dyndns.org>
-Cc:	Alan Cox <alan@lxorguk.ukuu.org.uk>, wim@iguana.be,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
-Message-ID: <20060812224100.GA9043@linux-mips.org>
-References: <200608102319.13679.thomas@koeller.dyndns.org> <1155326835.24077.116.camel@localhost.localdomain> <200608121806.02844.thomas@koeller.dyndns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2006 14:37:15 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:987 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037540AbWHMNhO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2006 14:37:14 +0100
+Received: from localhost (p4112-ipad28funabasi.chiba.ocn.ne.jp [220.107.203.112])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 3A5D0A2C9; Sun, 13 Aug 2006 22:37:07 +0900 (JST)
+Date:	Sun, 13 Aug 2006 22:38:48 +0900 (JST)
+Message-Id: <20060813.223848.25910859.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Re: [MIPS] SB1: Build fix: delete initialization of
+ flush_icache_page pointer.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <S20037882AbWHMBM6/20060813011258Z+2870@ftp.linux-mips.org>
+References: <S20037882AbWHMBM6/20060813011258Z+2870@ftp.linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200608121806.02844.thomas@koeller.dyndns.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12325
+X-archive-position: 12326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Aug 12, 2006 at 06:06:02PM +0200, Thomas Koeller wrote:
+One more.
 
-> > > +	while (1) continue;
-> >
-> > cpu_relax();
-> 
-> I tried to find out about the purpose of cpu_relax(). On MIPS, at least,
-> it maps to barrier(). I do not quite understand why I would need a
-> barrier() in this place. Would you, or someone else, care to
-> enlighten me?
+[MIPS] missing bits for "Retire flush_icache_page from mm use."
 
-Busy wait loops are meant to be filled with cpu_relax() in Linux.  On
-processors like the Pentium 4 this expands into something that keeps
-the CPU from consuming excessive amounts of energy for just twiddling
-thumbs and probably also CPU dependant.  On MIPS cpu_relax() so far is
-meaningless and therfore just defined as barrier().
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-  Ralf
+diff --git a/arch/mips/mm/c-tx39.c b/arch/mips/mm/c-tx39.c
+index cdb1942..932a09d 100644
+--- a/arch/mips/mm/c-tx39.c
++++ b/arch/mips/mm/c-tx39.c
+@@ -408,7 +408,7 @@ void __init tx39_cache_init(void)
+ 		flush_cache_mm = tx39_flush_cache_mm;
+ 		flush_cache_range = tx39_flush_cache_range;
+ 		flush_cache_page = tx39_flush_cache_page;
+-		flush_icache_page = tx39_flush_icache_page;
++		__flush_icache_page = tx39_flush_icache_page;
+ 		flush_icache_range = tx39_flush_icache_range;
+ 
+ 		flush_cache_sigtramp = tx39_flush_cache_sigtramp;

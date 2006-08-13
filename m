@@ -1,53 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2006 14:37:15 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:987 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20037540AbWHMNhO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2006 14:37:14 +0100
-Received: from localhost (p4112-ipad28funabasi.chiba.ocn.ne.jp [220.107.203.112])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 3A5D0A2C9; Sun, 13 Aug 2006 22:37:07 +0900 (JST)
-Date:	Sun, 13 Aug 2006 22:38:48 +0900 (JST)
-Message-Id: <20060813.223848.25910859.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [MIPS] SB1: Build fix: delete initialization of
- flush_icache_page pointer.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <S20037882AbWHMBM6/20060813011258Z+2870@ftp.linux-mips.org>
-References: <S20037882AbWHMBM6/20060813011258Z+2870@ftp.linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Aug 2006 18:07:49 +0100 (BST)
+Received: from witte.sonytel.be ([80.88.33.193]:56741 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S20039220AbWHMRHr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 13 Aug 2006 18:07:47 +0100
+Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k7DH7hQe001780;
+	Sun, 13 Aug 2006 19:07:43 +0200 (MEST)
+Date:	Sun, 13 Aug 2006 19:07:43 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Kaz Kylheku <kaz@zeugmasystems.com>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: RE: [PATCH 2/6] setup.c: move initrd code inside dedicated functions
+In-Reply-To: <66910A579C9312469A7DF9ADB54A8B7D33AF4A@exchange.ZeugmaSystems.local>
+Message-ID: <Pine.LNX.4.62.0608131905060.22076@pademelon.sonytel.be>
+References: <66910A579C9312469A7DF9ADB54A8B7D33AF4A@exchange.ZeugmaSystems.local>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12326
+X-archive-position: 12327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-One more.
+On Fri, 11 Aug 2006, Kaz Kylheku wrote:
+> Franck Bui-Huu wrote:
+> > Atsushi Nemoto wrote:
+> > >> +	printk(KERN_INFO "Initial ramdisk at: 0x%p (%lu bytes)\n",
+> > >> +	       (void *)initrd_start, initrd_size);
+> > > 
+> > > You can use "0x%lx" for initrd_start and remove the cast.  
+> > I know this
+> > > fragment are copied from corrent code as is, but it would be a good
+> > > chance to clean it up.
+> > > 
+> > 
+> > You're right.
+> 
+> Actually the cast that is there is only pedantic. ANSI C says that
+> %p must be met with a void *, which might be important on some
+> exotic machine where pointers have a different representation
+> based on their type. Elsewhere, it would be very surprising
+> if omitting the (void *) caused a problem with %p.
 
-[MIPS] missing bits for "Retire flush_icache_page from mm use."
+Except that initrd_start is not a pointer, but an unsigned long...
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> And you have to cast to an integer that is wide enough for the
+> pointer.  If you are compiling for 64 bit, that means
+> "unsigned long long", unless you are sure that the upper
+> 32 bits are all zero. 
 
-diff --git a/arch/mips/mm/c-tx39.c b/arch/mips/mm/c-tx39.c
-index cdb1942..932a09d 100644
---- a/arch/mips/mm/c-tx39.c
-+++ b/arch/mips/mm/c-tx39.c
-@@ -408,7 +408,7 @@ void __init tx39_cache_init(void)
- 		flush_cache_mm = tx39_flush_cache_mm;
- 		flush_cache_range = tx39_flush_cache_range;
- 		flush_cache_page = tx39_flush_cache_page;
--		flush_icache_page = tx39_flush_icache_page;
-+		__flush_icache_page = tx39_flush_icache_page;
- 		flush_icache_range = tx39_flush_icache_range;
- 
- 		flush_cache_sigtramp = tx39_flush_cache_sigtramp;
+unsigned long is 64-bit on LP64 systems, i.e. on all 64-bit Linux systems.
+That excludes (why am I not surprised) Win64, which is P64.
+
+> Ideally, you should just be able to use %p to print pointers,
+> and I'd love to recommend that. It should be smart enough to
+> know that they are 64 bits wide. I'm looking at the vsprintf
+> in 2.6.17 and see that, sadly, it converts the void * pulled
+> from the va_arg to "unsigned long".
+
+%p works fine for pointers, on both 32-bit and 64-bit Linux.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

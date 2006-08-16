@@ -1,51 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Aug 2006 15:35:54 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:22811 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20037552AbWHPOfw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Aug 2006 15:35:52 +0100
-Received: by mo.po.2iij.net (mo32) id k7GEZolm024114; Wed, 16 Aug 2006 23:35:50 +0900 (JST)
-Received: from localhost.localdomain (191.28.30.125.dy.iij4u.or.jp [125.30.28.191])
-	by mbox.po.2iij.net (mbox30) id k7GEZiZP076350
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 16 Aug 2006 23:35:44 +0900 (JST)
-Date:	Wed, 16 Aug 2006 23:35:43 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
-Subject: Re: [PATCH] removed common definitions in signal.h
-Message-Id: <20060816233543.06d47420.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20060816141528.GA31377@linux-mips.org>
-References: <20060816230747.57a1e6d4.yoichi_yuasa@tripeaks.co.jp>
-	<20060816141528.GA31377@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Aug 2006 15:55:39 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:32437 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S20037566AbWHPOzh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Aug 2006 15:55:37 +0100
+Received: (qmail 8320 invoked from network); 16 Aug 2006 14:55:39 -0000
+Received: from laja.dev.rtsoft.ru.dev.rtsoft.ru (HELO dev.rtsoft.ru.) (192.168.1.205)
+  by mail.dev.rtsoft.ru with SMTP; 16 Aug 2006 14:55:39 -0000
+Date:	Wed, 16 Aug 2006 18:55:42 +0400
+From:	Vitaly Wool <vitalywool@gmail.com>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix compilation breakage for PNX8550
+Message-Id: <20060816185542.3f93487c.vitalywool@gmail.com>
+In-Reply-To: <44E32CFB.6030601@ru.mvista.com>
+References: <20060816172906.5a2cafb1.vitalywool@gmail.com>
+	<44E32CFB.6030601@ru.mvista.com>
+X-Mailer: Sylpheed version 2.2.6 (GTK+ 2.8.13; i486-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <vitalywool@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12347
+X-archive-position: 12348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: vitalywool@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Wed, 16 Aug 2006 18:34:35 +0400
+Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
 
-On Wed, 16 Aug 2006 15:15:29 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Wed, Aug 16, 2006 at 11:07:47PM +0900, Yoichi Yuasa wrote:
+> >  arch/mips/philips/pnx8550/common/Makefile   |    1
+> >  arch/mips/philips/pnx8550/common/gdb_hook.c |  109 ----------------------------
 > 
-> > These definitions are already defined in asm-generic/signal.h .
-> 
-> This one is already on the queue branch since a while.
+>     NAK these two files -- you're effectively deleting KGDB support for PNX8550.
 
-OK.
+Well, it just doesn't work any more -- what can I do?
+I think that removing that here and adding some time later makes more sense than keeping bogus code.
 
-Thanks,
-
-Yoichi
+Vitaly

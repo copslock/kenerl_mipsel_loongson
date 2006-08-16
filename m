@@ -1,52 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Aug 2006 15:10:12 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:46896 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20037542AbWHPOKI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Aug 2006 15:10:08 +0100
-Received: by mo.po.2iij.net (mo31) id k7GEA6PI060197; Wed, 16 Aug 2006 23:10:06 +0900 (JST)
-Received: from localhost.localdomain (191.28.30.125.dy.iij4u.or.jp [125.30.28.191])
-	by mbox.po.2iij.net (mbox32) id k7GEA0rs020291
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 16 Aug 2006 23:10:00 +0900 (JST)
-Date:	Wed, 16 Aug 2006 23:10:00 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] removed F_SETSIG and F_GETSIG
-Message-Id: <20060816231000.0ade8f96.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Aug 2006 15:15:25 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:24461 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S20037548AbWHPOPY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Aug 2006 15:15:24 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k7GEFVxX032096;
+	Wed, 16 Aug 2006 15:15:31 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k7GEFTTB032095;
+	Wed, 16 Aug 2006 15:15:29 +0100
+Date:	Wed, 16 Aug 2006 15:15:29 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] removed common definitions in signal.h
+Message-ID: <20060816141528.GA31377@linux-mips.org>
+References: <20060816230747.57a1e6d4.yoichi_yuasa@tripeaks.co.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060816230747.57a1e6d4.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12343
+X-archive-position: 12344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Wed, Aug 16, 2006 at 11:07:47PM +0900, Yoichi Yuasa wrote:
 
-F_SETSIG and F_GETSIG are already defined in asm-generic/fcntl.h
+> These definitions are already defined in asm-generic/signal.h .
 
-Yoichi
+This one is already on the queue branch since a while.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/fcntl.h mips/include/asm-mips/fcntl.h
---- mips-orig/include/asm-mips/fcntl.h	2006-08-07 00:51:04.347826750 +0900
-+++ mips/include/asm-mips/fcntl.h	2006-08-07 00:49:09.836670250 +0900
-@@ -25,8 +25,6 @@
- 
- #define F_SETOWN	24	/*  for sockets. */
- #define F_GETOWN	23	/*  for sockets. */
--#define F_SETSIG	10	/*  for sockets. */
--#define F_GETSIG	11	/*  for sockets. */
- 
- #ifndef __mips64
- #define F_GETLK64	33	/*  using 'struct flock64' */
+  Ralf

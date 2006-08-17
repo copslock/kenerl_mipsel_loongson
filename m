@@ -1,240 +1,257 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2006 14:58:00 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.187]:13714 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037471AbWHQN56 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 17 Aug 2006 14:57:58 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so1112988nfc
-        for <linux-mips@linux-mips.org>; Thu, 17 Aug 2006 06:57:57 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=gcEg98Fz+rG79E4/NRRZLWvQ5RrxyIbXzxwM+yWhFqmPDZNVmY+ZdflDw4Y+0uK1RqYlSKBGh3Ra1LkvgrdbZlT96+oX8I1pGSQgz9auksFqt1UQc06OXPtEYg3JzMe8JtcFtP8JPsLKbDQduKXqfgyYE5BoKY69KAoVurnRRkI=
-Received: by 10.49.10.3 with SMTP id n3mr2304504nfi;
-        Thu, 17 Aug 2006 06:57:57 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id g1sm5683857nfe.2006.08.17.06.57.55;
-        Thu, 17 Aug 2006 06:57:56 -0700 (PDT)
-Message-ID: <44E475C8.5000105@innova-card.com>
-Date:	Thu, 17 Aug 2006 15:57:28 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Franck <vagabon.xyz@gmail.com>
-Subject: [PATCH] Remove mfinfo[64] used by get_wchan()
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2006 15:12:01 +0100 (BST)
+Received: from rtsoft2.corbina.net ([85.21.88.2]:55944 "HELO
+	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
+	id S20037472AbWHQOL7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 17 Aug 2006 15:11:59 +0100
+Received: (qmail 22582 invoked from network); 17 Aug 2006 14:11:56 -0000
+Received: from laja.dev.rtsoft.ru.dev.rtsoft.ru (HELO dev.rtsoft.ru.) (192.168.1.205)
+  by mail.dev.rtsoft.ru with SMTP; 17 Aug 2006 14:11:56 -0000
+Date:	Thu, 17 Aug 2006 18:11:37 +0400
+From:	Vitaly Wool <vitalywool@gmail.com>
+To:	ralf@linux-mips.org
+Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org
+Subject: [PATCH/RFC] fix compilation breakage for PNX8550: conservative
+ variant
+Message-Id: <20060817181137.45680622.vitalywool@gmail.com>
+X-Mailer: Sylpheed version 2.2.6 (GTK+ 2.8.13; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <vitalywool@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12350
+X-archive-position: 12351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: vitalywool@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This array was used to 'cache' some frame info about scheduler
-functions to speed up get_wchan(). This array was 1Ko size and
-was only used when CONFIG_KALLSYMS was set but declared for all
-configs.
+Hello folks,
 
-Rather than make the array statement conditional, this patches
-removes this array and its uses. Indeed the common case doesn't
-seem to use this array and get_wchan() is not a critical path
-anyways.
+taken into account what Sergey told me wrt kgdb code for pnx8550, I've made the second attempt to make it work. So, inlined is the patch that only restores the pnx8550 compilation and removes dependency on BROKEN for that target.
+I've verified that the target will boot up to mounting the NFS filesystem if this patch is applied.
 
-It results in a smaller bss and a better code:
+ Signed-off-by: Vitaly Wool <vitalywool@gmail.com>
 
-   text    data     bss     dec     hex filename
-2543808  254148  139296 2937252  2cd1a4 vmlinux-new-get-wchan
-2544080  254148  143392 2941620  2ce2b4 vmlinux~old
-
-Signed-off-by: Franck Bui-Huu <vagabon.xyz@gmail.com>
----
- arch/mips/kernel/process.c |  132 +++++++++++++++++---------------------------
- 1 files changed, 50 insertions(+), 82 deletions(-)
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 951bf9c..6d050fa 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -273,13 +273,15 @@ #endif
- 	return do_fork(flags | CLONE_VM | CLONE_UNTRACED, 0, &regs, 0, NULL, NULL);
+ arch/mips/Kconfig                           |    2 
+ arch/mips/philips/pnx8550/common/Makefile   |    2 
+ arch/mips/philips/pnx8550/common/int.c      |    9 ++-
+ arch/mips/philips/pnx8550/common/mipsIRQ.S  |   76 ++++++++++++++++++++++++++++
+ arch/mips/philips/pnx8550/common/platform.c |    4 -
+ arch/mips/philips/pnx8550/common/setup.c    |    2 
+ include/asm-mips/mach-pnx8550/uart.h        |   14 +++++
+ 7 files changed, 99 insertions(+), 10 deletions(-)
+      
+Index: powerpc.git/arch/mips/Kconfig
+===================================================================
+--- powerpc.git.orig/arch/mips/Kconfig
++++ powerpc.git/arch/mips/Kconfig
+@@ -493,13 +493,11 @@ config MIPS_XXS1500
+ 
+ config PNX8550_V2PCI
+ 	bool "Philips PNX8550 based Viper2-PCI board"
+-	depends on BROKEN
+ 	select PNX8550
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 
+ config PNX8550_JBS
+ 	bool "Philips PNX8550 based JBS board"
+-	depends on BROKEN
+ 	select PNX8550
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 
+Index: powerpc.git/arch/mips/philips/pnx8550/common/setup.c
+===================================================================
+--- powerpc.git.orig/arch/mips/philips/pnx8550/common/setup.c
++++ powerpc.git/arch/mips/philips/pnx8550/common/setup.c
+@@ -56,7 +56,7 @@ extern char *prom_getcmdline(void);
+ 
+ struct resource standard_io_resources[] = {
+ 	{
+-		.start	= .0x00,
++		.start	= 0x00,
+ 		.end	= 0x1f,
+ 		.name	= "dma1",
+ 		.flags	= IORESOURCE_BUSY
+Index: powerpc.git/arch/mips/philips/pnx8550/common/Makefile
+===================================================================
+--- powerpc.git.orig/arch/mips/philips/pnx8550/common/Makefile
++++ powerpc.git/arch/mips/philips/pnx8550/common/Makefile
+@@ -22,6 +22,6 @@
+ # under Linux.
+ #
+ 
+-obj-y := setup.o prom.o int.o reset.o time.o proc.o platform.o
++obj-y := setup.o prom.o int.o reset.o time.o proc.o platform.o mipsIRQ.o
+ obj-$(CONFIG_PCI) += pci.o
+ obj-$(CONFIG_KGDB) += gdb_hook.o
+Index: powerpc.git/arch/mips/philips/pnx8550/common/int.c
+===================================================================
+--- powerpc.git.orig/arch/mips/philips/pnx8550/common/int.c
++++ powerpc.git/arch/mips/philips/pnx8550/common/int.c
+@@ -52,7 +52,9 @@ static char gic_prio[PNX8550_INT_GIC_TOT
+ 	1			//  70
+ };
+ 
+-static void hw0_irqdispatch(int irq, struct pt_regs *regs)
++extern asmlinkage void cp0_irqdispatch(void);
++
++void hw0_irqdispatch(int irq, struct pt_regs *regs)
+ {
+ 	/* find out which interrupt */
+ 	irq = PNX8550_GIC_VECTOR_0 >> 3;
+@@ -65,7 +67,7 @@ static void hw0_irqdispatch(int irq, str
  }
  
--static struct mips_frame_info {
--	void *func;
--	unsigned long func_size;
--	int frame_size;
--	int pc_offset;
--} *schedule_frame, mfinfo[64];
--static int mfinfo_num;
+ 
+-static void timer_irqdispatch(int irq, struct pt_regs *regs)
++void timer_irqdispatch(int irq, struct pt_regs *regs)
+ {
+ 	irq = (0x01c0 & read_c0_config7()) >> 6;
+ 
+@@ -234,6 +236,9 @@ void __init arch_init_irq(void)
+ 	int i;
+ 	int configPR;
+ 
++	/* init of cp0 interrupts */
++	set_except_vector(0, cp0_irqdispatch);
++
+ 	for (i = 0; i < PNX8550_INT_CP0_TOTINT; i++) {
+ 		irq_desc[i].chip = &level_irq_type;
+ 		pnx8550_ack(i);	/* mask the irq just in case  */
+Index: powerpc.git/arch/mips/philips/pnx8550/common/mipsIRQ.S
+===================================================================
+--- /dev/null
++++ powerpc.git/arch/mips/philips/pnx8550/common/mipsIRQ.S
+@@ -0,0 +1,76 @@
 +/*
++ * Copyright (c) 2002 Philips, Inc. All rights.
++ * Copyright (c) 2002 Red Hat, Inc. All rights.
++ *
++ * This software may be freely redistributed under the terms of the
++ * GNU General Public License.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ * Based upon arch/mips/galileo-boards/ev64240/int-handler.S
 + *
 + */
-+struct mips_frame_info {
-+	void		*func;
-+	unsigned long	func_size;
-+	int		frame_size;
-+	int		pc_offset;
-+};
- 
- static inline int is_ra_save_ins(union mips_instruction *ip)
- {
-@@ -340,45 +342,31 @@ static int get_frame_info(struct mips_fr
- 	return -1;
- }
- 
-+static struct mips_frame_info schedule_mfi __read_mostly;
-+
- static int __init frame_info_init(void)
- {
--	int i;
-+	unsigned long size = 0;
-+
- #ifdef CONFIG_KALLSYMS
-+	unsigned long ofs;
- 	char *modname;
- 	char namebuf[KSYM_NAME_LEN + 1];
--	unsigned long start, size, ofs;
--	extern char __sched_text_start[], __sched_text_end[];
--	extern char __lock_text_start[], __lock_text_end[];
--
--	start = (unsigned long)__sched_text_start;
--	for (i = 0; i < ARRAY_SIZE(mfinfo); i++) {
--		if (start == (unsigned long)schedule)
--			schedule_frame = &mfinfo[i];
--		if (!kallsyms_lookup(start, &size, &ofs, &modname, namebuf))
--			break;
--		mfinfo[i].func = (void *)(start + ofs);
--		mfinfo[i].func_size = size;
--		start += size - ofs;
--		if (start >= (unsigned long)__lock_text_end)
--			break;
--		if (start == (unsigned long)__sched_text_end)
--			start = (unsigned long)__lock_text_start;
--	}
--#else
--	mfinfo[0].func = schedule;
--	schedule_frame = &mfinfo[0];
-+
-+	kallsyms_lookup((unsigned long)schedule, &size, &ofs, &modname, namebuf);
- #endif
--	for (i = 0; i < ARRAY_SIZE(mfinfo) && mfinfo[i].func; i++)
--		get_frame_info(mfinfo + i);
-+	schedule_mfi.func = schedule;
-+	schedule_mfi.func_size = size;
-+
-+	get_frame_info(&schedule_mfi);
- 
- 	/*
- 	 * Without schedule() frame info, result given by
- 	 * thread_saved_pc() and get_wchan() are not reliable.
- 	 */
--	if (schedule_frame->pc_offset < 0)
-+	if (schedule_mfi.pc_offset < 0)
- 		printk("Can't analyze schedule() prologue at %p\n", schedule);
- 
--	mfinfo_num = i;
- 	return 0;
- }
- 
-@@ -394,58 +382,11 @@ unsigned long thread_saved_pc(struct tas
- 	/* New born processes are a special case */
- 	if (t->reg31 == (unsigned long) ret_from_fork)
- 		return t->reg31;
--
--	if (!schedule_frame || schedule_frame->pc_offset < 0)
-+	if (schedule_mfi.pc_offset < 0)
- 		return 0;
--	return ((unsigned long *)t->reg29)[schedule_frame->pc_offset];
-+	return ((unsigned long *)t->reg29)[schedule_mfi.pc_offset];
- }
- 
--/* get_wchan - a maintenance nightmare^W^Wpain in the ass ...  */
--unsigned long get_wchan(struct task_struct *p)
--{
--	unsigned long stack_page;
--	unsigned long pc;
--#ifdef CONFIG_KALLSYMS
--	unsigned long frame;
--#endif
--
--	if (!p || p == current || p->state == TASK_RUNNING)
--		return 0;
--
--	stack_page = (unsigned long)task_stack_page(p);
--	if (!stack_page || !mfinfo_num)
--		return 0;
--
--	pc = thread_saved_pc(p);
--#ifdef CONFIG_KALLSYMS
--	if (!in_sched_functions(pc))
--		return pc;
--
--	frame = p->thread.reg29 + schedule_frame->frame_size;
--	do {
--		int i;
--
--		if (frame < stack_page || frame > stack_page + THREAD_SIZE - 32)
--			return 0;
--
--		for (i = mfinfo_num - 1; i >= 0; i--) {
--			if (pc >= (unsigned long) mfinfo[i].func)
--				break;
--		}
--		if (i < 0)
--			break;
--
--		if (mfinfo[i].pc_offset < 0)
--			break;
--		pc = ((unsigned long *)frame)[mfinfo[i].pc_offset];
--		if (!mfinfo[i].frame_size)
--			break;
--		frame += mfinfo[i].frame_size;
--	} while (in_sched_functions(pc));
--#endif
--
--	return pc;
--}
- 
- #ifdef CONFIG_KALLSYMS
- /* used by show_backtrace() */
-@@ -493,3 +434,30 @@ unsigned long unwind_stack(struct task_s
- 	return __kernel_text_address(pc) ? pc : 0;
- }
- #endif
++#include <asm/asm.h>
++#include <asm/mipsregs.h>
++#include <asm/addrspace.h>
++#include <asm/regdef.h>
++#include <asm/stackframe.h>
 +
 +/*
-+ * get_wchan - a maintenance nightmare^W^Wpain in the ass ...
++ * cp0_irqdispatch
++ *
++ *    Code to handle in-core interrupt exception.
 + */
-+unsigned long get_wchan(struct task_struct *task)
-+{
-+	unsigned long stack_page = (unsigned long)task_stack_page(task);
-+	unsigned long pc = 0;
-+#ifdef CONFIG_KALLSYMS
-+	unsigned long sp = task->thread.reg29;
-+#endif
 +
-+	if (!task || task == current || task->state == TASK_RUNNING)
-+		goto out;
-+	if (!stack_page)
-+		goto out;
++		.align	5
++		.set	reorder
++		.set	noat
++		NESTED(cp0_irqdispatch, PT_SIZE, sp)
++		SAVE_ALL
++		CLI
++		.set	at
++		mfc0	t0,CP0_CAUSE
++		mfc0	t2,CP0_STATUS
 +
-+	pc = thread_saved_pc(task);
++		and	t0,t2
 +
-+#ifdef CONFIG_KALLSYMS
-+	while (in_sched_functions(pc))
-+		pc = unwind_stack(task, &sp, pc, 0);
-+#endif
++		andi	t1,t0,STATUSF_IP2 /* int0 hardware line */
++		bnez	t1,ll_hw0_irq
++		nop
 +
-+out:
-+	return pc;
-+}
--- 
-1.4.2.rc4
++		andi	t1,t0,STATUSF_IP7 /* int5 hardware line */
++		bnez	t1,ll_timer_irq
++		nop
++
++		/* wrong alarm or masked ... */
++
++		j	spurious_interrupt
++		nop
++		END(cp0_irqdispatch)
++
++		.align	5
++		.set	reorder
++ll_hw0_irq:
++		li	a0,2
++		move	a1,sp
++		jal	hw0_irqdispatch
++		nop
++		j	ret_from_irq
++		nop
++
++		.align	5
++		.set	reorder
++ll_timer_irq:
++		mfc0	t3,CP0_CONFIG,7
++		andi	t4,t3,0x01c0
++		beqz	t4,ll_timer_out
++		nop
++		li	a0,7
++		move	a1,sp
++		jal	timer_irqdispatch
++		nop
++
++ll_timer_out:	j	ret_from_irq
++		nop
+Index: powerpc.git/arch/mips/philips/pnx8550/common/platform.c
+===================================================================
+--- powerpc.git.orig/arch/mips/philips/pnx8550/common/platform.c
++++ powerpc.git/arch/mips/philips/pnx8550/common/platform.c
+@@ -24,8 +24,6 @@
+ #include <usb.h>
+ #include <uart.h>
+ 
+-extern struct uart_ops ip3106_pops;
+-
+ static struct resource pnx8550_usb_ohci_resources[] = {
+ 	[0] = {
+ 		.start		= PNX8550_USB_OHCI_OP_BASE,
+@@ -73,7 +71,6 @@ struct ip3106_port ip3106_ports[] = {
+ 			.irq		= PNX8550_UART_INT(0),
+ 			.uartclk	= 3692300,
+ 			.fifosize	= 16,
+-			.ops		= &ip3106_pops,
+ 			.flags		= UPF_BOOT_AUTOCONF,
+ 			.line		= 0,
+ 		},
+@@ -87,7 +84,6 @@ struct ip3106_port ip3106_ports[] = {
+ 			.irq		= PNX8550_UART_INT(1),
+ 			.uartclk	= 3692300,
+ 			.fifosize	= 16,
+-			.ops		= &ip3106_pops,
+ 			.flags		= UPF_BOOT_AUTOCONF,
+ 			.line		= 1,
+ 		},
+Index: powerpc.git/include/asm-mips/mach-pnx8550/uart.h
+===================================================================
+--- powerpc.git.orig/include/asm-mips/mach-pnx8550/uart.h
++++ powerpc.git/include/asm-mips/mach-pnx8550/uart.h
+@@ -13,4 +13,18 @@
+ #define PNX8550_UART_INT(x)		(PNX8550_INT_GIC_MIN+19+x)
+ #define IRQ_TO_UART(x)			(x-PNX8550_INT_GIC_MIN-19)
+ 
++/* early macros needed for prom/kgdb */
++
++#define ip3106_lcr(base,port)    *(volatile u32 *)(base+(port*0x1000) + 0x000)
++#define ip3106_mcr(base, port)   *(volatile u32 *)(base+(port*0x1000) + 0x004)
++#define ip3106_baud(base, port)  *(volatile u32 *)(base+(port*0x1000) + 0x008)
++#define ip3106_cfg(base, port)   *(volatile u32 *)(base+(port*0x1000) + 0x00C)
++#define ip3106_fifo(base, port)	 *(volatile u32 *)(base+(port*0x1000) + 0x028)
++#define ip3106_istat(base, port) *(volatile u32 *)(base+(port*0x1000) + 0xFE0)
++#define ip3106_ien(base, port)   *(volatile u32 *)(base+(port*0x1000) + 0xFE4)
++#define ip3106_iclr(base, port)  *(volatile u32 *)(base+(port*0x1000) + 0xFE8)
++#define ip3106_iset(base, port)  *(volatile u32 *)(base+(port*0x1000) + 0xFEC)
++#define ip3106_pd(base, port)    *(volatile u32 *)(base+(port*0x1000) + 0xFF4)
++#define ip3106_mid(base, port)   *(volatile u32 *)(base+(port*0x1000) + 0xFFC)
++
+ #endif

@@ -1,63 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2006 16:36:05 +0100 (BST)
-Received: from gprs189-60.eurotel.cz ([160.218.189.60]:53257 "EHLO
-	spitz.ucw.cz") by ftp.linux-mips.org with ESMTP id S20037524AbWHQPgE
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 17 Aug 2006 16:36:04 +0100
-Received: by spitz.ucw.cz (Postfix, from userid 0)
-	id 48AA92787F; Thu, 17 Aug 2006 15:31:38 +0000 (UTC)
-Date:	Thu, 17 Aug 2006 15:31:38 +0000
-From:	Pavel Machek <pavel@suse.cz>
-To:	Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc:	=?iso-8859-1?Q?=C9ric?= Piel <Eric.Piel@lifl.fr>,
-	linux-kernel@vger.kernel.org, alan@lxorguk.ukuu.org.uk,
-	linux-mips@linux-mips.org,
-	Thomas =?iso-8859-1?Q?K=F6ller?= <thomas@koeller.dyndns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Aug 2006 21:30:44 +0100 (BST)
+Received: from mail01.hansenet.de ([213.191.73.61]:38615 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20037611AbWHQUan (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 17 Aug 2006 21:30:43 +0100
+Received: from [213.39.182.221] (213.39.182.221) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 44DC9FF70017F943; Thu, 17 Aug 2006 22:30:31 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 0E1501770BE;
+	Thu, 17 Aug 2006 22:30:31 +0200 (CEST)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+To:	Pavel Machek <pavel@suse.cz>
 Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
-Message-ID: <20060817153138.GE5950@ucw.cz>
-References: <200608102318.04512.thomas.koeller@baslerweb.com> <loom.20060812T191433-775@post.gmane.org> <44E09C7E.204@lifl.fr> <200608142126.29171.thomas.koeller@baslerweb.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Date:	Thu, 17 Aug 2006 22:30:30 +0200
+User-Agent: KMail/1.9.3
+Cc:	=?iso-8859-1?q?=C9ric_Piel?= <Eric.Piel@lifl.fr>,
+	linux-kernel@vger.kernel.org, alan@lxorguk.ukuu.org.uk,
+	linux-mips@linux-mips.org
+References: <200608102318.04512.thomas.koeller@baslerweb.com> <200608142126.29171.thomas.koeller@baslerweb.com> <20060817153138.GE5950@ucw.cz>
+In-Reply-To: <20060817153138.GE5950@ucw.cz>
+Organization: Basler AG
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <200608142126.29171.thomas.koeller@baslerweb.com>
-User-Agent: Mutt/1.5.9i
-Return-Path: <root@ucw.cz>
+Message-Id: <200608172230.30682.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12353
+X-archive-position: 12354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pavel@suse.cz
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi!
+On Thursday 17 August 2006 17:31, Pavel Machek wrote:
+> Well, I guess v4l api will need to be improved, then. That is still
+> not a reason to introduce completely new api...
 
-> > If so then the Video4Linux2 API is still the best way to implement the
-> > protocol to pass data between the user-space programs and the driver.
-> > The V4L2 API doesn't says that the camera must be far away from the
-> > processor, it can work for USB webcams, for Firewire video camera, PCI
-> > TV tuners, and probably also for your device. Using the V4L2 not only
-> > has the advantage of being a well tested API for communicating video
-> > related information with the user-space but it also buys you the fact
-> > that any program available on Linux for video should be able to directly
-> > detect and use the captor!
-> 
-> Sorry, but no. The camera has been designed to be used in industrial
-> control applications, such as quality assurance. Think of an automated
-> inspection of a certain product, where the inspection is integrated
-> into the production process. Faulty products are sorted out. For this to
-> work it is absolutely necessary to get the maximum speed (image frames
-> per second) out of the hardware, so image acquisition and processing
-> must be carried out in parallel. The way to achieve this is have the
-> driver manage a queue of image buffers to fill, so it will continue
-> grabbing images even if no read operation is currently pending. Also,
-> the ability to attach user-specific context information to every buffer
-> is essential.
+The API as implemented by the driver I submitted is very minimalistic,
+because it is just a starting point. There's more to be added in future,
+like controlling flashes, interfacing to line-scan cameras clocked by
+incremental encodes attached to some conveyor, and other stuff which
+is common in industrial image processing applications. You really do
+not want to clutter the v4l2 API with these things; that would hardly
+be an 'improvement'.
 
-Well, I guess v4l api will need to be improved, then. That is still
-not a reason to introduce completely new api...
+Different interfaces, designed to serve different purposes...
 
+Thomas
 -- 
-Thanks for all the (sleeping) penguins.
+Thomas Koeller, Software Development
+
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
+
+Tel +49 (4102) 463-390
+Fax +49 (4102) 463-46390
+
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com

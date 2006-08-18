@@ -1,102 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 09:50:33 +0100 (BST)
-Received: from nz-out-0102.google.com ([64.233.162.198]:27046 "EHLO
-	nz-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037753AbWHRIu3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 Aug 2006 09:50:29 +0100
-Received: by nz-out-0102.google.com with SMTP id s1so473293nze
-        for <linux-mips@linux-mips.org>; Fri, 18 Aug 2006 01:50:28 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=dfwD6PwbAU8VUXs+6NA4I8niwFl5TAmYmyaL3Bwfinif21CuM0I8MBQ34Nmi2b1/iljBObnuStbq3m2Xi6iZjXXMOKCF9smJ2mPaIfegh1t+1fEbgSu15gka5ovooCqdOS90zU1pNuQD0PbIqjLhArmzG4ZkS30JvrrZwj7FNMI=
-Received: by 10.65.139.9 with SMTP id r9mr3347488qbn;
-        Fri, 18 Aug 2006 01:50:28 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id e14sm1907787qbe.2006.08.18.01.50.26;
-        Fri, 18 Aug 2006 01:50:27 -0700 (PDT)
-Message-ID: <44E57F39.2020009@innova-card.com>
-Date:	Fri, 18 Aug 2006 10:50:01 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 10:11:41 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:49797 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20037748AbWHRJLk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 18 Aug 2006 10:11:40 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 18 Aug 2006 18:11:38 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 35A41202F1;
+	Fri, 18 Aug 2006 18:11:37 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 281BC202D2;
+	Fri, 18 Aug 2006 18:11:37 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k7I9BaW0089027;
+	Fri, 18 Aug 2006 18:11:36 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 18 Aug 2006 18:11:36 +0900 (JST)
+Message-Id: <20060818.181136.85412687.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] Remove mfinfo[64] used by get_wchan()
-References: <44E475C8.5000105@innova-card.com>	<20060818.115213.108739385.nemoto@toshiba-tops.co.jp>	<44E57161.5060104@innova-card.com> <20060818.171558.89065994.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20060818.171558.89065994.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44E57F39.2020009@innova-card.com>
+References: <44E57161.5060104@innova-card.com>
+	<20060818.171558.89065994.nemoto@toshiba-tops.co.jp>
+	<44E57F39.2020009@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12361
+X-archive-position: 12362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Fri, 18 Aug 2006 09:50:57 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->>>> +	unsigned long size = 0;
->>> You must pass some non-zero size even if CONFIG_KALLSYMS was not set.
->>> Otherwise schedule_mfi will not be initialized as expected.  Actually,
->>> this is not a problem of this patch, but we missed this point on
->>> previous cleanups for the get_frame_info()...
->> or maybe we can just fix get_frame_info() and make it more robust ?
-> 
-> Maybe.  But info->func_size == 0 is valid input when it was called via
-> show_backtrace.  If an exception occured on a first instruction of a
-> function, get_frame_info() should return 1.  So it would be easy to
-> give some appropriate (128?) size here.
-> 
+On Fri, 18 Aug 2006 10:50:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> Does something like this seem correct ? If an exception occured on a first
+> instruction of a function, show_backtrace() will call get_frame_info()
+> with info->func_size != 0 but very small. In this case it returns 1.
 
-Does something like this seem correct ? If an exception occured on a first
-instruction of a function, show_backtrace() will call get_frame_info()
-with info->func_size != 0 but very small. In this case it returns 1.
+Why get_frame_info() will be called with info->func_size != 0 ?  The
+offset of a _first_ instruction is 0, so "ofs" of this line in
+unwind_stack() will be 0.
 
-If the caller of get_frame_info() set info->func_size = 0, then it doesn't
-know the size of the function, and we assume it to 128 instructions.
+	info.func_size = ofs;	/* analyze from start to ofs */
 
-		Franck
-
--- >8 --
-
-
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 951bf9c..5b18806 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -311,12 +311,19 @@ static inline int is_sp_move_ins(union m
- static int get_frame_info(struct mips_frame_info *info)
- {
- 	union mips_instruction *ip = info->func;
--	int i, max_insns =
--		min(128UL, info->func_size / sizeof(union mips_instruction));
-+	unsigned max_insns = info->func_size / sizeof(union mips_instruction);
-+	unsigned i;
- 
- 	info->pc_offset = -1;
- 	info->frame_size = 0;
- 
-+	if (!ip)
-+		goto err;
-+	
-+	if (max_insns == 0)
-+		max_insns = 128U;
-+	max_insns = min(128U, max_insns);
-+
- 	for (i = 0; i < max_insns; i++, ip++) {
- 
- 		if (is_jal_jalr_jr_ins(ip))
-@@ -337,6 +344,7 @@ static int get_frame_info(struct mips_fr
- 	if (info->pc_offset < 0) /* leaf */
- 		return 1;
- 	/* prologue seems boggus... */
-+err:
- 	return -1;
- }
+---
+Atsushi Nemoto

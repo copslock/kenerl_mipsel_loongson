@@ -1,62 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 09:16:08 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:60580 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20037750AbWHRIQG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 Aug 2006 09:16:06 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 18 Aug 2006 17:16:05 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id BAF222047B;
-	Fri, 18 Aug 2006 17:15:59 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id AEC1E20385;
-	Fri, 18 Aug 2006 17:15:59 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k7I8FwW0088776;
-	Fri, 18 Aug 2006 17:15:59 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 18 Aug 2006 17:15:58 +0900 (JST)
-Message-Id: <20060818.171558.89065994.nemoto@toshiba-tops.co.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Remove mfinfo[64] used by get_wchan()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <44E57161.5060104@innova-card.com>
-References: <44E475C8.5000105@innova-card.com>
-	<20060818.115213.108739385.nemoto@toshiba-tops.co.jp>
-	<44E57161.5060104@innova-card.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 09:28:16 +0100 (BST)
+Received: from gprs189-60.eurotel.cz ([160.218.189.60]:13318 "EHLO
+	spitz.ucw.cz") by ftp.linux-mips.org with ESMTP id S20037748AbWHRI2O
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 18 Aug 2006 09:28:14 +0100
+Received: by spitz.ucw.cz (Postfix, from userid 0)
+	id A5AF02787E; Fri, 18 Aug 2006 08:27:37 +0000 (UTC)
+Date:	Fri, 18 Aug 2006 08:27:37 +0000
+From:	Pavel Machek <pavel@ucw.cz>
+To:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc:	=?iso-8859-1?Q?=C9ric?= Piel <Eric.Piel@lifl.fr>,
+	linux-kernel@vger.kernel.org, alan@lxorguk.ukuu.org.uk,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
+Message-ID: <20060818082736.GB7778@ucw.cz>
+References: <200608102318.04512.thomas.koeller@baslerweb.com> <200608142126.29171.thomas.koeller@baslerweb.com> <20060817153138.GE5950@ucw.cz> <200608172230.30682.thomas.koeller@baslerweb.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200608172230.30682.thomas.koeller@baslerweb.com>
+User-Agent: Mutt/1.5.9i
+Return-Path: <root@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12359
+X-archive-position: 12360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 18 Aug 2006 09:50:57 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> >> +	unsigned long size = 0;
-> > 
-> > You must pass some non-zero size even if CONFIG_KALLSYMS was not set.
-> > Otherwise schedule_mfi will not be initialized as expected.  Actually,
-> > this is not a problem of this patch, but we missed this point on
-> > previous cleanups for the get_frame_info()...
+On Thu 17-08-06 22:30:30, Thomas Koeller wrote:
+> On Thursday 17 August 2006 17:31, Pavel Machek wrote:
+> > Well, I guess v4l api will need to be improved, then. That is still
+> > not a reason to introduce completely new api...
 > 
-> or maybe we can just fix get_frame_info() and make it more robust ?
+> The API as implemented by the driver I submitted is very minimalistic,
+> because it is just a starting point. There's more to be added in future,
+> like controlling flashes, interfacing to line-scan cameras clocked by
+> incremental encodes attached to some conveyor, and other stuff which
+> is common in industrial image processing applications. You really do
 
-Maybe.  But info->func_size == 0 is valid input when it was called via
-show_backtrace.  If an exception occured on a first instruction of a
-function, get_frame_info() should return 1.  So it would be easy to
-give some appropriate (128?) size here.
 
----
-Atsushi Nemoto
+If it is _common_, we definitely need an API. We do not want the next
+driver to reinvent it from scratch, right?
+-- 
+Thanks for all the (sleeping) penguins.

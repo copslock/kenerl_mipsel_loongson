@@ -1,74 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 13:17:59 +0100 (BST)
-Received: from nz-out-0102.google.com ([64.233.162.200]:36984 "EHLO
-	nz-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037771AbWHRMRz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 Aug 2006 13:17:55 +0100
-Received: by nz-out-0102.google.com with SMTP id s1so495499nze
-        for <linux-mips@linux-mips.org>; Fri, 18 Aug 2006 05:17:54 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=jTDSFxNY/3aCam8F0JKxzjgzh4cxwznoSMvK6URqKuArkf9Tll34opK0jkPngE2hgVJmQ1GGhD5t6/XCOaqhLXfRWnq6dbic7Etg2nDpkmdSoQejG+Gy32rNswlLiiUCxeD/tlrvLqA5Ciwk95OV8NOhLK6Yjm9MPHERHtm7GcA=
-Received: by 10.65.219.4 with SMTP id w4mr3562924qbq;
-        Fri, 18 Aug 2006 05:17:54 -0700 (PDT)
-Received: from ?192.168.0.24? ( [194.3.162.233])
-        by mx.gmail.com with ESMTP id 6sm122176wrh.2006.08.18.05.17.52;
-        Fri, 18 Aug 2006 05:17:54 -0700 (PDT)
-Message-ID: <44E5AFD9.1050101@innova-card.com>
-Date:	Fri, 18 Aug 2006 14:17:29 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 14:16:07 +0100 (BST)
+Received: from mail.tmr.com ([64.65.253.246]:10696 "EHLO pixels.tmr.com")
+	by ftp.linux-mips.org with ESMTP id S20037765AbWHRNQF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2006 14:16:05 +0100
+Received: from [127.0.0.1] (pixels.tmr.com [127.0.0.1])
+	by pixels.tmr.com (8.12.10/8.12.10) with ESMTP id k7IDJpX2016674;
+	Fri, 18 Aug 2006 09:19:52 -0400
+Message-ID: <44E5BE77.9040200@tmr.com>
+Date:	Fri, 18 Aug 2006 09:19:51 -0400
+From:	Bill Davidsen <davidsen@tmr.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.0.5) Gecko/20060720 SeaMonkey/1.0.3
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, ralf@linux-mips.org,
+To:	Thomas Koeller <thomas.koeller@baslerweb.com>
+CC:	linux-kernel@vger.kernel.org, alan@lxorguk.ukuu.org.uk,
 	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Remove mfinfo[64] used by get_wchan()
-References: <44E57161.5060104@innova-card.com>	<20060818.171558.89065994.nemoto@toshiba-tops.co.jp>	<44E57F39.2020009@innova-card.com> <20060818.181136.85412687.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20060818.181136.85412687.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii
+Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
+References: <200608102318.04512.thomas.koeller@baslerweb.com> <200608142126.29171.thomas.koeller@baslerweb.com> <20060817153138.GE5950@ucw.cz> <200608172230.30682.thomas.koeller@baslerweb.com>
+In-Reply-To: <200608172230.30682.thomas.koeller@baslerweb.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <davidsen@tmr.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12363
+X-archive-position: 12364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: davidsen@tmr.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Fri, 18 Aug 2006 10:50:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->> Does something like this seem correct ? If an exception occured on a first
->> instruction of a function, show_backtrace() will call get_frame_info()
->> with info->func_size != 0 but very small. In this case it returns 1.
+Thomas Koeller wrote:
+> On Thursday 17 August 2006 17:31, Pavel Machek wrote:
+>> Well, I guess v4l api will need to be improved, then. That is still
+>> not a reason to introduce completely new api...
 > 
-> Why get_frame_info() will be called with info->func_size != 0 ?  The
-> offset of a _first_ instruction is 0, so "ofs" of this line in
-> unwind_stack() will be 0.
+> The API as implemented by the driver I submitted is very minimalistic,
+> because it is just a starting point. There's more to be added in future,
+> like controlling flashes, interfacing to line-scan cameras clocked by
+> incremental encodes attached to some conveyor, and other stuff which
+> is common in industrial image processing applications. You really do
+> not want to clutter the v4l2 API with these things; that would hardly
+> be an 'improvement'.
 > 
-> 	info.func_size = ofs;	/* analyze from start to ofs */
+> Different interfaces, designed to serve different purposes...
 > 
+If you look at Pavel's posts WRT swsusp2, he has taken this position 
+before, that lack of functionality in {something} is no justification to 
+introduce a new solution, and that the limitations of {something} can be 
+addressed by incremental improvement. Like any good idea, this can be 
+carried to extremes.
 
-because in unwind_stack(), before the line you showed, we do:
+Don't take it personally, just write working code people can patch in. 
+When your code has the features you mentioned it will be highly useful 
+and hopefully ported to many devices. I guess security monitoring is an 
+"industrial image processing application," which interests me. At the 
+moment I would call it an impressive proof of concept, but you have many 
+useful ideas for its future.
 
-	if (!kallsyms_lookup(pc, &size, &ofs, &modname, namebuf))
-		return 0;
-	if (ofs == 0)
-		return 0;
-
-Maybe we should do instead:
-
-	if (!kallsyms_lookup(pc, &size, &ofs, &modname, namebuf))
-		return 0;
-	/* return ra if an exception occured at the first instruction */
-	if (ofs == 0)
-		return ra;
-
-And in any cases, if we pass info->func_size = 0 to get_frame_info(),
-then it will consider the function size as unknown.
-
-		Franck
+-- 
+Bill Davidsen <davidsen@tmr.com>
+   Obscure bug of 2004: BASH BUFFER OVERFLOW - if bash is being run by a
+normal user and is setuid root, with the "vi" line edit mode selected,
+and the character set is "big5," an off-by-one errors occurs during
+wildcard (glob) expansion.

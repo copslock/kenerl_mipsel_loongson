@@ -1,66 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 14:16:07 +0100 (BST)
-Received: from mail.tmr.com ([64.65.253.246]:10696 "EHLO pixels.tmr.com")
-	by ftp.linux-mips.org with ESMTP id S20037765AbWHRNQF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2006 14:16:05 +0100
-Received: from [127.0.0.1] (pixels.tmr.com [127.0.0.1])
-	by pixels.tmr.com (8.12.10/8.12.10) with ESMTP id k7IDJpX2016674;
-	Fri, 18 Aug 2006 09:19:52 -0400
-Message-ID: <44E5BE77.9040200@tmr.com>
-Date:	Fri, 18 Aug 2006 09:19:51 -0400
-From:	Bill Davidsen <davidsen@tmr.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.0.5) Gecko/20060720 SeaMonkey/1.0.3
-MIME-Version: 1.0
-To:	Thomas Koeller <thomas.koeller@baslerweb.com>
-CC:	linux-kernel@vger.kernel.org, alan@lxorguk.ukuu.org.uk,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
-References: <200608102318.04512.thomas.koeller@baslerweb.com> <200608142126.29171.thomas.koeller@baslerweb.com> <20060817153138.GE5950@ucw.cz> <200608172230.30682.thomas.koeller@baslerweb.com>
-In-Reply-To: <200608172230.30682.thomas.koeller@baslerweb.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Aug 2006 15:02:26 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:39406 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037786AbWHROCZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Aug 2006 15:02:25 +0100
+Received: from localhost (p7196-ipad34funabasi.chiba.ocn.ne.jp [124.85.64.196])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id DC312A2B4; Fri, 18 Aug 2006 23:02:19 +0900 (JST)
+Date:	Fri, 18 Aug 2006 23:04:03 +0900 (JST)
+Message-Id: <20060818.230403.25910276.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Remove mfinfo[64] used by get_wchan()
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44E5AFD9.1050101@innova-card.com>
+References: <44E57F39.2020009@innova-card.com>
+	<20060818.181136.85412687.nemoto@toshiba-tops.co.jp>
+	<44E5AFD9.1050101@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <davidsen@tmr.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12364
+X-archive-position: 12365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davidsen@tmr.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Koeller wrote:
-> On Thursday 17 August 2006 17:31, Pavel Machek wrote:
->> Well, I guess v4l api will need to be improved, then. That is still
->> not a reason to introduce completely new api...
+On Fri, 18 Aug 2006 14:17:29 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > Why get_frame_info() will be called with info->func_size != 0 ?  The
+> > offset of a _first_ instruction is 0, so "ofs" of this line in
+> > unwind_stack() will be 0.
+> > 
+> > 	info.func_size = ofs;	/* analyze from start to ofs */
+> > 
 > 
-> The API as implemented by the driver I submitted is very minimalistic,
-> because it is just a starting point. There's more to be added in future,
-> like controlling flashes, interfacing to line-scan cameras clocked by
-> incremental encodes attached to some conveyor, and other stuff which
-> is common in industrial image processing applications. You really do
-> not want to clutter the v4l2 API with these things; that would hardly
-> be an 'improvement'.
+> because in unwind_stack(), before the line you showed, we do:
 > 
-> Different interfaces, designed to serve different purposes...
-> 
-If you look at Pavel's posts WRT swsusp2, he has taken this position 
-before, that lack of functionality in {something} is no justification to 
-introduce a new solution, and that the limitations of {something} can be 
-addressed by incremental improvement. Like any good idea, this can be 
-carried to extremes.
+> 	if (!kallsyms_lookup(pc, &size, &ofs, &modname, namebuf))
+> 		return 0;
+> 	if (ofs == 0)
+> 		return 0;
 
-Don't take it personally, just write working code people can patch in. 
-When your code has the features you mentioned it will be highly useful 
-and hopefully ported to many devices. I guess security monitoring is an 
-"industrial image processing application," which interests me. At the 
-moment I would call it an impressive proof of concept, but you have many 
-useful ideas for its future.
+Oh I missed it.
 
--- 
-Bill Davidsen <davidsen@tmr.com>
-   Obscure bug of 2004: BASH BUFFER OVERFLOW - if bash is being run by a
-normal user and is setuid root, with the "vi" line edit mode selected,
-and the character set is "big5," an off-by-one errors occurs during
-wildcard (glob) expansion.
+> Maybe we should do instead:
+> 
+> 	if (!kallsyms_lookup(pc, &size, &ofs, &modname, namebuf))
+> 		return 0;
+> 	/* return ra if an exception occured at the first instruction */
+> 	if (ofs == 0)
+> 		return ra;
+
+Sure.  I should be a right fix.  This part must be fixed anyway.
+
+> And in any cases, if we pass info->func_size = 0 to get_frame_info(),
+> then it will consider the function size as unknown.
+
+I see.  You're right.
+
+---
+Atsushi Nemoto

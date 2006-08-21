@@ -1,51 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2006 13:47:17 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:39560 "EHLO bacchus.dhis.org")
-	by ftp.linux-mips.org with ESMTP id S20038551AbWHUMrP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Aug 2006 13:47:15 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k7LClXg5015720;
-	Mon, 21 Aug 2006 13:47:33 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k7LClWFZ015719;
-	Mon, 21 Aug 2006 13:47:32 +0100
-Date:	Mon, 21 Aug 2006 13:47:32 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2006 14:57:31 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:25054 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037526AbWHUN53 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Aug 2006 14:57:29 +0100
+Received: from localhost (p7064-ipad03funabasi.chiba.ocn.ne.jp [219.160.87.64])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 67DECAEA2; Mon, 21 Aug 2006 22:57:24 +0900 (JST)
+Date:	Mon, 21 Aug 2006 22:59:10 +0900 (JST)
+Message-Id: <20060821.225910.108307053.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] qemu does not have dcache aliases
-Message-ID: <20060821124731.GA15352@linux-mips.org>
-References: <20060820.003338.25478178.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0608211340120.17504@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 In-Reply-To: <Pine.LNX.4.64N.0608211340120.17504@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <20060820.003338.25478178.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.64N.0608211340120.17504@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12378
+X-archive-position: 12379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 21, 2006 at 01:45:03PM +0100, Maciej W. Rozycki wrote:
-
-> > @@ -20,7 +20,7 @@ #define cpu_has_ejtag		0
-> >  
-> >  #define cpu_has_llsc		1
-> >  #define cpu_has_vtag_icache	0
-> > -#define cpu_has_dc_aliases	(PAGE_SIZE < 0x4000)
-> > +#define cpu_has_dc_aliases	0
-> >  #define cpu_has_ic_fills_f_dc	0
-> >  
-> >  #define cpu_has_dsp		0
-> 
+On Mon, 21 Aug 2006 13:45:03 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
 >  Hmm, it looks like a bug in QEMU -- we should definitely implement them!
 
-In this case I'd rather suggest to fix reality to match emulation ;-)
+Well, the QEMU cpu has 2-way 2kB dcache... does not have aliasing
+anyway. :-)
 
-  Ralf
+Or we can just remove cpu_has_dc_aliases from the file and use generic
+definition.
+
+---
+Atsushi Nemoto

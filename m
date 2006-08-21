@@ -1,56 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2006 16:16:24 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:3847 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20037551AbWHUPQW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 21 Aug 2006 16:16:22 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 27BEAF6E17;
-	Mon, 21 Aug 2006 17:16:18 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id iMkV-YC-NLBA; Mon, 21 Aug 2006 17:16:17 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id BFEF2F6483;
-	Mon, 21 Aug 2006 17:16:17 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.7/8.13.1) with ESMTP id k7LFGQtR012308;
-	Mon, 21 Aug 2006 17:16:26 +0200
-Date:	Mon, 21 Aug 2006 16:16:21 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Aug 2006 16:20:31 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:40424 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037552AbWHUPUa (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Aug 2006 16:20:30 +0100
+Received: from localhost (p7064-ipad03funabasi.chiba.ocn.ne.jp [219.160.87.64])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A578196B8; Tue, 22 Aug 2006 00:20:25 +0900 (JST)
+Date:	Tue, 22 Aug 2006 00:22:11 +0900 (JST)
+Message-Id: <20060822.002211.123673881.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] qemu does not have dcache aliases
-In-Reply-To: <20060821.225910.108307053.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0608211612090.17504@blysk.ds.pg.gda.pl>
-References: <20060820.003338.25478178.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.64N.0608211340120.17504@blysk.ds.pg.gda.pl>
- <20060821.225910.108307053.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.4/1700/Mon Aug 21 14:08:16 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060821144605.GA19032@linux-mips.org>
+References: <Pine.LNX.4.64N.0608211340120.17504@blysk.ds.pg.gda.pl>
+	<20060821.225910.108307053.anemo@mba.ocn.ne.jp>
+	<20060821144605.GA19032@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12383
+X-archive-position: 12384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 21 Aug 2006, Atsushi Nemoto wrote:
+On Mon, 21 Aug 2006 15:46:06 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> The CPU emulated by Qemu might change eventually so I think this is
+> preferable.
 
-> >  Hmm, it looks like a bug in QEMU -- we should definitely implement them!
-> 
-> Well, the QEMU cpu has 2-way 2kB dcache... does not have aliasing
-> anyway. :-)
+Then we can just remove mach-qemu/cpu-features-overrides.h to get
+maximum availability.  Would I create a patch?
 
- I don't think emulating a bigger cache so that we can add aliases should 
-be *that* difficult.  Adding aliases themselves might be a bit trickier, 
-but the gain would certainly justify the hassle, wouldn't it?
-
-  Maciej
+---
+Atsushi Nemoto

@@ -1,58 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2006 16:27:35 +0100 (BST)
-Received: from mx.globalone.ru ([194.84.254.251]:50359 "EHLO mx.globalone.ru")
-	by ftp.linux-mips.org with ESMTP id S20038730AbWHVP1d (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Aug 2006 16:27:33 +0100
-Received: from mx.globalone.ru (localhost [127.0.0.1])
-	by mx.globalone.ru (8.13.1/8.13.1) with ESMTP id k7MFRGiw005023;
-	Tue, 22 Aug 2006 19:27:21 +0400
-Received: from smtp.globalone.ru (smtp.globalone.ru [172.16.38.5])
-	by mx.globalone.ru (8.13.1/8.13.1) with ESMTP id k7MFR1nc004976;
-	Tue, 22 Aug 2006 19:27:01 +0400
-Received: from voropaya ([172.16.38.7]) by smtp.globalone.ru
-          (Netscape Messaging Server 4.15) with SMTP id J4EO9100.MQP; Tue,
-          22 Aug 2006 19:27:01 +0400 
-Message-ID: <0b2801c6c5ff$1ff8a8c0$e90d11ac@spb.in.rosprint.ru>
-Reply-To: "Alexander Voropay" <a.voropay@equant.ru>
-From:	"Alexander Voropay" <a.voropay@equant.ru>
-To:	"Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp>,
-	"Ralf Baechle" <ralf@linux-mips.org>
-Cc:	"linux-mips" <linux-mips@linux-mips.org>
-References: <20060822223406.56435d84.yoichi_yuasa@tripeaks.co.jp>
-Subject: Re: [PATCH 2/12] Cobalt use GT64120 PCI routines
-Date:	Tue, 22 Aug 2006 19:22:01 +0400
-Organization: &Equant
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2006 21:27:43 +0100 (BST)
+Received: from mail01.hansenet.de ([213.191.73.61]:47289 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20037719AbWHVU1k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Aug 2006 21:27:40 +0100
+Received: from [213.39.167.52] (213.39.167.52) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 44EA7D5F00036A5F; Tue, 22 Aug 2006 22:27:21 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 63A771770E8;
+	Tue, 22 Aug 2006 22:27:20 +0200 (CEST)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Subject: Re: [PATCH] RM9000 serial driver
+Date:	Tue, 22 Aug 2006 22:27:20 +0200
+User-Agent: KMail/1.9.3
+Cc:	sshtylyov@ru.mvista.com, rmk+serial@arm.linux.org.uk,
+	linux-serial@vger.kernel.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org,
+	Thomas =?iso-8859-1?q?K=F6ller?= <thomas@koeller.dyndns.org>
+References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608220057.52213.thomas.koeller@baslerweb.com> <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp>
+Organization: Basler AG
 MIME-Version: 1.0
 Content-Type: text/plain;
-	format=flowed;
-	charset="ISO-8859-1";
-	reply-type=original
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.2869
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
-X-Scanned-By: MIMEDefang 2.56 on 172.16.38.2
-Return-Path: <a.voropay@equant.ru>
+Content-Disposition: inline
+Message-Id: <200608222227.20181.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12410
+X-archive-position: 12411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.voropay@equant.ru
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-"Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp> wrote:
-> 
-> This patch has moved GT64111 PCI routine to GT64120 PCI routine about Cobalt.
-> They are same codes.
+On Tuesday 22 August 2006 02:59, Yoichi Yuasa wrote:
+>
+> If you have an another standard 8250 port. this driver cannot support it
+> You should do as well as AU1X00.
+>
+> Yoichi
 
- Hm... GT64111 and GT64120 are two different chips, i.e. GT64120 has two
-PCI buses e.t.c. May be, it wil be better to move this code to something
-more genetic, like GT64* ?
+The AU1X00 code obviously assumes that every port that is not an AU1X00 is
+a standard port requiring no register mapping. However, this is of course
+not necessarily true in the most general case. There could be platforms
+with multiple ports, all non-standard, but in different ways. Handling this
+would require per-port mapping functions, which could be achieved by adding
+function pointers to struct uart_8250_port. However, this would add the
+overhead of a real, non-inlined function call to every register access.
 
+Also, it seems to me that the whole register-mapping stuff conflicts with
+autodetection, because autoconfig() uses serial_inp() and serial_outp()
+before the port types, and hence the mapping requirements, are known.
+This is not a problem for me, however, since the correct port type is
+set up by the platform using early_serial_setup().
 
---
--=AV=-
+-- 
+Thomas Koeller, Software Development
+
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
+
+Tel +49 (4102) 463-390
+Fax +49 (4102) 463-46390
+
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com

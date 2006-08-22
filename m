@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2006 14:59:40 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:32826 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038726AbWHVN6r (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Aug 2006 14:58:47 +0100
-Received: by mo.po.2iij.net (mo30) id k7MDwiGS013049; Tue, 22 Aug 2006 22:58:44 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2006 15:00:07 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:8994 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038731AbWHVN6s (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Aug 2006 14:58:48 +0100
+Received: by mo.po.2iij.net (mo32) id k7MDwjt5037044; Tue, 22 Aug 2006 22:58:45 +0900 (JST)
 Received: from localhost.localdomain (191.28.30.125.dy.iij4u.or.jp [125.30.28.191])
-	by mbox.po.2iij.net (mbox33) id k7MDwgB8012175
+	by mbox.po.2iij.net (mbox33) id k7MDwhJN012197
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 22 Aug 2006 22:58:43 +0900 (JST)
-Date:	Tue, 22 Aug 2006 22:36:45 +0900
+	Tue, 22 Aug 2006 22:58:44 +0900 (JST)
+Date:	Tue, 22 Aug 2006 22:40:48 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 3/12] Cobalt is moved under gt64120 directory
-Message-Id: <20060822223645.5735c990.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH 4/12] added new common timer routines for GT64111/GT64120
+Message-Id: <20060822224048.0664ad5f.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +22,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12399
+X-archive-position: 12400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,1028 +32,416 @@ X-list: linux-mips
 
 Hi Ralf,
 
-This patch has moved cobalt directory under gt64120 directory.
-Cobalt servers are using GT64111. It's almost same as GT64120.
+This patch has added new common timer routines for GT64111/GT64120.
 
 Yoichi
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
 diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
---- mips-orig/arch/mips/Kconfig	2006-08-18 23:10:49.041972250 +0900
-+++ mips/arch/mips/Kconfig	2006-08-18 23:08:01.511502250 +0900
-@@ -830,7 +830,7 @@ source "arch/mips/tx4927/Kconfig"
- source "arch/mips/tx4938/Kconfig"
- source "arch/mips/vr41xx/Kconfig"
- source "arch/mips/philips/pnx8550/common/Kconfig"
--source "arch/mips/cobalt/Kconfig"
-+source "arch/mips/gt64120/cobalt/Kconfig"
+--- mips-orig/arch/mips/Kconfig	2006-08-18 23:18:55.852396000 +0900
++++ mips/arch/mips/Kconfig	2006-08-18 23:19:19.769890750 +0900
+@@ -1024,22 +1024,32 @@ config EMMA2RH
+ #
+ choice
+ 	prompt "Galileo Chip Clock"
+-	#default SYSCLK_83 if MIPS_EV64120
+-	depends on MIPS_EV64120 || MOMENCO_OCELOT || MOMENCO_OCELOT_G
++	depends on MIPS_COBALT || MIPS_EV64120 || MOMENCO_OCELOT || MOMENCO_OCELOT_G
++	default SYSCLK_50 if MIPS_COBALT
+ 	default SYSCLK_83 if MIPS_EV64120
+ 	default SYSCLK_100 if MOMENCO_OCELOT || MOMENCO_OCELOT_G
  
- endmenu
++config SYSCLK_50
++	bool "50MHz" if MIPS_COBALT
++
+ config SYSCLK_75
+-	bool "75" if MIPS_EV64120
++	bool "75MHz" if MIPS_EV64120
+ 
+ config SYSCLK_83
+-	bool "83.3" if MIPS_EV64120
++	bool "83.3MHz" if MIPS_EV64120
+ 
+ config SYSCLK_100
+-	bool "100" if MIPS_EV64120 || MOMENCO_OCELOT || MOMENCO_OCELOT_G
++	bool "100MHz" if MIPS_EV64120 || MOMENCO_OCELOT || MOMENCO_OCELOT_G
+ 
+ endchoice
+ 
++config SYSCLK 
++	int
++	default 50000000 if SYSCLK_50
++	default 75000000 if SYSCLK_70
++	default 83333000 if SYSCLK_83
++	default 100000000 if SYSCLK_100
++
+ config ARC32
+ 	bool
  
 diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Makefile mips/arch/mips/Makefile
---- mips-orig/arch/mips/Makefile	2006-08-18 23:04:38.033555000 +0900
-+++ mips/arch/mips/Makefile	2006-08-18 23:08:01.515502500 +0900
-@@ -258,7 +258,7 @@ load-$(CONFIG_MIPS_XXS1500)	+= 0xfffffff
- #
- # Cobalt Server
- #
--core-$(CONFIG_MIPS_COBALT)	+= arch/mips/cobalt/
-+core-$(CONFIG_MIPS_COBALT)	+= arch/mips/gt64120/cobalt/
- cflags-$(CONFIG_MIPS_COBALT)	+= -Iinclude/asm-mips/mach-cobalt
- load-$(CONFIG_MIPS_COBALT)	+= 0xffffffff80080000
+--- mips-orig/arch/mips/Makefile	2006-08-18 23:18:55.856396250 +0900
++++ mips/arch/mips/Makefile	2006-08-18 23:19:19.769890750 +0900
+@@ -271,11 +271,13 @@ libs-$(CONFIG_MACH_DECSTATION)	+= arch/m
+ load-$(CONFIG_MACH_DECSTATION)	+= 0xffffffff80040000
+ CLEAN_FILES			+= drivers/tc/lk201-map.c
  
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/Kconfig mips/arch/mips/cobalt/Kconfig
---- mips-orig/arch/mips/cobalt/Kconfig	2006-08-18 23:04:38.069539250 +0900
-+++ mips/arch/mips/cobalt/Kconfig	1970-01-01 09:00:00.000000000 +0900
-@@ -1,7 +0,0 @@
--config EARLY_PRINTK
--	bool "Early console support"
--	depends on MIPS_COBALT
--	help
--	  Provide early console support by direct access to the
--	  on board UART. The UART must have been previously
--	  initialised by the boot loader.
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/Makefile mips/arch/mips/cobalt/Makefile
---- mips-orig/arch/mips/cobalt/Makefile	2006-08-18 23:04:38.069539250 +0900
-+++ mips/arch/mips/cobalt/Makefile	1970-01-01 09:00:00.000000000 +0900
-@@ -1,9 +0,0 @@
--#
--# Makefile for the Cobalt micro systems family specific parts of the kernel
--#
--
--obj-y	 := irq.o reset.o setup.o
--
--obj-$(CONFIG_EARLY_PRINTK)	+= console.o
--
--EXTRA_AFLAGS := $(CFLAGS)
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/console.c mips/arch/mips/cobalt/console.c
---- mips-orig/arch/mips/cobalt/console.c	2006-08-18 23:04:38.069539250 +0900
-+++ mips/arch/mips/cobalt/console.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,47 +0,0 @@
--/*
-- * (C) P. Horton 2006
-- */
--
--#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/console.h>
--#include <linux/serial_reg.h>
--#include <asm/addrspace.h>
++
++core-$(CONFIG_MIPS_GT64120)	+= arch/mips/gt64120/common/
++
+ #
+ # Galileo EV64120 Board
+ #
+ core-$(CONFIG_MIPS_EV64120)	+= arch/mips/gt64120/ev64120/
+-core-$(CONFIG_MIPS_EV64120)	+= arch/mips/gt64120/common/
+ cflags-$(CONFIG_MIPS_EV64120)	+= -Iinclude/asm-mips/mach-ev64120
+ load-$(CONFIG_MIPS_EV64120)	+= 0xffffffff80100000
+ 
+@@ -345,8 +347,7 @@ load-$(CONFIG_MIPS_SIM)		+= 0x80100000
+ # The Ocelot setup.o must be linked early - it does the ioremap() for the
+ # mips_io_port_base.
+ #
+-core-$(CONFIG_MOMENCO_OCELOT)	+= arch/mips/gt64120/common/ \
+-				   arch/mips/gt64120/momenco_ocelot/
++core-$(CONFIG_MOMENCO_OCELOT)	+= arch/mips/gt64120/momenco_ocelot/
+ cflags-$(CONFIG_MOMENCO_OCELOT)	+= -Iinclude/asm-mips/mach-ocelot
+ load-$(CONFIG_MOMENCO_OCELOT)	+= 0xffffffff80100000
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/irq.c mips/arch/mips/gt64120/cobalt/irq.c
+--- mips-orig/arch/mips/gt64120/cobalt/irq.c	2006-08-18 23:18:55.856396250 +0900
++++ mips/arch/mips/gt64120/cobalt/irq.c	2006-08-18 23:19:19.769890750 +0900
+@@ -18,7 +18,7 @@
+ #include <asm/gt64120.h>
+ #include <asm/ptrace.h>
+ 
 -#include <asm/mach-cobalt/cobalt.h>
--
--static void putchar(int c)
--{
--	if(c == '\n')
--		putchar('\r');
--
--	while(!(COBALT_UART[UART_LSR] & UART_LSR_THRE))
--		;
--
--	COBALT_UART[UART_TX] = c;
--}
--
--static void cons_write(struct console *c, const char *s, unsigned n)
--{
--	while(n-- && *s)
--		putchar(*s++);
--}
--
--static struct console cons_info =
--{
--	.name	= "uart",
--	.write	= cons_write,
--	.flags	= CON_PRINTBUFFER | CON_BOOT,
--	.index	= -1,
--};
--
--void __init cobalt_early_console(void)
--{
--	register_console(&cons_info);
--
--	printk("Cobalt: early console registered\n");
--}
--
--void __init disable_early_printk(void)
--{
--	unregister_console(&cons_info);
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/irq.c mips/arch/mips/cobalt/irq.c
---- mips-orig/arch/mips/cobalt/irq.c	2006-08-18 23:10:49.017970750 +0900
-+++ mips/arch/mips/cobalt/irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,133 +0,0 @@
--/*
-- * IRQ vector handles
-- *
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1995, 1996, 1997, 2003 by Ralf Baechle
-- */
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <linux/irq.h>
--#include <linux/interrupt.h>
--#include <linux/pci.h>
--
--#include <asm/i8259.h>
--#include <asm/irq_cpu.h>
--#include <asm/gt64120.h>
--#include <asm/ptrace.h>
--
--#include <asm/mach-cobalt/cobalt.h>
--
--/*
-- * We have two types of interrupts that we handle, ones that come in through
-- * the CPU interrupt lines, and ones that come in on the via chip. The CPU
-- * mappings are:
-- *
-- *    16   - Software interrupt 0 (unused)	IE_SW0
-- *    17   - Software interrupt 1 (unused)	IE_SW1
-- *    18   - Galileo chip (timer)		IE_IRQ0
-- *    19   - Tulip 0 + NCR SCSI			IE_IRQ1
-- *    20   - Tulip 1				IE_IRQ2
-- *    21   - 16550 UART				IE_IRQ3
-- *    22   - VIA southbridge PIC		IE_IRQ4
-- *    23   - unused				IE_IRQ5
-- *
-- * The VIA chip is a master/slave 8259 setup and has the following interrupts:
-- *
-- *     8  - RTC
-- *     9  - PCI
-- *    14  - IDE0
-- *    15  - IDE1
-- */
--
--static inline void galileo_irq(struct pt_regs *regs)
--{
--	unsigned int mask, pending, devfn;
--
--	mask = GT_READ(GT_INTRMASK_OFS);
--	pending = GT_READ(GT_INTRCAUSE_OFS) & mask;
--
++#include <cobalt.h>
+ 
+ /*
+  * We have two types of interrupts that we handle, ones that come in through
+@@ -49,9 +49,9 @@ static inline void galileo_irq(struct pt
+ 	mask = GT_READ(GT_INTRMASK_OFS);
+ 	pending = GT_READ(GT_INTRCAUSE_OFS) & mask;
+ 
 -	if (pending & GALILEO_INTR_T0EXP) {
--
++	if (pending & GALILEO_INTR_T3EXP) {
+ 
 -		GT_WRITE(GT_INTRCAUSE_OFS, ~GALILEO_INTR_T0EXP);
--		do_IRQ(COBALT_GALILEO_IRQ, regs);
--
--	} else if (pending & GALILEO_INTR_RETRY_CTR) {
--
--		devfn = GT_READ(GT_PCI0_CFGADDR_OFS) >> 8;
--		GT_WRITE(GT_INTRCAUSE_OFS, ~GALILEO_INTR_RETRY_CTR);
--		printk(KERN_WARNING "Galileo: PCI retry count exceeded (%02x.%u)\n",
--			PCI_SLOT(devfn), PCI_FUNC(devfn));
--
--	} else {
--
--		GT_WRITE(GT_INTRMASK_OFS, mask & ~pending);
--		printk(KERN_WARNING "Galileo: masking unexpected interrupt %08x\n", pending);
--	}
--}
--
--static inline void via_pic_irq(struct pt_regs *regs)
--{
--	int irq;
--
--	irq = i8259_irq();
--	if (irq >= 0)
--		do_IRQ(irq, regs);
--}
--
--asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
--{
--	unsigned pending;
--
--	pending = read_c0_status() & read_c0_cause();
--
--	if (pending & CAUSEF_IP2)			/* COBALT_GALILEO_IRQ (18) */
--
--		galileo_irq(regs);
--
--	else if (pending & CAUSEF_IP6)			/* COBALT_VIA_IRQ (22) */
--
--		via_pic_irq(regs);
--
--	else if (pending & CAUSEF_IP3)			/* COBALT_ETH0_IRQ (19) */
--
--		do_IRQ(COBALT_CPU_IRQ + 3, regs);
--
--	else if (pending & CAUSEF_IP4)			/* COBALT_ETH1_IRQ (20) */
--
--		do_IRQ(COBALT_CPU_IRQ + 4, regs);
--
--	else if (pending & CAUSEF_IP5)			/* COBALT_SERIAL_IRQ (21) */
--
--		do_IRQ(COBALT_CPU_IRQ + 5, regs);
--
--	else if (pending & CAUSEF_IP7)			/* IRQ 23 */
--
--		do_IRQ(COBALT_CPU_IRQ + 7, regs);
--}
--
--static struct irqaction irq_via = {
--	no_action, 0, { { 0, } }, "cascade", NULL, NULL
--};
--
--void __init arch_init_irq(void)
--{
--	/*
--	 * Mask all Galileo interrupts. The Galileo
--	 * handler is set in cobalt_timer_setup()
--	 */
--	GT_WRITE(GT_INTRMASK_OFS, 0);
--
--	init_i8259_irqs();				/*  0 ... 15 */
--	mips_cpu_irq_init(COBALT_CPU_IRQ);		/* 16 ... 23 */
--
--	/*
--	 * Mask all cpu interrupts
--	 *  (except IE4, we already masked those at VIA level)
--	 */
--	change_c0_status(ST0_IM, IE_IRQ4);
--
--	setup_irq(COBALT_VIA_IRQ, &irq_via);
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/reset.c mips/arch/mips/cobalt/reset.c
---- mips-orig/arch/mips/cobalt/reset.c	2006-08-18 23:04:38.069539250 +0900
-+++ mips/arch/mips/cobalt/reset.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,65 +0,0 @@
--/*
-- * Cobalt Reset operations
-- *
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1995, 1996, 1997 by Ralf Baechle
-- * Copyright (C) 2001 by Liam Davies (ldavies@agile.tv)
-- */
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <asm/cacheflush.h>
--#include <asm/io.h>
--#include <asm/processor.h>
--#include <asm/reboot.h>
--#include <asm/system.h>
--#include <asm/mipsregs.h>
++		GT_WRITE(GT_INTRCAUSE_OFS, ~GALILEO_INTR_T3EXP);
+ 		do_IRQ(COBALT_GALILEO_IRQ, regs);
+ 
+ 	} else if (pending & GALILEO_INTR_RETRY_CTR) {
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/setup.c mips/arch/mips/gt64120/cobalt/setup.c
+--- mips-orig/arch/mips/gt64120/cobalt/setup.c	2006-08-18 23:18:55.860396500 +0900
++++ mips/arch/mips/gt64120/cobalt/setup.c	2006-08-18 23:19:19.773891000 +0900
+@@ -25,7 +25,7 @@
+ #include <asm/gt64120.h>
+ #include <asm/serial.h>
+ 
 -#include <asm/mach-cobalt/cobalt.h>
--
--void cobalt_machine_halt(void)
--{
--	int state, last, diff;
--	unsigned long mark;
--
--	/*
--	 * turn off bar on Qube, flash power off LED on RaQ (0.5Hz)
--	 *
--	 * restart if ENTER and SELECT are pressed
--	 */
--
--	last = COBALT_KEY_PORT;
--
--	for (state = 0;;) {
--
--		state ^= COBALT_LED_POWER_OFF;
--		COBALT_LED_PORT = state;
--
--		diff = COBALT_KEY_PORT ^ last;
--		last ^= diff;
--
--		if((diff & (COBALT_KEY_ENTER | COBALT_KEY_SELECT)) && !(~last & (COBALT_KEY_ENTER | COBALT_KEY_SELECT)))
--			COBALT_LED_PORT = COBALT_LED_RESET;
--
--		for (mark = jiffies; jiffies - mark < HZ;)
--			;
--	}
--}
--
--void cobalt_machine_restart(char *command)
--{
--	COBALT_LED_PORT = COBALT_LED_RESET;
--
--	/* we should never get here */
--	cobalt_machine_halt();
--}
--
--/*
-- * This triggers the luser mode device driver for the power switch ;-)
-- */
--void cobalt_machine_power_off(void)
--{
--	printk("You can switch the machine off now.\n");
--	cobalt_machine_halt();
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/setup.c mips/arch/mips/cobalt/setup.c
---- mips-orig/arch/mips/cobalt/setup.c	2006-08-18 23:10:49.045972500 +0900
-+++ mips/arch/mips/cobalt/setup.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,212 +0,0 @@
--/*
-- * Setup pointers to hardware dependent routines.
-- *
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1996, 1997, 2004, 05 by Ralf Baechle (ralf@linux-mips.org)
-- * Copyright (C) 2001, 2002, 2003 by Liam Davies (ldavies@agile.tv)
-- *
-- */
--#include <linux/interrupt.h>
--#include <linux/pci.h>
--#include <linux/init.h>
--#include <linux/pm.h>
--#include <linux/serial.h>
--#include <linux/serial_core.h>
--
--#include <asm/bootinfo.h>
--#include <asm/time.h>
--#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/processor.h>
--#include <asm/reboot.h>
--#include <asm/gt64120.h>
--#include <asm/serial.h>
--
--#include <asm/mach-cobalt/cobalt.h>
--
--extern void cobalt_machine_restart(char *command);
--extern void cobalt_machine_halt(void);
--extern void cobalt_machine_power_off(void);
--extern void cobalt_early_console(void);
--
--int cobalt_board_id;
--
--const char *get_system_type(void)
--{
--	switch (cobalt_board_id) {
--		case COBALT_BRD_ID_QUBE1:
--			return "Cobalt Qube";
--		case COBALT_BRD_ID_RAQ1:
--			return "Cobalt RaQ";
--		case COBALT_BRD_ID_QUBE2:
--			return "Cobalt Qube2";
--		case COBALT_BRD_ID_RAQ2:
--			return "Cobalt RaQ2";
--	}
--	return "MIPS Cobalt";
--}
--
--void __init plat_timer_setup(struct irqaction *irq)
--{
++#include <cobalt.h>
+ 
+ extern void cobalt_machine_restart(char *command);
+ extern void cobalt_machine_halt(void);
+@@ -51,17 +51,8 @@ const char *get_system_type(void)
+ 
+ void __init plat_timer_setup(struct irqaction *irq)
+ {
 -	/* Load timer value for 1KHz (TCLK is 50MHz) */
 -	GT_WRITE(GT_TC0_OFS, 50*1000*1000 / 1000);
 -
 -	/* Enable timer */
 -	GT_WRITE(GT_TC_CONTROL_OFS, GALILEO_ENTC0 | GALILEO_SELTC0);
 -
--	/* Register interrupt */
--	setup_irq(COBALT_GALILEO_IRQ, irq);
+ 	/* Register interrupt */
+ 	setup_irq(COBALT_GALILEO_IRQ, irq);
 -
 -	/* Enable interrupt */
 -	GT_WRITE(GT_INTRMASK_OFS, GALILEO_INTR_T0EXP | GT_READ(GT_INTRMASK_OFS));
--}
--
--extern struct pci_ops gt64120_pci_ops;
--
--static struct resource cobalt_mem_resource = {
--	.start	= GT_DEF_PCI0_MEM0_BASE,
--	.end	= GT_DEF_PCI0_MEM0_BASE + GT_DEF_PCI0_MEM0_SIZE - 1,
--	.name	= "PCI memory",
--	.flags	= IORESOURCE_MEM
--};
--
--static struct resource cobalt_io_resource = {
--	.start	= 0x1000,
--	.end	= 0xffff,
--	.name	= "PCI I/O",
--	.flags	= IORESOURCE_IO
--};
--
--static struct resource cobalt_io_resources[] = {
--	{
--		.start	= 0x00,
--		.end	= 0x1f,
--		.name	= "dma1",
--		.flags	= IORESOURCE_BUSY
--	}, {
--		.start	= 0x40,
--		.end	= 0x5f,
--		.name	= "timer",
--		.flags	= IORESOURCE_BUSY
--	}, {
--		.start	= 0x60,
--		.end	= 0x6f,
--		.name	= "keyboard",
--		.flags	= IORESOURCE_BUSY
--	}, {
--		.start	= 0x80,
--		.end	= 0x8f,
--		.name	= "dma page reg",
--		.flags	= IORESOURCE_BUSY
--	}, {
--		.start	= 0xc0,
--		.end	= 0xdf,
--		.name	= "dma2",
--		.flags	= IORESOURCE_BUSY
--	},
--};
--
--#define COBALT_IO_RESOURCES (sizeof(cobalt_io_resources)/sizeof(struct resource))
--
--static struct pci_controller cobalt_pci_controller = {
--	.pci_ops	= &gt64120_pci_ops,
--	.mem_resource	= &cobalt_mem_resource,
--	.mem_offset	= 0,
--	.io_resource	= &cobalt_io_resource,
--	.io_offset	= 0 - GT_DEF_PCI0_IO_BASE,
--};
--
--void __init plat_mem_setup(void)
--{
--	static struct uart_port uart;
--	unsigned int devfn = PCI_DEVFN(COBALT_PCICONF_VIA, 0);
--	int i;
--
--	_machine_restart = cobalt_machine_restart;
--	_machine_halt = cobalt_machine_halt;
--	pm_power_off = cobalt_machine_power_off;
--
--        set_io_port_base(CKSEG1ADDR(GT_DEF_PCI0_IO_BASE));
--
--	/* I/O port resource must include UART and LCD/buttons */
--	ioport_resource.end = 0x0fffffff;
--
--	/* request I/O space for devices used on all i[345]86 PCs */
--	for (i = 0; i < COBALT_IO_RESOURCES; i++)
--		request_resource(&ioport_resource, cobalt_io_resources + i);
--
--        /* Read the cobalt id register out of the PCI config space */
--        PCI_CFG_SET(devfn, (VIA_COBALT_BRD_ID_REG & ~0x3));
--        cobalt_board_id = GT_READ(GT_PCI0_CFGDATA_OFS);
--        cobalt_board_id >>= ((VIA_COBALT_BRD_ID_REG & 3) * 8);
--        cobalt_board_id = VIA_COBALT_BRD_REG_to_ID(cobalt_board_id);
--
--	printk("Cobalt board ID: %d\n", cobalt_board_id);
--
--#ifdef CONFIG_PCI
--	register_pci_controller(&cobalt_pci_controller);
--#endif
--
--#ifdef CONFIG_SERIAL_8250
--	if (cobalt_board_id > COBALT_BRD_ID_RAQ1) {
--
--#ifdef CONFIG_EARLY_PRINTK
--		cobalt_early_console();
--#endif
--
--		uart.line	= 0;
--		uart.type	= PORT_UNKNOWN;
--		uart.uartclk	= 18432000;
--		uart.irq	= COBALT_SERIAL_IRQ;
--		uart.flags	= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
--		uart.iobase	= 0xc800000;
--		uart.iotype	= UPIO_PORT;
--
--		early_serial_setup(&uart);
--	}
--#endif
--}
--
--/*
-- * Prom init. We read our one and only communication with the firmware.
-- * Grab the amount of installed memory.
-- * Better boot loaders (CoLo) pass a command line too :-)
-- */
--
--void __init prom_init(void)
--{
--	int narg, indx, posn, nchr;
--	unsigned long memsz;
--	char **argv;
--
--	mips_machgroup = MACH_GROUP_COBALT;
--
--	memsz = fw_arg0 & 0x7fff0000;
--	narg = fw_arg0 & 0x0000ffff;
--
--	if (narg) {
--		arcs_cmdline[0] = '\0';
--		argv = (char **) fw_arg1;
--		posn = 0;
--		for (indx = 1; indx < narg; ++indx) {
--			nchr = strlen(argv[indx]);
--			if (posn + 1 + nchr + 1 > sizeof(arcs_cmdline))
--				break;
--			if (posn)
--				arcs_cmdline[posn++] = ' ';
--			strcpy(arcs_cmdline + posn, argv[indx]);
--			posn += nchr;
--		}
--	}
--
--	add_memory_region(0x0, memsz, BOOT_MEM_RAM);
--}
--
--unsigned long __init prom_free_prom_memory(void)
--{
--	/* Nothing to do! */
--	return 0;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/Kconfig mips/arch/mips/gt64120/cobalt/Kconfig
---- mips-orig/arch/mips/gt64120/cobalt/Kconfig	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/gt64120/cobalt/Kconfig	2006-08-18 23:08:01.519502750 +0900
-@@ -0,0 +1,7 @@
-+config EARLY_PRINTK
-+	bool "Early console support"
-+	depends on MIPS_COBALT
-+	help
-+	  Provide early console support by direct access to the
-+	  on board UART. The UART must have been previously
-+	  initialised by the boot loader.
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/Makefile mips/arch/mips/gt64120/cobalt/Makefile
---- mips-orig/arch/mips/gt64120/cobalt/Makefile	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/gt64120/cobalt/Makefile	2006-08-18 23:08:01.519502750 +0900
-@@ -0,0 +1,9 @@
-+#
-+# Makefile for the Cobalt micro systems family specific parts of the kernel
-+#
+ }
+ 
+ extern struct pci_ops gt64120_pci_ops;
+@@ -129,6 +120,9 @@ void __init plat_mem_setup(void)
+ 	_machine_halt = cobalt_machine_halt;
+ 	pm_power_off = cobalt_machine_power_off;
+ 
++	gt641xx_disable_alltimers();
++	board_time_init = gt641xx_timer3_init;
 +
-+obj-y	 := irq.o reset.o setup.o
-+
-+obj-$(CONFIG_EARLY_PRINTK)	+= console.o
-+
-+EXTRA_AFLAGS := $(CFLAGS)
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/console.c mips/arch/mips/gt64120/cobalt/console.c
---- mips-orig/arch/mips/gt64120/cobalt/console.c	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/gt64120/cobalt/console.c	2006-08-18 23:08:01.519502750 +0900
-@@ -0,0 +1,47 @@
-+/*
-+ * (C) P. Horton 2006
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/console.h>
-+#include <linux/serial_reg.h>
-+#include <asm/addrspace.h>
-+#include <asm/mach-cobalt/cobalt.h>
-+
-+static void putchar(int c)
-+{
-+	if(c == '\n')
-+		putchar('\r');
-+
-+	while(!(COBALT_UART[UART_LSR] & UART_LSR_THRE))
-+		;
-+
-+	COBALT_UART[UART_TX] = c;
-+}
-+
-+static void cons_write(struct console *c, const char *s, unsigned n)
-+{
-+	while(n-- && *s)
-+		putchar(*s++);
-+}
-+
-+static struct console cons_info =
-+{
-+	.name	= "uart",
-+	.write	= cons_write,
-+	.flags	= CON_PRINTBUFFER | CON_BOOT,
-+	.index	= -1,
-+};
-+
-+void __init cobalt_early_console(void)
-+{
-+	register_console(&cons_info);
-+
-+	printk("Cobalt: early console registered\n");
-+}
-+
-+void __init disable_early_printk(void)
-+{
-+	unregister_console(&cons_info);
-+}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/irq.c mips/arch/mips/gt64120/cobalt/irq.c
---- mips-orig/arch/mips/gt64120/cobalt/irq.c	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/gt64120/cobalt/irq.c	2006-08-18 23:08:01.519502750 +0900
-@@ -0,0 +1,133 @@
-+/*
-+ * IRQ vector handles
+         set_io_port_base(CKSEG1ADDR(GT_DEF_PCI0_IO_BASE));
+ 
+ 	/* I/O port resource must include UART and LCD/buttons */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/common/Makefile mips/arch/mips/gt64120/common/Makefile
+--- mips-orig/arch/mips/gt64120/common/Makefile	2006-08-18 23:16:20.214669250 +0900
++++ mips/arch/mips/gt64120/common/Makefile	2006-08-18 23:19:19.773891000 +0900
+@@ -2,4 +2,4 @@
+ # Makefile for common code of gt64120-based boards.
+ #
+ 
+-obj-y	 		+= time.o
++obj-y	+= time.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/common/time.c mips/arch/mips/gt64120/common/time.c
+--- mips-orig/arch/mips/gt64120/common/time.c	2006-08-18 23:16:20.214669250 +0900
++++ mips/arch/mips/gt64120/common/time.c	2006-08-18 23:19:19.773891000 +0900
+@@ -1,99 +1,50 @@
+ /*
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
++ *  Common timer routines for Galileo GT64111/GT64120
+  *
+- * Galileo Technology chip interrupt handler
++ *  Copyright (C) 2006  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 + *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
 + *
-+ * Copyright (C) 1995, 1996, 1997, 2003 by Ralf Baechle
-+ */
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/irq.h>
-+#include <linux/interrupt.h>
-+#include <linux/pci.h>
-+
-+#include <asm/i8259.h>
-+#include <asm/irq_cpu.h>
-+#include <asm/gt64120.h>
-+#include <asm/ptrace.h>
-+
-+#include <asm/mach-cobalt/cobalt.h>
-+
-+/*
-+ * We have two types of interrupts that we handle, ones that come in through
-+ * the CPU interrupt lines, and ones that come in on the via chip. The CPU
-+ * mappings are:
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
 + *
-+ *    16   - Software interrupt 0 (unused)	IE_SW0
-+ *    17   - Software interrupt 1 (unused)	IE_SW1
-+ *    18   - Galileo chip (timer)		IE_IRQ0
-+ *    19   - Tulip 0 + NCR SCSI			IE_IRQ1
-+ *    20   - Tulip 1				IE_IRQ2
-+ *    21   - 16550 UART				IE_IRQ3
-+ *    22   - VIA southbridge PIC		IE_IRQ4
-+ *    23   - unused				IE_IRQ5
-+ *
-+ * The VIA chip is a master/slave 8259 setup and has the following interrupts:
-+ *
-+ *     8  - RTC
-+ *     9  - PCI
-+ *    14  - IDE0
-+ *    15  - IDE1
-+ */
-+
-+static inline void galileo_irq(struct pt_regs *regs)
-+{
-+	unsigned int mask, pending, devfn;
-+
-+	mask = GT_READ(GT_INTRMASK_OFS);
-+	pending = GT_READ(GT_INTRCAUSE_OFS) & mask;
-+
-+	if (pending & GALILEO_INTR_T0EXP) {
-+
-+		GT_WRITE(GT_INTRCAUSE_OFS, ~GALILEO_INTR_T0EXP);
-+		do_IRQ(COBALT_GALILEO_IRQ, regs);
-+
-+	} else if (pending & GALILEO_INTR_RETRY_CTR) {
-+
-+		devfn = GT_READ(GT_PCI0_CFGADDR_OFS) >> 8;
-+		GT_WRITE(GT_INTRCAUSE_OFS, ~GALILEO_INTR_RETRY_CTR);
-+		printk(KERN_WARNING "Galileo: PCI retry count exceeded (%02x.%u)\n",
-+			PCI_SLOT(devfn), PCI_FUNC(devfn));
-+
-+	} else {
-+
-+		GT_WRITE(GT_INTRMASK_OFS, mask & ~pending);
-+		printk(KERN_WARNING "Galileo: masking unexpected interrupt %08x\n", pending);
-+	}
-+}
-+
-+static inline void via_pic_irq(struct pt_regs *regs)
-+{
-+	int irq;
-+
-+	irq = i8259_irq();
-+	if (irq >= 0)
-+		do_IRQ(irq, regs);
-+}
-+
-+asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
-+{
-+	unsigned pending;
-+
-+	pending = read_c0_status() & read_c0_cause();
-+
-+	if (pending & CAUSEF_IP2)			/* COBALT_GALILEO_IRQ (18) */
-+
-+		galileo_irq(regs);
-+
-+	else if (pending & CAUSEF_IP6)			/* COBALT_VIA_IRQ (22) */
-+
-+		via_pic_irq(regs);
-+
-+	else if (pending & CAUSEF_IP3)			/* COBALT_ETH0_IRQ (19) */
-+
-+		do_IRQ(COBALT_CPU_IRQ + 3, regs);
-+
-+	else if (pending & CAUSEF_IP4)			/* COBALT_ETH1_IRQ (20) */
-+
-+		do_IRQ(COBALT_CPU_IRQ + 4, regs);
-+
-+	else if (pending & CAUSEF_IP5)			/* COBALT_SERIAL_IRQ (21) */
-+
-+		do_IRQ(COBALT_CPU_IRQ + 5, regs);
-+
-+	else if (pending & CAUSEF_IP7)			/* IRQ 23 */
-+
-+		do_IRQ(COBALT_CPU_IRQ + 7, regs);
-+}
-+
-+static struct irqaction irq_via = {
-+	no_action, 0, { { 0, } }, "cascade", NULL, NULL
-+};
-+
-+void __init arch_init_irq(void)
-+{
-+	/*
-+	 * Mask all Galileo interrupts. The Galileo
-+	 * handler is set in cobalt_timer_setup()
-+	 */
-+	GT_WRITE(GT_INTRMASK_OFS, 0);
-+
-+	init_i8259_irqs();				/*  0 ... 15 */
-+	mips_cpu_irq_init(COBALT_CPU_IRQ);		/* 16 ... 23 */
-+
-+	/*
-+	 * Mask all cpu interrupts
-+	 *  (except IE4, we already masked those at VIA level)
-+	 */
-+	change_c0_status(ST0_IM, IE_IRQ4);
-+
-+	setup_irq(COBALT_VIA_IRQ, &irq_via);
-+}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/reset.c mips/arch/mips/gt64120/cobalt/reset.c
---- mips-orig/arch/mips/gt64120/cobalt/reset.c	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/gt64120/cobalt/reset.c	2006-08-18 23:08:01.519502750 +0900
-@@ -0,0 +1,65 @@
-+/*
-+ * Cobalt Reset operations
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 1995, 1996, 1997 by Ralf Baechle
-+ * Copyright (C) 2001 by Liam Davies (ldavies@agile.tv)
-+ */
-+#include <linux/sched.h>
-+#include <linux/mm.h>
-+#include <asm/cacheflush.h>
-+#include <asm/io.h>
-+#include <asm/processor.h>
-+#include <asm/reboot.h>
-+#include <asm/system.h>
-+#include <asm/mipsregs.h>
-+#include <asm/mach-cobalt/cobalt.h>
-+
-+void cobalt_machine_halt(void)
-+{
-+	int state, last, diff;
-+	unsigned long mark;
-+
-+	/*
-+	 * turn off bar on Qube, flash power off LED on RaQ (0.5Hz)
-+	 *
-+	 * restart if ENTER and SELECT are pressed
-+	 */
-+
-+	last = COBALT_KEY_PORT;
-+
-+	for (state = 0;;) {
-+
-+		state ^= COBALT_LED_POWER_OFF;
-+		COBALT_LED_PORT = state;
-+
-+		diff = COBALT_KEY_PORT ^ last;
-+		last ^= diff;
-+
-+		if((diff & (COBALT_KEY_ENTER | COBALT_KEY_SELECT)) && !(~last & (COBALT_KEY_ENTER | COBALT_KEY_SELECT)))
-+			COBALT_LED_PORT = COBALT_LED_RESET;
-+
-+		for (mark = jiffies; jiffies - mark < HZ;)
-+			;
-+	}
-+}
-+
-+void cobalt_machine_restart(char *command)
-+{
-+	COBALT_LED_PORT = COBALT_LED_RESET;
-+
-+	/* we should never get here */
-+	cobalt_machine_halt();
-+}
-+
-+/*
-+ * This triggers the luser mode device driver for the power switch ;-)
-+ */
-+void cobalt_machine_power_off(void)
-+{
-+	printk("You can switch the machine off now.\n");
-+	cobalt_machine_halt();
-+}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/cobalt/setup.c mips/arch/mips/gt64120/cobalt/setup.c
---- mips-orig/arch/mips/gt64120/cobalt/setup.c	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/gt64120/cobalt/setup.c	2006-08-18 23:08:01.519502750 +0900
-@@ -0,0 +1,212 @@
-+/*
-+ * Setup pointers to hardware dependent routines.
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 1996, 1997, 2004, 05 by Ralf Baechle (ralf@linux-mips.org)
-+ * Copyright (C) 2001, 2002, 2003 by Liam Davies (ldavies@agile.tv)
-+ *
-+ */
-+#include <linux/interrupt.h>
-+#include <linux/pci.h>
-+#include <linux/init.h>
-+#include <linux/pm.h>
-+#include <linux/serial.h>
-+#include <linux/serial_core.h>
-+
-+#include <asm/bootinfo.h>
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+  */
+-#include <linux/interrupt.h>
+-#include <linux/kernel.h>
+-#include <linux/sched.h>
+-#include <linux/kernel_stat.h>
+-#include <asm/ptrace.h>
+ #include <asm/gt64120.h>
 +#include <asm/time.h>
-+#include <asm/io.h>
-+#include <asm/irq.h>
-+#include <asm/processor.h>
-+#include <asm/reboot.h>
-+#include <asm/gt64120.h>
-+#include <asm/serial.h>
-+
-+#include <asm/mach-cobalt/cobalt.h>
-+
-+extern void cobalt_machine_restart(char *command);
-+extern void cobalt_machine_halt(void);
-+extern void cobalt_machine_power_off(void);
-+extern void cobalt_early_console(void);
-+
-+int cobalt_board_id;
-+
-+const char *get_system_type(void)
+ 
+-/*
+- * These are interrupt handlers for the GT on-chip interrupts.  They all come
+- * in to the MIPS on a single interrupt line, and have to be handled and ack'ed
+- * differently than other MIPS interrupts.
+- */
++static void gt641xx_hpt_init(unsigned int count)
 +{
-+	switch (cobalt_board_id) {
-+		case COBALT_BRD_ID_QUBE1:
-+			return "Cobalt Qube";
-+		case COBALT_BRD_ID_RAQ1:
-+			return "Cobalt RaQ";
-+		case COBALT_BRD_ID_QUBE2:
-+			return "Cobalt Qube2";
-+		case COBALT_BRD_ID_RAQ2:
-+			return "Cobalt RaQ2";
-+	}
-+	return "MIPS Cobalt";
 +}
-+
-+void __init plat_timer_setup(struct irqaction *irq)
-+{
-+	/* Load timer value for 1KHz (TCLK is 50MHz) */
-+	GT_WRITE(GT_TC0_OFS, 50*1000*1000 / 1000);
-+
-+	/* Enable timer */
-+	GT_WRITE(GT_TC_CONTROL_OFS, GALILEO_ENTC0 | GALILEO_SELTC0);
-+
-+	/* Register interrupt */
-+	setup_irq(COBALT_GALILEO_IRQ, irq);
-+
-+	/* Enable interrupt */
-+	GT_WRITE(GT_INTRMASK_OFS, GALILEO_INTR_T0EXP | GT_READ(GT_INTRMASK_OFS));
-+}
-+
-+extern struct pci_ops gt64120_pci_ops;
-+
-+static struct resource cobalt_mem_resource = {
-+	.start	= GT_DEF_PCI0_MEM0_BASE,
-+	.end	= GT_DEF_PCI0_MEM0_BASE + GT_DEF_PCI0_MEM0_SIZE - 1,
-+	.name	= "PCI memory",
-+	.flags	= IORESOURCE_MEM
-+};
-+
-+static struct resource cobalt_io_resource = {
-+	.start	= 0x1000,
-+	.end	= 0xffff,
-+	.name	= "PCI I/O",
-+	.flags	= IORESOURCE_IO
-+};
-+
-+static struct resource cobalt_io_resources[] = {
-+	{
-+		.start	= 0x00,
-+		.end	= 0x1f,
-+		.name	= "dma1",
-+		.flags	= IORESOURCE_BUSY
-+	}, {
-+		.start	= 0x40,
-+		.end	= 0x5f,
-+		.name	= "timer",
-+		.flags	= IORESOURCE_BUSY
-+	}, {
-+		.start	= 0x60,
-+		.end	= 0x6f,
-+		.name	= "keyboard",
-+		.flags	= IORESOURCE_BUSY
-+	}, {
-+		.start	= 0x80,
-+		.end	= 0x8f,
-+		.name	= "dma page reg",
-+		.flags	= IORESOURCE_BUSY
-+	}, {
-+		.start	= 0xc0,
-+		.end	= 0xdf,
-+		.name	= "dma2",
-+		.flags	= IORESOURCE_BUSY
-+	},
-+};
-+
-+#define COBALT_IO_RESOURCES (sizeof(cobalt_io_resources)/sizeof(struct resource))
-+
-+static struct pci_controller cobalt_pci_controller = {
-+	.pci_ops	= &gt64120_pci_ops,
-+	.mem_resource	= &cobalt_mem_resource,
-+	.mem_offset	= 0,
-+	.io_resource	= &cobalt_io_resource,
-+	.io_offset	= 0 - GT_DEF_PCI0_IO_BASE,
-+};
-+
-+void __init plat_mem_setup(void)
-+{
-+	static struct uart_port uart;
-+	unsigned int devfn = PCI_DEVFN(COBALT_PCICONF_VIA, 0);
-+	int i;
-+
-+	_machine_restart = cobalt_machine_restart;
-+	_machine_halt = cobalt_machine_halt;
-+	pm_power_off = cobalt_machine_power_off;
-+
-+        set_io_port_base(CKSEG1ADDR(GT_DEF_PCI0_IO_BASE));
-+
-+	/* I/O port resource must include UART and LCD/buttons */
-+	ioport_resource.end = 0x0fffffff;
-+
-+	/* request I/O space for devices used on all i[345]86 PCs */
-+	for (i = 0; i < COBALT_IO_RESOURCES; i++)
-+		request_resource(&ioport_resource, cobalt_io_resources + i);
-+
-+        /* Read the cobalt id register out of the PCI config space */
-+        PCI_CFG_SET(devfn, (VIA_COBALT_BRD_ID_REG & ~0x3));
-+        cobalt_board_id = GT_READ(GT_PCI0_CFGDATA_OFS);
-+        cobalt_board_id >>= ((VIA_COBALT_BRD_ID_REG & 3) * 8);
-+        cobalt_board_id = VIA_COBALT_BRD_REG_to_ID(cobalt_board_id);
-+
-+	printk("Cobalt board ID: %d\n", cobalt_board_id);
-+
-+#ifdef CONFIG_PCI
-+	register_pci_controller(&cobalt_pci_controller);
-+#endif
-+
-+#ifdef CONFIG_SERIAL_8250
-+	if (cobalt_board_id > COBALT_BRD_ID_RAQ1) {
-+
-+#ifdef CONFIG_EARLY_PRINTK
-+		cobalt_early_console();
-+#endif
-+
-+		uart.line	= 0;
-+		uart.type	= PORT_UNKNOWN;
-+		uart.uartclk	= 18432000;
-+		uart.irq	= COBALT_SERIAL_IRQ;
-+		uart.flags	= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
-+		uart.iobase	= 0xc800000;
-+		uart.iotype	= UPIO_PORT;
-+
-+		early_serial_setup(&uart);
-+	}
-+#endif
-+}
-+
-+/*
-+ * Prom init. We read our one and only communication with the firmware.
-+ * Grab the amount of installed memory.
-+ * Better boot loaders (CoLo) pass a command line too :-)
-+ */
-+
-+void __init prom_init(void)
-+{
-+	int narg, indx, posn, nchr;
-+	unsigned long memsz;
-+	char **argv;
-+
-+	mips_machgroup = MACH_GROUP_COBALT;
-+
-+	memsz = fw_arg0 & 0x7fff0000;
-+	narg = fw_arg0 & 0x0000ffff;
-+
-+	if (narg) {
-+		arcs_cmdline[0] = '\0';
-+		argv = (char **) fw_arg1;
-+		posn = 0;
-+		for (indx = 1; indx < narg; ++indx) {
-+			nchr = strlen(argv[indx]);
-+			if (posn + 1 + nchr + 1 > sizeof(arcs_cmdline))
-+				break;
-+			if (posn)
-+				arcs_cmdline[posn++] = ' ';
-+			strcpy(arcs_cmdline + posn, argv[indx]);
-+			posn += nchr;
-+		}
-+	}
-+
-+	add_memory_region(0x0, memsz, BOOT_MEM_RAM);
-+}
-+
-+unsigned long __init prom_free_prom_memory(void)
-+{
-+	/* Nothing to do! */
+ 
+-static void gt64120_irq(int irq, void *dev_id, struct pt_regs *regs)
++static unsigned int gt641xx_hpt_read(void)
+ {
+-	unsigned int irq_src, int_high_src, irq_src_mask, int_high_src_mask;
+-	int handled = 0;
 +	return 0;
 +}
+ 
+-	irq_src = GT_READ(GT_INTRCAUSE_OFS);
+-	irq_src_mask = GT_READ(GT_INTRMASK_OFS);
+-	int_high_src = GT_READ(GT_HINTRCAUSE_OFS);
+-	int_high_src_mask = GT_READ(GT_HINTRMASK_OFS);
+-	irq_src = irq_src & irq_src_mask;
+-	int_high_src = int_high_src & int_high_src_mask;
+-
+-	if (irq_src & 0x00000800) {	/* Check for timer interrupt */
+-		handled = 1;
+-		irq_src &= ~0x00000800;
+-		do_timer(regs);
+-#ifndef CONFIG_SMP
+-		update_process_times(user_mode(regs));
+-#endif
+-	}
++void __init gt641xx_timer3_init(void)
++{
++	GT_WRITE(GT_TC3_OFS, GT641XX_SYSCLK / HZ);
+ 
+-	GT_WRITE(GT_INTRCAUSE_OFS, 0);
+-	GT_WRITE(GT_HINTRCAUSE_OFS, 0);
+-}
++	GT_WRITE(GT_TC_CONTROL_OFS, GT_TC_CONTROL_SELTC3_BIT | GT_TC_CONTROL_ENTC3_BIT);
+ 
+-/*
+- * Initializes timer using galileo's built in timer.
+- */
+-#ifdef CONFIG_SYSCLK_100
+-#define Sys_clock (100 * 1000000)	// 100 MHz
+-#endif
+-#ifdef CONFIG_SYSCLK_83
+-#define Sys_clock (83.333 * 1000000)	// 83.333 MHz
+-#endif
+-#ifdef CONFIG_SYSCLK_75
+-#define Sys_clock (75 * 1000000)	// 75 MHz
+-#endif
++	mips_hpt_init = gt641xx_hpt_init;
++	mips_hpt_read = gt641xx_hpt_read;
++	mips_hpt_frequency = GT641XX_SYSCLK;
++}
+ 
+-/*
+- * This will ignore the standard MIPS timer interrupt handler that is passed in
+- * as *irq (=irq0 in ../kernel/time.c).  We will do our own timer interrupt
+- * handling.
+- */
+-void gt64120_time_init(void)
++void __init gt641xx_disable_alltimers(void)
+ {
+-	static struct irqaction timer;
+-
+-	/* Disable timer first */
+ 	GT_WRITE(GT_TC_CONTROL_OFS, 0);
+-	/* Load timer value for 100 Hz */
+-	GT_WRITE(GT_TC3_OFS, Sys_clock / 100);
+-
+-	/*
+-	 * Create the IRQ structure entry for the timer.  Since we're too early
+-	 * in the boot process to use the "request_irq()" call, we'll hard-code
+-	 * the values to the correct interrupt line.
+-	 */
+-	timer.handler = gt64120_irq;
+-	timer.flags = IRQF_SHARED | IRQF_DISABLED;
+-	timer.name = "timer";
+-	timer.dev_id = NULL;
+-	timer.next = NULL;
+-	timer.mask = CPU_MASK_NONE;
+-	irq_desc[GT_TIMER].action = &timer;
+-
+-	enable_irq(GT_TIMER);
+-
+-	/* Enable timer ints */
+-	GT_WRITE(GT_TC_CONTROL_OFS, 0xc0);
+-	/* clear Cause register first */
+-	GT_WRITE(GT_INTRCAUSE_OFS, 0x0);
+-	/* Unmask timer int */
+-	GT_WRITE(GT_INTRMASK_OFS, 0x800);
+-	/* Clear High int register */
+-	GT_WRITE(GT_HINTRCAUSE_OFS, 0x0);
+-	/* Mask All interrupts at High cause interrupt */
+-	GT_WRITE(GT_HINTRMASK_OFS, 0x0);
++	GT_WRITE(GT_TC0_OFS, 0);
++	GT_WRITE(GT_TC1_OFS, 0);
++	GT_WRITE(GT_TC2_OFS, 0);
++	GT_WRITE(GT_TC3_OFS, 0);
+ }
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/ev64120/setup.c mips/arch/mips/gt64120/ev64120/setup.c
+--- mips-orig/arch/mips/gt64120/ev64120/setup.c	2006-08-18 23:16:20.218669500 +0900
++++ mips/arch/mips/gt64120/ev64120/setup.c	2006-08-18 23:19:19.773891000 +0900
+@@ -69,15 +69,14 @@ unsigned long __init prom_free_prom_memo
+  * Initializes basic routines and structures pointers, memory size (as
+  * given by the bios and saves the command line.
+  */
+-extern void gt64120_time_init(void);
+-
+ void __init plat_mem_setup(void)
+ {
+ 	_machine_restart = galileo_machine_restart;
+ 	_machine_halt = galileo_machine_halt;
+ 	pm_power_off = galileo_machine_power_off;
+ 
+-	board_time_init = gt64120_time_init;
++	gt641xx_disable_alltimers();
++	board_time_init = gt641xx_timer3_init;
+ 	set_io_port_base(KSEG1);
+ }
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/setup.c mips/arch/mips/gt64120/momenco_ocelot/setup.c
+--- mips-orig/arch/mips/gt64120/momenco_ocelot/setup.c	2006-08-18 23:16:20.222669750 +0900
++++ mips/arch/mips/gt64120/momenco_ocelot/setup.c	2006-08-18 23:19:19.773891000 +0900
+@@ -71,7 +71,6 @@ extern void momenco_ocelot_restart(char 
+ extern void momenco_ocelot_halt(void);
+ extern void momenco_ocelot_power_off(void);
+ 
+-extern void gt64120_time_init(void);
+ extern void momenco_ocelot_irq_setup(void);
+ 
+ static char reset_reason;
+@@ -157,7 +156,8 @@ void __init plat_mem_setup(void)
+ 	void (*l3func)(unsigned long)=KSEG1ADDR(&setup_l3cache);
+ 	unsigned int tmpword;
+ 
+-	board_time_init = gt64120_time_init;
++	gt641xx_disable_alltimers();
++	board_time_init = gt641xx_timer3_init;
+ 
+ 	_machine_restart = momenco_ocelot_restart;
+ 	_machine_halt = momenco_ocelot_halt;
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/wrppmc/time.c mips/arch/mips/gt64120/wrppmc/time.c
+--- mips-orig/arch/mips/gt64120/wrppmc/time.c	2006-08-18 23:16:20.222669750 +0900
++++ mips/arch/mips/gt64120/wrppmc/time.c	2006-08-18 23:19:19.777891250 +0900
+@@ -41,11 +41,7 @@ void __init plat_timer_setup(struct irqa
+ void __init wrppmc_time_init(void)
+ {
+ 	/* Disable GT64120 timers */
+-	GT_WRITE(GT_TC_CONTROL_OFS, 0x00);
+-	GT_WRITE(GT_TC0_OFS, 0x00);
+-	GT_WRITE(GT_TC1_OFS, 0x00);
+-	GT_WRITE(GT_TC2_OFS, 0x00);
+-	GT_WRITE(GT_TC3_OFS, 0x00);
++	gt641xx_disable_alltimers();
+ 
+ 	/* Use MIPS compare/count internal timer */
+ 	mips_hpt_frequency = WRPPMC_CPU_CLK_FREQ;
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c mips/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c
+--- mips-orig/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c	2006-08-18 23:16:20.438683250 +0900
++++ mips/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c	2006-08-18 23:19:19.777891250 +0900
+@@ -134,7 +134,6 @@ extern void toshiba_rbtx4927_power_off(v
+ 
+ int tx4927_using_backplane = 0;
+ 
+-extern void gt64120_time_init(void);
+ extern void toshiba_rbtx4927_irq_setup(void);
+ 
+ #ifdef CONFIG_PCI
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/gt64120.h mips/include/asm-mips/gt64120.h
+--- mips-orig/include/asm-mips/gt64120.h	2006-08-18 23:16:27.699137000 +0900
++++ mips/include/asm-mips/gt64120.h	2006-08-18 23:19:19.777891250 +0900
+@@ -24,6 +24,12 @@
+ #include <asm/addrspace.h>
+ #include <asm/byteorder.h>
+ 
++#ifdef CONFIG_SYSCLK
++#define GT641XX_SYSCLK		CONFIG_SYSCLK
++#else
++#define GT641XX_SYSCLK		0
++#endif
++
+ #define MSK(n)			((1 << (n)) - 1)
+ 
+ /*
+@@ -452,6 +458,15 @@
+ #define GT_SDRAM_OPMODE_OP_CBR		4
+ 
+ 
++#define GT_TC_CONTROL_ENTC3_SHF		6
++#define GT_TC_CONTROL_ENTC3_MSK		(MSK(1) << GT_TC_CONTROL_ENTC3_SHF)
++#define GT_TC_CONTROL_ENTC3_BIT		GT_TC_CONTROL_ENTC3_MSK
++
++#define GT_TC_CONTROL_SELTC3_SHF	7
++#define GT_TC_CONTROL_SELTC3_MSK	(MSK(1) << GT_TC_CONTROL_SELTC3_SHF)
++#define GT_TC_CONTROL_SELTC3_BIT	GT_TC_CONTROL_SELTC3_MSK
++
++
+ #define GT_PCI0_BARE_SWSCS3BOOTDIS_SHF	0
+ #define GT_PCI0_BARE_SWSCS3BOOTDIS_MSK	(MSK(1) << GT_PCI0_BARE_SWSCS3BOOTDIS_SHF)
+ #define GT_PCI0_BARE_SWSCS3BOOTDIS_BIT	GT_PCI0_BARE_SWSCS3BOOTDIS_MSK
+@@ -558,4 +573,7 @@
+ #define GT_READ(ofs)		le32_to_cpu(__GT_READ(ofs))
+ #define GT_WRITE(ofs, data)	__GT_WRITE(ofs, cpu_to_le32(data))
+ 
++extern void gt641xx_timer3_init(void);
++extern void gt641xx_disable_alltimers(void);
++
+ #endif /* _ASM_GT64120_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-cobalt/cobalt.h mips/include/asm-mips/mach-cobalt/cobalt.h
+--- mips-orig/include/asm-mips/mach-cobalt/cobalt.h	2006-08-18 23:18:55.828394500 +0900
++++ mips/include/asm-mips/mach-cobalt/cobalt.h	2006-08-18 23:19:19.781891500 +0900
+@@ -67,12 +67,9 @@
+ #define COBALT_BRD_ID_QUBE2    0x5
+ #define COBALT_BRD_ID_RAQ2     0x6
+ 
+-#define GALILEO_INTR_T0EXP	(1 << 8)
++#define GALILEO_INTR_T3EXP	(1 << 11)
+ #define GALILEO_INTR_RETRY_CTR	(1 << 20)
+ 
+-#define GALILEO_ENTC0		0x01
+-#define GALILEO_SELTC0		0x02
+-
+ #define PCI_CFG_SET(devfn,where)					\
+ 	GT_WRITE(GT_PCI0_CFGADDR_OFS, (0x80000000 | (PCI_SLOT (devfn) << 11) |		\
+ 		(PCI_FUNC (devfn) << 8) | (where)))

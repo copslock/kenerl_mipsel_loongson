@@ -1,164 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2006 02:00:25 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:18971 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038612AbWHVBAV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Aug 2006 02:00:21 +0100
-Received: by mo.po.2iij.net (mo32) id k7M0xlZ4009802; Tue, 22 Aug 2006 09:59:47 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox33) id k7M0xgeo095971
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 22 Aug 2006 09:59:42 +0900 (JST)
-Date:	Tue, 22 Aug 2006 09:59:42 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, sshtylyov@ru.mvista.com,
-	rmk+serial@arm.linux.org.uk, linux-serial@vger.kernel.org,
-	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	thomas@koeller.dyndns.org
-Subject: Re: [PATCH] RM9000 serial driver
-Message-Id: <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <200608220057.52213.thomas.koeller@baslerweb.com>
-References: <200608102318.52143.thomas.koeller@baslerweb.com>
-	<44DCDCED.7000404@ru.mvista.com>
-	<200608220057.52213.thomas.koeller@baslerweb.com>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2006 13:15:59 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:18076 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20038724AbWHVMP6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Aug 2006 13:15:58 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 22 Aug 2006 21:15:56 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 70DAD203C7;
+	Tue, 22 Aug 2006 21:15:49 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 5CDA020327;
+	Tue, 22 Aug 2006 21:15:49 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k7MCFlW0007125;
+	Tue, 22 Aug 2006 21:15:49 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 22 Aug 2006 21:15:47 +0900 (JST)
+Message-Id: <20060822.211547.92587044.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] remove redundant r4k_blast_icache() calls
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12393
+X-archive-position: 12394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+This patch remove some r4k_blast_icache() calls.
 
-On Tue, 22 Aug 2006 00:57:51 +0200
-Thomas Koeller <thomas.koeller@baslerweb.com> wrote:
+r4k_flush_cache_all() and r4k_flush_cache_mm() case: these are noop if
+the CPU did not have dc_aliases.  It would mean we do not need to care
+about icache here.
 
-<snip>
+r4k_flush_cache_range case: if r4k_flush_cache_mm() did not need to
+care about icache, it would be same for this function.
 
-> diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-> index 0ae9ced..c6c28ed 100644
-> --- a/drivers/serial/8250.c
-> +++ b/drivers/serial/8250.c
-> @@ -251,9 +251,16 @@ static const struct serial8250_config ua
->  		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
->  		.flags		= UART_CAP_FIFO | UART_CAP_UUE,
->  	},
-> +	[PORT_RM9000] = {
-> +		.name		= "RM9000",
-> +		.fifo_size	= 16,
-> +		.tx_loadsz	= 16,
-> +		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
-> +		.flags		= UART_CAP_FIFO,
-> +	},
->  };
->  
-> -#ifdef CONFIG_SERIAL_8250_AU1X00
-> +#if defined (CONFIG_SERIAL_8250_AU1X00)
->  
->  /* Au1x00 UART hardware has a weird register layout */
->  static const u8 au_io_in_map[] = {
-> @@ -289,6 +296,34 @@ static inline int map_8250_out_reg(struc
->  	return au_io_out_map[offset];
->  }
->  
-> +#elif defined (CONFIG_SERIAL_RM9000)
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-CONFIG_SERIAL_8250_RM9000.
-Morover, you should update drivers/serial/Kconfig
-
-> +
-> +static const u8
-> +	regmap_in[8] = {
-> +		[UART_RX]	= 0x00,
-> +		[UART_IER]	= 0x0c,
-> +		[UART_IIR]	= 0x14,
-> +		[UART_LCR]	= 0x1c,
-> +		[UART_MCR]	= 0x20,
-> +		[UART_LSR]	= 0x24,
-> +		[UART_MSR]	= 0x28,
-> +		[UART_SCR]	= 0x2c
-> +	},
-> +	regmap_out[8] = {
-> +		[UART_TX] 	= 0x04,
-> +		[UART_IER]	= 0x0c,
-> +		[UART_FCR]	= 0x18,
-> +		[UART_LCR]	= 0x1c,
-> +		[UART_MCR]	= 0x20,
-> +		[UART_LSR]	= 0x24,
-> +		[UART_MSR]	= 0x28,
-> +		[UART_SCR]	= 0x2c
-> +	};
-> +
-> +#define map_8250_in_reg(up, offset) (regmap_in[offset])
-> +#define map_8250_out_reg(up, offset) (regmap_out[offset])
-> +
-> +
->  #else
->  
->  /* sane hardware needs no mapping */
-> @@ -374,21 +409,21 @@ #define serial_inp(up, offset)		serial_i
->  #define serial_outp(up, offset, value)	serial_out(up, offset, value)
->  
->  /* Uart divisor latch read */
-> -static inline int _serial_dl_read(struct uart_8250_port *up)
-> +static inline unsigned int _serial_dl_read(struct uart_8250_port *up)
->  {
->  	return serial_inp(up, UART_DLL) | serial_inp(up, UART_DLM) << 8;
->  }
->  
->  /* Uart divisor latch write */
-> -static inline void _serial_dl_write(struct uart_8250_port *up, int value)
-> +static inline void _serial_dl_write(struct uart_8250_port *up, unsigned int value)
->  {
->  	serial_outp(up, UART_DLL, value & 0xff);
->  	serial_outp(up, UART_DLM, value >> 8 & 0xff);
->  }
->  
-> -#ifdef CONFIG_SERIAL_8250_AU1X00
-> +#if defined (CONFIG_SERIAL_8250_AU1X00)
->  /* Au1x00 haven't got a standard divisor latch */
-> -static int serial_dl_read(struct uart_8250_port *up)
-> +static unsigned int serial_dl_read(struct uart_8250_port *up)
->  {
->  	if (up->port.iotype == UPIO_AU)
->  		return __raw_readl(up->port.membase + 0x28);
-> @@ -396,13 +431,26 @@ static int serial_dl_read(struct uart_82
->  		return _serial_dl_read(up);
->  }
->  
-> -static void serial_dl_write(struct uart_8250_port *up, int value)
-> +static void serial_dl_write(struct uart_8250_port *up, unsigned int value)
->  {
->  	if (up->port.iotype == UPIO_AU)
->  		__raw_writel(value, up->port.membase + 0x28);
->  	else
->  		_serial_dl_write(up, value);
->  }
-> +#elif defined (CONFIG_SERIAL_RM9000)
-> +static inline unsigned int serial_dl_read(struct uart_8250_port *up)
-> +{
-> +	return
-> +		((readl(up->port.membase + 0x10) << 8) |
-> +		(readl(up->port.membase + 0x08) & 0xff)) & 0xffff;
-> +}
-> +
-> +static inline void serial_dl_write(struct uart_8250_port *up, unsigned int value)
-> +{
-> +	writel(value, up->port.membase + 0x08);
-> +	writel(value >> 8, up->port.membase + 0x10);
-> +}
->  #else
-
-If you have an another standard 8250 port. this driver cannot support it
-You should do as well as AU1X00.
-
-Yoichi
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 4e14982..a9e2f84 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -323,7 +323,6 @@ static inline void r4k_blast_scache_setu
+ static inline void local_r4k_flush_cache_all(void * args)
+ {
+ 	r4k_blast_dcache();
+-	r4k_blast_icache();
+ }
+ 
+ static void r4k_flush_cache_all(void)
+@@ -359,21 +358,19 @@ static void r4k___flush_cache_all(void)
+ static inline void local_r4k_flush_cache_range(void * args)
+ {
+ 	struct vm_area_struct *vma = args;
+-	int exec;
+ 
+ 	if (!(cpu_context(smp_processor_id(), vma->vm_mm)))
+ 		return;
+ 
+-	exec = vma->vm_flags & VM_EXEC;
+-	if (cpu_has_dc_aliases || exec)
+-		r4k_blast_dcache();
+-	if (exec)
+-		r4k_blast_icache();
++	r4k_blast_dcache();
+ }
+ 
+ static void r4k_flush_cache_range(struct vm_area_struct *vma,
+ 	unsigned long start, unsigned long end)
+ {
++	if (!cpu_has_dc_aliases)
++		return;
++
+ 	r4k_on_each_cpu(local_r4k_flush_cache_range, vma, 1, 1);
+ }
+ 
+@@ -385,7 +382,6 @@ static inline void local_r4k_flush_cache
+ 		return;
+ 
+ 	r4k_blast_dcache();
+-	r4k_blast_icache();
+ 
+ 	/*
+ 	 * Kludge alert.  For obscure reasons R4000SC and R4400SC go nuts if we

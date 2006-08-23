@@ -1,80 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Aug 2006 22:36:20 +0100 (BST)
-Received: from mail01.hansenet.de ([213.191.73.61]:22781 "EHLO
-	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
-	id S20037562AbWHVVgS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Aug 2006 22:36:18 +0100
-Received: from [213.39.167.52] (213.39.167.52) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
-        id 44EA7D5F0003A0CF; Tue, 22 Aug 2006 23:36:12 +0200
-Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
-	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 6841E1C9834;
-	Tue, 22 Aug 2006 23:36:12 +0200 (CEST)
-From:	Thomas Koeller <thomas.koeller@baslerweb.com>
-Organization: Basler AG
-To:	"Bill Davidsen" <davidsen@tmr.com>
-Subject: Re: [PATCH] Image capturing driver for Basler eXcite smart camera
-Date:	Tue, 22 Aug 2006 23:36:12 +0200
-User-Agent: KMail/1.9.3
-Cc:	linux-kernel@vger.kernel.org, alan@lxorguk.ukuu.org.uk,
-	linux-mips@linux-mips.org,
-	Thomas =?iso-8859-1?q?K=F6ller?= <thomas@koeller.dyndns.org>
-References: <200608102318.04512.thomas.koeller@baslerweb.com> <200608172230.30682.thomas.koeller@baslerweb.com> <44E5BE77.9040200@tmr.com>
-In-Reply-To: <44E5BE77.9040200@tmr.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2006 01:45:06 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:23852 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037804AbWHWApE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2006 01:45:04 +0100
+Received: by mo.po.2iij.net (mo30) id k7N0iouZ095534; Wed, 23 Aug 2006 09:44:50 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox32) id k7N0iioU075519
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 23 Aug 2006 09:44:45 +0900 (JST)
+Date:	Wed, 23 Aug 2006 09:44:44 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	"Alexander Voropay" <a.voropay@equant.ru>
+Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/12] Cobalt use GT64120 PCI routines
+Message-Id: <20060823094444.4c158363.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <0b2801c6c5ff$1ff8a8c0$e90d11ac@spb.in.rosprint.ru>
+References: <20060822223406.56435d84.yoichi_yuasa@tripeaks.co.jp>
+	<0b2801c6c5ff$1ff8a8c0$e90d11ac@spb.in.rosprint.ru>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200608222336.12137.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12412
+X-archive-position: 12413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 18 August 2006 15:19, Bill Davidsen wrote:
+On Tue, 22 Aug 2006 19:22:01 +0400
+"Alexander Voropay" <a.voropay@equant.ru> wrote:
+
+> "Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp> wrote:
+> > 
+> > This patch has moved GT64111 PCI routine to GT64120 PCI routine about Cobalt.
+> > They are same codes.
+> 
+>  Hm... GT64111 and GT64120 are two different chips, i.e. GT64120 has two
+> PCI buses e.t.c. May be, it wil be better to move this code to something
+> more genetic, like GT64* ?
 >
-> Don't take it personally, just write working code people can patch in.
-> When your code has the features you mentioned it will be highly useful
-> and hopefully ported to many devices. I guess security monitoring is an
-> "industrial image processing application," which interests me. At the
-> moment I would call it an impressive proof of concept, but you have many
-> useful ideas for its future.
 
-I am not offended at all, I certainly agree with Pavel's opinion of 'do
-not invent new interfaces needlessly'. But this is a use case significantly
-different from what the v4l2 api is aimed at.
+Yes, GT64120 has two PCI buses(PCI_0 and PCI_1).
+GT64120's PCI_0 is almost the same as GT64111 PCI.
 
-As I wrote earlier, if it were not for other reasons, then changing the
-API is not an option because the software already ships. I can place the
-driver somewhere else in the kernel tree. I can fix any issues that
-someone may find with it. I certainly cannot replace it with something
-entirely different. If it is rejected, my only option is to submit the
-rest of the code, without the capturing driver (the platform is already
-in the kernel tree). Some may feel that a camera that cannot capture
-images is somewhat pointless, though...
+arch/mips/pci/pci-gt64120.c supports only PCI_0.
+Now GT64111 and GT64120 can share pci-gt64120.c .
 
-Of course, everyone is free to write a v4l2 driver, but will likely
-find that the hardware is not very suitable as a streaming video
-device. At least, it would be a very expensive one...
+I don't know a board that uses PCI_1.
+Do you have any information about it?
 
-Thomas
-
--- 
-Thomas Koeller, Software Development
-
-Basler Vision Technologies
-An der Strusbek 60-62
-22926 Ahrensburg
-Germany
-
-Tel +49 (4102) 463-390
-Fax +49 (4102) 463-46390
-
-mailto:thomas.koeller@baslerweb.com
-http://www.baslerweb.com
+Yoichi

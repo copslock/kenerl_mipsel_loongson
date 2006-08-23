@@ -1,58 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2006 17:52:47 +0100 (BST)
-Received: from mx.mips.com ([63.167.95.198]:40901 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20037647AbWHWQwn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2006 17:52:43 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k7NGqU0u021188;
-	Wed, 23 Aug 2006 09:52:30 -0700 (PDT)
-Received: from ukservices1.mips.com (ukservices1 [192.168.192.240])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id k7NGqahk025741;
-	Wed, 23 Aug 2006 09:52:36 -0700 (PDT)
-Received: from highbury.mips.com ([192.168.192.236])
-	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1GFvxq-0001kb-00; Wed, 23 Aug 2006 17:52:26 +0100
-Message-ID: <44EC87C9.8010402@mips.com>
-Date:	Wed, 23 Aug 2006 17:52:25 +0100
-From:	Nigel Stephens <nigel@mips.com>
-Organization: MIPS Technologies
-User-Agent: Thunderbird 1.5.0.2 (X11/20060501)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2006 18:55:27 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:45516 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S20037591AbWHWRzX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2006 18:55:23 +0100
+Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id 5890945953; Wed, 23 Aug 2006 19:55:31 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1GFwvL-0001SY-Tz; Wed, 23 Aug 2006 18:53:55 +0100
+Date:	Wed, 23 Aug 2006 18:53:55 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Jonathan Day <imipak@yahoo.com>
+Cc:	Peter Watkins <treestem@gmail.com>, linux-mips@linux-mips.org,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] 64K page size
+Message-ID: <20060823175355.GA2887@networkno.de>
+References: <20060823160011.GE20395@networkno.de> <20060823162324.43027.qmail@web31507.mail.mud.yahoo.com>
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] fix cache coherency issues
-References: <20060214.011508.41198724.anemo@mba.ocn.ne.jp>	<20060523.003424.104640954.anemo@mba.ocn.ne.jp> <20060824.003130.25910593.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060824.003130.25910593.anemo@mba.ocn.ne.jp>
-X-Enigmail-Version: 0.94.0.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-MIPS-Technologies-UK-MailScanner: Found to be clean
-X-MIPS-Technologies-UK-MailScanner-From: nigel@mips.com
-Return-Path: <nigel@mips.com>
+Content-Disposition: inline
+In-Reply-To: <20060823162324.43027.qmail@web31507.mail.mud.yahoo.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12420
+X-archive-position: 12421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nigel@mips.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
+Jonathan Day wrote:
+> I am extremely interested in big pages (64K, etc), and
+> the sooner the better. If there is anything not
+> considered OK for immediate inclusion in the Linux
+> MIPS git tree, I would love to have a copy anyway.
+> Large pages will be necessary for some high-priority
+> work I'm doing, although stability at this point seems
+> to be an optional extra. (Hence why the patches are
+> much more important than whether they're actually
+> finished yet.)
+
+Biggest drawback (besides stability concerns and some broken userspace
+programs) is the insane amount of memory it can take. Every tiny file
+would currently take 64k in the page cache. There's some work going on
+to collate such partially used pages into single ones, but that may
+take a while to become usable.
 
 
-Atsushi Nemoto wrote:
->
-> +	unsigned int tlbidx;
->
->   
-...
-
-> +	if (tlbidx < 0)
->   
-
-Doesn't tlbidx need to be declared as a signed int, else the compiler
-could optimize away this comparison.
-
-
-Nigel
+Thiemo

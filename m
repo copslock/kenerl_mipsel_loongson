@@ -1,56 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Aug 2006 18:55:27 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:45516 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20037591AbWHWRzX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Aug 2006 18:55:23 +0100
-Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 5890945953; Wed, 23 Aug 2006 19:55:31 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GFwvL-0001SY-Tz; Wed, 23 Aug 2006 18:53:55 +0100
-Date:	Wed, 23 Aug 2006 18:53:55 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Jonathan Day <imipak@yahoo.com>
-Cc:	Peter Watkins <treestem@gmail.com>, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] 64K page size
-Message-ID: <20060823175355.GA2887@networkno.de>
-References: <20060823160011.GE20395@networkno.de> <20060823162324.43027.qmail@web31507.mail.mud.yahoo.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060823162324.43027.qmail@web31507.mail.mud.yahoo.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Aug 2006 02:15:41 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:47169 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20037823AbWHXBPj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 24 Aug 2006 02:15:39 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 24 Aug 2006 10:15:37 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id BC51520496;
+	Thu, 24 Aug 2006 10:15:31 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id A95492000B;
+	Thu, 24 Aug 2006 10:15:31 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k7O1FVW0014298;
+	Thu, 24 Aug 2006 10:15:31 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 24 Aug 2006 10:15:31 +0900 (JST)
+Message-Id: <20060824.101531.07643963.nemoto@toshiba-tops.co.jp>
+To:	nigel@mips.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] fix cache coherency issues
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <44EC87C9.8010402@mips.com>
+References: <20060523.003424.104640954.anemo@mba.ocn.ne.jp>
+	<20060824.003130.25910593.anemo@mba.ocn.ne.jp>
+	<44EC87C9.8010402@mips.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12421
+X-archive-position: 12422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Jonathan Day wrote:
-> I am extremely interested in big pages (64K, etc), and
-> the sooner the better. If there is anything not
-> considered OK for immediate inclusion in the Linux
-> MIPS git tree, I would love to have a copy anyway.
-> Large pages will be necessary for some high-priority
-> work I'm doing, although stability at this point seems
-> to be an optional extra. (Hence why the patches are
-> much more important than whether they're actually
-> finished yet.)
+On Wed, 23 Aug 2006 17:52:25 +0100, Nigel Stephens <nigel@mips.com> wrote:
+> Doesn't tlbidx need to be declared as a signed int, else the compiler
+> could optimize away this comparison.
 
-Biggest drawback (besides stability concerns and some broken userspace
-programs) is the insane amount of memory it can take. Every tiny file
-would currently take 64k in the page cache. There's some work going on
-to collate such partially used pages into single ones, but that may
-take a while to become usable.
+You are right.  I'll fix it.  Thanks.
 
-
-Thiemo
+---
+Atsushi Nemoto

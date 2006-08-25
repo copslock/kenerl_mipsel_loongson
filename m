@@ -1,99 +1,269 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2006 18:47:11 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:12889 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038886AbWHYRrJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2006 18:47:09 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id CB40E3EEF; Fri, 25 Aug 2006 10:47:04 -0700 (PDT)
-Message-ID: <44EF37DD.6090305@ru.mvista.com>
-Date:	Fri, 25 Aug 2006 21:48:13 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2006 23:38:40 +0100 (BST)
+Received: from mail04.hansenet.de ([213.191.73.12]:29176 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20038885AbWHYWii (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 25 Aug 2006 23:38:38 +0100
+Received: from [213.39.153.170] (213.39.153.170) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 44EC4423000A6BEE; Sat, 26 Aug 2006 00:38:14 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 0E09C1C9834;
+	Sat, 26 Aug 2006 00:38:14 +0200 (CEST)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Subject: Re: [PATCH] RM9000 serial driver
+Date:	Sat, 26 Aug 2006 00:38:13 +0200
+User-Agent: KMail/1.9.3
+Cc:	sshtylyov@ru.mvista.com, rmk+serial@arm.linux.org.uk,
+	linux-serial@vger.kernel.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org,
+	Thomas =?iso-8859-1?q?K=F6ller?= <thomas.koeller@baslerweb.com>
+References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608220057.52213.thomas.koeller@baslerweb.com> <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp>
+Organization: Basler AG
 MIME-Version: 1.0
-To:	dpervushin@ru.mvista.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	Vitaly Wool <vwool@ru.mvista.com>
-Subject: Re: [PATCH] NEC EMMA2RH support, revisited
-References: <1148208787.6884.9.camel@diimka-laptop> <44EDF1C8.4020507@ru.mvista.com>
-In-Reply-To: <44EDF1C8.4020507@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Disposition: inline
+Message-Id: <200608260038.13662.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12438
+X-archive-position: 12439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Tuesday 22 August 2006 02:59, Yoichi Yuasa wrote:
+>
+> If you have an another standard 8250 port. this driver cannot support it
+> You should do as well as AU1X00.
+>
+> Yoichi
 
-Sergei Shtylyov wrote:
+Hi Yoichi,
 
->> The patch below is to support NEC EMMA2RH Mark-eins board (R5500-based)
->> Thanks for helping and valuable comments:
->>      the whole linux-mips comminuty
->>     Ralf Baechle
->>     Martin Michlmayr
->>     Thiemo Seufer
+so far nobody commented on my recent mail, in which I explained why I
+think that the AU1X00 code in 8250.c is not entirely correct, so I assume
+nobody cares. I therefore modified my code to take the same approach,
+although I still have my doubts about it. Here's the updated patch:
 
->    It seems that the community have overlooked at least one issue with 
-> this code:
 
-    Not a big issue as it seems since UARTs are registered as the 8250 
-platform devices elsewhere.
 
->> Index: linux/arch/mips/emma2rh/markeins/setup.c
->> ===================================================================
->> --- /dev/null
->> +++ linux/arch/mips/emma2rh/markeins/setup.c
-> 
-> [...]
-> 
->> +static void inline __init markeins_sio_setup(void)
->> +{
->> +#ifdef CONFIG_KGDB_8250
+Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+---
+832ac1406f2530b7971cb0d23d3ede20a6057fa1
+ drivers/serial/8250.c       |   86 ++++++++++++++++++++++++++++++++++---------
+ drivers/serial/Kconfig      |    9 +++++
+ include/linux/serial_core.h |    3 +-
+ 3 files changed, 78 insertions(+), 20 deletions(-)
 
->    I wonder what it's doing in the Linux/MIPS patch while it's only 
-> relevant to the cross-arch KGDB patchset.
+diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
+index 0ae9ced..afe0e1f 100644
+--- a/drivers/serial/8250.c
++++ b/drivers/serial/8250.c
+@@ -251,9 +251,16 @@ static const struct serial8250_config ua
+ 		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
+ 		.flags		= UART_CAP_FIFO | UART_CAP_UUE,
+ 	},
++	[PORT_RM9000] = {
++		.name		= "RM9000",
++		.fifo_size	= 16,
++		.tx_loadsz	= 16,
++		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
++		.flags		= UART_CAP_FIFO,
++	},
+ };
+ 
+-#ifdef CONFIG_SERIAL_8250_AU1X00
++#if defined (CONFIG_SERIAL_8250_AU1X00)
+ 
+ /* Au1x00 UART hardware has a weird register layout */
+ static const u8 au_io_in_map[] = {
+@@ -289,6 +296,36 @@ static inline int map_8250_out_reg(struc
+ 	return au_io_out_map[offset];
+ }
+ 
++#elif defined (CONFIG_SERIAL_8250_RM9K)
++
++static const u8
++	regmap_in[8] = {
++		[UART_RX]	= 0x00,
++		[UART_IER]	= 0x0c,
++		[UART_IIR]	= 0x14,
++		[UART_LCR]	= 0x1c,
++		[UART_MCR]	= 0x20,
++		[UART_LSR]	= 0x24,
++		[UART_MSR]	= 0x28,
++		[UART_SCR]	= 0x2c
++	},
++	regmap_out[8] = {
++		[UART_TX] 	= 0x04,
++		[UART_IER]	= 0x0c,
++		[UART_FCR]	= 0x18,
++		[UART_LCR]	= 0x1c,
++		[UART_MCR]	= 0x20,
++		[UART_LSR]	= 0x24,
++		[UART_MSR]	= 0x28,
++		[UART_SCR]	= 0x2c
++	};
++
++#define map_8250_in_reg(up, offset) \
++	(((up)->port.type == PORT_RM9000) ? regmap_in[offset] : (offset))
++#define map_8250_out_reg(up, offset) \
++	(((up)->port.type == PORT_RM9000) ? regmap_out[offset] : (offset))
++
++
+ #else
+ 
+ /* sane hardware needs no mapping */
+@@ -374,21 +411,21 @@ #define serial_inp(up, offset)		serial_i
+ #define serial_outp(up, offset, value)	serial_out(up, offset, value)
+ 
+ /* Uart divisor latch read */
+-static inline int _serial_dl_read(struct uart_8250_port *up)
++static inline unsigned int _serial_dl_read(struct uart_8250_port *up)
+ {
+ 	return serial_inp(up, UART_DLL) | serial_inp(up, UART_DLM) << 8;
+ }
+ 
+ /* Uart divisor latch write */
+-static inline void _serial_dl_write(struct uart_8250_port *up, int value)
++static inline void _serial_dl_write(struct uart_8250_port *up, unsigned int value)
+ {
+ 	serial_outp(up, UART_DLL, value & 0xff);
+ 	serial_outp(up, UART_DLM, value >> 8 & 0xff);
+ }
+ 
+-#ifdef CONFIG_SERIAL_8250_AU1X00
++#if defined (CONFIG_SERIAL_8250_AU1X00)
+ /* Au1x00 haven't got a standard divisor latch */
+-static int serial_dl_read(struct uart_8250_port *up)
++static unsigned int serial_dl_read(struct uart_8250_port *up)
+ {
+ 	if (up->port.iotype == UPIO_AU)
+ 		return __raw_readl(up->port.membase + 0x28);
+@@ -396,13 +433,26 @@ static int serial_dl_read(struct uart_82
+ 		return _serial_dl_read(up);
+ }
+ 
+-static void serial_dl_write(struct uart_8250_port *up, int value)
++static void serial_dl_write(struct uart_8250_port *up, unsigned int value)
+ {
+ 	if (up->port.iotype == UPIO_AU)
+ 		__raw_writel(value, up->port.membase + 0x28);
+ 	else
+ 		_serial_dl_write(up, value);
+ }
++#elif defined (CONFIG_SERIAL_8250_RM9K)
++static inline unsigned int serial_dl_read(struct uart_8250_port *up)
++{
++	return
++		((readl(up->port.membase + 0x10) << 8) |
++		(readl(up->port.membase + 0x08) & 0xff)) & 0xffff;
++}
++
++static inline void serial_dl_write(struct uart_8250_port *up, unsigned int value)
++{
++	writel(value, up->port.membase + 0x08);
++	writel(value >> 8, up->port.membase + 0x10);
++}
+ #else
+ #define serial_dl_read(up) _serial_dl_read(up)
+ #define serial_dl_write(up, value) _serial_dl_write(up, value)
+@@ -576,22 +626,17 @@ static int size_fifo(struct uart_8250_po
+  */
+ static unsigned int autoconfig_read_divisor_id(struct uart_8250_port *p)
+ {
+-	unsigned char old_dll, old_dlm, old_lcr;
+-	unsigned int id;
++	unsigned char old_lcr;
++	unsigned int id, old_dl;
+ 
+ 	old_lcr = serial_inp(p, UART_LCR);
+ 	serial_outp(p, UART_LCR, UART_LCR_DLAB);
++	old_dl = _serial_dl_read(p);
+ 
+-	old_dll = serial_inp(p, UART_DLL);
+-	old_dlm = serial_inp(p, UART_DLM);
+-
+-	serial_outp(p, UART_DLL, 0);
+-	serial_outp(p, UART_DLM, 0);
+-
+-	id = serial_inp(p, UART_DLL) | serial_inp(p, UART_DLM) << 8;
++	serial_dl_write(p, 0);
++	id = serial_dl_read(p);
+ 
+-	serial_outp(p, UART_DLL, old_dll);
+-	serial_outp(p, UART_DLM, old_dlm);
++	serial_dl_write(p, old_dl);
+ 	serial_outp(p, UART_LCR, old_lcr);
+ 
+ 	return id;
+@@ -1138,8 +1183,11 @@ static void serial8250_start_tx(struct u
+ 		if (up->bugs & UART_BUG_TXEN) {
+ 			unsigned char lsr, iir;
+ 			lsr = serial_in(up, UART_LSR);
+-			iir = serial_in(up, UART_IIR);
+-			if (lsr & UART_LSR_TEMT && iir & UART_IIR_NO_INT)
++			iir = serial_in(up, UART_IIR) & 0x0f;
++			if ((up->port.type == PORT_RM9000) ?
++			   	(lsr & UART_LSR_THRE &&
++				(iir == UART_IIR_NO_INT || iir == UART_IIR_THRI)) :
++				(lsr & UART_LSR_TEMT && iir & UART_IIR_NO_INT))
+ 				transmit_chars(up);
+ 		}
+ 	}
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 9799cce..dfb51ff 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -244,6 +244,15 @@ config SERIAL_8250_AU1X00
+ 	  to this option.  The driver can handle 1 or 2 serial ports.
+ 	  If unsure, say N.
+ 
++config SERIAL_8250_RM9K
++	bool "Support for MIPS RM9xxx integrated serial port"
++	depends on SERIAL_8250 != n && SERIAL_RM9000
++	select SERIAL_8250_SHARE_IRQ
++	help
++	  Selecting this option will add support for the integrated serial
++	  port hardware found on MIPS RM9122 and similar processors.
++	  If unsure, say N.
++
+ comment "Non-8250 serial port support"
+ 
+ config SERIAL_AMBA_PL010
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index 86501a3..8a97caf 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -39,7 +39,8 @@ #define PORT_16850	12
+ #define PORT_RSA	13
+ #define PORT_NS16550A	14
+ #define PORT_XSCALE	15
+-#define PORT_MAX_8250	15	/* max port ID */
++#define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
++#define PORT_MAX_8250	16	/* max port ID */
+ 
+ /*
+  * ARM specific type numbers.  These are not currently guaranteed
 
-    Well, certainly this code does not belong here...
 
->> +    struct uart_port emma_port;
->> +
->> +    memset(&emma_port, 0, sizeof(emma_port));
->> +
->> +    emma_port.flags =
->> +        UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
->> +    emma_port.iotype = UPIO_MEM;
->> +    emma_port.regshift = 4;    /* I/O addresses are every 8 bytes */
->> +    emma_port.uartclk = 18544000;    /* Clock rate of the chip */
->> +
->> +    emma_port.line = 0;
->> +    emma_port.mapbase = KSEG1ADDR(EMMA2RH_PFUR0_BASE + 3);
->> +    emma_port.membase = (u8*)emma_port.mapbase;
->> +    early_serial_setup(&emma_port);
->> +
->> +    emma_port.line = 1;
->> +    emma_port.mapbase = KSEG1ADDR(EMMA2RH_PFUR1_BASE + 3);
->> +    emma_port.membase = (u8*)emma_port.mapbase;
->> +    early_serial_setup(&emma_port);
->> +
->> +    emma_port.irq = EMMA2RH_IRQ_PFUR1;
->> +    kgdb8250_add_port(1, &emma_port);
->> +#endif
+-- 
+Thomas Koeller, Software Development
 
->    Why you #ifdef out early_serial_setup() calls is even more 
-> interesting. How this kernel is supposed to work at all with such code?!
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
 
-    Why there was need to register ports early with 8250 driver if KGDB driver 
-was enabled -- they don't have that much to do with each other. This  code 
-looks dubious even in the context of the KGDB-2 patchset.
+Tel +49 (4102) 463-390
+Fax +49 (4102) 463-46390
 
-WBR, Sergei
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com

@@ -1,151 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2006 16:22:52 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:58311 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20038801AbWHYPWu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2006 16:22:50 +0100
-Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 492B5468E1; Fri, 25 Aug 2006 17:22:56 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GGdUn-0008GN-T6; Fri, 25 Aug 2006 16:21:21 +0100
-Date:	Fri, 25 Aug 2006 16:21:21 +0100
-To:	Peter Watkins <treestem@gmail.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	Jonathan Day <imipak@yahoo.com>
-Subject: Re: [PATCH 2] 64K page size
-Message-ID: <20060825152121.GF2887@networkno.de>
-References: <44EF0C61.7090008@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2006 18:47:11 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:12889 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038886AbWHYRrJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2006 18:47:09 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id CB40E3EEF; Fri, 25 Aug 2006 10:47:04 -0700 (PDT)
+Message-ID: <44EF37DD.6090305@ru.mvista.com>
+Date:	Fri, 25 Aug 2006 21:48:13 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44EF0C61.7090008@gmail.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+To:	dpervushin@ru.mvista.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	Vitaly Wool <vwool@ru.mvista.com>
+Subject: Re: [PATCH] NEC EMMA2RH support, revisited
+References: <1148208787.6884.9.camel@diimka-laptop> <44EDF1C8.4020507@ru.mvista.com>
+In-Reply-To: <44EDF1C8.4020507@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12437
+X-archive-position: 12438
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Peter Watkins wrote:
-> Hello,
+Hello.
+
+Sergei Shtylyov wrote:
+
+>> The patch below is to support NEC EMMA2RH Mark-eins board (R5500-based)
+>> Thanks for helping and valuable comments:
+>>      the whole linux-mips comminuty
+>>     Ralf Baechle
+>>     Martin Michlmayr
+>>     Thiemo Seufer
+
+>    It seems that the community have overlooked at least one issue with 
+> this code:
+
+    Not a big issue as it seems since UARTs are registered as the 8250 
+platform devices elsewhere.
+
+>> Index: linux/arch/mips/emma2rh/markeins/setup.c
+>> ===================================================================
+>> --- /dev/null
+>> +++ linux/arch/mips/emma2rh/markeins/setup.c
 > 
-> Attached is the rest of the 64K page patch. It's been tested 
-> uniprocessor on Malta 20KC and 25KF. It also runs on a 6-way SMP 
-> functional simulator containing 5KF's. Ran tests with 16K and 64K page 
-> size.
+> [...]
 > 
-> Question: Is there an SMP malta board?
+>> +static void inline __init markeins_sio_setup(void)
+>> +{
+>> +#ifdef CONFIG_KGDB_8250
 
-You mean a SMP core card? None I heard of.
+>    I wonder what it's doing in the Linux/MIPS patch while it's only 
+> relevant to the cross-arch KGDB patchset.
 
-> There are 2 areas which could use improvement:
-> 
-> (1) Because 64K is larger than a 15 bit immediate operand, I could not 
-> get the asm-offsets mechanism to produce the correct constants. So I 
-> enlisted a fairly gruesome hack of using #define's for _PAGE_SIZE and 
-> _THREAD_SIZE, for that page size. Hopefully someone has a better idea.
-> 
-> (2) In tlbex.c:build_adjust_context(), I suspect the change for shift = 
-> PAGE_SHIFT - 12 should be more generally true, rather than just for the 
-> CPU's mentioned in the case statement.
+    Well, certainly this code does not belong here...
 
-It should be added to the initial shift calculation instead, i suspect
-it will break 32bit kernels elsewise. It should be generally the same
-for all CPUs with r4k-style TLBs.
+>> +    struct uart_port emma_port;
+>> +
+>> +    memset(&emma_port, 0, sizeof(emma_port));
+>> +
+>> +    emma_port.flags =
+>> +        UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
+>> +    emma_port.iotype = UPIO_MEM;
+>> +    emma_port.regshift = 4;    /* I/O addresses are every 8 bytes */
+>> +    emma_port.uartclk = 18544000;    /* Clock rate of the chip */
+>> +
+>> +    emma_port.line = 0;
+>> +    emma_port.mapbase = KSEG1ADDR(EMMA2RH_PFUR0_BASE + 3);
+>> +    emma_port.membase = (u8*)emma_port.mapbase;
+>> +    early_serial_setup(&emma_port);
+>> +
+>> +    emma_port.line = 1;
+>> +    emma_port.mapbase = KSEG1ADDR(EMMA2RH_PFUR1_BASE + 3);
+>> +    emma_port.membase = (u8*)emma_port.mapbase;
+>> +    early_serial_setup(&emma_port);
+>> +
+>> +    emma_port.irq = EMMA2RH_IRQ_PFUR1;
+>> +    kgdb8250_add_port(1, &emma_port);
+>> +#endif
 
-> I was conservative there because 
-> I'm not familiar with the CPU_VR41* machines. Hopefully someone more 
-> intimate with that code can comment.
+>    Why you #ifdef out early_serial_setup() calls is even more 
+> interesting. How this kernel is supposed to work at all with such code?!
 
-The vr41xx has a different/broken page mask in order to support 1k pages
-(which aren't used by linux). The shift += 2 fixes this up.
+    Why there was need to register ports early with 8250 driver if KGDB driver 
+was enabled -- they don't have that much to do with each other. This  code 
+looks dubious even in the context of the KGDB-2 patchset.
 
-[snip]
-> index c06f63e..c9de17c 100644
-> --- a/arch/mips/kernel/head.S
-> +++ b/arch/mips/kernel/head.S
-> @@ -190,7 +190,12 @@ #endif /* CONFIG_MIPS_MT_SMTC */
->  
->  	MTC0		zero, CP0_CONTEXT	# clear context register
->  	PTR_LA		$28, init_thread_union
-> +#ifdef CONFIG_PAGE_SIZE_64KB
-> +	PTR_ADDIU	sp, $28, (_THREAD_SIZE - 32)/2
-> +	PTR_ADDIU	sp,  sp, (_THREAD_SIZE - 32)/2
-> +#else
->  	PTR_ADDIU	sp, $28, _THREAD_SIZE - 32
-> +#endif
-
-A PTR_LI ... ; PTR_ADDU sequence would be better, without an #ifdef.
-This isn't a critical path of execution, and one day we might go for
-even bigger pagesizes. Likewise for the other doubled addiu in this
-patch.
-
-[snip]
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 375e099..bf093aa 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -97,6 +97,8 @@ #define FUNC_SH		0
->  #define SET_MASK	0x7
->  #define SET_SH		0
->  
-> +#define OP_ERET		0x42000018
-> +
->  enum opcode {
->  	insn_invalid,
->  	insn_addu, insn_addiu, insn_and, insn_andi, insn_beq,
-> @@ -631,6 +633,9 @@ static __init void copy_handler(struct r
->  static __init int __attribute__((unused)) insn_has_bdelay(struct reloc *rel,
->  							  u32 *addr)
->  {
-> +	if (*addr == OP_ERET)
-> +		return 1;
-> +
-
-Why? Eret has no BD slot.
-
->  	for (; rel->lab != label_invalid; rel++) {
->  		if (rel->addr == addr
->  		    && (rel->type == R_MIPS_PC16
-> @@ -996,7 +1001,12 @@ #else
->  #endif
->  
->  	l_vmalloc_done(l, *p);
-> -	i_dsrl(p, tmp, tmp, PGDIR_SHIFT-3); /* get pgd offset in bytes */
-> +
-> +	/* Want PGDIR_SHIFT-3 here, but break it into two ops so we don't
-> +	 * exceed the max shift amount of 31 with large page sizes. */
-> +	i_dsrl(p, tmp, tmp, PGDIR_SHIFT-16);   	/* get pgd offset in bytes */
-> +	i_dsrl(p, tmp, tmp, 16-3); 		/* get pgd offset in bytes */
-
-This cries for a single i_dsrl32 for the large page case.
-
-> +
->  	i_andi(p, tmp, tmp, (PTRS_PER_PGD - 1)<<3);
->  	i_daddu(p, ptr, ptr, tmp); /* add in pgd offset */
->  	i_dmfc0(p, tmp, C0_BADVADDR); /* get faulting address */
-> @@ -1087,6 +1097,11 @@ static __init void build_adjust_context(
->  	case CPU_VR4133:
->  		shift += 2;
->  		break;
-> +	case CPU_20KC:
-> +	case CPU_25KF:
-> +	case CPU_5KC:
-> +		shift  = PAGE_SHIFT - 12;
-> +		break;
-
-As said, should be done for all CPUs. (This will also fix the vr41xx
-case, just in case somebody is crazy enough to go for large pages
-on his PDA. :-)
-
-
-Thiemo
+WBR, Sergei

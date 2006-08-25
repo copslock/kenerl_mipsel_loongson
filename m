@@ -1,81 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2006 00:11:25 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:44827 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038608AbWHXXLW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2006 00:11:22 +0100
-Received: by mo.po.2iij.net (mo31) id k7ONBCm4047347; Fri, 25 Aug 2006 08:11:12 +0900 (JST)
-Received: from localhost.localdomain (191.28.30.125.dy.iij4u.or.jp [125.30.28.191])
-	by mbox.po.2iij.net (mbox33) id k7ONB8Dv083176
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 25 Aug 2006 08:11:08 +0900 (JST)
-Date:	Fri, 25 Aug 2006 08:11:07 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	pdh@colonel-panic.org (Peter Horton)
-Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2006 01:11:01 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:417 "EHLO bacchus.dhis.org")
+	by ftp.linux-mips.org with ESMTP id S20038528AbWHYALA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Aug 2006 01:11:00 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by bacchus.dhis.org (8.13.7/8.13.4) with ESMTP id k7P0BIsK001295;
+	Fri, 25 Aug 2006 01:11:18 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k7P0BDHb001294;
+	Fri, 25 Aug 2006 01:11:13 +0100
+Date:	Fri, 25 Aug 2006 01:11:13 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	Peter Horton <pdh@colonel-panic.org>, linux-mips@linux-mips.org
 Subject: Re: [PATCH 9/12] removed unused resources for Cobalt
-Message-Id: <20060825081107.45e9996e.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20060824193121.GA23792@colonel-panic.org>
-References: <20060822225755.55a055c0.yoichi_yuasa@tripeaks.co.jp>
-	<20060824193121.GA23792@colonel-panic.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Message-ID: <20060825001113.GA32490@linux-mips.org>
+References: <20060822225755.55a055c0.yoichi_yuasa@tripeaks.co.jp> <20060824193121.GA23792@colonel-panic.org> <20060825081107.45e9996e.yoichi_yuasa@tripeaks.co.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060825081107.45e9996e.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12429
+X-archive-position: 12430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Fri, Aug 25, 2006 at 08:11:07AM +0900, Yoichi Yuasa wrote:
 
-On Thu, 24 Aug 2006 20:31:21 +0100
-pdh@colonel-panic.org (Peter Horton) wrote:
-
-> On Tue, Aug 22, 2006 at 10:57:55PM +0900, Yoichi Yuasa wrote:
-> > 
-> > This patch has removed unused resources for Cobalt.
-> > 
-> > -static struct resource cobalt_io_resources[] = {
-> > -	{
-> > -		.start	= 0x00,
-> > -		.end	= 0x1f,
-> > -		.name	= "dma1",
-> > -		.flags	= IORESOURCE_BUSY
-> > -	}, {
-> > -		.start	= 0x40,
-> > -		.end	= 0x5f,
-> > -		.name	= "timer",
-> > -		.flags	= IORESOURCE_BUSY
-> > -	}, {
-> > -		.start	= 0x60,
-> > -		.end	= 0x6f,
-> > -		.name	= "keyboard",
-> > -		.flags	= IORESOURCE_BUSY
-> > -	}, {
-> > -		.start	= 0x80,
-> > -		.end	= 0x8f,
-> > -		.name	= "dma page reg",
-> > -		.flags	= IORESOURCE_BUSY
-> > -	}, {
-> > -		.start	= 0xc0,
-> > -		.end	= 0xdf,
-> > -		.name	= "dma2",
-> > -		.flags	= IORESOURCE_BUSY
-> > -	},
-> > -};
-> > -
+> > Is this correct ? These resources maybe unused, but the registers are
+> > there, and should be listed as unavailable.
 > 
-> Is this correct ? These resources maybe unused, but the registers are
-> there, and should be listed as unavailable.
+> How about the change of them to "reserved"?
 
-How about the change of them to "reserved"?
+Afaik the SuperIO chip used in the Cobalt implements those registers but
+due to missing external circuitry touching some of these registers is
+dangerous.  Afaic that is the case for the PS/2 keyboard/mouse controller
+ports.  So those should be marked as reserved.  The remaining registers
+are implemented just not terribly useful, so I think what he have is
+probably right as it is.
 
-Yoichi
+  Ralf

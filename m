@@ -1,269 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Aug 2006 23:38:40 +0100 (BST)
-Received: from mail04.hansenet.de ([213.191.73.12]:29176 "EHLO
-	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
-	id S20038885AbWHYWii (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 25 Aug 2006 23:38:38 +0100
-Received: from [213.39.153.170] (213.39.153.170) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
-        id 44EC4423000A6BEE; Sat, 26 Aug 2006 00:38:14 +0200
-Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
-	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 0E09C1C9834;
-	Sat, 26 Aug 2006 00:38:14 +0200 (CEST)
-From:	Thomas Koeller <thomas.koeller@baslerweb.com>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Aug 2006 04:56:21 +0100 (BST)
+Received: from web31505.mail.mud.yahoo.com ([68.142.198.134]:111 "HELO
+	web31505.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20039473AbWHZD4T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 26 Aug 2006 04:56:19 +0100
+Received: (qmail 18367 invoked by uid 60001); 26 Aug 2006 03:56:13 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=fp/XPYjIT+3hDbVfa9gsXGv7wRruQdF16kXKbK54Rs5g6y6Xzq8lEYrDs05+UPL6T62ifnuOZoQM1QoiWayBXHVISj064HNjabyQGkYyE+VqWZD7vG+Hg+0t3cCrI4wQ/f9VS20tEoTVLKay+QNWWKmVHI2FSmGr9iDjHP//akc=  ;
+Message-ID: <20060826035613.18365.qmail@web31505.mail.mud.yahoo.com>
+Received: from [65.102.5.19] by web31505.mail.mud.yahoo.com via HTTP; Fri, 25 Aug 2006 20:56:13 PDT
+Date:	Fri, 25 Aug 2006 20:56:13 -0700 (PDT)
+From:	Jonathan Day <imipak@yahoo.com>
 Subject: Re: [PATCH] RM9000 serial driver
-Date:	Sat, 26 Aug 2006 00:38:13 +0200
-User-Agent: KMail/1.9.3
-Cc:	sshtylyov@ru.mvista.com, rmk+serial@arm.linux.org.uk,
-	linux-serial@vger.kernel.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org,
-	Thomas =?iso-8859-1?q?K=F6ller?= <thomas.koeller@baslerweb.com>
-References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608220057.52213.thomas.koeller@baslerweb.com> <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp>
-Organization: Basler AG
+To:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc:	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
+In-Reply-To: <200608260038.13662.thomas.koeller@baslerweb.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200608260038.13662.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <imipak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12439
+X-archive-position: 12440
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: imipak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 22 August 2006 02:59, Yoichi Yuasa wrote:
->
-> If you have an another standard 8250 port. this driver cannot support it
-> You should do as well as AU1X00.
->
-> Yoichi
+As it's not a driver I think I use, my opinions on the
+matter should not carry any significant weight. On the
+other hand, if there are no other opinions on the
+matter, then no non-zero weight is insignificant.
+(I'll leave it as an exercise to resolve the triple
+negative.)
 
-Hi Yoichi,
+Anyway, it is my opinion that code believed to be
+dubious should be fixed and that it is an error to add
+more code that carries the same potential flaw until
+either the flaw is resolved or proven insignificant.
+That includes flaws in style or code cleanliness.
 
-so far nobody commented on my recent mail, in which I explained why I
-think that the AU1X00 code in 8250.c is not entirely correct, so I assume
-nobody cares. I therefore modified my code to take the same approach,
-although I still have my doubts about it. Here's the updated patch:
+If the flaw is easily fixed, then it would seem vastly
+better to fix it once now rather than twice (or more)
+later - particularly if there is any risk that copied
+flaws could be forgotten. Forgotten temporary code is
+an excellent breeding-ground for bugs.
 
+There's also a potential for friction as there is a
+very understandable unease when it comes to knowingly
+adding brokenness to the mainstream kernel if it's not
+necessary, again even if that isn't brokenness in
+terms of logic but merely in some aspect of how it's
+represented.
 
+On the flip-side, if we waited for code to be perfect,
+we'd still be waiting for Alan Turing to finish the
+world's first stored program.
 
-Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
----
-832ac1406f2530b7971cb0d23d3ede20a6057fa1
- drivers/serial/8250.c       |   86 ++++++++++++++++++++++++++++++++++---------
- drivers/serial/Kconfig      |    9 +++++
- include/linux/serial_core.h |    3 +-
- 3 files changed, 78 insertions(+), 20 deletions(-)
+--- Thomas Koeller <thomas.koeller@baslerweb.com>
+wrote:
 
-diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-index 0ae9ced..afe0e1f 100644
---- a/drivers/serial/8250.c
-+++ b/drivers/serial/8250.c
-@@ -251,9 +251,16 @@ static const struct serial8250_config ua
- 		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
- 		.flags		= UART_CAP_FIFO | UART_CAP_UUE,
- 	},
-+	[PORT_RM9000] = {
-+		.name		= "RM9000",
-+		.fifo_size	= 16,
-+		.tx_loadsz	= 16,
-+		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
-+		.flags		= UART_CAP_FIFO,
-+	},
- };
- 
--#ifdef CONFIG_SERIAL_8250_AU1X00
-+#if defined (CONFIG_SERIAL_8250_AU1X00)
- 
- /* Au1x00 UART hardware has a weird register layout */
- static const u8 au_io_in_map[] = {
-@@ -289,6 +296,36 @@ static inline int map_8250_out_reg(struc
- 	return au_io_out_map[offset];
- }
- 
-+#elif defined (CONFIG_SERIAL_8250_RM9K)
-+
-+static const u8
-+	regmap_in[8] = {
-+		[UART_RX]	= 0x00,
-+		[UART_IER]	= 0x0c,
-+		[UART_IIR]	= 0x14,
-+		[UART_LCR]	= 0x1c,
-+		[UART_MCR]	= 0x20,
-+		[UART_LSR]	= 0x24,
-+		[UART_MSR]	= 0x28,
-+		[UART_SCR]	= 0x2c
-+	},
-+	regmap_out[8] = {
-+		[UART_TX] 	= 0x04,
-+		[UART_IER]	= 0x0c,
-+		[UART_FCR]	= 0x18,
-+		[UART_LCR]	= 0x1c,
-+		[UART_MCR]	= 0x20,
-+		[UART_LSR]	= 0x24,
-+		[UART_MSR]	= 0x28,
-+		[UART_SCR]	= 0x2c
-+	};
-+
-+#define map_8250_in_reg(up, offset) \
-+	(((up)->port.type == PORT_RM9000) ? regmap_in[offset] : (offset))
-+#define map_8250_out_reg(up, offset) \
-+	(((up)->port.type == PORT_RM9000) ? regmap_out[offset] : (offset))
-+
-+
- #else
- 
- /* sane hardware needs no mapping */
-@@ -374,21 +411,21 @@ #define serial_inp(up, offset)		serial_i
- #define serial_outp(up, offset, value)	serial_out(up, offset, value)
- 
- /* Uart divisor latch read */
--static inline int _serial_dl_read(struct uart_8250_port *up)
-+static inline unsigned int _serial_dl_read(struct uart_8250_port *up)
- {
- 	return serial_inp(up, UART_DLL) | serial_inp(up, UART_DLM) << 8;
- }
- 
- /* Uart divisor latch write */
--static inline void _serial_dl_write(struct uart_8250_port *up, int value)
-+static inline void _serial_dl_write(struct uart_8250_port *up, unsigned int value)
- {
- 	serial_outp(up, UART_DLL, value & 0xff);
- 	serial_outp(up, UART_DLM, value >> 8 & 0xff);
- }
- 
--#ifdef CONFIG_SERIAL_8250_AU1X00
-+#if defined (CONFIG_SERIAL_8250_AU1X00)
- /* Au1x00 haven't got a standard divisor latch */
--static int serial_dl_read(struct uart_8250_port *up)
-+static unsigned int serial_dl_read(struct uart_8250_port *up)
- {
- 	if (up->port.iotype == UPIO_AU)
- 		return __raw_readl(up->port.membase + 0x28);
-@@ -396,13 +433,26 @@ static int serial_dl_read(struct uart_82
- 		return _serial_dl_read(up);
- }
- 
--static void serial_dl_write(struct uart_8250_port *up, int value)
-+static void serial_dl_write(struct uart_8250_port *up, unsigned int value)
- {
- 	if (up->port.iotype == UPIO_AU)
- 		__raw_writel(value, up->port.membase + 0x28);
- 	else
- 		_serial_dl_write(up, value);
- }
-+#elif defined (CONFIG_SERIAL_8250_RM9K)
-+static inline unsigned int serial_dl_read(struct uart_8250_port *up)
-+{
-+	return
-+		((readl(up->port.membase + 0x10) << 8) |
-+		(readl(up->port.membase + 0x08) & 0xff)) & 0xffff;
-+}
-+
-+static inline void serial_dl_write(struct uart_8250_port *up, unsigned int value)
-+{
-+	writel(value, up->port.membase + 0x08);
-+	writel(value >> 8, up->port.membase + 0x10);
-+}
- #else
- #define serial_dl_read(up) _serial_dl_read(up)
- #define serial_dl_write(up, value) _serial_dl_write(up, value)
-@@ -576,22 +626,17 @@ static int size_fifo(struct uart_8250_po
-  */
- static unsigned int autoconfig_read_divisor_id(struct uart_8250_port *p)
- {
--	unsigned char old_dll, old_dlm, old_lcr;
--	unsigned int id;
-+	unsigned char old_lcr;
-+	unsigned int id, old_dl;
- 
- 	old_lcr = serial_inp(p, UART_LCR);
- 	serial_outp(p, UART_LCR, UART_LCR_DLAB);
-+	old_dl = _serial_dl_read(p);
- 
--	old_dll = serial_inp(p, UART_DLL);
--	old_dlm = serial_inp(p, UART_DLM);
--
--	serial_outp(p, UART_DLL, 0);
--	serial_outp(p, UART_DLM, 0);
--
--	id = serial_inp(p, UART_DLL) | serial_inp(p, UART_DLM) << 8;
-+	serial_dl_write(p, 0);
-+	id = serial_dl_read(p);
- 
--	serial_outp(p, UART_DLL, old_dll);
--	serial_outp(p, UART_DLM, old_dlm);
-+	serial_dl_write(p, old_dl);
- 	serial_outp(p, UART_LCR, old_lcr);
- 
- 	return id;
-@@ -1138,8 +1183,11 @@ static void serial8250_start_tx(struct u
- 		if (up->bugs & UART_BUG_TXEN) {
- 			unsigned char lsr, iir;
- 			lsr = serial_in(up, UART_LSR);
--			iir = serial_in(up, UART_IIR);
--			if (lsr & UART_LSR_TEMT && iir & UART_IIR_NO_INT)
-+			iir = serial_in(up, UART_IIR) & 0x0f;
-+			if ((up->port.type == PORT_RM9000) ?
-+			   	(lsr & UART_LSR_THRE &&
-+				(iir == UART_IIR_NO_INT || iir == UART_IIR_THRI)) :
-+				(lsr & UART_LSR_TEMT && iir & UART_IIR_NO_INT))
- 				transmit_chars(up);
- 		}
- 	}
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 9799cce..dfb51ff 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -244,6 +244,15 @@ config SERIAL_8250_AU1X00
- 	  to this option.  The driver can handle 1 or 2 serial ports.
- 	  If unsure, say N.
- 
-+config SERIAL_8250_RM9K
-+	bool "Support for MIPS RM9xxx integrated serial port"
-+	depends on SERIAL_8250 != n && SERIAL_RM9000
-+	select SERIAL_8250_SHARE_IRQ
-+	help
-+	  Selecting this option will add support for the integrated serial
-+	  port hardware found on MIPS RM9122 and similar processors.
-+	  If unsure, say N.
-+
- comment "Non-8250 serial port support"
- 
- config SERIAL_AMBA_PL010
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 86501a3..8a97caf 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -39,7 +39,8 @@ #define PORT_16850	12
- #define PORT_RSA	13
- #define PORT_NS16550A	14
- #define PORT_XSCALE	15
--#define PORT_MAX_8250	15	/* max port ID */
-+#define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
-+#define PORT_MAX_8250	16	/* max port ID */
- 
- /*
-  * ARM specific type numbers.  These are not currently guaranteed
+> On Tuesday 22 August 2006 02:59, Yoichi Yuasa wrote:
+> Hi Yoichi,
+> 
+> so far nobody commented on my recent mail, in which
+> I explained why I
+> think that the AU1X00 code in 8250.c is not entirely
+> correct, so I assume
+> nobody cares. I therefore modified my code to take
+> the same approach,
+> although I still have my doubts about it. Here's the
+> updated patch:
 
 
--- 
-Thomas Koeller, Software Development
-
-Basler Vision Technologies
-An der Strusbek 60-62
-22926 Ahrensburg
-Germany
-
-Tel +49 (4102) 463-390
-Fax +49 (4102) 463-46390
-
-mailto:thomas.koeller@baslerweb.com
-http://www.baslerweb.com
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

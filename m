@@ -1,83 +1,238 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Aug 2006 04:56:21 +0100 (BST)
-Received: from web31505.mail.mud.yahoo.com ([68.142.198.134]:111 "HELO
-	web31505.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20039473AbWHZD4T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 26 Aug 2006 04:56:19 +0100
-Received: (qmail 18367 invoked by uid 60001); 26 Aug 2006 03:56:13 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=fp/XPYjIT+3hDbVfa9gsXGv7wRruQdF16kXKbK54Rs5g6y6Xzq8lEYrDs05+UPL6T62ifnuOZoQM1QoiWayBXHVISj064HNjabyQGkYyE+VqWZD7vG+Hg+0t3cCrI4wQ/f9VS20tEoTVLKay+QNWWKmVHI2FSmGr9iDjHP//akc=  ;
-Message-ID: <20060826035613.18365.qmail@web31505.mail.mud.yahoo.com>
-Received: from [65.102.5.19] by web31505.mail.mud.yahoo.com via HTTP; Fri, 25 Aug 2006 20:56:13 PDT
-Date:	Fri, 25 Aug 2006 20:56:13 -0700 (PDT)
-From:	Jonathan Day <imipak@yahoo.com>
-Subject: Re: [PATCH] RM9000 serial driver
-To:	Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc:	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
-In-Reply-To: <200608260038.13662.thomas.koeller@baslerweb.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2006 12:56:49 +0100 (BST)
+Received: from mail04.hansenet.de ([213.191.73.12]:20474 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20037891AbWH0L4r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 27 Aug 2006 12:56:47 +0100
+Received: from [213.39.141.67] (213.39.141.67) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 44EC4423000F6382; Sun, 27 Aug 2006 13:56:41 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 7803B1770DB;
+	Sun, 27 Aug 2006 13:56:40 +0200 (CEST)
+X-Mailbox-Line:	From c201cfb18301415f409505efed9f045e50a58f39 Mon Sep 17 00:00:00 2001
+From:	thomas@koeller.dyndns.org
+Date:	Sun, 27 Aug 2006 13:54:31 +0200
+Subject: [PATCH] Move excite_fpga.h to include/asm-mips/mach-excite
+Organization: Basler AG
+To:	linux-mips@linux-mips.org
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas =?iso-8859-15?q?K=F6ller?= <thomas.koeller@baslerweb.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <imipak@yahoo.com>
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200608271354.31525.thomas@koeller.dyndns.org>
+Return-Path: <thomas@koeller.dyndns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12440
+X-archive-position: 12441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: imipak@yahoo.com
+X-original-sender: thomas@koeller.dyndns.org
 Precedence: bulk
 X-list: linux-mips
 
-As it's not a driver I think I use, my opinions on the
-matter should not carry any significant weight. On the
-other hand, if there are no other opinions on the
-matter, then no non-zero weight is insignificant.
-(I'll leave it as an exercise to resolve the triple
-negative.)
+excite_fpga.h, like all platform headers, really belongs in the
+platform header directory.
 
-Anyway, it is my opinion that code believed to be
-dubious should be fixed and that it is an error to add
-more code that carries the same potential flaw until
-either the flaw is resolved or proven insignificant.
-That includes flaws in style or code cleanliness.
+Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+---
+ arch/mips/basler/excite/excite_fpga.h      |   80 
+----------------------------
+ include/asm-mips/mach-excite/excite_fpga.h |   80 
+++++++++++++++++++++++++++++
+ 2 files changed, 80 insertions(+), 80 deletions(-)
 
-If the flaw is easily fixed, then it would seem vastly
-better to fix it once now rather than twice (or more)
-later - particularly if there is any risk that copied
-flaws could be forgotten. Forgotten temporary code is
-an excellent breeding-ground for bugs.
+diff --git a/arch/mips/basler/excite/excite_fpga.h 
+b/arch/mips/basler/excite/excite_fpga.h
+deleted file mode 100644
+index 38fcda7..0000000
+--- a/arch/mips/basler/excite/excite_fpga.h
++++ /dev/null
+@@ -1,80 +0,0 @@
+-#ifndef EXCITE_FPGA_H_INCLUDED
+-#define EXCITE_FPGA_H_INCLUDED
+-
+-
+-/**
+- * Adress alignment of the individual FPGA bytes.
+- * The address arrangement of the individual bytes of the FPGA is two
+- * byte aligned at the embedded MK2 platform.
+- */
+-#ifdef EXCITE_CCI_FPGA_MK2
+-typedef unsigned char excite_cci_fpga_align_t __attribute__ ((aligned(2)));
+-#else
+-typedef unsigned char excite_cci_fpga_align_t;
+-#endif
+-
+-
+-/**
+- * Size of Dual Ported RAM.
+- */
+-#define EXCITE_DPR_SIZE 263
+-
+-
+-/**
+- * Size of Reserved Status Fields in Dual Ported RAM.
+- */
+-#define EXCITE_DPR_STATUS_SIZE 7
+-
+-
+-
+-/**
+- * FPGA.
+- * Hardware register layout of the FPGA interface. The FPGA must accessed
+- * byte wise solely.
+- * @see EXCITE_CCI_DPR_MK2
+- */
+-typedef struct excite_fpga {
+-
+-	/**
+-	 * Dual Ported RAM.
+-	 */
+-	excite_cci_fpga_align_t dpr[EXCITE_DPR_SIZE];
+-
+-	/**
+-	 * Status.
+-	 */
+-	excite_cci_fpga_align_t status[EXCITE_DPR_STATUS_SIZE];
+-
+-#ifdef EXCITE_CCI_FPGA_MK2
+-	/**
+-	 * RM9000 Interrupt.
+-	 * Write access initiates interrupt at the RM9000 (MIPS) processor of the 
+eXcite.
+-	 */
+-	excite_cci_fpga_align_t rm9k_int;
+-#else
+-	/**
+-	 * MK2 Interrupt.
+-	 * Write access initiates interrupt at the ARM processor of the MK2.
+-	 */
+-	excite_cci_fpga_align_t mk2_int;
+-
+-	excite_cci_fpga_align_t gap[0x1000-0x10f];
+-
+-	/**
+-	 * IRQ Source/Acknowledge.
+-	 */
+-	excite_cci_fpga_align_t rm9k_irq_src;
+-
+-	/**
+-	 * IRQ Mask.
+-	 * Set bits enable the related interrupt.
+-	 */
+-	excite_cci_fpga_align_t rm9k_irq_mask;
+-#endif
+-
+-
+-} excite_fpga;
+-
+-
+-
+-#endif	/* ndef EXCITE_FPGA_H_INCLUDED */
+diff --git a/include/asm-mips/mach-excite/excite_fpga.h 
+b/include/asm-mips/mach-excite/excite_fpga.h
+new file mode 100644
+index 0000000..38fcda7
+--- /dev/null
++++ b/include/asm-mips/mach-excite/excite_fpga.h
+@@ -0,0 +1,80 @@
++#ifndef EXCITE_FPGA_H_INCLUDED
++#define EXCITE_FPGA_H_INCLUDED
++
++
++/**
++ * Adress alignment of the individual FPGA bytes.
++ * The address arrangement of the individual bytes of the FPGA is two
++ * byte aligned at the embedded MK2 platform.
++ */
++#ifdef EXCITE_CCI_FPGA_MK2
++typedef unsigned char excite_cci_fpga_align_t __attribute__ ((aligned(2)));
++#else
++typedef unsigned char excite_cci_fpga_align_t;
++#endif
++
++
++/**
++ * Size of Dual Ported RAM.
++ */
++#define EXCITE_DPR_SIZE 263
++
++
++/**
++ * Size of Reserved Status Fields in Dual Ported RAM.
++ */
++#define EXCITE_DPR_STATUS_SIZE 7
++
++
++
++/**
++ * FPGA.
++ * Hardware register layout of the FPGA interface. The FPGA must accessed
++ * byte wise solely.
++ * @see EXCITE_CCI_DPR_MK2
++ */
++typedef struct excite_fpga {
++
++	/**
++	 * Dual Ported RAM.
++	 */
++	excite_cci_fpga_align_t dpr[EXCITE_DPR_SIZE];
++
++	/**
++	 * Status.
++	 */
++	excite_cci_fpga_align_t status[EXCITE_DPR_STATUS_SIZE];
++
++#ifdef EXCITE_CCI_FPGA_MK2
++	/**
++	 * RM9000 Interrupt.
++	 * Write access initiates interrupt at the RM9000 (MIPS) processor of the 
+eXcite.
++	 */
++	excite_cci_fpga_align_t rm9k_int;
++#else
++	/**
++	 * MK2 Interrupt.
++	 * Write access initiates interrupt at the ARM processor of the MK2.
++	 */
++	excite_cci_fpga_align_t mk2_int;
++
++	excite_cci_fpga_align_t gap[0x1000-0x10f];
++
++	/**
++	 * IRQ Source/Acknowledge.
++	 */
++	excite_cci_fpga_align_t rm9k_irq_src;
++
++	/**
++	 * IRQ Mask.
++	 * Set bits enable the related interrupt.
++	 */
++	excite_cci_fpga_align_t rm9k_irq_mask;
++#endif
++
++
++} excite_fpga;
++
++
++
++#endif	/* ndef EXCITE_FPGA_H_INCLUDED */
+-- 
+1.4.0
 
-There's also a potential for friction as there is a
-very understandable unease when it comes to knowingly
-adding brokenness to the mainstream kernel if it's not
-necessary, again even if that isn't brokenness in
-terms of logic but merely in some aspect of how it's
-represented.
 
-On the flip-side, if we waited for code to be perfect,
-we'd still be waiting for Alan Turing to finish the
-world's first stored program.
+-- 
+Thomas Koeller, Software Development
 
---- Thomas Koeller <thomas.koeller@baslerweb.com>
-wrote:
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
 
-> On Tuesday 22 August 2006 02:59, Yoichi Yuasa wrote:
-> Hi Yoichi,
-> 
-> so far nobody commented on my recent mail, in which
-> I explained why I
-> think that the AU1X00 code in 8250.c is not entirely
-> correct, so I assume
-> nobody cares. I therefore modified my code to take
-> the same approach,
-> although I still have my doubts about it. Here's the
-> updated patch:
+Tel +49 (4102) 463-390
+Fax +49 (4102) 463-46390
 
-
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com

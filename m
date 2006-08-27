@@ -1,101 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2006 12:57:38 +0100 (BST)
-Received: from mail04.hansenet.de ([213.191.73.12]:20218 "EHLO
-	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
-	id S20038656AbWH0L4r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 27 Aug 2006 12:56:47 +0100
-Received: from [213.39.141.67] (213.39.141.67) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
-        id 44EC4423000F6380; Sun, 27 Aug 2006 13:56:40 +0200
-Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
-	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 41B291770BD;
-	Sun, 27 Aug 2006 13:56:40 +0200 (CEST)
-X-Mailbox-Line:	From 7cf22dd5aa18b77584cfff4136ae0ac806897d04 Mon Sep 17 00:00:00 2001
-From:	thomas@koeller.dyndns.org
-Date:	Sun, 27 Aug 2006 13:51:48 +0200
-Subject: [PATCH] Add configuration variables for RM9xxx processor
-Organization: Basler AG
-To:	linux-mips@linux-mips.org
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas =?iso-8859-15?q?K=F6ller?= <thomas.koeller@baslerweb.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Aug 2006 13:12:17 +0100 (BST)
+Received: from witte.sonytel.be ([80.88.33.193]:37531 "EHLO witte.sonytel.be")
+	by ftp.linux-mips.org with ESMTP id S20038702AbWH0MMP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 27 Aug 2006 13:12:15 +0100
+Received: from pademelon.sonytel.be (mail.sonytel.be [43.221.60.197])
+	by witte.sonytel.be (8.12.10/8.12.10) with ESMTP id k7RCC4Qe001718;
+	Sun, 27 Aug 2006 14:12:04 +0200 (MEST)
+Date:	Sun, 27 Aug 2006 14:12:03 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	thomas@koeller.dyndns.org
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	=?UTF-8?Q?Thomas_K=F6ller?= <thomas.koeller@baslerweb.com>
+Subject: Re: [PATCH] Suppress compiler warnings
+In-Reply-To: <200608271353.16681.thomas@koeller.dyndns.org>
+Message-ID: <Pine.LNX.4.62.0608271411250.26709@pademelon.sonytel.be>
+References: <200608271353.16681.thomas@koeller.dyndns.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200608271351.48462.thomas@koeller.dyndns.org>
-Return-Path: <thomas@koeller.dyndns.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12443
+X-archive-position: 12444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas@koeller.dyndns.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch introduces a number of configuration variables. These allow to
-specify presence/absence of integrated peripherals found on the MIPS
-RM9xxx processor family, based on the particular processor model used.
+On Sun, 27 Aug 2006 thomas@koeller.dyndns.org wrote:
+> The excite platform exports hardware resources for device drivers to use.
+> Any driver wanting to use these resources will look up them by their names.
+> Since these resources are declared to have static linkage, but are not used
+> in the source file defining them, the compiler used to emit an 'unused'
+> warning, which this patch suppresses.
 
-Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
----
- arch/mips/Kconfig |   16 ++++++++++++++++
- 1 files changed, 16 insertions(+), 0 deletions(-)
+How can a driver look them up, if they are not linked in in some structure?
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 96165d7..8affac6 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -126,6 +126,7 @@ config BASLER_EXCITE
- 	select IRQ_CPU
- 	select IRQ_CPU_RM7K
- 	select IRQ_CPU_RM9K
-+	select MIPS_RM9122
- 	select SYS_HAS_CPU_RM9000
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
-@@ -971,6 +972,12 @@ config MIPS_TX3927
- 	bool
- 	select HAS_TXX9_SERIAL
- 
-+config MIPS_RM9122
-+	bool
-+	select SERIAL_RM9000
-+	select GPI_RM9000
-+	select WDT_RM9000
-+
- config PCI_MARVELL
- 	bool
- 
-@@ -1021,6 +1028,15 @@ config EMMA2RH
- 	depends on MARKEINS
- 	default y
- 
-+config SERIAL_RM9000
-+	bool
-+
-+config GPI_RM9000
-+	bool
-+
-+config WDT_RM9000
-+	bool
-+
- #
- # Unfortunately not all GT64120 systems run the chip at the same clock.
- # As the user for the clock rate and try to minimize the available options.
--- 
-1.4.0
+Gr{oetje,eeting}s,
 
+						Geert
 
--- 
-Thomas Koeller, Software Development
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Basler Vision Technologies
-An der Strusbek 60-62
-22926 Ahrensburg
-Germany
-
-Tel +49 (4102) 463-390
-Fax +49 (4102) 463-46390
-
-mailto:thomas.koeller@baslerweb.com
-http://www.baslerweb.com
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

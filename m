@@ -1,91 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 18:42:23 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:60078 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20039481AbWH2RmV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2006 18:42:21 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id E4F903ED1; Tue, 29 Aug 2006 10:42:17 -0700 (PDT)
-Message-ID: <44F47CBD.8090202@ru.mvista.com>
-Date:	Tue, 29 Aug 2006 21:43:25 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Alexander Bigga <ab@mycable.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] fixup for pci config_access on alchemy au1x000
-References: <200608291648.35250.ab@mycable.de>
-In-Reply-To: <200608291648.35250.ab@mycable.de>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 18:59:52 +0100 (BST)
+Received: from buzzloop.caiaq.de ([212.112.241.133]:64519 "EHLO
+	buzzloop.caiaq.de") by ftp.linux-mips.org with ESMTP
+	id S20039481AbWH2R7r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 29 Aug 2006 18:59:47 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by buzzloop.caiaq.de (Postfix) with ESMTP id CD5EB7F4039;
+	Tue, 29 Aug 2006 19:59:43 +0200 (CEST)
+Received: from buzzloop.caiaq.de ([127.0.0.1])
+	by localhost (buzzloop [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 28201-09; Tue, 29 Aug 2006 19:59:43 +0200 (CEST)
+Received: from [192.168.1.140] (port-83-236-238-37.static.qsc.de [83.236.238.37])
+	(using TLSv1 with cipher RC4-SHA (128/128 bits))
+	(No client certificate requested)
+	by buzzloop.caiaq.de (Postfix) with ESMTP id 491E47F4024;
+	Tue, 29 Aug 2006 19:59:43 +0200 (CEST)
+In-Reply-To: <20060804082736.GX31105@domen.ultra.si>
+References: <2F5D781B-2119-4942-82C1-70B5037F5622@caiaq.de> <20060714161128.GB15427@linux-mips.org> <20060715005747.GA21358@ipxXXXXX> <20060715043941.GA3587@linux-mips.org> <20060715091614.GB21737@ipxXXXXX> <20060727023204.GA28793@ipxXXXXX> <20060804082736.GX31105@domen.ultra.si>
+Mime-Version: 1.0 (Apple Message framework v752.2)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-Id: <4A12CAB6-0237-498D-A1D3-A9DFD4BD50F1@caiaq.de>
+Cc:	linux-mips@linux-mips.org, Domen Puncer <domen.puncer@ultra.si>
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+From:	Daniel Mack <daniel@caiaq.de>
+Subject: Re: [PATCH] fix irq_chip struct for Pb1200/Db1200 platform
+Date:	Tue, 29 Aug 2006 19:59:39 +0200
+To:	Ralf Baechle <ralf@linux-mips.org>
+X-Mailer: Apple Mail (2.752.2)
+Return-Path: <daniel@caiaq.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12467
+X-archive-position: 12468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: daniel@caiaq.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hi,
 
-Alexander Bigga wrote:
+On Aug 4, 2006, at 10:27 AM, Domen Puncer wrote:
 
-> I've encountered a serious problem with PCI config space access on Au1x000 
-> platforms with recent 2.6.x-kernel. With 2.4.31 the same hardware works fine. 
-> So I was looking for the differences:
+>> http://caiaq.org/linux-mips/patches/irq_chip_pb1200.patch
+>
+> Ralf, can you please apply this.
+> We don't want 2.6.18 greeting pb1200/db1200 users with an oops, do we?
 
-> Symptoms:
-> - no PCI-device is seen on bootup though two or three cards are present
-> - lspci output is empty
-> - OR: lspci shows 20 times the same device
-> (- OR: in some slot-configurations it worked anyhow)
+Is there any change to get this into 2.6.18?
 
-> System(s): 
-> 1. platform with Au1500 and three PCI-devices (actually a mycable XXS1500 
->     with backplane for three PCI-devices)
-> 2. platform with Au1550 and two PCI-devices (custom board)
+> It applies and works here. Thanks!
 
-> Debugging:
-> I digged down to the config_access() of the au1xxx-processors in 
-> arch/mips/pci/ops-au1000.c and switched on DEBUG.
-
-> The code of config_access() seems to be almost the same as of the 
-> 2.4.x-kernel. But the "pci_cfg_vm->addr" returned by get_vm_area(0x2000, 0) 
-> once on booting is different. That's of course not forbidden. But the 
-> alignment seems to be wrong. In my case, I received:
-
-> 2.4.31: pci_cfg_vm->addr = c0000000
-> 2.6.18-rc5: pci_cfg_vm->addr = c0101000
-
-> To make it short: With 2.6.x it fails on the first config-access with:
-> "PCI ERR detected: status 83a00356".
-
-> Fixup:
-> My fix is now, to use the VM_IOREMAP-flag in the get_vm_area call. This flag 
-> seems to be introduced in mm/vmalloc.c a long time ago (in 2.6.7-bk13, I 
-> found in gitweb). 
-> Now, the returned address is pci_cfg_vm->addr = c0104000 and everything works 
-> fine.
-
-> What do you think about my fixup-patch? 
-> Nobody's using the get_vm_area()-call without any flag ("0"). Was it only 
-> forgotten in the  arch/mips/pci/ops-au1000.c?
-
-> Or am I completely wrong?
-
-    You're correct -- this code was only working by some chance. Once you get 
-a virtual address not aligned to 8K, it breaks completely since the pages 
-can't constitute a valid pair for wired entry anymore.
-    Actually, in 2.4 the situation seems to be even worse as get_vm_area() 
-there has no provision for the address alignment at all!
-
-> Best regard,
-
-> Alexander
-
-WBR, Sergei
+Greets,
+Daniel

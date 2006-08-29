@@ -1,106 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 15:48:44 +0100 (BST)
-Received: from serv07.server-center.de ([83.220.153.152]:59020 "EHLO
-	serv07.server-center.de") by ftp.linux-mips.org with ESMTP
-	id S20038548AbWH2Osm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Aug 2006 15:48:42 +0100
-Received: (qmail 7176 invoked from network); 29 Aug 2006 16:47:53 +0200
-Received: by simscan 1.1.0 ppid: 7112, pid: 7117, t: 7.2320s
-         scanners: regex: 1.1.0 clamav: 0.88.2/m:39/d:1600 spam: 3.1.0
-Received: from p548de4c9.dip.t-dialin.net (HELO mycable-alex.mycable.de) (www518317@84.141.228.201)
-  by serv07.server-center.de with ESMTPA; 29 Aug 2006 16:47:46 +0200
-From:	Alexander Bigga <ab@mycable.de>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] fixup for pci config_access on alchemy au1x000
-Date:	Tue, 29 Aug 2006 16:48:34 +0200
-User-Agent: KMail/1.7.2
-Cc:	ppopov@embeddedalley.com
-Organization: mycable GmbH
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 16:42:22 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:57003 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20039480AbWH2PmU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Aug 2006 16:42:20 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id A3D9C3ED1; Tue, 29 Aug 2006 08:13:29 -0700 (PDT)
+Message-ID: <44F459DD.8060902@ru.mvista.com>
+Date:	Tue, 29 Aug 2006 19:14:37 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+To:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+	rmk+serial@arm.linux.org.uk, linux-serial@vger.kernel.org,
+	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	=?ISO-8859-1?Q?Thomas_?= =?ISO-8859-1?Q?K=F6ller?= 
+	<thomas@koeller.dyndns.org>
+Subject: Re: [PATCH] RM9000 serial driver
+References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608220057.52213.thomas.koeller@baslerweb.com> <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp> <200608222227.20181.thomas.koeller@baslerweb.com>
+In-Reply-To: <200608222227.20181.thomas.koeller@baslerweb.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200608291648.35250.ab@mycable.de>
-Return-Path: <ab@mycable.de>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12462
+X-archive-position: 12463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ab@mycable.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Hello.
 
-I've encountered a serious problem with PCI config space access on Au1x000 
-platforms with recent 2.6.x-kernel. With 2.4.31 the same hardware works fine. 
-So I was looking for the differences:
+Thomas Koeller wrote:
 
-Symptoms:
-- no PCI-device is seen on bootup though two or three cards are present
-- lspci output is empty
-- OR: lspci shows 20 times the same device
-(- OR: in some slot-configurations it worked anyhow)
+>>If you have an another standard 8250 port. this driver cannot support it
+>>You should do as well as AU1X00.
 
-System(s): 
-1. platform with Au1500 and three PCI-devices (actually a mycable XXS1500 
-    with backplane for three PCI-devices)
-2. platform with Au1550 and two PCI-devices (custom board)
+> The AU1X00 code obviously assumes that every port that is not an AU1X00 is
+> a standard port requiring no register mapping. However, this is of course
+> not necessarily true in the most general case. There could be platforms
+> with multiple ports, all non-standard, but in different ways. Handling this
 
-Debugging:
-I digged down to the config_access() of the au1xxx-processors in 
-arch/mips/pci/ops-au1000.c and switched on DEBUG.
+    The key word here is *could*. So far, this case is purely speculative. The 
+"half-compatible" UARTs seem to only reside in some SOCs for which case the 
+current scheme is still adequate.
+    I think I understand why such "half- compatible" hardware has appeared at 
+all -- the weird 8250 addressing scheme with several registers mapped to the 
+single address may be hard to implement...
 
-The code of config_access() seems to be almost the same as of the 
-2.4.x-kernel. But the "pci_cfg_vm->addr" returned by get_vm_area(0x2000, 0) 
-once on booting is different. That's of course not forbidden. But the 
-alignment seems to be wrong. In my case, I received:
+> would require per-port mapping functions, which could be achieved by adding
+> function pointers to struct uart_8250_port. However, this would add the
+> overhead of a real, non-inlined function call to every register access.
 
-2.4.31: pci_cfg_vm->addr = c0000000
-2.6.18-rc5: pci_cfg_vm->addr = c0101000
+> Also, it seems to me that the whole register-mapping stuff conflicts with
+> autodetection, because autoconfig() uses serial_inp() and serial_outp()
+> before the port types, and hence the mapping requirements, are known.
 
-To make it short: With 2.6.x it fails on the first config-access with:
-"PCI ERR detected: status 83a00356".
+    Port types have nothing to do with this. Or at least they hadn't until 
+your recent patch. :-)
+    iotype was used to identify the addressing scheme, and it's alsready known 
+beforehand.
 
-Fixup:
-My fix is now, to use the VM_IOREMAP-flag in the get_vm_area call. This flag 
-seems to be introduced in mm/vmalloc.c a long time ago (in 2.6.7-bk13, I 
-found in gitweb). 
-Now, the returned address is pci_cfg_vm->addr = c0104000 and everything works 
-fine.
+> This is not a problem for me, however, since the correct port type is
+> set up by the platform using early_serial_setup().
 
-What do you think about my fixup-patch? 
-Nobody's using the get_vm_area()-call without any flag ("0"). Was it only 
-forgotten in the  arch/mips/pci/ops-au1000.c?
+    There actually may be some other (and more valid than your case :-) issues 
+preventing autoconfure from use with SOC UARTs. I guess autoconfigure code 
+wan't intended for the case of SOC chips -- their UARTs' charactarestics are 
+usually known beforehand, and the correct PORT_* might be pre-set by the 
+platform setup code.
 
-Or am I completely wrong?
-
-Thanks a lot for your comments!
-
-Best regard,
-
-
-Alexander
-
---- linux-2.6.18-rc5/arch/mips/pci/ops-au1000.c	2006-08-28 12:09:15.000000000 
-+0200
-+++ linux-2.6.18-rc5-dev/arch/mips/pci/ops-au1000.c	2006-08-29 
-13:08:59.000000000 +0200
-@@ -110,7 +110,7 @@
- 	if (first_cfg) {
- 		/* reserve a wired entry for pci config accesses */
- 		first_cfg = 0;
--		pci_cfg_vm = get_vm_area(0x2000, 0);
-+		pci_cfg_vm = get_vm_area(0x2000, VM_IOREMAP);
- 		if (!pci_cfg_vm)
- 			panic (KERN_ERR "PCI unable to get vm area\n");
- 		pci_cfg_wired_entry = read_c0_wired();
-
--- 
-Alexander Bigga     Tel: +49 4873 90 10 866
-mycable GmbH        Fax: +49 4873 901 976
-Boeker Stieg 43
-D-24613 Aukrug      eMail: ab@mycable.de
+WBR, Sergei

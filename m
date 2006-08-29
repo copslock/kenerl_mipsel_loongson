@@ -1,55 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 18:59:52 +0100 (BST)
-Received: from buzzloop.caiaq.de ([212.112.241.133]:64519 "EHLO
-	buzzloop.caiaq.de") by ftp.linux-mips.org with ESMTP
-	id S20039481AbWH2R7r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Aug 2006 18:59:47 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by buzzloop.caiaq.de (Postfix) with ESMTP id CD5EB7F4039;
-	Tue, 29 Aug 2006 19:59:43 +0200 (CEST)
-Received: from buzzloop.caiaq.de ([127.0.0.1])
-	by localhost (buzzloop [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 28201-09; Tue, 29 Aug 2006 19:59:43 +0200 (CEST)
-Received: from [192.168.1.140] (port-83-236-238-37.static.qsc.de [83.236.238.37])
-	(using TLSv1 with cipher RC4-SHA (128/128 bits))
-	(No client certificate requested)
-	by buzzloop.caiaq.de (Postfix) with ESMTP id 491E47F4024;
-	Tue, 29 Aug 2006 19:59:43 +0200 (CEST)
-In-Reply-To: <20060804082736.GX31105@domen.ultra.si>
-References: <2F5D781B-2119-4942-82C1-70B5037F5622@caiaq.de> <20060714161128.GB15427@linux-mips.org> <20060715005747.GA21358@ipxXXXXX> <20060715043941.GA3587@linux-mips.org> <20060715091614.GB21737@ipxXXXXX> <20060727023204.GA28793@ipxXXXXX> <20060804082736.GX31105@domen.ultra.si>
-Mime-Version: 1.0 (Apple Message framework v752.2)
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Message-Id: <4A12CAB6-0237-498D-A1D3-A9DFD4BD50F1@caiaq.de>
-Cc:	linux-mips@linux-mips.org, Domen Puncer <domen.puncer@ultra.si>
-Content-Transfer-Encoding: 7bit
-From:	Daniel Mack <daniel@caiaq.de>
-Subject: Re: [PATCH] fix irq_chip struct for Pb1200/Db1200 platform
-Date:	Tue, 29 Aug 2006 19:59:39 +0200
-To:	Ralf Baechle <ralf@linux-mips.org>
-X-Mailer: Apple Mail (2.752.2)
-Return-Path: <daniel@caiaq.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 20:04:47 +0100 (BST)
+Received: from caramon.arm.linux.org.uk ([217.147.92.249]:23825 "EHLO
+	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
+	id S20039497AbWH2TEq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 29 Aug 2006 20:04:46 +0100
+Received: from flint.arm.linux.org.uk ([2002:d993:5cf9:1:201:2ff:fe14:8fad])
+	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.52)
+	id 1GI8sv-0002V1-2d; Tue, 29 Aug 2006 20:04:29 +0100
+Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
+	id 1GI8st-0005aJ-CF; Tue, 29 Aug 2006 20:04:27 +0100
+Date:	Tue, 29 Aug 2006 20:04:27 +0100
+From:	Russell King <rmk@arm.linux.org.uk>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	Thomas Koeller <thomas.koeller@baslerweb.com>,
+	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+	linux-serial@vger.kernel.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] RM9000 serial driver
+Message-ID: <20060829190426.GA20606@flint.arm.linux.org.uk>
+References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608220057.52213.thomas.koeller@baslerweb.com> <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp> <200608260038.13662.thomas.koeller@baslerweb.com> <44F441F3.8050301@ru.mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <44F441F3.8050301@ru.mvista.com>
+User-Agent: Mutt/1.4.1i
+Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12468
+X-archive-position: 12469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel@caiaq.de
+X-original-sender: rmk@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, Aug 29, 2006 at 05:32:35PM +0400, Sergei Shtylyov wrote:
+> >@@ -576,22 +626,17 @@ static int size_fifo(struct uart_8250_po
+> >  */
+> > static unsigned int autoconfig_read_divisor_id(struct uart_8250_port *p)
+> > {
+> >-	unsigned char old_dll, old_dlm, old_lcr;
+> >-	unsigned int id;
+> >+	unsigned char old_lcr;
+> >+	unsigned int id, old_dl;
+> > 
+> > 	old_lcr = serial_inp(p, UART_LCR);
+> > 	serial_outp(p, UART_LCR, UART_LCR_DLAB);
+> >+	old_dl = _serial_dl_read(p);
+> > 
+> >-	old_dll = serial_inp(p, UART_DLL);
+> >-	old_dlm = serial_inp(p, UART_DLM);
+> >-
+> >-	serial_outp(p, UART_DLL, 0);
+> >-	serial_outp(p, UART_DLM, 0);
+> >-
+> >-	id = serial_inp(p, UART_DLL) | serial_inp(p, UART_DLM) << 8;
+> >+	serial_dl_write(p, 0);
+> >+	id = serial_dl_read(p);
+> > 
+> >-	serial_outp(p, UART_DLL, old_dll);
+> >-	serial_outp(p, UART_DLM, old_dlm);
+> >+	serial_dl_write(p, old_dl);
+> > 	serial_outp(p, UART_LCR, old_lcr);
+> > 
+> > 	return id;
+> 
+>    Not sure the autoconfig code was intended for half-compatible UARTs. 
+>    Note that it sets up->port.type as its result. However, your change seems 
+> correct, it just have nothing to do with RM9000.
 
-On Aug 4, 2006, at 10:27 AM, Domen Puncer wrote:
+It's worse than that - this code is there to read the ID from the divisor
+registers implemented in some UARTs.  If it isn't one of those UARTs, it's
+expected to return zero.
 
->> http://caiaq.org/linux-mips/patches/irq_chip_pb1200.patch
->
-> Ralf, can you please apply this.
-> We don't want 2.6.18 greeting pb1200/db1200 users with an oops, do we?
+So we don't actually want to be prodding some other random registers on
+differing UARTs.
 
-Is there any change to get this into 2.6.18?
+>    As a side note, I think that the code that sets DLAB before and resets it
+> after the divisor latch read/write should be part of serial_dl_read() and
+> serial_dl_write() actually. In the Alchemy UARTs this bit is reserved.
 
-> It applies and works here. Thanks!
+Not really, for two reasons.
 
-Greets,
-Daniel
+1. We end up with additional pointless writes to undo what serial_dl_*
+   did.
+2. setting DLAB might work for a subset of ports, but others require
+   different magic numbers written to LCR to access the divisor.
+3. other ports have additional properties when DLAB is set, to the
+   extent that you must not write other registers when it's reset to
+   avoid clearing some features you want to enable.
+
+So, really, Moving that stuff into serial_dl_* ends up adding additional
+code and complexity where it isn't needed.
+
+-- 
+Russell King
+ Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
+ maintainer of:  2.6 Serial core

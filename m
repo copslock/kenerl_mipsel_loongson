@@ -1,93 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 20:59:18 +0100 (BST)
-Received: from caramon.arm.linux.org.uk ([217.147.92.249]:8969 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20039498AbWH2T7Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Aug 2006 20:59:16 +0100
-Received: from flint.arm.linux.org.uk ([2002:d993:5cf9:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:DES-CBC3-SHA:168)
-	(Exim 4.52)
-	id 1GI9jo-0002Y2-Gm; Tue, 29 Aug 2006 20:59:09 +0100
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.52)
-	id 1GI9jm-00063N-KT; Tue, 29 Aug 2006 20:59:06 +0100
-Date:	Tue, 29 Aug 2006 20:59:06 +0100
-From:	Russell King <rmk@arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Aug 2006 00:06:44 +0100 (BST)
+Received: from mail01.hansenet.de ([213.191.73.61]:23209 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20027569AbWH2XGm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 30 Aug 2006 00:06:42 +0100
+Received: from [213.39.141.233] (213.39.141.233) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 44EA7D5F0020432A; Wed, 30 Aug 2006 01:06:16 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 8E8702C416;
+	Wed, 30 Aug 2006 01:06:15 +0200 (CEST)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
 To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Thomas Koeller <thomas.koeller@baslerweb.com>,
-	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] RM9000 serial driver
-Message-ID: <20060829195906.GA22913@flint.arm.linux.org.uk>
-References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608220057.52213.thomas.koeller@baslerweb.com> <20060822095942.4663a4cd.yoichi_yuasa@tripeaks.co.jp> <200608260038.13662.thomas.koeller@baslerweb.com> <44F441F3.8050301@ru.mvista.com> <20060829190426.GA20606@flint.arm.linux.org.uk> <44F4976E.7020702@ru.mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Date:	Wed, 30 Aug 2006 01:05:26 +0200
+User-Agent: KMail/1.9.3
+Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+	rmk+serial@arm.linux.org.uk, linux-serial@vger.kernel.org,
+	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	Thomas =?iso-8859-1?q?K=F6ller?= <thomas@koeller.dyndns.org>
+References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608222227.20181.thomas.koeller@baslerweb.com> <44F459DD.8060902@ru.mvista.com>
+In-Reply-To: <44F459DD.8060902@ru.mvista.com>
+Organization: Basler AG
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <44F4976E.7020702@ru.mvista.com>
-User-Agent: Mutt/1.4.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+Message-Id: <200608300105.26921.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12471
+X-archive-position: 12472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk@arm.linux.org.uk
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 29, 2006 at 11:37:18PM +0400, Sergei Shtylyov wrote:
-> >>  Not sure the autoconfig code was intended for half-compatible UARTs. 
-> >>  Note that it sets up->port.type as its result. However, your change 
-> >>  seems correct, it just have nothing to do with RM9000.
-> 
-> >It's worse than that - this code is there to read the ID from the divisor
-> >registers implemented in some UARTs.  If it isn't one of those UARTs, it's
-> >expected to return zero.
-> 
->    Well, I guess it should still return 0 (or revision) if we use 
->    serial_dl_*()?
+On Tuesday 29 August 2006 17:14, Sergei Shtylyov wrote:
+> > Also, it seems to me that the whole register-mapping stuff conflicts with
+> > autodetection, because autoconfig() uses serial_inp() and serial_outp()
+> > before the port types, and hence the mapping requirements, are known.
+>
+>     Port types have nothing to do with this. Or at least they hadn't until
+> your recent patch. :-)
+>     iotype was used to identify the addressing scheme, and it's alsready
+> known beforehand.
 
-Not sure.  Does this code actually even get reached?
+How so? If I do not yet know which hardware I am dealing with, how can I know
+the iotype?
 
-> >>  As a side note, I think that the code that sets DLAB before and resets 
-> >>  it
-> >>after the divisor latch read/write should be part of serial_dl_read() and
-> >>serial_dl_write() actually. In the Alchemy UARTs this bit is reserved.
-> 
-> >Not really, for two reasons.
-> 
-> >1. We end up with additional pointless writes to undo what serial_dl_*
-> >   did.
-> 
->    Yes, sometimes.
-> 
-> >2. setting DLAB might work for a subset of ports, but others require
-> >   different magic numbers written to LCR to access the divisor.
-> 
->    Indeed, I've spotted one such case. But we could possible RMW the line 
-> control reg. so that serial_dl_*() "cleanup" after themselves?
-
-Not really - writing 0xEF is one such magic number, and it doesn't
-change the current settings.  If you then clear DLAB (iow, 0x6F),
-there's no guarantee that it won't change the settings on you, and,
-eg start sending a break condition.  Why?  0xEF is defined to be a
-magic number to access additional features, and 0x6f has no such
-meaning.
-
-> >3. other ports have additional properties when DLAB is set, to the
-> >   extent that you must not write other registers when it's reset to
-> >   avoid clearing some features you want to enable.
-> 
-> >So, really, Moving that stuff into serial_dl_* ends up adding additional
-> >code and complexity where it isn't needed.
-> 
-> Well, alternatively, the checks might be added to the places where DLAB 
-> is written preventing the write for UARTs that don't have the bit. Or even 
-> such check and LCR masking or even write skipping might be added to 
-> serial_out()?
-
-In a similar way to the TSI ports?  Yes, that'd work.
-
+Thomas 
 -- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:  2.6 Serial core
+Thomas Koeller, Software Development
+
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
+
+Tel +49 (4102) 463-390
+Fax +49 (4102) 463-46390
+
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com

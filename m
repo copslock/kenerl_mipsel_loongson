@@ -1,57 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 08:24:01 +0100 (BST)
-Received: from mailout2.samsung.com ([203.254.224.25]:30700 "EHLO
-	mailout2.samsung.com") by ftp.linux-mips.org with ESMTP
-	id S20037820AbWH2HX7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Aug 2006 08:23:59 +0100
-Received: from ep_mmp2 (mailout2.samsung.com [203.254.224.25])
- by mailout2.samsung.com
- (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14 2004))
- with ESMTP id <0J4R000WE0JRD0@mailout2.samsung.com> for
- linux-mips@linux-mips.org; Tue, 29 Aug 2006 16:23:51 +0900 (KST)
-Received: from mon12key ([10.88.163.201])
- by mmp2.samsung.com (iPlanet Messaging Server 5.2 HotFix 1.17 (built Jun 23
- 2003)) with ESMTPA id <0J4R004IX0JQ2P@mmp2.samsung.com> for
- linux-mips@linux-mips.org; Tue, 29 Aug 2006 16:23:51 +0900 (KST)
-Date:	Tue, 29 Aug 2006 16:23:55 +0900
-From:	=?ks_c_5601-1987?B?wMzA58HY?= <jj76.lee@samsung.com>
-Subject: Data corruption during direct-IO
-In-reply-to: <50c9a2250607062212w70de956ax7aefd4f131ae9396@mail.gmail.com>
-To:	'linux-mips' <linux-mips@linux-mips.org>
-Message-id: <0J4R004IY0JQ2P@mmp2.samsung.com>
-MIME-version: 1.0
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
-X-Mailer: Microsoft Office Outlook, Build 11.0.5510
-Content-type: text/plain; charset=ks_c_5601-1987
-Content-transfer-encoding: 7BIT
-Thread-index: AcahhBZjm5Q6FhFfR1OnbzKQpyBJXgpsgKLA
-Return-Path: <jj76.lee@samsung.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Aug 2006 08:31:38 +0100 (BST)
+Received: from nz-out-0102.google.com ([64.233.162.200]:29407 "EHLO
+	nz-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037824AbWH2Hbf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 29 Aug 2006 08:31:35 +0100
+Received: by nz-out-0102.google.com with SMTP id i1so1002159nzh
+        for <linux-mips@linux-mips.org>; Tue, 29 Aug 2006 00:31:33 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=JzSekLnNa9md9hvEGOCjiVUaSk8SmINUGp3LufP62Tca/QiVBNcVt/HckmZyzDZmjDNP51McZQbcqqawJG9m+FDN1bePVllanWrIiTMrbyTUKNf5tqKQnPwZCwYT86JQS4IpA9K+hKLlTdAkMghdhgUZ05+Ww7Xg0oHnz21Pkrg=
+Received: by 10.64.184.14 with SMTP id h14mr8074477qbf;
+        Tue, 29 Aug 2006 00:31:33 -0700 (PDT)
+Received: from ?192.168.0.24? ( [194.3.162.233])
+        by mx.gmail.com with ESMTP id q15sm1407670qbq.2006.08.29.00.31.28;
+        Tue, 29 Aug 2006 00:31:29 -0700 (PDT)
+Message-ID: <44F3ED4B.9090202@innova-card.com>
+Date:	Tue, 29 Aug 2006 09:31:23 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	vagabon.xyz@gmail.com
+Subject: Re: [PATCH] make prepare_frametrace() not clobber v0
+References: <20060829.121022.130240504.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20060829.121022.130240504.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12454
+X-archive-position: 12455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jj76.lee@samsung.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi everyone.
+Atsushi Nemoto wrote:
+> Since lmo commit 323a380bf9e1a1679a774a2b053e3c1f2aa3f179 ("Simplify
+> dump_stack()") made prepare_frametrace() always inlined, using $2 (v0)
+> in __asm__ is not safe anymore.  We can use $1 (at) instead.  Also we
 
-I'm working on some application which is using directly block device with
-direct-IO.
-When the application writes some patterns and reads it again. The pattern
-is broken with 32bytes. I think that is due to the data-cache coherent
-problem.
+Thanks, good catch !
 
-So, I inserted the code dma_cache_inv() before direct-IO().
-
-After the patch, it works well. 
-
-Could you tell me why the data is broken and why mips-kernel doesn't handle
-data cache?
-
-Thanks for any comments. 
-
-Best Regards
-JJ
+		Franck

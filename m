@@ -1,53 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Aug 2006 10:10:12 +0100 (BST)
-Received: from mx1.redhat.com ([66.187.233.31]:51158 "EHLO mx1.redhat.com")
-	by ftp.linux-mips.org with ESMTP id S20027619AbWH3JKK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 30 Aug 2006 10:10:10 +0100
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7U9A2GE007031;
-	Wed, 30 Aug 2006 05:10:02 -0400
-Received: from pobox.surrey.redhat.com (pobox.surrey.redhat.com [172.16.10.17])
-	by int-mx1.corp.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7U9A0Yt012808;
-	Wed, 30 Aug 2006 05:10:01 -0400
-Received: from warthog.cambridge.redhat.com (warthog.cambridge.redhat.com [172.16.18.73])
-	by pobox.surrey.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id k7U99xMo004344;
-	Wed, 30 Aug 2006 10:09:59 +0100
-Received: from warthog.cambridge.redhat.com (localhost.localdomain [127.0.0.1])
-	by warthog.cambridge.redhat.com (8.13.7/8.13.4) with ESMTP id k7U99sOM020540;
-	Wed, 30 Aug 2006 10:09:54 +0100
-From:	David Howells <dhowells@redhat.com>
-In-Reply-To: <20060828085244.GA13544@flint.arm.linux.org.uk> 
-References: <20060828085244.GA13544@flint.arm.linux.org.uk> 
-To:	Russell King <rmk+lkml@arm.linux.org.uk>
-Cc:	linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-	linuxppc-embedded@ozlabs.org, paulkf@microgate.com,
-	takata@linux-m32r.org, linux-kernel@vger.kernel.org
-Subject: Re: [CFT:PATCH] Removing possible wrong asm/serial.h inclusions 
-X-Mailer: MH-E 8.0; nmh 1.1; GNU Emacs 22.0.50
-Date:	Wed, 30 Aug 2006 10:09:54 +0100
-Message-ID: <20539.1156928994@warthog.cambridge.redhat.com>
-Return-Path: <dhowells@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Aug 2006 11:50:28 +0100 (BST)
+Received: from serv07.server-center.de ([83.220.153.152]:395 "EHLO
+	serv07.server-center.de") by ftp.linux-mips.org with ESMTP
+	id S20037623AbWH3Ku0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 30 Aug 2006 11:50:26 +0100
+Received: (qmail 6318 invoked from network); 30 Aug 2006 12:49:38 +0200
+Received: by simscan 1.1.0 ppid: 6275, pid: 6283, t: 6.7200s
+         scanners: regex: 1.1.0 clamav: 0.88.2/m:39/d:1600 spam: 3.1.0
+Received: from p548de54f.dip.t-dialin.net (HELO mycable-alex.mycable.de) (www518317@84.141.229.79)
+  by serv07.server-center.de with ESMTPA; 30 Aug 2006 12:49:31 +0200
+Received: from ab by mycable-alex.mycable.de with local (Exim 4.50)
+	id 1GINeK-000539-8c; Wed, 30 Aug 2006 12:50:24 +0200
+Date:	Wed, 30 Aug 2006 12:50:24 +0200
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, ppopov@embeddedalley.com
+Subject: Re: [PATCH] fixup for pci config_access on alchemy au1x000
+Message-ID: <20060830105024.GA19370@mycable-alex>
+References: <200608291648.35250.ab@mycable.de> <20060829155607.GE29289@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060829155607.GE29289@linux-mips.org>
+User-Agent: Mutt/1.5.9i
+From:	Alexander Bigga <ab@mycable.de>
+Return-Path: <ab@mycable.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12474
+X-archive-position: 12475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: ab@mycable.de
 Precedence: bulk
 X-list: linux-mips
 
-Russell King <rmk+lkml@arm.linux.org.uk> wrote:
+Thanks for applying.
 
-> --- a/arch/frv/kernel/setup.c
-> +++ b/arch/frv/kernel/setup.c
-> @@ -31,7 +31,6 @@
->  #include <linux/serial_reg.h>
->  
->  #include <asm/setup.h>
-> -#include <asm/serial.h>
->  #include <asm/irq.h>
->  #include <asm/sections.h>
->  #include <asm/pgalloc.h>
+On Tue, Aug 29, 2006 at 04:56:07PM +0100, Ralf Baechle wrote:
+> The patch looks ok, so just the usual technicalities:
+> 
+>  - Please include a Signed-off-by: line.
 
-Acked-By: David Howells <dhowells@redhat.com>
+Ok. Will do this in future. 
+
+>  - Don't use a bloody crapmailer that garbles patches into some sort of
+>    ASCII spinach.
+
+I'm really sorry. I don't like spinach too ;-)
+For future mailings and patches, I will take mutt again.
+
+Alexander
+-- 
+Alexander Bigga     Tel: +49 4873 90 10 866
+mycable GmbH        Fax: +49 4873 901 976
+Boeker Stieg 43
+D-24613 Aukrug      eMail: ab@mycable.de

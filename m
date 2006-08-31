@@ -1,77 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Aug 2006 22:29:14 +0100 (BST)
-Received: from mail04.hansenet.de ([213.191.73.12]:36293 "EHLO
-	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
-	id S20037772AbWH3V3M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 30 Aug 2006 22:29:12 +0100
-Received: from [213.39.208.35] (213.39.208.35) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
-        id 44EC4423001DFCEF; Wed, 30 Aug 2006 23:28:48 +0200
-Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
-	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 24DA52C410;
-	Wed, 30 Aug 2006 23:28:48 +0200 (CEST)
-From:	Thomas Koeller <thomas.koeller@baslerweb.com>
-To:	"Russell King" <rmk@arm.linux.org.uk>
-Subject: Re: [PATCH] RM9000 serial driver
-Date:	Wed, 30 Aug 2006 23:28:47 +0200
-User-Agent: KMail/1.9.3
-Cc:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>,
-	"Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp>,
-	linux-serial@vger.kernel.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org,
-	Thomas =?iso-8859-1?q?K=F6ller?= <thomas@koeller.dyndns.org>
-References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608300100.32836.thomas.koeller@baslerweb.com> <20060830121216.GA25699@flint.arm.linux.org.uk>
-In-Reply-To: <20060830121216.GA25699@flint.arm.linux.org.uk>
-Organization: Basler AG
-MIME-Version: 1.0
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Aug 2006 04:48:19 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:29188 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037645AbWHaDsR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 31 Aug 2006 04:48:17 +0100
+Received: by mo.po.2iij.net (mo30) id k7V3mBAX052653; Thu, 31 Aug 2006 12:48:11 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox33) id k7V3m9KU097405
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 31 Aug 2006 12:48:09 +0900 (JST)
+Date:	Thu, 31 Aug 2006 12:48:09 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, imipak@yahoo.com, ths@networkno.de,
+	treestem@gmail.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH] 64K page size
+Message-Id: <20060831124809.7118ab45.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060829140700.GD29289@linux-mips.org>
+References: <20060823160011.GE20395@networkno.de>
+	<20060823162324.43027.qmail@web31507.mail.mud.yahoo.com>
+	<20060829140700.GD29289@linux-mips.org>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <200608302328.47944.thomas.koeller@baslerweb.com>
-Return-Path: <thomas.koeller@baslerweb.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12487
+X-archive-position: 12488
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas.koeller@baslerweb.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 30 August 2006 14:12, Russell King wrote:
+Hi Ralf,
 
-> iotype is all about the access method used to access the registers of
-> the device, be it by byte or word, and it also takes account of any
-> variance in the addressing of the registers.
->
-> It does not refer to features or bugs in any particular implementation.
+On Tue, 29 Aug 2006 15:07:00 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-That's what I assumed, too - it seemed obvious. And it seemed equally
-obvious that it is the port type that encodes the the implementation's
-peculiarities. Among these are the register offset mapping requirements,
-so I assumed these should depend on the port type as well.
+> On Wed, Aug 23, 2006 at 09:23:24AM -0700, Jonathan Day wrote:
+> 
+> > I am extremely interested in big pages (64K, etc), and
+> > the sooner the better. If there is anything not
+> > considered OK for immediate inclusion in the Linux
+> > MIPS git tree, I would love to have a copy anyway.
+> > Large pages will be necessary for some high-priority
+> > work I'm doing, although stability at this point seems
+> > to be an optional extra. (Hence why the patches are
+> > much more important than whether they're actually
+> > finished yet.)
+> 
+> We're getting very close to a 2.6.18 release and 64kB pages are still
+> quite experimental, so I'm putting all the 64kB pagesize related fixes
+> into the queue branch.  16kB by now has a few users, so I give it
+> higher priority.
 
-Now Sergei strongly insist that it's the iotype that should be checked
-whenever to get to the hardware type. I still do not quite understand how
-that is supposed to work. If I have a PCI device, for example, then the
-iotype will always be either UPIO_MEM or UPIO_PORT, so how could I learn
-something about the hardware implementation by looking at these values?
-Or is the assumption that devices on a standard bus will always be of
-a standard type?
+Which is your queue branch?
+I want to test 64k page size on vr41xx.
 
-Thomas
-
--- 
-Thomas Koeller, Software Development
-
-Basler Vision Technologies
-An der Strusbek 60-62
-22926 Ahrensburg
-Germany
-
-Tel +49 (4102) 463-390
-Fax +49 (4102) 463-46390
-
-mailto:thomas.koeller@baslerweb.com
-http://www.baslerweb.com
+Yoichi

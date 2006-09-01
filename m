@@ -1,49 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Aug 2006 22:23:58 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:5061 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037647AbWHaVX4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 31 Aug 2006 22:23:56 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k7VLOPLb004274;
-	Thu, 31 Aug 2006 22:24:25 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k7VLON1c004273;
-	Thu, 31 Aug 2006 22:24:23 +0100
-Date:	Thu, 31 Aug 2006 22:24:23 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	imipak@yahoo.com, ths@networkno.de, treestem@gmail.com,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] 64K page size
-Message-ID: <20060831212423.GA4233@linux-mips.org>
-References: <20060823160011.GE20395@networkno.de> <20060823162324.43027.qmail@web31507.mail.mud.yahoo.com> <20060829140700.GD29289@linux-mips.org> <20060831124809.7118ab45.yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Sep 2006 04:35:27 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:44608 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20027677AbWIADfZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 1 Sep 2006 04:35:25 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 1 Sep 2006 12:35:23 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 243C7204AD;
+	Fri,  1 Sep 2006 12:35:19 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 188BF1FF0A;
+	Fri,  1 Sep 2006 12:35:19 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k813ZGW0053279;
+	Fri, 1 Sep 2006 12:35:18 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 01 Sep 2006 12:35:16 +0900 (JST)
+Message-Id: <20060901.123516.21957726.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, nigel@mips.com
+Subject: Re: [MIPS] Fix COW D-cache aliasing on fork
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <S20037621AbWHaUco/20060831203244Z+5697@ftp.linux-mips.org>
+References: <S20037621AbWHaUco/20060831203244Z+5697@ftp.linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20060831124809.7118ab45.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12494
+X-archive-position: 12495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 31, 2006 at 12:48:09PM +0900, Yoichi Yuasa wrote:
+On Thu, 31 Aug 2006 21:32:39 +0100, linux-mips@linux-mips.org wrote:
+> Author: Atsushi Nemoto <anemo@mba.ocn.ne.jp> Thu Aug 24 00:31:30 2006 +0900
+> Comitter: Ralf Baechle <ralf@linux-mips.org> Thu Aug 31 19:50:02 2006 +0100
+> Commit: b895b66990f22a8a030c41390c538660a02bb97f
+> Gitweb: http://www.linux-mips.org/g/linux/b895b669
+> Branch: master
 
-> > We're getting very close to a 2.6.18 release and 64kB pages are still
-> > quite experimental, so I'm putting all the 64kB pagesize related fixes
-> > into the queue branch.  16kB by now has a few users, so I give it
-> > higher priority.
-> 
-> Which is your queue branch?
-> I want to test 64k page size on vr41xx.
+Thanks!!!
 
-It's just named "queue" in the usual git repository on linux-mips.org.
+And please commit this fix too.
 
-  Ralf
+
+The tlbidx variable should be signed int so that "tlbidx < 0"
+comparison works correctly.  Nigel Stephens <nigel@mips.com> pointed
+this out.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 2cfdc0b..bbc9458 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -136,7 +136,7 @@ static inline void *kmap_coherent(struct
+ 	unsigned long vaddr, flags, entrylo;
+ 	unsigned long old_ctx;
+ 	pte_t pte;
+-	unsigned int tlbidx;
++	int tlbidx;
+ 
+ 	inc_preempt_count();
+ 	idx = (addr >> PAGE_SHIFT) & (FIX_N_COLOURS - 1);

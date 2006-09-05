@@ -1,118 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Sep 2006 19:20:26 +0100 (BST)
-Received: from p549F5EA7.dip.t-dialin.net ([84.159.94.167]:49050 "EHLO
-	p549F5EA7.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20039253AbWIDSUX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 4 Sep 2006 19:20:23 +0100
-Received: from h155.mvista.com ([63.81.120.155]:10090 "EHLO imap.sh.mvista.com")
-	by lappi.linux-mips.net with ESMTP id S1100038AbWIDSNt (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 4 Sep 2006 20:13:49 +0200
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id A21813EBE; Mon,  4 Sep 2006 11:13:01 -0700 (PDT)
-Message-ID: <44FC6D38.1000407@ru.mvista.com>
-Date:	Mon, 04 Sep 2006 22:15:20 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2006 07:55:58 +0100 (BST)
+Received: from wx-out-0506.google.com ([66.249.82.238]:17061 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038727AbWIEGzv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 5 Sep 2006 07:55:51 +0100
+Received: by wx-out-0506.google.com with SMTP id h30so2540377wxd
+        for <linux-mips@linux-mips.org>; Mon, 04 Sep 2006 23:55:49 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=qIaGYaGjsH6ZJV8QbZt80md7yE8lUjJMAE1g7W+0eo7TqMD0CCbZnr/fLNbLfb5nQs6eU5jItxrPX40qapFnD34oIHrbfOv7ZTXlWx34O121YVfYVsufTYPyUqWHvxMmkXDoI4O3Q1HJZa8x6HzCIrEox48Y+HhCDwmES8s6u/w=
+Received: by 10.70.118.4 with SMTP id q4mr7061962wxc;
+        Mon, 04 Sep 2006 23:55:18 -0700 (PDT)
+Received: by 10.70.25.11 with HTTP; Mon, 4 Sep 2006 23:55:18 -0700 (PDT)
+Message-ID: <f21fe8a50609042355o19ab7b50nb5717bfe0d358232@mail.gmail.com>
+Date:	Tue, 5 Sep 2006 08:55:18 +0200
+From:	"Erik Niessen" <erik.niessen@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Weird output from pmap
 MIME-Version: 1.0
-To:	Pantelis Antoniou <pantelis@embeddedalley.com>
-Cc:	Russell King <rmk@arm.linux.org.uk>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] AMD Alchemy: claim UART memory range
-References: <4432BF48.8030403@ru.mvista.com> <44F2E9F7.6030309@ru.mvista.com> <F8D0F572-A68C-4343-A563-23D79BAB25AD@embeddedalley.com> <20060830080157.GA17632@flint.arm.linux.org.uk> <44FC625A.5050005@ru.mvista.com> <4098748B-6105-4644-A86A-B776A23D0272@embeddedalley.com>
-In-Reply-To: <4098748B-6105-4644-A86A-B776A23D0272@embeddedalley.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_123085_32158524.1157439318223"
+Return-Path: <erik.niessen@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12513
+X-archive-position: 12514
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: erik.niessen@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+------=_Part_123085_32158524.1157439318223
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Pantelis Antoniou wrote:
+Hi,
 
->>>>>  BTW, can anybody enlighten me why 8250_au1x00.c came into  being  
->>>>> at all?
->>>>> Its only function seems to register the UART platform devices,  
->>>>> the  thing
->>>>> that is usually done in the board setup code, i. e. I'd rather  
->>>>> have  it in arch/mips/au1000/common/platform.c (however, 8250.c  
->>>>> should  have been able to filter out ports with UPIO_AU in case   
->>>>> CONFIG_SERIAL_8250_AU1X00 undefined)...
+I am using an embedded development board with a mips 4kEC on it. I use
+buildroot for building a
+rootfs and the toolchain.
 
->>>> Seemed like a good idea at the moment to follow the already  
->>>> existing  convention.
+I cross compiled a helloword app.
+When I look at the output of pmap I see the following
 
->>> Already existing convention is as per Sergei's mail actually - to  
->>> have the
->>> platform device registration in arch/*.  The others which you  
->>> thought were
->>> convention there (accent, boca, fourport, hub6, mca) are all for  add-in
->>> cards and aren't architecture specific.
+/helloworldmips(86)
+00400000 (4 KB)        r-xp (00:0a 33243002)   linux/test/helloworldmips
+10000000 (4 KB)        rw-p (00:0a 33243002)   linux/test/helloworldmips
+10001000 (4 KB)        rwxp (00:00 0)        [heap]
+2aaa8000 (20 KB)       r-xp (00:07 1795853)
+/lib/ld-uClibc-0.9.27.so<http://uclibc-0.9.27.so/>
+2aaad000 (4 KB)        rw-p (00:00 0)
+2aaed000 (4 KB)        rw-p (00:07 1795853)  /lib/ld-
+uClibc-0.9.27.so<http://uclibc-0.9.27.so/>
+2aaee000 (48 KB)       r-xp (00:07 1795861)  /lib/libgcc_s.so.1
+2aafa000 (252 KB)      ---p (00:00 0)
+2ab39000 (4 KB)        rw-p (00:07 1795861)  /lib/libgcc_s.so.1
+2ab3a000 (368 KB)      r-xp (00:07 1795855)  /lib/libuClibc-0.9.27.so
+2ab96000 (256 KB)      ---p (00:00 0)
+2abd6000 (8 KB)        rw-p (00:07 1795855)  /lib/libuClibc- 0.9.27.so
+2abd8000 (16 KB)       rw-p (00:00 0)
+7fd49000 (84 KB)       rwxp (00:00 0)        [stack]
+mapped:   1076 KB writable/private: 128 KB shared: 0 KB
 
->>> Hence, they can't live in arch/*.
+It seems that the bss segments of the shared libs are protected and mapped
+to the zero page. I don't see this
+when I run this on a linux pc. I have the following questions:
+- Why is this segment protected? Accessing results in a seg fault.
+- Why is it so big (252k/256K)?
+- How much memory is physically allocated for this segment?
 
->>> So yes, 8250_au1x00.c breaks the established convention because it  
->>> isn't
->>> an add-in card.
+Thanks for reading sofar
 
->>    Thanks for clarification.
+Erik Niessen
 
->>    Now another question to Pantelis: IIUC, the Alchemy UART  platform 
->> devices have UPF_SKIP_TEST set because of the Alchemy docs  claiming 
->> that UARTs other than UART3 don't have MCR/MSR and only  UART3 does 
->> have the full set of the modem control/status lines?   Were they 
->> indeed failing the loopback test for you? Asking because  on DBAu1550 
->> board all (enabled) UARTs do pass the loopback test if  I get rid of 
->> this flag (however, Au1550 datasheet says MCR/MSR  exists on all 
->> UARTs, just no modem pins exist on UART0, and only  RTS-/CTS- pair on 
->> UART1 -- and the bits having no correspoding pins  seem to be tied 
->> high internally).
->>    If I'm correct, the driver seems inconsistent in how it handles  
->> UART_BUG_NOMSR flag, only checking it when deciding whether to  enable 
->> the modem status interrupts or not while actually it should  have been 
->> checked in serial8250_set_mctrl() and check_modem_status () as well...
->>    It also looks like the driver doesn't use Alchemy UARTs to their  
->> full potential currently: UART3 has not only full set of modem  lines, 
->> but also is capable of the auto flow control (UART1 on  Au1550 also 
->> is).  (Making use of these features howewer are  complicated by the 
->> auto flow control being only available in the  late steppings of 
->> Au1500 and UART3 modem pins being multiplexed  with GPIO...)
+------=_Part_123085_32158524.1157439318223
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
->> PS: CCing linux-mips to keep people here informed. :-)
+Hi,<br><br>I am using an embedded development board with a mips 4kEC on it. I use buildroot for building a <br>rootfs and the toolchain.<br><br>I cross compiled a helloword app.<br>When I look at the output of pmap I see the following
+<br><br>/helloworldmips(86)<br>00400000 (4 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r-xp (00:0a 33243002)&nbsp;&nbsp; linux/test/helloworldmips<br><div>10000000 (4 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rw-p (00:0a 33243002)&nbsp;&nbsp; linux/test/helloworldmips
+<br>10001000 (4 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rwxp (00:00 0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [heap]<br>2aaa8000 (20 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r-xp (00:07 1795853)&nbsp; /lib/ld-<a href="http://uclibc-0.9.27.so/" target="_blank" onclick="return top.js.OpenExtLink(window,event,this)">uClibc-0.9.27.so
+</a><br>2aaad000 (4 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rw-p (00:00 0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>2aaed000 (4 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rw-p (00:07 1795853)&nbsp; /lib/ld-
+<a href="http://uclibc-0.9.27.so/" target="_blank" onclick="return top.js.OpenExtLink(window,event,this)">uClibc-0.9.27.so</a><br>2aaee000 (48 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r-xp (00:07 1795861)&nbsp; /lib/libgcc_s.so.1<br>2aafa000 (252 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---p (00:00 0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<br>2ab39000 (4 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rw-p (00:07 1795861)&nbsp; /lib/libgcc_s.so.1
+<br>2ab3a000 (368 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r-xp (00:07 1795855)&nbsp; /lib/libuClibc-<a href="http://0.9.27.so/" target="_blank" onclick="return top.js.OpenExtLink(window,event,this)">0.9.27.so</a><br>2ab96000 (256 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---p (00:00 0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<br>2abd6000 (8 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rw-p (00:07 1795855)&nbsp; /lib/libuClibc-<a href="http://0.9.27.so/" target="_blank" onclick="return top.js.OpenExtLink(window,event,this)">
+0.9.27.so</a><br>2abd8000 (16 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rw-p (00:00 0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>7fd49000 (84 KB)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rwxp (00:00 0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [stack]<br>mapped:&nbsp;&nbsp; 1076 KB writable/private: 128 KB shared: 0 KB<br><br>It seems that the bss segments of the shared libs are protected and mapped to the zero page. I don't see this
+<br>when I run this on a linux pc. I have the following questions:<br>- Why is this segment protected? Accessing results in a seg fault.<br>- Why is it so big (252k/256K)?<br>- How much memory is physically allocated for this segment?
+<br><br>Thanks for reading sofar<br><br>Erik Niessen<br></div>
 
-> Yes, 1550 has proper UARTs on all port, but not 1200 ;)
-
-    No, it doesn't have "proper" UARTs on all ports (like all the other 
-Alchemies), it's just said it has MCR/MSR on UART0/1 as well as on UART3. 
-Actually, Au1200 also does, according to its datasheet.
-
-> Somehow I thought that hacking 8250 to support two different Au's  (1550 
-> & 1200)
-> wouldn't go down well; so I chickened out & settled for a subset that  
-> would work on
-> both. Feel free to fight your way through to support all the  
-> functionality you
-> require.
-
-    Well, now I certainly have no time for enabling any features, even for 
-fixing buglets. So, if anybody of the linux-mips readers cares enough, it's 
-their call... :-)
-    At least UART_BUG_NOMSR handling should be extended if MCR/MSR are indeed 
-missing on some SOCs.
-    And since 0 in the bit 7 (U3) bit of sys_pinfunc determines if UART3 modem 
-control/status are used for GPIO, this is also worth checking somewhere (if 
-one wants to support the full set of the modem lines)...
-
-> Pantelis
-
-WBR, Sergei
+------=_Part_123085_32158524.1157439318223--

@@ -1,66 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2006 16:11:49 +0100 (BST)
-Received: from ip-217-204-115-127.easynet.co.uk ([217.204.115.127]:21767 "EHLO
-	apollo.linkchoose.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20037572AbWIEPLs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Sep 2006 16:11:48 +0100
-Received: from [10.98.1.127] (helo=galaxy.dga.co.uk)
-	by apollo.linkchoose.co.uk with esmtp (Exim 4.60)
-	(envelope-from <david.goodenough@linkchoose.co.uk>)
-	id 1GKcb7-0006q1-7M
-	for linux-mips@linux-mips.org; Tue, 05 Sep 2006 16:12:21 +0100
-Received: from [10.0.1.63]
-	by galaxy.dga.co.uk with esmtp (Exim 4.62)
-	(envelope-from <david.goodenough@linkchoose.co.uk>)
-	id 1GKcaO-0002Kw-1l
-	for linux-mips@linux-mips.org; Tue, 05 Sep 2006 16:11:36 +0100
-From:	David Goodenough <david.goodenough@linkchoose.co.uk>
-Organization: Linkchoose Ltd
-To:	linux-mips@linux-mips.org
-Subject: Re: ADM5120 support
-Date:	Tue, 5 Sep 2006 16:11:33 +0100
-User-Agent: KMail/1.9.3
-References: <200609011150.54312.david.goodenough@linkchoose.co.uk> <20060904061141.GB5361@domen.puncer.telargo.com>
-In-Reply-To: <20060904061141.GB5361@domen.puncer.telargo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Sep 2006 16:17:46 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:36992 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20037585AbWIEPRo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Sep 2006 16:17:44 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id CB26B3EBE; Tue,  5 Sep 2006 08:17:17 -0700 (PDT)
+Message-ID: <44FD9587.3030708@ru.mvista.com>
+Date:	Tue, 05 Sep 2006 19:19:35 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Rodolfo Giometti <giometti@linux.it>, linux-mips@linux-mips.org,
+	rmk+serial@arm.linux.org.uk
+Subject: Re: [PATCH] au1x00 serial real interrupt
+References: <20060522165244.GA16223@enneenne.com>
+In-Reply-To: <20060522165244.GA16223@enneenne.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200609051611.34286.david.goodenough@linkchoose.co.uk>
-Return-Path: <david.goodenough@linkchoose.co.uk>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12516
+X-archive-position: 12517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.goodenough@linkchoose.co.uk
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Monday 04 September 2006 07:11, Domen Puncer wrote:
-> On 01/09/06 11:50 +0100, David Goodenough wrote:
-> > I have found some patches for the ADM5120 on the web for 2.6.12, but
-> > nothing more recent.  Anyone know of an updated patch (if updating is
-> > needed)?
->
-> Hi!
->
-> I forward ported them to 2.6.15, but then lost interest.
->
-> http://coderock.org/planet_xrt-401d/files/
->
->
-> 	Domen
->
-> > David
-Thank you.  I tried to use those but obviously I have something wrong in
-my config.  The patches apply, but then when it tried to compile it
-complains on the first CC saying that THREAD_SIZE_ORDER is undefined.  This
-looks as though I have the config wrong.  Do you have a working config to
-go with your patches?
+Hello.
 
-Regards
+Rodolfo Giometti wrote:
 
-David
+> Here my patch to enable real interrupts management for the au1x00
+> CPUs.
+
+> ------------------------------------------------------------------------
+> 
+> diff --git a/include/asm-mips/serial.h b/include/asm-mips/serial.h
+> index 7b23664..0197062 100644
+> --- a/include/asm-mips/serial.h
+> +++ b/include/asm-mips/serial.h
+> @@ -11,6 +11,14 @@
+>  
+>  #include <linux/config.h>
+>  
+> +#ifdef CONFIG_SOC_AU1X00
+> +/*
+> + * We have to redefine "is_real_interrupt()" for Au1x00 CPUs...
+> + */
+> +#undef is_real_interrupt
+> +#define is_real_interrupt(irq)	((irq) != ~0)
+> +#endif
+> +
+>  /*
+>   * This assumes you have a 1.8432 MHz clock for your UART.
+>   *
+
+    Ralf, how about this patch? Can it be applied, at least 3 months after 
+posting? Alchemy UART0 uses IRQ0 and 0 is treated as "no IRQ" by 
+drivers/serial/8250.c which says the macro should be redefined in 
+<asm/serial.h> if needed.
+
+WBR, Sergei

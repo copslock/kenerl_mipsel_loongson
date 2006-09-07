@@ -1,75 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Sep 2006 05:03:16 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:38602 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037483AbWIGEDM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Sep 2006 05:03:12 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8743jQL026224;
-	Thu, 7 Sep 2006 06:03:45 +0200
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8743j85026223;
-	Thu, 7 Sep 2006 06:03:45 +0200
-Date:	Thu, 7 Sep 2006 06:03:44 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Erik Niessen <erik.niessen@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Sep 2006 06:43:14 +0100 (BST)
+Received: from out001.atlarge.net ([129.41.63.69]:54547 "EHLO
+	out001.atlarge.net") by ftp.linux-mips.org with ESMTP
+	id S20037798AbWIGFnM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Sep 2006 06:43:12 +0100
+Received: from hpmailfe-01.atlarge.net ([10.100.60.156]) by out001.atlarge.net with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 7 Sep 2006 00:41:43 -0500
+Received: from localhost ([213.250.36.225]) by hpmailfe-01.atlarge.net with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 7 Sep 2006 00:41:41 -0500
+Date:	Thu, 7 Sep 2006 07:43:02 +0200
+From:	Domen Puncer <domen.puncer@telargo.com>
+To:	Tomasz Chmielewski <mangoo@wpkg.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Weird output from pmap
-Message-ID: <20060907040344.GC17965@linux-mips.org>
-References: <f21fe8a50609042355o19ab7b50nb5717bfe0d358232@mail.gmail.com>
-Mime-Version: 1.0
+Subject: Re: no USB device other than storage detected
+Message-ID: <20060907054302.GF5361@domen.puncer.telargo.com>
+References: <44FD6CE4.6010001@wpkg.org> <44FF25BE.5020901@wpkg.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f21fe8a50609042355o19ab7b50nb5717bfe0d358232@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <44FF25BE.5020901@wpkg.org>
+User-Agent: Mutt/1.5.12-2006-07-14
+X-OriginalArrivalTime: 07 Sep 2006 05:41:42.0567 (UTC) FILETIME=[4C407370:01C6D240]
+Return-Path: <domen.puncer@telargo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12531
+X-archive-position: 12532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: domen.puncer@telargo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 05, 2006 at 08:55:18AM +0200, Erik Niessen wrote:
-
-> /helloworldmips(86)
-> 00400000 (4 KB)        r-xp (00:0a 33243002)   linux/test/helloworldmips
-> 10000000 (4 KB)        rw-p (00:0a 33243002)   linux/test/helloworldmips
-> 10001000 (4 KB)        rwxp (00:00 0)        [heap]
-> 2aaa8000 (20 KB)       r-xp (00:07 1795853)
-> /lib/ld-uClibc-0.9.27.so<http://uclibc-0.9.27.so/>
-> 2aaad000 (4 KB)        rw-p (00:00 0)
-> 2aaed000 (4 KB)        rw-p (00:07 1795853)  /lib/ld-
-> uClibc-0.9.27.so<http://uclibc-0.9.27.so/>
-> 2aaee000 (48 KB)       r-xp (00:07 1795861)  /lib/libgcc_s.so.1
-> 2aafa000 (252 KB)      ---p (00:00 0)
-> 2ab39000 (4 KB)        rw-p (00:07 1795861)  /lib/libgcc_s.so.1
-> 2ab3a000 (368 KB)      r-xp (00:07 1795855)  /lib/libuClibc-0.9.27.so
-> 2ab96000 (256 KB)      ---p (00:00 0)
-> 2abd6000 (8 KB)        rw-p (00:07 1795855)  /lib/libuClibc- 0.9.27.so
-> 2abd8000 (16 KB)       rw-p (00:00 0)
-> 7fd49000 (84 KB)       rwxp (00:00 0)        [stack]
-> mapped:   1076 KB writable/private: 128 KB shared: 0 KB
+On 06/09/06 21:47 +0200, Tomasz Chmielewski wrote:
+> Tomasz Chmielewski wrote:
+> >I have a tiny router (ASUS WL-500g deluxe, MIPS CPU, 32 MB RAM, 2x 
+> >USB2), and would like to make it work with a USB DSL modem.
+> >
+> >Right now, it's running Debian and kernel 2.6.17, and boots off a 
+> >USB-stick.
+> >
+> >My problem is, that it only sees USB storage devices (USB sticks etc.).
+> >
+> >When I connect other devices (USB modem, webcam, microphone, keyboard, 
+> >printer etc.), they are not detected.
+> >By "not detected" I mean there are no "dmesg" entries with the device 
+> >name, and no devices, other than "USB storage", listed with "lsusb".
+> >
+> >I even compiled "USB verbose logging" in, but it only gives me a couple 
+> >of debug infos, no clue why the devices doesn't show up.
 > 
-> It seems that the bss segments of the shared libs are protected and mapped
-> to the zero page. I don't see this
-> when I run this on a linux pc. I have the following questions:
-> - Why is this segment protected? Accessing results in a seg fault.
+> It looks that something's borked in 2.6.17 kernel.
+> 
+> When I load ohci module, it complains a lot:
 
-Protecting a bss segment doesn't make sense.
+You say Ohci, but output is from Uhci, and the output in the first
+e-mail is from Ehci. :-)
 
-The address and the "---p" flags make me suspect your executable might
-actually be wrong, so I suggest you check the binary with something like
-readelf -S.
 
-> - Why is it so big (252k/256K)?
-> - How much memory is physically allocated for this segment?
-
-None at this stage - the actuall allocation would happen lazily when
-a page is touched first which of course doesn't ever happen in your
-case.
-
-  Ralf
+	Domen
+> 
+> USB Universal Host Controller Interface driver v3.0
+> PCI: Fixing up device 0000:01:02.0
+> uhci_hcd 0000:01:02.0: no i/o regions available
+> uhci_hcd 0000:01:02.0: init 0000:01:02.0 fail, -16
+> uhci_hcd: probe of 0000:01:02.0 failed with error -16
+> PCI: Fixing up device 0000:01:02.1
+> uhci_hcd 0000:01:02.1: no i/o regions available
+> uhci_hcd 0000:01:02.1: init 0000:01:02.1 fail, -16
+> uhci_hcd: probe of 0000:01:02.1 failed with error -16
+> 
+> 
+> With 2.4.30 kernel, ohci module loads fine, and I can use all USB devices:
+> 
+> # lsusb
+> Bus 002 Device 001: ID 0000:0000
+> Bus 001 Device 001: ID 0000:0000
+> Bus 001 Device 004: ID 03f0:3011 Hewlett-Packard
+> Bus 001 Device 003: ID 0471:0310 Philips PCVC730K WebCam [pwc]
+> 
+> 
+> Ideas what can be wrong?
+> 
+> 
+> -- 
+> Tomasz Chmielewski
+> http://wpkg.org

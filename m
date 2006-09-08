@@ -1,45 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Sep 2006 00:25:59 +0100 (BST)
-Received: from mail.zeugmasystems.com ([192.139.122.66]:43220 "EHLO
-	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
-	id S20038667AbWIGXZ5 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 Sep 2006 00:25:57 +0100
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: 64-bit 2.6.17.7 SMP hangs in __cpu_up().
-Date:	Thu, 7 Sep 2006 16:25:51 -0700
-Message-ID: <66910A579C9312469A7DF9ADB54A8B7D390152@exchange.ZeugmaSystems.local>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: 64-bit 2.6.17.7 SMP hangs in __cpu_up().
-Thread-Index: AcbS1PVG2vPyjOlUQySm6lGUUHn3SQ==
-From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <kaz@zeugmasystems.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Sep 2006 11:59:22 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:45448 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20037675AbWIHK7U (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 Sep 2006 11:59:20 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k88Axsm0021219;
+	Fri, 8 Sep 2006 12:59:54 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k88Axrj7021218;
+	Fri, 8 Sep 2006 12:59:53 +0200
+Date:	Fri, 8 Sep 2006 12:59:53 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kaz Kylheku <kaz@zeugmasystems.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: 64-bit 2.6.17.7 SMP hangs in __cpu_up().
+Message-ID: <20060908105953.GA1555@linux-mips.org>
+References: <66910A579C9312469A7DF9ADB54A8B7D390152@exchange.ZeugmaSystems.local>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66910A579C9312469A7DF9ADB54A8B7D390152@exchange.ZeugmaSystems.local>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12538
+X-archive-position: 12539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaz@zeugmasystems.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Anyone seen anything like this?
+On Thu, Sep 07, 2006 at 04:25:51PM -0700, Kaz Kylheku wrote:
 
-Execution does not get past the loop:
+> Anyone seen anything like this?
+> 
+> Execution does not get past the loop:
+> 
+>   while (!cpu_isset(cpu, cpu_callin_map))
+>     udelay(100);
+> 
+> The other CPU is not coming up.
+> 
+> 32 bit SMP works fine.
 
-  while (!cpu_isset(cpu, cpu_callin_map))
-    udelay(100);
+Interesting because the 64-bit kernel is considered bettere tested on
+Sibyte chips than 32-bit these days.
 
-The other CPU is not coming up.
+Not a problem I was aware of.
 
-32 bit SMP works fine.
-
-The board is a relative of the Broadcom BigSur. The processor CPU is the
-1280, dual core.
+  Ralf

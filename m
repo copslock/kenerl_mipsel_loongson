@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Sep 2006 17:56:37 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:9466 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038492AbWIIQ4f (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 9 Sep 2006 17:56:35 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Sep 2006 18:17:25 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:35834 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038495AbWIIRRX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 9 Sep 2006 18:17:23 +0100
 Received: from [192.168.1.248] (unknown [10.150.0.9])
 	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 20DBF3F61; Sat,  9 Sep 2006 09:56:30 -0700 (PDT)
-Message-ID: <4502F2C8.9020107@ru.mvista.com>
-Date:	Sat, 09 Sep 2006 20:58:48 +0400
+	id C17083F61; Sat,  9 Sep 2006 10:17:20 -0700 (PDT)
+Message-ID: <4502F7A9.3080301@ru.mvista.com>
+Date:	Sat, 09 Sep 2006 21:19:37 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
 X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Russell King <rmk@arm.linux.org.uk>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Rodolfo Giometti <giometti@linux.it>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] au1x00 serial real interrupt
-References: <20060522165244.GA16223@enneenne.com> <44FD9587.3030708@ru.mvista.com> <4502ED14.6080506@ru.mvista.com> <20060909163907.GA24012@flint.arm.linux.org.uk>
-In-Reply-To: <20060909163907.GA24012@flint.arm.linux.org.uk>
+To:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc:	rmk@arm.linux.org.uk, linux-serial@vger.kernel.org,
+	linux-mips@linux-mips.org,
+	=?ISO-8859-1?Q?Thomas_K=F6ller?= <thomas@koeller.dyndns.org>
+Subject: Re: [PATCH] RM9000 serial driver
+References: <200608102318.52143.thomas.koeller@baslerweb.com> <200608260038.13662.thomas.koeller@baslerweb.com> <44F441F3.8050301@ru.mvista.com> <200608300100.32836.thomas.koeller@baslerweb.com> <44F5911D.8020807@ru.mvista.com>
+In-Reply-To: <44F5911D.8020807@ru.mvista.com>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12545
+X-archive-position: 12546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,45 +33,71 @@ X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hello, I wrote:
 
-Russell King wrote:
+>>>> @@ -289,6 +296,36 @@ static inline int map_8250_out_reg(struc
+>>>>     return au_io_out_map[offset];
+>>>> }
+>>>>
+>>>> +#elif defined (CONFIG_SERIAL_8250_RM9K)
+>>>> +
+>>>> +static const u8
+>>>> +    regmap_in[8] = {
+>>>> +        [UART_RX]    = 0x00,
+>>>> +        [UART_IER]    = 0x0c,
+>>>> +        [UART_IIR]    = 0x14,
+>>>> +        [UART_LCR]    = 0x1c,
+>>>> +        [UART_MCR]    = 0x20,
+>>>> +        [UART_LSR]    = 0x24,
+>>>> +        [UART_MSR]    = 0x28,
+>>>> +        [UART_SCR]    = 0x2c
+>>>> +    },
+>>>> +    regmap_out[8] = {
+>>>> +        [UART_TX]     = 0x04,
+>>>> +        [UART_IER]    = 0x0c,
+>>>> +        [UART_FCR]    = 0x18,
+>>>> +        [UART_LCR]    = 0x1c,
+>>>> +        [UART_MCR]    = 0x20,
+>>>> +        [UART_LSR]    = 0x24,
+>>>> +        [UART_MSR]    = 0x28,
+>>>> +        [UART_SCR]    = 0x2c
+>>>> +    };
 
->>   Well, after looking at drivers/serial/8250.c a bit more, I think this 
->>   may be even more simlified since that driver seems to treat the negative 
->>values as completely invalid anyway. IOW, we can just:
+>>>    I guess you're using regshift == 0?
 
->>#define is_real_interrupt(irq)	1
+>> Yes.
 
->>   Russel, what do you think?
+>    Well, regshift of 2 seems more fitting for the 32-bit registers. This 
+> is not principal but using 0 regshift don't actually buy anything -- the 
+> shift will be perfomed anyway.
 
-> That's Russell 8)
+    Not only that -- look at serial8250_request_std_resources(). Withouth the
+proper regshift of 2 it won't be able to correctly calculate UART decoded
+memory range size.  So, 0 simply doesn't fit.
 
-    I'm sorry. :-)
+>> implementations, and hence every code to support a nonstandard device 
+>> must define an
+>> iotype of its own, even though one of the existing iotypes would work 
+>> just fine? In my
 
-> Well, if you need IRQ0 to be real then redefining is_real_interrupt()
-> is the correct way forward.
+>    UPIO_MEM32 doesn't actually cover your case as it corresponds to the 
+> UART with the
+> fully 8250-compatible register set, just having 32-bit registers instead 
+> of the usual
+> 8-bit ones. RM9000 is clearly not fully compatible to 8250 in regard to 
+> the register
+> addresses since it has RX/TX regs, FCR and the divisor latch mapped to 
+> the separate
+> addresses, just like Alchemy UART. And I stressed that it's the main 
+> issue with this
+> UART's compatibility to 8250 in my first followup.
 
-> However, Linus' policy is that IRQ0 shall be invalid at least on PCI
-> systems, and architectures _should_ remap their real IRQ0 to some other
-> number.
+    Further on, even if the regshift is correct it (being used as 8 << 
+regshift) still won't give you the correct resource size since as I just said, 
+the UART is not 8250-compatible and has more than 8 32-bit registers. So we 
+end up with the need to modify serial8250_request_std_resources() and 
+serial8250_release_std_resources().
 
-   Hm, given that NO_IRQ is #defined as -1 (when it's defined at all)...
-
->  Personally I don't like this.
-
-    Hm, me neither but I can undestand the reasoning. 0 is the usual default
-value of the PCI interrupt line register, meaning interrupt is unassigned.
-
- > Hence why I prefer to give people the option.
-
-    Thanks for the explanation.
-    Would be better probably to have that #define in 8250.c going after 
-#include <asm/serial.h> but as this seems the first and only case of the 
-override needed, it's good enough this way. :-)
-    As for the PCI UARTs possibly plugged into Alchemy board, I really don't 
-know... This macro has no provision to check for the UART type. So, skipping 
-its invocation in 8250.c for UPIO_AU case might be a better (though not 
-cleaner) solution...
+>> Thomas
 
 WBR, Sergei

@@ -1,47 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 15:28:53 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:45041 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20037486AbWIKO2w (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 11 Sep 2006 15:28:52 +0100
-Received: from localhost (p8244-ipad25funabasi.chiba.ocn.ne.jp [220.104.86.244])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 6F5239CB5; Mon, 11 Sep 2006 23:28:47 +0900 (JST)
-Date:	Mon, 11 Sep 2006 23:30:46 +0900 (JST)
-Message-Id: <20060911.233046.41631256.anemo@mba.ocn.ne.jp>
-To:	macro@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 16:19:20 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:32930 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S20038459AbWIKPTS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 11 Sep 2006 16:19:18 +0100
+Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id 0BDA6465DB; Mon, 11 Sep 2006 17:19:17 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1GMnXT-0006oJ-0h; Mon, 11 Sep 2006 16:17:35 +0100
+Date:	Mon, 11 Sep 2006 16:17:34 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	nigel@mips.com, ralf@linux-mips.org, dan@debian.org,
-	linux-mips@linux-mips.org
+	macro@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.64N.0609111406400.29692@blysk.ds.pg.gda.pl>
-References: <4501AABC.1050009@mips.com>
-	<20060909.225641.41198763.anemo@mba.ocn.ne.jp>
-	<Pine.LNX.4.64N.0609111406400.29692@blysk.ds.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Message-ID: <20060911151734.GC13414@networkno.de>
+References: <20060911.140403.126141483.nemoto@toshiba-tops.co.jp> <20060911.175029.37531637.nemoto@toshiba-tops.co.jp> <20060911094905.GB13414@networkno.de> <20060911.231314.25910522.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060911.231314.25910522.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12557
+X-archive-position: 12558
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 11 Sep 2006 14:09:20 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
-> > But I'm still looking for better solution (silver bullet?) for
-> > cpu_has_vtag_icache case.
+Atsushi Nemoto wrote:
+> On Mon, 11 Sep 2006 10:49:05 +0100, Thiemo Seufer <ths@networkno.de> wrote:
+> > > +	tlbp
+> > 
+> > This needs a .set mips3/.set mips0 pair.
 > 
->  What's wrong with just letting a TLB fault happen?
+> The TLBP is belong to MIPS I ISA, isn't it?
 
-It might add a little overhead to usual TLB refill handling.  The
-overhead might be neglectable, but I'm not sure.
+Uh, right. I wasn't awake when I wrote that mail. :-)
 
----
-Atsushi Nemoto
+> > > +#ifdef CONFIG_CPU_MIPSR2
+> > > +	_ehb			/* tlb_probe_hazard */
+> > > +#else
+> > > +	nop; nop; nop; nop; nop; nop	/* tlb_probe_hazard */
+> > > +#endif
+> > 
+> > What about a mtc0_tlbp_hazard macro here?
+> 
+> You mean mtc0_tlbw_hazard?  I took them from tlb_probe_hazard macro in
+> queue branch.
+
+Actually, I meant an equivalent to the build_tlb_probe_entry in tlbex.c,
+plus a tlb_use_hazard.
+
+> And it looks current mtc0_tlbw_hazard asm macro does not match with
+> its C equivalent ...
+> 
+> 	.macro	mtc0_tlbw_hazard
+> 	b	. + 8
+> 	.endm
+> 
+> #define mtc0_tlbw_hazard()						\
+> 	__asm__ __volatile__(						\
+> 	"	.set	noreorder				\n"	\
+> 	"	nop						\n"	\
+> 	"	nop						\n"	\
+> 	"	nop						\n"	\
+> 	"	nop						\n"	\
+> 	"	nop						\n"	\
+> 	"	nop						\n"	\
+> 	"	.set	reorder					\n")
+
+It also lacks a case for R2 CPUs, where IIRC _ehb is the the way
+approved by the spec.
+
+
+Thiemo

@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 06:04:17 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:19073 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 09:50:41 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:52988 "EHLO
 	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20037821AbWIKFEO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Sep 2006 06:04:14 +0100
+	id S20037486AbWIKIuj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 11 Sep 2006 09:50:39 +0100
 Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 11 Sep 2006 14:04:13 +0900
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 11 Sep 2006 17:50:37 +0900
 Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 0A09220598;
-	Mon, 11 Sep 2006 14:04:04 +0900 (JST)
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 997A720510;
+	Mon, 11 Sep 2006 17:50:32 +0900 (JST)
 Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id EB12C20595;
-	Mon, 11 Sep 2006 14:04:03 +0900 (JST)
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 843A12050F;
+	Mon, 11 Sep 2006 17:50:32 +0900 (JST)
 Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k8B543W0097421;
-	Mon, 11 Sep 2006 14:04:03 +0900 (JST)
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k8B8oTW0098198;
+	Mon, 11 Sep 2006 17:50:29 +0900 (JST)
 	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 11 Sep 2006 14:04:03 +0900 (JST)
-Message-Id: <20060911.140403.126141483.nemoto@toshiba-tops.co.jp>
+Date:	Mon, 11 Sep 2006 17:50:29 +0900 (JST)
+Message-Id: <20060911.175029.37531637.nemoto@toshiba-tops.co.jp>
 To:	nigel@mips.com
 Cc:	ralf@linux-mips.org, dan@debian.org, macro@linux-mips.org,
 	linux-mips@linux-mips.org
 Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <450491FA.3010600@mips.com>
-References: <4501AABC.1050009@mips.com>
-	<20060909.225641.41198763.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060911.140403.126141483.nemoto@toshiba-tops.co.jp>
+References: <20060909.225641.41198763.anemo@mba.ocn.ne.jp>
 	<450491FA.3010600@mips.com>
+	<20060911.140403.126141483.nemoto@toshiba-tops.co.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
@@ -36,7 +36,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12550
+X-archive-position: 12551
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,23 +44,20 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 10 Sep 2006 23:30:18 +0100, Nigel Stephens <nigel@mips.com> wrote:
-> > 	LEAF(handle_ri_rdhwr_vivt)
-...
-> >
-> > I'm wondering if this could work on CONFIG_MIPS_MT_SMTC case...
+On Mon, 11 Sep 2006 14:04:03 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> Then this woule be better then "take 2" patch?  This add some overhead
+> to fast RDHWR emulation path but no overhead to TLB refill path.
 > 
-> No, that wouldn't be reliable for CONFIG_MIPS_MT_SMTC, but then again 
-> the only CPU which currently runs SMTC has VIPT caches
+> The tlb_probe_hazard is not exist in main branch for now but already
+> exist in queue branch.
+> 
+> 
+> Take 3.  Comments (especially from pipeline wizards) are welcome.
 
-Then this woule be better then "take 2" patch?  This add some overhead
-to fast RDHWR emulation path but no overhead to TLB refill path.
-
-The tlb_probe_hazard is not exist in main branch for now but already
-exist in queue branch.
+Oops, "rdhwr_noopt" should be static in this take.  Revised.
 
 
-Take 3.  Comments (especially from pipeline wizards) are welcome.
+Take 3(revised).
 
 Add special short path for emulationg RDHWR which is used to support
 TLS.  Add an extra prologue for cpu_has_vtag_icache case.
@@ -153,7 +150,7 @@ index 37fda3d..55e090e 100644
  /* A temporary overflow handler used by check_daddi(). */
  
 diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index e51d8fd..7ae454a 100644
+index e51d8fd..e56b02f 100644
 --- a/arch/mips/kernel/traps.c
 +++ b/arch/mips/kernel/traps.c
 @@ -53,6 +53,8 @@ extern asmlinkage void handle_dbe(void);
@@ -169,7 +166,7 @@ index e51d8fd..7ae454a 100644
  	memcpy((void *)(uncached_ebase + offset), addr, size);
  }
  
-+int __initdata rdhwr_noopt;
++static int __initdata rdhwr_noopt;
 +static int __init set_rdhwr_noopt(char *str)
 +{
 +	rdhwr_noopt = 1;

@@ -1,84 +1,137 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 16:19:20 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:32930 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20038459AbWIKPTS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 11 Sep 2006 16:19:18 +0100
-Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 0BDA6465DB; Mon, 11 Sep 2006 17:19:17 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GMnXT-0006oJ-0h; Mon, 11 Sep 2006 16:17:35 +0100
-Date:	Mon, 11 Sep 2006 16:17:34 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	nigel@mips.com, ralf@linux-mips.org, dan@debian.org,
-	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
-Message-ID: <20060911151734.GC13414@networkno.de>
-References: <20060911.140403.126141483.nemoto@toshiba-tops.co.jp> <20060911.175029.37531637.nemoto@toshiba-tops.co.jp> <20060911094905.GB13414@networkno.de> <20060911.231314.25910522.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 16:25:15 +0100 (BST)
+Received: from mail.sysgo.com ([62.8.134.5]:5133 "EHLO mail.sysgo.com")
+	by ftp.linux-mips.org with ESMTP id S20038456AbWIKPZN convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 11 Sep 2006 16:25:13 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mail.sysgo.com (Postfix) with ESMTP id 5FB76CC1C0
+	for <linux-mips@linux-mips.org>; Mon, 11 Sep 2006 17:25:07 +0200 (CEST)
+Received: from mail.sysgo.com (localhost [127.0.0.1])
+	by localhost (AvMailGate-2.0.2-8) id 26031-392B27E7;
+	Mon, 11 Sep 2006 17:25:07 +0200
+Received: from donald.sysgo.com (unknown [172.20.1.30])
+	by mail.sysgo.com (Postfix) with ESMTP id 13A0ECC1BF
+	for <linux-mips@linux-mips.org>; Mon, 11 Sep 2006 17:25:07 +0200 (CEST)
+Received: by donald.sysgo.com (Postfix, from userid 65534)
+	id 7CC5826A66B; Mon, 11 Sep 2006 17:25:07 +0200 (CEST)
+Received: from cam (unknown [172.40.1.200])
+	by donald.sysgo.com (Postfix) with ESMTP id 714D126A669
+	for <linux-mips@linux-mips.org>; Mon, 11 Sep 2006 17:25:06 +0200 (CEST)
+From:	Carlos Mitidieri <carlos.mitidieri@sysgo.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: "Uncompressing Linux at load address"
+Date:	Mon, 11 Sep 2006 17:25:11 +0200
+User-Agent: KMail/1.8.2
+References: <2156B1E923F1A147AABDF4D9FDEAB4CB1727D5@blr-m2-msg.wipro.com>
+In-Reply-To: <2156B1E923F1A147AABDF4D9FDEAB4CB1727D5@blr-m2-msg.wipro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20060911.231314.25910522.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <ths@networkno.de>
+Message-Id: <200609111725.12209.carlos.mitidieri@sysgo.com>
+X-AntiVirus: checked by AntiVir MailGate (version: 2.0.2-8; AVE: 7.1.1.16; VDF: 6.35.1.213; host: mailgate.sysgo.com)
+Return-Path: <carlos.mitidieri@sysgo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12558
+X-archive-position: 12559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: carlos.mitidieri@sysgo.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Mon, 11 Sep 2006 10:49:05 +0100, Thiemo Seufer <ths@networkno.de> wrote:
-> > > +	tlbp
-> > 
-> > This needs a .set mips3/.set mips0 pair.
-> 
-> The TLBP is belong to MIPS I ISA, isn't it?
+thanks for commenting
+Since my APPRAMBASE in umon is 0xa0300000, I have changed my parametes in a 
+way that the kernel would be loaded above that address:
 
-Uh, right. I wasn't awake when I wrote that mail. :-)
+AVAIL_RAM_START=0xb0a00000
+AVAIL_RAM_END=0xb0f00000
+LOADADDR =0xb0000000
 
-> > > +#ifdef CONFIG_CPU_MIPSR2
-> > > +	_ehb			/* tlb_probe_hazard */
-> > > +#else
-> > > +	nop; nop; nop; nop; nop; nop	/* tlb_probe_hazard */
-> > > +#endif
-> > 
-> > What about a mtc0_tlbp_hazard macro here?
-> 
-> You mean mtc0_tlbw_hazard?  I took them from tlb_probe_hazard macro in
-> queue branch.
+unfortunately, the problem persists, i.e., the systems hangs just after the 
+messages:
 
-Actually, I meant an equivalent to the build_tlb_probe_entry in tlbex.c,
-plus a tlb_use_hazard.
+ zImage: size=680372 base=0xa0300000
+loaded at:     A0300000 A03A4000
+ zimage at:     A0306180 A03A3EE1
+ Uncompressing Linux at load address B0000000
 
-> And it looks current mtc0_tlbw_hazard asm macro does not match with
-> its C equivalent ...
-> 
-> 	.macro	mtc0_tlbw_hazard
-> 	b	. + 8
-> 	.endm
-> 
-> #define mtc0_tlbw_hazard()						\
-> 	__asm__ __volatile__(						\
-> 	"	.set	noreorder				\n"	\
-> 	"	nop						\n"	\
-> 	"	nop						\n"	\
-> 	"	nop						\n"	\
-> 	"	nop						\n"	\
-> 	"	nop						\n"	\
-> 	"	nop						\n"	\
-> 	"	.set	reorder					\n")
-
-It also lacks a case for R2 CPUs, where IIRC _ehb is the the way
-approved by the spec.
+I am pretty sure that the problem relates to where the things are loaded, but 
+I don't realize exactly what.
 
 
-Thiemo
+
+On Monday 11 September 2006 15:55, you wrote:
+> I had faced similar issue with AU1100 based boards which also use the
+> zImage patch. It turned out to be board initialization issue rather that
+> a zImage problem, since after uncompressing the image control is
+> transferred to kernel_entry.
+>
+> Thanks
+> Hemanth
+>
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org
+> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Carlos Mitidieri
+> Sent: Monday, September 11, 2006 7:00 PM
+> To: linux-mips@linux-mips.org
+> Subject: "Uncompressing Linux at load address"
+>
+> Hi,
+>
+> I am trying to boot a zImage from micromonitor on a csb655 board
+> (Au1550 processor).
+>
+> For that matter, I patched my kernel 2.6.15 with the zImage_2_6_10.patch
+> from
+> Popov.
+>
+> In the arch/mips/boot/compressed/au1xxx/Makefile, I have set:
+> 	1) RAM_RUN_ADDR=0xa0300000, which is the value got  from the
+> umon's
+> APPRAMBASE environment variable.
+> 	2) AVAIL_RAM_START=0x80500000
+>             AVAIL_RAM_END=0x80900000
+>      	3) LOADADDR =0x80100000, which is the same value I have set in
+> an
+> entry for this board in arch/mips/Makefile.
+>
+> I can compile and link the zImage with home build gcc cross tools, based
+> on
+> gcc-3.4.4 and glibc-2.3.4 . When the (binary) zImage is decompressed on
+> the
+> target, I get these messages:
+>
+> zImage: size=680372 base=0xa0300000
+> loaded at:     A0300000 A03A4000
+> zimage at:     A0306180 A03A3EE1
+> Uncompressing Linux at load address 80100000
+>
+> and then the target resets.
+> This zImage is very small, so the decompressed image is not going beyond
+> the
+> AVAIL_RAM limits. Would you have any guess on what is going on?
+>
+> I have looked for this information the list through, but anyone seems to
+> have
+> had this problem before. Thanks for any comment.
+
+-- 
+Carlos Mitidieri
+SYSGO AG - Office Ulm
+Lise-Meitner-Str. 15
+D-89081 Ulm
+
+Tel: +49 731 94683 16
+Fax: +49 731 94683 10
+Web: www.sysgo.com
+
+Meet us at our next event:
+
+RTS Embedded Systems 2006
+April 4-6, 2006
+Paris, La Défense
+http://www.birp.com/rts

@@ -1,53 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 14:09:27 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:3846 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038252AbWIKNJY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Sep 2006 14:09:24 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 14:30:17 +0100 (BST)
+Received: from mail.sysgo.com ([62.8.134.5]:60684 "EHLO mail.sysgo.com")
+	by ftp.linux-mips.org with ESMTP id S20037555AbWIKNaP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 11 Sep 2006 14:30:15 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 11BECF81CF;
-	Mon, 11 Sep 2006 15:09:20 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ipO-NVOsnkAJ; Mon, 11 Sep 2006 15:09:19 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A858EF819B;
-	Mon, 11 Sep 2006 15:09:19 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k8BD9OJe001822;
-	Mon, 11 Sep 2006 15:09:25 +0200
-Date:	Mon, 11 Sep 2006 14:09:20 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	nigel@mips.com, ralf@linux-mips.org, dan@debian.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
-In-Reply-To: <20060909.225641.41198763.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0609111406400.29692@blysk.ds.pg.gda.pl>
-References: <20060711025342.GA6898@nevyn.them.org>
- <20060711.122014.52129937.nemoto@toshiba-tops.co.jp> <4501AABC.1050009@mips.com>
- <20060909.225641.41198763.anemo@mba.ocn.ne.jp>
+	by mail.sysgo.com (Postfix) with ESMTP id C047FCC1BA
+	for <linux-mips@linux-mips.org>; Mon, 11 Sep 2006 15:30:09 +0200 (CEST)
+Received: from mail.sysgo.com (localhost [127.0.0.1])
+	by localhost (AvMailGate-2.0.2-8) id 25047-0B643A2C;
+	Mon, 11 Sep 2006 15:30:09 +0200
+Received: from donald.sysgo.com (unknown [172.20.1.30])
+	by mail.sysgo.com (Postfix) with ESMTP id 6CEC2CC1B1
+	for <linux-mips@linux-mips.org>; Mon, 11 Sep 2006 15:30:09 +0200 (CEST)
+Received: by donald.sysgo.com (Postfix, from userid 65534)
+	id B7BCC26A412; Mon, 11 Sep 2006 15:30:09 +0200 (CEST)
+Received: from cam (unknown [172.40.1.200])
+	by donald.sysgo.com (Postfix) with ESMTP id B76F126A406
+	for <linux-mips@linux-mips.org>; Mon, 11 Sep 2006 15:30:08 +0200 (CEST)
+From:	Carlos Mitidieri <carlos.mitidieri@sysgo.com>
+To:	linux-mips@linux-mips.org
+Date:	Mon, 11 Sep 2006 15:30:13 +0200
+User-Agent: KMail/1.8.2
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.4/1850/Mon Sep 11 11:41:17 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Disposition: inline
+Subject: "Uncompressing Linux at load address"
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200609111530.14447.carlos.mitidieri@sysgo.com>
+X-AntiVirus: checked by AntiVir MailGate (version: 2.0.2-8; AVE: 7.1.1.16; VDF: 6.35.1.212; host: mailgate.sysgo.com)
+Return-Path: <carlos.mitidieri@sysgo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12553
+X-archive-position: 12554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: carlos.mitidieri@sysgo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 9 Sep 2006, Atsushi Nemoto wrote:
+Hi,
 
-> But I'm still looking for better solution (silver bullet?) for
-> cpu_has_vtag_icache case.
+I am trying to boot a zImage from micromonitor on a csb655 board 
+(Au1550 processor).
 
- What's wrong with just letting a TLB fault happen?
+For that matter, I patched my kernel 2.6.15 with the zImage_2_6_10.patch from 
+Popov. 
 
-  Maciej
+In the arch/mips/boot/compressed/au1xxx/Makefile, I have set:
+	1) RAM_RUN_ADDR=0xa0300000, which is the value got  from the umon's 
+APPRAMBASE environment variable.
+	2) AVAIL_RAM_START=0x80500000
+            AVAIL_RAM_END=0x80900000
+     	3) LOADADDR =0x80100000, which is the same value I have set in an 
+entry for this board in arch/mips/Makefile.
+
+I can compile and link the zImage with home build gcc cross tools, based on 
+gcc-3.4.4 and glibc-2.3.4 . When the (binary) zImage is decompressed on the 
+target, I get these messages: 
+
+zImage: size=680372 base=0xa0300000
+loaded at:     A0300000 A03A4000
+zimage at:     A0306180 A03A3EE1
+Uncompressing Linux at load address 80100000
+
+and then the target resets.  
+This zImage is very small, so the decompressed image is not going beyond the 
+AVAIL_RAM limits. Would you have any guess on what is going on?
+
+I have looked for this information the list through, but anyone seems to have 
+had this problem before. Thanks for any comment.
+
+-- 
+Carlos Mitidieri
+SYSGO AG - Office Ulm
+Lise-Meitner-Str. 15
+D-89081 Ulm

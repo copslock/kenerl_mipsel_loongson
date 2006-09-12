@@ -1,99 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 16:47:14 +0100 (BST)
-Received: from tool.snarl.nl ([213.84.251.124]:27049 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S20038596AbWILPrK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 12 Sep 2006 16:47:10 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id 97E5A5E693;
-	Tue, 12 Sep 2006 17:46:57 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id lvNvkVIrPEEo; Tue, 12 Sep 2006 17:46:57 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 33E765E473; Tue, 12 Sep 2006 17:46:57 +0200 (CEST)
-Date:	Tue, 12 Sep 2006 17:46:57 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	adaplas@pol.net
-Cc:	linux-fbdev-devel@lists.sourceforge.net, linux-mips@linux-mips.org
-Subject: [PATCH] Fix to remove flickering.
-Message-ID: <20060912154656.GY10006@dusktilldawn.nl>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="i/VKSWANvDZSIhsB"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 17:18:37 +0100 (BST)
+Received: from gate.ebshome.net ([208.106.21.240]:2784 "EHLO gate.ebshome.net")
+	by ftp.linux-mips.org with ESMTP id S20038598AbWILQSd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 12 Sep 2006 17:18:33 +0100
+Received: (qmail 17615 invoked by uid 1000); 12 Sep 2006 09:18:25 -0700
+Date:	Tue, 12 Sep 2006 09:18:25 -0700
+From:	Eugene Surovegin <ebs@ebshome.net>
+To:	Youngduk Goo <ydgoo9@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: NOR Flash memory write speed.
+Message-ID: <20060912161824.GA5987@gate.ebshome.net>
+Mail-Followup-To: Youngduk Goo <ydgoo9@gmail.com>,
+	linux-mips@linux-mips.org
+References: <38dc7fce0609120440o11c6a11ejf7f0a3cb1371bb40@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <freddy@dusktilldawn.nl>
+In-Reply-To: <38dc7fce0609120440o11c6a11ejf7f0a3cb1371bb40@mail.gmail.com>
+X-ICQ-UIN: 1193073
+X-Operating-System: Linux i686
+X-PGP-Key: http://www.ebshome.net/pubkey.asc
+User-Agent: Mutt/1.5.8i
+Return-Path: <ebs@ebshome.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12567
+X-archive-position: 12568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: ebs@ebshome.net
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Sep 12, 2006 at 08:40:43PM +0900, Youngduk Goo wrote:
+> Hello, all
+> 
+> I am developing the system using the NOR flash (32MB) and the core is
+> about 300MHz mips.
+> I wonder how long takes the whole erase and write time to flash memory.
+> I tried it on the bootloader. Firstof all, bootloader(YAMON) load the image
+> and erase the flash except bootloader region, write the image..
+> It took about 14-16minutes.I think it is too long.
+> 
 
---i/VKSWANvDZSIhsB
-Content-Type: multipart/mixed; boundary="yC91f7qSViS67v3c"
-Content-Disposition: inline
+Yeah, this seems way too slow. Check if your chip supports "buffer 
+write" mode and make sure software uses it.
 
-
---yC91f7qSViS67v3c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Antonino,
-
-Currently a lot of flickering is seen on the VGA and LCD port
-when one starts a DBAu1100 board, with 'CONFIG_PRINTK=3Dy'.
-
-This patch removes the flickering and as a result all kernel
-messages come by in a nice steady fashion.
-
-Please apply.
-
-Signed-off-by: Freddy Spierenburg <freddy@dusktilldawn.nl>
-
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
-
---yC91f7qSViS67v3c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="au1100fb.patch"
-
-diff -Naur linux-2.6.17.13-orig/drivers/video/au1100fb.h linux-2.6.17.13/drivers/video/au1100fb.h
---- linux-2.6.17.13-orig/drivers/video/au1100fb.h	2006-09-09 03:23:25.000000000 +0000
-+++ linux-2.6.17.13/drivers/video/au1100fb.h	2006-09-12 15:26:52.000000000 +0000
-@@ -274,7 +274,7 @@
- 		.bpp = 16,
- 		.control_base =	0x0004886A |
- 			LCD_CONTROL_DEFAULT_PO | LCD_CONTROL_DEFAULT_SBPPF |
--			LCD_CONTROL_BPP_16,
-+			LCD_CONTROL_BPP_16 | LCD_CONTROL_SBB_4,
- 		.clkcontrol_base = 0x00020000,
- 		.horztiming = 0x005aff1f,
- 		.verttiming = 0x16000e57,
-
---yC91f7qSViS67v3c--
-
---i/VKSWANvDZSIhsB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.5 (GNU/Linux)
-
-iD8DBQFFBtZwbxf9XXlB0eERAtcRAJ98NI4P0gat6ROB3UcIs37ebhNqbQCgibi+
-sKl0Oq602P5FsbJhrqksMXA=
-=RJn2
------END PGP SIGNATURE-----
-
---i/VKSWANvDZSIhsB--
+-- 
+Eugene

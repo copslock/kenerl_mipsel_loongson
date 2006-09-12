@@ -1,50 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 17:18:37 +0100 (BST)
-Received: from gate.ebshome.net ([208.106.21.240]:2784 "EHLO gate.ebshome.net")
-	by ftp.linux-mips.org with ESMTP id S20038598AbWILQSd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 12 Sep 2006 17:18:33 +0100
-Received: (qmail 17615 invoked by uid 1000); 12 Sep 2006 09:18:25 -0700
-Date:	Tue, 12 Sep 2006 09:18:25 -0700
-From:	Eugene Surovegin <ebs@ebshome.net>
-To:	Youngduk Goo <ydgoo9@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 21:47:31 +0100 (BST)
+Received: from mail01.hansenet.de ([213.191.73.61]:6073 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20038634AbWILUr0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Sep 2006 21:47:26 +0100
+Received: from [213.39.153.133] (213.39.153.133) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 45064C5C00030367; Tue, 12 Sep 2006 22:47:19 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by sarkovy.koeller.dyndns.org (Postfix) with ESMTP id 610472C408;
+	Tue, 12 Sep 2006 22:47:19 +0200 (CEST)
+From:	Thomas Koeller <thomas@koeller.dyndns.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Patches
+Date:	Tue, 12 Sep 2006 22:47:19 +0200
+User-Agent: KMail/1.9.3
 Cc:	linux-mips@linux-mips.org
-Subject: Re: NOR Flash memory write speed.
-Message-ID: <20060912161824.GA5987@gate.ebshome.net>
-Mail-Followup-To: Youngduk Goo <ydgoo9@gmail.com>,
-	linux-mips@linux-mips.org
-References: <38dc7fce0609120440o11c6a11ejf7f0a3cb1371bb40@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <38dc7fce0609120440o11c6a11ejf7f0a3cb1371bb40@mail.gmail.com>
-X-ICQ-UIN: 1193073
-X-Operating-System: Linux i686
-X-PGP-Key: http://www.ebshome.net/pubkey.asc
-User-Agent: Mutt/1.5.8i
-Return-Path: <ebs@ebshome.net>
+Message-Id: <200609122247.19091.thomas@koeller.dyndns.org>
+Return-Path: <thomas@koeller.dyndns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12568
+X-archive-position: 12569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ebs@ebshome.net
+X-original-sender: thomas@koeller.dyndns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 12, 2006 at 08:40:43PM +0900, Youngduk Goo wrote:
-> Hello, all
-> 
-> I am developing the system using the NOR flash (32MB) and the core is
-> about 300MHz mips.
-> I wonder how long takes the whole erase and write time to flash memory.
-> I tried it on the bootloader. Firstof all, bootloader(YAMON) load the image
-> and erase the flash except bootloader region, write the image..
-> It took about 14-16minutes.I think it is too long.
-> 
+Hi Ralf,
 
-Yeah, this seems way too slow. Check if your chip supports "buffer 
-write" mode and make sure software uses it.
+what about these patches:
+http://www.linux-mips.org/archives/linux-mips/2006-08/msg00271.html
+http://www.linux-mips.org/archives/linux-mips/2006-08/msg00270.html
 
+Are you going to apply them?
+
+Thomas
 -- 
-Eugene
+Thomas Koeller
+thomas at koeller dot dyndns dot org

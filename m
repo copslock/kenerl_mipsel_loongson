@@ -1,59 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 13:58:43 +0100 (BST)
-Received: from [63.81.120.155] ([63.81.120.155]:55126 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038704AbWILM6k (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 12 Sep 2006 13:58:40 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id B8A4A3ED0; Tue, 12 Sep 2006 05:58:07 -0700 (PDT)
-Message-ID: <4506AF69.30905@ru.mvista.com>
-Date:	Tue, 12 Sep 2006 17:00:25 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 16:47:14 +0100 (BST)
+Received: from tool.snarl.nl ([213.84.251.124]:27049 "EHLO tool.snarl.nl")
+	by ftp.linux-mips.org with ESMTP id S20038596AbWILPrK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 12 Sep 2006 16:47:10 +0100
+Received: from localhost (tool.local.snarl.nl [127.0.0.1])
+	by tool.snarl.nl (Postfix) with ESMTP id 97E5A5E693;
+	Tue, 12 Sep 2006 17:46:57 +0200 (CEST)
+Received: from tool.snarl.nl ([127.0.0.1])
+	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id lvNvkVIrPEEo; Tue, 12 Sep 2006 17:46:57 +0200 (CEST)
+Received: by tool.snarl.nl (Postfix, from userid 1000)
+	id 33E765E473; Tue, 12 Sep 2006 17:46:57 +0200 (CEST)
+Date:	Tue, 12 Sep 2006 17:46:57 +0200
+From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+To:	adaplas@pol.net
+Cc:	linux-fbdev-devel@lists.sourceforge.net, linux-mips@linux-mips.org
+Subject: [PATCH] Fix to remove flickering.
+Message-ID: <20060912154656.GY10006@dusktilldawn.nl>
 MIME-Version: 1.0
-To:	Suzuki Takashi <setsu@emi.yamaha.co.jp>
-Cc:	linuxppc-embedded@ozlabs.org,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: SM501 Kernel display driver for v2.6.17
-References: <BDCC9646-9F98-4FFC-B0D8-A73E05B799A4@emi.yamaha.co.jp>
-In-Reply-To: <BDCC9646-9F98-4FFC-B0D8-A73E05B799A4@emi.yamaha.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="i/VKSWANvDZSIhsB"
+Content-Disposition: inline
+X-User-Agent-Feature: All mail clients suck. This one just sucks less.
+X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <freddy@dusktilldawn.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12566
+X-archive-position: 12567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: freddy@dusktilldawn.nl
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
 
-Suzuki Takashi wrote:
-> I want to make Voyager GX PCI Demo Board Ver.A work on Yosemite board.
+--i/VKSWANvDZSIhsB
+Content-Type: multipart/mixed; boundary="yC91f7qSViS67v3c"
+Content-Disposition: inline
 
-> I know Silicon Motion have Linux Kernel_v2.6 Display driver:
-> http://www.siliconmotion.com.tw/en/en2/download2c.htm
 
-> But it's for v2.6.4 and it cannot be compiled with v2.6.17 working on
-> Yosemite board.
+--yC91f7qSViS67v3c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Does anybody have succeeded in making the board work with v2.6.17?
-> If there is a patch or source code available, let me know the location.
+Hi Antonino,
 
-    I know that Linux/MIPS project maintains the framebuffer driver in 
-drivers/video/smivgxfb.c. We used to backport it to 2.6.10 and it worked for 
-us... Here's the link to the latest source:
+Currently a lot of flickering is seen on the VGA and LCD port
+when one starts a DBAu1100 board, with 'CONFIG_PRINTK=3Dy'.
 
-http://www.linux-mips.org/git?p=linux.git;a=blob;h=c521069c905b4252109b8144478b4381c0ccdb7f;hb=db092db967ec0824db433c4adf3b58202fe610e2;f=drivers/video/smivgxfb.c
+This patch removes the flickering and as a result all kernel
+messages come by in a nice steady fashion.
 
-> Thanks in advance,
+Please apply.
 
-> -- T.Suzuki
+Signed-off-by: Freddy Spierenburg <freddy@dusktilldawn.nl>
 
-WBR, Sergei
+--=20
+$ cat ~/.signature
+Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
+GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+
+--yC91f7qSViS67v3c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="au1100fb.patch"
+
+diff -Naur linux-2.6.17.13-orig/drivers/video/au1100fb.h linux-2.6.17.13/drivers/video/au1100fb.h
+--- linux-2.6.17.13-orig/drivers/video/au1100fb.h	2006-09-09 03:23:25.000000000 +0000
++++ linux-2.6.17.13/drivers/video/au1100fb.h	2006-09-12 15:26:52.000000000 +0000
+@@ -274,7 +274,7 @@
+ 		.bpp = 16,
+ 		.control_base =	0x0004886A |
+ 			LCD_CONTROL_DEFAULT_PO | LCD_CONTROL_DEFAULT_SBPPF |
+-			LCD_CONTROL_BPP_16,
++			LCD_CONTROL_BPP_16 | LCD_CONTROL_SBB_4,
+ 		.clkcontrol_base = 0x00020000,
+ 		.horztiming = 0x005aff1f,
+ 		.verttiming = 0x16000e57,
+
+--yC91f7qSViS67v3c--
+
+--i/VKSWANvDZSIhsB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.5 (GNU/Linux)
+
+iD8DBQFFBtZwbxf9XXlB0eERAtcRAJ98NI4P0gat6ROB3UcIs37ebhNqbQCgibi+
+sKl0Oq602P5FsbJhrqksMXA=
+=RJn2
+-----END PGP SIGNATURE-----
+
+--i/VKSWANvDZSIhsB--

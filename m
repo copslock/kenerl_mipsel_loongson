@@ -1,60 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 13:55:34 +0100 (BST)
-Received: from wx-out-0506.google.com ([66.249.82.225]:36303 "EHLO
-	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038701AbWILMzd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 12 Sep 2006 13:55:33 +0100
-Received: by wx-out-0506.google.com with SMTP id h30so2254453wxd
-        for <linux-mips@linux-mips.org>; Tue, 12 Sep 2006 05:55:31 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:sender:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;
-        b=iKK1J5a8hUuU+GFtwXwS8Gpcmw/oEsPzZRN4yWWwvRwRQeLaznYy8y37W9c8uBAxxdjQLnB7KoI5jnAkiuOJcc0GCV1aCPwhw4cXQmTA2r0ZRtAJ9ElIjpZDUcMTlRrMMkmxtm+n1eJqKVYj4gbtRCCpjgQkoz43HLUBaj4GjBY=
-Received: by 10.90.100.2 with SMTP id x2mr2032162agb;
-        Tue, 12 Sep 2006 05:55:31 -0700 (PDT)
-Received: by 10.90.86.20 with HTTP; Tue, 12 Sep 2006 05:55:31 -0700 (PDT)
-Message-ID: <474ab6f00609120555p33522851p151f7062e4379d17@mail.gmail.com>
-Date:	Tue, 12 Sep 2006 08:55:31 -0400
-From:	"Brett Foster" <fosterb@uoguelph.ca>
-To:	"Youngduk Goo" <ydgoo9@gmail.com>
-Subject: Re: NOR Flash memory write speed.
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <38dc7fce0609120440o11c6a11ejf7f0a3cb1371bb40@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 13:58:43 +0100 (BST)
+Received: from [63.81.120.155] ([63.81.120.155]:55126 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038704AbWILM6k (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 12 Sep 2006 13:58:40 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id B8A4A3ED0; Tue, 12 Sep 2006 05:58:07 -0700 (PDT)
+Message-ID: <4506AF69.30905@ru.mvista.com>
+Date:	Tue, 12 Sep 2006 17:00:25 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Suzuki Takashi <setsu@emi.yamaha.co.jp>
+Cc:	linuxppc-embedded@ozlabs.org,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: SM501 Kernel display driver for v2.6.17
+References: <BDCC9646-9F98-4FFC-B0D8-A73E05B799A4@emi.yamaha.co.jp>
+In-Reply-To: <BDCC9646-9F98-4FFC-B0D8-A73E05B799A4@emi.yamaha.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <38dc7fce0609120440o11c6a11ejf7f0a3cb1371bb40@mail.gmail.com>
-X-Google-Sender-Auth: be1aed679b4d8efb
-Return-Path: <666f7374657262@gmail.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12565
+X-archive-position: 12566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fosterb@uoguelph.ca
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On 9/12/06, Youngduk Goo <ydgoo9@gmail.com> wrote:
-> Hello, all
->
-> I am developing the system using the NOR flash (32MB) and the core is
-> about 300MHz mips.
-> I wonder how long takes the whole erase and write time to flash memory.
-> I tried it on the bootloader. Firstof all, bootloader(YAMON) load the image
-> and erase the flash except bootloader region, write the image..
-> It took about 14-16minutes.I think it is too long.
+Hello.
 
-Can't really say, but it seems ok to me. Each chip will have unique
-timing characteristics which are covered in the data sheet for the
-flash part with min, typical and max values. You can compute the upper
-and lower bounds of the operation using that information.
+Suzuki Takashi wrote:
+> I want to make Voyager GX PCI Demo Board Ver.A work on Yosemite board.
 
->
-> I would like to know, for you, normally how long it tasks ?
->
-> Thanks,
->
->
+> I know Silicon Motion have Linux Kernel_v2.6 Display driver:
+> http://www.siliconmotion.com.tw/en/en2/download2c.htm
+
+> But it's for v2.6.4 and it cannot be compiled with v2.6.17 working on
+> Yosemite board.
+
+> Does anybody have succeeded in making the board work with v2.6.17?
+> If there is a patch or source code available, let me know the location.
+
+    I know that Linux/MIPS project maintains the framebuffer driver in 
+drivers/video/smivgxfb.c. We used to backport it to 2.6.10 and it worked for 
+us... Here's the link to the latest source:
+
+http://www.linux-mips.org/git?p=linux.git;a=blob;h=c521069c905b4252109b8144478b4381c0ccdb7f;hb=db092db967ec0824db433c4adf3b58202fe610e2;f=drivers/video/smivgxfb.c
+
+> Thanks in advance,
+
+> -- T.Suzuki
+
+WBR, Sergei

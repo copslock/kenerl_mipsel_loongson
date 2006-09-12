@@ -1,79 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Sep 2006 22:32:06 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:57788 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20038533AbWIKVcE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 11 Sep 2006 22:32:04 +0100
-Received: from lagash (88-106-139-84.dynamic.dsl.as9105.com [88.106.139.84])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id BD75748A5C; Mon, 11 Sep 2006 23:32:03 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GMtM0-0008KG-8W; Mon, 11 Sep 2006 22:30:08 +0100
-Date:	Mon, 11 Sep 2006 22:30:08 +0100
-To:	Dirk Behme <dirk.behme@googlemail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: QEMU MIPS user space emulation issue
-Message-ID: <20060911213008.GD13414@networkno.de>
-References: <450589A6.5040808@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <450589A6.5040808@gmail.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Sep 2006 02:56:09 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:26845 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20038603AbWILB4G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Sep 2006 02:56:06 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 12 Sep 2006 10:56:04 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 102F820603;
+	Tue, 12 Sep 2006 10:55:59 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 040FE205B1;
+	Tue, 12 Sep 2006 10:55:59 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k8C1tuW0001517;
+	Tue, 12 Sep 2006 10:55:57 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 12 Sep 2006 10:55:56 +0900 (JST)
+Message-Id: <20060912.105556.25910629.nemoto@toshiba-tops.co.jp>
+To:	macro@linux-mips.org
+Cc:	nigel@mips.com, ralf@linux-mips.org, dan@debian.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] fast path for rdhwr emulation for TLS
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.64N.0609111810090.29692@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0609111406400.29692@blysk.ds.pg.gda.pl>
+	<20060911.233046.41631256.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.64N.0609111810090.29692@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12562
+X-archive-position: 12563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Dirk Behme wrote:
-> Hi,
+On Mon, 11 Sep 2006 18:53:29 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+> > It might add a little overhead to usual TLB refill handling.  The
+> > overhead might be neglectable, but I'm not sure.
 > 
-> we have an issue using QEMUs MIPS user space emulation 
-> running programs compiled with mipsel glibc based 
-> crosscompiler [1]. Because I'm not sure if it's a QEMU or 
-> toolchain (or anything else?) issue, I'd like to ask the 
-> experts here.
-> 
-> Up to now, the conclusion from [1] is that QEMUs mipsel user 
-> space emulation fails executing a simple hello world program 
-> if compiled with glibc based mipsel toolchain build with 
-> crosstool and linked dynamically. Compiled with toolchain 
-> using uClib or same program linked statically (-static) is okay.
+>  There is no need to change the refill handler -- only the general TLBL 
+> exception has to be modified.  And this one may be not too critical -- the 
+> change required is in the path to mark pages accessed.  Is the path 
+> frequent enough to seek a complex solution while a simple one would just 
+> work?
 
-So this is unlikely to be a kernel problem.
+Yes, my description was wrong.  general TLBL handling, not TLB refill
+handling.
 
-> For example, hello world compiled with mipsel toolchain 
-> build with crosstool-0.42 configuration
-> 
-> cat mipsel.dat gcc-3.4.1-glibc-2.3.2.dat
-> 
-> fails if dynamically linked. As mentioned above, using 
-> -static is okay.
+Hmm, it seems not so critical indeed.  Then "take 2" patch would be
+exactly what you preferred.
 
-Start from a known working mipsel userland, e.g. the one from Debian
-unstable, and use it to isolate the bug.
+http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20060710.234010.07457279.anemo%40mba.ocn.ne.jp
 
-> If failing, debug output shows that code
-> 
-> ...
-> 0x401fa00c:  lw t9,-32600(gp)
-> 0x401fa010:  addiu      a0,a0,30820
-> 0x401fa014:  addiu      a1,a1,29452
-> 0x401fa018:  addiu      a3,a3,25856
-> 0x401fa01c:  jalr       t9
-> 0x401fa020:  li a2,161
-> ...
+Any comments about that?
 
-Sa a guess, it might be a dynamic symbol mis-resolved by the ld.so.
-
-
-Thiemo
+---
+Atsushi Nemoto

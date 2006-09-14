@@ -1,73 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Sep 2006 14:01:43 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.188]:25965 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037726AbWIMNBi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 13 Sep 2006 14:01:38 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so1940263nfc
-        for <linux-mips@linux-mips.org>; Wed, 13 Sep 2006 06:01:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Sep 2006 16:51:46 +0100 (BST)
+Received: from wx-out-0506.google.com ([66.249.82.231]:36 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038903AbWINPvo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Sep 2006 16:51:44 +0100
+Received: by wx-out-0506.google.com with SMTP id h30so3155837wxd
+        for <linux-mips@linux-mips.org>; Thu, 14 Sep 2006 08:51:41 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=bPaiGoFAjrd1LD9xsbR78TRKbAbbfzNoW3edxnUuZUoLQOaLhPYRqPRYsG6RRyPWOz0el6saUJ9eikI2HrSXTiJgVrjgPgOU4mIqFXsp9Q1FcVPvbaENhFnuk73Z6Q+TJi4O9Bqb0vnVo+3RUZq3Ff6ubnY/B4kpkacqJnqIZhY=
-Received: by 10.49.21.8 with SMTP id y8mr10892818nfi;
-        Wed, 13 Sep 2006 06:01:37 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.gmail.com with ESMTP id c10sm17170788nfb.2006.09.13.06.01.36;
-        Wed, 13 Sep 2006 06:01:37 -0700 (PDT)
-Message-ID: <45080148.3000104@innova-card.com>
-Date:	Wed, 13 Sep 2006 15:02:00 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+        h=received:message-id:date:from:user-agent:x-accept-language:mime-version:to:subject:content-type;
+        b=X4b6bXtkqGqRy7yfs1qBTK7nD2nlxwMf2AkDfif54o61e0qm0j0KPNDEB3uio2H5jQbZlehWPFyAkIfH2ONrdcHDZCMN8H3Cv8/Kx2I6bwJuvV6x8I/9cjOL8O1stdw/KmFiF171tR4XrUhAPzd4b8/FqDl4Gdbfc1sWMryRurE=
+Received: by 10.70.29.7 with SMTP id c7mr12818166wxc;
+        Thu, 14 Sep 2006 08:51:41 -0700 (PDT)
+Received: from ?10.0.1.104? ( [71.243.124.123])
+        by mx.gmail.com with ESMTP id i12sm1572680wxd.2006.09.14.08.51.40;
+        Thu, 14 Sep 2006 08:51:40 -0700 (PDT)
+Message-ID: <45097A89.4060303@gmail.com>
+Date:	Thu, 14 Sep 2006 11:51:37 -0400
+From:	Peter Watkins <treestem@gmail.com>
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050831)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: Patches
-References: <200609122247.19091.thomas@koeller.dyndns.org> <20060913122746.GA10177@linux-mips.org>
-In-Reply-To: <20060913122746.GA10177@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] Add cache info to /proc/cpuinfo
+Content-Type: multipart/mixed;
+ boundary="------------080408080008000303090702"
+Return-Path: <treestem@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12571
+X-archive-position: 12572
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: treestem@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Tue, Sep 12, 2006 at 10:47:19PM +0200, Thomas Koeller wrote:
-> 
->> what about these patches:
->> http://www.linux-mips.org/archives/linux-mips/2006-08/msg00271.html
->> http://www.linux-mips.org/archives/linux-mips/2006-08/msg00270.html
->>
->> Are you going to apply them?
-> 
-> They've been applied to the queue branch weeks ago.  Due to the still
-> unmerged RM92xx seriver driver I didn't consider it 2.6.18 material.
-> 
+This is a multi-part message in MIME format.
+--------------080408080008000303090702
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-and what about ?
+This patch shows you more details about the cache using /proc/cpuinfo.
+It also shows the TLB page size.
 
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00112.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00113.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00114.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00115.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00117.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00118.html
+For example:
 
-and these ones too ?
+system type             : MIPS Malta
+processor               : 0
+cpu model               : MIPS 20Kc V2.0  FPU V2.0
+BogoMIPS                : 478.20
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 48 64K pages
+icache size             : 32K sets 256 ways 4 linesize 32
+dcache size             : 32K sets 256 ways 4 linesize 32
+default cache policy    : cached write-back
+extra interrupt vector  : yes
+hardware watchpoint     : yes
+ASEs implemented        : mips3d
+VCED exceptions         : not available
+VCEI exceptions         : not available
 
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00196.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00195.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00197.html
 
-BTW, mainline doesn't seem to merge MIPS repo anymore during election
-of release candidate. Do you know why ?
 
-		Franck
+--------------080408080008000303090702
+Content-Type: text/plain;
+ name="0001-Add-cache-info-to-cpuinfo-display.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="0001-Add-cache-info-to-cpuinfo-display.txt"
+
+Date: Thu, 14 Sep 2006 11:24:51 -0400
+Subject: [PATCH] Add cache info to cpuinfo display.
+---
+ arch/mips/kernel/proc.c |   34 +++++++++++++++++++++++++++++++++-
+ 1 files changed, 33 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index d8beef1..54f4da3 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -92,6 +92,7 @@ static int show_cpuinfo(struct seq_file 
+ 	unsigned int version = current_cpu_data.processor_id;
+ 	unsigned int fp_vers = current_cpu_data.fpu_id;
+ 	unsigned long n = (unsigned long) v - 1;
++	unsigned long cache_size;
+ 	char fmt [64];
+ 
+ #ifdef CONFIG_SMP
+@@ -118,7 +119,38 @@ #endif
+ 	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
+ 	seq_printf(m, "microsecond timers\t: %s\n",
+ 	              cpu_has_counter ? "yes" : "no");
+-	seq_printf(m, "tlb_entries\t\t: %d\n", current_cpu_data.tlbsize);
++	seq_printf(m, "tlb_entries\t\t: %d %luK pages\n", current_cpu_data.tlbsize,
++			PAGE_SIZE/1024);
++	cache_size = current_cpu_data.icache.sets * 
++		     current_cpu_data.icache.ways *
++		     current_cpu_data.icache.linesz;
++	if (cache_size) {
++	    seq_printf(m, "icache size\t\t: %luK sets %d ways %d linesize %d\n",
++	              cache_size/1024, current_cpu_data.icache.sets,
++		      current_cpu_data.icache.ways, current_cpu_data.icache.linesz);
++	}
++	cache_size = current_cpu_data.dcache.sets * 
++		     current_cpu_data.dcache.ways *
++		     current_cpu_data.dcache.linesz;
++	if (cache_size) {
++	    seq_printf(m, "dcache size\t\t: %luK sets %d ways %d linesize %d\n",
++	              cache_size/1024, current_cpu_data.dcache.sets,
++		      current_cpu_data.dcache.ways, current_cpu_data.dcache.linesz);
++	}
++	cache_size = current_cpu_data.scache.sets * 
++		     current_cpu_data.scache.ways *
++		     current_cpu_data.scache.linesz;
++	if (cache_size) {
++	    seq_printf(m, "scache size\t\t: %luK sets %d ways %d linesize %d\n",
++	              cache_size/1024, current_cpu_data.scache.sets,
++		      current_cpu_data.scache.ways, current_cpu_data.scache.linesz);
++	}
++	/* In pgtable-bits.h we never use a write-through policy */
++#ifdef CONFIG_MIPS_UNCACHED
++	seq_printf(m, "default cache policy\t: uncached\n");
++#else
++	seq_printf(m, "default cache policy\t: cached write-back\n");
++#endif
+ 	seq_printf(m, "extra interrupt vector\t: %s\n",
+ 	              cpu_has_divec ? "yes" : "no");
+ 	seq_printf(m, "hardware watchpoint\t: %s\n",
+-- 
+1.4.1
+
+
+--------------080408080008000303090702--

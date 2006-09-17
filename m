@@ -1,45 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2006 02:01:05 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:41925 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20038562AbWIQBBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 17 Sep 2006 02:01:03 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8H11gbN023726;
-	Sun, 17 Sep 2006 02:01:42 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8H11gWW023725;
-	Sun, 17 Sep 2006 02:01:42 +0100
-Date:	Sun, 17 Sep 2006 02:01:42 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Mark E Mason <mark.e.mason@broadcom.com>
-Cc:	Jonathan Day <imipak@yahoo.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Sep 2006 14:43:33 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:46031 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037619AbWIQNnb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Sep 2006 14:43:31 +0100
+Received: from localhost (p8015-ipad204funabasi.chiba.ocn.ne.jp [222.146.95.15])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 5CD58A6B3; Sun, 17 Sep 2006 22:43:26 +0900 (JST)
+Date:	Sun, 17 Sep 2006 22:45:28 +0900 (JST)
+Message-Id: <20060917.224528.93022156.anemo@mba.ocn.ne.jp>
+To:	imipak@yahoo.com
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Kernel debugging contd.
-Message-ID: <20060917010142.GA23646@linux-mips.org>
-References: <20060915221141.69174.qmail@web31504.mail.mud.yahoo.com> <7E000E7F06B05C49BDBB769ADAF44D070111E24B@NT-SJCA-0750.brcm.ad.broadcom.com>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060915221141.69174.qmail@web31504.mail.mud.yahoo.com>
+References: <20060915221141.69174.qmail@web31504.mail.mud.yahoo.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7E000E7F06B05C49BDBB769ADAF44D070111E24B@NT-SJCA-0750.brcm.ad.broadcom.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12582
+X-archive-position: 12583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 15, 2006 at 03:54:06PM -0700, Mark E Mason wrote:
+On Fri, 15 Sep 2006 15:11:40 -0700 (PDT), Jonathan Day <imipak@yahoo.com> wrote:
+> Ok, here's the console output with virtually every
+> Linux debug option I could find enabled. It softlocks
+> (no console activity, but kernel pings) after freeing
+> memory. Any thoughts on using the magic key over
+> minicom would also be welcome. The thing that stands
+> out the most is line 864000, where we have an IRQ
+> handler mismatch and a call trace.
 
-> FWIW - this is the same place my boards are hanging (right after freeing
-> kernel memory).  I'd tracked it down to the commit that changed the
-> cache/page handling for the sibyte parts from the sb1 specific to the
-> generic codes -- but haven't found time to look into it further as yet.
+I suppose the "IRQ handler mismatch" happened just because you enabled
+wrong rtc driver(s).  It would be irrelevant.
 
-Got a commit ID?
+In general, softlock just after "Freeing unused kernel memory" can
+happen because /sbin/init crashed for some reason (kernel keep sending
+signals to /sbin/init).
 
-  Ralf
+1. Enable second and third "#if 0" blocks in arch/mips/mm/fault.c
+2. Add printk() before each force_sig() in arch/mips/kernel/traps.c,
+   branch.c, unaligned.c
+
+might show you what's going on.
+
+Also, SYSRQ-p or SYSRQ-t (BRK + p or BRK + t for serial console) might
+be helpful, but it seems UART driver of your target board does not
+support the MAGIC_SYSRQ feature...
+
+---
+Atsushi Nemoto

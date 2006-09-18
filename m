@@ -1,108 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2006 20:28:10 +0100 (BST)
-Received: from web31514.mail.mud.yahoo.com ([68.142.198.143]:20048 "HELO
-	web31514.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20037850AbWIRT2F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 Sep 2006 20:28:05 +0100
-Received: (qmail 88938 invoked by uid 60001); 18 Sep 2006 19:27:56 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=ZYqE/2KuSL4ei8L20o6w1NF2/xtodZ0MCETlYpXyGb9Az5VhY4yDhSkGQXqkngg1Zwl1PC7LR4kIF9wR+ndROCu+HOhlBM7rKRM03qCe4CDL80rdzqT7IfhJ6+TJPSTgOVySCjnO7kzVFWnfwgzjE5CAxNXkvLYU/QpfT6kyMtg=  ;
-Message-ID: <20060918192756.88936.qmail@web31514.mail.mud.yahoo.com>
-Received: from [70.103.67.194] by web31514.mail.mud.yahoo.com via HTTP; Mon, 18 Sep 2006 12:27:56 PDT
-Date:	Mon, 18 Sep 2006 12:27:56 -0700 (PDT)
-From:	Jonathan Day <imipak@yahoo.com>
-Subject: RE: Kernel debugging contd.
-To:	Manoj Ekbote <manoje@broadcom.com>
-Cc:	Jonathan Day <imipak@yahoo.com>, linux-mips@linux-mips.org
-In-Reply-To: <710F16C36810444CA2F5821E5EAB7F2305D9C3@NT-SJCA-0752.brcm.ad.broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Sep 2006 21:11:13 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:43821 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20037885AbWIRULK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Sep 2006 21:11:10 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 7207D3ECD; Mon, 18 Sep 2006 13:10:48 -0700 (PDT)
+Message-ID: <450EFDCF.2020400@ru.mvista.com>
+Date:	Tue, 19 Sep 2006 00:13:03 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <imipak@yahoo.com>
+To:	Rodolfo Giometti <giometti@linux.it>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] au1x00 serial real interrupt
+References: <20060522165244.GA16223@enneenne.com> <44FD9587.3030708@ru.mvista.com> <4502ED14.6080506@ru.mvista.com>
+In-Reply-To: <4502ED14.6080506@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12591
+X-archive-position: 12592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: imipak@yahoo.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello.
 
-Any chance you could e-mail me a diff of the changes
-you made? I really need to get this Broadcom board
-back on its feet, preferably with the current kernel
-as there's a lot of stuff that I need in it.
+Sergei Shtylyov wrote:
 
-Thanks for any help you can give,
+>>> diff --git a/include/asm-mips/serial.h b/include/asm-mips/serial.h
+>>> index 7b23664..0197062 100644
+>>> --- a/include/asm-mips/serial.h
+>>> +++ b/include/asm-mips/serial.h
+>>> @@ -11,6 +11,14 @@
+>>>  
+>>>  #include <linux/config.h>
+>>>  
+>>> +#ifdef CONFIG_SOC_AU1X00
+>>> +/*
+>>> + * We have to redefine "is_real_interrupt()" for Au1x00 CPUs...
+>>> + */
+>>> +#undef is_real_interrupt
+>>> +#define is_real_interrupt(irq)    ((irq) != ~0)
+>>> +#endif
+>>> +
+>>>  /*
+>>>   * This assumes you have a 1.8432 MHz clock for your UART.
+>>>   *
 
-Jonathan Day
+>    Well, after looking at drivers/serial/8250.c a bit more, I think this 
+> may be even more simlified since that driver seems to treat the negative 
+> values as completely invalid anyway. IOW, we can just:
 
-P.S. Oh, one other thing you might be able to help
-with. A lot of tools I have for modifying the speed or
-other parameters of ethernet chips are designed for
-10/100 devices, but the 1250 works over a gigabit
-interface. You wouldn't happen to have any tools that
-would allow me to alter the state of the interface,
-would you? I'm getting some weird behaviour, with it
-switching to gigabit half-duplex, and would love to
-have some kind of disgnostic tool to see what's
-happening and modify the settings.
+> #define is_real_interrupt(irq)    1
 
-Again, thanks for any help - there's a lot with this
-board that is simply stumping me.
+    Rodolfo, can you do this (possibly adding more elaborate comment about 
+UART0 using IRQ0)?
 
---- Manoj Ekbote <manoje@broadcom.com> wrote:
-
-> If I may add, the changes made when the
-> flush_icache_page call was
-> retired seems to cause this problem.
-> I reversed some of the changes and the kernel boots
-> fine atleast on
-> 1480.
-> 
-> commit id : 4bbd62a93a1ab4b7d8a5b402b0c78ac265b35661
-> 
-> 
-> /manoj
-> 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org] On Behalf
-> Of Ralf Baechle
-> Sent: Saturday, September 16, 2006 6:02 PM
-> To: Mark E Mason
-> Cc: Jonathan Day; linux-mips@linux-mips.org
-> Subject: Re: Kernel debugging contd.
-> 
-> On Fri, Sep 15, 2006 at 03:54:06PM -0700, Mark E
-> Mason wrote:
-> 
-> > FWIW - this is the same place my boards are
-> hanging (right after
-> freeing
-> > kernel memory).  I'd tracked it down to the commit
-> that changed the
-> > cache/page handling for the sibyte parts from the
-> sb1 specific to the
-> > generic codes -- but haven't found time to look
-> into it further as
-> yet.
-> 
-> Got a commit ID?
-> 
->   Ralf
-> 
-> 
-> 
-> 
-
-
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+WBR, Sergei

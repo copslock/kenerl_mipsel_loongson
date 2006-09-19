@@ -1,46 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Sep 2006 22:09:30 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:16599 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20038671AbWISVJ2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Sep 2006 22:09:28 +0100
-Received: from lagash (88-106-139-84.dynamic.dsl.as9105.com [88.106.139.84])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id D21D9447C8; Tue, 19 Sep 2006 23:09:22 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GPmpk-0005OB-MK; Tue, 19 Sep 2006 22:08:48 +0100
-Date:	Tue, 19 Sep 2006 22:08:48 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Eric DeVolder <edevolder@razamicroelectronics.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Differing results from cross and native compilers
-Message-ID: <20060919210848.GC24864@networkno.de>
-References: <2E96546B3C2C8B4CA739323C6058204A0163548E@hq-ex-mb01.razamicroelectronics.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Sep 2006 23:44:02 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:63406 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038699AbWISWoA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 19 Sep 2006 23:44:00 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8JMigDj005785;
+	Tue, 19 Sep 2006 23:44:42 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8JMifX7005784;
+	Tue, 19 Sep 2006 23:44:41 +0100
+Date:	Tue, 19 Sep 2006 23:44:41 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org, richard@codesourcery.com
+Subject: Re: [PATCH] fstatat syscall names
+Message-ID: <20060919224441.GA4031@linux-mips.org>
+References: <877j02xozk.fsf@talisman.home>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2E96546B3C2C8B4CA739323C6058204A0163548E@hq-ex-mb01.razamicroelectronics.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <ths@networkno.de>
+In-Reply-To: <877j02xozk.fsf@talisman.home>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12600
+X-archive-position: 12601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Eric DeVolder wrote:
-> Thiemo, could you share what the native 3.4 compiler reports as
-> its configuration? (e.g. the "Configured with: " statement)?
+On Sun, Sep 17, 2006 at 08:38:39PM +0100, Richard Sandiford wrote:
 
-It was built by the Debian autobuilder, the buildlog at
-http://buildd.debian.org/fetch.php?&pkg=gcc-3.4&ver=3.4.6-4&arch=mips&stamp=1157712260&file=log&as=raw
-should show the configuration.
+> MIPS is the only port to call its fstatat()-related syscalls
+> "__NR_fstatat".  Now I can see why that might be seen as every
+> other port being wrong, but I think for o32, it is at best confusing.
+> __NR_fstat provides a plain (32-bit) stat while __NR_fstatat provides a
+> 64-bit stat.  Changing the name to __NR_fstatat64 would make things more
+> explicit, match x86, and make the glibc port slightly easier.
+> 
+> The current name is more appropriate for n32 and n64, but it would be
+> appropriate for other 64-bit targets too, and those targets have chosen
+> to call it __NR_newfstatat instead.  Using the same name for MIPS would
+> again be more consistent and make the glibc port slightly easier.
+> 
+> I'm not wedded to this idea if the current names are preferred,
+> but FWIW...
 
+I may have prefered the current naming at the time because they seemed to
+be more logical to me when I choose those names but I'm not married to
+them either.
 
-Thiemo
+  Ralf

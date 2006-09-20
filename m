@@ -1,63 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 10:18:57 +0100 (BST)
-Received: from web7909.mail.in.yahoo.com ([202.86.4.85]:18358 "HELO
-	web7909.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20038430AbWITJS4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 Sep 2006 10:18:56 +0100
-Received: (qmail 29619 invoked by uid 60001); 20 Sep 2006 09:18:46 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=kk5/KflSobBvos6KdSLGTqRtQpLJ8U6S8PS3Uw1Dc2xgj7MnIR91bA/euTVSqN6TTrznhoM8FYvW2LTq+E6VrQ7cXQW/sxsCWDARua4RE9H3MlKA0KoJjcD1ExUKTh4QiJ6fjMrXxIi+ptXKFB44m2/nwrIHQEusw6G3gIugEKw=  ;
-Message-ID: <20060920091846.29617.qmail@web7909.mail.in.yahoo.com>
-Received: from [61.246.223.98] by web7909.mail.in.yahoo.com via HTTP; Wed, 20 Sep 2006 10:18:46 BST
-Date:	Wed, 20 Sep 2006 10:18:46 +0100 (BST)
-From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
-Subject: linux-libc-headers-2.6.17
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 17:35:06 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:18634 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038746AbWITQfD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2006 17:35:03 +0100
+Received: from localhost (p5035-ipad201funabasi.chiba.ocn.ne.jp [222.146.68.35])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 7A950A590; Thu, 21 Sep 2006 01:34:57 +0900 (JST)
+Date:	Thu, 21 Sep 2006 01:37:02 +0900 (JST)
+Message-Id: <20060921.013702.126573740.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1148256633-1158743926=:28968"
-Content-Transfer-Encoding: 8bit
-Return-Path: <sathesh_edara2003@yahoo.co.in>
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] use proper hazard macro instead of BARRIER
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12604
+X-archive-position: 12605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sathesh_edara2003@yahoo.co.in
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
---0-1148256633-1158743926=:28968
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Hi,
-     I would like build toolchain to port Linux-2.6.17 kernel on MIPS 
-processor.
-    Can you please tell me where can i get linux-libc-headers-2.6.17.0 
-sources to build toolchain using buildroot.
-   
-  Has anybody built toolchain for Linux-2.6.17 kernel ver.
-   
-  Regards,
-  Sathesh
-   
-
- 				
----------------------------------
- Find out what India is talking about on  - Yahoo! Answers India 
- Send FREE SMS to your friend's mobile from Yahoo! Messenger Version 8. Get it NOW
---0-1148256633-1158743926=:28968
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-Hi,<BR>&nbsp;&nbsp;&nbsp;&nbsp; I would like build toolchain to port Linux-2.6.17 kernel on MIPS <BR>processor.<BR>&nbsp;&nbsp;&nbsp; Can you please tell me where can i get linux-libc-headers-2.6.17.0 <BR>sources to build toolchain using buildroot.<BR>&nbsp;&nbsp; <BR>&nbsp; Has anybody built toolchain for Linux-2.6.17 kernel ver.<BR>&nbsp;&nbsp; <BR>&nbsp; Regards,<BR>&nbsp; Sathesh<BR>&nbsp;&nbsp; <BR><p>&#32;
-	
-
-	
-		<hr size=1></hr> 
-Find out what India is talking about on  - <a href="http://us.rd.yahoo.com/mail/in/yanswers/*http://in.answers.yahoo.com/">Yahoo! Answers India</a> <BR> 
-Send FREE SMS to your friend's mobile from Yahoo! Messenger Version 8. <a href="http://us.rd.yahoo.com/mail/in/messengertagline/*http://in.messenger.yahoo.com">Get it NOW</a>
---0-1148256633-1158743926=:28968--
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index a681f57..3bf5e8a 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -38,11 +38,6 @@ #include <asm/pgalloc.h>
+ #include <asm/tlb.h>
+ #include <asm/fixmap.h>
+ 
+-/* CP0 hazard avoidance. */
+-#define BARRIER __asm__ __volatile__(".set noreorder\n\t" \
+-				     "nop; nop; nop; nop; nop; nop;\n\t" \
+-				     ".set reorder\n\t")
+-
+ /* Atomicity and interruptability */
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 
+@@ -161,7 +156,7 @@ #ifdef CONFIG_MIPS_MT_SMTC
+ 	/* preload TLB instead of local_flush_tlb_one() */
+ 	mtc0_tlbw_hazard();
+ 	tlb_probe();
+-	BARRIER;
++	tlb_probe_hazard();
+ 	tlbidx = read_c0_index();
+ 	mtc0_tlbw_hazard();
+ 	if (tlbidx < 0)

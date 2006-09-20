@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 18:08:36 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:26670 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20027543AbWITRIJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2006 18:08:09 +0100
-Received: by mo.po.2iij.net (mo31) id k8KH83jO052686; Thu, 21 Sep 2006 02:08:04 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 18:09:04 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:56329 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20027607AbWITRIK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2006 18:08:10 +0100
+Received: by mo.po.2iij.net (mo32) id k8KH83w0007074; Thu, 21 Sep 2006 02:08:03 +0900 (JST)
 Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
-	by mbox.po.2iij.net (mbox30) id k8KH7xb5028738
+	by mbox.po.2iij.net (mbox33) id k8KH7tCK096142
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 21 Sep 2006 02:07:59 +0900 (JST)
-Date:	Thu, 21 Sep 2006 02:00:31 +0900
+	Thu, 21 Sep 2006 02:07:56 +0900 (JST)
+Date:	Thu, 21 Sep 2006 01:57:58 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2/4] removed  Momentum / PMC-Sierra Jaguar ATX evaluation
- board support
-Message-Id: <20060921020031.0033e2d9.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20060921015758.639c4545.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH 1/4] removed MIPS EV96100 evaluation board support
+Message-Id: <20060921015758.639c4545.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060921015638.480ea7b1.yoichi_yuasa@tripeaks.co.jp>
 References: <20060921015638.480ea7b1.yoichi_yuasa@tripeaks.co.jp>
-	<20060921015758.639c4545.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -26,7 +24,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12607
+X-archive-position: 12608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,111 +32,108 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-This patch has removed Momentum / PMC-Sierra Jaguar ATX evaluation board support.
+This patch has removed MIPS EV96100 evaluation board support.
 
 Yoichi
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
 diff -pruN -X mips/Documentation/dontdiff mips-orig/Documentation/feature-removal-schedule.txt mips/Documentation/feature-removal-schedule.txt
---- mips-orig/Documentation/feature-removal-schedule.txt	2006-09-21 00:57:25.786852250 +0900
-+++ mips/Documentation/feature-removal-schedule.txt	2006-09-21 00:57:52.720535500 +0900
-@@ -202,16 +202,6 @@ Who:	Nick Piggin <npiggin@suse.de>
+--- mips-orig/Documentation/feature-removal-schedule.txt	2006-09-21 00:45:57.327826250 +0900
++++ mips/Documentation/feature-removal-schedule.txt	2006-09-21 00:46:07.336451750 +0900
+@@ -202,14 +202,6 @@ Who:	Nick Piggin <npiggin@suse.de>
  
  ---------------------------
  
--What:	Support for the Momentum / PMC-Sierra Jaguar ATX evaluation board
+-What:	Support for the MIPS EV96100 evaluation board
 -When:	September 2006
--Why:	Does no longer build since quite some time, and was never popular,
--	due to the platform being replaced by successor models.  Apparently
--	no user base left.  It also is one of the last users of
--	WANT_PAGE_VIRTUAL.
+-Why:	Does no longer build since at least November 15, 2003, apparently
+-	no userbase left.
 -Who:	Ralf Baechle <ralf@linux-mips.org>
 -
 ----------------------------
 -
- What:	Support for the Momentum Ocelot, Ocelot 3, Ocelot C and Ocelot G
+ What:	Support for the Momentum / PMC-Sierra Jaguar ATX evaluation board
  When:	September 2006
- Why:	Some do no longer build and apparently there is no user base left
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
---- mips-orig/arch/mips/Kconfig	2006-09-21 00:57:25.790852500 +0900
-+++ mips/arch/mips/Kconfig	2006-09-21 00:57:52.720535500 +0900
-@@ -373,26 +373,6 @@ config MIPS_SIM
- 	  This option enables support for MIPS Technologies MIPSsim software
- 	  emulator.
+ Why:	Does no longer build since quite some time, and was never popular,
+diff -pruN -X mips/Documentation/dontdiff mips-orig/Documentation/kernel-parameters.txt mips/Documentation/kernel-parameters.txt
+--- mips-orig/Documentation/kernel-parameters.txt	2006-09-21 00:45:57.443833500 +0900
++++ mips/Documentation/kernel-parameters.txt	2006-09-21 00:53:06.886672000 +0900
+@@ -573,8 +573,6 @@ running once the system is up.
+ 	gscd=		[HW,CD]
+ 			Format: <io>
  
--config MOMENCO_JAGUAR_ATX
--	bool "Momentum Jaguar board"
--	select BOOT_ELF32
+-	gt96100eth=	[NET] MIPS GT96100 Advanced Communication Controller
+-
+ 	gus=		[HW,OSS]
+ 			Format: <io>,<irq>,<dma>,<dma16>
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
+--- mips-orig/arch/mips/Kconfig	2006-09-21 00:46:00.103999750 +0900
++++ mips/arch/mips/Kconfig	2006-09-21 00:46:07.440458250 +0900
+@@ -202,26 +202,6 @@ config MIPS_EV64120
+ 	  <http://www.marvell.com/>.  Say Y here if you wish to build a
+ 	  kernel for this platform.
+ 
+-config MIPS_EV96100
+-	bool "Galileo EV96100 Evaluation board (EXPERIMENTAL)"
+-	depends on EXPERIMENTAL
 -	select DMA_NONCOHERENT
 -	select HW_HAS_PCI
 -	select IRQ_CPU
--	select IRQ_CPU_RM7K
--	select IRQ_MV64340
--	select LIMITED_DMA
--	select PCI_MARVELL
+-	select MIPS_GT96100
 -	select RM7000_CPU_SCACHE
 -	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_RM9000
+-	select SYS_HAS_CPU_R5000
+-	select SYS_HAS_CPU_RM7000
 -	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
 -	select SYS_SUPPORTS_BIG_ENDIAN
 -	help
--	  The Jaguar ATX is a MIPS-based Single Board Computer (SBC) made by
--	  Momentum Computer <http://www.momenco.com/>.
+-	  This is an evaluation board based on the Galileo GT-96100 LAN/WAN
+-	  communications controllers containing a MIPS R5000 compatible core
+-	  running at 83MHz. Their website is <http://www.marvell.com/>. Say Y
+-	  here if you wish to build a kernel for this platform.
 -
- config MOMENCO_OCELOT
- 	bool "Momentum Ocelot board"
+ config MIPS_IVR
+ 	bool "Globespan IVR board"
  	select DMA_NONCOHERENT
-@@ -802,7 +782,6 @@ source "arch/mips/gt64120/ev64120/Kconfi
- source "arch/mips/jazz/Kconfig"
- source "arch/mips/ite-boards/Kconfig"
- source "arch/mips/lasat/Kconfig"
--source "arch/mips/momentum/Kconfig"
- source "arch/mips/pmc-sierra/Kconfig"
- source "arch/mips/sgi-ip27/Kconfig"
- source "arch/mips/sibyte/Kconfig"
-@@ -875,11 +854,6 @@ config GENERIC_ISA_DMA
- config I8259
- 	bool
+@@ -1051,10 +1031,6 @@ config AU1X00_USB_DEVICE
+ 	depends on MIPS_PB1500 || MIPS_PB1100 || MIPS_PB1000
+ 	default n
  
--config LIMITED_DMA
+-config MIPS_GT96100
 -	bool
--	select HIGHMEM
--	select SYS_SUPPORTS_HIGHMEM
+-	select MIPS_GT64120
 -
- config MIPS_BONITO64
+ config IT8172_CIR
  	bool
- 
+ 	depends on MIPS_ITE8172 || MIPS_IVR
 diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Makefile mips/arch/mips/Makefile
---- mips-orig/arch/mips/Makefile	2006-09-21 00:57:25.790852500 +0900
-+++ mips/arch/mips/Makefile	2006-09-21 00:57:52.724535750 +0900
-@@ -390,17 +390,6 @@ cflags-$(CONFIG_BASLER_EXCITE)	+= -Iincl
- load-$(CONFIG_BASLER_EXCITE)	+= 0x80100000
+--- mips-orig/arch/mips/Makefile	2006-09-21 00:46:00.103999750 +0900
++++ mips/arch/mips/Makefile	2006-09-21 00:46:07.452459000 +0900
+@@ -280,13 +280,6 @@ cflags-$(CONFIG_MIPS_EV64120)	+= -Iinclu
+ load-$(CONFIG_MIPS_EV64120)	+= 0xffffffff80100000
  
  #
--# Momentum Jaguar ATX
+-# Galileo EV96100 Board
 -#
--core-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= arch/mips/momentum/jaguar_atx/
--cflags-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= -Iinclude/asm-mips/mach-ja
--#ifdef CONFIG_JAGUAR_DMALOW
--#load-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= 0xffffffff88000000
--#else
--load-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= 0xffffffff80100000
--#endif
+-core-$(CONFIG_MIPS_EV96100)	+= arch/mips/galileo-boards/ev96100/
+-cflags-$(CONFIG_MIPS_EV96100)	+= -Iinclude/asm-mips/mach-ev96100
+-load-$(CONFIG_MIPS_EV96100)	+= 0xffffffff80100000
 -
 -#
- # NEC DDB
+ # Wind River PPMC Board (4KC + GT64120)
  #
- core-$(CONFIG_DDB5XXX_COMMON)	+= arch/mips/ddb5xxx/common/
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx_defconfig mips/arch/mips/configs/jaguar-atx_defconfig
---- mips-orig/arch/mips/configs/jaguar-atx_defconfig	2006-09-21 00:46:00.164003500 +0900
-+++ mips/arch/mips/configs/jaguar-atx_defconfig	1970-01-01 09:00:00.000000000 +0900
-@@ -1,837 +0,0 @@
+ core-$(CONFIG_WR_PPMC)		+= arch/mips/gt64120/wrppmc/
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ev96100_defconfig mips/arch/mips/configs/ev96100_defconfig
+--- mips-orig/arch/mips/configs/ev96100_defconfig	2006-09-21 00:46:00.156003000 +0900
++++ mips/arch/mips/configs/ev96100_defconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,850 +0,0 @@
 -#
 -# Automatically generated make config: don't edit
 -# Linux kernel version: 2.6.18-rc1
--# Thu Jul  6 10:04:12 2006
+-# Thu Jul  6 10:04:05 2006
 -#
 -CONFIG_MIPS=y
 -
@@ -162,7 +157,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_MIPS_COBALT is not set
 -# CONFIG_MACH_DECSTATION is not set
 -# CONFIG_MIPS_EV64120 is not set
--# CONFIG_MIPS_EV96100 is not set
+-CONFIG_MIPS_EV96100=y
 -# CONFIG_MIPS_IVR is not set
 -# CONFIG_MIPS_ITE8172 is not set
 -# CONFIG_MACH_JAZZ is not set
@@ -172,7 +167,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_MIPS_SEAD is not set
 -# CONFIG_WR_PPMC is not set
 -# CONFIG_MIPS_SIM is not set
--CONFIG_MOMENCO_JAGUAR_ATX=y
+-# CONFIG_MOMENCO_JAGUAR_ATX is not set
 -# CONFIG_MOMENCO_OCELOT is not set
 -# CONFIG_MOMENCO_OCELOT_3 is not set
 -# CONFIG_MOMENCO_OCELOT_C is not set
@@ -201,7 +196,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_TOSHIBA_JMR3927 is not set
 -# CONFIG_TOSHIBA_RBTX4927 is not set
 -# CONFIG_TOSHIBA_RBTX4938 is not set
--CONFIG_JAGUAR_DMALOW=y
 -CONFIG_RWSEM_GENERIC_SPINLOCK=y
 -CONFIG_GENERIC_FIND_NEXT_BIT=y
 -CONFIG_GENERIC_HWEIGHT=y
@@ -209,16 +203,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
 -CONFIG_DMA_NONCOHERENT=y
 -CONFIG_DMA_NEED_PCI_MAP_STATE=y
--CONFIG_LIMITED_DMA=y
 -CONFIG_CPU_BIG_ENDIAN=y
 -# CONFIG_CPU_LITTLE_ENDIAN is not set
 -CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
 -CONFIG_IRQ_CPU=y
--CONFIG_IRQ_CPU_RM7K=y
--CONFIG_IRQ_MV64340=y
--CONFIG_PCI_MARVELL=y
+-CONFIG_MIPS_GT64120=y
 -CONFIG_SWAP_IO_SPACE=y
--CONFIG_BOOT_ELF32=y
+-CONFIG_MIPS_GT96100=y
 -CONFIG_MIPS_L1_CACHE_SHIFT=5
 -
 -#
@@ -240,10 +231,11 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_CPU_NEVADA is not set
 -# CONFIG_CPU_R8000 is not set
 -# CONFIG_CPU_R10000 is not set
--# CONFIG_CPU_RM7000 is not set
--CONFIG_CPU_RM9000=y
+-CONFIG_CPU_RM7000=y
+-# CONFIG_CPU_RM9000 is not set
 -# CONFIG_CPU_SB1 is not set
--CONFIG_SYS_HAS_CPU_RM9000=y
+-CONFIG_SYS_HAS_CPU_R5000=y
+-CONFIG_SYS_HAS_CPU_RM7000=y
 -CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
 -CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
 -CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
@@ -270,10 +262,12 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -CONFIG_CPU_HAS_SYNC=y
 -CONFIG_GENERIC_HARDIRQS=y
 -CONFIG_GENERIC_IRQ_PROBE=y
--CONFIG_HIGHMEM=y
 -CONFIG_CPU_SUPPORTS_HIGHMEM=y
--CONFIG_SYS_SUPPORTS_HIGHMEM=y
 -CONFIG_ARCH_FLATMEM_ENABLE=y
+-CONFIG_SELECT_MEMORY_MODEL=y
+-CONFIG_FLATMEM_MANUAL=y
+-# CONFIG_DISCONTIGMEM_MANUAL is not set
+-# CONFIG_SPARSEMEM_MANUAL is not set
 -CONFIG_FLATMEM=y
 -CONFIG_FLAT_NODE_MEM_MAP=y
 -# CONFIG_SPARSEMEM_STATIC is not set
@@ -296,7 +290,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# Code maturity level options
 -#
--# CONFIG_EXPERIMENTAL is not set
+-CONFIG_EXPERIMENTAL=y
 -CONFIG_BROKEN_ON_SMP=y
 -CONFIG_INIT_ENV_ARG_LIMIT=32
 -
@@ -307,17 +301,18 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -CONFIG_LOCALVERSION_AUTO=y
 -CONFIG_SWAP=y
 -CONFIG_SYSVIPC=y
+-# CONFIG_POSIX_MQUEUE is not set
 -# CONFIG_BSD_PROCESS_ACCT is not set
 -CONFIG_SYSCTL=y
 -# CONFIG_AUDIT is not set
--CONFIG_IKCONFIG=y
--CONFIG_IKCONFIG_PROC=y
+-# CONFIG_IKCONFIG is not set
 -CONFIG_RELAY=y
 -CONFIG_INITRAMFS_SOURCE=""
+-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
 -CONFIG_EMBEDDED=y
 -CONFIG_KALLSYMS=y
 -# CONFIG_KALLSYMS_EXTRA_PASS is not set
--CONFIG_HOTPLUG=y
+-# CONFIG_HOTPLUG is not set
 -CONFIG_PRINTK=y
 -CONFIG_BUG=y
 -CONFIG_ELF_CORE=y
@@ -337,9 +332,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -CONFIG_MODULES=y
 -CONFIG_MODULE_UNLOAD=y
--# CONFIG_MODVERSIONS is not set
+-# CONFIG_MODULE_FORCE_UNLOAD is not set
+-CONFIG_MODVERSIONS=y
 -CONFIG_MODULE_SRCVERSION_ALL=y
--CONFIG_KMOD=y
+-# CONFIG_KMOD is not set
 -
 -#
 -# Block layer
@@ -365,7 +361,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# Bus options (PCI, PCMCIA, EISA, ISA, TC)
 -#
 -CONFIG_HW_HAS_PCI=y
--CONFIG_PCI=y
+-# CONFIG_PCI is not set
 -CONFIG_MMU=y
 -
 -#
@@ -397,7 +393,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -CONFIG_UNIX=y
 -CONFIG_XFRM=y
 -CONFIG_XFRM_USER=m
--# CONFIG_NET_KEY is not set
+-CONFIG_NET_KEY=y
 -CONFIG_INET=y
 -# CONFIG_IP_MULTICAST is not set
 -# CONFIG_IP_ADVANCED_ROUTER is not set
@@ -408,6 +404,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_IP_PNP_RARP is not set
 -# CONFIG_NET_IPIP is not set
 -# CONFIG_NET_IPGRE is not set
+-# CONFIG_ARPD is not set
 -# CONFIG_SYN_COOKIES is not set
 -# CONFIG_INET_AH is not set
 -# CONFIG_INET_ESP is not set
@@ -420,25 +417,38 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -CONFIG_INET_TCP_DIAG=y
 -# CONFIG_TCP_CONG_ADVANCED is not set
 -CONFIG_TCP_CONG_BIC=y
--CONFIG_IPV6=m
--CONFIG_IPV6_PRIVACY=y
--CONFIG_IPV6_ROUTER_PREF=y
--CONFIG_INET6_AH=m
--CONFIG_INET6_ESP=m
--CONFIG_INET6_IPCOMP=m
--CONFIG_INET6_XFRM_TUNNEL=m
--CONFIG_INET6_TUNNEL=m
--CONFIG_INET6_XFRM_MODE_TRANSPORT=m
--CONFIG_INET6_XFRM_MODE_TUNNEL=m
--CONFIG_IPV6_TUNNEL=m
+-# CONFIG_IPV6 is not set
+-# CONFIG_INET6_XFRM_TUNNEL is not set
+-# CONFIG_INET6_TUNNEL is not set
 -CONFIG_NETWORK_SECMARK=y
 -# CONFIG_NETFILTER is not set
+-
+-#
+-# DCCP Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_IP_DCCP is not set
+-
+-#
+-# SCTP Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_IP_SCTP is not set
+-
+-#
+-# TIPC Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_TIPC is not set
+-# CONFIG_ATM is not set
 -# CONFIG_BRIDGE is not set
 -# CONFIG_VLAN_8021Q is not set
 -# CONFIG_DECNET is not set
 -# CONFIG_LLC2 is not set
 -# CONFIG_IPX is not set
 -# CONFIG_ATALK is not set
+-# CONFIG_X25 is not set
+-# CONFIG_LAPB is not set
+-# CONFIG_NET_DIVERT is not set
+-# CONFIG_ECONET is not set
+-# CONFIG_WAN_ROUTER is not set
 -
 -#
 -# QoS and/or fair queueing
@@ -456,6 +466,9 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_IEEE80211_DEBUG is not set
 -CONFIG_IEEE80211_CRYPT_WEP=m
 -CONFIG_IEEE80211_CRYPT_CCMP=m
+-CONFIG_IEEE80211_SOFTMAC=m
+-# CONFIG_IEEE80211_SOFTMAC_DEBUG is not set
+-CONFIG_WIRELESS_EXT=y
 -
 -#
 -# Device Drivers
@@ -466,7 +479,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -CONFIG_STANDALONE=y
 -CONFIG_PREVENT_FIRMWARE_BUILD=y
--CONFIG_FW_LOADER=m
+-# CONFIG_FW_LOADER is not set
 -# CONFIG_SYS_HYPERVISOR is not set
 -
 -#
@@ -491,17 +504,14 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# Block devices
 -#
--# CONFIG_BLK_CPQ_DA is not set
--# CONFIG_BLK_CPQ_CISS_DA is not set
--# CONFIG_BLK_DEV_DAC960 is not set
 -# CONFIG_BLK_DEV_COW_COMMON is not set
 -# CONFIG_BLK_DEV_LOOP is not set
 -# CONFIG_BLK_DEV_NBD is not set
--# CONFIG_BLK_DEV_SX8 is not set
 -# CONFIG_BLK_DEV_RAM is not set
 -# CONFIG_BLK_DEV_INITRD is not set
 -CONFIG_CDROM_PKTCDVD=m
 -CONFIG_CDROM_PKTCDVD_BUFFERS=8
+-# CONFIG_CDROM_PKTCDVD_WCACHE is not set
 -CONFIG_ATA_OVER_ETH=m
 -
 -#
@@ -528,12 +538,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# IEEE 1394 (FireWire) support
 -#
--# CONFIG_IEEE1394 is not set
 -
 -#
 -# I2O device support
 -#
--# CONFIG_I2O is not set
 -
 -#
 -# Network device support
@@ -543,11 +551,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_BONDING is not set
 -# CONFIG_EQUALIZER is not set
 -# CONFIG_TUN is not set
--
--#
--# ARCnet devices
--#
--# CONFIG_ARCNET is not set
 -
 -#
 -# PHY device support
@@ -569,69 +572,21 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# Ethernet (10 or 100Mbit)
 -#
 -CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--# CONFIG_HAPPYMEAL is not set
--# CONFIG_SUNGEM is not set
--# CONFIG_CASSINI is not set
--# CONFIG_NET_VENDOR_3COM is not set
+-# CONFIG_MII is not set
+-CONFIG_MIPS_GT96100ETH=y
 -# CONFIG_DM9000 is not set
--
--#
--# Tulip family network device support
--#
--# CONFIG_NET_TULIP is not set
--# CONFIG_HP100 is not set
--CONFIG_NET_PCI=y
--# CONFIG_PCNET32 is not set
--# CONFIG_AMD8111_ETH is not set
--# CONFIG_ADAPTEC_STARFIRE is not set
--# CONFIG_B44 is not set
--# CONFIG_FORCEDETH is not set
--# CONFIG_DGRS is not set
--CONFIG_EEPRO100=y
--# CONFIG_E100 is not set
--# CONFIG_FEALNX is not set
--# CONFIG_NATSEMI is not set
--# CONFIG_NE2K_PCI is not set
--# CONFIG_8139TOO is not set
--# CONFIG_SIS900 is not set
--# CONFIG_EPIC100 is not set
--# CONFIG_SUNDANCE is not set
--# CONFIG_TLAN is not set
--# CONFIG_VIA_RHINE is not set
 -
 -#
 -# Ethernet (1000 Mbit)
 -#
--# CONFIG_ACENIC is not set
--# CONFIG_DL2K is not set
--# CONFIG_E1000 is not set
--# CONFIG_NS83820 is not set
--# CONFIG_HAMACHI is not set
--# CONFIG_R8169 is not set
--# CONFIG_SIS190 is not set
--# CONFIG_SKGE is not set
--# CONFIG_SK98LIN is not set
--# CONFIG_VIA_VELOCITY is not set
--# CONFIG_TIGON3 is not set
--# CONFIG_BNX2 is not set
--CONFIG_MV643XX_ETH=y
--CONFIG_MV643XX_ETH_0=y
--CONFIG_MV643XX_ETH_1=y
--CONFIG_MV643XX_ETH_2=y
 -
 -#
 -# Ethernet (10000 Mbit)
 -#
--# CONFIG_CHELSIO_T1 is not set
--# CONFIG_IXGB is not set
--# CONFIG_S2IO is not set
--# CONFIG_MYRI10GE is not set
 -
 -#
 -# Token Ring devices
 -#
--# CONFIG_TR is not set
 -
 -#
 -# Wireless LAN (non-hamradio)
@@ -642,9 +597,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# Wan interfaces
 -#
 -# CONFIG_WAN is not set
--# CONFIG_FDDI is not set
 -# CONFIG_PPP is not set
 -# CONFIG_SLIP is not set
+-# CONFIG_SHAPER is not set
+-# CONFIG_NETCONSOLE is not set
 -# CONFIG_NETPOLL is not set
 -# CONFIG_NET_POLL_CONTROLLER is not set
 -
@@ -661,18 +617,46 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# Input device support
 -#
--# CONFIG_INPUT is not set
+-CONFIG_INPUT=y
+-
+-#
+-# Userland interfaces
+-#
+-CONFIG_INPUT_MOUSEDEV=y
+-CONFIG_INPUT_MOUSEDEV_PSAUX=y
+-CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
+-CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
+-# CONFIG_INPUT_JOYDEV is not set
+-# CONFIG_INPUT_TSDEV is not set
+-# CONFIG_INPUT_EVDEV is not set
+-# CONFIG_INPUT_EVBUG is not set
+-
+-#
+-# Input Device Drivers
+-#
+-# CONFIG_INPUT_KEYBOARD is not set
+-# CONFIG_INPUT_MOUSE is not set
+-# CONFIG_INPUT_JOYSTICK is not set
+-# CONFIG_INPUT_TOUCHSCREEN is not set
+-# CONFIG_INPUT_MISC is not set
 -
 -#
 -# Hardware I/O ports
 -#
--# CONFIG_SERIO is not set
+-CONFIG_SERIO=y
+-# CONFIG_SERIO_I8042 is not set
+-CONFIG_SERIO_SERPORT=y
+-# CONFIG_SERIO_LIBPS2 is not set
+-CONFIG_SERIO_RAW=m
 -# CONFIG_GAMEPORT is not set
 -
 -#
 -# Character devices
 -#
--# CONFIG_VT is not set
+-CONFIG_VT=y
+-CONFIG_VT_CONSOLE=y
+-CONFIG_HW_CONSOLE=y
+-CONFIG_VT_HW_CONSOLE_BINDING=y
 -# CONFIG_SERIAL_NONSTANDARD is not set
 -
 -#
@@ -680,7 +664,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -CONFIG_SERIAL_8250=y
 -CONFIG_SERIAL_8250_CONSOLE=y
--CONFIG_SERIAL_8250_PCI=y
 -CONFIG_SERIAL_8250_NR_UARTS=4
 -CONFIG_SERIAL_8250_RUNTIME_UARTS=4
 -# CONFIG_SERIAL_8250_EXTENDED is not set
@@ -690,7 +673,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -CONFIG_SERIAL_CORE=y
 -CONFIG_SERIAL_CORE_CONSOLE=y
--# CONFIG_SERIAL_JSM is not set
 -CONFIG_UNIX98_PTYS=y
 -CONFIG_LEGACY_PTYS=y
 -CONFIG_LEGACY_PTY_COUNT=256
@@ -709,17 +691,17 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_GEN_RTC is not set
 -# CONFIG_DTLK is not set
 -# CONFIG_R3964 is not set
--# CONFIG_APPLICOM is not set
 -
 -#
 -# Ftape, the floppy tape device driver
 -#
--# CONFIG_DRM is not set
 -# CONFIG_RAW_DRIVER is not set
 -
 -#
 -# TPM devices
 -#
+-# CONFIG_TCG_TPM is not set
+-# CONFIG_TELCLOCK is not set
 -
 -#
 -# I2C support
@@ -765,6 +747,12 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_FB is not set
 -
 -#
+-# Console display driver support
+-#
+-# CONFIG_VGA_CONSOLE is not set
+-CONFIG_DUMMY_CONSOLE=y
+-
+-#
 -# Sound
 -#
 -# CONFIG_SOUND is not set
@@ -772,10 +760,9 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# USB support
 -#
--CONFIG_USB_ARCH_HAS_HCD=y
--CONFIG_USB_ARCH_HAS_OHCI=y
--CONFIG_USB_ARCH_HAS_EHCI=y
--# CONFIG_USB is not set
+-# CONFIG_USB_ARCH_HAS_HCD is not set
+-# CONFIG_USB_ARCH_HAS_OHCI is not set
+-# CONFIG_USB_ARCH_HAS_EHCI is not set
 -
 -#
 -# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
@@ -807,7 +794,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# InfiniBand support
 -#
--# CONFIG_INFINIBAND is not set
 -
 -#
 -# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
@@ -816,6 +802,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# Real Time Clock
 -#
+-# CONFIG_RTC_CLASS is not set
 -
 -#
 -# DMA Engine support
@@ -833,12 +820,15 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -# File systems
 -#
--# CONFIG_EXT2_FS is not set
+-CONFIG_EXT2_FS=y
+-# CONFIG_EXT2_FS_XATTR is not set
+-# CONFIG_EXT2_FS_XIP is not set
 -# CONFIG_EXT3_FS is not set
 -# CONFIG_REISERFS_FS is not set
 -# CONFIG_JFS_FS is not set
 -# CONFIG_FS_POSIX_ACL is not set
 -# CONFIG_XFS_FS is not set
+-# CONFIG_OCFS2_FS is not set
 -# CONFIG_MINIX_FS is not set
 -# CONFIG_ROMFS_FS is not set
 -CONFIG_INOTIFY=y
@@ -871,11 +861,18 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# CONFIG_TMPFS is not set
 -# CONFIG_HUGETLB_PAGE is not set
 -CONFIG_RAMFS=y
+-# CONFIG_CONFIGFS_FS is not set
 -
 -#
 -# Miscellaneous filesystems
 -#
+-# CONFIG_ADFS_FS is not set
+-# CONFIG_AFFS_FS is not set
+-# CONFIG_HFS_FS is not set
 -# CONFIG_HFSPLUS_FS is not set
+-# CONFIG_BEFS_FS is not set
+-# CONFIG_BFS_FS is not set
+-# CONFIG_EFS_FS is not set
 -# CONFIG_CRAMFS is not set
 -# CONFIG_VXFS_FS is not set
 -# CONFIG_HPFS_FS is not set
@@ -888,16 +885,22 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -#
 -CONFIG_NFS_FS=y
 -# CONFIG_NFS_V3 is not set
+-# CONFIG_NFS_V4 is not set
+-# CONFIG_NFS_DIRECTIO is not set
 -# CONFIG_NFSD is not set
 -CONFIG_ROOT_NFS=y
 -CONFIG_LOCKD=y
 -CONFIG_NFS_COMMON=y
 -CONFIG_SUNRPC=y
+-# CONFIG_RPCSEC_GSS_KRB5 is not set
+-# CONFIG_RPCSEC_GSS_SPKM3 is not set
 -# CONFIG_SMB_FS is not set
 -# CONFIG_CIFS is not set
 -# CONFIG_CIFS_DEBUG2 is not set
 -# CONFIG_NCP_FS is not set
 -# CONFIG_CODA_FS is not set
+-# CONFIG_AFS_FS is not set
+-# CONFIG_9P_FS is not set
 -
 -#
 -# Partition Types
@@ -909,6 +912,11 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -# Native Language Support
 -#
 -# CONFIG_NLS is not set
+-
+-#
+-# Profiling support
+-#
+-# CONFIG_PROFILING is not set
 -
 -#
 -# Kernel hacking
@@ -972,210 +980,33 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx
 -CONFIG_ZLIB_INFLATE=m
 -CONFIG_ZLIB_DEFLATE=m
 -CONFIG_PLIST=y
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/mm/highmem.c mips/arch/mips/mm/highmem.c
---- mips-orig/arch/mips/mm/highmem.c	2006-09-21 00:46:00.988055000 +0900
-+++ mips/arch/mips/mm/highmem.c	2006-09-21 00:57:52.732536250 +0900
-@@ -82,7 +82,6 @@ void __kunmap_atomic(void *kvaddr, enum 
- 	preempt_check_resched();
- }
- 
--#ifndef CONFIG_LIMITED_DMA
- /*
-  * This is the same as kmap_atomic() but can map memory that doesn't
-  * have a struct page associated with it.
-@@ -101,7 +100,6 @@ void *kmap_atomic_pfn(unsigned long pfn,
- 
- 	return (void*) vaddr;
- }
--#endif /* CONFIG_LIMITED_DMA */
- 
- struct page *__kmap_atomic_to_page(void *ptr)
- {
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/mm/init.c mips/arch/mips/mm/init.c
---- mips-orig/arch/mips/mm/init.c	2006-09-21 00:46:00.988055000 +0900
-+++ mips/arch/mips/mm/init.c	2006-09-21 00:57:52.736536500 +0900
-@@ -453,9 +453,6 @@ void __init mem_init(void)
- 			continue;
- 		}
- 		ClearPageReserved(page);
--#ifdef CONFIG_LIMITED_DMA
--		set_page_address(page, lowmem_page_address(page));
--#endif
- 		init_page_count(page);
- 		__free_page(page);
- 		totalhigh_pages++;
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/Kconfig mips/arch/mips/momentum/Kconfig
---- mips-orig/arch/mips/momentum/Kconfig	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/Kconfig	1970-01-01 09:00:00.000000000 +0900
-@@ -1,6 +0,0 @@
--config JAGUAR_DMALOW
--	bool "Low DMA Mode"
--	depends on MOMENCO_JAGUAR_ATX
--	help
--	  Select to Y if jump JP5 is set on your board, N otherwise.  Normally
--	  the jumper is set, so if you feel unsafe, just say Y.
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/Makefile mips/arch/mips/momentum/jaguar_atx/Makefile
---- mips-orig/arch/mips/momentum/jaguar_atx/Makefile	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/Makefile	1970-01-01 09:00:00.000000000 +0900
-@@ -1,12 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/galileo-boards/ev96100/Makefile mips/arch/mips/galileo-boards/ev96100/Makefile
+--- mips-orig/arch/mips/galileo-boards/ev96100/Makefile	2006-09-21 00:46:00.208006250 +0900
++++ mips/arch/mips/galileo-boards/ev96100/Makefile	1970-01-01 09:00:00.000000000 +0900
+@@ -1,9 +0,0 @@
 -#
--# Makefile for Momentum Computer's Jaguar-ATX board.
+-#  Copyright 2000 MontaVista Software Inc.
+-#  Author: MontaVista Software, Inc.
+-#     	ppopov@mvista.com or source@mvista.com
 -#
--# Note! Dependencies are done automagically by 'make dep', which also
--# removes any old dependencies. DON'T put your own dependencies here
--# unless it's something special (ie not a .c file).
+-# Makefile for the Galileo EV96100 board.
 -#
 -
--obj-y += irq.o prom.o reset.o setup.o
--
--obj-$(CONFIG_SERIAL_8250_CONSOLE) += ja-console.o
--obj-$(CONFIG_REMOTE_DEBUG) += dbg_io.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/dbg_io.c mips/arch/mips/momentum/jaguar_atx/dbg_io.c
---- mips-orig/arch/mips/momentum/jaguar_atx/dbg_io.c	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/dbg_io.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,125 +0,0 @@
--
--#if defined(CONFIG_REMOTE_DEBUG)
--
--#include <asm/serial.h> /* For the serial port location and base baud */
--
--/* --- CONFIG --- */
--
--typedef unsigned char uint8;
--typedef unsigned int uint32;
--
--/* --- END OF CONFIG --- */
--
--#define         UART16550_BAUD_2400             2400
--#define         UART16550_BAUD_4800             4800
--#define         UART16550_BAUD_9600             9600
--#define         UART16550_BAUD_19200            19200
--#define         UART16550_BAUD_38400            38400
--#define         UART16550_BAUD_57600            57600
--#define         UART16550_BAUD_115200           115200
--
--#define         UART16550_PARITY_NONE           0
--#define         UART16550_PARITY_ODD            0x08
--#define         UART16550_PARITY_EVEN           0x18
--#define         UART16550_PARITY_MARK           0x28
--#define         UART16550_PARITY_SPACE          0x38
--
--#define         UART16550_DATA_5BIT             0x0
--#define         UART16550_DATA_6BIT             0x1
--#define         UART16550_DATA_7BIT             0x2
--#define         UART16550_DATA_8BIT             0x3
--
--#define         UART16550_STOP_1BIT             0x0
--#define         UART16550_STOP_2BIT             0x4
--
--/* ----------------------------------------------------- */
--
--/* === CONFIG === */
--
--/* [jsun] we use the second serial port for kdb */
--#define         BASE                    OCELOT_SERIAL1_BASE
--#define         MAX_BAUD                OCELOT_BASE_BAUD
--
--/* === END OF CONFIG === */
--
--#define         REG_OFFSET              4
--
--/* register offset */
--#define         OFS_RCV_BUFFER          0
--#define         OFS_TRANS_HOLD          0
--#define         OFS_SEND_BUFFER         0
--#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
--#define         OFS_INTR_ID             (2*REG_OFFSET)
--#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
--#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
--#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
--#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
--#define         OFS_LINE_STATUS         (5*REG_OFFSET)
--#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
--#define         OFS_RS232_INPUT         (6*REG_OFFSET)
--#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
--
--#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
--#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
--
--
--/* memory-mapped read/write of the port */
--#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
--#define         UART16550_WRITE(y, z)  ((*((volatile uint8*)(BASE + y))) = z)
--
--void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
--{
--	/* disable interrupts */
--	UART16550_WRITE(OFS_INTR_ENABLE, 0);
--
--	/* set up baud rate */
--	{
--		uint32 divisor;
--
--		/* set DIAB bit */
--		UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
--
--		/* set divisor */
--		divisor = MAX_BAUD / baud;
--		UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
--		UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
--
--		/* clear DIAB bit */
--		UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
--	}
--
--	/* set data format */
--	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
--}
--
--static int remoteDebugInitialized = 0;
--
--uint8 getDebugChar(void)
--{
--	if (!remoteDebugInitialized) {
--		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
--			  UART16550_DATA_8BIT,
--			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
--	}
--
--	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0);
--	return UART16550_READ(OFS_RCV_BUFFER);
--}
--
--
--int putDebugChar(uint8 byte)
--{
--	if (!remoteDebugInitialized) {
--		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
--			  UART16550_DATA_8BIT,
--			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
--	}
--
--	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0);
--	UART16550_WRITE(OFS_SEND_BUFFER, byte);
--	return 1;
--}
--
--#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/irq.c mips/arch/mips/momentum/jaguar_atx/irq.c
---- mips-orig/arch/mips/momentum/jaguar_atx/irq.c	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,94 +0,0 @@
+-obj-y		+= init.o irq.o puts.o reset.o time.o setup.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/galileo-boards/ev96100/init.c mips/arch/mips/galileo-boards/ev96100/init.c
+--- mips-orig/arch/mips/galileo-boards/ev96100/init.c	2006-09-21 00:46:00.208006250 +0900
++++ mips/arch/mips/galileo-boards/ev96100/init.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,173 +0,0 @@
 -/*
-- * Copyright (C) 2002 Momentum Computer, Inc.
-- * Author: Matthew Dharm, mdharm@momenco.com
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
-- * Based on work by:
-- *   Copyright (C) 2000 RidgeRun, Inc.
-- *   Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/generic/generic.c
 - *
-- *   Copyright 2001 MontaVista Software Inc.
-- *   Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- *
-- *   Copyright (C) 2000, 01, 06 Ralf Baechle (ralf@linux-mips.org)
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -1196,472 +1027,34 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_at
 - *  You should have received a copy of the  GNU General Public License along
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/signal.h>
--#include <linux/types.h>
--#include <asm/irq_cpu.h>
--#include <asm/mipsregs.h>
--#include <asm/time.h>
--
--asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
--{
--	unsigned int pending = read_c0_cause() & read_c0_status();
--
--	if (pending & STATUSF_IP0)
--		do_IRQ(0, regs);
--	else if (pending & STATUSF_IP1)
--		do_IRQ(1, regs);
--	else if (pending & STATUSF_IP2)
--		do_IRQ(2, regs);
--	else if (pending & STATUSF_IP3)
--		do_IRQ(3, regs);
--	else if (pending & STATUSF_IP4)
--		do_IRQ(4, regs);
--	else if (pending & STATUSF_IP5)
--		do_IRQ(5, regs);
--	else if (pending & STATUSF_IP6)
--		do_IRQ(6, regs);
--	else if (pending & STATUSF_IP7)
--		ll_timer_interrupt(7, regs);
--	else {
--		/*
--		 * Now look at the extended interrupts
--		 */
--		pending = (read_c0_cause() & (read_c0_intcontrol() << 8)) >> 16;
--		if (pending & STATUSF_IP8)
--			ll_mv64340_irq(regs);
--	}
--}
--
--static struct irqaction cascade_mv64340 = {
--	no_action, IRQF_DISABLED, CPU_MASK_NONE, "MV64340-Cascade", NULL, NULL
--};
--
--void __init arch_init_irq(void)
--{
--	/*
--	 * Clear all of the interrupts while we change the able around a bit.
--	 * int-handler is not on bootstrap
--	 */
--	clear_c0_status(ST0_IM);
--
--	mips_cpu_irq_init(0);
--	rm7k_cpu_irq_init(8);
--
--	/* set up the cascading interrupts */
--	setup_irq(8, &cascade_mv64340);
--
--	mv64340_irq_init(16);
--
--	set_c0_status(ST0_IM);
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/ja-console.c mips/arch/mips/momentum/jaguar_atx/ja-console.c
---- mips-orig/arch/mips/momentum/jaguar_atx/ja-console.c	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/ja-console.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,106 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2001, 2002, 2004 Ralf Baechle
-- */
--#include <linux/init.h>
--#include <linux/console.h>
--#include <linux/kdev_t.h>
--#include <linux/major.h>
--#include <linux/termios.h>
--#include <linux/sched.h>
--#include <linux/tty.h>
--
--#include <linux/serial.h>
--#include <linux/serial_core.h>
--#include <asm/serial.h>
--
--/* SUPERIO uart register map */
--struct ja_uartregs {
--	union {
--		volatile u8	pad0[3];
--		volatile u8	rbr;	/* read only, DLAB == 0 */
--		volatile u8	pad1[3];
--		volatile u8	thr;	/* write only, DLAB == 0 */
--		volatile u8	pad2[3];
--		volatile u8	dll;	/* DLAB == 1 */
--	} u1;
--	union {
--		volatile u8	pad0[3];
--		volatile u8	ier;	/* DLAB == 0 */
--		volatile u8	pad1[3];
--		volatile u8	dlm;	/* DLAB == 1 */
--	} u2;
--	union {
--		volatile u8	pad0[3];
--		volatile u8	iir;	/* read only */
--		volatile u8	pad1[3];
--		volatile u8	fcr;	/* write only */
--	} u3;
--	volatile u8	pad0[3];
--	volatile u8	iu_lcr;
--	volatile u8	pad1[3];
--	volatile u8	iu_mcr;
--	volatile u8	pad2[3];
--	volatile u8	iu_lsr;
--	volatile u8	pad3[3];
--	volatile u8	iu_msr;
--	volatile u8	pad4[3];
--	volatile u8	iu_scr;
--} ja_uregs_t;
--
--#define iu_rbr u1.rbr
--#define iu_thr u1.thr
--#define iu_dll u1.dll
--#define iu_ier u2.ier
--#define iu_dlm u2.dlm
--#define iu_iir u3.iir
--#define iu_fcr u3.fcr
--
--extern unsigned long uart_base;
--
--static inline struct ja_uartregs *console_uart(void)
--{
--	return (struct ja_uartregs *) (uart_base + 0x23UL);
--}
--
--void prom_putchar(char c)
--{
--	struct ja_uartregs *uart = console_uart();
--
--	while ((uart->iu_lsr & 0x20) == 0);
--	uart->iu_thr = c;
--}
--
--char __init prom_getchar(void)
--{
--	return 0;
--}
--
--static void inline ja_console_probe(void)
--{
--	struct uart_port up;
--
--	/*
--	 * Register to interrupt zero because we share the interrupt with
--	 * the serial driver which we don't properly support yet.
--	 */
--	memset(&up, 0, sizeof(up));
--	up.membase	= (unsigned char *) uart_base + 0x23UL;
--	up.irq		= JAGUAR_ATX_SERIAL1_IRQ;
--	up.uartclk	= JAGUAR_ATX_UART_CLK;
--	up.regshift	= 2;
--	up.iotype	= UPIO_MEM;
--	up.flags	= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
--	up.line		= 0;
--
--	if (early_serial_setup(&up))
--		printk(KERN_ERR "Early serial init of port 0 failed\n");
--}
--
--__init void ja_setup_console(void)
--{
--	ja_console_probe();
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h mips/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h
---- mips-orig/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,52 +0,0 @@
--/*
-- * Jaguar-ATX Board Register Definitions
-- *
-- * (C) 2002 Momentum Computer Inc.
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--#ifndef __JAGUAR_ATX_FPGA_H__
--#define __JAGUAR_ATX_FPGA_H__
--
--#define JAGUAR_ATX_REG_BOARDREV		0x0
--#define JAGUAR_ATX_REG_FPGA_REV		0x1
--#define JAGUAR_ATX_REG_FPGA_TYPE	0x2
--#define JAGUAR_ATX_REG_RESET_STATUS	0x3
--#define JAGUAR_ATX_REG_BOARD_STATUS	0x4
--#define JAGUAR_ATX_REG_RESERVED1	0x5
--#define JAGUAR_ATX_REG_SET		0x6
--#define JAGUAR_ATX_REG_CLR		0x7
--#define JAGUAR_ATX_REG_EEPROM_MODE	0x9
--#define JAGUAR_ATX_REG_RESERVED2	0xa
--#define JAGUAR_ATX_REG_RESERVED3	0xb
--#define JAGUAR_ATX_REG_RESERVED4	0xc
--#define JAGUAR_ATX_REG_PHY_INTSTAT	0xd
--#define JAGUAR_ATX_REG_RESERVED5	0xe
--#define JAGUAR_ATX_REG_RESERVED6	0xf
--
--#define JAGUAR_ATX_CS0_ADDR		0xfc000000L
--
--extern unsigned long ja_fpga_base;
--
--#define JAGUAR_FPGA_WRITE(x,y) writeb(x, ja_fpga_base + JAGUAR_ATX_REG_##y)
--#define JAGUAR_FPGA_READ(x) readb(ja_fpga_base + JAGUAR_ATX_REG_##x)
--
--#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/prom.c mips/arch/mips/momentum/jaguar_atx/prom.c
---- mips-orig/arch/mips/momentum/jaguar_atx/prom.c	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/prom.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,266 +0,0 @@
--/*
-- * Copyright 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
-- *
-- * Louis Hamilton, Red Hat, Inc.
-- * hamilton@redhat.com  [MIPS64 modifications]
-- *
-- * Based on Ocelot Linux port, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- * Added changes for SMP - Manish Lachwani (lachwani@pmc-sierra.com)
 - */
 -#include <linux/init.h>
 -#include <linux/mm.h>
 -#include <linux/sched.h>
 -#include <linux/bootmem.h>
--#include <linux/mv643xx.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
 -
 -#include <asm/addrspace.h>
 -#include <asm/bootinfo.h>
--#include <asm/pmon.h>
+-#include <asm/gt64120.h>
 -
--#include "jaguar_atx_fpga.h"
 -
--extern void ja_setup_console(void);
+-/* Environment variable */
 -
--struct callvectors *debug_vectors;
+-typedef struct {
+-	char *name;
+-	char *val;
+-} t_env_var;
 -
--extern unsigned long cpu_clock;
+-int prom_argc;
+-char **prom_argv, **prom_envp;
 -
--const char *get_system_type(void)
+-int init_debug = 0;
+-
+-char * __init prom_getcmdline(void)
 -{
--	return "Momentum Jaguar-ATX";
--}
--
--#ifdef CONFIG_MV643XX_ETH
--extern unsigned char prom_mac_addr_base[6];
--
--static void burn_clocks(void)
--{
--	int i;
--
--	/* this loop should burn at least 1us -- this should be plenty */
--	for (i = 0; i < 0x10000; i++)
--		;
--}
--
--static u8 exchange_bit(u8 val, u8 cs)
--{
--	/* place the data */
--	JAGUAR_FPGA_WRITE((val << 2) | cs, EEPROM_MODE);
--	burn_clocks();
--
--	/* turn the clock on */
--	JAGUAR_FPGA_WRITE((val << 2) | cs | 0x2, EEPROM_MODE);
--	burn_clocks();
--
--	/* turn the clock off and read-strobe */
--	JAGUAR_FPGA_WRITE((val << 2) | cs | 0x10, EEPROM_MODE);
--
--	/* return the data */
--	return ((JAGUAR_FPGA_READ(EEPROM_MODE) >> 3) & 0x1);
--}
--
--void get_mac(char dest[6])
--{
--	u8 read_opcode[12] = {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
--	int i,j;
--
--	for (i = 0; i < 12; i++)
--		exchange_bit(read_opcode[i], 1);
--
--	for (j = 0; j < 6; j++) {
--		dest[j] = 0;
--		for (i = 0; i < 8; i++) {
--			dest[j] <<= 1;
--			dest[j] |= exchange_bit(0, 1);
--		}
--	}
--
--	/* turn off CS */
--	exchange_bit(0,0);
--}
--#endif
--
--#ifdef CONFIG_64BIT
--
--unsigned long signext(unsigned long addr)
--{
--	addr &= 0xffffffff;
--	return (unsigned long)((int)addr);
--}
--
--void *get_arg(unsigned long args, int arc)
--{
--	unsigned long ul;
--	unsigned char *puc, uc;
--
--	args += (arc * 4);
--	ul = (unsigned long)signext(args);
--	puc = (unsigned char *)ul;
--	if (puc == 0)
--		return (void *)0;
--
--#ifdef CONFIG_CPU_LITTLE_ENDIAN
--	uc = *puc++;
--	l = (unsigned long)uc;
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 8);
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 16);
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 24);
--#else
--	uc = *puc++;
--	ul = ((unsigned long)uc) << 24;
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 16);
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 8);
--	uc = *puc++;
--	ul |= ((unsigned long)uc);
--#endif
--	ul = signext(ul);
--
--	return (void *)ul;
--}
--
--char *arg64(unsigned long addrin, int arg_index)
--{
--	unsigned long args;
--	char *p;
--
--	args = signext(addrin);
--	p = (char *)get_arg(args, arg_index);
--
--	return p;
--}
--#endif  /* CONFIG_64BIT */
--
--/* PMON passes arguments in C main() style */
--void __init prom_init(void)
--{
--	int argc = fw_arg0;
--	char **arg = (char **) fw_arg1;
--	char **env = (char **) fw_arg2;
--	struct callvectors *cv = (struct callvectors *) fw_arg3;
--	int i;
--
--#ifdef CONFIG_SERIAL_8250_CONSOLE
--//	ja_setup_console();	/* The very first thing.  */
--#endif
--
--#ifdef CONFIG_64BIT
--	char *ptr;
--
--	printk("Mips64 Jaguar-ATX\n");
--	/* save the PROM vectors for debugging use */
--	debug_vectors = (struct callvectors *)signext((unsigned long)cv);
--
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--
--	for (i = 1; i < argc; i++) {
--		ptr = (char *)arg64((unsigned long)arg, i);
--		if ((strlen(arcs_cmdline) + strlen(ptr) + 1) >=
--		    sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, ptr);
--		strcat(arcs_cmdline, " ");
--	}
--
--	i = 0;
--	while (1) {
--		ptr = (char *)arg64((unsigned long)env, i);
--		if (! ptr)
--			break;
--
--		if (strncmp("gtbase", ptr, strlen("gtbase")) == 0) {
--			marvell_base = simple_strtol(ptr + strlen("gtbase="),
--							NULL, 16);
--
--			if ((marvell_base & 0xffffffff00000000) == 0)
--				marvell_base |= 0xffffffff00000000;
--
--			printk("marvell_base set to 0x%016lx\n", marvell_base);
--		}
--		if (strncmp("cpuclock", ptr, strlen("cpuclock")) == 0) {
--			cpu_clock = simple_strtol(ptr + strlen("cpuclock="),
--							NULL, 10);
--			printk("cpu_clock set to %d\n", cpu_clock);
--		}
--		i++;
--	}
--	printk("arcs_cmdline: %s\n", arcs_cmdline);
--
--#else   /* CONFIG_64BIT */
--	/* save the PROM vectors for debugging use */
--	debug_vectors = cv;
--
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--	for (i = 1; i < argc; i++) {
--		if (strlen(arcs_cmdline) + strlen(arg[i] + 1)
--		    >= sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, arg[i]);
--		strcat(arcs_cmdline, " ");
--	}
--
--	while (*env) {
--		if (strncmp("gtbase", *env, strlen("gtbase")) == 0) {
--			marvell_base = simple_strtol(*env + strlen("gtbase="),
--							NULL, 16);
--		}
--		if (strncmp("cpuclock", *env, strlen("cpuclock")) == 0) {
--			cpu_clock = simple_strtol(*env + strlen("cpuclock="),
--							NULL, 10);
--		}
--		env++;
--	}
--#endif /* CONFIG_64BIT */
--	mips_machgroup = MACH_GROUP_MOMENCO;
--	mips_machtype = MACH_MOMENCO_JAGUAR_ATX;
--
--#ifdef CONFIG_MV643XX_ETH
--	/* get the base MAC address for on-board ethernet ports */
--	get_mac(prom_mac_addr_base);
--#endif
+-	return &(arcs_cmdline[0]);
 -}
 -
 -unsigned long __init prom_free_prom_memory(void)
@@ -1669,49 +1062,374 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_at
 -	return 0;
 -}
 -
--void __init prom_fixup_mem_map(unsigned long start, unsigned long end)
+-void  __init prom_init_cmdline(void)
 -{
+-	char *cp;
+-	int actr;
+-
+-	actr = 1; /* Always ignore argv[0] */
+-
+-	cp = &(arcs_cmdline[0]);
+-	while(actr < prom_argc) {
+-	        strcpy(cp, prom_argv[actr]);
+-		cp += strlen(prom_argv[actr]);
+-		*cp++ = ' ';
+-		actr++;
+-	}
+-	if (cp != &(arcs_cmdline[0])) /* get rid of trailing space */
+-		--cp;
+-	*cp = '\0';
 -}
 -
--int prom_boot_secondary(int cpu, unsigned long sp, unsigned long gp)
+-char *prom_getenv(char *envname)
 -{
--	/* Clear the semaphore */
--	*(volatile uint32_t *)(0xbb000a68) = 0x80000000;
+-	/*
+-	 * Return a pointer to the given environment variable.
+-	 */
 -
--	return 1;
+-	t_env_var *env = (t_env_var *) prom_envp;
+-	int i;
+-
+-	i = strlen(envname);
+-
+-	while (env->name) {
+-		if (strncmp(envname, env->name, i) == 0) {
+-			return (env->val);
+-		}
+-		env++;
+-	}
+-	return (NULL);
 -}
 -
--void prom_init_secondary(void)
+-static inline unsigned char str2hexnum(unsigned char c)
 -{
--        clear_c0_config(CONF_CM_CMASK);
--        set_c0_config(0x2);
--
--	clear_c0_status(ST0_IM);
--	set_c0_status(0x1ffff);
+-	if (c >= '0' && c <= '9')
+-		return c - '0';
+-	if (c >= 'a' && c <= 'f')
+-		return c - 'a' + 10;
+-	return 0;		/* foo */
 -}
 -
--void prom_smp_finish(void)
+-static inline void str2eaddr(unsigned char *ea, unsigned char *str)
 -{
+-	int i;
+-
+-	for (i = 0; i < 6; i++) {
+-		unsigned char num;
+-
+-		if ((*str == '.') || (*str == ':'))
+-			str++;
+-		num = str2hexnum(*str++) << 4;
+-		num |= (str2hexnum(*str++));
+-		ea[i] = num;
+-	}
 -}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/reset.c mips/arch/mips/momentum/jaguar_atx/reset.c
---- mips-orig/arch/mips/momentum/jaguar_atx/reset.c	2006-09-21 00:46:00.996055500 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/reset.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,56 +0,0 @@
+-
+-int get_ethernet_addr(char *ethernet_addr)
+-{
+-	char *ethaddr_str;
+-
+-	ethaddr_str = prom_getenv("ethaddr");
+-	if (!ethaddr_str) {
+-		printk("ethaddr not set in boot prom\n");
+-		return -1;
+-	}
+-	str2eaddr(ethernet_addr, ethaddr_str);
+-
+-	if (init_debug > 1) {
+-		int i;
+-		printk("get_ethernet_addr: ");
+-		for (i = 0; i < 5; i++)
+-			printk("%02x:",
+-			       (unsigned char) *(ethernet_addr + i));
+-		printk("%02x\n", *(ethernet_addr + i));
+-	}
+-
+-	return 0;
+-}
+-
+-const char *get_system_type(void)
+-{
+-	return "Galileo EV96100";
+-}
+-
+-void __init prom_init(void)
+-{
+-	volatile unsigned char *uart;
+-	char ppbuf[8];
+-
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **) fw_arg1;
+-	prom_envp = (char **) fw_arg2;
+-
+-	mips_machgroup = MACH_GROUP_GALILEO;
+-	mips_machtype = MACH_EV96100;
+-
+-	prom_init_cmdline();
+-
+-	/* 32 MB upgradable */
+-	add_memory_region(0, 32 << 20, BOOT_MEM_RAM);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/galileo-boards/ev96100/irq.c mips/arch/mips/galileo-boards/ev96100/irq.c
+--- mips-orig/arch/mips/galileo-boards/ev96100/irq.c	2006-09-21 00:46:00.208006250 +0900
++++ mips/arch/mips/galileo-boards/ev96100/irq.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,77 +0,0 @@
 -/*
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
-- * Copyright (C) 1997, 2001 Ralf Baechle
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/atlas/atlas_int.c.
 - *
-- * Copyright (C) 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 - *
-- * Louis Hamilton, Red Hat, Inc.
-- * hamilton@redhat.com  [MIPS64 modifications]
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/errno.h>
+-#include <linux/init.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/irq.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <asm/irq_cpu.h>
+-
+-static inline unsigned int ffz8(unsigned int word)
+-{
+-	unsigned long k;
+-
+-	k = 7;
+-	if (word & 0x0fUL) { k -= 4;  word <<= 4;  }
+-	if (word & 0x30UL) { k -= 2;  word <<= 2;  }
+-	if (word & 0x40UL) { k -= 1; }
+-
+-	return k;
+-}
+-
+-extern void mips_timer_interrupt(struct pt_regs *regs);
+-
+-asmlinkage void ev96100_cpu_irq(unsigned int pending, struct pt_regs *regs)
+-{
+-	do_IRQ(ffz8(pending >> 8), regs);
+-}
+-
+-asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
+-{
+-	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+-
+-	if (pending & CAUSEF_IP7)
+-		mips_timer_interrupt(regs);
+-	else if (pending)
+-		ev96100_cpu_irq(pending, regs);
+-	else
+-		spurious_interrupt(regs);
+-}
+-
+-void __init arch_init_irq(void)
+-{
+-	mips_cpu_irq_init(0);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/galileo-boards/ev96100/puts.c mips/arch/mips/galileo-boards/ev96100/puts.c
+--- mips-orig/arch/mips/galileo-boards/ev96100/puts.c	2006-09-21 00:46:00.208006250 +0900
++++ mips/arch/mips/galileo-boards/ev96100/puts.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,138 +0,0 @@
+-
+-/*
+- * Debug routines which directly access the uart.
+- */
+-
+-#include <linux/types.h>
+-#include <asm/gt64120.h>
+-
+-
+-//#define SERIAL_BASE    EV96100_UART0_REGS_BASE
+-#define SERIAL_BASE    0xBD000020
+-#define NS16550_BASE   SERIAL_BASE
+-
+-#define SERA_CMD       0x0D
+-#define SERA_DATA      0x08
+-//#define SERB_CMD       0x05
+-#define SERB_CMD       20
+-#define SERB_DATA      0x00
+-#define TX_BUSY        0x20
+-
+-#define TIMEOUT    0xffff
+-#undef SLOW_DOWN
+-
+-static const char digits[16] = "0123456789abcdef";
+-static volatile unsigned char *const com1 = (unsigned char *) SERIAL_BASE;
+-
+-
+-#ifdef SLOW_DOWN
+-static inline void slow_down()
+-{
+-	int k;
+-	for (k = 0; k < 10000; k++);
+-}
+-#else
+-#define slow_down()
+-#endif
+-
+-void putch(const unsigned char c)
+-{
+-	unsigned char ch;
+-	int i = 0;
+-
+-	do {
+-		ch = com1[SERB_CMD];
+-		slow_down();
+-		i++;
+-		if (i > TIMEOUT) {
+-			break;
+-		}
+-	} while (0 == (ch & TX_BUSY));
+-	com1[SERB_DATA] = c;
+-}
+-
+-void putchar(const unsigned char c)
+-{
+-	unsigned char ch;
+-	int i = 0;
+-
+-	do {
+-		ch = com1[SERB_CMD];
+-		slow_down();
+-		i++;
+-		if (i > TIMEOUT) {
+-			break;
+-		}
+-	} while (0 == (ch & TX_BUSY));
+-	com1[SERB_DATA] = c;
+-}
+-
+-void puts(unsigned char *cp)
+-{
+-	unsigned char ch;
+-	int i = 0;
+-
+-	while (*cp) {
+-		do {
+-			ch = com1[SERB_CMD];
+-			slow_down();
+-			i++;
+-			if (i > TIMEOUT) {
+-				break;
+-			}
+-		} while (0 == (ch & TX_BUSY));
+-		com1[SERB_DATA] = *cp++;
+-	}
+-	putch('\r');
+-	putch('\n');
+-}
+-
+-void fputs(unsigned char *cp)
+-{
+-	unsigned char ch;
+-	int i = 0;
+-
+-	while (*cp) {
+-
+-		do {
+-			ch = com1[SERB_CMD];
+-			slow_down();
+-			i++;
+-			if (i > TIMEOUT) {
+-				break;
+-			}
+-		} while (0 == (ch & TX_BUSY));
+-		com1[SERB_DATA] = *cp++;
+-	}
+-}
+-
+-
+-void put64(uint64_t ul)
+-{
+-	int cnt;
+-	unsigned ch;
+-
+-	cnt = 16;		/* 16 nibbles in a 64 bit long */
+-	putch('0');
+-	putch('x');
+-	do {
+-		cnt--;
+-		ch = (unsigned char) (ul >> cnt * 4) & 0x0F;
+-		putch(digits[ch]);
+-	} while (cnt > 0);
+-}
+-
+-void put32(unsigned u)
+-{
+-	int cnt;
+-	unsigned ch;
+-
+-	cnt = 8;		/* 8 nibbles in a 32 bit long */
+-	putch('0');
+-	putch('x');
+-	do {
+-		cnt--;
+-		ch = (unsigned char) (u >> cnt * 4) & 0x0F;
+-		putch(digits[ch]);
+-	} while (cnt > 0);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/galileo-boards/ev96100/reset.c mips/arch/mips/galileo-boards/ev96100/reset.c
+--- mips-orig/arch/mips/galileo-boards/ev96100/reset.c	2006-09-21 00:46:00.208006250 +0900
++++ mips/arch/mips/galileo-boards/ev96100/reset.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,70 +0,0 @@
+-/*
+- * BRIEF MODULE DESCRIPTION
+- *	Galileo EV96100 reset routines.
+- *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/generic/reset.c
+- *
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
 -#include <linux/sched.h>
 -#include <linux/mm.h>
@@ -1720,63 +1438,52 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_at
 -#include <asm/processor.h>
 -#include <asm/reboot.h>
 -#include <asm/system.h>
--#include <linux/delay.h>
+-#include <asm/gt64120.h>
 -
--void momenco_jaguar_restart(char *command)
+-static void mips_machine_restart(char *command);
+-static void mips_machine_halt(void);
+-
+-static void mips_machine_restart(char *command)
 -{
--	/* base address of timekeeper portion of part */
--#ifdef CONFIG_64BIT
--	void *nvram = (void*) 0xfffffffffc807000;
--#else
--	void *nvram = (void*) 0xfc807000;
--#endif
--	/* Ask the NVRAM/RTC/watchdog chip to assert reset in 1/16 second */
--	writeb(0x84, nvram + 0xff7);
--
--	/* wait for the watchdog to go off */
--	mdelay(100+(1000/16));
--
--	/* if the watchdog fails for some reason, let people know */
--	printk(KERN_NOTICE "Watchdog reset failed\n");
+-	set_c0_status(ST0_BEV | ST0_ERL);
+-	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-	flush_cache_all();
+-	write_c0_wired(0);
+-	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
+-	while (1);
 -}
 -
--void momenco_jaguar_halt(void)
+-static void mips_machine_halt(void)
 -{
--	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
+-	printk(KERN_NOTICE "You can safely turn off the power\n");
 -	while (1)
 -		__asm__(".set\tmips3\n\t"
 -	                "wait\n\t"
 -			".set\tmips0");
 -}
 -
--void momenco_jaguar_power_off(void)
+-void mips_reboot_setup(void)
 -{
--	momenco_jaguar_halt();
+-	_machine_restart = mips_machine_restart;
+-	_machine_halt = mips_machine_halt;
 -}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/setup.c mips/arch/mips/momentum/jaguar_atx/setup.c
---- mips-orig/arch/mips/momentum/jaguar_atx/setup.c	2006-09-21 00:46:01.000055750 +0900
-+++ mips/arch/mips/momentum/jaguar_atx/setup.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,476 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/galileo-boards/ev96100/setup.c mips/arch/mips/galileo-boards/ev96100/setup.c
+--- mips-orig/arch/mips/galileo-boards/ev96100/setup.c	2006-09-21 00:46:00.208006250 +0900
++++ mips/arch/mips/galileo-boards/ev96100/setup.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,159 +0,0 @@
 -/*
 - * BRIEF MODULE DESCRIPTION
-- * Momentum Computer Jaguar-ATX board dependent boot routines
+- *	Galileo EV96100 setup.
 - *
-- * Copyright (C) 1996, 1997, 2001, 04, 06  Ralf Baechle (ralf@linux-mips.org)
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Copyright (C) 2001 Red Hat, Inc.
-- * Copyright (C) 2002 Momentum Computer
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
-- * Author: Matthew Dharm, Momentum Computer
-- *   mdharm@momenco.com
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/atlas/atlas_setup.c.
 - *
-- * Louis Hamilton, Red Hat, Inc.
-- *   hamilton@redhat.com  [MIPS64 modifications]
-- *
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
-- *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -1798,492 +1505,287 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_at
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
--#include <linux/bcd.h>
 -#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/mm.h>
--#include <linux/bootmem.h>
--#include <linux/module.h>
--#include <linux/pci.h>
--#include <linux/swap.h>
--#include <linux/ioport.h>
--#include <linux/pm.h>
 -#include <linux/sched.h>
--#include <linux/interrupt.h>
--#include <linux/timex.h>
--#include <linux/vmalloc.h>
--#include <linux/mv643xx.h>
+-#include <linux/ioport.h>
+-#include <linux/string.h>
+-#include <linux/ctype.h>
+-#include <linux/pci.h>
 -
--#include <asm/time.h>
+-#include <asm/cpu.h>
 -#include <asm/bootinfo.h>
--#include <asm/page.h>
--#include <asm/io.h>
+-#include <asm/mipsregs.h>
 -#include <asm/irq.h>
--#include <asm/processor.h>
--#include <asm/ptrace.h>
--#include <asm/reboot.h>
--#include <asm/tlbflush.h>
+-#include <asm/delay.h>
+-#include <asm/gt64120.h>
+-#include <asm/galileo-boards/ev96100int.h>
 -
--#include "jaguar_atx_fpga.h"
 -
--extern unsigned long mv64340_sram_base;
--unsigned long cpu_clock;
+-extern char *__init prom_getcmdline(void);
 -
--/* These functions are used for rebooting or halting the machine*/
--extern void momenco_jaguar_restart(char *command);
--extern void momenco_jaguar_halt(void);
--extern void momenco_jaguar_power_off(void);
+-extern void mips_reboot_setup(void);
 -
--void momenco_time_init(void);
--
--static char reset_reason;
--
--static inline unsigned long ENTRYLO(unsigned long paddr)
--{
--	return ((paddr & PAGE_MASK) |
--	       (_PAGE_PRESENT | __READABLE | __WRITEABLE | _PAGE_GLOBAL |
--		_CACHE_UNCACHED)) >> 6;
--}
--
--void __init bus_error_init(void) { /* nothing */ }
--
--/*
-- * Load a few TLB entries for the MV64340 and perhiperals. The MV64340 is going
-- * to be hit on every IRQ anyway - there's absolutely no point in letting it be
-- * a random TLB entry, as it'll just cause needless churning of the TLB. And we
-- * use the other half for the serial port, which is just a PITA otherwise :)
-- *
-- *	Device			Physical	Virtual
-- *	MV64340 Internal Regs	0xf4000000	0xf4000000
-- *	Ocelot-C[S] PLD (CS0)	0xfc000000	0xfc000000
-- *	NVRAM (CS1)		0xfc800000	0xfc800000
-- *	UARTs (CS2)		0xfd000000	0xfd000000
-- *	Internal SRAM		0xfe000000	0xfe000000
-- *	M-Systems DOC (CS3)	0xff000000	0xff000000
-- */
--
--static __init void wire_stupidity_into_tlb(void)
--{
--#ifdef CONFIG_32BIT
--	write_c0_wired(0);
--	local_flush_tlb_all();
--
--	/* marvell and extra space */
--	add_wired_entry(ENTRYLO(0xf4000000), ENTRYLO(0xf4010000),
--	                0xf4000000UL, PM_64K);
--	/* fpga, rtc, and uart */
--	add_wired_entry(ENTRYLO(0xfc000000), ENTRYLO(0xfd000000),
--	                0xfc000000UL, PM_16M);
--//	/* m-sys and internal SRAM */
--//	add_wired_entry(ENTRYLO(0xfe000000), ENTRYLO(0xff000000),
--//	                0xfe000000UL, PM_16M);
--
--	marvell_base = 0xf4000000;
--	//mv64340_sram_base = 0xfe000000;	/* Currently unused */
--#endif
--}
--
--unsigned long marvell_base	= 0xf4000000L;
--unsigned long ja_fpga_base	= JAGUAR_ATX_CS0_ADDR;
--unsigned long uart_base		= 0xfd000000L;
--static unsigned char *rtc_base	= (unsigned char*) 0xfc800000L;
--
--EXPORT_SYMBOL(marvell_base);
--
--static __init int per_cpu_mappings(void)
--{
--	marvell_base	= (unsigned long) ioremap(0xf4000000, 0x10000);
--	ja_fpga_base	= (unsigned long) ioremap(JAGUAR_ATX_CS0_ADDR,  0x1000);
--	uart_base	= (unsigned long) ioremap(0xfd000000UL, 0x1000);
--	rtc_base	= ioremap(0xfc000000UL, 0x8000);
--	// ioremap(0xfe000000,  32 << 20);
--	write_c0_wired(0);
--	local_flush_tlb_all();
--	ja_setup_console();
--
--	return 0;
--}
--arch_initcall(per_cpu_mappings);
--
--unsigned long m48t37y_get_time(void)
--{
--	unsigned int year, month, day, hour, min, sec;
--	unsigned long flags;
--
--	spin_lock_irqsave(&rtc_lock, flags);
--	/* stop the update */
--	rtc_base[0x7ff8] = 0x40;
--
--	year = BCD2BIN(rtc_base[0x7fff]);
--	year += BCD2BIN(rtc_base[0x7ff1]) * 100;
--
--	month = BCD2BIN(rtc_base[0x7ffe]);
--
--	day = BCD2BIN(rtc_base[0x7ffd]);
--
--	hour = BCD2BIN(rtc_base[0x7ffb]);
--	min = BCD2BIN(rtc_base[0x7ffa]);
--	sec = BCD2BIN(rtc_base[0x7ff9]);
--
--	/* start the update */
--	rtc_base[0x7ff8] = 0x00;
--	spin_unlock_irqrestore(&rtc_lock, flags);
--
--	return mktime(year, month, day, hour, min, sec);
--}
--
--int m48t37y_set_time(unsigned long sec)
--{
--	struct rtc_time tm;
--	unsigned long flags;
--
--	/* convert to a more useful format -- note months count from 0 */
--	to_tm(sec, &tm);
--	tm.tm_mon += 1;
--
--	spin_lock_irqsave(&rtc_lock, flags);
--	/* enable writing */
--	rtc_base[0x7ff8] = 0x80;
--
--	/* year */
--	rtc_base[0x7fff] = BIN2BCD(tm.tm_year % 100);
--	rtc_base[0x7ff1] = BIN2BCD(tm.tm_year / 100);
--
--	/* month */
--	rtc_base[0x7ffe] = BIN2BCD(tm.tm_mon);
--
--	/* day */
--	rtc_base[0x7ffd] = BIN2BCD(tm.tm_mday);
--
--	/* hour/min/sec */
--	rtc_base[0x7ffb] = BIN2BCD(tm.tm_hour);
--	rtc_base[0x7ffa] = BIN2BCD(tm.tm_min);
--	rtc_base[0x7ff9] = BIN2BCD(tm.tm_sec);
--
--	/* day of week -- not really used, but let's keep it up-to-date */
--	rtc_base[0x7ffc] = BIN2BCD(tm.tm_wday + 1);
--
--	/* disable writing */
--	rtc_base[0x7ff8] = 0x00;
--	spin_unlock_irqrestore(&rtc_lock, flags);
--
--	return 0;
--}
--
--void __init plat_timer_setup(struct irqaction *irq)
--{
--	setup_irq(8, irq);
--}
--
--/*
-- * Ugly but the least of all evils.  TLB initialization did flush the TLB so
-- * We need to setup mappings again before we can touch the RTC.
-- */
--void momenco_time_init(void)
--{
--	wire_stupidity_into_tlb();
--
--	mips_hpt_frequency = cpu_clock / 2;
--
--	rtc_mips_get_time = m48t37y_get_time;
--	rtc_mips_set_time = m48t37y_set_time;
--}
--
--static struct resource mv_pci_io_mem0_resource = {
--	.name	= "MV64340 PCI0 IO MEM",
--	.flags	= IORESOURCE_IO
--};
--
--static struct resource mv_pci_mem0_resource = {
--	.name	= "MV64340 PCI0 MEM",
--	.flags	= IORESOURCE_MEM
--};
--
--static struct mv_pci_controller mv_bus0_controller = {
--	.pcic = {
--		.pci_ops	= &mv_pci_ops,
--		.mem_resource	= &mv_pci_mem0_resource,
--		.io_resource	= &mv_pci_io_mem0_resource,
--	},
--	.config_addr	= MV64340_PCI_0_CONFIG_ADDR,
--	.config_vreg	= MV64340_PCI_0_CONFIG_DATA_VIRTUAL_REG,
--};
--
--static uint32_t mv_io_base, mv_io_size;
--
--static void ja_pci0_init(void)
--{
--	uint32_t mem0_base, mem0_size;
--	uint32_t io_base, io_size;
--
--	io_base = MV_READ(MV64340_PCI_0_IO_BASE_ADDR) << 16;
--	io_size = (MV_READ(MV64340_PCI_0_IO_SIZE) + 1) << 16;
--	mem0_base = MV_READ(MV64340_PCI_0_MEMORY0_BASE_ADDR) << 16;
--	mem0_size = (MV_READ(MV64340_PCI_0_MEMORY0_SIZE) + 1) << 16;
--
--	mv_pci_io_mem0_resource.start		= 0;
--	mv_pci_io_mem0_resource.end		= io_size - 1;
--	mv_pci_mem0_resource.start		= mem0_base;
--	mv_pci_mem0_resource.end		= mem0_base + mem0_size - 1;
--	mv_bus0_controller.pcic.mem_offset	= mem0_base;
--	mv_bus0_controller.pcic.io_offset	= 0;
--
--	ioport_resource.end		= io_size - 1;
--
--	register_pci_controller(&mv_bus0_controller.pcic);
--
--	mv_io_base = io_base;
--	mv_io_size = io_size;
--}
--
--static struct resource mv_pci_io_mem1_resource = {
--	.name	= "MV64340 PCI1 IO MEM",
--	.flags	= IORESOURCE_IO
--};
--
--static struct resource mv_pci_mem1_resource = {
--	.name	= "MV64340 PCI1 MEM",
--	.flags	= IORESOURCE_MEM
--};
--
--static struct mv_pci_controller mv_bus1_controller = {
--	.pcic = {
--		.pci_ops	= &mv_pci_ops,
--		.mem_resource	= &mv_pci_mem1_resource,
--		.io_resource	= &mv_pci_io_mem1_resource,
--	},
--	.config_addr	= MV64340_PCI_1_CONFIG_ADDR,
--	.config_vreg	= MV64340_PCI_1_CONFIG_DATA_VIRTUAL_REG,
--};
--
--static __init void ja_pci1_init(void)
--{
--	uint32_t mem0_base, mem0_size;
--	uint32_t io_base, io_size;
--
--	io_base = MV_READ(MV64340_PCI_1_IO_BASE_ADDR) << 16;
--	io_size = (MV_READ(MV64340_PCI_1_IO_SIZE) + 1) << 16;
--	mem0_base = MV_READ(MV64340_PCI_1_MEMORY0_BASE_ADDR) << 16;
--	mem0_size = (MV_READ(MV64340_PCI_1_MEMORY0_SIZE) + 1) << 16;
--
--	/*
--	 * Here we assume the I/O window of second bus to be contiguous with
--	 * the first.  A gap is no problem but would waste address space for
--	 * remapping the port space.
--	 */
--	mv_pci_io_mem1_resource.start		= mv_io_size;
--	mv_pci_io_mem1_resource.end		= mv_io_size + io_size - 1;
--	mv_pci_mem1_resource.start		= mem0_base;
--	mv_pci_mem1_resource.end		= mem0_base + mem0_size - 1;
--	mv_bus1_controller.pcic.mem_offset	= mem0_base;
--	mv_bus1_controller.pcic.io_offset	= 0;
--
--	ioport_resource.end		= io_base + io_size -mv_io_base - 1;
--
--	register_pci_controller(&mv_bus1_controller.pcic);
--
--	mv_io_size = io_base + io_size - mv_io_base;
--}
--
--static __init int __init ja_pci_init(void)
--{
--	unsigned long io_v_base;
--	uint32_t enable;
--
--	enable = ~MV_READ(MV64340_BASE_ADDR_ENABLE);
--
--	/*
--	 * We require at least one enabled I/O or PCI memory window or we
--	 * will ignore this PCI bus.  We ignore PCI windows 1, 2 and 3.
--	 */
--	if (enable & (0x01 <<  9) || enable & (0x01 << 10))
--		ja_pci0_init();
--
--	if (enable & (0x01 << 14) || enable & (0x01 << 15))
--		ja_pci1_init();
--
--	if (mv_io_size) {
--		io_v_base = (unsigned long) ioremap(mv_io_base, mv_io_size);
--		if (!io_v_base)
--			panic("Could not ioremap I/O port range");
--
--		set_io_port_base(io_v_base);
--	}
--
--	return 0;
--}
--
--arch_initcall(ja_pci_init);
+-unsigned char mac_0_1[12];
 -
 -void __init plat_mem_setup(void)
 -{
--	unsigned int tmpword;
+-	unsigned int config = read_c0_config();
+-	unsigned int status = read_c0_status();
+-	unsigned int info = read_c0_info();
+-	u32 tmp;
 -
--	board_time_init = momenco_time_init;
+-	char *argptr;
 -
--	_machine_restart = momenco_jaguar_restart;
--	_machine_halt = momenco_jaguar_halt;
--	pm_power_off = momenco_jaguar_power_off;
+-	clear_c0_status(ST0_FR);
 -
--	/*
--	 * initrd_start = (unsigned long)jaguar_initrd_start;
--	 * initrd_end = (unsigned long)jaguar_initrd_start + (ulong)jaguar_initrd_size;
--	 * initrd_below_start_ok = 1;
--	 */
--
--	wire_stupidity_into_tlb();
--
--	/*
--	 * shut down ethernet ports, just to be sure our memory doesn't get
--	 * corrupted by random ethernet traffic.
--	 */
--	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(2), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(2), 0xff << 8);
--	while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0)) & 0xff);
--	while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1)) & 0xff);
--	while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(2)) & 0xff);
--	while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0)) & 0xff);
--	while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1)) & 0xff);
--	while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(2)) & 0xff);
--	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0),
--	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0)) & ~1);
--	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1),
--	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1)) & ~1);
--	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(2),
--	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(2)) & ~1);
--
--	/* Turn off the Bit-Error LED */
--	JAGUAR_FPGA_WRITE(0x80, CLR);
--
--	tmpword = JAGUAR_FPGA_READ(BOARDREV);
--	if (tmpword < 26)
--		printk("Momentum Jaguar-ATX: Board Assembly Rev. %c\n",
--			'A'+tmpword);
+-	if (config & 0x8)
+-		printk("Secondary cache is enabled\n");
 -	else
--		printk("Momentum Jaguar-ATX: Board Assembly Revision #0x%x\n",
--			tmpword);
+-		printk("Secondary cache is disabled\n");
 -
--	tmpword = JAGUAR_FPGA_READ(FPGA_REV);
--	printk("FPGA Rev: %d.%d\n", tmpword>>4, tmpword&15);
--	tmpword = JAGUAR_FPGA_READ(RESET_STATUS);
--	printk("Reset reason: 0x%x\n", tmpword);
--	switch (tmpword) {
--	case 0x1:
--		printk("  - Power-up reset\n");
--		break;
--	case 0x2:
--		printk("  - Push-button reset\n");
--		break;
--	case 0x8:
--		printk("  - Watchdog reset\n");
--		break;
--	case 0x10:
--		printk("  - JTAG reset\n");
--		break;
--	default:
--		printk("  - Unknown reset cause\n");
--	}
--	reset_reason = tmpword;
--	JAGUAR_FPGA_WRITE(0xff, RESET_STATUS);
+-	if (status & (1 << 27))
+-		printk("User-mode cache ops enabled\n");
+-	else
+-		printk("User-mode cache ops disabled\n");
 -
--	tmpword = JAGUAR_FPGA_READ(BOARD_STATUS);
--	printk("Board Status register: 0x%02x\n", tmpword);
--	printk("  - User jumper: %s\n", (tmpword & 0x80)?"installed":"absent");
--	printk("  - Boot flash write jumper: %s\n", (tmpword&0x40)?"installed":"absent");
+-	printk("CP0 info reg: %x\n", (unsigned) info);
+-	if (info & (1 << 28))
+-		printk("burst mode Scache RAMS\n");
+-	else
+-		printk("pipelined Scache RAMS\n");
 -
--	/* 256MiB of RM9000x2 DDR */
--//	add_memory_region(0x0, 0x100<<20, BOOT_MEM_RAM);
+-	if (info & 0x1)
+-		printk("Atomic Enable is set\n");
 -
--	/* 128MiB of MV-64340 DDR */
--//	add_memory_region(0x100<<20, 0x80<<20, BOOT_MEM_RAM);
--
--	/* XXX Memory configuration should be picked up from PMON2k */
--#ifdef CONFIG_JAGUAR_DMALOW
--	printk("Jaguar ATX DMA-low mode set\n");
--	add_memory_region(0x00000000, 0x08000000, BOOT_MEM_RAM);
--	add_memory_region(0x08000000, 0x10000000, BOOT_MEM_RAM);
--#else
--	/* 128MiB of MV-64340 DDR RAM */
--	printk("Jaguar ATX DMA-low mode is not set\n");
--	add_memory_region(0x100<<20, 0x80<<20, BOOT_MEM_RAM);
--#endif
--
--#ifdef GEMDEBUG_TRACEBUFFER
--	{
--	  unsigned int tbControl;
--	  tbControl =
--	    0 << 26 |  /* post trigger delay 0 */
--		    0x2 << 16 |		/* sequential trace mode */
--	    //	    0x0 << 16 |		/* non-sequential trace mode */
--	    //	    0xf << 4 |		/* watchpoints disabled */
--	    2 << 2 |		/* armed */
--	    2 ;			/* interrupt disabled  */
--	  printk ("setting     tbControl = %08lx\n", tbControl);
--	  write_32bit_cp0_set1_register($22, tbControl);
--	  __asm__ __volatile__(".set noreorder\n\t" \
--			       "nop; nop; nop; nop; nop; nop;\n\t" \
--			       "nop; nop; nop; nop; nop; nop;\n\t" \
--			       ".set reorder\n\t");
--
+-	argptr = prom_getcmdline();
+-#ifdef CONFIG_SERIAL_CONSOLE
+-	if (strstr(argptr, "console=") == NULL) {
+-		argptr = prom_getcmdline();
+-		strcat(argptr, " console=ttyS0,115200");
 -	}
 -#endif
+-
+-	mips_reboot_setup();
+-
+-	set_io_port_base(KSEG1);
+-	ioport_resource.start = GT_PCI_IO_BASE;
+-	ioport_resource.end = GT_PCI_IO_BASE + 0x01ffffff;
+-
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	ROOT_DEV = MKDEV(RAMDISK_MAJOR, 0);
+-#endif
+-
+-
+-	/*
+-	 * Setup GT controller master bit so we can do config cycles
+-	 */
+-
+-	/* Clear cause register bits */
+-	GT_WRITE(GT_INTRCAUSE_OFS, ~(GT_INTRCAUSE_MASABORT0_BIT |
+-				     GT_INTRCAUSE_TARABORT0_BIT));
+-	/* Setup address */
+-	GT_WRITE(GT_PCI0_CFGADDR_OFS,
+-		 (0 << GT_PCI0_CFGADDR_BUSNUM_SHF) |
+-		 (0 << GT_PCI0_CFGADDR_FUNCTNUM_SHF) |
+-		 ((PCI_COMMAND / 4) << GT_PCI0_CFGADDR_REGNUM_SHF) |
+-		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
+-
+-	udelay(2);
+-	tmp = GT_READ(GT_PCI0_CFGDATA_OFS);
+-
+-	tmp |= (PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
+-		PCI_COMMAND_MASTER | PCI_COMMAND_SERR);
+-	GT_WRITE(GT_PCI0_CFGADDR_OFS,
+-		 (0 << GT_PCI0_CFGADDR_BUSNUM_SHF) |
+-		 (0 << GT_PCI0_CFGADDR_FUNCTNUM_SHF) |
+-		 ((PCI_COMMAND / 4) << GT_PCI0_CFGADDR_REGNUM_SHF) |
+-		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
+-	udelay(2);
+-	GT_WRITE(GT_PCI0_CFGDATA_OFS, tmp);
+-
+-	/* Setup address */
+-	GT_WRITE(GT_PCI0_CFGADDR_OFS,
+-		 (0 << GT_PCI0_CFGADDR_BUSNUM_SHF) |
+-		 (0 << GT_PCI0_CFGADDR_FUNCTNUM_SHF) |
+-		 ((PCI_COMMAND / 4) << GT_PCI0_CFGADDR_REGNUM_SHF) |
+-		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
+-
+-	udelay(2);
+-	tmp = GT_READ(GT_PCI0_CFGDATA_OFS);
 -}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/Makefile mips/arch/mips/pci/Makefile
---- mips-orig/arch/mips/pci/Makefile	2006-09-21 00:57:25.810853750 +0900
-+++ mips/arch/mips/pci/Makefile	2006-09-21 00:57:52.744537000 +0900
-@@ -34,7 +34,6 @@ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000
- obj-$(CONFIG_SOC_AU1550)	+= fixup-au1000.o ops-au1000.o
- obj-$(CONFIG_SOC_PNX8550)	+= fixup-pnx8550.o ops-pnx8550.o
- obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o
--obj-$(CONFIG_MOMENCO_JAGUAR_ATX)+= fixup-jaguar.o
- obj-$(CONFIG_MOMENCO_OCELOT)	+= fixup-ocelot.o pci-ocelot.o
- obj-$(CONFIG_MOMENCO_OCELOT_3)	+= fixup-ocelot3.o
- obj-$(CONFIG_MOMENCO_OCELOT_C)	+= fixup-ocelot-c.o pci-ocelot-c.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-jaguar.c mips/arch/mips/pci/fixup-jaguar.c
---- mips-orig/arch/mips/pci/fixup-jaguar.c	2006-09-21 00:46:01.016056750 +0900
-+++ mips/arch/mips/pci/fixup-jaguar.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,43 +0,0 @@
+-
+-unsigned short get_gt_devid(void)
+-{
+-	u32 gt_devid;
+-
+-	/* Figure out if this is a gt96100 or gt96100A */
+-	GT_WRITE(GT_PCI0_CFGADDR_OFS,
+-		 (0 << GT_PCI0_CFGADDR_BUSNUM_SHF) |
+-		 (0 << GT_PCI0_CFGADDR_FUNCTNUM_SHF) |
+-		 ((PCI_VENDOR_ID / 4) << GT_PCI0_CFGADDR_REGNUM_SHF) |
+-		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
+-
+-	udelay(4);
+-	gt_devid = GT_READ(GT_PCI0_CFGDATA_OFS);
+-
+-	return gt_devid >> 16;
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/galileo-boards/ev96100/time.c mips/arch/mips/galileo-boards/ev96100/time.c
+--- mips-orig/arch/mips/galileo-boards/ev96100/time.c	2006-09-21 00:46:00.208006250 +0900
++++ mips/arch/mips/galileo-boards/ev96100/time.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,88 +0,0 @@
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * BRIEF MODULE DESCRIPTION
+- *	Galileo EV96100 rtc routines.
 - *
-- * Marvell MV64340 interrupt fixup code.
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
-- * Marvell wants an NDA for their docs so this was written without
-- * documentation.  You've been warned.
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/atlas/atlas_rtc.c.
 - *
-- * Copyright (C) 2004 Ralf Baechle (ralf@linux-mips.org)
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
--#include <linux/kernel.h>
 -#include <linux/init.h>
--#include <linux/pci.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/sched.h>
+-#include <linux/spinlock.h>
+-#include <linux/timex.h>
 -
 -#include <asm/mipsregs.h>
+-#include <asm/ptrace.h>
+-#include <asm/time.h>
+-
+-
+-#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
+-
+-extern volatile unsigned long wall_jiffies;
+-unsigned long missed_heart_beats = 0;
+-
+-static unsigned long r4k_offset; /* Amount to increment compare reg each time */
+-static unsigned long r4k_cur;    /* What counter should be at next timer irq */
+-
+-static inline void ack_r4ktimer(unsigned long newval)
+-{
+-	write_c0_compare(newval);
+-}
 -
 -/*
-- * WARNING: Example of how _NOT_ to do it.
+- * There are a lot of conceptually broken versions of the MIPS timer interrupt
+- * handler floating around.  This one is rather different, but the algorithm
+- * is probably more robust.
 - */
+-void mips_timer_interrupt(struct pt_regs *regs)
+-{
+-        int irq = 7; /* FIX ME */
+-
+-	if (r4k_offset == 0) {
+-            goto null;
+-        }
+-
+-	do {
+-		kstat_this_cpu.irqs[irq]++;
+-		do_timer(regs);
+-#ifndef CONFIG_SMP
+-		update_process_times(user_mode(regs));
+-#endif
+-		r4k_cur += r4k_offset;
+-		ack_r4ktimer(r4k_cur);
+-
+-	} while (((unsigned long)read_c0_count()
+-                    - r4k_cur) < 0x7fffffff);
+-	return;
+-
+-null:
+-	ack_r4ktimer(0);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/Makefile mips/arch/mips/pci/Makefile
+--- mips-orig/arch/mips/pci/Makefile	2006-09-21 00:46:01.012056500 +0900
++++ mips/arch/mips/pci/Makefile	2006-09-21 00:46:07.464459750 +0900
+@@ -11,7 +11,6 @@ obj-$(CONFIG_ITE_BOARD_GEN)	+= ops-it817
+ obj-$(CONFIG_MIPS_BONITO64)	+= ops-bonito64.o
+ obj-$(CONFIG_MIPS_GT64111)	+= ops-gt64111.o
+ obj-$(CONFIG_MIPS_GT64120)	+= ops-gt64120.o
+-obj-$(CONFIG_MIPS_GT96100)	+= ops-gt96100.o
+ obj-$(CONFIG_PCI_MARVELL)	+= ops-marvell.o
+ obj-$(CONFIG_MIPS_MSC)		+= ops-msc.o
+ obj-$(CONFIG_MIPS_NILE4)	+= ops-nile4.o
+@@ -29,7 +28,6 @@ obj-$(CONFIG_LASAT)		+= pci-lasat.o
+ obj-$(CONFIG_MIPS_ATLAS)	+= fixup-atlas.o
+ obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
+ obj-$(CONFIG_MIPS_EV64120)	+= fixup-ev64120.o
+-obj-$(CONFIG_MIPS_EV96100)	+= fixup-ev96100.o pci-ev96100.o
+ obj-$(CONFIG_MIPS_ITE8172)	+= fixup-ite8172g.o
+ obj-$(CONFIG_MIPS_IVR)		+= fixup-ivr.o
+ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000.o ops-au1000.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ev96100.c mips/arch/mips/pci/fixup-ev96100.c
+--- mips-orig/arch/mips/pci/fixup-ev96100.c	2006-09-21 00:46:01.016056750 +0900
++++ mips/arch/mips/pci/fixup-ev96100.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,48 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	EV96100 Board specific pci fixups.
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/init.h>
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-
+-static char irq_tab_ev96100[][5] __initdata = {
+- [8] = { 0, 5, 5, 5, 5 },
+- [9] = { 0, 2, 2, 2, 2 }
+-};
+-
 -int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
 -{
--	int bus = dev->bus->number;
--
--	if (bus == 0 && slot == 1)
--		return 3;	/* PCI-X A */
--	if (bus == 0 && slot == 2)
--		return 4;	/* PCI-X B */
--	if (bus == 1 && slot == 1)
--		return 5;	/* PCI A */
--	if (bus == 1 && slot == 2)
--		return 6;	/* PCI B */
--
--return 0;
--	panic("Whooops in pcibios_map_irq");
+-	return irq_tab_ev96100[slot][pin];
 -}
 -
 -/* Do platform specific device initialization at pci_enable_device() time */
@@ -2291,220 +1793,2797 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-jaguar.c
 -{
 -	return 0;
 -}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/ops-gt96100.c mips/arch/mips/pci/ops-gt96100.c
+--- mips-orig/arch/mips/pci/ops-gt96100.c	2006-09-21 00:46:01.024057250 +0900
++++ mips/arch/mips/pci/ops-gt96100.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,169 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Galileo EV96100 board specific pci support.
+- *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/generic/pci.c
+- *
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-
+-#include <asm/delay.h>
+-#include <asm/gt64120.h>
+-#include <asm/galileo-boards/ev96100.h>
+-
+-#define PCI_ACCESS_READ  0
+-#define PCI_ACCESS_WRITE 1
+-
+-static int static gt96100_config_access(unsigned char access_type,
+-	struct pci_bus *bus, unsigned int devfn, int where, u32 * data)
+-{
+-	unsigned char bus = bus->number;
+-	u32 intr;
+-
+-	/*
+-	 * Because of a bug in the galileo (for slot 31).
+-	 */
+-	if (bus == 0 && devfn >= PCI_DEVFN(31, 0))
+-		return PCIBIOS_DEVICE_NOT_FOUND;
+-
+-	/* Clear cause register bits */
+-	GT_WRITE(GT_INTRCAUSE_OFS, ~(GT_INTRCAUSE_MASABORT0_BIT |
+-				     GT_INTRCAUSE_TARABORT0_BIT));
+-
+-	/* Setup address */
+-	GT_WRITE(GT_PCI0_CFGADDR_OFS,
+-		 (bus << GT_PCI0_CFGADDR_BUSNUM_SHF) |
+-		 (devfn << GT_PCI0_CFGADDR_FUNCTNUM_SHF) |
+-		 ((where / 4) << GT_PCI0_CFGADDR_REGNUM_SHF) |
+-		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
+-	udelay(2);
+-
+-
+-	if (access_type == PCI_ACCESS_WRITE) {
+-		if (devfn != 0)
+-			*data = le32_to_cpu(*data);
+-		GT_WRITE(GT_PCI0_CFGDATA_OFS, *data);
+-	} else {
+-		*data = GT_READ(GT_PCI0_CFGDATA_OFS);
+-		if (devfn != 0)
+-			*data = le32_to_cpu(*data);
+-	}
+-
+-	udelay(2);
+-
+-	/* Check for master or target abort */
+-	intr = GT_READ(GT_INTRCAUSE_OFS);
+-
+-	if (intr & (GT_INTRCAUSE_MASABORT0_BIT | GT_INTRCAUSE_TARABORT0_BIT)) {
+-		/* Error occured */
+-
+-		/* Clear bits */
+-		GT_WRITE(GT_INTRCAUSE_OFS, ~(GT_INTRCAUSE_MASABORT0_BIT |
+-					     GT_INTRCAUSE_TARABORT0_BIT));
+-		return -1;
+-	}
+-	return 0;
+-}
+-
+-/*
+- * We can't address 8 and 16 bit words directly.  Instead we have to
+- * read/write a 32bit word and mask/modify the data we actually want.
+- */
+-static int gt96100_pcibios_read(struct pci_bus *bus, unsigned int devfn,
+-	int where, int size, u32 * val)
+-{
+-	u32 data = 0;
+-
+-	if (gt96100_config_access(PCI_ACCESS_READ, bus, devfn, where, &data))
+-		return PCIBIOS_DEVICE_NOT_FOUND;
+-
+-	switch (size) {
+-	case 1:
+-		*val = (data >> ((where & 3) << 3)) & 0xff;
+-		break;
+-
+-	case 2:
+-		*val = (data >> ((where & 3) << 3)) & 0xffff;
+-		break;
+-
+-	case 4:
+-		*val = data;
+-		break;
+-	}
+-	return PCIBIOS_SUCCESSFUL;
+-}
+-
+-static int gt96100_pcibios_write(struct pci_bus *bus, unsigned int devfn,
+-	int where, int size, u32 val)
+-{
+-	u32 data = 0;
+-
+-	switch (size) {
+-	case 1:
+-		if (gt96100_config_access(PCI_ACCESS_READ, bus, devfn, where, &data))
+-			return -1;
+-
+-		data = (data & ~(0xff << ((where & 3) << 3))) |
+-		       (val << ((where & 3) << 3));
+-
+-		if (gt96100_config_access(PCI_ACCESS_WRITE, bus, devfn, where, &data))
+-			return -1;
+-
+-		return PCIBIOS_SUCCESSFUL;
+-
+-	case 2:
+-		if (gt96100_config_access(PCI_ACCESS_READ, bus, devfn, where, &data))
+-			return -1;
+-
+-		data = (data & ~(0xffff << ((where & 3) << 3))) |
+-		       (val << ((where & 3) << 3));
+-
+-		if (gt96100_config_access(PCI_ACCESS_WRITE, dev, where, &data))
+-			return -1;
+-
+-
+-		return PCIBIOS_SUCCESSFUL;
+-
+-	case 4:
+-		if (gt96100_config_access(PCI_ACCESS_WRITE, dev, where, &val))
+-			return -1;
+-
+-		return PCIBIOS_SUCCESSFUL;
+-	}
+-}
+-
+-struct pci_ops gt96100_pci_ops = {
+-	.read	= gt96100_pcibios_read,
+-	.write	= gt96100_pcibios_write
+-};
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/pci-ev96100.c mips/arch/mips/pci/pci-ev96100.c
+--- mips-orig/arch/mips/pci/pci-ev96100.c	2006-09-21 00:46:01.032057750 +0900
++++ mips/arch/mips/pci/pci-ev96100.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,63 +0,0 @@
+-/*
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
+- *
+- * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-
+-static struct resource pci_io_resource = {
+-	.name	= "io pci IO space",
+-	.start	= 0x10000000,
+-	.end	= 0x11ffffff,
+-	.flags	= IORESOURCE_IO
+-};
+-
+-static struct resource pci_mem_resource = {
+-	.name	= "ext pci memory space",
+-	.start	= 0x12000000,
+-	.end	= 0x13ffffff,
+-	.flags	= IORESOURCE_MEM
+-};
+-
+-extern struct pci_ops gt96100_pci_ops;
+-
+-struct pci_controller ev96100_controller = {
+-	.pci_ops	= &gt96100_pci_ops,
+-	.io_resource	= &pci_io_resource,
+-	.mem_resource	= &pci_mem_resource,
+-};
+-
+-static void ev96100_pci_init(void)
+-{
+-	register_pci_controller(&ev96100_controller);
+-}
+-
+-arch_initcall(ev96100_pci_init);
 diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/net/Kconfig mips/drivers/net/Kconfig
---- mips-orig/drivers/net/Kconfig	2006-09-21 00:57:25.814854000 +0900
-+++ mips/drivers/net/Kconfig	2006-09-21 00:59:23.530210750 +0900
-@@ -2252,7 +2252,7 @@ config UGETH_HAS_GIGA
+--- mips-orig/drivers/net/Kconfig	2006-09-21 00:46:08.100499500 +0900
++++ mips/drivers/net/Kconfig	2006-09-21 00:51:48.629781250 +0900
+@@ -446,12 +446,6 @@ config GALILEO_64240_ETH
+ 	  This is the driver for the ethernet interfaces integrated into
+ 	  the Galileo (now Marvell) GT64240 chipset.
  
- config MV643XX_ETH
- 	tristate "MV-643XX Ethernet support"
--	depends on MOMENCO_OCELOT_C || MOMENCO_JAGUAR_ATX || MV64360 || MOMENCO_OCELOT_3 || PPC_MULTIPLATFORM
-+	depends on MOMENCO_OCELOT_C || MV64360 || MOMENCO_OCELOT_3 || PPC_MULTIPLATFORM
- 	select MII
- 	help
- 	  This driver supports the gigabit Ethernet on the Marvell MV643XX
+-config MIPS_GT96100ETH
+-	bool "MIPS GT96100 Ethernet support"
+-	depends on NET_ETHERNET && MIPS_GT96100
+-	help
+-	  Say Y here to support the Ethernet subsystem on your GT96100 card.
+-
+ config MIPS_AU1X00_ENET
+ 	bool "MIPS AU1000 Ethernet support"
+ 	depends on NET_ETHERNET && SOC_AU1X00
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/net/Makefile mips/drivers/net/Makefile
+--- mips-orig/drivers/net/Makefile	2006-09-21 00:46:08.100499500 +0900
++++ mips/drivers/net/Makefile	2006-09-21 00:52:01.742600750 +0900
+@@ -179,7 +179,6 @@ obj-$(CONFIG_HPLANCE) += hplance.o 7990.
+ obj-$(CONFIG_MVME147_NET) += mvme147.o 7990.o
+ obj-$(CONFIG_EQUALIZER) += eql.o
+ obj-$(CONFIG_MIPS_JAZZ_SONIC) += jazzsonic.o
+-obj-$(CONFIG_MIPS_GT96100ETH) += gt96100eth.o
+ obj-$(CONFIG_MIPS_AU1X00_ENET) += au1000_eth.o
+ obj-$(CONFIG_MIPS_SIM_NET) += mipsnet.o
+ obj-$(CONFIG_SGI_IOC3_ETH) += ioc3-eth.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/net/gt96100eth.c mips/drivers/net/gt96100eth.c
+--- mips-orig/drivers/net/gt96100eth.c	2006-09-21 00:46:08.328513750 +0900
++++ mips/drivers/net/gt96100eth.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,1566 +0,0 @@
+-/*
+- * Copyright 2000, 2001 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	stevel@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Ethernet driver for the MIPS GT96100 Advanced Communication Controller.
+- * 
+- *  Revision history
+- *    
+- *    11.11.2001  Moved to 2.4.14, ppopov@mvista.com.  Modified driver to add
+- *                proper gt96100A support.
+- *    12.05.2001  Moved eth port 0 to irq 3 (mapped to GT_SERINT0 on EV96100A)
+- *                in order for both ports to work. Also cleaned up boot
+- *                option support (mac address string parsing), fleshed out
+- *                gt96100_cleanup_module(), and other general code cleanups
+- *                <stevel@mvista.com>.
+- */
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/string.h>
+-#include <linux/timer.h>
+-#include <linux/errno.h>
+-#include <linux/in.h>
+-#include <linux/ioport.h>
+-#include <linux/slab.h>
+-#include <linux/interrupt.h>
+-#include <linux/pci.h>
+-#include <linux/init.h>
+-#include <linux/netdevice.h>
+-#include <linux/etherdevice.h>
+-#include <linux/skbuff.h>
+-#include <linux/delay.h>
+-#include <linux/ctype.h>
+-#include <linux/bitops.h>
+-
+-#include <asm/irq.h>
+-#include <asm/io.h>
+-
+-#define DESC_BE 1
+-#define DESC_DATA_BE 1
+-
+-#define GT96100_DEBUG 2
+-
+-#include "gt96100eth.h"
+-
+-// prototypes
+-static void* dmaalloc(size_t size, dma_addr_t *dma_handle);
+-static void dmafree(size_t size, void *vaddr);
+-static void gt96100_delay(int msec);
+-static int gt96100_add_hash_entry(struct net_device *dev,
+-				  unsigned char* addr);
+-static void read_mib_counters(struct gt96100_private *gp);
+-static int read_MII(int phy_addr, u32 reg);
+-static int write_MII(int phy_addr, u32 reg, u16 data);
+-static int gt96100_init_module(void);
+-static void gt96100_cleanup_module(void);
+-static void dump_MII(int dbg_lvl, struct net_device *dev);
+-static void dump_tx_desc(int dbg_lvl, struct net_device *dev, int i);
+-static void dump_rx_desc(int dbg_lvl, struct net_device *dev, int i);
+-static void dump_skb(int dbg_lvl, struct net_device *dev,
+-		     struct sk_buff *skb);
+-static void update_stats(struct gt96100_private *gp);
+-static void abort(struct net_device *dev, u32 abort_bits);
+-static void hard_stop(struct net_device *dev);
+-static void enable_ether_irq(struct net_device *dev);
+-static void disable_ether_irq(struct net_device *dev);
+-static int gt96100_probe1(struct pci_dev *pci, int port_num);
+-static void reset_tx(struct net_device *dev);
+-static void reset_rx(struct net_device *dev);
+-static int gt96100_check_tx_consistent(struct gt96100_private *gp);
+-static int gt96100_init(struct net_device *dev);
+-static int gt96100_open(struct net_device *dev);
+-static int gt96100_close(struct net_device *dev);
+-static int gt96100_tx(struct sk_buff *skb, struct net_device *dev);
+-static int gt96100_rx(struct net_device *dev, u32 status);
+-static irqreturn_t gt96100_interrupt(int irq, void *dev_id, struct pt_regs *regs);
+-static void gt96100_tx_timeout(struct net_device *dev);
+-static void gt96100_set_rx_mode(struct net_device *dev);
+-static struct net_device_stats* gt96100_get_stats(struct net_device *dev);
+-
+-extern char * __init prom_getcmdline(void);
+-
+-static int max_interrupt_work = 32;
+-
+-#define nibswap(x) ((((x) >> 4) & 0x0f) | (((x) << 4) & 0xf0))
+-
+-#define RUN_AT(x) (jiffies + (x))
+-
+-// For reading/writing 32-bit words and half-words from/to DMA memory
+-#ifdef DESC_BE
+-#define cpu_to_dma32 cpu_to_be32
+-#define dma32_to_cpu be32_to_cpu
+-#define cpu_to_dma16 cpu_to_be16
+-#define dma16_to_cpu be16_to_cpu
+-#else
+-#define cpu_to_dma32 cpu_to_le32
+-#define dma32_to_cpu le32_to_cpu
+-#define cpu_to_dma16 cpu_to_le16
+-#define dma16_to_cpu le16_to_cpu
+-#endif
+-
+-static char mac0[18] = "00.02.03.04.05.06";
+-static char mac1[18] = "00.01.02.03.04.05";
+-module_param_string(mac0, mac0, 18, 0);
+-module_param_string(mac1, mac0, 18, 0);
+-MODULE_PARM_DESC(mac0, "MAC address for GT96100 ethernet port 0");
+-MODULE_PARM_DESC(mac1, "MAC address for GT96100 ethernet port 1");
+-
+-/*
+- * Info for the GT96100 ethernet controller's ports.
+- */
+-static struct gt96100_if_t {
+-	struct net_device *dev;
+-	unsigned int  iobase;   // IO Base address of this port
+-	int           irq;      // IRQ number of this port
+-	char         *mac_str;
+-} gt96100_iflist[NUM_INTERFACES] = {
+-	{
+-		NULL,
+-		GT96100_ETH0_BASE, GT96100_ETHER0_IRQ,
+-		mac0
+-	},
+-	{
+-		NULL,
+-		GT96100_ETH1_BASE, GT96100_ETHER1_IRQ,
+-		mac1
+-	}
+-};
+-
+-static inline const char*
+-chip_name(int chip_rev)
+-{
+-	switch (chip_rev) {
+-	case REV_GT96100:
+-		return "GT96100";
+-	case REV_GT96100A_1:
+-	case REV_GT96100A:
+-		return "GT96100A";
+-	default:
+-		return "Unknown GT96100";
+-	}
+-}
+-
+-/*
+-  DMA memory allocation, derived from pci_alloc_consistent.
+-*/
+-static void * dmaalloc(size_t size, dma_addr_t *dma_handle)
+-{
+-	void *ret;
+-	
+-	ret = (void *)__get_free_pages(GFP_ATOMIC | GFP_DMA, get_order(size));
+-	
+-	if (ret != NULL) {
+-		dma_cache_inv((unsigned long)ret, size);
+-		if (dma_handle != NULL)
+-			*dma_handle = virt_to_phys(ret);
+-
+-		/* bump virtual address up to non-cached area */
+-		ret = (void*)KSEG1ADDR(ret);
+-	}
+-
+-	return ret;
+-}
+-
+-static void dmafree(size_t size, void *vaddr)
+-{
+-	vaddr = (void*)KSEG0ADDR(vaddr);
+-	free_pages((unsigned long)vaddr, get_order(size));
+-}
+-
+-static void gt96100_delay(int ms)
+-{
+-	if (in_interrupt())
+-		return;
+-	else
+-		msleep_interruptible(ms);
+-}
+-
+-static int
+-parse_mac_addr(struct net_device *dev, char* macstr)
+-{
+-	int i, j;
+-	unsigned char result, value;
+-	
+-	for (i=0; i<6; i++) {
+-		result = 0;
+-		if (i != 5 && *(macstr+2) != '.') {
+-			err(__FILE__ "invalid mac address format: %d %c\n",
+-			    i, *(macstr+2));
+-			return -EINVAL;
+-		}
+-		
+-		for (j=0; j<2; j++) {
+-			if (isxdigit(*macstr) &&
+-			    (value = isdigit(*macstr) ? *macstr-'0' : 
+-			     toupper(*macstr)-'A'+10) < 16) {
+-				result = result*16 + value;
+-				macstr++;
+-			} else {
+-				err(__FILE__ "invalid mac address "
+-				    "character: %c\n", *macstr);
+-				return -EINVAL;
+-			}
+-		}
+-
+-		macstr++; // step over '.'
+-		dev->dev_addr[i] = result;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int
+-read_MII(int phy_addr, u32 reg)
+-{
+-	int timedout = 20;
+-	u32 smir = smirOpCode | (phy_addr << smirPhyAdBit) |
+-		(reg << smirRegAdBit);
+-
+-	// wait for last operation to complete
+-	while (GT96100_READ(GT96100_ETH_SMI_REG) & smirBusy) {
+-		// snooze for 1 msec and check again
+-		gt96100_delay(1);
+-
+-		if (--timedout == 0) {
+-			printk(KERN_ERR "%s: busy timeout!!\n", __FUNCTION__);
+-			return -ENODEV;
+-		}
+-	}
+-    
+-	GT96100_WRITE(GT96100_ETH_SMI_REG, smir);
+-
+-	timedout = 20;
+-	// wait for read to complete
+-	while (!((smir = GT96100_READ(GT96100_ETH_SMI_REG)) & smirReadValid)) {
+-		// snooze for 1 msec and check again
+-		gt96100_delay(1);
+-	
+-		if (--timedout == 0) {
+-			printk(KERN_ERR "%s: timeout!!\n", __FUNCTION__);
+-			return -ENODEV;
+-		}
+-	}
+-
+-	return (int)(smir & smirDataMask);
+-}
+-
+-static void
+-dump_tx_desc(int dbg_lvl, struct net_device *dev, int i)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	gt96100_td_t *td = &gp->tx_ring[i];
+-
+-	dbg(dbg_lvl, "Tx descriptor at 0x%08lx:\n", virt_to_phys(td));
+-	dbg(dbg_lvl,
+-	    "    cmdstat=%04x, byte_cnt=%04x, buff_ptr=%04x, next=%04x\n",
+-	    dma32_to_cpu(td->cmdstat),
+-	    dma16_to_cpu(td->byte_cnt),
+-	    dma32_to_cpu(td->buff_ptr),
+-	    dma32_to_cpu(td->next));
+-}
+-
+-static void
+-dump_rx_desc(int dbg_lvl, struct net_device *dev, int i)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	gt96100_rd_t *rd = &gp->rx_ring[i];
+-
+-	dbg(dbg_lvl, "Rx descriptor at 0x%08lx:\n", virt_to_phys(rd));
+-	dbg(dbg_lvl, "    cmdstat=%04x, buff_sz=%04x, byte_cnt=%04x, "
+-	    "buff_ptr=%04x, next=%04x\n",
+-	    dma32_to_cpu(rd->cmdstat),
+-	    dma16_to_cpu(rd->buff_sz),
+-	    dma16_to_cpu(rd->byte_cnt),
+-	    dma32_to_cpu(rd->buff_ptr),
+-	    dma32_to_cpu(rd->next));
+-}
+-
+-static int
+-write_MII(int phy_addr, u32 reg, u16 data)
+-{
+-	int timedout = 20;
+-	u32 smir = (phy_addr << smirPhyAdBit) |
+-		(reg << smirRegAdBit) | data;
+-
+-	// wait for last operation to complete
+-	while (GT96100_READ(GT96100_ETH_SMI_REG) & smirBusy) {
+-		// snooze for 1 msec and check again
+-		gt96100_delay(1);
+-	
+-		if (--timedout == 0) {
+-			printk(KERN_ERR "%s: busy timeout!!\n", __FUNCTION__);
+-			return -1;
+-		}
+-	}
+-
+-	GT96100_WRITE(GT96100_ETH_SMI_REG, smir);
+-	return 0;
+-}
+-
+-static void
+-dump_MII(int dbg_lvl, struct net_device *dev)
+-{
+-	int i, val;
+-	struct gt96100_private *gp = netdev_priv(dev);
+-    
+-	if (dbg_lvl <= GT96100_DEBUG) {
+-		for (i=0; i<7; i++) {
+-			if ((val = read_MII(gp->phy_addr, i)) >= 0)
+-				printk("MII Reg %d=%x\n", i, val);
+-		}
+-		for (i=16; i<21; i++) {
+-			if ((val = read_MII(gp->phy_addr, i)) >= 0)
+-				printk("MII Reg %d=%x\n", i, val);
+-		}
+-	}
+-}
+-
+-static void
+-dump_hw_addr(int dbg_lvl, struct net_device *dev, const char* pfx,
+-	     const char* func, unsigned char* addr_str)
+-{
+-	int i;
+-	char buf[100], octet[5];
+-    
+-	if (dbg_lvl <= GT96100_DEBUG) {
+-		sprintf(buf, pfx, func);
+-		for (i = 0; i < 6; i++) {
+-			sprintf(octet, "%2.2x%s",
+-				addr_str[i], i<5 ? ":" : "\n");
+-			strcat(buf, octet);
+-		}
+-		info("%s", buf);
+-	}
+-}
+-
+-
+-static void
+-dump_skb(int dbg_lvl, struct net_device *dev, struct sk_buff *skb)
+-{
+-	int i;
+-	unsigned char* skbdata;
+-    
+-	if (dbg_lvl <= GT96100_DEBUG) {
+-		dbg(dbg_lvl, "%s: skb=%p, skb->data=%p, skb->len=%d\n",
+-		    __FUNCTION__, skb, skb->data, skb->len);
+-
+-		skbdata = (unsigned char*)KSEG1ADDR(skb->data);
+-    
+-		for (i=0; i<skb->len; i++) {
+-			if (!(i % 16))
+-				printk(KERN_DEBUG "\n   %3.3x: %2.2x,",
+-				       i, skbdata[i]);
+-			else
+-				printk(KERN_DEBUG "%2.2x,", skbdata[i]);
+-		}
+-		printk(KERN_DEBUG "\n");
+-	}
+-}
+-
+-
+-static int
+-gt96100_add_hash_entry(struct net_device *dev, unsigned char* addr)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	//u16 hashResult, stmp;
+-	//unsigned char ctmp, hash_ea[6];
+-	u32 tblEntry1, tblEntry0, *tblEntryAddr;
+-	int i;
+-
+-	tblEntry1 = hteValid | hteRD;
+-	tblEntry1 |= (u32)addr[5] << 3;
+-	tblEntry1 |= (u32)addr[4] << 11;
+-	tblEntry1 |= (u32)addr[3] << 19;
+-	tblEntry1 |= ((u32)addr[2] & 0x1f) << 27;
+-	dbg(3, "%s: tblEntry1=%x\n", __FUNCTION__, tblEntry1);
+-	tblEntry0 = ((u32)addr[2] >> 5) & 0x07;
+-	tblEntry0 |= (u32)addr[1] << 3;
+-	tblEntry0 |= (u32)addr[0] << 11;
+-	dbg(3, "%s: tblEntry0=%x\n", __FUNCTION__, tblEntry0);
+-
+-#if 0
+-
+-	for (i=0; i<6; i++) {
+-		// nibble swap
+-		ctmp = nibswap(addr[i]);
+-		// invert every nibble
+-		hash_ea[i] = ((ctmp&1)<<3) | ((ctmp&8)>>3) |
+-			((ctmp&2)<<1) | ((ctmp&4)>>1);
+-		hash_ea[i] |= ((ctmp&0x10)<<3) | ((ctmp&0x80)>>3) |
+-			((ctmp&0x20)<<1) | ((ctmp&0x40)>>1);
+-	}
+-
+-	dump_hw_addr(3, dev, "%s: nib swap/invt addr=", __FUNCTION__, hash_ea);
+-    
+-	if (gp->hash_mode == 0) {
+-		hashResult = ((u16)hash_ea[0] & 0xfc) << 7;
+-		stmp = ((u16)hash_ea[0] & 0x03) |
+-			(((u16)hash_ea[1] & 0x7f) << 2);
+-		stmp ^= (((u16)hash_ea[1] >> 7) & 0x01) |
+-			((u16)hash_ea[2] << 1);
+-		stmp ^= (u16)hash_ea[3] | (((u16)hash_ea[4] & 1) << 8);
+-		hashResult |= stmp;
+-	} else {
+-		return -1; // don't support hash mode 1
+-	}
+-
+-	dbg(3, "%s: hashResult=%x\n", __FUNCTION__, hashResult);
+-
+-	tblEntryAddr =
+-		(u32 *)(&gp->hash_table[((u32)hashResult & 0x7ff) << 3]);
+-    
+-	dbg(3, "%s: tblEntryAddr=%p\n", tblEntryAddr, __FUNCTION__);
+-
+-	for (i=0; i<HASH_HOP_NUMBER; i++) {
+-		if ((*tblEntryAddr & hteValid) &&
+-		    !(*tblEntryAddr & hteSkip)) {
+-			// This entry is already occupied, go to next entry
+-			tblEntryAddr += 2;
+-			dbg(3, "%s: skipping to %p\n", __FUNCTION__, 
+-			    tblEntryAddr);
+-		} else {
+-			memset(tblEntryAddr, 0, 8);
+-			tblEntryAddr[1] = cpu_to_dma32(tblEntry1);
+-			tblEntryAddr[0] = cpu_to_dma32(tblEntry0);
+-			break;
+-		}
+-	}
+-
+-	if (i >= HASH_HOP_NUMBER) {
+-		err("%s: expired!\n", __FUNCTION__);
+-		return -1; // Couldn't find an unused entry
+-	}
+-
+-#else
+-
+-	tblEntryAddr = (u32 *)gp->hash_table;
+-	for (i=0; i<RX_HASH_TABLE_SIZE/4; i+=2) {
+-		tblEntryAddr[i+1] = cpu_to_dma32(tblEntry1);
+-		tblEntryAddr[i] = cpu_to_dma32(tblEntry0);
+-	}
+-
+-#endif
+-    
+-	return 0;
+-}
+-
+-
+-static void
+-read_mib_counters(struct gt96100_private *gp)
+-{
+-	u32* mib_regs = (u32*)&gp->mib;
+-	int i;
+-    
+-	for (i=0; i<sizeof(mib_counters_t)/sizeof(u32); i++)
+-		mib_regs[i] = GT96100ETH_READ(gp, GT96100_ETH_MIB_COUNT_BASE +
+-					      i*sizeof(u32));
+-}
+-
+-
+-static void
+-update_stats(struct gt96100_private *gp)
+-{
+-	mib_counters_t *mib = &gp->mib;
+-	struct net_device_stats *stats = &gp->stats;
+-    
+-	read_mib_counters(gp);
+-    
+-	stats->rx_packets = mib->totalFramesReceived;
+-	stats->tx_packets = mib->framesSent;
+-	stats->rx_bytes = mib->totalByteReceived;
+-	stats->tx_bytes = mib->byteSent;
+-	stats->rx_errors = mib->totalFramesReceived - mib->framesReceived;
+-	//the tx error counters are incremented by the ISR
+-	//rx_dropped incremented by gt96100_rx
+-	//tx_dropped incremented by gt96100_tx
+-	stats->multicast = mib->multicastFramesReceived;
+-	// collisions incremented by gt96100_tx_complete
+-	stats->rx_length_errors = mib->oversizeFrames + mib->fragments;
+-	// The RxError condition means the Rx DMA encountered a
+-	// CPU owned descriptor, which, if things are working as
+-	// they should, means the Rx ring has overflowed.
+-	stats->rx_over_errors = mib->macRxError;
+-	stats->rx_crc_errors = mib->cRCError;
+-}
+-
+-static void
+-abort(struct net_device *dev, u32 abort_bits)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	int timedout = 100; // wait up to 100 msec for hard stop to complete
+-
+-	dbg(3, "%s\n", __FUNCTION__);
+-
+-	// Return if neither Rx or Tx abort bits are set
+-	if (!(abort_bits & (sdcmrAR | sdcmrAT)))
+-		return;
+-
+-	// make sure only the Rx/Tx abort bits are set
+-	abort_bits &= (sdcmrAR | sdcmrAT);
+-    
+-	spin_lock(&gp->lock);
+-
+-	// abort any Rx/Tx DMA immediately
+-	GT96100ETH_WRITE(gp, GT96100_ETH_SDMA_COMM, abort_bits);
+-
+-	dbg(3, "%s: SDMA comm = %x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_SDMA_COMM));
+-
+-	// wait for abort to complete
+-	while (GT96100ETH_READ(gp, GT96100_ETH_SDMA_COMM) & abort_bits) {
+-		// snooze for 1 msec and check again
+-		gt96100_delay(1);
+-	
+-		if (--timedout == 0) {
+-			err("%s: timeout!!\n", __FUNCTION__);
+-			break;
+-		}
+-	}
+-
+-	spin_unlock(&gp->lock);
+-}
+-
+-
+-static void
+-hard_stop(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-
+-	dbg(3, "%s\n", __FUNCTION__);
+-
+-	disable_ether_irq(dev);
+-
+-	abort(dev, sdcmrAR | sdcmrAT);
+-
+-	// disable port
+-	GT96100ETH_WRITE(gp, GT96100_ETH_PORT_CONFIG, 0);
+-}
+-
+-
+-static void
+-enable_ether_irq(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	u32 intMask;
+-	/*
+-	 * route ethernet interrupt to GT_SERINT0 for port 0,
+-	 * GT_INT0 for port 1.
+-	 */
+-	int intr_mask_reg = (gp->port_num == 0) ?
+-		GT96100_SERINT0_MASK : GT96100_INT0_HIGH_MASK;
+-	
+-	if (gp->chip_rev >= REV_GT96100A_1) {
+-		intMask = icrTxBufferLow | icrTxEndLow |
+-			icrTxErrorLow  | icrRxOVR | icrTxUdr |
+-			icrRxBufferQ0 | icrRxErrorQ0 |
+-			icrMIIPhySTC | icrEtherIntSum;
+-	}
+-	else {
+-		intMask = icrTxBufferLow | icrTxEndLow |
+-			icrTxErrorLow  | icrRxOVR | icrTxUdr |
+-			icrRxBuffer | icrRxError |
+-			icrMIIPhySTC | icrEtherIntSum;
+-	}
+-	
+-	// unmask interrupts
+-	GT96100ETH_WRITE(gp, GT96100_ETH_INT_MASK, intMask);
+-    
+-	intMask = GT96100_READ(intr_mask_reg);
+-	intMask |= 1<<gp->port_num;
+-	GT96100_WRITE(intr_mask_reg, intMask);
+-}
+-
+-static void
+-disable_ether_irq(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	u32 intMask;
+-	int intr_mask_reg = (gp->port_num == 0) ?
+-		GT96100_SERINT0_MASK : GT96100_INT0_HIGH_MASK;
+-
+-	intMask = GT96100_READ(intr_mask_reg);
+-	intMask &= ~(1<<gp->port_num);
+-	GT96100_WRITE(intr_mask_reg, intMask);
+-    
+-	GT96100ETH_WRITE(gp, GT96100_ETH_INT_MASK, 0);
+-}
+-
+-
+-/*
+- * Init GT96100 ethernet controller driver
+- */
+-static int gt96100_init_module(void)
+-{
+-	struct pci_dev *pci;
+-	int i, retval=0;
+-	u32 cpuConfig;
+-
+-	/*
+-	 * Stupid probe because this really isn't a PCI device
+-	 */
+-	if (!(pci = pci_find_device(PCI_VENDOR_ID_MARVELL,
+-	                            PCI_DEVICE_ID_MARVELL_GT96100, NULL)) &&
+-	    !(pci = pci_find_device(PCI_VENDOR_ID_MARVELL,
+-		                    PCI_DEVICE_ID_MARVELL_GT96100A, NULL))) {
+-		printk(KERN_ERR __FILE__ ": GT96100 not found!\n");
+-		return -ENODEV;
+-	}
+-
+-	cpuConfig = GT96100_READ(GT96100_CPU_INTERF_CONFIG);
+-	if (cpuConfig & (1<<12)) {
+-		printk(KERN_ERR __FILE__
+-		       ": must be in Big Endian mode!\n");
+-		return -ENODEV;
+-	}
+-
+-	for (i=0; i < NUM_INTERFACES; i++)
+-		retval |= gt96100_probe1(pci, i);
+-
+-	return retval;
+-}
+-
+-static int __init gt96100_probe1(struct pci_dev *pci, int port_num)
+-{
+-	struct gt96100_private *gp = NULL;
+-	struct gt96100_if_t *gtif = &gt96100_iflist[port_num];
+-	int phy_addr, phy_id1, phy_id2;
+-	u32 phyAD;
+-	int retval;
+-	unsigned char chip_rev;
+-	struct net_device *dev = NULL;
+-    
+-	if (gtif->irq < 0) {
+-		printk(KERN_ERR "%s: irq unknown - probing not supported\n",
+-		      __FUNCTION__);
+-		return -ENODEV;
+-	}
+-    
+-	pci_read_config_byte(pci, PCI_REVISION_ID, &chip_rev);
+-
+-	if (chip_rev >= REV_GT96100A_1) {
+-		phyAD = GT96100_READ(GT96100_ETH_PHY_ADDR_REG);
+-		phy_addr = (phyAD >> (5*port_num)) & 0x1f;
+-	} else {
+-		/*
+-		 * not sure what's this about -- probably a gt bug
+-		 */
+-		phy_addr = port_num;
+-		phyAD = GT96100_READ(GT96100_ETH_PHY_ADDR_REG);
+-		phyAD &= ~(0x1f << (port_num*5));
+-		phyAD |= phy_addr << (port_num*5);
+-		GT96100_WRITE(GT96100_ETH_PHY_ADDR_REG, phyAD);
+-	}
+-	
+-	// probe for the external PHY
+-	if ((phy_id1 = read_MII(phy_addr, 2)) <= 0 ||
+-	    (phy_id2 = read_MII(phy_addr, 3)) <= 0) {
+-		printk(KERN_ERR "%s: no PHY found on MII%d\n", __FUNCTION__, port_num);
+-		return -ENODEV;
+-	}
+-	
+-	if (!request_region(gtif->iobase, GT96100_ETH_IO_SIZE, "GT96100ETH")) {
+-		printk(KERN_ERR "%s: request_region failed\n", __FUNCTION__);
+-		return -EBUSY;
+-	}
+-
+-	dev = alloc_etherdev(sizeof(struct gt96100_private));
+-	if (!dev)
+-		goto out;
+-	gtif->dev = dev;
+-	
+-	/* private struct aligned and zeroed by alloc_etherdev */
+-	/* Fill in the 'dev' fields. */
+-	dev->base_addr = gtif->iobase;
+-	dev->irq = gtif->irq;
+-
+-	if ((retval = parse_mac_addr(dev, gtif->mac_str))) {
+-		err("%s: MAC address parse failed\n", __FUNCTION__);
+-		retval = -EINVAL;
+-		goto out1;
+-	}
+-
+-	gp = netdev_priv(dev);
+-
+-	memset(gp, 0, sizeof(*gp)); // clear it
+-
+-	gp->port_num = port_num;
+-	gp->port_offset = port_num * GT96100_ETH_IO_SIZE;
+-	gp->phy_addr = phy_addr;
+-	gp->chip_rev = chip_rev;
+-
+-	info("%s found at 0x%x, irq %d\n",
+-	     chip_name(gp->chip_rev), gtif->iobase, gtif->irq);
+-	dump_hw_addr(0, dev, "%s: HW Address ", __FUNCTION__, dev->dev_addr);
+-	info("%s chip revision=%d\n", chip_name(gp->chip_rev), gp->chip_rev);
+-	info("%s ethernet port %d\n", chip_name(gp->chip_rev), gp->port_num);
+-	info("external PHY ID1=0x%04x, ID2=0x%04x\n", phy_id1, phy_id2);
+-
+-	// Allocate Rx and Tx descriptor rings
+-	if (gp->rx_ring == NULL) {
+-		// All descriptors in ring must be 16-byte aligned
+-		gp->rx_ring = dmaalloc(sizeof(gt96100_rd_t) * RX_RING_SIZE
+-				       + sizeof(gt96100_td_t) * TX_RING_SIZE,
+-				       &gp->rx_ring_dma);
+-		if (gp->rx_ring == NULL) {
+-			retval = -ENOMEM;
+-			goto out1;
+-		}
+-	
+-		gp->tx_ring = (gt96100_td_t *)(gp->rx_ring + RX_RING_SIZE);
+-		gp->tx_ring_dma =
+-			gp->rx_ring_dma + sizeof(gt96100_rd_t) * RX_RING_SIZE;
+-	}
+-    
+-	// Allocate the Rx Data Buffers
+-	if (gp->rx_buff == NULL) {
+-		gp->rx_buff = dmaalloc(PKT_BUF_SZ*RX_RING_SIZE,
+-				       &gp->rx_buff_dma);
+-		if (gp->rx_buff == NULL) {
+-			retval = -ENOMEM;
+-			goto out2;
+-		}
+-	}
+-    
+-	dbg(3, "%s: rx_ring=%p, tx_ring=%p\n", __FUNCTION__,
+-	    gp->rx_ring, gp->tx_ring);
+-
+-	// Allocate Rx Hash Table
+-	if (gp->hash_table == NULL) {
+-		gp->hash_table = (char*)dmaalloc(RX_HASH_TABLE_SIZE,
+-						 &gp->hash_table_dma);
+-		if (gp->hash_table == NULL) {
+-			retval = -ENOMEM;
+-			goto out3;
+-		}
+-	}
+-    
+-	dbg(3, "%s: hash=%p\n", __FUNCTION__, gp->hash_table);
+-
+-	spin_lock_init(&gp->lock);
+-    
+-	dev->open = gt96100_open;
+-	dev->hard_start_xmit = gt96100_tx;
+-	dev->stop = gt96100_close;
+-	dev->get_stats = gt96100_get_stats;
+-	//dev->do_ioctl = gt96100_ioctl;
+-	dev->set_multicast_list = gt96100_set_rx_mode;
+-	dev->tx_timeout = gt96100_tx_timeout;
+-	dev->watchdog_timeo = GT96100ETH_TX_TIMEOUT;
+-
+-	retval = register_netdev(dev);
+-	if (retval)
+-		goto out4;
+-	return 0;
+-
+-out4:
+-	dmafree(RX_HASH_TABLE_SIZE, gp->hash_table_dma);
+-out3:
+-	dmafree(PKT_BUF_SZ*RX_RING_SIZE, gp->rx_buff);
+-out2:
+-	dmafree(sizeof(gt96100_rd_t) * RX_RING_SIZE
+-		+ sizeof(gt96100_td_t) * TX_RING_SIZE,
+-		gp->rx_ring);
+-out1:
+-	free_netdev (dev);
+-out:
+-	release_region(gtif->iobase, GT96100_ETH_IO_SIZE);
+-
+-	err("%s failed.  Returns %d\n", __FUNCTION__, retval);
+-	return retval;
+-}
+-
+-
+-static void
+-reset_tx(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	int i;
+-
+-	abort(dev, sdcmrAT);
+-
+-	for (i=0; i<TX_RING_SIZE; i++) {
+-		if (gp->tx_skbuff[i]) {
+-			if (in_interrupt())
+-				dev_kfree_skb_irq(gp->tx_skbuff[i]);
+-			else
+-				dev_kfree_skb(gp->tx_skbuff[i]);
+-			gp->tx_skbuff[i] = NULL;
+-		}
+-
+-		gp->tx_ring[i].cmdstat = 0; // CPU owns
+-		gp->tx_ring[i].byte_cnt = 0;
+-		gp->tx_ring[i].buff_ptr = 0;
+-		gp->tx_ring[i].next =
+-			cpu_to_dma32(gp->tx_ring_dma +
+-				     sizeof(gt96100_td_t) * (i+1));
+-		dump_tx_desc(4, dev, i);
+-	}
+-	/* Wrap the ring. */
+-	gp->tx_ring[i-1].next = cpu_to_dma32(gp->tx_ring_dma);
+-    
+-	// setup only the lowest priority TxCDP reg
+-	GT96100ETH_WRITE(gp, GT96100_ETH_CURR_TX_DESC_PTR0, gp->tx_ring_dma);
+-	GT96100ETH_WRITE(gp, GT96100_ETH_CURR_TX_DESC_PTR1, 0);
+-
+-	// init Tx indeces and pkt counter
+-	gp->tx_next_in = gp->tx_next_out = 0;
+-	gp->tx_count = 0;
+-
+-}
+-
+-static void
+-reset_rx(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	int i;
+-
+-	abort(dev, sdcmrAR);
+-    
+-	for (i=0; i<RX_RING_SIZE; i++) {
+-		gp->rx_ring[i].next =
+-			cpu_to_dma32(gp->rx_ring_dma +
+-				     sizeof(gt96100_rd_t) * (i+1));
+-		gp->rx_ring[i].buff_ptr =
+-			cpu_to_dma32(gp->rx_buff_dma + i*PKT_BUF_SZ);
+-		gp->rx_ring[i].buff_sz = cpu_to_dma16(PKT_BUF_SZ);
+-		// Give ownership to device, set first and last, enable intr
+-		gp->rx_ring[i].cmdstat =
+-			cpu_to_dma32((u32)(rxFirst | rxLast | rxOwn | rxEI));
+-		dump_rx_desc(4, dev, i);
+-	}
+-	/* Wrap the ring. */
+-	gp->rx_ring[i-1].next = cpu_to_dma32(gp->rx_ring_dma);
+-
+-	// Setup only the lowest priority RxFDP and RxCDP regs
+-	for (i=0; i<4; i++) {
+-		if (i == 0) {
+-			GT96100ETH_WRITE(gp, GT96100_ETH_1ST_RX_DESC_PTR0,
+-					 gp->rx_ring_dma);
+-			GT96100ETH_WRITE(gp, GT96100_ETH_CURR_RX_DESC_PTR0,
+-					 gp->rx_ring_dma);
+-		} else {
+-			GT96100ETH_WRITE(gp,
+-					 GT96100_ETH_1ST_RX_DESC_PTR0 + i*4,
+-					 0);
+-			GT96100ETH_WRITE(gp,
+-					 GT96100_ETH_CURR_RX_DESC_PTR0 + i*4,
+-					 0);
+-		}
+-	}
+-
+-	// init Rx NextOut index
+-	gp->rx_next_out = 0;
+-}
+-
+-
+-// Returns 1 if the Tx counter and indeces don't gel
+-static int
+-gt96100_check_tx_consistent(struct gt96100_private *gp)
+-{
+-	int diff = gp->tx_next_in - gp->tx_next_out;
+-
+-	diff = diff<0 ? TX_RING_SIZE + diff : diff;
+-	diff = gp->tx_count == TX_RING_SIZE ? diff + TX_RING_SIZE : diff;
+-    
+-	return (diff != gp->tx_count);
+-}
+-
+-static int
+-gt96100_init(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	u32 tmp;
+-	u16 mii_reg;
+-    
+-	dbg(3, "%s: dev=%p\n", __FUNCTION__, dev);
+-	dbg(3, "%s: scs10_lo=%4x, scs10_hi=%4x\n", __FUNCTION__, 
+-	    GT96100_READ(0x8), GT96100_READ(0x10));
+-	dbg(3, "%s: scs32_lo=%4x, scs32_hi=%4x\n", __FUNCTION__,
+-	    GT96100_READ(0x18), GT96100_READ(0x20));
+-    
+-	// Stop and disable Port
+-	hard_stop(dev);
+-    
+-	// Setup CIU Arbiter
+-	tmp = GT96100_READ(GT96100_CIU_ARBITER_CONFIG);
+-	tmp |= (0x0c << (gp->port_num*2)); // set Ether DMA req priority to hi
+-#ifndef DESC_BE
+-	tmp &= ~(1<<31);                   // set desc endianess to little
+-#else
+-	tmp |= (1<<31);
+-#endif
+-	GT96100_WRITE(GT96100_CIU_ARBITER_CONFIG, tmp);
+-	dbg(3, "%s: CIU Config=%x/%x\n", __FUNCTION__, 
+-	    tmp, GT96100_READ(GT96100_CIU_ARBITER_CONFIG));
+-
+-	// Set routing.
+-	tmp = GT96100_READ(GT96100_ROUTE_MAIN) & (0x3f << 18);
+-	tmp |= (0x07 << (18 + gp->port_num*3));
+-	GT96100_WRITE(GT96100_ROUTE_MAIN, tmp);
+-
+-	/* set MII as peripheral func */
+-	tmp = GT96100_READ(GT96100_GPP_CONFIG2);
+-	tmp |= 0x7fff << (gp->port_num*16);
+-	GT96100_WRITE(GT96100_GPP_CONFIG2, tmp);
+-	
+-	/* Set up MII port pin directions */
+-	tmp = GT96100_READ(GT96100_GPP_IO2);
+-	tmp |= 0x003d << (gp->port_num*16);
+-	GT96100_WRITE(GT96100_GPP_IO2, tmp);
+-
+-	// Set-up hash table
+-	memset(gp->hash_table, 0, RX_HASH_TABLE_SIZE); // clear it
+-	gp->hash_mode = 0;
+-	// Add a single entry to hash table - our ethernet address
+-	gt96100_add_hash_entry(dev, dev->dev_addr);
+-	// Set-up DMA ptr to hash table
+-	GT96100ETH_WRITE(gp, GT96100_ETH_HASH_TBL_PTR, gp->hash_table_dma);
+-	dbg(3, "%s: Hash Tbl Ptr=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_HASH_TBL_PTR));
+-
+-	// Setup Tx
+-	reset_tx(dev);
+-
+-	dbg(3, "%s: Curr Tx Desc Ptr0=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_CURR_TX_DESC_PTR0));
+-
+-	// Setup Rx
+-	reset_rx(dev);
+-
+-	dbg(3, "%s: 1st/Curr Rx Desc Ptr0=%x/%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_1ST_RX_DESC_PTR0),
+-	    GT96100ETH_READ(gp, GT96100_ETH_CURR_RX_DESC_PTR0));
+-
+-	// eth port config register
+-	GT96100ETH_WRITE(gp, GT96100_ETH_PORT_CONFIG_EXT,
+-			 pcxrFCTL | pcxrFCTLen | pcxrFLP | pcxrDPLXen);
+-
+-	mii_reg = read_MII(gp->phy_addr, 0x11); /* int enable register */
+-	mii_reg |= 2;  /* enable mii interrupt */
+-	write_MII(gp->phy_addr, 0x11, mii_reg);
+-	
+-	dbg(3, "%s: PhyAD=%x\n", __FUNCTION__,
+-	    GT96100_READ(GT96100_ETH_PHY_ADDR_REG));
+-
+-	// setup DMA
+-
+-	// We want the Rx/Tx DMA to write/read data to/from memory in
+-	// Big Endian mode. Also set DMA Burst Size to 8 64Bit words.
+-#ifdef DESC_DATA_BE
+-	GT96100ETH_WRITE(gp, GT96100_ETH_SDMA_CONFIG,
+-			 (0xf<<sdcrRCBit) | sdcrRIFB | (3<<sdcrBSZBit));
+-#else
+-	GT96100ETH_WRITE(gp, GT96100_ETH_SDMA_CONFIG,
+-			 sdcrBLMR | sdcrBLMT |
+-			 (0xf<<sdcrRCBit) | sdcrRIFB | (3<<sdcrBSZBit));
+-#endif
+-	dbg(3, "%s: SDMA Config=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_SDMA_CONFIG));
+-
+-	// start Rx DMA
+-	GT96100ETH_WRITE(gp, GT96100_ETH_SDMA_COMM, sdcmrERD);
+-	dbg(3, "%s: SDMA Comm=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_SDMA_COMM));
+-    
+-	// enable this port (set hash size to 1/2K)
+-	GT96100ETH_WRITE(gp, GT96100_ETH_PORT_CONFIG, pcrEN | pcrHS);
+-	dbg(3, "%s: Port Config=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_PORT_CONFIG));
+-    
+-	/*
+-	 * Disable all Type-of-Service queueing. All Rx packets will be
+-	 * treated normally and will be sent to the lowest priority
+-	 * queue.
+-	 *
+-	 * Disable flow-control for now. FIXME: support flow control?
+-	 */
+-
+-	// clear all the MIB ctr regs
+-	GT96100ETH_WRITE(gp, GT96100_ETH_PORT_CONFIG_EXT,
+-			 pcxrFCTL | pcxrFCTLen | pcxrFLP |
+-			 pcxrPRIOrxOverride);
+-	read_mib_counters(gp);
+-	GT96100ETH_WRITE(gp, GT96100_ETH_PORT_CONFIG_EXT,
+-			 pcxrFCTL | pcxrFCTLen | pcxrFLP |
+-			 pcxrPRIOrxOverride | pcxrMIBclrMode);
+-    
+-	dbg(3, "%s: Port Config Ext=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_PORT_CONFIG_EXT));
+-
+-	netif_start_queue(dev);
+-
+-	dump_MII(4, dev);
+-
+-	// enable interrupts
+-	enable_ether_irq(dev);
+-
+-	// we should now be receiving frames
+-	return 0;
+-}
+-
+-
+-static int
+-gt96100_open(struct net_device *dev)
+-{
+-	int retval;
+-    
+-	dbg(2, "%s: dev=%p\n", __FUNCTION__, dev);
+-
+-	// Initialize and startup the GT-96100 ethernet port
+-	if ((retval = gt96100_init(dev))) {
+-		err("error in gt96100_init\n");
+-		free_irq(dev->irq, dev);
+-		return retval;
+-	}
+-
+-	if ((retval = request_irq(dev->irq, &gt96100_interrupt,
+-				  IRQF_SHARED, dev->name, dev))) {
+-		err("unable to get IRQ %d\n", dev->irq);
+-		return retval;
+-	}
+-	
+-	dbg(2, "%s: Initialization done.\n", __FUNCTION__);
+-
+-	return 0;
+-}
+-
+-static int
+-gt96100_close(struct net_device *dev)
+-{
+-	dbg(3, "%s: dev=%p\n", __FUNCTION__, dev);
+-
+-	// stop the device
+-	if (netif_device_present(dev)) {
+-		netif_stop_queue(dev);
+-		hard_stop(dev);
+-	}
+-
+-	free_irq(dev->irq, dev);
+-    
+-	return 0;
+-}
+-
+-
+-static int
+-gt96100_tx(struct sk_buff *skb, struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	unsigned long flags;
+-	int nextIn;
+-
+-	spin_lock_irqsave(&gp->lock, flags);
+-
+-	nextIn = gp->tx_next_in;
+-
+-	dbg(3, "%s: nextIn=%d\n", __FUNCTION__, nextIn);
+-    
+-	if (gp->tx_count >= TX_RING_SIZE) {
+-		warn("Tx Ring full, pkt dropped.\n");
+-		gp->stats.tx_dropped++;
+-		spin_unlock_irqrestore(&gp->lock, flags);
+-		return 1;
+-	}
+-    
+-	if (!(gp->last_psr & psrLink)) {
+-		err("%s: Link down, pkt dropped.\n", __FUNCTION__);
+-		gp->stats.tx_dropped++;
+-		spin_unlock_irqrestore(&gp->lock, flags);
+-		return 1;
+-	}
+-    
+-	if (dma32_to_cpu(gp->tx_ring[nextIn].cmdstat) & txOwn) {
+-		err("%s: device owns descriptor, pkt dropped.\n", __FUNCTION__);
+-		gp->stats.tx_dropped++;
+-		// stop the queue, so Tx timeout can fix it
+-		netif_stop_queue(dev);
+-		spin_unlock_irqrestore(&gp->lock, flags);
+-		return 1;
+-	}
+-    
+-	// Prepare the Descriptor at tx_next_in
+-	gp->tx_skbuff[nextIn] = skb;
+-	gp->tx_ring[nextIn].byte_cnt = cpu_to_dma16(skb->len);
+-	gp->tx_ring[nextIn].buff_ptr = cpu_to_dma32(virt_to_phys(skb->data));
+-	// make sure packet gets written back to memory
+-	dma_cache_wback_inv((unsigned long)(skb->data), skb->len);
+-	// Give ownership to device, set first and last desc, enable interrupt
+-	// Setting of ownership bit must be *last*!
+-	gp->tx_ring[nextIn].cmdstat =
+-		cpu_to_dma32((u32)(txOwn | txGenCRC | txEI |
+-				   txPad | txFirst | txLast));
+-    
+-	dump_tx_desc(4, dev, nextIn);
+-	dump_skb(4, dev, skb);
+-
+-	// increment tx_next_in with wrap
+-	gp->tx_next_in = (nextIn + 1) % TX_RING_SIZE;
+-	// If DMA is stopped, restart
+-	if (!(GT96100ETH_READ(gp, GT96100_ETH_PORT_STATUS) & psrTxLow))
+-		GT96100ETH_WRITE(gp, GT96100_ETH_SDMA_COMM,
+-				 sdcmrERD | sdcmrTXDL);
+-
+-	// increment count and stop queue if full
+-	if (++gp->tx_count == TX_RING_SIZE) {
+-		gp->tx_full = 1;
+-		netif_stop_queue(dev);
+-		dbg(2, "Tx Ring now full, queue stopped.\n");
+-	}
+-    
+-	dev->trans_start = jiffies;
+-	spin_unlock_irqrestore(&gp->lock, flags);
+-
+-	return 0;
+-}
+-
+-
+-static int
+-gt96100_rx(struct net_device *dev, u32 status)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	struct sk_buff *skb;
+-	int pkt_len, nextOut, cdp;
+-	gt96100_rd_t *rd;
+-	u32 cmdstat;
+-    
+-	dbg(3, "%s: dev=%p, status=%x\n", __FUNCTION__, dev, status);
+-
+-	cdp = (GT96100ETH_READ(gp, GT96100_ETH_1ST_RX_DESC_PTR0)
+-	       - gp->rx_ring_dma) / sizeof(gt96100_rd_t);
+-
+-	// Continue until we reach 1st descriptor pointer
+-	for (nextOut = gp->rx_next_out; nextOut != cdp;
+-	     nextOut = (nextOut + 1) % RX_RING_SIZE) {
+-	
+-		if (--gp->intr_work_done == 0)
+-			break;
+-
+-		rd = &gp->rx_ring[nextOut];
+-		cmdstat = dma32_to_cpu(rd->cmdstat);
+-	
+-		dbg(4, "%s: Rx desc cmdstat=%x, nextOut=%d\n", __FUNCTION__,
+-		    cmdstat, nextOut);
+-
+-		if (cmdstat & (u32)rxOwn) {
+-			//err("%s: device owns descriptor!\n", __FUNCTION__);
+-			// DMA is not finished updating descriptor???
+-			// Leave and come back later to pick-up where
+-			// we left off.
+-			break;
+-		}
+-
+-		// Drop this received pkt if there were any errors
+-		if (((cmdstat & (u32)(rxErrorSummary)) &&
+-		     (cmdstat & (u32)(rxFirst))) || (status & icrRxError)) {
+-			// update the detailed rx error counters that
+-			// are not covered by the MIB counters.
+-			if (cmdstat & (u32)rxOverrun)
+-				gp->stats.rx_fifo_errors++;
+-			cmdstat |= (u32)rxOwn;
+-			rd->cmdstat = cpu_to_dma32(cmdstat);
+-			continue;
+-		}
+-
+-		/*
+-		 * Must be first and last (ie only) descriptor of packet. We
+-		 * ignore (drop) any packets that do not fit in one descriptor.
+-		 * Every descriptor's receive buffer is large enough to hold
+-		 * the maximum 802.3 frame size, so a multi-descriptor packet
+-		 * indicates an error. Most if not all corrupted packets will
+-		 * have already been dropped by the above check for the
+-		 * rxErrorSummary status bit.
+-		 */
+-		if (!(cmdstat & (u32)rxFirst) || !(cmdstat & (u32)rxLast)) {
+-			if (cmdstat & (u32)rxFirst) {
+-				/*
+-				 * This is the first descriptor of a
+-				 * multi-descriptor packet. It isn't corrupted
+-				 * because the above check for rxErrorSummary
+-				 * would have dropped it already, so what's
+-				 * the deal with this packet? Good question,
+-				 * let's dump it out.
+-				 */
+-				err("%s: desc not first and last!\n", __FUNCTION__);
+-				dump_rx_desc(0, dev, nextOut);
+-			}
+-			cmdstat |= (u32)rxOwn;
+-			rd->cmdstat = cpu_to_dma32(cmdstat);
+-			// continue to drop every descriptor of this packet
+-			continue;
+-		}
+-	
+-		pkt_len = dma16_to_cpu(rd->byte_cnt);
+-	
+-		/* Create new skb. */
+-		skb = dev_alloc_skb(pkt_len+2);
+-		if (skb == NULL) {
+-			err("%s: Memory squeeze, dropping packet.\n", __FUNCTION__);
+-			gp->stats.rx_dropped++;
+-			cmdstat |= (u32)rxOwn;
+-			rd->cmdstat = cpu_to_dma32(cmdstat);
+-			continue;
+-		}
+-		skb->dev = dev;
+-		skb_reserve(skb, 2);   /* 16 byte IP header align */
+-		memcpy(skb_put(skb, pkt_len),
+-		       &gp->rx_buff[nextOut*PKT_BUF_SZ], pkt_len);
+-		skb->protocol = eth_type_trans(skb, dev);
+-		dump_skb(4, dev, skb);
+-	
+-		netif_rx(skb);        /* pass the packet to upper layers */
+-		dev->last_rx = jiffies;
+-
+-		// now we can release ownership of this desc back to device
+-		cmdstat |= (u32)rxOwn;
+-		rd->cmdstat = cpu_to_dma32(cmdstat);
+-	}
+-    
+-	if (nextOut == gp->rx_next_out)
+-		dbg(3, "%s: RxCDP did not increment?\n", __FUNCTION__);
+-
+-	gp->rx_next_out = nextOut;
+-	return 0;
+-}
+-
+-
+-static void
+-gt96100_tx_complete(struct net_device *dev, u32 status)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	int nextOut, cdp;
+-	gt96100_td_t *td;
+-	u32 cmdstat;
+-
+-	cdp = (GT96100ETH_READ(gp, GT96100_ETH_CURR_TX_DESC_PTR0)
+-	       - gp->tx_ring_dma) / sizeof(gt96100_td_t);
+-    
+-	// Continue until we reach the current descriptor pointer
+-	for (nextOut = gp->tx_next_out; nextOut != cdp;
+-	     nextOut = (nextOut + 1) % TX_RING_SIZE) {
+-	
+-		if (--gp->intr_work_done == 0)
+-			break;
+-
+-		td = &gp->tx_ring[nextOut];
+-		cmdstat = dma32_to_cpu(td->cmdstat);
+-	
+-		dbg(3, "%s: Tx desc cmdstat=%x, nextOut=%d\n", __FUNCTION__,
+-		    cmdstat, nextOut);
+-	
+-		if (cmdstat & (u32)txOwn) {
+-			/*
+-			 * DMA is not finished writing descriptor???
+-			 * Leave and come back later to pick-up where
+-			 * we left off.
+-			 */
+-			break;
+-		}
+-	
+-		// increment Tx error stats
+-		if (cmdstat & (u32)txErrorSummary) {
+-			dbg(2, "%s: Tx error, cmdstat = %x\n", __FUNCTION__,
+-			    cmdstat);
+-			gp->stats.tx_errors++;
+-			if (cmdstat & (u32)txReTxLimit)
+-				gp->stats.tx_aborted_errors++;
+-			if (cmdstat & (u32)txUnderrun)
+-				gp->stats.tx_fifo_errors++;
+-			if (cmdstat & (u32)txLateCollision)
+-				gp->stats.tx_window_errors++;
+-		}
+-	
+-		if (cmdstat & (u32)txCollision)
+-			gp->stats.collisions +=
+-				(u32)((cmdstat & txReTxCntMask) >>
+-				      txReTxCntBit);
+-
+-		// Wake the queue if the ring was full
+-		if (gp->tx_full) {
+-			gp->tx_full = 0;
+-			if (gp->last_psr & psrLink) {
+-				netif_wake_queue(dev);
+-				dbg(2, "%s: Tx Ring was full, queue waked\n",
+-				    __FUNCTION__);
+-			}
+-		}
+-	
+-		// decrement tx ring buffer count
+-		if (gp->tx_count) gp->tx_count--;
+-	
+-		// free the skb
+-		if (gp->tx_skbuff[nextOut]) {
+-			dbg(3, "%s: good Tx, skb=%p\n", __FUNCTION__,
+-			    gp->tx_skbuff[nextOut]);
+-			dev_kfree_skb_irq(gp->tx_skbuff[nextOut]);
+-			gp->tx_skbuff[nextOut] = NULL;
+-		} else {
+-			err("%s: no skb!\n", __FUNCTION__);
+-		}
+-	}
+-
+-	gp->tx_next_out = nextOut;
+-
+-	if (gt96100_check_tx_consistent(gp)) {
+-		err("%s: Tx queue inconsistent!\n", __FUNCTION__);
+-	}
+-    
+-	if ((status & icrTxEndLow) && gp->tx_count != 0) {
+-		// we must restart the DMA
+-		dbg(3, "%s: Restarting Tx DMA\n", __FUNCTION__);
+-		GT96100ETH_WRITE(gp, GT96100_ETH_SDMA_COMM,
+-				 sdcmrERD | sdcmrTXDL);
+-	}
+-}
+-
+-
+-static irqreturn_t
+-gt96100_interrupt(int irq, void *dev_id, struct pt_regs *regs)
+-{
+-	struct net_device *dev = (struct net_device *)dev_id;
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	u32 status;
+-    	int handled = 0;
+-
+-	if (dev == NULL) {
+-		err("%s: null dev ptr\n", __FUNCTION__);
+-		return IRQ_NONE;
+-	}
+-
+-	dbg(3, "%s: entry, icr=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_INT_CAUSE));
+-
+-	spin_lock(&gp->lock);
+-
+-	gp->intr_work_done = max_interrupt_work;
+-
+-	while (gp->intr_work_done > 0) {
+-
+-		status = GT96100ETH_READ(gp, GT96100_ETH_INT_CAUSE);
+-		// ACK interrupts
+-		GT96100ETH_WRITE(gp, GT96100_ETH_INT_CAUSE, ~status);
+-
+-		if ((status & icrEtherIntSum) == 0 &&
+-		    !(status & (icrTxBufferLow|icrTxBufferHigh|icrRxBuffer)))
+-			break;
+-
+-		handled = 1;
+-
+-		if (status & icrMIIPhySTC) {
+-			u32 psr = GT96100ETH_READ(gp, GT96100_ETH_PORT_STATUS);
+-			if (gp->last_psr != psr) {
+-				dbg(0, "port status:\n");
+-				dbg(0, "    %s MBit/s, %s-duplex, "
+-				    "flow-control %s, link is %s,\n",
+-				    psr & psrSpeed ? "100":"10",
+-				    psr & psrDuplex ? "full":"half",
+-				    psr & psrFctl ? "disabled":"enabled",
+-				    psr & psrLink ? "up":"down");
+-				dbg(0, "    TxLowQ is %s, TxHighQ is %s, "
+-				    "Transmitter is %s\n",
+-				    psr & psrTxLow ? "running":"stopped",
+-				    psr & psrTxHigh ? "running":"stopped",
+-				    psr & psrTxInProg ? "on":"off");
+-		
+-				if ((psr & psrLink) && !gp->tx_full &&
+-				    netif_queue_stopped(dev)) {
+-					dbg(0, "%s: Link up, waking queue.\n",
+-					    __FUNCTION__);
+-					netif_wake_queue(dev);
+-				} else if (!(psr & psrLink) &&
+-					   !netif_queue_stopped(dev)) {
+-					dbg(0, "%s: Link down, stopping queue.\n",
+-					    __FUNCTION__);
+-					netif_stop_queue(dev);
+-				}
+-
+-				gp->last_psr = psr;
+-			}
+-
+-			if (--gp->intr_work_done == 0)
+-				break;
+-		}
+-	
+-		if (status & (icrTxBufferLow | icrTxEndLow))
+-			gt96100_tx_complete(dev, status);
+-
+-		if (status & (icrRxBuffer | icrRxError)) {
+-			gt96100_rx(dev, status);
+-		}
+-	
+-		// Now check TX errors (RX errors were handled in gt96100_rx)
+-		if (status & icrTxErrorLow) {
+-			err("%s: Tx resource error\n", __FUNCTION__);
+-			if (--gp->intr_work_done == 0)
+-				break;
+-		}
+-	
+-		if (status & icrTxUdr) {
+-			err("%s: Tx underrun error\n", __FUNCTION__);
+-			if (--gp->intr_work_done == 0)
+-				break;
+-		}
+-	}
+-
+-	if (gp->intr_work_done == 0) {
+-		// ACK any remaining pending interrupts
+-		GT96100ETH_WRITE(gp, GT96100_ETH_INT_CAUSE, 0);
+-		dbg(3, "%s: hit max work\n", __FUNCTION__);
+-	}
+-    
+-	dbg(3, "%s: exit, icr=%x\n", __FUNCTION__,
+-	    GT96100ETH_READ(gp, GT96100_ETH_INT_CAUSE));
+-
+-	spin_unlock(&gp->lock);
+-	return IRQ_RETVAL(handled);
+-}
+-
+-
+-static void
+-gt96100_tx_timeout(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	unsigned long flags;
+-    
+-	spin_lock_irqsave(&gp->lock, flags);
+-    
+-	if (!(gp->last_psr & psrLink)) {
+-		err("tx_timeout: link down.\n");
+-		spin_unlock_irqrestore(&gp->lock, flags);
+-	} else {
+-		if (gt96100_check_tx_consistent(gp))
+-			err("tx_timeout: Tx ring error.\n");
+-
+-		disable_ether_irq(dev);
+-		spin_unlock_irqrestore(&gp->lock, flags);
+-		reset_tx(dev);
+-		enable_ether_irq(dev);
+-	
+-		netif_wake_queue(dev);
+-	}
+-}
+-
+-
+-static void
+-gt96100_set_rx_mode(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	unsigned long flags;
+-	//struct dev_mc_list *mcptr;
+-    
+-	dbg(3, "%s: dev=%p, flags=%x\n", __FUNCTION__, dev, dev->flags);
+-
+-	// stop the Receiver DMA
+-	abort(dev, sdcmrAR);
+-
+-	spin_lock_irqsave(&gp->lock, flags);
+-
+-	if (dev->flags & IFF_PROMISC) {
+-		GT96100ETH_WRITE(gp, GT96100_ETH_PORT_CONFIG,
+-				 pcrEN | pcrHS | pcrPM);
+-	}
+-
+-#if 0
+-	/*
+-	  FIXME: currently multicast doesn't work - need to get hash table
+-	  working first.
+-	*/
+-	if (dev->mc_count) {
+-		// clear hash table
+-		memset(gp->hash_table, 0, RX_HASH_TABLE_SIZE);
+-		// Add our ethernet address
+-		gt96100_add_hash_entry(dev, dev->dev_addr);
+-
+-		for (mcptr = dev->mc_list; mcptr; mcptr = mcptr->next) {
+-			dump_hw_addr(2, dev, "%s: addr=", __FUNCTION__,
+-				     mcptr->dmi_addr);
+-			gt96100_add_hash_entry(dev, mcptr->dmi_addr);
+-		}
+-	}
+-#endif
+-    
+-	// restart Rx DMA
+-	GT96100ETH_WRITE(gp, GT96100_ETH_SDMA_COMM, sdcmrERD);
+-
+-	spin_unlock_irqrestore(&gp->lock, flags);
+-}
+-
+-static struct net_device_stats *
+-gt96100_get_stats(struct net_device *dev)
+-{
+-	struct gt96100_private *gp = netdev_priv(dev);
+-	unsigned long flags;
+-
+-	dbg(3, "%s: dev=%p\n", __FUNCTION__, dev);
+-
+-	if (netif_device_present(dev)) {
+-		spin_lock_irqsave (&gp->lock, flags);
+-		update_stats(gp);
+-		spin_unlock_irqrestore (&gp->lock, flags);
+-	}
+-
+-	return &gp->stats;
+-}
+-
+-static void gt96100_cleanup_module(void)
+-{
+-	int i;
+-	for (i=0; i<NUM_INTERFACES; i++) {
+-		struct gt96100_if_t *gtif = &gt96100_iflist[i];
+-		if (gtif->dev != NULL) {
+-			struct gt96100_private *gp = (struct gt96100_private *)
+-				netdev_priv(gtif->dev);
+-			unregister_netdev(gtif->dev);
+-			dmafree(RX_HASH_TABLE_SIZE, gp->hash_table_dma);
+-			dmafree(PKT_BUF_SZ*RX_RING_SIZE, gp->rx_buff);
+-			dmafree(sizeof(gt96100_rd_t) * RX_RING_SIZE
+-				+ sizeof(gt96100_td_t) * TX_RING_SIZE,
+-				gp->rx_ring);
+-			free_netdev(gtif->dev);
+-			release_region(gtif->iobase, GT96100_ETH_IO_SIZE);
+-		}
+-	}
+-}
+-
+-static int __init gt96100_setup(char *options)
+-{
+-	char *this_opt;
+-
+-	if (!options || !*options)
+-		return 0;
+-
+-	while ((this_opt = strsep (&options, ",")) != NULL) {
+-		if (!*this_opt)
+-			continue;
+-		if (!strncmp(this_opt, "mac0:", 5)) {
+-			memcpy(mac0, this_opt+5, 17);
+-			mac0[17]= '\0';
+-		} else if (!strncmp(this_opt, "mac1:", 5)) {
+-			memcpy(mac1, this_opt+5, 17);
+-			mac1[17]= '\0';
+-		}
+-	}
+-
+-	return 1;
+-}
+-
+-__setup("gt96100eth=", gt96100_setup);
+-
+-module_init(gt96100_init_module);
+-module_exit(gt96100_cleanup_module);
+-
+-MODULE_AUTHOR("Steve Longerbeam <stevel@mvista.com>");
+-MODULE_DESCRIPTION("GT96100 Ethernet driver");
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/net/gt96100eth.h mips/drivers/net/gt96100eth.h
+--- mips-orig/drivers/net/gt96100eth.h	2006-09-21 00:46:08.328513750 +0900
++++ mips/drivers/net/gt96100eth.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,346 +0,0 @@
+-/*
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	stevel@mvista.com or source@mvista.com
+- *
+- * ########################################################################
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * ########################################################################
+- *
+- * Ethernet driver definitions for the MIPS GT96100 Advanced
+- * Communication Controller.
+- * 
+- */
+-#ifndef _GT96100ETH_H
+-#define _GT96100ETH_H
+-
+-#include <asm/galileo-boards/gt96100.h>
+-
+-#define dbg(lvl, format, arg...) \
+-    if (lvl <= GT96100_DEBUG) \
+-        printk(KERN_DEBUG "%s: " format, dev->name , ## arg)
+-#define err(format, arg...) \
+-    printk(KERN_ERR "%s: " format, dev->name , ## arg)
+-#define info(format, arg...) \
+-    printk(KERN_INFO "%s: " format, dev->name , ## arg)
+-#define warn(format, arg...) \
+-    printk(KERN_WARNING "%s: " format, dev->name , ## arg)
+-
+-/* Keep the ring sizes a power of two for efficiency. */
+-#define TX_RING_SIZE	16
+-#define RX_RING_SIZE	32
+-#define PKT_BUF_SZ	1536	/* Size of each temporary Rx buffer.*/
+-
+-#define RX_HASH_TABLE_SIZE 16384
+-#define HASH_HOP_NUMBER 12
+-
+-#define NUM_INTERFACES 2
+-
+-#define GT96100ETH_TX_TIMEOUT HZ/4
+-
+-#define GT96100_ETH0_BASE (MIPS_GT96100_BASE + GT96100_ETH_PORT_CONFIG)
+-#define GT96100_ETH1_BASE (GT96100_ETH0_BASE + GT96100_ETH_IO_SIZE)
+-
+-#ifdef CONFIG_MIPS_EV96100
+-#define GT96100_ETHER0_IRQ 3
+-#define GT96100_ETHER1_IRQ 4
+-#else
+-#define GT96100_ETHER0_IRQ -1
+-#define GT96100_ETHER1_IRQ -1
+-#endif
+-
+-#define REV_GT96100  1
+-#define REV_GT96100A_1 2
+-#define REV_GT96100A 3
+-
+-#define GT96100ETH_READ(gp, offset) \
+-    GT96100_READ((gp->port_offset + offset))
+-
+-#define GT96100ETH_WRITE(gp, offset, data) \
+-    GT96100_WRITE((gp->port_offset + offset), data)
+-
+-#define GT96100ETH_SETBIT(gp, offset, bits) {\
+-    u32 val = GT96100ETH_READ(gp, offset); val |= (u32)(bits); \
+-    GT96100ETH_WRITE(gp, offset, val); }
+-
+-#define GT96100ETH_CLRBIT(gp, offset, bits) {\
+-    u32 val = GT96100ETH_READ(gp, offset); val &= (u32)(~(bits)); \
+-    GT96100ETH_WRITE(gp, offset, val); }
+-
+-
+-/* Bit definitions of the SMI Reg */
+-enum {
+-	smirDataMask = 0xffff,
+-	smirPhyAdMask = 0x1f<<16,
+-	smirPhyAdBit = 16,
+-	smirRegAdMask = 0x1f<<21,
+-	smirRegAdBit = 21,
+-	smirOpCode = 1<<26,
+-	smirReadValid = 1<<27,
+-	smirBusy = 1<<28
+-};
+-
+-/* Bit definitions of the Port Config Reg */
+-enum pcr_bits {
+-	pcrPM = 1,
+-	pcrRBM = 2,
+-	pcrPBF = 4,
+-	pcrEN = 1<<7,
+-	pcrLPBKMask = 0x3<<8,
+-	pcrLPBKBit = 8,
+-	pcrFC = 1<<10,
+-	pcrHS = 1<<12,
+-	pcrHM = 1<<13,
+-	pcrHDM = 1<<14,
+-	pcrHD = 1<<15,
+-	pcrISLMask = 0x7<<28,
+-	pcrISLBit = 28,
+-	pcrACCS = 1<<31
+-};
+-
+-/* Bit definitions of the Port Config Extend Reg */
+-enum pcxr_bits {
+-	pcxrIGMP = 1,
+-	pcxrSPAN = 2,
+-	pcxrPAR = 4,
+-	pcxrPRIOtxMask = 0x7<<3,
+-	pcxrPRIOtxBit = 3,
+-	pcxrPRIOrxMask = 0x3<<6,
+-	pcxrPRIOrxBit = 6,
+-	pcxrPRIOrxOverride = 1<<8,
+-	pcxrDPLXen = 1<<9,
+-	pcxrFCTLen = 1<<10,
+-	pcxrFLP = 1<<11,
+-	pcxrFCTL = 1<<12,
+-	pcxrMFLMask = 0x3<<14,
+-	pcxrMFLBit = 14,
+-	pcxrMIBclrMode = 1<<16,
+-	pcxrSpeed = 1<<18,
+-	pcxrSpeeden = 1<<19,
+-	pcxrRMIIen = 1<<20,
+-	pcxrDSCPen = 1<<21
+-};
+-
+-/* Bit definitions of the Port Command Reg */
+-enum pcmr_bits {
+-	pcmrFJ = 1<<15
+-};
+-
+-
+-/* Bit definitions of the Port Status Reg */
+-enum psr_bits {
+-	psrSpeed = 1,
+-	psrDuplex = 2,
+-	psrFctl = 4,
+-	psrLink = 8,
+-	psrPause = 1<<4,
+-	psrTxLow = 1<<5,
+-	psrTxHigh = 1<<6,
+-	psrTxInProg = 1<<7
+-};
+-
+-/* Bit definitions of the SDMA Config Reg */
+-enum sdcr_bits {
+-	sdcrRCMask = 0xf<<2,
+-	sdcrRCBit = 2,
+-	sdcrBLMR = 1<<6,
+-	sdcrBLMT = 1<<7,
+-	sdcrPOVR = 1<<8,
+-	sdcrRIFB = 1<<9,
+-	sdcrBSZMask = 0x3<<12,
+-	sdcrBSZBit = 12
+-};
+-
+-/* Bit definitions of the SDMA Command Reg */
+-enum sdcmr_bits {
+-	sdcmrERD = 1<<7,
+-	sdcmrAR = 1<<15,
+-	sdcmrSTDH = 1<<16,
+-	sdcmrSTDL = 1<<17,
+-	sdcmrTXDH = 1<<23,
+-	sdcmrTXDL = 1<<24,
+-	sdcmrAT = 1<<31
+-};
+-
+-/* Bit definitions of the Interrupt Cause Reg */
+-enum icr_bits {
+-	icrRxBuffer = 1,
+-	icrTxBufferHigh = 1<<2,
+-	icrTxBufferLow = 1<<3,
+-	icrTxEndHigh = 1<<6,
+-	icrTxEndLow = 1<<7,
+-	icrRxError = 1<<8,
+-	icrTxErrorHigh = 1<<10,
+-	icrTxErrorLow = 1<<11,
+-	icrRxOVR = 1<<12,
+-	icrTxUdr = 1<<13,
+-	icrRxBufferQ0 = 1<<16,
+-	icrRxBufferQ1 = 1<<17,
+-	icrRxBufferQ2 = 1<<18,
+-	icrRxBufferQ3 = 1<<19,
+-	icrRxErrorQ0 = 1<<20,
+-	icrRxErrorQ1 = 1<<21,
+-	icrRxErrorQ2 = 1<<22,
+-	icrRxErrorQ3 = 1<<23,
+-	icrMIIPhySTC = 1<<28,
+-	icrSMIdone = 1<<29,
+-	icrEtherIntSum = 1<<31
+-};
+-
+-
+-/* The Rx and Tx descriptor lists. */
+-typedef struct {
+-#ifdef DESC_BE
+-	u16 byte_cnt;
+-	u16 reserved;
+-#else
+-	u16 reserved;
+-	u16 byte_cnt;
+-#endif
+-	u32 cmdstat;
+-	u32 next;
+-	u32 buff_ptr;
+-} __attribute__ ((packed)) gt96100_td_t;
+-
+-typedef struct {
+-#ifdef DESC_BE
+-	u16 buff_sz;
+-	u16 byte_cnt;
+-#else
+-	u16 byte_cnt;
+-	u16 buff_sz;
+-#endif
+-	u32 cmdstat;
+-	u32 next;
+-	u32 buff_ptr;
+-} __attribute__ ((packed)) gt96100_rd_t;
+-
+-
+-/* Values for the Tx command-status descriptor entry. */
+-enum td_cmdstat {
+-	txOwn = 1<<31,
+-	txAutoMode = 1<<30,
+-	txEI = 1<<23,
+-	txGenCRC = 1<<22,
+-	txPad = 1<<18,
+-	txFirst = 1<<17,
+-	txLast = 1<<16,
+-	txErrorSummary = 1<<15,
+-	txReTxCntMask = 0x0f<<10,
+-	txReTxCntBit = 10,
+-	txCollision = 1<<9,
+-	txReTxLimit = 1<<8,
+-	txUnderrun = 1<<6,
+-	txLateCollision = 1<<5
+-};
+-
+-
+-/* Values for the Rx command-status descriptor entry. */
+-enum rd_cmdstat {
+-	rxOwn = 1<<31,
+-	rxAutoMode = 1<<30,
+-	rxEI = 1<<23,
+-	rxFirst = 1<<17,
+-	rxLast = 1<<16,
+-	rxErrorSummary = 1<<15,
+-	rxIGMP = 1<<14,
+-	rxHashExpired = 1<<13,
+-	rxMissedFrame = 1<<12,
+-	rxFrameType = 1<<11,
+-	rxShortFrame = 1<<8,
+-	rxMaxFrameLen = 1<<7,
+-	rxOverrun = 1<<6,
+-	rxCollision = 1<<4,
+-	rxCRCError = 1
+-};
+-
+-/* Bit fields of a Hash Table Entry */
+-enum hash_table_entry {
+-	hteValid = 1,
+-	hteSkip = 2,
+-	hteRD = 4
+-};
+-
+-// The MIB counters
+-typedef struct {
+-	u32 byteReceived;
+-	u32 byteSent;
+-	u32 framesReceived;
+-	u32 framesSent;
+-	u32 totalByteReceived;
+-	u32 totalFramesReceived;
+-	u32 broadcastFramesReceived;
+-	u32 multicastFramesReceived;
+-	u32 cRCError;
+-	u32 oversizeFrames;
+-	u32 fragments;
+-	u32 jabber;
+-	u32 collision;
+-	u32 lateCollision;
+-	u32 frames64;
+-	u32 frames65_127;
+-	u32 frames128_255;
+-	u32 frames256_511;
+-	u32 frames512_1023;
+-	u32 frames1024_MaxSize;
+-	u32 macRxError;
+-	u32 droppedFrames;
+-	u32 outMulticastFrames;
+-	u32 outBroadcastFrames;
+-	u32 undersizeFrames;
+-} mib_counters_t;
+-
+-
+-struct gt96100_private {
+-	gt96100_rd_t* rx_ring;
+-	gt96100_td_t* tx_ring;
+-	// The Rx and Tx rings must be 16-byte aligned
+-	dma_addr_t rx_ring_dma;
+-	dma_addr_t tx_ring_dma;
+-	char* hash_table;
+-	// The Hash Table must be 8-byte aligned
+-	dma_addr_t hash_table_dma;
+-	int hash_mode;
+-    
+-	// The Rx buffers must be 8-byte aligned
+-	char* rx_buff;
+-	dma_addr_t rx_buff_dma;
+-	// Tx buffers (tx_skbuff[i]->data) with less than 8 bytes
+-	// of payload must be 8-byte aligned
+-	struct sk_buff* tx_skbuff[TX_RING_SIZE];
+-	int rx_next_out; /* The next free ring entry to receive */
+-	int tx_next_in;	 /* The next free ring entry to send */
+-	int tx_next_out; /* The last ring entry the ISR processed */
+-	int tx_count;    /* current # of pkts waiting to be sent in Tx ring */
+-	int intr_work_done; /* number of Rx and Tx pkts processed in the isr */
+-	int tx_full;        /* Tx ring is full */
+-    
+-	mib_counters_t mib;
+-	struct net_device_stats stats;
+-
+-	int port_num;  // 0 or 1
+-	int chip_rev;
+-	u32 port_offset;
+-    
+-	int phy_addr; // PHY address
+-	u32 last_psr; // last value of the port status register
+-
+-	int options;     /* User-settable misc. driver options. */
+-	struct timer_list timer;
+-	spinlock_t lock; /* Serialise access to device */
+-};
+-
+-#endif
 diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/bootinfo.h mips/include/asm-mips/bootinfo.h
---- mips-orig/include/asm-mips/bootinfo.h	2006-09-21 00:57:25.830855000 +0900
-+++ mips/include/asm-mips/bootinfo.h	2006-09-21 00:57:52.748537250 +0900
-@@ -121,7 +121,6 @@
- #define  MACH_MOMENCO_OCELOT	0
- #define  MACH_MOMENCO_OCELOT_G	1
- #define  MACH_MOMENCO_OCELOT_C	2
--#define  MACH_MOMENCO_JAGUAR_ATX 3
- #define  MACH_MOMENCO_OCELOT_3	4
+--- mips-orig/include/asm-mips/bootinfo.h	2006-09-21 00:46:16.777041750 +0900
++++ mips/include/asm-mips/bootinfo.h	2006-09-21 00:46:07.468460000 +0900
+@@ -112,7 +112,6 @@
+  * Valid machtype for group GALILEO
+  */
+ #define MACH_GROUP_GALILEO     11	/* Galileo Eval Boards		*/
+-#define  MACH_EV96100		0	/* EV96100 */
+ #define  MACH_EV64120A		1	/* EV64120A */
  
  /*
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/highmem.h mips/include/asm-mips/highmem.h
---- mips-orig/include/asm-mips/highmem.h	2006-09-21 00:46:17.493086500 +0900
-+++ mips/include/asm-mips/highmem.h	2006-09-21 00:57:52.748537250 +0900
-@@ -47,41 +47,6 @@ extern pte_t *pkmap_page_table;
- extern void * kmap_high(struct page *page);
- extern void kunmap_high(struct page *page);
- 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/galileo-boards/ev96100.h mips/include/asm-mips/galileo-boards/ev96100.h
+--- mips-orig/include/asm-mips/galileo-boards/ev96100.h	2006-09-21 00:46:17.489086250 +0900
++++ mips/include/asm-mips/galileo-boards/ev96100.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,55 +0,0 @@
 -/*
-- * CONFIG_LIMITED_DMA is for systems with DMA limitations such as Momentum's
-- * Jaguar ATX.  This option exploits the highmem code in the kernel so is
-- * always enabled together with CONFIG_HIGHMEM but at this time doesn't
-- * actually add highmem functionality.
-- */
--
--#ifdef CONFIG_LIMITED_DMA
--
--/*
-- * These are the default functions for the no-highmem case from
-- * <linux/highmem.h>
-- */
--static inline void *kmap(struct page *page)
--{
--	might_sleep();
--	return page_address(page);
--}
--
--#define kunmap(page) do { (void) (page); } while (0)
--
--static inline void *kmap_atomic(struct page *page, enum km_type type)
--{
--	return page_address(page);
--}
--
--static inline void kunmap_atomic(void *kvaddr, enum km_type type) { }
--#define kmap_atomic_pfn(pfn, idx)	page_address(pfn_to_page(pfn))
--
--#define kmap_atomic_to_page(ptr) virt_to_page(ptr)
--
--#define flush_cache_kmaps()	do { } while (0)
--
--#else /* LIMITED_DMA */
--
- extern void *__kmap(struct page *page);
- extern void __kunmap(struct page *page);
- extern void *__kmap_atomic(struct page *page, enum km_type type);
-@@ -97,8 +62,6 @@ extern struct page *__kmap_atomic_to_pag
- 
- #define flush_cache_kmaps()	flush_cache_all()
- 
--#endif /* LIMITED_DMA */
--
- #endif /* __KERNEL__ */
- 
- #endif /* _ASM_HIGHMEM_H */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ja/cpu-feature-overrides.h mips/include/asm-mips/mach-ja/cpu-feature-overrides.h
---- mips-orig/include/asm-mips/mach-ja/cpu-feature-overrides.h	2006-09-21 00:46:18.013119000 +0900
-+++ mips/include/asm-mips/mach-ja/cpu-feature-overrides.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,45 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
 - *
-- * Copyright (C) 2003, 2004 Ralf Baechle
 - */
--#ifndef __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H
--#define __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H
+-#ifndef _MIPS_EV96100_H
+-#define _MIPS_EV96100_H
+-
+-#include <asm/addrspace.h>
 -
 -/*
-- * Momentum Jaguar ATX always has the RM9000 processor.
+- *   GT64120 config space base address
 - */
--#define cpu_has_watch		1
--#define cpu_has_mips16		0
--#define cpu_has_divec		0
--#define cpu_has_vce		0
--#define cpu_has_cache_cdex_p	0
--#define cpu_has_cache_cdex_s	0
--#define cpu_has_prefetch	1
--#define cpu_has_mcheck		0
--#define cpu_has_ejtag		0
+-#define GT64120_BASE	(KSEG1ADDR(0x14000000))
+-#define MIPS_GT_BASE	GT64120_BASE
 -
--#define cpu_has_llsc		1
--#define cpu_has_vtag_icache	0
--#define cpu_has_dc_aliases	0
--#define cpu_has_ic_fills_f_dc	0
--#define cpu_has_dsp		0
--#define cpu_icache_snoops_remote_store	0
--
--#define cpu_has_nofpuex		0
--#define cpu_has_64bits		1
--
--#define cpu_has_inclusive_pcaches	0
--
--#define cpu_dcache_line_size()	32
--#define cpu_icache_line_size()	32
--#define cpu_scache_line_size()	32
--
--#define cpu_has_mips32r1	0
--#define cpu_has_mips32r2	0
--#define cpu_has_mips64r1	0
--#define cpu_has_mips64r2	0
--
--#endif /* __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ja/spaces.h mips/include/asm-mips/mach-ja/spaces.h
---- mips-orig/include/asm-mips/mach-ja/spaces.h	2006-09-21 00:46:18.013119000 +0900
-+++ mips/include/asm-mips/mach-ja/spaces.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,20 +0,0 @@
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- *   PCI Bus allocation
+- */
+-#define GT_PCI_MEM_BASE    0x12000000UL
+-#define GT_PCI_MEM_SIZE    0x02000000UL
+-#define GT_PCI_IO_BASE     0x10000000UL
+-#define GT_PCI_IO_SIZE     0x02000000UL
+-#define GT_ISA_IO_BASE     PCI_IO_BASE
+-
+-/*
+- *   Duart I/O ports.
+- */
+-#define EV96100_COM1_BASE_ADDR 	(0xBD000000 + 0x20)
+-#define EV96100_COM2_BASE_ADDR	(0xBD000000 + 0x00)
+-
+-
+-/*
+- *   EV96100 interrupt controller register base.
+- */
+-#define EV96100_ICTRL_REGS_BASE	(KSEG1ADDR(0x1f000000))
+-
+-/*
+- *   EV96100 UART register base.
+- */
+-#define EV96100_UART0_REGS_BASE	EV96100_COM1_BASE_ADDR
+-#define EV96100_UART1_REGS_BASE	EV96100_COM2_BASE_ADDR
+-#define EV96100_BASE_BAUD	( 3686400 / 16 )
+-
+-
+-/*
+- * Because of an error/peculiarity in the Galileo chip, we need to swap the
+- * bytes when running bigendian.
+- */
+-#define __GT_READ(ofs)							\
+-	(*(volatile u32 *)(GT64120_BASE+(ofs)))
+-#define __GT_WRITE(ofs, data)						\
+-	do { *(volatile u32 *)(GT64120_BASE+(ofs)) = (data); } while (0)
+-#define GT_READ(ofs)		le32_to_cpu(__GT_READ(ofs))
+-#define GT_WRITE(ofs, data)	__GT_WRITE(ofs, cpu_to_le32(data))
+-
+-#endif /* !(_MIPS_EV96100_H) */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/galileo-boards/ev96100int.h mips/include/asm-mips/galileo-boards/ev96100int.h
+--- mips-orig/include/asm-mips/galileo-boards/ev96100int.h	2006-09-21 00:46:17.489086250 +0900
++++ mips/include/asm-mips/galileo-boards/ev96100int.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,12 +0,0 @@
+-/*
 - *
-- * Copyright (C) 1994 - 1999, 2000, 03, 04 Ralf Baechle
-- * Copyright (C) 2000, 2002  Maciej W. Rozycki
-- * Copyright (C) 1990, 1999, 2000 Silicon Graphics, Inc.
 - */
--#ifndef __ASM_MACH_JA_SPACES_H
--#define __ASM_MACH_JA_SPACES_H
+-#ifndef _MIPS_EV96100INT_H
+-#define _MIPS_EV96100INT_H
+-
+-#define EV96100INT_UART_0    6     /* IP 6 */
+-#define EV96100INT_TIMER     7     /* IP 7 */
+-
+-extern void ev96100int_init(void);
+-
+-#endif /* !(_MIPS_EV96100_H) */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/galileo-boards/gt96100.h mips/include/asm-mips/galileo-boards/gt96100.h
+--- mips-orig/include/asm-mips/galileo-boards/gt96100.h	2006-09-21 00:46:17.489086250 +0900
++++ mips/include/asm-mips/galileo-boards/gt96100.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,427 +0,0 @@
+-/*
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	stevel@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * Register offsets of the MIPS GT96100 Advanced Communication Controller.
+- */
+-#ifndef _GT96100_H
+-#define _GT96100_H
 -
 -/*
-- * Memory above this physical address will be considered highmem.
+- * Galileo GT96100 internal register base.
 - */
--#define HIGHMEM_START		0x08000000UL
+-#define MIPS_GT96100_BASE (KSEG1ADDR(0x14000000))
 -
--#include_next <spaces.h>
+-#define GT96100_WRITE(ofs, data) \
+-    *(volatile u32 *)(MIPS_GT96100_BASE+ofs) = cpu_to_le32(data)
+-#define GT96100_READ(ofs) \
+-    le32_to_cpu(*(volatile u32 *)(MIPS_GT96100_BASE+ofs))
 -
--#endif /* __ASM_MACH_JA_SPACES_H */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/page.h mips/include/asm-mips/page.h
---- mips-orig/include/asm-mips/page.h	2006-09-21 00:46:18.601155750 +0900
-+++ mips/include/asm-mips/page.h	2006-09-21 00:57:52.760538000 +0900
-@@ -164,10 +164,6 @@ typedef struct { unsigned long pgprot; }
- #define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
- #define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET)
- 
--#ifdef CONFIG_LIMITED_DMA
--#define WANT_PAGE_VIRTUAL
--#endif
+-#define GT96100_ETH_IO_SIZE 0x4000
 -
- #include <asm-generic/memory_model.h>
- #include <asm-generic/page.h>
- 
+-/************************************************************************
+- *  Register offset addresses follow
+- ************************************************************************/
+-
+-/* CPU Interface Control Registers */
+-#define GT96100_CPU_INTERF_CONFIG 0x000000
+-
+-/* Ethernet Ports */
+-#define GT96100_ETH_PHY_ADDR_REG             0x080800
+-#define GT96100_ETH_SMI_REG                  0x080810
+-/*
+-  These are offsets to port 0 registers. Add GT96100_ETH_IO_SIZE to
+-  get offsets to port 1 registers.
+-*/
+-#define GT96100_ETH_PORT_CONFIG          0x084800
+-#define GT96100_ETH_PORT_CONFIG_EXT      0x084808
+-#define GT96100_ETH_PORT_COMM            0x084810
+-#define GT96100_ETH_PORT_STATUS          0x084818
+-#define GT96100_ETH_SER_PARAM            0x084820
+-#define GT96100_ETH_HASH_TBL_PTR         0x084828
+-#define GT96100_ETH_FLOW_CNTRL_SRC_ADDR_L    0x084830
+-#define GT96100_ETH_FLOW_CNTRL_SRC_ADDR_H    0x084838
+-#define GT96100_ETH_SDMA_CONFIG          0x084840
+-#define GT96100_ETH_SDMA_COMM            0x084848
+-#define GT96100_ETH_INT_CAUSE            0x084850
+-#define GT96100_ETH_INT_MASK             0x084858
+-#define GT96100_ETH_1ST_RX_DESC_PTR0         0x084880
+-#define GT96100_ETH_1ST_RX_DESC_PTR1         0x084884
+-#define GT96100_ETH_1ST_RX_DESC_PTR2         0x084888
+-#define GT96100_ETH_1ST_RX_DESC_PTR3         0x08488C
+-#define GT96100_ETH_CURR_RX_DESC_PTR0        0x0848A0
+-#define GT96100_ETH_CURR_RX_DESC_PTR1        0x0848A4
+-#define GT96100_ETH_CURR_RX_DESC_PTR2        0x0848A8
+-#define GT96100_ETH_CURR_RX_DESC_PTR3        0x0848AC
+-#define GT96100_ETH_CURR_TX_DESC_PTR0        0x0848E0
+-#define GT96100_ETH_CURR_TX_DESC_PTR1        0x0848E4
+-#define GT96100_ETH_MIB_COUNT_BASE           0x085800
+-
+-/* SDMAs */
+-#define GT96100_SDMA_GROUP_CONFIG           0x101AF0
+-/* SDMA Group 0 */
+-#define GT96100_SDMA_G0_CHAN0_CONFIG        0x000900
+-#define GT96100_SDMA_G0_CHAN0_COMM          0x000908
+-#define GT96100_SDMA_G0_CHAN0_RX_DESC_BASE      0x008900
+-#define GT96100_SDMA_G0_CHAN0_CURR_RX_DESC_PTR  0x008910
+-#define GT96100_SDMA_G0_CHAN0_TX_DESC_BASE      0x00C900
+-#define GT96100_SDMA_G0_CHAN0_CURR_TX_DESC_PTR  0x00C910
+-#define GT96100_SDMA_G0_CHAN0_1ST_TX_DESC_PTR   0x00C914
+-#define GT96100_SDMA_G0_CHAN1_CONFIG        0x010900
+-#define GT96100_SDMA_G0_CHAN1_COMM          0x010908
+-#define GT96100_SDMA_G0_CHAN1_RX_DESC_BASE      0x018900
+-#define GT96100_SDMA_G0_CHAN1_CURR_RX_DESC_PTR  0x018910
+-#define GT96100_SDMA_G0_CHAN1_TX_DESC_BASE      0x01C900
+-#define GT96100_SDMA_G0_CHAN1_CURR_TX_DESC_PTR  0x01C910
+-#define GT96100_SDMA_G0_CHAN1_1ST_TX_DESC_PTR   0x01C914
+-#define GT96100_SDMA_G0_CHAN2_CONFIG        0x020900
+-#define GT96100_SDMA_G0_CHAN2_COMM          0x020908
+-#define GT96100_SDMA_G0_CHAN2_RX_DESC_BASE      0x028900
+-#define GT96100_SDMA_G0_CHAN2_CURR_RX_DESC_PTR  0x028910
+-#define GT96100_SDMA_G0_CHAN2_TX_DESC_BASE      0x02C900
+-#define GT96100_SDMA_G0_CHAN2_CURR_TX_DESC_PTR  0x02C910
+-#define GT96100_SDMA_G0_CHAN2_1ST_TX_DESC_PTR   0x02C914
+-#define GT96100_SDMA_G0_CHAN3_CONFIG        0x030900
+-#define GT96100_SDMA_G0_CHAN3_COMM          0x030908
+-#define GT96100_SDMA_G0_CHAN3_RX_DESC_BASE      0x038900
+-#define GT96100_SDMA_G0_CHAN3_CURR_RX_DESC_PTR  0x038910
+-#define GT96100_SDMA_G0_CHAN3_TX_DESC_BASE      0x03C900
+-#define GT96100_SDMA_G0_CHAN3_CURR_TX_DESC_PTR  0x03C910
+-#define GT96100_SDMA_G0_CHAN3_1ST_TX_DESC_PTR   0x03C914
+-#define GT96100_SDMA_G0_CHAN4_CONFIG        0x040900
+-#define GT96100_SDMA_G0_CHAN4_COMM          0x040908
+-#define GT96100_SDMA_G0_CHAN4_RX_DESC_BASE      0x048900
+-#define GT96100_SDMA_G0_CHAN4_CURR_RX_DESC_PTR  0x048910
+-#define GT96100_SDMA_G0_CHAN4_TX_DESC_BASE      0x04C900
+-#define GT96100_SDMA_G0_CHAN4_CURR_TX_DESC_PTR  0x04C910
+-#define GT96100_SDMA_G0_CHAN4_1ST_TX_DESC_PTR   0x04C914
+-#define GT96100_SDMA_G0_CHAN5_CONFIG        0x050900
+-#define GT96100_SDMA_G0_CHAN5_COMM          0x050908
+-#define GT96100_SDMA_G0_CHAN5_RX_DESC_BASE      0x058900
+-#define GT96100_SDMA_G0_CHAN5_CURR_RX_DESC_PTR  0x058910
+-#define GT96100_SDMA_G0_CHAN5_TX_DESC_BASE      0x05C900
+-#define GT96100_SDMA_G0_CHAN5_CURR_TX_DESC_PTR  0x05C910
+-#define GT96100_SDMA_G0_CHAN5_1ST_TX_DESC_PTR   0x05C914
+-#define GT96100_SDMA_G0_CHAN6_CONFIG        0x060900
+-#define GT96100_SDMA_G0_CHAN6_COMM          0x060908
+-#define GT96100_SDMA_G0_CHAN6_RX_DESC_BASE      0x068900
+-#define GT96100_SDMA_G0_CHAN6_CURR_RX_DESC_PTR  0x068910
+-#define GT96100_SDMA_G0_CHAN6_TX_DESC_BASE      0x06C900
+-#define GT96100_SDMA_G0_CHAN6_CURR_TX_DESC_PTR  0x06C910
+-#define GT96100_SDMA_G0_CHAN6_1ST_TX_DESC_PTR   0x06C914
+-#define GT96100_SDMA_G0_CHAN7_CONFIG        0x070900
+-#define GT96100_SDMA_G0_CHAN7_COMM          0x070908
+-#define GT96100_SDMA_G0_CHAN7_RX_DESC_BASE      0x078900
+-#define GT96100_SDMA_G0_CHAN7_CURR_RX_DESC_PTR  0x078910
+-#define GT96100_SDMA_G0_CHAN7_TX_DESC_BASE      0x07C900
+-#define GT96100_SDMA_G0_CHAN7_CURR_TX_DESC_PTR  0x07C910
+-#define GT96100_SDMA_G0_CHAN7_1ST_TX_DESC_PTR   0x07C914
+-/* SDMA Group 1 */
+-#define GT96100_SDMA_G1_CHAN0_CONFIG        0x100900
+-#define GT96100_SDMA_G1_CHAN0_COMM          0x100908
+-#define GT96100_SDMA_G1_CHAN0_RX_DESC_BASE      0x108900
+-#define GT96100_SDMA_G1_CHAN0_CURR_RX_DESC_PTR  0x108910
+-#define GT96100_SDMA_G1_CHAN0_TX_DESC_BASE      0x10C900
+-#define GT96100_SDMA_G1_CHAN0_CURR_TX_DESC_PTR  0x10C910
+-#define GT96100_SDMA_G1_CHAN0_1ST_TX_DESC_PTR   0x10C914
+-#define GT96100_SDMA_G1_CHAN1_CONFIG        0x110900
+-#define GT96100_SDMA_G1_CHAN1_COMM          0x110908
+-#define GT96100_SDMA_G1_CHAN1_RX_DESC_BASE      0x118900
+-#define GT96100_SDMA_G1_CHAN1_CURR_RX_DESC_PTR  0x118910
+-#define GT96100_SDMA_G1_CHAN1_TX_DESC_BASE      0x11C900
+-#define GT96100_SDMA_G1_CHAN1_CURR_TX_DESC_PTR  0x11C910
+-#define GT96100_SDMA_G1_CHAN1_1ST_TX_DESC_PTR   0x11C914
+-#define GT96100_SDMA_G1_CHAN2_CONFIG        0x120900
+-#define GT96100_SDMA_G1_CHAN2_COMM          0x120908
+-#define GT96100_SDMA_G1_CHAN2_RX_DESC_BASE      0x128900
+-#define GT96100_SDMA_G1_CHAN2_CURR_RX_DESC_PTR  0x128910
+-#define GT96100_SDMA_G1_CHAN2_TX_DESC_BASE      0x12C900
+-#define GT96100_SDMA_G1_CHAN2_CURR_TX_DESC_PTR  0x12C910
+-#define GT96100_SDMA_G1_CHAN2_1ST_TX_DESC_PTR   0x12C914
+-#define GT96100_SDMA_G1_CHAN3_CONFIG        0x130900
+-#define GT96100_SDMA_G1_CHAN3_COMM          0x130908
+-#define GT96100_SDMA_G1_CHAN3_RX_DESC_BASE      0x138900
+-#define GT96100_SDMA_G1_CHAN3_CURR_RX_DESC_PTR  0x138910
+-#define GT96100_SDMA_G1_CHAN3_TX_DESC_BASE      0x13C900
+-#define GT96100_SDMA_G1_CHAN3_CURR_TX_DESC_PTR  0x13C910
+-#define GT96100_SDMA_G1_CHAN3_1ST_TX_DESC_PTR   0x13C914
+-#define GT96100_SDMA_G1_CHAN4_CONFIG        0x140900
+-#define GT96100_SDMA_G1_CHAN4_COMM          0x140908
+-#define GT96100_SDMA_G1_CHAN4_RX_DESC_BASE      0x148900
+-#define GT96100_SDMA_G1_CHAN4_CURR_RX_DESC_PTR  0x148910
+-#define GT96100_SDMA_G1_CHAN4_TX_DESC_BASE      0x14C900
+-#define GT96100_SDMA_G1_CHAN4_CURR_TX_DESC_PTR  0x14C910
+-#define GT96100_SDMA_G1_CHAN4_1ST_TX_DESC_PTR   0x14C914
+-#define GT96100_SDMA_G1_CHAN5_CONFIG        0x150900
+-#define GT96100_SDMA_G1_CHAN5_COMM          0x150908
+-#define GT96100_SDMA_G1_CHAN5_RX_DESC_BASE      0x158900
+-#define GT96100_SDMA_G1_CHAN5_CURR_RX_DESC_PTR  0x158910
+-#define GT96100_SDMA_G1_CHAN5_TX_DESC_BASE      0x15C900
+-#define GT96100_SDMA_G1_CHAN5_CURR_TX_DESC_PTR  0x15C910
+-#define GT96100_SDMA_G1_CHAN5_1ST_TX_DESC_PTR   0x15C914
+-#define GT96100_SDMA_G1_CHAN6_CONFIG        0x160900
+-#define GT96100_SDMA_G1_CHAN6_COMM          0x160908
+-#define GT96100_SDMA_G1_CHAN6_RX_DESC_BASE      0x168900
+-#define GT96100_SDMA_G1_CHAN6_CURR_RX_DESC_PTR  0x168910
+-#define GT96100_SDMA_G1_CHAN6_TX_DESC_BASE      0x16C900
+-#define GT96100_SDMA_G1_CHAN6_CURR_TX_DESC_PTR  0x16C910
+-#define GT96100_SDMA_G1_CHAN6_1ST_TX_DESC_PTR   0x16C914
+-#define GT96100_SDMA_G1_CHAN7_CONFIG        0x170900
+-#define GT96100_SDMA_G1_CHAN7_COMM          0x170908
+-#define GT96100_SDMA_G1_CHAN7_RX_DESC_BASE      0x178900
+-#define GT96100_SDMA_G1_CHAN7_CURR_RX_DESC_PTR  0x178910
+-#define GT96100_SDMA_G1_CHAN7_TX_DESC_BASE      0x17C900
+-#define GT96100_SDMA_G1_CHAN7_CURR_TX_DESC_PTR  0x17C910
+-#define GT96100_SDMA_G1_CHAN7_1ST_TX_DESC_PTR   0x17C914
+-/*  MPSCs  */
+-#define GT96100_MPSC0_MAIN_CONFIG_LOW   0x000A00
+-#define GT96100_MPSC0_MAIN_CONFIG_HIGH  0x000A04
+-#define GT96100_MPSC0_PROTOCOL_CONFIG   0x000A08
+-#define GT96100_MPSC_CHAN0_REG1         0x000A0C
+-#define GT96100_MPSC_CHAN0_REG2         0x000A10
+-#define GT96100_MPSC_CHAN0_REG3         0x000A14
+-#define GT96100_MPSC_CHAN0_REG4         0x000A18
+-#define GT96100_MPSC_CHAN0_REG5         0x000A1C
+-#define GT96100_MPSC_CHAN0_REG6         0x000A20
+-#define GT96100_MPSC_CHAN0_REG7         0x000A24
+-#define GT96100_MPSC_CHAN0_REG8         0x000A28
+-#define GT96100_MPSC_CHAN0_REG9         0x000A2C
+-#define GT96100_MPSC_CHAN0_REG10        0x000A30
+-#define GT96100_MPSC_CHAN0_REG11        0x000A34
+-#define GT96100_MPSC1_MAIN_CONFIG_LOW   0x008A00
+-#define GT96100_MPSC1_MAIN_CONFIG_HIGH  0x008A04
+-#define GT96100_MPSC1_PROTOCOL_CONFIG   0x008A08
+-#define GT96100_MPSC_CHAN1_REG1         0x008A0C
+-#define GT96100_MPSC_CHAN1_REG2         0x008A10
+-#define GT96100_MPSC_CHAN1_REG3         0x008A14
+-#define GT96100_MPSC_CHAN1_REG4         0x008A18
+-#define GT96100_MPSC_CHAN1_REG5         0x008A1C
+-#define GT96100_MPSC_CHAN1_REG6         0x008A20
+-#define GT96100_MPSC_CHAN1_REG7         0x008A24
+-#define GT96100_MPSC_CHAN1_REG8         0x008A28
+-#define GT96100_MPSC_CHAN1_REG9         0x008A2C
+-#define GT96100_MPSC_CHAN1_REG10        0x008A30
+-#define GT96100_MPSC_CHAN1_REG11        0x008A34
+-#define GT96100_MPSC2_MAIN_CONFIG_LOW   0x010A00
+-#define GT96100_MPSC2_MAIN_CONFIG_HIGH  0x010A04
+-#define GT96100_MPSC2_PROTOCOL_CONFIG   0x010A08
+-#define GT96100_MPSC_CHAN2_REG1         0x010A0C
+-#define GT96100_MPSC_CHAN2_REG2         0x010A10
+-#define GT96100_MPSC_CHAN2_REG3         0x010A14
+-#define GT96100_MPSC_CHAN2_REG4         0x010A18
+-#define GT96100_MPSC_CHAN2_REG5         0x010A1C
+-#define GT96100_MPSC_CHAN2_REG6         0x010A20
+-#define GT96100_MPSC_CHAN2_REG7         0x010A24
+-#define GT96100_MPSC_CHAN2_REG8         0x010A28
+-#define GT96100_MPSC_CHAN2_REG9         0x010A2C
+-#define GT96100_MPSC_CHAN2_REG10        0x010A30
+-#define GT96100_MPSC_CHAN2_REG11        0x010A34
+-#define GT96100_MPSC3_MAIN_CONFIG_LOW   0x018A00
+-#define GT96100_MPSC3_MAIN_CONFIG_HIGH  0x018A04
+-#define GT96100_MPSC3_PROTOCOL_CONFIG   0x018A08
+-#define GT96100_MPSC_CHAN3_REG1         0x018A0C
+-#define GT96100_MPSC_CHAN3_REG2         0x018A10
+-#define GT96100_MPSC_CHAN3_REG3         0x018A14
+-#define GT96100_MPSC_CHAN3_REG4         0x018A18
+-#define GT96100_MPSC_CHAN3_REG5         0x018A1C
+-#define GT96100_MPSC_CHAN3_REG6         0x018A20
+-#define GT96100_MPSC_CHAN3_REG7         0x018A24
+-#define GT96100_MPSC_CHAN3_REG8         0x018A28
+-#define GT96100_MPSC_CHAN3_REG9         0x018A2C
+-#define GT96100_MPSC_CHAN3_REG10        0x018A30
+-#define GT96100_MPSC_CHAN3_REG11        0x018A34
+-#define GT96100_MPSC4_MAIN_CONFIG_LOW   0x020A00
+-#define GT96100_MPSC4_MAIN_CONFIG_HIGH  0x020A04
+-#define GT96100_MPSC4_PROTOCOL_CONFIG   0x020A08
+-#define GT96100_MPSC_CHAN4_REG1         0x020A0C
+-#define GT96100_MPSC_CHAN4_REG2         0x020A10
+-#define GT96100_MPSC_CHAN4_REG3         0x020A14
+-#define GT96100_MPSC_CHAN4_REG4         0x020A18
+-#define GT96100_MPSC_CHAN4_REG5         0x020A1C
+-#define GT96100_MPSC_CHAN4_REG6         0x020A20
+-#define GT96100_MPSC_CHAN4_REG7         0x020A24
+-#define GT96100_MPSC_CHAN4_REG8         0x020A28
+-#define GT96100_MPSC_CHAN4_REG9         0x020A2C
+-#define GT96100_MPSC_CHAN4_REG10        0x020A30
+-#define GT96100_MPSC_CHAN4_REG11        0x020A34
+-#define GT96100_MPSC5_MAIN_CONFIG_LOW   0x028A00
+-#define GT96100_MPSC5_MAIN_CONFIG_HIGH  0x028A04
+-#define GT96100_MPSC5_PROTOCOL_CONFIG   0x028A08
+-#define GT96100_MPSC_CHAN5_REG1         0x028A0C
+-#define GT96100_MPSC_CHAN5_REG2         0x028A10
+-#define GT96100_MPSC_CHAN5_REG3         0x028A14
+-#define GT96100_MPSC_CHAN5_REG4         0x028A18
+-#define GT96100_MPSC_CHAN5_REG5         0x028A1C
+-#define GT96100_MPSC_CHAN5_REG6         0x028A20
+-#define GT96100_MPSC_CHAN5_REG7         0x028A24
+-#define GT96100_MPSC_CHAN5_REG8         0x028A28
+-#define GT96100_MPSC_CHAN5_REG9         0x028A2C
+-#define GT96100_MPSC_CHAN5_REG10        0x028A30
+-#define GT96100_MPSC_CHAN5_REG11        0x028A34
+-#define GT96100_MPSC6_MAIN_CONFIG_LOW   0x030A00
+-#define GT96100_MPSC6_MAIN_CONFIG_HIGH  0x030A04
+-#define GT96100_MPSC6_PROTOCOL_CONFIG   0x030A08
+-#define GT96100_MPSC_CHAN6_REG1         0x030A0C
+-#define GT96100_MPSC_CHAN6_REG2         0x030A10
+-#define GT96100_MPSC_CHAN6_REG3         0x030A14
+-#define GT96100_MPSC_CHAN6_REG4         0x030A18
+-#define GT96100_MPSC_CHAN6_REG5         0x030A1C
+-#define GT96100_MPSC_CHAN6_REG6         0x030A20
+-#define GT96100_MPSC_CHAN6_REG7         0x030A24
+-#define GT96100_MPSC_CHAN6_REG8         0x030A28
+-#define GT96100_MPSC_CHAN6_REG9         0x030A2C
+-#define GT96100_MPSC_CHAN6_REG10        0x030A30
+-#define GT96100_MPSC_CHAN6_REG11        0x030A34
+-#define GT96100_MPSC7_MAIN_CONFIG_LOW   0x038A00
+-#define GT96100_MPSC7_MAIN_CONFIG_HIGH  0x038A04
+-#define GT96100_MPSC7_PROTOCOL_CONFIG   0x038A08
+-#define GT96100_MPSC_CHAN7_REG1         0x038A0C
+-#define GT96100_MPSC_CHAN7_REG2         0x038A10
+-#define GT96100_MPSC_CHAN7_REG3         0x038A14
+-#define GT96100_MPSC_CHAN7_REG4         0x038A18
+-#define GT96100_MPSC_CHAN7_REG5         0x038A1C
+-#define GT96100_MPSC_CHAN7_REG6         0x038A20
+-#define GT96100_MPSC_CHAN7_REG7         0x038A24
+-#define GT96100_MPSC_CHAN7_REG8         0x038A28
+-#define GT96100_MPSC_CHAN7_REG9         0x038A2C
+-#define GT96100_MPSC_CHAN7_REG10        0x038A30
+-#define GT96100_MPSC_CHAN7_REG11        0x038A34
+-/*  FlexTDMs  */
+-/* TDPR0 - Transmit Dual Port RAM. block size 0xff */
+-#define GT96100_FXTDM0_TDPR0_BLK0_BASE  0x000B00
+-#define GT96100_FXTDM0_TDPR0_BLK1_BASE  0x001B00
+-#define GT96100_FXTDM0_TDPR0_BLK2_BASE  0x002B00
+-#define GT96100_FXTDM0_TDPR0_BLK3_BASE  0x003B00
+-/* RDPR0 - Receive Dual Port RAM. block size 0xff */
+-#define GT96100_FXTDM0_RDPR0_BLK0_BASE  0x004B00
+-#define GT96100_FXTDM0_RDPR0_BLK1_BASE  0x005B00
+-#define GT96100_FXTDM0_RDPR0_BLK2_BASE  0x006B00
+-#define GT96100_FXTDM0_RDPR0_BLK3_BASE  0x007B00
+-#define GT96100_FXTDM0_TX_READ_PTR      0x008B00
+-#define GT96100_FXTDM0_RX_READ_PTR      0x008B04
+-#define GT96100_FXTDM0_CONFIG       0x008B08
+-#define GT96100_FXTDM0_AUX_CHANA_TX 0x008B0C
+-#define GT96100_FXTDM0_AUX_CHANA_RX 0x008B10
+-#define GT96100_FXTDM0_AUX_CHANB_TX 0x008B14
+-#define GT96100_FXTDM0_AUX_CHANB_RX 0x008B18
+-#define GT96100_FXTDM1_TDPR1_BLK0_BASE  0x010B00
+-#define GT96100_FXTDM1_TDPR1_BLK1_BASE  0x011B00
+-#define GT96100_FXTDM1_TDPR1_BLK2_BASE  0x012B00
+-#define GT96100_FXTDM1_TDPR1_BLK3_BASE  0x013B00
+-#define GT96100_FXTDM1_RDPR1_BLK0_BASE  0x014B00
+-#define GT96100_FXTDM1_RDPR1_BLK1_BASE  0x015B00
+-#define GT96100_FXTDM1_RDPR1_BLK2_BASE  0x016B00
+-#define GT96100_FXTDM1_RDPR1_BLK3_BASE  0x017B00
+-#define GT96100_FXTDM1_TX_READ_PTR      0x018B00
+-#define GT96100_FXTDM1_RX_READ_PTR      0x018B04
+-#define GT96100_FXTDM1_CONFIG       0x018B08
+-#define GT96100_FXTDM1_AUX_CHANA_TX 0x018B0C
+-#define GT96100_FXTDM1_AUX_CHANA_RX 0x018B10
+-#define GT96100_FLTDM1_AUX_CHANB_TX 0x018B14
+-#define GT96100_FLTDM1_AUX_CHANB_RX 0x018B18
+-#define GT96100_FLTDM2_TDPR2_BLK0_BASE  0x020B00
+-#define GT96100_FLTDM2_TDPR2_BLK1_BASE  0x021B00
+-#define GT96100_FLTDM2_TDPR2_BLK2_BASE  0x022B00
+-#define GT96100_FLTDM2_TDPR2_BLK3_BASE  0x023B00
+-#define GT96100_FLTDM2_RDPR2_BLK0_BASE  0x024B00
+-#define GT96100_FLTDM2_RDPR2_BLK1_BASE  0x025B00
+-#define GT96100_FLTDM2_RDPR2_BLK2_BASE  0x026B00
+-#define GT96100_FLTDM2_RDPR2_BLK3_BASE  0x027B00
+-#define GT96100_FLTDM2_TX_READ_PTR      0x028B00
+-#define GT96100_FLTDM2_RX_READ_PTR      0x028B04
+-#define GT96100_FLTDM2_CONFIG       0x028B08
+-#define GT96100_FLTDM2_AUX_CHANA_TX 0x028B0C
+-#define GT96100_FLTDM2_AUX_CHANA_RX 0x028B10
+-#define GT96100_FLTDM2_AUX_CHANB_TX 0x028B14
+-#define GT96100_FLTDM2_AUX_CHANB_RX 0x028B18
+-#define GT96100_FLTDM3_TDPR3_BLK0_BASE  0x030B00
+-#define GT96100_FLTDM3_TDPR3_BLK1_BASE  0x031B00
+-#define GT96100_FLTDM3_TDPR3_BLK2_BASE  0x032B00
+-#define GT96100_FLTDM3_TDPR3_BLK3_BASE  0x033B00
+-#define GT96100_FXTDM3_RDPR3_BLK0_BASE  0x034B00
+-#define GT96100_FXTDM3_RDPR3_BLK1_BASE  0x035B00
+-#define GT96100_FXTDM3_RDPR3_BLK2_BASE  0x036B00
+-#define GT96100_FXTDM3_RDPR3_BLK3_BASE  0x037B00
+-#define GT96100_FXTDM3_TX_READ_PTR      0x038B00
+-#define GT96100_FXTDM3_RX_READ_PTR      0x038B04
+-#define GT96100_FXTDM3_CONFIG       0x038B08
+-#define GT96100_FXTDM3_AUX_CHANA_TX 0x038B0C
+-#define GT96100_FXTDM3_AUX_CHANA_RX 0x038B10
+-#define GT96100_FXTDM3_AUX_CHANB_TX 0x038B14
+-#define GT96100_FXTDM3_AUX_CHANB_RX 0x038B18
+-/*  Baud Rate Generators  */
+-#define GT96100_BRG0_CONFIG     0x102A00
+-#define GT96100_BRG0_BAUD_TUNE  0x102A04
+-#define GT96100_BRG1_CONFIG     0x102A08
+-#define GT96100_BRG1_BAUD_TUNE  0x102A0C
+-#define GT96100_BRG2_CONFIG     0x102A10
+-#define GT96100_BRG2_BAUD_TUNE  0x102A14
+-#define GT96100_BRG3_CONFIG     0x102A18
+-#define GT96100_BRG3_BAUD_TUNE  0x102A1C
+-#define GT96100_BRG4_CONFIG     0x102A20
+-#define GT96100_BRG4_BAUD_TUNE  0x102A24
+-#define GT96100_BRG5_CONFIG     0x102A28
+-#define GT96100_BRG5_BAUD_TUNE  0x102A2C
+-#define GT96100_BRG6_CONFIG     0x102A30
+-#define GT96100_BRG6_BAUD_TUNE  0x102A34
+-#define GT96100_BRG7_CONFIG     0x102A38
+-#define GT96100_BRG7_BAUD_TUNE  0x102A3C
+-/*  Routing Registers  */
+-#define GT96100_ROUTE_MAIN      0x101A00
+-#define GT96100_ROUTE_RX_CLOCK  0x101A10
+-#define GT96100_ROUTE_TX_CLOCK  0x101A20
+-/*  General Purpose Ports  */
+-#define GT96100_GPP_CONFIG0     0x100A00
+-#define GT96100_GPP_CONFIG1     0x100A04
+-#define GT96100_GPP_CONFIG2     0x100A08
+-#define GT96100_GPP_CONFIG3     0x100A0C
+-#define GT96100_GPP_IO0         0x100A20
+-#define GT96100_GPP_IO1         0x100A24
+-#define GT96100_GPP_IO2         0x100A28
+-#define GT96100_GPP_IO3         0x100A2C
+-#define GT96100_GPP_DATA0       0x100A40
+-#define GT96100_GPP_DATA1       0x100A44
+-#define GT96100_GPP_DATA2       0x100A48
+-#define GT96100_GPP_DATA3       0x100A4C
+-#define GT96100_GPP_LEVEL0      0x100A60
+-#define GT96100_GPP_LEVEL1      0x100A64
+-#define GT96100_GPP_LEVEL2      0x100A68
+-#define GT96100_GPP_LEVEL3      0x100A6C
+-/*  Watchdog  */
+-#define GT96100_WD_CONFIG   0x101A80
+-#define GT96100_WD_VALUE    0x101A84
+-/* Communication Unit Arbiter  */
+-#define GT96100_COMM_UNIT_ARBTR_CONFIG 0x101AC0
+-/*  PCI Arbiters  */
+-#define GT96100_PCI0_ARBTR_CONFIG 0x101AE0
+-#define GT96100_PCI1_ARBTR_CONFIG 0x101AE4
+-/* CIU Arbiter */
+-#define GT96100_CIU_ARBITER_CONFIG 0x101AC0
+-/* Interrupt Controller */
+-#define GT96100_MAIN_CAUSE     0x000C18
+-#define GT96100_INT0_MAIN_MASK 0x000C1C
+-#define GT96100_INT1_MAIN_MASK 0x000C24
+-#define GT96100_HIGH_CAUSE     0x000C98
+-#define GT96100_INT0_HIGH_MASK 0x000C9C
+-#define GT96100_INT1_HIGH_MASK 0x000CA4
+-#define GT96100_INT0_SELECT    0x000C70
+-#define GT96100_INT1_SELECT    0x000C74
+-#define GT96100_SERIAL_CAUSE   0x103A00
+-#define GT96100_SERINT0_MASK   0x103A80
+-#define GT96100_SERINT1_MASK   0x103A88
+-
+-#endif /*  _GT96100_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ev96100/mach-gt64120.h mips/include/asm-mips/mach-ev96100/mach-gt64120.h
+--- mips-orig/include/asm-mips/mach-ev96100/mach-gt64120.h	2006-09-21 00:46:17.877110500 +0900
++++ mips/include/asm-mips/mach-ev96100/mach-gt64120.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,46 +0,0 @@
+-/*
+- *  This is a direct copy of the ev96100.h file, with a global
+- * search and replace.  The numbers are the same.
+- *
+- *  The reason I'm duplicating this is so that the 64120/96100
+- * defines won't be confusing in the source code.
+- */
+-#ifndef _ASM_GT64120_EV96100_GT64120_DEP_H
+-#define _ASM_GT64120_EV96100_GT64120_DEP_H
+-
+-/*
+- *   GT96100 config space base address
+- */
+-#define GT64120_BASE	(KSEG1ADDR(0x14000000))
+-
+-/*
+- *   PCI Bus allocation
+- *
+- *   (Guessing ...)
+- */
+-#define GT_PCI_MEM_BASE	0x12000000UL
+-#define GT_PCI_MEM_SIZE	0x02000000UL
+-#define GT_PCI_IO_BASE	0x10000000UL
+-#define GT_PCI_IO_SIZE	0x02000000UL
+-#define GT_ISA_IO_BASE	PCI_IO_BASE
+-
+-/*
+- *   Duart I/O ports.
+- */
+-#define EV96100_COM1_BASE_ADDR	(0xBD000000 + 0x20)
+-#define EV96100_COM2_BASE_ADDR	(0xBD000000 + 0x00)
+-
+-
+-/*
+- *   EV96100 interrupt controller register base.
+- */
+-#define EV96100_ICTRL_REGS_BASE	(KSEG1ADDR(0x1f000000))
+-
+-/*
+- *   EV96100 UART register base.
+- */
+-#define EV96100_UART0_REGS_BASE	EV96100_COM1_BASE_ADDR
+-#define EV96100_UART1_REGS_BASE	EV96100_COM2_BASE_ADDR
+-#define EV96100_BASE_BAUD	( 3686400 / 16 )
+-
+-#endif /* _ASM_GT64120_EV96100_GT64120_DEP_H */
 diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/serial.h mips/include/asm-mips/serial.h
---- mips-orig/include/asm-mips/serial.h	2006-09-21 00:57:25.842855750 +0900
-+++ mips/include/asm-mips/serial.h	2006-09-21 00:57:52.760538000 +0900
-@@ -112,25 +112,6 @@
- #define STD_SERIAL_PORT_DEFNS
- #endif /* CONFIG_HAVE_STD_PC_SERIAL_PORTS */
- 
--#ifdef CONFIG_MOMENCO_JAGUAR_ATX
--/* Ordinary NS16552 duart with a 20MHz crystal.  */
--#define JAGUAR_ATX_UART_CLK	20000000
--#define JAGUAR_ATX_BASE_BAUD	(JAGUAR_ATX_UART_CLK / 16)
--
--#define JAGUAR_ATX_SERIAL1_IRQ	6
--#define JAGUAR_ATX_SERIAL1_BASE	0xfd000023L
--
--#define _JAGUAR_ATX_SERIAL_INIT(int, base)				\
--	{ .baud_base = JAGUAR_ATX_BASE_BAUD, irq: int,			\
--	  .flags = (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),		\
--	  .iomem_base = (u8 *) base, iomem_reg_shift: 2,			\
--	  io_type: SERIAL_IO_MEM }
--#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS				\
--	_JAGUAR_ATX_SERIAL_INIT(JAGUAR_ATX_SERIAL1_IRQ, JAGUAR_ATX_SERIAL1_BASE)
--#else
--#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS
--#endif
--
- #ifdef CONFIG_MOMENCO_OCELOT_3
- #define OCELOT_3_BASE_BAUD	( 20000000 / 16 )
- #define OCELOT_3_SERIAL_IRQ	6
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/war.h mips/include/asm-mips/war.h
---- mips-orig/include/asm-mips/war.h	2006-09-21 00:46:19.445208500 +0900
-+++ mips/include/asm-mips/war.h	2006-09-21 00:57:52.760538000 +0900
-@@ -171,8 +171,7 @@
-  * On the RM9000 there is a problem which makes the CreateDirtyExclusive
-  * cache operation unusable on SMP systems.
+--- mips-orig/include/asm-mips/serial.h	2006-09-21 00:46:18.805168500 +0900
++++ mips/include/asm-mips/serial.h	2006-09-21 00:46:07.476460500 +0900
+@@ -54,20 +54,18 @@
+ /*
+  * Both Galileo boards have the same UART mappings.
   */
--#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_PMC_YOSEMITE) || \
--    defined(CONFIG_BASLER_EXCITE)
-+#if defined(CONFIG_PMC_YOSEMITE) || defined(CONFIG_BASLER_EXCITE)
- #define  RM9000_CDEX_SMP_WAR		1
+-#if defined (CONFIG_MIPS_EV96100) || defined (CONFIG_MIPS_EV64120)
+-#include <asm/galileo-boards/ev96100.h>
+-#include <asm/galileo-boards/ev96100int.h>
+-#define EV96100_SERIAL_PORT_DEFNS                                  \
+-    { .baud_base = EV96100_BASE_BAUD, .irq = EV96100INT_UART_0, \
++#ifdef CONFIG_MIPS_EV64120
++#define EV64120_SERIAL_PORT_DEFNS                                  \
++    { .baud_base = 3686400 / 16, .irq = 6, \
+       .flags = STD_COM_FLAGS,  \
+-      .iomem_base = EV96100_UART0_REGS_BASE, .iomem_reg_shift = 2, \
++      .iomem_base = 0xBD000020, .iomem_reg_shift = 2, \
+       .io_type = SERIAL_IO_MEM }, \
+-    { .baud_base = EV96100_BASE_BAUD, .irq = EV96100INT_UART_0, \
++    { .baud_base = 3686400 / 16, .irq = 6, \
+       .flags = STD_COM_FLAGS, \
+-      .iomem_base = EV96100_UART1_REGS_BASE, .iomem_reg_shift = 2, \
++      .iomem_base = 0xBD000000, .iomem_reg_shift = 2, \
+       .io_type = SERIAL_IO_MEM },
+ #else
+-#define EV96100_SERIAL_PORT_DEFNS
++#define EV64120_SERIAL_PORT_DEFNS
  #endif
  
-@@ -181,8 +180,8 @@
-  * where invalid instructions in the same I-cache line worth of instructions
-  * being fetched may case spurious exceptions.
-  */
--#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_MOMENCO_OCELOT_3) || \
--    defined(CONFIG_PMC_YOSEMITE) || defined(CONFIG_BASLER_EXCITE)
-+#if defined(CONFIG_MOMENCO_OCELOT_3) || defined(CONFIG_PMC_YOSEMITE) || \
-+    defined(CONFIG_BASLER_EXCITE)
- #define ICACHE_REFILLS_WORKAROUND_WAR	1
- #endif
+ #ifdef CONFIG_MIPS_ITE8172
+@@ -239,7 +237,7 @@
  
+ #define SERIAL_PORT_DFNS				\
+ 	DDB5477_SERIAL_PORT_DEFNS			\
+-	EV96100_SERIAL_PORT_DEFNS			\
++	EV64120_SERIAL_PORT_DEFNS			\
+ 	IP32_SERIAL_PORT_DEFNS                          \
+ 	ITE_SERIAL_PORT_DEFNS           		\
+ 	IVR_SERIAL_PORT_DEFNS           		\

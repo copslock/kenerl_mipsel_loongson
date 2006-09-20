@@ -1,52 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 18:26:15 +0100 (BST)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:26286 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20037598AbWITR0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 Sep 2006 18:26:11 +0100
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.13.6/8.13.4) with ESMTP id k8KHoLt5010249;
-	Wed, 20 Sep 2006 18:50:22 +0100
-Received: (from alan@localhost)
-	by localhost.localdomain (8.13.6/8.13.6/Submit) id k8KHoKVR010248;
-	Wed, 20 Sep 2006 18:50:20 +0100
-X-Authentication-Warning: localhost.localdomain: alan set sender to alan@lxorguk.ukuu.org.uk using -f
-Subject: Re: [PATCH 4/4] removed IT8172-based platforms, ITE 8172G and
-	Globespan IVR  support
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <20060921020351.697cd073.yoichi_yuasa@tripeaks.co.jp>
-References: <20060921015638.480ea7b1.yoichi_yuasa@tripeaks.co.jp>
-	 <20060921015758.639c4545.yoichi_yuasa@tripeaks.co.jp>
-	 <20060921020031.0033e2d9.yoichi_yuasa@tripeaks.co.jp>
-	 <20060921020221.00287460.yoichi_yuasa@tripeaks.co.jp>
-	 <20060921020351.697cd073.yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 20:07:58 +0100 (BST)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:38565 "EHLO
+	bluesmobile.corp.specifix.com") by ftp.linux-mips.org with ESMTP
+	id S20027678AbWITTHy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 20 Sep 2006 20:07:54 +0100
+Received: from localhost.localdomain (bluesmobile.specifix.com [64.220.152.99])
+	by bluesmobile.corp.specifix.com (Postfix) with ESMTP id 4C1173B896;
+	Wed, 20 Sep 2006 12:02:48 -0700 (PDT)
+Subject: Re: linux-libc-headers-2.6.17
+From:	Jim Wilson <wilson@specifix.com>
+To:	sathesh babu <sathesh_edara2003@yahoo.co.in>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20060920091846.29617.qmail@web7909.mail.in.yahoo.com>
+References: <20060920091846.29617.qmail@web7909.mail.in.yahoo.com>
 Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Date:	Wed, 20 Sep 2006 18:50:19 +0100
-Message-Id: <1158774619.7705.35.camel@localhost.localdomain>
+Date:	Wed, 20 Sep 2006 12:07:09 -0700
+Message-Id: <1158779230.2519.16.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.6.2 (2.6.2-1.fc5.5) 
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+X-Mailer: Evolution 2.6.3 (2.6.3-1.fc5.5) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wilson@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12611
+X-archive-position: 12612
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: wilson@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-Ar Iau, 2006-09-21 am 02:03 +0900, ysgrifennodd Yoichi Yuasa:
-> This patch has removed IT8172-based platforms, ITE 8172G and Globespan IVR support.
-> 
-> Yoichi
-> 
-> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+On Wed, 2006-09-20 at 10:18 +0100, sathesh babu wrote:
+>     Can you please tell me where can i get
+> linux-libc-headers-2.6.17.0 
 
-IDE part
+There is probably no such package.  The linux headers are part of the
+linux kernel sources, and the glibc headers are part of the glibc
+sources.  Both have convenient makefile targets so that you can install
+the headers when starting a build.
 
-Acked-by: Alan Cox <alan@redhat.com>
+Some distro vendors may extract out these headers into a separate
+package for convenience.  In that case, you either get the package from
+the distro vendor, or if they don't have the package you are looking
+for, you make it yourself.
+
+I'd suggest looking at Dan Kegel's crosstool package, which provides
+scripts showing how to do a build from scratch.  There is a pointer to
+it on the www.linux-mips.org wiki.  See
+    http://www.linux-mips.org/wiki/Toolchains
+-- 
+Jim Wilson, GNU Tools Support, http://www.specifix.com

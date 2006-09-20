@@ -1,18 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 18:08:08 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:48202 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20027554AbWITRIH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2006 18:08:07 +0100
-Received: by mo.po.2iij.net (mo31) id k8KH83Fx052680; Thu, 21 Sep 2006 02:08:03 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Sep 2006 18:08:36 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:26670 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20027543AbWITRIJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Sep 2006 18:08:09 +0100
+Received: by mo.po.2iij.net (mo31) id k8KH83jO052686; Thu, 21 Sep 2006 02:08:04 +0900 (JST)
 Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
-	by mbox.po.2iij.net (mbox33) id k8KH7sgh096138
+	by mbox.po.2iij.net (mbox30) id k8KH7xb5028738
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 21 Sep 2006 02:07:54 +0900 (JST)
-Date:	Thu, 21 Sep 2006 01:56:38 +0900
+	Thu, 21 Sep 2006 02:07:59 +0900 (JST)
+Date:	Thu, 21 Sep 2006 02:00:31 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 0/4]  remove scheduled boards
-Message-Id: <20060921015638.480ea7b1.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH 2/4] removed  Momentum / PMC-Sierra Jaguar ATX evaluation
+ board support
+Message-Id: <20060921020031.0033e2d9.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20060921015758.639c4545.yoichi_yuasa@tripeaks.co.jp>
+References: <20060921015638.480ea7b1.yoichi_yuasa@tripeaks.co.jp>
+	<20060921015758.639c4545.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +26,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12606
+X-archive-position: 12607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,21 +34,2477 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
-
-These boards were scheduled to be removed after 2.6.18 released.
-
-[1/4] MIPS EV96100 evaluation board
-[2/4] Momentum / PMC-Sierra Jaguar ATX evaluation board
-[3/4] Momentum Ocelot, Ocelot 3, Ocelot C and Ocelot G
-[4/4] IT8172-based platforms, ITE 8172G and Globespan IVR
-
-also included in MIPS Technologies' Altas and SEAD evaluation board in the list.
-But, SEAD seems to be maintained by Maciej.
-Therefore, it is not included in.
-
-Please apply these patches.
-
-Thanks,
+This patch has removed Momentum / PMC-Sierra Jaguar ATX evaluation board support.
 
 Yoichi
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/Documentation/feature-removal-schedule.txt mips/Documentation/feature-removal-schedule.txt
+--- mips-orig/Documentation/feature-removal-schedule.txt	2006-09-21 00:57:25.786852250 +0900
++++ mips/Documentation/feature-removal-schedule.txt	2006-09-21 00:57:52.720535500 +0900
+@@ -202,16 +202,6 @@ Who:	Nick Piggin <npiggin@suse.de>
+ 
+ ---------------------------
+ 
+-What:	Support for the Momentum / PMC-Sierra Jaguar ATX evaluation board
+-When:	September 2006
+-Why:	Does no longer build since quite some time, and was never popular,
+-	due to the platform being replaced by successor models.  Apparently
+-	no user base left.  It also is one of the last users of
+-	WANT_PAGE_VIRTUAL.
+-Who:	Ralf Baechle <ralf@linux-mips.org>
+-
+----------------------------
+-
+ What:	Support for the Momentum Ocelot, Ocelot 3, Ocelot C and Ocelot G
+ When:	September 2006
+ Why:	Some do no longer build and apparently there is no user base left
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
+--- mips-orig/arch/mips/Kconfig	2006-09-21 00:57:25.790852500 +0900
++++ mips/arch/mips/Kconfig	2006-09-21 00:57:52.720535500 +0900
+@@ -373,26 +373,6 @@ config MIPS_SIM
+ 	  This option enables support for MIPS Technologies MIPSsim software
+ 	  emulator.
+ 
+-config MOMENCO_JAGUAR_ATX
+-	bool "Momentum Jaguar board"
+-	select BOOT_ELF32
+-	select DMA_NONCOHERENT
+-	select HW_HAS_PCI
+-	select IRQ_CPU
+-	select IRQ_CPU_RM7K
+-	select IRQ_MV64340
+-	select LIMITED_DMA
+-	select PCI_MARVELL
+-	select RM7000_CPU_SCACHE
+-	select SWAP_IO_SPACE
+-	select SYS_HAS_CPU_RM9000
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL
+-	select SYS_SUPPORTS_BIG_ENDIAN
+-	help
+-	  The Jaguar ATX is a MIPS-based Single Board Computer (SBC) made by
+-	  Momentum Computer <http://www.momenco.com/>.
+-
+ config MOMENCO_OCELOT
+ 	bool "Momentum Ocelot board"
+ 	select DMA_NONCOHERENT
+@@ -802,7 +782,6 @@ source "arch/mips/gt64120/ev64120/Kconfi
+ source "arch/mips/jazz/Kconfig"
+ source "arch/mips/ite-boards/Kconfig"
+ source "arch/mips/lasat/Kconfig"
+-source "arch/mips/momentum/Kconfig"
+ source "arch/mips/pmc-sierra/Kconfig"
+ source "arch/mips/sgi-ip27/Kconfig"
+ source "arch/mips/sibyte/Kconfig"
+@@ -875,11 +854,6 @@ config GENERIC_ISA_DMA
+ config I8259
+ 	bool
+ 
+-config LIMITED_DMA
+-	bool
+-	select HIGHMEM
+-	select SYS_SUPPORTS_HIGHMEM
+-
+ config MIPS_BONITO64
+ 	bool
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Makefile mips/arch/mips/Makefile
+--- mips-orig/arch/mips/Makefile	2006-09-21 00:57:25.790852500 +0900
++++ mips/arch/mips/Makefile	2006-09-21 00:57:52.724535750 +0900
+@@ -390,17 +390,6 @@ cflags-$(CONFIG_BASLER_EXCITE)	+= -Iincl
+ load-$(CONFIG_BASLER_EXCITE)	+= 0x80100000
+ 
+ #
+-# Momentum Jaguar ATX
+-#
+-core-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= arch/mips/momentum/jaguar_atx/
+-cflags-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= -Iinclude/asm-mips/mach-ja
+-#ifdef CONFIG_JAGUAR_DMALOW
+-#load-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= 0xffffffff88000000
+-#else
+-load-$(CONFIG_MOMENCO_JAGUAR_ATX)	+= 0xffffffff80100000
+-#endif
+-
+-#
+ # NEC DDB
+ #
+ core-$(CONFIG_DDB5XXX_COMMON)	+= arch/mips/ddb5xxx/common/
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jaguar-atx_defconfig mips/arch/mips/configs/jaguar-atx_defconfig
+--- mips-orig/arch/mips/configs/jaguar-atx_defconfig	2006-09-21 00:46:00.164003500 +0900
++++ mips/arch/mips/configs/jaguar-atx_defconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,837 +0,0 @@
+-#
+-# Automatically generated make config: don't edit
+-# Linux kernel version: 2.6.18-rc1
+-# Thu Jul  6 10:04:12 2006
+-#
+-CONFIG_MIPS=y
+-
+-#
+-# Machine selection
+-#
+-# CONFIG_MIPS_MTX1 is not set
+-# CONFIG_MIPS_BOSPORUS is not set
+-# CONFIG_MIPS_PB1000 is not set
+-# CONFIG_MIPS_PB1100 is not set
+-# CONFIG_MIPS_PB1500 is not set
+-# CONFIG_MIPS_PB1550 is not set
+-# CONFIG_MIPS_PB1200 is not set
+-# CONFIG_MIPS_DB1000 is not set
+-# CONFIG_MIPS_DB1100 is not set
+-# CONFIG_MIPS_DB1500 is not set
+-# CONFIG_MIPS_DB1550 is not set
+-# CONFIG_MIPS_DB1200 is not set
+-# CONFIG_MIPS_MIRAGE is not set
+-# CONFIG_BASLER_EXCITE is not set
+-# CONFIG_MIPS_COBALT is not set
+-# CONFIG_MACH_DECSTATION is not set
+-# CONFIG_MIPS_EV64120 is not set
+-# CONFIG_MIPS_EV96100 is not set
+-# CONFIG_MIPS_IVR is not set
+-# CONFIG_MIPS_ITE8172 is not set
+-# CONFIG_MACH_JAZZ is not set
+-# CONFIG_LASAT is not set
+-# CONFIG_MIPS_ATLAS is not set
+-# CONFIG_MIPS_MALTA is not set
+-# CONFIG_MIPS_SEAD is not set
+-# CONFIG_WR_PPMC is not set
+-# CONFIG_MIPS_SIM is not set
+-CONFIG_MOMENCO_JAGUAR_ATX=y
+-# CONFIG_MOMENCO_OCELOT is not set
+-# CONFIG_MOMENCO_OCELOT_3 is not set
+-# CONFIG_MOMENCO_OCELOT_C is not set
+-# CONFIG_MOMENCO_OCELOT_G is not set
+-# CONFIG_MIPS_XXS1500 is not set
+-# CONFIG_PNX8550_V2PCI is not set
+-# CONFIG_PNX8550_JBS is not set
+-# CONFIG_DDB5477 is not set
+-# CONFIG_MACH_VR41XX is not set
+-# CONFIG_PMC_YOSEMITE is not set
+-# CONFIG_QEMU is not set
+-# CONFIG_MARKEINS is not set
+-# CONFIG_SGI_IP22 is not set
+-# CONFIG_SGI_IP27 is not set
+-# CONFIG_SGI_IP32 is not set
+-# CONFIG_SIBYTE_BIGSUR is not set
+-# CONFIG_SIBYTE_SWARM is not set
+-# CONFIG_SIBYTE_SENTOSA is not set
+-# CONFIG_SIBYTE_RHONE is not set
+-# CONFIG_SIBYTE_CARMEL is not set
+-# CONFIG_SIBYTE_PTSWARM is not set
+-# CONFIG_SIBYTE_LITTLESUR is not set
+-# CONFIG_SIBYTE_CRHINE is not set
+-# CONFIG_SIBYTE_CRHONE is not set
+-# CONFIG_SNI_RM200_PCI is not set
+-# CONFIG_TOSHIBA_JMR3927 is not set
+-# CONFIG_TOSHIBA_RBTX4927 is not set
+-# CONFIG_TOSHIBA_RBTX4938 is not set
+-CONFIG_JAGUAR_DMALOW=y
+-CONFIG_RWSEM_GENERIC_SPINLOCK=y
+-CONFIG_GENERIC_FIND_NEXT_BIT=y
+-CONFIG_GENERIC_HWEIGHT=y
+-CONFIG_GENERIC_CALIBRATE_DELAY=y
+-CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
+-CONFIG_DMA_NONCOHERENT=y
+-CONFIG_DMA_NEED_PCI_MAP_STATE=y
+-CONFIG_LIMITED_DMA=y
+-CONFIG_CPU_BIG_ENDIAN=y
+-# CONFIG_CPU_LITTLE_ENDIAN is not set
+-CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
+-CONFIG_IRQ_CPU=y
+-CONFIG_IRQ_CPU_RM7K=y
+-CONFIG_IRQ_MV64340=y
+-CONFIG_PCI_MARVELL=y
+-CONFIG_SWAP_IO_SPACE=y
+-CONFIG_BOOT_ELF32=y
+-CONFIG_MIPS_L1_CACHE_SHIFT=5
+-
+-#
+-# CPU selection
+-#
+-# CONFIG_CPU_MIPS32_R1 is not set
+-# CONFIG_CPU_MIPS32_R2 is not set
+-# CONFIG_CPU_MIPS64_R1 is not set
+-# CONFIG_CPU_MIPS64_R2 is not set
+-# CONFIG_CPU_R3000 is not set
+-# CONFIG_CPU_TX39XX is not set
+-# CONFIG_CPU_VR41XX is not set
+-# CONFIG_CPU_R4300 is not set
+-# CONFIG_CPU_R4X00 is not set
+-# CONFIG_CPU_TX49XX is not set
+-# CONFIG_CPU_R5000 is not set
+-# CONFIG_CPU_R5432 is not set
+-# CONFIG_CPU_R6000 is not set
+-# CONFIG_CPU_NEVADA is not set
+-# CONFIG_CPU_R8000 is not set
+-# CONFIG_CPU_R10000 is not set
+-# CONFIG_CPU_RM7000 is not set
+-CONFIG_CPU_RM9000=y
+-# CONFIG_CPU_SB1 is not set
+-CONFIG_SYS_HAS_CPU_RM9000=y
+-CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
+-
+-#
+-# Kernel type
+-#
+-CONFIG_32BIT=y
+-# CONFIG_64BIT is not set
+-CONFIG_PAGE_SIZE_4KB=y
+-# CONFIG_PAGE_SIZE_8KB is not set
+-# CONFIG_PAGE_SIZE_16KB is not set
+-# CONFIG_PAGE_SIZE_64KB is not set
+-CONFIG_BOARD_SCACHE=y
+-CONFIG_RM7000_CPU_SCACHE=y
+-CONFIG_CPU_HAS_PREFETCH=y
+-CONFIG_MIPS_MT_DISABLED=y
+-# CONFIG_MIPS_MT_SMTC is not set
+-# CONFIG_MIPS_MT_SMP is not set
+-# CONFIG_MIPS_VPE_LOADER is not set
+-# CONFIG_64BIT_PHYS_ADDR is not set
+-CONFIG_CPU_HAS_LLSC=y
+-CONFIG_CPU_HAS_SYNC=y
+-CONFIG_GENERIC_HARDIRQS=y
+-CONFIG_GENERIC_IRQ_PROBE=y
+-CONFIG_HIGHMEM=y
+-CONFIG_CPU_SUPPORTS_HIGHMEM=y
+-CONFIG_SYS_SUPPORTS_HIGHMEM=y
+-CONFIG_ARCH_FLATMEM_ENABLE=y
+-CONFIG_FLATMEM=y
+-CONFIG_FLAT_NODE_MEM_MAP=y
+-# CONFIG_SPARSEMEM_STATIC is not set
+-CONFIG_SPLIT_PTLOCK_CPUS=4
+-# CONFIG_RESOURCES_64BIT is not set
+-# CONFIG_HZ_48 is not set
+-# CONFIG_HZ_100 is not set
+-# CONFIG_HZ_128 is not set
+-# CONFIG_HZ_250 is not set
+-# CONFIG_HZ_256 is not set
+-CONFIG_HZ_1000=y
+-# CONFIG_HZ_1024 is not set
+-CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
+-CONFIG_HZ=1000
+-CONFIG_PREEMPT_NONE=y
+-# CONFIG_PREEMPT_VOLUNTARY is not set
+-# CONFIG_PREEMPT is not set
+-CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
+-
+-#
+-# Code maturity level options
+-#
+-# CONFIG_EXPERIMENTAL is not set
+-CONFIG_BROKEN_ON_SMP=y
+-CONFIG_INIT_ENV_ARG_LIMIT=32
+-
+-#
+-# General setup
+-#
+-CONFIG_LOCALVERSION=""
+-CONFIG_LOCALVERSION_AUTO=y
+-CONFIG_SWAP=y
+-CONFIG_SYSVIPC=y
+-# CONFIG_BSD_PROCESS_ACCT is not set
+-CONFIG_SYSCTL=y
+-# CONFIG_AUDIT is not set
+-CONFIG_IKCONFIG=y
+-CONFIG_IKCONFIG_PROC=y
+-CONFIG_RELAY=y
+-CONFIG_INITRAMFS_SOURCE=""
+-CONFIG_EMBEDDED=y
+-CONFIG_KALLSYMS=y
+-# CONFIG_KALLSYMS_EXTRA_PASS is not set
+-CONFIG_HOTPLUG=y
+-CONFIG_PRINTK=y
+-CONFIG_BUG=y
+-CONFIG_ELF_CORE=y
+-CONFIG_BASE_FULL=y
+-CONFIG_RT_MUTEXES=y
+-CONFIG_FUTEX=y
+-CONFIG_EPOLL=y
+-CONFIG_SHMEM=y
+-CONFIG_SLAB=y
+-CONFIG_VM_EVENT_COUNTERS=y
+-# CONFIG_TINY_SHMEM is not set
+-CONFIG_BASE_SMALL=0
+-# CONFIG_SLOB is not set
+-
+-#
+-# Loadable module support
+-#
+-CONFIG_MODULES=y
+-CONFIG_MODULE_UNLOAD=y
+-# CONFIG_MODVERSIONS is not set
+-CONFIG_MODULE_SRCVERSION_ALL=y
+-CONFIG_KMOD=y
+-
+-#
+-# Block layer
+-#
+-# CONFIG_LBD is not set
+-# CONFIG_BLK_DEV_IO_TRACE is not set
+-# CONFIG_LSF is not set
+-
+-#
+-# IO Schedulers
+-#
+-CONFIG_IOSCHED_NOOP=y
+-CONFIG_IOSCHED_AS=y
+-CONFIG_IOSCHED_DEADLINE=y
+-CONFIG_IOSCHED_CFQ=y
+-CONFIG_DEFAULT_AS=y
+-# CONFIG_DEFAULT_DEADLINE is not set
+-# CONFIG_DEFAULT_CFQ is not set
+-# CONFIG_DEFAULT_NOOP is not set
+-CONFIG_DEFAULT_IOSCHED="anticipatory"
+-
+-#
+-# Bus options (PCI, PCMCIA, EISA, ISA, TC)
+-#
+-CONFIG_HW_HAS_PCI=y
+-CONFIG_PCI=y
+-CONFIG_MMU=y
+-
+-#
+-# PCCARD (PCMCIA/CardBus) support
+-#
+-# CONFIG_PCCARD is not set
+-
+-#
+-# PCI Hotplug Support
+-#
+-
+-#
+-# Executable file formats
+-#
+-CONFIG_BINFMT_ELF=y
+-# CONFIG_BINFMT_MISC is not set
+-CONFIG_TRAD_SIGNALS=y
+-
+-#
+-# Networking
+-#
+-CONFIG_NET=y
+-
+-#
+-# Networking options
+-#
+-# CONFIG_NETDEBUG is not set
+-# CONFIG_PACKET is not set
+-CONFIG_UNIX=y
+-CONFIG_XFRM=y
+-CONFIG_XFRM_USER=m
+-# CONFIG_NET_KEY is not set
+-CONFIG_INET=y
+-# CONFIG_IP_MULTICAST is not set
+-# CONFIG_IP_ADVANCED_ROUTER is not set
+-CONFIG_IP_FIB_HASH=y
+-CONFIG_IP_PNP=y
+-# CONFIG_IP_PNP_DHCP is not set
+-CONFIG_IP_PNP_BOOTP=y
+-# CONFIG_IP_PNP_RARP is not set
+-# CONFIG_NET_IPIP is not set
+-# CONFIG_NET_IPGRE is not set
+-# CONFIG_SYN_COOKIES is not set
+-# CONFIG_INET_AH is not set
+-# CONFIG_INET_ESP is not set
+-# CONFIG_INET_IPCOMP is not set
+-# CONFIG_INET_XFRM_TUNNEL is not set
+-# CONFIG_INET_TUNNEL is not set
+-CONFIG_INET_XFRM_MODE_TRANSPORT=m
+-CONFIG_INET_XFRM_MODE_TUNNEL=m
+-CONFIG_INET_DIAG=y
+-CONFIG_INET_TCP_DIAG=y
+-# CONFIG_TCP_CONG_ADVANCED is not set
+-CONFIG_TCP_CONG_BIC=y
+-CONFIG_IPV6=m
+-CONFIG_IPV6_PRIVACY=y
+-CONFIG_IPV6_ROUTER_PREF=y
+-CONFIG_INET6_AH=m
+-CONFIG_INET6_ESP=m
+-CONFIG_INET6_IPCOMP=m
+-CONFIG_INET6_XFRM_TUNNEL=m
+-CONFIG_INET6_TUNNEL=m
+-CONFIG_INET6_XFRM_MODE_TRANSPORT=m
+-CONFIG_INET6_XFRM_MODE_TUNNEL=m
+-CONFIG_IPV6_TUNNEL=m
+-CONFIG_NETWORK_SECMARK=y
+-# CONFIG_NETFILTER is not set
+-# CONFIG_BRIDGE is not set
+-# CONFIG_VLAN_8021Q is not set
+-# CONFIG_DECNET is not set
+-# CONFIG_LLC2 is not set
+-# CONFIG_IPX is not set
+-# CONFIG_ATALK is not set
+-
+-#
+-# QoS and/or fair queueing
+-#
+-# CONFIG_NET_SCHED is not set
+-
+-#
+-# Network testing
+-#
+-# CONFIG_NET_PKTGEN is not set
+-# CONFIG_HAMRADIO is not set
+-# CONFIG_IRDA is not set
+-# CONFIG_BT is not set
+-CONFIG_IEEE80211=m
+-# CONFIG_IEEE80211_DEBUG is not set
+-CONFIG_IEEE80211_CRYPT_WEP=m
+-CONFIG_IEEE80211_CRYPT_CCMP=m
+-
+-#
+-# Device Drivers
+-#
+-
+-#
+-# Generic Driver Options
+-#
+-CONFIG_STANDALONE=y
+-CONFIG_PREVENT_FIRMWARE_BUILD=y
+-CONFIG_FW_LOADER=m
+-# CONFIG_SYS_HYPERVISOR is not set
+-
+-#
+-# Connector - unified userspace <-> kernelspace linker
+-#
+-CONFIG_CONNECTOR=m
+-
+-#
+-# Memory Technology Devices (MTD)
+-#
+-# CONFIG_MTD is not set
+-
+-#
+-# Parallel port support
+-#
+-# CONFIG_PARPORT is not set
+-
+-#
+-# Plug and Play support
+-#
+-
+-#
+-# Block devices
+-#
+-# CONFIG_BLK_CPQ_DA is not set
+-# CONFIG_BLK_CPQ_CISS_DA is not set
+-# CONFIG_BLK_DEV_DAC960 is not set
+-# CONFIG_BLK_DEV_COW_COMMON is not set
+-# CONFIG_BLK_DEV_LOOP is not set
+-# CONFIG_BLK_DEV_NBD is not set
+-# CONFIG_BLK_DEV_SX8 is not set
+-# CONFIG_BLK_DEV_RAM is not set
+-# CONFIG_BLK_DEV_INITRD is not set
+-CONFIG_CDROM_PKTCDVD=m
+-CONFIG_CDROM_PKTCDVD_BUFFERS=8
+-CONFIG_ATA_OVER_ETH=m
+-
+-#
+-# ATA/ATAPI/MFM/RLL support
+-#
+-# CONFIG_IDE is not set
+-
+-#
+-# SCSI device support
+-#
+-CONFIG_RAID_ATTRS=m
+-# CONFIG_SCSI is not set
+-
+-#
+-# Multi-device support (RAID and LVM)
+-#
+-# CONFIG_MD is not set
+-
+-#
+-# Fusion MPT device support
+-#
+-# CONFIG_FUSION is not set
+-
+-#
+-# IEEE 1394 (FireWire) support
+-#
+-# CONFIG_IEEE1394 is not set
+-
+-#
+-# I2O device support
+-#
+-# CONFIG_I2O is not set
+-
+-#
+-# Network device support
+-#
+-CONFIG_NETDEVICES=y
+-# CONFIG_DUMMY is not set
+-# CONFIG_BONDING is not set
+-# CONFIG_EQUALIZER is not set
+-# CONFIG_TUN is not set
+-
+-#
+-# ARCnet devices
+-#
+-# CONFIG_ARCNET is not set
+-
+-#
+-# PHY device support
+-#
+-CONFIG_PHYLIB=m
+-
+-#
+-# MII PHY device drivers
+-#
+-CONFIG_MARVELL_PHY=m
+-CONFIG_DAVICOM_PHY=m
+-CONFIG_QSEMI_PHY=m
+-CONFIG_LXT_PHY=m
+-CONFIG_CICADA_PHY=m
+-CONFIG_VITESSE_PHY=m
+-CONFIG_SMSC_PHY=m
+-
+-#
+-# Ethernet (10 or 100Mbit)
+-#
+-CONFIG_NET_ETHERNET=y
+-CONFIG_MII=y
+-# CONFIG_HAPPYMEAL is not set
+-# CONFIG_SUNGEM is not set
+-# CONFIG_CASSINI is not set
+-# CONFIG_NET_VENDOR_3COM is not set
+-# CONFIG_DM9000 is not set
+-
+-#
+-# Tulip family network device support
+-#
+-# CONFIG_NET_TULIP is not set
+-# CONFIG_HP100 is not set
+-CONFIG_NET_PCI=y
+-# CONFIG_PCNET32 is not set
+-# CONFIG_AMD8111_ETH is not set
+-# CONFIG_ADAPTEC_STARFIRE is not set
+-# CONFIG_B44 is not set
+-# CONFIG_FORCEDETH is not set
+-# CONFIG_DGRS is not set
+-CONFIG_EEPRO100=y
+-# CONFIG_E100 is not set
+-# CONFIG_FEALNX is not set
+-# CONFIG_NATSEMI is not set
+-# CONFIG_NE2K_PCI is not set
+-# CONFIG_8139TOO is not set
+-# CONFIG_SIS900 is not set
+-# CONFIG_EPIC100 is not set
+-# CONFIG_SUNDANCE is not set
+-# CONFIG_TLAN is not set
+-# CONFIG_VIA_RHINE is not set
+-
+-#
+-# Ethernet (1000 Mbit)
+-#
+-# CONFIG_ACENIC is not set
+-# CONFIG_DL2K is not set
+-# CONFIG_E1000 is not set
+-# CONFIG_NS83820 is not set
+-# CONFIG_HAMACHI is not set
+-# CONFIG_R8169 is not set
+-# CONFIG_SIS190 is not set
+-# CONFIG_SKGE is not set
+-# CONFIG_SK98LIN is not set
+-# CONFIG_VIA_VELOCITY is not set
+-# CONFIG_TIGON3 is not set
+-# CONFIG_BNX2 is not set
+-CONFIG_MV643XX_ETH=y
+-CONFIG_MV643XX_ETH_0=y
+-CONFIG_MV643XX_ETH_1=y
+-CONFIG_MV643XX_ETH_2=y
+-
+-#
+-# Ethernet (10000 Mbit)
+-#
+-# CONFIG_CHELSIO_T1 is not set
+-# CONFIG_IXGB is not set
+-# CONFIG_S2IO is not set
+-# CONFIG_MYRI10GE is not set
+-
+-#
+-# Token Ring devices
+-#
+-# CONFIG_TR is not set
+-
+-#
+-# Wireless LAN (non-hamradio)
+-#
+-# CONFIG_NET_RADIO is not set
+-
+-#
+-# Wan interfaces
+-#
+-# CONFIG_WAN is not set
+-# CONFIG_FDDI is not set
+-# CONFIG_PPP is not set
+-# CONFIG_SLIP is not set
+-# CONFIG_NETPOLL is not set
+-# CONFIG_NET_POLL_CONTROLLER is not set
+-
+-#
+-# ISDN subsystem
+-#
+-# CONFIG_ISDN is not set
+-
+-#
+-# Telephony Support
+-#
+-# CONFIG_PHONE is not set
+-
+-#
+-# Input device support
+-#
+-# CONFIG_INPUT is not set
+-
+-#
+-# Hardware I/O ports
+-#
+-# CONFIG_SERIO is not set
+-# CONFIG_GAMEPORT is not set
+-
+-#
+-# Character devices
+-#
+-# CONFIG_VT is not set
+-# CONFIG_SERIAL_NONSTANDARD is not set
+-
+-#
+-# Serial drivers
+-#
+-CONFIG_SERIAL_8250=y
+-CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_SERIAL_8250_PCI=y
+-CONFIG_SERIAL_8250_NR_UARTS=4
+-CONFIG_SERIAL_8250_RUNTIME_UARTS=4
+-# CONFIG_SERIAL_8250_EXTENDED is not set
+-
+-#
+-# Non-8250 serial port support
+-#
+-CONFIG_SERIAL_CORE=y
+-CONFIG_SERIAL_CORE_CONSOLE=y
+-# CONFIG_SERIAL_JSM is not set
+-CONFIG_UNIX98_PTYS=y
+-CONFIG_LEGACY_PTYS=y
+-CONFIG_LEGACY_PTY_COUNT=256
+-
+-#
+-# IPMI
+-#
+-# CONFIG_IPMI_HANDLER is not set
+-
+-#
+-# Watchdog Cards
+-#
+-# CONFIG_WATCHDOG is not set
+-# CONFIG_HW_RANDOM is not set
+-# CONFIG_RTC is not set
+-# CONFIG_GEN_RTC is not set
+-# CONFIG_DTLK is not set
+-# CONFIG_R3964 is not set
+-# CONFIG_APPLICOM is not set
+-
+-#
+-# Ftape, the floppy tape device driver
+-#
+-# CONFIG_DRM is not set
+-# CONFIG_RAW_DRIVER is not set
+-
+-#
+-# TPM devices
+-#
+-
+-#
+-# I2C support
+-#
+-# CONFIG_I2C is not set
+-
+-#
+-# SPI support
+-#
+-# CONFIG_SPI is not set
+-# CONFIG_SPI_MASTER is not set
+-
+-#
+-# Dallas's 1-wire bus
+-#
+-# CONFIG_W1 is not set
+-
+-#
+-# Hardware Monitoring support
+-#
+-# CONFIG_HWMON is not set
+-# CONFIG_HWMON_VID is not set
+-
+-#
+-# Misc devices
+-#
+-
+-#
+-# Multimedia devices
+-#
+-# CONFIG_VIDEO_DEV is not set
+-CONFIG_VIDEO_V4L2=y
+-
+-#
+-# Digital Video Broadcasting Devices
+-#
+-# CONFIG_DVB is not set
+-
+-#
+-# Graphics support
+-#
+-# CONFIG_FIRMWARE_EDID is not set
+-# CONFIG_FB is not set
+-
+-#
+-# Sound
+-#
+-# CONFIG_SOUND is not set
+-
+-#
+-# USB support
+-#
+-CONFIG_USB_ARCH_HAS_HCD=y
+-CONFIG_USB_ARCH_HAS_OHCI=y
+-CONFIG_USB_ARCH_HAS_EHCI=y
+-# CONFIG_USB is not set
+-
+-#
+-# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
+-#
+-
+-#
+-# USB Gadget Support
+-#
+-# CONFIG_USB_GADGET is not set
+-
+-#
+-# MMC/SD Card support
+-#
+-# CONFIG_MMC is not set
+-
+-#
+-# LED devices
+-#
+-# CONFIG_NEW_LEDS is not set
+-
+-#
+-# LED drivers
+-#
+-
+-#
+-# LED Triggers
+-#
+-
+-#
+-# InfiniBand support
+-#
+-# CONFIG_INFINIBAND is not set
+-
+-#
+-# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
+-#
+-
+-#
+-# Real Time Clock
+-#
+-
+-#
+-# DMA Engine support
+-#
+-# CONFIG_DMA_ENGINE is not set
+-
+-#
+-# DMA Clients
+-#
+-
+-#
+-# DMA Devices
+-#
+-
+-#
+-# File systems
+-#
+-# CONFIG_EXT2_FS is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_REISERFS_FS is not set
+-# CONFIG_JFS_FS is not set
+-# CONFIG_FS_POSIX_ACL is not set
+-# CONFIG_XFS_FS is not set
+-# CONFIG_MINIX_FS is not set
+-# CONFIG_ROMFS_FS is not set
+-CONFIG_INOTIFY=y
+-CONFIG_INOTIFY_USER=y
+-# CONFIG_QUOTA is not set
+-CONFIG_DNOTIFY=y
+-# CONFIG_AUTOFS_FS is not set
+-# CONFIG_AUTOFS4_FS is not set
+-CONFIG_FUSE_FS=m
+-
+-#
+-# CD-ROM/DVD Filesystems
+-#
+-# CONFIG_ISO9660_FS is not set
+-# CONFIG_UDF_FS is not set
+-
+-#
+-# DOS/FAT/NT Filesystems
+-#
+-# CONFIG_MSDOS_FS is not set
+-# CONFIG_VFAT_FS is not set
+-# CONFIG_NTFS_FS is not set
+-
+-#
+-# Pseudo filesystems
+-#
+-CONFIG_PROC_FS=y
+-CONFIG_PROC_KCORE=y
+-CONFIG_SYSFS=y
+-# CONFIG_TMPFS is not set
+-# CONFIG_HUGETLB_PAGE is not set
+-CONFIG_RAMFS=y
+-
+-#
+-# Miscellaneous filesystems
+-#
+-# CONFIG_HFSPLUS_FS is not set
+-# CONFIG_CRAMFS is not set
+-# CONFIG_VXFS_FS is not set
+-# CONFIG_HPFS_FS is not set
+-# CONFIG_QNX4FS_FS is not set
+-# CONFIG_SYSV_FS is not set
+-# CONFIG_UFS_FS is not set
+-
+-#
+-# Network File Systems
+-#
+-CONFIG_NFS_FS=y
+-# CONFIG_NFS_V3 is not set
+-# CONFIG_NFSD is not set
+-CONFIG_ROOT_NFS=y
+-CONFIG_LOCKD=y
+-CONFIG_NFS_COMMON=y
+-CONFIG_SUNRPC=y
+-# CONFIG_SMB_FS is not set
+-# CONFIG_CIFS is not set
+-# CONFIG_CIFS_DEBUG2 is not set
+-# CONFIG_NCP_FS is not set
+-# CONFIG_CODA_FS is not set
+-
+-#
+-# Partition Types
+-#
+-# CONFIG_PARTITION_ADVANCED is not set
+-CONFIG_MSDOS_PARTITION=y
+-
+-#
+-# Native Language Support
+-#
+-# CONFIG_NLS is not set
+-
+-#
+-# Kernel hacking
+-#
+-# CONFIG_PRINTK_TIME is not set
+-# CONFIG_MAGIC_SYSRQ is not set
+-# CONFIG_UNUSED_SYMBOLS is not set
+-# CONFIG_DEBUG_KERNEL is not set
+-CONFIG_LOG_BUF_SHIFT=14
+-# CONFIG_DEBUG_FS is not set
+-CONFIG_CROSSCOMPILE=y
+-CONFIG_CMDLINE=""
+-
+-#
+-# Security options
+-#
+-CONFIG_KEYS=y
+-CONFIG_KEYS_DEBUG_PROC_KEYS=y
+-# CONFIG_SECURITY is not set
+-
+-#
+-# Cryptographic options
+-#
+-CONFIG_CRYPTO=y
+-CONFIG_CRYPTO_HMAC=y
+-CONFIG_CRYPTO_NULL=m
+-CONFIG_CRYPTO_MD4=m
+-CONFIG_CRYPTO_MD5=m
+-CONFIG_CRYPTO_SHA1=m
+-CONFIG_CRYPTO_SHA256=m
+-CONFIG_CRYPTO_SHA512=m
+-CONFIG_CRYPTO_WP512=m
+-CONFIG_CRYPTO_TGR192=m
+-CONFIG_CRYPTO_DES=m
+-CONFIG_CRYPTO_BLOWFISH=m
+-CONFIG_CRYPTO_TWOFISH=m
+-CONFIG_CRYPTO_SERPENT=m
+-CONFIG_CRYPTO_AES=m
+-CONFIG_CRYPTO_CAST5=m
+-CONFIG_CRYPTO_CAST6=m
+-CONFIG_CRYPTO_TEA=m
+-CONFIG_CRYPTO_ARC4=m
+-CONFIG_CRYPTO_KHAZAD=m
+-CONFIG_CRYPTO_ANUBIS=m
+-CONFIG_CRYPTO_DEFLATE=m
+-CONFIG_CRYPTO_MICHAEL_MIC=m
+-CONFIG_CRYPTO_CRC32C=m
+-# CONFIG_CRYPTO_TEST is not set
+-
+-#
+-# Hardware crypto devices
+-#
+-
+-#
+-# Library routines
+-#
+-# CONFIG_CRC_CCITT is not set
+-CONFIG_CRC16=m
+-CONFIG_CRC32=m
+-CONFIG_LIBCRC32C=m
+-CONFIG_ZLIB_INFLATE=m
+-CONFIG_ZLIB_DEFLATE=m
+-CONFIG_PLIST=y
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/mm/highmem.c mips/arch/mips/mm/highmem.c
+--- mips-orig/arch/mips/mm/highmem.c	2006-09-21 00:46:00.988055000 +0900
++++ mips/arch/mips/mm/highmem.c	2006-09-21 00:57:52.732536250 +0900
+@@ -82,7 +82,6 @@ void __kunmap_atomic(void *kvaddr, enum 
+ 	preempt_check_resched();
+ }
+ 
+-#ifndef CONFIG_LIMITED_DMA
+ /*
+  * This is the same as kmap_atomic() but can map memory that doesn't
+  * have a struct page associated with it.
+@@ -101,7 +100,6 @@ void *kmap_atomic_pfn(unsigned long pfn,
+ 
+ 	return (void*) vaddr;
+ }
+-#endif /* CONFIG_LIMITED_DMA */
+ 
+ struct page *__kmap_atomic_to_page(void *ptr)
+ {
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/mm/init.c mips/arch/mips/mm/init.c
+--- mips-orig/arch/mips/mm/init.c	2006-09-21 00:46:00.988055000 +0900
++++ mips/arch/mips/mm/init.c	2006-09-21 00:57:52.736536500 +0900
+@@ -453,9 +453,6 @@ void __init mem_init(void)
+ 			continue;
+ 		}
+ 		ClearPageReserved(page);
+-#ifdef CONFIG_LIMITED_DMA
+-		set_page_address(page, lowmem_page_address(page));
+-#endif
+ 		init_page_count(page);
+ 		__free_page(page);
+ 		totalhigh_pages++;
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/Kconfig mips/arch/mips/momentum/Kconfig
+--- mips-orig/arch/mips/momentum/Kconfig	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/Kconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,6 +0,0 @@
+-config JAGUAR_DMALOW
+-	bool "Low DMA Mode"
+-	depends on MOMENCO_JAGUAR_ATX
+-	help
+-	  Select to Y if jump JP5 is set on your board, N otherwise.  Normally
+-	  the jumper is set, so if you feel unsafe, just say Y.
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/Makefile mips/arch/mips/momentum/jaguar_atx/Makefile
+--- mips-orig/arch/mips/momentum/jaguar_atx/Makefile	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/jaguar_atx/Makefile	1970-01-01 09:00:00.000000000 +0900
+@@ -1,12 +0,0 @@
+-#
+-# Makefile for Momentum Computer's Jaguar-ATX board.
+-#
+-# Note! Dependencies are done automagically by 'make dep', which also
+-# removes any old dependencies. DON'T put your own dependencies here
+-# unless it's something special (ie not a .c file).
+-#
+-
+-obj-y += irq.o prom.o reset.o setup.o
+-
+-obj-$(CONFIG_SERIAL_8250_CONSOLE) += ja-console.o
+-obj-$(CONFIG_REMOTE_DEBUG) += dbg_io.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/dbg_io.c mips/arch/mips/momentum/jaguar_atx/dbg_io.c
+--- mips-orig/arch/mips/momentum/jaguar_atx/dbg_io.c	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/jaguar_atx/dbg_io.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,125 +0,0 @@
+-
+-#if defined(CONFIG_REMOTE_DEBUG)
+-
+-#include <asm/serial.h> /* For the serial port location and base baud */
+-
+-/* --- CONFIG --- */
+-
+-typedef unsigned char uint8;
+-typedef unsigned int uint32;
+-
+-/* --- END OF CONFIG --- */
+-
+-#define         UART16550_BAUD_2400             2400
+-#define         UART16550_BAUD_4800             4800
+-#define         UART16550_BAUD_9600             9600
+-#define         UART16550_BAUD_19200            19200
+-#define         UART16550_BAUD_38400            38400
+-#define         UART16550_BAUD_57600            57600
+-#define         UART16550_BAUD_115200           115200
+-
+-#define         UART16550_PARITY_NONE           0
+-#define         UART16550_PARITY_ODD            0x08
+-#define         UART16550_PARITY_EVEN           0x18
+-#define         UART16550_PARITY_MARK           0x28
+-#define         UART16550_PARITY_SPACE          0x38
+-
+-#define         UART16550_DATA_5BIT             0x0
+-#define         UART16550_DATA_6BIT             0x1
+-#define         UART16550_DATA_7BIT             0x2
+-#define         UART16550_DATA_8BIT             0x3
+-
+-#define         UART16550_STOP_1BIT             0x0
+-#define         UART16550_STOP_2BIT             0x4
+-
+-/* ----------------------------------------------------- */
+-
+-/* === CONFIG === */
+-
+-/* [jsun] we use the second serial port for kdb */
+-#define         BASE                    OCELOT_SERIAL1_BASE
+-#define         MAX_BAUD                OCELOT_BASE_BAUD
+-
+-/* === END OF CONFIG === */
+-
+-#define         REG_OFFSET              4
+-
+-/* register offset */
+-#define         OFS_RCV_BUFFER          0
+-#define         OFS_TRANS_HOLD          0
+-#define         OFS_SEND_BUFFER         0
+-#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
+-#define         OFS_INTR_ID             (2*REG_OFFSET)
+-#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
+-#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
+-#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
+-#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
+-#define         OFS_LINE_STATUS         (5*REG_OFFSET)
+-#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
+-#define         OFS_RS232_INPUT         (6*REG_OFFSET)
+-#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
+-
+-#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
+-#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
+-
+-
+-/* memory-mapped read/write of the port */
+-#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
+-#define         UART16550_WRITE(y, z)  ((*((volatile uint8*)(BASE + y))) = z)
+-
+-void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
+-{
+-	/* disable interrupts */
+-	UART16550_WRITE(OFS_INTR_ENABLE, 0);
+-
+-	/* set up baud rate */
+-	{
+-		uint32 divisor;
+-
+-		/* set DIAB bit */
+-		UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
+-
+-		/* set divisor */
+-		divisor = MAX_BAUD / baud;
+-		UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
+-		UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
+-
+-		/* clear DIAB bit */
+-		UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
+-	}
+-
+-	/* set data format */
+-	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
+-}
+-
+-static int remoteDebugInitialized = 0;
+-
+-uint8 getDebugChar(void)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		debugInit(UART16550_BAUD_38400,
+-			  UART16550_DATA_8BIT,
+-			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-	}
+-
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0);
+-	return UART16550_READ(OFS_RCV_BUFFER);
+-}
+-
+-
+-int putDebugChar(uint8 byte)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		debugInit(UART16550_BAUD_38400,
+-			  UART16550_DATA_8BIT,
+-			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-	}
+-
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0);
+-	UART16550_WRITE(OFS_SEND_BUFFER, byte);
+-	return 1;
+-}
+-
+-#endif
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/irq.c mips/arch/mips/momentum/jaguar_atx/irq.c
+--- mips-orig/arch/mips/momentum/jaguar_atx/irq.c	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/jaguar_atx/irq.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,94 +0,0 @@
+-/*
+- * Copyright (C) 2002 Momentum Computer, Inc.
+- * Author: Matthew Dharm, mdharm@momenco.com
+- *
+- * Based on work by:
+- *   Copyright (C) 2000 RidgeRun, Inc.
+- *   Author: RidgeRun, Inc.
+- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
+- *
+- *   Copyright 2001 MontaVista Software Inc.
+- *   Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- *   Copyright (C) 2000, 01, 06 Ralf Baechle (ralf@linux-mips.org)
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/signal.h>
+-#include <linux/types.h>
+-#include <asm/irq_cpu.h>
+-#include <asm/mipsregs.h>
+-#include <asm/time.h>
+-
+-asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
+-{
+-	unsigned int pending = read_c0_cause() & read_c0_status();
+-
+-	if (pending & STATUSF_IP0)
+-		do_IRQ(0, regs);
+-	else if (pending & STATUSF_IP1)
+-		do_IRQ(1, regs);
+-	else if (pending & STATUSF_IP2)
+-		do_IRQ(2, regs);
+-	else if (pending & STATUSF_IP3)
+-		do_IRQ(3, regs);
+-	else if (pending & STATUSF_IP4)
+-		do_IRQ(4, regs);
+-	else if (pending & STATUSF_IP5)
+-		do_IRQ(5, regs);
+-	else if (pending & STATUSF_IP6)
+-		do_IRQ(6, regs);
+-	else if (pending & STATUSF_IP7)
+-		ll_timer_interrupt(7, regs);
+-	else {
+-		/*
+-		 * Now look at the extended interrupts
+-		 */
+-		pending = (read_c0_cause() & (read_c0_intcontrol() << 8)) >> 16;
+-		if (pending & STATUSF_IP8)
+-			ll_mv64340_irq(regs);
+-	}
+-}
+-
+-static struct irqaction cascade_mv64340 = {
+-	no_action, IRQF_DISABLED, CPU_MASK_NONE, "MV64340-Cascade", NULL, NULL
+-};
+-
+-void __init arch_init_irq(void)
+-{
+-	/*
+-	 * Clear all of the interrupts while we change the able around a bit.
+-	 * int-handler is not on bootstrap
+-	 */
+-	clear_c0_status(ST0_IM);
+-
+-	mips_cpu_irq_init(0);
+-	rm7k_cpu_irq_init(8);
+-
+-	/* set up the cascading interrupts */
+-	setup_irq(8, &cascade_mv64340);
+-
+-	mv64340_irq_init(16);
+-
+-	set_c0_status(ST0_IM);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/ja-console.c mips/arch/mips/momentum/jaguar_atx/ja-console.c
+--- mips-orig/arch/mips/momentum/jaguar_atx/ja-console.c	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/jaguar_atx/ja-console.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,106 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2001, 2002, 2004 Ralf Baechle
+- */
+-#include <linux/init.h>
+-#include <linux/console.h>
+-#include <linux/kdev_t.h>
+-#include <linux/major.h>
+-#include <linux/termios.h>
+-#include <linux/sched.h>
+-#include <linux/tty.h>
+-
+-#include <linux/serial.h>
+-#include <linux/serial_core.h>
+-#include <asm/serial.h>
+-
+-/* SUPERIO uart register map */
+-struct ja_uartregs {
+-	union {
+-		volatile u8	pad0[3];
+-		volatile u8	rbr;	/* read only, DLAB == 0 */
+-		volatile u8	pad1[3];
+-		volatile u8	thr;	/* write only, DLAB == 0 */
+-		volatile u8	pad2[3];
+-		volatile u8	dll;	/* DLAB == 1 */
+-	} u1;
+-	union {
+-		volatile u8	pad0[3];
+-		volatile u8	ier;	/* DLAB == 0 */
+-		volatile u8	pad1[3];
+-		volatile u8	dlm;	/* DLAB == 1 */
+-	} u2;
+-	union {
+-		volatile u8	pad0[3];
+-		volatile u8	iir;	/* read only */
+-		volatile u8	pad1[3];
+-		volatile u8	fcr;	/* write only */
+-	} u3;
+-	volatile u8	pad0[3];
+-	volatile u8	iu_lcr;
+-	volatile u8	pad1[3];
+-	volatile u8	iu_mcr;
+-	volatile u8	pad2[3];
+-	volatile u8	iu_lsr;
+-	volatile u8	pad3[3];
+-	volatile u8	iu_msr;
+-	volatile u8	pad4[3];
+-	volatile u8	iu_scr;
+-} ja_uregs_t;
+-
+-#define iu_rbr u1.rbr
+-#define iu_thr u1.thr
+-#define iu_dll u1.dll
+-#define iu_ier u2.ier
+-#define iu_dlm u2.dlm
+-#define iu_iir u3.iir
+-#define iu_fcr u3.fcr
+-
+-extern unsigned long uart_base;
+-
+-static inline struct ja_uartregs *console_uart(void)
+-{
+-	return (struct ja_uartregs *) (uart_base + 0x23UL);
+-}
+-
+-void prom_putchar(char c)
+-{
+-	struct ja_uartregs *uart = console_uart();
+-
+-	while ((uart->iu_lsr & 0x20) == 0);
+-	uart->iu_thr = c;
+-}
+-
+-char __init prom_getchar(void)
+-{
+-	return 0;
+-}
+-
+-static void inline ja_console_probe(void)
+-{
+-	struct uart_port up;
+-
+-	/*
+-	 * Register to interrupt zero because we share the interrupt with
+-	 * the serial driver which we don't properly support yet.
+-	 */
+-	memset(&up, 0, sizeof(up));
+-	up.membase	= (unsigned char *) uart_base + 0x23UL;
+-	up.irq		= JAGUAR_ATX_SERIAL1_IRQ;
+-	up.uartclk	= JAGUAR_ATX_UART_CLK;
+-	up.regshift	= 2;
+-	up.iotype	= UPIO_MEM;
+-	up.flags	= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
+-	up.line		= 0;
+-
+-	if (early_serial_setup(&up))
+-		printk(KERN_ERR "Early serial init of port 0 failed\n");
+-}
+-
+-__init void ja_setup_console(void)
+-{
+-	ja_console_probe();
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h mips/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h
+--- mips-orig/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/jaguar_atx/jaguar_atx_fpga.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,52 +0,0 @@
+-/*
+- * Jaguar-ATX Board Register Definitions
+- *
+- * (C) 2002 Momentum Computer Inc.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#ifndef __JAGUAR_ATX_FPGA_H__
+-#define __JAGUAR_ATX_FPGA_H__
+-
+-#define JAGUAR_ATX_REG_BOARDREV		0x0
+-#define JAGUAR_ATX_REG_FPGA_REV		0x1
+-#define JAGUAR_ATX_REG_FPGA_TYPE	0x2
+-#define JAGUAR_ATX_REG_RESET_STATUS	0x3
+-#define JAGUAR_ATX_REG_BOARD_STATUS	0x4
+-#define JAGUAR_ATX_REG_RESERVED1	0x5
+-#define JAGUAR_ATX_REG_SET		0x6
+-#define JAGUAR_ATX_REG_CLR		0x7
+-#define JAGUAR_ATX_REG_EEPROM_MODE	0x9
+-#define JAGUAR_ATX_REG_RESERVED2	0xa
+-#define JAGUAR_ATX_REG_RESERVED3	0xb
+-#define JAGUAR_ATX_REG_RESERVED4	0xc
+-#define JAGUAR_ATX_REG_PHY_INTSTAT	0xd
+-#define JAGUAR_ATX_REG_RESERVED5	0xe
+-#define JAGUAR_ATX_REG_RESERVED6	0xf
+-
+-#define JAGUAR_ATX_CS0_ADDR		0xfc000000L
+-
+-extern unsigned long ja_fpga_base;
+-
+-#define JAGUAR_FPGA_WRITE(x,y) writeb(x, ja_fpga_base + JAGUAR_ATX_REG_##y)
+-#define JAGUAR_FPGA_READ(x) readb(ja_fpga_base + JAGUAR_ATX_REG_##x)
+-
+-#endif
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/prom.c mips/arch/mips/momentum/jaguar_atx/prom.c
+--- mips-orig/arch/mips/momentum/jaguar_atx/prom.c	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/jaguar_atx/prom.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,266 +0,0 @@
+-/*
+- * Copyright 2002 Momentum Computer Inc.
+- * Author: Matthew Dharm <mdharm@momenco.com>
+- *
+- * Louis Hamilton, Red Hat, Inc.
+- * hamilton@redhat.com  [MIPS64 modifications]
+- *
+- * Based on Ocelot Linux port, which is
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- * Added changes for SMP - Manish Lachwani (lachwani@pmc-sierra.com)
+- */
+-#include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/mv643xx.h>
+-
+-#include <asm/addrspace.h>
+-#include <asm/bootinfo.h>
+-#include <asm/pmon.h>
+-
+-#include "jaguar_atx_fpga.h"
+-
+-extern void ja_setup_console(void);
+-
+-struct callvectors *debug_vectors;
+-
+-extern unsigned long cpu_clock;
+-
+-const char *get_system_type(void)
+-{
+-	return "Momentum Jaguar-ATX";
+-}
+-
+-#ifdef CONFIG_MV643XX_ETH
+-extern unsigned char prom_mac_addr_base[6];
+-
+-static void burn_clocks(void)
+-{
+-	int i;
+-
+-	/* this loop should burn at least 1us -- this should be plenty */
+-	for (i = 0; i < 0x10000; i++)
+-		;
+-}
+-
+-static u8 exchange_bit(u8 val, u8 cs)
+-{
+-	/* place the data */
+-	JAGUAR_FPGA_WRITE((val << 2) | cs, EEPROM_MODE);
+-	burn_clocks();
+-
+-	/* turn the clock on */
+-	JAGUAR_FPGA_WRITE((val << 2) | cs | 0x2, EEPROM_MODE);
+-	burn_clocks();
+-
+-	/* turn the clock off and read-strobe */
+-	JAGUAR_FPGA_WRITE((val << 2) | cs | 0x10, EEPROM_MODE);
+-
+-	/* return the data */
+-	return ((JAGUAR_FPGA_READ(EEPROM_MODE) >> 3) & 0x1);
+-}
+-
+-void get_mac(char dest[6])
+-{
+-	u8 read_opcode[12] = {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+-	int i,j;
+-
+-	for (i = 0; i < 12; i++)
+-		exchange_bit(read_opcode[i], 1);
+-
+-	for (j = 0; j < 6; j++) {
+-		dest[j] = 0;
+-		for (i = 0; i < 8; i++) {
+-			dest[j] <<= 1;
+-			dest[j] |= exchange_bit(0, 1);
+-		}
+-	}
+-
+-	/* turn off CS */
+-	exchange_bit(0,0);
+-}
+-#endif
+-
+-#ifdef CONFIG_64BIT
+-
+-unsigned long signext(unsigned long addr)
+-{
+-	addr &= 0xffffffff;
+-	return (unsigned long)((int)addr);
+-}
+-
+-void *get_arg(unsigned long args, int arc)
+-{
+-	unsigned long ul;
+-	unsigned char *puc, uc;
+-
+-	args += (arc * 4);
+-	ul = (unsigned long)signext(args);
+-	puc = (unsigned char *)ul;
+-	if (puc == 0)
+-		return (void *)0;
+-
+-#ifdef CONFIG_CPU_LITTLE_ENDIAN
+-	uc = *puc++;
+-	l = (unsigned long)uc;
+-	uc = *puc++;
+-	ul |= (((unsigned long)uc) << 8);
+-	uc = *puc++;
+-	ul |= (((unsigned long)uc) << 16);
+-	uc = *puc++;
+-	ul |= (((unsigned long)uc) << 24);
+-#else
+-	uc = *puc++;
+-	ul = ((unsigned long)uc) << 24;
+-	uc = *puc++;
+-	ul |= (((unsigned long)uc) << 16);
+-	uc = *puc++;
+-	ul |= (((unsigned long)uc) << 8);
+-	uc = *puc++;
+-	ul |= ((unsigned long)uc);
+-#endif
+-	ul = signext(ul);
+-
+-	return (void *)ul;
+-}
+-
+-char *arg64(unsigned long addrin, int arg_index)
+-{
+-	unsigned long args;
+-	char *p;
+-
+-	args = signext(addrin);
+-	p = (char *)get_arg(args, arg_index);
+-
+-	return p;
+-}
+-#endif  /* CONFIG_64BIT */
+-
+-/* PMON passes arguments in C main() style */
+-void __init prom_init(void)
+-{
+-	int argc = fw_arg0;
+-	char **arg = (char **) fw_arg1;
+-	char **env = (char **) fw_arg2;
+-	struct callvectors *cv = (struct callvectors *) fw_arg3;
+-	int i;
+-
+-#ifdef CONFIG_SERIAL_8250_CONSOLE
+-//	ja_setup_console();	/* The very first thing.  */
+-#endif
+-
+-#ifdef CONFIG_64BIT
+-	char *ptr;
+-
+-	printk("Mips64 Jaguar-ATX\n");
+-	/* save the PROM vectors for debugging use */
+-	debug_vectors = (struct callvectors *)signext((unsigned long)cv);
+-
+-	/* arg[0] is "g", the rest is boot parameters */
+-	arcs_cmdline[0] = '\0';
+-
+-	for (i = 1; i < argc; i++) {
+-		ptr = (char *)arg64((unsigned long)arg, i);
+-		if ((strlen(arcs_cmdline) + strlen(ptr) + 1) >=
+-		    sizeof(arcs_cmdline))
+-			break;
+-		strcat(arcs_cmdline, ptr);
+-		strcat(arcs_cmdline, " ");
+-	}
+-
+-	i = 0;
+-	while (1) {
+-		ptr = (char *)arg64((unsigned long)env, i);
+-		if (! ptr)
+-			break;
+-
+-		if (strncmp("gtbase", ptr, strlen("gtbase")) == 0) {
+-			marvell_base = simple_strtol(ptr + strlen("gtbase="),
+-							NULL, 16);
+-
+-			if ((marvell_base & 0xffffffff00000000) == 0)
+-				marvell_base |= 0xffffffff00000000;
+-
+-			printk("marvell_base set to 0x%016lx\n", marvell_base);
+-		}
+-		if (strncmp("cpuclock", ptr, strlen("cpuclock")) == 0) {
+-			cpu_clock = simple_strtol(ptr + strlen("cpuclock="),
+-							NULL, 10);
+-			printk("cpu_clock set to %d\n", cpu_clock);
+-		}
+-		i++;
+-	}
+-	printk("arcs_cmdline: %s\n", arcs_cmdline);
+-
+-#else   /* CONFIG_64BIT */
+-	/* save the PROM vectors for debugging use */
+-	debug_vectors = cv;
+-
+-	/* arg[0] is "g", the rest is boot parameters */
+-	arcs_cmdline[0] = '\0';
+-	for (i = 1; i < argc; i++) {
+-		if (strlen(arcs_cmdline) + strlen(arg[i] + 1)
+-		    >= sizeof(arcs_cmdline))
+-			break;
+-		strcat(arcs_cmdline, arg[i]);
+-		strcat(arcs_cmdline, " ");
+-	}
+-
+-	while (*env) {
+-		if (strncmp("gtbase", *env, strlen("gtbase")) == 0) {
+-			marvell_base = simple_strtol(*env + strlen("gtbase="),
+-							NULL, 16);
+-		}
+-		if (strncmp("cpuclock", *env, strlen("cpuclock")) == 0) {
+-			cpu_clock = simple_strtol(*env + strlen("cpuclock="),
+-							NULL, 10);
+-		}
+-		env++;
+-	}
+-#endif /* CONFIG_64BIT */
+-	mips_machgroup = MACH_GROUP_MOMENCO;
+-	mips_machtype = MACH_MOMENCO_JAGUAR_ATX;
+-
+-#ifdef CONFIG_MV643XX_ETH
+-	/* get the base MAC address for on-board ethernet ports */
+-	get_mac(prom_mac_addr_base);
+-#endif
+-}
+-
+-unsigned long __init prom_free_prom_memory(void)
+-{
+-	return 0;
+-}
+-
+-void __init prom_fixup_mem_map(unsigned long start, unsigned long end)
+-{
+-}
+-
+-int prom_boot_secondary(int cpu, unsigned long sp, unsigned long gp)
+-{
+-	/* Clear the semaphore */
+-	*(volatile uint32_t *)(0xbb000a68) = 0x80000000;
+-
+-	return 1;
+-}
+-
+-void prom_init_secondary(void)
+-{
+-        clear_c0_config(CONF_CM_CMASK);
+-        set_c0_config(0x2);
+-
+-	clear_c0_status(ST0_IM);
+-	set_c0_status(0x1ffff);
+-}
+-
+-void prom_smp_finish(void)
+-{
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/reset.c mips/arch/mips/momentum/jaguar_atx/reset.c
+--- mips-orig/arch/mips/momentum/jaguar_atx/reset.c	2006-09-21 00:46:00.996055500 +0900
++++ mips/arch/mips/momentum/jaguar_atx/reset.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,56 +0,0 @@
+-/*
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- * Copyright (C) 1997, 2001 Ralf Baechle
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * Copyright (C) 2002 Momentum Computer Inc.
+- * Author: Matthew Dharm <mdharm@momenco.com>
+- *
+- * Louis Hamilton, Red Hat, Inc.
+- * hamilton@redhat.com  [MIPS64 modifications]
+- */
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <asm/io.h>
+-#include <asm/pgtable.h>
+-#include <asm/processor.h>
+-#include <asm/reboot.h>
+-#include <asm/system.h>
+-#include <linux/delay.h>
+-
+-void momenco_jaguar_restart(char *command)
+-{
+-	/* base address of timekeeper portion of part */
+-#ifdef CONFIG_64BIT
+-	void *nvram = (void*) 0xfffffffffc807000;
+-#else
+-	void *nvram = (void*) 0xfc807000;
+-#endif
+-	/* Ask the NVRAM/RTC/watchdog chip to assert reset in 1/16 second */
+-	writeb(0x84, nvram + 0xff7);
+-
+-	/* wait for the watchdog to go off */
+-	mdelay(100+(1000/16));
+-
+-	/* if the watchdog fails for some reason, let people know */
+-	printk(KERN_NOTICE "Watchdog reset failed\n");
+-}
+-
+-void momenco_jaguar_halt(void)
+-{
+-	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
+-	while (1)
+-		__asm__(".set\tmips3\n\t"
+-	                "wait\n\t"
+-			".set\tmips0");
+-}
+-
+-void momenco_jaguar_power_off(void)
+-{
+-	momenco_jaguar_halt();
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/jaguar_atx/setup.c mips/arch/mips/momentum/jaguar_atx/setup.c
+--- mips-orig/arch/mips/momentum/jaguar_atx/setup.c	2006-09-21 00:46:01.000055750 +0900
++++ mips/arch/mips/momentum/jaguar_atx/setup.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,476 +0,0 @@
+-/*
+- * BRIEF MODULE DESCRIPTION
+- * Momentum Computer Jaguar-ATX board dependent boot routines
+- *
+- * Copyright (C) 1996, 1997, 2001, 04, 06  Ralf Baechle (ralf@linux-mips.org)
+- * Copyright (C) 2000 RidgeRun, Inc.
+- * Copyright (C) 2001 Red Hat, Inc.
+- * Copyright (C) 2002 Momentum Computer
+- *
+- * Author: Matthew Dharm, Momentum Computer
+- *   mdharm@momenco.com
+- *
+- * Louis Hamilton, Red Hat, Inc.
+- *   hamilton@redhat.com  [MIPS64 modifications]
+- *
+- * Author: RidgeRun, Inc.
+- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/bcd.h>
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/types.h>
+-#include <linux/mm.h>
+-#include <linux/bootmem.h>
+-#include <linux/module.h>
+-#include <linux/pci.h>
+-#include <linux/swap.h>
+-#include <linux/ioport.h>
+-#include <linux/pm.h>
+-#include <linux/sched.h>
+-#include <linux/interrupt.h>
+-#include <linux/timex.h>
+-#include <linux/vmalloc.h>
+-#include <linux/mv643xx.h>
+-
+-#include <asm/time.h>
+-#include <asm/bootinfo.h>
+-#include <asm/page.h>
+-#include <asm/io.h>
+-#include <asm/irq.h>
+-#include <asm/processor.h>
+-#include <asm/ptrace.h>
+-#include <asm/reboot.h>
+-#include <asm/tlbflush.h>
+-
+-#include "jaguar_atx_fpga.h"
+-
+-extern unsigned long mv64340_sram_base;
+-unsigned long cpu_clock;
+-
+-/* These functions are used for rebooting or halting the machine*/
+-extern void momenco_jaguar_restart(char *command);
+-extern void momenco_jaguar_halt(void);
+-extern void momenco_jaguar_power_off(void);
+-
+-void momenco_time_init(void);
+-
+-static char reset_reason;
+-
+-static inline unsigned long ENTRYLO(unsigned long paddr)
+-{
+-	return ((paddr & PAGE_MASK) |
+-	       (_PAGE_PRESENT | __READABLE | __WRITEABLE | _PAGE_GLOBAL |
+-		_CACHE_UNCACHED)) >> 6;
+-}
+-
+-void __init bus_error_init(void) { /* nothing */ }
+-
+-/*
+- * Load a few TLB entries for the MV64340 and perhiperals. The MV64340 is going
+- * to be hit on every IRQ anyway - there's absolutely no point in letting it be
+- * a random TLB entry, as it'll just cause needless churning of the TLB. And we
+- * use the other half for the serial port, which is just a PITA otherwise :)
+- *
+- *	Device			Physical	Virtual
+- *	MV64340 Internal Regs	0xf4000000	0xf4000000
+- *	Ocelot-C[S] PLD (CS0)	0xfc000000	0xfc000000
+- *	NVRAM (CS1)		0xfc800000	0xfc800000
+- *	UARTs (CS2)		0xfd000000	0xfd000000
+- *	Internal SRAM		0xfe000000	0xfe000000
+- *	M-Systems DOC (CS3)	0xff000000	0xff000000
+- */
+-
+-static __init void wire_stupidity_into_tlb(void)
+-{
+-#ifdef CONFIG_32BIT
+-	write_c0_wired(0);
+-	local_flush_tlb_all();
+-
+-	/* marvell and extra space */
+-	add_wired_entry(ENTRYLO(0xf4000000), ENTRYLO(0xf4010000),
+-	                0xf4000000UL, PM_64K);
+-	/* fpga, rtc, and uart */
+-	add_wired_entry(ENTRYLO(0xfc000000), ENTRYLO(0xfd000000),
+-	                0xfc000000UL, PM_16M);
+-//	/* m-sys and internal SRAM */
+-//	add_wired_entry(ENTRYLO(0xfe000000), ENTRYLO(0xff000000),
+-//	                0xfe000000UL, PM_16M);
+-
+-	marvell_base = 0xf4000000;
+-	//mv64340_sram_base = 0xfe000000;	/* Currently unused */
+-#endif
+-}
+-
+-unsigned long marvell_base	= 0xf4000000L;
+-unsigned long ja_fpga_base	= JAGUAR_ATX_CS0_ADDR;
+-unsigned long uart_base		= 0xfd000000L;
+-static unsigned char *rtc_base	= (unsigned char*) 0xfc800000L;
+-
+-EXPORT_SYMBOL(marvell_base);
+-
+-static __init int per_cpu_mappings(void)
+-{
+-	marvell_base	= (unsigned long) ioremap(0xf4000000, 0x10000);
+-	ja_fpga_base	= (unsigned long) ioremap(JAGUAR_ATX_CS0_ADDR,  0x1000);
+-	uart_base	= (unsigned long) ioremap(0xfd000000UL, 0x1000);
+-	rtc_base	= ioremap(0xfc000000UL, 0x8000);
+-	// ioremap(0xfe000000,  32 << 20);
+-	write_c0_wired(0);
+-	local_flush_tlb_all();
+-	ja_setup_console();
+-
+-	return 0;
+-}
+-arch_initcall(per_cpu_mappings);
+-
+-unsigned long m48t37y_get_time(void)
+-{
+-	unsigned int year, month, day, hour, min, sec;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	/* stop the update */
+-	rtc_base[0x7ff8] = 0x40;
+-
+-	year = BCD2BIN(rtc_base[0x7fff]);
+-	year += BCD2BIN(rtc_base[0x7ff1]) * 100;
+-
+-	month = BCD2BIN(rtc_base[0x7ffe]);
+-
+-	day = BCD2BIN(rtc_base[0x7ffd]);
+-
+-	hour = BCD2BIN(rtc_base[0x7ffb]);
+-	min = BCD2BIN(rtc_base[0x7ffa]);
+-	sec = BCD2BIN(rtc_base[0x7ff9]);
+-
+-	/* start the update */
+-	rtc_base[0x7ff8] = 0x00;
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-
+-	return mktime(year, month, day, hour, min, sec);
+-}
+-
+-int m48t37y_set_time(unsigned long sec)
+-{
+-	struct rtc_time tm;
+-	unsigned long flags;
+-
+-	/* convert to a more useful format -- note months count from 0 */
+-	to_tm(sec, &tm);
+-	tm.tm_mon += 1;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	/* enable writing */
+-	rtc_base[0x7ff8] = 0x80;
+-
+-	/* year */
+-	rtc_base[0x7fff] = BIN2BCD(tm.tm_year % 100);
+-	rtc_base[0x7ff1] = BIN2BCD(tm.tm_year / 100);
+-
+-	/* month */
+-	rtc_base[0x7ffe] = BIN2BCD(tm.tm_mon);
+-
+-	/* day */
+-	rtc_base[0x7ffd] = BIN2BCD(tm.tm_mday);
+-
+-	/* hour/min/sec */
+-	rtc_base[0x7ffb] = BIN2BCD(tm.tm_hour);
+-	rtc_base[0x7ffa] = BIN2BCD(tm.tm_min);
+-	rtc_base[0x7ff9] = BIN2BCD(tm.tm_sec);
+-
+-	/* day of week -- not really used, but let's keep it up-to-date */
+-	rtc_base[0x7ffc] = BIN2BCD(tm.tm_wday + 1);
+-
+-	/* disable writing */
+-	rtc_base[0x7ff8] = 0x00;
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-
+-	return 0;
+-}
+-
+-void __init plat_timer_setup(struct irqaction *irq)
+-{
+-	setup_irq(8, irq);
+-}
+-
+-/*
+- * Ugly but the least of all evils.  TLB initialization did flush the TLB so
+- * We need to setup mappings again before we can touch the RTC.
+- */
+-void momenco_time_init(void)
+-{
+-	wire_stupidity_into_tlb();
+-
+-	mips_hpt_frequency = cpu_clock / 2;
+-
+-	rtc_mips_get_time = m48t37y_get_time;
+-	rtc_mips_set_time = m48t37y_set_time;
+-}
+-
+-static struct resource mv_pci_io_mem0_resource = {
+-	.name	= "MV64340 PCI0 IO MEM",
+-	.flags	= IORESOURCE_IO
+-};
+-
+-static struct resource mv_pci_mem0_resource = {
+-	.name	= "MV64340 PCI0 MEM",
+-	.flags	= IORESOURCE_MEM
+-};
+-
+-static struct mv_pci_controller mv_bus0_controller = {
+-	.pcic = {
+-		.pci_ops	= &mv_pci_ops,
+-		.mem_resource	= &mv_pci_mem0_resource,
+-		.io_resource	= &mv_pci_io_mem0_resource,
+-	},
+-	.config_addr	= MV64340_PCI_0_CONFIG_ADDR,
+-	.config_vreg	= MV64340_PCI_0_CONFIG_DATA_VIRTUAL_REG,
+-};
+-
+-static uint32_t mv_io_base, mv_io_size;
+-
+-static void ja_pci0_init(void)
+-{
+-	uint32_t mem0_base, mem0_size;
+-	uint32_t io_base, io_size;
+-
+-	io_base = MV_READ(MV64340_PCI_0_IO_BASE_ADDR) << 16;
+-	io_size = (MV_READ(MV64340_PCI_0_IO_SIZE) + 1) << 16;
+-	mem0_base = MV_READ(MV64340_PCI_0_MEMORY0_BASE_ADDR) << 16;
+-	mem0_size = (MV_READ(MV64340_PCI_0_MEMORY0_SIZE) + 1) << 16;
+-
+-	mv_pci_io_mem0_resource.start		= 0;
+-	mv_pci_io_mem0_resource.end		= io_size - 1;
+-	mv_pci_mem0_resource.start		= mem0_base;
+-	mv_pci_mem0_resource.end		= mem0_base + mem0_size - 1;
+-	mv_bus0_controller.pcic.mem_offset	= mem0_base;
+-	mv_bus0_controller.pcic.io_offset	= 0;
+-
+-	ioport_resource.end		= io_size - 1;
+-
+-	register_pci_controller(&mv_bus0_controller.pcic);
+-
+-	mv_io_base = io_base;
+-	mv_io_size = io_size;
+-}
+-
+-static struct resource mv_pci_io_mem1_resource = {
+-	.name	= "MV64340 PCI1 IO MEM",
+-	.flags	= IORESOURCE_IO
+-};
+-
+-static struct resource mv_pci_mem1_resource = {
+-	.name	= "MV64340 PCI1 MEM",
+-	.flags	= IORESOURCE_MEM
+-};
+-
+-static struct mv_pci_controller mv_bus1_controller = {
+-	.pcic = {
+-		.pci_ops	= &mv_pci_ops,
+-		.mem_resource	= &mv_pci_mem1_resource,
+-		.io_resource	= &mv_pci_io_mem1_resource,
+-	},
+-	.config_addr	= MV64340_PCI_1_CONFIG_ADDR,
+-	.config_vreg	= MV64340_PCI_1_CONFIG_DATA_VIRTUAL_REG,
+-};
+-
+-static __init void ja_pci1_init(void)
+-{
+-	uint32_t mem0_base, mem0_size;
+-	uint32_t io_base, io_size;
+-
+-	io_base = MV_READ(MV64340_PCI_1_IO_BASE_ADDR) << 16;
+-	io_size = (MV_READ(MV64340_PCI_1_IO_SIZE) + 1) << 16;
+-	mem0_base = MV_READ(MV64340_PCI_1_MEMORY0_BASE_ADDR) << 16;
+-	mem0_size = (MV_READ(MV64340_PCI_1_MEMORY0_SIZE) + 1) << 16;
+-
+-	/*
+-	 * Here we assume the I/O window of second bus to be contiguous with
+-	 * the first.  A gap is no problem but would waste address space for
+-	 * remapping the port space.
+-	 */
+-	mv_pci_io_mem1_resource.start		= mv_io_size;
+-	mv_pci_io_mem1_resource.end		= mv_io_size + io_size - 1;
+-	mv_pci_mem1_resource.start		= mem0_base;
+-	mv_pci_mem1_resource.end		= mem0_base + mem0_size - 1;
+-	mv_bus1_controller.pcic.mem_offset	= mem0_base;
+-	mv_bus1_controller.pcic.io_offset	= 0;
+-
+-	ioport_resource.end		= io_base + io_size -mv_io_base - 1;
+-
+-	register_pci_controller(&mv_bus1_controller.pcic);
+-
+-	mv_io_size = io_base + io_size - mv_io_base;
+-}
+-
+-static __init int __init ja_pci_init(void)
+-{
+-	unsigned long io_v_base;
+-	uint32_t enable;
+-
+-	enable = ~MV_READ(MV64340_BASE_ADDR_ENABLE);
+-
+-	/*
+-	 * We require at least one enabled I/O or PCI memory window or we
+-	 * will ignore this PCI bus.  We ignore PCI windows 1, 2 and 3.
+-	 */
+-	if (enable & (0x01 <<  9) || enable & (0x01 << 10))
+-		ja_pci0_init();
+-
+-	if (enable & (0x01 << 14) || enable & (0x01 << 15))
+-		ja_pci1_init();
+-
+-	if (mv_io_size) {
+-		io_v_base = (unsigned long) ioremap(mv_io_base, mv_io_size);
+-		if (!io_v_base)
+-			panic("Could not ioremap I/O port range");
+-
+-		set_io_port_base(io_v_base);
+-	}
+-
+-	return 0;
+-}
+-
+-arch_initcall(ja_pci_init);
+-
+-void __init plat_mem_setup(void)
+-{
+-	unsigned int tmpword;
+-
+-	board_time_init = momenco_time_init;
+-
+-	_machine_restart = momenco_jaguar_restart;
+-	_machine_halt = momenco_jaguar_halt;
+-	pm_power_off = momenco_jaguar_power_off;
+-
+-	/*
+-	 * initrd_start = (unsigned long)jaguar_initrd_start;
+-	 * initrd_end = (unsigned long)jaguar_initrd_start + (ulong)jaguar_initrd_size;
+-	 * initrd_below_start_ok = 1;
+-	 */
+-
+-	wire_stupidity_into_tlb();
+-
+-	/*
+-	 * shut down ethernet ports, just to be sure our memory doesn't get
+-	 * corrupted by random ethernet traffic.
+-	 */
+-	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0), 0xff << 8);
+-	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1), 0xff << 8);
+-	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(2), 0xff << 8);
+-	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0), 0xff << 8);
+-	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1), 0xff << 8);
+-	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(2), 0xff << 8);
+-	while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0)) & 0xff);
+-	while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1)) & 0xff);
+-	while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(2)) & 0xff);
+-	while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0)) & 0xff);
+-	while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1)) & 0xff);
+-	while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(2)) & 0xff);
+-	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0),
+-	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0)) & ~1);
+-	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1),
+-	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1)) & ~1);
+-	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(2),
+-	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(2)) & ~1);
+-
+-	/* Turn off the Bit-Error LED */
+-	JAGUAR_FPGA_WRITE(0x80, CLR);
+-
+-	tmpword = JAGUAR_FPGA_READ(BOARDREV);
+-	if (tmpword < 26)
+-		printk("Momentum Jaguar-ATX: Board Assembly Rev. %c\n",
+-			'A'+tmpword);
+-	else
+-		printk("Momentum Jaguar-ATX: Board Assembly Revision #0x%x\n",
+-			tmpword);
+-
+-	tmpword = JAGUAR_FPGA_READ(FPGA_REV);
+-	printk("FPGA Rev: %d.%d\n", tmpword>>4, tmpword&15);
+-	tmpword = JAGUAR_FPGA_READ(RESET_STATUS);
+-	printk("Reset reason: 0x%x\n", tmpword);
+-	switch (tmpword) {
+-	case 0x1:
+-		printk("  - Power-up reset\n");
+-		break;
+-	case 0x2:
+-		printk("  - Push-button reset\n");
+-		break;
+-	case 0x8:
+-		printk("  - Watchdog reset\n");
+-		break;
+-	case 0x10:
+-		printk("  - JTAG reset\n");
+-		break;
+-	default:
+-		printk("  - Unknown reset cause\n");
+-	}
+-	reset_reason = tmpword;
+-	JAGUAR_FPGA_WRITE(0xff, RESET_STATUS);
+-
+-	tmpword = JAGUAR_FPGA_READ(BOARD_STATUS);
+-	printk("Board Status register: 0x%02x\n", tmpword);
+-	printk("  - User jumper: %s\n", (tmpword & 0x80)?"installed":"absent");
+-	printk("  - Boot flash write jumper: %s\n", (tmpword&0x40)?"installed":"absent");
+-
+-	/* 256MiB of RM9000x2 DDR */
+-//	add_memory_region(0x0, 0x100<<20, BOOT_MEM_RAM);
+-
+-	/* 128MiB of MV-64340 DDR */
+-//	add_memory_region(0x100<<20, 0x80<<20, BOOT_MEM_RAM);
+-
+-	/* XXX Memory configuration should be picked up from PMON2k */
+-#ifdef CONFIG_JAGUAR_DMALOW
+-	printk("Jaguar ATX DMA-low mode set\n");
+-	add_memory_region(0x00000000, 0x08000000, BOOT_MEM_RAM);
+-	add_memory_region(0x08000000, 0x10000000, BOOT_MEM_RAM);
+-#else
+-	/* 128MiB of MV-64340 DDR RAM */
+-	printk("Jaguar ATX DMA-low mode is not set\n");
+-	add_memory_region(0x100<<20, 0x80<<20, BOOT_MEM_RAM);
+-#endif
+-
+-#ifdef GEMDEBUG_TRACEBUFFER
+-	{
+-	  unsigned int tbControl;
+-	  tbControl =
+-	    0 << 26 |  /* post trigger delay 0 */
+-		    0x2 << 16 |		/* sequential trace mode */
+-	    //	    0x0 << 16 |		/* non-sequential trace mode */
+-	    //	    0xf << 4 |		/* watchpoints disabled */
+-	    2 << 2 |		/* armed */
+-	    2 ;			/* interrupt disabled  */
+-	  printk ("setting     tbControl = %08lx\n", tbControl);
+-	  write_32bit_cp0_set1_register($22, tbControl);
+-	  __asm__ __volatile__(".set noreorder\n\t" \
+-			       "nop; nop; nop; nop; nop; nop;\n\t" \
+-			       "nop; nop; nop; nop; nop; nop;\n\t" \
+-			       ".set reorder\n\t");
+-
+-	}
+-#endif
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/Makefile mips/arch/mips/pci/Makefile
+--- mips-orig/arch/mips/pci/Makefile	2006-09-21 00:57:25.810853750 +0900
++++ mips/arch/mips/pci/Makefile	2006-09-21 00:57:52.744537000 +0900
+@@ -34,7 +34,6 @@ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000
+ obj-$(CONFIG_SOC_AU1550)	+= fixup-au1000.o ops-au1000.o
+ obj-$(CONFIG_SOC_PNX8550)	+= fixup-pnx8550.o ops-pnx8550.o
+ obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o
+-obj-$(CONFIG_MOMENCO_JAGUAR_ATX)+= fixup-jaguar.o
+ obj-$(CONFIG_MOMENCO_OCELOT)	+= fixup-ocelot.o pci-ocelot.o
+ obj-$(CONFIG_MOMENCO_OCELOT_3)	+= fixup-ocelot3.o
+ obj-$(CONFIG_MOMENCO_OCELOT_C)	+= fixup-ocelot-c.o pci-ocelot-c.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-jaguar.c mips/arch/mips/pci/fixup-jaguar.c
+--- mips-orig/arch/mips/pci/fixup-jaguar.c	2006-09-21 00:46:01.016056750 +0900
++++ mips/arch/mips/pci/fixup-jaguar.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,43 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Marvell MV64340 interrupt fixup code.
+- *
+- * Marvell wants an NDA for their docs so this was written without
+- * documentation.  You've been warned.
+- *
+- * Copyright (C) 2004 Ralf Baechle (ralf@linux-mips.org)
+- */
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/pci.h>
+-
+-#include <asm/mipsregs.h>
+-
+-/*
+- * WARNING: Example of how _NOT_ to do it.
+- */
+-int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+-{
+-	int bus = dev->bus->number;
+-
+-	if (bus == 0 && slot == 1)
+-		return 3;	/* PCI-X A */
+-	if (bus == 0 && slot == 2)
+-		return 4;	/* PCI-X B */
+-	if (bus == 1 && slot == 1)
+-		return 5;	/* PCI A */
+-	if (bus == 1 && slot == 2)
+-		return 6;	/* PCI B */
+-
+-return 0;
+-	panic("Whooops in pcibios_map_irq");
+-}
+-
+-/* Do platform specific device initialization at pci_enable_device() time */
+-int pcibios_plat_dev_init(struct pci_dev *dev)
+-{
+-	return 0;
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/net/Kconfig mips/drivers/net/Kconfig
+--- mips-orig/drivers/net/Kconfig	2006-09-21 00:57:25.814854000 +0900
++++ mips/drivers/net/Kconfig	2006-09-21 00:59:23.530210750 +0900
+@@ -2252,7 +2252,7 @@ config UGETH_HAS_GIGA
+ 
+ config MV643XX_ETH
+ 	tristate "MV-643XX Ethernet support"
+-	depends on MOMENCO_OCELOT_C || MOMENCO_JAGUAR_ATX || MV64360 || MOMENCO_OCELOT_3 || PPC_MULTIPLATFORM
++	depends on MOMENCO_OCELOT_C || MV64360 || MOMENCO_OCELOT_3 || PPC_MULTIPLATFORM
+ 	select MII
+ 	help
+ 	  This driver supports the gigabit Ethernet on the Marvell MV643XX
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/bootinfo.h mips/include/asm-mips/bootinfo.h
+--- mips-orig/include/asm-mips/bootinfo.h	2006-09-21 00:57:25.830855000 +0900
++++ mips/include/asm-mips/bootinfo.h	2006-09-21 00:57:52.748537250 +0900
+@@ -121,7 +121,6 @@
+ #define  MACH_MOMENCO_OCELOT	0
+ #define  MACH_MOMENCO_OCELOT_G	1
+ #define  MACH_MOMENCO_OCELOT_C	2
+-#define  MACH_MOMENCO_JAGUAR_ATX 3
+ #define  MACH_MOMENCO_OCELOT_3	4
+ 
+ /*
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/highmem.h mips/include/asm-mips/highmem.h
+--- mips-orig/include/asm-mips/highmem.h	2006-09-21 00:46:17.493086500 +0900
++++ mips/include/asm-mips/highmem.h	2006-09-21 00:57:52.748537250 +0900
+@@ -47,41 +47,6 @@ extern pte_t *pkmap_page_table;
+ extern void * kmap_high(struct page *page);
+ extern void kunmap_high(struct page *page);
+ 
+-/*
+- * CONFIG_LIMITED_DMA is for systems with DMA limitations such as Momentum's
+- * Jaguar ATX.  This option exploits the highmem code in the kernel so is
+- * always enabled together with CONFIG_HIGHMEM but at this time doesn't
+- * actually add highmem functionality.
+- */
+-
+-#ifdef CONFIG_LIMITED_DMA
+-
+-/*
+- * These are the default functions for the no-highmem case from
+- * <linux/highmem.h>
+- */
+-static inline void *kmap(struct page *page)
+-{
+-	might_sleep();
+-	return page_address(page);
+-}
+-
+-#define kunmap(page) do { (void) (page); } while (0)
+-
+-static inline void *kmap_atomic(struct page *page, enum km_type type)
+-{
+-	return page_address(page);
+-}
+-
+-static inline void kunmap_atomic(void *kvaddr, enum km_type type) { }
+-#define kmap_atomic_pfn(pfn, idx)	page_address(pfn_to_page(pfn))
+-
+-#define kmap_atomic_to_page(ptr) virt_to_page(ptr)
+-
+-#define flush_cache_kmaps()	do { } while (0)
+-
+-#else /* LIMITED_DMA */
+-
+ extern void *__kmap(struct page *page);
+ extern void __kunmap(struct page *page);
+ extern void *__kmap_atomic(struct page *page, enum km_type type);
+@@ -97,8 +62,6 @@ extern struct page *__kmap_atomic_to_pag
+ 
+ #define flush_cache_kmaps()	flush_cache_all()
+ 
+-#endif /* LIMITED_DMA */
+-
+ #endif /* __KERNEL__ */
+ 
+ #endif /* _ASM_HIGHMEM_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ja/cpu-feature-overrides.h mips/include/asm-mips/mach-ja/cpu-feature-overrides.h
+--- mips-orig/include/asm-mips/mach-ja/cpu-feature-overrides.h	2006-09-21 00:46:18.013119000 +0900
++++ mips/include/asm-mips/mach-ja/cpu-feature-overrides.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,45 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2003, 2004 Ralf Baechle
+- */
+-#ifndef __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H
+-#define __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H
+-
+-/*
+- * Momentum Jaguar ATX always has the RM9000 processor.
+- */
+-#define cpu_has_watch		1
+-#define cpu_has_mips16		0
+-#define cpu_has_divec		0
+-#define cpu_has_vce		0
+-#define cpu_has_cache_cdex_p	0
+-#define cpu_has_cache_cdex_s	0
+-#define cpu_has_prefetch	1
+-#define cpu_has_mcheck		0
+-#define cpu_has_ejtag		0
+-
+-#define cpu_has_llsc		1
+-#define cpu_has_vtag_icache	0
+-#define cpu_has_dc_aliases	0
+-#define cpu_has_ic_fills_f_dc	0
+-#define cpu_has_dsp		0
+-#define cpu_icache_snoops_remote_store	0
+-
+-#define cpu_has_nofpuex		0
+-#define cpu_has_64bits		1
+-
+-#define cpu_has_inclusive_pcaches	0
+-
+-#define cpu_dcache_line_size()	32
+-#define cpu_icache_line_size()	32
+-#define cpu_scache_line_size()	32
+-
+-#define cpu_has_mips32r1	0
+-#define cpu_has_mips32r2	0
+-#define cpu_has_mips64r1	0
+-#define cpu_has_mips64r2	0
+-
+-#endif /* __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ja/spaces.h mips/include/asm-mips/mach-ja/spaces.h
+--- mips-orig/include/asm-mips/mach-ja/spaces.h	2006-09-21 00:46:18.013119000 +0900
++++ mips/include/asm-mips/mach-ja/spaces.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,20 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1994 - 1999, 2000, 03, 04 Ralf Baechle
+- * Copyright (C) 2000, 2002  Maciej W. Rozycki
+- * Copyright (C) 1990, 1999, 2000 Silicon Graphics, Inc.
+- */
+-#ifndef __ASM_MACH_JA_SPACES_H
+-#define __ASM_MACH_JA_SPACES_H
+-
+-/*
+- * Memory above this physical address will be considered highmem.
+- */
+-#define HIGHMEM_START		0x08000000UL
+-
+-#include_next <spaces.h>
+-
+-#endif /* __ASM_MACH_JA_SPACES_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/page.h mips/include/asm-mips/page.h
+--- mips-orig/include/asm-mips/page.h	2006-09-21 00:46:18.601155750 +0900
++++ mips/include/asm-mips/page.h	2006-09-21 00:57:52.760538000 +0900
+@@ -164,10 +164,6 @@ typedef struct { unsigned long pgprot; }
+ #define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
+ #define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET)
+ 
+-#ifdef CONFIG_LIMITED_DMA
+-#define WANT_PAGE_VIRTUAL
+-#endif
+-
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/page.h>
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/serial.h mips/include/asm-mips/serial.h
+--- mips-orig/include/asm-mips/serial.h	2006-09-21 00:57:25.842855750 +0900
++++ mips/include/asm-mips/serial.h	2006-09-21 00:57:52.760538000 +0900
+@@ -112,25 +112,6 @@
+ #define STD_SERIAL_PORT_DEFNS
+ #endif /* CONFIG_HAVE_STD_PC_SERIAL_PORTS */
+ 
+-#ifdef CONFIG_MOMENCO_JAGUAR_ATX
+-/* Ordinary NS16552 duart with a 20MHz crystal.  */
+-#define JAGUAR_ATX_UART_CLK	20000000
+-#define JAGUAR_ATX_BASE_BAUD	(JAGUAR_ATX_UART_CLK / 16)
+-
+-#define JAGUAR_ATX_SERIAL1_IRQ	6
+-#define JAGUAR_ATX_SERIAL1_BASE	0xfd000023L
+-
+-#define _JAGUAR_ATX_SERIAL_INIT(int, base)				\
+-	{ .baud_base = JAGUAR_ATX_BASE_BAUD, irq: int,			\
+-	  .flags = (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),		\
+-	  .iomem_base = (u8 *) base, iomem_reg_shift: 2,			\
+-	  io_type: SERIAL_IO_MEM }
+-#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS				\
+-	_JAGUAR_ATX_SERIAL_INIT(JAGUAR_ATX_SERIAL1_IRQ, JAGUAR_ATX_SERIAL1_BASE)
+-#else
+-#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS
+-#endif
+-
+ #ifdef CONFIG_MOMENCO_OCELOT_3
+ #define OCELOT_3_BASE_BAUD	( 20000000 / 16 )
+ #define OCELOT_3_SERIAL_IRQ	6
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/war.h mips/include/asm-mips/war.h
+--- mips-orig/include/asm-mips/war.h	2006-09-21 00:46:19.445208500 +0900
++++ mips/include/asm-mips/war.h	2006-09-21 00:57:52.760538000 +0900
+@@ -171,8 +171,7 @@
+  * On the RM9000 there is a problem which makes the CreateDirtyExclusive
+  * cache operation unusable on SMP systems.
+  */
+-#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_PMC_YOSEMITE) || \
+-    defined(CONFIG_BASLER_EXCITE)
++#if defined(CONFIG_PMC_YOSEMITE) || defined(CONFIG_BASLER_EXCITE)
+ #define  RM9000_CDEX_SMP_WAR		1
+ #endif
+ 
+@@ -181,8 +180,8 @@
+  * where invalid instructions in the same I-cache line worth of instructions
+  * being fetched may case spurious exceptions.
+  */
+-#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_MOMENCO_OCELOT_3) || \
+-    defined(CONFIG_PMC_YOSEMITE) || defined(CONFIG_BASLER_EXCITE)
++#if defined(CONFIG_MOMENCO_OCELOT_3) || defined(CONFIG_PMC_YOSEMITE) || \
++    defined(CONFIG_BASLER_EXCITE)
+ #define ICACHE_REFILLS_WORKAROUND_WAR	1
+ #endif
+ 

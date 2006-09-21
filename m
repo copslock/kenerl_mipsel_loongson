@@ -1,189 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Sep 2006 15:54:39 +0100 (BST)
-Received: from mx1.razamicroelectronics.com ([63.111.213.197]:13060 "EHLO
-	hq-ex-mb01.razamicroelectronics.com") by ftp.linux-mips.org with ESMTP
-	id S20038436AbWIUOye (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 Sep 2006 15:54:34 +0100
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C6DD8D.D54A58FF"
-Subject: RE: Differing results from cross and native compilers
-Date:	Thu, 21 Sep 2006 07:53:38 -0700
-Message-ID: <2E96546B3C2C8B4CA739323C6058204A01635494@hq-ex-mb01.razamicroelectronics.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Differing results from cross and native compilers
-Thread-Index: AcbcQxypWCQgkRBYSXWUIjUa8tCK9QBRtEP/AADyrsA=
-From:	"Eric DeVolder" <edevolder@razamicroelectronics.com>
-To:	"Jim Wilson" <wilson@specifix.com>
-Cc:	"Thiemo Seufer" <ths@networkno.de>, <linux-mips@linux-mips.org>
-Return-Path: <edevolder@razamicroelectronics.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Sep 2006 17:15:26 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:60976 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038489AbWIUQPX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 21 Sep 2006 17:15:23 +0100
+Received: by mo.po.2iij.net (mo30) id k8LGFJdG040921; Fri, 22 Sep 2006 01:15:19 +0900 (JST)
+Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
+	by mbox.po.2iij.net (mbox33) id k8LGFHCc089661
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 22 Sep 2006 01:15:17 +0900 (JST)
+Date:	Fri, 22 Sep 2006 01:07:13 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 1/3] fixed mtc0_tlbw_hazard
+Message-Id: <20060922010713.657f2861.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12617
+X-archive-position: 12618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: edevolder@razamicroelectronics.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Hi Ralf,
 
-------_=_NextPart_001_01C6DD8D.D54A58FF
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Some mtc0_tlbw_hazard() were broken by "[MIPS] Cleanup hazard handling" patch.
+Please apply this patch.
 
-oops...ignore the cut-n-paste below, this was from the cross compile =
-which in fact shows using gnu assembler and explicit reloc =
-support...eric=20
+tlb-r4k.o disassemble:
 
-________________________________
+8009018c <local_flush_tlb_all>:
+8009018c:       40066000        mfc0    a2,$12
+80090190:       34c1001f        ori     at,a2,0x1f
+80090194:       3821001f        xori    at,at,0x1f
+80090198:       40816000        mtc0    at,$12
+8009019c:       00000040        ssnop
+800901a0:       00000040        ssnop
+800901a4:       00000040        ssnop
+800901a8:       40075000        mfc0    a3,$10
+800901ac:       40801000        mtc0    zero,$2
+800901b0:       40801800        mtc0    zero,$3
+800901b4:       40043000        mfc0    a0,$6
+800901b8:       3c028035        lui     v0,0x8035
+800901bc:       8c457ac0        lw      a1,31424(v0)
+800901c0:       0085182a        slt     v1,a0,a1
+800901c4:       1060000b        beqz    v1,800901f4 <local_flush_tlb_all+0x68>
+800901c8:       00044340        sll     t0,a0,0xd
+800901cc:       3c098000        lui     t1,0x8000
+800901d0:       01091821        addu    v1,t0,t1
+800901d4:       40835000        mtc0    v1,$10
+800901d8:       10000002        b       800901e4 <local_flush_tlb_all+0x58> <-- mtc0_tlbw_hazard()
+800901dc:       40840000        mtc0    a0,$0
+800901e0:       42000002        tlbwi
 
-From: Eric DeVolder
-Sent: Thu 9/21/2006 9:26 AM
-To: Jim Wilson
-Cc: Thiemo Seufer; linux-mips@linux-mips.org
-Subject: RE: Differing results from cross and native compilers
+Yoichi
 
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-Thanks Jim, you hit the nail on the head!
-=20
-gcc/config.log:target_cpu_default=3D'(MASK_GAS)|MASK_EXPLICIT_RELOCS'
-gcc/config.status:s,@target_cpu_default@,(MASK_GAS)|MASK_EXPLICIT_RELOCS,=
-;t t
-gcc/Makefile:target_cpu_default=3D(MASK_GAS)|MASK_EXPLICIT_RELOCS
-
-So yes, something went awry and the configure stage didn't think gas was =
-in use...
-=20
-Eric=20
-
-________________________________
-
-From: Jim Wilson [mailto:wilson@specifix.com]
-Sent: Tue 9/19/2006 6:22 PM
-To: Eric DeVolder
-Cc: Thiemo Seufer; linux-mips@linux-mips.org
-Subject: RE: Differing results from cross and native compilers
-
-
-
-On Tue, 2006-09-19 at 09:57 -0700, Eric DeVolder wrote:
-
-> -       lw      $4,%got($LC0)($28)
-> +       la      $4,$LC0
-
-The difference here is -mexplicit-relocs, which is the default for the
-first one (cross) but not the second one (native).
-
-The explicit-reloc support is enabled by a run-time configure test,
-which tries to run the assembler to see if you have a new enough version
-of GNU as that supports the necessary assembler reloc syntax.
-Apparently this is going wrong with the native build.  Perhaps you have
-a different binutils version, or perhaps there is a problem with your
-PATH, or perhaps binutils and gcc weren't configured with the same
-prefix, etc.
-
-If you have the build trees, you can look at the gcc/config.h files and
-note that one has HAVE_AS_EXPLICIT_RELOCS defined and the other doesn't.
-
---
-Jim Wilson, GNU Tools Support, http://www.specifix.com
-
-
-
-
-
-
-
-------_=_NextPart_001_01C6DD8D.D54A58FF
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Diso-8859-1">=0A=
-=0A=
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">=0A=
-<HTML>=0A=
-<HEAD>=0A=
-=0A=
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-6.5.7226.0">=0A=
-<TITLE>RE: Differing results from cross and native compilers</TITLE>=0A=
-</HEAD>=0A=
-<BODY>=0A=
-<DIV dir=3Dltr id=3DidOWAReplyText69484>=0A=
-<DIV dir=3Dltr><FONT color=3D#000000 face=3DArial size=3D2>oops...ignore =
-the cut-n-paste =0A=
-below, this was from the cross compile which in fact shows using gnu =
-assembler =0A=
-and explicit reloc support...eric&nbsp;</FONT></DIV></DIV>=0A=
-<DIV dir=3Dltr><BR>=0A=
-<HR tabIndex=3D-1>=0A=
-<FONT face=3DTahoma size=3D2><B>From:</B> Eric DeVolder<BR><B>Sent:</B> =
-Thu =0A=
-9/21/2006 9:26 AM<BR><B>To:</B> Jim Wilson<BR><B>Cc:</B> Thiemo Seufer; =0A=
-linux-mips@linux-mips.org<BR><B>Subject:</B> RE: Differing results from =
-cross =0A=
-and native compilers<BR></FONT><BR></DIV>=0A=
-<DIV>=0A=
-<DIV dir=3Dltr id=3DidOWAReplyText63109>=0A=
-<DIV dir=3Dltr><FONT color=3D#000000 face=3DArial size=3D2>Thanks =
-Jim,&nbsp;you hit the =0A=
-nail on the head!</FONT></DIV>=0A=
-<DIV dir=3Dltr>&nbsp;</DIV>=0A=
-<DIV dir=3Dltr><FONT face=3DArial =0A=
-size=3D2>gcc/config.log:target_cpu_default=3D'(MASK_GAS)|MASK_EXPLICIT_RE=
-LOCS'<BR>gcc/config.status:s,@target_cpu_default@,(MASK_GAS)|MASK_EXPLICI=
-T_RELOCS,;t =0A=
-t<BR>gcc/Makefile:target_cpu_default=3D(MASK_GAS)|MASK_EXPLICIT_RELOCS<BR=
-></FONT></DIV>=0A=
-<DIV dir=3Dltr>So yes, something went awry and the configure stage =
-didn't think =0A=
-gas was in use...</DIV>=0A=
-<DIV dir=3Dltr>&nbsp;</DIV>=0A=
-<DIV dir=3Dltr>Eric&nbsp;</DIV></DIV>=0A=
-<DIV dir=3Dltr><BR>=0A=
-<HR tabIndex=3D-1>=0A=
-<FONT face=3DTahoma size=3D2><B>From:</B> Jim Wilson =0A=
-[mailto:wilson@specifix.com]<BR><B>Sent:</B> Tue 9/19/2006 6:22 =
-PM<BR><B>To:</B> =0A=
-Eric DeVolder<BR><B>Cc:</B> Thiemo Seufer; =0A=
-linux-mips@linux-mips.org<BR><B>Subject:</B> RE: Differing results from =
-cross =0A=
-and native compilers<BR></FONT><BR></DIV>=0A=
-<DIV>=0A=
-<P><FONT size=3D2>On Tue, 2006-09-19 at 09:57 -0700, Eric DeVolder =0A=
-wrote:<BR><BR>&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =0A=
-lw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $4,%got($LC0)($28)<BR>&gt; =0A=
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; la&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =0A=
-$4,$LC0<BR><BR>The difference here is -mexplicit-relocs, which is the =
-default =0A=
-for the<BR>first one (cross) but not the second one (native).<BR><BR>The =0A=
-explicit-reloc support is enabled by a run-time configure test,<BR>which =
-tries =0A=
-to run the assembler to see if you have a new enough version<BR>of GNU =
-as that =0A=
-supports the necessary assembler reloc syntax.<BR>Apparently this is =
-going wrong =0A=
-with the native build.&nbsp; Perhaps you have<BR>a different binutils =
-version, =0A=
-or perhaps there is a problem with your<BR>PATH, or perhaps binutils and =
-gcc =0A=
-weren't configured with the same<BR>prefix, etc.<BR><BR>If you have the =
-build =0A=
-trees, you can look at the gcc/config.h files and<BR>note that one has =0A=
-HAVE_AS_EXPLICIT_RELOCS defined and the other doesn't.<BR><BR>--<BR>Jim =
-Wilson, =0A=
-GNU Tools Support, <A =0A=
-href=3D"http://www.specifix.com">http://www.specifix.com</A><BR><BR><BR><=
-BR><BR></FONT></P></DIV></DIV>=0A=
-=0A=
-</BODY>=0A=
-</HTML>
-------_=_NextPart_001_01C6DD8D.D54A58FF--
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/hazards.h mips/include/asm-mips/hazards.h
+--- mips-orig/include/asm-mips/hazards.h	2006-09-21 18:21:11.793973750 +0900
++++ mips/include/asm-mips/hazards.h	2006-09-21 18:55:07.569201750 +0900
+@@ -138,7 +138,7 @@ ASMMACRO(back_to_back_c0_hazard,
+  * Mostly like R4000 for historic reasons
+  */
+ ASMMACRO(mtc0_tlbw_hazard,
+-	 b	. + 8
++	 nop; nop; nop; nop; nop; nop
+ 	)
+ ASMMACRO(tlbw_use_hazard,
+ 	 nop; nop; nop; nop; nop; nop
+@@ -169,7 +169,7 @@ ASMMACRO(back_to_back_c0_hazard,
+  * processors.
+  */
+ ASMMACRO(mtc0_tlbw_hazard,
+-	 b	. + 8
++	 nop; nop; nop; nop; nop; nop
+ 	)
+ ASMMACRO(tlbw_use_hazard,
+ 	 nop; nop; nop; nop; nop; nop

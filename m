@@ -1,122 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Sep 2006 04:17:36 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:6930 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20027693AbWIVDRe (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Sep 2006 04:17:34 +0100
-Received: by mo.po.2iij.net (mo31) id k8M3HUHn035158; Fri, 22 Sep 2006 12:17:31 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox32) id k8M3HTfR052620
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 22 Sep 2006 12:17:29 +0900 (JST)
-Date:	Fri, 22 Sep 2006 12:17:29 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Sep 2006 06:16:44 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:49601 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20037643AbWIVFQm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 22 Sep 2006 06:16:42 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 22 Sep 2006 14:16:40 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 9740B23789;
+	Fri, 22 Sep 2006 14:16:34 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 88B942379D;
+	Fri, 22 Sep 2006 14:16:34 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k8M5GYW0047164;
+	Fri, 22 Sep 2006 14:16:34 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 22 Sep 2006 14:16:34 +0900 (JST)
+Message-Id: <20060922.141634.07643963.nemoto@toshiba-tops.co.jp>
+To:	yoichi_yuasa@tripeaks.co.jp
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH 1/3] fixed mtc0_tlbw_hazard
-Message-Id: <20060922121729.435fa3bb.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <4512C55A.6070206@ru.mvista.com>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060922010713.657f2861.yoichi_yuasa@tripeaks.co.jp>
 References: <20060922010713.657f2861.yoichi_yuasa@tripeaks.co.jp>
-	<4512BC2A.6040003@dev.rtsoft.ru>
-	<20060922014142.2a1985c1.yoichi_yuasa@tripeaks.co.jp>
-	<4512C55A.6070206@ru.mvista.com>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12625
+X-archive-position: 12626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Sergei,
+On Fri, 22 Sep 2006 01:07:13 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
+> Some mtc0_tlbw_hazard() were broken by "[MIPS] Cleanup hazard handling" patch.
+...
+> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> 
+> diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/hazards.h mips/include/asm-mips/hazards.h
+> --- mips-orig/include/asm-mips/hazards.h	2006-09-21 18:21:11.793973750 +0900
+> +++ mips/include/asm-mips/hazards.h	2006-09-21 18:55:07.569201750 +0900
+> @@ -138,7 +138,7 @@ ASMMACRO(back_to_back_c0_hazard,
+>   * Mostly like R4000 for historic reasons
+>   */
+>  ASMMACRO(mtc0_tlbw_hazard,
+> -	 b	. + 8
+> +	 nop; nop; nop; nop; nop; nop
+>  	)
+>  ASMMACRO(tlbw_use_hazard,
+>  	 nop; nop; nop; nop; nop; nop
+> @@ -169,7 +169,7 @@ ASMMACRO(back_to_back_c0_hazard,
+>   * processors.
+>   */
+>  ASMMACRO(mtc0_tlbw_hazard,
+> -	 b	. + 8
+> +	 nop; nop; nop; nop; nop; nop
+>  	)
+>  ASMMACRO(tlbw_use_hazard,
+>  	 nop; nop; nop; nop; nop; nop
+> 
 
-On Thu, 21 Sep 2006 21:01:14 +0400
-Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+The root problem would be new ASMMACRO lacks .set noreorder.
 
-> Hello.
-> 
-> Yoichi Yuasa wrote:
-> 
-> >>>Some mtc0_tlbw_hazard() were broken by "[MIPS] Cleanup hazard handling" patch.
-> >>>Please apply this patch.
-> 
-> >>>tlb-r4k.o disassemble:
-> 
-> >>>8009018c <local_flush_tlb_all>:
-> >>>8009018c:       40066000        mfc0    a2,$12
-> >>>80090190:       34c1001f        ori     at,a2,0x1f
-> >>>80090194:       3821001f        xori    at,at,0x1f
-> >>>80090198:       40816000        mtc0    at,$12
-> >>>8009019c:       00000040        ssnop
-> >>>800901a0:       00000040        ssnop
-> >>>800901a4:       00000040        ssnop
-> 
-> >>    Hm, why there are ssnop's here...
-> 
-> > ssnop is a part of dvpe().
-> 
->     Yep, this is irq_disable_hazard, looking sane.
-> 
-> >>>800901a8:       40075000        mfc0    a3,$10
-> >>>800901ac:       40801000        mtc0    zero,$2
-> >>>800901b0:       40801800        mtc0    zero,$3
-> >>>800901b4:       40043000        mfc0    a0,$6
-> >>>800901b8:       3c028035        lui     v0,0x8035
-> >>>800901bc:       8c457ac0        lw      a1,31424(v0)
-> >>>800901c0:       0085182a        slt     v1,a0,a1
-> >>>800901c4:       1060000b        beqz    v1,800901f4 <local_flush_tlb_all+0x68>
-> >>>800901c8:       00044340        sll     t0,a0,0xd
-> >>>800901cc:       3c098000        lui     t1,0x8000
-> >>>800901d0:       01091821        addu    v1,t0,t1
-> >>>800901d4:       40835000        mtc0    v1,$10
-> >>>800901d8:       10000002        b       800901e4 <local_flush_tlb_all+0x58> <-- mtc0_tlbw_hazard()
-> >>>800901dc:       40840000        mtc0    a0,$0
-> >>>800901e0:       42000002        tlbwi
-> 
-> >>>Yoichi
-> 
-> >>>Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-> >>>
-> >>>diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/hazards.h mips/include/asm-mips/hazards.h
-> >>>--- mips-orig/include/asm-mips/hazards.h	2006-09-21 18:21:11.793973750 +0900
-> >>>+++ mips/include/asm-mips/hazards.h	2006-09-21 18:55:07.569201750 +0900
-> >>>@@ -138,7 +138,7 @@ ASMMACRO(back_to_back_c0_hazard,
-> 
->     This is under #elif defined(CONFIG_CPU_SB1), right?
+Here is my proposal.
 
-right.
 
-> >>>  * Mostly like R4000 for historic reasons
-> >>>  */
-> >>> ASMMACRO(mtc0_tlbw_hazard,
-> >>>-	 b	. + 8
-> >>>+	 nop; nop; nop; nop; nop; nop
-> 
-> >>    ... and nop's there? This looks inconsistent.
-> 
-> > previous mtc0_tlbw_hazard() for C used nop.
-> > "b . + 8" is trick for R4000/R4400, see comment in old hazard.h .
-> 
->     I fail to see what was changed WRT SB1 CPUs by the suspected patch. Though 
-> wait... the previous version was inconsistent, using the different barrier 
-> definitions for C and assembly (nops in the former, and branch in the latter). 
-> But since the assembly version was not really used, it couldn't break 
-> anything... :-/
-> 
->     Anyway, shouldn't ssnop's be used for SB1 instead? CPU has quad-issue 
-> pipeline, hasn't it?
+[PATCH] force noreorder in ASMMACRO().
 
-I don't know SB1 hazard requirement.
+And mtc0_tlbw_hazard and mtc0_tlbw_hazard are adjusted.
 
-This patch has kept previous mtc0_tlbw_hazard().
-You can optimize it for SB1.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Yoichi
+diff --git a/include/asm-mips/hazards.h b/include/asm-mips/hazards.h
+index dabfc0e..52eb0fc 100644
+--- a/include/asm-mips/hazards.h
++++ b/include/asm-mips/hazards.h
+@@ -12,11 +12,11 @@ #define _ASM_HAZARDS_H
+ 
+ 
+ #ifdef __ASSEMBLER__
+-#define ASMMACRO(name, code...) .macro name; code; .endm
++#define ASMMACRO(name, code...) .macro name; .set push; .set noreorder; code; .set pop; .endm
+ #else
+ 
+ #define ASMMACRO(name, code...)						\
+-__asm__(".macro " #name "; " #code "; .endm");				\
++__asm__(".macro " #name "; .set push; .set noreorder; " #code "; .set pop; .endm");				\
+ 									\
+ static inline void name(void)						\
+ {									\
+@@ -138,7 +138,7 @@ #elif defined(CONFIG_CPU_SB1)
+  * Mostly like R4000 for historic reasons
+  */
+ ASMMACRO(mtc0_tlbw_hazard,
+-	 b	. + 8
++	 b	. + 8; nop
+ 	)
+ ASMMACRO(tlbw_use_hazard,
+ 	 nop; nop; nop; nop; nop; nop
+@@ -169,7 +169,7 @@ #else
+  * processors.
+  */
+ ASMMACRO(mtc0_tlbw_hazard,
+-	 b	. + 8
++	 b	. + 8; nop
+ 	)
+ ASMMACRO(tlbw_use_hazard,
+ 	 nop; nop; nop; nop; nop; nop

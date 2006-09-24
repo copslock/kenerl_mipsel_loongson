@@ -1,73 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2006 16:21:40 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.170]:51147 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037883AbWIXPVi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 24 Sep 2006 16:21:38 +0100
-Received: by ug-out-1314.google.com with SMTP id 40so478892uga
-        for <linux-mips@linux-mips.org>; Sun, 24 Sep 2006 08:21:37 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=h4QlH+Dg6bSZt1olMMl2GgBQ5IW6hweH4hvHK7D0pv5+IwhiNQbNmcRMU2gOs6Z562bcKEeHp7tZ+5lJRrsaDlLPLWHpgKBOga7wGr066S+WapEI6MIYFYQgp6zVjEL9R0b1D9ZjAm36nEtcr4KGSMKbIaoVix3Abx4SnCtSH50=
-Received: by 10.67.105.19 with SMTP id h19mr2560413ugm;
-        Sun, 24 Sep 2006 08:21:37 -0700 (PDT)
-Received: by 10.66.242.8 with HTTP; Sun, 24 Sep 2006 08:21:37 -0700 (PDT)
-Message-ID: <816d36d30609240821x31035d3cw8170ace7de43abe5@mail.gmail.com>
-Date:	Sun, 24 Sep 2006 11:21:37 -0400
-From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
-To:	"Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp>
-Subject: Re: [PATCH] remove tx3912fb
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Sep 2006 16:24:17 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:14311 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037883AbWIXPYO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 24 Sep 2006 16:24:14 +0100
+Received: from localhost (p5142-ipad209funabasi.chiba.ocn.ne.jp [58.88.116.142])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id BA6B29DE0; Mon, 25 Sep 2006 00:24:09 +0900 (JST)
+Date:	Mon, 25 Sep 2006 00:26:16 +0900 (JST)
+Message-Id: <20060925.002616.126574366.anemo@mba.ocn.ne.jp>
+To:	girishvg@gmail.com
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <816d36d30609240819q59edce51p91a7aa66dbc8dc43@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Subject: Re: [PATCH] cleanup hardcoding __pa/__va macros etc.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <34a75100609232239y29cdabd4xeefb898e502c5dfa@mail.gmail.com>
+References: <34a75100609232239y29cdabd4xeefb898e502c5dfa@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20060922020202.31b2b537.yoichi_yuasa@tripeaks.co.jp>
-	 <816d36d30609221012j452e6b03raa1ef1c72bb494d@mail.gmail.com>
-	 <20060924214306.40133dee.yoichi_yuasa@tripeaks.co.jp>
-	 <816d36d30609240819q59edce51p91a7aa66dbc8dc43@mail.gmail.com>
-Return-Path: <mendoza.ricardo@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12640
+X-archive-position: 12641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mendoza.ricardo@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 9/24/06, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
-> Hello,
->
-> On Fri, 22 Sep 2006 13:12:44 -0400
-> "Ricardo Mendoza" <mendoza.ricardo@gmail.com> wrote:
->
-> > On 9/21/06, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
-> > > Hi,
-> > >
-> > > NINO support has already dropped.
-> > > Nothing is using tx3912fb.
-> > >
-> > > Yoichi
-> > >
-> > > Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-> > >
-> > > ...
-> >
-> > Hello Yoichi!
-> >
-> > If you don't mind I would ask to keep this driver up, I will soon add
-> > tx3912 support back up because I have a couple PDAs that use it, and
-> > there are still a few boards that run on it.
->
-> Do you add the support of which PDA?
+On Sun, 24 Sep 2006 14:39:38 +0900, girish <girishvg@gmail.com> wrote:
+> --- linux-vanilla/include/asm-mips/page.h	2006-09-24 12:23:34.000000000 +0900
+> +++ linux/include/asm-mips/page.h	2006-09-24 14:00:53.000000000 +0900
+> @@ -134,8 +134,13 @@ typedef struct { unsigned long pgprot; }
+>  /* to align the pointer to the (next) page boundary */
+>  #define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
+> 
+> -#define __pa(x)			((unsigned long) (x) - PAGE_OFFSET)
+> -#define __va(x)			((void *)((unsigned long) (x) + PAGE_OFFSET))
+> +#define UNMAPLIMIT              (UNCAC_BASE - CAC_BASE) /*HIGHMEM_START*/
+> +#define ISMAPPED(x)             (KSEGX((x)) > UNMAPLIMIT)
+> +#define ___pa(x)		((unsigned long) (x) - PAGE_OFFSET)
+> +#define __pa(x)		        (ISMAPPED(x) ? (x) : ___pa(x))
+> +
+> +#define ___va(x)		((void *)((unsigned long) (x) + PAGE_OFFSET))
+> +#define __va(x)			(ISMAPPED(x) ? (x) : ___va(x))
+> 
+>  #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
 
-Philips Nino and Velo series and the old Sharp Mobilon series; both
-run on PR31700/TX3912 SoCs. Steven Hill had a port for the Nino board
-on early 2.4, but it was dropped as of 2.4.17 if I recall correctly,
-it never made it to 2.6.
+This part looks broken for 64-bit kernel.
 
-     Ricardo
+For other parts, it would be better to keep correct indentation level.
+
+---
+Atsushi Nemoto

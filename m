@@ -1,114 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Sep 2006 11:33:49 +0100 (BST)
-Received: from ali.ali.com.tw ([202.3.177.34]:55187 "HELO ali.ali.com.tw")
-	by ftp.linux-mips.org with SMTP id S20038472AbWIYKdq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Sep 2006 11:33:46 +0100
-Received: (qmail 18043 invoked by uid 0); 25 Sep 2006 10:33:30 -0000
-Received: from william_lei@ali.com.tw by mx.ali.com.tw by uid 502 with qmail-scanner-1.15 
- (iscan: v3.1/v6.810-1005/783/76729.  Clear:. 
- Processed in 0.203787 secs); 25 Sep 2006 10:33:30 -0000
-Received: from unknown (HELO TWALINS2) ([202.3.177.54]) (envelope-sender <william_lei@ali.com.tw>)
-          by ali.ali.com.tw (qmail-ldap-1.03) with SMTP
-          for <kevink@mips.com>; 25 Sep 2006 10:33:29 -0000
-In-Reply-To: <001401c6e07e$8b07c080$10eca8c0@grendel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Sep 2006 11:49:53 +0100 (BST)
+Received: from mail.domino-uk.com ([193.131.116.193]:7442 "EHLO
+	UK-HC-PS1.domino-printing.com") by ftp.linux-mips.org with ESMTP
+	id S20038498AbWIYKtt convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Sep 2006 11:49:49 +0100
+Received: from emea-exchange3.emea.dps.local (EMEA-EXCHANGE3) by 
+    UK-HC-PS1.domino-printing.com (Clearswift SMTPRS 5.2.5) with ESMTP id 
+    <T7af139d89bc18374c18d4@UK-HC-PS1.domino-printing.com> for 
+    <linux-mips@linux-mips.org>; Mon, 25 Sep 2006 11:51:50 +0100
+Received: from tuxator2.emea.dps.local ([192.168.55.75]) by 
+    emea-exchange3.emea.dps.local with Microsoft SMTPSVC(6.0.3790.1830); 
+    Mon, 25 Sep 2006 12:49:42 +0200
+From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Organization: Sator Laser GmbH
+To:	linux-mips@linux-mips.org
 Subject: Re: How to emulate lw/sw instruction by lb/sb instruction
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	linux-mips@linux-mips.org
-X-Mailer: Lotus Notes Release 6.0 September 26, 2002
-Message-ID: <OFCDEA2C7E.BF7FD296-ON482571F4.0039233C-482571F4.003A3A12@LocalDomain>
-From:	william_lei@ali.com.tw
-Date:	Mon, 25 Sep 2006 18:35:01 +0800
-X-MIMETrack: Serialize by Router on TWALINS2/ALI_TPE/ACER(Release 5.0.11  |July 24, 2002) at
- 2006/09/25 06:33:33 PM
+Date:	Mon, 25 Sep 2006 12:49:40 +0200
+User-Agent: KMail/1.9.3
+References:	<OF041A6F77.FC0AA7D2-ON482571F4.00036CCB-482571F4.0003EC56@LocalDomain>
+In-Reply-To:	 <OF041A6F77.FC0AA7D2-ON482571F4.00036CCB-482571F4.0003EC56@LocalDomain>
 MIME-Version: 1.0
-Content-type: text/plain; charset=us-ascii
-Return-Path: <william_lei@ali.com.tw>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200609251249.40995.eckhardt@satorlaser.com>
+X-OriginalArrivalTime: 25 Sep 2006 10:49:42.0705 (UTC) 
+    FILETIME=[4EB53A10:01C6E090]
+Return-Path: <Eckhardt@satorlaser.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12649
+X-archive-position: 12650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: william_lei@ali.com.tw
+X-original-sender: eckhardt@satorlaser.com
 Precedence: bulk
 X-list: linux-mips
 
-
-Dear Kevin
-      Because there are some aligned instruction will load/store from/to
-unaligned base address in some module,such as "lw t0,56(sp)  ##sp is odd
-address"
-that's why I want some special version GCC can avoid generating load/store
-4 bytes opcode,then I can use this "GCC" to compile specified module and
-linked with others,it will avoid unnecessary exception processing when
-these instruction to be invoked and come up with best performance for me.
-Regards
-William Lei
-
-
-|---------+---------------------------->
-|         |           "Kevin D.        |
-|         |           Kissell"         |
-|         |           <kevink@mips.com>|
-|         |                            |
-|         |                            |
-|         |           2006-09-25 16:42 |
-|---------+---------------------------->
-  >------------------------------------------------------------------------------------------------------------------------------|
-  |                                                                                                                              |
-  |       To:       <linux-mips@linux-mips.org>, <william_lei@ali.com.tw>                                                        |
-  |       cc:                                                                                                                    |
-  |       Subject:  Re: How to emulate lw/sw instruction by lb/sb instruction                                                    |
-  >------------------------------------------------------------------------------------------------------------------------------|
-
-
-
-
-
-The MIPS Linux kernel is capable of handling unalgined loads and
-stores in emulation.  This is less efficient than synthesizing the word
-access out of byte or left/right load/store operations in-line, but it's
-only done when there really is an unaligned access, whereas forcing
-the compiler to synthesize *all* loads/stores adds that overhead
-even when the addresses are actually aligned.
-
-            Regards,
-
-            Kevin K.
-
------ Original Message -----
-From: <william_lei@ali.com.tw>
-To: <linux-mips@linux-mips.org>
-Sent: Monday, September 25, 2006 2:41 AM
-Subject: How to emulate lw/sw instruction by lb/sb instruction
-
-
-> Dear all
->       Could someone tell me how to modify GCC as titled?because we have
-met
+On Monday 25 September 2006 02:41, william_lei@ali.com.tw wrote:
+> Could someone tell me how to modify GCC as titled?because we have met
 > problem while porting some middleware,which will generate some lw/sw
 > instruction to unaligned address,so I would modify GCC to not generate
 > lw/sw instructions for this pieces code.
-> Regards
-> William Lei
->
-> ************* Email Confidentiality Notice ********************
->
-> The information contained in this e-mail message (including any
-> attachments) may be confidential, proprietary, privileged, or otherwise
-> exempt from disclosure under applicable laws. It is intended to be
-conveyed
-> only to the designated recipient(s). Any use, dissemination,
-distribution,
-> printing, retaining or copying of this e-mail (including its attachments)
-> by unintended recipient(s) is strictly prohibited and may be unlawful. If
-> you are not an intended recipient of this e-mail, or believe that you
-have
-> received this e-mail in error, please notify the sender immediately (by
-> replying to this e-mail), delete any and all copies of this e-mail
-> (including any attachments) from your system, and do not disclose the
-> content of this e-mail to any other person. Thank you!
->
->
->
->
+
+I'm not exactly sure what problem you are facing but if I understand you 
+correctly and you have code that simply does misaligned accesses, you would 
+be better off fixing the code. The reason is that such unaligned accesses 
+would have to be emulated with bytewise access and combining/dissecting the 
+values accordingly, which hurts performance (processing and cache). Even when 
+run on x86 (where such accesses don't cause bus errors) this would be the 
+better choice, because even there these are emulated in hardware and only 
+cause hidden performance losses.
+
+Other than that, I would rather filter the output of GCC, i.e. use -S (or what 
+it was) to generate assembler code and then replace the lw/sw instructions 
+via your $FAVOURITE_TEXTPROCESSING_TOOL in the affected files. Most other 
+software isn't that broken and would only suffer from such changes.
+
+Thinking about it, I believe there is also a way (some __attribute__) to tell 
+GCC that some pointer is not aligned and it will then output suitable code 
+for unaligned accesses. This requires changes to the generated sourcecode 
+though, but would be a rather clean solution because it would work on other 
+platforms, too.
+
+Just wondering, what middleware are you talking about?
+
+Uli
+
+
+**************************************************************************************
+           Visit our website at <http://www.satorlaser.de/>
+**************************************************************************************
+
+Diese E-Mail und jede mit dieser E-Mail versandte Datei ist vertraulich und ausschließlich für die Nutzung durch den vorgesehenen Empfänger bestimmt. Sollten Sie nicht der vorgesehene Empfänger dieser E-Mail sein, informieren Sie bitte den Absender.  Jeder unbefugte Zugriff oder unbefugte Weiterleitung, die Fertigung einer Kopie oder sonstige in diesem Zusammenhang stehende Handlung ist untersagt.
+
+
+This e-mail and any files transmitted with it are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you have received this e-mail in error, please be so kind to inform the sender. Any other unauthorised access, unauthorised forwarding, copying or other action in this connection at all, is prohibited.
+**************************************************************************************

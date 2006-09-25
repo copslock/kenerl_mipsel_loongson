@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Sep 2006 07:20:02 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.176]:60725 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037836AbWIYGUA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 25 Sep 2006 07:20:00 +0100
-Received: by py-out-1112.google.com with SMTP id i49so2003893pyi
-        for <linux-mips@linux-mips.org>; Sun, 24 Sep 2006 23:19:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Sep 2006 10:51:54 +0100 (BST)
+Received: from nz-out-0102.google.com ([64.233.162.197]:13108 "EHLO
+	nz-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038482AbWIYJvu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 25 Sep 2006 10:51:50 +0100
+Received: by nz-out-0102.google.com with SMTP id i1so585442nzh
+        for <linux-mips@linux-mips.org>; Mon, 25 Sep 2006 02:51:49 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=RybVLn5GPgS62rZy61CfQc3k/TfMs4+R7CB77VCtAvyf46hsK8gifDaI6LalcK1xsK5jbf1VDZ0XSkbRm7hFBd3HDpXgJVZOx0e0FfI8JZxQYZ5E21J5eFv6QM9qbQjbbdBX4Kw7AmOO16hnfv9clZl7KNG7pG5j5QCxDcxiLLk=
-Received: by 10.65.113.17 with SMTP id q17mr3761689qbm;
-        Sun, 24 Sep 2006 23:19:59 -0700 (PDT)
-Received: by 10.65.126.13 with HTTP; Sun, 24 Sep 2006 23:19:58 -0700 (PDT)
-Message-ID: <b01966ec0609242319t3dd1620es7426cbd4058a5a76@mail.gmail.com>
-Date:	Mon, 25 Sep 2006 11:49:58 +0530
+        b=m8OpS+Qh5XjmtA9v2TbnmroNuZjDy5xC5GRoKAxygLoxjq9iavHNcfZNtJwYxjI8bKEMG7xJEIk2pm15iKQQZRCxAiDeDPTux4MzoC/PxNvmTMTzTBl1oaVwYds5Vje2cuz8cj9/NmYuw77h5zou4mi3P/5Dn8r6iEAXw2amYlw=
+Received: by 10.65.59.11 with SMTP id m11mr755154qbk;
+        Mon, 25 Sep 2006 02:51:49 -0700 (PDT)
+Received: by 10.65.126.13 with HTTP; Mon, 25 Sep 2006 02:51:48 -0700 (PDT)
+Message-ID: <b01966ec0609250251kce617e5se9f3cfe8b3d0a2c0@mail.gmail.com>
+Date:	Mon, 25 Sep 2006 15:21:48 +0530
 From:	"Nida M" <nidajm@gmail.com>
 To:	"Ralf Baechle" <ralf@linux-mips.org>
 Subject: Re: single step in MIPS
@@ -32,7 +32,7 @@ Return-Path: <nidajm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12646
+X-archive-position: 12647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,6 +41,20 @@ Precedence: bulk
 X-list: linux-mips
 
 Hi,
+      I am facing problem in case of branch delay instruction.
+      When single stepping is done on a copied page,for an  uncondition jump
+      instruction to the given target address ( e.g j, jal ),
+      epc jumps to the target address with respect to current address,
+      And if I tried to put break point over there....it gives error as
+      "CPU 0 Unable to handle kernel paging request at virtual
+      address c005eeb8, epc == c005eeb8"
+
+
+      Can anybody knows...how to solve this problem..?
+
+
+ ~Nida
+
 
 
 On 9/7/06, Nida M <nidajm@gmail.com> wrote:

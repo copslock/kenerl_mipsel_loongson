@@ -1,87 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2006 08:13:32 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.185]:23845 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037585AbWIZHN2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Sep 2006 08:13:28 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so131977nfc
-        for <linux-mips@linux-mips.org>; Tue, 26 Sep 2006 00:13:26 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=fVyC9JpJGA9ujyerC0EZA0ov/QrPBMpStWGLH69Gjz2fyVnaKm/dmqnC50JlF7ebIJn+1mzZ4V/1kkpRhcAPstcf8Zd+ggQ1erGu9XEIoKGSosGds/UBmzHpnVUgzbNBkKj1A90I7ly2uo9AxVvAJY2T1YNPfEH/wUf27Vsa4xc=
-Received: by 10.48.220.15 with SMTP id s15mr663242nfg;
-        Tue, 26 Sep 2006 00:13:25 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.gmail.com with ESMTP id p45sm726906nfa.2006.09.26.00.13.24;
-        Tue, 26 Sep 2006 00:13:25 -0700 (PDT)
-Message-ID: <4518D33F.9070208@innova-card.com>
-Date:	Tue, 26 Sep 2006 09:14:07 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: How to work with Linux-Mips ?
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2006 10:02:47 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:10562 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20037627AbWIZJCp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 26 Sep 2006 10:02:45 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 26 Sep 2006 18:02:43 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 6A34F324CF;
+	Tue, 26 Sep 2006 18:02:41 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 5B37331EA8;
+	Tue, 26 Sep 2006 18:02:41 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k8Q92eW0065479;
+	Tue, 26 Sep 2006 18:02:40 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 26 Sep 2006 18:02:40 +0900 (JST)
+Message-Id: <20060926.180240.109570923.nemoto@toshiba-tops.co.jp>
+To:	girishvg@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] cleanup hardcoding __pa/__va macros etc. (take-2)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <C13EBDF2.724C%girishvg@gmail.com>
+References: <20060926.004318.68160600.anemo@mba.ocn.ne.jp>
+	<C13EBDF2.724C%girishvg@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12667
+X-archive-position: 12668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Tue, 26 Sep 2006 11:22:26 +0900, girish <girishvg@gmail.com> wrote:
+> The idea is to differentiate the Kseg0/Kseg1 segments in the physical area.
+> Beyond these areas lies the mapped area (or the HIGHMEM). What complicates
+> this matter further is their overlapping nature. The __pa()/__va() treated
+> all addresses mapped into PAGE_OFFSET (8000_0000) area. The effort is to
+> correctly differentiate these areas.
 
-First of all, I'm sending this email because I really want to
-understand how linux-mips is working with its community. I'm asking
-this question because I'm wondering how many times I should resend a
-patch before it can be considered for applying.
+Yes, __va() and __pa() are used to convert an physical address from/to
+an kernel logical address (i.e. low unmapped virtual address).
 
-For example, I posted some patches more than one month ago. I really
-think that these patches improve the MIPS specific code and they are
-not complex at all:
+I think passing another sort of addresses to them is simply wrong.
 
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00112.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00113.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00114.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00115.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00117.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00118.html
-
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00196.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00195.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00197.html
-
-These patchs have been kindly reviewed and acked by Atsushi Nemoto,
-but then no feedback from the MIPS team. I tried to get a status for
-MIPS team a couple of time, to know if something was wrong with them
-but MIPS people seem to not care about them. They even haven't
-bothered to take 10 seconds for replying something like:
-
-  - your patches are broken because...
-
-  - your patches do not respect our MIPS protocol, please resend...
-
-  - Sorry we are very busy, please hold on...
-
-  - OK your patches suck please try to work on ARM chips because MIPS
-    is a very closed circle reserved to MIPS gurus.
-
-Another question, is that MIPS tree seems to not care about linux
-mainline release process. I actually notice that even Linus do not
-pull MIPS tree anymore during the last release candidate cycle. Is
-MIPS aware that some of its customers are trying to make stable
-releases ? Does the linux-mips team exist to ease life of its
-customers to use the linux kernel on MIPS chips or is the purpose of
-this team doing only some development for fun ?
-
-Hoping this time I'll get some answers.
-
-		Franck
+P.S.
+Please do not reply to git-commits@linux-mips.org.
+---
+Atsushi Nemoto

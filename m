@@ -1,80 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2006 14:48:02 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:45791 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037758AbWIZNr6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Sep 2006 14:47:58 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8QDmnno029243;
-	Tue, 26 Sep 2006 14:48:49 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8QDmmZY029242;
-	Tue, 26 Sep 2006 14:48:48 +0100
-Date:	Tue, 26 Sep 2006 14:48:48 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: How to work with Linux-Mips ?
-Message-ID: <20060926134848.GB27446@linux-mips.org>
-References: <4518D33F.9070208@innova-card.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4518D33F.9070208@innova-card.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2006 15:34:20 +0100 (BST)
+Received: from smtp-out.sigp.net ([63.237.78.44]:45820 "EHLO smtp-out.sigp.net")
+	by ftp.linux-mips.org with ESMTP id S20037584AbWIZOeQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 26 Sep 2006 15:34:16 +0100
+Received: from gamd-ex-001.ss.drs.master (gamd-ex-001.ss.drs.master [172.22.132.94])
+	by smtp-out.sigp.net (8.13.1/8.13.6) with ESMTP id k8QEYCOH011947
+	for <linux-mips@linux-mips.org>; Tue, 26 Sep 2006 10:34:15 -0400 (EDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C6E178.D5788177"
+Subject: oprofile configure?
+Date:	Tue, 26 Sep 2006 10:34:12 -0400
+Message-ID: <DEB94D90ABFC8240851346CFD4ACFF149E1C7F@gamd-ex-001.ss.drs.master>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: oprofile configure?
+Thread-Index: AcbheNVzisvHJh+ZQrC/gpAimQjepw==
+From:	"Azer, William" <Bill.Azer@drs-ss.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <Bill.Azer@drs-ss.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12671
+X-archive-position: 12672
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Bill.Azer@drs-ss.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 26, 2006 at 09:14:07AM +0200, Franck Bui-Huu wrote:
+This is a multi-part message in MIME format.
 
-> These patchs have been kindly reviewed and acked by Atsushi Nemoto,
-> but then no feedback from the MIPS team. I tried to get a status for
-> MIPS team a couple of time, to know if something was wrong with them
-> but MIPS people seem to not care about them. They even haven't
-> bothered to take 10 seconds for replying something like:
-> 
->   - your patches are broken because...
-> 
->   - your patches do not respect our MIPS protocol, please resend...
-> 
->   - Sorry we are very busy, please hold on...
+------_=_NextPart_001_01C6E178.D5788177
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-You should interpret a non-answer as exactly this.
+Hi,
 
->   - OK your patches suck please try to work on ARM chips because MIPS
->     is a very closed circle reserved to MIPS gurus.
-> 
-> Another question, is that MIPS tree seems to not care about linux
-> mainline release process. I actually notice that even Linus do not
-> pull MIPS tree anymore during the last release candidate cycle.
+i have natively built oprofile for sb1 platform and i get a lot of =
+warnings from the compiler.  i had to use --disable-werror in order to =
+build.  has anyone encountered this?  am i doing something wrong?
 
-While my employer encourages my linux-mips.org activities at times there
-are things that take priority and that has happened before 2.6.18 until
-the time where it was too late to submit anything.  Still 2.6.18 from
-kernel.org is usable on MIPS.
+i did compile, install and run.
 
-> Is MIPS aware that some of its customers are trying to make stable
-> releases ?
+thx,
 
-I pass on answering a polemic question.
+Bill Azer
 
-> Does the linux-mips team exist to ease life of its
-> customers to use the linux kernel on MIPS chips or is the purpose of
-> this team doing only some development for fun ?
 
-You should draw a line between linux-mips.org and MIPS Technologies.
-linux-mips.org isn't a formal organization and not to be considered part
-of MTI.  If anything call it a loosely knit group of hackers with
-interest in running Linux and anything and all that has a MIPS processors.
-There is more to be said I guess you rather want me to return to my
-pending patches ;-)
+if g++ -DHAVE_CONFIG_H -I. -I. -I..  -I ../libutil -I ../libop  -W -Wall =
+-fno-common -ftemplate-depth-50 -g -O2 -MT op_exception.o -MD -MP -MF =
+".deps/op_exception.Tpo" -c -o op_exception.o op_exception.cpp; \
+then mv -f ".deps/op_exception.Tpo" ".deps/op_exception.Po"; else rm -f =
+".deps/op_exception.Tpo"; exit 1; fi
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h: In static member function `static =
+std::basic_string<_CharT, _Traits, _Alloc>::_Rep& =
+std::basic_string<_CharT, _Traits, _Alloc>::_Rep::_S_empty_rep() [with =
+_CharT =3D char, _Traits =3D std::char_traits<char>, _Alloc =3D =
+std::allocator<char>]':
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h:215:   instantiated from `void =
+std::basic_string<_CharT, _Traits, _Alloc>::_Rep::_M_dispose(const =
+_Alloc&) [with _CharT =3D char, _Traits =3D std::char_traits<char>, =
+_Alloc =3D std::allocator<char>]'
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h:418:   instantiated from =
+`std::basic_string<_CharT, _Traits, _Alloc>::~basic_string() [with =
+_CharT =3D char, _Traits =3D std::char_traits<char>, _Alloc =3D =
+std::allocator<char>]'
+op_exception.cpp:21:   instantiated from here
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h:178: warning: dereferencing type-punned pointer =
+will break strict-aliasing rules
 
-  Ralf
+------_=_NextPart_001_01C6E178.D5788177
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7233.28">
+<TITLE>oprofile configure?</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hi,<BR>
+<BR>
+i have natively built oprofile for sb1 platform and i get a lot of =
+warnings from the compiler.&nbsp; i had to use --disable-werror in order =
+to build.&nbsp; has anyone encountered this?&nbsp; am i doing something =
+wrong?<BR>
+<BR>
+i did compile, install and run.<BR>
+<BR>
+thx,<BR>
+<BR>
+Bill Azer<BR>
+<BR>
+<BR>
+if g++ -DHAVE_CONFIG_H -I. -I. -I..&nbsp; -I ../libutil -I =
+../libop&nbsp; -W -Wall -fno-common -ftemplate-depth-50 -g -O2 -MT =
+op_exception.o -MD -MP -MF &quot;.deps/op_exception.Tpo&quot; -c -o =
+op_exception.o op_exception.cpp; \<BR>
+then mv -f &quot;.deps/op_exception.Tpo&quot; =
+&quot;.deps/op_exception.Po&quot;; else rm -f =
+&quot;.deps/op_exception.Tpo&quot;; exit 1; fi<BR>
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h: In static member function `static =
+std::basic_string&lt;_CharT, _Traits, _Alloc&gt;::_Rep&amp; =
+std::basic_string&lt;_CharT, _Traits, _Alloc&gt;::_Rep::_S_empty_rep() =
+[with _CharT =3D char, _Traits =3D std::char_traits&lt;char&gt;, _Alloc =
+=3D std::allocator&lt;char&gt;]':<BR>
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h:215:&nbsp;&nbsp; instantiated from `void =
+std::basic_string&lt;_CharT, _Traits, _Alloc&gt;::_Rep::_M_dispose(const =
+_Alloc&amp;) [with _CharT =3D char, _Traits =3D =
+std::char_traits&lt;char&gt;, _Alloc =3D =
+std::allocator&lt;char&gt;]'<BR>
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h:418:&nbsp;&nbsp; instantiated from =
+`std::basic_string&lt;_CharT, _Traits, _Alloc&gt;::~basic_string() [with =
+_CharT =3D char, _Traits =3D std::char_traits&lt;char&gt;, _Alloc =3D =
+std::allocator&lt;char&gt;]'<BR>
+op_exception.cpp:21:&nbsp;&nbsp; instantiated from here<BR>
+/usr/lib32/gcc/mips64-montavista-linux/3.4.3/../../../../include/c++/3.4.=
+3/bits/basic_string.h:178: warning: dereferencing type-punned pointer =
+will break strict-aliasing rules<BR>
+</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C6E178.D5788177--

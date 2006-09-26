@@ -1,109 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2006 16:14:30 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:13797 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038960AbWIZPO2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 26 Sep 2006 16:14:28 +0100
-Received: from localhost (p5240-ipad201funabasi.chiba.ocn.ne.jp [222.146.68.240])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C2CBDA94E; Wed, 27 Sep 2006 00:14:22 +0900 (JST)
-Date:	Wed, 27 Sep 2006 00:16:31 +0900 (JST)
-Message-Id: <20060927.001631.78705973.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, mingo@redhat.com
-Subject: Re: [PATCH 2/3] [MIPS] lockdep: add STACKTRACE_SUPPORT and enable
- LOCKDEP_SUPPORT
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060926.234401.08077257.anemo@mba.ocn.ne.jp>
-References: <20060926.234401.08077257.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2006 16:20:42 +0100 (BST)
+Received: from py-out-1112.google.com ([64.233.166.183]:27881 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037632AbWIZPUj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 26 Sep 2006 16:20:39 +0100
+Received: by py-out-1112.google.com with SMTP id i49so2547161pyi
+        for <linux-mips@linux-mips.org>; Tue, 26 Sep 2006 08:20:38 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:user-agent:date:subject:from:to:cc:message-id:thread-topic:thread-index:in-reply-to:mime-version:content-type:content-transfer-encoding;
+        b=e5xLctlAW7jZZdD68pgRg4xExExyztoO5PCXVQ2AtQhHs7LGb51vu/hpPwZfR75upCBU0TEipEpxzQFKmKZ4je/imxW3QAc+gprv0p9zXWH49loagimdEB4Jo7TmY8yIIaCkiwjnyUjunD2Q1Kw+yl3ud1HmslpeEZsG+CLa/mI=
+Received: by 10.35.80.20 with SMTP id h20mr1039171pyl;
+        Tue, 26 Sep 2006 08:20:38 -0700 (PDT)
+Received: from ?192.168.1.3? ( [61.125.212.22])
+        by mx.gmail.com with ESMTP id w76sm3340419pyd.2006.09.26.08.20.35;
+        Tue, 26 Sep 2006 08:20:37 -0700 (PDT)
+User-Agent: Microsoft-Entourage/11.2.1.051004
+Date:	Wed, 27 Sep 2006 00:20:30 +0900
+Subject: Re: [PATCH] cleanup hardcoding __pa/__va macros etc. (take-2)
+From:	girish <girishvg@gmail.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	girish <girishvg@gmail.com>
+Message-ID: <C13F744E.72CB%girishvg@gmail.com>
+Thread-Topic: [PATCH] cleanup hardcoding __pa/__va macros etc. (take-2)
+Thread-Index: Acbhf01Di8KIO01yEdulewATIGIqNA==
+In-Reply-To: <20060926.180240.109570923.nemoto@toshiba-tops.co.jp>
+Mime-version: 1.0
+Content-type: text/plain;
+	charset="US-ASCII"
+Content-transfer-encoding: 7bit
+Return-Path: <girishvg@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12679
+X-archive-position: 12680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: girishvg@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 26 Sep 2006 23:44:01 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> Implement stacktrace interface by using unwind_stack().
-> And enable lockdep support.
 
-And I got this output when I booted kernel 2.6.18 using nfsroot:
+>> The idea is to differentiate the Kseg0/Kseg1 segments in the physical area.
+>> Beyond these areas lies the mapped area (or the HIGHMEM). What complicates
+>> this matter further is their overlapping nature. The __pa()/__va() treated
+>> all addresses mapped into PAGE_OFFSET (8000_0000) area. The effort is to
+>> correctly differentiate these areas.
+> 
+> Yes, __va() and __pa() are used to convert an physical address from/to
+> an kernel logical address (i.e. low unmapped virtual address).
+> 
+> I think passing another sort of addresses to them is simply wrong.
 
---- snip ---
-Mounting remote filesystems...
+Agreed. 
 
-=======================================================
-[ INFO: possible circular locking dependency detected ]
--------------------------------------------------------
-mount/1381 is trying to acquire lock:
- (&mm->mmap_sem){----}, at: [<80032370>] do_page_fault+0xf0/0x3e0
+But, then again treating all addresses as above PAGE_OFFSET is also wrong :)
+I looked at it just as a work around. These macros are called from so many
+other places that if an access is made at say 4000_0000 the kernel will oops
+telling it was C000_0000 access error. Now that confused me a lot! With this
+change now kernel oops on 4000_0000 :)
 
-but task is already holding lock:
- (sk_lock-AF_INET){--..}, at: [<802a55ac>] tcp_recvmsg+0x44/0x920
+Anyway, you may ignore __pa/__va macros.
 
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (sk_lock-AF_INET){--..}:
-       [<80075ac0>] __lock_acquire+0xd7c/0xe98
-       [<80076098>] lock_acquire+0xa4/0xf8
-       [<8026a9ec>] lock_sock+0xec/0x11c
-       [<802be8cc>] udp_sendmsg+0x20c/0x5cc
-       [<802c772c>] inet_sendmsg+0x58/0x9c
-       [<80267270>] sock_sendmsg+0xb0/0x104
-       [<802672f0>] kernel_sendmsg+0x2c/0x48
-       [<802e9924>] xs_udp_send_request+0x1d8/0x354
-       [<802e65dc>] xprt_transmit+0x70/0x284
-       [<802e3140>] call_transmit+0x204/0x2e4
-       [<802eb16c>] __rpc_execute+0xa8/0x2bc
-       [<802eb3e8>] rpc_execute+0x40/0x54
-       [<8013434c>] nfs_execute_read+0x50/0x84
-       [<80134c60>] nfs_pagein_one+0x2e4/0x388
-       [<80134e18>] nfs_readpages+0x114/0x21c
-       [<8008ce7c>] __do_page_cache_readahead+0x214/0x33c
-       [<8008d550>] do_page_cache_readahead+0x6c/0x9c
-       [<80087498>] filemap_nopage+0x178/0x560
-       [<800953e4>] __handle_mm_fault+0x178/0xb70
-       [<80032504>] do_page_fault+0x284/0x3e0
-       [<800339c0>] tlb_do_page_fault_1+0x104/0x114
-
--> #0 (&mm->mmap_sem){----}:
-       [<80075960>] __lock_acquire+0xc1c/0xe98
-       [<80076098>] lock_acquire+0xa4/0xf8
-       [<80070bb0>] down_read+0x38/0x58
-       [<80032370>] do_page_fault+0xf0/0x3e0
-       [<800339c0>] tlb_do_page_fault_1+0x104/0x114
-
-other info that might help us debug this:
-
-1 lock held by mount/1381:
- #0:  (sk_lock-AF_INET){--..}, at: [<802a55ac>] tcp_recvmsg+0x44/0x920
-
-stack backtrace:
-Call Trace:
-[<8002de48>] dump_stack+0x10/0x44
-[<80074d28>] print_circular_bug_tail+0x70/0x8c
-[<80075960>] __lock_acquire+0xc1c/0xe98
-[<80076098>] lock_acquire+0xa4/0xf8
-[<80070bb0>] down_read+0x38/0x58
-[<80032370>] do_page_fault+0xf0/0x3e0
-[<800339c0>] tlb_do_page_fault_1+0x104/0x114
---- snip ---
+Could you please look into other changes I proposed?
 
 
-I'm not familiar with lockdep output.  Is this a real dependency bug
-or lack of annotation on somewhere, or something other ?
+> 
+> P.S.
+> Please do not reply to git-commits@linux-mips.org.
 
----
-Atsushi Nemoto
+I am sorry. It was a stupid mistake in creating address book entry.

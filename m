@@ -1,136 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Sep 2006 02:55:46 +0100 (BST)
-Received: from mms3.broadcom.com ([216.31.210.19]:8452 "EHLO MMS3.broadcom.com")
-	by ftp.linux-mips.org with ESMTP id S20038996AbWI0Bzo convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 27 Sep 2006 02:55:44 +0100
-Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.2)); Tue, 26 Sep 2006 18:55:16 -0700
-X-Server-Uuid: 450F6D01-B290-425C-84F8-E170B39A25C9
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 3BA942B1; Tue, 26 Sep 2006 18:55:16 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 579ED2B3; Tue, 26 Sep
- 2006 18:55:15 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id EFY52268; Tue, 26 Sep 2006 18:54:42 -0700 (PDT)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 509DD20501; Tue, 26 Sep 2006 18:54:42 -0700 (PDT)
-Received: from NT-SJCA-0752.brcm.ad.broadcom.com ([10.16.192.222]) by
- NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Tue, 26 Sep 2006 18:54:42 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Sep 2006 04:18:10 +0100 (BST)
+Received: from web31506.mail.mud.yahoo.com ([68.142.198.135]:20391 "HELO
+	web31506.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20037478AbWI0DSH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 27 Sep 2006 04:18:07 +0100
+Received: (qmail 87248 invoked by uid 60001); 27 Sep 2006 03:18:01 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=JH1fB+687EcR+/LjOZhI1wphRJC5VCzwYinrEti7gFPf3dPe2T6axGhemiQ3bpeG/lp9rh+aIKbryRSau3SfloFjxnJisOvER7PXUoZocVxzoPf1VRkGSpyqea6LAIcoOIBU36MPOM6hrTGyabWV6N54UfFqnisM0f/z3/KFmag=  ;
+Message-ID: <20060927031800.87246.qmail@web31506.mail.mud.yahoo.com>
+Received: from [65.102.5.19] by web31506.mail.mud.yahoo.com via HTTP; Tue, 26 Sep 2006 20:18:00 PDT
+Date:	Tue, 26 Sep 2006 20:18:00 -0700 (PDT)
+From:	Jonathan Day <imipak@yahoo.com>
+Subject: Re: How to work with Linux-Mips ?
+To:	Peter Popov <ppopov@embeddedalley.com>,
+	Franck <vagabon.xyz@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+In-Reply-To: <4519859A.1090306@embeddedalley.com>
 MIME-Version: 1.0
-Subject: RE: [MIPS] SB1: Build fix: delete initialization of
- flush_icache_page pointer.
-Date:	Tue, 26 Sep 2006 18:54:40 -0700
-Message-ID: <710F16C36810444CA2F5821E5EAB7F230A0E45@NT-SJCA-0752.brcm.ad.broadcom.com>
-In-Reply-To: <20060926.183946.49857108.nemoto@toshiba-tops.co.jp>
-Thread-Topic: [MIPS] SB1: Build fix: delete initialization of
- flush_icache_page pointer.
-Thread-Index: AcbhT7ypS3Njh6HmQ7+E9jeQQjaFlAAhMObQ
-From:	"Manoj Ekbote" <manoje@broadcom.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	"Mark E Mason" <mark.e.mason@broadcom.com>
-X-OriginalArrivalTime: 27 Sep 2006 01:54:42.0152 (UTC)
- FILETIME=[E61D0E80:01C6E1D7]
-X-TMWD-Spam-Summary: TS=20060927015519; SEV=2.0.2; DFV=A2006092610;
- IFV=2.0.4,4.0-8; RPD=4.00.0004; ENG=IBF;
- RPDID=303030312E30413031303230352E34353139443745442E303034352D412D;
- CAT=NONE; CON=NONE
-X-MMS-Spam-Filter-ID: A2006092610_4.00.0004_4.0-8
-X-WSS-ID: 6907058E2304388638-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <manoje@broadcom.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <imipak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12689
+X-archive-position: 12690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manoje@broadcom.com
+X-original-sender: imipak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-I tried the patch that you pointed to and UP kernel boots fine. Looks
-like that was a icache and dcache coherency problem now that there is no
-flush_icache_page implementation.
 
-The SMP kernel still has trouble.Turning on the first printk in fault.c
-makes it work..which is interesting.
-I added a __sb1_flush_icache_range call with dcache invalidation..still
-no help. I don't see a SIGSEGV message now.The kernel hangs with no
-response to keystrokes and the soft lockup detect error shows up after
-sometime.
+--- Peter Popov <ppopov@embeddedalley.com> wrote:
+> There is no such thing as a 10 sec patch review.
+> Especially when it
+> comes to patches that touch generic portions of the
+> kernel.
 
-Oh, inserting flush_icache_page caused the kernel to panic. I also see
-that __flush_icache_page is not used anywhere. Any future use?
+That is extremely true. One has to only look at the
+number of "Brown Paper Bag" releases, over the history
+of Linux, to realize that even the intense reviews
+that take place are sometimes not enough.
 
-Thx.
+> MIPS Tech and linux-mips are separate entities.
+> Personally I think MIPS
+> Tech has done a great service to themselves, their
+> customers, and the
+> entire Linux MIPS community, by hiring Ralf to do
+> new MIPS development
+> and properly support new chips coming out.
 
->-----Original Message-----
->From: Atsushi Nemoto [mailto:anemo@mba.ocn.ne.jp] 
->Sent: Tuesday, September 26, 2006 2:40 AM
->To: Manoj Ekbote
->Cc: Mark E Mason; linux-mips@linux-mips.org; 
->ralf@linux-mips.org; ths@networkno.de
->Subject: Re: [MIPS] SB1: Build fix: delete initialization of 
->flush_icache_page pointer.
->
->On Mon, 25 Sep 2006 20:05:59 -0700, "Manoj Ekbote" 
-><manoje@broadcom.com> wrote:
->> The latest tip still has problems with booting on Broadcom boards.
->> I turned on a couple of printk's in the page fault handler and I see 
->> the following messages:
->...
->> It looks like a cache corruption issue.  Did the removal of 
->> flush_icache_page cause this?
->
->Yes perhaps.  But flush_icache_page() itself is obsolete API 
->and should be gone (see Documentation/cachetlb.txt).  So there 
->should be fault in somewhere else.
->
->I think 
->
->http://www.linux-mips.org/archives/linux-mips/2006-08/msg00184.html
->
->is still needed, but it seems not enough.
->
->If reverting flush_icache_page() worked, then you can debug more.
->
->1. kill part of local_sb1_flush_icache_page().
->
->If killing __sb1_writeback_inv_dcache_phys_range() part was 
->OK, then it would be dcache issue, if killing 
->drop_mmu_context() part was OK, then it would be icache issue.
->
->2. kill calls of flush_icache_page().
->
->If is used in only 3 places.
->
->mm/fremap.c:    flush_icache_page(vma, page);
->mm/memory.c:    flush_icache_page(vma, page);
->mm/memory.c:            flush_icache_page(vma, new_page);
->
->Finding which lines are required might help further investigation.
->
->
->Another possible approach might be trying c-r4k.c instead of c-sb1.c.
->
->If you wanted to debug with latest git tree, note that 
->include/asm-mips/hazard.h in current lmo git tree seems 
->broken.  The fix was already posted to this ML so hopefully we 
->can see in git tree soon...
->
->---
->Atsushi Nemoto
->
->
+Whilst I agree entirely, I think we need to put a
+little more perspective on this. The Linux kernel is
+big. Very, very big. By my estimate, it would take an
+army of 10,000+ full-time software engineers skilled
+in "Extreme Programming" and formal methods to be able
+to verify something of the complexity and intricacy of
+the Linux kernel within a single year, excluding any
+changes made during that time, which will likely
+replace so much of the code that the verification
+won't tell you much anyway.
+
+If every company and every University involved in
+Linux - not just every consortium - were to
+contribute, you might be able to amass that kind of
+manpower. One full-time coder for the entire of the
+MIPS side of the tree is valuable and it's doubtful
+any branch could now survive long without at least
+that, one person is simply not capable of replacing
+ten thousand, no matter how brilliant they are.
+
+This isn't to say MIPS Tech should necessarily throw
+in more manpower, although I certainly wouldn't argue
+with that. It's that there's simply no realistic way
+to get enough manpower together to do code reviews in
+the kind of timeframes that people are asking for.
+
+Rather than curse out the absence of something that is
+beyond any realistic reach, it might be good for
+people to reflect on the sheer magnitude of what we do
+have.
+
+I'd also like to throw in one other thought - people
+have patches and patch-sets on web pages that are
+popular but don't get merged in for ages, or sometimes
+at all. I know this as well as anyone can - I ran a
+project for a while that did nothing but collect the
+really significant patches and patchsets out there and
+merge them into one gigantic megapatch. It was about
+two-thirds the size of the kernel itself.
+
+Even at that kind of size, there was probably as much
+out there that I knew about but omitted as I included,
+and very likely ten times as much as all that combined
+that I never knew about at all.
+
+Today, with far more developers, far more hardware,
+far more gadgets and gizmos, vastly more R&D, and
+infinitely more interest in Linux, the ratio of
+included code to code "missing, presumed blogged" can
+only be worse. The various development teams don't
+scale nearly as well or as fast as the Internet.
+
+On that basis, my guess is that there is probably
+between 15-20 times as much interesting code out there
+that has not been reviewed and included as there is
+code in the whole of the Linux kernel as it currently
+stands. If, as may well happen, interest goes through
+another explosion before 2.8 gets out, then this could
+easily double over the next three or four years.
+
+Yes, I wish things moved faster. Yes, I wish there
+were fewer problems with some of the boards I use. I
+also wish I knew next week's lottery numbers. The odds
+of me finding a valid solution to the third seems
+infinitely more likely than anyone developing a
+perfect, lightning-speed solution to the first two.
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

@@ -1,54 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Sep 2006 21:06:32 +0100 (BST)
-Received: from wx-out-0506.google.com ([66.249.82.235]:36267 "EHLO
-	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039018AbWI0UGa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 27 Sep 2006 21:06:30 +0100
-Received: by wx-out-0506.google.com with SMTP id h30so333170wxd
-        for <linux-mips@linux-mips.org>; Wed, 27 Sep 2006 13:06:29 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:user-agent:x-accept-language:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=AByw2dLYvcnlVI/qxrSgCy9pKirqjoHibeKcgJHJPYHoa1APs2FLSY8GMV9xsI5pr9bqGkf29rQx79Ah2VLyWhnnf27CTYVqx3cpLyOGYGkJliDbCUwr4XCjRGZvfbY6olMh97NsEZDvePkYmrA9NHVS6ISs+tyAXtZBFisAGgk=
-Received: by 10.70.65.8 with SMTP id n8mr1327951wxa;
-        Wed, 27 Sep 2006 13:06:28 -0700 (PDT)
-Received: from ?10.0.1.104? ( [71.243.124.123])
-        by mx.gmail.com with ESMTP id h9sm1304341wxd.2006.09.27.13.06.27;
-        Wed, 27 Sep 2006 13:06:28 -0700 (PDT)
-Message-ID: <451AD9C1.6080608@gmail.com>
-Date:	Wed, 27 Sep 2006 16:06:25 -0400
-From:	Peter Watkins <treestem@gmail.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050831)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	Samium Gromoff <deepfire@elvees.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: 16KB PAGE_SIZE on r4k
-References: <200609221906.30516.deepfire@elvees.com>
-In-Reply-To: <200609221906.30516.deepfire@elvees.com>
-Content-Type: text/plain; charset=KOI8-R; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Sep 2006 21:15:10 +0100 (BST)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:24784 "EHLO
+	bluesmobile.corp.specifix.com") by ftp.linux-mips.org with ESMTP
+	id S20039018AbWI0UPI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 27 Sep 2006 21:15:08 +0100
+Received: from localhost.localdomain (bluesmobile.specifix.com [64.220.152.99])
+	by bluesmobile.corp.specifix.com (Postfix) with ESMTP id 5BECC3B849;
+	Wed, 27 Sep 2006 13:09:34 -0700 (PDT)
+Subject: Re: How to emulate lw/sw instruction by lb/sb instruction
+From:	Jim Wilson <wilson@specifix.com>
+To:	william_lei@ali.com.tw
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <OFCDEA2C7E.BF7FD296-ON482571F4.0039233C-482571F4.003A3A12@LocalDomain>
+References: <OFCDEA2C7E.BF7FD296-ON482571F4.0039233C-482571F4.003A3A12@LocalDomain>
+Content-Type: text/plain
+Date:	Wed, 27 Sep 2006 13:14:11 -0700
+Message-Id: <1159388051.3181.6.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.6.3 (2.6.3-1.fc5.5) 
 Content-Transfer-Encoding: 7bit
-Return-Path: <treestem@gmail.com>
+Return-Path: <wilson@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12698
+X-archive-position: 12699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: treestem@gmail.com
+X-original-sender: wilson@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-Samium Gromoff wrote:
-> How reliable is 16KB PAGE_SIZE on r4k-likes in kernels around 2.6.17?
-> 
-> Is it known to work?
-> 
-> regards, Samium Gromoff
-> 
-> 
+On Mon, 2006-09-25 at 18:35 +0800, william_lei@ali.com.tw wrote:
+>       Because there are some aligned instruction will load/store from/to
+> unaligned base address in some module,such as "lw t0,56(sp)  ##sp is odd
+> address"
 
-You might want to look at:
+You are better off fixing your code.  SP must always be aligned to an 8
+byte boundary minimum, 16 bytes for the New ABIs.
 
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00294.html
-http://www.linux-mips.org/archives/linux-mips/2006-08/msg00244.html
+Changing gcc would be difficult, and it isn't even clear if such a
+change can be made to work.  If it is possible, the resulting code will
+likely be so bad as to be nearly useless.
+-- 
+Jim Wilson, GNU Tools Support, http://www.specifix.com

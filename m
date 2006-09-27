@@ -1,182 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Sep 2006 23:06:25 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.176]:13177 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038972AbWIZWGX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Sep 2006 23:06:23 +0100
-Received: by py-out-1112.google.com with SMTP id i49so2654259pyi
-        for <linux-mips@linux-mips.org>; Tue, 26 Sep 2006 15:06:21 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:user-agent:date:subject:from:to:cc:message-id:thread-topic:thread-index:in-reply-to:mime-version:content-type;
-        b=E/CatyHixH32LvVWsb4qqj79r6fHiniipkBT+a4EZqGWzGjdiJ3SM/YCgZh060GNLqHGiYLWcrIy9pY8RMmSuCEfONbTTk3d0RcmNx6LoeusBxKvcvcroRi+EFi13jreaE5xP7brjiRfy6TeZWJDK/K2dZGc+bjgbjqBqkrWZaQ=
-Received: by 10.35.101.1 with SMTP id d1mr1692928pym;
-        Tue, 26 Sep 2006 15:06:21 -0700 (PDT)
-Received: from ?192.168.1.3? ( [61.125.212.22])
-        by mx.gmail.com with ESMTP id w66sm4259665pyw.2006.09.26.15.06.18;
-        Tue, 26 Sep 2006 15:06:20 -0700 (PDT)
-User-Agent: Microsoft-Entourage/11.2.1.051004
-Date:	Wed, 27 Sep 2006 07:06:10 +0900
-Subject: Re: [PATCH] cleanup hardcoding __pa/__va macros etc. (take-2)
-From:	girish <girishvg@gmail.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-	girish <girishvg@gmail.com>
-Message-ID: <C13FD364.7334%girishvg@gmail.com>
-Thread-Topic: [PATCH] cleanup hardcoding __pa/__va macros etc. (take-2)
-Thread-Index: Acbht/kIN7Jphk2rEdulewATIGIqNA==
-In-Reply-To: <20060927.013553.48803581.anemo@mba.ocn.ne.jp>
-Mime-version: 1.0
-Content-type: multipart/mixed;
-	boundary="B_3242185576_6409718"
-Return-Path: <girishvg@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Sep 2006 02:55:46 +0100 (BST)
+Received: from mms3.broadcom.com ([216.31.210.19]:8452 "EHLO MMS3.broadcom.com")
+	by ftp.linux-mips.org with ESMTP id S20038996AbWI0Bzo convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 27 Sep 2006 02:55:44 +0100
+Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.2.2)); Tue, 26 Sep 2006 18:55:16 -0700
+X-Server-Uuid: 450F6D01-B290-425C-84F8-E170B39A25C9
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 3BA942B1; Tue, 26 Sep 2006 18:55:16 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 579ED2B3; Tue, 26 Sep
+ 2006 18:55:15 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id EFY52268; Tue, 26 Sep 2006 18:54:42 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
+ [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 509DD20501; Tue, 26 Sep 2006 18:54:42 -0700 (PDT)
+Received: from NT-SJCA-0752.brcm.ad.broadcom.com ([10.16.192.222]) by
+ NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft
+ SMTPSVC(6.0.3790.1830); Tue, 26 Sep 2006 18:54:42 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Subject: RE: [MIPS] SB1: Build fix: delete initialization of
+ flush_icache_page pointer.
+Date:	Tue, 26 Sep 2006 18:54:40 -0700
+Message-ID: <710F16C36810444CA2F5821E5EAB7F230A0E45@NT-SJCA-0752.brcm.ad.broadcom.com>
+In-Reply-To: <20060926.183946.49857108.nemoto@toshiba-tops.co.jp>
+Thread-Topic: [MIPS] SB1: Build fix: delete initialization of
+ flush_icache_page pointer.
+Thread-Index: AcbhT7ypS3Njh6HmQ7+E9jeQQjaFlAAhMObQ
+From:	"Manoj Ekbote" <manoje@broadcom.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	"Mark E Mason" <mark.e.mason@broadcom.com>
+X-OriginalArrivalTime: 27 Sep 2006 01:54:42.0152 (UTC)
+ FILETIME=[E61D0E80:01C6E1D7]
+X-TMWD-Spam-Summary: TS=20060927015519; SEV=2.0.2; DFV=A2006092610;
+ IFV=2.0.4,4.0-8; RPD=4.00.0004; ENG=IBF;
+ RPDID=303030312E30413031303230352E34353139443745442E303034352D412D;
+ CAT=NONE; CON=NONE
+X-MMS-Spam-Filter-ID: A2006092610_4.00.0004_4.0-8
+X-WSS-ID: 6907058E2304388638-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <manoje@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12688
+X-archive-position: 12689
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: girishvg@gmail.com
+X-original-sender: manoje@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-> This message is in MIME format. Since your mail reader does not understand
-this format, some or all of this message may not be legible.
+Hi,
 
---B_3242185576_6409718
-Content-type: text/plain;
-	charset="US-ASCII"
-Content-transfer-encoding: 7bit
+I tried the patch that you pointed to and UP kernel boots fine. Looks
+like that was a icache and dcache coherency problem now that there is no
+flush_icache_page implementation.
 
+The SMP kernel still has trouble.Turning on the first printk in fault.c
+makes it work..which is interesting.
+I added a __sb1_flush_icache_range call with dcache invalidation..still
+no help. I don't see a SIGSEGV message now.The kernel hangs with no
+response to keystrokes and the soft lockup detect error shows up after
+sometime.
 
->> But, then again treating all addresses as above PAGE_OFFSET is also wrong :)
-> 
-> It would be a design not a bug :-)
-> 
->> I looked at it just as a work around. These macros are called from so many
->> other places that if an access is made at say 4000_0000 the kernel will oops
->> telling it was C000_0000 access error. Now that confused me a lot! With this
->> change now kernel oops on 4000_0000 :)
-> 
-> Yes, 4000_0000, which is wrong too.  And it _hides_ wrong usage of
-> vaddr/paddr.  Bad side effect :)
-> 
->> Anyway, you may ignore __pa/__va macros.
->> 
->> Could you please look into other changes I proposed?
-> 
-> __pa() returns "unsigned long" and __va() returns "void *" so some
-> casts are also redundant.
+Oh, inserting flush_icache_page caused the kernel to panic. I also see
+that __flush_icache_page is not used anywhere. Any future use?
 
-After removing some of the redundant casts, re-submitting the patch.
-Attached the patch in a text file.
- 
-In the meantime, I couldn't find the changes suggested for SPARSEMEM support
-in the main source tree. Especially the ones reviewed during month of August
-([PATCH] do not count pages in holes with sparsemem ...). Could you please
-resend the consolidated patch to the list? Thanks.
+Thx.
 
-BTW, I have couple of more changes in mind.
-.1a Currently only one PCI DMA window is supported. We need to extend that,
-if the PCI controller has multiple windows. Example implementation is in
-arch/powerpc.
-.1b During HIGHMEM support the PCI windows are not honored correctly. A
-kmap() based mapping could be provided during PCI sync. Example
-implementation, again arch/powerpc. Has anybody looked into this?
-.2 Has anybody tested /dev/mem and/or /dev/kmem devices on MIPS platform?
-
-
---B_3242185576_6409718
-Content-type: application/octet-stream; name="patch-basicfix-20060927"
-Content-disposition: attachment;
-	filename="patch-basicfix-20060927"
-Content-transfer-encoding: base64
-
-ZGlmZiAtdXByTiAtWCBsaW51eC12YW5pbGxhL0RvY3VtZW50YXRpb24vZG9udGRpZmYgbGlu
-dXgtdmFuaWxsYS9hcmNoL21pcHMvbW0vZG1hLW5vbmNvaGVyZW50LmMgbGludXgvYXJjaC9t
-aXBzL21tL2RtYS1ub25jb2hlcmVudC5jCi0tLSBsaW51eC12YW5pbGxhL2FyY2gvbWlwcy9t
-bS9kbWEtbm9uY29oZXJlbnQuYwkyMDA2LTA5LTI0IDEyOjIyOjQ2LjAwMDAwMDAwMCArMDkw
-MAorKysgbGludXgvYXJjaC9taXBzL21tL2RtYS1ub25jb2hlcmVudC5jCTIwMDYtMDktMjUg
-MjI6Mzg6MzguMDAwMDAwMDAwICswOTAwCkBAIC0zMzQsNyArMzM0LDcgQEAgRVhQT1JUX1NZ
-TUJPTChwY2lfZGFjX3BhZ2VfdG9fZG1hKTsKIHN0cnVjdCBwYWdlICpwY2lfZGFjX2RtYV90
-b19wYWdlKHN0cnVjdCBwY2lfZGV2ICpwZGV2LAogCWRtYTY0X2FkZHJfdCBkbWFfYWRkcikK
-IHsKLQlyZXR1cm4gbWVtX21hcCArIChkbWFfYWRkciA+PiBQQUdFX1NISUZUKTsKKwlyZXR1
-cm4gcGZuX3RvX3BhZ2UgKGRtYV9hZGRyID4+IFBBR0VfU0hJRlQpOwogfQogCiBFWFBPUlRf
-U1lNQk9MKHBjaV9kYWNfZG1hX3RvX3BhZ2UpOwpkaWZmIC11cHJOIC1YIGxpbnV4LXZhbmls
-bGEvRG9jdW1lbnRhdGlvbi9kb250ZGlmZiBsaW51eC12YW5pbGxhL2FyY2gvbWlwcy9tbS9p
-bml0LmMgbGludXgvYXJjaC9taXBzL21tL2luaXQuYwotLS0gbGludXgtdmFuaWxsYS9hcmNo
-L21pcHMvbW0vaW5pdC5jCTIwMDYtMDktMjQgMTI6MjI6NDYuMDAwMDAwMDAwICswOTAwCisr
-KyBsaW51eC9hcmNoL21pcHMvbW0vaW5pdC5jCTIwMDYtMDktMjUgMjI6NTg6MTUuMDAwMDAw
-MDAwICswOTAwCkBAIC0xNTUsMjQgKzE1NSwyMiBAQCB2b2lkIF9faW5pdCBwYWdpbmdfaW5p
-dCh2b2lkKQogCWxvdyA9IG1heF9sb3dfcGZuOwogCWhpZ2ggPSBoaWdoZW5kX3BmbjsKIAot
-I2lmZGVmIENPTkZJR19JU0EKLQlpZiAobG93IDwgbWF4X2RtYSkKKwlpZiAobG93IDwgbWF4
-X2RtYSkgewogCQl6b25lc19zaXplW1pPTkVfRE1BXSA9IGxvdzsKLQllbHNlIHsKKwl9IGVs
-c2UgewogCQl6b25lc19zaXplW1pPTkVfRE1BXSA9IG1heF9kbWE7CiAJCXpvbmVzX3NpemVb
-Wk9ORV9OT1JNQUxdID0gbG93IC0gbWF4X2RtYTsKIAl9Ci0jZWxzZQotCXpvbmVzX3NpemVb
-Wk9ORV9ETUFdID0gbG93OwotI2VuZGlmCisKICNpZmRlZiBDT05GSUdfSElHSE1FTQogCWlm
-IChjcHVfaGFzX2RjX2FsaWFzZXMpIHsKIAkJcHJpbnRrKEtFUk5fV0FSTklORyAiVGhpcyBw
-cm9jZXNzb3IgZG9lc24ndCBzdXBwb3J0IGhpZ2htZW0uIik7CiAJCWlmIChoaWdoIC0gbG93
-KQogCQkJcHJpbnRrKCIgJWxkayBoaWdobWVtIGlnbm9yZWQiLCBoaWdoIC0gbG93KTsKIAkJ
-cHJpbnRrKCJcbiIpOwotCX0gZWxzZQotCQl6b25lc19zaXplW1pPTkVfSElHSE1FTV0gPSBo
-aWdoIC0gbG93OworCX0gZWxzZSB7CisJCXpvbmVzX3NpemVbWk9ORV9ISUdITUVNXSA9IGhp
-Z2ggLSBoaWdoc3RhcnRfcGZuOworCX0KICNlbmRpZgogCiAJZnJlZV9hcmVhX2luaXQoem9u
-ZXNfc2l6ZSk7CkBAIC0yMzMsNyArMjMxLDcgQEAgdm9pZCBfX2luaXQgbWVtX2luaXQodm9p
-ZCkKIAogI2lmZGVmIENPTkZJR19ISUdITUVNCiAJZm9yICh0bXAgPSBoaWdoc3RhcnRfcGZu
-OyB0bXAgPCBoaWdoZW5kX3BmbjsgdG1wKyspIHsKLQkJc3RydWN0IHBhZ2UgKnBhZ2UgPSBt
-ZW1fbWFwICsgdG1wOworCQlzdHJ1Y3QgcGFnZSAqcGFnZSA9IHBmbl90b19wYWdlKHRtcCk7
-CiAKIAkJaWYgKCFwYWdlX2lzX3JhbSh0bXApKSB7CiAJCQlTZXRQYWdlUmVzZXJ2ZWQocGFn
-ZSk7CmRpZmYgLXVwck4gLVggbGludXgtdmFuaWxsYS9Eb2N1bWVudGF0aW9uL2RvbnRkaWZm
-IGxpbnV4LXZhbmlsbGEvaW5jbHVkZS9hc20tbWlwcy9kbWEuaCBsaW51eC9pbmNsdWRlL2Fz
-bS1taXBzL2RtYS5oCi0tLSBsaW51eC12YW5pbGxhL2luY2x1ZGUvYXNtLW1pcHMvZG1hLmgJ
-MjAwNi0wOS0yNCAxMjoyMzozNC4wMDAwMDAwMDAgKzA5MDAKKysrIGxpbnV4L2luY2x1ZGUv
-YXNtLW1pcHMvZG1hLmgJMjAwNi0wOS0yNSAyMjo0NToyOC4wMDAwMDAwMDAgKzA5MDAKQEAg
-LTg3LDggKzg3LDEzIEBACiAvKiBIb3JyaWJsZSBoYWNrIHRvIGhhdmUgYSBjb3JyZWN0IERN
-QSB3aW5kb3cgb24gSVAyMiAqLwogI2luY2x1ZGUgPGFzbS9zZ2kvbWMuaD4KICNkZWZpbmUg
-TUFYX0RNQV9BRERSRVNTCQkoUEFHRV9PRkZTRVQgKyBTR0lNQ19TRUcwX0JBRERSICsgMHgw
-MTAwMDAwMCkKLSNlbHNlCisjZWxpZiBkZWZpbmVkKENPTkZJR19JU0EpCiAjZGVmaW5lIE1B
-WF9ETUFfQUREUkVTUwkJKFBBR0VfT0ZGU0VUICsgMHgwMTAwMDAwMCkKKyNlbHNlCisjaWZu
-ZGVmIFBMQVRfTUFYX0RNQV9TSVpFCisjZGVmaW5lIFBMQVRfTUFYX0RNQV9TSVpFCTB4MTAw
-MDAwMDAJLyogMjU2TUI6IHRydWUgZm9yIG1vc3Qgb2YgdGhlIE1JUFMzMiBzeXN0ZW1zICov
-CisjZW5kaWYKKyNkZWZpbmUgTUFYX0RNQV9BRERSRVNTCQkoUEFHRV9PRkZTRVQgKyBQTEFU
-X01BWF9ETUFfU0laRSkKICNlbmRpZgogCiAvKiA4MjM3IERNQSBjb250cm9sbGVycyAqLwpk
-aWZmIC11cHJOIC1YIGxpbnV4LXZhbmlsbGEvRG9jdW1lbnRhdGlvbi9kb250ZGlmZiBsaW51
-eC12YW5pbGxhL2luY2x1ZGUvYXNtLW1pcHMvaW8uaCBsaW51eC9pbmNsdWRlL2FzbS1taXBz
-L2lvLmgKLS0tIGxpbnV4LXZhbmlsbGEvaW5jbHVkZS9hc20tbWlwcy9pby5oCTIwMDYtMDkt
-MjQgMTI6MjM6MzQuMDAwMDAwMDAwICswOTAwCisrKyBsaW51eC9pbmNsdWRlL2FzbS1taXBz
-L2lvLmgJMjAwNi0wOS0yNyAwNjo0NToxNS4wMDAwMDAwMDAgKzA5MDAKQEAgLTExNiw3ICsx
-MTYsNyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgc2V0X2lvX3BvcnRfYmFzZSh1bnNpCiAgKi8K
-IHN0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZyB2aXJ0X3RvX3BoeXModm9sYXRpbGUgdm9p
-ZCAqIGFkZHJlc3MpCiB7Ci0JcmV0dXJuICh1bnNpZ25lZCBsb25nKWFkZHJlc3MgLSBQQUdF
-X09GRlNFVDsKKwlyZXR1cm4gX19wYShhZGRyZXNzKTsKIH0KIAogLyoKQEAgLTEzMyw3ICsx
-MzMsNyBAQCBzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGxvbmcgdmlydF90b19waHlzCiAgKi8K
-IHN0YXRpYyBpbmxpbmUgdm9pZCAqIHBoeXNfdG9fdmlydCh1bnNpZ25lZCBsb25nIGFkZHJl
-c3MpCiB7Ci0JcmV0dXJuICh2b2lkICopKGFkZHJlc3MgKyBQQUdFX09GRlNFVCk7CisJcmV0
-dXJuIF9fdmEoYWRkcmVzcyk7CiB9CiAKIC8qCkBAIC0xNDEsMTIgKzE0MSwxMiBAQCBzdGF0
-aWMgaW5saW5lIHZvaWQgKiBwaHlzX3RvX3ZpcnQodW5zaWduCiAgKi8KIHN0YXRpYyBpbmxp
-bmUgdW5zaWduZWQgbG9uZyBpc2FfdmlydF90b19idXModm9sYXRpbGUgdm9pZCAqIGFkZHJl
-c3MpCiB7Ci0JcmV0dXJuICh1bnNpZ25lZCBsb25nKWFkZHJlc3MgLSBQQUdFX09GRlNFVDsK
-KwlyZXR1cm4gX19wYShhZGRyZXNzKTsKIH0KIAogc3RhdGljIGlubGluZSB2b2lkICogaXNh
-X2J1c190b192aXJ0KHVuc2lnbmVkIGxvbmcgYWRkcmVzcykKIHsKLQlyZXR1cm4gKHZvaWQg
-KikoYWRkcmVzcyArIFBBR0VfT0ZGU0VUKTsKKwlyZXR1cm4gX192YShhZGRyZXNzKTsKIH0K
-IAogI2RlZmluZSBpc2FfcGFnZV90b19idXMgcGFnZV90b19waHlzCmRpZmYgLXVwck4gLVgg
-bGludXgtdmFuaWxsYS9Eb2N1bWVudGF0aW9uL2RvbnRkaWZmIGxpbnV4LXZhbmlsbGEvaW5j
-bHVkZS9hc20tbWlwcy9wYWdlLmggbGludXgvaW5jbHVkZS9hc20tbWlwcy9wYWdlLmgKLS0t
-IGxpbnV4LXZhbmlsbGEvaW5jbHVkZS9hc20tbWlwcy9wYWdlLmgJMjAwNi0wOS0yNCAxMjoy
-MzozNC4wMDAwMDAwMDAgKzA5MDAKKysrIGxpbnV4L2luY2x1ZGUvYXNtLW1pcHMvcGFnZS5o
-CTIwMDYtMDktMjcgMDY6NDY6MjQuMDAwMDAwMDAwICswOTAwCkBAIC0xMzQsOCArMTM0LDE3
-IEBAIHR5cGVkZWYgc3RydWN0IHsgdW5zaWduZWQgbG9uZyBwZ3Byb3Q7IH0KIC8qIHRvIGFs
-aWduIHRoZSBwb2ludGVyIHRvIHRoZSAobmV4dCkgcGFnZSBib3VuZGFyeSAqLwogI2RlZmlu
-ZSBQQUdFX0FMSUdOKGFkZHIpCSgoKGFkZHIpICsgUEFHRV9TSVpFIC0gMSkgJiBQQUdFX01B
-U0spCiAKLSNkZWZpbmUgX19wYSh4KQkJCSgodW5zaWduZWQgbG9uZykgKHgpIC0gUEFHRV9P
-RkZTRVQpCi0jZGVmaW5lIF9fdmEoeCkJCQkoKHZvaWQgKikoKHVuc2lnbmVkIGxvbmcpICh4
-KSArIFBBR0VfT0ZGU0VUKSkKKyNpZmRlZiBDT05GSUdfMzJCSVQKKyNkZWZpbmUgSVNNQVBQ
-RUQoeCkJKEtTRUdYKCh4KSkgPj0gSElHSE1FTV9TVEFSVCAmJiBLU0VHWCgoeCkpIDwgS1NF
-RzApCisjZWxzZQorI2RlZmluZSBJU01BUFBFRCh4KQkoMCkKKyNlbmRpZgorCisjZGVmaW5l
-IF9fX3BhKHgpCSgodW5zaWduZWQgbG9uZykgKHgpIC0gUEFHRV9PRkZTRVQpCisjZGVmaW5l
-IF9fcGEoeCkJCShJU01BUFBFRCh4KSA/ICh1bnNpZ25lZCBsb25nKSh4KSA6IF9fX3BhKHgp
-KQorCisjZGVmaW5lIF9fX3ZhKHgpCSgodm9pZCAqKSgodW5zaWduZWQgbG9uZykgKHgpICsg
-UEFHRV9PRkZTRVQpKQorI2RlZmluZSBfX3ZhKHgpCQkoSVNNQVBQRUQoeCkgPyAodm9pZCop
-KHgpIDogX19fdmEoeCkpCiAKICNkZWZpbmUgcGZuX3RvX2thZGRyKHBmbikJX192YSgocGZu
-KSA8PCBQQUdFX1NISUZUKQogCg==
-
---B_3242185576_6409718--
+>-----Original Message-----
+>From: Atsushi Nemoto [mailto:anemo@mba.ocn.ne.jp] 
+>Sent: Tuesday, September 26, 2006 2:40 AM
+>To: Manoj Ekbote
+>Cc: Mark E Mason; linux-mips@linux-mips.org; 
+>ralf@linux-mips.org; ths@networkno.de
+>Subject: Re: [MIPS] SB1: Build fix: delete initialization of 
+>flush_icache_page pointer.
+>
+>On Mon, 25 Sep 2006 20:05:59 -0700, "Manoj Ekbote" 
+><manoje@broadcom.com> wrote:
+>> The latest tip still has problems with booting on Broadcom boards.
+>> I turned on a couple of printk's in the page fault handler and I see 
+>> the following messages:
+>...
+>> It looks like a cache corruption issue.  Did the removal of 
+>> flush_icache_page cause this?
+>
+>Yes perhaps.  But flush_icache_page() itself is obsolete API 
+>and should be gone (see Documentation/cachetlb.txt).  So there 
+>should be fault in somewhere else.
+>
+>I think 
+>
+>http://www.linux-mips.org/archives/linux-mips/2006-08/msg00184.html
+>
+>is still needed, but it seems not enough.
+>
+>If reverting flush_icache_page() worked, then you can debug more.
+>
+>1. kill part of local_sb1_flush_icache_page().
+>
+>If killing __sb1_writeback_inv_dcache_phys_range() part was 
+>OK, then it would be dcache issue, if killing 
+>drop_mmu_context() part was OK, then it would be icache issue.
+>
+>2. kill calls of flush_icache_page().
+>
+>If is used in only 3 places.
+>
+>mm/fremap.c:    flush_icache_page(vma, page);
+>mm/memory.c:    flush_icache_page(vma, page);
+>mm/memory.c:            flush_icache_page(vma, new_page);
+>
+>Finding which lines are required might help further investigation.
+>
+>
+>Another possible approach might be trying c-r4k.c instead of c-sb1.c.
+>
+>If you wanted to debug with latest git tree, note that 
+>include/asm-mips/hazard.h in current lmo git tree seems 
+>broken.  The fix was already posted to this ML so hopefully we 
+>can see in git tree soon...
+>
+>---
+>Atsushi Nemoto
+>
+>

@@ -1,80 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 00:29:44 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:58246 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039154AbWI1X3m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Sep 2006 00:29:42 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8SNUCF4008902;
-	Fri, 29 Sep 2006 00:30:12 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8SNTuHx008874;
-	Fri, 29 Sep 2006 00:29:56 +0100
-Date:	Fri, 29 Sep 2006 00:29:56 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	girish <girishvg@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: PATCH] cleanup hardcoding __pa/__va macros etc. (take-4)
-Message-ID: <20060928232956.GE3394@linux-mips.org>
-References: <20060928.003542.21929658.anemo@mba.ocn.ne.jp> <C140DCAC.7A1C%girishvg@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 00:45:16 +0100 (BST)
+Received: from farad.aurel32.net ([82.232.2.251]:22983 "EHLO farad.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20039159AbWI1XpO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Sep 2006 00:45:14 +0100
+Received: from bode.aurel32.net ([2001:618:400:fc13:211:9ff:feed:c498])
+	by farad.aurel32.net with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA:32)
+	(Exim 4.50)
+	id 1GT5Yy-0004YZ-Dn; Fri, 29 Sep 2006 01:45:08 +0200
+Received: from aurel32 by bode.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1GT5Yy-0002H3-FV; Fri, 29 Sep 2006 01:45:08 +0200
+Date:	Fri, 29 Sep 2006 01:45:08 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	qemu-devel@nongnu.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: add support for cvt.s.d and cvt.d.s
+Message-ID: <20060928234505.GA8305@bode.aurel32.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <C140DCAC.7A1C%girishvg@gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12723
+X-archive-position: 12724
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 28, 2006 at 01:58:02AM +0900, girish wrote:
-> Date:	Thu, 28 Sep 2006 01:58:02 +0900
-> Subject: PATCH] cleanup hardcoding __pa/__va macros etc. (take-4)
-> From:	girish <girishvg@gmail.com>
-> To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-> 	girish <girishvg@gmail.com>
-> Content-type: multipart/mixed;
-> 	boundary="B_3242253489_7379959"
-> 
-> 
-> > Using just plain text and adding Signed-off-by line would be preferred.
-> > Also your patch seems against neither latest lmo nor kernel.org tree...
-> 
-> The kernel sources I was referring to were 2.6.17-rc6.
-> 
-> 
-> >> In the meantime, I couldn't find the changes suggested for SPARSEMEM support
-> >> in the main source tree. Especially the ones reviewed during month of August
-> >> ([PATCH] do not count pages in holes with sparsemem ...). Could you please
-> >> resend the consolidated patch to the list? Thanks.
-> > 
-> > August?  I sent the patch with that title in July and applied already.
-> > 
-> > http://www.linux-mips.org/git?p=linux.git;a=commit;h=239367b4
-> 
-> Again, I was referring to older sources, that is 2.6.17-rc6. I have just
-> upgraded reference sources to 2.6.18 as mentioned above & now I see the
-> changes. Thanks. In fact I am experimenting on highmem/sparsemem with
-> 2.6.16.16 kernel sources.
-> 
-> 
-> Please find attached patch created from 2.6.18 (kernel.org) tree. Let me
-> know if this is alright.
-> 
-> Signed-off-by: Girish V. Gulawani <girishvg@gmail.com>
+Hi,
 
--#ifdef CONFIG_ISA
--	if (low < max_dma)
-+	if (low < max_dma) }
+The patch below implements the cvt.s.d and cvt.d.s instructions for the
+mips target. They are need to be able to execute the cp and the find
+programs.
 
-This doesn't quite compile.
+Bye,
+Aurelien
 
-  Ralf
+
+Index: target-mips/op.c
+===================================================================
+RCS file: /sources/qemu/qemu/target-mips/op.c,v
+retrieving revision 1.9
+diff -u -r1.9 op.c
+--- target-mips/op.c	26 Jun 2006 20:29:47 -0000	1.9
++++ target-mips/op.c	28 Sep 2006 23:42:30 -0000
+@@ -785,12 +785,24 @@
+ 
+ #define FLOAT_OP(name, p) void OPPROTO op_float_##name##_##p(void)
+ 
++FLOAT_OP(cvtd, s)
++{
++    FDT2 = float32_to_float64(WT0, &env->fp_status);
++    DEBUG_FPU_STATE();
++    RETURN();
++}
+ FLOAT_OP(cvtd, w)
+ {
+     FDT2 = int32_to_float64(WT0, &env->fp_status);
+     DEBUG_FPU_STATE();
+     RETURN();
+ }
++FLOAT_OP(cvts, d)
++{
++    FST2 = float64_to_float32(WT0, &env->fp_status);
++    DEBUG_FPU_STATE();
++    RETURN();
++}
+ FLOAT_OP(cvts, w)
+ {
+     FST2 = int32_to_float32(WT0, &env->fp_status);
+Index: target-mips/translate.c
+===================================================================
+RCS file: /sources/qemu/qemu/target-mips/translate.c,v
+retrieving revision 1.15
+diff -u -r1.15 translate.c
+--- target-mips/translate.c	26 Jun 2006 20:02:45 -0000	1.15
++++ target-mips/translate.c	28 Sep 2006 23:42:30 -0000
+@@ -1675,6 +1675,13 @@
+         GEN_STORE_FTN_FREG(fd, WT2);
+         opn = "ceil.w.d";
+         break;
++    case FOP(33, 16): /* cvt.d.s */
++        CHECK_FR(ctx, fs | fd);
++        GEN_LOAD_FREG_FTN(WT0, fs);
++        gen_op_float_cvtd_s();
++        GEN_STORE_FTN_FREG(fd, DT2);
++        opn = "cvt.d.s";
++        break;
+     case FOP(33, 20): /* cvt.d.w */
+         CHECK_FR(ctx, fs | fd);
+         GEN_LOAD_FREG_FTN(WT0, fs);
+@@ -1782,6 +1789,13 @@
+         GEN_STORE_FTN_FREG(fd, WT2);
+         opn = "trunc.w.s";
+         break;
++    case FOP(32, 17): /* cvt.s.d */
++        CHECK_FR(ctx, fs | fd);
++        GEN_LOAD_FREG_FTN(WT0, fs);
++        gen_op_float_cvts_d();
++        GEN_STORE_FTN_FREG(fd, WT2);
++        opn = "cvt.s.d";
++        break;
+     case FOP(32, 20): /* cvt.s.w */
+         CHECK_FR(ctx, fs | fd);
+         GEN_LOAD_FREG_FTN(WT0, fs);
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

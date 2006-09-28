@@ -1,94 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Sep 2006 09:44:28 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.185]:57281 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038560AbWI1Io1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 Sep 2006 09:44:27 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so687361nfc
-        for <linux-mips@linux-mips.org>; Thu, 28 Sep 2006 01:44:26 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=cDPhIQg8p8jbtr00J8EhhnwNXOdlGzzmBpbd697z96ojr11Sm1HUxBQIG0pdcOdlg4RIyklwahLdw1ZqMSMwwJlgmPPpUBG2T37HkwcFjkLez29CO6E8mmzeJHTXa6TcfmP9tfPM1edfZhe56WxRiJ1bJ9sLoi3x7GLM+r1hV8U=
-Received: by 10.49.92.18 with SMTP id u18mr3471170nfl;
-        Thu, 28 Sep 2006 01:44:26 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.gmail.com with ESMTP id l38sm5181363nfc.2006.09.28.01.44.24;
-        Thu, 28 Sep 2006 01:44:25 -0700 (PDT)
-Message-ID: <451B8B9C.4000803@innova-card.com>
-Date:	Thu, 28 Sep 2006 10:45:16 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Jonathan Day <imipak@yahoo.com>
-CC:	Peter Popov <ppopov@embeddedalley.com>,
-	Franck <vagabon.xyz@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: How to work with Linux-Mips ?
-References: <20060927031800.87246.qmail@web31506.mail.mud.yahoo.com>
-In-Reply-To: <20060927031800.87246.qmail@web31506.mail.mud.yahoo.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Sep 2006 10:43:31 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:3508 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038566AbWI1Jn3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 28 Sep 2006 10:43:29 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8S9iKjs002417;
+	Thu, 28 Sep 2006 10:44:21 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8S9iJvR002416;
+	Thu, 28 Sep 2006 10:44:19 +0100
+Date:	Thu, 28 Sep 2006 10:44:19 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Manoj Ekbote <manoje@broadcom.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+	Mark E Mason <mark.e.mason@broadcom.com>
+Subject: Re: [MIPS] SB1: Build fix: delete initialization of flush_icache_page pointer.
+Message-ID: <20060928094419.GA747@linux-mips.org>
+References: <20060927.235804.95064004.anemo@mba.ocn.ne.jp> <710F16C36810444CA2F5821E5EAB7F230A0E91@NT-SJCA-0752.brcm.ad.broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <710F16C36810444CA2F5821E5EAB7F230A0E91@NT-SJCA-0752.brcm.ad.broadcom.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12707
+X-archive-position: 12708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+On Wed, Sep 27, 2006 at 07:17:16PM -0700, Manoj Ekbote wrote:
 
-Jonathan Day wrote:
-> Whilst I agree entirely, I think we need to put a
-> little more perspective on this. The Linux kernel is
-> big. Very, very big. By my estimate, it would take an
-> army of 10,000+ full-time software engineers skilled
-> in "Extreme Programming" and formal methods to be able
-> to verify something of the complexity and intricacy of
-> the Linux kernel within a single year, excluding any
-> changes made during that time, which will likely
-> replace so much of the code that the verification
-> won't tell you much anyway.
-> 
-> If every company and every University involved in
-> Linux - not just every consortium - were to
-> contribute, you might be able to amass that kind of
-> manpower. One full-time coder for the entire of the
-> MIPS side of the tree is valuable and it's doubtful
-> any branch could now survive long without at least
-> that, one person is simply not capable of replacing
-> ten thousand, no matter how brilliant they are.
-> 
+> I am wondering if people have booted the latest tree on non-Broadcom
+> boards...curious to know if the removal of flush_icache_page has
+> affected them.
 
-Well, I'm not sure about that. Now knowing that Ralf is not
-maintaining/developing on linux-mips tree full time is a good
-information to keep in mind. I think he's able to take care of any
-MIPS specific code if he had time. The current number of patches sent
-to linux-mips is not so big. Look at how Andrew Morton is maintaining
-the mm branch. This branch is far more active and patches included in
-this tree are far more complex than those sent to this mailing list.
+I applied that patch only after some positive test feedback ...
 
-> This isn't to say MIPS Tech should necessarily throw
-> in more manpower, although I certainly wouldn't argue
-> with that. It's that there's simply no realistic way
-> to get enough manpower together to do code reviews in
-> the kind of timeframes that people are asking for.
-> 
-
-Well IMHO MIPS Tech may be under-estimating its Linux kernel port. I
-think it's a real advantage to sell some hardwares and to give some
-softwares that is already running on that hardware, specially if this
-software is a full operating system like Linux. But if MIPS' customers
-don't know on how fast this software will involve, will be fixed, it's
-a bit scaring to rely on that software.
-
-It would be interesting to know how well Linux is supported on the
-different arches keeping in mind the market that they are targeting
-(embedded, huge server...).
-
-		Franck
+  Ralf

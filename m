@@ -1,56 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Sep 2006 15:35:13 +0100 (BST)
-Received: from newmail.sw.starentnetworks.com ([12.33.234.78]:30216 "EHLO
-	mail.sw.starentnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20038455AbWI1OfI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 Sep 2006 15:35:08 +0100
-Received: from zeus.sw.starentnetworks.com (zeus.sw.starentnetworks.com [12.33.233.46])
-	by mail.sw.starentnetworks.com (Postfix) with ESMTP id 54A223E24C;
-	Thu, 28 Sep 2006 10:34:59 -0400 (EDT)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Sep 2006 15:53:05 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:10724 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039073AbWI1OxB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 28 Sep 2006 15:53:01 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8SErsoL002265;
+	Thu, 28 Sep 2006 15:53:54 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8SErqRR002264;
+	Thu, 28 Sep 2006 15:53:52 +0100
+Date:	Thu, 28 Sep 2006 15:53:52 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Azer, William" <Bill.Azer@drs-ss.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: oprofile configure?
+Message-ID: <20060928145352.GC3394@linux-mips.org>
+References: <DEB94D90ABFC8240851346CFD4ACFF149E1C7F@gamd-ex-001.ss.drs.master>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <17691.56721.616378.698325@zeus.sw.starentnetworks.com>
-Date:	Thu, 28 Sep 2006 10:34:57 -0400
-From:	Dave Johnson <djohnson+linux-mips@sw.starentnetworks.com>, 
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Subject: Re: wrong SP restored after DBE exception
-In-Reply-To: <20060928142840.GB3394@linux-mips.org>
-References: <17690.54995.407882.581783@zeus.sw.starentnetworks.com>
-	<20060928130925.GA3394@linux-mips.org>
-	<Pine.LNX.4.64N.0609281448310.3949@blysk.ds.pg.gda.pl>
-	<20060928142840.GB3394@linux-mips.org>
-X-Mailer: VM 7.17 under 21.4 (patch 17) "Jumbo Shrimp" XEmacs Lucid
-Return-Path: <djohnson@sw.starentnetworks.com>
+Content-Disposition: inline
+In-Reply-To: <DEB94D90ABFC8240851346CFD4ACFF149E1C7F@gamd-ex-001.ss.drs.master>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12717
+X-archive-position: 12718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: djohnson+linux-mips@sw.starentnetworks.com,
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle writes:
-> I would suggest to disable interrupts around accesses that potencially
-> could result in DB exceptions and just to make sure he is not getting
-> trapped by a non-blocking load by making some use of any value read
-> from the device.  Writes could be posted depending on bus type.  So
-> having a read from the same device would force the write to complete.
-> 
->   Ralf
+On Tue, Sep 26, 2006 at 10:34:12AM -0400, Azer, William wrote:
 
-Ya, I was about to try that.  I could be getting an interrupt
-between the time the read is issued and the timeout occurs on the
-GBus.  Also, doing a dummy read on the GBus to a device that
-shouldn't fault prior to (for reads) or after (for writes) the
-potentially faulting one to force ordering seems like a good idea
-too.
+> i have natively built oprofile for sb1 platform and i get a lot of warnings from the compiler.  i had to use --disable-werror in order to build.  has anyone encountered this?  am i doing something wrong?
 
+For a long time there has been no release of oprofile so only versions from
+CVS did work on MIPS:  However there has been a release of 0.9.2 on
+September 15 which so I hope is the first release of oprofile that will
+work out of the box for MIPS.
 
--- 
-Dave Johnson
-Starent Networks
+I believe -Werror is a remarkably bad idea for any software release no
+matter how beneficial it may be during development ...
+
+  Ralf

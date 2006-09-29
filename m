@@ -1,71 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 10:08:11 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.177]:39778 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038434AbWI2JIK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Sep 2006 10:08:10 +0100
-Received: by py-out-1112.google.com with SMTP id i49so949440pyi
-        for <linux-mips@linux-mips.org>; Fri, 29 Sep 2006 02:08:08 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=fIZjs0e55e89rzrvV9HdZfbiypR2dO6YN/M7rdu/FsoYT/s/ZVwvq+lyMmSaF1Inw8EUV98HDyQFPpwvOLBddV7l5RpkpATdakuZbz9xX4BcwL0DA1Ap5rWKMD4qM3zeyr/Xe0tWGdVIkcxzjPqiDnHB5l7OABDFpqSW/EpCAe8=
-Received: by 10.65.112.5 with SMTP id p5mr3314490qbm;
-        Fri, 29 Sep 2006 02:08:08 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.gmail.com with ESMTP id e16sm3193464qbe.2006.09.29.02.08.07;
-        Fri, 29 Sep 2006 02:08:08 -0700 (PDT)
-Message-ID: <451CE2AB.70907@innova-card.com>
-Date:	Fri, 29 Sep 2006 11:08:59 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 10:18:00 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:19720 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038425AbWI2JR6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Sep 2006 10:17:58 +0100
+Received: by mo.po.2iij.net (mo32) id k8T9HsDh084619; Fri, 29 Sep 2006 18:17:54 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox31) id k8T9HpZm073011
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 29 Sep 2006 18:17:51 +0900 (JST)
+Message-Id: <200609290917.k8T9HpZm073011@mbox31.po.2iij.net>
+Date:	Fri, 29 Sep 2006 18:17:51 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: [PATCH] Let gcc align 'struct pt_regs' on 8 bytes boundary
-Content-Type: text/plain; charset=ISO-8859-1
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] update i8259 resources
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12729
+X-archive-position: 12730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+Hi Ralf,
 
-The stack pointer in MIPS/gcc should always 8 bytes aligned on
-entry to any routines. Therefore pt_regs structure must be
-aligned to 8-byte boundary too.
+This patch has updated i8259 resources as same as i386.
+Please apply.
 
-Instead of creating dummy fields to achieve this alignment, this
-patch let gcc doing it. Therefore 'smtc_pad' field can be safely
-removed.
+Yoichi
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- include/asm-mips/ptrace.h |    3 +--
- 1 files changed, 1 insertions(+), 2 deletions(-)
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
-index 4fb0fc4..5f3a907 100644
---- a/include/asm-mips/ptrace.h
-+++ b/include/asm-mips/ptrace.h
-@@ -44,9 +44,8 @@ #endif
- 	unsigned long cp0_epc;
- #ifdef CONFIG_MIPS_MT_SMTC
- 	unsigned long cp0_tcstatus;
--	unsigned long smtc_pad;
- #endif /* CONFIG_MIPS_MT_SMTC */
--};
-+} __attribute__ ((aligned (8)));
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/kernel/i8259.c mips/arch/mips/kernel/i8259.c
+--- mips-orig/arch/mips/kernel/i8259.c	2006-08-19 00:34:52.514459500 +0900
++++ mips/arch/mips/kernel/i8259.c	2006-08-19 00:52:04.506955000 +0900
+@@ -302,11 +302,11 @@ static struct irqaction irq2 = {
+ };
  
- /* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
- #define PTRACE_GETREGS		12
--- 
-1.4.2.1
+ static struct resource pic1_io_resource = {
+-	.name = "pic1", .start = 0x20, .end = 0x3f, .flags = IORESOURCE_BUSY
++	.name = "pic1", .start = 0x20, .end = 0x21, .flags = IORESOURCE_BUSY
+ };
+ 
+ static struct resource pic2_io_resource = {
+-	.name = "pic2", .start = 0xa0, .end = 0xbf, .flags = IORESOURCE_BUSY
++	.name = "pic2", .start = 0xa0, .end = 0xa1, .flags = IORESOURCE_BUSY
+ };
+ 
+ /*

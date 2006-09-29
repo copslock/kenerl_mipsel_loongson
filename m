@@ -1,45 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 20:21:15 +0100 (BST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:11483 "EHLO
-	bluesmobile.corp.specifix.com") by ftp.linux-mips.org with ESMTP
-	id S20039283AbWI2TVN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Sep 2006 20:21:13 +0100
-Received: from localhost.localdomain (bluesmobile.specifix.com [64.220.152.99])
-	by bluesmobile.corp.specifix.com (Postfix) with ESMTP id 73E783B923;
-	Fri, 29 Sep 2006 12:15:34 -0700 (PDT)
-Subject: Re: HELP: opcode not supported on this processor
-From:	Jim Wilson <wilson@specifix.com>
-To:	David Lee <receive4me@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 22:29:25 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:65213 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039318AbWI2V3X (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 29 Sep 2006 22:29:23 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k8TLTXMc010309;
+	Fri, 29 Sep 2006 22:29:34 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k8TLT78h010226;
+	Fri, 29 Sep 2006 22:29:07 +0100
+Date:	Fri, 29 Sep 2006 22:29:07 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	girish <girishvg@gmail.com>
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <5ee285ba0609290632m6c5e3f35nbae45307a3398b86@mail.gmail.com>
-References: <5ee285ba0609290235v7b518495u2dccb1ef82b117d0@mail.gmail.com>
-	 <20060929110849.GD3868@networkno.de>
-	 <5ee285ba0609290632m6c5e3f35nbae45307a3398b86@mail.gmail.com>
-Content-Type: text/plain
-Date:	Fri, 29 Sep 2006 12:17:24 -0700
-Message-Id: <1159557444.2897.3.camel@localhost.localdomain>
+Subject: Re: [PATCH] include children count, in Threads: field present in /proc/<pid>/status (take-1)
+Message-ID: <20060929212907.GA29743@linux-mips.org>
+References: <091C938C-EB20-40AB-A7F1-396FC7C75C47@gmail.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.6.3 (2.6.3-1.fc5.5) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wilson@specifix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <091C938C-EB20-40AB-A7F1-396FC7C75C47@gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12749
+X-archive-position: 12750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2006-09-29 at 21:32 +0800, David Lee wrote:
-> I could not figure it out in more than 2 hours. I don't even know what
-> compliantion options used for kernel. I need more instructions and
-> help.
+This is a patch to generic code; please submit it to
+linux-kernel@vger.kernel.org.
 
-To elaborate on what Thiemo said, take a look at
-    http://www.linux-mips.org/wiki/Modules
-In particular, see the fourth sentence of the first paragraph.  I think
-this solves your problem.
--- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+  Ralf

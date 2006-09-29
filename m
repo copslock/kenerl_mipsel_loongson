@@ -1,342 +1,160 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 10:27:26 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:37693 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038425AbWI2J1W (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Sep 2006 10:27:22 +0100
-Received: by mo.po.2iij.net (mo31) id k8T9R8t5034395; Fri, 29 Sep 2006 18:27:08 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox30) id k8T9R7tU071268
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 29 Sep 2006 18:27:07 +0900 (JST)
-Date:	Fri, 29 Sep 2006 18:27:07 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	thies.moeller@baslerweb.com
-Cc:	yoichi_yuasa@tripeaks.co.jp, Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] removed excite_flash.c
-Message-Id: <20060929182707.11cd70d8.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 10:32:19 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:27483 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20038463AbWI2JcR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 29 Sep 2006 10:32:17 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 29 Sep 2006 18:32:15 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 76A4041500;
+	Fri, 29 Sep 2006 18:32:13 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 632BE41331;
+	Fri, 29 Sep 2006 18:32:13 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k8T9WCW0080118;
+	Fri, 29 Sep 2006 18:32:13 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 29 Sep 2006 18:32:12 +0900 (JST)
+Message-Id: <20060929.183212.45177847.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, mingo@redhat.com
+Subject: Re: [PATCH 2/3] [MIPS] lockdep: add STACKTRACE_SUPPORT and enable
+ LOCKDEP_SUPPORT
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20060928104247.GA3857@linux-mips.org>
+References: <20060927.001631.78705973.anemo@mba.ocn.ne.jp>
+	<20060928.192637.27955275.nemoto@toshiba-tops.co.jp>
+	<20060928104247.GA3857@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12731
+X-archive-position: 12732
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Thu, 28 Sep 2006 11:42:47 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > > And I got this output when I booted kernel 2.6.18 using nfsroot:
+> > 
+> > With updated stacktrace (now it shows all kernel context), I got:
+> 
+> Thanks.  Now the lockdep output makes sense.  At a glance it also looks
+> like this case isn't a false positive ...
 
-This patch has removed excite_flashtest.c .
-It seems to be unused.
+And here is a updated lockdep output with "nfsroot=host:dir,tcp"
+option.  In previous output, I used NFS over TCP but not specified
+",tcp" on nfsroot.
 
-Do you have any problem about this patch?
+Also I found this happens only NFS over TCP on Debian 3.1 (sarge).  If
+I used NFS over UDP or Debian 4.0 (etch), lockdep does not show
+anything.  I can not tell why the version of Debian affect this...
 
-Yoichi
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+--- snip ---
+Mounting remote filesystems...
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/basler/excite/excite_flashtest.c mips/arch/mips/basler/excite/excite_flashtest.c
---- mips-orig/arch/mips/basler/excite/excite_flashtest.c	2006-07-26 10:34:31.772178500 +0900
-+++ mips/arch/mips/basler/excite/excite_flashtest.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,294 +0,0 @@
--/*
--*  Copyright (C) 2005 by Basler Vision Technologies AG
--*  Author: Thies Moeller <thies.moeller@baslerweb.com>
--*
--*  This program is free software; you can redistribute it and/or modify
--*  it under the terms of the GNU General Public License as published by
--*  the Free Software Foundation; either version 2 of the License, or
--*  (at your option) any later version.
--*
--*  This program is distributed in the hope that it will be useful,
--*  but WITHOUT ANY WARRANTY; without even the implied warranty of
--*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--*  GNU General Public License for more details.
--*
--*  You should have received a copy of the GNU General Public License
--*  along with this program; if not, write to the Free Software
--*  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--*/
--
--#include <linux/module.h>
--#include <linux/types.h>
--#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/string.h>
--#include <linux/ioport.h>
--#include <linux/device.h>
--#include <linux/delay.h>
--#include <linux/err.h>
--#include <linux/kernel.h>
--
--#include <excite.h>
--
--#include <asm/io.h>
--
--#include <linux/mtd/mtd.h>
--#include <linux/mtd/nand.h>
--#include <linux/mtd/nand_ecc.h>
--#include <linux/mtd/partitions.h>
--#include <asm/rm9k-ocd.h> // for ocd_write
--#include <linux/workqueue.h> // for queue
--
--#include "excite_nandflash.h"
--#include "nandflash.h"
--
--#define PFX "excite flashtest: "
--typedef void __iomem *io_reg_t;
--
--#define io_readb(__a__)		__raw_readb((__a__))
--#define io_writeb(__v__, __a__)	__raw_writeb((__v__), (__a__))
--
--
--
--static inline const struct resource *excite_nandflash_get_resource(
--	struct platform_device *d, unsigned long flags, const char *basename)
--{
--	const char fmt[] = "%s_%u";
--	char buf[80];
--
--	if (unlikely(snprintf(buf, sizeof buf, fmt, basename, d->id) >= sizeof buf))
--		return NULL;
--
--	return platform_get_resource_byname(d, flags, buf);
--}
--
--static inline io_reg_t
--excite_nandflash_map_regs(struct platform_device *d, const char *basename)
--{
--	void *result = NULL;
--	const struct resource *const r =
--	    excite_nandflash_get_resource(d, IORESOURCE_MEM, basename);
--	if (r)
--	   result = ioremap_nocache(r->start, r->end + 1 - r->start);
--	return result;
--}
--
--/* controller and mtd information */
--
--struct excite_nandflash_drvdata {
--	struct mtd_info board_mtd;
--	struct nand_chip board_chip;
--	io_reg_t regs;
--};
--
--
--/* command and control functions */
--static void excite_nandflash_hwcontrol(struct mtd_info *mtd, int cmd)
--{
--	struct nand_chip *this = mtd->priv;
--	io_reg_t regs = container_of(mtd,struct excite_nandflash_drvdata,board_mtd)->regs;
--
--	switch (cmd) {
--	/* Select the command latch */
--	case NAND_CTL_SETCLE: this->IO_ADDR_W = regs + EXCITE_NANDFLASH_CMD;
--		break;
--	/* Deselect the command latch */
--	case NAND_CTL_CLRCLE: this->IO_ADDR_W = regs + EXCITE_NANDFLASH_DATA;
--		break;
--	/* Select the address latch */
--	case NAND_CTL_SETALE: this->IO_ADDR_W = regs + EXCITE_NANDFLASH_ADDR;
--		break;
--	/* Deselect the address latch */
--	case NAND_CTL_CLRALE: this->IO_ADDR_W = regs  + EXCITE_NANDFLASH_DATA;
--		break;
--	/* Select the chip  -- not used */
--	case NAND_CTL_SETNCE:
--		break;
--	/* Deselect the chip -- not used */
--	case NAND_CTL_CLRNCE:
--		break;
--	}
--
--	this->IO_ADDR_R = this->IO_ADDR_W;
--}
--
--/* excite_nandflash_devready()
-- *
-- * returns 0 if the nand is busy, 1 if it is ready
-- */
--static int excite_nandflash_devready(struct mtd_info *mtd)
--{
--	struct excite_nandflash_drvdata *drvdata =
--	    container_of(mtd, struct excite_nandflash_drvdata, board_mtd);
--
--	return io_readb(drvdata->regs + EXCITE_NANDFLASH_STATUS);
--}
--
--/* device management functions */
--
--/* excite_nandflash_remove
-- *
-- * called by device layer to remove the driver
-- * the binding to the mtd and all allocated
-- * resources are released
-- */
--static int excite_nandflash_remove(struct device *dev)
--{
--	struct excite_nandflash_drvdata *this = dev_get_drvdata(dev);
--
--	pr_info(PFX "remove");
--
--	dev_set_drvdata(dev, NULL);
--
--	if (this == NULL) {
--		pr_debug(PFX "call remove without private data!!");
--		return 0;
--	}
--
--
--	/* free the common resources */
--	if (this->regs != NULL) {
--		iounmap(this->regs);
--		this->regs = NULL;
--	}
--
--	kfree(this);
--
--	return 0;
--}
--
--static int elapsed;
--
--void my_workqueue_handler(void *arg)
--{
--	elapsed = 1;
--}
--
--DECLARE_WORK(sigElapsed, my_workqueue_handler, 0);
--
--
--/* excite_nandflash_probe
-- *
-- * called by device layer when it finds a device matching
-- * one our driver can handled. This code checks to see if
-- * it can allocate all necessary resources then calls the
-- * nand layer to look for devices
--*/
--static int excite_nandflash_probe(struct device *dev)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	struct excite_nandflash_drvdata *drvdata;	    /* private driver data     */
--	struct nand_chip              *board_chip;  /* private flash chip data */
--	struct mtd_info               *board_mtd;   /* mtd info for this board */
--
--	int err      = 0;
--	int count    = 0;
--	struct timeval tv,endtv;
--	unsigned int dt;
--
--	pr_info(PFX "probe dev: (%p)\n", dev);
--
--	pr_info(PFX "adjust LB timing\n");
--	ocd_writel(0x00000330, LDP2);
--
--	drvdata = kmalloc(sizeof(*drvdata), GFP_KERNEL);
--	if (unlikely(!drvdata)) {
--		printk(KERN_ERR PFX "no memory for drvdata\n");
--		err = -ENOMEM;
--		goto mem_error;
--	}
--
--	/* Initialize structures */
--	memset(drvdata, 0, sizeof(*drvdata));
--
--	/* bind private data into driver */
--	dev_set_drvdata(dev, drvdata);
--
--	/* allocate and map the resource */
--	drvdata->regs =
--	    excite_nandflash_map_regs(pdev, EXCITE_NANDFLASH_RESOURCE_REGS);
--
--	if (unlikely(!drvdata->regs)) {
--		printk(KERN_ERR PFX "cannot reserve register region\n");
--		err = -ENXIO;
--		goto io_error;
--	}
--
--	/* initialise our chip */
--	board_chip = &drvdata->board_chip;
--
--	board_chip->IO_ADDR_R = drvdata->regs + EXCITE_NANDFLASH_DATA;
--	board_chip->IO_ADDR_W = drvdata->regs + EXCITE_NANDFLASH_DATA;
--
--	board_chip->hwcontrol = excite_nandflash_hwcontrol;
--	board_chip->dev_ready = excite_nandflash_devready;
--
--	board_chip->chip_delay = 25;
--	#if 0
--	/* TODO: speedup the initial scan */
--	board_chip->options = NAND_USE_FLASH_BBT;
--	#endif
--	board_chip->eccmode = NAND_ECC_SOFT;
--
--	/* link chip to mtd */
--	board_mtd = &drvdata->board_mtd;
--	board_mtd->priv = board_chip;
--
--
--	pr_info(PFX "FlashTest\n");
--	elapsed = 0;
--/*	schedule_delayed_work(&sigElapsed, 1*HZ);
--	while (!elapsed) {
--		io_readb(drvdata->regs + EXCITE_NANDFLASH_STATUS);
--		count++;
--	}
--	pr_info(PFX "reads in 1 sec --> %d\n",count);
--*/
--	do_gettimeofday(&tv);
--	for (count = 0 ; count < 1000000; count ++) {
--		io_readb(drvdata->regs + EXCITE_NANDFLASH_STATUS);
--	}
--	do_gettimeofday(&endtv);
--	dt = (endtv.tv_sec - tv.tv_sec) * 1000000 + endtv.tv_usec  - tv.tv_usec;
--	pr_info(PFX "%8d us timeval\n",dt);
--	pr_info(PFX "EndFlashTest\n");
--
--/*      return with error to unload everything
--*/
--io_error:
--	iounmap(drvdata->regs);
--
--mem_error:
--	kfree(drvdata);
--
--	if (err == 0)
--		err = -EINVAL;
--	return err;
--}
--
--static struct device_driver excite_nandflash_driver = {
--	.name = "excite_nand",
--	.bus = &platform_bus_type,
--	.probe = excite_nandflash_probe,
--	.remove = excite_nandflash_remove,
--};
--
--static int __init excite_nandflash_init(void)
--{
--	pr_info(PFX "register Driver (Rev: $Revision:$)\n");
--	return driver_register(&excite_nandflash_driver);
--}
--
--static void __exit excite_nandflash_exit(void)
--{
--	driver_unregister(&excite_nandflash_driver);
--	pr_info(PFX "Driver unregistered");
--}
--
--module_init(excite_nandflash_init);
--module_exit(excite_nandflash_exit);
--
--MODULE_AUTHOR("Thies Moeller <thies.moeller@baslerweb.com>");
--MODULE_DESCRIPTION("Basler eXcite NAND-Flash driver");
--MODULE_LICENSE("GPL");
+=======================================================
+[ INFO: possible circular locking dependency detected ]
+-------------------------------------------------------
+mount/1425 is trying to acquire lock:
+ (&mm->mmap_sem){----}, at: [<80031b70>] do_page_fault+0xf0/0x3c0
+
+but task is already holding lock:
+ (sk_lock-AF_INET){--..}, at: [<802a7170>] tcp_recvmsg+0x44/0x920
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (sk_lock-AF_INET){--..}:
+       [<8007383c>] __lock_acquire+0xd80/0xe9c
+       [<80073e14>] lock_acquire+0xa4/0xf8
+       [<8026bc98>] lock_sock+0xec/0x11c
+       [<802a62f8>] tcp_sendmsg+0x40/0xc60
+       [<802c9194>] inet_sendmsg+0x58/0x9c
+       [<8026858c>] sock_sendmsg+0xb0/0x104
+       [<8026860c>] kernel_sendmsg+0x2c/0x48
+       [<802ebd70>] xs_tcp_send_request+0x134/0x3f8
+       [<802ea408>] xprt_transmit+0x70/0x284
+       [<802e70b0>] call_transmit+0x1fc/0x2dc
+       [<802ef194>] __rpc_execute+0xa8/0x2bc
+       [<802ef410>] rpc_execute+0x40/0x54
+       [<8013411c>] nfs_execute_read+0x50/0x84
+       [<80134a64>] nfs_pagein_one+0x2e4/0x388
+       [<80134ec0>] nfs_readpages+0x128/0x230
+       [<8008a2b4>] __do_page_cache_readahead+0x20c/0x328
+       [<8008a97c>] do_page_cache_readahead+0x6c/0x9c
+       [<800848e8>] filemap_nopage+0x17c/0x564
+       [<8009285c>] __handle_mm_fault+0x178/0xc18
+       [<80031d00>] do_page_fault+0x280/0x3c0
+       [<80025c00>] ret_from_exception+0x0/0x10
+       [<8018b7b4>] __bzero+0x38/0x80
+       [<800e2e24>] padzero+0x6c/0x8c
+       [<800e4864>] load_elf_binary+0x8ac/0x16e8
+       [<800b61c8>] search_binary_handler+0xe8/0x420
+       [<800b805c>] do_execve+0x13c/0x224
+       [<8002b554>] sys_execve+0x54/0x88
+       [<80030780>] stack_done+0x20/0x3c
+
+-> #0 (&mm->mmap_sem){----}:
+       [<800736dc>] __lock_acquire+0xc20/0xe9c
+       [<80073e14>] lock_acquire+0xa4/0xf8
+       [<8006e930>] down_read+0x38/0x58
+       [<80031b70>] do_page_fault+0xf0/0x3c0
+       [<80025c00>] ret_from_exception+0x0/0x10
+       [<8018adcc>] both_aligned+0x2c/0x64
+       [<80272504>] memcpy_toiovec+0x8c/0xbc
+       [<80272fc4>] skb_copy_datagram_iovec+0x208/0x2a4
+       [<802a77a0>] tcp_recvmsg+0x674/0x920
+       [<8026b0dc>] sock_common_recvmsg+0x4c/0x70
+       [<80267a88>] do_sock_read+0xb0/0xd8
+       [<80268984>] sock_aio_read+0x80/0x88
+       [<800a633c>] do_sync_read+0xe4/0x14c
+       [<800a7134>] vfs_read+0x1a8/0x1b0
+       [<800a76e0>] sys_read+0x5c/0xb0
+       [<80030780>] stack_done+0x20/0x3c
+
+other info that might help us debug this:
+
+1 lock held by mount/1425:
+ #0:  (sk_lock-AF_INET){--..}, at: [<802a7170>] tcp_recvmsg+0x44/0x920
+
+stack backtrace:
+Call Trace:
+[<8002da54>] dump_stack+0x10/0x44
+[<80072aa0>] print_circular_bug_tail+0x70/0x8c
+[<800736dc>] __lock_acquire+0xc20/0xe9c
+[<80073e14>] lock_acquire+0xa4/0xf8
+[<8006e930>] down_read+0x38/0x58
+[<80031b70>] do_page_fault+0xf0/0x3c0
+[<80025c00>] ret_from_exception+0x0/0x10
+[<8018adcc>] both_aligned+0x2c/0x64
+[<80272504>] memcpy_toiovec+0x8c/0xbc
+[<80272fc4>] skb_copy_datagram_iovec+0x208/0x2a4
+[<802a77a0>] tcp_recvmsg+0x674/0x920
+[<8026b0dc>] sock_common_recvmsg+0x4c/0x70
+[<80267a88>] do_sock_read+0xb0/0xd8
+[<80268984>] sock_aio_read+0x80/0x88
+[<800a633c>] do_sync_read+0xe4/0x14c
+[<800a7134>] vfs_read+0x1a8/0x1b0
+[<800a76e0>] sys_read+0x5c/0xb0
+[<80030780>] stack_done+0x20/0x3c
+--- snip ---
+
+
+Any idea?
+
+---
+Atsushi Nemoto

@@ -1,66 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 16:31:03 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.180]:53442 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039250AbWI2PbC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Sep 2006 16:31:02 +0100
-Received: by py-out-1112.google.com with SMTP id i49so25323pyi
-        for <linux-mips@linux-mips.org>; Fri, 29 Sep 2006 08:31:01 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:mime-version:content-type:message-id:cc:content-transfer-encoding:from:subject:date:to:x-mailer;
-        b=YBNBndilC0Nf28WzLyQXqYvglvxhrPedvU2rJ5uo8OpVJpGI1BX/2tQ+YbFpSNTvNtX892DhSfYSmP/B+7RRhC8fqShsFS0+yPgm0b8AysV5bpHqCcUeFNQTihi7soiSDj5MQHueY+D0kif/aSRssZTIDydVs2GCLA+NrQXP4OM=
-Received: by 10.35.107.20 with SMTP id j20mr878954pym;
-        Fri, 29 Sep 2006 08:31:00 -0700 (PDT)
-Received: from ?192.168.1.3? ( [61.125.212.22])
-        by mx.gmail.com with ESMTP id b43sm3621558pyb.2006.09.29.08.30.58;
-        Fri, 29 Sep 2006 08:30:59 -0700 (PDT)
-Mime-Version: 1.0 (Apple Message framework v749)
-Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
-Message-Id: <091C938C-EB20-40AB-A7F1-396FC7C75C47@gmail.com>
-Cc:	girishvg@gmail.com
-Content-Transfer-Encoding: 7bit
-From:	girish <girishvg@gmail.com>
-Subject: [PATCH] include children count, in Threads: field present in /proc/<pid>/status (take-1)
-Date:	Sat, 30 Sep 2006 00:30:55 +0900
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Sep 2006 18:52:51 +0100 (BST)
+Received: from ims.2wire.com ([206.171.6.87]:49942 "EHLO ims.2wire.com")
+	by ftp.linux-mips.org with ESMTP id S20039265AbWI2Rwt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Sep 2006 18:52:49 +0100
+Received: from ripper ([10.5.252.199]) by ims.2wire.com with Microsoft SMTPSVC(6.0.3790.211);
+	 Fri, 29 Sep 2006 10:52:41 -0700
+Date:	Fri, 29 Sep 2006 10:52:41 -0700
+From:	Andrew Sharp <asharp@2wire.com>
 To:	linux-mips@linux-mips.org
-X-Mailer: Apple Mail (2.749)
-Return-Path: <girishvg@gmail.com>
+Subject: Re: Introduction and problems cloning repository
+Message-ID: <20060929105241.423a1ade@ripper>
+In-Reply-To: <20060929094944.GA10597@linux-mips.org>
+References: <451C7CE7.8040909@nec.com.au>
+	<20060929094944.GA10597@linux-mips.org>
+Organization: 2Wire Inc.
+X-Mailer: Sylpheed-Claws 1.0.5 (GTK+ 1.2.10; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 29 Sep 2006 17:52:41.0983 (UTC) FILETIME=[0F96B8F0:01C6E3F0]
+Return-Path: <asharp@2wire.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12742
+X-archive-position: 12743
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: girishvg@gmail.com
+X-original-sender: asharp@2wire.com
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 29 Sep 2006 10:49:44 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-Signed-off-by: Girish V. Gulawani <girishvg@gmail.com>
+> On Fri, Sep 29, 2006 at 11:54:47AM +1000, Pak Woon wrote:
+> 
+> > First time poster to this mailing list so if I am not following the 
+> > correct protocol please let me know.
+> > 
+> > Introduction. I am a firmware developer working for NEC Australia.
+> > We  are currently developing a MIPS SOC device made by Wintegra.
+> > 
+> > I am trying to clone the linux-malta.git repository using the
+> > command "git clone http://ftp.linux-mips.org/pub/scm/linux-malta.git
+> > 
+> > ./linux-malta.git" but I receieve an "error: Can't lock ref". I have
+> > to  use http because I am sure port 9418 is blocked by the sysadmin
+> 
+> An good old access permission problem on the web server but I won't
+> have time to sort it out now.
 
---- linux-vanilla/fs/proc/array.c	2006-09-20 12:42:06.000000000 +0900
-+++ linux/fs/proc/array.c	2006-09-30 00:16:59.000000000 +0900
-@@ -248,6 +248,8 @@ static inline char * task_sig(struct tas
-  	int num_threads = 0;
-  	unsigned long qsize = 0;
-  	unsigned long qlim = 0;
-+	int num_children = 0;
-+	struct list_head *_p;
+I had this same problem.  Turns out that for the http method of git, you
+have to use the name 'www.linux-mips.org'.  So it would be 
 
-  	sigemptyset(&pending);
-  	sigemptyset(&shpending);
-@@ -268,9 +270,11 @@ static inline char * task_sig(struct tas
-  		qlim = p->signal->rlim[RLIMIT_SIGPENDING].rlim_cur;
-  		spin_unlock_irq(&p->sighand->siglock);
-  	}
-+	list_for_each(_p, &p->children)
-+		++num_children;
-  	read_unlock(&tasklist_lock);
+git clone http://www.linux-mips.org/pub/scm/linux-malta.git linux-malta.git
 
--	buffer += sprintf(buffer, "Threads:\t%d\n", num_threads);
-+	buffer += sprintf(buffer, "Threads:\t%d\n", num_threads +  
-num_children);
-  	buffer += sprintf(buffer, "SigQ:\t%lu/%lu\n", qsize, qlim);
+>   cvs -d :pserver:anonymous@git.linux-mips.org:/pub/scm/linux.git co
+>   -d linux-malta -P <branch>
+> 
+> Where <branch> is one of linux-2.0, linux-2.2, linux-2.4,
+> MaltaRef_2_4, MaltaRef_2_6 and master - if your firewall allows port
+> 2401 that is ...
+> 
+> But why are you still using the linux-malta repository?  Since ~ 5
+> months it is no longer being updated and has effectivly been replaced
+> with linux.git repository.  Of this repository there are also
+> snapshots of all tagged versions available.
 
-  	/* render them all */
+Good point.
+
+Cheers,
+
+a

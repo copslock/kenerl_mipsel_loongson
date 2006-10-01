@@ -1,118 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Oct 2006 11:49:52 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:60168 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20037784AbWJAKs7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 1 Oct 2006 11:48:59 +0100
-Received: by mo.po.2iij.net (mo30) id k91Amvd8011953; Sun, 1 Oct 2006 19:48:57 +0900 (JST)
-Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
-	by mbox.po.2iij.net (mbox30) id k91Amr4F090877
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 1 Oct 2006 19:48:53 +0900 (JST)
-Date:	Sun, 1 Oct 2006 19:47:08 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 3/3] remove unused galileo-boars header files
-Message-Id: <20061001194708.23bc7991.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20061001194327.02fceb06.yoichi_yuasa@tripeaks.co.jp>
-References: <20061001193528.003d01d8.yoichi_yuasa@tripeaks.co.jp>
-	<20061001194327.02fceb06.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Oct 2006 15:31:02 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:29126 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037855AbWJAObB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 1 Oct 2006 15:31:01 +0100
+Received: from localhost (p3194-ipad03funabasi.chiba.ocn.ne.jp [219.160.83.194])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id ED740A675; Sun,  1 Oct 2006 23:30:54 +0900 (JST)
+Date:	Sun, 01 Oct 2006 23:33:06 +0900 (JST)
+Message-Id: <20061001.233306.126574447.anemo@mba.ocn.ne.jp>
+To:	girishvg@gmail.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org, clameter@sgi.com
+Subject: Re: [PATCH] fix size of zones_size and zholes_size array
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <E3B3A030-E8D0-4BC3-8924-E88B3B43E53F@gmail.com>
+References: <20060930.033406.104030456.anemo@mba.ocn.ne.jp>
+	<E3B3A030-E8D0-4BC3-8924-E88B3B43E53F@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12753
+X-archive-position: 12754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+CC-d to Christoph Lameter.
 
-This patch has removed unused galileo-boards header files.
+On Sat, 30 Sep 2006 03:41:39 +0900, girish <girishvg@gmail.com> wrote:
+> On Sep 30, 2006, at 3:34 AM, Atsushi Nemoto wrote:
+> 
+> > The commit f06a96844a577c43249fce25809a4fae07407f46 broke mips.
+> >
+> > Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> >
+> > diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+> > index a624778..2f346d1 100644
+> > --- a/arch/mips/mm/init.c
+> > +++ b/arch/mips/mm/init.c
+> > @@ -357,10 +357,10 @@ static int __init page_is_ram(unsigned l
+> >
+> >  void __init paging_init(void)
+> >  {
+> > -	unsigned long zones_size[] = { 0, };
+> > +	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
+> >  	unsigned long max_dma, high, low;
+> >  #ifndef CONFIG_FLATMEM
+> > -	unsigned long zholes_size[] = { 0, };
+> > +	unsigned long zholes_size[MAX_NR_ZONES] = { 0, };
+> >  	unsigned long i, j, pfn;
+> >  #endif
+> 
+> Nemoto~san, this was your patch earlier.
+> 
+>   void __init paging_init(void)
+>   {
+> -	unsigned long zones_size[MAX_NR_ZONES] = {0, 0, 0};
+> +	unsigned long zones_size[] = { [0 ... MAX_NR_ZONES - 1] = 0 };
+>   	unsigned long max_dma, high, low;
+> +#ifdef CONFIG_SPARSEMEM
+> +	unsigned long zholes_size[] = { [0 ... MAX_NR_ZONES - 1] = 0 };
+> +	unsigned long i, j, pfn;
+> +#endif
 
-Yoichi
+Yes.  This is correct.  And then there was a conflict on this commit.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> commit f06a96844a577c43249fce25809a4fae07407f46
+> Author: Christoph Lameter <clameter@sgi.com>
+> Date:   Mon Sep 25 23:31:10 2006 -0700
+>     [PATCH] reduce MAX_NR_ZONES: fix MAX_NR_ZONES array initializations
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/galileo-boards/ev96100.h mips/include/asm-mips/galileo-boards/ev96100.h
---- mips-orig/include/asm-mips/galileo-boards/ev96100.h	2006-10-01 16:12:37.713494500 +0900
-+++ mips/include/asm-mips/galileo-boards/ev96100.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,55 +0,0 @@
--/*
-- *
-- */
--#ifndef _MIPS_EV96100_H
--#define _MIPS_EV96100_H
--
--#include <asm/addrspace.h>
--
--/*
-- *   GT64120 config space base address
-- */
--#define GT64120_BASE	(KSEG1ADDR(0x14000000))
--#define MIPS_GT_BASE	GT64120_BASE
--
--/*
-- *   PCI Bus allocation
-- */
--#define GT_PCI_MEM_BASE    0x12000000UL
--#define GT_PCI_MEM_SIZE    0x02000000UL
--#define GT_PCI_IO_BASE     0x10000000UL
--#define GT_PCI_IO_SIZE     0x02000000UL
--#define GT_ISA_IO_BASE     PCI_IO_BASE
--
--/*
-- *   Duart I/O ports.
-- */
--#define EV96100_COM1_BASE_ADDR 	(0xBD000000 + 0x20)
--#define EV96100_COM2_BASE_ADDR	(0xBD000000 + 0x00)
--
--
--/*
-- *   EV96100 interrupt controller register base.
-- */
--#define EV96100_ICTRL_REGS_BASE	(KSEG1ADDR(0x1f000000))
--
--/*
-- *   EV96100 UART register base.
-- */
--#define EV96100_UART0_REGS_BASE	EV96100_COM1_BASE_ADDR
--#define EV96100_UART1_REGS_BASE	EV96100_COM2_BASE_ADDR
--#define EV96100_BASE_BAUD	( 3686400 / 16 )
--
--
--/*
-- * Because of an error/peculiarity in the Galileo chip, we need to swap the
-- * bytes when running bigendian.
-- */
--#define __GT_READ(ofs)							\
--	(*(volatile u32 *)(GT64120_BASE+(ofs)))
--#define __GT_WRITE(ofs, data)						\
--	do { *(volatile u32 *)(GT64120_BASE+(ofs)) = (data); } while (0)
--#define GT_READ(ofs)		le32_to_cpu(__GT_READ(ofs))
--#define GT_WRITE(ofs, data)	__GT_WRITE(ofs, cpu_to_le32(data))
--
--#endif /* !(_MIPS_EV96100_H) */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/galileo-boards/ev96100int.h mips/include/asm-mips/galileo-boards/ev96100int.h
---- mips-orig/include/asm-mips/galileo-boards/ev96100int.h	2006-10-01 16:12:37.713494500 +0900
-+++ mips/include/asm-mips/galileo-boards/ev96100int.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,12 +0,0 @@
--/*
-- *
-- */
--#ifndef _MIPS_EV96100INT_H
--#define _MIPS_EV96100INT_H
--
--#define EV96100INT_UART_0    6     /* IP 6 */
--#define EV96100INT_TIMER     7     /* IP 7 */
--
--extern void ev96100int_init(void);
--
--#endif /* !(_MIPS_EV96100_H) */
+Perhaps his original patch was:
+
+-	unsigned long zones_size[MAX_NR_ZONES] = {0, 0, 0};
++	unsigned long zones_size[MAX_NR_ZONES] = {0, };
+
+This conflicted with my change.  Unfortunately the conflict was
+resolved in wrong way, thus now we have this line:
+
+	unsigned long zones_size[] = { 0, };
+
+This time my patch is trying to get the original target.
+
+---
+Atsushi Nemoto

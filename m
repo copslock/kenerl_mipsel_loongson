@@ -1,57 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Oct 2006 17:00:50 +0100 (BST)
-Received: from omx1-ext.sgi.com ([192.48.179.11]:13959 "EHLO
-	omx1.americas.sgi.com") by ftp.linux-mips.org with ESMTP
-	id S20038834AbWJBQAs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 2 Oct 2006 17:00:48 +0100
-Received: from imr2.americas.sgi.com (imr2.americas.sgi.com [198.149.16.18])
-	by omx1.americas.sgi.com (8.12.10/8.12.9/linux-outbound_gateway-1.1) with ESMTP id k92G0inx022557;
-	Mon, 2 Oct 2006 11:00:44 -0500
-Received: from spindle.corp.sgi.com (spindle.corp.sgi.com [198.29.75.13])
-	by imr2.americas.sgi.com (8.12.9/8.12.10/SGI_generic_relay-1.2) with ESMTP id k92FtTDu57879940;
-	Mon, 2 Oct 2006 08:55:29 -0700 (PDT)
-Received: from schroedinger.engr.sgi.com (schroedinger.engr.sgi.com [163.154.5.55])
-	by spindle.corp.sgi.com (SGI-8.12.5/8.12.9/generic_config-1.2) with ESMTP id k92G0hnB59520631;
-	Mon, 2 Oct 2006 09:00:43 -0700 (PDT)
-Received: from christoph (helo=localhost)
-	by schroedinger.engr.sgi.com with local-esmtp (Exim 3.36 #1 (Debian))
-	id 1GUQDj-0003CC-00; Mon, 02 Oct 2006 09:00:43 -0700
-Date:	Mon, 2 Oct 2006 09:00:43 -0700 (PDT)
-From:	Christoph Lameter <clameter@sgi.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	girishvg@gmail.com, linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] fix size of zones_size and zholes_size array
-In-Reply-To: <20061001.233306.126574447.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64.0610020900040.12258@schroedinger.engr.sgi.com>
-References: <20060930.033406.104030456.anemo@mba.ocn.ne.jp>
- <E3B3A030-E8D0-4BC3-8924-E88B3B43E53F@gmail.com> <20061001.233306.126574447.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <christoph@schroedinger.engr.sgi.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 00:34:45 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:58058 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038685AbWJBXen (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Oct 2006 00:34:43 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k92FI1oI025416;
+	Mon, 2 Oct 2006 16:19:21 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k92FI0cW025415;
+	Mon, 2 Oct 2006 16:18:00 +0100
+Date:	Mon, 2 Oct 2006 16:18:00 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] remove Momentum / PMC-Sierra Jaguar ATX evaluation board
+Message-ID: <20061002151800.GA25180@linux-mips.org>
+References: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12767
+X-archive-position: 12768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: clameter@sgi.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 1 Oct 2006, Atsushi Nemoto wrote:
+On Mon, Oct 02, 2006 at 11:14:32PM +0900, Yoichi Yuasa wrote:
 
-> > Nemoto~san, this was your patch earlier.
-> > 
-> >   void __init paging_init(void)
-> >   {
-> > -	unsigned long zones_size[MAX_NR_ZONES] = {0, 0, 0};
-> > +	unsigned long zones_size[] = { [0 ... MAX_NR_ZONES - 1] = 0 };
-> >   	unsigned long max_dma, high, low;
-> > +#ifdef CONFIG_SPARSEMEM
-> > +	unsigned long zholes_size[] = { [0 ... MAX_NR_ZONES - 1] = 0 };
-> > +	unsigned long i, j, pfn;
-> > +#endif
-> 
-> Yes.  This is correct.  And then there was a conflict on this commit.
+> This patch has removed Momentum / PMC-Sierra Jaguar ATX evaluation board support.
+> It was scheduled to be removed after 2.6.18 released.
 
-Looks fine to me too. In that case you can drop the piece of my patch.
+Stanislaw Skowronek raised his hand to take care of all the Jaguar /
+Ocelot boards, so I'll remove them from the list for now.
+
+  Ralf

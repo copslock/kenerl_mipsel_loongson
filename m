@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Oct 2006 15:20:44 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:7958 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038773AbWJBOUL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 2 Oct 2006 15:20:11 +0100
-Received: by mo.po.2iij.net (mo31) id k92EK5ln039189; Mon, 2 Oct 2006 23:20:05 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Oct 2006 15:21:13 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:55372 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038778AbWJBOUM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 2 Oct 2006 15:20:12 +0100
+Received: by mo.po.2iij.net (mo31) id k92EK89B039210; Mon, 2 Oct 2006 23:20:08 +0900 (JST)
 Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
-	by mbox.po.2iij.net (mbox33) id k92EJvYs030409
+	by mbox.po.2iij.net (mbox33) id k92EK2g9030463
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 2 Oct 2006 23:19:57 +0900 (JST)
-Date:	Mon, 2 Oct 2006 23:17:00 +0900
+	Mon, 2 Oct 2006 23:20:03 +0900 (JST)
+Date:	Mon, 2 Oct 2006 23:19:00 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] remove  Momentum Ocelot, Ocelot 3, Ocelot C and Ocelot G
- support
-Message-Id: <20061002231700.398b5836.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH] remove IT8172-based platforms, ITE 8172G and Globespan IVR
+  support
+Message-Id: <20061002231900.6c6b51a3.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -23,7 +23,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12765
+X-archive-position: 12766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,7 +33,7 @@ X-list: linux-mips
 
 Hi Ralf,
 
-This patch has removed Momentum Ocelot, Ocelot 3, Ocelot C and Ocelot G support.
+This patch has removed IT8172-based platforms, ITE 8172G and Globespan IVR support.
 It was scheduled to be removed after 2.6.18 released.
 
 Yoichi
@@ -41,193 +41,134 @@ Yoichi
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
 diff -pruN -X mips/Documentation/dontdiff mips-orig/Documentation/feature-removal-schedule.txt mips/Documentation/feature-removal-schedule.txt
---- mips-orig/Documentation/feature-removal-schedule.txt	2006-10-02 22:40:23.595344500 +0900
-+++ mips/Documentation/feature-removal-schedule.txt	2006-10-02 22:40:29.383706250 +0900
-@@ -220,14 +220,6 @@ Who:	Nick Piggin <npiggin@suse.de>
+--- mips-orig/Documentation/feature-removal-schedule.txt	2006-10-02 22:43:55.348578250 +0900
++++ mips/Documentation/feature-removal-schedule.txt	2006-10-02 22:44:01.296950000 +0900
+@@ -228,16 +228,6 @@ Who:	Ralf Baechle <ralf@linux-mips.org>
  
  ---------------------------
  
--What:	Support for the Momentum Ocelot, Ocelot 3, Ocelot C and Ocelot G
+-What:	Support for the IT8172-based platforms, ITE 8172G and Globespan IVR
 -When:	September 2006
--Why:	Some do no longer build and apparently there is no user base left
--	for these platforms.
+-Why:	Code does no longer build since at least 2.6.0,  apparently there is
+-	no user base left for these platforms.  Hardware out of production
+-	since several years and hardly a trace of the manufacturer left on
+-	the net.
 -Who:	Ralf Baechle <ralf@linux-mips.org>
 -
 ----------------------------
 -
- What:	Support for MIPS Technologies' Altas and SEAD evaluation board
- When:	September 2006
- Why:	Some do no longer build and apparently there is no user base left
+ What:	Interrupt only SA_* flags
+ When:	Januar 2007
+ Why:	The interrupt related SA_* flags are replaced by IRQF_* to move them
 diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
---- mips-orig/arch/mips/Kconfig	2006-10-02 22:40:23.595344500 +0900
-+++ mips/arch/mips/Kconfig	2006-10-02 22:40:29.387706500 +0900
-@@ -374,76 +374,6 @@ config MIPS_SIM
- 	  This option enables support for MIPS Technologies MIPSsim software
- 	  emulator.
+--- mips-orig/arch/mips/Kconfig	2006-10-02 22:43:55.348578250 +0900
++++ mips/arch/mips/Kconfig	2006-10-02 22:44:01.296950000 +0900
+@@ -203,39 +203,6 @@ config MIPS_EV64120
+ 	  <http://www.marvell.com/>.  Say Y here if you wish to build a
+ 	  kernel for this platform.
  
--config MOMENCO_OCELOT
--	bool "Momentum Ocelot board"
+-config MIPS_IVR
+-	bool "Globespan IVR board"
 -	select DMA_NONCOHERENT
 -	select HW_HAS_PCI
--	select IRQ_CPU
--	select IRQ_CPU_RM7K
--	select MIPS_GT64120
--	select RM7000_CPU_SCACHE
--	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_RM7000
+-	select ITE_BOARD_GEN
+-	select SYS_HAS_CPU_NEVADA
 -	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL
--	select SYS_SUPPORTS_BIG_ENDIAN
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	select SYS_SUPPORTS_LITTLE_ENDIAN
 -	help
--	  The Ocelot is a MIPS-based Single Board Computer (SBC) made by
--	  Momentum Computer <http://www.momenco.com/>.
+-	  This is an evaluation board built by Globespan to showcase thir
+-	  iVR (Internet Video Recorder) design. It utilizes a QED RM5231
+-	  R5000 MIPS core. More information can be found out their website
+-	  located at <http://www.globespan.net/>. Say Y here if you wish to
+-	  build a kernel for this platform.
 -
--config MOMENCO_OCELOT_3
--	bool "Momentum Ocelot-3 board"
--	select BOOT_ELF32
+-config MIPS_ITE8172
+-	bool "ITE 8172G board"
 -	select DMA_NONCOHERENT
 -	select HW_HAS_PCI
--	select IRQ_CPU
--	select IRQ_CPU_RM7K
--	select IRQ_MV64340
--	select PCI_MARVELL
--	select RM7000_CPU_SCACHE
--	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_RM9000
+-	select ITE_BOARD_GEN
+-	select SYS_HAS_CPU_R5432
+-	select SYS_HAS_CPU_NEVADA
 -	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL
--	select SYS_SUPPORTS_BIG_ENDIAN
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	select SYS_SUPPORTS_LITTLE_ENDIAN
 -	help
--	  The Ocelot-3 is based off Discovery III System Controller and
--	  PMC-Sierra Rm79000 core.
+-	  Ths is an evaluation board made by ITE <http://www.ite.com.tw/>
+-	  with ATX form factor that utilizes a MIPS R5000 to work with its
+-	  ITE8172G companion internet appliance chip. The MIPS core can be
+-	  either a NEC Vr5432 or QED RM5231. Say Y here if you wish to build
+-	  a kernel for this platform.
 -
--config MOMENCO_OCELOT_C
--	bool "Momentum Ocelot-C board"
--	select DMA_NONCOHERENT
--	select HW_HAS_PCI
--	select IRQ_CPU
--	select IRQ_MV64340
--	select PCI_MARVELL
--	select RM7000_CPU_SCACHE
--	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_RM7000
--	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL
--	select SYS_SUPPORTS_BIG_ENDIAN
--	help
--	  The Ocelot is a MIPS-based Single Board Computer (SBC) made by
--	  Momentum Computer <http://www.momenco.com/>.
--
--config MOMENCO_OCELOT_G
--	bool "Momentum Ocelot-G board"
--	select DMA_NONCOHERENT
--	select HW_HAS_PCI
--	select IRQ_CPU
--	select IRQ_CPU_RM7K
--	select PCI_MARVELL
--	select RM7000_CPU_SCACHE
--	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_RM7000
--	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL
--	select SYS_SUPPORTS_BIG_ENDIAN
--	help
--	  The Ocelot is a MIPS-based Single Board Computer (SBC) made by
--	  Momentum Computer <http://www.momenco.com/>.
--
- config MIPS_XXS1500
- 	bool "MyCable XXS1500 board"
- 	select DMA_NONCOHERENT
-@@ -908,9 +838,6 @@ config IRQ_CPU_RM7K
- config IRQ_CPU_RM9K
+ config MACH_JAZZ
+ 	bool "Jazz family of machines"
+ 	select ARC
+@@ -712,7 +679,6 @@ endchoice
+ source "arch/mips/ddb5xxx/Kconfig"
+ source "arch/mips/gt64120/ev64120/Kconfig"
+ source "arch/mips/jazz/Kconfig"
+-source "arch/mips/ite-boards/Kconfig"
+ source "arch/mips/lasat/Kconfig"
+ source "arch/mips/pmc-sierra/Kconfig"
+ source "arch/mips/sgi-ip27/Kconfig"
+@@ -863,9 +829,6 @@ config MIPS_RM9122
+ config PCI_MARVELL
  	bool
  
--config IRQ_MV64340
+-config ITE_BOARD_GEN
 -	bool
 -
- config DDB5XXX_COMMON
+ config SOC_AU1000
+ 	bool
+ 	select SOC_AU1X00
+@@ -948,16 +911,6 @@ config AU1X00_USB_DEVICE
+ 	depends on MIPS_PB1500 || MIPS_PB1100 || MIPS_PB1000
+ 	default n
+ 
+-config IT8172_CIR
+-	bool
+-	depends on MIPS_ITE8172 || MIPS_IVR
+-	default y
+-
+-config IT8712
+-	bool
+-	depends on MIPS_ITE8172
+-	default y
+-
+ config BOOT_ELF32
  	bool
  
-@@ -999,9 +926,8 @@ config WDT_RM9000
- choice
- 	prompt "Galileo Chip Clock"
- 	#default SYSCLK_83 if MIPS_EV64120
--	depends on MIPS_EV64120 || MOMENCO_OCELOT || MOMENCO_OCELOT_G
-+	depends on MIPS_EV64120
- 	default SYSCLK_83 if MIPS_EV64120
--	default SYSCLK_100 if MOMENCO_OCELOT || MOMENCO_OCELOT_G
- 
- config SYSCLK_75
- 	bool "75" if MIPS_EV64120
-@@ -1010,7 +936,7 @@ config SYSCLK_83
- 	bool "83.3" if MIPS_EV64120
- 
- config SYSCLK_100
--	bool "100" if MIPS_EV64120 || MOMENCO_OCELOT || MOMENCO_OCELOT_G
-+	bool "100" if MIPS_EV64120
- 
- endchoice
- 
 diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Makefile mips/arch/mips/Makefile
---- mips-orig/arch/mips/Makefile	2006-10-02 22:40:23.595344500 +0900
-+++ mips/arch/mips/Makefile	2006-10-02 22:40:29.387706500 +0900
-@@ -334,34 +334,6 @@ cflags-$(CONFIG_MIPS_SIM)	+= -Iinclude/a
- load-$(CONFIG_MIPS_SIM)		+= 0x80100000
+--- mips-orig/arch/mips/Makefile	2006-10-02 22:43:55.348578250 +0900
++++ mips/arch/mips/Makefile	2006-10-02 22:44:01.296950000 +0900
+@@ -287,19 +287,6 @@ cflags-$(CONFIG_WR_PPMC)		+= -Iinclude/a
+ load-$(CONFIG_WR_PPMC)		+= 0xffffffff80100000
  
  #
--# Momentum Ocelot board
+-# Globespan IVR eval board with QED 5231 CPU
 -#
--# The Ocelot setup.o must be linked early - it does the ioremap() for the
--# mips_io_port_base.
--#
--core-$(CONFIG_MOMENCO_OCELOT)	+= arch/mips/gt64120/common/ \
--				   arch/mips/gt64120/momenco_ocelot/
--cflags-$(CONFIG_MOMENCO_OCELOT)	+= -Iinclude/asm-mips/mach-ocelot
--load-$(CONFIG_MOMENCO_OCELOT)	+= 0xffffffff80100000
+-core-$(CONFIG_ITE_BOARD_GEN)	+= arch/mips/ite-boards/generic/
+-core-$(CONFIG_MIPS_IVR)		+= arch/mips/ite-boards/ivr/
+-load-$(CONFIG_MIPS_IVR)		+= 0xffffffff80100000
 -
 -#
--# Momentum Ocelot-G board
+-# ITE 8172 eval board with QED 5231 CPU
 -#
--# The Ocelot-G setup.o must be linked early - it does the ioremap() for the
--# mips_io_port_base.
--#
--core-$(CONFIG_MOMENCO_OCELOT_G)	+= arch/mips/momentum/ocelot_g/
--load-$(CONFIG_MOMENCO_OCELOT_G)	+= 0xffffffff80100000
+-core-$(CONFIG_MIPS_ITE8172)	+= arch/mips/ite-boards/qed-4n-s01b/
+-load-$(CONFIG_MIPS_ITE8172)	+= 0xffffffff80100000
 -
 -#
--# Momentum Ocelot-C and -CS boards
--#
--# The Ocelot-C[S] setup.o must be linked early - it does the ioremap() for the
--# mips_io_port_base.
--core-$(CONFIG_MOMENCO_OCELOT_C)	+= arch/mips/momentum/ocelot_c/
--load-$(CONFIG_MOMENCO_OCELOT_C)	+= 0xffffffff80100000
--
--#
- # PMC-Sierra Yosemite
+ # For all MIPS, Inc. eval boards
  #
- core-$(CONFIG_PMC_YOSEMITE)	+= arch/mips/pmc-sierra/yosemite/
-@@ -376,13 +348,6 @@ cflags-$(CONFIG_QEMU)		+= -Iinclude/asm-
- load-$(CONFIG_QEMU)		+= 0xffffffff80010000
- 
- #
--# Momentum Ocelot-3
--#
--core-$(CONFIG_MOMENCO_OCELOT_3) 	+= arch/mips/momentum/ocelot_3/
--cflags-$(CONFIG_MOMENCO_OCELOT_3)	+= -Iinclude/asm-mips/mach-ocelot3
--load-$(CONFIG_MOMENCO_OCELOT_3) 	+= 0xffffffff80100000
--
--#
- # Basler eXcite
- #
- core-$(CONFIG_BASLER_EXCITE)	+= arch/mips/basler/excite/
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_defconfig mips/arch/mips/configs/ocelot_3_defconfig
---- mips-orig/arch/mips/configs/ocelot_3_defconfig	2006-10-02 22:32:45.834736250 +0900
-+++ mips/arch/mips/configs/ocelot_3_defconfig	1970-01-01 09:00:00.000000000 +0900
-@@ -1,1158 +0,0 @@
+ core-$(CONFIG_MIPS_BOARDS_GEN)	+= arch/mips/mips-boards/generic/
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/it8172_defconfig mips/arch/mips/configs/it8172_defconfig
+--- mips-orig/arch/mips/configs/it8172_defconfig	2006-10-02 22:32:45.826735750 +0900
++++ mips/arch/mips/configs/it8172_defconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,964 +0,0 @@
 -#
 -# Automatically generated make config: don't edit
 -# Linux kernel version: 2.6.18-rc1
--# Thu Jul  6 10:04:15 2006
+-# Thu Jul  6 10:04:11 2006
 -#
 -CONFIG_MIPS=y
 -
@@ -252,7 +193,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_MACH_DECSTATION is not set
 -# CONFIG_MIPS_EV64120 is not set
 -# CONFIG_MIPS_IVR is not set
--# CONFIG_MIPS_ITE8172 is not set
+-CONFIG_MIPS_ITE8172=y
 -# CONFIG_MACH_JAZZ is not set
 -# CONFIG_LASAT is not set
 -# CONFIG_MIPS_ATLAS is not set
@@ -262,7 +203,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_MIPS_SIM is not set
 -# CONFIG_MOMENCO_JAGUAR_ATX is not set
 -# CONFIG_MOMENCO_OCELOT is not set
--CONFIG_MOMENCO_OCELOT_3=y
+-# CONFIG_MOMENCO_OCELOT_3 is not set
 -# CONFIG_MOMENCO_OCELOT_C is not set
 -# CONFIG_MOMENCO_OCELOT_G is not set
 -# CONFIG_MIPS_XXS1500 is not set
@@ -289,6 +230,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_TOSHIBA_JMR3927 is not set
 -# CONFIG_TOSHIBA_RBTX4927 is not set
 -# CONFIG_TOSHIBA_RBTX4938 is not set
+-# CONFIG_IT8172_REVC is not set
 -CONFIG_RWSEM_GENERIC_SPINLOCK=y
 -CONFIG_GENERIC_FIND_NEXT_BIT=y
 -CONFIG_GENERIC_HWEIGHT=y
@@ -296,15 +238,12 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
 -CONFIG_DMA_NONCOHERENT=y
 -CONFIG_DMA_NEED_PCI_MAP_STATE=y
--CONFIG_CPU_BIG_ENDIAN=y
--# CONFIG_CPU_LITTLE_ENDIAN is not set
--CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
--CONFIG_IRQ_CPU=y
--CONFIG_IRQ_CPU_RM7K=y
--CONFIG_IRQ_MV64340=y
--CONFIG_PCI_MARVELL=y
--CONFIG_SWAP_IO_SPACE=y
--CONFIG_BOOT_ELF32=y
+-# CONFIG_CPU_BIG_ENDIAN is not set
+-CONFIG_CPU_LITTLE_ENDIAN=y
+-CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+-CONFIG_ITE_BOARD_GEN=y
+-CONFIG_IT8172_CIR=y
+-CONFIG_IT8712=y
 -CONFIG_MIPS_L1_CACHE_SHIFT=5
 -
 -#
@@ -323,13 +262,14 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_CPU_R5000 is not set
 -# CONFIG_CPU_R5432 is not set
 -# CONFIG_CPU_R6000 is not set
--# CONFIG_CPU_NEVADA is not set
+-CONFIG_CPU_NEVADA=y
 -# CONFIG_CPU_R8000 is not set
 -# CONFIG_CPU_R10000 is not set
 -# CONFIG_CPU_RM7000 is not set
--CONFIG_CPU_RM9000=y
+-# CONFIG_CPU_RM9000 is not set
 -# CONFIG_CPU_SB1 is not set
--CONFIG_SYS_HAS_CPU_RM9000=y
+-CONFIG_SYS_HAS_CPU_R5432=y
+-CONFIG_SYS_HAS_CPU_NEVADA=y
 -CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
 -CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
 -CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
@@ -344,19 +284,14 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_PAGE_SIZE_8KB is not set
 -# CONFIG_PAGE_SIZE_16KB is not set
 -# CONFIG_PAGE_SIZE_64KB is not set
--CONFIG_BOARD_SCACHE=y
--CONFIG_RM7000_CPU_SCACHE=y
--CONFIG_CPU_HAS_PREFETCH=y
 -CONFIG_MIPS_MT_DISABLED=y
 -# CONFIG_MIPS_MT_SMTC is not set
 -# CONFIG_MIPS_MT_SMP is not set
 -# CONFIG_MIPS_VPE_LOADER is not set
--# CONFIG_64BIT_PHYS_ADDR is not set
 -CONFIG_CPU_HAS_LLSC=y
 -CONFIG_CPU_HAS_SYNC=y
 -CONFIG_GENERIC_HARDIRQS=y
 -CONFIG_GENERIC_IRQ_PROBE=y
--CONFIG_CPU_SUPPORTS_HIGHMEM=y
 -CONFIG_ARCH_FLATMEM_ENABLE=y
 -CONFIG_SELECT_MEMORY_MODEL=y
 -CONFIG_FLATMEM_MANUAL=y
@@ -398,11 +333,976 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_SWAP=y
 -CONFIG_SYSVIPC=y
 -# CONFIG_POSIX_MQUEUE is not set
--# CONFIG_BSD_PROCESS_ACCT is not set
+-CONFIG_BSD_PROCESS_ACCT=y
+-# CONFIG_BSD_PROCESS_ACCT_V3 is not set
 -CONFIG_SYSCTL=y
 -# CONFIG_AUDIT is not set
--CONFIG_IKCONFIG=y
--CONFIG_IKCONFIG_PROC=y
+-# CONFIG_IKCONFIG is not set
+-CONFIG_RELAY=y
+-CONFIG_INITRAMFS_SOURCE=""
+-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+-CONFIG_EMBEDDED=y
+-CONFIG_KALLSYMS=y
+-# CONFIG_KALLSYMS_EXTRA_PASS is not set
+-# CONFIG_HOTPLUG is not set
+-CONFIG_PRINTK=y
+-CONFIG_BUG=y
+-CONFIG_ELF_CORE=y
+-CONFIG_BASE_FULL=y
+-CONFIG_RT_MUTEXES=y
+-CONFIG_FUTEX=y
+-CONFIG_EPOLL=y
+-CONFIG_SHMEM=y
+-CONFIG_SLAB=y
+-CONFIG_VM_EVENT_COUNTERS=y
+-# CONFIG_TINY_SHMEM is not set
+-CONFIG_BASE_SMALL=0
+-# CONFIG_SLOB is not set
+-
+-#
+-# Loadable module support
+-#
+-CONFIG_MODULES=y
+-CONFIG_MODULE_UNLOAD=y
+-# CONFIG_MODULE_FORCE_UNLOAD is not set
+-CONFIG_MODVERSIONS=y
+-CONFIG_MODULE_SRCVERSION_ALL=y
+-CONFIG_KMOD=y
+-
+-#
+-# Block layer
+-#
+-# CONFIG_LBD is not set
+-# CONFIG_BLK_DEV_IO_TRACE is not set
+-# CONFIG_LSF is not set
+-
+-#
+-# IO Schedulers
+-#
+-CONFIG_IOSCHED_NOOP=y
+-CONFIG_IOSCHED_AS=y
+-CONFIG_IOSCHED_DEADLINE=y
+-CONFIG_IOSCHED_CFQ=y
+-CONFIG_DEFAULT_AS=y
+-# CONFIG_DEFAULT_DEADLINE is not set
+-# CONFIG_DEFAULT_CFQ is not set
+-# CONFIG_DEFAULT_NOOP is not set
+-CONFIG_DEFAULT_IOSCHED="anticipatory"
+-
+-#
+-# Bus options (PCI, PCMCIA, EISA, ISA, TC)
+-#
+-CONFIG_HW_HAS_PCI=y
+-# CONFIG_PCI is not set
+-CONFIG_MMU=y
+-
+-#
+-# PCCARD (PCMCIA/CardBus) support
+-#
+-# CONFIG_PCCARD is not set
+-
+-#
+-# PCI Hotplug Support
+-#
+-
+-#
+-# Executable file formats
+-#
+-CONFIG_BINFMT_ELF=y
+-# CONFIG_BINFMT_MISC is not set
+-CONFIG_TRAD_SIGNALS=y
+-
+-#
+-# Networking
+-#
+-CONFIG_NET=y
+-
+-#
+-# Networking options
+-#
+-# CONFIG_NETDEBUG is not set
+-CONFIG_PACKET=y
+-CONFIG_PACKET_MMAP=y
+-CONFIG_UNIX=y
+-CONFIG_XFRM=y
+-CONFIG_XFRM_USER=m
+-CONFIG_NET_KEY=y
+-CONFIG_INET=y
+-# CONFIG_IP_MULTICAST is not set
+-# CONFIG_IP_ADVANCED_ROUTER is not set
+-CONFIG_IP_FIB_HASH=y
+-CONFIG_IP_PNP=y
+-# CONFIG_IP_PNP_DHCP is not set
+-CONFIG_IP_PNP_BOOTP=y
+-# CONFIG_IP_PNP_RARP is not set
+-# CONFIG_NET_IPIP is not set
+-# CONFIG_NET_IPGRE is not set
+-# CONFIG_ARPD is not set
+-# CONFIG_SYN_COOKIES is not set
+-# CONFIG_INET_AH is not set
+-# CONFIG_INET_ESP is not set
+-# CONFIG_INET_IPCOMP is not set
+-# CONFIG_INET_XFRM_TUNNEL is not set
+-# CONFIG_INET_TUNNEL is not set
+-CONFIG_INET_XFRM_MODE_TRANSPORT=m
+-CONFIG_INET_XFRM_MODE_TUNNEL=m
+-CONFIG_INET_DIAG=y
+-CONFIG_INET_TCP_DIAG=y
+-# CONFIG_TCP_CONG_ADVANCED is not set
+-CONFIG_TCP_CONG_BIC=y
+-# CONFIG_IPV6 is not set
+-# CONFIG_INET6_XFRM_TUNNEL is not set
+-# CONFIG_INET6_TUNNEL is not set
+-CONFIG_NETWORK_SECMARK=y
+-# CONFIG_NETFILTER is not set
+-
+-#
+-# DCCP Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_IP_DCCP is not set
+-
+-#
+-# SCTP Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_IP_SCTP is not set
+-
+-#
+-# TIPC Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_TIPC is not set
+-# CONFIG_ATM is not set
+-# CONFIG_BRIDGE is not set
+-# CONFIG_VLAN_8021Q is not set
+-# CONFIG_DECNET is not set
+-# CONFIG_LLC2 is not set
+-# CONFIG_IPX is not set
+-# CONFIG_ATALK is not set
+-# CONFIG_X25 is not set
+-# CONFIG_LAPB is not set
+-# CONFIG_NET_DIVERT is not set
+-# CONFIG_ECONET is not set
+-# CONFIG_WAN_ROUTER is not set
+-
+-#
+-# QoS and/or fair queueing
+-#
+-# CONFIG_NET_SCHED is not set
+-
+-#
+-# Network testing
+-#
+-# CONFIG_NET_PKTGEN is not set
+-# CONFIG_HAMRADIO is not set
+-# CONFIG_IRDA is not set
+-# CONFIG_BT is not set
+-CONFIG_IEEE80211=m
+-# CONFIG_IEEE80211_DEBUG is not set
+-CONFIG_IEEE80211_CRYPT_WEP=m
+-CONFIG_IEEE80211_CRYPT_CCMP=m
+-CONFIG_IEEE80211_SOFTMAC=m
+-# CONFIG_IEEE80211_SOFTMAC_DEBUG is not set
+-CONFIG_WIRELESS_EXT=y
+-
+-#
+-# Device Drivers
+-#
+-
+-#
+-# Generic Driver Options
+-#
+-CONFIG_STANDALONE=y
+-CONFIG_PREVENT_FIRMWARE_BUILD=y
+-# CONFIG_FW_LOADER is not set
+-# CONFIG_SYS_HYPERVISOR is not set
+-
+-#
+-# Connector - unified userspace <-> kernelspace linker
+-#
+-CONFIG_CONNECTOR=m
+-
+-#
+-# Memory Technology Devices (MTD)
+-#
+-CONFIG_MTD=y
+-# CONFIG_MTD_DEBUG is not set
+-# CONFIG_MTD_CONCAT is not set
+-# CONFIG_MTD_PARTITIONS is not set
+-
+-#
+-# User Modules And Translation Layers
+-#
+-CONFIG_MTD_CHAR=y
+-# CONFIG_MTD_BLOCK is not set
+-# CONFIG_MTD_BLOCK_RO is not set
+-# CONFIG_FTL is not set
+-# CONFIG_NFTL is not set
+-# CONFIG_INFTL is not set
+-# CONFIG_RFD_FTL is not set
+-
+-#
+-# RAM/ROM/Flash chip drivers
+-#
+-CONFIG_MTD_CFI=y
+-# CONFIG_MTD_JEDECPROBE is not set
+-CONFIG_MTD_GEN_PROBE=y
+-# CONFIG_MTD_CFI_ADV_OPTIONS is not set
+-CONFIG_MTD_MAP_BANK_WIDTH_1=y
+-CONFIG_MTD_MAP_BANK_WIDTH_2=y
+-CONFIG_MTD_MAP_BANK_WIDTH_4=y
+-# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
+-# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
+-# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
+-CONFIG_MTD_CFI_I1=y
+-CONFIG_MTD_CFI_I2=y
+-# CONFIG_MTD_CFI_I4 is not set
+-# CONFIG_MTD_CFI_I8 is not set
+-CONFIG_MTD_CFI_INTELEXT=y
+-# CONFIG_MTD_CFI_AMDSTD is not set
+-# CONFIG_MTD_CFI_STAA is not set
+-CONFIG_MTD_CFI_UTIL=y
+-# CONFIG_MTD_RAM is not set
+-# CONFIG_MTD_ROM is not set
+-# CONFIG_MTD_ABSENT is not set
+-# CONFIG_MTD_OBSOLETE_CHIPS is not set
+-
+-#
+-# Mapping drivers for chip access
+-#
+-# CONFIG_MTD_COMPLEX_MAPPINGS is not set
+-CONFIG_MTD_PHYSMAP=y
+-CONFIG_MTD_PHYSMAP_START=0x8000000
+-CONFIG_MTD_PHYSMAP_LEN=0x2000000
+-CONFIG_MTD_PHYSMAP_BANKWIDTH=2
+-# CONFIG_MTD_PLATRAM is not set
+-
+-#
+-# Self-contained MTD device drivers
+-#
+-# CONFIG_MTD_SLRAM is not set
+-# CONFIG_MTD_PHRAM is not set
+-# CONFIG_MTD_MTDRAM is not set
+-# CONFIG_MTD_BLOCK2MTD is not set
+-
+-#
+-# Disk-On-Chip Device Drivers
+-#
+-# CONFIG_MTD_DOC2000 is not set
+-# CONFIG_MTD_DOC2001 is not set
+-# CONFIG_MTD_DOC2001PLUS is not set
+-
+-#
+-# NAND Flash Device Drivers
+-#
+-# CONFIG_MTD_NAND is not set
+-
+-#
+-# OneNAND Flash Device Drivers
+-#
+-# CONFIG_MTD_ONENAND is not set
+-
+-#
+-# Parallel port support
+-#
+-# CONFIG_PARPORT is not set
+-
+-#
+-# Plug and Play support
+-#
+-
+-#
+-# Block devices
+-#
+-# CONFIG_BLK_DEV_COW_COMMON is not set
+-CONFIG_BLK_DEV_LOOP=y
+-# CONFIG_BLK_DEV_CRYPTOLOOP is not set
+-# CONFIG_BLK_DEV_NBD is not set
+-# CONFIG_BLK_DEV_RAM is not set
+-# CONFIG_BLK_DEV_INITRD is not set
+-CONFIG_CDROM_PKTCDVD=m
+-CONFIG_CDROM_PKTCDVD_BUFFERS=8
+-# CONFIG_CDROM_PKTCDVD_WCACHE is not set
+-CONFIG_ATA_OVER_ETH=m
+-
+-#
+-# ATA/ATAPI/MFM/RLL support
+-#
+-CONFIG_IDE=y
+-CONFIG_BLK_DEV_IDE=y
+-
+-#
+-# Please see Documentation/ide.txt for help/info on IDE drives
+-#
+-# CONFIG_BLK_DEV_IDE_SATA is not set
+-CONFIG_BLK_DEV_IDEDISK=y
+-# CONFIG_IDEDISK_MULTI_MODE is not set
+-# CONFIG_BLK_DEV_IDECD is not set
+-# CONFIG_BLK_DEV_IDETAPE is not set
+-# CONFIG_BLK_DEV_IDEFLOPPY is not set
+-# CONFIG_IDE_TASK_IOCTL is not set
+-
+-#
+-# IDE chipset support/bugfixes
+-#
+-CONFIG_IDE_GENERIC=y
+-# CONFIG_IDE_ARM is not set
+-# CONFIG_BLK_DEV_IDEDMA is not set
+-# CONFIG_IDEDMA_AUTO is not set
+-# CONFIG_BLK_DEV_HD is not set
+-
+-#
+-# SCSI device support
+-#
+-CONFIG_RAID_ATTRS=m
+-# CONFIG_SCSI is not set
+-
+-#
+-# Multi-device support (RAID and LVM)
+-#
+-# CONFIG_MD is not set
+-
+-#
+-# Fusion MPT device support
+-#
+-# CONFIG_FUSION is not set
+-
+-#
+-# IEEE 1394 (FireWire) support
+-#
+-
+-#
+-# I2O device support
+-#
+-
+-#
+-# Network device support
+-#
+-CONFIG_NETDEVICES=y
+-# CONFIG_DUMMY is not set
+-# CONFIG_BONDING is not set
+-# CONFIG_EQUALIZER is not set
+-# CONFIG_TUN is not set
+-
+-#
+-# PHY device support
+-#
+-CONFIG_PHYLIB=m
+-
+-#
+-# MII PHY device drivers
+-#
+-CONFIG_MARVELL_PHY=m
+-CONFIG_DAVICOM_PHY=m
+-CONFIG_QSEMI_PHY=m
+-CONFIG_LXT_PHY=m
+-CONFIG_CICADA_PHY=m
+-CONFIG_VITESSE_PHY=m
+-CONFIG_SMSC_PHY=m
+-
+-#
+-# Ethernet (10 or 100Mbit)
+-#
+-CONFIG_NET_ETHERNET=y
+-# CONFIG_MII is not set
+-# CONFIG_DM9000 is not set
+-
+-#
+-# Ethernet (1000 Mbit)
+-#
+-
+-#
+-# Ethernet (10000 Mbit)
+-#
+-
+-#
+-# Token Ring devices
+-#
+-
+-#
+-# Wireless LAN (non-hamradio)
+-#
+-# CONFIG_NET_RADIO is not set
+-
+-#
+-# Wan interfaces
+-#
+-# CONFIG_WAN is not set
+-# CONFIG_PPP is not set
+-# CONFIG_SLIP is not set
+-# CONFIG_SHAPER is not set
+-# CONFIG_NETCONSOLE is not set
+-# CONFIG_NETPOLL is not set
+-# CONFIG_NET_POLL_CONTROLLER is not set
+-
+-#
+-# ISDN subsystem
+-#
+-# CONFIG_ISDN is not set
+-
+-#
+-# Telephony Support
+-#
+-# CONFIG_PHONE is not set
+-
+-#
+-# Input device support
+-#
+-CONFIG_INPUT=y
+-
+-#
+-# Userland interfaces
+-#
+-CONFIG_INPUT_MOUSEDEV=y
+-CONFIG_INPUT_MOUSEDEV_PSAUX=y
+-CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
+-CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
+-# CONFIG_INPUT_JOYDEV is not set
+-# CONFIG_INPUT_TSDEV is not set
+-# CONFIG_INPUT_EVDEV is not set
+-# CONFIG_INPUT_EVBUG is not set
+-
+-#
+-# Input Device Drivers
+-#
+-# CONFIG_INPUT_KEYBOARD is not set
+-# CONFIG_INPUT_MOUSE is not set
+-# CONFIG_INPUT_JOYSTICK is not set
+-# CONFIG_INPUT_TOUCHSCREEN is not set
+-# CONFIG_INPUT_MISC is not set
+-
+-#
+-# Hardware I/O ports
+-#
+-CONFIG_SERIO=y
+-# CONFIG_SERIO_I8042 is not set
+-CONFIG_SERIO_SERPORT=y
+-# CONFIG_SERIO_LIBPS2 is not set
+-CONFIG_SERIO_RAW=m
+-# CONFIG_GAMEPORT is not set
+-
+-#
+-# Character devices
+-#
+-CONFIG_VT=y
+-CONFIG_VT_CONSOLE=y
+-CONFIG_HW_CONSOLE=y
+-CONFIG_VT_HW_CONSOLE_BINDING=y
+-# CONFIG_SERIAL_NONSTANDARD is not set
+-# CONFIG_QTRONIX_KEYBOARD is not set
+-# CONFIG_IT8172_SCR0 is not set
+-# CONFIG_IT8172_SCR1 is not set
+-# CONFIG_ITE_GPIO is not set
+-
+-#
+-# Serial drivers
+-#
+-CONFIG_SERIAL_8250=y
+-CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_SERIAL_8250_NR_UARTS=4
+-CONFIG_SERIAL_8250_RUNTIME_UARTS=4
+-# CONFIG_SERIAL_8250_EXTENDED is not set
+-
+-#
+-# Non-8250 serial port support
+-#
+-CONFIG_SERIAL_CORE=y
+-CONFIG_SERIAL_CORE_CONSOLE=y
+-CONFIG_UNIX98_PTYS=y
+-CONFIG_LEGACY_PTYS=y
+-CONFIG_LEGACY_PTY_COUNT=256
+-
+-#
+-# IPMI
+-#
+-# CONFIG_IPMI_HANDLER is not set
+-
+-#
+-# Watchdog Cards
+-#
+-# CONFIG_WATCHDOG is not set
+-# CONFIG_HW_RANDOM is not set
+-# CONFIG_RTC is not set
+-# CONFIG_GEN_RTC is not set
+-# CONFIG_DTLK is not set
+-# CONFIG_R3964 is not set
+-
+-#
+-# Ftape, the floppy tape device driver
+-#
+-# CONFIG_RAW_DRIVER is not set
+-
+-#
+-# TPM devices
+-#
+-# CONFIG_TCG_TPM is not set
+-# CONFIG_TELCLOCK is not set
+-
+-#
+-# I2C support
+-#
+-# CONFIG_I2C is not set
+-
+-#
+-# SPI support
+-#
+-# CONFIG_SPI is not set
+-# CONFIG_SPI_MASTER is not set
+-
+-#
+-# Dallas's 1-wire bus
+-#
+-# CONFIG_W1 is not set
+-
+-#
+-# Hardware Monitoring support
+-#
+-# CONFIG_HWMON is not set
+-# CONFIG_HWMON_VID is not set
+-
+-#
+-# Misc devices
+-#
+-
+-#
+-# Multimedia devices
+-#
+-# CONFIG_VIDEO_DEV is not set
+-CONFIG_VIDEO_V4L2=y
+-
+-#
+-# Digital Video Broadcasting Devices
+-#
+-# CONFIG_DVB is not set
+-
+-#
+-# Graphics support
+-#
+-# CONFIG_FIRMWARE_EDID is not set
+-# CONFIG_FB is not set
+-
+-#
+-# Console display driver support
+-#
+-# CONFIG_VGA_CONSOLE is not set
+-CONFIG_DUMMY_CONSOLE=y
+-
+-#
+-# Sound
+-#
+-CONFIG_SOUND=y
+-
+-#
+-# Advanced Linux Sound Architecture
+-#
+-# CONFIG_SND is not set
+-
+-#
+-# Open Sound System
+-#
+-CONFIG_SOUND_PRIME=y
+-CONFIG_SOUND_IT8172=y
+-# CONFIG_SOUND_MSNDCLAS is not set
+-# CONFIG_SOUND_MSNDPIN is not set
+-
+-#
+-# USB support
+-#
+-# CONFIG_USB_ARCH_HAS_HCD is not set
+-# CONFIG_USB_ARCH_HAS_OHCI is not set
+-# CONFIG_USB_ARCH_HAS_EHCI is not set
+-
+-#
+-# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
+-#
+-
+-#
+-# USB Gadget Support
+-#
+-# CONFIG_USB_GADGET is not set
+-
+-#
+-# MMC/SD Card support
+-#
+-# CONFIG_MMC is not set
+-
+-#
+-# LED devices
+-#
+-# CONFIG_NEW_LEDS is not set
+-
+-#
+-# LED drivers
+-#
+-
+-#
+-# LED Triggers
+-#
+-
+-#
+-# InfiniBand support
+-#
+-
+-#
+-# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
+-#
+-
+-#
+-# Real Time Clock
+-#
+-# CONFIG_RTC_CLASS is not set
+-
+-#
+-# DMA Engine support
+-#
+-# CONFIG_DMA_ENGINE is not set
+-
+-#
+-# DMA Clients
+-#
+-
+-#
+-# DMA Devices
+-#
+-
+-#
+-# File systems
+-#
+-CONFIG_EXT2_FS=y
+-# CONFIG_EXT2_FS_XATTR is not set
+-# CONFIG_EXT2_FS_XIP is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_REISERFS_FS is not set
+-# CONFIG_JFS_FS is not set
+-# CONFIG_FS_POSIX_ACL is not set
+-# CONFIG_XFS_FS is not set
+-# CONFIG_OCFS2_FS is not set
+-# CONFIG_MINIX_FS is not set
+-# CONFIG_ROMFS_FS is not set
+-CONFIG_INOTIFY=y
+-CONFIG_INOTIFY_USER=y
+-# CONFIG_QUOTA is not set
+-CONFIG_DNOTIFY=y
+-# CONFIG_AUTOFS_FS is not set
+-# CONFIG_AUTOFS4_FS is not set
+-CONFIG_FUSE_FS=m
+-
+-#
+-# CD-ROM/DVD Filesystems
+-#
+-# CONFIG_ISO9660_FS is not set
+-# CONFIG_UDF_FS is not set
+-
+-#
+-# DOS/FAT/NT Filesystems
+-#
+-# CONFIG_MSDOS_FS is not set
+-# CONFIG_VFAT_FS is not set
+-# CONFIG_NTFS_FS is not set
+-
+-#
+-# Pseudo filesystems
+-#
+-CONFIG_PROC_FS=y
+-CONFIG_PROC_KCORE=y
+-CONFIG_SYSFS=y
+-# CONFIG_TMPFS is not set
+-# CONFIG_HUGETLB_PAGE is not set
+-CONFIG_RAMFS=y
+-# CONFIG_CONFIGFS_FS is not set
+-
+-#
+-# Miscellaneous filesystems
+-#
+-# CONFIG_ADFS_FS is not set
+-# CONFIG_AFFS_FS is not set
+-# CONFIG_HFS_FS is not set
+-# CONFIG_HFSPLUS_FS is not set
+-# CONFIG_BEFS_FS is not set
+-# CONFIG_BFS_FS is not set
+-# CONFIG_EFS_FS is not set
+-# CONFIG_JFFS_FS is not set
+-# CONFIG_JFFS2_FS is not set
+-# CONFIG_CRAMFS is not set
+-# CONFIG_VXFS_FS is not set
+-# CONFIG_HPFS_FS is not set
+-# CONFIG_QNX4FS_FS is not set
+-# CONFIG_SYSV_FS is not set
+-# CONFIG_UFS_FS is not set
+-
+-#
+-# Network File Systems
+-#
+-CONFIG_NFS_FS=y
+-# CONFIG_NFS_V3 is not set
+-# CONFIG_NFS_V4 is not set
+-# CONFIG_NFS_DIRECTIO is not set
+-# CONFIG_NFSD is not set
+-CONFIG_ROOT_NFS=y
+-CONFIG_LOCKD=y
+-CONFIG_NFS_COMMON=y
+-CONFIG_SUNRPC=y
+-# CONFIG_RPCSEC_GSS_KRB5 is not set
+-# CONFIG_RPCSEC_GSS_SPKM3 is not set
+-# CONFIG_SMB_FS is not set
+-# CONFIG_CIFS is not set
+-# CONFIG_CIFS_DEBUG2 is not set
+-# CONFIG_NCP_FS is not set
+-# CONFIG_CODA_FS is not set
+-# CONFIG_AFS_FS is not set
+-# CONFIG_9P_FS is not set
+-
+-#
+-# Partition Types
+-#
+-# CONFIG_PARTITION_ADVANCED is not set
+-CONFIG_MSDOS_PARTITION=y
+-
+-#
+-# Native Language Support
+-#
+-# CONFIG_NLS is not set
+-
+-#
+-# Profiling support
+-#
+-# CONFIG_PROFILING is not set
+-
+-#
+-# Kernel hacking
+-#
+-CONFIG_TRACE_IRQFLAGS_SUPPORT=y
+-# CONFIG_PRINTK_TIME is not set
+-# CONFIG_MAGIC_SYSRQ is not set
+-# CONFIG_UNUSED_SYMBOLS is not set
+-# CONFIG_DEBUG_KERNEL is not set
+-CONFIG_LOG_BUF_SHIFT=14
+-# CONFIG_DEBUG_FS is not set
+-CONFIG_CROSSCOMPILE=y
+-CONFIG_CMDLINE=""
+-
+-#
+-# Security options
+-#
+-CONFIG_KEYS=y
+-CONFIG_KEYS_DEBUG_PROC_KEYS=y
+-# CONFIG_SECURITY is not set
+-
+-#
+-# Cryptographic options
+-#
+-CONFIG_CRYPTO=y
+-CONFIG_CRYPTO_HMAC=y
+-CONFIG_CRYPTO_NULL=m
+-CONFIG_CRYPTO_MD4=m
+-CONFIG_CRYPTO_MD5=m
+-CONFIG_CRYPTO_SHA1=m
+-CONFIG_CRYPTO_SHA256=m
+-CONFIG_CRYPTO_SHA512=m
+-CONFIG_CRYPTO_WP512=m
+-CONFIG_CRYPTO_TGR192=m
+-CONFIG_CRYPTO_DES=m
+-CONFIG_CRYPTO_BLOWFISH=m
+-CONFIG_CRYPTO_TWOFISH=m
+-CONFIG_CRYPTO_SERPENT=m
+-CONFIG_CRYPTO_AES=m
+-CONFIG_CRYPTO_CAST5=m
+-CONFIG_CRYPTO_CAST6=m
+-CONFIG_CRYPTO_TEA=m
+-CONFIG_CRYPTO_ARC4=m
+-CONFIG_CRYPTO_KHAZAD=m
+-CONFIG_CRYPTO_ANUBIS=m
+-CONFIG_CRYPTO_DEFLATE=m
+-CONFIG_CRYPTO_MICHAEL_MIC=m
+-CONFIG_CRYPTO_CRC32C=m
+-# CONFIG_CRYPTO_TEST is not set
+-
+-#
+-# Hardware crypto devices
+-#
+-
+-#
+-# Library routines
+-#
+-# CONFIG_CRC_CCITT is not set
+-CONFIG_CRC16=m
+-CONFIG_CRC32=m
+-CONFIG_LIBCRC32C=m
+-CONFIG_ZLIB_INFLATE=m
+-CONFIG_ZLIB_DEFLATE=m
+-CONFIG_PLIST=y
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ivr_defconfig mips/arch/mips/configs/ivr_defconfig
+--- mips-orig/arch/mips/configs/ivr_defconfig	2006-10-02 22:32:45.826735750 +0900
++++ mips/arch/mips/configs/ivr_defconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,920 +0,0 @@
+-#
+-# Automatically generated make config: don't edit
+-# Linux kernel version: 2.6.18-rc1
+-# Thu Jul  6 10:04:12 2006
+-#
+-CONFIG_MIPS=y
+-
+-#
+-# Machine selection
+-#
+-# CONFIG_MIPS_MTX1 is not set
+-# CONFIG_MIPS_BOSPORUS is not set
+-# CONFIG_MIPS_PB1000 is not set
+-# CONFIG_MIPS_PB1100 is not set
+-# CONFIG_MIPS_PB1500 is not set
+-# CONFIG_MIPS_PB1550 is not set
+-# CONFIG_MIPS_PB1200 is not set
+-# CONFIG_MIPS_DB1000 is not set
+-# CONFIG_MIPS_DB1100 is not set
+-# CONFIG_MIPS_DB1500 is not set
+-# CONFIG_MIPS_DB1550 is not set
+-# CONFIG_MIPS_DB1200 is not set
+-# CONFIG_MIPS_MIRAGE is not set
+-# CONFIG_BASLER_EXCITE is not set
+-# CONFIG_MIPS_COBALT is not set
+-# CONFIG_MACH_DECSTATION is not set
+-# CONFIG_MIPS_EV64120 is not set
+-CONFIG_MIPS_IVR=y
+-# CONFIG_MIPS_ITE8172 is not set
+-# CONFIG_MACH_JAZZ is not set
+-# CONFIG_LASAT is not set
+-# CONFIG_MIPS_ATLAS is not set
+-# CONFIG_MIPS_MALTA is not set
+-# CONFIG_MIPS_SEAD is not set
+-# CONFIG_WR_PPMC is not set
+-# CONFIG_MIPS_SIM is not set
+-# CONFIG_MOMENCO_JAGUAR_ATX is not set
+-# CONFIG_MOMENCO_OCELOT is not set
+-# CONFIG_MOMENCO_OCELOT_3 is not set
+-# CONFIG_MOMENCO_OCELOT_C is not set
+-# CONFIG_MOMENCO_OCELOT_G is not set
+-# CONFIG_MIPS_XXS1500 is not set
+-# CONFIG_PNX8550_V2PCI is not set
+-# CONFIG_PNX8550_JBS is not set
+-# CONFIG_DDB5477 is not set
+-# CONFIG_MACH_VR41XX is not set
+-# CONFIG_PMC_YOSEMITE is not set
+-# CONFIG_QEMU is not set
+-# CONFIG_MARKEINS is not set
+-# CONFIG_SGI_IP22 is not set
+-# CONFIG_SGI_IP27 is not set
+-# CONFIG_SGI_IP32 is not set
+-# CONFIG_SIBYTE_BIGSUR is not set
+-# CONFIG_SIBYTE_SWARM is not set
+-# CONFIG_SIBYTE_SENTOSA is not set
+-# CONFIG_SIBYTE_RHONE is not set
+-# CONFIG_SIBYTE_CARMEL is not set
+-# CONFIG_SIBYTE_PTSWARM is not set
+-# CONFIG_SIBYTE_LITTLESUR is not set
+-# CONFIG_SIBYTE_CRHINE is not set
+-# CONFIG_SIBYTE_CRHONE is not set
+-# CONFIG_SNI_RM200_PCI is not set
+-# CONFIG_TOSHIBA_JMR3927 is not set
+-# CONFIG_TOSHIBA_RBTX4927 is not set
+-# CONFIG_TOSHIBA_RBTX4938 is not set
+-CONFIG_RWSEM_GENERIC_SPINLOCK=y
+-CONFIG_GENERIC_FIND_NEXT_BIT=y
+-CONFIG_GENERIC_HWEIGHT=y
+-CONFIG_GENERIC_CALIBRATE_DELAY=y
+-CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
+-CONFIG_DMA_NONCOHERENT=y
+-CONFIG_DMA_NEED_PCI_MAP_STATE=y
+-# CONFIG_CPU_BIG_ENDIAN is not set
+-CONFIG_CPU_LITTLE_ENDIAN=y
+-CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+-CONFIG_ITE_BOARD_GEN=y
+-CONFIG_IT8172_CIR=y
+-CONFIG_MIPS_L1_CACHE_SHIFT=5
+-
+-#
+-# CPU selection
+-#
+-# CONFIG_CPU_MIPS32_R1 is not set
+-# CONFIG_CPU_MIPS32_R2 is not set
+-# CONFIG_CPU_MIPS64_R1 is not set
+-# CONFIG_CPU_MIPS64_R2 is not set
+-# CONFIG_CPU_R3000 is not set
+-# CONFIG_CPU_TX39XX is not set
+-# CONFIG_CPU_VR41XX is not set
+-# CONFIG_CPU_R4300 is not set
+-# CONFIG_CPU_R4X00 is not set
+-# CONFIG_CPU_TX49XX is not set
+-# CONFIG_CPU_R5000 is not set
+-# CONFIG_CPU_R5432 is not set
+-# CONFIG_CPU_R6000 is not set
+-CONFIG_CPU_NEVADA=y
+-# CONFIG_CPU_R8000 is not set
+-# CONFIG_CPU_R10000 is not set
+-# CONFIG_CPU_RM7000 is not set
+-# CONFIG_CPU_RM9000 is not set
+-# CONFIG_CPU_SB1 is not set
+-CONFIG_SYS_HAS_CPU_NEVADA=y
+-CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
+-
+-#
+-# Kernel type
+-#
+-CONFIG_32BIT=y
+-# CONFIG_64BIT is not set
+-CONFIG_PAGE_SIZE_4KB=y
+-# CONFIG_PAGE_SIZE_8KB is not set
+-# CONFIG_PAGE_SIZE_16KB is not set
+-# CONFIG_PAGE_SIZE_64KB is not set
+-CONFIG_MIPS_MT_DISABLED=y
+-# CONFIG_MIPS_MT_SMTC is not set
+-# CONFIG_MIPS_MT_SMP is not set
+-# CONFIG_MIPS_VPE_LOADER is not set
+-CONFIG_CPU_HAS_LLSC=y
+-CONFIG_CPU_HAS_SYNC=y
+-CONFIG_GENERIC_HARDIRQS=y
+-CONFIG_GENERIC_IRQ_PROBE=y
+-CONFIG_ARCH_FLATMEM_ENABLE=y
+-CONFIG_SELECT_MEMORY_MODEL=y
+-CONFIG_FLATMEM_MANUAL=y
+-# CONFIG_DISCONTIGMEM_MANUAL is not set
+-# CONFIG_SPARSEMEM_MANUAL is not set
+-CONFIG_FLATMEM=y
+-CONFIG_FLAT_NODE_MEM_MAP=y
+-# CONFIG_SPARSEMEM_STATIC is not set
+-CONFIG_SPLIT_PTLOCK_CPUS=4
+-# CONFIG_RESOURCES_64BIT is not set
+-# CONFIG_HZ_48 is not set
+-# CONFIG_HZ_100 is not set
+-# CONFIG_HZ_128 is not set
+-# CONFIG_HZ_250 is not set
+-# CONFIG_HZ_256 is not set
+-CONFIG_HZ_1000=y
+-# CONFIG_HZ_1024 is not set
+-CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
+-CONFIG_HZ=1000
+-CONFIG_PREEMPT_NONE=y
+-# CONFIG_PREEMPT_VOLUNTARY is not set
+-# CONFIG_PREEMPT is not set
+-CONFIG_LOCKDEP_SUPPORT=y
+-CONFIG_STACKTRACE_SUPPORT=y
+-CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
+-
+-#
+-# Code maturity level options
+-#
+-CONFIG_EXPERIMENTAL=y
+-CONFIG_BROKEN_ON_SMP=y
+-CONFIG_INIT_ENV_ARG_LIMIT=32
+-
+-#
+-# General setup
+-#
+-CONFIG_LOCALVERSION=""
+-CONFIG_LOCALVERSION_AUTO=y
+-CONFIG_SWAP=y
+-CONFIG_SYSVIPC=y
+-# CONFIG_POSIX_MQUEUE is not set
+-CONFIG_BSD_PROCESS_ACCT=y
+-# CONFIG_BSD_PROCESS_ACCT_V3 is not set
+-CONFIG_SYSCTL=y
+-# CONFIG_AUDIT is not set
+-# CONFIG_IKCONFIG is not set
 -CONFIG_RELAY=y
 -CONFIG_INITRAMFS_SOURCE=""
 -# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
@@ -431,7 +1331,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_MODULE_UNLOAD=y
 -# CONFIG_MODULE_FORCE_UNLOAD is not set
 -CONFIG_MODVERSIONS=y
--# CONFIG_MODULE_SRCVERSION_ALL is not set
+-CONFIG_MODULE_SRCVERSION_ALL=y
 -CONFIG_KMOD=y
 -
 -#
@@ -488,17 +1388,17 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -#
 -# CONFIG_NETDEBUG is not set
 -CONFIG_PACKET=y
--# CONFIG_PACKET_MMAP is not set
+-CONFIG_PACKET_MMAP=y
 -CONFIG_UNIX=y
 -CONFIG_XFRM=y
--# CONFIG_XFRM_USER is not set
+-CONFIG_XFRM_USER=m
 -CONFIG_NET_KEY=y
 -CONFIG_INET=y
 -# CONFIG_IP_MULTICAST is not set
 -# CONFIG_IP_ADVANCED_ROUTER is not set
 -CONFIG_IP_FIB_HASH=y
 -CONFIG_IP_PNP=y
--CONFIG_IP_PNP_DHCP=y
+-# CONFIG_IP_PNP_DHCP is not set
 -CONFIG_IP_PNP_BOOTP=y
 -# CONFIG_IP_PNP_RARP is not set
 -# CONFIG_NET_IPIP is not set
@@ -516,69 +1416,11 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_INET_TCP_DIAG=y
 -# CONFIG_TCP_CONG_ADVANCED is not set
 -CONFIG_TCP_CONG_BIC=y
--
--#
--# IP: Virtual Server Configuration
--#
--# CONFIG_IP_VS is not set
--CONFIG_IPV6=m
--# CONFIG_IPV6_PRIVACY is not set
--CONFIG_IPV6_ROUTER_PREF=y
--CONFIG_IPV6_ROUTE_INFO=y
--# CONFIG_INET6_AH is not set
--# CONFIG_INET6_ESP is not set
--# CONFIG_INET6_IPCOMP is not set
+-# CONFIG_IPV6 is not set
 -# CONFIG_INET6_XFRM_TUNNEL is not set
 -# CONFIG_INET6_TUNNEL is not set
--CONFIG_INET6_XFRM_MODE_TRANSPORT=m
--CONFIG_INET6_XFRM_MODE_TUNNEL=m
--# CONFIG_IPV6_TUNNEL is not set
 -CONFIG_NETWORK_SECMARK=y
--CONFIG_NETFILTER=y
--# CONFIG_NETFILTER_DEBUG is not set
--
--#
--# Core Netfilter Configuration
--#
--CONFIG_NETFILTER_NETLINK=m
--CONFIG_NETFILTER_NETLINK_QUEUE=m
--CONFIG_NETFILTER_NETLINK_LOG=m
--# CONFIG_NF_CONNTRACK is not set
--CONFIG_NETFILTER_XTABLES=m
--CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
--CONFIG_NETFILTER_XT_TARGET_MARK=m
--CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
--CONFIG_NETFILTER_XT_TARGET_SECMARK=m
--CONFIG_NETFILTER_XT_MATCH_COMMENT=m
--CONFIG_NETFILTER_XT_MATCH_DCCP=m
--CONFIG_NETFILTER_XT_MATCH_ESP=m
--CONFIG_NETFILTER_XT_MATCH_LENGTH=m
--CONFIG_NETFILTER_XT_MATCH_LIMIT=m
--CONFIG_NETFILTER_XT_MATCH_MAC=m
--CONFIG_NETFILTER_XT_MATCH_MARK=m
--CONFIG_NETFILTER_XT_MATCH_POLICY=m
--CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
--CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
--CONFIG_NETFILTER_XT_MATCH_QUOTA=m
--CONFIG_NETFILTER_XT_MATCH_REALM=m
--CONFIG_NETFILTER_XT_MATCH_SCTP=m
--CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
--CONFIG_NETFILTER_XT_MATCH_STRING=m
--CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
--
--#
--# IP: Netfilter Configuration
--#
--# CONFIG_IP_NF_CONNTRACK is not set
--# CONFIG_IP_NF_QUEUE is not set
--# CONFIG_IP_NF_IPTABLES is not set
--# CONFIG_IP_NF_ARPTABLES is not set
--
--#
--# IPv6: Netfilter Configuration (EXPERIMENTAL)
--#
--# CONFIG_IP6_NF_QUEUE is not set
--# CONFIG_IP6_NF_IPTABLES is not set
+-# CONFIG_NETFILTER is not set
 -
 -#
 -# DCCP Configuration (EXPERIMENTAL)
@@ -611,7 +1453,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# QoS and/or fair queueing
 -#
 -# CONFIG_NET_SCHED is not set
--CONFIG_NET_CLS_ROUTE=y
 -
 -#
 -# Network testing
@@ -667,83 +1508,48 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_BLK_DEV_DAC960 is not set
 -# CONFIG_BLK_DEV_UMEM is not set
 -# CONFIG_BLK_DEV_COW_COMMON is not set
--CONFIG_BLK_DEV_LOOP=y
--# CONFIG_BLK_DEV_CRYPTOLOOP is not set
+-# CONFIG_BLK_DEV_LOOP is not set
 -# CONFIG_BLK_DEV_NBD is not set
 -# CONFIG_BLK_DEV_SX8 is not set
 -# CONFIG_BLK_DEV_RAM is not set
 -# CONFIG_BLK_DEV_INITRD is not set
--# CONFIG_CDROM_PKTCDVD is not set
+-CONFIG_CDROM_PKTCDVD=m
+-CONFIG_CDROM_PKTCDVD_BUFFERS=8
+-# CONFIG_CDROM_PKTCDVD_WCACHE is not set
 -CONFIG_ATA_OVER_ETH=m
 -
 -#
 -# ATA/ATAPI/MFM/RLL support
 -#
--# CONFIG_IDE is not set
+-CONFIG_IDE=y
+-CONFIG_BLK_DEV_IDE=y
+-
+-#
+-# Please see Documentation/ide.txt for help/info on IDE drives
+-#
+-# CONFIG_BLK_DEV_IDE_SATA is not set
+-CONFIG_BLK_DEV_IDEDISK=y
+-# CONFIG_IDEDISK_MULTI_MODE is not set
+-# CONFIG_BLK_DEV_IDECD is not set
+-# CONFIG_BLK_DEV_IDETAPE is not set
+-# CONFIG_BLK_DEV_IDEFLOPPY is not set
+-# CONFIG_IDE_TASK_IOCTL is not set
+-
+-#
+-# IDE chipset support/bugfixes
+-#
+-CONFIG_IDE_GENERIC=y
+-# CONFIG_BLK_DEV_IDEPCI is not set
+-# CONFIG_IDE_ARM is not set
+-# CONFIG_BLK_DEV_IDEDMA is not set
+-# CONFIG_IDEDMA_AUTO is not set
+-# CONFIG_BLK_DEV_HD is not set
 -
 -#
 -# SCSI device support
 -#
 -CONFIG_RAID_ATTRS=m
--CONFIG_SCSI=m
--CONFIG_SCSI_PROC_FS=y
--
--#
--# SCSI support type (disk, tape, CD-ROM)
--#
--# CONFIG_BLK_DEV_SD is not set
--# CONFIG_CHR_DEV_ST is not set
--# CONFIG_CHR_DEV_OSST is not set
--# CONFIG_BLK_DEV_SR is not set
--# CONFIG_CHR_DEV_SG is not set
--# CONFIG_CHR_DEV_SCH is not set
--
--#
--# Some SCSI devices (e.g. CD jukebox) support multiple LUNs
--#
--# CONFIG_SCSI_MULTI_LUN is not set
--# CONFIG_SCSI_CONSTANTS is not set
--# CONFIG_SCSI_LOGGING is not set
--
--#
--# SCSI Transport Attributes
--#
--# CONFIG_SCSI_SPI_ATTRS is not set
--CONFIG_SCSI_FC_ATTRS=m
--CONFIG_SCSI_ISCSI_ATTRS=m
--CONFIG_SCSI_SAS_ATTRS=m
--
--#
--# SCSI low-level drivers
--#
--CONFIG_ISCSI_TCP=m
--# CONFIG_BLK_DEV_3W_XXXX_RAID is not set
--# CONFIG_SCSI_3W_9XXX is not set
--# CONFIG_SCSI_ACARD is not set
--# CONFIG_SCSI_AACRAID is not set
--# CONFIG_SCSI_AIC7XXX is not set
--# CONFIG_SCSI_AIC7XXX_OLD is not set
--# CONFIG_SCSI_AIC79XX is not set
--# CONFIG_SCSI_DPT_I2O is not set
--# CONFIG_MEGARAID_NEWGEN is not set
--# CONFIG_MEGARAID_LEGACY is not set
--# CONFIG_MEGARAID_SAS is not set
--# CONFIG_SCSI_SATA is not set
--# CONFIG_SCSI_HPTIOP is not set
--# CONFIG_SCSI_DMX3191D is not set
--# CONFIG_SCSI_FUTURE_DOMAIN is not set
--# CONFIG_SCSI_IPS is not set
--# CONFIG_SCSI_INITIO is not set
--# CONFIG_SCSI_INIA100 is not set
--# CONFIG_SCSI_SYM53C8XX_2 is not set
--# CONFIG_SCSI_IPR is not set
--# CONFIG_SCSI_QLOGIC_1280 is not set
--# CONFIG_SCSI_QLA_FC is not set
--# CONFIG_SCSI_LPFC is not set
--# CONFIG_SCSI_DC395x is not set
--# CONFIG_SCSI_DC390T is not set
--# CONFIG_SCSI_NSP32 is not set
--# CONFIG_SCSI_DEBUG is not set
+-# CONFIG_SCSI is not set
 -
 -#
 -# Multi-device support (RAID and LVM)
@@ -754,9 +1560,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# Fusion MPT device support
 -#
 -# CONFIG_FUSION is not set
--# CONFIG_FUSION_SPI is not set
--# CONFIG_FUSION_FC is not set
--# CONFIG_FUSION_SAS is not set
 -
 -#
 -# IEEE 1394 (FireWire) support
@@ -775,7 +1578,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_DUMMY is not set
 -# CONFIG_BONDING is not set
 -# CONFIG_EQUALIZER is not set
--CONFIG_TUN=m
+-# CONFIG_TUN is not set
 -
 -#
 -# ARCnet devices
@@ -802,7 +1605,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# Ethernet (10 or 100Mbit)
 -#
 -CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
+-# CONFIG_MII is not set
 -# CONFIG_HAPPYMEAL is not set
 -# CONFIG_SUNGEM is not set
 -# CONFIG_CASSINI is not set
@@ -814,26 +1617,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -#
 -# CONFIG_NET_TULIP is not set
 -# CONFIG_HP100 is not set
--CONFIG_NET_PCI=y
--# CONFIG_PCNET32 is not set
--# CONFIG_AMD8111_ETH is not set
--# CONFIG_ADAPTEC_STARFIRE is not set
--# CONFIG_B44 is not set
--# CONFIG_FORCEDETH is not set
--# CONFIG_DGRS is not set
--# CONFIG_EEPRO100 is not set
--CONFIG_E100=y
--# CONFIG_FEALNX is not set
--# CONFIG_NATSEMI is not set
--# CONFIG_NE2K_PCI is not set
--# CONFIG_8139CP is not set
--# CONFIG_8139TOO is not set
--# CONFIG_SIS900 is not set
--# CONFIG_EPIC100 is not set
--# CONFIG_SUNDANCE is not set
--# CONFIG_TLAN is not set
--# CONFIG_VIA_RHINE is not set
--# CONFIG_LAN_SAA9730 is not set
+-# CONFIG_NET_PCI is not set
 -
 -#
 -# Ethernet (1000 Mbit)
@@ -849,13 +1633,8 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_SKGE is not set
 -# CONFIG_SKY2 is not set
 -# CONFIG_SK98LIN is not set
--# CONFIG_VIA_VELOCITY is not set
 -# CONFIG_TIGON3 is not set
 -# CONFIG_BNX2 is not set
--CONFIG_MV643XX_ETH=y
--CONFIG_MV643XX_ETH_0=y
--CONFIG_MV643XX_ETH_1=y
--CONFIG_MV643XX_ETH_2=y
 -
 -#
 -# Ethernet (10000 Mbit)
@@ -881,17 +1660,8 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_WAN is not set
 -# CONFIG_FDDI is not set
 -# CONFIG_HIPPI is not set
--CONFIG_PPP=m
--# CONFIG_PPP_MULTILINK is not set
--# CONFIG_PPP_FILTER is not set
--CONFIG_PPP_ASYNC=m
--CONFIG_PPP_SYNC_TTY=m
--CONFIG_PPP_DEFLATE=m
--# CONFIG_PPP_BSDCOMP is not set
--CONFIG_PPP_MPPE=m
--CONFIG_PPPOE=m
+-# CONFIG_PPP is not set
 -# CONFIG_SLIP is not set
--# CONFIG_NET_FC is not set
 -# CONFIG_SHAPER is not set
 -# CONFIG_NETCONSOLE is not set
 -# CONFIG_NETPOLL is not set
@@ -915,7 +1685,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -#
 -# Userland interfaces
 -#
--# CONFIG_INPUT_MOUSEDEV is not set
+-CONFIG_INPUT_MOUSEDEV=y
+-CONFIG_INPUT_MOUSEDEV_PSAUX=y
+-CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
+-CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
 -# CONFIG_INPUT_JOYDEV is not set
 -# CONFIG_INPUT_TSDEV is not set
 -# CONFIG_INPUT_EVDEV is not set
@@ -935,10 +1708,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -#
 -CONFIG_SERIO=y
 -# CONFIG_SERIO_I8042 is not set
--# CONFIG_SERIO_SERPORT is not set
+-CONFIG_SERIO_SERPORT=y
 -# CONFIG_SERIO_PCIPS2 is not set
 -# CONFIG_SERIO_LIBPS2 is not set
--# CONFIG_SERIO_RAW is not set
+-CONFIG_SERIO_RAW=m
 -# CONFIG_GAMEPORT is not set
 -
 -#
@@ -949,6 +1722,9 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_HW_CONSOLE=y
 -CONFIG_VT_HW_CONSOLE_BINDING=y
 -# CONFIG_SERIAL_NONSTANDARD is not set
+-CONFIG_QTRONIX_KEYBOARD=y
+-CONFIG_IT8172_SCR0=y
+-CONFIG_IT8172_SCR1=y
 -
 -#
 -# Serial drivers
@@ -1038,55 +1814,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# Graphics support
 -#
 -# CONFIG_FIRMWARE_EDID is not set
--CONFIG_FB=y
--# CONFIG_FB_CFB_FILLRECT is not set
--# CONFIG_FB_CFB_COPYAREA is not set
--# CONFIG_FB_CFB_IMAGEBLIT is not set
--# CONFIG_FB_MACMODES is not set
--# CONFIG_FB_BACKLIGHT is not set
--CONFIG_FB_MODE_HELPERS=y
--# CONFIG_FB_TILEBLITTING is not set
--# CONFIG_FB_CIRRUS is not set
--# CONFIG_FB_PM2 is not set
--# CONFIG_FB_CYBER2000 is not set
--# CONFIG_FB_ASILIANT is not set
--# CONFIG_FB_IMSTT is not set
--# CONFIG_FB_S1D13XXX is not set
--# CONFIG_FB_NVIDIA is not set
--# CONFIG_FB_RIVA is not set
--# CONFIG_FB_MATROX is not set
--# CONFIG_FB_RADEON is not set
--# CONFIG_FB_ATY128 is not set
--# CONFIG_FB_ATY is not set
--# CONFIG_FB_SAVAGE is not set
--# CONFIG_FB_SIS is not set
--# CONFIG_FB_NEOMAGIC is not set
--# CONFIG_FB_KYRO is not set
--# CONFIG_FB_3DFX is not set
--# CONFIG_FB_VOODOO1 is not set
--# CONFIG_FB_SMIVGX is not set
--# CONFIG_FB_TRIDENT is not set
--# CONFIG_FB_VIRTUAL is not set
+-# CONFIG_FB is not set
 -
 -#
 -# Console display driver support
 -#
 -# CONFIG_VGA_CONSOLE is not set
 -CONFIG_DUMMY_CONSOLE=y
--CONFIG_FRAMEBUFFER_CONSOLE=y
--# CONFIG_FRAMEBUFFER_CONSOLE_ROTATION is not set
--# CONFIG_FONTS is not set
--CONFIG_FONT_8x8=y
--CONFIG_FONT_8x16=y
--
--#
--# Logo configuration
--#
--CONFIG_LOGO=y
--CONFIG_LOGO_LINUX_MONO=y
--CONFIG_LOGO_LINUX_VGA16=y
--CONFIG_LOGO_LINUX_CLUT224=y
--# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
 -
 -#
 -# Sound
@@ -1161,24 +1895,11 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_EXT2_FS=y
 -# CONFIG_EXT2_FS_XATTR is not set
 -# CONFIG_EXT2_FS_XIP is not set
--CONFIG_EXT3_FS=m
--CONFIG_EXT3_FS_XATTR=y
--# CONFIG_EXT3_FS_POSIX_ACL is not set
--# CONFIG_EXT3_FS_SECURITY is not set
--CONFIG_JBD=m
--# CONFIG_JBD_DEBUG is not set
--CONFIG_FS_MBCACHE=y
--CONFIG_REISERFS_FS=m
--# CONFIG_REISERFS_CHECK is not set
--# CONFIG_REISERFS_PROC_INFO is not set
--# CONFIG_REISERFS_FS_XATTR is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_REISERFS_FS is not set
 -# CONFIG_JFS_FS is not set
 -# CONFIG_FS_POSIX_ACL is not set
--CONFIG_XFS_FS=m
--# CONFIG_XFS_QUOTA is not set
--# CONFIG_XFS_SECURITY is not set
--# CONFIG_XFS_POSIX_ACL is not set
--# CONFIG_XFS_RT is not set
+-# CONFIG_XFS_FS is not set
 -# CONFIG_OCFS2_FS is not set
 -# CONFIG_MINIX_FS is not set
 -# CONFIG_ROMFS_FS is not set
@@ -1186,8 +1907,8 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_INOTIFY_USER=y
 -# CONFIG_QUOTA is not set
 -CONFIG_DNOTIFY=y
--CONFIG_AUTOFS_FS=y
--CONFIG_AUTOFS4_FS=m
+-# CONFIG_AUTOFS_FS is not set
+-# CONFIG_AUTOFS4_FS is not set
 -CONFIG_FUSE_FS=m
 -
 -#
@@ -1209,7 +1930,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_PROC_FS=y
 -CONFIG_PROC_KCORE=y
 -CONFIG_SYSFS=y
--CONFIG_TMPFS=y
+-# CONFIG_TMPFS is not set
 -# CONFIG_HUGETLB_PAGE is not set
 -CONFIG_RAMFS=y
 -# CONFIG_CONFIGFS_FS is not set
@@ -1223,8 +1944,8 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# CONFIG_HFSPLUS_FS is not set
 -# CONFIG_BEFS_FS is not set
 -# CONFIG_BFS_FS is not set
--CONFIG_EFS_FS=y
--CONFIG_CRAMFS=y
+-# CONFIG_EFS_FS is not set
+-# CONFIG_CRAMFS is not set
 -# CONFIG_VXFS_FS is not set
 -# CONFIG_HPFS_FS is not set
 -# CONFIG_QNX4FS_FS is not set
@@ -1235,25 +1956,17 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -# Network File Systems
 -#
 -CONFIG_NFS_FS=y
--CONFIG_NFS_V3=y
--# CONFIG_NFS_V3_ACL is not set
+-# CONFIG_NFS_V3 is not set
 -# CONFIG_NFS_V4 is not set
 -# CONFIG_NFS_DIRECTIO is not set
--CONFIG_NFSD=y
--CONFIG_NFSD_V3=y
--# CONFIG_NFSD_V3_ACL is not set
--# CONFIG_NFSD_V4 is not set
--# CONFIG_NFSD_TCP is not set
+-# CONFIG_NFSD is not set
 -CONFIG_ROOT_NFS=y
 -CONFIG_LOCKD=y
--CONFIG_LOCKD_V4=y
--CONFIG_EXPORTFS=y
 -CONFIG_NFS_COMMON=y
 -CONFIG_SUNRPC=y
 -# CONFIG_RPCSEC_GSS_KRB5 is not set
 -# CONFIG_RPCSEC_GSS_SPKM3 is not set
--CONFIG_SMB_FS=m
--# CONFIG_SMB_NLS_DEFAULT is not set
+-# CONFIG_SMB_FS is not set
 -# CONFIG_CIFS is not set
 -# CONFIG_CIFS_DEBUG2 is not set
 -# CONFIG_NCP_FS is not set
@@ -1270,46 +1983,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -#
 -# Native Language Support
 -#
--CONFIG_NLS=m
--CONFIG_NLS_DEFAULT="iso8859-1"
--# CONFIG_NLS_CODEPAGE_437 is not set
--# CONFIG_NLS_CODEPAGE_737 is not set
--# CONFIG_NLS_CODEPAGE_775 is not set
--# CONFIG_NLS_CODEPAGE_850 is not set
--# CONFIG_NLS_CODEPAGE_852 is not set
--# CONFIG_NLS_CODEPAGE_855 is not set
--# CONFIG_NLS_CODEPAGE_857 is not set
--# CONFIG_NLS_CODEPAGE_860 is not set
--# CONFIG_NLS_CODEPAGE_861 is not set
--# CONFIG_NLS_CODEPAGE_862 is not set
--# CONFIG_NLS_CODEPAGE_863 is not set
--# CONFIG_NLS_CODEPAGE_864 is not set
--# CONFIG_NLS_CODEPAGE_865 is not set
--# CONFIG_NLS_CODEPAGE_866 is not set
--# CONFIG_NLS_CODEPAGE_869 is not set
--# CONFIG_NLS_CODEPAGE_936 is not set
--# CONFIG_NLS_CODEPAGE_950 is not set
--# CONFIG_NLS_CODEPAGE_932 is not set
--# CONFIG_NLS_CODEPAGE_949 is not set
--# CONFIG_NLS_CODEPAGE_874 is not set
--# CONFIG_NLS_ISO8859_8 is not set
--# CONFIG_NLS_CODEPAGE_1250 is not set
--# CONFIG_NLS_CODEPAGE_1251 is not set
--# CONFIG_NLS_ASCII is not set
--# CONFIG_NLS_ISO8859_1 is not set
--# CONFIG_NLS_ISO8859_2 is not set
--# CONFIG_NLS_ISO8859_3 is not set
--# CONFIG_NLS_ISO8859_4 is not set
--# CONFIG_NLS_ISO8859_5 is not set
--# CONFIG_NLS_ISO8859_6 is not set
--# CONFIG_NLS_ISO8859_7 is not set
--# CONFIG_NLS_ISO8859_9 is not set
--# CONFIG_NLS_ISO8859_13 is not set
--# CONFIG_NLS_ISO8859_14 is not set
--# CONFIG_NLS_ISO8859_15 is not set
--# CONFIG_NLS_KOI8_R is not set
--# CONFIG_NLS_KOI8_U is not set
--# CONFIG_NLS_UTF8 is not set
+-# CONFIG_NLS is not set
 -
 -#
 -# Profiling support
@@ -1327,12 +2001,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -CONFIG_LOG_BUF_SHIFT=14
 -# CONFIG_DEBUG_FS is not set
 -CONFIG_CROSSCOMPILE=y
--CONFIG_CMDLINE="ip=any root=nfs"
+-CONFIG_CMDLINE=""
 -
 -#
 -# Security options
 -#
--# CONFIG_KEYS is not set
+-CONFIG_KEYS=y
+-CONFIG_KEYS_DEBUG_PROC_KEYS=y
 -# CONFIG_SECURITY is not set
 -
 -#
@@ -1371,2714 +2046,56 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_3_d
 -#
 -# Library routines
 -#
--CONFIG_CRC_CCITT=m
+-# CONFIG_CRC_CCITT is not set
 -CONFIG_CRC16=m
--CONFIG_CRC32=y
+-CONFIG_CRC32=m
 -CONFIG_LIBCRC32C=m
--CONFIG_ZLIB_INFLATE=y
+-CONFIG_ZLIB_INFLATE=m
 -CONFIG_ZLIB_DEFLATE=m
--CONFIG_TEXTSEARCH=y
--CONFIG_TEXTSEARCH_KMP=m
--CONFIG_TEXTSEARCH_BM=m
--CONFIG_TEXTSEARCH_FSM=m
 -CONFIG_PLIST=y
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_c_defconfig mips/arch/mips/configs/ocelot_c_defconfig
---- mips-orig/arch/mips/configs/ocelot_c_defconfig	2006-10-02 22:32:45.834736250 +0900
-+++ mips/arch/mips/configs/ocelot_c_defconfig	1970-01-01 09:00:00.000000000 +0900
-@@ -1,903 +0,0 @@
--#
--# Automatically generated make config: don't edit
--# Linux kernel version: 2.6.18-rc1
--# Thu Jul  6 10:04:16 2006
--#
--CONFIG_MIPS=y
--
--#
--# Machine selection
--#
--# CONFIG_MIPS_MTX1 is not set
--# CONFIG_MIPS_BOSPORUS is not set
--# CONFIG_MIPS_PB1000 is not set
--# CONFIG_MIPS_PB1100 is not set
--# CONFIG_MIPS_PB1500 is not set
--# CONFIG_MIPS_PB1550 is not set
--# CONFIG_MIPS_PB1200 is not set
--# CONFIG_MIPS_DB1000 is not set
--# CONFIG_MIPS_DB1100 is not set
--# CONFIG_MIPS_DB1500 is not set
--# CONFIG_MIPS_DB1550 is not set
--# CONFIG_MIPS_DB1200 is not set
--# CONFIG_MIPS_MIRAGE is not set
--# CONFIG_BASLER_EXCITE is not set
--# CONFIG_MIPS_COBALT is not set
--# CONFIG_MACH_DECSTATION is not set
--# CONFIG_MIPS_EV64120 is not set
--# CONFIG_MIPS_IVR is not set
--# CONFIG_MIPS_ITE8172 is not set
--# CONFIG_MACH_JAZZ is not set
--# CONFIG_LASAT is not set
--# CONFIG_MIPS_ATLAS is not set
--# CONFIG_MIPS_MALTA is not set
--# CONFIG_MIPS_SEAD is not set
--# CONFIG_WR_PPMC is not set
--# CONFIG_MIPS_SIM is not set
--# CONFIG_MOMENCO_JAGUAR_ATX is not set
--# CONFIG_MOMENCO_OCELOT is not set
--# CONFIG_MOMENCO_OCELOT_3 is not set
--CONFIG_MOMENCO_OCELOT_C=y
--# CONFIG_MOMENCO_OCELOT_G is not set
--# CONFIG_MIPS_XXS1500 is not set
--# CONFIG_PNX8550_V2PCI is not set
--# CONFIG_PNX8550_JBS is not set
--# CONFIG_DDB5477 is not set
--# CONFIG_MACH_VR41XX is not set
--# CONFIG_PMC_YOSEMITE is not set
--# CONFIG_QEMU is not set
--# CONFIG_MARKEINS is not set
--# CONFIG_SGI_IP22 is not set
--# CONFIG_SGI_IP27 is not set
--# CONFIG_SGI_IP32 is not set
--# CONFIG_SIBYTE_BIGSUR is not set
--# CONFIG_SIBYTE_SWARM is not set
--# CONFIG_SIBYTE_SENTOSA is not set
--# CONFIG_SIBYTE_RHONE is not set
--# CONFIG_SIBYTE_CARMEL is not set
--# CONFIG_SIBYTE_PTSWARM is not set
--# CONFIG_SIBYTE_LITTLESUR is not set
--# CONFIG_SIBYTE_CRHINE is not set
--# CONFIG_SIBYTE_CRHONE is not set
--# CONFIG_SNI_RM200_PCI is not set
--# CONFIG_TOSHIBA_JMR3927 is not set
--# CONFIG_TOSHIBA_RBTX4927 is not set
--# CONFIG_TOSHIBA_RBTX4938 is not set
--CONFIG_RWSEM_GENERIC_SPINLOCK=y
--CONFIG_GENERIC_FIND_NEXT_BIT=y
--CONFIG_GENERIC_HWEIGHT=y
--CONFIG_GENERIC_CALIBRATE_DELAY=y
--CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
--CONFIG_DMA_NONCOHERENT=y
--CONFIG_DMA_NEED_PCI_MAP_STATE=y
--CONFIG_CPU_BIG_ENDIAN=y
--# CONFIG_CPU_LITTLE_ENDIAN is not set
--CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
--CONFIG_IRQ_CPU=y
--CONFIG_IRQ_MV64340=y
--CONFIG_PCI_MARVELL=y
--CONFIG_SWAP_IO_SPACE=y
--CONFIG_MIPS_L1_CACHE_SHIFT=5
--
--#
--# CPU selection
--#
--# CONFIG_CPU_MIPS32_R1 is not set
--# CONFIG_CPU_MIPS32_R2 is not set
--# CONFIG_CPU_MIPS64_R1 is not set
--# CONFIG_CPU_MIPS64_R2 is not set
--# CONFIG_CPU_R3000 is not set
--# CONFIG_CPU_TX39XX is not set
--# CONFIG_CPU_VR41XX is not set
--# CONFIG_CPU_R4300 is not set
--# CONFIG_CPU_R4X00 is not set
--# CONFIG_CPU_TX49XX is not set
--# CONFIG_CPU_R5000 is not set
--# CONFIG_CPU_R5432 is not set
--# CONFIG_CPU_R6000 is not set
--# CONFIG_CPU_NEVADA is not set
--# CONFIG_CPU_R8000 is not set
--# CONFIG_CPU_R10000 is not set
--CONFIG_CPU_RM7000=y
--# CONFIG_CPU_RM9000 is not set
--# CONFIG_CPU_SB1 is not set
--CONFIG_SYS_HAS_CPU_RM7000=y
--CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
--CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
--CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
--CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
--
--#
--# Kernel type
--#
--# CONFIG_32BIT is not set
--CONFIG_64BIT=y
--CONFIG_PAGE_SIZE_4KB=y
--# CONFIG_PAGE_SIZE_8KB is not set
--# CONFIG_PAGE_SIZE_16KB is not set
--# CONFIG_PAGE_SIZE_64KB is not set
--CONFIG_BOARD_SCACHE=y
--CONFIG_RM7000_CPU_SCACHE=y
--CONFIG_CPU_HAS_PREFETCH=y
--CONFIG_MIPS_MT_DISABLED=y
--# CONFIG_MIPS_MT_SMTC is not set
--# CONFIG_MIPS_MT_SMP is not set
--# CONFIG_MIPS_VPE_LOADER is not set
--CONFIG_CPU_HAS_LLSC=y
--CONFIG_CPU_HAS_SYNC=y
--CONFIG_GENERIC_HARDIRQS=y
--CONFIG_GENERIC_IRQ_PROBE=y
--CONFIG_CPU_SUPPORTS_HIGHMEM=y
--CONFIG_ARCH_FLATMEM_ENABLE=y
--CONFIG_SELECT_MEMORY_MODEL=y
--CONFIG_FLATMEM_MANUAL=y
--# CONFIG_DISCONTIGMEM_MANUAL is not set
--# CONFIG_SPARSEMEM_MANUAL is not set
--CONFIG_FLATMEM=y
--CONFIG_FLAT_NODE_MEM_MAP=y
--# CONFIG_SPARSEMEM_STATIC is not set
--CONFIG_SPLIT_PTLOCK_CPUS=4
--CONFIG_RESOURCES_64BIT=y
--# CONFIG_HZ_48 is not set
--# CONFIG_HZ_100 is not set
--# CONFIG_HZ_128 is not set
--# CONFIG_HZ_250 is not set
--# CONFIG_HZ_256 is not set
--CONFIG_HZ_1000=y
--# CONFIG_HZ_1024 is not set
--CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
--CONFIG_HZ=1000
--CONFIG_PREEMPT_NONE=y
--# CONFIG_PREEMPT_VOLUNTARY is not set
--# CONFIG_PREEMPT is not set
--CONFIG_LOCKDEP_SUPPORT=y
--CONFIG_STACKTRACE_SUPPORT=y
--CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
--
--#
--# Code maturity level options
--#
--CONFIG_EXPERIMENTAL=y
--CONFIG_BROKEN_ON_SMP=y
--CONFIG_INIT_ENV_ARG_LIMIT=32
--
--#
--# General setup
--#
--CONFIG_LOCALVERSION=""
--CONFIG_LOCALVERSION_AUTO=y
--CONFIG_SWAP=y
--CONFIG_SYSVIPC=y
--# CONFIG_POSIX_MQUEUE is not set
--# CONFIG_BSD_PROCESS_ACCT is not set
--CONFIG_SYSCTL=y
--# CONFIG_AUDIT is not set
--# CONFIG_IKCONFIG is not set
--CONFIG_RELAY=y
--CONFIG_INITRAMFS_SOURCE=""
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
--CONFIG_EMBEDDED=y
--CONFIG_KALLSYMS=y
--# CONFIG_KALLSYMS_EXTRA_PASS is not set
--CONFIG_HOTPLUG=y
--CONFIG_PRINTK=y
--CONFIG_BUG=y
--CONFIG_ELF_CORE=y
--CONFIG_BASE_FULL=y
--CONFIG_RT_MUTEXES=y
--CONFIG_FUTEX=y
--CONFIG_EPOLL=y
--CONFIG_SHMEM=y
--CONFIG_SLAB=y
--CONFIG_VM_EVENT_COUNTERS=y
--# CONFIG_TINY_SHMEM is not set
--CONFIG_BASE_SMALL=0
--# CONFIG_SLOB is not set
--
--#
--# Loadable module support
--#
--# CONFIG_MODULES is not set
--
--#
--# Block layer
--#
--# CONFIG_BLK_DEV_IO_TRACE is not set
--
--#
--# IO Schedulers
--#
--CONFIG_IOSCHED_NOOP=y
--CONFIG_IOSCHED_AS=y
--CONFIG_IOSCHED_DEADLINE=y
--CONFIG_IOSCHED_CFQ=y
--CONFIG_DEFAULT_AS=y
--# CONFIG_DEFAULT_DEADLINE is not set
--# CONFIG_DEFAULT_CFQ is not set
--# CONFIG_DEFAULT_NOOP is not set
--CONFIG_DEFAULT_IOSCHED="anticipatory"
--
--#
--# Bus options (PCI, PCMCIA, EISA, ISA, TC)
--#
--CONFIG_HW_HAS_PCI=y
--CONFIG_PCI=y
--CONFIG_MMU=y
--
--#
--# PCCARD (PCMCIA/CardBus) support
--#
--# CONFIG_PCCARD is not set
--
--#
--# PCI Hotplug Support
--#
--# CONFIG_HOTPLUG_PCI is not set
--
--#
--# Executable file formats
--#
--CONFIG_BINFMT_ELF=y
--# CONFIG_BINFMT_MISC is not set
--# CONFIG_BUILD_ELF64 is not set
--CONFIG_MIPS32_COMPAT=y
--CONFIG_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_MIPS32_N32=y
--CONFIG_BINFMT_ELF32=y
--
--#
--# Networking
--#
--CONFIG_NET=y
--
--#
--# Networking options
--#
--# CONFIG_NETDEBUG is not set
--# CONFIG_PACKET is not set
--CONFIG_UNIX=y
--CONFIG_XFRM=y
--CONFIG_XFRM_USER=y
--CONFIG_NET_KEY=y
--CONFIG_INET=y
--# CONFIG_IP_MULTICAST is not set
--# CONFIG_IP_ADVANCED_ROUTER is not set
--CONFIG_IP_FIB_HASH=y
--CONFIG_IP_PNP=y
--CONFIG_IP_PNP_DHCP=y
--# CONFIG_IP_PNP_BOOTP is not set
--# CONFIG_IP_PNP_RARP is not set
--# CONFIG_NET_IPIP is not set
--# CONFIG_NET_IPGRE is not set
--# CONFIG_ARPD is not set
--# CONFIG_SYN_COOKIES is not set
--# CONFIG_INET_AH is not set
--# CONFIG_INET_ESP is not set
--# CONFIG_INET_IPCOMP is not set
--# CONFIG_INET_XFRM_TUNNEL is not set
--# CONFIG_INET_TUNNEL is not set
--CONFIG_INET_XFRM_MODE_TRANSPORT=y
--CONFIG_INET_XFRM_MODE_TUNNEL=y
--CONFIG_INET_DIAG=y
--CONFIG_INET_TCP_DIAG=y
--# CONFIG_TCP_CONG_ADVANCED is not set
--CONFIG_TCP_CONG_BIC=y
--# CONFIG_IPV6 is not set
--# CONFIG_INET6_XFRM_TUNNEL is not set
--# CONFIG_INET6_TUNNEL is not set
--CONFIG_NETWORK_SECMARK=y
--# CONFIG_NETFILTER is not set
--
--#
--# DCCP Configuration (EXPERIMENTAL)
--#
--# CONFIG_IP_DCCP is not set
--
--#
--# SCTP Configuration (EXPERIMENTAL)
--#
--# CONFIG_IP_SCTP is not set
--
--#
--# TIPC Configuration (EXPERIMENTAL)
--#
--# CONFIG_TIPC is not set
--# CONFIG_ATM is not set
--# CONFIG_BRIDGE is not set
--# CONFIG_VLAN_8021Q is not set
--# CONFIG_DECNET is not set
--# CONFIG_LLC2 is not set
--# CONFIG_IPX is not set
--# CONFIG_ATALK is not set
--# CONFIG_X25 is not set
--# CONFIG_LAPB is not set
--# CONFIG_NET_DIVERT is not set
--# CONFIG_ECONET is not set
--# CONFIG_WAN_ROUTER is not set
--
--#
--# QoS and/or fair queueing
--#
--# CONFIG_NET_SCHED is not set
--
--#
--# Network testing
--#
--# CONFIG_NET_PKTGEN is not set
--# CONFIG_HAMRADIO is not set
--# CONFIG_IRDA is not set
--# CONFIG_BT is not set
--CONFIG_IEEE80211=y
--# CONFIG_IEEE80211_DEBUG is not set
--CONFIG_IEEE80211_CRYPT_WEP=y
--CONFIG_IEEE80211_CRYPT_CCMP=y
--CONFIG_IEEE80211_SOFTMAC=y
--# CONFIG_IEEE80211_SOFTMAC_DEBUG is not set
--CONFIG_WIRELESS_EXT=y
--
--#
--# Device Drivers
--#
--
--#
--# Generic Driver Options
--#
--CONFIG_STANDALONE=y
--CONFIG_PREVENT_FIRMWARE_BUILD=y
--CONFIG_FW_LOADER=y
--# CONFIG_SYS_HYPERVISOR is not set
--
--#
--# Connector - unified userspace <-> kernelspace linker
--#
--CONFIG_CONNECTOR=y
--CONFIG_PROC_EVENTS=y
--
--#
--# Memory Technology Devices (MTD)
--#
--# CONFIG_MTD is not set
--
--#
--# Parallel port support
--#
--# CONFIG_PARPORT is not set
--
--#
--# Plug and Play support
--#
--
--#
--# Block devices
--#
--# CONFIG_BLK_CPQ_DA is not set
--# CONFIG_BLK_CPQ_CISS_DA is not set
--# CONFIG_BLK_DEV_DAC960 is not set
--# CONFIG_BLK_DEV_UMEM is not set
--# CONFIG_BLK_DEV_COW_COMMON is not set
--# CONFIG_BLK_DEV_LOOP is not set
--# CONFIG_BLK_DEV_NBD is not set
--# CONFIG_BLK_DEV_SX8 is not set
--# CONFIG_BLK_DEV_RAM is not set
--# CONFIG_BLK_DEV_INITRD is not set
--CONFIG_CDROM_PKTCDVD=y
--CONFIG_CDROM_PKTCDVD_BUFFERS=8
--# CONFIG_CDROM_PKTCDVD_WCACHE is not set
--CONFIG_ATA_OVER_ETH=y
--
--#
--# ATA/ATAPI/MFM/RLL support
--#
--# CONFIG_IDE is not set
--
--#
--# SCSI device support
--#
--CONFIG_RAID_ATTRS=y
--# CONFIG_SCSI is not set
--
--#
--# Multi-device support (RAID and LVM)
--#
--# CONFIG_MD is not set
--
--#
--# Fusion MPT device support
--#
--# CONFIG_FUSION is not set
--
--#
--# IEEE 1394 (FireWire) support
--#
--# CONFIG_IEEE1394 is not set
--
--#
--# I2O device support
--#
--# CONFIG_I2O is not set
--
--#
--# Network device support
--#
--CONFIG_NETDEVICES=y
--# CONFIG_DUMMY is not set
--# CONFIG_BONDING is not set
--# CONFIG_EQUALIZER is not set
--# CONFIG_TUN is not set
--
--#
--# ARCnet devices
--#
--# CONFIG_ARCNET is not set
--
--#
--# PHY device support
--#
--CONFIG_PHYLIB=y
--
--#
--# MII PHY device drivers
--#
--CONFIG_MARVELL_PHY=y
--CONFIG_DAVICOM_PHY=y
--CONFIG_QSEMI_PHY=y
--CONFIG_LXT_PHY=y
--CONFIG_CICADA_PHY=y
--CONFIG_VITESSE_PHY=y
--CONFIG_SMSC_PHY=y
--
--#
--# Ethernet (10 or 100Mbit)
--#
--CONFIG_NET_ETHERNET=y
--# CONFIG_MII is not set
--# CONFIG_HAPPYMEAL is not set
--# CONFIG_SUNGEM is not set
--# CONFIG_CASSINI is not set
--# CONFIG_NET_VENDOR_3COM is not set
--# CONFIG_DM9000 is not set
--
--#
--# Tulip family network device support
--#
--# CONFIG_NET_TULIP is not set
--# CONFIG_HP100 is not set
--# CONFIG_NET_PCI is not set
--
--#
--# Ethernet (1000 Mbit)
--#
--# CONFIG_ACENIC is not set
--# CONFIG_DL2K is not set
--# CONFIG_E1000 is not set
--# CONFIG_NS83820 is not set
--# CONFIG_HAMACHI is not set
--# CONFIG_YELLOWFIN is not set
--# CONFIG_R8169 is not set
--# CONFIG_SIS190 is not set
--# CONFIG_SKGE is not set
--# CONFIG_SKY2 is not set
--# CONFIG_SK98LIN is not set
--# CONFIG_TIGON3 is not set
--# CONFIG_BNX2 is not set
--# CONFIG_MV643XX_ETH is not set
--
--#
--# Ethernet (10000 Mbit)
--#
--# CONFIG_CHELSIO_T1 is not set
--# CONFIG_IXGB is not set
--# CONFIG_S2IO is not set
--# CONFIG_MYRI10GE is not set
--
--#
--# Token Ring devices
--#
--# CONFIG_TR is not set
--
--#
--# Wireless LAN (non-hamradio)
--#
--# CONFIG_NET_RADIO is not set
--
--#
--# Wan interfaces
--#
--# CONFIG_WAN is not set
--# CONFIG_FDDI is not set
--# CONFIG_HIPPI is not set
--# CONFIG_PPP is not set
--# CONFIG_SLIP is not set
--# CONFIG_SHAPER is not set
--# CONFIG_NETCONSOLE is not set
--# CONFIG_NETPOLL is not set
--# CONFIG_NET_POLL_CONTROLLER is not set
--
--#
--# ISDN subsystem
--#
--# CONFIG_ISDN is not set
--
--#
--# Telephony Support
--#
--# CONFIG_PHONE is not set
--
--#
--# Input device support
--#
--CONFIG_INPUT=y
--
--#
--# Userland interfaces
--#
--CONFIG_INPUT_MOUSEDEV=y
--CONFIG_INPUT_MOUSEDEV_PSAUX=y
--CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
--CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
--# CONFIG_INPUT_JOYDEV is not set
--# CONFIG_INPUT_TSDEV is not set
--# CONFIG_INPUT_EVDEV is not set
--# CONFIG_INPUT_EVBUG is not set
--
--#
--# Input Device Drivers
--#
--# CONFIG_INPUT_KEYBOARD is not set
--# CONFIG_INPUT_MOUSE is not set
--# CONFIG_INPUT_JOYSTICK is not set
--# CONFIG_INPUT_TOUCHSCREEN is not set
--# CONFIG_INPUT_MISC is not set
--
--#
--# Hardware I/O ports
--#
--CONFIG_SERIO=y
--# CONFIG_SERIO_I8042 is not set
--CONFIG_SERIO_SERPORT=y
--# CONFIG_SERIO_PCIPS2 is not set
--# CONFIG_SERIO_LIBPS2 is not set
--CONFIG_SERIO_RAW=y
--# CONFIG_GAMEPORT is not set
--
--#
--# Character devices
--#
--CONFIG_VT=y
--CONFIG_VT_CONSOLE=y
--CONFIG_HW_CONSOLE=y
--CONFIG_VT_HW_CONSOLE_BINDING=y
--# CONFIG_SERIAL_NONSTANDARD is not set
--
--#
--# Serial drivers
--#
--CONFIG_SERIAL_8250=y
--CONFIG_SERIAL_8250_CONSOLE=y
--CONFIG_SERIAL_8250_PCI=y
--CONFIG_SERIAL_8250_NR_UARTS=4
--CONFIG_SERIAL_8250_RUNTIME_UARTS=4
--# CONFIG_SERIAL_8250_EXTENDED is not set
--
--#
--# Non-8250 serial port support
--#
--CONFIG_SERIAL_CORE=y
--CONFIG_SERIAL_CORE_CONSOLE=y
--# CONFIG_SERIAL_JSM is not set
--CONFIG_UNIX98_PTYS=y
--CONFIG_LEGACY_PTYS=y
--CONFIG_LEGACY_PTY_COUNT=256
--
--#
--# IPMI
--#
--# CONFIG_IPMI_HANDLER is not set
--
--#
--# Watchdog Cards
--#
--# CONFIG_WATCHDOG is not set
--# CONFIG_HW_RANDOM is not set
--# CONFIG_RTC is not set
--# CONFIG_GEN_RTC is not set
--# CONFIG_DTLK is not set
--# CONFIG_R3964 is not set
--# CONFIG_APPLICOM is not set
--
--#
--# Ftape, the floppy tape device driver
--#
--# CONFIG_DRM is not set
--# CONFIG_RAW_DRIVER is not set
--
--#
--# TPM devices
--#
--# CONFIG_TCG_TPM is not set
--# CONFIG_TELCLOCK is not set
--
--#
--# I2C support
--#
--# CONFIG_I2C is not set
--
--#
--# SPI support
--#
--# CONFIG_SPI is not set
--# CONFIG_SPI_MASTER is not set
--
--#
--# Dallas's 1-wire bus
--#
--# CONFIG_W1 is not set
--
--#
--# Hardware Monitoring support
--#
--# CONFIG_HWMON is not set
--# CONFIG_HWMON_VID is not set
--
--#
--# Misc devices
--#
--
--#
--# Multimedia devices
--#
--# CONFIG_VIDEO_DEV is not set
--CONFIG_VIDEO_V4L2=y
--
--#
--# Digital Video Broadcasting Devices
--#
--# CONFIG_DVB is not set
--
--#
--# Graphics support
--#
--# CONFIG_FIRMWARE_EDID is not set
--# CONFIG_FB is not set
--
--#
--# Console display driver support
--#
--# CONFIG_VGA_CONSOLE is not set
--CONFIG_DUMMY_CONSOLE=y
--
--#
--# Sound
--#
--# CONFIG_SOUND is not set
--
--#
--# USB support
--#
--CONFIG_USB_ARCH_HAS_HCD=y
--CONFIG_USB_ARCH_HAS_OHCI=y
--CONFIG_USB_ARCH_HAS_EHCI=y
--# CONFIG_USB is not set
--
--#
--# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
--#
--
--#
--# USB Gadget Support
--#
--# CONFIG_USB_GADGET is not set
--
--#
--# MMC/SD Card support
--#
--# CONFIG_MMC is not set
--
--#
--# LED devices
--#
--# CONFIG_NEW_LEDS is not set
--
--#
--# LED drivers
--#
--
--#
--# LED Triggers
--#
--
--#
--# InfiniBand support
--#
--# CONFIG_INFINIBAND is not set
--
--#
--# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
--#
--
--#
--# Real Time Clock
--#
--# CONFIG_RTC_CLASS is not set
--
--#
--# DMA Engine support
--#
--# CONFIG_DMA_ENGINE is not set
--
--#
--# DMA Clients
--#
--
--#
--# DMA Devices
--#
--
--#
--# File systems
--#
--CONFIG_EXT2_FS=y
--# CONFIG_EXT2_FS_XATTR is not set
--# CONFIG_EXT2_FS_XIP is not set
--# CONFIG_EXT3_FS is not set
--# CONFIG_REISERFS_FS is not set
--# CONFIG_JFS_FS is not set
--# CONFIG_FS_POSIX_ACL is not set
--# CONFIG_XFS_FS is not set
--# CONFIG_OCFS2_FS is not set
--# CONFIG_MINIX_FS is not set
--# CONFIG_ROMFS_FS is not set
--CONFIG_INOTIFY=y
--CONFIG_INOTIFY_USER=y
--# CONFIG_QUOTA is not set
--CONFIG_DNOTIFY=y
--# CONFIG_AUTOFS_FS is not set
--# CONFIG_AUTOFS4_FS is not set
--CONFIG_FUSE_FS=y
--
--#
--# CD-ROM/DVD Filesystems
--#
--# CONFIG_ISO9660_FS is not set
--# CONFIG_UDF_FS is not set
--
--#
--# DOS/FAT/NT Filesystems
--#
--# CONFIG_MSDOS_FS is not set
--# CONFIG_VFAT_FS is not set
--# CONFIG_NTFS_FS is not set
--
--#
--# Pseudo filesystems
--#
--CONFIG_PROC_FS=y
--CONFIG_PROC_KCORE=y
--CONFIG_SYSFS=y
--CONFIG_TMPFS=y
--# CONFIG_HUGETLB_PAGE is not set
--CONFIG_RAMFS=y
--# CONFIG_CONFIGFS_FS is not set
--
--#
--# Miscellaneous filesystems
--#
--# CONFIG_ADFS_FS is not set
--# CONFIG_AFFS_FS is not set
--# CONFIG_HFS_FS is not set
--# CONFIG_HFSPLUS_FS is not set
--# CONFIG_BEFS_FS is not set
--# CONFIG_BFS_FS is not set
--# CONFIG_EFS_FS is not set
--# CONFIG_CRAMFS is not set
--# CONFIG_VXFS_FS is not set
--# CONFIG_HPFS_FS is not set
--# CONFIG_QNX4FS_FS is not set
--# CONFIG_SYSV_FS is not set
--# CONFIG_UFS_FS is not set
--
--#
--# Network File Systems
--#
--CONFIG_NFS_FS=y
--# CONFIG_NFS_V3 is not set
--# CONFIG_NFS_V4 is not set
--# CONFIG_NFS_DIRECTIO is not set
--CONFIG_NFSD=y
--# CONFIG_NFSD_V3 is not set
--# CONFIG_NFSD_TCP is not set
--CONFIG_ROOT_NFS=y
--CONFIG_LOCKD=y
--CONFIG_EXPORTFS=y
--CONFIG_NFS_COMMON=y
--CONFIG_SUNRPC=y
--# CONFIG_RPCSEC_GSS_KRB5 is not set
--# CONFIG_RPCSEC_GSS_SPKM3 is not set
--# CONFIG_SMB_FS is not set
--# CONFIG_CIFS is not set
--# CONFIG_CIFS_DEBUG2 is not set
--# CONFIG_NCP_FS is not set
--# CONFIG_CODA_FS is not set
--# CONFIG_AFS_FS is not set
--# CONFIG_9P_FS is not set
--
--#
--# Partition Types
--#
--# CONFIG_PARTITION_ADVANCED is not set
--CONFIG_MSDOS_PARTITION=y
--
--#
--# Native Language Support
--#
--# CONFIG_NLS is not set
--
--#
--# Profiling support
--#
--# CONFIG_PROFILING is not set
--
--#
--# Kernel hacking
--#
--CONFIG_TRACE_IRQFLAGS_SUPPORT=y
--# CONFIG_PRINTK_TIME is not set
--# CONFIG_MAGIC_SYSRQ is not set
--# CONFIG_UNUSED_SYMBOLS is not set
--# CONFIG_DEBUG_KERNEL is not set
--CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_DEBUG_FS is not set
--# CONFIG_UNWIND_INFO is not set
--CONFIG_CROSSCOMPILE=y
--CONFIG_CMDLINE=""
--
--#
--# Security options
--#
--CONFIG_KEYS=y
--CONFIG_KEYS_DEBUG_PROC_KEYS=y
--# CONFIG_SECURITY is not set
--
--#
--# Cryptographic options
--#
--CONFIG_CRYPTO=y
--CONFIG_CRYPTO_HMAC=y
--CONFIG_CRYPTO_NULL=y
--CONFIG_CRYPTO_MD4=y
--CONFIG_CRYPTO_MD5=y
--CONFIG_CRYPTO_SHA1=y
--CONFIG_CRYPTO_SHA256=y
--CONFIG_CRYPTO_SHA512=y
--CONFIG_CRYPTO_WP512=y
--CONFIG_CRYPTO_TGR192=y
--CONFIG_CRYPTO_DES=y
--CONFIG_CRYPTO_BLOWFISH=y
--CONFIG_CRYPTO_TWOFISH=y
--CONFIG_CRYPTO_SERPENT=y
--CONFIG_CRYPTO_AES=y
--CONFIG_CRYPTO_CAST5=y
--CONFIG_CRYPTO_CAST6=y
--CONFIG_CRYPTO_TEA=y
--CONFIG_CRYPTO_ARC4=y
--CONFIG_CRYPTO_KHAZAD=y
--CONFIG_CRYPTO_ANUBIS=y
--CONFIG_CRYPTO_DEFLATE=y
--CONFIG_CRYPTO_MICHAEL_MIC=y
--CONFIG_CRYPTO_CRC32C=y
--
--#
--# Hardware crypto devices
--#
--
--#
--# Library routines
--#
--# CONFIG_CRC_CCITT is not set
--CONFIG_CRC16=y
--CONFIG_CRC32=y
--CONFIG_LIBCRC32C=y
--CONFIG_ZLIB_INFLATE=y
--CONFIG_ZLIB_DEFLATE=y
--CONFIG_PLIST=y
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_defconfig mips/arch/mips/configs/ocelot_defconfig
---- mips-orig/arch/mips/configs/ocelot_defconfig	2006-10-02 22:32:45.834736250 +0900
-+++ mips/arch/mips/configs/ocelot_defconfig	1970-01-01 09:00:00.000000000 +0900
-@@ -1,852 +0,0 @@
--#
--# Automatically generated make config: don't edit
--# Linux kernel version: 2.6.18-rc1
--# Thu Jul  6 10:04:16 2006
--#
--CONFIG_MIPS=y
--
--#
--# Machine selection
--#
--# CONFIG_MIPS_MTX1 is not set
--# CONFIG_MIPS_BOSPORUS is not set
--# CONFIG_MIPS_PB1000 is not set
--# CONFIG_MIPS_PB1100 is not set
--# CONFIG_MIPS_PB1500 is not set
--# CONFIG_MIPS_PB1550 is not set
--# CONFIG_MIPS_PB1200 is not set
--# CONFIG_MIPS_DB1000 is not set
--# CONFIG_MIPS_DB1100 is not set
--# CONFIG_MIPS_DB1500 is not set
--# CONFIG_MIPS_DB1550 is not set
--# CONFIG_MIPS_DB1200 is not set
--# CONFIG_MIPS_MIRAGE is not set
--# CONFIG_BASLER_EXCITE is not set
--# CONFIG_MIPS_COBALT is not set
--# CONFIG_MACH_DECSTATION is not set
--# CONFIG_MIPS_EV64120 is not set
--# CONFIG_MIPS_IVR is not set
--# CONFIG_MIPS_ITE8172 is not set
--# CONFIG_MACH_JAZZ is not set
--# CONFIG_LASAT is not set
--# CONFIG_MIPS_ATLAS is not set
--# CONFIG_MIPS_MALTA is not set
--# CONFIG_MIPS_SEAD is not set
--# CONFIG_WR_PPMC is not set
--# CONFIG_MIPS_SIM is not set
--# CONFIG_MOMENCO_JAGUAR_ATX is not set
--CONFIG_MOMENCO_OCELOT=y
--# CONFIG_MOMENCO_OCELOT_3 is not set
--# CONFIG_MOMENCO_OCELOT_C is not set
--# CONFIG_MOMENCO_OCELOT_G is not set
--# CONFIG_MIPS_XXS1500 is not set
--# CONFIG_PNX8550_V2PCI is not set
--# CONFIG_PNX8550_JBS is not set
--# CONFIG_DDB5477 is not set
--# CONFIG_MACH_VR41XX is not set
--# CONFIG_PMC_YOSEMITE is not set
--# CONFIG_QEMU is not set
--# CONFIG_MARKEINS is not set
--# CONFIG_SGI_IP22 is not set
--# CONFIG_SGI_IP27 is not set
--# CONFIG_SGI_IP32 is not set
--# CONFIG_SIBYTE_BIGSUR is not set
--# CONFIG_SIBYTE_SWARM is not set
--# CONFIG_SIBYTE_SENTOSA is not set
--# CONFIG_SIBYTE_RHONE is not set
--# CONFIG_SIBYTE_CARMEL is not set
--# CONFIG_SIBYTE_PTSWARM is not set
--# CONFIG_SIBYTE_LITTLESUR is not set
--# CONFIG_SIBYTE_CRHINE is not set
--# CONFIG_SIBYTE_CRHONE is not set
--# CONFIG_SNI_RM200_PCI is not set
--# CONFIG_TOSHIBA_JMR3927 is not set
--# CONFIG_TOSHIBA_RBTX4927 is not set
--# CONFIG_TOSHIBA_RBTX4938 is not set
--CONFIG_RWSEM_GENERIC_SPINLOCK=y
--CONFIG_GENERIC_FIND_NEXT_BIT=y
--CONFIG_GENERIC_HWEIGHT=y
--CONFIG_GENERIC_CALIBRATE_DELAY=y
--CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
--CONFIG_DMA_NONCOHERENT=y
--CONFIG_DMA_NEED_PCI_MAP_STATE=y
--CONFIG_CPU_BIG_ENDIAN=y
--# CONFIG_CPU_LITTLE_ENDIAN is not set
--CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
--CONFIG_IRQ_CPU=y
--CONFIG_IRQ_CPU_RM7K=y
--CONFIG_MIPS_GT64120=y
--CONFIG_SWAP_IO_SPACE=y
--# CONFIG_SYSCLK_75 is not set
--# CONFIG_SYSCLK_83 is not set
--CONFIG_SYSCLK_100=y
--CONFIG_MIPS_L1_CACHE_SHIFT=5
--
--#
--# CPU selection
--#
--# CONFIG_CPU_MIPS32_R1 is not set
--# CONFIG_CPU_MIPS32_R2 is not set
--# CONFIG_CPU_MIPS64_R1 is not set
--# CONFIG_CPU_MIPS64_R2 is not set
--# CONFIG_CPU_R3000 is not set
--# CONFIG_CPU_TX39XX is not set
--# CONFIG_CPU_VR41XX is not set
--# CONFIG_CPU_R4300 is not set
--# CONFIG_CPU_R4X00 is not set
--# CONFIG_CPU_TX49XX is not set
--# CONFIG_CPU_R5000 is not set
--# CONFIG_CPU_R5432 is not set
--# CONFIG_CPU_R6000 is not set
--# CONFIG_CPU_NEVADA is not set
--# CONFIG_CPU_R8000 is not set
--# CONFIG_CPU_R10000 is not set
--CONFIG_CPU_RM7000=y
--# CONFIG_CPU_RM9000 is not set
--# CONFIG_CPU_SB1 is not set
--CONFIG_SYS_HAS_CPU_RM7000=y
--CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
--CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
--CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
--CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
--
--#
--# Kernel type
--#
--CONFIG_32BIT=y
--# CONFIG_64BIT is not set
--CONFIG_PAGE_SIZE_4KB=y
--# CONFIG_PAGE_SIZE_8KB is not set
--# CONFIG_PAGE_SIZE_16KB is not set
--# CONFIG_PAGE_SIZE_64KB is not set
--CONFIG_BOARD_SCACHE=y
--CONFIG_RM7000_CPU_SCACHE=y
--CONFIG_CPU_HAS_PREFETCH=y
--CONFIG_MIPS_MT_DISABLED=y
--# CONFIG_MIPS_MT_SMTC is not set
--# CONFIG_MIPS_MT_SMP is not set
--# CONFIG_MIPS_VPE_LOADER is not set
--# CONFIG_64BIT_PHYS_ADDR is not set
--CONFIG_CPU_HAS_LLSC=y
--CONFIG_CPU_HAS_SYNC=y
--CONFIG_GENERIC_HARDIRQS=y
--CONFIG_GENERIC_IRQ_PROBE=y
--CONFIG_CPU_SUPPORTS_HIGHMEM=y
--CONFIG_ARCH_FLATMEM_ENABLE=y
--CONFIG_SELECT_MEMORY_MODEL=y
--CONFIG_FLATMEM_MANUAL=y
--# CONFIG_DISCONTIGMEM_MANUAL is not set
--# CONFIG_SPARSEMEM_MANUAL is not set
--CONFIG_FLATMEM=y
--CONFIG_FLAT_NODE_MEM_MAP=y
--# CONFIG_SPARSEMEM_STATIC is not set
--CONFIG_SPLIT_PTLOCK_CPUS=4
--# CONFIG_RESOURCES_64BIT is not set
--# CONFIG_HZ_48 is not set
--# CONFIG_HZ_100 is not set
--# CONFIG_HZ_128 is not set
--# CONFIG_HZ_250 is not set
--# CONFIG_HZ_256 is not set
--CONFIG_HZ_1000=y
--# CONFIG_HZ_1024 is not set
--CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
--CONFIG_HZ=1000
--CONFIG_PREEMPT_NONE=y
--# CONFIG_PREEMPT_VOLUNTARY is not set
--# CONFIG_PREEMPT is not set
--CONFIG_LOCKDEP_SUPPORT=y
--CONFIG_STACKTRACE_SUPPORT=y
--CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
--
--#
--# Code maturity level options
--#
--CONFIG_EXPERIMENTAL=y
--CONFIG_BROKEN_ON_SMP=y
--CONFIG_INIT_ENV_ARG_LIMIT=32
--
--#
--# General setup
--#
--CONFIG_LOCALVERSION=""
--CONFIG_LOCALVERSION_AUTO=y
--CONFIG_SWAP=y
--CONFIG_SYSVIPC=y
--# CONFIG_POSIX_MQUEUE is not set
--# CONFIG_BSD_PROCESS_ACCT is not set
--CONFIG_SYSCTL=y
--# CONFIG_AUDIT is not set
--# CONFIG_IKCONFIG is not set
--CONFIG_RELAY=y
--CONFIG_INITRAMFS_SOURCE=""
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
--CONFIG_EMBEDDED=y
--CONFIG_KALLSYMS=y
--# CONFIG_KALLSYMS_EXTRA_PASS is not set
--# CONFIG_HOTPLUG is not set
--CONFIG_PRINTK=y
--CONFIG_BUG=y
--CONFIG_ELF_CORE=y
--CONFIG_BASE_FULL=y
--CONFIG_RT_MUTEXES=y
--CONFIG_FUTEX=y
--CONFIG_EPOLL=y
--CONFIG_SHMEM=y
--CONFIG_SLAB=y
--CONFIG_VM_EVENT_COUNTERS=y
--# CONFIG_TINY_SHMEM is not set
--CONFIG_BASE_SMALL=0
--# CONFIG_SLOB is not set
--
--#
--# Loadable module support
--#
--# CONFIG_MODULES is not set
--
--#
--# Block layer
--#
--# CONFIG_LBD is not set
--# CONFIG_BLK_DEV_IO_TRACE is not set
--# CONFIG_LSF is not set
--
--#
--# IO Schedulers
--#
--CONFIG_IOSCHED_NOOP=y
--CONFIG_IOSCHED_AS=y
--CONFIG_IOSCHED_DEADLINE=y
--CONFIG_IOSCHED_CFQ=y
--CONFIG_DEFAULT_AS=y
--# CONFIG_DEFAULT_DEADLINE is not set
--# CONFIG_DEFAULT_CFQ is not set
--# CONFIG_DEFAULT_NOOP is not set
--CONFIG_DEFAULT_IOSCHED="anticipatory"
--
--#
--# Bus options (PCI, PCMCIA, EISA, ISA, TC)
--#
--CONFIG_HW_HAS_PCI=y
--# CONFIG_PCI is not set
--CONFIG_MMU=y
--
--#
--# PCCARD (PCMCIA/CardBus) support
--#
--# CONFIG_PCCARD is not set
--
--#
--# PCI Hotplug Support
--#
--
--#
--# Executable file formats
--#
--CONFIG_BINFMT_ELF=y
--# CONFIG_BINFMT_MISC is not set
--CONFIG_TRAD_SIGNALS=y
--
--#
--# Networking
--#
--CONFIG_NET=y
--
--#
--# Networking options
--#
--# CONFIG_NETDEBUG is not set
--# CONFIG_PACKET is not set
--CONFIG_UNIX=y
--CONFIG_XFRM=y
--CONFIG_XFRM_USER=y
--CONFIG_NET_KEY=y
--CONFIG_INET=y
--# CONFIG_IP_MULTICAST is not set
--# CONFIG_IP_ADVANCED_ROUTER is not set
--CONFIG_IP_FIB_HASH=y
--CONFIG_IP_PNP=y
--# CONFIG_IP_PNP_DHCP is not set
--CONFIG_IP_PNP_BOOTP=y
--# CONFIG_IP_PNP_RARP is not set
--# CONFIG_NET_IPIP is not set
--# CONFIG_NET_IPGRE is not set
--# CONFIG_ARPD is not set
--# CONFIG_SYN_COOKIES is not set
--# CONFIG_INET_AH is not set
--# CONFIG_INET_ESP is not set
--# CONFIG_INET_IPCOMP is not set
--# CONFIG_INET_XFRM_TUNNEL is not set
--# CONFIG_INET_TUNNEL is not set
--CONFIG_INET_XFRM_MODE_TRANSPORT=y
--CONFIG_INET_XFRM_MODE_TUNNEL=y
--CONFIG_INET_DIAG=y
--CONFIG_INET_TCP_DIAG=y
--# CONFIG_TCP_CONG_ADVANCED is not set
--CONFIG_TCP_CONG_BIC=y
--# CONFIG_IPV6 is not set
--# CONFIG_INET6_XFRM_TUNNEL is not set
--# CONFIG_INET6_TUNNEL is not set
--CONFIG_NETWORK_SECMARK=y
--# CONFIG_NETFILTER is not set
--
--#
--# DCCP Configuration (EXPERIMENTAL)
--#
--# CONFIG_IP_DCCP is not set
--
--#
--# SCTP Configuration (EXPERIMENTAL)
--#
--# CONFIG_IP_SCTP is not set
--
--#
--# TIPC Configuration (EXPERIMENTAL)
--#
--# CONFIG_TIPC is not set
--# CONFIG_ATM is not set
--# CONFIG_BRIDGE is not set
--# CONFIG_VLAN_8021Q is not set
--# CONFIG_DECNET is not set
--# CONFIG_LLC2 is not set
--# CONFIG_IPX is not set
--# CONFIG_ATALK is not set
--# CONFIG_X25 is not set
--# CONFIG_LAPB is not set
--# CONFIG_NET_DIVERT is not set
--# CONFIG_ECONET is not set
--# CONFIG_WAN_ROUTER is not set
--
--#
--# QoS and/or fair queueing
--#
--# CONFIG_NET_SCHED is not set
--
--#
--# Network testing
--#
--# CONFIG_NET_PKTGEN is not set
--# CONFIG_HAMRADIO is not set
--# CONFIG_IRDA is not set
--# CONFIG_BT is not set
--CONFIG_IEEE80211=y
--# CONFIG_IEEE80211_DEBUG is not set
--CONFIG_IEEE80211_CRYPT_WEP=y
--CONFIG_IEEE80211_CRYPT_CCMP=y
--CONFIG_IEEE80211_SOFTMAC=y
--# CONFIG_IEEE80211_SOFTMAC_DEBUG is not set
--CONFIG_WIRELESS_EXT=y
--
--#
--# Device Drivers
--#
--
--#
--# Generic Driver Options
--#
--CONFIG_STANDALONE=y
--CONFIG_PREVENT_FIRMWARE_BUILD=y
--# CONFIG_FW_LOADER is not set
--# CONFIG_SYS_HYPERVISOR is not set
--
--#
--# Connector - unified userspace <-> kernelspace linker
--#
--CONFIG_CONNECTOR=y
--CONFIG_PROC_EVENTS=y
--
--#
--# Memory Technology Devices (MTD)
--#
--# CONFIG_MTD is not set
--
--#
--# Parallel port support
--#
--# CONFIG_PARPORT is not set
--
--#
--# Plug and Play support
--#
--
--#
--# Block devices
--#
--# CONFIG_BLK_DEV_COW_COMMON is not set
--# CONFIG_BLK_DEV_LOOP is not set
--# CONFIG_BLK_DEV_NBD is not set
--# CONFIG_BLK_DEV_RAM is not set
--# CONFIG_BLK_DEV_INITRD is not set
--CONFIG_CDROM_PKTCDVD=y
--CONFIG_CDROM_PKTCDVD_BUFFERS=8
--# CONFIG_CDROM_PKTCDVD_WCACHE is not set
--CONFIG_ATA_OVER_ETH=y
--
--#
--# ATA/ATAPI/MFM/RLL support
--#
--# CONFIG_IDE is not set
--
--#
--# SCSI device support
--#
--CONFIG_RAID_ATTRS=y
--# CONFIG_SCSI is not set
--
--#
--# Multi-device support (RAID and LVM)
--#
--# CONFIG_MD is not set
--
--#
--# Fusion MPT device support
--#
--# CONFIG_FUSION is not set
--
--#
--# IEEE 1394 (FireWire) support
--#
--
--#
--# I2O device support
--#
--
--#
--# Network device support
--#
--CONFIG_NETDEVICES=y
--# CONFIG_DUMMY is not set
--# CONFIG_BONDING is not set
--# CONFIG_EQUALIZER is not set
--# CONFIG_TUN is not set
--
--#
--# PHY device support
--#
--CONFIG_PHYLIB=y
--
--#
--# MII PHY device drivers
--#
--CONFIG_MARVELL_PHY=y
--CONFIG_DAVICOM_PHY=y
--CONFIG_QSEMI_PHY=y
--CONFIG_LXT_PHY=y
--CONFIG_CICADA_PHY=y
--CONFIG_VITESSE_PHY=y
--CONFIG_SMSC_PHY=y
--
--#
--# Ethernet (10 or 100Mbit)
--#
--CONFIG_NET_ETHERNET=y
--# CONFIG_MII is not set
--# CONFIG_DM9000 is not set
--
--#
--# Ethernet (1000 Mbit)
--#
--
--#
--# Ethernet (10000 Mbit)
--#
--
--#
--# Token Ring devices
--#
--
--#
--# Wireless LAN (non-hamradio)
--#
--# CONFIG_NET_RADIO is not set
--
--#
--# Wan interfaces
--#
--# CONFIG_WAN is not set
--# CONFIG_PPP is not set
--# CONFIG_SLIP is not set
--# CONFIG_SHAPER is not set
--# CONFIG_NETCONSOLE is not set
--# CONFIG_NETPOLL is not set
--# CONFIG_NET_POLL_CONTROLLER is not set
--
--#
--# ISDN subsystem
--#
--# CONFIG_ISDN is not set
--
--#
--# Telephony Support
--#
--# CONFIG_PHONE is not set
--
--#
--# Input device support
--#
--CONFIG_INPUT=y
--
--#
--# Userland interfaces
--#
--CONFIG_INPUT_MOUSEDEV=y
--CONFIG_INPUT_MOUSEDEV_PSAUX=y
--CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
--CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
--# CONFIG_INPUT_JOYDEV is not set
--# CONFIG_INPUT_TSDEV is not set
--# CONFIG_INPUT_EVDEV is not set
--# CONFIG_INPUT_EVBUG is not set
--
--#
--# Input Device Drivers
--#
--# CONFIG_INPUT_KEYBOARD is not set
--# CONFIG_INPUT_MOUSE is not set
--# CONFIG_INPUT_JOYSTICK is not set
--# CONFIG_INPUT_TOUCHSCREEN is not set
--# CONFIG_INPUT_MISC is not set
--
--#
--# Hardware I/O ports
--#
--CONFIG_SERIO=y
--# CONFIG_SERIO_I8042 is not set
--CONFIG_SERIO_SERPORT=y
--# CONFIG_SERIO_LIBPS2 is not set
--CONFIG_SERIO_RAW=y
--# CONFIG_GAMEPORT is not set
--
--#
--# Character devices
--#
--CONFIG_VT=y
--CONFIG_VT_CONSOLE=y
--CONFIG_HW_CONSOLE=y
--CONFIG_VT_HW_CONSOLE_BINDING=y
--# CONFIG_SERIAL_NONSTANDARD is not set
--
--#
--# Serial drivers
--#
--CONFIG_SERIAL_8250=y
--CONFIG_SERIAL_8250_CONSOLE=y
--CONFIG_SERIAL_8250_NR_UARTS=4
--CONFIG_SERIAL_8250_RUNTIME_UARTS=4
--# CONFIG_SERIAL_8250_EXTENDED is not set
--
--#
--# Non-8250 serial port support
--#
--CONFIG_SERIAL_CORE=y
--CONFIG_SERIAL_CORE_CONSOLE=y
--CONFIG_UNIX98_PTYS=y
--CONFIG_LEGACY_PTYS=y
--CONFIG_LEGACY_PTY_COUNT=256
--
--#
--# IPMI
--#
--# CONFIG_IPMI_HANDLER is not set
--
--#
--# Watchdog Cards
--#
--# CONFIG_WATCHDOG is not set
--# CONFIG_HW_RANDOM is not set
--# CONFIG_RTC is not set
--# CONFIG_GEN_RTC is not set
--# CONFIG_DTLK is not set
--# CONFIG_R3964 is not set
--
--#
--# Ftape, the floppy tape device driver
--#
--# CONFIG_RAW_DRIVER is not set
--
--#
--# TPM devices
--#
--# CONFIG_TCG_TPM is not set
--# CONFIG_TELCLOCK is not set
--
--#
--# I2C support
--#
--# CONFIG_I2C is not set
--
--#
--# SPI support
--#
--# CONFIG_SPI is not set
--# CONFIG_SPI_MASTER is not set
--
--#
--# Dallas's 1-wire bus
--#
--# CONFIG_W1 is not set
--
--#
--# Hardware Monitoring support
--#
--# CONFIG_HWMON is not set
--# CONFIG_HWMON_VID is not set
--
--#
--# Misc devices
--#
--
--#
--# Multimedia devices
--#
--# CONFIG_VIDEO_DEV is not set
--CONFIG_VIDEO_V4L2=y
--
--#
--# Digital Video Broadcasting Devices
--#
--# CONFIG_DVB is not set
--
--#
--# Graphics support
--#
--# CONFIG_FIRMWARE_EDID is not set
--# CONFIG_FB is not set
--
--#
--# Console display driver support
--#
--# CONFIG_VGA_CONSOLE is not set
--CONFIG_DUMMY_CONSOLE=y
--
--#
--# Sound
--#
--# CONFIG_SOUND is not set
--
--#
--# USB support
--#
--# CONFIG_USB_ARCH_HAS_HCD is not set
--# CONFIG_USB_ARCH_HAS_OHCI is not set
--# CONFIG_USB_ARCH_HAS_EHCI is not set
--
--#
--# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
--#
--
--#
--# USB Gadget Support
--#
--# CONFIG_USB_GADGET is not set
--
--#
--# MMC/SD Card support
--#
--# CONFIG_MMC is not set
--
--#
--# LED devices
--#
--# CONFIG_NEW_LEDS is not set
--
--#
--# LED drivers
--#
--
--#
--# LED Triggers
--#
--
--#
--# InfiniBand support
--#
--
--#
--# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
--#
--
--#
--# Real Time Clock
--#
--# CONFIG_RTC_CLASS is not set
--
--#
--# DMA Engine support
--#
--# CONFIG_DMA_ENGINE is not set
--
--#
--# DMA Clients
--#
--
--#
--# DMA Devices
--#
--
--#
--# File systems
--#
--CONFIG_EXT2_FS=y
--# CONFIG_EXT2_FS_XATTR is not set
--# CONFIG_EXT2_FS_XIP is not set
--# CONFIG_EXT3_FS is not set
--# CONFIG_REISERFS_FS is not set
--# CONFIG_JFS_FS is not set
--# CONFIG_FS_POSIX_ACL is not set
--# CONFIG_XFS_FS is not set
--# CONFIG_OCFS2_FS is not set
--# CONFIG_MINIX_FS is not set
--# CONFIG_ROMFS_FS is not set
--CONFIG_INOTIFY=y
--CONFIG_INOTIFY_USER=y
--# CONFIG_QUOTA is not set
--CONFIG_DNOTIFY=y
--# CONFIG_AUTOFS_FS is not set
--# CONFIG_AUTOFS4_FS is not set
--CONFIG_FUSE_FS=y
--
--#
--# CD-ROM/DVD Filesystems
--#
--# CONFIG_ISO9660_FS is not set
--# CONFIG_UDF_FS is not set
--
--#
--# DOS/FAT/NT Filesystems
--#
--# CONFIG_MSDOS_FS is not set
--# CONFIG_VFAT_FS is not set
--# CONFIG_NTFS_FS is not set
--
--#
--# Pseudo filesystems
--#
--CONFIG_PROC_FS=y
--CONFIG_PROC_KCORE=y
--CONFIG_SYSFS=y
--CONFIG_TMPFS=y
--# CONFIG_HUGETLB_PAGE is not set
--CONFIG_RAMFS=y
--# CONFIG_CONFIGFS_FS is not set
--
--#
--# Miscellaneous filesystems
--#
--# CONFIG_ADFS_FS is not set
--# CONFIG_AFFS_FS is not set
--# CONFIG_HFS_FS is not set
--# CONFIG_HFSPLUS_FS is not set
--# CONFIG_BEFS_FS is not set
--# CONFIG_BFS_FS is not set
--# CONFIG_EFS_FS is not set
--# CONFIG_CRAMFS is not set
--# CONFIG_VXFS_FS is not set
--# CONFIG_HPFS_FS is not set
--# CONFIG_QNX4FS_FS is not set
--# CONFIG_SYSV_FS is not set
--# CONFIG_UFS_FS is not set
--
--#
--# Network File Systems
--#
--CONFIG_NFS_FS=y
--# CONFIG_NFS_V3 is not set
--# CONFIG_NFS_V4 is not set
--# CONFIG_NFS_DIRECTIO is not set
--CONFIG_NFSD=y
--# CONFIG_NFSD_V3 is not set
--# CONFIG_NFSD_TCP is not set
--CONFIG_ROOT_NFS=y
--CONFIG_LOCKD=y
--CONFIG_EXPORTFS=y
--CONFIG_NFS_COMMON=y
--CONFIG_SUNRPC=y
--# CONFIG_RPCSEC_GSS_KRB5 is not set
--# CONFIG_RPCSEC_GSS_SPKM3 is not set
--# CONFIG_SMB_FS is not set
--# CONFIG_CIFS is not set
--# CONFIG_CIFS_DEBUG2 is not set
--# CONFIG_NCP_FS is not set
--# CONFIG_CODA_FS is not set
--# CONFIG_AFS_FS is not set
--# CONFIG_9P_FS is not set
--
--#
--# Partition Types
--#
--# CONFIG_PARTITION_ADVANCED is not set
--CONFIG_MSDOS_PARTITION=y
--
--#
--# Native Language Support
--#
--# CONFIG_NLS is not set
--
--#
--# Profiling support
--#
--# CONFIG_PROFILING is not set
--
--#
--# Kernel hacking
--#
--CONFIG_TRACE_IRQFLAGS_SUPPORT=y
--# CONFIG_PRINTK_TIME is not set
--# CONFIG_MAGIC_SYSRQ is not set
--# CONFIG_UNUSED_SYMBOLS is not set
--# CONFIG_DEBUG_KERNEL is not set
--CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_DEBUG_FS is not set
--# CONFIG_UNWIND_INFO is not set
--CONFIG_CROSSCOMPILE=y
--CONFIG_CMDLINE=""
--
--#
--# Security options
--#
--CONFIG_KEYS=y
--CONFIG_KEYS_DEBUG_PROC_KEYS=y
--# CONFIG_SECURITY is not set
--
--#
--# Cryptographic options
--#
--CONFIG_CRYPTO=y
--CONFIG_CRYPTO_HMAC=y
--CONFIG_CRYPTO_NULL=y
--CONFIG_CRYPTO_MD4=y
--CONFIG_CRYPTO_MD5=y
--CONFIG_CRYPTO_SHA1=y
--CONFIG_CRYPTO_SHA256=y
--CONFIG_CRYPTO_SHA512=y
--CONFIG_CRYPTO_WP512=y
--CONFIG_CRYPTO_TGR192=y
--CONFIG_CRYPTO_DES=y
--CONFIG_CRYPTO_BLOWFISH=y
--CONFIG_CRYPTO_TWOFISH=y
--CONFIG_CRYPTO_SERPENT=y
--CONFIG_CRYPTO_AES=y
--CONFIG_CRYPTO_CAST5=y
--CONFIG_CRYPTO_CAST6=y
--CONFIG_CRYPTO_TEA=y
--CONFIG_CRYPTO_ARC4=y
--CONFIG_CRYPTO_KHAZAD=y
--CONFIG_CRYPTO_ANUBIS=y
--CONFIG_CRYPTO_DEFLATE=y
--CONFIG_CRYPTO_MICHAEL_MIC=y
--CONFIG_CRYPTO_CRC32C=y
--
--#
--# Hardware crypto devices
--#
--
--#
--# Library routines
--#
--# CONFIG_CRC_CCITT is not set
--CONFIG_CRC16=y
--CONFIG_CRC32=y
--CONFIG_LIBCRC32C=y
--CONFIG_ZLIB_INFLATE=y
--CONFIG_ZLIB_DEFLATE=y
--CONFIG_PLIST=y
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ocelot_g_defconfig mips/arch/mips/configs/ocelot_g_defconfig
---- mips-orig/arch/mips/configs/ocelot_g_defconfig	2006-10-02 22:32:45.834736250 +0900
-+++ mips/arch/mips/configs/ocelot_g_defconfig	1970-01-01 09:00:00.000000000 +0900
-@@ -1,906 +0,0 @@
--#
--# Automatically generated make config: don't edit
--# Linux kernel version: 2.6.18-rc1
--# Thu Jul  6 10:04:16 2006
--#
--CONFIG_MIPS=y
--
--#
--# Machine selection
--#
--# CONFIG_MIPS_MTX1 is not set
--# CONFIG_MIPS_BOSPORUS is not set
--# CONFIG_MIPS_PB1000 is not set
--# CONFIG_MIPS_PB1100 is not set
--# CONFIG_MIPS_PB1500 is not set
--# CONFIG_MIPS_PB1550 is not set
--# CONFIG_MIPS_PB1200 is not set
--# CONFIG_MIPS_DB1000 is not set
--# CONFIG_MIPS_DB1100 is not set
--# CONFIG_MIPS_DB1500 is not set
--# CONFIG_MIPS_DB1550 is not set
--# CONFIG_MIPS_DB1200 is not set
--# CONFIG_MIPS_MIRAGE is not set
--# CONFIG_BASLER_EXCITE is not set
--# CONFIG_MIPS_COBALT is not set
--# CONFIG_MACH_DECSTATION is not set
--# CONFIG_MIPS_EV64120 is not set
--# CONFIG_MIPS_IVR is not set
--# CONFIG_MIPS_ITE8172 is not set
--# CONFIG_MACH_JAZZ is not set
--# CONFIG_LASAT is not set
--# CONFIG_MIPS_ATLAS is not set
--# CONFIG_MIPS_MALTA is not set
--# CONFIG_MIPS_SEAD is not set
--# CONFIG_WR_PPMC is not set
--# CONFIG_MIPS_SIM is not set
--# CONFIG_MOMENCO_JAGUAR_ATX is not set
--# CONFIG_MOMENCO_OCELOT is not set
--# CONFIG_MOMENCO_OCELOT_3 is not set
--# CONFIG_MOMENCO_OCELOT_C is not set
--CONFIG_MOMENCO_OCELOT_G=y
--# CONFIG_MIPS_XXS1500 is not set
--# CONFIG_PNX8550_V2PCI is not set
--# CONFIG_PNX8550_JBS is not set
--# CONFIG_DDB5477 is not set
--# CONFIG_MACH_VR41XX is not set
--# CONFIG_PMC_YOSEMITE is not set
--# CONFIG_QEMU is not set
--# CONFIG_MARKEINS is not set
--# CONFIG_SGI_IP22 is not set
--# CONFIG_SGI_IP27 is not set
--# CONFIG_SGI_IP32 is not set
--# CONFIG_SIBYTE_BIGSUR is not set
--# CONFIG_SIBYTE_SWARM is not set
--# CONFIG_SIBYTE_SENTOSA is not set
--# CONFIG_SIBYTE_RHONE is not set
--# CONFIG_SIBYTE_CARMEL is not set
--# CONFIG_SIBYTE_PTSWARM is not set
--# CONFIG_SIBYTE_LITTLESUR is not set
--# CONFIG_SIBYTE_CRHINE is not set
--# CONFIG_SIBYTE_CRHONE is not set
--# CONFIG_SNI_RM200_PCI is not set
--# CONFIG_TOSHIBA_JMR3927 is not set
--# CONFIG_TOSHIBA_RBTX4927 is not set
--# CONFIG_TOSHIBA_RBTX4938 is not set
--CONFIG_RWSEM_GENERIC_SPINLOCK=y
--CONFIG_GENERIC_FIND_NEXT_BIT=y
--CONFIG_GENERIC_HWEIGHT=y
--CONFIG_GENERIC_CALIBRATE_DELAY=y
--CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
--CONFIG_DMA_NONCOHERENT=y
--CONFIG_DMA_NEED_PCI_MAP_STATE=y
--CONFIG_CPU_BIG_ENDIAN=y
--# CONFIG_CPU_LITTLE_ENDIAN is not set
--CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
--CONFIG_IRQ_CPU=y
--CONFIG_IRQ_CPU_RM7K=y
--CONFIG_PCI_MARVELL=y
--CONFIG_SWAP_IO_SPACE=y
--# CONFIG_SYSCLK_75 is not set
--# CONFIG_SYSCLK_83 is not set
--CONFIG_SYSCLK_100=y
--CONFIG_MIPS_L1_CACHE_SHIFT=5
--
--#
--# CPU selection
--#
--# CONFIG_CPU_MIPS32_R1 is not set
--# CONFIG_CPU_MIPS32_R2 is not set
--# CONFIG_CPU_MIPS64_R1 is not set
--# CONFIG_CPU_MIPS64_R2 is not set
--# CONFIG_CPU_R3000 is not set
--# CONFIG_CPU_TX39XX is not set
--# CONFIG_CPU_VR41XX is not set
--# CONFIG_CPU_R4300 is not set
--# CONFIG_CPU_R4X00 is not set
--# CONFIG_CPU_TX49XX is not set
--# CONFIG_CPU_R5000 is not set
--# CONFIG_CPU_R5432 is not set
--# CONFIG_CPU_R6000 is not set
--# CONFIG_CPU_NEVADA is not set
--# CONFIG_CPU_R8000 is not set
--# CONFIG_CPU_R10000 is not set
--CONFIG_CPU_RM7000=y
--# CONFIG_CPU_RM9000 is not set
--# CONFIG_CPU_SB1 is not set
--CONFIG_SYS_HAS_CPU_RM7000=y
--CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
--CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
--CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
--CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
--
--#
--# Kernel type
--#
--# CONFIG_32BIT is not set
--CONFIG_64BIT=y
--CONFIG_PAGE_SIZE_4KB=y
--# CONFIG_PAGE_SIZE_8KB is not set
--# CONFIG_PAGE_SIZE_16KB is not set
--# CONFIG_PAGE_SIZE_64KB is not set
--CONFIG_BOARD_SCACHE=y
--CONFIG_RM7000_CPU_SCACHE=y
--CONFIG_CPU_HAS_PREFETCH=y
--CONFIG_MIPS_MT_DISABLED=y
--# CONFIG_MIPS_MT_SMTC is not set
--# CONFIG_MIPS_MT_SMP is not set
--# CONFIG_MIPS_VPE_LOADER is not set
--CONFIG_CPU_HAS_LLSC=y
--CONFIG_CPU_HAS_SYNC=y
--CONFIG_GENERIC_HARDIRQS=y
--CONFIG_GENERIC_IRQ_PROBE=y
--CONFIG_CPU_SUPPORTS_HIGHMEM=y
--CONFIG_ARCH_FLATMEM_ENABLE=y
--CONFIG_SELECT_MEMORY_MODEL=y
--CONFIG_FLATMEM_MANUAL=y
--# CONFIG_DISCONTIGMEM_MANUAL is not set
--# CONFIG_SPARSEMEM_MANUAL is not set
--CONFIG_FLATMEM=y
--CONFIG_FLAT_NODE_MEM_MAP=y
--# CONFIG_SPARSEMEM_STATIC is not set
--CONFIG_SPLIT_PTLOCK_CPUS=4
--CONFIG_RESOURCES_64BIT=y
--# CONFIG_HZ_48 is not set
--# CONFIG_HZ_100 is not set
--# CONFIG_HZ_128 is not set
--# CONFIG_HZ_250 is not set
--# CONFIG_HZ_256 is not set
--CONFIG_HZ_1000=y
--# CONFIG_HZ_1024 is not set
--CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
--CONFIG_HZ=1000
--CONFIG_PREEMPT_NONE=y
--# CONFIG_PREEMPT_VOLUNTARY is not set
--# CONFIG_PREEMPT is not set
--CONFIG_LOCKDEP_SUPPORT=y
--CONFIG_STACKTRACE_SUPPORT=y
--CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
--
--#
--# Code maturity level options
--#
--CONFIG_EXPERIMENTAL=y
--CONFIG_BROKEN_ON_SMP=y
--CONFIG_INIT_ENV_ARG_LIMIT=32
--
--#
--# General setup
--#
--CONFIG_LOCALVERSION=""
--CONFIG_LOCALVERSION_AUTO=y
--CONFIG_SWAP=y
--CONFIG_SYSVIPC=y
--# CONFIG_POSIX_MQUEUE is not set
--# CONFIG_BSD_PROCESS_ACCT is not set
--CONFIG_SYSCTL=y
--# CONFIG_AUDIT is not set
--# CONFIG_IKCONFIG is not set
--CONFIG_RELAY=y
--CONFIG_INITRAMFS_SOURCE=""
--# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
--CONFIG_EMBEDDED=y
--CONFIG_KALLSYMS=y
--# CONFIG_KALLSYMS_EXTRA_PASS is not set
--CONFIG_HOTPLUG=y
--CONFIG_PRINTK=y
--CONFIG_BUG=y
--CONFIG_ELF_CORE=y
--CONFIG_BASE_FULL=y
--CONFIG_RT_MUTEXES=y
--CONFIG_FUTEX=y
--CONFIG_EPOLL=y
--CONFIG_SHMEM=y
--CONFIG_SLAB=y
--CONFIG_VM_EVENT_COUNTERS=y
--# CONFIG_TINY_SHMEM is not set
--CONFIG_BASE_SMALL=0
--# CONFIG_SLOB is not set
--
--#
--# Loadable module support
--#
--# CONFIG_MODULES is not set
--
--#
--# Block layer
--#
--# CONFIG_BLK_DEV_IO_TRACE is not set
--
--#
--# IO Schedulers
--#
--CONFIG_IOSCHED_NOOP=y
--CONFIG_IOSCHED_AS=y
--CONFIG_IOSCHED_DEADLINE=y
--CONFIG_IOSCHED_CFQ=y
--CONFIG_DEFAULT_AS=y
--# CONFIG_DEFAULT_DEADLINE is not set
--# CONFIG_DEFAULT_CFQ is not set
--# CONFIG_DEFAULT_NOOP is not set
--CONFIG_DEFAULT_IOSCHED="anticipatory"
--
--#
--# Bus options (PCI, PCMCIA, EISA, ISA, TC)
--#
--CONFIG_HW_HAS_PCI=y
--CONFIG_PCI=y
--CONFIG_MMU=y
--
--#
--# PCCARD (PCMCIA/CardBus) support
--#
--# CONFIG_PCCARD is not set
--
--#
--# PCI Hotplug Support
--#
--# CONFIG_HOTPLUG_PCI is not set
--
--#
--# Executable file formats
--#
--CONFIG_BINFMT_ELF=y
--# CONFIG_BINFMT_MISC is not set
--# CONFIG_BUILD_ELF64 is not set
--CONFIG_MIPS32_COMPAT=y
--CONFIG_COMPAT=y
--CONFIG_MIPS32_O32=y
--CONFIG_MIPS32_N32=y
--CONFIG_BINFMT_ELF32=y
--
--#
--# Networking
--#
--CONFIG_NET=y
--
--#
--# Networking options
--#
--# CONFIG_NETDEBUG is not set
--# CONFIG_PACKET is not set
--CONFIG_UNIX=y
--CONFIG_XFRM=y
--CONFIG_XFRM_USER=y
--CONFIG_NET_KEY=y
--CONFIG_INET=y
--# CONFIG_IP_MULTICAST is not set
--# CONFIG_IP_ADVANCED_ROUTER is not set
--CONFIG_IP_FIB_HASH=y
--CONFIG_IP_PNP=y
--CONFIG_IP_PNP_DHCP=y
--# CONFIG_IP_PNP_BOOTP is not set
--# CONFIG_IP_PNP_RARP is not set
--# CONFIG_NET_IPIP is not set
--# CONFIG_NET_IPGRE is not set
--# CONFIG_ARPD is not set
--# CONFIG_SYN_COOKIES is not set
--# CONFIG_INET_AH is not set
--# CONFIG_INET_ESP is not set
--# CONFIG_INET_IPCOMP is not set
--# CONFIG_INET_XFRM_TUNNEL is not set
--# CONFIG_INET_TUNNEL is not set
--CONFIG_INET_XFRM_MODE_TRANSPORT=y
--CONFIG_INET_XFRM_MODE_TUNNEL=y
--CONFIG_INET_DIAG=y
--CONFIG_INET_TCP_DIAG=y
--# CONFIG_TCP_CONG_ADVANCED is not set
--CONFIG_TCP_CONG_BIC=y
--# CONFIG_IPV6 is not set
--# CONFIG_INET6_XFRM_TUNNEL is not set
--# CONFIG_INET6_TUNNEL is not set
--CONFIG_NETWORK_SECMARK=y
--# CONFIG_NETFILTER is not set
--
--#
--# DCCP Configuration (EXPERIMENTAL)
--#
--# CONFIG_IP_DCCP is not set
--
--#
--# SCTP Configuration (EXPERIMENTAL)
--#
--# CONFIG_IP_SCTP is not set
--
--#
--# TIPC Configuration (EXPERIMENTAL)
--#
--# CONFIG_TIPC is not set
--# CONFIG_ATM is not set
--# CONFIG_BRIDGE is not set
--# CONFIG_VLAN_8021Q is not set
--# CONFIG_DECNET is not set
--# CONFIG_LLC2 is not set
--# CONFIG_IPX is not set
--# CONFIG_ATALK is not set
--# CONFIG_X25 is not set
--# CONFIG_LAPB is not set
--# CONFIG_NET_DIVERT is not set
--# CONFIG_ECONET is not set
--# CONFIG_WAN_ROUTER is not set
--
--#
--# QoS and/or fair queueing
--#
--# CONFIG_NET_SCHED is not set
--
--#
--# Network testing
--#
--# CONFIG_NET_PKTGEN is not set
--# CONFIG_HAMRADIO is not set
--# CONFIG_IRDA is not set
--# CONFIG_BT is not set
--CONFIG_IEEE80211=y
--# CONFIG_IEEE80211_DEBUG is not set
--CONFIG_IEEE80211_CRYPT_WEP=y
--CONFIG_IEEE80211_CRYPT_CCMP=y
--CONFIG_IEEE80211_SOFTMAC=y
--# CONFIG_IEEE80211_SOFTMAC_DEBUG is not set
--CONFIG_WIRELESS_EXT=y
--
--#
--# Device Drivers
--#
--
--#
--# Generic Driver Options
--#
--CONFIG_STANDALONE=y
--CONFIG_PREVENT_FIRMWARE_BUILD=y
--CONFIG_FW_LOADER=y
--# CONFIG_SYS_HYPERVISOR is not set
--
--#
--# Connector - unified userspace <-> kernelspace linker
--#
--CONFIG_CONNECTOR=y
--CONFIG_PROC_EVENTS=y
--
--#
--# Memory Technology Devices (MTD)
--#
--# CONFIG_MTD is not set
--
--#
--# Parallel port support
--#
--# CONFIG_PARPORT is not set
--
--#
--# Plug and Play support
--#
--
--#
--# Block devices
--#
--# CONFIG_BLK_CPQ_DA is not set
--# CONFIG_BLK_CPQ_CISS_DA is not set
--# CONFIG_BLK_DEV_DAC960 is not set
--# CONFIG_BLK_DEV_UMEM is not set
--# CONFIG_BLK_DEV_COW_COMMON is not set
--# CONFIG_BLK_DEV_LOOP is not set
--# CONFIG_BLK_DEV_NBD is not set
--# CONFIG_BLK_DEV_SX8 is not set
--# CONFIG_BLK_DEV_RAM is not set
--# CONFIG_BLK_DEV_INITRD is not set
--CONFIG_CDROM_PKTCDVD=y
--CONFIG_CDROM_PKTCDVD_BUFFERS=8
--# CONFIG_CDROM_PKTCDVD_WCACHE is not set
--CONFIG_ATA_OVER_ETH=y
--
--#
--# ATA/ATAPI/MFM/RLL support
--#
--# CONFIG_IDE is not set
--
--#
--# SCSI device support
--#
--CONFIG_RAID_ATTRS=y
--# CONFIG_SCSI is not set
--
--#
--# Multi-device support (RAID and LVM)
--#
--# CONFIG_MD is not set
--
--#
--# Fusion MPT device support
--#
--# CONFIG_FUSION is not set
--
--#
--# IEEE 1394 (FireWire) support
--#
--# CONFIG_IEEE1394 is not set
--
--#
--# I2O device support
--#
--# CONFIG_I2O is not set
--
--#
--# Network device support
--#
--CONFIG_NETDEVICES=y
--# CONFIG_DUMMY is not set
--# CONFIG_BONDING is not set
--# CONFIG_EQUALIZER is not set
--# CONFIG_TUN is not set
--
--#
--# ARCnet devices
--#
--# CONFIG_ARCNET is not set
--
--#
--# PHY device support
--#
--CONFIG_PHYLIB=y
--
--#
--# MII PHY device drivers
--#
--CONFIG_MARVELL_PHY=y
--CONFIG_DAVICOM_PHY=y
--CONFIG_QSEMI_PHY=y
--CONFIG_LXT_PHY=y
--CONFIG_CICADA_PHY=y
--CONFIG_VITESSE_PHY=y
--CONFIG_SMSC_PHY=y
--
--#
--# Ethernet (10 or 100Mbit)
--#
--CONFIG_NET_ETHERNET=y
--CONFIG_MII=y
--CONFIG_GALILEO_64240_ETH=y
--# CONFIG_HAPPYMEAL is not set
--# CONFIG_SUNGEM is not set
--# CONFIG_CASSINI is not set
--# CONFIG_NET_VENDOR_3COM is not set
--# CONFIG_DM9000 is not set
--
--#
--# Tulip family network device support
--#
--# CONFIG_NET_TULIP is not set
--# CONFIG_HP100 is not set
--# CONFIG_NET_PCI is not set
--
--#
--# Ethernet (1000 Mbit)
--#
--# CONFIG_ACENIC is not set
--# CONFIG_DL2K is not set
--# CONFIG_E1000 is not set
--# CONFIG_NS83820 is not set
--# CONFIG_HAMACHI is not set
--# CONFIG_YELLOWFIN is not set
--# CONFIG_R8169 is not set
--# CONFIG_SIS190 is not set
--# CONFIG_SKGE is not set
--# CONFIG_SKY2 is not set
--# CONFIG_SK98LIN is not set
--# CONFIG_TIGON3 is not set
--# CONFIG_BNX2 is not set
--
--#
--# Ethernet (10000 Mbit)
--#
--# CONFIG_CHELSIO_T1 is not set
--# CONFIG_IXGB is not set
--# CONFIG_S2IO is not set
--# CONFIG_MYRI10GE is not set
--
--#
--# Token Ring devices
--#
--# CONFIG_TR is not set
--
--#
--# Wireless LAN (non-hamradio)
--#
--# CONFIG_NET_RADIO is not set
--
--#
--# Wan interfaces
--#
--# CONFIG_WAN is not set
--# CONFIG_FDDI is not set
--# CONFIG_HIPPI is not set
--# CONFIG_PPP is not set
--# CONFIG_SLIP is not set
--# CONFIG_SHAPER is not set
--# CONFIG_NETCONSOLE is not set
--# CONFIG_NETPOLL is not set
--# CONFIG_NET_POLL_CONTROLLER is not set
--
--#
--# ISDN subsystem
--#
--# CONFIG_ISDN is not set
--
--#
--# Telephony Support
--#
--# CONFIG_PHONE is not set
--
--#
--# Input device support
--#
--CONFIG_INPUT=y
--
--#
--# Userland interfaces
--#
--CONFIG_INPUT_MOUSEDEV=y
--CONFIG_INPUT_MOUSEDEV_PSAUX=y
--CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
--CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
--# CONFIG_INPUT_JOYDEV is not set
--# CONFIG_INPUT_TSDEV is not set
--# CONFIG_INPUT_EVDEV is not set
--# CONFIG_INPUT_EVBUG is not set
--
--#
--# Input Device Drivers
--#
--# CONFIG_INPUT_KEYBOARD is not set
--# CONFIG_INPUT_MOUSE is not set
--# CONFIG_INPUT_JOYSTICK is not set
--# CONFIG_INPUT_TOUCHSCREEN is not set
--# CONFIG_INPUT_MISC is not set
--
--#
--# Hardware I/O ports
--#
--CONFIG_SERIO=y
--# CONFIG_SERIO_I8042 is not set
--CONFIG_SERIO_SERPORT=y
--# CONFIG_SERIO_PCIPS2 is not set
--# CONFIG_SERIO_LIBPS2 is not set
--CONFIG_SERIO_RAW=y
--# CONFIG_GAMEPORT is not set
--
--#
--# Character devices
--#
--CONFIG_VT=y
--CONFIG_VT_CONSOLE=y
--CONFIG_HW_CONSOLE=y
--CONFIG_VT_HW_CONSOLE_BINDING=y
--# CONFIG_SERIAL_NONSTANDARD is not set
--
--#
--# Serial drivers
--#
--CONFIG_SERIAL_8250=y
--CONFIG_SERIAL_8250_CONSOLE=y
--CONFIG_SERIAL_8250_PCI=y
--CONFIG_SERIAL_8250_NR_UARTS=4
--CONFIG_SERIAL_8250_RUNTIME_UARTS=4
--# CONFIG_SERIAL_8250_EXTENDED is not set
--
--#
--# Non-8250 serial port support
--#
--CONFIG_SERIAL_CORE=y
--CONFIG_SERIAL_CORE_CONSOLE=y
--# CONFIG_SERIAL_JSM is not set
--CONFIG_UNIX98_PTYS=y
--CONFIG_LEGACY_PTYS=y
--CONFIG_LEGACY_PTY_COUNT=256
--
--#
--# IPMI
--#
--# CONFIG_IPMI_HANDLER is not set
--
--#
--# Watchdog Cards
--#
--# CONFIG_WATCHDOG is not set
--# CONFIG_HW_RANDOM is not set
--# CONFIG_RTC is not set
--# CONFIG_GEN_RTC is not set
--# CONFIG_DTLK is not set
--# CONFIG_R3964 is not set
--# CONFIG_APPLICOM is not set
--
--#
--# Ftape, the floppy tape device driver
--#
--# CONFIG_DRM is not set
--# CONFIG_RAW_DRIVER is not set
--
--#
--# TPM devices
--#
--# CONFIG_TCG_TPM is not set
--# CONFIG_TELCLOCK is not set
--
--#
--# I2C support
--#
--# CONFIG_I2C is not set
--
--#
--# SPI support
--#
--# CONFIG_SPI is not set
--# CONFIG_SPI_MASTER is not set
--
--#
--# Dallas's 1-wire bus
--#
--# CONFIG_W1 is not set
--
--#
--# Hardware Monitoring support
--#
--# CONFIG_HWMON is not set
--# CONFIG_HWMON_VID is not set
--
--#
--# Misc devices
--#
--
--#
--# Multimedia devices
--#
--# CONFIG_VIDEO_DEV is not set
--CONFIG_VIDEO_V4L2=y
--
--#
--# Digital Video Broadcasting Devices
--#
--# CONFIG_DVB is not set
--
--#
--# Graphics support
--#
--# CONFIG_FIRMWARE_EDID is not set
--# CONFIG_FB is not set
--
--#
--# Console display driver support
--#
--# CONFIG_VGA_CONSOLE is not set
--CONFIG_DUMMY_CONSOLE=y
--
--#
--# Sound
--#
--# CONFIG_SOUND is not set
--
--#
--# USB support
--#
--CONFIG_USB_ARCH_HAS_HCD=y
--CONFIG_USB_ARCH_HAS_OHCI=y
--CONFIG_USB_ARCH_HAS_EHCI=y
--# CONFIG_USB is not set
--
--#
--# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
--#
--
--#
--# USB Gadget Support
--#
--# CONFIG_USB_GADGET is not set
--
--#
--# MMC/SD Card support
--#
--# CONFIG_MMC is not set
--
--#
--# LED devices
--#
--# CONFIG_NEW_LEDS is not set
--
--#
--# LED drivers
--#
--
--#
--# LED Triggers
--#
--
--#
--# InfiniBand support
--#
--# CONFIG_INFINIBAND is not set
--
--#
--# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
--#
--
--#
--# Real Time Clock
--#
--# CONFIG_RTC_CLASS is not set
--
--#
--# DMA Engine support
--#
--# CONFIG_DMA_ENGINE is not set
--
--#
--# DMA Clients
--#
--
--#
--# DMA Devices
--#
--
--#
--# File systems
--#
--CONFIG_EXT2_FS=y
--# CONFIG_EXT2_FS_XATTR is not set
--# CONFIG_EXT2_FS_XIP is not set
--# CONFIG_EXT3_FS is not set
--# CONFIG_REISERFS_FS is not set
--# CONFIG_JFS_FS is not set
--# CONFIG_FS_POSIX_ACL is not set
--# CONFIG_XFS_FS is not set
--# CONFIG_OCFS2_FS is not set
--# CONFIG_MINIX_FS is not set
--# CONFIG_ROMFS_FS is not set
--CONFIG_INOTIFY=y
--CONFIG_INOTIFY_USER=y
--# CONFIG_QUOTA is not set
--CONFIG_DNOTIFY=y
--# CONFIG_AUTOFS_FS is not set
--# CONFIG_AUTOFS4_FS is not set
--CONFIG_FUSE_FS=y
--
--#
--# CD-ROM/DVD Filesystems
--#
--# CONFIG_ISO9660_FS is not set
--# CONFIG_UDF_FS is not set
--
--#
--# DOS/FAT/NT Filesystems
--#
--# CONFIG_MSDOS_FS is not set
--# CONFIG_VFAT_FS is not set
--# CONFIG_NTFS_FS is not set
--
--#
--# Pseudo filesystems
--#
--CONFIG_PROC_FS=y
--CONFIG_PROC_KCORE=y
--CONFIG_SYSFS=y
--CONFIG_TMPFS=y
--# CONFIG_HUGETLB_PAGE is not set
--CONFIG_RAMFS=y
--# CONFIG_CONFIGFS_FS is not set
--
--#
--# Miscellaneous filesystems
--#
--# CONFIG_ADFS_FS is not set
--# CONFIG_AFFS_FS is not set
--# CONFIG_HFS_FS is not set
--# CONFIG_HFSPLUS_FS is not set
--# CONFIG_BEFS_FS is not set
--# CONFIG_BFS_FS is not set
--# CONFIG_EFS_FS is not set
--# CONFIG_CRAMFS is not set
--# CONFIG_VXFS_FS is not set
--# CONFIG_HPFS_FS is not set
--# CONFIG_QNX4FS_FS is not set
--# CONFIG_SYSV_FS is not set
--# CONFIG_UFS_FS is not set
--
--#
--# Network File Systems
--#
--CONFIG_NFS_FS=y
--# CONFIG_NFS_V3 is not set
--# CONFIG_NFS_V4 is not set
--# CONFIG_NFS_DIRECTIO is not set
--CONFIG_NFSD=y
--# CONFIG_NFSD_V3 is not set
--# CONFIG_NFSD_TCP is not set
--CONFIG_ROOT_NFS=y
--CONFIG_LOCKD=y
--CONFIG_EXPORTFS=y
--CONFIG_NFS_COMMON=y
--CONFIG_SUNRPC=y
--# CONFIG_RPCSEC_GSS_KRB5 is not set
--# CONFIG_RPCSEC_GSS_SPKM3 is not set
--# CONFIG_SMB_FS is not set
--# CONFIG_CIFS is not set
--# CONFIG_CIFS_DEBUG2 is not set
--# CONFIG_NCP_FS is not set
--# CONFIG_CODA_FS is not set
--# CONFIG_AFS_FS is not set
--# CONFIG_9P_FS is not set
--
--#
--# Partition Types
--#
--# CONFIG_PARTITION_ADVANCED is not set
--CONFIG_MSDOS_PARTITION=y
--
--#
--# Native Language Support
--#
--# CONFIG_NLS is not set
--
--#
--# Profiling support
--#
--# CONFIG_PROFILING is not set
--
--#
--# Kernel hacking
--#
--CONFIG_TRACE_IRQFLAGS_SUPPORT=y
--# CONFIG_PRINTK_TIME is not set
--# CONFIG_MAGIC_SYSRQ is not set
--# CONFIG_UNUSED_SYMBOLS is not set
--# CONFIG_DEBUG_KERNEL is not set
--CONFIG_LOG_BUF_SHIFT=14
--# CONFIG_DEBUG_FS is not set
--# CONFIG_UNWIND_INFO is not set
--CONFIG_CROSSCOMPILE=y
--CONFIG_CMDLINE=""
--
--#
--# Security options
--#
--CONFIG_KEYS=y
--CONFIG_KEYS_DEBUG_PROC_KEYS=y
--# CONFIG_SECURITY is not set
--
--#
--# Cryptographic options
--#
--CONFIG_CRYPTO=y
--CONFIG_CRYPTO_HMAC=y
--CONFIG_CRYPTO_NULL=y
--CONFIG_CRYPTO_MD4=y
--CONFIG_CRYPTO_MD5=y
--CONFIG_CRYPTO_SHA1=y
--CONFIG_CRYPTO_SHA256=y
--CONFIG_CRYPTO_SHA512=y
--CONFIG_CRYPTO_WP512=y
--CONFIG_CRYPTO_TGR192=y
--CONFIG_CRYPTO_DES=y
--CONFIG_CRYPTO_BLOWFISH=y
--CONFIG_CRYPTO_TWOFISH=y
--CONFIG_CRYPTO_SERPENT=y
--CONFIG_CRYPTO_AES=y
--CONFIG_CRYPTO_CAST5=y
--CONFIG_CRYPTO_CAST6=y
--CONFIG_CRYPTO_TEA=y
--CONFIG_CRYPTO_ARC4=y
--CONFIG_CRYPTO_KHAZAD=y
--CONFIG_CRYPTO_ANUBIS=y
--CONFIG_CRYPTO_DEFLATE=y
--CONFIG_CRYPTO_MICHAEL_MIC=y
--CONFIG_CRYPTO_CRC32C=y
--
--#
--# Hardware crypto devices
--#
--
--#
--# Library routines
--#
--# CONFIG_CRC_CCITT is not set
--CONFIG_CRC16=y
--CONFIG_CRC32=y
--CONFIG_LIBCRC32C=y
--CONFIG_ZLIB_INFLATE=y
--CONFIG_ZLIB_DEFLATE=y
--CONFIG_PLIST=y
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/Makefile mips/arch/mips/gt64120/momenco_ocelot/Makefile
---- mips-orig/arch/mips/gt64120/momenco_ocelot/Makefile	2006-10-02 22:32:45.894740000 +0900
-+++ mips/arch/mips/gt64120/momenco_ocelot/Makefile	1970-01-01 09:00:00.000000000 +0900
-@@ -1,9 +0,0 @@
--#
--# Makefile for Momentum's Ocelot board.
--#
--
--obj-y	 		+= irq.o prom.o reset.o setup.o
--
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/Kconfig mips/arch/mips/ite-boards/Kconfig
+--- mips-orig/arch/mips/ite-boards/Kconfig	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/Kconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,8 +0,0 @@
+-config IT8172_REVC
+-	bool "Support for older IT8172 (Rev C)"
+-	depends on MIPS_ITE8172
+-	help
+-	  Say Y here to support the older, Revision C version of the Integrated
+-	  Technology Express, Inc. ITE8172 SBC.  Vendor page at
+-	  <http://www.ite.com.tw/ia/brief_it8172bsp.htm>; picture of the
+-	  board at <http://www.mvista.com/partners/semiconductor/ite.html>.
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/Makefile mips/arch/mips/ite-boards/generic/Makefile
+--- mips-orig/arch/mips/ite-boards/generic/Makefile	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/Makefile	1970-01-01 09:00:00.000000000 +0900
+@@ -1,15 +0,0 @@
+-#
+-#  Copyright 2000 MontaVista Software Inc.
+-#  Author: MontaVista Software, Inc.
+-#     	ppopov@mvista.com or source@mvista.com
+-#
+-# Makefile for the ITE 8172 (qed-4n-s01b) board, generic files.
+-#
+-
+-obj-y			+= it8172_setup.o irq.o pmon_prom.o \
+-			   time.o lpc.o puts.o reset.o
+-
+-obj-$(CONFIG_IT8172_CIR)+= it8172_cir.o
 -obj-$(CONFIG_KGDB)	+= dbg_io.o
 -
 -EXTRA_AFLAGS := $(CFLAGS)
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/dbg_io.c mips/arch/mips/gt64120/momenco_ocelot/dbg_io.c
---- mips-orig/arch/mips/gt64120/momenco_ocelot/dbg_io.c	2006-10-02 22:32:45.894740000 +0900
-+++ mips/arch/mips/gt64120/momenco_ocelot/dbg_io.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,125 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/dbg_io.c mips/arch/mips/ite-boards/generic/dbg_io.c
+--- mips-orig/arch/mips/ite-boards/generic/dbg_io.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/dbg_io.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,124 +0,0 @@
+-
 -
 -#ifdef CONFIG_KGDB
 -
--#include <asm/serial.h> /* For the serial port location and base baud */
--
 -/* --- CONFIG --- */
 -
+-/* we need uint32 uint8 */
+-/* #include "types.h" */
 -typedef unsigned char uint8;
 -typedef unsigned int uint32;
 -
@@ -4110,36 +2127,34 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_oc
 -
 -/* === CONFIG === */
 -
--/* [jsun] we use the second serial port for kdb */
--#define         BASE                    OCELOT_SERIAL1_BASE
--#define         MAX_BAUD                OCELOT_BASE_BAUD
+-/* [stevel] we use the IT8712 serial port for kgdb */
+-#define	DEBUG_BASE  0xB40003F8	/* 8712 serial port 1 base address */
+-#define MAX_BAUD    115200
 -
 -/* === END OF CONFIG === */
--
--#define         REG_OFFSET              4
 -
 -/* register offset */
 -#define         OFS_RCV_BUFFER          0
 -#define         OFS_TRANS_HOLD          0
 -#define         OFS_SEND_BUFFER         0
--#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
--#define         OFS_INTR_ID             (2*REG_OFFSET)
--#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
--#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
--#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
--#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
--#define         OFS_LINE_STATUS         (5*REG_OFFSET)
--#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
--#define         OFS_RS232_INPUT         (6*REG_OFFSET)
--#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
+-#define         OFS_INTR_ENABLE         1
+-#define         OFS_INTR_ID             2
+-#define         OFS_DATA_FORMAT         3
+-#define         OFS_LINE_CONTROL        3
+-#define         OFS_MODEM_CONTROL       4
+-#define         OFS_RS232_OUTPUT        4
+-#define         OFS_LINE_STATUS         5
+-#define         OFS_MODEM_STATUS        6
+-#define         OFS_RS232_INPUT         6
+-#define         OFS_SCRATCH_PAD         7
 -
--#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
--#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
+-#define         OFS_DIVISOR_LSB         0
+-#define         OFS_DIVISOR_MSB         1
 -
 -
 -/* memory-mapped read/write of the port */
--#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
--#define         UART16550_WRITE(y, z)  ((*((volatile uint8*)(BASE + y))) = z)
+-#define UART16550_READ(y)    (*((volatile uint8*)(DEBUG_BASE + y)))
+-#define UART16550_WRITE(y,z) ((*((volatile uint8*)(DEBUG_BASE + y))) = z)
 -
 -void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
 -{
@@ -4172,7 +2187,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_oc
 -{
 -	if (!remoteDebugInitialized) {
 -		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
+-		debugInit(UART16550_BAUD_115200,
 -			  UART16550_DATA_8BIT,
 -			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
 -	}
@@ -4186,7 +2201,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_oc
 -{
 -	if (!remoteDebugInitialized) {
 -		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
+-		debugInit(UART16550_BAUD_115200,
 -			  UART16550_DATA_8BIT,
 -			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
 -	}
@@ -4197,18 +2212,23 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_oc
 -}
 -
 -#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/irq.c mips/arch/mips/gt64120/momenco_ocelot/irq.c
---- mips-orig/arch/mips/gt64120/momenco_ocelot/irq.c	2006-10-02 22:32:45.894740000 +0900
-+++ mips/arch/mips/gt64120/momenco_ocelot/irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,95 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/irq.c mips/arch/mips/ite-boards/generic/irq.c
+--- mips-orig/arch/mips/ite-boards/generic/irq.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/irq.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,308 +0,0 @@
 -/*
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
+- * BRIEF MODULE DESCRIPTION
+- *	ITE 8172G interrupt/setup routines.
 - *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- * Copyright (C) 2000, 2001, 2003 Ralf Baechle (ralf@gnu.org)
+- * Copyright 2000,2001 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- * Part of this file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/atlas/atlas_int.c.
+- *
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -4229,10 +2249,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_oc
 - *  You should have received a copy of the  GNU General Public License along
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
 - */
 -#include <linux/errno.h>
 -#include <linux/init.h>
+-#include <linux/irq.h>
 -#include <linux/kernel_stat.h>
 -#include <linux/module.h>
 -#include <linux/signal.h>
@@ -4243,241 +2263,279 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_oc
 -#include <linux/timex.h>
 -#include <linux/slab.h>
 -#include <linux/random.h>
+-#include <linux/serial_reg.h>
 -#include <linux/bitops.h>
+-
 -#include <asm/bootinfo.h>
 -#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/irq_cpu.h>
 -#include <asm/mipsregs.h>
 -#include <asm/system.h>
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_int.h>
+-#include <asm/it8172/it8172_dbg.h>
 -
--asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
+-/* revisit */
+-#define EXT_IRQ0_TO_IP 2 /* IP 2 */
+-#define EXT_IRQ5_TO_IP 7 /* IP 7 */
+-
+-#define ALLINTS_NOTIMER (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4)
+-
+-extern void set_debug_traps(void);
+-extern void mips_timer_interrupt(int irq, struct pt_regs *regs);
+-
+-struct it8172_intc_regs volatile *it8172_hw0_icregs =
+-	(struct it8172_intc_regs volatile *)(KSEG1ADDR(IT8172_PCI_IO_BASE + IT_INTC_BASE));
+-
+-static void disable_it8172_irq(unsigned int irq_nr)
 -{
--	unsigned int pending = read_c0_status() & read_c0_cause();
--
--	if (pending & STATUSF_IP2)		/* int0 hardware line */
--		do_IRQ(2, regs);
--	else if (pending & STATUSF_IP3)		/* int1 hardware line */
--		do_IRQ(3, regs);
--	else if (pending & STATUSF_IP4)		/* int2 hardware line */
--		do_IRQ(4, regs);
--	else if (pending & STATUSF_IP5)		/* int3 hardware line */
--		do_IRQ(5, regs);
--	else if (pending & STATUSF_IP6)		/* int4 hardware line */
--		do_IRQ(6, regs);
--	else if (pending & STATUSF_IP7)		/* cpu timer */
--		do_IRQ(7, regs);
--	else {
--		/*
--		 * Now look at the extended interrupts
--		 */
--		pending = (read_c0_cause() & (read_c0_intcontrol() << 8)) >> 16;
--
--		if (pending & STATUSF_IP8)		/* int6 hardware line */
--			do_IRQ(8, regs);
--		else if (pending & STATUSF_IP9)		/* int7 hardware line */
--			do_IRQ(9, regs);
--		else if (pending & STATUSF_IP10)	/* int8 hardware line */
--			do_IRQ(10, regs);
--		else if (pending & STATUSF_IP11)	/* int9 hardware line */
--			do_IRQ(11, regs);
+-	if ( (irq_nr >= IT8172_LPC_IRQ_BASE) && (irq_nr <= IT8172_SERIRQ_15)) {
+-		/* LPC interrupt */
+-		it8172_hw0_icregs->lpc_mask |=
+-			(1 << (irq_nr - IT8172_LPC_IRQ_BASE));
+-	} else if ( (irq_nr >= IT8172_LB_IRQ_BASE) && (irq_nr <= IT8172_IOCHK_IRQ)) {
+-		/* Local Bus interrupt */
+-		it8172_hw0_icregs->lb_mask |=
+-			(1 << (irq_nr - IT8172_LB_IRQ_BASE));
+-	} else if ( (irq_nr >= IT8172_PCI_DEV_IRQ_BASE) && (irq_nr <= IT8172_DMA_IRQ)) {
+-		/* PCI and other interrupts */
+-		it8172_hw0_icregs->pci_mask |=
+-			(1 << (irq_nr - IT8172_PCI_DEV_IRQ_BASE));
+-	} else if ( (irq_nr >= IT8172_NMI_IRQ_BASE) && (irq_nr <= IT8172_POWER_NMI_IRQ)) {
+-		/* NMI interrupts */
+-		it8172_hw0_icregs->nmi_mask |=
+-			(1 << (irq_nr - IT8172_NMI_IRQ_BASE));
+-	} else {
+-		panic("disable_it8172_irq: bad irq %d", irq_nr);
 -	}
+-}
+-
+-static void enable_it8172_irq(unsigned int irq_nr)
+-{
+-	if ( (irq_nr >= IT8172_LPC_IRQ_BASE) && (irq_nr <= IT8172_SERIRQ_15)) {
+-		/* LPC interrupt */
+-		it8172_hw0_icregs->lpc_mask &=
+-			~(1 << (irq_nr - IT8172_LPC_IRQ_BASE));
+-	}
+-	else if ( (irq_nr >= IT8172_LB_IRQ_BASE) && (irq_nr <= IT8172_IOCHK_IRQ)) {
+-		/* Local Bus interrupt */
+-		it8172_hw0_icregs->lb_mask &=
+-			~(1 << (irq_nr - IT8172_LB_IRQ_BASE));
+-	}
+-	else if ( (irq_nr >= IT8172_PCI_DEV_IRQ_BASE) && (irq_nr <= IT8172_DMA_IRQ)) {
+-		/* PCI and other interrupts */
+-		it8172_hw0_icregs->pci_mask &=
+-			~(1 << (irq_nr - IT8172_PCI_DEV_IRQ_BASE));
+-	}
+-	else if ( (irq_nr >= IT8172_NMI_IRQ_BASE) && (irq_nr <= IT8172_POWER_NMI_IRQ)) {
+-		/* NMI interrupts */
+-		it8172_hw0_icregs->nmi_mask &=
+-			~(1 << (irq_nr - IT8172_NMI_IRQ_BASE));
+-	}
+-	else {
+-		panic("enable_it8172_irq: bad irq %d", irq_nr);
+-	}
+-}
+-
+-static unsigned int startup_ite_irq(unsigned int irq)
+-{
+-	enable_it8172_irq(irq);
+-	return 0;
+-}
+-
+-#define shutdown_ite_irq	disable_it8172_irq
+-#define mask_and_ack_ite_irq    disable_it8172_irq
+-
+-static void end_ite_irq(unsigned int irq)
+-{
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
+-		enable_it8172_irq(irq);
+-}
+-
+-static struct irq_chip it8172_irq_type = {
+-	.typename = "ITE8172",
+-	.startup = startup_ite_irq,
+-	.shutdown = shutdown_ite_irq,
+-	.enable = enable_it8172_irq,
+-	.disable = disable_it8172_irq,
+-	.ack = mask_and_ack_ite_irq,
+-	.end = end_ite_irq,
+-};
+-
+-
+-static void enable_none(unsigned int irq) { }
+-static unsigned int startup_none(unsigned int irq) { return 0; }
+-static void disable_none(unsigned int irq) { }
+-static void ack_none(unsigned int irq) { }
+-
+-/* startup is the same as "enable", shutdown is same as "disable" */
+-#define shutdown_none	disable_none
+-#define end_none	enable_none
+-
+-static struct irq_chip cp0_irq_type = {
+-	.typename = "CP0 Count",
+-	.startup = startup_none,
+-	.shutdown = shutdown_none,
+-	.enable = enable_none,
+-	.disable = disable_none,
+-	.ack = ack_none,
+-	.end = end_none
+-};
+-
+-void enable_cpu_timer(void)
+-{
+-        unsigned long flags;
+-
+-        local_irq_save(flags);
+-	set_c0_status(0x100 << EXT_IRQ5_TO_IP);
+-        local_irq_restore(flags);
 -}
 -
 -void __init arch_init_irq(void)
 -{
--	/*
--	 * Clear all of the interrupts while we change the able around a bit.
--	 * int-handler is not on bootstrap
--	 */
--	clear_c0_status(ST0_IM);
--	local_irq_disable();
--
--	mips_cpu_irq_init(0);
--	rm7k_cpu_irq_init(8);
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/ocelot_pld.h mips/arch/mips/gt64120/momenco_ocelot/ocelot_pld.h
---- mips-orig/arch/mips/gt64120/momenco_ocelot/ocelot_pld.h	2006-10-02 22:32:45.894740000 +0900
-+++ mips/arch/mips/gt64120/momenco_ocelot/ocelot_pld.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,30 +0,0 @@
--/*
-- * Ocelot Board Register Definitions
-- *
-- * (C) 2001 Red Hat, Inc.
-- *
-- * GPL'd
-- */
--#ifndef __MOMENCO_OCELOT_PLD_H__
--#define __MOMENCO_OCELOT_PLD_H__
--
--#define OCELOT_CS0_ADDR (0xe0020000)
--
--#define OCELOT_REG_BOARDREV (0)
--#define OCELOT_REG_PLD1_ID (1)
--#define OCELOT_REG_PLD2_ID (2)
--#define OCELOT_REG_RESET_STATUS (3)
--#define OCELOT_REG_BOARD_STATUS (4)
--#define OCELOT_REG_CPCI_ID (5)
--#define OCELOT_REG_I2C_CTRL (8)
--#define OCELOT_REG_EEPROM_MODE (9)
--#define OCELOT_REG_INTMASK (10)
--#define OCELOT_REG_INTSTATUS (11)
--#define OCELOT_REG_INTSET (12)
--#define OCELOT_REG_INTCLR (13)
--
--#define OCELOT_PLD_WRITE(x, y) writeb(x, OCELOT_CS0_ADDR + OCELOT_REG_##y)
--#define OCELOT_PLD_READ(x) readb(OCELOT_CS0_ADDR + OCELOT_REG_##x)
--
--
--#endif /* __MOMENCO_OCELOT_PLD_H__ */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/prom.c mips/arch/mips/gt64120/momenco_ocelot/prom.c
---- mips-orig/arch/mips/gt64120/momenco_ocelot/prom.c	2006-10-02 22:32:45.894740000 +0900
-+++ mips/arch/mips/gt64120/momenco_ocelot/prom.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,73 +0,0 @@
--/*
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#include <linux/init.h>
--#include <linux/mm.h>
--#include <linux/sched.h>
--#include <linux/bootmem.h>
--
--#include <asm/addrspace.h>
--#include <asm/bootinfo.h>
--#include <asm/pmon.h>
--
--struct callvectors* debug_vectors;
--
--extern unsigned long gt64120_base;
--
--const char *get_system_type(void)
--{
--	return "Momentum Ocelot";
--}
--
--/* [jsun@junsun.net] PMON passes arguments in C main() style */
--void __init prom_init(void)
--{
--	int argc = fw_arg0;
--	char **arg = (char **) fw_arg1;
--	char **env = (char **) fw_arg2;
--	struct callvectors *cv = (struct callvectors *) fw_arg3;
--	uint32_t tmp;
 -	int i;
+-        unsigned long flags;
 -
--	/* save the PROM vectors for debugging use */
--	debug_vectors = cv;
+-	/* mask all interrupts */
+-	it8172_hw0_icregs->lb_mask  = 0xffff;
+-	it8172_hw0_icregs->lpc_mask = 0xffff;
+-	it8172_hw0_icregs->pci_mask = 0xffff;
+-	it8172_hw0_icregs->nmi_mask = 0xffff;
 -
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--	for (i = 1; i < argc; i++) {
--		if (strlen(arcs_cmdline) + strlen(arg[i] + 1)
--		    >= sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, arg[i]);
--		strcat(arcs_cmdline, " ");
+-	/* make all interrupts level triggered */
+-	it8172_hw0_icregs->lb_trigger  = 0;
+-	it8172_hw0_icregs->lpc_trigger = 0;
+-	it8172_hw0_icregs->pci_trigger = 0;
+-	it8172_hw0_icregs->nmi_trigger = 0;
+-
+-	/* active level setting */
+-	/* uart, keyboard, and mouse are active high */
+-	it8172_hw0_icregs->lpc_level = (0x10 | 0x2 | 0x1000);
+-	it8172_hw0_icregs->lb_level |= 0x20;
+-
+-	/* keyboard and mouse are edge triggered */
+-	it8172_hw0_icregs->lpc_trigger |= (0x2 | 0x1000);
+-
+-
+-#if 0
+-	// Enable this piece of code to make internal USB interrupt
+-	// edge triggered.
+-	it8172_hw0_icregs->pci_trigger |=
+-		(1 << (IT8172_USB_IRQ - IT8172_PCI_DEV_IRQ_BASE));
+-	it8172_hw0_icregs->pci_level &=
+-		~(1 << (IT8172_USB_IRQ - IT8172_PCI_DEV_IRQ_BASE));
+-#endif
+-
+-	for (i = 0; i <= IT8172_LAST_IRQ; i++) {
+-		irq_desc[i].chip = &it8172_irq_type;
+-		spin_lock_init(&irq_desc[i].lock);
 -	}
+-	irq_desc[MIPS_CPU_TIMER_IRQ].chip = &cp0_irq_type;
+-	set_c0_status(ALLINTS_NOTIMER);
+-}
 -
--	mips_machgroup = MACH_GROUP_MOMENCO;
--	mips_machtype = MACH_MOMENCO_OCELOT;
+-void mips_spurious_interrupt(struct pt_regs *regs)
+-{
+-#if 1
+-	return;
+-#else
+-	unsigned long status, cause;
 -
--	while (*env) {
--		if (strncmp("gtbase", *env, 6) == 0) {
--			gt64120_base = simple_strtol(*env + strlen("gtbase="),
--							NULL, 16);
--			break;
+-	printk("got spurious interrupt\n");
+-	status = read_c0_status();
+-	cause = read_c0_cause();
+-	printk("status %x cause %x\n", status, cause);
+-	printk("epc %x badvaddr %x \n", regs->cp0_epc, regs->cp0_badvaddr);
+-#endif
+-}
+-
+-void it8172_hw0_irqdispatch(struct pt_regs *regs)
+-{
+-	int irq;
+-	unsigned short intstatus = 0, status = 0;
+-
+-	intstatus = it8172_hw0_icregs->intstatus;
+-	if (intstatus & 0x8) {
+-		panic("Got NMI interrupt");
+-	} else if (intstatus & 0x4) {
+-		/* PCI interrupt */
+-		irq = 0;
+-		status |= it8172_hw0_icregs->pci_req;
+-		while (!(status & 0x1)) {
+-			irq++;
+-			status >>= 1;
 -		}
--		*env++;
--	}
--
--	debug_vectors->printf("Booting Linux kernel...\n");
--
--	/* All the boards have at least 64MiB. If there's more, we
--	   detect and register it later */
--	add_memory_region(0, 64 << 20, BOOT_MEM_RAM);
--}
--
--unsigned long __init prom_free_prom_memory(void)
--{
--	return 0;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/reset.c mips/arch/mips/gt64120/momenco_ocelot/reset.c
---- mips-orig/arch/mips/gt64120/momenco_ocelot/reset.c	2006-10-02 22:32:45.894740000 +0900
-+++ mips/arch/mips/gt64120/momenco_ocelot/reset.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,47 +0,0 @@
--/*
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- * Copyright (C) 1997, 2001 Ralf Baechle
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- */
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <asm/io.h>
--#include <asm/pgtable.h>
--#include <asm/processor.h>
--#include <asm/reboot.h>
--#include <asm/system.h>
--#include <linux/delay.h>
--
--void momenco_ocelot_restart(char *command)
--{
--	void *nvram = ioremap_nocache(0x2c807000, 0x1000);
--
--	if (!nvram) {
--		printk(KERN_NOTICE "ioremap of reset register failed\n");
+-		irq += IT8172_PCI_DEV_IRQ_BASE;
+-	} else if (intstatus & 0x1) {
+-		/* Local Bus interrupt */
+-		irq = 0;
+-		status |= it8172_hw0_icregs->lb_req;
+-		while (!(status & 0x1)) {
+-			irq++;
+-			status >>= 1;
+-		}
+-		irq += IT8172_LB_IRQ_BASE;
+-	} else if (intstatus & 0x2) {
+-		/* LPC interrupt */
+-		/* Since some lpc interrupts are edge triggered,
+-		 * we could lose an interrupt this way because
+-		 * we acknowledge all ints at onces. Revisit.
+-		 */
+-		status |= it8172_hw0_icregs->lpc_req;
+-		it8172_hw0_icregs->lpc_req = 0; /* acknowledge ints */
+-		irq = 0;
+-		while (!(status & 0x1)) {
+-			irq++;
+-			status >>= 1;
+-		}
+-		irq += IT8172_LPC_IRQ_BASE;
+-	} else
 -		return;
--	}
--	writeb(0x84, nvram + 0xff7); /* Ask the NVRAM/RTC/watchdog chip to
--					assert reset in 1/16 second */
--	mdelay(10+(1000/16));
--	iounmap(nvram);
--	printk(KERN_NOTICE "Watchdog reset failed\n");
+-
+-	do_IRQ(irq, regs);
 -}
 -
--void momenco_ocelot_halt(void)
+-asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
 -{
--	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
--	while (1)
--		__asm__(".set\tmips3\n\t"
--	                "wait\n\t"
--			".set\tmips0");
+-	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+-
+-	if (!pending)
+-		mips_spurious_interrupt(regs);
+-	else if (pending & CAUSEF_IP7)
+-		ll_timer_interrupt(127, regs);
+-	else if (pending & CAUSEF_IP2)
+-		it8172_hw0_irqdispatch(regs);
 -}
 -
--void momenco_ocelot_power_off(void)
+-void show_pending_irqs(void)
 -{
--	momenco_ocelot_halt();
+-	fputs("intstatus:  ");
+-	put32(it8172_hw0_icregs->intstatus);
+-	puts("");
+-
+-	fputs("pci_req:  ");
+-	put32(it8172_hw0_icregs->pci_req);
+-	puts("");
+-
+-	fputs("lb_req:  ");
+-	put32(it8172_hw0_icregs->lb_req);
+-	puts("");
+-
+-	fputs("lpc_req:  ");
+-	put32(it8172_hw0_icregs->lpc_req);
+-	puts("");
 -}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_ocelot/setup.c mips/arch/mips/gt64120/momenco_ocelot/setup.c
---- mips-orig/arch/mips/gt64120/momenco_ocelot/setup.c	2006-10-02 22:32:45.894740000 +0900
-+++ mips/arch/mips/gt64120/momenco_ocelot/setup.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,369 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/it8172_cir.c mips/arch/mips/ite-boards/generic/it8172_cir.c
+--- mips-orig/arch/mips/ite-boards/generic/it8172_cir.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/it8172_cir.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,170 +0,0 @@
 -/*
-- * setup.c
 - *
 - * BRIEF MODULE DESCRIPTION
-- * Momentum Computer Ocelot (CP7000) - board dependent boot routines
-- *
-- * Copyright (C) 1996, 1997, 2001, 06  Ralf Baechle (ralf@linux-mips.org)
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Copyright (C) 2001 Red Hat, Inc.
-- * Copyright (C) 2002 Momentum Computer
-- *
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
+- *	IT8172 Consumer IR port generic routines.
 - *
 - * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -4498,649 +2556,516 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/gt64120/momenco_oc
 - *  You should have received a copy of the  GNU General Public License along
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-
+-#ifdef CONFIG_IT8172_CIR
+-
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_cir.h>
+-
+-
+-volatile struct it8172_cir_regs *cir_regs[NUM_CIR_PORTS] = {
+-	(volatile struct it8172_cir_regs *)(KSEG1ADDR(IT8172_PCI_IO_BASE + IT_CIR0_BASE)),
+-	(volatile struct it8172_cir_regs *)(KSEG1ADDR(IT8172_PCI_IO_BASE + IT_CIR1_BASE))};
+-
+-
+-/*
+- * Initialize Consumer IR Port.
+- */
+-int cir_port_init(struct cir_port *cir)
+-{
+-	int port = cir->port;
+-	unsigned char data;
+-
+-	/* set baud rate */
+-	cir_regs[port]->bdlr = cir->baud_rate & 0xff;
+-	cir_regs[port]->bdhr = (cir->baud_rate >> 8) & 0xff;
+-
+-	/* set receiver control register */
+-	cir_regs[port]->rcr = (CIR_SET_RDWOS(cir->rdwos) | CIR_SET_RXDCR(cir->rxdcr));
+-
+-	/* set carrier frequency register */
+-	cir_regs[port]->cfr = (CIR_SET_CF(cir->cfq) | CIR_SET_HS(cir->hcfs));
+-
+-	/* set fifo threshold */
+-	data = cir_regs[port]->mstcr & 0xf3;
+-	data |= CIR_SET_FIFO_TL(cir->fifo_tl);
+-	cir_regs[port]->mstcr = data;
+-
+-	clear_fifo(cir);
+-	enable_receiver(cir);
+-	disable_rx_demodulation(cir);
+-
+-	set_rx_active(cir);
+-	int_enable(cir);
+-	rx_int_enable(cir);
+-
+-	return 0;
+-}
+-
+-
+-void clear_fifo(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->mstcr |= CIR_FIFO_CLEAR;
+-}
+-
+-void enable_receiver(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->rcr |= CIR_RXEN;
+-}
+-
+-void disable_receiver(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->rcr &= ~CIR_RXEN;
+-}
+-
+-void enable_rx_demodulation(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->rcr |= CIR_RXEND;
+-}
+-
+-void disable_rx_demodulation(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->rcr &= ~CIR_RXEND;
+-}
+-
+-void set_rx_active(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->rcr |= CIR_RXACT;
+-}
+-
+-void int_enable(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->ier |= CIR_IEC;
+-}
+-
+-void rx_int_enable(struct cir_port *cir)
+-{
+-	cir_regs[cir->port]->ier |= CIR_RDAIE;
+-}
+-
+-void dump_regs(struct cir_port *cir)
+-{
+-	printk("mstcr %x ier %x iir %x cfr %x rcr %x tcr %x tfsr %x rfsr %x\n",
+-	cir_regs[cir->port]->mstcr,
+-	cir_regs[cir->port]->ier,
+-	cir_regs[cir->port]->iir,
+-	cir_regs[cir->port]->cfr,
+-	cir_regs[cir->port]->rcr,
+-	cir_regs[cir->port]->tcr,
+-	cir_regs[cir->port]->tfsr,
+-	cir_regs[cir->port]->rfsr);
+-
+-	while (cir_regs[cir->port]->iir & CIR_RDAI) {
+-		printk("data %x\n", cir_regs[cir->port]->dr);
+-	}
+-}
+-
+-void dump_reg_addr(struct cir_port *cir)
+-{
+-	printk("dr %x mstcr %x ier %x iir %x cfr %x rcr %x tcr %x bdlr %x bdhr %x tfsr %x rfsr %x\n",
+-	(unsigned)&cir_regs[cir->port]->dr,
+-	(unsigned)&cir_regs[cir->port]->mstcr,
+-	(unsigned)&cir_regs[cir->port]->ier,
+-	(unsigned)&cir_regs[cir->port]->iir,
+-	(unsigned)&cir_regs[cir->port]->cfr,
+-	(unsigned)&cir_regs[cir->port]->rcr,
+-	(unsigned)&cir_regs[cir->port]->tcr,
+-	(unsigned)&cir_regs[cir->port]->bdlr,
+-	(unsigned)&cir_regs[cir->port]->bdhr,
+-	(unsigned)&cir_regs[cir->port]->tfsr,
+-	(unsigned)&cir_regs[cir->port]->rfsr);
+-}
+-
+-int cir_get_rx_count(struct cir_port *cir)
+-{
+-	return cir_regs[cir->port]->rfsr & CIR_RXFBC_MASK;
+-}
+-
+-char cir_read_data(struct cir_port *cir)
+-{
+-	return cir_regs[cir->port]->dr;
+-}
+-
+-char get_int_status(struct cir_port *cir)
+-{
+-	return cir_regs[cir->port]->iir;
+-}
+-#endif
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/it8172_setup.c mips/arch/mips/ite-boards/generic/it8172_setup.c
+--- mips-orig/arch/mips/ite-boards/generic/it8172_setup.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/it8172_setup.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,352 +0,0 @@
+-/*
+- * BRIEF MODULE DESCRIPTION
+- *	IT8172/QED5231 board setup.
 - *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
 -#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/mm.h>
--#include <linux/swap.h>
--#include <linux/ioport.h>
 -#include <linux/sched.h>
--#include <linux/interrupt.h>
--#include <linux/pci.h>
--#include <linux/timex.h>
--#include <linux/vmalloc.h>
+-#include <linux/ioport.h>
+-#include <linux/irq.h>
+-#include <linux/serial_reg.h>
+-#include <linux/major.h>
+-#include <linux/kdev_t.h>
+-#include <linux/root_dev.h>
 -#include <linux/pm.h>
 -
+-#include <asm/cpu.h>
 -#include <asm/time.h>
--#include <asm/bootinfo.h>
--#include <asm/page.h>
 -#include <asm/io.h>
+-#include <asm/bootinfo.h>
 -#include <asm/irq.h>
--#include <asm/pci.h>
--#include <asm/processor.h>
--#include <asm/ptrace.h>
+-#include <asm/mipsregs.h>
 -#include <asm/reboot.h>
 -#include <asm/traps.h>
--#include <linux/bootmem.h>
--#include <linux/initrd.h>
--#include <asm/gt64120.h>
--#include "ocelot_pld.h"
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8712.h>
 -
--unsigned long gt64120_base = KSEG1ADDR(GT_DEF_BASE);
+-extern struct resource ioport_resource;
+-#ifdef CONFIG_SERIO_I8042
+-int init_8712_keyboard(void);
+-#endif
 -
--/* These functions are used for rebooting or halting the machine*/
--extern void momenco_ocelot_restart(char *command);
--extern void momenco_ocelot_halt(void);
--extern void momenco_ocelot_power_off(void);
+-extern int SearchIT8712(void);
+-extern void InitLPCInterface(void);
+-extern char * __init prom_getcmdline(void);
+-extern void it8172_restart(char *command);
+-extern void it8172_halt(void);
+-extern void it8172_power_off(void);
 -
--extern void gt64120_time_init(void);
--extern void momenco_ocelot_irq_setup(void);
+-extern void it8172_time_init(void);
 -
--static char reset_reason;
+-#ifdef CONFIG_IT8172_REVC
+-struct {
+-    struct resource ram;
+-    struct resource pci_mem;
+-    struct resource pci_io;
+-    struct resource flash;
+-    struct resource boot;
+-} it8172_resources = {
+-	{
+-		.start	= 0,				/* to be initted */
+-		.end	= 0,
+-		.name	= "RAM",
+-		.flags	= IORESOURCE_MEM
+-	}, {
+-		.start	= 0x10000000,
+-		.end	= 0x13FFFFFF,
+-		.name	= "PCI Mem",
+-		.flags	= IORESOURCE_MEM
+-	}, {
+-		.start	= 0x14000000,
+-		.end	= 0x17FFFFFF
+-		.name	= "PCI I/O",
+-	}, {
+-		.start	= 0x08000000,
+-		.end	= 0x0CFFFFFF
+-		.name	= "Flash",
+-	}, {
+-		.start	= 0x1FC00000,
+-		.end	= 0x1FFFFFFF
+-		.name	= "Boot ROM",
+-	}
+-};
+-#else
+-struct {
+-    struct resource ram;
+-    struct resource pci_mem0;
+-    struct resource pci_mem1;
+-    struct resource pci_io;
+-    struct resource pci_mem2;
+-    struct resource pci_mem3;
+-    struct resource flash;
+-    struct resource boot;
+-} it8172_resources = {
+-	{
+-		.start	= 0,				/* to be initted */
+-		.end	= 0,
+-		.name	= "RAM",
+-		.flags	= IORESOURCE_MEM
+-	}, {
+-		.start	= 0x0C000000,
+-		.end	= 0x0FFFFFFF,
+-		.name	= "PCI Mem0",
+-		.flags	= IORESOURCE_MEM
+-	 }, {
+-		.start	= 0x10000000,
+-		.end	= 0x13FFFFFF,
+-		.name	= "PCI Mem1",
+-		.flags	= IORESOURCE_MEM
+-	 }, {
+-		.start	= 0x14000000,
+-		.end	= 0x17FFFFFF
+-		.name	= "PCI I/O",
+-	}, {
+-		.start	= 0x1A000000,
+-		.end	= 0x1BFFFFFF,
+-		.name	= "PCI Mem2",
+-		.flags	= IORESOURCE_MEM
+-	}, {
+-		.start	= 0x1C000000,
+-		.end	= 0x1FBFFFFF,
+-		.name	= "PCI Mem3",
+-		.flags	= IORESOURCE_MEM
+-	}, {
+-		.start	= 0x08000000,
+-		.end	= 0x0CFFFFFF
+-		.name	= "Flash",
+-	}, {
+-		.start	= 0x1FC00000,
+-		.end	= 0x1FFFFFFF
+-		.name	= "Boot ROM",
+-	}
+-};
+-#endif
 -
--#define ENTRYLO(x) ((pte_val(pfn_pte((x) >> PAGE_SHIFT, PAGE_KERNEL_UNCACHED)) >> 6)|1)
 -
--static void __init setup_l3cache(unsigned long size);
--
--/* setup code for a handoff from a version 1 PMON 2000 PROM */
--void PMON_v1_setup()
+-void __init it8172_init_ram_resource(unsigned long memsize)
 -{
--	/* A wired TLB entry for the GT64120A and the serial port. The
--	   GT64120A is going to be hit on every IRQ anyway - there's
--	   absolutely no point in letting it be a random TLB entry, as
--	   it'll just cause needless churning of the TLB. And we use
--	   the other half for the serial port, which is just a PITA
--	   otherwise :)
--
--		Device			Physical	Virtual
--		GT64120 Internal Regs	0x24000000	0xe0000000
--		UARTs (CS2)		0x2d000000	0xe0001000
--	*/
--	add_wired_entry(ENTRYLO(0x24000000), ENTRYLO(0x2D000000), 0xe0000000, PM_4K);
--
--	/* Also a temporary entry to let us talk to the Ocelot PLD and NVRAM
--	   in the CS[012] region. We can't use ioremap() yet. The NVRAM
--	   is a ST M48T37Y, which includes NVRAM, RTC, and Watchdog functions.
--
--		Ocelot PLD (CS0)	0x2c000000	0xe0020000
--		NVRAM			0x2c800000	0xe0030000
--	*/
--
--	add_temporary_entry(ENTRYLO(0x2C000000), ENTRYLO(0x2d000000), 0xe0020000, PM_64K);
--
--	/* Relocate the CS3/BootCS region */
--  	GT_WRITE(GT_CS3BOOTLD_OFS, 0x2f000000 >> 21);
--
--	/* Relocate CS[012] */
-- 	GT_WRITE(GT_CS20LD_OFS, 0x2c000000 >> 21);
--
--	/* Relocate the GT64120A itself... */
--	GT_WRITE(GT_ISD_OFS, 0x24000000 >> 21);
--	mb();
--	gt64120_base = 0xe0000000;
--
--	/* ...and the PCI0 view of it. */
--	GT_WRITE(GT_PCI0_CFGADDR_OFS, 0x80000020);
--	GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x24000000);
--	GT_WRITE(GT_PCI0_CFGADDR_OFS, 0x80000024);
--	GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x24000001);
--}
--
--/* setup code for a handoff from a version 2 PMON 2000 PROM */
--void PMON_v2_setup()
--{
--	/* A wired TLB entry for the GT64120A and the serial port. The
--	   GT64120A is going to be hit on every IRQ anyway - there's
--	   absolutely no point in letting it be a random TLB entry, as
--	   it'll just cause needless churning of the TLB. And we use
--	   the other half for the serial port, which is just a PITA
--	   otherwise :)
--
--		Device			Physical	Virtual
--		GT64120 Internal Regs	0xf4000000	0xe0000000
--		UARTs (CS2)		0xfd000000	0xe0001000
--	*/
--	add_wired_entry(ENTRYLO(0xf4000000), ENTRYLO(0xfD000000), 0xe0000000, PM_4K);
--
--	/* Also a temporary entry to let us talk to the Ocelot PLD and NVRAM
--	   in the CS[012] region. We can't use ioremap() yet. The NVRAM
--	   is a ST M48T37Y, which includes NVRAM, RTC, and Watchdog functions.
--
--		Ocelot PLD (CS0)	0xfc000000	0xe0020000
--		NVRAM			0xfc800000	0xe0030000
--	*/
--	add_temporary_entry(ENTRYLO(0xfC000000), ENTRYLO(0xfd000000), 0xe0020000, PM_64K);
--
--	gt64120_base = 0xe0000000;
+-	it8172_resources.ram.end = memsize;
 -}
 -
 -void __init plat_mem_setup(void)
 -{
--	void (*l3func)(unsigned long)=KSEG1ADDR(&setup_l3cache);
--	unsigned int tmpword;
+-	unsigned short dsr;
+-	char *argptr;
 -
--	board_time_init = gt64120_time_init;
+-	argptr = prom_getcmdline();
+-#ifdef CONFIG_SERIAL_CONSOLE
+-	if ((argptr = strstr(argptr, "console=")) == NULL) {
+-		argptr = prom_getcmdline();
+-		strcat(argptr, " console=ttyS0,115200");
+-	}
+-#endif
 -
--	_machine_restart = momenco_ocelot_restart;
--	_machine_halt = momenco_ocelot_halt;
--	pm_power_off = momenco_ocelot_power_off;
+-	clear_c0_status(ST0_FR);
+-
+-	board_time_init = it8172_time_init;
+-
+-	_machine_restart = it8172_restart;
+-	_machine_halt = it8172_halt;
+-	pm_power_off = it8172_power_off;
 -
 -	/*
--	 * initrd_start = (unsigned long)ocelot_initrd_start;
--	 * initrd_end = (unsigned long)ocelot_initrd_start + (ulong)ocelot_initrd_size;
--	 * initrd_below_start_ok = 1;
+-	 * IO/MEM resources.
+-	 *
+-	 * revisit this area.
 -	 */
+-	set_io_port_base(KSEG1);
+-	ioport_resource.start = it8172_resources.pci_io.start;
+-	ioport_resource.end = it8172_resources.pci_io.end;
+-#ifdef CONFIG_IT8172_REVC
+-	iomem_resource.start = it8172_resources.pci_mem.start;
+-	iomem_resource.end = it8172_resources.pci_mem.end;
+-#else
+-	iomem_resource.start = it8172_resources.pci_mem0.start;
+-	iomem_resource.end = it8172_resources.pci_mem3.end;
+-#endif
 -
--	/* do handoff reconfiguration */
--	if (gt64120_base == KSEG1ADDR(GT_DEF_BASE))
--		PMON_v1_setup();
--	else
--		PMON_v2_setup();
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	ROOT_DEV = Root_RAM0;
+-#endif
 -
--	/* Turn off the Bit-Error LED */
--	OCELOT_PLD_WRITE(0x80, INTCLR);
--
--	/* Relocate all the PCI1 stuff, not that we use it */
--	GT_WRITE(GT_PCI1IOLD_OFS, 0x30000000 >> 21);
--	GT_WRITE(GT_PCI1M0LD_OFS, 0x32000000 >> 21);
--	GT_WRITE(GT_PCI1M1LD_OFS, 0x34000000 >> 21);
--
--	/* Relocate PCI0 I/O and Mem0 */
--	GT_WRITE(GT_PCI0IOLD_OFS, 0x20000000 >> 21);
--	GT_WRITE(GT_PCI0M0LD_OFS, 0x22000000 >> 21);
--
--	/* Relocate PCI0 Mem1 */
--	GT_WRITE(GT_PCI0M1LD_OFS, 0x36000000 >> 21);
--
--	/* For the initial programming, we assume 512MB configuration */
--	/* Relocate the CPU's view of the RAM... */
--	GT_WRITE(GT_SCS10LD_OFS, 0);
--	GT_WRITE(GT_SCS10HD_OFS, 0x0fe00000 >> 21);
--	GT_WRITE(GT_SCS32LD_OFS, 0x10000000 >> 21);
--	GT_WRITE(GT_SCS32HD_OFS, 0x0fe00000 >> 21);
--
--	GT_WRITE(GT_SCS1LD_OFS, 0xff);
--	GT_WRITE(GT_SCS1HD_OFS, 0x00);
--	GT_WRITE(GT_SCS0LD_OFS, 0);
--	GT_WRITE(GT_SCS0HD_OFS, 0xff);
--	GT_WRITE(GT_SCS3LD_OFS, 0xff);
--	GT_WRITE(GT_SCS3HD_OFS, 0x00);
--	GT_WRITE(GT_SCS2LD_OFS, 0);
--	GT_WRITE(GT_SCS2HD_OFS, 0xff);
--
--	/* ...and the PCI0 view of it. */
--	GT_WRITE(GT_PCI0_CFGADDR_OFS, 0x80000010);
--	GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x00000000);
--	GT_WRITE(GT_PCI0_CFGADDR_OFS, 0x80000014);
--	GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x10000000);
--	GT_WRITE(GT_PCI0_BS_SCS10_OFS, 0x0ffff000);
--	GT_WRITE(GT_PCI0_BS_SCS32_OFS, 0x0ffff000);
--
--	tmpword = OCELOT_PLD_READ(BOARDREV);
--	if (tmpword < 26)
--		printk("Momenco Ocelot: Board Assembly Rev. %c\n", 'A'+tmpword);
--	else
--		printk("Momenco Ocelot: Board Assembly Revision #0x%x\n", tmpword);
--
--	tmpword = OCELOT_PLD_READ(PLD1_ID);
--	printk("PLD 1 ID: %d.%d\n", tmpword>>4, tmpword&15);
--	tmpword = OCELOT_PLD_READ(PLD2_ID);
--	printk("PLD 2 ID: %d.%d\n", tmpword>>4, tmpword&15);
--	tmpword = OCELOT_PLD_READ(RESET_STATUS);
--	printk("Reset reason: 0x%x\n", tmpword);
--	reset_reason = tmpword;
--	OCELOT_PLD_WRITE(0xff, RESET_STATUS);
--
--	tmpword = OCELOT_PLD_READ(BOARD_STATUS);
--	printk("Board Status register: 0x%02x\n", tmpword);
--	printk("  - User jumper: %s\n", (tmpword & 0x80)?"installed":"absent");
--	printk("  - Boot flash write jumper: %s\n", (tmpword&0x40)?"installed":"absent");
--	printk("  - Tulip PHY %s connected\n", (tmpword&0x10)?"is":"not");
--	printk("  - L3 Cache size: %d MiB\n", (1<<((tmpword&12) >> 2))&~1);
--	printk("  - SDRAM size: %d MiB\n", 1<<(6+(tmpword&3)));
--
--	if (tmpword&12)
--		l3func((1<<(((tmpword&12) >> 2)+20)));
--
--	switch(tmpword &3) {
--	case 3:
--		/* 512MiB */
--		/* Decoders are allready set -- just add the
--		 * appropriate region */
--		add_memory_region( 0x40<<20,  0xC0<<20, BOOT_MEM_RAM);
--		add_memory_region(0x100<<20, 0x100<<20, BOOT_MEM_RAM);
--		break;
--	case 2:
--		/* 256MiB -- two banks of 128MiB */
--		GT_WRITE(GT_SCS10HD_OFS, 0x07e00000 >> 21);
--		GT_WRITE(GT_SCS32LD_OFS, 0x08000000 >> 21);
--		GT_WRITE(GT_SCS32HD_OFS, 0x0fe00000 >> 21);
--
--		GT_WRITE(GT_SCS0HD_OFS, 0x7f);
--		GT_WRITE(GT_SCS2LD_OFS, 0x80);
--		GT_WRITE(GT_SCS2HD_OFS, 0xff);
--
--		/* reconfigure the PCI0 interface view of memory */
--		GT_WRITE(GT_PCI0_CFGADDR_OFS, 0x80000014);
--		GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x08000000);
--		GT_WRITE(GT_PCI0_BS_SCS10_OFS, 0x0ffff000);
--		GT_WRITE(GT_PCI0_BS_SCS32_OFS, 0x0ffff000);
--
--		add_memory_region(0x40<<20, 0x40<<20, BOOT_MEM_RAM);
--		add_memory_region(0x80<<20, 0x80<<20, BOOT_MEM_RAM);
--		break;
--	case 1:
--		/* 128MiB -- 64MiB per bank */
--		GT_WRITE(GT_SCS10HD_OFS, 0x03e00000 >> 21);
--		GT_WRITE(GT_SCS32LD_OFS, 0x04000000 >> 21);
--		GT_WRITE(GT_SCS32HD_OFS, 0x07e00000 >> 21);
--
--		GT_WRITE(GT_SCS0HD_OFS, 0x3f);
--		GT_WRITE(GT_SCS2LD_OFS, 0x40);
--		GT_WRITE(GT_SCS2HD_OFS, 0x7f);
--
--		/* reconfigure the PCI0 interface view of memory */
--		GT_WRITE(GT_PCI0_CFGADDR_OFS, 0x80000014);
--		GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x04000000);
--		GT_WRITE(GT_PCI0_BS_SCS10_OFS, 0x03fff000);
--		GT_WRITE(GT_PCI0_BS_SCS32_OFS, 0x03fff000);
--
--		/* add the appropriate region */
--		add_memory_region(0x40<<20, 0x40<<20, BOOT_MEM_RAM);
--		break;
--	case 0:
--		/* 64MiB */
--		GT_WRITE(GT_SCS10HD_OFS, 0x01e00000 >> 21);
--		GT_WRITE(GT_SCS32LD_OFS, 0x02000000 >> 21);
--		GT_WRITE(GT_SCS32HD_OFS, 0x03e00000 >> 21);
--
--		GT_WRITE(GT_SCS0HD_OFS, 0x1f);
--		GT_WRITE(GT_SCS2LD_OFS, 0x20);
--		GT_WRITE(GT_SCS2HD_OFS, 0x3f);
--
--		/* reconfigure the PCI0 interface view of memory */
--		GT_WRITE(GT_PCI0_CFGADDR_OFS, 0x80000014);
--		GT_WRITE(GT_PCI0_CFGDATA_OFS, 0x04000000);
--		GT_WRITE(GT_PCI0_BS_SCS10_OFS, 0x01fff000);
--		GT_WRITE(GT_PCI0_BS_SCS32_OFS, 0x01fff000);
--
--		break;
--	}
--
--	/* Fix up the DiskOnChip mapping */
--	GT_WRITE(GT_DEV_B3_OFS, 0xfef73);
--}
--
--extern int rm7k_tcache_enabled;
--/*
-- * This runs in KSEG1. See the verbiage in rm7k.c::probe_scache()
-- */
--#define Page_Invalidate_T 0x16
--static void __init setup_l3cache(unsigned long size)
--{
--	int register i;
--	unsigned long tmp;
--
--	printk("Enabling L3 cache...");
--
--	/* Enable the L3 cache in the GT64120A's CPU Configuration register */
--	tmp = GT_READ(GT_CPU_OFS);
--	GT_WRITE(GT_CPU_OFS, tmp | (1<<14));
--
--	/* Enable the L3 cache in the CPU */
--	set_c0_config(1<<12 /* CONF_TE */);
--
--	/* Clear the cache */
--	write_c0_taglo(0);
--	write_c0_taghi(0);
--
--	for (i=0; i < size; i+= 4096) {
--		__asm__ __volatile__ (
--			".set noreorder\n\t"
--			".set mips3\n\t"
--			"cache %1, (%0)\n\t"
--			".set mips0\n\t"
--			".set reorder"
--			:
--			: "r" (KSEG0ADDR(i)),
--			  "i" (Page_Invalidate_T));
--	}
--
--	/* Let the RM7000 MM code know that the tertiary cache is enabled */
--	rm7k_tcache_enabled = 1;
--
--	printk("Done\n");
--}
--
--
--/* This needs to be one of the first initcalls, because no I/O port access
--   can work before this */
--
--static int io_base_ioremap(void)
--{
--	void *io_remap_range = ioremap(GT_PCI_IO_BASE, GT_PCI_IO_SIZE);
--
--	if (!io_remap_range) {
--		panic("Could not ioremap I/O port range");
--	}
--	set_io_port_base(io_remap_range - GT_PCI_IO_BASE);
--
--	return 0;
--}
--
--module_init(io_base_ioremap);
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/kernel/Makefile mips/arch/mips/kernel/Makefile
---- mips-orig/arch/mips/kernel/Makefile	2006-10-02 22:32:45.906740750 +0900
-+++ mips/arch/mips/kernel/Makefile	2006-10-02 22:40:29.399707250 +0900
-@@ -50,7 +50,6 @@ obj-$(CONFIG_I8259)		+= i8259.o
- obj-$(CONFIG_IRQ_CPU)		+= irq_cpu.o
- obj-$(CONFIG_IRQ_CPU_RM7K)	+= irq-rm7000.o
- obj-$(CONFIG_IRQ_CPU_RM9K)	+= irq-rm9000.o
--obj-$(CONFIG_IRQ_MV64340)	+= irq-mv6434x.o
- obj-$(CONFIG_MIPS_BOARDS_GEN)	+= irq-msc01.o
- 
- obj-$(CONFIG_32BIT)		+= scall32-o32.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/kernel/irq-mv6434x.c mips/arch/mips/kernel/irq-mv6434x.c
---- mips-orig/arch/mips/kernel/irq-mv6434x.c	2006-10-02 22:32:45.910741000 +0900
-+++ mips/arch/mips/kernel/irq-mv6434x.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,162 +0,0 @@
--/*
-- * Copyright 2002 Momentum Computer
-- * Author: mdharm@momenco.com
-- * Copyright (C) 2004 Ralf Baechle <ralf@linux-mips.org>
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#include <linux/module.h>
--#include <linux/interrupt.h>
--#include <linux/kernel.h>
--#include <linux/kernel_stat.h>
--#include <linux/mv643xx.h>
--#include <linux/sched.h>
--
--#include <asm/ptrace.h>
--#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/marvell.h>
--
--static unsigned int irq_base;
--
--static inline int ls1bit32(unsigned int x)
--{
--        int b = 31, s;
--
--        s = 16; if (x << 16 == 0) s = 0; b -= s; x <<= s;
--        s =  8; if (x <<  8 == 0) s = 0; b -= s; x <<= s;
--        s =  4; if (x <<  4 == 0) s = 0; b -= s; x <<= s;
--        s =  2; if (x <<  2 == 0) s = 0; b -= s; x <<= s;
--        s =  1; if (x <<  1 == 0) s = 0; b -= s;
--
--        return b;
--}
--
--/* mask off an interrupt -- 1 is enable, 0 is disable */
--static inline void mask_mv64340_irq(unsigned int irq)
--{
--	uint32_t value;
--
--	if (irq < (irq_base + 32)) {
--		value = MV_READ(MV64340_INTERRUPT0_MASK_0_LOW);
--		value &= ~(1 << (irq - irq_base));
--		MV_WRITE(MV64340_INTERRUPT0_MASK_0_LOW, value);
--	} else {
--		value = MV_READ(MV64340_INTERRUPT0_MASK_0_HIGH);
--		value &= ~(1 << (irq - irq_base - 32));
--		MV_WRITE(MV64340_INTERRUPT0_MASK_0_HIGH, value);
--	}
--}
--
--/* unmask an interrupt -- 1 is enable, 0 is disable */
--static inline void unmask_mv64340_irq(unsigned int irq)
--{
--	uint32_t value;
--
--	if (irq < (irq_base + 32)) {
--		value = MV_READ(MV64340_INTERRUPT0_MASK_0_LOW);
--		value |= 1 << (irq - irq_base);
--		MV_WRITE(MV64340_INTERRUPT0_MASK_0_LOW, value);
--	} else {
--		value = MV_READ(MV64340_INTERRUPT0_MASK_0_HIGH);
--		value |= 1 << (irq - irq_base - 32);
--		MV_WRITE(MV64340_INTERRUPT0_MASK_0_HIGH, value);
--	}
--}
--
--/*
-- * Enables the IRQ on Marvell Chip
-- */
--static void enable_mv64340_irq(unsigned int irq)
--{
--	unmask_mv64340_irq(irq);
--}
--
--/*
-- * Initialize the IRQ on Marvell Chip
-- */
--static unsigned int startup_mv64340_irq(unsigned int irq)
--{
--	unmask_mv64340_irq(irq);
--	return 0;
--}
--
--/*
-- * Disables the IRQ on Marvell Chip
-- */
--static void disable_mv64340_irq(unsigned int irq)
--{
--	mask_mv64340_irq(irq);
--}
--
--/*
-- * Masks and ACKs an IRQ
-- */
--static void mask_and_ack_mv64340_irq(unsigned int irq)
--{
--	mask_mv64340_irq(irq);
--}
--
--/*
-- * End IRQ processing
-- */
--static void end_mv64340_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		unmask_mv64340_irq(irq);
--}
--
--/*
-- * Interrupt handler for interrupts coming from the Marvell chip.
-- * It could be built in ethernet ports etc...
-- */
--void ll_mv64340_irq(struct pt_regs *regs)
--{
--	unsigned int irq_src_low, irq_src_high;
-- 	unsigned int irq_mask_low, irq_mask_high;
--
--	/* read the interrupt status registers */
--	irq_mask_low = MV_READ(MV64340_INTERRUPT0_MASK_0_LOW);
--	irq_mask_high = MV_READ(MV64340_INTERRUPT0_MASK_0_HIGH);
--	irq_src_low = MV_READ(MV64340_MAIN_INTERRUPT_CAUSE_LOW);
--	irq_src_high = MV_READ(MV64340_MAIN_INTERRUPT_CAUSE_HIGH);
--
--	/* mask for just the interrupts we want */
--	irq_src_low &= irq_mask_low;
--	irq_src_high &= irq_mask_high;
--
--	if (irq_src_low)
--		do_IRQ(ls1bit32(irq_src_low) + irq_base, regs);
--	else
--		do_IRQ(ls1bit32(irq_src_high) + irq_base + 32, regs);
--}
--
--#define shutdown_mv64340_irq	disable_mv64340_irq
--
--struct irq_chip mv64340_irq_type = {
--	.typename = "MV-64340",
--	.startup = startup_mv64340_irq,
--	.shutdown = shutdown_mv64340_irq,
--	.enable = enable_mv64340_irq,
--	.disable = disable_mv64340_irq,
--	.ack = mask_and_ack_mv64340_irq,
--	.end = end_mv64340_irq,
--};
--
--void __init mv64340_irq_init(unsigned int base)
--{
--	int i;
--
--	/* Reset irq handlers pointers to NULL */
--	for (i = base; i < base + 64; i++) {
--		irq_desc[i].status = IRQ_DISABLED;
--		irq_desc[i].action = 0;
--		irq_desc[i].depth = 2;
--		irq_desc[i].chip = &mv64340_irq_type;
--	}
--
--	irq_base = base;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/Makefile mips/arch/mips/momentum/ocelot_3/Makefile
---- mips-orig/arch/mips/momentum/ocelot_3/Makefile	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_3/Makefile	1970-01-01 09:00:00.000000000 +0900
-@@ -1,8 +0,0 @@
--#
--# Makefile for Momentum Computer's Ocelot-3 board.
--#
--# Note! Dependencies are done automagically by 'make dep', which also
--# removes any old dependencies. DON'T put your own dependencies here
--# unless it's something special (ie not a .c file).
--#
--obj-y	 += irq.o prom.o reset.o setup.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/irq.c mips/arch/mips/momentum/ocelot_3/irq.c
---- mips-orig/arch/mips/momentum/ocelot_3/irq.c	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_3/irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,109 +0,0 @@
--/*
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
-- *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
-- *
-- * Copyright 2004 PMC-Sierra
-- * Author: Manish Lachwani (lachwani@pmc-sierra.com)
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- *  Copyright (C) 2004 MontaVista Software Inc.
-- *  Author: Manish Lachwani, mlachwani@mvista.com
-- *
-- */
--#include <linux/errno.h>
--#include <linux/init.h>
--#include <linux/kernel_stat.h>
--#include <linux/module.h>
--#include <linux/signal.h>
--#include <linux/sched.h>
--#include <linux/types.h>
--#include <linux/interrupt.h>
--#include <linux/ioport.h>
--#include <linux/timex.h>
--#include <linux/slab.h>
--#include <linux/random.h>
--#include <asm/bitops.h>
--#include <asm/bootinfo.h>
--#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/mipsregs.h>
--#include <asm/system.h>
--
--static struct irqaction cascade_mv64340 = {
--	no_action, IRQF_DISABLED, CPU_MASK_NONE, "MV64340-Cascade", NULL, NULL
--};
--
--void __init arch_init_irq(void)
--{
 -	/*
--	 * Clear all of the interrupts while we change the able around a bit.
--	 * int-handler is not on bootstrap
+-	 * Pull enabled devices out of standby
 -	 */
--	clear_c0_status(ST0_IM | ST0_BEV);
+-	IT_IO_READ16(IT_PM_DSR, dsr);
 -
--	rm7k_cpu_irq_init(8);
+-	/*
+-	 * Fixme: This breaks when these drivers are modules!!!
+-	 */
+-#ifdef CONFIG_SOUND_IT8172
+-	dsr &= ~IT_PM_DSR_ACSB;
+-#else
+-	dsr |= IT_PM_DSR_ACSB;
+-#endif
+-#ifdef CONFIG_BLK_DEV_IT8172
+-	dsr &= ~IT_PM_DSR_IDESB;
+-#else
+-	dsr |= IT_PM_DSR_IDESB;
+-#endif
+-	IT_IO_WRITE16(IT_PM_DSR, dsr);
 -
--	/* set up the cascading interrupts */
--	setup_irq(8, &cascade_mv64340);		/* unmask intControl IM8, IRQ 9 */
--	mv64340_irq_init(16);
+-	InitLPCInterface();
 -
--	set_c0_status(ST0_IM); /* IE in the status register */
+-#ifdef CONFIG_MIPS_ITE8172
+-	if (SearchIT8712()) {
+-		printk("Found IT8712 Super IO\n");
+-		/* enable IT8712 serial port */
+-		LPCSetConfig(LDN_SERIAL1, 0x30, 0x01); /* enable */
+-		LPCSetConfig(LDN_SERIAL1, 0x23, 0x01); /* clock selection */
+-#ifdef CONFIG_SERIO_I8042
+-		if (init_8712_keyboard()) {
+-			printk("Unable to initialize keyboard\n");
+-			LPCSetConfig(LDN_KEYBOARD, 0x30, 0x0); /* disable keyboard */
+-		} else {
+-			LPCSetConfig(LDN_KEYBOARD, 0x30, 0x1); /* enable keyboard */
+-			LPCSetConfig(LDN_KEYBOARD, 0xf0, 0x2);
+-			LPCSetConfig(LDN_KEYBOARD, 0x71, 0x3);
 -
--}
+-			LPCSetConfig(LDN_MOUSE, 0x30, 0x1); /* enable mouse */
 -
--asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
--{
--	unsigned int pending = read_c0_cause() & read_c0_status();
+-			LPCSetConfig(0x4, 0x30, 0x1);
+-			LPCSetConfig(0x4, 0xf4, LPCGetConfig(0x4, 0xf4) | 0x80);
 -
--	if (pending & STATUSF_IP0)
--		do_IRQ(0, regs);
--	else if (pending & STATUSF_IP1)
--		do_IRQ(1, regs);
--	else if (pending & STATUSF_IP2)
--		do_IRQ(2, regs);
--	else if (pending & STATUSF_IP3)
--		do_IRQ(3, regs);
--	else if (pending & STATUSF_IP4)
--		do_IRQ(4, regs);
--	else if (pending & STATUSF_IP5)
--		do_IRQ(5, regs);
--	else if (pending & STATUSF_IP6)
--		do_IRQ(6, regs);
--	else if (pending & STATUSF_IP7)
--		do_IRQ(7, regs);
+-			if ((LPCGetConfig(LDN_KEYBOARD, 0x30) == 0) ||
+-					(LPCGetConfig(LDN_MOUSE, 0x30) == 0))
+-				printk("Error: keyboard or mouse not enabled\n");
+-
+-		}
+-#endif
+-	}
 -	else {
--		/*
--		 * Now look at the extended interrupts
--		 */
--		pending = (read_c0_cause() & (read_c0_intcontrol() << 8)) >> 16;
--
--		if (pending & STATUSF_IP8)
--			ll_mv64340_irq(regs);
--		else
--			spurious_interrupt(regs);
+-		printk("IT8712 Super IO not found\n");
 -	}
+-#endif
+-
+-#ifdef CONFIG_IT8172_CIR
+-	{
+-		unsigned long data;
+-		//printk("Enabling CIR0\n");
+-		IT_IO_READ16(IT_PM_DSR, data);
+-		data &= ~IT_PM_DSR_CIR0SB;
+-		IT_IO_WRITE16(IT_PM_DSR, data);
+-		//printk("DSR register: %x\n", (unsigned)IT_IO_READ16(IT_PM_DSR, data));
+-	}
+-#endif
+-#ifdef CONFIG_IT8172_SCR0
+-	{
+-		unsigned i;
+-		/* Enable Smart Card Reader 0 */
+-		/* First power it up */
+-		IT_IO_READ16(IT_PM_DSR, i);
+-		i &= ~IT_PM_DSR_SCR0SB;
+-		IT_IO_WRITE16(IT_PM_DSR, i);
+-		/* Then initialize its registers */
+-		outb(( IT_SCR_SFR_GATE_UART_OFF     << IT_SCR_SFR_GATE_UART_BIT
+-		      |IT_SCR_SFR_FET_CHARGE_213_US << IT_SCR_SFR_FET_CHARGE_BIT
+-		      |IT_SCR_SFR_CARD_FREQ_3_5_MHZ << IT_SCR_SFR_CARD_FREQ_BIT
+-		      |IT_SCR_SFR_FET_ACTIVE_INVERT << IT_SCR_SFR_FET_ACTIVE_BIT
+-		      |IT_SCR_SFR_ENABLE_ON         << IT_SCR_SFR_ENABLE_BIT),
+-		     IT8172_PCI_IO_BASE + IT_SCR0_BASE + IT_SCR_SFR);
+-		outb(IT_SCR_SCDR_RESET_MODE_ASYNC << IT_SCR_SCDR_RESET_MODE_BIT,
+-		     IT8172_PCI_IO_BASE + IT_SCR0_BASE + IT_SCR_SCDR);
+-	}
+-#endif /* CONFIG_IT8172_SCR0 */
+-#ifdef CONFIG_IT8172_SCR1
+-	{
+-		unsigned i;
+-		/* Enable Smart Card Reader 1 */
+-		/* First power it up */
+-		IT_IO_READ16(IT_PM_DSR, i);
+-		i &= ~IT_PM_DSR_SCR1SB;
+-		IT_IO_WRITE16(IT_PM_DSR, i);
+-		/* Then initialize its registers */
+-		outb(( IT_SCR_SFR_GATE_UART_OFF     << IT_SCR_SFR_GATE_UART_BIT
+-		      |IT_SCR_SFR_FET_CHARGE_213_US << IT_SCR_SFR_FET_CHARGE_BIT
+-		      |IT_SCR_SFR_CARD_FREQ_3_5_MHZ << IT_SCR_SFR_CARD_FREQ_BIT
+-		      |IT_SCR_SFR_FET_ACTIVE_INVERT << IT_SCR_SFR_FET_ACTIVE_BIT
+-		      |IT_SCR_SFR_ENABLE_ON         << IT_SCR_SFR_ENABLE_BIT),
+-		     IT8172_PCI_IO_BASE + IT_SCR1_BASE + IT_SCR_SFR);
+-		outb(IT_SCR_SCDR_RESET_MODE_ASYNC << IT_SCR_SCDR_RESET_MODE_BIT,
+-		     IT8172_PCI_IO_BASE + IT_SCR1_BASE + IT_SCR_SCDR);
+-	}
+-#endif /* CONFIG_IT8172_SCR1 */
 -}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/ocelot_3_fpga.h mips/arch/mips/momentum/ocelot_3/ocelot_3_fpga.h
---- mips-orig/arch/mips/momentum/ocelot_3/ocelot_3_fpga.h	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_3/ocelot_3_fpga.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,57 +0,0 @@
+-
+-#ifdef CONFIG_SERIO_I8042
 -/*
-- * Ocelot-3 Board Register Definitions
+- * According to the ITE Special BIOS Note for waking up the
+- * keyboard controller...
+- */
+-static int init_8712_keyboard(void)
+-{
+-	unsigned int cmd_port = 0x14000064;
+-	unsigned int data_port = 0x14000060;
+-	                         ^^^^^^^^^^^
+-	Somebody here doesn't grok the concept of io ports.
+-
+-	unsigned char data;
+-	int i;
+-
+-	outb(0xaa, cmd_port); /* send self-test cmd */
+-	i = 0;
+-	while (!(inb(cmd_port) & 0x1)) { /* wait output buffer full */
+-		i++;
+-		if (i > 0xffffff)
+-			return 1;
+-	}
+-
+-	data = inb(data_port);
+-	outb(0xcb, cmd_port); /* set ps2 mode */
+-	while (inb(cmd_port) & 0x2) { /* wait while input buffer full */
+-		i++;
+-		if (i > 0xffffff)
+-			return 1;
+-	}
+-	outb(0x01, data_port);
+-	while (inb(cmd_port) & 0x2) { /* wait while input buffer full */
+-		i++;
+-		if (i > 0xffffff)
+-			return 1;
+-	}
+-
+-	outb(0x60, cmd_port); /* write 8042 command byte */
+-	while (inb(cmd_port) & 0x2) { /* wait while input buffer full */
+-		i++;
+-		if (i > 0xffffff)
+-			return 1;
+-	}
+-	outb(0x45, data_port); /* at interface, keyboard enabled, system flag */
+-	while (inb(cmd_port) & 0x2) { /* wait while input buffer full */
+-		i++;
+-		if (i > 0xffffff)
+-			return 1;
+-	}
+-
+-	outb(0xae, cmd_port); /* enable interface */
+-	return 0;
+-}
+-#endif
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/lpc.c mips/arch/mips/ite-boards/generic/lpc.c
+--- mips-orig/arch/mips/ite-boards/generic/lpc.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/lpc.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,144 +0,0 @@
+-/*
 - *
-- * (C) 2002 Momentum Computer Inc.
+- * BRIEF MODULE DESCRIPTION
+- *	ITE Semi IT8712 Super I/O functions.
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -5161,281 +3086,233 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/
 - *  You should have received a copy of the  GNU General Public License along
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- *  Louis Hamilton, Red Hat, Inc.
-- *    hamilton@redhat.com  [MIPS64 modifications]
-- *
-- * Copyright (C) 2004 MontaVista Software Inc.
-- * Author: Manish Lachwani, mlachwani@mvista.com
 - */
 -
--#ifndef __OCELOT_3_FPGA_H__
--#define __OCELOT_3_FPGA_H__
+-#include <asm/io.h>
+-#include <asm/types.h>
+-#include <asm/it8712.h>
+-#include <asm/it8172/it8172.h>
 -
--#define OCELOT_3_REG_BOARDREV		0x0
--#define OCELOT_3_REG_FPGA_REV		0x1
--#define OCELOT_3_REG_FPGA_TYPE		0x2
--#define OCELOT_3_REG_RESET_STATUS	0x3
--#define OCELOT_3_REG_BOARD_STATUS	0x4
--#define OCELOT_3_REG_CPCI_ID		0x5
--#define OCELOT_3_REG_SET		0x6
--#define OCELOT_3_REG_CLR		0x7
--#define OCELOT_3_REG_EEPROM_MODE	0x9
--#define OCELOT_3_REG_INTMASK		0xa
--#define OCELOT_3_REG_INTSTAT		0xb
--#define OCELOT_3_REG_UART_INTMASK	0xc
--#define OCELOT_3_REG_UART_INTSTAT	0xd
--#define OCELOT_3_REG_INTSET		0xe
--#define OCELOT_3_REG_INTCLR		0xf
--
--extern unsigned long ocelot_fpga_base;
--
--#define OCELOT_FPGA_WRITE(x, y) writeb(x, ocelot_fpga_base + OCELOT_3_REG_##y)
--#define OCELOT_FPGA_READ(x) readb(ocelot_fpga_base + OCELOT_3_REG_##x)
--
+-#ifndef TRUE
+-#define TRUE 1
 -#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/prom.c mips/arch/mips/momentum/ocelot_3/prom.c
---- mips-orig/arch/mips/momentum/ocelot_3/prom.c	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_3/prom.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,248 +0,0 @@
+-
+-#ifndef FALSE
+-#define FALSE 0
+-#endif
+-
+-void LPCEnterMBPnP(void)
+-{
+-	int i;
+-	unsigned char key[4] = {0x87, 0x01, 0x55, 0x55};
+-
+-	for (i = 0; i<4; i++)
+-		outb(key[i], LPC_KEY_ADDR);
+-
+-}
+-
+-void LPCExitMBPnP(void)
+-{
+-	outb(0x02, LPC_KEY_ADDR);
+-	outb(0x02, LPC_DATA_ADDR);
+-}
+-
+-void LPCSetConfig(char LdnNumber, char Index, char data)
+-{
+-	LPCEnterMBPnP();				// Enter IT8712 MB PnP mode
+-	outb(0x07, LPC_KEY_ADDR);
+-	outb(LdnNumber, LPC_DATA_ADDR);
+-	outb(Index, LPC_KEY_ADDR);
+-	outb(data, LPC_DATA_ADDR);
+-	LPCExitMBPnP();
+-}
+-
+-char LPCGetConfig(char LdnNumber, char Index)
+-{
+-	char rtn;
+-
+-	LPCEnterMBPnP();				// Enter IT8712 MB PnP mode
+-	outb(0x07, LPC_KEY_ADDR);
+-	outb(LdnNumber, LPC_DATA_ADDR);
+-	outb(Index, LPC_KEY_ADDR);
+-	rtn = inb(LPC_DATA_ADDR);
+-	LPCExitMBPnP();
+-	return rtn;
+-}
+-
+-int SearchIT8712(void)
+-{
+-	unsigned char Id1, Id2;
+-	unsigned short Id;
+-
+-	LPCEnterMBPnP();
+-	outb(0x20, LPC_KEY_ADDR); /* chip id byte 1 */
+-	Id1 = inb(LPC_DATA_ADDR);
+-	outb(0x21, LPC_KEY_ADDR); /* chip id byte 2 */
+-	Id2 = inb(LPC_DATA_ADDR);
+-	Id = (Id1 << 8) | Id2;
+-	LPCExitMBPnP();
+-	if (Id == 0x8712)
+-		return TRUE;
+-	else
+-		return FALSE;
+-}
+-
+-void InitLPCInterface(void)
+-{
+-	unsigned char bus, dev_fn;
+-	unsigned long data;
+-
+-	bus = 0;
+-	dev_fn = 1<<3 | 4;
+-
+-
+-	/* pci cmd, SERR# Enable */
+-	IT_WRITE(IT_CONFADDR,
+-		 (bus         << IT_BUSNUM_SHF)   |
+-		 (dev_fn      << IT_FUNCNUM_SHF) |
+-		 ((0x4 / 4) << IT_REGNUM_SHF));
+-	IT_READ(IT_CONFDATA, data);
+-	data |= 0x0100;
+-	IT_WRITE(IT_CONFADDR,
+-		 (bus         << IT_BUSNUM_SHF)   |
+-		 (dev_fn      << IT_FUNCNUM_SHF) |
+-		 ((0x4 / 4) << IT_REGNUM_SHF));
+-	IT_WRITE(IT_CONFDATA, data);
+-
+-	/* setup serial irq control register */
+-	IT_WRITE(IT_CONFADDR,
+-		 (bus         << IT_BUSNUM_SHF)   |
+-		 (dev_fn      << IT_FUNCNUM_SHF) |
+-		 ((0x48 / 4) << IT_REGNUM_SHF));
+-	IT_READ(IT_CONFDATA, data);
+-	data  = (data & 0xffff00ff) | 0xc400;
+-	IT_WRITE(IT_CONFADDR,
+-		 (bus         << IT_BUSNUM_SHF)   |
+-		 (dev_fn      << IT_FUNCNUM_SHF) |
+-		 ((0x48 / 4) << IT_REGNUM_SHF));
+-	IT_WRITE(IT_CONFDATA, data);
+-
+-
+-	/* Enable I/O Space Subtractive Decode */
+-	/* default 0x4C is 0x3f220000 */
+-	IT_WRITE(IT_CONFADDR,
+-		 (bus         << IT_BUSNUM_SHF)   |
+-		 (dev_fn      << IT_FUNCNUM_SHF) |
+-		 ((0x4C / 4) << IT_REGNUM_SHF));
+-	IT_WRITE(IT_CONFDATA, 0x3f2200f3);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/pmon_prom.c mips/arch/mips/ite-boards/generic/pmon_prom.c
+--- mips-orig/arch/mips/ite-boards/generic/pmon_prom.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/pmon_prom.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,135 +0,0 @@
 -/*
-- * Copyright 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
 - *
-- * Louis Hamilton, Red Hat, Inc.
-- *   hamilton@redhat.com  [MIPS64 modifications]
+- * BRIEF MODULE DESCRIPTION
+- *    PROM library initialisation code, assuming a version of
+- *    pmon is the boot code.
 - *
-- * Copyright 2004 PMC-Sierra
-- * Author: Manish Lachwani (lachwani@pmc-sierra.com)
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
-- * Based on Ocelot Linux port, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
+- * This file was derived from Carsten Langgaard's
+- * arch/mips/mips-boards/xx files.
 - *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 - *
-- * Copyright (C) 2004 MontaVista Software Inc.
-- * Author: Manish Lachwani, mlachwani@mvista.com
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
 - *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
+-
+-#include <linux/kernel.h>
 -#include <linux/init.h>
--#include <linux/bootmem.h>
--#include <linux/mv643xx.h>
+-#include <linux/string.h>
 -
--#include <asm/addrspace.h>
 -#include <asm/bootinfo.h>
--#include <asm/pmon.h>
--#include "ocelot_3_fpga.h"
 -
--struct callvectors* debug_vectors;
--extern unsigned long marvell_base;
--extern unsigned long cpu_clock;
+-extern int prom_argc;
+-extern char **prom_argv, **prom_envp;
 -
--#ifdef CONFIG_MV643XX_ETH
--extern unsigned char prom_mac_addr_base[6];
--#endif
--
--const char *get_system_type(void)
+-typedef struct
 -{
--	return "Momentum Ocelot-3";
+-    char *name;
+-/*    char *val; */
+-}t_env_var;
+-
+-
+-char * __init prom_getcmdline(void)
+-{
+-	return &(arcs_cmdline[0]);
 -}
 -
--#ifdef CONFIG_MV643XX_ETH
--void burn_clocks(void)
+-void  __init prom_init_cmdline(void)
 -{
+-	char *cp;
+-	int actr;
+-
+-	actr = 1; /* Always ignore argv[0] */
+-
+-	cp = &(arcs_cmdline[0]);
+-	while(actr < prom_argc) {
+-	        strcpy(cp, prom_argv[actr]);
+-		cp += strlen(prom_argv[actr]);
+-		*cp++ = ' ';
+-		actr++;
+-	}
+-	if (cp != &(arcs_cmdline[0])) /* get rid of trailing space */
+-		--cp;
+-	*cp = '\0';
+-
+-}
+-
+-
+-char *prom_getenv(char *envname)
+-{
+-	/*
+-	 * Return a pointer to the given environment variable.
+-	 * Environment variables are stored in the form of "memsize=64".
+-	 */
+-
+-	t_env_var *env = (t_env_var *)prom_envp;
 -	int i;
 -
--	/* this loop should burn at least 1us -- this should be plenty */
--	for (i = 0; i < 0x10000; i++)
--		;
--}
+-	i = strlen(envname);
 -
--u8 exchange_bit(u8 val, u8 cs)
--{
--	/* place the data */
--	OCELOT_FPGA_WRITE((val << 2) | cs, EEPROM_MODE);
--	burn_clocks();
--
--	/* turn the clock on */
--	OCELOT_FPGA_WRITE((val << 2) | cs | 0x2, EEPROM_MODE);
--	burn_clocks();
--
--	/* turn the clock off and read-strobe */
--	OCELOT_FPGA_WRITE((val << 2) | cs | 0x10, EEPROM_MODE);
--
--	/* return the data */
--	return ((OCELOT_FPGA_READ(EEPROM_MODE) >> 3) & 0x1);
--}
--
--void get_mac(char dest[6])
--{
--	u8 read_opcode[12] = {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
--	int i,j;
--
--	for (i = 0; i < 12; i++)
--		exchange_bit(read_opcode[i], 1);
--
--	for (j = 0; j < 6; j++) {
--		dest[j] = 0;
--		for (i = 0; i < 8; i++) {
--			dest[j] <<= 1;
--			dest[j] |= exchange_bit(0, 1);
--		}
--	}
--
--	/* turn off CS */
--	exchange_bit(0,0);
--}
--#endif
--
--
--#ifdef CONFIG_64BIT
--
--unsigned long signext(unsigned long addr)
--{
--	addr &= 0xffffffff;
--	return (unsigned long)((int)addr);
--}
--
--void *get_arg(unsigned long args, int arc)
--{
--	unsigned long ul;
--	unsigned char *puc, uc;
--
--	args += (arc * 4);
--	ul = (unsigned long)signext(args);
--	puc = (unsigned char *)ul;
--	if (puc == 0)
--		return (void *)0;
--
--#ifdef CONFIG_CPU_LITTLE_ENDIAN
--	uc = *puc++;
--	ul = (unsigned long)uc;
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 8);
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 16);
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 24);
--#else  /* CONFIG_CPU_LITTLE_ENDIAN */
--	uc = *puc++;
--	ul = ((unsigned long)uc) << 24;
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 16);
--	uc = *puc++;
--	ul |= (((unsigned long)uc) << 8);
--	uc = *puc++;
--	ul |= ((unsigned long)uc);
--#endif  /* CONFIG_CPU_LITTLE_ENDIAN */
--	ul = signext(ul);
--	return (void *)ul;
--}
--
--char *arg64(unsigned long addrin, int arg_index)
--{
--	unsigned long args;
--	char *p;
--
--	args = signext(addrin);
--	p = (char *)get_arg(args, arg_index);
--
--	return p;
--}
--#endif  /* CONFIG_64BIT */
--
--void __init prom_init(void)
--{
--	int argc = fw_arg0;
--	char **arg = (char **) fw_arg1;
--	char **env = (char **) fw_arg2;
--	struct callvectors *cv = (struct callvectors *) fw_arg3;
--	int i;
--
--#ifdef CONFIG_64BIT
--	char *ptr;
--	printk("prom_init - MIPS64\n");
--
--	/* save the PROM vectors for debugging use */
--	debug_vectors = (struct callvectors *)signext((unsigned long)cv);
--
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--
--	for (i = 1; i < argc; i++) {
--		ptr = (char *)arg64((unsigned long)arg, i);
--		if ((strlen(arcs_cmdline) + strlen(ptr) + 1) >=
--		    sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, ptr);
--		strcat(arcs_cmdline, " ");
--	}
--	i = 0;
--
--	while (1) {
--		ptr = (char *)arg64((unsigned long)env, i);
--		if (! ptr)
--			break;
--
--		if (strncmp("gtbase", ptr, strlen("gtbase")) == 0) {
--			marvell_base = simple_strtol(ptr + strlen("gtbase="),
--							NULL, 16);
--
--			if ((marvell_base & 0xffffffff00000000) == 0)
--				marvell_base |= 0xffffffff00000000;
--
--			printk("marvell_base set to 0x%016lx\n", marvell_base);
--		}
--		if (strncmp("cpuclock", ptr, strlen("cpuclock")) == 0) {
--			cpu_clock = simple_strtol(ptr + strlen("cpuclock="),
--							NULL, 10);
--			printk("cpu_clock set to %d\n", cpu_clock);
--		}
--		i++;
--	}
--	printk("arcs_cmdline: %s\n", arcs_cmdline);
--
--#else   /* CONFIG_64BIT */
--
--	/* save the PROM vectors for debugging use */
--	debug_vectors = cv;
--
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--	for (i = 1; i < argc; i++) {
--		if (strlen(arcs_cmdline) + strlen(arg[i] + 1)
--		    >= sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, arg[i]);
--		strcat(arcs_cmdline, " ");
--	}
--
--	while (*env) {
--		if (strncmp("gtbase", *env, strlen("gtbase")) == 0) {
--			marvell_base = simple_strtol(*env + strlen("gtbase="),
--							NULL, 16);
--		}
--		if (strncmp("cpuclock", *env, strlen("cpuclock")) == 0) {
--			cpu_clock = simple_strtol(*env + strlen("cpuclock="),
--							NULL, 10);
+-	while(env->name) {
+-		if(strncmp(envname, env->name, i) == 0) {
+-			return(env->name + strlen(envname) + 1);
 -		}
 -		env++;
 -	}
--#endif /* CONFIG_64BIT */
+-	return(NULL);
+-}
 -
--	mips_machgroup = MACH_GROUP_MOMENCO;
--	mips_machtype = MACH_MOMENCO_OCELOT_3;
--
--#ifdef CONFIG_MV643XX_ETH
--	/* get the base MAC address for on-board ethernet ports */
--	get_mac(prom_mac_addr_base);
--#endif
--
--#ifndef CONFIG_64BIT
--	debug_vectors->printf("Booting Linux kernel...\n");
--#endif
+-static inline unsigned char str2hexnum(unsigned char c)
+-{
+-	if(c >= '0' && c <= '9')
+-	return c - '0';
+-	if(c >= 'a' && c <= 'f')
+-	return c - 'a' + 10;
+-	return 0; /* foo */
 -}
 -
 -unsigned long __init prom_free_prom_memory(void)
@@ -5443,104 +3320,39 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/
 -	return 0;
 -}
 -
--void __init prom_fixup_mem_map(unsigned long start, unsigned long end)
+-unsigned long __init prom_get_memsize(void)
 -{
+-	char *memsize_str;
+-	unsigned int memsize;
+-
+-	memsize_str = prom_getenv("memsize");
+-	if (!memsize_str) {
+-#ifdef CONFIG_MIPS_ITE8172
+-		memsize = 32;
+-#elif defined(CONFIG_MIPS_IVR)
+-		memsize = 64;
+-#else
+-		memsize = 8;
+-#endif
+-		printk("memsize unknown: setting to %dMB\n", memsize);
+-	} else {
+-		printk("memsize: %s\n", memsize_str);
+-		memsize = simple_strtol(memsize_str, NULL, 0);
+-	}
+-	return memsize;
 -}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/reset.c mips/arch/mips/momentum/ocelot_3/reset.c
---- mips-orig/arch/mips/momentum/ocelot_3/reset.c	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_3/reset.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,59 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/puts.c mips/arch/mips/ite-boards/generic/puts.c
+--- mips-orig/arch/mips/ite-boards/generic/puts.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/puts.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,139 +0,0 @@
 -/*
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- * Copyright (C) 1997, 01, 05 Ralf Baechle
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * Copyright (C) 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
-- *
-- * Louis Hamilton, Red Hat, Inc.
-- * hamilton@redhat.com  [MIPS64 modifications]
-- *
-- * Copyright 2004 PMC-Sierra
-- * Author: Manish Lachwani (lachwani@pmc-sierra.com)
-- *
-- * Copyright (C) 2004 MontaVista Software Inc.
-- * Author: Manish Lachwani, mlachwani@mvista.com
-- */
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <linux/delay.h>
--#include <asm/io.h>
--#include <asm/pgtable.h>
--#include <asm/processor.h>
--#include <asm/reboot.h>
--#include <asm/system.h>
--
--void momenco_ocelot_restart(char *command)
--{
--	/* base address of timekeeper portion of part */
--	void *nvram = (void *) 0xfc807000L;
--
--	/* Ask the NVRAM/RTC/watchdog chip to assert reset in 1/16 second */
--	writeb(0x84, nvram + 0xff7);
--
--	/* wait for the watchdog to go off */
--	mdelay(100+(1000/16));
--
--	/* if the watchdog fails for some reason, let people know */
--	printk(KERN_NOTICE "Watchdog reset failed\n");
--}
--
--void momenco_ocelot_halt(void)
--{
--	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
--	while (1)
--		__asm__(".set\tmips3\n\t"
--	                "wait\n\t"
--			".set\tmips0");
--}
--
--void momenco_ocelot_power_off(void)
--{
--	momenco_ocelot_halt();
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/setup.c mips/arch/mips/momentum/ocelot_3/setup.c
---- mips-orig/arch/mips/momentum/ocelot_3/setup.c	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_3/setup.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,399 +0,0 @@
--/*
-- * setup.c
 - *
 - * BRIEF MODULE DESCRIPTION
-- * Momentum Computer Ocelot-3 board dependent boot routines
+- *	Low level uart routines to directly access a 16550 uart.
 - *
-- * Copyright (C) 1996, 1997, 01, 05  Ralf Baechle
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Copyright (C) 2001 Red Hat, Inc.
-- * Copyright (C) 2002 Momentum Computer
-- *
-- * Author: Matthew Dharm, Momentum Computer
-- *   mdharm@momenco.com
-- *
-- * Louis Hamilton, Red Hat, Inc.
-- *   hamilton@redhat.com  [MIPS64 modifications]
-- *
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
-- *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * Copyright 2004 PMC-Sierra
-- * Author: Manish Lachwani (lachwani@pmc-sierra.com)
-- *
-- * Copyright (C) 2004 MontaVista Software Inc.
-- * Author: Manish Lachwani, mlachwani@mvista.com
+- * Copyright 2000,2001 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -5562,1123 +3374,168 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_3/
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
--#include <linux/init.h>
--#include <linux/kernel.h>
+-
 -#include <linux/types.h>
--#include <linux/mc146818rtc.h>
--#include <linux/ioport.h>
--#include <linux/interrupt.h>
--#include <linux/pci.h>
--#include <linux/timex.h>
--#include <linux/bootmem.h>
--#include <linux/mv643xx.h>
--#include <linux/pm.h>
--#include <linux/bcd.h>
 -
--#include <asm/time.h>
--#include <asm/page.h>
--#include <asm/bootinfo.h>
+-#define SERIAL_BASE   0xB4011800	/* it8172 */
+-#define SER_CMD       5
+-#define SER_DATA      0x00
+-#define TX_BUSY       0x20
+-
+-#define TIMEOUT       0xffff
+-#undef SLOW_DOWN
+-
+-static const char digits[16] = "0123456789abcdef";
+-static volatile unsigned char *const com1 = (unsigned char *) SERIAL_BASE;
+-
+-
+-#ifdef SLOW_DOWN
+-static inline void slow_down()
+-{
+-	int k;
+-	for (k = 0; k < 10000; k++);
+-}
+-#else
+-#define slow_down()
+-#endif
+-
+-void putch(const unsigned char c)
+-{
+-	unsigned char ch;
+-	int i = 0;
+-
+-	do {
+-		ch = com1[SER_CMD];
+-		slow_down();
+-		i++;
+-		if (i > TIMEOUT) {
+-			break;
+-		}
+-	} while (0 == (ch & TX_BUSY));
+-	com1[SER_DATA] = c;
+-}
+-
+-void puts(unsigned char *cp)
+-{
+-	unsigned char ch;
+-	int i = 0;
+-
+-	while (*cp) {
+-		do {
+-			ch = com1[SER_CMD];
+-			slow_down();
+-			i++;
+-			if (i > TIMEOUT) {
+-				break;
+-			}
+-		} while (0 == (ch & TX_BUSY));
+-		com1[SER_DATA] = *cp++;
+-	}
+-	putch('\r');
+-	putch('\n');
+-}
+-
+-void fputs(unsigned char *cp)
+-{
+-	unsigned char ch;
+-	int i = 0;
+-
+-	while (*cp) {
+-
+-		do {
+-			ch = com1[SER_CMD];
+-			slow_down();
+-			i++;
+-			if (i > TIMEOUT) {
+-				break;
+-			}
+-		} while (0 == (ch & TX_BUSY));
+-		com1[SER_DATA] = *cp++;
+-	}
+-}
+-
+-
+-void put64(uint64_t ul)
+-{
+-	int cnt;
+-	unsigned ch;
+-
+-	cnt = 16;		/* 16 nibbles in a 64 bit long */
+-	putch('0');
+-	putch('x');
+-	do {
+-		cnt--;
+-		ch = (unsigned char) (ul >> cnt * 4) & 0x0F;
+-		putch(digits[ch]);
+-	} while (cnt > 0);
+-}
+-
+-void put32(unsigned u)
+-{
+-	int cnt;
+-	unsigned ch;
+-
+-	cnt = 8;		/* 8 nibbles in a 32 bit long */
+-	putch('0');
+-	putch('x');
+-	do {
+-		cnt--;
+-		ch = (unsigned char) (u >> cnt * 4) & 0x0F;
+-		putch(digits[ch]);
+-	} while (cnt > 0);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/reset.c mips/arch/mips/ite-boards/generic/reset.c
+--- mips-orig/arch/mips/ite-boards/generic/reset.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/reset.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,60 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	ITE 8172 reset routines.
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <asm/cacheflush.h>
 -#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/pci.h>
 -#include <asm/processor.h>
--#include <asm/ptrace.h>
 -#include <asm/reboot.h>
--#include <asm/mc146818rtc.h>
--#include <asm/tlbflush.h>
--#include "ocelot_3_fpga.h"
+-#include <asm/system.h>
 -
--/* Marvell Discovery Register Base */
--unsigned long marvell_base = (signed)0xf4000000;
--
--/* CPU clock */
--unsigned long cpu_clock;
--
--/* RTC/NVRAM */
--unsigned char* rtc_base = (unsigned char*)(signed)0xfc800000;
--
--/* FPGA Base */
--unsigned long ocelot_fpga_base = (signed)0xfc000000;
--
--/* Serial base */
--unsigned long uart_base = (signed)0xfd000000;
--
--/*
-- * Marvell Discovery SRAM. This is one place where Ethernet
-- * Tx and Rx descriptors can be placed to improve performance
-- */
--extern unsigned long mv64340_sram_base;
--
--/* These functions are used for rebooting or halting the machine*/
--extern void momenco_ocelot_restart(char *command);
--extern void momenco_ocelot_halt(void);
--extern void momenco_ocelot_power_off(void);
--
--void momenco_time_init(void);
--static char reset_reason;
--
--void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
--		     unsigned long entryhi, unsigned long pagemask);
--
--static inline unsigned long ENTRYLO(unsigned long paddr)
+-void it8172_restart()
 -{
--	return ((paddr & PAGE_MASK) |
--		(_PAGE_PRESENT | __READABLE | __WRITEABLE | _PAGE_GLOBAL |
--		_CACHE_UNCACHED)) >> 6;
--}
--
--void __init bus_error_init(void)
--{
--	/* nothing */
--}
--
--/*
-- * setup code for a handoff from a version 2 PMON 2000 PROM
-- */
--void setup_wired_tlb_entries(void)
--{
+-	set_c0_status(ST0_BEV | ST0_ERL);
+-	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
+-	flush_cache_all();
 -	write_c0_wired(0);
--	local_flush_tlb_all();
--
--	/* marvell and extra space */
--	add_wired_entry(ENTRYLO(0xf4000000), ENTRYLO(0xf4010000), (signed)0xf4000000, PM_64K);
--
--	/* fpga, rtc, and uart */
--	add_wired_entry(ENTRYLO(0xfc000000), ENTRYLO(0xfd000000), (signed)0xfc000000, PM_16M);
+-	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
 -}
 -
--unsigned long m48t37y_get_time(void)
--{
--	unsigned int year, month, day, hour, min, sec;
--	unsigned long flags;
--
--	spin_lock_irqsave(&rtc_lock, flags);
--	/* stop the update */
--	rtc_base[0x7ff8] = 0x40;
--
--	year = BCD2BIN(rtc_base[0x7fff]);
--	year += BCD2BIN(rtc_base[0x7ff1]) * 100;
--
--	month = BCD2BIN(rtc_base[0x7ffe]);
--
--	day = BCD2BIN(rtc_base[0x7ffd]);
--
--	hour = BCD2BIN(rtc_base[0x7ffb]);
--	min = BCD2BIN(rtc_base[0x7ffa]);
--	sec = BCD2BIN(rtc_base[0x7ff9]);
--
--	/* start the update */
--	rtc_base[0x7ff8] = 0x00;
--	spin_unlock_irqrestore(&rtc_lock, flags);
--
--	return mktime(year, month, day, hour, min, sec);
--}
--
--int m48t37y_set_time(unsigned long sec)
--{
--	struct rtc_time tm;
--	unsigned long flags;
--
--	/* convert to a more useful format -- note months count from 0 */
--	to_tm(sec, &tm);
--	tm.tm_mon += 1;
--
--	spin_lock_irqsave(&rtc_lock, flags);
--	/* enable writing */
--	rtc_base[0x7ff8] = 0x80;
--
--	/* year */
--	rtc_base[0x7fff] = BIN2BCD(tm.tm_year % 100);
--	rtc_base[0x7ff1] = BIN2BCD(tm.tm_year / 100);
--
--	/* month */
--	rtc_base[0x7ffe] = BIN2BCD(tm.tm_mon);
--
--	/* day */
--	rtc_base[0x7ffd] = BIN2BCD(tm.tm_mday);
--
--	/* hour/min/sec */
--	rtc_base[0x7ffb] = BIN2BCD(tm.tm_hour);
--	rtc_base[0x7ffa] = BIN2BCD(tm.tm_min);
--	rtc_base[0x7ff9] = BIN2BCD(tm.tm_sec);
--
--	/* day of week -- not really used, but let's keep it up-to-date */
--	rtc_base[0x7ffc] = BIN2BCD(tm.tm_wday + 1);
--
--	/* disable writing */
--	rtc_base[0x7ff8] = 0x00;
--	spin_unlock_irqrestore(&rtc_lock, flags);
--
--	return 0;
--}
--
--void __init plat_timer_setup(struct irqaction *irq)
--{
--	setup_irq(7, irq);	/* Timer interrupt, unmask status IM7 */
--}
--
--void momenco_time_init(void)
--{
--	setup_wired_tlb_entries();
--
--	/*
--	 * Ocelot-3 board has been built with both
--	 * the Rm7900 and the Rm7065C
--	 */
--	mips_hpt_frequency = cpu_clock / 2;
--
--	rtc_mips_get_time = m48t37y_get_time;
--	rtc_mips_set_time = m48t37y_set_time;
--}
--
--/*
-- * PCI Support for Ocelot-3
-- */
--
--/* Bus #0 IO and MEM space */
--#define	OCELOT_3_PCI_IO_0_START		0xe0000000
--#define	OCELOT_3_PCI_IO_0_SIZE		0x08000000
--#define	OCELOT_3_PCI_MEM_0_START	0xc0000000
--#define	OCELOT_3_PCI_MEM_0_SIZE		0x10000000
--
--/* Bus #1 IO and MEM space */
--#define	OCELOT_3_PCI_IO_1_START		0xe8000000
--#define	OCELOT_3_PCI_IO_1_SIZE		0x08000000
--#define	OCELOT_3_PCI_MEM_1_START	0xd0000000
--#define	OCELOT_3_PCI_MEM_1_SIZE		0x10000000
--
--static struct resource mv_pci_io_mem0_resource = {
--	.name	= "MV64340 PCI0 IO MEM",
--	.start	= OCELOT_3_PCI_IO_0_START,
--	.end	= OCELOT_3_PCI_IO_0_START + OCELOT_3_PCI_IO_0_SIZE - 1,
--	.flags  = IORESOURCE_IO,
--};
--
--static struct resource mv_pci_io_mem1_resource = {
--	.name	= "MV64340 PCI1 IO MEM",
--	.start	= OCELOT_3_PCI_IO_1_START,
--	.end	= OCELOT_3_PCI_IO_1_START + OCELOT_3_PCI_IO_1_SIZE - 1,
--	.flags	= IORESOURCE_IO,
--};
--
--static struct resource mv_pci_mem0_resource = {
--	.name	= "MV64340 PCI0 MEM",
--	.start	= OCELOT_3_PCI_MEM_0_START,
--	.end	= OCELOT_3_PCI_MEM_0_START + OCELOT_3_PCI_MEM_0_SIZE - 1,
--	.flags	= IORESOURCE_MEM,
--};
--
--static struct resource mv_pci_mem1_resource = {
--	.name	= "MV64340 PCI1 MEM",
--	.start	= OCELOT_3_PCI_MEM_1_START,
--	.end	= OCELOT_3_PCI_MEM_1_START + OCELOT_3_PCI_MEM_1_SIZE - 1,
--	.flags	= IORESOURCE_MEM,
--};
--
--static struct mv_pci_controller mv_bus0_controller = {
--	.pcic = {
--		 .pci_ops	= &mv_pci_ops,
--		 .mem_resource	= &mv_pci_mem0_resource,
--		 .io_resource	= &mv_pci_io_mem0_resource,
--	},
--	.config_addr	= MV64340_PCI_0_CONFIG_ADDR,
--	.config_vreg	= MV64340_PCI_0_CONFIG_DATA_VIRTUAL_REG,
--};
--
--static struct mv_pci_controller mv_bus1_controller = {
--	.pcic = {
--		 .pci_ops	= &mv_pci_ops,
--		 .mem_resource	= &mv_pci_mem1_resource,
--		 .io_resource	= &mv_pci_io_mem1_resource,
--	},
--	.config_addr	= MV64340_PCI_1_CONFIG_ADDR,
--	.config_vreg	= MV64340_PCI_1_CONFIG_DATA_VIRTUAL_REG,
--};
--
--static __init int __init ja_pci_init(void)
--{
--	uint32_t enable;
--	extern int pci_probe_only;
--
--	/* PMON will assign PCI resources */
--	pci_probe_only = 1;
--
--	enable = ~MV_READ(MV64340_BASE_ADDR_ENABLE);
--	/*
--	 * We require at least one enabled I/O or PCI memory window or we
--	 * will ignore this PCI bus.  We ignore PCI windows 1, 2 and 3.
--	 */
--	if (enable & (0x01 <<  9) || enable & (0x01 << 10))
--		register_pci_controller(&mv_bus0_controller.pcic);
--
--	if (enable & (0x01 << 14) || enable & (0x01 << 15))
--		register_pci_controller(&mv_bus1_controller.pcic);
--
--	ioport_resource.end = OCELOT_3_PCI_IO_0_START + OCELOT_3_PCI_IO_0_SIZE +
--					OCELOT_3_PCI_IO_1_SIZE - 1;
--
--	iomem_resource.end = OCELOT_3_PCI_MEM_0_START + OCELOT_3_PCI_MEM_0_SIZE +
--					OCELOT_3_PCI_MEM_1_SIZE - 1;
--
--	set_io_port_base(OCELOT_3_PCI_IO_0_START); /* mips_io_port_base */
--
--	return 0;
--}
--
--arch_initcall(ja_pci_init);
--
--void __init plat_mem_setup(void)
--{
--	unsigned int tmpword;
--
--	board_time_init = momenco_time_init;
--
--	_machine_restart = momenco_ocelot_restart;
--	_machine_halt = momenco_ocelot_halt;
--	pm_power_off = momenco_ocelot_power_off;
--
--	/* Wired TLB entries */
--	setup_wired_tlb_entries();
--
--	/* shut down ethernet ports, just to be sure our memory doesn't get
--	 * corrupted by random ethernet traffic.
--	 */
--	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1), 0xff << 8);
--	do {}
--	  while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0)) & 0xff);
--	do {}
--	  while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1)) & 0xff);
--	do {}
--	  while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0)) & 0xff);
--	do {}
--	  while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1)) & 0xff);
--	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0),
--		 MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0)) & ~1);
--	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1),
--		 MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1)) & ~1);
--
--	/* Turn off the Bit-Error LED */
--	OCELOT_FPGA_WRITE(0x80, CLR);
--
--	tmpword = OCELOT_FPGA_READ(BOARDREV);
--	if (tmpword < 26)
--		printk("Momenco Ocelot-3: Board Assembly Rev. %c\n",
--			'A'+tmpword);
--	else
--		printk("Momenco Ocelot-3: Board Assembly Revision #0x%x\n",
--			tmpword);
--
--	tmpword = OCELOT_FPGA_READ(FPGA_REV);
--	printk("FPGA Rev: %d.%d\n", tmpword>>4, tmpword&15);
--	tmpword = OCELOT_FPGA_READ(RESET_STATUS);
--	printk("Reset reason: 0x%x\n", tmpword);
--	switch (tmpword) {
--		case 0x1:
--			printk("  - Power-up reset\n");
--			break;
--		case 0x2:
--			printk("  - Push-button reset\n");
--			break;
--		case 0x4:
--			printk("  - cPCI bus reset\n");
--			break;
--		case 0x8:
--			printk("  - Watchdog reset\n");
--			break;
--		case 0x10:
--			printk("  - Software reset\n");
--			break;
--		default:
--			printk("  - Unknown reset cause\n");
--	}
--	reset_reason = tmpword;
--	OCELOT_FPGA_WRITE(0xff, RESET_STATUS);
--
--	tmpword = OCELOT_FPGA_READ(CPCI_ID);
--	printk("cPCI ID register: 0x%02x\n", tmpword);
--	printk("  - Slot number: %d\n", tmpword & 0x1f);
--	printk("  - PCI bus present: %s\n", tmpword & 0x40 ? "yes" : "no");
--	printk("  - System Slot: %s\n", tmpword & 0x20 ? "yes" : "no");
--
--	tmpword = OCELOT_FPGA_READ(BOARD_STATUS);
--	printk("Board Status register: 0x%02x\n", tmpword);
--	printk("  - User jumper: %s\n", (tmpword & 0x80)?"installed":"absent");
--	printk("  - Boot flash write jumper: %s\n", (tmpword&0x40)?"installed":"absent");
--	printk("  - L3 cache size: %d MB\n", (1<<((tmpword&12) >> 2))&~1);
--
--	/* Support for 128 MB memory */
--	add_memory_region(0x0, 0x08000000, BOOT_MEM_RAM);
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/Makefile mips/arch/mips/momentum/ocelot_c/Makefile
---- mips-orig/arch/mips/momentum/ocelot_c/Makefile	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_c/Makefile	1970-01-01 09:00:00.000000000 +0900
-@@ -1,8 +0,0 @@
--#
--# Makefile for Momentum Computer's Ocelot-C and -CS boards.
--#
--
--obj-y	 		+= cpci-irq.o irq.o prom.o reset.o \
--			   setup.o uart-irq.o
--
--obj-$(CONFIG_KGDB)	+= dbg_io.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/cpci-irq.c mips/arch/mips/momentum/ocelot_c/cpci-irq.c
---- mips-orig/arch/mips/momentum/ocelot_c/cpci-irq.c	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_c/cpci-irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,152 +0,0 @@
--/*
-- * Copyright 2002 Momentum Computer
-- * Author: mdharm@momenco.com
-- *
-- * arch/mips/momentum/ocelot_c/cpci-irq.c
-- *     Interrupt routines for cpci.  Interrupt numbers are assigned from
-- *     CPCI_IRQ_BASE to CPCI_IRQ_BASE+8 (8 interrupt sources).
-- *
-- * Note that the high-level software will need to be careful about using
-- * these interrupts.  If this board is asserting a cPCI interrupt, it will
-- * also see the asserted interrupt.  Care must be taken to avoid an
-- * interrupt flood.
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--
--#include <linux/module.h>
--#include <linux/interrupt.h>
--#include <linux/irq.h>
--#include <linux/kernel.h>
--#include <asm/ptrace.h>
--#include <linux/sched.h>
--#include <linux/kernel_stat.h>
--#include <asm/io.h>
--#include "ocelot_c_fpga.h"
--
--#define CPCI_IRQ_BASE	8
--
--static inline int ls1bit8(unsigned int x)
--{
--        int b = 7, s;
--
--        s =  4; if (((unsigned char)(x <<  4)) == 0) s = 0; b -= s; x <<= s;
--        s =  2; if (((unsigned char)(x <<  2)) == 0) s = 0; b -= s; x <<= s;
--        s =  1; if (((unsigned char)(x <<  1)) == 0) s = 0; b -= s;
--
--        return b;
--}
--
--/* mask off an interrupt -- 0 is enable, 1 is disable */
--static inline void mask_cpci_irq(unsigned int irq)
--{
--	uint32_t value;
--
--	value = OCELOT_FPGA_READ(INTMASK);
--	value |= 1 << (irq - CPCI_IRQ_BASE);
--	OCELOT_FPGA_WRITE(value, INTMASK);
--
--	/* read the value back to assure that it's really been written */
--	value = OCELOT_FPGA_READ(INTMASK);
--}
--
--/* unmask an interrupt -- 0 is enable, 1 is disable */
--static inline void unmask_cpci_irq(unsigned int irq)
--{
--	uint32_t value;
--
--	value = OCELOT_FPGA_READ(INTMASK);
--	value &= ~(1 << (irq - CPCI_IRQ_BASE));
--	OCELOT_FPGA_WRITE(value, INTMASK);
--
--	/* read the value back to assure that it's really been written */
--	value = OCELOT_FPGA_READ(INTMASK);
--}
--
--/*
-- * Enables the IRQ in the FPGA
-- */
--static void enable_cpci_irq(unsigned int irq)
--{
--	unmask_cpci_irq(irq);
--}
--
--/*
-- * Initialize the IRQ in the FPGA
-- */
--static unsigned int startup_cpci_irq(unsigned int irq)
--{
--	unmask_cpci_irq(irq);
--	return 0;
--}
--
--/*
-- * Disables the IRQ in the FPGA
-- */
--static void disable_cpci_irq(unsigned int irq)
--{
--	mask_cpci_irq(irq);
--}
--
--/*
-- * Masks and ACKs an IRQ
-- */
--static void mask_and_ack_cpci_irq(unsigned int irq)
--{
--	mask_cpci_irq(irq);
--}
--
--/*
-- * End IRQ processing
-- */
--static void end_cpci_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		unmask_cpci_irq(irq);
--}
--
--/*
-- * Interrupt handler for interrupts coming from the FPGA chip.
-- * It could be built in ethernet ports etc...
-- */
--void ll_cpci_irq(struct pt_regs *regs)
--{
--	unsigned int irq_src, irq_mask;
--
--	/* read the interrupt status registers */
--	irq_src = OCELOT_FPGA_READ(INTSTAT);
--	irq_mask = OCELOT_FPGA_READ(INTMASK);
--
--	/* mask for just the interrupts we want */
--	irq_src &= ~irq_mask;
--
--	do_IRQ(ls1bit8(irq_src) + CPCI_IRQ_BASE, regs);
--}
--
--#define shutdown_cpci_irq	disable_cpci_irq
--
--struct irq_chip cpci_irq_type = {
--	.typename = "CPCI/FPGA",
--	.startup = startup_cpci_irq,
--	.shutdown = shutdown_cpci_irq,
--	.enable = enable_cpci_irq,
--	.disable = disable_cpci_irq,
--	.ack = mask_and_ack_cpci_irq,
--	.end = end_cpci_irq,
--};
--
--void cpci_irq_init(void)
--{
--	int i;
--
--	/* Reset irq handlers pointers to NULL */
--	for (i = CPCI_IRQ_BASE; i < (CPCI_IRQ_BASE + 8); i++) {
--		irq_desc[i].status = IRQ_DISABLED;
--		irq_desc[i].action = 0;
--		irq_desc[i].depth = 2;
--		irq_desc[i].chip = &cpci_irq_type;
--	}
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/dbg_io.c mips/arch/mips/momentum/ocelot_c/dbg_io.c
---- mips-orig/arch/mips/momentum/ocelot_c/dbg_io.c	2006-10-02 22:32:46.170757250 +0900
-+++ mips/arch/mips/momentum/ocelot_c/dbg_io.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,125 +0,0 @@
--
--#ifdef CONFIG_KGDB
--
--#include <asm/serial.h> /* For the serial port location and base baud */
--
--/* --- CONFIG --- */
--
--typedef unsigned char uint8;
--typedef unsigned int uint32;
--
--/* --- END OF CONFIG --- */
--
--#define         UART16550_BAUD_2400             2400
--#define         UART16550_BAUD_4800             4800
--#define         UART16550_BAUD_9600             9600
--#define         UART16550_BAUD_19200            19200
--#define         UART16550_BAUD_38400            38400
--#define         UART16550_BAUD_57600            57600
--#define         UART16550_BAUD_115200           115200
--
--#define         UART16550_PARITY_NONE           0
--#define         UART16550_PARITY_ODD            0x08
--#define         UART16550_PARITY_EVEN           0x18
--#define         UART16550_PARITY_MARK           0x28
--#define         UART16550_PARITY_SPACE          0x38
--
--#define         UART16550_DATA_5BIT             0x0
--#define         UART16550_DATA_6BIT             0x1
--#define         UART16550_DATA_7BIT             0x2
--#define         UART16550_DATA_8BIT             0x3
--
--#define         UART16550_STOP_1BIT             0x0
--#define         UART16550_STOP_2BIT             0x4
--
--/* ----------------------------------------------------- */
--
--/* === CONFIG === */
--
--/* [jsun] we use the second serial port for kdb */
--#define         BASE                    OCELOT_SERIAL1_BASE
--#define         MAX_BAUD                OCELOT_BASE_BAUD
--
--/* === END OF CONFIG === */
--
--#define         REG_OFFSET              4
--
--/* register offset */
--#define         OFS_RCV_BUFFER          0
--#define         OFS_TRANS_HOLD          0
--#define         OFS_SEND_BUFFER         0
--#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
--#define         OFS_INTR_ID             (2*REG_OFFSET)
--#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
--#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
--#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
--#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
--#define         OFS_LINE_STATUS         (5*REG_OFFSET)
--#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
--#define         OFS_RS232_INPUT         (6*REG_OFFSET)
--#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
--
--#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
--#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
--
--
--/* memory-mapped read/write of the port */
--#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
--#define         UART16550_WRITE(y, z)  ((*((volatile uint8*)(BASE + y))) = z)
--
--void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
--{
--	/* disable interrupts */
--	UART16550_WRITE(OFS_INTR_ENABLE, 0);
--
--	/* set up baud rate */
--	{
--		uint32 divisor;
--
--		/* set DIAB bit */
--		UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
--
--		/* set divisor */
--		divisor = MAX_BAUD / baud;
--		UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
--		UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
--
--		/* clear DIAB bit */
--		UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
--	}
--
--	/* set data format */
--	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
--}
--
--static int remoteDebugInitialized = 0;
--
--uint8 getDebugChar(void)
--{
--	if (!remoteDebugInitialized) {
--		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
--			  UART16550_DATA_8BIT,
--			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
--	}
--
--	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0);
--	return UART16550_READ(OFS_RCV_BUFFER);
--}
--
--
--int putDebugChar(uint8 byte)
--{
--	if (!remoteDebugInitialized) {
--		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
--			  UART16550_DATA_8BIT,
--			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
--	}
--
--	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0);
--	UART16550_WRITE(OFS_SEND_BUFFER, byte);
--	return 1;
--}
--
--#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/irq.c mips/arch/mips/momentum/ocelot_c/irq.c
---- mips-orig/arch/mips/momentum/ocelot_c/irq.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_c/irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,107 +0,0 @@
--/*
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
-- *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- * Copyright (C) 2000, 01, 05 Ralf Baechle (ralf@linux-mips.org)
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--#include <linux/errno.h>
--#include <linux/init.h>
--#include <linux/kernel_stat.h>
--#include <linux/module.h>
--#include <linux/signal.h>
--#include <linux/sched.h>
--#include <linux/types.h>
--#include <linux/interrupt.h>
--#include <linux/ioport.h>
--#include <linux/timex.h>
--#include <linux/slab.h>
--#include <linux/random.h>
--#include <linux/bitops.h>
--#include <linux/mv643xx.h>
--#include <asm/bootinfo.h>
--#include <asm/io.h>
--#include <asm/irq_cpu.h>
--#include <asm/mipsregs.h>
--#include <asm/system.h>
--
--extern void uart_irq_init(void);
--extern void cpci_irq_init(void);
--
--static struct irqaction cascade_fpga = {
--	no_action, IRQF_DISABLED, CPU_MASK_NONE, "cascade via FPGA", NULL, NULL
--};
--
--static struct irqaction cascade_mv64340 = {
--	no_action, IRQF_DISABLED, CPU_MASK_NONE, "cascade via MV64340", NULL, NULL
--};
--
--extern void ll_uart_irq(struct pt_regs *regs);
--extern void ll_cpci_irq(struct pt_regs *regs);
--
--asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
--{
--	unsigned int pending = read_c0_cause() & read_c0_status();
--
--	if (pending & STATUSF_IP0)
--		do_IRQ(0, regs);
--	else if (pending & STATUSF_IP1)
--		do_IRQ(1, regs);
--	else if (pending & STATUSF_IP2)
--		do_IRQ(2, regs);
--	else if (pending & STATUSF_IP3)
--		ll_uart_irq(regs);
--	else if (pending & STATUSF_IP4)
--		do_IRQ(4, regs);
--	else if (pending & STATUSF_IP5)
--		ll_cpci_irq(regs);
--	else if (pending & STATUSF_IP6)
--		ll_mv64340_irq(regs);
--	else if (pending & STATUSF_IP7)
--		do_IRQ(7, regs);
--	else
--		spurious_interrupt(regs);
--}
--
--void __init arch_init_irq(void)
--{
--	/*
--	 * Clear all of the interrupts while we change the able around a bit.
--	 * int-handler is not on bootstrap
--	 */
--	clear_c0_status(ST0_IM);
--
--	mips_cpu_irq_init(0);
--
--	/* set up the cascading interrupts */
--	setup_irq(3, &cascade_fpga);
--	setup_irq(5, &cascade_fpga);
--	setup_irq(6, &cascade_mv64340);
--
--	mv64340_irq_init(16);
--	uart_irq_init();
--	cpci_irq_init();
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/ocelot_c_fpga.h mips/arch/mips/momentum/ocelot_c/ocelot_c_fpga.h
---- mips-orig/arch/mips/momentum/ocelot_c/ocelot_c_fpga.h	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_c/ocelot_c_fpga.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,59 +0,0 @@
--/*
-- * Ocelot-C Board Register Definitions
-- *
-- * (C) 2002 Momentum Computer Inc.
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- *  Louis Hamilton, Red Hat, Inc.
-- *    hamilton@redhat.com  [MIPS64 modifications]
-- */
--
--#ifndef __OCELOT_C_FPGA_H__
--#define __OCELOT_C_FPGA_H__
--
--
--#ifdef CONFIG_64BIT
--#define OCELOT_C_CS0_ADDR       (0xfffffffffc000000)
--#else
--#define OCELOT_C_CS0_ADDR               (0xfc000000)
--#endif
--
--#define OCELOT_C_REG_BOARDREV		0x0
--#define OCELOT_C_REG_FPGA_REV		0x1
--#define OCELOT_C_REG_FPGA_TYPE		0x2
--#define OCELOT_C_REG_RESET_STATUS	0x3
--#define OCELOT_C_REG_BOARD_STATUS	0x4
--#define OCELOT_C_REG_CPCI_ID		0x5
--#define OCELOT_C_REG_SET		0x6
--#define OCELOT_C_REG_CLR		0x7
--#define OCELOT_C_REG_EEPROM_MODE	0x9
--#define OCELOT_C_REG_INTMASK		0xa
--#define OCELOT_C_REG_INTSTAT		0xb
--#define OCELOT_C_REG_UART_INTMASK	0xc
--#define OCELOT_C_REG_UART_INTSTAT	0xd
--#define OCELOT_C_REG_INTSET		0xe
--#define OCELOT_C_REG_INTCLR		0xf
--
--#define OCELOT_FPGA_WRITE(x, y) writeb(x, OCELOT_C_CS0_ADDR + OCELOT_C_REG_##y)
--#define OCELOT_FPGA_READ(x) readb(OCELOT_C_CS0_ADDR + OCELOT_C_REG_##x)
--
--#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/prom.c mips/arch/mips/momentum/ocelot_c/prom.c
---- mips-orig/arch/mips/momentum/ocelot_c/prom.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_c/prom.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,242 +0,0 @@
--/*
-- * Copyright 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
-- *
-- * Louis Hamilton, Red Hat, Inc.
-- *   hamilton@redhat.com  [MIPS64 modifications]
-- *
-- * Based on Ocelot Linux port, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#include <linux/init.h>
--#include <linux/mm.h>
--#include <linux/sched.h>
--#include <linux/bootmem.h>
--#include <linux/mv643xx.h>
--
--#include <asm/addrspace.h>
--#include <asm/bootinfo.h>
--#include <asm/pmon.h>
--
--#include "ocelot_c_fpga.h"
--
--struct callvectors* debug_vectors;
--
--extern unsigned long marvell_base;
--extern unsigned long cpu_clock;
--
--#ifdef CONFIG_MV643XX_ETH
--extern unsigned char prom_mac_addr_base[6];
--#endif
--
--const char *get_system_type(void)
--{
--#ifdef CONFIG_CPU_SR71000
--	return "Momentum Ocelot-CS";
--#else
--	return "Momentum Ocelot-C";
--#endif
--}
--
--#ifdef CONFIG_MV643XX_ETH
--static void burn_clocks(void)
--{
--	int i;
--
--	/* this loop should burn at least 1us -- this should be plenty */
--	for (i = 0; i < 0x10000; i++)
--		;
--}
--
--static u8 exchange_bit(u8 val, u8 cs)
--{
--	/* place the data */
--	OCELOT_FPGA_WRITE((val << 2) | cs, EEPROM_MODE);
--	burn_clocks();
--
--	/* turn the clock on */
--	OCELOT_FPGA_WRITE((val << 2) | cs | 0x2, EEPROM_MODE);
--	burn_clocks();
--
--	/* turn the clock off and read-strobe */
--	OCELOT_FPGA_WRITE((val << 2) | cs | 0x10, EEPROM_MODE);
--
--	/* return the data */
--	return ((OCELOT_FPGA_READ(EEPROM_MODE) >> 3) & 0x1);
--}
--
--void get_mac(char dest[6])
--{
--	u8 read_opcode[12] = {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
--	int i,j;
--
--	for (i = 0; i < 12; i++)
--		exchange_bit(read_opcode[i], 1);
--
--	for (j = 0; j < 6; j++) {
--		dest[j] = 0;
--		for (i = 0; i < 8; i++) {
--			dest[j] <<= 1;
--			dest[j] |= exchange_bit(0, 1);
--		}
--	}
--
--	/* turn off CS */
--	exchange_bit(0,0);
--}
--#endif
--
--
--#ifdef CONFIG_64BIT
--
--unsigned long signext(unsigned long addr)
--{
--  addr &= 0xffffffff;
--  return (unsigned long)((int)addr);
--}
--
--void *get_arg(unsigned long args, int arc)
--{
--  unsigned long ul;
--  unsigned char *puc, uc;
--
--  args += (arc * 4);
--  ul = (unsigned long)signext(args);
--  puc = (unsigned char *)ul;
--  if (puc == 0)
--    return (void *)0;
--
--#ifdef CONFIG_CPU_LITTLE_ENDIAN
--  uc = *puc++;
--  ul = (unsigned long)uc;
--  uc = *puc++;
--  ul |= (((unsigned long)uc) << 8);
--  uc = *puc++;
--  ul |= (((unsigned long)uc) << 16);
--  uc = *puc++;
--  ul |= (((unsigned long)uc) << 24);
--#else  /* CONFIG_CPU_LITTLE_ENDIAN */
--  uc = *puc++;
--  ul = ((unsigned long)uc) << 24;
--  uc = *puc++;
--  ul |= (((unsigned long)uc) << 16);
--  uc = *puc++;
--  ul |= (((unsigned long)uc) << 8);
--  uc = *puc++;
--  ul |= ((unsigned long)uc);
--#endif  /* CONFIG_CPU_LITTLE_ENDIAN */
--  ul = signext(ul);
--  return (void *)ul;
--}
--
--char *arg64(unsigned long addrin, int arg_index)
--{
--  unsigned long args;
--  char *p;
--  args = signext(addrin);
--  p = (char *)get_arg(args, arg_index);
--  return p;
--}
--#endif  /* CONFIG_64BIT */
--
--
--void __init prom_init(void)
--{
--	int argc = fw_arg0;
--	char **arg = (char **) fw_arg1;
--	char **env = (char **) fw_arg2;
--	struct callvectors *cv = (struct callvectors *) fw_arg3;
--	int i;
--
--#ifdef CONFIG_64BIT
--	char *ptr;
--
--	printk("prom_init - MIPS64\n");
--	/* save the PROM vectors for debugging use */
--	debug_vectors = (struct callvectors *)signext((unsigned long)cv);
--
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--
--	for (i = 1; i < argc; i++) {
--		ptr = (char *)arg64((unsigned long)arg, i);
--		if ((strlen(arcs_cmdline) + strlen(ptr) + 1) >=
--		    sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, ptr);
--		strcat(arcs_cmdline, " ");
--	}
--	i = 0;
--	while (1) {
--		ptr = (char *)arg64((unsigned long)env, i);
--		if (! ptr)
--			break;
--
--		if (strncmp("gtbase", ptr, strlen("gtbase")) == 0) {
--			marvell_base = simple_strtol(ptr + strlen("gtbase="),
--							NULL, 16);
--
--			if ((marvell_base & 0xffffffff00000000) == 0)
--				marvell_base |= 0xffffffff00000000;
--
--			printk("marvell_base set to 0x%016lx\n", marvell_base);
--		}
--		if (strncmp("cpuclock", ptr, strlen("cpuclock")) == 0) {
--			cpu_clock = simple_strtol(ptr + strlen("cpuclock="),
--							NULL, 10);
--			printk("cpu_clock set to %d\n", cpu_clock);
--		}
--		i++;
--	}
--	printk("arcs_cmdline: %s\n", arcs_cmdline);
--
--#else   /* CONFIG_64BIT */
--	/* save the PROM vectors for debugging use */
--	debug_vectors = cv;
--
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--	for (i = 1; i < argc; i++) {
--		if (strlen(arcs_cmdline) + strlen(arg[i] + 1)
--		    >= sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, arg[i]);
--		strcat(arcs_cmdline, " ");
--	}
--
--	while (*env) {
--		if (strncmp("gtbase", *env, strlen("gtbase")) == 0) {
--			marvell_base = simple_strtol(*env + strlen("gtbase="),
--							NULL, 16);
--		}
--		if (strncmp("cpuclock", *env, strlen("cpuclock")) == 0) {
--			cpu_clock = simple_strtol(*env + strlen("cpuclock="),
--							NULL, 10);
--		}
--		env++;
--	}
--#endif /* CONFIG_64BIT */
--
--	mips_machgroup = MACH_GROUP_MOMENCO;
--	mips_machtype = MACH_MOMENCO_OCELOT_C;
--
--#ifdef CONFIG_MV643XX_ETH
--	/* get the base MAC address for on-board ethernet ports */
--	get_mac(prom_mac_addr_base);
--#endif
--
--#ifndef CONFIG_64BIT
--	debug_vectors->printf("Booting Linux kernel...\n");
--#endif
--}
--
--unsigned long __init prom_free_prom_memory(void)
--{
--	return 0;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/reset.c mips/arch/mips/momentum/ocelot_c/reset.c
---- mips-orig/arch/mips/momentum/ocelot_c/reset.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_c/reset.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,58 +0,0 @@
--/*
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- * Copyright (C) 1997, 2001 Ralf Baechle
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * Copyright (C) 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
-- *
-- * Louis Hamilton, Red Hat, Inc.
-- * hamilton@redhat.com  [MIPS64 modifications]
-- */
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <asm/io.h>
--#include <asm/pgtable.h>
--#include <asm/processor.h>
--#include <asm/reboot.h>
--#include <asm/system.h>
--#include <linux/delay.h>
--
--void momenco_ocelot_restart(char *command)
--{
--	/* base address of timekeeper portion of part */
--	void *nvram = (void *)
--#ifdef CONFIG_64BIT
--		0xfffffffffc807000;
--#else
--		0xfc807000;
--#endif
--
--	/* Ask the NVRAM/RTC/watchdog chip to assert reset in 1/16 second */
--	writeb(0x84, nvram + 0xff7);
--
--	/* wait for the watchdog to go off */
--	mdelay(100+(1000/16));
--
--	/* if the watchdog fails for some reason, let people know */
--	printk(KERN_NOTICE "Watchdog reset failed\n");
--}
--
--void momenco_ocelot_halt(void)
+-void it8172_halt(void)
 -{
 -	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
 -	while (1)
@@ -6687,902 +3544,295 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/
 -			".set\tmips0");
 -}
 -
--void momenco_ocelot_power_off(void)
+-void it8172_power_off(void)
 -{
--	momenco_ocelot_halt();
+-	it8172_halt();
 -}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/setup.c mips/arch/mips/momentum/ocelot_c/setup.c
---- mips-orig/arch/mips/momentum/ocelot_c/setup.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_c/setup.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,368 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/generic/time.c mips/arch/mips/ite-boards/generic/time.c
+--- mips-orig/arch/mips/ite-boards/generic/time.c	2006-10-02 22:32:45.898740250 +0900
++++ mips/arch/mips/ite-boards/generic/time.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,249 +0,0 @@
 -/*
-- * BRIEF MODULE DESCRIPTION
-- * Momentum Computer Ocelot-C and -CS board dependent boot routines
+- * Carsten Langgaard, carstenl@mips.com
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 - *
-- * Copyright (C) 1996, 1997, 2001  Ralf Baechle
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Copyright (C) 2001 Red Hat, Inc.
-- * Copyright (C) 2002 Momentum Computer
+- * Copyright (C) 2003 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
 - *
-- * Author: Matthew Dharm, Momentum Computer
-- *   mdharm@momenco.com
+- * ########################################################################
 - *
-- * Louis Hamilton, Red Hat, Inc.
-- *   hamilton@redhat.com  [MIPS64 modifications]
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
 - *
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
 - *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
 - *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
+- * ########################################################################
 - *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
+- * Setting up the clock on the MIPS boards.
 - */
--#include <linux/bcd.h>
 -#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/mm.h>
--#include <linux/swap.h>
--#include <linux/ioport.h>
+-#include <linux/kernel_stat.h>
 -#include <linux/sched.h>
--#include <linux/interrupt.h>
--#include <linux/pci.h>
--#include <linux/pm.h>
--#include <linux/timex.h>
--#include <linux/vmalloc.h>
--#include <linux/mv643xx.h>
+-#include <linux/time.h>
+-#include <linux/spinlock.h>
+-#include <linux/mc146818rtc.h>
 -
 -#include <asm/time.h>
--#include <asm/bootinfo.h>
--#include <asm/page.h>
--#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/pci.h>
--#include <asm/processor.h>
+-#include <asm/mipsregs.h>
 -#include <asm/ptrace.h>
--#include <asm/reboot.h>
--#include <asm/marvell.h>
--#include <linux/bootmem.h>
--#include <linux/blkdev.h>
--#include "ocelot_c_fpga.h"
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_int.h>
+-#include <asm/debug.h>
 -
--unsigned long marvell_base;
--extern unsigned long mv64340_sram_base;
--unsigned long cpu_clock;
+-#define IT8172_RTC_ADR_REG  (IT8172_PCI_IO_BASE + IT_RTC_BASE)
+-#define IT8172_RTC_DAT_REG  (IT8172_RTC_ADR_REG + 1)
+-#define IT8172_RTC_CENTURY_REG  (IT8172_PCI_IO_BASE + IT_RTC_CENTURY)
 -
--/* These functions are used for rebooting or halting the machine*/
--extern void momenco_ocelot_restart(char *command);
--extern void momenco_ocelot_halt(void);
--extern void momenco_ocelot_power_off(void);
+-static volatile char *rtc_adr_reg = (char*)KSEG1ADDR(IT8172_RTC_ADR_REG);
+-static volatile char *rtc_dat_reg = (char*)KSEG1ADDR(IT8172_RTC_DAT_REG);
+-static volatile char *rtc_century_reg = (char*)KSEG1ADDR(IT8172_RTC_CENTURY_REG);
 -
--void momenco_time_init(void);
--
--static char reset_reason;
--
--void add_wired_entry(unsigned long entrylo0, unsigned long entrylo1, unsigned long entryhi, unsigned long pagemask);
--
--static unsigned long ENTRYLO(unsigned long paddr)
+-unsigned char it8172_rtc_read_data(unsigned long addr)
 -{
--	return ((paddr & PAGE_MASK) |
--	       (_PAGE_PRESENT | __READABLE | __WRITEABLE | _PAGE_GLOBAL |
--		_CACHE_UNCACHED)) >> 6;
+-	unsigned char retval;
+-
+-	*rtc_adr_reg = addr;
+-	retval =  *rtc_dat_reg;
+-	return retval;
 -}
 -
--/* setup code for a handoff from a version 2 PMON 2000 PROM */
--void PMON_v2_setup(void)
+-void it8172_rtc_write_data(unsigned char data, unsigned long addr)
 -{
--	/* Some wired TLB entries for the MV64340 and perhiperals. The
--	   MV64340 is going to be hit on every IRQ anyway - there's
--	   absolutely no point in letting it be a random TLB entry, as
--	   it'll just cause needless churning of the TLB. And we use
--	   the other half for the serial port, which is just a PITA
--	   otherwise :)
--
--		Device			Physical	Virtual
--		MV64340 Internal Regs	0xf4000000	0xf4000000
--		Ocelot-C[S] PLD (CS0)	0xfc000000	0xfc000000
--		NVRAM (CS1)		0xfc800000	0xfc800000
--		UARTs (CS2)		0xfd000000	0xfd000000
--		Internal SRAM		0xfe000000	0xfe000000
--		M-Systems DOC (CS3)	0xff000000	0xff000000
--	*/
--  printk("PMON_v2_setup\n");
--
--#ifdef CONFIG_64BIT
--	/* marvell and extra space */
--	add_wired_entry(ENTRYLO(0xf4000000), ENTRYLO(0xf4010000), 0xfffffffff4000000, PM_64K);
--	/* fpga, rtc, and uart */
--	add_wired_entry(ENTRYLO(0xfc000000), ENTRYLO(0xfd000000), 0xfffffffffc000000, PM_16M);
--	/* m-sys and internal SRAM */
--	add_wired_entry(ENTRYLO(0xfe000000), ENTRYLO(0xff000000), 0xfffffffffe000000, PM_16M);
--
--	marvell_base = 0xfffffffff4000000;
--	mv64340_sram_base = 0xfffffffffe000000;
--#else
--	/* marvell and extra space */
--	add_wired_entry(ENTRYLO(0xf4000000), ENTRYLO(0xf4010000), 0xf4000000, PM_64K);
--	/* fpga, rtc, and uart */
--	add_wired_entry(ENTRYLO(0xfc000000), ENTRYLO(0xfd000000), 0xfc000000, PM_16M);
--	/* m-sys and internal SRAM */
--	add_wired_entry(ENTRYLO(0xfe000000), ENTRYLO(0xff000000), 0xfe000000, PM_16M);
--
--	marvell_base = 0xf4000000;
--	mv64340_sram_base = 0xfe000000;
--#endif
+-	*rtc_adr_reg = addr;
+-	*rtc_dat_reg = data;
 -}
 -
--unsigned long m48t37y_get_time(void)
+-#undef 	CMOS_READ
+-#undef 	CMOS_WRITE
+-#define	CMOS_READ(addr)			it8172_rtc_read_data(addr)
+-#define CMOS_WRITE(data, addr) 		it8172_rtc_write_data(data, addr)
+-
+-static unsigned char saved_control;	/* remember rtc control reg */
+-static inline int rtc_24h(void) { return saved_control & RTC_24H; }
+-static inline int rtc_dm_binary(void) { return saved_control & RTC_DM_BINARY; }
+-
+-static inline unsigned char
+-bin_to_hw(unsigned char c)
 -{
--#ifdef CONFIG_64BIT
--	unsigned char *rtc_base = (unsigned char*)0xfffffffffc800000;
--#else
--	unsigned char* rtc_base = (unsigned char*)0xfc800000;
--#endif
--	unsigned int year, month, day, hour, min, sec;
--	unsigned long flags;
--
--	spin_lock_irqsave(&rtc_lock, flags);
--	/* stop the update */
--	rtc_base[0x7ff8] = 0x40;
--
--	year = BCD2BIN(rtc_base[0x7fff]);
--	year += BCD2BIN(rtc_base[0x7ff1]) * 100;
--
--	month = BCD2BIN(rtc_base[0x7ffe]);
--
--	day = BCD2BIN(rtc_base[0x7ffd]);
--
--	hour = BCD2BIN(rtc_base[0x7ffb]);
--	min = BCD2BIN(rtc_base[0x7ffa]);
--	sec = BCD2BIN(rtc_base[0x7ff9]);
--
--	/* start the update */
--	rtc_base[0x7ff8] = 0x00;
--	spin_unlock_irqrestore(&rtc_lock, flags);
--
--	return mktime(year, month, day, hour, min, sec);
+-	if (rtc_dm_binary())
+-		return c;
+-	else
+-		return ((c/10) << 4) + (c%10);
 -}
 -
--int m48t37y_set_time(unsigned long sec)
+-static inline unsigned char
+-hw_to_bin(unsigned char c)
 -{
--#ifdef CONFIG_64BIT
--	unsigned char* rtc_base = (unsigned char*)0xfffffffffc800000;
--#else
--	unsigned char* rtc_base = (unsigned char*)0xfc800000;
--#endif
+-	if (rtc_dm_binary())
+-		return c;
+-	else
+-		return (c>>4)*10 + (c &0xf);
+-}
+-
+-/* 0x80 bit indicates pm in 12-hour format */
+-static inline unsigned char
+-hour_bin_to_hw(unsigned char c)
+-{
+-	if (rtc_24h())
+-		return bin_to_hw(c);
+-	if (c >= 12)
+-		return 0x80 | bin_to_hw((c==12)?12:c-12);  /* 12 is 12pm */
+-	else
+-		return bin_to_hw((c==0)?12:c);	/* 0 is 12 AM, not 0 am */
+-}
+-
+-static inline unsigned char
+-hour_hw_to_bin(unsigned char c)
+-{
+-	unsigned char tmp = hw_to_bin(c&0x3f);
+-	if (rtc_24h())
+-		return tmp;
+-	if (c & 0x80)
+-		return (tmp==12)?12:tmp+12;  	/* 12pm is 12, not 24 */
+-	else
+-		return (tmp==12)?0:tmp;		/* 12am is 0 */
+-}
+-
+-static unsigned long r4k_offset; /* Amount to increment compare reg each time */
+-static unsigned long r4k_cur;    /* What counter should be at next timer irq */
+-extern unsigned int mips_hpt_frequency;
+-
+-/*
+- * Figure out the r4k offset, the amount to increment the compare
+- * register for each time tick.
+- * Use the RTC to calculate offset.
+- */
+-static unsigned long __init cal_r4koff(void)
+-{
+-	unsigned int flags;
+-
+-	local_irq_save(flags);
+-
+-	/* Start counter exactly on falling edge of update flag */
+-	while (CMOS_READ(RTC_REG_A) & RTC_UIP);
+-	while (!(CMOS_READ(RTC_REG_A) & RTC_UIP));
+-
+-	/* Start r4k counter. */
+-	write_c0_count(0);
+-
+-	/* Read counter exactly on falling edge of update flag */
+-	while (CMOS_READ(RTC_REG_A) & RTC_UIP);
+-	while (!(CMOS_READ(RTC_REG_A) & RTC_UIP));
+-
+-	mips_hpt_frequency = read_c0_count();
+-
+-	/* restore interrupts */
+-	local_irq_restore(flags);
+-
+-	return (mips_hpt_frequency / HZ);
+-}
+-
+-static unsigned long
+-it8172_rtc_get_time(void)
+-{
+-	unsigned int year, mon, day, hour, min, sec;
+-	unsigned int flags;
+-
+-	/* avoid update-in-progress. */
+-	for (;;) {
+-		local_irq_save(flags);
+-		if (! (CMOS_READ(RTC_REG_A) & RTC_UIP))
+-			break;
+-		/* don't hold intr closed all the time */
+-		local_irq_restore(flags);
+-	}
+-
+-	/* Read regs. */
+-	sec = hw_to_bin(CMOS_READ(RTC_SECONDS));
+-	min = hw_to_bin(CMOS_READ(RTC_MINUTES));
+-	hour = hour_hw_to_bin(CMOS_READ(RTC_HOURS));
+-	day = hw_to_bin(CMOS_READ(RTC_DAY_OF_MONTH));
+-	mon = hw_to_bin(CMOS_READ(RTC_MONTH));
+-	year = hw_to_bin(CMOS_READ(RTC_YEAR)) +
+-		hw_to_bin(*rtc_century_reg) * 100;
+-
+-	/* restore interrupts */
+-	local_irq_restore(flags);
+-
+-	return mktime(year, mon, day, hour, min, sec);
+-}
+-
+-static int
+-it8172_rtc_set_time(unsigned long t)
+-{
 -	struct rtc_time tm;
--	unsigned long flags;
+-	unsigned int flags;
 -
--	/* convert to a more useful format -- note months count from 0 */
--	to_tm(sec, &tm);
--	tm.tm_mon += 1;
+-	/* convert */
+-	to_tm(t, &tm);
 -
--	spin_lock_irqsave(&rtc_lock, flags);
--	/* enable writing */
--	rtc_base[0x7ff8] = 0x80;
+-	/* avoid update-in-progress. */
+-	for (;;) {
+-		local_irq_save(flags);
+-		if (! (CMOS_READ(RTC_REG_A) & RTC_UIP))
+-			break;
+-		/* don't hold intr closed all the time */
+-		local_irq_restore(flags);
+-	}
 -
--	/* year */
--	rtc_base[0x7fff] = BIN2BCD(tm.tm_year % 100);
--	rtc_base[0x7ff1] = BIN2BCD(tm.tm_year / 100);
+-	*rtc_century_reg = bin_to_hw(tm.tm_year/100);
+-	CMOS_WRITE(bin_to_hw(tm.tm_sec), RTC_SECONDS);
+-	CMOS_WRITE(bin_to_hw(tm.tm_min), RTC_MINUTES);
+-	CMOS_WRITE(hour_bin_to_hw(tm.tm_hour), RTC_HOURS);
+-	CMOS_WRITE(bin_to_hw(tm.tm_mday), RTC_DAY_OF_MONTH);
+-	CMOS_WRITE(bin_to_hw(tm.tm_mon+1), RTC_MONTH);	/* tm_mon starts from 0 */
+-	CMOS_WRITE(bin_to_hw(tm.tm_year%100), RTC_YEAR);
 -
--	/* month */
--	rtc_base[0x7ffe] = BIN2BCD(tm.tm_mon);
--
--	/* day */
--	rtc_base[0x7ffd] = BIN2BCD(tm.tm_mday);
--
--	/* hour/min/sec */
--	rtc_base[0x7ffb] = BIN2BCD(tm.tm_hour);
--	rtc_base[0x7ffa] = BIN2BCD(tm.tm_min);
--	rtc_base[0x7ff9] = BIN2BCD(tm.tm_sec);
--
--	/* day of week -- not really used, but let's keep it up-to-date */
--	rtc_base[0x7ffc] = BIN2BCD(tm.tm_wday + 1);
--
--	/* disable writing */
--	rtc_base[0x7ff8] = 0x00;
--	spin_unlock_irqrestore(&rtc_lock, flags);
+-	/* restore interrupts */
+-	local_irq_restore(flags);
 -
 -	return 0;
 -}
+-
+-void __init it8172_time_init(void)
+-{
+-        unsigned int est_freq, flags;
+-
+-	local_irq_save(flags);
+-
+-	saved_control = CMOS_READ(RTC_CONTROL);
+-
+-	printk("calculating r4koff... ");
+-	r4k_offset = cal_r4koff();
+-	printk("%08lx(%d)\n", r4k_offset, (int) r4k_offset);
+-
+-	est_freq = 2*r4k_offset*HZ;
+-	est_freq += 5000;    /* round */
+-	est_freq -= est_freq%10000;
+-	printk("CPU frequency %d.%02d MHz\n", est_freq/1000000,
+-	       (est_freq%1000000)*100/1000000);
+-
+-	local_irq_restore(flags);
+-
+-	rtc_mips_get_time = it8172_rtc_get_time;
+-	rtc_mips_set_time = it8172_rtc_set_time;
+-}
+-
+-#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
 -
 -void __init plat_timer_setup(struct irqaction *irq)
 -{
--	setup_irq(7, irq);
+-	puts("timer_setup\n");
+-	put32(NR_IRQS);
+-	puts("");
+-        /* we are using the cpu counter for timer interrupts */
+-	setup_irq(MIPS_CPU_TIMER_IRQ, irq);
+-
+-        /* to generate the first timer interrupt */
+-	r4k_cur = (read_c0_count() + r4k_offset);
+-	write_c0_compare(r4k_cur);
+-	set_c0_status(ALLINTS);
 -}
--
--void momenco_time_init(void)
--{
--#ifdef CONFIG_CPU_SR71000
--	mips_hpt_frequency = cpu_clock;
--#elif defined(CONFIG_CPU_RM7000)
--	mips_hpt_frequency = cpu_clock / 2;
--#else
--#error Unknown CPU for this board
--#endif
--	printk("momenco_time_init cpu_clock=%d\n", cpu_clock);
--
--	rtc_mips_get_time = m48t37y_get_time;
--	rtc_mips_set_time = m48t37y_set_time;
--}
--
--void __init plat_mem_setup(void)
--{
--	unsigned int tmpword;
--
--	board_time_init = momenco_time_init;
--
--	_machine_restart = momenco_ocelot_restart;
--	_machine_halt = momenco_ocelot_halt;
--	pm_power_off = momenco_ocelot_power_off;
--
--	/*
--	 * initrd_start = (unsigned long)ocelot_initrd_start;
--	 * initrd_end = (unsigned long)ocelot_initrd_start + (ulong)ocelot_initrd_size;
--	 * initrd_below_start_ok = 1;
--	 */
--
--	/* do handoff reconfiguration */
--	PMON_v2_setup();
--
--	/* shut down ethernet ports, just to be sure our memory doesn't get
--	 * corrupted by random ethernet traffic.
--	 */
--	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0), 0xff << 8);
--	MV_WRITE(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1), 0xff << 8);
--	do {}
--	  while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(0)) & 0xff);
--	do {}
--	  while (MV_READ(MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(1)) & 0xff);
--	do {}
--	  while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(0)) & 0xff);
--	do {}
--	  while (MV_READ(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(1)) & 0xff);
--	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0),
--	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(0)) & ~1);
--	MV_WRITE(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1),
--	         MV_READ(MV643XX_ETH_PORT_SERIAL_CONTROL_REG(1)) & ~1);
--
--	/* Turn off the Bit-Error LED */
--	OCELOT_FPGA_WRITE(0x80, CLR);
--
--	tmpword = OCELOT_FPGA_READ(BOARDREV);
--#ifdef CONFIG_CPU_SR71000
--	if (tmpword < 26)
--		printk("Momenco Ocelot-CS: Board Assembly Rev. %c\n",
--			'A'+tmpword);
--	else
--		printk("Momenco Ocelot-CS: Board Assembly Revision #0x%x\n",
--			tmpword);
--#else
--	if (tmpword < 26)
--		printk("Momenco Ocelot-C: Board Assembly Rev. %c\n",
--			'A'+tmpword);
--	else
--		printk("Momenco Ocelot-C: Board Assembly Revision #0x%x\n",
--			tmpword);
--#endif
--
--	tmpword = OCELOT_FPGA_READ(FPGA_REV);
--	printk("FPGA Rev: %d.%d\n", tmpword>>4, tmpword&15);
--	tmpword = OCELOT_FPGA_READ(RESET_STATUS);
--	printk("Reset reason: 0x%x\n", tmpword);
--	switch (tmpword) {
--		case 0x1:
--			printk("  - Power-up reset\n");
--			break;
--		case 0x2:
--			printk("  - Push-button reset\n");
--			break;
--		case 0x4:
--			printk("  - cPCI bus reset\n");
--			break;
--		case 0x8:
--			printk("  - Watchdog reset\n");
--			break;
--		case 0x10:
--			printk("  - Software reset\n");
--			break;
--		default:
--			printk("  - Unknown reset cause\n");
--	}
--	reset_reason = tmpword;
--	OCELOT_FPGA_WRITE(0xff, RESET_STATUS);
--
--	tmpword = OCELOT_FPGA_READ(CPCI_ID);
--	printk("cPCI ID register: 0x%02x\n", tmpword);
--	printk("  - Slot number: %d\n", tmpword & 0x1f);
--	printk("  - PCI bus present: %s\n", tmpword & 0x40 ? "yes" : "no");
--	printk("  - System Slot: %s\n", tmpword & 0x20 ? "yes" : "no");
--
--	tmpword = OCELOT_FPGA_READ(BOARD_STATUS);
--	printk("Board Status register: 0x%02x\n", tmpword);
--	printk("  - User jumper: %s\n", (tmpword & 0x80)?"installed":"absent");
--	printk("  - Boot flash write jumper: %s\n", (tmpword&0x40)?"installed":"absent");
--	printk("  - L3 Cache size: %d MiB\n", (1<<((tmpword&12) >> 2))&~1);
--	printk("  - SDRAM size: %d MiB\n", 1<<(6+(tmpword&3)));
--
--	switch(tmpword &3) {
--	case 3:
--		/* 512MiB */
--		add_memory_region(0x0, 0x200<<20, BOOT_MEM_RAM);
--		break;
--	case 2:
--		/* 256MiB */
--		add_memory_region(0x0, 0x100<<20, BOOT_MEM_RAM);
--		break;
--	case 1:
--		/* 128MiB */
--		add_memory_region(0x0,  0x80<<20, BOOT_MEM_RAM);
--		break;
--	case 0:
--		/* 1GiB -- needs CONFIG_HIGHMEM */
--		add_memory_region(0x0, 0x400<<20, BOOT_MEM_RAM);
--		break;
--	}
--}
--
--#ifndef CONFIG_64BIT
--/* This needs to be one of the first initcalls, because no I/O port access
--   can work before this */
--static int io_base_ioremap(void)
--{
--	/* we're mapping PCI accesses from 0xc0000000 to 0xf0000000 */
--	void *io_remap_range = ioremap(0xc0000000, 0x30000000);
--
--	if (!io_remap_range) {
--		panic("Could not ioremap I/O port range");
--	}
--	printk("io_remap_range set at 0x%08x\n", (uint32_t)io_remap_range);
--	set_io_port_base(io_remap_range - 0xc0000000);
--
--	return 0;
--}
--
--module_init(io_base_ioremap);
--#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_c/uart-irq.c mips/arch/mips/momentum/ocelot_c/uart-irq.c
---- mips-orig/arch/mips/momentum/ocelot_c/uart-irq.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_c/uart-irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,146 +0,0 @@
--/*
-- * Copyright 2002 Momentum Computer
-- * Author: mdharm@momenco.com
-- *
-- * arch/mips/momentum/ocelot_c/uart-irq.c
-- *     Interrupt routines for UARTs.  Interrupt numbers are assigned from
-- *     80 to 81 (2 interrupt sources).
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--
--#include <linux/module.h>
--#include <linux/interrupt.h>
--#include <linux/irq.h>
--#include <linux/kernel.h>
--#include <asm/ptrace.h>
--#include <linux/sched.h>
--#include <linux/kernel_stat.h>
--#include <asm/io.h>
--#include <asm/irq.h>
--#include "ocelot_c_fpga.h"
--
--static inline int ls1bit8(unsigned int x)
--{
--        int b = 7, s;
--
--        s =  4; if (((unsigned char)(x << 4)) == 0) s = 0; b -= s; x <<= s;
--        s =  2; if (((unsigned char)(x << 2)) == 0) s = 0; b -= s; x <<= s;
--        s =  1; if (((unsigned char)(x << 1)) == 0) s = 0; b -= s;
--
--        return b;
--}
--
--/* mask off an interrupt -- 0 is enable, 1 is disable */
--static inline void mask_uart_irq(unsigned int irq)
--{
--	uint8_t value;
--
--	value = OCELOT_FPGA_READ(UART_INTMASK);
--	value |= 1 << (irq - 74);
--	OCELOT_FPGA_WRITE(value, UART_INTMASK);
--
--	/* read the value back to assure that it's really been written */
--	value = OCELOT_FPGA_READ(UART_INTMASK);
--}
--
--/* unmask an interrupt -- 0 is enable, 1 is disable */
--static inline void unmask_uart_irq(unsigned int irq)
--{
--	uint8_t value;
--
--	value = OCELOT_FPGA_READ(UART_INTMASK);
--	value &= ~(1 << (irq - 74));
--	OCELOT_FPGA_WRITE(value, UART_INTMASK);
--
--	/* read the value back to assure that it's really been written */
--	value = OCELOT_FPGA_READ(UART_INTMASK);
--}
--
--/*
-- * Enables the IRQ in the FPGA
-- */
--static void enable_uart_irq(unsigned int irq)
--{
--	unmask_uart_irq(irq);
--}
--
--/*
-- * Initialize the IRQ in the FPGA
-- */
--static unsigned int startup_uart_irq(unsigned int irq)
--{
--	unmask_uart_irq(irq);
--	return 0;
--}
--
--/*
-- * Disables the IRQ in the FPGA
-- */
--static void disable_uart_irq(unsigned int irq)
--{
--	mask_uart_irq(irq);
--}
--
--/*
-- * Masks and ACKs an IRQ
-- */
--static void mask_and_ack_uart_irq(unsigned int irq)
--{
--	mask_uart_irq(irq);
--}
--
--/*
-- * End IRQ processing
-- */
--static void end_uart_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		unmask_uart_irq(irq);
--}
--
--/*
-- * Interrupt handler for interrupts coming from the FPGA chip.
-- */
--void ll_uart_irq(struct pt_regs *regs)
--{
--	unsigned int irq_src, irq_mask;
--
--	/* read the interrupt status registers */
--	irq_src = OCELOT_FPGA_READ(UART_INTSTAT);
--	irq_mask = OCELOT_FPGA_READ(UART_INTMASK);
--
--	/* mask for just the interrupts we want */
--	irq_src &= ~irq_mask;
--
--	do_IRQ(ls1bit8(irq_src) + 74, regs);
--}
--
--#define shutdown_uart_irq	disable_uart_irq
--
--struct irq_chip uart_irq_type = {
--	.typename = "UART/FPGA",
--	.startup = startup_uart_irq,
--	.shutdown = shutdown_uart_irq,
--	.enable = enable_uart_irq,
--	.disable = disable_uart_irq,
--	.ack = mask_and_ack_uart_irq,
--	.end = end_uart_irq,
--};
--
--void uart_irq_init(void)
--{
--	/* Reset irq handlers pointers to NULL */
--	irq_desc[80].status = IRQ_DISABLED;
--	irq_desc[80].action = 0;
--	irq_desc[80].depth = 2;
--	irq_desc[80].chip = &uart_irq_type;
--
--	irq_desc[81].status = IRQ_DISABLED;
--	irq_desc[81].action = 0;
--	irq_desc[81].depth = 2;
--	irq_desc[81].chip = &uart_irq_type;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/Makefile mips/arch/mips/momentum/ocelot_g/Makefile
---- mips-orig/arch/mips/momentum/ocelot_g/Makefile	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/Makefile	1970-01-01 09:00:00.000000000 +0900
-@@ -1,8 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/ivr/Makefile mips/arch/mips/ite-boards/ivr/Makefile
+--- mips-orig/arch/mips/ite-boards/ivr/Makefile	2006-10-02 22:32:45.902740500 +0900
++++ mips/arch/mips/ite-boards/ivr/Makefile	1970-01-01 09:00:00.000000000 +0900
+@@ -1,10 +0,0 @@
 -#
--# Makefile for Momentum Computer's Ocelot-G board.
+-#  Copyright 2000 MontaVista Software Inc.
+-#  Author: MontaVista Software, Inc.
+-#     	ppopov@mvista.com or source@mvista.com
+-#
+-# Makefile for the Globespan IVR board,
+-# board-specific files.
 -#
 -
--obj-y	 		+= irq.o gt-irq.o prom.o reset.o setup.o
--obj-$(CONFIG_KGDB)	+= dbg_io.o
--
--EXTRA_AFLAGS := $(CFLAGS)
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/dbg_io.c mips/arch/mips/momentum/ocelot_g/dbg_io.c
---- mips-orig/arch/mips/momentum/ocelot_g/dbg_io.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/dbg_io.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,125 +0,0 @@
--
--#ifdef CONFIG_KGDB
--
--#include <asm/serial.h> /* For the serial port location and base baud */
--
--/* --- CONFIG --- */
--
--typedef unsigned char uint8;
--typedef unsigned int uint32;
--
--/* --- END OF CONFIG --- */
--
--#define         UART16550_BAUD_2400             2400
--#define         UART16550_BAUD_4800             4800
--#define         UART16550_BAUD_9600             9600
--#define         UART16550_BAUD_19200            19200
--#define         UART16550_BAUD_38400            38400
--#define         UART16550_BAUD_57600            57600
--#define         UART16550_BAUD_115200           115200
--
--#define         UART16550_PARITY_NONE           0
--#define         UART16550_PARITY_ODD            0x08
--#define         UART16550_PARITY_EVEN           0x18
--#define         UART16550_PARITY_MARK           0x28
--#define         UART16550_PARITY_SPACE          0x38
--
--#define         UART16550_DATA_5BIT             0x0
--#define         UART16550_DATA_6BIT             0x1
--#define         UART16550_DATA_7BIT             0x2
--#define         UART16550_DATA_8BIT             0x3
--
--#define         UART16550_STOP_1BIT             0x0
--#define         UART16550_STOP_2BIT             0x4
--
--/* ----------------------------------------------------- */
--
--/* === CONFIG === */
--
--/* [jsun] we use the second serial port for kdb */
--#define         BASE                    OCELOT_SERIAL1_BASE
--#define         MAX_BAUD                OCELOT_BASE_BAUD
--
--/* === END OF CONFIG === */
--
--#define         REG_OFFSET              4
--
--/* register offset */
--#define         OFS_RCV_BUFFER          0
--#define         OFS_TRANS_HOLD          0
--#define         OFS_SEND_BUFFER         0
--#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
--#define         OFS_INTR_ID             (2*REG_OFFSET)
--#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
--#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
--#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
--#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
--#define         OFS_LINE_STATUS         (5*REG_OFFSET)
--#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
--#define         OFS_RS232_INPUT         (6*REG_OFFSET)
--#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
--
--#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
--#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
--
--
--/* memory-mapped read/write of the port */
--#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
--#define         UART16550_WRITE(y, z)  ((*((volatile uint8*)(BASE + y))) = z)
--
--void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
--{
--	/* disable interrupts */
--	UART16550_WRITE(OFS_INTR_ENABLE, 0);
--
--	/* set up baud rate */
--	{
--		uint32 divisor;
--
--		/* set DIAB bit */
--		UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
--
--		/* set divisor */
--		divisor = MAX_BAUD / baud;
--		UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
--		UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
--
--		/* clear DIAB bit */
--		UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
--	}
--
--	/* set data format */
--	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
--}
--
--static int remoteDebugInitialized = 0;
--
--uint8 getDebugChar(void)
--{
--	if (!remoteDebugInitialized) {
--		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
--			  UART16550_DATA_8BIT,
--			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
--	}
--
--	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0);
--	return UART16550_READ(OFS_RCV_BUFFER);
--}
--
--
--int putDebugChar(uint8 byte)
--{
--	if (!remoteDebugInitialized) {
--		remoteDebugInitialized = 1;
--		debugInit(UART16550_BAUD_38400,
--			  UART16550_DATA_8BIT,
--			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
--	}
--
--	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0);
--	UART16550_WRITE(OFS_SEND_BUFFER, byte);
--	return 1;
--}
--
--#endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/gt-irq.c mips/arch/mips/momentum/ocelot_g/gt-irq.c
---- mips-orig/arch/mips/momentum/ocelot_g/gt-irq.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/gt-irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,213 +0,0 @@
+-obj-y		+= init.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/ivr/README mips/arch/mips/ite-boards/ivr/README
+--- mips-orig/arch/mips/ite-boards/ivr/README	2006-10-02 22:32:45.902740500 +0900
++++ mips/arch/mips/ite-boards/ivr/README	1970-01-01 09:00:00.000000000 +0900
+@@ -1,3 +0,0 @@
+-This is not really a board made by ITE Semi, but it's very
+-similar to the ITE QED-4N-S01B board.  The IVR board is made
+-by Globespan and it's a reference board for the PVR chip.
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/ivr/init.c mips/arch/mips/ite-boards/ivr/init.c
+--- mips-orig/arch/mips/ite-boards/ivr/init.c	2006-10-02 22:32:45.902740500 +0900
++++ mips/arch/mips/ite-boards/ivr/init.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,81 +0,0 @@
 -/*
+- * BRIEF MODULE DESCRIPTION
+- *	IVR board setup.
 - *
-- * Copyright 2002 Momentum Computer
-- * Author: mdharm@momenco.com
-- *
-- * arch/mips/momentum/ocelot_g/gt_irq.c
-- *     Interrupt routines for gt64240.  Currently it only handles timer irq.
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#include <linux/module.h>
--#include <linux/interrupt.h>
--#include <linux/kernel.h>
--#include <asm/ptrace.h>
--#include <linux/sched.h>
--#include <linux/kernel_stat.h>
--#include <asm/gt64240.h>
--#include <asm/io.h>
--
--unsigned long bus_clock;
--
--/*
-- * These are interrupt handlers for the GT on-chip interrupts.  They
-- * all come in to the MIPS on a single interrupt line, and have to
-- * be handled and ack'ed differently than other MIPS interrupts.
-- */
--
--#if CURRENTLY_UNUSED
--
--struct tq_struct irq_handlers[MAX_CAUSE_REGS][MAX_CAUSE_REG_WIDTH];
--void hook_irq_handler(int int_cause, int bit_num, void *isr_ptr);
--
--/*
-- * Hooks IRQ handler to the system. When the system is interrupted
-- * the interrupt service routine is called.
-- *
-- * Inputs :
-- * int_cause - The interrupt cause number. In EVB64120 two parameters
-- *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.
-- * bit_num   - Indicates which bit number in the cause register
-- * isr_ptr   - Pointer to the interrupt service routine
-- */
--void hook_irq_handler(int int_cause, int bit_num, void *isr_ptr)
--{
--	irq_handlers[int_cause][bit_num].routine = isr_ptr;
--}
--
--
--/*
-- * Enables the IRQ on Galileo Chip
-- *
-- * Inputs :
-- * int_cause - The interrupt cause number. In EVB64120 two parameters
-- *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.
-- * bit_num   - Indicates which bit number in the cause register
-- *
-- * Outputs :
-- * 1 if successful, 0 if failure
-- */
--int enable_galileo_irq(int int_cause, int bit_num)
--{
--	if (int_cause == INT_CAUSE_MAIN)
--		SET_REG_BITS(CPU_INTERRUPT_MASK_REGISTER, (1 << bit_num));
--	else if (int_cause == INT_CAUSE_HIGH)
--		SET_REG_BITS(CPU_HIGH_INTERRUPT_MASK_REGISTER,
--			     (1 << bit_num));
--	else
--		return 0;
--
--	return 1;
--}
--
--/*
-- * Disables the IRQ on Galileo Chip
-- *
-- * Inputs :
-- * int_cause - The interrupt cause number. In EVB64120 two parameters
-- *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.
-- * bit_num   - Indicates which bit number in the cause register
-- *
-- * Outputs :
-- * 1 if successful, 0 if failure
-- */
--int disable_galileo_irq(int int_cause, int bit_num)
--{
--	if (int_cause == INT_CAUSE_MAIN)
--		RESET_REG_BITS(CPU_INTERRUPT_MASK_REGISTER,
--			       (1 << bit_num));
--	else if (int_cause == INT_CAUSE_HIGH)
--		RESET_REG_BITS(CPU_HIGH_INTERRUPT_MASK_REGISTER,
--			       (1 << bit_num));
--	else
--		return 0;
--	return 1;
--}
--#endif				/*  UNUSED  */
--
--/*
-- * Interrupt handler for interrupts coming from the Galileo chip via P0_INT#.
-- *
-- * We route the timer interrupt to P0_INT# (IRQ 6), and that's all this
-- * routine can handle, for now.
-- *
-- * In the future, we'll route more interrupts to this pin, and that's why
-- * we keep this particular structure in the function.
-- */
--
--static irqreturn_t gt64240_p0int_irq(int irq, void *dev, struct pt_regs *regs)
--{
--	uint32_t irq_src, irq_src_mask;
--	int handled;
--
--	/* get the low interrupt cause register */
--	irq_src = MV_READ(LOW_INTERRUPT_CAUSE_REGISTER);
--
--	/* get the mask register for this pin */
--	irq_src_mask = MV_READ(PCI_0INTERRUPT_CAUSE_MASK_REGISTER_LOW);
--
--	/* mask off only the interrupts we're interested in */
--	irq_src = irq_src & irq_src_mask;
--
--	handled = IRQ_NONE;
--
--	/* Check for timer interrupt */
--	if (irq_src & 0x00000100) {
--		handled = IRQ_HANDLED;
--		irq_src &= ~0x00000100;
--
--		/* Clear any pending cause bits */
--		MV_WRITE(TIMER_COUNTER_0_3_INTERRUPT_CAUSE, 0x0);
--
--		/* handle the timer call */
--		do_timer(1);
--#ifndef CONFIG_SMP
--		update_process_times(user_mode(regs));
--#endif
--	}
--
--	if (irq_src) {
--		printk(KERN_INFO
--		       "UNKNOWN P0_INT# interrupt received, irq_src=0x%x\n",
--		       irq_src);
--	}
--
--	return handled;
--}
--
--/*
-- * Initializes timer using galileo's built in timer.
-- */
--
--/*
-- * This will ignore the standard MIPS timer interrupt handler
-- * that is passed in as *irq (=irq0 in ../kernel/time.c).
-- * We will do our own timer interrupt handling.
-- */
--void gt64240_time_init(void)
--{
--	static struct irqaction timer;
--
--	/* Stop the timer -- we'll use timer #0 */
--	MV_WRITE(TIMER_COUNTER_0_3_CONTROL, 0x0);
--
--	/* Load timer value for 100 Hz */
--	MV_WRITE(TIMER_COUNTER0, bus_clock / 100);
--
--	/*
--	 * Create the IRQ structure entry for the timer.  Since we're too early
--	 * in the boot process to use the "request_irq()" call, we'll hard-code
--	 * the values to the correct interrupt line.
--	 */
--	timer.handler = &gt64240_p0int_irq;
--	timer.flags = IRQF_SHARED | IRQF_DISABLED;
--	timer.name = "timer";
--	timer.dev_id = NULL;
--	timer.next = NULL;
--	timer.mask = CPU_MASK_NONE;
--	irq_desc[6].action = &timer;
--
--	enable_irq(6);
--
--	/* Clear any pending cause bits */
--	MV_WRITE(TIMER_COUNTER_0_3_INTERRUPT_CAUSE, 0x0);
--
--	/* Enable the interrupt for timer 0 */
--	MV_WRITE(TIMER_COUNTER_0_3_INTERRUPT_MASK, 0x1);
--
--	/* Enable the timer interrupt for GT-64240 pin P0_INT# */
--	MV_WRITE (PCI_0INTERRUPT_CAUSE_MASK_REGISTER_LOW, 0x100);
--
--	/* Configure and start the timer */
--	MV_WRITE(TIMER_COUNTER_0_3_CONTROL, 0x3);
--}
--
--void gt64240_irq_init(void)
--{
--#if CURRENTLY_UNUSED
--	int i, j;
--
--	/* Reset irq handlers pointers to NULL */
--	for (i = 0; i < MAX_CAUSE_REGS; i++) {
--		for (j = 0; j < MAX_CAUSE_REG_WIDTH; j++) {
--			irq_handlers[i][j].next = NULL;
--			irq_handlers[i][j].sync = 0;
--			irq_handlers[i][j].routine = NULL;
--			irq_handlers[i][j].data = NULL;
--		}
--	}
--#endif
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/irq.c mips/arch/mips/momentum/ocelot_g/irq.c
---- mips-orig/arch/mips/momentum/ocelot_g/irq.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/irq.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,101 +0,0 @@
--/*
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
-- *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- * Copyright (C) 2000, 01, 05 Ralf Baechle (ralf@linux-mips.org)
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -7603,274 +3853,91 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/
 - *  You should have received a copy of the  GNU General Public License along
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--#include <linux/errno.h>
--#include <linux/init.h>
--#include <linux/kernel_stat.h>
--#include <linux/module.h>
--#include <linux/signal.h>
--#include <linux/sched.h>
--#include <linux/types.h>
--#include <linux/interrupt.h>
--#include <linux/ioport.h>
--#include <linux/timex.h>
--#include <linux/slab.h>
--#include <linux/random.h>
--#include <linux/bitops.h>
--#include <asm/bootinfo.h>
--#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/irq_cpu.h>
--#include <asm/mipsregs.h>
--#include <asm/system.h>
--
--asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
--{
--	unsigned int pending = read_c0_cause() & read_c0_status();
--
--	if (pending & STATUSF_IP2)
--		do_IRQ(2, regs);
--	else if (pending & STATUSF_IP3)
--		do_IRQ(3, regs);
--	else if (pending & STATUSF_IP4)
--		do_IRQ(4, regs);
--	else if (pending & STATUSF_IP5)
--		do_IRQ(5, regs);
--	else if (pending & STATUSF_IP6)
--		do_IRQ(6, regs);
--	else if (pending & STATUSF_IP7)
--		do_IRQ(7, regs);
--	else {
--		/*
--		 * Now look at the extended interrupts
--		 */
--		pending = (read_c0_cause() & (read_c0_intcontrol() << 8)) >> 16;
--
--		if (pending & STATUSF_IP8)
--			do_IRQ(8, regs);
--		else if (pending & STATUSF_IP9)
--			do_IRQ(9, regs);
--		else if (pending & STATUSF_IP10)
--			do_IRQ(10, regs);
--		else if (pending & STATUSF_IP11)
--			do_IRQ(11, regs);
--		else
--			spurious_interrupt(regs);
--	}
--}
--
--extern void gt64240_irq_init(void);
--
--void __init arch_init_irq(void)
--{
--	/*
--	 * Clear all of the interrupts while we change the able around a bit.
--	 * int-handler is not on bootstrap
--	 */
--	clear_c0_status(ST0_IM);
--	local_irq_disable();
--
--	mips_cpu_irq_init(0);
--	rm7k_cpu_irq_init(8);
--
--	gt64240_irq_init();
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/ocelot_pld.h mips/arch/mips/momentum/ocelot_g/ocelot_pld.h
---- mips-orig/arch/mips/momentum/ocelot_g/ocelot_pld.h	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/ocelot_pld.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,30 +0,0 @@
--/*
-- * Ocelot Board Register Definitions
-- *
-- * (C) 2001 Red Hat, Inc.
-- *
-- * GPL'd
-- */
--#ifndef __MOMENCO_OCELOT_PLD_H__
--#define __MOMENCO_OCELOT_PLD_H__
--
--#define OCELOT_CS0_ADDR (0xfc000000)
--
--#define OCELOT_REG_BOARDREV (0)
--#define OCELOT_REG_PLD1_ID (1)
--#define OCELOT_REG_PLD2_ID (2)
--#define OCELOT_REG_RESET_STATUS (3)
--#define OCELOT_REG_BOARD_STATUS (4)
--#define OCELOT_REG_CPCI_ID (5)
--#define OCELOT_REG_I2C_CTRL (8)
--#define OCELOT_REG_EEPROM_MODE (9)
--#define OCELOT_REG_INTMASK (10)
--#define OCELOT_REG_INTSTATUS (11)
--#define OCELOT_REG_INTSET (12)
--#define OCELOT_REG_INTCLR (13)
--
--#define OCELOT_PLD_WRITE(x, y) writeb(x, OCELOT_CS0_ADDR + OCELOT_REG_##y)
--#define OCELOT_PLD_READ(x) readb(OCELOT_CS0_ADDR + OCELOT_REG_##x)
--
--
--#endif /* __MOMENCO_OCELOT_PLD_H__ */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/prom.c mips/arch/mips/momentum/ocelot_g/prom.c
---- mips-orig/arch/mips/momentum/ocelot_g/prom.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/prom.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,85 +0,0 @@
--/*
-- * Copyright 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
-- *
-- * Based on Ocelot Linux port, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
 - */
 -#include <linux/init.h>
 -#include <linux/mm.h>
 -#include <linux/sched.h>
 -#include <linux/bootmem.h>
--
 -#include <asm/addrspace.h>
 -#include <asm/bootinfo.h>
--#include <asm/pmon.h>
--#include <asm/gt64240.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
+-#include <asm/sections.h>
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_dbg.h>
 -
--#include "ocelot_pld.h"
+-int prom_argc;
+-char **prom_argv, **prom_envp;
 -
--struct callvectors* debug_vectors;
--
--extern unsigned long marvell_base;
--extern unsigned long bus_clock;
--
--#ifdef CONFIG_GALILLEO_GT64240_ETH
--extern unsigned char prom_mac_addr_base[6];
--#endif
+-extern void  __init prom_init_cmdline(void);
+-extern unsigned long __init prom_get_memsize(void);
+-extern void __init it8172_init_ram_resource(unsigned long memsize);
 -
 -const char *get_system_type(void)
 -{
--	return "Momentum Ocelot";
+-	return "Globespan IVR";
 -}
 -
 -void __init prom_init(void)
 -{
--	int argc = fw_arg0;
--	char **arg = (char **) fw_arg1;
--	char **env = (char **) fw_arg2;
--	struct callvectors *cv = (struct callvectors *) fw_arg3;
--	int i;
+-	unsigned long mem_size;
+-	unsigned long pcicr;
 -
--	/* save the PROM vectors for debugging use */
--	debug_vectors = cv;
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **) fw_arg1;
+-	prom_envp = (int *) fw_arg3;
 -
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--	for (i = 1; i < argc; i++) {
--		if (strlen(arcs_cmdline) + strlen(arg[i] + 1)
--		    >= sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, arg[i]);
--		strcat(arcs_cmdline, " ");
--	}
+-	mips_machgroup = MACH_GROUP_GLOBESPAN;
+-	mips_machtype = MACH_IVR;  /* Globespan's iTVC15 reference board */
 -
--	mips_machgroup = MACH_GROUP_MOMENCO;
--	mips_machtype = MACH_MOMENCO_OCELOT_G;
+-	prom_init_cmdline();
 -
--#ifdef CONFIG_GALILLEO_GT64240_ETH
--	/* get the base MAC address for on-board ethernet ports */
--	memcpy(prom_mac_addr_base, (void*)0xfc807cf2, 6);
--#endif
+-	/* pmon does not set memsize */
+-	mem_size = prom_get_memsize();
+-	mem_size = mem_size << 20;
 -
--	while (*env) {
--		if (strncmp("gtbase", *env, strlen("gtbase")) == 0) {
--			marvell_base = simple_strtol(*env + strlen("gtbase="),
--							NULL, 16);
--		}
--		if (strncmp("busclock", *env, strlen("busclock")) == 0) {
--			bus_clock = simple_strtol(*env + strlen("busclock="),
--							NULL, 10);
--		}
--		env++;
--	}
+-	/*
+-	 * make the entire physical memory visible to pci bus masters
+-	 */
+-	IT_READ(IT_MC_PCICR, pcicr);
+-	pcicr &= ~0x1f;
+-	pcicr |= (mem_size - 1) >> 22;
+-	IT_WRITE(IT_MC_PCICR, pcicr);
+-
+-	it8172_init_ram_resource(mem_size);
+-	add_memory_region(0, mem_size, BOOT_MEM_RAM);
 -}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/qed-4n-s01b/Makefile mips/arch/mips/ite-boards/qed-4n-s01b/Makefile
+--- mips-orig/arch/mips/ite-boards/qed-4n-s01b/Makefile	2006-10-02 22:32:45.902740500 +0900
++++ mips/arch/mips/ite-boards/qed-4n-s01b/Makefile	1970-01-01 09:00:00.000000000 +0900
+@@ -1,10 +0,0 @@
+-#
+-#  Copyright 2000 MontaVista Software Inc.
+-#  Author: MontaVista Software, Inc.
+-#     	ppopov@mvista.com or source@mvista.com
+-#
+-# Makefile for the ITE 8172 (qed-4n-s01b) board, board
+-# specific files.
+-#
 -
--unsigned long __init prom_free_prom_memory(void)
--{
--	return 0;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/reset.c mips/arch/mips/momentum/ocelot_g/reset.c
---- mips-orig/arch/mips/momentum/ocelot_g/reset.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/reset.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,47 +0,0 @@
--/*
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- * Copyright (C) 1997, 2001 Ralf Baechle
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- */
--#include <linux/sched.h>
--#include <linux/mm.h>
--#include <asm/io.h>
--#include <asm/pgtable.h>
--#include <asm/processor.h>
--#include <asm/reboot.h>
--#include <asm/system.h>
--#include <linux/delay.h>
--
--void momenco_ocelot_restart(char *command)
--{
--	void *nvram = ioremap_nocache(0x2c807000, 0x1000);
--
--	if (!nvram) {
--		printk(KERN_NOTICE "ioremap of reset register failed\n");
--		return;
--	}
--	writeb(0x84, nvram + 0xff7); /* Ask the NVRAM/RTC/watchdog chip to
--					assert reset in 1/16 second */
--	mdelay(10+(1000/16));
--	iounmap(nvram);
--	printk(KERN_NOTICE "Watchdog reset failed\n");
--}
--
--void momenco_ocelot_halt(void)
--{
--	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
--	while (1)
--		__asm__(".set\tmips3\n\t"
--	                "wait\n\t"
--			".set\tmips0");
--}
--
--void momenco_ocelot_power_off(void)
--{
--	momenco_ocelot_halt();
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/setup.c mips/arch/mips/momentum/ocelot_g/setup.c
---- mips-orig/arch/mips/momentum/ocelot_g/setup.c	2006-10-02 22:32:46.174757500 +0900
-+++ mips/arch/mips/momentum/ocelot_g/setup.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,263 +0,0 @@
+-obj-y := init.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/qed-4n-s01b/README mips/arch/mips/ite-boards/qed-4n-s01b/README
+--- mips-orig/arch/mips/ite-boards/qed-4n-s01b/README	2006-10-02 22:32:45.902740500 +0900
++++ mips/arch/mips/ite-boards/qed-4n-s01b/README	1970-01-01 09:00:00.000000000 +0900
+@@ -1,2 +0,0 @@
+-This is an ITE (www.iteusa.com) eval board for the ITE 8172G
+-system controller, with a QED 5231 CPU.
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ite-boards/qed-4n-s01b/init.c mips/arch/mips/ite-boards/qed-4n-s01b/init.c
+--- mips-orig/arch/mips/ite-boards/qed-4n-s01b/init.c	2006-10-02 22:32:45.902740500 +0900
++++ mips/arch/mips/ite-boards/qed-4n-s01b/init.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,82 +0,0 @@
 -/*
 - * BRIEF MODULE DESCRIPTION
-- * Momentum Computer Ocelot-G (CP7000G) - board dependent boot routines
+- *	IT8172/QED5231 board setup.
 - *
-- * Copyright (C) 1996, 1997, 2001  Ralf Baechle
-- * Copyright (C) 2000 RidgeRun, Inc.
-- * Copyright (C) 2001 Red Hat, Inc.
-- * Copyright (C) 2002 Momentum Computer
-- *
-- * Author: Matthew Dharm, Momentum Computer
-- *   mdharm@momenco.com
-- *
-- * Author: RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
-- *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -7891,831 +3958,92 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/momentum/ocelot_g/
 - *  You should have received a copy of the  GNU General Public License along
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
 - */
 -#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
 -#include <linux/mm.h>
--#include <linux/swap.h>
--#include <linux/ioport.h>
 -#include <linux/sched.h>
--#include <linux/interrupt.h>
--#include <linux/pci.h>
--#include <linux/pm.h>
--#include <linux/timex.h>
--#include <linux/vmalloc.h>
--
--#include <asm/time.h>
--#include <asm/bootinfo.h>
--#include <asm/page.h>
--#include <asm/io.h>
--#include <asm/gt64240.h>
--#include <asm/irq.h>
--#include <asm/pci.h>
--#include <asm/processor.h>
--#include <asm/ptrace.h>
--#include <asm/reboot.h>
 -#include <linux/bootmem.h>
+-#include <asm/addrspace.h>
+-#include <asm/bootinfo.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
+-#include <asm/sections.h>
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_dbg.h>
 -
--#include "ocelot_pld.h"
+-int prom_argc;
+-char **prom_argv, **prom_envp;
 -
--#ifdef CONFIG_GALILLEO_GT64240_ETH
--extern unsigned char prom_mac_addr_base[6];
--#endif
+-extern void  __init prom_init_cmdline(void);
+-extern unsigned long __init prom_get_memsize(void);
+-extern void __init it8172_init_ram_resource(unsigned long memsize);
 -
--unsigned long marvell_base;
--
--/* These functions are used for rebooting or halting the machine*/
--extern void momenco_ocelot_restart(char *command);
--extern void momenco_ocelot_halt(void);
--extern void momenco_ocelot_power_off(void);
--
--extern void gt64240_time_init(void);
--extern void momenco_ocelot_irq_setup(void);
--
--static char reset_reason;
--
--static unsigned long ENTRYLO(unsigned long paddr)
+-const char *get_system_type(void)
 -{
--	return ((paddr & PAGE_MASK) |
--	       (_PAGE_PRESENT | __READABLE | __WRITEABLE | _PAGE_GLOBAL |
--		_CACHE_UNCACHED)) >> 6;
+-	return "ITE QED-4N-S01B";
 -}
 -
--/* setup code for a handoff from a version 2 PMON 2000 PROM */
--void PMON_v2_setup(void)
+-void __init prom_init(void)
 -{
--	/* A wired TLB entry for the GT64240 and the serial port. The
--	   GT64240 is going to be hit on every IRQ anyway - there's
--	   absolutely no point in letting it be a random TLB entry, as
--	   it'll just cause needless churning of the TLB. And we use
--	   the other half for the serial port, which is just a PITA
--	   otherwise :)
+-	unsigned long mem_size;
+-	unsigned long pcicr;
 -
--		Device			Physical	Virtual
--		GT64240 Internal Regs	0xf4000000	0xe0000000
--		UARTs (CS2)		0xfd000000	0xe0001000
--	*/
--	add_wired_entry(ENTRYLO(0xf4000000), ENTRYLO(0xf4010000),
--	                0xf4000000, PM_64K);
--	add_wired_entry(ENTRYLO(0xfd000000), ENTRYLO(0xfd001000),
--	                0xfd000000, PM_4K);
+-	prom_argc = fw_arg0;
+-	prom_argv = (char **) fw_arg1;
+-	prom_envp = (int *) fw_arg3;
 -
--	/* Also a temporary entry to let us talk to the Ocelot PLD and NVRAM
--	   in the CS[012] region. We can't use ioremap() yet. The NVRAM
--	   is a ST M48T37Y, which includes NVRAM, RTC, and Watchdog functions.
+-	mips_machgroup = MACH_GROUP_ITE;
+-	mips_machtype = MACH_QED_4N_S01B;  /* ITE board name/number */
 -
--		Ocelot PLD (CS0)	0xfc000000	0xe0020000
--		NVRAM (CS1)		0xfc800000	0xe0030000
--	*/
--	add_temporary_entry(ENTRYLO(0xfc000000), ENTRYLO(0xfc010000),
--	                    0xfc000000, PM_64K);
--	add_temporary_entry(ENTRYLO(0xfc800000), ENTRYLO(0xfc810000),
--	                    0xfc800000, PM_64K);
+-	prom_init_cmdline();
+-	mem_size = prom_get_memsize();
 -
--	marvell_base = 0xf4000000;
--}
+-	printk("Memory size: %dMB\n", (unsigned)mem_size);
 -
--extern int rm7k_tcache_enabled;
--
--/*
-- * This runs in KSEG1. See the verbiage in rm7k.c::probe_scache()
-- */
--#define Page_Invalidate_T 0x16
--static void __init setup_l3cache(unsigned long size)
--{
--	int register i;
--
--	printk("Enabling L3 cache...");
--
--	/* Enable the L3 cache in the GT64120A's CPU Configuration register */
--	MV_WRITE(0, MV_READ(0) | (1<<14));
--
--	/* Enable the L3 cache in the CPU */
--	set_c0_config(1<<12 /* CONF_TE */);
--
--	/* Clear the cache */
--	write_c0_taglo(0);
--	write_c0_taghi(0);
--
--	for (i=0; i < size; i+= 4096) {
--		__asm__ __volatile__ (
--			".set noreorder\n\t"
--			".set mips3\n\t"
--			"cache %1, (%0)\n\t"
--			".set mips0\n\t"
--			".set reorder"
--			:
--			: "r" (KSEG0ADDR(i)),
--			  "i" (Page_Invalidate_T));
--	}
--
--	/* Let the RM7000 MM code know that the tertiary cache is enabled */
--	rm7k_tcache_enabled = 1;
--
--	printk("Done\n");
--}
--
--void __init plat_mem_setup(void)
--{
--	void (*l3func)(unsigned long) = (void *) KSEG1ADDR(setup_l3cache);
--	unsigned int tmpword;
--
--	board_time_init = gt64240_time_init;
--
--	_machine_restart = momenco_ocelot_restart;
--	_machine_halt = momenco_ocelot_halt;
--	pm_power_off = momenco_ocelot_power_off;
+-	mem_size <<= 20; /* MB */
 -
 -	/*
--	 * initrd_start = (unsigned long)ocelot_initrd_start;
--	 * initrd_end = (unsigned long)ocelot_initrd_start + (ulong)ocelot_initrd_size;
--	 * initrd_below_start_ok = 1;
+-	 * make the entire physical memory visible to pci bus masters
 -	 */
+-	IT_READ(IT_MC_PCICR, pcicr);
+-	pcicr &= ~0x1f;
+-	pcicr |= (mem_size - 1) >> 22;
+-	IT_WRITE(IT_MC_PCICR, pcicr);
 -
--	/* do handoff reconfiguration */
--	PMON_v2_setup();
--
--#ifdef CONFIG_GALILLEO_GT64240_ETH
--	/* get the mac addr */
--	memcpy(prom_mac_addr_base, (void*)0xfc807cf2, 6);
--#endif
--
--	/* Turn off the Bit-Error LED */
--	OCELOT_PLD_WRITE(0x80, INTCLR);
--
--	tmpword = OCELOT_PLD_READ(BOARDREV);
--	if (tmpword < 26)
--		printk("Momenco Ocelot-G: Board Assembly Rev. %c\n", 'A'+tmpword);
--	else
--		printk("Momenco Ocelot-G: Board Assembly Revision #0x%x\n", tmpword);
--
--	tmpword = OCELOT_PLD_READ(PLD1_ID);
--	printk("PLD 1 ID: %d.%d\n", tmpword>>4, tmpword&15);
--	tmpword = OCELOT_PLD_READ(PLD2_ID);
--	printk("PLD 2 ID: %d.%d\n", tmpword>>4, tmpword&15);
--	tmpword = OCELOT_PLD_READ(RESET_STATUS);
--	printk("Reset reason: 0x%x\n", tmpword);
--	reset_reason = tmpword;
--	OCELOT_PLD_WRITE(0xff, RESET_STATUS);
--
--	tmpword = OCELOT_PLD_READ(BOARD_STATUS);
--	printk("Board Status register: 0x%02x\n", tmpword);
--	printk("  - User jumper: %s\n", (tmpword & 0x80)?"installed":"absent");
--	printk("  - Boot flash write jumper: %s\n", (tmpword&0x40)?"installed":"absent");
--	printk("  - Tulip PHY %s connected\n", (tmpword&0x10)?"is":"not");
--	printk("  - L3 Cache size: %d MiB\n", (1<<((tmpword&12) >> 2))&~1);
--	printk("  - SDRAM size: %d MiB\n", 1<<(6+(tmpword&3)));
--
--	if (tmpword&12)
--		l3func((1<<(((tmpword&12) >> 2)+20)));
--
--	switch(tmpword &3) {
--	case 3:
--		/* 512MiB -- two banks of 256MiB */
--		add_memory_region(  0x0<<20, 0x100<<20, BOOT_MEM_RAM);
--/*
--		add_memory_region(0x100<<20, 0x100<<20, BOOT_MEM_RAM);
--*/
--		break;
--	case 2:
--		/* 256MiB -- two banks of 128MiB */
--		add_memory_region( 0x0<<20, 0x80<<20, BOOT_MEM_RAM);
--		add_memory_region(0x80<<20, 0x80<<20, BOOT_MEM_RAM);
--		break;
--	case 1:
--		/* 128MiB -- 64MiB per bank */
--		add_memory_region( 0x0<<20, 0x40<<20, BOOT_MEM_RAM);
--		add_memory_region(0x40<<20, 0x40<<20, BOOT_MEM_RAM);
--		break;
--	case 0:
--		/* 64MiB */
--		add_memory_region( 0x0<<20, 0x40<<20, BOOT_MEM_RAM);
--		break;
--	}
--
--	/* FIXME: Fix up the DiskOnChip mapping */
--	MV_WRITE(0x468, 0xfef73);
+-	it8172_init_ram_resource(mem_size);
+-	add_memory_region(0, mem_size, BOOT_MEM_RAM);
 -}
--
--/* This needs to be one of the first initcalls, because no I/O port access
--   can work before this */
--
--static int io_base_ioremap(void)
--{
--	/* we're mapping PCI accesses from 0xc0000000 to 0xf0000000 */
--	unsigned long io_remap_range;
--
--	io_remap_range = (unsigned long) ioremap(0xc0000000, 0x30000000);
--	if (!io_remap_range)
--		panic("Could not ioremap I/O port range");
--
--	set_io_port_base(io_remap_range - 0xc0000000);
--
--	return 0;
--}
--
--module_init(io_base_ioremap);
 diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/Makefile mips/arch/mips/pci/Makefile
---- mips-orig/arch/mips/pci/Makefile	2006-10-02 22:40:23.607345250 +0900
-+++ mips/arch/mips/pci/Makefile	2006-10-02 22:40:29.423708750 +0900
-@@ -11,7 +11,6 @@ obj-$(CONFIG_ITE_BOARD_GEN)	+= ops-it817
+--- mips-orig/arch/mips/pci/Makefile	2006-10-02 22:43:55.396581250 +0900
++++ mips/arch/mips/pci/Makefile	2006-10-02 22:44:01.312951000 +0900
+@@ -7,7 +7,6 @@ obj-y				+= pci.o
+ #
+ # PCI bus host bridge specific code
+ #
+-obj-$(CONFIG_ITE_BOARD_GEN)	+= ops-it8172.o
  obj-$(CONFIG_MIPS_BONITO64)	+= ops-bonito64.o
  obj-$(CONFIG_MIPS_GT64111)	+= ops-gt64111.o
  obj-$(CONFIG_MIPS_GT64120)	+= ops-gt64120.o
--obj-$(CONFIG_PCI_MARVELL)	+= ops-marvell.o
- obj-$(CONFIG_MIPS_MSC)		+= ops-msc.o
- obj-$(CONFIG_MIPS_NILE4)	+= ops-nile4.o
- obj-$(CONFIG_MIPS_TX3927)	+= ops-tx3927.o
-@@ -34,10 +33,6 @@ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000
+@@ -27,8 +26,6 @@ obj-$(CONFIG_LASAT)		+= pci-lasat.o
+ obj-$(CONFIG_MIPS_ATLAS)	+= fixup-atlas.o
+ obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
+ obj-$(CONFIG_MIPS_EV64120)	+= fixup-ev64120.o
+-obj-$(CONFIG_MIPS_ITE8172)	+= fixup-ite8172g.o
+-obj-$(CONFIG_MIPS_IVR)		+= fixup-ivr.o
+ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000.o ops-au1000.o
  obj-$(CONFIG_SOC_AU1550)	+= fixup-au1000.o ops-au1000.o
  obj-$(CONFIG_SOC_PNX8550)	+= fixup-pnx8550.o ops-pnx8550.o
- obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o
--obj-$(CONFIG_MOMENCO_OCELOT)	+= fixup-ocelot.o pci-ocelot.o
--obj-$(CONFIG_MOMENCO_OCELOT_3)	+= fixup-ocelot3.o
--obj-$(CONFIG_MOMENCO_OCELOT_C)	+= fixup-ocelot-c.o pci-ocelot-c.o
--obj-$(CONFIG_MOMENCO_OCELOT_G)	+= fixup-ocelot-g.o pci-ocelot-g.o
- obj-$(CONFIG_PMC_YOSEMITE)	+= fixup-yosemite.o ops-titan.o ops-titan-ht.o \
- 				   pci-yosemite.o
- obj-$(CONFIG_SGI_IP27)		+= ops-bridge.o pci-ip27.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ocelot-c.c mips/arch/mips/pci/fixup-ocelot-c.c
---- mips-orig/arch/mips/pci/fixup-ocelot-c.c	2006-10-02 22:32:46.178757750 +0900
-+++ mips/arch/mips/pci/fixup-ocelot-c.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,41 +0,0 @@
--/*
-- * Copyright 2002 Momentum Computer Inc.
-- * Author: Matthew Dharm <mdharm@momenco.com>
-- *
-- * Based on work for the Linux port to the Ocelot board, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- *
-- * arch/mips/momentum/ocelot_g/pci.c
-- *     Board-specific PCI routines for mv64340 controller.
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#include <linux/types.h>
--#include <linux/pci.h>
--#include <linux/kernel.h>
--#include <linux/init.h>
--
--int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
--{
--	int bus = dev->bus->number;
--
--	if (bus == 0 && slot == 1)
--		return 2;       /* PCI-X A */
--	if (bus == 1 && slot == 1)
--		return 12;      /* PCI-X B */
--	if (bus == 1 && slot == 2)
--		return 4;       /* PCI B */
--
--return 0;
--	panic("Whooops in pcibios_map_irq");
--}
--
--/* Do platform specific device initialization at pci_enable_device() time */
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	return 0;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ocelot-g.c mips/arch/mips/pci/fixup-ocelot-g.c
---- mips-orig/arch/mips/pci/fixup-ocelot-g.c	2006-10-02 22:32:46.178757750 +0900
-+++ mips/arch/mips/pci/fixup-ocelot-g.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,37 +0,0 @@
--/*
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- *
-- * Copyright (C) 2004 Ralf Baechle (ralf@linux-mips.org)
-- */
--#include <linux/types.h>
--#include <linux/pci.h>
--#include <linux/kernel.h>
--#include <linux/init.h>
--
--int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
--{
--	int bus = dev->bus->number;
--
--	if (bus == 0 && slot == 1)	/* Intel 82543 Gigabit MAC */
--		return 2;		/* irq_nr is 2 for INT0 */
--
--	if (bus == 0 && slot == 2)	/* Intel 82543 Gigabit MAC */
--		return 3;		/* irq_nr is 3 for INT1 */
--
--	if (bus == 1 && slot == 3)	/* Intel 21555 bridge */
--		return 5;		/* irq_nr is 8 for INT6 */
--
--	if (bus == 1 && slot == 4)	/* PMC Slot */
--		return 9;		/* irq_nr is 9 for INT7 */
--
--	return -1;
--}
--
--/* Do platform specific device initialization at pci_enable_device() time */
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	return 0;
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ocelot.c mips/arch/mips/pci/fixup-ocelot.c
---- mips-orig/arch/mips/pci/fixup-ocelot.c	2006-10-02 22:32:46.178757750 +0900
-+++ mips/arch/mips/pci/fixup-ocelot.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,75 +0,0 @@
--/*
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- *
-- * arch/mips/gt64120/momenco_ocelot/pci.c
-- *     Board-specific PCI routines for gt64120 controller.
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#include <linux/types.h>
--#include <linux/pci.h>
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <asm/pci.h>
--
--
--void __devinit pcibios_fixup_bus(struct pci_bus *bus)
--{
--	struct pci_bus *current_bus = bus;
--	struct pci_dev *devices;
--	struct list_head *devices_link;
--	u16 cmd;
--
--	list_for_each(devices_link, &(current_bus->devices)) {
--
--		devices = pci_dev_b(devices_link);
--		if (devices == NULL)
--			continue;
--
--		if (PCI_SLOT(devices->devfn) == 1) {
--			/*
--			 * Slot 1 is primary ether port, i82559
--			 * we double-check against that assumption
--			 */
--			if ((devices->vendor != 0x8086) ||
--			    (devices->device != 0x1209)) {
--				panic("pcibios_fixup_bus: found "
--				     "unexpected PCI device in slot 1.");
--			}
--			devices->irq = 2;	/* irq_nr is 2 for INT0 */
--		} else if (PCI_SLOT(devices->devfn) == 2) {
--			/*
--			 * Slot 2 is secondary ether port, i21143
--			 * we double-check against that assumption
--			 */
--			if ((devices->vendor != 0x1011) ||
--			    (devices->device != 0x19)) {
--				panic("galileo_pcibios_fixup_bus: "
--				      "found unexpected PCI device in slot 2.");
--			}
--			devices->irq = 3;	/* irq_nr is 3 for INT1 */
--		} else if (PCI_SLOT(devices->devfn) == 4) {
--			/* PMC Slot 1 */
--			devices->irq = 8;	/* irq_nr is 8 for INT6 */
--		} else if (PCI_SLOT(devices->devfn) == 5) {
--			/* PMC Slot 1 */
--			devices->irq = 9;	/* irq_nr is 9 for INT7 */
--		} else {
--			/* We don't have assign interrupts for other devices. */
--			devices->irq = 0xff;
--		}
--
--		/* Assign an interrupt number for the device */
--		bus->ops->write_byte(devices, PCI_INTERRUPT_LINE,
--				     devices->irq);
--
--		/* enable master */
--		bus->ops->read_word(devices, PCI_COMMAND, &cmd);
--		cmd |= PCI_COMMAND_MASTER;
--		bus->ops->write_word(devices, PCI_COMMAND, cmd);
--	}
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ocelot3.c mips/arch/mips/pci/fixup-ocelot3.c
---- mips-orig/arch/mips/pci/fixup-ocelot3.c	2006-10-02 22:32:46.178757750 +0900
-+++ mips/arch/mips/pci/fixup-ocelot3.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,41 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2004 Montavista Software Inc.
-- * Author: Manish Lachwani (mlachwani@mvista.com)
-- *
-- * Looking at the schematics for the Ocelot-3 board, there are
-- * two PCI busses and each bus has two PCI slots.
-- */
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <linux/pci.h>
--#include <asm/mipsregs.h>
--
--/*
-- * Do platform specific device initialization at
-- * pci_enable_device() time
-- */
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	return 0;
--}
--
--int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
--{
--	int bus = dev->bus->number;
--
--	if (bus == 0 && slot == 1)
--		return 2;	/* PCI-X A */
--	if (bus == 0 && slot == 2)
--		return 3;	/* PCI-X B */
--	if (bus == 1 && slot == 1)
--		return 4;	/* PCI A */
--	if (bus == 1 && slot == 2)
--		return 5;	/* PCI B */
--
--return 0;
--	panic("Whooops in pcibios_map_irq");
--}
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/ops-marvell.c mips/arch/mips/pci/ops-marvell.c
---- mips-orig/arch/mips/pci/ops-marvell.c	2006-10-02 22:32:46.210759750 +0900
-+++ mips/arch/mips/pci/ops-marvell.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,93 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2003, 2004 Ralf Baechle (ralf@linux-mips.org)
-- */
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/pci.h>
--
--#include <asm/marvell.h>
--
--static int mv_read_config(struct pci_bus *bus, unsigned int devfn,
--	int where, int size, u32 * val)
--{
--	struct mv_pci_controller *mvbc = bus->sysdata;
--	unsigned long address_reg, data_reg;
--	u32 address;
--
--	address_reg = mvbc->config_addr;
--	data_reg = mvbc->config_vreg;
--
--	/* Accessing device 31 crashes those Marvells.  Since years.
--	   Will they ever make sane controllers ... */
--	if (PCI_SLOT(devfn) == 31)
--		return PCIBIOS_DEVICE_NOT_FOUND;
--
--	address = (bus->number << 16) | (devfn << 8) |
--	          (where & 0xfc) | 0x80000000;
--
--	/* start the configuration cycle */
--	MV_WRITE(address_reg, address);
--
--	switch (size) {
--	case 1:
--		*val = MV_READ_8(data_reg + (where & 0x3));
--		break;
--
--	case 2:
--		*val = MV_READ_16(data_reg + (where & 0x3));
--		break;
--
--	case 4:
--		*val = MV_READ(data_reg);
--		break;
--	}
--
--	return PCIBIOS_SUCCESSFUL;
--}
--
--static int mv_write_config(struct pci_bus *bus, unsigned int devfn,
--	int where, int size, u32 val)
--{
--	struct mv_pci_controller *mvbc = bus->sysdata;
--	unsigned long address_reg, data_reg;
--	u32 address;
--
--	address_reg = mvbc->config_addr;
--	data_reg = mvbc->config_vreg;
--
--	/* Accessing device 31 crashes those Marvells.  Since years.
--	   Will they ever make sane controllers ... */
--	if (PCI_SLOT(devfn) == 31)
--		return PCIBIOS_DEVICE_NOT_FOUND;
--
--	address = (bus->number << 16) | (devfn << 8) |
--	          (where & 0xfc) | 0x80000000;
--
--	/* start the configuration cycle */
--	MV_WRITE(address_reg, address);
--
--	switch (size) {
--	case 1:
--		MV_WRITE_8(data_reg + (where & 0x3), val);
--		break;
--
--	case 2:
--		MV_WRITE_16(data_reg + (where & 0x3), val);
--		break;
--
--	case 4:
--		MV_WRITE(data_reg, val);
--		break;
--	}
--
--	return PCIBIOS_SUCCESSFUL;
--}
--
--struct pci_ops mv_pci_ops = {
--	.read	= mv_read_config,
--	.write	= mv_write_config
--};
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/pci-ocelot-c.c mips/arch/mips/pci/pci-ocelot-c.c
---- mips-orig/arch/mips/pci/pci-ocelot-c.c	2006-10-02 22:32:46.214760000 +0900
-+++ mips/arch/mips/pci/pci-ocelot-c.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,145 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2004, 06 by Ralf Baechle (ralf@linux-mips.org)
-- */
--
--#include <linux/types.h>
--#include <linux/pci.h>
--#include <linux/mv643xx.h>
--
--#include <linux/init.h>
--
--#include <asm/marvell.h>
--
--/*
-- * We assume the address ranges have already been setup appropriately by
-- * the firmware.  PMON in case of the Ocelot C does that.
-- */
--static struct resource mv_pci_io_mem0_resource = {
--	.name	= "MV64340 PCI0 IO MEM",
--	.flags	= IORESOURCE_IO
--};
--
--static struct resource mv_pci_mem0_resource = {
--	.name	= "MV64340 PCI0 MEM",
--	.flags	= IORESOURCE_MEM
--};
--
--static struct mv_pci_controller mv_bus0_controller = {
--	.pcic = {
--		.pci_ops	= &mv_pci_ops,
--		.mem_resource	= &mv_pci_mem0_resource,
--		.io_resource	= &mv_pci_io_mem0_resource,
--	},
--	.config_addr	= MV64340_PCI_0_CONFIG_ADDR,
--	.config_vreg	= MV64340_PCI_0_CONFIG_DATA_VIRTUAL_REG,
--};
--
--static uint32_t mv_io_base, mv_io_size;
--
--static void mv64340_pci0_init(void)
--{
--	uint32_t mem0_base, mem0_size;
--	uint32_t io_base, io_size;
--
--	io_base = MV_READ(MV64340_PCI_0_IO_BASE_ADDR) << 16;
--	io_size = (MV_READ(MV64340_PCI_0_IO_SIZE) + 1) << 16;
--	mem0_base = MV_READ(MV64340_PCI_0_MEMORY0_BASE_ADDR) << 16;
--	mem0_size = (MV_READ(MV64340_PCI_0_MEMORY0_SIZE) + 1) << 16;
--
--	mv_pci_io_mem0_resource.start		= 0;
--	mv_pci_io_mem0_resource.end		= io_size - 1;
--	mv_pci_mem0_resource.start		= mem0_base;
--	mv_pci_mem0_resource.end		= mem0_base + mem0_size - 1;
--	mv_bus0_controller.pcic.mem_offset	= mem0_base;
--	mv_bus0_controller.pcic.io_offset	= 0;
--
--	ioport_resource.end		= io_size - 1;
--
--	register_pci_controller(&mv_bus0_controller.pcic);
--
--	mv_io_base = io_base;
--	mv_io_size = io_size;
--}
--
--static struct resource mv_pci_io_mem1_resource = {
--	.name	= "MV64340 PCI1 IO MEM",
--	.flags	= IORESOURCE_IO
--};
--
--static struct resource mv_pci_mem1_resource = {
--	.name	= "MV64340 PCI1 MEM",
--	.flags	= IORESOURCE_MEM
--};
--
--static struct mv_pci_controller mv_bus1_controller = {
--	.pcic = {
--		.pci_ops	= &mv_pci_ops,
--		.mem_resource	= &mv_pci_mem1_resource,
--		.io_resource	= &mv_pci_io_mem1_resource,
--	},
--	.config_addr	= MV64340_PCI_1_CONFIG_ADDR,
--	.config_vreg	= MV64340_PCI_1_CONFIG_DATA_VIRTUAL_REG,
--};
--
--static __init void mv64340_pci1_init(void)
--{
--	uint32_t mem0_base, mem0_size;
--	uint32_t io_base, io_size;
--
--	io_base = MV_READ(MV64340_PCI_1_IO_BASE_ADDR) << 16;
--	io_size = (MV_READ(MV64340_PCI_1_IO_SIZE) + 1) << 16;
--	mem0_base = MV_READ(MV64340_PCI_1_MEMORY0_BASE_ADDR) << 16;
--	mem0_size = (MV_READ(MV64340_PCI_1_MEMORY0_SIZE) + 1) << 16;
--
--	/*
--	 * Here we assume the I/O window of second bus to be contiguous with
--	 * the first.  A gap is no problem but would waste address space for
--	 * remapping the port space.
--	 */
--	mv_pci_io_mem1_resource.start		= mv_io_size;
--	mv_pci_io_mem1_resource.end		= mv_io_size + io_size - 1;
--	mv_pci_mem1_resource.start		= mem0_base;
--	mv_pci_mem1_resource.end		= mem0_base + mem0_size - 1;
--	mv_bus1_controller.pcic.mem_offset	= mem0_base;
--	mv_bus1_controller.pcic.io_offset	= 0;
--
--	ioport_resource.end		= io_base + io_size -mv_io_base - 1;
--
--	register_pci_controller(&mv_bus1_controller.pcic);
--
--	mv_io_size = io_base + io_size - mv_io_base;
--}
--
--static __init int __init ocelot_c_pci_init(void)
--{
--	unsigned long io_v_base;
--	uint32_t enable;
--
--	enable = ~MV_READ(MV64340_BASE_ADDR_ENABLE);
--
--	/*
--	 * We require at least one enabled I/O or PCI memory window or we
--	 * will ignore this PCI bus.  We ignore PCI windows 1, 2 and 3.
--	 */
--	if (enable & (0x01 <<  9) || enable & (0x01 << 10))
--		mv64340_pci0_init();
--
--	if (enable & (0x01 << 14) || enable & (0x01 << 15))
--		mv64340_pci1_init();
--
--	if (mv_io_size) {
--		io_v_base = (unsigned long) ioremap(mv_io_base, mv_io_size);
--		if (!io_v_base)
--			panic("Could not ioremap I/O port range");
--
--		set_io_port_base(io_v_base);
--	}
--
--	return 0;
--}
--
--arch_initcall(ocelot_c_pci_init);
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/pci-ocelot-g.c mips/arch/mips/pci/pci-ocelot-g.c
---- mips-orig/arch/mips/pci/pci-ocelot-g.c	2006-10-02 22:32:46.214760000 +0900
-+++ mips/arch/mips/pci/pci-ocelot-g.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,97 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)
-- *
-- * This doesn't really fly - but I don't have a GT64240 system for testing.
-- */
--#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/pci.h>
--#include <asm/gt64240.h>
--
--/*
-- * We assume these address ranges have been programmed into the GT-64240 by
-- * the firmware.  PMON in case of the Ocelot G does that.  Note the size of
-- * the I/O range is completly stupid; I/O mappings are limited to at most
-- * 256 bytes by the PCI spec and deprecated; and just to make things worse
-- * apparently many devices don't decode more than 64k of I/O space.
-- */
--
--#define gt_io_size	0x20000000UL
--#define gt_io_base	0xe0000000UL
--
--static struct resource gt_pci_mem0_resource = {
--	.name	= "MV64240 PCI0 MEM",
--	.start	= 0xc0000000UL,
--	.end	= 0xcfffffffUL,
--	.flags	= IORESOURCE_MEM
--};
--
--static struct resource gt_pci_io_mem0_resource = {
--	.name	= "MV64240 PCI0 IO MEM",
--	.start	= 0xe0000000UL,
--	.end	= 0xefffffffUL,
--	.flags	= IORESOURCE_IO
--};
--
--static struct mv_pci_controller gt_bus0_controller = {
--	.pcic = {
--		.pci_ops	= &mv_pci_ops,
--		.mem_resource	= &gt_pci_mem0_resource,
--		.mem_offset	= 0xc0000000UL,
--		.io_resource	= &gt_pci_io_mem0_resource,
--		.io_offset	= 0x00000000UL
--	},
--	.config_addr	= PCI_0CONFIGURATION_ADDRESS,
--	.config_vreg	= PCI_0CONFIGURATION_DATA_VIRTUAL_REGISTER,
--};
--
--static struct resource gt_pci_mem1_resource = {
--	.name	= "MV64240 PCI1 MEM",
--	.start	= 0xd0000000UL,
--	.end	= 0xdfffffffUL,
--	.flags	= IORESOURCE_MEM
--};
--
--static struct resource gt_pci_io_mem1_resource = {
--	.name	= "MV64240 PCI1 IO MEM",
--	.start	= 0xf0000000UL,
--	.end	= 0xffffffffUL,
--	.flags	= IORESOURCE_IO
--};
--
--static struct mv_pci_controller gt_bus1_controller = {
--	.pcic = {
--		.pci_ops	= &mv_pci_ops,
--		.mem_resource	= &gt_pci_mem1_resource,
--		.mem_offset	= 0xd0000000UL,
--		.io_resource	= &gt_pci_io_mem1_resource,
--		.io_offset	= 0x10000000UL
--	},
--	.config_addr	= PCI_1CONFIGURATION_ADDRESS,
--	.config_vreg	= PCI_1CONFIGURATION_DATA_VIRTUAL_REGISTER,
--};
--
--static __init int __init ocelot_g_pci_init(void)
--{
--	unsigned long io_v_base;
--
--	if (gt_io_size) {
--		io_v_base = (unsigned long) ioremap(gt_io_base, gt_io_size);
--		if (!io_v_base)
--			panic("Could not ioremap I/O port range");
--
--		set_io_port_base(io_v_base);
--	}
--
--	register_pci_controller(&gt_bus0_controller.pcic);
--	register_pci_controller(&gt_bus1_controller.pcic);
--
--	return 0;
--}
--
--arch_initcall(ocelot_g_pci_init);
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/pci-ocelot.c mips/arch/mips/pci/pci-ocelot.c
---- mips-orig/arch/mips/pci/pci-ocelot.c	2006-10-02 22:32:46.214760000 +0900
-+++ mips/arch/mips/pci/pci-ocelot.c	1970-01-01 09:00:00.000000000 +0900
-@@ -1,107 +0,0 @@
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ite8172g.c mips/arch/mips/pci/fixup-ite8172g.c
+--- mips-orig/arch/mips/pci/fixup-ite8172g.c	2006-10-02 22:32:46.178757750 +0900
++++ mips/arch/mips/pci/fixup-ite8172g.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,80 +0,0 @@
 -/*
 - * BRIEF MODULE DESCRIPTION
-- * Galileo Evaluation Boards PCI support.
+- *	Board specific pci fixups.
 - *
-- * The general-purpose functions to read/write and configure the GT64120A's
-- * PCI registers (function names start with pci0 or pci1) are either direct
-- * copies of functions written by Galileo Technology, or are modifications
-- * of their functions to work with Linux 2.4 vs Linux 2.2.  These functions
-- * are Copyright - Galileo Technology.
-- *
-- * Other functions are derived from other MIPS PCI implementations, or were
-- * written by RidgeRun, Inc,  Copyright (C) 2000 RidgeRun, Inc.
-- *   glonnon@ridgerun.com, skranz@ridgerun.com, stevej@ridgerun.com
-- *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
 - *  under  the terms of  the GNU General  Public License as published by the
@@ -8737,321 +4065,1261 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/pci-ocelot.c m
 - *  with this program; if not, write  to the Free Software Foundation, Inc.,
 - *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
--#include <linux/init.h>
 -#include <linux/types.h>
 -#include <linux/pci.h>
 -#include <linux/kernel.h>
--#include <linux/slab.h>
--#include <linux/cache.h>
--#include <asm/pci.h>
--#include <asm/io.h>
--#include <asm/gt64120.h>
+-#include <linux/init.h>
 -
--static inline unsigned int pci0ReadConfigReg(unsigned int offset)
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_pci.h>
+-#include <asm/it8172/it8172_int.h>
+-
+-/*
+- * Shortcuts
+- */
+-#define INTA	IT8172_PCI_INTA_IRQ
+-#define INTB	IT8172_PCI_INTB_IRQ
+-#define INTC	IT8172_PCI_INTC_IRQ
+-#define INTD	IT8172_PCI_INTD_IRQ
+-
+-static const int internal_func_irqs[7] __initdata = {
+-	IT8172_AC97_IRQ,
+-	IT8172_DMA_IRQ,
+-	IT8172_CDMA_IRQ,
+-	IT8172_USB_IRQ,
+-	IT8172_BRIDGE_MASTER_IRQ,
+-	IT8172_IDE_IRQ,
+-	IT8172_MC68K_IRQ
+-};
+-
+-static char irq_tab_ite8172g[][5] __initdata = {
+- [0x10] = {	0, INTA, INTB, INTC, INTD },
+- [0x11] = {	0, INTA, INTB, INTC, INTD },
+- [0x12] = {	0, INTB, INTC, INTD, INTA },
+- [0x13] = {	0, INTC, INTD, INTA, INTB },
+- [0x14] = {	0, INTD, INTA, INTB, INTC },
+-};
+-
+-int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
 -{
--	unsigned int DataForRegCf8;
--	unsigned int data;
+-	/*
+-	 * Internal device 1 is actually 7 different internal devices on the
+-	 * IT8172G (a multifunction device).
+-	 */
+-	if (slot == 1)
+-		return internal_func_irqs[PCI_FUNC(dev->devfn)];
 -
--	DataForRegCf8 = ((PCI_SLOT(device->devfn) << 11) |
--			 (PCI_FUNC(device->devfn) << 8) |
--			 (offset & ~0x3)) | 0x80000000;
--	GT_WRITE(GT_PCI0_CFGADDR_OFS, DataForRegCf8);
--	GT_READ(GT_PCI0_CFGDATA_OFS, &data);
--
--	return data;
+-	return irq_tab_ite8172g[slot][pin];
 -}
 -
--static inline void pci0WriteConfigReg(unsigned int offset, unsigned int data)
+-/* Do platform specific device initialization at pci_enable_device() time */
+-int pcibios_plat_dev_init(struct pci_dev *dev)
 -{
--	unsigned int DataForRegCf8;
+-	return 0;
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ivr.c mips/arch/mips/pci/fixup-ivr.c
+--- mips-orig/arch/mips/pci/fixup-ivr.c	2006-10-02 22:32:46.178757750 +0900
++++ mips/arch/mips/pci/fixup-ivr.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,75 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Globespan IVR board-specific pci fixups.
+- *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
 -
--	DataForRegCf8 = ((PCI_SLOT(device->devfn) << 11) |
--			 (PCI_FUNC(device->devfn) << 8) |
--			 (offset & ~0x3)) | 0x80000000;
--	GT_WRITE(GT_PCI0_CFGADDR_OFS, DataForRegCf8);
--	GT_WRITE(GT_PCI0_CFGDATA_OFS, data);
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_pci.h>
+-#include <asm/it8172/it8172_int.h>
+-
+-/*
+- * Shortcuts
+- */
+-#define INTA	IT8172_PCI_INTA_IRQ
+-#define INTB	IT8172_PCI_INTB_IRQ
+-#define INTC	IT8172_PCI_INTC_IRQ
+-#define INTD	IT8172_PCI_INTD_IRQ
+-
+-static const int internal_func_irqs[7] __initdata = {
+-	IT8172_AC97_IRQ,
+-	IT8172_DMA_IRQ,
+-	IT8172_CDMA_IRQ,
+-	IT8172_USB_IRQ,
+-	IT8172_BRIDGE_MASTER_IRQ,
+-	IT8172_IDE_IRQ,
+-	IT8172_MC68K_IRQ
+-};
+-
+-static char irq_tab_ivr[][5] __initdata = {
+- [0x11] = { INTC, INTC, INTD, INTA, INTB },	/* Realtek RTL-8139	*/
+- [0x12] = { INTB, INTB, INTB, INTC, INTC },	/* IVR slot		*/
+- [0x13] = { INTA, INTA, INTB, INTC, INTD }	/* Expansion slot	*/
+-};
+-
+-int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+-{
+-	if (slot == 1)
+-		return internal_func_irqs[PCI_FUNC(dev->devfn)];
+-
+-	return irq_tab_ivr[slot][pin];
 -}
 -
--static struct resource ocelot_mem_resource = {
--	start	= GT_PCI_MEM_BASE;
--	end	= GT_PCI_MEM_BASE + GT_PCI_MEM_BASE - 1;
--};
--
--static struct resource ocelot_io_resource = {
--	start	= GT_PCI_IO_BASE;
--	end	= GT_PCI_IO_BASE + GT_PCI_IO_SIZE - 1;
--};
--
--static struct pci_controller ocelot_pci_controller = {
--	.pci_ops	= gt64120_pci_ops;
--	.mem_resource	= &ocelot_mem_resource;
--	.io_resource	= &ocelot_io_resource;
--};
--
--static int __init ocelot_pcibios_init(void)
+-/* Do platform specific device initialization at pci_enable_device() time */
+-int pcibios_plat_dev_init(struct pci_dev *dev)
 -{
--	u32 tmp;
+-	return 0;
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/ops-it8172.c mips/arch/mips/pci/ops-it8172.c
+--- mips-orig/arch/mips/pci/ops-it8172.c	2006-10-02 22:32:46.206759500 +0900
++++ mips/arch/mips/pci/ops-it8172.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,213 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	IT8172 system controller specific pci support.
+- *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
 -
--	GT_READ(GT_PCI0_CMD_OFS, &tmp);
--	GT_READ(GT_PCI0_BARE_OFS, &tmp);
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_pci.h>
+-
+-#define PCI_ACCESS_READ  0
+-#define PCI_ACCESS_WRITE 1
+-
+-#undef DEBUG
+-#ifdef DEBUG
+-#define DBG(x...) printk(x)
+-#else
+-#define DBG(x...)
+-#endif
+-
+-static struct resource pci_mem_resource_1;
+-
+-static struct resource pci_io_resource = {
+-	.start	= 0x14018000,
+-	.end	= 0x17FFFFFF,
+-	.name	= "io pci IO space",
+-	.flags	= IORESOURCE_IO
+-};
+-
+-static struct resource pci_mem_resource_0 = {
+-	.start	= 0x10101000,
+-	.end	= 0x13FFFFFF,
+-	.name	= "ext pci memory space 0/1",
+-	.flags	= IORESOURCE_MEM,
+-	.parent	= &pci_mem_resource_0,
+-	.sibling = NULL,
+-	.child	= &pci_mem_resource_1
+-};
+-
+-static struct resource pci_mem_resource_1 = {
+-	.start	= 0x1A000000,
+-	.end	= 0x1FBFFFFF,
+-	.name	= "ext pci memory space 2/3",
+-	.flags	= IORESOURCE_MEM,
+-	.parent	= &pci_mem_resource_0
+-};
+-
+-extern struct pci_ops it8172_pci_ops;
+-
+-struct pci_controller it8172_controller = {
+-	.pci_ops	= &it8172_pci_ops,
+-	.io_resource	= &pci_io_resource,
+-	.mem_resource	= &pci_mem_resource_0,
+-};
+-
+-static int it8172_pcibios_config_access(unsigned char access_type,
+-					struct pci_bus *bus,
+-					unsigned int devfn, int where,
+-					u32 * data)
+-{
+-	/*
+-	 * config cycles are on 4 byte boundary only
+-	 */
+-
+-	/* Setup address */
+-	IT_WRITE(IT_CONFADDR, (bus->number << IT_BUSNUM_SHF) |
+-		 (devfn << IT_FUNCNUM_SHF) | (where & ~0x3));
+-
+-	if (access_type == PCI_ACCESS_WRITE) {
+-		IT_WRITE(IT_CONFDATA, *data);
+-	} else {
+-		IT_READ(IT_CONFDATA, *data);
+-	}
 -
 -	/*
--	 * You have to enable bus mastering to configure any other
--	 * card on the bus.
+-	 * Revisit: check for master or target abort.
 -	 */
--	tmp = pci0ReadConfigReg(PCI_COMMAND);
--	tmp |= PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER | PCI_COMMAND_SERR;
--	pci0WriteConfigReg(PCI_COMMAND, tmp);
--
--	register_pci_controller(&ocelot_pci_controller);
+-	return 0;
 -}
 -
--arch_initcall(ocelot_pcibios_init);
+-
+-/*
+- * We can't address 8 and 16 bit words directly.  Instead we have to
+- * read/write a 32bit word and mask/modify the data we actually want.
+- */
+-static write_config(struct pci_bus *bus, unsigned int devfn, int where,
+-		    int size, u32 val)
+-{
+-	u32 data = 0;
+-
+-	switch (size) {
+-	case 1:
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_READ, dev, where, &data))
+-			return -1;
+-
+-		*val = (data >> ((where & 3) << 3)) & 0xff;
+-
+-		return PCIBIOS_SUCCESSFUL;
+-
+-	case 2:
+-
+-		if (where & 1)
+-			return PCIBIOS_BAD_REGISTER_NUMBER;
+-
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_READ, dev, where, &data))
+-			return -1;
+-
+-		*val = (data >> ((where & 3) << 3)) & 0xffff;
+-		DBG("cfg read word: bus %d dev_fn %x where %x: val %x\n",
+-		    dev->bus->number, dev->devfn, where, *val);
+-
+-		return PCIBIOS_SUCCESSFUL;
+-
+-	case 4:
+-
+-		if (where & 3)
+-			return PCIBIOS_BAD_REGISTER_NUMBER;
+-
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_READ, dev, where, &data))
+-			return -1;
+-
+-		*val = data;
+-
+-		return PCIBIOS_SUCCESSFUL;
+-	}
+-}
+-
+-
+-static write_config(struct pci_bus *bus, unsigned int devfn, int where,
+-		    int size, u32 val)
+-{
+-	u32 data = 0;
+-
+-	switch (size) {
+-	case 1:
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_READ, dev, where, &data))
+-			return -1;
+-
+-		data = (data & ~(0xff << ((where & 3) << 3))) |
+-		    (val << ((where & 3) << 3));
+-
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_WRITE, dev, where, &data))
+-			return -1;
+-
+-		return PCIBIOS_SUCCESSFUL;
+-
+-	case 2:
+-		if (where & 1)
+-			return PCIBIOS_BAD_REGISTER_NUMBER;
+-
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_READ, dev, where, &data))
+-			eturn - 1;
+-
+-		data = (data & ~(0xffff << ((where & 3) << 3))) |
+-		    (val << ((where & 3) << 3));
+-
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_WRITE, dev, where, &data))
+-			return -1;
+-
+-		return PCIBIOS_SUCCESSFUL;
+-
+-	case 4:
+-		if (where & 3)
+-			return PCIBIOS_BAD_REGISTER_NUMBER;
+-
+-		if (it8172_pcibios_config_access
+-		    (PCI_ACCESS_WRITE, dev, where, &val))
+-			return -1;
+-
+-		return PCIBIOS_SUCCESSFUL;
+-	}
+-}
+-
+-struct pci_ops it8172_pci_ops = {
+-	.read = read_config,
+-	.write = write_config,
+-};
 diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/bootinfo.h mips/include/asm-mips/bootinfo.h
---- mips-orig/include/asm-mips/bootinfo.h	2006-10-02 22:40:23.607345250 +0900
-+++ mips/include/asm-mips/bootinfo.h	2006-10-02 22:40:29.427709000 +0900
-@@ -115,15 +115,6 @@
+--- mips-orig/include/asm-mips/bootinfo.h	2006-10-02 22:43:55.400581500 +0900
++++ mips/include/asm-mips/bootinfo.h	2006-10-02 22:44:01.316951250 +0900
+@@ -115,12 +115,6 @@
  #define  MACH_EV64120A		0	/* EV64120A */
  
  /*
-- * Valid machtype for group MOMENCO
+- * Valid machtype for group ITE
 - */
--#define MACH_GROUP_MOMENCO	12	/* Momentum Boards		*/
--#define  MACH_MOMENCO_OCELOT	0
--#define  MACH_MOMENCO_OCELOT_G	1
--#define  MACH_MOMENCO_OCELOT_C	2
--#define  MACH_MOMENCO_OCELOT_3	4
+-#define MACH_GROUP_ITE		13	/* ITE Semi Eval Boards		*/
+-#define  MACH_QED_4N_S01B	0	/* ITE8172 based eval board */
 -
 -/*
-  * Valid machtype for group ITE
+  * Valid machtype for group PHILIPS
   */
- #define MACH_GROUP_ITE		13	/* ITE Semi Eval Boards		*/
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ocelot3/cpu-feature-overrides.h mips/include/asm-mips/mach-ocelot3/cpu-feature-overrides.h
---- mips-orig/include/asm-mips/mach-ocelot3/cpu-feature-overrides.h	2006-10-02 22:33:09.484214250 +0900
-+++ mips/include/asm-mips/mach-ocelot3/cpu-feature-overrides.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,48 +0,0 @@
+ #define MACH_GROUP_PHILIPS     14
+@@ -129,12 +123,6 @@
+ #define  MACH_PHILIPS_JBS	2	/* JBS */
+ 
+ /*
+- * Valid machtype for group Globespan
+- */
+-#define MACH_GROUP_GLOBESPAN   15	/* Globespan */
+-#define  MACH_IVR		0	/* IVR eval board */
+-
 -/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+  * Valid machtype for group SIBYTE
+  */
+ #define MACH_GROUP_SIBYTE	16	/* Sibyte / Broadcom */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/it8172/it8172.h mips/include/asm-mips/it8172/it8172.h
+--- mips-orig/include/asm-mips/it8172/it8172.h	2006-10-02 22:33:08.584158000 +0900
++++ mips/include/asm-mips/it8172/it8172.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,348 +0,0 @@
+-/*
 - *
-- * Copyright (C) 2004 MontaVista Software Inc.
-- * Author: Manish Lachwani, mlachwani@mvista.com
-- * Copyright (C) 2004 Ralf Baechle
-- */
--#ifndef __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H
--#define __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H
--
--/*
-- * Momentum Ocelot-3 is based on Rm7900 processor which
-- * is based on the E9000 core.
-- */
--#define cpu_has_watch		1
--#define cpu_has_mips16		0
--#define cpu_has_divec		0
--#define cpu_has_vce		0
--#define cpu_has_cache_cdex_p	0
--#define cpu_has_cache_cdex_s	0
--#define cpu_has_prefetch	1
--#define cpu_has_mcheck		0
--#define cpu_has_ejtag		0
--
--#define cpu_has_llsc		1
--#define cpu_has_vtag_icache	0
--#define cpu_has_dc_aliases	0
--#define cpu_has_ic_fills_f_dc	0
--#define cpu_has_dsp		0
--#define cpu_icache_snoops_remote_store	0
--
--#define cpu_has_nofpuex 	0
--#define cpu_has_64bits		1
--
--#define cpu_has_inclusive_pcaches	0
--
--#define cpu_dcache_line_size()	32
--#define cpu_icache_line_size()	32
--#define cpu_scache_line_size()	32
--
--#define cpu_has_mips32r1	0
--#define cpu_has_mips32r2	0
--#define cpu_has_mips64r1	0
--#define cpu_has_mips64r2	0
--
--#endif /* __ASM_MACH_JA_CPU_FEATURE_OVERRIDES_H */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/marvell.h mips/include/asm-mips/marvell.h
---- mips-orig/include/asm-mips/marvell.h	2006-10-02 22:33:09.492214750 +0900
-+++ mips/include/asm-mips/marvell.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,58 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
+- * BRIEF MODULE DESCRIPTION
+- *	IT8172 system controller defines.
 - *
-- * Copyright (C) 2004 by Ralf Baechle
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
--#ifndef __ASM_MIPS_MARVELL_H
--#define __ASM_MIPS_MARVELL_H
 -
--#include <linux/pci.h>
+-#ifndef __IT8172__H__
+-#define __IT8172__H__
 -
--#include <asm/byteorder.h>
+-#include <asm/addrspace.h>
 -
--extern unsigned long marvell_base;
+-#define IT8172_BASE			0x18000000
+-#define IT8172_PCI_IO_BASE		0x14000000
+-#define IT8172_PCI_MEM_BASE		0x10000000
 -
+-// System registers offsets from IT8172_BASE
+-#define IT_CMFPCR			0x0
+-#define IT_DSRR				0x2
+-#define IT_PCDCR			0x4
+-#define IT_SPLLCR			0x6
+-#define IT_CIDR				0x10
+-#define IT_CRNR				0x12
+-#define IT_CPUTR			0x14
+-#define IT_CTCR				0x16
+-#define IT_SDPR				0xF0
+-
+-// Power management register offset from IT8172_PCI_IO_BASE
+-// Power Management Device Standby Register
+-#define IT_PM_DSR		0x15800
+-
+-#define IT_PM_DSR_TMR0SB	0x0001
+-#define IT_PM_DSR_TMR1SB	0x0002
+-#define IT_PM_DSR_CIR0SB	0x0004
+-#define IT_PM_DSR_CIR1SB	0x0008
+-#define IT_PM_DSR_SCR0SB	0x0010
+-#define IT_PM_DSR_SCR1SB	0x0020
+-#define IT_PM_DSR_PPSB		0x0040
+-#define IT_PM_DSR_I2CSB		0x0080
+-#define IT_PM_DSR_UARTSB	0x0100
+-#define IT_PM_DSR_IDESB		0x0200
+-#define IT_PM_DSR_ACSB		0x0400
+-#define IT_PM_DSR_M68KSB	0x0800
+-
+-// Power Management PCI Device Software Reset Register
+-#define IT_PM_PCISR             0x15802
+-
+-#define IT_PM_PCISR_IDESR       0x0001
+-#define IT_PM_PCISR_CDMASR      0x0002
+-#define IT_PM_PCISR_USBSR       0x0004
+-#define IT_PM_PCISR_DMASR       0x0008
+-#define IT_PM_PCISR_ACSR        0x0010
+-#define IT_PM_PCISR_MEMSR       0x0020
+-#define IT_PM_PCISR_68KSR       0x0040
+-
+-
+-// PCI Configuration address and data register offsets
+-// from IT8172_BASE
+-#define IT_CONFADDR			0x4000
+-#define IT_BUSNUM_SHF                   16
+-#define IT_DEVNUM_SHF                   11
+-#define IT_FUNCNUM_SHF                  8
+-#define IT_REGNUM_SHF                   2
+-
+-#define IT_CONFDATA			0x4004
+-
+-// PCI configuration header common register offsets
+-#define IT_VID				0x00
+-#define IT_DID				0x02
+-#define IT_PCICMD			0x04
+-#define IT_PCISTS			0x06
+-#define IT_RID				0x08
+-#define IT_CLASSC			0x09
+-#define IT_HEADT			0x0E
+-#define IT_SERIRQC			0x49
+-
+-// PCI to Internal/LPC Bus Bridge configuration header register offset
+-#define IT_P2I_BCR				0x4C
+-#define IT_P2I_D0IOSC				0x50
+-#define IT_P2I_D1IOSC				0x54
+-#define IT_P2I_D2IOSC				0x58
+-#define IT_P2I_D3IOSC				0x5C
+-#define IT_P2I_D4IOSC				0x60
+-#define IT_P2I_D5IOSC				0x64
+-#define IT_P2I_D6IOSC				0x68
+-#define IT_P2I_D7IOSC				0x6C
+-#define IT_P2I_D8IOSC				0x70
+-#define IT_P2I_D9IOSC				0x74
+-#define IT_P2I_D10IOSC				0x78
+-#define IT_P2I_D11IOSC				0x7C
+-
+-// Memory controller register offsets from IT8172_BASE
+-#define IT_MC_SDRMR					0x1000
+-#define IT_MC_SDRTR					0x1004
+-#define IT_MC_MCR					0x1008
+-#define IT_MC_SDTYPE					0x100C
+-#define IT_MC_WPBA					0x1010
+-#define IT_MC_WPTA					0x1014
+-#define IT_MC_HATR					0x1018
+-#define IT_MC_PCICR					0x101C
+-
+-// Flash/ROM control register offsets from IT8172_BASE
+-#define IT_FC_BRCR					0x2000
+-#define IT_FC_FCR					0x2004
+-#define IT_FC_DCR					0x2008
+-
+-// M68K interface bridge configuration header register offset
+-#define IT_M68K_MBCSR					0x54
+-#define IT_M68K_TMR					0x58
+-#define IT_M68K_BCR					0x5C
+-#define IT_M68K_BSR					0x5D
+-#define IT_M68K_DTR					0x5F
+-
+-// Register offset from IT8172_PCI_IO_BASE
+-// These registers are accessible through 8172 PCI IO window.
+-
+-// INTC
+-#define IT_INTC_BASE				0x10000
+-#define IT_INTC_LBDNIRR				0x10000
+-#define IT_INTC_LBDNIMR				0x10002
+-#define IT_INTC_LBDNITR				0x10004
+-#define IT_INTC_LBDNIAR				0x10006
+-#define IT_INTC_LPCNIRR				0x10010
+-#define IT_INTC_LPCNIMR				0x10012
+-#define IT_INTC_LPCNITR				0x10014
+-#define IT_INTC_LPCNIAR				0x10016
+-#define IT_INTC_PDNIRR				0x10020
+-#define IT_INTC_PDNIMR				0x10022
+-#define IT_INTC_PDNITR				0x10024
+-#define IT_INTC_PDNIAR				0x10026
+-#define IT_INTC_UMNIRR				0x10030
+-#define IT_INTC_UMNITR				0x10034
+-#define IT_INTC_UMNIAR				0x10036
+-#define IT_INTC_TYPER				0x107FE
+-
+-// IT8172 PCI device number
+-#define IT_C2P_DEVICE				0
+-#define IT_AUDIO_DEVICE				1
+-#define IT_DMAC_DEVICE				1
+-#define IT_CDMAC_DEVICE				1
+-#define IT_USB_DEVICE				1
+-#define IT_P2I_DEVICE				1
+-#define IT_IDE_DEVICE				1
+-#define IT_M68K_DEVICE				1
+-
+-// IT8172 PCI function number
+-#define IT_C2P_FUNCION				0
+-#define IT_AUDIO_FUNCTION			0
+-#define IT_DMAC_FUNCTION			1
+-#define IT_CDMAC_FUNCTION			2
+-#define IT_USB_FUNCTION				3
+-#define IT_P2I_FUNCTION				4
+-#define IT_IDE_FUNCTION				5
+-#define IT_M68K_FUNCTION			6
+-
+-// IT8172 GPIO
+-#define IT_GPADR				0x13800
+-#define IT_GPBDR				0x13808
+-#define IT_GPCDR				0x13810
+-#define IT_GPACR				0x13802
+-#define IT_GPBCR				0x1380A
+-#define IT_GPCCR				0x13812
+-#define IT_GPAICR				0x13804
+-#define IT_GPBICR				0x1380C
+-#define IT_GPCICR				0x13814
+-#define IT_GPAISR				0x13806
+-#define IT_GPBISR				0x1380E
+-#define IT_GPCISR				0x13816
+-#define IT_GCR					0x13818
+-
+-// IT8172 RTC
+-#define IT_RTC_BASE				0x14800
+-#define IT_RTC_CENTURY				0x14808
+-
+-#define IT_RTC_RIR0				0x00
+-#define IT_RTC_RTR0				0x01
+-#define IT_RTC_RIR1				0x02
+-#define IT_RTC_RTR1				0x03
+-#define IT_RTC_RIR2				0x04
+-#define IT_RTC_RTR2				0x05
+-#define IT_RTC_RCTR				0x08
+-#define IT_RTC_RA				0x0A
+-#define IT_RTC_RB				0x0B
+-#define IT_RTC_RC				0x0C
+-#define IT_RTC_RD				0x0D
+-
+-#define RTC_SEC_INDEX				0x00
+-#define RTC_MIN_INDEX				0x02
+-#define RTC_HOUR_INDEX				0x04
+-#define RTC_DAY_INDEX				0x06
+-#define RTC_DATE_INDEX				0x07
+-#define RTC_MONTH_INDEX				0x08
+-#define RTC_YEAR_INDEX				0x09
+-
+-// IT8172 internal device registers
+-#define IT_TIMER_BASE				0x10800
+-#define IT_CIR0_BASE				0x11000
+-#define IT_UART_BASE				0x11800
+-#define IT_SCR0_BASE				0x12000
+-#define IT_SCR1_BASE				0x12800
+-#define IT_PP_BASE				0x13000
+-#define IT_I2C_BASE				0x14000
+-#define IT_CIR1_BASE				0x15000
+-
+-// IT8172 Smart Card Reader offsets from IT_SCR*_BASE
+-#define IT_SCR_SFR				0x08
+-#define IT_SCR_SCDR				0x09
+-
+-// IT8172 IT_SCR_SFR bit definition & mask
+-#define	IT_SCR_SFR_GATE_UART			0x40
+-#define	IT_SCR_SFR_GATE_UART_BIT		6
+-#define IT_SCR_SFR_GATE_UART_OFF		0
+-#define	IT_SCR_SFR_GATE_UART_ON			1
+-#define	IT_SCR_SFR_FET_CHARGE			0x30
+-#define	IT_SCR_SFR_FET_CHARGE_BIT		4
+-#define IT_SCR_SFR_FET_CHARGE_3_3_US		3
+-#define IT_SCR_SFR_FET_CHARGE_13_US		2
+-#define IT_SCR_SFR_FET_CHARGE_53_US		1
+-#define IT_SCR_SFR_FET_CHARGE_213_US		0
+-#define	IT_SCR_SFR_CARD_FREQ			0x0C
+-#define	IT_SCR_SFR_CARD_FREQ_BIT		2
+-#define IT_SCR_SFR_CARD_FREQ_STOP		3
+-#define IT_SCR_SFR_CARD_FREQ_3_5_MHZ		0
+-#define IT_SCR_SFR_CARD_FREQ_7_1_MHZ		2
+-#define IT_SCR_SFR_CARD_FREQ_96_DIV_MHZ		1
+-#define	IT_SCR_SFR_FET_ACTIVE			0x02
+-#define	IT_SCR_SFR_FET_ACTIVE_BIT		1
+-#define IT_SCR_SFR_FET_ACTIVE_INVERT		0
+-#define IT_SCR_SFR_FET_ACTIVE_NONINVERT		1
+-#define	IT_SCR_SFR_ENABLE			0x01
+-#define	IT_SCR_SFR_ENABLE_BIT			0
+-#define IT_SCR_SFR_ENABLE_OFF			0
+-#define IT_SCR_SFR_ENABLE_ON			1
+-
+-// IT8172 IT_SCR_SCDR bit definition & mask
+-#define	IT_SCR_SCDR_RESET_MODE			0x80
+-#define	IT_SCR_SCDR_RESET_MODE_BIT		7
+-#define	IT_SCR_SCDR_RESET_MODE_ASYNC		0
+-#define IT_SCR_SCDR_RESET_MODE_SYNC		1
+-#define	IT_SCR_SCDR_DIVISOR			0x7F
+-#define	IT_SCR_SCDR_DIVISOR_BIT			0
+-#define	IT_SCR_SCDR_DIVISOR_STOP_VAL_1		0x00
+-#define	IT_SCR_SCDR_DIVISOR_STOP_VAL_2		0x01
+-#define	IT_SCR_SCDR_DIVISOR_STOP_VAL_3		0x7F
+-
+-// IT8172 DMA
+-#define IT_DMAC_BASE				0x16000
+-#define IT_DMAC_BCAR0				0x00
+-#define IT_DMAC_BCAR1				0x04
+-#define IT_DMAC_BCAR2				0x08
+-#define IT_DMAC_BCAR3				0x0C
+-#define IT_DMAC_BCCR0				0x02
+-#define IT_DMAC_BCCR1				0x06
+-#define IT_DMAC_BCCR2				0x0a
+-#define IT_DMAC_BCCR3				0x0e
+-#define IT_DMAC_CR				0x10
+-#define IT_DMAC_SR				0x12
+-#define IT_DMAC_ESR				0x13
+-#define IT_DMAC_RQR				0x14
+-#define IT_DMAC_MR				0x16
+-#define IT_DMAC_EMR				0x17
+-#define IT_DMAC_MKR				0x18
+-#define IT_DMAC_PAR0				0x20
+-#define IT_DMAC_PAR1				0x22
+-#define IT_DMAC_PAR2				0x24
+-#define IT_DMAC_PAR3				0x26
+-
+-// IT8172 IDE
+-#define IT_IDE_BASE				0x17800
+-#define IT_IDE_STATUS				0x1F7
+-
+-// IT8172 Audio Controller
+-#define IT_AC_BASE				0x17000
+-#define	IT_AC_PCMOV				0x00
+-#define IT_AC_FMOV				0x02
+-#define	IT_AC_I2SV				0x04
+-#define IT_AC_DRSS				0x06
+-#define IT_AC_PCC				0x08
+-#define IT_AC_PCDL				0x0A
+-#define IT_AC_PCB1STA				0x0C
+-#define IT_AC_PCB2STA				0x10
+-#define IT_AC_CAPCC				0x14
+-#define IT_AC_CAPCDL				0x16
+-#define IT_AC_CAPB1STA				0x18
+-#define IT_AC_CAPB2STA				0x1C
+-#define IT_AC_CODECC				0x22
+-#define IT_AC_I2SMC				0x24
+-#define IT_AC_VS				0x26
+-#define IT_AC_SRCS				0x28
+-#define IT_AC_CIRCP				0x2A
+-#define IT_AC_CIRDP				0x2C
+-#define IT_AC_TM				0x4A
+-#define IT_AC_PFDP				0x4C
+-#define IT_AC_GC				0x54
+-#define IT_AC_IMC				0x56
+-#define IT_AC_ISC				0x5B
+-#define IT_AC_OPL3SR				0x68
+-#define IT_AC_OPL3DWDR				0x69
+-#define IT_AC_OPL3AB1W				0x6A
+-#define IT_AC_OPL3DW				0x6B
+-#define IT_AC_BPDC				0x70
+-
+-
+-// IT8172 Timer
+-#define IT_TIMER_BASE				0x10800
+-#define	TIMER_TCVR0				0x00
+-#define TIMER_TRVR0				0x02
+-#define	TIMER_TCR0				0x04
+-#define TIMER_TIRR				0x06
+-#define	TIMER_TCVR1				0x08
+-#define TIMER_TRVR1				0x0A
+-#define	TIMER_TCR1				0x0C
+-#define TIMER_TIDR				0x0E
+-
+-
+-#define IT_WRITE(ofs, data) *(volatile u32 *)KSEG1ADDR((IT8172_BASE+ofs)) = data
+-#define IT_READ(ofs, data)  data = *(volatile u32 *)KSEG1ADDR((IT8172_BASE+ofs))
+-
+-#define IT_IO_WRITE(ofs, data) *(volatile u32 *)KSEG1ADDR((IT8172_PCI_IO_BASE+ofs)) = data
+-#define IT_IO_READ(ofs, data)  data = *(volatile u32 *)KSEG1ADDR((IT8172_PCI_IO_BASE+ofs))
+-
+-#define IT_IO_WRITE16(ofs, data) *(volatile u16 *)KSEG1ADDR((IT8172_PCI_IO_BASE+ofs)) = data
+-#define IT_IO_READ16(ofs, data)  data = *(volatile u16 *)KSEG1ADDR((IT8172_PCI_IO_BASE+ofs))
+-
+-#endif
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/it8172/it8172_cir.h mips/include/asm-mips/it8172/it8172_cir.h
+--- mips-orig/include/asm-mips/it8172/it8172_cir.h	2006-10-02 22:33:08.584158000 +0900
++++ mips/include/asm-mips/it8172/it8172_cir.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,140 +0,0 @@
 -/*
-- * Because of an error/peculiarity in the Galileo chip, we need to swap the
-- * bytes when running bigendian.
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	IT8172 Consumer IR port defines.
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
 - */
--#define __MV_READ(ofs)							\
--	(*(volatile u32 *)(marvell_base+(ofs)))
--#define __MV_WRITE(ofs, data)						\
--	do { *(volatile u32 *)(marvell_base+(ofs)) = (data); } while (0)
 -
--#define MV_READ(ofs)		le32_to_cpu(__MV_READ(ofs))
--#define MV_WRITE(ofs, data)	__MV_WRITE(ofs, cpu_to_le32(data))
+-#define NUM_CIR_PORTS 2
 -
--#define MV_READ_16(ofs)							\
--        le16_to_cpu(*(volatile u16 *)(marvell_base+(ofs)))
--#define MV_WRITE_16(ofs, data)  \
--        *(volatile u16 *)(marvell_base+(ofs)) = cpu_to_le16(data)
+-/* Master Control Register */
+-#define CIR_RESET              0x1
+-#define CIR_FIFO_CLEAR         0x2
+-#define CIR_SET_FIFO_TL(x)     (((x)&0x3)<<2)
+-#define CIR_ILE                0x10
+-#define CIR_ILSEL              0x20
 -
--#define MV_READ_8(ofs)							\
--	*(volatile u8 *)(marvell_base+(ofs))
--#define MV_WRITE_8(ofs, data)						\
--	*(volatile u8 *)(marvell_base+(ofs)) = data
+-/* Interrupt Enable Register */
+-#define CIR_TLDLIE             0x1
+-#define CIR_RDAIE              0x2
+-#define CIR_RFOIE              0x4
+-#define CIR_IEC                0x80
 -
--#define MV_SET_REG_BITS(ofs, bits)					\
--	(*((volatile u32 *)(marvell_base + (ofs)))) |= ((u32)cpu_to_le32(bits))
--#define MV_RESET_REG_BITS(ofs, bits)					\
--	(*((volatile u32 *)(marvell_base + (ofs)))) &= ~((u32)cpu_to_le32(bits))
+-/* Interrupt Identification Register */
+-#define CIR_TLDLI              0x1
+-#define CIR_RDAI               0x2
+-#define CIR_RFOI               0x4
+-#define CIR_NIP                0x80
 -
--extern struct pci_ops mv_pci_ops;
+-/* Carrier Frequency Register */
+-#define CIR_SET_CF(x)          ((x)&0x1f)
+-  #define CFQ_38_480           0xB       /* 38 KHz low, 480 KHz high */
+-#define CIR_HCFS               0x20
+-  #define CIR_SET_HS(x)        (((x)&0x1)<<5)
 -
--struct mv_pci_controller {
--	struct pci_controller   pcic;
 -
--	/*
--	 * GT-64240/MV-64340 specific, per host bus information
--	 */
--	unsigned long   config_addr;
--	unsigned long   config_vreg;
+-/* Receiver Control Register */
+-#define CIR_SET_RXDCR(x)       ((x)&0x7)
+-#define CIR_RXACT              0x8
+-#define CIR_RXEND              0x10
+-#define CIR_RDWOS              0x20
+-  #define CIR_SET_RDWOS(x)     (((x)&0x1)<<5)
+-#define CIR_RXEN               0x80
+-
+-/* Transmitter Control Register */
+-#define CIR_SET_TXMPW(x)       ((x)&0x7)
+-#define CIR_SET_TXMPM(x)       (((x)&0x3)<<3)
+-#define CIR_TXENDF             0x20
+-#define CIR_TXRLE              0x40
+-
+-/* Receiver FIFO Status Register */
+-#define CIR_RXFBC_MASK         0x3f
+-#define CIR_RXFTO              0x80
+-
+-/* Wakeup Code Length Register */
+-#define CIR_SET_WCL            ((x)&0x3f)
+-#define CIR_WCL_MASK(x)        ((x)&0x3f)
+-
+-/* Wakeup Power Control/Status Register */
+-#define CIR_BTMON              0x2
+-#define CIR_CIRON              0x4
+-#define CIR_RCRST              0x10
+-#define CIR_WCRST              0x20
+-
+-struct cir_port {
+-	int port;
+-	unsigned short baud_rate;
+-	unsigned char fifo_tl;
+-	unsigned char cfq;
+-	unsigned char hcfs;
+-	unsigned char rdwos;
+-	unsigned char rxdcr;
 -};
 -
--extern void ll_mv64340_irq(struct pt_regs *regs);
+-struct it8172_cir_regs {
+-	unsigned char dr;       /* data                        */
+-	char pad;
+-	unsigned char mstcr;    /* master control              */
+-	char pad1;
+-	unsigned char ier;      /* interrupt enable            */
+-	char pad2;
+-	unsigned char iir;      /* interrupt identification    */
+-	char pad3;
+-	unsigned char cfr;      /* carrier frequency           */
+-	char pad4;
+-	unsigned char rcr;      /* receiver control            */
+-	char pad5;
+-	unsigned char tcr;      /* transmitter control         */
+-	char pad6;
+-	char pad7;
+-	char pad8;
+-	unsigned char bdlr;     /* baud rate divisor low byte  */
+-	char pad9;
+-	unsigned char bdhr;     /* baud rate divisor high byte */
+-	char pad10;
+-	unsigned char tfsr;     /* tx fifo byte count          */
+-	char pad11;
+-	unsigned char rfsr;     /* rx fifo status              */
+-	char pad12;
+-	unsigned char wcl;      /* wakeup code length          */
+-	char pad13;
+-	unsigned char wcr;      /* wakeup code read/write      */
+-	char pad14;
+-	unsigned char wps;      /* wakeup power control/status */
+-};
 -
--#endif	/* __ASM_MIPS_MARVELL_H */
+-int cir_port_init(struct cir_port *cir);
+-extern void clear_fifo(struct cir_port *cir);
+-extern void enable_receiver(struct cir_port *cir);
+-extern void disable_receiver(struct cir_port *cir);
+-extern void enable_rx_demodulation(struct cir_port *cir);
+-extern void disable_rx_demodulation(struct cir_port *cir);
+-extern void set_rx_active(struct cir_port *cir);
+-extern void int_enable(struct cir_port *cir);
+-extern void rx_int_enable(struct cir_port *cir);
+-extern char get_int_status(struct cir_port *cir);
+-extern int cir_get_rx_count(struct cir_port *cir);
+-extern char cir_read_data(struct cir_port *cir);
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/it8172/it8172_dbg.h mips/include/asm-mips/it8172/it8172_dbg.h
+--- mips-orig/include/asm-mips/it8172/it8172_dbg.h	2006-10-02 22:33:08.584158000 +0900
++++ mips/include/asm-mips/it8172/it8172_dbg.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,38 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Function prototypes for low level uart routines to
+- *	directly access a 16550 uart.
+- *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/types.h>
+-
+-extern void putch(const unsigned char c);
+-extern void puts(unsigned char *cp);
+-extern void fputs(unsigned char *cp);
+-extern void put64(uint64_t ul);
+-extern void put32(unsigned u);
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/it8172/it8172_int.h mips/include/asm-mips/it8172/it8172_int.h
+--- mips-orig/include/asm-mips/it8172/it8172_int.h	2006-10-02 22:33:08.588158250 +0900
++++ mips/include/asm-mips/it8172/it8172_int.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,144 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	ITE 8172 Interrupt Numbering
+- *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#ifndef _MIPS_ITEINT_H
+-#define _MIPS_ITEINT_H
+-
+-/*
+- * Here's the "strategy":
+- * We number the LPC serial irqs from 0 to 15,
+- * the local bus irqs from 16 to 31,
+- * the pci dev register interrupts from 32 to 47,
+- * and the non-maskable ints from 48 to 53.
+- */
+-
+-#define IT8172_LPC_IRQ_BASE  0    /* first LPC int number */
+-#define IT8172_SERIRQ_0      (IT8172_LPC_IRQ_BASE + 0)
+-#define IT8172_SERIRQ_1      (IT8172_LPC_IRQ_BASE + 1)
+-#define IT8172_SERIRQ_2      (IT8172_LPC_IRQ_BASE + 2)
+-#define IT8172_SERIRQ_3      (IT8172_LPC_IRQ_BASE + 3)
+-#define IT8172_SERIRQ_4      (IT8172_LPC_IRQ_BASE + 4)
+-#define IT8172_SERIRQ_5      (IT8172_LPC_IRQ_BASE + 5)
+-#define IT8172_SERIRQ_6      (IT8172_LPC_IRQ_BASE + 6)
+-#define IT8172_SERIRQ_7      (IT8172_LPC_IRQ_BASE + 7)
+-#define IT8172_SERIRQ_8      (IT8172_LPC_IRQ_BASE + 8)
+-#define IT8172_SERIRQ_9      (IT8172_LPC_IRQ_BASE + 9)
+-#define IT8172_SERIRQ_10     (IT8172_LPC_IRQ_BASE + 10)
+-#define IT8172_SERIRQ_11     (IT8172_LPC_IRQ_BASE + 11)
+-#define IT8172_SERIRQ_12     (IT8172_LPC_IRQ_BASE + 12)
+-#define IT8172_SERIRQ_13     (IT8172_LPC_IRQ_BASE + 13)
+-#define IT8172_SERIRQ_14     (IT8172_LPC_IRQ_BASE + 14)
+-#define IT8172_SERIRQ_15     (IT8172_LPC_IRQ_BASE + 15)
+-
+-#define IT8172_LB_IRQ_BASE  16   /* first local bus int number */
+-#define IT8172_PPR_IRQ          (IT8172_LB_IRQ_BASE + 0) /* parallel port */
+-#define IT8172_TIMER0_IRQ       (IT8172_LB_IRQ_BASE + 1)
+-#define IT8172_TIMER1_IRQ       (IT8172_LB_IRQ_BASE + 2)
+-#define IT8172_I2C_IRQ          (IT8172_LB_IRQ_BASE + 3)
+-#define IT8172_GPIO_IRQ         (IT8172_LB_IRQ_BASE + 4)
+-#define IT8172_CIR0_IRQ         (IT8172_LB_IRQ_BASE + 5)
+-#define IT8172_CIR1_IRQ         (IT8172_LB_IRQ_BASE + 6)
+-#define IT8172_UART_IRQ         (IT8172_LB_IRQ_BASE + 7)
+-#define IT8172_SCR0_IRQ         (IT8172_LB_IRQ_BASE + 8)
+-#define IT8172_SCR1_IRQ         (IT8172_LB_IRQ_BASE + 9)
+-#define IT8172_RTC_IRQ          (IT8172_LB_IRQ_BASE + 10)
+-#define IT8172_IOCHK_IRQ        (IT8172_LB_IRQ_BASE + 11)
+-/* 12 - 15 reserved */
+-
+-/*
+- * Note here that the pci dev registers includes bits for more than
+- * just the pci devices.
+- */
+-#define IT8172_PCI_DEV_IRQ_BASE  32   /* first pci dev irq */
+-#define IT8172_AC97_IRQ          (IT8172_PCI_DEV_IRQ_BASE + 0)
+-#define IT8172_MC68K_IRQ         (IT8172_PCI_DEV_IRQ_BASE + 1)
+-#define IT8172_IDE_IRQ           (IT8172_PCI_DEV_IRQ_BASE + 2)
+-#define IT8172_USB_IRQ           (IT8172_PCI_DEV_IRQ_BASE + 3)
+-#define IT8172_BRIDGE_MASTER_IRQ (IT8172_PCI_DEV_IRQ_BASE + 4)
+-#define IT8172_BRIDGE_TARGET_IRQ (IT8172_PCI_DEV_IRQ_BASE + 5)
+-#define IT8172_PCI_INTA_IRQ      (IT8172_PCI_DEV_IRQ_BASE + 6)
+-#define IT8172_PCI_INTB_IRQ      (IT8172_PCI_DEV_IRQ_BASE + 7)
+-#define IT8172_PCI_INTC_IRQ      (IT8172_PCI_DEV_IRQ_BASE + 8)
+-#define IT8172_PCI_INTD_IRQ      (IT8172_PCI_DEV_IRQ_BASE + 9)
+-#define IT8172_S_INTA_IRQ        (IT8172_PCI_DEV_IRQ_BASE + 10)
+-#define IT8172_S_INTB_IRQ        (IT8172_PCI_DEV_IRQ_BASE + 11)
+-#define IT8172_S_INTC_IRQ        (IT8172_PCI_DEV_IRQ_BASE + 12)
+-#define IT8172_S_INTD_IRQ        (IT8172_PCI_DEV_IRQ_BASE + 13)
+-#define IT8172_CDMA_IRQ          (IT8172_PCI_DEV_IRQ_BASE + 14)
+-#define IT8172_DMA_IRQ           (IT8172_PCI_DEV_IRQ_BASE + 15)
+-
+-#define IT8172_NMI_IRQ_BASE      48
+-#define IT8172_SER_NMI_IRQ       (IT8172_NMI_IRQ_BASE + 0)
+-#define IT8172_PCI_NMI_IRQ       (IT8172_NMI_IRQ_BASE + 1)
+-#define IT8172_RTC_NMI_IRQ       (IT8172_NMI_IRQ_BASE + 2)
+-#define IT8172_CPUIF_NMI_IRQ     (IT8172_NMI_IRQ_BASE + 3)
+-#define IT8172_PMER_NMI_IRQ      (IT8172_NMI_IRQ_BASE + 4)
+-#define IT8172_POWER_NMI_IRQ     (IT8172_NMI_IRQ_BASE + 5)
+-
+-#define IT8172_LAST_IRQ          (IT8172_POWER_NMI_IRQ)
+-/* Finally, let's move over here the mips cpu timer interrupt.
+- */
+-#define MIPS_CPU_TIMER_IRQ       (NR_IRQS-1)
+-
+-/*
+- * IT8172 Interrupt Controller Registers
+- */
+-struct it8172_intc_regs {
+-        volatile unsigned short lb_req;      /* offset 0 */
+-        volatile unsigned short lb_mask;
+-        volatile unsigned short lb_trigger;
+-        volatile unsigned short lb_level;
+-	unsigned char pad0[8];
+-
+-        volatile unsigned short lpc_req;     /* offset 0x10 */
+-        volatile unsigned short lpc_mask;
+-        volatile unsigned short lpc_trigger;
+-        volatile unsigned short lpc_level;
+-	unsigned char pad1[8];
+-
+-        volatile unsigned short pci_req;     /* offset 0x20 */
+-        volatile unsigned short pci_mask;
+-        volatile unsigned short pci_trigger;
+-        volatile unsigned short pci_level;
+-	unsigned char pad2[8];
+-
+-        volatile unsigned short nmi_req;     /* offset 0x30 */
+-        volatile unsigned short nmi_mask;
+-        volatile unsigned short nmi_trigger;
+-        volatile unsigned short nmi_level;
+-	unsigned char pad3[6];
+-
+-        volatile unsigned short nmi_redir;   /* offset 0x3E */
+-	unsigned char pad4[0xBE];
+-
+-        volatile unsigned short intstatus;    /* offset 0xFE */
+-};
+-
+-#endif /* _MIPS_ITEINT_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/it8172/it8172_pci.h mips/include/asm-mips/it8172/it8172_pci.h
+--- mips-orig/include/asm-mips/it8172/it8172_pci.h	2006-10-02 22:33:08.588158250 +0900
++++ mips/include/asm-mips/it8172/it8172_pci.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,108 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	IT8172 system controller specific pci defines.
+- *
+- * Copyright 2000 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#ifndef _8172PCI_H_
+-#define _8172PCI_H_
+-
+-// PCI configuration space Type0
+-#define	PCI_IDREG	0x00
+-#define	PCI_CMDSTSREG	0x04
+-#define	PCI_CLASSREG	0x08
+-#define	PCI_BHLCREG	0x0C
+-#define	PCI_BASE1REG	0x10
+-#define	PCI_BASE2REG	0x14
+-#define	PCI_BASE3REG	0x18
+-#define	PCI_BASE4REG	0x1C
+-#define	PCI_BASE5REG	0x20
+-#define	PCI_BASE6REG	0x24
+-#define	PCI_ROMBASEREG	0x30
+-#define	PCI_INTRREG	0x3C
+-
+-// PCI configuration space Type1
+-#define	PCI_BUSNOREG	0x18
+-
+-#define	IT_PCI_VENDORID(x)	((x) & 0xFFFF)
+-#define	IT_PCI_DEVICEID(x)	(((x)>>16) & 0xFFFF)
+-
+-// Command register
+-#define	PCI_CMD_IOEN		0x00000001
+-#define	PCI_CMD_MEMEN		0x00000002
+-#define	PCI_CMD_BUSMASTER	0x00000004
+-#define	PCI_CMD_SPCYCLE		0x00000008
+-#define	PCI_CMD_WRINV		0x00000010
+-#define	PCI_CMD_VGASNOOP	0x00000020
+-#define	PCI_CMD_PERR		0x00000040
+-#define	PCI_CMD_WAITCTRL	0x00000080
+-#define	PCI_CMD_SERR		0x00000100
+-#define	PCI_CMD_FAST_BACKTOBACK	0x00000200
+-
+-// Status register
+-#define	PCI_STS_66MHZ		0x00200000
+-#define	PCI_STS_SUPPORT_UDF	0x00400000
+-#define	PCI_STS_FAST_BACKTOBACK	0x00800000
+-#define	PCI_STS_DATA_PERR	0x01000000
+-#define	PCI_STS_DEVSEL0		0x02000000
+-#define	PCI_STS_DEVSEL1		0x04000000
+-#define	PCI_STS_SIG_TGTABORT	0x08000000
+-#define	PCI_STS_RCV_TGTABORT	0x10000000
+-#define	PCI_STS_RCV_MSTABORT	0x20000000
+-#define	PCI_STS_SYSERR		0x40000000
+-#define	PCI_STS_DETCT_PERR	0x80000000
+-
+-#define	IT_PCI_CLASS(x)		(((x)>>24) & 0xFF)
+-#define	IT_PCI_SUBCLASS(x)		(((x)>>16) & 0xFF)
+-#define	IT_PCI_INTERFACE(x)	(((x)>>8) & 0xFF)
+-#define	IT_PCI_REVISION(x)		((x) & 0xFF)
+-
+-// PCI class code
+-#define	PCI_CLASS_BRIDGE			0x06
+-
+-// bridge subclass
+-#define	PCI_SUBCLASS_BRIDGE_HOST		0x00
+-#define	PCI_SUBCLASS_BRIDGE_PCI			0x04
+-
+-// BHLCREG
+-#define	IT_PCI_BIST(x)		(((x)>>24) & 0xFF)
+-#define	IT_PCI_HEADERTYPE(x)	(((x)>>16) & 0xFF)
+-#define	IT_PCI_LATENCYTIMER(x)	(((x)>>8) & 0xFF)
+-#define	IT_PCI_CACHELINESIZE(x)	((x) & 0xFF)
+-
+-#define	PCI_MULTIFUNC	0x80
+-
+-// INTRREG
+-#define	IT_PCI_MAXLAT(x)		(((x)>>24) & 0xFF)
+-#define	IT_PCI_MINGNT(x)		(((x)>>16) & 0xFF)
+-#define	IT_PCI_INTRPIN(x)		(((x)>>8) & 0xFF)
+-#define	IT_PCI_INTRLINE(x)		((x) & 0xFF)
+-
+-#define	PCI_VENDOR_NEC	0x1033
+-#define PCI_VENDOR_DEC	0x1101
+-
+-#endif // _8172PCI_H_
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/it8712.h mips/include/asm-mips/it8712.h
+--- mips-orig/include/asm-mips/it8712.h	2006-10-02 22:33:08.588158250 +0900
++++ mips/include/asm-mips/it8712.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,28 +0,0 @@
+-
+-#ifndef __IT8712_H__
+-#define __IT8712_H__
+-
+-#define LPC_BASE_ADDR	0x14000000
+-
+-// MB PnP configuration register
+-#define LPC_KEY_ADDR	0x1400002E
+-#define LPC_DATA_ADDR	0x1400002F
+-
+-// Device LDN
+-#define LDN_SERIAL1	0x01
+-#define LDN_SERIAL2	0x02
+-#define LDN_PARALLEL	0x03
+-#define LDN_KEYBOARD	0x05
+-#define LDN_MOUSE	0x06
+-
+-#define IT8712_UART1_PORT      0x3F8
+-#define IT8712_UART2_PORT      0x2F8
+-
+-#ifndef ASM_ONLY
+-
+-void LPCSetConfig(char LdnNumber, char Index, char data);
+-char LPCGetConfig(char LdnNumber, char Index);
+-
+-#endif
+-
+-#endif
 diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/serial.h mips/include/asm-mips/serial.h
---- mips-orig/include/asm-mips/serial.h	2006-10-02 22:40:23.743353750 +0900
-+++ mips/include/asm-mips/serial.h	2006-10-02 22:40:29.439709750 +0900
-@@ -113,86 +113,6 @@
- #define STD_SERIAL_PORT_DEFNS
- #endif /* CONFIG_HAVE_STD_PC_SERIAL_PORTS */
- 
--#ifdef CONFIG_MOMENCO_OCELOT_3
--#define OCELOT_3_BASE_BAUD	( 20000000 / 16 )
--#define OCELOT_3_SERIAL_IRQ	6
--#define OCELOT_3_SERIAL_BASE	(signed)0xfd000020
--
--#define _OCELOT_3_SERIAL_INIT(int, base)				\
--	{ .baud_base = OCELOT_3_BASE_BAUD, irq: int, 			\
--	  .flags = STD_COM_FLAGS,						\
--	  .iomem_base = (u8 *) base, iomem_reg_shift: 2,			\
--	  io_type: SERIAL_IO_MEM }
--
--#define MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS				\
--	_OCELOT_3_SERIAL_INIT(OCELOT_3_SERIAL_IRQ, OCELOT_3_SERIAL_BASE)
--#else
--#define MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS
--#endif
--
--#ifdef CONFIG_MOMENCO_OCELOT
--/* Ordinary NS16552 duart with a 20MHz crystal.  */
--#define OCELOT_BASE_BAUD ( 20000000 / 16 )
--
--#define OCELOT_SERIAL1_IRQ	4
--#define OCELOT_SERIAL1_BASE	0xe0001020
--
--#define _OCELOT_SERIAL_INIT(int, base)					\
--	{ .baud_base = OCELOT_BASE_BAUD, .irq = int, .flags = STD_COM_FLAGS,	\
--	  .iomem_base = (u8 *) base, .iomem_reg_shift = 2,			\
--	  .io_type = SERIAL_IO_MEM }
--#define MOMENCO_OCELOT_SERIAL_PORT_DEFNS				\
--	_OCELOT_SERIAL_INIT(OCELOT_SERIAL1_IRQ, OCELOT_SERIAL1_BASE)
--#else
--#define MOMENCO_OCELOT_SERIAL_PORT_DEFNS
--#endif
--
--#ifdef CONFIG_MOMENCO_OCELOT_G
--/* Ordinary NS16552 duart with a 20MHz crystal.  */
--#define OCELOT_G_BASE_BAUD ( 20000000 / 16 )
--
--#define OCELOT_G_SERIAL1_IRQ	4
--#if 0
--#define OCELOT_G_SERIAL1_BASE	0xe0001020
--#else
--#define OCELOT_G_SERIAL1_BASE	0xfd000020
--#endif
--
--#define _OCELOT_G_SERIAL_INIT(int, base)				\
--	{ .baud_base = OCELOT_G_BASE_BAUD, .irq = int, .flags = STD_COM_FLAGS,\
--	  .iomem_base = (u8 *) base, .iomem_reg_shift = 2,			\
--	  .io_type = SERIAL_IO_MEM }
--#define MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS				\
--	_OCELOT_G_SERIAL_INIT(OCELOT_G_SERIAL1_IRQ, OCELOT_G_SERIAL1_BASE)
--#else
--#define MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS
--#endif
--
--#ifdef CONFIG_MOMENCO_OCELOT_C
--/* Ordinary NS16552 duart with a 20MHz crystal.  */
--#define OCELOT_C_BASE_BAUD ( 20000000 / 16 )
--
--#define OCELOT_C_SERIAL1_IRQ	80
--#define OCELOT_C_SERIAL1_BASE	0xfd000020
--
--#define OCELOT_C_SERIAL2_IRQ	81
--#define OCELOT_C_SERIAL2_BASE	0xfd000000
--
--#define _OCELOT_C_SERIAL_INIT(int, base)				\
--	{ .baud_base		= OCELOT_C_BASE_BAUD,			\
--	  .irq			= (int),				\
--	  .flags		= STD_COM_FLAGS,			\
--	  .iomem_base		= (u8 *) base,				\
--	  .iomem_reg_shift	= 2,					\
--	  .io_type		= SERIAL_IO_MEM				\
--	 }
--#define MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS				\
--	_OCELOT_C_SERIAL_INIT(OCELOT_C_SERIAL1_IRQ, OCELOT_C_SERIAL1_BASE), \
--	_OCELOT_C_SERIAL_INIT(OCELOT_C_SERIAL2_IRQ, OCELOT_C_SERIAL2_BASE)
--#else
--#define MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS
--#endif
--
- #ifdef CONFIG_DDB5477
- #include <asm/ddb5xxx/ddb5477.h>
- #define DDB5477_SERIAL_PORT_DEFNS                                       \
-@@ -224,10 +144,6 @@
- 	ITE_SERIAL_PORT_DEFNS           		\
- 	IVR_SERIAL_PORT_DEFNS           		\
- 	JAZZ_SERIAL_PORT_DEFNS				\
--	STD_SERIAL_PORT_DEFNS				\
--	MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS		\
--	MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS		\
--	MOMENCO_OCELOT_SERIAL_PORT_DEFNS		\
--	MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS
-+	STD_SERIAL_PORT_DEFNS
- 
- #endif /* _ASM_SERIAL_H */
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/war.h mips/include/asm-mips/war.h
---- mips-orig/include/asm-mips/war.h	2006-10-02 22:40:23.743353750 +0900
-+++ mips/include/asm-mips/war.h	2006-10-02 22:40:29.439709750 +0900
-@@ -180,8 +180,7 @@
-  * where invalid instructions in the same I-cache line worth of instructions
-  * being fetched may case spurious exceptions.
-  */
--#if defined(CONFIG_MOMENCO_OCELOT_3) || defined(CONFIG_PMC_YOSEMITE) || \
--    defined(CONFIG_BASLER_EXCITE)
-+#if defined(CONFIG_PMC_YOSEMITE) || defined(CONFIG_BASLER_EXCITE)
- #define ICACHE_REFILLS_WORKAROUND_WAR	1
+--- mips-orig/include/asm-mips/serial.h	2006-10-02 22:43:55.408582000 +0900
++++ mips/include/asm-mips/serial.h	2006-10-02 22:44:01.324951750 +0900
+@@ -69,38 +69,6 @@
+ #define EV64120_SERIAL_PORT_DEFNS
  #endif
+ 
+-#ifdef CONFIG_MIPS_ITE8172
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_int.h>
+-#include <asm/it8712.h>
+-#define ITE_SERIAL_PORT_DEFNS                                  \
+-    { .baud_base = BASE_BAUD, .port = (IT8172_PCI_IO_BASE + IT_UART_BASE), \
+-      .irq = IT8172_UART_IRQ, .flags = STD_COM_FLAGS, .port = PORT_16550 }, \
+-    { .baud_base = (24000000/(16*13)), .port = (IT8172_PCI_IO_BASE + IT8712_UART1_PORT), \
+-      .irq = IT8172_SERIRQ_4, .flags = STD_COM_FLAGS, .port = PORT_16550 }, \
+-    /* Smart Card Reader 0 */ \
+-    { .baud_base = BASE_BAUD, .port = (IT8172_PCI_IO_BASE + IT_SCR0_BASE), \
+-      .irq = IT8172_SCR0_IRQ, .flags = STD_COM_FLAGS, .port = PORT_16550 }, \
+-    /* Smart Card Reader 1 */ \
+-    { .baud_base = BASE_BAUD, .port = (IT8172_PCI_IO_BASE + IT_SCR1_BASE), \
+-      .irq = IT8172_SCR1_IRQ, .flags = STD_COM_FLAGS, .port = PORT_16550 },
+-#else
+-#define ITE_SERIAL_PORT_DEFNS
+-#endif
+-
+-#ifdef CONFIG_MIPS_IVR
+-#include <asm/it8172/it8172.h>
+-#include <asm/it8172/it8172_int.h>
+-#define IVR_SERIAL_PORT_DEFNS                                  \
+-    { .baud_base = BASE_BAUD, .port = (IT8172_PCI_IO_BASE + IT_UART_BASE), \
+-      .irq = IT8172_UART_IRQ, .flags = STD_COM_FLAGS, .port = PORT_16550 },         \
+-    /* Smart Card Reader 1 */ \
+-    { .baud_base = BASE_BAUD, .port = (IT8172_PCI_IO_BASE + IT_SCR1_BASE), \
+-      .irq = IT8172_SCR1_IRQ, .flags = STD_COM_FLAGS, .port = PORT_16550 },
+-#else
+-#define IVR_SERIAL_PORT_DEFNS
+-#endif
+-
+ #ifdef CONFIG_HAVE_STD_PC_SERIAL_PORT
+ #define STD_SERIAL_PORT_DEFNS			\
+ 	/* UART CLK   PORT IRQ     FLAGS        */			\
+@@ -141,8 +109,6 @@
+ 	DDB5477_SERIAL_PORT_DEFNS			\
+ 	EV64120_SERIAL_PORT_DEFNS			\
+ 	IP32_SERIAL_PORT_DEFNS                          \
+-	ITE_SERIAL_PORT_DEFNS           		\
+-	IVR_SERIAL_PORT_DEFNS           		\
+ 	JAZZ_SERIAL_PORT_DEFNS				\
+ 	STD_SERIAL_PORT_DEFNS
  

@@ -1,54 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 02:44:17 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:36356 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038837AbWJCBoO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 3 Oct 2006 02:44:14 +0100
-Received: by mo.po.2iij.net (mo30) id k931iAwG006033; Tue, 3 Oct 2006 10:44:10 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox32) id k931i4TD002658
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 3 Oct 2006 10:44:04 +0900 (JST)
-Message-Id: <200610030144.k931i4TD002658@mbox32.po.2iij.net>
-Date:	Tue, 3 Oct 2006 10:44:04 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
-Subject: Re: [PATCH] remove Momentum / PMC-Sierra Jaguar ATX evaluation
- board
-In-Reply-To: <20061002151800.GA25180@linux-mips.org>
-References: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>
-	<20061002151800.GA25180@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 08:57:20 +0100 (BST)
+Received: from ns2.nec.com.au ([147.76.180.2]:4266 "EHLO ns2.nec.com.au")
+	by ftp.linux-mips.org with ESMTP id S20037761AbWJCH5Q (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 3 Oct 2006 08:57:16 +0100
+Received: from smtp1.nec.com.au (unknown [172.31.8.18])
+	by ns2.nec.com.au (Postfix) with ESMTP id 70CD33B6B6
+	for <linux-mips@linux-mips.org>; Tue,  3 Oct 2006 17:57:04 +1000 (EST)
+Received: from [147.76.208.162] ([147.76.208.162])
+	by tns.neca.nec.com.au (8.12.8/8.12.8) with ESMTP id k9382jZl030035
+	for <linux-mips@linux-mips.org>; Tue, 3 Oct 2006 18:02:48 +1000
+Message-ID: <4522175B.80901@nec.com.au>
+Date:	Tue, 03 Oct 2006 17:55:07 +1000
+From:	Pak Woon <pak.woon@nec.com.au>
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Roll-your-own Toolchain Builds
+References: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>	<20061002151800.GA25180@linux-mips.org> <200610030144.k931i4TD002658@mbox32.po.2iij.net>
+In-Reply-To: <200610030144.k931i4TD002658@mbox32.po.2iij.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <pak.woon@nec.com.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12769
+X-archive-position: 12770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: pak.woon@nec.com.au
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+Hi all,
 
-On Mon, 2 Oct 2006 16:18:00 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
+I am trying to roll-my-own toolchain by following the instructions 
+outlined in http://www.linux-mips.org/wiki/Toolchains. I have 
+encountered the "cannot create executables" / "crt01.o: No such file" 
+problem. There are a lot of people who see the same thing, but there 
+does not seem to be a definative answer.
 
-> On Mon, Oct 02, 2006 at 11:14:32PM +0900, Yoichi Yuasa wrote:
-> 
-> > This patch has removed Momentum / PMC-Sierra Jaguar ATX evaluation board support.
-> > It was scheduled to be removed after 2.6.18 released.
-> 
-> Stanislaw Skowronek raised his hand to take care of all the Jaguar /
-> Ocelot boards, so I'll remove them from the list for now.
+FYI, my packages are:-
+binutils-2.16.91.0.6-5
+gcc-4.1.1-1.fc5
+lib-gcc-4.1.1-1.fc5
+gcc-gfortran-4.1.1-1.fc5
+gcc-g++-4.1.1-1.fc5
 
-OK.
-
-How about MIPS Technologies boards on the list?
-
-Yoichi
+Regards,
+Pak

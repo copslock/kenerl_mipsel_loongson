@@ -1,94 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 16:20:44 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:774 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038891AbWJCPTQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Oct 2006 16:19:16 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 120DBF62EE;
-	Tue,  3 Oct 2006 17:19:10 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id TPRCghgBWeWx; Tue,  3 Oct 2006 17:19:09 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B9374F62E0;
-	Tue,  3 Oct 2006 17:19:09 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k93FJHRo005257;
-	Tue, 3 Oct 2006 17:19:17 +0200
-Date:	Tue, 3 Oct 2006 16:19:12 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@osdl.org>, Jeff Garzik <jgarzik@pobox.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Andy Fleming <afleming@freescale.com>
-cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [patch 6/6] 2.6.18: sb1250-mac: PHY interrupt polarity fixup
-Message-ID: <Pine.LNX.4.64N.0610031605200.4642@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 16:33:59 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.174]:19268 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038895AbWJCPd5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Oct 2006 16:33:57 +0100
+Received: by ug-out-1314.google.com with SMTP id z27so580450ugc
+        for <linux-mips@linux-mips.org>; Tue, 03 Oct 2006 08:33:57 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=rfhAfUelVzOqtwamRjFBYfYpQQS2ugSDX7U1rRmHp5wTBOGl8fy8wyapEBYPBd8rcTeazv/nqC31eUUR5mprfJImolcSRHvpFysxSrfSrV9vWPlBDW2IjhL0INcRdIQUnj8MdWobP2NxbJEDRMOQwy1HFvJ7zXjABGUhQrV0aqk=
+Received: by 10.49.43.2 with SMTP id v2mr963135nfj;
+        Tue, 03 Oct 2006 08:33:57 -0700 (PDT)
+Received: from ?192.168.0.24? ( [81.252.61.1])
+        by mx.gmail.com with ESMTP id r34sm1298847nfc.2006.10.03.08.33.56;
+        Tue, 03 Oct 2006 08:33:56 -0700 (PDT)
+Message-ID: <45228320.2070809@innova-card.com>
+Date:	Tue, 03 Oct 2006 17:34:56 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.4/1984/Tue Oct  3 12:01:28 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+CC:	Franck Bui-Huu <vagabon.xyz@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: [RFC] setup.c: get ride of CPHYSADDR()
+References: <45227762.8090207@innova-card.com> <Pine.LNX.4.64N.0610031614550.4642@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0610031614550.4642@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12786
+X-archive-position: 12787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Maciej W. Rozycki wrote:
+> Franck,
+>>
+>> The reason why I'm trying to kick out this macro is that we should
+>> rely on __pa() for address convertions instead of having several
+>> helpers that do the same thing but differently. Futermore if some
+>> tricks are needed for these conversions, they should be done in
+>> one place.
+> 
+>  Have you verified it works correctly for 64-bit kernels linked at a KSEG0 
+> address?
+> 
 
- This change makes the PHY interrupt actually work as intended on the 
-SWARM board, where the CFE firmware leaves the GPIO line at the power-on 
-polarity, which is suitable for active-high interrupts, but not quite so 
-for this one (the "interrupt force" bit in the PHY works much better for 
-stress-testing interrupt handling; use that one instead if needed).
+Of course not ;). More seriously, I'm working on a 32 bits kernel. I'm
+not familiar with MIPS 64 bits world and all tricks needed to compile
+them, and that's the reason why I make this thread an RFC one.
 
- Please consider.
+I was suspecting something related to 64 bits kernels. Do you mean
+that this macro exists because of a linker issue ?
 
-  Maciej
+Futhermore I noticed that some part of the code in setup.c do no rely
+on this macro for address convertions. See for example in
+resource_init():
 
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+	code_resource.start = virt_to_phys(&_text);
+	code_resource.end = virt_to_phys(&_etext) - 1;
+	data_resource.start = virt_to_phys(&_etext);
+	data_resource.end = virt_to_phys(&_edata) - 1;
 
-patch-mips-2.6.18-20060920-swarm-setup-15
-diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/arch/mips/sibyte/swarm/setup.c linux-mips-2.6.18-20060920/arch/mips/sibyte/swarm/setup.c
---- linux-mips-2.6.18-20060920.macro/arch/mips/sibyte/swarm/setup.c	2006-07-12 04:59:56.000000000 +0000
-+++ linux-mips-2.6.18-20060920/arch/mips/sibyte/swarm/setup.c	2006-09-28 02:37:31.000000000 +0000
-@@ -1,6 +1,7 @@
- /*
-  * Copyright (C) 2000, 2001, 2002, 2003, 2004 Broadcom Corporation
-  * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)
-+ * Copyright (c) 2006  Maciej W. Rozycki
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-@@ -106,6 +107,8 @@ int swarm_be_handler(struct pt_regs *reg
- 
- void __init plat_mem_setup(void)
- {
-+	u64 invert;
-+
- #if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
- 	bcm1480_setup();
- #elif defined(CONFIG_SIBYTE_SB1250) || defined(CONFIG_SIBYTE_BCM112X)
-@@ -114,6 +117,16 @@ void __init plat_mem_setup(void)
- #error invalid SiByte board configuation
- #endif
- 
-+	/*
-+	 * The PHY interrupt on the SWARM is active low,
-+	 * but CFE gets it wrong (or not at all, probably).
-+	 */
-+#ifdef K_GPIO_PHY
-+	invert = __raw_readq(IOADDR(A_GPIO_INPUT_INVERT));
-+	invert |= 1 << K_GPIO_PHY;
-+	__raw_writeq(invert, IOADDR(A_GPIO_INPUT_INVERT));
-+#endif
-+
- 	panic_timeout = 5;  /* For debug.  */
- 
- 	board_time_init = swarm_time_init;
+Why in that case we compute address converstion differently ?
+
+Thanks
+		Franck

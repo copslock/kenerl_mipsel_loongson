@@ -1,47 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 21:13:23 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:59280 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20038894AbWJCUNW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Oct 2006 21:13:22 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k93KDMva006329;
-	Tue, 3 Oct 2006 21:13:22 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k93KDLJH006328;
-	Tue, 3 Oct 2006 21:13:21 +0100
-Date:	Tue, 3 Oct 2006 21:13:21 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 21:26:48 +0100 (BST)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:60806 "EHLO
+	bluesmobile.corp.specifix.com") by ftp.linux-mips.org with ESMTP
+	id S20038916AbWJCU0o (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Oct 2006 21:26:44 +0100
+Received: from localhost.localdomain (bluesmobile.specifix.com [64.220.152.99])
+	by bluesmobile.corp.specifix.com (Postfix) with ESMTP id 203DB3B8FE;
+	Tue,  3 Oct 2006 13:20:58 -0700 (PDT)
+Subject: Re: Roll-your-own Toolchain Builds
+From:	Jim Wilson <wilson@specifix.com>
+To:	Pak Woon <pak.woon@nec.com.au>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Fix wreckage after removal of tickadj; convert to GENERIC_TIME.
-Message-ID: <20061003201320.GB4934@linux-mips.org>
-References: <S20038910AbWJCTjS/20061003193918Z+2409@ftp.linux-mips.org> <4522BDFC.5040701@ru.mvista.com>
+In-Reply-To: <4522175B.80901@nec.com.au>
+References: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>
+	 <20061002151800.GA25180@linux-mips.org>
+	 <200610030144.k931i4TD002658@mbox32.po.2iij.net>
+	 <4522175B.80901@nec.com.au>
+Content-Type: text/plain
+Date:	Tue, 03 Oct 2006 13:25:47 -0700
+Message-Id: <1159907147.23111.14.camel@dhcp-128-107-166-62.cisco.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4522BDFC.5040701@ru.mvista.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.6.3 (2.6.3-1.fc5.5) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wilson@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12792
+X-archive-position: 12793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wilson@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 03, 2006 at 11:46:04PM +0400, Sergei Shtylyov wrote:
+On Tue, 2006-10-03 at 17:55 +1000, Pak Woon wrote:
+> I am trying to roll-my-own toolchain by following the instructions 
+> outlined in http://www.linux-mips.org/wiki/Toolchains. I have 
+> encountered the "cannot create executables" / "crt01.o: No such file" 
 
->    Well, be forewarned that with this patch, MIPS kernel now only has 
-> jiffy-precise time resolution. I.e. you could have killed all gettimeoffset 
-> handlers I suppose since there's nothing to call them from anymore. We need 
-> a clocksource patch added now to restore the old functionality (it's 
-> currently a part of the RT patch)...
+This is lacking the details and context necessary to understand what is
+going on.  What exactly command did you type?  What exactly was the
+error you got?  What was the make output leading up to the error?
 
-After the other broken time patch it was most important to get the
-kernel buildable again.  We can still sort out the clock source.
+Thinking about this a bit, I think the problem you ran into here is that
+the instructions given on the web site are for building a kernel only
+compiler.  This is not a compiler that you can use for building
+applications, as there is no glibc.  This is also not a compiler that
+you can use for building gcc libraries.
 
-  Ralf
+So the problem here is that gcc-4.x contains more libraries than
+gcc-3.x, including some written in C.  The instructions say to use
+--enable-languages=c when configuring, and then type make all.  This
+will work in gcc-3.x as there are no libraries for the C front end.
+This will not work for gcc-4.x, as there is at least one library for the
+C front end, namely mudflap.  So I am guessing you got the error while
+configuring libmudflap.
+
+The solution is to use "make all-gcc" instead of "make all" when
+building gcc.  This will build only the compiler (and libgcc), without
+any of the target libraries, that are unneeded for a kernel compiler.
+If this works, perhaps the instructions on the wiki should be changed.
+Using "make all-gcc" should work for all gcc versions.
+-- 
+Jim Wilson, GNU Tools Support, http://www.specifix.com

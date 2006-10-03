@@ -1,61 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 09:52:41 +0100 (BST)
-Received: from ns2.nec.com.au ([147.76.180.2]:37295 "EHLO ns2.nec.com.au")
-	by ftp.linux-mips.org with ESMTP id S20037889AbWJCIwj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 3 Oct 2006 09:52:39 +0100
-Received: from smtp1.nec.com.au (unknown [172.31.8.18])
-	by ns2.nec.com.au (Postfix) with ESMTP id 4021C3B6A7
-	for <linux-mips@linux-mips.org>; Tue,  3 Oct 2006 18:52:32 +1000 (EST)
-Received: from [147.76.208.162] ([147.76.208.162])
-	by tns.neca.nec.com.au (8.12.8/8.12.8) with ESMTP id k938wFZl031204;
-	Tue, 3 Oct 2006 18:58:16 +1000
-Message-ID: <4522245D.4020801@nec.com.au>
-Date:	Tue, 03 Oct 2006 18:50:37 +1000
-From:	Pak Woon <pak.woon@nec.com.au>
-User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 10:45:32 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:40972 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20038330AbWJCJp2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Oct 2006 10:45:28 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 1530CF61A3;
+	Tue,  3 Oct 2006 11:45:24 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id VtHde4pR2Z0a; Tue,  3 Oct 2006 11:45:23 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B5308F619C;
+	Tue,  3 Oct 2006 11:45:23 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k939jRRq012181;
+	Tue, 3 Oct 2006 11:45:27 +0200
+Date:	Tue, 3 Oct 2006 10:45:24 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Roll-your-own Toolchain Builds
-References: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>	<20061002151800.GA25180@linux-mips.org>	<200610030144.k931i4TD002658@mbox32.po.2iij.net>	<4522175B.80901@nec.com.au> <20061003173304.04e8b907.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20061003173304.04e8b907.yoichi_yuasa@tripeaks.co.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <pak.woon@nec.com.au>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] remove Momentum / PMC-Sierra Jaguar ATX evaluation board
+In-Reply-To: <200610030144.k931i4TD002658@mbox32.po.2iij.net>
+Message-ID: <Pine.LNX.4.64N.0610031033280.4642@blysk.ds.pg.gda.pl>
+References: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>
+ <20061002151800.GA25180@linux-mips.org> <200610030144.k931i4TD002658@mbox32.po.2iij.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.4/1982/Tue Oct  3 07:04:49 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12773
+X-archive-position: 12774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pak.woon@nec.com.au
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
->>I am trying to roll-my-own toolchain by following the instructions 
->>outlined in http://www.linux-mips.org/wiki/Toolchains. I have 
->>encountered the "cannot create executables" / "crt01.o: No such file" 
->>problem. There are a lot of people who see the same thing, but there 
->>does not seem to be a definative answer.
-> 
-> 
-> When did you get the message?
-During the "make -j2" command when building gcc
+On Tue, 3 Oct 2006, Yoichi Yuasa wrote:
 
-> building toolchain or ...
-> 
-> 
->>FYI, my packages are:-
->>binutils-2.16.91.0.6-5
->>gcc-4.1.1-1.fc5
->>lib-gcc-4.1.1-1.fc5
->>gcc-gfortran-4.1.1-1.fc5
->>gcc-g++-4.1.1-1.fc5
-> 
-> 
-> Did you install glibc-devel package?
-I have glibc-devel-2.4-11
+> How about MIPS Technologies boards on the list?
 
-> Yoichi
-> 
+ Both configurations affected build just fine now.
+
+ The Atlas board needs an update for its serial driver that I have to send 
+through RMK (which I'll try to do shortly) and the driver for the onboard 
+53c810 requires the missing iomap support.  Otherwise it works fine with 
+core cards using the Galileo system controller (others may have issues, 
+which may or may not eventually be resolved).
+
+ The SEAD board requires an update to its interrupt handler, which I'll 
+code as soon as I find a couple of minutes to spare.  It's nothing 
+complicated, but I want to test it a little bit before committing.  I need 
+to find a useful way of running Linux on it though. ;-)
+
+  Maciej

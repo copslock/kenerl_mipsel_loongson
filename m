@@ -1,84 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 15:43:54 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.185]:38023 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037823AbWJCOnw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Oct 2006 15:43:52 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so184193nfc
-        for <linux-mips@linux-mips.org>; Tue, 03 Oct 2006 07:43:51 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:subject:content-type:content-transfer-encoding:from;
-        b=WzLNzRcMG7pvK/Y1uy1mNxYojweL20ud4XJiNtdsHt/E5Fw/tsKRJrG8ONFKKNjjFxjf7RjUymRhcq5fDWWHzb75IzS79YmgxuZakRLm9dC1+MzYilWA1gy6+3z5SUNCBHowHpDQLTGnR1PmE+uXxs9I0wfPyedJLAknc3B53JA=
-Received: by 10.48.48.15 with SMTP id v15mr924082nfv;
-        Tue, 03 Oct 2006 07:43:51 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.gmail.com with ESMTP id l32sm1218693nfa.2006.10.03.07.43.50;
-        Tue, 03 Oct 2006 07:43:50 -0700 (PDT)
-Message-ID: <45227762.8090207@innova-card.com>
-Date:	Tue, 03 Oct 2006 16:44:50 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 16:16:35 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:12037 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20038706AbWJCPQc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Oct 2006 16:16:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 13420F62CC;
+	Tue,  3 Oct 2006 17:16:28 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id i91M76rkR9YG; Tue,  3 Oct 2006 17:16:27 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C2374F5BB4;
+	Tue,  3 Oct 2006 17:16:27 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k93FGZEr004033;
+	Tue, 3 Oct 2006 17:16:35 +0200
+Date:	Tue, 3 Oct 2006 16:16:30 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: [RFC] setup.c: get ride of CPHYSADDR()
+In-Reply-To: <45227762.8090207@innova-card.com>
+Message-ID: <Pine.LNX.4.64N.0610031614550.4642@blysk.ds.pg.gda.pl>
+References: <45227762.8090207@innova-card.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [RFC] setup.c: get ride of CPHYSADDR()
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.4/1984/Tue Oct  3 12:01:28 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12778
+X-archive-position: 12779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Franck,
 
-The following patch is an attempt to remove this macro in setup.c.
-I'm not sure about why sometimes it is used and sometimes it is
-not. By sending this RFC, I hope to get some feedbacks that will shed
-some light on this obscure macro...
+> The following patch is an attempt to remove this macro in setup.c.
+> I'm not sure about why sometimes it is used and sometimes it is
+> not. By sending this RFC, I hope to get some feedbacks that will shed
+> some light on this obscure macro...
+> 
+> The reason why I'm trying to kick out this macro is that we should
+> rely on __pa() for address convertions instead of having several
+> helpers that do the same thing but differently. Futermore if some
+> tricks are needed for these conversions, they should be done in
+> one place.
 
-The reason why I'm trying to kick out this macro is that we should
-rely on __pa() for address convertions instead of having several
-helpers that do the same thing but differently. Futermore if some
-tricks are needed for these conversions, they should be done in
-one place.
+ Have you verified it works correctly for 64-bit kernels linked at a KSEG0 
+address?
 
-Thanks
-		Franck
-
--- >8 --
-
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index fdbb508..00d62bd 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -204,12 +204,12 @@ static void __init finalize_initrd(void)
- 		printk(KERN_INFO "Initrd not found or empty");
- 		goto disable;
- 	}
--	if (CPHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
-+	if (__pa(initrd_end) > PFN_PHYS(max_low_pfn)) {
- 		printk("Initrd extends beyond end of memory");
- 		goto disable;
- 	}
- 
--	reserve_bootmem(CPHYSADDR(initrd_start), size);
-+	reserve_bootmem(__pa(initrd_start), size);
- 	initrd_below_start_ok = 1;
- 
- 	printk(KERN_INFO "Initial ramdisk at: 0x%lx (%lu bytes)\n",
-@@ -256,7 +256,7 @@ static void __init bootmem_init(void)
- 	 * of usable memory.
- 	 */
- 	reserved_end = init_initrd();
--	reserved_end = PFN_UP(CPHYSADDR(max(reserved_end, (unsigned long)&_end)));
-+	reserved_end = PFN_UP(__pa(max(reserved_end, (unsigned long)&_end)));
- 
- 	/*
- 	 * Find the highest page frame number we have available.
+  Maciej

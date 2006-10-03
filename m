@@ -1,65 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Oct 2006 21:26:48 +0100 (BST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:60806 "EHLO
-	bluesmobile.corp.specifix.com") by ftp.linux-mips.org with ESMTP
-	id S20038916AbWJCU0o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Oct 2006 21:26:44 +0100
-Received: from localhost.localdomain (bluesmobile.specifix.com [64.220.152.99])
-	by bluesmobile.corp.specifix.com (Postfix) with ESMTP id 203DB3B8FE;
-	Tue,  3 Oct 2006 13:20:58 -0700 (PDT)
-Subject: Re: Roll-your-own Toolchain Builds
-From:	Jim Wilson <wilson@specifix.com>
-To:	Pak Woon <pak.woon@nec.com.au>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <4522175B.80901@nec.com.au>
-References: <20061002231432.733374f7.yoichi_yuasa@tripeaks.co.jp>
-	 <20061002151800.GA25180@linux-mips.org>
-	 <200610030144.k931i4TD002658@mbox32.po.2iij.net>
-	 <4522175B.80901@nec.com.au>
-Content-Type: text/plain
-Date:	Tue, 03 Oct 2006 13:25:47 -0700
-Message-Id: <1159907147.23111.14.camel@dhcp-128-107-166-62.cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Oct 2006 02:02:15 +0100 (BST)
+Received: from p549F5BCD.dip.t-dialin.net ([84.159.91.205]:21705 "EHLO
+	p549F5BCD.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S20038942AbWJDBCL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 4 Oct 2006 02:02:11 +0100
+Received: from smtp.osdl.org ([65.172.181.4]:63887 "EHLO smtp.osdl.org")
+	by lappi.linux-mips.net with ESMTP id S1100430AbWJCXqR (ORCPT
+	<rfc822;linux-mips@linux-mips.org> + 1 other);
+	Wed, 4 Oct 2006 01:46:17 +0200
+Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
+	by smtp.osdl.org (8.12.8/8.12.8) with ESMTP id k93NgsaX021601
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Tue, 3 Oct 2006 16:42:56 -0700
+Received: from akpm.corp.google.com (shell0.pdx.osdl.net [10.9.0.31])
+	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id k93NgrP8017346;
+	Tue, 3 Oct 2006 16:42:54 -0700
+Date:	Tue, 3 Oct 2006 16:42:53 -0700
+From:	Andrew Morton <akpm@osdl.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Jeff Garzik <jgarzik@pobox.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Andy Fleming <afleming@freescale.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [patch 4/6] 2.6.18: sb1250-mac: The actual driver update
+Message-Id: <20061003164253.62f9d5a3.akpm@osdl.org>
+In-Reply-To: <Pine.LNX.4.64N.0610031549270.4642@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0610031549270.4642@blysk.ds.pg.gda.pl>
+X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.6; i686-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.6.3 (2.6.3-1.fc5.5) 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <wilson@specifix.com>
+X-MIMEDefang-Filter: osdl$Revision: 1.155 $
+X-Scanned-By: MIMEDefang 2.36
+Return-Path: <akpm@osdl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12793
+X-archive-position: 12794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: akpm@osdl.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2006-10-03 at 17:55 +1000, Pak Woon wrote:
-> I am trying to roll-my-own toolchain by following the instructions 
-> outlined in http://www.linux-mips.org/wiki/Toolchains. I have 
-> encountered the "cannot create executables" / "crt01.o: No such file" 
+On Tue, 3 Oct 2006 16:18:44 +0100 (BST)
+"Maciej W. Rozycki" <macro@linux-mips.org> wrote:
 
-This is lacking the details and context necessary to understand what is
-going on.  What exactly command did you type?  What exactly was the
-error you got?  What was the make output leading up to the error?
+> +	sbmac_state_t		sbm_state;	/* current state */
 
-Thinking about this a bit, I think the problem you ran into here is that
-the instructions given on the web site are for building a kernel only
-compiler.  This is not a compiler that you can use for building
-applications, as there is no glibc.  This is also not a compiler that
-you can use for building gcc libraries.
+argh.
 
-So the problem here is that gcc-4.x contains more libraries than
-gcc-3.x, including some written in C.  The instructions say to use
---enable-languages=c when configuring, and then type make all.  This
-will work in gcc-3.x as there are no libraries for the C front end.
-This will not work for gcc-4.x, as there is at least one library for the
-C front end, namely mudflap.  So I am guessing you got the error while
-configuring libmudflap.
+The reader looks at this and doesn't know if it's an integer, a void*, a
+struct usb_ac_header_descriptor** or what.
 
-The solution is to use "make all-gcc" instead of "make all" when
-building gcc.  This will build only the compiler (and libgcc), without
-any of the target libraries, that are unneeded for a kernel compiler.
-If this works, perhaps the instructions on the wiki should be changed.
-Using "make all-gcc" should work for all gcc versions.
--- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+	enum sbmac_state	smb_state;
+
+is nicer.  It has information.

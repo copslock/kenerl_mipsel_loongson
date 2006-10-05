@@ -1,43 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2006 09:55:34 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.172]:1058 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038986AbWJEIzb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Oct 2006 09:55:31 +0100
-Received: by ug-out-1314.google.com with SMTP id 40so185156uga
-        for <linux-mips@linux-mips.org>; Thu, 05 Oct 2006 01:55:31 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=tap3BwvqW+3Bm2LPzMHCzpjfJk5E7vD1jd6z3JZDE2IPEY40+BVrheeIJS1QiE1jcSbGt8mK6SqNaQIcwCi8yg/dRbhn5jprpf6jZ88vAHDu5apBh38a7ifdjcLsvJ5fbcKyerMEd85/h8s2bbNXNMgGpE3ZLfNOwLLfefCsjCE=
-Received: by 10.67.101.10 with SMTP id d10mr1623899ugm;
-        Thu, 05 Oct 2006 01:55:30 -0700 (PDT)
-Received: by 10.66.241.3 with HTTP; Thu, 5 Oct 2006 01:55:30 -0700 (PDT)
-Message-ID: <50c9a2250610050155r9928a24rf41cf58a73e7a89c@mail.gmail.com>
-Date:	Thu, 5 Oct 2006 16:55:30 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: how to do a fast checksum for ext2fs?
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2006 11:09:25 +0100 (BST)
+Received: from nwd2mail11.analog.com ([137.71.25.57]:22368 "EHLO
+	nwd2mail11.analog.com") by ftp.linux-mips.org with ESMTP
+	id S20038488AbWJEKJX convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Oct 2006 11:09:23 +0100
+Received: from nwd2mhb2.analog.com ([137.71.6.12])
+  by nwd2mail11.analog.com with ESMTP; 05 Oct 2006 06:06:11 -0400
+X-IronPort-AV: i="4.09,262,1157342400"; 
+   d="scan'208"; a="10930511:sNHT21344141"
+Received: from nwd2exm4.ad.analog.com (nwd2exm4.ad.analog.com [10.64.53.123])
+	by nwd2mhb2.analog.com (8.9.3 (PHNE_28810+JAGae91741)/8.9.3) with ESMTP id GAA18664
+	for <linux-mips@linux-mips.org>; Thu, 5 Oct 2006 06:09:24 -0400 (EDT)
+Received: from nwd2exm5.ad.analog.com ([10.64.51.20]) by nwd2exm4.ad.analog.com with Microsoft SMTPSVC(6.0.3790.211);
+	 Thu, 5 Oct 2006 06:09:22 -0400
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: R300 Mips Question
+Date:	Thu, 5 Oct 2006 06:09:19 -0400
+Message-ID: <7D453D0504B6A2429F98F4D72CBEDE490D7D8795@nwd2exm5.ad.analog.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: R300 Mips Question
+Thread-Index: AcboZlJ231HtYJLvR06W36U1NH9K6Q==
+From:	"Kota, Ramgopal" <Ramgopal.Kota@analog.com>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 05 Oct 2006 10:09:22.0100 (UTC) FILETIME=[540BB740:01C6E866]
+Return-Path: <Ramgopal.Kota@analog.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12803
+X-archive-position: 12804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: Ramgopal.Kota@analog.com
 Precedence: bulk
 X-list: linux-mips
 
-on my board, i use the ext2fs as rootfs on a DOC device, and i want do
-a fast checksum for the rootfs, is there only one way to use fsck?
+Hi,
 
-thanks for any hints
-Best Regards
+I am new to MIPS and uclinux port.I am getting familiarised with 2.6.18
+linux code.
+I see the following code in asm/mips/kernel/genex.S &
+asm/mips/kernel/traps.c
 
+++++++++++++ Genex.S  +++++++++++++
+NESTED(except_vec3_generic, 0, sp)
+        .set    push
+        .set    noat
+#if R5432_CP0_INTERRUPT_WAR
+        mfc0    k0, CP0_INDEX
+#endif
+        mfc0    k1, CP0_CAUSE
+        andi    k1, k1, 0x7c
+#ifdef CONFIG_64BIT
+        dsll    k1, k1, 1
+#endif
+        PTR_L   k0, exception_handlers(k1)
+        jr      k0
+        .set    pop
+        END(except_vec3_generic)
 
-zhuzhenhua
++++++++++++++ traps.c +++++++++++++++
+        set_except_vector(0, handle_int);
+        set_except_vector(1, handle_tlbm);
+        set_except_vector(2, handle_tlbl);
+        set_except_vector(3, handle_tlbs);
+
+        set_except_vector(4, handle_adel);
+        set_except_vector(5, handle_ades);
+
+        set_except_vector(6, handle_ibe);
+        set_except_vector(7, handle_dbe);
+
+        set_except_vector(8, handle_sys);
+        set_except_vector(9, handle_bp);
+        set_except_vector(10, handle_ri);
+        set_except_vector(11, handle_cpu);
+        set_except_vector(12, handle_ov);
+        set_except_vector(13, handle_tr);
+
+In R3000 manual , bits 2-6 indicate exception code value. In genex.S ,
+the cause register is anded with 0x7c to extract 2-6 bits. 
+I am not able to understand why it is not shifted the last 2 bits.
+
+Please try to educate me why this is not done.
+
+Ramgopal Kota 

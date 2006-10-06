@@ -1,87 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2006 19:31:49 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:59883 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20039484AbWJFSbp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2006 19:31:45 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id F15213ECA; Fri,  6 Oct 2006 11:31:18 -0700 (PDT)
-Message-ID: <4526A0F3.5090202@ru.mvista.com>
-Date:	Fri, 06 Oct 2006 22:31:15 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Oct 2006 01:02:18 +0100 (BST)
+Received: from mail.zeugmasystems.com ([192.139.122.66]:9315 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S20039501AbWJGACO convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 7 Oct 2006 01:02:14 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] add "depends on BROKEN" to broken boards support
-References: <20061007005452.45b50d8c.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20061007005452.45b50d8c.yoichi_yuasa@tripeaks.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: CFE problem: starting secondary CPU.
+Date:	Fri, 6 Oct 2006 16:58:37 -0700
+Message-ID: <66910A579C9312469A7DF9ADB54A8B7D3E7324@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: CFE problem: starting secondary CPU.
+thread-index: Acbpo1bBhY91FwuRSxSoPT5JCpbUyw==
+From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <kaz@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12822
+X-archive-position: 12823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: kaz@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Anyone seen a problem like this? cfe_cpu_start() works fine on a
+32 bit kernel, but not on 64.
 
-Yoichi Yuasa wrote:
+I added a function to cfe/smp.c:
 
-> This patch has added "depends on BROKEN" to broken boards support.
-> These boards cannot build now.
+  static asmlinkage void dummy()
+  {
+    prom_printf("dummy called\n");
+  }
 
-> Yoichi
+This serves as the simplest possible "hello world". 
 
-> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+If I substitute this for the function passed to cfe_cpu_start(),
+on a 32 bit kernel, the slave CPU calls the function and the
+message is printed on the serial console.
 
-> @@ -511,6 +517,7 @@ config QEMU
->  
->  config MARKEINS
->  	bool "Support for NEC EMMA2RH Mark-eins"
-> +	depends on BROKEN
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
->  	select IRQ_CPU
+On a 64 bit kernel, the function is never reached. The API call returns,
+but the
+secondary CPU never calls in.
 
-    What's broken about this board?
+The sign-extension of the address looks good. The function pointer looks
+like
+FFFFFFFF8XXXXXXX. This is cast to long before being assigned into the
+right field
+of the CFE request structure, where it is converted to 64 bit unsigned.
 
-> @@ -717,6 +724,7 @@ config SNI_RM200_PCI
->  
->  config TOSHIBA_JMR3927
->  	bool "Toshiba JMR-TX3927 board"
-> +	depends on BROKEN
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
->  	select MIPS_TX3927
-> @@ -728,6 +736,7 @@ config TOSHIBA_JMR3927
->  
->  config TOSHIBA_RBTX4927
->  	bool "Toshiba TBTX49[23]7 board"
-> +	depends on BROKEN
->  	select DMA_NONCOHERENT
->  	select HAS_TXX9_SERIAL
->  	select HW_HAS_PCI
+Inside CFE, the CPU is just looping around waiting for the address to
+call with
+a direct jump.
 
-    ... and this one?
-
-> @@ -745,6 +754,7 @@ config TOSHIBA_RBTX4927
->  
->  config TOSHIBA_RBTX4938
->  	bool "Toshiba RBTX4938 board"
-> +	depends on BROKEN
->  	select HAVE_STD_PC_SERIAL_PORT
->  	select DMA_NONCOHERENT
->  	select GENERIC_ISA_DMA
-
-    There's a patch from Atsushi Nemoto still pending commit, IIRC...
-
-WBR, Sergei
+So it's a puzzling problem.

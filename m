@@ -1,85 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2006 12:06:59 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.188]:40862 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039011AbWJFLGx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Oct 2006 12:06:53 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so1132415nfc
-        for <linux-mips@linux-mips.org>; Fri, 06 Oct 2006 04:06:51 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:subject:content-type:content-transfer-encoding:from;
-        b=RSFxg7tNBFQtJyNi8lb76QsjdBUd6PQgBgLq29/SrVg//js1dvVah6IpTPE3CAtXfsnfX65fhLU0wB2KYBjnexY200R0Qc0jxA/OKRN92dVow3hR0lzGCOPCrGxb7M6hEWjHXGfZJjpi5LT5KuZaXXe9Lchi9cgIsNzC1y6xUuY=
-Received: by 10.49.8.15 with SMTP id l15mr5281300nfi;
-        Fri, 06 Oct 2006 04:06:51 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id k23sm2587202nfc.2006.10.06.04.06.51;
-        Fri, 06 Oct 2006 04:06:51 -0700 (PDT)
-Message-ID: <4526390D.7070009@innova-card.com>
-Date:	Fri, 06 Oct 2006 13:07:57 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2006 12:26:52 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:5900 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20039021AbWJFL0q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Oct 2006 12:26:46 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 25875F59DD;
+	Fri,  6 Oct 2006 13:26:21 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ZMVGRJZ+l6Ie; Fri,  6 Oct 2006 13:26:20 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id ADA48E1C66;
+	Fri,  6 Oct 2006 13:26:20 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k96BQPVc016697;
+	Fri, 6 Oct 2006 13:26:25 +0200
+Date:	Fri, 6 Oct 2006 12:26:22 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@osdl.org>
+cc:	Jeff Garzik <jgarzik@pobox.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Andy Fleming <afleming@freescale.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [patch 3/6] 2.6.18: sb1250-mac: Phylib IRQ handling fixes
+In-Reply-To: <20061005234310.6c8042b5.akpm@osdl.org>
+Message-ID: <Pine.LNX.4.64N.0610061152340.22053@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0610031509380.4642@blysk.ds.pg.gda.pl>
+ <20061005234310.6c8042b5.akpm@osdl.org>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH] Use kallsyms_lookup_size_offset() instead of kallsyms_lookup()
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.4/1999/Thu Oct  5 19:35:38 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12812
+X-archive-position: 12813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+On Thu, 5 Oct 2006, Andrew Morton wrote:
 
-This new routine doesn't lookup symbol names. So we needn't
-to pass any char buffers or pointer since we don't care about
-names.
+> > 2. The driver uses schedule_work() for handling interrupts, but does not 
+> >    make sure any pending work scheduled thus has been completed before 
+> >    driver's structures get freed from memory.  This is especially 
+> >    important as interrupts may keep arriving if the line is shared with 
+> >    another PHY.
+> > 
+> >    The solution is to ignore phy_interrupt() calls if the reported device 
+> >    has already been halted and calling flush_scheduled_work() from 
+> >    phy_stop_interrupts() (but guarded with current_is_keventd() in case 
+> >    the function has been called through keventd from the MAC device's 
+> >    close call to avoid a deadlock on the netlink lock).
+> > 
+> 
+> eww, hack.
+> 
+> Also not module-friendly:
+> 
+> WARNING: "current_is_keventd" [drivers/net/phy/libphy.ko] undefined!
+> 
+> Does this
+> 
+> static void flush_cpu_workqueue(struct cpu_workqueue_struct *cwq)
+> {
+> 	if (cwq->thread == current) {
+> 		/*
+> 		 * Probably keventd trying to flush its own queue. So simply run
+> 		 * it by hand rather than deadlocking.
+> 		 */
+> 		run_workqueue(cwq);
+> 
+> not work???
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/kernel/process.c |    8 ++------
- 1 files changed, 2 insertions(+), 6 deletions(-)
+ It does, too well even! -- in the case I am trying to take care of we are 
+run with "rtnl_mutex" held as a result of rtnl_lock() called from 
+unregister_netdev() and there is some work already in the workqueue 
+(linkwatch_event(), apparently) wanting to acquire the same lock.  Hence a 
+deadlock.  It seems problematic elsewhere as well -- see tg3.c -- but a 
+different way to deal with it has been found there.
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 045d987..cace1ba 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -358,10 +358,8 @@ static int __init frame_info_init(void)
- 	unsigned long size = 0;
- #ifdef CONFIG_KALLSYMS
- 	unsigned long ofs;
--	char *modname;
--	char namebuf[KSYM_NAME_LEN + 1];
- 
--	kallsyms_lookup((unsigned long)schedule, &size, &ofs, &modname, namebuf);
-+	kallsyms_lookup_size_offset((unsigned long)schedule, &size, &ofs);
- #endif
- 	schedule_mfi.func = schedule;
- 	schedule_mfi.func_size = size;
-@@ -403,8 +401,6 @@ unsigned long unwind_stack(struct task_s
- {
- 	unsigned long stack_page;
- 	struct mips_frame_info info;
--	char *modname;
--	char namebuf[KSYM_NAME_LEN + 1];
- 	unsigned long size, ofs;
- 	int leaf;
- 	extern void ret_from_irq(void);
-@@ -433,7 +429,7 @@ unsigned long unwind_stack(struct task_s
- 		}
- 		return 0;
- 	}
--	if (!kallsyms_lookup(pc, &size, &ofs, &modname, namebuf))
-+	if (!kallsyms_lookup_size_offset(pc, &size, &ofs))
- 		return 0;
- 	/*
- 	 * Return ra if an exception occured at the first instruction
--- 
-1.4.2.3
+ I am not that fond of this solution, but at least it works, unlike 
+calling flush_scheduled_work() here, which deadlocks the current CPU in my 
+system instantly.  Any suggestions as to how to do this differently?  
+Perhaps linkwatch_event() should be scheduled differently (using a 
+separate workqueue?)...  Or does dev_close() have to be called under this 
+lock from unregister_netdevice()?  Perhaps code like this would do:
+
+	while (dev->flags & IFF_UP) {
+		rtnl_unlock();
+		dev_close(dev);
+		rtnl_lock();
+	}
+
+  Maciej

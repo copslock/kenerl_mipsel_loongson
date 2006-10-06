@@ -1,99 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Oct 2006 17:34:42 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:24331 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20039276AbWJEQeg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Oct 2006 17:34:36 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A79A8F5FDD;
-	Thu,  5 Oct 2006 18:34:22 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id s-qvGSfezdBL; Thu,  5 Oct 2006 18:34:22 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 433ABF5B22;
-	Thu,  5 Oct 2006 18:34:22 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k95GYWsF007564;
-	Thu, 5 Oct 2006 18:34:32 +0200
-Date:	Thu, 5 Oct 2006 17:34:27 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@osdl.org>, Jeff Garzik <jgarzik@pobox.com>,
-	Ralf Baechle <ralf@linux-mips.org>
-cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 2.6.18 8/6]: sb1250-mac: Fix an incorrect use of kfree()
-Message-ID: <Pine.LNX.4.64N.0610051729140.22085@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.4/1997/Wed Oct  4 17:20:43 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2006 07:43:23 +0100 (BST)
+Received: from smtp.osdl.org ([65.172.181.4]:48056 "EHLO smtp.osdl.org")
+	by ftp.linux-mips.org with ESMTP id S20038416AbWJFGnW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2006 07:43:22 +0100
+Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
+	by smtp.osdl.org (8.12.8/8.12.8) with ESMTP id k966hBaX011229
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Thu, 5 Oct 2006 23:43:12 -0700
+Received: from box (shell0.pdx.osdl.net [10.9.0.31])
+	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id k966hA1G020591;
+	Thu, 5 Oct 2006 23:43:11 -0700
+Date:	Thu, 5 Oct 2006 23:43:10 -0700
+From:	Andrew Morton <akpm@osdl.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Jeff Garzik <jgarzik@pobox.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Andy Fleming <afleming@freescale.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [patch 3/6] 2.6.18: sb1250-mac: Phylib IRQ handling fixes
+Message-Id: <20061005234310.6c8042b5.akpm@osdl.org>
+In-Reply-To: <Pine.LNX.4.64N.0610031509380.4642@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0610031509380.4642@blysk.ds.pg.gda.pl>
+X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.17; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: osdl$Revision: 1.155 $
+X-Scanned-By: MIMEDefang 2.36
+Return-Path: <akpm@osdl.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12810
+X-archive-position: 12811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: akpm@osdl.org
 Precedence: bulk
 X-list: linux-mips
 
- The pointer obtained by kmalloc() is treated with ALIGN() before passing 
-it to kfree().  This may or may not cause problems depending on the 
-minimum alignment enforced by kmalloc() and is ugly anyway.  This change 
-records the original pointer returned by kmalloc() so that kfree() may 
-safely use it.
+On Tue, 3 Oct 2006 16:18:35 +0100 (BST)
+"Maciej W. Rozycki" <macro@linux-mips.org> wrote:
 
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
----
+> 
+> 2. The driver uses schedule_work() for handling interrupts, but does not 
+>    make sure any pending work scheduled thus has been completed before 
+>    driver's structures get freed from memory.  This is especially 
+>    important as interrupts may keep arriving if the line is shared with 
+>    another PHY.
+> 
+>    The solution is to ignore phy_interrupt() calls if the reported device 
+>    has already been halted and calling flush_scheduled_work() from 
+>    phy_stop_interrupts() (but guarded with current_is_keventd() in case 
+>    the function has been called through keventd from the MAC device's 
+>    close call to avoid a deadlock on the netlink lock).
+> 
 
- This applies on top of the "typedef" change (7/6).  Please consider.
+eww, hack.
 
-  Maciej
+Also not module-friendly:
 
-patch-mips-2.6.18-20060920-sb1250-mac-kfree-0
-diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/net/sb1250-mac.c linux-mips-2.6.18-20060920/drivers/net/sb1250-mac.c
---- linux-mips-2.6.18-20060920.macro/drivers/net/sb1250-mac.c	2006-10-05 16:18:41.000000000 +0000
-+++ linux-mips-2.6.18-20060920/drivers/net/sb1250-mac.c	2006-10-04 23:07:27.000000000 +0000
-@@ -220,6 +220,7 @@ struct sbmacdma {
- 	/*
- 	 * This stuff is for maintenance of the ring
- 	 */
-+	void			*sbdma_dscrtable_un;
- 	struct sbdmadscr	*sbdma_dscrtable;
- 						/* base of descriptor table */
- 	struct sbdmadscr	*sbdma_dscrtable_end;
-@@ -640,15 +641,16 @@ static void sbdma_initctx(struct sbmacdm
- 
- 	d->sbdma_maxdescr = maxdescr;
- 
--	d->sbdma_dscrtable = kmalloc((d->sbdma_maxdescr + 1) *
--				     sizeof(*d->sbdma_dscrtable), GFP_KERNEL);
-+	d->sbdma_dscrtable_un = kmalloc((d->sbdma_maxdescr + 1) *
-+					sizeof(*d->sbdma_dscrtable),
-+					GFP_KERNEL);
- 
- 	/*
- 	 * The descriptor table must be aligned to at least 16 bytes or the
- 	 * MAC will corrupt it.
- 	 */
- 	d->sbdma_dscrtable = (struct sbdmadscr *)
--			     ALIGN((unsigned long)d->sbdma_dscrtable,
-+			     ALIGN((unsigned long)d->sbdma_dscrtable_un,
- 				   sizeof(*d->sbdma_dscrtable));
- 
- 	memset(d->sbdma_dscrtable, 0,
-@@ -1309,9 +1311,9 @@ static int sbmac_initctx(struct sbmac_so
- 
- static void sbdma_uninitctx(struct sbmacdma *d)
- {
--	if (d->sbdma_dscrtable) {
--		kfree(d->sbdma_dscrtable);
--		d->sbdma_dscrtable = NULL;
-+	if (d->sbdma_dscrtable_un) {
-+		kfree(d->sbdma_dscrtable_un);
-+		d->sbdma_dscrtable = d->sbdma_dscrtable_un = NULL;
- 	}
- 
- 	if (d->sbdma_ctxtable) {
+WARNING: "current_is_keventd" [drivers/net/phy/libphy.ko] undefined!
+
+Does this
+
+static void flush_cpu_workqueue(struct cpu_workqueue_struct *cwq)
+{
+	if (cwq->thread == current) {
+		/*
+		 * Probably keventd trying to flush its own queue. So simply run
+		 * it by hand rather than deadlocking.
+		 */
+		run_workqueue(cwq);
+
+not work???

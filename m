@@ -1,133 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2006 16:55:08 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:58637 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20039470AbWJFPzC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Oct 2006 16:55:02 +0100
-Received: by mo.po.2iij.net (mo30) id k96Ft0Mi030615; Sat, 7 Oct 2006 00:55:00 +0900 (JST)
-Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
-	by mbox.po.2iij.net (mbox33) id k96FsrRb036290
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sat, 7 Oct 2006 00:54:54 +0900 (JST)
-Date:	Sat, 7 Oct 2006 00:54:52 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] add "depends on BROKEN" to broken boards support
-Message-Id: <20061007005452.45b50d8c.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Oct 2006 16:55:36 +0100 (BST)
+Received: from userbg049.dsl.pipex.com ([62.190.246.49]:46341 "EHLO
+	homer.intra.qzxyz.com") by ftp.linux-mips.org with ESMTP
+	id S20039474AbWJFPzC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Oct 2006 16:55:02 +0100
+Received: from lisa.intra.qzxyz.com ([192.168.42.132])
+	by homer.intra.qzxyz.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1GVs2J-0003N9-00
+	for <linux-mips@linux-mips.org>; Fri, 06 Oct 2006 16:54:55 +0100
+Message-ID: <45267C4E.8090101@talk21.com>
+Date:	Fri, 06 Oct 2006 16:54:54 +0100
+From:	Scott Ashcroft <scott.ashcroft@talk21.com>
+User-Agent: Thunderbird 1.5.0.7 (X11/20060928)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Time runs too quickly on Cobalt
+Content-Type: multipart/mixed;
+ boundary="------------070103080007020100050900"
+Return-Path: <scott.ashcroft@talk21.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12819
+X-archive-position: 12820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: scott.ashcroft@talk21.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+This is a multi-part message in MIME format.
+--------------070103080007020100050900
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This patch has added "depends on BROKEN" to broken boards support.
-These boards cannot build now.
+If I build a kernel with HZ==250 then time runs about 4 four times too 
+quickly on my Cobalt RaQ2.
 
-Yoichi
+The following patch seems to fix it but I'm not sure this is the correct 
+thing to do.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Signed-off-by: Scott Ashcroft <scott.ashcroft@talk21.com>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
---- mips-orig/arch/mips/Kconfig	2006-10-05 22:29:18.893785250 +0900
-+++ mips/arch/mips/Kconfig	2006-10-05 22:30:34.042481750 +0900
-@@ -121,6 +121,7 @@ config MIPS_MIRAGE
+
+--------------070103080007020100050900
+Content-Type: text/plain;
+ name="patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="patch"
+
+diff --git a/arch/mips/cobalt/setup.c b/arch/mips/cobalt/setup.c
+index c01a017..f7c6eb2 100644
+--- a/arch/mips/cobalt/setup.c
++++ b/arch/mips/cobalt/setup.c
+@@ -51,8 +51,8 @@ const char *get_system_type(void)
  
- config BASLER_EXCITE
- 	bool "Basler eXcite smart camera support"
-+	depends on BROKEN
- 	select DMA_COHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
-@@ -188,7 +189,7 @@ config MACH_DECSTATION
+ void __init plat_timer_setup(struct irqaction *irq)
+ {
+-	/* Load timer value for 1KHz (TCLK is 50MHz) */
+-	GALILEO_OUTL(50*1000*1000 / 1000, GT_TC0_OFS);
++	/* Load timer value for HZ (TCLK is 50MHz) */
++	GALILEO_OUTL(50*1000*1000 / HZ, GT_TC0_OFS);
  
- config MIPS_EV64120
- 	bool "Galileo EV64120 Evaluation board (EXPERIMENTAL)"
--	depends on EXPERIMENTAL
-+	depends on BROKEN
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select MIPS_GT64120
-@@ -343,6 +344,7 @@ config MIPS_SIM
- 
- config MOMENCO_JAGUAR_ATX
- 	bool "Momentum Jaguar board"
-+	depends on BROKEN
- 	select BOOT_ELF32
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
-@@ -363,6 +365,7 @@ config MOMENCO_JAGUAR_ATX
- 
- config MOMENCO_OCELOT
- 	bool "Momentum Ocelot board"
-+	depends on BROKEN
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
-@@ -380,6 +383,7 @@ config MOMENCO_OCELOT
- 
- config MOMENCO_OCELOT_3
- 	bool "Momentum Ocelot-3 board"
-+	depends on BROKEN
- 	select BOOT_ELF32
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
-@@ -399,6 +403,7 @@ config MOMENCO_OCELOT_3
- 
- config MOMENCO_OCELOT_C
- 	bool "Momentum Ocelot-C board"
-+	depends on BROKEN
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
-@@ -416,6 +421,7 @@ config MOMENCO_OCELOT_C
- 
- config MOMENCO_OCELOT_G
- 	bool "Momentum Ocelot-G board"
-+	depends on BROKEN
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
-@@ -511,6 +517,7 @@ config QEMU
- 
- config MARKEINS
- 	bool "Support for NEC EMMA2RH Mark-eins"
-+	depends on BROKEN
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select IRQ_CPU
-@@ -717,6 +724,7 @@ config SNI_RM200_PCI
- 
- config TOSHIBA_JMR3927
- 	bool "Toshiba JMR-TX3927 board"
-+	depends on BROKEN
- 	select DMA_NONCOHERENT
- 	select HW_HAS_PCI
- 	select MIPS_TX3927
-@@ -728,6 +736,7 @@ config TOSHIBA_JMR3927
- 
- config TOSHIBA_RBTX4927
- 	bool "Toshiba TBTX49[23]7 board"
-+	depends on BROKEN
- 	select DMA_NONCOHERENT
- 	select HAS_TXX9_SERIAL
- 	select HW_HAS_PCI
-@@ -745,6 +754,7 @@ config TOSHIBA_RBTX4927
- 
- config TOSHIBA_RBTX4938
- 	bool "Toshiba RBTX4938 board"
-+	depends on BROKEN
- 	select HAVE_STD_PC_SERIAL_PORT
- 	select DMA_NONCOHERENT
- 	select GENERIC_ISA_DMA
+ 	/* Enable timer */
+ 	GALILEO_OUTL(GALILEO_ENTC0 | GALILEO_SELTC0, GT_TC_CONTROL_OFS);
+
+--------------070103080007020100050900--

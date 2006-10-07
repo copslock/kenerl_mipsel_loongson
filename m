@@ -1,68 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Oct 2006 23:10:25 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.181]:63376 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039559AbWJGWKX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 7 Oct 2006 23:10:23 +0100
-Received: by py-out-1112.google.com with SMTP id i49so1395863pyi
-        for <linux-mips@linux-mips.org>; Sat, 07 Oct 2006 15:10:22 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:in-reply-to:references:mime-version:content-type:message-id:cc:content-transfer-encoding:from:subject:date:to:x-mailer;
-        b=T+teVh8eWdSnOMWJ81xUdYR2aVBuXK3cLo3r3U6IbDTx9pmeZs9CMgP9Eeon6qxzYgH89cHQWWzZaLLRB+92KFNjPZVmmmxppGBUxm5mHCg1c0eyTjz3wug6turXpMBVGOnRU6Owh5NT85vum+6EHdla23yKlLAZUJn7FyLm22I=
-Received: by 10.35.10.17 with SMTP id n17mr9056408pyi;
-        Sat, 07 Oct 2006 15:10:22 -0700 (PDT)
-Received: from ?192.168.1.3? ( [61.125.212.22])
-        by mx.google.com with ESMTP id q71sm1563852pyg.2006.10.07.15.10.20;
-        Sat, 07 Oct 2006 15:10:21 -0700 (PDT)
-In-Reply-To: <20061007105338.GA571@linux-mips.org>
-References: <66910A579C9312469A7DF9ADB54A8B7D3E7324@exchange.ZeugmaSystems.local> <20061007021523.38254.qmail@web31512.mail.mud.yahoo.com> <20061007105338.GA571@linux-mips.org>
-Mime-Version: 1.0 (Apple Message framework v749)
-Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
-Message-Id: <9D189830-9D85-4360-BEEE-72A3D5510D77@gmail.com>
-Cc:	Jonathan Day <imipak@yahoo.com>,
-	Kaz Kylheku <kaz@zeugmasystems.com>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 00:15:23 +0100 (BST)
+Received: from pne-smtpout1-sn2.hy.skanova.net ([81.228.8.83]:44251 "EHLO
+	pne-smtpout1-sn2.hy.skanova.net") by ftp.linux-mips.org with ESMTP
+	id S20039566AbWJGXPV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 8 Oct 2006 00:15:21 +0100
+Received: from mail.ferretporn.se (83.250.8.219) by pne-smtpout1-sn2.hy.skanova.net (7.2.075)
+        id 4516FC4100369BD4 for linux-mips@linux-mips.org; Sun, 8 Oct 2006 01:15:15 +0200
+Received: from peepoe.ferretporn.se (peepoe.ferretporn.se [192.168.0.7])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.ferretporn.se (Postfix) with ESMTP id 6E88DCBF4
+	for <linux-mips@linux-mips.org>; Sun,  8 Oct 2006 01:15:14 +0200 (CEST)
+From:	Karl-Johan Karlsson <creideiki+linux-mips@ferretporn.se>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Show actual CPU information in /proc/cpuinfo
+Date:	Sun, 8 Oct 2006 01:15:02 +0200
+User-Agent: KMail/1.9.4
+X-Eric-Conspiracy: There is no conspiracy
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-From:	girish <girishvg@gmail.com>
-Subject: Re: CFE problem: starting secondary CPU.
-Date:	Sun, 8 Oct 2006 07:10:40 +0900
-To:	Ralf Baechle <ralf@linux-mips.org>
-X-Mailer: Apple Mail (2.749)
-Return-Path: <girishvg@gmail.com>
+Content-Disposition: inline
+Message-Id: <200610080115.12452.creideiki+linux-mips@ferretporn.se>
+Return-Path: <creideiki+linux-mips@ferretporn.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12830
+X-archive-position: 12831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: girishvg@gmail.com
+X-original-sender: creideiki+linux-mips@ferretporn.se
 Precedence: bulk
 X-list: linux-mips
 
+Currently, /proc/cpuinfo contains several copies of the information for 
+whatever processor we happen to be scheduled on. This patch makes it contain 
+the proper information for each CPU, which is particularly useful on mixed 
+R12k/R10k IP27 machines.
 
-On Oct 7, 2006, at 7:53 PM, Ralf Baechle wrote:
-
-> On Fri, Oct 06, 2006 at 07:15:23PM -0700, Jonathan Day wrote:
->
->> I've seen the case where the second CPU did not start
->> on a Broadcom 1250 running a 64-bit kernel, but I
->> don't know if anyone has a good solution. I just
->> rigged the values in the Linux kernel so that it knows
->> about the second CPU. It's a godawful hack, but I
->> needed something quick at the time.
->>
->> Personally, I am not a fan of CFE and would love to
->> know if there's a better way to bootstrap.
->
-> Firmware is a stepchild and all implementations have in common that  
-> they're
-> hated by they're users.  And my grief is there are way to many  
-> different
-> firmwares for MIPS systems.
->
->   Ralf
->
-
-would it be reasonable to choose couple of bootmonitors and support  
-them under MIPS/Linux umbrella. even bootable linux would be a good  
-choice.
+Signed-off-by: Karl-Johan Karlsson <creideiki@lysator.liu.se>
+---
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index d8beef1..46ee5a6 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -89,9 +89,9 @@ static const char *cpu_name[] = {
+ 
+ static int show_cpuinfo(struct seq_file *m, void *v)
+ {
+-	unsigned int version = current_cpu_data.processor_id;
+-	unsigned int fp_vers = current_cpu_data.fpu_id;
+ 	unsigned long n = (unsigned long) v - 1;
++	unsigned int version = cpu_data[n].processor_id;
++	unsigned int fp_vers = cpu_data[n].fpu_id;
+ 	char fmt [64];
+ 
+ #ifdef CONFIG_SMP
+@@ -108,8 +108,8 @@ #endif
+ 	seq_printf(m, "processor\t\t: %ld\n", n);
+ 	sprintf(fmt, "cpu model\t\t: %%s V%%d.%%d%s\n",
+ 	        cpu_has_fpu ? "  FPU V%d.%d" : "");
+-	seq_printf(m, fmt, cpu_name[current_cpu_data.cputype <= CPU_LAST ?
+-	                            current_cpu_data.cputype : CPU_UNKNOWN],
++	seq_printf(m, fmt, cpu_name[cpu_data[n].cputype <= CPU_LAST ?
++	                            cpu_data[n].cputype : CPU_UNKNOWN],
+ 	                           (version >> 4) & 0x0f, version & 0x0f,
+ 	                           (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
+ 	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
+@@ -118,7 +118,7 @@ #endif
+ 	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
+ 	seq_printf(m, "microsecond timers\t: %s\n",
+ 	              cpu_has_counter ? "yes" : "no");
+-	seq_printf(m, "tlb_entries\t\t: %d\n", current_cpu_data.tlbsize);
++	seq_printf(m, "tlb_entries\t\t: %d\n", cpu_data[n].tlbsize);
+ 	seq_printf(m, "extra interrupt vector\t: %s\n",
+ 	              cpu_has_divec ? "yes" : "no");
+ 	seq_printf(m, "hardware watchpoint\t: %s\n",

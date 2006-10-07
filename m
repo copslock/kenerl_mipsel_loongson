@@ -1,79 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 00:15:23 +0100 (BST)
-Received: from pne-smtpout1-sn2.hy.skanova.net ([81.228.8.83]:44251 "EHLO
-	pne-smtpout1-sn2.hy.skanova.net") by ftp.linux-mips.org with ESMTP
-	id S20039566AbWJGXPV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 8 Oct 2006 00:15:21 +0100
-Received: from mail.ferretporn.se (83.250.8.219) by pne-smtpout1-sn2.hy.skanova.net (7.2.075)
-        id 4516FC4100369BD4 for linux-mips@linux-mips.org; Sun, 8 Oct 2006 01:15:15 +0200
-Received: from peepoe.ferretporn.se (peepoe.ferretporn.se [192.168.0.7])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.ferretporn.se (Postfix) with ESMTP id 6E88DCBF4
-	for <linux-mips@linux-mips.org>; Sun,  8 Oct 2006 01:15:14 +0200 (CEST)
-From:	Karl-Johan Karlsson <creideiki+linux-mips@ferretporn.se>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] Show actual CPU information in /proc/cpuinfo
-Date:	Sun, 8 Oct 2006 01:15:02 +0200
-User-Agent: KMail/1.9.4
-X-Eric-Conspiracy: There is no conspiracy
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 00:25:26 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:64910 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039571AbWJGXZZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 8 Oct 2006 00:25:25 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k97NPQkH031447;
+	Sun, 8 Oct 2006 00:25:26 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k97NPK5u031446;
+	Sun, 8 Oct 2006 00:25:20 +0100
+Date:	Sun, 8 Oct 2006 00:25:20 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Karl-Johan Karlsson <creideiki+linux-mips@ferretporn.se>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: /proc/cpuinfo makes false assumptions of uniformity on IP27
+Message-ID: <20061007232520.GA23815@linux-mips.org>
+References: <34353.136.163.203.3.1160138023.squirrel@www.ferretporn.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200610080115.12452.creideiki+linux-mips@ferretporn.se>
-Return-Path: <creideiki+linux-mips@ferretporn.se>
+In-Reply-To: <34353.136.163.203.3.1160138023.squirrel@www.ferretporn.se>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12831
+X-archive-position: 12832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: creideiki+linux-mips@ferretporn.se
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Currently, /proc/cpuinfo contains several copies of the information for 
-whatever processor we happen to be scheduled on. This patch makes it contain 
-the proper information for each CPU, which is particularly useful on mixed 
-R12k/R10k IP27 machines.
+On Fri, Oct 06, 2006 at 02:33:43PM +0200, Karl-Johan Karlsson wrote:
 
-Signed-off-by: Karl-Johan Karlsson <creideiki@lysator.liu.se>
----
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index d8beef1..46ee5a6 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -89,9 +89,9 @@ static const char *cpu_name[] = {
- 
- static int show_cpuinfo(struct seq_file *m, void *v)
- {
--	unsigned int version = current_cpu_data.processor_id;
--	unsigned int fp_vers = current_cpu_data.fpu_id;
- 	unsigned long n = (unsigned long) v - 1;
-+	unsigned int version = cpu_data[n].processor_id;
-+	unsigned int fp_vers = cpu_data[n].fpu_id;
- 	char fmt [64];
- 
- #ifdef CONFIG_SMP
-@@ -108,8 +108,8 @@ #endif
- 	seq_printf(m, "processor\t\t: %ld\n", n);
- 	sprintf(fmt, "cpu model\t\t: %%s V%%d.%%d%s\n",
- 	        cpu_has_fpu ? "  FPU V%d.%d" : "");
--	seq_printf(m, fmt, cpu_name[current_cpu_data.cputype <= CPU_LAST ?
--	                            current_cpu_data.cputype : CPU_UNKNOWN],
-+	seq_printf(m, fmt, cpu_name[cpu_data[n].cputype <= CPU_LAST ?
-+	                            cpu_data[n].cputype : CPU_UNKNOWN],
- 	                           (version >> 4) & 0x0f, version & 0x0f,
- 	                           (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
- 	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
-@@ -118,7 +118,7 @@ #endif
- 	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
- 	seq_printf(m, "microsecond timers\t: %s\n",
- 	              cpu_has_counter ? "yes" : "no");
--	seq_printf(m, "tlb_entries\t\t: %d\n", current_cpu_data.tlbsize);
-+	seq_printf(m, "tlb_entries\t\t: %d\n", cpu_data[n].tlbsize);
- 	seq_printf(m, "extra interrupt vector\t: %s\n",
- 	              cpu_has_divec ? "yes" : "no");
- 	seq_printf(m, "hardware watchpoint\t: %s\n",
+> 1. What about the CPU feature test macros in
+> include/asm-mips/cpu-features.h? They claim
+>   /*
+>    * SMP assumption: Options of CPU 0 are a superset of all processors.
+>    * This is true for all known MIPS systems.
+>    */
+> but is that really true, even on a mixed R12k/R10k system?
+
+To the degree that is actually matters, yes.  For cache managment on
+Origins the size of the S-cache doesn't matter, that is it is not
+relevant if scache_size(cpu 0) > or < scache_size(cpu 1).  It gets a
+little hairy for stuff like performance counters where the R10000
+supports a different set of events than its successors; that is not
+something oprofile can deal with ...
+
+  Ralf

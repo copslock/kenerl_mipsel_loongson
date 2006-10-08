@@ -1,20 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 16:07:55 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:36301 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038870AbWJHPHx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 8 Oct 2006 16:07:53 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 17:22:15 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:48857 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20039406AbWJHQWN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 8 Oct 2006 17:22:13 +0100
 Received: from localhost (p7241-ipad29funabasi.chiba.ocn.ne.jp [221.184.74.241])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 4D55BAAC7; Mon,  9 Oct 2006 00:07:47 +0900 (JST)
-Date:	Mon, 09 Oct 2006 00:10:01 +0900 (JST)
-Message-Id: <20061009.001001.74753036.anemo@mba.ocn.ne.jp>
+	id 91309A614; Mon,  9 Oct 2006 01:22:08 +0900 (JST)
+Date:	Mon, 09 Oct 2006 01:24:23 +0900 (JST)
+Message-Id: <20061009.012423.59032950.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, mlachwani@mvista.com
-Subject: [PATCH] Make sure cpu_has_fpu is used only in atomic context
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] ret_from_irq adjustment
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20060901.170817.118968734.nemoto@toshiba-tops.co.jp>
-References: <44F715F2.7050305@mvista.com>
-	<20060901.122527.63741495.nemoto@toshiba-tops.co.jp>
-	<20060901.170817.118968734.nemoto@toshiba-tops.co.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
@@ -25,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12836
+X-archive-position: 12837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,217 +29,131 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Make sure cpu_has_fpu (which uses smp_processor_id()) is used
-only in atomic context.
+Make sure that RA on top of interrupt stack is an address of
+ret_from_irq, so that dump_stack etc. can trace info interrupted
+context.
+
+Also this patch fixes except_vec_vi_handler and __smtc_ipi_vector
+which seems broken.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
- arch/mips/kernel/proc.c     |    2 +-
- arch/mips/kernel/process.c  |    2 +-
- arch/mips/kernel/ptrace.c   |   18 ++++++++++--------
- arch/mips/kernel/ptrace32.c |    3 ++-
- arch/mips/kernel/traps.c    |   16 +++++++++-------
- arch/mips/math-emu/cp1emu.c |    7 +++----
- include/asm-mips/fpu.h      |    6 ++++--
- 7 files changed, 30 insertions(+), 24 deletions(-)
+ dec/int-handler.S |   11 ++++-------
+ kernel/entry.S    |   14 +++++++++-----
+ kernel/genex.S    |    8 +++-----
+ kernel/smtc-asm.S |    9 +++------
+ 4 files changed, 19 insertions(+), 23 deletions(-)
 
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 46ee5a6..4ed37ba 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -107,7 +107,7 @@ #endif
- 
- 	seq_printf(m, "processor\t\t: %ld\n", n);
- 	sprintf(fmt, "cpu model\t\t: %%s V%%d.%%d%s\n",
--	        cpu_has_fpu ? "  FPU V%d.%d" : "");
-+	        cpu_data[n].options & MIPS_CPU_FPU ? "  FPU V%d.%d" : "");
- 	seq_printf(m, fmt, cpu_name[cpu_data[n].cputype <= CPU_LAST ?
- 	                            cpu_data[n].cputype : CPU_UNKNOWN],
- 	                           (version >> 4) & 0x0f, version & 0x0f,
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index 045d987..9f307eb 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -115,7 +115,7 @@ #endif
- 	status |= KU_USER;
- 	regs->cp0_status = status;
- 	clear_used_math();
--	lose_fpu();
-+	clear_fpu_owner();
- 	if (cpu_has_dsp)
- 		__init_dsp();
- 	regs->cp0_epc = pc;
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 9c3b5fc..1fd705a 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -106,6 +106,7 @@ int ptrace_setregs (struct task_struct *
- int ptrace_getfpregs (struct task_struct *child, __u32 __user *data)
- {
- 	int i;
-+	unsigned int tmp;
- 
- 	if (!access_ok(VERIFY_WRITE, data, 33 * 8))
- 		return -EIO;
-@@ -121,10 +122,10 @@ int ptrace_getfpregs (struct task_struct
- 
- 	__put_user (child->thread.fpu.fcr31, data + 64);
- 
-+	preempt_disable();
- 	if (cpu_has_fpu) {
--		unsigned int flags, tmp;
-+		unsigned int flags;
- 
--		preempt_disable();
- 		if (cpu_has_mipsmt) {
- 			unsigned int vpflags = dvpe();
- 			flags = read_c0_status();
-@@ -138,11 +139,11 @@ int ptrace_getfpregs (struct task_struct
- 			__asm__ __volatile__("cfc1\t%0,$0" : "=r" (tmp));
- 			write_c0_status(flags);
- 		}
--		preempt_enable();
--		__put_user (tmp, data + 65);
- 	} else {
--		__put_user ((__u32) 0, data + 65);
-+		tmp = 0;
- 	}
-+	preempt_enable();
-+	__put_user (tmp, data + 65);
- 
- 	return 0;
- }
-@@ -245,16 +246,17 @@ #ifdef CONFIG_MIPS_MT_SMTC
- 			unsigned int mtflags;
- #endif /* CONFIG_MIPS_MT_SMTC */
- 
--			if (!cpu_has_fpu)
-+			preempt_disable();
-+			if (!cpu_has_fpu) {
-+				preempt_enable();
- 				break;
-+			}
- 
- #ifdef CONFIG_MIPS_MT_SMTC
- 			/* Read-modify-write of Status must be atomic */
- 			local_irq_save(irqflags);
- 			mtflags = dmt();
- #endif /* CONFIG_MIPS_MT_SMTC */
+diff --git a/arch/mips/dec/int-handler.S b/arch/mips/dec/int-handler.S
+index 55d60d5..31dd47d 100644
+--- a/arch/mips/dec/int-handler.S
++++ b/arch/mips/dec/int-handler.S
+@@ -266,10 +266,8 @@ #endif
+ handle_it:
+ 		LONG_L	s0, TI_REGS($28)
+ 		LONG_S	sp, TI_REGS($28)
+-		jal	do_IRQ
+-		LONG_S	s0, TI_REGS($28)
 -
--			preempt_disable();
- 			if (cpu_has_mipsmt) {
- 				unsigned int vpflags = dvpe();
- 				flags = read_c0_status();
-diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
-index f40ecd8..d9a39c1 100644
---- a/arch/mips/kernel/ptrace32.c
-+++ b/arch/mips/kernel/ptrace32.c
-@@ -175,7 +175,9 @@ #ifdef CONFIG_MIPS_MT_SMTC
- 			unsigned int mtflags;
- #endif /* CONFIG_MIPS_MT_SMTC */
+-		j	ret_from_irq
++		PTR_LA	ra, ret_from_irq
++		j	do_IRQ
+ 		 nop
  
-+			preempt_disable();
- 			if (!cpu_has_fpu) {
-+				preempt_enable();
- 				tmp = 0;
- 				break;
- 			}
-@@ -186,7 +188,6 @@ #ifdef CONFIG_MIPS_MT_SMTC
- 			mtflags = dmt();
- #endif /* CONFIG_MIPS_MT_SMTC */
+ #ifdef CONFIG_32BIT
+@@ -279,9 +277,8 @@ fpu:
+ #endif
  
--			preempt_disable();
- 			if (cpu_has_mipsmt) {
- 				unsigned int vpflags = dvpe();
- 				flags = read_c0_status();
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index b7292a5..cce8313 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -66,7 +66,7 @@ extern asmlinkage void handle_mcheck(voi
- extern asmlinkage void handle_reserved(void);
+ spurious:
+-		jal	spurious_interrupt
+-		 nop
+-		j	ret_from_irq
++		PTR_LA	ra, _ret_from_irq
++		j	spurious_interrupt
+ 		 nop
+ 		END(plat_irq_dispatch)
  
- extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
--	struct mips_fpu_struct *ctx);
-+	struct mips_fpu_struct *ctx, int has_fpu);
+diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
+index e93e43e..417c08a 100644
+--- a/arch/mips/kernel/entry.S
++++ b/arch/mips/kernel/entry.S
+@@ -20,10 +20,7 @@ #ifdef CONFIG_MIPS_MT_SMTC
+ #include <asm/mipsmtregs.h>
+ #endif
  
- void (*board_be_init)(void);
- int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
-@@ -641,7 +641,7 @@ #endif
- 		preempt_enable();
+-#ifdef CONFIG_PREEMPT
+-	.macro	preempt_stop
+-	.endm
+-#else
++#ifndef CONFIG_PREEMPT
+ 	.macro	preempt_stop
+ 	local_irq_disable
+ 	.endm
+@@ -32,9 +29,16 @@ #endif
  
- 		/* Run the emulator */
--		sig = fpu_emulator_cop1Handler (regs, &current->thread.fpu);
-+		sig = fpu_emulator_cop1Handler (regs, &current->thread.fpu, 1);
+ 	.text
+ 	.align	5
++FEXPORT(ret_from_irq)
++	LONG_S	s0, TI_REGS($28)
++#ifdef CONFIG_PREEMPT
++FEXPORT(ret_from_exception)
++#else
++	b	_ret_from_irq
+ FEXPORT(ret_from_exception)
+ 	preempt_stop
+-FEXPORT(ret_from_irq)
++#endif
++FEXPORT(_ret_from_irq)
+ 	LONG_L	t0, PT_STATUS(sp)		# returning to kernel mode?
+ 	andi	t0, t0, KU_USER
+ 	beqz	t0, resume_kernel
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index 50ed772..5baca16 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -133,9 +133,8 @@ NESTED(handle_int, PT_SIZE, sp)
  
- 		preempt_disable();
+ 	LONG_L	s0, TI_REGS($28)
+ 	LONG_S	sp, TI_REGS($28)
+-	jal	plat_irq_dispatch
+-	LONG_S	s0, TI_REGS($28)
+-	j	ret_from_irq
++	PTR_LA	ra, ret_from_irq
++	j	plat_irq_dispatch
+ 	END(handle_int)
  
-@@ -791,11 +791,13 @@ asmlinkage void do_cpu(struct pt_regs *r
- 			set_used_math();
- 		}
+ 	__INIT
+@@ -224,9 +223,8 @@ #endif /* CONFIG_MIPS_MT_SMTC */
  
--		preempt_enable();
--
--		if (!cpu_has_fpu) {
--			int sig = fpu_emulator_cop1Handler(regs,
--						&current->thread.fpu);
-+		if (cpu_has_fpu) {
-+			preempt_enable();
-+		} else {
-+			int sig;
-+			preempt_enable();
-+			sig = fpu_emulator_cop1Handler(regs,
-+						&current->thread.fpu, 0);
- 			if (sig)
- 				force_sig(sig, current);
- #ifdef CONFIG_MIPS_MT_FPAFF
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 3f0d5d2..80531b3 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -38,8 +38,6 @@ #include <linux/sched.h>
+ 	LONG_L	s0, TI_REGS($28)
+ 	LONG_S	sp, TI_REGS($28)
+-	jalr	v0
+-	LONG_S	s0, TI_REGS($28)
+ 	PTR_LA	ra, ret_from_irq
++	jr	v0
+ 	END(except_vec_vi_handler)
  
- #include <asm/inst.h>
- #include <asm/bootinfo.h>
--#include <asm/cpu.h>
--#include <asm/cpu-features.h>
- #include <asm/processor.h>
- #include <asm/ptrace.h>
- #include <asm/signal.h>
-@@ -1233,7 +1231,8 @@ #endif
- 	return 0;
- }
+ /*
+diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
+index 76cb31d..1cb9441 100644
+--- a/arch/mips/kernel/smtc-asm.S
++++ b/arch/mips/kernel/smtc-asm.S
+@@ -97,15 +97,12 @@ FEXPORT(__smtc_ipi_vector)
+ 	SAVE_ALL
+ 	CLI
+ 	TRACE_IRQS_OFF
+-	move	a0,sp
+ 	/* Function to be invoked passed stack pad slot 5 */
+ 	lw	t0,PT_PADSLOT5(sp)
+ 	/* Argument from sender passed in stack pad slot 4 */
+-	lw	a1,PT_PADSLOT4(sp)
+-	jalr	t0
+-	nop
+-	j	ret_from_irq
+-	nop
++	lw	a0,PT_PADSLOT4(sp)
++	PTR_LA	ra, _ret_from_irq
++	jr	t0
  
--int fpu_emulator_cop1Handler(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
-+int fpu_emulator_cop1Handler(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
-+	int has_fpu)
- {
- 	unsigned long oldepc, prevepc;
- 	mips_instruction insn;
-@@ -1263,7 +1262,7 @@ int fpu_emulator_cop1Handler(struct pt_r
- 			ieee754_csr.rm = mips_rm[ieee754_csr.rm];
- 		}
- 
--		if (cpu_has_fpu)
-+		if (has_fpu)
- 			break;
- 		if (sig)
- 			break;
-diff --git a/include/asm-mips/fpu.h b/include/asm-mips/fpu.h
-index 58c561a..efef843 100644
---- a/include/asm-mips/fpu.h
-+++ b/include/asm-mips/fpu.h
-@@ -134,9 +134,11 @@ static inline void restore_fp(struct tas
- 
- static inline fpureg_t *get_fpu_regs(struct task_struct *tsk)
- {
--	if (cpu_has_fpu) {
--		if ((tsk == current) && __is_fpu_owner())
-+	if (tsk == current) {
-+		preempt_disable();
-+		if (is_fpu_owner())
- 			_save_fp(current);
-+		preempt_enable();
- 	}
- 
- 	return tsk->thread.fpu.fpr;
+ /*
+  * Called from idle loop to provoke processing of queued IPIs

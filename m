@@ -1,76 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 19:25:41 +0100 (BST)
-Received: from mx.mips.com ([63.167.95.198]:710 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20038875AbWJHSZh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 8 Oct 2006 19:25:37 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id k98IOwpT007413;
-	Sun, 8 Oct 2006 11:25:02 -0700 (PDT)
-Received: from Ulysses ([192.168.3.128])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id k98IPLZn022882;
-	Sun, 8 Oct 2006 11:25:21 -0700 (PDT)
-Message-ID: <006501c6eb07$4fbf66c0$8003a8c0@Ulysses>
-From:	"Kevin D. Kissell" <KevinK@mips.com>
-To:	<linux-mips@linux-mips.org>, "Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Cc:	<ralf@linux-mips.org>
-References: <20061009.012423.59032950.anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH] ret_from_irq adjustment
-Date:	Sun, 8 Oct 2006 20:26:44 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 22:35:53 +0100 (BST)
+Received: from web31502.mail.mud.yahoo.com ([68.142.198.131]:52849 "HELO
+	web31502.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20039657AbWJHVft (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 8 Oct 2006 22:35:49 +0100
+Received: (qmail 84377 invoked by uid 60001); 8 Oct 2006 21:35:38 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=F6+WsDKojuSCM1VKIXBoDNg57wVGXgl5jR7reDRqJHVZhySdX3Mt865+ExGY/h9GtVM6KNJoBbsIDwA9ovMkjhMsgi7dmSygAU6QgqcNNzT0ZzRJ3vepU/PZwUjCQy9DoDBugdOINyly0AB+RLLGMQm0Bf6AXdNLaK+7hJZvlDI=  ;
+Message-ID: <20061008213538.84372.qmail@web31502.mail.mud.yahoo.com>
+Received: from [65.102.0.10] by web31502.mail.mud.yahoo.com via HTTP; Sun, 08 Oct 2006 14:35:37 PDT
+Date:	Sun, 8 Oct 2006 14:35:37 -0700 (PDT)
+From:	Jonathan Day <imipak@yahoo.com>
+Subject: Re: CFE problem: starting secondary CPU.
+To:	girish <girishvg@gmail.com>, Ralf Baechle <ralf@linux-mips.org>
+Cc:	Jonathan Day <imipak@yahoo.com>,
+	Kaz Kylheku <kaz@zeugmasystems.com>, linux-mips@linux-mips.org
+In-Reply-To: <9D189830-9D85-4360-BEEE-72A3D5510D77@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1807
-Return-Path: <KevinK@mips.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <imipak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12838
+X-archive-position: 12839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KevinK@mips.com
+X-original-sender: imipak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-While setting up ra "by hand" and transferring control via the jr
-is a reasonable optimization, you're otherwise breaking things for SMTC.
-While the comments are misleading (they accurately described an earlier
-version of the code), the function being called here is ipi_decode(), which
- needs a pt_regs * in the first argument (hence the copy of the sp), and 
-the pointer to the IPI message descriptor in the second.
+--- girish <girishvg@gmail.com> wrote:
+> would it be reasonable to choose couple of
+> bootmonitors and support  
+> them under MIPS/Linux umbrella. even bootable linux
+> would be a good  
+> choice.
 
-Do you have access to a 34K to test changes to SMTC?  I'd have
-expected this one to have been pretty quickly fatal.
+I can't see why not. For that matter, I can't imagine
+it would be too hard to write the necessary flash
+support to get LinuxBIOS working.
 
-            Regards,
+It does puzzle me, though, that the kernel seems to
+get a lot of data from CFE rather than using the
+probes it already has. Whether it's a built-in BIOS
+(as on the PC), ACPI, CFE, or some other external
+table of what is present, the one thing experience has
+taught is that these tables cannot (and should not) be
+trusted. Kernel discovery, although unsafe for some
+hardware*, generally produces more accurate and
+reliable results.
 
-            Kevin K.
+*Of course, that's a killer. There is an unfortunately
+large amount of hardware in the world that cannot be
+used safely in conjunction with probes. Other hardware
+will respond incorrectly, screw up the machine, play
+all your MP3's backwards, ...
 
-> diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
-> index 76cb31d..1cb9441 100644
-> --- a/arch/mips/kernel/smtc-asm.S
-> +++ b/arch/mips/kernel/smtc-asm.S
-> @@ -97,15 +97,12 @@ FEXPORT(__smtc_ipi_vector)
->   SAVE_ALL
->   CLI
->   TRACE_IRQS_OFF
-> - move a0,sp
->   /* Function to be invoked passed stack pad slot 5 */
->   lw t0,PT_PADSLOT5(sp)
->   /* Argument from sender passed in stack pad slot 4 */
-> - lw a1,PT_PADSLOT4(sp)
-> - jalr t0
-> - nop
-> - j ret_from_irq
-> - nop
-> + lw a0,PT_PADSLOT4(sp)
-> + PTR_LA ra, _ret_from_irq
-> + jr t0
->  
->  /*
->   * Called from idle loop to provoke processing of queued IPIs
-> 
-> 
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

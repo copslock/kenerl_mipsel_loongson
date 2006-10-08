@@ -1,66 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 22:35:53 +0100 (BST)
-Received: from web31502.mail.mud.yahoo.com ([68.142.198.131]:52849 "HELO
-	web31502.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20039657AbWJHVft (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 8 Oct 2006 22:35:49 +0100
-Received: (qmail 84377 invoked by uid 60001); 8 Oct 2006 21:35:38 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=F6+WsDKojuSCM1VKIXBoDNg57wVGXgl5jR7reDRqJHVZhySdX3Mt865+ExGY/h9GtVM6KNJoBbsIDwA9ovMkjhMsgi7dmSygAU6QgqcNNzT0ZzRJ3vepU/PZwUjCQy9DoDBugdOINyly0AB+RLLGMQm0Bf6AXdNLaK+7hJZvlDI=  ;
-Message-ID: <20061008213538.84372.qmail@web31502.mail.mud.yahoo.com>
-Received: from [65.102.0.10] by web31502.mail.mud.yahoo.com via HTTP; Sun, 08 Oct 2006 14:35:37 PDT
-Date:	Sun, 8 Oct 2006 14:35:37 -0700 (PDT)
-From:	Jonathan Day <imipak@yahoo.com>
-Subject: Re: CFE problem: starting secondary CPU.
-To:	girish <girishvg@gmail.com>, Ralf Baechle <ralf@linux-mips.org>
-Cc:	Jonathan Day <imipak@yahoo.com>,
-	Kaz Kylheku <kaz@zeugmasystems.com>, linux-mips@linux-mips.org
-In-Reply-To: <9D189830-9D85-4360-BEEE-72A3D5510D77@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <imipak@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 22:44:44 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:34245 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039656AbWJHVom (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 8 Oct 2006 22:44:42 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k98LimlP010070;
+	Sun, 8 Oct 2006 22:44:48 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k98Lii7Y010059;
+	Sun, 8 Oct 2006 22:44:44 +0100
+Date:	Sun, 8 Oct 2006 22:44:43 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Kevin D. Kissell" <KevinK@mips.com>
+Cc:	linux-mips@linux-mips.org, Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] ret_from_irq adjustment
+Message-ID: <20061008214443.GA6254@linux-mips.org>
+References: <20061009.012423.59032950.anemo@mba.ocn.ne.jp> <006501c6eb07$4fbf66c0$8003a8c0@Ulysses>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <006501c6eb07$4fbf66c0$8003a8c0@Ulysses>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12839
+X-archive-position: 12840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: imipak@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---- girish <girishvg@gmail.com> wrote:
-> would it be reasonable to choose couple of
-> bootmonitors and support  
-> them under MIPS/Linux umbrella. even bootable linux
-> would be a good  
-> choice.
+On Sun, Oct 08, 2006 at 08:26:44PM +0200, Kevin D. Kissell wrote:
 
-I can't see why not. For that matter, I can't imagine
-it would be too hard to write the necessary flash
-support to get LinuxBIOS working.
+> While setting up ra "by hand" and transferring control via the jr
+> is a reasonable optimization, you're otherwise breaking things for SMTC.
+> While the comments are misleading (they accurately described an earlier
+> version of the code), the function being called here is ipi_decode(), which
+>  needs a pt_regs * in the first argument (hence the copy of the sp), and 
+> the pointer to the IPI message descriptor in the second.
+> 
+> Do you have access to a 34K to test changes to SMTC?  I'd have
+> expected this one to have been pretty quickly fatal.
 
-It does puzzle me, though, that the kernel seems to
-get a lot of data from CFE rather than using the
-probes it already has. Whether it's a built-in BIOS
-(as on the PC), ACPI, CFE, or some other external
-table of what is present, the one thing experience has
-taught is that these tables cannot (and should not) be
-trusted. Kernel discovery, although unsafe for some
-hardware*, generally produces more accurate and
-reliable results.
+The shakeup of the code by the recent series of pt_regs related cleanups
+is pretty massive.  As of last night I only had uniprocessor support
+working again.  VSMP and SMTC were broken; actual multi-core CPU not
+tested yet.
 
-*Of course, that's a killer. There is an unfortunately
-large amount of hardware in the world that cannot be
-used safely in conjunction with probes. Other hardware
-will respond incorrectly, screw up the machine, play
-all your MP3's backwards, ...
-
-
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+  Ralf

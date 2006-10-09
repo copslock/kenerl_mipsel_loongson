@@ -1,65 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 14:21:38 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:10734 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20038606AbWJINVc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2006 14:21:32 +0100
-Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id 300FF445CA; Mon,  9 Oct 2006 15:21:29 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GWv4W-0006v2-Bj; Mon, 09 Oct 2006 14:21:32 +0100
-Date:	Mon, 9 Oct 2006 14:21:32 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] setup.c: introduce __pa_symbol() and get ride of CPHYSADDR()
-Message-ID: <20061009132131.GA18308@networkno.de>
-References: <45265BF0.8080103@innova-card.com> <20061006172153.GB4456@networkno.de> <452A3953.4060802@innova-card.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 14:25:38 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:15539 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039425AbWJINZg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Oct 2006 14:25:36 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k99DPgJe013949;
+	Mon, 9 Oct 2006 14:25:42 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k99DPfe3013948;
+	Mon, 9 Oct 2006 14:25:41 +0100
+Date:	Mon, 9 Oct 2006 14:25:41 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jonathan Day <imipak@yahoo.com>
+Cc:	girish <girishvg@gmail.com>, Kaz Kylheku <kaz@zeugmasystems.com>,
+	linux-mips@linux-mips.org
+Subject: Re: CFE problem: starting secondary CPU.
+Message-ID: <20061009132540.GA4372@linux-mips.org>
+References: <9D189830-9D85-4360-BEEE-72A3D5510D77@gmail.com> <20061008213538.84372.qmail@web31502.mail.mud.yahoo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <452A3953.4060802@innova-card.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <ths@networkno.de>
+In-Reply-To: <20061008213538.84372.qmail@web31502.mail.mud.yahoo.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12844
+X-archive-position: 12845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-> Thiemo Seufer wrote:
-> > Franck Bui-Huu wrote:
-> >>
-> >> -	if (CPHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
-> >> +	if (__pa(initrd_end) > PFN_PHYS(max_low_pfn)) {
-> > 
-> > ISTR this failed on O2, where kernel+initrd are loaded into KSEG0 but the
-> > PAGE_OFFSET is for XKPHYS.
-> > 
+On Sun, Oct 08, 2006 at 02:35:37PM -0700, Jonathan Day wrote:
+
+> > would it be reasonable to choose couple of
+> > bootmonitors and support  
+> > them under MIPS/Linux umbrella. even bootable linux
+> > would be a good  
+> > choice.
 > 
-> I guess that you were meaning somthing like:
-> 
-> LOADADDR    = 0xffffffff80004000
-> PAGE_OFFSET = 0xa800000000000000
-> 
-> is that correct ?
+> I can't see why not. For that matter, I can't imagine
+> it would be too hard to write the necessary flash
+> support to get LinuxBIOS working.
 
-Yes.
+The average firmware implementation contains alot of dark magic about
+hardware initialization.  Producing a decent replacement is not trivial.
 
-> If so could you explain the choice of these values
-> because I fail to understand it.
+The current situation is that every vendor has a favorite firmware
+implementation or sometimes even several depending on vintage or endianess.
+Repeated problems over the years have taught me the only productive
+way to live with most firmware implementations is to touch them as little
+as possible since the rules for coexistence with the OS are usually very
+weakly worded, inconsistent across platforms and the governing features
+generally are bugs, incompatibilites and lack of features.  End of rant :-)
 
-It allows to load a 64-bit kernel in KSEG0, and use short 2-instruction
-symbol references there. At the same time, it allows access to more
-address space for memory and I/O than would fit in KSEG0.
+How x86 or Linux centric is LinuxBIOS?  Makers of Linux devices want to
+support other operating systems as well.
 
-
-Thiemo
+  Ralf

@@ -1,53 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Oct 2006 22:44:44 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:34245 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039656AbWJHVom (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 8 Oct 2006 22:44:42 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k98LimlP010070;
-	Sun, 8 Oct 2006 22:44:48 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k98Lii7Y010059;
-	Sun, 8 Oct 2006 22:44:44 +0100
-Date:	Sun, 8 Oct 2006 22:44:43 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Kevin D. Kissell" <KevinK@mips.com>
-Cc:	linux-mips@linux-mips.org, Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH] ret_from_irq adjustment
-Message-ID: <20061008214443.GA6254@linux-mips.org>
-References: <20061009.012423.59032950.anemo@mba.ocn.ne.jp> <006501c6eb07$4fbf66c0$8003a8c0@Ulysses>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <006501c6eb07$4fbf66c0$8003a8c0@Ulysses>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 03:10:12 +0100 (BST)
+Received: from mail.zeugmasystems.com ([192.139.122.66]:41957 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S20038960AbWJICKJ convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2006 03:10:09 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: CFE problem: starting secondary CPU.
+Date:	Sun, 8 Oct 2006 19:10:05 -0700
+Message-ID: <66910A579C9312469A7DF9ADB54A8B7D3E7352@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: CFE problem: starting secondary CPU.
+thread-index: AcbptnK09wiGicUZQwSJalVBZNRNVQBjFPJg
+From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <kaz@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12840
+X-archive-position: 12841
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kaz@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Oct 08, 2006 at 08:26:44PM +0200, Kevin D. Kissell wrote:
+Jonathan Day wrote:
+> I've seen the case where the second CPU did not start
+> on a Broadcom 1250 running a 64-bit kernel, but I
+> don't know if anyone has a good solution. I just
+> rigged the values in the Linux kernel so that it knows
+> about the second CPU.
 
-> While setting up ra "by hand" and transferring control via the jr
-> is a reasonable optimization, you're otherwise breaking things for SMTC.
-> While the comments are misleading (they accurately described an earlier
-> version of the code), the function being called here is ipi_decode(), which
->  needs a pt_regs * in the first argument (hence the copy of the sp), and 
-> the pointer to the IPI message descriptor in the second.
-> 
-> Do you have access to a 34K to test changes to SMTC?  I'd have
-> expected this one to have been pretty quickly fatal.
+Do you have a patch for that?
 
-The shakeup of the code by the recent series of pt_regs related cleanups
-is pretty massive.  As of last night I only had uniprocessor support
-working again.  VSMP and SMTC were broken; actual multi-core CPU not
-tested yet.
+> It's a godawful hack, but I
+> needed something quick at the time.
 
-  Ralf
+I wrote another hack. I struggled with it for hours and
+then finally got it to work. Whoo! 
+
+The idea is based on the hypothesis that the 64 bit
+kernel's environment somehow makes the CFE calls unreliable.
+
+Under this hack, the CPUs are started early through CFE,
+before most other initializations. They go into a holding function
+which is almost identical to the one inside CFE, 
+except that it's running kernel code.
+
+Then later at the point where the CPU's are to be released
+into the kernel, it's purely an in-kernel operation, no
+longer involving any calls to CFE.
+
+
+
+Remarks:
+
+
+
+I have some CFE code which reads environment variables
+using CFE. Under 64 bit, there is a mysterious oops in it.
+The code looks good, and runs fine under 32.
+
+What could it be? Maybe CFE doesn't like being called from
+a task! Something about the 64 bit stack?
+
+Note that code which starts the other CPU's is called from a
+kernel thread which calls the init() function, not from
+the mainline.
+
+I will investigate further.

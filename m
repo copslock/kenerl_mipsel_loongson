@@ -1,79 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 15:38:17 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:23014 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20039672AbWJIOiM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2006 15:38:12 +0100
-Received: from localhost (p4240-ipad02funabasi.chiba.ocn.ne.jp [61.207.151.240])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 8BF1CA68B; Mon,  9 Oct 2006 23:38:07 +0900 (JST)
-Date:	Mon, 09 Oct 2006 23:40:22 +0900 (JST)
-Message-Id: <20061009.234022.07643427.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	KevinK@mips.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH] ret_from_irq adjustment
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061009135332.GA14048@linux-mips.org>
-References: <20061009.012423.59032950.anemo@mba.ocn.ne.jp>
-	<006501c6eb07$4fbf66c0$8003a8c0@Ulysses>
-	<20061009135332.GA14048@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 15:58:23 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:3497 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S20039675AbWJIO6S (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2006 15:58:18 +0100
+Received: from lagash (mipsfw.mips-uk.com [194.74.144.146])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id DFDF1446E2; Mon,  9 Oct 2006 16:58:16 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1GWwa9-0007Np-SY; Mon, 09 Oct 2006 15:58:17 +0100
+Date:	Mon, 9 Oct 2006 15:58:17 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] setup.c: introduce __pa_symbol() and get ride of CPHYSADDR()
+Message-ID: <20061009145817.GB18308@networkno.de>
+References: <45265BF0.8080103@innova-card.com> <20061006172153.GB4456@networkno.de> <452A3953.4060802@innova-card.com> <20061009132131.GA18308@networkno.de> <452A5BEA.2060500@innova-card.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <452A5BEA.2060500@innova-card.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12848
+X-archive-position: 12849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 9 Oct 2006 14:53:33 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> ipi_decode() has lost it's pt_regs argument like most of the interrupt
-> related functions, so Atushi's patch was right.  Any interrupt handler
-> that wants to get a pointer to the register frame can do so by calling
-> get_irq_regs().
-
-Yes, excuse me for a terse description.
-
-> So with Atsushi's patch applied VSMP and SMTC with only two TCs activated
-> are working again.  It still crashes with 5 TCs enabled:
+Franck Bui-Huu wrote:
+[snip]
+> >> If so could you explain the choice of these values
+> >> because I fail to understand it.
+> > 
+> > It allows to load a 64-bit kernel in KSEG0,
 > 
-> Cpu 1
-> $ 0   : 00000000 18102000 00000000 8041ed44
-> $ 4   : 00000000 00000000 8041ec88 00000000
-> $ 8   : 00000000 18001c00 8010de78 80430000
-> $12   : 80420000 fffffffb ffffffff 0000000a
-> $16   : 00000000 00000001 8041ec04 8041ec08
-> $20   : 803b0000 8041ed40 80380000 18102000
-> $24   : 00000000 810c3b11
-> $28   : 810c2000 810c3b58 00000100 80108bdc
-> Hi    : 00000009
-> Lo    : fbe7d600
-> epc   : 80132b74 profile_tick+0x20/0xb4     Not tainted
-> ra    : 80108bdc local_timer_interrupt+0x10/0x30
-> Status: 1100a603    KERNEL EXL IE
+> sorry to be ignorant of 64 bit kernels, but what's the point
+> to load them in KSEG0.
 
-Hmm, this would be because local_timer_interrupt was called from
-ipi_decode().  Is this a proper fix?
+Smaller code with better performance.
 
-diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
-index 1cb9441..20938a4 100644
---- a/arch/mips/kernel/smtc-asm.S
-+++ b/arch/mips/kernel/smtc-asm.S
-@@ -101,7 +101,9 @@ FEXPORT(__smtc_ipi_vector)
- 	lw	t0,PT_PADSLOT5(sp)
- 	/* Argument from sender passed in stack pad slot 4 */
- 	lw	a0,PT_PADSLOT4(sp)
--	PTR_LA	ra, _ret_from_irq
-+	LONG_L	s0, TI_REGS($28)
-+	LONG_S	sp, TI_REGS($28)
-+	PTR_LA	ra, ret_from_irq
- 	jr	t0
- 
- /*
+> > and use short 2-instruction symbol references there.
+> 
+> do you mean "it allows to use only 2 'lui' instructions to load
+> a symbol address into a register" ?
+
+It allows a 2-instruction "lui ; addiu" sequence instead of a
+6-instruction "lui ; lui ; addiu ; addiu ; dsll32 ; addu" sequence.
+
+> Futhermore I don't see how some part of the kernel convert virtual
+> address into a physical one with such values. For example in setup.c,
+> the function resource_init() does:
+> 
+> 	code_resource.start = virt_to_phys(&_text);
+> 	code_resource.end = virt_to_phys(&_etext) - 1;
+> 	data_resource.start = virt_to_phys(&_etext);
+> 	data_resource.end = virt_to_phys(&_edata) - 1;
+> 
+> How does it work in this case ?
+
+Those are addresses in 64-bit space, no special handling is needed
+there.
+
+The same doesn't hold for the initrd addresses supplied by the (32-bit)
+firmware. The firmware doesn't convert the kernel parameters to 64-bit
+values because the O2 kernel used to allow a pure 32-bit build, and the
+firmware can't find out what's actually inside the object file.
+
+
+Thiemo

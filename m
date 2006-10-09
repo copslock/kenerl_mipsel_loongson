@@ -1,69 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 20:13:01 +0100 (BST)
-Received: from web31506.mail.mud.yahoo.com ([68.142.198.135]:10098 "HELO
-	web31506.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20039732AbWJITM7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Oct 2006 20:12:59 +0100
-Received: (qmail 13895 invoked by uid 60001); 9 Oct 2006 19:12:52 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=qJlMHlzL5eySTVMnY6tZANn2V5SSSAjyfPmPjyttluN41BzfQquaFkvsfBfQmUE+9VN3icQpKNpWSCdSMkn5YkRXjzBcC5kGphCeCy+qOaNZhkCQ7BmcEEDbIynDCeFA6ed9AUhLz96YIHYGM6SYchZRTdxvJ3TTkEftJ9wg/cc=  ;
-Message-ID: <20061009191252.13893.qmail@web31506.mail.mud.yahoo.com>
-Received: from [70.103.67.194] by web31506.mail.mud.yahoo.com via HTTP; Mon, 09 Oct 2006 12:12:52 PDT
-Date:	Mon, 9 Oct 2006 12:12:52 -0700 (PDT)
-From:	Jonathan Day <imipak@yahoo.com>
-Subject: Re: CFE problem: starting secondary CPU.
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	girish <girishvg@gmail.com>, Kaz Kylheku <kaz@zeugmasystems.com>,
-	linux-mips@linux-mips.org
-In-Reply-To: <20061009132540.GA4372@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 20:42:43 +0100 (BST)
+Received: from mms2.broadcom.com ([216.31.210.18]:6160 "EHLO mms2.broadcom.com")
+	by ftp.linux-mips.org with ESMTP id S20039691AbWJITmj convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Oct 2006 20:42:39 +0100
+Received: from 10.10.64.154 by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.2.2)); Mon, 09 Oct 2006 12:42:25 -0700
+X-Server-Uuid: 79DB55DB-3CB4-423E-BEDB-D0F268247E63
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ D50222AF; Mon, 9 Oct 2006 12:42:24 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id B08032AE; Mon, 9 Oct
+ 2006 12:42:24 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id EHC21974; Mon, 9 Oct 2006 12:42:24 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
+ [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 3A80C20501; Mon, 9 Oct 2006 12:42:24 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <imipak@yahoo.com>
+Subject: RE: CFE problem: starting secondary CPU.
+Date:	Mon, 9 Oct 2006 12:42:23 -0700
+Message-ID: <7E000E7F06B05C49BDBB769ADAF44D07011FE3A6@NT-SJCA-0750.brcm.ad.broadcom.com>
+In-Reply-To: <66910A579C9312469A7DF9ADB54A8B7D3E7324@exchange.ZeugmaSystems.local>
+Thread-Topic: CFE problem: starting secondary CPU.
+Thread-Index: Acbpo1bBhY91FwuRSxSoPT5JCpbUywCN3gGQ
+From:	"Mark E Mason" <mark.e.mason@broadcom.com>
+To:	"Kaz Kylheku" <kaz@zeugmasystems.com>, linux-mips@linux-mips.org
+cc:	mason@broadcom.com
+X-TMWD-Spam-Summary: TS=20061009194227; SEV=2.0.2; DFV=A2006100907;
+ IFV=2.0.4,4.0-8; RPD=4.00.0004; ENG=IBF;
+ RPDID=303030312E30413031303230322E34353241413542462E303035312D412D;
+ CAT=NONE; CON=NONE
+X-MMS-Spam-Filter-ID: A2006100907_4.00.0004_4.0-8
+X-WSS-ID: 693479AB2I02791255-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mark.e.mason@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12857
+X-archive-position: 12858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: imipak@yahoo.com
+X-original-sender: mark.e.mason@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
---- Ralf Baechle <ralf@linux-mips.org> wrote:
-> The average firmware implementation contains alot of
-> dark magic about
-> hardware initialization.  Producing a decent
-> replacement is not trivial.
+Hello,
 
-Ok, does anyone here know if Voldemort is a good code
-hacker? :)
- 
-(snip)
-> How x86 or Linux centric is LinuxBIOS?  Makers of
-> Linux devices want to
-> support other operating systems as well.
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org 
+> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Kaz Kylheku
+> Sent: Friday, October 06, 2006 4:59 PM
+> To: linux-mips@linux-mips.org
+> Subject: CFE problem: starting secondary CPU.
+> 
+> Anyone seen a problem like this? cfe_cpu_start() works fine on a
+> 32 bit kernel, but not on 64.
 
-LinuxBIOS is listed as supporting Linux (!), Plan 9
-and Windows 2000. They don't support any of the *BSDs,
-as there's apparently some BIOS calls in their
-bootloaders and LinuxBIOS doesn't do BIOS calls. The
-total intrusion into Linux is a 10-line hook and there
-obviously can't even be that for Windows, so I think
-most other OS' should be ok with it.
+Which version of CFE are you using?  We'd seen something like this with
+the 1480 eval boards, some specific versions of CFE, and 64-bit SMP
+Linux.
 
-The supported motherboards include your usual x86
-stuff (including Opterons, which I'm taking as meaning
-it'll work on 64-bit systems) and PowerPC chips. The
-FAQ also mentions the Alpha processor, but I didn't
-see any examples amongst the listed vendors or
-supported motherboards.
-
-Jonathan
-
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+Thx,
+Mark

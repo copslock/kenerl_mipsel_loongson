@@ -1,50 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 16:49:40 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:36329 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20039682AbWJIPtf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2006 16:49:35 +0100
-Received: from localhost (p4240-ipad02funabasi.chiba.ocn.ne.jp [61.207.151.240])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 618C6AF92; Tue, 10 Oct 2006 00:49:27 +0900 (JST)
-Date:	Tue, 10 Oct 2006 00:51:42 +0900 (JST)
-Message-Id: <20061010.005142.03977034.anemo@mba.ocn.ne.jp>
-To:	ths@networkno.de
-Cc:	vagabon.xyz@gmail.com, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] setup.c: introduce __pa_symbol() and get ride of
- CPHYSADDR()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061009145817.GB18308@networkno.de>
-References: <20061009132131.GA18308@networkno.de>
-	<452A5BEA.2060500@innova-card.com>
-	<20061009145817.GB18308@networkno.de>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 17:02:15 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:10176 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039692AbWJIQCO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Oct 2006 17:02:14 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k99G2Icj007876;
+	Mon, 9 Oct 2006 17:02:21 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k99G2Gf1007875;
+	Mon, 9 Oct 2006 17:02:16 +0100
+Date:	Mon, 9 Oct 2006 17:02:15 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, mlachwani@mvista.com
+Subject: Re: [PATCH] Make sure cpu_has_fpu is used only in atomic context
+Message-ID: <20061009160215.GA7642@linux-mips.org>
+References: <44F715F2.7050305@mvista.com> <20060901.122527.63741495.nemoto@toshiba-tops.co.jp> <20060901.170817.118968734.nemoto@toshiba-tops.co.jp> <20061009.001001.74753036.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20061009.001001.74753036.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12851
+X-archive-position: 12852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 9 Oct 2006 15:58:17 +0100, Thiemo Seufer <ths@networkno.de> wrote:
-> > do you mean "it allows to use only 2 'lui' instructions to load
-> > a symbol address into a register" ?
-> 
-> It allows a 2-instruction "lui ; addiu" sequence instead of a
-> 6-instruction "lui ; lui ; addiu ; addiu ; dsll32 ; addu" sequence.
+On Mon, Oct 09, 2006 at 12:10:01AM +0900, Atsushi Nemoto wrote:
 
-Just for clarification: IIRC this optimization needs somewhat
-up-to-date binutils/gcc and is not enabled on current lmo kernel,
-right?
+> Make sure cpu_has_fpu (which uses smp_processor_id()) is used
+> only in atomic context.
 
----
-Atsushi Nemoto
+It's awfully ugly to have an increasing number of preemption kludgery
+around but it's not so trivial to avoid unfortunately ...
+
+  Ralf

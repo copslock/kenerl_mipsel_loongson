@@ -1,86 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 15:24:41 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.191]:7250 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037847AbWJIOYg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Oct 2006 15:24:36 +0100
-Received: by nf-out-0910.google.com with SMTP id n29so632115nfc
-        for <linux-mips@linux-mips.org>; Mon, 09 Oct 2006 07:24:35 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=mcXztVW623J6V+lYkQGCezMBBzNtJw0JvCiGJYZdfG/uXBstSkPzL9ZuEXP8Ir3Ou62sgzFt2XmdK+STgu7nCPqzIBhvqWSBzxEk1ga5tfDfWtWUjY+qFvDu5balRQHFvXe4AFNH92U5kc2fyy9XOHdEmV6IIl8yYAixkhlwsEs=
-Received: by 10.49.8.10 with SMTP id l10mr2108562nfi;
-        Mon, 09 Oct 2006 07:24:35 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id l27sm7943594nfa.2006.10.09.07.24.34;
-        Mon, 09 Oct 2006 07:24:35 -0700 (PDT)
-Message-ID: <452A5BEA.2060500@innova-card.com>
-Date:	Mon, 09 Oct 2006 16:25:46 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Thiemo Seufer <ths@networkno.de>
-CC:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] setup.c: introduce __pa_symbol() and get ride of CPHYSADDR()
-References: <45265BF0.8080103@innova-card.com> <20061006172153.GB4456@networkno.de> <452A3953.4060802@innova-card.com> <20061009132131.GA18308@networkno.de>
-In-Reply-To: <20061009132131.GA18308@networkno.de>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Oct 2006 15:38:17 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:23014 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20039672AbWJIOiM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Oct 2006 15:38:12 +0100
+Received: from localhost (p4240-ipad02funabasi.chiba.ocn.ne.jp [61.207.151.240])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8BF1CA68B; Mon,  9 Oct 2006 23:38:07 +0900 (JST)
+Date:	Mon, 09 Oct 2006 23:40:22 +0900 (JST)
+Message-Id: <20061009.234022.07643427.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	KevinK@mips.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH] ret_from_irq adjustment
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061009135332.GA14048@linux-mips.org>
+References: <20061009.012423.59032950.anemo@mba.ocn.ne.jp>
+	<006501c6eb07$4fbf66c0$8003a8c0@Ulysses>
+	<20061009135332.GA14048@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12847
+X-archive-position: 12848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> Franck Bui-Huu wrote:
->> Thiemo Seufer wrote:
->>> Franck Bui-Huu wrote:
->>>> -	if (CPHYSADDR(initrd_end) > PFN_PHYS(max_low_pfn)) {
->>>> +	if (__pa(initrd_end) > PFN_PHYS(max_low_pfn)) {
->>> ISTR this failed on O2, where kernel+initrd are loaded into KSEG0 but the
->>> PAGE_OFFSET is for XKPHYS.
->>>
->> I guess that you were meaning somthing like:
->>
->> LOADADDR    = 0xffffffff80004000
->> PAGE_OFFSET = 0xa800000000000000
->>
->> is that correct ?
+On Mon, 9 Oct 2006 14:53:33 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> ipi_decode() has lost it's pt_regs argument like most of the interrupt
+> related functions, so Atushi's patch was right.  Any interrupt handler
+> that wants to get a pointer to the register frame can do so by calling
+> get_irq_regs().
+
+Yes, excuse me for a terse description.
+
+> So with Atsushi's patch applied VSMP and SMTC with only two TCs activated
+> are working again.  It still crashes with 5 TCs enabled:
 > 
-> Yes.
-> 
->> If so could you explain the choice of these values
->> because I fail to understand it.
-> 
-> It allows to load a 64-bit kernel in KSEG0,
+> Cpu 1
+> $ 0   : 00000000 18102000 00000000 8041ed44
+> $ 4   : 00000000 00000000 8041ec88 00000000
+> $ 8   : 00000000 18001c00 8010de78 80430000
+> $12   : 80420000 fffffffb ffffffff 0000000a
+> $16   : 00000000 00000001 8041ec04 8041ec08
+> $20   : 803b0000 8041ed40 80380000 18102000
+> $24   : 00000000 810c3b11
+> $28   : 810c2000 810c3b58 00000100 80108bdc
+> Hi    : 00000009
+> Lo    : fbe7d600
+> epc   : 80132b74 profile_tick+0x20/0xb4     Not tainted
+> ra    : 80108bdc local_timer_interrupt+0x10/0x30
+> Status: 1100a603    KERNEL EXL IE
 
-sorry to be ignorant of 64 bit kernels, but what's the point
-to load them in KSEG0.
+Hmm, this would be because local_timer_interrupt was called from
+ipi_decode().  Is this a proper fix?
 
-> and use short 2-instruction symbol references there.
-
-do you mean "it allows to use only 2 'lui' instructions to load
-a symbol address into a register" ?
-
-Futhermore I don't see how some part of the kernel convert virtual
-address into a physical one with such values. For example in setup.c,
-the function resource_init() does:
-
-	code_resource.start = virt_to_phys(&_text);
-	code_resource.end = virt_to_phys(&_etext) - 1;
-	data_resource.start = virt_to_phys(&_etext);
-	data_resource.end = virt_to_phys(&_edata) - 1;
-
-How does it work in this case ?
-
-Thanks
-		Franck
+diff --git a/arch/mips/kernel/smtc-asm.S b/arch/mips/kernel/smtc-asm.S
+index 1cb9441..20938a4 100644
+--- a/arch/mips/kernel/smtc-asm.S
++++ b/arch/mips/kernel/smtc-asm.S
+@@ -101,7 +101,9 @@ FEXPORT(__smtc_ipi_vector)
+ 	lw	t0,PT_PADSLOT5(sp)
+ 	/* Argument from sender passed in stack pad slot 4 */
+ 	lw	a0,PT_PADSLOT4(sp)
+-	PTR_LA	ra, _ret_from_irq
++	LONG_L	s0, TI_REGS($28)
++	LONG_S	sp, TI_REGS($28)
++	PTR_LA	ra, ret_from_irq
+ 	jr	t0
+ 
+ /*

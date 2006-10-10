@@ -1,86 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 18:54:13 +0100 (BST)
-Received: from mms1.broadcom.com ([216.31.210.17]:5641 "EHLO mms1.broadcom.com")
-	by ftp.linux-mips.org with ESMTP id S20039897AbWJJRyL convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Oct 2006 18:54:11 +0100
-Received: from 10.10.64.154 by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.2.2)); Tue, 10 Oct 2006 10:53:52 -0700
-X-Server-Uuid: 8BFFF8BB-6D19-4612-8F54-AA4CE9D0539E
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 75B5C2AE; Tue, 10 Oct 2006 10:53:52 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 29C6A2AF; Tue, 10 Oct
- 2006 10:53:52 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id EHE35030; Tue, 10 Oct 2006 10:53:19 -0700 (PDT)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 0E02620501; Tue, 10 Oct 2006 10:53:19 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 19:12:03 +0100 (BST)
+Received: from web31501.mail.mud.yahoo.com ([68.142.198.130]:8815 "HELO
+	web31501.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20039800AbWJJSL7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 10 Oct 2006 19:11:59 +0100
+Received: (qmail 59512 invoked by uid 60001); 10 Oct 2006 18:11:48 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=xzMIvgqeQYuGTgVcCDR9s6rd6i6edQiDY0F20jHpwToqbCOwtZsm3+gV7wwsvIPBra+tpdZ36kYQ6MyzmIZa7NWnNOGvSKAShvSgy4o+lAK+DU34fenG9yMih2EA/0m4UZ5xDDu52uxv65QcNFOHe1RP+WEj4u90MjXk2xLg+NM=  ;
+Message-ID: <20061010181148.59510.qmail@web31501.mail.mud.yahoo.com>
+Received: from [70.103.67.194] by web31501.mail.mud.yahoo.com via HTTP; Tue, 10 Oct 2006 11:11:48 PDT
+Date:	Tue, 10 Oct 2006 11:11:48 -0700 (PDT)
+From:	Jonathan Day <imipak@yahoo.com>
+Subject: Memory freeing at boot time on SB1
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Subject: RE: CFE problem: starting secondary CPU.
-Date:	Tue, 10 Oct 2006 10:53:18 -0700
-Message-ID: <7E000E7F06B05C49BDBB769ADAF44D07011FE47D@NT-SJCA-0750.brcm.ad.broadcom.com>
-In-Reply-To: <66910A579C9312469A7DF9ADB54A8B7D3E73D2@exchange.ZeugmaSystems.local>
-Thread-Topic: CFE problem: starting secondary CPU.
-Thread-Index: Acbpo1bBhY91FwuRSxSoPT5JCpbUywCN3gGQACzu07AAAY2jIA==
-From:	"Mark E Mason" <mark.e.mason@broadcom.com>
-To:	"Kaz Kylheku" <kaz@zeugmasystems.com>, linux-mips@linux-mips.org
-cc:	mason@broadcom.com
-X-TMWD-Spam-Summary: TS=20061010175355; SEV=2.0.2; DFV=A2006101008;
- IFV=2.0.4,4.0-8; RPD=4.00.0004; ENG=IBF;
- RPDID=303030312E30413031303230362E34353242444446332E303035312D412D;
- CAT=NONE; CON=NONE
-X-MMS-Spam-Filter-ID: A2006101008_4.00.0004_4.0-8
-X-WSS-ID: 693501BA09W3189711-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mark.e.mason@broadcom.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <imipak@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12878
+X-archive-position: 12879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mark.e.mason@broadcom.com
+X-original-sender: imipak@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello, 
+Hi,
 
-> Mark E Mason: 
-> > Kaz Kylheku:
-> > > 
-> > > Anyone seen a problem like this? cfe_cpu_start() works fine on a
-> > > 32 bit kernel, but not on 64.
-> > 
-> > Which version of CFE are you using?  We'd seen something like 
-> > this with
-> > the 1480 eval boards, some specific versions of CFE, and 64-bit SMP
-> > Linux.
-> 
-> I see in the release notes that something was fixed in 1.2.4 
-> that could
-> prevent 64 bit SMP from booting: a bug that was preventing the upper
-> halves of registers from being saved. Is that what you are talking
-> about?
-> 
-> We are on 1.3.0.
+Since updating to a more recent version of the git
+repository, the patches published here that fixed the
+memory freeing bug on the SB1 (Broadcom 1250) no
+longer apply. A quick round of compiling, however,
+shows that the problem that the patch fixed still
+remains.
 
-Yes, I was thinking of the one fixed in 1.2.4.
+(As best as I recall, the problem was the switch from
+some SB1-specific operations to generic ones.)
 
-Definitely sounds like a [new] bug then.  Have you filed a bug report
-with sibyte-software@broadcom.com?
+Does anyone have an updated memory free fix?
 
-Thx,
-Mark
+Jonathan
 
-> 
-> Thanks.
-> 
-> 
-> 
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

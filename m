@@ -1,50 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 22:53:41 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:5026 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20027541AbWJJVxj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Oct 2006 22:53:39 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k9ALpbSv021240;
-	Tue, 10 Oct 2006 22:51:59 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k9ALpOwm021239;
-	Tue, 10 Oct 2006 22:51:24 +0100
-Date:	Tue, 10 Oct 2006 22:51:24 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ths@networkno.de,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] setup.c: introduce __pa_symbol() and get ride of CPHYSADDR()
-Message-ID: <20061010215124.GA21012@linux-mips.org>
-References: <452BA4E7.30901@innova-card.com> <20061010.231944.42203018.anemo@mba.ocn.ne.jp> <452BB5E1.5090308@innova-card.com> <20061011.002914.76462350.anemo@mba.ocn.ne.jp> <452BC4A5.3080706@innova-card.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 23:33:40 +0100 (BST)
+Received: from [69.90.147.196] ([69.90.147.196]:62383 "EHLO mail.kenati.com")
+	by ftp.linux-mips.org with ESMTP id S20027650AbWJJWdi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Oct 2006 23:33:38 +0100
+Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
+	by mail.kenati.com (Postfix) with ESMTP id 661EC15D4005
+	for <linux-mips@linux-mips.org>; Tue, 10 Oct 2006 15:57:20 -0700 (PDT)
+Subject: calibrate_delay function
+From:	Ashlesha Shintre <ashlesha@kenati.com>
+Reply-To: ashlesha@kenati.com
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain
+Date:	Tue, 10 Oct 2006 15:43:00 -0700
+Message-Id: <1160520180.6521.29.camel@sandbar.kenati.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <452BC4A5.3080706@innova-card.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.4.2.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ashlesha@kenati.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12886
+X-archive-position: 12887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ashlesha@kenati.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 10, 2006 at 06:04:53PM +0200, Franck Bui-Huu wrote:
+Hi,
+I m working on the Encore M3 board that has the AU1500 MIPS processor on
+it.  I aim to port the 2.6 linux kernel to the board which is already
+supported in the 2.4 kernel.
 
-> ok, and does the trick on KSEG0/XKPHYS really worth ? I mean what is
-> the size code gain ?
+The start_kernel function in linux/init/main.c file, calls a function
+calibrate_delay found in the arch/frv/kernel/setup.c file.  Why does the
+kernel call this function which is a part of the Fujitsu FR-V
+architecture?  
 
-Gcc / gas generate a 6 instruction sequence to load something from a
-64-bit address, basically lui, add, dsll16, add, dsll16, add.  It's
-just 2 instructions for 32-bit addresses.  This boils down to space
-savings in the hundred of kilobytes for a kernel.
+When I build the image, this is the point where the kernel is stuck and
+the last contents of the log buffer show the following printk message
+from the calibrate_delay function:
 
-Of course there are more intelligent way to load an address via global
-pointer optimization but that's the two choices we got today.
 
-  Ralf
+> Calibrating delay loop...
+
+Thanks,
+Ashlesha.

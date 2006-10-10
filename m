@@ -1,64 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 17:03:47 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.186]:22750 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039901AbWJJQDp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Oct 2006 17:03:45 +0100
-Received: by nf-out-0910.google.com with SMTP id n29so314981nfc
-        for <linux-mips@linux-mips.org>; Tue, 10 Oct 2006 09:03:41 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=CGausiY5C/7iUQAHxB2Ck0egOHDQDbCcYiFIbDkrcgMB4iCzIbYHIAm7BMNmcKIX2GN5VCZcqYYx6+vq/X6YtBv3VxfEadJUdLsGOZ9EW7CxhQxqVhtKXDXz4ebymf1YMTj9uPss3gVREMuGQzIAR2TlEq/y5r8kZ7alon3MFog=
-Received: by 10.49.8.4 with SMTP id l4mr1618044nfi;
-        Tue, 10 Oct 2006 09:03:41 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id z73sm2202993nfb.2006.10.10.09.03.40;
-        Tue, 10 Oct 2006 09:03:40 -0700 (PDT)
-Message-ID: <452BC4A5.3080706@innova-card.com>
-Date:	Tue, 10 Oct 2006 18:04:53 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, ths@networkno.de, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] setup.c: introduce __pa_symbol() and get ride of CPHYSADDR()
-References: <452BA4E7.30901@innova-card.com>	<20061010.231944.42203018.anemo@mba.ocn.ne.jp>	<452BB5E1.5090308@innova-card.com> <20061011.002914.76462350.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061011.002914.76462350.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 17:04:50 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:59615 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20039901AbWJJQEt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Oct 2006 17:04:49 +0100
+Received: from localhost (p3213-ipad213funabasi.chiba.ocn.ne.jp [124.85.68.213])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 201CEA3CC; Wed, 11 Oct 2006 01:04:45 +0900 (JST)
+Date:	Wed, 11 Oct 2006 01:07:01 +0900 (JST)
+Message-Id: <20061011.010701.108289252.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] asm-mips/irq.h does not need pt_regs anymore
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12874
+X-archive-position: 12875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Tue, 10 Oct 2006 17:01:53 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->>> I think this peice of code is just broken, as you said.  This is bogus
->>> but harmless since we have not checked these resources are
->>> successfully registered or not.
->> what about all other uses of virt_to_phys(x) ? And what the point to set
->> PAGE_OFFSET to 0xa800000000000000 ? I'm really confused...
-> 
-> For now I have not seen any problem on other usages.
-> 
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-do you know at which point the kernel starts to use XKPHYS addresses ?
-
-> We can use large flat mapping space in XKPHYS.  No TLB conversion, no
-> highmem trick.
-> 
-
-ok, and does the trick on KSEG0/XKPHYS really worth ? I mean what is
-the size code gain ?
-
-Thanks
-		Franck
+diff --git a/include/asm-mips/irq.h b/include/asm-mips/irq.h
+index 1a9804c..0ce2a80 100644
+--- a/include/asm-mips/irq.h
++++ b/include/asm-mips/irq.h
+@@ -24,8 +24,6 @@ #else
+ #define irq_canonicalize(irq) (irq)	/* Sane hardware, sane code ... */
+ #endif
+ 
+-struct pt_regs;
+-
+ extern asmlinkage unsigned int do_IRQ(unsigned int irq);
+ 
+ #ifdef CONFIG_MIPS_MT_SMTC

@@ -1,49 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 00:24:55 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:64988 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039764AbWJIXYy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Oct 2006 00:24:54 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k99NP101003191;
-	Tue, 10 Oct 2006 00:25:01 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k99NOuB9003169;
-	Tue, 10 Oct 2006 00:24:56 +0100
-Date:	Tue, 10 Oct 2006 00:24:56 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Igal Chernobelsky <igalch@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Math-emu issue
-Message-ID: <20061009232455.GA26855@linux-mips.org>
-References: <103e245f0610090921g5348dbd3hd806129e75668763@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Oct 2006 08:56:17 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:36359 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038662AbWJJH4P (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Oct 2006 08:56:15 +0100
+Received: by mo.po.2iij.net (mo30) id k9A7uCn1096889; Tue, 10 Oct 2006 16:56:12 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox31) id k9A7uAqM051471
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 10 Oct 2006 16:56:11 +0900 (JST)
+Date:	Tue, 10 Oct 2006 16:56:11 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] fix timer setup for Jazz
+Message-Id: <20061010165611.2ee77306.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <103e245f0610090921g5348dbd3hd806129e75668763@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12859
+X-archive-position: 12860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 09, 2006 at 06:21:18PM +0200, Igal Chernobelsky wrote:
+Hi Ralf,
 
-> I started to use LinuxThread in Linux 2.4 (version
-> 2.4.17_mvl21-malta-mips_fp_le) and sometimes encounter a problem of
-> arithmetic exception while performing dividing of two variables of double
-> type. Our MIPS core does not include FPU coprosessor so math-emu is used. Is
-> there any known problems/patches for kernel math emulation when LinuxThreads
-> is used?
+This patch has fixed timer setup function name for Jazz.
 
-This is an extremly old kernel; from my own experience I recall we hit
-heap and piles of bugs in that particular particular MV release so I
-can only recommend you to upgrade.
+Yoichi
 
-  Ralf
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/jazz/setup.c mips/arch/mips/jazz/setup.c
+--- mips-orig/arch/mips/jazz/setup.c	2006-10-10 11:36:15.066873500 +0900
++++ mips/arch/mips/jazz/setup.c	2006-10-10 15:01:30.833109250 +0900
+@@ -37,7 +37,7 @@ extern void jazz_machine_restart(char *c
+ extern void jazz_machine_halt(void);
+ extern void jazz_machine_power_off(void);
+ 
+-void __init plat_time_init(struct irqaction *irq)
++void __init plat_timer_setup(struct irqaction *irq)
+ {
+ 	/* set the clock to 100 Hz */
+ 	r4030_write_reg32(JAZZ_TIMER_INTERVAL, 9);

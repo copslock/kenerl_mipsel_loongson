@@ -1,7 +1,7 @@
-From: Maarten Lankhorst <M.B.Lankhorst@gmail.com>
+From: Maarten Lankhorst <a class="moz-txt-link-rfc2396E" href="mailto:M.B.Lankhorst@gmail.com">&lt;M.B.Lankhorst@gmail.com&gt;</a>
 Date: Tue, 10 Oct 2006 13:15:40 +0200
 Subject: [PATCH] b44 bcm47xx support
-Message-ID: <20061010111540.ghGWG2msnZOWhcfVy35L9o3cvG7ATre_MunHirkg4Rs@z>
+Message-ID: <20061010111540.xLjEI8U6pt4BR1gmgKZi_cSUewH0GDeYj9BDh4XUDN8@z>
 
 ---
  drivers/net/b44.c |  524 ++++++++++++++++++++++++++++++++++++++++++++++++-----
@@ -16,12 +16,12 @@ index b124eee..a9717ba 100644
 -/* b44.c: Broadcom 4400 device driver.
 +/* b44.c: Broadcom 4400/47xx device driver.
   *
-  * Copyright (C) 2002 David S. Miller (davem@redhat.com)
-- * Fixed by Pekka Pietikainen (pp@ee.oulu.fi)
-+ * Copyright (C) 2004 Pekka Pietikainen (pp@ee.oulu.fi)
-+ * Copyright (C) 2004 Florian Schirmer (jolt@tuxbox.org)
+  * Copyright (C) 2002 David S. Miller (<a class="moz-txt-link-abbreviated" href="mailto:davem@redhat.com">davem@redhat.com</a>)
+- * Fixed by Pekka Pietikainen (<a class="moz-txt-link-abbreviated" href="mailto:pp@ee.oulu.fi">pp@ee.oulu.fi</a>)
++ * Copyright (C) 2004 Pekka Pietikainen (<a class="moz-txt-link-abbreviated" href="mailto:pp@ee.oulu.fi">pp@ee.oulu.fi</a>)
++ * Copyright (C) 2004 Florian Schirmer (<a class="moz-txt-link-abbreviated" href="mailto:jolt@tuxbox.org">jolt@tuxbox.org</a>)
   * Copyright (C) 2006 Broadcom Corporation.
-+ * Copyright (C) 2006 Felix Fietkau (nbd@openwrt.org)
++ * Copyright (C) 2006 Felix Fietkau (<a class="moz-txt-link-abbreviated" href="mailto:nbd@openwrt.org">nbd@openwrt.org</a>)
   *
   * Distribute under GPL.
   */
@@ -82,13 +82,13 @@ index b124eee..a9717ba 100644
  
 -static inline unsigned long br32(const struct b44 *bp, unsigned long reg)
 -{
--	return readl(bp->regs + reg);
+-	return readl(bp-&gt;regs + reg);
 -}
 -
 -static inline void bw32(const struct b44 *bp,
 -			unsigned long reg, unsigned long val)
 -{
--	writel(val, bp->regs + reg);
+-	writel(val, bp-&gt;regs + reg);
 -}
 -
  static int b44_wait_bit(struct b44 *bp, unsigned long reg,
@@ -99,7 +99,7 @@ index b124eee..a9717ba 100644
  	};
  #endif
 +#ifdef CONFIG_BCM947XX
-+	if (bp->pdev->device == PCI_DEVICE_ID_BCM4713)
++	if (bp-&gt;pdev-&gt;device == PCI_DEVICE_ID_BCM4713)
 +		return b44_4713_instance++;
 +#endif
  	return 0;
@@ -115,21 +115,21 @@ index b124eee..a9717ba 100644
 +	u32 val;
 +
 +	bw32(bp, B44_CAM_CTRL, (CAM_CTRL_READ |
-+			    (index << CAM_CTRL_INDEX_SHIFT)));
++			    (index &lt;&lt; CAM_CTRL_INDEX_SHIFT)));
 +
 +	b44_wait_bit(bp, B44_CAM_CTRL, CAM_CTRL_BUSY, 100, 1);
 +
 +	val = br32(bp, B44_CAM_DATA_LO);
 +
-+	data[2] = (val >> 24) & 0xFF;
-+	data[3] = (val >> 16) & 0xFF;
-+	data[4] = (val >> 8) & 0xFF;
-+	data[5] = (val >> 0) & 0xFF;
++	data[2] = (val &gt;&gt; 24) &amp; 0xFF;
++	data[3] = (val &gt;&gt; 16) &amp; 0xFF;
++	data[4] = (val &gt;&gt; 8) &amp; 0xFF;
++	data[5] = (val &gt;&gt; 0) &amp; 0xFF;
 +
 +	val = br32(bp, B44_CAM_DATA_HI);
 +
-+	data[0] = (val >> 8) & 0xFF;
-+	data[1] = (val >> 0) & 0xFF;
++	data[0] = (val &gt;&gt; 8) &amp; 0xFF;
++	data[1] = (val &gt;&gt; 0) &amp; 0xFF;
 +}
 +#endif
 +
@@ -137,7 +137,7 @@ index b124eee..a9717ba 100644
  {
  	u32 val;
 @@ -323,14 +368,14 @@ static void b44_enable_ints(struct b44 *
- 	bw32(bp, B44_IMASK, bp->imask);
+ 	bw32(bp, B44_IMASK, bp-&gt;imask);
  }
  
 -static int b44_readphy(struct b44 *bp, int reg, u32 *val)
@@ -147,11 +147,11 @@ index b124eee..a9717ba 100644
  
  	bw32(bp, B44_EMAC_ISTAT, EMAC_INT_MII);
  	bw32(bp, B44_MDIO_DATA, (MDIO_DATA_SB_START |
- 			     (MDIO_OP_READ << MDIO_DATA_OP_SHIFT) |
--			     (bp->phy_addr << MDIO_DATA_PMD_SHIFT) |
-+			     (phy_addr << MDIO_DATA_PMD_SHIFT) |
- 			     (reg << MDIO_DATA_RA_SHIFT) |
- 			     (MDIO_TA_VALID << MDIO_DATA_TA_SHIFT)));
+ 			     (MDIO_OP_READ &lt;&lt; MDIO_DATA_OP_SHIFT) |
+-			     (bp-&gt;phy_addr &lt;&lt; MDIO_DATA_PMD_SHIFT) |
++			     (phy_addr &lt;&lt; MDIO_DATA_PMD_SHIFT) |
+ 			     (reg &lt;&lt; MDIO_DATA_RA_SHIFT) |
+ 			     (MDIO_TA_VALID &lt;&lt; MDIO_DATA_TA_SHIFT)));
  	err = b44_wait_bit(bp, B44_EMAC_ISTAT, EMAC_INT_MII, 100, 0);
 @@ -339,18 +384,34 @@ static int b44_readphy(struct b44 *bp, i
  	return err;
@@ -162,39 +162,39 @@ index b124eee..a9717ba 100644
  {
  	bw32(bp, B44_EMAC_ISTAT, EMAC_INT_MII);
  	bw32(bp, B44_MDIO_DATA, (MDIO_DATA_SB_START |
- 			     (MDIO_OP_WRITE << MDIO_DATA_OP_SHIFT) |
--			     (bp->phy_addr << MDIO_DATA_PMD_SHIFT) |
-+			     (phy_addr << MDIO_DATA_PMD_SHIFT) |
- 			     (reg << MDIO_DATA_RA_SHIFT) |
- 			     (MDIO_TA_VALID << MDIO_DATA_TA_SHIFT) |
- 			     (val & MDIO_DATA_DATA)));
+ 			     (MDIO_OP_WRITE &lt;&lt; MDIO_DATA_OP_SHIFT) |
+-			     (bp-&gt;phy_addr &lt;&lt; MDIO_DATA_PMD_SHIFT) |
++			     (phy_addr &lt;&lt; MDIO_DATA_PMD_SHIFT) |
+ 			     (reg &lt;&lt; MDIO_DATA_RA_SHIFT) |
+ 			     (MDIO_TA_VALID &lt;&lt; MDIO_DATA_TA_SHIFT) |
+ 			     (val &amp; MDIO_DATA_DATA)));
  	return b44_wait_bit(bp, B44_EMAC_ISTAT, EMAC_INT_MII, 100, 0);
  }
  
 +static inline int b44_readphy(struct b44 *bp, int reg, u32 *val)
 +{
-+	if (bp->phy_addr == B44_PHY_ADDR_NO_PHY)
++	if (bp-&gt;phy_addr == B44_PHY_ADDR_NO_PHY)
 +		return 0;
 +
-+	return __b44_readphy(bp, bp->phy_addr, reg, val);
++	return __b44_readphy(bp, bp-&gt;phy_addr, reg, val);
 +}
 +
 +static inline int b44_writephy(struct b44 *bp, int reg, u32 val)
 +{
-+	if (bp->phy_addr == B44_PHY_ADDR_NO_PHY)
++	if (bp-&gt;phy_addr == B44_PHY_ADDR_NO_PHY)
 +		return 0;
 +		
-+	return __b44_writephy(bp, bp->phy_addr, reg, val);
++	return __b44_writephy(bp, bp-&gt;phy_addr, reg, val);
 +}
 +
  /* miilib interface */
- /* FIXME FIXME: phy_id is ignored, bp->phy_addr use is unconditional
+ /* FIXME FIXME: phy_id is ignored, bp-&gt;phy_addr use is unconditional
   * due to code existing before miilib use was added to this driver.
 @@ -379,6 +440,8 @@ static int b44_phy_reset(struct b44 *bp)
  	u32 val;
  	int err;
  
-+	if (bp->phy_addr == B44_PHY_ADDR_NO_PHY)
++	if (bp-&gt;phy_addr == B44_PHY_ADDR_NO_PHY)
 +		return 0;
  	err = b44_writephy(bp, MII_BMCR, BMCR_RESET);
  	if (err)
@@ -206,51 +206,51 @@ index b124eee..a9717ba 100644
 +#ifdef CONFIG_BCM947XX
 +	/*
 +	 * workaround for bad hardware design in Linksys WAP54G v1.0
-+	 * see https://dev.openwrt.org/ticket/146
++	 * see <a class="moz-txt-link-freetext" href="https://dev.openwrt.org/ticket/146">https://dev.openwrt.org/ticket/146</a>
 +	 * check and reset bit "isolate"
 +	 */
-+	if ((bp->pdev->device == PCI_DEVICE_ID_BCM4713) &&
-+			(atoi(nvram_get("boardnum")) == 2) &&
-+			(__b44_readphy(bp, 0, MII_BMCR, &val) == 0) && 
-+			(val & BMCR_ISOLATE) &&
-+			(__b44_writephy(bp, 0, MII_BMCR, val & ~BMCR_ISOLATE) != 0)) {
++	if ((bp-&gt;pdev-&gt;device == PCI_DEVICE_ID_BCM4713) &amp;&amp;
++			(atoi(nvram_get("boardnum")) == 2) &amp;&amp;
++			(__b44_readphy(bp, 0, MII_BMCR, &amp;val) == 0) &amp;&amp; 
++			(val &amp; BMCR_ISOLATE) &amp;&amp;
++			(__b44_writephy(bp, 0, MII_BMCR, val &amp; ~BMCR_ISOLATE) != 0)) {
 +		printk(KERN_WARNING PFX "PHY: cannot reset MII transceiver isolate bit.\n");
 +	}
 +#endif
-+	if (bp->phy_addr == B44_PHY_ADDR_NO_PHY)
++	if (bp-&gt;phy_addr == B44_PHY_ADDR_NO_PHY)
 +		return 0;
- 	if ((err = b44_readphy(bp, B44_MII_ALEDCTRL, &val)) != 0)
+ 	if ((err = b44_readphy(bp, B44_MII_ALEDCTRL, &amp;val)) != 0)
  		goto out;
  	if ((err = b44_writephy(bp, B44_MII_ALEDCTRL,
 @@ -537,6 +616,19 @@ static void b44_check_phy(struct b44 *bp
  {
  	u32 bmsr, aux;
  
-+	if (bp->phy_addr == B44_PHY_ADDR_NO_PHY) {
-+		bp->flags |= B44_FLAG_100_BASE_T;
-+		bp->flags |= B44_FLAG_FULL_DUPLEX;
-+		if (!netif_carrier_ok(bp->dev)) {
++	if (bp-&gt;phy_addr == B44_PHY_ADDR_NO_PHY) {
++		bp-&gt;flags |= B44_FLAG_100_BASE_T;
++		bp-&gt;flags |= B44_FLAG_FULL_DUPLEX;
++		if (!netif_carrier_ok(bp-&gt;dev)) {
 +			u32 val = br32(bp, B44_TX_CTRL);
 +			val |= TX_CTRL_DUPLEX;
 +			bw32(bp, B44_TX_CTRL, val);
-+			netif_carrier_on(bp->dev);
++			netif_carrier_on(bp-&gt;dev);
 +			b44_link_report(bp);
 +		}
 +		return;
 +	}
 +
- 	if (!b44_readphy(bp, MII_BMSR, &bmsr) &&
- 	    !b44_readphy(bp, B44_MII_AUXCTRL, &aux) &&
+ 	if (!b44_readphy(bp, MII_BMSR, &amp;bmsr) &amp;&amp;
+ 	    !b44_readphy(bp, B44_MII_AUXCTRL, &amp;aux) &amp;&amp;
  	    (bmsr != 0xffff)) {
 @@ -1291,9 +1383,10 @@ static void b44_chip_reset(struct b44 *b
  		bw32(bp, B44_DMARX_CTRL, 0);
- 		bp->rx_prod = bp->rx_cons = 0;
+ 		bp-&gt;rx_prod = bp-&gt;rx_cons = 0;
  	} else {
--		ssb_pci_setup(bp, (bp->core_unit == 0 ?
+-		ssb_pci_setup(bp, (bp-&gt;core_unit == 0 ?
 -				   SBINTVEC_ENET0 :
 -				   SBINTVEC_ENET1));
-+		if (bp->pdev->device != PCI_DEVICE_ID_BCM4713)
-+			ssb_pci_setup(bp, (bp->core_unit == 0 ?
++		if (bp-&gt;pdev-&gt;device != PCI_DEVICE_ID_BCM4713)
++			ssb_pci_setup(bp, (bp-&gt;core_unit == 0 ?
 +					   SBINTVEC_ENET0 :
 +					   SBINTVEC_ENET1));
  	}
@@ -261,17 +261,17 @@ index b124eee..a9717ba 100644
  
  	/* Make PHY accessible. */
 -	bw32(bp, B44_MDIO_CTRL, (MDIO_CTRL_PREAMBLE |
-+	if (bp->pdev->device == PCI_DEVICE_ID_BCM4713)
++	if (bp-&gt;pdev-&gt;device == PCI_DEVICE_ID_BCM4713)
 +		bw32(bp, B44_MDIO_CTRL, (MDIO_CTRL_PREAMBLE |
 +			     (((100000000 + (B44_MDC_RATIO / 2)) / B44_MDC_RATIO)
-+			     & MDIO_CTRL_MAXF_MASK)));
++			     &amp; MDIO_CTRL_MAXF_MASK)));
 +	else
 +		bw32(bp, B44_MDIO_CTRL, (MDIO_CTRL_PREAMBLE |
- 			     (0x0d & MDIO_CTRL_MAXF_MASK)));
+ 			     (0x0d &amp; MDIO_CTRL_MAXF_MASK)));
 +
  	br32(bp, B44_MDIO_CTRL);
  
- 	if (!(br32(bp, B44_DEVCTRL) & DEVCTRL_IPP)) {
+ 	if (!(br32(bp, B44_DEVCTRL) &amp; DEVCTRL_IPP)) {
 @@ -1345,6 +1444,7 @@ static int b44_set_mac_addr(struct net_d
  {
  	struct b44 *bp = netdev_priv(dev);
@@ -281,24 +281,24 @@ index b124eee..a9717ba 100644
  	if (netif_running(dev))
  		return -EBUSY;
 @@ -1355,7 +1455,11 @@ static int b44_set_mac_addr(struct net_d
- 	memcpy(dev->dev_addr, addr->sa_data, dev->addr_len);
+ 	memcpy(dev-&gt;dev_addr, addr-&gt;sa_data, dev-&gt;addr_len);
  
- 	spin_lock_irq(&bp->lock);
+ 	spin_lock_irq(&amp;bp-&gt;lock);
 -	__b44_set_mac_addr(bp);
 +   
 +   	val = br32(bp, B44_RXCONFIG);
-+   	if (!(val & RXCONFIG_CAM_ABSENT))
++   	if (!(val &amp; RXCONFIG_CAM_ABSENT))
 +		__b44_set_mac_addr(bp);
 +   
- 	spin_unlock_irq(&bp->lock);
+ 	spin_unlock_irq(&amp;bp-&gt;lock);
  
  	return 0;
 @@ -1697,7 +1801,7 @@ static void __b44_set_rx_mode(struct net
  
  	val = br32(bp, B44_RXCONFIG);
- 	val &= ~(RXCONFIG_PROMISC | RXCONFIG_ALLMULTI);
--	if (dev->flags & IFF_PROMISC) {
-+	if ((dev->flags & IFF_PROMISC) || (val & RXCONFIG_CAM_ABSENT)) {
+ 	val &amp;= ~(RXCONFIG_PROMISC | RXCONFIG_ALLMULTI);
+-	if (dev-&gt;flags &amp; IFF_PROMISC) {
++	if ((dev-&gt;flags &amp; IFF_PROMISC) || (val &amp; RXCONFIG_CAM_ABSENT)) {
  		val |= RXCONFIG_PROMISC;
  		bw32(bp, B44_RXCONFIG, val);
  	} else {
@@ -308,11 +308,11 @@ index b124eee..a9717ba 100644
  
 +static int b44_ethtool_ioctl (struct net_device *dev, void __user *useraddr)
 +{
-+	struct b44 *bp = dev->priv;
-+	struct pci_dev *pci_dev = bp->pdev;
++	struct b44 *bp = dev-&gt;priv;
++	struct pci_dev *pci_dev = bp-&gt;pdev;
 +	u32 ethcmd;
 +
-+	if (copy_from_user (&ethcmd, useraddr, sizeof (ethcmd)))
++	if (copy_from_user (&amp;ethcmd, useraddr, sizeof (ethcmd)))
 +		return -EFAULT;
 +
 +	switch (ethcmd) {
@@ -320,11 +320,11 @@ index b124eee..a9717ba 100644
 +		struct ethtool_drvinfo info = { ETHTOOL_GDRVINFO };
 +		strcpy (info.driver, DRV_MODULE_NAME);
 +		strcpy (info.version, DRV_MODULE_VERSION);
-+		memset(&info.fw_version, 0, sizeof(info.fw_version));
++		memset(&amp;info.fw_version, 0, sizeof(info.fw_version));
 +		strcpy (info.bus_info, pci_name(pci_dev));
 +		info.eedump_len = 0;
 +		info.regdump_len = 0;
-+		if (copy_to_user (useraddr, &info, sizeof (info)))
++		if (copy_to_user (useraddr, &amp;info, sizeof (info)))
 +			return -EFAULT;
 +		return 0;
 +	}
@@ -332,7 +332,7 @@ index b124eee..a9717ba 100644
 +	case ETHTOOL_GSET: {
 +		struct ethtool_cmd cmd = { ETHTOOL_GSET };
 +
-+		if (!(bp->flags & B44_FLAG_INIT_COMPLETE))
++		if (!(bp-&gt;flags &amp; B44_FLAG_INIT_COMPLETE))
 +			return -EAGAIN;
 +		cmd.supported = (SUPPORTED_Autoneg);
 +		cmd.supported |= (SUPPORTED_100baseT_Half |
@@ -342,119 +342,119 @@ index b124eee..a9717ba 100644
 +				  SUPPORTED_MII);
 +
 +		cmd.advertising = 0;
-+		if (bp->flags & B44_FLAG_ADV_10HALF)
++		if (bp-&gt;flags &amp; B44_FLAG_ADV_10HALF)
 +			cmd.advertising |= ADVERTISE_10HALF;
-+		if (bp->flags & B44_FLAG_ADV_10FULL)
++		if (bp-&gt;flags &amp; B44_FLAG_ADV_10FULL)
 +			cmd.advertising |= ADVERTISE_10FULL;
-+		if (bp->flags & B44_FLAG_ADV_100HALF)
++		if (bp-&gt;flags &amp; B44_FLAG_ADV_100HALF)
 +			cmd.advertising |= ADVERTISE_100HALF;
-+		if (bp->flags & B44_FLAG_ADV_100FULL)
++		if (bp-&gt;flags &amp; B44_FLAG_ADV_100FULL)
 +			cmd.advertising |= ADVERTISE_100FULL;
 +		cmd.advertising |= ADVERTISE_PAUSE_CAP | ADVERTISE_PAUSE_ASYM;
-+		cmd.speed = (bp->flags & B44_FLAG_100_BASE_T) ?
++		cmd.speed = (bp-&gt;flags &amp; B44_FLAG_100_BASE_T) ?
 +			SPEED_100 : SPEED_10;
-+		cmd.duplex = (bp->flags & B44_FLAG_FULL_DUPLEX) ?
++		cmd.duplex = (bp-&gt;flags &amp; B44_FLAG_FULL_DUPLEX) ?
 +			DUPLEX_FULL : DUPLEX_HALF;
 +		cmd.port = 0;
-+		cmd.phy_address = bp->phy_addr;
-+		cmd.transceiver = (bp->flags & B44_FLAG_INTERNAL_PHY) ?
++		cmd.phy_address = bp-&gt;phy_addr;
++		cmd.transceiver = (bp-&gt;flags &amp; B44_FLAG_INTERNAL_PHY) ?
 +			XCVR_INTERNAL : XCVR_EXTERNAL;
-+		cmd.autoneg = (bp->flags & B44_FLAG_FORCE_LINK) ?
++		cmd.autoneg = (bp-&gt;flags &amp; B44_FLAG_FORCE_LINK) ?
 +			AUTONEG_DISABLE : AUTONEG_ENABLE;
 +		cmd.maxtxpkt = 0;
 +		cmd.maxrxpkt = 0;
-+		if (copy_to_user(useraddr, &cmd, sizeof(cmd)))
++		if (copy_to_user(useraddr, &amp;cmd, sizeof(cmd)))
 +			return -EFAULT;
 +		return 0;
 +	}
 +	case ETHTOOL_SSET: {
 +		struct ethtool_cmd cmd;
 +
-+		if (!(bp->flags & B44_FLAG_INIT_COMPLETE))
++		if (!(bp-&gt;flags &amp; B44_FLAG_INIT_COMPLETE))
 +			return -EAGAIN;
 +
-+		if (copy_from_user(&cmd, useraddr, sizeof(cmd)))
++		if (copy_from_user(&amp;cmd, useraddr, sizeof(cmd)))
 +			return -EFAULT;
 +
 +		/* We do not support gigabit. */
 +		if (cmd.autoneg == AUTONEG_ENABLE) {
-+			if (cmd.advertising &
++			if (cmd.advertising &amp;
 +			    (ADVERTISED_1000baseT_Half |
 +			     ADVERTISED_1000baseT_Full))
 +				return -EINVAL;
-+		} else if ((cmd.speed != SPEED_100 &&
++		} else if ((cmd.speed != SPEED_100 &amp;&amp;
 +			    cmd.speed != SPEED_10) ||
-+			   (cmd.duplex != DUPLEX_HALF &&
++			   (cmd.duplex != DUPLEX_HALF &amp;&amp;
 +			    cmd.duplex != DUPLEX_FULL)) {
 +				return -EINVAL;
 +		}
 +
-+		spin_lock_irq(&bp->lock);
++		spin_lock_irq(&amp;bp-&gt;lock);
 +
 +		if (cmd.autoneg == AUTONEG_ENABLE) {
-+			bp->flags &= ~B44_FLAG_FORCE_LINK;
-+			bp->flags &= ~(B44_FLAG_ADV_10HALF |
++			bp-&gt;flags &amp;= ~B44_FLAG_FORCE_LINK;
++			bp-&gt;flags &amp;= ~(B44_FLAG_ADV_10HALF |
 +				       B44_FLAG_ADV_10FULL |
 +				       B44_FLAG_ADV_100HALF |
 +				       B44_FLAG_ADV_100FULL);
-+			if (cmd.advertising & ADVERTISE_10HALF)
-+				bp->flags |= B44_FLAG_ADV_10HALF;
-+			if (cmd.advertising & ADVERTISE_10FULL)
-+				bp->flags |= B44_FLAG_ADV_10FULL;
-+			if (cmd.advertising & ADVERTISE_100HALF)
-+				bp->flags |= B44_FLAG_ADV_100HALF;
-+			if (cmd.advertising & ADVERTISE_100FULL)
-+				bp->flags |= B44_FLAG_ADV_100FULL;
++			if (cmd.advertising &amp; ADVERTISE_10HALF)
++				bp-&gt;flags |= B44_FLAG_ADV_10HALF;
++			if (cmd.advertising &amp; ADVERTISE_10FULL)
++				bp-&gt;flags |= B44_FLAG_ADV_10FULL;
++			if (cmd.advertising &amp; ADVERTISE_100HALF)
++				bp-&gt;flags |= B44_FLAG_ADV_100HALF;
++			if (cmd.advertising &amp; ADVERTISE_100FULL)
++				bp-&gt;flags |= B44_FLAG_ADV_100FULL;
 +		} else {
-+			bp->flags |= B44_FLAG_FORCE_LINK;
++			bp-&gt;flags |= B44_FLAG_FORCE_LINK;
 +			if (cmd.speed == SPEED_100)
-+				bp->flags |= B44_FLAG_100_BASE_T;
++				bp-&gt;flags |= B44_FLAG_100_BASE_T;
 +			if (cmd.duplex == DUPLEX_FULL)
-+				bp->flags |= B44_FLAG_FULL_DUPLEX;
++				bp-&gt;flags |= B44_FLAG_FULL_DUPLEX;
 +		}
 +
 +		b44_setup_phy(bp);
 +
-+		spin_unlock_irq(&bp->lock);
++		spin_unlock_irq(&amp;bp-&gt;lock);
 +
 +		return 0;
 +	}
 +
 +	case ETHTOOL_GMSGLVL: {
 +		struct ethtool_value edata = { ETHTOOL_GMSGLVL };
-+		edata.data = bp->msg_enable;
-+		if (copy_to_user(useraddr, &edata, sizeof(edata)))
++		edata.data = bp-&gt;msg_enable;
++		if (copy_to_user(useraddr, &amp;edata, sizeof(edata)))
 +			return -EFAULT;
 +		return 0;
 +	}
 +	case ETHTOOL_SMSGLVL: {
 +		struct ethtool_value edata;
-+		if (copy_from_user(&edata, useraddr, sizeof(edata)))
++		if (copy_from_user(&amp;edata, useraddr, sizeof(edata)))
 +			return -EFAULT;
-+		bp->msg_enable = edata.data;
++		bp-&gt;msg_enable = edata.data;
 +		return 0;
 +	}
 +	case ETHTOOL_NWAY_RST: {
 +		u32 bmcr;
 +		int r;
 +
-+		spin_lock_irq(&bp->lock);
-+		b44_readphy(bp, MII_BMCR, &bmcr);
-+		b44_readphy(bp, MII_BMCR, &bmcr);
++		spin_lock_irq(&amp;bp-&gt;lock);
++		b44_readphy(bp, MII_BMCR, &amp;bmcr);
++		b44_readphy(bp, MII_BMCR, &amp;bmcr);
 +		r = -EINVAL;
-+		if (bmcr & BMCR_ANENABLE) {
++		if (bmcr &amp; BMCR_ANENABLE) {
 +			b44_writephy(bp, MII_BMCR,
 +				     bmcr | BMCR_ANRESTART);
 +			r = 0;
 +		}
-+		spin_unlock_irq(&bp->lock);
++		spin_unlock_irq(&amp;bp-&gt;lock);
 +
 +		return r;
 +	}
 +	case ETHTOOL_GLINK: {
 +		struct ethtool_value edata = { ETHTOOL_GLINK };
-+		edata.data = netif_carrier_ok(bp->dev) ? 1 : 0;
-+		if (copy_to_user(useraddr, &edata, sizeof(edata)))
++		edata.data = netif_carrier_ok(bp-&gt;dev) ? 1 : 0;
++		if (copy_to_user(useraddr, &amp;edata, sizeof(edata)))
 +			return -EFAULT;
 +		return 0;
 +	}
@@ -462,36 +462,36 @@ index b124eee..a9717ba 100644
 +		struct ethtool_ringparam ering = { ETHTOOL_GRINGPARAM };
 +
 +		ering.rx_max_pending = B44_RX_RING_SIZE - 1;
-+		ering.rx_pending = bp->rx_pending;
++		ering.rx_pending = bp-&gt;rx_pending;
 +
 +		/* XXX ethtool lacks a tx_max_pending, oops... */
 +
-+		if (copy_to_user(useraddr, &ering, sizeof(ering)))
++		if (copy_to_user(useraddr, &amp;ering, sizeof(ering)))
 +			return -EFAULT;
 +		return 0;
 +	}
 +	case ETHTOOL_SRINGPARAM: {
 +		struct ethtool_ringparam ering;
 +
-+		if (copy_from_user(&ering, useraddr, sizeof(ering)))
++		if (copy_from_user(&amp;ering, useraddr, sizeof(ering)))
 +			return -EFAULT;
 +
-+		if ((ering.rx_pending > B44_RX_RING_SIZE - 1) ||
++		if ((ering.rx_pending &gt; B44_RX_RING_SIZE - 1) ||
 +		    (ering.rx_mini_pending != 0) ||
 +		    (ering.rx_jumbo_pending != 0) ||
-+		    (ering.tx_pending > B44_TX_RING_SIZE - 1))
++		    (ering.tx_pending &gt; B44_TX_RING_SIZE - 1))
 +			return -EINVAL;
 +
-+		spin_lock_irq(&bp->lock);
++		spin_lock_irq(&amp;bp-&gt;lock);
 +
-+		bp->rx_pending = ering.rx_pending;
-+		bp->tx_pending = ering.tx_pending;
++		bp-&gt;rx_pending = ering.rx_pending;
++		bp-&gt;tx_pending = ering.tx_pending;
 +
 +		b44_halt(bp);
 +		b44_init_rings(bp);
 +		b44_init_hw(bp, 1);
-+		netif_wake_queue(bp->dev);
-+		spin_unlock_irq(&bp->lock);
++		netif_wake_queue(bp-&gt;dev);
++		spin_unlock_irq(&amp;bp-&gt;lock);
 +
 +		b44_enable_ints(bp);
 +		
@@ -501,42 +501,42 @@ index b124eee..a9717ba 100644
 +		struct ethtool_pauseparam epause = { ETHTOOL_GPAUSEPARAM };
 +
 +		epause.autoneg =
-+			(bp->flags & B44_FLAG_PAUSE_AUTO) != 0;
++			(bp-&gt;flags &amp; B44_FLAG_PAUSE_AUTO) != 0;
 +		epause.rx_pause =
-+			(bp->flags & B44_FLAG_RX_PAUSE) != 0;
++			(bp-&gt;flags &amp; B44_FLAG_RX_PAUSE) != 0;
 +		epause.tx_pause =
-+			(bp->flags & B44_FLAG_TX_PAUSE) != 0;
-+		if (copy_to_user(useraddr, &epause, sizeof(epause)))
++			(bp-&gt;flags &amp; B44_FLAG_TX_PAUSE) != 0;
++		if (copy_to_user(useraddr, &amp;epause, sizeof(epause)))
 +			return -EFAULT;
 +		return 0;
 +	}
 +	case ETHTOOL_SPAUSEPARAM: {
 +		struct ethtool_pauseparam epause;
 +
-+		if (copy_from_user(&epause, useraddr, sizeof(epause)))
++		if (copy_from_user(&amp;epause, useraddr, sizeof(epause)))
 +			return -EFAULT;
 +
-+		spin_lock_irq(&bp->lock);
++		spin_lock_irq(&amp;bp-&gt;lock);
 +		if (epause.autoneg)
-+			bp->flags |= B44_FLAG_PAUSE_AUTO;
++			bp-&gt;flags |= B44_FLAG_PAUSE_AUTO;
 +		else
-+			bp->flags &= ~B44_FLAG_PAUSE_AUTO;
++			bp-&gt;flags &amp;= ~B44_FLAG_PAUSE_AUTO;
 +		if (epause.rx_pause)
-+			bp->flags |= B44_FLAG_RX_PAUSE;
++			bp-&gt;flags |= B44_FLAG_RX_PAUSE;
 +		else
-+			bp->flags &= ~B44_FLAG_RX_PAUSE;
++			bp-&gt;flags &amp;= ~B44_FLAG_RX_PAUSE;
 +		if (epause.tx_pause)
-+			bp->flags |= B44_FLAG_TX_PAUSE;
++			bp-&gt;flags |= B44_FLAG_TX_PAUSE;
 +		else
-+			bp->flags &= ~B44_FLAG_TX_PAUSE;
-+		if (bp->flags & B44_FLAG_PAUSE_AUTO) {
++			bp-&gt;flags &amp;= ~B44_FLAG_TX_PAUSE;
++		if (bp-&gt;flags &amp; B44_FLAG_PAUSE_AUTO) {
 +			b44_halt(bp);
 +			b44_init_rings(bp);
 +			b44_init_hw(bp, 1);
 +		} else {
-+			__b44_set_flow_ctrl(bp, bp->flags);
++			__b44_set_flow_ctrl(bp, bp-&gt;flags);
 +		}
-+		spin_unlock_irq(&bp->lock);
++		spin_unlock_irq(&amp;bp-&gt;lock);
 +
 +		b44_enable_ints(bp);
 +		
@@ -554,34 +554,34 @@ index b124eee..a9717ba 100644
  	int err = -EINVAL;
  
 -	if (!netif_running(dev))
-+	if (bp->pdev->device != PCI_DEVICE_ID_BCM4713) {
++	if (bp-&gt;pdev-&gt;device != PCI_DEVICE_ID_BCM4713) {
 +		if (!netif_running(dev))
 +			goto out;
 +
-+		spin_lock_irq(&bp->lock);
-+		err = generic_mii_ioctl(&bp->mii_if, data, cmd, NULL);
-+		spin_unlock_irq(&bp->lock);
++		spin_lock_irq(&amp;bp-&gt;lock);
++		err = generic_mii_ioctl(&amp;bp-&gt;mii_if, data, cmd, NULL);
++		spin_unlock_irq(&amp;bp-&gt;lock);
  		goto out;
 +	}
  
--	spin_lock_irq(&bp->lock);
--	err = generic_mii_ioctl(&bp->mii_if, data, cmd, NULL);
--	spin_unlock_irq(&bp->lock);
+-	spin_lock_irq(&amp;bp-&gt;lock);
+-	err = generic_mii_ioctl(&amp;bp-&gt;mii_if, data, cmd, NULL);
+-	spin_unlock_irq(&amp;bp-&gt;lock);
 +	switch (cmd) {
 +	case SIOCETHTOOL:
-+		return b44_ethtool_ioctl(dev, (void __user*) ifr->ifr_data);
++		return b44_ethtool_ioctl(dev, (void __user*) ifr-&gt;ifr_data);
 +
 +	case SIOCGMIIPHY:
-+		data->phy_id = bp->phy_addr;
++		data-&gt;phy_id = bp-&gt;phy_addr;
 +
 +		/* fallthru */
 +	case SIOCGMIIREG: {
 +		u32 mii_regval;
-+		spin_lock_irq(&bp->lock);
-+		err = __b44_readphy(bp, data->phy_id & 0x1f, data->reg_num & 0x1f, &mii_regval);
-+		spin_unlock_irq(&bp->lock);
++		spin_lock_irq(&amp;bp-&gt;lock);
++		err = __b44_readphy(bp, data-&gt;phy_id &amp; 0x1f, data-&gt;reg_num &amp; 0x1f, &amp;mii_regval);
++		spin_unlock_irq(&amp;bp-&gt;lock);
 +
-+		data->val_out = mii_regval;
++		data-&gt;val_out = mii_regval;
 +
 +		return err;
 +	}
@@ -590,9 +590,9 @@ index b124eee..a9717ba 100644
 +		if (!capable(CAP_NET_ADMIN))
 +			return -EPERM;
 +
-+		spin_lock_irq(&bp->lock);
-+		err = __b44_writephy(bp, data->phy_id & 0x1f, data->reg_num & 0x1f, data->val_in);
-+		spin_unlock_irq(&bp->lock);
++		spin_lock_irq(&amp;bp-&gt;lock);
++		err = __b44_writephy(bp, data-&gt;phy_id &amp; 0x1f, data-&gt;reg_num &amp; 0x1f, data-&gt;val_in);
++		spin_unlock_irq(&amp;bp-&gt;lock);
 +
 +		return err;
 +
@@ -614,105 +614,105 @@ index b124eee..a9717ba 100644
 +	unsigned long flags;
 +
 +#ifdef CONFIG_BCM947XX
-+	if (bp->pdev->device == PCI_DEVICE_ID_BCM4713) {
++	if (bp-&gt;pdev-&gt;device == PCI_DEVICE_ID_BCM4713) {
 +		/*
 +		 * BCM47xx boards don't have a EEPROM. The MAC is stored in
 +		 * a NVRAM area somewhere in the flash memory.
 +		 */
 +		sprintf(buf, "et%dmacaddr", b44_4713_instance);
 +		if (nvram_get(buf)) {
-+			e_aton(nvram_get(buf), bp->dev->dev_addr);
++			e_aton(nvram_get(buf), bp-&gt;dev-&gt;dev_addr);
 +		} else {
 +			/*
 +			 * Getting the MAC out of NVRAM failed. To make it work
 +			 * here, we simply rely on the bootloader to write the
 +			 * MAC into the CAM.
 +			 */
-+			spin_lock_irqsave(&bp->lock, flags);
-+			__b44_cam_read(bp, bp->dev->dev_addr, 0);
-+			spin_unlock_irqrestore(&bp->lock, flags);
++			spin_lock_irqsave(&amp;bp-&gt;lock, flags);
++			__b44_cam_read(bp, bp-&gt;dev-&gt;dev_addr, 0);
++			spin_unlock_irqrestore(&amp;bp-&gt;lock, flags);
 +		}
  
--	err = b44_read_eeprom(bp, &eeprom[0]);
+-	err = b44_read_eeprom(bp, &amp;eeprom[0]);
 -	if (err)
 -		goto out;
-+		if (!is_valid_ether_addr(&bp->dev->dev_addr[0])){
++		if (!is_valid_ether_addr(&amp;bp-&gt;dev-&gt;dev_addr[0])){
 +			printk(KERN_ERR PFX "Invalid MAC address found in NVRAM\n");
 +			return -EINVAL;
 +		}
  
--	bp->dev->dev_addr[0] = eeprom[79];
--	bp->dev->dev_addr[1] = eeprom[78];
--	bp->dev->dev_addr[2] = eeprom[81];
--	bp->dev->dev_addr[3] = eeprom[80];
--	bp->dev->dev_addr[4] = eeprom[83];
--	bp->dev->dev_addr[5] = eeprom[82];
+-	bp-&gt;dev-&gt;dev_addr[0] = eeprom[79];
+-	bp-&gt;dev-&gt;dev_addr[1] = eeprom[78];
+-	bp-&gt;dev-&gt;dev_addr[2] = eeprom[81];
+-	bp-&gt;dev-&gt;dev_addr[3] = eeprom[80];
+-	bp-&gt;dev-&gt;dev_addr[4] = eeprom[83];
+-	bp-&gt;dev-&gt;dev_addr[5] = eeprom[82];
 +		/*
 +		 * BCM47xx boards don't have a PHY. Usually there is a switch
 +		 * chip with multiple PHYs connected to the PHY port.
 +		 */
-+		bp->phy_addr = B44_PHY_ADDR_NO_PHY;
-+		bp->dma_offset = 0;
++		bp-&gt;phy_addr = B44_PHY_ADDR_NO_PHY;
++		bp-&gt;dma_offset = 0;
 +	} else
 +#endif
 +	{
-+		err = b44_read_eeprom(bp, &eeprom[0]);
++		err = b44_read_eeprom(bp, &amp;eeprom[0]);
 +		if (err)
 +			goto out;
  
--	if (!is_valid_ether_addr(&bp->dev->dev_addr[0])){
+-	if (!is_valid_ether_addr(&amp;bp-&gt;dev-&gt;dev_addr[0])){
 -		printk(KERN_ERR PFX "Invalid MAC address found in EEPROM\n");
 -		return -EINVAL;
 -	}
-+		bp->dev->dev_addr[0] = eeprom[79];
-+		bp->dev->dev_addr[1] = eeprom[78];
-+		bp->dev->dev_addr[2] = eeprom[81];
-+		bp->dev->dev_addr[3] = eeprom[80];
-+		bp->dev->dev_addr[4] = eeprom[83];
-+		bp->dev->dev_addr[5] = eeprom[82];
++		bp-&gt;dev-&gt;dev_addr[0] = eeprom[79];
++		bp-&gt;dev-&gt;dev_addr[1] = eeprom[78];
++		bp-&gt;dev-&gt;dev_addr[2] = eeprom[81];
++		bp-&gt;dev-&gt;dev_addr[3] = eeprom[80];
++		bp-&gt;dev-&gt;dev_addr[4] = eeprom[83];
++		bp-&gt;dev-&gt;dev_addr[5] = eeprom[82];
 +
-+		if (!is_valid_ether_addr(&bp->dev->dev_addr[0])){
++		if (!is_valid_ether_addr(&amp;bp-&gt;dev-&gt;dev_addr[0])){
 +			printk(KERN_ERR PFX "Invalid MAC address found in EEPROM\n");
 +			return -EINVAL;
 +		}
  
--	memcpy(bp->dev->perm_addr, bp->dev->dev_addr, bp->dev->addr_len);
-+		memcpy(bp->dev->perm_addr, bp->dev->dev_addr, bp->dev->addr_len);
+-	memcpy(bp-&gt;dev-&gt;perm_addr, bp-&gt;dev-&gt;dev_addr, bp-&gt;dev-&gt;addr_len);
++		memcpy(bp-&gt;dev-&gt;perm_addr, bp-&gt;dev-&gt;dev_addr, bp-&gt;dev-&gt;addr_len);
  
--	bp->phy_addr = eeprom[90] & 0x1f;
-+		bp->phy_addr = eeprom[90] & 0x1f;
-+		bp->dma_offset = SB_PCI_DMA;
+-	bp-&gt;phy_addr = eeprom[90] &amp; 0x1f;
++		bp-&gt;phy_addr = eeprom[90] &amp; 0x1f;
++		bp-&gt;dma_offset = SB_PCI_DMA;
 +	}
  
  	/* With this, plus the rx_header prepended to the data by the
  	 * hardware, we'll land the ethernet header on a 2-byte boundary.
 @@ -2093,11 +2514,6 @@ static int __devinit b44_get_invariants(
- 	bp->imask = IMASK_DEF;
+ 	bp-&gt;imask = IMASK_DEF;
  
- 	bp->core_unit = ssb_core_unit(bp);
--	bp->dma_offset = SB_PCI_DMA;
+ 	bp-&gt;core_unit = ssb_core_unit(bp);
+-	bp-&gt;dma_offset = SB_PCI_DMA;
 -
 -	/* XXX - really required?
--	   bp->flags |= B44_FLAG_BUGGY_TXPTR;
+-	   bp-&gt;flags |= B44_FLAG_BUGGY_TXPTR;
 -         */
  
-  	if (ssb_get_core_rev(bp) >= 7)
-  		bp->flags |= B44_FLAG_B0_ANDLATER;
+  	if (ssb_get_core_rev(bp) &gt;= 7)
+  		bp-&gt;flags |= B44_FLAG_B0_ANDLATER;
 @@ -2244,11 +2660,17 @@ #endif
  	 */
  	b44_chip_reset(bp);
  
--	printk(KERN_INFO "%s: Broadcom 4400 10/100BaseT Ethernet ", dev->name);
-+	printk(KERN_INFO "%s: Broadcom %s 10/100BaseT Ethernet ", dev->name,
-+		(pdev->device == PCI_DEVICE_ID_BCM4713) ? "47xx" : "4400");
- 	for (i = 0; i < 6; i++)
- 		printk("%2.2x%c", dev->dev_addr[i],
+-	printk(KERN_INFO "%s: Broadcom 4400 10/100BaseT Ethernet ", dev-&gt;name);
++	printk(KERN_INFO "%s: Broadcom %s 10/100BaseT Ethernet ", dev-&gt;name,
++		(pdev-&gt;device == PCI_DEVICE_ID_BCM4713) ? "47xx" : "4400");
+ 	for (i = 0; i &lt; 6; i++)
+ 		printk("%2.2x%c", dev-&gt;dev_addr[i],
  		       i == 5 ? '\n' : ':');
  
 +	/* Initialize phy */
-+	spin_lock_irq(&bp->lock);
++	spin_lock_irq(&amp;bp-&gt;lock);
 +	b44_chip_reset(bp);
-+	spin_unlock_irq(&bp->lock);
++	spin_unlock_irq(&amp;bp-&gt;lock);
 +
  	return 0;
  
@@ -733,8 +733,8 @@ index 4944507..1e6f2c5 100644
  #define SSB_PCI_MASK1		0xfc000000
  #define SSB_PCI_MASK2		0xc0000000
  
-+#define br32(bp, REG)	readl((void *)bp->regs + (REG))
-+#define bw32(bp, REG,VAL)	writel((VAL), (void *)bp->regs + (REG))
++#define br32(bp, REG)	readl((void *)bp-&gt;regs + (REG))
++#define bw32(bp, REG,VAL)	writel((VAL), (void *)bp-&gt;regs + (REG))
 +#define atoi(str) simple_strtoul(((str != NULL) ? str : ""), NULL, 0)
 +
  /* 4400 PHY registers */
@@ -759,16 +759,8 @@ index 4944507..1e6f2c5 100644
  #define B44_FLAG_100_BASE_T	0x00020000
 -- 
 1.4.1
+</pre>
+</body>
+</html>
 
-
---------------020609010802070204080008
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
-</head>
-<body bgcolor="#ffffff" text="#000000">
-<pre>Add support for the ethernet device.
+--------------020609010802070204080008--

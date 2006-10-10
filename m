@@ -1,108 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 00:30:51 +0100 (BST)
-Received: from gateway-1237.mvista.com ([63.81.120.158]:7054 "EHLO
-	gateway-1237.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S20037404AbWJJXat (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Oct 2006 00:30:49 +0100
-Received: from [10.0.0.139] (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id E92531BB63; Tue, 10 Oct 2006 16:30:42 -0700 (PDT)
-Message-ID: <452C2D22.3050502@mvista.com>
-Date:	Tue, 10 Oct 2006 16:30:42 -0700
-From:	mlachwani <mlachwani@mvista.com>
-User-Agent: Thunderbird 1.5.0.7 (X11/20060909)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 00:35:12 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.171]:49328 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037406AbWJJXfJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Oct 2006 00:35:09 +0100
+Received: by ug-out-1314.google.com with SMTP id 40so13562uga
+        for <linux-mips@linux-mips.org>; Tue, 10 Oct 2006 16:35:08 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=koBAu5PP1cblpA0D7ZmP3CRFWYhvSTgOMTHqOR5a4feIEJA7o+95EZsI2nLJSP4t+p66Mqozrc9uvdGYYeDz//sVNiT37UxD/QF9qGmBu4tbpPjl9GpOoNk65/BDrePAfSA6tpeN6iPD+QovOXX92eiI7BBtCE0WRmfdQOzi5/o=
+Received: by 10.67.117.2 with SMTP id u2mr95061ugm;
+        Tue, 10 Oct 2006 16:35:08 -0700 (PDT)
+Received: by 10.66.241.10 with HTTP; Tue, 10 Oct 2006 16:35:08 -0700 (PDT)
+Message-ID: <816d36d30610101635o5701a4clc362a6f07ac8173d@mail.gmail.com>
+Date:	Tue, 10 Oct 2006 19:35:08 -0400
+From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
 To:	ashlesha@kenati.com
-Cc:	linux-mips@linux-mips.org
 Subject: Re: calibrate_delay function
-References: <1160520180.6521.29.camel@sandbar.kenati.com>	 <452C20FC.6000705@mvista.com> <1160523270.8185.4.camel@sandbar.kenati.com>
+Cc:	linux-mips@linux-mips.org
 In-Reply-To: <1160523270.8185.4.camel@sandbar.kenati.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Content-Disposition: inline
+References: <1160520180.6521.29.camel@sandbar.kenati.com>
+	 <452C20FC.6000705@mvista.com>
+	 <1160523270.8185.4.camel@sandbar.kenati.com>
+Return-Path: <mendoza.ricardo@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12890
+X-archive-position: 12891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: mendoza.ricardo@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Can you check to see if you are getting timer interrupts
-
-thanks,
-Manish Lachwani
-
-Ashlesha Shintre wrote:
->>> start_kernel() calls calibrate_delay() which can be found in 
->>> init/calibrate.c
->>>       
->
-> Thanks, I did find it and put in a few printk s to debug the problem.
->
-> i have pasted part of the calibrate_delay function where the kernel gets stuck..
-> It is getting stuck at the second while loop where it goes into an infinite loop!
-> the value of ash_count keeps incrementing and thats all i see in the log buffer!
->
+On 10/10/06, Ashlesha Shintre <ashlesha@kenati.com> wrote:
 > i can see why the kernel is stuck -- its because ticks=jiffies is the command just before infinitely looping based on the condition that ticks==jiffies!
 > Am I not looking in the right place?
->
-> Regards,
-> Ashlesha.
->   
->>  printk(KERN_DEBUG "Calibrating delay loop... ");
->>                 while ((loops_per_jiffy <<= 1) != 0) {
->>                         printk("within the while loop\n");
->>                         /* wait for "start of" clock tick */
->>                         ticks = jiffies;
->>                         while (ticks == jiffies)
->>                                 printk("%d\n",++ash_count);
->>                                 /* nothing ; infinite loop, control never comes out of here*/
->>                         /* Go .. */
->>     
->
-> On Tue, 2006-10-10 at 15:38 -0700, mlachwani wrote:
->   
->> Ashlesha Shintre wrote:
->>     
->>> Hi,
->>> I m working on the Encore M3 board that has the AU1500 MIPS processor on
->>> it.  I aim to port the 2.6 linux kernel to the board which is already
->>> supported in the 2.4 kernel.
->>>
->>> The start_kernel function in linux/init/main.c file, calls a function
->>> calibrate_delay found in the arch/frv/kernel/setup.c file.  Why does the
->>> kernel call this function which is a part of the Fujitsu FR-V
->>> architecture?  
->>>
->>> When I build the image, this is the point where the kernel is stuck and
->>> the last contents of the log buffer show the following printk message
->>> from the calibrate_delay function:
->>>
->>>
->>>   
->>>       
->>>> Calibrating delay loop...
->>>>     
->>>>         
->>> Thanks,
->>> Ashlesha.
->>>
->>>
->>>
->>>
->>>   
->>>       
->
->   
->>> start_kernel() calls calibrate_delay() which can be found in 
->>> init/calibrate.c
->>>
->>>       
->> thanks,
->> Manish Lachwani
->>     
->
->   
+
+The delay loop calibration relies on a working system timer, if you
+haven't setup and started a timer for your board, the jiffies will
+never be incremented ergo indefinitely looping in this place.
+
+This information can probably be found under Porting, on the l-m.o
+wiki. Check there if you have any other problems in the process of
+writing your board specific code.
+
+
+     Ricardo

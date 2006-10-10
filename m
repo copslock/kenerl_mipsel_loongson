@@ -1,54 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 00:35:12 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.171]:49328 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037406AbWJJXfJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Oct 2006 00:35:09 +0100
-Received: by ug-out-1314.google.com with SMTP id 40so13562uga
-        for <linux-mips@linux-mips.org>; Tue, 10 Oct 2006 16:35:08 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=koBAu5PP1cblpA0D7ZmP3CRFWYhvSTgOMTHqOR5a4feIEJA7o+95EZsI2nLJSP4t+p66Mqozrc9uvdGYYeDz//sVNiT37UxD/QF9qGmBu4tbpPjl9GpOoNk65/BDrePAfSA6tpeN6iPD+QovOXX92eiI7BBtCE0WRmfdQOzi5/o=
-Received: by 10.67.117.2 with SMTP id u2mr95061ugm;
-        Tue, 10 Oct 2006 16:35:08 -0700 (PDT)
-Received: by 10.66.241.10 with HTTP; Tue, 10 Oct 2006 16:35:08 -0700 (PDT)
-Message-ID: <816d36d30610101635o5701a4clc362a6f07ac8173d@mail.gmail.com>
-Date:	Tue, 10 Oct 2006 19:35:08 -0400
-From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
-To:	ashlesha@kenati.com
-Subject: Re: calibrate_delay function
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 00:52:39 +0100 (BST)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:28605 "EHLO
+	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S20037436AbWJJXwh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Oct 2006 00:52:37 +0100
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by mail.enneenne.com with esmtp (Exim 4.50)
+	id 1GXQOs-0000U9-CS; Wed, 11 Oct 2006 00:48:41 +0200
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.63)
+	(envelope-from <giometti@enneenne.com>)
+	id 1GXROi-00082v-NE; Wed, 11 Oct 2006 01:52:32 +0200
+Date:	Wed, 11 Oct 2006 01:52:32 +0200
+From:	Rodolfo Giometti <giometti@linux.it>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1160523270.8185.4.camel@sandbar.kenati.com>
+Message-ID: <20061010235232.GA25397@enneenne.com>
+References: <20061010182747.GA14539@enneenne.com> <452BFC8D.8080903@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <1160520180.6521.29.camel@sandbar.kenati.com>
-	 <452C20FC.6000705@mvista.com>
-	 <1160523270.8185.4.camel@sandbar.kenati.com>
-Return-Path: <mendoza.ricardo@gmail.com>
+In-Reply-To: <452BFC8D.8080903@ru.mvista.com>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.13 (2006-08-11)
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: Re: Problem on au1100 USB device support
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12891
+X-archive-position: 12892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mendoza.ricardo@gmail.com
+X-original-sender: giometti@linux.it
 Precedence: bulk
 X-list: linux-mips
 
-On 10/10/06, Ashlesha Shintre <ashlesha@kenati.com> wrote:
-> i can see why the kernel is stuck -- its because ticks=jiffies is the command just before infinitely looping based on the condition that ticks==jiffies!
-> Am I not looking in the right place?
+On Wed, Oct 11, 2006 at 12:03:25AM +0400, Sergei Shtylyov wrote:
+> 
+>    What tree are you testing against? Asking because with the recent 
+>    deletion of the "old" driver (arch/mips/au1000/common/usbdev.c), the setup 
+> code fiddling with SYS_PINFUNC and SYS_CLKSRC regs is gone...
 
-The delay loop calibration relies on a working system timer, if you
-haven't setup and started a timer for your board, the jiffies will
-never be incremented ergo indefinitely looping in this place.
+Linux 2.6.18-rc1
 
-This information can probably be found under Porting, on the l-m.o
-wiki. Check there if you have any other problems in the process of
-writing your board specific code.
+>    Well, errata says you must use DMA for endpoint 0 on Au1100 revs before 
+>    BE -- otherwise you'll be asking for trouble.
 
+I enabled DMA for endpoint 0 but I still see no activities on the
+bus... I'm quite sure I misconfigured the controller.
 
-     Ricardo
+Any suggestions?
+
+Rodolfo
+
+-- 
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

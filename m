@@ -1,65 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 00:52:39 +0100 (BST)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:28605 "EHLO
-	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S20037436AbWJJXwh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Oct 2006 00:52:37 +0100
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by mail.enneenne.com with esmtp (Exim 4.50)
-	id 1GXQOs-0000U9-CS; Wed, 11 Oct 2006 00:48:41 +0200
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.63)
-	(envelope-from <giometti@enneenne.com>)
-	id 1GXROi-00082v-NE; Wed, 11 Oct 2006 01:52:32 +0200
-Date:	Wed, 11 Oct 2006 01:52:32 +0200
-From:	Rodolfo Giometti <giometti@linux.it>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	linux-mips@linux-mips.org
-Message-ID: <20061010235232.GA25397@enneenne.com>
-References: <20061010182747.GA14539@enneenne.com> <452BFC8D.8080903@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 01:03:00 +0100 (BST)
+Received: from mms3.broadcom.com ([216.31.210.19]:8977 "EHLO MMS3.broadcom.com")
+	by ftp.linux-mips.org with ESMTP id S20037437AbWJKAC5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2006 01:02:57 +0100
+Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.2.2)); Tue, 10 Oct 2006 17:02:41 -0700
+X-Server-Uuid: 450F6D01-B290-425C-84F8-E170B39A25C9
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 6D82F2AF; Tue, 10 Oct 2006 17:02:41 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 2907C2AF for
+ <linux-mips@linux-mips.org>; Tue, 10 Oct 2006 17:02:41 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id EHF33112; Tue, 10 Oct 2006 17:02:39 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
+ [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 9696C20504 for <linux-mips@linux-mips.org>; Tue, 10 Oct 2006 17:02:39
+ -0700 (PDT)
+Received: from localhost.localdomain ([10.240.253.63]) by
+ NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft
+ SMTPSVC(6.0.3790.1830); Tue, 10 Oct 2006 17:02:39 -0700
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+ by localhost.localdomain (8.13.4/8.13.4) with ESMTP id k9B03H7e022650
+ for <linux-mips@linux-mips.org>; Tue, 10 Oct 2006 17:03:23 -0700
+Received: (from mason@localhost) by localhost.localdomain (
+ 8.13.4/8.13.4/Submit) id k9B03AtS022649 for linux-mips@linux-mips.org;
+ Tue, 10 Oct 2006 17:03:10 -0700
+Date:	Tue, 10 Oct 2006 17:03:10 -0700
+From:	"Mark Mason" <mason@broadcom.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Fix compilation warnings in
+ arch/mips/sibyte/bcm1480/smp.c
+Message-ID: <20061011000310.GA22605@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.4.2.1i
+X-OriginalArrivalTime: 11 Oct 2006 00:02:39.0433 (UTC)
+ FILETIME=[90D80B90:01C6ECC8]
+X-WSS-ID: 6932EB2B3AK39907-01-01
+Content-Type: text/plain;
+ charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <452BFC8D.8080903@ru.mvista.com>
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.13 (2006-08-11)
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: Re: Problem on au1100 USB device support
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Content-Transfer-Encoding: 7bit
+Return-Path: <mark.e.mason@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12892
+X-archive-position: 12893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@linux.it
+X-original-sender: mason@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 11, 2006 at 12:03:25AM +0400, Sergei Shtylyov wrote:
-> 
->    What tree are you testing against? Asking because with the recent 
->    deletion of the "old" driver (arch/mips/au1000/common/usbdev.c), the setup 
-> code fiddling with SYS_PINFUNC and SYS_CLKSRC regs is gone...
 
-Linux 2.6.18-rc1
+Modified types of mailbox register arrays in order to prevent compilation
+warnings.  Changes are against 2.6.18-rc4, but should apply cleanly to the
+tip as well.
 
->    Well, errata says you must use DMA for endpoint 0 on Au1100 revs before 
->    BE -- otherwise you'll be asking for trouble.
+Signed-off-by: Mark Mason <mason@broadcom.com>
+---
+ arch/mips/sibyte/bcm1480/smp.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-I enabled DMA for endpoint 0 but I still see no activities on the
-bus... I'm quite sure I misconfigured the controller.
-
-Any suggestions?
-
-Rodolfo
-
+diff --git a/arch/mips/sibyte/bcm1480/smp.c b/arch/mips/sibyte/bcm1480/smp.c
+index 584a4b3..4f60142 100644
+--- a/arch/mips/sibyte/bcm1480/smp.c
++++ b/arch/mips/sibyte/bcm1480/smp.c
+@@ -34,21 +34,21 @@ extern void smp_call_function_interrupt(
+  * independent of board/firmware
+  */
+ 
+-static void *mailbox_0_set_regs[] = {
++static volatile void *mailbox_0_set_regs[] = {
+ 	IOADDR(A_BCM1480_IMR_CPU0_BASE + R_BCM1480_IMR_MAILBOX_0_SET_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU1_BASE + R_BCM1480_IMR_MAILBOX_0_SET_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU2_BASE + R_BCM1480_IMR_MAILBOX_0_SET_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU3_BASE + R_BCM1480_IMR_MAILBOX_0_SET_CPU),
+ };
+ 
+-static void *mailbox_0_clear_regs[] = {
++static volatile void *mailbox_0_clear_regs[] = {
+ 	IOADDR(A_BCM1480_IMR_CPU0_BASE + R_BCM1480_IMR_MAILBOX_0_CLR_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU1_BASE + R_BCM1480_IMR_MAILBOX_0_CLR_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU2_BASE + R_BCM1480_IMR_MAILBOX_0_CLR_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU3_BASE + R_BCM1480_IMR_MAILBOX_0_CLR_CPU),
+ };
+ 
+-static void *mailbox_0_regs[] = {
++static volatile void *mailbox_0_regs[] = {
+ 	IOADDR(A_BCM1480_IMR_CPU0_BASE + R_BCM1480_IMR_MAILBOX_0_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU1_BASE + R_BCM1480_IMR_MAILBOX_0_CPU),
+ 	IOADDR(A_BCM1480_IMR_CPU2_BASE + R_BCM1480_IMR_MAILBOX_0_CPU),
 -- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+1.1.6.g4e27f

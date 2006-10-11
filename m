@@ -1,70 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 13:11:06 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.190]:23669 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037694AbWJKMI4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Oct 2006 13:08:56 +0100
-Received: by nf-out-0910.google.com with SMTP id a25so165412nfc
-        for <linux-mips@linux-mips.org>; Wed, 11 Oct 2006 05:08:55 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=mczQAP/M3bpTricEPwu22Z25mB2cTFzuWekOs3jgtItKizsrVrRkP3zeEt+qrBjxggzeJvPJU/kwBf1uKT7HC0q/arcWiQV7xgHadFWPeq1rFVT6axFFgInB7qjVUOhaLqys7t96cCSj8sx92kAf5slaadxQYUi9Xi7UV/qNPYU=
-Received: by 10.49.8.4 with SMTP id l4mr3028176nfi;
-        Wed, 11 Oct 2006 05:08:54 -0700 (PDT)
-Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id c10sm4269353nfb.2006.10.11.05.08.53;
-        Wed, 11 Oct 2006 05:08:53 -0700 (PDT)
-Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 2B55F23F76F; Wed, 11 Oct 2006 14:08:45 +0200 (CEST)
-To:	ralf@linux-mips.org
-Cc:	anemo@mba.ocn.ne.jp, ths@networkno.de, linux-mips@linux-mips.org,
-	Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 1/5] Make __pa() uses CPHYSADDR() if really needed
-Date:	Wed, 11 Oct 2006 14:08:41 +0200
-Message-Id: <11605685251014-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.4.2.3
-In-Reply-To: <1160568525897-git-send-email-fbuihuu@gmail.com>
-References: <1160568525897-git-send-email-fbuihuu@gmail.com>
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 14:15:41 +0100 (BST)
+Received: from smtp105.biz.mail.re2.yahoo.com ([206.190.52.174]:17076 "HELO
+	smtp105.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20037734AbWJKNPg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Oct 2006 14:15:36 +0100
+Received: (qmail 11339 invoked from network); 11 Oct 2006 13:15:26 -0000
+Received: from unknown (HELO ?192.168.253.28?) (dan@embeddedalley.com@209.113.146.155 with plain)
+  by smtp105.biz.mail.re2.yahoo.com with SMTP; 11 Oct 2006 13:15:25 -0000
+In-Reply-To: <452BF775.6090504@ru.mvista.com>
+References: <20061010182747.GA14539@enneenne.com> <29381BAC-4A96-4BFE-8E86-836A3564F2F5@embeddedalley.com> <452BF775.6090504@ru.mvista.com>
+Mime-Version: 1.0 (Apple Message framework v752.2)
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-Id: <EF75E0BE-76C7-4C60-9C6E-38A6B609EB73@embeddedalley.com>
+Cc:	Rodolfo Giometti <giometti@linux.it>, linux-mips@linux-mips.org
+Content-Transfer-Encoding: 7bit
+From:	Dan Malek <dan@embeddedalley.com>
+Subject: Re: Problem on au1100 USB device support
+Date:	Wed, 11 Oct 2006 09:15:27 -0400
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+X-Mailer: Apple Mail (2.752.2)
+Return-Path: <dan@embeddedalley.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12903
+X-archive-position: 12904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: dan@embeddedalley.com
 Precedence: bulk
 X-list: linux-mips
 
-During early boot mem init, some configs can't use __pa() to
-convert virtual into physical addresses. This patch make __pa()
-uses CPHYSADDR() for these configs only, others don't need this
-hack. This will allow to not use anymore CPHYSADDR() in generic
-code.
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- include/asm-mips/page.h |    6 +++++-
- 1 files changed, 5 insertions(+), 1 deletions(-)
+On Oct 10, 2006, at 3:41 PM, Sergei Shtylyov wrote:
 
-diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
-index 32e5625..b4851ac 100644
---- a/include/asm-mips/page.h
-+++ b/include/asm-mips/page.h
-@@ -131,7 +131,11 @@ #endif /* !__ASSEMBLY__ */
- /* to align the pointer to the (next) page boundary */
- #define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
- 
--#define __pa(x)			((unsigned long) (x) - PAGE_OFFSET)
-+#if defined(CONFIG_64BITS) && !defined(CONFIG_BUILD_ELF64)
-+#define __pa(x)			CPHYSADDR(x)
-+#else
-+#define __pa(x)			((unsigned long)(x) - PAGE_OFFSET)
-+#endif
- #define __va(x)			((void *)((unsigned long) (x) + PAGE_OFFSET))
- 
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
--- 
-1.4.2.3
+>    Note that AMD claims that the latency (and other) errata fixed  
+> in the late revs of their SOCs.
+> For Au1100, BE and BF revs are claimed to be errata-free.
+
+I've been looking for the code I did long ago for
+this, but haven't found it yet.  As I recall, the BE and
+later version actually fixed some chip bugs, but didn't
+solve the design challenges of the CPU responding
+in a required time to collect proper status or to
+meet the USB timing.
+
+I'll keep looking and do whatever I can to help out.
+
+Thanks.
+
+	-- Dan

@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 14:15:41 +0100 (BST)
-Received: from smtp105.biz.mail.re2.yahoo.com ([206.190.52.174]:17076 "HELO
-	smtp105.biz.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20037734AbWJKNPg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Oct 2006 14:15:36 +0100
-Received: (qmail 11339 invoked from network); 11 Oct 2006 13:15:26 -0000
-Received: from unknown (HELO ?192.168.253.28?) (dan@embeddedalley.com@209.113.146.155 with plain)
-  by smtp105.biz.mail.re2.yahoo.com with SMTP; 11 Oct 2006 13:15:25 -0000
-In-Reply-To: <452BF775.6090504@ru.mvista.com>
-References: <20061010182747.GA14539@enneenne.com> <29381BAC-4A96-4BFE-8E86-836A3564F2F5@embeddedalley.com> <452BF775.6090504@ru.mvista.com>
-Mime-Version: 1.0 (Apple Message framework v752.2)
-Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
-Message-Id: <EF75E0BE-76C7-4C60-9C6E-38A6B609EB73@embeddedalley.com>
-Cc:	Rodolfo Giometti <giometti@linux.it>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 14:31:46 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:50660 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037747AbWJKNbl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2006 14:31:41 +0100
+Received: from localhost (p6080-ipad213funabasi.chiba.ocn.ne.jp [124.85.71.80])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 44AE2B70B; Wed, 11 Oct 2006 22:31:36 +0900 (JST)
+Date:	Wed, 11 Oct 2006 22:33:52 +0900 (JST)
+Message-Id: <20061011.223352.126573442.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org,
+	fbuihuu@gmail.com
+Subject: Re: [PATCH 1/5] Make __pa() uses CPHYSADDR() if really needed
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <11605685251014-git-send-email-fbuihuu@gmail.com>
+References: <1160568525897-git-send-email-fbuihuu@gmail.com>
+	<11605685251014-git-send-email-fbuihuu@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Dan Malek <dan@embeddedalley.com>
-Subject: Re: Problem on au1100 USB device support
-Date:	Wed, 11 Oct 2006 09:15:27 -0400
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-X-Mailer: Apple Mail (2.752.2)
-Return-Path: <dan@embeddedalley.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12904
+X-archive-position: 12905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@embeddedalley.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, 11 Oct 2006 14:08:41 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> -#define __pa(x)			((unsigned long) (x) - PAGE_OFFSET)
+> +#if defined(CONFIG_64BITS) && !defined(CONFIG_BUILD_ELF64)
+> +#define __pa(x)			CPHYSADDR(x)
+> +#else
+> +#define __pa(x)			((unsigned long)(x) - PAGE_OFFSET)
+> +#endif
+>  #define __va(x)			((void *)((unsigned long) (x) + PAGE_OFFSET))
 
-On Oct 10, 2006, at 3:41 PM, Sergei Shtylyov wrote:
+Please do not do this.  CONFIG_BUILD_ELF64=n does not mean we only
+have less then 512MB memory.  We can have large flat area at
+PAGE_OFFSET (0x9800000000000000) in 64-bit kernel, so __pa() should
+accepct a value such as 0x9800000020000000.
 
->    Note that AMD claims that the latency (and other) errata fixed  
-> in the late revs of their SOCs.
-> For Au1100, BE and BF revs are claimed to be errata-free.
-
-I've been looking for the code I did long ago for
-this, but haven't found it yet.  As I recall, the BE and
-later version actually fixed some chip bugs, but didn't
-solve the design challenges of the CPU responding
-in a required time to collect proper status or to
-meet the USB timing.
-
-I'll keep looking and do whatever I can to help out.
-
-Thanks.
-
-	-- Dan
+---
+Atsushi Nemoto

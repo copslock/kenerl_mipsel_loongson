@@ -1,122 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 01:58:08 +0100 (BST)
-Received: from [69.90.147.196] ([69.90.147.196]:18917 "EHLO mail.kenati.com")
-	by ftp.linux-mips.org with ESMTP id S20037481AbWJKA6H (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2006 01:58:07 +0100
-Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
-	by mail.kenati.com (Postfix) with ESMTP id 73D4B15D4005;
-	Tue, 10 Oct 2006 18:21:41 -0700 (PDT)
-Subject: Re: calibrate_delay function
-From:	Ashlesha Shintre <ashlesha@kenati.com>
-Reply-To: ashlesha@kenati.com
-To:	mlachwani <mlachwani@mvista.com>, mendoza.ricardo@gmail.com
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <452C2D22.3050502@mvista.com>
-References: <1160520180.6521.29.camel@sandbar.kenati.com>
-	 <452C20FC.6000705@mvista.com> <1160523270.8185.4.camel@sandbar.kenati.com>
-	 <452C2D22.3050502@mvista.com>
-Content-Type: text/plain
-Date:	Tue, 10 Oct 2006 18:07:20 -0700
-Message-Id: <1160528840.8185.11.camel@sandbar.kenati.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 04:12:02 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:48348 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20027600AbWJKDMA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Oct 2006 04:12:00 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 11 Oct 2006 12:11:58 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 909BB20578;
+	Wed, 11 Oct 2006 12:11:56 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 853B820569;
+	Wed, 11 Oct 2006 12:11:56 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9B3BtW0029243;
+	Wed, 11 Oct 2006 12:11:56 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 11 Oct 2006 12:11:55 +0900 (JST)
+Message-Id: <20061011.121155.25910632.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	vagabon.xyz@gmail.com, ths@networkno.de, linux-mips@linux-mips.org
+Subject: Re: [PATCH] setup.c: introduce __pa_symbol() and get ride of
+ CPHYSADDR()
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061010215124.GA21012@linux-mips.org>
+References: <20061011.002914.76462350.anemo@mba.ocn.ne.jp>
+	<452BC4A5.3080706@innova-card.com>
+	<20061010215124.GA21012@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ashlesha@kenati.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12895
+X-archive-position: 12896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashlesha@kenati.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-thanks, i m checking the Documentation/mips/time.c file..the time_init
-function gets executed as it is supposed to...
-the curious part is that a few days ago, this was not where the kernel
-was stuck..
-it was going to the rest_init function in the start_kernel and
-discovering devices on the PCI bus...it used to hang at that point!
-but i will check and let you know..
-thanks,
+On Tue, 10 Oct 2006 22:51:24 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > ok, and does the trick on KSEG0/XKPHYS really worth ? I mean what is
+> > the size code gain ?
+> 
+> Gcc / gas generate a 6 instruction sequence to load something from a
+> 64-bit address, basically lui, add, dsll16, add, dsll16, add.  It's
+> just 2 instructions for 32-bit addresses.  This boils down to space
+> savings in the hundred of kilobytes for a kernel.
 
-On Tue, 2006-10-10 at 16:30 -0700, mlachwani wrote:
-> Can you check to see if you are getting timer interrupts
-> 
-> thanks,
-> Manish Lachwani
-> 
-> Ashlesha Shintre wrote:
-> >>> start_kernel() calls calibrate_delay() which can be found in 
-> >>> init/calibrate.c
-> >>>       
-> >
-> > Thanks, I did find it and put in a few printk s to debug the problem.
-> >
-> > i have pasted part of the calibrate_delay function where the kernel gets stuck..
-> > It is getting stuck at the second while loop where it goes into an infinite loop!
-> > the value of ash_count keeps incrementing and thats all i see in the log buffer!
-> >
-> > i can see why the kernel is stuck -- its because ticks=jiffies is the command just before infinitely looping based on the condition that ticks==jiffies!
-> > Am I not looking in the right place?
-> >
-> > Regards,
-> > Ashlesha.
-> >   
-> >>  printk(KERN_DEBUG "Calibrating delay loop... ");
-> >>                 while ((loops_per_jiffy <<= 1) != 0) {
-> >>                         printk("within the while loop\n");
-> >>                         /* wait for "start of" clock tick */
-> >>                         ticks = jiffies;
-> >>                         while (ticks == jiffies)
-> >>                                 printk("%d\n",++ash_count);
-> >>                                 /* nothing ; infinite loop, control never comes out of here*/
-> >>                         /* Go .. */
-> >>     
-> >
-> > On Tue, 2006-10-10 at 15:38 -0700, mlachwani wrote:
-> >   
-> >> Ashlesha Shintre wrote:
-> >>     
-> >>> Hi,
-> >>> I m working on the Encore M3 board that has the AU1500 MIPS processor on
-> >>> it.  I aim to port the 2.6 linux kernel to the board which is already
-> >>> supported in the 2.4 kernel.
-> >>>
-> >>> The start_kernel function in linux/init/main.c file, calls a function
-> >>> calibrate_delay found in the arch/frv/kernel/setup.c file.  Why does the
-> >>> kernel call this function which is a part of the Fujitsu FR-V
-> >>> architecture?  
-> >>>
-> >>> When I build the image, this is the point where the kernel is stuck and
-> >>> the last contents of the log buffer show the following printk message
-> >>> from the calibrate_delay function:
-> >>>
-> >>>
-> >>>   
-> >>>       
-> >>>> Calibrating delay loop...
-> >>>>     
-> >>>>         
-> >>> Thanks,
-> >>> Ashlesha.
-> >>>
-> >>>
-> >>>
-> >>>
-> >>>   
-> >>>       
-> >
-> >   
-> >>> start_kernel() calls calibrate_delay() which can be found in 
-> >>> init/calibrate.c
-> >>>
-> >>>       
-> >> thanks,
-> >> Manish Lachwani
-> >>     
-> >
-> >   
-> 
-> 
+Yes, I got ~10% smaller kernel (4.8MB to 4.4MB) with -msym32.
+
+If modules are loaded into CKSEG2, we can use -msym32 for modules as
+well.  Until then this patch can be used for workaroung:
+
+http://www.linux-mips.org/archives/linux-mips/2006-10/msg00111.html
+
+---
+Atsushi Nemoto

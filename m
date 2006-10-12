@@ -1,86 +1,191 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Oct 2006 17:06:08 +0100 (BST)
-Received: from mail95.messagelabs.com ([216.82.241.67]:18330 "HELO
-	mail95.messagelabs.com") by ftp.linux-mips.org with SMTP
-	id S20038329AbWJLQGE convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Oct 2006 17:06:04 +0100
-X-VirusChecked:	Checked
-X-Env-Sender: madhvesh.s@ap.sony.com
-X-Msg-Ref: server-2.tower-95.messagelabs.com!1160669113!40547900!1
-X-StarScan-Version: 5.5.10.7; banners=-,-,-
-X-Originating-IP: [202.42.154.167]
-Received: (qmail 31786 invoked from network); 12 Oct 2006 16:05:14 -0000
-Received: from inetmg1.sony.com.sg (HELO inetmg1.sony.com.sg) (202.42.154.167)
-  by server-2.tower-95.messagelabs.com with SMTP; 12 Oct 2006 16:05:14 -0000
-Received: from avgw02c.sony.com.sg (avgw02c [43.68.8.33])
-	by inetmg1.sony.com.sg (8.11.7+Sun/8.11.6) with SMTP id k9CG5KQ06678
-	for <linux-mips@linux-mips.org>; Fri, 13 Oct 2006 00:05:20 +0800 (SGT)
-Received: from (seagw.sony.com.sg [43.68.8.1]) by avgw02c.sony.com.sg with smtp
-	 id 6d43_710e8702_5a0b_11db_8ddc_001143d917f1;
-	Fri, 13 Oct 2006 00:05:12 +0800
-Received: from sgapxbh04.ap.sony.com ([43.68.15.49])
-	by seagw01.sony.com.sg (8.11.6+Sun/8.11.6) with ESMTP id k9CG5Ca12450
-	for <linux-mips@linux-mips.org>; Fri, 13 Oct 2006 00:05:12 +0800 (SGT)
-Received: from insardxms01.ap.sony.com ([43.88.102.10]) by sgapxbh04.ap.sony.com with Microsoft SMTPSVC(6.0.3790.1830); Fri, 13 Oct 2006 00:05:08 +0800
-Content-Class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Oct 2006 19:02:14 +0100 (BST)
+Received: from ms-smtp-01.rdc-nyc.rr.com ([24.29.109.5]:10893 "EHLO
+	ms-smtp-01.rdc-nyc.rr.com") by ftp.linux-mips.org with ESMTP
+	id S20038513AbWJLSCJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Oct 2006 19:02:09 +0100
+Received: from landofbile.com (cpe-74-68-39-174.nj.res.rr.com [74.68.39.174])
+	by ms-smtp-01.rdc-nyc.rr.com (8.13.6/8.13.6) with SMTP id k9CI26I5017308
+	for <linux-mips@linux-mips.org>; Thu, 12 Oct 2006 14:02:06 -0400 (EDT)
+Message-Id: <200610121802.k9CI26I5017308@ms-smtp-01.rdc-nyc.rr.com>
+Received: by landofbile.com (sSMTP sendmail emulation); Thu, 12 Oct 2006 14:03:39 -0400
+From:	bile@landofbile.com
+Date:	Thu, 12 Oct 2006 14:03:39 -0400
+To:	linux-mips@linux-mips.org
+Subject: patch: include/asm-mips/system.h __cmpxchg64 bugfix and cleanup
+User-Agent: Heirloom mailx 12.1 6/15/06
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: KProbes Support for MIPS
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.2757
-Date:	Thu, 12 Oct 2006 21:34:40 +0530
-Message-ID: <7CC0A4CCB789A841944E316301AD153817FDED@insardxms01.ap.sony.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: KProbes Support for MIPS
-thread-index: AcbuGB+bzDtKUL9USw6nQES2FBE/xw==
-Priority: normal
-From:	"Madhvesh Sulibhavi" <madhvesh.s@ap.sony.com>
-Importance: normal
-To:	<linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 12 Oct 2006 16:05:08.0673 (UTC) FILETIME=[307C8310:01C6EE18]
-Return-Path: <madhvesh.s@ap.sony.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Symantec AntiVirus Scan Engine
+Return-Path: <bile@landofbile.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12919
+X-archive-position: 12920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: madhvesh.s@ap.sony.com
+X-original-sender: bile@landofbile.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+In include/asm-mips/system.h __cmpxchg_u64 is doing
 
-The mainline kernel 2.6.16  (and later) had KProbes support
-for x86, Alpha and PPC64 architectures. In this patch we provide
-an implementation of KProbe for the MIPS arch. It is targetted
-at the 2.6.16-24 kernel and tested on the Toshiba TX49 reference
-platform. The patch is available in the below CELF wiki page 
+if(cpu_has_llsc) {
+} else if(cpu_has_llsc) {
 
-http://tree.celinuxforum.org/CelfPubWiki/PatchArchive
+the first should be (cpu_has_llsc && R10000_LLSC_WAR).
 
-The patch can be downloaded from here
-http://tree.celinuxforum.org/CelfPubWiki/PatchArchive?action=AttachFile&
-do=get&target=kprobes-mips-patches-2.6.16.24.tgz
+While this probably gets cleaned up during optimization I took
+the liberty of cleaning up the code along with the fix so it's
+not doing the double check and only includes the R10000 workaround
+at compile time.
 
-Please see the documentation for usage and limitations.
-
-Look forward to any feedback.
-Thank you
-
-Regards
-Madhvesh
-
-=============================
-Madhvesh Sulibhavi
-Sony India Software Centre
-Bangalore
-=============================
-
-
-
--------------------------------------------------------------------
-This email is confidential and intended only for the use of the individual or entity named above and may contain information that is privileged. If you are not the intended recipient, you are notified that any dissemination, distribution or copying of this email is strictly prohibited. If you have received this email in error, please notify us immediately by return email or telephone and destroy the original message. - This mail is sent via Sony Asia Pacific Mail Gateway.
--------------------------------------------------------------------
+diff --git a/include/asm-mips/system.h b/include/asm-mips/system.h
+index dcb4701..bfae6ff 100644
+--- a/include/asm-mips/system.h
++++ b/include/asm-mips/system.h
+@@ -206,7 +206,7 @@ static inline unsigned long __xchg_u32(v
+ {
+ 	__u32 retval;
+ 
+-	if (cpu_has_llsc && R10000_LLSC_WAR) {
++	if (cpu_has_llsc) {
+ 		unsigned long dummy;
+ 
+ 		__asm__ __volatile__(
+@@ -216,25 +216,11 @@ static inline unsigned long __xchg_u32(v
+ 		"	move	%2, %z4					\n"
+ 		"	.set	mips3					\n"
+ 		"	sc	%2, %1					\n"
++#ifdef R10000_LLSC_WAR
+ 		"	beqzl	%2, 1b					\n"
+-#ifdef CONFIG_SMP
+-		"	sync						\n"
+-#endif
+-		"	.set	mips0					\n"
+-		: "=&r" (retval), "=m" (*m), "=&r" (dummy)
+-		: "R" (*m), "Jr" (val)
+-		: "memory");
+-	} else if (cpu_has_llsc) {
+-		unsigned long dummy;
+-
+-		__asm__ __volatile__(
+-		"	.set	mips3					\n"
+-		"1:	ll	%0, %3			# xchg_u32	\n"
+-		"	.set	mips0					\n"
+-		"	move	%2, %z4					\n"
+-		"	.set	mips3					\n"
+-		"	sc	%2, %1					\n"
++#else
+ 		"	beqz	%2, 1b					\n"
++#endif                
+ #ifdef CONFIG_SMP
+ 		"	sync						\n"
+ #endif
+@@ -259,7 +245,7 @@ static inline __u64 __xchg_u64(volatile 
+ {
+ 	__u64 retval;
+ 
+-	if (cpu_has_llsc && R10000_LLSC_WAR) {
++	if (cpu_has_llsc) {
+ 		unsigned long dummy;
+ 
+ 		__asm__ __volatile__(
+@@ -267,23 +253,11 @@ static inline __u64 __xchg_u64(volatile 
+ 		"1:	lld	%0, %3			# xchg_u64	\n"
+ 		"	move	%2, %z4					\n"
+ 		"	scd	%2, %1					\n"
++#ifdef R10000_LLSC_WAR
+ 		"	beqzl	%2, 1b					\n"
+-#ifdef CONFIG_SMP
+-		"	sync						\n"
+-#endif
+-		"	.set	mips0					\n"
+-		: "=&r" (retval), "=m" (*m), "=&r" (dummy)
+-		: "R" (*m), "Jr" (val)
+-		: "memory");
+-	} else if (cpu_has_llsc) {
+-		unsigned long dummy;
+-
+-		__asm__ __volatile__(
+-		"	.set	mips3					\n"
+-		"1:	lld	%0, %3			# xchg_u64	\n"
+-		"	move	%2, %z4					\n"
+-		"	scd	%2, %1					\n"
++#else
+ 		"	beqz	%2, 1b					\n"
++#endif                
+ #ifdef CONFIG_SMP
+ 		"	sync						\n"
+ #endif
+@@ -333,7 +307,7 @@ static inline unsigned long __cmpxchg_u3
+ {
+ 	__u32 retval;
+ 
+-	if (cpu_has_llsc && R10000_LLSC_WAR) {
++	if (cpu_has_llsc) {
+ 		__asm__ __volatile__(
+ 		"	.set	push					\n"
+ 		"	.set	noat					\n"
+@@ -344,27 +318,11 @@ static inline unsigned long __cmpxchg_u3
+ 		"	move	$1, %z4					\n"
+ 		"	.set	mips3					\n"
+ 		"	sc	$1, %1					\n"
++#ifdef R10000_LLSC_WAR                
+ 		"	beqzl	$1, 1b					\n"
+-#ifdef CONFIG_SMP
+-		"	sync						\n"
+-#endif
+-		"2:							\n"
+-		"	.set	pop					\n"
+-		: "=&r" (retval), "=R" (*m)
+-		: "R" (*m), "Jr" (old), "Jr" (new)
+-		: "memory");
+-	} else if (cpu_has_llsc) {
+-		__asm__ __volatile__(
+-		"	.set	push					\n"
+-		"	.set	noat					\n"
+-		"	.set	mips3					\n"
+-		"1:	ll	%0, %2			# __cmpxchg_u32	\n"
+-		"	bne	%0, %z3, 2f				\n"
+-		"	.set	mips0					\n"
+-		"	move	$1, %z4					\n"
+-		"	.set	mips3					\n"
+-		"	sc	$1, %1					\n"
+-		"	beqz	$1, 1b					\n"
++#else
++                "       beqz    $1, 1b                                  \n"
++#endif                
+ #ifdef CONFIG_SMP
+ 		"	sync						\n"
+ #endif
+@@ -401,25 +359,11 @@ static inline unsigned long __cmpxchg_u6
+ 		"	bne	%0, %z3, 2f				\n"
+ 		"	move	$1, %z4					\n"
+ 		"	scd	$1, %1					\n"
++#ifdef R10000_LLSC_WAR
+ 		"	beqzl	$1, 1b					\n"
+-#ifdef CONFIG_SMP
+-		"	sync						\n"
+-#endif
+-		"2:							\n"
+-		"	.set	pop					\n"
+-		: "=&r" (retval), "=R" (*m)
+-		: "R" (*m), "Jr" (old), "Jr" (new)
+-		: "memory");
+-	} else if (cpu_has_llsc) {
+-		__asm__ __volatile__(
+-		"	.set	push					\n"
+-		"	.set	noat					\n"
+-		"	.set	mips3					\n"
+-		"1:	lld	%0, %2			# __cmpxchg_u64	\n"
+-		"	bne	%0, %z3, 2f				\n"
+-		"	move	$1, %z4					\n"
+-		"	scd	$1, %1					\n"
++#else
+ 		"	beqz	$1, 1b					\n"
++#endif                
+ #ifdef CONFIG_SMP
+ 		"	sync						\n"
+ #endif

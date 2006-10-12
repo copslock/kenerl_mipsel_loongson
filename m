@@ -1,126 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Oct 2006 18:42:54 +0100 (BST)
-Received: from [69.90.147.196] ([69.90.147.196]:21978 "EHLO mail.kenati.com")
-	by ftp.linux-mips.org with ESMTP id S20037475AbWJKRmw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Oct 2006 18:42:52 +0100
-Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
-	by mail.kenati.com (Postfix) with ESMTP id 3DA2615D4006;
-	Wed, 11 Oct 2006 11:06:41 -0700 (PDT)
-Subject: Re: calibrate_delay function
-From:	Ashlesha Shintre <ashlesha@kenati.com>
-Reply-To: ashlesha@kenati.com
-To:	mlachwani <mlachwani@mvista.com>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <452C2D22.3050502@mvista.com>
-References: <1160520180.6521.29.camel@sandbar.kenati.com>
-	 <452C20FC.6000705@mvista.com> <1160523270.8185.4.camel@sandbar.kenati.com>
-	 <452C2D22.3050502@mvista.com>
-Content-Type: text/plain
-Date:	Wed, 11 Oct 2006 10:52:15 -0700
-Message-Id: <1160589135.8185.15.camel@sandbar.kenati.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Oct 2006 10:49:04 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:37286 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20037743AbWJLJtC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Oct 2006 10:49:02 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 12 Oct 2006 18:49:01 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 4330923ECF;
+	Thu, 12 Oct 2006 18:48:58 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 36C1B20846;
+	Thu, 12 Oct 2006 18:48:58 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9C9mtW0035002;
+	Thu, 12 Oct 2006 18:48:55 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 12 Oct 2006 18:48:55 +0900 (JST)
+Message-Id: <20061012.184855.108739419.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org
+Subject: Re: [PATCH 4/5] Introduce __pa_symbol()
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <452D180D.9020700@innova-card.com>
+References: <11605685254080-git-send-email-fbuihuu@gmail.com>
+	<20061012.003436.130240259.anemo@mba.ocn.ne.jp>
+	<452D180D.9020700@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <ashlesha@kenati.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12912
+X-archive-position: 12913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashlesha@kenati.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-hi,
-
-I checked what functions are being executed in the start up process and
-found that the au1xxx_timer_setup is called and executed..
-
-Also the processor has 2 counters, the TOY (time of year) and RTC, so
-the calibrate_div32_gettimeoffset gets executed...
-
-how can I check if I get the timer interrupt?
-
-Thanks,
-Ashlesha.
-
-On Tue, 2006-10-10 at 16:30 -0700, mlachwani wrote:
-> Can you check to see if you are getting timer interrupts
+On Wed, 11 Oct 2006 18:13:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> RELOC_HIDE(x) is used because arithmetic on symbol addresses is
+> undefined in C language. It avoid gcc to know that:
 > 
-> thanks,
-> Manish Lachwani
+> 	RELOC_HIDE(&_end) + OFFSET
 > 
-> Ashlesha Shintre wrote:
-> >>> start_kernel() calls calibrate_delay() which can be found in 
-> >>> init/calibrate.c
-> >>>       
-> >
-> > Thanks, I did find it and put in a few printk s to debug the problem.
-> >
-> > i have pasted part of the calibrate_delay function where the kernel gets stuck..
-> > It is getting stuck at the second while loop where it goes into an infinite loop!
-> > the value of ash_count keeps incrementing and thats all i see in the log buffer!
-> >
-> > i can see why the kernel is stuck -- its because ticks=jiffies is the command just before infinitely looping based on the condition that ticks==jiffies!
-> > Am I not looking in the right place?
-> >
-> > Regards,
-> > Ashlesha.
-> >   
-> >>  printk(KERN_DEBUG "Calibrating delay loop... ");
-> >>                 while ((loops_per_jiffy <<= 1) != 0) {
-> >>                         printk("within the while loop\n");
-> >>                         /* wait for "start of" clock tick */
-> >>                         ticks = jiffies;
-> >>                         while (ticks == jiffies)
-> >>                                 printk("%d\n",++ash_count);
-> >>                                 /* nothing ; infinite loop, control never comes out of here*/
-> >>                         /* Go .. */
-> >>     
-> >
-> > On Tue, 2006-10-10 at 15:38 -0700, mlachwani wrote:
-> >   
-> >> Ashlesha Shintre wrote:
-> >>     
-> >>> Hi,
-> >>> I m working on the Encore M3 board that has the AU1500 MIPS processor on
-> >>> it.  I aim to port the 2.6 linux kernel to the board which is already
-> >>> supported in the 2.4 kernel.
-> >>>
-> >>> The start_kernel function in linux/init/main.c file, calls a function
-> >>> calibrate_delay found in the arch/frv/kernel/setup.c file.  Why does the
-> >>> kernel call this function which is a part of the Fujitsu FR-V
-> >>> architecture?  
-> >>>
-> >>> When I build the image, this is the point where the kernel is stuck and
-> >>> the last contents of the log buffer show the following printk message
-> >>> from the calibrate_delay function:
-> >>>
-> >>>
-> >>>   
-> >>>       
-> >>>> Calibrating delay loop...
-> >>>>     
-> >>>>         
-> >>> Thanks,
-> >>> Ashlesha.
-> >>>
-> >>>
-> >>>
-> >>>
-> >>>   
-> >>>       
-> >
-> >   
-> >>> start_kernel() calls calibrate_delay() which can be found in 
-> >>> init/calibrate.c
-> >>>
-> >>>       
-> >> thanks,
-> >> Manish Lachwani
-> >>     
-> >
-> >   
-> 
-> 
+> is an operation on a symbol address and thus avoid an undefined
+> operation.
+
+Thanks, I see, but can not imagine the case the RELOC_HIDE() is
+_really_ needed.  Do you have any example?
+
+---
+Atsushi Nemoto

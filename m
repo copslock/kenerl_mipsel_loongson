@@ -1,45 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Oct 2006 15:25:27 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:24057 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20037491AbWJLOZ0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Oct 2006 15:25:26 +0100
-Received: from localhost (p1084-ipad31funabasi.chiba.ocn.ne.jp [221.189.125.84])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 1FA42A42E; Thu, 12 Oct 2006 23:25:20 +0900 (JST)
-Date:	Thu, 12 Oct 2006 23:27:37 +0900 (JST)
-Message-Id: <20061012.232737.35471315.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org
-Subject: Re: [PATCH 4/5] Introduce __pa_symbol()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <452E2DAC.9080207@innova-card.com>
-References: <452D180D.9020700@innova-card.com>
-	<20061012.184855.108739419.nemoto@toshiba-tops.co.jp>
-	<452E2DAC.9080207@innova-card.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Oct 2006 17:06:08 +0100 (BST)
+Received: from mail95.messagelabs.com ([216.82.241.67]:18330 "HELO
+	mail95.messagelabs.com") by ftp.linux-mips.org with SMTP
+	id S20038329AbWJLQGE convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Oct 2006 17:06:04 +0100
+X-VirusChecked:	Checked
+X-Env-Sender: madhvesh.s@ap.sony.com
+X-Msg-Ref: server-2.tower-95.messagelabs.com!1160669113!40547900!1
+X-StarScan-Version: 5.5.10.7; banners=-,-,-
+X-Originating-IP: [202.42.154.167]
+Received: (qmail 31786 invoked from network); 12 Oct 2006 16:05:14 -0000
+Received: from inetmg1.sony.com.sg (HELO inetmg1.sony.com.sg) (202.42.154.167)
+  by server-2.tower-95.messagelabs.com with SMTP; 12 Oct 2006 16:05:14 -0000
+Received: from avgw02c.sony.com.sg (avgw02c [43.68.8.33])
+	by inetmg1.sony.com.sg (8.11.7+Sun/8.11.6) with SMTP id k9CG5KQ06678
+	for <linux-mips@linux-mips.org>; Fri, 13 Oct 2006 00:05:20 +0800 (SGT)
+Received: from (seagw.sony.com.sg [43.68.8.1]) by avgw02c.sony.com.sg with smtp
+	 id 6d43_710e8702_5a0b_11db_8ddc_001143d917f1;
+	Fri, 13 Oct 2006 00:05:12 +0800
+Received: from sgapxbh04.ap.sony.com ([43.68.15.49])
+	by seagw01.sony.com.sg (8.11.6+Sun/8.11.6) with ESMTP id k9CG5Ca12450
+	for <linux-mips@linux-mips.org>; Fri, 13 Oct 2006 00:05:12 +0800 (SGT)
+Received: from insardxms01.ap.sony.com ([43.88.102.10]) by sgapxbh04.ap.sony.com with Microsoft SMTPSVC(6.0.3790.1830); Fri, 13 Oct 2006 00:05:08 +0800
+Content-Class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: KProbes Support for MIPS
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.2757
+Date:	Thu, 12 Oct 2006 21:34:40 +0530
+Message-ID: <7CC0A4CCB789A841944E316301AD153817FDED@insardxms01.ap.sony.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: KProbes Support for MIPS
+thread-index: AcbuGB+bzDtKUL9USw6nQES2FBE/xw==
+Priority: normal
+From:	"Madhvesh Sulibhavi" <madhvesh.s@ap.sony.com>
+Importance: normal
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 12 Oct 2006 16:05:08.0673 (UTC) FILETIME=[307C8310:01C6EE18]
+Return-Path: <madhvesh.s@ap.sony.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12918
+X-archive-position: 12919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: madhvesh.s@ap.sony.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 12 Oct 2006 13:57:32 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> No I don't have any example but you can take a look to
-> 
-> http://lkml.org/lkml/2006/8/23/175
+Hi All,
 
-Thanks!  Reading the thread, I remember "near" vs. "far" pointer issue
-in DOS age ...
+The mainline kernel 2.6.16  (and later) had KProbes support
+for x86, Alpha and PPC64 architectures. In this patch we provide
+an implementation of KProbe for the MIPS arch. It is targetted
+at the 2.6.16-24 kernel and tested on the Toshiba TX49 reference
+platform. The patch is available in the below CELF wiki page 
 
----
-Atsushi Nemoto
+http://tree.celinuxforum.org/CelfPubWiki/PatchArchive
+
+The patch can be downloaded from here
+http://tree.celinuxforum.org/CelfPubWiki/PatchArchive?action=AttachFile&
+do=get&target=kprobes-mips-patches-2.6.16.24.tgz
+
+Please see the documentation for usage and limitations.
+
+Look forward to any feedback.
+Thank you
+
+Regards
+Madhvesh
+
+=============================
+Madhvesh Sulibhavi
+Sony India Software Centre
+Bangalore
+=============================
+
+
+
+-------------------------------------------------------------------
+This email is confidential and intended only for the use of the individual or entity named above and may contain information that is privileged. If you are not the intended recipient, you are notified that any dissemination, distribution or copying of this email is strictly prohibited. If you have received this email in error, please notify us immediately by return email or telephone and destroy the original message. - This mail is sent via Sony Asia Pacific Mail Gateway.
+-------------------------------------------------------------------

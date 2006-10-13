@@ -1,50 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Oct 2006 10:51:57 +0100 (BST)
-Received: from bender.bawue.de ([193.7.176.20]:9914 "EHLO bender.bawue.de")
-	by ftp.linux-mips.org with ESMTP id S20038719AbWJMJvz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Oct 2006 10:51:55 +0100
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
-	(No client certificate requested)
-	by bender.bawue.de (Postfix) with ESMTP
-	id AB5674569D; Fri, 13 Oct 2006 11:51:54 +0200 (MEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GYJi2-00018i-K5; Fri, 13 Oct 2006 10:52:06 +0100
-Date:	Fri, 13 Oct 2006 10:52:06 +0100
-To:	Aurelien Jarno <aurelien@aurel32.net>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: SYS_personality does not work correctly on mips(el)64
-Message-ID: <20061013095206.GA4027@networkno.de>
-References: <452EB653.7070604@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Oct 2006 11:26:14 +0100 (BST)
+Received: from farad.aurel32.net ([82.232.2.251]:63687 "EHLO farad.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20038726AbWJMK0K (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Oct 2006 11:26:10 +0100
+Received: from anguille.univ-lyon1.fr ([134.214.4.207])
+	by farad.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA:32)
+	(Exim 4.50)
+	id 1GYKEu-00073T-Ox; Fri, 13 Oct 2006 12:26:05 +0200
+Message-ID: <452F69AD.8000902@aurel32.net>
+Date:	Fri, 13 Oct 2006 12:25:49 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
+User-Agent: Thunderbird 1.5.0.5 (X11/20060812)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <452EB653.7070604@aurel32.net>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+To:	Thiemo Seufer <ths@networkno.de>
+CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: SYS_personality does not work correctly on mips(el)64
+References: <452EB653.7070604@aurel32.net> <20061013095206.GA4027@networkno.de>
+In-Reply-To: <20061013095206.GA4027@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12926
+X-archive-position: 12927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-Aurelien Jarno wrote:
-> Hi all,
+Thiemo Seufer a écrit :
+> Aurelien Jarno wrote:
+>> Hi all,
+>>
+>> On mips(el), when doing multiple call to the syscall SYS_personality in 
+>> order to get the current personality (using 0xffffffff for the first 
+>> argument), on a 64-bit kernel, the second and subsequent syscalls are 
+>> failing. That works correctly with a 32-bit kernels and on other 
+>> architectures.
 > 
-> On mips(el), when doing multiple call to the syscall SYS_personality in 
-> order to get the current personality (using 0xffffffff for the first 
-> argument), on a 64-bit kernel, the second and subsequent syscalls are 
-> failing. That works correctly with a 32-bit kernels and on other 
-> architectures.
+> That's caused by mis-handling broken sign extensions, see also
+> http://bugs.debian.org/380531.
+> 
 
-That's caused by mis-handling broken sign extensions, see also
-http://bugs.debian.org/380531.
+Nice to see there is already a patch! Thanks for your work. Do you know 
+when the patch will be merged upstream or in Debian? I really want to 
+see this bug fixed, as it breaks dchroot.
 
-
-Thiemo
+-- 
+   .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+  : :' :  Debian developer           | Electrical Engineer
+  `. `'   aurel32@debian.org         | aurelien@aurel32.net
+    `-    people.debian.org/~aurel32 | www.aurel32.net

@@ -1,54 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Oct 2006 20:17:18 +0100 (BST)
-Received: from ms-smtp-02.rdc-nyc.rr.com ([24.29.109.6]:61150 "EHLO
-	ms-smtp-02.rdc-nyc.rr.com") by ftp.linux-mips.org with ESMTP
-	id S20038915AbWJMTRN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 13 Oct 2006 20:17:13 +0100
-Received: from amiga (cpe-74-68-39-174.nj.res.rr.com [74.68.39.174])
-	by ms-smtp-02.rdc-nyc.rr.com (8.13.6/8.13.6) with ESMTP id k9DJH9Ob011283;
-	Fri, 13 Oct 2006 15:17:11 -0400 (EDT)
-Date:	Fri, 13 Oct 2006 15:18:41 -0400
-From:	Antonio SJ Musumeci <bile@landofbile.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: patch: include/asm-mips/system.h __cmpxchg64 bugfix and cleanup
-Message-ID: <20061013151841.3a902627@amiga>
-In-Reply-To: <20061013141101.GA19260@linux-mips.org>
-References: <200610121802.k9CI26I5017308@ms-smtp-01.rdc-nyc.rr.com>
-	<20061013104250.GA16820@linux-mips.org>
-	<452F9A41.4020505@landofbile.com>
-	<20061013141101.GA19260@linux-mips.org>
-X-Mailer: Sylpheed-Claws 2.5.5 (GTK+ 2.10.6; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Oct 2006 09:39:40 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.187]:49851 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039047AbWJNIji (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 14 Oct 2006 09:39:38 +0100
+Received: by nf-out-0910.google.com with SMTP id l23so1884961nfc
+        for <linux-mips@linux-mips.org>; Sat, 14 Oct 2006 01:39:34 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=De75teH1rfCuMA68lbJQCrlXaTsbz4jNuY5xh2YQt53qNKAau4PxpSlKLP2pclGn08U/Wn6H3YjFwu6Av8YW+ELFwkNjYvCQ+GpCMbbgAUWSqMGFxwEEXNj9NeyLtjmfXN23kQVzY50XfghGp5DelQKVJ1dkaPXsX1ouC9N4tHc=
+Received: by 10.78.201.15 with SMTP id y15mr4937844huf;
+        Sat, 14 Oct 2006 01:39:34 -0700 (PDT)
+Received: by 10.78.124.19 with HTTP; Sat, 14 Oct 2006 01:39:34 -0700 (PDT)
+Message-ID: <cda58cb80610140139i4d20b423m9997f63cfdd90e31@mail.gmail.com>
+Date:	Sat, 14 Oct 2006 10:39:34 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH 2/7] Make __pa() aware of XKPHYS/CKSEG0 address mix for 64 bit kernels
+Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org,
+	fbuihuu@gmail.com
+In-Reply-To: <20061014.012738.26097195.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Symantec AntiVirus Scan Engine
-Return-Path: <bile@landofbile.com>
+Content-Disposition: inline
+References: <11607431461469-git-send-email-fbuihuu@gmail.com>
+	 <1160743146824-git-send-email-fbuihuu@gmail.com>
+	 <20061014.012738.26097195.anemo@mba.ocn.ne.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12950
+X-archive-position: 12951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bile@landofbile.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Wouldn't it be better to check the macro in the preprocessor instead of
-runtime? And why are those defined to 0 instead of explicitly undef'ed?
-I've found one bug because it was assumed to be undefined instead of 0.
-If no one objects I'll post a patch undefing those and fix any bugs I've
-found because of them.
+On 10/13/06, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> On Fri, 13 Oct 2006 14:39:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > -#define __pa(x)                      ((unsigned long) (x) - PAGE_OFFSET)
+> > -#define __va(x)                      ((void *)((unsigned long) (x) + PAGE_OFFSET))
+> > +#if defined(CONFIG_64BITS) && !defined(CONFIG_BUILD_ELF64)
+> > +#define __page_offset(x)     ((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
+> > +#else
+> > +#define __page_offset(x)     PAGE_OFFSET
+> > +#endif
+> > +#define __pa(x)                      ((unsigned long)(x) - __page_offset(x))
+> > +#define __va(x)                      ((void *)((unsigned long)(x) + __page_offset(x)))
+>
+> In __va(), you are passing an physical address to __page_offset().
+>
 
-On Fri, 13 Oct 2006 15:11:01 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
+oops, good catch ! I'll change that.
 
-> On Fri, Oct 13, 2006 at 09:53:05AM -0400, Antonio SJ Musumeci wrote:
-> 
-> > Should I apply my patch on top of this one?
-> 
-> No, the two patches conflict in what they're doing.  The important
-> part of your patch, the fix to the if condition I've already applied.
-> 
->   Ralf
-> 
+thanks
+-- 
+               Franck

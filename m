@@ -1,37 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Oct 2006 09:39:40 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.187]:49851 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Oct 2006 10:22:39 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.185]:11096 "EHLO
 	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039047AbWJNIji (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 14 Oct 2006 09:39:38 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so1884961nfc
-        for <linux-mips@linux-mips.org>; Sat, 14 Oct 2006 01:39:34 -0700 (PDT)
+	id S20039057AbWJNJWf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 14 Oct 2006 10:22:35 +0100
+Received: by nf-out-0910.google.com with SMTP id l23so1891209nfc
+        for <linux-mips@linux-mips.org>; Sat, 14 Oct 2006 02:22:34 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=De75teH1rfCuMA68lbJQCrlXaTsbz4jNuY5xh2YQt53qNKAau4PxpSlKLP2pclGn08U/Wn6H3YjFwu6Av8YW+ELFwkNjYvCQ+GpCMbbgAUWSqMGFxwEEXNj9NeyLtjmfXN23kQVzY50XfghGp5DelQKVJ1dkaPXsX1ouC9N4tHc=
-Received: by 10.78.201.15 with SMTP id y15mr4937844huf;
-        Sat, 14 Oct 2006 01:39:34 -0700 (PDT)
-Received: by 10.78.124.19 with HTTP; Sat, 14 Oct 2006 01:39:34 -0700 (PDT)
-Message-ID: <cda58cb80610140139i4d20b423m9997f63cfdd90e31@mail.gmail.com>
-Date:	Sat, 14 Oct 2006 10:39:34 +0200
+        b=sHHkQ2SMI6nMXB0A90ZbKwWQQ2Jjpr31GS74NY1/sFBbjeE0B4YiglAdeIisI2zkdALAObTndAeVh9aTWeoBfBX2fpx7hdQDhAZAVZDSLus/qPJu+iYWi/dJfyF8jUaCZrABdV0uZm7NN2h6P8VIH86fmaRvNsSWhAsBVV7N1+k=
+Received: by 10.78.139.1 with SMTP id m1mr4939806hud;
+        Sat, 14 Oct 2006 02:22:34 -0700 (PDT)
+Received: by 10.78.124.19 with HTTP; Sat, 14 Oct 2006 02:22:34 -0700 (PDT)
+Message-ID: <cda58cb80610140222t3b45a285r2715c3aab91f913f@mail.gmail.com>
+Date:	Sat, 14 Oct 2006 11:22:34 +0200
 From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
 To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH 2/7] Make __pa() aware of XKPHYS/CKSEG0 address mix for 64 bit kernels
-Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org,
-	fbuihuu@gmail.com
-In-Reply-To: <20061014.012738.26097195.anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH 1/7] page.h: remove __pa() usages.
+Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org
+In-Reply-To: <20061014.012723.61508918.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 References: <11607431461469-git-send-email-fbuihuu@gmail.com>
-	 <1160743146824-git-send-email-fbuihuu@gmail.com>
-	 <20061014.012738.26097195.anemo@mba.ocn.ne.jp>
+	 <11607431461941-git-send-email-fbuihuu@gmail.com>
+	 <20061014.012723.61508918.anemo@mba.ocn.ne.jp>
 Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12951
+X-archive-position: 12952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,21 +39,18 @@ Precedence: bulk
 X-list: linux-mips
 
 On 10/13/06, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Fri, 13 Oct 2006 14:39:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> > -#define __pa(x)                      ((unsigned long) (x) - PAGE_OFFSET)
-> > -#define __va(x)                      ((void *)((unsigned long) (x) + PAGE_OFFSET))
-> > +#if defined(CONFIG_64BITS) && !defined(CONFIG_BUILD_ELF64)
-> > +#define __page_offset(x)     ((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
-> > +#else
-> > +#define __page_offset(x)     PAGE_OFFSET
-> > +#endif
-> > +#define __pa(x)                      ((unsigned long)(x) - __page_offset(x))
-> > +#define __va(x)                      ((void *)((unsigned long)(x) + __page_offset(x)))
+> On Fri, 13 Oct 2006 14:39:00 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > -#define virt_to_page(kaddr)  pfn_to_page(__pa(kaddr) >> PAGE_SHIFT)
+> > -#define virt_addr_valid(kaddr)       pfn_valid(__pa(kaddr) >> PAGE_SHIFT)
+> > +#define virt_to_page(kaddr)  pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
+> > +#define virt_addr_valid(kaddr)       pfn_valid(PFN_DOWN(virt_to_phys(kaddr)))
 >
-> In __va(), you are passing an physical address to __page_offset().
+> It seems "#include <linux/pfn.h>" (and "#include <asm/io.h>" perhaps)
+> required.
 >
 
-oops, good catch ! I'll change that.
+Well it just compiles fine for me and to be honest I have no strong
+feeling here. So I'm following your recommendation.
 
 thanks
 -- 

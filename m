@@ -1,83 +1,132 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 15:49:28 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.187]:19629 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039613AbWJPOtX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Oct 2006 15:49:23 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so2508706nfc
-        for <linux-mips@linux-mips.org>; Mon, 16 Oct 2006 07:49:21 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=DMd04H7pv1DMl1H8VsDRLHdOQWqoxnIFoQG33kz+m2n9vJ0SdN7sDDQMOTBWid0IivXv5OmRXf5s9CE/LgV8Ufj52tAepU3DpJTEBgvq/fP7h+FNm4UGRZ5BTsWOHnnIyvf2IWFnxvDYqSxogTS772fbKuSEqQS9chN48gnDP5E=
-Received: by 10.49.41.12 with SMTP id t12mr10429373nfj;
-        Mon, 16 Oct 2006 07:49:20 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id a23sm972860nfc.2006.10.16.07.49.17;
-        Mon, 16 Oct 2006 07:49:20 -0700 (PDT)
-Message-ID: <45339BEF.6020206@innova-card.com>
-Date:	Mon, 16 Oct 2006 16:49:19 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Franck <vagabon.xyz@gmail.com>
-CC:	Thiemo Seufer <ths@networkno.de>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 15:51:11 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:43277 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20039620AbWJPOvG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Oct 2006 15:51:06 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id AB1C8E1C8A;
+	Mon, 16 Oct 2006 16:50:49 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id LhtbzwRMzsnT; Mon, 16 Oct 2006 16:50:49 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 07E61E1C89;
+	Mon, 16 Oct 2006 16:50:48 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k9GEouUJ015690;
+	Mon, 16 Oct 2006 16:50:57 +0200
+Date:	Mon, 16 Oct 2006 15:50:55 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@osdl.org>
+cc:	Jeff Garzik <jgarzik@pobox.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Andy Fleming <afleming@freescale.com>, netdev@vger.kernel.org,
 	linux-mips@linux-mips.org
-Subject: Re: [PATCH 6/7] setup.c: clean up initrd related code
-References: <11607431461469-git-send-email-fbuihuu@gmail.com> <1160743146503-git-send-email-fbuihuu@gmail.com> <45333CC1.3090704@innova-card.com> <20061016090923.GB25607@networkno.de> <453395CB.4040106@innova-card.com>
-In-Reply-To: <453395CB.4040106@innova-card.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Subject: Re: [patch 3/6] 2.6.18: sb1250-mac: Phylib IRQ handling fixes
+In-Reply-To: <20061006080323.185f2b58.akpm@osdl.org>
+Message-ID: <Pine.LNX.4.64N.0610161442010.28780@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0610031509380.4642@blysk.ds.pg.gda.pl>
+ <20061005234310.6c8042b5.akpm@osdl.org> <Pine.LNX.4.64N.0610061152340.22053@blysk.ds.pg.gda.pl>
+ <20061006080323.185f2b58.akpm@osdl.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV version 0.88.5, clamav-milter version 0.88.5 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12968
+X-archive-position: 12969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-> Thiemo Seufer wrote:
->> Franck Bui-Huu wrote:
->>> Atsushi,
->>>
->>> Franck Bui-Huu wrote:
->>>> Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
->>>> ---
->>> [snip]
->>>> @@ -176,24 +174,34 @@ static unsigned long __init init_initrd(
->>> [snip]
->>>>  	end = (unsigned long)&_end;
->>>>  	tmp = PAGE_ALIGN(end) - sizeof(u32) * 2;
->>>>  	if (tmp < end)
->>>>  		tmp += PAGE_SIZE;
->>>>  
->>> Any idea on what is this code for ?
->>> It seems that a minimum gap is needed betweend the end of kernel
->>> code and initrd but I don't see why...
->> AFAIR the bootmem map is placed there.
->>
+Andrew,
+
+> I don't get it.  If some code does
 > 
-> boot_mem_map[] seems to be located in bss.
+> 	rtnl_lock();
+> 	flush_scheduled_work();
 > 
+> and there's some work scheduled which does rtnl_lock() then it'll deadlock.
+> 
+> But it'll deadlock whether or not the caller of flush_scheduled_work() is
+> keventd.
+> 
+> Calling flush_scheduled_work() under locks is generally a bad idea.
 
-ok I think I got it...
+ Indeed -- this is why I avoid it.
 
-Actually sizeof(u32) * 2 is the place reserved for the initrd header
-and this header is right before initrd itself.
+> I'd have thought that was still deadlockable.  Could you describe the
+> deadlock more completely please?
 
-	initrd_header[0] -> magic number
-	initrd_header[1] -> size of initrd
-		initrd start
-		    ...
-		initrd end
+ The simplest sequence of calls that prevents races here is as follows:
 
-and initrd start must be PAGE_SIZE aligned, surely because we free it
-with a page granularity.
+unregister_netdev();
+  rtnl_lock();
+  unregister_netdevice();
+    dev_close();
+      sbmac_close();
+        phy_stop();
+        phy_disconnect();
+          phy_stop_interrupts();
+            phy_disable_interrupts();
+            flush_scheduled_work();
+            free_irq();
+          phy_detach();
+        mdiobus_unregister();
+  rtnl_unlock();
 
-		Franck
+We want to call flush_scheduled_work() from phy_stop_interrupts(), because 
+there may still be calls to phy_change() waiting for the keventd to 
+process and mdiobus_unregister() frees structures needed by phy_change().  
+This may deadlock because of the call to rtnl_lock() though.
+
+ So the modified sequence I have implemented is as follows:
+
+unregister_netdev();
+  rtnl_lock();
+  unregister_netdevice();
+    dev_close();
+      sbmac_close();
+        phy_stop();
+        schedule_work(); [sbmac_phy_disconnect()]
+  rtnl_unlock();
+
+and then:
+
+sbmac_phy_disconnect();
+  phy_disconnect();
+    phy_stop_interrupts();
+      phy_disable_interrupts();
+      free_irq();
+    phy_detach();
+  mdiobus_unregister();
+
+This guarantees calls to phy_change() for this PHY unit will not be run 
+after mdiobus_unregister(), because any such calls have been placed in the 
+queue before sbmac_phy_disconnect() (phy_stop() prevents the interrupt 
+handler from issuing new calls to phy_change()).
+
+ We still need flush_scheduled_work() to be called from 
+phy_stop_interrupts() though, in case some other MAC driver calls 
+phy_disconnect() (or phy_stop_interrupts(), depending on the abstraction 
+layer of phylib used) directly rather than using keventd.  This is 
+possible if phy_disconnect() is called from the driver's module_exit() 
+call, which may make sense for devices that are known not to have their 
+MII interface available as an external connector.  Hence the:
+
+if (!current_is_keventd())
+  flush_scheduled_work();
+
+sequence in phy_stop_interrupts().  Of course, we can force all drivers 
+using phylib (in the interrupt mode) to call phy_disconnect() through 
+keventd instead.
+
+ Does it sound clearer?
+
+  Maciej

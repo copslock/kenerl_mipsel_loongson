@@ -1,95 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 09:48:38 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.191]:60040 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038795AbWJPIsh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Oct 2006 09:48:37 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so2410429nfc
-        for <linux-mips@linux-mips.org>; Mon, 16 Oct 2006 01:48:36 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=j+ol6Mh2NTDm5MpO3YnLO7zOQ9wzVEQF1PvPlBFHMHfmyWgkLVf/C/NHPlf23e2M/72gzfb0j55VZ7b9E98RYpYivVF0yjwHxbmUmLWyZdUth/v8elxj9ZqM4byjdCzvuL1dN3LbNznFNNk8TjbGrqUhTynAqsIFY1RKO0NNxRE=
-Received: by 10.49.43.2 with SMTP id v2mr11712410nfj;
-        Mon, 16 Oct 2006 01:48:36 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id l21sm169666nfc.2006.10.16.01.48.35;
-        Mon, 16 Oct 2006 01:48:35 -0700 (PDT)
-Message-ID: <45334765.6000805@innova-card.com>
-Date:	Mon, 16 Oct 2006 10:48:37 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	vagabon.xyz@gmail.com, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 10:07:46 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:47248 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20039128AbWJPJHo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Oct 2006 10:07:44 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 16 Oct 2006 18:07:43 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 3E1BB4186A;
+	Mon, 16 Oct 2006 18:07:41 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 330434185E;
+	Mon, 16 Oct 2006 18:07:41 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9G97eW0051719;
+	Mon, 16 Oct 2006 18:07:40 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 16 Oct 2006 18:07:40 +0900 (JST)
+Message-Id: <20061016.180740.88700024.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH 6/7] setup.c: clean up initrd related code
-References: <11607431461469-git-send-email-fbuihuu@gmail.com>	<1160743146503-git-send-email-fbuihuu@gmail.com>	<45333CC1.3090704@innova-card.com> <20061016.171046.55511403.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20061016.171046.55511403.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=ISO-8859-1
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <45334765.6000805@innova-card.com>
+References: <45333CC1.3090704@innova-card.com>
+	<20061016.171046.55511403.nemoto@toshiba-tops.co.jp>
+	<45334765.6000805@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12959
+X-archive-position: 12960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Mon, 16 Oct 2006 10:03:13 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->>>  	end = (unsigned long)&_end;
->>>  	tmp = PAGE_ALIGN(end) - sizeof(u32) * 2;
->>>  	if (tmp < end)
->>>  		tmp += PAGE_SIZE;
->>>  
->> Any idea on what is this code for ?
->> It seems that a minimum gap is needed betweend the end of kernel
->> code and initrd but I don't see why...
-> 
-> Perhaps because current tools put initrd image at that place.
-> 
-> For example:
-> 
-> arch/mips/boot/addinitrd.c:92:
-> 	loadaddr = ((SWAB(esecs[2].s_vaddr) + SWAB(esecs[2].s_size)
-> 			+ MIPS_PAGE_SIZE-1) & ~MIPS_PAGE_MASK) - 8;
-> 	if (loadaddr < (SWAB(esecs[2].s_vaddr) + SWAB(esecs[2].s_size)))
-> 		loadaddr += MIPS_PAGE_SIZE;
-> 	initrd_header[0] = SWAB(0x494E5244);
-> 	initrd_header[1] = SWAB(st.st_size);
-> 
+On Mon, 16 Oct 2006 10:48:37 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> thanks but it doesn't explain anything either...Anyways what about this
+> patch on top of the previous one ?
 
-thanks but it doesn't explain anything either...Anyways what about this
-patch on top of the previous one ?
+> +	initrd_header = __va(PAGE_ALIGN(__pa_symbol(&_end) + sizeof(u32) * 2 + 1));
 
--- >8 --
+This breaks the addinitrd.  You mean this perhaps?
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 811a8fd..0e61e18 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -177,15 +177,13 @@ static unsigned long __init init_initrd(
- 	if (initrd_end > initrd_start)
- 		goto sanitize;
- 
--	end = (unsigned long)&_end;
--	tmp = PAGE_ALIGN(end) - sizeof(u32) * 2;
--	if (tmp < end)
--		tmp += PAGE_SIZE;
--
-+	/*
-+	 * FIXME: a good comment would be nice here...
-+	 */
-+	initrd_header = __va(PAGE_ALIGN(__pa_symbol(&_end) + sizeof(u32) * 2 + 1));
- 	initrd_start = 0;
- 	initrd_end = 0;
- 	end = 0;
--	initrd_header = (u32 *)tmp;
- 	if (initrd_header[0] == 0x494E5244) {
- 		initrd_start = (unsigned long)&initrd_header[2];
- 		initrd_end = initrd_start + initrd_header[1];
+initrd_header = __va(PAGE_ALIGN(__pa_symbol(&_end) + sizeof(u32) * 2)) - sizeof(u32) * 2;
+
+
+BTW, I'm a bit uncomfortable with current automatic initrd detection.
+Now we have rd_start= option.  If I enabled BLK_DEV_INITRD and did
+pass nfsroot= instead of rd_start= option, I want kernel do not search
+initrd_header at all.  Note that in this case current kernel might
+misdetect initrd_header from garbage beyond "_end".
+
+I think something like CONFIG_INITRD_AUTODETECT to control this
+behaviour is useful.  What do you think?
+
+---
+Atsushi Nemoto

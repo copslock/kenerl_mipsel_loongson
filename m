@@ -1,61 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 09:03:18 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.185]:51614 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039084AbWJPIDQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Oct 2006 09:03:16 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so2398371nfc
-        for <linux-mips@linux-mips.org>; Mon, 16 Oct 2006 01:03:15 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=jhis+ppxKr8u3aYx7UuLMUEINiT9FQKh1g0EhVWWrgv1rHT7e1fOPatzZ/zCa0BC+lvEeHkFuBA4WPk0kCQJ9o6A4Yt/fVkS735swsHX5rAk/fF3wKT6FzT2NTKLeK1cyYZMhgHFXH9cFqO52FR4/x9FL2e37yf1b74oW0eWtoc=
-Received: by 10.48.210.20 with SMTP id i20mr11659367nfg;
-        Mon, 16 Oct 2006 01:03:15 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id v20sm100551nfc.2006.10.16.01.03.15;
-        Mon, 16 Oct 2006 01:03:15 -0700 (PDT)
-Message-ID: <45333CC1.3090704@innova-card.com>
-Date:	Mon, 16 Oct 2006 10:03:13 +0200
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 09:10:53 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:40339 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20038990AbWJPIKv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Oct 2006 09:10:51 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 16 Oct 2006 17:10:50 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 6904A41AEC;
+	Mon, 16 Oct 2006 17:10:47 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 54B6D202E0;
+	Mon, 16 Oct 2006 17:10:47 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9G8AkW0051407;
+	Mon, 16 Oct 2006 17:10:46 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 16 Oct 2006 17:10:46 +0900 (JST)
+Message-Id: <20061016.171046.55511403.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH 6/7] setup.c: clean up initrd related code
-References: <11607431461469-git-send-email-fbuihuu@gmail.com> <1160743146503-git-send-email-fbuihuu@gmail.com>
-In-Reply-To: <1160743146503-git-send-email-fbuihuu@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <45333CC1.3090704@innova-card.com>
+References: <11607431461469-git-send-email-fbuihuu@gmail.com>
+	<1160743146503-git-send-email-fbuihuu@gmail.com>
+	<45333CC1.3090704@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12957
+X-archive-position: 12958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi,
+On Mon, 16 Oct 2006 10:03:13 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> >  	end = (unsigned long)&_end;
+> >  	tmp = PAGE_ALIGN(end) - sizeof(u32) * 2;
+> >  	if (tmp < end)
+> >  		tmp += PAGE_SIZE;
+> >  
+> 
+> Any idea on what is this code for ?
+> It seems that a minimum gap is needed betweend the end of kernel
+> code and initrd but I don't see why...
 
-Franck Bui-Huu wrote:
-> Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
-> ---
-[snip]
-> @@ -176,24 +174,34 @@ static unsigned long __init init_initrd(
-[snip]
->  	end = (unsigned long)&_end;
->  	tmp = PAGE_ALIGN(end) - sizeof(u32) * 2;
->  	if (tmp < end)
->  		tmp += PAGE_SIZE;
->  
+Perhaps because current tools put initrd image at that place.
 
-Any idea on what is this code for ?
-It seems that a minimum gap is needed betweend the end of kernel
-code and initrd but I don't see why...
+For example:
 
-Thanks
-		Franck
+arch/mips/boot/addinitrd.c:92:
+	loadaddr = ((SWAB(esecs[2].s_vaddr) + SWAB(esecs[2].s_size)
+			+ MIPS_PAGE_SIZE-1) & ~MIPS_PAGE_MASK) - 8;
+	if (loadaddr < (SWAB(esecs[2].s_vaddr) + SWAB(esecs[2].s_size)))
+		loadaddr += MIPS_PAGE_SIZE;
+	initrd_header[0] = SWAB(0x494E5244);
+	initrd_header[1] = SWAB(st.st_size);
+
+---
+Atsushi Nemoto

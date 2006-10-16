@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 17:12:58 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.191]:12876 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Oct 2006 17:13:26 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.187]:11084 "EHLO
 	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039583AbWJPQMY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S20039566AbWJPQMY (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Mon, 16 Oct 2006 17:12:24 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so2530932nfc
-        for <linux-mips@linux-mips.org>; Mon, 16 Oct 2006 09:12:19 -0700 (PDT)
+Received: by nf-out-0910.google.com with SMTP id l23so2530948nfc
+        for <linux-mips@linux-mips.org>; Mon, 16 Oct 2006 09:12:20 -0700 (PDT)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=CqkZqKrIBC8WtGz5g8pEs6WOu8sJhj+H6PrRJ60ayvZFjlLX48XUBKuqhQkXMTh/STf3Axkcc/QWC60M29XnRijRTM/VNr4mgoOhz8YLFziY2h9Bg4oXNCB0HJ7bk4dUBVVvDHhS8j47GrsJbk6n1zQ8/baLdfEZc0HO1Ynz/SM=
-Received: by 10.49.8.15 with SMTP id l15mr12454580nfi;
-        Mon, 16 Oct 2006 09:12:19 -0700 (PDT)
+        b=U1NNLRVcZ+kZS10fsBLNpZI2/ZzEAE7t2gc744QIkcG0K4MDs3lmxvoRARIM56r9kBi88ebkG0a3t7wEdKUneABLacxCi1JG4cdoQLOlYQ/yKkqIOYEvgpLsOcl/gMNg9zr2Flp1Y7ay4VbLUFnlRHb4/RvM27aEPqAUl7wNiI0=
+Received: by 10.49.8.10 with SMTP id l10mr12453621nfi;
+        Mon, 16 Oct 2006 09:12:20 -0700 (PDT)
 Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id l38sm1142394nfc.2006.10.16.09.12.18;
-        Mon, 16 Oct 2006 09:12:19 -0700 (PDT)
+        by mx.google.com with ESMTP id l38sm1142449nfc.2006.10.16.09.12.19;
+        Mon, 16 Oct 2006 09:12:20 -0700 (PDT)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id E3FA523F76F; Mon, 16 Oct 2006 18:12:21 +0200 (CEST)
+	id 6FDDF23F76E; Mon, 16 Oct 2006 18:12:22 +0200 (CEST)
 To:	ralf@linux-mips.org
 Cc:	anemo@mba.ocn.ne.jp, ths@networkno.de, linux-mips@linux-mips.org,
 	Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 2/7] Make __pa() aware of XKPHYS/CKSEG0 address mix for 64 bit kernels
-Date:	Mon, 16 Oct 2006 18:12:16 +0200
-Message-Id: <11610151413935-git-send-email-fbuihuu@gmail.com>
+Subject: [PATCH 6/7] setup.c: clean up initrd related code
+Date:	Mon, 16 Oct 2006 18:12:20 +0200
+Message-Id: <11610151422988-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.4.2.3
 In-Reply-To: <1161015141975-git-send-email-fbuihuu@gmail.com>
 References: <1161015141975-git-send-email-fbuihuu@gmail.com>
@@ -30,7 +30,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12972
+X-archive-position: 12973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,35 +38,143 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-During early boot mem init, some configs couldn't use __pa() to
-convert virtual into physical addresses. Specially for 64 bit
-kernel cases when CONFIG_BUILD_ELF64=n. This patch make __pa()
-work for _all_ configs and thus make CPHYSADDR() useless.
-
 Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
 ---
- include/asm-mips/page.h |    9 +++++++--
- 1 files changed, 7 insertions(+), 2 deletions(-)
+ arch/mips/kernel/setup.c |   65 +++++++++++++++++++++++++++-------------------
+ arch/mips/mm/init.c      |    5 ----
+ 2 files changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
-index fa4e4d9..df3a87e 100644
---- a/include/asm-mips/page.h
-+++ b/include/asm-mips/page.h
-@@ -133,8 +133,13 @@ #endif /* !__ASSEMBLY__ */
- /* to align the pointer to the (next) page boundary */
- #define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 84faa4b..58baf4f 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -144,14 +144,12 @@ static int __init rd_start_early(char *p
+ {
+ 	unsigned long start = memparse(p, &p);
  
--#define __pa(x)			((unsigned long) (x) - PAGE_OFFSET)
--#define __va(x)			((void *)((unsigned long) (x) + PAGE_OFFSET))
-+#if defined(CONFIG_64BITS) && !defined(CONFIG_BUILD_ELF64)
-+#define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
-+#else
-+#define __pa_page_offset(x)	PAGE_OFFSET
-+#endif
-+#define __pa(x)			((unsigned long)(x) - __pa_page_offset(x))
-+#define __va(x)			((void *)((unsigned long)(x) + PAGE_OFFSET))
+-#ifdef CONFIG_64BIT
+-	/* HACK: Guess if the sign extension was forgotten */
+-	if (start > 0x0000000080000000 && start < 0x00000000ffffffff)
+-		start |= 0xffffffff00000000UL;
+-#endif
++	/*
++	 * No sanity checkings are needed here, they're going to be
++	 * done by init_initrd() soon.
++	 */
+ 	initrd_start = start;
+ 	initrd_end += start;
+-
+ 	return 0;
+ }
+ early_param("rd_start", rd_start_early);
+@@ -159,41 +157,55 @@ early_param("rd_start", rd_start_early);
+ static int __init rd_size_early(char *p)
+ {
+ 	initrd_end += memparse(p, &p);
+-
+ 	return 0;
+ }
+ early_param("rd_size", rd_size_early);
  
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
++/* it returns the next free pfn after initrd */
+ static unsigned long __init init_initrd(void)
+ {
+-	unsigned long tmp, end, size;
++	unsigned long end;
+ 	u32 *initrd_header;
  
+-	ROOT_DEV = Root_RAM0;
+-
+ 	/*
+ 	 * Board specific code or command line parser should have
+ 	 * already set up initrd_start and initrd_end. In these cases
+ 	 * perfom sanity checks and use them if all looks good.
+ 	 */
+-	size = initrd_end - initrd_start;
+-	if (initrd_end == 0 || size == 0) {
+-		initrd_start = 0;
+-		initrd_end = 0;
+-	} else
+-		return initrd_end;
+-
+-	end = (unsigned long)&_end;
+-	tmp = PAGE_ALIGN(end) - sizeof(u32) * 2;
+-	if (tmp < end)
+-		tmp += PAGE_SIZE;
+-
+-	initrd_header = (u32 *)tmp;
++	if (initrd_start && initrd_end > initrd_start)
++		goto sanitize;
++
++	/*
++	 * See if initrd has been added to the kernel image by
++	 * arch/mips/boot/addinitrd.c. In that case a header is
++	 * prepended to initrd and is made up by 8 bytes. The fisrt
++	 * word is a magic number and the second one is the size of
++	 * initrd.  Initrd start must be page aligned in any cases.
++	 */
++	initrd_header = __va(PAGE_ALIGN(__pa_symbol(&_end) + 8)) - 8;
++	initrd_start = 0;
++	initrd_end = 0;
++	end = 0;
+ 	if (initrd_header[0] == 0x494E5244) {
+ 		initrd_start = (unsigned long)&initrd_header[2];
+ 		initrd_end = initrd_start + initrd_header[1];
++sanitize:
++		if (initrd_start & (PAGE_SIZE - 1))
++			panic("initrd start must be page aligned\n");
++		/*
++		 * Sanitize initrd addresses. For example firmware
++		 * can't guess if they need to pass them through
++		 * 64-bits values if the kernel has been built in pure
++		 * 32-bit. We need also to switch from KSEG0 to XKPHYS
++		 * addresses now, so the code can now safely use __pa().
++		 */
++		end = __pa(initrd_end);
++		initrd_end = (unsigned long)__va(end);
++		initrd_start = (unsigned long)__va(__pa(initrd_start));
++
++		ROOT_DEV = Root_RAM0;
+ 	}
+-	return initrd_end;
++	return PFN_UP(end);
+ }
+ 
+ static void __init finalize_initrd(void)
+@@ -223,7 +235,7 @@ disable:
+ 
+ #else  /* !CONFIG_BLK_DEV_INITRD */
+ 
+-#define init_initrd()		0
++#define init_initrd()		0UL
+ #define finalize_initrd()	do {} while (0)
+ 
+ #endif
+@@ -255,8 +267,7 @@ static void __init bootmem_init(void)
+ 	 * not selected. Once that done we can determine the low bound
+ 	 * of usable memory.
+ 	 */
+-	reserved_end = init_initrd();
+-	reserved_end = PFN_UP(max(__pa(reserved_end), __pa_symbol(&_end)));
++	reserved_end = max(init_initrd(), PFN_UP(__pa_symbol(&_end)));
+ 
+ 	/*
+ 	 * Find the highest page frame number we have available.
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 4431ea0..072b3b0 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -502,11 +502,6 @@ void free_init_pages(char *what, unsigne
+ #ifdef CONFIG_BLK_DEV_INITRD
+ void free_initrd_mem(unsigned long start, unsigned long end)
+ {
+-#ifdef CONFIG_64BIT
+-	/* Switch from KSEG0 to XKPHYS addresses */
+-	start = (unsigned long)phys_to_virt(CPHYSADDR(start));
+-	end = (unsigned long)phys_to_virt(CPHYSADDR(end));
+-#endif
+ 	free_init_pages("initrd memory", start, end);
+ }
+ #endif
 -- 
 1.4.2.3

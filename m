@@ -1,66 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Oct 2006 13:18:20 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:61201 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20039415AbWJQMSS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Oct 2006 13:18:18 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 7B3E5E1C65;
-	Tue, 17 Oct 2006 14:18:07 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id bPwPqcO-zgWR; Tue, 17 Oct 2006 14:18:07 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 1F554E1C8B;
-	Tue, 17 Oct 2006 14:18:07 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id k9HCIFAk000402;
-	Tue, 17 Oct 2006 14:18:15 +0200
-Date:	Tue, 17 Oct 2006 13:18:12 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@osdl.org>
-cc:	Jeff Garzik <jgarzik@pobox.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Andy Fleming <afleming@freescale.com>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [patch 3/6] 2.6.18: sb1250-mac: Phylib IRQ handling fixes
-In-Reply-To: <20061016120653.9a70135d.akpm@osdl.org>
-Message-ID: <Pine.LNX.4.64N.0610171306560.27348@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0610031509380.4642@blysk.ds.pg.gda.pl>
- <20061005234310.6c8042b5.akpm@osdl.org> <Pine.LNX.4.64N.0610061152340.22053@blysk.ds.pg.gda.pl>
- <20061006080323.185f2b58.akpm@osdl.org> <Pine.LNX.4.64N.0610161442010.28780@blysk.ds.pg.gda.pl>
- <20061016120653.9a70135d.akpm@osdl.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2006 02:05:36 +0100 (BST)
+Received: from web32213.mail.mud.yahoo.com ([68.142.207.144]:9838 "HELO
+	web32213.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20037799AbWJRBFe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 18 Oct 2006 02:05:34 +0100
+Received: (qmail 49863 invoked by uid 60001); 18 Oct 2006 01:05:24 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=aTY9SFpj0JtiBnmW0oiNhTEyxohfqaa50Xt+7d2LAuC3cDEKcSpH7Z3sCB6qpxOrpf4z2BM0joIb6Kd17mPsDVt5Ldq6YlLu4rUhc9tUx3PKhrZ1TCa01ywhGbiPy3wpDxnpRtnbSHzs0v31nYioAADn6IEDfXUIAqmdnoFHXUU=  ;
+Message-ID: <20061018010524.49858.qmail@web32213.mail.mud.yahoo.com>
+Received: from [70.91.7.10] by web32213.mail.mud.yahoo.com via HTTP; Tue, 17 Oct 2006 18:05:24 PDT
+Date:	Tue, 17 Oct 2006 18:05:24 -0700 (PDT)
+From:	kas turi <inox_kas@yahoo.com>
+Subject: insmod -m gives segmentation fault
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.5/2038/Tue Oct 17 00:48:19 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <inox_kas@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12982
+X-archive-position: 12983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: inox_kas@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 16 Oct 2006, Andrew Morton wrote:
+Hi
+  I am having a loadable module driver_mod.o If I load
+it without -m then the driver loads successfully. But
+if I load it with -m I get Segmentation fault:
+root@172.16.1.155:/home/modutils-2.4.27/insmod#
+./insmod -m ../../driver_mod.o
+Sections:       Size      Address   Align
+.this           00000060  12340000  2**2
+.text           00005570  12340060  2**4
+.fixup          00000034  123455d0  2**0
+.reginfo        00000018  12345604  2**2
+.rodata         00001a90  12345620  2**4
+__ex_table      00000028  123470b0  2**2
+.kstrtab        0000067d  123470d8  2**0
+__ksymtab       000003a8  12347758  2**2
+__archdata      00000000  12347b00  2**4
+.data           00000080  12347b00  2**4
+.sbss           00002c58  12347b80  2**4
+.bss            00000170  1234a7e0  2**4
 
-> Vaguely.  Why doesn't it deadlock if !current_is_keventd()?  I mean,
-> whether or not the caller is keventd, the flush_scheduled_work() caller
-> will still be dependent upon rtnl_lock() being acquirable.
+Symbols:
+Segmentation fault
 
- This !current_is_keventd() condition is just what it is, i.e. a check 
-whether phy_stop_interrupts() has been scheduled through keventd or not.  
-If it has, then flush_scheduled_work() cannot be called; it is not needed 
-anyway.  Otherwise phy_stop_interrupts() has to make sure no deferred 
-calls to phy_change() will be made once it has finished.
+I am using 2.4.27 version of insmod utility. The
+loadable module is compiled with following options:
+-mtune=r4600 -mips2 -fno-pic -mno-abicalls
+-mlong-calls -fno-strict-aliasing  -D__KERNEL__
+-DMODULE  -DLINUX -D_REENTRANT -g -O2 -fno-builtin
+-Werror -Wall -Wpointer-arith -Wwrite-strings
+-Wstrict-prototypes -Wuninitialized -Wswitch -Wcomment
+-Wformat
 
- In all cases the assumption is the caller has made sure rtnl_lock() is 
-not held at the time phy_stop_interrupts() is called.  That's the very 
-reason for scheduling phy_disconnect() (and hence phy_stop_interrupts()) 
-through keventd.
+Any idea why it is dumping core?
 
-  Maciej
+Thanks in advance
+Kasturi
+
+
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

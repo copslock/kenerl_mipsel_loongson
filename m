@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2006 15:38:49 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:6703 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038525AbWJROio (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2006 15:39:16 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:22568 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038531AbWJROio (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2006 15:38:44 +0100
-Received: by mo.po.2iij.net (mo32) id k9IEcfSs036628; Wed, 18 Oct 2006 23:38:41 +0900 (JST)
+Received: by mo.po.2iij.net (mo32) id k9IEcfWd036632; Wed, 18 Oct 2006 23:38:41 +0900 (JST)
 Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
-	by mbox.po.2iij.net (mbox32) id k9IEcYwE045506
+	by mbox.po.2iij.net (mbox32) id k9IEcbcV045534
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 18 Oct 2006 23:38:36 +0900 (JST)
-Date:	Wed, 18 Oct 2006 23:36:15 +0900
+	Wed, 18 Oct 2006 23:38:38 +0900 (JST)
+Date:	Wed, 18 Oct 2006 23:38:12 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] update pnx8500-jbs_defconfig
-Message-Id: <20061018233615.5e41d949.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH][MIPS] update pnx8550-v2pci_defconfig
+Message-Id: <20061018233812.7ff36bac.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +22,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12987
+X-archive-position: 12988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,23 +32,23 @@ X-list: linux-mips
 
 Hi Ralf,
 
-This patch has updated pnx8550-jbs_defconfig.
-The current pnx8550-jbs_defconfig, CONFIG_SGI_IP22 has been selected.
+This patch has updated pnx8550-v2pci_defconfig.
+The current pnx8550-v2pci_defconfig, CONFIG_SGI_IP22 has been selected.
 
 Yoichi
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jbs_defconfig mips/arch/mips/configs/pnx8550-jbs_defconfig
---- mips-orig/arch/mips/configs/pnx8550-jbs_defconfig	2006-10-14 22:54:18.650300750 +0900
-+++ mips/arch/mips/configs/pnx8550-jbs_defconfig	2006-10-14 23:02:51.574111750 +0900
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-v2pci_defconfig mips/arch/mips/configs/pnx8550-v2pci_defconfig
+--- mips-orig/arch/mips/configs/pnx8550-v2pci_defconfig	2006-10-14 23:08:56.242499500 +0900
++++ mips/arch/mips/configs/pnx8550-v2pci_defconfig	2006-10-14 23:14:04.096846500 +0900
 @@ -1,7 +1,7 @@
  #
  # Automatically generated make config: don't edit
 -# Linux kernel version: 2.6.18-rc1
 -# Thu Jul  6 10:04:18 2006
 +# Linux kernel version: 2.6.19-rc2
-+# Sat Oct 14 23:01:16 2006
++# Sat Oct 14 23:12:15 2006
  #
  CONFIG_MIPS=y
  
@@ -61,12 +61,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_MACH_JAZZ is not set
  # CONFIG_LASAT is not set
  # CONFIG_MIPS_ATLAS is not set
-@@ -41,13 +39,13 @@ CONFIG_MIPS=y
+@@ -40,14 +38,14 @@ CONFIG_MIPS=y
+ # CONFIG_MOMENCO_OCELOT_C is not set
  # CONFIG_MOMENCO_OCELOT_G is not set
  # CONFIG_MIPS_XXS1500 is not set
- # CONFIG_PNX8550_V2PCI is not set
--# CONFIG_PNX8550_JBS is not set
-+CONFIG_PNX8550_JBS=y
+-# CONFIG_PNX8550_V2PCI is not set
++CONFIG_PNX8550_V2PCI=y
+ # CONFIG_PNX8550_JBS is not set
  # CONFIG_DDB5477 is not set
  # CONFIG_MACH_VR41XX is not set
  # CONFIG_PMC_YOSEMITE is not set
@@ -192,9 +193,9 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  CONFIG_EMBEDDED=y
 +# CONFIG_SYSCTL_SYSCALL is not set
  CONFIG_KALLSYMS=y
- # CONFIG_KALLSYMS_ALL is not set
  # CONFIG_KALLSYMS_EXTRA_PASS is not set
-@@ -189,12 +186,12 @@ CONFIG_PRINTK=y
+ CONFIG_HOTPLUG=y
+@@ -188,12 +185,12 @@ CONFIG_PRINTK=y
  CONFIG_BUG=y
  CONFIG_ELF_CORE=y
  CONFIG_BASE_FULL=y
@@ -208,7 +209,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_TINY_SHMEM is not set
  CONFIG_BASE_SMALL=0
  # CONFIG_SLOB is not set
-@@ -211,6 +208,7 @@ CONFIG_KMOD=y
+@@ -210,6 +207,7 @@ CONFIG_KMOD=y
  #
  # Block layer
  #
@@ -216,7 +217,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_LBD is not set
  # CONFIG_BLK_DEV_IO_TRACE is not set
  # CONFIG_LSF is not set
-@@ -231,8 +229,10 @@ CONFIG_DEFAULT_IOSCHED="anticipatory"
+@@ -230,8 +228,9 @@ CONFIG_DEFAULT_IOSCHED="anticipatory"
  #
  # Bus options (PCI, PCMCIA, EISA, ISA, TC)
  #
@@ -225,11 +226,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +CONFIG_HW_HAS_PCI=y
 +CONFIG_PCI=y
 +# CONFIG_PCI_MULTITHREAD_PROBE is not set
-+# CONFIG_PCI_DEBUG is not set
  CONFIG_MMU=y
  
  #
-@@ -243,6 +243,7 @@ CONFIG_MMU=y
+@@ -242,6 +241,7 @@ CONFIG_MMU=y
  #
  # PCI Hotplug Support
  #
@@ -237,7 +237,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  
  #
  # Executable file formats
-@@ -265,6 +266,7 @@ CONFIG_PACKET=y
+@@ -264,6 +264,7 @@ CONFIG_PACKET=y
  CONFIG_UNIX=y
  CONFIG_XFRM=y
  # CONFIG_XFRM_USER is not set
@@ -245,7 +245,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_NET_KEY is not set
  CONFIG_INET=y
  # CONFIG_IP_MULTICAST is not set
-@@ -283,16 +285,18 @@ CONFIG_IP_PNP_BOOTP=y
+@@ -282,12 +283,14 @@ CONFIG_IP_PNP=y
  # CONFIG_INET_IPCOMP is not set
  # CONFIG_INET_XFRM_TUNNEL is not set
  # CONFIG_INET_TUNNEL is not set
@@ -260,15 +260,54 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 -CONFIG_TCP_CONG_BIC=y
 +CONFIG_TCP_CONG_CUBIC=y
 +CONFIG_DEFAULT_TCP_CONG="cubic"
- # CONFIG_IPV6 is not set
- # CONFIG_INET6_XFRM_TUNNEL is not set
- # CONFIG_INET6_TUNNEL is not set
--CONFIG_NETWORK_SECMARK=y
-+# CONFIG_NETWORK_SECMARK is not set
- # CONFIG_NETFILTER is not set
  
  #
-@@ -318,7 +322,6 @@ CONFIG_NETWORK_SECMARK=y
+ # IP: Virtual Server Configuration
+@@ -300,12 +303,18 @@ CONFIG_IPV6_ROUTE_INFO=y
+ # CONFIG_INET6_AH is not set
+ # CONFIG_INET6_ESP is not set
+ # CONFIG_INET6_IPCOMP is not set
++# CONFIG_IPV6_MIP6 is not set
+ # CONFIG_INET6_XFRM_TUNNEL is not set
+ # CONFIG_INET6_TUNNEL is not set
+ CONFIG_INET6_XFRM_MODE_TRANSPORT=m
+ CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++# CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION is not set
++CONFIG_IPV6_SIT=m
+ # CONFIG_IPV6_TUNNEL is not set
+-CONFIG_NETWORK_SECMARK=y
++# CONFIG_IPV6_SUBTREES is not set
++# CONFIG_IPV6_MULTIPLE_TABLES is not set
++# CONFIG_NETWORK_SECMARK is not set
+ CONFIG_NETFILTER=y
+ # CONFIG_NETFILTER_DEBUG is not set
+ 
+@@ -318,9 +327,9 @@ CONFIG_NETFILTER_XTABLES=m
+ CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
+ CONFIG_NETFILTER_XT_TARGET_MARK=m
+ CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
+-CONFIG_NETFILTER_XT_TARGET_SECMARK=m
+ CONFIG_NETFILTER_XT_MATCH_COMMENT=m
+ CONFIG_NETFILTER_XT_MATCH_DCCP=m
++# CONFIG_NETFILTER_XT_MATCH_DSCP is not set
+ CONFIG_NETFILTER_XT_MATCH_ESP=m
+ CONFIG_NETFILTER_XT_MATCH_LENGTH=m
+ CONFIG_NETFILTER_XT_MATCH_LIMIT=m
+@@ -329,10 +338,10 @@ CONFIG_NETFILTER_XT_MATCH_MARK=m
+ # CONFIG_NETFILTER_XT_MATCH_POLICY is not set
+ CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
+ CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
+-CONFIG_NETFILTER_XT_MATCH_QUOTA=m
++# CONFIG_NETFILTER_XT_MATCH_QUOTA is not set
+ CONFIG_NETFILTER_XT_MATCH_REALM=m
+ CONFIG_NETFILTER_XT_MATCH_SCTP=m
+-CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
++# CONFIG_NETFILTER_XT_MATCH_STATISTIC is not set
+ CONFIG_NETFILTER_XT_MATCH_STRING=m
+ CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
+ 
+@@ -373,7 +382,6 @@ CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
  # CONFIG_ATALK is not set
  # CONFIG_X25 is not set
  # CONFIG_LAPB is not set
@@ -276,7 +315,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_ECONET is not set
  # CONFIG_WAN_ROUTER is not set
  
-@@ -371,13 +374,20 @@ CONFIG_FW_LOADER=y
+@@ -426,13 +434,20 @@ CONFIG_FW_LOADER=y
  #
  # Block devices
  #
@@ -297,7 +336,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  CONFIG_BLK_DEV_INITRD=y
  # CONFIG_CDROM_PKTCDVD is not set
  # CONFIG_ATA_OVER_ETH is not set
-@@ -386,6 +396,7 @@ CONFIG_BLK_DEV_INITRD=y
+@@ -441,6 +456,7 @@ CONFIG_BLK_DEV_INITRD=y
  # ATA/ATAPI/MFM/RLL support
  #
  CONFIG_IDE=y
@@ -305,28 +344,29 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  CONFIG_BLK_DEV_IDE=y
  
  #
-@@ -404,8 +415,39 @@ CONFIG_BLK_DEV_IDESCSI=y
+@@ -459,9 +475,41 @@ CONFIG_IDEDISK_MULTI_MODE=y
  # IDE chipset support/bugfixes
  #
  CONFIG_IDE_GENERIC=y
 +CONFIG_BLK_DEV_IDEPCI=y
 +CONFIG_IDEPCI_SHARE_IRQ=y
-+CONFIG_BLK_DEV_OFFBOARD=y
-+CONFIG_BLK_DEV_GENERIC=y
++# CONFIG_BLK_DEV_OFFBOARD is not set
++# CONFIG_BLK_DEV_GENERIC is not set
 +# CONFIG_BLK_DEV_OPTI621 is not set
 +CONFIG_BLK_DEV_IDEDMA_PCI=y
 +# CONFIG_BLK_DEV_IDEDMA_FORCED is not set
-+# CONFIG_IDEDMA_PCI_AUTO is not set
++CONFIG_IDEDMA_PCI_AUTO=y
++# CONFIG_IDEDMA_ONLYDISK is not set
 +# CONFIG_BLK_DEV_AEC62XX is not set
 +# CONFIG_BLK_DEV_ALI15X3 is not set
 +# CONFIG_BLK_DEV_AMD74XX is not set
-+# CONFIG_BLK_DEV_CMD64X is not set
++CONFIG_BLK_DEV_CMD64X=y
 +# CONFIG_BLK_DEV_TRIFLEX is not set
 +# CONFIG_BLK_DEV_CY82C693 is not set
 +# CONFIG_BLK_DEV_CS5520 is not set
 +# CONFIG_BLK_DEV_CS5530 is not set
 +# CONFIG_BLK_DEV_HPT34X is not set
-+CONFIG_BLK_DEV_HPT366=y
++# CONFIG_BLK_DEV_HPT366 is not set
 +# CONFIG_BLK_DEV_JMICRON is not set
 +# CONFIG_BLK_DEV_SC1200 is not set
 +# CONFIG_BLK_DEV_PIIX is not set
@@ -341,12 +381,14 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +# CONFIG_BLK_DEV_VIA82CXXX is not set
  # CONFIG_IDE_ARM is not set
 -# CONFIG_BLK_DEV_IDEDMA is not set
+-# CONFIG_IDEDMA_AUTO is not set
 +CONFIG_BLK_DEV_IDEDMA=y
 +# CONFIG_IDEDMA_IVB is not set
- # CONFIG_IDEDMA_AUTO is not set
++CONFIG_IDEDMA_AUTO=y
  # CONFIG_BLK_DEV_HD is not set
  
-@@ -414,6 +456,7 @@ CONFIG_IDE_GENERIC=y
+ #
+@@ -469,6 +517,7 @@ CONFIG_IDE_GENERIC=y
  #
  # CONFIG_RAID_ATTRS is not set
  CONFIG_SCSI=y
@@ -354,14 +396,14 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  CONFIG_SCSI_PROC_FS=y
  
  #
-@@ -434,22 +477,54 @@ CONFIG_SCSI_CONSTANTS=y
+@@ -489,22 +538,59 @@ CONFIG_BLK_DEV_SD=y
  # CONFIG_SCSI_LOGGING is not set
  
  #
 -# SCSI Transport Attributes
 +# SCSI Transports
  #
- # CONFIG_SCSI_SPI_ATTRS is not set
+ CONFIG_SCSI_SPI_ATTRS=m
  CONFIG_SCSI_FC_ATTRS=y
  CONFIG_SCSI_ISCSI_ATTRS=m
  # CONFIG_SCSI_SAS_ATTRS is not set
@@ -377,7 +419,12 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +# CONFIG_SCSI_3W_9XXX is not set
 +# CONFIG_SCSI_ACARD is not set
 +# CONFIG_SCSI_AACRAID is not set
-+# CONFIG_SCSI_AIC7XXX is not set
++CONFIG_SCSI_AIC7XXX=m
++CONFIG_AIC7XXX_CMDS_PER_DEVICE=32
++CONFIG_AIC7XXX_RESET_DELAY_MS=15000
++# CONFIG_AIC7XXX_DEBUG_ENABLE is not set
++CONFIG_AIC7XXX_DEBUG_MASK=0
++# CONFIG_AIC7XXX_REG_PRETTY_PRINT is not set
 +# CONFIG_SCSI_AIC7XXX_OLD is not set
 +# CONFIG_SCSI_AIC79XX is not set
 +# CONFIG_SCSI_AIC94XX is not set
@@ -412,7 +459,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # Multi-device support (RAID and LVM)
  #
  # CONFIG_MD is not set
-@@ -458,14 +533,19 @@ CONFIG_ISCSI_TCP=m
+@@ -513,14 +599,19 @@ CONFIG_ISCSI_TCP=m
  # Fusion MPT device support
  #
  # CONFIG_FUSION is not set
@@ -432,8 +479,8 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  
  #
  # Network device support
-@@ -477,6 +557,11 @@ CONFIG_NETDEVICES=y
- # CONFIG_TUN is not set
+@@ -532,6 +623,11 @@ CONFIG_NETDEVICES=y
+ CONFIG_TUN=m
  
  #
 +# ARCnet devices
@@ -444,7 +491,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # PHY device support
  #
  # CONFIG_PHYLIB is not set
-@@ -486,20 +571,73 @@ CONFIG_NETDEVICES=y
+@@ -541,20 +637,73 @@ CONFIG_TUN=m
  #
  CONFIG_NET_ETHERNET=y
  CONFIG_MII=y
@@ -470,13 +517,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +# CONFIG_EEPRO100 is not set
 +# CONFIG_E100 is not set
 +# CONFIG_FEALNX is not set
-+# CONFIG_NATSEMI is not set
++CONFIG_NATSEMI=y
 +# CONFIG_NE2K_PCI is not set
 +# CONFIG_8139CP is not set
 +CONFIG_8139TOO=y
 +# CONFIG_8139TOO_PIO is not set
-+CONFIG_8139TOO_TUNE_TWISTER=y
-+CONFIG_8139TOO_8129=y
++# CONFIG_8139TOO_TUNE_TWISTER is not set
++# CONFIG_8139TOO_8129 is not set
 +# CONFIG_8139_OLD_RX_RESET is not set
 +# CONFIG_SIS900 is not set
 +# CONFIG_EPIC100 is not set
@@ -519,19 +566,25 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  
  #
  # Wireless LAN (non-hamradio)
-@@ -510,8 +648,11 @@ CONFIG_MII=y
+@@ -565,6 +714,8 @@ CONFIG_MII=y
  # Wan interfaces
  #
  # CONFIG_WAN is not set
 +# CONFIG_FDDI is not set
 +# CONFIG_HIPPI is not set
- # CONFIG_PPP is not set
+ CONFIG_PPP=m
+ # CONFIG_PPP_MULTILINK is not set
+ # CONFIG_PPP_FILTER is not set
+@@ -575,6 +726,8 @@ CONFIG_PPP_DEFLATE=m
+ CONFIG_PPP_MPPE=m
+ # CONFIG_PPPOE is not set
  # CONFIG_SLIP is not set
++CONFIG_SLHC=m
 +# CONFIG_NET_FC is not set
  # CONFIG_SHAPER is not set
  # CONFIG_NETCONSOLE is not set
  # CONFIG_NETPOLL is not set
-@@ -531,6 +672,7 @@ CONFIG_MII=y
+@@ -594,6 +747,7 @@ CONFIG_PPP_MPPE=m
  # Input device support
  #
  CONFIG_INPUT=y
@@ -539,24 +592,40 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  
  #
  # Userland interfaces
-@@ -556,6 +698,7 @@ CONFIG_INPUT=y
+@@ -616,6 +770,7 @@ CONFIG_KEYBOARD_ATKBD=y
+ # CONFIG_KEYBOARD_LKKBD is not set
+ # CONFIG_KEYBOARD_XTKBD is not set
+ # CONFIG_KEYBOARD_NEWTON is not set
++# CONFIG_KEYBOARD_STOWAWAY is not set
+ CONFIG_INPUT_MOUSE=y
+ CONFIG_MOUSE_PS2=y
+ # CONFIG_MOUSE_SERIAL is not set
+@@ -630,6 +785,7 @@ CONFIG_MOUSE_PS2=y
  CONFIG_SERIO=y
- # CONFIG_SERIO_I8042 is not set
- # CONFIG_SERIO_SERPORT is not set
+ CONFIG_SERIO_I8042=y
+ CONFIG_SERIO_SERPORT=y
 +# CONFIG_SERIO_PCIPS2 is not set
  CONFIG_SERIO_LIBPS2=y
  # CONFIG_SERIO_RAW is not set
  # CONFIG_GAMEPORT is not set
-@@ -566,7 +709,7 @@ CONFIG_SERIO_LIBPS2=y
+@@ -640,7 +796,7 @@ CONFIG_SERIO_LIBPS2=y
  CONFIG_VT=y
- CONFIG_VT_CONSOLE=y
+ # CONFIG_VT_CONSOLE is not set
  CONFIG_HW_CONSOLE=y
 -CONFIG_VT_HW_CONSOLE_BINDING=y
 +# CONFIG_VT_HW_CONSOLE_BINDING is not set
- # CONFIG_SERIAL_NONSTANDARD is not set
- 
- #
-@@ -577,7 +720,8 @@ CONFIG_VT_HW_CONSOLE_BINDING=y
+ CONFIG_SERIAL_NONSTANDARD=y
+ # CONFIG_COMPUTONE is not set
+ # CONFIG_ROCKETPORT is not set
+@@ -650,6 +806,7 @@ CONFIG_SERIAL_NONSTANDARD=y
+ # CONFIG_MOXA_SMARTIO is not set
+ # CONFIG_ISI is not set
+ # CONFIG_SYNCLINKMP is not set
++# CONFIG_SYNCLINK_GT is not set
+ # CONFIG_N_HDLC is not set
+ # CONFIG_RISCOM8 is not set
+ # CONFIG_SPECIALIX is not set
+@@ -665,7 +822,8 @@ CONFIG_SERIAL_NONSTANDARD=y
  #
  # Non-8250 serial port support
  #
@@ -566,7 +635,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  CONFIG_UNIX98_PTYS=y
  CONFIG_LEGACY_PTYS=y
  CONFIG_LEGACY_PTY_COUNT=256
-@@ -591,16 +735,17 @@ CONFIG_LEGACY_PTY_COUNT=256
+@@ -679,16 +837,17 @@ CONFIG_LEGACY_PTY_COUNT=256
  # Watchdog Cards
  #
  # CONFIG_WATCHDOG is not set
@@ -586,13 +655,53 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_RAW_DRIVER is not set
  
  #
-@@ -631,35 +776,37 @@ CONFIG_HWMON=y
- # CONFIG_HWMON_VID is not set
- # CONFIG_SENSORS_ABITUGURU is not set
- # CONFIG_SENSORS_F71805F is not set
-+# CONFIG_SENSORS_VT1211 is not set
- # CONFIG_HWMON_DEBUG_CHIP is not set
+@@ -709,14 +868,30 @@ CONFIG_I2C_CHARDEV=m
+ CONFIG_I2C_ALGOBIT=m
+ # CONFIG_I2C_ALGOPCF is not set
+ # CONFIG_I2C_ALGOPCA is not set
+-# CONFIG_I2C_ALGO_SGI is not set
  
+ #
+ # I2C Hardware Bus support
+ #
++# CONFIG_I2C_ALI1535 is not set
++# CONFIG_I2C_ALI1563 is not set
++# CONFIG_I2C_ALI15X3 is not set
++# CONFIG_I2C_AMD756 is not set
++# CONFIG_I2C_AMD8111 is not set
++# CONFIG_I2C_I801 is not set
++# CONFIG_I2C_I810 is not set
++# CONFIG_I2C_PIIX4 is not set
++# CONFIG_I2C_NFORCE2 is not set
+ # CONFIG_I2C_OCORES is not set
+ # CONFIG_I2C_PARPORT_LIGHT is not set
++# CONFIG_I2C_PROSAVAGE is not set
++# CONFIG_I2C_SAVAGE4 is not set
++# CONFIG_I2C_SIS5595 is not set
++# CONFIG_I2C_SIS630 is not set
++# CONFIG_I2C_SIS96X is not set
+ # CONFIG_I2C_STUB is not set
++# CONFIG_I2C_VIA is not set
++# CONFIG_I2C_VIAPRO is not set
++# CONFIG_I2C_VOODOO3 is not set
+ # CONFIG_I2C_PCA_ISA is not set
+ 
+ #
+@@ -776,9 +951,13 @@ CONFIG_HWMON=y
+ # CONFIG_SENSORS_LM92 is not set
+ # CONFIG_SENSORS_MAX1619 is not set
+ # CONFIG_SENSORS_PC87360 is not set
++# CONFIG_SENSORS_SIS5595 is not set
+ # CONFIG_SENSORS_SMSC47M1 is not set
+ # CONFIG_SENSORS_SMSC47M192 is not set
+ # CONFIG_SENSORS_SMSC47B397 is not set
++# CONFIG_SENSORS_VIA686A is not set
++# CONFIG_SENSORS_VT1211 is not set
++# CONFIG_SENSORS_VT8231 is not set
+ # CONFIG_SENSORS_W83781D is not set
+ # CONFIG_SENSORS_W83791D is not set
+ # CONFIG_SENSORS_W83792D is not set
+@@ -790,23 +969,25 @@ CONFIG_HWMON=y
  #
  # Misc devices
  #
@@ -615,7 +724,36 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  #
 -# CONFIG_FIRMWARE_EDID is not set
 +CONFIG_FIRMWARE_EDID=y
- # CONFIG_FB is not set
+ CONFIG_FB=y
++# CONFIG_FB_DDC is not set
+ # CONFIG_FB_CFB_FILLRECT is not set
+ # CONFIG_FB_CFB_COPYAREA is not set
+ # CONFIG_FB_CFB_IMAGEBLIT is not set
+@@ -814,14 +995,32 @@ CONFIG_FB=y
+ # CONFIG_FB_BACKLIGHT is not set
+ # CONFIG_FB_MODE_HELPERS is not set
+ # CONFIG_FB_TILEBLITTING is not set
++# CONFIG_FB_CIRRUS is not set
++# CONFIG_FB_PM2 is not set
++# CONFIG_FB_CYBER2000 is not set
++# CONFIG_FB_ASILIANT is not set
++# CONFIG_FB_IMSTT is not set
+ # CONFIG_FB_S1D13XXX is not set
++# CONFIG_FB_NVIDIA is not set
++# CONFIG_FB_RIVA is not set
++# CONFIG_FB_MATROX is not set
++# CONFIG_FB_RADEON is not set
++# CONFIG_FB_ATY128 is not set
++# CONFIG_FB_ATY is not set
++# CONFIG_FB_SAVAGE is not set
++# CONFIG_FB_SIS is not set
++# CONFIG_FB_NEOMAGIC is not set
++# CONFIG_FB_KYRO is not set
++# CONFIG_FB_3DFX is not set
++# CONFIG_FB_VOODOO1 is not set
++# CONFIG_FB_SMIVGX is not set
++# CONFIG_FB_TRIDENT is not set
+ # CONFIG_FB_VIRTUAL is not set
  
  #
  # Console display driver support
@@ -623,11 +761,9 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_VGA_CONSOLE is not set
 -# CONFIG_SGI_NEWPORT_CONSOLE is not set
  CONFIG_DUMMY_CONSOLE=y
-+# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
+ # CONFIG_FRAMEBUFFER_CONSOLE is not set
  
- #
- # Sound
-@@ -669,15 +816,131 @@ CONFIG_DUMMY_CONSOLE=y
+@@ -839,15 +1038,129 @@ CONFIG_DUMMY_CONSOLE=y
  #
  # USB support
  #
@@ -643,7 +779,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +#
 +# Miscellaneous USB options
 +#
-+# CONFIG_USB_DEVICEFS is not set
++CONFIG_USB_DEVICEFS=y
 +# CONFIG_USB_BANDWIDTH is not set
 +# CONFIG_USB_DYNAMIC_MINORS is not set
 +# CONFIG_USB_OTG is not set
@@ -653,9 +789,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +#
 +# CONFIG_USB_EHCI_HCD is not set
 +# CONFIG_USB_ISP116X_HCD is not set
-+CONFIG_USB_OHCI_HCD=y
-+# CONFIG_USB_OHCI_BIG_ENDIAN is not set
-+CONFIG_USB_OHCI_LITTLE_ENDIAN=y
++# CONFIG_USB_OHCI_HCD is not set
 +# CONFIG_USB_UHCI_HCD is not set
 +# CONFIG_USB_SL811_HCD is not set
 +
@@ -674,28 +808,27 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +#
 +CONFIG_USB_STORAGE=y
 +# CONFIG_USB_STORAGE_DEBUG is not set
-+CONFIG_USB_STORAGE_DATAFAB=y
-+CONFIG_USB_STORAGE_FREECOM=y
-+CONFIG_USB_STORAGE_ISD200=y
-+CONFIG_USB_STORAGE_DPCM=y
-+CONFIG_USB_STORAGE_USBAT=y
-+CONFIG_USB_STORAGE_SDDR09=y
-+CONFIG_USB_STORAGE_SDDR55=y
-+CONFIG_USB_STORAGE_JUMPSHOT=y
++# CONFIG_USB_STORAGE_DATAFAB is not set
++# CONFIG_USB_STORAGE_FREECOM is not set
++# CONFIG_USB_STORAGE_ISD200 is not set
++# CONFIG_USB_STORAGE_DPCM is not set
++# CONFIG_USB_STORAGE_USBAT is not set
++# CONFIG_USB_STORAGE_SDDR09 is not set
++# CONFIG_USB_STORAGE_SDDR55 is not set
++# CONFIG_USB_STORAGE_JUMPSHOT is not set
 +# CONFIG_USB_STORAGE_ALAUDA is not set
++# CONFIG_USB_STORAGE_ONETOUCH is not set
 +# CONFIG_USB_STORAGE_KARMA is not set
 +# CONFIG_USB_LIBUSUAL is not set
 +
 +#
 +# USB Input Devices
 +#
-+# CONFIG_USB_HID is not set
-+
-+#
-+# USB HID Boot Protocol drivers
-+#
-+# CONFIG_USB_KBD is not set
-+# CONFIG_USB_MOUSE is not set
++CONFIG_USB_HID=y
++CONFIG_USB_HIDINPUT=y
++# CONFIG_USB_HIDINPUT_POWERBOOK is not set
++# CONFIG_HID_FF is not set
++CONFIG_USB_HIDDEV=y
 +# CONFIG_USB_AIPTEK is not set
 +# CONFIG_USB_WACOM is not set
 +# CONFIG_USB_ACECAD is not set
@@ -753,6 +886,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
 +# CONFIG_USB_FTDI_ELAN is not set
 +# CONFIG_USB_APPLEDISPLAY is not set
 +# CONFIG_USB_LD is not set
++# CONFIG_USB_TEST is not set
 +
 +#
 +# USB DSL modem support
@@ -762,7 +896,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # USB Gadget Support
  #
  # CONFIG_USB_GADGET is not set
-@@ -703,6 +966,7 @@ CONFIG_DUMMY_CONSOLE=y
+@@ -873,6 +1186,7 @@ CONFIG_DUMMY_CONSOLE=y
  #
  # InfiniBand support
  #
@@ -770,20 +904,23 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  
  #
  # EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
-@@ -733,10 +997,12 @@ CONFIG_EXT2_FS=y
- # CONFIG_EXT2_FS_XATTR is not set
- # CONFIG_EXT2_FS_XIP is not set
- # CONFIG_EXT3_FS is not set
+@@ -906,6 +1220,7 @@ CONFIG_EXT3_FS=y
+ CONFIG_EXT3_FS_XATTR=y
+ # CONFIG_EXT3_FS_POSIX_ACL is not set
+ # CONFIG_EXT3_FS_SECURITY is not set
 +# CONFIG_EXT4DEV_FS is not set
- # CONFIG_REISERFS_FS is not set
- # CONFIG_JFS_FS is not set
- # CONFIG_FS_POSIX_ACL is not set
- # CONFIG_XFS_FS is not set
+ CONFIG_JBD=y
+ # CONFIG_JBD_DEBUG is not set
+ CONFIG_FS_MBCACHE=y
+@@ -917,6 +1232,7 @@ CONFIG_XFS_FS=m
+ # CONFIG_XFS_SECURITY is not set
+ # CONFIG_XFS_POSIX_ACL is not set
+ # CONFIG_XFS_RT is not set
 +# CONFIG_GFS2_FS is not set
  # CONFIG_OCFS2_FS is not set
  # CONFIG_MINIX_FS is not set
  # CONFIG_ROMFS_FS is not set
-@@ -769,8 +1035,10 @@ CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
+@@ -949,8 +1265,10 @@ CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
  #
  CONFIG_PROC_FS=y
  # CONFIG_PROC_KCORE is not set
@@ -794,15 +931,15 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_HUGETLB_PAGE is not set
  CONFIG_RAMFS=y
  # CONFIG_CONFIGFS_FS is not set
-@@ -813,7 +1081,6 @@ CONFIG_SUNRPC=y
- # CONFIG_RPCSEC_GSS_SPKM3 is not set
- # CONFIG_SMB_FS is not set
+@@ -994,7 +1312,6 @@ CONFIG_SUNRPC=y
+ CONFIG_SMB_FS=m
+ # CONFIG_SMB_NLS_DEFAULT is not set
  # CONFIG_CIFS is not set
 -# CONFIG_CIFS_DEBUG2 is not set
  # CONFIG_NCP_FS is not set
  # CONFIG_CODA_FS is not set
  # CONFIG_AFS_FS is not set
-@@ -824,7 +1091,6 @@ CONFIG_SUNRPC=y
+@@ -1005,7 +1322,6 @@ CONFIG_SMB_FS=m
  #
  # CONFIG_PARTITION_ADVANCED is not set
  CONFIG_MSDOS_PARTITION=y
@@ -810,33 +947,21 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  
  #
  # Native Language Support
-@@ -880,6 +1146,7 @@ CONFIG_NLS_DEFAULT="iso8859-1"
+@@ -1061,11 +1377,13 @@ CONFIG_NLS_DEFAULT="iso8859-1"
  #
  CONFIG_TRACE_IRQFLAGS_SUPPORT=y
  # CONFIG_PRINTK_TIME is not set
 +CONFIG_ENABLE_MUST_CHECK=y
- CONFIG_MAGIC_SYSRQ=y
+ # CONFIG_MAGIC_SYSRQ is not set
  # CONFIG_UNUSED_SYMBOLS is not set
- CONFIG_DEBUG_KERNEL=y
-@@ -893,13 +1160,17 @@ CONFIG_DEBUG_SLAB=y
- # CONFIG_DEBUG_SPINLOCK is not set
- CONFIG_DEBUG_MUTEXES=y
- # CONFIG_DEBUG_RWSEMS is not set
-+# CONFIG_DEBUG_LOCK_ALLOC is not set
-+# CONFIG_PROVE_LOCKING is not set
- # CONFIG_DEBUG_SPINLOCK_SLEEP is not set
- # CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
- # CONFIG_DEBUG_KOBJECT is not set
- # CONFIG_DEBUG_INFO is not set
+ # CONFIG_DEBUG_KERNEL is not set
+ CONFIG_LOG_BUF_SHIFT=14
  # CONFIG_DEBUG_FS is not set
- # CONFIG_DEBUG_VM is not set
-+# CONFIG_DEBUG_LIST is not set
- CONFIG_FORCED_INLINING=y
 +# CONFIG_HEADERS_CHECK is not set
- # CONFIG_RCU_TORTURE_TEST is not set
  CONFIG_CROSSCOMPILE=y
- CONFIG_CMDLINE="console=ttyS1,38400n8 kgdb=ttyS0 root=/dev/nfs ip=bootp"
-@@ -918,6 +1189,9 @@ CONFIG_CMDLINE="console=ttyS1,38400n8 kg
+ CONFIG_CMDLINE=""
+ 
+@@ -1079,6 +1397,9 @@ CONFIG_CMDLINE=""
  # Cryptographic options
  #
  CONFIG_CRYPTO=y
@@ -846,7 +971,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jb
  # CONFIG_CRYPTO_HMAC is not set
  # CONFIG_CRYPTO_NULL is not set
  # CONFIG_CRYPTO_MD4 is not set
-@@ -927,6 +1201,8 @@ CONFIG_CRYPTO_MD5=m
+@@ -1088,6 +1409,8 @@ CONFIG_CRYPTO_SHA1=m
  # CONFIG_CRYPTO_SHA512 is not set
  # CONFIG_CRYPTO_WP512 is not set
  # CONFIG_CRYPTO_TGR192 is not set

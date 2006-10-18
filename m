@@ -1,47 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2006 19:14:02 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:9905 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20038599AbWJRSOA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 18 Oct 2006 19:14:00 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k9IIEH6o004857;
-	Wed, 18 Oct 2006 19:14:17 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k9IIEGSm004856;
-	Wed, 18 Oct 2006 19:14:16 +0100
-Date:	Wed, 18 Oct 2006 19:14:16 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	mlachwani <mlachwani@mvista.com>
-Cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: start_kernel(): bug: interrupts were enabled early
-Message-ID: <20061018181416.GA4714@linux-mips.org>
-References: <20061018155009.GA22031@deprecation.cyrius.com> <45365B8E.8040704@mvista.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Oct 2006 19:42:31 +0100 (BST)
+Received: from bender.bawue.de ([193.7.176.20]:58007 "EHLO bender.bawue.de")
+	by ftp.linux-mips.org with ESMTP id S20038589AbWJRSmZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Oct 2006 19:42:25 +0100
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher DES-CBC3-SHA (168/168 bits))
+	(No client certificate requested)
+	by bender.bawue.de (Postfix) with ESMTP
+	id EBE6544424; Wed, 18 Oct 2006 20:42:24 +0200 (MEST)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1GaGMZ-00069j-Aa; Wed, 18 Oct 2006 19:41:59 +0100
+Date:	Wed, 18 Oct 2006 19:41:59 +0100
+To:	Antonio SJ Musumeci <bile@landofbile.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: patch: include/asm-mips/system.h __cmpxchg64 bugfix and cleanup
+Message-ID: <20061018184159.GC4051@networkno.de>
+References: <200610121802.k9CI26I5017308@ms-smtp-01.rdc-nyc.rr.com> <20061013104250.GA16820@linux-mips.org> <452F9A41.4020505@landofbile.com> <20061013141101.GA19260@linux-mips.org> <20061013151841.3a902627@amiga> <20061015184226.GA3259@linux-mips.org> <20061018140818.3e40b0a4@amiga>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45365B8E.8040704@mvista.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20061018140818.3e40b0a4@amiga>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 12996
+X-archive-position: 12997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 18, 2006 at 09:51:26AM -0700, mlachwani wrote:
+Antonio SJ Musumeci wrote:
+> I'm not talking about that. This patch explains it. Moving
+> the conditional compilation from the optimizer to the preprocessor.
+> I see no reason to be using hard coded 1's and 0's in runtime logic.
 
-> The issue is the on_each_cpu() calls made in arch/mips/mm/c-sb1.c. This 
-> function enables the interrupts on exit. As a result, you will get this 
-> error
-> on bootup. The fix is  similar to arch/mips/mm/c-r4k.c, i.e. to have 
-> something like r4k_on_each_cpu().
+It is easier to read than a ifdef maze, and the net result is the same.
 
-Also cosider using the local_* variant of a cache or tlb flush operation
-wherever possible.
 
-  Ralf
+Thiemo

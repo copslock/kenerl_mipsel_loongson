@@ -1,109 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 09:07:19 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:53282 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20037495AbWJSIHQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2006 09:07:16 +0100
-Received: by mo.po.2iij.net (mo31) id k9J87ANu087612; Thu, 19 Oct 2006 17:07:10 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox30) id k9J879mg003010
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 19 Oct 2006 17:07:09 +0900 (JST)
-Date:	Thu, 19 Oct 2006 17:07:09 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, vagabon.xyz@gmail.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 09:30:53 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.191]:1471 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S28573704AbWJSIav (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Oct 2006 09:30:51 +0100
+Received: by nf-out-0910.google.com with SMTP id l23so980315nfc
+        for <linux-mips@linux-mips.org>; Thu, 19 Oct 2006 01:30:51 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
+        b=snCdsaLpDBbHBf6tFqVxYGO4Ub5siSxLxHLXUNE3fhY3JwaK4sPARykVjutKinXzoIQ8ufX1W+EHM40OcocPYPUqBTJpLLfEoYfPhRHb7B3YOOvvFOx87pPvW+SwEIx2VdTDwBzkGpyXGSUV6STvQuDImrpQIUt8s5zUkPEEvtY=
+Received: by 10.49.36.6 with SMTP id o6mr5413091nfj;
+        Thu, 19 Oct 2006 01:30:50 -0700 (PDT)
+Received: from ?192.168.0.24? ( [81.252.61.1])
+        by mx.google.com with ESMTP id q28sm443301nfc.2006.10.19.01.30.50;
+        Thu, 19 Oct 2006 01:30:50 -0700 (PDT)
+Message-ID: <453737B8.9090307@innova-card.com>
+Date:	Thu, 19 Oct 2006 10:30:48 +0200
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	vagabon.xyz@gmail.com, ralf@linux-mips.org, ths@networkno.de,
 	linux-mips@linux-mips.org
-Subject: Re: [PATCH][MIPS] merge a few printk in check_wait()
-Message-Id: <20061019170709.54a8b9a6.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20061018161551.GA15530@linux-mips.org>
-References: <20061019002718.1ca0ec56.yoichi_yuasa@tripeaks.co.jp>
-	<45364F82.8030308@innova-card.com>
-	<20061018161551.GA15530@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH 6/7] setup.c: clean up initrd related code
+References: <cda58cb80610182337h611f1cf0vd489b5828dfd269f@mail.gmail.com>	<20061019.155124.96684956.nemoto@toshiba-tops.co.jp>	<4537296C.50702@innova-card.com> <20061019.165110.21957261.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20061019.165110.21957261.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13016
+X-archive-position: 13017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 18 Oct 2006 17:15:52 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Wed, Oct 18, 2006 at 06:00:02PM +0200, Franck Bui-Huu wrote:
+Atsushi Nemoto wrote:
+> On Thu, 19 Oct 2006 09:29:48 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>>> But we need sign extension for values comes from the initrd_header
+>>> anyway.  The initrd_header is fixed-size and can not hold 64-bit
+>>> address.
+>>>
+>> initrd_header gives only 2 numbers: size of initrd, and a magic number,
+>> well it's what I understood when rewriting the code.
+>>
+>> the start address of initrd is given by:
+>>
+>> 	initrd_header = __va(PAGE_ALIGN(__pa_symbol(&_end) + 8)) - 8;
+>> 		
+>>
+>> I don't think we need any sign extension here, do we ?
 > 
-> > 
-> > 	printk(" %savailable.\n", cpu_wait ? "" : "un");
+> Oh I was confused.  You are right.
+
+yeah I was confused at the first look too. I think rewriting it like
+this:
+
+	initrd_start = (unsigned long)(initrd_header + 2);
+
+is less confusing...
+
 > 
-> Or more radical, just getting rid of the printk entirely?  It doesn't
-> provide very useful information.
+> BTW, we can just ignore initrd instead of panic() if invalid values
+> given.  This place around is too early to print panic message.
+> Continuing with printk(KERN_ERR) will give us a chance to see what's
+> wrong.
 > 
->   Ralf
-> 
 
-I agree with you.
-I updated my patch.
+ok, I'm rebuilding a new patchset and sending it pretty soon,
 
-Yoichi
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/kernel/cpu-probe.c mips/arch/mips/kernel/cpu-probe.c
---- mips-orig/arch/mips/kernel/cpu-probe.c	2006-10-19 10:27:36.246613000 +0900
-+++ mips/arch/mips/kernel/cpu-probe.c	2006-10-19 10:28:08.504629000 +0900
-@@ -120,11 +120,9 @@ static inline void check_wait(void)
- 	case CPU_R3081:
- 	case CPU_R3081E:
- 		cpu_wait = r3081_wait;
--		printk(" available.\n");
- 		break;
- 	case CPU_TX3927:
- 		cpu_wait = r39xx_wait;
--		printk(" available.\n");
- 		break;
- 	case CPU_R4200:
- /*	case CPU_R4300: */
-@@ -146,33 +144,23 @@ static inline void check_wait(void)
- 	case CPU_74K:
-  	case CPU_PR4450:
- 		cpu_wait = r4k_wait;
--		printk(" available.\n");
- 		break;
- 	case CPU_TX49XX:
- 		cpu_wait = r4k_wait_irqoff;
--		printk(" available.\n");
- 		break;
- 	case CPU_AU1000:
- 	case CPU_AU1100:
- 	case CPU_AU1500:
- 	case CPU_AU1550:
- 	case CPU_AU1200:
--		if (allow_au1k_wait) {
-+		if (allow_au1k_wait)
- 			cpu_wait = au1k_wait;
--			printk(" available.\n");
--		} else
--			printk(" unavailable.\n");
- 		break;
- 	case CPU_RM9000:
--		if ((c->processor_id & 0x00ff) >= 0x40) {
-+		if ((c->processor_id & 0x00ff) >= 0x40)
- 			cpu_wait = r4k_wait;
--			printk(" available.\n");
--		} else {
--			printk(" unavailable.\n");
--		}
- 		break;
- 	default:
--		printk(" unavailable.\n");
- 		break;
- 	}
- }
+		Franck

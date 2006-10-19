@@ -1,49 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 07:39:32 +0100 (BST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:45952 "EHLO
-	t111.niisi.ras.ru") by ftp.linux-mips.org with ESMTP
-	id S20027692AbWJSGj3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Oct 2006 07:39:29 +0100
-Received: from t111.niisi.ras.ru (localhost [127.0.0.1])
-	by t111.niisi.ras.ru (8.13.4/8.13.4) with ESMTP id k9J6ctKM011849;
-	Thu, 19 Oct 2006 10:38:55 +0400
-Received: (from uucp@localhost)
-	by t111.niisi.ras.ru (8.13.4/8.13.4/Submit) with UUCP id k9J6cs2Y011845;
-	Thu, 19 Oct 2006 10:38:54 +0400
-Received: from [192.168.173.2] (t34 [193.232.173.34])
-	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id k9J6ahp2019687;
-	Thu, 19 Oct 2006 10:36:43 +0400
-Message-ID: <45371C77.8040304@niisi.msk.ru>
-Date:	Thu, 19 Oct 2006 10:34:31 +0400
-From:	"Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-User-Agent: Thunderbird 1.5.0.7 (Windows/20060909)
-MIME-Version: 1.0
-To:	"Azer, William" <Bill.Azer@drs-ss.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: lspci, pci util
-References: <DEB94D90ABFC8240851346CFD4ACFF149E1CAA@gamd-ex-001.ss.drs.master>
-In-Reply-To: <DEB94D90ABFC8240851346CFD4ACFF149E1CAA@gamd-ex-001.ss.drs.master>
-Content-Type: text/plain; charset=KOI8-R; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 07:41:45 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:12845 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20027692AbWJSGlm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2006 07:41:42 +0100
+Received: by mo.po.2iij.net (mo31) id k9J6fdGh041376; Thu, 19 Oct 2006 15:41:39 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox30) id k9J6fcPN085645
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 19 Oct 2006 15:41:38 +0900 (JST)
+Date:	Thu, 19 Oct 2006 15:41:38 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	yoichi_yuasa@tripeaks.co.jp, vagabon.xyz@gmail.com,
+	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org,
+	fbuihuu@gmail.com
+Subject: Re: [PATCH 2/7] Make __pa() aware of XKPHYS/CKSEG0 address mix for
+ 64 bit kernels
+Message-Id: <20061019154138.0343bbd0.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20061019.130133.108306753.nemoto@toshiba-tops.co.jp>
+References: <11607431461469-git-send-email-fbuihuu@gmail.com>
+	<1160743146824-git-send-email-fbuihuu@gmail.com>
+	<20061019.130133.108306753.nemoto@toshiba-tops.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <raiko@niisi.msk.ru>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13007
+X-archive-position: 13008
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Azer, William wrote:
-> where do i get pci utilities for mips?  i was trying to use pci utils but it looks like it can't be cross-compiled.  can anyone help?
+On Thu, 19 Oct 2006 13:01:33 +0900 (JST)
+Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
 
-For example,
-ftp://ftp.linux-mips.org/pub/linux/mips/redhat/7.3/RPMS/mips/pciutils-2.1.9-2.1.mips.rpm
+> On Fri, 13 Oct 2006 14:39:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > +#if defined(CONFIG_64BITS) && !defined(CONFIG_BUILD_ELF64)
+> > +#define __page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
+> 
+> CONFIG_64BIT, not CONFIG_64BITS.  Sorry, my mistake.
+> 
+> Also since CKSEG0 is defined with _LLCONST_ macro, the final type of
+> __page_offset(), __pa(), __pa_sym() will be "unsigned long long", not
+> "unsigned long".  This raise a "comparison of distinct pointer types
+> lacks a cast" warning on this line.
+> 
+> 	reserved_end = max(init_initrd(), PFN_UP(__pa_symbol(&_end)));
+> 
+> A qiuck and non-intrusive hack would be cast CKSEG0 with "unsigned
+> long" here, but it might be preferred to change _LLCONST_ definition
+> like this.  What do you think?
+> 
+> 
+> Subject: Use "long" for _ATYPE64_ and _LLCONST_ on 64-bit kernel.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> 
+> diff --git a/include/asm-mips/addrspace.h b/include/asm-mips/addrspace.h
+> index 45c706e..5005555 100644
+> --- a/include/asm-mips/addrspace.h
+> +++ b/include/asm-mips/addrspace.h
+> @@ -23,9 +23,14 @@ #define _LLCONST_(x)	x
+>  #else
+>  #define _ATYPE_		__PTRDIFF_TYPE__
+>  #define _ATYPE32_	int
+> +#ifdef CONFIG_64BIT
+> +#define _ATYPE64_	long
+> +#define _LLCONST_(x)	x ## L
+            ^^               ^
+The name is not corresponding to reality.
+It's not so good.
 
-The source rpm is nearby.
-
-Regards,
-Gleb.
+Yoichi

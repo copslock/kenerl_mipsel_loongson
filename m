@@ -1,80 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 07:41:45 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:12845 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20027692AbWJSGlm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2006 07:41:42 +0100
-Received: by mo.po.2iij.net (mo31) id k9J6fdGh041376; Thu, 19 Oct 2006 15:41:39 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox30) id k9J6fcPN085645
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 19 Oct 2006 15:41:38 +0900 (JST)
-Date:	Thu, 19 Oct 2006 15:41:38 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	yoichi_yuasa@tripeaks.co.jp, vagabon.xyz@gmail.com,
-	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org,
-	fbuihuu@gmail.com
-Subject: Re: [PATCH 2/7] Make __pa() aware of XKPHYS/CKSEG0 address mix for
- 64 bit kernels
-Message-Id: <20061019154138.0343bbd0.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20061019.130133.108306753.nemoto@toshiba-tops.co.jp>
-References: <11607431461469-git-send-email-fbuihuu@gmail.com>
-	<1160743146824-git-send-email-fbuihuu@gmail.com>
-	<20061019.130133.108306753.nemoto@toshiba-tops.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 07:51:30 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:30581 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20027692AbWJSGv3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Oct 2006 07:51:29 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 19 Oct 2006 15:51:27 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 617B52093D;
+	Thu, 19 Oct 2006 15:51:25 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 55BFC1FE16;
+	Thu, 19 Oct 2006 15:51:25 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9J6pOW0069327;
+	Thu, 19 Oct 2006 15:51:24 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 19 Oct 2006 15:51:24 +0900 (JST)
+Message-Id: <20061019.155124.96684956.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org
+Subject: Re: [PATCH 6/7] setup.c: clean up initrd related code
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <cda58cb80610182337h611f1cf0vd489b5828dfd269f@mail.gmail.com>
+References: <1160743146503-git-send-email-fbuihuu@gmail.com>
+	<20061019.131352.41630930.nemoto@toshiba-tops.co.jp>
+	<cda58cb80610182337h611f1cf0vd489b5828dfd269f@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13008
+X-archive-position: 13009
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 19 Oct 2006 13:01:33 +0900 (JST)
-Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+On Thu, 19 Oct 2006 08:37:32 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> I would rather move this fix into initrd start setup function as it
+> was done by old code. We know that some bootloaders forget sign
+> extension on 64 bits kernel. But if for example the sign extension is
+> forgotten by a board specific code, we shouldn't automatically fix the
+> mistake, but rather fix the board specific code. So I would do instead
+> of your fix:
 
-> On Fri, 13 Oct 2006 14:39:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> > +#if defined(CONFIG_64BITS) && !defined(CONFIG_BUILD_ELF64)
-> > +#define __page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
-> 
-> CONFIG_64BIT, not CONFIG_64BITS.  Sorry, my mistake.
-> 
-> Also since CKSEG0 is defined with _LLCONST_ macro, the final type of
-> __page_offset(), __pa(), __pa_sym() will be "unsigned long long", not
-> "unsigned long".  This raise a "comparison of distinct pointer types
-> lacks a cast" warning on this line.
-> 
-> 	reserved_end = max(init_initrd(), PFN_UP(__pa_symbol(&_end)));
-> 
-> A qiuck and non-intrusive hack would be cast CKSEG0 with "unsigned
-> long" here, but it might be preferred to change _LLCONST_ definition
-> like this.  What do you think?
-> 
-> 
-> Subject: Use "long" for _ATYPE64_ and _LLCONST_ on 64-bit kernel.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> 
-> diff --git a/include/asm-mips/addrspace.h b/include/asm-mips/addrspace.h
-> index 45c706e..5005555 100644
-> --- a/include/asm-mips/addrspace.h
-> +++ b/include/asm-mips/addrspace.h
-> @@ -23,9 +23,14 @@ #define _LLCONST_(x)	x
->  #else
->  #define _ATYPE_		__PTRDIFF_TYPE__
->  #define _ATYPE32_	int
-> +#ifdef CONFIG_64BIT
-> +#define _ATYPE64_	long
-> +#define _LLCONST_(x)	x ## L
-            ^^               ^
-The name is not corresponding to reality.
-It's not so good.
+But we need sign extension for values comes from the initrd_header
+anyway.  The initrd_header is fixed-size and can not hold 64-bit
+address.
 
-Yoichi
+---
+Atsushi Nemoto

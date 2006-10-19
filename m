@@ -1,77 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 12:23:09 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.189]:13536 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038419AbWJSLUK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Oct 2006 12:20:10 +0100
-Received: by nf-out-0910.google.com with SMTP id l23so1027111nfc
-        for <linux-mips@linux-mips.org>; Thu, 19 Oct 2006 04:20:10 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=IA+t21Pg0ohDPH9njTyzhFyhpgA3fdpz6hKqwyBIqoYbXqMNidp1Oac4rKYX31oC7ygzd6+HlYgPhn30NhDNNJrNmjsNKUPUxf+S8MAW9HTHvXiTZN84drihF/c2bEN2gN6J9DPQXRBcZ/XEnvlhn5ctkTDteVH9tIYS4wiR4/I=
-Received: by 10.49.93.13 with SMTP id v13mr5593433nfl;
-        Thu, 19 Oct 2006 04:20:09 -0700 (PDT)
-Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id o9sm872202nfa.2006.10.19.04.20.08;
-        Thu, 19 Oct 2006 04:20:09 -0700 (PDT)
-Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 83D8523F772; Thu, 19 Oct 2006 13:20:06 +0200 (CEST)
-To:	ralf@linux-mips.org
-Cc:	anemo@mba.ocn.ne.jp, ths@networkno.de, linux-mips@linux-mips.org,
-	Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 5/7] setup.c: use __pa_symbol() where needed
-Date:	Thu, 19 Oct 2006 13:20:03 +0200
-Message-Id: <1161256806520-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.4.2.3
-In-Reply-To: <11612568052624-git-send-email-fbuihuu@gmail.com>
-References: <11612568052624-git-send-email-fbuihuu@gmail.com>
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 13:56:07 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:22701 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038429AbWJSM4F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Oct 2006 13:56:05 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k9JCuO1L005171;
+	Thu, 19 Oct 2006 13:56:25 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k9JCuNfA005170;
+	Thu, 19 Oct 2006 13:56:23 +0100
+Date:	Thu, 19 Oct 2006 13:56:23 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Pramod P K <pra.engr@gmail.com>
+Cc:	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
+Subject: Re: OOPS with JFFS2, MIPS
+Message-ID: <20061019125623.GA24108@linux-mips.org>
+References: <417f1b740610190242h2a39da81l7f2763e79e457736@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <417f1b740610190242h2a39da81l7f2763e79e457736@mail.gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13033
+X-archive-position: 13034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-It should fix the broken code in resource_init() too.
+On Thu, Oct 19, 2006 at 03:12:49PM +0530, Pramod P K wrote:
+> Date:	Thu, 19 Oct 2006 15:12:49 +0530
+> From:	"Pramod P K" <pra.engr@gmail.com>
+> To:	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
+> Subject: OOPS with JFFS2, MIPS
+> Content-Type: multipart/alternative; 
+> 	boundary="----=_Part_217232_6585938.1161250969461"
+> 
+> Iam using MIPS, Big Endian, with AMD/Fujitsu Spansion CFI flash.
+> 
+> I have Rootfs(jffs2) in flash, Linux-2.6.15 in RAM. Trying to mount Rootfs
+> (jffs2). but gives OOPS, and then kernel panic !!
+> I have traced the disassembled part of it. Got the location of OOPS but dont
+> know why
+> 
+> Please .. help me out.
+> 
+> 
+> MSP flash device "flash0": 0x00800000 at 0x1f800000
+> flash0: Found 1 x16 devices at 0x0 in 8-bit bank
+> Amd/Fujitsu Extended Query Table at 0x0040
+> Using buffer write method
+> flash0: CFI does not contain boot bank location. Assuming top.
+> number of CFI chips: 1
+> cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+> Creating 6 MTD partitions on "flash0":
+> 0x00480000-0x007f0000 : " General partition"
+> mtd: Giving out device 0 to  General partition
+> 0x00400000-0x00470000 : " pmon"
+> mtd: Giving out device 1 to  pmon
+> 0x00470000-0x00480000 : " pmon script"
+> mtd: Giving out device 2 to  pmon script
+> 0x00010000-0x00400000 : " Linux"
+> mtd: Giving out device 3 to  Linux
+> 0x007f0000-0x00800000 : " Copyprotected space end"
+> mtd: Giving out device 4 to  Copyprotected space end
+> 0x00000000-0x00010000 : " Copyprotected space start"
+> mtd: Giving out device 5 to  Copyprotected space start
+> MSP flash device "flash1": 0x00bf0000 at 0x1e000000
+> flash1: Found 1 x16 devices at 0x0 in 8-bit bank
+> Amd/Fujitsu Extended Query Table at 0x0040
+> Using buffer write method
+> flash1: CFI does not contain boot bank location. Assuming top.
+> number of CFI chips: 1
+> cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+> Creating 1 MTD partitions on "flash1":
+> 0x00000000-0x00bf0000 : " Root Filesystem jffs2"
+> mtd: Giving out device 6 to  Root Filesystem jffs2
+> 
+> ...........
+> ..........
+> <skipped some statements here>
+> ..........
+> ..........
+> 
+> CPU 0 Unable to handle kernel paging request at virtual address 00000000,
+> epc == 80121f30, ra == 80121fe0
+> Oops[#1]:
+> Cpu 0
+> $ 0   : 00000000 00000000 00000003 00000000
+> $ 4   : 80490554 00000003 00000001 00000000
+> $ 8   : ffffffff 87e02488 00000000 00000008
+> $12   : 8048bb80 87e02480 ffffffff 00000010
+> $16   : 00000001 0000fff8 00000001 80490554
+> $20   : 00000000 00000000 00000003 80490500
+> $24   : 00000000 80298d08
+> $28   : 8048a000 8048ba98 8048ba98 80121fe0
+> Hi    : 00000000
+> Lo    : 000000bf
+> epc   : 80121f30 __wake_up_common+0x44/0xb8     Not tainted
+> ra    : 80121fe0 __wake_up+0x3c/0x98
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/kernel/setup.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+A good old NULL pointer dereferenced by a generic kernel function which
+almost certainly itself is not the culprit, so probably was passed bad
+arguments.
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 715451a..b52cc97 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -260,7 +260,7 @@ static void __init bootmem_init(void)
- 	 * of usable memory.
- 	 */
- 	reserved_end = init_initrd();
--	reserved_end = PFN_UP(__pa(max(reserved_end, (unsigned long)&_end)));
-+	reserved_end = PFN_UP(max(__pa(reserved_end), __pa_symbol(&_end)));
- 
- 	/*
- 	 * Find the highest page frame number we have available.
-@@ -432,10 +432,10 @@ static void __init resource_init(void)
- 	if (UNCAC_BASE != IO_BASE)
- 		return;
- 
--	code_resource.start = virt_to_phys(&_text);
--	code_resource.end = virt_to_phys(&_etext) - 1;
--	data_resource.start = virt_to_phys(&_etext);
--	data_resource.end = virt_to_phys(&_edata) - 1;
-+	code_resource.start = __pa_symbol(&_text);
-+	code_resource.end = __pa_symbol(&_etext) - 1;
-+	data_resource.start = __pa_symbol(&_etext);
-+	data_resource.end = __pa_symbol(&_edata) - 1;
- 
- 	/*
- 	 * Request address space for all standard RAM.
--- 
-1.4.2.3
+  Ralf

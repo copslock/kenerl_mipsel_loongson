@@ -1,56 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 09:00:05 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:28100 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20037485AbWJSIAD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Oct 2006 09:00:03 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 19 Oct 2006 17:00:02 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id AB8BE41B95;
-	Thu, 19 Oct 2006 17:00:00 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 9D3AA41B5D;
-	Thu, 19 Oct 2006 17:00:00 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9J7xvW0069701;
-	Thu, 19 Oct 2006 16:59:57 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Thu, 19 Oct 2006 16:59:57 +0900 (JST)
-Message-Id: <20061019.165957.45517509.nemoto@toshiba-tops.co.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org, ths@networkno.de,
-	linux-mips@linux-mips.org, fbuihuu@gmail.com
-Subject: Re: [PATCH 2/7] Make __pa() aware of XKPHYS/CKSEG0 address mix for
- 64 bit kernels
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <45372CBC.9090602@innova-card.com>
-References: <20061019154138.0343bbd0.yoichi_yuasa@tripeaks.co.jp>
-	<20061019.160145.63741509.nemoto@toshiba-tops.co.jp>
-	<45372CBC.9090602@innova-card.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 09:07:19 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:53282 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037495AbWJSIHQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2006 09:07:16 +0100
+Received: by mo.po.2iij.net (mo31) id k9J87ANu087612; Thu, 19 Oct 2006 17:07:10 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox30) id k9J879mg003010
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 19 Oct 2006 17:07:09 +0900 (JST)
+Date:	Thu, 19 Oct 2006 17:07:09 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, vagabon.xyz@gmail.com,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH][MIPS] merge a few printk in check_wait()
+Message-Id: <20061019170709.54a8b9a6.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20061018161551.GA15530@linux-mips.org>
+References: <20061019002718.1ca0ec56.yoichi_yuasa@tripeaks.co.jp>
+	<45364F82.8030308@innova-card.com>
+	<20061018161551.GA15530@linux-mips.org>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13015
+X-archive-position: 13016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 19 Oct 2006 09:43:56 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> or why not simply replacing _LLCONST_ usages by _LCONST_ ? After all,
-> 64 bits value seems to be used only for 64 bits kernels.
+On Wed, 18 Oct 2006 17:15:52 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-Well, I suppose 32bit kernel might want to use 64bit values, for
-example, CONFIG_64BIT_PHYS_ADDR.
+> On Wed, Oct 18, 2006 at 06:00:02PM +0200, Franck Bui-Huu wrote:
+> 
+> > 
+> > 	printk(" %savailable.\n", cpu_wait ? "" : "un");
+> 
+> Or more radical, just getting rid of the printk entirely?  It doesn't
+> provide very useful information.
+> 
+>   Ralf
+> 
 
----
-Atsushi Nemoto
+I agree with you.
+I updated my patch.
+
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/kernel/cpu-probe.c mips/arch/mips/kernel/cpu-probe.c
+--- mips-orig/arch/mips/kernel/cpu-probe.c	2006-10-19 10:27:36.246613000 +0900
++++ mips/arch/mips/kernel/cpu-probe.c	2006-10-19 10:28:08.504629000 +0900
+@@ -120,11 +120,9 @@ static inline void check_wait(void)
+ 	case CPU_R3081:
+ 	case CPU_R3081E:
+ 		cpu_wait = r3081_wait;
+-		printk(" available.\n");
+ 		break;
+ 	case CPU_TX3927:
+ 		cpu_wait = r39xx_wait;
+-		printk(" available.\n");
+ 		break;
+ 	case CPU_R4200:
+ /*	case CPU_R4300: */
+@@ -146,33 +144,23 @@ static inline void check_wait(void)
+ 	case CPU_74K:
+  	case CPU_PR4450:
+ 		cpu_wait = r4k_wait;
+-		printk(" available.\n");
+ 		break;
+ 	case CPU_TX49XX:
+ 		cpu_wait = r4k_wait_irqoff;
+-		printk(" available.\n");
+ 		break;
+ 	case CPU_AU1000:
+ 	case CPU_AU1100:
+ 	case CPU_AU1500:
+ 	case CPU_AU1550:
+ 	case CPU_AU1200:
+-		if (allow_au1k_wait) {
++		if (allow_au1k_wait)
+ 			cpu_wait = au1k_wait;
+-			printk(" available.\n");
+-		} else
+-			printk(" unavailable.\n");
+ 		break;
+ 	case CPU_RM9000:
+-		if ((c->processor_id & 0x00ff) >= 0x40) {
++		if ((c->processor_id & 0x00ff) >= 0x40)
+ 			cpu_wait = r4k_wait;
+-			printk(" available.\n");
+-		} else {
+-			printk(" unavailable.\n");
+-		}
+ 		break;
+ 	default:
+-		printk(" unavailable.\n");
+ 		break;
+ 	}
+ }

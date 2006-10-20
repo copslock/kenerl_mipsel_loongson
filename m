@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Oct 2006 23:10:54 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:3332 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038655AbWJSWKx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Oct 2006 23:10:53 +0100
-Received: by mo.po.2iij.net (mo32) id k9JMAk7g023729; Fri, 20 Oct 2006 07:10:46 +0900 (JST)
-Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
-	by mbox.po.2iij.net (mbox30) id k9JMAhbF057091
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 20 Oct 2006 07:10:44 +0900 (JST)
-Date:	Fri, 20 Oct 2006 07:10:42 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, macro@linux-mips.org,
-	vagabon.xyz@gmail.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH][MIPS] merge a few printk in check_wait()
-Message-Id: <20061020071042.75b69eae.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20061019174840.GA5195@linux-mips.org>
-References: <20061019002718.1ca0ec56.yoichi_yuasa@tripeaks.co.jp>
-	<45364F82.8030308@innova-card.com>
-	<20061018161551.GA15530@linux-mips.org>
-	<20061019170709.54a8b9a6.yoichi_yuasa@tripeaks.co.jp>
-	<Pine.LNX.4.64N.0610191753180.5982@blysk.ds.pg.gda.pl>
-	<20061019174840.GA5195@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Oct 2006 04:19:41 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:47692 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20027649AbWJTDTj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Oct 2006 04:19:39 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 20 Oct 2006 12:19:38 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 08959206F2;
+	Fri, 20 Oct 2006 12:19:36 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id E80D8204B6;
+	Fri, 20 Oct 2006 12:19:35 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9K3JYW0073496;
+	Fri, 20 Oct 2006 12:19:34 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 20 Oct 2006 12:19:34 +0900 (JST)
+Message-Id: <20061020.121934.126141543.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org
+Subject: Re: [PATCH 0/7] Get ride of CPHYSADDR() in setup.c [take #4]
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <11612568052624-git-send-email-fbuihuu@gmail.com>
+References: <11612568052624-git-send-email-fbuihuu@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13040
+X-archive-position: 13041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 19 Oct 2006 18:48:41 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
+On Thu, 19 Oct 2006 13:19:58 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> Changes since take #3
+> --------------------
+>   * Sign extension hack still needed by rd_start_early() (Atsushi)
+>   * Replace panic() by printk() in init_initrd() (Atsushi)
+>   * Fix CONFIG_64BITS typo (Atsushi)
+>   * Add a new sanity check in init_initrd():
+> 		initrd_start < PAGE_OFFSET
 
-> On Thu, Oct 19, 2006 at 05:54:19PM +0100, Maciej W. Rozycki wrote:
-> 
-> > 
-> > > > Or more radical, just getting rid of the printk entirely?  It doesn't
-> > > > provide very useful information.
-> > [...]
-> > > I agree with you.
-> > > I updated my patch.
-> > 
-> >  You might consider removing "Checking for..." in that case as well.
+Works fine for me.  Thanks.
 
-Oops.
-
-> I acutally already have such a patch on the queue tree.
-
-Thanks,
-
-Yoichi
+---
+Atsushi Nemoto

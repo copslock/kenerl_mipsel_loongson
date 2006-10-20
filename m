@@ -1,95 +1,154 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Oct 2006 16:49:31 +0100 (BST)
-Received: from farad.aurel32.net ([82.232.2.251]:62649 "EHLO farad.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20038885AbWJTPt0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Oct 2006 16:49:26 +0100
-Received: from anguille.univ-lyon1.fr ([134.214.4.207])
-	by farad.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA:32)
-	(Exim 4.50)
-	id 1GawcU-0005GL-94; Fri, 20 Oct 2006 17:49:14 +0200
-Message-ID: <4538EFEB.8010809@aurel32.net>
-Date:	Fri, 20 Oct 2006 17:48:59 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
-User-Agent: IceDove 1.5.0.7 (X11/20061013)
-MIME-Version: 1.0
-To:	Daniel Jacobowitz <dan@debian.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: qemu initrd and ide support
-References: <20061012211228.GA17383@nevyn.them.org> <452F9744.9010109@aurel32.net>
-In-Reply-To: <452F9744.9010109@aurel32.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <aurelien@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Oct 2006 17:26:12 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:41674 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038915AbWJTQ0L (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Oct 2006 17:26:11 +0100
+Received: from localhost (p2238-ipad201funabasi.chiba.ocn.ne.jp [222.146.65.238])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 2EEF3B54A; Sat, 21 Oct 2006 01:26:04 +0900 (JST)
+Date:	Sat, 21 Oct 2006 01:28:26 +0900 (JST)
+Message-Id: <20061021.012826.108307073.anemo@mba.ocn.ne.jp>
+To:	ddaney@avtrex.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] Use "long" for 64-bit values on 64-bit kernel.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <45379971.6070803@avtrex.com>
+References: <20061019.231645.126573493.anemo@mba.ocn.ne.jp>
+	<45379971.6070803@avtrex.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13042
+X-archive-position: 13043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Aurelien Jarno a écrit :
-> The initrd seems to works well, but it generates a strange failure 
-> during the boot:
+On Thu, 19 Oct 2006 08:27:45 -0700, David Daney <ddaney@avtrex.com> wrote:
+> > +#ifdef CONFIG_64BIT
+> > +#define _ATYPE64_	long
+> > +#define _CONST64_(x)	x ## L
+> > +#else
+> >  #define _ATYPE64_	long long
+> > -#define _LLCONST_(x)	x ## LL
+> > +#define _CONST64_(x)	x ## LL
+> > +#endif
+> >  #endif
 > 
-> [...]
-> Mount-cache hash table entries: 512
-> Checking for 'wait' instruction...  available.
-> checking if image is initramfs...it isn't (bad gzip magic numbers); 
-> looks like an initrd
-> Bad page state in process 'swapper'
-> page:81010000 flags:0x00080000 mapping:00000000 mapcount:0 count:0
-> Trying to fix it up, but a reboot is needed
-> Backtrace:
-> Call Trace:
->  [<8005c748>] bad_page+0x68/0xa8
->  [<8005ccf0>] free_hot_cold_page+0x1a4/0x1b4
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<80080138>] __fput+0x14c/0x1cc
->  [<8001b094>] free_init_pages+0xa4/0xfc
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<80288d98>] free_initrd+0x28/0x44
->  [<80288e80>] populate_rootfs+0xcc/0x110
->  [<80292860>] spawn_softlockup_task+0x30/0x50
->  [<80010498>] init+0x54/0x300
->  [<80010498>] init+0x54/0x300
->  [<80013074>] kernel_thread_helper+0x10/0x18
->  [<80013064>] kernel_thread_helper+0x0/0x18
-> 
-> Freeing initrd memory: 2520k freed
-> NET: Registered protocol family 16
-> NET: Registered protocol family 2
-> [...]
-> 
-> This message is not present when initrd is not used, and it also does 
-> not appear with the previous way of passing the size and location of the 
-> initrd.
-> 
-> I don't have time to look more now, I will give you some more details 
-> when/if I found some time to work on that.
-> 
+> This duplicates the things in asm-mips/types.h.  Is there some reason 
+> that we cannot use s64/u64 instead of long/long long?
 
-This failure is due to the fact that initrd_reserve_bootmem is not set 
-anymore to 1 in arch/mips/kernel/setup.c. It is set to 1 when the initrd 
-location and size are read from the command line arguments, but not when 
-  read from the place where QEMU put it.
+OK, revised.
 
-Setting this value to 1 fixes the problem, but it is rather a big hack 
-than a fix.
 
-About the patch itself, another comment: you should add a #ifdef 
-CONFIG_BLK_DEV_INITRD #endif for the block concerning the initrd in 
-arch/mips/qemu/q-firmware.c
+This would get rid of some warnings about "long" vs. "long long".
 
-Bye,
-Aurelien
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
--- 
-   .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
-  : :' :  Debian developer           | Electrical Engineer
-  `. `'   aurel32@debian.org         | aurelien@aurel32.net
-    `-    people.debian.org/~aurel32 | www.aurel32.net
+diff --git a/include/asm-mips/addrspace.h b/include/asm-mips/addrspace.h
+index 45c706e..c627508 100644
+--- a/include/asm-mips/addrspace.h
++++ b/include/asm-mips/addrspace.h
+@@ -19,12 +19,16 @@ #ifdef __ASSEMBLY__
+ #define _ATYPE_
+ #define _ATYPE32_
+ #define _ATYPE64_
+-#define _LLCONST_(x)	x
++#define _CONST64_(x)	x
+ #else
+ #define _ATYPE_		__PTRDIFF_TYPE__
+ #define _ATYPE32_	int
+-#define _ATYPE64_	long long
+-#define _LLCONST_(x)	x ## LL
++#define _ATYPE64_	__s64
++#ifdef CONFIG_64BIT
++#define _CONST64_(x)	x ## L
++#else
++#define _CONST64_(x)	x ## LL
++#endif
+ #endif
+ 
+ /*
+@@ -48,7 +52,7 @@ #define KSEGX(a)		((_ACAST32_ (a)) & 0xe
+  */
+ #define CPHYSADDR(a)		((_ACAST32_(a)) & 0x1fffffff)
+ #define XPHYSADDR(a)            ((_ACAST64_(a)) &			\
+-				 _LLCONST_(0x000000ffffffffff))
++				 _CONST64_(0x000000ffffffffff))
+ 
+ #ifdef CONFIG_64BIT
+ 
+@@ -57,14 +61,14 @@ #ifdef CONFIG_64BIT
+  * The compatibility segments use the full 64-bit sign extended value.  Note
+  * the R8000 doesn't have them so don't reference these in generic MIPS code.
+  */
+-#define XKUSEG			_LLCONST_(0x0000000000000000)
+-#define XKSSEG			_LLCONST_(0x4000000000000000)
+-#define XKPHYS			_LLCONST_(0x8000000000000000)
+-#define XKSEG			_LLCONST_(0xc000000000000000)
+-#define CKSEG0			_LLCONST_(0xffffffff80000000)
+-#define CKSEG1			_LLCONST_(0xffffffffa0000000)
+-#define CKSSEG			_LLCONST_(0xffffffffc0000000)
+-#define CKSEG3			_LLCONST_(0xffffffffe0000000)
++#define XKUSEG			_CONST64_(0x0000000000000000)
++#define XKSSEG			_CONST64_(0x4000000000000000)
++#define XKPHYS			_CONST64_(0x8000000000000000)
++#define XKSEG			_CONST64_(0xc000000000000000)
++#define CKSEG0			_CONST64_(0xffffffff80000000)
++#define CKSEG1			_CONST64_(0xffffffffa0000000)
++#define CKSSEG			_CONST64_(0xffffffffc0000000)
++#define CKSEG3			_CONST64_(0xffffffffe0000000)
+ 
+ #define CKSEG0ADDR(a)		(CPHYSADDR(a) | CKSEG0)
+ #define CKSEG1ADDR(a)		(CPHYSADDR(a) | CKSEG1)
+@@ -122,7 +126,7 @@ #define K_CALG_UNCACHED_ACCEL	7
+ #define PHYS_TO_XKSEG_UNCACHED(p)	PHYS_TO_XKPHYS(K_CALG_UNCACHED,(p))
+ #define PHYS_TO_XKSEG_CACHED(p)		PHYS_TO_XKPHYS(K_CALG_COH_SHAREABLE,(p))
+ #define XKPHYS_TO_PHYS(p)		((p) & TO_PHYS_MASK)
+-#define PHYS_TO_XKPHYS(cm,a)		(_LLCONST_(0x8000000000000000) | \
++#define PHYS_TO_XKPHYS(cm,a)		(_CONST64_(0x8000000000000000) | \
+ 					 ((cm)<<59) | (a))
+ 
+ #if defined (CONFIG_CPU_R4300)						\
+@@ -132,20 +136,20 @@ #if defined (CONFIG_CPU_R4300)						\
+     || defined (CONFIG_CPU_NEVADA)					\
+     || defined (CONFIG_CPU_TX49XX)					\
+     || defined (CONFIG_CPU_MIPS64)
+-#define TO_PHYS_MASK	_LLCONST_(0x0000000fffffffff)	/* 2^^36 - 1 */
++#define TO_PHYS_MASK	_CONST64_(0x0000000fffffffff)	/* 2^^36 - 1 */
+ #endif
+ 
+ #if defined (CONFIG_CPU_R8000)
+ /* We keep KUSIZE consistent with R4000 for now (2^^40) instead of (2^^48) */
+-#define TO_PHYS_MASK	_LLCONST_(0x000000ffffffffff)	/* 2^^40 - 1 */
++#define TO_PHYS_MASK	_CONST64_(0x000000ffffffffff)	/* 2^^40 - 1 */
+ #endif
+ 
+ #if defined (CONFIG_CPU_R10000)
+-#define TO_PHYS_MASK	_LLCONST_(0x000000ffffffffff)	/* 2^^40 - 1 */
++#define TO_PHYS_MASK	_CONST64_(0x000000ffffffffff)	/* 2^^40 - 1 */
+ #endif
+ 
+ #if defined(CONFIG_CPU_SB1) || defined(CONFIG_CPU_SB1A)
+-#define TO_PHYS_MASK	_LLCONST_(0x00000fffffffffff)	/* 2^^44 - 1 */
++#define TO_PHYS_MASK	_CONST64_(0x00000fffffffffff)	/* 2^^44 - 1 */
+ #endif
+ 
+ #ifndef CONFIG_CPU_R8000
+@@ -155,7 +159,7 @@ #ifndef CONFIG_CPU_R8000
+  * in order to catch bugs in the source code.
+  */
+ 
+-#define COMPAT_K1BASE32		_LLCONST_(0xffffffffa0000000)
++#define COMPAT_K1BASE32		_CONST64_(0xffffffffa0000000)
+ #define PHYS_TO_COMPATK1(x)	((x) | COMPAT_K1BASE32) /* 32-bit compat k1 */
+ 
+ #endif

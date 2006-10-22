@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Oct 2006 19:28:05 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:35287 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038563AbWJVS2C (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Oct 2006 19:28:02 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Oct 2006 19:31:53 +0100 (BST)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:17908 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038571AbWJVSbu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Oct 2006 19:31:50 +0100
 Received: from localhost (p2094-ipad22funabasi.chiba.ocn.ne.jp [220.104.80.94])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id DCC64A333; Mon, 23 Oct 2006 03:27:54 +0900 (JST)
-Date:	Mon, 23 Oct 2006 03:30:18 +0900 (JST)
-Message-Id: <20061023.033018.59031419.anemo@mba.ocn.ne.jp>
+	id 10092AD0F; Mon, 23 Oct 2006 03:31:44 +0900 (JST)
+Date:	Mon, 23 Oct 2006 03:34:07 +0900 (JST)
+Message-Id: <20061023.033407.104640794.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
 Subject: [PATCH] rest of works for migration to GENERIC_TIME
@@ -21,13 +21,15 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13050
+X-archive-position: 13051
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
+
+[Sorry, resend without unrelated changes ...]
 
 Since we already moved to GENERIC_TIME, we should implement
 alternatives of old do_gettimeoffset routines to get sub-jiffies
@@ -53,7 +55,6 @@ Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
  Documentation/mips/time.README          |   35 ---
  arch/mips/au1000/common/time.c          |   98 ----------
  arch/mips/dec/time.c                    |    9 
- arch/mips/jmr3927/rbhma3100/irq.c       |    5 
  arch/mips/jmr3927/rbhma3100/setup.c     |   46 +---
  arch/mips/kernel/time.c                 |  312 ++++----------------------------
  arch/mips/philips/pnx8550/common/time.c |    4 
@@ -64,7 +65,7 @@ Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
  include/asm-mips/div64.h                |   21 --
  include/asm-mips/sibyte/sb1250.h        |    2 
  include/asm-mips/time.h                 |   10 -
- 14 files changed, 108 insertions(+), 524 deletions(-)
+ 13 files changed, 105 insertions(+), 522 deletions(-)
 
 diff --git a/Documentation/mips/time.README b/Documentation/mips/time.README
 index e1304b6..e9f428a 100644
@@ -320,34 +321,6 @@ index 4cf0c06..69e424e 100644
  
  	/* Set up the rate of periodic DS1287 interrupts.  */
  	CMOS_WRITE(RTC_REF_CLCK_32KHZ | (16 - __ffs(HZ)), RTC_REG_A);
-diff --git a/arch/mips/jmr3927/rbhma3100/irq.c b/arch/mips/jmr3927/rbhma3100/irq.c
-index 39a0243..4e23328 100644
---- a/arch/mips/jmr3927/rbhma3100/irq.c
-+++ b/arch/mips/jmr3927/rbhma3100/irq.c
-@@ -288,6 +288,7 @@ #endif
- 
- static void jmr3927_spurious(void)
- {
-+	struct pt_regs *regs = get_irq_regs();
- #ifdef CONFIG_TX_BRANCH_LIKELY_BUG_WORKAROUND
- 	tx_branch_likely_bug_fixup();
- #endif
-@@ -302,13 +303,13 @@ asmlinkage void plat_irq_dispatch(void)
- #ifdef CONFIG_TX_BRANCH_LIKELY_BUG_WORKAROUND
- 	tx_branch_likely_bug_fixup();
- #endif
--	if ((regs->cp0_cause & CAUSEF_IP7) == 0) {
-+	if ((read_c0_cause() & CAUSEF_IP7) == 0) {
- #if 0
- 		jmr3927_spurious();
- #endif
- 		return;
- 	}
--	irq = (regs->cp0_cause >> CAUSEB_IP2) & 0x0f;
-+	irq = (read_c0_cause() >> CAUSEB_IP2) & 0x0f;
- 
- 	do_IRQ(irq + JMR3927_IRQ_IRC);
- }
 diff --git a/arch/mips/jmr3927/rbhma3100/setup.c b/arch/mips/jmr3927/rbhma3100/setup.c
 index 0254340..744f746 100644
 --- a/arch/mips/jmr3927/rbhma3100/setup.c

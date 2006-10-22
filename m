@@ -1,155 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Oct 2006 22:06:59 +0100 (BST)
-Received: from [82.232.2.251] ([82.232.2.251]:20937 "EHLO farad.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20038636AbWJVVG6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Oct 2006 22:06:58 +0100
-Received: from bode.aurel32.net ([2001:618:400:fc13:211:9ff:feed:c498] helo=[IPv6:2001:618:400:fc13:211:9ff:feed:c498])
-	by farad.aurel32.net with esmtps (TLS-1.0:DHE_RSA_AES_256_CBC_SHA:32)
-	(Exim 4.50)
-	id 1GbkWj-000563-G9; Sun, 22 Oct 2006 23:06:37 +0200
-Message-ID: <453BDC78.5080700@aurel32.net>
-Date:	Sun, 22 Oct 2006 23:02:48 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
-User-Agent: Thunderbird 1.5.0.7 (X11/20060927)
-MIME-Version: 1.0
-To:	qemu-devel@nongnu.org
-CC:	linux-mips@linux-mips.org
-Subject: Re: [Qemu-devel] [PATCH] MIPS: add support for cvt.s.d and cvt.d.s
-References: <20060928234505.GA8305@bode.aurel32.net>
-In-Reply-To: <20060928234505.GA8305@bode.aurel32.net>
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <aurelien@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 00:22:52 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:34980 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038680AbWJVXWu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Oct 2006 00:22:50 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k9MNNGpL008012;
+	Mon, 23 Oct 2006 00:23:16 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k9MNNG1k008011;
+	Mon, 23 Oct 2006 00:23:16 +0100
+Date:	Mon, 23 Oct 2006 00:23:16 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Karl-Johan Karlsson <creideiki+linux-mips@ferretporn.se>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Extreme system overhead on large IP27
+Message-ID: <20061022232316.GA19127@linux-mips.org>
+References: <200610212159.04965.creideiki+linux-mips@ferretporn.se> <20061022152158.GB17776@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20061022152158.GB17776@linux-mips.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13054
+X-archive-position: 13055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+On Sun, Oct 22, 2006 at 04:21:58PM +0100, Ralf Baechle wrote:
 
-The patch below has been posted 3 weeks ago, but I haven't received any 
-comment yet. If you need to be convinced that the patch is needed, you 
-can download a test case from http://temp.aurel32.net/test_cvt.tar.gz 
-made using files from Debian unstable:
-
-[bode:/tmp]$ tar xvfz test_cvt.tar.gz
-test_cvt/
-test_cvt/bin/
-test_cvt/bin/find
-test_cvt/etc/
-test_cvt/etc/ld.so.cache
-test_cvt/lib/
-test_cvt/lib/ld.so.1
-test_cvt/lib/libc.so.6
-[bode:/tmp]$ cd test_cvt/
-[bode:/tmp/test_cvt]$ qemu-mips.orig -L $PWD bin/find
-qemu: uncaught target signal 4 (Illegal instruction) - exiting
-[bode:/tmp/test_cvt]$ qemu-mips -L $PWD bin/find
-.
-./lib
-./lib/libc.so.6
-./lib/ld.so.1
-./etc
-./etc/ld.so.cache
-./bin
-./bin/find
-
-qemu-mips.orig is the qemu binary without the patch, qemu-mips is the 
-qemu binary with the patch.
-
-Could somebody please have a look to the patch (or even merge it)?
-
-Thanks,
-Aurelien
-
-
-Aurelien Jarno a écrit :
-> Hi,
+> > I have an Origin 2000 with 16 R12000 and 16 R10000 CPU:s, running a git 
+> > snapshot kernel from 20060618 based on 2.6.17.10 (the latest available in 
+> > Gentoo). Light loads run without problems, but as soon as the load average 
+> > goes above 4-5 system overhead skyrockets and almost no useful work is being 
+> > done (see top output below). OProfile is no help, since the daemon just 
+> > throws away everything the kernel gives it (see output from strace of 
+> > oprofiled below).
+> > 
+> > Does anyone know where this overhead is coming from, or how to get some data 
+> > from OProfile so I can search for it myself? I'll try booting just the R12000 
+> > part sometime soon to see if that helps with either problem.
 > 
-> The patch below implements the cvt.s.d and cvt.d.s instructions for the
-> mips target. They are need to be able to execute the cp and the find
-> programs.
+> Oprofile is a bit of a bitch on mixed processor systems since it assumes
+> all processors to have identical performance counters.  However SGI in
+> it's wisdem decieded the R12000 had to be better than the R10000 and
+> changed it.  It is possible to work around that but lacking any mixed
+> CPU configuration I've never done that.
 > 
-> Bye,
-> Aurelien
-> 
-> 
-> Index: target-mips/op.c
-> ===================================================================
-> RCS file: /sources/qemu/qemu/target-mips/op.c,v
-> retrieving revision 1.9
-> diff -u -r1.9 op.c
-> --- target-mips/op.c	26 Jun 2006 20:29:47 -0000	1.9
-> +++ target-mips/op.c	28 Sep 2006 23:42:30 -0000
-> @@ -785,12 +785,24 @@
->  
->  #define FLOAT_OP(name, p) void OPPROTO op_float_##name##_##p(void)
->  
-> +FLOAT_OP(cvtd, s)
-> +{
-> +    FDT2 = float32_to_float64(WT0, &env->fp_status);
-> +    DEBUG_FPU_STATE();
-> +    RETURN();
-> +}
->  FLOAT_OP(cvtd, w)
->  {
->      FDT2 = int32_to_float64(WT0, &env->fp_status);
->      DEBUG_FPU_STATE();
->      RETURN();
->  }
-> +FLOAT_OP(cvts, d)
-> +{
-> +    FST2 = float64_to_float32(WT0, &env->fp_status);
-> +    DEBUG_FPU_STATE();
-> +    RETURN();
-> +}
->  FLOAT_OP(cvts, w)
->  {
->      FST2 = int32_to_float32(WT0, &env->fp_status);
-> Index: target-mips/translate.c
-> ===================================================================
-> RCS file: /sources/qemu/qemu/target-mips/translate.c,v
-> retrieving revision 1.15
-> diff -u -r1.15 translate.c
-> --- target-mips/translate.c	26 Jun 2006 20:02:45 -0000	1.15
-> +++ target-mips/translate.c	28 Sep 2006 23:42:30 -0000
-> @@ -1675,6 +1675,13 @@
->          GEN_STORE_FTN_FREG(fd, WT2);
->          opn = "ceil.w.d";
->          break;
-> +    case FOP(33, 16): /* cvt.d.s */
-> +        CHECK_FR(ctx, fs | fd);
-> +        GEN_LOAD_FREG_FTN(WT0, fs);
-> +        gen_op_float_cvtd_s();
-> +        GEN_STORE_FTN_FREG(fd, DT2);
-> +        opn = "cvt.d.s";
-> +        break;
->      case FOP(33, 20): /* cvt.d.w */
->          CHECK_FR(ctx, fs | fd);
->          GEN_LOAD_FREG_FTN(WT0, fs);
-> @@ -1782,6 +1789,13 @@
->          GEN_STORE_FTN_FREG(fd, WT2);
->          opn = "trunc.w.s";
->          break;
-> +    case FOP(32, 17): /* cvt.s.d */
-> +        CHECK_FR(ctx, fs | fd);
-> +        GEN_LOAD_FREG_FTN(WT0, fs);
-> +        gen_op_float_cvts_d();
-> +        GEN_STORE_FTN_FREG(fd, WT2);
-> +        opn = "cvt.s.d";
-> +        break;
->      case FOP(32, 20): /* cvt.s.w */
->          CHECK_FR(ctx, fs | fd);
->          GEN_LOAD_FREG_FTN(WT0, fs);
+> With those annotations, the kernel part of oprofile doesn't yet support
+> R1x000 processors, I'll try to cook up something.  Should be easy enough
+> since the interface is nearly identical to MIPS32/MIPS64.
 
+Okay, turns out as I suspected one of the well facts well disguised by the
+R10000, MIPS32 and MIPS64 architecture manuals is that the R10000 MFPS,
+MFPC, MTPS, MTPC instructions use the same encoding as MIPS32/MIPS64 mfc0
+instructions with a selector argument,  So getting oprofile to actually
+work on the R10000 family won't be hard.
 
--- 
-   .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
-  : :' :  Debian developer           | Electrical Engineer
-  `. `'   aurel32@debian.org         | aurelien@aurel32.net
-    `-    people.debian.org/~aurel32 | www.aurel32.net
+  Ralf

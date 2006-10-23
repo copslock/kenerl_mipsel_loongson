@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 14:08:21 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:11752 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039453AbWJWNIU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Oct 2006 14:08:20 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.7/8.13.7) with ESMTP id k9ND8haQ020984;
-	Mon, 23 Oct 2006 14:08:44 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.7/8.13.7/Submit) id k9ND8eYv020983;
-	Mon, 23 Oct 2006 14:08:40 +0100
-Date:	Mon, 23 Oct 2006 14:08:39 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 15:38:47 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:49333 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20039468AbWJWOin (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Oct 2006 15:38:43 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id C1DA23ECA; Mon, 23 Oct 2006 07:38:39 -0700 (PDT)
+Message-ID: <453CD3ED.8020005@ru.mvista.com>
+Date:	Mon, 23 Oct 2006 18:38:37 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org,
-	tglx@linutronix.de, johnstul@us.ibm.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] rest of works for migration to GENERIC_TIME
-Message-ID: <20061023130839.GA19789@linux-mips.org>
-References: <20061023.033407.104640794.anemo@mba.ocn.ne.jp> <453BC5B4.50005@ru.mvista.com> <20061023.120407.122620341.nemoto@toshiba-tops.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20061023.120407.122620341.nemoto@toshiba-tops.co.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <ralf@linux-mips.org>
+References: <20061023.033407.104640794.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061023.033407.104640794.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13064
+X-archive-position: 13065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 23, 2006 at 12:04:07PM +0900, Atsushi Nemoto wrote:
+Hello.
 
-> As I wrote in reply to Manish, I do not see good reason to use
-> module_init here.
+Atsushi Nemoto wrote:
+> [Sorry, resend without unrelated changes ...]
 
-module_init code is being called fairly late in the game.  But as long as
-there are no initizalization order issues arising I prefer to initialize
-things a) after console code for easier debugging b) explicitly.
+> Since we already moved to GENERIC_TIME, we should implement
+> alternatives of old do_gettimeoffset routines to get sub-jiffies
+> resolution from gettimeofday().  This patch includes:
 
-  Ralf
+> * mips_hpt_mask variable to specify bitmask of hpt value.
+
+    There's actually no need to introduce more variables. Just make 
+clocksource declaration public and override default mask if necessary.
+    Also, I don't see much sense in further existence of mips_hpt_read() -- it 
+only causes each clocksource read go thru a double indirection which is really 
+ugly. The same approach shouyld be used here.
+
+WBR, Sergei

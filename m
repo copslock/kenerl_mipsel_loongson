@@ -1,63 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 22:30:28 +0100 (BST)
-Received: from ch-smtp02.sth.basefarm.net ([80.76.149.213]:59819 "EHLO
-	ch-smtp02.sth.basefarm.net") by ftp.linux-mips.org with ESMTP
-	id S20038803AbWJWVa0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Oct 2006 22:30:26 +0100
-Received: from c83-250-8-219.bredband.comhem.se ([83.250.8.219]:60088 helo=mail.ferretporn.se)
-	by ch-smtp02.sth.basefarm.net with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.63)
-	(envelope-from <creideiki+linux-mips@ferretporn.se>)
-	id 1Gc7NJ-0005SK-7k; Mon, 23 Oct 2006 23:30:25 +0200
-Received: from peepoe.ferretporn.se (peepoe.ferretporn.se [192.168.0.7])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.ferretporn.se (Postfix) with ESMTP id 944EDD1B3;
-	Mon, 23 Oct 2006 23:30:24 +0200 (CEST)
-From:	Karl-Johan Karlsson <creideiki+linux-mips@ferretporn.se>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: Extreme system overhead on large IP27
-Date:	Mon, 23 Oct 2006 23:30:19 +0200
-User-Agent: KMail/1.9.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Oct 2006 00:38:31 +0100 (BST)
+Received: from dmz.mips-uk.com ([194.74.144.194]:38152 "EHLO dmz.mips-uk.com")
+	by ftp.linux-mips.org with ESMTP id S20039612AbWJWXi2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Oct 2006 00:38:28 +0100
+Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
+	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
+	id 1Gc9NE-0007Op-00; Tue, 24 Oct 2006 00:38:28 +0100
+Received: from pimlico.mips.com ([192.168.192.143] helo=localhost.localdomain)
+	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1Gc9Mg-0000PP-00; Tue, 24 Oct 2006 00:37:54 +0100
+Received: from ths by localhost.localdomain with local (Exim 4.50)
+	id 1Gc9Mf-0006rx-Va; Tue, 24 Oct 2006 00:37:53 +0100
+Date:	Tue, 24 Oct 2006 00:37:53 +0100
+From:	ths@networkno.de
+To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org
-References: <200610212159.04965.creideiki+linux-mips@ferretporn.se> <20061022232316.GA19127@linux-mips.org> <20061023001947.GA10853@linux-mips.org>
-In-Reply-To: <20061023001947.GA10853@linux-mips.org>
-X-Eric-Conspiracy: There is no conspiracy
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH, 2.6.18] Implement missing flush_cache_data_page on SB-1(a)
+Message-ID: <20061023233753.GA11979@mips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200610232330.23498.creideiki+linux-mips@ferretporn.se>
-X-Scan-Result: No virus found in message 1Gc7NJ-0005SK-7k.
-X-Scan-Signature: ch-smtp02.sth.basefarm.net 1Gc7NJ-0005SK-7k 2940e6f3072fafe5fc755d3f0cd898c0
-Return-Path: <creideiki+linux-mips@ferretporn.se>
+User-Agent: Mutt/1.5.9i
+X-MIPS-Technologies-UK-MailScanner: Found to be clean
+X-MIPS-Technologies-UK-MailScanner-From: ths@networkno.de
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13076
+X-archive-position: 13077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: creideiki+linux-mips@ferretporn.se
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Monday 23 October 2006 02:19, Ralf Baechle wrote:
-> Can you test below patch which adds oprofile support for the R10000
-> family processors?
+The appended patch implements flush_data_cache_page for SB-1(a). This
+fixes the bcm1480 hanging at boot after "Freeing unused kernel memory"
+when booting from NFS (and likely also any other PIO-driven device).
 
-I've tried it, and it doesn't solve my problem. With the patch 
-applied, "opcontrol --list-events" seems correct, but I still get no data 
-from OProfile, neither from the CYCLES nor the INSTRUCTIONS_GRADUATED 
-event. /var/lib/oprofile/oprofiled.log just repeats:
 
-   Nr. samples lost cpu buffer overflow: 0
-   Nr. samples received: 0
-   Nr. backtrace aborted: 0
+Thiemo
 
-I tried both on the full machine and on only the R12000 rack with identical 
-results. The R12000 rack alone also has the original problem with large 
-system overhead.
 
--- 
-Karl-Johan Karlsson
+Signed-Off-By: Thiemo Seufer <ths@networkno.de>
+
+
+diff --git a/arch/mips/mm/c-sb1.c b/arch/mips/mm/c-sb1.c
+index 16bad7c..acae51c 100644
+--- a/arch/mips/mm/c-sb1.c
++++ b/arch/mips/mm/c-sb1.c
+@@ -19,6 +19,7 @@
+  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+  */
+ #include <linux/init.h>
++#include <linux/hardirq.h>
+ 
+ #include <asm/asm.h>
+ #include <asm/bootinfo.h>
+@@ -233,6 +234,25 @@ void sb1_flush_cache_page(struct vm_area
+ 	__attribute__((alias("local_sb1_flush_cache_page")));
+ #endif
+ 
++#ifdef CONFIG_SMP
++static void sb1_flush_cache_data_page_ipi(void *info)
++{
++	unsigned long start = (unsigned long)info;
++
++	__sb1_writeback_inv_dcache_range(start, start + PAGE_SIZE);
++}
++
++static void sb1_flush_cache_data_page(unsigned long addr)
++{
++	if (in_atomic())
++		__sb1_writeback_inv_dcache_range(addr, addr + PAGE_SIZE);
++	else
++		on_each_cpu(sb1_flush_cache_data_page_ipi, (void *) addr, 1, 1);
++}
++#else
++void sb1_flush_cache_data_page(unsigned long)
++	__attribute__((alias("local_sb1_flush_cache_data_page")));
++#endif
+ 
+ /*
+  * Invalidate all caches on this CPU
+@@ -504,7 +524,6 @@ static __init void probe_cache_sizes(voi
+ void sb1_cache_init(void)
+ {
+ 	extern char except_vec2_sb1;
+-	extern char handle_vec2_sb1;
+ 
+ 	/* Special cache error handler for SB1 */
+ 	set_uncached_handler (0x100, &except_vec2_sb1, 0x80);
+@@ -534,7 +553,7 @@ #endif
+ 
+ 	flush_cache_sigtramp = sb1_flush_cache_sigtramp;
+ 	local_flush_data_cache_page = (void *) sb1_nop;
+-	flush_data_cache_page = (void *) sb1_nop;
++	flush_data_cache_page = sb1_flush_cache_data_page;
+ 
+ 	/* Full flush */
+ 	__flush_cache_all = sb1___flush_cache_all;
+@@ -558,5 +577,5 @@ #endif
+ 	:
+ 	: "memory");
+ 
+-	flush_cache_all();
++	local_sb1___flush_cache_all();
+ }

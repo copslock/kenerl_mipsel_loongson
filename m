@@ -1,57 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 04:04:13 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:41628 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20038922AbWJWDEL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Oct 2006 04:04:11 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 23 Oct 2006 12:04:10 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 5251541942;
-	Mon, 23 Oct 2006 12:04:08 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 3E3B641919;
-	Mon, 23 Oct 2006 12:04:08 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id k9N347W0085553;
-	Mon, 23 Oct 2006 12:04:07 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 23 Oct 2006 12:04:07 +0900 (JST)
-Message-Id: <20061023.120407.122620341.nemoto@toshiba-tops.co.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org, tglx@linutronix.de,
-	johnstul@us.ibm.com
-Subject: Re: [PATCH] rest of works for migration to GENERIC_TIME
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <453BC5B4.50005@ru.mvista.com>
-References: <20061023.033407.104640794.anemo@mba.ocn.ne.jp>
-	<453BC5B4.50005@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 11:30:00 +0100 (BST)
+Received: from mail.sysgo.com ([62.8.134.5]:30984 "EHLO mail.sysgo.com")
+	by ftp.linux-mips.org with ESMTP id S20039312AbWJWK36 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Oct 2006 11:29:58 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mail.sysgo.com (Postfix) with ESMTP id B83C1CC11F;
+	Mon, 23 Oct 2006 12:29:48 +0200 (CEST)
+Received: from mail.sysgo.com (localhost [127.0.0.1])
+	by localhost (AvMailGate-2.0.2-8) id 28859-30FF6830;
+	Mon, 23 Oct 2006 12:29:48 +0200
+Received: from donald.sysgo.com (unknown [172.20.1.30])
+	by mail.sysgo.com (Postfix) with ESMTP id 6512DCC0CC;
+	Mon, 23 Oct 2006 12:29:48 +0200 (CEST)
+Received: by donald.sysgo.com (Postfix, from userid 65534)
+	id 29CF72685B2; Mon, 23 Oct 2006 12:29:47 +0200 (CEST)
+Received: from mag.sysgo.com (mag.sysgo.com [172.24.2.130])
+	by donald.sysgo.com (Postfix) with ESMTP
+	id B2E55268582; Mon, 23 Oct 2006 12:29:46 +0200 (CEST)
+Date:	Mon, 23 Oct 2006 12:29:46 +0200 (CEST)
+From:	Marius Groeger <mgroeger@sysgo.com>
+To:	qemu-devel@nongnu.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [Qemu-devel] [PATCH] MIPS: add support for cvt.s.d and cvt.d.s
+In-Reply-To: <453BDC78.5080700@aurel32.net>
+Message-ID: <Pine.LNX.4.63.0610231228430.5868@mag.sysgo.com>
+References: <20060928234505.GA8305@bode.aurel32.net> <453BDC78.5080700@aurel32.net>
+X-GPG-FINGRPRINT: BE3C5693 - C956 0BA1 6A3C 3838 5082 9295 3D74 E9C5
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+X-AntiVirus: checked by AntiVir MailGate (version: 2.0.2-8; AVE: 7.2.0.30; VDF: 6.36.0.131; host: mailgate.sysgo.com)
+Return-Path: <mgroeger@sysgo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13060
+X-archive-position: 13061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: mgroeger@sysgo.com
 Precedence: bulk
 X-list: linux-mips
 
-Oh I missed final comment ...
+On Sun, 22 Oct 2006, Aurelien Jarno wrote:
 
-On Sun, 22 Oct 2006 23:25:40 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > +	init_mips_clocksource();
-> 
->     Well, this is usually done via module_init()...
+> Could somebody please have a look to the patch (or even merge it)?
 
-As I wrote in reply to Manish, I do not see good reason to use
-module_init here.
+Looks ok to me.
 
----
-Atsushi Nemoto
+Regards,
+Marius
+
+-- 
+Marius Groeger <mgroeger@sysgo.com>
+SYSGO AG                      Embedded and Real-Time Software
+Voice: +49 6136 9948 0                  FAX: +49 6136 9948 10
+www.sysgo.com | www.elinos.com | www.osek.de | www.pikeos.com

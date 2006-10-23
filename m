@@ -1,170 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 12:49:50 +0100 (BST)
-Received: from farad.aurel32.net ([82.232.2.251]:38076 "EHLO farad.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20039316AbWJWLts (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Oct 2006 12:49:48 +0100
-Received: from bode.aurel32.net ([2001:618:400:fc13:211:9ff:feed:c498])
-	by farad.aurel32.net with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA:32)
-	(Exim 4.50)
-	id 1GbyJK-0000Qa-Pk; Mon, 23 Oct 2006 13:49:42 +0200
-Received: from aurel32 by bode.aurel32.net with local (Exim 4.63)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1GbyFd-0008Ug-BO; Mon, 23 Oct 2006 13:45:53 +0200
-Date:	Mon, 23 Oct 2006 13:45:53 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
-To:	linux-mips@linux-mips.org
-Cc:	Daniel Jacobowitz <dan@debian.org>
-Subject: Re: qemu initrd and ide support
-Message-ID: <20061023114553.GA31520@bode.aurel32.net>
-References: <20061012211228.GA17383@nevyn.them.org> <452F9744.9010109@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Oct 2006 13:32:37 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:56243 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20039337AbWJWMcd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Oct 2006 13:32:33 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 51FF23ECA; Mon, 23 Oct 2006 05:32:25 -0700 (PDT)
+Message-ID: <453CB658.9030307@ru.mvista.com>
+Date:	Mon, 23 Oct 2006 16:32:24 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="1yeeQ81UyVL57Vl7"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <452F9744.9010109@aurel32.net>
-X-Mailer: Mutt 1.5.13 (2006-08-11)
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <aurelien@aurel32.net>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, tglx@linutronix.de, johnstul@us.ibm.com
+Subject: Re: [PATCH] rest of works for migration to GENERIC_TIME
+References: <20061023.033407.104640794.anemo@mba.ocn.ne.jp>	<453BC5B4.50005@ru.mvista.com> <20061023.120059.63742109.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20061023.120059.63742109.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13062
+X-archive-position: 13063
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
 
---1yeeQ81UyVL57Vl7
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Atsushi Nemoto wrote:
 
-On Fri, Oct 13, 2006 at 03:40:20PM +0200, Aurelien Jarno wrote:
-> Hi!
-Hi!
+> On Sun, 22 Oct 2006 23:25:40 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
 
-> Daniel Jacobowitz a écrit :
-> >These patches for qemu let IDE and initrd work in the defconfig.
-> >It seems to function - I was able to get as far as partitioning
-> >the drive in the debian installer and the next time I started qemu
-> >the new partitions were found.  But the installer hangs up trying
-> >to format swap.
-> >
-> >Of course, what would be really nice would be a PCI controller.
-> >I'm not brave enough to try.
-> >
-> >I'm not going to submit the qemu change until I have some better
-> >evidence that it all works right (or someone else does).
-> >
-> 
-> First of all, thanks a lot for your work, that makes QEMU mips more usable.
-> 
-> The IDE part works very well, though there seems to be some problems 
-> with userland tools (mke2fs), an instruction is probably not/bad 
-> emulated. I now have a system with the root on the IDE drive and with swap.
-> 
-> The initrd seems to works well, but it generates a strange failure 
-> during the boot:
-> 
-> [...]
-> Mount-cache hash table entries: 512
-> Checking for 'wait' instruction...  available.
-> checking if image is initramfs...it isn't (bad gzip magic numbers); 
-> looks like an initrd
-> Bad page state in process 'swapper'
-> page:81010000 flags:0x00080000 mapping:00000000 mapcount:0 count:0
-> Trying to fix it up, but a reboot is needed
-> Backtrace:
-> Call Trace:
->  [<8005c748>] bad_page+0x68/0xa8
->  [<8005ccf0>] free_hot_cold_page+0x1a4/0x1b4
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<80080138>] __fput+0x14c/0x1cc
->  [<8001b094>] free_init_pages+0xa4/0xfc
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<802a0000>] ic_bootp_recv+0x238/0x6a0
->  [<80288d98>] free_initrd+0x28/0x44
->  [<80288e80>] populate_rootfs+0xcc/0x110
->  [<80292860>] spawn_softlockup_task+0x30/0x50
->  [<80010498>] init+0x54/0x300
->  [<80010498>] init+0x54/0x300
->  [<80013074>] kernel_thread_helper+0x10/0x18
->  [<80013064>] kernel_thread_helper+0x0/0x18
-> 
-> Freeing initrd memory: 2520k freed
-> NET: Registered protocol family 16
-> NET: Registered protocol family 2
-> [...]
+>>> arch/mips/au1000/common/time.c          |   98 ----------
 
-As discussed on IRC, it seems the oops does not occurs on all system,
-but we don't know what trigger it.
+>>    If the generic implementation is working well, the Alchemy code doesn't 
+>>need its own anymore. However, my patch that fixes the mips_hpt_frequency 
+>>calculation needs to be applied first before deleing this code. I'll try to 
+>>look into this and test some time...
 
-Alternatively, please find attached a patch to QEMU to pass the initrd
-arguments directly in text, so that no modifications are needed in the
-kernel.
+> Hmm, mips_hpt_frequency would be bad than lesser resolution.
 
--- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+    Not sure I understood you but my wording was unclear as well: what I meant 
+to say is the Alchemy code doesn't need its own timer handler anymore -- that 
+was my assumption after I saw the changes you made to timer_interrupt()...
 
---1yeeQ81UyVL57Vl7
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: attachment; filename="mips-qemu-initrd.patch"
+ > Please push your fix to Ralf again ;)
 
-Index: hw/mips_r4k.c
-===================================================================
-RCS file: /sources/qemu/qemu/hw/mips_r4k.c,v
-retrieving revision 1.20
-diff -u -d -p -r1.20 mips_r4k.c
---- hw/mips_r4k.c	18 Sep 2006 01:15:29 -0000	1.20
-+++ hw/mips_r4k.c	23 Oct 2006 10:35:54 -0000
-@@ -117,7 +117,7 @@ void mips_r4k_init (int ram_size, int vg
-     unsigned long bios_offset;
-     int ret;
-     CPUState *env;
--    long kernel_size;
-+    long kernel_size, initrd_size;
- 
-     env = cpu_init();
-     register_savevm("cpu", 0, 3, cpu_save, cpu_load, env);
-@@ -158,10 +158,11 @@ void mips_r4k_init (int ram_size, int vg
- 	}
- 
-         /* load initrd */
-+        initrd_size = 0;
-         if (initrd_filename) {
--            if (load_image(initrd_filename,
--			   phys_ram_base + INITRD_LOAD_ADDR + VIRT_TO_PHYS_ADDEND)
--		== (target_ulong) -1) {
-+            initrd_size = load_image(initrd_filename,
-+                                     phys_ram_base + INITRD_LOAD_ADDR + VIRT_TO_PHYS_ADDEND);
-+            if (initrd_size == (target_ulong) -1) {
-                 fprintf(stderr, "qemu: could not load initial ram disk '%s'\n", 
-                         initrd_filename);
-                 exit(1);
-@@ -169,7 +170,17 @@ void mips_r4k_init (int ram_size, int vg
-         }
- 
- 	/* Store command line.  */
--        strcpy (phys_ram_base + (16 << 20) - 256, kernel_cmdline);
-+        if (initrd_size > 0) {
-+            ret = sprintf(phys_ram_base + (16 << 20) - 256, 
-+                          "rd_start=0x%08x rd_size=%li ",
-+                          INITRD_LOAD_ADDR,
-+                          initrd_size);
-+            strcpy (phys_ram_base + (16 << 20) - 256 + ret, kernel_cmdline);
-+	}
-+	else {
-+            strcpy (phys_ram_base + (16 << 20) - 256, kernel_cmdline);
-+	}
-+
-         /* FIXME: little endian support */
-         *(int *)(phys_ram_base + (16 << 20) - 260) = tswap32 (0x12345678);
-         *(int *)(phys_ram_base + (16 << 20) - 264) = tswap32 (ram_size);
+    Frankly, I'm too tired of that process. ;-)
 
---1yeeQ81UyVL57Vl7--
+>>>+static unsigned int jmr3927_hpt_read(void)
+>>>+{
+>>>+	unsigned int count;
+>>>+	unsigned long j;
+>>>+	/* read consistent jiffies and counter */
+>>>+	do {
+>>>+		count = jmr3927_tmrptr->trr;
+>>>+		j = jiffies;
+>>>+	} while (count > jmr3927_tmrptr->trr);
+>>>+	return j * (JMR3927_TIMER_CLK / HZ) + count;
+>>>+}
+
+>>    That emulation trick looks very dubious. I'd suggest to implement a 
+>>different clocksource driver instead, since this is, after all, is not a CPU 
+>>counter. And this will get in the way of the clockevent implementation later. 
+>>  Also, it's stops to be continuous this way. And I don't understand why you 
+>>need this trick at all if you have the variable mips_hpt_mask...
+>>    And the same complaint about BCM1480 code.
+
+> This trick is due to range of TRR register.  The width of the counter
+> field is 24bit, but the range is not 0 - 0xffffff.  It wraps at some
+> non-all-F value.  So mips_hpt_mask can not help this.
+
+    This happens not due to a nature of this timer itself but due to the fact 
+that it's used to generate the jiffy interrupt, and therefore the comparator 
+register (which is obviously set to non-0xFFFFFF value) guiding its behavior. 
+There's no sense (or even need) in using it as a clock source -- TX3927 has 3 
+timers! So, you need to just use some other timer than #0 and set the 
+comparator A to 0xFFFFFF for it...
+
+> But this loop is not correct indeed.  If it called without xtime_lock
+> and interrupt disabled, it would return wrong value.  I should think
+> again ...
+
+    The whole idea of using such timer as TX39 has for both generating the 
+interrupts and as a clocksource was wrong, I'm afraid.  You only can use a 
+something similar to the MIPS counter which doesn't ever get auto-reloaded for 
+both purposes at once.
+
+>>    Well, I'd vote against the generic implementation. It's not
+>>quite correct to call all the diverse timers here "MIPS", IMHO...
+
+> How about calling it "MIPS-hpt" or something?
+
+    The name is not a problem, I didn't like the whole generic approach. 
+However, this seems a simpler way of doing this thing, so we probably should 
+indeed stick to it...
+
+> ---
+> Atsushi Nemoto
+
+WBR, Sergei

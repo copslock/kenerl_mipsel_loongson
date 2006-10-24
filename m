@@ -1,147 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Oct 2006 14:12:31 +0100 (BST)
-Received: from farad.aurel32.net ([82.232.2.251]:54661 "EHLO farad.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20039666AbWJXNM1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Oct 2006 14:12:27 +0100
-Received: from bode.aurel32.net ([2001:618:400:fc13:211:9ff:feed:c498])
-	by farad.aurel32.net with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA:32)
-	(Exim 4.50)
-	id 1GcM4r-0003KP-Vz; Tue, 24 Oct 2006 15:12:22 +0200
-Received: from aurel32 by bode.aurel32.net with local (Exim 4.63)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1GcM1A-0001EK-HF; Tue, 24 Oct 2006 15:08:32 +0200
-Date:	Tue, 24 Oct 2006 15:08:32 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
-To:	Daniel Jacobowitz <dan@debian.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: qemu initrd and ide support
-Message-ID: <20061024130832.GA3768@bode.aurel32.net>
-References: <20061012211228.GA17383@nevyn.them.org> <452F9744.9010109@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Oct 2006 14:40:06 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:32975 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20039677AbWJXNj7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Oct 2006 14:39:59 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id D6B183EBE; Tue, 24 Oct 2006 06:39:42 -0700 (PDT)
+Message-ID: <453E179B.50205@ru.mvista.com>
+Date:	Tue, 24 Oct 2006 17:39:39 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="4Ckj6UjgE2iN1+kY"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <452F9744.9010109@aurel32.net>
-X-Mailer: Mutt 1.5.13 (2006-08-11)
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <aurelien@aurel32.net>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] rest of works for migration to GENERIC_TIME
+References: <20061023.033407.104640794.anemo@mba.ocn.ne.jp> <20061024.002127.74752850.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061024.002127.74752850.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13082
+X-archive-position: 13083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
 
---4Ckj6UjgE2iN1+kY
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Atsushi Nemoto wrote:
 
-On Fri, Oct 13, 2006 at 03:40:20PM +0200, Aurelien Jarno wrote:
-> Hi!
-> 
-> Daniel Jacobowitz a écrit :
-> >These patches for qemu let IDE and initrd work in the defconfig.
-> >It seems to function - I was able to get as far as partitioning
-> >the drive in the debian installer and the next time I started qemu
-> >the new partitions were found.  But the installer hangs up trying
-> >to format swap.
-> >
-> >Of course, what would be really nice would be a PCI controller.
-> >I'm not brave enough to try.
-> >
-> >I'm not going to submit the qemu change until I have some better
-> >evidence that it all works right (or someone else does).
-> >
-> 
-> First of all, thanks a lot for your work, that makes QEMU mips more usable.
-> 
-> The IDE part works very well, though there seems to be some problems 
-> with userland tools (mke2fs), an instruction is probably not/bad 
-> emulated. I now have a system with the root on the IDE drive and with swap.
-> 
+>>Since we already moved to GENERIC_TIME, we should implement
+>>alternatives of old do_gettimeoffset routines to get sub-jiffies
+>>resolution from gettimeofday().  This patch includes:
 
-After a week of test, I can say that the IDE part is working correctly 
-(at least for me, and I suppose for you), I am using it on an emulated
-system with ext3 as the root partition, and with swap. There are some
-problems related to the userland tools (mke2fs) though.
+> Take 2.  Changes from previous patch are:
 
-Therefore I propose to submit the IDE part to QEMU. I have extracted it
-from your patch, which also contains initrd support.
+> * Update against current git tree.
+> * Just fix sb1250_hpt_setup typo.
+> * Remove hack from jmr3927_hpt_read, bcm1480_hpt_read and add comments.
 
-Care to send it?
+> Subject: [PATCH] rest of works for migration to GENERIC_TIME
 
-Thanks,
-Aurelien
+> Since we already moved to GENERIC_TIME, we should implement
+> alternatives of old do_gettimeoffset routines to get sub-jiffies
+> resolution from gettimeofday().  This patch includes:
 
--- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+> * MIPS clocksource support (based on works by Manish Lachwani).
+> * remove unused gettimeoffset routines and related codes.
+> * remove unised 64bit do_div64_32().
+> * simplify mips_hpt_init. (no argument needed, __init tag)
 
---4Ckj6UjgE2iN1+kY
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: attachment; filename="mips-qemu-ide.patch"
+    It looks like this change might have broken some code...
 
-Index: Makefile.target
-===================================================================
-RCS file: /sources/qemu/qemu/Makefile.target,v
-retrieving revision 1.130
-diff -u -d -p -r1.130 Makefile.target
---- Makefile.target	22 Oct 2006 00:18:54 -0000	1.130
-+++ Makefile.target	24 Oct 2006 04:58:51 -0000
-@@ -357,8 +357,8 @@ VL_OBJS+= grackle_pci.o prep_pci.o unin_
- DEFINES += -DHAS_AUDIO
- endif
- ifeq ($(TARGET_ARCH), mips)
--VL_OBJS+= mips_r4k.o dma.o vga.o serial.o i8254.o i8259.o
--#VL_OBJS+= #ide.o pckbd.o fdc.o m48t59.o
-+VL_OBJS+= mips_r4k.o dma.o vga.o serial.o i8254.o i8259.o ide.o
-+#VL_OBJS+= #pckbd.o fdc.o m48t59.o
- endif
- ifeq ($(TARGET_BASE_ARCH), sparc)
- ifeq ($(TARGET_ARCH), sparc64)
-Index: hw/mips_r4k.c
-===================================================================
-RCS file: /sources/qemu/qemu/hw/mips_r4k.c,v
-retrieving revision 1.20
-diff -u -d -p -r1.20 mips_r4k.c
---- hw/mips_r4k.c	18 Sep 2006 01:15:29 -0000	1.20
-+++ hw/mips_r4k.c	24 Oct 2006 04:58:51 -0000
-@@ -7,6 +7,10 @@
- 
- #define VIRT_TO_PHYS_ADDEND (-0x80000000LL)
- 
-+static const int ide_iobase[2] = { 0x1f0, 0x170 };
-+static const int ide_iobase2[2] = { 0x3f6, 0x376 };
-+static const int ide_irq[2] = { 14, 15 };
-+
- extern FILE *logfile;
- 
- static PITState *pit;
-@@ -118,6 +122,7 @@ void mips_r4k_init (int ram_size, int vg
-     int ret;
-     CPUState *env;
-     long kernel_size;
-+    int i;
- 
-     env = cpu_init();
-     register_savevm("cpu", 0, 3, cpu_save, cpu_load, env);
-@@ -198,6 +203,10 @@ void mips_r4k_init (int ram_size, int vg
-             exit (1);
-         }
-     }
-+
-+    for(i = 0; i < 2; i++)
-+        isa_ide_init(ide_iobase[i], ide_iobase2[i], ide_irq[i],
-+                     bs_table[2 * i], bs_table[2 * i + 1]);
- }
- 
- QEMUMachine mips_machine = {
+> * simplify c0_hpt_timer_init. (no need to write to c0_count)
+> * remove some hpt_init routines.
+> * mips_hpt_mask variable to specify bitmask of hpt value.
+> * convert jmr3927_do_gettimeoffset to jmr3927_hpt_read.
+> * convert ip27_do_gettimeoffset to ip27_hpt_read.
+> * convert bcm1480_do_gettimeoffset to bcm1480_hpt_read.
+> * simplify sb1250 hpt functions. (no need to subtract and shift)
 
---4Ckj6UjgE2iN1+kY--
+> Other than board independent part are not tested.  Please test if you
+> have those platforms.  Thank you.
+
+> diff --git a/arch/mips/dec/time.c b/arch/mips/dec/time.c
+> index 4cf0c06..69e424e 100644
+> --- a/arch/mips/dec/time.c
+> +++ b/arch/mips/dec/time.c
+> @@ -160,11 +160,6 @@ static unsigned int dec_ioasic_hpt_read(
+>  	return ioasic_read(IO_REG_FCTR);
+>  }
+>  
+> -static void dec_ioasic_hpt_init(unsigned int count)
+> -{
+> -	ioasic_write(IO_REG_FCTR, ioasic_read(IO_REG_FCTR) - count);
+> -}
+> -
+>  
+>  void __init dec_time_init(void)
+>  {
+> @@ -174,11 +169,9 @@ void __init dec_time_init(void)
+>  	mips_timer_state = dec_timer_state;
+>  	mips_timer_ack = dec_timer_ack;
+>  
+> -	if (!cpu_has_counter && IOASIC) {
+> +	if (!cpu_has_counter && IOASIC)
+>  		/* For pre-R4k systems we use the I/O ASIC's counter.  */
+>  		mips_hpt_read = dec_ioasic_hpt_read;
+> -		mips_hpt_init = dec_ioasic_hpt_init;
+> -	}
+
+    With mips_hpt_init() handler gone, how the initial value is loaded here?
+
+WBR, Sergei

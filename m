@@ -1,101 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Oct 2006 14:40:06 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:32975 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20039677AbWJXNj7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Oct 2006 14:39:59 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id D6B183EBE; Tue, 24 Oct 2006 06:39:42 -0700 (PDT)
-Message-ID: <453E179B.50205@ru.mvista.com>
-Date:	Tue, 24 Oct 2006 17:39:39 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Oct 2006 14:54:13 +0100 (BST)
+Received: from ch-smtp01.sth.basefarm.net ([80.76.149.212]:63877 "EHLO
+	ch-smtp01.sth.basefarm.net") by ftp.linux-mips.org with ESMTP
+	id S20039679AbWJXNyH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Oct 2006 14:54:07 +0100
+Received: from c83-250-8-219.bredband.comhem.se ([83.250.8.219]:45891 helo=mail.ferretporn.se)
+	by ch-smtp01.sth.basefarm.net with esmtps (TLSv1:AES256-SHA:256)
+	(Exim 4.63)
+	(envelope-from <creideiki+linux-mips@ferretporn.se>)
+	id 1GcMjD-0004BI-6C; Tue, 24 Oct 2006 15:54:06 +0200
+Received: from www.ferretporn.se (unknown [192.168.0.3])
+	by mail.ferretporn.se (Postfix) with ESMTP id F4051D247;
+	Tue, 24 Oct 2006 15:53:55 +0200 (CEST)
+Received: from 136.163.203.3
+        (SquirrelMail authenticated user creideiki)
+        by www.ferretporn.se with HTTP;
+        Tue, 24 Oct 2006 15:53:56 +0200 (CEST)
+Message-ID: <53979.136.163.203.3.1161698036.squirrel@www.ferretporn.se>
+In-Reply-To: <20061023224318.GA1732@linux-mips.org>
+References: <200610212159.04965.creideiki+linux-mips@ferretporn.se>
+    <20061022232316.GA19127@linux-mips.org>
+    <20061023001947.GA10853@linux-mips.org>
+    <200610232330.23498.creideiki+linux-mips@ferretporn.se>
+    <20061023224318.GA1732@linux-mips.org>
+Date:	Tue, 24 Oct 2006 15:53:56 +0200 (CEST)
+Subject: Re: Extreme system overhead on large IP27
+From:	"Karl-Johan Karlsson" <creideiki+linux-mips@ferretporn.se>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+User-Agent: SquirrelMail/1.4.8
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] rest of works for migration to GENERIC_TIME
-References: <20061023.033407.104640794.anemo@mba.ocn.ne.jp> <20061024.002127.74752850.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061024.002127.74752850.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Scan-Result: No virus found in message 1GcMjD-0004BI-6C.
+X-Scan-Signature: ch-smtp01.sth.basefarm.net 1GcMjD-0004BI-6C 3847c637f0e5505813664be8b1572174
+Return-Path: <creideiki+linux-mips@ferretporn.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13083
+X-archive-position: 13084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: creideiki+linux-mips@ferretporn.se
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Tue, October 24, 2006 00:43, Ralf Baechle wrote:
 
-Atsushi Nemoto wrote:
+> If you reduce your system to just 4 processors, do you also have that
+> extremly high overhead?  The reason I'm asking is that my own Origin 200
+> system has just 4 processors.
 
->>Since we already moved to GENERIC_TIME, we should implement
->>alternatives of old do_gettimeoffset routines to get sub-jiffies
->>resolution from gettimeofday().  This patch includes:
+I can't get physical access to the system to pull out CPU boards today, so
+I did the best I could do remotely - powered down all modules but one and
+am now running a kernel built with support for only 4 of the 8 remaining
+R12000 CPU:s.
 
-> Take 2.  Changes from previous patch are:
+Overhead is not as extreme as with more CPU:s, but still high. Running
+four copies of "md5sum /dev/zero", top shows around 95% useful work and 5%
+system overhead per CPU, while a "make -j4" of the kernel gives me 20-30%
+system and 70-80% user time (down from a maximum of 80% system time with
+all 32 CPU:s).
 
-> * Update against current git tree.
-> * Just fix sb1250_hpt_setup typo.
-> * Remove hack from jmr3927_hpt_read, bcm1480_hpt_read and add comments.
+This is still on the Gentoo 2.6.17.10 kernel, by the way (which is a
+mips-git snapshot from 2006-06-18 plus extra patches from e.g.
+<URL:http://ftp.du.se/pub/os/gentoo/distfiles/mips-sources-generic_patches-1.25.tar.bz2>).
+I tried a git snapshot from earlier today, but the only thing that kernel
+did was print the NUMA-link topology and then hang.
 
-> Subject: [PATCH] rest of works for migration to GENERIC_TIME
+Now that I actually look at Gentoo's patchset, I see there's a large patch
+(misc-2.6.17-ioc3-metadriver-r26.patch) touching serial and ethernet
+drivers for the IOC3. Perhaps the snapshot actually did boot, but just
+couldn't talk to me without that patch? The patch doesn't apply to the
+current git, though, so I think I'll leave that to someone who knows what
+they're doing.
 
-> Since we already moved to GENERIC_TIME, we should implement
-> alternatives of old do_gettimeoffset routines to get sub-jiffies
-> resolution from gettimeofday().  This patch includes:
-
-> * MIPS clocksource support (based on works by Manish Lachwani).
-> * remove unused gettimeoffset routines and related codes.
-> * remove unised 64bit do_div64_32().
-> * simplify mips_hpt_init. (no argument needed, __init tag)
-
-    It looks like this change might have broken some code...
-
-> * simplify c0_hpt_timer_init. (no need to write to c0_count)
-> * remove some hpt_init routines.
-> * mips_hpt_mask variable to specify bitmask of hpt value.
-> * convert jmr3927_do_gettimeoffset to jmr3927_hpt_read.
-> * convert ip27_do_gettimeoffset to ip27_hpt_read.
-> * convert bcm1480_do_gettimeoffset to bcm1480_hpt_read.
-> * simplify sb1250 hpt functions. (no need to subtract and shift)
-
-> Other than board independent part are not tested.  Please test if you
-> have those platforms.  Thank you.
-
-> diff --git a/arch/mips/dec/time.c b/arch/mips/dec/time.c
-> index 4cf0c06..69e424e 100644
-> --- a/arch/mips/dec/time.c
-> +++ b/arch/mips/dec/time.c
-> @@ -160,11 +160,6 @@ static unsigned int dec_ioasic_hpt_read(
->  	return ioasic_read(IO_REG_FCTR);
->  }
->  
-> -static void dec_ioasic_hpt_init(unsigned int count)
-> -{
-> -	ioasic_write(IO_REG_FCTR, ioasic_read(IO_REG_FCTR) - count);
-> -}
-> -
->  
->  void __init dec_time_init(void)
->  {
-> @@ -174,11 +169,9 @@ void __init dec_time_init(void)
->  	mips_timer_state = dec_timer_state;
->  	mips_timer_ack = dec_timer_ack;
->  
-> -	if (!cpu_has_counter && IOASIC) {
-> +	if (!cpu_has_counter && IOASIC)
->  		/* For pre-R4k systems we use the I/O ASIC's counter.  */
->  		mips_hpt_read = dec_ioasic_hpt_read;
-> -		mips_hpt_init = dec_ioasic_hpt_init;
-> -	}
-
-    With mips_hpt_init() handler gone, how the initial value is loaded here?
-
-WBR, Sergei
+-- 
+Karl-Johan Karlsson

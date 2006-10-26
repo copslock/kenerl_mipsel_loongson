@@ -1,59 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2006 15:14:25 +0100 (BST)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:50642 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038512AbWJZOOU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Oct 2006 15:14:20 +0100
-Received: from localhost (p7132-ipad209funabasi.chiba.ocn.ne.jp [58.88.118.132])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id A644CB7AB; Thu, 26 Oct 2006 23:14:15 +0900 (JST)
-Date:	Thu, 26 Oct 2006 23:16:42 +0900 (JST)
-Message-Id: <20061026.231642.126142599.anemo@mba.ocn.ne.jp>
-To:	m_lachwani@yahoo.com
-Cc:	creideiki+linux-mips@ferretporn.se, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Oct 2006 17:50:17 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:37781 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038624AbWJZQuP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 26 Oct 2006 17:50:15 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.7) with ESMTP id k9QGodbm029086;
+	Thu, 26 Oct 2006 17:50:40 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id k9QGoS3x029056;
+	Thu, 26 Oct 2006 17:50:37 +0100
+Date:	Thu, 26 Oct 2006 17:50:28 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	creideiki+linux-mips@ferretporn.se, linux-mips@linux-mips.org
 Subject: Re: Extreme system overhead on large IP27
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061026074216.68000.qmail@web37504.mail.mud.yahoo.com>
-References: <20061026.130552.11963152.nemoto@toshiba-tops.co.jp>
-	<20061026074216.68000.qmail@web37504.mail.mud.yahoo.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Message-ID: <20061026165023.GA24373@linux-mips.org>
+References: <20061024140614.GB27800@linux-mips.org> <6285.136.163.203.3.1161704681.squirrel@www.ferretporn.se> <20061025.174504.71086461.nemoto@toshiba-tops.co.jp> <20061026.130552.11963152.nemoto@toshiba-tops.co.jp> <20061026125624.GA14122@linux-mips.org> <003001c6f905$db2781f0$10eca8c0@grendel>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <003001c6f905$db2781f0$10eca8c0@grendel>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13103
+X-archive-position: 13104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 26 Oct 2006 00:42:16 -0700 (PDT), Manish Lachwani <m_lachwani@yahoo.com> wrote:
-> It could be that I am seeing a similar issue on the
-> SWARM board (sb1250) as well. Your patch removed the
-> shifts for mip_hpt_frequency from
-> arch/mips/sibyte/sb1250/time.c and in the
-> sb1250_hpt_read(). The Sibyte HPT is 1 Mhz. However,
-> when I added those shifts back, I did not see any
-> issues with the system clock. I could possibly try out
-> your patch with lower clocksource shift values and see
-> if the system clock is still wrong.
+On Thu, Oct 26, 2006 at 03:51:35PM +0200, Kevin D. Kissell wrote:
 
-I just sent the patch.  Please try it.
+> I don't see what's different here than in any other SMP case.
 
-> Btw, the clocksource changes seem to work well on the
-> BCM 1480 based board. 
+It just happened to be a coonfiguration which happened to trigger the
+issue.  But the underlying problem could exist on any other SMP system
+using per-processor timers.
 
-Thanks, good news!
+>  Is it really
+> true that the MIPS SMP support *requires* that all CPUs in the system
+> come out of reset on the same clock, with the same value in Count?
 
-As Ralf pointed out, current code still problematic on some SMP
-system, but I think IP27, SB1250, BCM1480 should be OK now while their
-mips_hpt_read are not using per-CPU cp0 timers.
+There isn't even an requirement to use the cp0 counter at all.  It just
+happens to be that the VSMP kernel is using that timer.  It also happens
+to be quite a logic choice on the Malta where the alternative would be
+specific to one of the several system controllers.
 
----
-Atsushi Nemoto
+SGI systems are infamous for potencially using mixed spec CPUs from the
+same family.  That includes different clock speeds; something like having
+180MHz R10000 and 500MHz R14000 would be possible.  The only sane cure for
+the time code in such cases is avoiding c0_count and relying on some other
+system-wide time source.  The same is may be needed in case of variable
+CPU clock.
+
+That said, Linux doesn't care just need a little bit of glue code to deal
+with arbitrary timers.
+
+> I find that very surprising (and a little disappointing).  Is this a general
+> limitation of Linux? MIPS32/MIPS64 PRAs call out the reset value
+> of Count as being undefined, and chip specs for pre-MIPS32 CPUs
+> like the R10000 and the R4400 do not call out any reset value for
+> Count either.
+
+The count / compare code is very much did originate on uniprocessor
+systems and the sole thing it cares about is the speed the counter is
+incrementing at, not the absolute value.
+
+> If there's going to be skew between CPU clocks, all it really means
+> is that one cannot directly compare timestamps generated by different
+> CPUs.  At a given point in time, "How long will it be until you hit an 
+> absolute Count value X?"  will have a slightly different answer on each CPU 
+> if there is skew, but "What will the local Count value be N jiffies from now?"
+> should be something that can be correctly calculated independently on each 
+> node. Where are we depending on the former, and can that usage be converted
+> into something more like the later?
+>             Kevin K.
+
+  Ralf

@@ -1,71 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Oct 2006 02:55:32 +0100 (BST)
-Received: from gateway-1237.mvista.com ([63.81.120.158]:56250 "EHLO
-	gateway-1237.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S20038926AbWJ0Bzb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Oct 2006 02:55:31 +0100
-Received: from [10.0.0.139] (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id 682B41BF2E; Thu, 26 Oct 2006 18:55:03 -0700 (PDT)
-Message-ID: <454166F7.70200@mvista.com>
-Date:	Thu, 26 Oct 2006 18:55:03 -0700
-From:	mlachwani <mlachwani@mvista.com>
-User-Agent: Thunderbird 1.5.0.7 (X11/20060909)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	m_lachwani@yahoo.com, creideiki+linux-mips@ferretporn.se,
-	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: Extreme system overhead on large IP27
-References: <20061026.130552.11963152.nemoto@toshiba-tops.co.jp>	<20061026074216.68000.qmail@web37504.mail.mud.yahoo.com> <20061026.231642.126142599.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061026.231642.126142599.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Oct 2006 16:42:40 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:15626 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037507AbWJ0Pmc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 27 Oct 2006 16:42:32 +0100
+Received: by mo.po.2iij.net (mo32) id k9RFgTrs099852; Sat, 28 Oct 2006 00:42:29 +0900 (JST)
+Received: from localhost.localdomain (34.26.30.125.dy.iij4u.or.jp [125.30.26.34])
+	by mbox.po.2iij.net (mbox31) id k9RFgPZv015402
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 28 Oct 2006 00:42:25 +0900 (JST)
+Date:	Sat, 28 Oct 2006 00:42:24 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove unused definition from c-sb1.c
+Message-Id: <20061028004224.49efdbac.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13107
+X-archive-position: 13108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Atsushi,
+Hi Ralf,
 
-I tried out your patch on the SWARM SMP and it works.
+This patch has removed unused definition from c-sb1.c .
 
-thanks,
-Manish Lachwani
+arch/mips/mm/c-sb1.c: In function `sb1_cache_init':
+arch/mips/mm/c-sb1.c:447: warning: unused variable `handle_vec2_sb1'
 
-Atsushi Nemoto wrote:
-> On Thu, 26 Oct 2006 00:42:16 -0700 (PDT), Manish Lachwani <m_lachwani@yahoo.com> wrote:
->   
->> It could be that I am seeing a similar issue on the
->> SWARM board (sb1250) as well. Your patch removed the
->> shifts for mip_hpt_frequency from
->> arch/mips/sibyte/sb1250/time.c and in the
->> sb1250_hpt_read(). The Sibyte HPT is 1 Mhz. However,
->> when I added those shifts back, I did not see any
->> issues with the system clock. I could possibly try out
->> your patch with lower clocksource shift values and see
->> if the system clock is still wrong.
->>     
->
-> I just sent the patch.  Please try it.
->
->   
->> Btw, the clocksource changes seem to work well on the
->> BCM 1480 based board. 
->>     
->
-> Thanks, good news!
->
-> As Ralf pointed out, current code still problematic on some SMP
-> system, but I think IP27, SB1250, BCM1480 should be OK now while their
-> mips_hpt_read are not using per-CPU cp0 timers.
->
-> ---
-> Atsushi Nemoto
->
->   
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X generic/Documentation/dontdiff generic-orig/arch/mips/mm/c-sb1.c generic/arch/mips/mm/c-sb1.c
+--- generic-orig/arch/mips/mm/c-sb1.c	2006-10-22 12:13:54.649176250 +0900
++++ generic/arch/mips/mm/c-sb1.c	2006-10-22 13:32:28.471771750 +0900
+@@ -444,7 +444,6 @@ static __init void probe_cache_sizes(voi
+ void sb1_cache_init(void)
+ {
+ 	extern char except_vec2_sb1;
+-	extern char handle_vec2_sb1;
+ 
+ 	/* Special cache error handler for SB1 */
+ 	set_uncached_handler (0x100, &except_vec2_sb1, 0x80);

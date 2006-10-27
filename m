@@ -1,121 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Oct 2006 20:22:41 +0100 (BST)
-Received: from smtp-out.sigp.net ([63.237.78.44]:29943 "EHLO smtp-out.sigp.net")
-	by ftp.linux-mips.org with ESMTP id S20037750AbWJ0TWh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 27 Oct 2006 20:22:37 +0100
-Received: from gamd-ex-001.ss.drs.master (gamd-ex-001.ss.drs.master [172.22.132.94])
-	by smtp-out.sigp.net (8.13.8/8.13.8) with ESMTP id k9RJMVdQ018204;
-	Fri, 27 Oct 2006 15:22:35 -0400 (EDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Oct 2006 21:22:13 +0100 (BST)
+Received: from mail.gazungle.com ([207.210.240.68]:64957 "HELO
+	mail.gazungle.com") by ftp.linux-mips.org with SMTP
+	id S20037758AbWJ0UWJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Oct 2006 21:22:09 +0100
+Received: (qmail 11303 invoked by uid 399); 27 Oct 2006 20:22:00 -0000
+Received: from unknown (HELO thelab) (69.26.107.202)
+  by mail.gazungle.com with SMTP; 27 Oct 2006 20:22:00 -0000
+Reply-To: <vasbridge@sanblaze.com>
+From:	"Vince Asbridge" <vasbridge@sanblaze.com>
+To:	<ralf@linux-mips.org>, <Bill.Azer@drs-ss.com>
+Cc:	<linux-mips@linux-mips.org>
+Subject: Drivers for SANBlaze FC card
+Date:	Fri, 27 Oct 2006 16:24:46 -0400
+Organization: SANBlaze
+Message-ID: <017901c6fa05$f211a160$4b01a8c0@sanblaze.com>
 MIME-Version: 1.0
 Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C6F9FD.3FBAB911"
-Subject: RE: sanblaze driver -> LSFC929 FiberChannel
-Date:	Fri, 27 Oct 2006 15:22:00 -0400
-Message-ID: <DEB94D90ABFC8240851346CFD4ACFF149E1CC2@gamd-ex-001.ss.drs.master>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: sanblaze driver -> LSFC929 FiberChannel
-Thread-Index: Acb5U0ypC9ZHsldVRgOrB0VVQKcH9wAn21gQAAKc0PQ=
-References: <DEB94D90ABFC8240851346CFD4ACFF1429FF05@gamd-ex-001.ss.drs.master>
-From:	"Azer, William" <Bill.Azer@drs-ss.com>
-To:	"Azer, William" <Bill.Azer@drs-ss.com>, <ralf@linux-mips.org>
-Cc:	<linux-mips@linux-mips.org>
-Return-Path: <Bill.Azer@drs-ss.com>
+	boundary="----=_NextPart_000_017A_01C6F9E4.6B000160"
+X-Mailer: Microsoft Office Outlook 11
+Thread-Index: Acb6BfGMq9+mDN7OS3il5QoeYv4i2w==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
+Return-Path: <vasbridge@sanblaze.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13111
+X-archive-position: 13112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Bill.Azer@drs-ss.com
+X-original-sender: vasbridge@sanblaze.com
 Precedence: bulk
 X-list: linux-mips
 
 This is a multi-part message in MIME format.
 
-------_=_NextPart_001_01C6F9FD.3FBAB911
+------=_NextPart_000_017A_01C6F9E4.6B000160
 Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-this is the order of the laod and the messages :
+Ralf,
 
-bash-2.05b# insmod drivers/message/fusion/mptbase.ko
+Bill Azer from DRS forwarded a mail regarding the SANBlaze FibreChannel card
+on a MIPS processor, and some issues he was having with loading the driver
+set.
 
-Fusion MPT base driver 3.03.09
+Our card uses the FusionMPT driver from LSI logic, and we were able to
+provide a new kit to Bill which resolved his issue.
 
-Copyright (c) 1999-2005 LSI Logic Corporation
+If you would like a copy of this latest driver set, please just send me an
+email and I'll send it along.
 
-bash-2.05b# insmod drivers/message/fusion/mptctl.ko
+I expect that LSI Logic will (or maybe even has) update the drivers on
+kernel.org, but if you want a copy of what we sent Bill, just send me an
+email.
 
-Fusion MPT misc device (ioctl) driver 3.03.09
+Vince Asbridge
+SANBlaze Technology, Inc.
 
-mptctl: Registered with Fusion MPT base driver
-
-mptctl: /dev/mptctl @ (major,minor=3D10,220)
-
-bash-2.05b# insmod drivers/message/fusion/mptscsih.ko
-
-bash-2.05b# insmod drivers/scsi/scsi_transport_fc.ko
-
-bash-2.05b# insmod
-
-/lib/modules/2.6.17.7/kernel/drivers/message/fusion/mptfc.ko
-
-Fusion MPT FC Host driver 3.03.09
-
-mptbase: Initiating ioc0 bringup
-
-ioc0: FC929: Capabilities=3D{Initiator,Target,LAN}
-
-=20
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!
-
-mptbase: Initiating ioc0 recovery
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (130)!
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!
-
-mptbase: Initiating ioc0 recovery
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!
-
-mptbase: Initiating ioc0 recovery
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!
-
-scsi0 : ioc0: LSIFC929, FwRev=3D02000a00h, Ports=3D1, MaxQ=3D1023, =
-IRQ=3D10
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!
-
-mptbase: Initiating ioc0 recovery
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!
-
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!
-
-
-
-
------Original Message-----
-From: linux-mips-bounce@linux-mips.org on behalf of Azer, William
-Sent: Fri 10/27/2006 2:07 PM
-To: ralf@linux-mips.org
-Cc: linux-mips@linux-mips.org
-Subject: Re: sanblaze driver -> LSFC929 FiberChannel
-=20
-It is a bcm1480, using linux 2.6.17.7 with sanblaze PMC
-
-Bill
 
 -----Original Message-----
 From: Ralf Baechle <ralf@linux-mips.org>
@@ -127,114 +69,62 @@ Subject: Re: sanblaze driver -> LSFC929 FiberChannel
 On Thu, Oct 26, 2006 at 04:39:42PM -0400, Azer, William wrote:
 
 > i am using the sanblaze card configured in the kernel for the
-> fiberchannel.  i enabled the mpt fusion fc and the ioctl driver, i =
-also
+> fiberchannel. i enabled the mpt fusion fc and the ioctl driver, i also
 > enable scsi disk support, ...
 
 This is the first user report for such a device on MIPS ever afaics.
 A few more details on your system, messages etc. could be useful to
 solve your issue.
 
-  Ralf
+Ralf
 
 
 
+	
 
-------_=_NextPart_001_01C6F9FD.3FBAB911
+------=_NextPart_000_017A_01C6F9E4.6B000160
 Content-Type: text/html;
-	charset="iso-8859-1"
+	charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <HTML>
 <HEAD>
 <META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Diso-8859-1">
+charset=3Dus-ascii">
 <META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-6.5.7233.28">
-<TITLE>RE: sanblaze driver -&gt; LSFC929 FiberChannel</TITLE>
+6.5.7036.0">
+<TITLE>Drivers for SANBlaze FC card</TITLE>
 </HEAD>
 <BODY>
-<!-- Converted from text/plain format -->
+<!-- Converted from text/rtf format -->
 
-<P><FONT SIZE=3D2>this is the order of the laod and the messages :<BR>
+<P><FONT SIZE=3D2 FACE=3D"Arial">Ralf,</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Bill Azer from DRS forwarded a mail =
+regarding the SANBlaze FibreChannel card on a MIPS processor, and some =
+issues he was having with loading the driver set.</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Our card uses the FusionMPT driver from =
+LSI logic, and we were able to provide a new kit to Bill which resolved =
+his issue.</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">If you would like a copy of this latest =
+driver set, please just send me an email and I'll send it along.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">I expect that LSI Logic will (or maybe =
+even has) update the drivers on kernel.org, but if you want a copy of =
+what we sent Bill, just send me an email.</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Vince Asbridge</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">SANBlaze Technology, Inc.</FONT>
+</P>
 <BR>
-bash-2.05b# insmod drivers/message/fusion/mptbase.ko<BR>
-<BR>
-Fusion MPT base driver 3.03.09<BR>
-<BR>
-Copyright (c) 1999-2005 LSI Logic Corporation<BR>
-<BR>
-bash-2.05b# insmod drivers/message/fusion/mptctl.ko<BR>
-<BR>
-Fusion MPT misc device (ioctl) driver 3.03.09<BR>
-<BR>
-mptctl: Registered with Fusion MPT base driver<BR>
-<BR>
-mptctl: /dev/mptctl @ (major,minor=3D10,220)<BR>
-<BR>
-bash-2.05b# insmod drivers/message/fusion/mptscsih.ko<BR>
-<BR>
-bash-2.05b# insmod drivers/scsi/scsi_transport_fc.ko<BR>
-<BR>
-bash-2.05b# insmod<BR>
-<BR>
-/lib/modules/2.6.17.7/kernel/drivers/message/fusion/mptfc.ko<BR>
-<BR>
-Fusion MPT FC Host driver 3.03.09<BR>
-<BR>
-mptbase: Initiating ioc0 bringup<BR>
-<BR>
-ioc0: FC929: Capabilities=3D{Initiator,Target,LAN}<BR>
-<BR>
-<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!<BR>
-<BR>
-mptbase: Initiating ioc0 recovery<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (130)!<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!<BR>
-<BR>
-mptbase: Initiating ioc0 recovery<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!<BR>
-<BR>
-mptbase: Initiating ioc0 recovery<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!<BR>
-<BR>
-scsi0 : ioc0: LSIFC929, FwRev=3D02000a00h, Ports=3D1, MaxQ=3D1023, =
-IRQ=3D10<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!<BR>
-<BR>
-mptbase: Initiating ioc0 recovery<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (0)!<BR>
-<BR>
-mptbase: mpt_reply: WARNING - ioc0: Invalid cb_idx (65)!<BR>
-<BR>
-<BR>
-<BR>
-<BR>
------Original Message-----<BR>
-From: linux-mips-bounce@linux-mips.org on behalf of Azer, William<BR>
-Sent: Fri 10/27/2006 2:07 PM<BR>
-To: ralf@linux-mips.org<BR>
-Cc: linux-mips@linux-mips.org<BR>
-Subject: Re: sanblaze driver -&gt; LSFC929 FiberChannel<BR>
-<BR>
-It is a bcm1480, using linux 2.6.17.7 with sanblaze PMC<BR>
-<BR>
-Bill<BR>
-<BR>
------Original Message-----<BR>
+
+<P><FONT FACE=3D"Times New Roman">-----Original Message-----<BR>
 From: Ralf Baechle &lt;ralf@linux-mips.org&gt;<BR>
 To: Azer, William &lt;Bill.Azer@drs-ss.com&gt;<BR>
 CC: linux-mips@linux-mips.org &lt;linux-mips@linux-mips.org&gt;<BR>
@@ -244,21 +134,22 @@ Subject: Re: sanblaze driver -&gt; LSFC929 FiberChannel<BR>
 On Thu, Oct 26, 2006 at 04:39:42PM -0400, Azer, William wrote:<BR>
 <BR>
 &gt; i am using the sanblaze card configured in the kernel for the<BR>
-&gt; fiberchannel.&nbsp; i enabled the mpt fusion fc and the ioctl =
-driver, i also<BR>
+&gt; fiberchannel. i enabled the mpt fusion fc and the ioctl driver, i =
+also<BR>
 &gt; enable scsi disk support, ...<BR>
 <BR>
 This is the first user report for such a device on MIPS ever afaics.<BR>
 A few more details on your system, messages etc. could be useful to<BR>
 solve your issue.<BR>
 <BR>
-&nbsp; Ralf<BR>
-<BR>
-<BR>
+Ralf<BR>
 <BR>
 </FONT>
 </P>
 
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+</P>
+
 </BODY>
 </HTML>
-------_=_NextPart_001_01C6F9FD.3FBAB911--
+------=_NextPart_000_017A_01C6F9E4.6B000160--

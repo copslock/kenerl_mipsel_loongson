@@ -1,280 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 06:15:45 +0000 (GMT)
-Received: from xenotime.net ([66.160.160.81]:51121 "HELO xenotime.net")
-	by ftp.linux-mips.org with SMTP id S20038467AbWKBGPn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2006 06:15:43 +0000
-Received: from midway.site ([71.117.236.95]) by xenotime.net for <linux-mips@linux-mips.org>; Wed, 1 Nov 2006 22:15:38 -0800
-Date:	Wed, 1 Nov 2006 22:11:25 -0800
-From:	Randy Dunlap <rdunlap@xenotime.net>
-To:	Wim Van Sebroeck <wim@iguana.be>
-Cc:	Thomas Koeller <thomas@koeller.dyndns.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Dave Jones <davej@redhat.com>,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
-Message-Id: <20061101221125.73505baa.rdunlap@xenotime.net>
-In-Reply-To: <20061101184633.GA7056@infomag.infomag.iguana.be>
-References: <20061101184633.GA7056@infomag.infomag.iguana.be>
-Organization: YPO4
-X-Mailer: Sylpheed version 2.2.9 (GTK+ 2.8.10; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <rdunlap@xenotime.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 07:41:09 +0000 (GMT)
+Received: from farad.aurel32.net ([82.232.2.251]:28350 "EHLO farad.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20038467AbWKBHlG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2006 07:41:06 +0000
+Received: from [2001:618:400:fc13:2d0:59ff:fe4a:19a9] (helo=henry.aurel32.net)
+	by farad.aurel32.net with esmtpsa (TLS-1.0:RSA_AES_256_CBC_SHA:32)
+	(Exim 4.50)
+	id 1GfXC5-0007VK-Pi; Thu, 02 Nov 2006 08:40:57 +0100
+Received: from aurel32 by henry.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1Gf08b-0005Vo-MY; Tue, 31 Oct 2006 21:23:09 +0100
+Date:	Tue, 31 Oct 2006 21:23:09 +0100
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	qemu-devel@nongnu.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] QEMU: improvement of the initrd support for mips(el)
+Message-ID: <20061031202309.GA16619@henry.aurel32.net>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="a8Wt8u1KmwUX3Y2C"
+Content-Disposition: inline
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13147
+X-archive-position: 13148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdunlap@xenotime.net
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 1 Nov 2006 19:46:33 +0100 Wim Van Sebroeck wrote:
 
-> /* Function prototypes */
-> static int __init wdt_gpi_probe(struct device *);
-> static int __exit wdt_gpi_remove(struct device *);
-> static void wdt_gpi_start(void);
-> static void wdt_gpi_stop(void);
-> static void wdt_gpi_set_timeout(unsigned int);
-> static int wdt_gpi_open(struct inode *, struct file *);
-> static int wdt_gpi_release(struct inode *, struct file *);
-> static ssize_t wdt_gpi_write(struct file *, const char __user *, size_t, loff_t *);
-> static long wdt_gpi_ioctl(struct file *, unsigned int, unsigned long);
-> static const struct resource *wdt_gpi_get_resource(struct platform_device *, const char *, unsigned int);
+--a8Wt8u1KmwUX3Y2C
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
 
-Some lines too long (stay <= 80 columns).
+Hi,
 
-> static int wdt_gpi_notify(struct notifier_block *, unsigned long, void *);
-> static irqreturn_t wdt_gpi_irqhdl(int, void *, struct pt_regs *);
-> 
-> 
-> 
-> 
-> static const char wdt_gpi_name[] = "wdt_gpi";
-> static atomic_t opencnt;
-> static int expect_close;
-> static int locked = 0;
+The attached patch improves the initrd support of the mips(el) platform
+by passing the initrd size and location via the kernel command line. This
+removes the need to pass them manually.
 
-Don't need to init to 0.
+Thanks,
+Aurelien
 
-> /* Module arguments */
-> static int timeout = MAX_TIMEOUT_SECONDS;
-> module_param(timeout, int, 0444);
-> static unsigned long resetaddr = 0xbffdc200;
-> module_param(resetaddr, ulong, 0444);
-> static unsigned long flagaddr = 0xbffdc104;
-> module_param(flagaddr, ulong, 0444);
-> static int powercycle = 0;
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian GNU/Linux developer | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net
 
-no need to init to 0.
+--a8Wt8u1KmwUX3Y2C
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: attachment; filename="mips-qemu-initrd.patch"
 
-> module_param(powercycle, bool, 0444);
-> 
-> static int nowayout = WATCHDOG_NOWAYOUT;
-> module_param(nowayout, bool, 0444);
-> 
-> 
-> 
-> /* No hotplugging on the platform bus - use __init */
-> static int __init wdt_gpi_probe(struct device *dev)
-> {
-> 	int res;
-> 	struct platform_device * const pdv = to_platform_device(dev);
-> 	const struct resource
-> 		* const rr = wdt_gpi_get_resource(pdv, WDT_RESOURCE_REGS,
-> 						  IORESOURCE_MEM),
-> 		* const ri = wdt_gpi_get_resource(pdv, WDT_RESOURCE_IRQ,
-> 						  IORESOURCE_IRQ),
-> 		* const rc = wdt_gpi_get_resource(pdv, WDT_RESOURCE_COUNTER,
-> 						  0);
-> 
-> 	if (unlikely(!rr || !ri || !rc))
-> 		return -ENXIO;
-> 
-> 	wd_regs = ioremap_nocache(rr->start, rr->end + 1 - rr->start);
-> 	if (unlikely(!wd_regs))
-> 		return -ENOMEM;
+--- hw/mips_r4k.c.orig	2006-10-30 23:28:58.000000000 +0100
++++ hw/mips_r4k.c	2006-10-31 14:59:33.000000000 +0100
+@@ -121,7 +121,7 @@
+     unsigned long bios_offset;
+     int ret;
+     CPUState *env;
+-    long kernel_size;
++    long kernel_size, initrd_size;
+     int i;
+ 
+     env = cpu_init();
+@@ -163,10 +163,11 @@
+ 	}
+ 
+         /* load initrd */
++        initrd_size = 0;
+         if (initrd_filename) {
+-            if (load_image(initrd_filename,
+-			   phys_ram_base + INITRD_LOAD_ADDR + VIRT_TO_PHYS_ADDEND)
+-		== (target_ulong) -1) {
++            initrd_size = load_image(initrd_filename,
++                                     phys_ram_base + INITRD_LOAD_ADDR + VIRT_TO_PHYS_ADDEND);
++            if (initrd_size == (target_ulong) -1) {
+                 fprintf(stderr, "qemu: could not load initial ram disk '%s'\n", 
+                         initrd_filename);
+                 exit(1);
+@@ -174,7 +175,17 @@
+         }
+ 
+ 	/* Store command line.  */
+-        strcpy (phys_ram_base + (16 << 20) - 256, kernel_cmdline);
++        if (initrd_size > 0) {
++            ret = sprintf(phys_ram_base + (16 << 20) - 256, 
++                          "rd_start=0x%08x rd_size=%li ",
++                          INITRD_LOAD_ADDR,
++                          initrd_size);
++            strcpy (phys_ram_base + (16 << 20) - 256 + ret, kernel_cmdline);
++	}
++	else {
++            strcpy (phys_ram_base + (16 << 20) - 256, kernel_cmdline);
++	}
++
+         /* FIXME: little endian support */
+         *(int *)(phys_ram_base + (16 << 20) - 260) = tswap32 (0x12345678);
+         *(int *)(phys_ram_base + (16 << 20) - 264) = tswap32 (ram_size);
 
-There's no way to return the resources on failure?
-
-> 	wd_irq = ri->start;
-> 	wd_ctr = rc->start;
-> 	res = misc_register(&miscdev);
-> 	if (res)
-> 		iounmap(wd_regs);
-> 	else
-> 		register_reboot_notifier(&wdt_gpi_shutdown);
-> 	return res;
-> }
-> 
-> 
-> 
-> static int wdt_gpi_open(struct inode *inode, struct file *file)
-> {
-> 	int res;
-> 
-> 	if (unlikely(0 > atomic_dec_if_positive(&opencnt)))
-
-Style: Instead of
-		if (constant op function_or_variable)
-we prefer
-		if (function_or_variable op constant)
-
-
-> 		return -EBUSY;
-> 
-> 	expect_close = 0;
-> 	if (locked) {
-> 		module_put(THIS_MODULE);
-> 		free_irq(wd_irq, &miscdev);
-> 		locked = 0;
-> 	}
-> 
-> 	res = request_irq(wd_irq, wdt_gpi_irqhdl, SA_SHIRQ | SA_INTERRUPT,
-> 			  wdt_gpi_name, &miscdev);
-> 	if (unlikely(res))
-> 		return res;
-> 
-> 	wdt_gpi_set_timeout(timeout);
-> 	wdt_gpi_start();
-> 
-> 	printk(KERN_INFO "%s: watchdog started, timeout = %u seconds\n",
-> 		wdt_gpi_name, timeout);
-> 	return nonseekable_open(inode, file);
-> }
-> 
-> 
-> 
-> 
-> static long
-> wdt_gpi_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
-> {
-> 	long res = -ENOTTY;
-> 	const long size = _IOC_SIZE(cmd);
-> 	int stat;
-> 	static struct watchdog_info wdinfo = {
-> 		.identity               = "RM9xxx/GPI watchdog",
-> 		.firmware_version       = 0,
-> 		.options                = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING
-> 	};
-> 
-> 	if (unlikely(_IOC_TYPE(cmd) != WATCHDOG_IOCTL_BASE))
-> 		return -ENOTTY;
-> 
-> 	if ((_IOC_DIR(cmd) & _IOC_READ)
-> 	    && !access_ok(VERIFY_WRITE, arg, size))
-> 		return -EFAULT;
-> 
-> 	if ((_IOC_DIR(cmd) & _IOC_WRITE)
-> 	    && !access_ok(VERIFY_READ, arg, size))
-> 		return -EFAULT;
-> 
-> 	expect_close = 0;
-> 
-> 	switch (cmd) {
-> 	case WDIOC_GETSUPPORT:
-> 		wdinfo.options = nowayout ?
-> 			WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING :
-> 			WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE;
-> 		res = __copy_to_user((void __user *)arg, &wdinfo, size) ?
-> 			-EFAULT : size;
-> 		break;
-> 
-> 	case WDIOC_GETSTATUS:
-> 		break;
-> 
-> 	case WDIOC_GETBOOTSTATUS:
-> 		stat = (*(volatile char *) flagaddr & 0x01)
-> 			? WDIOF_CARDRESET : 0;
-> 		res = __copy_to_user((void __user *)arg, &stat, size) ?
-> 			-EFAULT : size;
-> 		break;
-> 
-> 	case WDIOC_SETOPTIONS:
-> 		break;
-> 
-> 	case WDIOC_KEEPALIVE:
-> 		wdt_gpi_set_timeout(timeout);
-> 		res = size;
-> 		break;
-> 
-> 	case WDIOC_SETTIMEOUT:
-> 		{
-> 			int val;
-> 			if (unlikely(__copy_from_user(&val, (const void __user *) arg,
-> 					size))) {
-> 				res = -EFAULT;
-> 				break;
-> 			}
-> 
-> 			if (val > 32)
-> 				val = 32;
-
-There's a #defined constant for that "32".
-Please use it.
-
-> 			timeout = val;
-> 			wdt_gpi_set_timeout(val);
-> 			res = size;
-> 			printk("%s: timeout set to %u seconds\n",
-> 				wdt_gpi_name, timeout);
-> 		}
-> 		break;
-> 
-> 	case WDIOC_GETTIMEOUT:
-> 		res = __copy_to_user((void __user *) arg, &timeout, size) ?
-> 			-EFAULT : size;
-> 		break;
-> 	}
-> 
-> 	return res;
-> }
-> 
-> 
-> 
-> 
-> static irqreturn_t wdt_gpi_irqhdl(int irq, void *ctxt, struct pt_regs *regs)
-> {
-> 	if (!unlikely(__raw_readl(wd_regs + 0x0008) & 0x1))
-> 		return IRQ_NONE;
-> 	__raw_writel(0x1, wd_regs + 0x0008);
-> 
-> 
-> 	printk(KERN_WARNING "%s: watchdog expired - resetting system\n",
-> 		wdt_gpi_name);
-
-I would expect a KERN_ALERT or KERN_EMERG or KERN_CRIT there...
-
-> 
-> 	*(volatile char *) flagaddr |= 0x01;
-> 	*(volatile char *) resetaddr = powercycle ? 0x01 : 0x2;
-> 	iob();
-> 	while (1)
-> 		cpu_relax();
-> }
-> 
-> 
-> 
-> static int
-> wdt_gpi_notify(struct notifier_block *this, unsigned long code, void *unused)
-> {
-> 	if(code == SYS_DOWN || code == SYS_HALT) {
-
-Space between if and (.
-
-> 		wdt_gpi_stop();
-> 	}
-
-No braces around one-statement blocks.
-
-> 	return NOTIFY_DONE;
-> }
-
----
-~Randy
+--a8Wt8u1KmwUX3Y2C--

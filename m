@@ -1,166 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Nov 2006 20:44:20 +0000 (GMT)
-Received: from pasmtpb.tele.dk ([80.160.77.98]:5020 "EHLO pasmtpB.tele.dk")
-	by ftp.linux-mips.org with ESMTP id S20038534AbWKAUoR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Nov 2006 20:44:17 +0000
-Received: from ravnborg.org (0x535d98d8.vgnxx8.adsl-dhcp.tele.dk [83.93.152.216])
-	by pasmtpB.tele.dk (Postfix) with ESMTP id D6208E30DBC;
-	Wed,  1 Nov 2006 21:43:53 +0100 (CET)
-Received: by ravnborg.org (Postfix, from userid 500)
-	id 9EE38580D2; Wed,  1 Nov 2006 21:43:53 +0100 (CET)
-Date:	Wed, 1 Nov 2006 21:43:53 +0100
-From:	Sam Ravnborg <sam@ravnborg.org>
-To:	Wim Van Sebroeck <wim@iguana.be>
-Cc:	Thomas Koeller <thomas@koeller.dyndns.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Dave Jones <davej@redhat.com>,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	"Randy. Dunlap" <rdunlap@xenotime.net>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
-Message-ID: <20061101204353.GA691@uranus.ravnborg.org>
-References: <20061101184633.GA7056@infomag.infomag.iguana.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20061101184633.GA7056@infomag.infomag.iguana.be>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <sam@ravnborg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Nov 2006 22:42:41 +0000 (GMT)
+Received: from mail8.fw-bc.sony.com ([160.33.98.75]:65506 "EHLO
+	mail8.fw-bc.sony.com") by ftp.linux-mips.org with ESMTP
+	id S20038932AbWKAWmf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Nov 2006 22:42:35 +0000
+Received: from mail3.sjc.in.sel.sony.com (mail3.sjc.in.sel.sony.com [43.134.1.211])
+	by mail8.fw-bc.sony.com (8.12.11/8.12.11) with ESMTP id kA1MgNlP014361;
+	Wed, 1 Nov 2006 22:42:23 GMT
+Received: from [43.134.85.135] ([43.134.85.135])
+	by mail3.sjc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id kA1MgMDL013205;
+	Wed, 1 Nov 2006 22:42:22 GMT
+Message-ID: <45492407.7090606@am.sony.com>
+Date:	Wed, 01 Nov 2006 14:47:35 -0800
+From:	Tim Bird <tim.bird@am.sony.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+MIME-Version: 1.0
+To:	CE Linux Developers List <celinux-dev@tree.celinuxforum.org>,
+	linux-mips@linux-mips.org
+Subject: MIPS processors gain GNU/Linux binary prelinker
+X-Enigmail-Version: 0.94.0.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <tim.bird@am.sony.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13143
+X-archive-position: 13144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
+X-original-sender: tim.bird@am.sony.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Wim.
+FYI - For those interested in bootup time improvements on MIPS
+processors, here is some information about the recently
+developed MIPS prelinking feature, done by CodeSourcery
+and MIPS Technologies.
 
-Not much of my area so only some nitpicking stuff.
+http://www.linuxdevices.com/news/NS6220941326.html
 
-> /*
->  *  Watchdog implementation for GPI h/w found on PMC-Sierra RM9xxx
->  *  chips.
->  *
->  *  Copyright (C) 2004 by Basler Vision Technologies AG
->  *  Author: Thomas Koeller <thomas.koeller@baslerweb.com>
->  *
->  *  This program is free software; you can redistribute it and/or modify
-We have COPYING in top level directory. No need to include GPL here.
+This press release does not mention CELF, but it should
+be noted that the first public demonstration of this
+technology was performed (I believe) at the recent CELF technical
+jamboree, in Tokyo Japan, held just last Friday (Oct 27).
 
-> #define CPGIG1ER               0x0054
-> 
-> 
-> 
-> /* Function prototypes */
+See http://tree.celinuxforum.org/CelfPubWiki/JapanTechnicalJamboree11
+for information about the jamboree.  The presentation about
+this technology which was delivered at the meeting is at:
 
-Too many empty lines. Get it down to 2. Seen on many places.
+http://tree.celinuxforum.org/CelfPubWiki/JapanTechnicalJamboree11?action=AttachFile&do=get&target=MIPS-Prelinker.pdf
 
-> static int __init wdt_gpi_probe(struct device *);
-> static int __exit wdt_gpi_remove(struct device *);
+MIPS and CodeSourcery brought a demo so we got to do
+some actual speed comparisons live at the event.  It was fun!
 
-> static void wdt_gpi_start(void);
-> static void wdt_gpi_stop(void);
-> static void wdt_gpi_set_timeout(unsigned int);
-3 prototpyes not needed
+Regards,
+ -- Tim
 
-> static int wdt_gpi_open(struct inode *, struct file *);
-> static int wdt_gpi_release(struct inode *, struct file *);
-> static ssize_t wdt_gpi_write(struct file *, const char __user *, size_t, loff_t *);
-> static long wdt_gpi_ioctl(struct file *, unsigned int, unsigned long);
-> static const struct resource *wdt_gpi_get_resource(struct platform_device *, const char *, unsigned int);
-80 char coloum
-Prototype not needed.
-
-> /* These are set from device resources */
-> static void __iomem * wd_regs;
-Good to see code annotated.
-I assume sparse did not give any warnings on this code?
-
-> /* Module arguments */
-> static int timeout = MAX_TIMEOUT_SECONDS;
-> module_param(timeout, int, 0444);
-> static unsigned long resetaddr = 0xbffdc200;
-> module_param(resetaddr, ulong, 0444);
-> static unsigned long flagaddr = 0xbffdc104;
-> module_param(flagaddr, ulong, 0444);
-> static int powercycle = 0;
-> module_param(powercycle, bool, 0444);
-> 
-> static int nowayout = WATCHDOG_NOWAYOUT;
-> module_param(nowayout, bool, 0444);
-
-Locate parameter descriptions clode to parameter definition - not in
- bottom of file.
-
-> static struct device_driver wdt_gpi_driver = {
-> 	.name		= (char *) wdt_gpi_name,
-If this cast is really needed then struct device_driver ought to be updated?
-
-> static int __init wdt_gpi_probe(struct device *dev)
-> {
-> 	int res;
-> 	struct platform_device * const pdv = to_platform_device(dev);
-> 	const struct resource
-> 		* const rr = wdt_gpi_get_resource(pdv, WDT_RESOURCE_REGS,
-> 						  IORESOURCE_MEM),
-> 		* const ri = wdt_gpi_get_resource(pdv, WDT_RESOURCE_IRQ,
-> 						  IORESOURCE_IRQ),
-> 		* const rc = wdt_gpi_get_resource(pdv, WDT_RESOURCE_COUNTER,
-
-Separate variable definition and assignment => nicer code.
-
-> static long
-> wdt_gpi_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
-> {
-
-arg is a __user pointer - why hide this fact?
-
-> 		res = __copy_to_user((void __user *)arg, &wdinfo, size) ?
-> 			-EFAULT : size;
-then you get rid of this cast.
-And code this as if () else
-Using ?: is just ugly here.
-
-> 	case WDIOC_GETBOOTSTATUS:
-> 		stat = (*(volatile char *) flagaddr & 0x01)
-> 			? WDIOF_CARDRESET : 0;
-
-Use of volatile almost always indicate a bug.
-Please explain why volatile is needed and consider the other options.
-
-> 			printk("%s: timeout set to %u seconds\n",
-> 				wdt_gpi_name, timeout);
-
-I just noticed this pringk miss a <KERNEL_DEBUG> or similar specifier.
-I guess this is all of them.
-
-
-> 	if (!unlikely(__raw_readl(wd_regs + 0x0008) & 0x1))
-> 		return IRQ_NONE;
-> 	__raw_writel(0x1, wd_regs + 0x0008);
-Magics suchs as '0x0008' deserve a comment.
-
-> 	*(volatile char *) flagaddr |= 0x01;
-> 	*(volatile char *) resetaddr = powercycle ? 0x01 : 0x2;
-
-volatile again...
-
-> MODULE_AUTHOR("Thomas Koeller <thomas.koeller@baslerweb.com>");
-> MODULE_DESCRIPTION("Basler eXcite watchdog driver for gpi devices");
-> MODULE_VERSION("0.1");
-> MODULE_LICENSE("GPL");
-> MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);
-These five tags belongs in the start of the file.
-
-> MODULE_PARM_DESC(timeout, "Watchdog timeout in seconds");
-> MODULE_PARM_DESC(resetaddr, "Address to write to to force a reset");
-> MODULE_PARM_DESC(flagaddr, "Address to write to boot flags to");
-> MODULE_PARM_DESC(nowayout, "Watchdog cannot be disabled once started");
-> MODULE_PARM_DESC(powercycle, "Cycle power if watchdog expires");
-Same here - but already noted.
-
-	Sam
+=============================
+Tim Bird
+Architecture Group Chair, CE Linux Forum
+Senior Staff Engineer, Sony Electronics
+=============================

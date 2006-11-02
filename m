@@ -1,62 +1,280 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 02:51:58 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:48575 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20039081AbWKBCv4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Nov 2006 02:51:56 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 2 Nov 2006 11:51:55 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id B4B5441A10;
-	Thu,  2 Nov 2006 11:51:53 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id A9782204D2;
-	Thu,  2 Nov 2006 11:51:53 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id kA22prW0029341;
-	Thu, 2 Nov 2006 11:51:53 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Thu, 02 Nov 2006 11:51:53 +0900 (JST)
-Message-Id: <20061102.115153.25475422.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips irq cleanups
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061101184755.GC4736@linux-mips.org>
-References: <20061102.020836.25912635.anemo@mba.ocn.ne.jp>
-	<20061101184755.GC4736@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 06:15:45 +0000 (GMT)
+Received: from xenotime.net ([66.160.160.81]:51121 "HELO xenotime.net")
+	by ftp.linux-mips.org with SMTP id S20038467AbWKBGPn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2006 06:15:43 +0000
+Received: from midway.site ([71.117.236.95]) by xenotime.net for <linux-mips@linux-mips.org>; Wed, 1 Nov 2006 22:15:38 -0800
+Date:	Wed, 1 Nov 2006 22:11:25 -0800
+From:	Randy Dunlap <rdunlap@xenotime.net>
+To:	Wim Van Sebroeck <wim@iguana.be>
+Cc:	Thomas Koeller <thomas@koeller.dyndns.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Dave Jones <davej@redhat.com>,
+	Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
+Message-Id: <20061101221125.73505baa.rdunlap@xenotime.net>
+In-Reply-To: <20061101184633.GA7056@infomag.infomag.iguana.be>
+References: <20061101184633.GA7056@infomag.infomag.iguana.be>
+Organization: YPO4
+X-Mailer: Sylpheed version 2.2.9 (GTK+ 2.8.10; x86_64-unknown-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <rdunlap@xenotime.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13146
+X-archive-position: 13147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: rdunlap@xenotime.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 1 Nov 2006 18:47:55 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
-> >  37 files changed, 289 insertions(+), 1647 deletions(-)
+On Wed, 1 Nov 2006 19:46:33 +0100 Wim Van Sebroeck wrote:
+
+> /* Function prototypes */
+> static int __init wdt_gpi_probe(struct device *);
+> static int __exit wdt_gpi_remove(struct device *);
+> static void wdt_gpi_start(void);
+> static void wdt_gpi_stop(void);
+> static void wdt_gpi_set_timeout(unsigned int);
+> static int wdt_gpi_open(struct inode *, struct file *);
+> static int wdt_gpi_release(struct inode *, struct file *);
+> static ssize_t wdt_gpi_write(struct file *, const char __user *, size_t, loff_t *);
+> static long wdt_gpi_ioctl(struct file *, unsigned int, unsigned long);
+> static const struct resource *wdt_gpi_get_resource(struct platform_device *, const char *, unsigned int);
+
+Some lines too long (stay <= 80 columns).
+
+> static int wdt_gpi_notify(struct notifier_block *, unsigned long, void *);
+> static irqreturn_t wdt_gpi_irqhdl(int, void *, struct pt_regs *);
 > 
-> Very nice.  I gave it a shot on a Malta and it works just fine.
+> 
+> 
+> 
+> static const char wdt_gpi_name[] = "wdt_gpi";
+> static atomic_t opencnt;
+> static int expect_close;
+> static int locked = 0;
 
-Thanks!  For most level type irq chips (which initialize .ack, .mask
-and .mask_ack rountine with same function), it should be easy to
-migrate to new irq flow handler:
+Don't need to init to 0.
 
-1. replace set_irq_chip() with set_irq_chip_and_handler(..., handle_level_irq)
-2. use generic_handle_irq() instead of __do_IRQ()
+> /* Module arguments */
+> static int timeout = MAX_TIMEOUT_SECONDS;
+> module_param(timeout, int, 0444);
+> static unsigned long resetaddr = 0xbffdc200;
+> module_param(resetaddr, ulong, 0444);
+> static unsigned long flagaddr = 0xbffdc104;
+> module_param(flagaddr, ulong, 0444);
+> static int powercycle = 0;
 
-I'm still not sure for per-cpu type irq chips and egdg type irq chips,
-especially i8259.  The i8259 seems not suitable for handle_edge_irq or
-handle_level_irq yet.  The irq handling on SMP seems another maze ...
+no need to init to 0.
+
+> module_param(powercycle, bool, 0444);
+> 
+> static int nowayout = WATCHDOG_NOWAYOUT;
+> module_param(nowayout, bool, 0444);
+> 
+> 
+> 
+> /* No hotplugging on the platform bus - use __init */
+> static int __init wdt_gpi_probe(struct device *dev)
+> {
+> 	int res;
+> 	struct platform_device * const pdv = to_platform_device(dev);
+> 	const struct resource
+> 		* const rr = wdt_gpi_get_resource(pdv, WDT_RESOURCE_REGS,
+> 						  IORESOURCE_MEM),
+> 		* const ri = wdt_gpi_get_resource(pdv, WDT_RESOURCE_IRQ,
+> 						  IORESOURCE_IRQ),
+> 		* const rc = wdt_gpi_get_resource(pdv, WDT_RESOURCE_COUNTER,
+> 						  0);
+> 
+> 	if (unlikely(!rr || !ri || !rc))
+> 		return -ENXIO;
+> 
+> 	wd_regs = ioremap_nocache(rr->start, rr->end + 1 - rr->start);
+> 	if (unlikely(!wd_regs))
+> 		return -ENOMEM;
+
+There's no way to return the resources on failure?
+
+> 	wd_irq = ri->start;
+> 	wd_ctr = rc->start;
+> 	res = misc_register(&miscdev);
+> 	if (res)
+> 		iounmap(wd_regs);
+> 	else
+> 		register_reboot_notifier(&wdt_gpi_shutdown);
+> 	return res;
+> }
+> 
+> 
+> 
+> static int wdt_gpi_open(struct inode *inode, struct file *file)
+> {
+> 	int res;
+> 
+> 	if (unlikely(0 > atomic_dec_if_positive(&opencnt)))
+
+Style: Instead of
+		if (constant op function_or_variable)
+we prefer
+		if (function_or_variable op constant)
+
+
+> 		return -EBUSY;
+> 
+> 	expect_close = 0;
+> 	if (locked) {
+> 		module_put(THIS_MODULE);
+> 		free_irq(wd_irq, &miscdev);
+> 		locked = 0;
+> 	}
+> 
+> 	res = request_irq(wd_irq, wdt_gpi_irqhdl, SA_SHIRQ | SA_INTERRUPT,
+> 			  wdt_gpi_name, &miscdev);
+> 	if (unlikely(res))
+> 		return res;
+> 
+> 	wdt_gpi_set_timeout(timeout);
+> 	wdt_gpi_start();
+> 
+> 	printk(KERN_INFO "%s: watchdog started, timeout = %u seconds\n",
+> 		wdt_gpi_name, timeout);
+> 	return nonseekable_open(inode, file);
+> }
+> 
+> 
+> 
+> 
+> static long
+> wdt_gpi_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
+> {
+> 	long res = -ENOTTY;
+> 	const long size = _IOC_SIZE(cmd);
+> 	int stat;
+> 	static struct watchdog_info wdinfo = {
+> 		.identity               = "RM9xxx/GPI watchdog",
+> 		.firmware_version       = 0,
+> 		.options                = WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING
+> 	};
+> 
+> 	if (unlikely(_IOC_TYPE(cmd) != WATCHDOG_IOCTL_BASE))
+> 		return -ENOTTY;
+> 
+> 	if ((_IOC_DIR(cmd) & _IOC_READ)
+> 	    && !access_ok(VERIFY_WRITE, arg, size))
+> 		return -EFAULT;
+> 
+> 	if ((_IOC_DIR(cmd) & _IOC_WRITE)
+> 	    && !access_ok(VERIFY_READ, arg, size))
+> 		return -EFAULT;
+> 
+> 	expect_close = 0;
+> 
+> 	switch (cmd) {
+> 	case WDIOC_GETSUPPORT:
+> 		wdinfo.options = nowayout ?
+> 			WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING :
+> 			WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING | WDIOF_MAGICCLOSE;
+> 		res = __copy_to_user((void __user *)arg, &wdinfo, size) ?
+> 			-EFAULT : size;
+> 		break;
+> 
+> 	case WDIOC_GETSTATUS:
+> 		break;
+> 
+> 	case WDIOC_GETBOOTSTATUS:
+> 		stat = (*(volatile char *) flagaddr & 0x01)
+> 			? WDIOF_CARDRESET : 0;
+> 		res = __copy_to_user((void __user *)arg, &stat, size) ?
+> 			-EFAULT : size;
+> 		break;
+> 
+> 	case WDIOC_SETOPTIONS:
+> 		break;
+> 
+> 	case WDIOC_KEEPALIVE:
+> 		wdt_gpi_set_timeout(timeout);
+> 		res = size;
+> 		break;
+> 
+> 	case WDIOC_SETTIMEOUT:
+> 		{
+> 			int val;
+> 			if (unlikely(__copy_from_user(&val, (const void __user *) arg,
+> 					size))) {
+> 				res = -EFAULT;
+> 				break;
+> 			}
+> 
+> 			if (val > 32)
+> 				val = 32;
+
+There's a #defined constant for that "32".
+Please use it.
+
+> 			timeout = val;
+> 			wdt_gpi_set_timeout(val);
+> 			res = size;
+> 			printk("%s: timeout set to %u seconds\n",
+> 				wdt_gpi_name, timeout);
+> 		}
+> 		break;
+> 
+> 	case WDIOC_GETTIMEOUT:
+> 		res = __copy_to_user((void __user *) arg, &timeout, size) ?
+> 			-EFAULT : size;
+> 		break;
+> 	}
+> 
+> 	return res;
+> }
+> 
+> 
+> 
+> 
+> static irqreturn_t wdt_gpi_irqhdl(int irq, void *ctxt, struct pt_regs *regs)
+> {
+> 	if (!unlikely(__raw_readl(wd_regs + 0x0008) & 0x1))
+> 		return IRQ_NONE;
+> 	__raw_writel(0x1, wd_regs + 0x0008);
+> 
+> 
+> 	printk(KERN_WARNING "%s: watchdog expired - resetting system\n",
+> 		wdt_gpi_name);
+
+I would expect a KERN_ALERT or KERN_EMERG or KERN_CRIT there...
+
+> 
+> 	*(volatile char *) flagaddr |= 0x01;
+> 	*(volatile char *) resetaddr = powercycle ? 0x01 : 0x2;
+> 	iob();
+> 	while (1)
+> 		cpu_relax();
+> }
+> 
+> 
+> 
+> static int
+> wdt_gpi_notify(struct notifier_block *this, unsigned long code, void *unused)
+> {
+> 	if(code == SYS_DOWN || code == SYS_HALT) {
+
+Space between if and (.
+
+> 		wdt_gpi_stop();
+> 	}
+
+No braces around one-statement blocks.
+
+> 	return NOTIFY_DONE;
+> }
 
 ---
-Atsushi Nemoto
+~Randy

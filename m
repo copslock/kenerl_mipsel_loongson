@@ -1,31 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 13:44:13 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:45494 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 14:04:29 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:18669 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039228AbWKBNoL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Nov 2006 13:44:11 +0000
+	id S20039228AbWKBOE2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Nov 2006 14:04:28 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kA2DibVF017990;
-	Thu, 2 Nov 2006 13:44:37 GMT
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kA2E4rDe018478;
+	Thu, 2 Nov 2006 14:04:53 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kA2DiaiG017989;
-	Thu, 2 Nov 2006 13:44:36 GMT
-Date:	Thu, 2 Nov 2006 13:44:36 +0000
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kA2E4prK018477;
+	Thu, 2 Nov 2006 14:04:51 GMT
+Date:	Thu, 2 Nov 2006 14:04:51 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips irq cleanups
-Message-ID: <20061102134436.GD16883@linux-mips.org>
-References: <20061102.020836.25912635.anemo@mba.ocn.ne.jp> <20061101184755.GC4736@linux-mips.org> <20061102.115153.25475422.nemoto@toshiba-tops.co.jp>
+To:	Randy Dunlap <rdunlap@xenotime.net>
+Cc:	Wim Van Sebroeck <wim@iguana.be>,
+	Thomas Koeller <thomas@koeller.dyndns.org>,
+	Dave Jones <davej@redhat.com>,
+	Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
+Message-ID: <20061102140450.GE16883@linux-mips.org>
+References: <20061101184633.GA7056@infomag.infomag.iguana.be> <20061101221125.73505baa.rdunlap@xenotime.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20061102.115153.25475422.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20061101221125.73505baa.rdunlap@xenotime.net>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13153
+X-archive-position: 13154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,22 +39,26 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 02, 2006 at 11:51:53AM +0900, Atsushi Nemoto wrote:
+On Wed, Nov 01, 2006 at 10:11:25PM -0800, Randy Dunlap wrote:
 
-> 1. replace set_irq_chip() with set_irq_chip_and_handler(..., handle_level_irq)
-> 2. use generic_handle_irq() instead of __do_IRQ()
+> > 	wd_regs = ioremap_nocache(rr->start, rr->end + 1 - rr->start);
+> > 	if (unlikely(!wd_regs))
+> > 		return -ENOMEM;
+> 
+> There's no way to return the resources on failure?
 
-Another beneft of the new generic interrupt code will be for weird
-multiplex devices like IOC3 which basically want to be treated as if they
-have an interrupt controller on the PCI card itself.  The latest code now
-enables the IOC3 metadriver to support that in a portable way.  The only
-thing that's still missing is a portable way to allocate an interrupt
-number.
+MIPS drivers (and this one is specific to a particular MIPS SOC) are
+generally a bit sloopy about checking of return values of ioremap because
+ioremap is only doing some address arithmetic but no allocations that
+actually could fail.  So for 64-bit kernels or addresses below 0x20000000
+on a 32-bit system ioremap cannot fail.  In the same cases ioremap happens
+to be a no-op because where nothing was allocated nothing needs to be
+freed.
 
-> I'm still not sure for per-cpu type irq chips and egdg type irq chips,
-> especially i8259.  The i8259 seems not suitable for handle_edge_irq or
-> handle_level_irq yet.  The irq handling on SMP seems another maze ...
+> > 			if (unlikely(__copy_from_user(&val, (const void __user *) arg,
 
-One step after another.
+Note to self, __copy_from_user and gang are generally assume to not
+return an error so it might be a good idea to move that unlikely() into
+the macro definitions.
 
   Ralf

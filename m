@@ -1,53 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 08:38:47 +0000 (GMT)
-Received: from mo32.po.2iij.net ([210.128.50.17]:1577 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20038812AbWKBIip (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Nov 2006 08:38:45 +0000
-Received: by mo.po.2iij.net (mo32) id kA28cggn034290; Thu, 2 Nov 2006 17:38:42 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox31) id kA28cfOx049462
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 2 Nov 2006 17:38:41 +0900 (JST)
-Date:	Thu, 2 Nov 2006 17:38:41 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	anemo@mba.ocn.ne.jp
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 11:39:23 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:59399 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20039014AbWKBLjQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Nov 2006 11:39:16 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 81349F5945;
+	Thu,  2 Nov 2006 12:39:08 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Q3AMumYVMIbW; Thu,  2 Nov 2006 12:39:08 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 34513E1C73;
+	Thu,  2 Nov 2006 12:39:08 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.1) with ESMTP id kA2BdF6P012855;
+	Thu, 2 Nov 2006 12:39:15 +0100
+Date:	Thu, 2 Nov 2006 11:39:12 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] mips irq cleanups
-Message-Id: <20061102173841.7af31765.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20061101184755.GC4736@linux-mips.org>
+In-Reply-To: <20061102.020836.25912635.anemo@mba.ocn.ne.jp>
+Message-ID: <Pine.LNX.4.64N.0611021134030.7700@blysk.ds.pg.gda.pl>
 References: <20061102.020836.25912635.anemo@mba.ocn.ne.jp>
-	<20061101184755.GC4736@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.5/2146/Thu Nov  2 07:58:29 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13149
+X-archive-position: 13150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 1 Nov 2006 18:47:55 +0000
-Ralf Baechle <ralf@linux-mips.org> wrote:
+On Thu, 2 Nov 2006, Atsushi Nemoto wrote:
 
-> On Thu, Nov 02, 2006 at 02:08:36AM +0900, Atsushi Nemoto wrote:
-> 
-> > This is a big irq cleanup patch.
-> 
-> >  37 files changed, 289 insertions(+), 1647 deletions(-)
-> 
-> Very nice.  I gave it a shot on a Malta and it works just fine.
+> Though whole this patch is quite large, changes in each irq_chip are
+> not quite simple.  Please review and test on your platform.  Thanks.
 
-It works fine on vr41xx and cobalt too.
-Cobalt is using i8259.
+ You have removed a couple of spinlocks protecting accesses to some 
+resources on the DECstation.  This makes me suspicious -- after all I put 
+all of them there for a reason, e.g. to make sure shadow variables are 
+consistent with write-only registers.  But perhaps you had a valid reason 
+to believe with your changes in place they are no needed anymore.  I'll 
+have a closer look as soon as possible and will let you know if the 
+changes are fine.  Thanks for your work.
 
-Thanks for your work,
+ But for now it's a NAK for the DECstation part.
 
-Yoichi
+  Maciej

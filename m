@@ -1,64 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Nov 2006 14:04:29 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:18669 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039228AbWKBOE2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Nov 2006 14:04:28 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kA2E4rDe018478;
-	Thu, 2 Nov 2006 14:04:53 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kA2E4prK018477;
-	Thu, 2 Nov 2006 14:04:51 GMT
-Date:	Thu, 2 Nov 2006 14:04:51 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Randy Dunlap <rdunlap@xenotime.net>
-Cc:	Wim Van Sebroeck <wim@iguana.be>,
-	Thomas Koeller <thomas@koeller.dyndns.org>,
-	Dave Jones <davej@redhat.com>,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Added MIPS RM9K watchdog driver
-Message-ID: <20061102140450.GE16883@linux-mips.org>
-References: <20061101184633.GA7056@infomag.infomag.iguana.be> <20061101221125.73505baa.rdunlap@xenotime.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20061101221125.73505baa.rdunlap@xenotime.net>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Nov 2006 14:43:01 +0000 (GMT)
+Received: from ams-iport-1.cisco.com ([144.254.224.140]:28990 "EHLO
+	ams-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S20038498AbWKFOmz convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Nov 2006 14:42:55 +0000
+Received: from ams-dkim-1.cisco.com ([144.254.224.138])
+  by ams-iport-1.cisco.com with ESMTP; 06 Nov 2006 15:42:42 +0100
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: Ah4FALjWTkWQ/uCKY2dsb2JhbACMQBQPKg
+X-IronPort-AV: i="4.09,391,1157320800"; 
+   d="scan'208"; a="117491114:sNHT1670059248"
+Received: from ams-core-1.cisco.com (ams-core-1.cisco.com [144.254.224.150])
+	by ams-dkim-1.cisco.com (8.12.11.20060308/8.12.11) with ESMTP id kA6EgbkS032147
+	for <linux-mips@linux-mips.org>; Mon, 6 Nov 2006 15:42:37 +0100
+Received: from xbh-ams-331.emea.cisco.com (xbh-ams-331.cisco.com [144.254.231.71])
+	by ams-core-1.cisco.com (8.12.10/8.12.6) with ESMTP id kA6EgZ4Z013558
+	for <linux-mips@linux-mips.org>; Mon, 6 Nov 2006 15:42:37 +0100 (MET)
+Received: from xmb-ams-33b.cisco.com ([144.254.231.86]) by xbh-ams-331.emea.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 6 Nov 2006 15:42:35 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Sync operation in atomic_add_return()
+Date:	Mon, 6 Nov 2006 15:42:32 +0100
+Message-ID: <E98CBCB9ACC07244969BE4541EC0A78303137105@xmb-ams-33b.emea.cisco.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Sync operation in atomic_add_return()
+Thread-Index: AccBscqczM/yLc/WQ56lzFz+PK98Aw==
+From:	"Gideon Stupp \(gstupp\)" <gstupp@cisco.com>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 06 Nov 2006 14:42:35.0245 (UTC) FILETIME=[CC5721D0:01C701B1]
+DKIM-Signature:	a=rsa-sha1; q=dns; l=238; t=1162824157; x=1163688157;
+	c=relaxed/simple; s=amsdkim1002; h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=gstupp@cisco.com; z=From:=22Gideon=20Stupp=20\(gstupp\)=22=20<gstupp@cisco.com>
+	|Subject:Sync=20operation=20in=20atomic_add_return();
+	X=v=3Dcisco.com=3B=20h=3DrA689xsvf+eeyP6dQ0ll9jEY8OU=3D; b=V9BwL6QiSKOdZVbxqTwfwoiHZJPtSM2//QDR9JpOT1sPkssECddqxb8AZ77NE/G9u6Vb8dgq
+	omfwn/CLHocotMijhYimOWcRUUhLVX3ZdN/VftlXObussOil+YfGcIPO;
+Authentication-Results:	ams-dkim-1; header.From=gstupp@cisco.com; dkim=pass (
+	sig from cisco.com verified; ); 
+Return-Path: <gstupp@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13154
+X-archive-position: 13155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gstupp@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 01, 2006 at 10:11:25PM -0800, Randy Dunlap wrote:
+Hi,
+I am trying to figure out why there is a sync operation in
+linux/include/asm-mips/atomic.h:atomic_add_return(). 
+I believe it was added in the linux-2.4.19 patch, but can't trace the
+reason. Can anyone help?
 
-> > 	wd_regs = ioremap_nocache(rr->start, rr->end + 1 - rr->start);
-> > 	if (unlikely(!wd_regs))
-> > 		return -ENOMEM;
-> 
-> There's no way to return the resources on failure?
-
-MIPS drivers (and this one is specific to a particular MIPS SOC) are
-generally a bit sloopy about checking of return values of ioremap because
-ioremap is only doing some address arithmetic but no allocations that
-actually could fail.  So for 64-bit kernels or addresses below 0x20000000
-on a 32-bit system ioremap cannot fail.  In the same cases ioremap happens
-to be a no-op because where nothing was allocated nothing needs to be
-freed.
-
-> > 			if (unlikely(__copy_from_user(&val, (const void __user *) arg,
-
-Note to self, __copy_from_user and gang are generally assume to not
-return an error so it might be a good idea to move that unlikely() into
-the macro definitions.
-
-  Ralf
+Thanks, Gideon.

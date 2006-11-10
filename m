@@ -1,89 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Nov 2006 03:16:35 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:50768 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20038424AbWKJDQb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Nov 2006 03:16:31 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 10 Nov 2006 12:16:29 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id C9D8C205E9;
-	Fri, 10 Nov 2006 12:16:26 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id B69F02048B;
-	Fri, 10 Nov 2006 12:16:26 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id kAA3GNW0066099;
-	Fri, 10 Nov 2006 12:16:24 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 10 Nov 2006 12:16:23 +0900 (JST)
-Message-Id: <20061110.121623.26097731.nemoto@toshiba-tops.co.jp>
-To:	Trevor_Hamm@pmc-sierra.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Nov 2006 13:36:55 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:12419 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038555AbWKJNgx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Nov 2006 13:36:53 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kAADbJfX017324;
+	Fri, 10 Nov 2006 13:37:20 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kAADbJs0017323;
+	Fri, 10 Nov 2006 13:37:19 GMT
+Date:	Fri, 10 Nov 2006 13:37:19 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Gideon Stupp (gstupp)" <gstupp@cisco.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Problems booting Linux 2.6.18.1 on MIPS34K core
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <E8C8A5231DDE104C816ADF532E0639120194F4CC@bby1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-References: <E8C8A5231DDE104C816ADF532E0639120194F4CC@bby1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Subject: Re: Sync operation in atomic_add_return()
+Message-ID: <20061110133719.GA10119@linux-mips.org>
+References: <E98CBCB9ACC07244969BE4541EC0A78303137105@xmb-ams-33b.emea.cisco.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E98CBCB9ACC07244969BE4541EC0A78303137105@xmb-ams-33b.emea.cisco.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13171
+X-archive-position: 13172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 9 Nov 2006 09:20:12 -0800 , Trevor Hamm <Trevor_Hamm@pmc-sierra.com> wrote:
-> > Hmm, could you try init=/bin/sh?  If the shell invoked successfully it
-> > might be COW issue.  
-> 
->  Yes, /bin/sh works.  I've also run different /sbin/init programs
-> successfully (sysvinit, busybox; I think I mentioned sysvinit worked
-> in my original post).  It's just with simpleinit from util-linux
-> 2.12r that we've seen this issue.
+On Mon, Nov 06, 2006 at 03:42:32PM +0100, Gideon Stupp (gstupp) wrote:
 
-Oh, I had missed that point.  And I realize you said the fault was
-happend in /sbin/init itself.  So it should not be COW issue.
+> I am trying to figure out why there is a sync operation in
+> linux/include/asm-mips/atomic.h:atomic_add_return(). 
+> I believe it was added in the linux-2.4.19 patch, but can't trace the
+> reason. Can anyone help?
 
-> > In this case, could you try deleting
-> > __HAVE_ARCH_COPY_USER_HIGHPAGE in include/asm-mips/page.h?
-> 
-> Okay, I did this, but /sbin/init still hangs in the same place.  I
-> also had to delete the copy_user_highpage function in
-> arch/mips/mm/init.c to get the kernel to build.  It's now using the
-> copy_user_highpage from include/linux/highmem.h.  I assume this was
-> your intention?
+MIPS is a weakly ordered architecture.  In theory.  So those syncs are
+required to ensure proper global ordering.  In practice only the Sibyte
+SB1 and RM9000 CMPs are documented to be weakly ordered but I've never
+actually observed a single reordering related bug on any MIPS
+multiprocessor which may either mean no reordering happens in practice
+or I'm a genious managed to fix all reordering related bugs before they
+could strike.  I tend to assume the latter ;-)  On a uniprocessor these
+syncs are definately not needed and I have a patch to remove the sync
+for uniprocessor kernels and known to be strongly ordered SMPs waiting
+for 2.6.20.
 
-Yes, then copy_user_highpage would not be guilty.  Your trial
-confirmed this.  Thanks anyway.
-
-So now I doubt flush_dcache_page/update_mmu_cache change caused your
-problem, which was happen during 2.6.17.8 and 2.6.17.9.  This is a bit
-inconsistent from your analysis (2.6.17.10 was OK), but in general
-cache troubles are very sensitive anyway...
-
-
-Could you confirm that removing whole "if (mapping ..." block from
-__flush_dcache_page can hide your problem?
-
-Or if you changed a line in __update_cache():
-
-	int exec = (vma->vm_flags & VM_EXEC) && !cpu_has_ic_fills_f_dc;
-
-to
-
-	int exec = 1;
-
-then your problem still happen?
-
-
----
-Atsushi Nemoto
+  Ralf

@@ -1,116 +1,184 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Nov 2006 06:47:37 +0000 (GMT)
-Received: from ams-iport-1.cisco.com ([144.254.224.140]:47400 "EHLO
-	ams-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S20037586AbWKLGrc convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 12 Nov 2006 06:47:32 +0000
-Received: from ams-dkim-2.cisco.com ([144.254.224.139])
-  by ams-iport-1.cisco.com with ESMTP; 12 Nov 2006 07:46:47 +0100
-X-IronPort-AV: i="4.09,414,1157320800"; 
-   d="scan'208"; a="119401187:sNHT53480120"
-Received: from ams-core-1.cisco.com (ams-core-1.cisco.com [144.254.224.150])
-	by ams-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id kAC6kkoX028070;
-	Sun, 12 Nov 2006 07:46:46 +0100
-Received: from xbh-ams-331.emea.cisco.com (xbh-ams-331.cisco.com [144.254.231.71])
-	by ams-core-1.cisco.com (8.12.10/8.12.6) with ESMTP id kAC6kf4Z024956;
-	Sun, 12 Nov 2006 07:46:42 +0100 (MET)
-Received: from xmb-ams-33b.cisco.com ([144.254.231.86]) by xbh-ams-331.emea.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 12 Nov 2006 07:46:41 +0100
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Nov 2006 19:22:29 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:29170 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038477AbWKLTWY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 12 Nov 2006 19:22:24 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 67DF63EBE; Sun, 12 Nov 2006 11:22:02 -0800 (PST)
+Message-ID: <455774BD.6010706@ru.mvista.com>
+Date:	Sun, 12 Nov 2006 22:23:41 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Sync operation in atomic_add_return()
-Date:	Sun, 12 Nov 2006 07:46:39 +0100
-Message-ID: <E98CBCB9ACC07244969BE4541EC0A7830317CEE5@xmb-ams-33b.emea.cisco.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Sync operation in atomic_add_return()
-Thread-Index: AccBscqczM/yLc/WQ56lzFz+PK98AwAHKqogARW5gcA=
-From:	"Gideon Stupp \(gstupp\)" <gstupp@cisco.com>
-To:	"Kaz Kylheku" <kaz@zeugmasystems.com>
-Cc:	<linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 12 Nov 2006 06:46:41.0400 (UTC) FILETIME=[4F66A780:01C70626]
-DKIM-Signature:	v=0.5; a=rsa-sha256; q=dns/txt; l=2477; t=1163314006; x=1164178006;
-	c=relaxed/simple; s=amsdkim2001;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=gstupp@cisco.com;
-	z=From:=20=22Gideon=20Stupp=20\(gstupp\)=22=20<gstupp@cisco.com>
-	|Subject:=20RE=3A=20Sync=20operation=20in=20atomic_add_return()
-	|Sender:=20;
-	bh=raNmksd1EaNylGSTfql4VzTlIp0fCc9Pp4PMg8aQVF0=;
-	b=NnYbUoSayt8Qa0Zv18ENFNGp4nUtykXwtpiRIDSn5pXNHcDlT08em/rCUyCGUdISBeCHdnyX
-	Dq/aa/c967kwroIRIJYY9loeW/uP4otcJq+RitbUKQcplOy6tvBJOov6;
-Authentication-Results:	ams-dkim-2; header.From=gstupp@cisco.com; dkim=pass (
-	sig from cisco.com/amsdkim2001 verified; ); 
-Return-Path: <gstupp@cisco.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] mips hpt cleanup: make clocksource_mips public
+References: <20061112.001028.41198601.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061112.001028.41198601.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13179
+X-archive-position: 13180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gstupp@cisco.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org 
-> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Kaz Kylheku
-> Sent: Monday, November 06, 2006 8:18 PM
-> To: linux-mips@linux-mips.org
-> Subject: RE: Sync operation in atomic_add_return()
-> 
-> Gideon Stupp wrote:
-> > Hi,
-> > I am trying to figure out why there is a sync operation in 
-> > linux/include/asm-mips/atomic.h:atomic_add_return().
-> > I believe it was added in the linux-2.4.19 patch, but can't 
-> trace the 
-> > reason. Can anyone help?
-> 
-> Is it just unwarranted paranoia? There does not appear to be 
-> a need for the sync within the atomic_add_return code itself.
-> 
-> But it might be that the code which calls this function needs 
-> the sync.
-> 
-> Without looking at any code whatsoever, here is a general hypothesis.
-> 
-> In what situation might you /care/ about the return value of 
-> an atomic add?
-> 
-> Suppose atomic increments and decrements are being used for 
-> reference counting. If you know that you hold the reference 
-> to an object, you can call atomic_add to increase the 
-> reference count without caring about the return value, and no 
-> sync is needed in that situation.
-> 
-> Suppose, however, that atomic_add is used to pick up a reference.
-> Suppose you have a pool of ``dead'' objects with reference 
-> counts of zero, and want to recycle an object from such a 
-> pool. You might use atomic_add_return to examine the 
-> reference counts of the objects in this pool one by one until 
-> you get a 1 return. You might get something other than a 1 
-> return if racing against another processor which is tryiing 
-> to pick up the same object.
-> 
-> In this situation, if you successfully get the object, you do 
-> want to do a sync, since the object is being handed off 
-> between two processors.
-> Before the object was put into the pool, its fields were 
-> updated, since it was being cleaned up. You would not want 
-> the new owner, by chance, to observe stale values of those fields.
-> 
-> I.e., to put it briefly, atomic_add_return can have "acquire" 
-> semantics.
-> 
+Hello.
 
-Thanks for the reply.  I also checked the Alpha implementation ( the
-only other architecture I know of with non serializing atomic operations
-) and indeed there is an explicit smp_mb() in atomic_add_return() and
-nowhere else.  So I guess this is the convention.
+Atsushi Nemoto wrote:
+> Note: This patch can be applied after the patch titled:
+> "[PATCH] mips hpt cleanup: get rid of mips_hpt_init"
+> in lmo linux-queue tree (or 2.6.19-rc5-mm1).
 
-Gideon.
+> Make clocksource_mips public and get rid of mips_hpt_read,
+> mips_hpt_mask.
+
+    Good to see it. :-)
+    I have a suggestion though...
+
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+>  arch/mips/dec/time.c                |    4 +--
+>  arch/mips/jmr3927/rbhma3100/setup.c |    4 +--
+>  arch/mips/kernel/time.c             |   42 +++++++++++++-----------------------
+>  arch/mips/sgi-ip27/ip27-timer.c     |    4 +--
+>  arch/mips/sibyte/bcm1480/time.c     |    4 +--
+>  arch/mips/sibyte/sb1250/time.c      |    8 +++---
+>  include/asm-mips/time.h             |    8 +++---
+>  7 files changed, 32 insertions(+), 42 deletions(-)
+
+> diff --git a/arch/mips/dec/time.c b/arch/mips/dec/time.c
+> index 69e424e..8b7e0c1 100644
+> --- a/arch/mips/dec/time.c
+> +++ b/arch/mips/dec/time.c
+> @@ -151,7 +151,7 @@ static void dec_timer_ack(void)
+>  	CMOS_READ(RTC_REG_C);			/* Ack the RTC interrupt.  */
+>  }
+>  
+> -static unsigned int dec_ioasic_hpt_read(void)
+> +static cycle_t dec_ioasic_hpt_read(void)
+>  {
+>  	/*
+>  	 * The free-running counter is 32-bit which is good for about
+> @@ -171,7 +171,7 @@ void __init dec_time_init(void)
+>  
+>  	if (!cpu_has_counter && IOASIC)
+>  		/* For pre-R4k systems we use the I/O ASIC's counter.  */
+> -		mips_hpt_read = dec_ioasic_hpt_read;
+> +		clocksource_mips.read = dec_ioasic_hpt_read;
+
+    I'd like to see clocksource_mips.name overriden there as well.
+
+>  	/* Set up the rate of periodic DS1287 interrupts.  */
+>  	CMOS_WRITE(RTC_REF_CLCK_32KHZ | (16 - __ffs(HZ)), RTC_REG_A);
+> diff --git a/arch/mips/jmr3927/rbhma3100/setup.c b/arch/mips/jmr3927/rbhma3100/setup.c
+> index 16e5dfe..138f25e 100644
+> --- a/arch/mips/jmr3927/rbhma3100/setup.c
+> +++ b/arch/mips/jmr3927/rbhma3100/setup.c
+> @@ -170,7 +170,7 @@ static void jmr3927_machine_power_off(vo
+>  	while (1);
+>  }
+>  
+> -static unsigned int jmr3927_hpt_read(void)
+> +static cycle_t jmr3927_hpt_read(void)
+>  {
+>  	/* We assume this function is called xtime_lock held. */
+>  	return jiffies * (JMR3927_TIMER_CLK / HZ) + jmr3927_tmrptr->trr;
+> @@ -182,7 +182,7 @@ extern void rtc_ds1742_init(unsigned lon
+>  #endif
+>  static void __init jmr3927_time_init(void)
+>  {
+> -	mips_hpt_read = jmr3927_hpt_read;
+> +	clocksource_mips.read = jmr3927_hpt_read;
+
+    And the same here as well as this is TX3927-specific timer.
+
+>  	mips_hpt_frequency = JMR3927_TIMER_CLK;
+>  #ifdef USE_RTC_DS1742
+>  	if (jmr3927_have_nvram()) {
+[...]
+> diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
+> index 5e82a26..7106d54 100644
+> --- a/arch/mips/sgi-ip27/ip27-timer.c
+> +++ b/arch/mips/sgi-ip27/ip27-timer.c
+> @@ -239,14 +239,14 @@ void __init plat_timer_setup(struct irqa
+>  	setup_irq(irqno, &rt_irqaction);
+>  }
+>  
+> -static unsigned int ip27_hpt_read(void)
+> +static cycle_t ip27_hpt_read(void)
+>  {
+>  	return REMOTE_HUB_L(cputonasid(0), PI_RT_COUNT);
+>  }
+>  
+>  void __init ip27_time_init(void)
+>  {
+> -	mips_hpt_read = ip27_hpt_read;
+> +	clocksource_mips.read = ip27_hpt_read;
+
+    Again, would be good to override clocksource_mips.name here...
+
+>  	mips_hpt_frequency = CYCLES_PER_SEC;
+>  	xtime.tv_sec = get_m48t35_time();
+>  	xtime.tv_nsec = 0;
+> diff --git a/arch/mips/sibyte/bcm1480/time.c b/arch/mips/sibyte/bcm1480/time.c
+> index e136bde..26b5c29 100644
+> --- a/arch/mips/sibyte/bcm1480/time.c
+> +++ b/arch/mips/sibyte/bcm1480/time.c
+> @@ -119,7 +119,7 @@ void bcm1480_timer_interrupt(void)
+>  	}
+>  }
+>  
+> -static unsigned int bcm1480_hpt_read(void)
+> +static cycle_t bcm1480_hpt_read(void)
+>  {
+>  	/* We assume this function is called xtime_lock held. */
+>  	unsigned long count =
+> @@ -129,6 +129,6 @@ static unsigned int bcm1480_hpt_read(voi
+>  
+>  void __init bcm1480_hpt_setup(void)
+>  {
+> -	mips_hpt_read = bcm1480_hpt_read;
+> +	clocksource_mips.read = bcm1480_hpt_read;
+
+    Here...
+
+>  	mips_hpt_frequency = BCM1480_HPT_VALUE;
+>  }
+> diff --git a/arch/mips/sibyte/sb1250/time.c b/arch/mips/sibyte/sb1250/time.c
+> index bcb74f2..2efffe1 100644
+> --- a/arch/mips/sibyte/sb1250/time.c
+> +++ b/arch/mips/sibyte/sb1250/time.c
+> @@ -51,7 +51,7 @@ #define SB1250_HPT_VALUE	M_SCD_TIMER_CNT
+>  
+>  extern int sb1250_steal_irq(int irq);
+>  
+> -static unsigned int sb1250_hpt_read(void);
+> +static cycle_t sb1250_hpt_read(void);
+>  
+>  void __init sb1250_hpt_setup(void)
+>  {
+> @@ -66,8 +66,8 @@ void __init sb1250_hpt_setup(void)
+>  			     IOADDR(A_SCD_TIMER_REGISTER(SB1250_HPT_NUM, R_SCD_TIMER_CFG)));
+>  
+>  		mips_hpt_frequency = V_SCD_TIMER_FREQ;
+> -		mips_hpt_read = sb1250_hpt_read;
+> -		mips_hpt_mask = M_SCD_TIMER_INIT;
+> +		clocksource_mips.read = sb1250_hpt_read;
+> +		clocksource_mips.mask = M_SCD_TIMER_INIT;
+
+    And here as well...
+
+>  	}
+>  }
+>  
+
+WBR, Sergei

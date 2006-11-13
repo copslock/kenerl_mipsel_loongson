@@ -1,82 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 15:06:52 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.188]:6920 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038493AbWKMPGs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 13 Nov 2006 15:06:48 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so2027776nfc
-        for <linux-mips@linux-mips.org>; Mon, 13 Nov 2006 07:06:45 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Eu++uvNEvkff4Q0Fu9ylYc+DdRK0jnSKrjK6lGJeoAslGFrA65my2mO1ttsnpQw65v8cEcPaDoJ7yYcDEp52atx7RhEqRjExmYqBGf8/FdM+wjQnv9MJvvBVOQFrOijQAaW4kOtVWUe39ANeEdaKruo+GSAczEN4qEgl30mwEFI=
-Received: by 10.48.142.8 with SMTP id p8mr9992481nfd.1163430404743;
-        Mon, 13 Nov 2006 07:06:44 -0800 (PST)
-Received: by 10.48.163.3 with HTTP; Mon, 13 Nov 2006 07:06:44 -0800 (PST)
-Message-ID: <2e134a330611130706u4b8da444w469b88e96d3c55f0@mail.gmail.com>
-Date:	Mon, 13 Nov 2006 10:06:44 -0500
-From:	"s c" <steve.carren@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: au1500 USB does not recover from flash drive removal during operations
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 15:27:58 +0000 (GMT)
+Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:10595 "HELO krt.neobee.net")
+	by ftp.linux-mips.org with SMTP id S20037875AbWKMP1y (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2006 15:27:54 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by krt.neobee.net (Postfix) with ESMTP id BBCD5A5F7B;
+	Mon, 13 Nov 2006 16:27:50 +0100 (CET)
+Received: from krt.neobee.net ([127.0.0.1])
+ by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 14023-06; Mon, 13 Nov 2006 16:27:47 +0100 (CET)
+Received: from had (unknown [192.168.0.92])
+	by krt.neobee.net (Postfix) with ESMTP id 87C388F3D8;
+	Mon, 13 Nov 2006 16:27:47 +0100 (CET)
+From:	"Mile Davidovic" <Mile.Davidovic@micronasnit.com>
+To:	<linux-mips@linux-mips.org>
+Cc:	"'Ralf Baechle'" <ralf@linux-mips.org>
+Subject: RE: Uncached mmap
+Date:	Mon, 13 Nov 2006 16:30:26 +0100
+Message-ID: <002101c70738$a4974ad0$5c00a8c0@niit.micronasnit.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <steve.carren@gmail.com>
+X-Mailer: Microsoft Office Outlook 11
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
+Thread-Index: AccHH9YOr1x418tdT9Clo10n00/ztgAA+0+Q
+In-Reply-To: <20061113123233.GA20337@linux-mips.org>
+Return-Path: <Mile.Davidovic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13186
+X-archive-position: 13187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: steve.carren@gmail.com
+X-original-sender: Mile.Davidovic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello All,
 
-I was testing the USB capabilities of the au1500 and discovered that
-when a USB flash drive is removed during a copy operation twice, the
-USB host controller/root hub will no longer detect if the device is
-plugged in a third time.  I am assuming there is a bug in the au1xxx
-parts of the USB drivers because Linux has been able to handle this
-case for some time with the standard  EHCI/OHCI/UHCI host controllers.
+Hello again,
+first I want to thank You for Your fast answer. I work on MIPS 4Kec with linux
+kernel in version 2.6.15 from linux-mips (gcc 4.0.3 and gcc 3.4.3).
 
-I am testing using the dbau1500 development board and the 2.6.12
-kernel with the fs in ram.
+>> There is no byte access to uncached mmaped memory. Is this correct statement?
+>Definately wrong.  For example alot of mmapped I/O devices use uncached
+>byte accesses.
 
-I would be interested if anyone has experienced anything similar with
-the au1500 and the 2.6.12 or other (earlier or later) kernels.
+Ok, in that case I have problem with byte access on mmaped uncached memory. 
+Reason for previous post is next:
+If I write bytes to mmaped uncached memory like:
+...
+ptr = (unsigned char*)mmap(0,lineSize,PROT_READ|PROT_WRITE,MAP_SHARED,fd0,0);
+...
+for (i = 0; i < 12; i++) 
+   *ptr++ = 0xaa;
 
-The test goes something like this:
+this loop will not write all bytes correctly (every 4 bytes will have 0xaa as
+value), here is dump from Lauterbach debugger:
+___address__|_0________4________8________C________0123456789ABCDEF
+  D:83660000|>FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF ................
+  D:83660010| 000000AA 000000AA 000000AA 0000AA02 ................
 
-Plug in the USB drive - it gets detected.
+and if I use bigger loop
+for (i = 0; i < 20; i++) 
+   *ptr++ = 0xaa;
+My linux will be crashed on 13 write. So, this is reason why I thought that
+byte access is not allowed on mmaped uncached memory. 
 
-(it does not seem to matter whether the drive is mounted or not, I
-tested both ways.)
+Is it possible that problem with byte access is related with device mmap
+function?
 
-At the command prompt:
-#dd if=/dev/zero of=/dev/sda bs=1k count=50k
+>This stament if of course limited to the CPU's part of the system.  Devices
+>may have their specific restrictions on access size and its not uncommon to
+>have such restrictions though that would seem unlikely for framebuffer
+>memory.
 
-after some time un-plug the drive.
+Ok, I understood this.
 
-Error messages (too many to post)
+>If your particular CPU support it you may want to use cache mode "uncached
+>accellerated" for a framebuffer.  It should deliver significtn performance
+>gains yet avoid the need for cache flushes.
 
-Repeat
 
-Third time device is not detected.
 
-I did not want to post a huge list of error messages, but I did notice
-differences between the first and second try.
-
-In the first, I got a lot of "rejecting I/O to device being removed"
-from scsi, while after the second removal I did not. Instead I got a
-lot of "Buffer I/O error on device sda" from scsi.
-
-I am actively looking in to the problem and wanted to post to the list
-in case someone else had come across this behaviour. I could list the
-error messages if anyone is interested.
-
-Any feedback would be appreciated.
-
-Thanks
+Thanks in advance
+Mile

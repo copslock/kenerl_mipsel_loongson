@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 21:02:05 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:22169 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 23:37:41 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:6365 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039435AbWKMQke (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 13 Nov 2006 16:40:34 +0000
+	id S20038515AbWKMXhk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 13 Nov 2006 23:37:40 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kADGet5H006551;
-	Mon, 13 Nov 2006 16:40:57 GMT
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kADNc3vP017398;
+	Mon, 13 Nov 2006 23:38:03 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kADGes1c006550;
-	Mon, 13 Nov 2006 16:40:54 GMT
-Date:	Mon, 13 Nov 2006 16:40:54 +0000
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kADNc3CV017397;
+	Mon, 13 Nov 2006 23:38:03 GMT
+Date:	Mon, 13 Nov 2006 23:38:03 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Mile Davidovic <Mile.Davidovic@micronasnit.com>
+To:	Ashlesha Shintre <ashlesha@kenati.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Uncached mmap
-Message-ID: <20061113164054.GA31476@linux-mips.org>
-References: <20061113123233.GA20337@linux-mips.org> <002101c70738$a4974ad0$5c00a8c0@niit.micronasnit.com>
+Subject: Re: Portmap on the Encore M3
+Message-ID: <20061113233802.GA17130@linux-mips.org>
+References: <1163443607.6532.9.camel@sandbar.kenati.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <002101c70738$a4974ad0$5c00a8c0@niit.micronasnit.com>
+In-Reply-To: <1163443607.6532.9.camel@sandbar.kenati.com>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13190
+X-archive-position: 13191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,36 +33,55 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 13, 2006 at 04:30:26PM +0100, Mile Davidovic wrote:
+On Mon, Nov 13, 2006 at 10:46:47AM -0800, Ashlesha Shintre wrote:
 
-> ptr = (unsigned char*)mmap(0,lineSize,PROT_READ|PROT_WRITE,MAP_SHARED,fd0,0);
-> ...
-> for (i = 0; i < 12; i++) 
->    *ptr++ = 0xaa;
+> > RPC: sendmsg returned error 128.
+> > <4>nfs: RPC call returned error 128 
+
+128 = ENETUNREACH.
+
+> I m trying to boot the 2.6.14.6 kernel onto the Encore M3 board that has
+> the MIPS AU1500 processor on it.
+
+For more information [1] about 2.6.14 kernels see http://tinyurl.com/hjexx ;-)
+
+> The .config file contains the following line: CONFIG_PORTMAP=y
+> The server from which the NFS is mounted is also running the portmap
+> daemon..
 > 
-> this loop will not write all bytes correctly (every 4 bytes will have 0xaa as
-> value), here is dump from Lauterbach debugger:
-> ___address__|_0________4________8________C________0123456789ABCDEF
->   D:83660000|>FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF ................
->   D:83660010| 000000AA 000000AA 000000AA 0000AA02 ................
+> Is there a way to check if the portmap server is functioning properly?
+> 
+> 
+> Also:
+> 
+> - The BogoMIPS value is 7186 which seems too low for the AU1500 -- how
+> can I check that the timer interrupt is being handled correctly?  The
+> AU1500 has 2 counters which are used to generate a clock
+> 
+> - On the serial console I can only see messages upto this point:
+> 
+> 
+> > 16.35 BogoMIPS (lpj=8176)
 
-Is 83660000 a proper physical address or a virtual address?  A common
-mistake is mapping a KSEG _virtual_ address to a userspace _virtual_
-address.  Obviously mapping anything virtual to something else virtual
-doesn't work ...
+Sounds about right if your CPU clock hapens to be 8MHz so probably not.
+Chances the counter was missprogrammed.  Or are you running uncached?
+Uncached will completly devastate performance.
 
-> and if I use bigger loop
-> for (i = 0; i < 20; i++) 
->    *ptr++ = 0xaa;
-> My linux will be crashed on 13 write. So, this is reason why I thought that
-> byte access is not allowed on mmaped uncached memory. 
+> > calibrate delay done
+> > anon vma init done
+> > Mount-cache hash table entries: 512
+> > Checking for 'wait' instruction...  unavailable.
+> > NET: Registered protocol family 16
+> > size of au1xxx platform devices is 1
+> 
+> After this, the serial console 'hangs' -- I can see the RPC error from the log buffer, accessed from the JTAG port..
+> --Please give any suggestions as to where I should start looking to narrow down and figure out the problem..
 
-Let me guess, you filled up some write queue which now is waiting for
-an acknowledge which never arrives.
-
-> Is it possible that problem with byte access is related with device mmap
-> function?
-
-That is fairly simple code.
+At about this point the actual console driver is registered and takes
+over from the early console driver - whatever that may be in your case.
+So seems the early console driver is fine but the actual console driver
+(that is serial driver) is falling over.
 
   Ralf
+
+[1] Okay, I'm just trying to convince people to upgrade :-)

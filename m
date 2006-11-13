@@ -1,53 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 13:35:35 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:26362 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038440AbWKMNfa (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2006 13:35:30 +0000
-Received: from localhost (p3040-ipad01funabasi.chiba.ocn.ne.jp [61.207.77.40])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 01468B7EE; Mon, 13 Nov 2006 22:35:23 +0900 (JST)
-Date:	Mon, 13 Nov 2006 22:38:00 +0900 (JST)
-Message-Id: <20061113.223800.98359482.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 13:43:28 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:18444 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038444AbWKMNnX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2006 13:43:23 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 802913EBE; Mon, 13 Nov 2006 05:43:16 -0800 (PST)
+Message-ID: <455876D7.2010501@ru.mvista.com>
+Date:	Mon, 13 Nov 2006 16:44:55 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] mips hpt cleanup: make clocksource_mips public
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <455774BD.6010706@ru.mvista.com>
-References: <20061112.001028.41198601.anemo@mba.ocn.ne.jp>
-	<455774BD.6010706@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+References: <20061112.001028.41198601.anemo@mba.ocn.ne.jp>	<455774BD.6010706@ru.mvista.com> <20061113.223800.98359482.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061113.223800.98359482.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13184
+X-archive-position: 13185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 12 Nov 2006 22:23:41 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
->     Good to see it. :-)
->     I have a suggestion though...
+Hello.
 
-Thank you for review.
+Atsushi Nemoto wrote:
 
-> > -		mips_hpt_read = dec_ioasic_hpt_read;
-> > +		clocksource_mips.read = dec_ioasic_hpt_read;
-> 
->     I'd like to see clocksource_mips.name overriden there as well.
+>>>-		mips_hpt_read = dec_ioasic_hpt_read;
+>>>+		clocksource_mips.read = dec_ioasic_hpt_read;
+>>
+>>    I'd like to see clocksource_mips.name overriden there as well.
 
-Yes now it is possible without touching generic code.  You can do it
-if you wanted.  I do not have strong feeling for custom name :)
+    And also I forgot about that clocksource continuity thing: TX3927 and 
+other clocksource making use of jiffies should not be considered countinous. 
+This is not an issue though, till GENERIC_CLOCKEVENTS are ported to these 
+platforms...
 
-Main purpose of this patch is to remove mips_hpt_read (which saves a
-few cycles).
+> Yes now it is possible without touching generic code.  You can do it
+> if you wanted.  I do not have strong feeling for custom name :)
 
----
-Atsushi Nemoto
+   Well, it seems Ralf wants this to be converted into serveral clocksources 
+eventually...
+
+> ---
+> Atsushi Nemoto
+
+WBR, Sergei

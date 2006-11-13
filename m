@@ -1,87 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 15:27:58 +0000 (GMT)
-Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:10595 "HELO krt.neobee.net")
-	by ftp.linux-mips.org with SMTP id S20037875AbWKMP1y (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2006 15:27:54 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (Postfix) with ESMTP id BBCD5A5F7B;
-	Mon, 13 Nov 2006 16:27:50 +0100 (CET)
-Received: from krt.neobee.net ([127.0.0.1])
- by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 14023-06; Mon, 13 Nov 2006 16:27:47 +0100 (CET)
-Received: from had (unknown [192.168.0.92])
-	by krt.neobee.net (Postfix) with ESMTP id 87C388F3D8;
-	Mon, 13 Nov 2006 16:27:47 +0100 (CET)
-From:	"Mile Davidovic" <Mile.Davidovic@micronasnit.com>
-To:	<linux-mips@linux-mips.org>
-Cc:	"'Ralf Baechle'" <ralf@linux-mips.org>
-Subject: RE: Uncached mmap
-Date:	Mon, 13 Nov 2006 16:30:26 +0100
-Message-ID: <002101c70738$a4974ad0$5c00a8c0@niit.micronasnit.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Nov 2006 20:58:50 +0000 (GMT)
+Received: from [69.90.147.196] ([69.90.147.196]:55427 "EHLO mail.kenati.com")
+	by ftp.linux-mips.org with ESMTP id S20040370AbWKMSfi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Nov 2006 18:35:38 +0000
+Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
+	by mail.kenati.com (Postfix) with ESMTP id AC99BE4052
+	for <linux-mips@linux-mips.org>; Mon, 13 Nov 2006 12:02:40 -0800 (PST)
+Subject: Portmap on the Encore M3
+From:	Ashlesha Shintre <ashlesha@kenati.com>
+Reply-To: ashlesha@kenati.com
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain
+Date:	Mon, 13 Nov 2006 10:46:47 -0800
+Message-Id: <1163443607.6532.9.camel@sandbar.kenati.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.4.2.1 
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook 11
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
-Thread-Index: AccHH9YOr1x418tdT9Clo10n00/ztgAA+0+Q
-In-Reply-To: <20061113123233.GA20337@linux-mips.org>
-Return-Path: <Mile.Davidovic@micronasnit.com>
+Return-Path: <ashlesha@kenati.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13187
+X-archive-position: 13188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Mile.Davidovic@micronasnit.com
+X-original-sender: ashlesha@kenati.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
-Hello again,
-first I want to thank You for Your fast answer. I work on MIPS 4Kec with linux
-kernel in version 2.6.15 from linux-mips (gcc 4.0.3 and gcc 3.4.3).
-
->> There is no byte access to uncached mmaped memory. Is this correct statement?
->Definately wrong.  For example alot of mmapped I/O devices use uncached
->byte accesses.
-
-Ok, in that case I have problem with byte access on mmaped uncached memory. 
-Reason for previous post is next:
-If I write bytes to mmaped uncached memory like:
-...
-ptr = (unsigned char*)mmap(0,lineSize,PROT_READ|PROT_WRITE,MAP_SHARED,fd0,0);
-...
-for (i = 0; i < 12; i++) 
-   *ptr++ = 0xaa;
-
-this loop will not write all bytes correctly (every 4 bytes will have 0xaa as
-value), here is dump from Lauterbach debugger:
-___address__|_0________4________8________C________0123456789ABCDEF
-  D:83660000|>FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF ................
-  D:83660010| 000000AA 000000AA 000000AA 0000AA02 ................
-
-and if I use bigger loop
-for (i = 0; i < 20; i++) 
-   *ptr++ = 0xaa;
-My linux will be crashed on 13 write. So, this is reason why I thought that
-byte access is not allowed on mmaped uncached memory. 
-
-Is it possible that problem with byte access is related with device mmap
-function?
-
->This stament if of course limited to the CPU's part of the system.  Devices
->may have their specific restrictions on access size and its not uncommon to
->have such restrictions though that would seem unlikely for framebuffer
->memory.
-
-Ok, I understood this.
-
->If your particular CPU support it you may want to use cache mode "uncached
->accellerated" for a framebuffer.  It should deliver significtn performance
->gains yet avoid the need for cache flushes.
+I get the following error after the NFS is mounted and the kernel frees
+136k of memory:
 
 
 
-Thanks in advance
-Mile
+> >
+> RPC: sendmsg returned error 128.
+> <4>nfs: RPC call returned error 128 
+> 
+
+I m trying to boot the 2.6.14.6 kernel onto the Encore M3 board that has
+the MIPS AU1500 processor on it.
+
+The .config file contains the following line: CONFIG_PORTMAP=y
+The server from which the NFS is mounted is also running the portmap
+daemon..
+
+Is there a way to check if the portmap server is functioning properly?
+
+
+Also:
+
+- The BogoMIPS value is 7186 which seems too low for the AU1500 -- how
+can I check that the timer interrupt is being handled correctly?  The
+AU1500 has 2 counters which are used to generate a clock
+
+- On the serial console I can only see messages upto this point:
+
+
+> 16.35 BogoMIPS (lpj=8176)
+> calibrate delay done
+> anon vma init done
+> Mount-cache hash table entries: 512
+> Checking for 'wait' instruction...  unavailable.
+> NET: Registered protocol family 16
+> size of au1xxx platform devices is 1
+
+After this, the serial console 'hangs' -- I can see the RPC error from the log buffer, accessed from the JTAG port..
+--Please give any suggestions as to where I should start looking to narrow down and figure out the problem..
+
+Thank you!
+Ashlesha.
+
+Kenati Technologies
+Suite #220 
+800 W California Ave
+Sunnyvale 
+94086 CA

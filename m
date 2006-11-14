@@ -1,41 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2006 10:56:26 +0000 (GMT)
-Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:17769 "HELO krt.neobee.net")
-	by ftp.linux-mips.org with SMTP id S20037749AbWKNK4V (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2006 10:56:21 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2006 11:05:31 +0000 (GMT)
+Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:34923 "HELO krt.neobee.net")
+	by ftp.linux-mips.org with SMTP id S20038487AbWKNLF1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2006 11:05:27 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (Postfix) with ESMTP id 129B7282DA;
-	Tue, 14 Nov 2006 11:55:58 +0100 (CET)
+	by krt.neobee.net (Postfix) with ESMTP id 6FEDA10025E;
+	Tue, 14 Nov 2006 12:05:11 +0100 (CET)
 Received: from krt.neobee.net ([127.0.0.1])
  by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 28235-04; Tue, 14 Nov 2006 11:55:57 +0100 (CET)
+ with ESMTP id 28021-09; Tue, 14 Nov 2006 12:05:10 +0100 (CET)
 Received: from had (unknown [192.168.0.92])
-	by krt.neobee.net (Postfix) with ESMTP id 742CB2828B;
-	Tue, 14 Nov 2006 11:55:57 +0100 (CET)
+	by krt.neobee.net (Postfix) with ESMTP id EEB04100256;
+	Tue, 14 Nov 2006 12:05:09 +0100 (CET)
 From:	"Mile Davidovic" <Mile.Davidovic@micronasnit.com>
-To:	<linux-mips@linux-mips.org>
+To:	"'Mile Davidovic'" <Mile.Davidovic@micronasnit.com>,
+	<linux-mips@linux-mips.org>
 Cc:	"'Ralf Baechle'" <ralf@linux-mips.org>
 Subject: RE: Uncached mmap
-Date:	Tue, 14 Nov 2006 11:58:12 +0100
-Message-ID: <013c01c707db$c70cde10$5c00a8c0@niit.micronasnit.com>
+Date:	Tue, 14 Nov 2006 12:07:24 +0100
+Message-ID: <013e01c707dd$10680d90$5c00a8c0@niit.micronasnit.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 X-Mailer: Microsoft Office Outlook 11
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
-thread-index: AccHZ7TR8/4yl5a4Tr+t5fPHfq8UQgAbY4UQ
-In-Reply-To: <20061113164054.GA31476@linux-mips.org>
+thread-index: AccHZ7TR8/4yl5a4Tr+t5fPHfq8UQgAbY4UQAAHWH7A=
+In-Reply-To: <013c01c707db$c70cde10$5c00a8c0@niit.micronasnit.com>
 Return-Path: <Mile.Davidovic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13193
+X-archive-position: 13194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: Mile.Davidovic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
+
+Hello again,
+I just want to make apologies for bothering, I contacted our vendor and it seems
+that uncached DRAM byte accesses on their core (based on MIPS 4Kec) are
+impossible. 
+Thanks a lot for Your effort.
+
+Best regards Mile
 
 Hello all again,
 

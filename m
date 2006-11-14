@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2006 12:55:01 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:17874 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2006 13:04:40 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:25022 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20038639AbWKNMy6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Nov 2006 12:54:58 +0000
+	id S20038654AbWKNNEi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Nov 2006 13:04:38 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kAECtEs7029013;
-	Tue, 14 Nov 2006 12:55:15 GMT
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kAED53RL029227;
+	Tue, 14 Nov 2006 13:05:03 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kAECtEoW029012;
-	Tue, 14 Nov 2006 12:55:14 GMT
-Date:	Tue, 14 Nov 2006 12:55:14 +0000
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kAED53Pi029226;
+	Tue, 14 Nov 2006 13:05:03 GMT
+Date:	Tue, 14 Nov 2006 13:05:03 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	chandrashekar mogilicherla <chandu.nitw@gmail.com>
+To:	Ashlesha Shintre <ashlesha@kenati.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: process created when pthread_create is used ??????????
-Message-ID: <20061114125514.GA28579@linux-mips.org>
-References: <69a573da0611140328w16138465lfa7a6268981867e@mail.gmail.com>
+Subject: Re: Portmap on the Encore M3
+Message-ID: <20061114130503.GB28579@linux-mips.org>
+References: <1163443607.6532.9.camel@sandbar.kenati.com> <20061113233802.GA17130@linux-mips.org> <1163469787.6532.26.camel@sandbar.kenati.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69a573da0611140328w16138465lfa7a6268981867e@mail.gmail.com>
+In-Reply-To: <1163469787.6532.26.camel@sandbar.kenati.com>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13196
+X-archive-position: 13197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,19 +33,32 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 14, 2006 at 04:58:46PM +0530, chandrashekar mogilicherla wrote:
+On Mon, Nov 13, 2006 at 06:03:07PM -0800, Ashlesha Shintre wrote:
 
-> Iam using fedora core 2.6.11 kernel on mips machine ,
-
-Interesting, I wonder where you got that Fedora port from?
-
-> "process is getting created when i try to create thread using pthread
-> library."
+> > > > 16.35 BogoMIPS (lpj=8176)
+> > 
+> > Sounds about right if your CPU clock hapens to be 8MHz so probably not.
+> > Chances the counter was missprogrammed.  Or are you running uncached?
+> > Uncached will completly devastate performance.
+> > 
 > 
-> Can anybody explain what is happening  out  there
+> For the AU1500 processor, the CPU Clock is derived from the PLL whose
+> input is 12MHz.. Upon reading the value of the SYS_CPUPLL register in
+> the calibrate_delay function, I found out that the multiplying factor is
+> 40, thus, the CPU Clock frequency is 480MHz.. Thus the lpj should be
+> approximately 480000 -- right?
 
-On a kernel level thread and process are almost identical things which is
-why they look the same in ps output.  The fine differences are more
-special properties such as a having a private address space.
+From a CPU core like the Alchemy core I would more expect half of that
+number, 240000.  That is if HZ is 1000 which I believe it was still
+hardwired for kernels of the vintage you're running.
+
+> Also I dont know what you mean by "running uncached"?
+
+CONFIG_MIPS_UNCACHED which disables all processor caches.  Bad idea.
+
+> Thanks a lot, I will check the problem with the serial driver -- i m
+> using the 8250.c serial driver..
+
+Use CONFIG_SERIAL_AU1X00.
 
   Ralf

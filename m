@@ -1,111 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2006 01:52:08 +0000 (GMT)
-Received: from [69.90.147.196] ([69.90.147.196]:53191 "EHLO mail.kenati.com")
-	by ftp.linux-mips.org with ESMTP id S20038516AbWKNBwD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2006 01:52:03 +0000
-Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
-	by mail.kenati.com (Postfix) with ESMTP id 5F4D6E4052;
-	Mon, 13 Nov 2006 19:19:03 -0800 (PST)
-Subject: Re: Portmap on the Encore M3
-From:	Ashlesha Shintre <ashlesha@kenati.com>
-Reply-To: ashlesha@kenati.com
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20061113233802.GA17130@linux-mips.org>
-References: <1163443607.6532.9.camel@sandbar.kenati.com>
-	 <20061113233802.GA17130@linux-mips.org>
-Content-Type: text/plain
-Date:	Mon, 13 Nov 2006 18:03:07 -0800
-Message-Id: <1163469787.6532.26.camel@sandbar.kenati.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.4.2.1 
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Nov 2006 10:56:26 +0000 (GMT)
+Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:17769 "HELO krt.neobee.net")
+	by ftp.linux-mips.org with SMTP id S20037749AbWKNK4V (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Nov 2006 10:56:21 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by krt.neobee.net (Postfix) with ESMTP id 129B7282DA;
+	Tue, 14 Nov 2006 11:55:58 +0100 (CET)
+Received: from krt.neobee.net ([127.0.0.1])
+ by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 28235-04; Tue, 14 Nov 2006 11:55:57 +0100 (CET)
+Received: from had (unknown [192.168.0.92])
+	by krt.neobee.net (Postfix) with ESMTP id 742CB2828B;
+	Tue, 14 Nov 2006 11:55:57 +0100 (CET)
+From:	"Mile Davidovic" <Mile.Davidovic@micronasnit.com>
+To:	<linux-mips@linux-mips.org>
+Cc:	"'Ralf Baechle'" <ralf@linux-mips.org>
+Subject: RE: Uncached mmap
+Date:	Tue, 14 Nov 2006 11:58:12 +0100
+Message-ID: <013c01c707db$c70cde10$5c00a8c0@niit.micronasnit.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <ashlesha@kenati.com>
+X-Mailer: Microsoft Office Outlook 11
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
+thread-index: AccHZ7TR8/4yl5a4Tr+t5fPHfq8UQgAbY4UQ
+In-Reply-To: <20061113164054.GA31476@linux-mips.org>
+Return-Path: <Mile.Davidovic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13192
+X-archive-position: 13193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashlesha@kenati.com
+X-original-sender: Mile.Davidovic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2006-11-13 at 23:38 +0000, Ralf Baechle wrote:
-> On Mon, Nov 13, 2006 at 10:46:47AM -0800, Ashlesha Shintre wrote:
-> 
-> > > RPC: sendmsg returned error 128.
-> > > <4>nfs: RPC call returned error 128 
-> 
-> 128 = ENETUNREACH.
-Thank you -
-> 
-> > I m trying to boot the 2.6.14.6 kernel onto the Encore M3 board that has
-> > the MIPS AU1500 processor on it.
-> 
-> For more information [1] about 2.6.14 kernels see http://tinyurl.com/hjexx ;-)
-> 
-> > The .config file contains the following line: CONFIG_PORTMAP=y
-> > The server from which the NFS is mounted is also running the portmap
-> > daemon..
-> > 
-> > Is there a way to check if the portmap server is functioning properly?
-> > 
-> > 
-> > Also:
-> > 
-> > - The BogoMIPS value is 7186 which seems too low for the AU1500 -- how
-> > can I check that the timer interrupt is being handled correctly?  The
-> > AU1500 has 2 counters which are used to generate a clock
-> > 
-> > - On the serial console I can only see messages upto this point:
-> > 
-> > 
-> > > 16.35 BogoMIPS (lpj=8176)
-> 
-> Sounds about right if your CPU clock hapens to be 8MHz so probably not.
-> Chances the counter was missprogrammed.  Or are you running uncached?
-> Uncached will completly devastate performance.
-> 
+Hello all again,
 
-For the AU1500 processor, the CPU Clock is derived from the PLL whose
-input is 12MHz.. Upon reading the value of the SYS_CPUPLL register in
-the calibrate_delay function, I found out that the multiplying factor is
-40, thus, the CPU Clock frequency is 480MHz.. Thus the lpj should be
-approximately 480000 -- right?
-
-Also I dont know what you mean by "running uncached"?
-
-> > > calibrate delay done
-> > > anon vma init done
-> > > Mount-cache hash table entries: 512
-> > > Checking for 'wait' instruction...  unavailable.
-> > > NET: Registered protocol family 16
-> > > size of au1xxx platform devices is 1
-> > 
-> > After this, the serial console 'hangs' -- I can see the RPC error from the log buffer, accessed from the JTAG port..
-> > --Please give any suggestions as to where I should start looking to narrow down and figure out the problem..
+> ptr = (unsigned char*)mmap(0,lineSize,PROT_READ|PROT_WRITE,MAP_SHARED,fd0,0);
+> ...
+> for (i = 0; i < 12; i++) 
+>    *ptr++ = 0xaa;
 > 
-> At about this point the actual console driver is registered and takes
-> over from the early console driver - whatever that may be in your case.
-> So seems the early console driver is fine but the actual console driver
-> (that is serial driver) is falling over.
-> 
-Thanks a lot, I will check the problem with the serial driver -- i m
-using the 8250.c serial driver..
+> this loop will not write all bytes correctly (every 4 bytes will have 0xaa as
+> value), here is dump from Lauterbach debugger:
+> ___address__|_0________4________8________C________0123456789ABCDEF
+>   D:83660000|>FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF ................
+>   D:83660010| 000000AA 000000AA 000000AA 0000AA02 ................
 
-There is no early console init funciton:  The board has a serial port on
-a VIA 686B Southbridge on the PCI bus -- so to get the kernel messages
-on the console, before initialising the serial driver I just write a TLB
-entry giving the address of the VIA on the PCI bus --
+Is 83660000 a proper physical address or a virtual address?  A common
+mistake is mapping a KSEG _virtual_ address to a userspace _virtual_
+address.  Obviously mapping anything virtual to something else virtual
+doesn't work ...
 
-So maybe deleting this TLB entry before serial driver initialisation
-might work at this point...I will try that next -
+Ok, physical address for fb mmap is 0x03660000, mmap return 0x2aaa8000 to user
+space application and ptr is shifted for 16 bytes (only for test purpose), so
+loop will start writing from 0x2aaa8010, with Lauterbach I can check only
+0x83660000 or 0xA3660000 address and both are different then expected. Also
+small test loop also show that values on 0x2aaa8010 are not ok.
+Also if I write/read to this memory as u32 everything work as expected.
 
->   Ralf
-> 
-> [1] Okay, I'm just trying to convince people to upgrade :-)
-I will convey your message to my boss :-)
+I also have here IDT board with 79RC32K438 (4Kc core) and I will same test.
 
-Thanks again,
-Ashlesha.
+> My linux will be crashed on 13 write. So, this is reason why I thought that
+> byte access is not allowed on mmaped uncached memory. 
+
+Let me guess, you filled up some write queue which now is waiting for
+an acknowledge which never arrives.
+
+Unfortunately no, linux stopped and ejtag debugger is dead. 
+
+
+> Is it possible that problem with byte access is related with device mmap
+> function?
+
+That is fairly simple code.
+
+  Ralf

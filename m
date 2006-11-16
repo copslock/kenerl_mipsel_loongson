@@ -1,66 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Nov 2006 23:09:57 +0000 (GMT)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:56769 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20039023AbWKOXJw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 15 Nov 2006 23:09:52 +0000
-Received: (qmail 11900 invoked by uid 101); 15 Nov 2006 23:09:41 -0000
-Received: from unknown (HELO ogyruan.pmc-sierra.bc.ca) (216.241.226.236)
-  by mother.pmc-sierra.com with SMTP; 15 Nov 2006 23:09:41 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by ogyruan.pmc-sierra.bc.ca (8.13.3/8.12.7) with ESMTP id kAFN9bUX027040;
-	Wed, 15 Nov 2006 15:09:41 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <VY7SHD0K>; Wed, 15 Nov 2006 15:09:37 -0800
-Message-ID: <E8C8A5231DDE104C816ADF532E0639120194F4D2@bby1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Trevor Hamm <Trevor_Hamm@pmc-sierra.com>
-To:	"'Atsushi Nemoto'" <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: RE: Problems booting Linux 2.6.18.1 on MIPS34K core
-Date:	Wed, 15 Nov 2006 15:09:34 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Nov 2006 01:27:50 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.189]:8594 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039045AbWKPB1p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Nov 2006 01:27:45 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so821750nfc
+        for <linux-mips@linux-mips.org>; Wed, 15 Nov 2006 17:27:45 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=e5PjfRCGa/YyOBmd0WkdSb95voiK/Svm4aMQdkGQ9p1kPdMZKmzHZT8Nk0O6burroK4vLVK2uOc2qBsGSljFa6dnAYbAuJSH2bIWfPsJzQhFQWMo+Mkdsou3MbqnB53dQYRs91DLs/XRu6tZ1Vr8qbiST3xl+z3Jy2N62DGfkgQ=
+Received: by 10.49.1.12 with SMTP id d12mr1770563nfi.1163640464866;
+        Wed, 15 Nov 2006 17:27:44 -0800 (PST)
+Received: by 10.48.217.19 with HTTP; Wed, 15 Nov 2006 17:27:44 -0800 (PST)
+Message-ID: <71a06cc90611151727k32422c9bg75eb993fee821e12@mail.gmail.com>
+Date:	Thu, 16 Nov 2006 09:27:44 +0800
+From:	WhiteFox <wyh817@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: A promble about driver
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-Content-Type: text/plain
-Return-Path: <Trevor_Hamm@pmc-sierra.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Return-Path: <wyh817@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13210
+X-archive-position: 13211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Trevor_Hamm@pmc-sierra.com
+X-original-sender: wyh817@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
- 
+i wrote a simple driver in broadcom7111(use MIPSs3000),it works in the topbox.
+the linux kernel is 2.4.25
+the compiler is uclibc-3.3.5
+when i insmod the driver,it say:unresolved symbol _gp_disp
+what is this mean?
+thak you
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org 
-> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Atsushi Nemoto
-> Sent: Wednesday, November 15, 2006 8:07 AM
-> To: Trevor Hamm
-> Cc: linux-mips@linux-mips.org
-> Subject: Re: Problems booting Linux 2.6.18.1 on MIPS34K core
-> 
-> Then, I can imagine three (hardly possible) case:
-> 
-> A.  PG_dcache_dirty bit was cleared accidently.
-> 
-> B.  The page is accessed by user process without page_mapping()
-> 
-> C.  kernel forgot to call update_mmu_cache() at somewhere.
-> 
-> If case A, removing "&& Page_dcache_dirty(page)" condition from
-> __update_cache() will hide your problem.  If case B, calling
-> flush_dcache_page() unconditionally in __update_cache() will hide your
-> problem.
-> 
-> Anyway for now I can not see why this can happen...
-> 
+my code  is:
 
-Okay, so after writing up that long explanation, reading through some more kernel code, and re-reading what you wrote above, I realize that all I've done was to verify what you've already suspected all along -- that a flush_dcache_page on this page somehow doesn't flush the page.  This is my first time studying the cache/memory management code in Linux 2.6; thanks for being so patient with me :-)
-
-I tried the remedies you suggested for Case A and B, but neither one produces a kernel which can boot from power-up.  So far, the only work-around that works is calling flush_data_cache_page unconditionally from __flush_dcache_page.  This would imply that Case C is the culprit.  I'll see what I can do to verify this.
-
-Thanks,
-Trevor
+#define MODULE
+#include <linux/module.h>
+int init_module(void)
+{
+  printk("<1>Hello,world\n");
+  return 0;
+}
+void cleanup_module(void)
+{
+  printk("<1>Good Bye\n");
+}

@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2006 15:01:03 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:28171 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S20038619AbWKSPAd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 19 Nov 2006 15:00:33 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 9516564D3F; Sun, 19 Nov 2006 15:00:21 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 5781F54E76; Sun, 19 Nov 2006 14:58:43 +0000 (GMT)
-Date:	Sun, 19 Nov 2006 14:58:43 +0000
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:	ths@networkno.de
-Subject: Add -mfix7000 to CONFIG_SGI_IP22
-Message-ID: <20061119145843.GA5387@deprecation.cyrius.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Nov 2006 16:34:19 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:52451 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038721AbWKSQeS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 19 Nov 2006 16:34:18 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kAJGYFtY012350;
+	Sun, 19 Nov 2006 16:34:15 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kAJGYD5A012349;
+	Sun, 19 Nov 2006 17:34:13 +0100
+Date:	Sun, 19 Nov 2006 17:34:13 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	linux-mips@linux-mips.org, ths@networkno.de
+Subject: Re: Add -mfix7000 to CONFIG_SGI_IP22
+Message-ID: <20061119163413.GB6240@linux-mips.org>
+References: <20061119145843.GA5387@deprecation.cyrius.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <tbm@cyrius.com>
+In-Reply-To: <20061119145843.GA5387@deprecation.cyrius.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13219
+X-archive-position: 13220
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-What was the rationale to add that to CONFIG_SGI_IP22?  Shouldn't it
-be added to CONFIG_SGI_IP32, i.e. O2?
+On Sun, Nov 19, 2006 at 02:58:43PM +0000, Martin Michlmayr wrote:
 
-From: Thiemo Seufer <ths@networkno.de>
+> What was the rationale to add that to CONFIG_SGI_IP22?  Shouldn't it
+> be added to CONFIG_SGI_IP32, i.e. O2?
 
-Add -mfix7000 to CONFIG_SGI_IP22
+Indeed.
 
-Signed-off-by: Thiemo Seufer <ths@networkno.de>
-Signed-off-by: Martin Michlmayr <tbm@cyrius.com>
+And a workaround for what CPU bug is that supposed to be anyway?  My errata
+don't document anything that looks like what -mfix7000 claims to fix.
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -478,7 +478,7 @@ load-$(CONFIG_PNX8550_JBS)	+= 0xffffffff
- # address by 8kb.
- #
- core-$(CONFIG_SGI_IP22)		+= arch/mips/sgi-ip22/
--cflags-$(CONFIG_SGI_IP22)	+= -Iinclude/asm-mips/mach-ip22
-+cflags-$(CONFIG_SGI_IP22)	+= -Iinclude/asm-mips/mach-ip22 -Wa,-mfix7000
- ifdef CONFIG_32BIT
- load-$(CONFIG_SGI_IP22)		+= 0xffffffff88002000
- endif
-
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+  Ralf

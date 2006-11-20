@@ -1,104 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Nov 2006 10:49:41 +0000 (GMT)
-Received: from tool.snarl.nl ([213.84.251.124]:54923 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S20037841AbWKTKtg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Nov 2006 10:49:36 +0000
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id 04A245DF94;
-	Mon, 20 Nov 2006 11:49:23 +0100 (CET)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id XFi8m+FP1vdq; Mon, 20 Nov 2006 11:49:22 +0100 (CET)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 936755DF3D; Mon, 20 Nov 2006 11:49:22 +0100 (CET)
-Date:	Mon, 20 Nov 2006 11:49:22 +0100
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: au1xmmc.c: does it work?
-Message-ID: <20061120104922.GC32045@dusktilldawn.nl>
-References: <20061120094053.GA13509@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Nov 2006 11:31:46 +0000 (GMT)
+Received: from rex.snapgear.com ([203.143.235.140]:13700 "EHLO
+	cyberguard.com.au") by ftp.linux-mips.org with ESMTP
+	id S20037841AbWKTLbm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Nov 2006 11:31:42 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by hex.internal.moreton.com.au (Postfix) with ESMTP id 331B5EBA59
+	for <linux-mips@linux-mips.org>; Mon, 20 Nov 2006 21:31:33 +1000 (EST)
+Received: from hex.internal.moreton.com.au ([127.0.0.1])
+	by localhost (bne.snapgear.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 22815-10 for <linux-mips@linux-mips.org>;
+	Mon, 20 Nov 2006 21:31:31 +1000 (EST)
+Received: from beast (davidm0.sw.moreton.com.au [10.46.1.20])
+	by hex.internal.moreton.com.au (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Mon, 20 Nov 2006 21:31:31 +1000 (EST)
+Received: by beast (Postfix, from userid 1012)
+	id C9731161C056; Mon, 20 Nov 2006 21:31:50 +1000 (EST)
+Date:	Mon, 20 Nov 2006 21:31:50 +1000
+From:	David McCullough <david_mccullough@au.securecomputing.com>
+To:	linux-mips@linux-mips.org
+Subject: a1500 Performance query ?
+Message-ID: <20061120113150.GA15277@au.securecomputing.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UPT3ojh+0CqEDtpF"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20061120094053.GA13509@roarinelk.homelinux.net>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <freddy@dusktilldawn.nl>
+User-Agent: Mutt/1.5.11
+X-Virus-Scanned: amavisd-new at snapgear.com
+Return-Path: <david_mccullough@au.securecomputing.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13223
+X-archive-position: 13224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: david_mccullough@au.securecomputing.com
 Precedence: bulk
 X-list: linux-mips
 
 
---UPT3ojh+0CqEDtpF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi all,
 
-Hi Manuel,
+I just put together a 2.6.18 image on an older Bosporus board (400MHz
+au1500) and I am a bit disappointed with the networking performance.
+The few stats I have seen suggest that it should easily be doing 100Mbps
+of networking throughput, but I am seeing less than 60Mbps using either
+the onboard NIC's or a dual Intel e1000.
 
-On Mon, Nov 20, 2006 at 10:40:53AM +0100, Manuel Lauss wrote:
-> I insert a known working card, and the mmc cmd trace suggests
-> CMD9 (send CSD) times out.
+I am running a fairly stock 2.6.18 compiled with mipsel-linux-gcc version 3.4.6.
+Full netfilter firewall setup doing a through box (all kernel mode) test.
 
-Are you working with a real MMC card or with an SD-card?
+The original BSP came with 2.4.21 and gcc 3.2.1 (mips_fp_le-gcc?) if that
+is significant.
 
-I myself am not able to get several SD-cards working, even though
-SD-cards should be able to talk the MMC-protocol (AFAIK).
+Linux reports CPU of 396MHz,  CPUPLL and POWERCTRL registers are set for full
+speed and the RAM is running at the right speed (checked with an analyser).
 
-What I do have is several MMC-cards working properly, but I have
-to add a small side note. I am using the AU1100 processor on our
-own designed board. This AU1100 processor has a different DMA
-controller than the AU1200 and AU1500. Unfortunaly the mmc driver
-is written to use the DMA driver for the AU1200/AU1500 controller
-and not the DMA driver for the AU1100. This is why I have a
-slightly altered version of the au1xmmc driver. This version is
-currently using pio mode instead of DMA. In the future I want it
-to correcly use the right DMA driver depending on the processor,
-but time constrains keep me at this moment from doing that. Also
-it is a little bit addapted for our own hardware, which is like I
-mentioned before not the DBAu1100 development board.
+I expected the board to perform much better and figured something obvious
+must be wrong. Hopefully someone who knows these boards better has some
+ideas :-)
 
-If you have trouble with MMC-cards too I'm more than willing to
-send you the patch, but it probably needs some tweaking on your
-part. That's why I do not yet attach it to this mail. Just ask
-me personally for it if you want to try it out.
+Thanks,
+Davidm
 
-
-> Before I go about to trace the problem I'd like to know if
-> other people see this problem too or if it's specific to my
-> system.
-
-With the SD-cards the driver indeed got no answer on the CMD9
-request. So yes, I have the same problem on the AU1100 with the
-2.6.16 kernel.
-
-
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
-
---UPT3ojh+0CqEDtpF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.5 (GNU/Linux)
-
-iD8DBQFFYYgxbxf9XXlB0eERAiXiAKDhMMt6qF7qgBpjgvpEMn8uFVep9gCg8jvL
-7WiewsBHkuWQ0EfYNCA2nWo=
-=q12V
------END PGP SIGNATURE-----
-
---UPT3ojh+0CqEDtpF--
+-- 
+David McCullough,  david_mccullough@securecomputing.com,   Ph:+61 734352815
+Secure Computing - SnapGear  http://www.uCdot.org http://www.cyberguard.com

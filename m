@@ -1,67 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Nov 2006 11:31:46 +0000 (GMT)
-Received: from rex.snapgear.com ([203.143.235.140]:13700 "EHLO
-	cyberguard.com.au") by ftp.linux-mips.org with ESMTP
-	id S20037841AbWKTLbm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Nov 2006 11:31:42 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by hex.internal.moreton.com.au (Postfix) with ESMTP id 331B5EBA59
-	for <linux-mips@linux-mips.org>; Mon, 20 Nov 2006 21:31:33 +1000 (EST)
-Received: from hex.internal.moreton.com.au ([127.0.0.1])
-	by localhost (bne.snapgear.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 22815-10 for <linux-mips@linux-mips.org>;
-	Mon, 20 Nov 2006 21:31:31 +1000 (EST)
-Received: from beast (davidm0.sw.moreton.com.au [10.46.1.20])
-	by hex.internal.moreton.com.au (Postfix) with ESMTP
-	for <linux-mips@linux-mips.org>; Mon, 20 Nov 2006 21:31:31 +1000 (EST)
-Received: by beast (Postfix, from userid 1012)
-	id C9731161C056; Mon, 20 Nov 2006 21:31:50 +1000 (EST)
-Date:	Mon, 20 Nov 2006 21:31:50 +1000
-From:	David McCullough <david_mccullough@au.securecomputing.com>
-To:	linux-mips@linux-mips.org
-Subject: a1500 Performance query ?
-Message-ID: <20061120113150.GA15277@au.securecomputing.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Nov 2006 12:01:54 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:44047 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20038189AbWKTMBu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Nov 2006 12:01:50 +0000
+Received: (qmail 13754 invoked by uid 1000); 20 Nov 2006 13:01:48 +0100
+Date:	Mon, 20 Nov 2006 13:01:48 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: au1xmmc.c: does it work?
+Message-ID: <20061120120148.GA13740@roarinelk.homelinux.net>
+References: <20061120094053.GA13509@roarinelk.homelinux.net> <20061120104922.GC32045@dusktilldawn.nl>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20061120104922.GC32045@dusktilldawn.nl>
 User-Agent: Mutt/1.5.11
-X-Virus-Scanned: amavisd-new at snapgear.com
-Return-Path: <david_mccullough@au.securecomputing.com>
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13224
+X-archive-position: 13225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david_mccullough@au.securecomputing.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
+Hi Freddy,
 
-Hi all,
+On Mon, Nov 20, 2006 at 11:49:22AM +0100, Freddy Spierenburg wrote:
+> On Mon, Nov 20, 2006 at 10:40:53AM +0100, Manuel Lauss wrote:
+> > I insert a known working card, and the mmc cmd trace suggests
+> > CMD9 (send CSD) times out.
+> 
+> Are you working with a real MMC card or with an SD-card?
 
-I just put together a 2.6.18 image on an older Bosporus board (400MHz
-au1500) and I am a bit disappointed with the networking performance.
-The few stats I have seen suggest that it should easily be doing 100Mbps
-of networking throughput, but I am seeing less than 60Mbps using either
-the onboard NIC's or a dual Intel e1000.
+SD cards so far. MMC seems broken in a different way.
 
-I am running a fairly stock 2.6.18 compiled with mipsel-linux-gcc version 3.4.6.
-Full netfilter firewall setup doing a through box (all kernel mode) test.
+> I myself am not able to get several SD-cards working, even though
+> SD-cards should be able to talk the MMC-protocol (AFAIK).
 
-The original BSP came with 2.4.21 and gcc 3.2.1 (mips_fp_le-gcc?) if that
-is significant.
+From what I understand, SD is a superset of the MMC command set.
 
-Linux reports CPU of 396MHz,  CPUPLL and POWERCTRL registers are set for full
-speed and the RAM is running at the right speed (checked with an analyser).
+> What I do have is several MMC-cards working properly, but I have
+> to add a small side note. I am using the AU1100 processor on our
+> own designed board. This AU1100 processor has a different DMA
+> controller than the AU1200 and AU1500. 
 
-I expected the board to perform much better and figured something obvious
-must be wrong. Hopefully someone who knows these boards better has some
-ideas :-)
+It does not get so far to actually transfer data
+
+> If you have trouble with MMC-cards too I'm more than willing to
+> send you the patch, but it probably needs some tweaking on your
+> part. That's why I do not yet attach it to this mail. Just ask
+> me personally for it if you want to try it out.
+
+Yes, please. I'd like to give it a spin
+ 
+> > Before I go about to trace the problem I'd like to know if
+> > other people see this problem too or if it's specific to my
+> > system.
+> 
+> With the SD-cards the driver indeed got no answer on the CMD9
+> request. So yes, I have the same problem on the AU1100 with the
+> 2.6.16 kernel.
+
+I'll see what I can do ti fix this.
 
 Thanks,
-Davidm
 
 -- 
-David McCullough,  david_mccullough@securecomputing.com,   Ph:+61 734352815
-Secure Computing - SnapGear  http://www.uCdot.org http://www.cyberguard.com
+ ml.

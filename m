@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2006 21:58:17 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:4554 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2006 22:17:19 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:17356 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039336AbWKVV6N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Nov 2006 21:58:13 +0000
+	id S20039344AbWKVWRR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Nov 2006 22:17:17 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kAMLw8jw009243;
-	Wed, 22 Nov 2006 21:58:09 GMT
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kAMMHCe5009458;
+	Wed, 22 Nov 2006 22:17:14 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kAMLw4Tc009242;
-	Wed, 22 Nov 2006 21:58:04 GMT
-Date:	Wed, 22 Nov 2006 21:58:04 +0000
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kAMMHCJQ009457;
+	Wed, 22 Nov 2006 22:17:12 GMT
+Date:	Wed, 22 Nov 2006 22:17:12 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Trevor Hamm <Trevor_Hamm@pmc-sierra.com>
-Cc:	"'Atsushi Nemoto'" <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: Problems booting Linux 2.6.18.1 on MIPS34K core
-Message-ID: <20061122215803.GA8819@linux-mips.org>
-References: <E8C8A5231DDE104C816ADF532E0639120194F4EB@bby1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+To:	Ashlesha Shintre <ashlesha@kenati.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: request_module: runaway loop modprobe net-pf-1
+Message-ID: <20061122221712.GB8819@linux-mips.org>
+References: <1164224559.6511.4.camel@sandbar.kenati.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E8C8A5231DDE104C816ADF532E0639120194F4EB@bby1exm07.pmc_nt.nt.pmc-sierra.bc.ca>
+In-Reply-To: <1164224559.6511.4.camel@sandbar.kenati.com>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13239
+X-archive-position: 13240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,12 +33,25 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 22, 2006 at 12:31:10PM -0800, Trevor Hamm wrote:
+On Wed, Nov 22, 2006 at 11:42:39AM -0800, Ashlesha Shintre wrote:
 
-> The source of the problem seems to be with squashfs.  When I compare booting a kernel using squashfs to one using cramfs (which always seems to boot successfully on power-up), both are reading the troublesome page from /lib/ld-uClibc.so, and both are calling flush_dcache_page() on this page.  But in the case of cramfs, flush_dcache_page() causes an immediate cache flush of that page (mapping_mapped(mapping) in __flush_dcache_page() is returning non-zero), while squashfs just marks the page as dirty and defers the cache flush (mapping_mapped(mapping) is returning zero).  I have no idea what causes this difference in behaviour, but right now it appears to be a bug in squashfs rather than the linux-mips kernel.
+> During boot up on the Encore M3 board (AU1500 MIPS) of the 2.6.14.6
+> kernel, the process stops after the NFS filesystem has been mounted,
+> memory freed  and spits out the following message:
+> 
+> 
+> > request_module: runaway loop modprobe net-pf-1
 
-There are a few other potencial and real bugs me and Atsushi have found
-in squashfs.  Guess there is a reason why it's not yet in the kernel ...
-I'm still waiting for feedback from the squashfs author.
+The kernel tried to open UNIX domain socket but because support is not
+compiled it will load the module instead.  Now, glibc-based programs
+happen to try to connect to nscd via a UNIX domain socket on startup
+and the whole show starts all over.  After a few iterations the kernel
+gets tired of the whole game and prints this friendly message.
+
+> What does the net-pf-1 mean?
+
+net-pf-1 is PF_UNIX, see the definitions in include/linux/socket.h.  So
+you should set CONFIG_UNIX to y.  Building it as a module won't work
+as you just found :).
 
   Ralf

@@ -1,57 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2006 13:17:27 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:24815 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038553AbWKVNRV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Nov 2006 13:17:21 +0000
-Received: from localhost (p8044-ipad210funabasi.chiba.ocn.ne.jp [58.88.127.44])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 6968CB7F7; Wed, 22 Nov 2006 22:17:16 +0900 (JST)
-Date:	Wed, 22 Nov 2006 22:19:57 +0900 (JST)
-Message-Id: <20061122.221957.74752404.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] use generic_handle_irq, handle_level_irq,
- handle_percpu_irq
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <45631BD2.4090509@ru.mvista.com>
-References: <20061114.011318.99611303.anemo@mba.ocn.ne.jp>
-	<45631BD2.4090509@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Nov 2006 13:51:37 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:44047 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20039055AbWKVNvd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Nov 2006 13:51:33 +0000
+Received: (qmail 18160 invoked by uid 1000); 22 Nov 2006 14:51:32 +0100
+Date:	Wed, 22 Nov 2006 14:51:32 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] make au1xxx-ide compile again
+Message-ID: <20061122135132.GA18144@roarinelk.homelinux.net>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13234
+X-archive-position: 13235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 21 Nov 2006 18:31:30 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > diff --git a/arch/mips/kernel/irq-msc01.c b/arch/mips/kernel/irq-msc01.c
-> > index e1880b2..bcaad66 100644
-> > --- a/arch/mips/kernel/irq-msc01.c
-> > +++ b/arch/mips/kernel/irq-msc01.c
-> > @@ -117,6 +117,7 @@ struct irq_chip msc_levelirq_type = {
-> >  	.mask = mask_msc_irq,
-> >  	.mask_ack = level_mask_and_ack_msc_irq,
-> >  	.unmask = unmask_msc_irq,
-> > +	.eoi = unmask_msc_irq,
-> >  	.end = end_msc_irq,
-> >  };
-> 
->     You don't have to define eoi() method for the level flow. And you don't 
-> need end() method anymore.
 
-Yes, .eoi is not used level flow handler, but I thought this irq chip
-is possibly used with handle_percpu_irq flow handler.  And I kept .end
-method for old __do_IRQ users.
+The Au1xx IDE controller driver doesn't compile:
 
----
-Atsushi Nemoto
+  CC      drivers/ide/mips/au1xxx-ide.o
+/linux-2.6.19-rc6-work/drivers/ide/mips/au1xxx-ide.c:480: error: conflicting types for 'auide_ddma_tx_callback'
+include2/asm/mach-au1x00/au1xxx_ide.h:174: error: previous declaration of 'auide_ddma_tx_callback' was here
+/linux-2.6.19-rc6-work/drivers/ide/mips/au1xxx-ide.c:486: error: conflicting types for 'auide_ddma_rx_callback'
+include2/asm/mach-au1x00/au1xxx_ide.h:176: error: previous declaration of 'auide_ddma_rx_callback' was here
+
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+
+--- linux-2.6.19-rc6-base/include/asm-mips/mach-au1x00/au1xxx_ide.h	2006-11-16 11:14:28.370553000 +0100
++++ linux-2.6.19-rc6-work/include/asm-mips/mach-au1x00/au1xxx_ide.h	2006-11-22 14:41:33.006773000 +0100
+@@ -170,10 +170,8 @@ int __init auide_probe(void);
+         static int auide_dma_host_on(ide_drive_t *drive);
+         static int auide_dma_lostirq(ide_drive_t *drive);
+         static int auide_dma_on(ide_drive_t *drive);
+-        static void auide_ddma_tx_callback(int irq, void *param,
+-                                           struct pt_regs *regs);
+-        static void auide_ddma_rx_callback(int irq, void *param,
+-                                           struct pt_regs *regs);
++        static void auide_ddma_tx_callback(int irq, void *param);
++        static void auide_ddma_rx_callback(int irq, void *param);
+         static int auide_dma_off_quietly(ide_drive_t *drive);
+ #endif /* end CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA */
+ 

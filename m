@@ -1,83 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2006 00:10:31 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([63.81.120.158]:16845 "EHLO
-	gateway-1237.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S20039407AbWKWAK1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Nov 2006 00:10:27 +0000
-Received: from [10.0.0.139] (prometheus.mvista.com [10.0.0.139])
-	by hermes.mvista.com (Postfix) with ESMTP
-	id DBDB11C08B; Wed, 22 Nov 2006 16:10:02 -0800 (PST)
-Message-ID: <4564E6DA.1030504@mvista.com>
-Date:	Wed, 22 Nov 2006 16:10:02 -0800
-From:	mlachwani <mlachwani@mvista.com>
-User-Agent: Thunderbird 1.5.0.8 (X11/20061025)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2006 00:53:24 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.188]:35738 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039426AbWKWAxU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Nov 2006 00:53:20 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so680038nfc
+        for <linux-mips@linux-mips.org>; Wed, 22 Nov 2006 16:53:20 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=FgOvS+PiSpRrNnWKIHRNdeEw/3QTt38q7HBD1zG/qRFtWpmlY1M7lqHja+aAAV5qc1r5eL85y5L3FaCWSuiHzsRCG2ZXq/pDb+31j+0uvDtk+2SoQk+xBtARzf7vYE9IkHCr19kbPJ432B4gT9D6zTanxWMy++WNo85I8+fN+aM=
+Received: by 10.82.126.5 with SMTP id y5mr1342401buc.1164243199778;
+        Wed, 22 Nov 2006 16:53:19 -0800 (PST)
+Received: by 10.82.178.4 with HTTP; Wed, 22 Nov 2006 16:53:19 -0800 (PST)
+Message-ID: <50c9a2250611221653p255b2c0em218f69c32897147a@mail.gmail.com>
+Date:	Thu, 23 Nov 2006 08:53:19 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: about r4k_dma_cache_inv and r4k_dma_cache_wback_inv in c-r4k.c
 MIME-Version: 1.0
-To:	ashlesha@kenati.com
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: request_module: runaway loop modprobe net-pf-1
-References: <1164224559.6511.4.camel@sandbar.kenati.com>	 <20061122221712.GB8819@linux-mips.org> <1164239075.6511.13.camel@sandbar.kenati.com>
-In-Reply-To: <1164239075.6511.13.camel@sandbar.kenati.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <mlachwani@mvista.com>
+Content-Disposition: inline
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13243
+X-archive-position: 13244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlachwani@mvista.com
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-CONFIG_UNIX is defined in net/unix/Kconfig or simply do a "make 
-menuconfig" and search for UNIX.
+i see they all call 			
+flush_dcache_line(a);	/* Hit_Writeback_Inv_D */
 
-It depends on CONFIG_NET. Check your .config ...
-
-thanks,
-Manish Lachwani
+why didn't the r4k_dma_cache_inv call
+ invalidate_dcache_line(unsigned long addr)        /* Hit_Invalidate_D */;
 
 
-Ashlesha Shintre wrote:
-> On Wed, 2006-11-22 at 22:17 +0000, Ralf Baechle wrote:
->   
->> On Wed, Nov 22, 2006 at 11:42:39AM -0800, Ashlesha Shintre wrote:
->>
->>     
->>> During boot up on the Encore M3 board (AU1500 MIPS) of the 2.6.14.6
->>> kernel, the process stops after the NFS filesystem has been mounted,
->>> memory freed  and spits out the following message:
->>>
->>>
->>>       
->>>> request_module: runaway loop modprobe net-pf-1
->>>>         
->> The kernel tried to open UNIX domain socket but because support is not
->> compiled it will load the module instead.  Now, glibc-based programs
->> happen to try to connect to nscd via a UNIX domain socket on startup
->> and the whole show starts all over.  After a few iterations the kernel
->> gets tired of the whole game and prints this friendly message.
->>
->>     
->>> What does the net-pf-1 mean?
->>>       
->> net-pf-1 is PF_UNIX, see the definitions in include/linux/socket.h.  So
->> you should set CONFIG_UNIX to y.  
->>     
->
-> Thanks for your reply Ralf, but I dont see he CONFIG_UNIX option in my
-> Makefile, so I created one, but still get the same error!
-> is there anything else that i should try?
->
-> Thanks again,
-> Ashlesha.
->   
->> Building it as a module won't work
->> as you just found :).
->>
->>   Ralf
->>     
->
->
->   
+Best Regards
+zhuzhenhua

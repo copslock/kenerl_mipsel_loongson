@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2006 06:45:39 +0000 (GMT)
-Received: from smtp1.infineon.com ([217.10.60.22]:3704 "EHLO
-	smtp1.infineon.com") by ftp.linux-mips.org with ESMTP
-	id S20037961AbWKWGpf convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2006 06:45:35 +0000
-Received: from unknown (HELO mucse312.eu.infineon.com) ([172.23.30.12])
-  by smtp1.infineon.com with ESMTP; 23 Nov 2006 07:45:29 +0100
-X-SBRS:	None
-Received: from mucse307.eu.infineon.com ([172.23.30.7]) by mucse312.eu.infineon.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 23 Nov 2006 07:45:28 +0100
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: init cannot spawn shell
-Date:	Thu, 23 Nov 2006 07:45:25 +0100
-Message-ID: <B0956DED3DE3CD47BF0398D4E0ECE59F011B70C9@mucse307.eu.infineon.com>
-In-Reply-To: <1164246953.6511.25.camel@sandbar.kenati.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: init cannot spawn shell
-Thread-Index: AccOoPLXatL7OO9KTTyBLahSUZKDuAAKWwBg
-From:	<Andre.Messerschmidt@infineon.com>
-To:	<ashlesha@kenati.com>
-Cc:	<linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 23 Nov 2006 06:45:28.0313 (UTC) FILETIME=[F661B690:01C70ECA]
-Return-Path: <Andre.Messerschmidt@infineon.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2006 14:09:26 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:13769 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038840AbWKWOJY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Nov 2006 14:09:24 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kANE9FbX028874;
+	Thu, 23 Nov 2006 14:09:17 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kANE9EIu028873;
+	Thu, 23 Nov 2006 14:09:14 GMT
+Date:	Thu, 23 Nov 2006 14:09:14 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Andre.Messerschmidt@infineon.com
+Cc:	ashlesha@kenati.com, linux-mips@linux-mips.org
+Subject: Re: init cannot spawn shell
+Message-ID: <20061123140914.GA24273@linux-mips.org>
+References: <1164246953.6511.25.camel@sandbar.kenati.com> <B0956DED3DE3CD47BF0398D4E0ECE59F011B70C9@mucse307.eu.infineon.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <B0956DED3DE3CD47BF0398D4E0ECE59F011B70C9@mucse307.eu.infineon.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13246
+X-archive-position: 13247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andre.Messerschmidt@infineon.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
- 
+On Thu, Nov 23, 2006 at 07:45:25AM +0100, Andre.Messerschmidt@infineon.com wrote:
 
-> I m sure that the endianness is not an issue - everything is big 
-> endian.
+> > I m sure that the endianness is not an issue - everything is big 
+> > endian.
+> 
+> We had some problem in the past, where the reverse endianess bit was
+> set, that would result in a crash when the system starts init. Not sure
+> what bootloader you are using, but maybe it is worth checking the RE bit
+> in CP0.STATUS, since otherwise your userspace applications will run in
+> little endian.
 
-We had some problem in the past, where the reverse endianess bit was
-set, that would result in a crash when the system starts init. Not sure
-what bootloader you are using, but maybe it is worth checking the RE bit
-in CP0.STATUS, since otherwise your userspace applications will run in
-little endian.
+This was fixed in February for 2.6.16 already.  Also Ashleha is using
+a different CPU ...
 
-Regards
-Andre
+  Ralf

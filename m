@@ -1,65 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2006 15:41:29 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:51993 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20039443AbWKWPlY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2006 15:41:24 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 5BA7A3EBE; Thu, 23 Nov 2006 07:41:01 -0800 (PST)
-Message-ID: <4565C16E.3090803@ru.mvista.com>
-Date:	Thu, 23 Nov 2006 18:42:38 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] use generic_handle_irq, handle_level_irq, handle_percpu_irq
-References: <20061114.011318.99611303.anemo@mba.ocn.ne.jp> <45631BD2.4090509@ru.mvista.com> <20061122120552.GA27782@linux-mips.org>
-In-Reply-To: <20061122120552.GA27782@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Nov 2006 16:15:09 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:49625 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038834AbWKWQPD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Nov 2006 16:15:03 +0000
+Received: from localhost (p2128-ipad34funabasi.chiba.ocn.ne.jp [124.85.59.128])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 737ECA56B; Fri, 24 Nov 2006 01:14:58 +0900 (JST)
+Date:	Fri, 24 Nov 2006 01:17:40 +0900 (JST)
+Message-Id: <20061124.011740.108740210.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] use generic_handle_irq, handle_level_irq,
+ handle_percpu_irq
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <4565C16E.3090803@ru.mvista.com>
+References: <45631BD2.4090509@ru.mvista.com>
+	<20061122120552.GA27782@linux-mips.org>
+	<4565C16E.3090803@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13248
+X-archive-position: 13249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Thu, 23 Nov 2006 18:42:38 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> >>   BTW, isn't IRQ7 per-CPU?
+> 
+> > Yes and no.  On many CPUs IRQ 7 can be configured at reset time as either
+> > the count / compare interrupt or a CPU interrupt just like the others.
+> > It always used to be a normal CPU interrupt for R2000 class CPUs.
+> 
+>     Nevertheless, IRQ7 having percpu flow when it's known to be from 
+> count/compare would make the timer stuff faster, I assume...
 
-Ralf Baechle wrote:
+It would be faster indeed, but note that handle_percpu_irq() depends
+on CONFIG_SMP for now.
 
->>>@@ -104,6 +105,7 @@ static struct irq_chip mips_mt_cpu_irq_c
->>>	.mask		= mask_mips_mt_irq,
->>>	.mask_ack	= mips_mt_cpu_irq_ack,
->>>	.unmask		= unmask_mips_mt_irq,
->>>+	.eoi		= unmask_mips_mt_irq,
->>>	.end		= mips_mt_cpu_irq_end,
->>>};
->>>
->>>@@ -124,7 +126,8 @@ void __init mips_cpu_irq_init(int irq_ba
->>>			set_irq_chip(i, &mips_mt_cpu_irq_controller);
->>>
->>>	for (i = irq_base + 2; i < irq_base + 8; i++)
->>>-		set_irq_chip(i, &mips_cpu_irq_controller);
->>>+		set_irq_chip_and_handler(i, &mips_cpu_irq_controller,
->>>+					 handle_level_irq);
->>
->>   BTW, isn't IRQ7 per-CPU?
-
-> Yes and no.  On many CPUs IRQ 7 can be configured at reset time as either
-> the count / compare interrupt or a CPU interrupt just like the others.
-> It always used to be a normal CPU interrupt for R2000 class CPUs.
-
-    Nevertheless, IRQ7 having percpu flow when it's known to be from 
-count/compare would make the timer stuff faster, I assume...
-
->   Ralf
-
-WBR, Sergei
+---
+Atsushi Nemoto

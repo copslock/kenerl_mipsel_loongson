@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Nov 2006 14:47:26 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:56591 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Nov 2006 14:52:23 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:14859 "EHLO
 	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038960AbWKXOrU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Nov 2006 14:47:20 +0000
+	id S20038960AbWKXOwR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Nov 2006 14:52:17 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 55DF3F5980;
-	Fri, 24 Nov 2006 15:47:07 +0100 (CET)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 43337F5987;
+	Fri, 24 Nov 2006 15:52:05 +0100 (CET)
 X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
 	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id IGh27U2AS+j0; Fri, 24 Nov 2006 15:47:06 +0100 (CET)
+	with ESMTP id diXc75vT83VX; Fri, 24 Nov 2006 15:52:04 +0100 (CET)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id DC1DBF5971;
-	Fri, 24 Nov 2006 15:47:06 +0100 (CET)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 79A04F5980;
+	Fri, 24 Nov 2006 15:52:04 +0100 (CET)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kAOElHat014530;
-	Fri, 24 Nov 2006 15:47:18 +0100
-Date:	Fri, 24 Nov 2006 14:47:13 +0000 (GMT)
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kAOEqEbO016377;
+	Fri, 24 Nov 2006 15:52:14 +0100
+Date:	Fri, 24 Nov 2006 14:52:10 +0000 (GMT)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@osdl.org>
-cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 2.6.18] dz: Fixes to make it work
-Message-ID: <Pine.LNX.4.64N.0611241420500.20948@blysk.ds.pg.gda.pl>
+To:	Andrew Morton <akpm@osdl.org>, Jeff Garzik <jgarzik@pobox.com>
+cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 2.6.18] declance: Fix PMAX and PMAD support
+Message-ID: <Pine.LNX.4.64N.0611241447200.20948@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.88.6/2239/Fri Nov 24 11:59:19 2006 on piorun.ds.pg.gda.pl
@@ -30,7 +30,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13250
+X-archive-position: 13251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,853 +38,795 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
- This a set of fixes mostly to make the driver actually work:
-
-1. Actually select the line for setting parameters and receiver 
-   disable/enable.
-2. Select the line for receive and transmit interrupt handling correctly.
-3. Report the transmitter empty state correctly.
-4. Set the I/O type of ports correctly.
-5. Perform polled transmission correctly.
-6. Don't fix the console line at ttyS3.
-7. Magic SysRq support.
-8. Various small bits here and there.
+ The shared buffer used by the LANCE on the PMAX only supports halfword 
+(16-bit) accesses.  And the PMAD has the buffer wired differently.  This 
+is a change to fix these issues.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- Tested with a DECstation 2100 (thanks Flo for making this possible).
+ Tested with a DECstation 2100 (thanks Flo for making this possible) and a 
+DECstation 5000/133 (both the PMAD and the onboard LANCE).
 
  Please apply.
 
   Maciej
 
-patch-2.6.18-dz-13
-diff -up --recursive --new-file linux-2.6.18.macro/drivers/char/decserial.c linux-2.6.18/drivers/char/decserial.c
---- linux-2.6.18.macro/drivers/char/decserial.c	2006-09-20 03:42:06.000000000 +0000
-+++ linux-2.6.18/drivers/char/decserial.c	2006-11-23 18:29:38.000000000 +0000
-@@ -23,20 +23,12 @@
- extern int zs_init(void);
- #endif
- 
--#ifdef CONFIG_DZ
--extern int dz_init(void);
--#endif
--
- #ifdef CONFIG_SERIAL_CONSOLE
- 
- #ifdef CONFIG_ZS
- extern void zs_serial_console_init(void);
- #endif
- 
--#ifdef CONFIG_DZ
--extern void dz_serial_console_init(void);
--#endif
--
- #endif
- 
- /* rs_init - starts up the serial interface -
-@@ -46,23 +38,11 @@ extern void dz_serial_console_init(void)
- 
- int __init rs_init(void)
- {
--
--#if defined(CONFIG_ZS) && defined(CONFIG_DZ)
-+#ifdef ONFIG_ZS
-     if (IOASIC)
- 	return zs_init();
--    else
--	return dz_init();
--#else
--
--#ifdef CONFIG_ZS
--    return zs_init();
--#endif
--
--#ifdef CONFIG_DZ
--    return dz_init();
--#endif
--
- #endif
-+    return -ENXIO;
- }
- 
- __initcall(rs_init);
-@@ -76,21 +56,9 @@ __initcall(rs_init);
-  */
- static int __init decserial_console_init(void)
- {
--#if defined(CONFIG_ZS) && defined(CONFIG_DZ)
-+#ifdef CONFIG_ZS
-     if (IOASIC)
- 	zs_serial_console_init();
--    else
--	dz_serial_console_init();
--#else
--
--#ifdef CONFIG_ZS
--    zs_serial_console_init();
--#endif
--
--#ifdef CONFIG_DZ
--    dz_serial_console_init();
--#endif
--
- #endif
-     return 0;
- }
-diff -up --recursive --new-file linux-2.6.18.macro/drivers/serial/dz.c linux-2.6.18/drivers/serial/dz.c
---- linux-2.6.18.macro/drivers/serial/dz.c	2006-09-20 03:42:06.000000000 +0000
-+++ linux-2.6.18/drivers/serial/dz.c	2006-11-23 18:27:06.000000000 +0000
-@@ -1,11 +1,13 @@
- /*
-- * dz.c: Serial port driver for DECStations equiped
-+ * dz.c: Serial port driver for DECstations equipped
-  *       with the DZ chipset.
+patch-mips-2.6.18-20060920-pmax-lance-10
+diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/net/declance.c linux-mips-2.6.18-20060920/drivers/net/declance.c
+--- linux-mips-2.6.18-20060920.macro/drivers/net/declance.c	2006-09-20 20:50:22.000000000 +0000
++++ linux-mips-2.6.18-20060920/drivers/net/declance.c	2006-11-23 02:55:34.000000000 +0000
+@@ -40,6 +40,10 @@
   *
-  * Copyright (C) 1998 Olivier A. D. Lebaillif
-  *
-  * Email: olivier.lebaillif@ifrsys.com
-  *
-+ * Copyright (C) 2004, 2006  Maciej W. Rozycki
+  *      v0.009: Module support fixes, multiple interfaces support, various
+  *              bits. macro
 + *
-  * [31-AUG-98] triemer
-  * Changed IRQ to use Harald's dec internals interrupts.h
-  * removed base_addr code - moving address assignment to setup.c
-@@ -26,10 +28,16 @@
++ *      v0.010: Fixes for the PMAD mapping of the LANCE buffer and for the
++ *              PMAX requirement to only use halfword accesses to the
++ *              buffer. macro
+  */
  
- #undef DEBUG_DZ
+ #include <linux/crc32.h>
+@@ -54,6 +58,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/stddef.h>
+ #include <linux/string.h>
++#include <linux/types.h>
  
-+#if defined(CONFIG_SERIAL_DZ_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
-+#define SUPPORT_SYSRQ
-+#endif
-+
-+#include <linux/delay.h>
- #include <linux/module.h>
- #include <linux/interrupt.h>
- #include <linux/init.h>
- #include <linux/console.h>
-+#include <linux/sysrq.h>
- #include <linux/tty.h>
- #include <linux/tty_flip.h>
- #include <linux/serial_core.h>
-@@ -45,14 +53,10 @@
+ #include <asm/addrspace.h>
  #include <asm/system.h>
- #include <asm/uaccess.h>
+@@ -67,7 +72,7 @@
+ #include <asm/dec/tc.h>
  
--#define CONSOLE_LINE (3)	/* for definition of struct console */
+ static char version[] __devinitdata =
+-"declance.c: v0.009 by Linux MIPS DECstation task force\n";
++"declance.c: v0.010 by Linux MIPS DECstation task force\n";
+ 
+ MODULE_AUTHOR("Linux MIPS DECstation task force");
+ MODULE_DESCRIPTION("DEC LANCE (DECstation onboard, PMAD-xx) driver");
+@@ -110,24 +115,25 @@ MODULE_LICENSE("GPL");
+ #define	LE_C3_BCON	0x1	/* Byte control */
+ 
+ /* Receive message descriptor 1 */
+-#define LE_R1_OWN       0x80	/* Who owns the entry */
+-#define LE_R1_ERR       0x40	/* Error: if FRA, OFL, CRC or BUF is set */
+-#define LE_R1_FRA       0x20	/* FRA: Frame error */
+-#define LE_R1_OFL       0x10	/* OFL: Frame overflow */
+-#define LE_R1_CRC       0x08	/* CRC error */
+-#define LE_R1_BUF       0x04	/* BUF: Buffer error */
+-#define LE_R1_SOP       0x02	/* Start of packet */
+-#define LE_R1_EOP       0x01	/* End of packet */
+-#define LE_R1_POK       0x03	/* Packet is complete: SOP + EOP */
 -
- #include "dz.h"
- 
--#define DZ_INTR_DEBUG 1
--
- static char *dz_name = "DECstation DZ serial driver version ";
--static char *dz_version = "1.02";
-+static char *dz_version = "1.03";
- 
- struct dz_port {
- 	struct uart_port	port;
-@@ -61,22 +65,6 @@ struct dz_port {
- 
- static struct dz_port dz_ports[DZ_NB_PORT];
- 
--#ifdef DEBUG_DZ
--/*
-- * debugging code to send out chars via prom
-- */
--static void debug_console(const char *s, int count)
--{
--	unsigned i;
--
--	for (i = 0; i < count; i++) {
--		if (*s == 10)
--			prom_printf("%c", 13);
--		prom_printf("%c", *s++);
--	}
--}
--#endif
--
- /*
-  * ------------------------------------------------------------
-  * dz_in () and dz_out ()
-@@ -90,6 +78,7 @@ static inline unsigned short dz_in(struc
- {
- 	volatile unsigned short *addr =
- 		(volatile unsigned short *) (dport->port.membase + offset);
+-#define LE_T1_OWN       0x80	/* Lance owns the packet */
+-#define LE_T1_ERR       0x40	/* Error summary */
+-#define LE_T1_EMORE     0x10	/* Error: more than one retry needed */
+-#define LE_T1_EONE      0x08	/* Error: one retry needed */
+-#define LE_T1_EDEF      0x04	/* Error: deferred */
+-#define LE_T1_SOP       0x02	/* Start of packet */
+-#define LE_T1_EOP       0x01	/* End of packet */
+-#define LE_T1_POK	0x03	/* Packet is complete: SOP + EOP */
++#define LE_R1_OWN	0x8000	/* Who owns the entry */
++#define LE_R1_ERR	0x4000	/* Error: if FRA, OFL, CRC or BUF is set */
++#define LE_R1_FRA	0x2000	/* FRA: Frame error */
++#define LE_R1_OFL	0x1000	/* OFL: Frame overflow */
++#define LE_R1_CRC	0x0800	/* CRC error */
++#define LE_R1_BUF	0x0400	/* BUF: Buffer error */
++#define LE_R1_SOP	0x0200	/* Start of packet */
++#define LE_R1_EOP	0x0100	/* End of packet */
++#define LE_R1_POK	0x0300	/* Packet is complete: SOP + EOP */
 +
- 	return *addr;
- }
++/* Transmit message descriptor 1 */
++#define LE_T1_OWN	0x8000	/* Lance owns the packet */
++#define LE_T1_ERR	0x4000	/* Error summary */
++#define LE_T1_EMORE	0x1000	/* Error: more than one retry needed */
++#define LE_T1_EONE	0x0800	/* Error: one retry needed */
++#define LE_T1_EDEF	0x0400	/* Error: deferred */
++#define LE_T1_SOP	0x0200	/* Start of packet */
++#define LE_T1_EOP	0x0100	/* End of packet */
++#define LE_T1_POK	0x0300	/* Packet is complete: SOP + EOP */
  
-@@ -98,6 +87,7 @@ static inline void dz_out(struct dz_port
- {
- 	volatile unsigned short *addr =
- 		(volatile unsigned short *) (dport->port.membase + offset);
-+
- 	*addr = value;
- }
+ #define LE_T3_BUF       0x8000	/* Buffer error */
+ #define LE_T3_UFL       0x4000	/* Error underflow */
+@@ -156,69 +162,57 @@ MODULE_LICENSE("GPL");
+ #undef TEST_HITS
+ #define ZERO 0
  
-@@ -144,7 +134,7 @@ static void dz_stop_rx(struct uart_port 
- 
- 	spin_lock_irqsave(&dport->port.lock, flags);
- 	dport->cflag &= ~DZ_CREAD;
--	dz_out(dport, DZ_LPR, dport->cflag);
-+	dz_out(dport, DZ_LPR, dport->cflag | dport->port.line);
- 	spin_unlock_irqrestore(&dport->port.lock, flags);
- }
- 
-@@ -155,14 +145,14 @@ static void dz_enable_ms(struct uart_por
- 
- /*
-  * ------------------------------------------------------------
-- * Here starts the interrupt handling routines.  All of the
-- * following subroutines are declared as inline and are folded
-- * into dz_interrupt.  They were separated out for readability's
-- * sake.
-  *
-- * Note: rs_interrupt() is a "fast" interrupt, which means that it
-+ * Here start the interrupt handling routines.  All of the following
-+ * subroutines are declared as inline and are folded into
-+ * dz_interrupt.  They were separated out for readability's sake.
-+ *
-+ * Note: dz_interrupt() is a "fast" interrupt, which means that it
-  * runs with interrupts turned off.  People who may want to modify
-- * rs_interrupt() should try to keep the interrupt handler as fast as
-+ * dz_interrupt() should try to keep the interrupt handler as fast as
-  * possible.  After you are done making modifications, it is not a bad
-  * idea to do:
-  *
-@@ -180,92 +170,74 @@ static void dz_enable_ms(struct uart_por
-  * This routine deals with inputs from any lines.
-  * ------------------------------------------------------------
-  */
--static inline void dz_receive_chars(struct dz_port *dport)
-+static inline void dz_receive_chars(struct dz_port *dport_in,
-+				    struct pt_regs *regs)
- {
-+	struct dz_port *dport;
- 	struct tty_struct *tty = NULL;
- 	struct uart_icount *icount;
--	int ignore = 0;
--	unsigned short status, tmp;
-+	int lines_rx[DZ_NB_PORT] = { [0 ... DZ_NB_PORT - 1] = 0 };
-+	unsigned short status;
- 	unsigned char ch, flag;
-+	int i;
- 
--	/* this code is going to be a problem...
--	   the call to tty_flip_buffer is going to need
--	   to be rethought...
--	 */
--	do {
--		status = dz_in(dport, DZ_RBUF);
+-/* The DS2000/3000 have a linear 64 KB buffer.
 -
--		/* punt so we don't get duplicate characters */
--		if (!(status & DZ_DVAL))
--			goto ignore_char;
--
-+	while ((status = dz_in(dport_in, DZ_RBUF)) & DZ_DVAL) {
-+		dport = &dz_ports[LINE(status)];
-+		tty = dport->port.info->tty;	/* point to the proper dev */
- 
--		ch = UCHAR(status);	/* grab the char */
--		flag = TTY_NORMAL;
-+		ch = UCHAR(status);		/* grab the char */
- 
--#if 0
--		if (info->is_console) {
--			if (ch == 0)
--				return;		/* it's a break ... */
--		}
--#endif
--
--		tty = dport->port.info->tty;/* now tty points to the proper dev */
- 		icount = &dport->port.icount;
--
--		if (!tty)
--			break;
--
- 		icount->rx++;
- 
--		/* keep track of the statistics */
--		if (status & (DZ_OERR | DZ_FERR | DZ_PERR)) {
--			if (status & DZ_PERR)	/* parity error */
--				icount->parity++;
--			else if (status & DZ_FERR)	/* frame error */
--				icount->frame++;
--			if (status & DZ_OERR)	/* overrun error */
--				icount->overrun++;
--
--			/*  check to see if we should ignore the character
--			   and mask off conditions that should be ignored
-+		flag = TTY_NORMAL;
-+		if (status & DZ_FERR) {		/* frame error */
-+			/*
-+			 * There is no separate BREAK status bit, so
-+			 * treat framing errors as BREAKs for Magic SysRq
-+			 * and SAK; normally, otherwise.
- 			 */
--
--			if (status & dport->port.ignore_status_mask) {
--				if (++ignore > 100)
--					break;
--				goto ignore_char;
--			}
--			/* mask off the error conditions we want to ignore */
--			tmp = status & dport->port.read_status_mask;
--
--			if (tmp & DZ_PERR) {
--				flag = TTY_PARITY;
--#ifdef DEBUG_DZ
--				debug_console("PERR\n", 5);
--#endif
--			} else if (tmp & DZ_FERR) {
-+			if (uart_handle_break(&dport->port))
-+				continue;
-+			if (dport->port.flags & UPF_SAK)
-+				flag = TTY_BREAK;
-+			else
- 				flag = TTY_FRAME;
--#ifdef DEBUG_DZ
--				debug_console("FERR\n", 5);
--#endif
--			}
--			if (tmp & DZ_OERR) {
--#ifdef DEBUG_DZ
--				debug_console("OERR\n", 5);
--#endif
--				tty_insert_flip_char(tty, ch, flag);
--				ch = 0;
--				flag = TTY_OVERRUN;
--			}
-+		} else if (status & DZ_OERR)	/* overrun error */
-+			flag = TTY_OVERRUN;
-+		else if (status & DZ_PERR)	/* parity error */
-+			flag = TTY_PARITY;
-+
-+		/* keep track of the statistics */
-+		switch (flag) {
-+		case TTY_FRAME:
-+			icount->frame++;
-+			break;
-+		case TTY_PARITY:
-+			icount->parity++;
-+			break;
-+		case TTY_OVERRUN:
-+			icount->overrun++;
-+			break;
-+		case TTY_BREAK:
-+			icount->brk++;
-+			break;
-+		default:
-+			break;
- 		}
--		tty_insert_flip_char(tty, ch, flag);
--	      ignore_char:
--			;
--	} while (status & DZ_DVAL);
- 
--	if (tty)
--		tty_flip_buffer_push(tty);
-+		if (uart_handle_sysrq_char(&dport->port, ch, regs))
-+			continue;
-+
-+		if ((status & dport->port.ignore_status_mask) == 0) {
-+			uart_insert_char(&dport->port,
-+					 status, DZ_OERR, ch, flag);
-+			lines_rx[LINE(status)] = 1;
-+		}
-+	}
-+	for (i = 0; i < DZ_NB_PORT; i++)
-+		if (lines_rx[i])
-+			tty_flip_buffer_push(dz_ports[i].port.info->tty);
- }
- 
- /*
-@@ -275,26 +247,32 @@ static inline void dz_receive_chars(stru
-  * This routine deals with outputs to any lines.
-  * ------------------------------------------------------------
-  */
--static inline void dz_transmit_chars(struct dz_port *dport)
-+static inline void dz_transmit_chars(struct dz_port *dport_in)
- {
--	struct circ_buf *xmit = &dport->port.info->xmit;
-+	struct dz_port *dport;
-+	struct circ_buf *xmit;
-+	unsigned short status;
- 	unsigned char tmp;
- 
--	if (dport->port.x_char) {	/* XON/XOFF chars */
-+	status = dz_in(dport_in, DZ_CSR);
-+	dport = &dz_ports[LINE(status)];
-+	xmit = &dport->port.info->xmit;
-+
-+	if (dport->port.x_char) {		/* XON/XOFF chars */
- 		dz_out(dport, DZ_TDR, dport->port.x_char);
- 		dport->port.icount.tx++;
- 		dport->port.x_char = 0;
- 		return;
- 	}
--	/* if nothing to do or stopped or hardware stopped */
-+	/* If nothing to do or stopped or hardware stopped. */
- 	if (uart_circ_empty(xmit) || uart_tx_stopped(&dport->port)) {
- 		dz_stop_tx(&dport->port);
- 		return;
- 	}
- 
- 	/*
--	 * if something to do ... (rember the dz has no output fifo so we go
--	 * one char at a time :-<
-+	 * If something to do... (remember the dz has no output fifo,
-+	 * so we go one char at a time) :-<
- 	 */
- 	tmp = xmit->buf[xmit->tail];
- 	xmit->tail = (xmit->tail + 1) & (DZ_XMIT_SIZE - 1);
-@@ -304,23 +282,29 @@ static inline void dz_transmit_chars(str
- 	if (uart_circ_chars_pending(xmit) < DZ_WAKEUP_CHARS)
- 		uart_write_wakeup(&dport->port);
- 
--	/* Are we done */
-+	/* Are we are done. */
- 	if (uart_circ_empty(xmit))
- 		dz_stop_tx(&dport->port);
- }
- 
- /*
-  * ------------------------------------------------------------
-- * check_modem_status ()
-+ * check_modem_status()
-  *
-- * Only valid for the MODEM line duh !
-+ * DS 3100 & 5100: Only valid for the MODEM line, duh!
-+ * DS 5000/200: Valid for the MODEM and PRINTER line.
-  * ------------------------------------------------------------
-  */
- static inline void check_modem_status(struct dz_port *dport)
- {
-+	/*
-+	 * FIXME:
-+	 * 1. No status change interrupt; use a timer.
-+	 * 2. Handle the 3100/5000 as appropriate. --macro
-+	 */
- 	unsigned short status;
- 
--	/* if not ne modem line just return */
-+	/* If not the modem line just return.  */
- 	if (dport->port.line != DZ_MODEM)
- 		return;
- 
-@@ -341,21 +325,18 @@ static inline void check_modem_status(st
-  */
- static irqreturn_t dz_interrupt(int irq, void *dev, struct pt_regs *regs)
- {
--	struct dz_port *dport;
-+	struct dz_port *dport = (struct dz_port *)dev;
- 	unsigned short status;
- 
- 	/* get the reason why we just got an irq */
--	status = dz_in((struct dz_port *)dev, DZ_CSR);
--	dport = &dz_ports[LINE(status)];
-+	status = dz_in(dport, DZ_CSR);
- 
--	if (status & DZ_RDONE)
--		dz_receive_chars(dport);
-+	if ((status & (DZ_RDONE | DZ_RIE)) == (DZ_RDONE | DZ_RIE))
-+		dz_receive_chars(dport, regs);
- 
--	if (status & DZ_TRDY)
-+	if ((status & (DZ_TRDY | DZ_TIE)) == (DZ_TRDY | DZ_TIE))
- 		dz_transmit_chars(dport);
- 
--	/* FIXME: what about check modem status??? --rmk */
--
- 	return IRQ_HANDLED;
- }
- 
-@@ -367,13 +348,13 @@ static irqreturn_t dz_interrupt(int irq,
- 
- static unsigned int dz_get_mctrl(struct uart_port *uport)
- {
-+	/*
-+	 * FIXME: Handle the 3100/5000 as appropriate. --macro
-+	 */
- 	struct dz_port *dport = (struct dz_port *)uport;
- 	unsigned int mctrl = TIOCM_CAR | TIOCM_DSR | TIOCM_CTS;
- 
- 	if (dport->port.line == DZ_MODEM) {
--		/*
--		 * CHECKME: This is a guess from the other code... --rmk
--		 */
- 		if (dz_in(dport, DZ_MSR) & DZ_MODEM_DSR)
- 			mctrl &= ~TIOCM_DSR;
- 	}
-@@ -383,6 +364,9 @@ static unsigned int dz_get_mctrl(struct 
- 
- static void dz_set_mctrl(struct uart_port *uport, unsigned int mctrl)
- {
-+	/*
-+	 * FIXME: Handle the 3100/5000 as appropriate. --macro
-+	 */
- 	struct dz_port *dport = (struct dz_port *)uport;
- 	unsigned short tmp;
- 
-@@ -409,13 +393,6 @@ static int dz_startup(struct uart_port *
- 	unsigned long flags;
- 	unsigned short tmp;
- 
--	/* The dz lines for the mouse/keyboard must be
--	 * opened using their respective drivers.
--	 */
--	if ((dport->port.line == DZ_KEYBOARD) ||
--	    (dport->port.line == DZ_MOUSE))
--		return -ENODEV;
--
- 	spin_lock_irqsave(&dport->port.lock, flags);
- 
- 	/* enable the interrupt and the scanning */
-@@ -442,7 +419,8 @@ static void dz_shutdown(struct uart_port
- }
- 
- /*
-- * get_lsr_info - get line status register info
-+ * -------------------------------------------------------------------
-+ * dz_tx_empty() -- get the transmitter empty status
-  *
-  * Purpose: Let user call ioctl() to get info when the UART physically
-  *          is emptied.  On bus types like RS485, the transmitter must
-@@ -450,21 +428,28 @@ static void dz_shutdown(struct uart_port
-  *          the transmit shift register is empty, not be done when the
-  *          transmit holding register is empty.  This functionality
-  *          allows an RS485 driver to be written in user space.
-+ * -------------------------------------------------------------------
-  */
- static unsigned int dz_tx_empty(struct uart_port *uport)
- {
- 	struct dz_port *dport = (struct dz_port *)uport;
--	unsigned short status = dz_in(dport, DZ_LPR);
-+	unsigned short tmp, mask = 1 << dport->port.line;
- 
--	/* FIXME: this appears to be obviously broken --rmk. */
--	return status ? TIOCSER_TEMT : 0;
-+	tmp = dz_in(dport, DZ_TCR);
-+	tmp &= mask;
-+
-+	return tmp ? 0 : TIOCSER_TEMT;
- }
- 
- static void dz_break_ctl(struct uart_port *uport, int break_state)
- {
-+	/*
-+	 * FIXME: Can't access BREAK bits in TDR easily;
-+	 * reuse the code for polled TX. --macro
-+	 */
- 	struct dz_port *dport = (struct dz_port *)uport;
- 	unsigned long flags;
--	unsigned short tmp, mask = 1 << uport->line;
-+	unsigned short tmp, mask = 1 << dport->port.line;
- 
- 	spin_lock_irqsave(&uport->lock, flags);
- 	tmp = dz_in(dport, DZ_TCR);
-@@ -561,7 +546,7 @@ static void dz_set_termios(struct uart_p
- 
- 	spin_lock_irqsave(&dport->port.lock, flags);
- 
--	dz_out(dport, DZ_LPR, cflag);
-+	dz_out(dport, DZ_LPR, cflag | dport->port.line);
- 	dport->cflag = cflag;
- 
- 	/* setup accept flag */
-@@ -650,7 +635,7 @@ static void __init dz_init_ports(void)
- 	for (i = 0, dport = dz_ports; i < DZ_NB_PORT; i++, dport++) {
- 		spin_lock_init(&dport->port.lock);
- 		dport->port.membase	= (char *) base;
--		dport->port.iotype	= UPIO_PORT;
-+		dport->port.iotype	= UPIO_MEM;
- 		dport->port.irq		= dec_interrupt[DEC_IRQ_DZ11];
- 		dport->port.line	= i;
- 		dport->port.fifosize	= 1;
-@@ -662,10 +647,7 @@ static void __init dz_init_ports(void)
- static void dz_reset(struct dz_port *dport)
- {
- 	dz_out(dport, DZ_CSR, DZ_CLR);
--
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
--		/* FIXME: cpu_relax? */
--
- 	iob();
- 
- 	/* enable scanning */
-@@ -673,26 +655,55 @@ static void dz_reset(struct dz_port *dpo
- }
- 
- #ifdef CONFIG_SERIAL_DZ_CONSOLE
+- * The PMAD-AA has 128 kb buffer on-board. 
 +/*
-+ * -------------------------------------------------------------------
-+ * dz_console_putchar() -- transmit a character
++ * The DS2100/3100 have a linear 64 kB buffer which supports halfword
++ * accesses only.  Each halfword of the buffer is word-aligned in the
++ * CPU address space.
 + *
-+ * Polled transmission.  This is tricky.  We need to mask transmit
-+ * interrupts so that they do not interfere, enable the transmitter
-+ * for the line requested and then wait till the transmit scanner
-+ * requests data for this line.  But it may request data for another
-+ * line first, in which case we have to disable its transmitter and
-+ * repeat waiting till our line pops up.  Only then the character may
-+ * be transmitted.  Finally, the state of the transmitter mask is
-+ * restored.  Welcome to the world of PDP-11!
-+ * -------------------------------------------------------------------
-+ */
- static void dz_console_putchar(struct uart_port *uport, int ch)
- {
- 	struct dz_port *dport = (struct dz_port *)uport;
- 	unsigned long flags;
--	int loops = 2500;
--	unsigned short tmp = (unsigned char)ch;
--	/* this code sends stuff out to serial device - spinning its
--	   wheels and waiting. */
-+	unsigned short csr, tcr, trdy, mask;
-+	int loops = 10000;
- 
- 	spin_lock_irqsave(&dport->port.lock, flags);
-+	csr = dz_in(dport, DZ_CSR);
-+	dz_out(dport, DZ_CSR, csr & ~DZ_TIE);
-+	tcr = dz_in(dport, DZ_TCR);
-+	tcr |= 1 << dport->port.line;
-+	mask = tcr;
-+	dz_out(dport, DZ_TCR, mask);
-+	iob();
-+	spin_unlock_irqrestore(&dport->port.lock, flags);
- 
--	/* spin our wheels */
--	while (((dz_in(dport, DZ_CSR) & DZ_TRDY) != DZ_TRDY) && loops--)
--		/* FIXME: cpu_relax, udelay? --rmk */
--		;
-+	while (loops--) {
-+		trdy = dz_in(dport, DZ_CSR);
-+		if (!(trdy & DZ_TRDY))
-+			continue;
-+		trdy = (trdy & DZ_TLINE) >> 8;
-+		if (trdy == dport->port.line)
-+			break;
-+		mask &= ~(1 << trdy);
-+		dz_out(dport, DZ_TCR, mask);
-+		iob();
-+		udelay(2);
-+	}
- 
--	/* Actually transmit the character. */
--	dz_out(dport, DZ_TDR, tmp);
-+	if (loops)				/* Cannot send otherwise. */
-+		dz_out(dport, DZ_TDR, ch);
- 
--	spin_unlock_irqrestore(&dport->port.lock, flags);
-+	dz_out(dport, DZ_TCR, tcr);
-+	dz_out(dport, DZ_CSR, csr);
- }
- 
- /*
-@@ -703,11 +714,11 @@ static void dz_console_putchar(struct ua
-  * The console must be locked when we get here.
-  * -------------------------------------------------------------------
++ * The PMAD-AA has a 128 kB buffer on-board. 
+  *
+- * The IOASIC LANCE devices use a shared memory region. This region as seen 
+- * from the CPU is (max) 128 KB long and has to be on an 128 KB boundary.
+- * The LANCE sees this as a 64 KB long continuous memory region.
++ * The IOASIC LANCE devices use a shared memory region.  This region
++ * as seen from the CPU is (max) 128 kB long and has to be on an 128 kB
++ * boundary.  The LANCE sees this as a 64 kB long continuous memory
++ * region.
+  *
+- * The LANCE's DMA address is used as an index in this buffer and DMA takes
+- * place in bursts of eight 16-Bit words which are packed into four 32-Bit words
+- * by the IOASIC. This leads to a strange padding: 16 bytes of valid data followed
+- * by a 16 byte gap :-(.
++ * The LANCE's DMA address is used as an index in this buffer and DMA
++ * takes place in bursts of eight 16-bit words which are packed into
++ * four 32-bit words by the IOASIC.  This leads to a strange padding:
++ * 16 bytes of valid data followed by a 16 byte gap :-(.
   */
--static void dz_console_print(struct console *cons,
-+static void dz_console_print(struct console *co,
- 			     const char *str,
- 			     unsigned int count)
- {
--	struct dz_port *dport = &dz_ports[CONSOLE_LINE];
-+	struct dz_port *dport = &dz_ports[co->index];
- #ifdef DEBUG_DZ
- 	prom_printf((char *) str);
- #endif
-@@ -716,49 +727,43 @@ static void dz_console_print(struct cons
  
- static int __init dz_console_setup(struct console *co, char *options)
- {
--	struct dz_port *dport = &dz_ports[CONSOLE_LINE];
-+	struct dz_port *dport = &dz_ports[co->index];
- 	int baud = 9600;
- 	int bits = 8;
- 	int parity = 'n';
- 	int flow = 'n';
--	int ret;
--	unsigned short mask, tmp;
- 
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
- 
- 	dz_reset(dport);
- 
--	ret = uart_set_options(&dport->port, co, baud, parity, bits, flow);
--	if (ret == 0) {
--		mask = 1 << dport->port.line;
--		tmp = dz_in(dport, DZ_TCR);	/* read the TX flag */
--		if (!(tmp & mask)) {
--			tmp |= mask;		/* set the TX flag */
--			dz_out(dport, DZ_TCR, tmp);
--		}
--	}
--
--	return ret;
-+	return uart_set_options(&dport->port, co, baud, parity, bits, flow);
- }
- 
--static struct console dz_sercons =
--{
-+static struct uart_driver dz_reg;
-+static struct console dz_sercons = {
- 	.name	= "ttyS",
- 	.write	= dz_console_print,
- 	.device	= uart_console_device,
- 	.setup	= dz_console_setup,
--	.flags	= CON_CONSDEV | CON_PRINTBUFFER,
--	.index	= CONSOLE_LINE,
-+	.flags	= CON_PRINTBUFFER,
-+	.index	= -1,
-+	.data	= &dz_reg,
+ struct lance_rx_desc {
+ 	unsigned short rmd0;		/* low address of packet */
+-	short gap0;
+-	unsigned char rmd1_hadr;	/* high address of packet */
+-	unsigned char rmd1_bits;	/* descriptor bits */
+-	short gap1;
++	unsigned short rmd1;		/* high address of packet
++					   and descriptor bits */
+ 	short length;			/* 2s complement (negative!)
+ 					   of buffer length */
+-	short gap2;
+ 	unsigned short mblength;	/* actual number of bytes received */
+-	short gap3;
  };
  
--void __init dz_serial_console_init(void)
-+static int __init dz_serial_console_init(void)
- {
--	dz_init_ports();
--
--	register_console(&dz_sercons);
-+	if (!IOASIC) {
-+		dz_init_ports();
-+		register_console(&dz_sercons);
-+		return 0;
-+	} else
-+		return -ENXIO;
- }
- 
-+console_initcall(dz_serial_console_init);
-+
- #define SERIAL_DZ_CONSOLE	&dz_sercons
- #else
- #define SERIAL_DZ_CONSOLE	NULL
-@@ -767,35 +772,29 @@ void __init dz_serial_console_init(void)
- static struct uart_driver dz_reg = {
- 	.owner			= THIS_MODULE,
- 	.driver_name		= "serial",
--	.dev_name		= "ttyS%d",
-+	.dev_name		= "ttyS",
- 	.major			= TTY_MAJOR,
- 	.minor			= 64,
- 	.nr			= DZ_NB_PORT,
- 	.cons			= SERIAL_DZ_CONSOLE,
+ struct lance_tx_desc {
+ 	unsigned short tmd0;		/* low address of packet */
+-	short gap0;
+-	unsigned char tmd1_hadr;	/* high address of packet */
+-	unsigned char tmd1_bits;	/* descriptor bits */
+-	short gap1;
++	unsigned short tmd1;		/* high address of packet
++					   and descriptor bits */
+ 	short length;			/* 2s complement (negative!)
+ 					   of buffer length */
+-	short gap2;
+ 	unsigned short misc;
+-	short gap3;
  };
  
--int __init dz_init(void)
-+static int __init dz_init(void)
- {
--	unsigned long flags;
- 	int ret, i;
  
-+	if (IOASIC)
-+		return -ENXIO;
+ /* First part of the LANCE initialization block, described in databook. */
+ struct lance_init_block {
+ 	unsigned short mode;		/* pre-set mode (reg. 15) */
+-	short gap0;
+ 
+-	unsigned char phys_addr[12];	/* physical ethernet address
+-					   only 0, 1, 4, 5, 8, 9 are valid
+-					   2, 3, 6, 7, 10, 11 are gaps */
+-	unsigned short filter[8];	/* multicast filter
+-					   only 0, 2, 4, 6 are valid
+-					   1, 3, 5, 7 are gaps */
++	unsigned short phys_addr[3];	/* physical ethernet address */
++	unsigned short filter[4];	/* multicast filter */
+ 
+ 	/* Receive and transmit ring base, along with extra bits. */
+ 	unsigned short rx_ptr;		/* receive descriptor addr */
+-	short gap1;
+ 	unsigned short rx_len;		/* receive len and high addr */
+-	short gap2;
+ 	unsigned short tx_ptr;		/* transmit descriptor addr */
+-	short gap3;
+ 	unsigned short tx_len;		/* transmit len and high addr */
+-	short gap4;
+-	short gap5[8];
 +
- 	printk("%s%s\n", dz_name, dz_version);
++	short gap[4];
  
- 	dz_init_ports();
+ 	/* The buffer descriptors */
+ 	struct lance_rx_desc brx_ring[RX_RING_SIZE];
+@@ -226,15 +220,28 @@ struct lance_init_block {
+ };
  
--	save_flags(flags);
--	cli();
--
- #ifndef CONFIG_SERIAL_DZ_CONSOLE
- 	/* reset the chip */
- 	dz_reset(&dz_ports[0]);
- #endif
+ #define BUF_OFFSET_CPU sizeof(struct lance_init_block)
+-#define BUF_OFFSET_LNC (sizeof(struct lance_init_block)>>1)
++#define BUF_OFFSET_LNC sizeof(struct lance_init_block)
  
--	/* order matters here... the trick is that flags
--	   is updated... in request_irq - to immediatedly obliterate
--	   it is unwise. */
--	restore_flags(flags);
--
- 	if (request_irq(dz_ports[0].port.irq, dz_interrupt,
- 			IRQF_DISABLED, "DZ", &dz_ports[0]))
- 		panic("Unable to register DZ interrupt");
-@@ -810,5 +809,7 @@ int __init dz_init(void)
- 	return ret;
+-#define libdesc_offset(rt, elem) \
+-((__u32)(((unsigned long)(&(((struct lance_init_block *)0)->rt[elem])))))
++#define shift_off(off, type)						\
++	(type == ASIC_LANCE || type == PMAX_LANCE ? off << 1 : off)
+ 
+-/*
+- * This works *only* for the ring descriptors
+- */
+-#define LANCE_ADDR(x) (CPHYSADDR(x) >> 1)
++#define lib_off(rt, type)						\
++	shift_off(offsetof(struct lance_init_block, rt), type)
++
++#define lib_ptr(ib, rt, type) 						\
++	((volatile u16 *)((u8 *)(ib) + lib_off(rt, type)))
++
++#define rds_off(rt, type)						\
++	shift_off(offsetof(struct lance_rx_desc, rt), type)
++
++#define rds_ptr(rd, rt, type) 						\
++	((volatile u16 *)((u8 *)(rd) + rds_off(rt, type)))
++
++#define tds_off(rt, type)						\
++	shift_off(offsetof(struct lance_tx_desc, rt), type)
++
++#define tds_ptr(td, rt, type) 						\
++	((volatile u16 *)((u8 *)(td) + tds_off(rt, type)))
+ 
+ struct lance_private {
+ 	struct net_device *next;
+@@ -242,7 +249,6 @@ struct lance_private {
+ 	int slot;
+ 	int dma_irq;
+ 	volatile struct lance_regs *ll;
+-	volatile struct lance_init_block *init_block;
+ 
+ 	spinlock_t	lock;
+ 
+@@ -260,8 +266,8 @@ struct lance_private {
+ 	char *tx_buf_ptr_cpu[TX_RING_SIZE];
+ 
+ 	/* Pointers to the ring buffers as seen from the LANCE */
+-	char *rx_buf_ptr_lnc[RX_RING_SIZE];
+-	char *tx_buf_ptr_lnc[TX_RING_SIZE];
++	uint rx_buf_ptr_lnc[RX_RING_SIZE];
++	uint tx_buf_ptr_lnc[TX_RING_SIZE];
+ };
+ 
+ #define TX_BUFFS_AVAIL ((lp->tx_old<=lp->tx_new)?\
+@@ -294,7 +300,7 @@ static inline void writereg(volatile uns
+ static void load_csrs(struct lance_private *lp)
+ {
+ 	volatile struct lance_regs *ll = lp->ll;
+-	int leptr;
++	uint leptr;
+ 
+ 	/* The address space as seen from the LANCE
+ 	 * begins at address 0. HK
+@@ -316,12 +322,14 @@ static void load_csrs(struct lance_priva
+  * Our specialized copy routines
+  *
+  */
+-void cp_to_buf(const int type, void *to, const void *from, int len)
++static void cp_to_buf(const int type, void *to, const void *from, int len)
+ {
+ 	unsigned short *tp, *fp, clen;
+ 	unsigned char *rtp, *rfp;
+ 
+-	if (type == PMAX_LANCE) {
++	if (type == PMAD_LANCE) {
++		memcpy(to, from, len);
++	} else if (type == PMAX_LANCE) {
+ 		clen = len >> 1;
+ 		tp = (unsigned short *) to;
+ 		fp = (unsigned short *) from;
+@@ -370,12 +378,14 @@ void cp_to_buf(const int type, void *to,
+ 	iob();
  }
  
-+module_init(dz_init);
+-void cp_from_buf(const int type, void *to, const void *from, int len)
++static void cp_from_buf(const int type, void *to, const void *from, int len)
+ {
+ 	unsigned short *tp, *fp, clen;
+ 	unsigned char *rtp, *rfp;
+ 
+-	if (type == PMAX_LANCE) {
++	if (type == PMAD_LANCE) {
++		memcpy(to, from, len);
++	} else if (type == PMAX_LANCE) {
+ 		clen = len >> 1;
+ 		tp = (unsigned short *) to;
+ 		fp = (unsigned short *) from;
+@@ -431,12 +441,10 @@ void cp_from_buf(const int type, void *t
+ static void lance_init_ring(struct net_device *dev)
+ {
+ 	struct lance_private *lp = netdev_priv(dev);
+-	volatile struct lance_init_block *ib;
+-	int leptr;
++	volatile u16 *ib = (volatile u16 *)dev->mem_start;
++	uint leptr;
+ 	int i;
+ 
+-	ib = (struct lance_init_block *) (dev->mem_start);
+-
+ 	/* Lock out other processes while setting up hardware */
+ 	netif_stop_queue(dev);
+ 	lp->rx_new = lp->tx_new = 0;
+@@ -445,55 +453,64 @@ static void lance_init_ring(struct net_d
+ 	/* Copy the ethernet address to the lance init block.
+ 	 * XXX bit 0 of the physical address registers has to be zero
+ 	 */
+-	ib->phys_addr[0] = dev->dev_addr[0];
+-	ib->phys_addr[1] = dev->dev_addr[1];
+-	ib->phys_addr[4] = dev->dev_addr[2];
+-	ib->phys_addr[5] = dev->dev_addr[3];
+-	ib->phys_addr[8] = dev->dev_addr[4];
+-	ib->phys_addr[9] = dev->dev_addr[5];
++	*lib_ptr(ib, phys_addr[0], lp->type) = (dev->dev_addr[1] << 8) |
++				     dev->dev_addr[0];
++	*lib_ptr(ib, phys_addr[1], lp->type) = (dev->dev_addr[3] << 8) |
++				     dev->dev_addr[2];
++	*lib_ptr(ib, phys_addr[2], lp->type) = (dev->dev_addr[5] << 8) |
++				     dev->dev_addr[4];
+ 	/* Setup the initialization block */
+ 
+ 	/* Setup rx descriptor pointer */
+-	leptr = LANCE_ADDR(libdesc_offset(brx_ring, 0));
+-	ib->rx_len = (LANCE_LOG_RX_BUFFERS << 13) | (leptr >> 16);
+-	ib->rx_ptr = leptr;
++	leptr = offsetof(struct lance_init_block, brx_ring);
++	*lib_ptr(ib, rx_len, lp->type) = (LANCE_LOG_RX_BUFFERS << 13) |
++					 (leptr >> 16);
++	*lib_ptr(ib, rx_ptr, lp->type) = leptr;
+ 	if (ZERO)
+-		printk("RX ptr: %8.8x(%8.8x)\n", leptr, libdesc_offset(brx_ring, 0));
++		printk("RX ptr: %8.8x(%8.8x)\n",
++		       leptr, lib_off(brx_ring, lp->type));
+ 
+ 	/* Setup tx descriptor pointer */
+-	leptr = LANCE_ADDR(libdesc_offset(btx_ring, 0));
+-	ib->tx_len = (LANCE_LOG_TX_BUFFERS << 13) | (leptr >> 16);
+-	ib->tx_ptr = leptr;
++	leptr = offsetof(struct lance_init_block, btx_ring);
++	*lib_ptr(ib, tx_len, lp->type) = (LANCE_LOG_TX_BUFFERS << 13) |
++					 (leptr >> 16);
++	*lib_ptr(ib, tx_ptr, lp->type) = leptr;
+ 	if (ZERO)
+-		printk("TX ptr: %8.8x(%8.8x)\n", leptr, libdesc_offset(btx_ring, 0));
++		printk("TX ptr: %8.8x(%8.8x)\n",
++		       leptr, lib_off(btx_ring, lp->type));
+ 
+ 	if (ZERO)
+ 		printk("TX rings:\n");
+ 
+ 	/* Setup the Tx ring entries */
+ 	for (i = 0; i < TX_RING_SIZE; i++) {
+-		leptr = (int) lp->tx_buf_ptr_lnc[i];
+-		ib->btx_ring[i].tmd0 = leptr;
+-		ib->btx_ring[i].tmd1_hadr = leptr >> 16;
+-		ib->btx_ring[i].tmd1_bits = 0;
+-		ib->btx_ring[i].length = 0xf000;	/* The ones required by tmd2 */
+-		ib->btx_ring[i].misc = 0;
++		leptr = lp->tx_buf_ptr_lnc[i];
++		*lib_ptr(ib, btx_ring[i].tmd0, lp->type) = leptr;
++		*lib_ptr(ib, btx_ring[i].tmd1, lp->type) = (leptr >> 16) &
++							   0xff;
++		*lib_ptr(ib, btx_ring[i].length, lp->type) = 0xf000;
++						/* The ones required by tmd2 */
++		*lib_ptr(ib, btx_ring[i].misc, lp->type) = 0;
+ 		if (i < 3 && ZERO)
+-			printk("%d: 0x%8.8x(0x%8.8x)\n", i, leptr, (int) lp->tx_buf_ptr_cpu[i]);
++			printk("%d: 0x%8.8x(0x%8.8x)\n",
++			       i, leptr, (uint)lp->tx_buf_ptr_cpu[i]);
+ 	}
+ 
+ 	/* Setup the Rx ring entries */
+ 	if (ZERO)
+ 		printk("RX rings:\n");
+ 	for (i = 0; i < RX_RING_SIZE; i++) {
+-		leptr = (int) lp->rx_buf_ptr_lnc[i];
+-		ib->brx_ring[i].rmd0 = leptr;
+-		ib->brx_ring[i].rmd1_hadr = leptr >> 16;
+-		ib->brx_ring[i].rmd1_bits = LE_R1_OWN;
+-		ib->brx_ring[i].length = -RX_BUFF_SIZE | 0xf000;
+-		ib->brx_ring[i].mblength = 0;
++		leptr = lp->rx_buf_ptr_lnc[i];
++		*lib_ptr(ib, brx_ring[i].rmd0, lp->type) = leptr;
++		*lib_ptr(ib, brx_ring[i].rmd1, lp->type) = ((leptr >> 16) &
++							    0xff) |
++							   LE_R1_OWN;
++		*lib_ptr(ib, brx_ring[i].length, lp->type) = -RX_BUFF_SIZE |
++							     0xf000;
++		*lib_ptr(ib, brx_ring[i].mblength, lp->type) = 0;
+ 		if (i < 3 && ZERO)
+-			printk("%d: 0x%8.8x(0x%8.8x)\n", i, leptr, (int) lp->rx_buf_ptr_cpu[i]);
++			printk("%d: 0x%8.8x(0x%8.8x)\n",
++			       i, leptr, (uint)lp->rx_buf_ptr_cpu[i]);
+ 	}
+ 	iob();
+ }
+@@ -511,11 +528,13 @@ static int init_restart_lance(struct lan
+ 		udelay(10);
+ 	}
+ 	if ((i == 100) || (ll->rdp & LE_C0_ERR)) {
+-		printk("LANCE unopened after %d ticks, csr0=%4.4x.\n", i, ll->rdp);
++		printk("LANCE unopened after %d ticks, csr0=%4.4x.\n",
++		       i, ll->rdp);
+ 		return -1;
+ 	}
+ 	if ((ll->rdp & LE_C0_ERR)) {
+-		printk("LANCE unopened after %d ticks, csr0=%4.4x.\n", i, ll->rdp);
++		printk("LANCE unopened after %d ticks, csr0=%4.4x.\n",
++		       i, ll->rdp);
+ 		return -1;
+ 	}
+ 	writereg(&ll->rdp, LE_C0_IDON);
+@@ -528,12 +547,11 @@ static int init_restart_lance(struct lan
+ static int lance_rx(struct net_device *dev)
+ {
+ 	struct lance_private *lp = netdev_priv(dev);
+-	volatile struct lance_init_block *ib;
+-	volatile struct lance_rx_desc *rd = 0;
+-	unsigned char bits;
+-	int len = 0;
+-	struct sk_buff *skb = 0;
+-	ib = (struct lance_init_block *) (dev->mem_start);
++	volatile u16 *ib = (volatile u16 *)dev->mem_start;
++	volatile u16 *rd;
++	unsigned short bits;
++	int entry, len;
++	struct sk_buff *skb;
+ 
+ #ifdef TEST_HITS
+ 	{
+@@ -542,19 +560,22 @@ static int lance_rx(struct net_device *d
+ 		printk("[");
+ 		for (i = 0; i < RX_RING_SIZE; i++) {
+ 			if (i == lp->rx_new)
+-				printk("%s", ib->brx_ring[i].rmd1_bits &
++				printk("%s", *lib_ptr(ib, brx_ring[i].rmd1,
++						      lp->type) &
+ 					     LE_R1_OWN ? "_" : "X");
+ 			else
+-				printk("%s", ib->brx_ring[i].rmd1_bits &
++				printk("%s", *lib_ptr(ib, brx_ring[i].rmd1,
++						      lp->type) &
+ 					     LE_R1_OWN ? "." : "1");
+ 		}
+ 		printk("]");
+ 	}
+ #endif
+ 
+-	for (rd = &ib->brx_ring[lp->rx_new];
+-	     !((bits = rd->rmd1_bits) & LE_R1_OWN);
+-	     rd = &ib->brx_ring[lp->rx_new]) {
++	for (rd = lib_ptr(ib, brx_ring[lp->rx_new], lp->type);
++	     !((bits = *rds_ptr(rd, rmd1, lp->type)) & LE_R1_OWN);
++	     rd = lib_ptr(ib, brx_ring[lp->rx_new], lp->type)) {
++		entry = lp->rx_new;
+ 
+ 		/* We got an incomplete frame? */
+ 		if ((bits & LE_R1_POK) != LE_R1_POK) {
+@@ -575,16 +596,18 @@ static int lance_rx(struct net_device *d
+ 			if (bits & LE_R1_EOP)
+ 				lp->stats.rx_errors++;
+ 		} else {
+-			len = (rd->mblength & 0xfff) - 4;
++			len = (*rds_ptr(rd, mblength, lp->type) & 0xfff) - 4;
+ 			skb = dev_alloc_skb(len + 2);
+ 
+ 			if (skb == 0) {
+ 				printk("%s: Memory squeeze, deferring packet.\n",
+ 				       dev->name);
+ 				lp->stats.rx_dropped++;
+-				rd->mblength = 0;
+-				rd->rmd1_bits = LE_R1_OWN;
+-				lp->rx_new = (lp->rx_new + 1) & RX_RING_MOD_MASK;
++				*rds_ptr(rd, mblength, lp->type) = 0;
++				*rds_ptr(rd, rmd1, lp->type) =
++					((lp->rx_buf_ptr_lnc[entry] >> 16) &
++					 0xff) | LE_R1_OWN;
++				lp->rx_new = (entry + 1) & RX_RING_MOD_MASK;
+ 				return 0;
+ 			}
+ 			lp->stats.rx_bytes += len;
+@@ -594,8 +617,7 @@ static int lance_rx(struct net_device *d
+ 			skb_put(skb, len);	/* make room */
+ 
+ 			cp_from_buf(lp->type, skb->data,
+-				    (char *)lp->rx_buf_ptr_cpu[lp->rx_new],
+-				    len);
++				    (char *)lp->rx_buf_ptr_cpu[entry], len);
+ 
+ 			skb->protocol = eth_type_trans(skb, dev);
+ 			netif_rx(skb);
+@@ -604,10 +626,12 @@ static int lance_rx(struct net_device *d
+ 		}
+ 
+ 		/* Return the packet to the pool */
+-		rd->mblength = 0;
+-		rd->length = -RX_BUFF_SIZE | 0xf000;
+-		rd->rmd1_bits = LE_R1_OWN;
+-		lp->rx_new = (lp->rx_new + 1) & RX_RING_MOD_MASK;
++		*rds_ptr(rd, mblength, lp->type) = 0;
++		*rds_ptr(rd, length, lp->type) = -RX_BUFF_SIZE | 0xf000;
++		*rds_ptr(rd, rmd1, lp->type) = LE_R1_OWN;
++		*rds_ptr(rd, rmd1, lp->type) =
++			((lp->rx_buf_ptr_lnc[entry] >> 16) & 0xff) | LE_R1_OWN;
++		lp->rx_new = (entry + 1) & RX_RING_MOD_MASK;
+ 	}
+ 	return 0;
+ }
+@@ -615,24 +639,24 @@ static int lance_rx(struct net_device *d
+ static void lance_tx(struct net_device *dev)
+ {
+ 	struct lance_private *lp = netdev_priv(dev);
+-	volatile struct lance_init_block *ib;
++	volatile u16 *ib = (volatile u16 *)dev->mem_start;
+ 	volatile struct lance_regs *ll = lp->ll;
+-	volatile struct lance_tx_desc *td;
++	volatile u16 *td;
+ 	int i, j;
+ 	int status;
+-	ib = (struct lance_init_block *) (dev->mem_start);
 +
- MODULE_DESCRIPTION("DECstation DZ serial driver");
- MODULE_LICENSE("GPL");
-diff -up --recursive --new-file linux-2.6.18.macro/drivers/serial/dz.h linux-2.6.18/drivers/serial/dz.h
---- linux-2.6.18.macro/drivers/serial/dz.h	2006-09-20 03:42:06.000000000 +0000
-+++ linux-2.6.18/drivers/serial/dz.h	2006-11-23 18:27:06.000000000 +0000
-@@ -1,20 +1,22 @@
- /*
-- * dz.h: Serial port driver for DECStations equiped 
-+ * dz.h: Serial port driver for DECstations equipped 
-  *       with the DZ chipset.
-  *
-  * Copyright (C) 1998 Olivier A. D. Lebaillif 
-  *             
-  * Email: olivier.lebaillif@ifrsys.com
-  *
-+ * Copyright (C) 2004, 2006  Maciej W. Rozycki
-  */
- #ifndef DZ_SERIAL_H
- #define DZ_SERIAL_H
+ 	j = lp->tx_old;
  
- /*
-- * Definitions for the Control and Status Received.
-+ * Definitions for the Control and Status Register.
-  */
- #define DZ_TRDY        0x8000                 /* Transmitter empty */
--#define DZ_TIE         0x4000                 /* Transmitter Interrupt Enable */
-+#define DZ_TIE         0x4000                 /* Transmitter Interrupt Enbl */
-+#define DZ_TLINE       0x0300                 /* Transmitter Line Number */
- #define DZ_RDONE       0x0080                 /* Receiver data ready */
- #define DZ_RIE         0x0040                 /* Receive Interrupt Enable */
- #define DZ_MSE         0x0020                 /* Master Scan Enable */
-@@ -22,32 +24,44 @@
- #define DZ_MAINT       0x0008                 /* Loop Back Mode */
+ 	spin_lock(&lp->lock);
  
- /*
-- * Definitions for the Received buffer. 
-+ * Definitions for the Receiver Buffer Register. 
-  */
--#define DZ_RBUF_MASK   0x00FF                 /* Data Mask in the Receive Buffer */
--#define DZ_LINE_MASK   0x0300                 /* Line Mask in the Receive Buffer */
-+#define DZ_RBUF_MASK   0x00FF                 /* Data Mask */
-+#define DZ_LINE_MASK   0x0300                 /* Line Mask */
- #define DZ_DVAL        0x8000                 /* Valid Data indicator */
- #define DZ_OERR        0x4000                 /* Overrun error indicator */
- #define DZ_FERR        0x2000                 /* Frame error indicator */
- #define DZ_PERR        0x1000                 /* Parity error indicator */
+ 	for (i = j; i != lp->tx_new; i = j) {
+-		td = &ib->btx_ring[i];
++		td = lib_ptr(ib, btx_ring[i], lp->type);
+ 		/* If we hit a packet not owned by us, stop */
+-		if (td->tmd1_bits & LE_T1_OWN)
++		if (*tds_ptr(td, tmd1, lp->type) & LE_T1_OWN)
+ 			break;
  
--#define LINE(x) (x & DZ_LINE_MASK) >> 8       /* Get the line number from the input buffer */
--#define UCHAR(x) (unsigned char)(x & DZ_RBUF_MASK)
-+#define LINE(x) ((x & DZ_LINE_MASK) >> 8)     /* Get the line number
-+                                                 from the input buffer */
-+#define UCHAR(x) ((unsigned char)(x & DZ_RBUF_MASK))
+-		if (td->tmd1_bits & LE_T1_ERR) {
+-			status = td->misc;
++		if (*tds_ptr(td, tmd1, lp->type) & LE_T1_ERR) {
++			status = *tds_ptr(td, misc, lp->type);
  
- /*
-- * Definitions for the Transmit Register.
-+ * Definitions for the Transmit Control Register.
-  */
- #define DZ_LINE_KEYBOARD 0x0001
- #define DZ_LINE_MOUSE    0x0002
- #define DZ_LINE_MODEM    0x0004
- #define DZ_LINE_PRINTER  0x0008
+ 			lp->stats.tx_errors++;
+ 			if (status & LE_T3_RTY)
+@@ -667,18 +691,19 @@ static void lance_tx(struct net_device *
+ 				init_restart_lance(lp);
+ 				goto out;
+ 			}
+-		} else if ((td->tmd1_bits & LE_T1_POK) == LE_T1_POK) {
++		} else if ((*tds_ptr(td, tmd1, lp->type) & LE_T1_POK) ==
++			   LE_T1_POK) {
+ 			/*
+ 			 * So we don't count the packet more than once.
+ 			 */
+-			td->tmd1_bits &= ~(LE_T1_POK);
++			*tds_ptr(td, tmd1, lp->type) &= ~(LE_T1_POK);
  
-+#define DZ_MODEM_RTS     0x0800               /* RTS for the modem line (2) */
- #define DZ_MODEM_DTR     0x0400               /* DTR for the modem line (2) */
-+#define DZ_PRINT_RTS     0x0200               /* RTS for the prntr line (3) */
-+#define DZ_PRINT_DTR     0x0100               /* DTR for the prntr line (3) */
-+#define DZ_LNENB         0x000f               /* Transmitter Line Enable */
+ 			/* One collision before packet was sent. */
+-			if (td->tmd1_bits & LE_T1_EONE)
++			if (*tds_ptr(td, tmd1, lp->type) & LE_T1_EONE)
+ 				lp->stats.collisions++;
  
- /*
-  * Definitions for the Modem Status Register.
-  */
-+#define DZ_MODEM_RI      0x0800               /* RI for the modem line (2) */
-+#define DZ_MODEM_CD      0x0400               /* CD for the modem line (2) */
- #define DZ_MODEM_DSR     0x0200               /* DSR for the modem line (2) */
-+#define DZ_MODEM_CTS     0x0100               /* CTS for the modem line (2) */
-+#define DZ_PRINT_RI      0x0008               /* RI for the printer line (3) */
-+#define DZ_PRINT_CD      0x0004               /* CD for the printer line (3) */
-+#define DZ_PRINT_DSR     0x0002               /* DSR for the prntr line (3) */
-+#define DZ_PRINT_CTS     0x0001               /* CTS for the prntr line (3) */
+ 			/* More than one collision, be optimistic. */
+-			if (td->tmd1_bits & LE_T1_EMORE)
++			if (*tds_ptr(td, tmd1, lp->type) & LE_T1_EMORE)
+ 				lp->stats.collisions += 2;
  
- /*
-  * Definitions for the Transmit Data Register.
+ 			lp->stats.tx_packets++;
+@@ -754,7 +779,7 @@ struct net_device *last_dev = 0;
+ 
+ static int lance_open(struct net_device *dev)
+ {
+-	volatile struct lance_init_block *ib = (struct lance_init_block *) (dev->mem_start);
++	volatile u16 *ib = (volatile u16 *)dev->mem_start;
+ 	struct lance_private *lp = netdev_priv(dev);
+ 	volatile struct lance_regs *ll = lp->ll;
+ 	int status = 0;
+@@ -771,11 +796,11 @@ static int lance_open(struct net_device 
+ 	 *
+ 	 * BTW it is common bug in all lance drivers! --ANK
+ 	 */
+-	ib->mode = 0;
+-	ib->filter [0] = 0;
+-	ib->filter [2] = 0;
+-	ib->filter [4] = 0;
+-	ib->filter [6] = 0;
++	*lib_ptr(ib, mode, lp->type) = 0;
++	*lib_ptr(ib, filter[0], lp->type) = 0;
++	*lib_ptr(ib, filter[1], lp->type) = 0;
++	*lib_ptr(ib, filter[2], lp->type) = 0;
++	*lib_ptr(ib, filter[3], lp->type) = 0;
+ 
+ 	lance_init_ring(dev);
+ 	load_csrs(lp);
+@@ -876,12 +901,10 @@ static int lance_start_xmit(struct sk_bu
+ {
+ 	struct lance_private *lp = netdev_priv(dev);
+ 	volatile struct lance_regs *ll = lp->ll;
+-	volatile struct lance_init_block *ib = (struct lance_init_block *) (dev->mem_start);
+-	int entry, skblen, len;
+-
+-	skblen = skb->len;
++	volatile u16 *ib = (volatile u16 *)dev->mem_start;
++	int entry, len;
+ 
+-	len = skblen;
++	len = skb->len;
+ 	
+ 	if (len < ETH_ZLEN) {
+ 		if (skb_padto(skb, ETH_ZLEN))
+@@ -891,23 +914,17 @@ static int lance_start_xmit(struct sk_bu
+ 
+ 	lp->stats.tx_bytes += len;
+ 
+-	entry = lp->tx_new & TX_RING_MOD_MASK;
+-	ib->btx_ring[entry].length = (-len);
+-	ib->btx_ring[entry].misc = 0;
++	entry = lp->tx_new;
++	*lib_ptr(ib, btx_ring[entry].length, lp->type) = (-len);
++	*lib_ptr(ib, btx_ring[entry].misc, lp->type) = 0;
+ 
+-	cp_to_buf(lp->type, (char *)lp->tx_buf_ptr_cpu[entry], skb->data,
+-		  skblen);
+-
+-	/* Clear the slack of the packet, do I need this? */
+-	/* For a firewall it's a good idea - AC */
+-/*
+-   if (len != skblen)
+-   memset ((char *) &ib->tx_buf [entry][skblen], 0, (len - skblen) << 1);
+- */
++	cp_to_buf(lp->type, (char *)lp->tx_buf_ptr_cpu[entry], skb->data, len);
+ 
+ 	/* Now, give the packet to the lance */
+-	ib->btx_ring[entry].tmd1_bits = (LE_T1_POK | LE_T1_OWN);
+-	lp->tx_new = (lp->tx_new + 1) & TX_RING_MOD_MASK;
++	*lib_ptr(ib, btx_ring[entry].tmd1, lp->type) =
++		((lp->tx_buf_ptr_lnc[entry] >> 16) & 0xff) |
++		(LE_T1_POK | LE_T1_OWN);
++	lp->tx_new = (entry + 1) & TX_RING_MOD_MASK;
+ 
+ 	if (TX_BUFFS_AVAIL <= 0)
+ 		netif_stop_queue(dev);
+@@ -932,8 +949,8 @@ static struct net_device_stats *lance_ge
+ 
+ static void lance_load_multicast(struct net_device *dev)
+ {
+-	volatile struct lance_init_block *ib = (struct lance_init_block *) (dev->mem_start);
+-	volatile u16 *mcast_table = (u16 *) & ib->filter;
++	struct lance_private *lp = netdev_priv(dev);
++	volatile u16 *ib = (volatile u16 *)dev->mem_start;
+ 	struct dev_mc_list *dmi = dev->mc_list;
+ 	char *addrs;
+ 	int i;
+@@ -941,17 +958,17 @@ static void lance_load_multicast(struct 
+ 
+ 	/* set all multicast bits */
+ 	if (dev->flags & IFF_ALLMULTI) {
+-		ib->filter[0] = 0xffff;
+-		ib->filter[2] = 0xffff;
+-		ib->filter[4] = 0xffff;
+-		ib->filter[6] = 0xffff;
++		*lib_ptr(ib, filter[0], lp->type) = 0xffff;
++		*lib_ptr(ib, filter[1], lp->type) = 0xffff;
++		*lib_ptr(ib, filter[2], lp->type) = 0xffff;
++		*lib_ptr(ib, filter[3], lp->type) = 0xffff;
+ 		return;
+ 	}
+ 	/* clear the multicast filter */
+-	ib->filter[0] = 0;
+-	ib->filter[2] = 0;
+-	ib->filter[4] = 0;
+-	ib->filter[6] = 0;
++	*lib_ptr(ib, filter[0], lp->type) = 0;
++	*lib_ptr(ib, filter[1], lp->type) = 0;
++	*lib_ptr(ib, filter[2], lp->type) = 0;
++	*lib_ptr(ib, filter[3], lp->type) = 0;
+ 
+ 	/* Add addresses */
+ 	for (i = 0; i < dev->mc_count; i++) {
+@@ -964,7 +981,7 @@ static void lance_load_multicast(struct 
+ 
+ 		crc = ether_crc_le(ETH_ALEN, addrs);
+ 		crc = crc >> 26;
+-		mcast_table[2 * (crc >> 4)] |= 1 << (crc & 0xf);
++		*lib_ptr(ib, filter[crc >> 4], lp->type) |= 1 << (crc & 0xf);
+ 	}
+ 	return;
+ }
+@@ -972,11 +989,9 @@ static void lance_load_multicast(struct 
+ static void lance_set_multicast(struct net_device *dev)
+ {
+ 	struct lance_private *lp = netdev_priv(dev);
+-	volatile struct lance_init_block *ib;
++	volatile u16 *ib = (volatile u16 *)dev->mem_start;
+ 	volatile struct lance_regs *ll = lp->ll;
+ 
+-	ib = (struct lance_init_block *) (dev->mem_start);
+-
+ 	if (!netif_running(dev))
+ 		return;
+ 
+@@ -994,9 +1009,9 @@ static void lance_set_multicast(struct n
+ 	lance_init_ring(dev);
+ 
+ 	if (dev->flags & IFF_PROMISC) {
+-		ib->mode |= LE_MO_PROM;
++		*lib_ptr(ib, mode, lp->type) |= LE_MO_PROM;
+ 	} else {
+-		ib->mode &= ~LE_MO_PROM;
++		*lib_ptr(ib, mode, lp->type) &= ~LE_MO_PROM;
+ 		lance_load_multicast(dev);
+ 	}
+ 	load_csrs(lp);
+@@ -1075,20 +1090,20 @@ static int __init dec_lance_init(const i
+ 		 */
+ 		for (i = 0; i < RX_RING_SIZE; i++) {
+ 			lp->rx_buf_ptr_cpu[i] =
+-				(char *)(dev->mem_start + BUF_OFFSET_CPU +
++				(char *)(dev->mem_start + 2 * BUF_OFFSET_CPU +
+ 					 2 * i * RX_BUFF_SIZE);
+ 			lp->rx_buf_ptr_lnc[i] =
+-				(char *)(BUF_OFFSET_LNC + i * RX_BUFF_SIZE);
++				(BUF_OFFSET_LNC + i * RX_BUFF_SIZE);
+ 		}
+ 		for (i = 0; i < TX_RING_SIZE; i++) {
+ 			lp->tx_buf_ptr_cpu[i] =
+-				(char *)(dev->mem_start + BUF_OFFSET_CPU +
++				(char *)(dev->mem_start + 2 * BUF_OFFSET_CPU +
+ 					 2 * RX_RING_SIZE * RX_BUFF_SIZE +
+ 					 2 * i * TX_BUFF_SIZE);
+ 			lp->tx_buf_ptr_lnc[i] =
+-				(char *)(BUF_OFFSET_LNC +
+-					 RX_RING_SIZE * RX_BUFF_SIZE +
+-					 i * TX_BUFF_SIZE);
++				(BUF_OFFSET_LNC +
++				 RX_RING_SIZE * RX_BUFF_SIZE +
++				 i * TX_BUFF_SIZE);
+ 		}
+ 
+ 		/* Setup I/O ASIC LANCE DMA.  */
+@@ -1102,6 +1117,7 @@ static int __init dec_lance_init(const i
+ 		claim_tc_card(slot);
+ 
+ 		dev->mem_start = CKSEG1ADDR(get_tc_base_addr(slot));
++		dev->mem_end = dev->mem_start + 0x100000;
+ 		dev->base_addr = dev->mem_start + 0x100000;
+ 		dev->irq = get_tc_irq_nr(slot);
+ 		esar_base = dev->mem_start + 0x1c0002;
+@@ -1112,7 +1128,7 @@ static int __init dec_lance_init(const i
+ 				(char *)(dev->mem_start + BUF_OFFSET_CPU +
+ 					 i * RX_BUFF_SIZE);
+ 			lp->rx_buf_ptr_lnc[i] =
+-				(char *)(BUF_OFFSET_LNC + i * RX_BUFF_SIZE);
++				(BUF_OFFSET_LNC + i * RX_BUFF_SIZE);
+ 		}
+ 		for (i = 0; i < TX_RING_SIZE; i++) {
+ 			lp->tx_buf_ptr_cpu[i] =
+@@ -1120,9 +1136,9 @@ static int __init dec_lance_init(const i
+ 					 RX_RING_SIZE * RX_BUFF_SIZE +
+ 					 i * TX_BUFF_SIZE);
+ 			lp->tx_buf_ptr_lnc[i] =
+-				(char *)(BUF_OFFSET_LNC +
+-					 RX_RING_SIZE * RX_BUFF_SIZE +
+-					 i * TX_BUFF_SIZE);
++				(BUF_OFFSET_LNC +
++				 RX_RING_SIZE * RX_BUFF_SIZE +
++				 i * TX_BUFF_SIZE);
+ 		}
+ 
+ 		break;
+@@ -1132,6 +1148,7 @@ static int __init dec_lance_init(const i
+ 		dev->irq = dec_interrupt[DEC_IRQ_LANCE];
+ 		dev->base_addr = CKSEG1ADDR(KN01_SLOT_BASE + KN01_LANCE);
+ 		dev->mem_start = CKSEG1ADDR(KN01_SLOT_BASE + KN01_LANCE_MEM);
++		dev->mem_end = dev->mem_start + KN01_SLOT_SIZE;
+ 		esar_base = CKSEG1ADDR(KN01_SLOT_BASE + KN01_ESAR + 1);
+ 		lp->dma_irq = -1;
+ 
+@@ -1140,20 +1157,20 @@ static int __init dec_lance_init(const i
+ 		 */
+ 		for (i = 0; i < RX_RING_SIZE; i++) {
+ 			lp->rx_buf_ptr_cpu[i] =
+-				(char *)(dev->mem_start + BUF_OFFSET_CPU +
++				(char *)(dev->mem_start + 2 * BUF_OFFSET_CPU +
+ 					 2 * i * RX_BUFF_SIZE);
+ 			lp->rx_buf_ptr_lnc[i] =
+-				(char *)(BUF_OFFSET_LNC + i * RX_BUFF_SIZE);
++				(BUF_OFFSET_LNC + i * RX_BUFF_SIZE);
+ 		}
+ 		for (i = 0; i < TX_RING_SIZE; i++) {
+ 			lp->tx_buf_ptr_cpu[i] =
+-				(char *)(dev->mem_start + BUF_OFFSET_CPU +
++				(char *)(dev->mem_start + 2 * BUF_OFFSET_CPU +
+ 					 2 * RX_RING_SIZE * RX_BUFF_SIZE +
+ 					 2 * i * TX_BUFF_SIZE);
+ 			lp->tx_buf_ptr_lnc[i] =
+-				(char *)(BUF_OFFSET_LNC +
+-					 RX_RING_SIZE * RX_BUFF_SIZE +
+-					 i * TX_BUFF_SIZE);
++				(BUF_OFFSET_LNC +
++				 RX_RING_SIZE * RX_BUFF_SIZE +
++				 i * TX_BUFF_SIZE);
+ 		}
+ 
+ 		break;

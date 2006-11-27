@@ -1,56 +1,156 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Nov 2006 22:46:22 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.173]:59845 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037637AbWKZWqS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 26 Nov 2006 22:46:18 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so1073062uga
-        for <linux-mips@linux-mips.org>; Sun, 26 Nov 2006 14:46:17 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=tSMciPfm/lbiIGo1HF+9yVBq7MCeFk8LRHXyDtHIwhsyqeEVbk79d5H2UWFudVaNYRjPFDb6OhkLS7EiTAu3ZFI52ScdF9mOQILXTPsb7FPKL1GROZMJXleI0DqdD9uyuKfDDnUKn7uhxCfmhWDPuEAYVq4j5YHOPPhCwpWmcVA=
-Received: by 10.67.103.7 with SMTP id f7mr11269243ugm.1164581177242;
-        Sun, 26 Nov 2006 14:46:17 -0800 (PST)
-Received: by 10.67.100.15 with HTTP; Sun, 26 Nov 2006 14:46:16 -0800 (PST)
-Message-ID: <598f0650611261446k145aa973nade5595d056bdc28@mail.gmail.com>
-Date:	Mon, 27 Nov 2006 00:46:16 +0200
-From:	"Andras Joo" <jooa3000@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: ndv8601: boy, this is phantom
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Nov 2006 19:28:01 +0000 (GMT)
+Received: from smtp-out.sigp.net ([63.237.78.44]:59624 "EHLO smtp-out.sigp.net")
+	by ftp.linux-mips.org with ESMTP id S20038640AbWK0T15 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Nov 2006 19:27:57 +0000
+Received: from gamd-ex-001.ss.drs.master (gamd-ex-001.ss.drs.master [172.22.132.94])
+	by smtp-out.sigp.net (8.13.8/8.13.8) with ESMTP id kARJRqdp028577
+	for <linux-mips@linux-mips.org>; Mon, 27 Nov 2006 14:27:56 -0500 (EST)
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <jooa3000@gmail.com>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C7125A.2CF9AD24"
+Subject: pci_ids.h
+Date:	Mon, 27 Nov 2006 14:27:50 -0500
+Message-ID: <DEB94D90ABFC8240851346CFD4ACFF14C5590E@gamd-ex-001.ss.drs.master>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: pci_ids.h
+Thread-Index: AccSWiCdE5H9e5YHTRqc16t9lcN3kw==
+From:	"Azer, William" <Bill.Azer@drs-ss.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <Bill.Azer@drs-ss.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13258
+X-archive-position: 13259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jooa3000@gmail.com
+X-original-sender: Bill.Azer@drs-ss.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C7125A.2CF9AD24
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
 Hi all,
 
-I'm looking for information about the Mediamatics (National
-Semiconductor) ndv8601.
-This is a dvd-player SoC, with some nice features. I have it in a
-Mivoc DSX-8500 dvd player which, btw, is a phantom too. The problem is
-that so far I was unable to locate any useful information about
-it/them. The Mivoc's site doesn't exist, and on Natsemi's I can't find
-anything but some features list. I searched their site, in datasheet
-archives and google, but there is only a general description of the
-chip, or the player. OK, they are a little old, but still. I'd like to
-port/run Linux to/on it, but the single useful information I found is
-that it has a MIPS core. That's all. Hence I'm here.
-If someone has some info about these I'd really appreciate it.
-Actually, about any of the ndv84xx, ndv85xx or ndv86xx families of
-chips. I think, if I could retrieve the firmware from the flash it
-would help, but not knowing the pinout I am unable to locate the EJTAG
-port (if it has any). Any ideas?
+=20
 
-Best regards,
-Joo Andras
+I am using the Tundra Tsi148 device and the Tundra PCI vendor code has
+been de-listed in "include/linux/pci_ids.h" and it is still listed in
+"/usr/share/misc/pci.ids" (with more detail) used by lspci.
+
+=20
+
+Is there any reason why this may have been?
+
+=20
+
+Thx in advance,
+
+=20
+
+Bill
+
+
+------_=_NextPart_001_01C7125A.2CF9AD24
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hi all,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I am using the Tundra Tsi148 device and the Tundra =
+PCI
+vendor code has been de-listed in &#8220;include/linux/pci_ids.h&#8221; =
+and it
+is still listed in &#8220;/usr/share/misc/pci.ids&#8221; (with more =
+detail)
+used by lspci.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Is there any reason why this may have =
+been?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thx in advance,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Bill<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C7125A.2CF9AD24--

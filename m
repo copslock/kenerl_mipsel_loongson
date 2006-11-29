@@ -1,106 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Nov 2006 19:05:34 +0000 (GMT)
-Received: from ka.cs.utk.edu ([160.36.56.221]:47032 "EHLO ka.cs.utk.edu")
-	by ftp.linux-mips.org with ESMTP id S20040229AbWK1TF2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Nov 2006 19:05:28 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by ka.cs.utk.edu (Postfix) with ESMTP id D903C2F291;
-	Tue, 28 Nov 2006 14:05:16 -0500 (EST)
-X-Virus-Scanned: by amavisd-new with ClamAV and SpamAssasin at cs.utk.edu
-Received: from ka.cs.utk.edu ([127.0.0.1])
-	by localhost (ka.cs.utk.edu [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id O74EQyG4h4ob; Tue, 28 Nov 2006 14:05:07 -0500 (EST)
-Received: from [192.168.1.9] (213-66-54-131-o837.telia.com [213.66.54.131])
-	by ka.cs.utk.edu (Postfix) with ESMTP id 83D1E2F22E;
-	Tue, 28 Nov 2006 14:05:06 -0500 (EST)
-Subject: Re: [Perfctr-devel] 2.6.19-rc6-git10 new perfmon code base +
-	libpfm + pfmon
-From:	"Philip J. Mucci" <mucci@cs.utk.edu>
-To:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Nov 2006 16:04:52 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:29379 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20040307AbWK2QEu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Nov 2006 16:04:50 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kATG4iLJ015289;
+	Wed, 29 Nov 2006 16:04:44 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kATG4ZEW015283;
+	Wed, 29 Nov 2006 16:04:35 GMT
+Date:	Wed, 29 Nov 2006 16:04:35 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Philip J. Mucci" <mucci@cs.utk.edu>
 Cc:	eranian@hpl.hp.com, perfmon@napali.hpl.hp.com,
 	linux-mips@linux-mips.org
-In-Reply-To: <20061128182049.GA19304@linux-mips.org>
-References: <20061127143705.GC24980@frankl.hpl.hp.com>
-	 <1164725427.2316.109.camel@localhost.localdomain>
-	 <20061128182049.GA19304@linux-mips.org>
-Content-Type: text/plain
-Date:	Tue, 28 Nov 2006 20:05:02 +0100
-Message-Id: <1164740702.2316.151.camel@localhost.localdomain>
+Subject: Re: [Perfctr-devel] 2.6.19-rc6-git10 new perfmon code base + libpfm + pfmon
+Message-ID: <20061129160434.GA15230@linux-mips.org>
+References: <20061127143705.GC24980@frankl.hpl.hp.com> <1164725427.2316.109.camel@localhost.localdomain> <20061128182049.GA19304@linux-mips.org> <1164740702.2316.151.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.6.3 (2.6.3-1.fc5.5) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mucci@cs.utk.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1164740702.2316.151.camel@localhost.localdomain>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13269
+X-archive-position: 13270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mucci@cs.utk.edu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Tue, Nov 28, 2006 at 08:05:02PM +0100, Philip J. Mucci wrote:
 
-Forgive me, I thought Stefane had posted the announcement of the new
-perfmon kernel substrate on Linux/MIPS list. I see now that he did not,
-so it's likely that the below patch has little meaning to you folks. I
-do know however, that there are some broadcom folks tracking this work.
+> Forgive me, I thought Stefane had posted the announcement of the new
+> perfmon kernel substrate on Linux/MIPS list. I see now that he did not,
+> so it's likely that the below patch has little meaning to you folks. I
+> do know however, that there are some broadcom folks tracking this work.
+> 
+> This is not meant to be a patch for the Linux/MIPS tree, but rather the
+> perfmon2 patch when applied to Linus' latest GIT tree. This hack (marked
+> as such) gets around a NULL pointer dereference upon boot. I make no
+> claims other than that it lets the MIPS folks play with the perfmon2
+> implementation.
 
-This is not meant to be a patch for the Linux/MIPS tree, but rather the
-perfmon2 patch when applied to Linus' latest GIT tree. This hack (marked
-as such) gets around a NULL pointer dereference upon boot. I make no
-claims other than that it lets the MIPS folks play with the perfmon2
-implementation.
+So following our private mail exchange I've checked in below fix.
 
-Phil
+  Ralf
 
-On Tue, 2006-11-28 at 18:20 +0000, Ralf Baechle wrote:
-> On Tue, Nov 28, 2006 at 03:50:27PM +0100, Philip J. Mucci wrote:
-> 
-> > Linux-MIPS users will need the following patch to add the 'cpu'
-> > directories to sysfs.
-> 
-> This patch is to some file which doesn't even exist in standard
-> kernels.  Nor should it be done in the perfmon code if it did exist in
-> the stock kernel.
-> 
-> > Index: perfmon/perfmon_sysfs.c
-> > ===================================================================
-> > --- perfmon/perfmon_sysfs.c	(.../perfmon2-post-sf-pre-fixup)	(revision 27882)
-> > +++ perfmon/perfmon_sysfs.c	(.../perfmon2-post-sf-post-fixup)	(revision 27882)
-> > @@ -79,6 +79,10 @@
-> >  
-> >  static struct kobject pfm_kernel_kobj, pfm_kernel_fmt_kobj;
-> >  
-> > +/* Remove this after mips get topology.c files */
-> 
-> Why should there be one?  I guess you were looking for topology_init
-> which exists since Febuary 20 / linux-2.6.16-rc5 and does register all
-> CPUs.
-> 
-> > +struct cpu sysfs_cpus[NR_CPUS];
-> > +
-> >  static void pfm_reset_stats(int cpu)
-> >  {
-> >  	struct pfm_stats *st;
-> > @@ -400,6 +404,19 @@
-> >  	int done_kobj_fmt = 0, done_kobj_kernel = 0;
-> >  	int i, cpu = -1;
-> >  	
-> > +	/* This is a hack to be removed */
-> > +
-> > +        for_each_present_cpu(i) {
-> > +          ret = register_cpu(&sysfs_cpus[i],i,NULL);
-> > +          if (ret)
-> > +            {
-> > +              PFM_INFO("cannot register cpu %d: %d\n",i,ret);
-> > +              goto error;
-> > +            }
-> > +        }
-> > +
-> > +	/* End hack */
-> 
-> Formatting style, see Documentation/CodingStyle.
-> 
->   Ralf
+commit 83eee867cf914c968933e8bc3acf7a3fe58ceaed
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Wed Nov 29 15:04:08 2006 +0000
+
+[MIPS] Do topology_init even on uniprocessor kernels.
+
+Otherwise CPU 0 doesn't show up in sysfs which breaks some software.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index cd9cec9..6bfbbed 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -6,7 +6,7 @@ extra-y		:= head.o init_task.o vmlinux.l
+ 
+ obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
+ 		   ptrace.o reset.o semaphore.o setup.o signal.o syscall.o \
+-		   time.o traps.o unaligned.o
++		   time.o topology.o traps.o unaligned.o
+ 
+ binfmt_irix-objs	:= irixelf.o irixinv.o irixioctl.o irixsig.o	\
+ 			   irix5sys.o sysirix.o
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index db80957..49db516 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -463,28 +463,5 @@ void flush_tlb_one(unsigned long vaddr)
+ 	smp_on_each_tlb(flush_tlb_one_ipi, (void *) vaddr);
+ }
+ 
+-static DEFINE_PER_CPU(struct cpu, cpu_devices);
+-
+-static int __init topology_init(void)
+-{
+-	int i, ret;
+-
+-#ifdef CONFIG_NUMA
+-	for_each_online_node(i)
+-		register_one_node(i);
+-#endif /* CONFIG_NUMA */
+-
+-	for_each_present_cpu(i) {
+-		ret = register_cpu(&per_cpu(cpu_devices, i), i);
+-		if (ret)
+-			printk(KERN_WARNING "topology_init: register_cpu %d "
+-			       "failed (%d)\n", i, ret);
+-	}
+-
+-	return 0;
+-}
+-
+-subsys_initcall(topology_init);
+-
+ EXPORT_SYMBOL(flush_tlb_page);
+ EXPORT_SYMBOL(flush_tlb_one);
+diff --git a/arch/mips/kernel/topology.c b/arch/mips/kernel/topology.c
+new file mode 100644
+index 0000000..660e44e
+--- /dev/null
++++ b/arch/mips/kernel/topology.c
+@@ -0,0 +1,29 @@
++#include <linux/cpu.h>
++#include <linux/cpumask.h>
++#include <linux/init.h>
++#include <linux/node.h>
++#include <linux/nodemask.h>
++#include <linux/percpu.h>
++
++static DEFINE_PER_CPU(struct cpu, cpu_devices);
++
++static int __init topology_init(void)
++{
++	int i, ret;
++
++#ifdef CONFIG_NUMA
++	for_each_online_node(i)
++		register_one_node(i);
++#endif /* CONFIG_NUMA */
++
++	for_each_present_cpu(i) {
++		ret = register_cpu(&per_cpu(cpu_devices, i), i);
++		if (ret)
++			printk(KERN_WARNING "topology_init: register_cpu %d "
++			       "failed (%d)\n", i, ret);
++	}
++
++	return 0;
++}
++
++subsys_initcall(topology_init);

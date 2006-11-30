@@ -1,65 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2006 12:06:26 +0000 (GMT)
-Received: from xdsl-664.zgora.dialog.net.pl ([81.168.226.152]:15118 "EHLO
-	tuxland.pl") by ftp.linux-mips.org with ESMTP id S20037631AbWK3MGW
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 30 Nov 2006 12:06:22 +0000
-Received: from [192.168.1.3] (xdsl-664.zgora.dialog.net.pl [81.168.226.152])
-	by tuxland.pl (Postfix) with ESMTP id DE6996EE9A;
-	Thu, 30 Nov 2006 13:06:07 +0100 (CET)
-Received: from [192.168.1.3] ([192.168.1.3])
-	by tuxland.pl (AISK); Thu, 30 Nov 2006 13:06:07 +0100 (CET)
-From:	Mariusz Kozlowski <m.kozlowski@tuxland.pl>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] mips: klconfig add missing bracket
-Date:	Thu, 30 Nov 2006 13:05:48 +0100
-User-Agent: KMail/1.9.5
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-References: <200611301016.29505.m.kozlowski@tuxland.pl> <20061130115944.GA9564@linux-mips.org>
-In-Reply-To: <20061130115944.GA9564@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2006 13:06:30 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:13318 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20037693AbWK3NGY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 30 Nov 2006 13:06:24 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 544DCE1C9C;
+	Thu, 30 Nov 2006 14:06:11 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id tRPpp4yz8kqj; Thu, 30 Nov 2006 14:06:10 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 99FADE1C61;
+	Thu, 30 Nov 2006 14:06:10 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kAUD6ItH009407;
+	Thu, 30 Nov 2006 14:06:18 +0100
+Date:	Thu, 30 Nov 2006 13:06:15 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@osdl.org>, Jeff Garzik <jgarzik@pobox.com>
+cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 2.6.18] declance: Fix RX ownership handover
+Message-ID: <Pine.LNX.4.64N.0611301257300.1757@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200611301305.49442.m.kozlowski@tuxland.pl>
-Return-Path: <m.kozlowski@tuxland.pl>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.6/2263/Thu Nov 30 07:51:08 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13277
+X-archive-position: 13278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m.kozlowski@tuxland.pl
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> The patch is ok but please add a Signed-off-by: line to every patch you
-> send, See Documentation/SubmittingPatches for what this is about.
+ The change for PMAD support introduced a bug, where the ownership of RX 
+descriptors was given back to the LANCE in the wrong way.  Occasional 
+lockups would happen as a result.  This is a fix for this problem.
 
-Right. Must have ovelooked that. Second try:
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+ Tested with the onboard LANCE of a DECstation 5000/133.
 
-	This patch adds missing bracket.
+ Please apply.
 
-Signed-off-by: Mariusz Kozlowski <m.kozlowski@tuxland.pl>
+  Maciej
 
- include/asm-mips/sn/klconfig.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- linux-2.6.19-rc6-mm2-a/include/asm-mips/sn/klconfig.h	2006-11-16 05:03:40.000000000 +0100
-+++ linux-2.6.19-rc6-mm2-b/include/asm-mips/sn/klconfig.h	2006-11-30 00:58:32.000000000 +0100
-@@ -176,7 +176,7 @@ typedef struct kl_config_hdr {
- /* --- New Macros for the changed kl_config_hdr_t structure --- */
- 
- #define PTR_CH_MALLOC_HDR(_k)   ((klc_malloc_hdr_t *)\
--			(unsigned long)_k + (_k->ch_malloc_hdr_off)))
-+			((unsigned long)_k + (_k->ch_malloc_hdr_off)))
- 
- #define KL_CONFIG_CH_MALLOC_HDR(_n)   PTR_CH_MALLOC_HDR(KL_CONFIG_HDR(_n))
- 
-
-
--- 
-Regards,
-
-	Mariusz Kozlowski
+patch-mips-2.6.18-20060920-pmax-lance-rx-fix-0
+diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/net/declance.c linux-mips-2.6.18-20060920/drivers/net/declance.c
+--- linux-mips-2.6.18-20060920.macro/drivers/net/declance.c	2006-11-23 02:55:34.000000000 +0000
++++ linux-mips-2.6.18-20060920/drivers/net/declance.c	2006-11-30 02:26:34.000000000 +0000
+@@ -628,7 +628,6 @@ static int lance_rx(struct net_device *d
+ 		/* Return the packet to the pool */
+ 		*rds_ptr(rd, mblength, lp->type) = 0;
+ 		*rds_ptr(rd, length, lp->type) = -RX_BUFF_SIZE | 0xf000;
+-		*rds_ptr(rd, rmd1, lp->type) = LE_R1_OWN;
+ 		*rds_ptr(rd, rmd1, lp->type) =
+ 			((lp->rx_buf_ptr_lnc[entry] >> 16) & 0xff) | LE_R1_OWN;
+ 		lp->rx_new = (entry + 1) & RX_RING_MOD_MASK;

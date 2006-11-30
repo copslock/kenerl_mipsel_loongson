@@ -1,27 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2006 13:15:21 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:41481 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Nov 2006 18:07:58 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:4102 "EHLO
 	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20037670AbWK3NPN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 30 Nov 2006 13:15:13 +0000
+	id S20037721AbWK3SHx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 30 Nov 2006 18:07:53 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A82F7F5946;
-	Thu, 30 Nov 2006 14:14:59 +0100 (CET)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 86771F5968;
+	Thu, 30 Nov 2006 19:07:36 +0100 (CET)
 X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
 	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id G82bNkTXLVEX; Thu, 30 Nov 2006 14:14:59 +0100 (CET)
+	with ESMTP id 3i5UWlCnytpy; Thu, 30 Nov 2006 19:07:36 +0100 (CET)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 660E6E1C61;
-	Thu, 30 Nov 2006 14:14:59 +0100 (CET)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 1B94DF5946;
+	Thu, 30 Nov 2006 19:07:36 +0100 (CET)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kAUDF84R012388;
-	Thu, 30 Nov 2006 14:15:08 +0100
-Date:	Thu, 30 Nov 2006 13:15:05 +0000 (GMT)
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kAUI7nG2001218;
+	Thu, 30 Nov 2006 19:07:49 +0100
+Date:	Thu, 30 Nov 2006 18:07:45 +0000 (GMT)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@osdl.org>, Jeff Garzik <jgarzik@pobox.com>
-cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH 2.6.18] declance: Support the I/O ASIC LANCE w/o TURBOchannel
-Message-ID: <Pine.LNX.4.64N.0611301306460.1757@blysk.ds.pg.gda.pl>
+To:	Andy Fleming <afleming@freescale.com>
+cc:	Andrew Morton <akpm@osdl.org>, Jeff Garzik <jgarzik@pobox.com>,
+	Ralf Baechle <ralf@linux-mips.org>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [patch 3/6] 2.6.18: sb1250-mac: Phylib IRQ handling fixes
+In-Reply-To: <Pine.LNX.4.64N.0610231752440.4426@blysk.ds.pg.gda.pl>
+Message-ID: <Pine.LNX.4.64N.0611301757200.1757@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0610031509380.4642@blysk.ds.pg.gda.pl>
+ <E2ACBAE3-B0E1-4D90-BF25-6981543090C4@freescale.com>
+ <Pine.LNX.4.64N.0610231752440.4426@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.88.6/2263/Thu Nov 30 07:51:08 2006 on piorun.ds.pg.gda.pl
@@ -30,7 +36,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13279
+X-archive-position: 13280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,56 +44,115 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
- The onboard LANCE of I/O ASIC systems is not a TURBOchannel device, at 
-least from the software point of view.  Therefore it does not rely on any 
-kernel TURBOchannel bus services and can be supported even if support for 
-TURBOchannel has not been enabled in the configuration.
+On Mon, 23 Oct 2006, Maciej W. Rozycki wrote:
 
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
----
- Tested with the onboard LANCE of a DECstation 5000/133.
+> > I'm not too enthusiastic about requiring the ethernet drivers to call
+> > phy_disconnect in a separate thread after "close" is called.  Assuming there's
+> > not some sort of "squash work queue" function that can be invoked with
+> > rtnl_lock held, I think phy_disconnect should schedule itself to flush the
+> > queue.  This would also require that mdiobus_unregister hold off on freeing
+> > phydevs if any of the phys were still waiting for pending flush_pending calls
+> > to finish.  Which would, in turn, require mdiobus_unregister to schedule
+> > cleaning up memory for some later time.
+> 
+>  This could work, indeed.
+> 
+> > I'm not enthusiastic about that implementation, either, but it maintains the
+> > abstractions I consider important for this code.  The ethernet driver should
+> > not need to know what structures the PHY lib uses to implement its interrupt
+> > handling, and how to work around their failings, IMHO.
+> 
+>  Agreed.
 
- Please apply.
+ So what's the plan?
+
+ Here's a new version of the patch that addresses your other concerns.
 
   Maciej
 
-patch-mips-2.6.18-20060920-declance-tc-0
-diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/net/declance.c linux-mips-2.6.18-20060920/drivers/net/declance.c
---- linux-mips-2.6.18-20060920.macro/drivers/net/declance.c	2006-11-23 02:55:34.000000000 +0000
-+++ linux-mips-2.6.18-20060920/drivers/net/declance.c	2006-11-30 02:31:19.000000000 +0000
-@@ -1068,7 +1068,6 @@ static int __init dec_lance_init(const i
- 	lp->type = type;
- 	lp->slot = slot;
- 	switch (type) {
--#ifdef CONFIG_TC
- 	case ASIC_LANCE:
- 		dev->base_addr = CKSEG1ADDR(dec_kn_slot_base + IOASIC_LANCE);
+patch-mips-2.6.18-20060920-phy-irq-18
+diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/net/phy/phy.c linux-mips-2.6.18-20060920/drivers/net/phy/phy.c
+--- linux-mips-2.6.18-20060920.macro/drivers/net/phy/phy.c	2006-08-05 04:58:46.000000000 +0000
++++ linux-mips-2.6.18-20060920/drivers/net/phy/phy.c	2006-11-30 17:58:37.000000000 +0000
+@@ -7,6 +7,7 @@
+  * Author: Andy Fleming
+  *
+  * Copyright (c) 2004 Freescale Semiconductor, Inc.
++ * Copyright (c) 2006  Maciej W. Rozycki
+  *
+  * This program is free software; you can redistribute  it and/or modify it
+  * under  the terms of  the GNU General  Public License as published by the
+@@ -32,6 +33,8 @@
+ #include <linux/mii.h>
+ #include <linux/ethtool.h>
+ #include <linux/phy.h>
++#include <linux/timer.h>
++#include <linux/workqueue.h>
  
-@@ -1112,7 +1111,7 @@ static int __init dec_lance_init(const i
- 			     CPHYSADDR(dev->mem_start) << 3);
+ #include <asm/io.h>
+ #include <asm/irq.h>
+@@ -484,6 +487,9 @@ static irqreturn_t phy_interrupt(int irq
+ {
+ 	struct phy_device *phydev = phy_dat;
  
- 		break;
--
-+#ifdef CONFIG_TC
- 	case PMAD_LANCE:
- 		claim_tc_card(slot);
++	if (PHY_HALTED == phydev->state)
++		return IRQ_NONE;		/* It can't be ours.  */
++
+ 	/* The MDIO bus is not allowed to be written in interrupt
+ 	 * context, so we need to disable the irq here.  A work
+ 	 * queue will write the PHY to disable and clear the
+@@ -577,6 +583,13 @@ int phy_stop_interrupts(struct phy_devic
+ 	if (err)
+ 		phy_error(phydev);
  
-@@ -1143,7 +1142,6 @@ static int __init dec_lance_init(const i
++	/*
++	 * Finish any pending work; we might have been scheduled
++	 * to be called from keventd ourselves, though.
++	 */
++	if (!current_is_keventd())
++		flush_scheduled_work();
++
+ 	free_irq(phydev->irq, phydev);
  
- 		break;
- #endif
--
- 	case PMAX_LANCE:
- 		dev->irq = dec_interrupt[DEC_IRQ_LANCE];
- 		dev->base_addr = CKSEG1ADDR(KN01_SLOT_BASE + KN01_LANCE);
-@@ -1298,10 +1296,8 @@ static int __init dec_lance_probe(void)
- 	/* Then handle onboard devices. */
- 	if (dec_interrupt[DEC_IRQ_LANCE] >= 0) {
- 		if (dec_interrupt[DEC_IRQ_LANCE_MERR] >= 0) {
--#ifdef CONFIG_TC
- 			if (dec_lance_init(ASIC_LANCE, -1) >= 0)
- 				count++;
--#endif
- 		} else if (!TURBOCHANNEL) {
- 			if (dec_lance_init(PMAX_LANCE, -1) >= 0)
- 				count++;
+ 	return err;
+@@ -596,14 +609,17 @@ static void phy_change(void *data)
+ 		goto phy_err;
+ 
+ 	spin_lock(&phydev->lock);
++
+ 	if ((PHY_RUNNING == phydev->state) || (PHY_NOLINK == phydev->state))
+ 		phydev->state = PHY_CHANGELINK;
+-	spin_unlock(&phydev->lock);
+ 
+ 	enable_irq(phydev->irq);
+ 
+ 	/* Reenable interrupts */
+-	err = phy_config_interrupt(phydev, PHY_INTERRUPT_ENABLED);
++	if (PHY_HALTED != phydev->state)
++		err = phy_config_interrupt(phydev, PHY_INTERRUPT_ENABLED);
++
++	spin_unlock(&phydev->lock);
+ 
+ 	if (err)
+ 		goto irq_enable_err;
+@@ -624,15 +640,15 @@ void phy_stop(struct phy_device *phydev)
+ 	if (PHY_HALTED == phydev->state)
+ 		goto out_unlock;
+ 
+-	if (phydev->irq != PHY_POLL) {
+-		/* Clear any pending interrupts */
+-		phy_clear_interrupt(phydev);
++	phydev->state = PHY_HALTED;
+ 
++	if (phydev->irq != PHY_POLL) {
+ 		/* Disable PHY Interrupts */
+ 		phy_config_interrupt(phydev, PHY_INTERRUPT_DISABLED);
+-	}
+ 
+-	phydev->state = PHY_HALTED;
++		/* Clear any pending interrupts */
++		phy_clear_interrupt(phydev);
++	}
+ 
+ out_unlock:
+ 	spin_unlock(&phydev->lock);

@@ -1,46 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:22:23 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:58589 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038329AbWLAPWS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2006 15:22:18 +0000
-Received: from localhost (p7250-ipad213funabasi.chiba.ocn.ne.jp [124.85.72.250])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 4C9B6BFBB; Sat,  2 Dec 2006 00:22:14 +0900 (JST)
-Date:	Sat, 02 Dec 2006 00:22:14 +0900 (JST)
-Message-Id: <20061202.002214.51866784.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:27:49 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:46560 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038324AbWLAP1p (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2006 15:27:45 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 7D5B33ECA; Fri,  1 Dec 2006 07:27:40 -0800 (PST)
+Message-ID: <45704A4D.9050303@ru.mvista.com>
+Date:	Fri, 01 Dec 2006 18:29:17 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org
 Subject: Re: Is _do_IRQ() not needed anymore ?
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <45704569.8000807@ru.mvista.com>
-References: <cda58cb80612010206r51d319a1x72105981d900068a@mail.gmail.com>
-	<20061201.191049.63741937.nemoto@toshiba-tops.co.jp>
-	<45704569.8000807@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+References: <cda58cb80612010206r51d319a1x72105981d900068a@mail.gmail.com>	<20061201.191049.63741937.nemoto@toshiba-tops.co.jp>	<45704569.8000807@ru.mvista.com> <20061202.002214.51866784.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061202.002214.51866784.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13301
+X-archive-position: 13302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 01 Dec 2006 18:08:25 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > You can use both irq_cpu and i8259 same time. :)
-> 
->     What's wrong with 8259 I wonder? It's happily converted to genirq by other 
-> arches...
+Hello.
 
-Indeed.  I missed other arch's i8259.c had changed.  Maybe we should
-update i8259.c entirely.
+Atsushi Nemoto wrote:
 
----
-Atsushi Nemoto
+>>>You can use both irq_cpu and i8259 same time. :)
+
+>>    What's wrong with 8259 I wonder? It's happily converted to genirq by other 
+>>arches...
+
+> Indeed.  I missed other arch's i8259.c had changed.  Maybe we should
+> update i8259.c entirely.
+
+    The question is what flow to use: level/edge ones used in x86 code and 
+actually intended for simplistic controllers, not the likes of 8259 OR the 
+"fasteoi" one used in PowerPC code and (as it turned out in my earlier 
+discussion in linuxppc-dev) intended for the controllers that are smart enough 
+to mask off the lower-priority IRQs when getting the top level one 
+acknowledged and unmask them upon EOI command...
+
+> ---
+> Atsushi Nemoto
+
+WBR, Sergei

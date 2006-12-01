@@ -1,74 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:36:55 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:47374 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038324AbWLAPgu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 1 Dec 2006 15:36:50 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 9D480E1D01;
-	Fri,  1 Dec 2006 16:36:37 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id qWNuSMgh8ZuD; Fri,  1 Dec 2006 16:36:37 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3C29BE1CAE;
-	Fri,  1 Dec 2006 16:36:37 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB1FalGR021234;
-	Fri, 1 Dec 2006 16:36:47 +0100
-Date:	Fri, 1 Dec 2006 15:36:44 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	linux-mips <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:40:43 +0000 (GMT)
+Received: from wr-out-0506.google.com ([64.233.184.238]:51019 "EHLO
+	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038423AbWLAPkj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 1 Dec 2006 15:40:39 +0000
+Received: by wr-out-0506.google.com with SMTP id i32so937481wra
+        for <linux-mips@linux-mips.org>; Fri, 01 Dec 2006 07:40:38 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=K/iX8tITw9zCT6xfR5qGOoSUe/HjcAx2wQHeRJX8zbkK3YbZqgfCNxgAkzODi8OfOwNlMgymlYZTrgQFTecWHVhENiqU+dSmsbM2N3NQ3WLA1+Aq8C+f/AaHuTiyrVBe+oWqKknmCZ3Mwx2Cp84g7MBzGBrbLfIroB1XUIqNb9M=
+Received: by 10.78.149.15 with SMTP id w15mr4921584hud.1164987637295;
+        Fri, 01 Dec 2006 07:40:37 -0800 (PST)
+Received: by 10.78.124.19 with HTTP; Fri, 1 Dec 2006 07:40:37 -0800 (PST)
+Message-ID: <cda58cb80612010740u50bf6a7an78e735db0a9c9168@mail.gmail.com>
+Date:	Fri, 1 Dec 2006 16:40:37 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
 Subject: Re: [PATCH] Compile __do_IRQ() when really needed [take #2]
-In-Reply-To: <45704B26.9040202@innova-card.com>
-Message-ID: <Pine.LNX.4.64N.0612011535090.5923@blysk.ds.pg.gda.pl>
-References: <45704B26.9040202@innova-card.com>
+Cc:	"Ralf Baechle" <ralf@linux-mips.org>,
+	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>,
+	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.64N.0612011535090.5923@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.6/2267/Fri Dec  1 05:29:21 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <45704B26.9040202@innova-card.com>
+	 <Pine.LNX.4.64N.0612011535090.5923@blysk.ds.pg.gda.pl>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13306
+X-archive-position: 13307
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 1 Dec 2006, Franck Bui-Huu wrote:
+On 12/1/06, Maciej W. Rozycki <macro@linux-mips.org> wrote:
+>
+>  Well, end_ioasic_irq() is called from end_ioasic_dma_irq(), sorry. ;-)
+>
 
-> diff --git a/arch/mips/dec/ioasic-irq.c b/arch/mips/dec/ioasic-irq.c
-> index 269b22b..880ef88 100644
-> --- a/arch/mips/dec/ioasic-irq.c
-> +++ b/arch/mips/dec/ioasic-irq.c
-> @@ -55,19 +55,12 @@ static inline void ack_ioasic_irq(unsign
->  	fast_iob();
->  }
->  
-> -static inline void end_ioasic_irq(unsigned int irq)
-> -{
-> -	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
-> -		unmask_ioasic_irq(irq);
-> -}
-> -
->  static struct irq_chip ioasic_irq_type = {
->  	.typename = "IO-ASIC",
->  	.ack = ack_ioasic_irq,
->  	.mask = mask_ioasic_irq,
->  	.mask_ack = ack_ioasic_irq,
->  	.unmask = unmask_ioasic_irq,
-> -	.end = end_ioasic_irq,
->  };
->  
->  
+no problem, I should had caught this by my own. Let's do it again...
 
- Well, end_ioasic_irq() is called from end_ioasic_dma_irq(), sorry. ;-)
-
-  Maciej
+thanks
+-- 
+               Franck

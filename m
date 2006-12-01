@@ -1,64 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:12:27 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:59118 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20037960AbWLAPMW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2006 15:12:22 +0000
-Received: from localhost (p7250-ipad213funabasi.chiba.ocn.ne.jp [124.85.72.250])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id CCEA1BFB3; Sat,  2 Dec 2006 00:12:17 +0900 (JST)
-Date:	Sat, 02 Dec 2006 00:12:17 +0900 (JST)
-Message-Id: <20061202.001217.108120576.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:14:18 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:9477 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20038324AbWLAPON (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 1 Dec 2006 15:14:13 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 23E5EE1CAE;
+	Fri,  1 Dec 2006 16:14:01 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id U0fJsd1e4NwV; Fri,  1 Dec 2006 16:14:00 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C0A62E1CAC;
+	Fri,  1 Dec 2006 16:14:00 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB1FEB1L013274;
+	Fri, 1 Dec 2006 16:14:11 +0100
+Date:	Fri, 1 Dec 2006 15:14:07 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] Compile __do_IRQ() when really needed
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 In-Reply-To: <457042FF.2060908@innova-card.com>
+Message-ID: <Pine.LNX.4.64N.0612011511330.5923@blysk.ds.pg.gda.pl>
 References: <457042FF.2060908@innova-card.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.6/2267/Fri Dec  1 05:29:21 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13298
+X-archive-position: 13299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 01 Dec 2006 15:58:07 +0100, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> __do_IRQ() is needed only by irq handlers that can't use
-> default handler defined in kernel/irq/chip.c.
-> 
-> For others platforms there's no need to compile this function
-> since it won't be used. For those platforms this patch defines
-> GENERIC_HARDIRQS_NO__DO_IRQ symbol which is used exactly for
-> this purpose.
-> 
-> Futhermore for platforms which do not use __do_IRQ(), end()
-> method which is part of the 'irq_chip' structure is not used.
-> This patch simply removes this method in this case.
+On Fri, 1 Dec 2006, Franck Bui-Huu wrote:
 
-As I wrote in separate mail, I think I had fault on
-ioasic_dma_irq_type.  So please drop some part from your patch.
-
-
-> @@ -171,6 +171,7 @@ config MACH_DECSTATION
->  	select SYS_SUPPORTS_128HZ
->  	select SYS_SUPPORTS_256HZ
->  	select SYS_SUPPORTS_1024HZ
-> +	select GENERIC_HARDIRQS_NO__DO_IRQ
->  	help
->  	  This enables support for DEC's MIPS based workstations.  For details
->  	  see the Linux/MIPS FAQ on <http://www.linux-mips.org/> and the
-
-and
-
+> diff --git a/arch/mips/dec/ioasic-irq.c b/arch/mips/dec/ioasic-irq.c
+> index 269b22b..c5248a1 100644
+> --- a/arch/mips/dec/ioasic-irq.c
+> +++ b/arch/mips/dec/ioasic-irq.c
+> @@ -55,19 +55,12 @@ static inline void ack_ioasic_irq(unsign
+>  	fast_iob();
+>  }
+>  
+> -static inline void end_ioasic_irq(unsigned int irq)
+> -{
+> -	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
+> -		unmask_ioasic_irq(irq);
+> -}
+> -
+>  static struct irq_chip ioasic_irq_type = {
+>  	.typename = "IO-ASIC",
+>  	.ack = ack_ioasic_irq,
+>  	.mask = mask_ioasic_irq,
+>  	.mask_ack = ack_ioasic_irq,
+>  	.unmask = unmask_ioasic_irq,
+> -	.end = end_ioasic_irq,
+>  };
+>  
+>  
 > @@ -77,20 +70,12 @@ static struct irq_chip ioasic_irq_type =
 >  
 >  #define ack_ioasic_dma_irq ack_ioasic_irq
@@ -81,6 +90,7 @@ and
 >  
 >  
 
-Sorry for confusion...
----
-Atsushi Nemoto
+ You have removed a call to clear_ioasic_irq() -- I/O ASIC DMA engines 
+will cease to work as a result.
+
+  Maciej

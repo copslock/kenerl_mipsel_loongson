@@ -1,932 +1,639 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 17:21:17 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.190]:6427 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S28573740AbWLARVM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 1 Dec 2006 17:21:12 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so3480348nfc
-        for <linux-mips@linux-mips.org>; Fri, 01 Dec 2006 09:21:11 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=GezxrujMy1cscXqmDkF7d6MYQewOxmEZGNHgdaYvcFDDCZUeDZihCQeMTqmxoWGQwGt9xgJDCQEpMC+I5yvvfDx3BE+qwayY63e5pJM9k5zuMctixiW7eSXWxJbX4yM1CJMGD/LiSxwnZ3CfQdaQrRTt7qykbz0qz5qRndi3/sI=
-Received: by 10.48.220.12 with SMTP id s12mr9539660nfg.1164993671064;
-        Fri, 01 Dec 2006 09:21:11 -0800 (PST)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id d2sm37682224nfe.2006.12.01.09.21.09;
-        Fri, 01 Dec 2006 09:21:10 -0800 (PST)
-Message-ID: <457064D3.3030705@innova-card.com>
-Date:	Fri, 01 Dec 2006 18:22:27 +0100
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, macro@linux-mips.org,
-	sshtylyov@ru.mvista.com, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] Compile __do_IRQ() when really needed [take #3]
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 18:23:37 +0000 (GMT)
+Received: from smtp114.sbc.mail.mud.yahoo.com ([68.142.198.213]:33614 "HELO
+	smtp114.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S28573745AbWLASXb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 1 Dec 2006 18:23:31 +0000
+Received: (qmail 73196 invoked from network); 1 Dec 2006 18:23:21 -0000
+Received: from unknown (HELO lucon.org) (hjjean@sbcglobal.net@75.0.162.249 with login)
+  by smtp114.sbc.mail.mud.yahoo.com with SMTP; 1 Dec 2006 18:23:20 -0000
+X-YMail-OSG: OZy_TN0VM1kPfZyb1OfmXbfZLF5aTWIdeDth8yKeL0w4vHQpaFXWLqfpvPprsUGfy9ssMSXe6JqDqdfyel9GIZZvj53IByAczkpgbtncNJSZ8g4eVbEFPQ--
+Received: by lucon.org (Postfix, from userid 500)
+	id D851346EEED; Fri,  1 Dec 2006 10:23:18 -0800 (PST)
+Date:	Fri, 1 Dec 2006 10:23:18 -0800
+From:	"H. J. Lu" <hjl@lucon.org>
+To:	linux-gcc@vger.kernel.org
+Cc:	gcc@gcc.gnu.org, GNU C Library <libc-alpha@sources.redhat.com>,
+	Mat Hostetter <mat@lcs.mit.edu>, Warner Losh <imp@village.org>,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	Linas Vepstas <linas@linas.org>, linux-vax@pergamentum.com
+Subject: The Linux binutils 2.17.50.0.8 is released
+Message-ID: <20061201182318.GA7026@lucon.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <hjl@lucon.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13316
+X-archive-position: 13317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: hjl@lucon.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+This is the beta release of binutils 2.17.50.0.8 for Linux, which is
+based on binutils 2006 1201 in CVS on sourceware.org plus various
+changes. It is purely for Linux.
 
-__do_IRQ() is needed only by irq handlers that can't use
-default handlers defined in kernel/irq/chip.c.
+Starting from the 2.17.50.0.8 release, the default output section LMA
+(load memory address) has changed for allocatable sections from being
+equal to VMA (virtual memory address), to keeping the difference between
+LMA and VMA the same as the previous output section in the same region.
 
-For others platforms there's no need to compile this function
-since it won't be used. For those platforms this patch defines
-GENERIC_HARDIRQS_NO__DO_IRQ symbol which is used exactly for
-this purpose.
+For
 
-Futhermore for platforms which do not use __do_IRQ(), end()
-method which is part of the 'irq_chip' structure is not used.
-This patch simply removes this method in this case.
+.data.init_task : { *(.data.init_task) }
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
+LMA of .data.init_task section is equal to its VMA with the old linker.
+With the new linker, it depends on the previous output section. You
+can use
 
- Thanks for your feedbacks and sorry for the crap I previously
- sent...
+.data.init_task : AT (ADDR(.data.init_task)) { *(.data.init_task) }
 
- arch/mips/Kconfig                                  |    9 ++++++
- arch/mips/dec/ioasic-irq.c                         |    1 -
- arch/mips/dec/kn02-irq.c                           |    7 -----
- arch/mips/emma2rh/common/irq_emma2rh.c             |    7 -----
- arch/mips/emma2rh/markeins/irq_markeins.c          |    7 -----
- arch/mips/jazz/irq.c                               |    7 -----
- arch/mips/kernel/irq-mv6434x.c                     |   10 -------
- arch/mips/kernel/irq-rm7000.c                      |    7 -----
- arch/mips/kernel/irq-rm9000.c                      |    8 -----
- arch/mips/kernel/irq_cpu.c                         |    7 -----
- arch/mips/lasat/interrupt.c                        |    7 -----
- arch/mips/momentum/ocelot_c/cpci-irq.c             |   10 -------
- arch/mips/momentum/ocelot_c/uart-irq.c             |   10 -------
- arch/mips/philips/pnx8550/common/int.c             |    8 -----
- arch/mips/sgi-ip22/ip22-int.c                      |   28 --------------------
- arch/mips/sgi-ip27/ip27-irq.c                      |    8 -----
- arch/mips/sgi-ip27/ip27-timer.c                    |    5 ---
- arch/mips/tx4927/common/tx4927_irq.c               |   26 ------------------
- .../tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c |   21 ---------------
- arch/mips/tx4938/common/irq.c                      |   20 --------------
- arch/mips/tx4938/toshiba_rbtx4938/irq.c            |   10 -------
- arch/mips/vr41xx/Kconfig                           |    5 +++
- arch/mips/vr41xx/common/icu.c                      |   14 ----------
- 23 files changed, 14 insertions(+), 228 deletions(-)
+to ensure that LMA of .data.init_task section is always equal to its
+VMA. The linker script in the older 2.6 x86-64 kernel depends on the
+old behavior.  You can add AT (ADDR(section)) to force LMA of
+.data.init_task section equal to its VMA. It will work with both old
+and new linkers. The x86-64 kernel linker script in kernel 2.6.13 and
+above is OK.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 5ff94e5..0dfa941 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -233,6 +233,7 @@ config LASAT
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
- config MIPS_ATLAS
- 	bool "MIPS Atlas board"
-@@ -256,6 +257,7 @@ config MIPS_ATLAS
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_MULTITHREADING if EXPERIMENTAL
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 	help
- 	  This enables support for the MIPS Technologies Atlas evaluation
- 	  board.
-@@ -410,6 +412,7 @@ config MOMENCO_OCELOT_C
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 	help
- 	  The Ocelot is a MIPS-based Single Board Computer (SBC) made by
- 	  Momentum Computer <http://www.momenco.com/>.
-@@ -558,6 +561,7 @@ config SGI_IP27
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_NUMA
- 	select SYS_SUPPORTS_SMP
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 	help
- 	  This are the SGI Origin 200, Origin 2000 and Onyx 2 Graphics
- 	  workstations.  To compile a Linux kernel that runs on these, say Y
-@@ -824,6 +828,10 @@ config SCHED_NO_NO_OMIT_FRAME_POINTER
- 	bool
- 	default y
- 
-+config GENERIC_HARDIRQS_NO__DO_IRQ
-+	bool
-+	default n
-+
- #
- # Select some configuration options automatically based on user selections.
- #
-@@ -985,6 +993,7 @@ config SOC_PNX8550
- 	select HW_HAS_PCI
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select SYS_SUPPORTS_32BIT_KERNEL
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
- config SWAP_IO_SPACE
- 	bool
-diff --git a/arch/mips/dec/ioasic-irq.c b/arch/mips/dec/ioasic-irq.c
-index 269b22b..c7391bb 100644
---- a/arch/mips/dec/ioasic-irq.c
-+++ b/arch/mips/dec/ioasic-irq.c
-@@ -67,7 +67,6 @@ static struct irq_chip ioasic_irq_type =
- 	.mask = mask_ioasic_irq,
- 	.mask_ack = ack_ioasic_irq,
- 	.unmask = unmask_ioasic_irq,
--	.end = end_ioasic_irq,
- };
- 
- 
-diff --git a/arch/mips/dec/kn02-irq.c b/arch/mips/dec/kn02-irq.c
-index 5a9be4c..916e46b 100644
---- a/arch/mips/dec/kn02-irq.c
-+++ b/arch/mips/dec/kn02-irq.c
-@@ -57,19 +57,12 @@ static void ack_kn02_irq(unsigned int ir
- 	iob();
- }
- 
--static void end_kn02_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		unmask_kn02_irq(irq);
--}
--
- static struct irq_chip kn02_irq_type = {
- 	.typename = "KN02-CSR",
- 	.ack = ack_kn02_irq,
- 	.mask = mask_kn02_irq,
- 	.mask_ack = ack_kn02_irq,
- 	.unmask = unmask_kn02_irq,
--	.end = end_kn02_irq,
- };
- 
- 
-diff --git a/arch/mips/emma2rh/common/irq_emma2rh.c b/arch/mips/emma2rh/common/irq_emma2rh.c
-index 59b9829..8d880f0 100644
---- a/arch/mips/emma2rh/common/irq_emma2rh.c
-+++ b/arch/mips/emma2rh/common/irq_emma2rh.c
-@@ -56,19 +56,12 @@ static void emma2rh_irq_disable(unsigned
- 	ll_emma2rh_irq_disable(irq - emma2rh_irq_base);
- }
- 
--static void emma2rh_irq_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		ll_emma2rh_irq_enable(irq - emma2rh_irq_base);
--}
--
- struct irq_chip emma2rh_irq_controller = {
- 	.typename = "emma2rh_irq",
- 	.ack = emma2rh_irq_disable,
- 	.mask = emma2rh_irq_disable,
- 	.mask_ack = emma2rh_irq_disable,
- 	.unmask = emma2rh_irq_enable,
--	.end = emma2rh_irq_end,
- };
- 
- void emma2rh_irq_init(u32 irq_base)
-diff --git a/arch/mips/emma2rh/markeins/irq_markeins.c b/arch/mips/emma2rh/markeins/irq_markeins.c
-index 3ac4e40..2116d9b 100644
---- a/arch/mips/emma2rh/markeins/irq_markeins.c
-+++ b/arch/mips/emma2rh/markeins/irq_markeins.c
-@@ -48,19 +48,12 @@ static void emma2rh_sw_irq_disable(unsig
- 	ll_emma2rh_sw_irq_disable(irq - emma2rh_sw_irq_base);
- }
- 
--static void emma2rh_sw_irq_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		ll_emma2rh_sw_irq_enable(irq - emma2rh_sw_irq_base);
--}
--
- struct irq_chip emma2rh_sw_irq_controller = {
- 	.typename = "emma2rh_sw_irq",
- 	.ack = emma2rh_sw_irq_disable,
- 	.mask = emma2rh_sw_irq_disable,
- 	.mask_ack = emma2rh_sw_irq_disable,
- 	.unmask = emma2rh_sw_irq_enable,
--	.end = emma2rh_sw_irq_end,
- };
- 
- void emma2rh_sw_irq_init(u32 irq_base)
-diff --git a/arch/mips/jazz/irq.c b/arch/mips/jazz/irq.c
-index 5c4f50c..f8d417b 100644
---- a/arch/mips/jazz/irq.c
-+++ b/arch/mips/jazz/irq.c
-@@ -39,19 +39,12 @@ void disable_r4030_irq(unsigned int irq)
- 	spin_unlock_irqrestore(&r4030_lock, flags);
- }
- 
--static void end_r4030_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_r4030_irq(irq);
--}
--
- static struct irq_chip r4030_irq_type = {
- 	.typename = "R4030",
- 	.ack = disable_r4030_irq,
- 	.mask = disable_r4030_irq,
- 	.mask_ack = disable_r4030_irq,
- 	.unmask = enable_r4030_irq,
--	.end = end_r4030_irq,
- };
- 
- void __init init_r4030_ints(void)
-diff --git a/arch/mips/kernel/irq-mv6434x.c b/arch/mips/kernel/irq-mv6434x.c
-index 6cfb31c..efbd219 100644
---- a/arch/mips/kernel/irq-mv6434x.c
-+++ b/arch/mips/kernel/irq-mv6434x.c
-@@ -67,15 +67,6 @@ static inline void unmask_mv64340_irq(un
- }
- 
- /*
-- * End IRQ processing
-- */
--static void end_mv64340_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		unmask_mv64340_irq(irq);
--}
--
--/*
-  * Interrupt handler for interrupts coming from the Marvell chip.
-  * It could be built in ethernet ports etc...
-  */
-@@ -106,7 +97,6 @@ struct irq_chip mv64340_irq_type = {
- 	.mask = mask_mv64340_irq,
- 	.mask_ack = mask_mv64340_irq,
- 	.unmask = unmask_mv64340_irq,
--	.end = end_mv64340_irq,
- };
- 
- void __init mv64340_irq_init(unsigned int base)
-diff --git a/arch/mips/kernel/irq-rm7000.c b/arch/mips/kernel/irq-rm7000.c
-index ddcc2a5..123324b 100644
---- a/arch/mips/kernel/irq-rm7000.c
-+++ b/arch/mips/kernel/irq-rm7000.c
-@@ -29,19 +29,12 @@ static inline void mask_rm7k_irq(unsigne
- 	clear_c0_intcontrol(0x100 << (irq - irq_base));
- }
- 
--static void rm7k_cpu_irq_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		unmask_rm7k_irq(irq);
--}
--
- static struct irq_chip rm7k_irq_controller = {
- 	.typename = "RM7000",
- 	.ack = mask_rm7k_irq,
- 	.mask = mask_rm7k_irq,
- 	.mask_ack = mask_rm7k_irq,
- 	.unmask = unmask_rm7k_irq,
--	.end = rm7k_cpu_irq_end,
- };
- 
- void __init rm7k_cpu_irq_init(int base)
-diff --git a/arch/mips/kernel/irq-rm9000.c b/arch/mips/kernel/irq-rm9000.c
-index ba6440c..0e6f4c5 100644
---- a/arch/mips/kernel/irq-rm9000.c
-+++ b/arch/mips/kernel/irq-rm9000.c
-@@ -80,19 +80,12 @@ static void rm9k_perfcounter_irq_shutdow
- 	on_each_cpu(local_rm9k_perfcounter_irq_shutdown, (void *) irq, 0, 1);
- }
- 
--static void rm9k_cpu_irq_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		unmask_rm9k_irq(irq);
--}
--
- static struct irq_chip rm9k_irq_controller = {
- 	.typename = "RM9000",
- 	.ack = mask_rm9k_irq,
- 	.mask = mask_rm9k_irq,
- 	.mask_ack = mask_rm9k_irq,
- 	.unmask = unmask_rm9k_irq,
--	.end = rm9k_cpu_irq_end,
- };
- 
- static struct irq_chip rm9k_perfcounter_irq = {
-@@ -103,7 +96,6 @@ static struct irq_chip rm9k_perfcounter_
- 	.mask = mask_rm9k_irq,
- 	.mask_ack = mask_rm9k_irq,
- 	.unmask = unmask_rm9k_irq,
--	.end = rm9k_cpu_irq_end,
- };
- 
- unsigned int rm9000_perfcount_irq;
-diff --git a/arch/mips/kernel/irq_cpu.c b/arch/mips/kernel/irq_cpu.c
-index be5ac23..7634a66 100644
---- a/arch/mips/kernel/irq_cpu.c
-+++ b/arch/mips/kernel/irq_cpu.c
-@@ -50,12 +50,6 @@ static inline void mask_mips_irq(unsigne
- 	irq_disable_hazard();
- }
- 
--static void mips_cpu_irq_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		unmask_mips_irq(irq);
--}
--
- static struct irq_chip mips_cpu_irq_controller = {
- 	.typename	= "MIPS",
- 	.ack		= mask_mips_irq,
-@@ -63,7 +57,6 @@ static struct irq_chip mips_cpu_irq_cont
- 	.mask_ack	= mask_mips_irq,
- 	.unmask		= unmask_mips_irq,
- 	.eoi		= unmask_mips_irq,
--	.end		= mips_cpu_irq_end,
- };
- 
- /*
-diff --git a/arch/mips/lasat/interrupt.c b/arch/mips/lasat/interrupt.c
-index 4a84a7b..2affa5f 100644
---- a/arch/mips/lasat/interrupt.c
-+++ b/arch/mips/lasat/interrupt.c
-@@ -44,19 +44,12 @@ void enable_lasat_irq(unsigned int irq_n
- 	*lasat_int_mask |= (1 << irq_nr) << lasat_int_mask_shift;
- }
- 
--static void end_lasat_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_lasat_irq(irq);
--}
--
- static struct irq_chip lasat_irq_type = {
- 	.typename = "Lasat",
- 	.ack = disable_lasat_irq,
- 	.mask = disable_lasat_irq,
- 	.mask_ack = disable_lasat_irq,
- 	.unmask = enable_lasat_irq,
--	.end = end_lasat_irq,
- };
- 
- static inline int ls1bit32(unsigned int x)
-diff --git a/arch/mips/momentum/ocelot_c/cpci-irq.c b/arch/mips/momentum/ocelot_c/cpci-irq.c
-index e5a4a0a..bb11fef 100644
---- a/arch/mips/momentum/ocelot_c/cpci-irq.c
-+++ b/arch/mips/momentum/ocelot_c/cpci-irq.c
-@@ -66,15 +66,6 @@ static inline void unmask_cpci_irq(unsig
- }
- 
- /*
-- * End IRQ processing
-- */
--static void end_cpci_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		unmask_cpci_irq(irq);
--}
--
--/*
-  * Interrupt handler for interrupts coming from the FPGA chip.
-  * It could be built in ethernet ports etc...
-  */
-@@ -98,7 +89,6 @@ struct irq_chip cpci_irq_type = {
- 	.mask = mask_cpci_irq,
- 	.mask_ack = mask_cpci_irq,
- 	.unmask = unmask_cpci_irq,
--	.end = end_cpci_irq,
- };
- 
- void cpci_irq_init(void)
-diff --git a/arch/mips/momentum/ocelot_c/uart-irq.c b/arch/mips/momentum/ocelot_c/uart-irq.c
-index 0029f00..a7a80c0 100644
---- a/arch/mips/momentum/ocelot_c/uart-irq.c
-+++ b/arch/mips/momentum/ocelot_c/uart-irq.c
-@@ -60,15 +60,6 @@ static inline void unmask_uart_irq(unsig
- }
- 
- /*
-- * End IRQ processing
-- */
--static void end_uart_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		unmask_uart_irq(irq);
--}
--
--/*
-  * Interrupt handler for interrupts coming from the FPGA chip.
-  */
- void ll_uart_irq(void)
-@@ -91,7 +82,6 @@ struct irq_chip uart_irq_type = {
- 	.mask = mask_uart_irq,
- 	.mask_ack = mask_uart_irq,
- 	.unmask = unmask_uart_irq,
--	.end = end_uart_irq,
- };
- 
- void uart_irq_init(void)
-diff --git a/arch/mips/philips/pnx8550/common/int.c b/arch/mips/philips/pnx8550/common/int.c
-index 0dc2393..2c36c10 100644
---- a/arch/mips/philips/pnx8550/common/int.c
-+++ b/arch/mips/philips/pnx8550/common/int.c
-@@ -158,20 +158,12 @@ int pnx8550_set_gic_priority(int irq, in
- 	return prev_priority;
- }
- 
--static void end_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS))) {
--		unmask_irq(irq);
--	}
--}
--
- static struct irq_chip level_irq_type = {
- 	.typename =	"PNX Level IRQ",
- 	.ack =		mask_irq,
- 	.mask =		mask_irq,
- 	.mask_ack =	mask_irq,
- 	.unmask =	unmask_irq,
--	.end =		end_irq,
- };
- 
- static struct irqaction gic_action = {
-diff --git a/arch/mips/sgi-ip22/ip22-int.c b/arch/mips/sgi-ip22/ip22-int.c
-index c7b1380..c44f8be 100644
---- a/arch/mips/sgi-ip22/ip22-int.c
-+++ b/arch/mips/sgi-ip22/ip22-int.c
-@@ -51,19 +51,12 @@ static void disable_local0_irq(unsigned
- 	sgint->imask0 &= ~(1 << (irq - SGINT_LOCAL0));
- }
- 
--static void end_local0_irq (unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_local0_irq(irq);
--}
--
- static struct irq_chip ip22_local0_irq_type = {
- 	.typename	= "IP22 local 0",
- 	.ack		= disable_local0_irq,
- 	.mask		= disable_local0_irq,
- 	.mask_ack	= disable_local0_irq,
- 	.unmask		= enable_local0_irq,
--	.end		= end_local0_irq,
- };
- 
- static void enable_local1_irq(unsigned int irq)
-@@ -79,19 +72,12 @@ void disable_local1_irq(unsigned int irq
- 	sgint->imask1 &= ~(1 << (irq - SGINT_LOCAL1));
- }
- 
--static void end_local1_irq (unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_local1_irq(irq);
--}
--
- static struct irq_chip ip22_local1_irq_type = {
- 	.typename	= "IP22 local 1",
- 	.ack		= disable_local1_irq,
- 	.mask		= disable_local1_irq,
- 	.mask_ack	= disable_local1_irq,
- 	.unmask		= enable_local1_irq,
--	.end		= end_local1_irq,
- };
- 
- static void enable_local2_irq(unsigned int irq)
-@@ -107,19 +93,12 @@ void disable_local2_irq(unsigned int irq
- 		sgint->imask0 &= ~(1 << (SGI_MAP_0_IRQ - SGINT_LOCAL0));
- }
- 
--static void end_local2_irq (unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_local2_irq(irq);
--}
--
- static struct irq_chip ip22_local2_irq_type = {
- 	.typename	= "IP22 local 2",
- 	.ack		= disable_local2_irq,
- 	.mask		= disable_local2_irq,
- 	.mask_ack	= disable_local2_irq,
- 	.unmask		= enable_local2_irq,
--	.end		= end_local2_irq,
- };
- 
- static void enable_local3_irq(unsigned int irq)
-@@ -135,19 +114,12 @@ void disable_local3_irq(unsigned int irq
- 		sgint->imask1 &= ~(1 << (SGI_MAP_1_IRQ - SGINT_LOCAL1));
- }
- 
--static void end_local3_irq (unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_local3_irq(irq);
--}
--
- static struct irq_chip ip22_local3_irq_type = {
- 	.typename	= "IP22 local 3",
- 	.ack		= disable_local3_irq,
- 	.mask		= disable_local3_irq,
- 	.mask_ack	= disable_local3_irq,
- 	.unmask		= enable_local3_irq,
--	.end		= end_local3_irq,
- };
- 
- static void indy_local0_irqdispatch(void)
-diff --git a/arch/mips/sgi-ip27/ip27-irq.c b/arch/mips/sgi-ip27/ip27-irq.c
-index 5f8835b..319f880 100644
---- a/arch/mips/sgi-ip27/ip27-irq.c
-+++ b/arch/mips/sgi-ip27/ip27-irq.c
-@@ -332,13 +332,6 @@ static inline void disable_bridge_irq(un
- 	intr_disconnect_level(cpu, swlevel);
- }
- 
--static void end_bridge_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)) &&
--	    irq_desc[irq].action)
--		enable_bridge_irq(irq);
--}
--
- static struct irq_chip bridge_irq_type = {
- 	.typename	= "bridge",
- 	.startup	= startup_bridge_irq,
-@@ -347,7 +340,6 @@ static struct irq_chip bridge_irq_type =
- 	.mask		= disable_bridge_irq,
- 	.mask_ack	= disable_bridge_irq,
- 	.unmask		= enable_bridge_irq,
--	.end		= end_bridge_irq,
- };
- 
- void __devinit register_bridge_irq(unsigned int irq)
-diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
-index 7d36172..c20e989 100644
---- a/arch/mips/sgi-ip27/ip27-timer.c
-+++ b/arch/mips/sgi-ip27/ip27-timer.c
-@@ -180,10 +180,6 @@ static void disable_rt_irq(unsigned int
- {
- }
- 
--static void end_rt_irq(unsigned int irq)
--{
--}
--
- static struct irq_chip rt_irq_type = {
- 	.typename	= "SN HUB RT timer",
- 	.ack		= disable_rt_irq,
-@@ -191,7 +187,6 @@ static struct irq_chip rt_irq_type = {
- 	.mask_ack	= disable_rt_irq,
- 	.unmask		= enable_rt_irq,
- 	.eoi		= enable_rt_irq,
--	.end		= end_rt_irq,
- };
- 
- static struct irqaction rt_irqaction = {
-diff --git a/arch/mips/tx4927/common/tx4927_irq.c b/arch/mips/tx4927/common/tx4927_irq.c
-index 21873de..ed4a19a 100644
---- a/arch/mips/tx4927/common/tx4927_irq.c
-+++ b/arch/mips/tx4927/common/tx4927_irq.c
-@@ -66,12 +66,10 @@
- #define TX4927_IRQ_CP0_INIT     ( 1 << 10 )
- #define TX4927_IRQ_CP0_ENABLE   ( 1 << 13 )
- #define TX4927_IRQ_CP0_DISABLE  ( 1 << 14 )
--#define TX4927_IRQ_CP0_ENDIRQ   ( 1 << 16 )
- 
- #define TX4927_IRQ_PIC_INIT     ( 1 << 20 )
- #define TX4927_IRQ_PIC_ENABLE   ( 1 << 23 )
- #define TX4927_IRQ_PIC_DISABLE  ( 1 << 24 )
--#define TX4927_IRQ_PIC_ENDIRQ   ( 1 << 26 )
- 
- #define TX4927_IRQ_ALL         0xffffffff
- #endif
-@@ -82,12 +80,10 @@ static const u32 tx4927_irq_debug_flag =
- 					  | TX4927_IRQ_WARN | TX4927_IRQ_EROR
- //                                       | TX4927_IRQ_CP0_INIT
- //                                       | TX4927_IRQ_CP0_ENABLE
--//                                       | TX4927_IRQ_CP0_DISABLE
- //                                       | TX4927_IRQ_CP0_ENDIRQ
- //                                       | TX4927_IRQ_PIC_INIT
- //                                       | TX4927_IRQ_PIC_ENABLE
- //                                       | TX4927_IRQ_PIC_DISABLE
--//                                       | TX4927_IRQ_PIC_ENDIRQ
- //                                       | TX4927_IRQ_INIT
- //                                       | TX4927_IRQ_NEST1
- //                                       | TX4927_IRQ_NEST2
-@@ -114,11 +110,9 @@ static const u32 tx4927_irq_debug_flag =
- 
- static void tx4927_irq_cp0_enable(unsigned int irq);
- static void tx4927_irq_cp0_disable(unsigned int irq);
--static void tx4927_irq_cp0_end(unsigned int irq);
- 
- static void tx4927_irq_pic_enable(unsigned int irq);
- static void tx4927_irq_pic_disable(unsigned int irq);
--static void tx4927_irq_pic_end(unsigned int irq);
- 
- /*
-  * Kernel structs for all pic's
-@@ -131,7 +125,6 @@ static struct irq_chip tx4927_irq_cp0_ty
- 	.mask		= tx4927_irq_cp0_disable,
- 	.mask_ack	= tx4927_irq_cp0_disable,
- 	.unmask		= tx4927_irq_cp0_enable,
--	.end		= tx4927_irq_cp0_end,
- };
- 
- #define TX4927_PIC_NAME "TX4927-PIC"
-@@ -141,7 +134,6 @@ static struct irq_chip tx4927_irq_pic_ty
- 	.mask		= tx4927_irq_pic_disable,
- 	.mask_ack	= tx4927_irq_pic_disable,
- 	.unmask		= tx4927_irq_pic_enable,
--	.end		= tx4927_irq_pic_end,
- };
- 
- #define TX4927_PIC_ACTION(s) { no_action, 0, CPU_MASK_NONE, s, NULL, NULL }
-@@ -214,15 +206,6 @@ static void tx4927_irq_cp0_disable(unsig
- 	tx4927_irq_cp0_modify(CCP0_STATUS, tx4927_irq_cp0_mask(irq), 0);
- }
- 
--static void tx4927_irq_cp0_end(unsigned int irq)
--{
--	TX4927_IRQ_DPRINTK(TX4927_IRQ_CP0_ENDIRQ, "irq=%d \n", irq);
--
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		tx4927_irq_cp0_enable(irq);
--	}
--}
--
- /*
-  * Functions for pic
-  */
-@@ -376,15 +359,6 @@ static void tx4927_irq_pic_disable(unsig
- 			      tx4927_irq_pic_mask(irq), 0);
- }
- 
--static void tx4927_irq_pic_end(unsigned int irq)
--{
--	TX4927_IRQ_DPRINTK(TX4927_IRQ_PIC_ENDIRQ, "irq=%d\n", irq);
--
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		tx4927_irq_pic_enable(irq);
--	}
--}
--
- /*
-  * Main init functions
-  */
-diff --git a/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c b/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
-index 34cdb2a..5a5ea6c 100644
---- a/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
-+++ b/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
-@@ -153,7 +153,6 @@ JP7 is not bus master -- do NOT use -- o
- #define TOSHIBA_RBTX4927_IRQ_IOC_INIT      ( 1 << 10 )
- #define TOSHIBA_RBTX4927_IRQ_IOC_ENABLE    ( 1 << 13 )
- #define TOSHIBA_RBTX4927_IRQ_IOC_DISABLE   ( 1 << 14 )
--#define TOSHIBA_RBTX4927_IRQ_IOC_ENDIRQ    ( 1 << 16 )
- 
- #define TOSHIBA_RBTX4927_IRQ_ISA_INIT      ( 1 << 20 )
- #define TOSHIBA_RBTX4927_IRQ_ISA_ENABLE    ( 1 << 23 )
-@@ -172,7 +171,6 @@ static const u32 toshiba_rbtx4927_irq_de
- //                                                 | TOSHIBA_RBTX4927_IRQ_IOC_INIT
- //                                                 | TOSHIBA_RBTX4927_IRQ_IOC_ENABLE
- //                                                 | TOSHIBA_RBTX4927_IRQ_IOC_DISABLE
--//                                                 | TOSHIBA_RBTX4927_IRQ_IOC_ENDIRQ
- //                                                 | TOSHIBA_RBTX4927_IRQ_ISA_INIT
- //                                                 | TOSHIBA_RBTX4927_IRQ_ISA_ENABLE
- //                                                 | TOSHIBA_RBTX4927_IRQ_ISA_DISABLE
-@@ -223,7 +221,6 @@ extern void mask_and_ack_8259A(unsigned
- 
- static void toshiba_rbtx4927_irq_ioc_enable(unsigned int irq);
- static void toshiba_rbtx4927_irq_ioc_disable(unsigned int irq);
--static void toshiba_rbtx4927_irq_ioc_end(unsigned int irq);
- 
- #ifdef CONFIG_TOSHIBA_FPCIB0
- static void toshiba_rbtx4927_irq_isa_enable(unsigned int irq);
-@@ -239,7 +236,6 @@ static struct irq_chip toshiba_rbtx4927_
- 	.mask = toshiba_rbtx4927_irq_ioc_disable,
- 	.mask_ack = toshiba_rbtx4927_irq_ioc_disable,
- 	.unmask = toshiba_rbtx4927_irq_ioc_enable,
--	.end = toshiba_rbtx4927_irq_ioc_end,
- };
- #define TOSHIBA_RBTX4927_IOC_INTR_ENAB 0xbc002000
- #define TOSHIBA_RBTX4927_IOC_INTR_STAT 0xbc002006
-@@ -388,23 +384,6 @@ static void toshiba_rbtx4927_irq_ioc_dis
- 	TOSHIBA_RBTX4927_WR08(TOSHIBA_RBTX4927_IOC_INTR_ENAB, v);
- }
- 
--static void toshiba_rbtx4927_irq_ioc_end(unsigned int irq)
--{
--	TOSHIBA_RBTX4927_IRQ_DPRINTK(TOSHIBA_RBTX4927_IRQ_IOC_ENDIRQ,
--				     "irq=%d\n", irq);
--
--	if (irq < TOSHIBA_RBTX4927_IRQ_IOC_BEG
--	    || irq > TOSHIBA_RBTX4927_IRQ_IOC_END) {
--		TOSHIBA_RBTX4927_IRQ_DPRINTK(TOSHIBA_RBTX4927_IRQ_EROR,
--					     "bad irq=%d\n", irq);
--		panic("\n");
--	}
--
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		toshiba_rbtx4927_irq_ioc_enable(irq);
--	}
--}
--
- 
- /**********************************************************************************/
- /* Functions for isa                                                              */
-diff --git a/arch/mips/tx4938/common/irq.c b/arch/mips/tx4938/common/irq.c
-index 42e1276..a347b42 100644
---- a/arch/mips/tx4938/common/irq.c
-+++ b/arch/mips/tx4938/common/irq.c
-@@ -39,11 +39,9 @@
- 
- static void tx4938_irq_cp0_enable(unsigned int irq);
- static void tx4938_irq_cp0_disable(unsigned int irq);
--static void tx4938_irq_cp0_end(unsigned int irq);
- 
- static void tx4938_irq_pic_enable(unsigned int irq);
- static void tx4938_irq_pic_disable(unsigned int irq);
--static void tx4938_irq_pic_end(unsigned int irq);
- 
- /**********************************************************************************/
- /* Kernel structs for all pic's                                                   */
-@@ -56,7 +54,6 @@ static struct irq_chip tx4938_irq_cp0_ty
- 	.mask = tx4938_irq_cp0_disable,
- 	.mask_ack = tx4938_irq_cp0_disable,
- 	.unmask = tx4938_irq_cp0_enable,
--	.end = tx4938_irq_cp0_end,
- };
- 
- #define TX4938_PIC_NAME "TX4938-PIC"
-@@ -66,7 +63,6 @@ static struct irq_chip tx4938_irq_pic_ty
- 	.mask = tx4938_irq_pic_disable,
- 	.mask_ack = tx4938_irq_pic_disable,
- 	.unmask = tx4938_irq_pic_enable,
--	.end = tx4938_irq_pic_end,
- };
- 
- static struct irqaction tx4938_irq_pic_action = {
-@@ -104,14 +100,6 @@ tx4938_irq_cp0_disable(unsigned int irq)
- 	clear_c0_status(tx4938_irq_cp0_mask(irq));
- }
- 
--static void
--tx4938_irq_cp0_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		tx4938_irq_cp0_enable(irq);
--	}
--}
--
- /**********************************************************************************/
- /* Functions for pic                                                              */
- /**********************************************************************************/
-@@ -269,14 +257,6 @@ tx4938_irq_pic_disable(unsigned int irq)
- 			      tx4938_irq_pic_mask(irq), 0);
- }
- 
--static void
--tx4938_irq_pic_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		tx4938_irq_pic_enable(irq);
--	}
--}
--
- /**********************************************************************************/
- /* Main init functions                                                            */
- /**********************************************************************************/
-diff --git a/arch/mips/tx4938/toshiba_rbtx4938/irq.c b/arch/mips/tx4938/toshiba_rbtx4938/irq.c
-index 8c87a35..b6f363d 100644
---- a/arch/mips/tx4938/toshiba_rbtx4938/irq.c
-+++ b/arch/mips/tx4938/toshiba_rbtx4938/irq.c
-@@ -89,7 +89,6 @@ IRQ  Device
- 
- static void toshiba_rbtx4938_irq_ioc_enable(unsigned int irq);
- static void toshiba_rbtx4938_irq_ioc_disable(unsigned int irq);
--static void toshiba_rbtx4938_irq_ioc_end(unsigned int irq);
- 
- #define TOSHIBA_RBTX4938_IOC_NAME "RBTX4938-IOC"
- static struct irq_chip toshiba_rbtx4938_irq_ioc_type = {
-@@ -98,7 +97,6 @@ static struct irq_chip toshiba_rbtx4938_
- 	.mask = toshiba_rbtx4938_irq_ioc_disable,
- 	.mask_ack = toshiba_rbtx4938_irq_ioc_disable,
- 	.unmask = toshiba_rbtx4938_irq_ioc_enable,
--	.end = toshiba_rbtx4938_irq_ioc_end,
- };
- 
- #define TOSHIBA_RBTX4938_IOC_INTR_ENAB 0xb7f02000
-@@ -167,14 +165,6 @@ toshiba_rbtx4938_irq_ioc_disable(unsigne
- 	TX4938_RD08(TOSHIBA_RBTX4938_IOC_INTR_ENAB);
- }
- 
--static void
--toshiba_rbtx4938_irq_ioc_end(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		toshiba_rbtx4938_irq_ioc_enable(irq);
--	}
--}
--
- extern void __init txx9_spi_irqinit(int irc_irq);
- 
- void __init arch_init_irq(void)
-diff --git a/arch/mips/vr41xx/Kconfig b/arch/mips/vr41xx/Kconfig
-index 92f41f6..c8dfd80 100644
---- a/arch/mips/vr41xx/Kconfig
-+++ b/arch/mips/vr41xx/Kconfig
-@@ -6,6 +6,7 @@ config CASIO_E55
- 	select ISA
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
- config IBM_WORKPAD
- 	bool "Support for IBM WorkPad z50"
-@@ -15,6 +16,7 @@ config IBM_WORKPAD
- 	select ISA
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
- config NEC_CMBVR4133
- 	bool "Support for NEC CMB-VR4133"
-@@ -39,6 +41,7 @@ config TANBAC_TB022X
- 	select IRQ_CPU
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 	help
- 	  The TANBAC VR4131 multichip module(TB0225) and
- 	  the TANBAC VR4131DIMM(TB0229) are MIPS-based platforms
-@@ -71,6 +74,7 @@ config VICTOR_MPC30X
- 	select IRQ_CPU
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
- config ZAO_CAPCELLA
- 	bool "Support for ZAO Networks Capcella"
-@@ -80,6 +84,7 @@ config ZAO_CAPCELLA
- 	select IRQ_CPU
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
- config PCI_VR41XX
- 	bool "Add PCI control unit support of NEC VR4100 series"
-diff --git a/arch/mips/vr41xx/common/icu.c b/arch/mips/vr41xx/common/icu.c
-index 54b92a7..c075261 100644
---- a/arch/mips/vr41xx/common/icu.c
-+++ b/arch/mips/vr41xx/common/icu.c
-@@ -427,19 +427,12 @@ static void enable_sysint1_irq(unsigned
- 	icu1_set(MSYSINT1REG, 1 << SYSINT1_IRQ_TO_PIN(irq));
- }
- 
--static void end_sysint1_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		icu1_set(MSYSINT1REG, 1 << SYSINT1_IRQ_TO_PIN(irq));
--}
--
- static struct irq_chip sysint1_irq_type = {
- 	.typename	= "SYSINT1",
- 	.ack		= disable_sysint1_irq,
- 	.mask		= disable_sysint1_irq,
- 	.mask_ack	= disable_sysint1_irq,
- 	.unmask		= enable_sysint1_irq,
--	.end		= end_sysint1_irq,
- };
- 
- static void disable_sysint2_irq(unsigned int irq)
-@@ -452,19 +445,12 @@ static void enable_sysint2_irq(unsigned
- 	icu2_set(MSYSINT2REG, 1 << SYSINT2_IRQ_TO_PIN(irq));
- }
- 
--static void end_sysint2_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		icu2_set(MSYSINT2REG, 1 << SYSINT2_IRQ_TO_PIN(irq));
--}
--
- static struct irq_chip sysint2_irq_type = {
- 	.typename	= "SYSINT2",
- 	.ack		= disable_sysint2_irq,
- 	.mask		= disable_sysint2_irq,
- 	.mask_ack	= disable_sysint2_irq,
- 	.unmask		= enable_sysint2_irq,
--	.end		= end_sysint2_irq,
- };
- 
- static inline int set_sysint1_assign(unsigned int irq, unsigned char assign)
--- 
-1.4.4.1
+The new x86_64 assembler no longer accepts
+
+	monitor %eax,%ecx,%edx
+
+You should use
+
+	monitor %rax,%ecx,%edx
+
+or
+	monitor
+
+which works with both old and new x86_64 assemblers. They should
+generate the same opcode.
+
+The new i386/x86_64 assemblers no longer accept instructions for moving
+between a segment register and a 32bit memory location, i.e.,
+
+	movl (%eax),%ds
+	movl %ds,(%eax)
+
+To generate instructions for moving between a segment register and a
+16bit memory location without the 16bit operand size prefix, 0x66,
+
+	mov (%eax),%ds
+	mov %ds,(%eax)
+
+should be used. It will work with both new and old assemblers. The
+assembler starting from 2.16.90.0.1 will also support
+
+	movw (%eax),%ds
+	movw %ds,(%eax)
+
+without the 0x66 prefix. Patches for 2.4 and 2.6 Linux kernels are
+available at
+
+http://www.kernel.org/pub/linux/devel/binutils/linux-2.4-seg-4.patch
+http://www.kernel.org/pub/linux/devel/binutils/linux-2.6-seg-5.patch
+
+The ia64 assembler is now defaulted to tune for Itanium 2 processors.
+To build a kernel for Itanium 1 processors, you will need to add
+
+ifeq ($(CONFIG_ITANIUM),y)
+	CFLAGS += -Wa,-mtune=itanium1
+	AFLAGS += -Wa,-mtune=itanium1
+endif
+
+to arch/ia64/Makefile in your kernel source tree.
+
+Please report any bugs related to binutils 2.17.50.0.8 to hjl@lucon.org
+
+and
+
+http://www.sourceware.org/bugzilla/
+
+If you don't use
+
+# rpmbuild -ta binutils-xx.xx.xx.xx.xx.tar.bz2
+
+to compile the Linux binutils, please read patches/README in source
+tree to apply Linux patches if there are any.
+
+Changes from binutils 2.17.50.0.7:
+
+1. Update from binutils 2006 1201.
+2. Fix "objcopy --only-keep-debug" crash. PR 3609.
+3. Fix various ARM ELF bugs.
+4. Fix various xtensa bugs.
+5. Update x86 disassembler.
+
+Changes from binutils 2.17.50.0.6:
+
+1. Update from binutils 2006 1127.
+2. Properly set ELF output segment address when the first section in
+input segment is removed.
+3. Better merging of CIEs in linker .eh_frame optimizations.
+4. Support .cfi_personality and .cfi_lsda assembler directives.
+5. Fix an ARM linker crash. PR 3532.
+6. Fix various PPC64 ELF bugs.
+7. Mark discarded debug info more thoroughly in linker output.
+8. Fix various MIPS ELF bugs.
+9. Fix readelf to display program interpreter path > 64 chars. PR 3384.
+10. Add support for PowerPC SPU.
+11. Properly handle cloned symbols used in relocations in assembler. PR
+3469.
+12. Update opcode for POPCNT in amdfam10 architecture.
+
+Changes from binutils 2.17.50.0.5:
+
+1. Update from binutils 2006 1020.
+2. Don't make debug symbol dynamic. PR 3290.
+3. Don't page align empty SHF_ALLOC sections, which leads to very large
+executables. PR 3314.
+4. Use a different section index for section relative symbols against
+removed empty sections.
+5. Fix a few ELF EH frame handling bugs.
+6. Don't ignore relocation overflow on branches to undefweaks for
+x86-64. PR 3283.
+7. Rename MNI to SSSE3.
+8. Properly append symbol list for --dynamic-list.
+lists.
+9. Various ARM ELF fixes.
+10. Correct 64bit library search path for Linux/x86 linker with 64bit
+support.
+11. Fix ELF linker to copy OS/PROC specific flags from input section to
+output section.
+12. Fix DW_FORM_ref_addr handling in linker dwarf reader. PR 3191.
+13. Fix ELF indirect symbol handling. PR 3351.
+14. Fix PT_GNU_RELRO segment handling for SHF_TLS sections. Don't add
+PT_GNU_RELRO segment when there are no relro sections. PR 3281.
+15. Various MIPS ELF fixes.
+16. Various Sparc ELF fixes.
+17. Various Xtensa ELF fixes.
+
+Changes from binutils 2.17.50.0.4:
+
+1. Update from binutils 2006 0927.
+2. Fix linker regressions of section address and section relative symbol
+with empty output section. PR 3223/3267.
+3. Fix "strings -T". PR 3257.
+4. Fix "objcopy --only-keep-debug". PR 3262.
+5. Add Intell iwmmxt2 support.
+6. Fix an x86 disassembler bug. PR 3100.
+
+Changes from binutils 2.17.50.0.3:
+
+1. Update from binutils 2006 0924.
+2. Speed up linker on .o files with debug info on linkonce sections.
+PR 3111.
+3. Added x86-64 PE support.
+4. Fix objcopy/strip on .o files with section groups. PR 3181.
+5. Fix "ld --hash-style=gnu" crash with gcc 3.4.6. PR 3197.
+6. Fix "strip --strip-debug" on .o files generated with
+"gcc -feliminate-dwarf2-dups". PR 3186.
+7. Fix "ld -r" on .o files generated with "gcc -feliminate-dwarf2-dups".
+PR 3249.
+8. Add --dynamic-list to linker to make global symbols dynamic.
+9. Fix magic number for EFI ia64. PR 3171.
+10. Remove PT_NULL segment for "ld -z relro". PR 3015.
+11. Make objcopy to perserve the file formats in archive elements.
+PR 3110.
+12. Optimize x86-64 assembler and fix disassembler for
+"add32 mov xx,$eax". PR 3235.
+13. Improve linker diagnostics. PR 3107.
+14. Fix "ld --sort-section name". PR 3009.
+15. Updated an x86 disassembler bug. PR 3000.
+16. Various updates for PPC, ARM, MIPS, SH, Xtensa.
+17. Added Score support.
+
+Changes from binutils 2.17.50.0.2:
+
+1. Update from binutils 2006 0715.
+2. Add --hash-style to ELF linker with DT_GNU_HASH and SHT_GNU_HASH.
+3. Fix a visibility bug in ELF linker (PR 2884).
+4. Properly fix the i386 TLS linker bug (PR 2513).
+5. Add assembler and dissassembler support for Pentium Pro nops.
+6. Optimize x86 nops for Pentium Pro and above.
+7. Add -march=/-mtune= to x86 assembler.
+8. Fix an ELF linker with TLS common symbols.
+9. Improve program header allocation in ELF linker.
+10. Improve MIPS, M68K and ARM support.
+11. Fix an ELF linker crash when reporting alignment change (PR 2735).
+12. Remove unused ELF section symbols (PR 2723).
+13. Add --localize-hidden to objcopy.
+14. Add AMD SSE4a and ABM new instruction support.
+15. Properly handle illegal x86 instructions in group 11 (PR 2829).
+16. Add "-z max-page-size=" and "-z common-page-size=" to ELF linker.
+17. Fix objcopy for .tbss sections.
+
+Changes from binutils 2.17.50.0.1:
+
+1. Update from binutils 2006 0526.
+2. Change the x86-64 maximum page size to 2MB.
+3. Support --enable-targets=all for 64bit target and host (PR 1485).
+4. Properly update CIE/FDE length and align section for .eh_frame
+section (PR 2655/2657).
+5. Properly handle removed ELF section symbols.
+6. Fix an ELF linker regression introduced on 2006-04-21.
+7. Fix an segfault in PPC ELF linker (PR 2658).
+8. Speed up the ELF linker by caching the result of kept section check.
+9. Properly create stabs section for ELF.
+10. Preserve ELF program header when copying ELF files.
+11. Properly handle ELF SHN_LOPROC/SHN_HIOS when checking section
+index (PR 2607).
+12. Misc mips updates.
+13. Misc arm updates.
+14. Misc xtensa updates.
+15. Fix an alpha assembler warning (PR 2598).
+16. Fix assembler buffer overflow.
+17. Properly disassemble sgdt/sidt for x86-64.
+
+Changes from binutils 2.16.91.0.7:
+
+1. Update from binutils 2006 0427.
+2. Fix an objcopy regression (PR 2593).
+3. Reduce ar memory usage (PR 2467).
+4. Allow application specific ELF sections (PR 2537).
+5. Fix an i386 TLS linker bug (PR 2513).
+6. Speed up ia64 linker by 1300X in some cases (PR 2442).
+7. Check illegal immediate register operand in i386 assembler (PR
+2533).
+8. Fix a strings bug (PR 2584).
+9. Better handle corrupted ELF files (PR 2257).
+10. Fix a MIPS linker bug (PR 2267).
+
+Changes from binutils 2.16.91.0.6:
+
+1. Update from binutils 2006 0317.
+2. Support Intel Merom New Instructions in assembler/disassembler.
+3. Support Intel new instructions in Montecito.
+4. Fix linker "--as-needed" (PR 2434).
+5. Fix linker "-s" regression (PR 2462).
+6. Fix REP prefix for string instructions in x86 disassembler
+(PR 2428).
+7. Fix the weak undefined symbols in PIE (PR 2218).
+8. Fix 2 DWARF reader bugs (PRs 2443, 2338).
+9. Improve ELF linker error message (PR 2322).
+10. Avoid abort with dynamic symbols in >64K sections (PR 2411).
+11. Handle mismatched symbol types for executables (PR 2404).
+12. Avoid a linker linkonce regression (PR 2342).
+
+Changes from binutils 2.16.91.0.5:
+
+1. Update from binutils 2006 0212.
+2. Correct Linux linker search order for DT_NEEDED entries (PR 2290).
+3. Fix the x86-64 disassembler for control/debug register moves.
+4. Properly handle ELF strip/objcopy with unmodified program header
+(PR 2258).
+5. Improve ELF linker error handling when there are not enough room for
+program headers (PR 2322).
+6. Properly handle weak undefined symbols in PIE (PR 2218).
+7. Support new i386/x86-64 TLS relocations.
+8. Fix addr2line for linux kernel (PR 2096).
+9. Fix an assembler memory leak with --statistics.
+10. Avoid an ia64 assembler regression (PR 2117).
+
+Changes from binutils 2.16.91.0.4:
+
+1. Update from binutils 2005 1219.
+2. Fix a MIPS linker regression (PR 1932).
+3. Fix an objcopy bug for ia64 (PR 1991).
+4. Fix a linker crash on bad input (PR 2008).
+5. Fix 64bit monitor and mwait (PR 1874).
+
+Changes from binutils 2.16.91.0.3:
+
+1. Update from binutils 2005 1111.
+2. Fix ELF orphan section handling (PR 1467)
+3. Fix ELF section attribute handleing (PR 1487).
+4. Fix IA64 unwind info dump for relocatable files. (PR 1436).
+5. Add DWARF info dump to objdump.
+6. Fix SHF_LINK_ORDER handling (PR 1321).
+7. Don't allow "ld --just-symbols" on DSO (PR 1263).
+8. Fix a "ld -u" crash on TLS symbol (PR 1301).
+9. Fix an IA64 linker crash (PR 1247).
+10. Fix a MIPS linker bug (PR 1150).
+11. Fix a M68K linker bug (PR 1775).
+12. Fix an ELF symbol versioning linker bug (PR 1540).
+13. Improve linker error handling (PR 1208).
+14. Add new SPARC processors to SunOS for objcopy (PR 1472).
+15. Add "@file" to read options from a file.
+16. Add assembler weakref support.
+
+Changes from binutils 2.16.91.0.2:
+
+1. Update from binutils 2005 0821.
+2. Support x86-64 medium model.
+3. Fix "objdump -S --adjust-vma=xxx" (PR 1179).
+4. Reduce R_IA64_NONE relocations from R_IA64_LDXMOV relaxation.
+5. Fix x86 linker regression for dosemu.
+6. Add "readelf -t/--section-details" to display section details.
+7. Fix "as -al=file" regression (PR 1118).
+
+Changes from binutils 2.16.91.0.1:
+
+1. Update from binutils 2005 0720.
+2. Add Intel VMX support.
+3. Add AMD SVME support.
+4. Add x86-64 new relocations for medium model.
+5. Fix a PIE regression (PR 975).
+6. Fix an x86_64 signed 32bit displacement regression.
+7. Fix PPC PLT (PR 1004). 
+8. Improve empty section removal.
+
+Changes from binutils 2.16.90.0.3:
+
+1. Update from binutils 2005 0622.
+2. Fix a linker versioning bug exposed by gcc 4 (PR 1022/1023/1025).
+3. Optimize ia64 br->brl relaxation (PR 834).
+4. Improve linker empty section removal.
+5. Fix DWARF 2 line number reporting (PR 990).
+6. Fix DWARF 2 line number reporting regression on assembly file (PR
+1000).
+
+Changes from binutils 2.16.90.0.2:
+
+1. Update from binutils 2005 0510.
+2. Update ia64 assembler to support comdat group section generated by
+gcc 4 (PR 940).
+3. Fix a linker crash on bad input (PR 939).
+4. Fix a sh64 assembler regression (PR 936).
+5. Support linker script on executable (PR 882).
+6. Fix the linker -pie regression (PR 878).
+7. Fix an x86_64 disassembler bug (PR 843).
+8. Fix a PPC linker regression.
+9. Misc speed up.
+
+Changes from binutils 2.16.90.0.1:
+
+1. Update from binutils 2005 0429.
+2. Fix an ELF linker regression (PR 815).
+3. Fix an empty section removal related bug.
+4. Fix an ia64 linker regression (PR 855).
+5. Don't allow local symbol to be equated common/undefined symbols (PR
+857).
+6. Fix the ia64 linker to handle local dynamic symbol error reporting.
+7. Make non-debugging reference to discarded section an error (PR 858).
+8. Support Sparc/TLS.
+9. Support rpm build with newer rpm.
+10. Fix an alpha linker regression.
+11. Fix the non-gcc build regression.
+
+Changes from binutils 2.15.94.0.2.2:
+
+1. Update from binutils 2005 0408.
+2. The i386/x86_64 assemblers no longer accept instructions for moving
+between a segment register and a 32bit memory location.
+3. The x86_64 assembler now allows movq between a segment register and
+a 64bit general purpose register.
+4. 20x Speed up linker for input files with >64K sections.
+5. Properly report ia64 linker relaxation failures.
+6. Support tuning ia64 assembler for Itanium 2 processors.
+7. Linker will remove empty unused output sections.
+8. Add -N to readelf to display full section names.
+9. Fix the ia64 linker to support linkonce text sections without unwind
+sections.
+10. More unwind directive checkings in the ia64 assembler.
+11. Speed up linker with wildcard handling.
+12. Fix readelf to properly dump .debug_ranges and .debug_loc sections.
+
+Changes from binutils 2.15.94.0.2:
+
+1. Fix greater than 64K section support in linker.
+2. Properly handle i386 and x86_64 protected symbols in linker.
+3. Fix readelf for LEB128 on 64bit hosts.
+4. Speed up readelf for section group process.
+5. Include ia64 texinfo pages.
+6. Change ia64 assembler to check hint.b for Montecito.
+7. Improve relaxation failure report in ia64 linker.
+8. Fix ia64 linker to allow relax backward branch in the same section.
+
+Changes from binutils 2.15.94.0.1:
+
+1. Update from binutils 2004 1220.
+2. Fix strip for TLS symbol references.
+
+Changes from binutils 2.15.92.0.2:
+
+1. Update from binutils 2004 1121.
+2. Put ia64 .ctors/.dtors sections next to small data section for
+Intel ia64 compiler.
+3. Fix -Bdynamic/-Bstatic handling for linker script.
+4. Provide more information on relocation overflow.
+5. Add --sort-section to linker.
+6. Support icc 8.1 unwind info in readelf.
+7. Fix the infinite loop bug on bad input in the ia64 assembler.
+8. Fix ia64 SECREL relocation in linker.
+9. Fix a section group memory leak in readelf.
+
+Changes from binutils 2.15.91.0.2:
+
+1. Update from binutils 2004 0927.
+2. Work around a section header bug in Intel ia64 compiler.
+3. Fix an unwind directive bug in the ia64 assembler.
+4. Fix various PPC bugs.
+5. Update ARM support.
+6. Fix an x86-64 linker warning while building Linux kernel.
+
+Changes from binutils 2.15.91.0.1:
+
+1. Update from binutils 2004 0727.
+2. Fix the x86_64 linker to prevent non-PIC code in shared library.
+3. Fix the ia64 linker to warn the relotable files which can't be
+relaxed.
+4. Fix the comdat group support. Allow mix single-member comdat group
+with linkonce section.
+5. Added --add-needed/--no-add-needed options to linker.
+6. Fix the SHF_LINK_ORDER support.
+7. Fix the ia64 assembler for multiple sections with the same name and
+SHT_IA_64_UNWIND sections.
+8. Fix the ia64 assembler for merge section and relaxation.
+
+Changes from binutils 2.15.90.0.3:
+
+1. Update from binutils 2004 0527.
+2. Fix -x auto option in the ia64 assembler.
+3. Add the AR check in the ia64 assembler.
+4. Fix the section group support.
+5. Add a new -z relro linker option.
+6. Fix an exception section placement bug in linker.
+7. Add .serialize.data and .serialize.instruction to the ia64
+assembler.
+
+Changes from binutils 2.15.90.0.2:
+
+1. Update from binutils 2004 0415.
+2. Fix the linker for weak undefined symbol handling.
+3. Fix the ELF/Sparc and ELF/Sparc64 linker for statically linking PIC
+code.
+
+Changes from binutils 2.15.90.0.1.1:
+
+1. Update from binutils 2004 0412.
+2. Add --as-needed/--no-as-needed to linker.
+3. Fix -z defs in linker.
+4. Always reserve the memory for ia64 dynamic linker.
+5. Fix a race condition in ia64 lazy binding.
+
+Changes from binutils 2.15.90.0.1:
+
+1. Fixed an ia64 assembler bug.
+2. Install the assembler man page.
+
+Changes from binutils 2.14.90.0.8:
+
+1. Update from binutils 2004 0303.
+2. Fixed linker for undefined symbols with non-default visibility.
+3. Sped up linker weakdef symbol handling.
+4. Fixed mixing ELF32 and ELF64 object files in archive.
+5. Added ia64 linker brl optimization.
+6. Fixed ia64 linker to disallow invalid dynamic relocations.
+7. Fixed DT_TEXTREL handling in ia64 linker.
+8. Fixed alignment handling in ia64 assembler.
+9. Improved ia64 assembler unwind table handling. 
+
+Changes from binutils 2.14.90.0.7:
+
+1. Update from binutils 2004 0114.
+2. Fixed an ia64 assembler unwind table bug. 
+3. Better handle IPF linker relaxation overflow.
+4. Fixed misc PPC bugs.
+
+Changes from binutils 2.14.90.0.6:
+
+1. Update from binutils 2003 1029.
+2. Allow type changes for undefined symbols.
+3. Fix EH frame optimization.
+4. Fix the check for undefined versioned symbol with wildcard.
+5. Support generating code for Itanium.
+6. Detect and warn bad symbol index.
+7. Update IPF assemebler DV check.
+
+Changes from binutils 2.14.90.0.5:
+
+1. Update from binutils 2003 0820.
+2. No longer use section names for ELF section types nor flags.
+3. Fix some ELF/IA64 linker bugs.
+4. Fix some ELF/ppc bugs.
+5. Add archive support to readelf.
+
+Changes from binutils 2.14.90.0.4.1:
+
+1. Update from binutils 2003 0722.
+2. Fix an ELF/mips linker bug.
+3. Fix an ELF/hpppa linker bug.
+4. Fix an ELF/ia64 assembler bug.
+5. Fix a linkonce support with C++ debug.
+6. A new working C++ demangler.
+7. Various alpha, mips, ia64, ... bug fixes.
+8. Support for the current gcc and glibc.
+
+Changes from binutils 2.14.90.0.4:
+ 
+1. Fix an ia64 assembler hint@pause bug.
+2. Support Intel Prescott New Instructions.
+
+Changes from binutils 2.14.90.0.3:
+
+1. Work around the brain dead libtool.
+
+Changes from binutils 2.14.90.0.2:
+
+1. Update from binutils 2003 0523.
+2. Fix 2 ELF visibility bugs.
+3. Fix ELF/ppc linker bugs.
+
+Changes from binutils 2.14.90.0.1:
+
+1. Update from binutils 2003 0515.
+2. Fix various ELF visibility bugs.
+3. Fix some ia64 linker bugs.
+4. Add more IAS compatibilities to ia64 assembler.
+
+Changes from binutils 2.13.90.0.20:
+
+1. Update from binutils 2003 0505.
+2. Fix various ELF visibility bugs.
+3. Fix some ia64 linker bugs.
+4. Fix some ia64 assembler bugs.
+5. Add some IAS compatibilities to ia64 assembler.
+6. Fix ELF common symbol alignment.
+7. Fix ELF weak symbol handling.
+
+Changes from binutils 2.13.90.0.18:
+
+1. Update from binutils 2003 0319.
+2. Fix an ia64 linker brl relaxation bug.
+3. Fix some ELF/ppc linker bugs.
+
+Changes from binutils 2.13.90.0.16:
+
+1. Update from binutils 2003 0121.
+2. Fix an ia64 gas bug.
+3. Fix some TLS bugs.
+4. Fix some ELF/ppc bugs.
+5. Fix an ELF/m68k bug.
+
+2. Include /usr/bin/c++filt.
+Changes from binutils 2.13.90.0.14:
+
+1. Update from binutils 2002 1126.
+2. Include /usr/bin/c++filt.
+3. Fix "ld -r" with execption handling.
+
+Changes from binutils 2.13.90.0.10:
+
+1. Update from binutils 2002 1114.
+2. Fix ELF/alpha bugs.
+3. Fix an ELF/i386 assembler bug.
+
+Changes from binutils 2.13.90.0.4:
+
+1. Update from binutils 2002 1010.
+2. More ELF/PPC linker bug fixes.
+3. Fix an ELF/alpha linker bug.
+4. Fix an ELF/sparc linker bug to support Solaris.
+5. More TLS updates.
+
+Changes from binutils 2.13.90.0.3:
+
+1. Update from binutils 2002 0814.
+2. Fix symbol versioning bugs for gcc 3.2.
+3. Fix mips gas.
+
+Changes from binutils 2.13.90.0.2:
+
+1. Update from binutils 2002 0809.
+2. Fix a mips gas compatibility bug.
+3. Fix an x86 TLS bfd bug.
+4. Fix an x86 PIC gas bug.
+5. Improve symbol versioning support.
+
+The file list:
+
+1. binutils-2.17.50.0.8.tar.bz2. Source code.
+2. binutils-2.17.50.0.7-2.17.50.0.8.diff.bz2. Patch against the
+   previous beta source code.
+3. binutils-2.17.50.0.8-1.i386.rpm. IA-32 binary RPM for RedHat EL 4.
+4. binutils-2.17.50.0.8-1.ia64.rpm. IA-64 binary RPM for RedHat EL 4.
+5. binutils-2.17.50.0.8-1.x86_64.rpm. X64_64 binary RPM for RedHat
+   EL 4.
+
+There is no separate source rpm. You can do
+
+# rpmbuild -ta binutils-2.17.50.0.8.tar.bz2
+
+to create both binary and source rpms.
+
+The primary sites for the beta Linux binutils are:
+
+1. http://www.kernel.org/pub/linux/devel/binutils/
+
+Thanks.
+
+
+H.J. Lu
+hjl@lucon.org
+12/01/2006

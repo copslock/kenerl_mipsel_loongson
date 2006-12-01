@@ -1,64 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:33:25 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:57568 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038419AbWLAPdV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2006 15:33:21 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 9D8C43ECA; Fri,  1 Dec 2006 07:33:17 -0800 (PST)
-Message-ID: <45704B9D.5090805@ru.mvista.com>
-Date:	Fri, 01 Dec 2006 18:34:53 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:36:55 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:47374 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20038324AbWLAPgu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 1 Dec 2006 15:36:50 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 9D480E1D01;
+	Fri,  1 Dec 2006 16:36:37 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id qWNuSMgh8ZuD; Fri,  1 Dec 2006 16:36:37 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3C29BE1CAE;
+	Fri,  1 Dec 2006 16:36:37 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB1FalGR021234;
+	Fri, 1 Dec 2006 16:36:47 +0100
+Date:	Fri, 1 Dec 2006 15:36:44 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] Compile __do_IRQ() when really needed [take #2]
+In-Reply-To: <45704B26.9040202@innova-card.com>
+Message-ID: <Pine.LNX.4.64N.0612011535090.5923@blysk.ds.pg.gda.pl>
+References: <45704B26.9040202@innova-card.com>
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org
-Subject: Re: Is _do_IRQ() not needed anymore ?
-References: <cda58cb80612010206r51d319a1x72105981d900068a@mail.gmail.com>	<20061201.191049.63741937.nemoto@toshiba-tops.co.jp>	<45704569.8000807@ru.mvista.com> <20061202.002214.51866784.anemo@mba.ocn.ne.jp> <45704A4D.9050303@ru.mvista.com>
-In-Reply-To: <45704A4D.9050303@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.6/2267/Fri Dec  1 05:29:21 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13305
+X-archive-position: 13306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Fri, 1 Dec 2006, Franck Bui-Huu wrote:
 
-Sergei Shtylyov wrote:
+> diff --git a/arch/mips/dec/ioasic-irq.c b/arch/mips/dec/ioasic-irq.c
+> index 269b22b..880ef88 100644
+> --- a/arch/mips/dec/ioasic-irq.c
+> +++ b/arch/mips/dec/ioasic-irq.c
+> @@ -55,19 +55,12 @@ static inline void ack_ioasic_irq(unsign
+>  	fast_iob();
+>  }
+>  
+> -static inline void end_ioasic_irq(unsigned int irq)
+> -{
+> -	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
+> -		unmask_ioasic_irq(irq);
+> -}
+> -
+>  static struct irq_chip ioasic_irq_type = {
+>  	.typename = "IO-ASIC",
+>  	.ack = ack_ioasic_irq,
+>  	.mask = mask_ioasic_irq,
+>  	.mask_ack = ack_ioasic_irq,
+>  	.unmask = unmask_ioasic_irq,
+> -	.end = end_ioasic_irq,
+>  };
+>  
+>  
 
->>>> You can use both irq_cpu and i8259 same time. :)
+ Well, end_ioasic_irq() is called from end_ioasic_dma_irq(), sorry. ;-)
 
->>>    What's wrong with 8259 I wonder? It's happily converted to genirq 
->>> by other arches...
-
->> Indeed.  I missed other arch's i8259.c had changed.  Maybe we should
->> update i8259.c entirely.
-
->    The question is what flow to use: level/edge ones used in x86 code 
-> and actually intended for simplistic controllers, not the likes of 8259 
-> OR the "fasteoi" one used in PowerPC code and (as it turned out in my 
-
-    Sorry for some confusion: in arch/powerpc/ level flow is always used for 
-8259 code (just because it fits both leve and edge cases)...
-
-> earlier discussion in linuxppc-dev) intended for the controllers that 
-> are smart enough to mask off the lower-priority IRQs when getting the 
-> top level one acknowledged and unmask them upon EOI command...
-
-   However, Benjamin Herrenschmidt said that 8259 should have used fasteoi 
-flow instead since it was intended for that exact type of controllers (he 
-claimed to have proposed this flow initially).
-
->> ---
->> Atsushi Nemoto
-
-WBR, Sergei
+  Maciej

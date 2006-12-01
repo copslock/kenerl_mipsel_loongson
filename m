@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:27:49 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:46560 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038324AbWLAP1p (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2006 15:27:45 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 7D5B33ECA; Fri,  1 Dec 2006 07:27:40 -0800 (PST)
-Message-ID: <45704A4D.9050303@ru.mvista.com>
-Date:	Fri, 01 Dec 2006 18:29:17 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org
-Subject: Re: Is _do_IRQ() not needed anymore ?
-References: <cda58cb80612010206r51d319a1x72105981d900068a@mail.gmail.com>	<20061201.191049.63741937.nemoto@toshiba-tops.co.jp>	<45704569.8000807@ru.mvista.com> <20061202.002214.51866784.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061202.002214.51866784.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Dec 2006 15:29:57 +0000 (GMT)
+Received: from mo32.po.2iij.net ([210.128.50.17]:46894 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038324AbWLAP3w (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Dec 2006 15:29:52 +0000
+Received: by mo.po.2iij.net (mo32) id kB1FTkir023411; Sat, 2 Dec 2006 00:29:46 +0900 (JST)
+Received: from localhost.localdomain (133.25.30.125.dy.iij4u.or.jp [125.30.25.133])
+	by mbox.po.2iij.net (mbox32) id kB1FTbdF080366
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 2 Dec 2006 00:29:38 +0900 (JST)
+Date:	Sat, 2 Dec 2006 00:29:37 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Franck <vagabon.xyz@gmail.com>
+Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
+	anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Compile __do_IRQ() when really needed
+Message-Id: <20061202002937.7b4cb749.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <457042FF.2060908@innova-card.com>
+References: <457042FF.2060908@innova-card.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13302
+X-archive-position: 13303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hi,
 
-Atsushi Nemoto wrote:
+On Fri, 01 Dec 2006 15:58:07 +0100
+Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
 
->>>You can use both irq_cpu and i8259 same time. :)
+>  config MACH_VR41XX
+>  	bool "NEC VR41XX-based machines"
+>  	select SYS_HAS_CPU_VR41XX
+> +	select GENERIC_HARDIRQS_NO__DO_IRQ
 
->>    What's wrong with 8259 I wonder? It's happily converted to genirq by other 
->>arches...
+NEC CMBVR4133 has i8259.
+The other vr41xx boards have no problem.
 
-> Indeed.  I missed other arch's i8259.c had changed.  Maybe we should
-> update i8259.c entirely.
+Thanks,
 
-    The question is what flow to use: level/edge ones used in x86 code and 
-actually intended for simplistic controllers, not the likes of 8259 OR the 
-"fasteoi" one used in PowerPC code and (as it turned out in my earlier 
-discussion in linuxppc-dev) intended for the controllers that are smart enough 
-to mask off the lower-priority IRQs when getting the top level one 
-acknowledged and unmask them upon EOI command...
-
-> ---
-> Atsushi Nemoto
-
-WBR, Sergei
+Yoichi

@@ -1,43 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Dec 2006 05:20:10 +0000 (GMT)
-Received: from srv5.dvmed.net ([207.36.208.214]:49326 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20037692AbWLBFUF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 2 Dec 2006 05:20:05 +0000
-Received: from cpe-065-190-194-075.nc.res.rr.com ([65.190.194.75] helo=[10.10.10.10])
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1GqNI8-0007sD-3H; Sat, 02 Dec 2006 05:20:00 +0000
-Message-ID: <45710CFE.5090007@pobox.com>
-Date:	Sat, 02 Dec 2006 00:19:58 -0500
-From:	Jeff Garzik <jgarzik@pobox.com>
-User-Agent: Thunderbird 1.5.0.8 (X11/20061107)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Dec 2006 05:33:00 +0000 (GMT)
+Received: from smtp104.sbc.mail.re2.yahoo.com ([68.142.229.101]:9579 "HELO
+	smtp104.sbc.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20037692AbWLBFcz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 2 Dec 2006 05:32:55 +0000
+Received: (qmail 31870 invoked from network); 2 Dec 2006 05:32:48 -0000
+Received: from unknown (HELO stupidest.org) (cwedgwood@sbcglobal.net@24.5.75.45 with login)
+  by smtp104.sbc.mail.re2.yahoo.com with SMTP; 2 Dec 2006 05:32:48 -0000
+X-YMail-OSG: X_e_DZ8VM1lU01lklG0gB46OlsdDAx8FcFU2PMfn3WmGw9OzKiVC_vjc7ssAGZftcLL59BijWmQ_CL2uk.vZ6f1p2_IoSpxHoQo3ePqGc9Jrcf.f31Lq
+Received: by tuatara.stupidest.org (Postfix, from userid 10000)
+	id 5567E1827280; Fri,  1 Dec 2006 21:32:47 -0800 (PST)
+Date:	Fri, 1 Dec 2006 21:32:47 -0800
+From:	Chris Wedgwood <cw@f00f.org>
+To:	Ashlesha Shintre <ashlesha@kenati.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: initramfs -- boot args?
+Message-ID: <20061202053247.GB12580@tuatara.stupidest.org>
+References: <1165024791.6535.43.camel@sandbar.kenati.com>
 MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	Andrew Morton <akpm@osdl.org>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6.18] declance: Support the I/O ASIC LANCE w/o TURBOchannel
-References: <Pine.LNX.4.64N.0611301306460.1757@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0611301306460.1757@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jgarzik@pobox.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1165024791.6535.43.camel@sandbar.kenati.com>
+Return-Path: <cw@f00f.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13323
+X-archive-position: 13324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jgarzik@pobox.com
+X-original-sender: cw@f00f.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
->  The onboard LANCE of I/O ASIC systems is not a TURBOchannel device, at 
-> least from the software point of view.  Therefore it does not rely on any 
-> kernel TURBOchannel bus services and can be supported even if support for 
-> TURBOchannel has not been enabled in the configuration.
+On Fri, Dec 01, 2006 at 05:59:51PM -0800, Ashlesha Shintre wrote:
+
+> I built my own initramfs_data.cpio.gz file that contains the object file
+> for the hello world code below-
 > 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> printkf("Hello World\n");
+> sleep(99999999);
+> return(0)
 
-can you (or Andrew) please resend your patches against 2.6.19?
+as what filename?
 
-	Jeff
+initramfs can be very picky.
+
+can you show me "cpio --list --verbose < initramfs.cpio" or similar
+please?

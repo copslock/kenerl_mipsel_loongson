@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Dec 2006 16:53:36 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:39925 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20037479AbWLCQxb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 3 Dec 2006 16:53:31 +0000
-Received: from localhost (p6165-ipad201funabasi.chiba.ocn.ne.jp [222.146.69.165])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id CBF0CC0CE
-	for <linux-mips@linux-mips.org>; Mon,  4 Dec 2006 01:53:27 +0900 (JST)
-Date:	Mon, 04 Dec 2006 01:53:27 +0900 (JST)
-Message-Id: <20061204.015327.36921579.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Use conditional traps for BUG_ON on MIPS II and better.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <S20037651AbWK3BXW/20061130012322Z+10503@ftp.linux-mips.org>
-References: <S20037651AbWK3BXW/20061130012322Z+10503@ftp.linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Dec 2006 17:05:24 +0000 (GMT)
+Received: from nevyn.them.org ([66.93.172.17]:49287 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S20037526AbWLCRFU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 3 Dec 2006 17:05:20 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.63)
+	(envelope-from <drow@nevyn.them.org>)
+	id 1GqumB-0002w5-Rf; Sun, 03 Dec 2006 12:05:15 -0500
+Date:	Sun, 3 Dec 2006 12:05:15 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	"Fu, He Wei PSE NKG" <hewei.fu@siemens.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: The difference between mips*-gnu and mips*-linux when configure tool-chain
+Message-ID: <20061203170514.GA11258@nevyn.them.org>
+References: <96E7D5519FC3D741BEE27AB88C7387970162312C@PEKW934A.cn001.siemens.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <96E7D5519FC3D741BEE27AB88C7387970162312C@PEKW934A.cn001.siemens.net>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13330
+X-archive-position: 13331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 30 Nov 2006 01:23:17 +0000, linux-mips@linux-mips.org wrote:
-> Author: Ralf Baechle <ralf@linux-mips.org> Mon Oct 16 01:38:50 2006 +0100
-> Commit: 17243c78ae5f25c8901da05ca4eab0968dddb16f
-> Gitweb: http://www.linux-mips.org/g/linux/17243c78
-> Branch: master
-> 
-> This shaves of around 4kB and a few cycles for the average kernel that
-> has CONFIG_BUG enabled.
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+On Sun, Dec 03, 2006 at 05:15:07PM +0800, Fu, He Wei PSE NKG wrote:
+> Hello everyone.At the time of building tool-chain for mips machine,we
+> can choose mips*-gnu or mips*-linux, I want to know what's the
+> difference between them? The original idea is that mips*-gnu for
+> developing firmware which has not OS-surport, and mips*-linux for
+> developing software on Linux, but it is not suitable for firmware such
+> as bootloaders.But now I think I'm not right,it seems that configure
+> with mips*-linux suit for both linux and bootloader, and configure with
+> mips*-gnu means build for OS such as IRIX surport, I'm not very
+> clearly,can anybody help me figour out the difference between them?
 
-It seems this commit break QEMU kernel ...  or QEMU can not interpret
-the TNE instruction correctly?
+mips-gnu is the GNU system (the Hurd kernel).  mips-linux is used for
+the kernel and userspace of a Linux system.  mips-elf is used for bare
+metal targets without an OS.
 
----
-Atsushi Nemoto
+You should be able to build a Linux bootloader using a mips-linux
+compiler.
+
+-- 
+Daniel Jacobowitz
+CodeSourcery

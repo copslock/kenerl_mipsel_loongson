@@ -1,56 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Dec 2006 05:46:43 +0000 (GMT)
-Received: from smtp.osdl.org ([65.172.181.25]:14302 "EHLO smtp.osdl.org")
-	by ftp.linux-mips.org with ESMTP id S20038453AbWLBFqi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 2 Dec 2006 05:46:38 +0000
-Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
-	by smtp.osdl.org (8.12.8/8.12.8) with ESMTP id kB25kVjQ014700
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Fri, 1 Dec 2006 21:46:31 -0800
-Received: from box (shell0.pdx.osdl.net [10.9.0.31])
-	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id kB25kRlr009054;
-	Fri, 1 Dec 2006 21:46:27 -0800
-Date:	Fri, 1 Dec 2006 21:46:26 -0800
-From:	Andrew Morton <akpm@osdl.org>
-To:	Jeff Garzik <jgarzik@pobox.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6.18] declance: Support the I/O ASIC LANCE w/o
- TURBOchannel
-Message-Id: <20061201214626.1c50dd38.akpm@osdl.org>
-In-Reply-To: <45710CFE.5090007@pobox.com>
-References: <Pine.LNX.4.64N.0611301306460.1757@blysk.ds.pg.gda.pl>
-	<45710CFE.5090007@pobox.com>
-X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.17; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: osdl$Revision: 1.161 $
-X-Scanned-By: MIMEDefang 2.36
-Return-Path: <akpm@osdl.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Dec 2006 09:15:27 +0000 (GMT)
+Received: from david.siemens.com.cn ([194.138.202.53]:3809 "EHLO
+	david.siemens.com.cn") by ftp.linux-mips.org with ESMTP
+	id S20038753AbWLCJPV convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 3 Dec 2006 09:15:21 +0000
+Received: from ns.siemens.com.cn (ns.siemens.com.cn [194.138.237.52])
+	by david.siemens.com.cn (8.11.7/8.11.7) with ESMTP id kB39FCJ10774
+	for <linux-mips@linux-mips.org>; Sun, 3 Dec 2006 17:15:17 +0800 (CST)
+Received: from pekw905a.cn001.siemens.net (localhost [127.0.0.1])
+	by ns.siemens.com.cn (8.11.7/8.11.7) with ESMTP id kB39FA111959
+	for <linux-mips@linux-mips.org>; Sun, 3 Dec 2006 17:15:12 +0800 (CST)
+Received: from PEKW934A.cn001.siemens.net ([139.24.236.66]) by pekw905a.cn001.siemens.net with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 3 Dec 2006 17:15:09 +0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: The difference between mips*-gnu and mips*-linux when configure tool-chain
+Date:	Sun, 3 Dec 2006 17:15:07 +0800
+Message-ID: <96E7D5519FC3D741BEE27AB88C7387970162312C@PEKW934A.cn001.siemens.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: The difference between mips*-gnu and mips*-linux when configure tool-chain
+Thread-Index: AccWu4aqDG6I9o1bQbac0KZMM452qQ==
+From:	"Fu, He Wei PSE NKG" <hewei.fu@siemens.com>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 03 Dec 2006 09:15:10.0124 (UTC) FILETIME=[8816CEC0:01C716BB]
+Return-Path: <hewei.fu@siemens.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13325
+X-archive-position: 13326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@osdl.org
+X-original-sender: hewei.fu@siemens.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 02 Dec 2006 00:19:58 -0500
-Jeff Garzik <jgarzik@pobox.com> wrote:
-
-> Maciej W. Rozycki wrote:
-> >  The onboard LANCE of I/O ASIC systems is not a TURBOchannel device, at 
-> > least from the software point of view.  Therefore it does not rely on any 
-> > kernel TURBOchannel bus services and can be supported even if support for 
-> > TURBOchannel has not been enabled in the configuration.
-> > 
-> > Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> 
-> can you (or Andrew) please resend your patches against 2.6.19?
-> 
-
-I have then all (I think) queued up.  Will send once I've done a round
-of build-testing.
+Hello everyone.At the time of building tool-chain for mips machine,we
+can choose mips*-gnu or mips*-linux, I want to know what's the
+difference between them? The original idea is that mips*-gnu for
+developing firmware which has not OS-surport, and mips*-linux for
+developing software on Linux, but it is not suitable for firmware such
+as bootloaders.But now I think I'm not right,it seems that configure
+with mips*-linux suit for both linux and bootloader, and configure with
+mips*-gnu means build for OS such as IRIX surport, I'm not very
+clearly,can anybody help me figour out the difference between them?
+Thanks

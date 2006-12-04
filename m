@@ -1,55 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Dec 2006 12:06:21 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:30220 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038775AbWLDMGR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 4 Dec 2006 12:06:17 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 0C293E1CB0;
-	Mon,  4 Dec 2006 13:06:05 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id U0g2UdVkmD+K; Mon,  4 Dec 2006 13:06:04 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A37ACE1C93;
-	Mon,  4 Dec 2006 13:06:04 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB4C6CDC023918;
-	Mon, 4 Dec 2006 13:06:12 +0100
-Date:	Mon, 4 Dec 2006 12:06:08 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@osdl.org>
-cc:	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2.6.18] declance: Support the I/O ASIC LANCE w/o TURBOchannel
-In-Reply-To: <20061201214626.1c50dd38.akpm@osdl.org>
-Message-ID: <Pine.LNX.4.64N.0612041204580.12525@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0611301306460.1757@blysk.ds.pg.gda.pl>
- <45710CFE.5090007@pobox.com> <20061201214626.1c50dd38.akpm@osdl.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.6/2276/Mon Dec  4 09:15:27 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Dec 2006 13:31:08 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:31648 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038831AbWLDNbH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 4 Dec 2006 13:31:07 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kB4DV6dp032556;
+	Mon, 4 Dec 2006 13:31:06 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kB4DV5D9032548;
+	Mon, 4 Dec 2006 13:31:05 GMT
+Date:	Mon, 4 Dec 2006 13:31:05 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Mariusz Kozlowski <m.kozlowski@tuxland.pl>
+Cc:	linux-mips@linux-mips.org, Willy Tarreau <wtarreau@hera.kernel.org>
+Subject: Re: [2.4 PATCH] mips/mips64 mv64340 parenthesis fixes
+Message-ID: <20061204133105.GA30410@linux-mips.org>
+References: <200612041036.21953.m.kozlowski@tuxland.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <200612041036.21953.m.kozlowski@tuxland.pl>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13335
+X-archive-position: 13336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 1 Dec 2006, Andrew Morton wrote:
+On Mon, Dec 04, 2006 at 10:36:21AM +0100, Mariusz Kozlowski wrote:
 
-> > can you (or Andrew) please resend your patches against 2.6.19?
-> > 
-> 
-> I have then all (I think) queued up.  Will send once I've done a round
-> of build-testing.
+>         This patch fixes parenthesis mv64340 stuff in both mips and mips64 code.
 
- Thanks a lot, Andrew.
+Applied.  Not that anybody case much, the broken macros were unused ...
 
-  Maciej
+  Ralf

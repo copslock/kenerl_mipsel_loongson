@@ -1,60 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Dec 2006 09:37:47 +0000 (GMT)
-Received: from xdsl-664.zgora.dialog.net.pl ([81.168.226.152]:38152 "EHLO
-	tuxland.pl") by ftp.linux-mips.org with ESMTP id S20038722AbWLDJhn convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 4 Dec 2006 09:37:43 +0000
-Received: from [192.168.1.3] (xdsl-664.zgora.dialog.net.pl [81.168.226.152])
-	by tuxland.pl (Postfix) with ESMTP id 022B06EF87;
-	Mon,  4 Dec 2006 10:37:22 +0100 (CET)
-Received: from [192.168.1.3] ([192.168.1.3])
-	by tuxland.pl (AISK); Mon, 04 Dec 2006 10:37:22 +0100 (CET)
-From:	Mariusz Kozlowski <m.kozlowski@tuxland.pl>
-To:	ralf@linux-mips.org
-Subject: [2.4 PATCH] mips64 klconfig parenthesis fix
-Date:	Mon, 4 Dec 2006 10:37:21 +0100
-User-Agent: KMail/1.9.5
-Cc:	linux-mips@linux-mips.org, Willy Tarreau <wtarreau@hera.kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Dec 2006 12:06:21 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:30220 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20038775AbWLDMGR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 4 Dec 2006 12:06:17 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 0C293E1CB0;
+	Mon,  4 Dec 2006 13:06:05 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id U0g2UdVkmD+K; Mon,  4 Dec 2006 13:06:04 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A37ACE1C93;
+	Mon,  4 Dec 2006 13:06:04 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB4C6CDC023918;
+	Mon, 4 Dec 2006 13:06:12 +0100
+Date:	Mon, 4 Dec 2006 12:06:08 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@osdl.org>
+cc:	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2.6.18] declance: Support the I/O ASIC LANCE w/o TURBOchannel
+In-Reply-To: <20061201214626.1c50dd38.akpm@osdl.org>
+Message-ID: <Pine.LNX.4.64N.0612041204580.12525@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0611301306460.1757@blysk.ds.pg.gda.pl>
+ <45710CFE.5090007@pobox.com> <20061201214626.1c50dd38.akpm@osdl.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-2"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200612041037.21563.m.kozlowski@tuxland.pl>
-Return-Path: <m.kozlowski@tuxland.pl>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.6/2276/Mon Dec  4 09:15:27 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13334
+X-archive-position: 13335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m.kozlowski@tuxland.pl
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Fri, 1 Dec 2006, Andrew Morton wrote:
 
-        This patch fixes parenthesis stuff in PTR_CH_MALLOC_HDR() macro code.
+> > can you (or Andrew) please resend your patches against 2.6.19?
+> > 
+> 
+> I have then all (I think) queued up.  Will send once I've done a round
+> of build-testing.
 
-Signed-off-by: Mariusz Kozlowski <m.kozlowski@tuxland.pl>
+ Thanks a lot, Andrew.
 
- include/asm-mips64/sn/klconfig.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- linux-2.4.34-pre6-a/include/asm-mips64/sn/klconfig.h	2002-11-29 00:53:15.000000000 +0100
-+++ linux-2.4.34-pre6-b/include/asm-mips64/sn/klconfig.h	2006-12-01 12:01:25.000000000 +0100
-@@ -196,7 +196,7 @@ typedef struct kl_config_hdr {
- 			((__psunsigned_t)_k + (_k->ch_malloc_hdr_off)))
- #else
- #define PTR_CH_MALLOC_HDR(_k)   ((klc_malloc_hdr_t *)\
--			(unsigned long)_k + (_k->ch_malloc_hdr_off)))
-+			((unsigned long)_k + (_k->ch_malloc_hdr_off)))
- #endif
- 
- #define KL_CONFIG_CH_MALLOC_HDR(_n)   PTR_CH_MALLOC_HDR(KL_CONFIG_HDR(_n))
-
-
--- 
-Regards,
-
-	Mariusz Kozlowski
+  Maciej

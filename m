@@ -1,92 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Dec 2006 09:38:46 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.190]:36120 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038971AbWLEJil (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Dec 2006 09:38:41 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so156791nfc
-        for <linux-mips@linux-mips.org>; Tue, 05 Dec 2006 01:38:41 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=kVRJ7whDkyr7ggJYQqNIeUWQ/s9L7o24yNLvHqwd0kshIuqBSKCSMQvQeZYQyDILLnpIN/AYj0uC2UaxMmo2fm4p+sIDELTl+ukqDFf5q16w5vhXTDHHnwBE3ZYVv6lWM9Kb4MV/PrFmxybkGMocDmJBjW2Sytc2tQS9ySFSeVI=
-Received: by 10.49.57.14 with SMTP id j14mr585706nfk.1165311520956;
-        Tue, 05 Dec 2006 01:38:40 -0800 (PST)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id d2sm1948705nfe.2006.12.05.01.38.40;
-        Tue, 05 Dec 2006 01:38:40 -0800 (PST)
-Message-ID: <45753E6C.1030702@innova-card.com>
-Date:	Tue, 05 Dec 2006 10:39:56 +0100
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Dec 2006 12:43:35 +0000 (GMT)
+Received: from phoenix.bawue.net ([193.7.176.60]:32943 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20038987AbWLEMna (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Dec 2006 12:43:30 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id C2AE1B908A;
+	Tue,  5 Dec 2006 13:45:46 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1GrZeO-0001sx-1q; Tue, 05 Dec 2006 12:43:56 +0000
+Date:	Tue, 5 Dec 2006 12:43:56 +0000
+To:	"Fu, He Wei PSE NKG" <hewei.fu@siemens.com>
+Cc:	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org
+Subject: Re: The difference between mips*-gnu and mips*-linux when configure tool-chain
+Message-ID: <20061205124355.GB26046@networkno.de>
+References: <20061203170514.GA11258@nevyn.them.org> <96E7D5519FC3D741BEE27AB88C7387970167840A@PEKW934A.cn001.siemens.net>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] pte_offset(dir,addr): parenthesis fix
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <96E7D5519FC3D741BEE27AB88C7387970167840A@PEKW934A.cn001.siemens.net>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13342
+X-archive-position: 13343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+Fu, He Wei PSE NKG wrote:
+> Thanks, sorry for I missed the mips*-elf for mips*-gnu.
+> 
+> I think that for ld,the difference between mips*-elf and mips*-linux
+> produces only some minor impact on the default ld script, for the
+> behavior of ld itself, it has not serious impact.Is it my understanding
+> correct?
+> 
+> But for bfd, does the difference of these two config-choice have impact
+> on the behavior of two different bfd-target? . 
 
-This patch adds missing parenthesis around 'dir' argument in
-pte_offset() macro definition.
+For both cases the resulting object file layout is different. mips*-elf
+uses SGI-style, mips*-linux uses "traditional" style. I expect the
+"traditional" format to get better long-term maintenance.
 
-It also removes an extra space in the definition of
-pte_offset_kernel() macro.
+For a stand-alone bootloader both do for now, but I would prefer
+mips*-linux since it eliminates the need for one extra compiler
+when building a Linux environment.
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
 
- Hi Ralf,
- Could you apply this trivial patch ?
-
- include/asm-mips/pgtable-32.h |    6 +++---
- include/asm-mips/pgtable-64.h |    4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/include/asm-mips/pgtable-32.h b/include/asm-mips/pgtable-32.h
-index d20f2e9..2fbd47e 100644
---- a/include/asm-mips/pgtable-32.h
-+++ b/include/asm-mips/pgtable-32.h
-@@ -156,9 +156,9 @@ pfn_pte(unsigned long pfn, pgprot_t prot
- #define __pte_offset(address)						\
- 	(((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
- #define pte_offset(dir, address)					\
--	((pte_t *) (pmd_page_vaddr(*dir)) + __pte_offset(address))
--#define pte_offset_kernel(dir, address) \
--	((pte_t *) pmd_page_vaddr(*(dir)) +  __pte_offset(address))
-+	((pte_t *) pmd_page_vaddr(*(dir)) + __pte_offset(address))
-+#define pte_offset_kernel(dir, address)					\
-+	((pte_t *) pmd_page_vaddr(*(dir)) + __pte_offset(address))
- 
- #define pte_offset_map(dir, address)                                    \
- 	((pte_t *)page_address(pmd_page(*(dir))) + __pte_offset(address))
-diff --git a/include/asm-mips/pgtable-64.h b/include/asm-mips/pgtable-64.h
-index b9b1e86..a5b1871 100644
---- a/include/asm-mips/pgtable-64.h
-+++ b/include/asm-mips/pgtable-64.h
-@@ -212,9 +212,9 @@ static inline pmd_t *pmd_offset(pud_t *
- #define __pte_offset(address)						\
- 	(((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
- #define pte_offset(dir, address)					\
--	((pte_t *) (pmd_page_vaddr(*dir)) + __pte_offset(address))
-+	((pte_t *) pmd_page_vaddr(*(dir)) + __pte_offset(address))
- #define pte_offset_kernel(dir, address)					\
--	((pte_t *) pmd_page_vaddr(*(dir)) +  __pte_offset(address))
-+	((pte_t *) pmd_page_vaddr(*(dir)) + __pte_offset(address))
- #define pte_offset_map(dir, address)					\
- 	((pte_t *)page_address(pmd_page(*(dir))) + __pte_offset(address))
- #define pte_offset_map_nested(dir, address)				\
--- 
-1.4.4.1
+Thiemo

@@ -1,51 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Dec 2006 17:08:44 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.188]:7215 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039028AbWLERIj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Dec 2006 17:08:39 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so259789nfc
-        for <linux-mips@linux-mips.org>; Tue, 05 Dec 2006 09:08:38 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Dec 2006 17:54:26 +0000 (GMT)
+Received: from web7907.mail.in.yahoo.com ([202.86.4.83]:8371 "HELO
+	web7907.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20039045AbWLERyU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 5 Dec 2006 17:54:20 +0000
+Received: (qmail 20191 invoked by uid 60001); 5 Dec 2006 17:54:13 -0000
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding:from;
-        b=bIrcH7M5zfpZrD64S1bLRRxfh2cWOATx8nKg0fRaindy1NKCva/A2sBcnso+tQfdE1S6UksUw3lCvlIULgw26eMSVnyD1dowdlnC4tQGEwqX1zgQFYSjALW/D3cdC5J2rPJKtBf1A+0cddAkyB+O4ABchtby0KP7LIx6vlcEokE=
-Received: by 10.49.80.12 with SMTP id h12mr1096492nfl.1165338518341;
-        Tue, 05 Dec 2006 09:08:38 -0800 (PST)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id v20sm3316440nfc.2006.12.05.09.08.37;
-        Tue, 05 Dec 2006 09:08:37 -0800 (PST)
-Message-ID: <4575A7E8.60901@innova-card.com>
-Date:	Tue, 05 Dec 2006 18:10:00 +0100
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=hlRpZRKW0/lbGmPmQd29yDbCqZErKPFEP0ab456TAZ5QDAIBDjO/AsCZVUs0MSdTRRk44B9UzUbVExqsqmM4a661DA1SibjIG6hss7APs3A0H7H+/niC8EEw0yVHew19Ztb2j3awWW/Q9Qj0xmk02M2IIKwR03KFkEYM8pWvO9M=;
+X-YMail-OSG: 5lTBvnQVM1koWtYv0N6DiJxVjzrmtGVOb32onFeunmeCQTUFoWAPYHU3pHaW5oXr7saUK4_VPY8Q2Im5_1oL1JWK8KtJzBH0dMex2JVFaxiltzdGCZ62OeeF.gRTkfVj6mgUZx3fBMwtmPm6T39tdWlcHsygLb_l
+Received: from [206.40.46.114] by web7907.mail.in.yahoo.com via HTTP; Tue, 05 Dec 2006 17:54:12 GMT
+Date:	Tue, 5 Dec 2006 17:54:12 +0000 (GMT)
+From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
+Subject: Toolchain for M IPS24KE
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Import updates from i386's i8259.c
-References: <20061206.012311.86891097.anemo@mba.ocn.ne.jp> <4575A364.1010703@innova-card.com> <20061205165253.GA17390@linux-mips.org>
-In-Reply-To: <20061205165253.GA17390@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: multipart/alternative; boundary="0-34709160-1165341252=:20050"
+Content-Transfer-Encoding: 8bit
+Message-ID: <86084.20050.qm@web7907.mail.in.yahoo.com>
+Return-Path: <sathesh_edara2003@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13348
+X-archive-position: 13349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: sathesh_edara2003@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
+--0-34709160-1165341252=:20050
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
 Hi,
+    Can some one give pointers on Toolchain for MIPS24KE ( Linux-2.6.x kernel).
+  Could you please tell me where can i get the sources for this?.
+   
+  Regards,
+  Sathesh
 
-Ralf Baechle wrote:
-> 
-> I believe it will need an update.
-> 
+ 				
+---------------------------------
+ Find out what India is talking about on  - Yahoo! Answers India 
+ Send FREE SMS to your friend's mobile from Yahoo! Messenger Version 8. Get it NOW
+--0-34709160-1165341252=:20050
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Ok, I'll do that tomorrow.
+<div>Hi,</div>  <div>&nbsp; Can some one give pointers on Toolchain for MIPS24KE ( Linux-2.6.x kernel).</div>  <div>Could you please tell me where can i get the sources for this?.</div>  <div>&nbsp;</div>  <div>Regards,</div>  <div>Sathesh</div><p>&#32;
+	
 
-		Franck
+	
+		<hr size=1></hr> 
+Find out what India is talking about on  - <a href="http://us.rd.yahoo.com/mail/in/yanswers/*http://in.answers.yahoo.com/">Yahoo! Answers India</a> <BR> 
+Send FREE SMS to your friend's mobile from Yahoo! Messenger Version 8. <a href="http://us.rd.yahoo.com/mail/in/messengertagline/*http://in.messenger.yahoo.com">Get it NOW</a>
+--0-34709160-1165341252=:20050--

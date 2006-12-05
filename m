@@ -1,89 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Dec 2006 19:55:05 +0000 (GMT)
-Received: from az33egw01.freescale.net ([192.88.158.102]:39871 "EHLO
-	az33egw01.freescale.net") by ftp.linux-mips.org with ESMTP
-	id S20038907AbWLDTzB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 4 Dec 2006 19:55:01 +0000
-Received: from az33smr01.freescale.net (az33smr01.freescale.net [10.64.34.199])
-	by az33egw01.freescale.net (8.12.11/az33egw01) with ESMTP id kB4JspL1005635;
-	Mon, 4 Dec 2006 12:54:51 -0700 (MST)
-Received: from [10.82.17.56] ([10.82.17.56])
-	by az33smr01.freescale.net (8.13.1/8.13.0) with ESMTP id kB4Jsnjp027934;
-	Mon, 4 Dec 2006 13:54:49 -0600 (CST)
-In-Reply-To: <Pine.LNX.4.64N.0611301757200.1757@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0610031509380.4642@blysk.ds.pg.gda.pl> <E2ACBAE3-B0E1-4D90-BF25-6981543090C4@freescale.com> <Pine.LNX.4.64N.0610231752440.4426@blysk.ds.pg.gda.pl> <Pine.LNX.4.64N.0611301757200.1757@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0 (Apple Message framework v752.2)
-Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
-Message-Id: <BE651D76-77D9-4CC0-85E1-F586C24F9012@freescale.com>
-Cc:	Andrew Morton <akpm@osdl.org>, Jeff Garzik <jgarzik@pobox.com>,
-	Ralf Baechle <ralf@linux-mips.org>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org
-Content-Transfer-Encoding: 7bit
-From:	Andy Fleming <afleming@freescale.com>
-Subject: Re: [patch 3/6] 2.6.18: sb1250-mac: Phylib IRQ handling fixes
-Date:	Mon, 4 Dec 2006 13:54:45 -0600
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-X-Mailer: Apple Mail (2.752.2)
-Return-Path: <afleming@freescale.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Dec 2006 03:41:39 +0000 (GMT)
+Received: from david.siemens.com.cn ([194.138.202.53]:48004 "EHLO
+	david.siemens.com.cn") by ftp.linux-mips.org with ESMTP
+	id S20038965AbWLEDle convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Dec 2006 03:41:34 +0000
+Received: from ns.siemens.com.cn (ns.siemens.com.cn [194.138.237.52])
+	by david.siemens.com.cn (8.11.7/8.11.7) with ESMTP id kB53fGJ14244;
+	Tue, 5 Dec 2006 11:41:20 +0800 (CST)
+Received: from pekw905a.cn001.siemens.net (localhost [127.0.0.1])
+	by ns.siemens.com.cn (8.11.7/8.11.7) with ESMTP id kB53fF115993;
+	Tue, 5 Dec 2006 11:41:15 +0800 (CST)
+Received: from PEKW934A.cn001.siemens.net ([139.24.236.66]) by pekw905a.cn001.siemens.net with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 5 Dec 2006 11:41:14 +0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: The difference between mips*-gnu and mips*-linux when configure tool-chain
+Date:	Tue, 5 Dec 2006 11:41:12 +0800
+Message-ID: <96E7D5519FC3D741BEE27AB88C7387970167840A@PEKW934A.cn001.siemens.net>
+In-Reply-To: <20061203170514.GA11258@nevyn.them.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: The difference between mips*-gnu and mips*-linux when configure tool-chain
+Thread-Index: AccW/Tvw9HWJ0gXfS7mWzjp4UM2UyABE0/pQ
+From:	"Fu, He Wei PSE NKG" <hewei.fu@siemens.com>
+To:	"Daniel Jacobowitz" <dan@debian.org>
+Cc:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 05 Dec 2006 03:41:14.0170 (UTC) FILETIME=[368E59A0:01C7181F]
+Return-Path: <hewei.fu@siemens.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13340
+X-archive-position: 13341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: afleming@freescale.com
+X-original-sender: hewei.fu@siemens.com
 Precedence: bulk
 X-list: linux-mips
 
+Thanks, sorry for I missed the mips*-elf for mips*-gnu.
 
-On Nov 30, 2006, at 12:07, Maciej W. Rozycki wrote:
+I think that for ld,the difference between mips*-elf and mips*-linux
+produces only some minor impact on the default ld script, for the
+behavior of ld itself, it has not serious impact.Is it my understanding
+correct?
 
-> On Mon, 23 Oct 2006, Maciej W. Rozycki wrote:
->
->>> I'm not too enthusiastic about requiring the ethernet drivers to  
->>> call
->>> phy_disconnect in a separate thread after "close" is called.   
->>> Assuming there's
->>> not some sort of "squash work queue" function that can be invoked  
->>> with
->>> rtnl_lock held, I think phy_disconnect should schedule itself to  
->>> flush the
->>> queue.  This would also require that mdiobus_unregister hold off  
->>> on freeing
->>> phydevs if any of the phys were still waiting for pending  
->>> flush_pending calls
->>> to finish.  Which would, in turn, require mdiobus_unregister to  
->>> schedule
->>> cleaning up memory for some later time.
->>
->>  This could work, indeed.
->>
->>> I'm not enthusiastic about that implementation, either, but it  
->>> maintains the
->>> abstractions I consider important for this code.  The ethernet  
->>> driver should
->>> not need to know what structures the PHY lib uses to implement  
->>> its interrupt
->>> handling, and how to work around their failings, IMHO.
->>
->>  Agreed.
->
->  So what's the plan?
->
->  Here's a new version of the patch that addresses your other concerns.
+But for bfd, does the difference of these two config-choice have impact
+on the behavior of two different bfd-target? . 
 
+-----Original Message-----
+From: Daniel Jacobowitz [mailto:dan@debian.org] 
+Sent: Monday, December 04, 2006 1:05 AM
+To: Fu, He Wei PSE NKG
+Cc: linux-mips@linux-mips.org
+Subject: Re: The difference between mips*-gnu and mips*-linux when
+configure tool-chain
 
-So I think the problem is we still don't understand the problem, and  
-the solution to the problem, except that it's causing your driver to  
-lock up.  Most of the changes below are fine with me.  The confusing  
-one is still the check for current_is_keventd().  This is related in  
-some way to why the driver code invokes phy_disconnect from a  
-work_queue.  I admit, though, I'm not familiar enough with the work  
-queue infrastructure to understand the problem.  But I'm very certain  
-that creating a work queue for the sole purpose of disconnecting from  
-the PHY is crufty.
+On Sun, Dec 03, 2006 at 05:15:07PM +0800, Fu, He Wei PSE NKG wrote:
+> Hello everyone.At the time of building tool-chain for mips machine,we
+> can choose mips*-gnu or mips*-linux, I want to know what's the
+> difference between them? The original idea is that mips*-gnu for
+> developing firmware which has not OS-surport, and mips*-linux for
+> developing software on Linux, but it is not suitable for firmware such
+> as bootloaders.But now I think I'm not right,it seems that configure
+> with mips*-linux suit for both linux and bootloader, and configure
+with
+> mips*-gnu means build for OS such as IRIX surport, I'm not very
+> clearly,can anybody help me figour out the difference between them?
 
-Can you try again to convey how this solves your problem, so we can  
-try to figure out if there's a better way?
+mips-gnu is the GNU system (the Hurd kernel).  mips-linux is used for
+the kernel and userspace of a Linux system.  mips-elf is used for bare
+metal targets without an OS.
 
-Andy
+You should be able to build a Linux bootloader using a mips-linux
+compiler.
+
+-- 
+Daniel Jacobowitz
+CodeSourcery

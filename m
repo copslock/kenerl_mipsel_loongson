@@ -1,70 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 08:05:06 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.171]:54937 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 08:40:55 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.171]:17489 "EHLO
 	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037666AbWLFIFC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 6 Dec 2006 08:05:02 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so76168uga
-        for <linux-mips@linux-mips.org>; Wed, 06 Dec 2006 00:05:02 -0800 (PST)
+	id S20038322AbWLFIkv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 6 Dec 2006 08:40:51 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so83838uga
+        for <linux-mips@linux-mips.org>; Wed, 06 Dec 2006 00:40:51 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=I3F3rRbJUaaUm3/Vpgm42VKb93E28/tyMwssAtdEMlBtKohlrMo24XmlINDHHXIA4uat7LMiXHZ8Rj55QPIbW5G5AXf7yLn5qgfTlDGn07ZmONPHGxt+vnsi1urDAzYv0uoLXbT426DRxBlMvCHM/MbTSa0/c4vSAWKH4kcucQI=
-Received: by 10.78.17.1 with SMTP id 1mr324601huq.1165392301698;
-        Wed, 06 Dec 2006 00:05:01 -0800 (PST)
-Received: by 10.78.199.6 with HTTP; Wed, 6 Dec 2006 00:05:01 -0800 (PST)
-Message-ID: <38dc7fce0612060005o6807e347re182171214c2501a@mail.gmail.com>
-Date:	Wed, 6 Dec 2006 17:05:01 +0900
-From:	"Youngduk Goo" <ydgoo9@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: USB 2.0 error
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=BL1dD1A19paWMmd8HKOeGHSXepDDHyi5PWwq6cFUkgIRqRKLvst6lQ7i2RuYRl2YgBAncP+fdD9k/YeOjRwfK/6CA7NPjqox5FNM1KUIIxkEfMf3Is3UyK69zTZyby5rUKeRm4BJB70vW8jqtfofmqeW554dRZcsQqYnWH0vIyg=
+Received: by 10.78.128.15 with SMTP id a15mr403269hud.1165394450547;
+        Wed, 06 Dec 2006 00:40:50 -0800 (PST)
+Received: by 10.78.123.2 with HTTP; Wed, 6 Dec 2006 00:40:50 -0800 (PST)
+Message-ID: <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com>
+Date:	Wed, 6 Dec 2006 09:40:50 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>,
+	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] Import updates from i386's i8259.c
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20061205195702.GA2097@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Return-Path: <ydgoo9@gmail.com>
+References: <20061206.012311.86891097.anemo@mba.ocn.ne.jp>
+	 <20061205194907.GA1088@linux-mips.org>
+	 <20061205195702.GA2097@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13364
+X-archive-position: 13365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ydgoo9@gmail.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I have tested the USB 2.0 and 1.1 on my set based on the mips core.
-The kernel version is 2.6.15 (not the uclinux) with uClibc.
+On 12/5/06, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Tue, Dec 05, 2006 at 07:49:07PM +0000, Ralf Baechle wrote:
+>
+> > > Import many updates from i386's i8259.c, especially genirq
+> > > transitions.
+> >
+> > With this patch applied Malta fails ...
+>
+> Which meant I removed this patch from my tree for now.  Which means nothing
+> is blocking Franck's patch anymore so I applied it with a trivial build fix
+> to irq_cpu.c.
+>
 
-The port 0 of USB is working fine as a EHCI(2.0) when I put the storage.
-But In case of port 1, it fails to identify the device.
-It can read the device information but cannot read partition table.
-I don't know how to debug it. ans where to start it.
-Please give me a advice.
+Thanks !
 
-Thanks in advance.
+Except the mips_mt_cpu_irq_controller have not used flow handler yet
+as Astushi already reported.
 
-This is the error message.
+Atsushi, could you take care of removing "select
+GENERIC_HARDIRQS_NO__DO_IRQ" in your patch where needed ? specially
+all boards based on NEC VR41XX cpu.
 
-Vendor: I0MEGA    Model: Mini128MB*IOM2B5  Rev: 2.00
-  Type:   Direct-Access                      ANSI SCSI revision: 02
-aSCSI device sda: 256000 512-byte hdwr sectors (131 MB)
-sda: Write Protect is off
-sda: Mode Sense: 03 00 00 00
-sda: assuming drive cache: write through
-SCSI device sda: 256000 512-byte hdwr sectors (131 MB)
-sda: Write Protect is off
-sda: Mode Sense: 03 00 00 00
-sda: assuming drive cache: write through
-usb 1-2: reset high speed USB device using hcd and address 2
-sd 0:0:0:0: SCSI error: return code = 0x70000
-end_request: I/O error, dev sda, sector 0
-Buffer I/O error on device sda, logical block 0
-usb 1-2: reset high speed USB device using hcd and address 2
-sd 0:0:0:0: SCSI error: return code = 0x70000
-end_request: I/O error, dev sda, sector 0
-Buffer I/O error on device sda, logical block 0
- unable to read partition table
-sd 0:0:0:0: Attached scsi removable disk sda
-sd 0:0:0:0: Attached scsi generic sg0 type 0
-usb-storage: device scan complete
+thanks
+-- 
+               Franck

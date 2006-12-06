@@ -1,98 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 15:48:35 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.185]:15474 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038486AbWLFPrI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 6 Dec 2006 15:47:08 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so555907nfc
-        for <linux-mips@linux-mips.org>; Wed, 06 Dec 2006 07:47:08 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=qe03BI23PZnFQMoZ63XLQRF0RIRDhVDgIyGcy3JGSH1yJMKeeutse5OL2+OTg26WEBi+mJ9Qm9AccgUuc38qVBqOBw2W56nXwBfnrgMpyIEhh88hZG234yRNf9Feh+zkjbP42QPbLvPAPiZ8IiaLl7oNteoIgphFvB1VRXZCGLI=
-Received: by 10.48.254.10 with SMTP id b10mr2414826nfi.1165420026878;
-        Wed, 06 Dec 2006 07:47:06 -0800 (PST)
-Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id m16sm2290262nfc.2006.12.06.07.47.06;
-        Wed, 06 Dec 2006 07:47:06 -0800 (PST)
-Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 9CCEA23F759; Wed,  6 Dec 2006 16:48:30 +0100 (CET)
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 1/3] paging_init(): use highend_pfn/highstart_pfn
-Date:	Wed,  6 Dec 2006 16:48:28 +0100
-Message-Id: <11654201101028-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.4.4.1
-In-Reply-To: <1165420110699-git-send-email-fbuihuu@gmail.com>
-References: <1165420110699-git-send-email-fbuihuu@gmail.com>
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 15:49:02 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:25698 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038310AbWLFPrW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2006 15:47:22 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 8F8A83EC9; Wed,  6 Dec 2006 07:47:18 -0800 (PST)
+Message-ID: <4576E666.1010502@ru.mvista.com>
+Date:	Wed, 06 Dec 2006 18:48:54 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Ingo Molnar <mingo@redhat.com>, anemo@mba.sphere.ne.jp,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Import updates from i386's i8259.c
+References: <20061206.103923.71086192.nemoto@toshiba-tops.co.jp> <20061206015818.GB27985@linux-mips.org> <20061206.115602.63741871.nemoto@toshiba-tops.co.jp> <20061206.133836.89067271.nemoto@toshiba-tops.co.jp> <4576C2E9.4060900@ru.mvista.com> <Pine.LNX.4.64N.0612061337220.29000@blysk.ds.pg.gda.pl> <4576CB64.2060705@ru.mvista.com> <Pine.LNX.4.64N.0612061438440.29000@blysk.ds.pg.gda.pl> <4576DDEC.1050105@ru.mvista.com> <Pine.LNX.4.64N.0612061525580.29000@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0612061525580.29000@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13377
+X-archive-position: 13378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+Hello.
 
-This patch makes paging_init() use highend_pfn/highstart_pfn globals.
+Maciej W. Rozycki wrote:
 
-It removes the need of 'high' local which was needed only by
-HIGHMEM config.
+>>   As for the I/O APIC, I think i82903AA was "the reference design" for it...
 
-More important perhaps, it fixes a bug when HIGHMEM is set
-but there's actually no physical highmem (highend_pfn = 0)
+>  Nope, it was the i82489DX -- the original "discrete" coupled Local & I/O 
+> APIC using a five-wire inter-APIC bus and a protocol different from later 
+> implementations.
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/mm/init.c |   17 ++++++++---------
- 1 files changed, 8 insertions(+), 9 deletions(-)
+    Hm, that's news to me. I always thought that chip was external *local* 
+APIC only... Well, there's no docs on it anyway.
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 1db991d..30245c0 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -341,7 +341,7 @@ static int __init page_is_ram(unsigned l
- void __init paging_init(void)
- {
- 	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
--	unsigned long max_dma, high, low;
-+	unsigned long max_dma, low;
- #ifndef CONFIG_FLATMEM
- 	unsigned long zholes_size[MAX_NR_ZONES] = { 0, };
- 	unsigned long i, j, pfn;
-@@ -356,7 +356,6 @@ void __init paging_init(void)
- 
- 	max_dma = virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
- 	low = max_low_pfn;
--	high = highend_pfn;
- 
- #ifdef CONFIG_ISA
- 	if (low < max_dma)
-@@ -369,13 +368,13 @@ void __init paging_init(void)
- 	zones_size[ZONE_DMA] = low;
- #endif
- #ifdef CONFIG_HIGHMEM
--	if (cpu_has_dc_aliases) {
--		printk(KERN_WARNING "This processor doesn't support highmem.");
--		if (high - low)
--			printk(" %ldk highmem ignored", high - low);
--		printk("\n");
--	} else
--		zones_size[ZONE_HIGHMEM] = high - low;
-+	zones_size[ZONE_HIGHMEM] = highend_pfn - highstart_pfn;
-+
-+	if (cpu_has_dc_aliases && zones_size[ZONE_HIGHMEM]) {
-+		printk(KERN_WARNING "This processor doesn't support highmem."
-+		       " %ldk highmem ignored\n", zones_size[ZONE_HIGHMEM]);
-+		zones_size[ZONE_HIGHMEM] = 0;
-+	}
- #endif
- 
- #ifdef CONFIG_FLATMEM
--- 
-1.4.4.1
+> Then there were ones included in the i82379AB (SIO.A) 
+> and i82374EB/SB (ESC) chipset components.  They used a three-wire bus and 
+> a new protocol.  And only then came the i82093AA.
+
+    Aha, you're probably correct here. I forgot about those early chipssets.
+
+>   Maciej
+
+WBR, Sergei

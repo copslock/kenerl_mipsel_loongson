@@ -1,63 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 15:43:26 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:38670 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20037960AbWLFPnV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 6 Dec 2006 15:43:21 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3CADCF5965;
-	Wed,  6 Dec 2006 16:43:06 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 8IRYCnkrxC8w; Wed,  6 Dec 2006 16:43:05 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C3633F5964;
-	Wed,  6 Dec 2006 16:43:05 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB6FhGaN024482;
-	Wed, 6 Dec 2006 16:43:17 +0100
-Date:	Wed, 6 Dec 2006 15:43:12 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-cc:	Ingo Molnar <mingo@redhat.com>, anemo@mba.sphere.ne.jp,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Import updates from i386's i8259.c
-In-Reply-To: <4576DDEC.1050105@ru.mvista.com>
-Message-ID: <Pine.LNX.4.64N.0612061525580.29000@blysk.ds.pg.gda.pl>
-References: <20061206.103923.71086192.nemoto@toshiba-tops.co.jp>
- <20061206015818.GB27985@linux-mips.org> <20061206.115602.63741871.nemoto@toshiba-tops.co.jp>
- <20061206.133836.89067271.nemoto@toshiba-tops.co.jp> <4576C2E9.4060900@ru.mvista.com>
- <Pine.LNX.4.64N.0612061337220.29000@blysk.ds.pg.gda.pl> <4576CB64.2060705@ru.mvista.com>
- <Pine.LNX.4.64N.0612061438440.29000@blysk.ds.pg.gda.pl> <4576DDEC.1050105@ru.mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.6/2293/Wed Dec  6 15:00:31 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 15:47:12 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.185]:15474 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038252AbWLFPrH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 6 Dec 2006 15:47:07 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so555907nfc
+        for <linux-mips@linux-mips.org>; Wed, 06 Dec 2006 07:47:07 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:to:cc:subject:date:message-id:x-mailer:from;
+        b=lA7ebdCXY8iZQIaryLRr8Nbkc7lE8Lo2beY2O48JPrPP1EUQRzjvYWQRNr6BcHq8bUkRTy+ygo7Ks4JgzQO7OUI9Wbo8sdy24wkzWd5iqtBjrPfJv8vyTmeCb+CqiRfjaMv2/DLQCz8gqnMitIaezluGtBu1IH/hYz/ppFhsAbM=
+Received: by 10.49.91.6 with SMTP id t6mr2378148nfl.1165420026786;
+        Wed, 06 Dec 2006 07:47:06 -0800 (PST)
+Received: from spoutnik.innova-card.com ( [81.252.61.1])
+        by mx.google.com with ESMTP id m16sm2290260nfc.2006.12.06.07.47.06;
+        Wed, 06 Dec 2006 07:47:06 -0800 (PST)
+Received: by spoutnik.innova-card.com (Postfix, from userid 500)
+	id 7470E23F76E; Wed,  6 Dec 2006 16:48:30 +0100 (CET)
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: [RFC] FLATMEM: allow memory to start at pfn != 0
+Date:	Wed,  6 Dec 2006 16:48:27 +0100
+Message-Id: <1165420110699-git-send-email-fbuihuu@gmail.com>
+X-Mailer: git-send-email 1.4.4.1
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13373
+X-archive-position: 13374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 6 Dec 2006, Sergei Shtylyov wrote:
+This patchset relaxes this constraint. Basically you just need to
+define in your platform code (include/asm-mips/mach-foo/spaces.h
+probably) PHYS_OFFSET that corresponds to the start of your
+physical memory and you're done.
 
->    I'd say they *only* looked consistent then. :-)
+The first patch is just a fix for HIGHMEM, I just found it while
+writing this patchset. I haven't done any tests though, I have
+no hardwares to play with.
 
- Some user tools may rely on certain strings seen in /proc/interrupts 
-("procinfo"?).
+The second and third patchs are the real meat. There are 2 points
+that I'm not really sure:
 
->    As for the I/O APIC, I think i82903AA was "the reference design" for it...
+	- PHYS_OFFSET is defined in page.h, I'm not sure if it's
+	the right place though.
 
- Nope, it was the i82489DX -- the original "discrete" coupled Local & I/O 
-APIC using a five-wire inter-APIC bus and a protocol different from later 
-implementations.  Then there were ones included in the i82379AB (SIO.A) 
-and i82374EB/SB (ESC) chipset components.  They used a three-wire bus and 
-a new protocol.  And only then came the i82093AA.
+	- ARCH_PFN_OFFSET is always defined whatever the memory
+	model. I don't think it will hurt since physical memory
+	always has a starting point in all cases.
 
-  Maciej
+
+
+Please consider.
+
+		Franck
+---
+
+ arch/mips/kernel/setup.c |   30 ++++++++++++++++++++++--------
+ arch/mips/mm/init.c      |   30 +++++++++++++-----------------
+ include/asm-mips/dma.h   |    1 +
+ include/asm-mips/io.h    |    4 ++--
+ include/asm-mips/page.h  |   25 +++++++++++++++++++++----
+ 5 files changed, 59 insertions(+), 31 deletions(-)

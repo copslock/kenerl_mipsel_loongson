@@ -1,143 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 13:15:58 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:62047 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038409AbWLFNPy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2006 13:15:54 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id BD6FD3EC9; Wed,  6 Dec 2006 05:15:51 -0800 (PST)
-Message-ID: <4576C2E9.4060900@ru.mvista.com>
-Date:	Wed, 06 Dec 2006 16:17:29 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	anemo@mba.sphere.ne.jp
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 13:44:24 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:26332 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20037869AbWLFNoW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 6 Dec 2006 13:44:22 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kB6C7IgE013773;
+	Wed, 6 Dec 2006 12:09:58 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kB6C7HiL013772;
+	Wed, 6 Dec 2006 12:07:17 GMT
+Date:	Wed, 6 Dec 2006 12:07:17 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Import updates from i386's i8259.c
-References: <20061206.103923.71086192.nemoto@toshiba-tops.co.jp>	<20061206015818.GB27985@linux-mips.org>	<20061206.115602.63741871.nemoto@toshiba-tops.co.jp> <20061206.133836.89067271.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20061206.133836.89067271.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Message-ID: <20061206120717.GA13744@linux-mips.org>
+References: <20061205195702.GA2097@linux-mips.org> <20061206.103923.71086192.nemoto@toshiba-tops.co.jp> <20061206015818.GB27985@linux-mips.org> <20061206.115602.63741871.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20061206.115602.63741871.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13367
+X-archive-position: 13368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Wed, Dec 06, 2006 at 11:56:02AM +0900, Atsushi Nemoto wrote:
+> Date:	Wed, 06 Dec 2006 11:56:02 +0900 (JST)
+> To:	ralf@linux-mips.org
+> Cc:	linux-mips@linux-mips.org
+> Subject: Re: [PATCH] Import updates from i386's i8259.c
+> From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> Content-Type: Text/Plain; charset=us-ascii
+> 
+> On Wed, 6 Dec 2006 01:58:18 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > There are some other issues with the legacy IDE on the Intel PIIX which
+> > likely affect other systems such as Alpha as well.  I think I solved that
+> > so it's now time to tackle the IRQ stuff.  Even without your i8259 stuff
+> > there are some strange things going on currently:
+> > 
+> > [...]
+> > irq 7, desc: 803db360, depth: 1, count: 0, unhandled: 0
+> > ->handle_irq():  8014ff28, handle_bad_irq+0x0/0x318
+> > ->chip(): 803a3d4c, 0x803a3d4c
+> > ->action(): 00000000
+> >   IRQ_DISABLED set
+> > unexpected IRQ # 7
+> 
+> Hmm ... malta_int.c:get_int() returned 7?  I have no idea, but it
+> seems mips_irq_lock in malta_int.c can be replaced by i8259A_lock...
 
-anemo@mba.sphere.ne.jp wrote:
+Your new patch works and also resolves this issue.
 
-> Import many updates from i386's i8259.c, especially genirq
-> transitions.
-
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> ---
-> diff --git a/arch/mips/kernel/i8259.c b/arch/mips/kernel/i8259.c
-> index 2526c0c..85ca2a9 100644
-> --- a/arch/mips/kernel/i8259.c
-> +++ b/arch/mips/kernel/i8259.c
-[...]
-> @@ -31,23 +28,16 @@ void disable_8259A_irq(unsigned int irq)
->   * moves to arch independent land
->   */
->  
-> +static int i8259A_auto_eoi;
->  DEFINE_SPINLOCK(i8259A_lock);
-> -
-> -static void end_8259A_irq (unsigned int irq)
-> -{
-> -	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)) &&
-> -	    irq_desc[irq].action)
-> -		enable_8259A_irq(irq);
-> -}
-> -
-> +/* some platforms call this... */
->  void mask_and_ack_8259A(unsigned int);
->  
-> -static struct irq_chip i8259A_irq_type = {
-> -	.typename = "XT-PIC",
-> -	.enable = enable_8259A_irq,
-> -	.disable = disable_8259A_irq,
-> -	.ack = mask_and_ack_8259A,
-> -	.end = end_8259A_irq,
-> +static struct irq_chip i8259A_chip = {
-> +	.name		= "XT-PIC",
-> +	.mask		= disable_8259A_irq,
-> +	.unmask		= enable_8259A_irq,
-> +	.mask_ack	= mask_and_ack_8259A,
->  };
-
-    I wonder whose idea was to call this device XT-PIC. XT never had dual 
-8259A PICs and so was capable of handling only 8 IRQs. Dual 8259A was first 
-used in the AT class machines...
-
-> @@ -84,23 +74,23 @@ void enable_8259A_irq(unsigned int irq)
->  	spin_lock_irqsave(&i8259A_lock, flags);
->  	cached_irq_mask &= mask;
->  	if (irq & 8)
-> -		outb(cached_A1,0xA1);
-> +		outb(cached_slave_mask, PIC_SLAVE_IMR);
->  	else
-> -		outb(cached_21,0x21);
-> +		outb(cached_master_mask, PIC_MASTER_IMR);
->  	spin_unlock_irqrestore(&i8259A_lock, flags);
->  }
->  
->  int i8259A_irq_pending(unsigned int irq)
->  {
-> -	unsigned int mask = 1 << irq;
-> +	unsigned int mask = 1<<irq;
-
-    Unnecassary, to say the least.
-
-> @@ -109,7 +99,8 @@ int i8259A_irq_pending(unsigned int irq)
->  void make_8259A_irq(unsigned int irq)
->  {
->  	disable_irq_nosync(irq);
-> -	set_irq_chip(irq, &i8259A_irq_type);
-> +	set_irq_chip_and_handler_name(irq, &i8259A_chip, handle_level_irq,
-> +				      "XT");
-
-    No! Do not evoke the memory of XT anymore, let it rest in peace at last!
-Call it 8259A, please.
-
-> @@ -122,17 +113,17 @@ void make_8259A_irq(unsigned int irq)
->  static inline int i8259A_irq_real(unsigned int irq)
->  {
->  	int value;
-> -	int irqmask = 1 << irq;
-> +	int irqmask = 1<<irq;
-
-    Unnecessary too.
-
-> @@ -214,15 +207,52 @@ spurious_8259A_irq:
->  	}
->  }
->  
-> +static char irq_trigger[2];
-> +/**
-> + * ELCR registers (0x4d0, 0x4d1) control edge/level of IRQ
-> + */
-> +static void restore_ELCR(char *trigger)
-> +{
-> +	outb(trigger[0], 0x4d0);
-> +	outb(trigger[1], 0x4d1);
-> +}
-> +
-> +static void save_ELCR(char *trigger)
-> +{
-> +	/* IRQ 0,1,2,8,13 are marked as reserved */
-> +	trigger[0] = inb(0x4d0) & 0xF8;
-> +	trigger[1] = inb(0x4d1) & 0xDE;
-
-    Erm, the bits should be zero, why mask them out I wonder...
-
-WBR, Sergei
+  Ralf

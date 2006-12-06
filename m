@@ -1,61 +1,157 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 19:00:36 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:26125 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20037960AbWLFTAb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 6 Dec 2006 19:00:31 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B69A9F5964;
-	Wed,  6 Dec 2006 20:00:13 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id kdquFQP3WcsW; Wed,  6 Dec 2006 20:00:13 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A5073F5949;
-	Wed,  6 Dec 2006 20:00:12 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB6J0Pho007503;
-	Wed, 6 Dec 2006 20:00:26 +0100
-Date:	Wed, 6 Dec 2006 19:00:20 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 19:37:02 +0000 (GMT)
+Received: from [69.90.147.196] ([69.90.147.196]:10136 "EHLO mail.kenati.com")
+	by ftp.linux-mips.org with ESMTP id S20038616AbWLFTg5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Dec 2006 19:36:57 +0000
+Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
+	by mail.kenati.com (Postfix) with ESMTP id 71DE415D4004;
+	Wed,  6 Dec 2006 13:06:56 -0800 (PST)
+Subject: Re: serial console: platform_device
+From:	Ashlesha Shintre <ashlesha@kenati.com>
+Reply-To: ashlesha@kenati.com
 To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-cc:	Ingo Molnar <mingo@redhat.com>, anemo@mba.sphere.ne.jp,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Import updates from i386's i8259.c
-In-Reply-To: <4576E666.1010502@ru.mvista.com>
-Message-ID: <Pine.LNX.4.64N.0612061855370.29000@blysk.ds.pg.gda.pl>
-References: <20061206.103923.71086192.nemoto@toshiba-tops.co.jp>
- <20061206015818.GB27985@linux-mips.org> <20061206.115602.63741871.nemoto@toshiba-tops.co.jp>
- <20061206.133836.89067271.nemoto@toshiba-tops.co.jp> <4576C2E9.4060900@ru.mvista.com>
- <Pine.LNX.4.64N.0612061337220.29000@blysk.ds.pg.gda.pl> <4576CB64.2060705@ru.mvista.com>
- <Pine.LNX.4.64N.0612061438440.29000@blysk.ds.pg.gda.pl> <4576DDEC.1050105@ru.mvista.com>
- <Pine.LNX.4.64N.0612061525580.29000@blysk.ds.pg.gda.pl> <4576E666.1010502@ru.mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.6/2293/Wed Dec  6 15:00:31 2006 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <4576BEBA.6080702@ru.mvista.com>
+References: <1165346639.6871.19.camel@sandbar.kenati.com>
+	 <4575CBB6.8030804@ru.mvista.com>
+	 <1165351710.6871.34.camel@sandbar.kenati.com>
+	 <4575DABF.2000604@ru.mvista.com>
+	 <1165365058.6871.54.camel@sandbar.kenati.com>
+	 <4576BEBA.6080702@ru.mvista.com>
+Content-Type: text/plain
+Date:	Wed, 06 Dec 2006 11:49:37 -0800
+Message-Id: <1165434577.6516.8.camel@sandbar.kenati.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.4.2.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ashlesha@kenati.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13381
+X-archive-position: 13382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ashlesha@kenati.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 6 Dec 2006, Sergei Shtylyov wrote:
+hi,
 
-> > Nope, it was the i82489DX -- the original "discrete" coupled Local & I/O
-> > APIC using a five-wire inter-APIC bus and a protocol different from later
-> > implementations.
+There is already an interrupt handler in place for the AU1000_GPIO_0
+that takes care of the cascaded interrupts -- so I *can* say 
+ .irq= AU1000_GPIO_0 ----right?
+
+Also, how will I make sure my board specific encm3_platform_init is
+called during the arch init calls?
+
+I have put in an entry in the Makefile for the board specific
+encm3_platform.c file -- so it is built - but when control goes to the 
+static int __devinit serial8250_probe(struct device *dev) function in
+the 8250.c it never executes the serial8250_register_port function.
+I know this cus I m using the JTAG port on the board to look inside and
+step through the code..
+
+Here is my /arch/mips/au1000/encm3/encm3_platform.c file:
+
+Thanks and Regards,
+Ashlesha.
+
+> /*
+>  * Platform device support for Au1x00 SoCs.
+>  *
+>  * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
+>  *
+>  * This file is licensed under the terms of the GNU General Public
+>  * License version 2.  This program is licensed "as is" without any
+>  * warranty of any kind, whether express or implied.
+>  */
+> #include <linux/device.h>
+> #include <linux/kernel.h>
+> #include <linux/init.h>
+> #include <linux/resource.h>
+> #include <linux/serial_8250.h>
+> #include <linux/tty.h>
 > 
->    Hm, that's news to me. I always thought that chip was external *local* APIC
-> only... Well, there's no docs on it anyway.
+> #include <asm/mach-au1x00/au1000.h>
+> #include <asm/mach-encm3/encm3.h>
+> static struct plat_serial8250_port encm3_via_uart_data[] = {
+>                 {
+>                         .mapbase        =
+> 0x3f8,                        //resource base
+> //                      .membase        = (char *)(0x50000000 +
+> 0x3f8),         // is a pointer - ioremap cookie or NULL
+>                         .irq            = AU1000_GPIO_0,
+>                         .flags          = UPF_SHARE_IRQ, //|
+> UPF_IOREMAP, //UPF_BOOT_AUTOCONF | UPF_SKIP_TEST |
+>                         .iotype         = UPIO_PORT,
+>                         .regshift       = 1,
+>                         .uartclk        = 1843200,
+> 
+>                   },
+>                         { },
+> };
+> 
+> static struct resource encm3_via_uart_resource = {
+>                 .start  = VIA_COM1_ADDR,
+>                 .end    = VIA_COM1_ADDR + 0x7,
+>                 .flags  = IORESOURCE_IO,
+> };
+> 
+> 
+> static struct platform_device encm3_via_uart = {
+>                 .name           = "serial8250",
+>                 .id             = 1,
+>                 .dev                    = {
+>                                 .platform_data  = encm3_via_uart_data,
+>                  },
+>                 .num_resources  = 1,
+>                 .resource       = &encm3_via_uart_resource,
+> };
+> 
+> static struct platform_device *encm3_platform_devices[] __initdata = {
+>         &encm3_via_uart,
+> };
+> 
+> int encm3_platform_init(void)
+> {
+>         printk("size of encm3 platform devices is %d
+> \n",ARRAY_SIZE(encm3_platform_devices));
+>         return platform_add_devices(encm3_platform_devices,
+> ARRAY_SIZE(encm3_platform_devices));
+> }
+> 
+> arch_initcall(encm3_platform_init);
 
- The docs used to be available from Intel -- guess how we have got the 
-chip supported. ;-)
 
-  Maciej
+On Wed, 2006-12-06 at 15:59 +0300, Sergei Shtylyov wrote:
+> Hello.
+> 
+> Ashlesha Shintre wrote:
+> 
+> >>    Ah, I forgot to mention that if your UART is a part of the south bridge, 
+> >>its IRQ number is _4_ on the integrated 8259 interrupt controller. I'm sure 
+> >>that AU1000_GPIO_0 is the cascaded interrupt request from 8259, not the UART's 
+> >>own IRQ...
+> 
+> >>>>static struct plat_serial8250_port encm3_via_uart_data[] = {
+> >>>>               {
+> >>>>                       .mapbase        = 0x3f8,
+> >>>>                       .irq            = AU1000_GPIO_0,
+> 
+> >>    So, this is wrong. You need to specify to what platform IRQ 8259's IRQ4 
+> >>gets routed here.
+> 
+> > I m not sure what you mean here -- the AU1000_GPIO_0 is the cascaded
+> > interrupt request from the 8259 on the VIA Southbridge -- 
+> 
+>     I meant that the UART interrupts from the south bridge *cannot* be 
+> delivered *directly* to the Alchemy's embedded interrupt controller), so 
+> AU1000_GPIO_0 must be used to deliver all the interrupts from 8259 (the 
+> interrupt controller integrated into the south bridge) to the embedded 
+> interrupt controller. So, you need to setup some kind of the cascading 
+> interrupt handler for AU1000_GPIO_0 to read the vector from 8259 I think...
+> 
+> > Best Regards,
+> > Ashlesha.
+> 
+> WBR, Sergei

@@ -1,52 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 13:37:52 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:6820 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039159AbWLGNhu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Dec 2006 13:37:50 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kB7Dbjqu003401;
-	Thu, 7 Dec 2006 13:37:46 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kB7Dbhbq003400;
-	Thu, 7 Dec 2006 13:37:43 GMT
-Date:	Thu, 7 Dec 2006 13:37:43 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 13:50:25 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:14469 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038561AbWLGNuU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 13:50:20 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id CAFAE3EC9; Thu,  7 Dec 2006 05:50:09 -0800 (PST)
+Message-ID: <45781C70.30405@ru.mvista.com>
+Date:	Thu, 07 Dec 2006 16:51:44 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, vagabon.xyz@gmail.com,
 	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Import updates from i386's i8259.c
-Message-ID: <20061207133743.GA3373@linux-mips.org>
-References: <20061205194907.GA1088@linux-mips.org> <20061205195702.GA2097@linux-mips.org> <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com> <20061207.121702.108739943.nemoto@toshiba-tops.co.jp> <20061207115035.GA15386@linux-mips.org> <Pine.LNX.4.64N.0612071329530.22220@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0612071329530.22220@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+References: <20061205194907.GA1088@linux-mips.org> <20061205195702.GA2097@linux-mips.org> <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com> <20061207.121702.108739943.nemoto@toshiba-tops.co.jp> <20061207115035.GA15386@linux-mips.org>
+In-Reply-To: <20061207115035.GA15386@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13396
+X-archive-position: 13397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 07, 2006 at 01:32:25PM +0000, Maciej W. Rozycki wrote:
+Hello.
 
-> From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-> > > Also I think most codes in vr41xx/nec-cmbvr4133/irq.c can be removed
-> > > if we made I8259A_IRQ_BASE customizable, but that would be another
-> > > story...
-> > 
-> > This number is fixed to zero because that's what all the old ISA drivers
-> > expect, the ISA boards have printed on etc...
-> 
->  Well, it's probably that nobody has been brave enough to tackle it yet. 
-> ;-)
+Ralf Baechle wrote:
+> On Thu, Dec 07, 2006 at 12:17:02PM +0900, Atsushi Nemoto wrote:
 
-I just think this problem should better be unsolved ;-)
+>>You mean "adding" ?  I think now we can select
+>>GENERIC_HARDIRQS_NO__DO_IRQ for all MACH_VR41XX boards.
 
-  Ralf
+>>Also I think most codes in vr41xx/nec-cmbvr4133/irq.c can be removed
+>>if we made I8259A_IRQ_BASE customizable, but that would be another
+>>story...
+
+> This number is fixed to zero because that's what all the old ISA drivers
+> expect, the ISA boards have printed on etc...
+
+    It's not really related as 8259 is programmed to generate vectors 0x20 to 
+0x2F for x86 but the the IRQs start from zero anyway...
+
+>   Ralf
+
+WBR, Sergei

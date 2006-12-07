@@ -1,48 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 11:50:55 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:29583 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039152AbWLGLul (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Dec 2006 11:50:41 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kB7BobPJ017271;
-	Thu, 7 Dec 2006 11:50:38 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kB7BoZFd017270;
-	Thu, 7 Dec 2006 11:50:35 GMT
-Date:	Thu, 7 Dec 2006 11:50:35 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Import updates from i386's i8259.c
-Message-ID: <20061207115035.GA15386@linux-mips.org>
-References: <20061205194907.GA1088@linux-mips.org> <20061205195702.GA2097@linux-mips.org> <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com> <20061207.121702.108739943.nemoto@toshiba-tops.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20061207.121702.108739943.nemoto@toshiba-tops.co.jp>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 12:23:35 +0000 (GMT)
+Received: from mx.globalone.ru ([194.84.254.251]:47017 "EHLO mx.globalone.ru")
+	by ftp.linux-mips.org with ESMTP id S20039158AbWLGMXa (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 12:23:30 +0000
+Received: from mx.globalone.ru (localhost [127.0.0.1])
+	by mx.globalone.ru (8.13.1/8.13.1) with ESMTP id kB7CNNwF020577
+	for <linux-mips@linux-mips.org>; Thu, 7 Dec 2006 15:23:24 +0300
+Received: from smtp.globalone.ru (smtp.globalone.ru [172.16.38.5])
+	by mx.globalone.ru (8.13.1/8.13.1) with ESMTP id kB7CN9nU020398
+	for <linux-mips@linux-mips.org>; Thu, 7 Dec 2006 15:23:09 +0300
+Received: from voropaya ([172.16.38.7]) by smtp.globalone.ru
+          (Netscape Messaging Server 4.15) with SMTP id J9WL2L00.5GX for
+          <linux-mips@linux-mips.org>; Thu, 7 Dec 2006 15:23:09 +0300 
+Message-ID: <385101c719fa$80448100$e90d11ac@spb.in.rosprint.ru>
+From:	"Alexander Voropay" <a.voropay@orange-ftgroup.ru>
+To:	<linux-mips@linux-mips.org>
+References: <S20037871AbWLFUPw/20061206201552Z+14601@ftp.linux-mips.org> <20061207094639.GA30260@lst.de>
+Subject: Re: [MIPS] Import updates from i386's i8259.c
+Date:	Thu, 7 Dec 2006 15:21:55 +0300
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2869
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
+X-Scanned-By: MIMEDefang 2.56 on 172.16.38.2
+Return-Path: <a.voropay@equant.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13392
+X-archive-position: 13393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: a.voropay@orange-ftgroup.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 07, 2006 at 12:17:02PM +0900, Atsushi Nemoto wrote:
+"Christoph Hellwig" <hch@lst.de> wrote:
 
-> You mean "adding" ?  I think now we can select
-> GENERIC_HARDIRQS_NO__DO_IRQ for all MACH_VR41XX boards.
+>> Import many updates from i386's i8259.c, especially genirq transitions.
 > 
-> Also I think most codes in vr41xx/nec-cmbvr4133/irq.c can be removed
-> if we made I8259A_IRQ_BASE customizable, but that would be another
-> story...
+> Shouldn't we try to share i8259.c over the various architectures that
+> use this controller?  With the generic hardirq framework that should be
+> possible.
 
-This number is fixed to zero because that's what all the old ISA drivers
-expect, the ISA boards have printed on etc...
+ The "i8259" should be under "ISA" or "EISA" Kconfig option.
+AFAIK, all known ISA chipsets contains dual i8259 controllers:
+LPC on the PCI-ISA bridge (Cobalt, Malta, ...), 
+Intel 82430 EISA Mongoose chipset (Indigo2 IP22, Magnum/Jazz, SNI RM-200, ...)
 
-  Ralf
+--
+-=AV=-

@@ -1,59 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 03:17:13 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:4729 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20039065AbWLGDRJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Dec 2006 03:17:09 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 7 Dec 2006 12:17:08 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 700AD20752;
-	Thu,  7 Dec 2006 12:17:05 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 63AF820488;
-	Thu,  7 Dec 2006 12:17:05 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id kB73H2W0089697;
-	Thu, 7 Dec 2006 12:17:04 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Thu, 07 Dec 2006 12:17:02 +0900 (JST)
-Message-Id: <20061207.121702.108739943.nemoto@toshiba-tops.co.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	ralf@linux-mips.org, anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Import updates from i386's i8259.c
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com>
-References: <20061205194907.GA1088@linux-mips.org>
-	<20061205195702.GA2097@linux-mips.org>
-	<cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 03:26:38 +0000 (GMT)
+Received: from [69.90.147.196] ([69.90.147.196]:51415 "EHLO mail.kenati.com")
+	by ftp.linux-mips.org with ESMTP id S20039073AbWLGD0d (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 03:26:33 +0000
+Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
+	by mail.kenati.com (Postfix) with ESMTP id 08DDC15D4004;
+	Wed,  6 Dec 2006 20:56:36 -0800 (PST)
+Subject: Re: Cant analyze prologue code
+From:	Ashlesha Shintre <ashlesha@kenati.com>
+Reply-To: ashlesha@kenati.com
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, sshtylyov@ru.mvista.com
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20061207.103714.25910613.nemoto@toshiba-tops.co.jp>
+References: <1165434577.6516.8.camel@sandbar.kenati.com>
+	 <45772013.70907@ru.mvista.com>
+	 <1165450403.6516.28.camel@sandbar.kenati.com>
+	 <20061207.103714.25910613.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain
+Date:	Wed, 06 Dec 2006 19:39:14 -0800
+Message-Id: <1165462754.6516.40.camel@sandbar.kenati.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+X-Mailer: Evolution 2.4.2.1 
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <ashlesha@kenati.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13387
+X-archive-position: 13388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ashlesha@kenati.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 6 Dec 2006 09:40:50 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> Atsushi, could you take care of removing "select
-> GENERIC_HARDIRQS_NO__DO_IRQ" in your patch where needed ? specially
-> all boards based on NEC VR41XX cpu.
 
-You mean "adding" ?  I think now we can select
-GENERIC_HARDIRQS_NO__DO_IRQ for all MACH_VR41XX boards.
+Hi,
 
-Also I think most codes in vr41xx/nec-cmbvr4133/irq.c can be removed
-if we made I8259A_IRQ_BASE customizable, but that would be another
-story...
+I cant build the kernel with this patch -- i m using the 2.6.14.6
+kernel..
 
----
-Atsushi Nemoto
+also, the kernel does not hang, but the output produced on the console 
+is not complete: eg
+i.e. I get this:
+
+
+> 1000 i 1.5 P P <v@e.>
+> 0: A1 Er n  01500000,  28
+> 0: Bd BCM5221 10/100 BT PHY   e 0
+> 0: U Bo BCM5221 10/100 BT PHY  a
+> 1: A1 Ee    01510000,  29
+> 1: Bm BCM5221 10/100 BT PHY   e 0
+> 1: U Bc BCM5221 10/100 BT PHY  l
+> NET: Re c l 2
+> IP t   h l i: 1024 (: 0, 4096 s)
+> TCP l h  i: 4096 (: 2, 16384 s)
+> TCP d h  i: 4096 (: 2, 16384 s)
+> TCP: H s u (a 4096  4096)
+> TCP  s
+> TCP  s
+> NET: Rs o y 1
+> NET: Rt o i 17
+> IP-C: Gn s 255.255.255.0
+
+instead of :
+
+
+> au1000eth version 1.5 Pete Popov <ppopov@embeddedalley.com>
+> eth0: Au1x Ethernet found at 0xb1500000, irq 28
+> eth0: Broadcom BCM5221 10/100 BaseT PHY at phy address 0
+> eth0: Using Broadcom BCM5221 10/100 BaseT PHY as default
+> eth1: Au1x Ethernet found at 0xb1510000, irq 29
+> eth1: Broadcom BCM5221 10/100 BaseT PHY at phy address 0
+> eth1: Using Broadcom BCM5221 10/100 BaseT PHY as default
+> NET: Registered protocol family 2
+> IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+> TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+> TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
+> TCP: Hash tables configured (established 4096 bind 4096)
+> TCP reno registered
+> TCP bic registered
+> NET: Registered protocol family 1
+> NET: Registered protocol family 17
+> IP-Config: Guessing netmask 255.255.255.0
+> IP-Config: Complete:
+
+
+which makes me think there is some kind of a wrong initialisation of the UART -- but i ve checked all the parameters:
+iobase, IRQ, etc and nothing is obviously wrong --
+
+I was wondering what the significance of the flags in the plat_serial8250_port is?
+
+
+> static struct plat_serial8250_port encm3_via_uart_data[] = {
+>                 {
+> 
+>                    .flags          = UPF_SHARE_IRQ, 
+>                        
+Thanks and Regards,
+Ashlesha.
+
+
+On Thu, 2006-12-07 at 10:37 +0900, Atsushi Nemoto wrote:
+> On Wed, 06 Dec 2006 16:13:23 -0800, Ashlesha Shintre <ashlesha@kenati.com> wrote:
+> > However, I now get a "Cant analyze prologue code at 80294aec." error!
+> > 
+> > Any remedies/suggestions for the same?
+> 
+> Please look at this thread:
+> 
+> http://www.linux-mips.org/archives/linux-mips/2004-09/msg00123.html
+> 
+> Final patch is:
+> 
+> http://www.linux-mips.org/archives/linux-mips/2004-10/msg00312.html
+> 
+> And actual commit is:
+> 
+> http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=dc953df1ba5526814982676f47580c8e1bcdbfeb
+> 
+> ---
+> Atsushi Nemoto

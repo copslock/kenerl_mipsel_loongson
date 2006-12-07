@@ -1,46 +1,165 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Dec 2006 20:33:12 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:51133 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037871AbWLFUdK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 6 Dec 2006 20:33:10 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kB6KX884010522;
-	Wed, 6 Dec 2006 20:33:08 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kB6KWxIG010521;
-	Wed, 6 Dec 2006 20:32:59 GMT
-Date:	Wed, 6 Dec 2006 20:32:59 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Import updates from i386's i8259.c
-Message-ID: <20061206203259.GA10170@linux-mips.org>
-References: <20061206.115602.63741871.nemoto@toshiba-tops.co.jp> <20061206.133836.89067271.nemoto@toshiba-tops.co.jp> <4576C2E9.4060900@ru.mvista.com> <20061207.020348.25910403.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 00:00:48 +0000 (GMT)
+Received: from [69.90.147.196] ([69.90.147.196]:57018 "EHLO mail.kenati.com")
+	by ftp.linux-mips.org with ESMTP id S20038989AbWLGAAn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 00:00:43 +0000
+Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
+	by mail.kenati.com (Postfix) with ESMTP id 74A4C15D4004;
+	Wed,  6 Dec 2006 17:30:43 -0800 (PST)
+Subject: Cant analyze prologue code
+From:	Ashlesha Shintre <ashlesha@kenati.com>
+Reply-To: ashlesha@kenati.com
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <45772013.70907@ru.mvista.com>
+References: <1165346639.6871.19.camel@sandbar.kenati.com>
+	 <4575CBB6.8030804@ru.mvista.com>
+	 <1165351710.6871.34.camel@sandbar.kenati.com>
+	 <4575DABF.2000604@ru.mvista.com>
+	 <1165365058.6871.54.camel@sandbar.kenati.com>
+	 <4576BEBA.6080702@ru.mvista.com>
+	 <1165434577.6516.8.camel@sandbar.kenati.com> <45772013.70907@ru.mvista.com>
+Content-Type: text/plain
+Date:	Wed, 06 Dec 2006 16:13:23 -0800
+Message-Id: <1165450403.6516.28.camel@sandbar.kenati.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20061207.020348.25910403.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.4.2.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <ashlesha@kenati.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13384
+X-archive-position: 13385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ashlesha@kenati.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 07, 2006 at 02:03:48AM +0900, Atsushi Nemoto wrote:
 
-> > 8259A PICs and so was capable of handling only 8 IRQs. Dual 8259A was first 
-> > used in the AT class machines...
+Hi Sergei!
+
+So now encm3_platform_init function is linked to the kernel image -- and
+is part of the executable -- i added this line to the
+arch/mips/au1000/encm3/Makefile:
+
+obj-y +=encm3_platform.o
+
+However, I now get a "Cant analyze prologue code at 80294aec." error!
+
+Any remedies/suggestions for the same?
+
+Thank you!
+Best Regards,
+Ashlesha.
+
+On Wed, 2006-12-06 at 22:54 +0300, Sergei Shtylyov wrote:
+> Hello.
 > 
-> It has been called "XT-PIC" anyway so I'd like to keep unchanged.
-
-90% of the i8259 code are identical between i386 and MIPS and several
-others; maybe it's time to share such code between architectures.
-
-  Ralf
+> Ashlesha Shintre wrote:
+> 
+> > There is already an interrupt handler in place for the AU1000_GPIO_0
+> > that takes care of the cascaded interrupts -- so I *can* say 
+> >  .irq= AU1000_GPIO_0 ----right?
+> 
+>     No, you can't. You'll have to specify to what 8259's IRQ4 maps to on your 
+> platform.
+> 
+> > Also, how will I make sure my board specific encm3_platform_init is
+> > called during the arch init calls?
+> 
+>     Mentioning it in arch_initcall() arranges for that. :-/
+> 
+> > I have put in an entry in the Makefile for the board specific
+> > encm3_platform.c file -- so it is built - but when control goes to the 
+> > static int __devinit serial8250_probe(struct device *dev) function in
+> > the 8250.c it never executes the serial8250_register_port function.
+> > I know this cus I m using the JTAG port on the board to look inside and
+> > step through the code..
+> 
+>     That's strange. Although the UART declaration has a grave defect....
+> 
+> > Here is my /arch/mips/au1000/encm3/encm3_platform.c file:
+> 
+> >>/*
+> >> * Platform device support for Au1x00 SoCs.
+> >> *
+> >> * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
+> >> *
+> >> * This file is licensed under the terms of the GNU General Public
+> >> * License version 2.  This program is licensed "as is" without any
+> >> * warranty of any kind, whether express or implied.
+> >> */
+> 
+>     That boilerplate is no longer applicable. :-)
+> 
+> >>#include <linux/device.h>
+> >>#include <linux/kernel.h>
+> >>#include <linux/init.h>
+> >>#include <linux/resource.h>
+> >>#include <linux/serial_8250.h>
+> >>#include <linux/tty.h>
+> >>
+> >>#include <asm/mach-au1x00/au1000.h>
+> >>#include <asm/mach-encm3/encm3.h>
+> >>static struct plat_serial8250_port encm3_via_uart_data[] = {
+> >>                {
+> >>                        .mapbase        =
+> >>0x3f8,                        //resource base
+> 
+>     Damn, I didn't notice: .mapbase should be changed to .iobase!
+> 
+> >>//                      .membase        = (char *)(0x50000000 +
+> >>0x3f8),         // is a pointer - ioremap cookie or NULL
+> >>                        .irq            = AU1000_GPIO_0,
+> >>                        .flags          = UPF_SHARE_IRQ, //|
+> >>UPF_IOREMAP, //UPF_BOOT_AUTOCONF | UPF_SKIP_TEST |
+> >>                        .iotype         = UPIO_PORT,
+> >>                        .regshift       = 1,
+> >>                        .uartclk        = 1843200,
+> >>
+> >>                  },
+> >>                        { },
+> >>};
+> 
+> >>static struct resource encm3_via_uart_resource = {
+> >>                .start  = VIA_COM1_ADDR,
+> >>                .end    = VIA_COM1_ADDR + 0x7,
+> >>                .flags  = IORESOURCE_IO,
+> >>};
+> 
+>     Still, you don't need to declare the resources for the 8250 devices -- the 
+> driver should handle requesting them for you -- as they're alredy specified by 
+> struct plat_serial8250_port.
+> 
+> >>static struct platform_device encm3_via_uart = {
+> >>                .name           = "serial8250",
+> >>                .id             = 1,
+> 
+>     I guess it should be PLAT8250_DEV_LEGACY...
+> 
+> >>                .dev                    = {
+> >>                                .platform_data  = encm3_via_uart_data,
+> >>                 },
+> 
+>     So, you also don't need the following 2 lines:
+> 
+> >>                .num_resources  = 1,
+> >>                .resource       = &encm3_via_uart_resource,
+> >>};
+> 
+> >>static struct platform_device *encm3_platform_devices[] __initdata = {
+> >>        &encm3_via_uart,
+> >>};
+> 
+> >>int encm3_platform_init(void)
+> >>{
+> >>        printk("size of encm3 platform devices is %d
+> >>\n",ARRAY_SIZE(encm3_platform_devices));
+> >>        return platform_add_devices(encm3_platform_devices,
+> >>ARRAY_SIZE(encm3_platform_devices));
+> 
+>     I think it's better to call platform_device_register() for a single device...
+> 
+> WBR, Sergei
+> 

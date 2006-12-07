@@ -1,154 +1,307 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 15:48:35 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:2731 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037585AbWLGPsd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Dec 2006 15:48:33 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kB7FmVVq009033;
-	Thu, 7 Dec 2006 15:48:31 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kB7FmUYq009032;
-	Thu, 7 Dec 2006 15:48:30 GMT
-Date:	Thu, 7 Dec 2006 15:48:30 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Vitaly Wool <vitalywool@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] add STB810 support (Philips PNX8550-based)
-Message-ID: <20061207154830.GB4156@linux-mips.org>
-References: <20061207182234.83212939.vitalywool@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 16:04:41 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:35293 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037600AbWLGQEg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 16:04:36 +0000
+Received: from localhost (p8245-ipad29funabasi.chiba.ocn.ne.jp [221.184.75.245])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 903F8B89A; Fri,  8 Dec 2006 01:04:31 +0900 (JST)
+Date:	Fri, 08 Dec 2006 01:04:31 +0900 (JST)
+Message-Id: <20061208.010431.05600019.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH 1/3] Make csum_partial more readable
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20061207182234.83212939.vitalywool@gmail.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13403
+X-archive-position: 13404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 07, 2006 at 06:22:34PM +0300, Vitaly Wool wrote:
+Use standard o32 register name instead of T0, T1, etc, like memcpy.S.
 
-> Index: linux-mips.git/arch/mips/philips/pnx8550/stb810/Makefile
-> ===================================================================
-> --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-> +++ linux-mips.git/arch/mips/philips/pnx8550/stb810/Makefile	2006-12-07 18:21:04.000000000 +0300
-> @@ -0,0 +1,4 @@
-> +
-> +# Makefile for the Philips STB810 Board.
-> +
-> +lib-y := prom_init.o board_setup.o irqmap.o
-> Index: linux-mips.git/arch/mips/philips/pnx8550/stb810/board_setup.c
-> ===================================================================
-> --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-> +++ linux-mips.git/arch/mips/philips/pnx8550/stb810/board_setup.c	2006-12-07 18:21:04.000000000 +0300
-> @@ -0,0 +1,56 @@
-> +/*
-> + *  STB810 specific board startup routines.
-> + *
-> + *  Based on the arch/mips/philips/pnx8550/jbs/board_setup.c
-> + *
-> + *  Author: MontaVista Software, Inc.
-> + *          source@mvista.com
-> + *
-> + *  Copyright 2005 MontaVista Software Inc.
-> + *
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License as published by the
-> + *  Free Software Foundation; either version 2 of the License, or (at your
-> + *  option) any later version.
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/sched.h>
-> +#include <linux/ioport.h>
-> +#include <linux/mm.h>
-> +#include <linux/console.h>
-> +#include <linux/mc146818rtc.h>
-> +#include <linux/delay.h>
-> +
-> +#include <asm/cpu.h>
-> +#include <asm/bootinfo.h>
-> +#include <asm/irq.h>
-> +#include <asm/mipsregs.h>
-> +#include <asm/reboot.h>
-> +#include <asm/pgtable.h>
-> +
-> +#include <glb.h>
-> +
-> +/* CP0 hazard avoidance. */
-> +#define BARRIER __asm__ __volatile__(".set noreorder\n\t" \
-> +				     "nop; nop; nop; nop; nop; nop;\n\t" \
-> +				     ".set reorder\n\t")
-> +
-> +void __init board_setup(void)
-> +{
-> +	unsigned long config0, configpr;
-> +
-> +	config0 = read_c0_config();
-> +
-> +	/* clear all three cache coherency fields */
-> +	config0 &= ~(0x7 | (7<<25) | (7<<28));
-> +	config0 |= (CONF_CM_DEFAULT | (CONF_CM_DEFAULT<<25) |
-> +			(CONF_CM_DEFAULT<<28));
-> +	write_c0_config(config0);
-> +	BARRIER;
-> +
-> +	configpr = read_c0_config7();
-> +	configpr |= (1<<19); /* enable tlb */
-> +	write_c0_config7(configpr);
-> +	BARRIER;
-> +}
-
-You really need that hazard barrier?
-
-Chances are you can get away without a hazard barrier I guess.
-
-> Index: linux-mips.git/arch/mips/philips/pnx8550/stb810/irqmap.c
-> ===================================================================
-> --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-> +++ linux-mips.git/arch/mips/philips/pnx8550/stb810/irqmap.c	2006-12-07 18:21:04.000000000 +0300
-
-> +char irq_tab_jbs[][5] __initdata = {
-> + [8] =  { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-> + [9] =  { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-> + [10] = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-
-Coding style, indent with tabs.
-
-> Index: linux-mips.git/arch/mips/kernel/head.S
-> ===================================================================
-> --- linux-mips.git.orig/arch/mips/kernel/head.S	2006-12-07 18:20:47.000000000 +0300
-> +++ linux-mips.git/arch/mips/kernel/head.S	2006-12-07 18:21:04.000000000 +0300
-> @@ -138,7 +138,7 @@
->  EXPORT(stext)					# used for profiling
->  EXPORT(_stext)
->  
-> -#if defined(CONFIG_QEMU) || defined(CONFIG_MIPS_SIM)
-> +#if defined(CONFIG_QEMU) || defined(CONFIG_MIPS_SIM) || defined(CONFIG_PNX8550_STB810)
-
-Your firmware is really so broken it needs this?
-
-> Index: linux-mips.git/arch/mips/configs/pnx8550-stb810_defconfig
-> ===================================================================
-> --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-> +++ linux-mips.git/arch/mips/configs/pnx8550-stb810_defconfig	2006-12-07 18:21:04.000000000 +0300
-> @@ -0,0 +1,1777 @@
-> +#
-> +# Automatically generated make config: don't edit
-> +# Linux kernel version: 2.6.19-rc5
-> +# Wed Nov  8 13:46:57 2006
-> +#
-> +CONFIG_ARM=y
-
-LOL.
-
-Doesn't look quite right.  Let's see if you find out why ;-)
-
-  Ralf
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
+index 15611d9..3bffdbb 100644
+--- a/arch/mips/lib/csum_partial.S
++++ b/arch/mips/lib/csum_partial.S
+@@ -12,19 +12,23 @@ #include <asm/asm.h>
+ #include <asm/regdef.h>
+ 
+ #ifdef CONFIG_64BIT
+-#define T0	ta0
+-#define T1	ta1
+-#define T2	ta2
+-#define T3	ta3
+-#define T4	t0
+-#define T7	t3
+-#else
+-#define T0	t0
+-#define T1	t1
+-#define T2	t2
+-#define T3	t3
+-#define T4	t4
+-#define T7	t7
++/*
++ * As we are sharing code base with the mips32 tree (which use the o32 ABI
++ * register definitions). We need to redefine the register definitions from
++ * the n64 ABI register naming to the o32 ABI register naming.
++ */
++#undef t0
++#undef t1
++#undef t2
++#undef t3
++#define t0	$8
++#define t1	$9
++#define t2	$10
++#define t3	$11
++#define t4	$12
++#define t5	$13
++#define t6	$14
++#define t7	$15
+ #endif
+ 
+ #define ADDC(sum,reg)						\
+@@ -64,37 +68,37 @@ #define sum v0
+ 
+ /* unknown src alignment and < 8 bytes to go  */
+ small_csumcpy:
+-	move	a1, T2
++	move	a1, t2
+ 
+-	andi	T0, a1, 4
+-	beqz	T0, 1f
+-	 andi	T0, a1, 2
++	andi	t0, a1, 4
++	beqz	t0, 1f
++	 andi	t0, a1, 2
+ 
+ 	/* Still a full word to go  */
+-	ulw	T1, (src)
++	ulw	t1, (src)
+ 	PTR_ADDIU	src, 4
+-	ADDC(sum, T1)
++	ADDC(sum, t1)
+ 
+-1:	move	T1, zero
+-	beqz	T0, 1f
+-	 andi	T0, a1, 1
++1:	move	t1, zero
++	beqz	t0, 1f
++	 andi	t0, a1, 1
+ 
+ 	/* Still a halfword to go  */
+-	ulhu	T1, (src)
++	ulhu	t1, (src)
+ 	PTR_ADDIU	src, 2
+ 
+-1:	beqz	T0, 1f
+-	 sll	T1, T1, 16
++1:	beqz	t0, 1f
++	 sll	t1, t1, 16
+ 
+-	lbu	T2, (src)
++	lbu	t2, (src)
+ 	 nop
+ 
+ #ifdef __MIPSEB__
+-	sll	T2, T2, 8
++	sll	t2, t2, 8
+ #endif
+-	or	T1, T2
++	or	t1, t2
+ 
+-1:	ADDC(sum, T1)
++1:	ADDC(sum, t1)
+ 
+ 	/* fold checksum */
+ 	sll	v1, sum, 16
+@@ -104,7 +108,7 @@ #endif
+ 	addu	sum, v1
+ 
+ 	/* odd buffer alignment? */
+-	beqz	T7, 1f
++	beqz	t7, 1f
+ 	 nop
+ 	sll	v1, sum, 8
+ 	srl	sum, sum, 8
+@@ -122,25 +126,25 @@ #endif
+ 	.align	5
+ LEAF(csum_partial)
+ 	move	sum, zero
+-	move	T7, zero
++	move	t7, zero
+ 
+ 	sltiu	t8, a1, 0x8
+ 	bnez	t8, small_csumcpy		/* < 8 bytes to copy */
+-	 move	T2, a1
++	 move	t2, a1
+ 
+ 	beqz	a1, out
+-	 andi	T7, src, 0x1			/* odd buffer? */
++	 andi	t7, src, 0x1			/* odd buffer? */
+ 
+ hword_align:
+-	beqz	T7, word_align
++	beqz	t7, word_align
+ 	 andi	t8, src, 0x2
+ 
+-	lbu	T0, (src)
++	lbu	t0, (src)
+ 	LONG_SUBU	a1, a1, 0x1
+ #ifdef __MIPSEL__
+-	sll	T0, T0, 8
++	sll	t0, t0, 8
+ #endif
+-	ADDC(sum, T0)
++	ADDC(sum, t0)
+ 	PTR_ADDU	src, src, 0x1
+ 	andi	t8, src, 0x2
+ 
+@@ -148,9 +152,9 @@ word_align:
+ 	beqz	t8, dword_align
+ 	 sltiu	t8, a1, 56
+ 
+-	lhu	T0, (src)
++	lhu	t0, (src)
+ 	LONG_SUBU	a1, a1, 0x2
+-	ADDC(sum, T0)
++	ADDC(sum, t0)
+ 	sltiu	t8, a1, 56
+ 	PTR_ADDU	src, src, 0x2
+ 
+@@ -162,9 +166,9 @@ dword_align:
+ 	beqz	t8, qword_align
+ 	 andi	t8, src, 0x8
+ 
+-	lw	T0, 0x00(src)
++	lw	t0, 0x00(src)
+ 	LONG_SUBU	a1, a1, 0x4
+-	ADDC(sum, T0)
++	ADDC(sum, t0)
+ 	PTR_ADDU	src, src, 0x4
+ 	andi	t8, src, 0x8
+ 
+@@ -172,11 +176,11 @@ qword_align:
+ 	beqz	t8, oword_align
+ 	 andi	t8, src, 0x10
+ 
+-	lw	T0, 0x00(src)
+-	lw	T1, 0x04(src)
++	lw	t0, 0x00(src)
++	lw	t1, 0x04(src)
+ 	LONG_SUBU	a1, a1, 0x8
+-	ADDC(sum, T0)
+-	ADDC(sum, T1)
++	ADDC(sum, t0)
++	ADDC(sum, t1)
+ 	PTR_ADDU	src, src, 0x8
+ 	andi	t8, src, 0x10
+ 
+@@ -184,46 +188,46 @@ oword_align:
+ 	beqz	t8, begin_movement
+ 	 LONG_SRL	t8, a1, 0x7
+ 
+-	lw	T3, 0x08(src)
+-	lw	T4, 0x0c(src)
+-	lw	T0, 0x00(src)
+-	lw	T1, 0x04(src)
+-	ADDC(sum, T3)
+-	ADDC(sum, T4)
+-	ADDC(sum, T0)
+-	ADDC(sum, T1)
++	lw	t3, 0x08(src)
++	lw	t4, 0x0c(src)
++	lw	t0, 0x00(src)
++	lw	t1, 0x04(src)
++	ADDC(sum, t3)
++	ADDC(sum, t4)
++	ADDC(sum, t0)
++	ADDC(sum, t1)
+ 	LONG_SUBU	a1, a1, 0x10
+ 	PTR_ADDU	src, src, 0x10
+ 	LONG_SRL	t8, a1, 0x7
+ 
+ begin_movement:
+ 	beqz	t8, 1f
+-	 andi	T2, a1, 0x40
++	 andi	t2, a1, 0x40
+ 
+ move_128bytes:
+-	CSUM_BIGCHUNK(src, 0x00, sum, T0, T1, T3, T4)
+-	CSUM_BIGCHUNK(src, 0x20, sum, T0, T1, T3, T4)
+-	CSUM_BIGCHUNK(src, 0x40, sum, T0, T1, T3, T4)
+-	CSUM_BIGCHUNK(src, 0x60, sum, T0, T1, T3, T4)
++	CSUM_BIGCHUNK(src, 0x00, sum, t0, t1, t3, t4)
++	CSUM_BIGCHUNK(src, 0x20, sum, t0, t1, t3, t4)
++	CSUM_BIGCHUNK(src, 0x40, sum, t0, t1, t3, t4)
++	CSUM_BIGCHUNK(src, 0x60, sum, t0, t1, t3, t4)
+ 	LONG_SUBU	t8, t8, 0x01
+ 	bnez	t8, move_128bytes
+ 	 PTR_ADDU	src, src, 0x80
+ 
+ 1:
+-	beqz	T2, 1f
+-	 andi	T2, a1, 0x20
++	beqz	t2, 1f
++	 andi	t2, a1, 0x20
+ 
+ move_64bytes:
+-	CSUM_BIGCHUNK(src, 0x00, sum, T0, T1, T3, T4)
+-	CSUM_BIGCHUNK(src, 0x20, sum, T0, T1, T3, T4)
++	CSUM_BIGCHUNK(src, 0x00, sum, t0, t1, t3, t4)
++	CSUM_BIGCHUNK(src, 0x20, sum, t0, t1, t3, t4)
+ 	PTR_ADDU	src, src, 0x40
+ 
+ 1:
+-	beqz	T2, do_end_words
++	beqz	t2, do_end_words
+ 	 andi	t8, a1, 0x1c
+ 
+ move_32bytes:
+-	CSUM_BIGCHUNK(src, 0x00, sum, T0, T1, T3, T4)
++	CSUM_BIGCHUNK(src, 0x00, sum, t0, t1, t3, t4)
+ 	andi	t8, a1, 0x1c
+ 	PTR_ADDU	src, src, 0x20
+ 
+@@ -232,22 +236,22 @@ do_end_words:
+ 	 LONG_SRL	t8, t8, 0x2
+ 
+ end_words:
+-	lw	T0, (src)
++	lw	t0, (src)
+ 	LONG_SUBU	t8, t8, 0x1
+-	ADDC(sum, T0)
++	ADDC(sum, t0)
+ 	bnez	t8, end_words
+ 	 PTR_ADDU	src, src, 0x4
+ 
+ maybe_end_cruft:
+-	andi	T2, a1, 0x3
++	andi	t2, a1, 0x3
+ 
+ small_memcpy:
+- j small_csumcpy; move a1, T2		/* XXX ??? */
++ j small_csumcpy; move a1, t2		/* XXX ??? */
+ 	beqz	t2, out
+-	 move	a1, T2
++	 move	a1, t2
+ 
+ end_bytes:
+-	lb	T0, (src)
++	lb	t0, (src)
+ 	LONG_SUBU	a1, a1, 0x1
+ 	bnez	a2, end_bytes
+ 	 PTR_ADDU	src, src, 0x1

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 16:05:39 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:740 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20037653AbWLGQE4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 16:04:56 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 16:55:18 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:64991 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037690AbWLGQzM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 16:55:12 +0000
 Received: from localhost (p8245-ipad29funabasi.chiba.ocn.ne.jp [221.184.75.245])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id ACE8EB64F; Fri,  8 Dec 2006 01:04:51 +0900 (JST)
-Date:	Fri, 08 Dec 2006 01:04:51 +0900 (JST)
-Message-Id: <20061208.010451.51865806.anemo@mba.ocn.ne.jp>
+	id E8014B8B9; Fri,  8 Dec 2006 01:55:07 +0900 (JST)
+Date:	Fri, 08 Dec 2006 01:55:07 +0900 (JST)
+Message-Id: <20061208.015507.82088245.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH 3/3] Optimize csum_partial for 64bit kernel
+Cc:	ralf@linux-mips.org, vagabon.xyz@gmail.com
+Subject: [PATCH] add GENERIC_HARDIRQS_NO__DO_IRQ for i8259 users
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -21,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13406
+X-archive-position: 13407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,130 +29,216 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Make csum_partial 64-bit powered.
+Now i8259A_chip uses new irq flow handler.  Select
+GENERIC_HARDIRQS_NO__DO_IRQ on some more platforms.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
-diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-index b04475d..9db3572 100644
---- a/arch/mips/lib/csum_partial.S
-+++ b/arch/mips/lib/csum_partial.S
-@@ -29,30 +29,49 @@ #define t4	$12
- #define t5	$13
- #define t6	$14
- #define t7	$15
-+
-+#define USE_DOUBLE
+ arch/mips/Kconfig                                        |    6 ++
+ arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c |   27 -------------
+ arch/mips/vr41xx/Kconfig                                 |    5 --
+ arch/mips/vr41xx/nec-cmbvr4133/irq.c                     |    9 ----
+ 4 files changed, 9 insertions(+), 38 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 1afc890..78e70f2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -165,6 +165,7 @@ config MIPS_COBALT
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 
+ config MACH_DECSTATION
+ 	bool "DECstations"
+@@ -225,6 +226,7 @@ config MACH_JAZZ
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+ 	select SYS_SUPPORTS_100HZ
++	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	help
+ 	 This a family of machines based on the MIPS R4030 chipset which was
+ 	 used by several vendors to build RISC/os and Windows NT workstations.
+@@ -480,6 +482,7 @@ config DDB5477
+ config MACH_VR41XX
+ 	bool "NEC VR41XX-based machines"
+ 	select SYS_HAS_CPU_VR41XX
++	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 
+ config PMC_YOSEMITE
+ 	bool "PMC-Sierra Yosemite eval board"
+@@ -513,6 +516,7 @@ config QEMU
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select ARCH_SPARSEMEM_ENABLE
++	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	help
+ 	  Qemu is a software emulator which among other architectures also
+ 	  can simulate a MIPS32 4Kc system.  This patch adds support for the
+@@ -752,6 +756,7 @@ config TOSHIBA_RBTX4927
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select TOSHIBA_BOARDS
++	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	help
+ 	  This Toshiba board is based on the TX4927 processor. Say Y here to
+ 	  support this machine type
+@@ -771,6 +776,7 @@ config TOSHIBA_RBTX4938
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select TOSHIBA_BOARDS
++	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	help
+ 	  This Toshiba board is based on the TX4938 processor. Say Y here to
+ 	  support this machine type
+diff --git a/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c b/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
+index 5a5ea6c..b54b529 100644
+--- a/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
++++ b/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_irq.c
+@@ -158,7 +158,6 @@ #define TOSHIBA_RBTX4927_IRQ_ISA_INIT   
+ #define TOSHIBA_RBTX4927_IRQ_ISA_ENABLE    ( 1 << 23 )
+ #define TOSHIBA_RBTX4927_IRQ_ISA_DISABLE   ( 1 << 24 )
+ #define TOSHIBA_RBTX4927_IRQ_ISA_MASK      ( 1 << 25 )
+-#define TOSHIBA_RBTX4927_IRQ_ISA_ENDIRQ    ( 1 << 26 )
+ 
+ #define TOSHIBA_RBTX4927_SETUP_ALL         0xffffffff
+ #endif
+@@ -175,7 +174,6 @@ static const u32 toshiba_rbtx4927_irq_de
+ //                                                 | TOSHIBA_RBTX4927_IRQ_ISA_ENABLE
+ //                                                 | TOSHIBA_RBTX4927_IRQ_ISA_DISABLE
+ //                                                 | TOSHIBA_RBTX4927_IRQ_ISA_MASK
+-//                                                 | TOSHIBA_RBTX4927_IRQ_ISA_ENDIRQ
+     );
  #endif
  
-+#ifdef USE_DOUBLE
-+
-+#define LOAD   ld
-+#define ADD    daddu
-+#define NBYTES 8
-+
-+#else
-+
-+#define LOAD   lw
-+#define ADD    addu
-+#define NBYTES 4
-+
-+#endif /* USE_DOUBLE */
-+
-+#define UNIT(unit)  ((unit)*NBYTES)
-+
- #define ADDC(sum,reg)						\
--	addu	sum, reg;					\
-+	ADD	sum, reg;					\
- 	sltu	v1, sum, reg;					\
--	addu	sum, v1
-+	ADD	sum, v1
+@@ -226,7 +224,6 @@ #ifdef CONFIG_TOSHIBA_FPCIB0
+ static void toshiba_rbtx4927_irq_isa_enable(unsigned int irq);
+ static void toshiba_rbtx4927_irq_isa_disable(unsigned int irq);
+ static void toshiba_rbtx4927_irq_isa_mask_and_ack(unsigned int irq);
+-static void toshiba_rbtx4927_irq_isa_end(unsigned int irq);
+ #endif
  
--#define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
--	lw	_t0, (offset + 0x00)(src);			\
--	lw	_t1, (offset + 0x04)(src);			\
--	lw	_t2, (offset + 0x08)(src); 			\
--	lw	_t3, (offset + 0x0c)(src); 			\
--	ADDC(sum, _t0);						\
--	ADDC(sum, _t1);						\
--	ADDC(sum, _t2);						\
--	ADDC(sum, _t3);						\
--	lw	_t0, (offset + 0x10)(src);			\
--	lw	_t1, (offset + 0x14)(src);			\
--	lw	_t2, (offset + 0x18)(src);			\
--	lw	_t3, (offset + 0x1c)(src);			\
-+#define CSUM_BIGCHUNK1(src, offset, sum, _t0, _t1, _t2, _t3)	\
-+	LOAD	_t0, (offset + UNIT(0))(src);			\
-+	LOAD	_t1, (offset + UNIT(1))(src);			\
-+	LOAD	_t2, (offset + UNIT(2))(src); 			\
-+	LOAD	_t3, (offset + UNIT(3))(src); 			\
- 	ADDC(sum, _t0);						\
- 	ADDC(sum, _t1);						\
- 	ADDC(sum, _t2);						\
--	ADDC(sum, _t3);						\
-+	ADDC(sum, _t3)
-+
-+#ifdef USE_DOUBLE
-+#define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
-+	CSUM_BIGCHUNK1(src, offset, sum, _t0, _t1, _t2, _t3)
-+#else
-+#define CSUM_BIGCHUNK(src, offset, sum, _t0, _t1, _t2, _t3)	\
-+	CSUM_BIGCHUNK1(src, offset, sum, _t0, _t1, _t2, _t3);	\
-+	CSUM_BIGCHUNK1(src, offset + 0x10, sum, _t0, _t1, _t2, _t3)
-+#endif
+ #define TOSHIBA_RBTX4927_IOC_NAME "RBTX4927-IOC"
+@@ -249,7 +246,6 @@ static struct irq_chip toshiba_rbtx4927_
+ 	.mask = toshiba_rbtx4927_irq_isa_disable,
+ 	.mask_ack = toshiba_rbtx4927_irq_isa_mask_and_ack,
+ 	.unmask = toshiba_rbtx4927_irq_isa_enable,
+-	.end = toshiba_rbtx4927_irq_isa_end,
+ };
+ #endif
  
- /*
-  * a0: source address
-@@ -117,11 +136,17 @@ qword_align:
- 	beqz	t8, oword_align
- 	 andi	t8, src, 0x10
+@@ -402,7 +398,8 @@ static void __init toshiba_rbtx4927_irq_
  
-+#ifdef USE_DOUBLE
-+	ld	t0, 0x00(src)
-+	LONG_SUBU	a1, a1, 0x8
-+	ADDC(sum, t0)
-+#else
- 	lw	t0, 0x00(src)
- 	lw	t1, 0x04(src)
- 	LONG_SUBU	a1, a1, 0x8
- 	ADDC(sum, t0)
- 	ADDC(sum, t1)
-+#endif
- 	PTR_ADDU	src, src, 0x8
- 	andi	t8, src, 0x10
+ 	for (i = TOSHIBA_RBTX4927_IRQ_ISA_BEG;
+ 	     i <= TOSHIBA_RBTX4927_IRQ_ISA_END; i++)
+-		set_irq_chip(i, &toshiba_rbtx4927_irq_isa_type);
++		set_irq_chip_and_handler(i, &toshiba_rbtx4927_irq_isa_type,
++					 handle_level_irq);
  
-@@ -129,14 +154,14 @@ oword_align:
- 	beqz	t8, begin_movement
- 	 LONG_SRL	t8, a1, 0x7
+ 	setup_irq(TOSHIBA_RBTX4927_IRQ_NEST_ISA_ON_IOC,
+ 		  &toshiba_rbtx4927_irq_isa_master);
+@@ -470,26 +467,6 @@ static void toshiba_rbtx4927_irq_isa_mas
+ #endif
  
--	lw	t3, 0x08(src)
--	lw	t4, 0x0c(src)
--	lw	t0, 0x00(src)
--	lw	t1, 0x04(src)
--	ADDC(sum, t3)
--	ADDC(sum, t4)
-+#ifdef USE_DOUBLE
-+	ld	t0, 0x00(src)
-+	ld	t1, 0x08(src)
- 	ADDC(sum, t0)
- 	ADDC(sum, t1)
-+#else
-+	CSUM_BIGCHUNK1(src, 0x00, sum, t0, t1, t3, t4)
-+#endif
- 	LONG_SUBU	a1, a1, 0x10
- 	PTR_ADDU	src, src, 0x10
- 	LONG_SRL	t8, a1, 0x7
-@@ -219,6 +244,13 @@ #endif
- 1:	ADDC(sum, t1)
  
- 	/* fold checksum */
-+#ifdef USE_DOUBLE
-+	dsll32	v1, sum, 0
-+	daddu	sum, v1
-+	sltu	v1, sum, v1
-+	dsra32	sum, sum, 0
-+	addu	sum, v1
-+#endif
- 	sll	v1, sum, 16
- 	addu	sum, v1
- 	sltu	v1, sum, v1
+-#ifdef CONFIG_TOSHIBA_FPCIB0
+-static void toshiba_rbtx4927_irq_isa_end(unsigned int irq)
+-{
+-	TOSHIBA_RBTX4927_IRQ_DPRINTK(TOSHIBA_RBTX4927_IRQ_ISA_ENDIRQ,
+-				     "irq=%d\n", irq);
+-
+-	if (irq < TOSHIBA_RBTX4927_IRQ_ISA_BEG
+-	    || irq > TOSHIBA_RBTX4927_IRQ_ISA_END) {
+-		TOSHIBA_RBTX4927_IRQ_DPRINTK(TOSHIBA_RBTX4927_IRQ_EROR,
+-					     "bad irq=%d\n", irq);
+-		panic("\n");
+-	}
+-
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
+-		toshiba_rbtx4927_irq_isa_enable(irq);
+-	}
+-}
+-#endif
+-
+-
+ void __init arch_init_irq(void)
+ {
+ 	extern void tx4927_irq_init(void);
+diff --git a/arch/mips/vr41xx/Kconfig b/arch/mips/vr41xx/Kconfig
+index c8dfd80..92f41f6 100644
+--- a/arch/mips/vr41xx/Kconfig
++++ b/arch/mips/vr41xx/Kconfig
+@@ -6,7 +6,6 @@ config CASIO_E55
+ 	select ISA
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 
+ config IBM_WORKPAD
+ 	bool "Support for IBM WorkPad z50"
+@@ -16,7 +15,6 @@ config IBM_WORKPAD
+ 	select ISA
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 
+ config NEC_CMBVR4133
+ 	bool "Support for NEC CMB-VR4133"
+@@ -41,7 +39,6 @@ config TANBAC_TB022X
+ 	select IRQ_CPU
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	help
+ 	  The TANBAC VR4131 multichip module(TB0225) and
+ 	  the TANBAC VR4131DIMM(TB0229) are MIPS-based platforms
+@@ -74,7 +71,6 @@ config VICTOR_MPC30X
+ 	select IRQ_CPU
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 
+ config ZAO_CAPCELLA
+ 	bool "Support for ZAO Networks Capcella"
+@@ -84,7 +80,6 @@ config ZAO_CAPCELLA
+ 	select IRQ_CPU
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 
+ config PCI_VR41XX
+ 	bool "Add PCI control unit support of NEC VR4100 series"
+diff --git a/arch/mips/vr41xx/nec-cmbvr4133/irq.c b/arch/mips/vr41xx/nec-cmbvr4133/irq.c
+index a039bb7..128ed8d 100644
+--- a/arch/mips/vr41xx/nec-cmbvr4133/irq.c
++++ b/arch/mips/vr41xx/nec-cmbvr4133/irq.c
+@@ -45,19 +45,12 @@ static void ack_i8259_irq(unsigned int i
+ 	mask_and_ack_8259A(irq - I8259_IRQ_BASE);
+ }
+ 
+-static void end_i8259_irq(unsigned int irq)
+-{
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
+-		enable_8259A_irq(irq - I8259_IRQ_BASE);
+-}
+-
+ static struct irq_chip i8259_irq_type = {
+ 	.typename       = "XT-PIC",
+ 	.ack            = ack_i8259_irq,
+ 	.mask		= disable_i8259_irq,
+ 	.mask_ack	= ack_i8259_irq,
+ 	.unmask		= enable_i8259_irq,
+-	.end            = end_i8259_irq,
+ };
+ 
+ static int i8259_get_irq_number(int irq)
+@@ -92,7 +85,7 @@ void __init rockhopper_init_irq(void)
+ 	}
+ 
+ 	for (i = I8259_IRQ_BASE; i <= I8259_IRQ_LAST; i++)
+-		set_irq_chip(i, &i8259_irq_type);
++		set_irq_chip_and_handler(i, &i8259_irq_type, handle_level_irq);
+ 
+ 	setup_irq(I8259_SLAVE_IRQ, &i8259_slave_cascade);
+ 

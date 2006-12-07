@@ -1,57 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 07:34:50 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.189]:35516 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038727AbWLGHep (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Dec 2006 07:34:45 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so758955nfc
-        for <linux-mips@linux-mips.org>; Wed, 06 Dec 2006 23:34:43 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=lCLsEwv1uZZn+JyEmE36G1pSNHTENzaE8SaKwiwtCkgGqv8AMmtbQvRAb/Q/J3m6CiHdyBPdEwNb4RV1BEL/AkEoQaJelNtud2dn2VNhwsCBhUfABiNMAv/utLUMqqanxrqSct65INKQHnCFwXIUpOJ5AsLEpJEo/YinM59zsdc=
-Received: by 10.49.7.10 with SMTP id k10mr3411715nfi.1165476883430;
-        Wed, 06 Dec 2006 23:34:43 -0800 (PST)
-Received: by 10.78.123.2 with HTTP; Wed, 6 Dec 2006 23:34:43 -0800 (PST)
-Message-ID: <cda58cb80612062334h65d1b19di29ea71fecaf8015a@mail.gmail.com>
-Date:	Thu, 7 Dec 2006 08:34:43 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH] Import updates from i386's i8259.c
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-In-Reply-To: <20061207.121702.108739943.nemoto@toshiba-tops.co.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 09:46:51 +0000 (GMT)
+Received: from verein.lst.de ([213.95.11.210]:932 "EHLO mail.lst.de")
+	by ftp.linux-mips.org with ESMTP id S20038860AbWLGJqr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 09:46:47 +0000
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id kB79kesi030447
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Thu, 7 Dec 2006 10:46:40 +0100
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id kB79kdbj030445;
+	Thu, 7 Dec 2006 10:46:39 +0100
+Date:	Thu, 7 Dec 2006 10:46:39 +0100
+From:	Christoph Hellwig <hch@lst.de>
+To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	mingo@elte.hu
+Subject: Re: [MIPS] Import updates from i386's i8259.c
+Message-ID: <20061207094639.GA30260@lst.de>
+References: <S20037871AbWLFUPw/20061206201552Z+14601@ftp.linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <20061205194907.GA1088@linux-mips.org>
-	 <20061205195702.GA2097@linux-mips.org>
-	 <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com>
-	 <20061207.121702.108739943.nemoto@toshiba-tops.co.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <S20037871AbWLFUPw/20061206201552Z+14601@ftp.linux-mips.org>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13390
+X-archive-position: 13391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-On 12/7/06, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Wed, 6 Dec 2006 09:40:50 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> > Atsushi, could you take care of removing "select
-> > GENERIC_HARDIRQS_NO__DO_IRQ" in your patch where needed ? specially
-> > all boards based on NEC VR41XX cpu.
->
-> You mean "adding" ?  I think now we can select
-> GENERIC_HARDIRQS_NO__DO_IRQ for all MACH_VR41XX boards.
->
+On Wed, Dec 06, 2006 at 08:15:47PM +0000, linux-mips@linux-mips.org wrote:
+> Author: Atsushi Nemoto <anemo@mba.ocn.ne.jp> Thu Dec 7 02:04:17 2006 +0900
+> Comitter: Ralf Baechle <ralf@linux-mips.org> Wed Dec 6 20:10:54 2006 +0000
+> Commit: bf8cfe1360932f191a3ea8d47c773c008ec32cd7
+> Gitweb: http://www.linux-mips.org/g/linux/bf8cfe13
+> Branch: master
+> 
+> Import many updates from i386's i8259.c, especially genirq transitions.
 
-yes sorry. I was thinking of removing all of them in
-arch/mips/vr41xx/Kconfig, and add it to MACH_VR41XX config and all
-others configs that were using the i8259.
-
--- 
-               Franck
+Shouldn't we try to share i8259.c over the various architectures that
+use this controller?  With the generic hardirq framework that should be
+possible.

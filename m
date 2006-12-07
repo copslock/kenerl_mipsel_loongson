@@ -1,65 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 04:13:15 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:16369 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20037675AbWLGENL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Dec 2006 04:13:11 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 7 Dec 2006 13:13:09 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id EE81F41E11;
-	Thu,  7 Dec 2006 13:13:06 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id E392F41DBA;
-	Thu,  7 Dec 2006 13:13:06 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id kB74D6W0089930;
-	Thu, 7 Dec 2006 13:13:06 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Thu, 07 Dec 2006 13:13:06 +0900 (JST)
-Message-Id: <20061207.131306.63741931.nemoto@toshiba-tops.co.jp>
-To:	ashlesha@kenati.com
-Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org
-Subject: Re: Cant analyze prologue code
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <1165462754.6516.40.camel@sandbar.kenati.com>
-References: <1165450403.6516.28.camel@sandbar.kenati.com>
-	<20061207.103714.25910613.nemoto@toshiba-tops.co.jp>
-	<1165462754.6516.40.camel@sandbar.kenati.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 07:34:50 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.189]:35516 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038727AbWLGHep (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Dec 2006 07:34:45 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so758955nfc
+        for <linux-mips@linux-mips.org>; Wed, 06 Dec 2006 23:34:43 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=lCLsEwv1uZZn+JyEmE36G1pSNHTENzaE8SaKwiwtCkgGqv8AMmtbQvRAb/Q/J3m6CiHdyBPdEwNb4RV1BEL/AkEoQaJelNtud2dn2VNhwsCBhUfABiNMAv/utLUMqqanxrqSct65INKQHnCFwXIUpOJ5AsLEpJEo/YinM59zsdc=
+Received: by 10.49.7.10 with SMTP id k10mr3411715nfi.1165476883430;
+        Wed, 06 Dec 2006 23:34:43 -0800 (PST)
+Received: by 10.78.123.2 with HTTP; Wed, 6 Dec 2006 23:34:43 -0800 (PST)
+Message-ID: <cda58cb80612062334h65d1b19di29ea71fecaf8015a@mail.gmail.com>
+Date:	Thu, 7 Dec 2006 08:34:43 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] Import updates from i386's i8259.c
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+In-Reply-To: <20061207.121702.108739943.nemoto@toshiba-tops.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+References: <20061205194907.GA1088@linux-mips.org>
+	 <20061205195702.GA2097@linux-mips.org>
+	 <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com>
+	 <20061207.121702.108739943.nemoto@toshiba-tops.co.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13389
+X-archive-position: 13390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 06 Dec 2006 19:39:14 -0800, Ashlesha Shintre <ashlesha@kenati.com> wrote:
-> I cant build the kernel with this patch -- i m using the 2.6.14.6
-> kernel..
+On 12/7/06, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> On Wed, 6 Dec 2006 09:40:50 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> > Atsushi, could you take care of removing "select
+> > GENERIC_HARDIRQS_NO__DO_IRQ" in your patch where needed ? specially
+> > all boards based on NEC VR41XX cpu.
+>
+> You mean "adding" ?  I think now we can select
+> GENERIC_HARDIRQS_NO__DO_IRQ for all MACH_VR41XX boards.
+>
 
-Then these patch might fit your needs:
+yes sorry. I was thinking of removing all of them in
+arch/mips/vr41xx/Kconfig, and add it to MACH_VR41XX config and all
+others configs that were using the i8259.
 
-http://www.linux-mips.org/archives/linux-mips/2005-11/msg00088.html
-or
-http://www.linux-mips.org/archives/linux-mips/2006-02/msg00097.html
-(http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=63077519899721120b61d663a68adced068a459d)
-
-> also, the kernel does not hang, but the output produced on the console 
-> is not complete: eg
-> i.e. I get this:
-
-Anyway, "Cant analyze prologue code" message should not irrelevant to
-your serial console problem.
-
----
-Atsushi Nemoto
+-- 
+               Franck

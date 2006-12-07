@@ -1,51 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 13:53:06 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:20357 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20039152AbWLGNxC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Dec 2006 13:53:02 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 663873EC9; Thu,  7 Dec 2006 05:52:59 -0800 (PST)
-Message-ID: <45781D1C.40805@ru.mvista.com>
-Date:	Thu, 07 Dec 2006 16:54:36 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Dec 2006 15:04:02 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:8210 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20027577AbWLGPD4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Dec 2006 15:03:56 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id A5F53FE276;
+	Thu,  7 Dec 2006 16:03:42 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 6l463pDaGZMj; Thu,  7 Dec 2006 16:03:42 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 42BBAFE272;
+	Thu,  7 Dec 2006 16:03:42 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id kB7F3qZ3026535;
+	Thu, 7 Dec 2006 16:03:52 +0100
+Date:	Thu, 7 Dec 2006 15:03:48 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, vagabon.xyz@gmail.com,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Import updates from i386's i8259.c
+In-Reply-To: <45781C70.30405@ru.mvista.com>
+Message-ID: <Pine.LNX.4.64N.0612071443250.22220@blysk.ds.pg.gda.pl>
+References: <20061205194907.GA1088@linux-mips.org> <20061205195702.GA2097@linux-mips.org>
+ <cda58cb80612060040o17ec40f3x4c2f7d0037d3cd1@mail.gmail.com>
+ <20061207.121702.108739943.nemoto@toshiba-tops.co.jp> <20061207115035.GA15386@linux-mips.org>
+ <45781C70.30405@ru.mvista.com>
 MIME-Version: 1.0
-To:	Alexander Voropay <a.voropay@orange-ftgroup.ru>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Import updates from i386's i8259.c
-References: <S20037871AbWLFUPw/20061206201552Z+14601@ftp.linux-mips.org> <20061207094639.GA30260@lst.de> <385101c719fa$80448100$e90d11ac@spb.in.rosprint.ru>
-In-Reply-To: <385101c719fa$80448100$e90d11ac@spb.in.rosprint.ru>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.6/2299/Thu Dec  7 08:36:50 2006 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13398
+X-archive-position: 13399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Thu, 7 Dec 2006, Sergei Shtylyov wrote:
 
-Alexander Voropay wrote:
+>    It's not really related as 8259 is programmed to generate vectors 0x20 to
+> 0x2F for x86 but the the IRQs start from zero anyway...
 
->>> Import many updates from i386's i8259.c, especially genirq transitions.
+ In Linux most platforms define IRQ numbers in the sense of physical lines 
+(or wires if you prefer) routed to inputs of interrupt controllers rather 
+than vectors which may or may not be used by a given platform (and to 
+complicate things further, the presence of which may be 
+software-configurable).  Of course if a message passing concept is used 
+for interrupt delivery (be it a simple chain or a more complicated 
+protocol), then a different numbering scheme may be required and exposing 
+vectors may be a necessity.
 
->> Shouldn't we try to share i8259.c over the various architectures that
->> use this controller?  With the generic hardirq framework that should be
->> possible.
+ Even with the i8259A there is no need to use its vector at all if the 
+processor being interrupted does not issue INTA cycles itself.
 
-> The "i8259" should be under "ISA" or "EISA" Kconfig option.
-
-    It's not really bus specific actually. I'm sure MCA systems had it as well.
-
-> -- 
-> -=AV=-
-
-WBR, Sergei
+  Maciej

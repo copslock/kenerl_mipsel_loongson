@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2006 12:57:59 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:62631 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20037578AbWLHM5z (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 Dec 2006 12:57:55 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 28A4F3EC9; Fri,  8 Dec 2006 04:57:32 -0800 (PST)
-Message-ID: <4579619D.1080903@ru.mvista.com>
-Date:	Fri, 08 Dec 2006 15:59:09 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	ashlesha@kenati.com
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: Serial 8250 driver registration:
-References: <1165462754.6516.40.camel@sandbar.kenati.com>	 <20061207.131306.63741931.nemoto@toshiba-tops.co.jp>	 <1165534711.6512.10.camel@sandbar.kenati.com>	 <20061208.101112.108306293.nemoto@toshiba-tops.co.jp> <1165543305.6512.17.camel@sandbar.kenati.com>
-In-Reply-To: <1165543305.6512.17.camel@sandbar.kenati.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2006 13:05:46 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:2275 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20037591AbWLHNFp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 Dec 2006 13:05:45 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kB8D5i0Y006929;
+	Fri, 8 Dec 2006 13:05:44 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kB8D5htA006928;
+	Fri, 8 Dec 2006 13:05:43 GMT
+Date:	Fri, 8 Dec 2006 13:05:43 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Vitaly Wool <vitalywool@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH][respin] add STB810 support (Philips PNX8550-based)
+Message-ID: <20061208130543.GB5797@linux-mips.org>
+References: <20061208114035.000049c4.vitalywool@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20061208114035.000049c4.vitalywool@gmail.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13412
+X-archive-position: 13413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Fri, Dec 08, 2006 at 11:40:35AM +0300, Vitaly Wool wrote:
 
-Ashlesha Shintre wrote:
+>  please find the updated  patch that adds support for STB810 below.
 
-> Yeah, i thought you might have meant that :-)
+Ok, I applied the unARMed version of the patch :-)
 
-> i m starting to think that the uartclk parameter that i pass to the
-> platform_add_devices function might be wrong --
+Thanks Vitaly,
 
-> i m passing the standard value of 1843200 for a baudrate of 115200...
-
-    Since it's a standard x86 UART built into the x86 south bridge, it should 
-be clocked by the standard 1.8432 MHz clock.
-
-WBR, Sergei
+  Ralf

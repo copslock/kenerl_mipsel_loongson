@@ -1,66 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Dec 2006 13:49:10 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.189]:27740 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037767AbWLHNtF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 8 Dec 2006 13:49:05 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so1083020nfc
-        for <linux-mips@linux-mips.org>; Fri, 08 Dec 2006 05:49:05 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=EnF16Gvam6YiVWMN6rGcqgwUc0psRjKWoNit6H/5RE/0f+RRrLwsVxjXZW2NV0WKLEWzkABsipjcxJ9PN87tzsNH+dT3Ly6T3rNSbJKaSBl/4pBQi/HbYzaMxscEPIpLAfwn7O3MOMXCcFQztULeZZ444xnGV7suNVqU1quwkQA=
-Received: by 10.82.123.16 with SMTP id v16mr309544buc.1165585744753;
-        Fri, 08 Dec 2006 05:49:04 -0800 (PST)
-Received: by 10.82.108.6 with HTTP; Fri, 8 Dec 2006 05:49:04 -0800 (PST)
-Message-ID: <acd2a5930612080549m74abadfeg62ce3336adbf654e@mail.gmail.com>
-Date:	Fri, 8 Dec 2006 16:49:04 +0300
-From:	"Vitaly Wool" <vitalywool@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH][respin] add STB810 support (Philips PNX8550-based)
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20061208130806.GA7439@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Dec 2006 02:09:39 +0000 (GMT)
+Received: from [69.90.147.196] ([69.90.147.196]:59296 "EHLO mail.kenati.com")
+	by ftp.linux-mips.org with ESMTP id S20038913AbWLICJe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 9 Dec 2006 02:09:34 +0000
+Received: from [192.168.1.169] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
+	by mail.kenati.com (Postfix) with ESMTP id E2FEE15D4005;
+	Fri,  8 Dec 2006 19:39:49 -0800 (PST)
+Subject: console stuck
+From:	Ashlesha Shintre <ashlesha@kenati.com>
+Reply-To: ashlesha@kenati.com
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Content-Type: text/plain
+Date:	Fri, 08 Dec 2006 18:22:20 -0800
+Message-Id: <1165630940.7860.7.camel@sandbar.kenati.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.4.2.1 
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20061208114035.000049c4.vitalywool@gmail.com>
-	 <20061208130543.GB5797@linux-mips.org>
-	 <20061208130806.GA7439@linux-mips.org>
-Return-Path: <vitalywool@gmail.com>
+Return-Path: <ashlesha@kenati.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13418
+X-archive-position: 13419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vitalywool@gmail.com
+X-original-sender: ashlesha@kenati.com
 Precedence: bulk
 X-list: linux-mips
 
-On 12/8/06, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Dec 08, 2006 at 01:05:43PM +0000, Ralf Baechle wrote:
->
-> Hmmm...
->
->   CC      arch/mips/philips/pnx8550/common/setup.o
-> arch/mips/philips/pnx8550/common/setup.c:27:34: error:
-> linux/serial_pnx8xxx.h: No such file or directory
-> arch/mips/philips/pnx8550/common/setup.c: In function 'plat_mem_setup':
-> arch/mips/philips/pnx8550/common/setup.c:147: error: 'PNX8XXX_UART_LCR_8BIT'
-> undeclared (first use in this function)
-> arch/mips/philips/pnx8550/common/setup.c:147: error: (Each undeclared
-> identifier is reported only once
-> arch/mips/philips/pnx8550/common/setup.c:147: error: for each function it
-> appears in.)
-> make[1]: *** [arch/mips/philips/pnx8550/common/setup.o] Error 1
-> make: *** [arch/mips/philips/pnx8550/common] Error 2
+Hi,
 
-That's due to my serial rework for 8550 still being ignored, even
-though it has been accepted basically by rmk just before he quitted
-mainstaining serial stuff .
+I m very much confused as to why there is an infinite loop in the
+__request_resource function in the linux/kernel/resource.c file?
 
-The latest repost was yesterday: http://lkml.org/lkml/2006/12/7/147.
-I don't know what else to do to make it seen by anyone :(
+The serial console is getting stuck at this point.
 
-Vitaly
+> for (;;) {
+>                 tmp = *p;
+>                 if (!tmp || tmp->start > end) {
+>                         new->sibling = tmp;
+>                         *p = new;
+>                         new->parent = root;
+>                         return NULL;
+>                 }
+>                 p = &tmp->sibling;
+>                 if (tmp->end < start){
+>                         printk("tmp->end = %d\n",tmp->end);
+>                         printk("tmp->start = %d\n",tmp->start);
+>                         printk("*********!!!!!!!*******sibling?!!\n");
+>                         continue;
+>                 }
+>                 return tmp;
+
+Thanks and Regards,
+Ashlesha.

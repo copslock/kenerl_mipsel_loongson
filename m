@@ -1,66 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Dec 2006 16:16:59 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:32482 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20039260AbWLJQQx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 10 Dec 2006 16:16:53 +0000
-Received: from localhost (p1056-ipad26funabasi.chiba.ocn.ne.jp [220.104.87.56])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 6E218B62E; Mon, 11 Dec 2006 01:16:47 +0900 (JST)
-Date:	Mon, 11 Dec 2006 01:16:47 +0900 (JST)
-Message-Id: <20061211.011647.41196525.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix negative buffer overflow in copy_from_user
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Dec 2006 19:41:51 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:15267 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039327AbWLJTlt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 10 Dec 2006 19:41:49 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kBAJfkrW000535;
+	Sun, 10 Dec 2006 19:41:47 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kBAJfiHj000534;
+	Sun, 10 Dec 2006 19:41:44 GMT
+Date:	Sun, 10 Dec 2006 19:41:44 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Andrew Morton <akpm@osdl.org>, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org, mchehab@infradead.org,
+	luca.risolia@studio.unibo.it
+Subject: [PATCH] Fix namespace conflict between w9968cf.c on MIPS
+Message-ID: <20061210194144.GA423@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13422
+X-archive-position: 13423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-If we passed an invalid _and_ unaligned source address to
-copy_from_user(), the fault handling code miscalculates a length of
-uncopied bytes and returns a value greater than original length.  This
-also causes an negative buffer overflow and overwrites some bytes just
-before the destination kernel buffer.
+Both use __SC.  Since __* is sort of private namespace I've choosen to
+fix this in the driver.  For consistency I decieded to also change
+__UNSC to UNSC.
 
-This can happen "src_unaligned" case in memcpy.S.  If the first load
-from source buffer was a LDFIRST/LDREST (L[WD][RL]) instruction, it
-raise an exception and the THREAD_BUADDR will be an aligned address so
-it will _smaller_ than its real target address.
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-For all case "src" register is smaller than its target load address
-(ie. the offset of load instruction is always greater then zero), and
-on the first load instruction "src" is always start of uncopied source
-buffer, so we can fix the faulted address using the "src" value.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
-index a526c62..7b21bc9 100644
---- a/arch/mips/lib/memcpy.S
-+++ b/arch/mips/lib/memcpy.S
-@@ -434,6 +434,12 @@ l_exc:
- 	 nop
- 	LOAD	t0, THREAD_BUADDR(t0)	# t0 is just past last good address
- 	 nop
-+	/* If src was unaligned, t0 might be _smaller_ then src.  Fix it. */
-+	slt	t1, t0, src
-+	beqz	t1, 1f
-+	 nop
-+	move	t0, src
-+1:
- 	SUB	len, AT, t0		# len number of uncopied bytes
- 	/*
- 	 * Here's where we rely on src and dst being incremented in tandem,
+diff --git a/drivers/media/video/w9968cf.c b/drivers/media/video/w9968cf.c
+index ddce2fb..9f403af 100644
+--- a/drivers/media/video/w9968cf.c
++++ b/drivers/media/video/w9968cf.c
+@@ -1827,8 +1827,8 @@ w9968cf_set_window(struct w9968cf_device
+ 	int err = 0;
+ 
+ 	/* Work around to avoid FP arithmetics */
+-	#define __SC(x) ((x) << 10)
+-	#define __UNSC(x) ((x) >> 10)
++	#define SC(x) ((x) << 10)
++	#define UNSC(x) ((x) >> 10)
+ 
+ 	/* Make sure we are using a supported resolution */
+ 	if ((err = w9968cf_adjust_window_size(cam, (u16*)&win.width,
+@@ -1836,15 +1836,15 @@ w9968cf_set_window(struct w9968cf_device
+ 		goto error;
+ 
+ 	/* Scaling factors */
+-	fw = __SC(win.width) / cam->maxwidth;
+-	fh = __SC(win.height) / cam->maxheight;
++	fw = SC(win.width) / cam->maxwidth;
++	fh = SC(win.height) / cam->maxheight;
+ 
+ 	/* Set up the width and height values used by the chip */
+ 	if ((win.width > cam->maxwidth) || (win.height > cam->maxheight)) {
+ 		cam->vpp_flag |= VPP_UPSCALE;
+ 		/* Calculate largest w,h mantaining the same w/h ratio */
+-		w = (fw >= fh) ? cam->maxwidth : __SC(win.width)/fh;
+-		h = (fw >= fh) ? __SC(win.height)/fw : cam->maxheight;
++		w = (fw >= fh) ? cam->maxwidth : SC(win.width)/fh;
++		h = (fw >= fh) ? SC(win.height)/fw : cam->maxheight;
+ 		if (w < cam->minwidth) /* just in case */
+ 			w = cam->minwidth;
+ 		if (h < cam->minheight) /* just in case */
+@@ -1861,8 +1861,8 @@ w9968cf_set_window(struct w9968cf_device
+ 
+ 	/* Calculate cropped area manteining the right w/h ratio */
+ 	if (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE)) {
+-		cw = (fw >= fh) ? cam->maxwidth : __SC(win.width)/fh;
+-		ch = (fw >= fh) ? __SC(win.height)/fw : cam->maxheight;
++		cw = (fw >= fh) ? cam->maxwidth : SC(win.width)/fh;
++		ch = (fw >= fh) ? SC(win.height)/fw : cam->maxheight;
+ 	} else {
+ 		cw = w;
+ 		ch = h;
+@@ -1901,8 +1901,8 @@ w9968cf_set_window(struct w9968cf_device
+ 	/* We have to scale win.x and win.y offsets */
+ 	if ( (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE))
+ 	     || (cam->vpp_flag & VPP_UPSCALE) ) {
+-		ax = __SC(win.x)/fw;
+-		ay = __SC(win.y)/fh;
++		ax = SC(win.x)/fw;
++		ay = SC(win.y)/fh;
+ 	} else {
+ 		ax = win.x;
+ 		ay = win.y;
+@@ -1917,8 +1917,8 @@ w9968cf_set_window(struct w9968cf_device
+ 	/* Adjust win.x, win.y */
+ 	if ( (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE))
+ 	     || (cam->vpp_flag & VPP_UPSCALE) ) {
+-		win.x = __UNSC(ax*fw);
+-		win.y = __UNSC(ay*fh);
++		win.x = UNSC(ax*fw);
++		win.y = UNSC(ay*fh);
+ 	} else {
+ 		win.x = ax;
+ 		win.y = ay;

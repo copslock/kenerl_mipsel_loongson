@@ -1,46 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2006 18:46:42 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:20898 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039510AbWLKSqk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Dec 2006 18:46:40 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kBBIkemx015120;
-	Mon, 11 Dec 2006 18:46:40 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kBBIkeAE015119;
-	Mon, 11 Dec 2006 18:46:40 GMT
-Date:	Mon, 11 Dec 2006 18:46:40 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [RFC] FLATMEM: allow memory to start at pfn != 0
-Message-ID: <20061211184640.GB1308@linux-mips.org>
-References: <1165420110699-git-send-email-fbuihuu@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1165420110699-git-send-email-fbuihuu@gmail.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2006 20:02:02 +0000 (GMT)
+Received: from as4.cineca.com ([130.186.84.213]:10419 "EHLO as4.cineca.com")
+	by ftp.linux-mips.org with ESMTP id S20039517AbWLKUB5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 11 Dec 2006 20:01:57 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by as4.cineca.com (Postfix) with ESMTP id 114B825DAED;
+	Mon, 11 Dec 2006 21:01:39 +0100 (CET)
+Received: from unibo.mm.cineca.it (unibo.mm.cineca.it [130.186.10.202])
+	by as4.cineca.com (Postfix) with ESMTP id 799DD25DAC3;
+	Mon, 11 Dec 2006 21:01:27 +0100 (CET)
+Received: from localhost (unibo.mm.cineca.it [130.186.10.202])
+	as user anonymous by unibo.mm.cineca.it (Postfix) with ESMTP
+	id A8C37D74B6B; Mon, 11 Dec 2006 21:01:26 +0100 (MET)
+Received: from 151.46.154.186 ( [151.46.154.186])
+	as user luca.risolia@studio.unibo.it@posta.studio.unibo.it by posta.studio.unibo.it with HTTP;
+	Mon, 11 Dec 2006 21:01:26 +0100
+Message-ID: <1165867286.457db9169cf67@posta.studio.unibo.it>
+Date:	Mon, 11 Dec 2006 21:01:26 +0100
+From:	"luca.risolia@studio.unibo.it" <luca.risolia@studio.unibo.it>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Andrew Morton <akpm@osdl.org>, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org, mchehab@infradead.org
+Subject: Re: [PATCH] Fix namespace conflict between w9968cf.c on MIPS
+References: <20061210194144.GA423@linux-mips.org>
+In-Reply-To: <20061210194144.GA423@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) 3.1
+X-Originating-IP: 151.46.154.186
+X-Virus-Scanned: Cineca AppOs 0.99 at as4.cineca.com
+Return-Path: <luca.risolia@studio.unibo.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13429
+X-archive-position: 13430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: luca.risolia@studio.unibo.it
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 06, 2006 at 04:48:27PM +0100, Franck Bui-Huu wrote:
+Okay, thanks.
 
-I just tested this on a Malta.  So patch 2/3 makes Malta die pretty
-spectacularly, so I'm going to remve patches 2/3 and 3/3 again from my
-tree.
+Best regards
+Luca Risolia
 
-Btw, there's spelling mistake in 2/3:
+Scrive Ralf Baechle <ralf@linux-mips.org>:
 
-+               panic("Boggus memory mapping !!!");
-
-  Ralf
+> Both use __SC.  Since __* is sort of private namespace I've choosen to
+> fix this in the driver.  For consistency I decieded to also change
+> __UNSC to UNSC.
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+> diff --git a/drivers/media/video/w9968cf.c b/drivers/media/video/w9968cf.c
+> index ddce2fb..9f403af 100644
+> --- a/drivers/media/video/w9968cf.c
+> +++ b/drivers/media/video/w9968cf.c
+> @@ -1827,8 +1827,8 @@ w9968cf_set_window(struct w9968cf_device
+>  	int err = 0;
+>  
+>  	/* Work around to avoid FP arithmetics */
+> -	#define __SC(x) ((x) << 10)
+> -	#define __UNSC(x) ((x) >> 10)
+> +	#define SC(x) ((x) << 10)
+> +	#define UNSC(x) ((x) >> 10)
+>  
+>  	/* Make sure we are using a supported resolution */
+>  	if ((err = w9968cf_adjust_window_size(cam, (u16*)&win.width,
+> @@ -1836,15 +1836,15 @@ w9968cf_set_window(struct w9968cf_device
+>  		goto error;
+>  
+>  	/* Scaling factors */
+> -	fw = __SC(win.width) / cam->maxwidth;
+> -	fh = __SC(win.height) / cam->maxheight;
+> +	fw = SC(win.width) / cam->maxwidth;
+> +	fh = SC(win.height) / cam->maxheight;
+>  
+>  	/* Set up the width and height values used by the chip */
+>  	if ((win.width > cam->maxwidth) || (win.height > cam->maxheight)) {
+>  		cam->vpp_flag |= VPP_UPSCALE;
+>  		/* Calculate largest w,h mantaining the same w/h ratio */
+> -		w = (fw >= fh) ? cam->maxwidth : __SC(win.width)/fh;
+> -		h = (fw >= fh) ? __SC(win.height)/fw : cam->maxheight;
+> +		w = (fw >= fh) ? cam->maxwidth : SC(win.width)/fh;
+> +		h = (fw >= fh) ? SC(win.height)/fw : cam->maxheight;
+>  		if (w < cam->minwidth) /* just in case */
+>  			w = cam->minwidth;
+>  		if (h < cam->minheight) /* just in case */
+> @@ -1861,8 +1861,8 @@ w9968cf_set_window(struct w9968cf_device
+>  
+>  	/* Calculate cropped area manteining the right w/h ratio */
+>  	if (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE)) {
+> -		cw = (fw >= fh) ? cam->maxwidth : __SC(win.width)/fh;
+> -		ch = (fw >= fh) ? __SC(win.height)/fw : cam->maxheight;
+> +		cw = (fw >= fh) ? cam->maxwidth : SC(win.width)/fh;
+> +		ch = (fw >= fh) ? SC(win.height)/fw : cam->maxheight;
+>  	} else {
+>  		cw = w;
+>  		ch = h;
+> @@ -1901,8 +1901,8 @@ w9968cf_set_window(struct w9968cf_device
+>  	/* We have to scale win.x and win.y offsets */
+>  	if ( (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE))
+>  	     || (cam->vpp_flag & VPP_UPSCALE) ) {
+> -		ax = __SC(win.x)/fw;
+> -		ay = __SC(win.y)/fh;
+> +		ax = SC(win.x)/fw;
+> +		ay = SC(win.y)/fh;
+>  	} else {
+>  		ax = win.x;
+>  		ay = win.y;
+> @@ -1917,8 +1917,8 @@ w9968cf_set_window(struct w9968cf_device
+>  	/* Adjust win.x, win.y */
+>  	if ( (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE))
+>  	     || (cam->vpp_flag & VPP_UPSCALE) ) {
+> -		win.x = __UNSC(ax*fw);
+> -		win.y = __UNSC(ay*fh);
+> +		win.x = UNSC(ax*fw);
+> +		win.y = UNSC(ay*fh);
+>  	} else {
+>  		win.x = ax;
+>  		win.y = ay;
+> 
+> 

@@ -1,62 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2006 04:40:33 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:4696 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20038448AbWLKEk3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Dec 2006 04:40:29 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 11 Dec 2006 13:40:28 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 9347641525;
-	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 8659520327;
-	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id kBB4eOW0007811;
-	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
-Message-Id: <20061211.134024.41628345.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2006 15:53:52 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:2178 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039438AbWLKPxv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 11 Dec 2006 15:53:51 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id kBBFrgch003729
+	for <linux-mips@linux-mips.org>; Mon, 11 Dec 2006 15:53:42 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id kBBFrfGL003728
+	for linux-mips@linux-mips.org; Mon, 11 Dec 2006 15:53:41 GMT
+Date:	Mon, 11 Dec 2006 15:53:41 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH] Fix negative buffer overflow in copy_from_user
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061211.011647.41196525.anemo@mba.ocn.ne.jp>
-References: <20061211.011647.41196525.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Subject: Git stuff
+Message-ID: <20061211155341.GA3542@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13425
+X-archive-position: 13426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 11 Dec 2006 01:16:47 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> If we passed an invalid _and_ unaligned source address to
-> copy_from_user(), the fault handling code miscalculates a length of
-> uncopied bytes and returns a value greater than original length.  This
-> also causes an negative buffer overflow and overwrites some bytes just
-> before the destination kernel buffer.
-> 
-> This can happen "src_unaligned" case in memcpy.S.  If the first load
-> from source buffer was a LDFIRST/LDREST (L[WD][RL]) instruction, it
-> raise an exception and the THREAD_BUADDR will be an aligned address so
-> it will _smaller_ than its real target address.
+I've been asked what that strange commit
 
-Sorry, this is wrong!  Please ignore this patch.
+commit e81fbbbb9a0d8072460c223e935fb1aca4231dc0
+Merge: 6f0b1e5... 9202f32...
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Mon Dec 11 12:25:29 2006 +0000
 
-In this case THREAD_BUADDR should be an _unaligned_ address.  On QEMU
-THREAD_BUADDR was an _aligned_ address so it might be a QEMU bug ...
+    Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/torva
+    
+    nothing to commit
 
----
-Atsushi Nemoto
+from around noon today means - it's a merge commit where after resolution
+of the merge conflict there was nothing left to commit.  Nothing to worry :)
+
+Also sorry for the flood of commit messages.  I cherry pick any commit
+that is a fix to the -stable branches which ends multiplying the number
+of commits.  If you only care about certain branches you can use i.e.
+procmail to filter away the uninterestin messages.  The format of the
+mail messages was choosen to make that easy.
+
+  Ralf

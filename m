@@ -1,46 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2006 03:50:14 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.185]:35426 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039461AbWLKDuK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Dec 2006 03:50:10 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so1778693nfc
-        for <linux-mips@linux-mips.org>; Sun, 10 Dec 2006 19:50:10 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=B9AVPPEbXg6pI/uvESmlf+6QaIbddbBlXS47A6Qsfatrs/G6VqWCdlXChxyhao/58DcdRPaljg4bufK9cwmUiOD8kWXp3e0z2bbiIIpcIgXmmGlb7DXZ3Xue6lTz87N1gR6MlJwHowD1ruL1eUHXuueYGkbmzgsLppaFfP8F4fo=
-Received: by 10.82.114.3 with SMTP id m3mr524478buc.1165809010040;
-        Sun, 10 Dec 2006 19:50:10 -0800 (PST)
-Received: by 10.82.179.13 with HTTP; Sun, 10 Dec 2006 19:50:10 -0800 (PST)
-Message-ID: <50c9a2250612101950s20e3f71cs7c6726be43685b26@mail.gmail.com>
-Date:	Mon, 11 Dec 2006 11:50:10 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: hwo to improve a video decoder program's timeslice
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2006 04:40:33 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:4696 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20038448AbWLKEk3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 11 Dec 2006 04:40:29 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 11 Dec 2006 13:40:28 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 9347641525;
+	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 8659520327;
+	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id kBB4eOW0007811;
+	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 11 Dec 2006 13:40:24 +0900 (JST)
+Message-Id: <20061211.134024.41628345.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Re: [PATCH] Fix negative buffer overflow in copy_from_user
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061211.011647.41196525.anemo@mba.ocn.ne.jp>
+References: <20061211.011647.41196525.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13424
+X-archive-position: 13425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
- i have a video decoder program run as aplication
-and i now have change the HZ from 1000 to 100, set the decoder program
-priority as 99.
-if i want to the video decoder program to get more time to run, is
-there any other way to improve it ?
+On Mon, 11 Dec 2006 01:16:47 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> If we passed an invalid _and_ unaligned source address to
+> copy_from_user(), the fault handling code miscalculates a length of
+> uncopied bytes and returns a value greater than original length.  This
+> also causes an negative buffer overflow and overwrites some bytes just
+> before the destination kernel buffer.
+> 
+> This can happen "src_unaligned" case in memcpy.S.  If the first load
+> from source buffer was a LDFIRST/LDREST (L[WD][RL]) instruction, it
+> raise an exception and the THREAD_BUADDR will be an aligned address so
+> it will _smaller_ than its real target address.
 
-thanks for any hints
+Sorry, this is wrong!  Please ignore this patch.
 
-Best Regards
+In this case THREAD_BUADDR should be an _unaligned_ address.  On QEMU
+THREAD_BUADDR was an _aligned_ address so it might be a QEMU bug ...
 
-zhuzhenhua
+---
+Atsushi Nemoto

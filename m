@@ -1,126 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Dec 2006 20:02:02 +0000 (GMT)
-Received: from as4.cineca.com ([130.186.84.213]:10419 "EHLO as4.cineca.com")
-	by ftp.linux-mips.org with ESMTP id S20039517AbWLKUB5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 11 Dec 2006 20:01:57 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by as4.cineca.com (Postfix) with ESMTP id 114B825DAED;
-	Mon, 11 Dec 2006 21:01:39 +0100 (CET)
-Received: from unibo.mm.cineca.it (unibo.mm.cineca.it [130.186.10.202])
-	by as4.cineca.com (Postfix) with ESMTP id 799DD25DAC3;
-	Mon, 11 Dec 2006 21:01:27 +0100 (CET)
-Received: from localhost (unibo.mm.cineca.it [130.186.10.202])
-	as user anonymous by unibo.mm.cineca.it (Postfix) with ESMTP
-	id A8C37D74B6B; Mon, 11 Dec 2006 21:01:26 +0100 (MET)
-Received: from 151.46.154.186 ( [151.46.154.186])
-	as user luca.risolia@studio.unibo.it@posta.studio.unibo.it by posta.studio.unibo.it with HTTP;
-	Mon, 11 Dec 2006 21:01:26 +0100
-Message-ID: <1165867286.457db9169cf67@posta.studio.unibo.it>
-Date:	Mon, 11 Dec 2006 21:01:26 +0100
-From:	"luca.risolia@studio.unibo.it" <luca.risolia@studio.unibo.it>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Andrew Morton <akpm@osdl.org>, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org, mchehab@infradead.org
-Subject: Re: [PATCH] Fix namespace conflict between w9968cf.c on MIPS
-References: <20061210194144.GA423@linux-mips.org>
-In-Reply-To: <20061210194144.GA423@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Dec 2006 00:58:19 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.191]:53426 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039561AbWLLA6P (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Dec 2006 00:58:15 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so73437nfc
+        for <linux-mips@linux-mips.org>; Mon, 11 Dec 2006 16:58:07 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=dter0MhAnz5/Mec/jkvYNqFLPzEic06efpxzTHZCJ7BPzevc7r4V20A31/ja4/Q7C5DcZcJquYMtD1FQdC5C7FEIxbHGSJXkDADheDIM7cL3HOxGV+T1dlj+AJBYl7v84hByv7s8K9c0qN2q9dnBxrR7PeYPaw+FH8tiMaMBAVY=
+Received: by 10.82.105.13 with SMTP id d13mr1196885buc.1165885087427;
+        Mon, 11 Dec 2006 16:58:07 -0800 (PST)
+Received: by 10.82.178.4 with HTTP; Mon, 11 Dec 2006 16:58:06 -0800 (PST)
+Message-ID: <50c9a2250612111658t50c5cdcdtd6831101d4316e2e@mail.gmail.com>
+Date:	Tue, 12 Dec 2006 08:58:06 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	"Philippe De Swert" <philippedeswert@scarlet.be>
+Subject: Re: hwo to improve a video decoder program's timeslice
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <JA4FU5$15B25B9E0AEC49C3D47C4ABD5469CF70@scarlet.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-User-Agent: Internet Messaging Program (IMP) 3.1
-X-Originating-IP: 151.46.154.186
-X-Virus-Scanned: Cineca AppOs 0.99 at as4.cineca.com
-Return-Path: <luca.risolia@studio.unibo.it>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <JA4FU5$15B25B9E0AEC49C3D47C4ABD5469CF70@scarlet.be>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13430
+X-archive-position: 13431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luca.risolia@studio.unibo.it
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Okay, thanks.
+On 12/12/06, Philippe De Swert <philippedeswert@scarlet.be> wrote:
+> Hi,
+>
+> >  i have a video decoder program run as aplication
+> > and i now have change the HZ from 1000 to 100, set the decoder program
+> > priority as 99.
+>
+> Seems you are mixing things here... The HZ change will just change the
+> interval of the timer tick. For some more explanations about this, look here :
+> http://kerneltrap.org/node/464
+>
+> > if i want to the video decoder program to get more time to run, is
+> > there any other way to improve it ?
+>
+> Maybe using nice? Try "man nice" in a terminal on your Linux box to get more
+> explanations about this.
+thanks, i have try nice already, there's not too much change.
 
-Best regards
-Luca Risolia
-
-Scrive Ralf Baechle <ralf@linux-mips.org>:
-
-> Both use __SC.  Since __* is sort of private namespace I've choosen to
-> fix this in the driver.  For consistency I decieded to also change
-> __UNSC to UNSC.
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> diff --git a/drivers/media/video/w9968cf.c b/drivers/media/video/w9968cf.c
-> index ddce2fb..9f403af 100644
-> --- a/drivers/media/video/w9968cf.c
-> +++ b/drivers/media/video/w9968cf.c
-> @@ -1827,8 +1827,8 @@ w9968cf_set_window(struct w9968cf_device
->  	int err = 0;
->  
->  	/* Work around to avoid FP arithmetics */
-> -	#define __SC(x) ((x) << 10)
-> -	#define __UNSC(x) ((x) >> 10)
-> +	#define SC(x) ((x) << 10)
-> +	#define UNSC(x) ((x) >> 10)
->  
->  	/* Make sure we are using a supported resolution */
->  	if ((err = w9968cf_adjust_window_size(cam, (u16*)&win.width,
-> @@ -1836,15 +1836,15 @@ w9968cf_set_window(struct w9968cf_device
->  		goto error;
->  
->  	/* Scaling factors */
-> -	fw = __SC(win.width) / cam->maxwidth;
-> -	fh = __SC(win.height) / cam->maxheight;
-> +	fw = SC(win.width) / cam->maxwidth;
-> +	fh = SC(win.height) / cam->maxheight;
->  
->  	/* Set up the width and height values used by the chip */
->  	if ((win.width > cam->maxwidth) || (win.height > cam->maxheight)) {
->  		cam->vpp_flag |= VPP_UPSCALE;
->  		/* Calculate largest w,h mantaining the same w/h ratio */
-> -		w = (fw >= fh) ? cam->maxwidth : __SC(win.width)/fh;
-> -		h = (fw >= fh) ? __SC(win.height)/fw : cam->maxheight;
-> +		w = (fw >= fh) ? cam->maxwidth : SC(win.width)/fh;
-> +		h = (fw >= fh) ? SC(win.height)/fw : cam->maxheight;
->  		if (w < cam->minwidth) /* just in case */
->  			w = cam->minwidth;
->  		if (h < cam->minheight) /* just in case */
-> @@ -1861,8 +1861,8 @@ w9968cf_set_window(struct w9968cf_device
->  
->  	/* Calculate cropped area manteining the right w/h ratio */
->  	if (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE)) {
-> -		cw = (fw >= fh) ? cam->maxwidth : __SC(win.width)/fh;
-> -		ch = (fw >= fh) ? __SC(win.height)/fw : cam->maxheight;
-> +		cw = (fw >= fh) ? cam->maxwidth : SC(win.width)/fh;
-> +		ch = (fw >= fh) ? SC(win.height)/fw : cam->maxheight;
->  	} else {
->  		cw = w;
->  		ch = h;
-> @@ -1901,8 +1901,8 @@ w9968cf_set_window(struct w9968cf_device
->  	/* We have to scale win.x and win.y offsets */
->  	if ( (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE))
->  	     || (cam->vpp_flag & VPP_UPSCALE) ) {
-> -		ax = __SC(win.x)/fw;
-> -		ay = __SC(win.y)/fh;
-> +		ax = SC(win.x)/fw;
-> +		ay = SC(win.y)/fh;
->  	} else {
->  		ax = win.x;
->  		ay = win.y;
-> @@ -1917,8 +1917,8 @@ w9968cf_set_window(struct w9968cf_device
->  	/* Adjust win.x, win.y */
->  	if ( (cam->largeview && !(cam->vpp_flag & VPP_UPSCALE))
->  	     || (cam->vpp_flag & VPP_UPSCALE) ) {
-> -		win.x = __UNSC(ax*fw);
-> -		win.y = __UNSC(ay*fh);
-> +		win.x = UNSC(ax*fw);
-> +		win.y = UNSC(ay*fh);
->  	} else {
->  		win.x = ax;
->  		win.y = ay;
-> 
-> 
+>
+> Cheers,
+>
+> Philippe---
+> Scarlet ONE -  Combine ADSL with unlimited fixed phone and save 400 euros
+> http://www.scarlet.be
+>
+>

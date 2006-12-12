@@ -1,64 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Dec 2006 00:58:19 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.191]:53426 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039561AbWLLA6P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 12 Dec 2006 00:58:15 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so73437nfc
-        for <linux-mips@linux-mips.org>; Mon, 11 Dec 2006 16:58:07 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Dec 2006 08:55:52 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.171]:49983 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037892AbWLLIzs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Dec 2006 08:55:48 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so1953865uga
+        for <linux-mips@linux-mips.org>; Tue, 12 Dec 2006 00:55:47 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=dter0MhAnz5/Mec/jkvYNqFLPzEic06efpxzTHZCJ7BPzevc7r4V20A31/ja4/Q7C5DcZcJquYMtD1FQdC5C7FEIxbHGSJXkDADheDIM7cL3HOxGV+T1dlj+AJBYl7v84hByv7s8K9c0qN2q9dnBxrR7PeYPaw+FH8tiMaMBAVY=
-Received: by 10.82.105.13 with SMTP id d13mr1196885buc.1165885087427;
-        Mon, 11 Dec 2006 16:58:07 -0800 (PST)
-Received: by 10.82.178.4 with HTTP; Mon, 11 Dec 2006 16:58:06 -0800 (PST)
-Message-ID: <50c9a2250612111658t50c5cdcdtd6831101d4316e2e@mail.gmail.com>
-Date:	Tue, 12 Dec 2006 08:58:06 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	"Philippe De Swert" <philippedeswert@scarlet.be>
-Subject: Re: hwo to improve a video decoder program's timeslice
-Cc:	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <JA4FU5$15B25B9E0AEC49C3D47C4ABD5469CF70@scarlet.be>
+        b=QNvPQYQ07bVRHGzDxpH+1lBweBiEJZvrIawXhaAv0QW7LE6j64Miw7D2WljzngMmfbmteWpzPiZkCzQbu1CpXKSkDEL/qZpOj08hXQYj9hACZ/YIFDQePYP/981ng9/rUs10xevUMlxMl+gLSYmalWPSJf1Mjvjsd4HgDSBg1I8=
+Received: by 10.78.21.7 with SMTP id 7mr156756huu.1165913746868;
+        Tue, 12 Dec 2006 00:55:46 -0800 (PST)
+Received: by 10.78.123.2 with HTTP; Tue, 12 Dec 2006 00:55:41 -0800 (PST)
+Message-ID: <cda58cb80612120055j393dbf4bj1a3fe7a464f4a62d@mail.gmail.com>
+Date:	Tue, 12 Dec 2006 09:55:41 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [RFC] FLATMEM: allow memory to start at pfn != 0
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20061211184640.GB1308@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-References: <JA4FU5$15B25B9E0AEC49C3D47C4ABD5469CF70@scarlet.be>
-Return-Path: <zzh.hust@gmail.com>
+References: <1165420110699-git-send-email-fbuihuu@gmail.com>
+	 <20061211184640.GB1308@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13431
+X-archive-position: 13432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 12/12/06, Philippe De Swert <philippedeswert@scarlet.be> wrote:
-> Hi,
->
-> >  i have a video decoder program run as aplication
-> > and i now have change the HZ from 1000 to 100, set the decoder program
-> > priority as 99.
->
-> Seems you are mixing things here... The HZ change will just change the
-> interval of the timer tick. For some more explanations about this, look here :
-> http://kerneltrap.org/node/464
->
-> > if i want to the video decoder program to get more time to run, is
-> > there any other way to improve it ?
->
-> Maybe using nice? Try "man nice" in a terminal on your Linux box to get more
-> explanations about this.
-thanks, i have try nice already, there's not too much change.
+Hi Ralf,
 
+On 12/11/06, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Wed, Dec 06, 2006 at 04:48:27PM +0100, Franck Bui-Huu wrote:
 >
-> Cheers,
+> I just tested this on a Malta.  So patch 2/3 makes Malta die pretty
+> spectacularly, so I'm going to remve patches 2/3 and 3/3 again from my
+> tree.
 >
-> Philippe---
-> Scarlet ONE -  Combine ADSL with unlimited fixed phone and save 400 euros
-> http://www.scarlet.be
+
+Thanks for your review ! Could you give me some info about your config
+to help me to find out the issue ? For example what's your value of
+PHYS_OFFSET ? your memory mapping ?
+
+> Btw, there's spelling mistake in 2/3:
 >
->
+> +               panic("Boggus memory mapping !!!");
+
+I'll fix it by "Incorrect memory mapping !!!"
+
+thanks
+-- 
+               Franck

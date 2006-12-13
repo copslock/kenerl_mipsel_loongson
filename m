@@ -1,56 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Dec 2006 10:36:34 +0000 (GMT)
-Received: from smtp3.infineon.com ([203.126.106.229]:52030 "EHLO
-	smtp3.infineon.com") by ftp.linux-mips.org with ESMTP
-	id S20038807AbWLMKga convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 13 Dec 2006 10:36:30 +0000
-Received: from unknown (HELO sinse301.ap.infineon.com) ([172.20.70.22])
-  by smtp3.infineon.com with ESMTP; 13 Dec 2006 18:36:11 +0800
-X-SBRS:	None
-X-MIMEOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Dec 2006 11:00:09 +0000 (GMT)
+Received: from phoenix.bawue.net ([193.7.176.60]:19682 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20038715AbWLMLAE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 13 Dec 2006 11:00:04 +0000
+Received: from lagash (88-106-179-150.dynamic.dsl.as9105.com [88.106.179.150])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 2EF89B8D49;
+	Wed, 13 Dec 2006 12:02:50 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1GuRql-0006S8-Gg; Wed, 13 Dec 2006 11:00:35 +0000
+Date:	Wed, 13 Dec 2006 11:00:35 +0000
+To:	KokHow.Teh@infineon.com
+Cc:	linux-mips@linux-mips.org, info@denx.de, Bing-Tao.Xu@infineon.com
+Subject: Re: MIPS32v2 toolchain for MIPS32 24KE Core?
+Message-ID: <20061213110035.GA4148@networkno.de>
+References: <5049F8BE55F36348A315EFBE6CF34386E5D89E@sinse301.ap.infineon.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 8BIT
-Subject: MIPS32v2 toolchain for MIPS32 24KE Core?
-Date:	Wed, 13 Dec 2006 18:36:10 +0800
-Message-ID: <5049F8BE55F36348A315EFBE6CF34386E5D89E@sinse301.ap.infineon.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: MIPS32v2 toolchain for MIPS32 24KE Core?
-Thread-index: AcceooFiwZT6t1TWRpmt/RCd9et/5g==
-From:	<KokHow.Teh@infineon.com>
-To:	<linux-mips@linux-mips.org>, <info@denx.de>
-Cc:	<Bing-Tao.Xu@infineon.com>
-Return-Path: <KokHow.Teh@infineon.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5049F8BE55F36348A315EFBE6CF34386E5D89E@sinse301.ap.infineon.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13440
+X-archive-position: 13441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KokHow.Teh@infineon.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi;
-	Which toolchain can I use to build linux kernel for 24KEc core
-in order to use MIPS32v2 ISA?
-	"Programming the MIPS32 24KE Core Family" (Document Number
-MD00458 Revision 1.10 December 21,2005) from MIPS Technologies
-illustrates the details of programming this core using MIPS32v2 ISA to
-access into some hardware registers using some extended instructions.
-One typical critical example that I encounter now is the use of `rdhwr
-v0, CCRes` that tells you how fast the COUNT register is running. I
-assumed it to be running at pipeline frequency but in fact it is not.
-What I do now is to hard-code it to be running at half of the pipeline
-frequency according to hardware implementation document since the
-present toolchain that I am using is not supporting this ISA. Assembling
-`rdhwr v0,CCRes` will result in "opcode not supported at this ISA level
-(mips2) error. GCC(1) does not give any indication of MIPS32v2 ISA at
-all.
-	Any advice and insight is appreciated.
+KokHow.Teh@infineon.com wrote:
+> Hi;
+> 	Which toolchain can I use to build linux kernel for 24KEc core
+> in order to use MIPS32v2 ISA?
 
-Regards,
-KH
+MIPS32R2 support was added in gcc-3.4.6, as mentioned in the release
+notes at http://gcc.gnu.org/
+
+
+Thiemo

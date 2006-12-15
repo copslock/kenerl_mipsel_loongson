@@ -1,69 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Dec 2006 23:14:12 +0000 (GMT)
-Received: from fmmailgate03.web.de ([217.72.192.234]:29415 "EHLO
-	fmmailgate03.web.de") by ftp.linux-mips.org with ESMTP
-	id S20039846AbWLNXOH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 14 Dec 2006 23:14:07 +0000
-Received: from smtp05.web.de (fmsmtp05.dlan.cinetic.de [172.20.4.166])
-	by fmmailgate03.web.de (Postfix) with ESMTP id 960D94634DEF;
-	Fri, 15 Dec 2006 00:14:01 +0100 (CET)
-Received: from [84.180.164.166] (helo=pluto.sol)
-	by smtp05.web.de with asmtp (TLSv1:AES256-SHA:256)
-	(WEB.DE 4.107 #114)
-	id 1Guzm5-0001D4-00; Fri, 15 Dec 2006 00:14:01 +0100
-Received: from jens by pluto.sol with local (Exim 4.63)
-	(envelope-from <tux-master@web.de>)
-	id 1Guzhi-0001DC-NA; Fri, 15 Dec 2006 00:09:30 +0100
-Date:	Fri, 15 Dec 2006 00:09:30 +0100
-From:	Jens Seidel <jensseidel@users.sf.net>
-To:	linux-mips@linux-mips.org
-Cc:	Jens Seidel <jensseidel@users.sf.net>
-Subject: Re: SGI Octane kernel patches fail
-Message-ID: <20061214230930.GB2229@pluto>
-References: <20061214203535.GA18511@pluto>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20061214203535.GA18511@pluto>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-X-Sender: tux-master@web.de
-Return-Path: <tux-master@web.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Dec 2006 16:26:56 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:19961 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038640AbWLOQ0v (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 Dec 2006 16:26:51 +0000
+Received: from localhost (p8174-ipad34funabasi.chiba.ocn.ne.jp [124.85.65.174])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 20441BD84; Sat, 16 Dec 2006 01:26:46 +0900 (JST)
+Date:	Sat, 16 Dec 2006 01:26:45 +0900 (JST)
+Message-Id: <20061216.012645.07642903.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, qemu-devel@nongnu.org
+Subject: Re: [MIPS] Use conditional traps for BUG_ON on MIPS II and better.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20061203213518.GA22225@linux-mips.org>
+References: <S20037651AbWK3BXW/20061130012322Z+10503@ftp.linux-mips.org>
+	<20061204.015327.36921579.anemo@mba.ocn.ne.jp>
+	<20061203213518.GA22225@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13453
+X-archive-position: 13454
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jensseidel@users.sf.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 14, 2006 at 09:35:35PM +0100, Jens Seidel wrote:
-> I tried to compile a newer 2.6.19-rc1 kernel and applied the two IOC3
-> and IP30 patches from
-> ftp://ftp.linux-mips.org/pub/linux/mips/people/skylark/. First of all
-> the patch fails slightly and needs manual adjustments. Compiling results
-> in an error, do_IRQ() is called with only one parameter instead of two.
+On Sun, 3 Dec 2006 21:35:18 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > It seems this commit break QEMU kernel ...  or QEMU can not interpret
+> > the TNE instruction correctly?
 > 
-> So I wonder what kernels are compatible with
-> linux-mips-2.6.19-rc1-ip30-r28.patch.bz2. Do I need other patches as
-> well? Also the kernel config file skylark-approved-config-tm in skylark/
-> is out of date. It seems to match a 2.6.12 or similar version.
-> 
-> PS: Please CC: me.
+> Thiemo says that's indeed a possibility.  Probably that feature has not
+> been well tested in qemu.
 
-Ah, it works fine with linux-2.6.19 (it was trivial to crosscompile). So it
-seems the names of the patches are just wrong.
+I found the bug.  "Trap If XXX" instructions are translated as it was
+"Trap If XXX Immediate".
 
-I still fail to mount the root fs via NFS (tcpdump reports no network
-transfer after loading the kernel) and to have root on a local hard disk:
-[17179594.972000] XFS: file system using version 1 directory format
-[17179595.044000] XFS: SB validate failed
-[17179595.092000] VFS: Cannot open root device "sdb8" or unknown-block(8,24)
-[17179595.172000] Please append a correct "root=" boot option
-[17179595.240000] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(8,24)
+Index: target-mips/translate.c
+===================================================================
+RCS file: /sources/qemu/qemu/target-mips/translate.c,v
+retrieving revision 1.27
+diff -u -r1.27 translate.c
+--- target-mips/translate.c	10 Dec 2006 22:08:10 -0000	1.27
++++ target-mips/translate.c	15 Dec 2006 16:16:07 -0000
+@@ -1276,6 +1276,7 @@
+             GEN_LOAD_REG_TN(T1, rt);
+             cond = 1;
+         }
++        break;
+     case OPC_TEQI:
+     case OPC_TGEI:
+     case OPC_TGEIU:
 
-I need to check this "SB validation". But I'm sure I'm able to embed an
-initrd into the kernel as this works already with the old Gentoo kernel.
-
-Jens
+---
+Atsushi Nemoto

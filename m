@@ -1,55 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Dec 2006 11:17:28 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.170]:58513 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038404AbWLPLRY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 16 Dec 2006 11:17:24 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so1309093uga
-        for <linux-mips@linux-mips.org>; Sat, 16 Dec 2006 03:17:24 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=X+XJs0KS7Cnke3rm8I5iC1sXWGfFTH1hvlCW8pz9vthEMHjKCJ2sF55Cde+/dWKicOqqAnNgK4zDE+DBxmVQecF4hDUWMZ5gDAneAMjLu64DGuzobx25LLTDjUuHsywfKIMrerWWd+CVsUU23QHrhyp5wf5ls5Zswk5L+uUXpdI=
-Received: by 10.78.193.19 with SMTP id q19mr956483huf.1166267843605;
-        Sat, 16 Dec 2006 03:17:23 -0800 (PST)
-Received: by 10.78.124.19 with HTTP; Sat, 16 Dec 2006 03:17:23 -0800 (PST)
-Message-ID: <cda58cb80612160317n2547cbf4q39a8e184449faf40@mail.gmail.com>
-Date:	Sat, 16 Dec 2006 12:17:23 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [RFC] FLATMEM: allow memory to start at pfn != 0
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20061211184640.GB1308@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Dec 2006 17:19:17 +0000 (GMT)
+Received: from phoenix.bawue.net ([193.7.176.60]:40644 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20039490AbWLPRTM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 16 Dec 2006 17:19:12 +0000
+Received: from lagash (p54A46E44.dip.t-dialin.net [84.164.110.68])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 6CDADBAD28;
+	Sat, 16 Dec 2006 18:10:59 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1Gvd4Z-0008C1-5t; Sat, 16 Dec 2006 17:11:43 +0000
+Date:	Sat, 16 Dec 2006 17:11:43 +0000
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	qemu-devel@nongnu.org
+Subject: Re: [MIPS] Use conditional traps for BUG_ON on MIPS II and better.
+Message-ID: <20061216171142.GA21660@networkno.de>
+References: <S20037651AbWK3BXW/20061130012322Z+10503@ftp.linux-mips.org> <20061204.015327.36921579.anemo@mba.ocn.ne.jp> <20061203213518.GA22225@linux-mips.org> <20061216.012645.07642903.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <1165420110699-git-send-email-fbuihuu@gmail.com>
-	 <20061211184640.GB1308@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20061216.012645.07642903.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13456
+X-archive-position: 13457
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On 12/11/06, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Wed, Dec 06, 2006 at 04:48:27PM +0100, Franck Bui-Huu wrote:
->
-> I just tested this on a Malta.  So patch 2/3 makes Malta die pretty
-> spectacularly, so I'm going to remve patches 2/3 and 3/3 again from my
-> tree.
->
+Atsushi Nemoto wrote:
+> On Sun, 3 Dec 2006 21:35:18 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > > It seems this commit break QEMU kernel ...  or QEMU can not interpret
+> > > the TNE instruction correctly?
+> > 
+> > Thiemo says that's indeed a possibility.  Probably that feature has not
+> > been well tested in qemu.
+> 
+> I found the bug.  "Trap If XXX" instructions are translated as it was
+> "Trap If XXX Immediate".
+> 
+> Index: target-mips/translate.c
+> ===================================================================
+> RCS file: /sources/qemu/qemu/target-mips/translate.c,v
+> retrieving revision 1.27
+> diff -u -r1.27 translate.c
+> --- target-mips/translate.c	10 Dec 2006 22:08:10 -0000	1.27
+> +++ target-mips/translate.c	15 Dec 2006 16:16:07 -0000
+> @@ -1276,6 +1276,7 @@
+>              GEN_LOAD_REG_TN(T1, rt);
+>              cond = 1;
+>          }
+> +        break;
+>      case OPC_TEQI:
+>      case OPC_TGEI:
+>      case OPC_TGEIU:
 
-When you'll have time, could you test only patch 2/3. It's only a
-clean up patch, which eases integration of patch 3/3 ? This clean up
-should improve current code even if you don't merge patch 3/3. And
-more importantly,  knowing that patch 2/3 woks should help me to find
-out what's wrong with your config.
+Thanks, committed.
 
-Thanks
-                Franck
+
+Thiemo

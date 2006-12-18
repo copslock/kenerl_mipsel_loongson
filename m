@@ -1,57 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Dec 2006 15:38:30 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:55551 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20042560AbWLQPiZ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Dec 2006 15:38:25 +0000
-Received: from localhost (p3079-ipad02funabasi.chiba.ocn.ne.jp [61.214.23.79])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 729D0BCD5; Mon, 18 Dec 2006 00:38:21 +0900 (JST)
-Date:	Mon, 18 Dec 2006 00:38:21 +0900 (JST)
-Message-Id: <20061218.003821.96686517.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Dec 2006 09:04:18 +0000 (GMT)
+Received: from www.nabble.com ([72.21.53.35]:8938 "EHLO talk.nabble.com")
+	by ftp.linux-mips.org with ESMTP id S20047876AbWLRJEM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Dec 2006 09:04:12 +0000
+Received: from [72.21.53.38] (helo=jubjub.nabble.com)
+	by talk.nabble.com with esmtp (Exim 4.50)
+	id 1GwEPq-0006ch-4E
+	for linux-mips@linux-mips.org; Mon, 18 Dec 2006 01:04:10 -0800
+Message-ID: <7925460.post@talk.nabble.com>
+Date:	Mon, 18 Dec 2006 01:04:10 -0800 (PST)
+From:	Daniel Laird <danieljlaird@hotmail.com>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix build_store_reg()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Subject: PAGE_ALIGN + PAGE_SHIFT from userspace
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Nabble-From: danieljlaird@hotmail.com
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13459
+X-archive-position: 13460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: danieljlaird@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-The commit a923660d786a53e78834b19062f7af2535f7f8ad accidently
-prevents TX49 from using CDEX.  Use build_dst_pref() only if prefetch
-for store was really available.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/mm/pg-r4k.c b/arch/mips/mm/pg-r4k.c
-index d41fc58..dc795be 100644
---- a/arch/mips/mm/pg-r4k.c
-+++ b/arch/mips/mm/pg-r4k.c
-@@ -243,11 +243,10 @@ static void __init __build_store_reg(int
- 
- static inline void build_store_reg(int reg)
- {
--	if (cpu_has_prefetch)
--		if (reg)
--			build_dst_pref(pref_offset_copy);
--		else
--			build_dst_pref(pref_offset_clear);
-+	int pref_off = cpu_has_prefetch ?
-+		(reg ? pref_offset_copy : pref_offset_clear) : 0;
-+	if (pref_off)
-+		build_dst_pref(pref_off);
- 	else if (cpu_has_cache_cdex_s)
- 		build_cdex_s();
- 	else if (cpu_has_cache_cdex_p)
+Hi All,
+
+I was using linux 2.6.17.13 on my MIPS and it was all going well.  I am just
+porting to 2.6.19 and am having a couple of issues.
+
+My first issue is that i used to mmap a buffer from user space.  I used to
+use a PAGE_ALIGN macro when doing this:
+/** to align the pointer to the (next) page boundary */
+#define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
+
+this worked as PAGE_SIZE and PAGE_MASK were available in page.h.
+
+This have now been moved inside the #ifdef KERNEL guard in the header file. 
+Meaning these are no longer available.
+
+Are these available somewhere else?
+Should I be doing something different to mmap?
+
+Any help appreciated
+Daniel Laird
+-- 
+View this message in context: http://www.nabble.com/PAGE_ALIGN-%2B-PAGE_SHIFT-from-userspace-tf2838680.html#a7925460
+Sent from the linux-mips main mailing list archive at Nabble.com.

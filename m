@@ -1,62 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Dec 2006 13:00:54 +0000 (GMT)
-Received: from phoenix.bawue.net ([193.7.176.60]:41434 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20048948AbWLRNAs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Dec 2006 13:00:48 +0000
-Received: from lagash (p54A47C58.dip.t-dialin.net [84.164.124.88])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id 131F5B84E1;
-	Mon, 18 Dec 2006 13:46:17 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GwHtU-000259-3y; Mon, 18 Dec 2006 12:47:00 +0000
-Date:	Mon, 18 Dec 2006 12:47:00 +0000
-To:	Daniel Laird <danieljlaird@hotmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: PAGE_ALIGN + PAGE_SHIFT from userspace
-Message-ID: <20061218124659.GA17301@networkno.de>
-References: <7925460.post@talk.nabble.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7925460.post@talk.nabble.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Dec 2006 16:17:47 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:52203 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20050072AbWLRQRm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Dec 2006 16:17:42 +0000
+Received: from localhost (p8230-ipad202funabasi.chiba.ocn.ne.jp [222.146.79.230])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A773FBC42; Tue, 19 Dec 2006 01:17:35 +0900 (JST)
+Date:	Tue, 19 Dec 2006 01:17:35 +0900 (JST)
+Message-Id: <20061219.011735.35857841.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix csum_partial_copy_from_user
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13462
+X-archive-position: 13463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Daniel Laird wrote:
-> 
-> Hi All,
-> 
-> I was using linux 2.6.17.13 on my MIPS and it was all going well.  I am just
-> porting to 2.6.19 and am having a couple of issues.
-> 
-> My first issue is that i used to mmap a buffer from user space.  I used to
-> use a PAGE_ALIGN macro when doing this:
-> /** to align the pointer to the (next) page boundary */
-> #define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
-> 
-> this worked as PAGE_SIZE and PAGE_MASK were available in page.h.
+I found that asm version of csum_partial_copy_from_user() introduced
+in e9e016815f264227b6260f77ca84f1c43cf8b9bd was less effective.
 
-It didn't work reliably since the pagesize is a kernel configuration option.
+For csum_partial_copy_from_user() case, "both_aligned" 8-word copy/sum
+loop block is skipped to handle LOAD failure properly.  So we should
+iterate 4-word copy/sum block for that case, otherwize we will loop at
+ineffective "less_than_4units" block.
 
-> This have now been moved inside the #ifdef KERNEL guard in the header file. 
-> Meaning these are no longer available.
-> 
-> Are these available somewhere else?
-> Should I be doing something different to mmap?
-
-Use the libc's sysconf(_SC_PAGESIZE) function.
-
-
-Thiemo
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
+index ec0744d..0d6e9ae 100644
+--- a/arch/mips/lib/csum_partial.S
++++ b/arch/mips/lib/csum_partial.S
+@@ -488,8 +488,11 @@ EXC(	STORE	t2, UNIT(2)(dst),	s_exc)
+ 	ADDC(sum, t2)
+ EXC(	STORE	t3, UNIT(3)(dst),	s_exc)
+ 	ADDC(sum, t3)
+-	beqz	len, done
++	/* If we skipped both_aligned 8-word loop, iterate here */
++	bnez	AT, cleanup_both_aligned
+ 	 ADD	dst, dst, 4*NBYTES
++	beqz	len, done
++	 nop
+ less_than_4units:
+ 	/*
+ 	 * rem = len % NBYTES

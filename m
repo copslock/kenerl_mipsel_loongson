@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Dec 2006 15:53:05 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:55008 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28577122AbWLSPxB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Dec 2006 15:53:01 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Dec 2006 16:24:11 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:31201 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28577296AbWLSQYH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Dec 2006 16:24:07 +0000
 Received: from [192.168.1.248] (unknown [10.150.0.9])
 	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 3893F3ECA; Tue, 19 Dec 2006 07:52:39 -0800 (PST)
-Message-ID: <45880AC4.5010403@ru.mvista.com>
-Date:	Tue, 19 Dec 2006 18:52:36 +0300
+	id 08A603ECA; Tue, 19 Dec 2006 08:24:01 -0800 (PST)
+Message-ID: <4588121D.90505@ru.mvista.com>
+Date:	Tue, 19 Dec 2006 19:23:57 +0300
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
 X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	danieljlaird@hotmail.com, linux-mips@linux-mips.org,
-	Vitaly Wool <vwool@ru.mvista.com>
+To:	Daniel Laird <danieljlaird@hotmail.com>
+Cc:	linux-mips@linux-mips.org, Vitaly Wool <vwool@ru.mvista.com>
 Subject: Re: 2.6.19 timer API changes
-References: <7925588.post@talk.nabble.com>	<7943218.post@talk.nabble.com> <20061219.233410.25911550.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20061219.233410.25911550.anemo@mba.ocn.ne.jp>
+References: <7925588.post@talk.nabble.com> <7943218.post@talk.nabble.com> <20061219.233410.25911550.anemo@mba.ocn.ne.jp> <7948316.post@talk.nabble.com>
+In-Reply-To: <7948316.post@talk.nabble.com>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13470
+X-archive-position: 13471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,33 +31,60 @@ X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Daniel Laird wrote:
 
-Atsushi Nemoto wrote:
+> Atsushi Nemoto wrote:
 
->>When I run the kernel it hangs in the calibrate_delay function. 
->>Eventually the complete kernel does run but it runs very slow. 
->>This is usually an issue with the Timer Interuppt setup etc.  But I have
->>looked at the other MIPS ports and seem to have made the same changes. 
+>>Hmm, do the TIMER1 and CP0_COUNTER run at same speed?  If no, the
+>>PNX8550 port should be broken (i.e. gettimeofday() did not work
+>>properly) even without the timer API changes.  You should provide
+>>custom clocksource.mips_read (previously named mips_hpt_read) function
 
->>On the PNX8550 it does not use the CP0 timer but use a different timer (the
->>Custom MIPS core has 3 extra timers) 
+    Meaning clocksource_mips.read... :-)
 
-> Hmm, do the TIMER1 and CP0_COUNTER run at same speed?  If no, the
-> PNX8550 port should be broken (i.e. gettimeofday() did not work
-> properly) even without the timer API changes.  You should provide
-> custom clocksource.mips_read (previously named mips_hpt_read) function
-> which returns TIMER1 counter value.  If the TIMER1 was not 32-bit
-> free-run counter, some trick would be required.  Refer sb1250 or
-> jmr3927 for example.
+>>which returns TIMER1 counter value.  If the TIMER1 was not 32-bit
+>>free-run counter, some trick would be required.  Refer sb1250 or
+>>jmr3927 for example.
 
-    I would like to discourage you from repeating those JMR3927 clocksource 
-"tricks" when you have 3 spare count/compare regs. This will warrant troubles 
-when clockevents support gets merged into mainline (in fact, it was not 
-necessary even on JMR3927 which has 3 timers). Although, if the timer isn't 
-auto-reloading (I assume it isn't), the trick shouldn't be needed.
+>>---
+>>Atsushi Nemoto
+>>
+>>
+>>
+> 
+> I am just starting to look into this (thankyou for your first comments).
+> I have reduced the problem code, so if I change the following:
+> /* For use both as a high precision timer and an interrupt source.  */
+> static void __init c0_hpt_timer_init(void)
+> {
+> 	expirelo = read_c0_count() + cycles_per_jiffy;
+> 	write_c0_compare(expirelo);
+> } (the 2.6.19 version)
+> to the following:
+> /* For use both as a high precision timer and an interrupt source.  */
+> static void __init c0_hpt_timer_init(void)
+> {
+>     unsigned int count = read_c0_count() - mips_hpt_read();
 
-> ---
-> Atsushi Nemoto
+     Doesn't make sense to me... Should be 0 or near.
+
+> 	expirelo = (count / cycles_per_jiffy + 1) * cycles_per_jiffy;
+> 	write_c0_count(expirelo - cycles_per_jiffy);
+> 	write_c0_compare(expirelo);
+> 	write_c0_count(count);
+> }
+
+    This code just shouldn't be executing at all, since the interrupts are 
+coming from the other source than standard CP0 count/compare registers (so, 
+I'd assume mips_timer_state should need to be set -- but it doesn't)... and at 
+the same time the handler writes to them... well, PNX8550 must have really 
+weird timers...
+
+> Then i get the system to boot up and all seems well.  I am new to this and
+> am looking into why this change makes the system boot up.  As always though
+> any help is appreciated.
+
+> Cheers
+> Dan
 
 WBR, Sergei

@@ -1,58 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Dec 2006 16:17:47 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:52203 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20050072AbWLRQRm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Dec 2006 16:17:42 +0000
-Received: from localhost (p8230-ipad202funabasi.chiba.ocn.ne.jp [222.146.79.230])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id A773FBC42; Tue, 19 Dec 2006 01:17:35 +0900 (JST)
-Date:	Tue, 19 Dec 2006 01:17:35 +0900 (JST)
-Message-Id: <20061219.011735.35857841.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Dec 2006 08:17:34 +0000 (GMT)
+Received: from www.nabble.com ([72.21.53.35]:8904 "EHLO talk.nabble.com")
+	by ftp.linux-mips.org with ESMTP id S28574753AbWLSIR3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Dec 2006 08:17:29 +0000
+Received: from [72.21.53.38] (helo=jubjub.nabble.com)
+	by talk.nabble.com with esmtp (Exim 4.50)
+	id 1GwaA8-0000l8-Nl
+	for linux-mips@linux-mips.org; Tue, 19 Dec 2006 00:17:24 -0800
+Message-ID: <7943218.post@talk.nabble.com>
+Date:	Tue, 19 Dec 2006 00:17:24 -0800 (PST)
+From:	Daniel Laird <danieljlaird@hotmail.com>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix csum_partial_copy_from_user
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Subject: 2.6.19 timer API changes
+In-Reply-To: <7925588.post@talk.nabble.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Nabble-From: danieljlaird@hotmail.com
+References: <7925588.post@talk.nabble.com>
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13463
+X-archive-position: 13464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: danieljlaird@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I found that asm version of csum_partial_copy_from_user() introduced
-in e9e016815f264227b6260f77ca84f1c43cf8b9bd was less effective.
 
-For csum_partial_copy_from_user() case, "both_aligned" 8-word copy/sum
-loop block is skipped to handle LOAD failure properly.  So we should
-iterate 4-word copy/sum block for that case, otherwize we will loop at
-ineffective "less_than_4units" block.
+Hi All, 
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-index ec0744d..0d6e9ae 100644
---- a/arch/mips/lib/csum_partial.S
-+++ b/arch/mips/lib/csum_partial.S
-@@ -488,8 +488,11 @@ EXC(	STORE	t2, UNIT(2)(dst),	s_exc)
- 	ADDC(sum, t2)
- EXC(	STORE	t3, UNIT(3)(dst),	s_exc)
- 	ADDC(sum, t3)
--	beqz	len, done
-+	/* If we skipped both_aligned 8-word loop, iterate here */
-+	bnez	AT, cleanup_both_aligned
- 	 ADD	dst, dst, 4*NBYTES
-+	beqz	len, done
-+	 nop
- less_than_4units:
- 	/*
- 	 * rem = len % NBYTES
+I am porting the Philips/PNX8550 kernel from 2.6.17.13 to 2.6.19.  I am
+having some issues: 
+One issue I am having is with the new Timer API that replaced the board
+specific API. 
+
+I have made all of the important changes 
+board_timer_setup -> plat_timer_setup 
+
+When I run the kernel it hangs in the calibrate_delay function. 
+Eventually the complete kernel does run but it runs very slow. 
+This is usually an issue with the Timer Interuppt setup etc.  But I have
+looked at the other MIPS ports and seem to have made the same changes. 
+
+On the PNX8550 it does not use the CP0 timer but use a different timer (the
+Custom MIPS core has 3 extra timers) 
+
+I replaced the arch/mips/kernel/time.c with a merge between 2.6.17.13 and
+2.6.19 and I can get the kernel to boot at the correct speed straight
+through the calibrate_delay function and the entire system seems to be
+working correctly. 
+
+I was wondering if anyone might have any ideas on how to debug this problem
+as I would like a clean port to 2.6.19. 
+Maybe the new timer code will not work properly on the PNX8550 in which case
+maybe some patches are required. 
+
+I am continuing to debug at my end and once I have a working system with the
+smallest set of changes to the time.c file I will post them in the hope that
+someone will point out a silly error I have made in the CPU/board setup. 
+
+In the mean time any helpful ideas on debugging, tracing, even solving this
+issue would be really appreciated 
+
+Daniel 
+  
+
+
+
+
+-- 
+View this message in context: http://www.nabble.com/2.6.19-timer-API-changes-tf2838715.html#a7943218
+Sent from the linux-mips main mailing list archive at Nabble.com.

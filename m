@@ -1,36 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Dec 2006 08:18:10 +0000 (GMT)
-Received: from www.nabble.com ([72.21.53.35]:14793 "EHLO talk.nabble.com")
-	by ftp.linux-mips.org with ESMTP id S28574828AbWLSISF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Dec 2006 08:18:05 +0000
-Received: from [72.21.53.38] (helo=jubjub.nabble.com)
-	by talk.nabble.com with esmtp (Exim 4.50)
-	id 1GwaAm-0000qu-GY
-	for linux-mips@linux-mips.org; Tue, 19 Dec 2006 00:18:04 -0800
-Message-ID: <7943224.post@talk.nabble.com>
-Date:	Tue, 19 Dec 2006 00:18:04 -0800 (PST)
-From:	Daniel Laird <danieljlaird@hotmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: PAGE_ALIGN + PAGE_SHIFT from userspace
-In-Reply-To: <20061218124659.GA17301@networkno.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Dec 2006 14:34:21 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:60610 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28576869AbWLSOeQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Dec 2006 14:34:16 +0000
+Received: from localhost (p7053-ipad211funabasi.chiba.ocn.ne.jp [58.91.163.53])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id CB604BA43; Tue, 19 Dec 2006 23:34:10 +0900 (JST)
+Date:	Tue, 19 Dec 2006 23:34:10 +0900 (JST)
+Message-Id: <20061219.233410.25911550.anemo@mba.ocn.ne.jp>
+To:	danieljlaird@hotmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: 2.6.19 timer API changes
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <7943218.post@talk.nabble.com>
+References: <7925588.post@talk.nabble.com>
+	<7943218.post@talk.nabble.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Nabble-From: danieljlaird@hotmail.com
-References: <7925460.post@talk.nabble.com> <20061218124659.GA17301@networkno.de>
-Return-Path: <lists@nabble.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13465
+X-archive-position: 13466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 19 Dec 2006 00:17:24 -0800 (PST), Daniel Laird <danieljlaird@hotmail.com> wrote:
+> When I run the kernel it hangs in the calibrate_delay function. 
+> Eventually the complete kernel does run but it runs very slow. 
+> This is usually an issue with the Timer Interuppt setup etc.  But I have
+> looked at the other MIPS ports and seem to have made the same changes. 
+> 
+> On the PNX8550 it does not use the CP0 timer but use a different timer (the
+> Custom MIPS core has 3 extra timers) 
 
-Works a treat thankyou!
--- 
-View this message in context: http://www.nabble.com/PAGE_ALIGN-%2B-PAGE_SHIFT-from-userspace-tf2838680.html#a7943224
-Sent from the linux-mips main mailing list archive at Nabble.com.
+Hmm, do the TIMER1 and CP0_COUNTER run at same speed?  If no, the
+PNX8550 port should be broken (i.e. gettimeofday() did not work
+properly) even without the timer API changes.  You should provide
+custom clocksource.mips_read (previously named mips_hpt_read) function
+which returns TIMER1 counter value.  If the TIMER1 was not 32-bit
+free-run counter, some trick would be required.  Refer sb1250 or
+jmr3927 for example.
+
+---
+Atsushi Nemoto

@@ -1,66 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Dec 2006 15:40:26 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:46037 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28583435AbWLTPkV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Dec 2006 15:40:21 +0000
-Received: from localhost (p3074-ipad206funabasi.chiba.ocn.ne.jp [222.145.77.74])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 02B90C32C; Thu, 21 Dec 2006 00:40:18 +0900 (JST)
-Date:	Thu, 21 Dec 2006 00:40:17 +0900 (JST)
-Message-Id: <20061221.004017.21363332.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	danieljlaird@hotmail.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Dec 2006 15:46:34 +0000 (GMT)
+Received: from www.nabble.com ([72.21.53.35]:27582 "EHLO talk.nabble.com")
+	by ftp.linux-mips.org with ESMTP id S28583452AbWLTPq3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Dec 2006 15:46:29 +0000
+Received: from [72.21.53.38] (helo=jubjub.nabble.com)
+	by talk.nabble.com with esmtp (Exim 4.50)
+	id 1Gx3eD-00078Y-1y
+	for linux-mips@linux-mips.org; Wed, 20 Dec 2006 07:46:25 -0800
+Message-ID: <7992266.post@talk.nabble.com>
+Date:	Wed, 20 Dec 2006 07:46:24 -0800 (PST)
+From:	Daniel Laird <danieljlaird@hotmail.com>
+To:	linux-mips@linux-mips.org
 Subject: Re: 2.6.19 timer API changes
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <458948C5.4050909@ru.mvista.com>
-References: <7949125.post@talk.nabble.com>
-	<20061220.021508.97296486.anemo@mba.ocn.ne.jp>
-	<458948C5.4050909@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+In-Reply-To: <20061221.002420.132303561.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Nabble-From: danieljlaird@hotmail.com
+References: <7925588.post@talk.nabble.com> <7943218.post@talk.nabble.com> <20061219.233410.25911550.anemo@mba.ocn.ne.jp> <20061220.000113.59033093.anemo@mba.ocn.ne.jp> <7949125.post@talk.nabble.com> <20061220.021508.97296486.anemo@mba.ocn.ne.jp> <7987092.post@talk.nabble.com> <20061221.002420.132303561.anemo@mba.ocn.ne.jp>
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13491
+X-archive-position: 13492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: danieljlaird@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 20 Dec 2006 17:29:25 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > How about this?  You should still fix pnx8550_hpt_read() anyway, but I
-> > suppose gettimeofday() on PNX8550 was broken long time.
+
+hello, 
+
+
+Atsushi Nemoto wrote:
 > 
->     And nobody noticed. :-)
-
-I changed my mind a bit.  The pre-clocksource gettimeofday() might
-work well on PNX8550.  There was timerlo variable which hold COUNT
-value on last timer interrupt and fixed_gettimeoffset() subtracted
-timerlo from COUNT value at the time.
-
-On Wed, 20 Dec 2006 17:29:25 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-
-> > +static cycle_t pnx8550_hpt_read(void)
-> > +{
-> > +	/* FIXME: we should use timer2 or timer3 as freerun counter */
-> > +	return read_c0_count();
->  > +}
+> On Wed, 20 Dec 2006 01:37:17 -0800 (PST), Daniel Laird
+> <danieljlaird@hotmail.com> wrote:
+>> Then I get  a normal startup.  i.e it boots fast (no 10second hang).  If
+>> I
+>> remove the write_c0_count then I get the 10 second hang.
 > 
->     I'd suggest read_c0_count2() here, possibly adding an interrupt
-> handler for it since it will interrupt upon hitting compare2
-> reg. value (but we could probably just mask the IRQ off), and
-> enabling the timer 2, of course (the current code disables it)...
-
-It would be right direction.  And we should set set count2 frequency
-to mips_hpt_frequency.  But I cannot test it by myself so I'd like to
-leave it for others.  Good exercise ;)
-
----
-Atsushi Nemoto
+> I think Kevin's analysis about this 10 second hang is correct.  Then I
+> think my last patch will work as well.
+> 
+>> I have no idea if gettimeofday is broken.  ANy ideas on testing this? Is
+>> there a test package / application that will do this?  Before I write my
+>> own
+> 
+> Calling gettimeofday() continuously many times (at least some tick
+> periods) and calculates times between each call.  Those differences
+> should be almost same.  Of course you must run this program on very
+> idle system (or you must raise its priority).
+> 
+> ---
+> Atsushi Nemoto
+> 
+Thanks guys I can see how Kevin has come to his conclusion (On 10 secs And I
+think I agree)!  
+I will try your 2nd proposed solution, I gave it a very quick go but it did
+not work.  I will give this some proper time, I think some mips_clocksource
+needed to be externed etc.  (and add linux/clocksource.h ) to
+pnx8550/common/time.c.
+Hopefullly this will make it compile, and then I can trace the problem a bit
+more.  It might be after Christmas though before I come back to this
+Again cheers for the help.
+Dan
+-- 
+View this message in context: http://www.nabble.com/2.6.19-timer-API-changes-tf2838715.html#a7992266
+Sent from the linux-mips main mailing list archive at Nabble.com.

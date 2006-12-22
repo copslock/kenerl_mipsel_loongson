@@ -1,49 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Dec 2006 16:46:52 +0000 (GMT)
-Received: from phoenix.bawue.net ([193.7.176.60]:19934 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S28644165AbWLUQqq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 21 Dec 2006 16:46:46 +0000
-Received: from lagash (p54A47735.dip.t-dialin.net [84.164.119.53])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id 941DA845A0;
-	Thu, 21 Dec 2006 17:41:18 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1GxQzY-0000bs-UT; Thu, 21 Dec 2006 16:42:00 +0000
-Date:	Thu, 21 Dec 2006 16:42:00 +0000
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] Fix build_store_reg()
-Message-ID: <20061221164200.GE30873@networkno.de>
-References: <20061218.003821.96686517.anemo@mba.ocn.ne.jp> <20061222.010316.63742169.anemo@mba.ocn.ne.jp> <20061222.013031.89066226.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Dec 2006 22:04:45 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.170]:5490 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20043946AbWLVWEl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 22 Dec 2006 22:04:41 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so3578020uga
+        for <linux-mips@linux-mips.org>; Fri, 22 Dec 2006 14:04:41 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=pc60rFlPIlzqIy9FOU+qwzz1Hx2zES56mpatxysJO1Qk+aQmRXxBJJ1lug5pksuHpRMipM16iD24m/5FXJP8r2UwtCZhzFuZ/o65QMEwBsrW+Oi4EFeGa+qGBr1bvWyH/NWrUNEe4kqw7aRRRERS9UITfw1PLHvaWkUhjReQ350=
+Received: by 10.78.204.1 with SMTP id b1mr1624791hug.1166825081001;
+        Fri, 22 Dec 2006 14:04:41 -0800 (PST)
+Received: by 10.78.45.19 with HTTP; Fri, 22 Dec 2006 14:04:40 -0800 (PST)
+Message-ID: <d31941710612221404t7a6a2b8cnec4854b872e089e9@mail.gmail.com>
+Date:	Fri, 22 Dec 2006 15:04:40 -0700
+From:	"Allan Young" <auriculatus@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: any hints for running linux on an old galileo ev-64120 eval board?
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20061222.013031.89066226.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Return-Path: <auriculatus@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13512
+X-archive-position: 13513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: auriculatus@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Fri, 22 Dec 2006 01:03:16 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> > BTW, why prefetch is preferred than cache_cdex?  I feel cdex is better
-> > while it avoids unnecessary load...
-> 
-> Oh, I missed that Pref_StoreStreamed or Pref_PrepareForStore is used
-> for destination.  Perhaps they would be better than cdex (though not
-> sure...).
+It would be great if I could get a few hints on how to get Linux
+running on one of these old gt64120 based PCI eval cards from Galileo.
+I know these cards are quite old and crufty but since I see evidence
+of support in the kernel I thought I'd ask if anyone still uses the
+ev-64120 support.
 
-StoreStreamed doesn't avoid the reload, but PrepareForStore does.
+Currently I have an ev-64120 inserted into a passive PCI backplane and
+have access to pmon over the serial port.
 
+I expect that I should be able to cross compile the kernel, with the
+ev-64120 board support enabled, and convert the resulting elf into
+srec format for loading via pmon (ouch).  However, I'm not sure what
+to do for providing a root filesystem or even how one should specify
+kernel command line parameters.
 
-Thiemo
+I'm wondering if it's feasible to put a supported NIC in the PCI
+passive backplane with the ev-64120 and provide a suitable root file
+system over a network connection?  I'm not aware if the linux kernel
+can perform the PCI configuration (setting up the PCI base address
+registers etc).
+
+Any way, if anyone has gone down this ev-64120 path I'd greatly
+appreciate hearing any suggestions, even if they are along the lines
+of "abandon all hope". :)
+
+Thanks,
+Allan

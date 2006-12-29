@@ -1,56 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2006 16:29:56 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:57833 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28574966AbWL2Q3w (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Dec 2006 16:29:52 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id F3A603EC9; Fri, 29 Dec 2006 08:29:28 -0800 (PST)
-Message-ID: <45954261.9060502@ru.mvista.com>
-Date:	Fri, 29 Dec 2006 19:29:21 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2006 19:07:12 +0000 (GMT)
+Received: from web7906.mail.in.yahoo.com ([202.86.4.82]:19076 "HELO
+	web7906.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S28575529AbWL2THJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 29 Dec 2006 19:07:09 +0000
+Received: (qmail 54872 invoked by uid 60001); 29 Dec 2006 19:07:01 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=nVJYsfq+BP2ni7xvuGLUGN6VksRrtgryc08YoguQUK5HrL+h+NBXxX67e8smPhmQ+a9AHJmqEjiYt6COXWEwxurUdmMUWsRuXldKqLcuYPvIv+6v+AMrvnigVVpWqEdwD68QiY8bgFAdcDxYHZq5gXQyh3frklNGIlcZwjvuwWs=;
+X-YMail-OSG: r2zUWbMVM1njhKejExIWuOUAtULOfCE25ku.ePEshm8xRRCvCdtAEe0m8nsNYpWciqAqqxJOr03EkAliCzkixMVSCKseCiTUsGfh4kXBcGVSNEsvoHoRtF26F02bB.O0P5Aau909GXvEo8VEx5hWbx06ww--
+Received: from [206.40.46.114] by web7906.mail.in.yahoo.com via HTTP; Fri, 29 Dec 2006 19:07:01 GMT
+Date:	Fri, 29 Dec 2006 19:07:01 +0000 (GMT)
+From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
+Subject: Cache implementation for MIPS32
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:	Manish Regmi <regmi.manish@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Linux latest kernel and Tosiba rbtx 4939 support
-References: <652016d30612282134x4d16670fge82825356a091844@mail.gmail.com>
-In-Reply-To: <652016d30612282134x4d16670fge82825356a091844@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: multipart/alternative; boundary="0-1849877749-1167419221=:53874"
+Content-Transfer-Encoding: 8bit
+Message-ID: <678432.53874.qm@web7906.mail.in.yahoo.com>
+Return-Path: <sathesh_edara2003@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13529
+X-archive-position: 13530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: sathesh_edara2003@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+--0-1849877749-1167419221=:53874
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Manish Regmi wrote:
+Hi ,
+   Could you plz give me pointers where can i see the referance code for cache implementation for MIPS32/MIPS24KE.
+   
+  Regards,
+  Sathesh
 
->   Is tosiba rbtx 4939 supported in the latest Linux kernel?
+ Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
+--0-1849877749-1167419221=:53874
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-    Yes but not completely (for examle, only 1 of 2 PCI busses is currently 
-supported).
-
-> I tried 2.6.19 and even 2.6.20-rc2 but i could not find support for that 
-> board.
-
-    How do you think what's in arch/mips/tx4938/toshiba_rbtx4938/ ?
-
-> is it safe to use rbtx4938 support in rbtx4938?
-
-    Well, at least it used to be. I was able to boot it before 2.6.19.
-
-> Thanks in advance.
-
-> PS: please cc me i am not subscribed to this list.
-
-WBR, Sergei
+<div>Hi ,</div>  <div>&nbsp;Could you plz give me pointers where can i see the referance code for cache implementation for MIPS32/MIPS24KE.</div>  <div>&nbsp;</div>  <div>Regards,</div>  <div>Sathesh</div><p>&#32;Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
+--0-1849877749-1167419221=:53874--

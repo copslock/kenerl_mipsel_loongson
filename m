@@ -1,59 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2006 10:24:04 +0000 (GMT)
-Received: from web38411.mail.mud.yahoo.com ([209.191.125.42]:58247 "HELO
-	web38411.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20053095AbWL2KX6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Dec 2006 10:23:58 +0000
-Received: (qmail 66338 invoked by uid 60001); 29 Dec 2006 10:23:51 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:Received:Date:From:Subject:To:MIME-Version:Content-Type;
-  b=xf2milACNmx73PnpQgiJWDh1wQUFPmFR7bD9oGZswOsrrNJ6x2Mf3zr1KQ5xdu0JyhSVxJpvGOjJRm5bCRyp20rPLgYBsNudhcas5zxXM4QA9rvSKMFkZ5OGp6Bd3yQjGELPnshW69XA5omHMMntMIX3p29XrqLko16oFg64f/E=  ;
-Message-ID: <20061229102351.66336.qmail@web38411.mail.mud.yahoo.com>
-Received: from [203.92.57.132] by web38411.mail.mud.yahoo.com via HTTP; Fri, 29 Dec 2006 02:23:51 PST
-Date:	Fri, 29 Dec 2006 02:23:51 -0800 (PST)
-From:	ashley jones <ashley_jones_2000@yahoo.com>
-Subject: Doubt on mmap
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Dec 2006 11:23:29 +0000 (GMT)
+Received: from mail.gmx.net ([213.165.64.20]:2479 "HELO mail.gmx.net")
+	by ftp.linux-mips.org with SMTP id S20053227AbWL2LXX convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 29 Dec 2006 11:23:23 +0000
+Received: (qmail invoked by alias); 29 Dec 2006 11:23:17 -0000
+Received: from pD9F7B953.dip0.t-ipconnect.de (EHLO pD9F7B953.dip0.t-ipconnect.de) [217.247.185.83]
+  by mail.gmx.net (mp033) with SMTP; 29 Dec 2006 12:23:17 +0100
+X-Authenticated: #9962044
+From:	marvin <marvin24@gmx.de>
+To:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2.6.20-rc1 00/10] TURBOchannel update to the driver model
+Date:	Fri, 29 Dec 2006 12:22:59 +0100
+User-Agent: KMail/1.9.5
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Andrew Morton <akpm@osdl.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Jeff Garzik <jgarzik@pobox.com>,
+	Antonino Daplas <adaplas@pol.net>, linux-mips@linux-mips.org,
+	James Simmons <jsimmons@infradead.org>
+References: <Pine.LNX.4.64N.0612182115550.10069@blysk.ds.pg.gda.pl> <Pine.LNX.4.64.0612272207010.19264@pentafluge.infradead.org>
+In-Reply-To: <Pine.LNX.4.64.0612272207010.19264@pentafluge.infradead.org>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-403511557-1167387831=:65720"
-Return-Path: <ashley_jones_2000@yahoo.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200612291223.01499.marvin24@gmx.de>
+X-Y-GMX-Trusted: 0
+Return-Path: <marvin24@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13526
+X-archive-position: 13527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ashley_jones_2000@yahoo.com
+X-original-sender: marvin24@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
---0-403511557-1167387831=:65720
-Content-Type: text/plain; charset=ascii
-Content-Transfer-Encoding: quoted-printable
 
-hi,=0A         Can i "mmap" a physical memory region (part of dram) not giv=
-en to linux, using remap_pfn_range ? During booting instead of giving whole=
- available memory to linux i have reserved around 10 MB which i use as a sh=
-ared memory between driver and user space application. Can i pass this pfn =
-no. to remap_pfn_range to get the mapping done for user space application?=
-=0A=0AThanks,=0AAshley.=0A=0A______________________________________________=
-____=0ADo You Yahoo!?=0ATired of spam?  Yahoo! Mail has the best spam prote=
-ction around =0Ahttp://mail.yahoo.com 
---0-403511557-1167387831=:65720
-Content-Type: text/html; charset=ascii
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-<html><head><style type=3D"text/css"><!-- DIV {margin:0px;} --></style></he=
-ad><body><div style=3D"font-family:times new roman, new york, times, serif;=
-font-size:12pt"><DIV>hi,</DIV>=0A<DIV>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp; Can i "mmap" a physical memory region (part of dram) not given =
-to linux, using remap_pfn_range ? During booting instead of&nbsp;giving who=
-le available memory to linux i have reserved around 10 MB which i use as a =
-shared memory between driver and user space application. Can i pass this pf=
-n no. to remap_pfn_range to get the mapping done for user space application=
-?</DIV>=0A<DIV><BR>Thanks,</DIV>=0A<DIV>Ashley.</DIV></div><br>____________=
-______________________________________<br>Do You Yahoo!?<br>Tired of spam? =
- Yahoo! Mail has the best spam protection around <br>http://mail.yahoo.com =
-</body></html>
---0-403511557-1167387831=:65720--
+and thanks Maciej! As you mentioned other platforms ...
+
+I have some DEC3000/300 LX alphas running netbsd standing around here. I 
+willing donate one if someone is volunteering to port turbochannel support to 
+Alpha. Please send me a private email if interessed...
+
+Greetings
+
+Marc
+
+Le Wednesday 27 December 2006 23:19, James Simmons a écrit :
+> >  And last but not least, thanks to James Simmons for beginning this work
+> > a while ago as his code was great to start with.
+>
+> Wow!! I thought the work was dropped along time ago. Thanks for bring it
+> back.
+>
+> -
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/

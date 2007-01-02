@@ -1,69 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2007 17:17:43 +0000 (GMT)
-Received: from www.nabble.com ([72.21.53.35]:2538 "EHLO talk.nabble.com")
-	by ftp.linux-mips.org with ESMTP id S28575680AbXABRRi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2007 17:17:38 +0000
-Received: from [72.21.53.38] (helo=jubjub.nabble.com)
-	by talk.nabble.com with esmtp (Exim 4.50)
-	id 1H1nGW-0000to-3K
-	for linux-mips@linux-mips.org; Tue, 02 Jan 2007 09:17:32 -0800
-Message-ID: <8127168.post@talk.nabble.com>
-Date:	Tue, 2 Jan 2007 09:17:32 -0800 (PST)
-From:	Daniel Laird <danieljlaird@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2007 21:08:48 +0000 (GMT)
+Received: from web7910.mail.in.yahoo.com ([202.86.4.86]:29078 "HELO
+	web7910.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S28646171AbXABVIm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 2 Jan 2007 21:08:42 +0000
+Received: (qmail 40875 invoked by uid 60001); 2 Jan 2007 21:08:35 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=dk18Wtf3T+ubK36KMsbJMXrU1I9p6esyvGw0GHX5SOZgnkmNYCyTIdvxEbwBsTCxZ1b5jYJQtttoP/PJ1DRONTIQLPdFrfscPlLhjtj3NDr8ExOueKXF9yoaWZ3Yu1LHS/jBXBRCmxsQSaL7i6uEpiT0tE868ga8zbRsh7m9XSg=;
+X-YMail-OSG: vHT41woVM1k6bnVqZlPCNKycyoU04f3kbIeVrKFfhr.JlV8WPjT8f_rCZaIr0WJ8eqEjXbdyl6ciQuMl_DrHNq_VlvAnMwkhGRVQze0fg7KmFG2tlTJqM6g0KLkygqLh8GJtloZXaY02cWdsMJQcoXitOQ--
+Received: from [206.40.46.114] by web7910.mail.in.yahoo.com via HTTP; Tue, 02 Jan 2007 21:08:35 GMT
+Date:	Tue, 2 Jan 2007 21:08:35 +0000 (GMT)
+From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
+Subject: Running linux-2.6.18 kernel in uncache area
 To:	linux-mips@linux-mips.org
-Subject: Re: [PATCH][respin] pnx8550: fix system timer support
-In-Reply-To: <20070103.010650.25910215.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Nabble-From: danieljlaird@hotmail.com
-References: <20061228171405.b1e3eed8.vitalywool@gmail.com> <20061229.011621.05599370.anemo@mba.ocn.ne.jp> <acd2a5930612280820l43639382x1f573386f2752d18@mail.gmail.com> <8124491.post@talk.nabble.com> <20070103.010650.25910215.anemo@mba.ocn.ne.jp>
-Return-Path: <lists@nabble.com>
+Content-Type: multipart/alternative; boundary="0-328417631-1167772115=:40204"
+Content-Transfer-Encoding: 8bit
+Message-ID: <30660.40204.qm@web7910.mail.in.yahoo.com>
+Return-Path: <sathesh_edara2003@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13535
+X-archive-position: 13536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: sathesh_edara2003@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
+--0-328417631-1167772115=:40204
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
+Hi,
+    I would like to know is there any configuration option ( using make menuconfig)  to turn off cache in linux-2.6.18 kernel.
+   
+  Basically i would like to run kernel in uncache area.
+   
+  I see there is an option in the in the menuconfig under 
+  Kernel hacking
+               [ ] Run uncached (NEW)
+  Sould i need to enable this  option to run in the uncahe area?
+   
+  Could you please tell me how to disable cache and run the kernel in uncache area.
+   
+   
+   
+  Regards,
+  Sathesh
 
-Atsushi Nemoto wrote:
-> 
-> On Tue, 2 Jan 2007 06:05:55 -0800 (PST), Daniel Laird
-> <danieljlaird@hotmail.com> wrote:
->> First things first, if I do use the line 
->> clocksource_mips.read = hpt_read; 
->> It does not compile as this symbol is not in a header file and is a
->> static
->> struct in arch/mips/kernel/time.c
->> I can make it not static and extern it from pnx8550/common/time.c is this
->> how I should do it?
-> 
-> To fix the build problem, use latest linux-mips.org git-tree or use
-> 2.6.20-rc3 from kernel.org, or import these patches:
-> 
-> http://www.linux-mips.org/git?p=linux.git;a=commit;h=c87b6ebaea034c0e0ce86127870cf1511a307b64
-> http://www.linux-mips.org/git?p=linux.git;a=commit;h=005985609ff72df3257fde6b29aa9d71342c2a6b
-> 
-> ---
-> Atsushi Nemoto
-> 
-> 
-> 
-Thanks, thats the build problem removed, I now have a kernel that builds
-properly! (issues 1 and 2 appear to be closed)
-Only issue remaining is that I still have a long hang (10 seconds ish) 
-after this
-Memory: 53540k/57344k available (2156k kernel code, 3744k reserved, 383k
-data, 128k init, 0k highmem)
- I am investigating but any help is appreciated...
-Dan
+ Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
+--0-328417631-1167772115=:40204
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-
--- 
-View this message in context: http://www.nabble.com/-PATCH--respin--pnx8550%3A-fix-system-timer-support-tf2890537.html#a8127168
-Sent from the linux-mips main mailing list archive at Nabble.com.
+<div>Hi,</div>  <div>&nbsp; I would like to know is there any configuration option ( using make menuconfig) &nbsp;to turn off cache in linux-2.6.18 kernel.</div>  <div>&nbsp;</div>  <div>Basically i would like to run kernel in uncache area.</div>  <div>&nbsp;</div>  <div>I see there is an option in the in the menuconfig under&nbsp;</div>  <div>Kernel hacking</div>  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ ] Run uncached (NEW)</div>  <div>Sould&nbsp;i need to enable this&nbsp; option to run in the uncahe area?</div>  <div>&nbsp;</div>  <div>Could you please tell me how to disable cache and run the kernel in uncache area.</div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>&nbsp;</div>  <div>Regards,</div>  <div>Sathesh</div><p>&#32;Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
+--0-328417631-1167772115=:40204--

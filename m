@@ -1,65 +1,125 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2007 07:04:30 +0000 (GMT)
-Received: from web8408.mail.in.yahoo.com ([202.43.219.156]:39761 "HELO
-	web8408.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20039214AbXABHEZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 2 Jan 2007 07:04:25 +0000
-Received: (qmail 57041 invoked by uid 60001); 2 Jan 2007 07:04:15 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=sWg6u/oJGP2VR1KHeTXckjUKhHTRsT7nCDTOVGBPONm6krVqL/4zGbMH/KCm0T7xjdFlj/ZJaDODL6KsKYH3G7P4nRT3pHWCxPgsXWQc2nTvbRAiFKnnJPF7+ACXBJAIGmC2U0eH2F8x7HsXQ86J9P0r5AUQkDKM/QAgmzPfSuM=;
-X-YMail-OSG: itk0oPkVM1ki95d9946TbF.B1d4bb5ZUBpophv5UVQHLG6anOQTcnw6ADaEqX_1RULiKzXQNNIFAp1Q6pQWULWQswt7T7SWy5MJ2SRcGakx8qjgz32bdhPTF2QOfw.0ToAugsx2FVAPnOrh1Xi7aaMBTAA--
-Received: from [61.246.223.98] by web8408.mail.in.yahoo.com via HTTP; Tue, 02 Jan 2007 07:04:15 GMT
-Date:	Tue, 2 Jan 2007 07:04:15 +0000 (GMT)
-From:	veerasena reddy <veerasena_b@yahoo.co.in>
-Subject: problem with starting an application daemon from rcS script in case of lnux-2.6.18 kernel version.
-To:	linux-mips <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jan 2007 14:06:05 +0000 (GMT)
+Received: from www.nabble.com ([72.21.53.35]:17597 "EHLO talk.nabble.com")
+	by ftp.linux-mips.org with ESMTP id S28645331AbXABOF7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 2 Jan 2007 14:05:59 +0000
+Received: from [72.21.53.38] (helo=jubjub.nabble.com)
+	by talk.nabble.com with esmtp (Exim 4.50)
+	id 1H1kH5-0002yf-Al
+	for linux-mips@linux-mips.org; Tue, 02 Jan 2007 06:05:55 -0800
+Message-ID: <8124491.post@talk.nabble.com>
+Date:	Tue, 2 Jan 2007 06:05:55 -0800 (PST)
+From:	Daniel Laird <danieljlaird@hotmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: [PATCH][respin] pnx8550: fix system timer support
+In-Reply-To: <acd2a5930612280820l43639382x1f573386f2752d18@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <201707.54244.qm@web8408.mail.in.yahoo.com>
-Return-Path: <veerasena_b@yahoo.co.in>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Nabble-From: danieljlaird@hotmail.com
+References: <20061228171405.b1e3eed8.vitalywool@gmail.com> <20061229.011621.05599370.anemo@mba.ocn.ne.jp> <acd2a5930612280820l43639382x1f573386f2752d18@mail.gmail.com>
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13532
+X-archive-position: 13533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: veerasena_b@yahoo.co.in
+X-original-sender: danieljlaird@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-I wrote a small appication "test_shell" and started
-the same as a background process ("test_shell&") from
-"rcS" script to print a message "This is to test the
-shell for daemon processes" on console for every ten
-seconds.
 
-For this, the rcS script contains the below command:
-"test_shell &"
+Vitaly Wool-4 wrote:
+> 
+> On 12/28/06, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+>>
+>> On Thu, 28 Dec 2006 17:14:05 +0300, Vitaly Wool <vitalywool@gmail.com>
+>> wrote:
+>> > --- linux-mips.git.orig/arch/mips/philips/pnx8550/common/time.c
+>> > +++ linux-mips.git/arch/mips/philips/pnx8550/common/time.c
+>> > @@ -29,11 +29,22 @@
+>> >  #include <asm/hardirq.h>
+>> >  #include <asm/div64.h>
+>> >  #include <asm/debug.h>
+>> > +#include <asm/time.h>
+>>
+>> As I said before, asm/time.h is already included just before there.
+>> Why double inclusion?
+>>
+>>
+> Oh shoot, thanks, this hunk is bogus.
+> 
+> Vitaly
+> 
+> 
+I have now tried this new patch and am still not having much success and am
+still not understanding the patch very well.
+First things first, if I do use the line 
+clocksource_mips.read = hpt_read; 
+It does not compile as this symbol is not in a header file and is a static
+struct in arch/mips/kernel/time.c
+I can make it not static and extern it from pnx8550/common/time.c is this
+how I should do it?
 
-I have built two images for the target with the kernel
-versions linux-2.6.18 and linux-mips-2.6.12.
+Secondly I look at the logic for the arch/mips/kernel/time.c in the
+time_init code
+I think we want to follow the else branch (/* We know counter frequency.  Or
+we can get it.  */)
+In this case it then checks to see if mips_hpt_read is undefined which in
+our case it is.
+It then defines the mips_hpt_read to be c0_hpt_read
 
-In case of linux-mips-2.6.12 i am able to see the
-prints on the console.
+It then also overrides mips_timer_ack to be c0_timer_ack which i think is
+wrong as we have already overridden this function in
+arch/mips/philips/pnx8550/common/time.c.  (Is this behaviour correct?)
 
-In case of linux-2.6.18 i am not getting the prints
-on the console. if i try "ps" command i am able to see
-the process running in the background.
+I used the patch and ran the kernel,  It does not work very well, Long Hang
+after 
+Memory: ......
+Very slow behaviour after this.
 
-In both kernel versions libraries and shell used are
-same.
+I tried the following:
+else {
+    /* We know counter frequency.  Or we can get it.  */
+    if (!mips_hpt_read) 
+    {
+        /* No external high precision timer -- use R4k.  */
+	mips_hpt_read = c0_hpt_read;
 
-What could be the reason for this?
-Please suggest me some solution for this.
+	if (!mips_timer_state) {
+            /* No external timer interrupt -- use R4k.  */
+	    mips_hpt_init = c0_hpt_timer_init;
++	    if(!mips_timer_ack)
+                mips_timer_ack = c0_timer_ack;
+	}
+}
+This means it uses the mips_timer_ack function defined in
+arch/mips/philips/pnx8550/common/time.c 
+(mips_timer_ack = timer_ack;)
 
-Thanks in advance.
+If I use this patch then the kernel still hangs for a long time at 
+Memory: ...... (of the order of 12-14 secs)
+It then seems to run at full speed and to a prompt.
 
-Regards,
-veeru.
+In summary:
+How do I override clocksource_mips.read properly?
+Should mips_timer_ack = c0_timer_ack; be being done even though the board
+specific mips_timer_ack = timer_ack; has been done?
+Finally there is still the long hang which still looks top be related to
+waiting for counter to cycle could ?
 
-Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
+Any help with all three would be appreciated but 1 and 2 appear to be more
+generic questions whilst 3 is PNX8550 specific (any help  would be
+appreciated there as well).
+
+Cheers
+Dan
+
+
+
+
+-- 
+View this message in context: http://www.nabble.com/-PATCH--respin--pnx8550%3A-fix-system-timer-support-tf2890537.html#a8124491
+Sent from the linux-mips main mailing list archive at Nabble.com.

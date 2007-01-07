@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Jan 2007 10:57:08 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.174]:20285 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20041940AbXAGK5D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 7 Jan 2007 10:57:03 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so7038577uga
-        for <linux-mips@linux-mips.org>; Sun, 07 Jan 2007 02:57:03 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=cN/D9KjWll59kasE3oStCudmunkJyKzyDvUDYpKvZrTZBWFNTlLgS9cjIPdlmbLxJdDYlHwgSfQkqDMbFLpORBiI7y61gx9MahMbb6lOvV53aFhcCoynp8JzwGaEHSD6y+OYUrNOLEdmMwzB5UN5rJmrAu4eZvcHT3xuCJ+NBUw=
-Received: by 10.78.201.15 with SMTP id y15mr3716427huf.1168167422899;
-        Sun, 07 Jan 2007 02:57:02 -0800 (PST)
-Received: by 10.78.43.2 with HTTP; Sun, 7 Jan 2007 02:57:02 -0800 (PST)
-Message-ID: <c4357ccd0701070257u73994becy81976a64e2eadabb@mail.gmail.com>
-Date:	Sun, 7 Jan 2007 12:57:02 +0200
-From:	"Alexander Sirotkin" <demiourgos@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Jan 2007 15:20:32 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:4288 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28576110AbXAGPU1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 7 Jan 2007 15:20:27 +0000
+Received: from localhost (p2249-ipad204funabasi.chiba.ocn.ne.jp [222.146.89.249])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id EB3F5E9BB; Mon,  8 Jan 2007 00:20:23 +0900 (JST)
+Date:	Mon, 08 Jan 2007 00:20:24 +0900 (JST)
+Message-Id: <20070108.002024.75184927.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: network hardware accelerators
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Remove unused rm9k_cpu_irq_disable()
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <demiourgos@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13547
+X-archive-position: 13548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: demiourgos@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+rm9k_cpu_irq_disable() is unused since commit
+1603b5aca4f15b34848fb5594d0c7b6333b99144.  Remove it.
 
-I'd like to know LinuxMIPS community opinion on network hardware
-accelerators. I'm not talking about VPN accelerators, there is plenty
-of material on the subject on the net and the benefits are quite
-clear, as well as potential problems.
-
-There is a claim that in order to do wire-speed, i.e. 100Mbps, router
-using not high-end embedded processor, say MIPS 4K or 24K, one has to
-use hardware accelerators for firewall, NAT, bridging and other
-standard networking features of the residential gateway. I know that
-the idea of HW network accelerators is not very welcome in Linux
-community and the problems in functionality that it can cause. But the
-question still remains - whether 100Mbps firewall, NAT, etc can run on
-moderately priced embedded processor without HW acceleration.
-
-Opinions ?
-
-I'm going to get my hands on a reference design board in order to do
-some benchmarking, but maybe somebody saw these kinds of benchmarks on
-the net ? There are quite a few processors we are looking at and it
-would be problematic to benchmark them all.
-
-Thanks.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/kernel/irq-rm9000.c b/arch/mips/kernel/irq-rm9000.c
+index 0e6f4c5..2e68e4b 100644
+--- a/arch/mips/kernel/irq-rm9000.c
++++ b/arch/mips/kernel/irq-rm9000.c
+@@ -39,15 +39,6 @@ static inline void rm9k_cpu_irq_enable(u
+ 	local_irq_restore(flags);
+ }
+ 
+-static void rm9k_cpu_irq_disable(unsigned int irq)
+-{
+-	unsigned long flags;
+-
+-	local_irq_save(flags);
+-	mask_rm9k_irq(irq);
+-	local_irq_restore(flags);
+-}
+-
+ /*
+  * Performance counter interrupts are global on all processors.
+  */

@@ -1,43 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jan 2007 13:59:50 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.187]:64663 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20044904AbXAHN7q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 8 Jan 2007 13:59:46 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so8689195nfc
-        for <linux-mips@linux-mips.org>; Mon, 08 Jan 2007 05:59:46 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-        s=beta; d=gmail.com;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=jTQ/GTIi3WS+sYEECgTHZtC918ZXkIXDeUom7mii9CdFNTJaWTaSM/W51uQ8xVn3zuowm9YB5p0TK8Pt+80rdSI9u5yZuyTuxom1xmS/Fidld9dXIQsW4gSJ49MG0E+JnZrcbnnPZKFd2tS66PhnCEZ2413VCcLHJcYFGNrWtyo=
-Received: by 10.82.136.4 with SMTP id j4mr2052697bud.1168264786192;
-        Mon, 08 Jan 2007 05:59:46 -0800 (PST)
-Received: by 10.82.179.13 with HTTP; Mon, 8 Jan 2007 05:59:46 -0800 (PST)
-Message-ID: <50c9a2250701080559m66bb04afqd5c9eb1871b85928@mail.gmail.com>
-Date:	Mon, 8 Jan 2007 21:59:46 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: run linux on hardware without kseg2?
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jan 2007 14:09:32 +0000 (GMT)
+Received: from wf1.mips-uk.com ([194.74.144.154]:23487 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20044925AbXAHOJ2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 8 Jan 2007 14:09:28 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l08EAIUx015494;
+	Mon, 8 Jan 2007 14:10:18 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l08EAHl1015493;
+	Mon, 8 Jan 2007 14:10:17 GMT
+Date:	Mon, 8 Jan 2007 14:10:17 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix build errors on SEAD
+Message-ID: <20070108141017.GA15486@linux-mips.org>
+References: <20070108.012740.30187488.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+In-Reply-To: <20070108.012740.30187488.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13552
+X-archive-position: 13553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-hello all
-      our team want to use the mips kesg2 to do other things.and i
-found in linux that seems it use kseg2 in vmalloc?
-is that possible to remove kseg2 and the linux can also run ?
+On Mon, Jan 08, 2007 at 01:27:40AM +0900, Atsushi Nemoto wrote:
 
-Best Regards
+> Quick and dirty fix for build errors on SEAD.
 
-sky
+Applied,
+
+  Ralf

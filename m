@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jan 2007 17:42:55 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.187]:3897 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Jan 2007 17:43:22 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.191]:59 "EHLO
 	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S28574354AbXAHRms (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S28574356AbXAHRms (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Mon, 8 Jan 2007 17:42:48 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so8744174nfc
-        for <linux-mips@linux-mips.org>; Mon, 08 Jan 2007 09:42:47 -0800 (PST)
+Received: by nf-out-0910.google.com with SMTP id l24so8744178nfc
+        for <linux-mips@linux-mips.org>; Mon, 08 Jan 2007 09:42:48 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
         s=beta; d=gmail.com;
         h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=n3yUOEUpum5TeRwkVpOPpmAsLRAopZwPQUqxoAkFaiHb44ezaUdXTtkf1ehZAZSiPZf7Auipwuo30Ihp64aXbfzlh1IK0YgGX3QcEeWb+3fACoVTvnz6RpuQIMNrzXdHxPasYkXivGRSBbamOoRJ95SwWluco1hJNcAVRtLiE8k=
-Received: by 10.49.90.4 with SMTP id s4mr1554392nfl.1168278166881;
+        b=UanY6F5Ng1phtAl8TgXmd9KzL7v2cpbPHuTk4gLdJ+XQJJZgAELxvN8OR4ty4RDnFB+maM4QPqaL4Vr6vTCdM8TPHdnvMmbgAMVrg7yMw4dOhR96HWQFa/gG/vHZCQaBP8EvpM4XfuJ14p+fjKkfJ7clLmo7aeR9yLuyFvsojXY=
+Received: by 10.48.220.15 with SMTP id s15mr11206482nfg.1168278166956;
         Mon, 08 Jan 2007 09:42:46 -0800 (PST)
 Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id x27sm107759001nfb.2007.01.08.09.42.45;
+        by mx.google.com with ESMTP id p45sm107678077nfa.2007.01.08.09.42.45;
         Mon, 08 Jan 2007 09:42:46 -0800 (PST)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id AD5FF23F759; Mon,  8 Jan 2007 18:44:52 +0100 (CET)
+	id D175A23F76E; Mon,  8 Jan 2007 18:44:52 +0100 (CET)
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 1/2] Setup min_low_pfn/max_low_pfn correctly
-Date:	Mon,  8 Jan 2007 18:44:51 +0100
-Message-Id: <11682782922887-git-send-email-fbuihuu@gmail.com>
+Subject: [PATCH 2/2] FLATMEM: introduce PHYS_OFFSET.
+Date:	Mon,  8 Jan 2007 18:44:52 +0100
+Message-Id: <11682782923407-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.4.4.3.ge6d4
 In-Reply-To: <11682782923799-git-send-email-fbuihuu@gmail.com>
 References: <11682782923799-git-send-email-fbuihuu@gmail.com>
@@ -29,7 +29,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13561
+X-archive-position: 13562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,143 +39,115 @@ X-list: linux-mips
 
 From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-This patch makes a better usage of these two globals.
-'min_low_pfn' is now correctly setup for all configs, which
-allow us to rely on it in boot memory code init.
+The old code was assuming that min_low_pfn was always 0. This
+means that platforms having a big hole at their memory start
+paid the price of wasting some memory for the allocation of
+unused entries in mem_map[].
+
+This patch prevents this waste.
+
+It introduces PHYS_OFFSET define which is the start of the
+physical memory and uses it wherever needed. Specially when
+converting physical/virtual addresses into virtual/physical
+ones.
+
+Currently all platforms defines PHYS_OFFSET to 0.
 
 Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
 ---
- arch/mips/kernel/setup.c |   29 ++++++++++++++++++++---------
- arch/mips/mm/init.c      |   23 +++++++++++------------
- include/asm-mips/dma.h   |    1 +
- 3 files changed, 32 insertions(+), 21 deletions(-)
+ arch/mips/kernel/setup.c |    3 +++
+ include/asm-mips/io.h    |    4 ++--
+ include/asm-mips/page.h  |   25 +++++++++++++++++++++----
+ 3 files changed, 26 insertions(+), 6 deletions(-)
 
 diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 89440a0..581409d 100644
+index 581409d..63c17ce 100644
 --- a/arch/mips/kernel/setup.c
 +++ b/arch/mips/kernel/setup.c
-@@ -271,8 +271,7 @@ static void __init bootmem_init(void)
- static void __init bootmem_init(void)
- {
- 	unsigned long reserved_end;
--	unsigned long highest = 0;
--	unsigned long mapstart = -1UL;
-+	unsigned long mapstart = ~0UL;
- 	unsigned long bootmap_size;
- 	int i;
+@@ -315,6 +315,9 @@ static void __init bootmem_init(void)
  
-@@ -284,6 +283,13 @@ static void __init bootmem_init(void)
- 	reserved_end = max(init_initrd(), PFN_UP(__pa_symbol(&_end)));
+ 	if (min_low_pfn >= max_low_pfn)
+ 		panic("Incorrect memory mapping !!!");
++	if (min_low_pfn != ARCH_PFN_OFFSET)
++		panic("PHYS_OFFSET(%lx) and your mem start(%lx) don't match",
++		      PHYS_OFFSET, PFN_PHYS(min_low_pfn));
  
- 	/*
-+	 * max_low_pfn is not a number of pages. The number of pages
-+	 * of the system is given by 'max_low_pfn - min_low_pfn'.
-+	 */
-+	min_low_pfn = ~0UL;
-+	max_low_pfn = 0;
-+
-+	/*
- 	 * Find the highest page frame number we have available.
- 	 */
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
-@@ -296,8 +302,10 @@ static void __init bootmem_init(void)
- 		end = PFN_DOWN(boot_mem_map.map[i].addr
- 				+ boot_mem_map.map[i].size);
- 
--		if (end > highest)
--			highest = end;
-+		if (end > max_low_pfn)
-+			max_low_pfn = end;
-+		if (start < min_low_pfn)
-+			min_low_pfn = start;
- 		if (end <= reserved_end)
- 			continue;
- 		if (start >= mapstart)
-@@ -305,22 +313,25 @@ static void __init bootmem_init(void)
- 		mapstart = max(reserved_end, start);
- 	}
- 
-+	if (min_low_pfn >= max_low_pfn)
-+		panic("Incorrect memory mapping !!!");
-+
  	/*
  	 * Determine low and high memory ranges
- 	 */
--	if (highest > PFN_DOWN(HIGHMEM_START)) {
-+	if (max_low_pfn > PFN_DOWN(HIGHMEM_START)) {
- #ifdef CONFIG_HIGHMEM
- 		highstart_pfn = PFN_DOWN(HIGHMEM_START);
--		highend_pfn = highest;
-+		highend_pfn = max_low_pfn;
- #endif
--		highest = PFN_DOWN(HIGHMEM_START);
-+		max_low_pfn = PFN_DOWN(HIGHMEM_START);
- 	}
- 
- 	/*
- 	 * Initialize the boot-time allocator with low memory only.
- 	 */
--	bootmap_size = init_bootmem(mapstart, highest);
--
-+	bootmap_size = init_bootmem_node(NODE_DATA(0), mapstart,
-+					 min_low_pfn, max_low_pfn);
- 	/*
- 	 * Register fully available low RAM pages with the bootmem allocator.
- 	 */
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 30245c0..cd50b7a 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -341,7 +341,6 @@ static int __init page_is_ram(unsigned long pagenr)
- void __init paging_init(void)
+diff --git a/include/asm-mips/io.h b/include/asm-mips/io.h
+index 38d1399..e1592af 100644
+--- a/include/asm-mips/io.h
++++ b/include/asm-mips/io.h
+@@ -115,7 +115,7 @@ static inline void set_io_port_base(unsigned long base)
+  */
+ static inline unsigned long virt_to_phys(volatile const void *address)
  {
- 	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
--	unsigned long max_dma, low;
- #ifndef CONFIG_FLATMEM
- 	unsigned long zholes_size[MAX_NR_ZONES] = { 0, };
- 	unsigned long i, j, pfn;
-@@ -354,19 +353,19 @@ void __init paging_init(void)
- #endif
- 	kmap_coherent_init();
+-	return (unsigned long)address - PAGE_OFFSET;
++	return (unsigned long)address - PAGE_OFFSET + PHYS_OFFSET;
+ }
  
--	max_dma = virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
--	low = max_low_pfn;
--
- #ifdef CONFIG_ISA
--	if (low < max_dma)
--		zones_size[ZONE_DMA] = low;
--	else {
--		zones_size[ZONE_DMA] = max_dma;
--		zones_size[ZONE_NORMAL] = low - max_dma;
--	}
--#else
--	zones_size[ZONE_DMA] = low;
-+	if (max_low_pfn >= MAX_DMA_PFN)
-+		if (min_low_pfn >= MAX_DMA_PFN) {
-+			zones_size[ZONE_DMA] = 0;
-+			zones_size[ZONE_NORMAL] = max_low_pfn - min_low_pfn;
-+		} else {
-+			zones_size[ZONE_DMA] = MAX_DMA_PFN - min_low_pfn;
-+			zones_size[ZONE_NORMAL] = max_low_pfn - MAX_DMA_PFN;
-+		}
-+	else
- #endif
-+	zones_size[ZONE_DMA] = max_low_pfn - min_low_pfn;
+ /*
+@@ -132,7 +132,7 @@ static inline unsigned long virt_to_phys(volatile const void *address)
+  */
+ static inline void * phys_to_virt(unsigned long address)
+ {
+-	return (void *)(address + PAGE_OFFSET);
++	return (void *)(address + PAGE_OFFSET - PHYS_OFFSET);
+ }
+ 
+ /*
+diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
+index 2f9e1a9..d3fbd83 100644
+--- a/include/asm-mips/page.h
++++ b/include/asm-mips/page.h
+@@ -34,6 +34,20 @@
+ 
+ #ifndef __ASSEMBLY__
+ 
++/*
++ * This gives the physical RAM offset.
++ */
++#ifndef PHYS_OFFSET
++#define PHYS_OFFSET		0UL
++#endif
 +
- #ifdef CONFIG_HIGHMEM
- 	zones_size[ZONE_HIGHMEM] = highend_pfn - highstart_pfn;
++/*
++ * It's normally defined only for FLATMEM config but it's
++ * used in our early mem init code for all memory models.
++ * So always define it.
++ */
++#define ARCH_PFN_OFFSET		PFN_UP(PHYS_OFFSET)
++
+ #include <linux/pfn.h>
+ #include <asm/io.h>
  
-diff --git a/include/asm-mips/dma.h b/include/asm-mips/dma.h
-index 23f789c..e06ef07 100644
---- a/include/asm-mips/dma.h
-+++ b/include/asm-mips/dma.h
-@@ -91,6 +91,7 @@
+@@ -132,20 +146,23 @@ typedef struct { unsigned long pgprot; } pgprot_t;
+ /* to align the pointer to the (next) page boundary */
+ #define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
+ 
++/*
++ * __pa()/__va() should be used only during mem init.
++ */
+ #if defined(CONFIG_64BIT) && !defined(CONFIG_BUILD_ELF64)
+ #define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
  #else
- #define MAX_DMA_ADDRESS		(PAGE_OFFSET + 0x01000000)
+ #define __pa_page_offset(x)	PAGE_OFFSET
  #endif
-+#define MAX_DMA_PFN		PFN_DOWN(virt_to_phys((void *)MAX_DMA_ADDRESS))
+-#define __pa(x)			((unsigned long)(x) - __pa_page_offset(x))
+-#define __pa_symbol(x)		__pa(RELOC_HIDE((unsigned long)(x),0))
+-#define __va(x)			((void *)((unsigned long)(x) + PAGE_OFFSET))
++#define __pa(x)		((unsigned long)(x) - __pa_page_offset(x) + PHYS_OFFSET)
++#define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
++#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x),0))
  
- /* 8237 DMA controllers */
- #define IO_DMA1_BASE	0x00	/* 8 bit slave DMA, channels 0..3 */
+ #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
+ 
+ #ifdef CONFIG_FLATMEM
+ 
+-#define pfn_valid(pfn)		((pfn) < max_mapnr)
++#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
+ 
+ #elif defined(CONFIG_SPARSEMEM)
+ 
 -- 
 1.4.4.3.ge6d4

@@ -1,173 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2007 16:30:17 +0000 (GMT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jan 2007 16:38:26 +0000 (GMT)
 Received: from p549F72FE.dip.t-dialin.net ([84.159.114.254]:33981 "EHLO
 	p549F72FE.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20039254AbXAJQaP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Jan 2007 16:30:15 +0000
-Received: from nf-out-0910.google.com ([64.233.182.186]:33237 "EHLO
-	nf-out-0910.google.com") by lappi.linux-mips.net with ESMTP
-	id S136405AbXAJImD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Jan 2007 09:42:03 +0100
-Received: by nf-out-0910.google.com with SMTP id l24so408123nfc
-        for <linux-mips@linux-mips.org>; Wed, 10 Jan 2007 00:42:02 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=RygRHZYm1PlsEbyYnyUDziBaH9GLl+JSShtb4mOIKrYEf5DZUSvwroWujJ0lCbdS7+UjOhiuBAhwLown4igSiPDDN22GjUE3jBwkutdapNS5QN4in7pFjuvRy36J/GDit/2vgwFctT2o+0mUDhm2g1/pAR6SShZ6OZtLG+LEHIU=
-Received: by 10.49.57.1 with SMTP id j1mr997173nfk.1168418522012;
-        Wed, 10 Jan 2007 00:42:02 -0800 (PST)
-Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id p45sm3241412nfa.2007.01.10.00.41.59;
-        Wed, 10 Jan 2007 00:42:01 -0800 (PST)
-Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 3EC2323F76A; Wed, 10 Jan 2007 09:44:06 +0100 (CET)
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 2/2] FLATMEM: introduce PHYS_OFFSET.
-Date:	Wed, 10 Jan 2007 09:44:05 +0100
-Message-Id: <11684186464085-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.4.4.3.ge6d4
-In-Reply-To: <116841864595-git-send-email-fbuihuu@gmail.com>
-References: <116841864595-git-send-email-fbuihuu@gmail.com>
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+	id S20039673AbXAJQiW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 Jan 2007 16:38:22 +0000
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:13013 "EHLO
+	topsns2.toshiba-tops.co.jp") by lappi.linux-mips.net with ESMTP
+	id S1100422AbXAJJxh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 Jan 2007 10:53:37 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for p549F72FE.dip.t-dialin.net [84.159.114.254]) with ESMTP; Wed, 10 Jan 2007 18:53:37 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 4024541E1C;
+	Wed, 10 Jan 2007 18:53:33 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 351AA203B8;
+	Wed, 10 Jan 2007 18:53:33 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l0A9rXW0035795;
+	Wed, 10 Jan 2007 18:53:33 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 10 Jan 2007 18:53:33 +0900 (JST)
+Message-Id: <20070110.185333.51860171.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, kaz@zeugmasystems.com, drow@false.org
+Subject: [PATCH] Fix N32 SysV IPC routines
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13572
+X-archive-position: 13573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+Add wrappers for N32 msg{snd,rcv} while compat_sys_msg{snd,rcv} could
+not be used as system call entries as is.  This fix is based on patch
+originally made by Kaz Kylheku.
 
-The old code was assuming that min_low_pfn was always 0. This
-means that platforms having a big hole at their memory start
-paid the price of wasting some memory for the allocation of
-unused entries in mem_map[].
+Also change a type of last argument of sysn32_semctl to match its true
+size.
 
-This patch prevents this waste.
-
-It introduces PHYS_OFFSET define which is the start of the
-physical memory and uses it wherever needed. Specially when
-converting physical/virtual addresses into virtual/physical
-ones.
-
-Currently all platforms defines PHYS_OFFSET to 0.
-
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
-
-Conflicts:
-
-	arch/mips/kernel/setup.c
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/kernel/setup.c |   12 ++++++++----
- include/asm-mips/io.h    |    4 ++--
- include/asm-mips/page.h  |   25 +++++++++++++++++++++----
- 3 files changed, 31 insertions(+), 10 deletions(-)
+ linux32.c     |   16 ++++++++--
+ scall64-n32.S |    4 +-
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index f352cd9..e1d76b8 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -315,13 +315,17 @@ static void __init bootmem_init(void)
- 
- 	if (min_low_pfn >= max_low_pfn)
- 		panic("Incorrect memory mapping !!!");
--	if (min_low_pfn > 0) {
-+	if (min_low_pfn > ARCH_PFN_OFFSET) {
- 		printk(KERN_INFO
- 		       "Wasting %lu bytes for tracking %lu unused pages\n",
--		       min_low_pfn * sizeof(struct page),
--		       min_low_pfn);
--		min_low_pfn = 0;
-+		       (min_low_pfn - ARCH_PFN_OFFSET) * sizeof(struct page),
-+		       min_low_pfn - ARCH_PFN_OFFSET);
-+	} else if (min_low_pfn < ARCH_PFN_OFFSET) {
-+		printk(KERN_INFO
-+		       "%lu free pages won't be used\n",
-+		       ARCH_PFN_OFFSET - min_low_pfn);
- 	}
-+	min_low_pfn = ARCH_PFN_OFFSET;
- 
- 	/*
- 	 * Determine low and high memory ranges
-diff --git a/include/asm-mips/io.h b/include/asm-mips/io.h
-index 38d1399..e1592af 100644
---- a/include/asm-mips/io.h
-+++ b/include/asm-mips/io.h
-@@ -115,7 +115,7 @@ static inline void set_io_port_base(unsigned long base)
-  */
- static inline unsigned long virt_to_phys(volatile const void *address)
- {
--	return (unsigned long)address - PAGE_OFFSET;
-+	return (unsigned long)address - PAGE_OFFSET + PHYS_OFFSET;
+diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
+index b061c9a..de3fae2 100644
+--- a/arch/mips/kernel/linux32.c
++++ b/arch/mips/kernel/linux32.c
+@@ -440,14 +440,26 @@ sys32_ipc (u32 call, int first, int seco
  }
  
- /*
-@@ -132,7 +132,7 @@ static inline unsigned long virt_to_phys(volatile const void *address)
-  */
- static inline void * phys_to_virt(unsigned long address)
+ #ifdef CONFIG_MIPS32_N32
+-asmlinkage long sysn32_semctl(int semid, int semnum, int cmd, union semun arg)
++asmlinkage long sysn32_semctl(int semid, int semnum, int cmd, u32 arg)
  {
--	return (void *)(address + PAGE_OFFSET);
-+	return (void *)(address + PAGE_OFFSET - PHYS_OFFSET);
+ 	/* compat_sys_semctl expects a pointer to union semun */
+ 	u32 __user *uptr = compat_alloc_user_space(sizeof(u32));
+-	if (put_user(ptr_to_compat(arg.__pad), uptr))
++	if (put_user(arg, uptr))
+ 		return -EFAULT;
+ 	return compat_sys_semctl(semid, semnum, cmd, uptr);
  }
- 
- /*
-diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
-index 2f9e1a9..d3fbd83 100644
---- a/include/asm-mips/page.h
-+++ b/include/asm-mips/page.h
-@@ -34,6 +34,20 @@
- 
- #ifndef __ASSEMBLY__
- 
-+/*
-+ * This gives the physical RAM offset.
-+ */
-+#ifndef PHYS_OFFSET
-+#define PHYS_OFFSET		0UL
-+#endif
 +
-+/*
-+ * It's normally defined only for FLATMEM config but it's
-+ * used in our early mem init code for all memory models.
-+ * So always define it.
-+ */
-+#define ARCH_PFN_OFFSET		PFN_UP(PHYS_OFFSET)
++asmlinkage long sysn32_msgsnd(int msqid, u32 msgp, unsigned msgsz, int msgflg)
++{
++	return compat_sys_msgsnd(msqid, msgsz, msgflg, compat_ptr(msgp));
++}
 +
- #include <linux/pfn.h>
- #include <asm/io.h>
- 
-@@ -132,20 +146,23 @@ typedef struct { unsigned long pgprot; } pgprot_t;
- /* to align the pointer to the (next) page boundary */
- #define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
- 
-+/*
-+ * __pa()/__va() should be used only during mem init.
-+ */
- #if defined(CONFIG_64BIT) && !defined(CONFIG_BUILD_ELF64)
- #define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
- #else
- #define __pa_page_offset(x)	PAGE_OFFSET
++asmlinkage long sysn32_msgrcv(int msqid, u32 msgp, size_t msgsz, int msgtyp,
++			      int msgflg)
++{
++	return compat_sys_msgrcv(msqid, msgsz, msgtyp, msgflg, IPC_64,
++				 compat_ptr(msgp));
++}
  #endif
--#define __pa(x)			((unsigned long)(x) - __pa_page_offset(x))
--#define __pa_symbol(x)		__pa(RELOC_HIDE((unsigned long)(x),0))
--#define __va(x)			((void *)((unsigned long)(x) + PAGE_OFFSET))
-+#define __pa(x)		((unsigned long)(x) - __pa_page_offset(x) + PHYS_OFFSET)
-+#define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
-+#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x),0))
  
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
- 
- #ifdef CONFIG_FLATMEM
- 
--#define pfn_valid(pfn)		((pfn) < max_mapnr)
-+#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
- 
- #elif defined(CONFIG_SPARSEMEM)
- 
--- 
-1.4.4.3.ge6d4
+ struct sysctl_args32
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index 34567d8..a7bff2a 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -187,8 +187,8 @@ EXPORT(sysn32_call_table)
+ 	PTR	sysn32_semctl
+ 	PTR	sys_shmdt			/* 6065 */
+ 	PTR	sys_msgget
+-	PTR	compat_sys_msgsnd
+-	PTR	compat_sys_msgrcv
++	PTR	sysn32_msgsnd
++	PTR	sysn32_msgrcv
+ 	PTR	compat_sys_msgctl
+ 	PTR	compat_sys_fcntl		/* 6070 */
+ 	PTR	sys_flock

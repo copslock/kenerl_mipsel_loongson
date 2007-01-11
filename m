@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2007 16:50:21 +0000 (GMT)
-Received: from wf1.mips-uk.com ([194.74.144.154]:9896 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2007 17:15:01 +0000 (GMT)
+Received: from wf1.mips-uk.com ([194.74.144.154]:43456 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28581219AbXAKQuU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Jan 2007 16:50:20 +0000
+	id S28581298AbXAKRO7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Jan 2007 17:14:59 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0BGp9Jf011727;
-	Thu, 11 Jan 2007 16:51:09 GMT
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0BHBjup012808;
+	Thu, 11 Jan 2007 17:11:45 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0BGp7XJ011726;
-	Thu, 11 Jan 2007 16:51:07 GMT
-Date:	Thu, 11 Jan 2007 16:51:07 +0000
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0BHBfdO012807;
+	Thu, 11 Jan 2007 17:11:41 GMT
+Date:	Thu, 11 Jan 2007 17:11:41 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] [MIPS] vr41xx: add MACINT controls
-Message-ID: <20070111165107.GA23014@linux-mips.org>
-References: <20070111235318.49bf0820.yoichi_yuasa@tripeaks.co.jp>
+To:	"Joseph S. Myers" <joseph@codesourcery.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Use compat_sys_pselect6
+Message-ID: <20070111171138.GC23014@linux-mips.org>
+References: <Pine.LNX.4.64.0701101228450.6217@digraph.polyomino.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20070111235318.49bf0820.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <Pine.LNX.4.64.0701101228450.6217@digraph.polyomino.org.uk>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13588
+X-archive-position: 13589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,11 +33,11 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 11, 2007 at 11:53:18PM +0900, Yoichi Yuasa wrote:
+On Wed, Jan 10, 2007 at 12:30:50PM +0000, Joseph S. Myers wrote:
 
-> This patch has added MACINT controls.
-> They are necessary for VR4133 ethernet driver.
+> The N32 and O32 pselect6 syscalls need to use compat_sys_pselect6 to
+> translate arguments from 32-bit to 64-bit layout.
 
-Okay, queued.
+Thanks, applied.
 
   Ralf

@@ -1,61 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2007 14:30:31 +0000 (GMT)
-Received: from wf1.mips-uk.com ([194.74.144.154]:14313 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20046744AbXAKOa3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Jan 2007 14:30:29 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0BEVI0t004534;
-	Thu, 11 Jan 2007 14:31:18 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0BEVGGj004533;
-	Thu, 11 Jan 2007 14:31:16 GMT
-Date:	Thu, 11 Jan 2007 14:31:16 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] [MIPS] Fixed PCI resource fixup
-Message-ID: <20070111143116.GA4451@linux-mips.org>
-References: <200701110555.l0B5twHe006668@mbox33.po.2iij.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200701110555.l0B5twHe006668@mbox33.po.2iij.net>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2007 14:44:10 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:10248 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S28580535AbXAKOoF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Jan 2007 14:44:05 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id DB212F59AE;
+	Thu, 11 Jan 2007 15:43:50 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id oW9hcat-jlTW; Thu, 11 Jan 2007 15:43:50 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 7ACBCF59AA;
+	Thu, 11 Jan 2007 15:43:50 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l0BEhxZn026442;
+	Thu, 11 Jan 2007 15:44:00 +0100
+Date:	Thu, 11 Jan 2007 14:43:54 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@osdl.org>
+cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2.6.20-rc1 11/10] TURBOchannel resources off-by-one fix 
+Message-ID: <Pine.LNX.4.64N.0701111439070.11394@blysk.ds.pg.gda.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.7/2435/Thu Jan 11 09:34:23 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13583
+X-archive-position: 13584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 11, 2007 at 02:55:58PM +0900, Yoichi Yuasa wrote:
+ This is a trivial fix to resource reservation of TURBOchannel areas, 
+where the end is one byte too far.
 
-> This patch has fixed IDE resources problem about Cobalt.
-> 
-> pcibios_fixup_device_resources() changes non-movable resources.
-> It cannot be changed if there is IORESOURCE_PCI_FIXED in the resource flags. 
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
 
-<Ralf> anemo: Have you seen Yoichi's patch?
-<anemo> Ralf: yes, but I could not see why ...  My impression is IORESOURCE_PCI_FIXED and io_offset adjustment is irrerevant.
-<Ralf> This whole fixup thing is really meant to handle machines where there is an offset between PCI bus addresses and CPU physical addresses.
-<Ralf> And that exists regardless of IORESOURCE_PCI_FIXED
-<anemo> I thought so too.  So I can not see why youichi's patch fix something.
-<Ralf> This may be the explanation:
-<Ralf> static struct pci_controller cobalt_pci_controller = {
-<Ralf>         .pci_ops        = &gt64111_pci_ops,
-<Ralf>         .mem_resource   = &cobalt_mem_resource,
-<Ralf>         .mem_offset     = 0,
-<Ralf>         .io_resource    = &cobalt_io_resource,
-<Ralf>         .io_offset      = 0 - GT_DEF_PCI0_IO_BASE,
-<Ralf> };
-<Ralf> I think he should have io_offset = 0.
+ Please apply.
 
-Which is what other GT-64120 platforms are using, so I wonder why that is
-different on Cobalt.
+  Maciej
 
-  Ralf
+patch-mips-2.6.18-20060920-tc-sysfs-resource-0
+diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/tc/tc.c linux-mips-2.6.18-20060920/drivers/tc/tc.c
+--- linux-mips-2.6.18-20060920.macro/drivers/tc/tc.c	2006-12-19 23:03:11.000000000 +0000
++++ linux-mips-2.6.18-20060920/drivers/tc/tc.c	2006-12-28 18:51:49.000000000 +0000
+@@ -160,7 +160,7 @@ static int __init tc_init(void)
+ 		tc_bus.resource[0].start = tc_bus.slot_base;
+ 		tc_bus.resource[0].end = tc_bus.slot_base +
+ 					 (tc_bus.info.slot_size << 20) *
+-					 tc_bus.num_tcslots;
++					 tc_bus.num_tcslots - 1;
+ 		tc_bus.resource[0].name = tc_bus.name;
+ 		tc_bus.resource[0].flags = IORESOURCE_MEM;
+ 		if (request_resource(&iomem_resource,
+@@ -172,7 +172,7 @@ static int __init tc_init(void)
+ 			tc_bus.resource[1].start = tc_bus.ext_slot_base;
+ 			tc_bus.resource[1].end = tc_bus.ext_slot_base +
+ 						 tc_bus.ext_slot_size *
+-						 tc_bus.num_tcslots;
++						 tc_bus.num_tcslots - 1;
+ 			tc_bus.resource[1].name = tc_bus.name;
+ 			tc_bus.resource[1].flags = IORESOURCE_MEM;
+ 			if (request_resource(&iomem_resource,

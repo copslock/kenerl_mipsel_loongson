@@ -1,85 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2007 13:50:40 +0000 (GMT)
-Received: from mailout.stusta.mhn.de ([141.84.69.5]:3858 "HELO
-	mailout.stusta.mhn.de") by ftp.linux-mips.org with SMTP
-	id S20046649AbXAKNug (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Jan 2007 13:50:36 +0000
-Received: (qmail 14917 invoked from network); 11 Jan 2007 13:50:30 -0000
-Received: from r063144.stusta.swh.mhn.de (10.150.63.144)
-  by mailhub.stusta.mhn.de with SMTP; 11 Jan 2007 13:50:30 -0000
-Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
-	id 194DC3A9DBA; Thu, 11 Jan 2007 14:50:37 +0100 (CET)
-Date:	Thu, 11 Jan 2007 14:50:37 +0100
-From:	Adrian Bunk <bunk@stusta.de>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [2.6 patch] MIPS: remove smp_tune_scheduling()
-Message-ID: <20070111135037.GK20027@stusta.de>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jan 2007 14:30:31 +0000 (GMT)
+Received: from wf1.mips-uk.com ([194.74.144.154]:14313 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20046744AbXAKOa3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Jan 2007 14:30:29 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0BEVI0t004534;
+	Thu, 11 Jan 2007 14:31:18 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0BEVGGj004533;
+	Thu, 11 Jan 2007 14:31:16 GMT
+Date:	Thu, 11 Jan 2007 14:31:16 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] [MIPS] Fixed PCI resource fixup
+Message-ID: <20070111143116.GA4451@linux-mips.org>
+References: <200701110555.l0B5twHe006668@mbox33.po.2iij.net>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <bunk@stusta.de>
+In-Reply-To: <200701110555.l0B5twHe006668@mbox33.po.2iij.net>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13582
+X-archive-position: 13583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@stusta.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Since smp_tune_scheduling() didn't do anything we can simply remove it.
+On Thu, Jan 11, 2007 at 02:55:58PM +0900, Yoichi Yuasa wrote:
 
-Signed-off-by: Adrian Bunk <bunk@stusta.de>
+> This patch has fixed IDE resources problem about Cobalt.
+> 
+> pcibios_fixup_device_resources() changes non-movable resources.
+> It cannot be changed if there is IORESOURCE_PCI_FIXED in the resource flags. 
 
----
+<Ralf> anemo: Have you seen Yoichi's patch?
+<anemo> Ralf: yes, but I could not see why ...  My impression is IORESOURCE_PCI_FIXED and io_offset adjustment is irrerevant.
+<Ralf> This whole fixup thing is really meant to handle machines where there is an offset between PCI bus addresses and CPU physical addresses.
+<Ralf> And that exists regardless of IORESOURCE_PCI_FIXED
+<anemo> I thought so too.  So I can not see why youichi's patch fix something.
+<Ralf> This may be the explanation:
+<Ralf> static struct pci_controller cobalt_pci_controller = {
+<Ralf>         .pci_ops        = &gt64111_pci_ops,
+<Ralf>         .mem_resource   = &cobalt_mem_resource,
+<Ralf>         .mem_offset     = 0,
+<Ralf>         .io_resource    = &cobalt_io_resource,
+<Ralf>         .io_offset      = 0 - GT_DEF_PCI0_IO_BASE,
+<Ralf> };
+<Ralf> I think he should have io_offset = 0.
 
- arch/mips/kernel/smp.c |   28 ----------------------------
- 1 file changed, 28 deletions(-)
+Which is what other GT-64120 platforms are using, so I wonder why that is
+different on Cobalt.
 
---- linux-2.6.20-rc3-mm1/arch/mips/kernel/smp.c.old	2007-01-11 14:19:43.000000000 +0100
-+++ linux-2.6.20-rc3-mm1/arch/mips/kernel/smp.c	2007-01-11 14:20:01.000000000 +0100
-@@ -51,33 +51,6 @@
- EXPORT_SYMBOL(phys_cpu_present_map);
- EXPORT_SYMBOL(cpu_online_map);
- 
--static void smp_tune_scheduling (void)
--{
--	struct cache_desc *cd = &current_cpu_data.scache;
--	unsigned long cachesize;       /* kB   */
--	unsigned long cpu_khz;
--
--	/*
--	 * Crude estimate until we actually meassure ...
--	 */
--	cpu_khz = loops_per_jiffy * 2 * HZ / 1000;
--
--	/*
--	 * Rough estimation for SMP scheduling, this is the number of
--	 * cycles it takes for a fully memory-limited process to flush
--	 * the SMP-local cache.
--	 *
--	 * (For a P5 this pretty much means we will choose another idle
--	 *  CPU almost always at wakeup time (this is due to the small
--	 *  L1 cache), on PIIs it's around 50-100 usecs, depending on
--	 *  the cache size)
--	 */
--	if (!cpu_khz)
--		return;
--
--	cachesize = cd->linesz * cd->sets * cd->ways;
--}
--
- extern void __init calibrate_delay(void);
- extern ATTRIB_NORET void cpu_idle(void);
- 
-@@ -245,7 +218,6 @@
- {
- 	init_new_context(current, &init_mm);
- 	current_thread_info()->cpu = 0;
--	smp_tune_scheduling();
- 	plat_prepare_cpus(max_cpus);
- #ifndef CONFIG_HOTPLUG_CPU
- 	cpu_present_map = cpu_possible_map;
+  Ralf

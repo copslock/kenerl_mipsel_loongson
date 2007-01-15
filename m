@@ -1,187 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2007 18:46:23 +0000 (GMT)
-Received: from smtp-ext.int-evry.fr ([157.159.11.17]:30421 "EHLO
-	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S28643080AbXAOSqS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Jan 2007 18:46:18 +0000
-Received: from mini.int.alphacore.net (florian.maisel.int-evry.fr [157.159.41.36])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 4FD938D168F
-	for <linux-mips@linux-mips.org>; Mon, 15 Jan 2007 19:45:04 +0100 (CET)
-From:	Florian Fainelli <florian.fainelli@int-evry.fr>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] Add support for Cobalt Server front LED
-Date:	Mon, 15 Jan 2007 19:36:52 +0100
-User-Agent: KMail/1.9.5
-MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart3049338.yGKx3zGaik";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200701151936.57738.florian.fainelli@int-evry.fr>
-Return-Path: <florian.fainelli@int-evry.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2007 21:14:36 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.169]:62548 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20045658AbXAOVOb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Jan 2007 21:14:31 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so1601735uga
+        for <linux-mips@linux-mips.org>; Mon, 15 Jan 2007 13:14:30 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
+        b=JR4F35IhU4a5IfohyWnMgJWVyPkbqGbe51SuBHJn7eGNnqY2t8zPH9AXASNe4B5APqTL4BA3xl/MaEw7hbgHP4i+JFm4ric1TpqfVMYg/+IctbWAPSqBuN931tSev1HTa26kejqlJ4qRTNNA/UDNXKxCKAy4HjYVFJeXaUdfEHY=
+Received: by 10.66.232.9 with SMTP id e9mr6057303ugh.1168895670335;
+        Mon, 15 Jan 2007 13:14:30 -0800 (PST)
+Received: from gmail.com ( [217.67.117.64])
+        by mx.google.com with ESMTP id 59sm7384968ugf.2007.01.15.13.14.29;
+        Mon, 15 Jan 2007 13:14:29 -0800 (PST)
+Received: by gmail.com (nbSMTP-1.00) for uid 1000
+	(using TLSv1/SSLv3 with cipher DES-CBC3-SHA (168/168 bits))
+	adobriyan@gmail.com; Tue, 16 Jan 2007 00:14:15 +0300 (MSK)
+Date:	Tue, 16 Jan 2007 00:14:13 +0300
+From:	Alexey Dobriyan <adobriyan@gmail.com>
+To:	akpm@osdl.org
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH] seq_file conversion: APM on mips
+Message-ID: <20070115211413.GB5010@martell.zuzino.mipt.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Return-Path: <adobriyan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13600
+X-archive-position: 13601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@int-evry.fr
+X-original-sender: adobriyan@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---nextPart3049338.yGKx3zGaik
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Compile-tested.
 
-Hi all,
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+---
 
-This patch adds support for controlling the front LED on Cobalt Server. It =
-has=20
-been tested on Qube 2 with either no default trigger, or the IDE-activity=20
-trigger. Both work fine. Please comment and test !
+ arch/mips/kernel/apm.c |   28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-Thanks
-
-=46lorian
-
-Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
-
-diff -urN linux-2.6.19.1/include/asm-mips/mach-cobalt/cobalt.h=20
-linux-2.6.19.1.led/include/asm-mips/mach-cobalt/cobalt.h
-=2D-- linux-2.6.19.1/include/asm-mips/mach-cobalt/cobalt.h        2006-12-1=
-1=20
-20:32:53.000000000 +0100
-+++ linux-2.6.19.1.led/include/asm-mips/mach-cobalt/cobalt.h    2007-01-15=
-=20
-19:29:07.000000000 +0100
-@@ -97,6 +97,7 @@
-                (PCI_FUNC (devfn) << 8) | (where)), GT_PCI0_CFGADDR_OFS)
-
- #define COBALT_LED_PORT                (*(volatile unsigned char *)=20
-CKSEG1ADDR(0x1c000000))
-+#define COBALT_LED_BASE         0xbc000000
- # define COBALT_LED_BAR_LEFT   (1 << 0)        /* Qube */
- # define COBALT_LED_BAR_RIGHT  (1 << 1)        /* Qube */
- # define COBALT_LED_WEB                (1 << 2)        /* RaQ */
-diff -urN linux-2.6.19.1/drivers/leds/Kconfig=20
-linux-2.6.19.1.led/drivers/leds/Kconfig
-=2D-- linux-2.6.19.1/drivers/leds/Kconfig 2006-12-11 20:32:53.000000000 +01=
-00
-+++ linux-2.6.19.1.led/drivers/leds/Kconfig     2007-01-15 19:22:00.0000000=
-00=20
-+0100
-@@ -76,6 +76,12 @@
-          This option enables support for the Soekris net4801 and net4826=20
-error
-          LED.
-
-+config LEDS_COBALT
-+       tristate "LED Support for Cobalt Server front LED"
-+       depends on LEDS_CLASS && MIPS_COBALT
-+       help
-+         This option enables support for the front LED on Cobalt Server
-+
- comment "LED Triggers"
-
- config LEDS_TRIGGERS
-diff -urN linux-2.6.19.1/drivers/leds/leds-cobalt.c=20
-linux-2.6.19.1.led/drivers/leds/leds-cobalt.c
-=2D-- linux-2.6.19.1/drivers/leds/leds-cobalt.c   1970-01-01 01:00:00.00000=
-0000=20
-+0100
-+++ linux-2.6.19.1.led/drivers/leds/leds-cobalt.c       2007-01-15=20
-19:28:09.000000000 +0100
-@@ -0,0 +1,55 @@
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/leds.h>
-+#include <asm/mach-cobalt/cobalt.h>
-+
-+/* Copyright 2006 - Florian Fainelli <florian@openwrt.org>
-+ *
-+ * This driver let you control the Cobalt Qube/RaQ front LED
-+ *
-+ * 255 (max brightness) -> turn the led on
-+ * 0 -> turn the led off
-+ *
-+ * If you want the LED to be blinking on IDE activity, select the IDE trig=
-ger
-+ */
-+
-+void cobalt_led_set(struct led_classdev *led_cdev, enum led_brightness=20
-brightness)
-+{
-+       switch (brightness) {
-+       case LED_OFF:
-+               *(volatile uint8_t *) COBALT_LED_BASE =3D 0;
-+               break;
-+       case LED_FULL:
-+               *(volatile uint8_t *) COBALT_LED_BASE =3D COBALT_LED_BAR_LE=
-=46T |=20
-COBALT_LED_BAR_RIGHT;
-+               break;
-+       default:
-+               return;
-+       }
+--- a/arch/mips/kernel/apm.c
++++ b/arch/mips/kernel/apm.c
+@@ -15,6 +15,7 @@ #include <linux/poll.h>
+ #include <linux/timer.h>
+ #include <linux/slab.h>
+ #include <linux/proc_fs.h>
++#include <linux/seq_file.h>
+ #include <linux/miscdevice.h>
+ #include <linux/apm_bios.h>
+ #include <linux/capability.h>
+@@ -434,11 +435,10 @@ #ifdef CONFIG_PROC_FS
+  *	-1: Unknown
+  *   8) min = minutes; sec = seconds
+  */
+-static int apm_get_info(char *buf, char **start, off_t fpos, int length)
++static int proc_apm_show(struct seq_file *m, void *v)
+ {
+ 	struct apm_power_info info;
+ 	char *units;
+-	int ret;
+ 
+ 	info.ac_line_status = 0xff;
+ 	info.battery_status = 0xff;
+@@ -456,14 +456,26 @@ static int apm_get_info(char *buf, char 
+ 	case 1: 	units = "sec";	break;
+ 	}
+ 
+-	ret = sprintf(buf, "%s 1.2 0x%02x 0x%02x 0x%02x 0x%02x %d%% %d %s\n",
++	seq_printf(m, "%s 1.2 0x%02x 0x%02x 0x%02x 0x%02x %d%% %d %s\n",
+ 		     driver_version, APM_32_BIT_SUPPORT,
+ 		     info.ac_line_status, info.battery_status,
+ 		     info.battery_flag, info.battery_life,
+ 		     info.time, units);
++	return 0;
 +}
+ 
+- 	return ret;
++static int proc_apm_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, proc_apm_show, NULL);
+ }
 +
-+static struct led_classdev cobalt_led =3D {
-+       .name =3D "cobalt-front-led",
-+       .brightness_set =3D cobalt_led_set,
-+#ifdef CONFIG_LEDS_TRIGGER_IDE_DISK
-+       .default_trigger =3D "ide-disk",
-+#endif
++static const struct file_operations proc_apm_fops = {
++	.owner		= THIS_MODULE,
++	.open		= proc_apm_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
 +};
+ #endif
+ 
+ static int kapmd(void *arg)
+@@ -529,7 +541,13 @@ static int __init apm_init(void)
+ 	}
+ 
+ #ifdef CONFIG_PROC_FS
+-	create_proc_info_entry("apm", 0, NULL, apm_get_info);
++	{
++		struct proc_dir_entry *pde;
 +
-+static int __init cobalt_led_init(void)
-+{
-+       return led_classdev_register(NULL, &cobalt_led);
-+}
-+
-+static void __exit cobalt_led_exit(void)
-+{
-+       led_classdev_unregister(&cobalt_led);
-+}
-+
-+module_init(cobalt_led_init);
-+module_exit(cobalt_led_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Front LED support for Cobalt Server");
-+MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
-diff -urN linux-2.6.19.1/drivers/leds/Makefile=20
-linux-2.6.19.1.led/drivers/leds/Makefile
-=2D-- linux-2.6.19.1/drivers/leds/Makefile        2006-12-11 20:32:53.00000=
-0000=20
-+0100
-+++ linux-2.6.19.1.led/drivers/leds/Makefile    2007-01-15 19:22:18.0000000=
-00=20
-+0100
-@@ -13,6 +13,7 @@
- obj-$(CONFIG_LEDS_S3C24XX)             +=3D leds-s3c24xx.o
- obj-$(CONFIG_LEDS_AMS_DELTA)           +=3D leds-ams-delta.o
- obj-$(CONFIG_LEDS_NET48XX)             +=3D leds-net48xx.o
-+obj-$(CONFIG_LEDS_COBALT)              +=3D leds-cobalt.o
-
- # LED Triggers
- obj-$(CONFIG_LEDS_TRIGGER_TIMER)       +=3D ledtrig-timer.o
-
---nextPart3049338.yGKx3zGaik
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.1 (GNU/Linux)
-
-iD8DBQBFq8nJQ/Yr6D8A81kRAhxtAJ0fAqQT1eCle6UNpz2tLwMNhmb3SwCfUKJn
-WFM92oygkJo+ZA54kGbnbfw=
-=sOts
------END PGP SIGNATURE-----
-
---nextPart3049338.yGKx3zGaik--
++		pde = create_proc_entry("apm", 0, NULL);
++		if (pde)
++			pde->proc_fops = &proc_apm_fops;
++	}
+ #endif
+ 
+ 	ret = misc_register(&apm_device);

@@ -1,116 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2007 21:14:36 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.169]:62548 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20045658AbXAOVOb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Jan 2007 21:14:31 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so1601735uga
-        for <linux-mips@linux-mips.org>; Mon, 15 Jan 2007 13:14:30 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
-        b=JR4F35IhU4a5IfohyWnMgJWVyPkbqGbe51SuBHJn7eGNnqY2t8zPH9AXASNe4B5APqTL4BA3xl/MaEw7hbgHP4i+JFm4ric1TpqfVMYg/+IctbWAPSqBuN931tSev1HTa26kejqlJ4qRTNNA/UDNXKxCKAy4HjYVFJeXaUdfEHY=
-Received: by 10.66.232.9 with SMTP id e9mr6057303ugh.1168895670335;
-        Mon, 15 Jan 2007 13:14:30 -0800 (PST)
-Received: from gmail.com ( [217.67.117.64])
-        by mx.google.com with ESMTP id 59sm7384968ugf.2007.01.15.13.14.29;
-        Mon, 15 Jan 2007 13:14:29 -0800 (PST)
-Received: by gmail.com (nbSMTP-1.00) for uid 1000
-	(using TLSv1/SSLv3 with cipher DES-CBC3-SHA (168/168 bits))
-	adobriyan@gmail.com; Tue, 16 Jan 2007 00:14:15 +0300 (MSK)
-Date:	Tue, 16 Jan 2007 00:14:13 +0300
-From:	Alexey Dobriyan <adobriyan@gmail.com>
-To:	akpm@osdl.org
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH] seq_file conversion: APM on mips
-Message-ID: <20070115211413.GB5010@martell.zuzino.mipt.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jan 2007 22:42:25 +0000 (GMT)
+Received: from mo30.po.2iij.net ([210.128.50.53]:30980 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S28578739AbXAOWmU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 15 Jan 2007 22:42:20 +0000
+Received: by mo.po.2iij.net (mo30) id l0FMg8Q7082440; Tue, 16 Jan 2007 07:42:08 +0900 (JST)
+Received: from localhost.localdomain (69.25.30.125.dy.iij4u.or.jp [125.30.25.69])
+	by mbox.po.2iij.net (mbox30) id l0FMg650060855
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 16 Jan 2007 07:42:06 +0900 (JST)
+Date:	Tue, 16 Jan 2007 07:42:05 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Florian Fainelli <florian.fainelli@int-evry.fr>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Add support for Cobalt Server front LED
+Message-Id: <20070116074205.0428449d.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <200701151936.57738.florian.fainelli@int-evry.fr>
+References: <200701151936.57738.florian.fainelli@int-evry.fr>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.11
-Return-Path: <adobriyan@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13601
+X-archive-position: 13602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adobriyan@gmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Compile-tested.
+Hi,
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
----
+On Mon, 15 Jan 2007 19:36:52 +0100
+Florian Fainelli <florian.fainelli@int-evry.fr> wrote:
 
- arch/mips/kernel/apm.c |   28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+> Hi all,
+> 
+> This patch adds support for controlling the front LED on Cobalt Server. It has 
+> been tested on Qube 2 with either no default trigger, or the IDE-activity 
+> trigger. Both work fine. Please comment and test !
+> 
+> Thanks
+> 
+> Florian
+> 
+> Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
+> 
+> diff -urN linux-2.6.19.1/include/asm-mips/mach-cobalt/cobalt.h 
+> linux-2.6.19.1.led/include/asm-mips/mach-cobalt/cobalt.h
+> --- linux-2.6.19.1/include/asm-mips/mach-cobalt/cobalt.h        2006-12-11 
+> 20:32:53.000000000 +0100
+> +++ linux-2.6.19.1.led/include/asm-mips/mach-cobalt/cobalt.h    2007-01-15 
+> 19:29:07.000000000 +0100
+> @@ -97,6 +97,7 @@
+>                 (PCI_FUNC (devfn) << 8) | (where)), GT_PCI0_CFGADDR_OFS)
+> 
+>  #define COBALT_LED_PORT                (*(volatile unsigned char *) 
+> CKSEG1ADDR(0x1c000000))
+> +#define COBALT_LED_BASE         0xbc000000
 
---- a/arch/mips/kernel/apm.c
-+++ b/arch/mips/kernel/apm.c
-@@ -15,6 +15,7 @@ #include <linux/poll.h>
- #include <linux/timer.h>
- #include <linux/slab.h>
- #include <linux/proc_fs.h>
-+#include <linux/seq_file.h>
- #include <linux/miscdevice.h>
- #include <linux/apm_bios.h>
- #include <linux/capability.h>
-@@ -434,11 +435,10 @@ #ifdef CONFIG_PROC_FS
-  *	-1: Unknown
-  *   8) min = minutes; sec = seconds
-  */
--static int apm_get_info(char *buf, char **start, off_t fpos, int length)
-+static int proc_apm_show(struct seq_file *m, void *v)
- {
- 	struct apm_power_info info;
- 	char *units;
--	int ret;
- 
- 	info.ac_line_status = 0xff;
- 	info.battery_status = 0xff;
-@@ -456,14 +456,26 @@ static int apm_get_info(char *buf, char 
- 	case 1: 	units = "sec";	break;
- 	}
- 
--	ret = sprintf(buf, "%s 1.2 0x%02x 0x%02x 0x%02x 0x%02x %d%% %d %s\n",
-+	seq_printf(m, "%s 1.2 0x%02x 0x%02x 0x%02x 0x%02x %d%% %d %s\n",
- 		     driver_version, APM_32_BIT_SUPPORT,
- 		     info.ac_line_status, info.battery_status,
- 		     info.battery_flag, info.battery_life,
- 		     info.time, units);
-+	return 0;
-+}
- 
-- 	return ret;
-+static int proc_apm_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, proc_apm_show, NULL);
- }
-+
-+static const struct file_operations proc_apm_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= proc_apm_open,
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.release	= single_release,
-+};
- #endif
- 
- static int kapmd(void *arg)
-@@ -529,7 +541,13 @@ static int __init apm_init(void)
- 	}
- 
- #ifdef CONFIG_PROC_FS
--	create_proc_info_entry("apm", 0, NULL, apm_get_info);
-+	{
-+		struct proc_dir_entry *pde;
-+
-+		pde = create_proc_entry("apm", 0, NULL);
-+		if (pde)
-+			pde->proc_fops = &proc_apm_fops;
-+	}
- #endif
- 
- 	ret = misc_register(&apm_device);
+You don't need COBALT_LED_BASE.
+Because COBALT_LED_PORT is already defined.
+
+Yoichi

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 17:00:26 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:57474 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 17:00:54 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:58242 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S28580822AbXAPQmS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S28580823AbXAPQmS (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Tue, 16 Jan 2007 16:42:18 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGf7QC001033;
-	Tue, 16 Jan 2007 09:41:07 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGf5Ir001029;
+	Tue, 16 Jan 2007 09:41:05 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGf6LG001032;
-	Tue, 16 Jan 2007 09:41:06 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGf4Wk001028;
+	Tue, 16 Jan 2007 09:41:04 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 40/59] sysctl: C99 convert ctl_tables in arch/x86_64/kernel/vsyscall.c
-Date:	Tue, 16 Jan 2007 09:39:45 -0700
-Message-Id: <11689656651135-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 39/59] sysctl: C99 convert ctl_tables in arch/x86_64/ia32/ia32_binfmt.c
+Date:	Tue, 16 Jan 2007 09:39:44 -0700
+Message-Id: <1168965664873-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13655
+X-archive-position: 13656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,34 +48,51 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-Basically everything was done but I removed all element
-initializers from the trailing entries to make it clear
-the entire last entry should be zero filled.
-
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- arch/x86_64/kernel/vsyscall.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86_64/ia32/ia32_binfmt.c |   30 ++++++++++++++++++++----------
+ 1 files changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86_64/kernel/vsyscall.c b/arch/x86_64/kernel/vsyscall.c
-index 2433d6f..c0e2b48 100644
---- a/arch/x86_64/kernel/vsyscall.c
-+++ b/arch/x86_64/kernel/vsyscall.c
-@@ -235,13 +235,13 @@ static ctl_table kernel_table2[] = {
- 	  .data = &sysctl_vsyscall, .maxlen = sizeof(int), .mode = 0644,
- 	  .strategy = vsyscall_sysctl_nostrat,
- 	  .proc_handler = vsyscall_sysctl_change },
+diff --git a/arch/x86_64/ia32/ia32_binfmt.c b/arch/x86_64/ia32/ia32_binfmt.c
+index 75677ad..644b203 100644
+--- a/arch/x86_64/ia32/ia32_binfmt.c
++++ b/arch/x86_64/ia32/ia32_binfmt.c
+@@ -395,16 +395,26 @@ EXPORT_SYMBOL(ia32_setup_arg_pages);
+ #include <linux/sysctl.h>
+ 
+ static ctl_table abi_table2[] = {
+-	{ 99, "vsyscall32", &sysctl_vsyscall32, sizeof(int), 0644, NULL,
+-	  proc_dointvec },
 -	{ 0, }
+-}; 
+-
+-static ctl_table abi_root_table2[] = { 
+-	{ .ctl_name = CTL_ABI, .procname = "abi", .mode = 0555, 
+-	  .child = abi_table2 }, 
+-	{ 0 }, 
+-}; 
++	{
++		.ctl_name	= 99,
++		.procname	= "vsyscall32",
++		.data		= &sysctl_vsyscall32,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec
++	},
 +	{}
- };
- 
- static ctl_table kernel_root_table2[] = {
- 	{ .ctl_name = CTL_KERN, .procname = "kernel", .mode = 0555,
- 	  .child = kernel_table2 },
--	{ 0 },
++};
++
++static ctl_table abi_root_table2[] = {
++	{
++		.ctl_name = CTL_ABI,
++		.procname = "abi",
++		.mode = 0555,
++		.child = abi_table2
++	},
 +	{}
- };
++};
  
- #endif
+ static __init int ia32_binfmt_init(void)
+ { 
 -- 
 1.4.4.1.g278f

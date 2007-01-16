@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 17:06:23 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:14723 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 17:06:51 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:16515 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S20041448AbXAPQmk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Jan 2007 16:42:40 +0000
+	id S28580837AbXAPQml (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 16 Jan 2007 16:42:41 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGeXiE000933;
-	Tue, 16 Jan 2007 09:40:33 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGeTio000921;
+	Tue, 16 Jan 2007 09:40:29 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGeX18000932;
-	Tue, 16 Jan 2007 09:40:33 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGeTeT000920;
+	Tue, 16 Jan 2007 09:40:29 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 16/59] sysctl: md Remove unnecessary insert_at_head flag
-Date:	Tue, 16 Jan 2007 09:39:21 -0700
-Message-Id: <1168965633112-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 13/59] sysctl: xfs remove unnecessary insert_at_head flag
+Date:	Tue, 16 Jan 2007 09:39:18 -0700
+Message-Id: <11689656291632-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13668
+X-archive-position: 13669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,26 +48,23 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-The sysctls used by the md driver are have unique binary numbers
-so remove the insert_at_head flag as it serves no useful purpose.
-
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- drivers/md/md.c |    2 +-
+ fs/xfs/linux-2.6/xfs_sysctl.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index d1cb45f..966e8be 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -5551,7 +5551,7 @@ static int __init md_init(void)
- 			    md_probe, NULL, NULL);
+diff --git a/fs/xfs/linux-2.6/xfs_sysctl.c b/fs/xfs/linux-2.6/xfs_sysctl.c
+index af24653..af777e9 100644
+--- a/fs/xfs/linux-2.6/xfs_sysctl.c
++++ b/fs/xfs/linux-2.6/xfs_sysctl.c
+@@ -149,7 +149,7 @@ STATIC ctl_table xfs_root_table[] = {
+ void
+ xfs_sysctl_register(void)
+ {
+-	xfs_table_header = register_sysctl_table(xfs_root_table, 1);
++	xfs_table_header = register_sysctl_table(xfs_root_table, 0);
+ }
  
- 	register_reboot_notifier(&md_notifier);
--	raid_table_header = register_sysctl_table(raid_root_table, 1);
-+	raid_table_header = register_sysctl_table(raid_root_table, 0);
- 
- 	md_geninit();
- 	return (0);
+ void
 -- 
 1.4.4.1.g278f

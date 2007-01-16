@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:50:09 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:51329 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:50:35 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:54401 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S28580787AbXAPQlh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Jan 2007 16:41:37 +0000
+	id S20041436AbXAPQll (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 16 Jan 2007 16:41:41 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGeES7000880;
-	Tue, 16 Jan 2007 09:40:14 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGeMN3000892;
+	Tue, 16 Jan 2007 09:40:22 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGeDFZ000879;
-	Tue, 16 Jan 2007 09:40:13 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGeKFT000891;
+	Tue, 16 Jan 2007 09:40:20 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 3/59] sysctl: sunrpc Remove unnecessary insert_at_head flag
-Date:	Tue, 16 Jan 2007 09:39:08 -0700
-Message-Id: <11689656133336-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 6/59] sysctl: netrom remove unnecessary insert_at_head flag
+Date:	Tue, 16 Jan 2007 09:39:11 -0700
+Message-Id: <11689656204073-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13633
+X-archive-position: 13634
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,41 +48,26 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-Because the sunrpc sysctls don't conflict with any other
-sysctls the setting the insert at head flag to register_sysctl
-has no semantic meaning.
+The sysctl numbers used are unique so setting the insert_at_head
+flag serves no semantic purpose, so it is just confusing.
 
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- net/sunrpc/sysctl.c   |    2 +-
- net/sunrpc/xprtsock.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/netrom/sysctl_net_netrom.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/net/sunrpc/sysctl.c b/net/sunrpc/sysctl.c
-index 82b2752..3852689 100644
---- a/net/sunrpc/sysctl.c
-+++ b/net/sunrpc/sysctl.c
-@@ -36,7 +36,7 @@ void
- rpc_register_sysctl(void)
+diff --git a/net/netrom/sysctl_net_netrom.c b/net/netrom/sysctl_net_netrom.c
+index 6bb8dda..09f4246 100644
+--- a/net/netrom/sysctl_net_netrom.c
++++ b/net/netrom/sysctl_net_netrom.c
+@@ -192,7 +192,7 @@ static ctl_table nr_root_table[] = {
+ 
+ void __init nr_register_sysctl(void)
  {
- 	if (!sunrpc_table_header) {
--		sunrpc_table_header = register_sysctl_table(sunrpc_table, 1);
-+		sunrpc_table_header = register_sysctl_table(sunrpc_table, 0);
- #ifdef CONFIG_PROC_FS
- 		if (sunrpc_table[0].de)
- 			sunrpc_table[0].de->owner = THIS_MODULE;
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 49cabff..98d1af9 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1630,7 +1630,7 @@ int init_socket_xprt(void)
- {
- #ifdef RPC_DEBUG
- 	if (!sunrpc_table_header) {
--		sunrpc_table_header = register_sysctl_table(sunrpc_table, 1);
-+		sunrpc_table_header = register_sysctl_table(sunrpc_table, 0);
- #ifdef CONFIG_PROC_FS
- 		if (sunrpc_table[0].de)
- 			sunrpc_table[0].de->owner = THIS_MODULE;
+-	nr_table_header = register_sysctl_table(nr_root_table, 1);
++	nr_table_header = register_sysctl_table(nr_root_table, 0);
+ }
+ 
+ void nr_unregister_sysctl(void)
 -- 
 1.4.4.1.g278f

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:58:00 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:40834 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:58:28 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:42114 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S28580814AbXAPQmG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S28580815AbXAPQmG (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Tue, 16 Jan 2007 16:42:06 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGf06o001013;
-	Tue, 16 Jan 2007 09:41:00 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGf1kD001017;
+	Tue, 16 Jan 2007 09:41:01 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGexjV001012;
-	Tue, 16 Jan 2007 09:40:59 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGf1DY001016;
+	Tue, 16 Jan 2007 09:41:01 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 35/59] sysctl: C99 convert ctl_tables in arch/powerpc/kernel/idle.c
-Date:	Tue, 16 Jan 2007 09:39:40 -0700
-Message-Id: <11689656593247-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 36/59] sysctl: C99 convert ctl_tables entries in arch/ppc/kernel/ppc_htab.c
+Date:	Tue, 16 Jan 2007 09:39:41 -0700
+Message-Id: <11689656602523-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13650
+X-archive-position: 13651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,33 +48,33 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-This was partially done already and there was no ABI breakage what
-a relief.
+And make the mode of the kernel directory 0555 no one is allowed
+to write to sysctl directories.
 
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- arch/powerpc/kernel/idle.c |   11 ++++++++---
+ arch/ppc/kernel/ppc_htab.c |   11 ++++++++---
  1 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/idle.c b/arch/powerpc/kernel/idle.c
-index 8994af3..8b27bb1 100644
---- a/arch/powerpc/kernel/idle.c
-+++ b/arch/powerpc/kernel/idle.c
-@@ -110,11 +110,16 @@ static ctl_table powersave_nap_ctl_table[]={
+diff --git a/arch/ppc/kernel/ppc_htab.c b/arch/ppc/kernel/ppc_htab.c
+index bd129d3..77b20ff 100644
+--- a/arch/ppc/kernel/ppc_htab.c
++++ b/arch/ppc/kernel/ppc_htab.c
+@@ -442,11 +442,16 @@ static ctl_table htab_ctl_table[]={
  		.mode		= 0644,
- 		.proc_handler	= &proc_dointvec,
+ 		.proc_handler	= &proc_dol2crvec,
  	},
 -	{ 0, },
 +	{}
  };
- static ctl_table powersave_nap_sysctl_root[] = {
--	{ 1, "kernel", NULL, 0, 0755, powersave_nap_ctl_table, },
+ static ctl_table htab_sysctl_root[] = {
+-	{ 1, "kernel", NULL, 0, 0755, htab_ctl_table, },
 - 	{ 0,},
 +	{
 +		.ctl_name	= CTL_KERN,
 +		.procname	= "kernel",
-+		.mode		= 0755,
-+		.child		= powersave_nap_ctl_table,
++		.mode		= 0555,
++		.child		= htab_ctl_table,
 +	},
 +	{}
  };

@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:46:27 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:21121 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:46:54 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:21377 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S28580769AbXAPQlY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Jan 2007 16:41:24 +0000
+	id S28580777AbXAPQlZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 16 Jan 2007 16:41:25 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGeJ8H000888;
-	Tue, 16 Jan 2007 09:40:19 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGee0a000957;
+	Tue, 16 Jan 2007 09:40:40 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGeJMi000887;
-	Tue, 16 Jan 2007 09:40:19 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGee9j000956;
+	Tue, 16 Jan 2007 09:40:40 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 5/59] sysctl: rose remove unnecessary insert_at_head flag
-Date:	Tue, 16 Jan 2007 09:39:10 -0700
-Message-Id: <11689656191854-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 22/59] sysctl: frv pm remove unnecessary insert_at_head flag
+Date:	Tue, 16 Jan 2007 09:39:27 -0700
+Message-Id: <1168965639241-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13625
+X-archive-position: 13626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,26 +48,27 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-The sysctl numbers used are unique so setting the insert_at_head
-flag serves no semantic purpose.
+With unique binary numbers setting insert_at_head to
+insert yourself at the head of sysctl list and thus override
+existing sysctl entries serves no point.
 
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- net/rose/sysctl_net_rose.c |    2 +-
+ arch/frv/kernel/pm.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/net/rose/sysctl_net_rose.c b/net/rose/sysctl_net_rose.c
-index 8548c7c..0190a07 100644
---- a/net/rose/sysctl_net_rose.c
-+++ b/net/rose/sysctl_net_rose.c
-@@ -160,7 +160,7 @@ static ctl_table rose_root_table[] = {
- 
- void __init rose_register_sysctl(void)
+diff --git a/arch/frv/kernel/pm.c b/arch/frv/kernel/pm.c
+index 6b76466..c1840d6 100644
+--- a/arch/frv/kernel/pm.c
++++ b/arch/frv/kernel/pm.c
+@@ -419,7 +419,7 @@ static struct ctl_table pm_dir_table[] =
+  */
+ static int __init pm_init(void)
  {
--	rose_table_header = register_sysctl_table(rose_root_table, 1);
-+	rose_table_header = register_sysctl_table(rose_root_table, 0);
+-	register_sysctl_table(pm_dir_table, 1);
++	register_sysctl_table(pm_dir_table, 0);
+ 	return 0;
  }
  
- void rose_unregister_sysctl(void)
 -- 
 1.4.4.1.g278f

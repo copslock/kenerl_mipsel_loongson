@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:57:34 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:39298 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:58:00 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:40834 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S28580813AbXAPQmF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Jan 2007 16:42:05 +0000
+	id S28580814AbXAPQmG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 16 Jan 2007 16:42:06 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGfKjk001061;
-	Tue, 16 Jan 2007 09:41:20 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGf06o001013;
+	Tue, 16 Jan 2007 09:41:00 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGfJ0P001060;
-	Tue, 16 Jan 2007 09:41:19 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGexjV001012;
+	Tue, 16 Jan 2007 09:40:59 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 47/59] sysctl: C99 convert ctl_tables in NTFS and remove sys_sysctl support
-Date:	Tue, 16 Jan 2007 09:39:52 -0700
-Message-Id: <11689656793474-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 35/59] sysctl: C99 convert ctl_tables in arch/powerpc/kernel/idle.c
+Date:	Tue, 16 Jan 2007 09:39:40 -0700
+Message-Id: <11689656593247-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13649
+X-archive-position: 13650
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,54 +48,37 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-Putting ntfs-debug under FS_NRINODE was not a kosher thing to do
-so don't give it any binary number.
+This was partially done already and there was no ABI breakage what
+a relief.
 
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- fs/ntfs/sysctl.c |   24 ++++++++++++++++--------
- 1 files changed, 16 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/idle.c |   11 ++++++++---
+ 1 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs/sysctl.c b/fs/ntfs/sysctl.c
-index 1c23138..bc217de 100644
---- a/fs/ntfs/sysctl.c
-+++ b/fs/ntfs/sysctl.c
-@@ -33,20 +33,28 @@
- #include "sysctl.h"
- #include "debug.h"
- 
--#define FS_NTFS	1
--
- /* Definition of the ntfs sysctl. */
- static ctl_table ntfs_sysctls[] = {
--	{ FS_NTFS, "ntfs-debug",		/* Binary and text IDs. */
--	  &debug_msgs,sizeof(debug_msgs),	/* Data pointer and size. */
--	  0644,	NULL, &proc_dointvec },		/* Mode, child, proc handler. */
--	{ 0 }
+diff --git a/arch/powerpc/kernel/idle.c b/arch/powerpc/kernel/idle.c
+index 8994af3..8b27bb1 100644
+--- a/arch/powerpc/kernel/idle.c
++++ b/arch/powerpc/kernel/idle.c
+@@ -110,11 +110,16 @@ static ctl_table powersave_nap_ctl_table[]={
+ 		.mode		= 0644,
+ 		.proc_handler	= &proc_dointvec,
+ 	},
+-	{ 0, },
++	{}
+ };
+ static ctl_table powersave_nap_sysctl_root[] = {
+-	{ 1, "kernel", NULL, 0, 0755, powersave_nap_ctl_table, },
+- 	{ 0,},
 +	{
-+		.ctl_name	= CTL_UNUMBERED,	/* Binary and text IDs. */
-+		.procname	= "ntfs-debug",
-+		.data		= &debug_msgs,		/* Data pointer and size. */
-+		.maxlen		= sizeof(debug_msgs),
-+		.mode		= 0644,			/* Mode, proc handler. */
-+		.proc_handler	= &proc_dointvec
++		.ctl_name	= CTL_KERN,
++		.procname	= "kernel",
++		.mode		= 0755,
++		.child		= powersave_nap_ctl_table,
 +	},
 +	{}
  };
  
- /* Define the parent directory /proc/sys/fs. */
- static ctl_table sysctls_root[] = {
--	{ CTL_FS, "fs", NULL, 0, 0555, ntfs_sysctls },
--	{ 0 }
-+	{
-+		.ctl_name	= CTL_FS,
-+		.procname	= "fs",
-+		.mode		= 0555,
-+		.child		= ntfs_sysctls
-+	},
-+	{}
- };
- 
- /* Storage for the sysctls header. */
+ static int __init
 -- 
 1.4.4.1.g278f

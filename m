@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:54:20 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:26498 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 16:54:46 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:29058 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S28580799AbXAPQlz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Jan 2007 16:41:55 +0000
+	id S28580803AbXAPQl5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 16 Jan 2007 16:41:57 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGf9up001041;
-	Tue, 16 Jan 2007 09:41:09 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGfDdg001053;
+	Tue, 16 Jan 2007 09:41:13 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGf8p9001040;
-	Tue, 16 Jan 2007 09:41:08 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGfDan001052;
+	Tue, 16 Jan 2007 09:41:13 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 42/59] sysctl: Remove sys_sysctl support from the hpet timer driver.
-Date:	Tue, 16 Jan 2007 09:39:47 -0700
-Message-Id: <11689656683585-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 45/59] sysctl: C99 convert ctl_tables in drivers/parport/procfs.c
+Date:	Tue, 16 Jan 2007 09:39:50 -0700
+Message-Id: <11689656733768-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13642
+X-archive-position: 13643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,36 +48,316 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-In the binary sysctl interface the hpet driver was claiming to
-be the cdrom driver.  This is a no-no so remove support for the
-binary interface.
-
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- drivers/char/hpet.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/parport/procfs.c |  264 +++++++++++++++++++++++++++++++++-------------
+ 1 files changed, 189 insertions(+), 75 deletions(-)
 
-diff --git a/drivers/char/hpet.c b/drivers/char/hpet.c
-index 20dc3be..81be1db 100644
---- a/drivers/char/hpet.c
-+++ b/drivers/char/hpet.c
-@@ -703,7 +703,7 @@ int hpet_control(struct hpet_task *tp, unsigned int cmd, unsigned long arg)
+diff --git a/drivers/parport/procfs.c b/drivers/parport/procfs.c
+index 2e744a2..5337789 100644
+--- a/drivers/parport/procfs.c
++++ b/drivers/parport/procfs.c
+@@ -233,12 +233,12 @@ static int do_hardware_modes (ctl_table *table, int write,
+ 	return copy_to_user(result, buffer, len) ? -EFAULT : 0;
+ }
  
- static ctl_table hpet_table[] = {
- 	{
--	 .ctl_name = 1,
-+	 .ctl_name = CTL_UNNUMBERED,
- 	 .procname = "max-user-freq",
- 	 .data = &hpet_max_freq,
- 	 .maxlen = sizeof(int),
-@@ -715,7 +715,7 @@ static ctl_table hpet_table[] = {
+-#define PARPORT_PORT_DIR(child) { 0, NULL, NULL, 0, 0555, child }
+-#define PARPORT_PARPORT_DIR(child) { DEV_PARPORT, "parport", \
+-                                     NULL, 0, 0555, child }
+-#define PARPORT_DEV_DIR(child) { CTL_DEV, "dev", NULL, 0, 0555, child }
+-#define PARPORT_DEVICES_ROOT_DIR  { DEV_PARPORT_DEVICES, "devices", \
+-                                    NULL, 0, 0555, NULL }
++#define PARPORT_PORT_DIR(CHILD) { .ctl_name = 0, .procname = NULL, .mode = 0555, .child = CHILD }
++#define PARPORT_PARPORT_DIR(CHILD) { .ctl_name = DEV_PARPORT, .procname = "parport", \
++                                     .mode = 0555, .child = CHILD }
++#define PARPORT_DEV_DIR(CHILD) { .ctl_name = CTL_DEV, .procname = "dev", .mode = 0555, .child = CHILD }
++#define PARPORT_DEVICES_ROOT_DIR  { .ctl_name = DEV_PARPORT_DEVICES, .procname = "devices", \
++                                    .mode = 0555, .child = NULL }
  
- static ctl_table hpet_root[] = {
+ static const unsigned long parport_min_timeslice_value =
+ PARPORT_MIN_TIMESLICE_VALUE;
+@@ -263,50 +263,118 @@ struct parport_sysctl_table {
+ };
+ 
+ static const struct parport_sysctl_table parport_sysctl_template = {
+-	NULL,
++	.sysctl_header = NULL,
+         {
+-		{ DEV_PARPORT_SPINTIME, "spintime",
+-		  NULL, sizeof(int), 0644, NULL,
+-		  &proc_dointvec_minmax, NULL, NULL,
+-		  (void*) &parport_min_spintime_value,
+-		  (void*) &parport_max_spintime_value },
+-		{ DEV_PARPORT_BASE_ADDR, "base-addr",
+-		  NULL, 0, 0444, NULL,
+-		  &do_hardware_base_addr },
+-		{ DEV_PARPORT_IRQ, "irq",
+-		  NULL, 0, 0444, NULL,
+-		  &do_hardware_irq },
+-		{ DEV_PARPORT_DMA, "dma",
+-		  NULL, 0, 0444, NULL,
+-		  &do_hardware_dma },
+-		{ DEV_PARPORT_MODES, "modes",
+-		  NULL, 0, 0444, NULL,
+-		  &do_hardware_modes },
++		{
++			.ctl_name	= DEV_PARPORT_SPINTIME,
++			.procname	= "spintime",
++			.data		= NULL,
++			.maxlen		= sizeof(int),
++			.mode		= 0644,
++			.proc_handler	= &proc_dointvec_minmax,
++			.extra1		= (void*) &parport_min_spintime_value,
++			.extra2		= (void*) &parport_max_spintime_value
++		},
++		{
++			.ctl_name	= DEV_PARPORT_BASE_ADDR,
++			.procname	= "base-addr",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_hardware_base_addr
++		},
++		{
++			.ctl_name	= DEV_PARPORT_IRQ,
++			.procname	= "irq",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_hardware_irq
++		},
++		{
++			.ctl_name	= DEV_PARPORT_DMA,
++			.procname	= "dma",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_hardware_dma
++		},
++		{
++			.ctl_name	= DEV_PARPORT_MODES,
++			.procname	= "modes",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_hardware_modes
++		},
+ 		PARPORT_DEVICES_ROOT_DIR,
+ #ifdef CONFIG_PARPORT_1284
+-		{ DEV_PARPORT_AUTOPROBE, "autoprobe",
+-		  NULL, 0, 0444, NULL,
+-		  &do_autoprobe },
+-		{ DEV_PARPORT_AUTOPROBE + 1, "autoprobe0",
+-		 NULL, 0, 0444, NULL,
+-		 &do_autoprobe },
+-		{ DEV_PARPORT_AUTOPROBE + 2, "autoprobe1",
+-		  NULL, 0, 0444, NULL,
+-		  &do_autoprobe },
+-		{ DEV_PARPORT_AUTOPROBE + 3, "autoprobe2",
+-		  NULL, 0, 0444, NULL,
+-		  &do_autoprobe },
+-		{ DEV_PARPORT_AUTOPROBE + 4, "autoprobe3",
+-		  NULL, 0, 0444, NULL,
+-		  &do_autoprobe },
++		{
++			.ctl_name	= DEV_PARPORT_AUTOPROBE,
++			.procname	= "autoprobe",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_autoprobe
++		},
++		{
++			.ctl_name	= DEV_PARPORT_AUTOPROBE + 1,
++			.procname	= "autoprobe0",
++			.data		= NULL,
++			.maxlen		= 0,
++			.maxlen		= 0444,
++			.proc_handler	=  &do_autoprobe
++		},
++		{
++			.ctl_name	= DEV_PARPORT_AUTOPROBE + 2,
++			.procname	= "autoprobe1",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_autoprobe
++		},
++		{
++			.ctl_name	= DEV_PARPORT_AUTOPROBE + 3,
++			.procname	= "autoprobe2",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_autoprobe
++		},
++		{
++			.ctl_name	= DEV_PARPORT_AUTOPROBE + 4,
++			.procname	= "autoprobe3",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_autoprobe
++		},
+ #endif /* IEEE 1284 support */
+-		{0}
++		{}
+ 	},
+-	{ {DEV_PARPORT_DEVICES_ACTIVE, "active", NULL, 0, 0444, NULL,
+-	  &do_active_device }, {0}},
+-	{ PARPORT_PORT_DIR(NULL), {0}},
+-	{ PARPORT_PARPORT_DIR(NULL), {0}},
+-	{ PARPORT_DEV_DIR(NULL), {0}}
++	{
++		{
++			.ctl_name	= DEV_PARPORT_DEVICES_ACTIVE,
++			.procname	= "active",
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0444,
++			.proc_handler	= &do_active_device
++		},
++		{}
++	},
++	{
++		PARPORT_PORT_DIR(NULL),
++		{}
++	},
++	{
++		PARPORT_PARPORT_DIR(NULL),
++		{}
++	},
++	{
++		PARPORT_DEV_DIR(NULL),
++		{}
++	}
+ };
+ 
+ struct parport_device_sysctl_table
+@@ -322,19 +390,46 @@ struct parport_device_sysctl_table
+ 
+ static const struct parport_device_sysctl_table
+ parport_device_sysctl_template = {
+-	NULL,
++	.sysctl_header = NULL,
++	{
++		{
++			.ctl_name 	= DEV_PARPORT_DEVICE_TIMESLICE,
++			.procname 	= "timeslice",
++			.data		= NULL,
++			.maxlen		= sizeof(int),
++			.mode		= 0644,
++			.proc_handler	= &proc_doulongvec_ms_jiffies_minmax,
++			.extra1		= (void*) &parport_min_timeslice_value,
++			.extra2		= (void*) &parport_max_timeslice_value
++		},
++	},
++	{
++		{
++			.ctl_name	= 0,
++			.procname	= NULL,
++			.data		= NULL,
++			.maxlen		= 0,
++			.mode		= 0555,
++			.child		= NULL
++		},
++		{}
++	},
  	{
--	 .ctl_name = 1,
-+	 .ctl_name = CTL_UNNUMBERED,
- 	 .procname = "hpet",
- 	 .maxlen = 0,
- 	 .mode = 0555,
+-		{ DEV_PARPORT_DEVICE_TIMESLICE, "timeslice",
+-		  NULL, sizeof(int), 0644, NULL,
+-		  &proc_doulongvec_ms_jiffies_minmax, NULL, NULL,
+-		  (void*) &parport_min_timeslice_value,
+-		  (void*) &parport_max_timeslice_value },
++		PARPORT_DEVICES_ROOT_DIR,
++		{}
++	},
++	{
++		PARPORT_PORT_DIR(NULL),
++		{}
+ 	},
+-	{ {0, NULL, NULL, 0, 0555, NULL}, {0}},
+-	{ PARPORT_DEVICES_ROOT_DIR, {0}},
+-	{ PARPORT_PORT_DIR(NULL), {0}},
+-	{ PARPORT_PARPORT_DIR(NULL), {0}},
+-	{ PARPORT_DEV_DIR(NULL), {0}}
++	{
++		PARPORT_PARPORT_DIR(NULL),
++		{}
++	},
++	{
++		PARPORT_DEV_DIR(NULL),
++		{}
++	}
+ };
+ 
+ struct parport_default_sysctl_table
+@@ -351,28 +446,47 @@ extern int parport_default_spintime;
+ 
+ static struct parport_default_sysctl_table
+ parport_default_sysctl_table = {
+-	NULL,
++	.sysctl_header	= NULL,
++	{
++		{
++			.ctl_name	= DEV_PARPORT_DEFAULT_TIMESLICE,
++			.procname	= "timeslice",
++			.data		= &parport_default_timeslice,
++			.maxlen		= sizeof(parport_default_timeslice),
++			.mode		= 0644,
++			.proc_handler	= &proc_doulongvec_ms_jiffies_minmax,
++			.extra1		= (void*) &parport_min_timeslice_value,
++			.extra2		= (void*) &parport_max_timeslice_value
++		},
++		{
++			.ctl_name	= DEV_PARPORT_DEFAULT_SPINTIME,
++			.procname	= "spintime",
++			.data		= &parport_default_spintime,
++			.maxlen		= sizeof(parport_default_spintime),
++			.mode		= 0644,
++			.proc_handler	= &proc_dointvec_minmax,
++			.extra1		= (void*) &parport_min_spintime_value,
++			.extra2		= (void*) &parport_max_spintime_value
++		},
++		{}
++	},
+ 	{
+-		{ DEV_PARPORT_DEFAULT_TIMESLICE, "timeslice",
+-		  &parport_default_timeslice,
+-		  sizeof(parport_default_timeslice), 0644, NULL,
+-		  &proc_doulongvec_ms_jiffies_minmax, NULL, NULL,
+-		  (void*) &parport_min_timeslice_value,
+-		  (void*) &parport_max_timeslice_value },
+-		{ DEV_PARPORT_DEFAULT_SPINTIME, "spintime",
+-		  &parport_default_spintime,
+-		  sizeof(parport_default_spintime), 0644, NULL,
+-		  &proc_dointvec_minmax, NULL, NULL,
+-		  (void*) &parport_min_spintime_value,
+-		  (void*) &parport_max_spintime_value },
+-		{0}
++		{
++			.ctl_name	= DEV_PARPORT_DEFAULT,
++			.procname	= "default",
++			.mode		= 0555,
++			.child		= parport_default_sysctl_table.vars
++		},
++		{}
+ 	},
+-	{ { DEV_PARPORT_DEFAULT, "default", NULL, 0, 0555,
+-	    parport_default_sysctl_table.vars },{0}},
+ 	{
+-	PARPORT_PARPORT_DIR(parport_default_sysctl_table.default_dir), 
+-	{0}},
+-	{ PARPORT_DEV_DIR(parport_default_sysctl_table.parport_dir), {0}}
++		PARPORT_PARPORT_DIR(parport_default_sysctl_table.default_dir), 
++		{}
++	},
++	{
++		PARPORT_DEV_DIR(parport_default_sysctl_table.parport_dir), 
++		{}
++	}
+ };
+ 
+ 
 -- 
 1.4.4.1.g278f

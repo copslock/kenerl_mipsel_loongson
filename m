@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 17:04:06 +0000 (GMT)
-Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:9091 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 17:04:33 +0000 (GMT)
+Received: from ebiederm.dsl.xmission.com ([166.70.28.69]:9603 "EHLO
 	ebiederm.dsl.xmission.com") by ftp.linux-mips.org with ESMTP
-	id S28580831AbXAPQme (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Jan 2007 16:42:34 +0000
+	id S28580832AbXAPQmf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 16 Jan 2007 16:42:35 +0000
 Received: from ebiederm.dsl.xmission.com (localhost [127.0.0.1])
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGfY79001085;
-	Tue, 16 Jan 2007 09:41:34 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Debian-2) with ESMTP id l0GGfgTC001101;
+	Tue, 16 Jan 2007 09:41:42 -0700
 Received: (from eric@localhost)
-	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGfXUL001084;
-	Tue, 16 Jan 2007 09:41:33 -0700
+	by ebiederm.dsl.xmission.com (8.13.8/8.13.8/Submit) id l0GGffT6001100;
+	Tue, 16 Jan 2007 09:41:41 -0700
 From:	"Eric W. Biederman" <ebiederm@xmission.com>
 To:	"<Andrew Morton" <akpm@osdl.org>
 Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
@@ -28,9 +28,9 @@ Cc:	<linux-kernel@vger.kernel.org>, <containers@lists.osdl.org>,
 	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
 	mark.fasheh@oracle.com, kurt.hackel@oracle.com,
 	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: [PATCH 52/59] sysctl: Create sys/fs/binfmt_misc as an ordinary sysctl entry
-Date:	Tue, 16 Jan 2007 09:39:57 -0700
-Message-Id: <11689656932416-git-send-email-ebiederm@xmission.com>
+Subject: [PATCH 56/59] sysctl: factor out sysctl_head_next from do_sysctl
+Date:	Tue, 16 Jan 2007 09:40:01 -0700
+Message-Id: <11689657011683-git-send-email-ebiederm@xmission.com>
 X-Mailer: git-send-email 1.5.0.rc1.gb60d
 In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
 References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
@@ -38,7 +38,7 @@ Return-Path: <eric@ebiederm.dsl.xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13663
+X-archive-position: 13664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,65 +48,124 @@ X-list: linux-mips
 
 From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
 
-binfmt_misc has a mount point in the middle of the sysctl and
-that mount point is created as a proc_generic directory.
+The current logic to walk through the list of sysctl table
+headers is slightly painful and implement in a way it cannot
+be used by code outside sysctl.c
 
-Doing it that way gets in the way of cleaning up the sysctl
-proc support as it continues the existence of a horrible hack.
-So instead simply create the directory as an ordinary sysctl
-directory.   At least that removes the magic special case.
+I am in the process of implementing a version of the sysctl
+proc support that instead of using the proc generic non-caching
+monster, just uses the existing sysctl data structure as
+backing store for building the dcache entries and for doing
+directory reads.   To use the existing data structures however
+I need a way to get at them.
 
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 ---
- fs/proc/root.c  |    4 ----
- kernel/sysctl.c |   13 +++++++++++++
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ include/linux/sysctl.h |    4 +++
+ kernel/sysctl.c        |   57 +++++++++++++++++++++++++++++++++++------------
+ 2 files changed, 46 insertions(+), 15 deletions(-)
 
-diff --git a/fs/proc/root.c b/fs/proc/root.c
-index 64d242b..8059e92 100644
---- a/fs/proc/root.c
-+++ b/fs/proc/root.c
-@@ -74,10 +74,6 @@ void __init proc_root_init(void)
- #ifdef CONFIG_SYSCTL
- 	proc_sys_root = proc_mkdir("sys", NULL);
- #endif
--#if defined(CONFIG_BINFMT_MISC) || defined(CONFIG_BINFMT_MISC_MODULE)
--	proc_mkdir("sys/fs", NULL);
--	proc_mkdir("sys/fs/binfmt_misc", NULL);
--#endif
- 	proc_root_fs = proc_mkdir("fs", NULL);
- 	proc_root_driver = proc_mkdir("driver", NULL);
- 	proc_mkdir("fs/nfsd", NULL); /* somewhere for the nfsd filesystem to be mounted */
+diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+index 6113f3b..81ee9ea 100644
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -923,6 +923,10 @@ enum
+ #ifdef __KERNEL__
+ #include <linux/list.h>
+ 
++/* For the /proc/sys support */
++extern struct ctl_table_header *sysctl_head_next(struct ctl_table_header *prev);
++extern void sysctl_head_finish(struct ctl_table_header *prev);
++
+ extern void sysctl_init(void);
+ 
+ typedef struct ctl_table ctl_table;
 diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 6e2e608..8da6647 100644
+index 5beee1f..ca2831a 100644
 --- a/kernel/sysctl.c
 +++ b/kernel/sysctl.c
-@@ -142,6 +142,7 @@ static struct ctl_table_header root_table_header =
- static ctl_table kern_table[];
- static ctl_table vm_table[];
- static ctl_table fs_table[];
-+static ctl_table binfmt_misc_table[];
- static ctl_table debug_table[];
- static ctl_table dev_table[];
- extern ctl_table random_table[];
-@@ -1001,6 +1002,18 @@ static ctl_table fs_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= &proc_dointvec,
- 	},
-+#if defined(CONFIG_BINFMT_MISC) || defined(CONFIG_BINFMT_MISC_MODULE)
-+	{
-+		.ctl_name	= CTL_UNNUMBERED,
-+		.procname	= "binfmt_misc",
-+		.mode		= 0555,
-+		.child		= binfmt_misc_table,
-+	},
-+#endif
-+	{ .ctl_name = 0 }
-+};
+@@ -1066,6 +1066,42 @@ static void start_unregistering(struct ctl_table_header *p)
+ 	list_del_init(&p->ctl_entry);
+ }
+ 
++void sysctl_head_finish(struct ctl_table_header *head)
++{
++	if (!head)
++		return;
++	spin_lock(&sysctl_lock);
++	unuse_table(head);
++	spin_unlock(&sysctl_lock);
++}
 +
-+static ctl_table binfmt_misc_table[] = {
- 	{ .ctl_name = 0 }
- };
++struct ctl_table_header *sysctl_head_next(struct ctl_table_header *prev)
++{
++	struct ctl_table_header *head;
++	struct list_head *tmp;
++	spin_lock(&sysctl_lock);
++	if (prev) {
++		tmp = &prev->ctl_entry;
++		unuse_table(prev);
++		goto next;
++	}
++	tmp = &root_table_header.ctl_entry;
++	for (;;) {
++		head = list_entry(tmp, struct ctl_table_header, ctl_entry);
++
++		if (!use_table(head))
++			goto next;
++		spin_unlock(&sysctl_lock);
++		return head;
++	next:
++		tmp = tmp->next;
++		if (tmp == &root_table_header.ctl_entry)
++			break;
++	}
++	spin_unlock(&sysctl_lock);
++	return NULL;
++}
++
+ void __init sysctl_init(void)
+ {
+ #ifdef CONFIG_PROC_SYSCTL
+@@ -1077,6 +1113,7 @@ void __init sysctl_init(void)
+ int do_sysctl(int __user *name, int nlen, void __user *oldval, size_t __user *oldlenp,
+ 	       void __user *newval, size_t newlen)
+ {
++	struct ctl_table_header *head;
+ 	struct list_head *tmp;
+ 	int error = -ENOTDIR;
+ 
+@@ -1087,26 +1124,16 @@ int do_sysctl(int __user *name, int nlen, void __user *oldval, size_t __user *ol
+ 		if (!oldlenp || get_user(old_len, oldlenp))
+ 			return -EFAULT;
+ 	}
+-	spin_lock(&sysctl_lock);
+-	tmp = &root_table_header.ctl_entry;
+-	do {
+-		struct ctl_table_header *head =
+-			list_entry(tmp, struct ctl_table_header, ctl_entry);
+ 
+-		if (!use_table(head))
+-			continue;
+-
+-		spin_unlock(&sysctl_lock);
++	for (head = sysctl_head_next(NULL); head; head = sysctl_head_next(head)) {
+ 
+ 		error = parse_table(name, nlen, oldval, oldlenp, 
+ 					newval, newlen, head->ctl_table);
+-
+-		spin_lock(&sysctl_lock);
+-		unuse_table(head);
+-		if (error != -ENOTDIR)
++		if (error != -ENOTDIR) {
++			sysctl_head_finish(head);
+ 			break;
+-	} while ((tmp = tmp->next) != &root_table_header.ctl_entry);
+-	spin_unlock(&sysctl_lock);
++		}
++	}
+ 	return error;
+ }
  
 -- 
 1.4.4.1.g278f

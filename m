@@ -1,103 +1,191 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2007 18:00:57 +0000 (GMT)
-Received: from mailhub.sw.ru ([195.214.233.200]:24730 "EHLO relay.sw.ru")
-	by ftp.linux-mips.org with ESMTP id S20042566AbXAQSAx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2007 18:00:53 +0000
-Received: from [192.168.1.129] ([192.168.1.129])
-	by relay.sw.ru (8.13.4/8.13.4) with ESMTP id l0HI1K8t026726;
-	Wed, 17 Jan 2007 21:01:21 +0300 (MSK)
-Message-ID: <45AE66AA.1050508@sw.ru>
-Date:	Wed, 17 Jan 2007 21:10:50 +0300
-From:	Kirill Korotaev <dev@sw.ru>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.13) Gecko/20060417
-X-Accept-Language: en-us, en, ru
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2007 18:05:31 +0000 (GMT)
+Received: from smtp-ext.int-evry.fr ([157.159.11.17]:60606 "EHLO
+	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
+	id S20042581AbXAQSF0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 Jan 2007 18:05:26 +0000
+Received: from mini.int.alphacore.net (florian.maisel.int-evry.fr [157.159.41.36])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id D52F28D1693;
+	Wed, 17 Jan 2007 19:04:08 +0100 (CET)
+From:	Florian Fainelli <florian.fainelli@int-evry.fr>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] Add support for Cobalt Server front LED
+Date:	Wed, 17 Jan 2007 19:04:23 +0100
+User-Agent: KMail/1.9.5
+Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+	linux-mips@linux-mips.org
+References: <200701151936.57738.florian.fainelli@int-evry.fr> <200701160056.00748.florian.fainelli@int-evry.fr> <20070117164610.GA1200@linux-mips.org>
+In-Reply-To: <20070117164610.GA1200@linux-mips.org>
 MIME-Version: 1.0
-To:	"Eric W. Biederman" <ebiederm@xmission.com>
-CC:	Andrew Morton <akpm@osdl.org>, James.Bottomley@SteelEye.com,
-	linux-mips@linux-mips.org, linux-parport@lists.infradead.org,
-	minyard@acm.org, rtc-linux@googlegroups.com, clemens@ladisch.de,
-	heiko.carstens@de.ibm.com, xfs@oss.sgi.com,
-	linuxppc-dev@ozlabs.org, paulus@samba.org,
-	openipmi-developer@lists.sourceforge.net, linux-390@vm.marist.edu,
-	schwidefsky@de.ibm.com, tim@cyberelk.net,
-	codalist@TELEMANN.coda.cs.cmu.edu, a.zummo@towertech.it,
-	tony.luck@intel.com, vojtech@suse.cz, linux-scsi@vger.kernel.org,
-	xfs-masters@oss.sgi.com, linux-ntfs-dev@lists.sourceforge.net,
-	netdev@vger.kernel.org, aia21@cantab.net, aharkes@cs.cmu.edu,
-	linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-	mark.fasheh@oracle.com, coda@cs.cmu.edu, lethal@linux-sh.org,
-	kurt.hackel@oracle.com,
-	Linux Containers <containers@lists.osdl.org>,
-	linux390@de.ibm.com, philb@gnu.org, andrea@suse.de,
-	linuxsh-shmedia-dev@lists.sourceforge.net, ak@suse.de
-Subject: Re: [PATCH 0/59] Cleanup sysctl
-References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
-In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed;
+  boundary="nextPart2142788.HERbmlOEkF";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-Return-Path: <dev@sw.ru>
+Message-Id: <200701171904.28281.florian.fainelli@int-evry.fr>
+Return-Path: <florian.fainelli@int-evry.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13694
+X-archive-position: 13695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dev@sw.ru
+X-original-sender: florian.fainelli@int-evry.fr
 Precedence: bulk
 X-list: linux-mips
 
-Eric, really good job!
+--nextPart2142788.HERbmlOEkF
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Patches: 1-13, 15-24, 26-32, 34-44, 46-49, 52-55, 57 (all except below)
-Acked-By: Kirill Korotaev <dev@openvz.org>
+Hi Ralf,
 
-14/59 - minor (extra space)
-25/59 - minor note	
-33/59 - not sorted sysctl IDs
-45/59 - typo
-50/59 - copyright/file note
-51/59 - copyright/file name/kconfig option notes
+This should take into account everything that has been said before.
 
-56,58,59/59 - will review tomorrow
+Thanks.
 
-another issue I have to think over is removal of de->owner.
-Alexey Dobriyan has sent recently patching fixing /proc <-> modules refcounting.
-I guess w/o these patches your changes are not safe if proc_handler or strategy
-are functions from the module.
+Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
 
-Thanks,
-Kirill
+diff -urN linux-2.6.19.1/drivers/leds/Kconfig=20
+linux-2.6.19.1.led/drivers/leds/Kconfig
+=2D-- linux-2.6.19.1/drivers/leds/Kconfig 2006-12-11 20:32:53.000000000 +01=
+00
++++ linux-2.6.19.1.led/drivers/leds/Kconfig =A0 =A0 2007-01-15 19:22:00.000=
+000000=20
++0100
+@@ -76,6 +76,12 @@
+=A0 =A0 =A0 =A0 =A0 This option enables support for the Soekris net4801 and=
+ net4826=20
+error
+=A0 =A0 =A0 =A0 =A0 LED.
 
-> There has not been much maintenance on sysctl in years, and as a result is
-> there is a lot to do to allow future interesting work to happen, and being
-> ambitious I'm trying to do it all at once :)
-> 
-> The patches in this series fall into several general categories.
-> 
-> - Removal of useless attempts to override the standard sysctls
-> 
-> - Registers of sysctl numbers in sysctl.h so someone else does not use
->   the magic number and conflict.
-> 
-> - C99 conversions so it becomes possible to change the layout of 
->   struct ctl_table without breaking everything.
-> 
-> - Removal of useless claims of module ownership, in the proc dir entries
-> 
-> - Removal of sys_sysctl support where people had used conflicting sysctl
->   numbers. Trying to break glibc or other applications by changing the
->   ABI is not cool.  9 instances of this in the kernel seems a little
->   extreme.
-> 
-> - General enhancements when I got the junk I could see out.
-> 
-> Odds are I missed something, most of the cleanups are simply a result of
-> me working on the sysctl core and glancing at the users and going: What?
-> 
-> Eric
-> _______________________________________________
-> Containers mailing list
-> Containers@lists.osdl.org
-> https://lists.osdl.org/mailman/listinfo/containers
-> 
-> 
++config LEDS_COBALT
++ =A0 =A0 =A0 tristate "LED Support for Cobalt Server front LED"
++ =A0 =A0 =A0 depends on LEDS_CLASS && MIPS_COBALT
++ =A0 =A0 =A0 help
++ =A0 =A0 =A0 =A0 This option enables support for the front LED on Cobalt S=
+erver
++
+=A0comment "LED Triggers"
+
+=A0config LEDS_TRIGGERS
+diff -urN linux-2.6.19.1/drivers/leds/leds-cobalt.c=20
+linux-2.6.19.1.led/drivers/leds/leds-cobalt.c
+=2D-- linux-2.6.19.1/drivers/leds/leds-cobalt.c =A0 1970-01-01 01:00:00.000=
+000000=20
++0100
++++ linux-2.6.19.1.led/drivers/leds/leds-cobalt.c =A0 =A0 =A0 2007-01-15=20
+19:28:09.000000000 +0100
+@@ -0,0 +1,55 @@
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/device.h>
++#include <linux/leds.h>
++#include <asm/mach-cobalt/cobalt.h>
++
++/* Copyright 2006 - Florian Fainelli <florian@openwrt.org>
++ *
++ * This driver let you control the Cobalt Qube/RaQ front LED
++ *
++ * 255 (max brightness) -> turn the led on
++ * 0 -> turn the led off
++ *
++ * If you want the LED to be blinking on IDE activity, select the IDE trig=
+ger
++ */
++
++static void cobalt_led_set(struct led_classdev *led_cdev, enum led_brightn=
+ess=20
+brightness)
++{
++ =A0 =A0 =A0 switch (brightness) {
++ =A0 =A0 =A0 case LED_OFF:
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 *(volatile uint8_t *) COBALT_LED_BASE =3D 0;
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
++ =A0 =A0 =A0 case LED_FULL:
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 *(volatile uint8_t *) COBALT_LED_BASE =3D COB=
+ALT_LED_BAR_LEFT |=20
+COBALT_LED_BAR_RIGHT;
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
++ =A0 =A0 =A0 default:
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 return;
++ =A0 =A0 =A0 }
++}
++
++static struct led_classdev cobalt_led =3D {
++ =A0 =A0 =A0 .name =3D "cobalt-front-led",
++ =A0 =A0 =A0 .brightness_set =3D cobalt_led_set,
++#ifdef CONFIG_LEDS_TRIGGER_IDE_DISK
++ =A0 =A0 =A0 .default_trigger =3D "ide-disk",
++#endif
++};
++
++static int __init cobalt_led_init(void)
++{
++ =A0 =A0 =A0 return led_classdev_register(NULL, &cobalt_led);
++}
++
++static void __exit cobalt_led_exit(void)
++{
++ =A0 =A0 =A0 led_classdev_unregister(&cobalt_led);
++}
++
++module_init(cobalt_led_init);
++module_exit(cobalt_led_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Front LED support for Cobalt Server");
++MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
+diff -urN linux-2.6.19.1/drivers/leds/Makefile=20
+linux-2.6.19.1.led/drivers/leds/Makefile
+=2D-- linux-2.6.19.1/drivers/leds/Makefile =A0 =A0 =A0 =A02006-12-11 20:32:=
+53.000000000=20
++0100
++++ linux-2.6.19.1.led/drivers/leds/Makefile =A0 =A02007-01-15 19:22:18.000=
+000000=20
++0100
+@@ -13,6 +13,7 @@
+=A0obj-$(CONFIG_LEDS_S3C24XX) =A0 =A0 =A0 =A0 =A0 =A0 +=3D leds-s3c24xx.o
+=A0obj-$(CONFIG_LEDS_AMS_DELTA) =A0 =A0 =A0 =A0 =A0 +=3D leds-ams-delta.o
+=A0obj-$(CONFIG_LEDS_NET48XX) =A0 =A0 =A0 =A0 =A0 =A0 +=3D leds-net48xx.o
++obj-$(CONFIG_LEDS_COBALT) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D leds-cobalt.o
+
+=A0# LED Triggers
+=A0obj-$(CONFIG_LEDS_TRIGGER_TIMER) =A0 =A0 =A0 +=3D ledtrig-timer.o
+
+
+Le mercredi 17 janvier 2007 17:46, Ralf Baechle a =E9crit=A0:
+> On Tue, Jan 16, 2007 at 12:56:00AM +0100, Florian Fainelli wrote:
+> > Answering back to myself, since I fixed the stuff using the
+> > COBALT_LED_PORT, here the corrected patch. Can you queue this patch for=
+ a
+> > commit if it sounds acceptable to you ?
+> >
+> > Thank you very much in advance.
+>
+> Signed-off???
+>
+> > +void cobalt_led_set(struct led_classdev *led_cdev, enum led_brightness
+> > brightness)
+>
+> This function is only used locally so should be static.
+>
+>   Ralf
+
+--nextPart2142788.HERbmlOEkF
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.1 (GNU/Linux)
+
+iD8DBQBFrmUsQ/Yr6D8A81kRAmzKAJ9kmfdoMsAFbTZ+BcR5SC+BvWxDrQCgjtYd
+1ef/0HtECtir4vwwnAGW2VY=
+=s/gs
+-----END PGP SIGNATURE-----
+
+--nextPart2142788.HERbmlOEkF--

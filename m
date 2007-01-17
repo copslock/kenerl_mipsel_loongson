@@ -1,204 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2007 07:14:51 +0000 (GMT)
-Received: from mail152.messagelabs.com ([216.82.253.19]:34180 "EHLO
-	mail152.messagelabs.com") by ftp.linux-mips.org with ESMTP
-	id S20039164AbXAQHOp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 Jan 2007 07:14:45 +0000
-X-VirusChecked:	Checked
-X-Env-Sender: sachidananda.naik@ap.sony.com
-X-Msg-Ref: server-13.tower-152.messagelabs.com!1169018072!2046510!1
-X-StarScan-Version: 5.5.10.7; banners=-,-,-
-X-Originating-IP: [121.100.32.134]
-Received: (qmail 2661 invoked from network); 17 Jan 2007 07:14:36 -0000
-Received: from sggdcex1ns01.sony.com.sg (HELO sggdcex1ns01.sony.com.sg) (121.100.32.134)
-  by server-13.tower-152.messagelabs.com with DES-CBC3-SHA encrypted SMTP; 17 Jan 2007 07:14:36 -0000
-Received: from sgsesgdcia01.sony.com.sg (sggdcwn1vs01 [43.68.8.23])
-	by sggdcex1ns01.sony.com.sg (8.13.7+Sun/8.13.7) with SMTP id l0H7Chit027236;
-	Wed, 17 Jan 2007 15:13:09 +0800 (SGT)
-Received: from (seagw.sony.com.sg [43.68.8.1]) by sgsesgdcia01.sony.com.sg with smtp
-	 id 7a18_203c6a3e_a5fa_11db_9dfa_001372631f16;
-	Wed, 17 Jan 2007 15:12:43 +0800
-Received: from sgapxbh04.ap.sony.com ([43.68.15.49])
-	by sgsesgdcid01.sony.com.sg (8.13.7+Sun/8.13.7) with ESMTP id l0H7Chow009409;
-	Wed, 17 Jan 2007 15:12:43 +0800 (SGT)
-Received: from insardxms01.ap.sony.com ([43.88.102.10]) by sgapxbh04.ap.sony.com with Microsoft SMTPSVC(6.0.3790.1830); Wed, 17 Jan 2007 15:12:43 +0800
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C73A06.CF1DDAE3"
-Subject: OSK ARM board automatic rebooting procedure...
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2007 12:10:23 +0000 (GMT)
+Received: from mtagate5.uk.ibm.com ([195.212.29.138]:7987 "EHLO
+	mtagate5.uk.ibm.com") by ftp.linux-mips.org with ESMTP
+	id S20042048AbXAQMKS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 Jan 2007 12:10:18 +0000
+Received: from d06nrmr1407.portsmouth.uk.ibm.com (d06nrmr1407.portsmouth.uk.ibm.com [9.149.38.185])
+	by mtagate5.uk.ibm.com (8.13.8/8.13.8) with ESMTP id l0HCACft113842;
+	Wed, 17 Jan 2007 12:10:12 GMT
+Received: from d06av02.portsmouth.uk.ibm.com (d06av02.portsmouth.uk.ibm.com [9.149.37.228])
+	by d06nrmr1407.portsmouth.uk.ibm.com (8.13.8/8.13.8/NCO v8.2) with ESMTP id l0HCACI5753696;
+	Wed, 17 Jan 2007 12:10:12 GMT
+Received: from d06av02.portsmouth.uk.ibm.com (loopback [127.0.0.1])
+	by d06av02.portsmouth.uk.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id l0HCAAww027104;
+	Wed, 17 Jan 2007 12:10:12 GMT
+Received: from dyn-9-152-216-78.boeblingen.de.ibm.com (dyn-9-152-216-78.boeblingen.de.ibm.com [9.152.216.78])
+	by d06av02.portsmouth.uk.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id l0HCAAW9027077;
+	Wed, 17 Jan 2007 12:10:10 GMT
+Subject: Re: [PATCH 0/59] Cleanup sysctl
+From:	Martin Schwidefsky <schwidefsky@de.ibm.com>
+Reply-To: schwidefsky@de.ibm.com
+To:	"Eric W. Biederman" <ebiederm@xmission.com>
+Cc:	Andrew Morton <akpm@osdl.org>, linux-kernel@vger.kernel.org,
+	Linux Containers <containers@lists.osdl.org>,
+	netdev@vger.kernel.org, xfs-masters@oss.sgi.com, xfs@oss.sgi.com,
+	linux-scsi@vger.kernel.org, James.Bottomley@SteelEye.com,
+	minyard@acm.org, openipmi-developer@lists.sourceforge.net,
+	tony.luck@intel.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, heiko.carstens@de.ibm.com,
+	linux390@de.ibm.com, linux-390@vm.marist.edu, paulus@samba.org,
+	linuxppc-dev@ozlabs.org, lethal@linux-sh.org,
+	linuxsh-shmedia-dev@lists.sourceforge.net, ak@suse.de,
+	vojtech@suse.cz, clemens@ladisch.de, a.zummo@towertech.it,
+	rtc-linux@googlegroups.com, linux-parport@lists.infradead.org,
+	andrea@suse.de, tim@cyberelk.net, philb@gnu.org,
+	aharkes@cs.cmu.edu, coda@cs.cmu.edu,
+	codalist@TELEMANN.coda.cs.cmu.edu, aia21@cantab.net,
+	linux-ntfs-dev@lists.sourceforge.net, mark.fasheh@oracle.com,
+	kurt.hackel@oracle.com
+In-Reply-To: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
+References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
+Content-Type: text/plain
+Organization: IBM Corporation
+Date:	Wed, 17 Jan 2007 13:10:13 +0100
+Message-Id: <1169035813.7711.7.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.6.3 
 Content-Transfer-Encoding: 7bit
-content-class: urn:content-classes:message
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.2826
-Date:	Wed, 17 Jan 2007 12:42:12 +0530
-Message-ID: <7CC0A4CCB789A841944E316301AD1538399C24@insardxms01.ap.sony.com>
-Importance: normal
-Priority: normal
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: OSK ARM board automatic rebooting procedure...
-Thread-Index: Acc6B6XIRbvTKJVMTQuMquAX+AbQ5w==
-From:	"Naik, Sachidananda" <sachidananda.naik@ap.sony.com>
-To:	<linux-mips@linux-mips.org>, <linux-parport@lists.infradead.org>,
-	<heiko.carstens@de.ibm.com>, <ak@suse.de>,
-	<linuxppc-dev@ozlabs.org>, <paulus@samba.org>, <aharkes@cs.cmu.edu>
-X-OriginalArrivalTime: 17 Jan 2007 07:12:43.0332 (UTC) FILETIME=[E1A61040:01C73A06]
-Return-Path: <sachidananda.naik@ap.sony.com>
+Return-Path: <schwidefsky@de.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13686
+X-archive-position: 13687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sachidananda.naik@ap.sony.com
+X-original-sender: schwidefsky@de.ibm.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+On Tue, 2007-01-16 at 09:33 -0700, Eric W. Biederman wrote:
+> There has not been much maintenance on sysctl in years, and as a result is
+> there is a lot to do to allow future interesting work to happen, and being
+> ambitious I'm trying to do it all at once :)
 
-------_=_NextPart_001_01C73A06.CF1DDAE3
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+s390 parts look good. Kernels boots and the system controls are still
+working. I had to add an #include <linux/uaccess.h> to ipc/ipc_sysctl.c
+to get the kernel compiled. That include should be added to patch #51.
 
-Hi all,
-=20
-I'm trying to achieve automatic restarting of ARM Board : OMAP 5012 OSK
-board. For that I found a link and I went through it.
-=20
-Here is the link that discusses about Ebony board reboot procedure ::
-           =20
+Acked-by: Martin Schwidefsky <schwidefsky@de.ibm.com> for:
+[PATCH 33/59] sysctl: s390 move sysctl definitions to sysctl.h
+[PATCH 34/59] sysctl: s390 Remove unnecessary use of insert_at_head
 
-http://tree.celinuxforum.org/CelfPubWiki/TargetSwitchControlFromParallel
-Port?action=3Dhighlight&value=3Dparallel+port
-<http://tree.celinuxforum.org/CelfPubWiki/TargetSwitchControlFromParalle
-lPort?action=3Dhighlight&value=3Dparallel+port>=20
+and the s390 parts of 
+[PATCH 55/59] sysctl: Remove insert_at_head from register_sysctl
 
-In the link :
+-- 
+blue skies,
+  Martin.
 
-        1. They have taken DB25 connector ::=20
+Martin Schwidefsky
+Linux for zSeries Development & Services
+IBM Deutschland Entwicklung GmbH
 
-                            I'm not familiar with this device : Anybody
-who knows better about this device please send some information abt it.
-
-        2. They have used the parport device driver :
-
-                            Inside the source file, parport.c in the
-link , they are taking some addresses, I wan to kno abt those addresses.
-
-        3. And In the module they have developed, the four pins are
-there to connect on the target board, In the OMAP 5012 OSK board where
-to connect these=20
-
-            wires.
-
-Please reply with some information.
-
-Thanks and Regards
-
-Sachidananda Naik
-
-
-
--------------------------------------------------------------------
-This email is confidential and intended only for the use of the =
-individual or entity named above and may contain information that is =
-privileged. If you are not the intended recipient, you are notified that =
-any dissemination, distribution or copying of this email is strictly =
-prohibited. If you have received this email in error, please notify us =
-immediately by return email or telephone and destroy the original =
-message. - This mail is sent via Sony Asia Pacific Mail Gateway.
--------------------------------------------------------------------
-
-------_=_NextPart_001_01C73A06.CF1DDAE3
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dus-ascii">
-<META content=3D"MSHTML 6.00.2900.3020" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D765430807-17012007>Hi=20
-all,</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D765430807-17012007></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D765430807-17012007>I'm =
-trying to=20
-achieve automatic restarting of ARM&nbsp;Board : OMAP&nbsp;5012 =
-OSK&nbsp;board.=20
-For that I found a link and I went through it.</SPAN></FONT></DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN=20
-class=3D765430807-17012007></SPAN></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2><SPAN class=3D765430807-17012007>Here =
-is the link=20
-that discusses about Ebony board reboot =
-procedure&nbsp;::</SPAN></FONT></DIV>
-<DIV><FONT><SPAN class=3D765430807-17012007><FONT face=3DArial=20
-size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;=20
-</FONT>
-<P><A=20
-href=3D"http://tree.celinuxforum.org/CelfPubWiki/TargetSwitchControlFromP=
-arallelPort?action=3Dhighlight&amp;value=3Dparallel+port"><U><FONT=20
-color=3D#0000ff><FONT face=3DArial=20
-size=3D2>http://tree.celinuxforum.org/CelfPubWiki/TargetSwitchControlFrom=
-ParallelPort?action=3Dhighlight&amp;value=3Dparallel+port</FONT></U></FON=
-T></A></P>
-<P><SPAN class=3D765430807-17012007><FONT face=3DArial size=3D2>In the =
-link=20
-:</FONT></SPAN></P>
-<P><SPAN =
-class=3D765430807-17012007>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-<FONT face=3DArial size=3D2>1. They have taken DB25 connector :: =
-</FONT></SPAN></P>
-<P><SPAN class=3D765430807-17012007><FONT face=3DArial=20
-size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;=20
-I'm not familiar with this device : Anybody who knows better about this =
-device=20
-please send some information abt it.</FONT></SPAN></P>
-<P><SPAN =
-class=3D765430807-17012007>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-<FONT face=3DArial size=3D2>2. They have used the parport device driver=20
-:</FONT></SPAN></P>
-<P><SPAN=20
-class=3D765430807-17012007>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-<FONT face=3DArial size=3D2>Inside the source file, parport.c in the =
-link , they are=20
-taking some addresses, I wan to kno abt those =
-addresses.</FONT></SPAN></P>
-<P><SPAN=20
-class=3D765430807-17012007>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;3.&nbsp;<FONT=20
-face=3DArial size=3D2>And In the module they have developed, the four =
-pins are there=20
-to connect on the target board, In the OMAP&nbsp;5012 OSK&nbsp;board =
-where to=20
-connect these </FONT></SPAN></P>
-<P><SPAN=20
-class=3D765430807-17012007>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;=20
-<FONT face=3DArial size=3D2>wires.</FONT></SPAN></P>
-<P><SPAN class=3D765430807-17012007><FONT face=3DArial size=3D2>Please =
-reply with some=20
-information.</FONT></SPAN></P>
-<P><SPAN class=3D765430807-17012007><FONT face=3DArial size=3D2>Thanks =
-and=20
-Regards</FONT></SPAN></P>
-<P><SPAN class=3D765430807-17012007><FONT face=3DArial =
-size=3D2>Sachidananda=20
-Naik</FONT></SPAN></P></SPAN></FONT></DIV><p></p><hr><br>This email is =
-confidential and intended only for the use of the individual or entity =
-named above and may contain information that is privileged. If you are =
-not the intended recipient, you are notified that any dissemination, =
-distribution or copying of this email is strictly prohibited. If you =
-have received this email in error, please notify us immediately by =
-return email or telephone and destroy the original message. - This mail =
-is sent via Sony Asia Pacific Mail Gateway.<hr></BODY></HTML>
-
-------_=_NextPart_001_01C73A06.CF1DDAE3--
+"Reality continues to ruin my life." - Calvin.

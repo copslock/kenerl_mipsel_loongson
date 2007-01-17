@@ -1,99 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Jan 2007 23:36:28 +0000 (GMT)
-Received: from smtprelay01.ispgateway.de ([80.67.18.13]:12424 "EHLO
-	smtprelay01.ispgateway.de") by ftp.linux-mips.org with ESMTP
-	id S20052741AbXAPXgX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Jan 2007 23:36:23 +0000
-Received: (qmail 24212 invoked from network); 16 Jan 2007 23:36:22 -0000
-Received: from unknown (HELO p5483d117.dip.t-dialin.net) (696817@[84.131.209.23])
-          (envelope-sender <ioe-lkml@rameria.de>)
-          by smtprelay01.ispgateway.de (qmail-ldap-1.03) with AES256-SHA encrypted SMTP
-          for <ebiederm@xmission.com>; 16 Jan 2007 23:36:22 -0000
-From:	Ingo Oeser <ioe-lkml@rameria.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jan 2007 03:15:55 +0000 (GMT)
+Received: from gate.crashing.org ([63.228.1.57]:32973 "EHLO gate.crashing.org")
+	by ftp.linux-mips.org with ESMTP id S20047332AbXAQDPv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Jan 2007 03:15:51 +0000
+Received: from [127.0.0.1] (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.13.8/8.13.8) with ESMTP id l0H3EviD006666;
+	Tue, 16 Jan 2007 21:15:01 -0600
+Subject: Re: [PATCH 18/59] sysctl: ipmi remove unnecessary insert_at_head
+	flag
+From:	Benjamin Herrenschmidt <benh@kernel.crashing.org>
 To:	"Eric W. Biederman" <ebiederm@xmission.com>
-Subject: Re: [PATCH 31/59] sysctl: C99 convert the ctl_tables in arch/mips/au1000/common/power.c
-Date:	Tue, 16 Jan 2007 23:20:17 +0100
-User-Agent: KMail/1.9.5
-Cc:	"<Andrew Morton" <akpm@osdl.org>, linux-kernel@vger.kernel.org,
-	containers@lists.osdl.org, netdev@vger.kernel.org,
-	xfs-masters@oss.sgi.com, xfs@oss.sgi.com,
-	linux-scsi@vger.kernel.org, James.Bottomley@steeleye.com,
-	minyard@acm.org, openipmi-developer@lists.sourceforge.net,
-	tony.luck@intel.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, schwidefsky@de.ibm.com,
-	heiko.carstens@de.ibm.com, linux390@de.ibm.com,
-	linux-390@vm.marist.edu, paulus@samba.org, linuxppc-dev@ozlabs.org,
-	lethal@linux-sh.org, linuxsh-shmedia-dev@lists.sourceforge.net,
-	ak@suse.de, vojtech@suse.cz, clemens@ladisch.de,
-	a.zummo@towertech.it, rtc-linux@googlegroups.com,
-	linux-parport@lists.infradead.org, andrea@suse.de,
-	tim@cyberelk.net, philb@gnu.org, aharkes@cs.cmu.edu,
-	coda@cs.cmu.edu, codalist@telemann.coda.cs.cmu.edu,
-	aia21@cantab.net, linux-ntfs-dev@lists.sourceforge.net,
-	mark.fasheh@oracle.com, kurt.hackel@oracle.com
-References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com> <11689656551180-git-send-email-ebiederm@xmission.com>
-In-Reply-To: <11689656551180-git-send-email-ebiederm@xmission.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-15"
+Cc:	"<Andrew Morton" <akpm@osdl.org>, linux-mips@linux-mips.org,
+	linux-parport@lists.infradead.org, heiko.carstens@de.ibm.com,
+	ak@suse.de, linuxppc-dev@ozlabs.org, paulus@samba.org,
+	aharkes@cs.cmu.edu, schwidefsky@de.ibm.com, tim@cyberelk.net,
+	rtc-linux@googlegroups.com, linux-scsi@vger.kernel.org,
+	kurt.hackel@oracle.com, coda@cs.cmu.edu, vojtech@suse.cz,
+	linuxsh-shmedia-dev@lists.sourceforge.net,
+	James.Bottomley@SteelEye.com, clemens@ladisch.de, xfs@oss.sgi.com,
+	xfs-masters@oss.sgi.com, andrea@suse.de,
+	openipmi-developer@lists.sourceforge.net, linux-390@vm.marist.edu,
+	codalist@TELEMANN.coda.cs.cmu.edu, a.zummo@towertech.it,
+	tony.luck@intel.com, linux-ntfs-dev@lists.sourceforge.net,
+	netdev@vger.kernel.org, aia21@cantab.net,
+	linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+	lethal@linux-sh.org, containers@lists.osdl.org,
+	linux390@de.ibm.com, philb@gnu.org
+In-Reply-To: <1168965635875-git-send-email-ebiederm@xmission.com>
+References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com>
+	 <1168965635875-git-send-email-ebiederm@xmission.com>
+Content-Type: text/plain
+Date:	Wed, 17 Jan 2007 14:14:54 +1100
+Message-Id: <1169003694.4778.15.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.8.1 
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200701162320.27961.ioe-lkml@rameria.de>
-Return-Path: <ioe-lkml@rameria.de>
+Return-Path: <benh@kernel.crashing.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13681
+X-archive-position: 13682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ioe-lkml@rameria.de
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Eric,
+On Tue, 2007-01-16 at 09:39 -0700, Eric W. Biederman wrote:
+> From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
+> 
+> With unique sysctl binary numbers setting insert_at_head is pointless.
+> 
+> Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 
-On Tuesday, 16. January 2007 17:39, Eric W. Biederman wrote:
-> diff --git a/arch/mips/au1000/common/power.c b/arch/mips/au1000/common/power.c
-> index b531ab7..31256b8 100644
-> --- a/arch/mips/au1000/common/power.c
-> +++ b/arch/mips/au1000/common/power.c
-> @@ -419,15 +419,41 @@ static int pm_do_freq(ctl_table * ctl, int write, struct file *file,
+Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 
-> +	{
-> +		.ctl_name 	= CTL_UNNUMBERED,
-> +		.procname	= "suspend",
-> +		.data		= NULL,
-> +		.maxlen		= 0,
-> +		.mode		= 0600,
-> +		.proc_handler	= &pm_do_suspend
-> +	},
-
-No need for zero initialization for maxlen.
-
-> +	{
-> +		.ctl_name	= CTL_UNNUMBERED,
-> +		.procname	= "sleep",
-> +		.data		= NULL,
-> +		.maxlen		= 0,
-> +		.mode		= 0600,
-> +		.proc_handler	= &pm_do_sleep
-> +	},
-
-dito
-
-> +	{
-> +		.ctl_name	= CTL_UNNUMBERED,
-> +		.procname	= "freq",
-> +		.data		= NULL,
-> +		.maxlen		= 0,
-> +		.mode		= 0600,
-> +		.proc_handler	= &pm_do_freq
-> +	},
-> +	{}
->  };
-
-dito
-
-Regards
-
-Ingo Oeser
+> ---
+>  drivers/char/ipmi/ipmi_poweroff.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/char/ipmi/ipmi_poweroff.c b/drivers/char/ipmi/ipmi_poweroff.c
+> index 9d23136..b3ae65e 100644
+> --- a/drivers/char/ipmi/ipmi_poweroff.c
+> +++ b/drivers/char/ipmi/ipmi_poweroff.c
+> @@ -686,7 +686,7 @@ static int ipmi_poweroff_init (void)
+>  		printk(KERN_INFO PFX "Power cycle is enabled.\n");
+>  
+>  #ifdef CONFIG_PROC_FS
+> -	ipmi_table_header = register_sysctl_table(ipmi_root_table, 1);
+> +	ipmi_table_header = register_sysctl_table(ipmi_root_table, 0);
+>  	if (!ipmi_table_header) {
+>  		printk(KERN_ERR PFX "Unable to register powercycle sysctl\n");
+>  		rv = -ENOMEM;

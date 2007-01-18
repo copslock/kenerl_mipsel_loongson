@@ -1,40 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2007 13:57:10 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:22691 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28585562AbXARN5J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Jan 2007 13:57:09 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0IDw8k8018425;
-	Thu, 18 Jan 2007 13:58:08 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0IDw7kh018424;
-	Thu, 18 Jan 2007 13:58:07 GMT
-Date:	Thu, 18 Jan 2007 13:58:07 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] update vr41xx IRQ numers
-Message-ID: <20070118135807.GA11056@linux-mips.org>
-References: <20070118222711.4e6e4e8b.yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2007 15:23:57 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:30403 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28573739AbXARPXw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Jan 2007 15:23:52 +0000
+Received: from localhost (p1212-ipad02funabasi.chiba.ocn.ne.jp [61.214.21.212])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 04C09B614; Fri, 19 Jan 2007 00:23:47 +0900 (JST)
+Date:	Fri, 19 Jan 2007 00:23:46 +0900 (JST)
+Message-Id: <20070119.002346.74752797.anemo@mba.ocn.ne.jp>
+To:	linux-kernel@vger.kernel.org
+Cc:	linux-mips@linux-mips.org, akpm@osdl.org, ralf@linux-mips.org
+Subject: [PATCH] Make CARDBUS_MEM_SIZE and CARDBUS_IO_SIZE customizable
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070118222711.4e6e4e8b.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13712
+X-archive-position: 13713
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 18, 2007 at 10:27:11PM +0900, Yoichi Yuasa wrote:
+CARDBUS_MEM_SIZE was increased to 64MB on 2.6.20-rc2, but larger size
+might result in allocation failure for the reserving itself on some
+platforms (for example typical 32bit MIPS).  Make it (and
+CARDBUS_IO_SIZE too) customizable for such platforms.
 
-Thanks, applied.
-
-  Ralf
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+index 3cfb0a3..6085d3d 100644
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -60,3 +60,19 @@ config HT_IRQ
+ 	   This allows native hypertransport devices to use interrupts.
+ 
+ 	   If unsure say Y.
++
++config PCI_CARDBUS_IO_SIZE
++	int "CardBus IO window size (bytes)"
++	depends on PCI
++	default "256"
++	help
++	  A fixed amount of bus space is reserved for CardBus bridges.
++	  The default value is 256 bytes.
++
++config PCI_CARDBUS_MEM_SIZE
++	int "CardBus Memory window size (megabytes)"
++	depends on PCI
++	default "64"
++	help
++	  A fixed amount of bus space is reserved for CardBus bridges.
++	  The default value is 64 megabytes.
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 89f3036..046c87b 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -40,8 +40,8 @@
+  * FIXME: IO should be max 256 bytes.  However, since we may
+  * have a P2P bridge below a cardbus bridge, we need 4K.
+  */
+-#define CARDBUS_IO_SIZE		(256)
+-#define CARDBUS_MEM_SIZE	(64*1024*1024)
++#define CARDBUS_IO_SIZE		CONFIG_PCI_CARDBUS_IO_SIZE
++#define CARDBUS_MEM_SIZE	(CONFIG_PCI_CARDBUS_MEM_SIZE * 1024 * 1024)
+ 
+ static void __devinit
+ pbus_assign_resources_sorted(struct pci_bus *bus)

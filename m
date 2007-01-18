@@ -1,56 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2007 11:23:00 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:58837 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S28580215AbXARLW6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Jan 2007 11:22:58 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 18 Jan 2007 20:22:57 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 60EF13A3E0;
-	Thu, 18 Jan 2007 20:22:53 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 4D97C20403;
-	Thu, 18 Jan 2007 20:22:53 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l0IBMqW0073293;
-	Thu, 18 Jan 2007 20:22:52 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Thu, 18 Jan 2007 20:22:52 +0900 (JST)
-Message-Id: <20070118.202252.29576513.nemoto@toshiba-tops.co.jp>
-To:	ths@networkno.de
-Cc:	danieljlaird@hotmail.com, linux-mips@linux-mips.org
-Subject: Re: Install Headers Target
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070118110643.GC23469@networkno.de>
-References: <8426876.post@talk.nabble.com>
-	<20070118110643.GC23469@networkno.de>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2007 12:01:35 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:1744 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20044129AbXARMBd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 18 Jan 2007 12:01:33 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0IC2XkK004809;
+	Thu, 18 Jan 2007 12:02:33 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0IC2Xh2004808;
+	Thu, 18 Jan 2007 12:02:33 GMT
+Date:	Thu, 18 Jan 2007 12:02:33 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Anders Brogestam <anders.brogestam@avegasystems.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: crt0.s for mips
+Message-ID: <20070118120233.GA4440@linux-mips.org>
+References: <1169094906.14832.3.camel@localhost>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1169094906.14832.3.camel@localhost>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13706
+X-archive-position: 13707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 18 Jan 2007 11:06:43 +0000, Thiemo Seufer <ths@networkno.de> wrote:
-> > Is it possible for this to go in? (Any one any problems with this patch)
-> > Is this mailing list the correct one for this patch?
-> 
-> For a glibc configuration those files are provided by glibc. I think
-> uClibc should do the same, the files aren't Linux specific.
+On Thu, Jan 18, 2007 at 03:35:06PM +1100, Anders Brogestam wrote:
 
-uClibc svn already do the same.  If any references to asm/asm.h,
-asm/regdef was remained in uClibc, please fix them.
+> I am looking for a crt0.s file for the MIPS architecture. Included in
+> all the Linux kernels that I downloaded and looked in there are only
+> source for the PPC.
 
----
-Atsushi Nemoto
+crt0 is a file used ages ago for a.out.  So somehow sounds you're trying
+a wrong solution - but what problem are you trying to solve anyway?
+
+  Ralf

@@ -1,37 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2007 04:33:09 +0000 (GMT)
-Received: from mail2.opentransfer.com ([69.49.238.3]:18074 "HELO
-	mail2.opentransfer.com") by ftp.linux-mips.org with SMTP
-	id S28576890AbXAREdE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Jan 2007 04:33:04 +0000
-Received: (qmail 28375 invoked by uid 399); 18 Jan 2007 04:32:54 -0000
-Received: from unknown (HELO ?192.168.1.240?) (150.101.126.138)
-  by mail2.opentransfer.com with SMTP; 18 Jan 2007 04:32:54 -0000
-Subject: crt0.s for mips
-From:	Anders Brogestam <anders.brogestam@avegasystems.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jan 2007 08:45:30 +0000 (GMT)
+Received: from www.nabble.com ([72.21.53.35]:45742 "EHLO talk.nabble.com")
+	by ftp.linux-mips.org with ESMTP id S20043418AbXARIpY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Jan 2007 08:45:24 +0000
+Received: from [72.21.53.38] (helo=jubjub.nabble.com)
+	by talk.nabble.com with esmtp (Exim 4.50)
+	id 1H7Ste-0008Ct-35
+	for linux-mips@linux-mips.org; Thu, 18 Jan 2007 00:45:22 -0800
+Message-ID: <8426876.post@talk.nabble.com>
+Date:	Thu, 18 Jan 2007 00:45:22 -0800 (PST)
+From:	Daniel Laird <danieljlaird@hotmail.com>
 To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Date:	Thu, 18 Jan 2007 15:35:06 +1100
-Message-Id: <1169094906.14832.3.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.6.1 
+Subject: Install Headers Target
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <anders.brogestam@avegasystems.com>
+X-Nabble-From: danieljlaird@hotmail.com
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13702
+X-archive-position: 13703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anders.brogestam@avegasystems.com
+X-original-sender: danieljlaird@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi.
 
-I am looking for a crt0.s file for the MIPS architecture. Included in
-all the Linux kernels that I downloaded and looked in there are only
-source for the PPC.
+I have been trying to build a kernel, toolchain and rootfs using buildroot.
 
-Best Regards
-Anders B
+Buildroot uses the install-headers target of the kernel to get the headers
+to build a toolchain.
+I tried to build a the uClibc-gcc toolchain combo was missing 2 header files
+to do the build.
+This I fixed by patching Kbuild in asm-mips dir
+See below:
+diff -urN overlay_orig/include/asm-mips/Kbuild
+overlay/include/asm-mips/Kbuild
+--- a/include/asm-mips/Kbuild	2007-01-17 12:57:20.000000000 +0000
++++b/include/asm-mips/Kbuild	2007-01-17 12:53:46.000000000 +0000
+@@ -1,3 +1,3 @@
+ include include/asm-generic/Kbuild.asm
+
+-header-y += cachectl.h sgidefs.h sysmips.h
++header-y += asm.h cachectl.h regdef.h sgidefs.h sysmips.h
+
+Is it possible for this to go in? (Any one any problems with this patch)
+Is this mailing list the correct one for this patch?
+
+Hope it helps
+Daniel Laird
+
+-- 
+View this message in context: http://www.nabble.com/Install-Headers-Target-tf3032928.html#a8426876
+Sent from the linux-mips main mailing list archive at Nabble.com.

@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2007 03:19:20 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:26764 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jan 2007 03:58:01 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:25521 "EHLO
 	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S28575941AbXASDTQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 19 Jan 2007 03:19:16 +0000
+	id S28576030AbXASD54 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 19 Jan 2007 03:57:56 +0000
 Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 19 Jan 2007 12:19:14 +0900
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 19 Jan 2007 12:57:54 +0900
 Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 4585341D08;
-	Fri, 19 Jan 2007 12:19:12 +0900 (JST)
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 7131541FA9;
+	Fri, 19 Jan 2007 12:57:52 +0900 (JST)
 Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 311CA41A5B;
-	Fri, 19 Jan 2007 12:19:12 +0900 (JST)
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 5CB06203E0;
+	Fri, 19 Jan 2007 12:57:52 +0900 (JST)
 Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l0J3JBW0076303;
-	Fri, 19 Jan 2007 12:19:11 +0900 (JST)
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l0J3vpW0076451;
+	Fri, 19 Jan 2007 12:57:51 +0900 (JST)
 	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 19 Jan 2007 12:19:10 +0900 (JST)
-Message-Id: <20070119.121910.96686038.nemoto@toshiba-tops.co.jp>
+Date:	Fri, 19 Jan 2007 12:57:51 +0900 (JST)
+Message-Id: <20070119.125751.104030382.nemoto@toshiba-tops.co.jp>
 To:	akpm@osdl.org
 Cc:	ralf@linux-mips.org, linux-kernel@vger.kernel.org,
 	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Make CARDBUS_MEM_SIZE and CARDBUS_IO_SIZE customizable
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070118135326.c0238873.akpm@osdl.org>
-References: <20070119.002346.74752797.anemo@mba.ocn.ne.jp>
-	<20070118160338.GA6343@linux-mips.org>
+In-Reply-To: <20070119.121910.96686038.nemoto@toshiba-tops.co.jp>
+References: <20070118160338.GA6343@linux-mips.org>
 	<20070118135326.c0238873.akpm@osdl.org>
+	<20070119.121910.96686038.nemoto@toshiba-tops.co.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
@@ -36,7 +36,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13719
+X-archive-position: 13720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,18 +44,12 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 18 Jan 2007 13:53:26 -0800, Andrew Morton <akpm@osdl.org> wrote:
-> > Patch looks technically ok to me, so feel free to add my Acked-by: line.
-> > 
-> > The grief I have with this sort of patch is that this kind of detailed
-> > technical knowledge should not be required by a mortal configuring the
-> > Linux kernel.
-> > 
-> 
-> Yes, it does rater suck.  A boot option/module parameter would be better.
+On Fri, 19 Jan 2007 12:19:10 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> OK, here is a revised patch which uses pci= option instead of config
+> parameters.
 
-OK, here is a revised patch which uses pci= option instead of config
-parameters.
+Sorry, this patch would cause build failure if setup-bus.c was not
+built into kernel.  Revised again.
 
 
 Subject: [PATCH] Make CARDBUS_MEM_SIZE and CARDBUS_IO_SIZE customizable
@@ -68,10 +62,10 @@ CARDBUS_IO_SIZE too) customizable by "pci=" option for such platforms.
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
  Documentation/kernel-parameters.txt |    6 ++++++
- drivers/pci/pci.c                   |    6 ++++++
- drivers/pci/setup-bus.c             |   27 +++++++++++++++------------
+ drivers/pci/pci.c                   |   16 ++++++++++++++++
+ drivers/pci/setup-bus.c             |   27 ++++++++++-----------------
  include/linux/pci.h                 |    3 +++
- 4 files changed, 30 insertions(+), 12 deletions(-)
+ 4 files changed, 35 insertions(+), 17 deletions(-)
 
 diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
 index 25d2985..ace7a9a 100644
@@ -91,10 +85,27 @@ index 25d2985..ace7a9a 100644
  	pcmv=		[HW,PCMCIA] BadgePAD 4
  
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 206c834..639069a 100644
+index 206c834..dc7f40e 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -1168,6 +1168,12 @@ static int __devinit pci_setup(char *str
+@@ -1159,6 +1159,16 @@ static int __devinit pci_init(void)
+ 	return 0;
+ }
+ 
++/*
++ * FIXME: IO should be max 256 bytes.  However, since we may
++ * have a P2P bridge below a cardbus bridge, we need 4K.
++ */
++#define DEFAULT_CARDBUS_IO_SIZE		(256)
++#define DEFAULT_CARDBUS_MEM_SIZE	(64*1024*1024)
++/* pci=cbmemsize=nnM,cbiosize=nn can override this */
++unsigned long pci_cardbus_io_size = DEFAULT_CARDBUS_IO_SIZE;
++unsigned long pci_cardbus_mem_size = DEFAULT_CARDBUS_MEM_SIZE;
++
+ static int __devinit pci_setup(char *str)
+ {
+ 	while (str) {
+@@ -1168,6 +1178,12 @@ static int __devinit pci_setup(char *str
  		if (*str && (str = pcibios_setup(str)) && *str) {
  			if (!strcmp(str, "nomsi")) {
  				pci_no_msi();
@@ -108,24 +119,24 @@ index 206c834..639069a 100644
  				printk(KERN_ERR "PCI: Unknown option `%s'\n",
  						str);
 diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 89f3036..1dfc288 100644
+index 89f3036..3554f39 100644
 --- a/drivers/pci/setup-bus.c
 +++ b/drivers/pci/setup-bus.c
-@@ -40,8 +40,11 @@ #define ROUND_UP(x, a)		(((x) + (a) - 1)
-  * FIXME: IO should be max 256 bytes.  However, since we may
-  * have a P2P bridge below a cardbus bridge, we need 4K.
-  */
+@@ -36,13 +36,6 @@ #endif
+ 
+ #define ROUND_UP(x, a)		(((x) + (a) - 1) & ~((a) - 1))
+ 
+-/*
+- * FIXME: IO should be max 256 bytes.  However, since we may
+- * have a P2P bridge below a cardbus bridge, we need 4K.
+- */
 -#define CARDBUS_IO_SIZE		(256)
 -#define CARDBUS_MEM_SIZE	(64*1024*1024)
-+#define DEFAULT_CARDBUS_IO_SIZE		(256)
-+#define DEFAULT_CARDBUS_MEM_SIZE	(64*1024*1024)
-+/* pci=cbmemsize=nnM,cbiosize=nn can override this */
-+unsigned long pci_cardbus_io_size = DEFAULT_CARDBUS_IO_SIZE;
-+unsigned long pci_cardbus_mem_size = DEFAULT_CARDBUS_MEM_SIZE;
- 
+-
  static void __devinit
  pbus_assign_resources_sorted(struct pci_bus *bus)
-@@ -415,12 +418,12 @@ pci_bus_size_cardbus(struct pci_bus *bus
+ {
+@@ -415,12 +408,12 @@ pci_bus_size_cardbus(struct pci_bus *bus
  	 * Reserve some resources for CardBus.  We reserve
  	 * a fixed amount of bus space for CardBus bridges.
  	 */
@@ -142,7 +153,7 @@ index 89f3036..1dfc288 100644
  	b_res[1].flags |= IORESOURCE_IO;
  
  	/*
-@@ -440,16 +443,16 @@ pci_bus_size_cardbus(struct pci_bus *bus
+@@ -440,16 +433,16 @@ pci_bus_size_cardbus(struct pci_bus *bus
  	 * twice the size.
  	 */
  	if (ctrl & PCI_CB_BRIDGE_CTL_PREFETCH_MEM0) {

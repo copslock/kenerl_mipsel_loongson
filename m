@@ -1,59 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Jan 2007 23:42:50 +0000 (GMT)
-Received: from web7912.mail.in.yahoo.com ([202.86.4.88]:30377 "HELO
-	web7912.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S28578666AbXATXmp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 20 Jan 2007 23:42:45 +0000
-Received: (qmail 49128 invoked by uid 60001); 20 Jan 2007 23:42:37 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=Message-ID:X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=Ispd8GIhxtzkK2h7ctDXyj32uVmiJpO9H01aGx9uIMMnU7zyPFnXtzFhCJ2O0WgpqI2zDHwSLEIpywVussH/dYggRDCzYG/ZpSgTrQA7wCBZCGrT8US4OZ+ZTodmUhUL2UFeXn8dlx6bwSsCOI6d3UrxMQNWOA5Tb7CbVKjZN3o=  ;
-Message-ID: <20070120234237.49126.qmail@web7912.mail.in.yahoo.com>
-X-YMail-OSG: _7lwWTMVM1nASmcNO9JtJoz4jfjiWUkgDxjHWx5K3PKw_A1I9HuM3SSQd1HpjfnZuJd3b261ww51tU6Nw9NA9HCJvdfIaHN66joJ_fdhck8YURLPx667FHDPRMbh2i.8HOasozEMCMg30NgVtgJRb3Jvjw--
-Received: from [206.40.46.114] by web7912.mail.in.yahoo.com via HTTP; Sat, 20 Jan 2007 23:42:37 GMT
-Date:	Sat, 20 Jan 2007 23:42:37 +0000 (GMT)
-From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
-Subject: Running Linux on FPGA
-To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1862169920-1169336557=:45458"
-Content-Transfer-Encoding: 8bit
-Return-Path: <sathesh_edara2003@yahoo.co.in>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Jan 2007 00:40:44 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:15245 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28578857AbXAUAkm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 21 Jan 2007 00:40:42 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0L0F1rS010016;
+	Sun, 21 Jan 2007 00:17:41 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0L0Ewwq010015;
+	Sun, 21 Jan 2007 00:14:58 GMT
+Date:	Sun, 21 Jan 2007 00:14:58 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	sathesh babu <sathesh_edara2003@yahoo.co.in>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: Running Linux on FPGA
+Message-ID: <20070121001457.GA9123@linux-mips.org>
+References: <20070120234237.49126.qmail@web7912.mail.in.yahoo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070120234237.49126.qmail@web7912.mail.in.yahoo.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13726
+X-archive-position: 13727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sathesh_edara2003@yahoo.co.in
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0-1862169920-1169336557=:45458
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+On Sat, Jan 20, 2007 at 11:42:37PM +0000, sathesh babu wrote:
 
-Hi,
-  I am trying to run Linux-2.6.18.2 ( with preemption enable) kernel on FPGA board which has MIPS24KE processor runs at 12 MHZ. Programmed the timer to give interrupt at every 10msec.
-  I am seeing some inconsistence behavior during boot up processor. Some times it stops after "NET: Registered protocol family 17" and "VFS: Mounted root (jffs2 filesystem).".
-  Could some give some pointers why the behavior is random.
-  Is it OK to program the timer to 10 msec? or should it be more.
-  Thanks in advance.
-  Regards,
-  Sathesh
+> Hi,
+>   I am trying to run Linux-2.6.18.2 ( with preemption enable) kernel on FPGA board which has MIPS24KE processor runs at 12 MHZ. Programmed the timer to give interrupt at every 10msec.
+>   I am seeing some inconsistence behavior during boot up processor. Some times it stops after "NET: Registered protocol family 17" and "VFS: Mounted root (jffs2 filesystem).".
+>   Could some give some pointers why the behavior is random.
+>   Is it OK to program the timer to 10 msec? or should it be more.
 
- 				
----------------------------------
- Here’s a new way to find what you're looking for - Yahoo! Answers 
---0-1862169920-1169336557=:45458
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+The overhead of timer interrupts at this low clockrate is significant
+so I recommend to minimize the timer interrupt rate as far as possible.
+This is really a tradeoff between latency and overhead and matters
+much less on hardcores which run at hundreds of MHz.  For power sensitive
+applications lowering the interrupt rate can also help.  And that's alredy
+pretty much what you need to know, that is a 10ms  timer is fine.
 
-<div>Hi,</div>  <div>I am trying to run Linux-2.6.18.2 ( with preemption enable) kernel on FPGA board which has MIPS24KE processor runs at 12 MHZ. Programmed the timer to give interrupt at every 10msec.</div>  <div>I am seeing some inconsistence behavior during boot up processor. Some times it stops after "NET: Registered protocol family 17" and "VFS: Mounted root (jffs2 filesystem).".</div>  <div>Could some give some pointers why the behavior is random.</div>  <div>Is it OK to program the timer to 10 msec? or should it be more.</div>  <div>Thanks in advance.</div>  <div>Regards,</div>  <div>Sathesh</div><p>&#32;
-	
+Btw, is this coincidentally on a CoreFPGA 2 or 3 CPU card on a Malta board?
 
-	
-		<hr size=1></hr> 
-Here’s a new way to find what you're looking for - <a href="http://us.rd.yahoo.com/mail/in/yanswers/*http://in.answers.yahoo.com/">Yahoo! Answers</a> 
---0-1862169920-1169336557=:45458--
+  Ralf

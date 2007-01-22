@@ -1,61 +1,152 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jan 2007 20:35:23 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:12469 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28580782AbXAVUfV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 22 Jan 2007 20:35:21 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0MKZJxn028045;
-	Mon, 22 Jan 2007 20:35:19 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0MKZHNQ028044;
-	Mon, 22 Jan 2007 20:35:17 GMT
-Date:	Mon, 22 Jan 2007 20:35:17 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Peter Horton <phorton@bitbox.co.uk>
-Cc:	Alan <alan@lxorguk.ukuu.org.uk>,
-	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] [MIPS] Fixed PCI resource fixup
-Message-ID: <20070122203517.GA26801@linux-mips.org>
-References: <200701110555.l0B5twHe006668@mbox33.po.2iij.net> <20070111143116.GA4451@linux-mips.org> <45A79847.1060302@bitbox.co.uk> <20070112144042.74c4edca@localhost.localdomain> <20070112144905.2919e705@localhost.localdomain> <20070114115539.GA5755@linux-mips.org> <45AB839A.50003@bitbox.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jan 2007 22:21:26 +0000 (GMT)
+Received: from MAIL.13thfloor.at ([213.145.232.33]:25785 "EHLO
+	MAIL.13thfloor.at") by ftp.linux-mips.org with ESMTP
+	id S28582424AbXAVWVT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 22 Jan 2007 22:21:19 +0000
+Received: by mail.13thfloor.at (Postfix, from userid 1001)
+	id B2FB5707B2; Mon, 22 Jan 2007 23:21:15 +0100 (CET)
+Date:	Mon, 22 Jan 2007 23:21:15 +0100
+From:	Herbert Poetzl <herbert@13thfloor.at>
+To:	Kirill Korotaev <dev@sw.ru>
+Cc:	"Eric W. Biederman" <ebiederm@xmission.com>,
+	James.Bottomley@SteelEye.com, linux-parport@lists.infradead.org,
+	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
+	heiko.carstens@de.ibm.com, containers@lists.osdl.org,
+	lethal@linux-sh.org, clemens@ladisch.de, xfs@oss.sgi.com,
+	xfs-masters@oss.sgi.com, paulus@samba.org, linux390@de.ibm.com,
+	openipmi-developer@lists.sourceforge.net, linux-390@vm.marist.edu,
+	aharkes@cs.cmu.edu, tim@cyberelk.net,
+	codalist@TELEMANN.coda.cs.cmu.edu, a.zummo@towertech.it,
+	tony.luck@intel.com, minyard@acm.org, linux-scsi@vger.kernel.org,
+	linuxppc-dev@ozlabs.org, linux-ntfs-dev@lists.sourceforge.net,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ralf@linux-mips.org, mark.fasheh@oracle.com, coda@cs.cmu.edu,
+	vojtech@suse.cz, kurt.hackel@oracle.com, schwidefsky@de.ibm.com,
+	aia21@cantab.net, philb@gnu.org, andrea@suse.de,
+	linuxsh-shmedia-dev@lists.sourceforge.net, ak@suse.de
+Subject: Re: [PATCH 25/59] sysctl: C99 convert arch/frv/kernel/pm.c
+Message-ID: <20070122222115.GC11128@MAIL.13thfloor.at>
+Mail-Followup-To: Kirill Korotaev <dev@sw.ru>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	James.Bottomley@SteelEye.com, linux-parport@lists.infradead.org,
+	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
+	heiko.carstens@de.ibm.com, containers@lists.osdl.org,
+	lethal@linux-sh.org, clemens@ladisch.de, xfs@oss.sgi.com,
+	xfs-masters@oss.sgi.com, paulus@samba.org, linux390@de.ibm.com,
+	openipmi-developer@lists.sourceforge.net, linux-390@vm.marist.edu,
+	aharkes@cs.cmu.edu, tim@cyberelk.net,
+	codalist@TELEMANN.coda.cs.cmu.edu, a.zummo@towertech.it,
+	tony.luck@intel.com, minyard@acm.org, linux-scsi@vger.kernel.org,
+	linuxppc-dev@ozlabs.org, linux-ntfs-dev@lists.sourceforge.net,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ralf@linux-mips.org, mark.fasheh@oracle.com, coda@cs.cmu.edu,
+	vojtech@suse.cz, kurt.hackel@oracle.com, schwidefsky@de.ibm.com,
+	aia21@cantab.net, philb@gnu.org, andrea@suse.de,
+	linuxsh-shmedia-dev@lists.sourceforge.net, ak@suse.de
+References: <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com> <11689656443582-git-send-email-ebiederm@xmission.com> <45AE5969.8030603@sw.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45AB839A.50003@bitbox.co.uk>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <45AE5969.8030603@sw.ru>
+User-Agent: Mutt/1.5.11
+Return-Path: <herbert@13thfloor.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13739
+X-archive-position: 13740
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: herbert@13thfloor.at
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 15, 2007 at 01:37:30PM +0000, Peter Horton wrote:
+On Wed, Jan 17, 2007 at 08:14:17PM +0300, Kirill Korotaev wrote:
+> another small minor note.
+> 
+> > From: Eric W. Biederman <ebiederm@xmission.com> - unquoted
+> > 
+> > Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
+> > ---
+> >  arch/frv/kernel/pm.c |   50 +++++++++++++++++++++++++++++++++++++++++++-------
+> >  1 files changed, 43 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/arch/frv/kernel/pm.c b/arch/frv/kernel/pm.c
+> > index c1840d6..aa50333 100644
+> > --- a/arch/frv/kernel/pm.c
+> > +++ b/arch/frv/kernel/pm.c
+> > @@ -401,17 +401,53 @@ static int cm_sysctl(ctl_table *table, int __user *name, int nlen,
+> >  
+> >  static struct ctl_table pm_table[] =
+> >  {
+> > -	{CTL_PM_SUSPEND, "suspend", NULL, 0, 0200, NULL, &sysctl_pm_do_suspend},
+> > -	{CTL_PM_CMODE, "cmode", &clock_cmode_current, sizeof(int), 0644, NULL, &cmode_procctl, &cmode_sysctl, NULL},
+> > -	{CTL_PM_P0, "p0", &clock_p0_current, sizeof(int), 0644, NULL, &p0_procctl, &p0_sysctl, NULL},
+> > -	{CTL_PM_CM, "cm", &clock_cm_current, sizeof(int), 0644, NULL, &cm_procctl, &cm_sysctl, NULL},
+> > -	{0}
+> > +	{
+> > +		.ctl_name	= CTL_PM_SUSPEND,
+> > +		.procname	= "suspend",
+> > +		.data		= NULL,
+> > +		.maxlen		= 0,
+> > +		.mode		= 0200,
+> > +		.proc_handler	= &sysctl_pm_do_suspend,
+> > +	},
+> > +	{
+> > +		.ctl_name	= CTL_PM_CMODE,
+> > +		.procname	= "cmode",
+> > +		.data		= &clock_cmode_current,
+> > +		.maxlen		= sizeof(int),
+> > +		.mode		= 0644,
+> > +		.proc_handler	= &cmode_procctl,
+> > +		.strategy	= &cmode_sysctl,
+> > +	},
+> > +	{
+> > +		.ctl_name	= CTL_PM_P0,
+> > +		.procname	= "p0",
+> > +		.data		= &clock_p0_current,
+> > +		.maxlen		= sizeof(int),
+> > +		.mode		= 0644,
+> > +		.proc_handler	= &p0_procctl,
+> > +		.strategy	= &p0_sysctl,
+> > +	},
+> > +	{
+> > +		.ctl_name	= CTL_PM_CM,
+> > +		.procname	= "cm",
+> > +		.data		= &clock_cm_current,
+> > +		.maxlen		= sizeof(int),
+> > +		.mode		= 0644,
+> > +		.proc_handler	= &cm_procctl,
+> > +		.strategy	= &cm_sysctl,
+> > +	},
+> > +	{ .ctl_name = 0}
+> in next patch (26/59) you write just "{ }". .ctl_name = 0 not required here.
 
-Time to get this going again ...
+I'd prefer '{ 0 }' here, but I'm fine with the '{ .ctl_name = 0 }'
+too, just '{ }' seems confusing, and it actually might get
+misinterpreted too ..
 
-> I've just checked on the Qube2 here and the RTC can be found at 
-> 0x1000.0070, 0x1001.0070 etc so the VIA bridge is only decoding the low 
-> 16 address lines for I/O space. Handy really otherwise it wouldn't work 
-> with the GT-64111 :-)
+best,
+Herbert
 
-Thanks, that's what I was expecting.  So to resume the discussion about
-how to fix this I suggest:
-
- o Set cobalt_io_resource to the 0x10001000 - 0x10010000 range.
- o Set ioport_resource to the 0x10000000 - 0x10010000 range.
- o set mips_io_port_base to 0xa0000000
- o set cobalt_pci_controller.io_offset back to 0
-
-And then since we're not longer cheating about the true value of the
-port addresses on the PCI bus used, add 0x10000000 to all of the start
-and end values in cobalt_io_resources.
-
-Does that sound reasonable?
-
-  Ralf
+> >  };
+> >  
+> >  static struct ctl_table pm_dir_table[] =
+> >  {
+> > -	{CTL_PM, "pm", NULL, 0, 0555, pm_table},
+> > -	{0}
+> > +	{
+> > +		.ctl_name	= CTL_PM,
+> > +		.procname	= "pm",
+> > +		.mode		= 0555,
+> > +		.child		= pm_table,
+> > +	},
+> > +	{ .ctl_name = 0}
+> >  };
+> >  
+> >  /*
+> 
+> _______________________________________________
+> Containers mailing list
+> Containers@lists.osdl.org
+> https://lists.osdl.org/mailman/listinfo/containers

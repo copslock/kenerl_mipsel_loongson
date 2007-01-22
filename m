@@ -1,65 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Jan 2007 21:33:00 +0000 (GMT)
-Received: from tmailer.gwdg.de ([134.76.10.23]:35019 "EHLO tmailer.gwdg.de")
-	by ftp.linux-mips.org with ESMTP id S20046926AbXAUVcy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 21 Jan 2007 21:32:54 +0000
-Received: from linux01.gwdg.de ([134.76.13.21])
-	by mailer.gwdg.de with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.63)
-	(envelope-from <jengelh@linux01.gwdg.de>)
-	id 1H8kJ4-0005T7-Ce; Sun, 21 Jan 2007 22:32:54 +0100
-Received: from linux01.gwdg.de (localhost [127.0.0.1])
-	by linux01.gwdg.de (8.13.3/8.13.3/SuSE Linux 0.7) with ESMTP id l0LLVPGR029370;
-	Sun, 21 Jan 2007 22:31:27 +0100
-Received: from localhost (jengelh@localhost)
-	by linux01.gwdg.de (8.13.3/8.13.3/Submit) with ESMTP id l0LLVPDA029364;
-	Sun, 21 Jan 2007 22:31:25 +0100
-Date:	Sun, 21 Jan 2007 22:31:25 +0100 (MET)
-From:	Jan Engelhardt <jengelh@linux01.gwdg.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	sathesh babu <sathesh_edara2003@yahoo.co.in>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: Running Linux on FPGA
-In-Reply-To: <20070121001457.GA9123@linux-mips.org>
-Message-ID: <Pine.LNX.4.61.0701212228340.29213@yvahk01.tjqt.qr>
-References: <20070120234237.49126.qmail@web7912.mail.in.yahoo.com>
- <20070121001457.GA9123@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jan 2007 13:58:01 +0000 (GMT)
+Received: from vulpecula.futurs.inria.fr ([195.83.212.5]:24540 "EHLO
+	vulpecula.futurs.inria.fr") by ftp.linux-mips.org with ESMTP
+	id S28574956AbXAVN5z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 22 Jan 2007 13:57:55 +0000
+Received: from [193.51.235.222] (unknown [193.51.235.222])
+	by vulpecula.futurs.inria.fr (Postfix) with ESMTP
+	id D7E2162409; Mon, 22 Jan 2007 14:54:42 +0100 (CET)
+Message-ID: <45B4C2DA.8020906@lifl.fr>
+Date:	Mon, 22 Jan 2007 14:57:46 +0100
+From:	=?UTF-8?B?w4lyaWMgUGllbA==?= <Eric.Piel@lifl.fr>
+User-Agent: Thunderbird 1.5.0.9 (X11/20070105)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: (clean) by exiscan+sophie
-Return-Path: <jengelh@linux01.gwdg.de>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	akpm@osdl.org, ralf@linux-mips.org, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Make CARDBUS_MEM_SIZE and CARDBUS_IO_SIZE customizable
+References: <20070118160338.GA6343@linux-mips.org>	<20070118135326.c0238873.akpm@osdl.org>	<20070119.121910.96686038.nemoto@toshiba-tops.co.jp> <20070119.125751.104030382.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20070119.125751.104030382.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <Eric.Piel@lifl.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13730
+X-archive-position: 13731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jengelh@linux01.gwdg.de
+X-original-sender: Eric.Piel@lifl.fr
 Precedence: bulk
 X-list: linux-mips
 
+01/19/2007 04:57 AM, Atsushi Nemoto wrote/a écrit:
+> On Fri, 19 Jan 2007 12:19:10 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+>> OK, here is a revised patch which uses pci= option instead of config
+>> parameters.
+> 
+> Sorry, this patch would cause build failure if setup-bus.c was not
+> built into kernel.  Revised again.
+> 
+> 
+> Subject: [PATCH] Make CARDBUS_MEM_SIZE and CARDBUS_IO_SIZE customizable
+> 
+> CARDBUS_MEM_SIZE was increased to 64MB on 2.6.20-rc2, but larger size
+> might result in allocation failure for the reserving itself on some
+> platforms (for example typical 32bit MIPS).  Make it (and
+> CARDBUS_IO_SIZE too) customizable by "pci=" option for such platforms.
+:
+> 
+> diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
+> index 25d2985..ace7a9a 100644
+> --- a/Documentation/kernel-parameters.txt
+> +++ b/Documentation/kernel-parameters.txt
+> @@ -1259,6 +1259,12 @@ and is between 256 and 4096 characters. 
+>  				This sorting is done to get a device
+>  				order compatible with older (<= 2.4) kernels.
+>  		nobfsort	Don't sort PCI devices into breadth-first order.
+> +		cbiosize=nn[KMG]	A fixed amount of bus space is
+> +				reserved for CardBus bridges.
+> +				The default value is 256 bytes.
+> +		cbmemsize=nn[KMG]	A fixed amount of bus space is
+> +				reserved for CardBus bridges.
+> +				The default value is 64 megabytes.
+Hi, I've got the feeling that those two parameters don't do the same 
+things, although they have the same description ;-) Maybe the texts 
+could be:
+* The fixed amount of bus space which is reserved for the CardBus 
+bridges IO window.
+* The fixed amount of bus space which is reserved for the CardBus 
+bridges memory window.
 
-On Jan 21 2007 00:14, Ralf Baechle wrote:
->On Sat, Jan 20, 2007 at 11:42:37PM +0000, sathesh babu wrote:
->
->>   I am trying to run Linux-2.6.18.2 ( with preemption enable)
->>   kernel on FPGA board which has MIPS24KE processor runs at 12
->>   MHZ. Programmed the timer to give interrupt at every 10msec. I
->>   am seeing some inconsistence behavior during boot up processor.
->>   Some times it stops after "NET: Registered protocol family 17"
->>   and "VFS: Mounted root (jffs2 filesystem).". Could some give
->>   some pointers why the behavior is random. Is it OK to program
->>   the timer to 10 msec? or should it be more.
->
->The overhead of timer interrupts at this low clockrate is
->significant so I recommend to minimize the timer interrupt rate as
->far as possible. This is really a tradeoff between latency and
->overhead and matters much less on hardcores which run at hundreds of
->MHz.
-
-Hm I've been running 2.6.13 on a 10/20 MHz (switchable) i386 @ 100 Hz
-before without any hangs during boot or operation.
-
-
-	-`J'
--- 
+See you,
+Eric

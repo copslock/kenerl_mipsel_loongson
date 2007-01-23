@@ -1,108 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 22:38:43 +0000 (GMT)
-Received: from father.pmc-sierra.com ([216.241.224.13]:3726 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S28582493AbXAWWii (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 Jan 2007 22:38:38 +0000
-Received: (qmail 27006 invoked by uid 101); 23 Jan 2007 22:37:30 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 23 Jan 2007 22:37:30 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l0NMbTxc000984;
-	Tue, 23 Jan 2007 14:37:29 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <DCB6BX7G>; Tue, 23 Jan 2007 14:37:29 -0800
-Message-ID: <45B68E23.7080800@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Alan <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 23:32:40 +0000 (GMT)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:40936 "EHLO
+	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
+	id S28583256AbXAWXcg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Jan 2007 23:32:36 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.13.8/8.13.4) with ESMTP id l0NNfsMc016425;
+	Tue, 23 Jan 2007 23:41:56 GMT
+Date:	Tue, 23 Jan 2007 23:41:53 +0000
+From:	Alan <alan@lxorguk.ukuu.org.uk>
+To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 Cc:	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
 	linux-mips@linux-mips.org
 Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git mast
-	er
-Date:	Tue, 23 Jan 2007 14:37:23 -0800
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 23 Jan 2007 22:37:24.0032 (UTC) FILETIME=[0D338C00:01C73F3F]
-user-agent: Thunderbird 1.5.0.9 (X11/20061206)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+ er
+Message-ID: <20070123234153.66fbeac6@localhost.localdomain>
+In-Reply-To: <45B68E23.7080800@pmc-sierra.com>
+References: <45B68E23.7080800@pmc-sierra.com>
+X-Mailer: Claws Mail 2.7.1 (GTK+ 2.10.4; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13772
+X-archive-position: 13773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-
-Alan wrote:
->  > There are three different fixes:
->  > 1. Fix for THRE errata
+On Tue, 23 Jan 2007 14:37:23 -0800
+Marc St-Jean <Marc_St-Jean@pmc-sierra.com> wrote:
+> > This I would hope you can hide in the platform specific
+> > serial_in/serial_out functions. If you write the UART_LCR save it in
+> > serial_out(), if you read IER etc.
 > 
-> That should be handled anyway. The current code actually spots this and
-> uses a backup timer for dodgy UARTS
+> I couldn't find hooks for platform specific serial_in/out functions.
+> Do you mean using the up->port.iotype's in serial_in/out from 8250.c?
 
-Thanks, I'll retest without this fix on the current l-m.o git master and see
-if it still solves our errata.
+If you can have other uarts as well then yes. Basically I want all the
+ugliness to belong to you not to the 8250 driver (and ditto for any other
+half baked uart or demented piece of broken glue logic). If we don't do
+that then 8250.c will end up unmanagable. So long as you crap in your own
+pond everyone else is fine ;)
 
->  > 2. Fix for Busy Detect on LCR write
->  > 3. Workaround for interrupt/data concurrency issue
+> A serial_in(up, UART_IIR) calls occur in more places that just the interrupt
+> handler (i.e. autoconfig*, serial8250_start_tx, etc). We will need to check
+> if we are in an interrupt on each IIR read, hopefully that won't be too much
+> overhead!
+
+Or if need be we make that hint generally available as we can do that bit
+cleanly.
+
+> > 
+> > And we might want to add a void * for board specific insanity to the 8250
+> > structures if we really have to so you can hang your brain damage
+> > privately off that ?
 > 
->  >       case UPIO_MEM:
->  > +#ifdef CONFIG_PMC_MSP
->  > +             /* Save the LCR value so it can be re-written when a
->  > +              * Busy Detect interrupt occurs. */
->  > +             if (dwapb_offset == UART_LCR)
->  > +                     up->dwapb_lcr = value;
->  > +#endif
->  >               writeb(value, up->port.membase + offset);
->  > +#ifdef CONFIG_PMC_MSP
->  > +             /* Re-read the IER to ensure any interrupt disabling has
->  > +              * completed before proceeding with ISR. */
->  > +             if (dwapb_offset == UART_IER)
->  > +                     value = serial_in(up, dwapb_offset);
->  > +#endif
->  >               break;
-> 
-> This I would hope you can hide in the platform specific
-> serial_in/serial_out functions. If you write the UART_LCR save it in
-> serial_out(), if you read IER etc.
+> Sounds good to me, it would give us a location to store the address of the
+> UART_STATUS_REG required by this UART variant.
 
-I couldn't find hooks for platform specific serial_in/out functions.
-Do you mean using the up->port.iotype's in serial_in/out from 8250.c?
+and for anything harder people can hang a struct off it.
 
-> 
->  > +#ifdef CONFIG_PMC_MSP
->  > +             } else if ((iir & UART_IER_BUSY) == UART_IER_BUSY) {
->  > +                     /*
->  > +                      * The MSP (DesignWare APB UART) serial 
-> subsystem has a
->  > +                      * non-standard interrupt condition (0x7) which 
-> means
->  > +                      * that the LCR was written while the UART was 
-> busy, so
->  > +                      * the LCR was not actually written.  It is 
-> cleared by
->  > +                      * reading the special non-standard extended 
-> UART status
->  > +                      * register.
-> 
-> Ditto... spot this case and whack it in your serial methods.
-
-A serial_in(up, UART_IIR) calls occur in more places that just the interrupt
-handler (i.e. autoconfig*, serial8250_start_tx, etc). We will need to check
-if we are in an interrupt on each IIR read, hopefully that won't be too much
-overhead!
-
-> 
-> And we might want to add a void * for board specific insanity to the 8250
-> structures if we really have to so you can hang your brain damage
-> privately off that ?
-
-Sounds good to me, it would give us a location to store the address of the
-UART_STATUS_REG required by this UART variant.
-
-Marc
+Alan

@@ -1,64 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 14:54:34 +0000 (GMT)
-Received: from wx-out-0506.google.com ([66.249.82.236]:61038 "EHLO
-	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20044469AbXAWOya (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 Jan 2007 14:54:30 +0000
-Received: by wx-out-0506.google.com with SMTP id t14so1724202wxc
-        for <linux-mips@linux-mips.org>; Tue, 23 Jan 2007 06:54:23 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=cZmSrV9wNVPZOmmOi1kkUjBRMoc/EEc4F88UNMdBGX9Odx0R7JyhX/swMG36rU4SqnBx0vPAF2JblqQr8+UQIyp+HsUVqq5c/cGSwQy5F9drdlgGAbJ+V7vWUgXXTnX+oQu6mgeDKwnq+LhrgIQx94Cqppzammi9Ld+I8ePXl5c=
-Received: by 10.90.90.16 with SMTP id n16mr8058403agb.1169564063352;
-        Tue, 23 Jan 2007 06:54:23 -0800 (PST)
-Received: by 10.90.104.20 with HTTP; Tue, 23 Jan 2007 06:54:23 -0800 (PST)
-Message-ID: <cda58cb80701230654v301e9f97n15ba992b4a2653c2@mail.gmail.com>
-Date:	Tue, 23 Jan 2007 15:54:23 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 14:58:54 +0000 (GMT)
+Received: from nevyn.them.org ([66.93.172.17]:48853 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S28573884AbXAWO6u (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2007 14:58:50 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.63)
+	(envelope-from <drow@nevyn.them.org>)
+	id 1H9N6m-0002aj-LE; Tue, 23 Jan 2007 09:58:48 -0500
+Date:	Tue, 23 Jan 2007 09:58:48 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>, linux-mips@linux-mips.org
 Subject: Re: [PATCH 0/7] Clean up signal code
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070123143214.GC18083@linux-mips.org>
+Message-ID: <20070123145848.GA9900@nevyn.them.org>
+References: <1169561903878-git-send-email-fbuihuu@gmail.com> <20070123143214.GC18083@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <1169561903878-git-send-email-fbuihuu@gmail.com>
-	 <20070123143214.GC18083@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20070123143214.GC18083@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13760
+X-archive-position: 13761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On 1/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> No.  All the information in the MIPS c0_status register is priviledged.
-> Unlike CISC architectures MIPS has no flags such as zero, equal, overflow
-> or similar in the status register that is nothing that would constitute
-> part of the thread context.
->
-> The one flag one could possibly argument about might be c0_status.fr - but
-> none of the ABIs or tools or application software can make use of it ...
->
-
-OK.
-
+On Tue, Jan 23, 2007 at 02:32:14PM +0000, Ralf Baechle wrote:
 > >     (b) Status register is saved by setup_sigcontext32() but
 > >         not restored by restore_sigcontext(). Is it a bug ?
->
+> 
 > Not really a bug but useless code, yes.  We used to save c0_status in the
 > dark ages but again, no known code - not even IRIX code - relies on this
 > field.
->
 
-OK, for consistency I'll remove the saving in setup_sigcontext32()
+For once not even GDB uses it :-)
 
-thanks
 -- 
-               Franck
+Daniel Jacobowitz
+CodeSourcery

@@ -1,66 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 18:31:40 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.191]:42228 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20044768AbXAWSbe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 Jan 2007 18:31:34 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so323393nfc
-        for <linux-mips@linux-mips.org>; Tue, 23 Jan 2007 10:30:33 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
-        b=N8YVcbn00gEAgmmvc86BmLnMgQmcIaPiHycYESwDw5ZnMdkEWN1IRKpZLJToeiYI+IObAMMC8lSc2Nxh9BMy9TpvMjoxmxyRFRxfIzX99ZDSAa4soVuiyrqXseccLVKJdiHxC3IT2ck9SPsEy+o6OfKspGVLW8n4IDbiK1tfulY=
-Received: by 10.49.90.4 with SMTP id s4mr1547765nfl.1169577028623;
-        Tue, 23 Jan 2007 10:30:28 -0800 (PST)
-Received: from gmail.com ( [217.67.117.64])
-        by mx.google.com with ESMTP id a23sm3516680nfc.2007.01.23.10.30.27;
-        Tue, 23 Jan 2007 10:30:28 -0800 (PST)
-Received: by gmail.com (nbSMTP-1.00) for uid 1000
-	(using TLSv1/SSLv3 with cipher DES-CBC3-SHA (168/168 bits))
-	adobriyan@gmail.com; Tue, 23 Jan 2007 21:30:20 +0300 (MSK)
-Date:	Tue, 23 Jan 2007 21:30:14 +0300
-From:	Alexey Dobriyan <adobriyan@gmail.com>
-To:	akpm@osdl.org, ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] mips: there is no __GNUC_MAJOR__
-Message-ID: <20070123183014.GB5535@martell.zuzino.mipt.ru>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.11
-Return-Path: <adobriyan@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 18:57:59 +0000 (GMT)
+Received: from 85.8.24.16.se.wasadata.net ([85.8.24.16]:9888 "EHLO
+	smtp.drzeus.cx") by ftp.linux-mips.org with ESMTP id S28583180AbXAWS5z
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Jan 2007 18:57:55 +0000
+Received: from [10.8.2.152] (wlan152.drzeus.cx [::ffff:10.8.2.152])
+  (AUTH: PLAIN drzeus, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by smtp.drzeus.cx with esmtp; Tue, 23 Jan 2007 19:56:49 +0100
+  id 0005B536.45B65A72.00000C34
+Message-ID: <45B65A73.90308@drzeus.cx>
+Date:	Tue, 23 Jan 2007 19:56:51 +0100
+From:	Pierre Ossman <drzeus-mmc@drzeus.cx>
+User-Agent: Thunderbird 1.5.0.9 (X11/20061223)
+MIME-Version: 1.0
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MMC: au1xmmc R6 response support
+References: <20070123100814.GA5001@roarinelk.homelinux.net>
+In-Reply-To: <20070123100814.GA5001@roarinelk.homelinux.net>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <drzeus-mmc@drzeus.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13770
+X-archive-position: 13771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adobriyan@gmail.com
+X-original-sender: drzeus-mmc@drzeus.cx
 Precedence: bulk
 X-list: linux-mips
 
-gcc major version number is in __GNUC__. As side effect fix checking with
-sparse if sparse was built with gcc 4.1 and mips cross-compiler is 3.4.
+Manuel Lauss wrote:
+> Hi,
+> 
+> here's a trivial patch which adds R6 reponse support to the au1xmmc
+> driver. Fixes SD card detection / operation.
+> 
 
-sparse will inherit version 4.1, __GNUC__ won't be filtered from
-"-dM -E -xc" output, sparse will pick only new major, effectively becoming
-gcc version 3.1 which is unsupported.
+NAK. MMC_RSP_R1 and MMC_RSP_R6 have the same value so this will break
+the switch.
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
----
+Rgds
+-- 
+     -- Pierre Ossman
 
- arch/mips/Makefile |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -623,7 +623,8 @@ LDFLAGS			+= -m $(ld-emul)
- 
- ifdef CONFIG_MIPS
- CHECKFLAGS += $(shell $(CC) $(CFLAGS) -dM -E -xc /dev/null | \
--	egrep -vw '__GNUC_(MAJOR|MINOR|PATCHLEVEL)__' | \
-+	egrep -vw '__GNUC__' | \
-+	egrep -vw '__GNUC_(MINOR|PATCHLEVEL)__' | \
- 	sed -e 's/^\#define /-D/' -e "s/ /='/" -e "s/$$/'/")
- ifdef CONFIG_64BIT
- CHECKFLAGS		+= -m64
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  PulseAudio, core developer          http://pulseaudio.org
+  rdesktop, core developer          http://www.rdesktop.org

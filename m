@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 14:18:23 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.184]:56886 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20044427AbXAWOQD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 Jan 2007 14:16:03 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so237968nfc
-        for <linux-mips@linux-mips.org>; Tue, 23 Jan 2007 06:16:03 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 14:18:51 +0000 (GMT)
+Received: from an-out-0708.google.com ([209.85.132.251]:34836 "EHLO
+	an-out-0708.google.com") by ftp.linux-mips.org with ESMTP
+	id S20044414AbXAWOQK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Jan 2007 14:16:10 +0000
+Received: by an-out-0708.google.com with SMTP id c8so651520ana
+        for <linux-mips@linux-mips.org>; Tue, 23 Jan 2007 06:16:06 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=moAxojm0IMWhT0Z1YUVzi71/Sk0vDvjYu1MizWg7xAk0gouIyaT5FWHMLdui4/zL2Y11CgCLr4oIIGnGviibx+dgL6neHsb+99x6DsIeoWRCpnsWUMsnOUDgl/QM+Vcj3g8g9JjdfTp4FxooblflvEfsmyLGJY1uOKtUA4gnXUo=
-Received: by 10.49.8.15 with SMTP id l15mr1135939nfi.1169561762835;
-        Tue, 23 Jan 2007 06:16:02 -0800 (PST)
+        b=HVEe69aZ8En9LiRiN9i5VVb9brN4/5jym3t8hulLvzaDBf9LWkDKFf5KDpmXm2Y429KDb8QC6cSxSsMXTixWgeYei1d+ZoEWqblPfFjgWsYfiM5jHziq1i9s7fT8dbKspI7iapzoijzK8gQunSbIDBxO9VdihnY9MPw5Nm7qyFw=
+Received: by 10.49.12.4 with SMTP id p4mr1116543nfi.1169561763627;
+        Tue, 23 Jan 2007 06:16:03 -0800 (PST)
 Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id c1sm2673538nfe.2007.01.23.06.16.01;
-        Tue, 23 Jan 2007 06:16:02 -0800 (PST)
+        by mx.google.com with ESMTP id z73sm2704375nfb.2007.01.23.06.15.58;
+        Tue, 23 Jan 2007 06:16:03 -0800 (PST)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 1F25B23F774; Tue, 23 Jan 2007 15:18:24 +0100 (CET)
+	id A551C23F770; Tue, 23 Jan 2007 15:18:23 +0100 (CET)
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 6/7] signal: factorize debug code
-Date:	Tue, 23 Jan 2007 15:18:22 +0100
-Message-Id: <11695619041312-git-send-email-fbuihuu@gmail.com>
+Subject: [PATCH 3/7] signal: clean up sigframe structure
+Date:	Tue, 23 Jan 2007 15:18:19 +0100
+Message-Id: <11695619031474-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.4.4.3.ge6d4
 In-Reply-To: <1169561903878-git-send-email-fbuihuu@gmail.com>
 References: <1169561903878-git-send-email-fbuihuu@gmail.com>
@@ -29,7 +29,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13752
+X-archive-position: 13753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,144 +39,235 @@ X-list: linux-mips
 
 From: Franck Bui-Huu <fbuihuu@gmail.com>
 
+This patch makes 'struct sigframe' declaration avalaible for all signals
+code. It allows signal32 to not have its own declaration.
+
+This patch also removes all ICACHE_REFILLS_WORKAROUND_WAR tests in
+structure declaration and hopefully make them more readable.
+
 Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
 ---
- arch/mips/kernel/signal-common.h |    8 ++++++++
- arch/mips/kernel/signal.c        |   14 +++++---------
- arch/mips/kernel/signal32.c      |   16 ++++++----------
- arch/mips/kernel/signal_n32.c    |    7 ++-----
- 4 files changed, 21 insertions(+), 24 deletions(-)
+ arch/mips/kernel/signal-common.h |   26 +++++++++++++++++
+ arch/mips/kernel/signal.c        |   56 ++++++++++++++-----------------------
+ arch/mips/kernel/signal32.c      |   49 ++++++++++++++-------------------
+ arch/mips/kernel/signal_n32.c    |   19 +++++++++----
+ 4 files changed, 81 insertions(+), 69 deletions(-)
 
 diff --git a/arch/mips/kernel/signal-common.h b/arch/mips/kernel/signal-common.h
-index 5838f6d..509b914 100644
+index 03d2b60..5838f6d 100644
 --- a/arch/mips/kernel/signal-common.h
 +++ b/arch/mips/kernel/signal-common.h
-@@ -11,6 +11,14 @@
- #ifndef __SIGNAL_COMMON_H
+@@ -12,6 +12,32 @@
  #define __SIGNAL_COMMON_H
  
-+/* #define DEBUG_SIG */
+ /*
++ * Horribly complicated - with the bloody RM9000 workarounds enabled
++ * the signal trampolines is moving to the end of the structure so we can
++ * increase the alignment without breaking software compatibility.
++ */
++#ifndef ICACHE_REFILLS_WORKAROUND_WAR
 +
-+#ifdef DEBUG_SIG
-+#  define DEBUGP(fmt, args...) printk("%s: " fmt, __FUNCTION__ , ##args)
++struct sigframe {
++	u32 sf_ass[4];		/* argument save space for o32 */
++	u32 sf_code[2];		/* signal trampoline */
++	struct sigcontext sf_sc;
++	sigset_t sf_mask;
++};
++
++#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
++
++struct sigframe {
++	u32 sf_ass[4];			/* argument save space for o32 */
++	u32 sf_pad[2];
++	struct sigcontext sf_sc;	/* hw context */
++	sigset_t sf_mask;
++	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
++};
++
++#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
++
++/*
+  * handle hardware context
+  */
+ extern int setup_sigcontext(struct pt_regs *, struct sigcontext __user *);
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index 50b9191..468c74d 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -38,6 +38,27 @@
+ 
+ #define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
+ 
++#ifndef ICACHE_REFILLS_WORKAROUND_WAR
++
++struct rt_sigframe {
++	u32 rs_ass[4];		/* argument save space for o32 */
++	u32 rs_code[2];		/* signal trampoline */
++	struct siginfo rs_info;
++	struct ucontext rs_uc;
++};
++
 +#else
-+#  define DEBUGP(fmt, args...)
++
++struct rt_sigframe {
++	u32 rs_ass[4];			/* argument save space for o32 */
++	u32 rs_pad[2];
++	struct siginfo rs_info;
++	struct ucontext rs_uc;
++	u32 rs_code[8] ____cacheline_aligned;	/* signal trampoline */
++};
++
 +#endif
 +
  /*
-  * Horribly complicated - with the bloody RM9000 workarounds enabled
-  * the signal trampolines is moving to the end of the structure so we can
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index 133ef74..0a2c699 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -34,8 +34,6 @@
+  * Helper routines
+  */
+@@ -290,41 +311,6 @@ asmlinkage int sys_sigaltstack(nabi_no_regargs struct pt_regs regs)
+ 	return do_sigaltstack(uss, uoss, usp);
+ }
  
- #include "signal-common.h"
- 
--#define DEBUG_SIG 0
+-/*
+- * Horribly complicated - with the bloody RM9000 workarounds enabled
+- * the signal trampolines is moving to the end of the structure so we can
+- * increase the alignment without breaking software compatibility.
+- */
+-#ifdef CONFIG_TRAD_SIGNALS
+-struct sigframe {
+-	u32 sf_ass[4];			/* argument save space for o32 */
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 sf_pad[2];
+-#else
+-	u32 sf_code[2];			/* signal trampoline */
+-#endif
+-	struct sigcontext sf_sc;
+-	sigset_t sf_mask;
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
+-#endif
+-};
+-#endif
 -
- #define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
- 
- #ifndef ICACHE_REFILLS_WORKAROUND_WAR
-@@ -427,11 +425,10 @@ int setup_frame(struct k_sigaction * ka, struct pt_regs *regs,
- 	regs->regs[31] = (unsigned long) frame->sf_code;
- 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
- 
--#if DEBUG_SIG
--	printk("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%p\n",
-+	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
- 	       current->comm, current->pid,
--	       frame, regs->cp0_epc, frame->regs[31]);
+-struct rt_sigframe {
+-	u32 rs_ass[4];			/* argument save space for o32 */
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 rs_pad[2];
+-#else
+-	u32 rs_code[2];			/* signal trampoline */
 -#endif
-+	       frame, regs->cp0_epc, regs->regs[31]);
-+
-         return 0;
- 
- give_sigsegv:
-@@ -487,11 +484,10 @@ int setup_rt_frame(struct k_sigaction * ka, struct pt_regs *regs,
- 	regs->regs[31] = (unsigned long) frame->rs_code;
- 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
- 
--#if DEBUG_SIG
--	printk("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%p\n",
-+	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
- 	       current->comm, current->pid,
- 	       frame, regs->cp0_epc, regs->regs[31]);
+-	struct siginfo rs_info;
+-	struct ucontext rs_uc;
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 rs_code[8] ____cacheline_aligned;	/* signal trampoline */
 -#endif
-+
- 	return 0;
- 
- give_sigsegv:
+-};
+-
+ #ifdef CONFIG_TRAD_SIGNALS
+ save_static_function(sys_sigreturn);
+ __attribute_used__ noinline static void
 diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index d83002e..96b3412 100644
+index c86a5dd..e5125ad 100644
 --- a/arch/mips/kernel/signal32.c
 +++ b/arch/mips/kernel/signal32.c
-@@ -104,8 +104,6 @@ typedef struct compat_siginfo {
- #define __NR_O32_rt_sigreturn		4193
- #define __NR_O32_restart_syscall	4253
+@@ -139,6 +139,27 @@ struct ucontext32 {
+ 	sigset_t32          uc_sigmask;   /* mask last for extensibility */
+ };
  
--#define DEBUG_SIG 0
++#ifndef ICACHE_REFILLS_WORKAROUND_WAR
++
++struct rt_sigframe32 {
++	u32 rs_ass[4];			/* argument save space for o32 */
++	u32 rs_code[2];			/* signal trampoline */
++	compat_siginfo_t rs_info;
++	struct ucontext32 rs_uc;
++};
++
++#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
++
++struct rt_sigframe32 {
++	u32 rs_ass[4];			/* argument save space for o32 */
++	u32 rs_pad[2];
++	compat_siginfo_t rs_info;
++	struct ucontext32 rs_uc;
++	u32 rs_code[8] __attribute__((aligned(32)));	/* signal trampoline */
++};
++
++#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
++
+ extern void __put_sigset_unknown_nsig(void);
+ extern void __get_sigset_unknown_nsig(void);
+ 
+@@ -383,34 +404,6 @@ static int restore_sigcontext32(struct pt_regs *regs, struct sigcontext32 __user
+ 	return err;
+ }
+ 
+-struct sigframe {
+-	u32 sf_ass[4];			/* argument save space for o32 */
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 sf_pad[2];
+-#else
+-	u32 sf_code[2];			/* signal trampoline */
+-#endif
+-	struct sigcontext32 sf_sc;
+-	sigset_t sf_mask;
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
+-#endif
+-};
 -
- #define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
- 
- /* 32-bit compatibility types */
-@@ -640,11 +638,10 @@ int setup_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
- 	regs->regs[31] = (unsigned long) frame->sf_code;
- 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
- 
--#if DEBUG_SIG
--	printk("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%p\n",
-+	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
- 	       current->comm, current->pid,
--	       frame, regs->cp0_epc, frame->sf_code);
+-struct rt_sigframe32 {
+-	u32 rs_ass[4];			/* argument save space for o32 */
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 rs_pad[2];
+-#else
+-	u32 rs_code[2];			/* signal trampoline */
 -#endif
-+	       frame, regs->cp0_epc, regs->regs[31]);
-+
- 	return 0;
- 
- give_sigsegv:
-@@ -701,11 +698,10 @@ int setup_rt_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
- 	regs->regs[31] = (unsigned long) frame->rs_code;
- 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
- 
--#if DEBUG_SIG
--	printk("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%p\n",
-+	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
- 	       current->comm, current->pid,
--	       frame, regs->cp0_epc, frame->rs_code);
+-	compat_siginfo_t rs_info;
+-	struct ucontext32 rs_uc;
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 rs_code[8] __attribute__((aligned(32)));	/* signal trampoline */
 -#endif
-+	       frame, regs->cp0_epc, regs->regs[31]);
-+
- 	return 0;
- 
- give_sigsegv:
+-};
+-
+ int copy_siginfo_to_user32(compat_siginfo_t __user *to, siginfo_t *from)
+ {
+ 	int err;
 diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
-index 3830757..535f06c 100644
+index a67c185..3830757 100644
 --- a/arch/mips/kernel/signal_n32.c
 +++ b/arch/mips/kernel/signal_n32.c
-@@ -47,8 +47,6 @@
- #define __NR_N32_rt_sigreturn		6211
- #define __NR_N32_restart_syscall	6214
+@@ -66,20 +66,27 @@ struct ucontextn32 {
+ 	sigset_t            uc_sigmask;   /* mask last for extensibility */
+ };
  
--#define DEBUG_SIG 0
--
- #define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
- 
- /* IRIX compatible stack_t  */
-@@ -221,11 +219,10 @@ int setup_rt_frame_n32(struct k_sigaction * ka,
- 	regs->regs[31] = (unsigned long) frame->rs_code;
- 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
- 
--#if DEBUG_SIG
--	printk("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%p\n",
-+	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
- 	       current->comm, current->pid,
- 	       frame, regs->cp0_epc, regs->regs[31]);
--#endif
++#ifndef ICACHE_REFILLS_WORKAROUND_WAR
 +
- 	return 0;
+ struct rt_sigframe_n32 {
+ 	u32 rs_ass[4];			/* argument save space for o32 */
+-#if ICACHE_REFILLS_WORKAROUND_WAR
+-	u32 rs_pad[2];
+-#else
+ 	u32 rs_code[2];			/* signal trampoline */
+-#endif
+ 	struct siginfo rs_info;
+ 	struct ucontextn32 rs_uc;
+-#if ICACHE_REFILLS_WORKAROUND_WAR
++};
++
++#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
++
++struct rt_sigframe_n32 {
++	u32 rs_ass[4];			/* argument save space for o32 */
++	u32 rs_pad[2];
++	struct siginfo rs_info;
++	struct ucontextn32 rs_uc;
+ 	u32 rs_code[8] ____cacheline_aligned;		/* signal trampoline */
+-#endif
+ };
  
- give_sigsegv:
++#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
++
+ extern void sigset_from_compat (sigset_t *set, compat_sigset_t *compat);
+ 
+ save_static_function(sysn32_rt_sigsuspend);
 -- 
 1.4.4.3.ge6d4

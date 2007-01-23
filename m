@@ -1,137 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 16:21:15 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:61174 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20051982AbXAWQVK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2007 16:21:10 +0000
-Received: from localhost (p2057-ipad205funabasi.chiba.ocn.ne.jp [222.146.97.57])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 5E4B3B5E5; Wed, 24 Jan 2007 01:21:06 +0900 (JST)
-Date:	Wed, 24 Jan 2007 01:21:05 +0900 (JST)
-Message-Id: <20070124.012105.63741796.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH][RFC] Move some kernel globals from asm file to C file.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070123161226.GA20530@linux-mips.org>
-References: <20070124.003859.126141727.anemo@mba.ocn.ne.jp>
-	<20070123161226.GA20530@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 16:26:33 +0000 (GMT)
+Received: from wx-out-0506.google.com ([66.249.82.238]:19301 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20044680AbXAWQ02 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Jan 2007 16:26:28 +0000
+Received: by wx-out-0506.google.com with SMTP id t14so1761556wxc
+        for <linux-mips@linux-mips.org>; Tue, 23 Jan 2007 08:26:22 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=DYIDFOjytc+jGaNSORGPzApxTjap3B3oXcxUXy2R5DB/EmYkn3QeiYnmj/N6j+2z2/ur5WqTscDcVUrCQI/WmZ0HSdP+bvR+XjIm2r+2Zp6+RLUCaKY0xRp29MKX3A6y3PfKmoHvtIKpfFoOMiX7fIGQahN353d3EckicDllo+E=
+Received: by 10.90.56.14 with SMTP id e14mr8174648aga.1169569581734;
+        Tue, 23 Jan 2007 08:26:21 -0800 (PST)
+Received: by 10.90.104.20 with HTTP; Tue, 23 Jan 2007 08:26:21 -0800 (PST)
+Message-ID: <cda58cb80701230826i3cba9164jf20678f9efd1a7ba@mail.gmail.com>
+Date:	Tue, 23 Jan 2007 17:26:21 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/7] signals: reduce {setup,restore}_sigcontext sizes
+Cc:	linux-mips@linux-mips.org, "Franck Bui-Huu" <fbuihuu@gmail.com>
+In-Reply-To: <20070123143814.GE18083@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+References: <1169561903878-git-send-email-fbuihuu@gmail.com>
+	 <11695619031540-git-send-email-fbuihuu@gmail.com>
+	 <20070123143814.GE18083@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13765
+X-archive-position: 13766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 23 Jan 2007 16:12:26 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
-> Looks ok but I think all the pagetable stuff should move to somewhere
-> like arch/mips/mm/init.c.
+On 1/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Tue, Jan 23, 2007 at 03:18:17PM +0100, Franck Bui-Huu wrote:
+> >    text    data     bss     dec     hex filename
+> >   11972       0       0   11972    2ec4 arch/mips/kernel/signal.o~old
+> >    5380       0       0    5380    1504 arch/mips/kernel/signal.o~new
+>
+> Have you ran any benchmarks on this?  Unrolling the loops used to make
+> a noticable difference.
+>
 
-Thanks, updated.  Also use "#ifdef MODULE_START" instead of complex
-condition.
+No, I haven't. Since the size code has been reduced by a factor 2, I
+would think that signal code can better fit in instruction cache
+lines. For example, the loop is made up by 11 instructions (I don't
+know why gcc makes it so big though) which fits into 3 cache lines in
+my cases. Where as the old code generated 246 instructions for the
+same job, which should cause many more cache misses.
 
+Do you have any pointers on benchmarks I could run ?
 
-Subject: Move some kernel globals from asm file to C file.
-
-This get rid of some undesirable hole in BSS section due to random
-order of placement.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/kernel/asm-offsets.c |    4 ----
- arch/mips/kernel/head.S        |   25 -------------------------
- arch/mips/kernel/setup.c       |    3 +++
- arch/mips/mm/init.c            |   15 +++++++++++++++
- 4 files changed, 18 insertions(+), 29 deletions(-)
-
-diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
-index ff88b06..ea7df4b 100644
---- a/arch/mips/kernel/asm-offsets.c
-+++ b/arch/mips/kernel/asm-offsets.c
-@@ -234,10 +234,6 @@ void output_mm_defines(void)
- 	constant("#define _PMD_SHIFT     ", PMD_SHIFT);
- 	constant("#define _PGDIR_SHIFT   ", PGDIR_SHIFT);
- 	linefeed;
--	constant("#define _PGD_ORDER     ", PGD_ORDER);
--	constant("#define _PMD_ORDER     ", PMD_ORDER);
--	constant("#define _PTE_ORDER     ", PTE_ORDER);
--	linefeed;
- 	constant("#define _PTRS_PER_PGD  ", PTRS_PER_PGD);
- 	constant("#define _PTRS_PER_PMD  ", PTRS_PER_PMD);
- 	constant("#define _PTRS_PER_PTE  ", PTRS_PER_PTE);
-diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
-index 9a7811d..6f57ca4 100644
---- a/arch/mips/kernel/head.S
-+++ b/arch/mips/kernel/head.S
-@@ -231,28 +231,3 @@ NESTED(smp_bootstrap, 16, sp)
- #endif /* CONFIG_SMP */
- 
- 	__FINIT
--
--	.comm	kernelsp,    NR_CPUS * 8, 8
--	.comm	pgd_current, NR_CPUS * 8, 8
--
--	.comm	fw_arg0, SZREG, SZREG		# firmware arguments
--	.comm	fw_arg1, SZREG, SZREG
--	.comm	fw_arg2, SZREG, SZREG
--	.comm	fw_arg3, SZREG, SZREG
--
--	.macro page name, order
--	.comm	\name, (_PAGE_SIZE << \order), (_PAGE_SIZE << \order)
--	.endm
--
--	/*
--	 * On 64-bit we've got three-level pagetables with a slightly
--	 * different layout ...
--	 */
--	page	swapper_pg_dir, _PGD_ORDER
--#ifdef CONFIG_64BIT
--#if defined(CONFIG_MODULES) && !defined(CONFIG_BUILD_ELF64)
--	page	module_pg_dir, _PGD_ORDER
--#endif
--	page	invalid_pmd_table, _PMD_ORDER
--#endif
--	page	invalid_pte_table, _PTE_ORDER
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 89440a0..8da9d03 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -541,3 +541,6 @@ int __init dsp_disable(char *s)
- }
- 
- __setup("nodsp", dsp_disable);
-+
-+unsigned long kernelsp[NR_CPUS];
-+unsigned long fw_arg0, fw_arg1, fw_arg2, fw_arg3;
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 30245c0..1e1427a 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -507,3 +507,18 @@ void free_initmem(void)
- 			__pa_symbol(&__init_begin),
- 			__pa_symbol(&__init_end));
- }
-+
-+unsigned long pgd_current[NR_CPUS];
-+/*
-+ * On 64-bit we've got three-level pagetables with a slightly
-+ * different layout ...
-+ */
-+#define __page_aligned(order) __attribute__((__aligned__(PAGE_SIZE<<order)))
-+pgd_t swapper_pg_dir[PTRS_PER_PGD] __page_aligned(PGD_ORDER);
-+#ifdef CONFIG_64BIT
-+#ifdef MODULE_START
-+pgd_t module_pg_dir[PTRS_PER_PGD] __page_aligned(PGD_ORDER);
-+#endif
-+pmd_t invalid_pmd_table[PTRS_PER_PMD] __page_aligned(PMD_ORDER);
-+#endif
-+pte_t invalid_pte_table[PTRS_PER_PTE] __page_aligned(PTE_ORDER);
+thanks
+-- 
+               Franck

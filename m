@@ -1,46 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 13:29:12 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:22002 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20040239AbXAWN3L (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Jan 2007 13:29:11 +0000
-Received: from localhost (p2057-ipad205funabasi.chiba.ocn.ne.jp [222.146.97.57])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 5FF49B6DF; Tue, 23 Jan 2007 22:29:06 +0900 (JST)
-Date:	Tue, 23 Jan 2007 22:29:06 +0900 (JST)
-Message-Id: <20070123.222906.41198626.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Remove _fdata from asm-mips/sections.h
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Jan 2007 13:53:29 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:25026 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20044272AbXAWNx1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Jan 2007 13:53:27 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0NDrQuA010843;
+	Tue, 23 Jan 2007 13:53:26 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0NDrPaC010842;
+	Tue, 23 Jan 2007 13:53:25 GMT
+Date:	Tue, 23 Jan 2007 13:53:25 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] GENERIC_HARDIRQS_NO__DO_IRQ update for vr41xx
+Message-ID: <20070123135325.GA10727@linux-mips.org>
+References: <20070122230106.312a6348.yoichi_yuasa@tripeaks.co.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070122230106.312a6348.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13745
+X-archive-position: 13746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-There is no _fdata symbol in kernel.
+On Mon, Jan 22, 2007 at 11:01:06PM +0900, Yoichi Yuasa wrote:
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/include/asm-mips/sections.h b/include/asm-mips/sections.h
-index f701627..b7e3726 100644
---- a/include/asm-mips/sections.h
-+++ b/include/asm-mips/sections.h
-@@ -3,6 +3,4 @@
- 
- #include <asm-generic/sections.h>
- 
--extern char _fdata;
--
- #endif /* _ASM_SECTIONS_H */
+> This patch is necessary according to GENERIC_HARDIRQS_NO__DO_IRQ update for vr41xx.
+
+Applied.  Thanks,
+
+  Ralf

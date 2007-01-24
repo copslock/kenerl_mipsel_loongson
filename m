@@ -1,54 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 09:04:06 +0000 (GMT)
-Received: from mx1.redhat.com ([66.187.233.31]:50852 "EHLO mx1.redhat.com")
-	by ftp.linux-mips.org with ESMTP id S20043791AbXAXJEB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2007 09:04:01 +0000
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.12.11.20060308/8.12.11) with ESMTP id l0O90cYl004632;
-	Wed, 24 Jan 2007 04:00:38 -0500
-Received: from warthog.cambridge.redhat.com (warthog.cambridge.redhat.com [172.16.18.73])
-	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id l0O90Yjc028121;
-	Wed, 24 Jan 2007 04:00:35 -0500
-Received: from redhat.com (localhost.localdomain [127.0.0.1])
-	by warthog.cambridge.redhat.com (8.13.8/8.13.8) with ESMTP id l0O90G5j027475;
-	Wed, 24 Jan 2007 09:00:17 GMT
-From:	David Howells <dhowells@redhat.com>
-In-Reply-To: <20070122222115.GC11128@MAIL.13thfloor.at> 
-References: <20070122222115.GC11128@MAIL.13thfloor.at>  <m1ac0jc4no.fsf@ebiederm.dsl.xmission.com> <11689656443582-git-send-email-ebiederm@xmission.com> <45AE5969.8030603@sw.ru> 
-To:	Herbert Poetzl <herbert@13thfloor.at>
-Cc:	Kirill Korotaev <dev@sw.ru>, linux-mips@linux-mips.org,
-	linux-parport@lists.infradead.org, clemens@ladisch.de, ak@suse.de,
-	linuxppc-dev@ozlabs.org, paulus@samba.org, aharkes@cs.cmu.edu,
-	schwidefsky@de.ibm.com, tim@cyberelk.net,
-	linux-scsi@vger.kernel.org, kurt.hackel@oracle.com,
-	coda@cs.cmu.edu, vojtech@suse.cz,
-	linuxsh-shmedia-dev@lists.sourceforge.net,
-	James.Bottomley@SteelEye.com, rtc-linux@googlegroups.com,
-	heiko.carstens@de.ibm.com, xfs@oss.sgi.com,
-	xfs-masters@oss.sgi.com, andrea@suse.de,
-	openipmi-developer@lists.sourceforge.net, linux-390@vm.marist.edu,
-	codalist@TELEMANN.coda.cs.cmu.edu, a.zummo@towertech.it,
-	tony.luck@intel.com, linux-ntfs-dev@lists.sourceforge.net,
-	netdev@vger.kernel.org, aia21@cantab.net,
-	linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-	lethal@linux-sh.org, "Eric W. Biederman" <ebiederm@xmission.com>,
-	containers@lists.osdl.org, linux390@de.ibm.com, philb@gnu.org
-Subject: Re: [PATCH 25/59] sysctl: C99 convert arch/frv/kernel/pm.c 
-X-Mailer: MH-E 8.0; nmh 1.1; GNU Emacs 22.0.50
-Date:	Wed, 24 Jan 2007 09:00:16 +0000
-Message-ID: <27474.1169629216@redhat.com>
-Return-Path: <dhowells@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 10:05:12 +0000 (GMT)
+Received: from 85.8.24.16.se.wasadata.net ([85.8.24.16]:15776 "EHLO
+	smtp.drzeus.cx") by ftp.linux-mips.org with ESMTP id S20044896AbXAXKFH
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 24 Jan 2007 10:05:07 +0000
+Received: from [192.168.128.82] (alcatraz.cendio.se [::ffff:193.12.253.67])
+  (AUTH: PLAIN drzeus, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by smtp.drzeus.cx with esmtp; Wed, 24 Jan 2007 11:04:05 +0100
+  id 0005B536.45B72F15.0000497B
+Message-ID: <45B72F13.4040707@drzeus.cx>
+Date:	Wed, 24 Jan 2007 11:04:03 +0100
+From:	Pierre Ossman <drzeus-mmc@drzeus.cx>
+User-Agent: Thunderbird 1.5.0.9 (X11/20061223)
+MIME-Version: 1.0
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MMC: au1xmmc R6 response support
+References: <20070123100814.GA5001@roarinelk.homelinux.net> <45B65A73.90308@drzeus.cx> <20070124055202.GA6446@roarinelk.homelinux.net>
+In-Reply-To: <20070124055202.GA6446@roarinelk.homelinux.net>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <drzeus-mmc@drzeus.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13785
+X-archive-position: 13786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: drzeus-mmc@drzeus.cx
 Precedence: bulk
 X-list: linux-mips
 
+Manuel Lauss wrote:
+> 
+> not in my version of 2.6.20-rc5 (and 2.6.19):
+> 
 
-Fine by me.
+HEAD has this fixed. Every spec I can get my hands on states that R1 and
+R6 have the same format. So it sounds like this controller is doing
+something stupid.
 
-Acked-By: David Howells <dhowells@redhat.com>
+> 
+> Without the patch, SD card detection stops with CMD7 returning error.
+> 
+
+Can I see a dump with MMC_DEBUG enabled?
+
+On a related note... Would you, or anyone else you know, be willing to
+sign up as official maintainer of this driver? Otherwise I'll have to
+mark it as unmaintained.
+
+Rgds
+-- 
+     -- Pierre Ossman
+
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  PulseAudio, core developer          http://pulseaudio.org
+  rdesktop, core developer          http://www.rdesktop.org

@@ -1,79 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 16:50:11 +0000 (GMT)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:8920 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20048768AbXAXQuG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 24 Jan 2007 16:50:06 +0000
-Received: (qmail 10783 invoked by uid 101); 24 Jan 2007 16:48:59 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by mother.pmc-sierra.com with SMTP; 24 Jan 2007 16:48:59 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l0OGmw8e004643;
-	Wed, 24 Jan 2007 08:48:59 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <DCB6CRAS>; Wed, 24 Jan 2007 08:48:58 -0800
-Message-ID: <45B78DF5.9000203@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Alan <alan@lxorguk.ukuu.org.uk>, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git mast
-	 er
-Date:	Wed, 24 Jan 2007 08:48:53 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 19:41:25 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:55518 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20045869AbXAXTlV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2007 19:41:21 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 95A623EC9; Wed, 24 Jan 2007 11:40:46 -0800 (PST)
+Message-ID: <45B7B63E.70608@ru.mvista.com>
+Date:	Wed, 24 Jan 2007 22:40:46 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 24 Jan 2007 16:48:54.0136 (UTC) FILETIME=[88585F80:01C73FD7]
-user-agent: Thunderbird 1.5.0.9 (X11/20061206)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+Cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git mast
+  er
+References: <45B78C19.4030408@pmc-sierra.com>
+In-Reply-To: <45B78C19.4030408@pmc-sierra.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13806
+X-archive-position: 13807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Sergei Shtylyov wrote:
-> 
->  >>This I would hope you can hide in the platform specific
->  >>serial_in/serial_out functions. If you write the UART_LCR save it in
->  >>serial_out(), if you read IER etc.
-> 
->  > I couldn't find hooks for platform specific serial_in/out functions.
-> 
->     It's because there are none. :-)
-> 
->  > Do you mean using the up->port.iotype's in serial_in/out from 8250.c?
-> 
->     Not sure what Alan meant, but this seems the only option for now.
+Hello.
 
-That's the conclusion I came to. I've rewritten the patch to use port.type
-instead of iotype since one of the fix is SoC and not UART specific. I guess
-I could use both iotype and type with a test on each for the appropriate
-bug, what do you recommend?
+Marc St-Jean wrote:
 
+>>http://www.kernel.org/pub/linux/kernel/people/akpm/patches/2.6/2.6.20-rc4/2.6.20-rc4-mm1/broken-out/8250-uart-backup-timer.patch
 
->   >>And we might want to add a void * for board specific insanity to the 
-> 8250
->  >>structures if we really have to so you can hang your brain damage
->  >>privately off that ?
-> 
->  > Sounds good to me, it would give us a location to store the address 
-> of the
->  > UART_STATUS_REG required by this UART variant.
-> 
->     I doubt we really need to *store* it somewhere. Isn't it an fixed 
-> offset
-> from UART's base (I haven't seen the header)?
+> This second patch failure description is identical to what we are seeing without
+> the THRE work-around. This must be the timer patch Alan mentioned but it's not
+> in the linux.git at l-m.o.
 
-Unfortunately it's not a constant offset from the UART in the SoC register
-space. I've used Alan suggestion and added a classic, on some other OSes %-|,
-void "user" pointer.
+    Yeah, it must still be considered "experimental" as it resides only within 
+the -mm tree.
 
-I'll repost as soon I complete testing and try the new timer patch.
+> Could you please explain what you mean by and where I can find the "-mm tree"?
 
-Marc
+    http://kernel.org/patchtypes/mm.html
+
+    As the serial drivers have no maintainer now, you probably have to CC the 
+final patch to Andrew Morton (akpm@osdl.org), so it'd be better to be 
+applicable against the recent -mm patch.
+
+> Marc
+
+MBR, Sergei

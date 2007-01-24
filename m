@@ -1,44 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 14:46:48 +0000 (GMT)
-Received: from ex.2n.cz ([213.29.92.11]:29660 "EHLO ex.2n.cz")
-	by ftp.linux-mips.org with ESMTP id S20048664AbXAXOqo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2007 14:46:44 +0000
-Received: from orphique ([192.168.22.100]) by ex.2n.cz with Microsoft SMTPSVC(5.0.2195.6713);
-	 Wed, 24 Jan 2007 15:46:16 +0100
-Received: from ladis by orphique with local (Exim 3.36 #1 (Debian))
-	id 1H9jNu-0005Bl-00
-	for <linux-mips@linux-mips.org>; Wed, 24 Jan 2007 15:45:58 +0100
-Date:	Wed, 24 Jan 2007 15:45:58 +0100
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: how to choose journal filesystem for embedded linux?
-Message-ID: <20070124144557.GA19790@orphique>
-References: <50c9a2250701231805y62ec67f0v83d2fcf3ae2c55da@mail.gmail.com> <45B6E02D.1040206@gmail.com> <50c9a2250701232104k317049b3ve1890524cc2ddfea@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 15:26:25 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:57560 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20048699AbXAXP0V (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 24 Jan 2007 15:26:21 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id A89993EC9; Wed, 24 Jan 2007 07:25:47 -0800 (PST)
+Message-ID: <45B77A7B.2040504@ru.mvista.com>
+Date:	Wed, 24 Jan 2007 18:25:47 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50c9a2250701232104k317049b3ve1890524cc2ddfea@mail.gmail.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Ladislav Michl <ladis@linux-mips.org>
-X-OriginalArrivalTime: 24 Jan 2007 14:46:16.0568 (UTC) FILETIME=[66E49780:01C73FC6]
-Return-Path: <ladis@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>,
+	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git mast
+ er
+References: <5C1FD43E5F1B824E83985A74F396286E03AD7632@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca> <45B51D5C.207@ru.mvista.com>
+In-Reply-To: <45B51D5C.207@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13802
+X-archive-position: 13803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ladis@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jan 24, 2007 at 01:04:03PM +0800, zhuzhenhua wrote:
-> On 1/24/07, Maarten Lankhorst <m.b.lankhorst@gmail.com> wrote:
-> >Have you tried jffs2? Journaled Flash FileSystem 2
-> 
-> the JFFS2 is combile filesytem with FLASH. but our FLASH driver team
-> have developed a driver good enough to handle FLASH as HD, so we don't
-> want to use the special FLASH filesystem
+Hello, I wrote:
 
-Could you provide a short explanation about advantages of such solution?
+>>>> Here is a serial driver patch for the PMC-Sierra MSP71xx device.
 
-	ladis
+>>>> There are three different fixes:
+>>>> 1. Fix for THRE errata
+>>>> 2. Fix for Busy Detect on LCR write
+>>>> 3. Workaround for interrupt/data concurrency issue
+
+>>>> The first fix is handled cleanly using a UART_BUG_* flag.
+
+>>>    Hm, I wouldn't call it clean...
+
+>> Relative to the other two. Any recommended improvements on this one?
+
+>    I already told: runtime check.
+
+    BTW, I've just came accross 2 patches in the -mm tree related to the 
+transmitter bug:
+
+http://www.kernel.org/pub/linux/kernel/people/akpm/patches/2.6/2.6.20-rc4/2.6.20-rc4-mm1/broken-out/8250-make-probing-for-txen-bug-a-config-option.patch
+http://www.kernel.org/pub/linux/kernel/people/akpm/patches/2.6/2.6.20-rc4/2.6.20-rc4-mm1/broken-out/8250-uart-backup-timer.patch
+
+>>>> Thanks,
+>>>> Marc
+
+WBR, Sergei

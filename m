@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 14:10:55 +0000 (GMT)
-Received: from hu-out-0506.google.com ([72.14.214.230]:25723 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jan 2007 14:11:21 +0000 (GMT)
+Received: from hu-out-0506.google.com ([72.14.214.238]:25979 "EHLO
 	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20048447AbXAXOKt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S20048452AbXAXOKt (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Wed, 24 Jan 2007 14:10:49 +0000
-Received: by hu-out-0506.google.com with SMTP id 22so152615hug
-        for <linux-mips@linux-mips.org>; Wed, 24 Jan 2007 06:09:48 -0800 (PST)
+Received: by hu-out-0506.google.com with SMTP id 22so152618hug
+        for <linux-mips@linux-mips.org>; Wed, 24 Jan 2007 06:09:49 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=dvh9OjVdbhKG54Cn97ECUsSatMkJOKPzhz6tfnPU/t/8livSkZBdyE83ul3gHPqk1Mgd04oPh+mgFtXXkdoArJTMeVx52NCTwGR+336roFtaZAu/UmzHz6JgcD7UkR+2NOu+hEdmCFfbsixBuPJQ3+DQbGPPfCahLqN/XyRFTnI=
-Received: by 10.49.93.13 with SMTP id v13mr2952529nfl.1169647788415;
+        b=o7xU1RS1rAwRZQ46uWjeY/ifLRboJ+C4bMDqhiRRX3q6cfK4rQHUsunYdovjGGxPc7r6iXnktn8hFBdK8OQLVmIg05gg2Zp9rhj6N2/OXNq7wC8BhNpG/LhG/58wce9u1HSCaodpdX676jW+Vjvq1j0Zrg4hFTeXtubKguBMSas=
+Received: by 10.49.36.6 with SMTP id o6mr2950636nfj.1169647788588;
         Wed, 24 Jan 2007 06:09:48 -0800 (PST)
 Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id y24sm6535130nfb.2007.01.24.06.09.45;
+        by mx.google.com with ESMTP id l21sm6484520nfc.2007.01.24.06.09.44;
         Wed, 24 Jan 2007 06:09:46 -0800 (PST)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 710AB23F770; Wed, 24 Jan 2007 15:12:11 +0100 (CET)
+	id 55AD923F76F; Wed, 24 Jan 2007 15:12:11 +0100 (CET)
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, Franck Bui-Huu <fbuihuu@gmail.com>
-Subject: [PATCH 3/8] signal: clean up sigframe structure
-Date:	Wed, 24 Jan 2007 15:12:06 +0100
-Message-Id: <11696479312502-git-send-email-fbuihuu@gmail.com>
+Subject: [PATCH 2/8] signal: do not inline functions in signal-common.h
+Date:	Wed, 24 Jan 2007 15:12:05 +0100
+Message-Id: <11696479314107-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.4.4.3.ge6d4
 In-Reply-To: <11696479312279-git-send-email-fbuihuu@gmail.com>
 References: <11696479312279-git-send-email-fbuihuu@gmail.com>
@@ -29,7 +29,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13793
+X-archive-position: 13794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,235 +39,330 @@ X-list: linux-mips
 
 From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-This patch makes 'struct sigframe' declaration avalaible for all signals
-code. It allows signal32 to not have its own declaration.
-
-This patch also removes all ICACHE_REFILLS_WORKAROUND_WAR tests in
-structure declaration and hopefully make them more readable.
+These functions are quite big and there are no points to make
+them inlined. So this patch moves the functions implementation
+in signal.c and make them available for others source files
+which need them.
 
 Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
 ---
- arch/mips/kernel/signal-common.h |   26 +++++++++++++++++
- arch/mips/kernel/signal.c        |   56 ++++++++++++++-----------------------
- arch/mips/kernel/signal32.c      |   49 ++++++++++++++-------------------
- arch/mips/kernel/signal_n32.c    |   19 +++++++++----
- 4 files changed, 81 insertions(+), 69 deletions(-)
+ arch/mips/kernel/signal-common.h |  150 ++++----------------------------------
+ arch/mips/kernel/signal.c        |  139 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 153 insertions(+), 136 deletions(-)
 
 diff --git a/arch/mips/kernel/signal-common.h b/arch/mips/kernel/signal-common.h
-index 03d2b60..6700bde 100644
+index bb3c631..03d2b60 100644
 --- a/arch/mips/kernel/signal-common.h
 +++ b/arch/mips/kernel/signal-common.h
-@@ -12,6 +12,32 @@
- #define __SIGNAL_COMMON_H
+@@ -8,145 +8,23 @@
+  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
+  */
+ 
++#ifndef __SIGNAL_COMMON_H
++#define __SIGNAL_COMMON_H
+ 
+-static inline int
+-setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
+-{
+-	int err = 0;
+-	int i;
+-
+-	err |= __put_user(regs->cp0_epc, &sc->sc_pc);
+-
+-	err |= __put_user(0, &sc->sc_regs[0]);
+-	for (i = 1; i < 32; i++)
+-		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
+-
+-	err |= __put_user(regs->hi, &sc->sc_mdhi);
+-	err |= __put_user(regs->lo, &sc->sc_mdlo);
+-	if (cpu_has_dsp) {
+-		err |= __put_user(mfhi1(), &sc->sc_hi1);
+-		err |= __put_user(mflo1(), &sc->sc_lo1);
+-		err |= __put_user(mfhi2(), &sc->sc_hi2);
+-		err |= __put_user(mflo2(), &sc->sc_lo2);
+-		err |= __put_user(mfhi3(), &sc->sc_hi3);
+-		err |= __put_user(mflo3(), &sc->sc_lo3);
+-		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
+-	}
+-
+-	err |= __put_user(!!used_math(), &sc->sc_used_math);
+-
+-	if (used_math()) {
+-		/*
+-		 * Save FPU state to signal context.  Signal handler
+-		 * will "inherit" current FPU state.
+-		 */
+-		preempt_disable();
+-
+-		if (!is_fpu_owner()) {
+-			own_fpu();
+-			restore_fp(current);
+-		}
+-		err |= save_fp_context(sc);
+-
+-		preempt_enable();
+-	}
+-	return err;
+-}
+-
+-static inline int
+-restore_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
+-{
+-	unsigned int used_math;
+-	unsigned long treg;
+-	int err = 0;
+-	int i;
+-
+-	/* Always make any pending restarted system calls return -EINTR */
+-	current_thread_info()->restart_block.fn = do_no_restart_syscall;
+-
+-	err |= __get_user(regs->cp0_epc, &sc->sc_pc);
+-	err |= __get_user(regs->hi, &sc->sc_mdhi);
+-	err |= __get_user(regs->lo, &sc->sc_mdlo);
+-	if (cpu_has_dsp) {
+-		err |= __get_user(treg, &sc->sc_hi1); mthi1(treg);
+-		err |= __get_user(treg, &sc->sc_lo1); mtlo1(treg);
+-		err |= __get_user(treg, &sc->sc_hi2); mthi2(treg);
+-		err |= __get_user(treg, &sc->sc_lo2); mtlo2(treg);
+-		err |= __get_user(treg, &sc->sc_hi3); mthi3(treg);
+-		err |= __get_user(treg, &sc->sc_lo3); mtlo3(treg);
+-		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
+-	}
+-
+-	for (i = 1; i < 32; i++)
+-		err |= __get_user(regs->regs[i], &sc->sc_regs[i]);
+-
+-	err |= __get_user(used_math, &sc->sc_used_math);
+-	conditional_used_math(used_math);
+-
+-	preempt_disable();
+-
+-	if (used_math()) {
+-		/* restore fpu context if we have used it before */
+-		own_fpu();
+-		err |= restore_fp_context(sc);
+-	} else {
+-		/* signal handler may have used FPU.  Give it up. */
+-		lose_fpu();
+-	}
+-
+-	preempt_enable();
+-
+-	return err;
+-}
++/*
++ * handle hardware context
++ */
++extern int setup_sigcontext(struct pt_regs *, struct sigcontext __user *);
++extern int restore_sigcontext(struct pt_regs *, struct sigcontext __user *);
  
  /*
-+ * Horribly complicated - with the bloody RM9000 workarounds enabled
-+ * the signal trampolines is moving to the end of the structure so we can
-+ * increase the alignment without breaking software compatibility.
-+ */
-+#if ICACHE_REFILLS_WORKAROUND_WAR == 0
-+
-+struct sigframe {
-+	u32 sf_ass[4];		/* argument save space for o32 */
-+	u32 sf_code[2];		/* signal trampoline */
-+	struct sigcontext sf_sc;
-+	sigset_t sf_mask;
-+};
-+
-+#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
-+
-+struct sigframe {
-+	u32 sf_ass[4];			/* argument save space for o32 */
-+	u32 sf_pad[2];
-+	struct sigcontext sf_sc;	/* hw context */
-+	sigset_t sf_mask;
-+	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
-+};
-+
-+#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
-+
-+/*
-  * handle hardware context
+  * Determine which stack to use..
   */
- extern int setup_sigcontext(struct pt_regs *, struct sigcontext __user *);
+-static inline void __user *
+-get_sigframe(struct k_sigaction *ka, struct pt_regs *regs, size_t frame_size)
+-{
+-	unsigned long sp;
+-
+-	/* Default to using normal stack */
+-	sp = regs->regs[29];
+-
+-	/*
+-	 * FPU emulator may have it's own trampoline active just
+-	 * above the user stack, 16-bytes before the next lowest
+-	 * 16 byte boundary.  Try to avoid trashing it.
+-	 */
+-	sp -= 32;
+-
+-	/* This is the X/Open sanctioned signal stack switching.  */
+-	if ((ka->sa.sa_flags & SA_ONSTACK) && (sas_ss_flags (sp) == 0))
+-		sp = current->sas_ss_sp + current->sas_ss_size;
+-
+-	return (void __user *)((sp - frame_size) & (ICACHE_REFILLS_WORKAROUND_WAR ? ~(cpu_icache_line_size()-1) : ALMASK));
+-}
+-
+-static inline int install_sigtramp(unsigned int __user *tramp,
+-	unsigned int syscall)
+-{
+-	int err;
+-
+-	/*
+-	 * Set up the return code ...
+-	 *
+-	 *         li      v0, __NR__foo_sigreturn
+-	 *         syscall
+-	 */
+-
+-	err = __put_user(0x24020000 + syscall, tramp + 0);
+-	err |= __put_user(0x0000000c          , tramp + 1);
+-	if (ICACHE_REFILLS_WORKAROUND_WAR) {
+-		err |= __put_user(0, tramp + 2);
+-		err |= __put_user(0, tramp + 3);
+-		err |= __put_user(0, tramp + 4);
+-		err |= __put_user(0, tramp + 5);
+-		err |= __put_user(0, tramp + 6);
+-		err |= __put_user(0, tramp + 7);
+-	}
+-	flush_cache_sigtramp((unsigned long) tramp);
++extern void __user *get_sigframe(struct k_sigaction *ka, struct pt_regs *regs,
++				 size_t frame_size);
++/*
++ * install trampoline code to get back from the sig handler
++ */
++extern int install_sigtramp(unsigned int __user *tramp, unsigned int syscall);
+ 
+-	return err;
+-}
++#endif	/* __SIGNAL_COMMON_H */
 diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index 7ec73f2..41033be 100644
+index b9d358e..7ec73f2 100644
 --- a/arch/mips/kernel/signal.c
 +++ b/arch/mips/kernel/signal.c
-@@ -38,6 +38,27 @@
- 
+@@ -39,6 +39,145 @@
  #define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
  
-+#if ICACHE_REFILLS_WORKAROUND_WAR == 0
-+
-+struct rt_sigframe {
-+	u32 rs_ass[4];		/* argument save space for o32 */
-+	u32 rs_code[2];		/* signal trampoline */
-+	struct siginfo rs_info;
-+	struct ucontext rs_uc;
-+};
-+
-+#else
-+
-+struct rt_sigframe {
-+	u32 rs_ass[4];			/* argument save space for o32 */
-+	u32 rs_pad[2];
-+	struct siginfo rs_info;
-+	struct ucontext rs_uc;
-+	u32 rs_code[8] ____cacheline_aligned;	/* signal trampoline */
-+};
-+
-+#endif
-+
  /*
-  * Helper routines
++ * Helper routines
++ */
++int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
++{
++	int err = 0;
++	int i;
++
++	err |= __put_user(regs->cp0_epc, &sc->sc_pc);
++
++	err |= __put_user(0, &sc->sc_regs[0]);
++	for (i = 1; i < 32; i++)
++		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
++
++	err |= __put_user(regs->hi, &sc->sc_mdhi);
++	err |= __put_user(regs->lo, &sc->sc_mdlo);
++	if (cpu_has_dsp) {
++		err |= __put_user(mfhi1(), &sc->sc_hi1);
++		err |= __put_user(mflo1(), &sc->sc_lo1);
++		err |= __put_user(mfhi2(), &sc->sc_hi2);
++		err |= __put_user(mflo2(), &sc->sc_lo2);
++		err |= __put_user(mfhi3(), &sc->sc_hi3);
++		err |= __put_user(mflo3(), &sc->sc_lo3);
++		err |= __put_user(rddsp(DSP_MASK), &sc->sc_dsp);
++	}
++
++	err |= __put_user(!!used_math(), &sc->sc_used_math);
++
++	if (used_math()) {
++		/*
++		 * Save FPU state to signal context. Signal handler
++		 * will "inherit" current FPU state.
++		 */
++		preempt_disable();
++
++		if (!is_fpu_owner()) {
++			own_fpu();
++			restore_fp(current);
++		}
++		err |= save_fp_context(sc);
++
++		preempt_enable();
++	}
++	return err;
++}
++
++int restore_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
++{
++	unsigned int used_math;
++	unsigned long treg;
++	int err = 0;
++	int i;
++
++	/* Always make any pending restarted system calls return -EINTR */
++	current_thread_info()->restart_block.fn = do_no_restart_syscall;
++
++	err |= __get_user(regs->cp0_epc, &sc->sc_pc);
++	err |= __get_user(regs->hi, &sc->sc_mdhi);
++	err |= __get_user(regs->lo, &sc->sc_mdlo);
++	if (cpu_has_dsp) {
++		err |= __get_user(treg, &sc->sc_hi1); mthi1(treg);
++		err |= __get_user(treg, &sc->sc_lo1); mtlo1(treg);
++		err |= __get_user(treg, &sc->sc_hi2); mthi2(treg);
++		err |= __get_user(treg, &sc->sc_lo2); mtlo2(treg);
++		err |= __get_user(treg, &sc->sc_hi3); mthi3(treg);
++		err |= __get_user(treg, &sc->sc_lo3); mtlo3(treg);
++		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
++	}
++
++	for (i = 1; i < 32; i++)
++		err |= __get_user(regs->regs[i], &sc->sc_regs[i]);
++
++	err |= __get_user(used_math, &sc->sc_used_math);
++	conditional_used_math(used_math);
++
++	preempt_disable();
++
++	if (used_math()) {
++		/* restore fpu context if we have used it before */
++		own_fpu();
++		err |= restore_fp_context(sc);
++	} else {
++		/* signal handler may have used FPU.  Give it up. */
++		lose_fpu();
++	}
++
++	preempt_enable();
++
++	return err;
++}
++
++void __user *get_sigframe(struct k_sigaction *ka, struct pt_regs *regs,
++			  size_t frame_size)
++{
++	unsigned long sp;
++
++	/* Default to using normal stack */
++	sp = regs->regs[29];
++
++	/*
++	 * FPU emulator may have it's own trampoline active just
++	 * above the user stack, 16-bytes before the next lowest
++	 * 16 byte boundary.  Try to avoid trashing it.
++	 */
++	sp -= 32;
++
++	/* This is the X/Open sanctioned signal stack switching.  */
++	if ((ka->sa.sa_flags & SA_ONSTACK) && (sas_ss_flags (sp) == 0))
++		sp = current->sas_ss_sp + current->sas_ss_size;
++
++	return (void __user *)((sp - frame_size) & (ICACHE_REFILLS_WORKAROUND_WAR ? ~(cpu_icache_line_size()-1) : ALMASK));
++}
++
++int install_sigtramp(unsigned int __user *tramp, unsigned int syscall)
++{
++	int err;
++
++	/*
++	 * Set up the return code ...
++	 *
++	 *         li      v0, __NR__foo_sigreturn
++	 *         syscall
++	 */
++
++	err = __put_user(0x24020000 + syscall, tramp + 0);
++	err |= __put_user(0x0000000c          , tramp + 1);
++	if (ICACHE_REFILLS_WORKAROUND_WAR) {
++		err |= __put_user(0, tramp + 2);
++		err |= __put_user(0, tramp + 3);
++		err |= __put_user(0, tramp + 4);
++		err |= __put_user(0, tramp + 5);
++		err |= __put_user(0, tramp + 6);
++		err |= __put_user(0, tramp + 7);
++	}
++	flush_cache_sigtramp((unsigned long) tramp);
++
++	return err;
++}
++
++/*
+  * Atomically swap in the new signal mask, and wait for a signal.
   */
-@@ -287,41 +308,6 @@ asmlinkage int sys_sigaltstack(nabi_no_regargs struct pt_regs regs)
- 	return do_sigaltstack(uss, uoss, usp);
- }
  
--/*
-- * Horribly complicated - with the bloody RM9000 workarounds enabled
-- * the signal trampolines is moving to the end of the structure so we can
-- * increase the alignment without breaking software compatibility.
-- */
--#ifdef CONFIG_TRAD_SIGNALS
--struct sigframe {
--	u32 sf_ass[4];			/* argument save space for o32 */
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 sf_pad[2];
--#else
--	u32 sf_code[2];			/* signal trampoline */
--#endif
--	struct sigcontext sf_sc;
--	sigset_t sf_mask;
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
--#endif
--};
--#endif
--
--struct rt_sigframe {
--	u32 rs_ass[4];			/* argument save space for o32 */
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 rs_pad[2];
--#else
--	u32 rs_code[2];			/* signal trampoline */
--#endif
--	struct siginfo rs_info;
--	struct ucontext rs_uc;
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 rs_code[8] ____cacheline_aligned;	/* signal trampoline */
--#endif
--};
--
- #ifdef CONFIG_TRAD_SIGNALS
- save_static_function(sys_sigreturn);
- __attribute_used__ noinline static void
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index c86a5dd..e0a8553 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -139,6 +139,27 @@ struct ucontext32 {
- 	sigset_t32          uc_sigmask;   /* mask last for extensibility */
- };
- 
-+#if ICACHE_REFILLS_WORKAROUND_WAR == 0
-+
-+struct rt_sigframe32 {
-+	u32 rs_ass[4];			/* argument save space for o32 */
-+	u32 rs_code[2];			/* signal trampoline */
-+	compat_siginfo_t rs_info;
-+	struct ucontext32 rs_uc;
-+};
-+
-+#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
-+
-+struct rt_sigframe32 {
-+	u32 rs_ass[4];			/* argument save space for o32 */
-+	u32 rs_pad[2];
-+	compat_siginfo_t rs_info;
-+	struct ucontext32 rs_uc;
-+	u32 rs_code[8] __attribute__((aligned(32)));	/* signal trampoline */
-+};
-+
-+#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
-+
- extern void __put_sigset_unknown_nsig(void);
- extern void __get_sigset_unknown_nsig(void);
- 
-@@ -383,34 +404,6 @@ static int restore_sigcontext32(struct pt_regs *regs, struct sigcontext32 __user
- 	return err;
- }
- 
--struct sigframe {
--	u32 sf_ass[4];			/* argument save space for o32 */
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 sf_pad[2];
--#else
--	u32 sf_code[2];			/* signal trampoline */
--#endif
--	struct sigcontext32 sf_sc;
--	sigset_t sf_mask;
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
--#endif
--};
--
--struct rt_sigframe32 {
--	u32 rs_ass[4];			/* argument save space for o32 */
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 rs_pad[2];
--#else
--	u32 rs_code[2];			/* signal trampoline */
--#endif
--	compat_siginfo_t rs_info;
--	struct ucontext32 rs_uc;
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 rs_code[8] __attribute__((aligned(32)));	/* signal trampoline */
--#endif
--};
--
- int copy_siginfo_to_user32(compat_siginfo_t __user *to, siginfo_t *from)
- {
- 	int err;
-diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
-index a67c185..f8e1539 100644
---- a/arch/mips/kernel/signal_n32.c
-+++ b/arch/mips/kernel/signal_n32.c
-@@ -66,20 +66,27 @@ struct ucontextn32 {
- 	sigset_t            uc_sigmask;   /* mask last for extensibility */
- };
- 
-+#if ICACHE_REFILLS_WORKAROUND_WAR == 0
-+
- struct rt_sigframe_n32 {
- 	u32 rs_ass[4];			/* argument save space for o32 */
--#if ICACHE_REFILLS_WORKAROUND_WAR
--	u32 rs_pad[2];
--#else
- 	u32 rs_code[2];			/* signal trampoline */
--#endif
- 	struct siginfo rs_info;
- 	struct ucontextn32 rs_uc;
--#if ICACHE_REFILLS_WORKAROUND_WAR
-+};
-+
-+#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
-+
-+struct rt_sigframe_n32 {
-+	u32 rs_ass[4];			/* argument save space for o32 */
-+	u32 rs_pad[2];
-+	struct siginfo rs_info;
-+	struct ucontextn32 rs_uc;
- 	u32 rs_code[8] ____cacheline_aligned;		/* signal trampoline */
--#endif
- };
- 
-+#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
-+
- extern void sigset_from_compat (sigset_t *set, compat_sigset_t *compat);
- 
- save_static_function(sysn32_rt_sigsuspend);
 -- 
 1.4.4.3.ge6d4

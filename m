@@ -1,60 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jan 2007 08:34:49 +0000 (GMT)
-Received: from 85.8.24.16.se.wasadata.net ([85.8.24.16]:27040 "EHLO
-	smtp.drzeus.cx") by ftp.linux-mips.org with ESMTP id S20050484AbXAYIek
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 25 Jan 2007 08:34:40 +0000
-Received: from [192.168.128.82] (alcatraz.cendio.se [::ffff:193.12.253.67])
-  (AUTH: PLAIN drzeus, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by smtp.drzeus.cx with esmtp; Thu, 25 Jan 2007 09:33:39 +0100
-  id 0005B53A.45B86B63.000021D1
-Message-ID: <45B86B64.5000402@drzeus.cx>
-Date:	Thu, 25 Jan 2007 09:33:40 +0100
-From:	Pierre Ossman <drzeus-mmc@drzeus.cx>
-User-Agent: Thunderbird 1.5.0.9 (X11/20061223)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jan 2007 14:30:06 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:52740 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20052574AbXAYOaC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Jan 2007 14:30:02 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 92A8E3EC9; Thu, 25 Jan 2007 06:29:27 -0800 (PST)
+Message-ID: <45B8BEC5.7010000@ru.mvista.com>
+Date:	Thu, 25 Jan 2007 17:29:25 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MMC: au1xmmc R6 response support
-References: <20070123100814.GA5001@roarinelk.homelinux.net> <45B65A73.90308@drzeus.cx> <20070124055202.GA6446@roarinelk.homelinux.net> <45B72F13.4040707@drzeus.cx> <20070125072000.GA8257@roarinelk.homelinux.net>
-In-Reply-To: <20070125072000.GA8257@roarinelk.homelinux.net>
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+Cc:	Alan <alan@lxorguk.ukuu.org.uk>, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git mast
+  er
+References: <45B7CB34.60209@pmc-sierra.com>
+In-Reply-To: <45B7CB34.60209@pmc-sierra.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <drzeus-mmc@drzeus.cx>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13814
+X-archive-position: 13815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: drzeus-mmc@drzeus.cx
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Manuel Lauss wrote:
-> 
-> Apparently my HW is broken... I got a hold of a DB1200 demoboard and
-> the distributed version works fine there.
-> 
-> I'm very sorry for the noise!
-> 
+Hello.
 
-No problem. Better safe than sorry.
+Marc St-Jean wrote:
 
-> 
-> Aren't people from AMD (now Raza) maintaining it? I have source for this
-> driver which also implements SDIO, also from AMD. It's a bit dated (for
-> 2.6.11). But I'm willing to look into problems, as long as I have access
-> to the hardware.
-> 
+>> > I could use both iotype and type with a test on each for the appropriate
+>> > bug, what do you recommend?
 
-I have not heard anything from Raza, so I wouldn't even know who to
-contact there.
+>>    I think iotype would be enough. You can't pass type for platform 
+>>devices anyway, IIRC (the thing I don't quite like).
 
-Rgds
--- 
-     -- Pierre Ossman
+> I just found that out the hard way, it get's overwritten during autoconfig* and
+> ends up back at PORT_16550A.
 
-  Linux kernel, MMC maintainer        http://www.kernel.org
-  PulseAudio, core developer          http://pulseaudio.org
-  rdesktop, core developer          http://www.rdesktop.org
+> I'm now trying to use my own iotype = UPIO_DWAPB and I've added it to all cases
+> that check for UPIO_MEM. However at boot time I'm getting:
+> 	"serial8250: ttyS0 at *unknown* (irq = 27) is a 16550A".
+> It looks like something outside of 8250.c must be checking for UPIO_MEM, I'm
+> looking into it.
+
+    Yeah, be sure to change serial_core.c as well (whereever you'll see 
+UPIO_AU/TSI there)... Quite ugly. :-/
+
+WBR, Sergei

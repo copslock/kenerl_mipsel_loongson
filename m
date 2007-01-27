@@ -1,113 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2007 21:53:00 +0000 (GMT)
-Received: from smtp-ext.int-evry.fr ([157.159.11.17]:24760 "EHLO
-	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20037644AbXA0Vwz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 27 Jan 2007 21:52:55 +0000
-Received: from mini.int.alphacore.net (florian.maisel.int-evry.fr [157.159.41.36])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 7B0EB8D168F;
-	Sat, 27 Jan 2007 22:50:58 +0100 (CET)
-From:	Florian Fainelli <florian.fainelli@int-evry.fr>
-To:	"W.P." <laurentp@wp.pl>
-Subject: Re: RTL-8186 follow-up
-Date:	Sat, 27 Jan 2007 22:38:08 +0100
-User-Agent: KMail/1.9.5
-Cc:	linux-mips@linux-mips.org
-References: <5C1FD43E5F1B824E83985A74F396286E041B10FB@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca> <200701271354.41905.florian.fainelli@int-evry.fr> <45BB8C5D.50405@wp.pl>
-In-Reply-To: <45BB8C5D.50405@wp.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2007 22:31:09 +0000 (GMT)
+Received: from mx5.wp.pl ([212.77.101.9]:8835 "EHLO mx1.wp.pl")
+	by ftp.linux-mips.org with ESMTP id S20037670AbXA0WbE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 27 Jan 2007 22:31:04 +0000
+Received: (wp-smtpd smtp.wp.pl 4724 invoked from network); 27 Jan 2007 23:30:00 +0100
+Received: from apn-237-18.gprsbal.plusgsm.pl (HELO [87.251.237.18]) (laurentp@[87.251.237.18])
+          (envelope-sender <laurentp@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with AES256-SHA encrypted SMTP
+          for <florian.fainelli@int-evry.fr>; 27 Jan 2007 23:30:00 +0100
+Message-ID: <45BBD308.4060207@wp.pl>
+Date:	Sat, 27 Jan 2007 23:32:40 +0100
+From:	"W.P." <laurentp@wp.pl>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
+X-Accept-Language: pl, en, en-us
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart4757433.SZreyfRjZB";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200701272238.08482.florian.fainelli@int-evry.fr>
-Return-Path: <florian.fainelli@int-evry.fr>
+To:	Florian Fainelli <florian.fainelli@int-evry.fr>,
+	linux-mips@linux-mips.org
+Subject: Re: RTL-8186 follow-up
+References: <5C1FD43E5F1B824E83985A74F396286E041B10FB@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca> <200701271354.41905.florian.fainelli@int-evry.fr> <45BB8C5D.50405@wp.pl> <200701272238.08482.florian.fainelli@int-evry.fr>
+In-Reply-To: <200701272238.08482.florian.fainelli@int-evry.fr>
+Content-Type: multipart/mixed;
+ boundary="------------040507080700060002020505"
+X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
+X-WP-SPAM: NO 0000000                                      
+Return-Path: <laurentp@wp.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13833
+X-archive-position: 13834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@int-evry.fr
+X-original-sender: laurentp@wp.pl
 Precedence: bulk
 X-list: linux-mips
 
---nextPart4757433.SZreyfRjZB
+This is a multi-part message in MIME format.
+--------------040507080700060002020505
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<cut>
+
+>There might be version mismatch, or other modules to load before this one. 
+>This can also be a kernel configuration problem, related to modules that are 
+>expected to be in-kernel.
+>
+>  
+>
+You gave me an idea: i think it's related to fact, that those modules
+expect to be linked into kernel (they complain about basic kernel
+symbols too). But how to make sure?? - not risking to render board unusable?
+If you find a method (maybe trying to link a non network-critical module
+into kernel, like ipsec), please provide step-by-step instructions to me.
+
+
+<cut>
+>>Well, unless you have erased the booloader, I think you should still
+be able
+>>to reflash the device using bootloader commands, even via xmodem if
+the loader allows it.
+
+You THINK or you KNOW? (in case of 8186!)
+
+>>I think you should have a look at this page [1], where there are
+ressources to create custom rtl8181 firmwares.
+
+I will, but on my board there is 8186, not 8181. And very beginning of
+bootstrap, in bootloader i can see no option of TFTP (see atached file).
+
+W.P.
+
+--------------040507080700060002020505
 Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+ name="bootloader.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="bootloader.txt"
 
-Hi Laurent,
 
-Le samedi 27 janvier 2007 18:31, W.P. a =E9crit=A0:
-> <cut>
-> 1). I have added modules found in KERNEL_SRC/rtl8186 (that i wrote about
-> in other post), to image, but trying to load them gives "unresolved
-> symbol" errors:
->
-> <example>
-> # insmod ip_nat_l2tp
-> Using /lib/modules/2.4.18-MIPS-01.00/ip_nat_l2tp.o
-> insmod: unresolved symbol kmalloc
-> insmod: unresolved symbol create_proc_entry
-> insmod: unresolved symbol ip_nat_helper_register
-> insmod: unresolved symbol ip_nat_helper_unregister
-> insmod: unresolved symbol csum_partial
-> insmod: unresolved symbol sprintf
-> </example>
+UART1 output test ok
+Uart init
+mfid=000000c2 devid=00002249
+Found 1 x 2M flash memory
 
-There might be version mismatch, or other modules to load before this one.=
-=20
-This can also be a kernel configuration problem, related to modules that ar=
-e=20
-expected to be in-kernel.
+---RealTek(RTL8186)at 2005.06.06-11:22+0800 version 1.3c [32bit](180MHz)
 
->
-> This problem is very of interest, because there are modules for IP_SEC,
-> and a module rtl8186 (NIC driver??) that is much SMALLER that module
-> with the same name rtl8186 generated during kernel compilation. There is
-> also module named wireless_ag_net.
->
-> 2). Is there some possibility to "recover" using serial port if it
-> happens to corrupt kernel to point to not have network access? (I mean
-> NOT using JTAG).??
-
-Well, unless you have erased the booloader, I think you should still be abl=
-e=20
-to reflash the device using bootloader commands, even via xmodem if the=20
-loader allows it.
-
->
-> 3). Florian, could you help me to "reverse engineer" Edimax-supplied
-> firmware image? AFAIR it is composed of header, compressed vmlinux and
-> compressed initrd. But how to find at what offset those images are?, and
-> how are they compressed.
-
-I think you should have a look at this page [1], where there are ressources=
- to=20
-create custom rtl8181 firmwares.
-
->
-> W.P.
-
-[1] http://rtl8181.sourceforge.net/
-
-=2D-=20
-Regards, Florian
-
---nextPart4757433.SZreyfRjZB
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.1 (GNU/Linux)
-
-iD8DBQBFu8ZAQ/Yr6D8A81kRAhZPAJ0R51mLnjO8kslAUiQPuiTzYg15DQCglHNB
-SEmKy85M/GJU0PQXccPaOdg=
-=VUkk
------END PGP SIGNATURE-----
-
---nextPart4757433.SZreyfRjZB--
+---Escape booting by user
+<RealTek>help
+----------------- COMMAND MODE HELP ------------------
+HELP (?)				    : Print this help message
+D <Address> <Len>
+EW <Address> <Value1> <Value2>...
+EH <Address> <Value1> <Value2>...
+EB <Address> <Value1> <Value2>...
+EC <Address> <Value1> <Length>...
+CMP: CMP <dst><src><length>
+IPCONFIG:<TargetAddress>
+J: Jump to <TargetAddress>
+FLW: FLW <dst><src><length>
+FLR: FLR <dst><src><length>
+LOADADDR: <Load Address>
+AUTOBURN: 0/1
+<RealTek>
+--------------040507080700060002020505--

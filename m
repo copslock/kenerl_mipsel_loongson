@@ -1,67 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2007 17:29:36 +0000 (GMT)
-Received: from mx5.wp.pl ([212.77.101.9]:33873 "EHLO mx1.wp.pl")
-	by ftp.linux-mips.org with ESMTP id S20037612AbXA0R3b (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 27 Jan 2007 17:29:31 +0000
-Received: (wp-smtpd smtp.wp.pl 5302 invoked from network); 27 Jan 2007 18:28:27 +0100
-Received: from apn-237-18.gprsbal.plusgsm.pl (HELO [87.251.237.18]) (laurentp@[87.251.237.18])
-          (envelope-sender <laurentp@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with AES256-SHA encrypted SMTP
-          for <florian.fainelli@int-evry.fr>; 27 Jan 2007 18:28:27 +0100
-Message-ID: <45BB8C5D.50405@wp.pl>
-Date:	Sat, 27 Jan 2007 18:31:09 +0100
-From:	"W.P." <laurentp@wp.pl>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
-X-Accept-Language: pl, en, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2007 17:44:51 +0000 (GMT)
+Received: from mailout.stusta.mhn.de ([141.84.69.5]:9883 "EHLO
+	mailhub.stusta.mhn.de") by ftp.linux-mips.org with ESMTP
+	id S20037617AbXA0Ror (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 27 Jan 2007 17:44:47 +0000
+Received: from r063144.stusta.swh.mhn.de (r063144.stusta.swh.mhn.de [10.150.63.144])
+	by mailhub.stusta.mhn.de (Postfix) with ESMTP id 3C033181CDB;
+	Sat, 27 Jan 2007 18:44:20 +0100 (CET)
+Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
+	id D2931115944; Sat, 27 Jan 2007 18:44:20 +0100 (CET)
+Date:	Sat, 27 Jan 2007 18:44:20 +0100
+From:	Adrian Bunk <bunk@stusta.de>
+To:	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@osdl.org>
+Cc:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Jan Altenberg <jan@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Andrew Clayton <andrew@digital-domain.net>,
+	Trond Myklebust <trond.myklebust@fys.uio.no>
+Subject: 2.6.20-rc6: known regressions with patches (v2)
+Message-ID: <20070127174420.GO6017@stusta.de>
+References: <Pine.LNX.4.64.0701241847360.25027@woody.linux-foundation.org>
 MIME-Version: 1.0
-To:	Florian Fainelli <florian.fainelli@int-evry.fr>,
-	linux-mips@linux-mips.org
-Subject: Re: RTL-8186 follow-up
-References: <5C1FD43E5F1B824E83985A74F396286E041B10FB@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca> <45BA94FF.4080301@wp.pl> <45BB4DF8.7070006@wp.pl> <200701271354.41905.florian.fainelli@int-evry.fr>
-In-Reply-To: <200701271354.41905.florian.fainelli@int-evry.fr>
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
-X-WP-SPAM: NO 0000000                                      
-Return-Path: <laurentp@wp.pl>
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64.0701241847360.25027@woody.linux-foundation.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <bunk@stusta.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13831
+X-archive-position: 13832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: laurentp@wp.pl
+X-original-sender: bunk@stusta.de
 Precedence: bulk
 X-list: linux-mips
 
-<cut>
-1). I have added modules found in KERNEL_SRC/rtl8186 (that i wrote about
-in other post), to image, but trying to load them gives "unresolved
-symbol" errors:
+This email lists some known regressions in 2.6.20-rc6 compared to 2.6.19
+with patches available.
 
-<example>
-# insmod ip_nat_l2tp
-Using /lib/modules/2.4.18-MIPS-01.00/ip_nat_l2tp.o
-insmod: unresolved symbol kmalloc
-insmod: unresolved symbol create_proc_entry
-insmod: unresolved symbol ip_nat_helper_register
-insmod: unresolved symbol ip_nat_helper_unregister
-insmod: unresolved symbol csum_partial
-insmod: unresolved symbol sprintf
-</example>
+If you find your name in the Cc header, you are either submitter of one
+of the bugs, maintainer of an affectected subsystem or driver, a patch
+of you caused a breakage or I'm considering you in any other way possibly
+involved with one or more of these issues.
 
-This problem is very of interest, because there are modules for IP_SEC,
-and a module rtl8186 (NIC driver??) that is much SMALLER that module
-with the same name rtl8186 generated during kernel compilation. There is
-also module named wireless_ag_net.
+Due to the huge amount of recipients, please trim the Cc when answering.
 
-2). Is there some possibility to "recover" using serial port if it
-happens to corrupt kernel to point to not have network access? (I mean
-NOT using JTAG).??
 
-3). Florian, could you help me to "reverse engineer" Edimax-supplied
-firmware image? AFAIR it is composed of header, compressed vmlinux and
-compressed initrd. But how to find at what offset those images are?, and
-how are they compressed.
+Subject    : MIPS Malta: CONFIG_MTD=n compile error
+References : http://lkml.org/lkml/2007/1/25/122
+Submitter  : Jan Altenberg <jan@linutronix.de>
+Caused-By  : Ralf Baechle <ralf@linux-mips.org>
+             commit b228f4c54df37b53c6f364aa7f3efa4280bcc4f0
+Handled-By : Jan Altenberg <jan@linutronix.de>
+Patch      : http://lkml.org/lkml/2007/1/25/122
+Status     : patch available
 
-W.P.
+
+Subject    : NFS triggers WARN_ON() in invalidate_inode_pages2_range()
+References : http://bugzilla.kernel.org/show_bug.cgi?id=7826
+Submitter  : Andrew Clayton <andrew@digital-domain.net>
+Caused-By  : Andrew Morton <akpm@osdl.org>
+             commit 8258d4a574d3a8c01f0ef68aa26b969398a0e140
+Handled-By : Trond Myklebust <trond.myklebust@fys.uio.no>
+Patch      : http://lkml.org/lkml/2007/1/24/323
+Status     : patch available

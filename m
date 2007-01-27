@@ -1,95 +1,196 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jan 2007 23:54:13 +0000 (GMT)
-Received: from mx5.wp.pl ([212.77.101.9]:41436 "EHLO mx1.wp.pl")
-	by ftp.linux-mips.org with ESMTP id S28576309AbXAZXyL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 26 Jan 2007 23:54:11 +0000
-Received: (wp-smtpd smtp.wp.pl 1422 invoked from network); 27 Jan 2007 00:53:04 +0100
-Received: from apn-236-1.gprsbal.plusgsm.pl (HELO [87.251.236.1]) (laurentp@[87.251.236.1])
-          (envelope-sender <laurentp@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with AES256-SHA encrypted SMTP
-          for <linux-mips@linux-mips.org>; 27 Jan 2007 00:53:04 +0100
-Message-ID: <45BA94FF.4080301@wp.pl>
-Date:	Sat, 27 Jan 2007 00:55:43 +0100
-From:	"W.P." <laurentp@wp.pl>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
-X-Accept-Language: pl, en, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jan 2007 00:29:39 +0000 (GMT)
+Received: from father.pmc-sierra.com ([216.241.224.13]:33520 "HELO
+	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S28576371AbXA0A3e (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 27 Jan 2007 00:29:34 +0000
+Received: (qmail 15892 invoked by uid 101); 27 Jan 2007 00:28:19 -0000
+Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
+  by father.pmc-sierra.com with SMTP; 27 Jan 2007 00:28:19 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l0R0SHBh018519;
+	Fri, 26 Jan 2007 16:28:18 -0800
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
+	id <DCB6FXFH>; Fri, 26 Jan 2007 16:28:17 -0800
+Message-ID: <45BA9C9D.7060302@pmc-sierra.com>
+From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git mast
+	 er
+Date:	Fri, 26 Jan 2007 16:28:13 -0800
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Beginning with REALTEK RTL-8186.
-References: <5C1FD43E5F1B824E83985A74F396286E041B10FB@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <5C1FD43E5F1B824E83985A74F396286E041B10FB@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-Content-Type: text/plain; charset=ISO-8859-2
-Content-Transfer-Encoding: 8bit
-X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
-X-WP-SPAM: NO 0000000                                      
-Return-Path: <laurentp@wp.pl>
+X-Mailer: Internet Mail Service (5.5.2657.72)
+x-originalarrivaltime: 27 Jan 2007 00:28:13.0800 (UTC) FILETIME=[0802DE80:01C741AA]
+user-agent: Thunderbird 1.5.0.9 (X11/20061206)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Marc_St-Jean@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13825
+X-archive-position: 13826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: laurentp@wp.pl
+X-original-sender: Marc_St-Jean@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-U¿ytkownik Don Hiatt napisa³:
 
->I'd certainly like to here about it. Well done.
->
->Cheers,
->
->don
+
+Sergei Shtylyov wrote:
+> Hello.
 > 
->
-Let it be ;)
+> Marc St-Jean wrote:
+> 
+>  >> > Index: linux_2_6/drivers/serial/8250.c
+>  >> > ===================================================================
+>  >> > RCS file: linux_2_6/drivers/serial/8250.c,v
+>  >> > retrieving revision 1.1.1.7
+>  >> > diff -u -r1.1.1.7 8250.c
+>  >> > --- linux_2_6/drivers/serial/8250.c   19 Oct 2006 21:00:58 -0000     
+>  >>1.1.1.7
+>  >> > +++ linux_2_6/drivers/serial/8250.c   24 Jan 2007 23:55:27 -0000
+>  >>[...]
+>  >> > @@ -333,6 +334,8 @@
+>  >> >   static void
+>  >> >   serial_out(struct uart_8250_port *up, int offset, int value)
+> 
+>  >>   Your patch is clearly garbled again, something added an extra space
+>  >>to all
+>  >>lines stating with space... :-/
+> 
+>  > I see that but was under the impression cvs diff did that so all lines
+>  > lineup correctly whether they have a +, -, or neither.
+> 
+>     Yes. And your mailer has probably added another space to lines already
+> begginign with space. Some mailers tend to do it, don't know sure why... 
+> :-/
 
-0). Model: EDIMAX BR-6204Wg, CPU: Realtek RTL-8186, bridge/NIC:
-RTL-83055C, Flash: 1x MX-29LV160CBTC-70G, RAM: 2x PSC-.....
+I'll look into it for the next patch.
 
-1). First of all, i have disassembled the device to get to it's serial
-port. On PCB i've found a 4-pins header labeled JP2. Optical inspection
-followed by ohmometer use shown that it is RTL's serial port. Pin
-functions (from center to egde): +3.3Vcc, RxD (RTL's receiver), GND, TxD
-(RTL's transmitter).
-Then i connected an MAX232 level translator to those pins, using +3.3V
-as power (CAUTION: 232 from Ti did not work @ 3.3V), as proposed on
-mips-wiki pages. Parameters of transmission: 38400/8N1. BTW Edimax tech
-support for Europe refused to tell if that header is serial.
 
-2). On username/pass prompt working configuration was super/@gogolinux -
-again from wiki.
+>  > It doesn't affect applying the patches for me, did you try?
+> 
+>     I hadn't but I had no doubts it'll fail... just tried, not a single 
+> hunk
+> applied. :-]
+> 
+>  >> >   {
+>  >> > +     /* Save the offset before it's remapped */
+>  >> > +     int save_offset = offset;
+> 
+>  >>    Is there real need to save this? What regshift equals for this UART?
+> 
+>  > Yes, we have a regshift of 2 on this SoC and it could be different on 
+> other
+>  > SoCs which reuse the UART IP.
+> 
+>     Agreed then (though still seems avoidable).
+> 
+>  >> >       offset = map_8250_out_reg(up, offset) << up->port.regshift;
+> 
+>  >> >       switch (up->port.iotype) {
+>  >> > @@ -359,6 +362,19 @@
+>  >> >                       writeb(value, up->port.membase + offset);
+>  >> >               break;
+>  >> >
+>  >> > +     case UPIO_DWAPB:
+>  >> > +             /* Save the LCR value so it can be re-written when a
+>  >> > +              * Busy Detect interrupt occurs. */
+>  >> > +             if (save_offset == UART_LCR)
+>  >> > +                     up->lcr = value;
+>  >> > +             writeb(value, up->port.membase + offset);
+>  >> > +             /* Read the IER to ensure any interrupt is cleared 
+> before
+>  >> > +              * returning from ISR. */
+>  >> > +             if ((save_offset == UART_TX || save_offset == 
+> UART_IER) &&
+> 
+>  >>    Not sure how an IER read ensures that...
+> 
+>  > It's just a dummy read to ensure that any writes which clear 
+> interrupts have
+>  > reached the device before returning from the IRQ.
+> 
+>     Hm, isn't it CPU write buffer flush? Shouldn't this be handled more
+> generically?
 
-3). Software instalation that comes from Edimax lacks nearly everything
-;( no vi, not even ln.
+No because this peripheral is across an internal SoC bus. Only a read
+accessing it will ensure the write is complete. We must insure the
+interrupt source is cleared to avoid spurious interrupts.
 
-4). Downloaded sources from Edimax Taiwanese site:
-http://www.edimax.com.tw/download/drivers/GPL/BR-6204WG_GNU.tgz a little
-71.5MB package. ;)
-4a). what lacks from that tarball: /web directory, *.sh scripts from /bin
-4b). using default build instructions found in tarball leads to lack of
-webserver (webs), and two important other execs: /bin/setup and
-/bin/flash. The latter is, as i realize an interface to store/fetch
-variables from flash. The setup file SHOULD be in tarball: it is
-referenced in build chain, but is missing (whole directory AP/console).
-4c). I launched build, then I copied missing files from working system
-and  then blocked script in rtl-11g-GPL/AP/mkimg/app_11g_script to NOT
-regenerate top.11g directory. Then i ran build once again.
 
-5). Flashed resulting bin file onto Edimax.
+> [...]
+>  >> > Index: linux_2_6/drivers/serial/8250_early.c
+>  >> > ===================================================================
+>  >> > RCS file: linux_2_6/drivers/serial/8250_early.c,v
+>  >> > retrieving revision 1.1.1.3
+>  >> > diff -u -r1.1.1.3 8250_early.c
+>  >> > --- linux_2_6/drivers/serial/8250_early.c     19 Oct 2006 20:08:20
+>  >>-0000      1.1.1.3
+>  >> > +++ linux_2_6/drivers/serial/8250_early.c     24 Jan 2007 23:55:27 
+> -0000
+>  >> > @@ -46,7 +46,7 @@
+>  >> >
+>  >> >   static unsigned int __init serial_in(struct uart_port *port, int
+>  >>offset)
+>  >> >   {
+>  >> > -     if (port->iotype == UPIO_MEM)
+>  >> > +     if (port->iotype == UPIO_MEM || port->iotype == UPIO_DWAPB)
+>  >> >               return readb(port->membase + offset);
+>  >> >       else
+>  >> >               return inb(port->iobase + offset);
+>  >> > @@ -54,7 +54,7 @@
+>  >> >
+>  >> >   static void __init serial_out(struct uart_port *port, int offset,
+>  >>int value)
+>  >> >   {
+>  >> > -     if (port->iotype == UPIO_MEM)
+>  >> > +     if (port->iotype == UPIO_MEM || port->iotype == UPIO_DWAPB)
+>  >> >               writeb(value, port->membase + offset);
+>  >> >       else
+>  >> >               outb(value, port->iobase + offset);
+>  >> > @@ -233,7 +233,7 @@
+>  >> >               return 0;
+>  >> >
+>  >> >       /* Try to start the normal driver on a matching line.  */
+>  >> > -     mmio = (port->iotype == UPIO_MEM);
+>  >> > +     mmio = (port->iotype == UPIO_MEM || port->iotype == 
+> UPIO_DWAPB);
+>  >> >       line = serial8250_start_console(port, device->options);
+>  >> >       if (line < 0)
+>  >> >               printk("No ttyS device at %s 0x%lx for console\n",
+> 
+>  >>    From your 8250_eraly.c changes I can conclude regshift == 1 (it 
+> doesn't
+>  >>currently support other cases). So, serial_pot() doesn't need
+>  >>save_offset. :-)
+> 
+>  > Our regshift is definitely 2 on this SoC and we don't have any 
+> problems with
+>  > console output before the serial driver opens. So assuming it's using
+>  > 8250_early.c for initial console output I can only conclude that it 
+> works
+> 
+>     It comes into action only if you specify console=uart,... kernel option
+> for the eraly console support.  The "plain" 8250 console driver is 
+> containded
+> within 8250.c itself.
+> 
+>  > because UART_TX is offset 0 and the port was left configured from our
+>  > ROM monitor.
+> 
+>     Well, this part of the patch can't be considered complete then (how LSR
+> polling is going to work?), so should either be removed or the proper 
+> regshift
+> support added.
 
-6). Boots OK, but have to manually start init.sh and webs& from serial
-console.
-6a). Much more options in Busybox enabled. ex: vi, ln, etc.
+Since we don't require it I will drop the 8250_early.c changes from the patch.
 
-7). For this moment i have returned back to original (downloaded 1.48)
-Edimax firmware.
+I've tested the "mm tree" patch for the backup timer and it works, although
+the output seems a little choppy at times. I'll drop the UART_BUG_DWTHRE flag
+and associated code.
 
-Tomorrow I'll upload photos and boot-progress files somewhere.
-
-W.P.
-
-PS, there is a lot in configuration of this system, that i do not
-understand clearly: ex: ifconfig shows: br0, br1 WITH ip-addresses,
-eth0, eth1, wlan0 WITHOUT ip....
-I'll have to investigate config files/scripts.
+Marc

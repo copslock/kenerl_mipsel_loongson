@@ -1,54 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 16:27:15 +0000 (GMT)
-Received: from ag-out-0708.google.com ([72.14.246.243]:29530 "EHLO
-	ag-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038620AbXA2Q1L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Jan 2007 16:27:11 +0000
-Received: by ag-out-0708.google.com with SMTP id 22so1217390agd
-        for <linux-mips@linux-mips.org>; Mon, 29 Jan 2007 08:27:04 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=P2jaqsfAciBI8b5VOQ4P1dapodSIgpzpkctckbYTBzmkSFWFed09r1gQkk+Lk/0somkjhxQ3KYpx10cjMmydQ7ggGneLx328wZJHQJceCA3pAF79KKfQ2Z/6SkCGkxX0ztF89zkR2X9D2EJjUT65Ple70523Jh2yHTmOkydUUPQ=
-Received: by 10.90.78.1 with SMTP id a1mr6924022agb.1170088024628;
-        Mon, 29 Jan 2007 08:27:04 -0800 (PST)
-Received: by 10.90.34.12 with HTTP; Mon, 29 Jan 2007 08:27:04 -0800 (PST)
-Message-ID: <cda58cb80701290827i1892e74dlb60651847982f77f@mail.gmail.com>
-Date:	Mon, 29 Jan 2007 17:27:04 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 18:06:39 +0000 (GMT)
+Received: from phoenix.bawue.net ([193.7.176.60]:9679 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20038660AbXA2SGe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 18:06:34 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 6808DB924B;
+	Mon, 29 Jan 2007 19:05:56 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1HBauX-0004OG-2U; Mon, 29 Jan 2007 18:07:21 +0000
+Date:	Mon, 29 Jan 2007 18:07:21 +0000
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	macro@linux-mips.org, vagabon.xyz@gmail.com, dan@debian.org,
+	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: RFC: Sentosa boot fix
-Cc:	macro@linux-mips.org, dan@debian.org, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-In-Reply-To: <20070130.011442.21365159.anemo@mba.ocn.ne.jp>
+Message-ID: <20070129180720.GC13923@networkno.de>
+References: <20070128180807.GA18890@nevyn.them.org> <cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com> <Pine.LNX.4.64N.0701291527130.26916@blysk.ds.pg.gda.pl> <20070130.011442.21365159.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <20070128180807.GA18890@nevyn.them.org>
-	 <cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com>
-	 <Pine.LNX.4.64N.0701291527130.26916@blysk.ds.pg.gda.pl>
-	 <20070130.011442.21365159.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20070130.011442.21365159.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13845
+X-archive-position: 13846
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On 1/29/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
->
+Atsushi Nemoto wrote:
+> On Mon, 29 Jan 2007 15:46:20 +0000 (GMT), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+> >  Well, the option used to select between 64-bit and 32-bit ELF for 
+> > building 64-bit configurations.  I can see it has been changed from its 
+> > original meaning and it now only controls whether "-mno-explicit-relocs" 
+> > is passed to the compiler or not, which is sort of useless and certainly 
+> > does not match the intent nor what the description says.  The 64-bit 
+> > format is now used unconditionally and you can always pass such obscure 
+> > options to the compiler on the make's command line, so instead of this fix 
+> > I vote for complete removal of the BUILD_ELF64 option.
+> 
+> Though I do not know much about -mno-explicit-relocs,
+> CONFIG_BUILD_ELF64 controls -msym32 option and this is the reason of
+> the tweak in __pa_page_offset().
+> 
 > I thought -msym32 can not be used for 64-bit kernels which do not have
 > CKSEG load address, but apparently IP27 is using -msym32 with XKPHYS
 > load address.  Hmm...
->
 
-It may be interesting to have a look to the assembly code in this case
-to see what the compiler does exactly.
+IP27 kernels get objcopied to a CKSEG0 address.
 
--- 
-               Franck
+
+Thiemo

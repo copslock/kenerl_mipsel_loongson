@@ -1,67 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 18:47:56 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:43532 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038672AbXA2Srv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Jan 2007 18:47:51 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 963B3E1C99;
-	Mon, 29 Jan 2007 19:47:04 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id FeMhrNKi6vjh; Mon, 29 Jan 2007 19:47:04 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 26028E1C95;
-	Mon, 29 Jan 2007 19:47:04 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l0TIlJrh012959;
-	Mon, 29 Jan 2007 19:47:19 +0100
-Date:	Mon, 29 Jan 2007 18:47:12 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Daniel Jacobowitz <dan@debian.org>
-cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: Re: RFC: Sentosa boot fix
-In-Reply-To: <20070129161450.GA3384@nevyn.them.org>
-Message-ID: <Pine.LNX.4.64N.0701291833480.26916@blysk.ds.pg.gda.pl>
-References: <20070128180807.GA18890@nevyn.them.org>
- <cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com>
- <20070129155253.GA2070@nevyn.them.org> <cda58cb80701290806p5d68ba5ck5e3e3b2b3490126f@mail.gmail.com>
- <20070129161450.GA3384@nevyn.them.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 19:53:16 +0000 (GMT)
+Received: from mx1.wp.pl ([212.77.101.5]:22461 "EHLO mx1.wp.pl")
+	by ftp.linux-mips.org with ESMTP id S20038698AbXA2TxL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 19:53:11 +0000
+Received: (wp-smtpd smtp.wp.pl 5609 invoked from network); 29 Jan 2007 20:52:07 +0100
+Received: from apn-237-51.gprsbal.plusgsm.pl (HELO [87.251.237.51]) (laurentp@[87.251.237.51])
+          (envelope-sender <laurentp@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with RC4-MD5 encrypted SMTP
+          for <florian.fainelli@int-evry.fr>; 29 Jan 2007 20:52:07 +0100
+Message-ID: <45BE510D.10505@wp.pl>
+Date:	Mon, 29 Jan 2007 20:54:53 +0100
+From:	"W.P." <laurentp@wp.pl>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
+X-Accept-Language: pl, en, en-us
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.7/2500/Mon Jan 29 10:43:16 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+To:	Florian Fainelli <florian.fainelli@int-evry.fr>,
+	linux-mips@linux-mips.org
+Subject: Re: RTL-8186 follow-up2
+References: <5C1FD43E5F1B824E83985A74F396286E041B10FB@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca> <45BA94FF.4080301@wp.pl> <45BB4DF8.7070006@wp.pl> <200701271354.41905.florian.fainelli@int-evry.fr>
+In-Reply-To: <200701271354.41905.florian.fainelli@int-evry.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
+X-WP-SPAM: NO 0000000                                      
+Return-Path: <laurentp@wp.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13849
+X-archive-position: 13850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: laurentp@wp.pl
 Precedence: bulk
 X-list: linux-mips
 
-Daniel,
+<cut>
 
-> > Surely because none of them define CONFIG_BUILD_ELF64:
-> 
-> Huh - you're right, it must just be living in my local .config since
-> back when it meant something different.
+>Which kernel did you run ? Which toolchain did you use ?
+>  
+>
+I have unpacked the bigger of Edimax files for BR-6204Wg ->
+BR-6204Wg_GPL.zip and there are 2 FRESH (2006 dated) patches named
+realtek gcc/binutils. Maybe this is something for you.
 
- It looks like the meaning is still the same (although the note about 
-binutils versions supported needs be adjusted) and you are free to change 
-what's provided by a default configuration to whatever you like.
-
- I have BUILD_ELF64 enabled for my SWARM configuration and I do not plan 
-to change it.  If there is a bug in the definition of __pa_page_offset() 
-for such a setup it should be fixed indeed.
-
- Also "-mno-explicit-relocs" was only required with the old hack to 
-truncate addresses at the assembly level -- where "-mabi=64 -Wa,-mabi=32" 
-was used.  The option should go now, yielding a small code size 
-improvement for inline assembly, where the "R" constraint is used.
-
-  Maciej
+W.P.

@@ -1,64 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Jan 2007 18:11:23 +0000 (GMT)
-Received: from nevyn.them.org ([66.93.172.17]:48873 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S20038287AbXA1SLT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 28 Jan 2007 18:11:19 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.63)
-	(envelope-from <drow@nevyn.them.org>)
-	id 1HBERj-0004xA-CW; Sun, 28 Jan 2007 13:08:07 -0500
-Date:	Sun, 28 Jan 2007 13:08:07 -0500
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	linux-mips@linux-mips.org
-Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>, ralf@linux-mips.org
-Subject: RFC: Sentosa boot fix
-Message-ID: <20070128180807.GA18890@nevyn.them.org>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 08:50:53 +0000 (GMT)
+Received: from mx2.mail.elte.hu ([157.181.151.9]:16853 "EHLO mx2.mail.elte.hu")
+	by ftp.linux-mips.org with ESMTP id S20037669AbXA2Ius (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 08:50:48 +0000
+Received: from elvis.elte.hu ([157.181.1.14])
+	by mx2.mail.elte.hu with esmtp (Exim)
+	id 1HBSAV-0006mj-SF
+	from <mingo@elte.hu>; Mon, 29 Jan 2007 09:47:24 +0100
+Received: by elvis.elte.hu (Postfix, from userid 1004)
+	id 792923E245A; Mon, 29 Jan 2007 09:46:40 +0100 (CET)
+Date:	Mon, 29 Jan 2007 09:45:48 +0100
+From:	Ingo Molnar <mingo@elte.hu>
+To:	Adrian Bunk <bunk@stusta.de>
+Cc:	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@osdl.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Duncan <1i5t5.duncan@cox.net>, Neil Brown <neilb@suse.de>,
+	mingo@redhat.com, linux-raid@vger.kernel.org,
+	Dave Jones <davej@redhat.com>, cpufreq@lists.linux.org.uk,
+	lenb@kernel.org, linux-acpi@vger.kernel.org,
+	Jan Altenberg <jan@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Andrew Clayton <andrew@digital-domain.net>,
+	Trond Myklebust <trond.myklebust@fys.uio.no>
+Subject: Re: 2.6.20-rc6: known regressions with patches
+Message-ID: <20070129084548.GA10578@elte.hu>
+References: <Pine.LNX.4.64.0701241847360.25027@woody.linux-foundation.org> <20070126181853.GO17836@stusta.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <drow@nevyn.them.org>
+In-Reply-To: <20070126181853.GO17836@stusta.de>
+User-Agent: Mutt/1.4.2.2i
+Received-SPF: softfail (mx2: transitioning domain of elte.hu does not designate 157.181.1.14 as permitted sender) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
+X-ELTE-VirusStatus: clean
+X-ELTE-SpamScore: -3.7
+X-ELTE-SpamLevel: 
+X-ELTE-SpamCheck: no
+X-ELTE-SpamVersion: ELTE 2.0 
+X-ELTE-SpamCheck-Details: score=-3.7 required=5.9 tests=ALL_TRUSTED,BAYES_05 autolearn=no SpamAssassin version=3.0.3
+	-3.3 ALL_TRUSTED            Did not pass through any untrusted hosts
+	-0.4 BAYES_05               BODY: Bayesian spam probability is 1 to 5%
+	[score: 0.0247]
+Return-Path: <mingo@elte.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13836
+X-archive-position: 13837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: mingo@elte.hu
 Precedence: bulk
 X-list: linux-mips
 
-From: Daniel Jacobowitz <dan@codesourcery.com>
 
-Always support CKSEG0 for 64-bit kernels.
+* Adrian Bunk <bunk@stusta.de> wrote:
 
-This prevents an early exception when used without a ramdisk.
+> Subject    : ACPI: fix cpufreq regression
+> References : http://lkml.org/lkml/2007/1/16/120
+> Submitter  : Ingo Molnar <mingo@elte.hu>
+> Caused-By  : Dave Jones <davej@redhat.com>
+>              commit 0916bd3ebb7cefdd0f432e8491abe24f4b5a101e
+> Handled-By : Ingo Molnar <mingo@elte.hu>
+> Patch      : http://lkml.org/lkml/2007/1/16/120
+> Status     : patch available
 
-Signed-off-by: Daniel Jacobowitz <dan@codesourcery.com>
+this is commit e4233dec749a3519069d9390561b5636a75c7579 meanwhile.
 
----
-
-Here's a crude patch that lets my Sentosa boot using GIT HEAD.
-The problem is __pa_symbol(&_end); the kernel is linked at
-0xffffffff80xxxxxx, so subtracting a PAGE_OFFSET of 0xa800000000000000
-does not do anything useful to this address at all.
-
-This may be the wrong fix, but if so, I don't understand what's going
-on.  What does CKSEG0 have to do with !CONFIG_BUILD_ELF64?
-
-diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
-index 2f9e1a9..81dc8a6 100644
---- a/include/asm-mips/page.h
-+++ b/include/asm-mips/page.h
-@@ -132,7 +132,7 @@ typedef struct { unsigned long pgprot; } pgprot_t;
- /* to align the pointer to the (next) page boundary */
- #define PAGE_ALIGN(addr)	(((addr) + PAGE_SIZE - 1) & PAGE_MASK)
- 
--#if defined(CONFIG_64BIT) && !defined(CONFIG_BUILD_ELF64)
-+#if defined(CONFIG_64BIT)
- #define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
- #else
- #define __pa_page_offset(x)	PAGE_OFFSET
-
--- 
-Daniel Jacobowitz
-CodeSourcery
+	Ingo

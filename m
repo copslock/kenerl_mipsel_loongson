@@ -1,86 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 13:03:19 +0000 (GMT)
-Received: from mx1.redhat.com ([66.187.233.31]:32913 "EHLO mx1.redhat.com")
-	by ftp.linux-mips.org with ESMTP id S20038564AbXA2NDP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 13:03:15 +0000
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.13.1/8.13.1) with ESMTP id l0TCxRvw016446;
-	Mon, 29 Jan 2007 07:59:27 -0500
-Received: from gelk.kernelslacker.org (vpn-248-1.boston.redhat.com [10.13.248.1])
-	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id l0TCxN6N013740;
-	Mon, 29 Jan 2007 07:59:26 -0500
-Received: from gelk.kernelslacker.org (localhost.localdomain [127.0.0.1])
-	by gelk.kernelslacker.org (8.13.8/8.13.8) with ESMTP id l0TCxM3a025007;
-	Mon, 29 Jan 2007 07:59:23 -0500
-Received: (from davej@localhost)
-	by gelk.kernelslacker.org (8.13.8/8.13.8/Submit) id l0TCwuoP025004;
-	Mon, 29 Jan 2007 07:58:56 -0500
-X-Authentication-Warning: gelk.kernelslacker.org: davej set sender to davej@redhat.com using -f
-Date:	Mon, 29 Jan 2007 07:58:55 -0500
-From:	Dave Jones <davej@redhat.com>
-To:	Ingo Molnar <mingo@elte.hu>
-Cc:	Adrian Bunk <bunk@stusta.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@osdl.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Duncan <1i5t5.duncan@cox.net>, Neil Brown <neilb@suse.de>,
-	mingo@redhat.com, linux-raid@vger.kernel.org,
-	cpufreq@lists.linux.org.uk, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, Jan Altenberg <jan@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Andrew Clayton <andrew@digital-domain.net>,
-	Trond Myklebust <trond.myklebust@fys.uio.no>
-Subject: Re: 2.6.20-rc6: known regressions with patches
-Message-ID: <20070129125855.GA30599@redhat.com>
-Mail-Followup-To: Dave Jones <davej@redhat.com>,
-	Ingo Molnar <mingo@elte.hu>, Adrian Bunk <bunk@stusta.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@osdl.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Duncan <1i5t5.duncan@cox.net>, Neil Brown <neilb@suse.de>,
-	mingo@redhat.com, linux-raid@vger.kernel.org,
-	cpufreq@lists.linux.org.uk, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, Jan Altenberg <jan@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Andrew Clayton <andrew@digital-domain.net>,
-	Trond Myklebust <trond.myklebust@fys.uio.no>
-References: <Pine.LNX.4.64.0701241847360.25027@woody.linux-foundation.org> <20070126181853.GO17836@stusta.de> <20070129084548.GA10578@elte.hu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070129084548.GA10578@elte.hu>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <davej@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 15:47:03 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:23311 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20038614AbXA2Pq6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Jan 2007 15:46:58 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 29FBCE1C95;
+	Mon, 29 Jan 2007 16:46:15 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id DffxLO5UqxxV; Mon, 29 Jan 2007 16:46:14 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id BD548E1C75;
+	Mon, 29 Jan 2007 16:46:14 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l0TFkQup029419;
+	Mon, 29 Jan 2007 16:46:26 +0100
+Date:	Mon, 29 Jan 2007 15:46:20 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: Re: RFC: Sentosa boot fix
+In-Reply-To: <cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com>
+Message-ID: <Pine.LNX.4.64N.0701291527130.26916@blysk.ds.pg.gda.pl>
+References: <20070128180807.GA18890@nevyn.them.org>
+ <cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.7/2500/Mon Jan 29 10:43:16 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13839
+X-archive-position: 13840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davej@redhat.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 29, 2007 at 09:45:48AM +0100, Ingo Molnar wrote:
- > 
- > * Adrian Bunk <bunk@stusta.de> wrote:
- > 
- > > Subject    : ACPI: fix cpufreq regression
- > > References : http://lkml.org/lkml/2007/1/16/120
- > > Submitter  : Ingo Molnar <mingo@elte.hu>
- > > Caused-By  : Dave Jones <davej@redhat.com>
- > >              commit 0916bd3ebb7cefdd0f432e8491abe24f4b5a101e
- > > Handled-By : Ingo Molnar <mingo@elte.hu>
- > > Patch      : http://lkml.org/lkml/2007/1/16/120
- > > Status     : patch available
- > 
- > this is commit e4233dec749a3519069d9390561b5636a75c7579 meanwhile.
+On Mon, 29 Jan 2007, Franck Bui-Huu wrote:
 
-Thanks for pushing this on in my absense btw.
-FWIW, it has my belated ACK :)
-I've asked for it to be in 19.3 too as the same bug exists there.
+> > The problem is __pa_symbol(&_end); the kernel is linked at
+> > 0xffffffff80xxxxxx, so subtracting a PAGE_OFFSET of 0xa800000000000000
+> > does not do anything useful to this address at all.
+> >
+> 
+> In my understanding, if your kernel is linked at 0xffffffff80xxxxxx,
+> you shouldn't have CONFIG_BUILD_ELF64 set.
 
-		Dave
+ Well, the option used to select between 64-bit and 32-bit ELF for 
+building 64-bit configurations.  I can see it has been changed from its 
+original meaning and it now only controls whether "-mno-explicit-relocs" 
+is passed to the compiler or not, which is sort of useless and certainly 
+does not match the intent nor what the description says.  The 64-bit 
+format is now used unconditionally and you can always pass such obscure 
+options to the compiler on the make's command line, so instead of this fix 
+I vote for complete removal of the BUILD_ELF64 option.
 
--- 
-http://www.codemonkey.org.uk
+  Maciej

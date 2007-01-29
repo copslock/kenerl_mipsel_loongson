@@ -1,47 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 16:14:58 +0000 (GMT)
-Received: from nevyn.them.org ([66.93.172.17]:45776 "EHLO nevyn.them.org")
-	by ftp.linux-mips.org with ESMTP id S20038622AbXA2QOw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 16:14:52 +0000
-Received: from drow by nevyn.them.org with local (Exim 4.63)
-	(envelope-from <drow@nevyn.them.org>)
-	id 1HBZ9e-0000u4-H4; Mon, 29 Jan 2007 11:14:50 -0500
-Date:	Mon, 29 Jan 2007 11:14:50 -0500
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 16:16:16 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:55014 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038625AbXA2QQL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 16:16:11 +0000
+Received: from localhost (p7074-ipad29funabasi.chiba.ocn.ne.jp [221.184.74.74])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C5876BEB5; Tue, 30 Jan 2007 01:14:46 +0900 (JST)
+Date:	Tue, 30 Jan 2007 01:14:42 +0900 (JST)
+Message-Id: <20070130.011442.21365159.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
+Cc:	vagabon.xyz@gmail.com, dan@debian.org, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
 Subject: Re: RFC: Sentosa boot fix
-Message-ID: <20070129161450.GA3384@nevyn.them.org>
-References: <20070128180807.GA18890@nevyn.them.org> <cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com> <20070129155253.GA2070@nevyn.them.org> <cda58cb80701290806p5d68ba5ck5e3e3b2b3490126f@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80701290806p5d68ba5ck5e3e3b2b3490126f@mail.gmail.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <drow@nevyn.them.org>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.64N.0701291527130.26916@blysk.ds.pg.gda.pl>
+References: <20070128180807.GA18890@nevyn.them.org>
+	<cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com>
+	<Pine.LNX.4.64N.0701291527130.26916@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13843
+X-archive-position: 13844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 29, 2007 at 05:06:39PM +0100, Franck Bui-Huu wrote:
-> >What Maciej said.  But also: please compare the description of
-> >CONFIG_BUILD_ELF64 with the targets that link at that address.
-> >Almost every supported target links at that address, except for
-> >IP27.  How do any of them work today?
-> >
-> 
-> Surely because none of them define CONFIG_BUILD_ELF64:
+On Mon, 29 Jan 2007 15:46:20 +0000 (GMT), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+>  Well, the option used to select between 64-bit and 32-bit ELF for 
+> building 64-bit configurations.  I can see it has been changed from its 
+> original meaning and it now only controls whether "-mno-explicit-relocs" 
+> is passed to the compiler or not, which is sort of useless and certainly 
+> does not match the intent nor what the description says.  The 64-bit 
+> format is now used unconditionally and you can always pass such obscure 
+> options to the compiler on the make's command line, so instead of this fix 
+> I vote for complete removal of the BUILD_ELF64 option.
 
-Huh - you're right, it must just be living in my local .config since
-back when it meant something different.
+Though I do not know much about -mno-explicit-relocs,
+CONFIG_BUILD_ELF64 controls -msym32 option and this is the reason of
+the tweak in __pa_page_offset().
 
--- 
-Daniel Jacobowitz
-CodeSourcery
+I thought -msym32 can not be used for 64-bit kernels which do not have
+CKSEG load address, but apparently IP27 is using -msym32 with XKPHYS
+load address.  Hmm...
+
+---
+Atsushi Nemoto

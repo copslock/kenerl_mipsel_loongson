@@ -1,46 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 19:53:16 +0000 (GMT)
-Received: from mx1.wp.pl ([212.77.101.5]:22461 "EHLO mx1.wp.pl")
-	by ftp.linux-mips.org with ESMTP id S20038698AbXA2TxL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 19:53:11 +0000
-Received: (wp-smtpd smtp.wp.pl 5609 invoked from network); 29 Jan 2007 20:52:07 +0100
-Received: from apn-237-51.gprsbal.plusgsm.pl (HELO [87.251.237.51]) (laurentp@[87.251.237.51])
-          (envelope-sender <laurentp@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with RC4-MD5 encrypted SMTP
-          for <florian.fainelli@int-evry.fr>; 29 Jan 2007 20:52:07 +0100
-Message-ID: <45BE510D.10505@wp.pl>
-Date:	Mon, 29 Jan 2007 20:54:53 +0100
-From:	"W.P." <laurentp@wp.pl>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
-X-Accept-Language: pl, en, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 22:01:05 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.172]:64909 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037403AbXA2WBB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Jan 2007 22:01:01 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so1460421uga
+        for <linux-mips@linux-mips.org>; Mon, 29 Jan 2007 14:00:01 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Lt+3vUMRiRfo3ZtF42Dd0ndJ3GDvjcbWBy2j+cKrobMYdD/7CDNp6XacaPNVc9cKiH4urbF2+nHCpmlKBHMv1di/AxC5WBstGUUOM61kYddI2KbDyru2pZw2HKxAlJ5WP4tKDzUgfzyTtWMBS/Zwgcby6OaZ+ns+k0VQxPwNjqU=
+Received: by 10.82.183.19 with SMTP id g19mr4138478buf.1170108000571;
+        Mon, 29 Jan 2007 14:00:00 -0800 (PST)
+Received: by 10.49.66.16 with HTTP; Mon, 29 Jan 2007 14:00:00 -0800 (PST)
+Message-ID: <816d36d30701291400i7a0e8f4u7f57a5a453f55ae3@mail.gmail.com>
+Date:	Mon, 29 Jan 2007 18:00:00 -0400
+From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
+To:	"Juergen Sell" <juergen.sell@gmail.com>
+Subject: Re: Re: Support for Vadem/Clio with NEC VR4121 anyone?
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <c2c892590701291050qe2e6c98q51f4f42d96734e1d@mail.gmail.com>
 MIME-Version: 1.0
-To:	Florian Fainelli <florian.fainelli@int-evry.fr>,
-	linux-mips@linux-mips.org
-Subject: Re: RTL-8186 follow-up2
-References: <5C1FD43E5F1B824E83985A74F396286E041B10FB@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca> <45BA94FF.4080301@wp.pl> <45BB4DF8.7070006@wp.pl> <200701271354.41905.florian.fainelli@int-evry.fr>
-In-Reply-To: <200701271354.41905.florian.fainelli@int-evry.fr>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
-X-WP-SPAM: NO 0000000                                      
-Return-Path: <laurentp@wp.pl>
+Content-Disposition: inline
+References: <c2c892590606120819m3cf64540n7cfcc8cd0e7fa394@mail.gmail.com>
+	 <816d36d30606121303u4e6529aat24bf60cd6ae8c37c@mail.gmail.com>
+	 <c2c892590701291050qe2e6c98q51f4f42d96734e1d@mail.gmail.com>
+Return-Path: <mendoza.ricardo@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13850
+X-archive-position: 13851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: laurentp@wp.pl
+X-original-sender: mendoza.ricardo@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-<cut>
+On 1/29/07, Juergen Sell <juergen.sell@gmail.com> wrote:
+> Hi,
+> never got a response from you since my reply.
+> So how far did you get?
+> Please share some info.
+> Juergen
 
->Which kernel did you run ? Which toolchain did you use ?
->  
->
-I have unpacked the bigger of Edimax files for BR-6204Wg ->
-BR-6204Wg_GPL.zip and there are 2 FRESH (2006 dated) patches named
-realtek gcc/binutils. Maybe this is something for you.
+Hi Jurgen,
 
-W.P.
+Truth is the thing is here in my table, didn't find the time to get
+pcmcia working, maybe one day I will. I am looking into other boards
+right now, not to mention most of my time is used up with other
+things.
+
+But what I said in my previous mail remains true, there is plenty of
+support in the kernel, just minor issues that shouldn't need massive
+amounts of work; Yoichi has it done pretty nicely on what VR stuff
+relates to.
+
+
+     Ricardo

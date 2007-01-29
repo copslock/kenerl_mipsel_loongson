@@ -1,52 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 09:59:44 +0000 (GMT)
-Received: from ag-out-0708.google.com ([72.14.246.240]:6034 "EHLO
-	ag-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038517AbXA2J7k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Jan 2007 09:59:40 +0000
-Received: by ag-out-0708.google.com with SMTP id 22so1154699agd
-        for <linux-mips@linux-mips.org>; Mon, 29 Jan 2007 01:59:37 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=eio1WaHAwTOPNvbOVXpL4ga9QIExGofvPTknjxlde9w0bvjp0ncH0I6ypmz7ih/VfHtTna7fRlHJl2NgpDlhQk14cYbjp/n2YgccilO4Z4rA15Z+D53TxdV4oC+3VVZbO4hO9wUDweIOJb5nMUm2+azCPXrmjNpE9sa4CPp+8Ts=
-Received: by 10.90.32.14 with SMTP id f14mr6299421agf.1170064777414;
-        Mon, 29 Jan 2007 01:59:37 -0800 (PST)
-Received: by 10.90.34.12 with HTTP; Mon, 29 Jan 2007 01:59:37 -0800 (PST)
-Message-ID: <cda58cb80701290159m5eed331em5945eac4a602363a@mail.gmail.com>
-Date:	Mon, 29 Jan 2007 10:59:37 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Daniel Jacobowitz" <dan@debian.org>
-Subject: Re: RFC: Sentosa boot fix
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070128180807.GA18890@nevyn.them.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jan 2007 13:03:19 +0000 (GMT)
+Received: from mx1.redhat.com ([66.187.233.31]:32913 "EHLO mx1.redhat.com")
+	by ftp.linux-mips.org with ESMTP id S20038564AbXA2NDP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jan 2007 13:03:15 +0000
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.13.1/8.13.1) with ESMTP id l0TCxRvw016446;
+	Mon, 29 Jan 2007 07:59:27 -0500
+Received: from gelk.kernelslacker.org (vpn-248-1.boston.redhat.com [10.13.248.1])
+	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id l0TCxN6N013740;
+	Mon, 29 Jan 2007 07:59:26 -0500
+Received: from gelk.kernelslacker.org (localhost.localdomain [127.0.0.1])
+	by gelk.kernelslacker.org (8.13.8/8.13.8) with ESMTP id l0TCxM3a025007;
+	Mon, 29 Jan 2007 07:59:23 -0500
+Received: (from davej@localhost)
+	by gelk.kernelslacker.org (8.13.8/8.13.8/Submit) id l0TCwuoP025004;
+	Mon, 29 Jan 2007 07:58:56 -0500
+X-Authentication-Warning: gelk.kernelslacker.org: davej set sender to davej@redhat.com using -f
+Date:	Mon, 29 Jan 2007 07:58:55 -0500
+From:	Dave Jones <davej@redhat.com>
+To:	Ingo Molnar <mingo@elte.hu>
+Cc:	Adrian Bunk <bunk@stusta.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@osdl.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Duncan <1i5t5.duncan@cox.net>, Neil Brown <neilb@suse.de>,
+	mingo@redhat.com, linux-raid@vger.kernel.org,
+	cpufreq@lists.linux.org.uk, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, Jan Altenberg <jan@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Andrew Clayton <andrew@digital-domain.net>,
+	Trond Myklebust <trond.myklebust@fys.uio.no>
+Subject: Re: 2.6.20-rc6: known regressions with patches
+Message-ID: <20070129125855.GA30599@redhat.com>
+Mail-Followup-To: Dave Jones <davej@redhat.com>,
+	Ingo Molnar <mingo@elte.hu>, Adrian Bunk <bunk@stusta.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@osdl.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Duncan <1i5t5.duncan@cox.net>, Neil Brown <neilb@suse.de>,
+	mingo@redhat.com, linux-raid@vger.kernel.org,
+	cpufreq@lists.linux.org.uk, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, Jan Altenberg <jan@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Andrew Clayton <andrew@digital-domain.net>,
+	Trond Myklebust <trond.myklebust@fys.uio.no>
+References: <Pine.LNX.4.64.0701241847360.25027@woody.linux-foundation.org> <20070126181853.GO17836@stusta.de> <20070129084548.GA10578@elte.hu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <20070128180807.GA18890@nevyn.them.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20070129084548.GA10578@elte.hu>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <davej@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13838
+X-archive-position: 13839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: davej@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Mon, Jan 29, 2007 at 09:45:48AM +0100, Ingo Molnar wrote:
+ > 
+ > * Adrian Bunk <bunk@stusta.de> wrote:
+ > 
+ > > Subject    : ACPI: fix cpufreq regression
+ > > References : http://lkml.org/lkml/2007/1/16/120
+ > > Submitter  : Ingo Molnar <mingo@elte.hu>
+ > > Caused-By  : Dave Jones <davej@redhat.com>
+ > >              commit 0916bd3ebb7cefdd0f432e8491abe24f4b5a101e
+ > > Handled-By : Ingo Molnar <mingo@elte.hu>
+ > > Patch      : http://lkml.org/lkml/2007/1/16/120
+ > > Status     : patch available
+ > 
+ > this is commit e4233dec749a3519069d9390561b5636a75c7579 meanwhile.
 
-On 1/28/07, Daniel Jacobowitz <dan@debian.org> wrote:
-> The problem is __pa_symbol(&_end); the kernel is linked at
-> 0xffffffff80xxxxxx, so subtracting a PAGE_OFFSET of 0xa800000000000000
-> does not do anything useful to this address at all.
->
+Thanks for pushing this on in my absense btw.
+FWIW, it has my belated ACK :)
+I've asked for it to be in 19.3 too as the same bug exists there.
 
-In my understanding, if your kernel is linked at 0xffffffff80xxxxxx,
-you shouldn't have CONFIG_BUILD_ELF64 set.
+		Dave
 
 -- 
-               Franck
+http://www.codemonkey.org.uk

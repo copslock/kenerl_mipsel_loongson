@@ -1,75 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jan 2007 01:03:20 +0000 (GMT)
-Received: from smtp.ocgnet.org ([64.20.243.3]:64729 "EHLO smtp.ocgnet.org")
-	by ftp.linux-mips.org with ESMTP id S20037582AbXA3BDN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 30 Jan 2007 01:03:13 +0000
-Received: from smtp.ocgnet.org (localhost [127.0.0.1])
-	by smtp.ocgnet.org (Postfix) with ESMTP id D15235203F4;
-	Mon, 29 Jan 2007 19:02:39 -0600 (CST)
-Received: from master.linux-sh.org (124x34x33x190.ap124.ftth.ucom.ne.jp [124.34.33.190])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.ocgnet.org (Postfix) with ESMTP id 6B3225203E0;
-	Mon, 29 Jan 2007 19:02:39 -0600 (CST)
-Received: from localhost (unknown [127.0.0.1])
-	by master.linux-sh.org (Postfix) with ESMTP id 54DF61029C4;
-	Tue, 30 Jan 2007 01:00:56 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at linux-sh.org
-Received: from master.linux-sh.org ([127.0.0.1])
-	by localhost (master.linux-sh.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id UGdwcgl1NX24; Tue, 30 Jan 2007 10:00:55 +0900 (JST)
-Received: by master.linux-sh.org (Postfix, from userid 500)
-	id 74B051029C3; Tue, 30 Jan 2007 10:00:55 +0900 (JST)
-Date:	Tue, 30 Jan 2007 10:00:55 +0900
-From:	Paul Mundt <lethal@linux-sh.org>
-To:	Rodolfo Giometti <giometti@enneenne.com>
-Cc:	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.arm.linux.org.uk, linux-mips@linux-mips.org
-Subject: Re: Advice on APM-EMU reunion
-Message-ID: <20070130010055.GA15907@linux-sh.org>
-Mail-Followup-To: Paul Mundt <lethal@linux-sh.org>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.arm.linux.org.uk, linux-mips@linux-mips.org
-References: <20070129230755.GA8705@enneenne.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070129230755.GA8705@enneenne.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <lethal@linux-sh.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jan 2007 03:53:05 +0000 (GMT)
+Received: from mo30.po.2iij.net ([210.128.50.53]:10508 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037681AbXA3DxA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 30 Jan 2007 03:53:00 +0000
+Received: by mo.po.2iij.net (mo30) id l0U3peOW015520; Tue, 30 Jan 2007 12:51:40 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox30) id l0U3pZC1000839
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 30 Jan 2007 12:51:35 +0900 (JST)
+Date:	Tue, 30 Jan 2007 12:51:35 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	juergen.sell@gmail.com
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
+	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
+Subject: Re: Support for Vadem/Clio with NEC VR4121 anyone?
+Message-Id: <20070130125135.069d58b8.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <816d36d30701291400i7a0e8f4u7f57a5a453f55ae3@mail.gmail.com>
+References: <c2c892590606120819m3cf64540n7cfcc8cd0e7fa394@mail.gmail.com>
+	<816d36d30606121303u4e6529aat24bf60cd6ae8c37c@mail.gmail.com>
+	<c2c892590701291050qe2e6c98q51f4f42d96734e1d@mail.gmail.com>
+	<816d36d30701291400i7a0e8f4u7f57a5a453f55ae3@mail.gmail.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13855
+X-archive-position: 13856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lethal@linux-sh.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 30, 2007 at 12:07:56AM +0100, Rodolfo Giometti wrote:
-> some months ago I sent to the MIPS and ARM mail lists a patch to unify
-> the several APM emulation codes adding a new dedicated directory so it
-> can be used to put there the per board specific code avoiding code
-> duplications (see files ./arch/arm/kernel/apm.c,
-> ./arch/mips/kernel/apm.c and ./arch/sh/kernel/apm.c that are almost
-> the same).
+Hi,
+
+On Mon, 29 Jan 2007 18:00:00 -0400
+"Ricardo Mendoza" <mendoza.ricardo@gmail.com> wrote:
+
+> On 1/29/07, Juergen Sell <juergen.sell@gmail.com> wrote:
+> > Hi,
+> > never got a response from you since my reply.
+> > So how far did you get?
+> > Please share some info.
+> > Juergen
 > 
-> The patch is here
-> "http://www.linux-mips.org/archives/linux-mips/2006-07/msg00144.html"
-> and it has been lost in the deep space...
+> Hi Jurgen,
 > 
-Not quite, the rationale for it being dropped was here:
+> Truth is the thing is here in my table, didn't find the time to get
+> pcmcia working, maybe one day I will. I am looking into other boards
+> right now, not to mention most of my time is used up with other
+> things.
+> 
+> But what I said in my previous mail remains true, there is plenty of
+> support in the kernel, just minor issues that shouldn't need massive
+> amounts of work; Yoichi has it done pretty nicely on what VR stuff
+> relates to.
 
-http://article.gmane.org/gmane.linux.kernel/485831
+I have no information about Clio.
 
-However, it has since been reposted:
+If it's same as IBM WorkPad z50 hardware, please use workpad_defconfig.
+It can be boot from CF with hpcboot or pbsdboot(boot loader for NetBSD).
+You should connect to PC with serial cable.
+Because we have no graphic driver for Clio now.
 
-http://article.gmane.org/gmane.linux.kernel/485833
-http://article.gmane.org/gmane.linux.kernel/485834
-http://article.gmane.org/gmane.linux.kernel/485835
-http://article.gmane.org/gmane.linux.kernel/485837
-
-and merged back in to -mm. This is all post 2.6.20 stuff, though..
+Yoichi

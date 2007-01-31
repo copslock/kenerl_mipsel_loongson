@@ -1,96 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jan 2007 17:57:04 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:4364 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038547AbXA3R47 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 30 Jan 2007 17:56:59 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 793D6E1CB2;
-	Tue, 30 Jan 2007 18:56:12 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id p8ZA8gc5M9XQ; Tue, 30 Jan 2007 18:56:12 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 20068E1CA8;
-	Tue, 30 Jan 2007 18:56:12 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l0UHuQH1026885;
-	Tue, 30 Jan 2007 18:56:26 +0100
-Date:	Tue, 30 Jan 2007 17:56:19 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	vagabon.xyz@gmail.com, dan@debian.org, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: RFC: Sentosa boot fix
-In-Reply-To: <20070131.014133.75185230.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0701301735470.9231@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0701291527130.26916@blysk.ds.pg.gda.pl>
- <20070130.011442.21365159.anemo@mba.ocn.ne.jp>
- <cda58cb80701290827i1892e74dlb60651847982f77f@mail.gmail.com>
- <20070131.014133.75185230.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.7/2505/Tue Jan 30 11:40:21 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2007 13:09:31 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:7592 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20037878AbXAaNJ3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 Jan 2007 13:09:29 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0VD9RsI030000;
+	Wed, 31 Jan 2007 13:09:27 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0VD9Q1b029999;
+	Wed, 31 Jan 2007 13:09:26 GMT
+Date:	Wed, 31 Jan 2007 13:09:26 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Cc:	Sam Cannell <sam@catalyst.net.nz>
+Subject: Kernel issues on R4000/R4000 SC and MC
+Message-ID: <20070131130926.GA29562@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13862
+X-archive-position: 13863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 31 Jan 2007, Atsushi Nemoto wrote:
+Since the introduction of rmap into the kernel memory managment has been
+broken for the SC and MC versions of R4000 and R4400 versions.
 
-> I compiled ip27 kernel and really confused...
-> 
-> head.S:
-> 	PTR_LA		t0, __bss_start		# clear .bss
-> 	LONG_S		zero, (t0)
-> 
-> System.map:
-> a8000000003b6000 A __bss_start
-> 
-> vmlinux:
-> a800000000385058:	3c0c003b 	lui	t0,0x3b
-> a80000000038505c:	658c6000 	daddiu	t0,t0,24576
-> a800000000385060:	fd800000 	sd	zero,0(t0)
-> 
-> vmlinux.32:
-> 80385058:	3c0c003b 	lui	t4,0x3b
-> 8038505c:	658c6000 	daddiu	t4,t4,24576
-> 80385060:	fd800000 	sd	zero,0(t4)
-> 
-> How does this code work?  Isn't address 0x3b6000 in user space?
+Interestingly enough this was only ever reported once in May 2006 and at
+that time the report just didn't make sense, so it ended up being ignored,
+see http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=1146433653.18721.10.camel%40pkunk.wgtn.cat-it.co.nz
 
- Well, the default config for this machine specifies -msym32 with the load 
-address of 0xa80000000001c000.  No wonder it does not work.
+Anyway, the issue boiled up again last week and was supposedly fixed for
+linux-2.6.17-rc7 which I've just merged.   I'd like to ask somebody with
+one of the affected CPUs to test this.  Below Nick Piggin's test program.
 
- I suppose the setup for this platform should be more or less like this:
+Thanks,
 
-ifdef CONFIG_BUILD_ELF64
-ifdef CONFIG_MAPPED_KERNEL
-load-$(CONFIG_SGI_IP27)		+= 0xc00000004001c000
-dataoffset-$(CONFIG_SGI_IP27)	+= 0x01000000
-else
-load-$(CONFIG_SGI_IP27)		+= 0xa80000000001c000
-endif
-else
-ifdef CONFIG_MAPPED_KERNEL
-load-$(CONFIG_SGI_IP27)		+= 0xffffffffc001c000
-OBJCOPYFLAGS			:= --change-addresses=0xc000000080000000
-dataoffset-$(CONFIG_SGI_IP27)	+= 0x01000000
-else
-load-$(CONFIG_SGI_IP27)		+= 0xffffffff8001c000
-OBJCOPYFLAGS			:= --change-addresses=0xa800000080000000
-endif
-endif
+  Ralf
 
- I can cook a patch if some SGI expert steps in and comments whether this 
-makes sense from the platform point of view or not.
+#define _GNU_SOURCE
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <assert.h>
 
-  Maciej
+int main(void)
+{
+	char *mem, *mem2, *frag;
+	size_t length = getpagesize();
+	unsigned int i;
+
+	mem = mmap(NULL, length, PROT_READ, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+	if (mem == MAP_FAILED)
+		perror("mmap"), exit(1);
+	/* fault in a zero page */
+	for (i = 0; i < length; i++)
+		assert(mem[i] == 0);
+
+	/* create an obstacle */
+	frag = mmap(NULL, length, PROT_READ, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+	if (frag == MAP_FAILED)
+		perror("mmap"), exit(1);
+	for (i = 0; i < length; i++)
+		assert(frag[i] == 0);
+	
+	mem2 = mremap(mem, length, length*2, MREMAP_MAYMOVE);
+	if (mem2 == MAP_FAILED)
+		perror("mremap"), exit(1);
+	
+	if (mem == mem2)
+		printf("Did not move old mappings!\n");
+	else {
+		unsigned int order = 3;
+		unsigned long size = length << order;
+		unsigned long mask = (size - 1) & ~(length-1);
+
+		printf("Moved ZERO_PAGE vaddr from %p to %p\n", mem, mem2);
+		if (((unsigned long)mem&mask) == ((unsigned long)mem2&mask))
+			printf("This will not change physical ZERO_PAGEs\n");
+		else
+			printf("This will change physical ZERO_PAGEs\n");
+	}
+
+	if (munmap(frag, length) == -1)
+		perror("munmap"), exit(1);
+
+	if (munmap(mem2, length*2) == -1)
+		perror("munmap"), exit(1);
+
+	exit(0);
+}

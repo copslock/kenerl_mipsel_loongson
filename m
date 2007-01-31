@@ -1,139 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2007 22:03:07 +0000 (GMT)
-Received: from smtp-ext.int-evry.fr ([157.159.11.17]:18635 "EHLO
-	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20038806AbXAaWDC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 Jan 2007 22:03:02 +0000
-Received: from mini.int.alphacore.net (florian.maisel.int-evry.fr [157.159.41.36])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 238F7D0E322;
-	Wed, 31 Jan 2007 23:00:59 +0100 (CET)
-From:	Florian Fainelli <florian.fainelli@int-evry.fr>
-To:	"Sergio Aguayo" <sergio@amilda.org>
-Subject: Re: Advice needed.
-Date:	Wed, 31 Jan 2007 22:59:42 +0100
-User-Agent: KMail/1.9.6
-Cc:	linux-mips@linux-mips.org
-References: <45C0C956.2050009@wp.pl> <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>
-In-Reply-To: <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2007 22:26:47 +0000 (GMT)
+Received: from mx1.wp.pl ([212.77.101.5]:1379 "EHLO mx1.wp.pl")
+	by ftp.linux-mips.org with ESMTP id S20038807AbXAaW0l (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 31 Jan 2007 22:26:41 +0000
+Received: (wp-smtpd smtp.wp.pl 2774 invoked from network); 31 Jan 2007 23:25:38 +0100
+Received: from apn-236-153.gprsbal.plusgsm.pl (HELO [87.251.236.153]) (laurentp@[87.251.236.153])
+          (envelope-sender <laurentp@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with RC4-MD5 encrypted SMTP
+          for <linux-mips@linux-mips.org>; 31 Jan 2007 23:25:38 +0100
+Message-ID: <45C11812.9050808@wp.pl>
+Date:	Wed, 31 Jan 2007 23:28:34 +0100
+From:	"W.P." <laurentp@wp.pl>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
+X-Accept-Language: pl, en, en-us
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart3243408.YHQuWLMysN";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
+To:	linux-mips@linux-mips.org
+Subject: Re: Advice needed.
+References: <45C0C956.2050009@wp.pl> <20916.201.240.249.124.1170279547.squirrel@www.amilda.org> <200701312302.05473.florian.fainelli@int-evry.fr>
+In-Reply-To: <200701312302.05473.florian.fainelli@int-evry.fr>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <200701312302.05473.florian.fainelli@int-evry.fr>
-Return-Path: <florian.fainelli@int-evry.fr>
+X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
+X-WP-SPAM: NO 0000000                                      
+Return-Path: <laurentp@wp.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13869
+X-archive-position: 13870
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@int-evry.fr
+X-original-sender: laurentp@wp.pl
 Precedence: bulk
 X-list: linux-mips
 
---nextPart3243408.YHQuWLMysN
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+<cut>
 
-Hello
-
-Le mercredi 31 janvier 2007, Sergio Aguayo a =E9crit=A0:
-> Hello
+>The board he is talking about is based on a rtl8186 which has few things in 
+>common with admtek 5120?
+>  
 >
-> I think you should check my webpage, www.amilda.org. It's a distro for
-> other Edimax routers, based on the (also MIPS) ADM5120. While the kernel
-> may not be what you need, the rest is quite the same. It may still be
-> useful for you.
+As i realize, it is a MIPS too, and he's talking about utilities, not
+the kernel. (I'll download sources tomorrow, i have only GPRS internet
+connection, so i will take several hours, and the i'll examine it). At
+least some idea ;)
 
-The board he is talking about is based on a rtl8186 which has few things in=
-=20
-common with admtek 5120?
+<cut>
 
+>I think you had better using dd rather than cat, because /dev/mtdblock are 
+>block devices, and should be treated like that. If your image has a valid 
+>format, i.e : the bootloader accepts it, unless you made important 
+>modifications to the system code, it should at least be booting.
+>  
 >
-> Regards,
->
-> Sergio Aguayo
->
-> > Hello,
-> > currently i am "fighting" with Edimax BR-6024Wg, (Realtek-8186 based,
-> > lexra-mips). I need an advice from a system developer/programmer:
-> >
-> > 1). When using original firmware (EDIMAX-developed Linux-mips), task of
-> > upgrading firmware is done by web server binary: webs, which is GoAhead
-> > 2.1.1, BUT Edimax didn't published "applets" -> C functions, that
-> > implement real functionality.
 
-This might be under particular licensing so that it has not been published.=
- By=20
-analysing the web uploadable image, you should be able to discover how the=
-=20
-web image format works. Probably : header, crc check, kernel, rootfs ...
+Using dd also suggests padding resulting file to 2048*1024 bytes, am i
+right? And using block size of 64k?
+As of image, i remarked, that file resulting from reading /dev/mtd look
+like: boot&variables(64k) + original image I have uploaded using Edimax
+program(approx 1.9M) + zeros to the end of 2M boundary.
 
-> >
-> > 2). In /dev directory there is a block node with mtd name. I have cat'ed
-> > it's contents to /web, and downloaded to PC. File seems to be raw
-> > contents of Flash memory: 2048*1024bytes long. If I drop first 64kB and
-> > truncate file to same length that Edimax-supplied firmware, files show
-> > to be the same (using cmp). The first 64kB looks to contain among
-> > others, variables used in BR system. There is originally an utility
-> > "flash" to get/set variables.
+So you think it may work? (dd ?) Image generation and upload using
+Edimax-supplied tools works.
 
-There is probably some kind of nvram on this flash, to store settings. The=
-=20
-flash utility is probably checking crc on key+variable for instance.
-
-> >
-> > Now the question:
-> > When I will have a new firmware (image) will it be safe(!?) to do such
-> > thing: (instead of using webs binary):
-> > cat /dev/mtd > some.file
-> > dd first 64k of some.file to other.file,
-> > then download image (from PC) to a third.file
-> > cat other.file third.file > /dev/mtd back.??????
-
-I think you had better using dd rather than cat, because /dev/mtdblock are=
-=20
-block devices, and should be treated like that. If your image has a valid=20
-format, i.e : the bootloader accepts it, unless you made important=20
-modifications to the system code, it should at least be booting.
-
-> >
-> > W.Piotrzkowski
-
-
-
-=2D-=20
-Cordialement, Florian Fainelli
-=2D--------------------------------------------
-5, rue Charles Fourier
-Chambre 1202
-91011 Evry
-http://www.alphacore.net
-(+33) 01 60 76 64 21
-(+33) 06 09 02 64 95
-=2D--------------------------------------------
-Association MiNET
-http://www.minet.net
-=2D--------------------------------------------
-Institut National des T=E9l=E9communication
-http://www.int-evry.fr/telecomint
-=2D--------------------------------------------
-
---nextPart3243408.YHQuWLMysN
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.1 (GNU/Linux)
-
-iD8DBQBFwRHdQ/Yr6D8A81kRAujcAKCX9X3ln5FmE0M0yUx5y0hb4i2lWQCfaPuX
-pR4JERcuj2/IW6arVGZdweU=
-=zoOH
------END PGP SIGNATURE-----
-
---nextPart3243408.YHQuWLMysN--
+W.P.

@@ -1,101 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2007 13:09:31 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:7592 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037878AbXAaNJ3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 Jan 2007 13:09:29 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l0VD9RsI030000;
-	Wed, 31 Jan 2007 13:09:27 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l0VD9Q1b029999;
-	Wed, 31 Jan 2007 13:09:26 GMT
-Date:	Wed, 31 Jan 2007 13:09:26 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2007 16:51:06 +0000 (GMT)
+Received: from mx1.wp.pl ([212.77.101.5]:30434 "EHLO mx1.wp.pl")
+	by ftp.linux-mips.org with ESMTP id S20038742AbXAaQvB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 31 Jan 2007 16:51:01 +0000
+Received: (wp-smtpd smtp.wp.pl 7604 invoked from network); 31 Jan 2007 17:49:50 +0100
+Received: from apn-236-153.gprsbal.plusgsm.pl (HELO [87.251.236.153]) (laurentp@[87.251.236.153])
+          (envelope-sender <laurentp@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with AES256-SHA encrypted SMTP
+          for <linux-mips@linux-mips.org>; 31 Jan 2007 17:49:50 +0100
+Message-ID: <45C0C956.2050009@wp.pl>
+Date:	Wed, 31 Jan 2007 17:52:38 +0100
+From:	"W.P." <laurentp@wp.pl>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
+X-Accept-Language: pl, en, en-us
+MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-Cc:	Sam Cannell <sam@catalyst.net.nz>
-Subject: Kernel issues on R4000/R4000 SC and MC
-Message-ID: <20070131130926.GA29562@linux-mips.org>
-Mime-Version: 1.0
+Subject: Advice needed.
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
+X-WP-SPAM: NO 0000000                                      
+Return-Path: <laurentp@wp.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13863
+X-archive-position: 13864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: laurentp@wp.pl
 Precedence: bulk
 X-list: linux-mips
 
-Since the introduction of rmap into the kernel memory managment has been
-broken for the SC and MC versions of R4000 and R4400 versions.
+Hello,
+currently i am "fighting" with Edimax BR-6024Wg, (Realtek-8186 based,
+lexra-mips). I need an advice from a system developer/programmer:
 
-Interestingly enough this was only ever reported once in May 2006 and at
-that time the report just didn't make sense, so it ended up being ignored,
-see http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=1146433653.18721.10.camel%40pkunk.wgtn.cat-it.co.nz
+1). When using original firmware (EDIMAX-developed Linux-mips), task of
+upgrading firmware is done by web server binary: webs, which is GoAhead
+2.1.1, BUT Edimax didn't published "applets" -> C functions, that
+implement real functionality.
 
-Anyway, the issue boiled up again last week and was supposedly fixed for
-linux-2.6.17-rc7 which I've just merged.   I'd like to ask somebody with
-one of the affected CPUs to test this.  Below Nick Piggin's test program.
+2). In /dev directory there is a block node with mtd name. I have cat'ed
+it's contents to /web, and downloaded to PC. File seems to be raw
+contents of Flash memory: 2048*1024bytes long. If I drop first 64kB and
+truncate file to same length that Edimax-supplied firmware, files show
+to be the same (using cmp). The first 64kB looks to contain among
+others, variables used in BR system. There is originally an utility
+"flash" to get/set variables.
 
-Thanks,
+Now the question:
+When I will have a new firmware (image) will it be safe(!?) to do such
+thing: (instead of using webs binary):
+cat /dev/mtd > some.file
+dd first 64k of some.file to other.file,
+then download image (from PC) to a third.file
+cat other.file third.file > /dev/mtd back.??????
 
-  Ralf
-
-#define _GNU_SOURCE
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <assert.h>
-
-int main(void)
-{
-	char *mem, *mem2, *frag;
-	size_t length = getpagesize();
-	unsigned int i;
-
-	mem = mmap(NULL, length, PROT_READ, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-	if (mem == MAP_FAILED)
-		perror("mmap"), exit(1);
-	/* fault in a zero page */
-	for (i = 0; i < length; i++)
-		assert(mem[i] == 0);
-
-	/* create an obstacle */
-	frag = mmap(NULL, length, PROT_READ, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-	if (frag == MAP_FAILED)
-		perror("mmap"), exit(1);
-	for (i = 0; i < length; i++)
-		assert(frag[i] == 0);
-	
-	mem2 = mremap(mem, length, length*2, MREMAP_MAYMOVE);
-	if (mem2 == MAP_FAILED)
-		perror("mremap"), exit(1);
-	
-	if (mem == mem2)
-		printf("Did not move old mappings!\n");
-	else {
-		unsigned int order = 3;
-		unsigned long size = length << order;
-		unsigned long mask = (size - 1) & ~(length-1);
-
-		printf("Moved ZERO_PAGE vaddr from %p to %p\n", mem, mem2);
-		if (((unsigned long)mem&mask) == ((unsigned long)mem2&mask))
-			printf("This will not change physical ZERO_PAGEs\n");
-		else
-			printf("This will change physical ZERO_PAGEs\n");
-	}
-
-	if (munmap(frag, length) == -1)
-		perror("munmap"), exit(1);
-
-	if (munmap(mem2, length*2) == -1)
-		perror("munmap"), exit(1);
-
-	exit(0);
-}
+W.Piotrzkowski

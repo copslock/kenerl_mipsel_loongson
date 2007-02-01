@@ -1,47 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 10:44:19 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.228]:54086 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038907AbXBAKoP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Feb 2007 10:44:15 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so37012qba
-        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 02:43:14 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=mgMbkbW3tIkDd1pfS2VXZ4aESMc4LKCOK0jJlDMwwIh/S8fNUniFw71makLPBbGb8h81EdbrVT7DSbPJXeW+IeiFbfJMI8xfGMVkBshH24lkgrFVH9V4Wprtc95wWo2sHvF6S997geQBM28Q2gTyFrgioxRBYlS07P2tVwnqMU4=
-Received: by 10.114.13.1 with SMTP id 1mr137544wam.1170326593259;
-        Thu, 01 Feb 2007 02:43:13 -0800 (PST)
-Received: by 10.114.134.16 with HTTP; Thu, 1 Feb 2007 02:43:13 -0800 (PST)
-Message-ID: <cda58cb80702010243y4a36026i6945f2a5cd3791d0@mail.gmail.com>
-Date:	Thu, 1 Feb 2007 11:43:13 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: Question about signal syscalls !
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 10:54:12 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:18102 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20038876AbXBAKyF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Feb 2007 10:54:05 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1HCZWn-00028p-00; Thu, 01 Feb 2007 11:50:53 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id C40A6C2E08; Thu,  1 Feb 2007 11:36:18 +0100 (CET)
+Date:	Thu, 1 Feb 2007 11:36:18 +0100
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org, sam@catalyst.net.nz
+Subject: Re: Kernel issues on R4000/R4000 SC and MC
+Message-ID: <20070201103618.GA25843@alpha.franken.de>
+References: <20070131130926.GA29562@linux-mips.org> <20070201.190717.55145997.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20070201.190717.55145997.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.5.9i
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13874
+X-archive-position: 13875
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, Feb 01, 2007 at 07:07:17PM +0900, Atsushi Nemoto wrote:
+> On Wed, 31 Jan 2007 13:09:26 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > Anyway, the issue boiled up again last week and was supposedly fixed for
+> > linux-2.6.17-rc7 which I've just merged.   I'd like to ask somebody with
+> > one of the affected CPUs to test this.  Below Nick Piggin's test program.
+> 
+> What is the expected output of the test program?
 
-I'm probably missing something very obvious so the subject could have
-been "Dumb question of the week". So please be nice when answering ;)
+I can confirm, that it kills R4400SC/MC machines. I saw some
+"detected softlock" messages. With just one zero page (CPU without VCE)
+everything is fine
 
-I'm wondering why we need to save/restore the static registers
-(s0...s7) when dealing with some  signal system calls. Specially all
-of them which are declared by using save_static_function() macros.
+Thomas.
 
-Thanks
 -- 
-               Franck
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

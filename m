@@ -1,76 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 10:02:17 +0000 (GMT)
-Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:27863 "EHLO
-	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
-	id S20038889AbXBAKCN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Feb 2007 10:02:13 +0000
-Received: from zaigor.enneenne.com ([192.168.32.1])
-	by mail.enneenne.com with esmtp (Exim 4.50)
-	id 1HCYi6-000491-Pt; Thu, 01 Feb 2007 10:58:34 +0100
-Received: from giometti by zaigor.enneenne.com with local (Exim 4.63)
-	(envelope-from <giometti@enneenne.com>)
-	id 1HCYie-0001ri-Gd; Thu, 01 Feb 2007 10:59:04 +0100
-Date:	Thu, 1 Feb 2007 10:59:04 +0100
-From:	Rodolfo Giometti <giometti@enneenne.com>
-To:	Paul Mundt <lethal@linux-sh.org>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.arm.linux.org.uk, linux-mips@linux-mips.org
-Message-ID: <20070201095904.GE8882@enneenne.com>
-References: <20070129230755.GA8705@enneenne.com> <20070130010055.GA15907@linux-sh.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070130010055.GA15907@linux-sh.org>
-Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
-X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
-User-Agent: Mutt/1.5.13 (2006-08-11)
-X-SA-Exim-Connect-IP: 192.168.32.1
-X-SA-Exim-Mail-From: giometti@enneenne.com
-Subject: Advice on battery support [was: Advice on APM-EMU reunion]
-X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
-X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
-Return-Path: <giometti@enneenne.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 10:07:48 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:4406 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20038891AbXBAKHo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Feb 2007 10:07:44 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 1 Feb 2007 19:07:43 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 1AAB741D4E;
+	Thu,  1 Feb 2007 19:07:19 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0711A410FD;
+	Thu,  1 Feb 2007 19:07:19 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l11A7IW0036167;
+	Thu, 1 Feb 2007 19:07:18 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 01 Feb 2007 19:07:17 +0900 (JST)
+Message-Id: <20070201.190717.55145997.nemoto@toshiba-tops.co.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, sam@catalyst.net.nz
+Subject: Re: Kernel issues on R4000/R4000 SC and MC
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070131130926.GA29562@linux-mips.org>
+References: <20070131130926.GA29562@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13872
+X-archive-position: 13873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giometti@enneenne.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 30, 2007 at 10:00:55AM +0900, Paul Mundt wrote:
+On Wed, 31 Jan 2007 13:09:26 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Anyway, the issue boiled up again last week and was supposedly fixed for
+> linux-2.6.17-rc7 which I've just merged.   I'd like to ask somebody with
+> one of the affected CPUs to test this.  Below Nick Piggin's test program.
 
-> However, it has since been reposted:
-> 
-> http://article.gmane.org/gmane.linux.kernel/485833
-> http://article.gmane.org/gmane.linux.kernel/485834
-> http://article.gmane.org/gmane.linux.kernel/485835
-> http://article.gmane.org/gmane.linux.kernel/485837
-> 
-> and merged back in to -mm. This is all post 2.6.20 stuff, though..
+What is the expected output of the test program?
 
-Ok, starting from these patches I'd like to add a "battery support" to
-the kernel.
-
-What I suppose to do is a new class with a proper methods useful to
-collect several info on battery status, such as get_ac_line_status()
-get_battery_status(), get_battery_flags(),
-get_remaining_battery_life() and so on.
-
-The output will be APM-like into file "/proc/apm" (one line per
-battery, or just the "main"/first one?) so that existing applications
-continue to work and under sysfs into "/sysfs/class/battery".
-
-Is it sane? :)
-
-Thanks in advance,
-
-Rodolfo
-
--- 
-
-GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
-Linux Device Driver                             giometti@gnudd.com
-Embedded Systems                     		giometti@linux.it
-UNIX programming                     phone:     +39 349 2432127
+---
+Atsushi Nemoto

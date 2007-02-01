@@ -1,112 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 13:09:58 +0000 (GMT)
-Received: from www.pc-net.at ([193.238.157.29]:53439 "EHLO MrWeb01.pc-net.at")
-	by ftp.linux-mips.org with ESMTP id S20038930AbXBANJy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Feb 2007 13:09:54 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 13:21:01 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:11791 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20038926AbXBANU4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Feb 2007 13:20:56 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by MrWeb01.pc-net.at (Postfix) with ESMTP id 0BD5D215ED1
-	for <linux-mips@linux-mips.org>; Thu,  1 Feb 2007 14:09:18 +0100 (CET)
-Received: from MrWeb01.pc-net.at ([127.0.0.1])
-	by localhost (MrWeb01 [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 05032-07 for <linux-mips@linux-mips.org>;
-	Thu, 1 Feb 2007 14:09:07 +0100 (CET)
-Received: from www.amilda.org (localhost [127.0.0.1])
-	by MrWeb01.pc-net.at (Postfix) with ESMTP id 19316215EC9
-	for <linux-mips@linux-mips.org>; Thu,  1 Feb 2007 14:08:54 +0100 (CET)
-Received: from 201.240.249.124
-        (SquirrelMail authenticated user amilda0001)
-        by www.amilda.org with HTTP;
-        Thu, 1 Feb 2007 08:09:07 -0500 (PET)
-Message-ID: <10879.201.240.249.124.1170335347.squirrel@www.amilda.org>
-In-Reply-To: <45C11812.9050808@wp.pl>
-References: <45C0C956.2050009@wp.pl>
-    <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>
-    <200701312302.05473.florian.fainelli@int-evry.fr>
-    <45C11812.9050808@wp.pl>
-Date:	Thu, 1 Feb 2007 08:09:07 -0500 (PET)
-Subject: Re: Advice needed.
-From:	"Sergio Aguayo" <sergio@amilda.org>
-To:	linux-mips@linux-mips.org
-User-Agent: SquirrelMail/1.4.6-rc1
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 4575CE1CB9;
+	Thu,  1 Feb 2007 14:20:13 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id rdqI+-4Y3Ser; Thu,  1 Feb 2007 14:20:12 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C61C5E1C92;
+	Thu,  1 Feb 2007 14:20:12 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l11DKIYq001453;
+	Thu, 1 Feb 2007 14:20:19 +0100
+Date:	Thu, 1 Feb 2007 13:20:15 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, dan@debian.org,
+	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: RFC: Sentosa boot fix
+In-Reply-To: <cda58cb80702010151x62e3b92ap18c63110f7fd4f0c@mail.gmail.com>
+Message-ID: <Pine.LNX.4.64N.0702011233240.7161@blysk.ds.pg.gda.pl>
+References: <cda58cb80701290806p5d68ba5ck5e3e3b2b3490126f@mail.gmail.com> 
+ <20070129161450.GA3384@nevyn.them.org>  <Pine.LNX.4.64N.0701291833480.26916@blysk.ds.pg.gda.pl>
+  <20070130.234537.126574565.anemo@mba.ocn.ne.jp> 
+ <Pine.LNX.4.64N.0701301713350.9231@blysk.ds.pg.gda.pl>
+ <cda58cb80702010151x62e3b92ap18c63110f7fd4f0c@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at pc-net.at
-Return-Path: <sergio@amilda.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.88.7/2510/Thu Feb  1 10:12:06 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13876
+X-archive-position: 13877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergio@amilda.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> <cut>
->
->>The board he is talking about is based on a rtl8186 which has few things
->> in
->>common with admtek 5120?
->>
->>
-> As i realize, it is a MIPS too, and he's talking about utilities, not
-> the kernel. (I'll download sources tomorrow, i have only GPRS internet
-> connection, so i will take several hours, and the i'll examine it). At
-> least some idea ;)
->
+On Thu, 1 Feb 2007, Franck Bui-Huu wrote:
 
-The realtek chipset by itself doesn't have many things in common with the
-ADM5120. But the board used (in this case by Edimax), is very similar for
-both chipsets. Almost the only thing needed to make the software of the
-one work in the other is placing some platform-dependent code in the
-kernel. The user-space should be quite the same (except the wireless
-driver, which is different).
+> > Checking for code correctness and validation of the toolchain (Linux is
+> > one of the few non-PIC users of (n)64) without having to chase hardware
+> > that would support running from XPHYS without serious pain (the firmware
+> > being the usual offender).
+> 
+> This use case was unknown by the time we introduced __pa_page_offset().
 
-> <cut>
->
->>I think you had better using dd rather than cat, because /dev/mtdblock
->> are
->>block devices, and should be treated like that. If your image has a valid
->>format, i.e : the bootloader accepts it, unless you made important
->>modifications to the system code, it should at least be booting.
->>
->>
->
-> Using dd also suggests padding resulting file to 2048*1024 bytes, am i
-> right? And using block size of 64k?
-> As of image, i remarked, that file resulting from reading /dev/mtd look
-> like: boot&variables(64k) + original image I have uploaded using Edimax
-> program(approx 1.9M) + zeros to the end of 2M boundary.
->
+ Well, I am afraid it was known well before.  I introduced it first to 2.4 
+a while ago and I forward-ported the patch immediately to 2.6.  Both 
+changes went in on Oct 20th, 2004.  The help text for the option has not 
+changed since.  And even 2.6.18 that I'm still using does not have this 
+__pa_page_offset() macro!  I did build various kernel versions with 
+BUILD_ELF64 set for the DECstation (which links at 0xffffffff80040000).
 
-The structure (of the flash memory) is something like this:
+> Basically this macro assumes that if BUILD_ELF64 is set the load
+> address is in XKPHYS. This allows to simplify __pa_page_offset()
+> definition for this case.
 
-32KB             Boot loader
-32KB             Config stuff
-rest             Kernel+BZIP2 RAMDISK
+ Wrong assumption.  And nowhere guaranteed either.
 
-The exact size of the kernel and the ramdisk varies greatly between
-firmware versions. YOu can find the start of the ramdisk by searching for
-the bzip2 signature (in this case 'BZh'). The kernel+ramdisk doesn't have
-to occupy the rest of the flash memory: the part not occupied by it is
-just undefined and its contents may be whatever.
+> However if BUILD_ELF64 is not set then the macro deals with both
+> CKSEG0 and XKPHYS virtual addresses.
 
+ Indeed.
 
-> So you think it may work? (dd ?) Image generation and upload using
-> Edimax-supplied tools works.
->
+> > That said, I have not checked the every single use of __pa_page_offset(),
+> > but the sole existence of this condition raises a question about whether
+> > we are sure __pa_page_offset() is going to be only used on virtual
+> > addresses in the same segment the kernel is linked to.
+> 
+> Well it all depends if we consider the case with BUILD_ELF64 set and a
+> load address in CKSEG0 a useful case. If so, then we can remove "&&
+> !defined(CONFIG_BUILD_ELF64)"
+> from __pa_page_offset(). It shouldn't hurt the case where BUILD_ELF64
+> is not set and Atsushi seems to agree.
 
-dd would certainly work. I would suggest you to check the way AMiLDA
-generates the firmware image. It's a lot more practical than a dd :D
+ It hurts performance a little bit, so if you can assure the macro shall 
+never be used on addresses from CKSEG0 if the load address is in XPHYS, 
+then you can easily arrange for the load address to be passed to the 
+preprocessor and use it as a condition here instead, which will be 
+optimised away as required by the compiler.
 
-Regards,
+> BTW, maybe we can simply remove BUILD_ELF64 at all, since it's only
+> used to add '-msym32' switch in the makefile. This switch could be
+> automatically be added by the makefile instead thanks the following
+> condition:
+> 
+> if CONFIG_64BITS and ${load-y} in CKSEG0
+>    cflags-y += -msym32
+> endif
+> 
+> what do you think ?
 
-Sergio
+ I do not see enough of justification for -msym32 to be forced.  This will 
+also raise the minimum version of binutils required to 2.16 for the 
+affected platforms, which may be a little bit too aggressive.
 
-> W.P.
->
->
->
+> Please keep these conversions in the platform specific codes before
+> calling back the firmware.
+
+ The DECstation uses CPHYSADDR() for these purposes; see e.g.
+arch/mips/dec/tc.c (not yet in the linux-mips.org repository -- to be 
+merged from the -mm tree sometime after 2.6.20).  But I recall seeing 
+suggestions for this macro to be removed.  Which I object against if there 
+is no usable alternative available (and I refuse to implement generic 
+functionality in platform-specific code -- there has been too much pain 
+already to merge many such bits scattered around).
+
+  Maciej

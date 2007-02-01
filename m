@@ -1,110 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 16:00:55 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.229]:20638 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038951AbXBAQAv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Feb 2007 16:00:51 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so57305qba
-        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 07:59:50 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=CLdcfHwFCg+x8WpPOBm/F7ptKjybQFQ68I+WJBxTiRpNwCDrjb8Dx2heVe1ibXhrI0y7uacHL313AYLthdefEjRxiOtvhuHIQw4+5fyfotBXfDT3sdFoY0yQpYO6FQW4Mx2WK19yI9W3shb7MWBdaT3ze+Hg9iT6cI3cheknRlE=
-Received: by 10.114.75.1 with SMTP id x1mr173064waa.1170345589383;
-        Thu, 01 Feb 2007 07:59:49 -0800 (PST)
-Received: by 10.114.134.16 with HTTP; Thu, 1 Feb 2007 07:59:49 -0800 (PST)
-Message-ID: <cda58cb80702010759w505b4b8br44fb75be28cc8ff0@mail.gmail.com>
-Date:	Thu, 1 Feb 2007 16:59:49 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: RFC: Sentosa boot fix
-Cc:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>, dan@debian.org,
-	linux-mips@linux-mips.org, ralf@linux-mips.org
-In-Reply-To: <Pine.LNX.4.64N.0702011233240.7161@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 17:02:35 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:5014 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20038939AbXBARC3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Feb 2007 17:02:29 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 6B4E12985D0;
+	Thu,  1 Feb 2007 12:01:51 -0500 (EST)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Thu,  1 Feb 2007 12:01:51 -0500 (EST)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 1 Feb 2007 09:01:50 -0800
+Message-ID: <45C21CFE.9060804@avtrex.com>
+Date:	Thu, 01 Feb 2007 09:01:50 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.9 (X11/20061219)
 MIME-Version: 1.0
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Question about signal syscalls !
+References: <cda58cb80702010243y4a36026i6945f2a5cd3791d0@mail.gmail.com>	 <20070201135734.GB12728@linux-mips.org> <cda58cb80702010654w74527a34k4ed229b499b8f9b2@mail.gmail.com>
+In-Reply-To: <cda58cb80702010654w74527a34k4ed229b499b8f9b2@mail.gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <cda58cb80701290806p5d68ba5ck5e3e3b2b3490126f@mail.gmail.com>
-	 <20070129161450.GA3384@nevyn.them.org>
-	 <Pine.LNX.4.64N.0701291833480.26916@blysk.ds.pg.gda.pl>
-	 <20070130.234537.126574565.anemo@mba.ocn.ne.jp>
-	 <Pine.LNX.4.64N.0701301713350.9231@blysk.ds.pg.gda.pl>
-	 <cda58cb80702010151x62e3b92ap18c63110f7fd4f0c@mail.gmail.com>
-	 <Pine.LNX.4.64N.0702011233240.7161@blysk.ds.pg.gda.pl>
-Return-Path: <vagabon.xyz@gmail.com>
+X-OriginalArrivalTime: 01 Feb 2007 17:01:50.0664 (UTC) FILETIME=[AA7F2480:01C74622]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13883
+X-archive-position: 13884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Thu, 1 Feb 2007, Franck Bui-Huu wrote:
->
->>> Checking for code correctness and validation of the toolchain (Linux is
->>> one of the few non-PIC users of (n)64) without having to chase hardware
->>> that would support running from XPHYS without serious pain (the firmware
->>> being the usual offender).
->> This use case was unknown by the time we introduced __pa_page_offset().
->
->  Well, I am afraid it was known well before.  I introduced it first to 2.4
-
-sorry I meant it wasn't for _me_.
-
->
->  It hurts performance a little bit, so if you can assure the macro shall
-
-Well __pa() is only used in a few places. Futhermore it's used
-only during boot mem init so it really shouldn't hurt.
-
->
->> BTW, maybe we can simply remove BUILD_ELF64 at all, since it's only
->> used to add '-msym32' switch in the makefile. This switch could be
->> automatically be added by the makefile instead thanks the following
->> condition:
+Franck Bui-Huu wrote:
+> Hi Ralf,
+> 
+> On 2/1/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+>> The values of those registers need to be preserved so they can later be
+>> copied into the signal frame.
 >>
->> if CONFIG_64BITS and ${load-y} in CKSEG0
->>    cflags-y += -msym32
->> endif
->>
->> what do you think ?
->
->  I do not see enough of justification for -msym32 to be forced.
->
+> 
+> Let's take for example sys_sigreturn(). In my understanding this
+> syscall is used automatically when the signal handler returns. At this
+> time, I don't see the point to save the static registers since they
+> have been already saved by setup_sigcontext().
+> 
+> Actually I don't see why they need to be saved/restored at all...
+> 
+> Let's say that process P1 sends a signal X to process P2 which has a
+> handler defined for signal X and assume that the static registers are
+> not saved at all.
+> 
+> Signal X is received by P2. The signal handler is now executed in user
+> mode. At this point what are the values of the static registers ? I
+> would say they have the same values (let's call this state S) when P2
+> got interrupted. Once the signal handler returns into the kernel mode
+> by executing 'syscall __NR_sigreturn' instructions, static registers
+> still have state S and this state is normally preserved during
+> sys_sigreturn syscall execution. So when resuming the normal execution
+> of P2, the static registers have the correct values.
+> 
+> What am I missing ?
 
-It gives good default behaviours without both user's intervention or
-configuration:
+I don't think *any* registers *need* to be saved on sys_sigreturn(). 
+The values in sigcontext on the user stack associated with the system 
+call are all used instead of the actual register values.
 
-	if CONFIG_64BITS
-		ifndef sym32
-			if load-y in XKPHYS
-				sym32 = ''		[1]
-			elif load-y in CKSEG0
-				sym32 = '-msym32'	[2]
-		else
-			if sym32 eq 'yes'
-				sym32 = '-msym32'	[3]
-		endef
-	fi
-	cflags-y += $(sym32)
-
-[1] since there is no reason to add '-msym32' and it would generate
-    wrong code anyways.
-[2] since it's used by all platforms to generate smaller code.
-    Warn if this option is not supported by the tool chains.
-[3] if you really want to generate code loaded in CKSEG0 without
-    -msym32 switch you could always do:
-
-		$ make sym32=no
-
-    IMHO, for normal users, this case is probably a configuration
-    bug and that's the reason we should request for a user to ask for
-    it explicitly.
-
--- 
-               Franck
+David Daney

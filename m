@@ -1,98 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 09:52:23 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.236]:29885 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038877AbXBAJwT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Feb 2007 09:52:19 +0000
-Received: by qb-out-0506.google.com with SMTP id p30so36241qba
-        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 01:51:16 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=h3LWFQG8Ncz1zcOEL0Yvmn4wTKU8W8s+6RDsUNm2egeAHeI9pOa8T9XELOJZacDZx6s9EkCl3HiU9mo8Tv7lmdx2rPWUoZRgjnOeb3x4MR67wt1HnAxic34bO/WQcNHC/awkc8Xa7V/lkbVpig1aSU1ivWdPRl6OMv5/0CY/mhQ=
-Received: by 10.114.181.1 with SMTP id d1mr133641waf.1170323475737;
-        Thu, 01 Feb 2007 01:51:15 -0800 (PST)
-Received: by 10.114.134.16 with HTTP; Thu, 1 Feb 2007 01:51:15 -0800 (PST)
-Message-ID: <cda58cb80702010151x62e3b92ap18c63110f7fd4f0c@mail.gmail.com>
-Date:	Thu, 1 Feb 2007 10:51:15 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: RFC: Sentosa boot fix
-Cc:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>, dan@debian.org,
-	linux-mips@linux-mips.org, ralf@linux-mips.org
-In-Reply-To: <Pine.LNX.4.64N.0701301713350.9231@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 10:02:17 +0000 (GMT)
+Received: from 81-174-11-161.f5.ngi.it ([81.174.11.161]:27863 "EHLO
+	mail.enneenne.com") by ftp.linux-mips.org with ESMTP
+	id S20038889AbXBAKCN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Feb 2007 10:02:13 +0000
+Received: from zaigor.enneenne.com ([192.168.32.1])
+	by mail.enneenne.com with esmtp (Exim 4.50)
+	id 1HCYi6-000491-Pt; Thu, 01 Feb 2007 10:58:34 +0100
+Received: from giometti by zaigor.enneenne.com with local (Exim 4.63)
+	(envelope-from <giometti@enneenne.com>)
+	id 1HCYie-0001ri-Gd; Thu, 01 Feb 2007 10:59:04 +0100
+Date:	Thu, 1 Feb 2007 10:59:04 +0100
+From:	Rodolfo Giometti <giometti@enneenne.com>
+To:	Paul Mundt <lethal@linux-sh.org>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.arm.linux.org.uk, linux-mips@linux-mips.org
+Message-ID: <20070201095904.GE8882@enneenne.com>
+References: <20070129230755.GA8705@enneenne.com> <20070130010055.GA15907@linux-sh.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <cda58cb80701290806p5d68ba5ck5e3e3b2b3490126f@mail.gmail.com>
-	 <20070129161450.GA3384@nevyn.them.org>
-	 <Pine.LNX.4.64N.0701291833480.26916@blysk.ds.pg.gda.pl>
-	 <20070130.234537.126574565.anemo@mba.ocn.ne.jp>
-	 <Pine.LNX.4.64N.0701301713350.9231@blysk.ds.pg.gda.pl>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <20070130010055.GA15907@linux-sh.org>
+Organization: GNU/Linux Device Drivers, Embedded Systems and Courses
+X-PGP-Key: gpg --keyserver keyserver.linux.it --recv-keys D25A5633
+User-Agent: Mutt/1.5.13 (2006-08-11)
+X-SA-Exim-Connect-IP: 192.168.32.1
+X-SA-Exim-Mail-From: giometti@enneenne.com
+Subject: Advice on battery support [was: Advice on APM-EMU reunion]
+X-SA-Exim-Version: 4.2 (built Thu, 03 Mar 2005 10:44:12 +0100)
+X-SA-Exim-Scanned: Yes (on mail.enneenne.com)
+Return-Path: <giometti@enneenne.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13871
+X-archive-position: 13872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: giometti@enneenne.com
 Precedence: bulk
 X-list: linux-mips
 
-On 1/30/07, Maciej W. Rozycki <macro@linux-mips.org> wrote:
-> On Tue, 30 Jan 2007, Atsushi Nemoto wrote:
->
-> > Though I do not object to remove "&& !defined(CONFIG_BUILD_ELF64)"
-> > from __pa_page_offset(), are there any point of CONFIG_BUILD_ELF64=y
-> > if your load address was CKSEG0?
->
->  Checking for code correctness and validation of the toolchain (Linux is
-> one of the few non-PIC users of (n)64) without having to chase hardware
-> that would support running from XPHYS without serious pain (the firmware
-> being the usual offender).
->
+On Tue, Jan 30, 2007 at 10:00:55AM +0900, Paul Mundt wrote:
 
-This use case was unknown by the time we introduced __pa_page_offset().
+> However, it has since been reposted:
+> 
+> http://article.gmane.org/gmane.linux.kernel/485833
+> http://article.gmane.org/gmane.linux.kernel/485834
+> http://article.gmane.org/gmane.linux.kernel/485835
+> http://article.gmane.org/gmane.linux.kernel/485837
+> 
+> and merged back in to -mm. This is all post 2.6.20 stuff, though..
 
-Basically this macro assumes that if BUILD_ELF64 is set the load
-address is in XKPHYS. This allows to simplify __pa_page_offset()
-definition for this case.
+Ok, starting from these patches I'd like to add a "battery support" to
+the kernel.
 
-However if BUILD_ELF64 is not set then the macro deals with both
-CKSEG0 and XKPHYS virtual addresses.
+What I suppose to do is a new class with a proper methods useful to
+collect several info on battery status, such as get_ac_line_status()
+get_battery_status(), get_battery_flags(),
+get_remaining_battery_life() and so on.
 
->  That said, I have not checked the every single use of __pa_page_offset(),
-> but the sole existence of this condition raises a question about whether
-> we are sure __pa_page_offset() is going to be only used on virtual
-> addresses in the same segment the kernel is linked to.
+The output will be APM-like into file "/proc/apm" (one line per
+battery, or just the "main"/first one?) so that existing applications
+continue to work and under sysfs into "/sysfs/class/battery".
 
-Well it all depends if we consider the case with BUILD_ELF64 set and a
-load address in CKSEG0 a useful case. If so, then we can remove "&&
-!defined(CONFIG_BUILD_ELF64)"
-from __pa_page_offset(). It shouldn't hurt the case where BUILD_ELF64
-is not set and Atsushi seems to agree.
+Is it sane? :)
 
-BTW, maybe we can simply remove BUILD_ELF64 at all, since it's only
-used to add '-msym32' switch in the makefile. This switch could be
-automatically be added by the makefile instead thanks the following
-condition:
+Thanks in advance,
 
-if CONFIG_64BITS and ${load-y} in CKSEG0
-    cflags-y += -msym32
-endif
+Rodolfo
 
-what do you think ?
-
-> Sometimes
-> references to both CKSEG0 and XPHYS may be used in the same kernel, e.g.
-> because the the kernel is linked to XPHYS, but the firmware is limited to
-> accept CKSEG0 addresses only (and we do call back into firmware on some
-> platforms).
->
-
-Please keep these conversions in the platform specific codes before
-calling back the firmware.
 -- 
-               Franck
+
+GNU/Linux Solutions                  e-mail:    giometti@enneenne.com
+Linux Device Driver                             giometti@gnudd.com
+Embedded Systems                     		giometti@linux.it
+UNIX programming                     phone:     +39 349 2432127

@@ -1,54 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 14:48:51 +0000 (GMT)
-Received: from mx1.wp.pl ([212.77.101.5]:23989 "EHLO mx1.wp.pl")
-	by ftp.linux-mips.org with ESMTP id S20038953AbXBAOsq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Feb 2007 14:48:46 +0000
-Received: (wp-smtpd smtp.wp.pl 20587 invoked from network); 1 Feb 2007 15:47:42 +0100
-Received: from apn-239-74.gprsbal.plusgsm.pl (HELO [87.251.239.74]) (laurentp@[87.251.239.74])
-          (envelope-sender <laurentp@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with AES256-SHA encrypted SMTP
-          for <linux-mips@linux-mips.org>; 1 Feb 2007 15:47:42 +0100
-Message-ID: <45C1FE3D.8080304@wp.pl>
-Date:	Thu, 01 Feb 2007 15:50:37 +0100
-From:	"W.P." <laurentp@wp.pl>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
-X-Accept-Language: pl, en, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 14:55:47 +0000 (GMT)
+Received: from qb-out-0506.google.com ([72.14.204.235]:24938 "EHLO
+	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038949AbXBAOzm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Feb 2007 14:55:42 +0000
+Received: by qb-out-0506.google.com with SMTP id e12so52977qba
+        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 06:54:41 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=SkXTeqZBbeJGcCiYhNhC/PoV6re7nKjS4LjRWGbS8liZ97x8boKrro7CSL1oUP2U5rthwbD/dw3dzU7qRBXTmL7DywdgymaCH81PpNev1EWU1q4aK5WhJC3aUkOM72AqdOilvje0KePFhXlRfTAoWixIpl07MLF68BnzGa1IewA=
+Received: by 10.114.75.1 with SMTP id x1mr151496waa.1170341680550;
+        Thu, 01 Feb 2007 06:54:40 -0800 (PST)
+Received: by 10.114.134.16 with HTTP; Thu, 1 Feb 2007 06:54:40 -0800 (PST)
+Message-ID: <cda58cb80702010654w74527a34k4ed229b499b8f9b2@mail.gmail.com>
+Date:	Thu, 1 Feb 2007 15:54:40 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: Question about signal syscalls !
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20070201135734.GB12728@linux-mips.org>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Advice needed.
-References: <45C0C956.2050009@wp.pl>    <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>    <200701312302.05473.florian.fainelli@int-evry.fr>    <45C11812.9050808@wp.pl> <10879.201.240.249.124.1170335347.squirrel@www.amilda.org>
-In-Reply-To: <10879.201.240.249.124.1170335347.squirrel@www.amilda.org>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
-X-WP-SPAM: NO 0000000                                      
-Return-Path: <laurentp@wp.pl>
+Content-Disposition: inline
+References: <cda58cb80702010243y4a36026i6945f2a5cd3791d0@mail.gmail.com>
+	 <20070201135734.GB12728@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13881
+X-archive-position: 13882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: laurentp@wp.pl
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-<cut>
+Hi Ralf,
 
->dd would certainly work. I would suggest you to check the way AMiLDA
->generates the firmware image. It's a lot more practical than a dd :D
->  
+On 2/1/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> The values of those registers need to be preserved so they can later be
+> copied into the signal frame.
 >
-Thanks, i'll look at this (just finished downloading source). But my
-question was NOT concerning GENERATING image (that part
-of toolchain works, so let it be), but FLasing it. Normally done by webs
-app. And as i see in Amilda, it uses the same scheme -> webs-buried C
-function. And I would have an alternative, because of: first -> have no
-source for webs-buried functions supplied by Edimax, so I have only
-choice of using built binary no chance to simply add some functionality,
-second -> webs is quite heavyweight, approx 450kb -> it is a lot on
-system with 2M Flash expanded to 5M Ramdisk.
 
-BTW maybe someone reading this knows what Edimax devices have 4M flash?
+Let's take for example sys_sigreturn(). In my understanding this
+syscall is used automatically when the signal handler returns. At this
+time, I don't see the point to save the static registers since they
+have been already saved by setup_sigcontext().
 
-W.P.
+Actually I don't see why they need to be saved/restored at all...
+
+Let's say that process P1 sends a signal X to process P2 which has a
+handler defined for signal X and assume that the static registers are
+not saved at all.
+
+Signal X is received by P2. The signal handler is now executed in user
+mode. At this point what are the values of the static registers ? I
+would say they have the same values (let's call this state S) when P2
+got interrupted. Once the signal handler returns into the kernel mode
+by executing 'syscall __NR_sigreturn' instructions, static registers
+still have state S and this state is normally preserved during
+sys_sigreturn syscall execution. So when resuming the normal execution
+of P2, the static registers have the correct values.
+
+What am I missing ?
+
+Thanks
+-- 
+               Franck

@@ -1,65 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Jan 2007 22:26:47 +0000 (GMT)
-Received: from mx1.wp.pl ([212.77.101.5]:1379 "EHLO mx1.wp.pl")
-	by ftp.linux-mips.org with ESMTP id S20038807AbXAaW0l (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 31 Jan 2007 22:26:41 +0000
-Received: (wp-smtpd smtp.wp.pl 2774 invoked from network); 31 Jan 2007 23:25:38 +0100
-Received: from apn-236-153.gprsbal.plusgsm.pl (HELO [87.251.236.153]) (laurentp@[87.251.236.153])
-          (envelope-sender <laurentp@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with RC4-MD5 encrypted SMTP
-          for <linux-mips@linux-mips.org>; 31 Jan 2007 23:25:38 +0100
-Message-ID: <45C11812.9050808@wp.pl>
-Date:	Wed, 31 Jan 2007 23:28:34 +0100
-From:	"W.P." <laurentp@wp.pl>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
-X-Accept-Language: pl, en, en-us
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 09:52:23 +0000 (GMT)
+Received: from qb-out-0506.google.com ([72.14.204.236]:29885 "EHLO
+	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038877AbXBAJwT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Feb 2007 09:52:19 +0000
+Received: by qb-out-0506.google.com with SMTP id p30so36241qba
+        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 01:51:16 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=h3LWFQG8Ncz1zcOEL0Yvmn4wTKU8W8s+6RDsUNm2egeAHeI9pOa8T9XELOJZacDZx6s9EkCl3HiU9mo8Tv7lmdx2rPWUoZRgjnOeb3x4MR67wt1HnAxic34bO/WQcNHC/awkc8Xa7V/lkbVpig1aSU1ivWdPRl6OMv5/0CY/mhQ=
+Received: by 10.114.181.1 with SMTP id d1mr133641waf.1170323475737;
+        Thu, 01 Feb 2007 01:51:15 -0800 (PST)
+Received: by 10.114.134.16 with HTTP; Thu, 1 Feb 2007 01:51:15 -0800 (PST)
+Message-ID: <cda58cb80702010151x62e3b92ap18c63110f7fd4f0c@mail.gmail.com>
+Date:	Thu, 1 Feb 2007 10:51:15 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: RFC: Sentosa boot fix
+Cc:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>, dan@debian.org,
+	linux-mips@linux-mips.org, ralf@linux-mips.org
+In-Reply-To: <Pine.LNX.4.64N.0701301713350.9231@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Advice needed.
-References: <45C0C956.2050009@wp.pl> <20916.201.240.249.124.1170279547.squirrel@www.amilda.org> <200701312302.05473.florian.fainelli@int-evry.fr>
-In-Reply-To: <200701312302.05473.florian.fainelli@int-evry.fr>
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
-X-WP-SPAM: NO 0000000                                      
-Return-Path: <laurentp@wp.pl>
+Content-Disposition: inline
+References: <cda58cb80701290806p5d68ba5ck5e3e3b2b3490126f@mail.gmail.com>
+	 <20070129161450.GA3384@nevyn.them.org>
+	 <Pine.LNX.4.64N.0701291833480.26916@blysk.ds.pg.gda.pl>
+	 <20070130.234537.126574565.anemo@mba.ocn.ne.jp>
+	 <Pine.LNX.4.64N.0701301713350.9231@blysk.ds.pg.gda.pl>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13870
+X-archive-position: 13871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: laurentp@wp.pl
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-<cut>
-
->The board he is talking about is based on a rtl8186 which has few things in 
->common with admtek 5120?
->  
+On 1/30/07, Maciej W. Rozycki <macro@linux-mips.org> wrote:
+> On Tue, 30 Jan 2007, Atsushi Nemoto wrote:
 >
-As i realize, it is a MIPS too, and he's talking about utilities, not
-the kernel. (I'll download sources tomorrow, i have only GPRS internet
-connection, so i will take several hours, and the i'll examine it). At
-least some idea ;)
-
-<cut>
-
->I think you had better using dd rather than cat, because /dev/mtdblock are 
->block devices, and should be treated like that. If your image has a valid 
->format, i.e : the bootloader accepts it, unless you made important 
->modifications to the system code, it should at least be booting.
->  
+> > Though I do not object to remove "&& !defined(CONFIG_BUILD_ELF64)"
+> > from __pa_page_offset(), are there any point of CONFIG_BUILD_ELF64=y
+> > if your load address was CKSEG0?
+>
+>  Checking for code correctness and validation of the toolchain (Linux is
+> one of the few non-PIC users of (n)64) without having to chase hardware
+> that would support running from XPHYS without serious pain (the firmware
+> being the usual offender).
 >
 
-Using dd also suggests padding resulting file to 2048*1024 bytes, am i
-right? And using block size of 64k?
-As of image, i remarked, that file resulting from reading /dev/mtd look
-like: boot&variables(64k) + original image I have uploaded using Edimax
-program(approx 1.9M) + zeros to the end of 2M boundary.
+This use case was unknown by the time we introduced __pa_page_offset().
 
-So you think it may work? (dd ?) Image generation and upload using
-Edimax-supplied tools works.
+Basically this macro assumes that if BUILD_ELF64 is set the load
+address is in XKPHYS. This allows to simplify __pa_page_offset()
+definition for this case.
 
-W.P.
+However if BUILD_ELF64 is not set then the macro deals with both
+CKSEG0 and XKPHYS virtual addresses.
+
+>  That said, I have not checked the every single use of __pa_page_offset(),
+> but the sole existence of this condition raises a question about whether
+> we are sure __pa_page_offset() is going to be only used on virtual
+> addresses in the same segment the kernel is linked to.
+
+Well it all depends if we consider the case with BUILD_ELF64 set and a
+load address in CKSEG0 a useful case. If so, then we can remove "&&
+!defined(CONFIG_BUILD_ELF64)"
+from __pa_page_offset(). It shouldn't hurt the case where BUILD_ELF64
+is not set and Atsushi seems to agree.
+
+BTW, maybe we can simply remove BUILD_ELF64 at all, since it's only
+used to add '-msym32' switch in the makefile. This switch could be
+automatically be added by the makefile instead thanks the following
+condition:
+
+if CONFIG_64BITS and ${load-y} in CKSEG0
+    cflags-y += -msym32
+endif
+
+what do you think ?
+
+> Sometimes
+> references to both CKSEG0 and XPHYS may be used in the same kernel, e.g.
+> because the the kernel is linked to XPHYS, but the firmware is limited to
+> accept CKSEG0 addresses only (and we do call back into firmware on some
+> platforms).
+>
+
+Please keep these conversions in the platform specific codes before
+calling back the firmware.
+-- 
+               Franck

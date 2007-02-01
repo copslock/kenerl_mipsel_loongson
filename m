@@ -1,47 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 14:37:43 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:23524 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28573709AbXBAOhh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Feb 2007 14:37:37 +0000
-Received: from localhost (p5011-ipad301funabasi.chiba.ocn.ne.jp [122.17.255.11])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id D77B7B8A3; Thu,  1 Feb 2007 23:36:15 +0900 (JST)
-Date:	Thu, 01 Feb 2007 23:36:12 +0900 (JST)
-Message-Id: <20070201.233612.104641547.anemo@mba.ocn.ne.jp>
-To:	macro@linux-mips.org
-Cc:	vagabon.xyz@gmail.com, dan@debian.org, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: RFC: Sentosa boot fix
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070201.233120.126142024.anemo@mba.ocn.ne.jp>
-References: <cda58cb80702010151x62e3b92ap18c63110f7fd4f0c@mail.gmail.com>
-	<Pine.LNX.4.64N.0702011233240.7161@blysk.ds.pg.gda.pl>
-	<20070201.233120.126142024.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 14:48:51 +0000 (GMT)
+Received: from mx1.wp.pl ([212.77.101.5]:23989 "EHLO mx1.wp.pl")
+	by ftp.linux-mips.org with ESMTP id S20038953AbXBAOsq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Feb 2007 14:48:46 +0000
+Received: (wp-smtpd smtp.wp.pl 20587 invoked from network); 1 Feb 2007 15:47:42 +0100
+Received: from apn-239-74.gprsbal.plusgsm.pl (HELO [87.251.239.74]) (laurentp@[87.251.239.74])
+          (envelope-sender <laurentp@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with AES256-SHA encrypted SMTP
+          for <linux-mips@linux-mips.org>; 1 Feb 2007 15:47:42 +0100
+Message-ID: <45C1FE3D.8080304@wp.pl>
+Date:	Thu, 01 Feb 2007 15:50:37 +0100
+From:	"W.P." <laurentp@wp.pl>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
+X-Accept-Language: pl, en, en-us
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: Advice needed.
+References: <45C0C956.2050009@wp.pl>    <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>    <200701312302.05473.florian.fainelli@int-evry.fr>    <45C11812.9050808@wp.pl> <10879.201.240.249.124.1170335347.squirrel@www.amilda.org>
+In-Reply-To: <10879.201.240.249.124.1170335347.squirrel@www.amilda.org>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
+X-WP-SPAM: NO 0000000                                      
+Return-Path: <laurentp@wp.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13880
+X-archive-position: 13881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: laurentp@wp.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 01 Feb 2007 23:31:20 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> Well, $(call cc-option,-msym32) can be used safely.  AFAIK -msym32 was
-> added to gcc 4.0 which was released on Apr 2005, and binutils 2.16 was
-> release on May 2005.  So if gcc accepted -msym32 we can assume
-> binutils accept too.
+<cut>
 
-Oops, Apr 2005 was before May 2005 :)
-Anyway I suppose gcc 4.x users are using modern binutils.
+>dd would certainly work. I would suggest you to check the way AMiLDA
+>generates the firmware image. It's a lot more practical than a dd :D
+>  
+>
+Thanks, i'll look at this (just finished downloading source). But my
+question was NOT concerning GENERATING image (that part
+of toolchain works, so let it be), but FLasing it. Normally done by webs
+app. And as i see in Amilda, it uses the same scheme -> webs-buried C
+function. And I would have an alternative, because of: first -> have no
+source for webs-buried functions supplied by Edimax, so I have only
+choice of using built binary no chance to simply add some functionality,
+second -> webs is quite heavyweight, approx 450kb -> it is a lot on
+system with 2M Flash expanded to 5M Ramdisk.
 
----
-Atsushi Nemoto
+BTW maybe someone reading this knows what Edimax devices have 4M flash?
+
+W.P.

@@ -1,55 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2007 00:47:08 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.173]:52231 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039020AbXBBArB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Feb 2007 00:47:01 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so687262uga
-        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 16:46:01 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2007 01:33:26 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.186]:8534 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039028AbXBBBdW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Feb 2007 01:33:22 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so998822nfc
+        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 17:32:22 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:subject:content-type:content-transfer-encoding;
-        b=E3rc5LW8ddgiVfkkuCrpVkm0pnCXr7u7EJfRbGM7I4dP+EItiFOxGIOQKQQ41cgdF8ClDhwVsYlCPt4OQj/R8oJ2QFh3ABWIrwuEYK9+1NZ0+M3S3gF/nlsW74C60++r05QqNZFNWnPE2o8S55fqE1AIS/wK4g817TlKdhtsY14=
-Received: by 10.67.22.14 with SMTP id z14mr3580281ugi.1170377161356;
-        Thu, 01 Feb 2007 16:46:01 -0800 (PST)
-Received: from ?192.168.2.101? ( [81.164.103.166])
-        by mx.google.com with ESMTP id h1sm3590317ugf.2007.02.01.16.46.00;
-        Thu, 01 Feb 2007 16:46:01 -0800 (PST)
-Message-ID: <45C289C9.3010409@gmail.com>
-Date:	Fri, 02 Feb 2007 01:46:01 +0100
-From:	Wim Vander Schelden <wim.vanderschelden@gmail.com>
-User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Ot/hPfPPYQrptRtbXLkclKfE2v93KX+NR6VspjtnZjdp5FK57Wl3UtuSvuhOMxSQBupxEAwEcn+2rtiDShTOvKnNQGoZv+zChUjpThjhcrQKrupVyU2R2ZYiS0LkliLpHtIZmwv5mUlW8bYHEPc02VqEQk8U5ANGvcjCrfNfFPU=
+Received: by 10.49.13.19 with SMTP id q19mr5644616nfi.1170379941865;
+        Thu, 01 Feb 2007 17:32:21 -0800 (PST)
+Received: by 10.49.66.16 with HTTP; Thu, 1 Feb 2007 17:32:21 -0800 (PST)
+Message-ID: <816d36d30702011732p60b73fe8w1c7a14ee07a3a748@mail.gmail.com>
+Date:	Thu, 1 Feb 2007 21:32:21 -0400
+From:	"Ricardo Mendoza" <mendoza.ricardo@gmail.com>
+To:	"Wim Vander Schelden" <wim.vanderschelden@gmail.com>
+Subject: Re: Linux on the MobilePro 7xx
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <45C289C9.3010409@gmail.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Linux on the MobilePro 7xx
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <wim.vanderschelden@gmail.com>
+Content-Disposition: inline
+References: <45C289C9.3010409@gmail.com>
+Return-Path: <mendoza.ricardo@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13887
+X-archive-position: 13888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim.vanderschelden@gmail.com
+X-original-sender: mendoza.ricardo@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On 2/1/07, Wim Vander Schelden <wim.vanderschelden@gmail.com> wrote:
+> Hi,
+>
+> I just purchased a MobilePro 770 and I intend to port linux to it. It
+> runs on a VR4121 CPU, is there already some support in linux-mips for that?
+>
+> I found some stuff on the net, but it all uses 2.4 kernels, and I would
+> rather get a 2.6 going.
+>
+> Anyone who knows a little bit more about the subject is welcome to comment,
+>
+> Wim
 
-I just purchased a MobilePro 770 and I intend to port linux to it. It 
-runs on a VR4121 CPU, is there already some support in linux-mips for that?
+Hi Wim,
 
-I found some stuff on the net, but it all uses 2.4 kernels, and I would 
-rather get a 2.6 going.
+The VR41XX branch is pretty much fully supported in the kernel, thanks
+to Yoichi Yuasa's work. You just need to make some board setup code
+for the MP and you should be ready to boot a kernel on it.
 
-Anyone who knows a little bit more about the subject is welcome to comment,
+On the current linux-mips tree there is NO support for neither fb,
+pcmcia, touchscreen or keyboard for the MP; there are, however, some
+drivers for fb, tpanel and keyb written somewhere, just look for them.
 
-Wim
+PCMCIA is broken due to i82365 legacy way of sorting irq's. Taking a
+look at old linux-vr code for 2.4 tree might help to give you an idea
+on whats causing the problem.
 
--- 
-Wim Vander Schelden
-Bachelor Computer Science, University Ghent
 
-http://nanoblog.ath.cx
-My weblog, powered by Ruby and BSD licensed.
+     Ricardo

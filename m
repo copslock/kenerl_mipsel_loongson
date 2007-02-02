@@ -1,54 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Feb 2007 18:19:18 +0000 (GMT)
-Received: from an-out-0708.google.com ([209.85.132.240]:21900 "EHLO
-	an-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038962AbXBASTO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Feb 2007 18:19:14 +0000
-Received: by an-out-0708.google.com with SMTP id c8so402997ana
-        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 10:19:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2007 00:47:08 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.173]:52231 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039020AbXBBArB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Feb 2007 00:47:01 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so687262uga
+        for <linux-mips@linux-mips.org>; Thu, 01 Feb 2007 16:46:01 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=NxZwV5fA/hOundN27tL+DIZz2UORFMDQQWJ5O2eIuwiow3bCC7BcEjQG7/WAOXuHekdh71xuycAhap+88kQ/MVa7SOv/wua9B1WQEg0CLMfgHWHywyvJO6zpJquXQAu0WQ+SDv0aS65q4eu0PEwV7myZeb7zpBFP6GS2yeeK3nc=
-Received: by 10.78.170.17 with SMTP id s17mr551380hue.1170353948628;
-        Thu, 01 Feb 2007 10:19:08 -0800 (PST)
-Received: by 10.78.184.6 with HTTP; Thu, 1 Feb 2007 10:19:08 -0800 (PST)
-Message-ID: <f383264b0702011019ha411ef7t3447e65f6266917e@mail.gmail.com>
-Date:	Thu, 1 Feb 2007 10:19:08 -0800
-From:	"Matt Reimer" <mattjreimer@gmail.com>
-To:	"Rodolfo Giometti" <giometti@enneenne.com>
-Subject: Re: Advice on battery support [was: Advice on APM-EMU reunion]
-Cc:	"Paul Mundt" <lethal@linux-sh.org>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.arm.linux.org.uk, linux-mips@linux-mips.org
-In-Reply-To: <20070201095904.GE8882@enneenne.com>
+        h=received:message-id:date:from:user-agent:mime-version:to:subject:content-type:content-transfer-encoding;
+        b=E3rc5LW8ddgiVfkkuCrpVkm0pnCXr7u7EJfRbGM7I4dP+EItiFOxGIOQKQQ41cgdF8ClDhwVsYlCPt4OQj/R8oJ2QFh3ABWIrwuEYK9+1NZ0+M3S3gF/nlsW74C60++r05QqNZFNWnPE2o8S55fqE1AIS/wK4g817TlKdhtsY14=
+Received: by 10.67.22.14 with SMTP id z14mr3580281ugi.1170377161356;
+        Thu, 01 Feb 2007 16:46:01 -0800 (PST)
+Received: from ?192.168.2.101? ( [81.164.103.166])
+        by mx.google.com with ESMTP id h1sm3590317ugf.2007.02.01.16.46.00;
+        Thu, 01 Feb 2007 16:46:01 -0800 (PST)
+Message-ID: <45C289C9.3010409@gmail.com>
+Date:	Fri, 02 Feb 2007 01:46:01 +0100
+From:	Wim Vander Schelden <wim.vanderschelden@gmail.com>
+User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
 MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Linux on the MobilePro 7xx
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20070129230755.GA8705@enneenne.com>
-	 <20070130010055.GA15907@linux-sh.org>
-	 <20070201095904.GE8882@enneenne.com>
-Return-Path: <mattjreimer@gmail.com>
+Return-Path: <wim.vanderschelden@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13886
+X-archive-position: 13887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattjreimer@gmail.com
+X-original-sender: wim.vanderschelden@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 2/1/07, Rodolfo Giometti <giometti@enneenne.com> wrote:
->
-> Ok, starting from these patches I'd like to add a "battery support" to
-> the kernel.
->
-> What I suppose to do is a new class with a proper methods useful to
-> collect several info on battery status, such as get_ac_line_status()
-> get_battery_status(), get_battery_flags(),
-> get_remaining_battery_life() and so on.
+Hi,
 
-Wasn't there recently a big discussion on lkml about a battery class?
+I just purchased a MobilePro 770 and I intend to port linux to it. It 
+runs on a VR4121 CPU, is there already some support in linux-mips for that?
 
-Matt
+I found some stuff on the net, but it all uses 2.4 kernels, and I would 
+rather get a 2.6 going.
+
+Anyone who knows a little bit more about the subject is welcome to comment,
+
+Wim
+
+-- 
+Wim Vander Schelden
+Bachelor Computer Science, University Ghent
+
+http://nanoblog.ath.cx
+My weblog, powered by Ruby and BSD licensed.

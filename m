@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2007 20:03:43 +0000 (GMT)
-Received: from an-out-0708.google.com ([209.85.132.246]:46298 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Feb 2007 20:18:43 +0000 (GMT)
+Received: from an-out-0708.google.com ([209.85.132.251]:39686 "EHLO
 	an-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039260AbXBBUDi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Feb 2007 20:03:38 +0000
-Received: by an-out-0708.google.com with SMTP id c8so682312ana
-        for <linux-mips@linux-mips.org>; Fri, 02 Feb 2007 12:03:33 -0800 (PST)
+	id S20039264AbXBBUSh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Feb 2007 20:18:37 +0000
+Received: by an-out-0708.google.com with SMTP id c8so686729ana
+        for <linux-mips@linux-mips.org>; Fri, 02 Feb 2007 12:18:35 -0800 (PST)
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=WT+HOnxfb/3orNcYsgu2OFpC/lXzsve5k/eqjW4rwlRIbUyoTA9/K0IOFjhjHM3rczD4M/yd4i/WPydebYlZpkpGQxriz8Gm2EdwIWvFH4tuSUkrl+ZkgtRSMpG5LhucPE6wONXKEyljugPYTmsSeOaEI9wLrKJ9zCzath1oha8=
-Received: by 10.114.60.19 with SMTP id i19mr376249waa.1170446613315;
-        Fri, 02 Feb 2007 12:03:33 -0800 (PST)
-Received: by 10.114.134.16 with HTTP; Fri, 2 Feb 2007 12:03:33 -0800 (PST)
-Message-ID: <cda58cb80702021203x18684333lcfdffd1f87da9eca@mail.gmail.com>
-Date:	Fri, 2 Feb 2007 21:03:33 +0100
+        b=HufPr8SAQGtodUjxdB89Yx09Wtlo1N4ZvYfpppK7tLH4pUk1zb/9vzQw7grHekg/1v+cNn0JhaHesFoEZuvdvBRRdJmHCkoQAc8enRFVDU5eOMj/AuRntejDGO+6t6s8ttx7kiaOyW1UGrEPcj9ypCmeTdBgLp+miAoKANlKm+8=
+Received: by 10.114.185.8 with SMTP id i8mr394085waf.1170447514538;
+        Fri, 02 Feb 2007 12:18:34 -0800 (PST)
+Received: by 10.114.134.16 with HTTP; Fri, 2 Feb 2007 12:18:34 -0800 (PST)
+Message-ID: <cda58cb80702021218w23abcecet28a81444eea35265@mail.gmail.com>
+Date:	Fri, 2 Feb 2007 21:18:34 +0100
 From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
 To:	"Daniel Jacobowitz" <dan@debian.org>
 Subject: Re: Question about signal syscalls !
@@ -37,7 +37,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13905
+X-archive-position: 13906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,20 +51,10 @@ On 2/2/07, Daniel Jacobowitz <dan@debian.org> wrote:
 > > setup_sigcontext() either...
 >
 > It's possible not to (iirc at least one arch does that) but please
-
-can you tell which one ?
-
-> don't change it now.  This is a userland ABI issue; GDB knows that the
-
-don't worry I don't want to change anything, I'm just trying to understand.
-
-> registers are saved, and there are slots for them in
-> sigcontext/ucontext so it would be unexpected if they were not filled
-> in.  Could break things like pth.
 >
 
-ok it's a good point to keep in mind.
+crazy idea: do you think it could be possible not to when dealing with
+interrupts ?
 
-thanks
 -- 
                Franck

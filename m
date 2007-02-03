@@ -1,79 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Feb 2007 05:58:32 +0000 (GMT)
-Received: from www.pc-net.at ([193.238.157.29]:30411 "EHLO MrWeb01.pc-net.at")
-	by ftp.linux-mips.org with ESMTP id S20037475AbXBCF60 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 3 Feb 2007 05:58:26 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by MrWeb01.pc-net.at (Postfix) with ESMTP id 19B2F215ECC
-	for <linux-mips@linux-mips.org>; Sat,  3 Feb 2007 06:57:51 +0100 (CET)
-Received: from MrWeb01.pc-net.at ([127.0.0.1])
-	by localhost (MrWeb01 [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 00413-06 for <linux-mips@linux-mips.org>;
-	Sat, 3 Feb 2007 06:57:48 +0100 (CET)
-Received: from www.amilda.org (localhost [127.0.0.1])
-	by MrWeb01.pc-net.at (Postfix) with ESMTP id 74793215EC8
-	for <linux-mips@linux-mips.org>; Sat,  3 Feb 2007 06:57:38 +0100 (CET)
-Received: from 201.230.45.190
-        (SquirrelMail authenticated user amilda0001)
-        by www.amilda.org with HTTP;
-        Sat, 3 Feb 2007 00:57:48 -0500 (PET)
-Message-ID: <50812.201.230.45.190.1170482268.squirrel@www.amilda.org>
-In-Reply-To: <45C3BB23.2070309@wp.pl>
-References: <45C0C956.2050009@wp.pl>      
-    <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>      
-    <200701312302.05473.florian.fainelli@int-evry.fr>      
-    <45C11812.9050808@wp.pl>   
-    <10879.201.240.249.124.1170335347.squirrel@www.amilda.org>   
-    <45C1FE3D.8080304@wp.pl>
-    <16445.201.240.249.124.1170423826.squirrel@www.amilda.org>
-    <45C3BB23.2070309@wp.pl>
-Date:	Sat, 3 Feb 2007 00:57:48 -0500 (PET)
-Subject: Re: Advice needed.
-From:	"Sergio Aguayo" <sergio@amilda.org>
-To:	linux-mips@linux-mips.org
-User-Agent: SquirrelMail/1.4.6-rc1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Feb 2007 09:33:01 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.189]:5282 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038409AbXBCJc5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 3 Feb 2007 09:32:57 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so1377436nfc
+        for <linux-mips@linux-mips.org>; Sat, 03 Feb 2007 01:31:56 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=EKNex/PC8bxEjq6DWlqPDBQhNuyI84nHIOt62PDYrcqVw+2Ta+z2J7EuJIt+OKKBnyzxH0RtoHS8TI/k2oN9hB5kxEiBj/kZhLU05ZE3uBCuBIdJ43yINEPBWLmv6f302zLhKnag412f4/J1HQh0ISe9ikUL3C+Zc5PFwYCPWHc=
+Received: by 10.82.152.16 with SMTP id z16mr1506124bud.1170495116407;
+        Sat, 03 Feb 2007 01:31:56 -0800 (PST)
+Received: by 10.82.178.4 with HTTP; Sat, 3 Feb 2007 01:31:56 -0800 (PST)
+Message-ID: <50c9a2250702030131x7ea1331ay29acdd1190208173@mail.gmail.com>
+Date:	Sat, 3 Feb 2007 17:31:56 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: whatis the connection with sysctl and "bad magic number for tty struct ..." ?
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at pc-net.at
-Return-Path: <sergio@amilda.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13910
+X-archive-position: 13911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sergio@amilda.org
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> <cut>
->
->>check this: http://www.linux-mips.org/wiki/Adm5120
->>
->>
->>
-> Nice ;)
->
-> Sergio,
-> 1). I am trying now to port the flash utility to BR-6204Wg (different
-> data structure), as of now i have succeded to read part of
-> hardware-related settings -> nic0, nic1, wlan-mac. As I finish I'll send
-> you a copy of related changes needed.
+hi all:
+       i am working on a mips borad with linux-2.6.14.
+and my board boot up from an initrd and then switch to Nand FLASH as root dev.
+it also add a power control entry like the /arch/mips/common/power.c
+do. as follow
 
-Are you talking about the configuration structure? If so, it varies
-between model to model. AMiLDA itself uses a totally different
-configuration which may very from version to version.
+#define	CTL_ACPI 9999
+#define	ACPI_S1_SLP_TYP 19
+#define	ACPI_SLEEP 21
+
+static struct ctl_table pm_table[] = {
+	{ACPI_S1_SLP_TYP, "suspend", NULL, 0, 0600, NULL, &pm_do_suspend},
+	{ACPI_SLEEP, "sleep", NULL, 0, 0600, NULL, &pm_do_sleep},
+	{CTL_ACPI, "freq", NULL, 0, 0600, NULL, &pm_do_freq},
+	{0}
+};
+
+static struct ctl_table pm_dir_table[] = {
+	{CTL_ACPI, "pm", NULL, 0, 0555, pm_table},
+	{0}
+};
+
+/*
+ * Initialize power interface
+ */
+static int __init pm_init(void)
+{
+	register_sysctl_table(pm_dir_table, 1);
+	return 0;
+}
+
+__initcall(pm_init);
 
 
-> 2). I have compiled webs server as-is from Amilda, it compiles, but when
-> started just returns with no output. I will investigate this.
->
+they had worked well before. but this week, out nand flash driver
+change the driver to new code. and when use the same kernel to bootup
+,when switch rootfs by /linuxrc. it
+get messages "bad magic number for tty struct ..." . but if i manual
+insmod my flash driiver, it works.and also if ii remove the
+"register_sysctl_table(pm_dir_table, 1)", it works too.
 
-That means that webs encountered an error starting up. Usually it is due
-to another webs instance already running or another process that has port
-80 opened.
+so what will cause this situation? (i have check the flash driver
+code, not find special code).
 
-Sergio
+BTW: the initrd is made with busybox instead of nash.
+
+
+thanks for any hints
+
+
+Best Regards
+
+zhuzhenhua

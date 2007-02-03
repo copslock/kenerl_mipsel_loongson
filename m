@@ -1,88 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Feb 2007 09:33:01 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.189]:5282 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038409AbXBCJc5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 3 Feb 2007 09:32:57 +0000
-Received: by nf-out-0910.google.com with SMTP id l24so1377436nfc
-        for <linux-mips@linux-mips.org>; Sat, 03 Feb 2007 01:31:56 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=EKNex/PC8bxEjq6DWlqPDBQhNuyI84nHIOt62PDYrcqVw+2Ta+z2J7EuJIt+OKKBnyzxH0RtoHS8TI/k2oN9hB5kxEiBj/kZhLU05ZE3uBCuBIdJ43yINEPBWLmv6f302zLhKnag412f4/J1HQh0ISe9ikUL3C+Zc5PFwYCPWHc=
-Received: by 10.82.152.16 with SMTP id z16mr1506124bud.1170495116407;
-        Sat, 03 Feb 2007 01:31:56 -0800 (PST)
-Received: by 10.82.178.4 with HTTP; Sat, 3 Feb 2007 01:31:56 -0800 (PST)
-Message-ID: <50c9a2250702030131x7ea1331ay29acdd1190208173@mail.gmail.com>
-Date:	Sat, 3 Feb 2007 17:31:56 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: whatis the connection with sysctl and "bad magic number for tty struct ..." ?
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Feb 2007 13:09:22 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:51415 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20038757AbXBCNJR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 3 Feb 2007 13:09:17 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1HDKam-0003Kg-00; Sat, 03 Feb 2007 14:06:08 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 48B42C2E0E; Sat,  3 Feb 2007 14:06:10 +0100 (CET)
+Date:	Sat, 3 Feb 2007 14:06:10 +0100
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: PATCH: Fix mc146818_decode_year
+Message-ID: <20070203130610.GA18062@alpha.franken.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+User-Agent: Mutt/1.5.9i
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13911
+X-archive-position: 13912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-hi all:
-       i am working on a mips borad with linux-2.6.14.
-and my board boot up from an initrd and then switch to Nand FLASH as root dev.
-it also add a power control entry like the /arch/mips/common/power.c
-do. as follow
 
-#define	CTL_ACPI 9999
-#define	ACPI_S1_SLP_TYP 19
-#define	ACPI_SLEEP 21
+Big endian RMs uses a different mc146818_decode_year than little endian RMs
+Correct mc146818_decode_year for years before 2000
 
-static struct ctl_table pm_table[] = {
-	{ACPI_S1_SLP_TYP, "suspend", NULL, 0, 0600, NULL, &pm_do_suspend},
-	{ACPI_SLEEP, "sleep", NULL, 0, 0600, NULL, &pm_do_sleep},
-	{CTL_ACPI, "freq", NULL, 0, 0600, NULL, &pm_do_freq},
-	{0}
-};
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
+ include/asm-mips/mach-atlas/mc146818rtc.h   |    2 +-
+ include/asm-mips/mach-generic/mc146818rtc.h |    2 +-
+ include/asm-mips/mach-mips/mc146818rtc.h    |    2 +-
+ include/asm-mips/mach-rm/mc146818rtc.h      |   10 +++++++---
+ 4 files changed, 10 insertions(+), 6 deletions(-)
 
-static struct ctl_table pm_dir_table[] = {
-	{CTL_ACPI, "pm", NULL, 0, 0555, pm_table},
-	{0}
-};
+diff --git a/include/asm-mips/mach-atlas/mc146818rtc.h b/include/asm-mips/mach-atlas/mc146818rtc.h
+index a73a569..51d337e 100644
+--- a/include/asm-mips/mach-atlas/mc146818rtc.h
++++ b/include/asm-mips/mach-atlas/mc146818rtc.h
+@@ -55,6 +55,6 @@ static inline void CMOS_WRITE(unsigned char data, unsigned long addr)
+ 
+ #define RTC_ALWAYS_BCD	0
+ 
+-#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1970)
++#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1900)
+ 
+ #endif /* __ASM_MACH_ATLAS_MC146818RTC_H */
+diff --git a/include/asm-mips/mach-generic/mc146818rtc.h b/include/asm-mips/mach-generic/mc146818rtc.h
+index 90c2e6f..0b9a942 100644
+--- a/include/asm-mips/mach-generic/mc146818rtc.h
++++ b/include/asm-mips/mach-generic/mc146818rtc.h
+@@ -30,7 +30,7 @@ static inline void CMOS_WRITE(unsigned char data, unsigned long addr)
+ #define RTC_ALWAYS_BCD	1
+ 
+ #ifndef mc146818_decode_year
+-#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1970)
++#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1900)
+ #endif
+ 
+ #endif /* __ASM_MACH_GENERIC_MC146818RTC_H */
+diff --git a/include/asm-mips/mach-mips/mc146818rtc.h b/include/asm-mips/mach-mips/mc146818rtc.h
+index 6730ba0..ea612f3 100644
+--- a/include/asm-mips/mach-mips/mc146818rtc.h
++++ b/include/asm-mips/mach-mips/mc146818rtc.h
+@@ -43,6 +43,6 @@ static inline void CMOS_WRITE(unsigned char data, unsigned long addr)
+ 
+ #define RTC_ALWAYS_BCD	0
+ 
+-#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1970)
++#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1900)
+ 
+ #endif /* __ASM_MACH_MALTA_MC146818RTC_H */
+diff --git a/include/asm-mips/mach-rm/mc146818rtc.h b/include/asm-mips/mach-rm/mc146818rtc.h
+index d37ae68..103ae8e 100644
+--- a/include/asm-mips/mach-rm/mc146818rtc.h
++++ b/include/asm-mips/mach-rm/mc146818rtc.h
+@@ -7,11 +7,15 @@
+  *
+  * RTC routines for PC style attached Dallas chip with ARC epoch.
+  */
+-#ifndef __ASM_MACH_RM200_MC146818RTC_H
+-#define __ASM_MACH_RM200_MC146818RTC_H
++#ifndef __ASM_MACH_RM_MC146818RTC_H
++#define __ASM_MACH_RM_MC146818RTC_H
+ 
++#if CONFIG_CPU_BIG_ENDIAN
++#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1900)
++#else
+ #define mc146818_decode_year(year) ((year) + 1980)
++#endif
+ 
+ #include_next <mc146818rtc.h>
+ 
+-#endif /* __ASM_MACH_RM200_MC146818RTC_H */
++#endif /* __ASM_MACH_RM_MC146818RTC_H */
+-- 
+1.4.4.3
 
-/*
- * Initialize power interface
- */
-static int __init pm_init(void)
-{
-	register_sysctl_table(pm_dir_table, 1);
-	return 0;
-}
-
-__initcall(pm_init);
-
-
-they had worked well before. but this week, out nand flash driver
-change the driver to new code. and when use the same kernel to bootup
-,when switch rootfs by /linuxrc. it
-get messages "bad magic number for tty struct ..." . but if i manual
-insmod my flash driiver, it works.and also if ii remove the
-"register_sysctl_table(pm_dir_table, 1)", it works too.
-
-so what will cause this situation? (i have check the flash driver
-code, not find special code).
-
-BTW: the initrd is made with busybox instead of nash.
-
-
-thanks for any hints
-
-
-Best Regards
-
-zhuzhenhua
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

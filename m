@@ -1,100 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Feb 2007 15:58:51 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:10238 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038812AbXBCP6q (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 3 Feb 2007 15:58:46 +0000
-Received: from localhost (p3165-ipad210funabasi.chiba.ocn.ne.jp [58.88.122.165])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id A5886B80C; Sun,  4 Feb 2007 00:57:25 +0900 (JST)
-Date:	Sun, 04 Feb 2007 00:57:25 +0900 (JST)
-Message-Id: <20070204.005725.62338494.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] fix pb1200/irqmap.c and apply some missed patches
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Feb 2007 20:35:35 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:26632 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20038926AbXBCUfa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 3 Feb 2007 20:35:30 +0000
+Received: (qmail 5414 invoked from network); 3 Feb 2007 21:34:28 +0100
+Received: from scarran.roarinelk.net (HELO ?192.168.0.242?) (192.168.0.242)
+  by wormhole.roarinelk.net with SMTP; 3 Feb 2007 21:34:28 +0100
+Message-ID: <45C4F1B1.3070407@roarinelk.homelinux.net>
+Date:	Sat, 03 Feb 2007 21:33:53 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+User-Agent: Thunderbird/1.0 Mnenhy/0.7
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org
+Subject: Re: 2.6.20-rc: au1x irqs broken
+References: <20070202.161857.55145886.nemoto@toshiba-tops.co.jp>	<20070202075328.GB23737@roarinelk.homelinux.net>	<20070202095814.GA23967@roarinelk.homelinux.net> <20070204.000338.21930811.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070204.000338.21930811.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13914
+X-archive-position: 13915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-pb1200/irqmap.c had been broken a while due to non-named initializer
-and had missed some recent IRQ related changes.  Apply these commits
-to this file.
+Atsushi Nemoto wrote:
+> You are to drop PB1000 support?
 
-[MIPS] IRQ cleanups
-commit 1603b5aca4f15b34848fb5594d0c7b6333b99144
-[MIPS] use generic_handle_irq, handle_level_irq, handle_percpu_irq
-commit 1417836e81c0ab8f5a0bfeafa90d3eaa41b2a067
-[MIPS] Compile __do_IRQ() when really needed
-commit e77c232cfc6e1250b2916a7c69225d6634d05a49
+I won't submit this patch for inclusion, ever. It was just a test.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/au1000/pb1200/irqmap.c b/arch/mips/au1000/pb1200/irqmap.c
-index 91983ba..b73b2d1 100644
---- a/arch/mips/au1000/pb1200/irqmap.c
-+++ b/arch/mips/au1000/pb1200/irqmap.c
-@@ -137,33 +137,20 @@ static void pb1200_shutdown_irq( unsigne
- 	return;
- }
- 
--static inline void pb1200_mask_and_ack_irq(unsigned int irq_nr)
--{
--	pb1200_disable_irq( irq_nr );
--}
--
--static void pb1200_end_irq(unsigned int irq_nr)
--{
--	if (!(irq_desc[irq_nr].status & (IRQ_DISABLED|IRQ_INPROGRESS))) {
--		pb1200_enable_irq(irq_nr);
--	}
--}
--
- static struct irq_chip external_irq_type =
- {
- #ifdef CONFIG_MIPS_PB1200
--	"Pb1200 Ext",
-+	.name = "Pb1200 Ext",
- #endif
- #ifdef CONFIG_MIPS_DB1200
--	"Db1200 Ext",
-+	.name = "Db1200 Ext",
- #endif
--	pb1200_startup_irq,
--	pb1200_shutdown_irq,
--	pb1200_enable_irq,
--	pb1200_disable_irq,
--	pb1200_mask_and_ack_irq,
--	pb1200_end_irq,
--	NULL
-+	.startup  = pb1200_startup_irq,
-+	.shutdown = pb1200_shutdown_irq,
-+	.ack      = pb1200_disable_irq,
-+	.mask     = pb1200_disable_irq,
-+	.mask_ack = pb1200_disable_irq,
-+	.unmask   = pb1200_enable_irq,
- };
- 
- void _board_init_irq(void)
-@@ -172,7 +159,8 @@ void _board_init_irq(void)
- 
- 	for (irq_nr = PB1200_INT_BEGIN; irq_nr <= PB1200_INT_END; irq_nr++)
- 	{
--		irq_desc[irq_nr].chip = &external_irq_type;
-+		set_irq_chip_and_handler(irq_nr, &external_irq_type,
-+					 handle_level_irq);
- 		pb1200_disable_irq(irq_nr);
- 	}
- 
+> .ack entries are required for handle_edge_irq.  And if you wanted to
+> unregister an irq handler by set_irq_handler(irq, NULL), .ack will be
+> used even for level flow handler.
+
+Good to know, Thanks.
+
+-- 
+  ml.

@@ -1,51 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Feb 2007 20:43:08 +0000 (GMT)
-Received: from father.pmc-sierra.com ([216.241.224.13]:4312 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20037724AbXBEUnC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Feb 2007 20:43:02 +0000
-Received: (qmail 28295 invoked by uid 101); 5 Feb 2007 20:41:42 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 5 Feb 2007 20:41:42 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l15Kfgsw014415
-	for <linux-mips@linux-mips.org>; Mon, 5 Feb 2007 12:41:42 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <1CC7PNGC>; Mon, 5 Feb 2007 12:41:41 -0800
-Message-ID: <45C7967E.1090505@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	linux-mips@linux-mips.org
-Subject: Embedding rootfs with kernel
-Date:	Mon, 5 Feb 2007 12:41:34 -0800 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 05 Feb 2007 20:41:34.0648 (UTC) FILETIME=[066A7380:01C74966]
-user-agent: Thunderbird 1.5.0.9 (X11/20061206)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Feb 2007 21:48:22 +0000 (GMT)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:42387 "EHLO
+	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
+	id S20027541AbXBEVsS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Feb 2007 21:48:18 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.13.8/8.13.4) with ESMTP id l15Lx1IK011259;
+	Mon, 5 Feb 2007 21:59:02 GMT
+Date:	Mon, 5 Feb 2007 21:59:01 +0000
+From:	Alan <alan@lxorguk.ukuu.org.uk>
+To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+Cc:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
+Message-ID: <20070205215901.7344c954@localhost.localdomain>
+In-Reply-To: <45C77B61.1080209@pmc-sierra.com>
+References: <45C77B61.1080209@pmc-sierra.com>
+X-Mailer: Claws Mail 2.7.1 (GTK+ 2.10.4; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13941
+X-archive-position: 13942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-What is the MIPS-way of embedding the rootfs with the kernel?
+>   	unsigned char		hub6;			/* this should be in the 8250 driver */
+>   	unsigned char		unused[3];
+> +	void				*data;			/* generic platform data pointer */
+>   };
 
-Our method involves modifying the vmlinux.lds.S linker script to pull in our
-'romfs' section. I don't see any other platform code doing this so there must
-be a more "standard" approach.
+Convention is "private_data"
 
-Apparently there was support in linux 2.4 (a patch possibly?) which would
-look for supported file system magic numbers past the end of the kernel.
-So you could just cat the rootfs to the end of the kernel binary and go
-on with life.
+>
+>   /*
+> diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
+> index 3c8a6aa..b3550cc 100644
+> --- a/include/linux/serial_reg.h
+> +++ b/include/linux/serial_reg.h
+> @@ -37,6 +37,7 @@ #define UART_IIR_MSI		0x00 /* Modem stat
+>   #define UART_IIR_THRI		0x02 /* Transmitter holding register empty */
+>   #define UART_IIR_RDI		0x04 /* Receiver data interrupt */
+>   #define UART_IIR_RLSI		0x06 /* Receiver line status interrupt */
+> +#define UART_IIR_BUSY		0x07 /* DesignWare APB Busy Detect */
 
-I've tried this with linux-mips.org code base and it doesn't appear to work.
-Any pointers would be appreciated.
+Please move this down a line to break it from "official" values and call
+it DESIGNWARE_UART_IIR_BUSY, so it is obviously designware specific.
 
-Marc
+Otherwise looks much less invasive and messy

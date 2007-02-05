@@ -1,44 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Feb 2007 17:54:34 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:4006 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037679AbXBDRyc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 4 Feb 2007 17:54:32 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l14HsVTg015282;
-	Sun, 4 Feb 2007 17:54:31 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l14HsS79015281;
-	Sun, 4 Feb 2007 17:54:28 GMT
-Date:	Sun, 4 Feb 2007 17:54:28 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] fix pb1200/irqmap.c and apply some missed patches
-Message-ID: <20070204175428.GA12319@linux-mips.org>
-References: <20070204.005725.62338494.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Feb 2007 00:58:34 +0000 (GMT)
+Received: from nevyn.them.org ([66.93.172.17]:59828 "EHLO nevyn.them.org")
+	by ftp.linux-mips.org with ESMTP id S20038780AbXBEA63 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 5 Feb 2007 00:58:29 +0000
+Received: from drow by nevyn.them.org with local (Exim 4.63)
+	(envelope-from <drow@nevyn.them.org>)
+	id 1HDs8a-0000QK-3a; Sun, 04 Feb 2007 19:55:16 -0500
+Date:	Sun, 4 Feb 2007 19:55:16 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Question about signal syscalls !
+Message-ID: <20070205005516.GA1581@nevyn.them.org>
+References: <cda58cb80702010243y4a36026i6945f2a5cd3791d0@mail.gmail.com> <20070201135734.GB12728@linux-mips.org> <cda58cb80702010654w74527a34k4ed229b499b8f9b2@mail.gmail.com> <45C21CFE.9060804@avtrex.com> <cda58cb80702020055t6eb2578fn5d1e4370e9ebda08@mail.gmail.com> <45C3611D.7000702@avtrex.com> <cda58cb80702020836t54ab54bam1b83dd7c1dacb4d8@mail.gmail.com> <45C36D46.5040409@avtrex.com> <cda58cb80702021158n42bdb5fbi6cca4f2c8dff6782@mail.gmail.com> <45C3A1E3.8010802@avtrex.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20070204.005725.62338494.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <45C3A1E3.8010802@avtrex.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <drow@nevyn.them.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13917
+X-archive-position: 13918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 04, 2007 at 12:57:25AM +0900, Atsushi Nemoto wrote:
+On Fri, Feb 02, 2007 at 12:41:07PM -0800, David Daney wrote:
+> I thought you were suggesting not saving s0-s7.  If you don't save them, 
+> you cannot restore them.  And they have to be restored from the 
+> sigcontext in the user's address space.   This allows user space signal 
+> handlers to emulate trapping instructions, and the like.
 
-> pb1200/irqmap.c had been broken a while due to non-named initializer
-> and had missed some recent IRQ related changes.  Apply these commits
-> to this file.
+Not necessarily, because you can trust the signal handler to restore
+them, and it can save them itself if it needs to.  As I said, I think
+there's at least one architecture which does it this way.  I'm afraid I
+don't know which one.
 
-Thanks, applied.
-
-  Ralf
+-- 
+Daniel Jacobowitz
+CodeSourcery

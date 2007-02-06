@@ -1,61 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Feb 2007 18:21:22 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:10502 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038453AbXBFSVR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Feb 2007 18:21:17 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B5CDEE1CA0;
-	Tue,  6 Feb 2007 19:20:31 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id hA1F6ShoORnV; Tue,  6 Feb 2007 19:20:31 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 58003E1C84;
-	Tue,  6 Feb 2007 19:20:31 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l16IKiU4022676;
-	Tue, 6 Feb 2007 19:20:44 +0100
-Date:	Tue, 6 Feb 2007 18:20:39 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] fix run_uncached warning about 32bit kernel
-In-Reply-To: <20070206152817.GB5660@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0702061818550.28283@blysk.ds.pg.gda.pl>
-References: <200702060159.l161xM59075711@mbox33.po.2iij.net>
- <20070206152817.GB5660@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Feb 2007 19:04:39 +0000 (GMT)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:34968 "HELO
+	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S20038469AbXBFTEc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Feb 2007 19:04:32 +0000
+Received: (qmail 16181 invoked by uid 101); 6 Feb 2007 19:03:15 -0000
+Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
+  by mother.pmc-sierra.com with SMTP; 6 Feb 2007 19:03:15 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l16J3Eu9004447;
+	Tue, 6 Feb 2007 11:03:14 -0800
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
+	id <1CC7QRAW>; Tue, 6 Feb 2007 11:03:14 -0800
+Message-ID: <45C8D0EC.2060007@pmc-sierra.com>
+From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: Embedding rootfs with kernel
+Date:	Tue, 6 Feb 2007 11:03:08 -0800 
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.7/2527/Tue Feb  6 11:14:46 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+X-Mailer: Internet Mail Service (5.5.2657.72)
+x-originalarrivaltime: 06 Feb 2007 19:03:09.0088 (UTC) FILETIME=[70D74200:01C74A21]
+user-agent: Thunderbird 1.5.0.9 (X11/20061206)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Marc_St-Jean@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13952
+X-archive-position: 13953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: Marc_St-Jean@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 6 Feb 2007, Ralf Baechle wrote:
-
-> On Tue, Feb 06, 2007 at 10:59:22AM +0900, Yoichi Yuasa wrote:
+Alexander Voropay wrote:
 > 
-> > arch/mips/lib/uncached.c: In function 'run_uncached':
-> > arch/mips/lib/uncached.c:47: warning: comparison is always true due to limited range of data type
-> > arch/mips/lib/uncached.c:48: warning: comparison is always false due to limited range of data type
-> > arch/mips/lib/uncached.c:57: warning: comparison is always true due to limited range of data type
-> > arch/mips/lib/uncached.c:58: warning: comparison is always false due to limited range of data type
 > 
-> Thanks, applied.
+>  >I was also looking at initramfs but from documentation I found it,
+>  > appears to expand the cpio.gz into a tmpfs (i.e. RAM) before using
+>  > it.
+> 
+>  Read this nice article:
+> http://www.linuxdevices.com/articles/AT4017834659.html
+> 
 
- "Fixing" bugs in the compiler, huh? ;-)  I suppose there should be a note 
-somewhere nearby then, so there is a remote chance to remove the clutter 
-in the future.
+Thanks Alexander, I'd read it many months ago, it does clarifies a few
+issues. Another article on various methods of preparing the initramfs is:
+"Including an initramfs Intialization Program in the Kernel"
+http://lldn.timesys.com/docs/initramfs?elq=1EE1D775A62A4EF68F0A3E9AEC666D0D
 
-  Maciej
+Neither of these seem to help with regards to embedding a read-only
+file system. It seems like there is no officially supported way of doing
+this. Presumably these types of file systems are meant to only be used
+separate from the kernel image, such as in a flash partition.
+
+I guess we can continue to use our current method, but I was hoping
+to eliminate any changes to non-platform code such as vmlinux.lds.S.
+
+Marc

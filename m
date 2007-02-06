@@ -1,56 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Feb 2007 21:48:22 +0000 (GMT)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:42387 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20027541AbXBEVsS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Feb 2007 21:48:18 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.13.8/8.13.4) with ESMTP id l15Lx1IK011259;
-	Mon, 5 Feb 2007 21:59:02 GMT
-Date:	Mon, 5 Feb 2007 21:59:01 +0000
-From:	Alan <alan@lxorguk.ukuu.org.uk>
-To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-Cc:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
-Message-ID: <20070205215901.7344c954@localhost.localdomain>
-In-Reply-To: <45C77B61.1080209@pmc-sierra.com>
-References: <45C77B61.1080209@pmc-sierra.com>
-X-Mailer: Claws Mail 2.7.1 (GTK+ 2.10.4; x86_64-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Feb 2007 02:00:50 +0000 (GMT)
+Received: from mo31.po.2iij.net ([210.128.50.54]:60487 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038814AbXBFCAp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 6 Feb 2007 02:00:45 +0000
+Received: by mo.po.2iij.net (mo31) id l161xMUd081328; Tue, 6 Feb 2007 10:59:22 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox33) id l161xM59075711
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 6 Feb 2007 10:59:22 +0900 (JST)
+Message-Id: <200702060159.l161xM59075711@mbox33.po.2iij.net>
+Date:	Tue, 6 Feb 2007 10:59:22 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] fix run_uncached warning about 32bit kernel
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13942
+X-archive-position: 13943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
->   	unsigned char		hub6;			/* this should be in the 8250 driver */
->   	unsigned char		unused[3];
-> +	void				*data;			/* generic platform data pointer */
->   };
+Hi Ralf,
 
-Convention is "private_data"
+This patch has fixed warning about 32 bit kernel.
 
->
->   /*
-> diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
-> index 3c8a6aa..b3550cc 100644
-> --- a/include/linux/serial_reg.h
-> +++ b/include/linux/serial_reg.h
-> @@ -37,6 +37,7 @@ #define UART_IIR_MSI		0x00 /* Modem stat
->   #define UART_IIR_THRI		0x02 /* Transmitter holding register empty */
->   #define UART_IIR_RDI		0x04 /* Receiver data interrupt */
->   #define UART_IIR_RLSI		0x06 /* Receiver line status interrupt */
-> +#define UART_IIR_BUSY		0x07 /* DesignWare APB Busy Detect */
+arch/mips/lib/uncached.c: In function 'run_uncached':
+arch/mips/lib/uncached.c:47: warning: comparison is always true due to limited range of data type
+arch/mips/lib/uncached.c:48: warning: comparison is always false due to limited range of data type
+arch/mips/lib/uncached.c:57: warning: comparison is always true due to limited range of data type
+arch/mips/lib/uncached.c:58: warning: comparison is always false due to limited range of data type
 
-Please move this down a line to break it from "official" values and call
-it DESIGNWARE_UART_IIR_BUSY, so it is obviously designware specific.
+Yoichi
 
-Otherwise looks much less invasive and messy
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/lib/uncached.c mips/arch/mips/lib/uncached.c
+--- mips-orig/arch/mips/lib/uncached.c	2006-11-13 19:32:04.002117500 +0900
++++ mips/arch/mips/lib/uncached.c	2006-11-13 19:29:07.087061000 +0900
+@@ -44,20 +44,24 @@ unsigned long __init run_uncached(void *
+ 
+ 	if (sp >= (long)CKSEG0 && sp < (long)CKSEG2)
+ 		usp = CKSEG1ADDR(sp);
++#ifdef CONFIG_64BIT
+ 	else if ((long long)sp >= (long long)PHYS_TO_XKPHYS(0LL, 0) &&
+ 		 (long long)sp < (long long)PHYS_TO_XKPHYS(8LL, 0))
+ 		usp = PHYS_TO_XKPHYS((long long)K_CALG_UNCACHED,
+ 				     XKPHYS_TO_PHYS((long long)sp));
++#endif
+ 	else {
+ 		BUG();
+ 		usp = sp;
+ 	}
+ 	if (lfunc >= (long)CKSEG0 && lfunc < (long)CKSEG2)
+ 		ufunc = CKSEG1ADDR(lfunc);
++#ifdef CONFIG_64BIT
+ 	else if ((long long)lfunc >= (long long)PHYS_TO_XKPHYS(0LL, 0) &&
+ 		 (long long)lfunc < (long long)PHYS_TO_XKPHYS(8LL, 0))
+ 		ufunc = PHYS_TO_XKPHYS((long long)K_CALG_UNCACHED,
+ 				       XKPHYS_TO_PHYS((long long)lfunc));
++#endif
+ 	else {
+ 		BUG();
+ 		ufunc = lfunc;

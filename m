@@ -1,89 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Feb 2007 15:55:31 +0000 (GMT)
-Received: from hu-out-0506.google.com ([72.14.214.236]:49953 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038431AbXBFPz0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Feb 2007 15:55:26 +0000
-Received: by hu-out-0506.google.com with SMTP id 22so985449hug
-        for <linux-mips@linux-mips.org>; Tue, 06 Feb 2007 07:54:25 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=KwHe7wK7c6sSKeF6pB/UVCQzAd6O6p8CC/mmdqOvXHQyeEh6m5TjcQtlaff/u3MwovHLGSJgK3ECWClZqm0Qq/trjYSBdg0peYq4vdSpf8R/hHOLOOfTtl4DoMJ074YxPVSeasuJPGI4V5RIBv18zUk11LrP/om3An4T1WdnsfQ=
-Received: by 10.78.172.20 with SMTP id u20mr531657hue.1170777265690;
-        Tue, 06 Feb 2007 07:54:25 -0800 (PST)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id q28sm2872148nfc.2007.02.06.07.54.24;
-        Tue, 06 Feb 2007 07:54:25 -0800 (PST)
-Message-ID: <45C8A477.8070906@innova-card.com>
-Date:	Tue, 06 Feb 2007 16:53:27 +0100
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Feb 2007 16:54:07 +0000 (GMT)
+Received: from father.pmc-sierra.com ([216.241.224.13]:64717 "HELO
+	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S20038440AbXBFQyC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Feb 2007 16:54:02 +0000
+Received: (qmail 16814 invoked by uid 101); 6 Feb 2007 16:52:50 -0000
+Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
+  by father.pmc-sierra.com with SMTP; 6 Feb 2007 16:52:50 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l16GqW5v024492;
+	Tue, 6 Feb 2007 08:52:41 -0800
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
+	id <1CC7QLJC>; Tue, 6 Feb 2007 08:52:32 -0800
+Message-ID: <45C8B24B.1000204@pmc-sierra.com>
+From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+To:	Alan <alan@lxorguk.ukuu.org.uk>
+Cc:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git mast
+	er
+Date:	Tue, 6 Feb 2007 08:52:27 -0800 
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] clean up ret_from_{irq,exception}
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+X-Mailer: Internet Mail Service (5.5.2657.72)
+x-originalarrivaltime: 06 Feb 2007 16:52:28.0427 (UTC) FILETIME=[2F7155B0:01C74A0F]
+user-agent: Thunderbird 1.5.0.9 (X11/20061206)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Marc_St-Jean@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13949
+X-archive-position: 13950
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: Marc_St-Jean@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+Thank Alan. I made the changes yesterday but I'll wait another day
+before reposting, in case other interested people have more comments.
 
-This patch makes these routines a lot more readable whatever
-the value of CONFIG_PREEMPT.
+Marc
 
-It also moves one branch instruction from ret_from_irq()
-to ret_from_exception(). Therefore we favour the return
-from irq path which should be more common than the other
-one.
-
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/kernel/entry.S |   15 +++++----------
- 1 files changed, 5 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
-index f10b6a1..571029b 100644
---- a/arch/mips/kernel/entry.S
-+++ b/arch/mips/kernel/entry.S
-@@ -21,23 +21,18 @@
- #endif
- 
- #ifndef CONFIG_PREEMPT
--	.macro	preempt_stop
--	local_irq_disable
--	.endm
- #define resume_kernel	restore_all
- #endif
- 
- 	.text
- 	.align	5
--FEXPORT(ret_from_irq)
--	LONG_S	s0, TI_REGS($28)
--#ifdef CONFIG_PREEMPT
--FEXPORT(ret_from_exception)
--#else
--	b	_ret_from_irq
- FEXPORT(ret_from_exception)
--	preempt_stop
-+#ifndef CONFIG_PREEMPT
-+	local_irq_disable			# preempt stop
- #endif
-+	b	_ret_from_irq
-+FEXPORT(ret_from_irq)
-+	LONG_S	s0, TI_REGS($28)
- FEXPORT(_ret_from_irq)
- 	LONG_L	t0, PT_STATUS(sp)		# returning to kernel mode?
- 	andi	t0, t0, KU_USER
--- 
-1.4.4.3.ge6d4
+Alan wrote:
+>  >       unsigned char           hub6;                   /* this should 
+> be in the 8250 driver */
+>  >       unsigned char           unused[3];
+>  > +     void                            *data;                  /* 
+> generic platform data pointer */
+>  >   };
+> 
+> Convention is "private_data"
+> 
+>  >
+>  >   /*
+>  > diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
+>  > index 3c8a6aa..b3550cc 100644
+>  > --- a/include/linux/serial_reg.h
+>  > +++ b/include/linux/serial_reg.h
+>  > @@ -37,6 +37,7 @@ #define UART_IIR_MSI                0x00 /* Modem stat
+>  >   #define UART_IIR_THRI               0x02 /* Transmitter holding 
+> register empty */
+>  >   #define UART_IIR_RDI                0x04 /* Receiver data interrupt */
+>  >   #define UART_IIR_RLSI               0x06 /* Receiver line status 
+> interrupt */
+>  > +#define UART_IIR_BUSY                0x07 /* DesignWare APB Busy 
+> Detect */
+> 
+> Please move this down a line to break it from "official" values and call
+> it DESIGNWARE_UART_IIR_BUSY, so it is obviously designware specific.
+> 
+> Otherwise looks much less invasive and messy
+> 

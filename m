@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 18:53:03 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:47551 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 18:53:28 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:50111 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039514AbXBGSxB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Feb 2007 18:53:01 +0000
+	id S20039511AbXBGSxX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 7 Feb 2007 18:53:23 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l17Ir1gt028838;
-	Wed, 7 Feb 2007 18:53:01 GMT
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l17IrNxY028857;
+	Wed, 7 Feb 2007 18:53:23 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l17IqxHt028837;
-	Wed, 7 Feb 2007 18:52:59 GMT
-Date:	Wed, 7 Feb 2007 18:52:59 +0000
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l17IrNUs028856;
+	Wed, 7 Feb 2007 18:53:23 GMT
+Date:	Wed, 7 Feb 2007 18:53:23 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] (2.6.20) Toshiba JMR3927 and RBTX49x7 do support LE
-Message-ID: <20070207185259.GA25720@linux-mips.org>
-References: <200702072039.05901.sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH] (2.6.20) Toshiba RBTX49x7: declare prom_getcmdline()
+Message-ID: <20070207185323.GB25720@linux-mips.org>
+References: <200702072041.36064.sshtylyov@ru.mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200702072039.05901.sshtylyov@ru.mvista.com>
+In-Reply-To: <200702072041.36064.sshtylyov@ru.mvista.com>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13965
+X-archive-position: 13966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,10 +33,9 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 07, 2007 at 08:39:05PM +0300, Sergei Shtylyov wrote:
+On Wed, Feb 07, 2007 at 08:41:36PM +0300, Sergei Shtylyov wrote:
 
-> Toshiba JMR3927 (RBHMA3100) and RBTX49[23]7 (RBHMA4[24]00) do support both
-> little and big endian mode (if you flash the right PMON).
+> Fix a bunch of warnings caused by a missing prom_getcmdline() prototype.
 
 Applied.  Thanks,
 

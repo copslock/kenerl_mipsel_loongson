@@ -1,163 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 17:55:14 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:6028 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20039489AbXBGRzK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Feb 2007 17:55:10 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id D7A363EC9; Wed,  7 Feb 2007 09:54:37 -0800 (PST)
-Message-ID: <45CA125B.6050701@ru.mvista.com>
-Date:	Wed, 07 Feb 2007 20:54:35 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 18:05:11 +0000 (GMT)
+Received: from mx5.wp.pl ([212.77.101.9]:15005 "EHLO mx1.wp.pl")
+	by ftp.linux-mips.org with ESMTP id S20039501AbXBGSFG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Feb 2007 18:05:06 +0000
+Received: (wp-smtpd smtp.wp.pl 16732 invoked from network); 7 Feb 2007 19:03:59 +0100
+Received: from apn-239-193.gprsbal.plusgsm.pl (HELO [87.251.239.193]) (laurentp@[87.251.239.193])
+          (envelope-sender <laurentp@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with AES256-SHA encrypted SMTP
+          for <linux-mips@linux-mips.org>; 7 Feb 2007 19:03:59 +0100
+Message-ID: <45CA1552.3080100@wp.pl>
+Date:	Wed, 07 Feb 2007 19:07:14 +0100
+From:	"W.P." <laurentp@wp.pl>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920
+X-Accept-Language: pl, en, en-us
 MIME-Version: 1.0
-To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-Cc:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
-References: <45C77B61.1080209@pmc-sierra.com>
-In-Reply-To: <45C77B61.1080209@pmc-sierra.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To:	linux-mips@linux-mips.org
+Subject: Re: Advice needed.
+References: <45C0C956.2050009@wp.pl>             <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>             <200701312302.05473.florian.fainelli@int-evry.fr>             <45C11812.9050808@wp.pl>          <10879.201.240.249.124.1170335347.squirrel@www.amilda.org>          <45C1FE3D.8080304@wp.pl>       <16445.201.240.249.124.1170423826.squirrel@www.amilda.org>       <45C3BB23.2070309@wp.pl>    <50812.201.230.45.190.1170482268.squirrel@www.amilda.org>    <45C45DDA.1000805@wp.pl> <24895.201.240.249.124.1170686083.squirrel@www.amilda.org>
+In-Reply-To: <24895.201.240.249.124.1170686083.squirrel@www.amilda.org>
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
+X-WP-SPAM: NO 0000000                                      
+Return-Path: <laurentp@wp.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13963
+X-archive-position: 13964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: laurentp@wp.pl
 Precedence: bulk
 X-list: linux-mips
 
-Marc St-Jean wrote:
-> Third attempt at the serial driver patch for the PMC-Sierra MSP71xx device.
-> 
-> There are three different fixes:
-> 1. Fix for DesignWare THRE errata
-> - Dropped our fix since the "8250-uart-backup-timer.patch" in the "mm"
-> tree also fixes it. This patch needs to be applied on top of it.
-> 
-> 2. Fix for Busy Detect on LCR write
-> - Dropped the addition of UPIO_DWAPB iotype to 8250_early.c as Sergei
-> pointed out the fix wasn't complete and we don't require it.
-> 
-> 3. Workaround for interrupt/data concurrency issue
-> - Fix must remain serial8250_interrupt() in order to mark interrupt as
-> handled.
-> 
-> Thanks,
-> Marc
-> 
-> Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-> 
-> diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-> index 3d91bfc..489ff2b 100644
-> --- a/drivers/serial/8250.c
-> +++ b/drivers/serial/8250.c
-> @@ -308,6 +308,7 @@ static unsigned int serial_in(struct uar
->   		return inb(up->port.iobase + 1);
-> 
->   	case UPIO_MEM:
-> +	case UPIO_DWAPB:
->   		return readb(up->port.membase + offset);
-> 
->   	case UPIO_MEM32:
-> @@ -333,6 +334,8 @@ #endif
->   static void
->   serial_out(struct uart_8250_port *up, int offset, int value)
->   {
-> +	/* Save the offset before it's remapped */
-> +	int save_offset = offset;
->   	offset = map_8250_out_reg(up, offset) << up->port.regshift;
-> 
->   	switch (up->port.iotype) {
-> @@ -359,6 +362,18 @@ #endif
->   			writeb(value, up->port.membase + offset);
->   		break;
-> 
-> +	case UPIO_DWAPB:
-> +		/* Save the LCR value so it can be re-written when a
-> +		 * Busy Detect interrupt occurs. */
-> +		if (save_offset == UART_LCR)
-> +			up->lcr = value;
-> +		writeb(value, up->port.membase + offset);
-> +		/* Read the IER to ensure any interrupt is cleared before
-> +		 * returning from ISR. */
-> +		if ((save_offset == UART_TX || save_offset == UART_IER) && in_irq())
-> +			value = serial_in(up, UART_IER);
-> +		break;
-> +		
->   	default:
->   		outb(value, up->port.iobase + offset);
->   	}
-> @@ -373,6 +388,7 @@ serial_out_sync(struct uart_8250_port *u
->   #ifdef CONFIG_SERIAL_8250_AU1X00
->   	case UPIO_AU:
->   #endif
-> +	case UPIO_DWAPB:
->   		serial_out(up, offset, value);
->   		(void)serial_in(up, UART_LCR); /* safe, no side-effects */
->   		break;
-> @@ -1383,6 +1399,19 @@ static irqreturn_t serial8250_interrupt(
->   			handled = 1;
-> 
->   			end = NULL;
-> +		} else if ((iir & UART_IIR_BUSY) == UART_IIR_BUSY &&
-> +				up->port.iotype == UPIO_DWAPB) {
+<cut>
 
-    Makes sense to swap the checks, i.e. to only test for UART_IIR_BUSY is 
-this is UPIO_DWAPB.
+>The configuration structure is difficult to understand (even if you have
+>the C header containing the struct)
+>  
+>
+I don't have any header files for flash. Do you? In tarballs for BR,
+there is no source for utilities like flash.
+I'm trying to "decode" this structure, variable-by-variable. I have used
+your flash utility source
 
-> +			/* The DesignWare APB UART has an Busy Detect (0x07)
-> +			 * interrupt meaning an LCR write attempt occured while the
-> +			 * UART was busy. The interrupt must be cleared by reading
-> +			 * the UART status register (USR) and the LCR re-written. */
-> +			unsigned int status;
-> +			status = *(volatile u32 *)up->port.data;
-> +			serial_out(up, UART_LCR, up->lcr);
-> +
-> +			handled = 1;
-> +
-> +			end = NULL;
->   		} else if (end == NULL)
->   			end = l;
+>Just use the "flash" program.
+>  
+>
+The one, that comes with original firmware? But what about webs, as i
+looked into, this needs too some knowledge of flash datastructures.?
 
-[...]
 
-> @@ -2454,9 +2485,12 @@ int __init serial8250_start_console(stru
-> 
->   	add_preferred_console("ttyS", line, options);
->   	printk("Adding console on ttyS%d at %s 0x%lx (options '%s')\n",
-> -		line, port->iotype == UPIO_MEM ? "MMIO" : "I/O port",
-> -		port->iotype == UPIO_MEM ? (unsigned long) port->mapbase :
-> -		    (unsigned long) port->iobase, options);
-> +		line,
-> +		(port->iotype == UPIO_MEM || port->iotype == UPIO_DWAPB)
-> +			? "MMIO" : "I/O port",
-> +		(port->iotype == UPIO_MEM || port->iotype == UPIO_DWAPB)
-> +			? (unsigned long) port->mapbase : (unsigned long) port->iobase,
-> +		options);
+About webs -> will try to add some printf for debugging, and see.
 
-    Please turn this check into port->iotype >= UPIO_MEM, since this would be 
-the Right Thing (RM).  All iotypes beyond UPIO_MEM are memory mapped.  And I 
-thought I fixed that -- was wrong, obviously... :-/
+BTW, maybe the JP3 connector (just 12 little holes) is the JTAG. Will
+upload photo i think tomorrow. I have checked this with ohmometer and
+pin-map of 8186, and it seems to be JTAG + RESET+ something(?). You have
+published schema of JTAG cable, but what software shall anyone use?
 
-> diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
-> index 3c8a6aa..b3550cc 100644
-> --- a/include/linux/serial_reg.h
-> +++ b/include/linux/serial_reg.h
-> @@ -37,6 +37,7 @@ #define UART_IIR_MSI		0x00 /* Modem stat
->   #define UART_IIR_THRI		0x02 /* Transmitter holding register empty */
->   #define UART_IIR_RDI		0x04 /* Receiver data interrupt */
->   #define UART_IIR_RLSI		0x06 /* Receiver line status interrupt */
-> +#define UART_IIR_BUSY		0x07 /* DesignWare APB Busy Detect */
-
-    Alan already said about this one... :-)
-
-    BTW, your patches are still corrupt by your mailer (space added to lines 
-starting with space)
-
-MBR, Sergei
+W.Piotrzkowski.

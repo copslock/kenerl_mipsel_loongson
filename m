@@ -1,61 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Feb 2007 19:04:39 +0000 (GMT)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:34968 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20038469AbXBFTEc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Feb 2007 19:04:32 +0000
-Received: (qmail 16181 invoked by uid 101); 6 Feb 2007 19:03:15 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by mother.pmc-sierra.com with SMTP; 6 Feb 2007 19:03:15 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l16J3Eu9004447;
-	Tue, 6 Feb 2007 11:03:14 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <1CC7QRAW>; Tue, 6 Feb 2007 11:03:14 -0800
-Message-ID: <45C8D0EC.2060007@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 04:38:40 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:42697 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20037419AbXBGEig (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 7 Feb 2007 04:38:36 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 7 Feb 2007 13:38:34 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id F3BE041DA1
+	for <linux-mips@linux-mips.org>; Wed,  7 Feb 2007 13:38:09 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id E744E206AB
+	for <linux-mips@linux-mips.org>; Wed,  7 Feb 2007 13:38:09 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l174c9W0062264
+	for <linux-mips@linux-mips.org>; Wed, 7 Feb 2007 13:38:09 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 07 Feb 2007 13:38:09 +0900 (JST)
+Message-Id: <20070207.133809.71085888.nemoto@toshiba-tops.co.jp>
 To:	linux-mips@linux-mips.org
-Subject: Re: Embedding rootfs with kernel
-Date:	Tue, 6 Feb 2007 11:03:08 -0800 
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 06 Feb 2007 19:03:09.0088 (UTC) FILETIME=[70D74200:01C74A21]
-user-agent: Thunderbird 1.5.0.9 (X11/20061206)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Subject: Re: [MIPS] Check FCSR for pending interrupts before restoring from
+ a context.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <S20038814AbXBEQMb/20070205161231Z+24864@ftp.linux-mips.org>
+References: <S20038814AbXBEQMb/20070205161231Z+24864@ftp.linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13953
+X-archive-position: 13954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Alexander Voropay wrote:
+On Mon, 05 Feb 2007 16:12:26 +0000, linux-mips@linux-mips.org wrote:
+> Author: Chris Dearman <chris@mips.com> Thu Feb 1 19:54:13 2007 +0000
+> Comitter: Ralf Baechle <ralf@linux-mips.org> Mon Feb 5 15:56:18 2007 +0000
+> Commit: a9e080c2c615bc4e9d9987330c0be35ea5226eed
+> Gitweb: http://www.linux-mips.org/g/linux/a9e080c2
+> Branch: master
 > 
+> Signed-off-by: Chris Dearman <chris@mips.com>
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 > 
->  >I was also looking at initramfs but from documentation I found it,
->  > appears to expand the cpio.gz into a tmpfs (i.e. RAM) before using
->  > it.
+> ---
 > 
->  Read this nice article:
-> http://www.linuxdevices.com/articles/AT4017834659.html
-> 
+>  arch/mips/kernel/r4k_fpu.S |   16 ++++++++++++++++
+>  1 files changed, 16 insertions(+), 0 deletions(-)
 
-Thanks Alexander, I'd read it many months ago, it does clarifies a few
-issues. Another article on various methods of preparing the initramfs is:
-"Including an initramfs Intialization Program in the Kernel"
-http://lldn.timesys.com/docs/initramfs?elq=1EE1D775A62A4EF68F0A3E9AEC666D0D
+r2300_fpu.S and r6000_fpu.S should be fixed too?
 
-Neither of these seem to help with regards to embedding a read-only
-file system. It seems like there is no officially supported way of doing
-this. Presumably these types of file systems are meant to only be used
-separate from the kernel image, such as in a flash partition.
+Also, fpu_emulator_restore_context() should check FCSR too? (it should
+not harm FPU-less CPU, but on MIPS_MT, FCSR value restored by fpu
+emulator might be used for real FPU, right?)
 
-I guess we can continue to use our current method, but I was hoping
-to eliminate any changes to non-platform code such as vmlinux.lds.S.
-
-Marc
+---
+Atsushi Nemoto

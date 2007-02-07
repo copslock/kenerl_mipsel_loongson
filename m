@@ -1,55 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 17:29:46 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:7442 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20039477AbXBGR3k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Feb 2007 17:29:40 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id E2792E1C93;
-	Wed,  7 Feb 2007 18:28:54 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4OVi1UOsEhaO; Wed,  7 Feb 2007 18:28:54 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 89EE7F5943;
-	Wed,  7 Feb 2007 18:28:54 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l17HT75s000440;
-	Wed, 7 Feb 2007 18:29:07 +0100
-Date:	Wed, 7 Feb 2007 17:29:02 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [MIPS] Check FCSR for pending interrupts before restoring from
- a context.
-In-Reply-To: <20070208.012216.103777705.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0702071725150.9744@blysk.ds.pg.gda.pl>
-References: <S20038814AbXBEQMb/20070205161231Z+24864@ftp.linux-mips.org>
- <20070207.133809.71085888.nemoto@toshiba-tops.co.jp> <20070207110929.GA17660@linux-mips.org>
- <20070208.012216.103777705.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 17:39:47 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:49035 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20039488AbXBGRjm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Feb 2007 17:39:42 +0000
+Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 4DA8A3EC9; Wed,  7 Feb 2007 09:39:09 -0800 (PST)
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+To:	ralf@linux-mips.org
+Subject: [PATCH] (2.6.20) Toshiba JMR3927 and RBTX49x7 do support LE
+Date:	Wed, 7 Feb 2007 20:39:05 +0300
+User-Agent: KMail/1.5
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.7/2533/Wed Feb  7 15:20:47 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Disposition: inline
+Organization: MontaVista Software Inc.
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200702072039.05901.sshtylyov@ru.mvista.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13960
+X-archive-position: 13961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 8 Feb 2007, Atsushi Nemoto wrote:
+Toshiba JMR3927 (RBHMA3100) and RBTX49[23]7 (RBHMA4[24]00) do support both
+little and big endian mode (if you flash the right PMON).
 
-> If the format of FCSR was common to all CPU (I hope so), we can do
-> check it in caller of fp_restore_context(), in C language.
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
- The R3010, etc. use bits 23 and 17:0 the same way as the R4000 and MIPS 
-architecture processors do.  The other bits are unused and hardwired to 
-zeroes.
-
-  Maciej
+Index: linux-2.6/arch/mips/Kconfig
+===================================================================
+--- linux-2.6.orig/arch/mips/Kconfig
++++ linux-2.6/arch/mips/Kconfig
+@@ -747,6 +747,7 @@ config TOSHIBA_JMR3927
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_TX39XX
+ 	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select TOSHIBA_BOARDS
+ 
+@@ -761,6 +762,7 @@ config TOSHIBA_RBTX4927
+ 	select SYS_HAS_CPU_TX49XX
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select TOSHIBA_BOARDS
+ 	select GENERIC_HARDIRQS_NO__DO_IRQ

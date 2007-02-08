@@ -1,158 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 12:13:50 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:33450 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038521AbXBHMNq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 12:13:46 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 169B63EC9; Thu,  8 Feb 2007 04:13:12 -0800 (PST)
-Message-ID: <45CB13D5.3090907@ru.mvista.com>
-Date:	Thu, 08 Feb 2007 15:13:09 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 12:25:50 +0000 (GMT)
+Received: from mail3.raymarine.com ([213.206.137.1]:48288 "EHLO
+	RMUKMAIL.raymarine.com") by ftp.linux-mips.org with ESMTP
+	id S20038539AbXBHMZm convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 12:25:42 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-Cc:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
-References: <45CA5415.4000402@pmc-sierra.com>
-In-Reply-To: <45CA5415.4000402@pmc-sierra.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Toshiba TX4939
+Date:	Thu, 8 Feb 2007 12:23:14 -0000
+Message-ID: <B8993E4AF7E2B44A80FE742A85665EF00275456C@rmukmail.raymarine.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Toshiba TX4939
+Thread-Index: AcdLeR2CEU+GdlydTHy/gIl8rAsyFAAAlzbg
+From:	"Barry Bridgman" <Barry.Bridgman@raymarine.com>
+To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>
+Cc:	<linux-mips@linux-mips.org>
+Return-Path: <Barry.Bridgman@raymarine.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13979
+X-archive-position: 13980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: Barry.Bridgman@raymarine.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi Sergei
+
+Thanks for the Info we have use Montavista in the past for stuff so will give them a call.
+
+Thanks
+
+Barry
+
+
+-----Original Message-----
+From: Sergei Shtylyov [mailto:sshtylyov@ru.mvista.com]
+Sent: 08 February 2007 12:05
+To: Barry Bridgman
+Cc: linux-mips@linux-mips.org
+Subject: Re: Toshiba TX4939
+
+
 Hello.
 
-Marc St-Jean wrote:
-> Fourth attempt at the serial driver patch for the PMC-Sierra MSP71xx device.
-> 
-> There are three different fixes:
-> 1. Fix for DesignWare THRE errata
-> - Dropped our fix since the "8250-uart-backup-timer.patch" in the "mm"
-> tree also fixes it. This patch needs to be applied on top of "mm" patch.
-> 
-> 2. Fix for Busy Detect on LCR write
-> - Changed the ordering of test in serial8250_interrupt().
-> - Combined test for UPIO_DWAPB with UPIO_MEM in serial8250_start_console().
-> - Renamed new uart_8250_port member to private_data.
-> 
-> 3. Workaround for interrupt/data concurrency issue
-> - No changes since last patch.
+Barry Bridgman wrote:
 
-> diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-> index 3d91bfc..b309c4c 100644
-> --- a/drivers/serial/8250.c
-> +++ b/drivers/serial/8250.c
-> @@ -308,6 +308,7 @@ static unsigned int serial_in(struct uar
->   		return inb(up->port.iobase + 1);
-> 
->   	case UPIO_MEM:
-> +	case UPIO_DWAPB:
->   		return readb(up->port.membase + offset);
-> 
->   	case UPIO_MEM32:
-> @@ -333,6 +334,8 @@ #endif
->   static void
->   serial_out(struct uart_8250_port *up, int offset, int value)
->   {
-> +	/* Save the offset before it's remapped */
-> +	int save_offset = offset;
->   	offset = map_8250_out_reg(up, offset) << up->port.regshift;
-> 
->   	switch (up->port.iotype) {
-> @@ -359,6 +362,18 @@ #endif
->   			writeb(value, up->port.membase + offset);
->   		break;
-> 
-> +	case UPIO_DWAPB:
-> +		/* Save the LCR value so it can be re-written when a
-> +		 * Busy Detect interrupt occurs. */
-> +		if (save_offset == UART_LCR)
-> +			up->lcr = value;
-> +		writeb(value, up->port.membase + offset);
-> +		/* Read the IER to ensure any interrupt is cleared before
-> +		 * returning from ISR. */
-> +		if ((save_offset == UART_TX || save_offset == UART_IER) && in_irq())
-> +			value = serial_in(up, UART_IER);
-> +		break;
-> +		
->   	default:
->   		outb(value, up->port.iobase + offset);
->   	}
-> @@ -373,6 +388,7 @@ serial_out_sync(struct uart_8250_port *u
->   #ifdef CONFIG_SERIAL_8250_AU1X00
->   	case UPIO_AU:
->   #endif
-> +	case UPIO_DWAPB:
->   		serial_out(up, offset, value);
->   		(void)serial_in(up, UART_LCR); /* safe, no side-effects */
->   		break;
-> @@ -1383,6 +1399,19 @@ static irqreturn_t serial8250_interrupt(
->   			handled = 1;
-> 
->   			end = NULL;
-> +		} else if (up->port.iotype == UPIO_DWAPB &&
-> +				(iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
+> First post on this list as I have come over from xscale and x86 embedded linux designs to a potential MIPS design.
 
-     Worth aligning this line with the opening paren of if... but's that's 
-nitpicking. :-)
+> Does anyone know of any sources of information regarding linux on the TX4939 initially on the RBTX4939 development platform.
 
-> +			/* The DesignWare APB UART has an Busy Detect (0x07)
-> +			 * interrupt meaning an LCR write attempt occured while the
-> +			 * UART was busy. The interrupt must be cleared by reading
-> +			 * the UART status register (USR) and the LCR re-written. */
-> +			unsigned int status;
-> +			status = *(volatile u32 *)up->port.private_data;
-> +			serial_out(up, UART_LCR, up->lcr);
-> +
-> +			handled = 1;
-> +
-> +			end = NULL;
->   		} else if (end == NULL)
->   			end = l;
-> 
->   	return 0;
+    MontaVista has released the 2.6.10 kernel for this board about a year ago. 
+Unfortunately, it hasn't been pushed to Linux/MIPS.
 
-    Still, shouldn't you be doing this in serial8250_timeout() also?
-What IRQ numbers this UART is using, BTW?
+> Any info would be gratefully received. I have done some searching for info on the TX4939 but info seems thin on the ground.
 
-> diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-> index cf23813..bd9711a 100644
-> --- a/include/linux/serial_core.h
-> +++ b/include/linux/serial_core.h
-> @@ -276,6 +277,7 @@ #define UPF_USR_MASK		((__force upf_t) (
->   	struct device		*dev;			/* parent device */
->   	unsigned char		hub6;			/* this should be in the 8250 driver */
->   	unsigned char		unused[3];
-> +	void				*private_data;		/* generic platform data pointer */
+> Many Thanks
 
-    One tab to many before *private_data...
-
-> diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
-> index 3c8a6aa..1c5ed7d 100644
-> --- a/include/linux/serial_reg.h
-> +++ b/include/linux/serial_reg.h
-> @@ -38,6 +38,8 @@ #define UART_IIR_THRI		0x02 /* Transmitt
->   #define UART_IIR_RDI		0x04 /* Receiver data interrupt */
->   #define UART_IIR_RLSI		0x06 /* Receiver line status interrupt */
-> 
-> +#define UART_IIR_BUSY		0x07 /* DesignWare APB Busy Detect */
-> +
->   #define UART_FCR	2	/* Out: FIFO Control Register */
->   #define UART_FCR_ENABLE_FIFO	0x01 /* Enable the FIFO */
->   #define UART_FCR_CLEAR_RCVR	0x02 /* Clear the RCVR FIFO */
-
-    Oops, your mailer went and did it again. :-)
+> Barry
 
 WBR, Sergei

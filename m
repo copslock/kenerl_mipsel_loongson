@@ -1,68 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 12:25:50 +0000 (GMT)
-Received: from mail3.raymarine.com ([213.206.137.1]:48288 "EHLO
-	RMUKMAIL.raymarine.com") by ftp.linux-mips.org with ESMTP
-	id S20038539AbXBHMZm convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 12:25:42 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Toshiba TX4939
-Date:	Thu, 8 Feb 2007 12:23:14 -0000
-Message-ID: <B8993E4AF7E2B44A80FE742A85665EF00275456C@rmukmail.raymarine.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Toshiba TX4939
-Thread-Index: AcdLeR2CEU+GdlydTHy/gIl8rAsyFAAAlzbg
-From:	"Barry Bridgman" <Barry.Bridgman@raymarine.com>
-To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>
-Cc:	<linux-mips@linux-mips.org>
-Return-Path: <Barry.Bridgman@raymarine.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 12:42:52 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:29599 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038547AbXBHMmu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 Feb 2007 12:42:50 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l18Cglci010213;
+	Thu, 8 Feb 2007 12:42:48 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l18Cgkbs010212;
+	Thu, 8 Feb 2007 12:42:46 GMT
+Date:	Thu, 8 Feb 2007 12:42:46 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [MIPS] Do not allow oprofile to be enabled on SMTC.
+Message-ID: <20070208124246.GA10135@linux-mips.org>
+References: <S20039134AbXBBLSL/20070202111811Z+23663@ftp.linux-mips.org> <20070205.161123.25910611.nemoto@toshiba-tops.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070205.161123.25910611.nemoto@toshiba-tops.co.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13980
+X-archive-position: 13981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Barry.Bridgman@raymarine.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Sergei
+On Mon, Feb 05, 2007 at 04:11:23PM +0900, Atsushi Nemoto wrote:
 
-Thanks for the Info we have use Montavista in the past for stuff so will give them a call.
+> !!MIPS_MT_SMTC means MIPS_MT_SMTC!=n ...
 
-Thanks
+I guess my keyboard was a bit overzealous that day ;-)  Of course this
+should have been a single exclamation mark.
 
-Barry
-
-
------Original Message-----
-From: Sergei Shtylyov [mailto:sshtylyov@ru.mvista.com]
-Sent: 08 February 2007 12:05
-To: Barry Bridgman
-Cc: linux-mips@linux-mips.org
-Subject: Re: Toshiba TX4939
-
-
-Hello.
-
-Barry Bridgman wrote:
-
-> First post on this list as I have come over from xscale and x86 embedded linux designs to a potential MIPS design.
-
-> Does anyone know of any sources of information regarding linux on the TX4939 initially on the RBTX4939 development platform.
-
-    MontaVista has released the 2.6.10 kernel for this board about a year ago. 
-Unfortunately, it hasn't been pushed to Linux/MIPS.
-
-> Any info would be gratefully received. I have done some searching for info on the TX4939 but info seems thin on the ground.
-
-> Many Thanks
-
-> Barry
-
-WBR, Sergei
+  Ralf

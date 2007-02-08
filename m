@@ -1,121 +1,275 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 16:50:53 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:16914 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038616AbXBHQus (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 Feb 2007 16:50:48 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3E1AEE1CC8;
-	Thu,  8 Feb 2007 17:50:03 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id fSWhRwFcOWXJ; Thu,  8 Feb 2007 17:50:02 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 1632BE1CC1;
-	Thu,  8 Feb 2007 17:50:02 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l18GoEQv031009;
-	Thu, 8 Feb 2007 17:50:14 +0100
-Date:	Thu, 8 Feb 2007 16:50:09 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] fix run_uncached warning about 32bit kernel
-In-Reply-To: <20070208130744.GB10739@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0702081550360.18649@blysk.ds.pg.gda.pl>
-References: <200702060159.l161xM59075711@mbox33.po.2iij.net>
- <20070206152817.GB5660@linux-mips.org> <Pine.LNX.4.64N.0702061818550.28283@blysk.ds.pg.gda.pl>
- <20070208130744.GB10739@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.88.7/2538/Thu Feb  8 15:37:31 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 16:55:31 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:51960 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038631AbXBHQz0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 16:55:26 +0000
+Received: from localhost (p4240-ipad301funabasi.chiba.ocn.ne.jp [122.17.254.240])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 9A23A867E; Fri,  9 Feb 2007 01:54:05 +0900 (JST)
+Date:	Fri, 09 Feb 2007 01:54:05 +0900 (JST)
+Message-Id: <20070209.015405.08319291.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	macro@linux-mips.org
+Subject: Re: [MIPS] Check FCSR for pending interrupts before restoring from
+ a context.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <cda58cb80702080830n44627bafw88b0b6620eefb693@mail.gmail.com>
+References: <20070208.120219.96684712.nemoto@toshiba-tops.co.jp>
+	<20070209.002323.115905985.anemo@mba.ocn.ne.jp>
+	<cda58cb80702080830n44627bafw88b0b6620eefb693@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13997
+X-archive-position: 13998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 8 Feb 2007, Ralf Baechle wrote:
+On Thu, 8 Feb 2007 17:30:29 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> yes this's going to conflict a lot with the patchset I sent...
 
-> Well, some of the warnings are also simply due to broken code.  This is
-> the result of preprocessing the code without Yoichi's patch applied:
-> 
-> [...]
->  if (sp >= (long)0x80000000 && sp < (long)0xc0000000)
->   usp = ((((int)(int)(sp)) & 0x1fffffff) | 0xa0000000);
->  else if ((long long)sp >= (long long)(0x8000000000000000LL | ((0LL)<<59) | (0)) &&
->    (long long)sp < (long long)(0x8000000000000000LL | ((8LL)<<59) | (0)))
->   usp = (0x8000000000000000LL | (((long long)2)<<59) | ((((long long)sp) & -1)));
-> 
-> else {
->   do { __asm__ __volatile__("break %0" : : "i" (512)); } while (0);
->   usp = sp;
->  }
-> [...]
-> 
-> So (0x8000000000000000LL | ((0LL)<<59) | (0)) is 0x8000000000000000LL which
-> then is casted to _signed_ long long, so becomes -9223372036854775808, the
-> most negative representable number so the two "comparison is always true
-> due to limited range of data type" warnings are perfectly correct.
+Here is a patch can be applied on top of your patchset.
 
- They are neither correct nor expected.  And the problem is not 
-0x8000000000000000LL being the most negative representable number, but 
-"sp" being a variable of a 32-bit type and being compared against the 
-constant.  In this case GCC seems to completely ignore the cast to "long 
-long" and treats it as if the comparison was done between types of 
-different widths.
 
- Try building this program:
+Subject: Check FCSR for pending interrupts, alternative version
 
-$ cat range.c
-int foo(sp_t sp)
-{
-	if (sp >= (long)0x80000000 && sp < (long)0xc0000000)
-		return 0;
-	else if ((long long)sp >= (long long)0x8000000000000000LL &&
-		 (long long)sp < (long long)0xc000000000000000LL)
-		return 1;
-	else
-		return 2;
-}
-$ mips64el-linux-gcc -O2 -Wall -Dsp_t=long -c range.c
-$ mips64el-linux-gcc -O2 -Wall -Dsp_t=int -c range.c
-range.c: In function 'foo':
-range.c:3: warning: comparison is always false due to limited range of data type
-range.c:3: warning: comparison is always true due to limited range of data type
-range.c:5: warning: comparison is always true due to limited range of data type
-range.c:6: warning: comparison is always false due to limited range of data type
-$
+The commit 6d6671066a311703bca1b91645bb1e04cc983387 is incomplete and
+misses non-r4k CPUs.  This patch reverts the commit and fixes in other
+way.
 
-Notice how GCC complains about both 0x8000000000000000LL and 
-0xc000000000000000LL.
+* Do FCSR checking in caller of restore_fp_context.
+* Send SIGFPE if the signal handler set any FPU exception bits.
 
- I think there was a bug report associated with it -- let me see...  Yep: 
-"http://gcc.gnu.org/bugzilla/show_bug.cgi?id=12963".
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/kernel/r4k_fpu.S       |   16 ------------
+ arch/mips/kernel/signal-common.h |    3 ++
+ arch/mips/kernel/signal.c        |   46 ++++++++++++++++++++++++++++++++++---
+ arch/mips/kernel/signal32.c      |   27 +++++++++++++++++++--
+ 4 files changed, 70 insertions(+), 22 deletions(-)
 
-> Treating addresses as signed is a dangerous thing and we reallly only
-> should do it where extending 32-bit addresses to 64-bit because that's
-> what the architecture does.  So I would suggest as part of cleaning u the
-> mess something like below totally untested patch.
-
- I have used signed types here on purpose not to cross to the user segment 
-(positive range) accidentally.  But I do not insist on keeping them if 
-they were to hurt somebody's eyes.  Your change is not going to fix the 
-problem anyway -- if I change the condition in the program above to:
-
-	else if ((unsigned long long)sp >= (unsigned long long)0x8000000000000000ULL &&
-		 (unsigned long long)sp < (unsigned long long)0xc000000000000000ULL)
-
-then unfortunately the warnings persist (I am pretty sure I did this kind 
-of testing before committing these bits, to make sure the warning was 
-unavoidable).
-
-  Maciej
+diff --git a/arch/mips/kernel/r4k_fpu.S b/arch/mips/kernel/r4k_fpu.S
+index 59c1577..dbd42ad 100644
+--- a/arch/mips/kernel/r4k_fpu.S
++++ b/arch/mips/kernel/r4k_fpu.S
+@@ -114,14 +114,6 @@ LEAF(_save_fp_context32)
+  */
+ LEAF(_restore_fp_context)
+ 	EX	lw t0, SC_FPC_CSR(a0)
+-
+-	/* Fail if the CSR has exceptions pending */
+-	srl	t1, t0, 5
+-	and	t1, t0
+-	andi	t1, 0x1f << 7
+-	bnez	t1, fault
+-	 nop
+-
+ #ifdef CONFIG_64BIT
+ 	EX	ldc1 $f1, SC_FPREGS+8(a0)
+ 	EX	ldc1 $f3, SC_FPREGS+24(a0)
+@@ -165,14 +157,6 @@ LEAF(_restore_fp_context)
+ LEAF(_restore_fp_context32)
+ 	/* Restore an o32 sigcontext.  */
+ 	EX	lw t0, SC32_FPC_CSR(a0)
+-
+-	/* Fail if the CSR has exceptions pending */
+-	srl	t1, t0, 5
+-	and	t1, t0
+-	andi	t1, 0x1f << 7
+-	bnez	t1, fault
+-	 nop
+-
+ 	EX	ldc1 $f0, SC32_FPREGS+0(a0)
+ 	EX	ldc1 $f2, SC32_FPREGS+16(a0)
+ 	EX	ldc1 $f4, SC32_FPREGS+32(a0)
+diff --git a/arch/mips/kernel/signal-common.h b/arch/mips/kernel/signal-common.h
+index 9a8abd6..1f24288 100644
+--- a/arch/mips/kernel/signal-common.h
++++ b/arch/mips/kernel/signal-common.h
+@@ -61,4 +61,7 @@ extern void __user *get_sigframe(struct
+  */
+ extern int install_sigtramp(unsigned int __user *tramp, unsigned int syscall);
+ 
++/* Check and clear pending FPU exceptions in saved CSR */
++extern int fpcsr_pending(unsigned int __user *fpcsr);
++
+ #endif	/* __SIGNAL_COMMON_H */
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index 8dfb7b1..d7531d5 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -103,6 +103,37 @@ int setup_sigcontext(struct pt_regs *reg
+ 	return err;
+ }
+ 
++int fpcsr_pending(unsigned int __user *fpcsr)
++{
++	int err, sig = 0;
++	unsigned int csr, enabled;
++
++	err = __get_user(csr, fpcsr);
++	enabled = FPU_CSR_UNI_X | ((csr & FPU_CSR_ALL_E) << 5);
++	/*
++	 * If the signal handler set some FPU exceptions, clear it and
++	 * send SIGFPE.
++	 */
++	if (csr & enabled) {
++		csr &= ~enabled;
++		err |= __put_user(csr, fpcsr);
++		sig = SIGFPE;
++	}
++	return err ?: sig;
++}
++
++static int
++check_and_restore_fp_context(struct sigcontext __user *sc)
++{
++	int err, sig;
++
++	err = sig = fpcsr_pending(&sc->sc_fpc_csr);
++	if (err > 0)
++		err = 0;
++	err |= restore_fp_context(sc);
++	return err ?: sig;
++}
++
+ int restore_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
+ {
+ 	unsigned int used_math;
+@@ -137,7 +168,8 @@ int restore_sigcontext(struct pt_regs *r
+ 	if (used_math()) {
+ 		/* restore fpu context if we have used it before */
+ 		own_fpu();
+-		err |= restore_fp_context(sc);
++		if (!err)
++			err = check_and_restore_fp_context(sc);
+ 	} else {
+ 		/* signal handler may have used FPU.  Give it up. */
+ 		lose_fpu();
+@@ -307,6 +339,7 @@ asmlinkage void sys_sigreturn(nabi_no_re
+ {
+ 	struct sigframe __user *frame;
+ 	sigset_t blocked;
++	int sig;
+ 
+ 	frame = (struct sigframe __user *) regs.regs[29];
+ 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
+@@ -320,8 +353,11 @@ asmlinkage void sys_sigreturn(nabi_no_re
+ 	recalc_sigpending();
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 
+-	if (restore_sigcontext(&regs, &frame->sf_sc))
++	sig = restore_sigcontext(&regs, &frame->sf_sc);
++	if (sig < 0)
+ 		goto badframe;
++	else if (sig)
++		force_sig(sig, current);
+ 
+ 	/*
+ 	 * Don't let your children do this ...
+@@ -343,6 +379,7 @@ asmlinkage void sys_rt_sigreturn(nabi_no
+ 	struct rt_sigframe __user *frame;
+ 	sigset_t set;
+ 	stack_t st;
++	int sig;
+ 
+ 	frame = (struct rt_sigframe __user *) regs.regs[29];
+ 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
+@@ -356,8 +393,11 @@ asmlinkage void sys_rt_sigreturn(nabi_no
+ 	recalc_sigpending();
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 
+-	if (restore_sigcontext(&regs, &frame->rs_uc.uc_mcontext))
++	sig = restore_sigcontext(&regs, &frame->rs_uc.uc_mcontext);
++	if (sig < 0)
+ 		goto badframe;
++	else if (sig)
++		force_sig(sig, current);
+ 
+ 	if (__copy_from_user(&st, &frame->rs_uc.uc_stack, sizeof(st)))
+ 		goto badframe;
+diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
+index 183fc7e..c37ff65 100644
+--- a/arch/mips/kernel/signal32.c
++++ b/arch/mips/kernel/signal32.c
+@@ -207,6 +207,18 @@ static int setup_sigcontext32(struct pt_
+ 	return err;
+ }
+ 
++static int
++check_and_restore_fp_context32(struct sigcontext32 __user *sc)
++{
++	int err, sig;
++
++	sig = fpcsr_pending(&sc->sc_fpc_csr);
++	if (sig < 0)
++		err = sig;
++	err |= restore_fp_context32(sc);
++	return err ?: sig;
++}
++
+ static int restore_sigcontext32(struct pt_regs *regs,
+ 				struct sigcontext32 __user *sc)
+ {
+@@ -242,7 +254,8 @@ static int restore_sigcontext32(struct p
+ 	if (used_math()) {
+ 		/* restore fpu context if we have used it before */
+ 		own_fpu();
+-		err |= restore_fp_context32(sc);
++		if (!err)
++			err = check_and_restore_fp_context32(sc);
+ 	} else {
+ 		/* signal handler may have used FPU.  Give it up. */
+ 		lose_fpu();
+@@ -495,6 +508,7 @@ asmlinkage void sys32_sigreturn(nabi_no_
+ {
+ 	struct sigframe __user *frame;
+ 	sigset_t blocked;
++	int sig;
+ 
+ 	frame = (struct sigframe __user *) regs.regs[29];
+ 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
+@@ -508,8 +522,11 @@ asmlinkage void sys32_sigreturn(nabi_no_
+ 	recalc_sigpending();
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 
+-	if (restore_sigcontext32(&regs, &frame->sf_sc))
++	sig = restore_sigcontext32(&regs, &frame->sf_sc);
++	if (sig < 0)
+ 		goto badframe;
++	else if (sig)
++		force_sig(sig, current);
+ 
+ 	/*
+ 	 * Don't let your children do this ...
+@@ -532,6 +549,7 @@ asmlinkage void sys32_rt_sigreturn(nabi_
+ 	sigset_t set;
+ 	stack_t st;
+ 	s32 sp;
++	int sig;
+ 
+ 	frame = (struct rt_sigframe32 __user *) regs.regs[29];
+ 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
+@@ -545,8 +563,11 @@ asmlinkage void sys32_rt_sigreturn(nabi_
+ 	recalc_sigpending();
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 
+-	if (restore_sigcontext32(&regs, &frame->rs_uc.uc_mcontext))
++	sig = restore_sigcontext32(&regs, &frame->rs_uc.uc_mcontext);
++	if (sig < 0)
+ 		goto badframe;
++	else if (sig)
++		force_sig(sig, current);
+ 
+ 	/* The ucontext contains a stack32_t, so we must convert!  */
+ 	if (__get_user(sp, &frame->rs_uc.uc_stack.ss_sp))

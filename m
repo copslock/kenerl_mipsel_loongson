@@ -1,86 +1,139 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 13:38:04 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:49858 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038573AbXBHNh6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 13:37:58 +0000
-Received: from localhost (p4240-ipad301funabasi.chiba.ocn.ne.jp [122.17.254.240])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 66522B649; Thu,  8 Feb 2007 22:36:38 +0900 (JST)
-Date:	Thu, 08 Feb 2007 22:36:37 +0900 (JST)
-Message-Id: <20070208.223637.108120499.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 9/10] signal: do not use save_static_function() anymore
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <cda58cb80702080053m6f22dc15td3b8c447e2abbda1@mail.gmail.com>
-References: <11706854703880-git-send-email-fbuihuu@gmail.com>
-	<20070208.004049.51866970.anemo@mba.ocn.ne.jp>
-	<cda58cb80702080053m6f22dc15td3b8c447e2abbda1@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 13:52:49 +0000 (GMT)
+Received: from e36.co.us.ibm.com ([32.97.110.154]:12472 "EHLO
+	e36.co.us.ibm.com") by ftp.linux-mips.org with ESMTP
+	id S20038542AbXBHNwo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 Feb 2007 13:52:44 +0000
+Received: from d03relay04.boulder.ibm.com (d03relay04.boulder.ibm.com [9.17.195.106])
+	by e36.co.us.ibm.com (8.13.8/8.13.8) with ESMTP id l18DnQxY027225
+	for <linux-mips@linux-mips.org>; Thu, 8 Feb 2007 08:49:26 -0500
+Received: from d03av01.boulder.ibm.com (d03av01.boulder.ibm.com [9.17.195.167])
+	by d03relay04.boulder.ibm.com (8.13.8/8.13.8/NCO v8.2) with ESMTP id l18DnQ9Z527924
+	for <linux-mips@linux-mips.org>; Thu, 8 Feb 2007 06:49:26 -0700
+Received: from d03av01.boulder.ibm.com (loopback [127.0.0.1])
+	by d03av01.boulder.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id l18DnQKd026151
+	for <linux-mips@linux-mips.org>; Thu, 8 Feb 2007 06:49:26 -0700
+Received: from [9.67.123.9] (wecm-9-67-123-9.wecm.ibm.com [9.67.123.9])
+	by d03av01.boulder.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id l18DnOMO026084;
+	Thu, 8 Feb 2007 06:49:25 -0700
+Subject: Re: [PATCH] eXcite nand flash driver
+From:	Josh Boyer <jwboyer@linux.vnet.ibm.com>
+To:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc:	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
+In-Reply-To: <200702080157.25432.thomas.koeller@baslerweb.com>
+References: <200702080157.25432.thomas.koeller@baslerweb.com>
+Content-Type: text/plain
+Date:	Thu, 08 Feb 2007 07:50:27 -0600
+Message-Id: <1170942627.4884.89.camel@zod.rchland.ibm.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+X-Mailer: Evolution 2.8.2.1 (2.8.2.1-3.fc6) 
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <jwboyer@linux.vnet.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13985
+X-archive-position: 13986
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: jwboyer@linux.vnet.ibm.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 8 Feb 2007 09:53:18 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> I tried the following patch:
+On Thu, 2007-02-08 at 01:57 +0100, Thomas Koeller wrote:
 > 
-> diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-> index 229276a..046fb1b 100644
-> --- a/arch/mips/kernel/signal.c
-> +++ b/arch/mips/kernel/signal.c
-> @@ -68,7 +68,9 @@ int setup_sigcontext(struct pt_regs *regs, struct
-> sigcontext __user *sc)
->  	err |= __put_user(regs->cp0_epc, &sc->sc_pc);
-> 
->  	err |= __put_user(0, &sc->sc_regs[0]);
-> -	for (i = 1; i < 32; i++)
-> +	for (i = 1; i < 16; i++)
-> +		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
-> +	for (i = 24; i < 32; i++)
->  		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
-> 
->  	err |= __put_user(regs->hi, &sc->sc_mdhi);
-> @@ -126,7 +128,9 @@ int restore_sigcontext(struct pt_regs *regs,
-> struct sigcontext __user *sc)
->  		err |= __get_user(treg, &sc->sc_dsp); wrdsp(treg, DSP_MASK);
->  	}
-> 
-> -	for (i = 1; i < 32; i++)
-> +	for (i = 1; i < 16; i++)
-> +		err |= __get_user(regs->regs[i], &sc->sc_regs[i]);
-> +	for (i = 24; i < 32; i++)
->  		err |= __get_user(regs->regs[i], &sc->sc_regs[i]);
-> 
->  	err |= __get_user(used_math, &sc->sc_used_math);
-> 
-> ...and it still passes LTP tests.
-> 
-> Someone reported that not saving/restoring static registers may break
-> user tools but the gain is important I think.
+> diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+> index 358f55a..5b50396 100644
+> --- a/drivers/mtd/nand/Kconfig
+> +++ b/drivers/mtd/nand/Kconfig
+> @@ -216,10 +216,26 @@ config MTD_NAND_DISKONCHIP_BBTWRITE
+>  	  Even if you leave this disabled, you can enable BBT writes at module
+>  	  load time (assuming you build diskonchip as a module) with the module
+>  	  parameter "inftl_bbt_write=1".
+> -
+> +	  
+>  config MTD_NAND_SHARPSL
+>  	tristate "Support for NAND Flash on Sharp SL Series (C7xx + others)"
+>  	depends on MTD_NAND && ARCH_PXA
+> + 
+> +config MTD_NAND_BASLER_EXCITE
+> +	tristate  "Support for NAND Flash on Basler eXcite"
+> +	depends on MTD_NAND && BASLER_EXCITE
+> +	help
+> +          This enables the driver for the NAND flash device found on the
+> +          Basler eXcite Smart Camera. If built as a module, the driver
+> +	  will be named "excite_nandflash.ko".
+> +
+> +config MTD_NAND_BASLER_EXCITE
+> +	tristate  "Support for NAND Flash on Basler eXcite"
+> +	depends on MTD_NAND && BASLER_EXCITE
+> +	help
+> +          This enables the driver for the NAND flash device found on the
+> +          Basler eXcite Smart Camera. If built as a module, the driver
+> +	  will be named "excite_nandflash.ko".
 
-NO!  This change might silently corrupt static registers!
+You have the same config option twice...  Cut and paste error?
 
-If you did not restore static registers in kernel stack on
-restore_sigcontext(), succeeding RESTORE_STATIC in restore_all will
-load garbages to static registers.
+> diff --git a/drivers/mtd/nand/excite_nandflash.c 
+> b/drivers/mtd/nand/excite_nandflash.c
+> new file mode 100644
+> index 0000000..d683659
+> --- /dev/null
+> +++ b/drivers/mtd/nand/excite_nandflash.c
 
-Note that any hardware interrupts in middle of signal handler
-overwrite pt_regs area in kernel stack.
+<snip>
 
-I can still remember random static register corruption bug and how
-hard to debug ...
+> +
+> +#define io_readb(__a__)		__raw_readb((__a__))
+> +#define io_writeb(__v__, __a__)	__raw_writeb((__v__), (__a__))
 
----
-Atsushi Nemoto
+Do you really need these defines?  Why can't you call
+__raw_{readb,writeb} directly?
+
+> +
+> +typedef void __iomem *io_reg_t;
+
+Ugh... typdef?
+
+<snip>
+
+> +static inline io_reg_t
+> +excite_nand_map_regs(struct platform_device *d, const char *basename)
+> +{
+> +	void *result = NULL;
+> +	const struct resource *const r =
+> +	    excite_nand_get_resource(d, IORESOURCE_MEM, basename);
+> +	if (likely(r))
+> +		result = ioremap_nocache(r->start, r->end + 1 - r->start);
+
+Does this likely really buy you anything?  I would think doing the
+converse (if any sort of *likely at all) would be better.
+
+<snip>
+
+> + */
+> +static int __exit excite_nand_remove(struct device *dev)
+> +{
+> +	struct excite_nand_drvdata * const this = dev_get_drvdata(dev);
+> +
+> +	dev_set_drvdata(dev, NULL);
+> +
+> +	if (unlikely(!this)) {
+> +		printk(KERN_ERR "%s: called %s without private data!!",
+> +		       module_id, __func__);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* first thing we need to do is release our mtd
+> +	 * then go through freeing the resource used
+> +	 */
+> +	nand_release(&this->board_mtd);
+> +
+> +	/* free the common resources */
+> +	if (likely(this->regs)) {
+> +		iounmap(this->regs);
+> +		this->regs = NULL;
+> +	}
+
+Same likely usage comment as above.
+
+josh

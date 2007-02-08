@@ -1,61 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 09:18:05 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.235]:18562 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037872AbXBHJSB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 Feb 2007 09:18:01 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so44798qba
-        for <linux-mips@linux-mips.org>; Thu, 08 Feb 2007 01:17:00 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=dygJ1HJOXEd98Hn6USdm8nRShXZa9tigDmZhqWFU+wTXApTed3hF0uyVu+Q9INRk51Njw7VdgYvR7I1By6lsFK+TlmZzE3ix8uuWnjBCFawc6dYFhThpOpRKsZesimxGCg4f+I0CdihFgQemDMyWAmQSOP4jUEQC6GJBpgVmjOw=
-Received: by 10.115.95.1 with SMTP id x1mr2508581wal.1170926219452;
-        Thu, 08 Feb 2007 01:16:59 -0800 (PST)
-Received: by 10.114.136.11 with HTTP; Thu, 8 Feb 2007 01:16:59 -0800 (PST)
-Message-ID: <cda58cb80702080116j1d398053q666aa087e0b578ea@mail.gmail.com>
-Date:	Thu, 8 Feb 2007 10:16:59 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH 0/10] Clean up signal code [take #3]
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-In-Reply-To: <cda58cb80702080055w5b052319u7f49281aa55928ea@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 10:23:42 +0000 (GMT)
+Received: from mail.baslerweb.com ([145.253.187.130]:18882 "EHLO
+	mail.baslerweb.com") by ftp.linux-mips.org with ESMTP
+	id S20038447AbXBHKXi convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 10:23:38 +0000
+Received: (from smtpd@127.0.0.1) by mail.baslerweb.com (8.13.4/8.13.4)
+	id l18AKSOD021602; Thu, 8 Feb 2007 11:20:28 +0100
+Received: from unknown [172.16.20.75] by gateway id /processing/kwEkM5s9; Thu Feb 08 11:20:27 2007
+Received: from ahr040s.basler.corp ([172.16.20.40]) by AHR075S.basler.corp with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 8 Feb 2007 11:20:27 +0100
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Date:	Thu, 8 Feb 2007 11:20:25 +0100
+User-Agent: KMail/1.9.5
+Cc:	linux-mips@linux-mips.org
+References: <200702080157.25432.thomas.koeller@baslerweb.com> <200702080920.12723.eckhardt@satorlaser.com>
+In-Reply-To: <200702080920.12723.eckhardt@satorlaser.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-Id: <200702081120.26026.thomas.koeller@baslerweb.com>
+X-OriginalArrivalTime: 08 Feb 2007 10:20:27.0140 (UTC) FILETIME=[C07D4440:01C74B6A]
+X-SecurE-Mail-Gateway: Version: 5.00.3.1 (smtpd: 6.53.8.7) Date: 20070208102028Z
+Subject: Re: [PATCH] eXcite nand flash driver
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-References: <11706854683935-git-send-email-fbuihuu@gmail.com>
-	 <20070208.010430.58789357.anemo@mba.ocn.ne.jp>
-	 <cda58cb80702080055w5b052319u7f49281aa55928ea@mail.gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13975
+X-archive-position: 13976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On 2/8/07, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> Hi Atsushi
+On Thursday 08 February 2007 09:20, Ulrich Eckhardt wrote:
+> Just some cosmetic notes ...
 >
-> Thanks for you review !
+> On Thursday 08 February 2007 01:57, Thomas Koeller wrote:
+> > @@ -216,10 +216,26 @@ config MTD_NAND_DISKONCHIP_BBTWRITE
+> >  	  Even if you leave this disabled, you can enable BBT writes at module
+> >  	  load time (assuming you build diskonchip as a module) with the module
+> >  	  parameter "inftl_bbt_write=1".
+> > -
+> > +
 >
-> On 2/7/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> > # Though [PATCH 6/10] failed due to recent whitespace cleanup ...
-> >
+> This just inserts whitespace.
+
+No, it actually _removes_ whitspace.
+
 >
-> I can rebase it if needed,
+> >         tristate "NAND support for OLPC CAFÉ chip"
 >
-> > I hope this patchset applied before updating my fp_context patches.
+> The accent on the E might cause problems, but I'm not sure.
+
+This has been in there before.
+
 >
-> yeah I hope too...
+> > +#define io_readb(__a__)		__raw_readb((__a__))
+> > +#define io_writeb(__v__, __a__)	__raw_writeb((__v__), (__a__))
+>
+> I would have used an inline function. Also, aren't there functions to use
+> IOs already? What's the reason here?
+>
+> > +/* prefix for debug output */
+> > +static const char module_id[] = "excite_nandflash";
+>
+> I'd have used
+>
+>   static const char* module_id = "excite_nandflash";
+>
+> except if you need the sizeof it to capture the length.
+
+Then I'd have used
+	static const char * const module_id = "excite_nandflash";
+
+but what is the advantage of doing so?
+
+>
+> > +static inline const struct resource *excite_nand_get_resource
+> > +    (struct platform_device *d, unsigned long flags, const char
+> > *basename){ +	const char fmt[] = "%s_%u";
+>
+> Here, too, is no need for a local buffer, just use a pointer.
+>
+> > +/* excite_nand_probe
+> > + *
+> > + * called by device layer when it finds a device matching
+> > + * one our driver can handled. [...]
+>
+> "... when it finds a device our driver can handle."
+
+Right.
+
+>
+> Otherwise I'd say it looks very clean, better than quite some other stuff I
+> have seen.
+>
+> Uli
 >
 
-BTW, did you have time to try it on a 64-bits kernel ?
+Thanks for your comments!
 
-Thanks
--- 
-               Franck
+
+_______________________________
+
+Thomas Köller, Software Developer
+
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
+
+Tel. +49 (0) 4102 - 463 390
+Fax +49 (0) 4102 - 463 390
+
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com
+
+Vorstand: Dr.-Ing. Dietmar Ley (Vorsitzender) · John P. Jennings · Peter Krumhoff · Aufsichtsratsvorsitzender: Norbert Basler
+Basler AG · Amtsgericht Ahrensburg HRB 4090 · Ust-IdNr.: DE 135 098 121 · Steuer-Nr.: 30 292 04497
+
+_______________________________

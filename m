@@ -1,61 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 15:40:49 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.224]:57845 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038595AbXBHPko (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 Feb 2007 15:40:44 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so79517qba
-        for <linux-mips@linux-mips.org>; Thu, 08 Feb 2007 07:39:43 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=AUNyRSTkYnrSmhhea0ByVb06xwXGyVVvGHRBxiW+aKdSKwfBDXJYXbYcYVNQMXsrRIL0U1eB6amK0xKv5wMWQBIFYebHc1gYzKj5o1XJD9QgfVkpC0tZhx3H92XTOXJVFCGILfW2CaJri7AeWi9XGx30dpBcJBHmWnFiIeI+5ik=
-Received: by 10.115.17.1 with SMTP id u1mr4257577wai.1170949183097;
-        Thu, 08 Feb 2007 07:39:43 -0800 (PST)
-Received: by 10.114.136.11 with HTTP; Thu, 8 Feb 2007 07:39:42 -0800 (PST)
-Message-ID: <cda58cb80702080739y18d31a34gc184a0cc96c86fb0@mail.gmail.com>
-Date:	Thu, 8 Feb 2007 16:39:42 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH 9/10] signal: do not use save_static_function() anymore
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-In-Reply-To: <20070208.223637.108120499.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 15:49:25 +0000 (GMT)
+Received: from www.osadl.org ([213.239.205.134]:7403 "EHLO mail.tglx.de")
+	by ftp.linux-mips.org with ESMTP id S20038595AbXBHPtT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 15:49:19 +0000
+Received: from [IPv6:::1] (debian [213.239.205.147])
+	by mail.tglx.de (Postfix) with ESMTP id B91CE65C065;
+	Thu,  8 Feb 2007 16:48:47 +0100 (CET)
+Subject: Re: [PATCH] eXcite nand flash driver
+From:	Thomas Gleixner <tglx@linutronix.de>
+To:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Cc:	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
+In-Reply-To: <200702080157.25432.thomas.koeller@baslerweb.com>
+References: <200702080157.25432.thomas.koeller@baslerweb.com>
+Content-Type: text/plain
+Date:	Thu, 08 Feb 2007 16:48:57 +0100
+Message-Id: <1170949737.3646.29.camel@chaos>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.8.2.1 (2.8.2.1-3.fc6) 
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <11706854703880-git-send-email-fbuihuu@gmail.com>
-	 <20070208.004049.51866970.anemo@mba.ocn.ne.jp>
-	 <cda58cb80702080053m6f22dc15td3b8c447e2abbda1@mail.gmail.com>
-	 <20070208.223637.108120499.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13991
+X-archive-position: 13992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> If you did not restore static registers in kernel stack on
-> restore_sigcontext(), succeeding RESTORE_STATIC in restore_all will
-> load garbages to static registers.
->
+On Thu, 2007-02-08 at 01:57 +0100, Thomas Koeller wrote:
 
-You're right the patch I sent is not sufficient. However, we actually
-could restore save_static_function (well if we do it, I think it's
-much better to do it in assembly code...) for sys_sigreturn() _only_.
-In that case RESTORE_STATIC should load correct values, shouldn't it ?
+> +static inline const struct resource *excite_nand_get_resource
+> +    (struct platform_device *d, unsigned long flags, const char *basename) {
 
-But the points are:
+Move curly bracket to new line.
 
-	- get rid of saving static registers in setup_sigcontext()
-	- get rid of restoring static registers in restore_sigcontext()
-	- free space in the signal frame
+> +	const char fmt[] = "%s_%u";
 
-what do you think ?
--- 
-               Franck
+Please move the format into the snprintf
+
+> +	char buf[80];
+> +
+> +	if (unlikely
+> +	    (snprintf(buf, sizeof buf, fmt, basename, d->id) >= sizeof buf))
+> +		return NULL;
+
+Useless unlikely
+
+> +	return platform_get_resource_byname(d, flags, buf);
+> +}
+> +
+> +static inline io_reg_t
+> +excite_nand_map_regs(struct platform_device *d, const char *basename)
+> +{
+> +	void *result = NULL;
+> +	const struct resource *const r =
+> +	    excite_nand_get_resource(d, IORESOURCE_MEM, basename);
+
+Blank line between variable declaration and code.
+
+> +	if (likely(r))
+> +		result = ioremap_nocache(r->start, r->end + 1 - r->start);
+
+Useless likely
+
+> +	return result;
+> +}
+
+
+> +/* command and control functions */
+> +static void excite_nand_control(struct mtd_info *mtd, int cmd,
+> +				       unsigned int ctrl)
+> +{
+> +	io_reg_t regs =
+> +	    container_of(mtd, struct excite_nand_drvdata, board_mtd)->regs;
+> +	static void __iomem *tgt = NULL;
+> +
+> +	switch (ctrl) {
+> +	case NAND_CTRL_CHANGE | NAND_CTRL_CLE:
+> +		tgt = regs + EXCITE_NANDFLASH_CMD_BYTE;
+> +		break;
+> +	case NAND_CTRL_CHANGE | NAND_CTRL_ALE:
+> +		tgt = regs + EXCITE_NANDFLASH_ADDR_BYTE;
+> +		break;
+> +	case NAND_CTRL_CHANGE | NAND_NCE:
+> +		tgt = regs + EXCITE_NANDFLASH_DATA_BYTE;
+> +		break;
+> +	}
+
+Err, did this ever work ? I doubt it. From nand_base.c:
+
+                chip->cmd_ctrl(mtd, page_addr, ctrl);                                                                                                        
+                ctrl &= ~NAND_CTRL_CHANGE;                                                                                                                   
+                chip->cmd_ctrl(mtd, page_addr >> 8, ctrl);  
+
+So I expect an OOPS happens on a regular base.
+
+> +static int excite_nand_devready(struct mtd_info *mtd)
+> +{
+> +	struct excite_nand_drvdata * const drvdata =
+> +	    container_of(mtd, struct excite_nand_drvdata, board_mtd);
+
+Blank line missing
+
+> +	return io_readb(drvdata->regs + EXCITE_NANDFLASH_STATUS_BYTE);
+> +}
+> +
+> +/* excite_nand_remove
+> + *
+> + * called by device layer to remove the driver
+> + * the binding to the mtd and all allocated
+> + * resources are released
+> + */
+> +static int __exit excite_nand_remove(struct device *dev)
+> +{
+> +	struct excite_nand_drvdata * const this = dev_get_drvdata(dev);
+> +
+> +	dev_set_drvdata(dev, NULL);
+> +
+> +	if (unlikely(!this)) {
+> +		printk(KERN_ERR "%s: called %s without private data!!",
+> +		       module_id, __func__);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* first thing we need to do is release our mtd
+> +	 * then go through freeing the resource used
+> +	 */
+> +	nand_release(&this->board_mtd);
+> +
+> +	/* free the common resources */
+> +	if (likely(this->regs)) {
+
+Why should you ever come here with no mapping ?
+
+	tglx

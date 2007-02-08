@@ -1,43 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 10:37:11 +0000 (GMT)
-Received: from mail3.raymarine.com ([213.206.137.1]:22388 "EHLO
-	RMUKMAIL.raymarine.com") by ftp.linux-mips.org with ESMTP
-	id S20038451AbXBHKhG convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 10:37:06 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 12:05:49 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:16554 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038507AbXBHMFo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 12:05:44 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id B4C7B3EC9; Thu,  8 Feb 2007 04:05:10 -0800 (PST)
+Message-ID: <45CB11F2.1070504@ru.mvista.com>
+Date:	Thu, 08 Feb 2007 15:05:06 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Toshiba TX4939
-Date:	Thu, 8 Feb 2007 10:34:38 -0000
-Message-ID: <B8993E4AF7E2B44A80FE742A85665EF002754568@rmukmail.raymarine.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [PATCH] eXcite nand flash driver
-Thread-Index: AcdLa3NGu/WpD2kdQq+3YlutiLL8rAAAF7+w
-From:	"Barry Bridgman" <Barry.Bridgman@raymarine.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <Barry.Bridgman@raymarine.com>
+To:	Barry Bridgman <Barry.Bridgman@raymarine.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Toshiba TX4939
+References: <B8993E4AF7E2B44A80FE742A85665EF002754568@rmukmail.raymarine.com>
+In-Reply-To: <B8993E4AF7E2B44A80FE742A85665EF002754568@rmukmail.raymarine.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13977
+X-archive-position: 13978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Barry.Bridgman@raymarine.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi All
+Hello.
 
-First post on this list as I have come over from xscale and x86 embedded linux designs to a potential MIPS design.
+Barry Bridgman wrote:
 
-Does anyone know of any sources of information regarding linux on the TX4939 initially on the RBTX4939 development platform.
+> First post on this list as I have come over from xscale and x86 embedded linux designs to a potential MIPS design.
 
-Any info would be gratefully received. I have done some searching for info on the TX4939 but info seems thin on the ground.
+> Does anyone know of any sources of information regarding linux on the TX4939 initially on the RBTX4939 development platform.
 
-Many Thanks
+    MontaVista has released the 2.6.10 kernel for this board about a year ago. 
+Unfortunately, it hasn't been pushed to Linux/MIPS.
 
-Barry
+> Any info would be gratefully received. I have done some searching for info on the TX4939 but info seems thin on the ground.
+
+> Many Thanks
+
+> Barry
+
+WBR, Sergei

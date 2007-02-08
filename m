@@ -1,66 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 16:31:35 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.228]:11446 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038609AbXBHQbb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 Feb 2007 16:31:31 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so84619qba
-        for <linux-mips@linux-mips.org>; Thu, 08 Feb 2007 08:30:30 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=hlhcRTXMF7LExNHjteVbFAG7fddNT46TB1TcqXBWACLriS9xR/fQmhtUqka4qm5uptMyBqS4B0ikL95Xj7WDJAcVULfwuE9RIW7cMzOTsEWm48ydg22D/8mleIdgnlnLyNPQqov6Uf+mF+BOyXdpXln7x8xtxpA+yYDoM7qikHI=
-Received: by 10.114.75.1 with SMTP id x1mr4374091waa.1170952229739;
-        Thu, 08 Feb 2007 08:30:29 -0800 (PST)
-Received: by 10.114.136.11 with HTTP; Thu, 8 Feb 2007 08:30:29 -0800 (PST)
-Message-ID: <cda58cb80702080830n44627bafw88b0b6620eefb693@mail.gmail.com>
-Date:	Thu, 8 Feb 2007 17:30:29 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [MIPS] Check FCSR for pending interrupts before restoring from a context.
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	macro@linux-mips.org
-In-Reply-To: <20070209.002323.115905985.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 16:36:33 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:6113 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038601AbXBHQg2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 16:36:28 +0000
+Received: from localhost (p4240-ipad301funabasi.chiba.ocn.ne.jp [122.17.254.240])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 41E3E856F; Fri,  9 Feb 2007 01:35:07 +0900 (JST)
+Date:	Fri, 09 Feb 2007 01:35:07 +0900 (JST)
+Message-Id: <20070209.013507.52129192.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 9/10] signal: do not use save_static_function() anymore
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <cda58cb80702080739y18d31a34gc184a0cc96c86fb0@mail.gmail.com>
+References: <cda58cb80702080053m6f22dc15td3b8c447e2abbda1@mail.gmail.com>
+	<20070208.223637.108120499.anemo@mba.ocn.ne.jp>
+	<cda58cb80702080739y18d31a34gc184a0cc96c86fb0@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20070208.012216.103777705.anemo@mba.ocn.ne.jp>
-	 <Pine.LNX.4.64N.0702071725150.9744@blysk.ds.pg.gda.pl>
-	 <20070208.120219.96684712.nemoto@toshiba-tops.co.jp>
-	 <20070209.002323.115905985.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13994
+X-archive-position: 13995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 2/8/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Thu, 08 Feb 2007 12:02:19 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> Here is a first cut.  Changes in r4k_fpu.S can be reverted, and after
-> Franck's patchset applied, this patch can be a bit smaller.  Please
-> review.
->
+On Thu, 8 Feb 2007 16:39:42 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> You're right the patch I sent is not sufficient. However, we actually
+> could restore save_static_function (well if we do it, I think it's
+> much better to do it in assembly code...) for sys_sigreturn() _only_.
+> In that case RESTORE_STATIC should load correct values, shouldn't it ?
 
-yes this's going to conflict a lot with the patchset I sent...
+Yes.  I think you are right.
 
-[snip]
+> But the points are:
+> 
+> 	- get rid of saving static registers in setup_sigcontext()
+> 	- get rid of restoring static registers in restore_sigcontext()
+> 	- free space in the signal frame
 
-> +static inline int
->  restore_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc)
->  {
->         unsigned int used_math;
-> @@ -112,7 +144,8 @@ restore_sigcontext(struct pt_regs *regs,
->         if (used_math()) {
+I'm afraid of ABI compatibility.  Someone might try to handle SIGSEGV
+and dump all registers to debug the program without debugger...
 
-sorry for the stupid question but I don't know fpu code...Here
-used_math() function is used as condition whereas used_math local is
-already defined. Are we sure we want to use the function here ?
-
--- 
-               Franck
+---
+Atsushi Nemoto

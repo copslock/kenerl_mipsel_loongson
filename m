@@ -1,206 +1,358 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Feb 2007 22:36:32 +0000 (GMT)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:9361 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20039529AbXBGWg1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Feb 2007 22:36:27 +0000
-Received: (qmail 12366 invoked by uid 101); 7 Feb 2007 22:35:17 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by mother.pmc-sierra.com with SMTP; 7 Feb 2007 22:35:17 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l17MZ6F8018753;
-	Wed, 7 Feb 2007 14:35:15 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <1CC7SBZX>; Wed, 7 Feb 2007 14:35:06 -0800
-Message-ID: <45CA5415.4000402@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	linux-serial@vger.kernel.org
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
-Date:	Wed, 7 Feb 2007 14:35:01 -0800 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 01:11:48 +0000 (GMT)
+Received: from mail02.hansenet.de ([213.191.73.62]:55478 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20039565AbXBHBLn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 Feb 2007 01:11:43 +0000
+Received: from [213.39.208.75] (213.39.208.75) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 45BEA1BF003D1686; Thu, 8 Feb 2007 02:07:53 +0100
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by mail.koeller.dyndns.org (Postfix) with ESMTP id A787D479FC;
+	Thu,  8 Feb 2007 02:07:51 +0100 (CET)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Date:	Thu, 8 Feb 2007 01:57:25 +0100
+Subject: [PATCH] eXcite nand flash driver
+X-Length: 10171
+X-UID:	5
+To:	linux-mtd@lists.infradead.org
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 07 Feb 2007 22:35:02.0368 (UTC) FILETIME=[34F59600:01C74B08]
-user-agent: Thunderbird 1.5.0.9 (X11/20061206)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Message-Id: <200702080157.25432.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13968
+X-archive-position: 13969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Fourth attempt at the serial driver patch for the PMC-Sierra MSP71xx device.
+This is a nand flash driver for the eXcite series of intelligent
+cameras manufactured by Basler Vision Technologies AG.
 
-There are three different fixes:
-1. Fix for DesignWare THRE errata
-- Dropped our fix since the "8250-uart-backup-timer.patch" in the "mm"
-tree also fixes it. This patch needs to be applied on top of "mm" patch.
+Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+=2D--
+ drivers/mtd/nand/Kconfig            |   18 +++-
+ drivers/mtd/nand/Makefile           |    1 +
+ drivers/mtd/nand/excite_nandflash.c |  259=20
++++++++++++++++++++++++++++++++++++
+ 3 files changed, 277 insertions(+), 1 deletions(-)
 
-2. Fix for Busy Detect on LCR write
-- Changed the ordering of test in serial8250_interrupt().
-- Combined test for UPIO_DWAPB with UPIO_MEM in serial8250_start_console().
-- Renamed new uart_8250_port member to private_data.
-
-3. Workaround for interrupt/data concurrency issue
-- No changes since last patch.
-
-Thanks,
-Marc
-
-Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-
-diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-index 3d91bfc..b309c4c 100644
---- a/drivers/serial/8250.c
-+++ b/drivers/serial/8250.c
-@@ -308,6 +308,7 @@ static unsigned int serial_in(struct uar
-  		return inb(up->port.iobase + 1);
-
-  	case UPIO_MEM:
-+	case UPIO_DWAPB:
-  		return readb(up->port.membase + offset);
-
-  	case UPIO_MEM32:
-@@ -333,6 +334,8 @@ #endif
-  static void
-  serial_out(struct uart_8250_port *up, int offset, int value)
-  {
-+	/* Save the offset before it's remapped */
-+	int save_offset = offset;
-  	offset = map_8250_out_reg(up, offset) << up->port.regshift;
-
-  	switch (up->port.iotype) {
-@@ -359,6 +362,18 @@ #endif
-  			writeb(value, up->port.membase + offset);
-  		break;
-
-+	case UPIO_DWAPB:
-+		/* Save the LCR value so it can be re-written when a
-+		 * Busy Detect interrupt occurs. */
-+		if (save_offset == UART_LCR)
-+			up->lcr = value;
-+		writeb(value, up->port.membase + offset);
-+		/* Read the IER to ensure any interrupt is cleared before
-+		 * returning from ISR. */
-+		if ((save_offset == UART_TX || save_offset == UART_IER) && in_irq())
-+			value = serial_in(up, UART_IER);
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 358f55a..5b50396 100644
+=2D-- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -216,10 +216,26 @@ config MTD_NAND_DISKONCHIP_BBTWRITE
+ 	  Even if you leave this disabled, you can enable BBT writes at module
+ 	  load time (assuming you build diskonchip as a module) with the module
+ 	  parameter "inftl_bbt_write=3D1".
+=2D
++	 =20
+ config MTD_NAND_SHARPSL
+ 	tristate "Support for NAND Flash on Sharp SL Series (C7xx + others)"
+ 	depends on MTD_NAND && ARCH_PXA
++=20
++config MTD_NAND_BASLER_EXCITE
++	tristate  "Support for NAND Flash on Basler eXcite"
++	depends on MTD_NAND && BASLER_EXCITE
++	help
++          This enables the driver for the NAND flash device found on the
++          Basler eXcite Smart Camera. If built as a module, the driver
++	  will be named "excite_nandflash.ko".
++
++config MTD_NAND_BASLER_EXCITE
++	tristate  "Support for NAND Flash on Basler eXcite"
++	depends on MTD_NAND && BASLER_EXCITE
++	help
++          This enables the driver for the NAND flash device found on the
++          Basler eXcite Smart Camera. If built as a module, the driver
++	  will be named "excite_nandflash.ko".
+=20
+ config MTD_NAND_CAFE
+        tristate "NAND support for OLPC CAF=C9 chip"
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index f7a53f0..80f1dfc 100644
+=2D-- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -24,6 +24,7 @@ obj-$(CONFIG_MTD_NAND_NANDSIM)		+=3D nands
+ obj-$(CONFIG_MTD_NAND_CS553X)		+=3D cs553x_nand.o
+ obj-$(CONFIG_MTD_NAND_NDFC)		+=3D ndfc.o
+ obj-$(CONFIG_MTD_NAND_AT91)		+=3D at91_nand.o
++obj-$(CONFIG_MTD_NAND_BASLER_EXCITE)	+=3D excite_nandflash.o
+=20
+ nand-objs :=3D nand_base.o nand_bbt.o
+ cafe_nand-objs :=3D cafe.o cafe_ecc.o
+diff --git a/drivers/mtd/nand/excite_nandflash.c=20
+b/drivers/mtd/nand/excite_nandflash.c
+new file mode 100644
+index 0000000..d683659
+=2D-- /dev/null
++++ b/drivers/mtd/nand/excite_nandflash.c
+@@ -0,0 +1,259 @@
++/*
++*  Copyright (C) 2005 - 2007 by Basler Vision Technologies AG
++*  Author: Thomas Koeller <thomas.koeller.qbaslerweb.com>
++*  Original code by Thies Moeller <thies.moeller@baslerweb.com>
++*
++*  This program is free software; you can redistribute it and/or modify
++*  it under the terms of the GNU General Public License as published by
++*  the Free Software Foundation; either version 2 of the License, or
++*  (at your option) any later version.
++*
++*  This program is distributed in the hope that it will be useful,
++*  but WITHOUT ANY WARRANTY; without even the implied warranty of
++*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++*  GNU General Public License for more details.
++*
++*  You should have received a copy of the GNU General Public License
++*  along with this program; if not, write to the Free Software
++*  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  U=
+SA
++*/
++
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/string.h>
++#include <linux/ioport.h>
++#include <linux/platform_device.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/kernel.h>
++
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <linux/mtd/nand_ecc.h>
++#include <linux/mtd/partitions.h>
++
++#include <asm/io.h>
++#include <asm/rm9k-ocd.h>
++
++#include <excite_nandflash.h>
++
++#define EXCITE_NANDFLASH_VERSION "0.1"
++
++/* I/O register offsets */
++#define EXCITE_NANDFLASH_DATA_BYTE   0x00
++#define EXCITE_NANDFLASH_STATUS_BYTE 0x0c
++#define EXCITE_NANDFLASH_ADDR_BYTE   0x10
++#define EXCITE_NANDFLASH_CMD_BYTE    0x14
++
++#define io_readb(__a__)		__raw_readb((__a__))
++#define io_writeb(__v__, __a__)	__raw_writeb((__v__), (__a__))
++
++typedef void __iomem *io_reg_t;
++
++/* prefix for debug output */
++static const char module_id[] =3D "excite_nandflash";
++
++/*
++ * partition definition
++ */
++static const struct mtd_partition partition_info[] =3D {
++	{
++		.name =3D "eXcite RootFS",
++		.offset =3D 0,
++		.size =3D MTDPART_SIZ_FULL
++	}
++};
++
++static inline const struct resource *excite_nand_get_resource
++    (struct platform_device *d, unsigned long flags, const char *basename)=
+ {
++	const char fmt[] =3D "%s_%u";
++	char buf[80];
++
++	if (unlikely
++	    (snprintf(buf, sizeof buf, fmt, basename, d->id) >=3D sizeof buf))
++		return NULL;
++	return platform_get_resource_byname(d, flags, buf);
++}
++
++static inline io_reg_t
++excite_nand_map_regs(struct platform_device *d, const char *basename)
++{
++	void *result =3D NULL;
++	const struct resource *const r =3D
++	    excite_nand_get_resource(d, IORESOURCE_MEM, basename);
++	if (likely(r))
++		result =3D ioremap_nocache(r->start, r->end + 1 - r->start);
++	return result;
++}
++
++/* controller and mtd information */
++struct excite_nand_drvdata {
++	struct mtd_info board_mtd;
++	struct nand_chip board_chip;
++	io_reg_t regs;
++};
++
++/* command and control functions */
++static void excite_nand_control(struct mtd_info *mtd, int cmd,
++				       unsigned int ctrl)
++{
++	io_reg_t regs =3D
++	    container_of(mtd, struct excite_nand_drvdata, board_mtd)->regs;
++	static void __iomem *tgt =3D NULL;
++
++	switch (ctrl) {
++	case NAND_CTRL_CHANGE | NAND_CTRL_CLE:
++		tgt =3D regs + EXCITE_NANDFLASH_CMD_BYTE;
 +		break;
-+		
-  	default:
-  		outb(value, up->port.iobase + offset);
-  	}
-@@ -373,6 +388,7 @@ serial_out_sync(struct uart_8250_port *u
-  #ifdef CONFIG_SERIAL_8250_AU1X00
-  	case UPIO_AU:
-  #endif
-+	case UPIO_DWAPB:
-  		serial_out(up, offset, value);
-  		(void)serial_in(up, UART_LCR); /* safe, no side-effects */
-  		break;
-@@ -1383,6 +1399,19 @@ static irqreturn_t serial8250_interrupt(
-  			handled = 1;
-
-  			end = NULL;
-+		} else if (up->port.iotype == UPIO_DWAPB &&
-+				(iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
-+			/* The DesignWare APB UART has an Busy Detect (0x07)
-+			 * interrupt meaning an LCR write attempt occured while the
-+			 * UART was busy. The interrupt must be cleared by reading
-+			 * the UART status register (USR) and the LCR re-written. */
-+			unsigned int status;
-+			status = *(volatile u32 *)up->port.private_data;
-+			serial_out(up, UART_LCR, up->lcr);
++	case NAND_CTRL_CHANGE | NAND_CTRL_ALE:
++		tgt =3D regs + EXCITE_NANDFLASH_ADDR_BYTE;
++		break;
++	case NAND_CTRL_CHANGE | NAND_NCE:
++		tgt =3D regs + EXCITE_NANDFLASH_DATA_BYTE;
++		break;
++	}
 +
-+			handled = 1;
++	if (cmd !=3D NAND_CMD_NONE)
++		io_writeb(cmd, tgt);
++}
 +
-+			end = NULL;
-  		} else if (end == NULL)
-  			end = l;
-
-@@ -2085,6 +2114,7 @@ static int serial8250_request_std_resour
-  	case UPIO_TSI:
-  	case UPIO_MEM32:
-  	case UPIO_MEM:
-+	case UPIO_DWAPB:
-  		if (!up->port.mapbase)
-  			break;
-
-@@ -2122,6 +2152,7 @@ static void serial8250_release_std_resou
-  	case UPIO_TSI:
-  	case UPIO_MEM32:
-  	case UPIO_MEM:
-+	case UPIO_DWAPB:
-  		if (!up->port.mapbase)
-  			break;
-
-@@ -2454,8 +2485,8 @@ int __init serial8250_start_console(stru
-
-  	add_preferred_console("ttyS", line, options);
-  	printk("Adding console on ttyS%d at %s 0x%lx (options '%s')\n",
--		line, port->iotype == UPIO_MEM ? "MMIO" : "I/O port",
--		port->iotype == UPIO_MEM ? (unsigned long) port->mapbase :
-+		line, port->iotype >= UPIO_MEM ? "MMIO" : "I/O port",
-+		port->iotype >= UPIO_MEM ? (unsigned long) port->mapbase :
-  		    (unsigned long) port->iobase, options);
-  	if (!(serial8250_console.flags & CON_ENABLED)) {
-  		serial8250_console.flags &= ~CON_PRINTBUFFER;
-diff --git a/drivers/serial/8250.h b/drivers/serial/8250.h
-diff --git a/drivers/serial/serial_core.c b/drivers/serial/serial_core.c
-index f84982e..f5b6036 100644
---- a/drivers/serial/serial_core.c
-+++ b/drivers/serial/serial_core.c
-@@ -2057,6 +2057,7 @@ uart_report_port(struct uart_driver *drv
-  	case UPIO_MEM32:
-  	case UPIO_AU:
-  	case UPIO_TSI:
-+	case UPIO_DWAPB:
-  		snprintf(address, sizeof(address),
-  			 "MMIO 0x%lx", port->mapbase);
-  		break;
-@@ -2401,6 +2402,7 @@ int uart_match_port(struct uart_port *po
-  	case UPIO_MEM32:
-  	case UPIO_AU:
-  	case UPIO_TSI:
-+	case UPIO_DWAPB:
-  		return (port1->mapbase == port2->mapbase);
-  	}
-  	return 0;
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index cf23813..bd9711a 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -230,6 +230,7 @@ #define UPIO_MEM		(2)
-  #define UPIO_MEM32		(3)
-  #define UPIO_AU			(4)			/* Au1x00 type IO */
-  #define UPIO_TSI		(5)			/* Tsi108/109 type IO */
-+#define UPIO_DWAPB		(6)			/* DesignWare APB UART */
-
-  	unsigned int		read_status_mask;	/* driver specific */
-  	unsigned int		ignore_status_mask;	/* driver specific */
-@@ -276,6 +277,7 @@ #define UPF_USR_MASK		((__force upf_t) (
-  	struct device		*dev;			/* parent device */
-  	unsigned char		hub6;			/* this should be in the 8250 driver */
-  	unsigned char		unused[3];
-+	void				*private_data;		/* generic platform data pointer */
-  };
-
-  /*
-diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
-index 3c8a6aa..1c5ed7d 100644
---- a/include/linux/serial_reg.h
-+++ b/include/linux/serial_reg.h
-@@ -38,6 +38,8 @@ #define UART_IIR_THRI		0x02 /* Transmitt
-  #define UART_IIR_RDI		0x04 /* Receiver data interrupt */
-  #define UART_IIR_RLSI		0x06 /* Receiver line status interrupt */
-
-+#define UART_IIR_BUSY		0x07 /* DesignWare APB Busy Detect */
++/* excite_nand_devready()
++ *
++ * returns 0 if the nand is busy, 1 if it is ready
++ */
++static int excite_nand_devready(struct mtd_info *mtd)
++{
++	struct excite_nand_drvdata * const drvdata =3D
++	    container_of(mtd, struct excite_nand_drvdata, board_mtd);
++	return io_readb(drvdata->regs + EXCITE_NANDFLASH_STATUS_BYTE);
++}
 +
-  #define UART_FCR	2	/* Out: FIFO Control Register */
-  #define UART_FCR_ENABLE_FIFO	0x01 /* Enable the FIFO */
-  #define UART_FCR_CLEAR_RCVR	0x02 /* Clear the RCVR FIFO */
++/* excite_nand_remove
++ *
++ * called by device layer to remove the driver
++ * the binding to the mtd and all allocated
++ * resources are released
++ */
++static int __exit excite_nand_remove(struct device *dev)
++{
++	struct excite_nand_drvdata * const this =3D dev_get_drvdata(dev);
++
++	dev_set_drvdata(dev, NULL);
++
++	if (unlikely(!this)) {
++		printk(KERN_ERR "%s: called %s without private data!!",
++		       module_id, __func__);
++		return -EINVAL;
++	}
++
++	/* first thing we need to do is release our mtd
++	 * then go through freeing the resource used
++	 */
++	nand_release(&this->board_mtd);
++
++	/* free the common resources */
++	if (likely(this->regs)) {
++		iounmap(this->regs);
++		this->regs =3D NULL;
++	}
++
++	kfree(this);
++
++	DEBUG(MTD_DEBUG_LEVEL1, "%s: removed\n", module_id);
++	return 0;
++}
++
++/* excite_nand_probe
++ *
++ * called by device layer when it finds a device matching
++ * one our driver can handled. This code checks to see if
++ * it can allocate all necessary resources then calls the
++ * nand layer to look for devices
++*/
++static int __init excite_nand_probe(struct device *dev)
++{
++	struct platform_device * const pdev =3D to_platform_device(dev);
++
++	struct excite_nand_drvdata *drvdata;	/* private driver data     */
++	struct nand_chip *board_chip;	/* private flash chip data */
++	struct mtd_info *board_mtd;	/* mtd info for this board */
++	int scan_res;
++
++	drvdata =3D kzalloc(sizeof(*drvdata), GFP_KERNEL);
++	if (unlikely(!drvdata)) {
++		printk(KERN_ERR "%s: no memory for drvdata\n",
++		       module_id);
++		return -ENOMEM;
++	}
++
++	/* bind private data into driver */
++	dev_set_drvdata(dev, drvdata);
++
++	/* allocate and map the resource */
++	drvdata->regs =3D
++		excite_nand_map_regs(pdev, EXCITE_NANDFLASH_RESOURCE_REGS);
++
++	if (unlikely(!drvdata->regs)) {
++		printk(KERN_ERR "%s: cannot reserve register region\n",
++		       module_id);
++		kfree(drvdata);
++		return -ENXIO;
++	}
++
++	/* initialise our chip */
++	board_chip =3D &drvdata->board_chip;
++	board_chip->IO_ADDR_R =3D board_chip->IO_ADDR_W =3D
++		drvdata->regs + EXCITE_NANDFLASH_DATA_BYTE;
++	board_chip->cmd_ctrl =3D excite_nand_control;
++	board_chip->dev_ready =3D excite_nand_devready;
++	board_chip->chip_delay =3D 25;
++	board_chip->ecc.mode =3D NAND_ECC_SOFT;
++
++	/* link chip to mtd */
++	board_mtd =3D &drvdata->board_mtd;
++	board_mtd->priv =3D board_chip;
++
++	DEBUG(MTD_DEBUG_LEVEL2, "%s: device scan\n", module_id);
++	scan_res =3D nand_scan(&drvdata->board_mtd, 1);
++
++	if (likely(!scan_res)) {
++		DEBUG(MTD_DEBUG_LEVEL2, "%s: register partitions\n", module_id);
++		add_mtd_partitions(&drvdata->board_mtd, partition_info,
++				   sizeof partition_info / sizeof partition_info[0]);
++	} else {
++		iounmap(drvdata->regs);
++		kfree(drvdata);
++		printk(KERN_ERR "%s: device scan failed\n", module_id);
++		return -EIO;
++	}
++	return 0;
++}
++
++static struct device_driver excite_nand_driver =3D {
++	.name =3D "excite_nand",
++	.bus =3D &platform_bus_type,
++	.probe =3D excite_nand_probe,
++	.remove =3D __exit_p(excite_nand_remove)
++};
++
++static int __init excite_nand_init(void)
++{
++	pr_info("Basler eXcite nand flash driver Version "
++		EXCITE_NANDFLASH_VERSION "\n");
++	return driver_register(&excite_nand_driver);
++}
++
++static void __exit excite_nand_exit(void)
++{
++	driver_unregister(&excite_nand_driver);
++}
++
++module_init(excite_nand_init);
++module_exit(excite_nand_exit);
++
++MODULE_AUTHOR("Thomas Koeller <thomas.koeller@baslerweb.com>");
++MODULE_DESCRIPTION("Basler eXcite NAND-Flash driver");
++MODULE_LICENSE("GPL");
++MODULE_VERSION(EXCITE_NANDFLASH_VERSION)
+=2D-=20
+1.4.3

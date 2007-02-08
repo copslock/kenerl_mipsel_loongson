@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 15:09:58 +0000 (GMT)
-Received: from www.pc-net.at ([193.238.157.29]:5252 "EHLO MrWeb01.pc-net.at")
-	by ftp.linux-mips.org with ESMTP id S20038614AbXBHPJy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 15:09:54 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 15:17:47 +0000 (GMT)
+Received: from www.pc-net.at ([193.238.157.29]:23940 "EHLO MrWeb01.pc-net.at")
+	by ftp.linux-mips.org with ESMTP id S20038527AbXBHPRn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Feb 2007 15:17:43 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by MrWeb01.pc-net.at (Postfix) with ESMTP id DF855215EDC
-	for <linux-mips@linux-mips.org>; Thu,  8 Feb 2007 16:09:18 +0100 (CET)
+	by MrWeb01.pc-net.at (Postfix) with ESMTP id B8368215ED0
+	for <linux-mips@linux-mips.org>; Thu,  8 Feb 2007 16:17:07 +0100 (CET)
 Received: from MrWeb01.pc-net.at ([127.0.0.1])
 	by localhost (MrWeb01 [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 22290-08 for <linux-mips@linux-mips.org>;
-	Thu, 8 Feb 2007 16:09:14 +0100 (CET)
+	with ESMTP id 25511-02 for <linux-mips@linux-mips.org>;
+	Thu, 8 Feb 2007 16:16:56 +0100 (CET)
 Received: from www.amilda.org (localhost [127.0.0.1])
-	by MrWeb01.pc-net.at (Postfix) with ESMTP id 64C45215EDB
-	for <linux-mips@linux-mips.org>; Thu,  8 Feb 2007 16:09:04 +0100 (CET)
+	by MrWeb01.pc-net.at (Postfix) with ESMTP id D06D7215ECC
+	for <linux-mips@linux-mips.org>; Thu,  8 Feb 2007 16:16:46 +0100 (CET)
 Received: from 201.240.249.124
         (SquirrelMail authenticated user amilda0001)
         by www.amilda.org with HTTP;
-        Thu, 8 Feb 2007 10:09:14 -0500 (PET)
-Message-ID: <13931.201.240.249.124.1170947354.squirrel@www.amilda.org>
+        Thu, 8 Feb 2007 10:16:56 -0500 (PET)
+Message-ID: <13985.201.240.249.124.1170947816.squirrel@www.amilda.org>
 In-Reply-To: <45CA1552.3080100@wp.pl>
 References: <45C0C956.2050009@wp.pl>            
     <20916.201.240.249.124.1170279547.squirrel@www.amilda.org>            
@@ -30,7 +30,7 @@ References: <45C0C956.2050009@wp.pl>
     <45C45DDA.1000805@wp.pl>
     <24895.201.240.249.124.1170686083.squirrel@www.amilda.org>
     <45CA1552.3080100@wp.pl>
-Date:	Thu, 8 Feb 2007 10:09:14 -0500 (PET)
+Date:	Thu, 8 Feb 2007 10:16:56 -0500 (PET)
 Subject: Re: Advice needed.
 From:	"Sergio Aguayo" <sergio@amilda.org>
 To:	linux-mips@linux-mips.org
@@ -45,14 +45,13 @@ Return-Path: <sergio@amilda.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 13988
+X-archive-position: 13989
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: sergio@amilda.org
 Precedence: bulk
 X-list: linux-mips
-
 
 
 > <cut>

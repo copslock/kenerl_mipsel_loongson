@@ -1,66 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Feb 2007 20:06:09 +0000 (GMT)
-Received: from nz-out-0506.google.com ([64.233.162.234]:26645 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038678AbXBHUGF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 Feb 2007 20:06:05 +0000
-Received: by nz-out-0506.google.com with SMTP id x7so623665nzc
-        for <linux-mips@linux-mips.org>; Thu, 08 Feb 2007 12:05:03 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=O7er7CwmzqEvt3Ht1aRStkfp7pHHoWmA8LiHXA1poMJ7Z0GzvatUQvPDkS4SUG77G1sx/pqAhNk4FjtQa2//lCE3jMtHqrBSe5LilMtq9Qtf1UKcM+QGntDnbaW1mTTAohOroBDWu8jPwVu4LElEKzZDpIv7Begcs/G3oDuX3zg=
-Received: by 10.115.76.1 with SMTP id d1mr4806894wal.1170965103573;
-        Thu, 08 Feb 2007 12:05:03 -0800 (PST)
-Received: by 10.114.136.11 with HTTP; Thu, 8 Feb 2007 12:05:03 -0800 (PST)
-Message-ID: <cda58cb80702081205s1e23a5c3qe0ae53859cfca83d@mail.gmail.com>
-Date:	Thu, 8 Feb 2007 21:05:03 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH 9/10] signal: do not use save_static_function() anymore
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-In-Reply-To: <20070209.013507.52129192.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Feb 2007 03:17:54 +0000 (GMT)
+Received: from mo31.po.2iij.net ([210.128.50.54]:44109 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20039482AbXBIDRt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 9 Feb 2007 03:17:49 +0000
+Received: by mo.po.2iij.net (mo31) id l193GVw2050720; Fri, 9 Feb 2007 12:16:31 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox33) id l193GP00008541
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 9 Feb 2007 12:16:25 +0900 (JST)
+Date:	Fri, 9 Feb 2007 12:16:24 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] Fixed Cobalt UART I/O type
+Message-Id: <20070209121624.074ab2cd.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <cda58cb80702080053m6f22dc15td3b8c447e2abbda1@mail.gmail.com>
-	 <20070208.223637.108120499.anemo@mba.ocn.ne.jp>
-	 <cda58cb80702080739y18d31a34gc184a0cc96c86fb0@mail.gmail.com>
-	 <20070209.013507.52129192.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14001
+X-archive-position: 14002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 2/8/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Thu, 8 Feb 2007 16:39:42 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> > But the points are:
-> >
-> >       - get rid of saving static registers in setup_sigcontext()
-> >       - get rid of restoring static registers in restore_sigcontext()
-> >       - free space in the signal frame
->
-> I'm afraid of ABI compatibility.  Someone might try to handle SIGSEGV
-> and dump all registers to debug the program without debugger...
->
+This patch has fixed UART I/O type.
+The cobalt UART device is actually connected to memory resource area.
 
-Yes that's the main issue with this change. We could make it
-configurable with an option which would depend on CONFIG_EMBEDDED or
-something. Therefore someone can turn on the optimization if he really
-wants it on his platform. But we would still lose the extra space gain
-in the signal frame.
+Yoichi
 
-Note: I think that such programs can have trouble with current code
-anyway... What would happen if the sig handler is run when returning
-from a syscall ? In this case wouldn't sig context contain almost
-garbage ?
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
--- 
-               Franck
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/setup.c mips/arch/mips/cobalt/setup.c
+--- mips-orig/arch/mips/cobalt/setup.c	2007-02-07 18:24:06.652083250 +0900
++++ mips/arch/mips/cobalt/setup.c	2007-02-08 15:39:32.309132500 +0900
+@@ -130,7 +130,7 @@ void __init plat_mem_setup(void)
+ 
+ 	set_io_port_base(CKSEG1ADDR(GT_DEF_PCI0_IO_BASE));
+ 
+-	/* I/O port resource must include UART and LCD/buttons */
++	/* I/O port resource must include LCD/buttons */
+ 	ioport_resource.end = 0x0fffffff;
+ 
+ 	/* request I/O space for devices used on all i[345]86 PCs */
+@@ -149,24 +149,24 @@ void __init plat_mem_setup(void)
+ 	register_pci_controller(&cobalt_pci_controller);
+ #endif
+ 
+-#ifdef CONFIG_SERIAL_8250
+ 	if (cobalt_board_id > COBALT_BRD_ID_RAQ1) {
+-
+ #ifdef CONFIG_EARLY_PRINTK
+ 		cobalt_early_console();
+ #endif
+ 
++#ifdef CONFIG_SERIAL_8250
+ 		uart.line	= 0;
+ 		uart.type	= PORT_UNKNOWN;
+ 		uart.uartclk	= 18432000;
+ 		uart.irq	= COBALT_SERIAL_IRQ;
+-		uart.flags	= UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
+-		uart.iobase	= 0xc800000;
+-		uart.iotype	= UPIO_PORT;
++		uart.flags	= UPF_IOREMAP | UPF_BOOT_AUTOCONF |
++				  UPF_SKIP_TEST;
++		uart.iotype	= UPIO_MEM;
++		uart.mapbase	= 0x1c800000;
+ 
+ 		early_serial_setup(&uart);
+-	}
+ #endif
++	}
+ }
+ 
+ /*

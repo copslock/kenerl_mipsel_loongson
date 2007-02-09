@@ -1,54 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Feb 2007 15:11:06 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.238]:22154 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038792AbXBIPJh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Feb 2007 15:09:37 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so191991qba
-        for <linux-mips@linux-mips.org>; Fri, 09 Feb 2007 07:08:36 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:to:cc:subject:date:message-id:x-mailer:from;
-        b=kKHqRGUbfzAc51QRUk+oeVStFC+566YUng/jgiOW1Bn4kHcGW0wRok2Eofje6NLkGyOFR16CeWo0J6GuYR0Mqd9r4cFOVjDcQLRb+QWOV+/0FBp4HdkFlav9iV4jzQke0XZyOo2JOShwmOILVOW4BqPVSfmAAAR1wL26GvOefas=
-Received: by 10.65.154.2 with SMTP id g2mr15856175qbo.1171033716322;
-        Fri, 09 Feb 2007 07:08:36 -0800 (PST)
-Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id q13sm3530337qbq.2007.02.09.07.08.34;
-        Fri, 09 Feb 2007 07:08:35 -0800 (PST)
-Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 4F79E23F770; Fri,  9 Feb 2007 16:07:39 +0100 (CET)
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, anemo@mba.ocn.ne.jp
-Subject: [PATCH 0/3] More signal clean up
-Date:	Fri,  9 Feb 2007 16:07:35 +0100
-Message-Id: <1171033658561-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.4.4.3.ge6d4
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Feb 2007 16:20:01 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:12755 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038782AbXBIQT4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 9 Feb 2007 16:19:56 +0000
+Received: from localhost (p4029-ipad301funabasi.chiba.ocn.ne.jp [122.17.254.29])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 617C0B6EC; Sat, 10 Feb 2007 01:18:35 +0900 (JST)
+Date:	Sat, 10 Feb 2007 01:18:35 +0900 (JST)
+Message-Id: <20070210.011835.08318488.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org, fbuihuu@gmail.com
+Subject: Re: [PATCH 3/3] signal.c: fix gcc warning on 32 bits kernel
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <11710336591652-git-send-email-fbuihuu@gmail.com>
+References: <1171033658561-git-send-email-fbuihuu@gmail.com>
+	<11710336591652-git-send-email-fbuihuu@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14008
+X-archive-position: 14009
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Fri,  9 Feb 2007 16:07:38 +0100, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>   CC      arch/mips/kernel/signal.o
+> arch/mips/kernel/signal.c: In function `sys_sigaction':
+> arch/mips/kernel/signal.c:266: warning: cast to pointer from integer of different size
+> 
+> This warning is due to the following line:
+> 
+> 	__get_user(new_ka.sa.sa_handler, &act->sa_handler);
 
-Sorry for forgetting these 3 trivial patches. It shouldn't
-conflict with Atsushi's last patch:
+This usage of __get_user() should be absolutely legal.
 
-	Check FCSR for pending interrupts, alternative version
+> 	new_ka.sa.sa_handler = (__sighandler_t) __gu_tmp;
+> 
+> Here we try to cast an 'unsigned long long' into a 32 bits pointer and
+> that's the reason of the warning.
 
-Please consider,
+This line is never executed on 32bit kernel and gcc optimize out.  On
+64-bit kernel, this line is executed without any problem without
+warning.
 
-		Franck
+I think this is a problem of __get_user() implementation or gcc
+itself.  Though I can not find better solution yet, hacking the caller
+to avoid the warning would not be right things to to.
+
 ---
-
- arch/mips/kernel/signal-common.h |    2 ++
- arch/mips/kernel/signal.c        |   10 ++++------
- arch/mips/kernel/signal32.c      |    2 --
- arch/mips/kernel/signal_n32.c    |    2 --
- 4 files changed, 6 insertions(+), 10 deletions(-)
+Atsushi Nemoto

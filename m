@@ -1,70 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Feb 2007 10:24:25 +0000 (GMT)
-Received: from mtagate6.de.ibm.com ([195.212.29.155]:59957 "EHLO
-	mtagate6.de.ibm.com") by ftp.linux-mips.org with ESMTP
-	id S20037476AbXBJKYU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 10 Feb 2007 10:24:20 +0000
-Received: from d12nrmr1607.megacenter.de.ibm.com (d12nrmr1607.megacenter.de.ibm.com [9.149.167.49])
-	by mtagate6.de.ibm.com (8.13.8/8.13.8) with ESMTP id l1AANE5g036144;
-	Sat, 10 Feb 2007 10:23:14 GMT
-Received: from d12av03.megacenter.de.ibm.com (d12av03.megacenter.de.ibm.com [9.149.165.213])
-	by d12nrmr1607.megacenter.de.ibm.com (8.13.8/8.13.8/NCO v8.2) with ESMTP id l1AANEdN1384540;
-	Sat, 10 Feb 2007 11:23:14 +0100
-Received: from d12av03.megacenter.de.ibm.com (loopback [127.0.0.1])
-	by d12av03.megacenter.de.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id l1AANEPW027364;
-	Sat, 10 Feb 2007 11:23:14 +0100
-Received: from localhost (dyn-9-152-198-88.boeblingen.de.ibm.com [9.152.198.88])
-	by d12av03.megacenter.de.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id l1AANEjR027361;
-	Sat, 10 Feb 2007 11:23:14 +0100
-Date:	Sat, 10 Feb 2007 11:22:05 +0100
-From:	Heiko Carstens <heiko.carstens@de.ibm.com>
-To:	Davide Libenzi <davidel@xmailserver.org>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Cc:	David Woodhouse <dwmw2@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexey Dobriyan <adobriyan@openvz.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Ulrich Drepper <drepper@redhat.com>
-Subject: Re: -mm merge plans for 2.6.21
-Message-ID: <20070210102205.GB8145@osiris.boeblingen.de.ibm.com>
-References: <20070208150710.1324f6b4.akpm@linux-foundation.org> <1171042535.29713.96.camel@pmac.infradead.org> <20070209134516.2367a7aa.akpm@linux-foundation.org> <1171058342.29713.136.camel@pmac.infradead.org> <Pine.LNX.4.64.0702091442230.2786@alien.or.mcafeemobile.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Feb 2007 10:26:40 +0000 (GMT)
+Received: from mail02.hansenet.de ([213.191.73.62]:50107 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20037543AbXBJK0f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 10 Feb 2007 10:26:35 +0000
+Received: from [213.39.184.171] (213.39.184.171) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 45CB2B4F000CF39F; Sat, 10 Feb 2007 11:22:44 +0100
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by mail.koeller.dyndns.org (Postfix) with ESMTP id 1E3BC479FC;
+	Sat, 10 Feb 2007 11:22:43 +0100 (CET)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To:	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH] eXcite nand flash driver
+Date:	Sat, 10 Feb 2007 11:22:04 +0100
+User-Agent: KMail/1.9.6
+Cc:	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org
+References: <200702080157.25432.thomas.koeller@baslerweb.com> <1170949737.3646.29.camel@chaos>
+In-Reply-To: <1170949737.3646.29.camel@chaos>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0702091442230.2786@alien.or.mcafeemobile.com>
-User-Agent: mutt-ng/devel-r804 (Linux)
-Return-Path: <heiko.carstens@de.ibm.com>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200702101122.05049.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14021
+X-archive-position: 14022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: heiko.carstens@de.ibm.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 09, 2007 at 02:50:12PM -0800, Davide Libenzi wrote:
-> On Fri, 9 Feb 2007, David Woodhouse wrote:
-> 
-> > On Fri, 2007-02-09 at 13:45 -0800, Andrew Morton wrote:
-> > > > I would strongly recommend that in the general case, you don't merge new
-> > > > system calls unless the corresponding compat_ system call is
-> > > > implemented.
-> > > 
-> > > Good point. 
-> > 
-> > It's a _damn_ good point, but I see we went ahead and merged
-> > sys_epoll_pwait without it anyway -- despite the fact that it's
-> > include/linux/eventpoll.h which contains the example of why we should
-> > think first :)
-> > 
-> > I think I even threw together an untested implementation of
-> > compat_sys_epoll_pwait() at one point to assist with that task, but it
-> > didn't seem to help much.
-> 
-> Damn! I always forget. Doing it right now ...
+On Donnerstag, 8. Februar 2007, Thomas Gleixner wrote:
+> > +/* command and control functions */
+> > +static void excite_nand_control(struct mtd_info *mtd, int cmd,
+> > +				       unsigned int ctrl)
+> > +{
+> > +	io_reg_t regs =
+> > +	    container_of(mtd, struct excite_nand_drvdata, board_mtd)->regs;
+> > +	static void __iomem *tgt = NULL;
+> > +
+> > +	switch (ctrl) {
+> > +	case NAND_CTRL_CHANGE | NAND_CTRL_CLE:
+> > +		tgt = regs + EXCITE_NANDFLASH_CMD_BYTE;
+> > +		break;
+> > +	case NAND_CTRL_CHANGE | NAND_CTRL_ALE:
+> > +		tgt = regs + EXCITE_NANDFLASH_ADDR_BYTE;
+> > +		break;
+> > +	case NAND_CTRL_CHANGE | NAND_NCE:
+> > +		tgt = regs + EXCITE_NANDFLASH_DATA_BYTE;
+> > +		break;
+> > +	}
+>
+> Err, did this ever work ? I doubt it. From nand_base.c:
+>
+>                 chip->cmd_ctrl(mtd, page_addr, ctrl);
+>                 ctrl &= ~NAND_CTRL_CHANGE;
+>                 chip->cmd_ctrl(mtd, page_addr >> 8, ctrl);
+>
+> So I expect an OOPS happens on a regular base.
+>
 
-Which remembers me that I think that MIPS is using the non-compat version
-of sys_epoll_pwait for compat syscalls. But maybe MIPS doesn't need a compat
-syscall for some reason. Dunno.
+I guess it is the 'static void __iomem *tgt = NULL' part that worries
+you? Think about it, that value is never used.
+
+However, I admit it is somewhat unclean, and therefore I am changing
+it. Updated patch follows.
+
+tk

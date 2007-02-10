@@ -1,62 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Feb 2007 10:35:37 +0000 (GMT)
-Received: from pentafluge.infradead.org ([213.146.154.40]:34998 "EHLO
-	pentafluge.infradead.org") by ftp.linux-mips.org with ESMTP
-	id S20038938AbXBJKfc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 10 Feb 2007 10:35:32 +0000
-Received: from pmac.infradead.org ([81.187.2.168])
-	by pentafluge.infradead.org with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1HFpWd-0005St-7l; Sat, 10 Feb 2007 10:32:11 +0000
-Subject: Re: -mm merge plans for 2.6.21
-From:	David Woodhouse <dwmw2@infradead.org>
-To:	Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc:	Davide Libenzi <davidel@xmailserver.org>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexey Dobriyan <adobriyan@openvz.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Ulrich Drepper <drepper@redhat.com>
-In-Reply-To: <20070210102205.GB8145@osiris.boeblingen.de.ibm.com>
-References: <20070208150710.1324f6b4.akpm@linux-foundation.org>
-	 <1171042535.29713.96.camel@pmac.infradead.org>
-	 <20070209134516.2367a7aa.akpm@linux-foundation.org>
-	 <1171058342.29713.136.camel@pmac.infradead.org>
-	 <Pine.LNX.4.64.0702091442230.2786@alien.or.mcafeemobile.com>
-	 <20070210102205.GB8145@osiris.boeblingen.de.ibm.com>
-Content-Type: text/plain
-Date:	Sat, 10 Feb 2007 10:32:07 +0000
-Message-Id: <1171103527.29713.228.camel@pmac.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Feb 2007 15:41:49 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:63686 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20039014AbXBJPln (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 10 Feb 2007 15:41:43 +0000
+Received: from localhost (p3173-ipad210funabasi.chiba.ocn.ne.jp [58.88.122.173])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id AC917B89B; Sun, 11 Feb 2007 00:40:20 +0900 (JST)
+Date:	Sun, 11 Feb 2007 00:40:20 +0900 (JST)
+Message-Id: <20070211.004020.79071872.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] clean up ret_from_{irq,exception}
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <45C8A477.8070906@innova-card.com>
+References: <45C8A477.8070906@innova-card.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.8.2.1 (2.8.2.1-3.fc6.dwmw2.1) 
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by pentafluge.infradead.org
-	See http://www.infradead.org/rpr.html
-Return-Path: <SRS0+5cffa4984f8ae9ed5307+1266+infradead.org+dwmw2@pentafluge.srs.infradead.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14024
+X-archive-position: 14025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwmw2@infradead.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 2007-02-10 at 11:22 +0100, Heiko Carstens wrote:
-> Which remembers me that I think that MIPS is using the non-compat version
-> of sys_epoll_pwait for compat syscalls. But maybe MIPS doesn't need a compat
-> syscall for some reason. Dunno. 
+On Tue, 06 Feb 2007 16:53:27 +0100, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> This patch makes these routines a lot more readable whatever
+> the value of CONFIG_PREEMPT.
+> 
+> It also moves one branch instruction from ret_from_irq()
+> to ret_from_exception(). Therefore we favour the return
+> from irq path which should be more common than the other
+> one.
 
-It's OK as long as the 64-bit kernel, N32 and O32 userspace all agree
-there there's 32 bits of padding between the fields of this structure:
+After this patch, entry.S becomes:
 
-struct epoll_event {
-        __u32 events;
-        __u64 data;
-};
+FEXPORT(ret_from_exception)
+#ifndef CONFIG_PREEMPT
+	local_irq_disable			# preempt stop
+#endif
+	b	_ret_from_irq
+FEXPORT(ret_from_irq)
+	LONG_S	s0, TI_REGS($28)
+FEXPORT(_ret_from_irq)
 
-I suspect it's a fairly safe bet that N32 userspace agrees; if the O32
-ABI is different then it would need the compat syscall.
 
--- 
-dwmw2
+Apparently your patch add an additional branch in critical path in
+CONFIG_PREEMPT=y case.
+
+Maybe this would be better?
+
+#ifdef CONFIG_PREEMPT
+FEXPORT(ret_from_irq)
+	LONG_S	s0, TI_REGS($28)
+FEXPORT(ret_from_exception)
+#else
+FEXPORT(ret_from_exception)
+	local_irq_disable			# preempt stop
+	b	_ret_from_irq
+FEXPORT(ret_from_irq)
+	LONG_S	s0, TI_REGS($28)
+#endif
+FEXPORT(_ret_from_irq)
+
+---
+Atsushi Nemoto

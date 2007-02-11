@@ -1,53 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Feb 2007 10:43:43 +0000 (GMT)
-Received: from ns.suse.de ([195.135.220.2]:30375 "EHLO mx1.suse.de")
-	by ftp.linux-mips.org with ESMTP id S20038912AbXBKKnh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 11 Feb 2007 10:43:37 +0000
-Received: from Relay2.suse.de (mail2.suse.de [195.135.221.8])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.suse.de (Postfix) with ESMTP id 59C7412082;
-	Sun, 11 Feb 2007 11:42:17 +0100 (CET)
-From:	Andi Kleen <ak@suse.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Feb 2007 15:37:27 +0000 (GMT)
+Received: from pentafluge.infradead.org ([213.146.154.40]:11475 "EHLO
+	pentafluge.infradead.org") by ftp.linux-mips.org with ESMTP
+	id S20039028AbXBKPhW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 11 Feb 2007 15:37:22 +0000
+Received: from [89.192.35.138] (helo=[10.42.195.205])
+	by pentafluge.infradead.org with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
+	id 1HGGiG-00077D-9d; Sun, 11 Feb 2007 15:34:03 +0000
 Subject: Re: -mm merge plans for 2.6.21
-Date:	Sun, 11 Feb 2007 11:37:45 +0100
-User-Agent: KMail/1.9.5
+From:	David Woodhouse <dwmw2@infradead.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Heiko Carstens <heiko.carstens@de.ibm.com>,
 	Davide Libenzi <davidel@xmailserver.org>,
-	linux-mips@linux-mips.org, David Woodhouse <dwmw2@infradead.org>,
+	linux-mips@linux-mips.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Alexey Dobriyan <adobriyan@openvz.org>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Ulrich Drepper <drepper@redhat.com>
-References: <20070208150710.1324f6b4.akpm@linux-foundation.org> <20070210102205.GB8145@osiris.boeblingen.de.ibm.com> <20070210210557.GA9116@linux-mips.org>
-In-Reply-To: <20070210210557.GA9116@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+In-Reply-To: <20070210213447.GB9116@linux-mips.org>
+References: <20070208150710.1324f6b4.akpm@linux-foundation.org>
+	 <1171042535.29713.96.camel@pmac.infradead.org>
+	 <20070209134516.2367a7aa.akpm@linux-foundation.org>
+	 <1171058342.29713.136.camel@pmac.infradead.org>
+	 <Pine.LNX.4.64.0702091442230.2786@alien.or.mcafeemobile.com>
+	 <20070210102205.GB8145@osiris.boeblingen.de.ibm.com>
+	 <1171103527.29713.228.camel@pmac.infradead.org>
+	 <20070210213447.GB9116@linux-mips.org>
+Content-Type: text/plain
+Date:	Sun, 11 Feb 2007 16:33:41 +0100
+Message-Id: <1171208022.16494.5.camel@shinybook.infradead.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.8.2.1 (2.8.2.1-3.fc6.dwmw2.1) 
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200702111137.46344.ak@suse.de>
-Return-Path: <ak@suse.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by pentafluge.infradead.org
+	See http://www.infradead.org/rpr.html
+Return-Path: <SRS0+bf6f6d5a4a10df2b7bef+1267+infradead.org+dwmw2@pentafluge.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14034
+X-archive-position: 14035
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ak@suse.de
+X-original-sender: dwmw2@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-On Saturday 10 February 2007 22:05, Ralf Baechle wrote:
-> On Sat, Feb 10, 2007 at 11:22:05AM +0100, Heiko Carstens wrote:
-> 
-> > Which remembers me that I think that MIPS is using the non-compat version
-> > of sys_epoll_pwait for compat syscalls. But maybe MIPS doesn't need a compat
-> > syscall for some reason. Dunno.
-> 
-> Which reminds me that x86_64 i386 compat doesn't wire up sys_epoll_pwait ;-)
+On Sat, 2007-02-10 at 21:34 +0000, Ralf Baechle wrote:
+> Unfortunately struct epoll_event contains a gap so it bets on identical
+> padding rules between native and compat ABI and anyway, padding is wasted
+> space so the struct members should have been swapped when this structure
+> was created.  Oh well, too late. 
 
-Added thanks.
+Indeed. That was the example I was thinking of when I suggested the "no
+new syscalls without _simultaneous_ compat version" rule.
 
--Andi
+-- 
+dwmw2

@@ -1,49 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Feb 2007 18:03:29 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:36588 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039062AbXBKSD0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 11 Feb 2007 18:03:26 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1BI1wpw023777;
-	Sun, 11 Feb 2007 18:01:58 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1BI1vjC023776;
-	Sun, 11 Feb 2007 18:01:57 GMT
-Date:	Sun, 11 Feb 2007 18:01:57 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc:	David Woodhouse <dwmw2@infradead.org>,
-	Davide Libenzi <davidel@xmailserver.org>,
-	linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexey Dobriyan <adobriyan@openvz.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Ulrich Drepper <drepper@redhat.com>
-Subject: Re: -mm merge plans for 2.6.21
-Message-ID: <20070211180157.GA21492@linux-mips.org>
-References: <20070208150710.1324f6b4.akpm@linux-foundation.org> <1171042535.29713.96.camel@pmac.infradead.org> <20070209134516.2367a7aa.akpm@linux-foundation.org> <1171058342.29713.136.camel@pmac.infradead.org> <Pine.LNX.4.64.0702091442230.2786@alien.or.mcafeemobile.com> <20070210102205.GB8145@osiris.boeblingen.de.ibm.com> <1171103527.29713.228.camel@pmac.infradead.org> <20070210213447.GB9116@linux-mips.org> <20070211161446.GB11547@osiris.ibm.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Feb 2007 00:32:07 +0000 (GMT)
+Received: from mail04.hansenet.de ([213.191.73.12]:53422 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20037573AbXBLAcC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Feb 2007 00:32:02 +0000
+Received: from [213.39.184.53] (213.39.184.53) by webmail.hansenet.de (7.2.074) (authenticated as mbx20228207@koeller-hh.org)
+        id 45CB2EBD0017FC70; Mon, 12 Feb 2007 01:28:04 +0100
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by mail.koeller.dyndns.org (Postfix) with ESMTP id 0983B479E4;
+	Mon, 12 Feb 2007 01:28:03 +0100 (CET)
+From:	Thomas Koeller <thomas@koeller.dyndns.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH] RM9000 serial driver
+Date:	Mon, 12 Feb 2007 01:28:01 +0100
+User-Agent: KMail/1.9.6
+Cc:	Russell King <rmk@arm.linux.org.uk>, linux-serial@vger.kernel.org,
+	ralf@linux-mips.org, linux-mips@linux-mips.org
+References: <200608102318.52143.thomas.koeller@baslerweb.com> <200702101711.46826.thomas@koeller.dyndns.org> <45CE0CFF.1000105@ru.mvista.com>
+In-Reply-To: <45CE0CFF.1000105@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20070211161446.GB11547@osiris.ibm.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200702120128.02521.thomas@koeller.dyndns.org>
+Return-Path: <thomas@koeller.dyndns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14040
+X-archive-position: 14041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: thomas@koeller.dyndns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 11, 2007 at 05:14:46PM +0100, Heiko Carstens wrote:
+On Samstag, 10. Februar 2007, Sergei Shtylyov wrote:
+>     I'm afraid you're on your own with resolving the issues now, as the
+> serial drivers are no longer maintaned by anybody (so, you probably will
+> have to work with Andrew Morton)...
 
-> Hmm.. so you don't need to do some fancy compat conversion for the sigset_t
-> that gets passed? Why is that? I don't get it...
+Thank you for the hint - I did not notice that Russell retired in the
+meantime. So I'll submit the driver to Andrew directly.
 
-Ah, I finally get your point.  Yes, that needs conversion.
+regards,
+tk
 
-  Ralf
+
+-- 
+Thomas Koeller
+thomas@koeller.dyndns.org

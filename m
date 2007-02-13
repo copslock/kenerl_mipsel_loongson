@@ -1,170 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 06:04:28 +0000 (GMT)
-Received: from smtp-out02.alice.it ([85.33.2.6]:28676 "EHLO
-	smtp-out02.alice.it") by ftp.linux-mips.org with ESMTP
-	id S20037808AbXBMGEW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Feb 2007 06:04:22 +0000
-Received: from FBCMMO03.fbc.local ([192.168.68.197]) by smtp-out02.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 13 Feb 2007 07:03:54 +0100
-Received: from FBCMCL01B06.fbc.local ([192.168.69.87]) by FBCMMO03.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 13 Feb 2007 07:03:54 +0100
-Received: from [192.168.1.200] ([82.49.75.20]) by FBCMCL01B06.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 13 Feb 2007 07:03:54 +0100
-Message-ID: <45D154C2.9030809@tin.it>
-Date:	Tue, 13 Feb 2007 07:03:46 +0100
-From:	Lucio Dona' <memorylost@tin.it>
-User-Agent: Mozilla Thunderbird 1.5.0.9 (X11/20070102)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 07:52:58 +0000 (GMT)
+Received: from roasted.cubic.org ([193.108.181.130]:21670 "EHLO
+	roasted.cubic.org") by ftp.linux-mips.org with ESMTP
+	id S20038718AbXBMHwu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Feb 2007 07:52:50 +0000
+Received: from c145138.adsl.hansenet.de ([213.39.145.138] helo=cubic.org)
+	by roasted.cubic.org with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.36 #1)
+	id 1HGsPw-0005gA-00
+	for linux-mips@linux-mips.org; Tue, 13 Feb 2007 08:49:36 +0100
+Message-ID: <45D16D8B.40401@cubic.org>
+Date:	Tue, 13 Feb 2007 08:49:31 +0100
+From:	Michael Stickel <michael@cubic.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030225
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-Subject: AU1100 Ethernet problems
-Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg=sha1; boundary="------------ms020508000201000800020508"
-X-OriginalArrivalTime: 13 Feb 2007 06:03:54.0623 (UTC) FILETIME=[BDE650F0:01C74F34]
-Return-Path: <memorylost@tin.it>
+Subject: Re: AU1100 Ethernet problems
+References: <45D154C2.9030809@tin.it>
+In-Reply-To: <45D154C2.9030809@tin.it>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <michael@cubic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14056
+X-archive-position: 14057
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: memorylost@tin.it
+X-original-sender: michael@cubic.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a cryptographically signed message in MIME format.
+Lucio Dona' wrote:
 
---------------ms020508000201000800020508
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 7bit
+> When the boards are powered up without Ethernet cable plugged-in, and 
+> the Ethernet is initialized, it seems that the system gets a lot of 
+> 'rx interrupts' and stays almost all the time inside the Ethernet rx 
+> interrupt service routine.
+> This horribly slows down everything and causes the watchdog to come up 
+> resetting the board.
+>
+> Tried to make some debugging, but don't understand why there are all 
+> those interrupts.
+>
+> If the system is powered up with the Ethernet cable connected to a 
+> simple hub (hub only, no other computers connected to the net) the 
+> problem does not occur.
+>
+> I have this problem on about 10% boards.
+> The design is based on AMD Syrah reference schematics, the kernel is 
+> 2.4.21-pre4. Searching with oscilloscope there is no apparent 
+> 'hardware' difference between a 'bad' board and a good one.
 
-Hi all,
-I am working on an AU1100 project and I found problems in some 
-pre-production boards.
+If this is on 10% of the boards I would say it is a production problem.
 
-When the boards are powered up without Ethernet cable plugged-in, and 
-the Ethernet is initialized, it seems that the system gets a lot of 'rx 
-interrupts' and stays almost all the time inside the Ethernet rx 
-interrupt service routine.
-This horribly slows down everything and causes the watchdog to come up 
-resetting the board.
+What PHY do you use and is it properly reseted?
+Is there any soldering problem with the PHY. Does it have a ground pad 
+under the case and is this pad well soldered?
 
-Tried to make some debugging, but don't understand why there are all 
-those interrupts.
-
-If the system is powered up with the Ethernet cable connected to a 
-simple hub (hub only, no other computers connected to the net) the 
-problem does not occur.
-
-I have this problem on about 10% boards.
-The design is based on AMD Syrah reference schematics, the kernel is 
-2.4.21-pre4. Searching with oscilloscope there is no apparent 'hardware' 
-difference between a 'bad' board and a good one.
-
-Any suggestions ?
-
-
-Thanks, regards
-Lucio Dona'
-
---------------ms020508000201000800020508
-Content-Type: application/x-pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIQEjCC
-BIowggNyoAMCAQICECf06hH0eobEbp27bqkXBwcwDQYJKoZIhvcNAQEFBQAwbzELMAkGA1UE
-BhMCU0UxFDASBgNVBAoTC0FkZFRydXN0IEFCMSYwJAYDVQQLEx1BZGRUcnVzdCBFeHRlcm5h
-bCBUVFAgTmV0d29yazEiMCAGA1UEAxMZQWRkVHJ1c3QgRXh0ZXJuYWwgQ0EgUm9vdDAeFw0w
-NTA2MDcwODA5MTBaFw0yMDA1MzAxMDQ4MzhaMIGuMQswCQYDVQQGEwJVUzELMAkGA1UECBMC
-VVQxFzAVBgNVBAcTDlNhbHQgTGFrZSBDaXR5MR4wHAYDVQQKExVUaGUgVVNFUlRSVVNUIE5l
-dHdvcmsxITAfBgNVBAsTGGh0dHA6Ly93d3cudXNlcnRydXN0LmNvbTE2MDQGA1UEAxMtVVRO
-LVVTRVJGaXJzdC1DbGllbnQgQXV0aGVudGljYXRpb24gYW5kIEVtYWlsMIIBIjANBgkqhkiG
-9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsjmFpPJ9q0E7YkY3rs3BYHW8OWX5ShpHornMSMxqmNVN
-NRm5pELlzkniii8efNIxB8dOtINknS4p1aJkxIW9hVE1eaROaJB7HHqkkqgX8pgV8pPMyaQy
-lbsMTzC9mKALi+VuG6JG+ni8om+rWV6lL8/K2m2qL+usobNqqrcuZzWLeeEeaYji5kbNoKXq
-vgvOdjp6Dpvq/NonWz1zHyLmSGHGTPNpsaguG7bUMSAsvIKKjqQOpdeJQ/wWWq8dcdcRWdq6
-hw2v+vPhwvCkxWeM1tZUOt4KpLoDd7NlyP0e03RiqhjKaJMeoYV+9Udly/hNVyh00jT/MLbu
-9mIwFIws6wIDAQABo4HhMIHeMB8GA1UdIwQYMBaAFK29mHo0tCb3+sQmVO8DveAky1QaMB0G
-A1UdDgQWBBSJgmd9xJ0mcABLtFBIfN49rgRufTAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/
-BAUwAwEB/zB7BgNVHR8EdDByMDigNqA0hjJodHRwOi8vY3JsLmNvbW9kb2NhLmNvbS9BZGRU
-cnVzdEV4dGVybmFsQ0FSb290LmNybDA2oDSgMoYwaHR0cDovL2NybC5jb21vZG8ubmV0L0Fk
-ZFRydXN0RXh0ZXJuYWxDQVJvb3QuY3JsMA0GCSqGSIb3DQEBBQUAA4IBAQAZ2IkRbyispgCi
-54fBm5AD236hEv0e8+LwAamUVEJrmgnEoG3XkJIEA2Z5Q3H8+G+v23ZF4jcaPd3kWQR4rBz0
-g0bzes9bhHIt5UbBuhgRKfPLSXmHPLptBZ2kbWhPrXIUNqi5sf2/z3/wpGqUNVCPz4FtVbHd
-WTBK322gnGQfSXzvNrv042n0+DmPWq1LhTq3Du3Tzw1EovsEv+QvcI4l+1pUBrPQxLxtjftz
-Mizpm4QkLdZ/kXpoAlAfDj9N6cz1u2fo3BwuO/xOzf4CjuOoEwqlJkRl6RDyTVKnrtw+ymsy
-XEFs/vVdoOr/0fqbhlhtPZZH5f4ulQTCAMyOofK7MIIFvjCCBKagAwIBAgIQIItj0veEaiqr
-F3/W6viitTANBgkqhkiG9w0BAQUFADCBrjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAlVUMRcw
-FQYDVQQHEw5TYWx0IExha2UgQ2l0eTEeMBwGA1UEChMVVGhlIFVTRVJUUlVTVCBOZXR3b3Jr
-MSEwHwYDVQQLExhodHRwOi8vd3d3LnVzZXJ0cnVzdC5jb20xNjA0BgNVBAMTLVVUTi1VU0VS
-Rmlyc3QtQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBFbWFpbDAeFw0wNjA5MjEwMDAwMDBa
-Fw0wNzA5MjEyMzU5NTlaMIHYMTUwMwYDVQQLEyxDb21vZG8gVHJ1c3QgTmV0d29yayAtIFBF
-UlNPTkEgTk9UIFZBTElEQVRFRDFGMEQGA1UECxM9VGVybXMgYW5kIENvbmRpdGlvbnMgb2Yg
-dXNlOiBodHRwOi8vd3d3LmNvbW9kby5uZXQvcmVwb3NpdG9yeTEfMB0GA1UECxMWKGMpMjAw
-MyBDb21vZG8gTGltaXRlZDEUMBIGA1UEAxMLTHVjaW8gRG9uYScxIDAeBgkqhkiG9w0BCQEW
-EW1lbW9yeWxvc3RAdGluLml0MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDjcc2kiEuz
-PE+Uynvp8Hm1pcHM5SxPC6AFy8hNBIYwvLM/HAMikqzOaAm0xpCqWd3OGnCLenxxzcevIsuA
-ILJWv+bqL4Ydq33hpkN2T40lVWnwFDvPpMpiYx5dJYNSqBvbClBE4q45RYvWojbHm6Sgz6rj
-sK7Cb9bdJm7ZSTnEzQIDAQABo4ICLjCCAiowHwYDVR0jBBgwFoAUiYJnfcSdJnAAS7RQSHze
-Pa4Ebn0wHQYDVR0OBBYEFGd07JU5fNv5IPhfGf4kCtqeCUIOMA4GA1UdDwEB/wQEAwIFoDAM
-BgNVHRMBAf8EAjAAMCAGA1UdJQQZMBcGCCsGAQUFBwMEBgsrBgEEAbIxAQMFAjARBglghkgB
-hvhCAQEEBAMCBSAwRgYDVR0gBD8wPTA7BgwrBgEEAbIxAQIBAQEwKzApBggrBgEFBQcCARYd
-aHR0cHM6Ly9zZWN1cmUuY29tb2RvLm5ldC9DUFMwgaUGA1UdHwSBnTCBmjBMoEqgSIZGaHR0
-cDovL2NybC5jb21vZG9jYS5jb20vVVROLVVTRVJGaXJzdC1DbGllbnRBdXRoZW50aWNhdGlv
-bmFuZEVtYWlsLmNybDBKoEigRoZEaHR0cDovL2NybC5jb21vZG8ubmV0L1VUTi1VU0VSRmly
-c3QtQ2xpZW50QXV0aGVudGljYXRpb25hbmRFbWFpbC5jcmwwgYYGCCsGAQUFBwEBBHoweDA7
-BggrBgEFBQcwAoYvaHR0cDovL2NydC5jb21vZG9jYS5jb20vVVROQWRkVHJ1c3RDbGllbnRD
-QS5jcnQwOQYIKwYBBQUHMAKGLWh0dHA6Ly9jcnQuY29tb2RvLm5ldC9VVE5BZGRUcnVzdENs
-aWVudENBLmNydDAcBgNVHREEFTATgRFtZW1vcnlsb3N0QHRpbi5pdDANBgkqhkiG9w0BAQUF
-AAOCAQEAWllXFs20b+3qhf/gPEadCka1eDk1MBZ8JZzyJI+a+Gpcmxfwemzw9C01kSFElBJr
-eP5NNyaSWmAoSPb19QmEYxe0KfMrEjt/HemNBlLNxwzqKbQFO3U5289IgLq28mEFtQluNbkd
-Lq0wCNg0OmntkaN0LwAYoHlacSEHj/Tei/siMJvVQgPO8uBRSwvkZoTPfHDE4MuiQcyYQUX8
-ARjSYjDeSpcJtLiFWFD6lL8MmlXq/rSvtYILRNSnxPhvF3mD8ancgBPTiK2eYaPX4exiYKgu
-W98ig74wU/xByfMqd3xD2y7iHztiBO7AaqhVugiEuVxx2Db+rXeXlsH7AxnOvzCCBb4wggSm
-oAMCAQICECCLY9L3hGoqqxd/1ur4orUwDQYJKoZIhvcNAQEFBQAwga4xCzAJBgNVBAYTAlVT
-MQswCQYDVQQIEwJVVDEXMBUGA1UEBxMOU2FsdCBMYWtlIENpdHkxHjAcBgNVBAoTFVRoZSBV
-U0VSVFJVU1QgTmV0d29yazEhMB8GA1UECxMYaHR0cDovL3d3dy51c2VydHJ1c3QuY29tMTYw
-NAYDVQQDEy1VVE4tVVNFUkZpcnN0LUNsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgRW1haWww
-HhcNMDYwOTIxMDAwMDAwWhcNMDcwOTIxMjM1OTU5WjCB2DE1MDMGA1UECxMsQ29tb2RvIFRy
-dXN0IE5ldHdvcmsgLSBQRVJTT05BIE5PVCBWQUxJREFURUQxRjBEBgNVBAsTPVRlcm1zIGFu
-ZCBDb25kaXRpb25zIG9mIHVzZTogaHR0cDovL3d3dy5jb21vZG8ubmV0L3JlcG9zaXRvcnkx
-HzAdBgNVBAsTFihjKTIwMDMgQ29tb2RvIExpbWl0ZWQxFDASBgNVBAMTC0x1Y2lvIERvbmEn
-MSAwHgYJKoZIhvcNAQkBFhFtZW1vcnlsb3N0QHRpbi5pdDCBnzANBgkqhkiG9w0BAQEFAAOB
-jQAwgYkCgYEA43HNpIhLszxPlMp76fB5taXBzOUsTwugBcvITQSGMLyzPxwDIpKszmgJtMaQ
-qlndzhpwi3p8cc3HryLLgCCyVr/m6i+GHat94aZDdk+NJVVp8BQ7z6TKYmMeXSWDUqgb2wpQ
-ROKuOUWL1qI2x5ukoM+q47Cuwm/W3SZu2Uk5xM0CAwEAAaOCAi4wggIqMB8GA1UdIwQYMBaA
-FImCZ33EnSZwAEu0UEh83j2uBG59MB0GA1UdDgQWBBRndOyVOXzb+SD4Xxn+JAranglCDjAO
-BgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH/BAIwADAgBgNVHSUEGTAXBggrBgEFBQcDBAYLKwYB
-BAGyMQEDBQIwEQYJYIZIAYb4QgEBBAQDAgUgMEYGA1UdIAQ/MD0wOwYMKwYBBAGyMQECAQEB
-MCswKQYIKwYBBQUHAgEWHWh0dHBzOi8vc2VjdXJlLmNvbW9kby5uZXQvQ1BTMIGlBgNVHR8E
-gZ0wgZowTKBKoEiGRmh0dHA6Ly9jcmwuY29tb2RvY2EuY29tL1VUTi1VU0VSRmlyc3QtQ2xp
-ZW50QXV0aGVudGljYXRpb25hbmRFbWFpbC5jcmwwSqBIoEaGRGh0dHA6Ly9jcmwuY29tb2Rv
-Lm5ldC9VVE4tVVNFUkZpcnN0LUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kRW1haWwuY3JsMIGG
-BggrBgEFBQcBAQR6MHgwOwYIKwYBBQUHMAKGL2h0dHA6Ly9jcnQuY29tb2RvY2EuY29tL1VU
-TkFkZFRydXN0Q2xpZW50Q0EuY3J0MDkGCCsGAQUFBzAChi1odHRwOi8vY3J0LmNvbW9kby5u
-ZXQvVVROQWRkVHJ1c3RDbGllbnRDQS5jcnQwHAYDVR0RBBUwE4ERbWVtb3J5bG9zdEB0aW4u
-aXQwDQYJKoZIhvcNAQEFBQADggEBAFpZVxbNtG/t6oX/4DxGnQpGtXg5NTAWfCWc8iSPmvhq
-XJsX8Hps8PQtNZEhRJQSa3j+TTcmklpgKEj29fUJhGMXtCnzKxI7fx3pjQZSzccM6im0BTt1
-OdvPSIC6tvJhBbUJbjW5HS6tMAjYNDpp7ZGjdC8AGKB5WnEhB4/03ov7IjCb1UIDzvLgUUsL
-5GaEz3xwxODLokHMmEFF/AEY0mIw3kqXCbS4hVhQ+pS/DJpV6v60r7WCC0TUp8T4bxd5g/Gp
-3IAT04itnmGj1+HsYmCoLlvfIoO+MFP8QcnzKnd8Q9su4h87YgTuwGqoVboIhLlccdg2/q13
-l5bB+wMZzr8xggPPMIIDywIBATCBwzCBrjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAlVUMRcw
-FQYDVQQHEw5TYWx0IExha2UgQ2l0eTEeMBwGA1UEChMVVGhlIFVTRVJUUlVTVCBOZXR3b3Jr
-MSEwHwYDVQQLExhodHRwOi8vd3d3LnVzZXJ0cnVzdC5jb20xNjA0BgNVBAMTLVVUTi1VU0VS
-Rmlyc3QtQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBFbWFpbAIQIItj0veEaiqrF3/W6vii
-tTAJBgUrDgMCGgUAoIICYTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0wNzAyMTMwNjAzNDZaMCMGCSqGSIb3DQEJBDEWBBTWpbwZ6k4Y4Fk3XwOwY4GvRJ5K
-gzBSBgkqhkiG9w0BCQ8xRTBDMAoGCCqGSIb3DQMHMA4GCCqGSIb3DQMCAgIAgDANBggqhkiG
-9w0DAgIBQDAHBgUrDgMCBzANBggqhkiG9w0DAgIBKDCB1AYJKwYBBAGCNxAEMYHGMIHDMIGu
-MQswCQYDVQQGEwJVUzELMAkGA1UECBMCVVQxFzAVBgNVBAcTDlNhbHQgTGFrZSBDaXR5MR4w
-HAYDVQQKExVUaGUgVVNFUlRSVVNUIE5ldHdvcmsxITAfBgNVBAsTGGh0dHA6Ly93d3cudXNl
-cnRydXN0LmNvbTE2MDQGA1UEAxMtVVROLVVTRVJGaXJzdC1DbGllbnQgQXV0aGVudGljYXRp
-b24gYW5kIEVtYWlsAhAgi2PS94RqKqsXf9bq+KK1MIHWBgsqhkiG9w0BCRACCzGBxqCBwzCB
-rjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAlVUMRcwFQYDVQQHEw5TYWx0IExha2UgQ2l0eTEe
-MBwGA1UEChMVVGhlIFVTRVJUUlVTVCBOZXR3b3JrMSEwHwYDVQQLExhodHRwOi8vd3d3LnVz
-ZXJ0cnVzdC5jb20xNjA0BgNVBAMTLVVUTi1VU0VSRmlyc3QtQ2xpZW50IEF1dGhlbnRpY2F0
-aW9uIGFuZCBFbWFpbAIQIItj0veEaiqrF3/W6viitTANBgkqhkiG9w0BAQEFAASBgHsLeyiH
-iHfxJSFkIovKMEDIW5QEfM6977FAT7w2bMelHLW5M7SZQQpEbWRJbQSgr48hINMFgPqQJ235
-eri65ZN7qy5sF835KBiqT19q1boXv1apRwxodcNnHTR2rSJpRrA/RI524znygaWpD7xM8qA+
-JKg5REOeGzf86nB8H/O8AAAAAAAA
---------------ms020508000201000800020508--
+Regards,
+Michael

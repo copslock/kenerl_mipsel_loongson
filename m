@@ -1,42 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 17:22:35 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:48342 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039030AbXBMRWe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Feb 2007 17:22:34 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1DHMX9E022833;
-	Tue, 13 Feb 2007 17:22:33 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1DHMWEh022830;
-	Tue, 13 Feb 2007 17:22:32 GMT
-Date:	Tue, 13 Feb 2007 17:22:32 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] fix irq handling of DECstations
-Message-ID: <20070213172232.GA22447@linux-mips.org>
-References: <20070212.234826.59032634.anemo@mba.ocn.ne.jp> <20070213022548.GB25323@linux-mips.org> <45D1C21A.9070801@innova-card.com> <20070213152716.GA4942@linux-mips.org> <cda58cb80702130901l62d5bf7if5b7730ba24460f3@mail.gmail.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 19:04:17 +0000 (GMT)
+Received: from newmail.sw.starentnetworks.com ([12.33.234.78]:657 "EHLO
+	mail.sw.starentnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S20039277AbXBMTEM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Feb 2007 19:04:12 +0000
+Received: from zeus.sw.starentnetworks.com (zeus.sw.starentnetworks.com [12.33.233.46])
+	by mail.sw.starentnetworks.com (Postfix) with ESMTP id 26C1D3ED7F;
+	Tue, 13 Feb 2007 14:03:31 -0500 (EST)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80702130901l62d5bf7if5b7730ba24460f3@mail.gmail.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Message-ID: <17874.2946.982942.958962@zeus.sw.starentnetworks.com>
+Date:	Tue, 13 Feb 2007 14:03:30 -0500
+From:	Dave Johnson <djohnson+linux-mips@sw.starentnetworks.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: problems booting sb1250, page fault issue?
+In-Reply-To: <20070213.233505.64804701.anemo@mba.ocn.ne.jp>
+References: <17869.2075.900049.547334@zeus.sw.starentnetworks.com>
+	<20070211.010336.15248113.anemo@mba.ocn.ne.jp>
+	<17872.61204.190437.109367@zeus.sw.starentnetworks.com>
+	<20070213.233505.64804701.anemo@mba.ocn.ne.jp>
+X-Mailer: VM 7.17 under 21.4 (patch 17) "Jumbo Shrimp" XEmacs Lucid
+Return-Path: <djohnson@sw.starentnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14082
+X-archive-position: 14083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: djohnson+linux-mips@sw.starentnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 13, 2007 at 06:01:56PM +0100, Franck Bui-Huu wrote:
+Atsushi Nemoto writes:
+> On Mon, 12 Feb 2007 17:49:56 -0500, Dave Johnson <djohnson+linux-mips@sw.starentnetworks.com> wrote:
+> > I added both flush_data_cache_page to c-sb1.c and
+> > __flush_icache_page() to flush_icache_page in cacheflush.h.
+> > 
+> > With those, the page faults work correctly and booting seems to be
+> > reliable on 2.6.18.
+> 
+> I think the problem of c-sb1.c was fixed in lmo 2.6.18-stable branch.
+> Could you try it?
 
-> argh there's a small mistake. Could you amend this fix ?
+I merged in the flush_data_cache_page routine (from linux-2.6.18.6
+tag) instead of the ones from the mailing list and it's good as well.
 
-Fortunately I haven't pushed yet, so yes, will do git surgery :)
+Even though local_flush_data_cache_page is only used in
+__ide_flush_dcache_range() (and that is inside a cpu_has_dc_aliases
+check) it still might be good to fill it out anyway.
 
-  Ralf
+-- 
+Dave Johnson
+Starent Networks

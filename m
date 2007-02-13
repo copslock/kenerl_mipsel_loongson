@@ -1,56 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 19:04:17 +0000 (GMT)
-Received: from newmail.sw.starentnetworks.com ([12.33.234.78]:657 "EHLO
-	mail.sw.starentnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20039277AbXBMTEM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Feb 2007 19:04:12 +0000
-Received: from zeus.sw.starentnetworks.com (zeus.sw.starentnetworks.com [12.33.233.46])
-	by mail.sw.starentnetworks.com (Postfix) with ESMTP id 26C1D3ED7F;
-	Tue, 13 Feb 2007 14:03:31 -0500 (EST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 20:06:16 +0000 (GMT)
+Received: from nz-out-0506.google.com ([64.233.162.227]:17995 "EHLO
+	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039293AbXBMUGM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Feb 2007 20:06:12 +0000
+Received: by nz-out-0506.google.com with SMTP id x7so2139662nzc
+        for <linux-mips@linux-mips.org>; Tue, 13 Feb 2007 12:05:07 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=BqAUcNgq2NO2wJVqL8/IhAuLdnsZzvFWvChJAd5JafkQwU1MI1EWuhgJO2aDxToKAh5BoxoOxbpfgY9ag2Cn97C5OsywzENpGSnbhP9DDvoHG9HU9XzAYU+kzB/WDaMPJxtk8cw6EvHfqRP8bhXzb1S+C9nvKj+IIlnkGA5mOG8=
+Received: by 10.114.161.11 with SMTP id j11mr8150370wae.1171397106616;
+        Tue, 13 Feb 2007 12:05:06 -0800 (PST)
+Received: by 10.114.136.11 with HTTP; Tue, 13 Feb 2007 12:05:06 -0800 (PST)
+Message-ID: <cda58cb80702131205n7ffbc73rfd26897f4bb99d74@mail.gmail.com>
+Date:	Tue, 13 Feb 2007 21:05:06 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [PATCH 2/3] Automatically set CONFIG_BUILD_ELF64
+Cc:	linux-mips@linux-mips.org, anemo@mba.ocn.ne.jp,
+	macro@linux-mips.org
+In-Reply-To: <cda58cb80702130909u2c0cbe8fg6929fc78ca8d3cb8@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-ID: <17874.2946.982942.958962@zeus.sw.starentnetworks.com>
-Date:	Tue, 13 Feb 2007 14:03:30 -0500
-From:	Dave Johnson <djohnson+linux-mips@sw.starentnetworks.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: problems booting sb1250, page fault issue?
-In-Reply-To: <20070213.233505.64804701.anemo@mba.ocn.ne.jp>
-References: <17869.2075.900049.547334@zeus.sw.starentnetworks.com>
-	<20070211.010336.15248113.anemo@mba.ocn.ne.jp>
-	<17872.61204.190437.109367@zeus.sw.starentnetworks.com>
-	<20070213.233505.64804701.anemo@mba.ocn.ne.jp>
-X-Mailer: VM 7.17 under 21.4 (patch 17) "Jumbo Shrimp" XEmacs Lucid
-Return-Path: <djohnson@sw.starentnetworks.com>
+Content-Disposition: inline
+References: <1171358289786-git-send-email-fbuihuu@gmail.com>
+	 <11713582901742-git-send-email-fbuihuu@gmail.com>
+	 <20070213161801.GA9700@linux-mips.org>
+	 <cda58cb80702130909u2c0cbe8fg6929fc78ca8d3cb8@mail.gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14083
+X-archive-position: 14084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: djohnson+linux-mips@sw.starentnetworks.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto writes:
-> On Mon, 12 Feb 2007 17:49:56 -0500, Dave Johnson <djohnson+linux-mips@sw.starentnetworks.com> wrote:
-> > I added both flush_data_cache_page to c-sb1.c and
-> > __flush_icache_page() to flush_icache_page in cacheflush.h.
-> > 
-> > With those, the page faults work correctly and booting seems to be
-> > reliable on 2.6.18.
-> 
-> I think the problem of c-sb1.c was fixed in lmo 2.6.18-stable branch.
-> Could you try it?
+On 2/13/07, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> On 2/13/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > On Tue, Feb 13, 2007 at 10:18:08AM +0100, Franck Bui-Huu wrote:
+> >
+> > > +    cflags-y += -DCONFIG_BUILD_ELF64
+> >                    ^^^^^^^^^^^^^^^^^^^^
+> >
+> > Preprocessor symbol names starting CONFIG_ are reserved for Kbuild.
+> >
+>
+> Ok but keeping this name avoid to change all places where
+> CONFIG_BUILD_ELF64 is used.
+>
+> It should be done by patch #3 instead where CONFIG_BUILD_ELF64 is
+> renamed into CONFIG_64BIT_BUILD_ELF32. Any suggestions for a better
+> name ?
 
-I merged in the flush_data_cache_page routine (from linux-2.6.18.6
-tag) instead of the ones from the mailing list and it's good as well.
-
-Even though local_flush_data_cache_page is only used in
-__ide_flush_dcache_range() (and that is inside a cpu_has_dc_aliases
-check) it still might be good to fill it out anyway.
+What about KBUILD_64BIT_ELF32 with 'KBUILD' meaning that it comes from
+Kbuild itself and not from any Kconfig files ?
 
 -- 
-Dave Johnson
-Starent Networks
+               Franck

@@ -1,63 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 07:52:58 +0000 (GMT)
-Received: from roasted.cubic.org ([193.108.181.130]:21670 "EHLO
-	roasted.cubic.org") by ftp.linux-mips.org with ESMTP
-	id S20038718AbXBMHwu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Feb 2007 07:52:50 +0000
-Received: from c145138.adsl.hansenet.de ([213.39.145.138] helo=cubic.org)
-	by roasted.cubic.org with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.36 #1)
-	id 1HGsPw-0005gA-00
-	for linux-mips@linux-mips.org; Tue, 13 Feb 2007 08:49:36 +0100
-Message-ID: <45D16D8B.40401@cubic.org>
-Date:	Tue, 13 Feb 2007 08:49:31 +0100
-From:	Michael Stickel <michael@cubic.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030225
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Feb 2007 08:27:36 +0000 (GMT)
+Received: from wx-out-0506.google.com ([66.249.82.239]:8601 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038861AbXBMI1c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Feb 2007 08:27:32 +0000
+Received: by wx-out-0506.google.com with SMTP id t14so2140943wxc
+        for <linux-mips@linux-mips.org>; Tue, 13 Feb 2007 00:26:31 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=q53UC2RKUToXBJBM+nMBiCIp71bkQib90Y5UrLjErvky46E94eGIydQjiVyNO1atCXKf5IuafGP3c8FAZQALAaptvIKDORc/t79g6CyDERTjwzKRlEW5xL9xz+RQ6eURxmc4DaZUSdUgWdBu/2V6jlU6UFynHzurIWtDX8Nru90=
+Received: by 10.90.68.15 with SMTP id q15mr18684850aga.1171355191196;
+        Tue, 13 Feb 2007 00:26:31 -0800 (PST)
+Received: by 10.90.51.6 with HTTP; Tue, 13 Feb 2007 00:26:31 -0800 (PST)
+Message-ID: <851fc09e0702130026l1f63ece3h94197635068673ce@mail.gmail.com>
+Date:	Tue, 13 Feb 2007 16:26:31 +0800
+From:	"huang ying" <huang.ying.caritas@gmail.com>
+To:	"Wim Vander Schelden" <wim.vanderschelden@gmail.com>
+Subject: Re: Linux on the MobilePro 7xx
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <45C289C9.3010409@gmail.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: AU1100 Ethernet problems
-References: <45D154C2.9030809@tin.it>
-In-Reply-To: <45D154C2.9030809@tin.it>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <michael@cubic.org>
+Content-Disposition: inline
+References: <45C289C9.3010409@gmail.com>
+Return-Path: <huang.ying.caritas@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14057
+X-archive-position: 14058
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael@cubic.org
+X-original-sender: huang.ying.caritas@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Lucio Dona' wrote:
+Hi,
 
-> When the boards are powered up without Ethernet cable plugged-in, and 
-> the Ethernet is initialized, it seems that the system gets a lot of 
-> 'rx interrupts' and stays almost all the time inside the Ethernet rx 
-> interrupt service routine.
-> This horribly slows down everything and causes the watchdog to come up 
-> resetting the board.
->
-> Tried to make some debugging, but don't understand why there are all 
-> those interrupts.
->
-> If the system is powered up with the Ethernet cable connected to a 
-> simple hub (hub only, no other computers connected to the net) the 
-> problem does not occur.
->
-> I have this problem on about 10% boards.
-> The design is based on AMD Syrah reference schematics, the kernel is 
-> 2.4.21-pre4. Searching with oscilloscope there is no apparent 
-> 'hardware' difference between a 'bad' board and a good one.
+I have ported Linux 2.6 to my MobilePro 800, which uses a VR4121 too.
+I think most driver can be used for MobilePro 770 too.
 
-If this is on 10% of the boards I would say it is a production problem.
+The source code and simple document can be found in:
+http://linux-mcr700.sourceforge.net
 
-What PHY do you use and is it properly reseted?
-Is there any soldering problem with the PHY. Does it have a ground pad 
-under the case and is this pad well soldered?
+Hope helpful to you.
 
-Regards,
-Michael
+Best Regards,
+Huang Ying

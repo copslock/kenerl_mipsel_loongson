@@ -1,22 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2007 16:06:54 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([210.190.142.172]:62939 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20038462AbXBNQGw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Feb 2007 16:06:52 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2007 16:15:43 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:44258 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038726AbXBNQPm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Feb 2007 16:15:42 +0000
 Received: from localhost (p1218-ipad205funabasi.chiba.ocn.ne.jp [222.146.96.218])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 66626BAEC; Thu, 15 Feb 2007 01:05:31 +0900 (JST)
-Date:	Thu, 15 Feb 2007 01:05:31 +0900 (JST)
-Message-Id: <20070215.010531.79072528.anemo@mba.ocn.ne.jp>
+	id B3BCE9164; Thu, 15 Feb 2007 01:14:20 +0900 (JST)
+Date:	Thu, 15 Feb 2007 01:14:20 +0900 (JST)
+Message-Id: <20070215.011420.15247947.anemo@mba.ocn.ne.jp>
 To:	vagabon.xyz@gmail.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
 	macro@linux-mips.org
-Subject: Re: [MIPS] Check FCSR for pending interrupts before restoring from
- a context.
+Subject: Re: [PATCH 2/3] Automatically set CONFIG_BUILD_ELF64
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <cda58cb80702140034g5f3243c9j333f97ae6fc6986@mail.gmail.com>
-References: <20070209.130316.14978798.nemoto@toshiba-tops.co.jp>
-	<20070214.170420.85684996.nemoto@toshiba-tops.co.jp>
-	<cda58cb80702140034g5f3243c9j333f97ae6fc6986@mail.gmail.com>
+In-Reply-To: <cda58cb80702140020l319b987agc88e87c3acaa5e07@mail.gmail.com>
+References: <cda58cb80702130909u2c0cbe8fg6929fc78ca8d3cb8@mail.gmail.com>
+	<20070214.102801.41198530.nemoto@toshiba-tops.co.jp>
+	<cda58cb80702140020l319b987agc88e87c3acaa5e07@mail.gmail.com>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
@@ -27,7 +26,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14091
+X-archive-position: 14092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,18 +34,18 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 14 Feb 2007 09:34:53 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> > +/* Check and clear pending FPU exceptions in saved CSR */
-> > +extern int fpcsr_pending(unsigned int __user *fpcsr);
-> > +
-> 
-> Just my 2 cents: This looks like the wrong place for this fpu
-> prototype. I mean shouldn't it belong to a fpu header file or
-> something else ?
+On Wed, 14 Feb 2007 09:20:22 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> That's a good point. What about replacing BUILD by KBUILD meaning this
+> macro is coming from Kbuild itsel ?
 
-Well, this is a helper function for signal so signal-common.h is not
-so bad, I think.  And adding to kernel/signal-common.h looks less
-intrusive than adding to include/asm-mips/fpu.h, in my impression.
+No objections.
+
+> And maybe it would be interesting to make obvious that this macro
+> implies 64-bits kernel. What about something like KBUILD_64BIT_SYM32
+> and replace 'BUILD_ELF32=no' by 'KBUILD_SYM32=no' ?
+
+Same here.  I just think introducing one name is better than two name.
+I also feel "make KBUILD_SYM32=0" is more consistent.
 
 ---
 Atsushi Nemoto

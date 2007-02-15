@@ -1,89 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2007 08:35:37 +0000 (GMT)
-Received: from coyote.holtmann.net ([217.160.111.169]:27012 "EHLO
-	mail.holtmann.net") by ftp.linux-mips.org with ESMTP
-	id S20037889AbXBOIfc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Feb 2007 08:35:32 +0000
-Received: from [192.168.5.242] (p5487F978.dip.t-dialin.net [84.135.249.120])
-	by mail.holtmann.net (8.13.4/8.13.4/Debian-3sarge3) with ESMTP id l1F8agZ3009536;
-	Thu, 15 Feb 2007 09:36:42 +0100
-Subject: Re: [PATCH] Optimize generic get_unaligned / put_unaligned
-	implementations.
-From:	Marcel Holtmann <marcel@holtmann.org>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20070214203903.8d013170.akpm@linux-foundation.org>
-References: <20050830104056.GA4710@linux-mips.org>
-	 <20060306.203218.69025300.nemoto@toshiba-tops.co.jp>
-	 <20060306170552.0aab29c5.akpm@osdl.org>
-	 <20070214214226.GA17899@linux-mips.org>
-	 <20070214203903.8d013170.akpm@linux-foundation.org>
-Content-Type: text/plain
-Date:	Thu, 15 Feb 2007 09:35:16 +0100
-Message-Id: <1171528516.28302.30.camel@violet>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.9.91 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2007 08:38:02 +0000 (GMT)
+Received: from qb-out-0506.google.com ([72.14.204.235]:58385 "EHLO
+	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037879AbXBOIh5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Feb 2007 08:37:57 +0000
+Received: by qb-out-0506.google.com with SMTP id e12so123916qba
+        for <linux-mips@linux-mips.org>; Thu, 15 Feb 2007 00:36:56 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=HC1/13Pykf4h5QPJIgIkD65qZrlRK6DbftFvBIPAElUXgc2xmGvPuxfaHPTomU0P3XDu9khlBCIfC9zNwgYq1K1kwta3WZbEQMgMSnaUBWlAn9nP1vuj3HAk9XUyO6nu8cvoh78lmM27f0tQu9rjLM+bduqsQz5SZSgRFZLIm/w=
+Received: by 10.114.107.19 with SMTP id f19mr868106wac.1171528616148;
+        Thu, 15 Feb 2007 00:36:56 -0800 (PST)
+Received: by 10.114.136.11 with HTTP; Thu, 15 Feb 2007 00:36:56 -0800 (PST)
+Message-ID: <cda58cb80702150036h6c7a05a5ya8b64250a6083f76@mail.gmail.com>
+Date:	Thu, 15 Feb 2007 09:36:56 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH 2/3] Automatically set CONFIG_BUILD_ELF64
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	macro@linux-mips.org
+In-Reply-To: <20070215.011420.15247947.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <marcel@holtmann.org>
+Content-Disposition: inline
+References: <cda58cb80702130909u2c0cbe8fg6929fc78ca8d3cb8@mail.gmail.com>
+	 <20070214.102801.41198530.nemoto@toshiba-tops.co.jp>
+	 <cda58cb80702140020l319b987agc88e87c3acaa5e07@mail.gmail.com>
+	 <20070215.011420.15247947.anemo@mba.ocn.ne.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14096
+X-archive-position: 14097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcel@holtmann.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Andrew,
+On 2/14/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> Same here.  I just think introducing one name is better than two name.
+> I also feel "make KBUILD_SYM32=0" is more consistent.
+>
 
-> > +#define get_unaligned(ptr)						\
-> > +({									\
-> > +	const struct {							\
-> > +		union {							\
-> > +			const int __un_foo[0];				\
-> > +			const __typeof__(*(ptr)) __un;			\
-> > +		} __un __attribute__ ((packed));			\
-> > +	} * const __gu_p = (void *) (ptr);				\
-> > +									\
-> > +	__gu_p->__un.__un;						\
-> >  })
-> 
-> Can someone please tell us how this magic works?  (And it does appear to
-> work).
-> 
-> It seems to assuming that the compiler will assume that members of packed
-> structures can have arbitrary alignment, even if that alignment is obvious.
-> 
-> Which makes sense, but I'd like to see chapter-and-verse from the spec or
-> from the gcc docs so we can rely upon it working on all architectures and
-> compilers from now until ever more.
+Yes I agree KBUILD_SYM32 seems better for command line usage but I
+think it won't be used widely unlike in code usage where
+KBUILD_64BIT_SYM32 is better because it's really self explaned and not
+ambigous: "build a 64 bits kernel with 32 bits symbols".
 
-I am far away from having any knowledge about the GCC internals and the
-reason why this code works, but I've been told the generic way of
-handling unaligned access is this:
+And I think it's more important.
 
-#define get_unaligned(ptr)                      \
-({                                              \
-        struct __attribute__((packed)) {        \
-                typeof(*(ptr)) __v;             \
-        } *__p = (void *) (ptr);                \
-        __p->__v;                               \
-})
-
-#define put_unaligned(val, ptr)                 \
-do {                                            \
-        struct __attribute__((packed)) {        \
-                typeof(*(ptr)) __v;             \
-        } *__p = (void *) (ptr);                \
-        __p->__v = (val);                       \
-} while(0)
-
-Actually I am using this code in the Bluetooth userspace library for
-over two years now without any complaints.
-
-Regards
-
-Marcel
+-- 
+               Franck

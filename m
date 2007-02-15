@@ -1,56 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2007 08:38:02 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.235]:58385 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037879AbXBOIh5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Feb 2007 08:37:57 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so123916qba
-        for <linux-mips@linux-mips.org>; Thu, 15 Feb 2007 00:36:56 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=HC1/13Pykf4h5QPJIgIkD65qZrlRK6DbftFvBIPAElUXgc2xmGvPuxfaHPTomU0P3XDu9khlBCIfC9zNwgYq1K1kwta3WZbEQMgMSnaUBWlAn9nP1vuj3HAk9XUyO6nu8cvoh78lmM27f0tQu9rjLM+bduqsQz5SZSgRFZLIm/w=
-Received: by 10.114.107.19 with SMTP id f19mr868106wac.1171528616148;
-        Thu, 15 Feb 2007 00:36:56 -0800 (PST)
-Received: by 10.114.136.11 with HTTP; Thu, 15 Feb 2007 00:36:56 -0800 (PST)
-Message-ID: <cda58cb80702150036h6c7a05a5ya8b64250a6083f76@mail.gmail.com>
-Date:	Thu, 15 Feb 2007 09:36:56 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH 2/3] Automatically set CONFIG_BUILD_ELF64
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	macro@linux-mips.org
-In-Reply-To: <20070215.011420.15247947.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2007 12:34:48 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:51921 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038434AbXBOMer (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Feb 2007 12:34:47 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1FCYUJn027186;
+	Thu, 15 Feb 2007 12:34:31 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1FCYU8O027185;
+	Thu, 15 Feb 2007 12:34:30 GMT
+Date:	Thu, 15 Feb 2007 12:34:30 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	barrioskmc@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Who know latest Linux/MIPS ABI ?
+Message-ID: <20070215123430.GA26003@linux-mips.org>
+References: <000701c750a3$24ecf9b0$8aab580a@swcenter.sec.samsung.co.kr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-References: <cda58cb80702130909u2c0cbe8fg6929fc78ca8d3cb8@mail.gmail.com>
-	 <20070214.102801.41198530.nemoto@toshiba-tops.co.jp>
-	 <cda58cb80702140020l319b987agc88e87c3acaa5e07@mail.gmail.com>
-	 <20070215.011420.15247947.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <000701c750a3$24ecf9b0$8aab580a@swcenter.sec.samsung.co.kr>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14097
+X-archive-position: 14098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 2/14/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> Same here.  I just think introducing one name is better than two name.
-> I also feel "make KBUILD_SYM32=0" is more consistent.
->
+On Thu, Feb 15, 2007 at 10:46:39AM +0900, ������ wrote:
 
-Yes I agree KBUILD_SYM32 seems better for command line usage but I
-think it won't be used widely unlike in code usage where
-KBUILD_64BIT_SYM32 is better because it's really self explaned and not
-ambigous: "build a 64 bits kernel with 32 bits symbols".
+> I want to know ELF format well in MIPS architecture. 
+> But in case of elf spec document on net, it had explained about i386. so I
+> can't find specific sections about MIPS ELF. For example, Sections
+> (.MIPS.stubs, .jcr, .pdr ) and so on.
+> 
+> There is a MIPS ABI document in linux-mips.org. But it is very obsolete. As
+> I know, any vendor don't use obsolete system V ABI. Currently, Is any ABI
+> using o32 or n32 and so on. 
+> 
+> I hope I get a latest MIPS ABI and ELF Spec on Linux/MIPS. 
+> Who know where I get it?
 
-And I think it's more important.
+The documentation situation is a bit mess.  The SysV gABI and MIPS psABI
+document the ABI ELF flavour which actually is only a subset of what
+Linux/MIPS actually uses.  For the extensions you can probably find
+individual papers and postings scattered over the net.
 
--- 
-               Franck
+  Ralf

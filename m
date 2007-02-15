@@ -1,133 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2007 20:32:20 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:6568 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20027651AbXBOUcQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Feb 2007 20:32:16 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id BEEAE3EC9; Thu, 15 Feb 2007 12:31:38 -0800 (PST)
-Message-ID: <45D4C324.1000106@ru.mvista.com>
-Date:	Thu, 15 Feb 2007 23:31:32 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Marc St-Jean <stjeanma@pmc-sierra.com>
-Cc:	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
-References: <200702151926.l1FJQT2o020816@pasqua.pmc-sierra.bc.ca>
-In-Reply-To: <200702151926.l1FJQT2o020816@pasqua.pmc-sierra.bc.ca>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2007 21:57:45 +0000 (GMT)
+Received: from smtp.osdl.org ([65.172.181.24]:42892 "EHLO smtp.osdl.org")
+	by ftp.linux-mips.org with ESMTP id S20037484AbXBOV5P (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Feb 2007 21:57:15 +0000
+Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
+	by smtp.osdl.org (8.12.8/8.12.8) with ESMTP id l1FLrwhB029022
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Thu, 15 Feb 2007 13:53:59 -0800
+Received: from akpm.corp.google.com (shell0.pdx.osdl.net [10.9.0.31])
+	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id l1FLrwK4009853;
+	Thu, 15 Feb 2007 13:53:58 -0800
+Date:	Thu, 15 Feb 2007 13:53:58 -0800
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Optimize generic get_unaligned / put_unaligned
+ implementations.
+Message-Id: <20070215135358.020781dd.akpm@linux-foundation.org>
+In-Reply-To: <20070215143441.GA18155@linux-mips.org>
+References: <20050830104056.GA4710@linux-mips.org>
+	<20060306.203218.69025300.nemoto@toshiba-tops.co.jp>
+	<20060306170552.0aab29c5.akpm@osdl.org>
+	<20070214214226.GA17899@linux-mips.org>
+	<20070214203903.8d013170.akpm@linux-foundation.org>
+	<20070215143441.GA18155@linux-mips.org>
+X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-MIMEDefang-Filter: osdl$Revision: 1.176 $
+X-Scanned-By: MIMEDefang 2.36
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14108
+X-archive-position: 14109
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Thu, 15 Feb 2007 14:34:41 +0000
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-Marc St-Jean wrote:
+> On Wed, Feb 14, 2007 at 08:39:03PM -0800, Andrew Morton wrote:
+> 
+> > Can someone please tell us how this magic works?  (And it does appear to
+> > work).
+> > 
+> > It seems to assuming that the compiler will assume that members of packed
+> > structures can have arbitrary alignment, even if that alignment is obvious.
+> > 
+> > Which makes sense, but I'd like to see chapter-and-verse from the spec or
+> > from the gcc docs so we can rely upon it working on all architectures and
+> > compilers from now until ever more.
+> > 
+> > IOW: your changlogging sucks ;)
+> 
+> It was my entry for the next edition of the C Puzzle Book ;-)
+> 
+> The whole union thing was only needed to get rid of a warning but Marcel's
+> solution does the same thing by attaching the packed keyword to the entire
+> structure instead, so this patch is now using his macros but using __packed
+> instead.
 
-> There are three different fixes:
-> 1. Fix for DesignWare APB THRE errata:
-> In brief, this is a non-standard 16550 in that the THRE interrupt
-> will not re-assert itself simply by disabling and re-enabling the
-> THRI bit in the IER, it is only re-enabled if a character is actually
-> sent out.
-> It appears that the "8250-uart-backup-timer.patch" in the "mm" tree also
-> fixes it so we have dropped our initial workaround.
-> This patch now needs to be applied on top of that "mm" patch.
+How do we know this trick will work as-designed across all versions of gcc
+and icc (at least) and for all architectures and for all sets of compiler
+options?
 
-    This patch has hit the mainline kernel already.
-
-> 2. Fix for Busy Detect on LCR write:
-> The DesignWare APB UART has a feature which causes a new Busy Detect
-> interrupt to be generated if it's busy when the LCR is written. This
-> fix saves the value of the LCR and rewrites it after clearing the
-> interrupt.
-
-> 3. Workaround for interrupt/data concurrency issue:
-> The SoC needs to ensure that writes that can cause interrupts to be
-> cleared reach the UART before returning from the ISR. This fix reads
-> a non-destructive register on the UART so the read transaction
-> completion ensures the previously queued write transaction has
-> also completed.
-
-> The differences from the last attempt is dropping the call to
-> in_irq() and including more detailed description of the fixes.
-
-    The difference part would better be under the "---" cutoff line, along 
-with diffstat.
-This way it gets auto-removed by quilt/git when applying the patch.
-
-> Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-
-> diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-> index 3d91bfc..bfaacc5 100644
-> --- a/drivers/serial/8250.c
-> +++ b/drivers/serial/8250.c
-> @@ -308,6 +308,7 @@ static unsigned int serial_in(struct uar
->  		return inb(up->port.iobase + 1);
->  
->  	case UPIO_MEM:
-> +	case UPIO_DWAPB:
->  		return readb(up->port.membase + offset);
->  
->  	case UPIO_MEM32:
-> @@ -333,6 +334,8 @@ #endif
->  static void
->  serial_out(struct uart_8250_port *up, int offset, int value)
->  {
-> +	/* Save the offset before it's remapped */
-> +	int save_offset = offset;
->  	offset = map_8250_out_reg(up, offset) << up->port.regshift;
->  
->  	switch (up->port.iotype) {
-
-    I've just got an idea how to "beautify" this code -- rename the 'offset' 
-arg to something like reg, and then declare/init 'offset' as local variable.
-Would certainly look better (and worth doing in all serial_* accessros).
-
-> @@ -359,6 +362,18 @@ #endif
->  			writeb(value, up->port.membase + offset);
->  		break;
->  
-> +	case UPIO_DWAPB:
-> +		/* Save the LCR value so it can be re-written when a
-> +		 * Busy Detect interrupt occurs. */
-> +		if (save_offset == UART_LCR)
-> +			up->lcr = value;
-> +		writeb(value, up->port.membase + offset);
-> +		/* Read the IER to ensure any interrupt is cleared before
-> +		 * returning from ISR. */
-> +		if (save_offset == UART_TX || save_offset == UART_IER)
-> +			value = serial_in(up, UART_IER);
-> +		break;
-> +		
->  	default:
->  		outb(value, up->port.iobase + offset);
->  	}
-> @@ -2454,8 +2485,8 @@ int __init serial8250_start_console(stru
->  
->  	add_preferred_console("ttyS", line, options);
->  	printk("Adding console on ttyS%d at %s 0x%lx (options '%s')\n",
-> -		line, port->iotype == UPIO_MEM ? "MMIO" : "I/O port",
-> -		port->iotype == UPIO_MEM ? (unsigned long) port->mapbase :
-> +		line, port->iotype >= UPIO_MEM ? "MMIO" : "I/O port",
-> +		port->iotype >= UPIO_MEM ? (unsigned long) port->mapbase :
->  		    (unsigned long) port->iobase, options);
->  	if (!(serial8250_console.flags & CON_ENABLED)) {
->  		serial8250_console.flags &= ~CON_PRINTBUFFER;
-
-    I've remembered why I decided not to fix it: this code only gets called 
-from 8250__eraly.c which can't handle anything beyond UPIO_MEM anyway.
-
-WBR, Sergei
+Basically, it has to be guaranteed by a C standard.  Is it?

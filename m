@@ -1,234 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Feb 2007 21:42:29 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:55021 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039581AbXBNVm1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Feb 2007 21:42:27 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1ELgRig008291;
-	Wed, 14 Feb 2007 21:42:28 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1ELgQpO008290;
-	Wed, 14 Feb 2007 21:42:26 GMT
-Date:	Wed, 14 Feb 2007 21:42:26 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andrew Morton <akpm@osdl.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Optimize generic get_unaligned / put_unaligned implementations.
-Message-ID: <20070214214226.GA17899@linux-mips.org>
-References: <20050830104056.GA4710@linux-mips.org> <20060306.203218.69025300.nemoto@toshiba-tops.co.jp> <20060306170552.0aab29c5.akpm@osdl.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20060306170552.0aab29c5.akpm@osdl.org>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Feb 2007 01:47:51 +0000 (GMT)
+Received: from py-out-1112.google.com ([64.233.166.177]:58980 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039612AbXBOBrq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Feb 2007 01:47:46 +0000
+Received: by py-out-1112.google.com with SMTP id u52so177306pyb
+        for <linux-mips@linux-mips.org>; Wed, 14 Feb 2007 17:46:44 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:from:to:subject:date:message-id:mime-version:content-type:content-transfer-encoding:x-mailer:thread-index:x-mimeole;
+        b=N7aZu8iMrN1fslamiPTY7/9y33Z2aERkQlmFxqNq8UVjKgZU9HQHhzgijv8tGh/tJQdX3o+Yr/4CsKTiLdCu2ij9O6fHPF1QlpzKjL+4enrV6BUx2Ri1ZjVqc6xx/va9WJqsruZz9XK0c6NqG0Mv2h6mgB0mCK9oVxJzift5coI=
+Received: by 10.35.96.11 with SMTP id y11mr2183451pyl.1171504004210;
+        Wed, 14 Feb 2007 17:46:44 -0800 (PST)
+Received: from barrioswindows ( [210.94.41.89])
+        by mx.google.com with ESMTP id v15sm1982342pyh.2007.02.14.17.46.42;
+        Wed, 14 Feb 2007 17:46:43 -0800 (PST)
+From:	=?ks_c_5601-1987?B?sei5zsL5?= <barrioskmc@gmail.com>
+To:	<linux-mips@linux-mips.org>
+Subject: Who know latest Linux/MIPS ABI ?
+Date:	Thu, 15 Feb 2007 10:46:39 +0900
+Message-ID: <000701c750a3$24ecf9b0$8aab580a@swcenter.sec.samsung.co.kr>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="ks_c_5601-1987"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook 11
+Thread-Index: AcdNh6W+t9WKjDKCRnu/wrGp7uYg0QCZh/TwAC1SM/A=
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3028
+Return-Path: <barrioskmc@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14093
+X-archive-position: 14094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: barrioskmc@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Time for a little bit of dead horse flogging.
 
-On Mon, Mar 06, 2006 at 05:05:52PM -0800, Andrew Morton wrote:
+I want to know ELF format well in MIPS architecture. 
+But in case of elf spec document on net, it had explained about i386. so I
+can't find specific sections about MIPS ELF. For example, Sections
+(.MIPS.stubs, .jcr, .pdr ) and so on.
 
-> > --- a/include/asm-generic/unaligned.h
-> > +++ b/include/asm-generic/unaligned.h
-> > @@ -78,7 +78,7 @@ static inline void __ustw(__u16 val, __u
-> >  
-> >  #define __get_unaligned(ptr, size) ({		\
-> >  	const void *__gu_p = ptr;		\
-> > -	__typeof__(*(ptr)) val;			\
-> > +	__u64 val;				\
-> >  	switch (size) {				\
-> >  	case 1:					\
-> >  		val = *(const __u8 *)__gu_p;	\
-> > @@ -95,7 +95,7 @@ static inline void __ustw(__u16 val, __u
-> >  	default:				\
-> >  		bad_unaligned_access_length();	\
-> >  	};					\
-> > -	val;					\
-> > +	(__typeof__(*(ptr)))val;		\
-> >  })
-> >  
-> >  #define __put_unaligned(val, ptr, size)		\
-> 
-> I worry about what impact that change might have on code generation. 
-> Hopefully none, if gcc is good enough.
-> 
-> But I cannot think of a better fix.
+There is a MIPS ABI document in linux-mips.org. But it is very obsolete. As
+I know, any vendor don't use obsolete system V ABI. Currently, Is any ABI
+using o32 or n32 and so on. 
 
-It does inflate the code but back then we agreed to go for Atsushi's patch
-because it was fairly obviously correct.  This patch obviously is less
-obvious but generates fairly decent, works for arbitrary data types and
-cuts down the size of unaligned.h from 122 lines to 44 so it must be good.
+I hope I get a latest MIPS ABI and ELF Spec on Linux/MIPS. 
+Who know where I get it?
 
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/include/asm-generic/unaligned.h b/include/asm-generic/unaligned.h
-index 09ec447..d7fda33 100644
---- a/include/asm-generic/unaligned.h
-+++ b/include/asm-generic/unaligned.h
-@@ -1,122 +1,44 @@
--#ifndef _ASM_GENERIC_UNALIGNED_H_
--#define _ASM_GENERIC_UNALIGNED_H_
--
- /*
-- * For the benefit of those who are trying to port Linux to another
-- * architecture, here are some C-language equivalents. 
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-- * This is based almost entirely upon Richard Henderson's
-- * asm-alpha/unaligned.h implementation.  Some comments were
-- * taken from David Mosberger's asm-ia64/unaligned.h header.
-+ * Copyright (C) 2006 MIPS Technologies, Inc.
-+ *   written by Ralf Baechle <ralf@linux-mips.org>
-  */
-+#ifndef __ASM_GENERIC_UNALIGNED_H
-+#define __ASM_GENERIC_UNALIGNED_H
- 
- #include <linux/types.h>
- 
--/* 
-- * The main single-value unaligned transfer routines.
-- */
--#define get_unaligned(ptr) \
--	__get_unaligned((ptr), sizeof(*(ptr)))
--#define put_unaligned(x,ptr) \
--	__put_unaligned((__u64)(x), (ptr), sizeof(*(ptr)))
--
--/*
-- * This function doesn't actually exist.  The idea is that when
-- * someone uses the macros below with an unsupported size (datatype),
-- * the linker will alert us to the problem via an unresolved reference
-- * error.
-- */
--extern void bad_unaligned_access_length(void) __attribute__((noreturn));
--
--struct __una_u64 { __u64 x __attribute__((packed)); };
--struct __una_u32 { __u32 x __attribute__((packed)); };
--struct __una_u16 { __u16 x __attribute__((packed)); };
--
--/*
-- * Elemental unaligned loads 
-- */
--
--static inline __u64 __uldq(const __u64 *addr)
--{
--	const struct __una_u64 *ptr = (const struct __una_u64 *) addr;
--	return ptr->x;
--}
--
--static inline __u32 __uldl(const __u32 *addr)
--{
--	const struct __una_u32 *ptr = (const struct __una_u32 *) addr;
--	return ptr->x;
--}
--
--static inline __u16 __uldw(const __u16 *addr)
--{
--	const struct __una_u16 *ptr = (const struct __una_u16 *) addr;
--	return ptr->x;
--}
--
- /*
-- * Elemental unaligned stores 
-+ * The unused member __un_foo is there to suppress "warning: ´packed´
-+ * attribute ignored for field of type ´union <anonymous>´" messages if
-+ * ptr is char *.
-  */
- 
--static inline void __ustq(__u64 val, __u64 *addr)
--{
--	struct __una_u64 *ptr = (struct __una_u64 *) addr;
--	ptr->x = val;
--}
--
--static inline void __ustl(__u32 val, __u32 *addr)
--{
--	struct __una_u32 *ptr = (struct __una_u32 *) addr;
--	ptr->x = val;
--}
--
--static inline void __ustw(__u16 val, __u16 *addr)
--{
--	struct __una_u16 *ptr = (struct __una_u16 *) addr;
--	ptr->x = val;
--}
--
--#define __get_unaligned(ptr, size) ({		\
--	const void *__gu_p = ptr;		\
--	__u64 val;				\
--	switch (size) {				\
--	case 1:					\
--		val = *(const __u8 *)__gu_p;	\
--		break;				\
--	case 2:					\
--		val = __uldw(__gu_p);		\
--		break;				\
--	case 4:					\
--		val = __uldl(__gu_p);		\
--		break;				\
--	case 8:					\
--		val = __uldq(__gu_p);		\
--		break;				\
--	default:				\
--		bad_unaligned_access_length();	\
--	};					\
--	(__typeof__(*(ptr)))val;		\
-+#define get_unaligned(ptr)						\
-+({									\
-+	const struct {							\
-+		union {							\
-+			const int __un_foo[0];				\
-+			const __typeof__(*(ptr)) __un;			\
-+		} __un __attribute__ ((packed));			\
-+	} * const __gu_p = (void *) (ptr);				\
-+									\
-+	__gu_p->__un.__un;						\
- })
- 
--#define __put_unaligned(val, ptr, size)		\
--do {						\
--	void *__gu_p = ptr;			\
--	switch (size) {				\
--	case 1:					\
--		*(__u8 *)__gu_p = val;		\
--	        break;				\
--	case 2:					\
--		__ustw(val, __gu_p);		\
--		break;				\
--	case 4:					\
--		__ustl(val, __gu_p);		\
--		break;				\
--	case 8:					\
--		__ustq(val, __gu_p);		\
--		break;				\
--	default:				\
--	    	bad_unaligned_access_length();	\
--	};					\
-+#define put_unaligned(val, ptr)						\
-+do {									\
-+	struct {							\
-+		union {							\
-+			const int __un_foo[0];				\
-+			__typeof__(*(ptr)) __un;			\
-+		} __un __attribute__ ((packed));			\
-+	} * const __gu_p = (void *) (ptr);				\
-+									\
-+	__gu_p->__un.__un = (val);					\
- } while(0)
- 
--#endif /* _ASM_GENERIC_UNALIGNED_H */
-+#endif /* __ASM_GENERIC_UNALIGNED_H */
+Thanks in advance.

@@ -1,60 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 01:59:40 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:4809 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28573768AbXBPB7j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Feb 2007 01:59:39 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1G1xatq025701;
-	Fri, 16 Feb 2007 01:59:37 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1G1xYac025700;
-	Fri, 16 Feb 2007 01:59:34 GMT
-Date:	Fri, 16 Feb 2007 01:59:34 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 13:48:43 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:45253 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20038843AbXBPNsi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Feb 2007 13:48:38 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 0C1AC3EC9; Fri, 16 Feb 2007 05:48:03 -0800 (PST)
+Message-ID: <45D5B60F.7020104@ru.mvista.com>
+Date:	Fri, 16 Feb 2007 16:47:59 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
 To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Optimize generic get_unaligned / put_unaligned implementations.
-Message-ID: <20070216015934.GB18987@linux-mips.org>
-References: <20060306.203218.69025300.nemoto@toshiba-tops.co.jp> <20060306170552.0aab29c5.akpm@osdl.org> <20070214214226.GA17899@linux-mips.org> <20070214203903.8d013170.akpm@linux-foundation.org> <20070215143441.GA18155@linux-mips.org> <20070215135358.020781dd.akpm@linux-foundation.org> <20070215221839.GA14103@linux-mips.org> <20070215153823.239fd616.akpm@linux-foundation.org> <20070216004317.GA18987@linux-mips.org> <20070215172720.3e9ce464.akpm@linux-foundation.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070215172720.3e9ce464.akpm@linux-foundation.org>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Cc:	Marc St-Jean <stjeanma@pmc-sierra.com>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-serial@vger.kernel.org
+Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
+References: <200702151926.l1FJQT2o020816@pasqua.pmc-sierra.bc.ca> <20070215171035.83918aae.akpm@linux-foundation.org>
+In-Reply-To: <20070215171035.83918aae.akpm@linux-foundation.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14117
+X-archive-position: 14118
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 15, 2007 at 05:27:20PM -0800, Andrew Morton wrote:
+Hello.
 
-> No, icc surely supports attribute(packed).  My point is that we shouldn't
-> rely upon the gcc info file for this, because other compilers can (or
-> could) be used to build the kernel.
-> 
-> So it would be safer if the C spec said (or could be interpreted to say)
-> "members of packed structures are always copied bytewise".  So then we
-> can be reasonably confident that this change won't break the use of
-> those compilers.
-> 
-> But then, I don't even know if any C standard says anything about packing.
+Andrew Morton wrote:
 
-Memory layout and alignment of structures and members are implementation
-defined according to the C standard; the standard provides no means to
-influence these.  So it takes a compiler extension such as gcc's
-__attribute__().
+>>+			status = *(volatile u32 *)up->port.private_data;
 
-> Ho hum.  Why are we talking about this, anyway?  Does the patch make the
-> code faster?  Or just nicer?
+> It distresses me that this patch uses a variable which this patch
+> doesn't initialise anywhere.  It isn't complete.
 
-Smaller binary and from looking at the disassembly a tad faster also.
+    I assume this gets passed via early_serial_setup(). Marc?
 
-  Ralf
+> The sub-driver code whch sets up this field shuld be included in the
+> patch, no?
+
+    Hardly so, this code (not a subdriver) resides under arch/mips/ I think.
+
+WBR, Sergei

@@ -1,90 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 15:34:17 +0000 (GMT)
-Received: from hu-out-0506.google.com ([72.14.214.236]:26284 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038963AbXBPPeM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Feb 2007 15:34:12 +0000
-Received: by hu-out-0506.google.com with SMTP id 27so428049hub
-        for <linux-mips@linux-mips.org>; Fri, 16 Feb 2007 07:33:39 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=Ltd+Q01BiwMNtXF5wdmQHqn9xGvOQqiLfUStHvrEzdnqLIGW5TkiXHoK1+W7dJFHGtldcgYISTG8Qldk4/P1vHknVJtJFCahKiZWdmiOHerBnI50ARcX3VWcxBPvYIOazJKMcTGBRrZ87aGo2InH8utItuFISOu6WDs6NsCXU18=
-Received: by 10.67.22.7 with SMTP id z7mr3068467ugi.1171640019187;
-        Fri, 16 Feb 2007 07:33:39 -0800 (PST)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id c25sm3895691ika.2007.02.16.07.33.37;
-        Fri, 16 Feb 2007 07:33:38 -0800 (PST)
-Message-ID: <45D5CEA5.3050604@innova-card.com>
-Date:	Fri, 16 Feb 2007 16:32:53 +0100
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] Fix __copy_{to,from}_user_inatomic
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 15:44:56 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:10743 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038909AbXBPPou (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Feb 2007 15:44:50 +0000
+Received: from localhost (p2199-ipad213funabasi.chiba.ocn.ne.jp [124.85.67.199])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id 8C5C6AAD4
+	for <linux-mips@linux-mips.org>; Sat, 17 Feb 2007 00:43:29 +0900 (JST)
+Date:	Sat, 17 Feb 2007 00:43:29 +0900 (JST)
+Message-Id: <20070217.004329.108739438.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Subject: fadvise on MIPS
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14119
+X-archive-position: 14120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+I found some confusions about posix_fadvise() on MIPS.
 
-These functions are aliases to __copy_{to,from}_user resp but they
-are not allowed to sleep. Therefore might_sleep() must not be used
-by their implementions.
+1) unistd.h defines __NR_fadvise64 for all ABI but no
+__NR_fadvise64_64.  But sys_fadvise64_64 is used for all syscall
+entries.  For N64, sys_fadvise64 and sys_fadvise64_64 are same so no
+problem, but for other ABIs size of 'len' argument cause mismatch
+between kernel and libc.
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+2) On O32, glibc pass a 'long long' argument by hi and lo words, but
+kernel needs padding word between 'fd' and 'offset' argument.
+
+3) On N32, glibc pass a 'long long' argument by hi and lo words, but
+kernel expects a single register value for 'long long' argument.
+
+4) __ARCH_WANT_SYS_FADVISE64 is defined in unistd.h but sys_fadvise64
+is not used.
+
+What is preferred way to fix those issues?
+
+It seems N64 do not need any fix.
+
+For N32 and O32, kernel should be fixed anyway, but which syscall
+should be supported?  And whether kernel or libc should take care of
+'long long' issue?
+
 ---
- include/asm-mips/uaccess.h |    6 ++----
- 1 files changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/include/asm-mips/uaccess.h b/include/asm-mips/uaccess.h
-index 825fcbd..fd01939 100644
---- a/include/asm-mips/uaccess.h
-+++ b/include/asm-mips/uaccess.h
-@@ -407,7 +407,7 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
-  * @from: Source address, in kernel space.
-  * @n:    Number of bytes to copy.
-  *
-- * Context: User context only.  This function may sleep.
-+ * Context: User context only.
-  *
-  * Copy data from kernel space to user space.  Caller must check
-  * the specified block with access_ok() before calling this function.
-@@ -421,7 +421,6 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
- 	const void *__cu_from;						\
- 	long __cu_len;							\
- 									\
--	might_sleep();							\
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
-@@ -490,7 +489,7 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
-  * @from: Source address, in user space.
-  * @n:    Number of bytes to copy.
-  *
-- * Context: User context only.  This function may sleep.
-+ * Context: User context only.
-  *
-  * Copy data from user space to kernel space.  Caller must check
-  * the specified block with access_ok() before calling this function.
-@@ -507,7 +506,6 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
- 	const void __user *__cu_from;					\
- 	long __cu_len;							\
- 									\
--	might_sleep();							\
- 	__cu_to = (to);							\
- 	__cu_from = (from);						\
- 	__cu_len = (n);							\
--- 
-1.4.4.3.ge6d4
+Atsushi Nemoto

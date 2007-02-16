@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 20:53:06 +0000 (GMT)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:21896 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S28573782AbXBPUxA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Feb 2007 20:53:00 +0000
-Received: (qmail 16340 invoked by uid 101); 16 Feb 2007 20:51:43 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 21:01:27 +0000 (GMT)
+Received: from father.pmc-sierra.com ([216.241.224.13]:17140 "HELO
+	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S28573790AbXBPVBW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 16 Feb 2007 21:01:22 +0000
+Received: (qmail 15992 invoked by uid 101); 16 Feb 2007 21:00:15 -0000
 Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by mother.pmc-sierra.com with SMTP; 16 Feb 2007 20:51:43 -0000
+  by father.pmc-sierra.com with SMTP; 16 Feb 2007 21:00:15 -0000
 Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l1GKpgbQ019090
-	for <linux-mips@linux-mips.org>; Fri, 16 Feb 2007 12:51:43 -0800
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l1GL0BxC019712
+	for <linux-mips@linux-mips.org>; Fri, 16 Feb 2007 13:00:12 -0800
 From:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l1GKpcEM002083
-	for linux-mips@linux-mips.org; Fri, 16 Feb 2007 14:51:38 -0600
-Date:	Fri, 16 Feb 2007 14:51:38 -0600
-Message-Id: <200702162051.l1GKpcEM002083@pasqua.pmc-sierra.bc.ca>
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l1GL0A8w003710
+	for linux-mips@linux-mips.org; Fri, 16 Feb 2007 15:00:10 -0600
+Date:	Fri, 16 Feb 2007 15:00:10 -0600
+Message-Id: <200702162100.l1GL0A8w003710@pasqua.pmc-sierra.bc.ca>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH 1/2] PMC MSP71xx platform patch, kernel linux-mips.git master
+Subject: [PATCH 2/2] PMC MSP71xx mips-common patch, kernel linux-mips.git master
 Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14132
+X-archive-position: 14133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,17 +29,18 @@ X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH X/Y] NNNNNN PMC MSP71xx, kernel linux-mips.git master
+MIPS-common patch for the PMC-Sierra MSP71xx devices. This
+patch only contains the code living in arch/mips.
 
-NNNNNN patch for the PMC-Sierra MSP71xx devices.
-
-Changes include:
+Please provide any initial feedback. I will update and repost
+for consideration in the linux-mips.org repository.
 
 Thanks,
 Marc
 
 Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
+
  arch/mips/Kconfig                   |   81 +
  arch/mips/Makefile                  |    8 
  arch/mips/configs/msp71xx_defconfig | 1462 ++++++++++++++++++++++++++++++++++++

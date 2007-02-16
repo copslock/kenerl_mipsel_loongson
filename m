@@ -1,52 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 13:48:43 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:45253 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20038843AbXBPNsi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Feb 2007 13:48:38 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 0C1AC3EC9; Fri, 16 Feb 2007 05:48:03 -0800 (PST)
-Message-ID: <45D5B60F.7020104@ru.mvista.com>
-Date:	Fri, 16 Feb 2007 16:47:59 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 15:34:17 +0000 (GMT)
+Received: from hu-out-0506.google.com ([72.14.214.236]:26284 "EHLO
+	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20038963AbXBPPeM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 16 Feb 2007 15:34:12 +0000
+Received: by hu-out-0506.google.com with SMTP id 27so428049hub
+        for <linux-mips@linux-mips.org>; Fri, 16 Feb 2007 07:33:39 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
+        b=Ltd+Q01BiwMNtXF5wdmQHqn9xGvOQqiLfUStHvrEzdnqLIGW5TkiXHoK1+W7dJFHGtldcgYISTG8Qldk4/P1vHknVJtJFCahKiZWdmiOHerBnI50ARcX3VWcxBPvYIOazJKMcTGBRrZ87aGo2InH8utItuFISOu6WDs6NsCXU18=
+Received: by 10.67.22.7 with SMTP id z7mr3068467ugi.1171640019187;
+        Fri, 16 Feb 2007 07:33:39 -0800 (PST)
+Received: from ?192.168.0.24? ( [81.252.61.1])
+        by mx.google.com with ESMTP id c25sm3895691ika.2007.02.16.07.33.37;
+        Fri, 16 Feb 2007 07:33:38 -0800 (PST)
+Message-ID: <45D5CEA5.3050604@innova-card.com>
+Date:	Fri, 16 Feb 2007 16:32:53 +0100
+Reply-To: Franck <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Marc St-Jean <stjeanma@pmc-sierra.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-serial@vger.kernel.org
-Subject: Re: [PATCH] serial driver PMC MSP71xx, kernel linux-mips.git master
-References: <200702151926.l1FJQT2o020816@pasqua.pmc-sierra.bc.ca> <20070215171035.83918aae.akpm@linux-foundation.org>
-In-Reply-To: <20070215171035.83918aae.akpm@linux-foundation.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] Fix __copy_{to,from}_user_inatomic
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14118
+X-archive-position: 14119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-Andrew Morton wrote:
+These functions are aliases to __copy_{to,from}_user resp but they
+are not allowed to sleep. Therefore might_sleep() must not be used
+by their implementions.
 
->>+			status = *(volatile u32 *)up->port.private_data;
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
+ include/asm-mips/uaccess.h |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
 
-> It distresses me that this patch uses a variable which this patch
-> doesn't initialise anywhere.  It isn't complete.
-
-    I assume this gets passed via early_serial_setup(). Marc?
-
-> The sub-driver code whch sets up this field shuld be included in the
-> patch, no?
-
-    Hardly so, this code (not a subdriver) resides under arch/mips/ I think.
-
-WBR, Sergei
+diff --git a/include/asm-mips/uaccess.h b/include/asm-mips/uaccess.h
+index 825fcbd..fd01939 100644
+--- a/include/asm-mips/uaccess.h
++++ b/include/asm-mips/uaccess.h
+@@ -407,7 +407,7 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+  * @from: Source address, in kernel space.
+  * @n:    Number of bytes to copy.
+  *
+- * Context: User context only.  This function may sleep.
++ * Context: User context only.
+  *
+  * Copy data from kernel space to user space.  Caller must check
+  * the specified block with access_ok() before calling this function.
+@@ -421,7 +421,6 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+ 	const void *__cu_from;						\
+ 	long __cu_len;							\
+ 									\
+-	might_sleep();							\
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
+@@ -490,7 +489,7 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+  * @from: Source address, in user space.
+  * @n:    Number of bytes to copy.
+  *
+- * Context: User context only.  This function may sleep.
++ * Context: User context only.
+  *
+  * Copy data from user space to kernel space.  Caller must check
+  * the specified block with access_ok() before calling this function.
+@@ -507,7 +506,6 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+ 	const void __user *__cu_from;					\
+ 	long __cu_len;							\
+ 									\
+-	might_sleep();							\
+ 	__cu_to = (to);							\
+ 	__cu_from = (from);						\
+ 	__cu_len = (n);							\
+-- 
+1.4.4.3.ge6d4

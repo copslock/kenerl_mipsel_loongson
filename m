@@ -1,49 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Feb 2007 23:34:11 +0000 (GMT)
-Received: from phoenix.bawue.net ([193.7.176.60]:50867 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20039268AbXBPXeG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Feb 2007 23:34:06 +0000
-Received: from lagash (88-106-179-150.dynamic.dsl.as9105.com [88.106.179.150])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id DFC9EB93BE;
-	Sat, 17 Feb 2007 00:33:30 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1HICbt-00042w-Oz; Fri, 16 Feb 2007 23:35:25 +0000
-Date:	Fri, 16 Feb 2007 23:35:25 +0000
-To:	Jim Wilson <wilson@specifix.com>
-Cc:	regan <reganrussell@optusnet.com.au>,
-	????????? <barrioskmc@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: Who know latest Linux/MIPS ABI ?
-Message-ID: <20070216233525.GC31271@networkno.de>
-References: <000701c750a3$24ecf9b0$8aab580a@swcenter.sec.samsung.co.kr> <1171651846.2577.18.camel@localhost.localdomain> <1171652502.2577.20.camel@localhost.localdomain> <BA268825-15F3-4E09-934B-F248EE0A2D82@optusnet.com.au> <1171665081.2577.62.camel@localhost.localdomain>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Feb 2007 02:52:02 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:48055 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28573811AbXBQCwA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 17 Feb 2007 02:52:00 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1H2pSnm020294;
+	Sat, 17 Feb 2007 02:51:29 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1H2pFIw020287;
+	Sat, 17 Feb 2007 02:51:15 GMT
+Date:	Sat, 17 Feb 2007 02:51:15 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jeff Garzik <jeff@garzik.org>
+Cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [IOC3] Fix link autonegotiation timer.
+Message-ID: <20070217025115.GA20247@linux-mips.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1171665081.2577.62.camel@localhost.localdomain>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14137
+X-archive-position: 14138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Jim Wilson wrote:
-> On Sat, 2007-02-17 at 07:27 +1100, regan wrote:
-> > MIPS Pro compiler does not come free of charge.
-> > My initial quote from SGI was in the area of $3,000..!
-> 
-> GNU Binutils is free though, and one of the options here.
+Start link negotiation in the open method.  Previously it was started
+on driver initialialization and shutdown on close so an ifdown would
+have results in closing negotiation for good.
 
-It also is, sadly, the _only_ reasonably complete and up-to-date
-"specification" of the Linux/MIPS ABIs.
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-
-Thiemo
+diff --git a/drivers/net/ioc3-eth.c b/drivers/net/ioc3-eth.c
+index ee6bca0..f5d277c 100644
+--- a/drivers/net/ioc3-eth.c
++++ b/drivers/net/ioc3-eth.c
+@@ -831,13 +831,17 @@ static int ioc3_mii_init(struct ioc3_private *ip)
+ 	}
+ 
+ 	ip->mii.phy_id = i;
++
++out:
++	return res;
++}
++
++static void ioc3_mii_start(struct ioc3_private *ip)
++{
+ 	ip->ioc3_timer.expires = jiffies + (12 * HZ)/10;  /* 1.2 sec. */
+ 	ip->ioc3_timer.data = (unsigned long) ip;
+ 	ip->ioc3_timer.function = &ioc3_timer;
+ 	add_timer(&ip->ioc3_timer);
+-
+-out:
+-	return res;
+ }
+ 
+ static inline void ioc3_clean_rx_ring(struct ioc3_private *ip)
+@@ -1066,6 +1070,7 @@ static int ioc3_open(struct net_device *dev)
+ 	ip->ehar_h = 0;
+ 	ip->ehar_l = 0;
+ 	ioc3_init(dev);
++	ioc3_mii_start(ip);
+ 
+ 	netif_start_queue(dev);
+ 	return 0;
+@@ -1269,6 +1274,7 @@ static int ioc3_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto out_stop;
+ 	}
+ 
++	ioc3_mii_start(ip);
+ 	ioc3_ssram_disc(ip);
+ 	ioc3_get_eaddr(ip);
+ 
+@@ -1307,6 +1313,7 @@ static int ioc3_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ out_stop:
+ 	ioc3_stop(ip);
++	del_timer_sync(&ip->ioc3_timer);
+ 	ioc3_free_rings(ip);
+ out_res:
+ 	pci_release_regions(pdev);
+@@ -1328,6 +1335,8 @@ static void __devexit ioc3_remove_one (struct pci_dev *pdev)
+ 	struct ioc3 *ioc3 = ip->regs;
+ 
+ 	unregister_netdev(dev);
++	del_timer_sync(&ip->ioc3_timer);
++
+ 	iounmap(ioc3);
+ 	pci_release_regions(pdev);
+ 	free_netdev(dev);
+@@ -1483,6 +1492,7 @@ static void ioc3_timeout(struct net_device *dev)
+ 	ioc3_stop(ip);
+ 	ioc3_init(dev);
+ 	ioc3_mii_init(ip);
++	ioc3_mii_start(ip);
+ 
+ 	spin_unlock_irq(&ip->ioc3_lock);
+ 

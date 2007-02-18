@@ -1,59 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Feb 2007 15:54:14 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:20945 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039427AbXBRPyM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 18 Feb 2007 15:54:12 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1IFs95i025618;
-	Sun, 18 Feb 2007 15:54:09 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1IFs8Mi025617;
-	Sun, 18 Feb 2007 15:54:08 GMT
-Date:	Sun, 18 Feb 2007 15:54:08 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Make __declare_dbe_table() static
-Message-ID: <20070218155408.GA24660@linux-mips.org>
-References: <20070219.004435.25910295.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Feb 2007 15:55:53 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:61381 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20039429AbXBRPzs (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 18 Feb 2007 15:55:48 +0000
+Received: from localhost (p2027-ipad11funabasi.chiba.ocn.ne.jp [219.162.37.27])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 66373AC88; Mon, 19 Feb 2007 00:54:27 +0900 (JST)
+Date:	Mon, 19 Feb 2007 00:54:27 +0900 (JST)
+Message-Id: <20070219.005427.126141810.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Make kernel_thread_helper() static
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070219.004435.25910295.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14144
+X-archive-position: 14145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 19, 2007 at 12:44:35AM +0900, Atsushi Nemoto wrote:
-
-> Make __declare_dbe_table() static and call it explicitly to ensure not
-> optimized out.
-
-That's what __attribute_used__ was meant to be used for.
-
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index cfd1785..db0a9a2 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -340,7 +340,7 @@ NORET_TYPE void ATTRIB_NORET die(const char * str, struct pt_regs * regs)
- extern const struct exception_table_entry __start___dbe_table[];
- extern const struct exception_table_entry __stop___dbe_table[];
- 
--void __declare_dbe_table(void)
-+static void __attribute_used__ __declare_dbe_table(void)
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 9704c21..a669089 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -213,7 +213,7 @@ int dump_task_fpu (struct task_struct *t
+ /*
+  * Create a kernel thread
+  */
+-ATTRIB_NORET void kernel_thread_helper(void *arg, int (*fn)(void *))
++static ATTRIB_NORET void kernel_thread_helper(void *arg, int (*fn)(void *))
  {
- 	__asm__ __volatile__(
- 	".section\t__dbe_table,\"a\"\n\t"
+ 	do_exit(fn(arg));
+ }

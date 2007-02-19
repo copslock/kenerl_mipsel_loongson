@@ -1,74 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Feb 2007 20:01:38 +0000 (GMT)
-Received: from rwcrmhc11.comcast.net ([216.148.227.151]:46537 "EHLO
-	rwcrmhc11.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S20039473AbXBRUBd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 18 Feb 2007 20:01:33 +0000
-Received: from [192.168.1.4] (c-68-34-70-207.hsd1.md.comcast.net[68.34.70.207])
-          by comcast.net (rwcrmhc11) with ESMTP
-          id <20070218200049m11008dkple>; Sun, 18 Feb 2007 20:00:49 +0000
-Message-ID: <45D8B070.7070405@gentoo.org>
-Date:	Sun, 18 Feb 2007 15:00:48 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0b2 (Windows/20070116)
-MIME-Version: 1.0
-To:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: IP32 prom crashes due to __pa() funkiness
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Feb 2007 15:00:32 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:27817 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20037636AbXBSPAa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Feb 2007 15:00:30 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1JF0UGQ009862;
+	Mon, 19 Feb 2007 15:00:30 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1JF0Txr009861;
+	Mon, 19 Feb 2007 15:00:29 GMT
+Date:	Mon, 19 Feb 2007 15:00:29 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Declare highstart_pfn, highend_pfn only if CONFIG_HIGHMEM=y
+Message-ID: <20070219150029.GA9808@linux-mips.org>
+References: <20070218.005748.27954771.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070218.005748.27954771.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14153
+X-archive-position: 14154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Feb 18, 2007 at 12:57:48AM +0900, Atsushi Nemoto wrote:
 
-Initially, booting a straight git checkout on an IP32 will cause it to prom 
-crash, usually somewhere in between init_bootmem() and init_bootmem_core().  I 
-bisected git to trace this back to one of the inital __pa() introduction patches 
-from commit d4df6d4 (get ride of CPHYSADDR()).  It actually appears that the 
-actual commit that broke things was 620a480 (Make __pa() aware of XKPHYS/CKSEG0 
-address mix for 64 bit kernels).
+Thanks, I'll go for this slightly cleaner variant.
 
-The [short-term] fix highlighted by Ilya is to make __pa() unconditionally be 
-defined to "((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)"; Discovered by 
-building IP32 with CONFIG_BUILD_ELF64=n.
+  Ralf
 
-Normally, this shouldn't be possible, as CONFIG_BUILD_ELF64=n was originally 
-only allowed by using the old o64 hack, which has subsequently died and been 
-replaced with the newer -msym32 form.  As far as I know, CONFIG_BUILD_ELF64 is 
-apparently supposed to be removed at some point in the future, since I believe 
-it existed only for quirky 64bit-in-32bit kernels for IP22 and more commonly, 
-IP32.  From 2.6.17 onwards, I've been building IP32 kernels with 
-CONFIG_BUILD_ELF64=y and using gcc-4, and haven't had problems up until now.
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-Anyways, I'm not sure if this is an IP32-specific oddity or not (probably is), 
-but it needs the define highlighted above to work properly.  Plain PAGE_OFFSET 
-won't work for these machines.  Given the same trick os -msym32 is used for the 
-rare IP22 64bit kernel, I would not be surprised if the same problem and fix 
-both occur and work for those machines as well.  Something to maybe test later, 
-I suppose.
-
-But for now, anyone got thoughts as to a sane workaround for this?  Perhaps some 
-conditional tweaks in mach-ip32/*.h files somewheres, would it be simpler to 
-just switch to:
-
-#if defined(CONFIG_64BIT) && (!defined(CONFIG_BUILD_ELF64) || 
-defined(CONFIG_SGI_IP32))
-
-(assuming that IP22 doesn't need it; I'll find out later)
-
-
-
---Kumba
-
--- 
-Gentoo/MIPS Team Lead
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 13a4208..f08ae71 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -61,8 +61,6 @@
+ 
+ DEFINE_PER_CPU(struct mmu_gather, mmu_gathers);
+ 
+-unsigned long highstart_pfn, highend_pfn;
+-
+ /*
+  * We have up to 8 empty zeroed pages so we can map one of the right colour
+  * when needed.  This is necessary only on R4000 / R4400 SC and MC versions
+@@ -261,6 +259,8 @@ EXPORT_SYMBOL(copy_from_user_page);
+ 
+ 
+ #ifdef CONFIG_HIGHMEM
++unsigned long highstart_pfn, highend_pfn;
++
+ pte_t *kmap_pte;
+ pgprot_t kmap_prot;
+ 

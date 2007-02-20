@@ -1,92 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2007 11:09:16 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:10703 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20038868AbXBTLJL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Feb 2007 11:09:11 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 20 Feb 2007 20:09:09 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 3B1E53EEB0;
-	Tue, 20 Feb 2007 20:08:46 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 2EFDA203B8;
-	Tue, 20 Feb 2007 20:08:46 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l1KB8jW0022825;
-	Tue, 20 Feb 2007 20:08:46 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 20 Feb 2007 20:08:45 +0900 (JST)
-Message-Id: <20070220.200845.98359099.nemoto@toshiba-tops.co.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Drop __init from init_8259A()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2007 14:01:09 +0000 (GMT)
+Received: from gprs189-60.eurotel.cz ([160.218.189.60]:2823 "EHLO spitz.ucw.cz")
+	by ftp.linux-mips.org with ESMTP id S20038832AbXBTOBF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2007 14:01:05 +0000
+Received: by spitz.ucw.cz (Postfix, from userid 0)
+	id 788182799B; Tue, 20 Feb 2007 13:50:46 +0000 (UTC)
+Date:	Tue, 20 Feb 2007 13:50:46 +0000
+From:	Pavel Machek <pavel@ucw.cz>
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Optimize generic get_unaligned / put_unaligned implementations.
+Message-ID: <20070220135046.GE3945@ucw.cz>
+References: <20060306.203218.69025300.nemoto@toshiba-tops.co.jp> <20060306170552.0aab29c5.akpm@osdl.org> <20070214214226.GA17899@linux-mips.org> <20070214203903.8d013170.akpm@linux-foundation.org> <20070215143441.GA18155@linux-mips.org> <20070215135358.020781dd.akpm@linux-foundation.org> <20070215221839.GA14103@linux-mips.org> <20070215153823.239fd616.akpm@linux-foundation.org> <20070216004317.GA18987@linux-mips.org> <20070215172720.3e9ce464.akpm@linux-foundation.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070215172720.3e9ce464.akpm@linux-foundation.org>
+User-Agent: Mutt/1.5.9i
+Return-Path: <root@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14167
+X-archive-position: 14168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 X-list: linux-mips
 
-init_8259A() is called from i8259A_resume() so should not be marked as
-__init.  And add some tests for whether 8259A was already initialized
-or not.
+Hi!
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/kernel/i8259.c b/arch/mips/kernel/i8259.c
-index b33ba6c..9c79703 100644
---- a/arch/mips/kernel/i8259.c
-+++ b/arch/mips/kernel/i8259.c
-@@ -28,7 +28,7 @@
-  * moves to arch independent land
-  */
- 
--static int i8259A_auto_eoi;
-+static int i8259A_auto_eoi = -1;
- DEFINE_SPINLOCK(i8259A_lock);
- /* some platforms call this... */
- void mask_and_ack_8259A(unsigned int);
-@@ -216,7 +216,8 @@ spurious_8259A_irq:
- 
- static int i8259A_resume(struct sys_device *dev)
- {
--	init_8259A(i8259A_auto_eoi);
-+	if (i8259A_auto_eoi >= 0)
-+		init_8259A(i8259A_auto_eoi);
- 	return 0;
- }
- 
-@@ -226,8 +227,10 @@ static int i8259A_shutdown(struct sys_device *dev)
- 	 * the kernel initialization code can get it
- 	 * out of.
- 	 */
--	outb(0xff, PIC_MASTER_IMR);	/* mask all of 8259A-1 */
--	outb(0xff, PIC_SLAVE_IMR);	/* mask all of 8259A-1 */
-+	if (i8259A_auto_eoi >= 0) {
-+		outb(0xff, PIC_MASTER_IMR);	/* mask all of 8259A-1 */
-+		outb(0xff, PIC_SLAVE_IMR);	/* mask all of 8259A-1 */
-+	}
- 	return 0;
- }
- 
-@@ -252,7 +255,7 @@ static int __init i8259A_init_sysfs(void)
- 
- device_initcall(i8259A_init_sysfs);
- 
--void __init init_8259A(int auto_eoi)
-+void init_8259A(int auto_eoi)
- {
- 	unsigned long flags;
- 
+> > > hm.  So if I have
+> > > 
+> > > 	struct bar {
+> > > 		unsigned long b;
+> > > 	} __attribute__((packed));
+> > > 
+> > > 	struct foo {
+> > > 		unsigned long u;
+> > > 		struct bar b;
+> > > 	};
+> > > 
+> > > then the compiler can see that foo.b.b is well-aligned, regardless of the
+> > > packedness.
+> > > 
+> > > Plus some crazy people compile the kernel with icc (or at least they used
+> > > to).  What happens there?
+> > 
+> > A quick grep for __attribute__((packed)) and __packed find around 900 hits,
+> > I'd probably find more if I'd look for syntactical variations.  Some hits
+> > are in arch/{i386,x86_64,ia64}.  At a glance it seems hard to configure a
+> > useful x86 kernel that doesn't involve any packed attribute.  I take that
+> > as statistical proof that icc either has doesn't really work for building
+> > the kernel or groks packing.  Any compiler not implementing gcc extensions
+> > is lost at building the kernel but that's old news.
+> > 
+> 
+> No, icc surely supports attribute(packed).  My point is that we shouldn't
+> rely upon the gcc info file for this, because other compilers can (or
+> could) be used to build the kernel.
+
+Well, icc should be gcc compatible. If it is not, it is icc bug.
+
+-- 
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html

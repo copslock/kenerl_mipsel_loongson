@@ -1,49 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2007 22:02:17 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:62862 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20038992AbXBTWCP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Feb 2007 22:02:15 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1KM2Be9017791;
-	Tue, 20 Feb 2007 22:02:11 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1KM2AGC017790;
-	Tue, 20 Feb 2007 22:02:10 GMT
-Date:	Tue, 20 Feb 2007 22:02:10 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [RFC] Add basic SMARTMIPS ASE support
-Message-ID: <20070220220210.GA10404@linux-mips.org>
-References: <45C369CB.2040400@innova-card.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2007 22:47:59 +0000 (GMT)
+Received: from xyzzy.farnsworth.org ([65.39.95.219]:12296 "HELO farnsworth.org")
+	by ftp.linux-mips.org with SMTP id S20037614AbXBTWrz (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Feb 2007 22:47:55 +0000
+Received: (qmail 4831 invoked by uid 1000); 20 Feb 2007 15:46:49 -0700
+From:	"Dale Farnsworth" <dale@farnsworth.org>
+Date:	Tue, 20 Feb 2007 15:46:49 -0700
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] Fix port 0 mac address for mips mv643xx platforms
+Message-ID: <20070220224649.GA4485@xyzzy.farnsworth.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45C369CB.2040400@innova-card.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <dale@farnsworth.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14174
+X-archive-position: 14175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dale@farnsworth.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 02, 2007 at 05:41:47PM +0100, Franck Bui-Huu wrote:
+From: Dale Farnsworth <dale@farnsworth.org>
 
-> From: Franck Bui-Huu <fbuihuu@gmail.com>
-> 
-> This patch adds trivial support for SMARTMIPS extension. This
-> extension is currently implemented by 4KS[CD] CPUs.
+Signed-off-by: Dale Farnsworth <dale@farnsworth.org>
 
-The SmartMIPS ASE according to the spec is explicitly for MIPS32, so I'm
-stripping the 64-bit kernel bits of it.  I also did a bit of Kconfig
-polishing to make SmartMIPS selectable on those platforms which might
-actually have such a CPU only, that is currently all the FPGA-based
-platforms, Altas, SEAD and Malta.
+---
 
-  Ralf
+Untested, but seems obvious enough.
+
+ arch/mips/momentum/jaguar_atx/platform.c |    2 +-
+ arch/mips/momentum/ocelot_3/platform.c   |    2 +-
+ arch/mips/momentum/ocelot_c/platform.c   |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+Index: b/arch/mips/momentum/jaguar_atx/platform.c
+===================================================================
+--- a/arch/mips/momentum/jaguar_atx/platform.c
++++ b/arch/mips/momentum/jaguar_atx/platform.c
+@@ -200,7 +200,7 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
+ 
+ 	get_mac(mac);
+-	eth_mac_add(eth1_mac_addr, mac, 0);
++	eth_mac_add(eth0_mac_addr, mac, 0);
+ 	eth_mac_add(eth1_mac_addr, mac, 1);
+ 	eth_mac_add(eth2_mac_addr, mac, 2);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+Index: b/arch/mips/momentum/ocelot_3/platform.c
+===================================================================
+--- a/arch/mips/momentum/ocelot_3/platform.c
++++ b/arch/mips/momentum/ocelot_3/platform.c
+@@ -200,7 +200,7 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
+ 
+ 	get_mac(mac);
+-	eth_mac_add(eth1_mac_addr, mac, 0);
++	eth_mac_add(eth0_mac_addr, mac, 0);
+ 	eth_mac_add(eth1_mac_addr, mac, 1);
+ 	eth_mac_add(eth2_mac_addr, mac, 2);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+Index: b/arch/mips/momentum/ocelot_c/platform.c
+===================================================================
+--- a/arch/mips/momentum/ocelot_c/platform.c
++++ b/arch/mips/momentum/ocelot_c/platform.c
+@@ -174,7 +174,7 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
+ 
+ 	get_mac(mac);
+-	eth_mac_add(eth1_mac_addr, mac, 0);
++	eth_mac_add(eth0_mac_addr, mac, 0);
+ 	eth_mac_add(eth1_mac_addr, mac, 1);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+ 			ARRAY_SIZE(mv643xx_eth_pd_devs));

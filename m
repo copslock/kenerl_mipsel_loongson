@@ -1,51 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2007 18:13:51 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:10704 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20038971AbXBTSNt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Feb 2007 18:13:49 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1KIDmpq006093;
-	Tue, 20 Feb 2007 18:13:48 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1KIDmxo006092;
-	Tue, 20 Feb 2007 18:13:48 GMT
-Date:	Tue, 20 Feb 2007 18:13:48 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kaz Kylheku <kaz@zeugmasystems.com>
-Cc:	Andrew Sharp <tigerand@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Clean up serial console support on Sibyte 1250 duart
-Message-ID: <20070220181348.GA6049@linux-mips.org>
-References: <66910A579C9312469A7DF9ADB54A8B7D627017@exchange.ZeugmaSystems.local>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Feb 2007 19:16:42 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:17033 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20038972AbXBTTQh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Feb 2007 19:16:37 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 3945B64D3D; Tue, 20 Feb 2007 19:15:50 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 8173054D4B; Tue, 20 Feb 2007 20:15:39 +0100 (CET)
+Date:	Tue, 20 Feb 2007 19:15:39 +0000
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] add MTD device support for Cobalt
+Message-ID: <20070220191539.GB21082@deprecation.cyrius.com>
+References: <20070220141157.06bf44bd.yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <66910A579C9312469A7DF9ADB54A8B7D627017@exchange.ZeugmaSystems.local>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20070220141157.06bf44bd.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14172
+X-archive-position: 14173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Feb 20, 2007 at 09:03:56AM -0800, Kaz Kylheku wrote:
+* Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> [2007-02-20 14:11]:
+> +		.name	= "Colo",
 
-> Andrew Sharp wrote:
-> > Clean up the serial console support on the Sibyte 1250's
-> > built in duart.
-> 
-> Hi Andrew,
-> 
-> Would it be too much trouble to split the patch into two: the whitespace
-> changes, and the actual bugfix?
-
-While that's strongly prefered I wasn't picky in this case because this
-driver only has a single job left to do - as a stop gap until there is
-a new driver for the drivers/serial subsystem.
-
-  Ralf
+Should this really be called 'Colo'?
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,67 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2007 00:35:40 +0000 (GMT)
-Received: from mms3.broadcom.com ([216.31.210.19]:54023 "EHLO
-	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S20039019AbXBUAff convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2007 00:35:35 +0000
-Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.0)); Tue, 20 Feb 2007 16:34:58 -0800
-X-Server-Uuid: 9206F490-5C8F-4575-BE70-2AAA8A3D4853
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 744CE2AF; Tue, 20 Feb 2007 16:34:58 -0800 (PST)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 61B442AE for
- <linux-mips@linux-mips.org>; Tue, 20 Feb 2007 16:34:58 -0800 (PST)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id EYN96768; Tue, 20 Feb 2007 16:34:58 -0800 (PST)
-Received: from NT-SJCA-0751.brcm.ad.broadcom.com (nt-sjca-0751
- [10.16.192.221]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- EC87420501 for <linux-mips@linux-mips.org>; Tue, 20 Feb 2007 16:34:57
- -0800 (PST)
-Received: from NT-SJCA-0752.brcm.ad.broadcom.com ([10.16.192.222]) by
- NT-SJCA-0751.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Tue, 20 Feb 2007 16:34:57 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Subject: [PATCH] minor fix in sb1250_duart.c
-Date:	Tue, 20 Feb 2007 16:34:56 -0800
-Message-ID: <710F16C36810444CA2F5821E5EAB7F231C84EB@NT-SJCA-0752.brcm.ad.broadcom.com>
-Thread-Topic: [PATCH] minor fix in sb1250_duart.c
-Thread-Index: AcdVUBwYEKYbAIIaTJCPFN8oX0l5fg==
-From:	"Manoj Ekbote" <manoj.ekbote@broadcom.com>
-To:	linux-mips@linux-mips.org
-X-OriginalArrivalTime: 21 Feb 2007 00:34:57.0877 (UTC)
- FILETIME=[1D2FE050:01C75550]
-X-WSS-ID: 69C54C383Y825748611-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <manoj.ekbote@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2007 01:16:28 +0000 (GMT)
+Received: from mo30.po.2iij.net ([210.128.50.53]:48432 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037831AbXBUBQX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2007 01:16:23 +0000
+Received: by mo.po.2iij.net (mo30) id l1L1F23d061155; Wed, 21 Feb 2007 10:15:02 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox33) id l1L1F1Zp096627
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 21 Feb 2007 10:15:01 +0900 (JST)
+Message-Id: <200702210115.l1L1F1Zp096627@mbox33.po.2iij.net>
+Date:	Wed, 21 Feb 2007 10:15:01 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH][MIPS] add MTD device support for Cobalt
+In-Reply-To: <20070221001601.GA11298@deprecation.cyrius.com>
+References: <20070220141157.06bf44bd.yoichi_yuasa@tripeaks.co.jp>
+	<20070220191539.GB21082@deprecation.cyrius.com>
+	<20070220235627.GA21412@linux-mips.org>
+	<20070221001601.GA11298@deprecation.cyrius.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14179
+X-archive-position: 14180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manoj.ekbote@broadcom.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Patch to remove the first "default" label in switch and case.
+On Wed, 21 Feb 2007 00:16:01 +0000
+Martin Michlmayr <tbm@cyrius.com> wrote:
 
-Signed-off-by: Manoj Ekbote <manoje@broadcom.com>
+> * Ralf Baechle <ralf@linux-mips.org> [2007-02-20 23:56]:
+> > How about calling it just "firmware"?
+> 
+> Sounds good to me.
 
-diff --git a/drivers/char/sb1250_duart.c b/drivers/char/sb1250_duart.c
-index 9cbd92e..a311fdb 100644
---- a/drivers/char/sb1250_duart.c
-+++ b/drivers/char/sb1250_duart.c
-@@ -469,7 +469,6 @@ static inline void duart_set_cflag(unsig
- 	case B1800:	clk_divisor = 2776;		break;
- 	case B2400:	clk_divisor = 2082;		break;
- 	case B4800:	clk_divisor = 1040;		break;
--	default:
- 	case B9600:	clk_divisor = 519;		break;
- 	case B19200:	clk_divisor = 259;		break;
- 	case B38400:	clk_divisor = 129;		break;
+It's OK for me.
+
+Yoichi

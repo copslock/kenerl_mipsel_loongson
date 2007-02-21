@@ -1,92 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2007 03:40:54 +0000 (GMT)
-Received: from mms3.broadcom.com ([216.31.210.19]:30738 "EHLO
-	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S20039019AbXBUDku (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Feb 2007 03:40:50 +0000
-Received: from 10.10.64.154 by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.0)); Tue, 20 Feb 2007 19:40:11 -0800
-X-Server-Uuid: 9206F490-5C8F-4575-BE70-2AAA8A3D4853
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- E801D2AF; Tue, 20 Feb 2007 19:40:10 -0800 (PST)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id D4E632AE for
- <linux-mips@linux-mips.org>; Tue, 20 Feb 2007 19:40:10 -0800 (PST)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id EYO27472; Tue, 20 Feb 2007 19:40:10 -0800 (PST)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 7FD4820501 for <linux-mips@linux-mips.org>; Tue, 20 Feb 2007 19:40:10
- -0800 (PST)
-Received: from NT-SJCA-0752.brcm.ad.broadcom.com ([10.16.192.222]) by
- NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Tue, 20 Feb 2007 19:40:10 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Subject: [PATCH] update sb1250 defconfig
-Date:	Tue, 20 Feb 2007 19:40:09 -0800
-Message-ID: <710F16C36810444CA2F5821E5EAB7F231C84F3@NT-SJCA-0752.brcm.ad.broadcom.com>
-X-MS-Has-Attach: yes
-Thread-Topic: [PATCH] update sb1250 defconfig
-Thread-Index: AcdVafxg7QwoBARRQNO4mkDuOSmVBA==
-From:	"Manoj Ekbote" <manoj.ekbote@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2007 07:39:55 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:19725 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20037416AbXBUHju (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 21 Feb 2007 07:39:50 +0000
+Received: (qmail 9903 invoked by uid 1000); 21 Feb 2007 08:38:48 +0100
+Date:	Wed, 21 Feb 2007 08:38:48 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	linux-mips@linux-mips.org
-X-OriginalArrivalTime: 21 Feb 2007 03:40:10.0323 (UTC)
- FILETIME=[FCB89230:01C75569]
-X-WSS-ID: 69C560913Y825789163-01-01
-Content-Type: multipart/mixed;
- boundary="----_=_NextPart_001_01C75569.FCA61828"
-Return-Path: <manoj.ekbote@broadcom.com>
+Subject: Au1000 PCMCIA broken in 2.6.20
+Message-ID: <20070221073848.GA9822@roarinelk.homelinux.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14184
+X-archive-position: 14185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manoj.ekbote@broadcom.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Hello,
 
-------_=_NextPart_001_01C75569.FCA61828
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+PCMCIA is broken on my Au1200 platform. Seems to me that accesses to Attribute
+memory are broken; a dump of the CIS reveals the following:
 
-The last email got messed up. The patch is attached here.
+1.0: ParseTuple: Bad CIS tuple
+00000000  01 03 ff ff ff 1c 04 ff  ff ff ff 18 02 ff ff 20  |............... |
+00000010  04 98 00 00 00 15 20 04  ff ff ff ff ff ff ff ff  |...... .........|
+00000020  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  |................|
+00000030  ff ff ff ff ff ff ff 21  02 04 01 22 02 ff ff 22  |.......!..."..."|
+00000040  03 ff ff ff 1a 05 ff ff  ff ff ff 1b 08 ff ff ff  |................|
+00000050  ff ff ff ff ff 1b 06 ff  ff ff ff ff ff 1b 0a ff  |................|
+00000060  ff ff ff ff ff ff ff ff  ff 1b 06 ff ff ff ff ff  |................|
+00000070  ff 1b 0f ff ff ff ff ff  ff ff ff ff ff ff ff ff  |................|
+00000080  ff ff 1b 06 ff ff ff ff  ff ff 1b 0f ff ff ff ff  |................|
+00000090  ff ff ff ff ff ff ff ff  ff ff ff 1b 06 ff ff ff  |................|
+000000a0  ff ff ff 14 00                                    |.....|
 
+it should look like this:
+00000000  01 03 d9 01 ff 1c 04 03  d9 01 ff 18 02 df 01 20  |............... |
+00000010  04 98 00 00 00 15 20 04  01 54 4f 53 48 49 42 41  |...... ..TOSHIBA|
+00000020  20 54 48 4e 43 46 32 35  36 4d 50 47 20 00 00 00  | THNCF256MPG ...|
+00000030  00 00 00 00 00 00 ff 21  02 04 01 22 02 01 01 22  |.......!..."..."|
+00000040  03 02 0c 0f 1a 05 01 03  00 02 0f 1b 08 c0 c0 a1  |................|
+00000050  01 55 08 00 20 1b 06 00  01 21 b5 1e 4d 1b 0a c1  |.U.. ....!..M...|
+00000060  41 99 01 55 64 f0 ff ff  20 1b 06 01 01 21 b5 1e  |A..Ud... ....!..|
+00000070  4d 1b 0f c2 41 99 01 55  ea 61 f0 01 07 f6 03 01  |M...A..U.a......|
+00000080  ee 20 1b 06 02 01 21 b5  1e 4d 1b 0f c3 41 99 01  |. ....!..M...A..|
+00000090  55 ea 61 70 01 07 76 03  01 ee 20 1b 06 03 01 21  |U.ap..v... ....!|
+000000a0  b5 1e 4d 14 00                                    |..M..|
 
+Reverting "[PATCH] Generic ioremap_page_range: mips conversion" makes it
+work again:
+http://www.linux-mips.org/git?p=linux.git;a=commitdiff_plain;h=8e087929df884dbb13e383d49d192bdd6928ecbf;hp=62dfb5541a025b47df9405ff0219c7829a97d83b
 
-------_=_NextPart_001_01C75569.FCA61828
-Content-Type: text/plain;
- name=patch-defconfig.txt
-Content-Transfer-Encoding: base64
-Content-Description: patch-defconfig.txt
-Content-Disposition: attachment;
- filename=patch-defconfig.txt
+The socket driver I use is a simplified version of au1000_generic and
+au1000_db1x00 combined. None of those have received any updates since
+the above mentioned patch went it.
 
-VGhpcyBwYXRjaCB1cGRhdGVzIHNiMTI1MC1zd2FybS1kZWZjb25maWcgZmlsZSB0byBkZWZhdWx0
-IHRvIFNpYnl0ZSBCbiBzaWxpY29uIGFzIHRoZSBQQVNTXzEgcHJvY2Vzc29ycyBhcmUgdmVyeSBv
-bGQuCgpTaWduZWQtb2ZmLWJ5OiBNYW5vaiBFa2JvdGUgPG1hbm9qZUBicm9hZGNvbS5jb20+CgoK
-ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9jb25maWdzL3NiMTI1MC1zd2FybV9kZWZjb25maWcgYi9h
-cmNoL21pcHMvY29uZmlncy9zYjEyNTAtc3dhcm1fZGVmY29uZmlnCmluZGV4IDUzM2RmNmYuLjQ1
-YjY4ZGUgMTAwNjQ0Ci0tLSBhL2FyY2gvbWlwcy9jb25maWdzL3NiMTI1MC1zd2FybV9kZWZjb25m
-aWcKKysrIGIvYXJjaC9taXBzL2NvbmZpZ3Mvc2IxMjUwLXN3YXJtX2RlZmNvbmZpZwpAQCAtNjUs
-OSArNjUsOSBAQCBDT05GSUdfU0lCWVRFX1NXQVJNPXkKICMgQ09ORklHX1RPU0hJQkFfUkJUWDQ5
-MzggaXMgbm90IHNldAogQ09ORklHX1NJQllURV9TQjEyNTA9eQogQ09ORklHX1NJQllURV9TQjF4
-eHhfU09DPXkKLUNPTkZJR19DUFVfU0IxX1BBU1NfMT15CisjIENPTkZJR19DUFVfU0IxX1BBU1Nf
-MSBpcyBub3Qgc2V0CiAjIENPTkZJR19DUFVfU0IxX1BBU1NfMl8xMjUwIGlzIG5vdCBzZXQKLSMg
-Q09ORklHX0NQVV9TQjFfUEFTU18yXzIgaXMgbm90IHNldAorQ09ORklHX0NQVV9TQjFfUEFTU18y
-XzI9eQogIyBDT05GSUdfQ1BVX1NCMV9QQVNTXzQgaXMgbm90IHNldAogIyBDT05GSUdfQ1BVX1NC
-MV9QQVNTXzJfMTEyeCBpcyBub3Qgc2V0CiAjIENPTkZJR19DUFVfU0IxX1BBU1NfMyBpcyBub3Qg
-c2V0CkBAIC0xNDIsNyArMTQyLDcgQEAgQ09ORklHX01JUFNfTVRfRElTQUJMRUQ9eQogIyBDT05G
-SUdfTUlQU19NVF9TTVAgaXMgbm90IHNldAogIyBDT05GSUdfTUlQU19NVF9TTVRDIGlzIG5vdCBz
-ZXQKICMgQ09ORklHX01JUFNfVlBFX0xPQURFUiBpcyBub3Qgc2V0Ci1DT05GSUdfU0IxX1BBU1Nf
-MV9XT1JLQVJPVU5EUz15CitDT05GSUdfU0IxX1BBU1NfMl9XT1JLQVJPVU5EUz15CiBDT05GSUdf
-Q1BVX0hBU19MTFNDPXkKIENPTkZJR19DUFVfSEFTX1NZTkM9eQogQ09ORklHX0dFTkVSSUNfSEFS
-RElSUVM9eQo=
+Thanks!
 
-------_=_NextPart_001_01C75569.FCA61828--
+-- 
+ ml.

@@ -1,59 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2007 12:57:18 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:19985 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20037800AbXBUM5N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Feb 2007 12:57:13 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 4F23CE1CAE;
-	Wed, 21 Feb 2007 13:56:32 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id U3-ZafIbSTbb; Wed, 21 Feb 2007 13:56:32 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id D4FB6E1C72;
-	Wed, 21 Feb 2007 13:56:31 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l1LCuedl013520;
-	Wed, 21 Feb 2007 13:56:40 +0100
-Date:	Wed, 21 Feb 2007 12:56:36 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Kaz Kylheku <kaz@zeugmasystems.com>,
-	Andrew Sharp <tigerand@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Clean up serial console support on Sibyte 1250 duart
-In-Reply-To: <20070220181348.GA6049@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0702211242310.29504@blysk.ds.pg.gda.pl>
-References: <66910A579C9312469A7DF9ADB54A8B7D627017@exchange.ZeugmaSystems.local>
- <20070220181348.GA6049@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90/2616/Wed Feb 21 11:36:16 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2007 17:11:40 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:6101 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20038416AbXBURLe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Feb 2007 17:11:34 +0000
+Received: from localhost (p7058-ipad205funabasi.chiba.ocn.ne.jp [222.146.102.58])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id E1B0C82FB; Thu, 22 Feb 2007 02:10:14 +0900 (JST)
+Date:	Thu, 22 Feb 2007 02:10:14 +0900 (JST)
+Message-Id: <20070222.021014.85684636.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix mmiowb() for MIPS I
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14189
+X-archive-position: 14190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 20 Feb 2007, Ralf Baechle wrote:
+The SYNC instruction is not available on MIPS I.  Use __sync() instead.
 
-> While that's strongly prefered I wasn't picky in this case because this
-> driver only has a single job left to do - as a stop gap until there is
-> a new driver for the drivers/serial subsystem.
-
- Which will be a funny exercise because of that AC97 codec hanging off one 
-of the lines.  I guess it gives me enough incentive to put it on my to-do 
-list for not such a distant future. ;-)
-
- It's a pity they did not wire the clock lines (TxC, RxC) to the serial 
-port connectors (I guess PCB space was more important) -- it would have 
-given me yet more incentive...
-
-  Maciej
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/include/asm-mips/io.h b/include/asm-mips/io.h
+index 92ec261..855c304 100644
+--- a/include/asm-mips/io.h
++++ b/include/asm-mips/io.h
+@@ -502,8 +502,7 @@ BUILDSTRING(q, u64)
+ #endif
+ 
+ 
+-/* Depends on MIPS II instruction set */
+-#define mmiowb() asm volatile ("sync" ::: "memory")
++#define mmiowb() __sync()
+ 
+ static inline void memset_io(volatile void __iomem *addr, unsigned char val, int count)
+ {

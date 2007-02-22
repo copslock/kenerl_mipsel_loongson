@@ -1,64 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Feb 2007 11:27:04 +0000 (GMT)
-Received: from wx-out-0506.google.com ([66.249.82.227]:62148 "EHLO
-	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20038488AbXBVL1A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 22 Feb 2007 11:27:00 +0000
-Received: by wx-out-0506.google.com with SMTP id t14so141322wxc
-        for <linux-mips@linux-mips.org>; Thu, 22 Feb 2007 03:25:57 -0800 (PST)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=WDw09ozSkhX2iVKdcAWaBRh9+QqCxDxduTtXkfUd4VQEC3iYgvcg/5RdPTkvpLMlhzc7SAE9u4cTfzk6/L+5wnLRNk+vIZK/qxa7pTlToIg8gZlGzZcfX1PSD2qcPYbVVH3Wo4cUXaRFmQS0AOlbaoN/fdG+c2ND8q2sxZWQkt8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=EyVb8YUTIYcfxBgUHH0NSBLnrxDpcOlZandAJnTYpJ0nMYyBPg2nts9XcXyuSTPGSObsyMxX6LNriR/We71hurAzyeCoh1OW92nbw/zmiWzingrjxpXaJgnJ6nRUuu/YUdROpFs9+mPkuzOibtkFHU06IidFN4gPmuA6r6L23hQ=
-Received: by 10.90.89.5 with SMTP id m5mr201339agb.1172143557378;
-        Thu, 22 Feb 2007 03:25:57 -0800 (PST)
-Received: by 10.90.51.4 with HTTP; Thu, 22 Feb 2007 03:25:57 -0800 (PST)
-Message-ID: <f68850780702220325g5c4967a8nee36625d8d83bc04@mail.gmail.com>
-Date:	Thu, 22 Feb 2007 16:55:57 +0530
-From:	"Raseel Bhagat" <raseelbhagat@gmail.com>
-To:	kernelnewbies <kernelnewbies@nl.linux.org>,
-	newbie <linux-newbie@vger.kernel.org>, linux-mips@linux-mips.org
-Subject: Re: not getting command prompt at the console
-In-Reply-To: <20070222111115.GC31252@gateway.home>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Feb 2007 13:32:30 +0000 (GMT)
+Received: from mo30.po.2iij.net ([210.128.50.53]:48652 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20038583AbXBVNcY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Feb 2007 13:32:24 +0000
+Received: by mo.po.2iij.net (mo30) id l1MDV5pi012476; Thu, 22 Feb 2007 22:31:05 +0900 (JST)
+Received: from localhost.localdomain (70.27.30.125.dy.iij4u.or.jp [125.30.27.70])
+	by mbox.po.2iij.net (mbox33) id l1MDV0NF041036
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 22 Feb 2007 22:31:01 +0900 (JST)
+Date:	Thu, 22 Feb 2007 22:31:00 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] add new SM501 drivers support to tb0287_defconfig
+Message-Id: <20070222223100.47911367.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <b115cb5f0702220149wfbfc051qc8d0106b9e4ed98d@mail.gmail.com>
-	 <20070222102540.GB31252@gateway.home>
-	 <f68850780702220250x57f4f678re104caecfeec6ef2@mail.gmail.com>
-	 <20070222111115.GC31252@gateway.home>
-Return-Path: <raseelbhagat@gmail.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14200
+X-archive-position: 14201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raseelbhagat@gmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi Ralf,
 
-On 2/22/07, Erik Mouw <mouw@nl.linux.org> wrote:
+This patch has added new SM501 drivers support to TB0287 defconfig.
 
-> > Also , assuming you are using a serial console , check your entries in
-> > the inittab file .
-> > It should look  something like :
-> > ttyS0::respawn:/sbin/getty ttyS0 115200 linux
->
-> If the device is indeed called "ttyS0". Remember it's a MIPS board, not
-> a peecee. For example, on StrongARM SA11x0 you need to use ttySA0
-> instead of ttyS0.
->
+Yoichi
 
-Correct.  Thanks for the correction Erik.
-My point being, you sould have such an entry in your inittab when
-working on a serial console.
-I have faced this problem before and spent hours trying to figure out
-what was only a silly-mistake.
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0287_defconfig mips/arch/mips/configs/tb0287_defconfig
+--- mips-orig/arch/mips/configs/tb0287_defconfig	2007-02-22 10:04:12.196917750 +0900
++++ mips/arch/mips/configs/tb0287_defconfig	2007-02-22 11:47:27.710893500 +0900
+@@ -1,7 +1,7 @@
+ #
+ # Automatically generated make config: don't edit
+-# Linux kernel version: 2.6.20
+-# Tue Feb 20 21:47:41 2007
++# Linux kernel version: 2.6.21-rc1
++# Thu Feb 22 10:38:09 2007
+ #
+ CONFIG_MIPS=y
+ 
+@@ -826,6 +826,11 @@ CONFIG_GPIO_VR41XX=y
+ # CONFIG_HWMON_VID is not set
+ 
+ #
++# Multifunction device drivers
++#
++CONFIG_MFD_SM501=y
++
++#
+ # Multimedia devices
+ #
+ # CONFIG_VIDEO_DEV is not set
+@@ -839,8 +844,10 @@ CONFIG_GPIO_VR41XX=y
+ #
+ # Graphics support
+ #
+-# CONFIG_FIRMWARE_EDID is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
+ CONFIG_FB=y
++# CONFIG_FIRMWARE_EDID is not set
++# CONFIG_FB_DDC is not set
+ CONFIG_FB_CFB_FILLRECT=y
+ CONFIG_FB_CFB_COPYAREA=y
+ CONFIG_FB_CFB_IMAGEBLIT=y
+@@ -849,6 +856,10 @@ CONFIG_FB_CFB_IMAGEBLIT=y
+ # CONFIG_FB_BACKLIGHT is not set
+ # CONFIG_FB_MODE_HELPERS is not set
+ # CONFIG_FB_TILEBLITTING is not set
++
++#
++# Frambuffer hardware drivers
++#
+ # CONFIG_FB_CIRRUS is not set
+ # CONFIG_FB_PM2 is not set
+ # CONFIG_FB_CYBER2000 is not set
+@@ -868,8 +879,9 @@ CONFIG_FB_CFB_IMAGEBLIT=y
+ # CONFIG_FB_KYRO is not set
+ # CONFIG_FB_3DFX is not set
+ # CONFIG_FB_VOODOO1 is not set
+-CONFIG_FB_SMIVGX=y
++# CONFIG_FB_SMIVGX is not set
+ # CONFIG_FB_TRIDENT is not set
++CONFIG_FB_SM501=y
+ # CONFIG_FB_VIRTUAL is not set
+ 
+ #
+@@ -883,7 +895,6 @@ CONFIG_DUMMY_CONSOLE=y
+ # Logo configuration
+ #
+ # CONFIG_LOGO is not set
+-# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
+ 
+ #
+ # Sound

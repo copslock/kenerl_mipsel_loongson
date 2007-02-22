@@ -1,74 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Feb 2007 18:10:39 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:27295 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037877AbXBUSKh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Feb 2007 18:10:37 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1LIAcuC005652;
-	Wed, 21 Feb 2007 18:10:38 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1LIAbLi005651;
-	Wed, 21 Feb 2007 18:10:37 GMT
-Date:	Wed, 21 Feb 2007 18:10:37 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix mmiowb() for MIPS I
-Message-ID: <20070221181037.GB4157@linux-mips.org>
-References: <20070222.021014.85684636.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0702211727530.29504@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0702211727530.29504@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Feb 2007 07:11:53 +0000 (GMT)
+Received: from web7904.mail.in.yahoo.com ([202.86.4.80]:58512 "HELO
+	web7904.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20037641AbXBVHLr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 22 Feb 2007 07:11:47 +0000
+Received: (qmail 6800 invoked by uid 60001); 22 Feb 2007 07:10:40 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=GBnhDfOGtbKYLAZaV23gVctbDguKzn6FzKB5EU7whOk6DJ2kpRgIFlmeAMPzBvvDACAsTXO9f5xMvbpLU1252nl0Y4pcBLKDkMXyNAp1MvheBKiO0GO8/V4M6GE0I6eGVbdsPEHzQWdARfHxyFMdWaQlXaHukezrWIxlV6pv8o0=;
+X-YMail-OSG: GKEWKwIVM1m0B_WeMqmaGmzIuff9emUs_cBCxCEeawRhRmqTV4TOaPdSPK9m_re0nlvT9p3roNaQkavsvmdqrwFbe8WXo_5WVCe0UUgWnuteWlTuFY06PzfAmeiDONRpeYzwFadVU9CSj7n7SwHE2g--
+Received: from [61.246.223.98] by web7904.mail.in.yahoo.com via HTTP; Thu, 22 Feb 2007 07:10:40 GMT
+Date:	Thu, 22 Feb 2007 07:10:40 +0000 (GMT)
+From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
+Subject: unaligned access
+To:	linux-mips@linux-mips.org,
+	sathesh babu <sathesh_edara2003@yahoo.co.in>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-314701750-1172128240=:6765"
+Content-Transfer-Encoding: 8bit
+Message-ID: <566085.6765.qm@web7904.mail.in.yahoo.com>
+Return-Path: <sathesh_edara2003@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14192
+X-archive-position: 14193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sathesh_edara2003@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 21, 2007 at 05:46:18PM +0000, Maciej W. Rozycki wrote:
+--0-314701750-1172128240=:6765
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-> > diff --git a/include/asm-mips/io.h b/include/asm-mips/io.h
-> > index 92ec261..855c304 100644
-> > --- a/include/asm-mips/io.h
-> > +++ b/include/asm-mips/io.h
-> > @@ -502,8 +502,7 @@ BUILDSTRING(q, u64)
-> >  #endif
-> >  
-> >  
-> > -/* Depends on MIPS II instruction set */
-> > -#define mmiowb() asm volatile ("sync" ::: "memory")
-> > +#define mmiowb() __sync()
-> >  
-> >  static inline void memset_io(volatile void __iomem *addr, unsigned char val, int count)
-> >  {
-> 
->  That's still not correct -- it should probably be defined like mb() 
-> currently is as the write-back buffer may defeat strong ordering (IIRC, 
-> the R2020 can do byte merging).  Also the semantics of mmiowb() does not 
-> seem to be well specified -- I gather a sequence of:
-> 
-> 	writeb(mmioreg, val);
-> 	mmiowb();
-> 	readb(mmioreg);
-> 
-> should guarantee "val" has reached the register (mmiowb() replacing 
-> incorrect mb() used in many places like this), but with either definition 
-> of mmiowb() and a MIPS-I-style external write-back buffer it will not 
-> work.
+Hi,
+    I have ported linux-2.6.12 kernel on MIPS processor.I would like to 
+print the warning messges whenenver kernel or user code  try to access 
+unaligned address ( including proceor ID ).
+  Is there any configuration option  avaliable in the kernel to view 
+the unaligned address?
+   
+  Thanks in advance.
+   
+  Regards,
+  Sathesh
 
-Does a read from the same device suffice to provide the necessary flushing
-the same way as it does on PCI?
 
-I'm not opposed to allowing platform specific definitions for operations
-like mmiowbb() but I think we really should get rid of the special MIPS
-iob() operation.
+ 				
+---------------------------------
+ Here’s a new way to find what you're looking for - Yahoo! Answers 
+--0-314701750-1172128240=:6765
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-  Ralf
+Hi,<BR>&nbsp;&nbsp;&nbsp; I have ported linux-2.6.12 kernel on MIPS processor.I would like to <BR>print the warning messges whenenver kernel or user code&nbsp; try to access <BR>unaligned address ( including proceor ID ).<BR>&nbsp; Is there any configuration option&nbsp; avaliable in the kernel to view <BR>the unaligned address?<BR>&nbsp;&nbsp; <BR>&nbsp; Thanks in advance.<BR>&nbsp;&nbsp; <BR>&nbsp; Regards,<BR>&nbsp; Sathesh<BR><BR><p>&#32;
+	
+
+	
+		<hr size=1></hr> 
+Here’s a new way to find what you're looking for - <a href="http://us.rd.yahoo.com/mail/in/yanswers/*http://in.answers.yahoo.com/">Yahoo! Answers</a> 
+--0-314701750-1172128240=:6765--

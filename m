@@ -1,84 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Feb 2007 03:37:01 +0000 (GMT)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:36685 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20038865AbXBWDg4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Feb 2007 03:36:56 +0000
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 23 Feb 2007 12:36:55 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 841ED41ECF;
-	Fri, 23 Feb 2007 12:36:31 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 70C5C20474;
-	Fri, 23 Feb 2007 12:36:31 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l1N3aUW0035256;
-	Fri, 23 Feb 2007 12:36:31 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 23 Feb 2007 12:36:30 +0900 (JST)
-Message-Id: <20070223.123630.92584856.nemoto@toshiba-tops.co.jp>
-To:	ralf@linux-mips.org
-Cc:	kevink@mips.com, sathesh_edara2003@yahoo.co.in,
-	rajat.noida.india@gmail.com, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Feb 2007 09:49:52 +0000 (GMT)
+Received: from web7914.mail.in.yahoo.com ([202.86.4.90]:14739 "HELO
+	web7914.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20037707AbXBWJtr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Feb 2007 09:49:47 +0000
+Received: (qmail 89556 invoked by uid 60001); 23 Feb 2007 09:48:38 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=n6RjLV+82WGXCwqqjudRDHRPudETAKusK09k1MRNnSfk0fK841s/nRjFzqQp6QzC9z0A2kcxw5FuyCcB+o4FP7nqZoFZBZP7ALOrpszPs7LM/chWKlcZyfxsg2jMd+7cGZ4GRnew/AH90CNxYFhai5UuEwAfH9zS2sBD3C9bm3U=;
+X-YMail-OSG: be7womkVM1ncZ5y.BN6Q9QCOh_GkYYTfKbq8S_YC.7jYJe9wMUWtFVwhANbtGGJqjOIFs7bRHeG2x1EXXjjsNAsFf6ljgr.wzOA__c7XntutQYdQRtAQZwq85RKVbwlG5uZdYz2J5tT8cIPUqzlsKQ--
+Received: from [61.246.223.98] by web7914.mail.in.yahoo.com via HTTP; Fri, 23 Feb 2007 09:48:38 GMT
+Date:	Fri, 23 Feb 2007 09:48:38 +0000 (GMT)
+From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
 Subject: Re: unaligned access
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>,
+	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	sathesh babu <sathesh_edara2003@yahoo.co.in>,
+	Rajat Jain <rajat.noida.india@gmail.com>,
+	linux-mips@linux-mips.org
 In-Reply-To: <20070223030645.GA1349@linux-mips.org>
-References: <80178.32924.qm@web7903.mail.in.yahoo.com>
-	<01fc01c75693$195858b0$10eca8c0@grendel>
-	<20070223030645.GA1349@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1192634343-1172224118=:88566"
+Content-Transfer-Encoding: 8bit
+Message-ID: <623154.88566.qm@web7914.mail.in.yahoo.com>
+Return-Path: <sathesh_edara2003@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14215
+X-archive-position: 14216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sathesh_edara2003@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 23 Feb 2007 03:06:45 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
-> There used to be a configuration option to allow logging which was a
-> leftover from the times when I implemented the unaligned emulation.  I
-> did never find it useful later on, so I removed that in almost 9 years
-> ago and nobody missed it since :-)
-> 
-> But I don't mind putting it back, controllable by sysctl if there is any
-> demand for it.
+--0-1192634343-1172224118=:88566
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Sometimes I want to know a value of unaligned_instructions variable,
-to make sure nobody is causing such exceptions.  I just wanted to know
-the statistics and did not want to control it, but showing name of the
-process and PC would help to find out who is guilty.  I wonder if
-anybody really want to handle the exception manually.
+It would be good idea to know which process hitting unaligned access and PC.
+  So that we can try to fix unaligned access when it causes the  performance bottleneck.
+   
+  Could you please share details about logging the unaligned accesses using sysctl.
+   
+  Thanks in advance
+   
+  Regards,
+  Sathesh
 
-So how about this interface?
+Ralf Baechle <ralf@linux-mips.org> wrote:
+  On Thu, Feb 22, 2007 at 04:06:57PM +0100, Kevin D. Kissell wrote:
 
-1. echo show > /sys/kernel/unaligned_action
+> Default behavior in MIPS is to silently fix up and emulate. A MIPS-specific
+> system call (sys_sysmips with the command argument of MIPS_FIXADE
+> and a parameter agument of zero) allows for this to be overridden, so that 
+> such accesses will be fatal. It looks as if there was once support to log the events 
+> to syslog, independently of whether or not they were fixed up, but it doesn't look to me 
+> as if that still works in 2.6.x kernels.
 
-Show register dump and processor name at each unaligned exception,
-using show_regs() or someting.
+There used to be a configuration option to allow logging which was a
+leftover from the times when I implemented the unaligned emulation. I
+did never find it useful later on, so I removed that in almost 9 years
+ago and nobody missed it since :-)
 
-2. echo quiet > /sys/kernel/unaligned_action
+But I don't mind putting it back, controllable by sysctl if there is any
+demand for it.
 
-Siliently fixup unaligned exceptions.
-
-3. cat /sys/kernel/unaligned_instructions
-
-Print unaligned_instructions variable.
+Ralf
 
 
-Creating files in /sys/kernel is fairly simple:
 
-	subsys_create_file(&kernel_subsys, &foo_attr);
+ 				
+---------------------------------
+ Here’s a new way to find what you're looking for - Yahoo! Answers 
+--0-1192634343-1172224118=:88566
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Any comments?
----
-Atsushi Nemoto
+<div>It would be good idea to know which process hitting unaligned access and PC.</div>  <div>So that we can try to fix unaligned access when it causes the &nbsp;performance bottleneck.</div>  <div>&nbsp;</div>  <div>Could you please share details about logging the unaligned accesses using sysctl.</div>  <div>&nbsp;</div>  <div>Thanks in advance</div>  <div>&nbsp;</div>  <div>Regards,</div>  <div>Sathesh<BR><BR><B><I>Ralf Baechle &lt;ralf@linux-mips.org&gt;</I></B> wrote:</div>  <BLOCKQUOTE class=replbq style="PADDING-LEFT: 5px; MARGIN-LEFT: 5px; BORDER-LEFT: #1010ff 2px solid">On Thu, Feb 22, 2007 at 04:06:57PM +0100, Kevin D. Kissell wrote:<BR><BR>&gt; Default behavior in MIPS is to silently fix up and emulate. A MIPS-specific<BR>&gt; system call (sys_sysmips with the command argument of MIPS_FIXADE<BR>&gt; and a parameter agument of zero) allows for this to be overridden, so that <BR>&gt; such accesses will be fatal. It looks as if there was once support to log the
+ events <BR>&gt; to syslog, independently of whether or not they were fixed up, but it doesn't look to me <BR>&gt; as if that still works in 2.6.x kernels.<BR><BR>There used to be a configuration option to allow logging which was a<BR>leftover from the times when I implemented the unaligned emulation. I<BR>did never find it useful later on, so I removed that in almost 9 years<BR>ago and nobody missed it since :-)<BR><BR>But I don't mind putting it back, controllable by sysctl if there is any<BR>demand for it.<BR><BR>Ralf<BR><BR></BLOCKQUOTE><BR><p>&#32;
+	
+
+	
+		<hr size=1></hr> 
+Here’s a new way to find what you're looking for - <a href="http://us.rd.yahoo.com/mail/in/yanswers/*http://in.answers.yahoo.com/">Yahoo! Answers</a> 
+--0-1192634343-1172224118=:88566--

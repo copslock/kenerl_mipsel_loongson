@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Feb 2007 03:21:35 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:37134 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20039114AbXBXDVa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Feb 2007 03:21:30 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 67002E1F58;
-	Sat, 24 Feb 2007 04:20:40 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id gWi5x8sYg3Y7; Sat, 24 Feb 2007 04:20:40 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3261410DDE5;
-	Fri, 23 Feb 2007 17:38:25 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l1NGTg2F030708;
-	Fri, 23 Feb 2007 17:29:42 +0100
-Date:	Fri, 23 Feb 2007 16:29:37 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	"Kevin D. Kissell" <kevink@mips.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	sathesh_edara2003@yahoo.co.in, rajat.noida.india@gmail.com,
-	linux-mips@linux-mips.org
-Subject: Re: unaligned access
-In-Reply-To: <20070223161840.GA23178@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0702231627510.9153@blysk.ds.pg.gda.pl>
-References: <20070223.123630.92584856.nemoto@toshiba-tops.co.jp>
- <005701c7573f$6aca0890$10eca8c0@grendel> <20070223161840.GA23178@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Feb 2007 20:53:30 +0000 (GMT)
+Received: from jg555.com ([216.66.227.242]:16565 "EHLO jg555.com")
+	by ftp.linux-mips.org with ESMTP id S28576257AbXBXUx2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Feb 2007 20:53:28 +0000
+Received: from [192.168.55.157] ([::ffff:192.168.55.157])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Sat, 24 Feb 2007 12:52:26 -0800
+  id 002DC567.45E0A58A.00006125
+Message-ID: <45E0A57F.4020304@jg555.com>
+Date:	Sat, 24 Feb 2007 12:52:15 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90/2631/Thu Feb 22 22:33:11 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Building 2.6.20.1 from source
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14237
+X-archive-position: 14238
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 23 Feb 2007, Ralf Baechle wrote:
+    Trying to build the current 2.6.20.1 on my cobalt. I get this error. 
+I have disabled epoll in the config, but still not compiling. Any 
+suggestions.
 
->  o Logging unaligned accesses is a dangerous thing; it can easily reach
->    a DoS-like volume.
-
- Providing a damn good incentive to fix your broken software?
-
-  Maciej
+arch/mips/lib-64/dump_tlb.c: In function 'msk2str':
+arch/mips/lib-64/dump_tlb.c:34: warning: control reaches end of non-void 
+function
+  LD      arch/mips/lib-64/built-in.o
+  AS      arch/mips/lib-64/memset.o
+  AS      arch/mips/lib-64/watch.o
+  AR      arch/mips/lib-64/lib.a
+  GEN     .version
+  CHK     include/linux/compile.h
+  UPD     include/linux/compile.h
+  CC      init/version.o
+  LD      init/built-in.o
+  LD      .tmp_vmlinux1
+arch/mips/kernel/built-in.o: In function `sys_call_table':
+arch/mips/kernel/scall64-64.S:(.text+0x9ef8): undefined reference to 
+`compat_sys_epoll_pwait'
+make: *** [.tmp_vmlinux1] Error 1

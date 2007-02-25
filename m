@@ -1,67 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Feb 2007 22:32:14 +0000 (GMT)
-Received: from jg555.com ([216.66.227.242]:15840 "EHLO jg555.com")
-	by ftp.linux-mips.org with ESMTP id S20027600AbXBXWcN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Feb 2007 22:32:13 +0000
-Received: from [192.168.55.157] ([::ffff:192.168.55.157])
-  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by jg555.com with esmtp; Sat, 24 Feb 2007 14:31:10 -0800
-  id 002DC559.45E0BCAE.00006991
-Message-ID: <45E0BCA4.9020208@jg555.com>
-Date:	Sat, 24 Feb 2007 14:31:00 -0800
-From:	Jim Gifford <maillist@jg555.com>
-User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Building 2.6.20.1 from source
-References: <45E0A57F.4020304@jg555.com> <20070224205850.GA12637@linux-mips.org> <20070224211348.GB12637@linux-mips.org>
-In-Reply-To: <20070224211348.GB12637@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <maillist@jg555.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Feb 2007 14:36:05 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:30878 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20038992AbXBYOgE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 25 Feb 2007 14:36:04 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1PEZxK5014511
+	for <linux-mips@linux-mips.org>; Sun, 25 Feb 2007 14:35:59 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1PEZwtG014510
+	for linux-mips@linux-mips.org; Sun, 25 Feb 2007 14:35:58 GMT
+Date:	Sun, 25 Feb 2007 14:35:58 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Testing needed: Support for 2nd ethernet port of Challenge S
+Message-ID: <20070225143558.GA14175@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14241
+X-archive-position: 14242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maillist@jg555.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Sat, Feb 24, 2007 at 08:58:50PM +0000, Ralf Baechle wrote:
->
-> Guess I should have eyeballed the error message for a few extra nanoseconds,
-> my answer wasn't quite right.  Enabling the binary compat options would
-> fix the build but leave the native N64 broken.  Below the fix.
->
->   Ralf
->
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
->
-> diff --git a/arch/mips/kernel/scall64-64.S b/arch/mips/kernel/scall64-64.S
-> index 10e9a18..e569b84 100644
-> --- a/arch/mips/kernel/scall64-64.S
-> +++ b/arch/mips/kernel/scall64-64.S
-> @@ -470,4 +470,4 @@ sys_call_table:
->  	PTR	sys_get_robust_list
->  	PTR	sys_kexec_load			/* 5270 */
->  	PTR	sys_getcpu
-> -	PTR	compat_sys_epoll_pwait
-> +	PTR	sys_epoll_pwait
-> diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-> index c5f590c..bcc4248 100644
-> --- a/arch/mips/kernel/scall64-o32.S
-> +++ b/arch/mips/kernel/scall64-o32.S
-> @@ -518,5 +518,5 @@ sys_call_table:
->  	PTR	compat_sys_get_robust_list	/* 4310 */
->  	PTR	compat_sys_kexec_load
->  	PTR	sys_getcpu
-> -	PTR	sys_epoll_pwait
-> +	PTR	compat_sys_epoll_pwait
->  	.size	sys_call_table,.-sys_call_table
->
->   
-Thanx Ralf.!!!
+Below patch adds support to the second ethernet port of the Challenge S.
+It basically is a forward port of what already exists on the linux-2.4
+branch as commit 5eb7a832f4777aa1f994f32da59f58bfc49d39a6 since September
+2005 but I'd prefer if somebody would give it some testing before I
+send this one upstream.
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+diff --git a/drivers/net/sgiseeq.c b/drivers/net/sgiseeq.c
+index a833e7f..0a82b4c 100644
+--- a/drivers/net/sgiseeq.c
++++ b/drivers/net/sgiseeq.c
+@@ -27,8 +27,10 @@
+ #include <asm/byteorder.h>
+ #include <asm/io.h>
+ #include <asm/system.h>
++#include <asm/paccess.h>
+ #include <asm/page.h>
+ #include <asm/pgtable.h>
++#include <asm/sgi/mc.h>
+ #include <asm/sgi/hpc3.h>
+ #include <asm/sgi/ip22.h>
+ #include <asm/sgialib.h>
+@@ -636,7 +638,7 @@ static inline void setup_rx_ring(struct sgiseeq_rx_desc *buf, int nbufs)
+ 
+ #define ALIGNED(x)  ((((unsigned long)(x)) + 0xf) & ~(0xf))
+ 
+-static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq)
++static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq, int has_eeprom)
+ {
+ 	struct sgiseeq_init_block *sr;
+ 	struct sgiseeq_private *sp;
+@@ -662,7 +664,9 @@ static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq)
+ 
+ #define EADDR_NVOFS     250
+ 	for (i = 0; i < 3; i++) {
+-		unsigned short tmp = ip22_nvram_read(EADDR_NVOFS / 2 + i);
++		unsigned short tmp = has_eeprom ?
++			ip22_eeprom_read(&hpcregs->eeprom, EADDR_NVOFS / 2+i) :
++			ip22_nvram_read(EADDR_NVOFS / 2+i);
+ 
+ 		dev->dev_addr[2 * i]     = tmp >> 8;
+ 		dev->dev_addr[2 * i + 1] = tmp & 0xff;
+@@ -695,6 +699,11 @@ static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq)
+ 	sp->hregs->dconfig = HPC3_EDCFG_FIRQ | HPC3_EDCFG_FEOP |
+ 			     HPC3_EDCFG_FRXDC | HPC3_EDCFG_PTO | 0x026;
+ 
++	/* Setup PIO and DMA transfer timing */
++	sp->hregs->pconfig = 0x161;
++	sp->hregs->dconfig = HPC3_EDCFG_FIRQ | HPC3_EDCFG_FEOP |
++			     HPC3_EDCFG_FRXDC | HPC3_EDCFG_PTO | 0x026;
++
+ 	/* Reset the chip. */
+ 	hpc3_eth_reset(sp->hregs);
+ 
+@@ -741,8 +750,23 @@ err_out:
+ 
+ static int __init sgiseeq_probe(void)
+ {
++	unsigned int tmp, ret1, ret2 = 0;
++
+ 	/* On board adapter on 1st HPC is always present */
+-	return sgiseeq_init(hpc3c0, SGI_ENET_IRQ);
++	ret1 = sgiseeq_init(hpc3c0, SGI_ENET_IRQ, 0);
++	/* Let's see if second HPC is there */
++	if (!(ip22_is_fullhouse()) &&
++	    get_dbe(tmp, (unsigned int *)&hpc3c1->pbdma[1]) == 0) {
++		sgimc->giopar |= SGIMC_GIOPAR_MASTEREXP1 |
++				 SGIMC_GIOPAR_EXP164 |
++				 SGIMC_GIOPAR_HPC264;
++		hpc3c1->pbus_piocfg[0][0] = 0x3ffff;
++		/* interrupt/config register on Challenge S Mezz board */
++		hpc3c1->pbus_extregs[0][0] = 0x30;
++		ret2 = sgiseeq_init(hpc3c1, SGI_GIO_0_IRQ, 1);
++	}
++
++	return (ret1 & ret2) ? ret1 : 0;
+ }
+ 
+ static void __exit sgiseeq_exit(void)

@@ -1,114 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Feb 2007 14:36:05 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:30878 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20038992AbXBYOgE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 25 Feb 2007 14:36:04 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1PEZxK5014511
-	for <linux-mips@linux-mips.org>; Sun, 25 Feb 2007 14:35:59 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1PEZwtG014510
-	for linux-mips@linux-mips.org; Sun, 25 Feb 2007 14:35:58 GMT
-Date:	Sun, 25 Feb 2007 14:35:58 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] Testing needed: Support for 2nd ethernet port of Challenge S
-Message-ID: <20070225143558.GA14175@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Feb 2007 08:38:00 +0000 (GMT)
+Received: from qb-out-0506.google.com ([72.14.204.227]:55368 "EHLO
+	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037755AbXBZIhz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Feb 2007 08:37:55 +0000
+Received: by qb-out-0506.google.com with SMTP id e12so776289qba
+        for <linux-mips@linux-mips.org>; Mon, 26 Feb 2007 00:36:54 -0800 (PST)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=ElZ228PkwGYcxN1ya12tsNU1RLxm/boxC6KoEcG+S6h3Cu7wB4SryA5aW34qrp5/ZzIASob5QRn6D5OQSM/4F7jWCNKE9CVCgkIqKLs0k9DnVm7yMx2UNKlfJfBcTgqhJ3H2p1FVk2N2FG0pyVhz4N9OaoJwCt0mmNmCe3/6mcg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=K99DZpIeAfVUVlEWKnLNNBOp6JsnQNJj8+pcS3UiBbI9xGl8B+3lhUkxa69x1KZyvZgb45DE/LerOQ8BxQ6Wynu2Zf28pg8DcuyPa8KqhFmDkpVzLV76QGtchB3a77EFtjNlHD/LGuvDk0dLZZeGtf7GSXdq1ojKiQm/3ZV6fys=
+Received: by 10.114.122.2 with SMTP id u2mr2003254wac.1172479013683;
+        Mon, 26 Feb 2007 00:36:53 -0800 (PST)
+Received: by 10.114.136.11 with HTTP; Mon, 26 Feb 2007 00:36:53 -0800 (PST)
+Message-ID: <cda58cb80702260036r4a93033i51b1b135b96f189d@mail.gmail.com>
+Date:	Mon, 26 Feb 2007 09:36:53 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [RFC] Add basic SMARTMIPS ASE support
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20070220220210.GA10404@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+References: <45C369CB.2040400@innova-card.com>
+	 <20070220220210.GA10404@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14242
+X-archive-position: 14243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Below patch adds support to the second ethernet port of the Challenge S.
-It basically is a forward port of what already exists on the linux-2.4
-branch as commit 5eb7a832f4777aa1f994f32da59f58bfc49d39a6 since September
-2005 but I'd prefer if somebody would give it some testing before I
-send this one upstream.
+On 2/20/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Fri, Feb 02, 2007 at 05:41:47PM +0100, Franck Bui-Huu wrote:
+>
+> > From: Franck Bui-Huu <fbuihuu@gmail.com>
+> >
+> > This patch adds trivial support for SMARTMIPS extension. This
+> > extension is currently implemented by 4KS[CD] CPUs.
+>
+> The SmartMIPS ASE according to the spec is explicitly for MIPS32, so I'm
+> stripping the 64-bit kernel bits of it.  I also did a bit of Kconfig
+> polishing to make SmartMIPS selectable on those platforms which might
+> actually have such a CPU only, that is currently all the FPGA-based
+> platforms, Altas, SEAD and Malta.
+>
 
-  Ralf
+Thanks for polishing.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/drivers/net/sgiseeq.c b/drivers/net/sgiseeq.c
-index a833e7f..0a82b4c 100644
---- a/drivers/net/sgiseeq.c
-+++ b/drivers/net/sgiseeq.c
-@@ -27,8 +27,10 @@
- #include <asm/byteorder.h>
- #include <asm/io.h>
- #include <asm/system.h>
-+#include <asm/paccess.h>
- #include <asm/page.h>
- #include <asm/pgtable.h>
-+#include <asm/sgi/mc.h>
- #include <asm/sgi/hpc3.h>
- #include <asm/sgi/ip22.h>
- #include <asm/sgialib.h>
-@@ -636,7 +638,7 @@ static inline void setup_rx_ring(struct sgiseeq_rx_desc *buf, int nbufs)
- 
- #define ALIGNED(x)  ((((unsigned long)(x)) + 0xf) & ~(0xf))
- 
--static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq)
-+static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq, int has_eeprom)
- {
- 	struct sgiseeq_init_block *sr;
- 	struct sgiseeq_private *sp;
-@@ -662,7 +664,9 @@ static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq)
- 
- #define EADDR_NVOFS     250
- 	for (i = 0; i < 3; i++) {
--		unsigned short tmp = ip22_nvram_read(EADDR_NVOFS / 2 + i);
-+		unsigned short tmp = has_eeprom ?
-+			ip22_eeprom_read(&hpcregs->eeprom, EADDR_NVOFS / 2+i) :
-+			ip22_nvram_read(EADDR_NVOFS / 2+i);
- 
- 		dev->dev_addr[2 * i]     = tmp >> 8;
- 		dev->dev_addr[2 * i + 1] = tmp & 0xff;
-@@ -695,6 +699,11 @@ static int sgiseeq_init(struct hpc3_regs* hpcregs, int irq)
- 	sp->hregs->dconfig = HPC3_EDCFG_FIRQ | HPC3_EDCFG_FEOP |
- 			     HPC3_EDCFG_FRXDC | HPC3_EDCFG_PTO | 0x026;
- 
-+	/* Setup PIO and DMA transfer timing */
-+	sp->hregs->pconfig = 0x161;
-+	sp->hregs->dconfig = HPC3_EDCFG_FIRQ | HPC3_EDCFG_FEOP |
-+			     HPC3_EDCFG_FRXDC | HPC3_EDCFG_PTO | 0x026;
-+
- 	/* Reset the chip. */
- 	hpc3_eth_reset(sp->hregs);
- 
-@@ -741,8 +750,23 @@ err_out:
- 
- static int __init sgiseeq_probe(void)
- {
-+	unsigned int tmp, ret1, ret2 = 0;
-+
- 	/* On board adapter on 1st HPC is always present */
--	return sgiseeq_init(hpc3c0, SGI_ENET_IRQ);
-+	ret1 = sgiseeq_init(hpc3c0, SGI_ENET_IRQ, 0);
-+	/* Let's see if second HPC is there */
-+	if (!(ip22_is_fullhouse()) &&
-+	    get_dbe(tmp, (unsigned int *)&hpc3c1->pbdma[1]) == 0) {
-+		sgimc->giopar |= SGIMC_GIOPAR_MASTEREXP1 |
-+				 SGIMC_GIOPAR_EXP164 |
-+				 SGIMC_GIOPAR_HPC264;
-+		hpc3c1->pbus_piocfg[0][0] = 0x3ffff;
-+		/* interrupt/config register on Challenge S Mezz board */
-+		hpc3c1->pbus_extregs[0][0] = 0x30;
-+		ret2 = sgiseeq_init(hpc3c1, SGI_GIO_0_IRQ, 1);
-+	}
-+
-+	return (ret1 & ret2) ? ret1 : 0;
- }
- 
- static void __exit sgiseeq_exit(void)
+BTW, 'linux-2.6.21-rc1' tag is missing in your repo.
+-- 
+               Franck

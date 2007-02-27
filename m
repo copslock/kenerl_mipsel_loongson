@@ -1,102 +1,380 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Feb 2007 20:08:00 +0000 (GMT)
-Received: from phoenix.bawue.net ([193.7.176.60]:39571 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S28573819AbXB0UHz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Feb 2007 20:07:55 +0000
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id 6295DBAC53;
-	Tue, 27 Feb 2007 21:01:38 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1HM8Y1-0004Ri-1v; Tue, 27 Feb 2007 20:03:41 +0000
-Date:	Tue, 27 Feb 2007 20:03:41 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-Cc:	Andrew Sharp <tigerand@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/5] mips: PMC MSP71xx mips common
-Message-ID: <20070227200340.GE12230@networkno.de>
-References: <45E47197.7010204@pmc-sierra.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <45E47197.7010204@pmc-sierra.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Feb 2007 20:29:40 +0000 (GMT)
+Received: from smtp.osdl.org ([65.172.181.24]:18373 "EHLO smtp.osdl.org")
+	by ftp.linux-mips.org with ESMTP id S20039197AbXB0U3f (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Feb 2007 20:29:35 +0000
+Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
+	by smtp.osdl.org (8.12.8/8.12.8) with ESMTP id l1RKQChB016257
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Tue, 27 Feb 2007 12:26:13 -0800
+Received: from sony (shell0.pdx.osdl.net [10.9.0.31])
+	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id l1RKQ9Ma027142;
+	Tue, 27 Feb 2007 12:26:11 -0800
+Date:	Tue, 27 Feb 2007 12:26:06 -0800
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	Marc St-Jean <stjeanma@pmc-sierra.com>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] drivers: PMC MSP71xx GPIO char driver
+Message-Id: <20070227122606.8ec3f09a.akpm@linux-foundation.org>
+In-Reply-To: <200702232328.l1NNSJXr015186@pasqua.pmc-sierra.bc.ca>
+References: <200702232328.l1NNSJXr015186@pasqua.pmc-sierra.bc.ca>
+X-Mailer: Sylpheed version 2.2.4 (GTK+ 2.8.19; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: osdl$Revision: 1.176 $
+X-Scanned-By: MIMEDefang 2.36
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14268
+X-archive-position: 14269
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-Marc St-Jean wrote:
+> On Fri, 23 Feb 2007 17:28:19 -0600 Marc St-Jean <stjeanma@pmc-sierra.com> wrote:
+> [PATCH] drivers: PMC MSP71xx GPIO char driver
 > 
+> Patch to add a GPIO char driver for the PMC-Sierra
+> MSP71xx devices.
 > 
-> Thiemo Seufer wrote:
-> > Marc St-Jean wrote:
-> > [snip]
-> >  > >  > +#ifdef CONFIG_PMC_MSP
-> >  > >  > +     jal     kernel_entry
-> >  > >  > +#else
-> > 
-> > Maybe introduce a CONFIG_BOOT_RAW (and use it in arch/mips/Makefile
-> > to objcopy the kernel to a raw binary).
-> > 
-> >  > >  > +     /*
-> >  > >  >        * Reserved space for exception handlers.
-> >  > >  >        * Necessary for machines which link their kernels at KSEG0.
-> >  > >  >        */
-> >  > >  >       .fill   0x400
-> >  > >  > +#endif /* CONFIG_PMC_MSP */
-> >  > >
-> >  > > This is getting kind of ugly.  There are a whole lot of config choices
-> >  > > that need to use the 'j kernel_entry'.  Do they all have to have their
-> >  > > own?  I'm not sure what the best way is to handle them all.
-> >  >
-> >  > I agree but don't know the best way to handle this. I could introduce a
-> >  > SYS_NO_EXEPT_FILL or similar flag but this seems excessive.
-> >  >
-> >  > Any other ideas from arch/mips folks?
-> > 
-> > Something like
-> > 
-> > #if LOADADDR == 0xffffffff80000000
-> >         .fill   0x400
-> > #endif
-> > 
-> > but by defining an appropriate name in arch/mips/Makefile instead of
-> > externalizing the load-y/LOADADDR there.
+> This patch references some platform support files previously
+> submitted to the linux-mips@linux-mips.org list.
 > 
-> Thanks for the suggestions Thiemo.
-> 
-> We only need one of these solutions and I think the second one is cleaner.
 
-You need both as they solve two independent problems. One is rerouting
-the kernel entry, the other saves some space in the image.
+Comments:
 
-> I do have a few questions before respinning the patch:
-> 
-> 1. Why do you want to create another name, wouldn't there be less confusion
-> and chance for errors by reusing LOADADDR and ensuring it's the same as what
-> the linker script uses?
+> +static int msp_blink_running;
 
-LOADADDR is a short and thus bad name for a global symbol.
+Could have type `bool'.
 
-> 2. Looking at arch/mips/Makefile there are many boards not using
-> 0xffffffff80000000. If we introduce this check it seems that all of these
-> boards will have their _stext changed and it'll affect their "jump" address
-> from monitor/boot scripts?
+> +static DEFINE_SPINLOCK(msp_blink_lock);
+> +static DECLARE_COMPLETION(msp_blink_wait);
+> +
+> +struct blinkTable_t {
 
-For targets with a raw binary kernel the assumption is that their
-firmware jumps to the start of the image. The .fill translates to nops.
+a) It uses StudlyCaps
 
-Targets which don't use 0x80000000 as load address don't need to
-reserve space at the start for exception handlers.
+b) the _t suffix is used for typedefs.
 
+I suggest this be renamed to `struct blink_table'.
 
-Thiemo
+> +	uint32_t count;
+> +	uint32_t period;
+> +	uint32_t dcycle;
+
+u32 is preferred.
+
+> +static uint32_t msp_gpio_read_data_extended(void)
+
+everywhere...
+
+> +{
+> +	int pin;
+> +	uint32_t tmp, retval = 0;
+> +	
+> +	tmp = *EXTENDED_GPIO_REG;
+> +	for( pin = 0; pin < EXTENDED_GPIO_COUNT; pin++ ) {
+> +		uint32_t bit = 0;
+> +		/*
+> +		 * In output mode, read CLR bit
+> +		 * In input mode, read SET bit
+> +		 */
+> +		if( tmp & (EXTENDED_GPIO_CFG_ENABLE <<
+> +					EXTENDED_GPIO_CFG_SHIFT(pin)) )
+
+Please convert all the code to sue standard whitespace conventions:
+
+	for (i = 0; i < n; i++) {
+
+and
+
+	if (foo && bar)
+
+> +			bit = (EXTENDED_GPIO_DATA_CLR <<
+> +					EXTENDED_GPIO_DATA_SHIFT(pin));
+
+Uneeded parens.
+
+> +			retval |= (1 << pin);
+
+Ditto.
+
+> +static int msp_gpio_ioctl( struct inode *inode, struct file *file,
+> +		unsigned int cmd, unsigned long arg)
+> +{
+> +	static struct msp_gpio_ioctl_io_data data;
+> +	static struct msp_gpio_ioctl_blink_data blink;
+> +
+> +	switch( cmd ) {
+
+	switch (cmd) {
+
+> +		case MSP_GPIO_BLINK:
+> +			if( copy_from_user(&blink, (struct msp_gpio_ioctl_blink_data *)arg, sizeof(blink) ) )
+> +				return -EFAULT;
+> +			break;
+> +		default:
+> +			if( copy_from_user(&data, (struct msp_gpio_ioctl_io_data *)arg, sizeof(data) ) )
+> +				return -EFAULT;
+> +			break;
+
+Please indent the body of the switch one tabstop less than this.
+
+Please fit all the code into 80-cols.
+
+> +	}
+> +
+> +	switch( cmd ) {
+> +		case MSP_GPIO_IN:
+> +			if( msp_gpio_in( &data.data, data.mask ) )
+
+Lots of dittos here.
+
+> +/* -- Module functions -- */
+> +
+> +static int msp_gpio_blinkthread( void *none )
+
+Why is this a "module function"?
+
+> +{
+> +	int firstrun = 1;
+> +	
+> +	msp_blink_running = 1;
+> +	while( msp_blink_running ) {
+> +		uint32_t mask = 0, data = 0;
+> +		int i, blinking = 0;
+> +		spin_lock( &msp_blink_lock );
+> +		for( i = 0; i < MSP_NUM_GPIOS; i++ ) {
+> +			/* use blinkTable[i].period as 'blink enabled' test */
+> +			if( blinkTable[i].period) {
+> +				blinking = 1;
+> +				mask |= MSP_GPIO_BIT(i);
+> +				blinkTable[i].count++;
+> +
+> +				if( blinkTable[i].count >=
+> +						blinkTable[i].period )
+> +					blinkTable[i].count = 0;
+> +
+> +				if( blinkTable[i].count <
+> +					(blinkTable[i].period *
+> +					 blinkTable[i].dcycle / 100 ) )
+> +					data |= MSP_GPIO_BIT(i);
+> +			}
+> +		}
+> +		spin_unlock( &msp_blink_lock );
+> +
+> +		if( !firstrun || blinking )
+> +			msp_gpio_write_data( data, mask );
+> +		else
+> +			firstrun = 0;
+> +
+> +		if( blinking ) {
+> +			set_current_state(TASK_INTERRUPTIBLE);
+> +			schedule_timeout (HZ/100);
+
+schedule_timeout_interruptible), or ssleep().
+
+This kernel thread will probably break suspend.  I suspect a
+try_to_freeze() is needed.
+
+> +		} else {
+> +			wait_for_completion_interruptible( &msp_blink_wait );
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __init msp_gpio_init(void)
+> +{
+> +	if( misc_register(&msp_gpio_miscdev) ) {
+> +		printk( "Device registration failed\n" );
+> +		goto err_miscdev;
+> +	}
+> +
+> +	msp_blinkthread = kthread_run( msp_gpio_blinkthread, NULL, "gpio_blink" );
+> +	if( msp_blinkthread == NULL )
+> +	{
+
+	if (msp_blinkthread == NULL) {
+
+> +		printk( "Could not start kthread\n" );
+> +		goto err_blinkthread;
+> +	}
+> +
+> +	printk( "MSP7120 GPIO subsystem initialized\n" );
+
+Please give all the printks a facility level (KERN_INFO, etc)
+
+> +	return 0;
+> +
+> +err_blinkthread:
+> +	misc_deregister(&msp_gpio_miscdev);
+> +err_miscdev:
+> +	return -ENOMEM;
+> +}
+> +
+> +static void __exit msp_gpio_exit(void)
+> +{
+> +	msp_blink_running = 0;
+> +	complete( &msp_blink_wait );
+> +	kthread_stop( msp_blinkthread );
+> +
+> +	misc_deregister(&msp_gpio_miscdev);
+> +}
+
+I think msp_blink_running can just be removed - use kthread_should_stop().
+
+> +module_init(msp_gpio_init);
+> +module_exit(msp_gpio_exit);
+> +
+> +EXPORT_SYMBOL(msp_gpio_in);
+> +EXPORT_SYMBOL(msp_gpio_out);
+> +EXPORT_SYMBOL(msp_gpio_mode);
+> +EXPORT_SYMBOL(msp_gpio_blink);
+> +EXPORT_SYMBOL(msp_gpio_noblink);
+
+What uses these exports?
+
+> +#include <msp_gpio_macros.h>
+> +
+> +/* IOCTL structs macros */
+> +
+> +struct msp_gpio_ioctl_io_data
+
+	struct foo {
+
+> +{
+> +	uint32_t data;
+> +	uint32_t mask;
+> +};
+> +
+> +struct msp_gpio_ioctl_blink_data
+> +{
+
+Ditto.
+
+> +	uint32_t mask;
+> +	uint32_t period;
+> +	uint32_t dcycle;
+> +};
+> +
+> +#define MSP_GPIO_IOCTL_BASE	'Z'
+> +
+> +/* Reads the current data bits */
+> +#define MSP_GPIO_IN		_IOWR(MSP_GPIO_IOCTL_BASE, 0, \
+> +					struct msp_gpio_ioctl_io_data )
+
+Remvove space before the )
+
+> +
+> +/* Writes data bits */
+> +#define MSP_GPIO_OUT	_IOW (MSP_GPIO_IOCTL_BASE, 1, \
+> +					struct msp_gpio_ioctl_io_data )
+> +
+> +/*
+> + * Sets all masked pins to the msp_gpio_mode_t given in the data field
+> + */
+> +#define MSP_GPIO_MODE	_IOW (MSP_GPIO_IOCTL_BASE, 2, \
+> +					struct msp_gpio_ioctl_io_data )
+
+Dittoes.
+
+> +/* 
+> + * Starts any masked LEDs blinking with parameters as follows:
+> + *   - period - The time in 100ths of a second for a single period
+> + *              (set to '0' to stop blinking)
+> + *   - dcycle - The 'duty cycle' - what percentage of the period should the
+> + *              gpio be on?
+> + */
+> +#define MSP_GPIO_BLINK	_IOW (MSP_GPIO_IOCTL_BASE, 3, \
+> +					struct msp_gpio_ioctl_blink_data )
+
+And remove space before (
+
+> +/* Bit flags and masks for GPIOs */
+> +#define MSP_GPIO_BIT(gpio)	(1 << gpio)
+
+This probably obscures more than it reveals.  Better to open-code it.
+
+> +#define MSP_NUM_GPIOS		(20)
+> +
+> +#define MSP_GPIO_ALL_MASK 	((1<<MSP_NUM_GPIOS) - 1)
+> +
+> +#define MSP_GPIO_NONE_MASK 	(0LL)
+> +
+> +#define MSP_GPIO_FREE_MASK	MSP_GPIO_ALL_MASK
+> +
+> +/* The following is only available to other modules */
+> +
+> +#ifdef __KERNEL__
+> +
+> +/*
+> + * Reads the bits specified by the mask and puts the values in data.
+> + * May include output statuses also, if in mask.
+> + *
+> + * Returns 0 on success
+> + */
+> +extern int msp_gpio_in( uint32_t *data, uint32_t mask );
+
+Busted whitespace, use u32
+
+> +
+> +/*
+> + * Sets the specified data to the masked pins
+> + *
+> + * Returns 0 on success or one of the following:
+> + *  -EINVAL if any of the pins in the mask are not free or not already in output
+> + *  mode
+> + */
+> +extern int msp_gpio_out( uint32_t data, uint32_t mask );
+> +
+> +/*
+> + * Sets all masked pins to the specified msp_gpio_mode_t
+> + *
+> + * Returns 0 on success or one of the following:
+> + *  -EINVAL if any of the pins in the mask are not free, or if any pins are not
+> + *  allowed to be set to the specified mode
+> + */
+> +extern int msp_gpio_mode( msp_gpio_mode_t mode, uint32_t mask );
+
+It's more conventional to document functions in the .c file, using
+kerneldoc format.
+
+> +/*
+> + * Stops the specified GPIOs from blinking
+> + */
+> +extern int msp_gpio_noblink( uint32_t mask );
+> +
+> +/*
+> + * Configures GPIO(s) to blink
+> + *  - mask shows which GPIOs to blink
+> + *  - period is the time in 100ths of a second for the total period
+> + *    (0 disables blinking)
+> + *  - dcycle is the percentage of the period where the GPIO is HI
+> + */
+> +int msp_gpio_blink( uint32_t mask, uint32_t period, uint32_t dcycle );
+> +
+> +/* Special bitflags and whatnot for the driver's convenience */
+> +#define GPIO_REG_COUNT		4
+> +const uint32_t GPIO_DATA_COUNT[] = { 2, 4, 4, 6 };
+> +const uint32_t GPIO_DATA_SHIFT[] = { 0, 2, 6, 10 };
+> +const uint32_t GPIO_DATA_MASK[]  = { 0x03, 0x0f, 0x0f, 0x3f };
+> +volatile uint32_t * const GPIO_DATA_REG[] = {
+> +	GPIO_DATA1_REG, GPIO_DATA2_REG, GPIO_DATA3_REG, GPIO_DATA4_REG,
+> +};
+> +const uint32_t GPIO_CFG_MASK[]   = { 0x0000ff, 0x00ffff, 0x00ffff, 0xffffff };
+> +volatile uint32_t * const GPIO_CFG_REG[] = {
+> +	GPIO_CFG1_REG, GPIO_CFG2_REG, GPIO_CFG3_REG, GPIO_CFG4_REG,
+> +};
+
+This should all be moved from .h into .c.  As it is, if two .c files
+include this header, we'll get additional copies of this data.  And a
+linker error.
+
+Please don't use volatile.  Kernel standard I/O operations (inb, readl,
+etc) handle all this.

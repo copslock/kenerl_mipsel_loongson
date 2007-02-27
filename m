@@ -1,78 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Feb 2007 18:15:10 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:5837 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20039164AbXB0SPJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Feb 2007 18:15:09 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l1RIF2P5010957;
-	Tue, 27 Feb 2007 18:15:03 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l1RIF1d8010929;
-	Tue, 27 Feb 2007 18:15:01 GMT
-Date:	Tue, 27 Feb 2007 18:15:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org, netdev@vger.kernel.org,
-	Jeff Garzik <jeff@garzik.org>
-Subject: [PATCH] jmr3927: do not call tc35815_killall().
-Message-ID: <20070227181501.GA10897@linux-mips.org>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Feb 2007 18:49:22 +0000 (GMT)
+Received: from [66.201.51.66] ([66.201.51.66]:47301 "EHLO ripper.onstor.net")
+	by ftp.linux-mips.org with ESMTP id S20039200AbXB0StS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Feb 2007 18:49:18 +0000
+Received: from andys by ripper.onstor.net with local (Exim 4.63)
+	(envelope-from <andy.sharp@onstor.com>)
+	id 1HM7Kr-0008Rg-S9
+	for linux-mips@linux-mips.org; Tue, 27 Feb 2007 10:46:01 -0800
+Date:	Tue, 27 Feb 2007 10:46:01 -0800
+From:	Andrew Sharp <tigerand@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/5] mips: PMC MSP71xx mips common
+Message-ID: <20070227184555.GA32425@onstor.com>
+References: <45E465C1.50408@pmc-sierra.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <45E465C1.50408@pmc-sierra.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <andy.sharp@onstor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14265
+X-archive-position: 14266
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tigerand@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-No need to stop tc35815 before resetting the board.  This fixes the
-build of tc35815 as a module.  This also means there is no caller of
-tc35815_killall left, so remove that function also.
+On Tue, Feb 27, 2007 at 09:09:21AM -0800, Marc St-Jean wrote:
+> 
+> Andrew Sharp wrote:
+> > On Mon, 26 Feb 2007 18:12:55 -0600 Marc St-Jean <stjeanma@pmc-sierra.com> wrote:
+> >  > diff --git a/include/asm-mips/bootinfo.h b/include/asm-mips/bootinfo.h
+> >  > index c7c945b..ab29fd4 100644
+> >  > --- a/include/asm-mips/bootinfo.h
+> >  > +++ b/include/asm-mips/bootinfo.h
+> >  > @@ -213,6 +213,18 @@
+> >  >  #define MACH_GROUP_NEC_EMMA2RH 25    /* NEC EMMA2RH (was 23)         */
+> >  > #define  MACH_NEC_MARKEINS    0       /* NEC EMMA2RH Mark-eins        */
+> >  > +/*
+> >  > + * Valid machtype for group PMC-MSP
+> >  > + */
+> >  > +#define MACH_GROUP_MSP         23    /* PMC-Sierra MSP 
+> > boards/CPUs    */
+> >  > +#define MACH_MSP4200_EVAL       0    /* PMC-Sierra MSP4200 
+> > Evaluation board */
+> >  > +#define MACH_MSP4200_GW         1    /* PMC-Sierra MSP4200 Gateway 
+> > demo board */
+> >  > +#define MACH_MSP4200_FPGA       2    /* PMC-Sierra MSP4200 Emulation 
+> > board */
+> >  > +#define MACH_MSP7120_EVAL       3    /* PMC-Sierra MSP7120 
+> > Evaluation board *
+> > /
+> >  > +#define MACH_MSP7120_GW         4    /* PMC-Sierra MSP7120 
+> > Residential Gateway board */
+> >  > +#define MACH_MSP7120_FPGA       5    /* PMC-Sierra MSP7120 Emulation 
+> > board */
+> >  > +#define MACH_MSP_OTHER        255    /* PMC-Sierra unknown board 
+> > type */
+> >  > +#define CL_SIZE                      COMMAND_LINE_SIZE
+> > 
+> > 
+> > Really I would add MACH_GROUP_MSP after MACH_GROUP_NEC_EMMA2RH,
+> > perhaps 27 or 28, rather than an interior number.  Especially if
+> > you are going to put it after MACH_GROUP_NEC_EMMA2RH in the file. ~:^)
+> 
+> Sure we aren't tied to this number. Looking at the numbering more closely,
+> it looks like numbers aren't reused when they are dropped so it may be
+> safer in case existing boards are still using 23.
+> 
+> Why do you recommend 27 or higher when apparently 26 hasn't been used?
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Experience. ~:^)  You never know when a little extra room for expansion
+might come in handy.  For example, let's say next year you release a
+quad-core SOC (hint-hint), and a line of eval boards.  You would have
+room to put them in the file next to your other boards.  But just a
+suggestion.
 
-diff --git a/arch/mips/jmr3927/rbhma3100/setup.c b/arch/mips/jmr3927/rbhma3100/setup.c
-index 7ca3d6d..ecabe5b 100644
---- a/arch/mips/jmr3927/rbhma3100/setup.c
-+++ b/arch/mips/jmr3927/rbhma3100/setup.c
-@@ -137,10 +137,6 @@ int jmr3927_ccfg_toeon = 0;
- 
- static inline void do_reset(void)
- {
--#ifdef CONFIG_TC35815
--	extern void tc35815_killall(void);
--	tc35815_killall();
--#endif
- #if 1	/* Resetting PCI bus */
- 	jmr3927_ioc_reg_out(0, JMR3927_IOC_RESET_ADDR);
- 	jmr3927_ioc_reg_out(JMR3927_IOC_RESET_PCI, JMR3927_IOC_RESET_ADDR);
-diff --git a/drivers/net/tc35815.c b/drivers/net/tc35815.c
-index 81ed82f..911ff51 100644
---- a/drivers/net/tc35815.c
-+++ b/drivers/net/tc35815.c
-@@ -1703,19 +1703,6 @@ static void tc35815_chip_init(struct net_device *dev)
- 	spin_unlock_irqrestore(&lp->lock, flags);
- }
- 
--/* XXX */
--void
--tc35815_killall(void)
--{
--	struct net_device *dev;
--
--	for (dev = root_tc35815_dev; dev; dev = ((struct tc35815_local *)dev->priv)->next_module) {
--		if (dev->flags&IFF_UP){
--			dev->stop(dev);
--		}
--	}
--}
--
- static struct pci_driver tc35815_driver = {
- 	.name = TC35815_MODULE_NAME,
- 	.probe = tc35815_probe,
+Cheers,
+
+a

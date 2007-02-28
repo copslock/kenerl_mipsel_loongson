@@ -1,297 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2007 22:47:17 +0000 (GMT)
-Received: from xyzzy.farnsworth.org ([65.39.95.219]:17925 "HELO farnsworth.org")
-	by ftp.linux-mips.org with SMTP id S20039449AbXB1WrN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2007 22:47:13 +0000
-Received: (qmail 9468 invoked by uid 1000); 28 Feb 2007 15:47:10 -0700
-From:	"Dale Farnsworth" <dale@farnsworth.org>
-Date:	Wed, 28 Feb 2007 15:47:10 -0700
-To:	Jeff Garzik <jgarzik@pobox.com>
-Cc:	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 2/2] mv643xx_eth: Place explicit port number in mv643xx_eth_platform_data
-Message-ID: <20070228224710.GA9229@xyzzy.farnsworth.org>
-References: <20070228224031.GA8233@xyzzy.farnsworth.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2007 23:17:36 +0000 (GMT)
+Received: from smtp.osdl.org ([65.172.181.24]:43192 "EHLO smtp.osdl.org")
+	by ftp.linux-mips.org with ESMTP id S20039061AbXB1XRb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2007 23:17:31 +0000
+Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
+	by smtp.osdl.org (8.12.8/8.12.8) with ESMTP id l1SNB4hB032148
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Wed, 28 Feb 2007 15:11:04 -0800
+Received: from freekitty (freekitty.pdx.osdl.net [10.8.0.54])
+	by shell0.pdx.osdl.net (8.13.1/8.11.6) with ESMTP id l1SNB3C7029881;
+	Wed, 28 Feb 2007 15:11:03 -0800
+Date:	Wed, 28 Feb 2007 15:11:03 -0800
+From:	Stephen Hemminger <shemminger@linux-foundation.org>
+To:	"Dale Farnsworth" <dale@farnsworth.org>
+Cc:	Jeff Garzik <jgarzik@pobox.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/2] mv643xx_eth: move mac_addr inside of
+ mv643xx_eth_platform_data
+Message-ID: <20070228151103.0c5a320d@freekitty>
 In-Reply-To: <20070228224031.GA8233@xyzzy.farnsworth.org>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <dale@farnsworth.org>
+References: <20070228224031.GA8233@xyzzy.farnsworth.org>
+Organization: Linux Foundation
+X-Mailer: Sylpheed-Claws 2.5.0-rc3 (GTK+ 2.10.6; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: osdl$Revision: 1.176 $
+X-Scanned-By: MIMEDefang 2.36
+Return-Path: <shemminger@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14290
+X-archive-position: 14291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dale@farnsworth.org
+X-original-sender: shemminger@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-We had been using the platform_device.id field to identify which ethernet
-port is used for mv643xx_eth device.  This is not correct in general.
-It will be incorrect, for example, if a hardware platform uses a single
-port but not the first port.  Here, we add an explicit port_number field
-to struct mv643xx_eth_platform_data.
+On Wed, 28 Feb 2007 15:40:31 -0700
+"Dale Farnsworth" <dale@farnsworth.org> wrote:
 
-This makes the mv643xx_eth_platform_data structure required, but that
-isn't an issue since all users currently provide it already.
+> The information contained within platform_data should be self-contained.
+> Replace the pointer to a MAC address with the actual MAC address in
+> struct mv643xx_eth_platform_data.
+> 
+> Signed-off-by: Dale Farnsworth <dale@farnsworth.org>
+> 
+> Index: b/drivers/net/mv643xx_eth.c
+> ===================================================================
+> --- a/drivers/net/mv643xx_eth.c
+> +++ b/drivers/net/mv643xx_eth.c
+> @@ -1380,7 +1380,9 @@ static int mv643xx_eth_probe(struct plat
+>  
+>  	pd = pdev->dev.platform_data;
+>  	if (pd) {
+> -		if (pd->mac_addr)
+> +		static u8 zero_mac_addr[6] = { 0 };
+> +
+> +		if (memcmp(pd->mac_addr, zero_mac_addr, 6) != 0)
+>  			memcpy(dev->dev_addr, pd->mac_addr, 6);
 
-Signed-off-by: Dale Farnsworth <dale@farnsworth.org>
 
-diff --git a/arch/mips/momentum/jaguar_atx/platform.c b/arch/mips/momentum/jaguar_atx/platform.c
-Index: b/arch/mips/momentum/jaguar_atx/platform.c
-===================================================================
---- a/arch/mips/momentum/jaguar_atx/platform.c
-+++ b/arch/mips/momentum/jaguar_atx/platform.c
-@@ -48,6 +48,8 @@ static struct resource mv64x60_eth0_reso
- };
- 
- static struct mv643xx_eth_platform_data eth0_pd = {
-+	.port_number	= 0,
-+
- 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
- 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
- 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
-@@ -77,6 +79,8 @@ static struct resource mv64x60_eth1_reso
- };
- 
- static struct mv643xx_eth_platform_data eth1_pd = {
-+	.port_number	= 1,
-+
- 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
- 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
- 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
-@@ -105,7 +109,9 @@ static struct resource mv64x60_eth2_reso
- 	},
- };
- 
--static struct mv643xx_eth_platform_data eth2_pd;
-+static struct mv643xx_eth_platform_data eth2_pd = {
-+	.port_number	= 2,
-+};
- 
- static struct platform_device eth2_device = {
- 	.name		= MV643XX_ETH_NAME,
-Index: b/arch/mips/momentum/ocelot_3/platform.c
-===================================================================
---- a/arch/mips/momentum/ocelot_3/platform.c
-+++ b/arch/mips/momentum/ocelot_3/platform.c
-@@ -48,6 +48,8 @@ static struct resource mv64x60_eth0_reso
- };
- 
- static struct mv643xx_eth_platform_data eth0_pd = {
-+	.port_number	= 0,
-+
- 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
- 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
- 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
-@@ -77,6 +79,8 @@ static struct resource mv64x60_eth1_reso
- };
- 
- static struct mv643xx_eth_platform_data eth1_pd = {
-+	.port_number	= 1,
-+
- 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
- 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
- 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
-@@ -105,7 +109,9 @@ static struct resource mv64x60_eth2_reso
- 	},
- };
- 
--static struct mv643xx_eth_platform_data eth2_pd;
-+static struct mv643xx_eth_platform_data eth2_pd = {
-+	.port_number	= 2,
-+};
- 
- static struct platform_device eth2_device = {
- 	.name		= MV643XX_ETH_NAME,
-Index: b/arch/mips/momentum/ocelot_c/platform.c
-===================================================================
---- a/arch/mips/momentum/ocelot_c/platform.c
-+++ b/arch/mips/momentum/ocelot_c/platform.c
-@@ -47,6 +47,8 @@ static struct resource mv64x60_eth0_reso
- };
- 
- static struct mv643xx_eth_platform_data eth0_pd = {
-+	.port_number	= 0,
-+
- 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
- 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
- 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
-@@ -76,6 +78,8 @@ static struct resource mv64x60_eth1_reso
- };
- 
- static struct mv643xx_eth_platform_data eth1_pd = {
-+	.port_number	= 1,
-+
- 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
- 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
- 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
-Index: b/arch/powerpc/platforms/chrp/pegasos_eth.c
-===================================================================
---- a/arch/powerpc/platforms/chrp/pegasos_eth.c
-+++ b/arch/powerpc/platforms/chrp/pegasos_eth.c
-@@ -58,6 +58,7 @@ static struct resource mv643xx_eth0_reso
- 
- 
- static struct mv643xx_eth_platform_data eth0_pd = {
-+	.port_number	= 0,
- 	.tx_sram_addr = PEGASOS2_SRAM_BASE_ETH0,
- 	.tx_sram_size = PEGASOS2_SRAM_TXRING_SIZE,
- 	.tx_queue_size = PEGASOS2_SRAM_TXRING_SIZE/16,
-@@ -87,6 +88,7 @@ static struct resource mv643xx_eth1_reso
- };
- 
- static struct mv643xx_eth_platform_data eth1_pd = {
-+	.port_number	= 1,
- 	.tx_sram_addr = PEGASOS2_SRAM_BASE_ETH1,
- 	.tx_sram_size = PEGASOS2_SRAM_TXRING_SIZE,
- 	.tx_queue_size = PEGASOS2_SRAM_TXRING_SIZE/16,
-Index: b/arch/ppc/syslib/mv64x60.c
-===================================================================
---- a/arch/ppc/syslib/mv64x60.c
-+++ b/arch/ppc/syslib/mv64x60.c
-@@ -339,7 +339,9 @@ static struct resource mv64x60_eth0_reso
- 	},
- };
- 
--static struct mv643xx_eth_platform_data eth0_pd;
-+static struct mv643xx_eth_platform_data eth0_pd = {
-+	.port_number	= 0,
-+};
- 
- static struct platform_device eth0_device = {
- 	.name		= MV643XX_ETH_NAME,
-@@ -362,7 +364,9 @@ static struct resource mv64x60_eth1_reso
- 	},
- };
- 
--static struct mv643xx_eth_platform_data eth1_pd;
-+static struct mv643xx_eth_platform_data eth1_pd = {
-+	.port_number	= 1,
-+};
- 
- static struct platform_device eth1_device = {
- 	.name		= MV643XX_ETH_NAME,
-@@ -385,7 +389,9 @@ static struct resource mv64x60_eth2_reso
- 	},
- };
- 
--static struct mv643xx_eth_platform_data eth2_pd;
-+static struct mv643xx_eth_platform_data eth2_pd = {
-+	.port_number	= 2,
-+};
- 
- static struct platform_device eth2_device = {
- 	.name		= MV643XX_ETH_NAME,
-Index: b/drivers/net/mv643xx_eth.c
-===================================================================
---- a/drivers/net/mv643xx_eth.c
-+++ b/drivers/net/mv643xx_eth.c
-@@ -1309,7 +1309,7 @@ static void mv643xx_init_ethtool_cmd(str
- static int mv643xx_eth_probe(struct platform_device *pdev)
- {
- 	struct mv643xx_eth_platform_data *pd;
--	int port_num = pdev->id;
-+	int port_num;
- 	struct mv643xx_private *mp;
- 	struct net_device *dev;
- 	u8 *p;
-@@ -1318,6 +1318,13 @@ static int mv643xx_eth_probe(struct plat
- 	struct ethtool_cmd cmd;
- 	int duplex = DUPLEX_HALF;
- 	int speed = 0;			/* default to auto-negotiation */
-+	static u8 zero_mac_addr[6] = { 0 };
-+
-+	pd = pdev->dev.platform_data;
-+	if (pd == NULL) {
-+		printk(KERN_ERR "No mv643xx_eth_platform_data\n");
-+		return -ENODEV;
-+	}
- 
- 	dev = alloc_etherdev(sizeof(struct mv643xx_private));
- 	if (!dev)
-@@ -1331,8 +1338,6 @@ static int mv643xx_eth_probe(struct plat
- 	BUG_ON(!res);
- 	dev->irq = res->start;
- 
--	mp->port_num = port_num;
--
- 	dev->open = mv643xx_eth_open;
- 	dev->stop = mv643xx_eth_stop;
- 	dev->hard_start_xmit = mv643xx_eth_start_xmit;
-@@ -1373,40 +1378,39 @@ static int mv643xx_eth_probe(struct plat
- 
- 	spin_lock_init(&mp->lock);
- 
-+	port_num = pd->port_number;
-+
- 	/* set default config values */
- 	eth_port_uc_addr_get(dev, dev->dev_addr);
- 	mp->rx_ring_size = MV643XX_ETH_PORT_DEFAULT_RECEIVE_QUEUE_SIZE;
- 	mp->tx_ring_size = MV643XX_ETH_PORT_DEFAULT_TRANSMIT_QUEUE_SIZE;
- 
--	pd = pdev->dev.platform_data;
--	if (pd) {
--		static u8 zero_mac_addr[6] = { 0 };
-+	if (memcmp(pd->mac_addr, zero_mac_addr, 6) != 0)
-+		memcpy(dev->dev_addr, pd->mac_addr, 6);
- 
--		if (memcmp(pd->mac_addr, zero_mac_addr, 6) != 0)
--			memcpy(dev->dev_addr, pd->mac_addr, 6);
-+	if (pd->phy_addr || pd->force_phy_addr)
-+		ethernet_phy_set(port_num, pd->phy_addr);
- 
--		if (pd->phy_addr || pd->force_phy_addr)
--			ethernet_phy_set(port_num, pd->phy_addr);
-+	if (pd->rx_queue_size)
-+		mp->rx_ring_size = pd->rx_queue_size;
- 
--		if (pd->rx_queue_size)
--			mp->rx_ring_size = pd->rx_queue_size;
-+	if (pd->tx_queue_size)
-+		mp->tx_ring_size = pd->tx_queue_size;
- 
--		if (pd->tx_queue_size)
--			mp->tx_ring_size = pd->tx_queue_size;
-+	if (pd->tx_sram_size) {
-+		mp->tx_sram_size = pd->tx_sram_size;
-+		mp->tx_sram_addr = pd->tx_sram_addr;
-+	}
- 
--		if (pd->tx_sram_size) {
--			mp->tx_sram_size = pd->tx_sram_size;
--			mp->tx_sram_addr = pd->tx_sram_addr;
--		}
-+	if (pd->rx_sram_size) {
-+		mp->rx_sram_size = pd->rx_sram_size;
-+		mp->rx_sram_addr = pd->rx_sram_addr;
-+	}
- 
--		if (pd->rx_sram_size) {
--			mp->rx_sram_size = pd->rx_sram_size;
--			mp->rx_sram_addr = pd->rx_sram_addr;
--		}
-+	duplex = pd->duplex;
-+	speed = pd->speed;
- 
--		duplex = pd->duplex;
--		speed = pd->speed;
--	}
-+	mp->port_num = port_num;
- 
- 	/* Hook up MII support for ethtool */
- 	mp->mii.dev = dev;
-Index: b/include/linux/mv643xx.h
-===================================================================
---- a/include/linux/mv643xx.h
-+++ b/include/linux/mv643xx.h
-@@ -1289,6 +1289,7 @@ struct mv64xxx_i2c_pdata {
- #define MV643XX_ETH_NAME	"mv643xx_eth"
- 
- struct mv643xx_eth_platform_data {
-+	int		port_number;
- 	u16		force_phy_addr;	/* force override if phy_addr == 0 */
- 	u16		phy_addr;
- 
+is_zero_ether_addr() is faster/cleaner for this
+
+-- 
+Stephen Hemminger <shemminger@linux-foundation.org>

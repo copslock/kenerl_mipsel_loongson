@@ -1,100 +1,216 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2007 22:37:21 +0000 (GMT)
-Received: from father.pmc-sierra.com ([216.241.224.13]:28055 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20039427AbXB1WhQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Feb 2007 22:37:16 +0000
-Received: (qmail 16275 invoked by uid 101); 28 Feb 2007 22:36:07 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 28 Feb 2007 22:36:07 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l1SMa3XP020096;
-	Wed, 28 Feb 2007 14:36:03 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <FGCPG14M>; Wed, 28 Feb 2007 14:36:02 -0800
-Message-ID: <45E603CF.506@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Thiemo Seufer <ths@networkno.de>,
-	Andrew Sharp <tigerand@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/5] mips: PMC MSP71xx mips common
-Date:	Wed, 28 Feb 2007 14:35:59 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2007 22:41:41 +0000 (GMT)
+Received: from xyzzy.farnsworth.org ([65.39.95.219]:28684 "HELO farnsworth.org")
+	by ftp.linux-mips.org with SMTP id S20039427AbXB1Wlg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2007 22:41:36 +0000
+Received: (qmail 8725 invoked by uid 1000); 28 Feb 2007 15:40:31 -0700
+From:	"Dale Farnsworth" <dale@farnsworth.org>
+Date:	Wed, 28 Feb 2007 15:40:31 -0700
+To:	Jeff Garzik <jgarzik@pobox.com>
+Cc:	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 1/2] mv643xx_eth: move mac_addr inside of mv643xx_eth_platform_data
+Message-ID: <20070228224031.GA8233@xyzzy.farnsworth.org>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 28 Feb 2007 22:35:59.0568 (UTC) FILETIME=[D1BA5D00:01C75B88]
-user-agent: Thunderbird 1.5.0.9 (X11/20061206)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <dale@farnsworth.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14288
+X-archive-position: 14289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: dale@farnsworth.org
 Precedence: bulk
 X-list: linux-mips
 
+The information contained within platform_data should be self-contained.
+Replace the pointer to a MAC address with the actual MAC address in
+struct mv643xx_eth_platform_data.
 
+Signed-off-by: Dale Farnsworth <dale@farnsworth.org>
 
-Ralf Baechle wrote:
-> On Wed, Feb 28, 2007 at 01:35:32PM -0800, Marc St-Jean wrote:
-> 
->  > Ralf Baechle wrote:
->  > > On Tue, Feb 27, 2007 at 05:38:41PM +0000, Thiemo Seufer wrote:
->  > >
->  > >  > Something like
->  > >  >
->  > >  > #if LOADADDR == 0xffffffff80000000
->  > >  >       .fill   0x400
->  > >  > #endif
->  > >  >
->  > >  > but by defining an appropriate name in arch/mips/Makefile 
-> instead of
->  > >  > externalizing the load-y/LOADADDR there.
->  > >
->  > > Basically a good idea but it will fail for 64-bit kernels so the test
->  > > would need to be extended to cover XKPHYS as well.  Also R2 processors
->  > > which have the c0_ebase registers do no need to reserve space for
->  > > exception handlers as they can easily move them elsewhere.
->  > >
->  > >   Ralf
->  >
->  > Hi Ralf,
->  >
->  >  From your description it sounds like not all R2 CPUs have c0_ebase 
-> registers?
->  >
->  > I don't know how to check for c0_ebase from the pre-processor, the 
-> test below
->  > assumes they all do.
-> 
-> Sorry for being ambigous.  All R2 processors have ebase.  However Linux
-> happens to support older processors as well, that was my point.
-> 
->  > How about something like:
->  >
->  > #if (defined(CONFIG_SYS_HAS_CPU_MIPS32_R1) && \
->  >                  VMLINUX_LOAD_ADDRESS == CKSEG0) || \
->  >          ((defined(CONFIG_SYS_HAS_CPU_MIPS64_R1) || 
-> defined(CONFIG_SYS_HAS_CPU_MIPS64_R2)) && \
->  >                  VMLINUX_LOAD_ADDRESS == XKPHYS)
->  >       .fill 0x400
->  > #endif
-> 
-> There are several potencial addresses in XKPHYS, so if anything:
-> 
-> #if !defined(CONFIG_CPU_MIPSR2) && \
->     ((VMLINUX_LOAD_ADDRESS == CKSEG0) || \
->      (VMLINUX_LOAD_ADDRESS & 0xc7ffffffffffffffUL) == XKPHYS)
-> 
-> However even where ebase actually exists there might be reasons not to use
-> it.  So a config option might be the safe thing to do.
-> 
->   Ralf
-
-OK, I'll introduce a CONFIG_NO_EXCEPT_FILL as proposed earlier and select
-it in our platform configuration section.
-
-Marc
+Index: b/drivers/net/mv643xx_eth.c
+===================================================================
+--- a/drivers/net/mv643xx_eth.c
++++ b/drivers/net/mv643xx_eth.c
+@@ -1380,7 +1380,9 @@ static int mv643xx_eth_probe(struct plat
+ 
+ 	pd = pdev->dev.platform_data;
+ 	if (pd) {
+-		if (pd->mac_addr)
++		static u8 zero_mac_addr[6] = { 0 };
++
++		if (memcmp(pd->mac_addr, zero_mac_addr, 6) != 0)
+ 			memcpy(dev->dev_addr, pd->mac_addr, 6);
+ 
+ 		if (pd->phy_addr || pd->force_phy_addr)
+Index: b/include/linux/mv643xx.h
+===================================================================
+--- a/include/linux/mv643xx.h
++++ b/include/linux/mv643xx.h
+@@ -1289,7 +1289,6 @@ struct mv64xxx_i2c_pdata {
+ #define MV643XX_ETH_NAME	"mv643xx_eth"
+ 
+ struct mv643xx_eth_platform_data {
+-	char		*mac_addr;	/* pointer to mac address */
+ 	u16		force_phy_addr;	/* force override if phy_addr == 0 */
+ 	u16		phy_addr;
+ 
+@@ -1304,6 +1303,7 @@ struct mv643xx_eth_platform_data {
+ 	u32		tx_sram_size;
+ 	u32		rx_sram_addr;
+ 	u32		rx_sram_size;
++	u8		mac_addr[6];	/* mac address if non-zero*/
+ };
+ 
+ #endif /* __ASM_MV643XX_H */
+Index: b/arch/mips/momentum/jaguar_atx/platform.c
+===================================================================
+--- a/arch/mips/momentum/jaguar_atx/platform.c
++++ b/arch/mips/momentum/jaguar_atx/platform.c
+@@ -47,11 +47,7 @@ static struct resource mv64x60_eth0_reso
+ 	},
+ };
+ 
+-static char eth0_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth0_pd = {
+-	.mac_addr	= eth0_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -80,11 +76,7 @@ static struct resource mv64x60_eth1_reso
+ 	},
+ };
+ 
+-static char eth1_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth1_pd = {
+-	.mac_addr	= eth1_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -113,11 +105,7 @@ static struct resource mv64x60_eth2_reso
+ 	},
+ };
+ 
+-static char eth2_mac_addr[ETH_ALEN];
+-
+-static struct mv643xx_eth_platform_data eth2_pd = {
+-	.mac_addr	= eth2_mac_addr,
+-};
++static struct mv643xx_eth_platform_data eth2_pd;
+ 
+ static struct platform_device eth2_device = {
+ 	.name		= MV643XX_ETH_NAME,
+@@ -200,9 +188,9 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
+ 
+ 	get_mac(mac);
+-	eth_mac_add(eth0_mac_addr, mac, 0);
+-	eth_mac_add(eth1_mac_addr, mac, 1);
+-	eth_mac_add(eth2_mac_addr, mac, 2);
++	eth_mac_add(eth0_pd.mac_addr, mac, 0);
++	eth_mac_add(eth1_pd.mac_addr, mac, 1);
++	eth_mac_add(eth2_pd.mac_addr, mac, 2);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+ 			ARRAY_SIZE(mv643xx_eth_pd_devs));
+ 
+Index: b/arch/mips/momentum/ocelot_3/platform.c
+===================================================================
+--- a/arch/mips/momentum/ocelot_3/platform.c
++++ b/arch/mips/momentum/ocelot_3/platform.c
+@@ -47,11 +47,7 @@ static struct resource mv64x60_eth0_reso
+ 	},
+ };
+ 
+-static char eth0_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth0_pd = {
+-	.mac_addr	= eth0_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -80,11 +76,7 @@ static struct resource mv64x60_eth1_reso
+ 	},
+ };
+ 
+-static char eth1_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth1_pd = {
+-	.mac_addr	= eth1_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -113,11 +105,7 @@ static struct resource mv64x60_eth2_reso
+ 	},
+ };
+ 
+-static char eth2_mac_addr[ETH_ALEN];
+-
+-static struct mv643xx_eth_platform_data eth2_pd = {
+-	.mac_addr	= eth2_mac_addr,
+-};
++static struct mv643xx_eth_platform_data eth2_pd;
+ 
+ static struct platform_device eth2_device = {
+ 	.name		= MV643XX_ETH_NAME,
+@@ -200,9 +188,9 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
+ 
+ 	get_mac(mac);
+-	eth_mac_add(eth0_mac_addr, mac, 0);
+-	eth_mac_add(eth1_mac_addr, mac, 1);
+-	eth_mac_add(eth2_mac_addr, mac, 2);
++	eth_mac_add(eth0_pd.mac_addr, mac, 0);
++	eth_mac_add(eth1_pd.mac_addr, mac, 1);
++	eth_mac_add(eth2_pd.mac_addr, mac, 2);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+ 			ARRAY_SIZE(mv643xx_eth_pd_devs));
+ 
+Index: b/arch/mips/momentum/ocelot_c/platform.c
+===================================================================
+--- a/arch/mips/momentum/ocelot_c/platform.c
++++ b/arch/mips/momentum/ocelot_c/platform.c
+@@ -46,11 +46,7 @@ static struct resource mv64x60_eth0_reso
+ 	},
+ };
+ 
+-static char eth0_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth0_pd = {
+-	.mac_addr	= eth0_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -79,11 +75,7 @@ static struct resource mv64x60_eth1_reso
+ 	},
+ };
+ 
+-static char eth1_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth1_pd = {
+-	.mac_addr	= eth1_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -174,8 +166,8 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
+ 
+ 	get_mac(mac);
+-	eth_mac_add(eth0_mac_addr, mac, 0);
+-	eth_mac_add(eth1_mac_addr, mac, 1);
++	eth_mac_add(eth0_pd.mac_addr, mac, 0);
++	eth_mac_add(eth1_pd.mac_addr, mac, 1);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+ 			ARRAY_SIZE(mv643xx_eth_pd_devs));
+ 

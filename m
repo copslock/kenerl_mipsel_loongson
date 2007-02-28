@@ -1,53 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2007 13:58:18 +0000 (GMT)
-Received: from wr-out-0506.google.com ([64.233.184.224]:45248 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20039322AbXB1N6N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Feb 2007 13:58:13 +0000
-Received: by wr-out-0506.google.com with SMTP id i30so201193wra
-        for <linux-mips@linux-mips.org>; Wed, 28 Feb 2007 05:57:12 -0800 (PST)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=D0tRYFshwY+F7t0hE1K/rCMG+k/oGbtmfkmlrG65XmdfZerSmTm9PNZI2PLInASTaexpy+8OnLLse4C3Xok0dCPD/DuSoEv/we7YhfHMJFfZQ3Mv/rvKmLy+42APPpFS9bZgRBGJ9XRii4PW/5Xhtniena8UGX8+EIppzaUOf1A=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=aA2kV+IuhyEijSJ6rAF6QG+qt6jYIcQd+/B408tXLbTxhD8ptpBlTq6zKLASymdYgWFs5v83Aa5dK2TVD9Bgksy7ryB6Si14fchC7a71dKa8zQFXpehY8pQBQJ3X+2qO5MHt4jT+HuFQn4xJ1nQcvLaDaLIbkFUgJoUwndyaEOM=
-Received: by 10.114.132.5 with SMTP id f5mr717012wad.1172671028268;
-        Wed, 28 Feb 2007 05:57:08 -0800 (PST)
-Received: by 10.114.168.17 with HTTP; Wed, 28 Feb 2007 05:57:08 -0800 (PST)
-Message-ID: <50c9a2250702280557r3b4e3594r360fa7c24465d0b8@mail.gmail.com>
-Date:	Wed, 28 Feb 2007 21:57:08 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: how to switch rootfs from initrd to new rootfs manualy?
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Feb 2007 14:09:26 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([210.190.142.172]:60158 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20039318AbXB1OJU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Feb 2007 14:09:20 +0000
+Received: from localhost (p5152-ipad28funabasi.chiba.ocn.ne.jp [220.107.204.152])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 73EA3B672; Wed, 28 Feb 2007 23:07:59 +0900 (JST)
+Date:	Wed, 28 Feb 2007 23:07:59 +0900 (JST)
+Message-Id: <20070228.230759.39154923.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: rbhma4500_defconfig
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <45E44C89.4020105@ru.mvista.com>
+References: <45E33E13.7010007@ru.mvista.com>
+	<20070227.235804.108739157.anemo@mba.ocn.ne.jp>
+	<45E44C89.4020105@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <zzh.hust@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14274
+X-archive-position: 14275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-i used to switch rootfs from initrd to nfs by use "pivot_root" and
-"exec chroot" with kernel cmdline having "init=/linuxrc".
-But if i do not set "init=/linuxrc", and bootup with the ramdisk as
-rootfs. after that, i manualy execute "pivot_root" and "exec chroot"
-etc. it seems switching rootfs umcompletely. the /etc/init.d/rcS is
-not executed while "exec chroot . /sbin/init <dev/console >dev/console
-2>&1".
-does anyone have some similiar experience ?
+On Tue, 27 Feb 2007 18:21:45 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > I have not tried recently.  I'll try later, but what's the problem?
+> 
+>     No console output, IIRC.
 
-thanks for any hints
+CONFIG_SERIAL_TXX9_CONSOLE=y
+CONFIG_SERIAL_TXX9_STDSERIAL=y
 
-Best Regards
+and
 
-zhuzhenhua
+CONFIG_VGA_CONSOLE=n
+CONFIG_KEYBOARD_ATKBD=n
+CONFIG_SERIO_I8042=n
+
+Would help?
+---
+Atsushi Nemoto

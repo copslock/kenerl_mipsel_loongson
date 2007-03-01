@@ -1,561 +1,226 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2007 20:43:05 +0000 (GMT)
-Received: from father.pmc-sierra.com ([216.241.224.13]:9387 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20039275AbXCAUm7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Mar 2007 20:42:59 +0000
-Received: (qmail 4577 invoked by uid 101); 1 Mar 2007 20:41:19 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 1 Mar 2007 20:41:19 -0000
-Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l21KfI9b003088
-	for <linux-mips@linux-mips.org>; Thu, 1 Mar 2007 12:41:18 -0800
-From:	Marc St-Jean <stjeanma@pmc-sierra.com>
-Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l21KfHeh014921
-	for linux-mips@linux-mips.org; Thu, 1 Mar 2007 14:41:17 -0600
-Date:	Thu, 1 Mar 2007 14:41:17 -0600
-Message-Id: <200703012041.l21KfHeh014921@pasqua.pmc-sierra.bc.ca>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH 2/5] mips: PMC MSP71xx mips common
-Return-Path: <stjeanma@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2007 23:32:58 +0000 (GMT)
+Received: from xyzzy.farnsworth.org ([65.39.95.219]:49419 "HELO farnsworth.org")
+	by ftp.linux-mips.org with SMTP id S20039468AbXCAXcy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2007 23:32:54 +0000
+Received: (qmail 20181 invoked by uid 1000); 1 Mar 2007 16:31:48 -0700
+From:	"Dale Farnsworth" <dale@farnsworth.org>
+Date:	Thu, 1 Mar 2007 16:31:48 -0700
+To:	Jeff Garzik <jgarzik@pobox.com>
+Cc:	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 1/2] mv643xx_eth: move mac_addr inside mv643xx_eth_platform_data
+Message-ID: <20070301233148.GA19550@xyzzy.farnsworth.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <dale@farnsworth.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14302
+X-archive-position: 14303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stjeanma@pmc-sierra.com
+X-original-sender: dale@farnsworth.org
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH 2/5] mips: PMC MSP71xx mips common
+The information contained within platform_data should be self-contained.
+Replace the pointer to a MAC address with the actual MAC address in
+struct mv643xx_eth_platform_data.
 
-Patch to add mips common support for the PMC-Sierra
-MSP71xx devices.
+Signed-off-by: Dale Farnsworth <dale@farnsworth.org>
 
-These 5 patches along with the previously posted serial patch
-will boot the PMC-Sierra MSP7120 Residential Gateway board.
-
-Thanks,
-Marc
-
-Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
-Re-posting patch with recommended change:
-Added CONFIG_NO_EXCEPT_FILL option and selected in PMC_MSP
-to eliminate the .fill for exception handlers.
-(arch/mips/Kconfig, arch/mips/kernel/head.S)
 
- arch/mips/Kconfig           |   87 ++++++++++++++++++++++
- arch/mips/Makefile          |   11 ++
- arch/mips/kernel/head.S     |    5 +
- arch/mips/kernel/traps.c    |    6 +
- include/asm-mips/bootinfo.h |   12 +++
- include/asm-mips/mipsregs.h |   30 +++++++
- include/asm-mips/regops.h   |  168 ++++++++++++++++++++++++++++++++++++++++++++
- include/asm-mips/war.h      |   11 ++
- 8 files changed, 328 insertions(+), 2 deletions(-)
+Replaced explicit mac address comparison with a call to is_valid_ether_addr(),
+as suggested by Stephen Hemminger <shemminger@linux-foundation.org>.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 5da6b0d..899c528 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -354,6 +354,7 @@ config MIPS_SIM
- 	bool 'MIPS simulator (MIPSsim)'
- 	select DMA_NONCOHERENT
- 	select IRQ_CPU
-+	select BOOT_RAW
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select SYS_HAS_CPU_MIPS32_R2
- 	select SYS_SUPPORTS_32BIT_KERNEL
-@@ -504,6 +505,27 @@ config MACH_VR41XX
- 	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
- 	select GENERIC_HARDIRQS_NO__DO_IRQ
+ arch/mips/momentum/jaguar_atx/platform.c |   20 ++++----------------
+ arch/mips/momentum/ocelot_3/platform.c   |   20 ++++----------------
+ arch/mips/momentum/ocelot_c/platform.c   |   12 ++----------
+ drivers/net/mv643xx_eth.c                |    2 +-
+ include/linux/mv643xx.h                  |    2 +-
+ 5 files changed, 12 insertions(+), 44 deletions(-)
+
+Index: b/drivers/net/mv643xx_eth.c
+===================================================================
+--- a/drivers/net/mv643xx_eth.c
++++ b/drivers/net/mv643xx_eth.c
+@@ -1380,7 +1380,7 @@ static int mv643xx_eth_probe(struct plat
  
-+config PMC_MSP
-+	bool "PMC-Sierra MSP chipsets"
-+	depends on EXPERIMENTAL
-+	select DMA_NONCOHERENT
-+	select SWAP_IO_SPACE
-+	select NO_EXCEPT_FILL
-+	select BOOT_RAW
-+	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_BIG_ENDIAN
-+	select SYS_SUPPORTS_KGDB
-+	select IRQ_CPU
-+	select SERIAL_8250
-+	select SERIAL_8250_CONSOLE
-+	help
-+	  This adds support for the PMC-Sierra family of Multi-Service
-+	  Processor System-On-A-Chips.  These parts include a number
-+	  of integrated peripherals, interfaces and DSPs in addition to
-+	  a variety of MIPS cores.
-+
- config PMC_YOSEMITE
- 	bool "PMC-Sierra Yosemite eval board"
- 	select DMA_COHERENT
-@@ -815,6 +837,55 @@ config TOSHIBA_RBTX4938
+ 	pd = pdev->dev.platform_data;
+ 	if (pd) {
+-		if (pd->mac_addr)
++		if (is_valid_ether_addr(pd->mac_addr))
+ 			memcpy(dev->dev_addr, pd->mac_addr, 6);
  
- endchoice
+ 		if (pd->phy_addr || pd->force_phy_addr)
+Index: b/include/linux/mv643xx.h
+===================================================================
+--- a/include/linux/mv643xx.h
++++ b/include/linux/mv643xx.h
+@@ -1289,7 +1289,6 @@ struct mv64xxx_i2c_pdata {
+ #define MV643XX_ETH_NAME	"mv643xx_eth"
  
-+choice
-+	prompt "PMC-Sierra MSP SOC type"
-+	depends on PMC_MSP
-+
-+config PMC_MSP4200_EVAL
-+	bool "PMC-Sierra MSP4200 Eval Board"
-+	select IRQ_MSP_SLP
-+	select HW_HAS_PCI
-+
-+config PMC_MSP4200_GW
-+	bool "PMC-Sierra MSP4200 VoIP Gateway"
-+	select IRQ_MSP_SLP
-+	select HW_HAS_PCI
-+
-+config PMC_MSP7120_EVAL
-+	bool "PMC-Sierra MSP7120 Eval Board"
-+	select SYS_SUPPORTS_MULTITHREADING
-+	select IRQ_MSP_CIC
-+	select HW_HAS_PCI
-+	select MSP_USB
-+
-+config PMC_MSP7120_GW
-+	bool "PMC-Sierra MSP7120 Residential Gateway"
-+	select SYS_SUPPORTS_MULTITHREADING
-+	select IRQ_MSP_CIC
-+	select HW_HAS_PCI
-+	select MSP_USB
-+
-+config PMC_MSP7120_FPGA
-+	bool "PMC-Sierra MSP7120 FPGA"
-+	select SYS_SUPPORTS_MULTITHREADING
-+	select IRQ_MSP_CIC
-+	select HW_HAS_PCI
-+	select MSP_USB
-+
-+endchoice
-+
-+menu "Options for PMC-Sierra MSP chipsets"
-+	depends on PMC_MSP
-+
-+config PMC_MSP_EMBEDDED_ROOTFS
-+	bool "Root filesystem embedded in kernel image"
-+	select MTD
-+	select MTD_BLOCK
-+	select MTD_PMC_MSP_RAMROOT
-+	select MTD_RAM
-+
-+endmenu
-+
- source "arch/mips/ddb5xxx/Kconfig"
- source "arch/mips/gt64120/ev64120/Kconfig"
- source "arch/mips/jazz/Kconfig"
-@@ -879,6 +950,9 @@ config ARC
- config ARCH_MAY_HAVE_PC_FDC
- 	bool
+ struct mv643xx_eth_platform_data {
+-	char		*mac_addr;	/* pointer to mac address */
+ 	u16		force_phy_addr;	/* force override if phy_addr == 0 */
+ 	u16		phy_addr;
  
-+config BOOT_RAW
-+	bool
-+
- config DMA_COHERENT
- 	bool
+@@ -1304,6 +1303,7 @@ struct mv643xx_eth_platform_data {
+ 	u32		tx_sram_size;
+ 	u32		rx_sram_addr;
+ 	u32		rx_sram_size;
++	u8		mac_addr[6];	/* mac address if non-zero*/
+ };
  
-@@ -924,6 +998,9 @@ config MIPS_DISABLE_OBSOLETE_IDE
+ #endif /* __ASM_MV643XX_H */
+Index: b/arch/mips/momentum/jaguar_atx/platform.c
+===================================================================
+--- a/arch/mips/momentum/jaguar_atx/platform.c
++++ b/arch/mips/momentum/jaguar_atx/platform.c
+@@ -47,11 +47,7 @@ static struct resource mv64x60_eth0_reso
+ 	},
+ };
  
- config GENERIC_ISA_DMA_SUPPORT_BROKEN
- 	bool
-+	
-+config NO_EXCEPT_FILL
-+	bool
+-static char eth0_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth0_pd = {
+-	.mac_addr	= eth0_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -80,11 +76,7 @@ static struct resource mv64x60_eth1_reso
+ 	},
+ };
  
- #
- # Endianess selection.  Sufficiently obscure so many users don't know what to
-@@ -971,6 +1048,15 @@ config IRQ_CPU_RM9K
- config IRQ_MV64340
- 	bool
+-static char eth1_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth1_pd = {
+-	.mac_addr	= eth1_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -113,11 +105,7 @@ static struct resource mv64x60_eth2_reso
+ 	},
+ };
  
-+config IRQ_MSP_SLP
-+	bool
-+
-+config IRQ_MSP_CIC
-+	bool
-+
-+config MSP_USB
-+	bool
-+
- config DDB5XXX_COMMON
- 	bool
- 	select SYS_SUPPORTS_KGDB
-@@ -1086,6 +1172,7 @@ config MIPS_L1_CACHE_SHIFT
- 	int
- 	default "4" if MACH_DECSTATION || SNI_RM
- 	default "7" if SGI_IP27
-+	default "4" if PMC_MSP4200_EVAL
- 	default "5"
+-static char eth2_mac_addr[ETH_ALEN];
+-
+-static struct mv643xx_eth_platform_data eth2_pd = {
+-	.mac_addr	= eth2_mac_addr,
+-};
++static struct mv643xx_eth_platform_data eth2_pd;
  
- config HAVE_STD_PC_SERIAL_PORT
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 92bca6a..1c38332 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -360,6 +360,14 @@ core-$(CONFIG_MOMENCO_OCELOT_C)	+= arch/mips/momentum/ocelot_c/
- load-$(CONFIG_MOMENCO_OCELOT_C)	+= 0xffffffff80100000
+ static struct platform_device eth2_device = {
+ 	.name		= MV643XX_ETH_NAME,
+@@ -200,9 +188,9 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
  
- #
-+# PMC-Sierra MSP SOCs
-+#
-+core-$(CONFIG_PMC_MSP)		+= arch/mips/pmc-sierra/msp71xx/
-+cflags-$(CONFIG_PMC_MSP)	+= -Iinclude/asm-mips/pmc-sierra/msp71xx \
-+					-mno-branch-likely
-+load-$(CONFIG_PMC_MSP)		+= 0xffffffff80100000
-+
-+#
- # PMC-Sierra Yosemite
- #
- core-$(CONFIG_PMC_YOSEMITE)	+= arch/mips/pmc-sierra/yosemite/
-@@ -619,7 +627,8 @@ JIFFIES			= jiffies_64
- endif
+ 	get_mac(mac);
+-	eth_mac_add(eth0_mac_addr, mac, 0);
+-	eth_mac_add(eth1_mac_addr, mac, 1);
+-	eth_mac_add(eth2_mac_addr, mac, 2);
++	eth_mac_add(eth0_pd.mac_addr, mac, 0);
++	eth_mac_add(eth1_pd.mac_addr, mac, 1);
++	eth_mac_add(eth2_pd.mac_addr, mac, 2);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+ 			ARRAY_SIZE(mv643xx_eth_pd_devs));
  
- AFLAGS		+= $(cflags-y)
--CFLAGS		+= $(cflags-y)
-+CFLAGS		+= $(cflags-y) \
-+			-D"VMLINUX_LOAD_ADDRESS=$(load-y)"
+Index: b/arch/mips/momentum/ocelot_3/platform.c
+===================================================================
+--- a/arch/mips/momentum/ocelot_3/platform.c
++++ b/arch/mips/momentum/ocelot_3/platform.c
+@@ -47,11 +47,7 @@ static struct resource mv64x60_eth0_reso
+ 	},
+ };
  
- LDFLAGS			+= -m $(ld-emul)
+-static char eth0_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth0_pd = {
+-	.mac_addr	= eth0_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -80,11 +76,7 @@ static struct resource mv64x60_eth1_reso
+ 	},
+ };
  
-diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
-index 6f57ca4..27366f6 100644
---- a/arch/mips/kernel/head.S
-+++ b/arch/mips/kernel/head.S
-@@ -16,6 +16,7 @@
- #include <linux/init.h>
- #include <linux/threads.h>
+-static char eth1_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth1_pd = {
+-	.mac_addr	= eth1_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -113,11 +105,7 @@ static struct resource mv64x60_eth2_reso
+ 	},
+ };
  
-+#include <asm/addrspace.h>
- #include <asm/asm.h>
- #include <asm/asmmacro.h>
- #include <asm/irqflags.h>
-@@ -129,16 +130,18 @@
- #endif
- 	.endm
+-static char eth2_mac_addr[ETH_ALEN];
+-
+-static struct mv643xx_eth_platform_data eth2_pd = {
+-	.mac_addr	= eth2_mac_addr,
+-};
++static struct mv643xx_eth_platform_data eth2_pd;
  
-+#ifndef CONFIG_NO_EXCEPT_FILL
- 	/*
- 	 * Reserved space for exception handlers.
- 	 * Necessary for machines which link their kernels at KSEG0.
- 	 */
- 	.fill	0x400
-+#endif
+ static struct platform_device eth2_device = {
+ 	.name		= MV643XX_ETH_NAME,
+@@ -200,9 +188,9 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
  
- EXPORT(stext)					# used for profiling
- EXPORT(_stext)
+ 	get_mac(mac);
+-	eth_mac_add(eth0_mac_addr, mac, 0);
+-	eth_mac_add(eth1_mac_addr, mac, 1);
+-	eth_mac_add(eth2_mac_addr, mac, 2);
++	eth_mac_add(eth0_pd.mac_addr, mac, 0);
++	eth_mac_add(eth1_pd.mac_addr, mac, 1);
++	eth_mac_add(eth2_pd.mac_addr, mac, 2);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+ 			ARRAY_SIZE(mv643xx_eth_pd_devs));
  
--#ifdef CONFIG_MIPS_SIM
-+#ifdef CONFIG_BOOT_RAW
- 	/*
- 	 * Give us a fighting chance of running if execution beings at the
- 	 * kernel load address.  This is needed because this platform does
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 18f56a9..2c812c2 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -70,6 +70,7 @@ extern asmlinkage void handle_reserved(void);
- extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
- 	struct mips_fpu_struct *ctx, int has_fpu);
+Index: b/arch/mips/momentum/ocelot_c/platform.c
+===================================================================
+--- a/arch/mips/momentum/ocelot_c/platform.c
++++ b/arch/mips/momentum/ocelot_c/platform.c
+@@ -46,11 +46,7 @@ static struct resource mv64x60_eth0_reso
+ 	},
+ };
  
-+void (*board_watchpoint_handler)(struct pt_regs *regs);
- void (*board_be_init)(void);
- int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- void (*board_nmi_handler_setup)(void);
-@@ -860,6 +861,11 @@ asmlinkage void do_mdmx(struct pt_regs *regs)
+-static char eth0_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth0_pd = {
+-	.mac_addr	= eth0_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH0,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -79,11 +75,7 @@ static struct resource mv64x60_eth1_reso
+ 	},
+ };
  
- asmlinkage void do_watch(struct pt_regs *regs)
- {
-+	if (board_watchpoint_handler) {
-+		(*board_watchpoint_handler)(regs);
-+		return;
-+	}
-+	
- 	/*
- 	 * We use the watch exception where available to detect stack
- 	 * overflows.
-diff --git a/include/asm-mips/bootinfo.h b/include/asm-mips/bootinfo.h
-index c7c945b..7fc52c7 100644
---- a/include/asm-mips/bootinfo.h
-+++ b/include/asm-mips/bootinfo.h
-@@ -213,6 +213,18 @@
- #define MACH_GROUP_NEC_EMMA2RH 25	/* NEC EMMA2RH (was 23)		*/
- #define  MACH_NEC_MARKEINS	0	/* NEC EMMA2RH Mark-eins	*/
+-static char eth1_mac_addr[ETH_ALEN];
+-
+ static struct mv643xx_eth_platform_data eth1_pd = {
+-	.mac_addr	= eth1_mac_addr,
+-
+ 	.tx_sram_addr	= MV_SRAM_BASE_ETH1,
+ 	.tx_sram_size	= MV_SRAM_TXRING_SIZE,
+ 	.tx_queue_size	= MV_SRAM_TXRING_SIZE / 16,
+@@ -174,8 +166,8 @@ static int __init mv643xx_eth_add_pds(vo
+ 	int ret;
  
-+/*
-+ * Valid machtype for group PMC-MSP
-+ */
-+#define MACH_GROUP_MSP         26	/* PMC-Sierra MSP boards/CPUs    */
-+#define MACH_MSP4200_EVAL       0	/* PMC-Sierra MSP4200 Evaluation board */
-+#define MACH_MSP4200_GW         1	/* PMC-Sierra MSP4200 Gateway demo board */
-+#define MACH_MSP4200_FPGA       2	/* PMC-Sierra MSP4200 Emulation board */
-+#define MACH_MSP7120_EVAL       3	/* PMC-Sierra MSP7120 Evaluation board */
-+#define MACH_MSP7120_GW         4	/* PMC-Sierra MSP7120 Residential Gateway board */
-+#define MACH_MSP7120_FPGA       5	/* PMC-Sierra MSP7120 Emulation board */
-+#define MACH_MSP_OTHER        255	/* PMC-Sierra unknown board type */
-+
- #define CL_SIZE			COMMAND_LINE_SIZE
+ 	get_mac(mac);
+-	eth_mac_add(eth0_mac_addr, mac, 0);
+-	eth_mac_add(eth1_mac_addr, mac, 1);
++	eth_mac_add(eth0_pd.mac_addr, mac, 0);
++	eth_mac_add(eth1_pd.mac_addr, mac, 1);
+ 	ret = platform_add_devices(mv643xx_eth_pd_devs,
+ 			ARRAY_SIZE(mv643xx_eth_pd_devs));
  
- const char *get_system_type(void);
-diff --git a/include/asm-mips/mipsregs.h b/include/asm-mips/mipsregs.h
-index 9985cb7..bd683b6 100644
---- a/include/asm-mips/mipsregs.h
-+++ b/include/asm-mips/mipsregs.h
-@@ -15,6 +15,7 @@
- 
- #include <linux/linkage.h>
- #include <asm/hazards.h>
-+#include <asm/war.h>
- 
- /*
-  * The following macros are especially useful for __asm__
-@@ -1292,10 +1293,39 @@ static inline void tlb_probe(void)
- 
- static inline void tlb_read(void)
- {
-+#if MIPS34K_MISSED_ITLB_WAR
-+	int res = 0;
-+
-+	__asm__ __volatile__(
-+	"	.set	push						\n"
-+	"	.set	noreorder					\n"
-+	"	.set	noat						\n"
-+	"	.set	mips32r2					\n"
-+	"	.word	0x41610001		# dvpe $1		\n"
-+	"	move	%0, $1						\n"
-+	"	ehb							\n"
-+	"	.set	pop						\n"
-+	: "=r" (res));
-+
-+	instruction_hazard();
-+#endif
-+
- 	__asm__ __volatile__(
- 		".set noreorder\n\t"
- 		"tlbr\n\t"
- 		".set reorder");
-+
-+#if MIPS34K_MISSED_ITLB_WAR
-+	if ((res & _ULCAST_(1)))
-+		__asm__ __volatile__(
-+		"	.set	push						\n"
-+		"	.set	noreorder					\n"
-+		"	.set	noat						\n"
-+		"	.set	mips32r2					\n"
-+		"	.word	0x41600021		# evpe			\n"
-+		"	ehb							\n"
-+		"	.set	pop						\n");
-+#endif
- }
- 
- static inline void tlb_write_indexed(void)
-diff --git a/include/asm-mips/war.h b/include/asm-mips/war.h
-index 13a3502..74c08e6 100644
---- a/include/asm-mips/war.h
-+++ b/include/asm-mips/war.h
-@@ -196,6 +196,14 @@
- #endif
- 
- /*
-+ * 34K core erratum: "Problems Executing the TLBR Instruction"
-+ */
-+#if defined(CONFIG_PMC_MSP7120_EVAL) || defined(CONFIG_PMC_MSP7120_GW) || \
-+	defined(CONFIG_PMC_MSP7120_FPGA)
-+#define MIPS34K_MISSED_ITLB_WAR		1
-+#endif
-+
-+/*
-  * Workarounds default to off
-  */
- #ifndef ICACHE_REFILLS_WORKAROUND_WAR
-@@ -234,5 +242,8 @@
- #ifndef R10000_LLSC_WAR
- #define R10000_LLSC_WAR			0
- #endif
-+#ifndef MIPS34K_MISSED_ITLB_WAR
-+#define MIPS34K_MISSED_ITLB_WAR		0
-+#endif
- 
- #endif /* _ASM_WAR_H */
-diff --git a/include/asm-mips/regops.h b/include/asm-mips/regops.h
-new file mode 100644
-index 0000000..fbfc940
---- /dev/null
-+++ b/include/asm-mips/regops.h
-@@ -0,0 +1,168 @@
-+/*
-+ * $Id: regops.h,v 1.2 2006/05/08 22:00:34 ramsayji Exp $
-+ *
-+ * VPE/SMP-safe functions to access registers.  They use ll/sc instructions, so
-+ * it is your responsibility to ensure these are available on your platform
-+ * before including this file.
-+ *
-+ * In addition, there is a bug on the R10000 chips which has a workaround.  If
-+ * you are affected by this bug, make sure to define the symbol
-+ * 'R10000_LLSC_WAR' to be non-zero.  If you are using this header from within
-+ * linux, you may include <asm/war.h> before including this file to have this
-+ * defined appropriately for you.
-+ *
-+ * Copyright 2005 PMC-Sierra, Inc.
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
-+ *  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-+ *  LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF USE,
-+ *  DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-+ *  THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc., 675
-+ *  Mass Ave, Cambridge, MA 02139, USA.
-+ */
-+
-+#ifndef __ASM_REGOPS_H__
-+#define __ASM_REGOPS_H__
-+
-+#ifndef R10000_LLSC_WAR
-+#define R10000_LLSC_WAR 0
-+#endif
-+
-+#if R10000_LLSC_WAR == 1
-+#define __beqz	"beqzl	"
-+#else
-+#define __beqz	"beqz	"
-+#endif
-+
-+#ifndef _LINUX_TYPES_H
-+typedef unsigned int uint32_t;
-+#endif
-+
-+/*
-+ * Sets all the masked bits to the corresponding value bits
-+ */
-+static inline void set_value_reg32( volatile uint32_t * const addr,
-+					uint32_t const mask,
-+					uint32_t const value )
-+{
-+	uint32_t temp;
-+
-+	__asm__ __volatile__(
-+	"	.set	mips3				\n"
-+	"1:	ll	%0, %1	# set_value_reg32	\n"
-+	"	and	%0, %2				\n"
-+	"	or	%0, %3				\n"
-+	"	sc	%0, %1				\n"
-+	"	"__beqz"%0, 1b				\n"
-+	"	.set	mips0				\n"
-+	: "=&r" (temp), "=m" (*addr)
-+	: "ir" (~mask), "ir" (value), "m" (*addr) );
-+}
-+
-+/*
-+ * Sets all the masked bits to '1'
-+ */
-+static inline void set_reg32( volatile uint32_t * const addr,
-+				uint32_t const mask )
-+{
-+	uint32_t temp;
-+
-+	__asm__ __volatile__(
-+	"	.set	mips3				\n"
-+	"1:	ll	%0, %1		# set_reg32	\n"
-+	"	or	%0, %2				\n"
-+	"	sc	%0, %1				\n"
-+	"	"__beqz"%0, 1b				\n"
-+	"	.set	mips0				\n"
-+	: "=&r" (temp), "=m" (*addr)
-+	: "ir" (mask), "m" (*addr) );
-+}
-+
-+/*
-+ * Sets all the masked bits to '0'
-+ */
-+static inline void clear_reg32( volatile uint32_t * const addr,
-+				uint32_t const mask )
-+{
-+	uint32_t temp;
-+
-+	__asm__ __volatile__(
-+	"	.set	mips3				\n"
-+	"1:	ll	%0, %1		# clear_reg32	\n"
-+	"	and	%0, %2				\n"
-+	"	sc	%0, %1				\n"
-+	"	"__beqz"%0, 1b				\n"
-+	"	.set	mips0				\n"
-+	: "=&r" (temp), "=m" (*addr)
-+	: "ir" (~mask), "m" (*addr) );
-+}
-+
-+/*
-+ * Toggles all masked bits from '0' to '1' and '1' to '0'
-+ */
-+static inline void toggle_reg32( volatile uint32_t * const addr,
-+				uint32_t const mask )
-+{
-+	uint32_t temp;
-+
-+	__asm__ __volatile__(
-+	"	.set	mips3				\n"
-+	"1:	ll	%0, %1		# toggle_reg32	\n"
-+	"	xor	%0, %2				\n"
-+	"	sc	%0, %1				\n"
-+	"	"__beqz"%0, 1b				\n"
-+	"	.set	mips0				\n"
-+	: "=&r" (temp), "=m" (*addr)
-+	: "ir" (mask), "m" (*addr) );
-+}
-+
-+/* For special strange cases only:
-+ *
-+ * If you need custom processing within a ll/sc loop, use the following macros
-+ * VERY CAREFULLY:
-+ *
-+ *   uint32_t tmp;                      <-- Define a variable to hold the data
-+ *
-+ *   custom_reg32_start(address, tmp);	<-- Reads the address and puts the value
-+ *						in the 'tmp' variable given
-+ *
-+ *	< From here on out, you are (basicly) atomic, so don't do anything too
-+ *	< fancy!
-+ *	< Also, this code may loop if the end of this block fails to write
-+ *	< everything back safely due do the other CPU, so do NOT do anything
-+ *	< with side-effects!
-+ *
-+ *   custom_reg32_stop(address, tmp);	<-- Writes back 'tmp' safely. 
-+ *
-+ */
-+#define custom_reg32_read(address, tmp)				\
-+	__asm__ __volatile__(					\
-+	"	.set	mips3				\n"	\
-+	"1:	ll	%0, %1	#custom_reg32_read	\n"	\
-+	"	.set	mips0				\n"	\
-+	: "=r" (tmp), "=m" (*address)				\
-+	: "m" (*address) )
-+
-+#define custom_reg32_write(address, tmp)			\
-+	__asm__ __volatile__(					\
-+	"	.set	mips3				\n"	\
-+	"	sc	%0, %1	#custom_reg32_write	\n"	\
-+	"	"__beqz"%0, 1b				\n"	\
-+	"	.set	mips0				\n"	\
-+	: "=&r" (tmp), "=m" (*address)				\
-+	: "0" (tmp), "m" (*address) )
-+
-+#endif  /* __ASM_REGOPS_H__ */

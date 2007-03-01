@@ -1,51 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2007 18:56:13 +0000 (GMT)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:40709 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20039439AbXCAS4I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Mar 2007 18:56:08 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 5C146E1CCD;
-	Thu,  1 Mar 2007 19:55:23 +0100 (CET)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id QkHssIO0Ez2m; Thu,  1 Mar 2007 19:55:23 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id E8D1BE1C69;
-	Thu,  1 Mar 2007 19:55:22 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l21Itbkh008692;
-	Thu, 1 Mar 2007 19:55:37 +0100
-Date:	Thu, 1 Mar 2007 18:55:30 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Untangle the rest of the prom_printf mess and convert to
- early printk
-In-Reply-To: <S20039493AbXCASgj/20070301183639Z+38846@ftp.linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0703011853230.25556@blysk.ds.pg.gda.pl>
-References: <S20039493AbXCASgj/20070301183639Z+38846@ftp.linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90/2690/Thu Mar  1 12:11:27 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2007 19:10:22 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:57247 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20039452AbXCATKV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Mar 2007 19:10:21 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l21JAK1F024287;
+	Thu, 1 Mar 2007 19:10:20 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l21JAJKL024286;
+	Thu, 1 Mar 2007 19:10:19 GMT
+Date:	Thu, 1 Mar 2007 19:10:19 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [MIPS] Untangle the rest of the prom_printf mess and convert to early printk
+Message-ID: <20070301191019.GA23843@linux-mips.org>
+References: <S20039493AbXCASgj/20070301183639Z+38846@ftp.linux-mips.org> <Pine.LNX.4.64N.0703011853230.25556@blysk.ds.pg.gda.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0703011853230.25556@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14300
+X-archive-position: 14301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 1 Mar 2007, linux-mips@linux-mips.org wrote:
+On Thu, Mar 01, 2007 at 06:55:30PM +0000, Maciej W. Rozycki wrote:
 
->  arch/mips/dec/prom/console.c             |   38 +--------
+> >  arch/mips/dec/prom/console.c             |   38 +--------
+> 
+>  Any particular reason for replacing an optimised version with this 
+> miserable contraption?
 
- Any particular reason for replacing an optimised version with this 
-miserable contraption?
+I doubt anybody will notice when the first few lines of bootup messages
+take a few cycles extra.  For the moment it did matter to get rid of
+the impressive barbed wire fence made from several independant early
+printk implementations and macros, functions and function pointers being
+named prom_printf with no apparent pattern.
 
-  Maciej
+If you think the code really needs to be optimized as the next step, I
+take patches.
+
+  Ralf

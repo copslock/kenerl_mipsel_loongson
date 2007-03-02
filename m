@@ -1,29 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2007 21:10:02 +0000 (GMT)
-Received: from smtp-ext.int-evry.fr ([157.159.11.17]:63650 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2007 21:10:29 +0000 (GMT)
+Received: from smtp-ext.int-evry.fr ([157.159.11.17]:14728 "EHLO
 	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20039604AbXCBVJ5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Mar 2007 21:09:57 +0000
+	id S20039606AbXCBVKB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Mar 2007 21:10:01 +0000
 Received: from mini.int.alphacore.net (florian.maisel.int-evry.fr [157.159.41.36])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 1F6848D1691
-	for <linux-mips@linux-mips.org>; Fri,  2 Mar 2007 22:09:04 +0100 (CET)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id F11F48D1693
+	for <linux-mips@linux-mips.org>; Fri,  2 Mar 2007 22:09:08 +0100 (CET)
 From:	Florian Fainelli <florian.fainelli@int-evry.fr>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH 0/7] MTX-1 patches
-Date:	Fri, 2 Mar 2007 22:07:20 +0100
+Subject: [PATCH 1/7] MTX-1 watchdog driver
+Date:	Fri, 2 Mar 2007 22:07:26 +0100
 User-Agent: KMail/1.9.6
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200703022207.20580.florian.fainelli@int-evry.fr>
+Content-Type: Multipart/Mixed;
+  boundary="Boundary-00=_OIJ6FHfN7oBlxto"
+Message-Id: <200703022207.26276.florian.fainelli@int-evry.fr>
 Return-Path: <florian.fainelli@int-evry.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14311
+X-archive-position: 14312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,12 +29,304 @@ X-original-sender: florian.fainelli@int-evry.fr
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+--Boundary-00=_OIJ6FHfN7oBlxto
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-This patch suite is used in the OpenWrt au1000-2.6 port, and working 
-flawlessly on MTX-1 boards for months now. Most patches are not from me, but 
-forward ported from the openembedded repository.
+This patch is required if you want to use a MTX-1 board and do not see it 
+being rebooted every 10 seconds.
 
-Patches are based on 2.6.19.2 and should apply fine with 2.6.20.
--- 
-Regards, Florian
+Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
+--
+
+--Boundary-00=_OIJ6FHfN7oBlxto
+Content-Type: text/plain;
+  charset="utf-8";
+  name="004-mtx1_watchdog.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename="004-mtx1_watchdog.patch"
+
+diff -urN linux-2.6.16.7/drivers/char/watchdog/Kconfig linux-2.6.16.7.new/drivers/char/watchdog/Kconfig
+--- linux-2.6.16.7/drivers/char/watchdog/Kconfig	2006-04-17 23:53:25.000000000 +0200
++++ linux-2.6.16.7.new/drivers/char/watchdog/Kconfig	2006-04-22 23:23:53.000000000 +0200
+@@ -460,6 +460,14 @@
+ 	  timer expired and no process has written to /dev/watchdog during
+ 	  that time.
+ 
++config MTX1_WATCHDOG
++	tristate "MTX-1 Hardware Watchdog"
++	depends on WATCHDOG && MIPS_MTX1
++	help
++	  Hardware driver for the AccessCube MTX-1 watchdog. This is a
++	  watchdog timer that will reboot the machine after a 100 seconds
++	  timer expired.
++
+ # S390 Architecture
+ 
+ config ZVM_WATCHDOG
+diff -urN linux-2.6.16.7/drivers/char/watchdog/Makefile linux-2.6.16.7.new/drivers/char/watchdog/Makefile
+--- linux-2.6.16.7/drivers/char/watchdog/Makefile	2006-04-17 23:53:25.000000000 +0200
++++ linux-2.6.16.7.new/drivers/char/watchdog/Makefile	2006-04-22 23:21:18.000000000 +0200
+@@ -65,6 +65,7 @@
+ 
+ # MIPS Architecture
+ obj-$(CONFIG_INDYDOG) += indydog.o
++obj-$(CONFIG_MTX1_WATCHDOG) += mtx-1_watchdog.o
+ 
+ # S390 Architecture
+ 
+diff -urN linux-2.6.16.7/drivers/char/watchdog/mtx-1_watchdog.c linux-2.6.16.7.new/drivers/char/watchdog/mtx-1_watchdog.c
+--- linux-2.6.16.7/drivers/char/watchdog/mtx-1_watchdog.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.16.7.new/drivers/char/watchdog/mtx-1_watchdog.c	2006-04-22 23:20:53.000000000 +0200
+@@ -0,0 +1,246 @@
++/*
++ *      Driver for the MTX-1 Watchdog.
++ *
++ *      (c) Copyright 2005 4G Systems <info@4g-systems.biz>, All Rights Reserved.
++ *                              http://www.4g-systems.biz
++ *
++ *      This program is free software; you can redistribute it and/or
++ *      modify it under the terms of the GNU General Public License
++ *      as published by the Free Software Foundation; either version
++ *      2 of the License, or (at your option) any later version.
++ *
++ *      Neither Michael Stickel nor 4G Systems admit liability nor provide
++ *      warranty for any of this software. This material is provided
++ *      "AS-IS" and at no charge.
++ *
++ *      (c) Copyright 2005    4G Systems <info@4g-systems.biz>
++ *
++ *      Release 0.01.
++ *
++ *      Author: Michael Stickel  michael.stickel@4g-systems.biz
++ *
++ *
++ *      The Watchdog is configured to reset the MTX-1
++ *      if it is not triggered for 100 seconds.
++ *      It should not be triggered more often than 1.6 seconds.
++ *
++ *      A timer triggers the watchdog every 5 seconds, until
++ *      it is opened for the first time. After the first open
++ *      it MUST be triggered every 2..95 seconds.
++ */
++#include <linux/autoconf.h>
++#include <linux/module.h>
++#include <linux/version.h>
++#include <linux/types.h>
++#include <linux/errno.h>
++#include <linux/kernel.h>
++#include <linux/sched.h>
++#include <linux/miscdevice.h>
++#include <linux/watchdog.h>
++#include <linux/slab.h>
++#include <linux/init.h>
++#include <asm/uaccess.h>
++#include <linux/fs.h>
++
++#include <asm/mach-au1x00/au1000.h>
++
++#ifndef FALSE
++# define FALSE (0)
++#endif
++
++#ifndef TRUE
++# define TRUE (!FALSE)
++#endif
++
++
++//---------[ Hardware Functions ]-----------------
++
++static void mtx1_trigger_wd (void)
++{
++	/*
++	 * toggle GPIO2_15
++	 */
++
++	u32 tmp = au_readl(GPIO2_DIR);
++	tmp = (tmp & ~(1<<15)) | ((~tmp) & (1<<15));
++	au_writel (tmp, GPIO2_DIR);
++}
++
++static void mtx1_enable_wd (void)
++{
++	au_writel (au_readl(GPIO2_DIR) | (u32)(1<<15), GPIO2_DIR);
++}
++
++static void mtx1_disable_wd (void)
++{
++	au_writel (au_readl(GPIO2_DIR) & ~((u32)(1<<15)), GPIO2_DIR);
++}
++
++
++//---------[ Timer Functions ]-----------------
++
++static struct timer_list   wd_trigger_timer;
++static char                timer_is_running = FALSE;
++
++static void wd_timer_callback (unsigned long data)
++{
++	if (timer_is_running)
++		mod_timer (&wd_trigger_timer, jiffies + 5 * HZ);
++	mtx1_trigger_wd();
++}
++
++static void start_wd_timer (void)
++{
++	if (!timer_is_running) {
++		struct timer_list *t = &wd_trigger_timer;
++		
++		init_timer (t);
++		t->function = wd_timer_callback;
++		t->data     = (unsigned long)0L;
++		t->expires  = jiffies + 5 * HZ;   // 5 seconds.
++		add_timer (t);
++		timer_is_running = TRUE;
++	}
++}
++
++
++
++static void stop_wd_timer (void)
++{
++	if (timer_is_running) {
++		del_timer(&wd_trigger_timer);
++		timer_is_running = FALSE;
++	}
++}
++
++
++//---------[ File Functions ]-----------------
++
++static char restart_after_close;
++
++static int mtx1wd_open (struct inode *inode, struct file *file)
++{
++	if (MINOR(inode->i_rdev) != WATCHDOG_MINOR) return -ENODEV;
++	//MOD_INC_USE_COUNT;
++
++	// stop the timer, if it is running. It will not be
++	// started again, until the module is loaded again.
++	stop_wd_timer();
++
++	// sleep for 2 seconds, to ensure, that the wd is
++	// not triggered more often than every 2 seconds.
++	schedule_timeout (2 * HZ);
++
++	return 0;
++}
++
++
++static int mtx1wd_release (struct inode *inode, struct file *file) {
++	if (MINOR(inode->i_rdev)==WATCHDOG_MINOR) {
++	}
++	if (restart_after_close)
++		start_wd_timer();
++	//MOD_DEC_USE_COUNT;
++	return 0;
++}
++
++
++static ssize_t mtx1wd_write (struct file *file, const char *buf, size_t count, loff_t *ppos) {
++
++	mtx1_trigger_wd ();
++
++	if (count > 0) {
++               char buffer[10];
++               int n = (count>9)?9:count;
++
++               if (copy_from_user (&buffer, buf, n))
++                       return -EFAULT;
++               buffer[n]=0;
++
++               if (count >= 4 && strncmp("auto", buffer, 4)==0)
++                       restart_after_close = 1;
++
++               else if (count >= 6 && strncmp("manual", buffer, 6)==0)
++                       restart_after_close = 0;
++
++               return n;
++	}
++
++	return 0;
++}
++
++static ssize_t mtx1wd_read (struct file *file, char *buf, size_t count, loff_t *ppos)
++{
++       char * state = restart_after_close ? "auto\n" : "manual\n";
++       int n = strlen(state)+1;
++
++       if (file->f_pos >= n)
++               return 0;
++
++       if (count < n)
++               return -EINVAL;
++
++       if(copy_to_user(buf, state, n))
++               return -EFAULT;
++
++       file->f_pos += n;
++
++       return n;
++}
++
++static struct file_operations mtx1wd_fops = {
++	.owner = THIS_MODULE,
++	.read = mtx1wd_read,
++	.write = mtx1wd_write,
++	.open = mtx1wd_open,
++	.release = mtx1wd_release
++};
++
++
++static struct miscdevice mtx1wd_miscdev = {
++	WATCHDOG_MINOR,
++	"watchdog",
++	&mtx1wd_fops
++};
++
++
++
++//---------[ Module Functions ]-----------------
++
++
++static int __init init_mtx1_watchdog(void)
++{
++	printk("MTX-1 watchdog driver\n");
++
++	misc_register(&mtx1wd_miscdev);
++	
++	restart_after_close = 0;
++
++	mtx1_enable_wd ();
++
++	//-- trigger it for the first time.
++	//-- We do not exactly know how long it has not been triggered.
++	mtx1_trigger_wd ();
++
++	// start a timer, that calls mtx1_trigger_wd every 5 seconds.
++	start_wd_timer();
++
++	return 0;
++}
++
++static void __exit exit_mtx1_watchdog(void) {
++
++	// stop the timer, if it is running.
++        stop_wd_timer();
++
++        misc_deregister(&mtx1wd_miscdev);
++
++        mtx1_disable_wd();
++}
++
++module_init(init_mtx1_watchdog);
++module_exit(exit_mtx1_watchdog);
++
++MODULE_AUTHOR("Michael Stickel");
++MODULE_DESCRIPTION("Driver for the MTX-1 watchdog");
++MODULE_LICENSE("GPL");
+
+--Boundary-00=_OIJ6FHfN7oBlxto--

@@ -1,76 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Mar 2007 14:16:53 +0000 (GMT)
-Received: from hu-out-0506.google.com ([72.14.214.228]:1185 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037518AbXCEOQu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Mar 2007 14:16:50 +0000
-Received: by hu-out-0506.google.com with SMTP id 22so1327156hug
-        for <linux-mips@linux-mips.org>; Mon, 05 Mar 2007 06:15:49 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Mar 2007 14:20:23 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.186]:141 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20037495AbXCEOUT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Mar 2007 14:20:19 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so2015840nfc
+        for <linux-mips@linux-mips.org>; Mon, 05 Mar 2007 06:19:18 -0800 (PST)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=BWutyqVkxnzVuLWswrmL2hXQF9gOTii2Lyb5pL5vhBVC0Tn3+fMXAiktAcZmmI6Wwxa/hB8j6MDCL6ETZd2nCA0FblQZBUFPGnqkS54ApmMT7nh5dVpCv3B2qAJMrRxglZFavF6j8NfNjf4FedUQa6B9KUE1VWjPgC4FT6QwQZw=
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=OMRWmGY/vN/XEgbbaxTZYnNptGOzeXc9HpRJxGjlUbYQ4wYQDDT6Gb6RDqZJn/EuREA5buO3sJdNMCCIAJBKYPhD7AgVHFkqlSIX2vGzXlMxTuWVTmjsvbKAFYFI0DSmT5YmKTojru3mG+V4RYSrvVClV9qEbxUOTXgOhb5CXng=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=VHCPWbrFy+jZbqLWkdt6sC1hCgc50FntDL/x+pQnJuTWMtrrBrY5A6SwD76ic55lcZCbVluSUPXaG61l2Esn7Wh2KveNzI4lUJvKqAJRPEAFCA3RIll9LavHszQN/cksyhyTKlB/4cx23kfC2D85VN1eN/LfF+KASSXJMKE5Tb8=
-Received: by 10.114.202.15 with SMTP id z15mr1270833waf.1173104147291;
-        Mon, 05 Mar 2007 06:15:47 -0800 (PST)
-Received: by 10.114.136.11 with HTTP; Mon, 5 Mar 2007 06:15:46 -0800 (PST)
-Message-ID: <cda58cb80703050615r4e559ca1u78517634ac23a27@mail.gmail.com>
-Date:	Mon, 5 Mar 2007 15:15:46 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	mbizon@freebox.fr
-Subject: Re: [PATCH 0/2] FLATMEM: allow memory to start at pfn != 0 [take #2]
-Cc:	ralf <ralf@linux-mips.org>, linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <1172879147.964.65.camel@sakura.staff.proxad.net>
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=U0Ccd9MHFBN6vYEZ5m0RR6nmjeV8jeCzHJTHpXRbCi9AzrpVRIy8KkPR2Z1hEr//uLp8X0Ux1UrBZtjpd5xAKnNVwgbb/fNDTJslb2XAY+MU8oSAipL4P/akJW4cs+Wnr5gNQhCnJykBHP+9CxfG4kRK/81pmd0pu0nXc8/K/Xo=
+Received: by 10.78.192.20 with SMTP id p20mr626592huf.1173104358198;
+        Mon, 05 Mar 2007 06:19:18 -0800 (PST)
+Received: by 10.78.44.13 with HTTP; Mon, 5 Mar 2007 06:19:18 -0800 (PST)
+Message-ID: <c4357ccd0703050619r6b5a7452j6b582687bf1794d3@mail.gmail.com>
+Date:	Mon, 5 Mar 2007 16:19:18 +0200
+From:	"Alexander Sirotkin" <demiourgos@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: 0 function size
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-References: <116841864595-git-send-email-fbuihuu@gmail.com>
-	 <1172879147.964.65.camel@sakura.staff.proxad.net>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <demiourgos@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14353
+X-archive-position: 14354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: demiourgos@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+I'm trying to see the function sizes for some object file compiled for
+MIPS. On x86 one can use objdump  or readelf to see the sizes, however
+for same weird reason on MIPS these routines show 0 for all functions.
 
-On 3/3/07, Maxime Bizon <mbizon@freebox.fr> wrote:
-> Looking at phys_to_virt(), it looks like I also need to change
-> PAGE_OFFSET to 0x90000000 to get correct values. This makes the kernel
-> boot with a correct memory map, but userspace doesn't work anymore.
-
-No phys_to_virt() should already take care of that:
-
-static inline void * phys_to_virt(unsigned long address)
-{
-        return (void *)(address + PAGE_OFFSET - PHYS_OFFSET);
-}
-
-Does your platform code do some address translation by using
-CPHYSADDR() macro or by using anything else than pa() ?
-
->
-> Just in case, I'm not using git head, but a 2.6.20 kernel with the 2
-
-2.6.20 should be OK. This patchset need some commits which have been
-applied before.
-
-> patches applied. Just tell me if you need complete dmesg.
->
-
-yes, please, it may help. Can you send your config file as well ?
-
-Just to be sure, is your PAGE_OFFSET equal to 0x80000000 ?
-
-Thanks
--- 
-               Franck
+Any idea what I'm missing ?

@@ -1,45 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Mar 2007 13:13:56 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:42410 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20037484AbXCENNy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Mar 2007 13:13:54 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l25DC5Nd029224;
-	Mon, 5 Mar 2007 13:12:05 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l25DC3HJ029223;
-	Mon, 5 Mar 2007 13:12:03 GMT
-Date:	Mon, 5 Mar 2007 13:12:03 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] separate Cobalt PCI codes from setup.c
-Message-ID: <20070305131203.GA29204@linux-mips.org>
-References: <20070305191003.5357b4bf.yoichi_yuasa@tripeaks.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070305191003.5357b4bf.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Mar 2007 13:48:51 +0000 (GMT)
+Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:41623 "HELO krt.neobee.net")
+	by ftp.linux-mips.org with SMTP id S20037477AbXCENsn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 5 Mar 2007 13:48:43 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by krt.neobee.net (Postfix) with ESMTP id DC46CCDE28
+	for <linux-mips@linux-mips.org>; Mon,  5 Mar 2007 14:48:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at krt.neobee.net
+Received: from krt.neobee.net ([127.0.0.1])
+	by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id HZvRI9TJLDab for <linux-mips@linux-mips.org>;
+	Mon,  5 Mar 2007 14:48:11 +0100 (CET)
+Received: from had (unknown [192.168.193.88])
+	by krt.neobee.net (Postfix) with ESMTP id 5130ECDE30
+	for <linux-mips@linux-mips.org>; Mon,  5 Mar 2007 14:48:09 +0100 (CET)
+From:	"Mile Davidovic" <Mile.Davidovic@micronasnit.com>
+To:	<linux-mips@linux-mips.org>
+Subject: Encrypt user file system
+Date:	Mon, 5 Mar 2007 14:51:10 +0100
+Message-ID: <06b401c75f2d$552b8130$ff828390$@Davidovic@micronasnit.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook 12.0
+Thread-Index: AcdfLVPzHZiHXQOnR66OGNXFLNoW8A==
+Content-Language: sr
+Return-Path: <Mile.Davidovic@micronasnit.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14350
+X-archive-position: 14351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Mile.Davidovic@micronasnit.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 05, 2007 at 07:10:03PM +0900, Yoichi Yuasa wrote:
+Hello all,
+What is mips way for encrypting user file system? 
+On intel we can use combination dm-crypt and we could crypt complete user FS I
+suppose that should work on MIPS too?
 
-> This patch has separated cobalt PCI codes from setup.c .
-> It's removed #ifdef CONFIG_PCI/#endif from cobalt setup.c .
 
-Thanks, queued.
-
-2.6.21 ante portas ;-)
-
-  Ralf
+Thanks in advice
+Mile

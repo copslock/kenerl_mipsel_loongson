@@ -1,67 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2007 11:23:22 +0000 (GMT)
-Received: from srv5.dvmed.net ([207.36.208.214]:48592 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20021358AbXCFLXT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2007 11:23:19 +0000
-Received: from cpe-065-190-194-075.nc.res.rr.com ([65.190.194.75] helo=[10.10.10.10])
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1HOXi8-0002Ma-SC; Tue, 06 Mar 2007 11:20:05 +0000
-Message-ID: <45ED4E64.5030404@garzik.org>
-Date:	Tue, 06 Mar 2007 06:20:04 -0500
-From:	Jeff Garzik <jeff@garzik.org>
-User-Agent: Thunderbird 1.5.0.10 (X11/20070302)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	netdev@vger.kernel.org, sshtylyov@ru.mvista.com
-Subject: Re: [PATCH] tc35815 driver update (take 2)
-References: <20070303.235459.25478204.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070303.235459.25478204.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2007 12:36:15 +0000 (GMT)
+Received: from mo31.po.2iij.net ([210.128.50.54]:60959 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20021367AbXCFMgM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2007 12:36:12 +0000
+Received: by mo.po.2iij.net (mo31) id l26CYo3G041416; Tue, 6 Mar 2007 21:34:50 +0900 (JST)
+Received: from localhost.localdomain (70.27.30.125.dy.iij4u.or.jp [125.30.27.70])
+	by mbox.po.2iij.net (mbox32) id l26CYi0I014215
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 6 Mar 2007 21:34:45 +0900 (JST)
+Date:	Tue, 6 Mar 2007 21:34:44 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] clean up include files for Cobalt
+Message-Id: <20070306213444.7b826d1d.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <jeff@garzik.org>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14369
+X-archive-position: 14370
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff@garzik.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> Current tc35815 driver is very obsolete and less maintained for a long
-> time.  Replace it with a new driver based on one from CELF patch
-> archive.
-> 
-> Major advantages of CELF version (version 1.23, for kernel 2.6.10) are:
-> 
-> * Independent of JMR3927.
->   (Actually independent of MIPS, but AFAIK the chip is used only on
->    MIPS platforms)
-> * TX4938 support.
-> * 64-bit proof.
-> * Asynchronous and on-demand auto negotiation.
-> * High performance on non-coherent architecture.
-> * ethtool support.
-> * Many bugfixes and cleanups.
-> 
-> And improvoments since version 1.23 are:
-> 
-> * TX4939 support.
-> * NETPOLL support.
-> * NAPI support. (disabled by default)
-> * Reduce memcpy on receiving.
-> * PM support.
-> * Many cleanups and bugfixes.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> 
->  drivers/net/Kconfig     |    3 
->  drivers/net/tc35815.c   | 2587 ++++++++++++++++++++++++++++++++++------------
->  include/linux/pci_ids.h |    2 
->  3 files changed, 1917 insertions(+), 675 deletions(-)
+Hi Ralf,
 
-applied to #upstream, let's give it a good review while it hangs out in 
-libata-dev.git#ALL and -mm
+This patch has cleaned up include files for Cobalt.
+
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/console.c mips/arch/mips/cobalt/console.c
+--- mips-orig/arch/mips/cobalt/console.c	2007-03-05 06:51:23.517795750 +0900
++++ mips/arch/mips/cobalt/console.c	2007-03-05 06:54:18.104706750 +0900
+@@ -1,13 +1,11 @@
+ /*
+  * (C) P. Horton 2006
+  */
+-
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/console.h>
+ #include <linux/serial_reg.h>
++
+ #include <asm/addrspace.h>
+-#include <asm/mach-cobalt/cobalt.h>
++
++#include <cobalt.h>
+ 
+ void prom_putchar(char c)
+ {
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/irq.c mips/arch/mips/cobalt/irq.c
+--- mips-orig/arch/mips/cobalt/irq.c	2007-03-05 06:51:23.517795750 +0900
++++ mips/arch/mips/cobalt/irq.c	2007-03-05 06:54:18.104706750 +0900
+@@ -17,7 +17,7 @@
+ #include <asm/irq_cpu.h>
+ #include <asm/gt64120.h>
+ 
+-#include <asm/mach-cobalt/cobalt.h>
++#include <cobalt.h>
+ 
+ /*
+  * We have two types of interrupts that we handle, ones that come in through
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/reset.c mips/arch/mips/cobalt/reset.c
+--- mips-orig/arch/mips/cobalt/reset.c	2007-03-05 06:51:23.521796000 +0900
++++ mips/arch/mips/cobalt/reset.c	2007-03-05 06:54:18.104706750 +0900
+@@ -8,15 +8,12 @@
+  * Copyright (C) 1995, 1996, 1997 by Ralf Baechle
+  * Copyright (C) 2001 by Liam Davies (ldavies@agile.tv)
+  */
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <asm/cacheflush.h>
++#include <linux/jiffies.h>
++
+ #include <asm/io.h>
+-#include <asm/processor.h>
+ #include <asm/reboot.h>
+-#include <asm/system.h>
+-#include <asm/mipsregs.h>
+-#include <asm/mach-cobalt/cobalt.h>
++
++#include <cobalt.h>
+ 
+ void cobalt_machine_halt(void)
+ {
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/setup.c mips/arch/mips/cobalt/setup.c
+--- mips-orig/arch/mips/cobalt/setup.c	2007-03-05 06:56:04.679367250 +0900
++++ mips/arch/mips/cobalt/setup.c	2007-03-05 06:54:18.120707750 +0900
+@@ -19,12 +19,10 @@
+ #include <asm/bootinfo.h>
+ #include <asm/time.h>
+ #include <asm/io.h>
+-#include <asm/irq.h>
+-#include <asm/processor.h>
+ #include <asm/reboot.h>
+ #include <asm/gt64120.h>
+ 
+-#include <asm/mach-cobalt/cobalt.h>
++#include <cobalt.h>
+ 
+ extern void cobalt_machine_restart(char *command);
+ extern void cobalt_machine_halt(void);

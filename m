@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2007 18:02:19 +0000 (GMT)
-Received: from hancock.steeleye.com ([71.30.118.248]:64204 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2007 18:06:17 +0000 (GMT)
+Received: from hancock.steeleye.com ([71.30.118.248]:13261 "EHLO
 	hancock.sc.steeleye.com") by ftp.linux-mips.org with ESMTP
-	id S20021429AbXCFSCP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Mar 2007 18:02:15 +0000
+	id S20021427AbXCFSGN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Mar 2007 18:06:13 +0000
 Received: from [172.17.6.40] (midgard.sc.steeleye.com [172.17.6.40])
-	by hancock.sc.steeleye.com (8.11.6/8.11.6) with ESMTP id l26I10x10975;
-	Tue, 6 Mar 2007 13:01:00 -0500
-Subject: Re: [parisc-linux] [PATCH 1/2] Use a weak symbol for the empty
-	version of pcibios_add_platform_entries()
+	by hancock.sc.steeleye.com (8.11.6/8.11.6) with ESMTP id l26I51x11230;
+	Tue, 6 Mar 2007 13:05:01 -0500
+Subject: Re: [parisc-linux] [PATCH 2/2] Make pcibios_add_platform_entries()
+	return errors
 From:	James Bottomley <James.Bottomley@SteelEye.com>
 To:	Michael Ellerman <michael@ellerman.id.au>
 Cc:	Greg Kroah-Hartman <greg@kroah.com>, linux-mips@linux-mips.org,
@@ -18,11 +18,11 @@ Cc:	Greg Kroah-Hartman <greg@kroah.com>, linux-mips@linux-mips.org,
 	uclinux-v850@lsi.nec.co.jp, linux-pci@atrey.karlin.mff.cuni.cz,
 	parisc-linux@parisc-linux.org, kernel@wantstofly.org,
 	rth@twiddle.net
-In-Reply-To: <1173193568.89821.610708199943.qpush@concordia>
-References: <1173193568.89821.610708199943.qpush@concordia>
+In-Reply-To: <20070306150725.68D97DDF36@ozlabs.org>
+References: <20070306150725.68D97DDF36@ozlabs.org>
 Content-Type: text/plain
-Date:	Tue, 06 Mar 2007 12:01:00 -0600
-Message-Id: <1173204060.3379.28.camel@mulgrave.il.steeleye.com>
+Date:	Tue, 06 Mar 2007 12:05:01 -0600
+Message-Id: <1173204301.3379.33.camel@mulgrave.il.steeleye.com>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.8.3 (2.8.3-1.fc6) 
 Content-Transfer-Encoding: 7bit
@@ -30,7 +30,7 @@ Return-Path: <James.Bottomley@SteelEye.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14378
+X-archive-position: 14379
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,11 +39,45 @@ Precedence: bulk
 X-list: linux-mips
 
 On Tue, 2007-03-06 at 16:06 +0100, Michael Ellerman wrote:
-> I'm not sure if this is going to fly, weak symbols work on the compilers I'm
-> using, but whether they work for all of the affected architectures I can't say.
-> I've cc'ed as many arch maintainers/lists as I could find.
+>  int __must_check pci_create_sysfs_dev_files (struct pci_dev *pdev)
+> @@ -644,10 +644,13 @@ int __must_check pci_create_sysfs_dev_fi
+>  		}
+>  	}
+>  	/* add platform-specific attributes */
+> -	pcibios_add_platform_entries(pdev);
+> +	if (pcibios_add_platform_entries(pdev))
+> +		goto err_rom_attr;
+>  
+>  	return 0;
+>  
+> +err_rom_attr:
+> +	sysfs_remove_bin_file(&pdev->dev.kobj, rom_attr);
 
-Well, for your use, PCI already uses weak symbols, so it must work on
-every architecture that you want to do it on ...
+This file is only created if the rom resource has a non-zero length.  If
+you unconditionally call sysfs_remove_bin_file() it's going to spit
+scary warnings and dump traces in this error leg if the rom resource
+doesn't exist.
 
 James
+
+
+>  err_rom:
+>  	kfree(rom_attr);
+>  err_bin_file:
+> Index: msi-new/include/linux/pci.h
+> ===================================================================
+> --- msi-new.orig/include/linux/pci.h
+> +++ msi-new/include/linux/pci.h
+> @@ -857,7 +857,7 @@ extern int pci_pci_problems;
+>  extern unsigned long pci_cardbus_io_size;
+>  extern unsigned long pci_cardbus_mem_size;
+>  
+> -extern void pcibios_add_platform_entries(struct pci_dev *dev);
+> +extern int pcibios_add_platform_entries(struct pci_dev *dev);
+>  
+>  #endif /* __KERNEL__ */
+>  #endif /* LINUX_PCI_H */
+> _______________________________________________
+> parisc-linux mailing list
+> parisc-linux@lists.parisc-linux.org
+> http://lists.parisc-linux.org/mailman/listinfo/parisc-linux

@@ -1,60 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2007 08:59:57 +0000 (GMT)
-Received: from krt.tmd.ns.ac.yu ([147.91.177.65]:52629 "HELO krt.neobee.net")
-	by ftp.linux-mips.org with SMTP id S20021350AbXCFI7x (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2007 08:59:53 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by krt.neobee.net (Postfix) with ESMTP id E19C7278040
-	for <linux-mips@linux-mips.org>; Tue,  6 Mar 2007 09:59:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at krt.neobee.net
-Received: from krt.neobee.net ([127.0.0.1])
-	by localhost (krt.neobee.net [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id hNFLOumUtyZn for <linux-mips@linux-mips.org>;
-	Tue,  6 Mar 2007 09:59:22 +0100 (CET)
-Received: from had (unknown [192.168.193.90])
-	by krt.neobee.net (Postfix) with ESMTP id CAE52278031
-	for <linux-mips@linux-mips.org>; Tue,  6 Mar 2007 09:59:21 +0100 (CET)
-From:	"Mile Davidovic" <Mile.Davidovic@micronasnit.com>
-To:	<linux-mips@linux-mips.org>
-References: <20070305162826.GC786@linux-mips.org>
-In-Reply-To: <20070305162826.GC786@linux-mips.org>
-Subject: RE: Encrypt user file system
-Date:	Tue, 6 Mar 2007 10:02:13 +0100
-Message-ID: <023501c75fce$21c37db0$654a7910$@Davidovic@micronasnit.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2007 11:07:27 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.186]:37764 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021344AbXCFLHZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 Mar 2007 11:07:25 +0000
+Received: by nf-out-0910.google.com with SMTP id l24so2325694nfc
+        for <linux-mips@linux-mips.org>; Tue, 06 Mar 2007 03:06:25 -0800 (PST)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=odHefe32hztH4osQHubEk7v7CPspyKT0sF1X6iX8zZmyWJ4OGTadmuVFXACxvFr786pCf46Ab04i7D5np2YkioyehCK8fGj/gXnt7A+8eDMaAxVpicsVjDRMo+U+F+fpCwMeMH31bfeaxb25X3L1LafNovFiE1uKuZlDFhe1Tuc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=AB8aF3E56A72N+hsI6kGuBGEA+MrYrvCgWOPu5DVyf9rj5vCRcAUgOc0MESaouJhrdB89IPSo/X2WrDZ47ysT8tyfSqwo82wvh2caUgVgGUXYJpnpc8DTsyVlyVyPkjp1sf6R8sBQujh4te9QE5ogaku7QGI/hh6emId41dlUa8=
+Received: by 10.78.138.6 with SMTP id l6mr765057hud.1173179185385;
+        Tue, 06 Mar 2007 03:06:25 -0800 (PST)
+Received: by 10.78.44.13 with HTTP; Tue, 6 Mar 2007 03:06:25 -0800 (PST)
+Message-ID: <c4357ccd0703060306x6135cf22p39d55ff79ed7ad45@mail.gmail.com>
+Date:	Tue, 6 Mar 2007 13:06:25 +0200
+From:	"Alexander Sirotkin" <demiourgos@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: 0 function size
+In-Reply-To: <20070305162745.GB786@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="Windows-1252"
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Office Outlook 12.0
-Thread-Index: AcdfQ6udbicM6h1fR36sutkqSTaAdAAiRUJw
-Content-Language: sr
-x-cr-hashedpuzzle: ASXg Axsp C2ol DPT5 DRKr E08S FM9F FlPs GAii GPAt GQqv G68Y HeOJ H/1w IVER IiXz;1;bABpAG4AdQB4AC0AbQBpAHAAcwBAAGwAaQBuAHUAeAAtAG0AaQBwAHMALgBvAHIAZwA=;Sosha1_v1;7;{2D5F0227-1C15-44F8-95FF-AE49686C1945};bQBpAGwAZQAuAGQAYQB2AGkAZABvAHYAaQBjAEAAbQBpAGMAcgBvAG4AYQBzAG4AaQB0AC4AYwBvAG0A;Tue, 06 Mar 2007 09:02:06 GMT;UgBFADoAIABFAG4AYwByAHkAcAB0ACAAdQBzAGUAcgAgAGYAaQBsAGUAIABzAHkAcwB0AGUAbQA=
-x-cr-puzzleid: {2D5F0227-1C15-44F8-95FF-AE49686C1945}
-Return-Path: <Mile.Davidovic@micronasnit.com>
+Content-Disposition: inline
+References: <c4357ccd0703050619r6b5a7452j6b582687bf1794d3@mail.gmail.com>
+	 <b115cb5f0703050821v50667580oa8dfa26412c05b08@mail.gmail.com>
+	 <20070305162745.GB786@linux-mips.org>
+Return-Path: <demiourgos@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14367
+X-archive-position: 14368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Mile.Davidovic@micronasnit.com
+X-original-sender: demiourgos@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Thanks a lot, it make sense. But my question is not precise, 
-I am wonder if MTD block device could be encrypted with dm-crypt.
-But this is questions for MTD mailing list.
-
-Best regards Mile
-
-
-But if I want to crypt MTD device 
-> 
-> > What is mips way for encrypting user file system?
-> > On intel we can use combination dm-crypt and we could crypt complete user
-> FS I
-> > suppose that should work on MIPS too?
-> 
-> Yes, of course.
-> 
+On 3/5/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Mon, Mar 05, 2007 at 09:51:25PM +0530, Rajat Jain wrote:
+>
+> > Are you using a native compiler or a cross compiler?
+> >
+> > If you are using a cross compiler, then you need to use the "cross
+> > compiler" version of objdump / readelf  utilities as well. For
+> > instance if you are using mips-linux-gcc to compile, then you need
+> > mips-linux-readelf / mips-linux-objdump etc.
+>
+> In general your're right but for this particular purpose for example an
+> i386-linux-objdump will do the job for 32-bit big and little endian
+> MIPS ELF.  It will - depending on the exact binutils configuration - fail
+> with an error message for 64-bit ELF.
+>
 >   Ralf
+>
+
+Apparently it is a bug in MIPS SDE toolchain, even in the latest version 6.05.
+With emdebian toolchain it works just fine.

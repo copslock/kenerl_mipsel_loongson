@@ -1,85 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2007 23:49:13 +0000 (GMT)
-Received: from father.pmc-sierra.com ([216.241.224.13]:14320 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20021662AbXCGXtI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Mar 2007 23:49:08 +0000
-Received: (qmail 13091 invoked by uid 101); 7 Mar 2007 23:47:45 -0000
-Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by father.pmc-sierra.com with SMTP; 7 Mar 2007 23:47:45 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l27NleTc024449;
-	Wed, 7 Mar 2007 15:47:45 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <FGCP3JFP>; Wed, 7 Mar 2007 15:47:40 -0800
-Message-ID: <45EF4F0E.50303@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Marc St-Jean <stjeanma@pmc-sierra.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] drivers: PMC MSP71xx GPIO char driver
-Date:	Wed, 7 Mar 2007 15:47:26 -0800 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2007 06:13:18 +0000 (GMT)
+Received: from rrcs-64-183-102-11.west.biz.rr.com ([64.183.102.11]:41411 "EHLO
+	jg555.com") by ftp.linux-mips.org with ESMTP id S20021535AbXCHGNQ
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 Mar 2007 06:13:16 +0000
+Received: from [192.168.55.157] ([::ffff:192.168.55.157])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Wed, 07 Mar 2007 22:12:14 -0800
+  id 004600EC.45EFA93E.00000872
+Message-ID: <45EFA92C.3070203@jg555.com>
+Date:	Wed, 07 Mar 2007 22:11:56 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Thunderbird 1.5.0.10 (Windows/20070221)
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 07 Mar 2007 23:47:36.0611 (UTC) FILETIME=[FBDB5730:01C76112]
-user-agent: Thunderbird 1.5.0.10 (X11/20070221)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: Building 64 bit kernel on Cobalt
+References: <45EB53D5.8060007@jg555.com> <20070304232731.GA25039@linux-mips.org>
+In-Reply-To: <20070304232731.GA25039@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14389
+X-archive-position: 14390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-Andrew Morton wrote:
->  > On Fri, 23 Feb 2007 17:28:19 -0600 Marc St-Jean 
-> <stjeanma@pmc-sierra.com> wrote:
->  > [PATCH] drivers: PMC MSP71xx GPIO char driver
->  >
->  > Patch to add a GPIO char driver for the PMC-Sierra
->  > MSP71xx devices.
->  >
->  > This patch references some platform support files previously
->  > submitted to the linux-mips@linux-mips.org list.
->  >
+Ralf Baechle wrote:
+> On Sun, Mar 04, 2007 at 03:18:45PM -0800, Jim Gifford wrote:
+>
+>   
+>> Last working Kernel was 2.6.19 series.
+>>
+>> Some changes from 2.6.19 and the 2.6.20 make it impossible to build a 64 
+>> bit kernel to boot on the cobalt. Ya, I know why, building a N32 
+>> actually but need a 64 bit kernel in order to do that. Anyone got any 
+>> suggestions. Looking through the difference between the kernels to 
+>> figure this out, but it's like looking for a needle in a haystack. Any 
+>> suggestions as to a starting point?
+>>     
+>
+> Try git-bisect to track down the changeset that broke things.
+>
+>   Ralf
+>
+>   
+We got it nailed down to arch/mips/kernel /setup.c. But we have not 
+isolated which change is actually causing it.
 
-Thanks for the feedback Andrew. I've implemented all your recommendations
-other than the kernel thread handling, which I still have to look into.
-
-[...]
-
-> 
->  > +/* -- Module functions -- */
->  > +
->  > +static int msp_gpio_blinkthread( void *none )
-> 
-> Why is this a "module function"?
-
-The reason is likely because it's only called by msp_gpio_init so it was
-considered part of the module code. I'll move the comment to only cover
-msp_gpio_init/exit.
-
-[...]
-
->  > +module_init(msp_gpio_init);
->  > +module_exit(msp_gpio_exit);
->  > +
->  > +EXPORT_SYMBOL(msp_gpio_in);
->  > +EXPORT_SYMBOL(msp_gpio_out);
->  > +EXPORT_SYMBOL(msp_gpio_mode);
->  > +EXPORT_SYMBOL(msp_gpio_blink);
->  > +EXPORT_SYMBOL(msp_gpio_noblink);
-> 
-> What uses these exports?
-
-These exports are needed for other drivers compiled as modules can control
-the GPIO pins through this driver.
-
-[...]
-
-Marc
+We do know that reverting back to the 2.6.19.x arch/mips/kernel /setup.c 
+will fix the issue. We will continue to dwindle it down until we come up 
+with the offender.

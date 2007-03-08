@@ -1,54 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2007 15:39:16 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:14785 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021756AbXCHPjL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Mar 2007 15:39:11 +0000
-Received: from localhost (p8013-ipad201funabasi.chiba.ocn.ne.jp [222.146.71.13])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 0007CBA41; Fri,  9 Mar 2007 00:37:49 +0900 (JST)
-Date:	Fri, 09 Mar 2007 00:37:49 +0900 (JST)
-Message-Id: <20070309.003749.39154822.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, kraj@mvista.com, libc-ports@sourceware.org
-Subject: Re: [PATCH] Fix some system calls with long long arguments
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070307.231410.15268922.anemo@mba.ocn.ne.jp>
-References: <20070307.003931.25235381.anemo@mba.ocn.ne.jp>
-	<20070307.231410.15268922.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Mar 2007 16:12:25 +0000 (GMT)
+Received: from rrcs-64-183-102-11.west.biz.rr.com ([64.183.102.11]:55498 "EHLO
+	jg555.com") by ftp.linux-mips.org with ESMTP id S20021759AbXCHQMV
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 Mar 2007 16:12:21 +0000
+Received: from [192.168.55.157] ([::ffff:192.168.55.157])
+  (AUTH: PLAIN root, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by jg555.com with esmtp; Thu, 08 Mar 2007 08:11:17 -0800
+  id 00340293.45F035A5.00003B40
+Message-ID: <45F0359A.105@jg555.com>
+Date:	Thu, 08 Mar 2007 08:11:06 -0800
+From:	Jim Gifford <maillist@jg555.com>
+User-Agent: Thunderbird 1.5.0.10 (Windows/20070221)
+MIME-Version: 1.0
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+CC:	Ralf Baechle <ralf@linux-mips.org>,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: Building 64 bit kernel on Cobalt
+References: <45EB53D5.8060007@jg555.com>	 <20070304232731.GA25039@linux-mips.org> <45EFA92C.3070203@jg555.com> <cda58cb80703080448yca7fa21xb005e0685d42d318@mail.gmail.com>
+In-Reply-To: <cda58cb80703080448yca7fa21xb005e0685d42d318@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <maillist@jg555.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14395
+X-archive-position: 14396
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: maillist@jg555.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 07 Mar 2007 23:14:10 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> fadvise64(), readahead(), sync_file_range() have long long argument(s)
-> but glibc passes it by hi/lo pair without padding, on both O32 and
-> N32.
-> 
-> Also wire up fadvise64_64() and fixup confusion of it with
-> fadvise64().
+Franck Bui-Huu wrote:
+> Hi,
+>
+> On 3/8/07, Jim Gifford <maillist@jg555.com> wrote:
+>> Ralf Baechle wrote:
+>> > On Sun, Mar 04, 2007 at 03:18:45PM -0800, Jim Gifford wrote:
+>> >
+>> >
+>> >> Last working Kernel was 2.6.19 series.
+>> >>
+>
+> It seems that I broke things again :(
+>
+>> >> Some changes from 2.6.19 and the 2.6.20 make it impossible to 
+>> build a 64
+>> >> bit kernel to boot on the cobalt. Ya, I know why, building a N32
+>> >> actually but need a 64 bit kernel in order to do that. Anyone got any
+>> >> suggestions. Looking through the difference between the kernels to
+>> >> figure this out, but it's like looking for a needle in a haystack. 
+>> Any
+>> >> suggestions as to a starting point?
+>> >>
+>> >
+>> > Try git-bisect to track down the changeset that broke things.
+>> >
+>> >   Ralf
+>> >
+>> >
+>> We got it nailed down to arch/mips/kernel /setup.c. But we have not
+>> isolated which change is actually causing it.
+>>
+>
+> Do you use any initrd ? If so how do you pass its address to the kernel ?
+No.
+>
+> What is your kernel load address ?
+Not sure
+>
+> can you send your .config file you're using ?
+I'll send it to you later, since I'm not at the office right now.
+>
+>> We do know that reverting back to the 2.6.19.x arch/mips/kernel /setup.c
+>> will fix the issue. We will continue to dwindle it down until we come up
+>> with the offender.
+>>
+>>
+>
+> What did the console say ? If nothing early console may help if 
+> available.
+All I get is this
+inflate: decompressing
+elf64: 00080000 - 0037701f (ffffffff.80326000) (ffffffff.80000000)
+elf64: ffffffff.80080000 (80080000) 2957446t + 151450t
+net: interface down
 
-If best performance was preferred, the O32 readahead and
-sync_file_range should not changed and libc should provide MIPS
-specific syscall wrappers, like pread64.  The N32 can also use
-standard sys_readahead(), etc. and libc should provide wrappers, too.
-
-Anyway fadvice64() needs to be fixed.
-
-Any comments from libc side?  Original patch is here:
-http://www.linux-mips.org/archives/linux-mips/2007-03/msg00092.html
-
----
-Atsushi Nemoto
+>
+> thanks

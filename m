@@ -1,311 +1,164 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2007 16:34:14 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:27857 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021497AbXCIQeJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2007 16:34:09 +0000
-Received: from localhost (p4160-ipad211funabasi.chiba.ocn.ne.jp [58.91.160.160])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 77808B3F5; Sat, 10 Mar 2007 01:32:48 +0900 (JST)
-Date:	Sat, 10 Mar 2007 01:32:48 +0900 (JST)
-Message-Id: <20070310.013248.45177878.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2007 18:14:49 +0000 (GMT)
+Received: from mail.blastwave.org ([147.87.98.10]:30344 "EHLO
+	mail.blastwave.org") by ftp.linux-mips.org with ESMTP
+	id S20021429AbXCISOo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Mar 2007 18:14:44 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by mail.blastwave.org (Postfix) with ESMTP id 42599F9AA
+	for <linux-mips@linux-mips.org>; Fri,  9 Mar 2007 19:14:13 +0100 (MET)
+X-Virus-Scanned: amavisd-new at blastwave.org
+Received: from mail.blastwave.org ([127.0.0.1])
+	by localhost (enterprise.blastwave.org [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id pyRv2WYJpeYk for <linux-mips@linux-mips.org>;
+	Fri,  9 Mar 2007 19:14:03 +0100 (MET)
+Received: from unknown (66-132.63-81.stat.fixnetdata.ch [81.63.132.66])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.blastwave.org (Postfix) with ESMTP id E4642F957
+	for <linux-mips@linux-mips.org>; Fri,  9 Mar 2007 19:14:02 +0100 (MET)
+Date:	Fri, 9 Mar 2007 19:13:54 +0100
+From:	Attila Kinali <attila@kinali.ch>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Cleanup FPU ownership management (alternative version)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Subject: crash in first printk of start_kernel
+Message-Id: <20070309191354.f962e57b.attila@kinali.ch>
+Organization: NERV
+X-Mailer: Sylpheed 2.3.0 (GTK+ 2.10.6; i686-pc-mingw32)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <attila@kinali.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14408
+X-archive-position: 14409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: attila@kinali.ch
 Precedence: bulk
 X-list: linux-mips
 
-Currently preempt_disable/preempt_enable are scattered in FPU
-ownership management code.  This patch makes own_fpu() and lost_fpu()
-can save/restore FPU context in itself and make these functions (and
-init_fpu() too) preempt-proof.  This makes the FPU management codes
-much readable.  Also this patch introduce raw_cpu_has_fpu macro which
-is to be used if the caller did not need atomic context.
+Hi,
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+I'm currently to bring up a new embedded system we build
+using the Alchemy Au1550 CPU. The board itself looks like
+a downsized version of the DB1550 evaluation board from AMD,
+with 64MB DRAM and a 32MB NOR flash, plus PC-Card controller,
+one ethernet port used.
+
+I'm using a 2.6.16.11 (an old snapshot from about last august,
+when we started development of another board) that has slight
+adjustments in various drivers to accomodate for our platform
+specific stuff.
+
+While booting from u-boot works fine, ie it can load the kernel
+from tftp, checksum is ok, uncompression is ok. It then jumps
+into the kernel but ends up in an exception handler when executing
+the first printk in start_kernel (ie the printk(KERN_NOTICE);
+at init/main.c:451).
+
+While in the "exception handler" endless loop from u-boot 
+ra points to vscnprintf() (lib/vsprintf.c:512)
+where it calls vsnprintf() (at line 517).
+
+If i set a breakpoint at lib/vsprintf.c:517 and follow it
+into vsnprintf, i get the follwing gdb log:
+
 ---
-This is an update of:
-http://www.linux-mips.org/archives/linux-mips/2006-11/msg00128.html
+Breakpoint 3, vscnprintf (buf=0x80411548 "", size=0x803b1fac,
+    fmt=0x8036f10c "<5>", args=0x803b1fac) at lib/vsprintf.c:517
+517             i=vsnprintf(buf,size,fmt,args);
+(gdb) step
+vsnprintf (buf=0x80411548 "", size=0x400, fmt=0x8036f10c "<5>", args=0xff0000)
+    at lib/vsprintf.c:276
+276             if (unlikely((int) size < 0)) {
+(gdb) next
+285             end = buf + size - 1;
+(gdb) next
+287             if (end < buf - 1) {
+(gdb) p end
+$1 = 0x80411947 ""
+(gdb) p buf
+$2 = 0x80411548 ""
+---
 
-This patch depends on:
-> Subject: [PATCH] do_fpe() cleanup
-> Message-Id: <20070310.010745.07456268.anemo@mba.ocn.ne.jp>
-> Subject: [PATCH] Allow CpU exception in kernel partially
-> Message-Id: <20070310.012811.108982622.anemo@mba.ocn.ne.jp>
+if i go here further (either next/step or continue), then i end up
+in the exception handler. So, it must be something in the asm
+of this line:
 
- arch/mips/kernel/signal.c       |   16 +++-------------
- arch/mips/kernel/signal32.c     |   17 +++--------------
- arch/mips/kernel/traps.c        |   33 ++++++++-------------------------
- include/asm-mips/cpu-features.h |    3 +++
- include/asm-mips/cpu-info.h     |    1 +
- include/asm-mips/fpu.h          |   30 +++++++++++++++++++++++-------
- 6 files changed, 41 insertions(+), 59 deletions(-)
+---
+(gdb) disassemble $pc $pc+100
+Dump of assembler code from 0x8026612c to 0x80266190:
+0xffffffff8026612c <vsnprintf+68>:      addiu   v0,a0,-1
+0xffffffff80266130 <vsnprintf+72>:      sltu    v0,s2,v0
+0xffffffff80266134 <vsnprintf+76>:      beqz    v0,0x80266144 <vsnprintf+92>
+0xffffffff80266138 <vsnprintf+80>:      bltz    a0,0x802461c0 <jffs2_remount_fs+144>
+0xffffffff8026613c <vsnprintf+84>:      li      s2,-1
+0xffffffff80266140 <vsnprintf+88>:      negu    s6,a0
+0xffffffff80266144 <vsnprintf+92>:      lb      v0,0(a2)
+0xffffffff80266148 <vsnprintf+96>:      beqz    v0,0x80266190 <vsnprintf+168>
+0xffffffff8026614c <vsnprintf+100>:     move    a0,a2
+0xffffffff80266150 <vsnprintf+104>:     lb      v1,0(a0)
+0xffffffff80266154 <vsnprintf+108>:     li      v0,37
+0xffffffff80266158 <vsnprintf+112>:     beq     v1,v0,0x802661dc <vsnprintf+244>
+0xffffffff8026615c <vsnprintf+116>:     lbu     a0,4(a0)
+0xffffffff80266160 <vsnprintf+120>:     sltu    v0,s2,s0
+0xffffffff80266164 <vsnprintf+124>:     bnez    v0,0x80266174 <vsnprintf+140>
+0xffffffff80266168 <vsnprintf+128>:     sllv    zero,zero,zero
+0xffffffff8026616c <vsnprintf+132>:     sb      a0,0(s0)
+0xffffffff80266170 <vsnprintf+136>:     lw      a2,80(sp)
+0xffffffff80266174 <vsnprintf+140>:     addiu   s0,s0,1
+0xffffffff80266178 <vsnprintf+144>:     addiu   v0,a2,1
+0xffffffff8026617c <vsnprintf+148>:     sw      v0,80(sp)
+0xffffffff80266180 <vsnprintf+152>:     lb      v1,0(v0)
+0xffffffff80266184 <vsnprintf+156>:     move    a0,v0
+0xffffffff80266188 <vsnprintf+160>:     bnez    v1,0x80266150 <vsnprintf+104>
+0xffffffff8026618c <vsnprintf+164>:     move    a2,v0
+End of assembler dump.
+---
 
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index c4ef270..4c1849b 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -111,13 +111,7 @@ int setup_sigcontext(struct pt_regs *reg
- 		 * Save FPU state to signal context. Signal handler
- 		 * will "inherit" current FPU state.
- 		 */
--		preempt_disable();
--
--		if (!is_fpu_owner()) {
--			own_fpu();
--			restore_fp(current);
--		}
--
-+		own_fpu(1);
- 		preempt_enable();
- 		enable_fp_in_kernel();
- 		err |= save_fp_context(sc);
-@@ -190,20 +184,16 @@ int restore_sigcontext(struct pt_regs *r
- 	err |= __get_user(used_math, &sc->sc_used_math);
- 	conditional_used_math(used_math);
- 
--	preempt_disable();
--
- 	if (used_math()) {
- 		/* restore fpu context if we have used it before */
--		own_fpu();
--		preempt_enable();
-+		own_fpu(0);
- 		enable_fp_in_kernel();
- 		if (!err)
- 			err = check_and_restore_fp_context(sc);
- 		disable_fp_in_kernel();
- 	} else {
- 		/* signal handler may have used FPU.  Give it up. */
--		lose_fpu();
--		preempt_enable();
-+		lose_fpu(0);
- 	}
- 
- 	return err;
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index cf5bbe0..c90c8cf 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -207,14 +207,7 @@ static int setup_sigcontext32(struct pt_
- 		 * Save FPU state to signal context.  Signal handler
- 		 * will "inherit" current FPU state.
- 		 */
--		preempt_disable();
--
--		if (!is_fpu_owner()) {
--			own_fpu();
--			restore_fp(current);
--		}
--
--		preempt_enable();
-+		own_fpu(1);
- 		enable_fp_in_kernel();
- 		err |= save_fp_context32(sc);
- 		disable_fp_in_kernel();
-@@ -264,20 +257,16 @@ static int restore_sigcontext32(struct p
- 	err |= __get_user(used_math, &sc->sc_used_math);
- 	conditional_used_math(used_math);
- 
--	preempt_disable();
--
- 	if (used_math()) {
- 		/* restore fpu context if we have used it before */
--		own_fpu();
--		preempt_enable();
-+		own_fpu(0);
- 		enable_fp_in_kernel();
- 		if (!err)
- 			err = check_and_restore_fp_context32(sc);
- 		disable_fp_in_kernel();
- 	} else {
- 		/* signal handler may have used FPU.  Give it up. */
--		lose_fpu();
--		preempt_enable();
-+		lose_fpu(0);
- 	}
- 
- 	return err;
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 2aaf76b..31c897b 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -620,15 +620,8 @@ asmlinkage void do_fpe(struct pt_regs *r
- 		 * register operands before invoking the emulator, which seems
- 		 * a bit extreme for what should be an infrequent event.
- 		 */
--		preempt_disable();
--
--		/* We might have lost fpu before disabling preempt... */
--		if (is_fpu_owner())
--			save_fp(current);
- 		/* Ensure 'resume' not overwrite saved fp context again. */
--		lose_fpu();
--
--		preempt_enable();
-+		lose_fpu(1);
- 
- 		/* Run the emulator */
- 		sig = fpu_emulator_cop1Handler (regs, &current->thread.fpu, 1);
-@@ -639,13 +632,8 @@ asmlinkage void do_fpe(struct pt_regs *r
- 		 */
- 		current->thread.fpu.fcr31 &= ~FPU_CSR_ALL_X;
- 
--		preempt_disable();
--
--		own_fpu();	/* Using the FPU again.  */
- 		/* Restore the hardware register state */
--		restore_fp(current);
--
--		preempt_enable();
-+		own_fpu(1);	/* Using the FPU again.  */
- 
- 		/* If something went wrong, signal */
- 		if (sig)
-@@ -787,18 +775,14 @@ asmlinkage void do_cpu(struct pt_regs *r
- 		if (!test_thread_flag(TIF_ALLOW_FP_IN_KERNEL))
- 			die_if_kernel("do_cpu invoked from kernel context!",
- 				      regs);
--		preempt_disable();
--
--		own_fpu();
--		if (used_math()) {	/* Using the FPU again.  */
--			restore_fp(current);
--		} else {			/* First time FPU user.  */
-+		if (used_math())	/* Using the FPU again.  */
-+			own_fpu(1);
-+		else {			/* First time FPU user.  */
- 			init_fpu();
- 			set_used_math();
- 		}
- 
--		if (cpu_has_fpu) {
--			preempt_enable();
-+		if (raw_cpu_has_fpu) {
- 			if (test_thread_flag(TIF_ALLOW_FP_IN_KERNEL)) {
- 				local_irq_disable();
- 				if (cpu_has_fpu)
-@@ -812,7 +796,6 @@ asmlinkage void do_cpu(struct pt_regs *r
- 			}
- 		} else {
- 			int sig;
--			preempt_enable();
- 			sig = fpu_emulator_cop1Handler(regs,
- 						&current->thread.fpu, 0);
- 			if (sig)
-@@ -1278,14 +1261,14 @@ extern asmlinkage int fpu_emulator_resto
- #ifdef CONFIG_SMP
- static int smp_save_fp_context(struct sigcontext *sc)
- {
--	return cpu_has_fpu
-+	return raw_cpu_has_fpu
- 	       ? _save_fp_context(sc)
- 	       : fpu_emulator_save_context(sc);
- }
- 
- static int smp_restore_fp_context(struct sigcontext *sc)
- {
--	return cpu_has_fpu
-+	return raw_cpu_has_fpu
- 	       ? _restore_fp_context(sc)
- 	       : fpu_emulator_restore_context(sc);
- }
-diff --git a/include/asm-mips/cpu-features.h b/include/asm-mips/cpu-features.h
-index eadca26..5e4bed1 100644
---- a/include/asm-mips/cpu-features.h
-+++ b/include/asm-mips/cpu-features.h
-@@ -40,6 +40,9 @@
- #endif
- #ifndef cpu_has_fpu
- #define cpu_has_fpu		(current_cpu_data.options & MIPS_CPU_FPU)
-+#define raw_cpu_has_fpu		(raw_current_cpu_data.options & MIPS_CPU_FPU)
-+#else
-+#define raw_cpu_has_fpu		cpu_has_fpu
- #endif
- #ifndef cpu_has_32fpr
- #define cpu_has_32fpr		(cpu_data[0].options & MIPS_CPU_32FPR)
-diff --git a/include/asm-mips/cpu-info.h b/include/asm-mips/cpu-info.h
-index 610d0cd..22fe845 100644
---- a/include/asm-mips/cpu-info.h
-+++ b/include/asm-mips/cpu-info.h
-@@ -87,6 +87,7 @@ struct cpuinfo_mips {
- 
- extern struct cpuinfo_mips cpu_data[];
- #define current_cpu_data cpu_data[smp_processor_id()]
-+#define raw_current_cpu_data cpu_data[raw_smp_processor_id()]
- 
- extern void cpu_probe(void);
- extern void cpu_report(void);
-diff --git a/include/asm-mips/fpu.h b/include/asm-mips/fpu.h
-index 40536a2..dfecb7b 100644
---- a/include/asm-mips/fpu.h
-+++ b/include/asm-mips/fpu.h
-@@ -95,31 +95,47 @@ static inline int is_fpu_owner(void)
- 	return cpu_has_fpu && __is_fpu_owner();
- }
- 
--static inline void own_fpu(void)
-+static inline void __own_fpu(void)
- {
--	if (cpu_has_fpu) {
--		__enable_fpu();
--		KSTK_STATUS(current) |= ST0_CU1;
--		set_thread_flag(TIF_USEDFPU);
-+	__enable_fpu();
-+	KSTK_STATUS(current) |= ST0_CU1;
-+	set_thread_flag(TIF_USEDFPU);
-+}
-+
-+static inline void own_fpu(int restore)
-+{
-+	preempt_disable();
-+	if (cpu_has_fpu && !__is_fpu_owner()) {
-+		__own_fpu();
-+		if (restore)
-+			_restore_fp(current);
- 	}
-+	preempt_enable();
- }
- 
--static inline void lose_fpu(void)
-+static inline void lose_fpu(int save)
- {
--	if (cpu_has_fpu) {
-+	preempt_disable();
-+	if (is_fpu_owner()) {
-+		if (save)
-+			_save_fp(current);
- 		KSTK_STATUS(current) &= ~ST0_CU1;
- 		clear_thread_flag(TIF_USEDFPU);
- 		__disable_fpu();
- 	}
-+	preempt_enable();
- }
- 
- static inline void init_fpu(void)
- {
-+	preempt_disable();
- 	if (cpu_has_fpu) {
-+		__own_fpu();
- 		_init_fpu();
- 	} else {
- 		fpu_emulator_init_fpu();
- 	}
-+	preempt_enable();
- }
- 
- static inline void save_fp(struct task_struct *tsk)
+But if i use stepi from here on, then it looks like that the
+BDI2000's breakpoint (both soft and hard) somehow interferes
+with the execution of the code:
+
+---
+(gdb) display/i $pc
+1: x/i $pc  0x8026612c <vsnprintf+68>:  addiu   v0,a0,-1
+(gdb) stepi
+0xffffffff80266130      287             if (end < buf - 1) {
+1: x/i $pc  0x80266130 <vsnprintf+72>:  sltu    v0,s2,v0
+(gdb) stepi
+287             if (end < buf - 1) {
+1: x/i $pc  0x80266134 <vsnprintf+76>:  beqz    v0,0x80266144 <vsnprintf+92>
+(gdb) stepi
+287             if (end < buf - 1) {
+1: x/i $pc  0x80266134 <vsnprintf+76>:  beqz    v0,0x80266144 <vsnprintf+92>
+(gdb) stepi
+287             if (end < buf - 1) {
+1: x/i $pc  0x80266134 <vsnprintf+76>:  beqz    v0,0x80266144 <vsnprintf+92>
+(gdb) stepi
+287             if (end < buf - 1) {
+1: x/i $pc  0x80266134 <vsnprintf+76>:  beqz    v0,0x80266144 <vsnprintf+92>
+(gdb) stepi
+---
+
+Yes, the next instruction (bltz    a0,0x802461c0 <jffs2_remount_fs+144>)
+looks fishy and should be most probably a NOP. If i patch this point
+by hand and continue it crashes at another point.
+
+The only two reasons why the instruction at this point could be
+wrong, is either a gcc bug or a bug in u-boot's gunzip function.
+And i somewhat doubt both. gcc is a 3.3.1 from Montavista and both
+gcc and u-boot work on our other board which has a similar layout.
+
+Has anyone an idea what the problem here could be or how i could
+narrow it down?
+
+Thanks in advance
+
+			Attila Kinali
+
+-- 
+Praised are the Fountains of Shelieth, the silver harp of the waters,
+But blest in my name forever this stream that stanched my thirst!
+                         -- Deed of Morred

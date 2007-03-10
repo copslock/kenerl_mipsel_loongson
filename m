@@ -1,39 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Mar 2007 09:40:20 +0000 (GMT)
-Received: from mail1.pearl-online.net ([62.159.194.147]:65061 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Mar 2007 09:45:12 +0000 (GMT)
+Received: from mail1.pearl-online.net ([62.159.194.147]:1062 "EHLO
 	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
-	id S20021424AbXCJJkP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 10 Mar 2007 09:40:15 +0000
+	id S20021427AbXCJJpF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 10 Mar 2007 09:45:05 +0000
 Received: from SNaIlmail.Peter (unknown [77.47.7.186])
-	by mail1.pearl-online.net (Postfix) with ESMTP id E5AA5BA17;
-	Sat, 10 Mar 2007 10:39:49 +0100 (CET)
+	by mail1.pearl-online.net (Postfix) with ESMTP id 48C3AB09F
+	for <linux-mips@linux-mips.org>; Sat, 10 Mar 2007 10:44:48 +0100 (CET)
 Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id l2A9bTB3000658;
-	Sat, 10 Mar 2007 10:37:30 +0100
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id l2A9goB3000707
+	for <linux-mips@linux-mips.org>; Sat, 10 Mar 2007 10:42:50 +0100
 Received: from Indigo2.Peter (localhost [127.0.0.1])
-	by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id l2A9afVF019014;
-	Sat, 10 Mar 2007 10:36:41 +0100
+	by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id l2A9fxVF019022;
+	Sat, 10 Mar 2007 10:42:00 +0100
 Received: from localhost (pf@localhost)
-	by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id l2A9afoQ019011;
-	Sat, 10 Mar 2007 10:36:41 +0100
+	by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id l2A9fxAq019019;
+	Sat, 10 Mar 2007 10:41:59 +0100
 X-Authentication-Warning: Indigo2.Peter: pf owned process doing -bs
-Date:	Sat, 10 Mar 2007 10:36:40 +0100 (CET)
+Date:	Sat, 10 Mar 2007 10:41:59 +0100 (CET)
 From:	peter fuerst <post@pfrst.de>
 X-X-Sender: pf@Indigo2.Peter
 Reply-To: post@pfrst.de
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/2] FLATMEM: allow memory to start at pfn != 0 [take
- #2]
-In-Reply-To: <116841864595-git-send-email-fbuihuu@gmail.com>
-Message-ID: <Pine.LNX.4.58.0703101034500.19007@Indigo2.Peter>
-References: <116841864595-git-send-email-fbuihuu@gmail.com>
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: [PATCH], Re: IP32 prom crashes due to __pa() funkiness
+In-Reply-To: <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com>
+Message-ID: <Pine.LNX.4.58.0703101039420.19007@Indigo2.Peter>
+References: <45D8B070.7070405@gentoo.org> <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Return-Path: <post@pfrst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14415
+X-archive-position: 14416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,98 +41,117 @@ X-list: linux-mips
 
 
 
-Hi,
+Hi !
 
-i'm just trying to understand, what the "[PATCH 0,1,2/2] FLATMEM..." patchset
-does.  While working through it, it appears to me that
+Watching the discussion about __pa(), CPHYSADDR and related stuff, with about
+a hundred e-mails last October, and rising again several times recently (see
+below), i wonder why we must cling so firmly to the "x - page_offset"
+algorithm, the least capable one. AFAIK this method is taken over unaltered
+from the i386 arch (yes, i know, the majority of archs did this), where we
+have a situation quite different from MIPS:
+A (preferably simple) mapping must be invented for kernel-memory with some,
+more or less deliberately chosen, "page-offset". There exist no addresses
+beside this mapping, no hardware "kernel-mappings" with (un)cached regions,
+cached-attributes, unmapped spaces, etc. and "x - page_offset" is necessary
+and sufficient to handle all addresses.
 
-1) Formerly min_low_pfn was never calculated, but left zero-initialized.
+On the MIPS-side there isn't really something like "the" page-offset, and
+the processor architecture already defines kernel spaces with respective
+address-syntax. In other words, the definitions in asm-mips/addrspace.h
+properly describe the virtual/physical conversions and masking, not some
+subtracting, is the natural way to go.
 
-2) The patchset now provides proper min_low_pfn calculation from boot_mem_map
-   (thanks !), and then discards this calculated value:
- a) Patch 1/2 prints an info about wasted pagetable-entries and resets
-    min_low_pfn to zero, retaining the former state.
- b) (first part of) Patch 2/2 prints an info about differences between the
-    the really found (boot_mem_map) and the expected (given by PHYS_OFFSET
-    through ARCH_PFN_OFFSET) memory-offset, then resets min_low_pfn to
-    ARCH_PFN_OFFSET.
+Since __pa() and virt_to_phys() are currently "under construction" anyway,
+i think it's time to submit robust versions (with kernel_physaddr() stolen
+from the IP30 patch) for both, that handle any pitfall in one place and may
+be used without pain throughout the kernel. I don't know, which one to prefer,
+29 drivers are using __pa(), 60 are using virt_to_phys(), the uses in
+arch/mips files are about equal.
 
-3) Finally the (rather set than) calculated values are completely passed on
-   to init_bootmem by replacing the former call (mm/bootmem.c)
-       max_low_pfn = highest;
-       min_low_pfn = mapstart;
-       init_bootmem_core(NODE_DATA(0), mapstart, 0,           highest);
-   with
-       init_bootmem_core(NODE_DATA(0), mapstart, min_low_pfn, max_low_pfn);
-
-Right ?
-
-So far, i can't avoid the impression, that this patchset would work perfectly
-without using PHYS_OFFSET at all, even better IMHO, since it would use the
-*really* detected memory-offset instead of some should-be-value.  (Providing
-an override-option for critical cases is another topic).
-
-
-The second part of Patch 2/2 introduces PHYS_OFFSET to __pa/__va and to
-virt_to_phys/phys_to_virt (writing "page_offset" shorthand for PAGE_OFFSET
-and __pa_page_offset() here):
-
-pa: address - page_offset + PHYS_OFFSET
-
-va: address + page_offset - PHYS_OFFSET
-
-1) Since the relation between kernel virtual address and physical address
-   is fixed (we agreed about that earlier), introducing PHYS_OFFSET in this
-   places is a nop at best: (page_offset - PHYS_OFFSET) is constant, whenever
-   we introduce/change PHYS_OFFSET we must adjust page_offset accordingly
-   (what's about CKSEG0 in __pa_page_offset() ?).
-
-2) Because of 1) we get the same conversions, if we don't use PHYS_OFFSET
-   anywhere.
-
-3) The page_offset adjustment may force fixes in other, not yet blown up,
-   places (pmd_phys() cried out lately...).
-
-Hard to see, what we gain by introducing PHYS_OFFSET here.
-
-What can PHYS_OFFSET achieve here - besides obfuscating ?
-Are there future uses for it, that justify the contortions ?
+Having a robust __pa()/virt_to_phys() avoids the need for local fixes, like
+in sgiwd93.c and sgiseeq.c, which have to cope with at least one uncached
+(usu. 0x9000...) address-type and at least one cached type (usu. 0xa800...)
+in xkphys, and where virt_to_phys() blew up nicely. In some situation there
+may be need to handle a ckseg0/1 address additionaly.
 
 
-with best regards
+On Thu, 1 Mar 2007, Franck Bui-Huu wrote:
 
-peter
-
-
-
-On Wed, 10 Jan 2007, Franck Bui-Huu wrote:
-
-> Date: Wed, 10 Jan 2007 09:44:03 +0100
+> Date: Thu, 1 Mar 2007 10:39:08 +0100
 > From: Franck Bui-Huu <vagabon.xyz@gmail.com>
-> To: ralf@linux-mips.org
-> Cc: linux-mips@linux-mips.org
-> Subject: [PATCH 0/2] FLATMEM: allow memory to start at pfn != 0 [take #2]
+> To: Kumba <kumba@gentoo.org>
+> Cc: Linux MIPS List <linux-mips@linux-mips.org>
+> Subject: Re: IP32 prom crashes due to __pa() funkiness
 >
-> Ralf,
+> Hi,
 >
-> Here's is the second attempt to make this works on your Malta board
-> and all other boards that have some data reserved at the start of
-> their memories. In these cases the first patchset assumed wrongly that
-> the start of the memory was after this reserved area.
+> Kumba wrote:
+> >
+> > Initially, booting a straight git checkout on an IP32 will cause it to
+> > prom crash, usually somewhere in between init_bootmem() and
+> > init_bootmem_core().  I bisected git to trace this back to one of the
+> > inital __pa() introduction patches from commit d4df6d4 (get ride of
+> > CPHYSADDR()).  It actually appears that the actual commit that broke
+> > things was 620a480 (Make __pa() aware of XKPHYS/CKSEG0 address mix for
+> > 64 bit kernels).
+> >
+> > The [short-term] fix highlighted by Ilya is to make __pa()
+> > unconditionally be defined to "((unsigned long)(x) < CKSEG0 ?
+> > PAGE_OFFSET : CKSEG0)"; Discovered by building IP32 with
+> > CONFIG_BUILD_ELF64=n.
+> >
 >
-> Patch 1/2 should work alone now. the kernel should report that your
-> mem config is wasting some memory for tracking reserved pages located
-> at the start of the mem.
+> Well, it means that you previously used CONFIG_BUILD_ELF64=y (this
+> implied that PAGE_OFFSET is in XKPHYS) whereas your kernel has CKSEG
+> load address (symbols need PAGE_OFFSET in CKSEG for address
+> translation).
 >
-> Thanks for testing
->
-> 		Franck
->
-> ---
->
->  arch/mips/kernel/setup.c |   40 +++++++++++++++++++++++++++++++---------
->  arch/mips/mm/init.c      |   23 +++++++++++------------
->  include/asm-mips/dma.h   |    1 +
->  include/asm-mips/io.h    |    4 ++--
->  include/asm-mips/page.h  |   25 +++++++++++++++++++++----
->  5 files changed, 66 insertions(+), 27 deletions(-)
+> ...
+
+
+
+Signed-off-by: peter fuerst <post@pfrst.de>
+
+========================================================================
+--- c6275088cf65aaa1826e426e9e683b6c3e1f371c/include/asm-mips/addrspace.h	Sat Mar 10 08:38:53 2007
++++ kernelphysaddr-version/include/asm-mips/addrspace.h	Sat Mar 10 08:38:53 2007
+@@ -54,6 +54,17 @@
+ #define XPHYSADDR(a)            ((_ACAST64_(a)) &			\
+ 				 _CONST64_(0x000000ffffffffff))
+
++static inline unsigned long kernel_physaddr(unsigned long kva)
++{
++#ifdef CONFIG_64BIT
++	if((kva & 0xffffffff80000000UL) == 0xffffffff80000000UL)
++		return CPHYSADDR(kva);
++	return XPHYSADDR(kva);
++#else
++	return CPHYSADDR(kva);
++#endif
++}
++
+ #ifdef CONFIG_64BIT
+
+ /*
+--- 92ec2618560c984355e653d33d5dc935e5e1488c/include/asm-mips/io.h	Sat Mar 10 08:41:06 2007
++++ kernelphysaddr-version/include/asm-mips/io.h	Sat Mar 10 08:41:06 2007
+@@ -116,7 +116,7 @@ static inline void set_io_port_base(unsi
+  */
+ static inline unsigned long virt_to_phys(volatile const void *address)
+ {
+-	return (unsigned long)address - PAGE_OFFSET + PHYS_OFFSET;
++	return kernel_physaddr((unsigned long)address);
+ }
+
+ /*
+--- d3fbd83ff545e49e2a0a5ca0f00dda4eedaf8be7/include/asm-mips/page.h	Sat Mar 10 08:43:17 2007
++++ kernelphysaddr-version/include/asm-mips/page.h	Sat Mar 10 08:43:17 2007
+@@ -154,7 +154,7 @@ typedef struct { unsigned long pgprot; }
+ #else
+ #define __pa_page_offset(x)	PAGE_OFFSET
+ #endif
+-#define __pa(x)		((unsigned long)(x) - __pa_page_offset(x) + PHYS_OFFSET)
++#define __pa(x)		kernel_physaddr((unsigned long)(x))
+ #define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
+ #define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x),0))
+========================================================================

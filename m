@@ -1,68 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Mar 2007 06:30:16 +0000 (GMT)
-Received: from wr-out-0506.google.com ([64.233.184.229]:21255 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022032AbXCKGaM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 11 Mar 2007 06:30:12 +0000
-Received: by wr-out-0506.google.com with SMTP id l58so775436wrl
-        for <linux-mips@linux-mips.org>; Sat, 10 Mar 2007 22:29:11 -0800 (PST)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        b=BKpIr85QGL2HCTotxPMJWSqBX4O6gQAgQLVMZEOvcQRMLyhPkAT8NQ+kVxQ+jsM409UuWXHyw7IK4WWE/LjGywpttMrw72ANOYr0Ty+BiEBLyqxqvJhOB6fV/jCoVjtJbUCyLc1aSmuiRF0F0CfMzsMAz92xLUBY4MNKWT/DLfY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=rO9luX31UPINUcXddU5iXD/1ZJd6TQo4Z0YRIAiGeETWOD7x7tRHB7naw5br5zCIfA1QsagHxOIzxTeH0HdhZuLhT4s5YrYUZkOe1bBJRR4PBZP+ZvJ2qxzYIFm2ldlJTE873q+qYTtXskpkhYaFCE8M7PWFfwCzvm4+EjeBKik=
-Received: by 10.90.120.13 with SMTP id s13mr1922329agc.1173594551488;
-        Sat, 10 Mar 2007 22:29:11 -0800 (PST)
-Received: by 10.90.91.2 with HTTP; Sat, 10 Mar 2007 22:29:11 -0800 (PST)
-Message-ID: <bf8a8a430703102229k409c4cf5s44fc3510b3e1f64e@mail.gmail.com>
-Date:	Sun, 11 Mar 2007 11:59:11 +0530
-From:	PhilipS <sphilip30@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Mips SOC, Linux
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_5739_6244963.1173594551459"
-Return-Path: <sphilip30@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Mar 2007 13:58:55 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:26786 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022130AbXCKN6x (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 11 Mar 2007 13:58:53 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2BDv08f028015;
+	Sun, 11 Mar 2007 13:57:01 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2BDusJs028014;
+	Sun, 11 Mar 2007 13:56:54 GMT
+Date:	Sun, 11 Mar 2007 13:56:54 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	PhilipS <sphilip30@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Mips SOC, Linux
+Message-ID: <20070311135654.GA26339@linux-mips.org>
+References: <bf8a8a430703102229k409c4cf5s44fc3510b3e1f64e@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf8a8a430703102229k409c4cf5s44fc3510b3e1f64e@mail.gmail.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14425
+X-archive-position: 14426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sphilip30@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_5739_6244963.1173594551459
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Sun, Mar 11, 2007 at 11:59:11AM +0530, PhilipS wrote:
 
-Hello All,
-I am looking for MIPS Development boards for my hobby projects like Linux
-Porting and Development, I am here by looking for an Expert suggestion to
-buy a MIPS custom boards, so far on Google I could come across
-vendor selling MIPS Evaluation target boards which is Obviously expensive
-which ,I cannot afford to buy. I hope I am asking this question at the right
-place, else please suggest me where I can post my request if one knows about
-it.
+> Hello All,
+> I am looking for MIPS Development boards for my hobby projects like Linux
+> Porting and Development, I am here by looking for an Expert suggestion to
+> buy a MIPS custom boards, so far on Google I could come across
+> vendor selling MIPS Evaluation target boards which is Obviously expensive
+> which ,I cannot afford to buy. I hope I am asking this question at the right
+> place, else please suggest me where I can post my request if one knows about
+> it.
 
-Regards
-Philip S
+You're touch a big problem here, so I'm going to use this opportunity to
+post a rant ...
 
-------=_Part_5739_6244963.1173594551459
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Most of the eval boards are have very high price tags due to low volume and
+esotheric components such as very large and fast FPGAs or pricey matched
+impedance connectors for logic analyzers.  Another factor is that the
+vendors making these boards usually target their commercial customers and
+factor in a fairly generous markup for the post-sale support into the sales
+price of the board.
 
-<div>Hello All,</div>
-<div>I am looking for MIPS Development boards for my hobby projects like Linux Porting and Development, I am here by looking for an Expert suggestion to buy a MIPS custom boards, so far on Google&nbsp;I could come across vendor&nbsp;selling MIPS Evaluation target boards&nbsp;which is Obviously expensive which ,I cannot afford to&nbsp;buy.&nbsp;I hope I am asking this question at the right place, else please suggest me where I can post my request if one knows about it.
-</div>
-<div>&nbsp;</div>
-<div>Regards</div>
-<div>Philip S</div>
+From a Free Software perspective this is a bloody disaster.  Even if for a
+moment I put on my dot com hat again, it's one.  Over the past years the
+commercial contributions have primarily focused on hardware support.  In
+many cases I received large code drops of lousy to medicore quality and
+no maintenance at all after the initial code drop.  I won't go into the
+reasons here nor do I think I need to name companies here - but it's a big
+problem.
 
-------=_Part_5739_6244963.1173594551459--
+As usual exceptions proof the rule and also as usual there are alot of
+grey shades between white and black.  Some companies seem to have tremendous
+difficulty to be good open source citizens - but they throw some free
+hardware into the crowd.  Not enough to satisfy the demand and usually only
+a few key people are really able to take advantage of that.
+
+Otoh many if not most important and highest quality contributions over the
+years have come from hobby hackers, so in the end the lack availability of
+modern hardware is making everybody suffer.  Meanwhile the importance of
+Linux as OS for MIPS is continuing to rise ...
+
+I hear similar complaints from other, mostly embedded architectures such as
+ARM.  But that's not an excuse - this problem wants some remedy.
+
+But let's also look at the options you have right now:
+
+ o Eval boards end on ebay relativly rarely, but you can try anyway.
+   Another option is something like a surplus MIPS workstation.
+ o A bunch of wireless routers and other devices such as some the Linksys
+   WRT54 models have been recycled for hacking use with good success.
+ o Routerboard which is not yet supported out of tree (working in cleaing
+   the patches) would be another reasonably priced option.  Generally you
+   may want to look at the list of platforms supported by
+   http://openwrt.org/ - many of their platforms have friendly price tags.
+   Of course alot of those are purpose built hw so may be a bit quirky to
+   use.
+ o Apparently AMD Alchemy boards used to be fairly cheap, on the order of
+   $100.  I have not idea this is true or still true for the new owner of
+   Alchemy Raza Microelectronics.
+ o For the meager investment of a few megabytes of disk space Qemu is a
+   really nice and well performing system which also is rapidly improving.
+
+  Ralf

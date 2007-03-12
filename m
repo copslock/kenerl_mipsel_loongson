@@ -1,46 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2007 15:35:48 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:12524 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20021375AbXCLPfo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 12 Mar 2007 15:35:44 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 655BD3EC9; Mon, 12 Mar 2007 08:35:10 -0700 (PDT)
-Message-ID: <45F57328.8000606@ru.mvista.com>
-Date:	Mon, 12 Mar 2007 18:35:04 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2007 17:06:16 +0000 (GMT)
+Received: from hu-out-0506.google.com ([72.14.214.229]:53351 "EHLO
+	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021367AbXCLRGM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Mar 2007 17:06:12 +0000
+Received: by hu-out-0506.google.com with SMTP id 22so5774271hug
+        for <linux-mips@linux-mips.org>; Mon, 12 Mar 2007 10:05:11 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=O4O2brhiLC0JqrnEjkQFuQv+ccdNehNlA/gzsR/sQJL4jiiMmu9cll+lGOwKqr1n2kAfkm//mE/WNXEoOeiBJw/HdX62YU/aU90Xf4xb8gt7eLD7hPIomvH0fzcS6ynDOsom5jvr7Urlo2+lBYNy+a1pm5kcydZ0Dpk42+Dqm1Q=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=BjaiZWBZilZkGQl1QX/kOotn08viVn1w+eWOyi+TEkTsUV8K1AqduoTq6/0XlNgx/Xu8EEVeHv6wJcoEBKZp+tAhPQYhR2/MvBP3Wg75kv5Dk3940ceUE1UqZ290g9qk0KfaK2ABipGVOjFjpPmHGy+JNoMAIrZg9etn++wMBnw=
+Received: by 10.114.167.2 with SMTP id p2mr1850309wae.1173719110450;
+        Mon, 12 Mar 2007 10:05:10 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Mon, 12 Mar 2007 10:05:10 -0700 (PDT)
+Message-ID: <cda58cb80703121005h53969eb2j7b2290b97b14374d@mail.gmail.com>
+Date:	Mon, 12 Mar 2007 18:05:10 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	post@pfrst.de
+Subject: Re: [PATCH 0/2] FLATMEM: allow memory to start at pfn != 0 [take #2]
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.58.0703121329450.440@Indigo2.Peter>
 MIME-Version: 1.0
-To:	Marco Braga <marco.braga@gmail.com>
-Cc:	Domen Puncer <domen.puncer@telargo.com>, linux-mips@linux-mips.org
-Subject: Re: Trouble with sound/mips/au1x00.c AC97 driver
-References: <20070307104930.GD25248@dusktilldawn.nl>	 <d459bb380703082322r18879381ma4c57149a8b7adfe@mail.gmail.com>	 <45F350E9.3020208@cooper-street.com>	 <d459bb380703120157wb3dde00p4c232e300e82fd3d@mail.gmail.com>	 <d459bb380703120259r53889966xd8af623ff01ef297@mail.gmail.com>	 <20070312103927.GC14658@moe.telargo.com> <d459bb380703120609i7d3a9e1dwf7f4fa431a9631e5@mail.gmail.com>
-In-Reply-To: <d459bb380703120609i7d3a9e1dwf7f4fa431a9631e5@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Disposition: inline
+References: <116841864595-git-send-email-fbuihuu@gmail.com>
+	 <Pine.LNX.4.58.0703101034500.19007@Indigo2.Peter>
+	 <cda58cb80703120247q435b6bb1p8a025d8597aca2a2@mail.gmail.com>
+	 <Pine.LNX.4.58.0703121329450.440@Indigo2.Peter>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14435
+X-archive-position: 14436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On 3/12/07, peter fuerst <post@pfrst.de> wrote:
+>
+> You see the problem. Any occurrence of PAGE_OFFSET must be checked.
+>
 
-Marco Braga wrote:
-> 2007/3/12, Domen Puncer <domen.puncer@telargo.com>:
+yes and whatever the scheme you propose...
 
->> It might be ignorance on my part, but aren't au_sync()'s needed here?
+> the kernel-addresses.  Moreover it would be desirable, if this macro
+> really could be used throughout the kernel, e.g. by drivers, handling
+> any reasonable kernel-address, which isn't possible in the page_offset
+> scheme anyway.
+>
 
-> My ignorance too.. What's au_sync()? Something to writeback/invalidate the
-> cache?
+Can you explain why the current use of pa() failed to handle all
+kernel address with a real example ?
 
-    It's "memory barrier" (SYNC instruction).
+A few people reported that they had problem with KPHYS/CKSEG0 address
+mix for 64 bit kernels but as far I can see it was due to a miss
+configuration of their kernels. Of course I can be wrong but these
+people haven't given any feedbacks so far...
 
-WBR, Sergei
+Thanks
+-- 
+               Franck

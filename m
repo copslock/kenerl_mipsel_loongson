@@ -1,60 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2007 07:34:50 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.171]:25048 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022262AbXCLHeq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Mar 2007 07:34:46 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so2408609uga
-        for <linux-mips@linux-mips.org>; Mon, 12 Mar 2007 00:33:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2007 09:48:14 +0000 (GMT)
+Received: from hu-out-0506.google.com ([72.14.214.230]:55134 "EHLO
+	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022265AbXCLJsH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Mar 2007 09:48:07 +0000
+Received: by hu-out-0506.google.com with SMTP id 22so5432270hug
+        for <linux-mips@linux-mips.org>; Mon, 12 Mar 2007 02:47:06 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=OWkxxg0y1AuHiQOoBHYJ8dIUlwJfjA5F51ZPb5+rgfK17/7dxKmzvjuuPynLFSnM3hqfX3ORvvLw4U3p/Oz01lQEmOcS7aquBvfvTDKrjS1QlzET/2SsuPYrgK9KSLhnqW9gcPW9cckHL5Fut+OJnMzvBgw/CX0yTYiF6wkYyYg=
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=KLx9g4ywPVEEdJYFd0P5mWC1bIEDA2prGlbtMQe2JF5pj6ReGZvrGVPz/oRnHZxph2VlKHKK3r1+7HKwXmOMfxVhT47VOThaCc+9xpNQgCjqGqGS2u99Qz3yzUpB3kxyIBa17CpQ2ASkDcFc960/TiFgWATSXIcUqYB/hrxYWH4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=Ku8qZUo1Mk7m5kaFAniVU0diX9I81Y4iBCq+KbJSvUW5b40Ig8af5VPkiZ1m/SlJwu9TkKeGFtBxcpJ9K75kwTf4dw9Y+tM2wpgcIMrhEoSnelA8QFzJwdTmlYzs25CxAMOOG/ekwcr2oQFKX82i5+2bv7vBq01Lzrqqphxo0q0=
-Received: by 10.114.204.3 with SMTP id b3mr1149539wag.1173684825193;
-        Mon, 12 Mar 2007 00:33:45 -0700 (PDT)
-Received: by 10.114.80.18 with HTTP; Mon, 12 Mar 2007 00:33:45 -0700 (PDT)
-Message-ID: <d459bb380703120033m12a8c9a3x60727cf6dab1a22d@mail.gmail.com>
-Date:	Mon, 12 Mar 2007 08:33:45 +0100
-From:	"Marco Braga" <marco.braga@gmail.com>
-To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>
-Subject: Re: Linux kernel 2.6.20, PCI and hpt266
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=dpSoUUh7huhYbd3gBko8Hn/Nk1tkjzkamtOJWNYvPP7SkyWnoBpUEYYhsWi1jrabDwCsD0bzN8zmpwmJfC1sZe3oKiufn47wIE54PGUU7ryIkw/T4KXp8Ras1EGxeNgFUk7oEngf10r9nhePTdJ5xZW9w3YBZFXC3l+6YNoLPPE=
+Received: by 10.114.145.1 with SMTP id s1mr1184788wad.1173692821563;
+        Mon, 12 Mar 2007 02:47:01 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Mon, 12 Mar 2007 02:47:01 -0700 (PDT)
+Message-ID: <cda58cb80703120247q435b6bb1p8a025d8597aca2a2@mail.gmail.com>
+Date:	Mon, 12 Mar 2007 10:47:01 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	post@pfrst.de
+Subject: Re: [PATCH 0/2] FLATMEM: allow memory to start at pfn != 0 [take #2]
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <45EC101D.8050600@ru.mvista.com>
+In-Reply-To: <Pine.LNX.4.58.0703101034500.19007@Indigo2.Peter>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_22923_4064859.1173684825148"
-References: <d459bb380703040427g4a8cad08kd8e3190f7d109c86@mail.gmail.com>
-	 <45EC101D.8050600@ru.mvista.com>
-Return-Path: <marco.braga@gmail.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14428
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marco.braga@gmail.com
-Precedence: bulk
-X-list: linux-mips
-
-------=_Part_22923_4064859.1173684825148
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
+References: <116841864595-git-send-email-fbuihuu@gmail.com>
+	 <Pine.LNX.4.58.0703101034500.19007@Indigo2.Peter>
+Return-Path: <vagabon.xyz@gmail.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 14429
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
+Precedence: bulk
+X-list: linux-mips
 
-Hello Sergei,
+Hi,
 
-did you had the time to test the 2.6.20 kernel on Au1500?
-Thanx!
+On 3/10/07, peter fuerst <post@pfrst.de> wrote:
+> 3) The page_offset adjustment may force fixes in other, not yet blown up,
+>    places (pmd_phys() cried out lately...).
+>
 
-------=_Part_22923_4064859.1173684825148
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Not really fair. It crashed lately because until now I was the only
+one to use it. And unfortunately I failed to give back this change to
+Ralf's tree.
 
-Hello Sergei,<br><br>did you had the time to test the 2.6.20 kernel on Au1500?<br>Thanx!<br><br>
+BUT, note that the root cause of this bug is that we did _plain_
+address translation instead of using dedicated macro.
 
-------=_Part_22923_4064859.1173684825148--
+So I would say that this patch helps to fix these buggy places.
+
+> What can PHYS_OFFSET achieve here - besides obfuscating ?
+> Are there future uses for it, that justify the contortions ?
+>
+
+How do you deal with fancy cases such as physical memory starting at
+0x20000000 for example ?
+
+-- 
+               Franck

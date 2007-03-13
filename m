@@ -1,54 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2007 01:12:05 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:64394 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021838AbXCMBME (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Mar 2007 01:12:04 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2D1A4X0027635;
-	Tue, 13 Mar 2007 01:10:05 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2D19tLC027606;
-	Tue, 13 Mar 2007 01:09:55 GMT
-Date:	Tue, 13 Mar 2007 01:09:55 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andrew Dyer <adyer@righthandtech.com>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Marco Braga <marco.braga@gmail.com>,
-	Domen Puncer <domen.puncer@telargo.com>,
-	linux-mips@linux-mips.org
-Subject: Re: Trouble with sound/mips/au1x00.c AC97 driver
-Message-ID: <20070313010955.GA27567@linux-mips.org>
-References: <20070307104930.GD25248@dusktilldawn.nl> <d459bb380703082322r18879381ma4c57149a8b7adfe@mail.gmail.com> <45F350E9.3020208@cooper-street.com> <d459bb380703120157wb3dde00p4c232e300e82fd3d@mail.gmail.com> <d459bb380703120259r53889966xd8af623ff01ef297@mail.gmail.com> <20070312103927.GC14658@moe.telargo.com> <d459bb380703120609i7d3a9e1dwf7f4fa431a9631e5@mail.gmail.com> <45F57328.8000606@ru.mvista.com> <20070313004315.GA26119@linux-mips.org> <45F5F7CA.3000503@righthandtech.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2007 08:38:16 +0000 (GMT)
+Received: from qb-out-0506.google.com ([72.14.204.229]:32105 "EHLO
+	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022208AbXCMIiM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Mar 2007 08:38:12 +0000
+Received: by qb-out-0506.google.com with SMTP id e12so4304896qba
+        for <linux-mips@linux-mips.org>; Tue, 13 Mar 2007 01:37:07 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=NBn8OEUXtwy+e3LV3chd0biZbmGue1ocO25HyXmAwZ6rxjM5dTz4Gp6saJFxwfeaTcPYdsWqd+kRBOzVXl48rUWDllWOAekCM8IwMyhzskgztMKQUhv4ZGvdHDoeyKuFcOoa+jFEvpa/9gIs2eFkJXEf4cUVxrl6qrXJ+wrV9Qk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=fKsIvb0vhZeETdVPDSBX2sU+7EHmYZTAyJHjPPCzL/33I1IjRLnf1uOazc2ktBJbiXchSpU8OWbdUrPFxtT0bvA4zlWnb//4vKG5mpCtxmeGnTFXOsHDPuEPsA7hm75k22remxRCFHAC0YUgpMelkIHSQ6aGMksyMhxLXscimgY=
+Received: by 10.115.17.1 with SMTP id u1mr2265146wai.1173775026685;
+        Tue, 13 Mar 2007 01:37:06 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Tue, 13 Mar 2007 01:37:06 -0700 (PDT)
+Message-ID: <cda58cb80703130137p39c46d8cr2dcd77ad57d4897e@mail.gmail.com>
+Date:	Tue, 13 Mar 2007 09:37:06 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	post@pfrst.de
+Subject: Re: [PATCH 0/2] FLATMEM: allow memory to start at pfn != 0 [take #2]
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.58.0703122016430.438@Indigo2.Peter>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <45F5F7CA.3000503@righthandtech.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+References: <116841864595-git-send-email-fbuihuu@gmail.com>
+	 <Pine.LNX.4.58.0703101034500.19007@Indigo2.Peter>
+	 <cda58cb80703120247q435b6bb1p8a025d8597aca2a2@mail.gmail.com>
+	 <Pine.LNX.4.58.0703121329450.440@Indigo2.Peter>
+	 <cda58cb80703121005h53969eb2j7b2290b97b14374d@mail.gmail.com>
+	 <Pine.LNX.4.58.0703122016430.438@Indigo2.Peter>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14444
+X-archive-position: 14445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 12, 2007 at 08:00:58PM -0500, Andrew Dyer wrote:
+On 3/12/07, peter fuerst <post@pfrst.de> wrote:
+> On Mon, 12 Mar 2007, Franck Bui-Huu wrote:
+> > Can you explain why the current use of pa() failed to handle all
+> > kernel address with a real example ?
+>
+> Simply, when you convert between cached (kseg0, ckseg0, several xkphys-
+> regions) and uncached (kseg1, ckseg1, several xkphys-regions) addresses
+> and the other way round, you need the physical address as an intermediate
+> value and __pa() or virt_to_phys() can support only one direction.
+>
 
-> I just looked it up.
-> 
-> Section 2.4.5 of the Alchemy Au1550 datasheet says that a SYNC is 
-> guaranteed to commit the write buffer to memory.
-> 
-> Whoever is looking at this should also pay attention to the CCA bits in 
-> the TLB mapping the registers (Section 2.3.6 of the manual) or the fixed 
-> regions (depending on the VA used) to make sure that merging and 
-> gathering are turned off.
+I was asking for _real_ uses. Can you point out some code where these
+convertion are needed ?
 
-MIPS does does no merging / gathering for uncached accesses.  KSEG1
-addresses are uncached.
-
-  Ralf
+I'm asking that because your uses of __pa()/virt_to_phys() to convert
+cached address into uncached address and vice versa is weird. You
+talked about drivers but I would think that drivers have physical
+addresses of the device they control. And they get a virtual address
+by using ioremap() and Co. And using __pa() on such addresses is
+simply buggy whatever the implementation of __pa().
+-- 
+               Franck

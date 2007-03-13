@@ -1,997 +1,901 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2007 17:43:45 +0000 (GMT)
-Received: from father.pmc-sierra.com ([216.241.224.13]:30875 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20022327AbXCMRnj convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 13 Mar 2007 17:43:39 +0000
-Received: (qmail 20983 invoked by uid 101); 13 Mar 2007 17:42:28 -0000
-Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by father.pmc-sierra.com with SMTP; 13 Mar 2007 17:42:28 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2DHgHot020622;
-	Tue, 13 Mar 2007 09:42:17 -0800
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <FGCPT4B4>; Tue, 13 Mar 2007 10:42:13 -0800
-Message-ID: <45F6E270.9030101@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Florian Fainelli <florian.fainelli@int-evry.fr>
-Cc:	Marc St-Jean <stjeanma@pmc-sierra.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] drivers: PMC MSP71xx LED driver
-Date:	Tue, 13 Mar 2007 09:42:08 -0800
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 13 Mar 2007 18:42:04.0671 (UTC) FILETIME=[4BA5C8F0:01C7659F]
-user-agent: Thunderbird 1.5.0.10 (X11/20070221)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Mar 2007 17:59:57 +0000 (GMT)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:50073 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S20022312AbXCMR7w (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Mar 2007 17:59:52 +0000
+Received: from [192.168.1.112] (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id 872668810; Tue, 13 Mar 2007 21:59:19 +0400 (SAMT)
+Subject: [PATCH] EMMA2RH I2C driver
+From:	dmitry pervushin <dpervushin@ru.mvista.com>
+Reply-To: dpervushin@ru.mvista.com
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20070308145948.GA4235@linux-mips.org>
+References: <20070308145948.GA4235@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Organization: MontaVista RU
+Date:	Tue, 13 Mar 2007 20:59:51 +0300
+Message-Id: <1173808791.4948.10.camel@diimka>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.8.2 
+Content-Transfer-Encoding: 8bit
+Return-Path: <dpervushin@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14458
+X-archive-position: 14459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: dpervushin@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Below is patch to support I2C controller on NEC EMMA2RH board
 
+Signed-off: dmitry pervushin <dpervushin@ru.mvista.com>
 
-Florian Fainelli wrote:
-> Hi Marc,
-> 
-> Your patch does not seem to use the Linux LED API (include/linux/leds.h),
-> which is sometimes pretty unknown, but dramatically ease your work. 
-> Maybe it
-> is a good idea converting it to this API if you find it relevant.
+ drivers/i2c/algos/Kconfig            |    5 
+ drivers/i2c/algos/Makefile           |    1 
+ drivers/i2c/algos/i2c-algo-emma2rh.c |  426 +++++++++++++++++++++++++++++++++++
+ drivers/i2c/algos/i2c-algo-emma2rh.h |  105 ++++++++
+ drivers/i2c/busses/Kconfig           |    7 
+ drivers/i2c/busses/Makefile          |    1 
+ drivers/i2c/busses/i2c-emma2rh.c     |  253 ++++++++++++++++++++
+ 7 files changed, 798 insertions(+)
 
-Hi Florian,
-
-Thanks for pointing out the API. We were aware of the API which appeared
-when updating to 2.6.16 or 17. At some point if we require a userland
-API we will need to look at how to integrate support for it.
-
-Currently our driver has a different goal which is to support concurrent
-control of the LEDs (over TWI and GPIO) from kernel and non-kernel code.
-The non-kernel code here isn't userland code but an RTOS running on a
-second CPU.
-
-> Also consider the ongoing LED-GPIO API which is being written by ARM 
-> people :
-> http://marc.theaimsgroup.com/?l=linux-kernel&m=110873454720555&w=2 
-> <http://marc.theaimsgroup.com/?l=linux-kernel&m=110873454720555&w=2>
-> 
-> My 2 cents
-
-I wasn't aware of this work, we'll need to look into it. If it can
-be adapted to provide the architecture level atomicity need for
-separate OSes, it we should be able to adapt to it once in the kernel
-tree.
-
-Thanks,
-Marc
-
-> Le lundi 12 mars 2007, Marc St-Jean a écrit :
->  > [PATCH] drivers: PMC MSP71xx LED driver
->  >
->  > Patch to add LED driver for the PMC-Sierra MSP71xx devices.
->  >
->  > This patch references some platform support files previously
->  > submitted to the linux-mips@linux-mips.org list.
->  >
->  > Thanks,
->  > Marc
->  >
->  > Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
->  > ---
->  > Re-posting patch with recommended changes:
->  > -Cleanup on style and formatting for comments, macros, etc.
->  > -Removed unnecessary memset.
->  > -Removed unnecessary inlines.
->  > -Moved some driver private data structures from .h to .c.
->  > -Made use of schedule_timeout_interruptible() call instead
->  > of multiple calls.
->  > -Added calls to kthread_should_stop and try_to_freeze().
->  >
->  >  drivers/i2c/chips/Kconfig                            |    9
->  >  drivers/i2c/chips/Makefile                           |    1
->  >  drivers/i2c/chips/pmctwiled.c                        |  524
->  > +++++++++++++++++++ 
-> include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h |
->  > 273 +++++++++ 4 files changed, 807 insertions(+)
->  >
->  > diff --git a/drivers/i2c/chips/Kconfig b/drivers/i2c/chips/Kconfig
->  > index 87ee3ce..3bef46b 100644
->  > --- a/drivers/i2c/chips/Kconfig
->  > +++ b/drivers/i2c/chips/Kconfig
->  > @@ -50,6 +50,15 @@ config SENSORS_PCF8574
->  >         These devices are hard to detect and rarely found on mainstream
->  >         hardware.  If unsure, say N.
->  >
->  > +config SENSORS_PMCTWILED
->  > +     tristate "PMC Led-over-TWI driver"
->  > +     depends on I2C && PMC_MSP
->  > +     help
->  > +       The new VPE-safe backend driver for all the LEDs on the 7120 
-> platform.
->  > +
->  > +       While you may build this as a module, it is recommended you 
-> build it
->  > +       into the kernel monolithic so all drivers may access it at 
-> all times.
->  > +
->  >  config SENSORS_PCA9539
->  >       tristate "Philips PCA9539 16-bit I/O port"
->  >       depends on I2C && EXPERIMENTAL
->  > diff --git a/drivers/i2c/chips/Makefile b/drivers/i2c/chips/Makefile
->  > index 779868e..4e79e27 100644
->  > --- a/drivers/i2c/chips/Makefile
->  > +++ b/drivers/i2c/chips/Makefile
->  > @@ -10,6 +10,7 @@ obj-$(CONFIG_SENSORS_M41T00)        += m41t00.o
->  >  obj-$(CONFIG_SENSORS_PCA9539)        += pca9539.o
->  >  obj-$(CONFIG_SENSORS_PCF8574)        += pcf8574.o
->  >  obj-$(CONFIG_SENSORS_PCF8591)        += pcf8591.o
->  > +obj-$(CONFIG_SENSORS_PMCTWILED) += pmctwiled.o
->  >  obj-$(CONFIG_ISP1301_OMAP)   += isp1301_omap.o
->  >  obj-$(CONFIG_TPS65010)               += tps65010.o
->  >
->  > diff --git a/drivers/i2c/chips/pmctwiled.c 
-> b/drivers/i2c/chips/pmctwiled.c
->  > new file mode 100644
->  > index 0000000..69845a5
->  > --- /dev/null
->  > +++ b/drivers/i2c/chips/pmctwiled.c
->  > @@ -0,0 +1,524 @@
->  > +/*
->  > + * Special LED-over-TWI-PCA9554 driver for the PMC Sierra
->  > + * Residential Gateway demo board (and potentially others).
->  > + *
->  > + * Based on pca9539.c Copyright (C) 2005 Ben Gardner 
-> <bgardner@wabtec.com>
->  > + * Modified by Copyright 2006-2007 PMC-Sierra, Inc.
->  > + *
->  > + * This program is free software; you can redistribute it and/or modify
->  > + * it under the terms of the GNU General Public License as published by
->  > + * the Free Software Foundation; version 2 of the License.
->  > + */
->  > +
->  > +#include <linux/module.h>
->  > +#include <linux/init.h>
->  > +#include <linux/kthread.h>
->  > +#include <linux/i2c.h>
->  > +#include <linux/freezer.h>
->  > +
->  > +#include <msp_led_macros.h>
->  > +
->  > +/*
->  > + * The externally available "registers"
->  > + *
->  > + * TODO: We must ensure these are in "shared memory" for the other VPE
->  > + *       to access
->  > + */
->  > +u32 msp_led_register[MSP_LED_COUNT];
->  > +
->  > +#ifdef CONFIG_PMC_MSP7120_GW
->  > +/*
->  > + * For each device, which pins will be in "input" mode:
->  > + * One byte per device:
->  > + *  0 = Output
->  > + *  1 = Input
->  > + */
->  > +static const u8 msp_led_initial_input_state[] = {
->  > +     /* No outputs on device 0 or 1, these are inputs only */
->  > +     MSP_LED_INPUT_MODE, MSP_LED_INPUT_MODE,
->  > +     /* All outputs on device 2 through 4 */
->  > +     MSP_LED_OUTPUT_MODE, MSP_LED_OUTPUT_MODE, MSP_LED_OUTPUT_MODE,
->  > +};
->  > +
->  > +/*
->  > + * For each device, which output pins should start on and off:
->  > + * One byte per device:
->  > + *  0 = OFF = HI
->  > + *  1 = ON  = Lo
->  > + */
->  > +static const u8 msp_led_initial_pin_state[] = {
->  > +     0, 0,   /* No initial state, these are input only */
->  > +     1 << 1, /* PWR_GREEN LED on, all others off */
->  > +     0,      /* All off */
->  > +     0,      /* All off */
->  > +};
->  > +#endif /* CONFIG_PMC_MSP7120_GW */
->  > +
->  > +/* Internal polling data */
->  > +#define POLL_PERIOD msecs_to_jiffies(125) /* Poll at 125ms */
->  > +
->  > +static struct i2c_client *pmctwiled_device[MSP_LED_NUM_DEVICES];
->  > +static struct task_struct *pmctwiled_pollthread;
->  > +static u32 private_msp_led_register[MSP_LED_COUNT];
->  > +static u16 current_period;
->  > +
->  > +/* Addresses to scan */
->  > +#define PMCTWILED_BASEADDRESS        0x38
->  > +
->  > +static unsigned short normal_i2c[] = {
->  > +     PMCTWILED_BASEADDRESS + 0,
->  > +     PMCTWILED_BASEADDRESS + 1,
->  > +     PMCTWILED_BASEADDRESS + 2,
->  > +     PMCTWILED_BASEADDRESS + 3,
->  > +     PMCTWILED_BASEADDRESS + 4,
->  > +     I2C_CLIENT_END
->  > +};
->  > +
->  > +/* Insmod parameters */
->  > +I2C_CLIENT_INSMOD_1(pmctwiled);
->  > +
->  > +enum pca9554_cmd {
->  > +     PCA9554_INPUT           = 0,
->  > +     PCA9554_OUTPUT          = 1,
->  > +     PCA9554_INVERT          = 2,
->  > +     PCA9554_DIRECTION       = 3,
->  > +};
->  > +
->  > +static int pmctwiled_attach_adapter(struct i2c_adapter *adapter);
->  > +static int pmctwiled_detect(struct i2c_adapter *adapter,
->  > +                             int address, int kind);
->  > +static int pmctwiled_detach_client(struct i2c_client *client);
->  > +
->  > +/* This is the driver that will be inserted */
->  > +static struct i2c_driver pmctwiled_driver = {
->  > +     .driver = {
->  > +             .name   = "pmctwiled",
->  > +     },
->  > +     .attach_adapter = pmctwiled_attach_adapter,
->  > +     .detach_client  = pmctwiled_detach_client,
->  > +};
->  > +
->  > +struct pmctwiled_data {
->  > +     struct i2c_client client;
->  > +};
->  > +
->  > +static int pmctwiled_attach_adapter(struct i2c_adapter *adapter)
->  > +{
->  > +     return i2c_probe(adapter, &addr_data, pmctwiled_detect);
->  > +}
->  > +
->  > +/* This function is called by i2c_probe */
->  > +static int pmctwiled_detect(struct i2c_adapter *adapter,
->  > +                             int address, int kind)
->  > +{
->  > +     struct i2c_client *new_client = NULL;   /* client structure */
->  > +     struct pmctwiled_data *data = NULL;     /* local data structure */
->  > +     int err = 0;
->  > +     int dev_id = address - PMCTWILED_BASEADDRESS;
->  > +
->  > +     if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA))
->  > +             goto exit;
->  > +
->  > +     /*
->  > +      * For now, we presume we have a valid client. We now create the
->  > +      * client structure, even though we cannot fill it completely yet.
->  > +      */
->  > +     data = kzalloc(sizeof(*data), GFP_KERNEL);
->  > +     if (!data) {
->  > +             err = -ENOMEM;
->  > +             goto exit;
->  > +     }
->  > +
->  > +     new_client = &data->client;
->  > +     i2c_set_clientdata(new_client, data);
->  > +     new_client->addr = address;
->  > +     new_client->adapter = adapter;
->  > +     new_client->driver = &pmctwiled_driver;
->  > +     new_client->flags = 0;
->  > +
->  > +     /*
->  > +      * Detection:
->  > +      *   The pca9554 only has 4 registers (0-3).
->  > +      * All other reads should fail.
->  > +      */
->  > +     if (i2c_smbus_read_byte_data(new_client, 3) < 0 ||
->  > +         i2c_smbus_read_byte_data(new_client, 4) >= 0)
->  > +             goto exit_kfree;
->  > +
->  > +     /* Found PCA9554 (probably) */
->  > +     strlcpy(new_client->name, "pca9554", I2C_NAME_SIZE);
->  > +     printk(KERN_WARNING
->  > +             "Detected PCA9554 I/O chip (device %d) at 0x%02x\n",
->  > +             dev_id, address);
->  > +
->  > +     /* Tell the I2C layer a new client has arrived */
->  > +     err = i2c_attach_client(new_client);
->  > +     if (err)
->  > +             goto exit_kfree;
->  > +
->  > +     /*
->  > +      * Register this in the list of available devices, and set up the
->  > +      * initial state
->  > +      */
->  > +     i2c_smbus_write_byte_data(new_client, PCA9554_OUTPUT,
->  > +                     i2c_smbus_read_byte_data(new_client, 
-> PCA9554_INPUT));
->  > +     i2c_smbus_write_byte_data(new_client, PCA9554_DIRECTION,
->  > +                     msp_led_initial_input_state[dev_id]);
->  > +     pmctwiled_device[dev_id] = new_client;
->  > +
->  > +     return 0;
->  > +
->  > +exit_kfree:
->  > +     kfree(data);
->  > +exit:
->  > +     return err;
->  > +}
->  > +
->  > +static int pmctwiled_detach_client(struct i2c_client *client)
->  > +{
->  > +     int err;
->  > +     int dev_id = client->addr - PMCTWILED_BASEADDRESS;
->  > +
->  > +     /* Clear reference so poll thread doesn't use while detaching */
->  > +     pmctwiled_device[dev_id] = NULL;
->  > +
->  > +     /* Remove this device from the list of devices */
->  > +     err = i2c_detach_client(client);
->  > +     if (err)
->  > +             return err;
->  > +
->  > +     kfree(i2c_get_clientdata(client));
->  > +
->  > +     return 0;
->  > +}
->  > +
->  > +/*
->  > + * mode_bits_update - Sets the mode bits of the given led register
->  > + * @led_reg_ptr: Pointer to the led register value that needs to be
->  > updated + *           with the given mode.
->  > + * @mode: new mode value to be set to the register
->  > + *
->  > + * Sets the given mode value to the given led register.
->  > + */
->  > +inline void mode_bits_update(u32 *led_reg_ptr, enum msp_led_mode mode)
->  > +{
->  > +     /* TODO: validate mode */
->  > +     *led_reg_ptr |= MSP_LED_MODE_MASK;
->  > +     *led_reg_ptr &= (~((u32) MSP_LED_MODE_MASK) | mode);
->  > +}
->  > +
->  > +/*
->  > + * sync_led_timer_with_polling_count - Synchronizes the led timer with
->  > + *   polling thread count
->  > + * @led_id: Index for the private led register used to obtain timer
->  > + *   information
->  > + * @led_reg_ptr: Pointer to the new led register value
->  > + *
->  > + * returns 0: If led is in its final period
->  > + * returns 1: If led is in its initial period
->  > + *
->  > + * This function determines if the led timer is in its initial 
-> period or
->  > + * the final, relative to the TWI-polling thread count (current_period)
->  > + * and updates the previous timer value in the private led 
-> register.  If
->  > + * the state of the led needs to be turned off (i.e. when the led has
->  > + * timed out) then the mode bits in the current led register pointer is
->  > + * set to MSP_LED_OFF and the other data bits are set to 0.
->  > + */
->  > +int sync_led_timer_with_polling_count(int led_id, u32 *led_reg_ptr)
->  > +{
->  > +     /* Timer variables */
->  > +     int is_in_initial_period = 0;
->  > +     u8 timer, led_timeout, initial_period, final_period;
->  > +     u16 total_period;
->  > +
->  > +     /*
->  > +      * Determine the progress into the current cycle, relative to
->  > +      * the POLL_PERIOD
->  > +      */
->  > +     initial_period = *led_reg_ptr >> MSP_LED_INITIALPERIOD_SHIFT;
->  > +     final_period = *led_reg_ptr >> MSP_LED_FINALPERIOD_SHIFT;
->  > +     led_timeout = *led_reg_ptr >> MSP_LED_WATCHDOG_SHIFT;
->  > +     timer = private_msp_led_register[led_id] >> 
-> MSP_LED_WATCHDOG_SHIFT;
->  > +
->  > +     total_period = initial_period + final_period;
->  > +     if (total_period != 0)
->  > +             is_in_initial_period = (current_period % total_period) <
->  > +                                     initial_period;
->  > +
->  > +     /*
->  > +      * if the led_timeout is set, adjust the current state to be 
-> either
->  > +      * ON or OFF
->  > +      */
->  > +     if (led_timeout > 0) {
->  > +             if (timer >= led_timeout) {
->  > +                     /* set the register to OFF state */
->  > +                     mode_bits_update(led_reg_ptr, MSP_LED_OFF);
->  > +                     timer = 0;
->  > +
->  > +                     /*
->  > +                      * TODO:
->  > +                      * This introduces a race condition with other
->  > +                      * thread using shared memory and must be fixed.
->  > +                      */
->  > +                     msp_led_turn_off(led_id);
->  > +             } else
->  > +                     timer += 1;
->  > +
->  > +             /* update timer */
->  > +             *led_reg_ptr &= ~(0xff << MSP_LED_WATCHDOG_SHIFT);
->  > +             *led_reg_ptr |= (timer << MSP_LED_WATCHDOG_SHIFT);
->  > +     }
->  > +
->  > +     return is_in_initial_period;
->  > +}
->  > +
->  > +/*
->  > + * led_update - Sets the mode bits of the given led register
->  > + * @led_id - id pertaining to the led that needs update
->  > + * @prev_direction_bits_ptr - points to the previous direction bits 
-> on the
->  > bus + * @prev_data_bits_ptr - points to the previous data bits on the 
-> bus +
->  > * @curr_direction_bits_ptr - points to the new direction bits for bus
->  > update + * @curr_data_bits_ptr - points to the new data bits for bus 
-> update
->  > + *
->  > + * returns 1 - led is in output mode
->  > + *         0 - led is in input mode and hasn't been updated
->  > + *
->  > + * Sets the given mode value to the given led register.
->  > + */
->  > +int led_update(int led_id,
->  > +             u8 *prev_direction_bits_ptr, u8 *prev_data_bits_ptr,
->  > +             u8 *curr_direction_bits_ptr, u8 *curr_data_bits_ptr)
->  > +{
->  > +     u32 curr_led_reg;
->  > +     enum msp_led_mode curr_mode, prev_mode;
->  > +     enum msp_led_direction curr_direction, prev_direction;
->  > +     int is_in_initial_period;
->  > +
->  > +     /* Read the shared memory into a temporary variable */
->  > +     int pin = led_id % MSP_LED_NUM_DEVICE_PINS;
->  > +     curr_led_reg = msp_led_register[led_id];
->  > +
->  > +     /* Check if the input direction has changed to output */
->  > +     prev_direction = (enum msp_led_direction)
->  > +                     ((private_msp_led_register[led_id] &
->  > +                     MSP_LED_DIRECTION_MASK) >> 
-> MSP_LED_DIRECTION_SHIFT);
->  > +     curr_direction = (enum msp_led_direction)((curr_led_reg &
->  > +                     MSP_LED_DIRECTION_MASK) >> 
-> MSP_LED_DIRECTION_SHIFT);
->  > +     if ((prev_direction == MSP_LED_INPUT) &&
->  > +         (curr_direction != MSP_LED_OUTPUT))
->  > +             return 0;
->  > +
->  > +     /* get the previous mode of the LED */
->  > +     prev_mode = (enum msp_led_mode)(private_msp_led_register[led_id] &
->  > +                     MSP_LED_MODE_MASK);
->  > +
->  > +     if (prev_mode == MSP_LED_ON)
->  > +             *prev_data_bits_ptr |= 1 << pin;
->  > +
->  > +     if (prev_direction == MSP_LED_INPUT)
->  > +             *prev_direction_bits_ptr |= 1 << pin;
->  > +
->  > +     /* Update timer and obtain the current period */
->  > +     is_in_initial_period = sync_led_timer_with_polling_count(
->  > +                                     led_id, &curr_led_reg);
->  > +
->  > +     /* get the current mode of the LED */
->  > +     curr_mode = (enum msp_led_mode)(curr_led_reg & MSP_LED_MODE_MASK);
->  > +
->  > +     switch (curr_mode) {
->  > +     case MSP_LED_BLINK:
->  > +             if (is_in_initial_period) {
->  > +                     *curr_data_bits_ptr |= 1 << pin;
->  > +                     mode_bits_update(&curr_led_reg, MSP_LED_ON);
->  > +             } else
->  > +                     mode_bits_update(&curr_led_reg,MSP_LED_OFF);
->  > +             break;
->  > +     case MSP_LED_BLINK_INVERT:
->  > +             if (!is_in_initial_period) {
->  > +                     *curr_data_bits_ptr |= 1 << pin;
->  > +                     mode_bits_update(&curr_led_reg, MSP_LED_ON);
->  > +             } else
->  > +                     mode_bits_update(&curr_led_reg,MSP_LED_OFF);
->  > +             break;
->  > +     case MSP_LED_OFF:
->  > +             /*
->  > +              * Assuming that the led be turned off when set to
->  > +              * output mode
->  > +              */
->  > +             break;
->  > +     case MSP_LED_ON:
->  > +             *curr_data_bits_ptr |= 1 << pin;
->  > +             break;
->  > +     }
->  > +
->  > +     if (curr_direction == MSP_LED_INPUT)
->  > +             *curr_direction_bits_ptr |= 1 << pin;
->  > +
->  > +     /* save the current mode */
->  > +     private_msp_led_register[led_id] = curr_led_reg;
->  > +
->  > +     return 1;
->  > +}
->  > +
->  > +/*
->  > + * device_update - Updates led device(s) on GPIO
->  > + * @dev_id - id pertaining to the device that needs update
->  > + *
->  > + * returns 1 - device exists
->  > + *              0 - device does not exist
->  > + *
->  > + * Every pin connected to the GPIO is updated if the state of the 
-> pin has
->  > + * changed from its previous value stored in the memory register.  A
->  > temporary + * variable, curr_led_reg is used to store the current 
-> value of
->  > the register + * corresponding to the pin under focus.  curLedReg 
-> gets its
->  > value from the + * global shared memory registers for leds.  This 
-> value is
->  > compared with the + * previous value to determine if a change to the led
->  > pin is required.  The + * previous values are stored in the private led
->  > register,
->  > + * private_msp_led_register.
->  > + */
->  > +int device_update(int dev_id)
->  > +{
->  > +     int pin;
->  > +     u8 curr_direction_bits = 0;
->  > +     u8 curr_data_bits = 0;
->  > +     u8 prev_data_bits = 0;
->  > +     u8 prev_direction_bits = 0;
->  > +
->  > +     /* if the device wasn't detected */
->  > +     if (pmctwiled_device[dev_id] == NULL)
->  > +             return 0;
->  > +
->  > +     /* iterate through each pin of the device and update as 
-> necessary */
->  > +     for (pin = 0; pin < MSP_LED_NUM_DEVICE_PINS; pin++) {
->  > +             int led_id = MSP_LED_DEVPIN(dev_id, pin);
->  > +             led_update(led_id, &prev_direction_bits, &prev_data_bits,
->  > +                             &curr_direction_bits, &curr_data_bits);
->  > +     }
->  > +
->  > +     /*
->  > +      * BUS OPERATIONS: if the previous state is different from the
->  > +      * current state
->  > +      */
->  > +     if (curr_data_bits != prev_data_bits)
->  > +             i2c_smbus_write_byte_data(pmctwiled_device[dev_id],
->  > +                             PCA9554_OUTPUT, ~(curr_data_bits));
->  > +
->  > +     if (curr_direction_bits != prev_direction_bits)
->  > +             i2c_smbus_write_byte_data(pmctwiled_device[dev_id],
->  > +                             PCA9554_DIRECTION, curr_direction_bits);
->  > +
->  > +     return 1;
->  > +}
->  > +
->  > +static int pmctwiled_poll(void *data)
->  > +{
->  > +     current_period = 0;
->  > +
->  > +     /* start the polling loop */
->  > +     do {
->  > +             /* Starting Time */
->  > +             unsigned long poll_end;
->  > +             unsigned long time_left;
->  > +             unsigned int poll_start = jiffies;
->  > +
->  > +             /* update every device in here for the current period */
->  > +             int dev_id;
->  > +             for (dev_id = 0; dev_id < MSP_LED_NUM_DEVICES; dev_id++)
->  > +                     device_update(dev_id);
->  > +
->  > +             /* Ending Time */
->  > +             poll_end = jiffies;
->  > +             if (poll_end >= poll_start) {
->  > +                     time_left = POLL_PERIOD - (poll_end - poll_start);
->  > +             } else {
->  > +                     time_left = POLL_PERIOD - ((0xffffffff - 
-> poll_start) +
->  > +                                     poll_end);
->  > +                     printk(KERN_WARNING
->  > +                             "Warning: Delaying for %lu jiffies. 
-> This may "
->  > +                             "not be correct because of clock 
-> wrapping\n",
->  > +                             time_left);
->  > +             }
->  > +             if (time_left > POLL_PERIOD) {
->  > +                     printk(KERN_WARNING
->  > +                             "Warning: Delay of %lu jiffies 
-> requested, "
->  > +                             "defaulting back to %lu\n",
->  > +                             time_left, POLL_PERIOD);
->  > +                     time_left = POLL_PERIOD;
->  > +             }
->  > +
->  > +             /* reshedule next polling interval */
->  > +             schedule_timeout_interruptible(time_left);
->  > +
->  > +             /* make swsusp happy with our thread */
->  > +             try_to_freeze();
->  > +
->  > +             current_period++;
->  > +     } while (!kthread_should_stop());
->  > +
->  > +     return 0;
->  > +}
->  > +
->  > +void __init pmctwiled_setup(void)
->  > +{
->  > +     static int called;
->  > +     int dev;
->  > +
->  > +     /* check if already initialized from platform initialization */
->  > +     if (called)
->  > +             return;
->  > +
->  > +     /* initialize LEDs to default state */
->  > +     for (dev = 0; dev < MSP_LED_NUM_DEVICES; dev++) {
->  > +             int pin;
->  > +             pmctwiled_device[dev] = NULL;
->  > +
->  > +             for (pin = 0; pin < 8; pin++) {
->  > +                     int led = MSP_LED_DEVPIN(dev, pin);
->  > +                     if (msp_led_initial_input_state[dev] & (1 << 
-> pin)) {
->  > +                             msp_led_disable(led);
->  > +                     } else {
->  > +                             msp_led_enable(led);
->  > +                             if (msp_led_initial_pin_state[dev] & (1 
-> << pin))
->  > +                                     msp_led_turn_on(led);
->  > +                             else
->  > +                                     msp_led_turn_off(led);
->  > +                     }
->  > +
->  > +                     /* Initialize the private led register memory */
->  > +                     private_msp_led_register[led] = 0;
->  > +             }
->  > +     }
->  > +
->  > +     /* indicate initialised */
->  > +     called++;
->  > +}
->  > +
->  > +static int __init pmctwiled_init(void)
->  > +{
->  > +     /* setup twi led interface */
->  > +     pmctwiled_setup();
->  > +
->  > +     /* start the polling thread */
->  > +     pmctwiled_pollthread = kthread_run(pmctwiled_poll, NULL,
->  > +                                     "PMCTwiLedPoller");
->  > +     if (pmctwiled_pollthread == NULL) {
->  > +             printk(KERN_ERR "Could not start polling thread\n");
->  > +             return -ENOMEM;
->  > +     }
->  > +
->  > +     return i2c_add_driver(&pmctwiled_driver);
->  > +}
->  > +
->  > +static void __exit pmctwiled_exit(void)
->  > +{
->  > +     /* stop the polling thread */
->  > +     kthread_stop(pmctwiled_pollthread);
->  > +
->  > +     i2c_del_driver(&pmctwiled_driver);
->  > +}
->  > +
->  > +MODULE_DESCRIPTION("PMC TWI-LED driver");
->  > +MODULE_LICENSE("GPL");
->  > +
->  > +module_init(pmctwiled_init);
->  > +module_exit(pmctwiled_exit);
->  > diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h
->  > b/include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h new file mode 
-> 100644
->  > index 0000000..b5fb683
->  > --- /dev/null
->  > +++ b/include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h
->  > @@ -0,0 +1,273 @@
->  > +/*
->  > + * Macros for external SMP-safe access to the PMC MSP7120
->  > + * Residential Gateway demo board LEDs (over TWI)
->  > + *
->  > + * Copyright 2006-2007 PMC-Sierra, Inc.
->  > + *
->  > + *  This program is free software; you can redistribute  it and/or 
-> modify
->  > it + *  under  the terms of  the GNU General  Public License as 
-> published
->  > by the + *  Free Software Foundation;  either version 2 of the  
-> License, or
->  > (at your + *  option) any later version.
->  > + *
->  > + *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR 
-> IMPLIED
->  > + *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED 
-> WARRANTIES
->  > OF + *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
->  > DISCLAIMED.  IN + *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR 
-> ANY 
->  > DIRECT, INDIRECT, + *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
->  > DAMAGES (INCLUDING, BUT + *  NOT LIMITED   TO, PROCUREMENT OF  
-> SUBSTITUTE
->  > GOODS  OR SERVICES; LOSS OF + *  USE, DATA,  OR PROFITS; OR  BUSINESS
->  > INTERRUPTION) HOWEVER CAUSED AND ON + *  ANY THEORY OF LIABILITY, 
-> WHETHER
->  > IN  CONTRACT, STRICT LIABILITY, OR TORT + *  (INCLUDING NEGLIGENCE OR
->  > OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF + *  THIS SOFTWARE, 
-> EVEN IF
->  > ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. + *
->  > + *  You should have received a copy of the  GNU General Public License
->  > along + *  with this program; if not, write  to the Free Software
->  > Foundation, Inc., + *  675 Mass Ave, Cambridge, MA 02139, USA.
->  > + */
->  > +
->  > +#ifndef __MSP_LED_MACROS_H__
->  > +#define __MSP_LED_MACROS_H__
->  > +
->  > +/* For ll/sc macros */
->  > +#include <asm/regops.h>
->  > +
->  > +/* Generic macros for board setup */
->  > +#define MSP_LED_DEVPIN(DEVICE, PIN)  ((DEVICE * 8) + PIN)
->  > +
->  > +/* ----- Per-board configuration ----- */
->  > +
->  > +/* TODO: Maybe break this out into one file per board? */
->  > +
->  > +#ifdef CONFIG_PMC_MSP7120_GW
->  > +/* Specific LEDs and PINs which can be controlled on the RG demo 
-> board: */
->  > +#define MSP_LED_PWRSTANDBY_RED               MSP_LED_DEVPIN(2, 0)
->  > +#define MSP_LED_PWRSTANDBY_GREEN     MSP_LED_DEVPIN(2, 1)
->  > +#define MSP_LED_LAN1_10                      MSP_LED_DEVPIN(2, 2)
->  > +#define MSP_LED_LAN1_100             MSP_LED_DEVPIN(2, 3)
->  > +#define MSP_LED_LAN2_10                      MSP_LED_DEVPIN(2, 4)
->  > +#define MSP_LED_LAN2_100             MSP_LED_DEVPIN(2, 5)
->  > +#define MSP_LED_LAN3_10                      MSP_LED_DEVPIN(2, 6)
->  > +#define MSP_LED_LAN3_100             MSP_LED_DEVPIN(2, 7)
->  > +#define MSP_LED_LAN4_10                      MSP_LED_DEVPIN(3, 0)
->  > +#define MSP_LED_LAN4_100             MSP_LED_DEVPIN(3, 1)
->  > +#define MSP_LED_LAN5_10                      MSP_LED_DEVPIN(3, 2)
->  > +#define MSP_LED_LAN5_100             MSP_LED_DEVPIN(3, 3)
->  > +#define MSP_LED_RFU_10                       MSP_LED_LAN5_10
->  > +#define MSP_LED_RFU_100                      MSP_LED_LAN5_100
->  > +#define MSP_PIN_FLASH_RESETB         MSP_LED_DEVPIN(3, 4)
->  > +#define MSP_LED_PSTN                 MSP_LED_DEVPIN(3, 5)
->  > +#define MSP_PIN_FLASH_BANK           MSP_LED_DEVPIN(3, 6)
->  > +#define MSP_PIN_USB_HOST_DEV         MSP_LED_DEVPIN(3, 7)
->  > +#define MSP_LED_PHONE1                       MSP_LED_DEVPIN(4, 0)
->  > +#define MSP_LED_PHONE2                       MSP_LED_DEVPIN(4, 1)
->  > +#define MSP_LED_USB                  MSP_LED_DEVPIN(4, 2)
->  > +#define MSP_LED_WIRELESS             MSP_LED_DEVPIN(4, 3)
->  > +#define MSP_LED_DSL_RED                      MSP_LED_DEVPIN(4, 4)
->  > +#define MSP_LED_DSL_GREEN            MSP_LED_DEVPIN(4, 5)
->  > +#define MSP_LED_INTERNET_RED         MSP_LED_DEVPIN(4, 6)
->  > +#define MSP_LED_INTERNET_GREEN               MSP_LED_DEVPIN(4, 7)
->  > +
->  > +#define MSP_LED_NUM_DEVICES          5
->  > +#define MSP_LED_NUM_DEVICE_PINS              8
->  > +#define MSP_LED_COUNT                        
-> (MSP_LED_NUM_DEVICE_PINS * \
->  > +                                      MSP_LED_NUM_DEVICES)
->  > +#define MSP_LED_INPUT_MODE           0xff
->  > +#define MSP_LED_OUTPUT_MODE          0x00
->  > +#endif /* CONFIG_PMC_MSP7120_GW */
->  > +
->  > +/* ----- End of Per-board configuration ----- */
->  > +
->  > +/* Definitions for LED blink rate value */
->  > +#define MSP_LED_RATE_MAX     0xff
->  > +
->  > +/* -- The actual LED register list -- */
->  > +extern u32 msp_led_register[];
->  > +
->  > +/*
->  > + * Each 'register' has the following format:
->  > + *
->  > + * +-------+-----------------------------+
->  > + * | BITS  | DESCRIPTION                 |
->  > + * +-------+-----------------------------+
->  > + * | 31:24 | Watchdog timer              |
->  > + * |       |   Set to non-zero to start  |
->  > + * |       |   or to kick, this number   |
->  > + * |       |   will be decremented every |
->  > + * |       |   125ms, if it reaches zero |
->  > + * |       |   the LED will be turned off|
->  > + * +-------+-----------------------------+
->  > + * | 23:16 | Initial Period              |
->  > + * |       |   125ms increments          |
->  > + * +-------+-----------------------------+
->  > + * |  15:8 | Final Period                |
->  > + * |       |   125ms increments          |
->  > + * +-------+-----------------------------+
->  > + * |  7:7  | Direction                   |
->  > + * |       |   See msp_led_direction     |
->  > + * +-------+-----------------------------+
->  > + * |  6:0  | Mode                        |
->  > + * |       |   See msp_led_mode          |
->  > + * +-------+-----------------------------+
->  > + *
->  > + * NOTE: You should probably not affect these registers directly but 
-> use
->  > + * the macros in this file.  That said, if you need to touch them, 
-> be sure
->  > + * to use ll/sc instructions (or the macros in regops.h) so that values
->  > are + * preserved safely.
->  > + */
->  > +
->  > +/* Direction modes */
->  > +enum msp_led_direction {
->  > +     MSP_LED_INPUT = 0,
->  > +     MSP_LED_OUTPUT,
->  > +};
->  > +
->  > +/* Output modes */
->  > +enum msp_led_mode {
->  > +     MSP_LED_OFF = 0,/* Off steady */
->  > +     MSP_LED_ON,     /* On steady */
->  > +     MSP_LED_BLINK,  /* On for initial_period, off for final_period */
->  > +     MSP_LED_BLINK_INVERT,
->  > +                     /* Off for initial_period, on for final_period */
->  > +};
->  > +
->  > +#define MSP_LED_MODE_MASK            0x7f
->  > +#define MSP_LED_DIRECTION_MASK               0x80
->  > +#define MSP_LED_DIRECTION_SHIFT              7
->  > +#define MSP_LED_INITIALPERIOD_SHIFT  8
->  > +#define MSP_LED_FINALPERIOD_SHIFT    16
->  > +#define MSP_LED_WATCHDOG_SHIFT               24
->  > +
->  > +/* -- Public API functions -- */
->  > +
->  > +/* Low-level macro, explicitly sets the specified LED with the 
-> values */
->  > +static inline void msp_led_set_mode(u16 led,
->  > +                                 enum msp_led_mode mode, u8 
-> initial_period,
->  > +                                 u8 final_period, u8 watchdog_timeout)
->  > +{
->  > +     set_value_reg32(&msp_led_register[led],
->  > +                     0xffffff7f,
->  > +                     watchdog_timeout << MSP_LED_WATCHDOG_SHIFT |
->  > +                     initial_period << MSP_LED_INITIALPERIOD_SHIFT |
->  > +                     final_period << MSP_LED_FINALPERIOD_SHIFT |
->  > +                     ((u8)mode & MSP_LED_MODE_MASK));
->  > +}
->  > +
->  > +static inline void msp_led_set_direction(u16 led,
->  > +                                      enum msp_led_direction direction)
->  > +{
->  > +     set_value_reg32(&msp_led_register[led],
->  > +                     0x00000080,
->  > +                     ((u8)direction << MSP_LED_DIRECTION_SHIFT));
->  > +}
->  > +
->  > +/* Turns the LED on */
->  > +static inline void msp_led_turn_on(u16 led)
->  > +{
->  > +     msp_led_set_mode(led, MSP_LED_ON, 0, 0, 0);
->  > +}
->  > +
->  > +/* Set pin LO */
->  > +static inline void msp_led_pin_lo(u16 pin)
->  > +{
->  > +     msp_led_set_mode(pin, MSP_LED_ON, 0, 0, 0);
->  > +}
->  > +
->  > +/* Turns the LED off */
->  > +static inline void msp_led_turn_off(u16 led)
->  > +{
->  > +     msp_led_set_mode(led, MSP_LED_OFF, 0, 0, 0);
->  > +}
->  > +
->  > +/* Set pin HI */
->  > +static inline void msp_led_pin_hi(u16 pin)
->  > +{
->  > +     msp_led_set_mode(pin, MSP_LED_OFF, 0, 0, 0);
->  > +}
->  > +
->  > +/*
->  > + * Blinks a single LED
->  > + * Period is specified in 125ms chunks
->  > + */
->  > +static inline void msp_led_blink(u16 led, u8 initial_period, u8
->  > final_period) +{
->  > +     msp_led_set_mode(led, MSP_LED_BLINK, initial_period,
->  > +                      final_period, 0);
->  > +}
->  > +
->  > +static inline void msp_led_blink_2Hz(u16 led)
->  > +{
->  > +     msp_led_set_mode(led, MSP_LED_BLINK, 2, 2, 0);
->  > +}
->  > +
->  > +static inline void msp_led_blink_4Hz(u16 led)
->  > +{
->  > +     msp_led_set_mode(led, MSP_LED_BLINK, 1, 1, 0);
->  > +}
->  > +
->  > +/*
->  > + * Blinks one LED, then the other
->  > + * Period is specified in 125ms chunks
->  > + */
->  > +static inline void msp_led_alternate(u16 led1, u16 led2,
->  > +                                  u8 led1_period, u8 led2_period)
->  > +{
->  > +     msp_led_set_mode(led1, MSP_LED_BLINK, led1_period,
->  > +                             led2_period, 0);
->  > +     msp_led_set_mode(led2, MSP_LED_BLINK_INVERT, led1_period,
->  > +                             led2_period, 0);
->  > +}
->  > +
->  > +/*
->  > + * Stops both alternating LEDs from blinking, leaving 'on_led' on
->  > + * and 'off_led' off.
->  > + */
->  > +static inline void msp_led_alternate_stop(u16 on_led, u16 off_led)
->  > +{
->  > +     msp_led_turn_on(on_led);
->  > +     msp_led_turn_off(off_led);
->  > +}
->  > +
->  > +/*
->  > + * Starts the LED blinking at the specified rate until the
->  > watchdog_timeout + * (specified in 125ms increments) expires, when 
-> the LED
->  > is turned off. + *
->  > + * This can also be used to kick the watchdog.
->  > + *
->  > + * Calling any other 'msp_led_...' macro will disable the watchdog,
->  > + * as will kicking this watchdog with a watchdogtimeout value of 0.
->  > + * When the watchdog is disabled, the LED will blink forever.
->  > + */
->  > +static inline void msp_led_watchdog_init(u16 led, u8 initial_period,
->  > +                                      u8 final_period, u8 
-> watchdog_timeout)
->  > +{
->  > +     msp_led_set_mode(led, MSP_LED_BLINK, initial_period,
->  > +                      final_period, watchdog_timeout);
->  > +}
->  > +
->  > +/*
->  > + * Kicks a 'watchdog' LED.  If the LED is already blinking or on,
->  > + * it will start the watchdog countdown.  If the LED is already off or
->  > + * the wathdog timeout given is 0, it will ensure the LED is off and
->  > + * the watchdog timer has stopped.
->  > + */
->  > +static inline void msp_led_watchdog_kick(u16 led, u8 watchdog_timeout)
->  > +{
->  > +     set_value_reg32(&msp_led_register[led],
->  > +                     0xff << MSP_LED_WATCHDOG_SHIFT,
->  > +                     watchdog_timeout << MSP_LED_WATCHDOG_SHIFT);
->  > +}
->  > +
->  > +/*
->  > + * Set the direction of the led pins.
->  > + */
->  > +static inline void msp_led_enable(u16 led)
->  > +{
->  > +     msp_led_set_direction(led, MSP_LED_OUTPUT);
->  > +}
->  > +
->  > +static inline void msp_led_disable(u16 led)
->  > +{
->  > +     msp_led_set_direction(led, MSP_LED_INPUT);
->  > +}
->  > +
->  > +#endif /* !__MSP_LED_MACROS_H__ */
-> 
-> 
-> 
-> -- 
-> Cordialement, Florian Fainelli
-> ---------------------------------------------
-> 
+Index: linux-2.6.20/drivers/i2c/algos/Kconfig
+===================================================================
+--- linux-2.6.20.orig/drivers/i2c/algos/Kconfig
++++ linux-2.6.20/drivers/i2c/algos/Kconfig
+@@ -49,5 +49,10 @@ config I2C_ALGO_SGI
+ 	  Supports the SGI interfaces like the ones found on SGI Indy VINO
+ 	  or SGI O2 MACE.
+ 
++config I2C_ALGO_EMMA2RH
++	tristate "I2C EMMA2RH interfaces"
++	depends on I2C && MARKEINS
++	help
++	  NEC EMMA2RH I2C Algorithm
+ endmenu
+ 
+Index: linux-2.6.20/drivers/i2c/algos/Makefile
+===================================================================
+--- linux-2.6.20.orig/drivers/i2c/algos/Makefile
++++ linux-2.6.20/drivers/i2c/algos/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_I2C_ALGOBIT)	+= i2c-algo-bi
+ obj-$(CONFIG_I2C_ALGOPCF)	+= i2c-algo-pcf.o
+ obj-$(CONFIG_I2C_ALGOPCA)	+= i2c-algo-pca.o
+ obj-$(CONFIG_I2C_ALGO_SGI)	+= i2c-algo-sgi.o
++obj-$(CONFIG_I2C_ALGO_EMMA2RH)	+= i2c-algo-emma2rh.o
+ 
+ ifeq ($(CONFIG_I2C_DEBUG_ALGO),y)
+ EXTRA_CFLAGS += -DDEBUG
+Index: linux-2.6.20/drivers/i2c/algos/i2c-algo-emma2rh.c
+===================================================================
+--- /dev/null
++++ linux-2.6.20/drivers/i2c/algos/i2c-algo-emma2rh.c
+@@ -0,0 +1,426 @@
++/*
++   -------------------------------------------------------------------------
++   i2c-algo-emma2rh.c i2c driver algorithms for NEC EMMA2RH I2C adapters
++   -------------------------------------------------------------------------
++
++    Copyright (C) NEC Electronics Corporation 2005-2006
++
++    Changes made to support the I2C peripheral on the NEC EMMA2RH
++
++   -------------------------------------------------------------------------
++    This file was highly leveraged from i2c-algo-pcf.c, which was created
++    by Simon G. Vogl and Hans Berglund:
++
++     Copyright (C) 1995-1997 Simon G. Vogl
++                   1998-2000 Hans Berglund
++
++    With some changes from Kyösti Mälkki <kmalkki@cc.hut.fi> and
++    Frodo Looijaard <frodol@dds.nl> ,and also from Martin Bailey
++    <mbailey@littlefeet-inc.com>
++
++    Partially rewriten by Oleg I. Vdovikin <vdovikin@jscc.ru> to handle multiple
++    messages, proper stop/repstart signaling during receive,
++    added detect code
++
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program; if not, write to the Free Software
++    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++   -------------------------------------------------------------------------
++*/
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/delay.h>
++#include <linux/slab.h>
++#include <linux/version.h>
++#include <linux/init.h>
++#include <asm/uaccess.h>
++#include <linux/ioport.h>
++#include <linux/errno.h>
++#include <linux/sched.h>
++#include <linux/interrupt.h>
++
++#include <linux/i2c.h>
++#include <linux/i2c-algo-emma2rh.h>
++
++#include <asm/emma2rh/emma2rh.h>
++
++#ifdef DEBUG
++#define i2c_emma2rh_debug(level,op) do { if (i2c_debug>=(level)) { op; } } while (0)
++static int i2c_debug;
++module_param(i2c_debug, int, S_IRUGO | S_IWUSR);
++MODULE_PARM_DESC(i2c_debug,
++		 "debug level - 0 off; 1 normal; 2,3 more verbose; 9 i2c-protocol");
++#else
++#define i2c_emma2rh_debug(level,op) /* nothing */
++#endif
++
++#define DEB(x) i2c_emma2rh_debug(1, x)
++#define DEB2(x) i2c_emma2rh_debug(2, x)
++#define DEB3(x) i2c_emma2rh_debug(3, x)
++#define DEBPROTO(x) i2c_emma2rh_debug(9,x)
++
++#define EMMA2RH_I2C_RETRIES 3
++#define EMMA2RH_I2C_TIMEOUT 100
++
++/* --- setting states on the bus with the right timing: ---------------	*/
++#define set_emma(adap, ctl, val) adap->setemma(adap->data, ctl, val)
++#define get_emma(adap, ctl) adap->getemma(adap->data, ctl)
++#define get_own(adap) adap->getown(adap->data)
++#define get_clock(adap) adap->getclock(adap->data)
++
++/* --- other auxiliary functions --------------------------------------	*/
++
++static void i2c_start(struct i2c_algo_emma_data *adap)
++{
++	DEBPROTO(printk("S "));
++	set_emma(adap, I2C_EMMA_CNT, I2C_EMMA_START);
++}
++
++static void i2c_repstart(struct i2c_algo_emma_data *adap)
++{
++	DEBPROTO(printk(" Sr "));
++	set_emma(adap, I2C_EMMA_CNT, I2C_EMMA_REPSTART);
++}
++
++static void i2c_stop(struct i2c_algo_emma_data *adap)
++{
++	DEBPROTO(printk("P\n"));
++	set_emma(adap, I2C_EMMA_CNT, I2C_EMMA_STOP);
++}
++
++static inline void emma_sleep(unsigned long timeout)
++{
++	schedule_timeout(timeout * HZ);
++}
++
++static int wait_for_pin(struct i2c_algo_emma_data *adap, int *status)
++{
++	adap->waitforpin(adap->data);
++	*status = get_emma(adap, I2C_EMMA_STA);
++	return 0;
++}
++
++static int emma_init(struct i2c_algo_emma_data *adap)
++{
++	unsigned char temp;
++
++	/* serial interface off */
++	set_emma(adap, I2C_EMMA_CNT, 0);
++
++	/* load clock register CS */
++	set_emma(adap, I2C_EMMA_CSEL, get_clock(adap));
++	udelay(20);		/* wait awhile */
++	/* check it's realy written, the only 4 lowest bits does matter */
++	if (((temp = get_emma(adap, I2C_EMMA_CSEL)) & 0x8f) != get_clock(adap)) {
++		DEB2(printk
++		     (KERN_ERR
++		      "%s: EMMA detection failed -- can't set I2C_EMMA_CSEL (0x%02x).\n",
++		      __FUNCTION__, temp));
++		return -ENXIO;
++	}
++
++	/* initialize interrupt mask */
++	set_emma(adap, I2C_EMMA_INT, 0);
++	set_emma(adap, I2C_EMMA_INTM, INTE0);
++
++	/* Enable serial interface */
++	set_emma(adap, I2C_EMMA_CNT, IICE);
++
++	/* generate a STOP condition, first of all */
++	i2c_stop(adap);
++
++	return 0;
++}
++
++static int emma_exit(struct i2c_algo_emma_data *adap)
++{
++	set_emma(adap, I2C_EMMA_INTM, 0);
++}
++
++/* --- Utility functions ---------------------------------------------- */
++
++static inline int try_address(struct i2c_algo_emma_data *adap,
++			      unsigned char addr, int retries)
++{
++	int i, status, ret = -1;
++
++	for (i = 0; i < retries; i++) {
++		i2c_start(adap);
++		set_emma(adap, I2C_EMMA_SHR, addr);
++		if (wait_for_pin(adap, &status) >= 0)
++			if (status & ACKD) {
++				i2c_stop(adap);
++				ret = 1;
++				break;	/* success! */
++			}
++		i2c_stop(adap);
++		udelay(adap->udelay);
++	}
++	DEB2(if (i)
++	     printk(KERN_DEBUG "%s: needed %d retries for %d\n", __FUNCTION__, i, addr)) ;
++	return ret;
++}
++
++static int emma_sendbytes(struct i2c_adapter *i2c_adap, const char *buf,
++			  int count, int last)
++{
++	struct i2c_algo_emma_data *adap = i2c_adap->algo_data;
++	int wrcount, status, timeout;
++
++	set_emma(adap, I2C_EMMA_CNT, IICE | WTIM);
++	for (wrcount = 0; wrcount < count; wrcount++) {
++		set_emma(adap, I2C_EMMA_INT, 0);
++		set_emma(adap, I2C_EMMA_SHR, buf[wrcount] & SR);
++		timeout = wait_for_pin(adap, &status);
++		if (timeout) {
++			i2c_stop(adap);
++			printk(KERN_ERR "%s i2c_write: "
++			       "error - timeout.\n", i2c_adap->name);
++			return -EREMOTEIO;	/* got a better one ?? */
++		}
++		if (!(status & ACKD)) {
++			i2c_stop(adap);
++			printk(KERN_ERR "%s i2c_write: "
++			       "error - no ack.\n", i2c_adap->name);
++			return -EREMOTEIO;	/* got a better one ?? */
++		}
++	}
++
++	if (last)
++		i2c_stop(adap);
++	else
++		i2c_repstart(adap);
++
++	return (wrcount);
++}
++
++static int emma_readbytes(struct i2c_adapter *i2c_adap, char *buf,
++			  int count, int last)
++{
++	struct i2c_algo_emma_data *adap = i2c_adap->algo_data;
++	int rdcount, status, timeout;
++
++	for (rdcount = 0; rdcount < count; rdcount++) {
++
++		/* we will suffer from unexpected interrupts if we
++		 * use 8-clock-wait.
++		 */
++
++		set_emma(adap, I2C_EMMA_INT, 0);
++		if (rdcount == count - 1)
++			/* last byte */
++			set_emma(adap, I2C_EMMA_CNT, IICE | WREL | WTIM);
++		else
++			set_emma(adap, I2C_EMMA_CNT, IICE | WREL | WTIM | ACKE);
++
++		timeout = wait_for_pin(adap, &status);
++		if (timeout) {
++			i2c_stop(adap);
++			printk(KERN_ERR
++			       "i2c-algo-emma.o: emma_readbytes timed out.\n");
++			return (-1);
++		}
++		if (!(status & ACKD) && (rdcount != count - 1)) {
++			i2c_stop(adap);
++			printk(KERN_ERR
++			       "i2c-algo-emma.o: i2c_read: i2c_inb, No ack.\n");
++			return (-1);
++		}
++		buf[rdcount] = get_emma(adap, I2C_EMMA_SHR);
++	}
++
++	if (last)
++		i2c_stop(adap);
++	else
++		i2c_repstart(adap);
++
++	return (rdcount);
++}
++
++static inline int emma_doAddress(struct i2c_algo_emma_data *adap,
++				 struct i2c_msg *msg, int retries)
++{
++	unsigned short flags = msg->flags;
++	unsigned int addr;
++	int ret;
++
++	set_emma(adap, I2C_EMMA_INT, 0);
++
++	if (flags & I2C_M_TEN) {
++		/* a ten bit address */
++		addr = 0xf0 | ((msg->addr >> 7) & 0x03);
++		DEB2(printk(KERN_DEBUG "addr0: %d\n", addr));
++
++		/* try extended address code... */
++		ret = try_address(adap, addr, retries);
++		if (ret != 1) {
++			printk(KERN_ERR "died at extended address code.\n");
++			return -EREMOTEIO;
++		}
++		/* the remaining 8 bit address */
++		/* ...TBD */
++		printk(KERN_ERR"10 bit addresses are not supported in this driver.\n");
++		return -EREMOTEIO;
++	} else {		/* normal 7bit address  */
++		addr = (msg->addr << 1);
++		if (flags & I2C_M_RD)
++			addr |= 1;
++		if (flags & I2C_M_REV_DIR_ADDR)
++			addr ^= 1;
++		set_emma(adap, I2C_EMMA_SHR, addr);
++	}
++	return 0;
++}
++
++static int emma_xfer(struct i2c_adapter *i2c_adap,
++		     struct i2c_msg msgs[], int num)
++{
++	struct i2c_algo_emma_data *adap = i2c_adap->algo_data;
++	struct i2c_msg *pmsg;
++	int i;
++	int ret = 0, timeout, status;
++
++	for (i = 0; ret >= 0 && i < num; i++) {
++		pmsg = &msgs[i];
++
++		DEB2(printk
++		     (KERN_DEBUG
++		      "Doing %s %d bytes to 0x%02x - %d of %d messages\n",
++		      pmsg->flags & I2C_M_RD ? "read" : "write", pmsg->len,
++		      pmsg->addr, i + 1, num));
++
++		/* Send START */
++		if (i == 0)
++			i2c_start(adap);
++
++		ret = emma_doAddress(adap, pmsg, i2c_adap->retries);
++
++		/* Wait for PIN (pending interrupt NOT) */
++		timeout = wait_for_pin(adap, &status);
++		if (timeout) {
++			i2c_stop(adap);
++			DEB2(printk(KERN_ERR "Timeout waiting "
++				    "for PIN(1) in emma_xfer\n"));
++			return (-EREMOTEIO);
++		}
++
++		/* Check LRB (last rcvd bit - slave ack) */
++		if (!(status & ACKD)) {
++			i2c_stop(adap);
++			DEB2(printk
++			     (KERN_ERR
++			      "No LRB(1) in emma_xfer\n"));
++			return (-EREMOTEIO);
++		}
++
++		DEB3(printk
++		     (KERN_DEBUG
++		      "i2c-algo-emma.o: Msg %d, addr=0x%x, flags=0x%x, len=%d\n",
++		      i, msgs[i].addr, msgs[i].flags, msgs[i].len));
++
++		if (pmsg->flags & I2C_M_RD)
++			/* read bytes into buffer */
++			ret = emma_readbytes(i2c_adap, pmsg->buf, pmsg->len,
++					     (i + 1 == num));
++		 else 	/* Write */
++			ret = emma_sendbytes(i2c_adap, pmsg->buf, pmsg->len,
++					     (i + 1 == num));
++
++		DEB2( printk( KERN_DEBUG "transferred %d bytes of %d -- %s\n",
++					ret, pmsg->len, ret != pmsg->len ? "FAIL" : "succeeded"));
++	}
++
++	return (i);
++}
++
++static int algo_control(struct i2c_adapter *adapter,
++			unsigned int cmd, unsigned long arg)
++{
++	return 0;
++}
++
++static u32 emma_func(struct i2c_adapter *adap)
++{
++	return I2C_FUNC_SMBUS_EMUL | I2C_FUNC_PROTOCOL_MANGLING;
++}
++
++/* --- exported algorithm data ---------------------------------------- */
++
++static struct i2c_algorithm emma_algo = {
++	.master_xfer = emma_xfer,
++	.smbus_xfer = NULL,
++	.algo_control = algo_control,	/* ioctl */
++	.functionality = emma_func,	/* functionality */
++};
++
++/*
++ * registering functions to load algorithms at routine
++ */
++int i2c_emma_add_bus(struct i2c_adapter *adap)
++{
++	int i;
++	struct i2c_algo_emma_data *emma_adap = adap->algo_data;
++
++	DEB2(printk
++	     (KERN_DEBUG "hw routines for %s registered.\n",
++	      adap->name));
++
++	/* register new adapter to i2c module... */
++	adap->algo = &emma_algo;
++
++	adap->timeout = EMMA2RH_I2C_TIMEOUT;	/* default values, should */
++	adap->retries = EMMA2RH_I2C_RETRIES;	/* be replaced by defines */
++
++	if ((i = emma_init(emma_adap)))
++		return i;
++
++	i2c_add_adapter(adap);
++
++	return 0;
++}
++
++int i2c_emma_del_bus(struct i2c_adapter *adap)
++{
++	int res;
++	struct i2c_algo_emma_data *emma_adap = adap->algo_data;
++
++	emma_exit(emma_adap);
++
++	if ((res = i2c_del_adapter(adap)) < 0)
++		return res;
++	DEB2(printk(KERN_DEBUG "adapter unregistered: %s\n",
++		    adap->name));
++
++	return 0;
++}
++
++int __init i2c_algo_emma_init(void)
++{
++	return 0;
++}
++
++void i2c_algo_emma_exit(void)
++{
++	return;
++}
++
++EXPORT_SYMBOL_GPL(i2c_emma_add_bus);
++EXPORT_SYMBOL_GPL(i2c_emma_del_bus);
++
++MODULE_AUTHOR("NEC Electronics Corporation <www.necel.com>");
++MODULE_DESCRIPTION("NEC EMMA2RH I2C-Bus algorithm");
++MODULE_LICENSE("GPL");
++
++module_init(i2c_algo_emma_init);
++module_exit(i2c_algo_emma_exit);
+Index: linux-2.6.20/drivers/i2c/algos/i2c-algo-emma2rh.h
+===================================================================
+--- /dev/null
++++ linux-2.6.20/drivers/i2c/algos/i2c-algo-emma2rh.h
+@@ -0,0 +1,105 @@
++/* -------------------------------------------------------------------- */
++/* i2c-algo-emma2rh.h: NEC EMMA2RH global defines                       */
++/* -------------------------------------------------------------------- */
++/*
++    Copyright (C) NEC Electronics Corporation 2005-2006
++
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program; if not, write to the Free Software
++    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA*/
++/* --------------------------------------------------------------------	*/
++
++#ifndef I2C_EMMA2RH_H
++#define I2C_EMMA2RH_H
++
++/*---------------------------------------------------------------------------*/
++/* CNT - Control register (00H R/W)                                          */
++/*---------------------------------------------------------------------------*/
++#define SPT         0x00000001
++#define STT         0x00000002
++#define ACKE        0x00000004
++#define WTIM        0x00000008
++#define SPIE        0x00000010
++#define WREL        0x00000020
++#define LREL        0x00000040
++#define IICE        0x00000080
++#define CNT_RESERVED    0x000000ff	/* reserved bit 0 */
++
++#define I2C_EMMA_START      (IICE | STT)
++#define I2C_EMMA_STOP       (IICE | SPT)
++#define I2C_EMMA_REPSTART   I2C_EMMA_START
++
++/*---------------------------------------------------------------------------*/
++/* STA - Status register (10H Read)                                          */
++/*---------------------------------------------------------------------------*/
++#define MSTS        0x00000080
++#define ALD         0x00000040
++#define EXC         0x00000020
++#define COI         0x00000010
++#define TRC         0x00000008
++#define ACKD        0x00000004
++#define STD         0x00000002
++#define SPD         0x00000001
++
++/*---------------------------------------------------------------------------*/
++/* CSEL - Clock select register (20H R/W)                                    */
++/*---------------------------------------------------------------------------*/
++#define FCL         0x00000080
++#define ND50        0x00000040
++#define CLD         0x00000020
++#define DAD         0x00000010
++#define SMC         0x00000008
++#define DFC         0x00000004
++#define CL          0x00000003
++#define CSEL_RESERVED   0x000000ff	/* reserved bit 0 */
++
++#define FAST397     0x0000008b
++#define FAST297     0x0000008a
++#define FAST347     0x0000000b
++#define FAST260     0x0000000a
++#define FAST130     0x00000008
++#define STANDARD108 0x00000083
++#define STANDARD83  0x00000082
++#define STANDARD95  0x00000003
++#define STANDARD73  0x00000002
++#define STANDARD36  0x00000001
++#define STANDARD71  0x00000000
++
++/*---------------------------------------------------------------------------*/
++/* SVA - Slave address register (30H R/W)                                    */
++/*---------------------------------------------------------------------------*/
++#define SVA         0x000000fe
++
++/*---------------------------------------------------------------------------*/
++/* SHR - Shift register (40H R/W)                                            */
++/*---------------------------------------------------------------------------*/
++#define SR          0x000000ff
++
++/*---------------------------------------------------------------------------*/
++/* INT - Interrupt register (50H R/W)                                        */
++/* INTM - Interrupt mask register (60H R/W)                                  */
++/*---------------------------------------------------------------------------*/
++#define INTE0       0x00000001
++
++/***********************************************************************
++ * I2C registers
++ ***********************************************************************
++ */
++#define I2C_EMMA_CNT            0x00
++#define I2C_EMMA_STA            0x10
++#define I2C_EMMA_CSEL           0x20
++#define I2C_EMMA_SVA            0x30
++#define I2C_EMMA_SHR            0x40
++#define I2C_EMMA_INT            0x50
++#define I2C_EMMA_INTM           0x60
++#endif				/* I2C_EMMA2RH_H */
+Index: linux-2.6.20/drivers/i2c/busses/Kconfig
+===================================================================
+--- linux-2.6.20.orig/drivers/i2c/busses/Kconfig
++++ linux-2.6.20/drivers/i2c/busses/Kconfig
+@@ -573,4 +573,11 @@ config I2C_PNX
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-pnx.
+ 
++config I2C_EMMA2RH
++	tristate "EMMA2RH I2C adapter"
++	depends on I2C && MARKEINS
++	select I2C_ALGO_EMMA2RH
++	help
++ 	  Support for NEC EMMA2RH I2C Adapter
++
+ endmenu
+Index: linux-2.6.20/drivers/i2c/busses/Makefile
+===================================================================
+--- linux-2.6.20.orig/drivers/i2c/busses/Makefile
++++ linux-2.6.20/drivers/i2c/busses/Makefile
+@@ -47,6 +47,7 @@ obj-$(CONFIG_I2C_VIAPRO)	+= i2c-viapro.o
+ obj-$(CONFIG_I2C_VOODOO3)	+= i2c-voodoo3.o
+ obj-$(CONFIG_SCx200_ACB)	+= scx200_acb.o
+ obj-$(CONFIG_SCx200_I2C)	+= scx200_i2c.o
++obj-$(CONFIG_I2C_EMMA2RH)	+= i2c-emma2rh.o
+ 
+ ifeq ($(CONFIG_I2C_DEBUG_BUS),y)
+ EXTRA_CFLAGS += -DDEBUG
+Index: linux-2.6.20/drivers/i2c/busses/i2c-emma2rh.c
+===================================================================
+--- /dev/null
++++ linux-2.6.20/drivers/i2c/busses/i2c-emma2rh.c
+@@ -0,0 +1,253 @@
++/*
++   -------------------------------------------------------------------------
++   i2c-emma2rh.c i2c-hw access for the I2C peripheral on the NEC EMMA2RH
++   -------------------------------------------------------------------------
++
++    Copyright (C) NEC Electronics Corporation 2005-2006
++
++    Changes made to support the I2C peripheral on the NEC EMMA2RH
++
++   -------------------------------------------------------------------------
++    This file was highly leveraged from i2c-elektor.c, which was created
++    by Simon G. Vogl and Hans Berglund:
++
++     Copyright (C) 1995-97 Simon G. Vogl
++                   1998-99 Hans Berglund
++
++    With some changes from Kyösti Mälkki <kmalkki@cc.hut.fi> and even
++    Frodo Looijaard <frodol@dds.nl>
++
++    Partialy rewriten by Oleg I. Vdovikin for mmapped support of
++    for Alpha Processor Inc. UP-2000(+) boards
++
++    This program is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program; if not, write to the Free Software
++    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++   -------------------------------------------------------------------------
++*/
++
++#include <linux/kernel.h>
++#include <linux/ioport.h>
++#include <linux/module.h>
++#include <linux/delay.h>
++#include <linux/slab.h>
++#include <linux/version.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/device.h>
++#include <linux/i2c.h>
++#include <linux/i2c-id.h>
++#include <linux/i2c-algo-emma2rh.h>
++#include <linux/platform_device.h>
++#include <asm/irq.h>
++#include <asm/io.h>
++#include <asm/atomic.h>
++#include <asm/emma2rh/emma2rh.h>
++
++#define I2C_EMMA2RH "emma2rh-iic"
++static int i2c_debug = 0;
++
++/* ----- global defines -----------------------------------------------	*/
++#define DEB(x)	if (i2c_debug>=1) x
++#define DEB2(x) if (i2c_debug>=2) x
++#define DEB3(x) if (i2c_debug>=3) x
++#define DEBE(x)	x		/* error messages */
++
++struct i2c_drvdata {
++	struct i2c_algo_emma_data alg;
++	struct i2c_adapter adap;
++	spinlock_t lock;
++	atomic_t pending;
++	u32 base;
++	int irq;
++	int clock;
++	int own;
++	wait_queue_head_t wait;
++};
++
++/* ----- local functions ----------------------------------------------	*/
++static void i2c_emma_setbyte(void *data, int ctl, int val)
++{
++	int address = ((struct i2c_drvdata *)data)->base + ctl;
++
++	DEB3(printk
++	     (KERN_DEBUG "i2c_emma_setbyte: Write 0x%08x 0x%08x\n", address,
++	      val));
++	__raw_writel(val, (void *)address);
++}
++
++static int i2c_emma_getbyte(void *data, int ctl)
++{
++	int address = ((struct i2c_drvdata *)data)->base + ctl;
++	int val = __raw_readl((void *)address);
++
++	DEB3(printk
++	     (KERN_DEBUG "i2c_emma_getbyte: Read 0x%08x 0x%08x\n", address,
++	      val));
++	return (val);
++}
++
++static int i2c_emma_getown(void *data)
++{
++	return (((struct i2c_drvdata *)data)->own);
++}
++
++static int i2c_emma_getclock(void *data)
++{
++	return (((struct i2c_drvdata *)data)->clock);
++}
++
++
++
++static int i2c_emma_reg(struct i2c_client *client)
++{
++	return 0;
++}
++
++static int i2c_emma_unreg(struct i2c_client *client)
++{
++	return 0;
++}
++
++
++static irqreturn_t i2c_emma_handler(int this_irq, void *dev_id)
++{
++	struct i2c_drvdata *dd = dev_id;
++
++	DEB2(printk("i2c_emma_handler: status = 0x%08x\n",
++		    __raw_readl((void *)(dd->base + I2C_EMMA_INT))));
++	/* clear interrupt */
++	__raw_writel(0, (void *)(dd->base + I2C_EMMA_INT));
++
++	atomic_set(&dd->pending, 1);
++	wake_up(&dd->wait);
++	return IRQ_HANDLED;
++}
++
++static void i2c_emma_waitforpin(void *data)
++{
++	int timeout = 2;
++	struct i2c_drvdata *dd = data;
++
++	if (dd->irq >=0) {
++		timeout = wait_event_timeout(dd->wait,
++					     atomic_read(&dd->pending),
++					     timeout * HZ);
++		atomic_set(&dd->pending,0);
++	} else
++		udelay(100);
++}
++
++static int __devinit i2c_emma_probe(struct device *dev)
++{
++	struct platform_device *pdev = to_platform_device(dev);
++	struct i2c_drvdata *dd;
++	int err = 0;
++	struct resource *r;
++
++	dd = kzalloc (sizeof *dd, GFP_KERNEL);
++	if (dd == NULL) {
++		err = -ENOMEM;
++		goto out;
++	}
++	dd->alg.data = dd;
++	dd->alg.setemma = i2c_emma_setbyte;
++	dd->alg.getemma = i2c_emma_getbyte;
++	dd->alg.getown = i2c_emma_getown;
++	dd->alg.getclock = i2c_emma_getclock;
++	dd->alg.waitforpin = i2c_emma_waitforpin;
++	dd->alg.udelay = 80;
++	dd->alg.mdelay = 80;
++	dd->alg.timeout = 200;
++
++	strcpy(dd->adap.name, dev->bus_id);
++	dd->adap.id = 0x00;
++	dd->adap.algo = NULL;
++	dd->adap.algo_data = &dd->alg;
++	dd->adap.client_register = i2c_emma_reg;
++	dd->adap.client_unregister = i2c_emma_unreg;
++
++	spin_lock_init(&dd->lock);
++
++	atomic_set(&dd->pending,0);
++	init_waitqueue_head(&dd->wait);
++
++	dev_set_drvdata(dev, dd);
++
++	r = platform_get_resource(pdev, 0, 0);
++	/* get resource of type '0' with #0 */
++
++	if (!r) {
++		printk("Cannot get resource\n");
++		err = -ENODEV;
++		goto out_free;
++	}
++	dd->base = r->start;
++
++	dd->irq = platform_get_irq(pdev,0);
++	dd->clock = FAST397;
++	dd->own = 0x40 + pdev->id * 4;
++
++	err = request_irq(dd->irq, i2c_emma_handler, 0, dev->bus_id, dd);
++	if (err < 0)
++		goto out_free;
++
++	if ((err = i2c_emma_add_bus(&dd->adap)) < 0)
++		goto out_irq;
++
++	return 0;
++out_irq:
++	free_irq(dd->irq, dev->bus_id);
++out_free:
++	kfree(dd);
++out:
++	return err;
++}
++
++static int __devexit i2c_emma_remove (struct device *dev)
++{
++	struct i2c_drvdata* dd = dev_get_drvdata(dev);
++
++	if (dd) {
++		disable_irq(dd->irq);
++		free_irq(dd->irq, dev->bus_id);
++		i2c_emma_del_bus(&dd->adap);
++		kfree(dd);
++	}
++	return 0;
++}
++
++static struct device_driver i2c_emma_driver = {
++	.bus = &platform_bus_type,
++	.name = I2C_EMMA2RH,
++	.probe = i2c_emma_probe,
++	.remove = i2c_emma_remove,
++};
++
++static int __init i2c_emma_init(void)
++{
++	return driver_register(&i2c_emma_driver);
++}
++
++static void __exit i2c_emma_exit(void)
++{
++	driver_unregister(&i2c_emma_driver);
++}
++
++MODULE_AUTHOR("NEC Electronics Corporation <www.necel.com>");
++MODULE_DESCRIPTION("I2C-Bus adapter routines for EMMA2RH I2C bus adapter");
++MODULE_LICENSE("GPL");
++
++module_param(i2c_debug, int, S_IRUGO | S_IWUSR);
++module_init(i2c_emma_init);
++module_exit(i2c_emma_exit);

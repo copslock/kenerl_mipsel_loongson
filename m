@@ -1,37 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2007 15:07:03 +0000 (GMT)
-Received: from srv5.dvmed.net ([207.36.208.214]:14020 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20022320AbXCOPGh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Mar 2007 15:06:37 +0000
-Received: from cpe-065-190-194-075.nc.res.rr.com ([65.190.194.75] helo=[10.10.10.10])
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1HRrUF-0001bH-9V; Thu, 15 Mar 2007 15:03:27 +0000
-Message-ID: <45F9603E.8020909@garzik.org>
-Date:	Thu, 15 Mar 2007 11:03:26 -0400
-From:	Jeff Garzik <jeff@garzik.org>
-User-Agent: Thunderbird 1.5.0.10 (X11/20070302)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	netdev@vger.kernel.org, sshtylyov@ru.mvista.com,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH] tc35815: Zap changelog from source code
-References: <20070315.001037.25910308.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070315.001037.25910308.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2007 16:35:01 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:62438 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022414AbXCOQe4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Mar 2007 16:34:56 +0000
+Received: from localhost (p4042-ipad27funabasi.chiba.ocn.ne.jp [220.107.195.42])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 9BA54A42B; Fri, 16 Mar 2007 01:33:34 +0900 (JST)
+Date:	Fri, 16 Mar 2007 01:33:34 +0900 (JST)
+Message-Id: <20070316.013334.128618583.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, kraj@mvista.com, libc-ports@sourceware.org
+Subject: Re: [PATCH] Fix some system calls with long long arguments
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070315.103511.89758184.nemoto@toshiba-tops.co.jp>
+References: <20070315.103511.89758184.nemoto@toshiba-tops.co.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <jeff@garzik.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14485
+X-archive-position: 14486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff@garzik.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+On Thu, 15 Mar 2007 10:35:11 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> > > fadvise64(), readahead(), sync_file_range() have long long argument(s)
+> > > but glibc passes it by hi/lo pair without padding, on both O32 and
+> > > N32.
 
-applied to #upstream
+BTW, I can not find sync_file_range symbol in my libc.so.  There is
+sysdeps/unix/sysv/linux/sync_file_range.c but it seems not built into
+library.
+
+Is this a correct fix?
+
+--- glibc-2.5.org/sysdeps/unix/sysv/linux/Makefile	2006-04-26 04:12:04.000000000 +0900
++++ glibc-2.5/sysdeps/unix/sysv/linux/Makefile	2007-03-16 01:25:28.654940581 +0900
+@@ -13,7 +13,7 @@
+ 
+ ifeq ($(subdir),misc)
+ sysdep_routines += sysctl clone llseek umount umount2 readahead \
+-		   setfsuid setfsgid makedev
++		   setfsuid setfsgid makedev sync_file_range
+ 
+ CFLAGS-gethostid.c = -fexceptions
+ 

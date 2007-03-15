@@ -1,86 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2007 08:05:29 +0000 (GMT)
-Received: from wr-out-0506.google.com ([64.233.184.226]:3187 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021406AbXCOIFZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Mar 2007 08:05:25 +0000
-Received: by wr-out-0506.google.com with SMTP id 25so77313wry
-        for <linux-mips@linux-mips.org>; Thu, 15 Mar 2007 01:04:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2007 08:45:04 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.169]:25290 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021452AbXCOIpA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Mar 2007 08:45:00 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so258093uga
+        for <linux-mips@linux-mips.org>; Thu, 15 Mar 2007 01:43:59 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
-        b=ZkToqLJ+Y2Ym4RFfoicUEpUYw+1Y3DsPW5wmh9Co9d5ONWQV+I/cy6DMROPDnWxO87rwpluslA4HUio8z+8S/R9d/j2f0gLokBqICN4hkkGXz++w3hMTk/Ruqo9UlAoGCCVvW62tYhYWQtSPu+FMQoohjS/1PvVJyp1kaO3sY2o=
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=LyCZ6VTeP+HgameJWRBMww6DIBrafEZTXKa4PnX3GzAHdRUTFhPKFWLx0uirf65K1R2M1Ec71CgwuEwZtir59BbBNc1lfj1YCAtGg416WL7TRW9zuBGsdX3fTgj/q8aPJXZTrAZvP3kofoGzfCpVYBKuOBfF/9XttYsZ2R7AlCk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
-        b=HnYNKzF44/vT774oZ3inWSHo8lUfezrvo1ydNx2qJC8bNJwFM8UZP63gq+ee1nIrmNBow3oLqE5yxnSQIxBa1WeKnJuR0YYOB21P+cZdCXNCR0UflGN2zcY5Uuo6MIS5+v0G8c+VgAbKXEWLs/Vsh6fvIdcu4LFauGtzuOWNM5U=
-Received: by 10.114.204.3 with SMTP id b3mr120557wag.1173945863166;
-        Thu, 15 Mar 2007 01:04:23 -0700 (PDT)
-Received: by 10.114.159.16 with HTTP; Thu, 15 Mar 2007 01:04:23 -0700 (PDT)
-Message-ID: <d459bb380703150104ge21f2a0u71fe634cf3719612@mail.gmail.com>
-Date:	Thu, 15 Mar 2007 09:04:23 +0100
-From:	"Marco Braga" <marco.braga@gmail.com>
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=DG8fs7+swNcZc82EE6nxkpTMLKDEfxuHAesyR4xOaXcvwgGJjWsGTJfIUjrJnULbxR4G7HRi59jy8PC8wp43UfD+Wa2cwSZtUVJPwf+sB9fKTdvglX6YEfJF5ygqfnYdpoRmvReU7/ccl11XWyIjJuNssnPODXFlAoGkobFuDVM=
+Received: by 10.82.188.15 with SMTP id l15mr195140buf.1173948239089;
+        Thu, 15 Mar 2007 01:43:59 -0700 (PDT)
+Received: by 10.82.178.13 with HTTP; Thu, 15 Mar 2007 01:43:59 -0700 (PDT)
+Message-ID: <b115cb5f0703150143y46a1f877m9dbb43345721c355@mail.gmail.com>
+Date:	Thu, 15 Mar 2007 14:13:59 +0530
+From:	"Rajat Jain" <rajat.noida.india@gmail.com>
 To:	linux-mips@linux-mips.org
-Subject: Re: Trouble with sound/mips/au1x00.c AC97 driver
-In-Reply-To: <d459bb380703131612m36c70ecaka83175b3d8a30bc5@mail.gmail.com>
+Subject: How does boot loader pass initrd address / size to kernel?
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_78189_19426648.1173945863058"
-References: <20070307104930.GD25248@dusktilldawn.nl>
-	 <d459bb380703082322r18879381ma4c57149a8b7adfe@mail.gmail.com>
-	 <45F350E9.3020208@cooper-street.com>
-	 <d459bb380703120157wb3dde00p4c232e300e82fd3d@mail.gmail.com>
-	 <d459bb380703120259r53889966xd8af623ff01ef297@mail.gmail.com>
-	 <45F5DC73.9060004@cooper-street.com>
-	 <d459bb380703130143w7c98e1cchdbdae6cb9a7ac7ce@mail.gmail.com>
-	 <45F71FFD.202@cooper-street.com>
-	 <d459bb380703131612m36c70ecaka83175b3d8a30bc5@mail.gmail.com>
-Return-Path: <marco.braga@gmail.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14477
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marco.braga@gmail.com
-Precedence: bulk
-X-list: linux-mips
-
-------=_Part_78189_19426648.1173945863058
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
+Return-Path: <rajat.noida.india@gmail.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 14478
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: rajat.noida.india@gmail.com
+Precedence: bulk
+X-list: linux-mips
 
-As promised, this is my change:
+Hi,
 
-linux/sound/mips/au1x00.c, function "snd_au1000_ac97_new":
+I'm running an ancient Linux kernel 2.4.20 (please don't ask me why
+:-( ) on a MIPS 4KEC. I am experimenting with initrd and my initrd
+fails to mount. My bootloader (U-BOOT) coorectly loads the initrd into
+RAM as I can see.
 
-...
-    /* Initialise Au1000's AC'97 Control Block */
-    au1000->ac97_ioport->cntrl = AC97C_RS | AC97C_CE;
-    udelay(10);
-    au1000->ac97_ioport->cntrl = AC97C_CE;
+I am wondering how does the kernel get to know the address at which
+the initrd is loaded by boot loader? How does the boot loader
+communicate this to the kernel?
 
-    /* Original delay 10us */
-    /* udelay(10); */
+I can see that when emebedding root filesystem into kernel image, the
+symbols __rd_start and __rd_end are defined by the linker script and
+hence the kernel gets to know. However, how does this happen when
+bootloader loads the ramdisk and needs to tell the kernel?
 
-    /* New delay 200ms */
-    mdelay(200);
+Any code references will be appreciated.
 
-    /* Initialise External CODEC -- cold reset */
-    au1000->ac97_ioport->config = AC97C_RESET;
-    udelay(10);
-    au1000->ac97_ioport->config = 0x0;
-    mdelay(5);
-...
+Thanks,
 
-------=_Part_78189_19426648.1173945863058
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-As promised, this is my change:<br><br>linux/sound/mips/au1x00.c, function &quot;snd_au1000_ac97_new&quot;:<br><br>...<br>&nbsp;&nbsp;&nbsp; /* Initialise Au1000&#39;s AC&#39;97 Control Block */<br>&nbsp;&nbsp;&nbsp; au1000-&gt;ac97_ioport-&gt;cntrl = AC97C_RS | AC97C_CE;
-<br>&nbsp;&nbsp;&nbsp; udelay(10);<br>&nbsp;&nbsp;&nbsp; au1000-&gt;ac97_ioport-&gt;cntrl = AC97C_CE;<br><br>&nbsp;&nbsp;&nbsp; /* Original delay 10us */<br>&nbsp;&nbsp;&nbsp; /* udelay(10); */<br><br>&nbsp;&nbsp;&nbsp; /* New delay 200ms */<br>&nbsp;&nbsp;&nbsp; mdelay(200);<br><br>&nbsp;&nbsp;&nbsp; /* Initialise External CODEC -- cold reset */
-<br>&nbsp;&nbsp;&nbsp; au1000-&gt;ac97_ioport-&gt;config = AC97C_RESET;<br>&nbsp;&nbsp;&nbsp; udelay(10);<br>&nbsp;&nbsp;&nbsp; au1000-&gt;ac97_ioport-&gt;config = 0x0;<br>&nbsp;&nbsp;&nbsp; mdelay(5); <br>...<br><br><br>
-
-------=_Part_78189_19426648.1173945863058--
+Rajat

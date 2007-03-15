@@ -1,60 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2007 08:45:04 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.169]:25290 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021452AbXCOIpA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Mar 2007 08:45:00 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so258093uga
-        for <linux-mips@linux-mips.org>; Thu, 15 Mar 2007 01:43:59 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=LyCZ6VTeP+HgameJWRBMww6DIBrafEZTXKa4PnX3GzAHdRUTFhPKFWLx0uirf65K1R2M1Ec71CgwuEwZtir59BbBNc1lfj1YCAtGg416WL7TRW9zuBGsdX3fTgj/q8aPJXZTrAZvP3kofoGzfCpVYBKuOBfF/9XttYsZ2R7AlCk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=DG8fs7+swNcZc82EE6nxkpTMLKDEfxuHAesyR4xOaXcvwgGJjWsGTJfIUjrJnULbxR4G7HRi59jy8PC8wp43UfD+Wa2cwSZtUVJPwf+sB9fKTdvglX6YEfJF5ygqfnYdpoRmvReU7/ccl11XWyIjJuNssnPODXFlAoGkobFuDVM=
-Received: by 10.82.188.15 with SMTP id l15mr195140buf.1173948239089;
-        Thu, 15 Mar 2007 01:43:59 -0700 (PDT)
-Received: by 10.82.178.13 with HTTP; Thu, 15 Mar 2007 01:43:59 -0700 (PDT)
-Message-ID: <b115cb5f0703150143y46a1f877m9dbb43345721c355@mail.gmail.com>
-Date:	Thu, 15 Mar 2007 14:13:59 +0530
-From:	"Rajat Jain" <rajat.noida.india@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2007 12:21:05 +0000 (GMT)
+Received: from buzzloop.caiaq.de ([212.112.241.133]:56332 "EHLO
+	buzzloop.caiaq.de") by ftp.linux-mips.org with ESMTP
+	id S20021899AbXCOMVB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Mar 2007 12:21:01 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by buzzloop.caiaq.de (Postfix) with ESMTP id DD6B17F402B
+	for <linux-mips@linux-mips.org>; Thu, 15 Mar 2007 13:20:25 +0100 (CET)
+Received: from buzzloop.caiaq.de ([127.0.0.1])
+	by localhost (buzzloop [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 08680-03 for <linux-mips@linux-mips.org>;
+	Thu, 15 Mar 2007 13:20:13 +0100 (CET)
+Received: by buzzloop.caiaq.de (Postfix, from userid 1000)
+	id D37857F4025; Thu, 15 Mar 2007 13:20:12 +0100 (CET)
+Date:	Thu, 15 Mar 2007 13:20:12 +0100
+From:	Daniel Mack <daniel@caiaq.de>
 To:	linux-mips@linux-mips.org
-Subject: How does boot loader pass initrd address / size to kernel?
+Subject: [PATCH] IDE/DMA for au1xxx
+Message-ID: <20070315122012.GA8612@ipxXXXXX>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="+HP7ph2BbKc20aGI"
 Content-Disposition: inline
-Return-Path: <rajat.noida.india@gmail.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at caiaq.de
+Return-Path: <daniel@caiaq.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14478
+X-archive-position: 14479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rajat.noida.india@gmail.com
+X-original-sender: daniel@caiaq.de
 Precedence: bulk
 X-list: linux-mips
 
+
+--+HP7ph2BbKc20aGI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
 Hi,
 
-I'm running an ancient Linux kernel 2.4.20 (please don't ask me why
-:-( ) on a MIPS 4KEC. I am experimenting with initrd and my initrd
-fails to mount. My bootloader (U-BOOT) coorectly loads the initrd into
-RAM as I can see.
+this makes the DMA part of Au1xxx's IDE interface compile again.
 
-I am wondering how does the kernel get to know the address at which
-the initrd is loaded by boot loader? How does the boot loader
-communicate this to the kernel?
+Signed-of-by: Daniel Mack <daniel@caiaq.de>
 
-I can see that when emebedding root filesystem into kernel image, the
-symbols __rd_start and __rd_end are defined by the linker script and
-hence the kernel gets to know. However, how does this happen when
-bootloader loads the ramdisk and needs to tell the kernel?
 
-Any code references will be appreciated.
 
-Thanks,
+--+HP7ph2BbKc20aGI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="au1xxx-ide-dma.patch"
 
-Rajat
+diff --git a/drivers/ide/mips/au1xxx-ide.c b/drivers/ide/mips/au1xxx-ide.c
+index b2dc028..806b6d1 100644
+--- a/drivers/ide/mips/au1xxx-ide.c
++++ b/drivers/ide/mips/au1xxx-ide.c
+@@ -443,7 +443,6 @@ static void auide_dma_host_on(ide_drive_t *drive)
+ static int auide_dma_on(ide_drive_t *drive)
+ {
+ 	drive->using_dma = 1;
+-
+ 	return 0;
+ }
+ 
+@@ -638,6 +637,7 @@ static int au_ide_probe(struct device *dev)
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	_auide_hwif *ahwif = &auide_hwif;
+ 	ide_hwif_t *hwif;
++	hw_regs_t *hw;
+ 	struct resource *res;
+ 	int ret = 0;
+ 
+@@ -681,7 +681,7 @@ static int au_ide_probe(struct device *dev)
+ 	/* FIXME:  This might possibly break PCMCIA IDE devices */
+ 
+ 	hwif                            = &ide_hwifs[pdev->id];
+-	hw_regs_t *hw 			= &hwif->hw;
++	hw 				= &hwif->hw;
+ 	hwif->irq = hw->irq             = ahwif->irq;
+ 	hwif->chipset                   = ide_au1xxx;
+ 
+diff --git a/include/asm-mips/mach-au1x00/au1xxx_ide.h b/include/asm-mips/mach-au1x00/au1xxx_ide.h
+index e9fa252..e747814 100644
+--- a/include/asm-mips/mach-au1x00/au1xxx_ide.h
++++ b/include/asm-mips/mach-au1x00/au1xxx_ide.h
+@@ -166,13 +166,13 @@ int __init auide_probe(void);
+         static int auide_dma_setup(ide_drive_t *drive);
+         static int auide_dma_check(ide_drive_t *drive);
+         static int auide_dma_test_irq(ide_drive_t *drive);
+-        static int auide_dma_host_off(ide_drive_t *drive);
+-        static int auide_dma_host_on(ide_drive_t *drive);
++        static void auide_dma_host_off(ide_drive_t *drive);
++        static void auide_dma_host_on(ide_drive_t *drive);
+         static int auide_dma_lostirq(ide_drive_t *drive);
+         static int auide_dma_on(ide_drive_t *drive);
+         static void auide_ddma_tx_callback(int irq, void *param);
+         static void auide_ddma_rx_callback(int irq, void *param);
+-        static int auide_dma_off_quietly(ide_drive_t *drive);
++        static void auide_dma_off_quietly(ide_drive_t *drive);
+ #endif /* end CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA */
+ 
+ /*******************************************************************************
+
+--+HP7ph2BbKc20aGI--

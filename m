@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2007 21:35:39 +0000 (GMT)
-Received: from father.pmc-sierra.com ([216.241.224.13]:3290 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20022610AbXCPVfd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Mar 2007 21:35:33 +0000
-Received: (qmail 28107 invoked by uid 101); 16 Mar 2007 21:34:16 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2007 21:37:29 +0000 (GMT)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:56979 "HELO
+	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S20022627AbXCPVhW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 16 Mar 2007 21:37:22 +0000
+Received: (qmail 25966 invoked by uid 101); 16 Mar 2007 21:36:05 -0000
 Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 16 Mar 2007 21:34:16 -0000
+  by mother.pmc-sierra.com with SMTP; 16 Mar 2007 21:36:05 -0000
 Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2GLYFH3029771;
-	Fri, 16 Mar 2007 13:34:15 -0800
+	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2GLa42l030090;
+	Fri, 16 Mar 2007 13:36:04 -0800
 From:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2GLYFjB000511;
-	Fri, 16 Mar 2007 15:34:15 -0600
-Date:	Fri, 16 Mar 2007 15:34:15 -0600
-Message-Id: <200703162134.l2GLYFjB000511@pasqua.pmc-sierra.bc.ca>
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2GLa4fg000857;
+	Fri, 16 Mar 2007 15:36:04 -0600
+Date:	Fri, 16 Mar 2007 15:36:04 -0600
+Message-Id: <200703162136.l2GLa4fg000857@pasqua.pmc-sierra.bc.ca>
 To:	akpm@linux-foundation.org
-Subject: [PATCH 3/12] mips: PMC MSP71xx PCI support
+Subject: [PATCH 4/12] mips: PMC MSP71xx default configuration
 Cc:	linux-mips@linux-mips.org
 Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14504
+X-archive-position: 14505
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,9 +30,10 @@ X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH 3/12] mips: PMC MSP71xx PCI support
+[PATCH 4/12] mips: PMC MSP71xx default configuration
 
-Patch to add PCI support for the PMC-Sierra MSP71xx devices.
+Patch to add default configuration for the PMC-Sierra
+MSP71xx devices.
 
 Reposting patches as a single set at the request of akpm.
 Only 9 of 12 will be posted at this time, 3 more to follow
@@ -47,1534 +48,1516 @@ Marc
 Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
 Re-posting patch with recommended changes:
--Fixed a few style issues.
+-Removed CONFIG_PMC_MSP_UNCACHED.
+-Added CONFIG_BOOT_RAW and CONFIG_NO_EXCEPT_FILL.
+-Turned on:
+	CONFIG_PMCMSP_GPIO
+	CONFIG_I2C_ALGO_PMCTWI
+	CONFIG_I2C_PMCMSP
+	CONFIG_SENSORS_PMCTWILED
 
- arch/mips/pci/Makefile                        |    3 
- arch/mips/pci/fixup-pmcmsp.c                  |  219 +++++
- arch/mips/pci/ops-pmcmsp.c                    | 1007 ++++++++++++++++++++++++++
- arch/mips/pmc-sierra/msp71xx/msp_pci.c        |   50 +
- include/asm-mips/pmc-sierra/msp71xx/msp_pci.h |  208 +++++
- 5 files changed, 1487 insertions(+)
+ msp71xx_defconfig | 1496 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 1496 insertions(+)
 
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index bf85995..5a7ab08 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -36,6 +36,9 @@ obj-$(CONFIG_MOMENCO_OCELOT)	+= fixup-ocelot.o pci-ocelot.o
- obj-$(CONFIG_MOMENCO_OCELOT_3)	+= fixup-ocelot3.o
- obj-$(CONFIG_MOMENCO_OCELOT_C)	+= fixup-ocelot-c.o pci-ocelot-c.o
- obj-$(CONFIG_MOMENCO_OCELOT_G)	+= fixup-ocelot-g.o pci-ocelot-g.o
-+obj-$(CONFIG_PMC_MSP7120_GW) 	+= fixup-pmcmsp.o ops-pmcmsp.o
-+obj-$(CONFIG_PMC_MSP7120_EVAL)	+= fixup-pmcmsp.o ops-pmcmsp.o
-+obj-$(CONFIG_PMC_MSP7120_FPGA)	+= fixup-pmcmsp.o ops-pmcmsp.o
- obj-$(CONFIG_PMC_YOSEMITE)	+= fixup-yosemite.o ops-titan.o ops-titan-ht.o \
- 				   pci-yosemite.o
- obj-$(CONFIG_SGI_IP27)		+= ops-bridge.o pci-ip27.o
-diff --git a/arch/mips/pci/fixup-pmcmsp.c b/arch/mips/pci/fixup-pmcmsp.c
+diff --git a/arch/mips/configs/msp71xx_defconfig b/arch/mips/configs/msp71xx_defconfig
 new file mode 100644
-index 0000000..7f97e68
+index 0000000..99afbe9
 --- /dev/null
-+++ b/arch/mips/pci/fixup-pmcmsp.c
-@@ -0,0 +1,219 @@
-+/* $Id$ */
-+/*
-+ * BRIEF MODULE DESCRIPTION
-+ *	Board specific pci fixups.
-+ *
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc.
-+ *         	ppopov@mvista.com or source@mvista.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ */
-+
-+#ifdef CONFIG_PCI
-+
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+
-+#include <asm-mips/pmc-sierra/msp71xx/msp_pci.h>
-+#include <asm-mips/pmc-sierra/msp71xx/msp_cic_int.h>
-+#include <asm/byteorder.h>
-+
-+/* PCI interrupt pins */
-+#define IRQ4	(MSP_INT_EXT4)
-+#define IRQ5	(MSP_INT_EXT5)
-+#define IRQ6	(MSP_INT_EXT6)
-+
-+#if defined(CONFIG_PMC_MSP7120_GW)
-+
-+/* Garibaldi Board IRQ wiring to PCI slots */
-+static char irq_tab[][5] __initdata = {
-+	/* INTA    INTB    INTC    INTD */
-+	{0,     0,      0,      0,      0 },    /*    (AD[0]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[1]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[2]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[3]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[4]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[5]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[6]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[7]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[8]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[9]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  0 (AD[10]): Unused */ 
-+	{0,     0,      0,      0,      0 },    /*  1 (AD[11]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  2 (AD[12]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  3 (AD[13]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  4 (AD[14]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  5 (AD[15]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  6 (AD[16]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  7 (AD[17]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  8 (AD[18]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  9 (AD[19]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 10 (AD[20]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 11 (AD[21]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 12 (AD[22]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 13 (AD[23]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 14 (AD[24]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 15 (AD[25]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 16 (AD[26]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 17 (AD[27]): Unused */
-+	{0,     IRQ4,   IRQ4,   0,      0 },    /* 18 (AD[28]): slot 0 */
-+	{0,     0,      0,      0,      0 },    /* 19 (AD[29]): Unused */
-+	{0,     IRQ5,   IRQ5,   0,      0 },    /* 20 (AD[30]): slot 1 */
-+	{0,     IRQ6,   IRQ6,   0,      0 }     /* 21 (AD[31]): slot 2 */
-+};
-+
-+#elif defined(CONFIG_PMC_MSP7120_EVAL)
-+
-+/* MSP7120 Eval Board IRQ wiring to PCI slots */
-+static char irq_tab[][5] __initdata = {
-+	/* INTA    INTB    INTC    INTD */
-+	{0,     0,      0,      0,      0 },    /*    (AD[0]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[1]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[2]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[3]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[4]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[5]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[6]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[7]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[8]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[9]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  0 (AD[10]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  1 (AD[11]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  2 (AD[12]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  3 (AD[13]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  4 (AD[14]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  5 (AD[15]): Unused */
-+	{0,     IRQ6,   IRQ6,   0,      0 },    /*  6 (AD[16]): slot 3 (mini-PCI) */
-+	{0,     IRQ5,   IRQ5,   0,      0 },    /*  7 (AD[17]): slot 2 (mini-PCI) */
-+	{0,     IRQ4,   IRQ4,   IRQ4,   IRQ4},  /*  8 (AD[18]): slot 0 (PCI)      */
-+	{0,     IRQ5,   IRQ5,   IRQ5,   IRQ5},  /*  9 (AD[19]): slot 1 (PCI)      */
-+	{0,     0,      0,      0,      0 },    /* 10 (AD[20]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 11 (AD[21]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 12 (AD[22]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 13 (AD[23]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 14 (AD[24]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 15 (AD[25]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 16 (AD[26]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 17 (AD[27]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 18 (AD[28]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 19 (AD[29]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 20 (AD[30]): Unused */
-+	{0,     0,      0,      0,      0 }     /* 21 (AD[31]): Unused */
-+};
-+
-+#else
-+
-+/* Unknown board -- don't assign any IRQs */
-+static char irq_tab[][5] __initdata = {
-+	/* INTA    INTB    INTC    INTD */
-+	{0,     0,      0,      0,      0 },    /*    (AD[0]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[1]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[2]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[3]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[4]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[5]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[6]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[7]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[8]): Unused */
-+	{0,     0,      0,      0,      0 },    /*    (AD[9]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  0 (AD[10]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  1 (AD[11]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  2 (AD[12]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  3 (AD[13]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  4 (AD[14]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  5 (AD[15]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  6 (AD[16]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  7 (AD[17]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  8 (AD[18]): Unused */
-+	{0,     0,      0,      0,      0 },    /*  9 (AD[19]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 10 (AD[20]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 11 (AD[21]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 12 (AD[22]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 13 (AD[23]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 14 (AD[24]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 15 (AD[25]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 16 (AD[26]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 17 (AD[27]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 18 (AD[28]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 19 (AD[29]): Unused */
-+	{0,     0,      0,      0,      0 },    /* 20 (AD[30]): Unused */
-+	{0,     0,      0,      0,      0 }     /* 21 (AD[31]): Unused */
-+};
-+#endif
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: pcibios_plat_dev_init
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Perform platform specific device initialization at
-+**               pci_enable_device() time.
-+**               None are needed for the MSP7120 PCI Controller.
-+**
-+**  INPUTS:      dev     - structure describing the PCI device
-+**
-+**  OUTPUTS:     none
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL
-+**
-+*****************************************************************************/
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: pcibios_map_irq
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Perform board supplied PCI IRQ mapping routine.
-+**
-+**  INPUTS:      dev     - unused
-+**               slot    - PCI slot. Identified by which bit of the AD[] bus
-+**                         drives the IDSEL line. AD[10] is 0, AD[31] is
-+**                         slot 21.
-+**               pin     - numbered using the scheme of the PCI_INTERRUPT_PIN
-+**                         field of the config header.
-+**
-+**  OUTPUTS:     none
-+**
-+**  RETURNS:     IRQ number 
-+**
-+*****************************************************************************/
-+int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+#if !defined(CONFIG_PMC_MSP7120_GW) && !defined(CONFIG_PMC_MSP7120_EVAL)
-+	printk(KERN_WARNING "PCI: unknown board, no PCI IRQs assigned.\n");
-+#endif
-+	printk(KERN_WARNING "PCI: irq_tab returned %d for slot=%d pin=%d\n", irq_tab[slot][pin], slot, pin);
-+
-+	return irq_tab[slot][pin];
-+}
-+
-+
-+#endif	/* CONFIG_PCI */
-+
-diff --git a/arch/mips/pci/ops-pmcmsp.c b/arch/mips/pci/ops-pmcmsp.c
-new file mode 100644
-index 0000000..6734db4
---- /dev/null
-+++ b/arch/mips/pci/ops-pmcmsp.c
-@@ -0,0 +1,1007 @@
-+/* $Id$ */
-+/*
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-+ *
-+ * arch/mips/pci/ops-pmcmsp.c
-+ *     Define the pci_ops for PMC MSP PCI.
-+ *
-+ * Much of the code is derived from the original DDB5074 port by 
-+ * Geert Uytterhoeven <geert@sonycom.com>
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ *
-+ */
-+
-+#define PCI_COUNTERS 1
-+
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/interrupt.h>
-+
-+#if defined(CONFIG_PROC_FS) && defined(PCI_COUNTERS)
-+#include <linux/proc_fs.h>
-+#include <linux/seq_file.h>
-+#endif /* CONFIG_PROC_FS && PCI_COUNTERS */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+
-+#include <asm-mips/pmc-sierra/msp71xx/msp_prom.h>
-+#include <asm-mips/pmc-sierra/msp71xx/msp_cic_int.h>
-+#include <asm-mips/pmc-sierra/msp71xx/msp_pci.h>
-+#include <asm-mips/pmc-sierra/msp71xx/msp_regs.h>
-+#include <asm/byteorder.h>
-+
-+#if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
-+#include <asm-mips/mipsmtregs.h>
-+#endif
-+
-+
-+#define PCI_ACCESS_READ		0
-+#define PCI_ACCESS_WRITE	1
-+
-+
-+#if defined(CONFIG_PROC_FS) && defined(PCI_COUNTERS)
-+static char proc_init;
-+extern struct proc_dir_entry *proc_bus_pci_dir;
-+unsigned int pci_int_count[32];
-+
-+static void pci_proc_init(void);
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: read_msp_pci_counts
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Prints the count of how many times each PCI
-+**               interrupt has asserted. Can be invoked by the
-+**               /proc filesystem.
-+**
-+**  INPUTS:      page    - part of STDOUT calculation
-+**               off     - part of STDOUT calculation
-+**               count   - part of STDOUT calculation
-+**               data    - unused
-+**
-+**  OUTPUTS:     start   - new start location
-+**               eof     - end of file pointer
-+**
-+**  RETURNS:     len     - STDOUT length
-+**
-+*****************************************************************************/
-+static int read_msp_pci_counts(char *page, char **start, off_t off,
-+								int count, int *eof, void *data)
-+{
-+	int i;
-+	int len = 0;
-+	unsigned int intcount, total = 0;
-+
-+	for (i = 0; i < 32; ++i) {
-+		intcount = pci_int_count[i];
-+		if (intcount != 0) {
-+			len += sprintf(page + len, "[%d] = %u\n", i, intcount);
-+			total += intcount;
-+		}
-+	}
-+	
-+	len += sprintf(page + len, "total = %u\n", total);
-+	if (len <= off+count)
-+		*eof = 1;
-+		
-+	*start = page + off;
-+	len -= off;
-+	if (len > count)
-+		len = count;
-+	if (len < 0)
-+		len = 0;
-+		
-+	return len;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: gen_pci_cfg_wr
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Generates a configuration write cycle for debug purposes.
-+**               The IDSEL line asserted and location and data written are
-+**               immaterial. Just want to be able to prove that a 
-+**               configuration write can be correctly generated on the 
-+**               PCI bus.  Intent is that this function by invocable from
-+**               the /proc filesystem.
-+**
-+**  INPUTS:      page    - part of STDOUT calculation
-+**               off     - part of STDOUT calculation
-+**               count   - part of STDOUT calculation
-+**               data    - unused
-+**
-+**  OUTPUTS:     start   - new start location
-+**               eof     - end of file pointer
-+**
-+**  RETURNS:     len     - STDOUT length
-+**
-+*****************************************************************************/
-+static int gen_pci_cfg_wr(char *page, char **start, off_t off,
-+							int count, int *eof, void *data)
-+{
-+	unsigned char where	= 0;	/* Write to static Device/Vendor ID */
-+	unsigned char bus_num = 0;	/* Bus 0 */
-+	unsigned char dev_fn = 0xF; /* Arbitrary device number */
-+	u32			wr_data = 0xFF00AA00; /* Arbitrary data */
-+	mspPciRegs	*preg	= (void *)PCI_BASE_REG;
-+	int			len	 = 0;
-+	unsigned long value;
-+	volatile unsigned long *pcispace = (void *)PCI_CONFIG_SPACE_REG;
-+	int			intr;
-+	
-+	len += sprintf(page + len, "PMC MSP PCI: Beginning\n");
-+
-+	if (proc_init == 0) {
-+		pci_proc_init();
-+		proc_init = ~0;
-+	}
-+ 
-+	len += sprintf(page + len, "PMC MSP PCI: Before Cfg Wr\n");
-+ 
-+	/*
-+	 * Generate PCI Configuration Write Cycle 
-+	 */
-+	
-+	/* Clear cause register bits */
-+	preg->if_status = ~(BPCI_IFSTATUS_BC0F | BPCI_IFSTATUS_BC1F);
-+ 
-+	/* Setup address that is to appear on PCI bus */
-+	preg->config_addr = BPCI_CFGADDR_ENABLE |
-+		(bus_num << BPCI_CFGADDR_BUSNUM_SHF) |
-+		(dev_fn << BPCI_CFGADDR_FUNCTNUM_SHF) |
-+		(where & 0xFC);
-+
-+	value = cpu_to_le32(wr_data);
-+
-+	/* Launch the PCI configuration write cycle */
-+	*pcispace = value;
-+
-+
-+	/* 
-+	 * Check if the PCI configuration cycle (rd or wr) succeeded, by
-+	 * checking the status bits for errors like master or target abort.
-+	 */
-+	intr = preg->if_status;
-+
-+	len += sprintf(page + len, "PMC MSP PCI: After Cfg Wr\n");
-+
-+	/* Handle STDOUT calculations */
-+	if (len <= off+count)
-+		*eof = 1;
-+	*start = page + off;
-+	len -= off;
-+	if (len > count)
-+		len = count;
-+	if (len < 0)
-+		len = 0;
-+	
-+	return len;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: pci_proc_init
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Create entries in the /proc filesystem for debug access.
-+**
-+**  INPUTS:      none
-+**
-+**  OUTPUTS:     none
-+**
-+**  RETURNS:     none
-+**
-+*****************************************************************************/
-+static void pci_proc_init(void)
-+{
-+	create_proc_read_entry("pmc_msp_pci_rd_cnt", 0, NULL,
-+							read_msp_pci_counts, NULL);
-+	create_proc_read_entry("pmc_msp_pci_cfg_wr", 0, NULL,
-+							gen_pci_cfg_wr, NULL);
-+}
-+#endif /* CONFIG_PROC_FS && PCI_COUNTERS */
-+
-+
-+spinlock_t bpci_lock = SPIN_LOCK_UNLOCKED;
-+
-+
-+/*****************************************************************************
-+**
-+**  STRUCT: pci_io_resource
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Defines the address range that pciauto() will use to
-+**               assign to the I/O BARs of PCI devices.
-+**
-+**               Use the start and end addresses of the MSP7120 PCI Host
-+**               Controller I/O space, in the form that they appear on the
-+**               PCI bus AFTER MSP7120 has performed address translation.
-+**
-+**               For I/O accesses, MSP7120 ignores OATRAN and maps I/O
-+**               accesses into the bottom 0xFFF region of address space,
-+**               so that is the range to put into the pci_io_resource
-+**               struct.
-+**
-+**               In MSP4200, the start address was 0x04 instead of the expected
-+**               0x00. Will just assume there was a good reason for this!
-+**
-+**  NOTES:       Linux, by default, will assign I/O space to the lowest
-+**               region of address space. Since MSP7120 and Linux,
-+**               by default, have no offset in between how they map, the
-+**               io_offset element of pci_controller struct should be set
-+**               to zero.
-+**  ELEMENTS:
-+**    name       - String used for a meaningful name.
-+**
-+**    start      - Start address of MSP7120's I/O space, as MSP7120 presents
-+**                 the address on the PCI bus.
-+**
-+**    end        - End address of MSP7120's I/O space, as MSP7120 presents
-+**                 the address on the PCI bus.
-+**
-+**    flags      - Attributes indicating the type of resource. In this case,
-+**                 indicate I/O space.
-+**
-+*****************************************************************************/
-+static struct resource pci_io_resource = {
-+	.name	= "pci IO space", 
-+	.start	= 0x04,
-+	.end	= 0x0FFF,
-+	.flags	= IORESOURCE_IO	/* I/O space */
-+};
-+
-+
-+/*****************************************************************************
-+**
-+**  STRUCT: pci_mem_resource
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Defines the address range that pciauto() will use to
-+**               assign to the memory BARs of PCI devices.
-+**
-+**               The .start and .end values are dependent upon how address
-+**               translation is performed by the OATRAN regiser.
-+**
-+**               The values to use for .start and .end are the values
-+**               in the form they appear on the PCI bus AFTER MSP7120 has
-+**               performed OATRAN address translation.
-+**
-+**  ELEMENTS:
-+**    name       - String used for a meaningful name.
-+**
-+**    start      - Start address of MSP7120's memory space, as MSP7120 presents
-+**                 the address on the PCI bus.
-+**
-+**    end        - End address of MSP7120's memory space, as MSP7120 presents
-+**                 the address on the PCI bus.
-+**
-+**    flags      - Attributes indicating the type of resource. In this case,
-+**                 indicate memory space.
-+**
-+*****************************************************************************/
-+static struct resource pci_mem_resource = {
-+	.name	= "pci memory space", 
-+	.start	= MSP_PCI_SPACE_BASE,
-+	.end	= MSP_PCI_SPACE_END,
-+	.flags	= IORESOURCE_MEM	 /* memory space */
-+};
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: bpci_interrupt
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: PCI status interrupt handler. Updates the count of how
-+**               many times each status bit has been set, then clears
-+**               the status bits. If the appropriate macros are defined,
-+**               these counts can be viewed via the /proc filesystem.
-+**
-+**  INPUTS:      irq     - unused
-+**               dev_id  - unused
-+**               pt_regs - unused 
-+**
-+**  OUTPUTS:     none
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL  - success
-+**
-+*****************************************************************************/
-+static int bpci_interrupt(int irq, void *dev_id)
-+{
-+	mspPciRegs *preg = (void *)PCI_BASE_REG;
-+	unsigned int stat = preg->if_status;
-+
-+#if defined(CONFIG_PROC_FS) && defined(PCI_COUNTERS)
-+	int i;
-+	for (i = 0; i < 32; ++i) {
-+		if ((1 << i) & stat)
-+			++pci_int_count[i];
-+	}
-+#endif /* PROC_FS && PCI_COUNTERS */
-+
-+	/* printk("PCI ISR: Status=%08X\n", stat); */
-+
-+	/* write to clear all asserted interrupts */
-+	preg->if_status = stat;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_config_access
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Performs a PCI configuration access (rd or wr), then
-+**               checks that the access succeeded by querying MSP7120's
-+**               PCI status bits.
-+**
-+**  INPUTS:
-+**               access_type  - kind of PCI configuration cycle to perform
-+**                              (read or write). Legal values are 
-+**                              PCI_ACCESS_WRITE and PCI_ACCESS_READ.
-+**
-+**               bus          - pointer to the bus number of the device to
-+**                              be targetted for the configuration cycle.
-+**                              The only element of the pci_bus structure
-+**                              used is bus->number. This argument determines
-+**                              if the configuration access will be Type 0 or
-+**                              Type 1. Since MSP7120 assumes itself to be the
-+**                              PCI Host, any non-zero bus->number generates
-+**                              a Type 1 access.
-+**
-+**               devfn        - this is an 8-bit field. The lower three bits
-+**                              specify the function number of the device to 
-+**                              be targetted for the configuration cycle, with
-+**                              all three-bit combinations being legal. The
-+**                              upper five bits specify the device number,
-+**                              with legal values being 10 to 31.
-+**
-+**               where        - address within the Configuration Header 
-+**                              space to access.
-+**
-+**               data         - for write accesses, contains the data to
-+**                              write. 
-+**
-+**  OUTPUTS:     
-+**               data         - for read accesses, contains the value read.
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL  - success
-+**               -1                  - access failure
-+**
-+*****************************************************************************/
-+int msp_pcibios_config_access(unsigned char	access_type,
-+								struct pci_bus *bus,
-+								unsigned int	devfn,
-+								unsigned char	where,
-+								u32			 	*data)
-+{
-+	volatile unsigned long *pcispace = (void *)PCI_CONFIG_SPACE_REG;
-+	mspPciRegs *preg				= (void *)PCI_BASE_REG;
-+	unsigned char bus_num			= bus->number;
-+	unsigned char dev_fn			= (unsigned char)devfn;
-+	unsigned long flags;
-+	unsigned long intr;
-+	unsigned long value;
-+	static char pciirqflag;
-+#if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
-+	unsigned int	vpe_status;
-+#endif
-+
-+#if defined(CONFIG_PROC_FS) && defined(PCI_COUNTERS)
-+	if (proc_init == 0) {
-+		pci_proc_init();
-+		proc_init = ~0;
-+	}
-+#endif /* CONFIG_PROC_FS && PCI_COUNTERS */
-+
-+	/*
-+	 * Just the first time this function invokes, allocate
-+	 * an interrupt line for PCI host status interrupts. The
-+	 * allocation assigns an interrupt handler to the interrupt.
-+	 */
-+	if (pciirqflag == 0) {
-+		request_irq(MSP_INT_PCI,		/* Hardcoded internal MSP7120 wiring */
-+					bpci_interrupt,	/* Function to call when the IRQ occurs */
-+					SA_SHIRQ | SA_INTERRUPT, /* Bit mask interrupt type flags */
-+					"PMC MSP PCI Host", /* An ascii name for the claiming device */
-+					preg);				/* PCI Device ID from Config Header reg */
-+		pciirqflag = ~0;
-+	}
-+
-+#if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
-+	local_irq_save(flags);
-+	vpe_status = dvpe(); 
-+#else
-+	spin_lock_irqsave(&bpci_lock, flags);
-+#endif
-+
-+	/*
-+	 * Clear PCI cause register bits.
-+	 *
-+	 * In Polo, the PCI Host had a dedicated DMA called the 
-+	 * Block Copy (not to be confused with the general purpose Block
-+	 * Copy Engine block). There appear to have been special interrupts
-+	 * for this Block Copy, called Block Copy 0 Fault (BC0F) and Block Copy 1
-+	 * Fault (BC1F). MSP4200 and MSP7120 don't have this dedicated Block Copy
-+	 * block, so these two interrupts are now marked reserved. In case the 
-+	 * Block Copy is resurrected in a future design, maintain the code that
-+	 * treats these two interrupts specially.
-+	 *
-+	 * Write to clear all interrupts in the PCI status register, aside from
-+	 * BC0F and BC1F.
-+	 */
-+	preg->if_status = ~(BPCI_IFSTATUS_BC0F | BPCI_IFSTATUS_BC1F);
-+
-+	/* Setup address that is to appear on PCI bus */
-+	preg->config_addr = BPCI_CFGADDR_ENABLE	|
-+		(bus_num << BPCI_CFGADDR_BUSNUM_SHF) |
-+		(dev_fn << BPCI_CFGADDR_FUNCTNUM_SHF) |
-+		(where & 0xFC);
-+
-+	/* IF access is a PCI configuration write */
-+	if (access_type == PCI_ACCESS_WRITE) {
-+		value = cpu_to_le32(*data);
-+		*pcispace = value;
-+	} else {
-+		/* ELSE access is a PCI configuration read */
-+		value = le32_to_cpu(*pcispace);
-+		*data = value;
-+	}
-+
-+	/* 
-+	 * Check if the PCI configuration cycle (rd or wr) succeeded, by
-+	 * checking the status bits for errors like master or target abort.
-+	 */
-+	intr = preg->if_status;
-+
-+	/* Clear config access */
-+	preg->config_addr = 0;
-+
-+	/* IF error occurred */
-+	if (intr & ~(BPCI_IFSTATUS_BC0F | BPCI_IFSTATUS_BC1F)) {
-+		/* Clear status bits */
-+		preg->if_status = ~(BPCI_IFSTATUS_BC0F | BPCI_IFSTATUS_BC1F);
-+
-+#if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
-+		evpe(vpe_status);
-+		local_irq_restore(flags);
-+#else
-+		spin_unlock_irqrestore(&bpci_lock, flags);
-+#endif
-+
-+		return -1;
-+	}
-+
-+#if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
-+	evpe(vpe_status);
-+	local_irq_restore(flags);
-+#else
-+	spin_unlock_irqrestore(&bpci_lock, flags);
-+#endif
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_read_config_byte
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Read a byte from PCI configuration address spac	*               Since the hardware can't address 8 bit chunks
-+**               directly, read a 32-bit chunk, then mask off extraneous
-+**               bits. 
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus
-+**                        that the read is destined for.
-+**               devfn  - device/function combination that the read is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**
-+**  OUTPUTS      val    - read data
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL  - success
-+**               -1                  - read access failure
-+**
-+*****************************************************************************/
-+static int
-+msp_pcibios_read_config_byte(struct pci_bus *bus,
-+							 unsigned int	devfn,
-+							 int			 where,
-+							 u32			 *val)
-+{
-+	u32 data = 0;
-+
-+	/* 
-+	 * If the config access did not complete normally (e.g., underwent master
-+	 * abort) do the PCI compliant thing, which is to supply an all ones value.
-+	 */
-+	if (msp_pcibios_config_access(PCI_ACCESS_READ, bus, devfn, where, &data)) {
-+		*val = 0xFFFFFFFF;
-+		return -1;
-+	}
-+
-+	*val = (data >> ((where & 3) << 3)) & 0x0ff;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_read_config_word
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Read a word (16 bits) from PCI configuration address space.	
-+**               Since the hardware can't address 16 bit chunks
-+**               directly, read a 32-bit chunk, then mask off extraneous
-+**               bits.
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus
-+**                        that the read is destined for.
-+**               devfn  - device/function combination that the read is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**
-+**  OUTPUTS      val    - read data
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL           - success
-+**               PCIBIOS_BAD_REGISTER_NUMBER  - bad register address
-+**               -1                           - read access failure
-+**
-+*****************************************************************************/
-+static int 
-+msp_pcibios_read_config_word(struct pci_bus *bus,
-+							 unsigned int	devfn,
-+							 int			 where,
-+							 u32			 *val)
-+{
-+	u32 data = 0;
-+
-+	/* if (where & 1) */	/* Michael Penner, Nov 24, 2005 commented out
-+							 * non-compliant code. Should allow word access
-+							 * to configuration registers, with only exception
-+							 * being when the word access would wrap around
-+							 * into the next dword.
-+							 */
-+	if ((where & 3) == 3) {
-+		*val = 0xFFFFFFFF;
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	}
-+
-+	/* 
-+	 * If the config access did not complete normally (e.g., underwent master
-+	 * abort) do the PCI compliant thing, which is to supply an all ones value.
-+	 */
-+	if (msp_pcibios_config_access(PCI_ACCESS_READ, bus, devfn, where, &data)) {
-+		*val = 0xFFFFFFFF;
-+		return -1;
-+	}
-+
-+	*val = (data >> ((where & 3) << 3)) & 0x0ffff;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_read_config_dword
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Read a double word (32 bits) from PCI configuration
-+**               address space.
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus
-+**                        that the read is destined for.
-+**               devfn  - device/function combination that the read is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**
-+**  OUTPUTS      val    - read data
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL           - success
-+**               PCIBIOS_BAD_REGISTER_NUMBER  - bad register address
-+**               -1                           - read access failure
-+**
-+*****************************************************************************/
-+static int
-+msp_pcibios_read_config_dword(struct pci_bus *bus,
-+								unsigned int	devfn,
-+								int			 where,
-+								u32			 *val)
-+{
-+	u32 data = 0;
-+
-+	/* 
-+	 * Address must be dword aligned.
-+	 */
-+	if (where & 3) {
-+		*val = 0xFFFFFFFF;
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	}
-+
-+	/* 
-+	 * If the config access did not complete normally (e.g., underwent master
-+	 * abort) do the PCI compliant thing, which is to supply an all ones value.
-+	 */
-+	if (msp_pcibios_config_access(PCI_ACCESS_READ, bus, devfn, where, &data)) {
-+		*val = 0xFFFFFFFF;
-+		return -1;
-+	}
-+
-+	*val = data;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_write_config_byte
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Write a byte to PCI configuration address space.
-+**               Since the hardware can't address 8 bit chunks
-+**               directly, a read-modify-write is performed.
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus
-+**                        that the write is destined for.
-+**               devfn  - device/function combination that the write is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**               val    - value to write
-+**
-+**  OUTPUTS      none
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL  - success
-+**               -1                  - write access failure
-+**
-+*****************************************************************************/
-+static int
-+msp_pcibios_write_config_byte(struct pci_bus *bus,
-+								unsigned int devfn,
-+								int			 where, 
-+								u8			 val)
-+{
-+	u32 data = 0;
-+	
-+	/* read config space */
-+	if (msp_pcibios_config_access(PCI_ACCESS_READ, bus, devfn, where, &data))
-+		return -1;
-+
-+	/* modify the byte within the dword */
-+	data = (data & ~(0xff << ((where & 3) << 3))) |
-+			(val << ((where & 3) << 3));
-+
-+	/* write back the full dword */
-+	if (msp_pcibios_config_access(PCI_ACCESS_WRITE, bus, devfn, where, &data))
-+		return -1;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_write_config_word
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Write a word (16-bits) to PCI configuration address space.
-+**               Since the hardware can't address 16 bit chunks
-+**               directly, a read-modify-write is performed.
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus
-+**                        that the write is destined for.
-+**               devfn  - device/function combination that the write is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**               val    - value to write
-+**
-+**  OUTPUTS      none
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL           - success
-+**               PCIBIOS_BAD_REGISTER_NUMBER  - bad register address
-+**               -1                           - write access failure
-+**
-+*****************************************************************************/
-+static int
-+msp_pcibios_write_config_word(struct pci_bus *bus,
-+								unsigned int devfn,
-+								int			 where, 
-+								u16			 val)
-+{
-+	u32 data = 0;
-+
-+	/* MBGP Nov 24, 2005, fixed non-compliance: if (where & 1) */
-+	if ((where & 3) == 3)
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+
-+	/* read config space */
-+	if (msp_pcibios_config_access(PCI_ACCESS_READ, bus, devfn, where, &data))
-+		return -1;
-+ 
-+	/* modify the word within the dword */
-+	data = (data & ~(0xffff << ((where & 3) << 3))) | 
-+			(val << ((where & 3) << 3));
-+
-+	/* write back the full dword */
-+	if (msp_pcibios_config_access(PCI_ACCESS_WRITE, bus, devfn, where, &data))
-+		return -1;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_write_config_dword
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Write a double word (32-bits) to PCI configuration address
-+**               space.
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus 
-+**                        that the write is destined for.
-+**               devfn  - device/function combination that the write is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**               val    - value to write
-+**
-+**  OUTPUTS      none
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL           - success
-+**               PCIBIOS_BAD_REGISTER_NUMBER  - bad register address
-+**               -1                           - write access failure
-+**
-+*****************************************************************************/
-+static int
-+msp_pcibios_write_config_dword(struct pci_bus *bus,
-+								unsigned int	devfn,
-+								int			 where,
-+								u32			 val)
-+{
-+	/* check that address is dword aligned */
-+	if (where & 3)
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+
-+	/* perform write */
-+	if (msp_pcibios_config_access(PCI_ACCESS_WRITE, bus, devfn, where, &val))
-+		return -1;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_read_config
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Interface the PCI configuration read request with
-+**               the appropriate function, based on how many bytes
-+**               the read request is.
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus 
-+**                        that the write is destined for.
-+**               devfn  - device/function combination that the write is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**               size   - in units of bytes, should be 1, 2, or 4.
-+**
-+**  OUTPUTS      val    - value read, with any extraneous bytes masked
-+**                        to zero.
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL   - success
-+**               -1                   - failure
-+**
-+*****************************************************************************/
-+int
-+msp_pcibios_read_config(struct pci_bus *bus,
-+						unsigned int	devfn,
-+						int			 where,
-+						int			 size,
-+						u32			*val)
-+{
-+	if (size == 1) {
-+		if (msp_pcibios_read_config_byte(bus, devfn, where, val)) {
-+			return -1;
-+		}
-+	} else if (size == 2) {
-+		if (msp_pcibios_read_config_word(bus, devfn, where, val)) {
-+			return -1;
-+		}
-+	} else if (size == 4) {
-+		if (msp_pcibios_read_config_dword(bus, devfn, where, val)) {
-+			return -1;
-+		}
-+	} else {
-+		*val = 0xFFFFFFFF;
-+		return -1;
-+	}
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pcibios_write_config
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Interface the PCI configuration write request with
-+**               the appropriate function, based on how many bytes
-+**               the read request is.
-+**
-+**  INPUTS       bus    - structure containing attributes for the PCI bus 
-+**                        that the write is destined for.
-+**               devfn  - device/function combination that the write is
-+**                        destined for.
-+**               where  - register within the Configuration Header space
-+**                        to access.
-+**               size   - in units of bytes, should be 1, 2, or 4.
-+**               val    - value to write
-+**
-+**  OUTPUTS:     none
-+**
-+**  RETURNS:     PCIBIOS_SUCCESSFUL   - success
-+**               -1                   - failure
-+**
-+*****************************************************************************/
-+int
-+msp_pcibios_write_config(struct pci_bus *bus, 
-+						 unsigned int	devfn,
-+						 int			 where, 
-+						 int			 size,
-+						 u32			 val)
-+{
-+	if (size == 1) {
-+		if (msp_pcibios_write_config_byte(bus, devfn, where, (u8)(0xFF & val))) {
-+			return -1;
-+		}
-+	} else if (size == 2) {
-+		if (msp_pcibios_write_config_word(bus, devfn, where, (u16)(0xFFFF & val))) {
-+			return -1;
-+		}
-+	} else if (size == 4) {
-+		if (msp_pcibios_write_config_dword(bus, devfn, where, val)) {
-+			return -1;
-+		}
-+	} else {
-+		return -1;
-+	}
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+
-+/*****************************************************************************
-+**
-+**  STRUCTURE: msp_pci_ops
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: structure to abstract the hardware specific PCI
-+**               configuration accesses.
-+**
-+**  ELEMENTS:
-+**    read      - function for Linux to generate PCI Configuration reads.
-+**    write     - function for Linux to generate PCI Configuration writes.
-+**
-+*****************************************************************************/
-+struct pci_ops msp_pci_ops = {
-+	.read = msp_pcibios_read_config,
-+	.write = msp_pcibios_write_config
-+};
-+
-+
-+/*****************************************************************************
-+**
-+**  STRUCTURE: msp_pci_controller
-+**  _________________________________________________________________________
-+**
-+**  Describes the attributes of the MSP7120 PCI Host Controller
-+**               
-+**  ELEMENTS:
-+**    pci_ops      - abstracts the hardware specific PCI configuration
-+**                   accesses.
-+**
-+**    mem_resource - address range pciauto() uses to assign to PCI device
-+**                   memory BARs.
-+**    
-+**    mem_offset   - offset between how MSP7120 outbound PCI memory
-+**                   transaction addresses appear on the PCI bus and how Linux
-+**                   wants to configure memory BARs of the PCI devices.
-+**                   MSP7120 does nothing funky, so just set to zero.
-+**
-+**    io_resource  - address range pciauto() uses to assign to PCI device
-+**                   I/O BARs.
-+**
-+**    io_offset    - offset between how MSP7120 outbound PCI I/O
-+**                   transaction addresses appear on the PCI bus and how
-+**                   Linux defaults to configure I/O BARs of the PCI devices.
-+**                   MSP7120 maps outbound I/O accesses into the bottom
-+**                   bottom 4K of PCI address space (and ignores OATRAN). 
-+**                   Since the Linux default is to configure I/O BARs to the
-+**                   bottom 4K, no special offset is needed. Just set to zero.
-+**
-+*****************************************************************************/
-+static struct pci_controller msp_pci_controller = {
-+	.pci_ops		= &msp_pci_ops,
-+	.mem_resource	= &pci_mem_resource,
-+	.mem_offset	 	= 0,
-+	.io_resource	= &pci_io_resource,
-+	.io_offset		= 0
-+};
-+
-+
-+/*****************************************************************************
-+**
-+**  FUNCTION: msp_pci_init
-+**  _________________________________________________________________________
-+**
-+**  DESCRIPTION: Initialize the PCI Host Controller and register it with
-+**               Linux so Linux can seize control of the PCI bus.
-+**
-+*****************************************************************************/
-+void __init msp_pci_init(void)
-+{
-+	mspPciRegs *preg = (void *)PCI_BASE_REG;
-+	u32 id;
-+
-+	/* Extract Device ID */
-+	id = (MSP_PCI_READ_REG32(PCI_JTAG_DEVID_REG, 0) >> 12) & 0x0FFFF;
-+ 
-+	/*
-+	 * Check if JTAG ID identifies MSP7120 
-+	 */
-+	if (!MSP_HAS_PCI(id)) {
-+		printk("PCI: No PCI; id reads as %x\n", id);
-+		goto no_pci;
-+	}
-+ 
-+	/*
-+	* Enable flushing of the PCI-SDRAM queue upon a read
-+	* of the SDRAM's Memory Configuration Register.
-+	*/
-+	*(unsigned long *)QFLUSH_REG_1 = 3;
-+
-+	/*
-+	 * Configure PCI Host Controller.
-+	 */
-+	preg->if_status	= ~0;			 /* Clear cause register bits		*/ 
-+	preg->config_addr = 0;			/* Clear config access				*/
-+	preg->oatran	= MSP_PCI_OATRAN; /* PCI outbound addr translation	*/
-+	preg->if_mask	= 0xF8BF87C0;	 /* Enable all PCI status interrupts */
-+
-+	/* configure so inb(), outb(), and family are functional */
-+	set_io_port_base(MSP_PCI_IOSPACE_BASE);
-+	
-+	/* Tell Linux the details of the MSP7120 PCI Host Controller */
-+	register_pci_controller(&msp_pci_controller);
-+
-+	return;
-+
-+no_pci:
-+	/* Disable PCI channel */
-+	printk("PCI: no host PCI bus detected\n");
-+	return;
-+}
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_pci.c b/arch/mips/pmc-sierra/msp71xx/msp_pci.c
-new file mode 100644
-index 0000000..f764fe7
---- /dev/null
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_pci.c
-@@ -0,0 +1,50 @@
-+/*
-+ * The setup file for PCI related hardware on PMC-Sierra MSP processors.
-+ *
-+ * Copyright 2005-2006 PMC-Sierra, Inc.
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ */
-+
-+#include <linux/init.h>
-+
-+#include <msp_prom.h>
-+#include <msp_regs.h>
-+
-+extern void msp_pci_init(void);
-+
-+static int __init msp_pci_setup(void)
-+{
-+#if 0 /* Linux 2.6 initialization code to be completed */
-+	if (getdeviceid() & DEV_ID_SINGLE_PC) {
-+		/* If single card mode */
-+		slmRegs	*sreg = (slmRegs *) SREG_BASE;
-+
-+		sreg->single_pc_enable = SINGLE_PCCARD;
-+	}
-+#endif
-+
-+	msp_pci_init();
-+
-+	return 0;
-+}
-+
-+subsys_initcall(msp_pci_setup);
-diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_pci.h b/include/asm-mips/pmc-sierra/msp71xx/msp_pci.h
-new file mode 100644
-index 0000000..c205d1e
---- /dev/null
-+++ b/include/asm-mips/pmc-sierra/msp71xx/msp_pci.h
-@@ -0,0 +1,208 @@
-+/*
-+ * Copyright (c) 2000-2006 PMC-Sierra INC.
-+ *
-+ *     This program is free software; you can redistribute it
-+ *     and/or modify it under the terms of the GNU General
-+ *     Public License as published by the Free Software
-+ *     Foundation; either version 2 of the License, or (at your
-+ *     option) any later version.
-+ *
-+ *     This program is distributed in the hope that it will be
-+ *     useful, but WITHOUT ANY WARRANTY; without even the implied
-+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-+ *     PURPOSE.  See the GNU General Public License for more
-+ *     details.
-+ *
-+ *     You should have received a copy of the GNU General Public
-+ *     License along with this program; if not, write to the Free
-+ *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
-+ *     02139, USA.
-+ *
-+ * PMC-SIERRA INC. DISCLAIMS ANY LIABILITY OF ANY KIND
-+ * FOR ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS
-+ * SOFTWARE.
-+ */
-+
-+#ifndef _MSP_PCI_H_
-+#define _MSP_PCI_H_
-+
-+#define MSP_HAS_PCI(ID) (((u32)(ID) <= 0x4236) && ((u32)(ID) >= 0x4220))
-+
-+/*
-+ * It is convenient to program the OATRAN register so that
-+ * Athena virtual address space and PCI address space are
-+ * the same. This is not a requirement, just a convenience.
-+ *
-+ * The only hard restrictions on the value of OATRAN is that
-+ * OATRAN must not be programmed to allow translated memory
-+ * addresses to fall within the lowest 512MB of
-+ * PCI address space. This region is hardcoded
-+ * for use as Athena PCI Host Controller target
-+ * access memory space to the Athena's SDRAM.
-+ *
-+ * Note that OATRAN applies only to memory accesses, not
-+ * to I/O accesses.
-+ *
-+ * To program OATRAN to make Athena virtual address space
-+ * and PCI address space have the same values, OATRAN
-+ * is to be programmed to 0xB8000000. The top seven
-+ * bits of the value mimic the seven bits clipped off
-+ * by the PCI Host controller.
-+ * 
-+ * With OATRAN at the said value, when the CPU does
-+ * an access to its virtual address at, say 0xB900_5000,
-+ * the address appearing on the PCI bus will be
-+ * 0xB900_5000.
-+ *    - Michael Penner
-+ */
-+#define  MSP_PCI_OATRAN       0xB8000000UL
-+
-+#define  MSP_PCI_SPACE_BASE   (MSP_PCI_OATRAN + 0x1002000UL)
-+#define  MSP_PCI_SPACE_SIZE   (0x3000000UL - 0x2000)
-+#define  MSP_PCI_SPACE_END \
-+		(MSP_PCI_SPACE_BASE + MSP_PCI_SPACE_SIZE - 1)
-+#define  MSP_PCI_IOSPACE_BASE (MSP_PCI_OATRAN + 0x1001000UL)
-+#define  MSP_PCI_IOSPACE_SIZE 0x1000
-+#define  MSP_PCI_IOSPACE_END  \
-+		(MSP_PCI_IOSPACE_BASE + MSP_PCI_IOSPACE_SIZE - 1)
-+
-+/* IRQ for PCI status interrupts */
-+#define PCI_STAT_IRQ 20
-+
-+#define  QFLUSH_REG_1   0xB7F40000
-+
-+typedef volatile unsigned int pcireg;
-+typedef void * volatile ppcireg;
-+
-+typedef struct blockCopy_st
-+{
-+    pcireg   unused1; /* +0x00 */
-+    pcireg   unused2; /* +0x04 */
-+    ppcireg  unused3; /* +0x08 */
-+    ppcireg  unused4; /* +0x0C */
-+    pcireg   unused5; /* +0x10 */
-+    pcireg   unused6; /* +0x14 */
-+    pcireg   unused7; /* +0x18 */
-+    ppcireg  unused8; /* +0x1C */
-+    ppcireg  unused9; /* +0x20 */
-+    pcireg   unusedA; /* +0x24 */
-+    ppcireg  unusedB; /* +0x28 */
-+    ppcireg  unusedC; /* +0x2C */
-+} pciBlockCopy;
-+
-+enum
-+{
-+    config_device_vendor,  /* 0 */
-+    config_status_command, /* 1 */
-+    config_class_revision, /* 2 */
-+    config_BIST_header_latency_cache, /* 3 */
-+    config_BAR0,           /* 4 */
-+    config_BAR1,           /* 5 */
-+    config_BAR2,           /* 6 */
-+    config_not_used7,      /* 7 */
-+    config_not_used8,      /* 8 */
-+    config_not_used9,      /* 9 */
-+    config_CIS,            /* 10 */
-+    config_subsystem,      /* 11 */
-+    config_not_used12,     /* 12 */
-+    config_capabilities,   /* 13 */
-+    config_not_used14,     /* 14 */
-+    config_lat_grant_irq,  /* 15 */
-+    config_message_control,/* 16 */
-+    config_message_addr,   /* 17 */
-+    config_message_data,   /* 18 */
-+    config_VPD_addr,       /* 19 */
-+    config_VPD_data,       /* 20 */
-+    config_maxregs         /* 21 - number of registers */
-+};
-+    
-+typedef struct mspPci_st
-+{
-+    pcireg hop_unused_00; /* +0x00 */
-+    pcireg hop_unused_04; /* +0x04 */
-+    pcireg hop_unused_08; /* +0x08 */
-+    pcireg hop_unused_0C; /* +0x0C */
-+    pcireg hop_unused_10; /* +0x10 */
-+    pcireg hop_unused_14; /* +0x14 */
-+    pcireg hop_unused_18; /* +0x18 */
-+    pcireg hop_unused_1C; /* +0x1C */
-+    pcireg hop_unused_20; /* +0x20 */
-+    pcireg hop_unused_24; /* +0x24 */
-+    pcireg hop_unused_28; /* +0x28 */
-+    pcireg hop_unused_2C; /* +0x2C */
-+    pcireg hop_unused_30; /* +0x30 */
-+    pcireg hop_unused_34; /* +0x34 */
-+    pcireg if_control;    /* +0x38 */
-+    pcireg oatran;        /* +0x3C */
-+    pcireg reset_ctl;     /* +0x40 */
-+    pcireg config_addr;   /* +0x44 */
-+    pcireg hop_unused_48; /* +0x48 */
-+    pcireg msg_signaled_int_status; /* +0x4C */
-+    pcireg msg_signaled_int_mask;   /* +0x50 */
-+    pcireg if_status;     /* +0x54 */
-+    pcireg if_mask;       /* +0x58 */
-+    pcireg hop_unused_5C; /* +0x5C */
-+    pcireg hop_unused_60; /* +0x60 */
-+    pcireg hop_unused_64; /* +0x64 */
-+    pcireg hop_unused_68; /* +0x68 */
-+    pcireg hop_unused_6C; /* +0x6C */
-+    pcireg hop_unused_70; /* +0x70 */
-+
-+    pciBlockCopy pci_bc[2] __attribute__((aligned(64)));
-+
-+    pcireg error_hdr1; /* +0xE0 */
-+    pcireg error_hdr2; /* +0xE4 */
-+
-+    pcireg config[config_maxregs] __attribute__((aligned(256)));
-+
-+} mspPciRegs;
-+
-+
-+#define BPCI_CFGADDR_BUSNUM_SHF 16
-+#define BPCI_CFGADDR_FUNCTNUM_SHF 8
-+#define BPCI_CFGADDR_REGNUM_SHF 2
-+#define BPCI_CFGADDR_ENABLE (1<<31)
-+
-+#define BPCI_IFCONTROL_RTO (1<<20) /* Retry timeout */
-+#define BPCI_IFCONTROL_HCE (1<<16) /* Host configuration enable */
-+#define BPCI_IFCONTROL_CTO_SHF 12  /* Shift count for CTO bits */
-+#define BPCI_IFCONTROL_SE  (1<<5)  /* Enable exceptions on errors */
-+#define BPCI_IFCONTROL_BIST (1<<4) /* Use BIST in per. mode */
-+#define BPCI_IFCONTROL_CAP (1<<3)  /* Enable capabilities */
-+#define BPCI_IFCONTROL_MMC_SHF 0   /* Shift count for MMC bits */
-+
-+#define BPCI_IFSTATUS_MGT  (1<<8)  /* Master Grant timeout */
-+#define BPCI_IFSTATUS_MTT  (1<<9)  /* Master TRDY timeout */
-+#define BPCI_IFSTATUS_MRT  (1<<10) /* Master retry timeout */
-+#define BPCI_IFSTATUS_BC0F (1<<13) /* Block copy 0 fault */
-+#define BPCI_IFSTATUS_BC1F (1<<14) /* Block copy 1 fault */
-+#define BPCI_IFSTATUS_PCIU (1<<15) /* PCI unable to respond */
-+#define BPCI_IFSTATUS_BSIZ (1<<16) /* PCI access with illegal size */
-+#define BPCI_IFSTATUS_BADD (1<<17) /* PCI access with illegal addr */
-+#define BPCI_IFSTATUS_RTO  (1<<18) /* Retry time out */
-+#define BPCI_IFSTATUS_SER  (1<<19) /* System error */
-+#define BPCI_IFSTATUS_PER  (1<<20) /* Parity error */
-+#define BPCI_IFSTATUS_LCA  (1<<21) /* Local CPU abort */
-+#define BPCI_IFSTATUS_MEM  (1<<22) /* Memory prot. violation */
-+#define BPCI_IFSTATUS_ARB  (1<<23) /* Arbiter timed out */
-+#define BPCI_IFSTATUS_STA  (1<<27) /* Signaled target abort */
-+#define BPCI_IFSTATUS_TA   (1<<28) /* Target abort */
-+#define BPCI_IFSTATUS_MA   (1<<29) /* Master abort */
-+#define BPCI_IFSTATUS_PEI  (1<<30) /* Parity error as initiator */
-+#define BPCI_IFSTATUS_PET  (1<<31) /* Parity error as target */
-+
-+#define BPCI_RESETCTL_PR (1<<0)    /* True if reset asserted */
-+#define BPCI_RESETCTL_RT (1<<4)    /* Release time */
-+#define BPCI_RESETCTL_CT (1<<8)    /* Config time */
-+#define BPCI_RESETCTL_PE (1<<12)   /* PCI enabled */
-+#define BPCI_RESETCTL_HM (1<<13)   /* PCI host mode */
-+#define BPCI_RESETCTL_RI (1<<14)   /* PCI reset in */
-+
-+extern mspPciRegs msp_pci_regs __attribute__((section(".register")));
-+extern unsigned long msp_pci_config_space
-+			__attribute__((section(".register")));
-+
-+#define MSP_PCI_READ_REG32(base, byte_offset) \
-+   *((volatile u32 *)((u8 *)(base) + (byte_offset)))
-+
-+#endif /* !_MSP_PCI_H_ */
++++ b/arch/mips/configs/msp71xx_defconfig
+@@ -0,0 +1,1496 @@
++#
++# Automatically generated make config: don't edit
++# Linux kernel version: 2.6.21-rc1
++# Fri Mar 16 15:00:35 2007
++#
++CONFIG_MIPS=y
++
++#
++# Machine selection
++#
++CONFIG_ZONE_DMA=y
++# CONFIG_MIPS_MTX1 is not set
++# CONFIG_MIPS_BOSPORUS is not set
++# CONFIG_MIPS_PB1000 is not set
++# CONFIG_MIPS_PB1100 is not set
++# CONFIG_MIPS_PB1500 is not set
++# CONFIG_MIPS_PB1550 is not set
++# CONFIG_MIPS_PB1200 is not set
++# CONFIG_MIPS_DB1000 is not set
++# CONFIG_MIPS_DB1100 is not set
++# CONFIG_MIPS_DB1500 is not set
++# CONFIG_MIPS_DB1550 is not set
++# CONFIG_MIPS_DB1200 is not set
++# CONFIG_MIPS_MIRAGE is not set
++# CONFIG_BASLER_EXCITE is not set
++# CONFIG_MIPS_COBALT is not set
++# CONFIG_MACH_DECSTATION is not set
++# CONFIG_MIPS_EV64120 is not set
++# CONFIG_MACH_JAZZ is not set
++# CONFIG_LASAT is not set
++# CONFIG_MIPS_ATLAS is not set
++# CONFIG_MIPS_MALTA is not set
++# CONFIG_MIPS_SEAD is not set
++# CONFIG_WR_PPMC is not set
++# CONFIG_MIPS_SIM is not set
++# CONFIG_MOMENCO_JAGUAR_ATX is not set
++# CONFIG_MOMENCO_OCELOT is not set
++# CONFIG_MOMENCO_OCELOT_3 is not set
++# CONFIG_MOMENCO_OCELOT_C is not set
++# CONFIG_MOMENCO_OCELOT_G is not set
++# CONFIG_MIPS_XXS1500 is not set
++# CONFIG_PNX8550_V2PCI is not set
++# CONFIG_PNX8550_JBS is not set
++# CONFIG_PNX8550_STB810 is not set
++# CONFIG_DDB5477 is not set
++# CONFIG_MACH_VR41XX is not set
++CONFIG_PMC_MSP=y
++# CONFIG_PMC_YOSEMITE is not set
++# CONFIG_QEMU is not set
++# CONFIG_MARKEINS is not set
++# CONFIG_SGI_IP22 is not set
++# CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP32 is not set
++# CONFIG_SIBYTE_BIGSUR is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_CARMEL is not set
++# CONFIG_SIBYTE_PTSWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SNI_RM is not set
++# CONFIG_TOSHIBA_JMR3927 is not set
++# CONFIG_TOSHIBA_RBTX4927 is not set
++# CONFIG_TOSHIBA_RBTX4938 is not set
++# CONFIG_PMC_MSP4200_EVAL is not set
++# CONFIG_PMC_MSP4200_GW is not set
++# CONFIG_PMC_MSP7120_EVAL is not set
++CONFIG_PMC_MSP7120_GW=y
++# CONFIG_PMC_MSP7120_FPGA is not set
++
++#
++# Options for PMC-Sierra MSP chipsets
++#
++CONFIG_PMC_MSP_EMBEDDED_ROOTFS=y
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++# CONFIG_ARCH_HAS_ILOG2_U32 is not set
++# CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_GENERIC_FIND_NEXT_BIT=y
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_GENERIC_TIME=y
++CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
++# CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ is not set
++CONFIG_BOOT_RAW=y
++CONFIG_DMA_NONCOHERENT=y
++CONFIG_DMA_NEED_PCI_MAP_STATE=y
++CONFIG_NO_EXCEPT_FILL=y
++CONFIG_CPU_BIG_ENDIAN=y
++# CONFIG_CPU_LITTLE_ENDIAN is not set
++CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_IRQ_MSP_CIC=y
++CONFIG_MSP_USB=y
++CONFIG_SWAP_IO_SPACE=y
++CONFIG_MIPS_L1_CACHE_SHIFT=5
++
++#
++# CPU selection
++#
++# CONFIG_CPU_MIPS32_R1 is not set
++CONFIG_CPU_MIPS32_R2=y
++# CONFIG_CPU_MIPS64_R1 is not set
++# CONFIG_CPU_MIPS64_R2 is not set
++# CONFIG_CPU_R3000 is not set
++# CONFIG_CPU_TX39XX is not set
++# CONFIG_CPU_VR41XX is not set
++# CONFIG_CPU_R4300 is not set
++# CONFIG_CPU_R4X00 is not set
++# CONFIG_CPU_TX49XX is not set
++# CONFIG_CPU_R5000 is not set
++# CONFIG_CPU_R5432 is not set
++# CONFIG_CPU_R6000 is not set
++# CONFIG_CPU_NEVADA is not set
++# CONFIG_CPU_R8000 is not set
++# CONFIG_CPU_R10000 is not set
++# CONFIG_CPU_RM7000 is not set
++# CONFIG_CPU_RM9000 is not set
++# CONFIG_CPU_SB1 is not set
++CONFIG_SYS_HAS_CPU_MIPS32_R1=y
++CONFIG_SYS_HAS_CPU_MIPS32_R2=y
++CONFIG_CPU_MIPS32=y
++CONFIG_CPU_MIPSR2=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++
++#
++# Kernel type
++#
++CONFIG_32BIT=y
++# CONFIG_64BIT is not set
++CONFIG_PAGE_SIZE_4KB=y
++# CONFIG_PAGE_SIZE_8KB is not set
++# CONFIG_PAGE_SIZE_16KB is not set
++# CONFIG_PAGE_SIZE_64KB is not set
++CONFIG_CPU_HAS_PREFETCH=y
++CONFIG_MIPS_MT_DISABLED=y
++# CONFIG_MIPS_MT_SMP is not set
++# CONFIG_MIPS_MT_SMTC is not set
++# CONFIG_MIPS_VPE_LOADER is not set
++CONFIG_SYS_SUPPORTS_MULTITHREADING=y
++# CONFIG_64BIT_PHYS_ADDR is not set
++CONFIG_CPU_HAS_LLSC=y
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_CPU_SUPPORTS_HIGHMEM=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_SELECT_MEMORY_MODEL=y
++CONFIG_FLATMEM_MANUAL=y
++# CONFIG_DISCONTIGMEM_MANUAL is not set
++# CONFIG_SPARSEMEM_MANUAL is not set
++CONFIG_FLATMEM=y
++CONFIG_FLAT_NODE_MEM_MAP=y
++# CONFIG_SPARSEMEM_STATIC is not set
++CONFIG_SPLIT_PTLOCK_CPUS=4
++# CONFIG_RESOURCES_64BIT is not set
++CONFIG_ZONE_DMA_FLAG=1
++# CONFIG_HZ_48 is not set
++# CONFIG_HZ_100 is not set
++# CONFIG_HZ_128 is not set
++CONFIG_HZ_250=y
++# CONFIG_HZ_256 is not set
++# CONFIG_HZ_1000 is not set
++# CONFIG_HZ_1024 is not set
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=250
++# CONFIG_PREEMPT_NONE is not set
++# CONFIG_PREEMPT_VOLUNTARY is not set
++CONFIG_PREEMPT=y
++# CONFIG_PREEMPT_BKL is not set
++# CONFIG_KEXEC is not set
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++
++#
++# Code maturity level options
++#
++CONFIG_EXPERIMENTAL=y
++CONFIG_BROKEN_ON_SMP=y
++CONFIG_LOCK_KERNEL=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++
++#
++# General setup
++#
++CONFIG_LOCALVERSION="-pmc"
++CONFIG_LOCALVERSION_AUTO=y
++# CONFIG_SWAP is not set
++CONFIG_SYSVIPC=y
++# CONFIG_IPC_NS is not set
++CONFIG_SYSVIPC_SYSCTL=y
++# CONFIG_POSIX_MQUEUE is not set
++# CONFIG_BSD_PROCESS_ACCT is not set
++# CONFIG_TASKSTATS is not set
++# CONFIG_UTS_NS is not set
++# CONFIG_AUDIT is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_SYSFS_DEPRECATED=y
++# CONFIG_RELAY is not set
++# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++CONFIG_SYSCTL=y
++CONFIG_EMBEDDED=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_KALLSYMS=y
++# CONFIG_KALLSYMS_ALL is not set
++# CONFIG_KALLSYMS_EXTRA_PASS is not set
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_ELF_CORE=y
++CONFIG_BASE_FULL=y
++CONFIG_FUTEX=y
++CONFIG_EPOLL=y
++# CONFIG_SHMEM is not set
++CONFIG_SLAB=y
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_RT_MUTEXES=y
++CONFIG_TINY_SHMEM=y
++CONFIG_BASE_SMALL=0
++# CONFIG_SLOB is not set
++
++#
++# Loadable module support
++#
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++# CONFIG_MODULE_FORCE_UNLOAD is not set
++CONFIG_MODVERSIONS=y
++# CONFIG_MODULE_SRCVERSION_ALL is not set
++CONFIG_KMOD=y
++
++#
++# Block layer
++#
++CONFIG_BLOCK=y
++# CONFIG_LBD is not set
++# CONFIG_BLK_DEV_IO_TRACE is not set
++# CONFIG_LSF is not set
++
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++CONFIG_IOSCHED_AS=y
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_IOSCHED_CFQ is not set
++CONFIG_DEFAULT_AS=y
++# CONFIG_DEFAULT_DEADLINE is not set
++# CONFIG_DEFAULT_CFQ is not set
++# CONFIG_DEFAULT_NOOP is not set
++CONFIG_DEFAULT_IOSCHED="anticipatory"
++
++#
++# Bus options (PCI, PCMCIA, EISA, ISA, TC)
++#
++CONFIG_HW_HAS_PCI=y
++CONFIG_PCI=y
++# CONFIG_PCI_DEBUG is not set
++CONFIG_MMU=y
++
++#
++# PCCARD (PCMCIA/CardBus) support
++#
++# CONFIG_PCCARD is not set
++
++#
++# PCI Hotplug Support
++#
++# CONFIG_HOTPLUG_PCI is not set
++
++#
++# Executable file formats
++#
++CONFIG_BINFMT_ELF=y
++# CONFIG_BINFMT_MISC is not set
++CONFIG_TRAD_SIGNALS=y
++
++#
++# Power management options
++#
++# CONFIG_PM is not set
++
++#
++# Networking
++#
++CONFIG_NET=y
++
++#
++# Networking options
++#
++# CONFIG_NETDEBUG is not set
++# CONFIG_PACKET is not set
++CONFIG_UNIX=y
++CONFIG_XFRM=y
++CONFIG_XFRM_USER=y
++# CONFIG_XFRM_SUB_POLICY is not set
++# CONFIG_XFRM_MIGRATE is not set
++CONFIG_NET_KEY=y
++# CONFIG_NET_KEY_MIGRATE is not set
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++# CONFIG_IP_ADVANCED_ROUTER is not set
++CONFIG_IP_FIB_HASH=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++# CONFIG_IP_PNP_RARP is not set
++# CONFIG_NET_IPIP is not set
++# CONFIG_NET_IPGRE is not set
++# CONFIG_IP_MROUTE is not set
++# CONFIG_ARPD is not set
++# CONFIG_SYN_COOKIES is not set
++CONFIG_INET_AH=y
++CONFIG_INET_ESP=y
++CONFIG_INET_IPCOMP=y
++CONFIG_INET_XFRM_TUNNEL=y
++CONFIG_INET_TUNNEL=y
++CONFIG_INET_XFRM_MODE_TRANSPORT=y
++CONFIG_INET_XFRM_MODE_TUNNEL=y
++CONFIG_INET_XFRM_MODE_BEET=y
++CONFIG_INET_DIAG=y
++CONFIG_INET_TCP_DIAG=y
++# CONFIG_TCP_CONG_ADVANCED is not set
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_DEFAULT_TCP_CONG="cubic"
++# CONFIG_TCP_MD5SIG is not set
++
++#
++# IP: Virtual Server Configuration
++#
++# CONFIG_IP_VS is not set
++# CONFIG_IPV6 is not set
++# CONFIG_INET6_XFRM_TUNNEL is not set
++# CONFIG_INET6_TUNNEL is not set
++# CONFIG_NETWORK_SECMARK is not set
++CONFIG_NETFILTER=y
++# CONFIG_NETFILTER_DEBUG is not set
++CONFIG_BRIDGE_NETFILTER=y
++
++#
++# Core Netfilter Configuration
++#
++# CONFIG_NETFILTER_NETLINK is not set
++# CONFIG_NF_CONNTRACK_ENABLED is not set
++CONFIG_NETFILTER_XTABLES=y
++# CONFIG_NETFILTER_XT_TARGET_CLASSIFY is not set
++# CONFIG_NETFILTER_XT_TARGET_MARK is not set
++# CONFIG_NETFILTER_XT_TARGET_NFQUEUE is not set
++# CONFIG_NETFILTER_XT_TARGET_NFLOG is not set
++# CONFIG_NETFILTER_XT_TARGET_TCPMSS is not set
++# CONFIG_NETFILTER_XT_MATCH_COMMENT is not set
++# CONFIG_NETFILTER_XT_MATCH_DCCP is not set
++# CONFIG_NETFILTER_XT_MATCH_DSCP is not set
++# CONFIG_NETFILTER_XT_MATCH_ESP is not set
++# CONFIG_NETFILTER_XT_MATCH_LENGTH is not set
++# CONFIG_NETFILTER_XT_MATCH_LIMIT is not set
++# CONFIG_NETFILTER_XT_MATCH_MAC is not set
++# CONFIG_NETFILTER_XT_MATCH_MARK is not set
++# CONFIG_NETFILTER_XT_MATCH_POLICY is not set
++# CONFIG_NETFILTER_XT_MATCH_MULTIPORT is not set
++# CONFIG_NETFILTER_XT_MATCH_PHYSDEV is not set
++# CONFIG_NETFILTER_XT_MATCH_PKTTYPE is not set
++# CONFIG_NETFILTER_XT_MATCH_QUOTA is not set
++# CONFIG_NETFILTER_XT_MATCH_REALM is not set
++# CONFIG_NETFILTER_XT_MATCH_SCTP is not set
++# CONFIG_NETFILTER_XT_MATCH_STATISTIC is not set
++# CONFIG_NETFILTER_XT_MATCH_STRING is not set
++# CONFIG_NETFILTER_XT_MATCH_TCPMSS is not set
++# CONFIG_NETFILTER_XT_MATCH_HASHLIMIT is not set
++
++#
++# IP: Netfilter Configuration
++#
++# CONFIG_IP_NF_QUEUE is not set
++CONFIG_IP_NF_IPTABLES=y
++# CONFIG_IP_NF_MATCH_IPRANGE is not set
++# CONFIG_IP_NF_MATCH_TOS is not set
++# CONFIG_IP_NF_MATCH_RECENT is not set
++# CONFIG_IP_NF_MATCH_ECN is not set
++# CONFIG_IP_NF_MATCH_AH is not set
++# CONFIG_IP_NF_MATCH_TTL is not set
++# CONFIG_IP_NF_MATCH_OWNER is not set
++# CONFIG_IP_NF_MATCH_ADDRTYPE is not set
++CONFIG_IP_NF_FILTER=y
++CONFIG_IP_NF_TARGET_REJECT=y
++# CONFIG_IP_NF_TARGET_LOG is not set
++# CONFIG_IP_NF_TARGET_ULOG is not set
++# CONFIG_IP_NF_MANGLE is not set
++# CONFIG_IP_NF_RAW is not set
++# CONFIG_IP_NF_ARPTABLES is not set
++
++#
++# Bridge: Netfilter Configuration
++#
++# CONFIG_BRIDGE_NF_EBTABLES is not set
++
++#
++# DCCP Configuration (EXPERIMENTAL)
++#
++# CONFIG_IP_DCCP is not set
++
++#
++# SCTP Configuration (EXPERIMENTAL)
++#
++# CONFIG_IP_SCTP is not set
++
++#
++# TIPC Configuration (EXPERIMENTAL)
++#
++# CONFIG_TIPC is not set
++# CONFIG_ATM is not set
++CONFIG_BRIDGE=y
++# CONFIG_VLAN_8021Q is not set
++# CONFIG_DECNET is not set
++CONFIG_LLC=y
++# CONFIG_LLC2 is not set
++# CONFIG_IPX is not set
++# CONFIG_ATALK is not set
++# CONFIG_X25 is not set
++# CONFIG_LAPB is not set
++# CONFIG_ECONET is not set
++# CONFIG_WAN_ROUTER is not set
++
++#
++# QoS and/or fair queueing
++#
++# CONFIG_NET_SCHED is not set
++
++#
++# Network testing
++#
++# CONFIG_NET_PKTGEN is not set
++# CONFIG_HAMRADIO is not set
++# CONFIG_IRDA is not set
++# CONFIG_BT is not set
++# CONFIG_IEEE80211 is not set
++CONFIG_WIRELESS_EXT=y
++
++#
++# Device Drivers
++#
++
++#
++# Generic Driver Options
++#
++CONFIG_STANDALONE=y
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++# CONFIG_FW_LOADER is not set
++# CONFIG_DEBUG_DRIVER is not set
++# CONFIG_DEBUG_DEVRES is not set
++# CONFIG_SYS_HYPERVISOR is not set
++
++#
++# Connector - unified userspace <-> kernelspace linker
++#
++# CONFIG_CONNECTOR is not set
++
++#
++# Memory Technology Devices (MTD)
++#
++CONFIG_MTD=y
++# CONFIG_MTD_DEBUG is not set
++# CONFIG_MTD_CONCAT is not set
++CONFIG_MTD_PARTITIONS=y
++# CONFIG_MTD_REDBOOT_PARTS is not set
++# CONFIG_MTD_CMDLINE_PARTS is not set
++
++#
++# User Modules And Translation Layers
++#
++CONFIG_MTD_CHAR=y
++CONFIG_MTD_BLKDEVS=y
++CONFIG_MTD_BLOCK=y
++# CONFIG_FTL is not set
++# CONFIG_NFTL is not set
++# CONFIG_INFTL is not set
++# CONFIG_RFD_FTL is not set
++# CONFIG_SSFDC is not set
++
++#
++# RAM/ROM/Flash chip drivers
++#
++CONFIG_MTD_CFI=y
++# CONFIG_MTD_JEDECPROBE is not set
++CONFIG_MTD_GEN_PROBE=y
++# CONFIG_MTD_CFI_ADV_OPTIONS is not set
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++# CONFIG_MTD_CFI_I4 is not set
++# CONFIG_MTD_CFI_I8 is not set
++# CONFIG_MTD_CFI_INTELEXT is not set
++CONFIG_MTD_CFI_AMDSTD=y
++# CONFIG_MTD_CFI_STAA is not set
++CONFIG_MTD_CFI_UTIL=y
++CONFIG_MTD_RAM=y
++# CONFIG_MTD_ROM is not set
++# CONFIG_MTD_ABSENT is not set
++# CONFIG_MTD_OBSOLETE_CHIPS is not set
++
++#
++# Mapping drivers for chip access
++#
++# CONFIG_MTD_COMPLEX_MAPPINGS is not set
++# CONFIG_MTD_PHYSMAP is not set
++CONFIG_MTD_PMC_MSP_EVM=y
++CONFIG_MSP_FLASH_MAP_LIMIT_32M=y
++CONFIG_MSP_FLASH_MAP_LIMIT=0x02000000
++CONFIG_MTD_PMC_MSP_RAMROOT=y
++# CONFIG_MTD_PLATRAM is not set
++
++#
++# Self-contained MTD device drivers
++#
++# CONFIG_MTD_PMC551 is not set
++# CONFIG_MTD_SLRAM is not set
++# CONFIG_MTD_PHRAM is not set
++# CONFIG_MTD_MTDRAM is not set
++# CONFIG_MTD_BLOCK2MTD is not set
++
++#
++# Disk-On-Chip Device Drivers
++#
++# CONFIG_MTD_DOC2000 is not set
++# CONFIG_MTD_DOC2001 is not set
++# CONFIG_MTD_DOC2001PLUS is not set
++
++#
++# NAND Flash Device Drivers
++#
++# CONFIG_MTD_NAND is not set
++
++#
++# OneNAND Flash Device Drivers
++#
++# CONFIG_MTD_ONENAND is not set
++
++#
++# Parallel port support
++#
++# CONFIG_PARPORT is not set
++
++#
++# Plug and Play support
++#
++# CONFIG_PNPACPI is not set
++
++#
++# Block devices
++#
++# CONFIG_BLK_CPQ_DA is not set
++# CONFIG_BLK_CPQ_CISS_DA is not set
++# CONFIG_BLK_DEV_DAC960 is not set
++# CONFIG_BLK_DEV_UMEM is not set
++# CONFIG_BLK_DEV_COW_COMMON is not set
++# CONFIG_BLK_DEV_LOOP is not set
++# CONFIG_BLK_DEV_NBD is not set
++# CONFIG_BLK_DEV_SX8 is not set
++# CONFIG_BLK_DEV_UB is not set
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=16
++CONFIG_BLK_DEV_RAM_SIZE=4096
++CONFIG_BLK_DEV_RAM_BLOCKSIZE=1024
++# CONFIG_BLK_DEV_INITRD is not set
++# CONFIG_CDROM_PKTCDVD is not set
++# CONFIG_ATA_OVER_ETH is not set
++
++#
++# Misc devices
++#
++# CONFIG_SGI_IOC4 is not set
++# CONFIG_TIFM_CORE is not set
++
++#
++# ATA/ATAPI/MFM/RLL support
++#
++# CONFIG_IDE is not set
++
++#
++# SCSI device support
++#
++# CONFIG_RAID_ATTRS is not set
++CONFIG_SCSI=y
++# CONFIG_SCSI_TGT is not set
++# CONFIG_SCSI_NETLINK is not set
++CONFIG_SCSI_PROC_FS=y
++
++#
++# SCSI support type (disk, tape, CD-ROM)
++#
++CONFIG_BLK_DEV_SD=y
++# CONFIG_CHR_DEV_ST is not set
++# CONFIG_CHR_DEV_OSST is not set
++# CONFIG_BLK_DEV_SR is not set
++# CONFIG_CHR_DEV_SG is not set
++# CONFIG_CHR_DEV_SCH is not set
++
++#
++# Some SCSI devices (e.g. CD jukebox) support multiple LUNs
++#
++# CONFIG_SCSI_MULTI_LUN is not set
++# CONFIG_SCSI_CONSTANTS is not set
++# CONFIG_SCSI_LOGGING is not set
++# CONFIG_SCSI_SCAN_ASYNC is not set
++
++#
++# SCSI Transports
++#
++# CONFIG_SCSI_SPI_ATTRS is not set
++# CONFIG_SCSI_FC_ATTRS is not set
++# CONFIG_SCSI_ISCSI_ATTRS is not set
++# CONFIG_SCSI_SAS_ATTRS is not set
++# CONFIG_SCSI_SAS_LIBSAS is not set
++
++#
++# SCSI low-level drivers
++#
++# CONFIG_ISCSI_TCP is not set
++# CONFIG_BLK_DEV_3W_XXXX_RAID is not set
++# CONFIG_SCSI_3W_9XXX is not set
++# CONFIG_SCSI_ACARD is not set
++# CONFIG_SCSI_AACRAID is not set
++# CONFIG_SCSI_AIC7XXX is not set
++# CONFIG_SCSI_AIC7XXX_OLD is not set
++# CONFIG_SCSI_AIC79XX is not set
++# CONFIG_SCSI_AIC94XX is not set
++# CONFIG_SCSI_DPT_I2O is not set
++# CONFIG_SCSI_ARCMSR is not set
++# CONFIG_MEGARAID_NEWGEN is not set
++# CONFIG_MEGARAID_LEGACY is not set
++# CONFIG_MEGARAID_SAS is not set
++# CONFIG_SCSI_HPTIOP is not set
++# CONFIG_SCSI_DMX3191D is not set
++# CONFIG_SCSI_FUTURE_DOMAIN is not set
++# CONFIG_SCSI_IPS is not set
++# CONFIG_SCSI_INITIO is not set
++# CONFIG_SCSI_INIA100 is not set
++# CONFIG_SCSI_STEX is not set
++# CONFIG_SCSI_SYM53C8XX_2 is not set
++# CONFIG_SCSI_QLOGIC_1280 is not set
++# CONFIG_SCSI_QLA_FC is not set
++# CONFIG_SCSI_QLA_ISCSI is not set
++# CONFIG_SCSI_LPFC is not set
++# CONFIG_SCSI_DC395x is not set
++# CONFIG_SCSI_DC390T is not set
++# CONFIG_SCSI_NSP32 is not set
++# CONFIG_SCSI_DEBUG is not set
++# CONFIG_SCSI_SRP is not set
++
++#
++# Serial ATA (prod) and Parallel ATA (experimental) drivers
++#
++# CONFIG_ATA is not set
++
++#
++# Multi-device support (RAID and LVM)
++#
++# CONFIG_MD is not set
++
++#
++# Fusion MPT device support
++#
++# CONFIG_FUSION is not set
++# CONFIG_FUSION_SPI is not set
++# CONFIG_FUSION_FC is not set
++# CONFIG_FUSION_SAS is not set
++
++#
++# IEEE 1394 (FireWire) support
++#
++# CONFIG_IEEE1394 is not set
++
++#
++# I2O device support
++#
++# CONFIG_I2O is not set
++
++#
++# Network device support
++#
++CONFIG_NETDEVICES=y
++CONFIG_DUMMY=y
++# CONFIG_BONDING is not set
++# CONFIG_EQUALIZER is not set
++# CONFIG_TUN is not set
++
++#
++# ARCnet devices
++#
++# CONFIG_ARCNET is not set
++
++#
++# PHY device support
++#
++# CONFIG_PHYLIB is not set
++
++#
++# Ethernet (10 or 100Mbit)
++#
++CONFIG_NET_ETHERNET=y
++CONFIG_MII=y
++# CONFIG_PMC_MSP_ETH is not set
++# CONFIG_HAPPYMEAL is not set
++# CONFIG_SUNGEM is not set
++# CONFIG_CASSINI is not set
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_DM9000 is not set
++
++#
++# Tulip family network device support
++#
++# CONFIG_NET_TULIP is not set
++# CONFIG_HP100 is not set
++# CONFIG_NET_PCI is not set
++
++#
++# Ethernet (1000 Mbit)
++#
++# CONFIG_ACENIC is not set
++# CONFIG_DL2K is not set
++# CONFIG_E1000 is not set
++# CONFIG_NS83820 is not set
++# CONFIG_HAMACHI is not set
++# CONFIG_YELLOWFIN is not set
++# CONFIG_R8169 is not set
++# CONFIG_SIS190 is not set
++# CONFIG_SKGE is not set
++# CONFIG_SKY2 is not set
++# CONFIG_SK98LIN is not set
++# CONFIG_TIGON3 is not set
++# CONFIG_BNX2 is not set
++# CONFIG_QLA3XXX is not set
++# CONFIG_ATL1 is not set
++
++#
++# Ethernet (10000 Mbit)
++#
++# CONFIG_CHELSIO_T1 is not set
++# CONFIG_CHELSIO_T3 is not set
++# CONFIG_IXGB is not set
++# CONFIG_S2IO is not set
++# CONFIG_MYRI10GE is not set
++# CONFIG_NETXEN_NIC is not set
++
++#
++# Token Ring devices
++#
++# CONFIG_TR is not set
++
++#
++# Wireless LAN (non-hamradio)
++#
++CONFIG_NET_RADIO=y
++# CONFIG_NET_WIRELESS_RTNETLINK is not set
++
++#
++# Obsolete Wireless cards support (pre-802.11)
++#
++# CONFIG_STRIP is not set
++
++#
++# Wireless 802.11b ISA/PCI cards support
++#
++# CONFIG_IPW2100 is not set
++# CONFIG_IPW2200 is not set
++# CONFIG_HERMES is not set
++# CONFIG_ATMEL is not set
++
++#
++# Prism GT/Duette 802.11(a/b/g) PCI/Cardbus support
++#
++# CONFIG_PRISM54 is not set
++# CONFIG_USB_ZD1201 is not set
++# CONFIG_HOSTAP is not set
++CONFIG_NET_WIRELESS=y
++
++#
++# Wan interfaces
++#
++# CONFIG_WAN is not set
++# CONFIG_FDDI is not set
++# CONFIG_HIPPI is not set
++CONFIG_PPP=y
++# CONFIG_PPP_MULTILINK is not set
++# CONFIG_PPP_FILTER is not set
++# CONFIG_PPP_ASYNC is not set
++# CONFIG_PPP_SYNC_TTY is not set
++# CONFIG_PPP_DEFLATE is not set
++# CONFIG_PPP_BSDCOMP is not set
++# CONFIG_PPP_MPPE is not set
++# CONFIG_PPPOE is not set
++# CONFIG_SLIP is not set
++CONFIG_SLHC=y
++# CONFIG_NET_FC is not set
++# CONFIG_SHAPER is not set
++# CONFIG_NETCONSOLE is not set
++# CONFIG_NETPOLL is not set
++# CONFIG_NET_POLL_CONTROLLER is not set
++
++#
++# ISDN subsystem
++#
++# CONFIG_ISDN is not set
++
++#
++# Telephony Support
++#
++# CONFIG_PHONE is not set
++
++#
++# Input device support
++#
++CONFIG_INPUT=y
++# CONFIG_INPUT_FF_MEMLESS is not set
++
++#
++# Userland interfaces
++#
++# CONFIG_INPUT_MOUSEDEV is not set
++# CONFIG_INPUT_JOYDEV is not set
++# CONFIG_INPUT_TSDEV is not set
++# CONFIG_INPUT_EVDEV is not set
++# CONFIG_INPUT_EVBUG is not set
++
++#
++# Input Device Drivers
++#
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_INPUT_JOYSTICK is not set
++# CONFIG_INPUT_TOUCHSCREEN is not set
++# CONFIG_INPUT_MISC is not set
++
++#
++# Hardware I/O ports
++#
++# CONFIG_SERIO is not set
++# CONFIG_GAMEPORT is not set
++
++#
++# Character devices
++#
++# CONFIG_VT is not set
++# CONFIG_SERIAL_NONSTANDARD is not set
++CONFIG_PMCMSP_GPIO=y
++
++#
++# Serial drivers
++#
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++# CONFIG_SERIAL_8250_PCI is not set
++CONFIG_SERIAL_8250_NR_UARTS=2
++CONFIG_SERIAL_8250_RUNTIME_UARTS=2
++# CONFIG_SERIAL_8250_EXTENDED is not set
++
++#
++# Non-8250 serial port support
++#
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++# CONFIG_SERIAL_JSM is not set
++CONFIG_UNIX98_PTYS=y
++# CONFIG_LEGACY_PTYS is not set
++
++#
++# IPMI
++#
++# CONFIG_IPMI_HANDLER is not set
++
++#
++# Watchdog Cards
++#
++# CONFIG_WATCHDOG is not set
++# CONFIG_HW_RANDOM is not set
++# CONFIG_RTC is not set
++# CONFIG_GEN_RTC is not set
++# CONFIG_DTLK is not set
++# CONFIG_R3964 is not set
++# CONFIG_APPLICOM is not set
++# CONFIG_DRM is not set
++# CONFIG_RAW_DRIVER is not set
++
++#
++# TPM devices
++#
++# CONFIG_TCG_TPM is not set
++
++#
++# I2C support
++#
++CONFIG_I2C=y
++CONFIG_I2C_CHARDEV=y
++
++#
++# I2C Algorithms
++#
++# CONFIG_I2C_ALGOBIT is not set
++# CONFIG_I2C_ALGOPCF is not set
++# CONFIG_I2C_ALGOPCA is not set
++CONFIG_I2C_ALGO_PMCTWI=y
++
++#
++# I2C Hardware Bus support
++#
++# CONFIG_I2C_ALI1535 is not set
++# CONFIG_I2C_ALI1563 is not set
++# CONFIG_I2C_ALI15X3 is not set
++# CONFIG_I2C_AMD756 is not set
++# CONFIG_I2C_AMD8111 is not set
++# CONFIG_I2C_I801 is not set
++# CONFIG_I2C_I810 is not set
++# CONFIG_I2C_PIIX4 is not set
++# CONFIG_I2C_NFORCE2 is not set
++# CONFIG_I2C_OCORES is not set
++# CONFIG_I2C_PARPORT_LIGHT is not set
++# CONFIG_I2C_PASEMI is not set
++# CONFIG_I2C_PROSAVAGE is not set
++# CONFIG_I2C_SAVAGE4 is not set
++# CONFIG_I2C_SIS5595 is not set
++# CONFIG_I2C_SIS630 is not set
++# CONFIG_I2C_SIS96X is not set
++# CONFIG_I2C_STUB is not set
++# CONFIG_I2C_VIA is not set
++# CONFIG_I2C_VIAPRO is not set
++# CONFIG_I2C_VOODOO3 is not set
++# CONFIG_I2C_PCA_ISA is not set
++CONFIG_I2C_PMCMSP=y
++
++#
++# Miscellaneous I2C Chip support
++#
++# CONFIG_SENSORS_DS1337 is not set
++# CONFIG_SENSORS_DS1374 is not set
++# CONFIG_SENSORS_EEPROM is not set
++# CONFIG_SENSORS_PCF8574 is not set
++CONFIG_SENSORS_PMCTWILED=y
++# CONFIG_SENSORS_PCA9539 is not set
++# CONFIG_SENSORS_PCF8591 is not set
++# CONFIG_SENSORS_MAX6875 is not set
++# CONFIG_I2C_DEBUG_CORE is not set
++# CONFIG_I2C_DEBUG_ALGO is not set
++# CONFIG_I2C_DEBUG_BUS is not set
++# CONFIG_I2C_DEBUG_CHIP is not set
++
++#
++# SPI support
++#
++# CONFIG_SPI is not set
++# CONFIG_SPI_MASTER is not set
++
++#
++# Dallas's 1-wire bus
++#
++# CONFIG_W1 is not set
++
++#
++# Hardware Monitoring support
++#
++CONFIG_HWMON=y
++# CONFIG_HWMON_VID is not set
++# CONFIG_SENSORS_ABITUGURU is not set
++# CONFIG_SENSORS_ADM1021 is not set
++# CONFIG_SENSORS_ADM1025 is not set
++# CONFIG_SENSORS_ADM1026 is not set
++# CONFIG_SENSORS_ADM1029 is not set
++# CONFIG_SENSORS_ADM1031 is not set
++# CONFIG_SENSORS_ADM9240 is not set
++# CONFIG_SENSORS_ASB100 is not set
++# CONFIG_SENSORS_ATXP1 is not set
++# CONFIG_SENSORS_DS1621 is not set
++# CONFIG_SENSORS_F71805F is not set
++# CONFIG_SENSORS_FSCHER is not set
++# CONFIG_SENSORS_FSCPOS is not set
++# CONFIG_SENSORS_GL518SM is not set
++# CONFIG_SENSORS_GL520SM is not set
++# CONFIG_SENSORS_IT87 is not set
++# CONFIG_SENSORS_LM63 is not set
++# CONFIG_SENSORS_LM75 is not set
++# CONFIG_SENSORS_LM77 is not set
++# CONFIG_SENSORS_LM78 is not set
++# CONFIG_SENSORS_LM80 is not set
++# CONFIG_SENSORS_LM83 is not set
++# CONFIG_SENSORS_LM85 is not set
++# CONFIG_SENSORS_LM87 is not set
++# CONFIG_SENSORS_LM90 is not set
++# CONFIG_SENSORS_LM92 is not set
++# CONFIG_SENSORS_MAX1619 is not set
++# CONFIG_SENSORS_PC87360 is not set
++# CONFIG_SENSORS_PC87427 is not set
++# CONFIG_SENSORS_SIS5595 is not set
++# CONFIG_SENSORS_SMSC47M1 is not set
++# CONFIG_SENSORS_SMSC47M192 is not set
++# CONFIG_SENSORS_SMSC47B397 is not set
++# CONFIG_SENSORS_VIA686A is not set
++# CONFIG_SENSORS_VT1211 is not set
++# CONFIG_SENSORS_VT8231 is not set
++# CONFIG_SENSORS_W83781D is not set
++# CONFIG_SENSORS_W83791D is not set
++# CONFIG_SENSORS_W83792D is not set
++# CONFIG_SENSORS_W83793 is not set
++# CONFIG_SENSORS_W83L785TS is not set
++# CONFIG_SENSORS_W83627HF is not set
++# CONFIG_SENSORS_W83627EHF is not set
++# CONFIG_HWMON_DEBUG_CHIP is not set
++
++#
++# Multifunction device drivers
++#
++# CONFIG_MFD_SM501 is not set
++
++#
++# Multimedia devices
++#
++# CONFIG_VIDEO_DEV is not set
++
++#
++# Digital Video Broadcasting Devices
++#
++# CONFIG_DVB is not set
++# CONFIG_USB_DABUSB is not set
++
++#
++# Graphics support
++#
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++# CONFIG_FB is not set
++
++#
++# Sound
++#
++# CONFIG_SOUND is not set
++
++#
++# HID Devices
++#
++CONFIG_HID=y
++# CONFIG_HID_DEBUG is not set
++
++#
++# USB support
++#
++CONFIG_USB_ARCH_HAS_HCD=y
++CONFIG_USB_ARCH_HAS_OHCI=y
++CONFIG_USB_ARCH_HAS_EHCI=y
++CONFIG_USB=y
++# CONFIG_USB_DEBUG is not set
++
++#
++# Miscellaneous USB options
++#
++CONFIG_USB_DEVICEFS=y
++# CONFIG_USB_DYNAMIC_MINORS is not set
++# CONFIG_USB_OTG is not set
++
++#
++# USB Host Controller Drivers
++#
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_SPLIT_ISO is not set
++CONFIG_USB_EHCI_ROOT_HUB_TT=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++# CONFIG_USB_EHCI_BIG_ENDIAN_MMIO is not set
++# CONFIG_USB_ISP116X_HCD is not set
++# CONFIG_USB_OHCI_HCD is not set
++# CONFIG_USB_UHCI_HCD is not set
++# CONFIG_USB_SL811_HCD is not set
++
++#
++# USB Device Class drivers
++#
++# CONFIG_USB_ACM is not set
++# CONFIG_USB_PRINTER is not set
++
++#
++# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
++#
++
++#
++# may also be needed; see USB_STORAGE Help for more information
++#
++CONFIG_USB_STORAGE=y
++# CONFIG_USB_STORAGE_DEBUG is not set
++# CONFIG_USB_STORAGE_DATAFAB is not set
++# CONFIG_USB_STORAGE_FREECOM is not set
++# CONFIG_USB_STORAGE_DPCM is not set
++# CONFIG_USB_STORAGE_USBAT is not set
++# CONFIG_USB_STORAGE_SDDR09 is not set
++# CONFIG_USB_STORAGE_SDDR55 is not set
++# CONFIG_USB_STORAGE_JUMPSHOT is not set
++# CONFIG_USB_STORAGE_ALAUDA is not set
++# CONFIG_USB_STORAGE_KARMA is not set
++# CONFIG_USB_LIBUSUAL is not set
++
++#
++# USB Input Devices
++#
++# CONFIG_USB_HID is not set
++
++#
++# USB HID Boot Protocol drivers
++#
++# CONFIG_USB_KBD is not set
++# CONFIG_USB_MOUSE is not set
++# CONFIG_USB_AIPTEK is not set
++# CONFIG_USB_WACOM is not set
++# CONFIG_USB_ACECAD is not set
++# CONFIG_USB_KBTAB is not set
++# CONFIG_USB_POWERMATE is not set
++# CONFIG_USB_TOUCHSCREEN is not set
++# CONFIG_USB_YEALINK is not set
++# CONFIG_USB_XPAD is not set
++# CONFIG_USB_ATI_REMOTE is not set
++# CONFIG_USB_ATI_REMOTE2 is not set
++# CONFIG_USB_KEYSPAN_REMOTE is not set
++# CONFIG_USB_APPLETOUCH is not set
++# CONFIG_USB_GTCO is not set
++
++#
++# USB Imaging devices
++#
++# CONFIG_USB_MDC800 is not set
++# CONFIG_USB_MICROTEK is not set
++
++#
++# USB Network Adapters
++#
++# CONFIG_USB_CATC is not set
++# CONFIG_USB_KAWETH is not set
++# CONFIG_USB_PEGASUS is not set
++# CONFIG_USB_RTL8150 is not set
++# CONFIG_USB_USBNET_MII is not set
++# CONFIG_USB_USBNET is not set
++CONFIG_USB_MON=y
++
++#
++# USB port drivers
++#
++
++#
++# USB Serial Converter support
++#
++# CONFIG_USB_SERIAL is not set
++
++#
++# USB Miscellaneous drivers
++#
++# CONFIG_USB_EMI62 is not set
++# CONFIG_USB_EMI26 is not set
++# CONFIG_USB_ADUTUX is not set
++# CONFIG_USB_AUERSWALD is not set
++# CONFIG_USB_RIO500 is not set
++# CONFIG_USB_LEGOTOWER is not set
++# CONFIG_USB_LCD is not set
++# CONFIG_USB_BERRY_CHARGE is not set
++# CONFIG_USB_LED is not set
++# CONFIG_USB_CYPRESS_CY7C63 is not set
++# CONFIG_USB_CYTHERM is not set
++# CONFIG_USB_PHIDGET is not set
++# CONFIG_USB_IDMOUSE is not set
++# CONFIG_USB_FTDI_ELAN is not set
++# CONFIG_USB_APPLEDISPLAY is not set
++# CONFIG_USB_SISUSBVGA is not set
++# CONFIG_USB_LD is not set
++# CONFIG_USB_TRANCEVIBRATOR is not set
++# CONFIG_USB_TEST is not set
++
++#
++# USB DSL modem support
++#
++
++#
++# USB Gadget Support
++#
++# CONFIG_USB_GADGET is not set
++
++#
++# MMC/SD Card support
++#
++# CONFIG_MMC is not set
++
++#
++# LED devices
++#
++# CONFIG_NEW_LEDS is not set
++
++#
++# LED drivers
++#
++
++#
++# LED Triggers
++#
++
++#
++# InfiniBand support
++#
++# CONFIG_INFINIBAND is not set
++
++#
++# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
++#
++
++#
++# Real Time Clock
++#
++# CONFIG_RTC_CLASS is not set
++
++#
++# DMA Engine support
++#
++# CONFIG_DMA_ENGINE is not set
++
++#
++# DMA Clients
++#
++
++#
++# DMA Devices
++#
++
++#
++# Auxiliary Display support
++#
++
++#
++# Virtualization
++#
++
++#
++# File systems
++#
++CONFIG_EXT2_FS=y
++# CONFIG_EXT2_FS_XATTR is not set
++# CONFIG_EXT2_FS_XIP is not set
++# CONFIG_EXT3_FS is not set
++# CONFIG_EXT4DEV_FS is not set
++# CONFIG_REISERFS_FS is not set
++# CONFIG_JFS_FS is not set
++# CONFIG_FS_POSIX_ACL is not set
++# CONFIG_XFS_FS is not set
++# CONFIG_GFS2_FS is not set
++# CONFIG_OCFS2_FS is not set
++# CONFIG_MINIX_FS is not set
++# CONFIG_ROMFS_FS is not set
++# CONFIG_INOTIFY is not set
++# CONFIG_QUOTA is not set
++# CONFIG_DNOTIFY is not set
++# CONFIG_AUTOFS_FS is not set
++# CONFIG_AUTOFS4_FS is not set
++# CONFIG_FUSE_FS is not set
++
++#
++# CD-ROM/DVD Filesystems
++#
++# CONFIG_ISO9660_FS is not set
++# CONFIG_UDF_FS is not set
++
++#
++# DOS/FAT/NT Filesystems
++#
++CONFIG_FAT_FS=y
++CONFIG_MSDOS_FS=y
++CONFIG_VFAT_FS=y
++CONFIG_FAT_DEFAULT_CODEPAGE=437
++CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
++# CONFIG_NTFS_FS is not set
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++# CONFIG_PROC_KCORE is not set
++CONFIG_PROC_SYSCTL=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++# CONFIG_TMPFS_POSIX_ACL is not set
++# CONFIG_HUGETLB_PAGE is not set
++CONFIG_RAMFS=y
++# CONFIG_CONFIGFS_FS is not set
++
++#
++# Miscellaneous filesystems
++#
++# CONFIG_ADFS_FS is not set
++# CONFIG_AFFS_FS is not set
++# CONFIG_HFS_FS is not set
++# CONFIG_HFSPLUS_FS is not set
++# CONFIG_BEFS_FS is not set
++# CONFIG_BFS_FS is not set
++# CONFIG_EFS_FS is not set
++CONFIG_JFFS2_FS=y
++CONFIG_JFFS2_FS_DEBUG=0
++CONFIG_JFFS2_FS_WRITEBUFFER=y
++# CONFIG_JFFS2_SUMMARY is not set
++# CONFIG_JFFS2_FS_XATTR is not set
++# CONFIG_JFFS2_COMPRESSION_OPTIONS is not set
++CONFIG_JFFS2_ZLIB=y
++CONFIG_JFFS2_RTIME=y
++# CONFIG_JFFS2_RUBIN is not set
++# CONFIG_CRAMFS is not set
++CONFIG_SQUASHFS=y
++CONFIG_SQUASHFS_EMBEDDED=y
++CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
++CONFIG_SQUASHFS_VMALLOC=y
++# CONFIG_VXFS_FS is not set
++# CONFIG_HPFS_FS is not set
++# CONFIG_QNX4FS_FS is not set
++# CONFIG_SYSV_FS is not set
++# CONFIG_UFS_FS is not set
++
++#
++# Network File Systems
++#
++# CONFIG_NFS_FS is not set
++# CONFIG_NFSD is not set
++# CONFIG_SMB_FS is not set
++# CONFIG_CIFS is not set
++# CONFIG_NCP_FS is not set
++# CONFIG_CODA_FS is not set
++# CONFIG_AFS_FS is not set
++# CONFIG_9P_FS is not set
++
++#
++# Partition Types
++#
++# CONFIG_PARTITION_ADVANCED is not set
++CONFIG_MSDOS_PARTITION=y
++
++#
++# Native Language Support
++#
++CONFIG_NLS=y
++CONFIG_NLS_DEFAULT="iso8859-1"
++CONFIG_NLS_CODEPAGE_437=y
++# CONFIG_NLS_CODEPAGE_737 is not set
++# CONFIG_NLS_CODEPAGE_775 is not set
++# CONFIG_NLS_CODEPAGE_850 is not set
++# CONFIG_NLS_CODEPAGE_852 is not set
++# CONFIG_NLS_CODEPAGE_855 is not set
++# CONFIG_NLS_CODEPAGE_857 is not set
++# CONFIG_NLS_CODEPAGE_860 is not set
++# CONFIG_NLS_CODEPAGE_861 is not set
++# CONFIG_NLS_CODEPAGE_862 is not set
++# CONFIG_NLS_CODEPAGE_863 is not set
++# CONFIG_NLS_CODEPAGE_864 is not set
++# CONFIG_NLS_CODEPAGE_865 is not set
++# CONFIG_NLS_CODEPAGE_866 is not set
++# CONFIG_NLS_CODEPAGE_869 is not set
++# CONFIG_NLS_CODEPAGE_936 is not set
++# CONFIG_NLS_CODEPAGE_950 is not set
++# CONFIG_NLS_CODEPAGE_932 is not set
++# CONFIG_NLS_CODEPAGE_949 is not set
++# CONFIG_NLS_CODEPAGE_874 is not set
++# CONFIG_NLS_ISO8859_8 is not set
++# CONFIG_NLS_CODEPAGE_1250 is not set
++# CONFIG_NLS_CODEPAGE_1251 is not set
++# CONFIG_NLS_ASCII is not set
++CONFIG_NLS_ISO8859_1=y
++# CONFIG_NLS_ISO8859_2 is not set
++# CONFIG_NLS_ISO8859_3 is not set
++# CONFIG_NLS_ISO8859_4 is not set
++# CONFIG_NLS_ISO8859_5 is not set
++# CONFIG_NLS_ISO8859_6 is not set
++# CONFIG_NLS_ISO8859_7 is not set
++# CONFIG_NLS_ISO8859_9 is not set
++# CONFIG_NLS_ISO8859_13 is not set
++# CONFIG_NLS_ISO8859_14 is not set
++# CONFIG_NLS_ISO8859_15 is not set
++# CONFIG_NLS_KOI8_R is not set
++# CONFIG_NLS_KOI8_U is not set
++# CONFIG_NLS_UTF8 is not set
++
++#
++# Distributed Lock Manager
++#
++# CONFIG_DLM is not set
++
++#
++# Profiling support
++#
++# CONFIG_PROFILING is not set
++
++#
++# Kernel hacking
++#
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++# CONFIG_PRINTK_TIME is not set
++CONFIG_ENABLE_MUST_CHECK=y
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_UNUSED_SYMBOLS is not set
++# CONFIG_DEBUG_FS is not set
++# CONFIG_HEADERS_CHECK is not set
++CONFIG_DEBUG_KERNEL=y
++# CONFIG_DEBUG_SHIRQ is not set
++CONFIG_LOG_BUF_SHIFT=14
++CONFIG_DETECT_SOFTLOCKUP=y
++# CONFIG_SCHEDSTATS is not set
++# CONFIG_TIMER_STATS is not set
++# CONFIG_DEBUG_SLAB is not set
++CONFIG_DEBUG_PREEMPT=y
++# CONFIG_DEBUG_RT_MUTEXES is not set
++# CONFIG_RT_MUTEX_TESTER is not set
++# CONFIG_DEBUG_SPINLOCK is not set
++# CONFIG_DEBUG_MUTEXES is not set
++# CONFIG_DEBUG_LOCK_ALLOC is not set
++# CONFIG_PROVE_LOCKING is not set
++# CONFIG_DEBUG_SPINLOCK_SLEEP is not set
++# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
++# CONFIG_DEBUG_KOBJECT is not set
++# CONFIG_DEBUG_INFO is not set
++# CONFIG_DEBUG_VM is not set
++# CONFIG_DEBUG_LIST is not set
++CONFIG_FORCED_INLINING=y
++# CONFIG_RCU_TORTURE_TEST is not set
++# CONFIG_FAULT_INJECTION is not set
++CONFIG_CROSSCOMPILE=y
++CONFIG_CMDLINE=""
++# CONFIG_DEBUG_STACK_USAGE is not set
++# CONFIG_KGDB is not set
++CONFIG_SYS_SUPPORTS_KGDB=y
++# CONFIG_RUNTIME_DEBUG is not set
++# CONFIG_MIPS_UNCACHED is not set
++
++#
++# Security options
++#
++# CONFIG_KEYS is not set
++# CONFIG_SECURITY is not set
++
++#
++# Cryptographic options
++#
++CONFIG_CRYPTO=y
++CONFIG_CRYPTO_ALGAPI=y
++CONFIG_CRYPTO_BLKCIPHER=y
++CONFIG_CRYPTO_HASH=y
++CONFIG_CRYPTO_MANAGER=y
++CONFIG_CRYPTO_HMAC=y
++# CONFIG_CRYPTO_XCBC is not set
++CONFIG_CRYPTO_NULL=y
++# CONFIG_CRYPTO_MD4 is not set
++CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_SHA1=y
++# CONFIG_CRYPTO_SHA256 is not set
++# CONFIG_CRYPTO_SHA512 is not set
++# CONFIG_CRYPTO_WP512 is not set
++# CONFIG_CRYPTO_TGR192 is not set
++# CONFIG_CRYPTO_GF128MUL is not set
++# CONFIG_CRYPTO_ECB is not set
++CONFIG_CRYPTO_CBC=y
++# CONFIG_CRYPTO_PCBC is not set
++# CONFIG_CRYPTO_LRW is not set
++CONFIG_CRYPTO_DES=y
++# CONFIG_CRYPTO_FCRYPT is not set
++# CONFIG_CRYPTO_BLOWFISH is not set
++# CONFIG_CRYPTO_TWOFISH is not set
++# CONFIG_CRYPTO_SERPENT is not set
++CONFIG_CRYPTO_AES=y
++# CONFIG_CRYPTO_CAST5 is not set
++# CONFIG_CRYPTO_CAST6 is not set
++# CONFIG_CRYPTO_TEA is not set
++# CONFIG_CRYPTO_ARC4 is not set
++# CONFIG_CRYPTO_KHAZAD is not set
++# CONFIG_CRYPTO_ANUBIS is not set
++CONFIG_CRYPTO_DEFLATE=y
++# CONFIG_CRYPTO_MICHAEL_MIC is not set
++# CONFIG_CRYPTO_CRC32C is not set
++# CONFIG_CRYPTO_CAMELLIA is not set
++# CONFIG_CRYPTO_TEST is not set
++
++#
++# Hardware crypto devices
++#
++
++#
++# Library routines
++#
++CONFIG_BITREVERSE=y
++# CONFIG_CRC_CCITT is not set
++# CONFIG_CRC16 is not set
++CONFIG_CRC32=y
++# CONFIG_LIBCRC32C is not set
++CONFIG_ZLIB_INFLATE=y
++CONFIG_ZLIB_DEFLATE=y
++CONFIG_PLIST=y
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y

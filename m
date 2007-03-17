@@ -1,79 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 16:03:05 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:19450 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022776AbXCQQDA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 17 Mar 2007 16:03:00 +0000
-Received: from localhost (p4213-ipad32funabasi.chiba.ocn.ne.jp [221.189.136.213])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id EF664B7DE; Sun, 18 Mar 2007 01:01:39 +0900 (JST)
-Date:	Sun, 18 Mar 2007 01:01:39 +0900 (JST)
-Message-Id: <20070318.010139.126141710.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix Symmetric Uniprocessor support for Qemu
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 19:53:09 +0000 (GMT)
+Received: from rwcrmhc12.comcast.net ([216.148.227.152]:8701 "EHLO
+	rwcrmhc12.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20022826AbXCQTxE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 17 Mar 2007 19:53:04 +0000
+Received: from [192.168.1.4] (c-68-34-70-207.hsd1.md.comcast.net[68.34.70.207])
+          by comcast.net (rwcrmhc12) with ESMTP
+          id <20070317195220m1200fuvcge>; Sat, 17 Mar 2007 19:52:20 +0000
+Message-ID: <45FC46F0.3070300@gentoo.org>
+Date:	Sat, 17 Mar 2007 15:52:16 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0b2 (Windows/20070116)
+MIME-Version: 1.0
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP32 prom crashes due to __pa() funkiness
+References: <45D8B070.7070405@gentoo.org> <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com>
+In-Reply-To: <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14522
+X-archive-position: 14523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Might be useful for SMP debugging.
+(whoops, reply didn't send to the ML, sorry Frank!)
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/Kconfig      |    6 ++++--
- arch/mips/qemu/q-smp.c |    7 +++++++
- 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 1f98b6c..c7c07a2 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -542,6 +542,7 @@ config QEMU
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select ARCH_SPARSEMEM_ENABLE
- 	select GENERIC_HARDIRQS_NO__DO_IRQ
-+	select SYS_SUPPORTS_SMP
- 	help
- 	  Qemu is a software emulator which among other architectures also
- 	  can simulate a MIPS32 4Kc system.  This patch adds support for the
-@@ -1824,9 +1825,10 @@ config NR_CPUS_DEFAULT_64
- 	bool
- 
- config NR_CPUS
--	int "Maximum number of CPUs (2-64)"
--	range 2 64
-+	int "Maximum number of CPUs (2-64)" if !QEMU
-+	range 2 64 if !QEMU
- 	depends on SMP
-+	default "1" if QEMU
- 	default "2" if NR_CPUS_DEFAULT_2
- 	default "4" if NR_CPUS_DEFAULT_4
- 	default "8" if NR_CPUS_DEFAULT_8
-diff --git a/arch/mips/qemu/q-smp.c b/arch/mips/qemu/q-smp.c
-index 5a12354..786bbfa 100644
---- a/arch/mips/qemu/q-smp.c
-+++ b/arch/mips/qemu/q-smp.c
-@@ -46,3 +46,10 @@ void __init prom_prepare_cpus(unsigned i
- void prom_boot_secondary(int cpu, struct task_struct *idle)
- {
- }
-+
-+void __init plat_smp_setup(void)
-+{
-+}
-+void __init plat_prepare_cpus(unsigned int max_cpus)
-+{
-+}
+Franck Bui-Huu wrote:
+ > Hi,
+ >
+[snip]
+ >
+ > Well, it means that you previously used CONFIG_BUILD_ELF64=y (this
+ > implied that PAGE_OFFSET is in XKPHYS) whereas your kernel has CKSEG
+ > load address (symbols need PAGE_OFFSET in CKSEG for address
+ > translation).
+ >
+ > So the question is why can't you use CONFIG_BUILD_ELF64=n (and
+ > reagarding the current definition of CONFIG_BUILD_ELF64).
+ >
+[snip]
+ >
+ > It makes me think that I posted a patch for that a couple of weeks ago:
+ >
+ > http://marc.theaimsgroup.com/?l=linux-mips&m=117154480225936&w=2
+ > http://marc.theaimsgroup.com/?l=linux-mips&m=117154480126802&w=2
+ > http://marc.theaimsgroup.com/?l=linux-mips&m=117154587014827&w=2
+ >
+ > Basically this patch removes CONFIG_BUILD_ELF64 and makes Kbuild to use
+ > '-msym32' switch if you really need it. Kbuild makes its choice according
+ > the load address of your kernel image.
+ >
+ > Could you give it a try ? This patch was based on 2.6.20 but it should
+ > apply fine on a 2.6.21-rc[12].
+
+Tested, and it still failed.
+
+And I didn't always use CONFIG_BUILD_ELF64.  In fact, for the longest time (up 
+until 2.6.17) I built IP32 and 64bit IP22 kernels without CONFIG_BUILD_eLF64, 
+passing -mabi=o64 (a.k.a., the binutils hack).  This let me use the plain 
+'vmlinux' target w/o the need for an objcopy to boot these systems.  After 
+2.6.17, the nature of o64 was mostly neutered, so I switched to using 
+CONFIG_BUILD_ELF64 and the 'vmlinux.32' target, as this is apparently the way 
+Debian builds their IP32 kernels (and was the way geoman/spbecker said I 
+should've been using all along).
+
+So with the changes brought in by __pa(), I suppose a new, RightWay(TM) to build 
+IP32 (and conversely, 64bit IP22) kernels needs to be found.  These two systems 
+are particularly wacky, hence why they need a bit more special care than more 
+traditional, proper, 64bit systems like Origin and Octane.
+
+Also, Peter raises a good point in this case.  It sounds like a re-thinking of 
+how all this address stuff is handled will fix not only special cases like 
+IP32/IP22, but the really weird systems, like IP28, as well.  Which would be a 
+big plus in my opinion.
+
+
+--Kumba
+
+-- 
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

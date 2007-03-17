@@ -1,53 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 13:48:34 +0000 (GMT)
-Received: from roasted.cubic.org ([193.108.181.130]:40667 "EHLO
-	roasted.cubic.org") by ftp.linux-mips.org with ESMTP
-	id S20022742AbXCQNs3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 17 Mar 2007 13:48:29 +0000
-Received: from c192151.adsl.hansenet.de ([213.39.192.151] helo=cubic.org)
-	by roasted.cubic.org with asmtp (TLSv1:RC4-MD5:128)
-	(Exim 3.36 #1)
-	id 1HSZDj-0007ix-00
-	for linux-mips@linux-mips.org; Sat, 17 Mar 2007 14:45:19 +0100
-Message-ID: <45FBF0F1.70302@cubic.org>
-Date:	Sat, 17 Mar 2007 14:45:21 +0100
-From:	Michael Stickel <michael@cubic.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030225
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 16:03:05 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:19450 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022776AbXCQQDA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 17 Mar 2007 16:03:00 +0000
+Received: from localhost (p4213-ipad32funabasi.chiba.ocn.ne.jp [221.189.136.213])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id EF664B7DE; Sun, 18 Mar 2007 01:01:39 +0900 (JST)
+Date:	Sun, 18 Mar 2007 01:01:39 +0900 (JST)
+Message-Id: <20070318.010139.126141710.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: Re: Au1500 and TI PCI1510 cardbus
-References: <d459bb380703161129l769d3f48w744ba0bfdf04fc91@mail.gmail.com>	 <45FBB9C7.9060800@cubic.org> <d459bb380703170554l3fb40d60h6f68b70472ad7cb@mail.gmail.com>
-In-Reply-To: <d459bb380703170554l3fb40d60h6f68b70472ad7cb@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix Symmetric Uniprocessor support for Qemu
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <michael@cubic.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14521
+X-archive-position: 14522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael@cubic.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Marco Braga wrote:
+Might be useful for SMP debugging.
 
-> I've found the datasheet of PCI1510 and the section you pointed. Sadly 
-> I don't understand fully the problem, so I'll discuss it with out 
-> hardware enginers. Do you have any reference to the effects of that 
-> problem? Can it cause the hand of reads on the bus?
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/Kconfig      |    6 ++++--
+ arch/mips/qemu/q-smp.c |    7 +++++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-I am sory, I meant the datasheet of the Au1500. I do not find the 
-paragraph anymore, but can tell you more on monday.
-One interesting paragraph is "AMD Alchemy Au1500 Processor Data Book" - 
-4.3.10 "Other Notes" first paragraph.
-
-The note I meant descibes a situration where a delayed read transaction 
-on a pci device behind a pci-pci bridge can cause to a racing condition, 
-where the whole system stalls. The CPU does not get the chance to do 
-anything anymore, because the PCI subsystem blocks it.
-
-Regards,
-Michael
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 1f98b6c..c7c07a2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -542,6 +542,7 @@ config QEMU
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select ARCH_SPARSEMEM_ENABLE
+ 	select GENERIC_HARDIRQS_NO__DO_IRQ
++	select SYS_SUPPORTS_SMP
+ 	help
+ 	  Qemu is a software emulator which among other architectures also
+ 	  can simulate a MIPS32 4Kc system.  This patch adds support for the
+@@ -1824,9 +1825,10 @@ config NR_CPUS_DEFAULT_64
+ 	bool
+ 
+ config NR_CPUS
+-	int "Maximum number of CPUs (2-64)"
+-	range 2 64
++	int "Maximum number of CPUs (2-64)" if !QEMU
++	range 2 64 if !QEMU
+ 	depends on SMP
++	default "1" if QEMU
+ 	default "2" if NR_CPUS_DEFAULT_2
+ 	default "4" if NR_CPUS_DEFAULT_4
+ 	default "8" if NR_CPUS_DEFAULT_8
+diff --git a/arch/mips/qemu/q-smp.c b/arch/mips/qemu/q-smp.c
+index 5a12354..786bbfa 100644
+--- a/arch/mips/qemu/q-smp.c
++++ b/arch/mips/qemu/q-smp.c
+@@ -46,3 +46,10 @@ void __init prom_prepare_cpus(unsigned i
+ void prom_boot_secondary(int cpu, struct task_struct *idle)
+ {
+ }
++
++void __init plat_smp_setup(void)
++{
++}
++void __init plat_prepare_cpus(unsigned int max_cpus)
++{
++}

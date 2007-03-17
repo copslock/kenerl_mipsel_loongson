@@ -1,106 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 07:53:35 +0000 (GMT)
-Received: from smtp-106-saturday.nerim.net ([62.4.16.106]:25094 "EHLO
-	kraid.nerim.net") by ftp.linux-mips.org with ESMTP
-	id S20022013AbXCQHxa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 17 Mar 2007 07:53:30 +0000
-Received: from arrakis.delvare (jdelvare.pck.nerim.net [62.212.121.182])
-	by kraid.nerim.net (Postfix) with SMTP id B3F7840E31;
-	Sat, 17 Mar 2007 08:52:59 +0100 (CET)
-Date:	Sat, 17 Mar 2007 08:52:44 +0100
-From:	Jean Delvare <khali@linux-fr.org>
-To:	200703162139.l2GLdpuH001568@pasqua.pmc-sierra.bc.ca
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Marc St-Jean <stjeanma@pmc-sierra.com>,
-	akpm@linux-foundation.org, linux-mips@linux-mips.org,
-	i2c@lm-sensors.org
-Subject: Re: [PATCH 8/12] drivers: PMC MSP71xx TWI driver]
-Message-Id: <20070317085244.f99aad86.khali@linux-fr.org>
-In-Reply-To: <20070316230333.GA17478@linux-mips.org>
-References: <20070316230333.GA17478@linux-mips.org>
-X-Mailer: Sylpheed version 2.2.10 (GTK+ 2.8.20; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 09:53:14 +0000 (GMT)
+Received: from roasted.cubic.org ([193.108.181.130]:62680 "EHLO
+	roasted.cubic.org") by ftp.linux-mips.org with ESMTP
+	id S20022689AbXCQJxJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 17 Mar 2007 09:53:09 +0000
+Received: from c192151.adsl.hansenet.de ([213.39.192.151] helo=cubic.org)
+	by roasted.cubic.org with asmtp (TLSv1:RC4-MD5:128)
+	(Exim 3.36 #1)
+	id 1HSVXz-00078A-00
+	for linux-mips@linux-mips.org; Sat, 17 Mar 2007 10:49:59 +0100
+Message-ID: <45FBB9C7.9060800@cubic.org>
+Date:	Sat, 17 Mar 2007 10:49:59 +0100
+From:	Michael Stickel <michael@cubic.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20030225
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: Au1500 and TI PCI1510 cardbus
+References: <d459bb380703161129l769d3f48w744ba0bfdf04fc91@mail.gmail.com>
+In-Reply-To: <d459bb380703161129l769d3f48w744ba0bfdf04fc91@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+Return-Path: <michael@cubic.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14516
+X-archive-position: 14517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: michael@cubic.org
 Precedence: bulk
 X-list: linux-mips
 
-Marc,
+Marco Braga wrote:
 
-> ----- Forwarded message from Marc St-Jean <stjeanma@pmc-sierra.com> -----
-> 
-> From:	Marc St-Jean <stjeanma@pmc-sierra.com>
-> Date:	Fri, 16 Mar 2007 15:39:51 -0600
-> To:	akpm@linux-foundation.org
-> Cc:	linux-mips@linux-mips.org
-> Subject: [PATCH 8/12] drivers: PMC MSP71xx TWI driver
-> 
-> [PATCH 8/12] drivers: PMC MSP71xx TWI driver
-> 
-> Patch to add TWI driver for the PMC-Sierra MSP71xx devices.
-> 
-> Reposting patches as a single set at the request of akpm.
-> Only 9 of 12 will be posted at this time, 3 more to follow
-> when cleanups are complete.
-> 
-> CCing linux-mips.org since minor changes have occured
-> during cleanup of driver patches for other lists.
-> 
-> Thanks,
-> Marc
-> 
-> Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-> ---
-> Re-posting patch with recommended changes:
-> -No changes.
-> 
->  drivers/i2c/algos/Kconfig           |    9 
->  drivers/i2c/algos/Makefile          |    1 
->  drivers/i2c/algos/i2c-algo-pmctwi.c |  197 ++++++++++++++++
->  drivers/i2c/busses/Kconfig          |    7 
->  drivers/i2c/busses/Makefile         |    1 
->  drivers/i2c/busses/i2c-pmcmsp.c     |  419 ++++++++++++++++++++++++++++++++++++
->  include/linux/i2c-algo-pmctwi.h     |  135 +++++++++++
->  7 files changed, 768 insertions(+), 1 deletion(-)
+> my Au1500 based board has a PCI1510 cardbus controller connected to 
+> the PCI bus. So far the kernel 2.6.17 supports it as a "yenta_socket". 
+> The cardbus is correctly seen and configured, and if I insert a wifi 
+> card in the slot I can configure it.
 
-Why are you making a separate algorithm driver? This should really only
-be done when the algorithm is very generic. This is the exception, not
-the rule. These days I tend to move algorithm code back into the only
-bus driver that uses them (i2c-algo-sibyte done recently, i2c-algo-sgi
-is next on my list.)
 
-> 
-> diff --git a/drivers/i2c/algos/Kconfig b/drivers/i2c/algos/Kconfig
-> index af02034..794f7bb 100644
-> --- a/drivers/i2c/algos/Kconfig
-> +++ b/drivers/i2c/algos/Kconfig
-> @@ -49,5 +49,12 @@ config I2C_ALGO_SGI
->  	  Supports the SGI interfaces like the ones found on SGI Indy VINO
->  	  or SGI O2 MACE.
->  
-> -endmenu
-> +config I2C_ALGO_PMCTWI
-> +	tristate "I2C PMC TWI interfaces"
-> +	depends on I2C && PMC_MSP
+There is a hint on that in the datasheet. Search for deadlock and/or 
+delayed read transaction.
+Read it carefully. May be you can not use you PCI-Cardbus controller. 
+Have in mind, that a PCI-Cardbus controller with a cardbus card inserted 
+acts like a PCI to PCI bridge.
 
-As a matter of fact, each time an algorithm depends on specific
-hardware, you can be reasonably certain that it should NOT be made a
-generic algorithm driver.
-
-> +	help
-> +	  Implements the PMC TWI SoC algorithm for various implementations.
->  
-> +	  Be sure to select the proper bus for your platform below.
-> +
-> +endmenu
-
--- 
-Jean Delvare
+Regards,
+Michael

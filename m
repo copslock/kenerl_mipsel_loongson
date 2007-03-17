@@ -1,65 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 12:55:16 +0000 (GMT)
-Received: from wr-out-0506.google.com ([64.233.184.238]:62881 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022737AbXCQMzK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 17 Mar 2007 12:55:10 +0000
-Received: by wr-out-0506.google.com with SMTP id i31so801989wra
-        for <linux-mips@linux-mips.org>; Sat, 17 Mar 2007 05:54:09 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=iXfjRmMzYxQOmY5gjXhCpSTmPoClp61iRfD7bYpw9MVhHgT8MbT2A0M/GtzHv8rD6BE9CxXAs7+8lytNS9Bw7fT2QUtKrm8T612ZR5fgJawy3QGsPEDfOE7AxEzNBJDoNn6UohesJjJ2ThmkArcof0/OvHboUE8BmWozGmWNy6I=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=mHS2b0mnqTyM6qbrwHujwWKfxficUrkC78bw2PREQu+/ZxsVLTnPWIeRylWaMpZqZFnbNABPZhhxHTDvcXCEe/4OmTn/ISFMqUK0awbt72AtI/p8Bd5rZEC9y+j6rItyK0hz68HDUMAGcQiCf33TpbMj18CLl489adZIXb2cAY4=
-Received: by 10.114.13.1 with SMTP id 1mr1096372wam.1174136049031;
-        Sat, 17 Mar 2007 05:54:09 -0700 (PDT)
-Received: by 10.114.159.16 with HTTP; Sat, 17 Mar 2007 05:54:08 -0700 (PDT)
-Message-ID: <d459bb380703170554l3fb40d60h6f68b70472ad7cb@mail.gmail.com>
-Date:	Sat, 17 Mar 2007 13:54:08 +0100
-From:	"Marco Braga" <marco.braga@gmail.com>
-To:	"Michael Stickel" <michael@cubic.org>
-Subject: Re: Au1500 and TI PCI1510 cardbus
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <45FBB9C7.9060800@cubic.org>
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_125253_18638465.1174136048983"
-References: <d459bb380703161129l769d3f48w744ba0bfdf04fc91@mail.gmail.com>
-	 <45FBB9C7.9060800@cubic.org>
-Return-Path: <marco.braga@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Mar 2007 13:31:59 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:6624 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022286AbXCQNbx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 17 Mar 2007 13:31:53 +0000
+Received: from localhost (p4213-ipad32funabasi.chiba.ocn.ne.jp [221.189.136.213])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C5270B7CB; Sat, 17 Mar 2007 22:30:31 +0900 (JST)
+Date:	Sat, 17 Mar 2007 22:30:31 +0900 (JST)
+Message-Id: <20070317.223031.93018658.anemo@mba.ocn.ne.jp>
+To:	stjeanma@pmc-sierra.com
+Cc:	akpm@linux-foundation.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/12] mips: PMC MSP71xx core platform
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <200703162132.l2GLWuAv032733@pasqua.pmc-sierra.bc.ca>
+References: <200703162132.l2GLWuAv032733@pasqua.pmc-sierra.bc.ca>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14519
+X-archive-position: 14520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marco.braga@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_125253_18638465.1174136048983
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Fri, 16 Mar 2007 15:32:56 -0600, Marc St-Jean <stjeanma@pmc-sierra.com> wrote:
+> +static struct irq_chip msp_cic_irq_controller = {
+> +	.typename = "MSP_CIC",
 
-Dear Michael,
+The 'typename' is obsolete.  Use 'name'.  Also, using new flow handler
+(and GENERIC_HARDIRQS_NO__DO_IRQ in Kconfig) might give you a little
+bit better performance.
 
-I've found the datasheet of PCI1510 and the section you pointed. Sadly I
-don't understand fully the problem, so I'll discuss it with out hardware
-enginers. Do you have any reference to the effects of that problem? Can it
-cause the hand of reads on the bus?
-
-Thanks a lot!
-
-------=_Part_125253_18638465.1174136048983
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-Dear Michael,<br><br>I&#39;ve found the datasheet of PCI1510 and the section you pointed. Sadly I don&#39;t understand fully the problem, so I&#39;ll discuss it with out hardware enginers. Do you have any reference to the effects of that problem? Can it cause the hand of reads on the bus?
-<br><br>Thanks a lot!<br>
-
-------=_Part_125253_18638465.1174136048983--
+---
+Atsushi Nemoto

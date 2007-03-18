@@ -1,77 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2007 13:18:23 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.175]:33670 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021713AbXCRNSV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 18 Mar 2007 13:18:21 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so1204014uga
-        for <linux-mips@linux-mips.org>; Sun, 18 Mar 2007 06:17:20 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=jyMOFZvLcLjWmxuJzr1eL6r/sADjxNWj6MIzDbKskJ0GNv3aY+wAxFA0k8mqcYaNmU2u+nrbBAMVpeR+RVcpaWer9sdCmeS+lMhlxY7kGDccrlBov1Gy0Ra6De33UArZLEfOtLa9pzVpfzBJ1ORjJKLvDITTafn2/oqGgRAF3gA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=Puia6VTihAmK0CQUFdMKJuiKuv5YqZas8s/Tkmsx454JDrGcUQ3aH1gH52QIB0uixPs+LrQHpMLrrigdrUDsWgcAnLV/QBNZVIN7AjtmAmwLRxijx4p7NIjtoVEl7/fxuVoIOWqmju9iRtyAc8A9iTwu4uBJaGznhTKHxQXLJaw=
-Received: by 10.65.237.15 with SMTP id o15mr5499270qbr.1174223822216;
-        Sun, 18 Mar 2007 06:17:02 -0700 (PDT)
-Received: by 10.114.159.16 with HTTP; Sun, 18 Mar 2007 06:17:02 -0700 (PDT)
-Message-ID: <d459bb380703180617i6e50539bx13ad405fb306fe44@mail.gmail.com>
-Date:	Sun, 18 Mar 2007 14:17:02 +0100
-From:	"Marco Braga" <marco.braga@gmail.com>
-To:	"Michael Stickel" <michael@cubic.org>
-Subject: Re: Au1500 and TI PCI1510 cardbus
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <45FBF0F1.70302@cubic.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Mar 2007 21:27:02 +0000 (GMT)
+Received: from sccrmhc15.comcast.net ([63.240.77.85]:22242 "EHLO
+	sccrmhc15.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20022842AbXCRV1B (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 18 Mar 2007 21:27:01 +0000
+Received: from [192.168.1.4] (c-68-34-70-207.hsd1.md.comcast.net[68.34.70.207])
+          by comcast.net (sccrmhc15) with ESMTP
+          id <20070318212617015001niqve>; Sun, 18 Mar 2007 21:26:17 +0000
+Message-ID: <45FDAE77.1040800@gentoo.org>
+Date:	Sun, 18 Mar 2007 17:26:15 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0b2 (Windows/20070116)
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_135937_29248647.1174223822137"
-References: <d459bb380703161129l769d3f48w744ba0bfdf04fc91@mail.gmail.com>
-	 <45FBB9C7.9060800@cubic.org>
-	 <d459bb380703170554l3fb40d60h6f68b70472ad7cb@mail.gmail.com>
-	 <45FBF0F1.70302@cubic.org>
-Return-Path: <marco.braga@gmail.com>
+To:	post@pfrst.de
+CC:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: IP32 prom crashes due to __pa() funkiness
+References: <45D8B070.7070405@gentoo.org> <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com> <45FC3923.2080207@gentoo.org> <Pine.LNX.4.58.0703181006450.396@Indigo2.Peter>
+In-Reply-To: <Pine.LNX.4.58.0703181006450.396@Indigo2.Peter>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14528
+X-archive-position: 14529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marco.braga@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_135937_29248647.1174223822137
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+peter fuerst wrote:
+> 
+> Hi!
+> 
+> Did you try to use PHYS_OFFSET > 0 ?  __pa() ist still (as of
+> d3fbd83ff545e49e2a0a5ca0f00dda4eedaf8be7) defined as (casts omitted):
+> 
+> #define __pa(x) (x - (x < CKSEG0 ? PAGE_OFFSET:CKSEG0) + PHYS_OFFSET)
+> 
+> This gives __pa(CKSEG0) == PHYS_OFFSET, which will never work for
+> PHYS_OFFSET > 0. A quick fix (assuming this was the cause for failure)
+> could be:
+> 
+> ========================================================================
+> --- d3fbd83ff545e49e2a0a5ca0f00dda4eedaf8be7/include/asm-mips/page.h	Sat Mar 10 08:43:17 2007
+> +++ quickfix/include/asm-mips/page.h	Sun Mar 18 10:24:34 2007
+> @@ -150,7 +150,7 @@ typedef struct { unsigned long pgprot; }
+>   * __pa()/__va() should be used only during mem init.
+>   */
+>  #if defined(CONFIG_64BIT) && !defined(CONFIG_BUILD_ELF64)
+> -#define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
+> +#define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0+PHYS_OFFSET)
+>  #else
+>  #define __pa_page_offset(x)	PAGE_OFFSET
+>  #endif
+> 
+> 
+> Signed-off-by: peter fuerst <post@pfrst.de>
+> 
+> ========================================================================
+> 
+> Of course, "#define PAGE_OFFSET (CAC_BASE + PHYS_OFFSET)" is also needed.
+> 
+> kind regards
+> 
+> peter
 
-> I am sory, I meant the datasheet of the Au1500. I do not find the
-> paragraph anymore, but can tell you more on monday.
+Hmm, I can't find where PHYS_OFFSET is defined for mips.  A grep shows it mostly 
+existing for the arm arch.  Is there an alternative macro available, or is this 
+something that needs porting over?
 
 
-Thank you. I've checked the data book but I've not found anything so
-explicit. Paragraph 4.3.10 "Other notes" states:
+--Kumba
 
-"The Au1500 PCI contoller cannot be used with external PCI-to-PCI bridges
-that have PCI bus-mastering devices on the
-secondary bus which target the Au1500 memory."
+-- 
+Gentoo/MIPS Team Lead
 
-But this is not exactly an explanation.. I've found nothing regarding race
-conditions or delayed transactions. I'll wait eagerly for monday when all
-the truths will be revealed. :)
-
-Thanks!!
-
-------=_Part_135937_29248647.1174223822137
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<br><div><blockquote class="gmail_quote" style="border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">I am sory, I meant the datasheet of the Au1500. I do not find the<br>paragraph anymore, but can tell you more on monday.
-</blockquote><div><br>Thank you. I&#39;ve checked the data book but I&#39;ve not found anything so explicit. Paragraph 4.3.10 &quot;Other notes&quot; states:<br><br>&quot;The Au1500 PCI contoller cannot be used with external PCI-to-PCI bridges that have PCI bus-mastering devices on the
-<br>secondary bus which target the Au1500 memory.&quot;<br><br>But this is not exactly an explanation.. I&#39;ve found nothing regarding race conditions or delayed transactions. I&#39;ll wait eagerly for monday when all the truths will be revealed. :)
-<br><br>Thanks!!<br><br></div></div>
-
-------=_Part_135937_29248647.1174223822137--
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

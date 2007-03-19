@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 15:52:34 +0000 (GMT)
-Received: from hu-out-0506.google.com ([72.14.214.239]:60645 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021925AbXCSPw3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 19 Mar 2007 15:52:29 +0000
-Received: by hu-out-0506.google.com with SMTP id 22so6019734hug
-        for <linux-mips@linux-mips.org>; Mon, 19 Mar 2007 08:51:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 16:00:28 +0000 (GMT)
+Received: from qb-out-0506.google.com ([72.14.204.229]:59999 "EHLO
+	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021913AbXCSQAX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Mar 2007 16:00:23 +0000
+Received: by qb-out-0506.google.com with SMTP id e12so4824201qba
+        for <linux-mips@linux-mips.org>; Mon, 19 Mar 2007 08:59:22 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=lVTZoqdq3Xx73urGBUMqOZlj/ta0dIL1EF/AticoFCkJdiVP8C8ifObXX69r1YcBFG4+2Fy9ixq9261VxVibSSy6hfS20K1620IxjpQuU2CvQe1YQg+3FiEOOJ0vV6XGCArrJ6NKzseAp3DZ4B51sDtkU9hrl40o9k6mM5m1COc=
+        b=cjfbWzGUJpjUUiSQaA18RQnRfZtufYz8QQKcMUgsrjEHZkWLmqlZwVcCbthqoZmJfWc9tLM0nQ+6Mv+g/Kj8pFm2bMjP+bQ14ahdyCUKIxf+h0DffxqgQAhJ6j9gbGWEu8x9AAjRn7h+OUY9fCV+JOSt+xbqCGNzX/D1fy5uK/o=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=PszqflCUtO6xqWyH6g2HiBE7hNb3JStpN3DlxGB8zb6xR0gMdantyxTSw/HyawLhs+Fh2UchMv1AS5BYgSlwSvapppGqiSvQtCZKTkg6m6hG5yZavQ24KrL1Nq3em33qJnlJc40Vo+ME3CgZseHpKnY93BVXpOu9bMr37wy8MTI=
-Received: by 10.82.167.5 with SMTP id p5mr10240038bue.1174319488822;
-        Mon, 19 Mar 2007 08:51:28 -0700 (PDT)
+        b=cu4Z33OQL65AwK2bA2N0iUmgCmPjDQMC6n+Qlm9A3hYYrOPPNnpE5B/Da/IPdLUA44lCRrUsBuuKKKB3tYRJ7eWZVUxE9nCWDs2Z+YOGSbfcttRos/aOlVwVOTW/dKeugtHVdTmshRluMvydo64/cSWwBppCTpLYedKNbItoewk=
+Received: by 10.65.253.6 with SMTP id f6mr8014765qbs.1174319962076;
+        Mon, 19 Mar 2007 08:59:22 -0700 (PDT)
 Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id y34sm12786874iky.2007.03.19.08.51.27;
-        Mon, 19 Mar 2007 08:51:28 -0700 (PDT)
-Message-ID: <45FEB179.4070904@innova-card.com>
-Date:	Mon, 19 Mar 2007 16:51:21 +0100
+        by mx.google.com with ESMTP id k24sm14455320nfc.2007.03.19.08.59.20;
+        Mon, 19 Mar 2007 08:59:21 -0700 (PDT)
+Message-ID: <45FEB353.5020001@innova-card.com>
+Date:	Mon, 19 Mar 2007 16:59:15 +0100
 Reply-To: Franck <vagabon.xyz@gmail.com>
 User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
 To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	post@pfrst.de, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] __pa_page_offset(): fix physical offset for kernel linked
- in CKSEG0
+CC:	mbizon@freebox.fr, post@pfrst.de,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] Always include PHYS_OFFSET in PAGE_OFFSET
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
@@ -34,7 +34,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14563
+X-archive-position: 14564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,29 +42,54 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: peter fuerst <post@pfrst.de>
+From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-This patch fixes commit 6f284a2ce7b8bc49cb8455b1763357897a899abb
-for 64 bits kernel linked in CKSEG0.
+For platforms that use PHYS_OFFSET and do not use a mapped kernel,
+this patch automatically adds PHYS_OFFSET into PAGE_OFFSET.
+Therefore for these platforms there are no more needs to change
+PAGE_OFFSET.
 
-Signed-off-by: peter fuerst <post@pfrst.de>
+For mapped kernel, they need to redefine PAGE_OFFSET anyways.
+
 Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
 ---
- include/asm-mips/page.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
-index d3fbd83..76cb88c 100644
---- a/include/asm-mips/page.h
-+++ b/include/asm-mips/page.h
-@@ -150,7 +150,7 @@ typedef struct { unsigned long pgprot; } pgprot_t;
-  * __pa()/__va() should be used only during mem init.
+ Maxime,
+
+ Could you give a try to this patch ? It removes the need to
+ change your PAGE_OFFSET. If I remember correctly it's now
+ 0x90000000, and you should be able to restore back to
+ 0x80000000.
+
+		Franck
+
+ include/asm-mips/mach-generic/spaces.h |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/asm-mips/mach-generic/spaces.h b/include/asm-mips/mach-generic/spaces.h
+index 0ae9997..600561f 100644
+--- a/include/asm-mips/mach-generic/spaces.h
++++ b/include/asm-mips/mach-generic/spaces.h
+@@ -22,7 +22,7 @@
+  * This handles the memory map.
+  * We handle pages at KSEG0 for kernels with 32 bit address space.
   */
- #if defined(CONFIG_64BIT) && !defined(CONFIG_BUILD_ELF64)
--#define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0)
-+#define __pa_page_offset(x)	((unsigned long)(x) < CKSEG0 ? PAGE_OFFSET : CKSEG0 + PHYS_OFFSET)
+-#define PAGE_OFFSET		0x80000000UL
++#define PAGE_OFFSET		(0x80000000UL + PHYS_OFFSET)
+ 
+ /*
+  * Memory above this physical address will be considered highmem.
+@@ -39,9 +39,9 @@
+  * This handles the memory map.
+  */
+ #ifdef CONFIG_DMA_NONCOHERENT
+-#define PAGE_OFFSET	0x9800000000000000UL
++#define PAGE_OFFSET	(0x9800000000000000UL + PHYS_OFFSET)
  #else
- #define __pa_page_offset(x)	PAGE_OFFSET
+-#define PAGE_OFFSET	0xa800000000000000UL
++#define PAGE_OFFSET	(0xa800000000000000UL + PHYS_OFFSET)
  #endif
+ 
+ /*
 -- 
 1.4.4.3.ge6d4

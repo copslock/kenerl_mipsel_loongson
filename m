@@ -1,46 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 15:49:02 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:53234 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021903AbXCSPs5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2007 15:48:57 +0000
-Received: from localhost (p3228-ipad01funabasi.chiba.ocn.ne.jp [61.207.77.228])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 0AD1FAAA0; Tue, 20 Mar 2007 00:47:37 +0900 (JST)
-Date:	Tue, 20 Mar 2007 00:47:36 +0900 (JST)
-Message-Id: <20070320.004736.10544260.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 15:50:22 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:45954 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021775AbXCSPuU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Mar 2007 15:50:20 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2JFmM5j001981;
+	Mon, 19 Mar 2007 15:48:22 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2JFmLfK001980;
+	Mon, 19 Mar 2007 15:48:21 GMT
+Date:	Mon, 19 Mar 2007 15:48:21 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org
 Subject: Re: ZONE_DMA on MIPS
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <45FEAD11.7070503@ru.mvista.com>
+Message-ID: <20070319154821.GA31766@linux-mips.org>
 References: <20070320.000947.88474417.anemo@mba.ocn.ne.jp>
-	<45FEAD11.7070503@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070320.000947.88474417.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14560
+X-archive-position: 14561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 19 Mar 2007 18:32:33 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > Are there any other platforms requires special DMA zone?
+On Tue, Mar 20, 2007 at 12:09:47AM +0900, Atsushi Nemoto wrote:
+
+> Some ZONE_DMA patches were merged in 2.6.21.  On most MIPS, ZONE_DMA
+> is not needed, isn't it?
 > 
->     Erm, RBHMA4[24]00 have 8259 on the backplane... And the NEC boards with 
-> the Rockhopper backplane as well...
+> Currently JAZZ, MALTA, QEMU, IP22, SNI_RM, RBTX4938 defines
+> GENERIC_ISA_DMA so they may need ZONE_DMA (though I wonder QEMU or
+> RBTX4938 really need it...)
+> 
+> Are there any other platforms requires special DMA zone?
 
-Having 8259 does not mean it uses ISA DMA.  IIRC FPCIB0 backplane does
-not have real ISA slot, and no on-board device uses ISA DMA.  Does
-Rockhopper backplace have ISA slot?
+Qemu supports more or less the full PC braind^Wheritage, including the
+good old too-old floppy controller.  IP22 supports Indigo 2 systems
+which have EISA support, so we only want ZONE_DMA if EISA is enabled.
+For a bunch of other systems ZONE_DMA may be required to support b0rked
+PCI cards that only support like 31-bit DMA addresses or even less.
 
----
-Atsushi Nemoto
+  Ralf

@@ -1,60 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 13:57:54 +0000 (GMT)
-Received: from ag-out-0708.google.com ([72.14.246.245]:34116 "EHLO
-	ag-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021871AbXCSN5t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 19 Mar 2007 13:57:49 +0000
-Received: by ag-out-0708.google.com with SMTP id 22so8234970agd
-        for <linux-mips@linux-mips.org>; Mon, 19 Mar 2007 06:57:44 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=p3lIg3+lKJvW96Mtqya3n3+jxwj5OAKkufyM845X7wEScRHbrlZLJCIn3iqSVqsNkSfu6pzC/Fa+gpbqFIX2a3Um65/r3Chkm2xb2BSHKi0DZGF5DhSQGbaO8vVDYmVgpGJREk14IqR81sGnBGT6IMycYJLrvsp5g68pfdQIzPc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=FO2yenGz1+DqLFOWUEFXBf73Z7lYsrc44YAuzWRonDeEolpr88apSKoXC7yoHslsbF003FCAgUCkKBFhYJIon6bt3nRYQa0puZvAJRpohALxxK9mHSPktEOooNnWtSfLGxxIjZfbQ6Ozu1b3On8//Bmktvr4gQFIkeXlABeKeRQ=
-Received: by 10.90.113.20 with SMTP id l20mr3947637agc.1174312663826;
-        Mon, 19 Mar 2007 06:57:43 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Mon, 19 Mar 2007 06:57:43 -0700 (PDT)
-Message-ID: <cda58cb80703190657x7f33f9ffx80982c2591e2e11@mail.gmail.com>
-Date:	Mon, 19 Mar 2007 14:57:43 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	Kumba <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 14:14:51 +0000 (GMT)
+Received: from phoenix.bawue.net ([193.7.176.60]:43482 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20021845AbXCSOOq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2007 14:14:46 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 5F6E4BB79F;
+	Mon, 19 Mar 2007 15:07:22 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1HTIWQ-0008SP-5f; Mon, 19 Mar 2007 14:07:38 +0000
+Date:	Mon, 19 Mar 2007 14:07:38 +0000
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Kumba <kumba@gentoo.org>,
+	Linux MIPS List <linux-mips@linux-mips.org>,
+	Arnaud Giersch <arnaud.giersch@free.fr>
 Subject: Re: IP32 prom crashes due to __pa() funkiness
-Cc:	post@pfrst.de, "Linux MIPS List" <linux-mips@linux-mips.org>
-In-Reply-To: <45FDC0E0.1050609@gentoo.org>
+Message-ID: <20070319140738.GA28895@networkno.de>
+References: <45D8B070.7070405@gentoo.org> <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com> <45FC46F0.3070300@gentoo.org> <87irczzglc.fsf@groumpf.homeip.net> <45FC9E39.7010506@gentoo.org> <45FE95EE.5030108@innova-card.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <45D8B070.7070405@gentoo.org>
-	 <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com>
-	 <45FC3923.2080207@gentoo.org>
-	 <Pine.LNX.4.58.0703181006450.396@Indigo2.Peter>
-	 <45FDC0E0.1050609@gentoo.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <45FE95EE.5030108@innova-card.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14548
+X-archive-position: 14549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On 3/18/07, Kumba <kumba@gentoo.org> wrote:
->
-> Backported the patches that bring in PHYS_OFFSET and tried both with and without
-> Frank's patches to remove CONFIG_BUILD_ELF64 from the Makefile, plus this
-> change, and still no go.  W/o CONFIG_BUILD_ELF64, both the vmlinux and
-> vmlinux.32 targets just silently hang.  With CONFIG_BUILD_ELF64 in the Makefile,
-> the same Prom crash.
->
+Franck Bui-Huu wrote:
+[snip]
+> > Now I guess we're back to CONFIG_BUILD_ELF64=n?  I guess the real
+> > question is, which way is the OneWay(TM), RightWay(TM) and OnlyWay(TM)?
+> 
+> Now it's clear that CONFIG_BUILD_ELF64 is really confusing. I would say
+> that whatever the value of CONFIG_BUILD_ELF64, your kernel should run
+> fine. BUT it really depends on your kernel load address:
+> 
+> if CONFIG_BUILD_ELF64=y then kernel load address must be in XKPHYS
+> if CONFIG_BUILD_ELF64=n then kernel load address must be in CKSEG0
+> 
+> All others configs (I think) are buggy...
 
-wait wait wait. PHYS_OFFSET has nothing to do in this case. You are
-obvioulsy not using it by default.
+Why? A ELF64 kernel for CKSEG0 should be fine, at least in principle,
+even if it doesn't work wih the current codebase.
 
--- 
-               Franck
+> That's said, it seems that IPxx kernels are really special
+> beasts. Take from MIPS makefile:
+> 
+> """
+> Some machines like the Indy need 32-bit ELF binaries for booting
+> purposes.
+> """
+
+This is true for netbooting via firmware. For booting from disk the
+bootloaders support AFAIR ELF64-for-CKSEG0.
+
+
+Thiemo

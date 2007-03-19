@@ -1,78 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 14:50:04 +0000 (GMT)
-Received: from phoenix.bawue.net ([193.7.176.60]:6807 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20021875AbXCSOt7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 19 Mar 2007 14:49:59 +0000
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id 88A35B82D2;
-	Mon, 19 Mar 2007 15:45:06 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1HTJ6w-00012d-CO; Mon, 19 Mar 2007 14:45:22 +0000
-Date:	Mon, 19 Mar 2007 14:45:22 +0000
-To:	Kumba <kumba@gentoo.org>
-Cc:	Franck <vagabon.xyz@gmail.com>,
-	Linux MIPS List <linux-mips@linux-mips.org>,
-	Arnaud Giersch <arnaud.giersch@free.fr>
-Subject: Re: IP32 prom crashes due to __pa() funkiness
-Message-ID: <20070319144522.GB28895@networkno.de>
-References: <45D8B070.7070405@gentoo.org> <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com> <45FC46F0.3070300@gentoo.org> <87irczzglc.fsf@groumpf.homeip.net> <45FC9E39.7010506@gentoo.org> <45FE95EE.5030108@innova-card.com> <45FE9D22.1030407@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 14:56:32 +0000 (GMT)
+Received: from wx-out-0506.google.com ([66.249.82.227]:48908 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021877AbXCSO41 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Mar 2007 14:56:27 +0000
+Received: by wx-out-0506.google.com with SMTP id t14so1349931wxc
+        for <linux-mips@linux-mips.org>; Mon, 19 Mar 2007 07:55:21 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
+        b=B4M0ojINs2CFt5LAbdDrZUGEjBmGZpKvDWQ0JYBQN0SArQNvmjW2a8DlxDhBvUREJCtY9tUocEDK8XCNy1WAKT/ZgZl8kkFCCsqMU9z/ESPh3AWwLLFVSd8N20MCFGK34IGfClTkPtk1HXONssJDWRm7p17wfH1fmr5lr6SMiaQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
+        b=pdmi4ECWraGvnjssaDByD9zeNlF0JTYIFsfMV8GoTNSWXpHbosMvVMnqWPo/DWHpspnSPATkOSRNSAWY1sX55ZthZZ7Exszo31SSHN1LpzPVZdhHmeEn+D0/HiJ4z+erPi5y1qgQala4A0l5kGzRvECUI9HTM2CbA/uRU6G7Igk=
+Received: by 10.90.118.8 with SMTP id q8mr4066415agc.1174316121613;
+        Mon, 19 Mar 2007 07:55:21 -0700 (PDT)
+Received: by 10.114.159.16 with HTTP; Mon, 19 Mar 2007 07:55:21 -0700 (PDT)
+Message-ID: <d459bb380703190755n3f05b8e1v850bb8347e574d68@mail.gmail.com>
+Date:	Mon, 19 Mar 2007 15:55:21 +0100
+From:	"Marco Braga" <marco.braga@gmail.com>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: Au1500 and TI PCI1510 cardbus
+In-Reply-To: <45FEA214.3000805@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <45FE9D22.1030407@gentoo.org>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_155110_12414117.1174316121484"
+References: <d459bb380703161129l769d3f48w744ba0bfdf04fc91@mail.gmail.com>
+	 <45FBB9C7.9060800@cubic.org>
+	 <d459bb380703170554l3fb40d60h6f68b70472ad7cb@mail.gmail.com>
+	 <45FBF0F1.70302@cubic.org>
+	 <d459bb380703180617i6e50539bx13ad405fb306fe44@mail.gmail.com>
+	 <45FE83B6.3040100@ru.mvista.com>
+	 <d459bb380703190741w3d0bef6fw101c64da8d81d422@mail.gmail.com>
+	 <45FEA214.3000805@ru.mvista.com>
+Return-Path: <marco.braga@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14556
+X-archive-position: 14557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: marco.braga@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Kumba wrote:
-[snip]
-> Most of this is because IP22 (Indy/Idigo2 R4xx) and IP32 (O2 R5xxx), while 
-> supporting 64bit kernels (same for cobalt, since it's a mips4-level CPU), 
-> we had to "trick" them into accepting 64bit code.  IP32 at one point ran 
-> 32bit kernels only, but it was later converted to supporting only 64bit 
-> kernels, hence the hackery involved.  We describe it as wrapping 64bit code 
-> into a 32bit object, because their proms will only recognize 32bit objects 
-> (specifically, IP22 will only boot 32bit objects; crash on 64bit; IP32 will 
-> take both, but likes 32bit better).
-> 
-> So really, CONFIG_BUILD_ELF64 was probably part of this "magic" to stuff 
-> 64bit code into a candy-coated 32bit wrapper for the Indy (And later the 
-> O2) to suck down w/o complaint.  Hence, __pa() probably needs to replicate 
-> this support, or we all need to brainstorm a proper way to get these 
-> systems to boot.
+------=_Part_155110_12414117.1174316121484
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-BUILD_ELF64 + -sym32 + objcopy into a ELF32 file is supposed to be the
-full replacement for the old o64-in-o32 hack.
+Hi,
 
-> Octane, Origin, IP28 (Indigo2 R10000). et al, don't complain, and don't 
-> need this hacker, because their proms boot proper 64bit binaries only (they 
-> reject all else).
-> 
-> So probably the following is true (someone correct me if not)
-> 
-> if (CONFIG_BUILD_ELF64=y and (!CONFIG_SGI_IP22 or !CONFIG_SGI_IP32 or 
-> !CONFIG_COBALT)) then kernel load address must be in XKPHYS
-> else load address must be in CKSEG0
-> if CONFIG_BUILD_ELF64=n then kernel load address must be in CKSEG0
+we need PCI so Au15xx is our only choice. Internal USB 1.1 is working well,
+but what about adding a PCI to USB controller? Has anyone tried this?
 
-The 64/64 configs can do both:
+Regards,
+Marco
 
-                      |  BUILD_ELF64  | BUILD_ELF32
----------------------------------------------------
-64bit firmware loader | CKSEG0/XKPHYS |   CKSEG0
-32bit firmware loader |     CKSEG0    |   CKSEG0
+------=_Part_155110_12414117.1174316121484
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+Hi,<br><br>we need PCI so Au15xx is our only choice. Internal USB 1.1
+is working well, but what about adding a PCI to USB controller? Has
+anyone tried this?<br><br>Regards,<br><span class="sg">Marco</span><br><br>
 
-Thiemo
+------=_Part_155110_12414117.1174316121484--

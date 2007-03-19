@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 09:43:03 +0000 (GMT)
-Received: from hu-out-0506.google.com ([72.14.214.239]:4335 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021419AbXCSJm5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 19 Mar 2007 09:42:57 +0000
-Received: by hu-out-0506.google.com with SMTP id 22so5686013hug
-        for <linux-mips@linux-mips.org>; Mon, 19 Mar 2007 02:41:57 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 10:09:30 +0000 (GMT)
+Received: from qb-out-0506.google.com ([72.14.204.234]:35426 "EHLO
+	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021414AbXCSKJ2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Mar 2007 10:09:28 +0000
+Received: by qb-out-0506.google.com with SMTP id e12so4557569qba
+        for <linux-mips@linux-mips.org>; Mon, 19 Mar 2007 03:08:23 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=sSyNLopgDOhdC0d3OhpVVpfogDiIO+ilG14mqfiJJ9PlRlxtMS08s80Ob7/ska9DUYOWLYSNod8TrbddYELxYvDWmSYIDRs/DiqNcrBaQBf5yIHFU3+ZyB2XSKwNY2VQfq3vW26T5zE7C6pbl4err7aX0FA3BaF0bu4WXRN9DY8=
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=OyDeARL4AeloMtMmc0DHTYROFAeNCrBnS9qU/TU/k4L3nbL52SpnBMerpQCYruPsBOhBueBv0hXo0sqUVh54ywU3obHnMYSkH4FnQPD3WPV3opiMMy79NTpMg83fnj2PVF8x2OAVkaluc+Y9hNsozyc94u+fa72J7hbutd67UCM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding:from;
-        b=FnSueOZOt5A2hmHLskTRws4MFkU9edbMcM/Uz4J4WZhl1rjfb3MontarNW6gIaUtVDmNuc1GmdvIc84es49v95SHlBnDN/G/kxG+S73WHM44pzBL4v3TJTeucZrgUTByEzYj9v4kp9m6ulmIcWAhVPP61NugZgGubd5+bPIrp7o=
-Received: by 10.67.89.5 with SMTP id r5mr9562301ugl.1174297316879;
-        Mon, 19 Mar 2007 02:41:56 -0700 (PDT)
-Received: from ?192.168.0.24? ( [81.252.61.1])
-        by mx.google.com with ESMTP id c25sm11823774ika.2007.03.19.02.41.55;
-        Mon, 19 Mar 2007 02:41:56 -0700 (PDT)
-Message-ID: <45FE5ADA.3030309@innova-card.com>
-Date:	Mon, 19 Mar 2007 10:41:46 +0100
-Reply-To: Franck <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=pwK3LCgovqd4JFWoUzxZvDXagIVmm3a1wncPJXLvxbJxZ8X+iW6Gnt4LAdNwtFhp1iAg1ucxOTrvB5GyrbE/II9gCcdFTT6NjfW4wjqEN9+z/QL6XYpzLLZpgKNDTrscE6h9jjcfpcSUPHamd63CZt+J1pS870m5ARj4ymOwe7E=
+Received: by 10.65.239.14 with SMTP id q14mr7367382qbr.1174298903375;
+        Mon, 19 Mar 2007 03:08:23 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Mon, 19 Mar 2007 03:08:23 -0700 (PDT)
+Message-ID: <cda58cb80703190308k4e57e194u56dca25b063646b6@mail.gmail.com>
+Date:	Mon, 19 Mar 2007 11:08:23 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: Building 64 bit kernel on Cobalt
+Cc:	maillist@jg555.com, linux-mips@linux-mips.org, ralf@linux-mips.org
+In-Reply-To: <20070319.150705.100740532.nemoto@toshiba-tops.co.jp>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	mbizon@freebox.fr, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] Always use virt_to_phys() when translating kernel addresses
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Content-Disposition: inline
+References: <45FDB498.1040504@jg555.com>
+	 <20070319.101209.79013781.nemoto@toshiba-tops.co.jp>
+	 <45FE1D95.8050204@jg555.com>
+	 <20070319.150705.100740532.nemoto@toshiba-tops.co.jp>
 Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14541
+X-archive-position: 14542
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,54 +43,35 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+On 3/19/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> On Sun, 18 Mar 2007 22:20:21 -0700, Jim Gifford <maillist@jg555.com> wrote:
+> > Here's the config file I'm using http://ftp.jg555.com/cobalt.config
+> > Now if I revert all changes that have occurred to setup.c from 2.6.19 to
+> > 2.6.20, everything works perfectly.
+> >
+> > Without that patch, this is as far as it gets.
+>
+> You are using CONFIG_BUILD_ELF64=y and CKSEG0 load address.
+> This combination does not work.  Please refer these threads:
+>
 
-This patch fixes two places where we used plain 'x - PAGE_OFFSET' to
-achieve virtual to physical address convertion. This type of convertion
-is no more allowed since commit 6f284a2ce7b8bc49cb8455b1763357897a899abb.
+Thanks Atsushi for sorting this out. It's a bit sad to get these type
+of information after so many email echanges...
 
-Reported-by: Maxime Bizon <mbizon@freebox.fr>
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
+>
+> Please try CONFIG_BUILD_ELF64=n.
+>
+> BTW, Ralf, any chance to Franck's CONFIG_BUILD_ELF64 cleanup patchset?
+> I hope the patchset make things clearer...
+>
 
- Ralf,
+Well, this patch may be not enough. From last thread about 64bits kernel issue:
 
- Could you apply this patch. Unfortunately I failed to report back these
- changes when submitting the original patch, and without it, platforms
- which are using (or trying to use) PHYS_OFFSET will break.
+http://marc.info/?l=linux-mips&m=117418351419352&w=2
 
- Thanks,
-		Franck
-
- include/asm-mips/pgtable-64.h |    2 +-
- include/asm-mips/pgtable.h    |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/asm-mips/pgtable-64.h b/include/asm-mips/pgtable-64.h
-index a5b1871..49f5a1a 100644
---- a/include/asm-mips/pgtable-64.h
-+++ b/include/asm-mips/pgtable-64.h
-@@ -199,7 +199,7 @@ static inline unsigned long pud_page_vaddr(pud_t pud)
- {
- 	return pud_val(pud);
- }
--#define pud_phys(pud)		(pud_val(pud) - PAGE_OFFSET)
-+#define pud_phys(pud)		virt_to_phys((void *)pud_val(pud))
- #define pud_page(pud)		(pfn_to_page(pud_phys(pud) >> PAGE_SHIFT))
- 
- /* Find an entry in the second-level page table.. */
-diff --git a/include/asm-mips/pgtable.h b/include/asm-mips/pgtable.h
-index 3fcfd79..0d3295f 100644
---- a/include/asm-mips/pgtable.h
-+++ b/include/asm-mips/pgtable.h
-@@ -75,7 +75,7 @@ extern void paging_init(void);
-  * Conversion functions: convert a page and protection to a page entry,
-  * and a page entry and page directory to the page they refer to.
-  */
--#define pmd_phys(pmd)		(pmd_val(pmd) - PAGE_OFFSET)
-+#define pmd_phys(pmd)		virt_to_phys((void *)pmd_val(pmd))
- #define pmd_page(pmd)		(pfn_to_page(pmd_phys(pmd) >> PAGE_SHIFT))
- #define pmd_page_vaddr(pmd)	pmd_val(pmd)
- 
+It seems that objcopy can be used to do some addresses translations.
+In that case the current patch won't help. At least we could add more
+sanity checks to detect all buggy configs we can have for 64 bits
+kernel and panic if they fail.
 -- 
-1.4.4.3.ge6d4
+               Franck

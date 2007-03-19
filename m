@@ -1,58 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 22:30:17 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:56793 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021975AbXCSWaQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 19 Mar 2007 22:30:16 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2JMSGii016923;
-	Mon, 19 Mar 2007 22:28:17 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2JMSEvd016922;
-	Mon, 19 Mar 2007 22:28:14 GMT
-Date:	Mon, 19 Mar 2007 22:28:14 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	mbizon@freebox.fr, linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Always use virt_to_phys() when translating kernel addresses [take #2]
-Message-ID: <20070319222814.GA16895@linux-mips.org>
-References: <45FE5ADA.3030309@innova-card.com> <1174320169.32046.113.camel@sakura.staff.proxad.net> <cda58cb80703190916g7851000dn7defeaa09eb038f@mail.gmail.com> <45FEBC1A.8070604@innova-card.com>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Mar 2007 23:43:45 +0000 (GMT)
+Received: from sccrmhc12.comcast.net ([204.127.200.82]:34719 "EHLO
+	sccrmhc12.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20021968AbXCSXnj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Mar 2007 23:43:39 +0000
+Received: from plexity.net (c-71-193-156-244.hsd1.or.comcast.net[71.193.156.244])
+          by comcast.net (sccrmhc12) with ESMTP
+          id <20070319234255012008mll5e>; Mon, 19 Mar 2007 23:42:56 +0000
+Received: by plexity.net (Postfix, from userid 1025)
+	id DD7B454494A; Mon, 19 Mar 2007 15:43:11 -0700 (PDT)
+Date:	Mon, 19 Mar 2007 15:43:11 -0700
+From:	Deepak Saxena <dsaxena@plexity.net>
+To:	netdev@vger.kernel.org
+Cc:	ralf@linux-mips.org, jeff@garzik.org, linux-mips@linux-mips.org,
+	Manish Lachwani <mlachwani@mvista.com>
+Subject: [PATCH] Netpoll support for Sibyte MAC
+Message-ID: <20070319224311.GA10176@plexity.net>
+Reply-To: dsaxena@plexity.net
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45FEBC1A.8070604@innova-card.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Organization: Plexity Networks
+User-Agent: Mutt/1.5.11
+Return-Path: <dsaxena@plexity.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14572
+X-archive-position: 14573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dsaxena@plexity.net
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 19, 2007 at 05:36:42PM +0100, Franck Bui-Huu wrote:
 
-> diff --git a/include/asm-mips/mach-generic/dma-coherence.h b/include/asm-mips/mach-generic/dma-coherence.h
-> index 76e04e7..3a2ac54 100644
-> --- a/include/asm-mips/mach-generic/dma-coherence.h
-> +++ b/include/asm-mips/mach-generic/dma-coherence.h
-> @@ -28,6 +28,13 @@ static inline unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
->  	return dma_addr;
->  }
->  
-> +static inline unsigned long plat_dma_addr_to_virt(dma_addr_t dma_addr)
-> +{
-> +	unsigned long addr = plat_dma_addr_to_phys(dma_addr);
-> +
-> +	return (unsigned long)phys_to_virt(addr);
-> +}
-> +
+NETPOLL support for Sibyte MAC
 
-Putting this function into include/asm-mips/mach-generic/dma-coherence.h
-breaks the build for all machines that don't include this header.  I
-applied your patch with this issue fixed.
+Signed-off-by: Manish Lachwani <mlachwani@mvista.com>
+Signed-off-by: Deepak Saxena <dsaxena@mvista.com>
 
-  Ralf
+---
+
+ Applies cleanly to 2.6.21-rc4
+
+ drivers/net/sb1250-mac.c |   23 +++++++++++++++++++++++
+ 1 files changed, 23 insertions(+)
+
+Index: linux-2.6.18/drivers/net/sb1250-mac.c
+===================================================================
+--- linux-2.6.18.orig/drivers/net/sb1250-mac.c
++++ linux-2.6.18/drivers/net/sb1250-mac.c
+@@ -1128,6 +1128,26 @@ static void sbdma_fillring(sbmacdma_t *d
+ 	}
+ }
+ 
++#ifdef CONFIG_NET_POLL_CONTROLLER
++static void sbmac_netpoll(struct net_device *netdev)
++{
++	struct sbmac_softc *sc = netdev_priv(netdev);
++	int irq = sc->sbm_dev->irq;
++
++	__raw_writeq(0, sc->sbm_imr);
++
++	sbmac_intr(irq, netdev, NULL);
++
++#ifdef CONFIG_SBMAC_COALESCE
++	__raw_writeq(((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) << S_MAC_TX_CH0) |
++	((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) << S_MAC_RX_CH0),
++	sc->sbm_imr);
++#else
++	__raw_writeq((M_MAC_INT_CHANNEL << S_MAC_TX_CH0) | 
++	(M_MAC_INT_CHANNEL << S_MAC_RX_CH0), sc->sbm_imr);
++#endif
++}
++#endif
+ 
+ /**********************************************************************
+  *  SBDMA_RX_PROCESS(sc,d)
+@@ -2402,6 +2422,9 @@ static int sbmac_init(struct net_device 
+ 	dev->watchdog_timeo     = TX_TIMEOUT;
+ 
+ 	dev->change_mtu         = sb1250_change_mtu;
++#ifdef CONFIG_NET_POLL_CONTROLLER
++	dev->poll_controller = sbmac_netpoll;
++#endif
+ 
+ 	/* This is needed for PASS2 for Rx H/W checksum feature */
+ 	sbmac_set_iphdr_offset(sc);
+
+-- 
+Deepak Saxena - dsaxena@plexity.net - http://www.plexity.net
+
+In the end, they will not say, "those were dark times,"  they will ask
+"why were their poets silent?" - Bertolt Brecht

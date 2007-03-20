@@ -1,50 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 14:12:11 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:35548 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022185AbXCTOLe (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2007 14:11:34 +0000
-Received: from localhost (p1076-ipad02funabasi.chiba.ocn.ne.jp [61.214.21.76])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id A6C1AAA80; Tue, 20 Mar 2007 23:10:13 +0900 (JST)
-Date:	Tue, 20 Mar 2007 23:10:13 +0900 (JST)
-Message-Id: <20070320.231013.128618011.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: ZONE_DMA on MIPS
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070319222031.GB8707@linux-mips.org>
-References: <20070319154821.GA31766@linux-mips.org>
-	<20070320.013608.103777227.anemo@mba.ocn.ne.jp>
-	<20070319222031.GB8707@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 14:21:30 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:49635 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20021949AbXCTOV3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2007 14:21:29 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id A8C113ED1; Tue, 20 Mar 2007 07:20:53 -0700 (PDT)
+Message-ID: <45FFEDED.6060708@ru.mvista.com>
+Date:	Tue, 20 Mar 2007 17:21:33 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Takeyoshi Kikuchi <kikuchi@centurysys.co.jp>
+Cc:	Marco Braga <marco.braga@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: Au1500 and TI PCI1510 cardbus
+References: <d459bb380703190755n3f05b8e1v850bb8347e574d68@mail.gmail.com> <200703200204.l2K24WgH020041@centurysys.co.jp>
+In-Reply-To: <200703200204.l2K24WgH020041@centurysys.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14584
+X-archive-position: 14585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 19 Mar 2007 22:20:31 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
-> It's probably reasonable to do something like:
-> 
-> config GENERIC_ISA_DMA
-> 	bool
-> 	select ZONE_DMA
-> 
-> I don't think we should expose such deep technical details to the Kconfig
-> user.
+Hello.
 
-Thanks.  I'll try.  GENERIC_ISA_DMA_SUPPORT_BROKEN also should select
-ZONE_DMA, right?
+Takeyoshi Kikuchi wrote:
 
----
-Atsushi Nemoto
+>>we need PCI so Au15xx is our only choice. Internal USB 1.1 is working well,
+>>but what about adding a PCI to USB controller? Has anyone tried this?
+
+>>Regards,
+>>Marco
+
+> Our Au1500 board works fine with Ricoh CardBus Bridge and NEC USB 
+> controller.
+> However, the board does not work stably with TI PCI1520 controller.
+
+> ~# lspci 
+> 00:0a.0 CardBus bridge: Ricoh Co Ltd RL5c476 II (rev 82)
+> 00:0a.1 CardBus bridge: Ricoh Co Ltd RL5c476 II (rev 82)
+> 00:0b.0 RAID bus controller: Triones Technologies, Inc. HPT371/371N (rev 02)
+> 05:00.0 USB Controller: NEC Corporation USB (rev 43)
+> 05:00.1 USB Controller: NEC Corporation USB (rev 43)
+> 05:00.2 USB Controller: NEC Corporation USB 2.0 (rev 04)
+
+    What I don't understand is why use USB card on CardBus, if the Au1500 
+datasheet clearly tells us (well, at least me :-) that this is *not* going to 
+work?
+
+WBR, Sergei

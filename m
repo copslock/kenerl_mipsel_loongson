@@ -1,112 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 16:22:09 +0000 (GMT)
-Received: from qb-out-0506.google.com ([72.14.204.233]:49904 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022189AbXCTQWH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Mar 2007 16:22:07 +0000
-Received: by qb-out-0506.google.com with SMTP id e12so6015256qba
-        for <linux-mips@linux-mips.org>; Tue, 20 Mar 2007 09:21:05 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=ZrkEfXrzKsi3jPEV9xu79MUi1JBD6WsUMb1Z5BD2+k/ft9a/6vU8QQONL560ebAYCG2UryM83p/geQgBIkUV249X5ZlhvlPn3kwvpFUhOsTqd1KSbgoh+sRuttUvAAEmmOCCkr1mcGgksLGtBBS9g4DaMiNp5CLzFH1fdXiwkKg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=NSBMgrEgwhEvLmDOmi6yP0IGuGtlQhwQcXfUfYDvtazVNFh3oNLKQbRHAuz/5dSeuOsZOD1Z/rqatP9jL39pK8w2O7POvkcPc7SawvwCAe+U6km399SuZTJAM1BEZKDnN08oBzePY625+fCzXxiltkqzZLW9uK1F0e5SiBjDCYA=
-Received: by 10.100.121.12 with SMTP id t12mr5174332anc.1174407665220;
-        Tue, 20 Mar 2007 09:21:05 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Tue, 20 Mar 2007 09:21:05 -0700 (PDT)
-Message-ID: <cda58cb80703200921r2744b87ch257c09eeb97528d5@mail.gmail.com>
-Date:	Tue, 20 Mar 2007 17:21:05 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH] Always include PHYS_OFFSET in PAGE_OFFSET
-Cc:	mbizon@freebox.fr, post@pfrst.de,
-	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <45FEB353.5020001@innova-card.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 16:24:58 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:57062 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20022224AbXCTQY4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2007 16:24:56 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id A35CB3ED1; Tue, 20 Mar 2007 09:24:21 -0700 (PDT)
+Message-ID: <46000ADD.3050309@ru.mvista.com>
+Date:	Tue, 20 Mar 2007 19:25:01 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Marco Braga <marco.braga@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Au1500 and TI PCI1510 cardbus
+References: <d459bb380703190755n3f05b8e1v850bb8347e574d68@mail.gmail.com>	 <200703200204.l2K24WgH020041@centurysys.co.jp>	 <45FFEDED.6060708@ru.mvista.com>	 <d459bb380703200747y13ba427ek83cc32b503c33bc7@mail.gmail.com>	 <45FFFE8B.1010806@ru.mvista.com>	 <d459bb380703200850m1077be9cnecb8283750763a4f@mail.gmail.com>	 <4600052B.40901@ru.mvista.com> <d459bb380703200908t2ab759f0u352dc0014ebe0b17@mail.gmail.com>
+In-Reply-To: <d459bb380703200908t2ab759f0u352dc0014ebe0b17@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <45FEB353.5020001@innova-card.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14594
+X-archive-position: 14595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
+Hello.
 
-On 3/19/07, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> From: Franck Bui-Huu <fbuihuu@gmail.com>
->
-> For platforms that use PHYS_OFFSET and do not use a mapped kernel,
-> this patch automatically adds PHYS_OFFSET into PAGE_OFFSET.
-> Therefore for these platforms there are no more needs to change
-> PAGE_OFFSET.
->
+Marco Braga wrote:
 
-This patch is actually useless. I didn't notice that spaces.h must be
-totaly rewritten by platforms when they need to customize one value.
-Why, I dunno ?
+>> > I think I'm beginning to make a lot of confusion. Is the problem that
+>> the
+>> > PCI1510 must NOT be behind a bridge, or the problem is that PCI1510 
+>> acts
+>> as
+>> > a bridge, so cardbus cards cannot work?
 
-Why not doing something like:
+>>     The second.
 
--- >8 --
-diff --git a/include/asm-mips/mach-generic/spaces.h
-b/include/asm-mips/mach-generic/spaces.h
-index 0ae9997..beec80e 100644
---- a/include/asm-mips/mach-generic/spaces.h
-+++ b/include/asm-mips/mach-generic/spaces.h
-@@ -16,13 +16,18 @@
- #define CAC_BASE               0x80000000
- #define IO_BASE                        0xa0000000
- #define UNCAC_BASE             0xa0000000
-+
-+#ifndef MAP_BASE
- #define MAP_BASE               0xc0000000
-+#endif
+> Ok, at the risk of appearing totally dumb, I'll double check.. If the 
+> second
+> ic correct, PCI1510 is a bridce, a cardbus card cannot work.
 
- /*
-  * This handles the memory map.
-  * We handle pages at KSEG0 for kernels with 32 bit address space.
-  */
-+#ifndef PAGE_OFFSET
- #define PAGE_OFFSET            0x80000000UL
-+#endif
+    Yeah. Note that it's not totally broken -- you just can't use the "decent" 
+devices on it, i.e. ones with bus mastering.
 
- /*
-  * Memory above this physical address will be considered highmem.
-@@ -38,11 +43,13 @@
- /*
-  * This handles the memory map.
-  */
-+#ifndef PAGE_OFFSET
- #ifdef CONFIG_DMA_NONCOHERENT
- #define PAGE_OFFSET    0x9800000000000000UL
- #else
- #define PAGE_OFFSET    0xa800000000000000UL
- #endif
-+#endif
+>>    You can see yourself that PCI1510 is a bridge (Cardbus-to-PCI bridge is
+>> largely the same as PCI-to-PCI bridge).
 
- /*
-  * Memory above this physical address will be considered highmem.
--- >8 --
+> Ok.
 
-and doing in platform's spaces.h:
+    Yeah, that's an importnat point.  AMD docs don't say about CardBus 
+bridges, So, it was probably obvious to me only. :-)
 
-        [ redefine a couple of constants]
+>> So it seems that the 3Com card is behind a bus. Should this work? From
+>> what
+>> > I've understood, it should now work..
 
-        #include <asm/mach-generic/spaces.h>
+>>     Think again. :-)
 
-AFAIK, {CAC,UNCAC,IO}_BASE are likely to be the same for all platforms, no ?
+> Ok, that's a typo :-) It should NOT work. Is this better?
 
-Does that need some cleanup ? if so I'm your man ;)
--- 
-               Franck
+>   Sounds like what's been told in the errata 32.
+
+> It seems that  Au1500 slowly faded into the shadows. Now it is owned by
+> Raza, but there is no sign of an errata document, perhaps I've lost the
+> magic moment when a lot of documentation was available.
+
+    The errata has been available only from the AMD's developer site.
+
+> But still, the question remains: how can Takeyoshi's "Ricoh CardBus Bridge"
+> work with a cardbus card if bridges cannot work with Au1500's PCI?
+
+> Scrub scrub..
+
+WBR, Sergei

@@ -1,83 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 16:35:03 +0000 (GMT)
-Received: from wr-out-0506.google.com ([64.233.184.227]:45726 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022923AbXCTQfA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Mar 2007 16:35:00 +0000
-Received: by wr-out-0506.google.com with SMTP id i31so1868587wra
-        for <linux-mips@linux-mips.org>; Tue, 20 Mar 2007 09:33:55 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
-        b=VujjhrGphK6QwyzLDgeJ0pGPaHT3JogVwwC2d34qSGsPkPw8xg0CK4KaldLdX2nyr+08rUuPMKuZctGct+6cB61q1NkWTiGxo6GeqD5SB35YCRjJmLCl4EpWzDd+DR2wjv0ZUYsSIbD4bOSSaDLk2SRrNhotsyz8BsalJTvrgP4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;
-        b=eln7Y9wQ60mcoyHj+UQrqeJfne5m7FUdYocCYcrUsVtjBWz/yEkIBTGIBzy++pjkmhXa5UAmUyU6HgMbi+AKj+gbvLUk071PMoaTYWFrjIQ8YhN6pIZ1SOj1TC9wS0YiltpVanptLDG6Fjn3Xbb09Cwn2/bYBF6+BVuNcICnXK8=
-Received: by 10.100.178.7 with SMTP id a7mr5202176anf.1174408434846;
-        Tue, 20 Mar 2007 09:33:54 -0700 (PDT)
-Received: by 10.114.159.16 with HTTP; Tue, 20 Mar 2007 09:33:54 -0700 (PDT)
-Message-ID: <d459bb380703200933w501736cfmfbd19cc1b03f8ed1@mail.gmail.com>
-Date:	Tue, 20 Mar 2007 17:33:54 +0100
-From:	"Marco Braga" <marco.braga@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: Au1500 and TI PCI1510 cardbus
-In-Reply-To: <46000ADD.3050309@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 18:35:55 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:27626 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20022269AbXCTSfy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2007 18:35:54 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 9B7CC3ED1; Tue, 20 Mar 2007 11:35:15 -0700 (PDT)
+Message-ID: <46002989.5000609@ru.mvista.com>
+Date:	Tue, 20 Mar 2007 21:35:53 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_185849_28748522.1174408434653"
-References: <d459bb380703190755n3f05b8e1v850bb8347e574d68@mail.gmail.com>
-	 <200703200204.l2K24WgH020041@centurysys.co.jp>
-	 <45FFEDED.6060708@ru.mvista.com>
-	 <d459bb380703200747y13ba427ek83cc32b503c33bc7@mail.gmail.com>
-	 <45FFFE8B.1010806@ru.mvista.com>
-	 <d459bb380703200850m1077be9cnecb8283750763a4f@mail.gmail.com>
-	 <4600052B.40901@ru.mvista.com>
-	 <d459bb380703200908t2ab759f0u352dc0014ebe0b17@mail.gmail.com>
-	 <46000ADD.3050309@ru.mvista.com>
-Return-Path: <marco.braga@gmail.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	dsaxena@plexity.net, netdev@vger.kernel.org, ralf@linux-mips.org,
+	jeff@garzik.org, linux-mips@linux-mips.org, mlachwani@mvista.com
+Subject: Re: [PATCH] Netpoll support for Sibyte MAC
+References: <20070319224311.GA10176@plexity.net> <20070320.102248.68134682.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20070320.102248.68134682.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14596
+X-archive-position: 14597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marco.braga@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_185849_28748522.1174408434653
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Hello.
 
-To sum it up, Cardbus bridge is not a viable solution on Au1500 for
-hotswapping devices, since any decent one (bus mastering) will not work.
-USB2.0 should instead work with PCI based controllers, that must be
-connected to the main PCI device (directly to Au1500).
+Atsushi Nemoto wrote:
 
-Well, I think that this closes the issue. As a last note, Au1200 is not a
-solution since we really need PCI.
+>>NETPOLL support for Sibyte MAC
 
-I'd like to thank everyone here, you've been very patient with me. :-)
+>>Signed-off-by: Manish Lachwani <mlachwani@mvista.com>
+>>Signed-off-by: Deepak Saxena <dsaxena@mvista.com>
 
-Regards,
-Marco
+> If you added NETPOLL support, do not forget to ensure hard_start_xmit
+> routine callable from interrupt context (or irq disabled).
+> See commit bce305f4fe779f29d99d414685243f5da0803254 for example.
 
-------=_Part_185849_28748522.1174408434653
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+    You're absolutely right: this driver is very likely to blow up the caller 
+when called with interrupts disabled -- it uses spin_unlock_irq() there! This 
+*must* be fixed.
 
-To sum it up, Cardbus bridge is not a viable solution on Au1500 for
-hotswapping devices, since any decent one (bus mastering) will not
-work. USB2.0 should instead work with PCI based controllers, that must
-be connected to the main PCI device (directly to Au1500).<br>
-<br>
-Well, I think that this closes the issue. As a last note, Au1200 is not a solution since we really need PCI.<br><br>I&#39;d like to thank everyone here, you&#39;ve been very patient with me. :-)<br>
-<br>
-Regards,<br>
-Marco<br>
-<br>
+> ---
+> Atsushi Nemoto
 
-------=_Part_185849_28748522.1174408434653--
+WBR, Sergei

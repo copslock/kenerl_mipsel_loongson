@@ -1,99 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 02:06:19 +0000 (GMT)
-Received: from centurysys.co.jp ([125.206.128.231]:36619 "EHLO
-	centurysys.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20022473AbXCTCFx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Mar 2007 02:05:53 +0000
-Received: from 125.206.128.231 (220x151x150x170.ap220.ftth.ucom.ne.jp [220.151.150.170])
-	(authenticated bits=0)
-	by centurysys.co.jp (8.13.6.20060614/8.13.6) with ESMTP id l2K24WgH020041;
-	Tue, 20 Mar 2007 11:04:33 +0900 (JST)
-Message-Id: <200703200204.l2K24WgH020041@centurysys.co.jp>
-Date:	Tue, 20 Mar 2007 11:04:27 +0900
-From:	Takeyoshi Kikuchi <kikuchi@centurysys.co.jp>
-X-Mailer: EdMax Ver2.85.6F
-MIME-Version: 1.0
-To:	"Marco Braga" <marco.braga@gmail.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 07:33:47 +0000 (GMT)
+Received: from wx-out-0506.google.com ([66.249.82.234]:925 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022080AbXCTHdn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Mar 2007 07:33:43 +0000
+Received: by wx-out-0506.google.com with SMTP id t14so1674968wxc
+        for <linux-mips@linux-mips.org>; Tue, 20 Mar 2007 00:32:35 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=qedBXKKq42Jmxhym4yNoTu6gcLVHLfYWhvioGwkCjF8mE0tx9IiR1//rWXAEOsW7gzi9caIBDNjtWGbmaCCIZHw2HNdnA0k+iZMxd+ERp2Ikc7CoKv3H7qemNt1H7pDi/THjp+a7PRO0kWIjGx0XFjFTm20uq2YtRSyzzOdd5+0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=Hzep5yvWqnRJvzqdY3EmfcssCgKw4oXEQFNI/24Y0QWoq9MOiaRSWB2lbFq+7szlbajYLgRsD9eXB/9Wg0SUl9tCdtgNiMWp1FTqJy4NTI7S7tfKHcvnyzMpYp+mQA4WM1q4PX9AO2wZr+uq0qgtzqnA8jeJuGErrcTE3HtYM+E=
+Received: by 10.70.32.13 with SMTP id f13mr10200294wxf.1174375955165;
+        Tue, 20 Mar 2007 00:32:35 -0700 (PDT)
+Received: by 10.114.159.16 with HTTP; Tue, 20 Mar 2007 00:32:34 -0700 (PDT)
+Message-ID: <d459bb380703200032s16993f87s89cd057d8b4ec2c6@mail.gmail.com>
+Date:	Tue, 20 Mar 2007 08:32:34 +0100
+From:	"Marco Braga" <marco.braga@gmail.com>
+To:	"Takeyoshi Kikuchi" <kikuchi@centurysys.co.jp>
 Subject: Re: Re: Au1500 and TI PCI1510 cardbus
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <d459bb380703190755n3f05b8e1v850bb8347e574d68@mail.gmail.com>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <200703200204.l2K24WgH020041@centurysys.co.jp>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_174624_15467755.1174375954942"
 References: <d459bb380703190755n3f05b8e1v850bb8347e574d68@mail.gmail.com>
-X-VSS-HEADER: SID:005; PID:2743; Tue, 20 Mar 2007 11:04:33 +0900 (JST)
-Return-Path: <kikuchi@centurysys.co.jp>
+	 <200703200204.l2K24WgH020041@centurysys.co.jp>
+Return-Path: <marco.braga@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14580
+X-archive-position: 14581
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kikuchi@centurysys.co.jp
+X-original-sender: marco.braga@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+------=_Part_174624_15467755.1174375954942
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-"Marco Braga" <marco.braga@gmail.com> wrote:
+Hello!
 
->Hi,
->
->we need PCI so Au15xx is our only choice. Internal USB 1.1 is working well,
->but what about adding a PCI to USB controller? Has anyone tried this?
->
->Regards,
->Marco
+2007/3/20, Takeyoshi Kikuchi <kikuchi@centurysys.co.jp>:
 
-Our Au1500 board works fine with Ricoh CardBus Bridge and NEC USB 
-controller.
-However, the board does not work stably with TI PCI1520 controller.
-
-~# lspci 
-00:0a.0 CardBus bridge: Ricoh Co Ltd RL5c476 II (rev 82)
-00:0a.1 CardBus bridge: Ricoh Co Ltd RL5c476 II (rev 82)
-00:0b.0 RAID bus controller: Triones Technologies, Inc. HPT371/371N (rev 02)
-05:00.0 USB Controller: NEC Corporation USB (rev 43)
-05:00.1 USB Controller: NEC Corporation USB (rev 43)
-05:00.2 USB Controller: NEC Corporation USB 2.0 (rev 04)
-
--- log --
-usb 4-1: USB disconnect, address 3
-usb 4-1: new high speed USB device using ehci_hcd and address 4
-usb 4-1: configuration #1 chosen from 1 choice
-scsi2 : SCSI emulation for USB Mass Storage devices
-  Vendor: USB 2.0   Model: Flash Disk        Rev: 1100
-  Type:   Direct-Access                      ANSI SCSI revision: 00
-SCSI device sda: 8093696 512-byte hdwr sectors (4144 MB)
-sda: Write Protect is off
-sda: assuming drive cache: write through
-SCSI device sda: 8093696 512-byte hdwr sectors (4144 MB)
-sda: Write Protect is off
-sda: assuming drive cache: write through
- sda: sda1
-sd 2:0:0:0: Attached scsi removable disk sda
-
-~# dd if=/dev/sda of=/dev/null bs=1048576 count=64
-64+0 records in
-64+0 records out
-67108864 bytes (67 MB) copied, 5.04437 seconds, 13.3 MB/s
-
-~# cat /proc/cpuinfo 
-system type             : Century Systems MA420
-processor               : 0
-cpu model               : Au1500 V0.2
-BogoMIPS                : 395.26
-wait instruction        : no
-microsecond timers      : yes
-tlb_entries             : 32
-extra interrupt vector  : yes
-hardware watchpoint     : yes
-ASEs implemented        :
-VCED exceptions         : not available
-VCEI exceptions         : not available
-
-~# uname -a
-Linux MA-420 2.6.18.5 #6 PREEMPT Tue Mar 20 10:22:01 JST 2007 mips GNU/Linux
+Our Au1500 board works fine with Ricoh CardBus Bridge and NEC USB
+> controller.
+> However, the board does not work stably with TI PCI1520 controller.
 
 
----------------------------------
-Takeyoshi Kikuchi
+As you have seen, we've experienced the same problem with the PCI1510. Can
+you please give me the exact product number of both the controllers you use
+(USB / Cardbus)? In particular your cardbus experience is interesting
+because from the informations I've received until now I tought that no
+cardbus controller could work on Au1500's PCI.
+
+Thanks!
+
+------=_Part_174624_15467755.1174375954942
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Hello!<br><br><div><span class="gmail_quote">2007/3/20, Takeyoshi Kikuchi &lt;<a href="mailto:kikuchi@centurysys.co.jp">kikuchi@centurysys.co.jp</a>&gt;:<br><br></span><blockquote class="gmail_quote" style="border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+Our Au1500 board works fine with Ricoh CardBus Bridge and NEC USB<br>controller.<br>However, the board does not work stably with TI PCI1520 controller.</blockquote><div><br>As you have seen, we&#39;ve experienced the same problem with the PCI1510. Can you please give me the exact product number of both the controllers you use (USB / Cardbus)? In particular your cardbus experience is interesting because from the informations I&#39;ve received until now I tought that no cardbus controller could work on Au1500&#39;s PCI.
+<br><br>Thanks!<br><br></div></div><br>
+
+------=_Part_174624_15467755.1174375954942--

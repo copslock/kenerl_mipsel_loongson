@@ -1,55 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 18:35:55 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:27626 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20022269AbXCTSfy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Mar 2007 18:35:54 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 9B7CC3ED1; Tue, 20 Mar 2007 11:35:15 -0700 (PDT)
-Message-ID: <46002989.5000609@ru.mvista.com>
-Date:	Tue, 20 Mar 2007 21:35:53 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Mar 2007 21:37:12 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:34198 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022522AbXCTVhK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Mar 2007 21:37:10 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2KLYxcv004551;
+	Tue, 20 Mar 2007 21:35:10 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2KEm9fp012916;
+	Tue, 20 Mar 2007 14:48:09 GMT
+Date:	Tue, 20 Mar 2007 14:48:09 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	dsaxena@plexity.net, netdev@vger.kernel.org, ralf@linux-mips.org,
-	jeff@garzik.org, linux-mips@linux-mips.org, mlachwani@mvista.com
-Subject: Re: [PATCH] Netpoll support for Sibyte MAC
-References: <20070319224311.GA10176@plexity.net> <20070320.102248.68134682.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20070320.102248.68134682.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: ZONE_DMA on MIPS
+Message-ID: <20070320144809.GA12680@linux-mips.org>
+References: <20070319154821.GA31766@linux-mips.org> <20070320.013608.103777227.anemo@mba.ocn.ne.jp> <20070319222031.GB8707@linux-mips.org> <20070320.231013.128618011.anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070320.231013.128618011.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14597
+X-archive-position: 14598
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Tue, Mar 20, 2007 at 11:10:13PM +0900, Atsushi Nemoto wrote:
 
-Atsushi Nemoto wrote:
+> On Mon, 19 Mar 2007 22:20:31 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > It's probably reasonable to do something like:
+> > 
+> > config GENERIC_ISA_DMA
+> > 	bool
+> > 	select ZONE_DMA
+> > 
+> > I don't think we should expose such deep technical details to the Kconfig
+> > user.
+> 
+> Thanks.  I'll try.  GENERIC_ISA_DMA_SUPPORT_BROKEN also should select
+> ZONE_DMA, right?
 
->>NETPOLL support for Sibyte MAC
+That one is actually a more interesting issue.  GENERIC_ISA_DMA_SUPPORT_BROKEN
+is needed on Indigo 2 but Indigo 2 has no mmeory other than a little bit
+for the exception vectors mapped into the low 16MB.  At this stage nobody
+seems to know if the machine actually can support ISA DMA or not.
+Anyway, that means that for now it seems better to leave ZONE_DMA
+disabled.
 
->>Signed-off-by: Manish Lachwani <mlachwani@mvista.com>
->>Signed-off-by: Deepak Saxena <dsaxena@mvista.com>
+But maybe somebody who knows a little more about EISA support on Indigo 2
+should comment.
 
-> If you added NETPOLL support, do not forget to ensure hard_start_xmit
-> routine callable from interrupt context (or irq disabled).
-> See commit bce305f4fe779f29d99d414685243f5da0803254 for example.
-
-    You're absolutely right: this driver is very likely to blow up the caller 
-when called with interrupts disabled -- it uses spin_unlock_irq() there! This 
-*must* be fixed.
-
-> ---
-> Atsushi Nemoto
-
-WBR, Sergei
+  Ralf

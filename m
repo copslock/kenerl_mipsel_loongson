@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2007 15:36:20 +0000 (GMT)
-Received: from smtp-103-wednesday.noc.nerim.net ([62.4.17.103]:54276 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2007 15:43:07 +0000 (GMT)
+Received: from smtp-103-wednesday.noc.nerim.net ([62.4.17.103]:16906 "EHLO
 	mallaury.nerim.net") by ftp.linux-mips.org with ESMTP
-	id S20021500AbXCUPgP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Mar 2007 15:36:15 +0000
+	id S20021500AbXCUPnE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 21 Mar 2007 15:43:04 +0000
 Received: from arrakis.delvare (jdelvare.pck.nerim.net [62.212.121.182])
-	by mallaury.nerim.net (Postfix) with SMTP id 0E98F4F437;
-	Wed, 21 Mar 2007 16:35:34 +0100 (CET)
-Date:	Wed, 21 Mar 2007 16:34:26 +0100
+	by mallaury.nerim.net (Postfix) with SMTP id C068B4F3F6;
+	Wed, 21 Mar 2007 16:42:23 +0100 (CET)
+Date:	Wed, 21 Mar 2007 16:41:16 +0100
 From:	Jean Delvare <khali@linux-fr.org>
 To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 Cc:	linux-mips@linux-mips.org, i2c@lm-sensors.org
-Subject: Re: [PATCH 8/12] drivers: PMC MSP71xx TWI driver]
-Message-Id: <20070321163426.0a442deb.khali@linux-fr.org>
-In-Reply-To: <46007F7F.9030604@pmc-sierra.com>
-References: <46007F7F.9030604@pmc-sierra.com>
+Subject: Re: [PATCH 9/12] drivers: PMC MSP71xx LED driver
+Message-Id: <20070321164116.4025ce37.khali@linux-fr.org>
+In-Reply-To: <4600812E.7070200@pmc-sierra.com>
+References: <4600812E.7070200@pmc-sierra.com>
 X-Mailer: Sylpheed version 2.2.10 (GTK+ 2.8.20; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -22,7 +22,7 @@ Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14606
+X-archive-position: 14607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,23 +32,38 @@ X-list: linux-mips
 
 Hi Marc,
 
-On Tue, 20 Mar 2007 16:42:39 -0800, Marc St-Jean wrote:
+On Tue, 20 Mar 2007 16:49:50 -0800, Marc St-Jean wrote:
 > Jean Delvare wrote:
-> > Why are you making a separate algorithm driver? This should really only
-> > be done when the algorithm is very generic. This is the exception, not
-> > the rule. These days I tend to move algorithm code back into the only
-> > bus driver that uses them (i2c-algo-sibyte done recently, i2c-algo-sgi
-> > is next on my list.)
+> > This is confusing. First you write a dedicated driver, then you use the
+> > generic name for the device name. This raises a question:
+> > 
+> > Would it make sense to have generic PCA9554 driver, possibly
+> > implementing the new GPIO infrastructure, and have dedicated drivers
+> > such as this one build on top of that?
+> > 
+> > Either way you have to be consistent, if you go with dedicated code,
+> > the i2c client name should not be generic.
 > 
-> I believe it was done to separate the algorithm for the TWI sub-system,
-> which is used in several devices, from the device family code. If this
-> is no longer acceptable I will merge the algo code with the adapter.
+> I have renamed the driver "pmctwiled" and the client "pmctwiled_pca9554"
+> to help avoid confusion.
 
-You should be able to have a single i2c bus driver handling all the
-different devices, by using the platform data to provide the
-device-specific configuration. The i2c-algorithm concept is quite old,
-now that we have a clean new device driver model it should no longer be
-necessary in most cases.
+Are there PMC LED implementations _not_ based on the PCA9554? If not,
+then the _pca9554 suffix is not really needed.
+
+> > This driver appears to be a good candidate to become a new-style i2c
+> > driver, where devices are instantiated explicitely by the platform code
+> > rather than probed for afterwards. The i2c-core changes allowing that
+> > will be in the next -mm kernel and will be merged in 2.6.22-rc1.
+> 
+> OK, I will look at it when it reaches l-m.o. Although the probe still
+> allows us to support several demo boards on the same device family
+> which could have a different number of clients.
+
+The new code will let you handle that case too, the difference with the
+current model being that instead of doing a system-wide probe and
+having your driver check that you only attach to the right i2c adapter,
+you will specifically ask to probe only that adapter, so the check will
+no longer be necessary. And of course it'll be faster, too.
 
 -- 
 Jean Delvare

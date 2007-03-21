@@ -1,69 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2007 15:43:07 +0000 (GMT)
-Received: from smtp-103-wednesday.noc.nerim.net ([62.4.17.103]:16906 "EHLO
-	mallaury.nerim.net") by ftp.linux-mips.org with ESMTP
-	id S20021500AbXCUPnE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Mar 2007 15:43:04 +0000
-Received: from arrakis.delvare (jdelvare.pck.nerim.net [62.212.121.182])
-	by mallaury.nerim.net (Postfix) with SMTP id C068B4F3F6;
-	Wed, 21 Mar 2007 16:42:23 +0100 (CET)
-Date:	Wed, 21 Mar 2007 16:41:16 +0100
-From:	Jean Delvare <khali@linux-fr.org>
-To:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-Cc:	linux-mips@linux-mips.org, i2c@lm-sensors.org
-Subject: Re: [PATCH 9/12] drivers: PMC MSP71xx LED driver
-Message-Id: <20070321164116.4025ce37.khali@linux-fr.org>
-In-Reply-To: <4600812E.7070200@pmc-sierra.com>
-References: <4600812E.7070200@pmc-sierra.com>
-X-Mailer: Sylpheed version 2.2.10 (GTK+ 2.8.20; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2007 15:43:44 +0000 (GMT)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:46866 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021486AbXCUPnm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 21 Mar 2007 15:43:42 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 20097E1C8B;
+	Wed, 21 Mar 2007 16:42:57 +0100 (CET)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id K0zIEvUjo0wX; Wed, 21 Mar 2007 16:42:56 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id AEB13E1C6E;
+	Wed, 21 Mar 2007 16:42:56 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l2LFh8fH019935;
+	Wed, 21 Mar 2007 16:43:09 +0100
+Date:	Wed, 21 Mar 2007 15:43:03 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Florian Fainelli <florian.fainelli@int-evry.fr>
+cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix a warning in lib-64/dump_tlb.c
+In-Reply-To: <45FABA5A.5000007@int-evry.fr>
+Message-ID: <Pine.LNX.4.64N.0703211540520.2628@blysk.ds.pg.gda.pl>
+References: <45FABA5A.5000007@int-evry.fr>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.1/2892/Wed Mar 21 11:40:09 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14607
+X-archive-position: 14608
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Marc,
+On Fri, 16 Mar 2007, Florian Fainelli wrote:
 
-On Tue, 20 Mar 2007 16:49:50 -0800, Marc St-Jean wrote:
-> Jean Delvare wrote:
-> > This is confusing. First you write a dedicated driver, then you use the
-> > generic name for the device name. This raises a question:
-> > 
-> > Would it make sense to have generic PCA9554 driver, possibly
-> > implementing the new GPIO infrastructure, and have dedicated drivers
-> > such as this one build on top of that?
-> > 
-> > Either way you have to be consistent, if you go with dedicated code,
-> > the i2c client name should not be generic.
+> This patch suppresses a warning in arch/mips/lib-64/dump_tlb.c
 > 
-> I have renamed the driver "pmctwiled" and the client "pmctwiled_pca9554"
-> to help avoid confusion.
-
-Are there PMC LED implementations _not_ based on the PCA9554? If not,
-then the _pca9554 suffix is not really needed.
-
-> > This driver appears to be a good candidate to become a new-style i2c
-> > driver, where devices are instantiated explicitely by the platform code
-> > rather than probed for afterwards. The i2c-core changes allowing that
-> > will be in the next -mm kernel and will be merged in 2.6.22-rc1.
+> Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
 > 
-> OK, I will look at it when it reaches l-m.o. Although the probe still
-> allows us to support several demo boards on the same device family
-> which could have a different number of clients.
+> -----
+> diff --git a/arch/mips/lib-64/dump_tlb.c b/arch/mips/lib-64/dump_tlb.c
+> index 8232900..60a87c5 100644
+> --- a/arch/mips/lib-64/dump_tlb.c
+> +++ b/arch/mips/lib-64/dump_tlb.c
+> @@ -30,6 +30,7 @@ static inline const char *msk2str(unsigned int mask)
+>         case PM_64M:    return "64Mb";
+>         case PM_256M:   return "256Mb";
+>  #endif
+> +       default:        return NULL;
+>         }
+>  }
 
-The new code will let you handle that case too, the difference with the
-current model being that instead of doing a system-wide probe and
-having your driver check that you only attach to the right i2c adapter,
-you will specifically ask to probe only that adapter, so the check will
-no longer be necessary. And of course it'll be faster, too.
+ I guess BUG() would be appropriate here.
 
--- 
-Jean Delvare
+  Maciej

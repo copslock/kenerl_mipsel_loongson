@@ -1,71 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2007 16:33:42 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.175]:13829 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021482AbXCUQdl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Mar 2007 16:33:41 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so419209uga
-        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2007 09:32:40 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:mime-version:content-type;
-        b=Fz0/nuEXnDUWFz3box1W/hC2f/laRZ1mC7e6W9tbFUmhfnP1qc2EnwDM0gbPaHRyvAIK2sj5FQAUSjHIkWc6hCghA79BJMgKjnGRAC6gSKUtpPTjrqvK1GN/09pK5oWbdsE17qGu9ov7nugPfyVjgpZiVb3xgYUrxCNrvc/WcCc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:mime-version:content-type;
-        b=UKnmlQXuPu+JFZDZw77roRSKNWLomMMWa+voZ5sOj8Jfeg7yJL4hmvbzkKdbBrw5HWIUnmdPyYoc7bMRWNQjMXLQxFRWYjZSkTxy+CpJkAg+U4YWnEgof2xB/jbm7c6E++pU5hbYWSTRX4sb2CR0K0KBwPsfypWZPuLzjEc4A/g=
-Received: by 10.114.27.20 with SMTP id a20mr226674waa.1174494759236;
-        Wed, 21 Mar 2007 09:32:39 -0700 (PDT)
-Received: by 10.114.159.16 with HTTP; Wed, 21 Mar 2007 09:32:39 -0700 (PDT)
-Message-ID: <d459bb380703210932ycb5ec66xc1e090bd3a1da8fd@mail.gmail.com>
-Date:	Wed, 21 Mar 2007 17:32:39 +0100
-From:	"Marco Braga" <marco.braga@gmail.com>
-To:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: RE: PCI troubles on Alchemy AU1550 in 2.6.20 (and 2.6.19.1)
-Cc:	clem.taylor@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2007 17:05:07 +0000 (GMT)
+Received: from phoenix.bawue.net ([193.7.176.60]:43467 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20021482AbXCURFC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2007 17:05:02 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id A27D5BBDAA;
+	Wed, 21 Mar 2007 17:55:04 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1HU45p-0006z8-Ce; Wed, 21 Mar 2007 16:55:21 +0000
+Date:	Wed, 21 Mar 2007 16:55:21 +0000
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Florian Fainelli <florian.fainelli@int-evry.fr>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix a warning in lib-64/dump_tlb.c
+Message-ID: <20070321165521.GI2311@networkno.de>
+References: <45FABA5A.5000007@int-evry.fr> <Pine.LNX.4.64N.0703211540520.2628@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_213816_20384840.1174494759184"
-Return-Path: <marco.braga@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0703211540520.2628@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	Thiemo Seufer <ths@networkno.de>
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14610
+X-archive-position: 14611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marco.braga@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_213816_20384840.1174494759184
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Maciej W. Rozycki wrote:
+> On Fri, 16 Mar 2007, Florian Fainelli wrote:
+> 
+> > This patch suppresses a warning in arch/mips/lib-64/dump_tlb.c
+> > 
+> > Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
+> > 
+> > -----
+> > diff --git a/arch/mips/lib-64/dump_tlb.c b/arch/mips/lib-64/dump_tlb.c
+> > index 8232900..60a87c5 100644
+> > --- a/arch/mips/lib-64/dump_tlb.c
+> > +++ b/arch/mips/lib-64/dump_tlb.c
+> > @@ -30,6 +30,7 @@ static inline const char *msk2str(unsigned int mask)
+> >         case PM_64M:    return "64Mb";
+> >         case PM_256M:   return "256Mb";
+> >  #endif
+> > +       default:        return NULL;
+> >         }
+> >  }
+> 
+>  I guess BUG() would be appropriate here.
 
-Hello Clem,
+AFAICS NULL is wrong, it could cause the printk to crash.
 
-I am experiencing exactly the same problems with PCI peripherials on Au1500
-with kernel 2.6.20.1, now I am trying 2.6.20.3 but I have few hopes. Kernel
-version 2.6.17.14 instead seems to be ok.
 
-Perhaps sometime someone with better knowloedge than me will fix this issue,
-since I am truly a newbie.
-
-I am also trying to make out Sil3512 work with sata_sil, in kernel
-2.6.17.14it hangs when probing the dis. Exactly which Sil controller
-are you using?
-Do you have an EPROM on your controller? It is present in the PCI reference
-card but our engineer decided to go without it. I am not sure it has been a
-good idea..
-
-------=_Part_213816_20384840.1174494759184
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-Hello Clem,<br><br>I am experiencing exactly the same problems with PCI peripherials on Au1500 with kernel <a href="http://2.6.20.1">2.6.20.1</a>, now I am trying <a href="http://2.6.20.3">2.6.20.3</a> but I have few hopes. Kernel version 
-<a href="http://2.6.17.14">2.6.17.14</a> instead seems to be ok.<br><br>Perhaps sometime someone with better knowloedge than me will fix this issue, since I am truly a newbie.<br><br>I am also trying to make out Sil3512 work with sata_sil, in kernel 
-<a href="http://2.6.17.14">2.6.17.14</a> it hangs when probing the dis. Exactly which Sil controller are you using? Do you have an EPROM on your controller? It is present in the PCI reference card but our engineer decided to go without it. I am not sure it has been a good idea..
-<br><br>
-
-------=_Part_213816_20384840.1174494759184--
+Thiemo

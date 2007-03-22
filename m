@@ -1,65 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2007 11:25:10 +0000 (GMT)
-Received: from arrakis.dune.hu ([195.56.146.235]:65250 "EHLO arrakis.dune.hu")
-	by ftp.linux-mips.org with ESMTP id S20022210AbXCVLZJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Mar 2007 11:25:09 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by arrakis.dune.hu (Postfix) with ESMTP id E8F967840CD
-	for <linux-mips@linux-mips.org>; Thu, 22 Mar 2007 12:33:56 +0100 (CET)
-Received: from arrakis.dune.hu ([127.0.0.1])
-	by localhost (arrakis [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 16346-06 for <linux-mips@linux-mips.org>;
-	Thu, 22 Mar 2007 12:33:56 +0100 (CET)
-Received: from ecaz.afh.b-m.hu (unknown [195.228.217.18])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by arrakis.dune.hu (Postfix) with ESMTP id 8D5147840CB
-	for <linux-mips@linux-mips.org>; Thu, 22 Mar 2007 12:33:56 +0100 (CET)
-To:	linux-mips@linux-mips.org
-Subject: Re: =?utf-8?B?5Zue5aSNOiBNaXBzIFNPQywgTGludXg=?=
-From:	"Imre Kaloz" <kaloz@openwrt.org>
-Organization: OpenWrt - Wireless Freedom
-Content-Type: text/plain; format=flowed; delsp=yes; charset=utf-8
-MIME-Version: 1.0
-References: <bf8a8a430703102229k409c4cf5s44fc3510b3e1f64e@mail.gmail.com> <20070311135654.GA26339@linux-mips.org> <7d73e7d80703211907l147578b3gc696b8c4c15ae20c@mail.gmail.com> <20070322104149.GC24177@linux-mips.org>
-Content-Transfer-Encoding: 7bit
-Date:	Thu, 22 Mar 2007 12:24:33 +0100
-Message-ID: <op.tpk8m7dw2s3iss@ecaz.afh.b-m.hu>
-In-Reply-To: <20070322104149.GC24177@linux-mips.org>
-X-Virus-Scanned: by amawis at dune.hu
-Return-Path: <kaloz@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2007 13:47:09 +0000 (GMT)
+Received: from ra.tuxdriver.com ([70.61.120.52]:3341 "EHLO ra.tuxdriver.com")
+	by ftp.linux-mips.org with ESMTP id S20022226AbXCVNrI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Mar 2007 13:47:08 +0000
+Received: from ra.tuxdriver.com (ra.tuxdriver.com [127.0.0.1])
+	by ra.tuxdriver.com (8.13.7/8.13.7) with ESMTP id l2MDhkq1025241
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 22 Mar 2007 09:43:51 -0400
+Received: (from uucp@localhost)
+	by ra.tuxdriver.com (8.13.7/8.13.6/Submit) with UUCP id l2MDFKXa024727;
+	Thu, 22 Mar 2007 09:15:20 -0400
+Received: from linville-t43.mobile (linville-t43.mobile [127.0.0.1])
+	by linville-t43.mobile (8.13.8/8.13.8) with ESMTP id l2MD5dQ3007186;
+	Thu, 22 Mar 2007 09:05:39 -0400
+Received: (from linville@localhost)
+	by linville-t43.mobile (8.13.8/8.13.8/Submit) id l2MD5dI1007185;
+	Thu, 22 Mar 2007 09:05:39 -0400
+Date:	Thu, 22 Mar 2007 09:05:39 -0400
+From:	"John W. Linville" <linville@tuxdriver.com>
+To:	Imre Kaloz <kaloz@openwrt.org>
+Cc:	Songmao Tian <kingkongmao@gmail.com>,
+	PhilipS <sphilip30@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: =?utf-8?B?5Zue5aSNOg==?= Mips SOC, Linux
+Message-ID: <20070322130539.GD3860@tuxdriver.com>
+References: <bf8a8a430703102229k409c4cf5s44fc3510b3e1f64e@mail.gmail.com> <20070311135654.GA26339@linux-mips.org> <7d73e7d80703211907l147578b3gc696b8c4c15ae20c@mail.gmail.com> <op.tpkzjwul2s3iss@richese>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <op.tpkzjwul2s3iss@richese>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <linville@tuxdriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14617
+X-archive-position: 14618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaloz@openwrt.org
+X-original-sender: linville@tuxdriver.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 22 Mar 2007 11:41:49 +0100, Ralf Baechle <ralf@linux-mips.org>  
-wrote:
+On Thu, Mar 22, 2007 at 09:08:10AM +0100, Imre Kaloz wrote:
+> Well, a year before or so I've tried to get a Godson based unit (a  
+> Municator) with no luck.. I wasn't able to find a contact regarding the  
+> Lemote, but if you can, I would be also interested in working on this  
+> platform.
 
-> On Thu, Mar 22, 2007 at 10:07:49AM +0800, Songmao Tian wrote:
->
->> Have you heard of loongson? the current version of the cpu is 2e,
->> while 2f will be released this year, which will clocks at 1GHz,
->> delivering rather high perfermance:)
->>
->> Fulong is a miniPC now based on loongson 2e. you can get one for free
->> if you make recognized contribution to the system:)
->>
->>
->> Some introduction here:
->> http://www.cyrius.com/debian/loongson/
->
-> But I have two Loongsons :-)
->
->   Ralf
->
+Yes, I am in a similar situation.  How do I get one?
 
-Lucky bastard :D
-
-
-Imre
+John
+-- 
+John W. Linville
+linville@tuxdriver.com

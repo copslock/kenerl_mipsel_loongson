@@ -1,88 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2007 19:32:47 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.174]:5790 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021629AbXCUTcq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 Mar 2007 19:32:46 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so487266uga
-        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2007 12:31:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2007 02:08:56 +0000 (GMT)
+Received: from nz-out-0506.google.com ([64.233.162.239]:22715 "EHLO
+	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021844AbXCVCIx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 22 Mar 2007 02:08:53 +0000
+Received: by nz-out-0506.google.com with SMTP id x7so316013nzc
+        for <linux-mips@linux-mips.org>; Wed, 21 Mar 2007 19:07:49 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=g3nKzmuDnU2BR34QmK1blPXYCcxgGZWNJ9hUQqmdcdhYRqkH25P2zub4qxua0wVVPl71WJhV1T4p0K0VDpgok1daHoADBG+lh/a4ou8T939raGvEnj36YvfnSa+lu1M8oW0qhTKHQg3sJ62od5JivRD+4yImi0ESD9JEnnoLOdM=
+        b=tcGYw6KyYs0/fJaRDQuWKYqYe4u0Q09pJYF7d8NHIWHqXQHaSs3wYbYblz7SHhA4F7+tCCRWCUKIjS3OsB4oTjNUdTz0TN+5eASP8ch4rWJ687MMktwVo18UrpWH7+BQZUQPvEiTtByRiBbt991k6Ne8EFQSndHlI13IdoVlrhw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=sq4/OxWpHJMac3+eVyOnLi70MyVSG69NhhONJYNp+RzF9Xl4dPcq02bUbVdYYJs0wMTswQ+Ez9F7gJPC5D8y25PkXRSehFtlRdo0ZSNFPr2suQ3X922x2kClKuxDBBJm56driP1uQ3GVntnGSDnmUSajCH1MB98MggdUQXJzoz8=
-Received: by 10.114.110.1 with SMTP id i1mr286629wac.1174505500753;
-        Wed, 21 Mar 2007 12:31:40 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Wed, 21 Mar 2007 12:31:40 -0700 (PDT)
-Message-ID: <cda58cb80703211231u68e2f3b0g3a8a490a35f9d07f@mail.gmail.com>
-Date:	Wed, 21 Mar 2007 20:31:40 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: Building 64 bit kernel on Cobalt
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070322.020756.25910272.anemo@mba.ocn.ne.jp>
+        b=rLimkqJk5msjp0qScO53Yqd2Gwu9RfSDL2BEpQu1tR02X53wGbOXi6Nb68etKmyTeUnEG37skMWQLmjki1KY6bIrQb8G8gIiS34y/T9Un2lM2HhXkEtc49CxFMR0VH2id+nUxf3qEyO5iiRbMDuzq+cpCTbfk9K0/ktHkzvnXwU=
+Received: by 10.65.43.17 with SMTP id v17mr3013286qbj.1174529269144;
+        Wed, 21 Mar 2007 19:07:49 -0700 (PDT)
+Received: by 10.65.97.12 with HTTP; Wed, 21 Mar 2007 19:07:49 -0700 (PDT)
+Message-ID: <7d73e7d80703211907l147578b3gc696b8c4c15ae20c@mail.gmail.com>
+Date:	Thu, 22 Mar 2007 10:07:49 +0800
+From:	"Songmao Tian" <kingkongmao@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: =?GB2312?B?u9i4tDogTWlwcyBTT0MsIExpbnV4?=
+Cc:	PhilipS <sphilip30@gmail.com>, linux-mips@linux-mips.org
+In-Reply-To: <20070311135654.GA26339@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-References: <20070319.150705.100740532.nemoto@toshiba-tops.co.jp>
-	 <cda58cb80703190308k4e57e194u56dca25b063646b6@mail.gmail.com>
-	 <cda58cb80703190317h80cfd53x4acee55f2c757907@mail.gmail.com>
-	 <20070322.020756.25910272.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+References: <bf8a8a430703102229k409c4cf5s44fc3510b3e1f64e@mail.gmail.com>
+	 <20070311135654.GA26339@linux-mips.org>
+Return-Path: <kingkongmao@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14613
+X-archive-position: 14614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: kingkongmao@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 3/21/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Mon, 19 Mar 2007 11:17:48 +0100, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> > > > You are using CONFIG_BUILD_ELF64=y and CKSEG0 load address.
-> > > > This combination does not work.  Please refer these threads:
-> > > >
-> > >
-> > > Thanks Atsushi for sorting this out. It's a bit sad to get these type
-> > > of information after so many email echanges...
-> > >
-> >
-> > BTW, how this config has ever worked for a 2.6.19 kernel ? I don't see
-> > why using __pa() instead of CPHYSADDR() breaks this config...
+Have you heard of loongson? the current version of the cpu is 2e,
+while 2f will be released this year, which will clocks at 1GHz,
+delivering rather high perfermance:)
+
+Fulong is a miniPC now based on loongson 2e. you can get one for free
+if you make recognized contribution to the system:)
+
+
+Some introduction here:
+http://www.cyrius.com/debian/loongson/
+
+2007/3/11, Ralf Baechle <ralf@linux-mips.org>:
+> On Sun, Mar 11, 2007 at 11:59:11AM +0530, PhilipS wrote:
 >
-> 2.6.19:
->         CPHYSADDR(0xffffffff80000000) == 0
->         __pa(0xffffffff80000000) == 0xffffffff80000000 - 0x9800000000000000
-> 2.6.20 (CONFIG_BUILD_ELF64=y):
->         CPHYSADDR(0xffffffff80000000) == 0
->         __pa(0xffffffff80000000) == 0xffffffff80000000 - 0x9800000000000000
-> 2.6.20 (CONFIG_BUILD_ELF64=n):
->         CPHYSADDR(0xffffffff80000000) == 0
->         __pa(0xffffffff80000000) == 0
+> > Hello All,
+> > I am looking for MIPS Development boards for my hobby projects like Linux
+> > Porting and Development, I am here by looking for an Expert suggestion to
+> > buy a MIPS custom boards, so far on Google I could come across
+> > vendor selling MIPS Evaluation target boards which is Obviously expensive
+> > which ,I cannot afford to buy. I hope I am asking this question at the
+> right
+> > place, else please suggest me where I can post my request if one knows
+> about
+> > it.
 >
-> The reason is obvious, isn't it? ;)
+> You're touch a big problem here, so I'm going to use this opportunity to
+> post a rant ...
 >
-
-Yes it is !
-
-After writing this I just realised that I was confused by what you said earlier:
-
-    You are using CONFIG_BUILD_ELF64=y and CKSEG0 load address.
-    This combination does not work.  Please refer these threads:
-
-This combo should theoritically work but currently does not. Unlike
-the following one
-
-    CONFIG_BUILD_ELF64=n and XKPHYS load address.
-
-which definitely don't work. And I mixed the second case with the first one...
-
-no other comment ;)
--- 
-               Franck
+> Most of the eval boards are have very high price tags due to low volume and
+> esotheric components such as very large and fast FPGAs or pricey matched
+> impedance connectors for logic analyzers.  Another factor is that the
+> vendors making these boards usually target their commercial customers and
+> factor in a fairly generous markup for the post-sale support into the sales
+> price of the board.
+>
+> From a Free Software perspective this is a bloody disaster.  Even if for a
+> moment I put on my dot com hat again, it's one.  Over the past years the
+> commercial contributions have primarily focused on hardware support.  In
+> many cases I received large code drops of lousy to medicore quality and
+> no maintenance at all after the initial code drop.  I won't go into the
+> reasons here nor do I think I need to name companies here - but it's a big
+> problem.
+>
+> As usual exceptions proof the rule and also as usual there are alot of
+> grey shades between white and black.  Some companies seem to have tremendous
+> difficulty to be good open source citizens - but they throw some free
+> hardware into the crowd.  Not enough to satisfy the demand and usually only
+> a few key people are really able to take advantage of that.
+>
+> Otoh many if not most important and highest quality contributions over the
+> years have come from hobby hackers, so in the end the lack availability of
+> modern hardware is making everybody suffer.  Meanwhile the importance of
+> Linux as OS for MIPS is continuing to rise ...
+>
+> I hear similar complaints from other, mostly embedded architectures such as
+> ARM.  But that's not an excuse - this problem wants some remedy.
+>
+> But let's also look at the options you have right now:
+>
+>  o Eval boards end on ebay relativly rarely, but you can try anyway.
+>    Another option is something like a surplus MIPS workstation.
+>  o A bunch of wireless routers and other devices such as some the Linksys
+>    WRT54 models have been recycled for hacking use with good success.
+>  o Routerboard which is not yet supported out of tree (working in cleaing
+>    the patches) would be another reasonably priced option.  Generally you
+>    may want to look at the list of platforms supported by
+>    http://openwrt.org/ - many of their platforms have friendly price tags.
+>    Of course alot of those are purpose built hw so may be a bit quirky to
+>    use.
+>  o Apparently AMD Alchemy boards used to be fairly cheap, on the order of
+>    $100.  I have not idea this is true or still true for the new owner of
+>    Alchemy Raza Microelectronics.
+>  o For the meager investment of a few megabytes of disk space Qemu is a
+>    really nice and well performing system which also is rapidly improving.
+>
+>   Ralf
+>
+>

@@ -1,94 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 15:13:14 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.189]:24956 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022402AbXCWPNN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Mar 2007 15:13:13 +0000
-Received: by nf-out-0910.google.com with SMTP id q29so1314314nfc
-        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2007 08:12:12 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=Wzt8c/ubbz8PXxz4uoZaG7/NdjCmOg7rohikJFDCI1CrNbNRIUJEwsrjQx9AsOygcNFtL+GwiD5R34b5gb34pHMKFvTtVeZgRVbYekXKp5yTbisQ2ycpvW+FneRn8jVYJ8vixIlkzbYaS+Jv9eknDwCEsVHpJSJoVpa9ZD921ig=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=PR9Gv9r+AC6EbG9Fy17Sb9dfu2/ZkO7UGqm0NovULBD6f/KFLvpIfbYY+re0jpjjvVVvt2YlrKwWX/v3NEqlsfRhUGwQL58//Fo9MCi96a5guWC6zSocUYfLCsVB4m65/OmLoP03rG4Xqna9HryWLfyOvXwk+LB9hDZhJTS6TKg=
-Received: by 10.115.93.16 with SMTP id v16mr1224788wal.1174662731501;
-        Fri, 23 Mar 2007 08:12:11 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Fri, 23 Mar 2007 08:12:10 -0700 (PDT)
-Message-ID: <cda58cb80703230812l732aed7ej5b158c27a3c98c3@mail.gmail.com>
-Date:	Fri, 23 Mar 2007 16:12:10 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	Kumba <kumba@gentoo.org>
-Subject: Re: IP32 prom crashes due to __pa() funkiness
-Cc:	"Linux MIPS List" <linux-mips@linux-mips.org>,
-	"Arnaud Giersch" <arnaud.giersch@free.fr>
-In-Reply-To: <45FFEB5A.707@gentoo.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 15:20:06 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:51937 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022421AbXCWPUE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Mar 2007 15:20:04 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2NFK281019733;
+	Fri, 23 Mar 2007 15:20:02 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2NFK1Ek019732;
+	Fri, 23 Mar 2007 15:20:01 GMT
+Date:	Fri, 23 Mar 2007 15:20:01 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Miklos Szeredi <miklos@szeredi.hu>, linux-mips@linux-mips.org,
+	Ravi.Pratap@hillcrestlabs.com
+Subject: Re: flush_anon_page for MIPS
+Message-ID: <20070323152001.GA19477@linux-mips.org>
+References: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu> <20070323141939.GB17311@linux-mips.org> <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <45D8B070.7070405@gentoo.org>
-	 <cda58cb80703010139y3e5bbb8eqa4d25b75ba658a22@mail.gmail.com>
-	 <45FC46F0.3070300@gentoo.org> <87irczzglc.fsf@groumpf.homeip.net>
-	 <45FC9E39.7010506@gentoo.org> <45FE95EE.5030108@innova-card.com>
-	 <45FE9D22.1030407@gentoo.org>
-	 <cda58cb80703191435u37ba4ed2se4cc150fcdb734a2@mail.gmail.com>
-	 <45FFEB5A.707@gentoo.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14631
+X-archive-position: 14632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Kumba wrote:
->
-> After going through all the fun to get rid of CPHYSADDR, I see no
-> point really to bring it back.
+On Fri, Mar 23, 2007 at 03:47:45PM +0100, Franck Bui-Huu wrote:
 
-The patch restores CPHYSADDR() but in __pa()'s _implementation_. It
-makes a huge difference.
+> On 3/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> >The other thing I still need to understand is why nobody actually seems
+> >to have triggered this bug on MIPS so far.  I suppose our implementation
+> >of flush_dcache_page() may have done a successful job at papering it
+> >which means there might be some performance getting lost there as well.
+> >
+> 
+> Just to understand, doesn't all mappings of shared anonymous pages and
+> kernel addresses of them share the same cache lines ?
 
-I think CPHYSADDR() is not that bad for 64 bits kernels. With such
-beasts we need to handle two PAGE_OFFSET values if we stick with the
-current implementation of __pa(). Magically using CPHYSADDR() removes
-this need. OTOH, CPHYSADDR() is quite bad for mapped kernels.
+That's true only for all userspace mappings and an anonymous page should
+normally have only a single mapping per mm anyway.  But to make things
+more complicated a page of course also has a kernel space address in
+KSEG0 or XKPHYS and on a VIPT cache there we frequently have the case
+where the user address and the kernel address would map to a different
+cache line.
 
-But do we really care in 64 bits world ?
+Let me illustrate this with a little example.  Assume we have a page at
+physical address 0x5000, a page size of 4kB, an 8kB direct mapped cache
+and 32-byte cache lines.  Then address bits 0..4 will be the byte index
+into the cache line, address bits 5..12 will index the cache array.  So
+now let's map our page into userspace, at address 0x12340000.  In KSEG0
+it is accessible at 0x80005000.  Now, compute the cache index for both
+addresses compare and curse ...
 
->  Plus that patch unnecessarily complicates those defines.  As I
-> highlighted in my original mail, O2 doesn't need CPHYSADDR added to
-> __pa(), it just needs the conditional define for __pa_page_offset to
-> be a little bit more flexible.
->
-
-I don't see why the patch complicates those defines. It actually gets
-rid of CONFIG_BUILD_ELF64 and __pa_page_offset(). OK I could have
-written it a little bit more readable:
-
-#ifdef CONFIG_64BIT
-#define __pa(x)							\
-({								\
-	unsigned long __x = (unsigned long)(x);			\
-	__x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);		\
-})
-#else
-#define __pa(x)							\
-	((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
-#endif
-
-Yes, it actually increases size code for CONFIG_64BIT because we
-always test if the virtual address is from XKPHYS or CKSEG0. But how
-much ? I would say not a lot, and it maybe worths it since we get rid
-of an obscure config option.
-
-		Franck
-
--- 
-               Franck
+  Ralf

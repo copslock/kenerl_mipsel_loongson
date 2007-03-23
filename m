@@ -1,163 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 14:19:52 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:2947 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022388AbXCWOTu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Mar 2007 14:19:50 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2NEJeK5018770;
-	Fri, 23 Mar 2007 14:19:49 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2NEJdaO018769;
-	Fri, 23 Mar 2007 14:19:39 GMT
-Date:	Fri, 23 Mar 2007 14:19:39 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Miklos Szeredi <miklos@szeredi.hu>
-Cc:	linux-mips@linux-mips.org, Ravi.Pratap@hillcrestlabs.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 14:48:48 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.169]:10659 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022402AbXCWOsq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Mar 2007 14:48:46 +0000
+Received: by ug-out-1314.google.com with SMTP id 40so1144610uga
+        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2007 07:47:46 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=uANX666OASnk9gl6sxwMeHoaJJ5NQUSAFksJMSCHQt8UW37x2/ysNyP4ADRd0MijvtkpyeUFdBdlzVe5OmMmvq9Zt1rXrDC5dQIBMZqGUnBIZ76iUS6jzJBcpnXR+o7ysrb6TSku05wsEn4qQr/5r/s+nOCuvKOYRcejwYkYPMA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=WNvCXQArx4HG2YcLaC9+0TjkL2PdnPpJ+0LKdc1zglfhOj/DKjxo3Jq3BzccLmsCCcx7RODMTa4QjGy/maXj315rKXynE7Lu7qtoZZkpV3sh3llxGUEA/pVIYVEDdS7wtX3D2kivGvdquouILABlnhzI3/zbLym2qZUpYbO2lbk=
+Received: by 10.114.155.1 with SMTP id c1mr1215320wae.1174661265294;
+        Fri, 23 Mar 2007 07:47:45 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Fri, 23 Mar 2007 07:47:45 -0700 (PDT)
+Message-ID: <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com>
+Date:	Fri, 23 Mar 2007 15:47:45 +0100
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
 Subject: Re: flush_anon_page for MIPS
-Message-ID: <20070323141939.GB17311@linux-mips.org>
-References: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Cc:	"Miklos Szeredi" <miklos@szeredi.hu>, linux-mips@linux-mips.org,
+	Ravi.Pratap@hillcrestlabs.com
+In-Reply-To: <20070323141939.GB17311@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+References: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu>
+	 <20070323141939.GB17311@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14627
+X-archive-position: 14628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 22, 2007 at 11:28:40PM +0100, Miklos Szeredi wrote:
+Hi,
 
-> It seems that MIPS needs to implement flush_anon_page() for correct
-> operation of get_user_pages() on anonymous pages.
-> 
-> This function is already implemented in PARISC and ARM.  Also see
-> Documentation/cachetlb.txt.
+On 3/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> The other thing I still need to understand is why nobody actually seems
+> to have triggered this bug on MIPS so far.  I suppose our implementation
+> of flush_dcache_page() may have done a successful job at papering it
+> which means there might be some performance getting lost there as well.
+>
 
-**GRRRRR**
+Just to understand, doesn't all mappings of shared anonymous pages and
+kernel addresses of them share the same cache lines ?
 
-From <linux/highmem.h>:
-
-#ifndef ARCH_HAS_FLUSH_ANON_PAGE
-static inline void flush_anon_page(struct vm_area_struct *vma, struct page *page
-, unsigned long vmaddr)
-{
-}
-#endif
-
-See why such stuff is happening?  Providing a default implemntation may be
-fine for i.e. strcpy() where it's only about providing a better mouse
-trap than the standard one in lib/string.c.  It's an awfully bad idea for
-something that matters for correctness such as flush_anon_page() ...
-
-Oh well, I'm looking into it.  Fortunately I've written reasonable
-infrastructure during the previous round of the cache alias wars, so this
-case should be reasonably simple to solve.  First cut of patch below.
-
-The other thing I still need to understand is why nobody actually seems
-to have triggered this bug on MIPS so far.  I suppose our implementation
-of flush_dcache_page() may have done a successful job at papering it
-which means there might be some performance getting lost there as well.
-
-Was this one found by code inspection or actually triggered by like FUSE?
-
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index 31819c5..f565608 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -3,7 +3,8 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (C) 1994 - 2003 by Ralf Baechle
-+ * Copyright (C) 1994 - 2003, 07 by Ralf Baechle (ralf@linux-mips.org)
-+ * Copyright (C) 2007 MIPS Technologies, Inc.
-  */
- #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -88,6 +89,23 @@ void __flush_dcache_page(struct page *page)
- 
- EXPORT_SYMBOL(__flush_dcache_page);
- 
-+void __flush_anon_page(struct vm_area_struct *vma, struct page *page,
-+	unsigned long vmaddr)
-+{
-+	if (!cpu_has_dc_aliases)
-+		return;
-+
-+	if (pages_do_alias((unsigned long)page_address(page), vmaddr)) {
-+		void *kaddr;
-+
-+		kaddr = kmap_coherent(page, vmaddr);
-+		flush_data_cache_page((unsigned long)kaddr);
-+		kunmap_coherent(kaddr);
-+	}
-+}
-+
-+EXPORT_SYMBOL(__flush_anon_page);
-+
- void __update_cache(struct vm_area_struct *vma, unsigned long address,
- 	pte_t pte)
- {
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 25abe91..e9951c0 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -123,7 +123,7 @@ static void __init kmap_coherent_init(void)
- static inline void kmap_coherent_init(void) {}
- #endif
- 
--static inline void *kmap_coherent(struct page *page, unsigned long addr)
-+void *kmap_coherent(struct page *page, unsigned long addr)
- {
- 	enum fixed_addresses idx;
- 	unsigned long vaddr, flags, entrylo;
-@@ -177,7 +177,7 @@ static inline void *kmap_coherent(struct page *page, unsigned long addr)
- 
- #define UNIQUE_ENTRYHI(idx) (CKSEG0 + ((idx) << (PAGE_SHIFT + 1)))
- 
--static inline void kunmap_coherent(struct page *page)
-+void kunmap_coherent(struct page *page)
- {
- #ifndef CONFIG_MIPS_MT_SMTC
- 	unsigned int wired;
-diff --git a/include/asm-mips/cacheflush.h b/include/asm-mips/cacheflush.h
-index 0ddada3..1bd3310 100644
---- a/include/asm-mips/cacheflush.h
-+++ b/include/asm-mips/cacheflush.h
-@@ -48,6 +48,16 @@ static inline void flush_dcache_page(struct page *page)
- #define flush_dcache_mmap_lock(mapping)		do { } while (0)
- #define flush_dcache_mmap_unlock(mapping)	do { } while (0)
- 
-+#define ARCH_HAS_FLUSH_ANON_PAGE
-+static inline void flush_anon_page(struct vm_area_struct *vma,
-+	struct page *page, unsigned long vmaddr)
-+{
-+	extern void __flush_anon_page(struct vm_area_struct *vma,
-+	                              struct page *, unsigned long);
-+	if (PageAnon(page))
-+		__flush_anon_page(vma, page, vmaddr);
-+}
-+
- static inline void flush_icache_page(struct vm_area_struct *vma,
- 	struct page *page)
- {
-@@ -86,4 +96,7 @@ extern void (*flush_data_cache_page)(unsigned long addr);
- /* Run kernel code uncached, useful for cache probing functions. */
- unsigned long __init run_uncached(void *func);
- 
-+extern void *kmap_coherent(struct page *page, unsigned long addr);
-+extern void kunmap_coherent(struct page *page);
-+
- #endif /* _ASM_CACHEFLUSH_H */
+thanks,
+-- 
+               Franck

@@ -1,47 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 17:13:22 +0000 (GMT)
-Received: from mms2.broadcom.com ([216.31.210.18]:18187 "EHLO
-	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S20022409AbXCWRNT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Mar 2007 17:13:19 +0000
-Received: from [10.10.64.154] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.1)); Fri, 23 Mar 2007 10:12:41 -0700
-X-Server-Uuid: A6C4E0AE-A7F0-449F-BAE7-7FA0D737AC76
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 18:08:56 +0000 (GMT)
+Received: from mms3.broadcom.com ([216.31.210.19]:33547 "EHLO
+	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S20021730AbXCWSIx convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2007 18:08:53 +0000
+Received: from [10.10.64.154] by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.1)); Fri, 23 Mar 2007 11:08:19 -0700
+X-Server-Uuid: 20144BB6-FB76-4F11-80B6-E6B2900CA0D7
 Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- B19482B0; Fri, 23 Mar 2007 10:12:41 -0700 (PDT)
+ 2E73A2AF; Fri, 23 Mar 2007 11:08:19 -0700 (PDT)
 Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 341CB2B4; Fri, 23 Mar
- 2007 10:12:39 -0700 (PDT)
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 16D322AE; Fri, 23 Mar
+ 2007 11:08:19 -0700 (PDT)
 Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
  [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id FCI08728; Fri, 23 Mar 2007 10:12:14 -0700 (PDT)
+ id FCI25066; Fri, 23 Mar 2007 11:08:18 -0700 (PDT)
 Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
  [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- C1C9F20501; Fri, 23 Mar 2007 10:12:14 -0700 (PDT)
-Received: from localhost.localdomain ([10.240.253.47]) by
- NT-SJCA-0750.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Fri, 23 Mar 2007 10:12:13 -0700
-Received: from mason by localhost.localdomain with local (Exim 4.50) id
- 1HUnIe-0000OG-DL; Fri, 23 Mar 2007 10:11:36 -0700
-Date:	Fri, 23 Mar 2007 10:11:32 -0700
-To:	linux-mips@linux-mips.org, netdev@vger.kernel.org,
-	mason@broadcom.com
-Subject: [PATCH] NAPI support for Sibyte MAC
-Message-ID: <20070323171132.GA1464@broadcom.com>
+ 993F020501; Fri, 23 Mar 2007 11:08:18 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-User-Agent: Mutt/1.5.9i
-From:	"mason" <mason@broadcom.com>
-X-OriginalArrivalTime: 23 Mar 2007 17:12:13.0457 (UTC)
- FILETIME=[665D5010:01C76D6E]
-X-WSS-ID: 6A1AD5033A47547010-01-01
+Subject: [PATCH] NAPI support for Sibyte MAC
+Date:	Fri, 23 Mar 2007 11:08:16 -0700
+Message-ID: <7E000E7F06B05C49BDBB769ADAF44D070206E7BF@NT-SJCA-0750.brcm.ad.broadcom.com>
+Thread-Topic: [PATCH] NAPI support for Sibyte MAC
+Thread-Index: AcdtdjsGWVMqXgxNR1+xMr7rUfg0qQ==
+From:	"Mark E Mason" <mason@broadcom.com>
+To:	linux-mips@linux-mips.org, netdev@vger.kernel.org
+X-WSS-ID: 6A1AC81B38G7719424-05-01
 Content-Type: text/plain;
  charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 Return-Path: <mason@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14645
+X-archive-position: 14646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,10 +45,12 @@ X-list: linux-mips
 
 
 [ This is a re-post, but the patch still applies and works fine against
-the linux-mips.org tip. We'd really like to get this in. -Mark]
+the linux-mips.org tip. We'd really like to get this in. -Mark ]
 
-  This patch completes the NAPI functionality for SB1250 MAC, including making
-  NAPI a kernel option that can be turned on or off and adds the "sbmac_poll"
+  This patch completes the NAPI functionality for SB1250 MAC, including
+making
+  NAPI a kernel option that can be turned on or off and adds the
+"sbmac_poll"
   routine.
 
     Signed off by: Mark Mason (mason@broadcom.com)
@@ -63,8 +59,10 @@ the linux-mips.org tip. We'd really like to get this in. -Mark]
 
 Index: linux-2.6.14-cgl/drivers/net/Kconfig
 ===================================================================
---- linux-2.6.14-cgl.orig/drivers/net/Kconfig	2006-09-20 14:58:54.000000000 -0700
-+++ linux-2.6.14-cgl/drivers/net/Kconfig	2006-09-20 17:04:31.000000000 -0700
+--- linux-2.6.14-cgl.orig/drivers/net/Kconfig	2006-09-20
+14:58:54.000000000 -0700
++++ linux-2.6.14-cgl/drivers/net/Kconfig	2006-09-20
+17:04:31.000000000 -0700
 @@ -2031,6 +2031,23 @@
  	tristate "SB1250 Ethernet support"
  	depends on SIBYTE_SB1xxx_SOC
@@ -73,12 +71,17 @@ Index: linux-2.6.14-cgl/drivers/net/Kconfig
 +	bool "SBMAC: Use Rx Polling (NAPI) (EXPERIMENTAL)"
 +	depends on NET_SB1250_MAC && EXPERIMENTAL
 +	help
-+	  NAPI is a new driver API designed to reduce CPU and interrupt load
-+	  when the driver is receiving lots of packets from the card. It is
-+	  still somewhat experimental and thus not yet enabled by default.
++	  NAPI is a new driver API designed to reduce CPU and interrupt
+load
++	  when the driver is receiving lots of packets from the card. It
+is
++	  still somewhat experimental and thus not yet enabled by
+default.
 +
-+	  If your estimated Rx load is 10kpps or more, or if the card will be
-+	  deployed on potentially unfriendly networks (e.g. in a firewall),
++	  If your estimated Rx load is 10kpps or more, or if the card
+will be
++	  deployed on potentially unfriendly networks (e.g. in a
+firewall),
 +	  then say Y here.
 +
 +	  See <file:Documentation/networking/NAPI_HOWTO.txt> for more
@@ -97,8 +100,10 @@ Index: linux-2.6.14-cgl/drivers/net/Kconfig
 +
 Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 ===================================================================
---- linux-2.6.14-cgl.orig/drivers/net/sb1250-mac.c	2006-09-20 14:59:00.000000000 -0700
-+++ linux-2.6.14-cgl/drivers/net/sb1250-mac.c	2006-09-20 20:16:27.000000000 -0700
+--- linux-2.6.14-cgl.orig/drivers/net/sb1250-mac.c	2006-09-20
+14:59:00.000000000 -0700
++++ linux-2.6.14-cgl/drivers/net/sb1250-mac.c	2006-09-20
+20:16:27.000000000 -0700
 @@ -95,19 +95,28 @@
  #endif
  
@@ -150,23 +155,34 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  	 * associated with it.
  	 */
  
--	struct sbmac_softc *sbdma_eth;	        /* back pointer to associated MAC */
+-	struct sbmac_softc *sbdma_eth;	        /* back pointer to
+associated MAC */
 -	int              sbdma_channel;	/* channel number */
-+	struct sbmac_softc *sbdma_eth;	    /* back pointer to associated MAC */
++	struct sbmac_softc *sbdma_eth;	    /* back pointer to
+associated MAC */
 +	int              sbdma_channel;	    /* channel number */
  	int		 sbdma_txdir;       /* direction (1=transmit) */
--	int		 sbdma_maxdescr;	/* total # of descriptors in ring */
-+	int		 sbdma_maxdescr;    /* total # of descriptors in ring */
+-	int		 sbdma_maxdescr;	/* total # of
+descriptors in ring */
++	int		 sbdma_maxdescr;    /* total # of descriptors in
+ring */
  #ifdef CONFIG_SBMAC_COALESCE
- 	int		 sbdma_int_pktcnt;  /* # descriptors rx/tx before interrupt*/
+ 	int		 sbdma_int_pktcnt;  /* # descriptors rx/tx
+before interrupt*/
  	int		 sbdma_int_timeout; /* # usec rx/tx interrupt */
 @@ -197,13 +206,16 @@
- 	volatile void __iomem *sbdma_config0;	/* DMA config register 0 */
- 	volatile void __iomem *sbdma_config1;	/* DMA config register 1 */
- 	volatile void __iomem *sbdma_dscrbase;	/* Descriptor base address */
--	volatile void __iomem *sbdma_dscrcnt;     /* Descriptor count register */
-+	volatile void __iomem *sbdma_dscrcnt;   /* Descriptor count register */
- 	volatile void __iomem *sbdma_curdscr;	/* current descriptor address */
+ 	volatile void __iomem *sbdma_config0;	/* DMA config register 0
+*/
+ 	volatile void __iomem *sbdma_config1;	/* DMA config register 1
+*/
+ 	volatile void __iomem *sbdma_dscrbase;	/* Descriptor base
+address */
+-	volatile void __iomem *sbdma_dscrcnt;     /* Descriptor count
+register */
++	volatile void __iomem *sbdma_dscrcnt;   /* Descriptor count
+register */
+ 	volatile void __iomem *sbdma_curdscr;	/* current descriptor
+address */
 +	volatile void __iomem *sbdma_oodpktlost;/* pkt drop (rx only) */
 +
  
@@ -175,8 +191,10 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  	 */
  
 +	sbdmadscr_t     *sbdma_dscrtable_unaligned;
- 	sbdmadscr_t     *sbdma_dscrtable;	/* base of descriptor table */
- 	sbdmadscr_t     *sbdma_dscrtable_end; /* end of descriptor table */
+ 	sbdmadscr_t     *sbdma_dscrtable;	/* base of descriptor
+table */
+ 	sbdmadscr_t     *sbdma_dscrtable_end; /* end of descriptor table
+*/
  
 @@ -286,8 +298,8 @@
  static int sbdma_add_txbuffer(sbmacdma_t *d,struct sk_buff *m);
@@ -184,14 +202,17 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  static void sbdma_fillring(sbmacdma_t *d);
 -static void sbdma_rx_process(struct sbmac_softc *sc,sbmacdma_t *d);
 -static void sbdma_tx_process(struct sbmac_softc *sc,sbmacdma_t *d);
-+static int sbdma_rx_process(struct sbmac_softc *sc,sbmacdma_t *d, int work_to_do, int poll);
-+static void sbdma_tx_process(struct sbmac_softc *sc,sbmacdma_t *d, int poll);
++static int sbdma_rx_process(struct sbmac_softc *sc,sbmacdma_t *d, int
+work_to_do, int poll);
++static void sbdma_tx_process(struct sbmac_softc *sc,sbmacdma_t *d, int
+poll);
  static int sbmac_initctx(struct sbmac_softc *s);
  static void sbmac_channel_start(struct sbmac_softc *s);
  static void sbmac_channel_stop(struct sbmac_softc *s);
 @@ -308,6 +320,10 @@
  static void sbmac_set_rx_mode(struct net_device *dev);
- static int sbmac_mii_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
+ static int sbmac_mii_ioctl(struct net_device *dev, struct ifreq *rq,
+int cmd);
  static int sbmac_close(struct net_device *dev);
 +#ifdef CONFIG_SBMAC_NAPI
 +static int sbmac_poll(struct net_device *poll_dev, int *budget);
@@ -212,14 +233,17 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  	 * Save away interesting stuff in the structure
  	 */
 @@ -728,6 +748,11 @@
- 		s->sbm_base + R_MAC_DMA_REGISTER(txrx,chan,R_MAC_DMA_DSCR_CNT);
+ 		s->sbm_base +
+R_MAC_DMA_REGISTER(txrx,chan,R_MAC_DMA_DSCR_CNT);
  	d->sbdma_curdscr =
- 		s->sbm_base + R_MAC_DMA_REGISTER(txrx,chan,R_MAC_DMA_CUR_DSCRADDR);
+ 		s->sbm_base +
+R_MAC_DMA_REGISTER(txrx,chan,R_MAC_DMA_CUR_DSCRADDR);
 +	if (d->sbdma_txdir)
 +		d->sbdma_oodpktlost = NULL;
 +	else
 +		d->sbdma_oodpktlost =
-+			s->sbm_base + R_MAC_DMA_REGISTER(txrx,chan,R_MAC_DMA_OODPKTLOST_RX);
++			s->sbm_base +
+R_MAC_DMA_REGISTER(txrx,chan,R_MAC_DMA_OODPKTLOST_RX);
  
  	/*
  	 * Allocate memory for the ring
@@ -229,7 +253,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  
 +	d->sbdma_dscrtable_unaligned =
  	d->sbdma_dscrtable = (sbdmadscr_t *)
- 		kmalloc((d->sbdma_maxdescr+1)*sizeof(sbdmadscr_t), GFP_KERNEL);
+ 		kmalloc((d->sbdma_maxdescr+1)*sizeof(sbdmadscr_t),
+GFP_KERNEL);
  
 @@ -765,12 +791,14 @@
  	 * Setup Rx/Tx DMA coalescing defaults
@@ -242,7 +267,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  		d->sbdma_int_pktcnt = 1;
  	}
  
-+	int_timeout = (txrx == DMA_TX) ? int_timeout_tx : int_timeout_rx;
++	int_timeout = (txrx == DMA_TX) ? int_timeout_tx :
+int_timeout_rx;
  	if ( int_timeout ) {
  		d->sbdma_int_timeout = int_timeout;
  	} else {
@@ -269,7 +295,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
   *
   *  Return value:
   *  	   nothing
-  ********************************************************************* */
+  *********************************************************************
+*/
  
 -static void sbdma_rx_process(struct sbmac_softc *sc,sbmacdma_t *d)
 +static int sbdma_rx_process(struct sbmac_softc *sc,sbmacdma_t *d,
@@ -297,7 +324,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  		 * figure out where we are (as an index) and where
  		 * the hardware is (also as an index)
 @@ -1165,7 +1204,12 @@
- 		 * (sbdma_remptr) and the physical address (sbdma_curdscr CSR)
+ 		 * (sbdma_remptr) and the physical address
+(sbdma_curdscr CSR)
  		 */
  
 -		curidx = d->sbdma_remptr - d->sbdma_dscrtable;
@@ -307,8 +335,10 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +		prefetch(dsc);
 +		prefetch(&d->sbdma_ctxtable[curidx]);
 +
- 		hwidx = (int) (((__raw_readq(d->sbdma_curdscr) & M_DMA_CURDSCR_ADDR) -
- 				d->sbdma_dscrtable_phys) / sizeof(sbdmadscr_t));
+ 		hwidx = (int) (((__raw_readq(d->sbdma_curdscr) &
+M_DMA_CURDSCR_ADDR) -
+ 				d->sbdma_dscrtable_phys) /
+sizeof(sbdmadscr_t));
  
 @@ -1176,13 +1220,12 @@
  		 */
@@ -334,9 +364,12 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +		if (likely (!(dsc->dscr_a & M_DMA_ETHRX_BAD))) {
 + 
  			/*
- 			 * Add a new buffer to replace the old one.  If we fail
- 			 * to allocate a buffer, we're going to drop this
- 			 * packet and put it right back on the receive ring.
+ 			 * Add a new buffer to replace the old one.  If
+we fail
+ 			 * to allocate a buffer, we're going to drop
+this
+ 			 * packet and put it right back on the receive
+ring.
  			 */
  
 -			if (sbdma_add_rcvbuffer(d,NULL) == -ENOBUFS) {
@@ -344,10 +377,13 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +			if (unlikely (sbdma_add_rcvbuffer(d,NULL) == 
 +				      -ENOBUFS)) {
 + 				sc->sbm_stats.rx_dropped++;
- 				sbdma_add_rcvbuffer(d,sb); /* re-add old buffer */
-+				/* No point in continuing at the moment */
+ 				sbdma_add_rcvbuffer(d,sb); /* re-add old
+buffer */
++				/* No point in continuing at the moment
+*/
 +				printk(KERN_ERR "dropped packet (1)\n");
-+				d->sbdma_remptr = SBDMA_NEXTBUF(d,sbdma_remptr);
++				d->sbdma_remptr =
+SBDMA_NEXTBUF(d,sbdma_remptr);
 +				goto done;
  			} else {
  				/*
@@ -358,17 +394,21 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  				 */
 -				sc->sbm_stats.rx_bytes += len;
 -				sc->sbm_stats.rx_packets++;
- 				sb->protocol = eth_type_trans(sb,d->sbdma_eth->sbm_dev);
- 				/* Check hw IPv4/TCP checksum if supported */
+ 				sb->protocol =
+eth_type_trans(sb,d->sbdma_eth->sbm_dev);
+ 				/* Check hw IPv4/TCP checksum if
+supported */
  				if (sc->rx_hw_checksum == ENABLE) {
 @@ -1229,8 +1275,24 @@
- 						sb->ip_summed = CHECKSUM_NONE;
+ 						sb->ip_summed =
+CHECKSUM_NONE;
  					}
  				}
 -
 -				netif_rx(sb);
 +				prefetch(sb->data);
-+				prefetch((const void *)(((char *)sb->data)+32));
++				prefetch((const void *)(((char
+*)sb->data)+32));
 +#ifdef CONFIG_SBMAC_NAPI
 +				if (poll)
 +					dropped = netif_receive_skb(sb);
@@ -378,7 +418,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +
 +				if (dropped == NET_RX_DROP) {
 +					sc->sbm_stats.rx_dropped++;
-+					d->sbdma_remptr = SBDMA_NEXTBUF(d,sbdma_remptr);
++					d->sbdma_remptr =
+SBDMA_NEXTBUF(d,sbdma_remptr);
 +					goto done;
 +				}
 +				else {
@@ -418,10 +459,12 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
   *
   *  Return value:
   *  	   nothing
-  ********************************************************************* */
+  *********************************************************************
+*/
  
 -static void sbdma_tx_process(struct sbmac_softc *sc,sbmacdma_t *d)
-+static void sbdma_tx_process(struct sbmac_softc *sc,sbmacdma_t *d, int poll)
++static void sbdma_tx_process(struct sbmac_softc *sc,sbmacdma_t *d, int
+poll)
  {
  	int curidx;
  	int hwidx;
@@ -435,7 +478,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +	if (d->sbdma_remptr == d->sbdma_addptr)
 +	  goto end_unlock;
 +
-+	hwidx = (int) (((__raw_readq(d->sbdma_curdscr) & M_DMA_CURDSCR_ADDR) -
++	hwidx = (int) (((__raw_readq(d->sbdma_curdscr) &
+M_DMA_CURDSCR_ADDR) -
 +			d->sbdma_dscrtable_phys) / sizeof(sbdmadscr_t));
 + 
  	for (;;) {
@@ -445,8 +489,10 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  		 */
  
  		curidx = d->sbdma_remptr - d->sbdma_dscrtable;
--		hwidx = (int) (((__raw_readq(d->sbdma_curdscr) & M_DMA_CURDSCR_ADDR) -
--				d->sbdma_dscrtable_phys) / sizeof(sbdmadscr_t));
+-		hwidx = (int) (((__raw_readq(d->sbdma_curdscr) &
+M_DMA_CURDSCR_ADDR) -
+-				d->sbdma_dscrtable_phys) /
+sizeof(sbdmadscr_t));
  
  		/*
  		 * If they're the same, that means we've processed all
@@ -480,7 +526,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 -		d->sbdma_dscrtable = NULL;
 +	if (d->sbdma_dscrtable_unaligned) {
 +		kfree(d->sbdma_dscrtable_unaligned);
-+		d->sbdma_dscrtable_unaligned = d->sbdma_dscrtable = NULL;
++		d->sbdma_dscrtable_unaligned = d->sbdma_dscrtable =
+NULL;
  	}
  
  	if (d->sbdma_ctxtable) {
@@ -489,10 +536,13 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  
  #ifdef CONFIG_SBMAC_COALESCE
 -	/*
--	 * Accept any TX interrupt and EOP count/timer RX interrupts on ch 0
+-	 * Accept any TX interrupt and EOP count/timer RX interrupts on
+ch 0
 -	 */
- 	__raw_writeq(((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) << S_MAC_TX_CH0) |
- 		       ((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) << S_MAC_RX_CH0), s->sbm_imr);
+ 	__raw_writeq(((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) <<
+S_MAC_TX_CH0) |
+ 		       ((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) <<
+S_MAC_RX_CH0), s->sbm_imr);
  #else
 -	/*
 -	 * Accept any kind of interrupt on TX and RX DMA channel 0
@@ -528,7 +578,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +			sbdma_tx_process(sc,&(sc->sbm_txdma), 0);
 +#ifdef CONFIG_NETPOLL_TRAP
 +		       if (netpoll_trap()) {
-+			       if (test_and_clear_bit(__LINK_STATE_XOFF, &dev->state)) 
++			       if (test_and_clear_bit(__LINK_STATE_XOFF,
+&dev->state)) 
 +				       __netif_schedule(dev);
 +		       }
 +#endif
@@ -538,7 +589,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +		if (netif_rx_schedule_prep(dev)) {
 +			__raw_writeq(0, sc->sbm_imr);
 +			__netif_rx_schedule(dev);
-+			/* Depend on the exit from poll to reenable intr */
++			/* Depend on the exit from poll to reenable intr
+*/
 +		}
 +		else {
 +			/* may leave some packets behind */
@@ -567,7 +619,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +					 SBMAC_MAX_RXDESCR * 2);
 +#ifdef CONFIG_NETPOLL_TRAP
 +		       if (netpoll_trap()) {
-+			       if (test_and_clear_bit(__LINK_STATE_XOFF, &dev->state)) 
++			       if (test_and_clear_bit(__LINK_STATE_XOFF,
+&dev->state)) 
 +				       __netif_schedule(dev);
 +		       }
 +#endif
@@ -577,7 +630,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  		 * It's important to test all the bits (or at least the
 @@ -2097,16 +2205,15 @@
  		 * EOP_SEEN here takes care of this case.
- 		 * (EOP_SEEN is part of M_MAC_INT_CHANNEL << S_MAC_RX_CH0)
+ 		 * (EOP_SEEN is part of M_MAC_INT_CHANNEL <<
+S_MAC_RX_CH0)
  		 */
 -
 -
@@ -601,7 +655,8 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
  
 -
 -
- #if defined(SBMAC_ETH0_HWADDR) || defined(SBMAC_ETH1_HWADDR) || defined(SBMAC_ETH2_HWADDR) || defined(SBMAC_ETH3_HWADDR)
+ #if defined(SBMAC_ETH0_HWADDR) || defined(SBMAC_ETH1_HWADDR) ||
+defined(SBMAC_ETH2_HWADDR) || defined(SBMAC_ETH3_HWADDR)
  /**********************************************************************
   *  SBMAC_PARSE_XDIGIT(str)
 @@ -2400,9 +2505,12 @@
@@ -631,11 +686,14 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +	struct sbmac_softc *sc = netdev_priv(dev);
 +
 +	work_to_do = min(*budget, dev->quota);
-+	work_done = sbdma_rx_process(sc, &(sc->sbm_rxdma), work_to_do, 1);
++	work_done = sbdma_rx_process(sc, &(sc->sbm_rxdma), work_to_do,
+1);
 +
 +	if (work_done > work_to_do)
-+		printk(KERN_ERR "%s exceeded work_to_do budget=%d quota=%d work-done=%d\n",
-+		       sc->sbm_dev->name, *budget, dev->quota, work_done);
++		printk(KERN_ERR "%s exceeded work_to_do budget=%d
+quota=%d work-done=%d\n",
++		       sc->sbm_dev->name, *budget, dev->quota,
+work_done);
 +
 +	sbdma_tx_process(sc, &(sc->sbm_txdma), 1);
  
@@ -646,12 +704,15 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +		netif_rx_complete(dev);
 +
 +#ifdef CONFIG_SBMAC_COALESCE
-+		__raw_writeq(((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) << S_MAC_TX_CH0) |
-+			     ((M_MAC_INT_EOP_COUNT | M_MAC_INT_EOP_TIMER) << S_MAC_RX_CH0), 
++		__raw_writeq(((M_MAC_INT_EOP_COUNT |
+M_MAC_INT_EOP_TIMER) << S_MAC_TX_CH0) |
++			     ((M_MAC_INT_EOP_COUNT |
+M_MAC_INT_EOP_TIMER) << S_MAC_RX_CH0), 
 +			     sc->sbm_imr);
 +#else
 +		__raw_writeq((M_MAC_INT_CHANNEL << S_MAC_TX_CH0) |
-+			     (M_MAC_INT_CHANNEL << S_MAC_RX_CH0), sc->sbm_imr);
++			     (M_MAC_INT_CHANNEL << S_MAC_RX_CH0),
+sc->sbm_imr);
 +#endif
 +	}
 +
@@ -659,12 +720,15 @@ Index: linux-2.6.14-cgl/drivers/net/sb1250-mac.c
 +}
 +#endif
  
- #if defined(SBMAC_ETH0_HWADDR) || defined(SBMAC_ETH1_HWADDR) || defined(SBMAC_ETH2_HWADDR) || defined(SBMAC_ETH3_HWADDR)
+ #if defined(SBMAC_ETH0_HWADDR) || defined(SBMAC_ETH1_HWADDR) ||
+defined(SBMAC_ETH2_HWADDR) || defined(SBMAC_ETH3_HWADDR)
  static void
 Index: linux-2.6.14-cgl/arch/mips/sibyte/bcm1480/irq.c
 ===================================================================
---- linux-2.6.14-cgl.orig/arch/mips/sibyte/bcm1480/irq.c	2006-09-20 14:58:41.000000000 -0700
-+++ linux-2.6.14-cgl/arch/mips/sibyte/bcm1480/irq.c	2006-09-20 15:58:33.000000000 -0700
+--- linux-2.6.14-cgl.orig/arch/mips/sibyte/bcm1480/irq.c
+2006-09-20 14:58:41.000000000 -0700
++++ linux-2.6.14-cgl/arch/mips/sibyte/bcm1480/irq.c	2006-09-20
+15:58:33.000000000 -0700
 @@ -144,11 +144,11 @@
  	unsigned long flags;
  	unsigned int irq_dirty;
@@ -672,7 +736,8 @@ Index: linux-2.6.14-cgl/arch/mips/sibyte/bcm1480/irq.c
 -	i = first_cpu(mask);
 -	if (next_cpu(i, mask) <= NR_CPUS) {
 +	if (cpus_weight(mask) != 1) {
- 		printk("attempted to set irq affinity for irq %d to multiple CPUs\n", irq);
+ 		printk("attempted to set irq affinity for irq %d to
+multiple CPUs\n", irq);
  		return;
  	}
 +	i = first_cpu(mask);

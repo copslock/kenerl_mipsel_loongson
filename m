@@ -1,64 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 15:20:06 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:51937 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022421AbXCWPUE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Mar 2007 15:20:04 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2NFK281019733;
-	Fri, 23 Mar 2007 15:20:02 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2NFK1Ek019732;
-	Fri, 23 Mar 2007 15:20:01 GMT
-Date:	Fri, 23 Mar 2007 15:20:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Miklos Szeredi <miklos@szeredi.hu>, linux-mips@linux-mips.org,
-	Ravi.Pratap@hillcrestlabs.com
-Subject: Re: flush_anon_page for MIPS
-Message-ID: <20070323152001.GA19477@linux-mips.org>
-References: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu> <20070323141939.GB17311@linux-mips.org> <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 15:26:04 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:59885 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022419AbXCWP0D (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Mar 2007 15:26:03 +0000
+Received: from localhost (p5246-ipad210funabasi.chiba.ocn.ne.jp [58.88.124.246])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id F18D3856E; Sat, 24 Mar 2007 00:24:40 +0900 (JST)
+Date:	Sat, 24 Mar 2007 00:24:40 +0900 (JST)
+Message-Id: <20070324.002440.93023010.anemo@mba.ocn.ne.jp>
+To:	kumba@gentoo.org
+Cc:	linux-mips@linux-mips.org, vagabon.xyz@gmail.com
+Subject: Re: Building 64 bit kernel on Cobalt
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <4603DA74.70707@gentoo.org>
+References: <20070322.020756.25910272.anemo@mba.ocn.ne.jp>
+	<cda58cb80703211231u68e2f3b0g3a8a490a35f9d07f@mail.gmail.com>
+	<4603DA74.70707@gentoo.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14632
+X-archive-position: 14633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 23, 2007 at 03:47:45PM +0100, Franck Bui-Huu wrote:
+On Fri, 23 Mar 2007 09:47:32 -0400, Kumba <kumba@gentoo.org> wrote:
+> Can someone review this patch for sanity?  It achieves my desire and
+> lets IP32 boot using the way I've been told (BUILD_ELF64 + -msym32 +
+> vmlinux.32).  Likely, it'll also do the same for Cobalt and IP22
+> 64bit kernels (good luck getting those to work right anyways).
 
-> On 3/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> >The other thing I still need to understand is why nobody actually seems
-> >to have triggered this bug on MIPS so far.  I suppose our implementation
-> >of flush_dcache_page() may have done a successful job at papering it
-> >which means there might be some performance getting lost there as well.
-> >
-> 
-> Just to understand, doesn't all mappings of shared anonymous pages and
-> kernel addresses of them share the same cache lines ?
+Let me ask again:  Why do you want to use CONFIG_BUILD_ELF64=y ?
 
-That's true only for all userspace mappings and an anonymous page should
-normally have only a single mapping per mm anyway.  But to make things
-more complicated a page of course also has a kernel space address in
-KSEG0 or XKPHYS and on a VIPT cache there we frequently have the case
-where the user address and the kernel address would map to a different
-cache line.
+If your board use CKSEG0 load address, I can not see any point setting
+CONFIG_BUILD_ELF64=y.  I think the description in Kconfig (and the
+name of CONFIG_BUILD_ELF64 itself) should be changed to make people
+enable it only if really needed.  And it is already done by Franck's
+pending patchset.
 
-Let me illustrate this with a little example.  Assume we have a page at
-physical address 0x5000, a page size of 4kB, an 8kB direct mapped cache
-and 32-byte cache lines.  Then address bits 0..4 will be the byte index
-into the cache line, address bits 5..12 will index the cache array.  So
-now let's map our page into userspace, at address 0x12340000.  In KSEG0
-it is accessible at 0x80005000.  Now, compute the cache index for both
-addresses compare and curse ...
-
-  Ralf
+---
+Atsushi Nemoto

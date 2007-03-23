@@ -1,42 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 20:53:58 +0000 (GMT)
-Received: from wr-out-0506.google.com ([64.233.184.236]:60405 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 21:01:05 +0000 (GMT)
+Received: from wr-out-0506.google.com ([64.233.184.230]:52991 "EHLO
 	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022460AbXCWUx4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Mar 2007 20:53:56 +0000
-Received: by wr-out-0506.google.com with SMTP id i31so1053481wra
-        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2007 13:52:53 -0700 (PDT)
+	id S20022468AbXCWVBC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Mar 2007 21:01:02 +0000
+Received: by wr-out-0506.google.com with SMTP id i31so1054540wra
+        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2007 14:00:00 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=emMlHm7KZEX7gFLKfeKf8XCgdQ/YuBQLW2eDoBe7WGCouS8wGGHQkU2xMOwYW8KSQT3pMJ6SmJUvPH0v3YT/wrhqog8KQjmSXV7YecibyCX0i3eAW/2/s1kTJ060iX0EDeScKR9e2w2WK8fq6HODzLEwoeadsvgm0nOVcbJsI0g=
+        b=N+TzGWL90wa+6U6c5QM77QV25MfpllsDKjxGi6aBZ1cvbY/EO+TAsJhe7jbPJP8OfNjbvNc5Xydcg/Z0s5w9paTfCzvBuAEpA8Psevkg3F62nWodJIU5ttHOzv+nLZtbN2Rqrw2b4S2/yzy6NmNvBeVtmK/P0Cibu9TbK52A3p4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=bTxPWGwNZRFDHFedWSE6lQIgHv8HERy/VmV2FoxA/oocJ8v8IkivXsI4XYyYqQpPd0xTCWcPN63TEur7n/Xa6NRVLBZWhqdCx+sqZTYoFJP/dAZ8bT8W4qQRR3BzgCJX4rBB5o2VbPOv7lpz4PcrZEO7kE5v3gujnogSZ+SkM2Q=
-Received: by 10.114.170.1 with SMTP id s1mr1398785wae.1174683170772;
-        Fri, 23 Mar 2007 13:52:50 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Fri, 23 Mar 2007 13:52:50 -0700 (PDT)
-Message-ID: <cda58cb80703231352g687bff78q42ec8f84cb80d103@mail.gmail.com>
-Date:	Fri, 23 Mar 2007 21:52:50 +0100
+        b=gzgDZtLq1LTlZ/+TZJJ5O2hobQKJPyPix6kNkhr9kbknKck8P2jX7pinyWmYg0HEZH7J/gUAPpo2ZlOU9XacVmA7fQl/fK/rbc91gRd8xxlf6PLSt1dPGTpF6sp6ccbqJT02K85NaeSd3Z1Dx8NAlvvx0g0cuOcFFO2zZBmnlpc=
+Received: by 10.114.198.1 with SMTP id v1mr1397996waf.1174683600417;
+        Fri, 23 Mar 2007 14:00:00 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Fri, 23 Mar 2007 14:00:00 -0700 (PDT)
+Message-ID: <cda58cb80703231400n24023fahca5dee9608f90bba@mail.gmail.com>
+Date:	Fri, 23 Mar 2007 22:00:00 +0100
 From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
 To:	"Ralf Baechle" <ralf@linux-mips.org>
 Subject: Re: flush_anon_page for MIPS
-Cc:	"Miklos Szeredi" <miklos@szeredi.hu>, linux-mips@linux-mips.org,
-	Ravi.Pratap@hillcrestlabs.com
-In-Reply-To: <20070323153621.GB19477@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20070323152001.GA19477@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 References: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu>
 	 <20070323141939.GB17311@linux-mips.org>
-	 <cda58cb80703230801v5ce4baacr9b40119ff3342ac8@mail.gmail.com>
-	 <20070323153621.GB19477@linux-mips.org>
+	 <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com>
+	 <20070323152001.GA19477@linux-mips.org>
 Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14650
+X-archive-position: 14651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,10 +44,16 @@ Precedence: bulk
 X-list: linux-mips
 
 On 3/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> course that will still leave the unused body of __flush_anon_page around,
-> how sad ;)
+> Let me illustrate this with a little example.  Assume we have a page at
+> physical address 0x5000, a page size of 4kB, an 8kB direct mapped cache
+> and 32-byte cache lines.  Then address bits 0..4 will be the byte index
+> into the cache line, address bits 5..12 will index the cache array.  So
+> now let's map our page into userspace, at address 0x12340000.  In KSEG0
+> it is accessible at 0x80005000.  Now, compute the cache index for both
+> addresses compare and curse ...
 >
 
-At this point,  ISTR there are some tools which can be used to remove dead code.
+Yes but since the kernel page address is fixed, why not choosing
+userspace page addresses to share the same kernel cache index ?
 -- 
                Franck

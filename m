@@ -1,57 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 21:20:24 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:52396 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022480AbXCWVUX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Mar 2007 21:20:23 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2NLKJWk028036;
-	Fri, 23 Mar 2007 21:20:20 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2NLKEU6028035;
-	Fri, 23 Mar 2007 21:20:14 GMT
-Date:	Fri, 23 Mar 2007 21:20:14 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: flush_anon_page for MIPS
-Message-ID: <20070323212014.GA27761@linux-mips.org>
-References: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu> <20070323141939.GB17311@linux-mips.org> <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com> <20070323152001.GA19477@linux-mips.org> <cda58cb80703231400n24023fahca5dee9608f90bba@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80703231400n24023fahca5dee9608f90bba@mail.gmail.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 22:17:54 +0000 (GMT)
+Received: from mail.hcrest.com ([12.173.51.131]:45350 "EHLO mail.hcrest.com")
+	by ftp.linux-mips.org with ESMTP id S20022487AbXCWWRw convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Mar 2007 22:17:52 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: flush_anon_page for MIPS
+Date:	Fri, 23 Mar 2007 18:17:25 -0400
+Message-ID: <36E4692623C5974BA6661C0B18EE8EDF6CD3C5@MAILSERV.hcrest.com>
+In-Reply-To: <20070323190617.GA26884@linux-mips.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+thread-topic: flush_anon_page for MIPS
+Thread-Index: AcdtfliWKGKH0V9BSNartX8ALkXKOAAGpwKg
+From:	"Ravi Pratap" <Ravi.Pratap@hillcrestlabs.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Cc:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>, <miklos@szeredi.hu>,
+	<linux-mips@linux-mips.org>
+Return-Path: <Ravi.Pratap@hillcrestlabs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14652
+X-archive-position: 14653
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Ravi.Pratap@hillcrestlabs.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 23, 2007 at 10:00:00PM +0100, Franck Bui-Huu wrote:
-
-> On 3/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> >Let me illustrate this with a little example.  Assume we have a page at
-> >physical address 0x5000, a page size of 4kB, an 8kB direct mapped cache
-> >and 32-byte cache lines.  Then address bits 0..4 will be the byte index
-> >into the cache line, address bits 5..12 will index the cache array.  So
-> >now let's map our page into userspace, at address 0x12340000.  In KSEG0
-> >it is accessible at 0x80005000.  Now, compute the cache index for both
-> >addresses compare and curse ...
-> >
+> From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+> Sent: Friday, March 23, 2007 3:06 PM
+> To: Ravi Pratap
+> Cc: Atsushi Nemoto; miklos@szeredi.hu; linux-mips@linux-mips.org
+> Subject: Re: flush_anon_page for MIPS
 > 
-> Yes but since the kernel page address is fixed, why not choosing
-> userspace page addresses to share the same kernel cache index ?
+> On Fri, Mar 23, 2007 at 11:47:20AM -0400, Ravi Pratap wrote:
+> 
+> > ~/fuse/example$ mkdir /tmp/fuse
+> > ~/fuse/example$ ./hello /tmp/fuse
+> > ~/fuse/example$ ls -l /tmp/fuse
+> > total 0
+> > -r--r--r--  1 root root 13 Jan  1  1970 hello
+> > ~/fuse/example$ cat /tmp/fuse/hello
+> > Hello World!
+> > ~/fuse/example$ fusermount -u /tmp/fuse
+> > ~/fuse/example$
+> > 
+> > 
+> > It hangs when you do ls -l /tmp/fuse, in the above example.
+> 
+> Yes, that's perfectly reproducable here (running a VSMP 
+> kernel on a 34K).
+> So the fix I posted earlier was good but I did a few tweaks 
+> to it anyway.
+> Will commit to all 2.6 -stable branch and master later.
 
-That would require turning the memory allocator upside down to support
-allocation of pages of a certain "color" which due to memory fragmentation
-issues is seriously non-trivial.  Some UNIX variants do this scheme but
-it doesn't come for free either and anyway, so far Linus' answer has been
-a clear no.
 
-  Ralf
+Thanks so much! Will this go into 2.6.15 by any chance?
+
+
+Ravi.

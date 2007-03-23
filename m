@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 14:48:48 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.169]:10659 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022402AbXCWOsq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 Mar 2007 14:48:46 +0000
-Received: by ug-out-1314.google.com with SMTP id 40so1144610uga
-        for <linux-mips@linux-mips.org>; Fri, 23 Mar 2007 07:47:46 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=uANX666OASnk9gl6sxwMeHoaJJ5NQUSAFksJMSCHQt8UW37x2/ysNyP4ADRd0MijvtkpyeUFdBdlzVe5OmMmvq9Zt1rXrDC5dQIBMZqGUnBIZ76iUS6jzJBcpnXR+o7ysrb6TSku05wsEn4qQr/5r/s+nOCuvKOYRcejwYkYPMA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=WNvCXQArx4HG2YcLaC9+0TjkL2PdnPpJ+0LKdc1zglfhOj/DKjxo3Jq3BzccLmsCCcx7RODMTa4QjGy/maXj315rKXynE7Lu7qtoZZkpV3sh3llxGUEA/pVIYVEDdS7wtX3D2kivGvdquouILABlnhzI3/zbLym2qZUpYbO2lbk=
-Received: by 10.114.155.1 with SMTP id c1mr1215320wae.1174661265294;
-        Fri, 23 Mar 2007 07:47:45 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Fri, 23 Mar 2007 07:47:45 -0700 (PDT)
-Message-ID: <cda58cb80703230747w524409d7m3ee7753e676b0683@mail.gmail.com>
-Date:	Fri, 23 Mar 2007 15:47:45 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: flush_anon_page for MIPS
-Cc:	"Miklos Szeredi" <miklos@szeredi.hu>, linux-mips@linux-mips.org,
-	Ravi.Pratap@hillcrestlabs.com
-In-Reply-To: <20070323141939.GB17311@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Mar 2007 14:52:02 +0000 (GMT)
+Received: from mail.hcrest.com ([12.173.51.131]:33231 "EHLO mail.hcrest.com")
+	by ftp.linux-mips.org with ESMTP id S20022404AbXCWOwA convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 Mar 2007 14:52:00 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <E1HUVlw-00034H-00@dorka.pomaz.szeredi.hu>
-	 <20070323141939.GB17311@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: flush_anon_page for MIPS
+Date:	Fri, 23 Mar 2007 10:51:32 -0400
+Message-ID: <36E4692623C5974BA6661C0B18EE8EDF6CD36D@MAILSERV.hcrest.com>
+In-Reply-To: <20070323141939.GB17311@linux-mips.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+thread-topic: flush_anon_page for MIPS
+Thread-Index: AcdtVlJpcEwMHrZGTbGl1OgScfIJHQABEeaA
+From:	"Ravi Pratap" <Ravi.Pratap@hillcrestlabs.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>,
+	"Miklos Szeredi" <miklos@szeredi.hu>
+Cc:	<linux-mips@linux-mips.org>
+Return-Path: <Ravi.Pratap@hillcrestlabs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14628
+X-archive-position: 14629
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: Ravi.Pratap@hillcrestlabs.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-On 3/23/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> The other thing I still need to understand is why nobody actually seems
-> to have triggered this bug on MIPS so far.  I suppose our implementation
-> of flush_dcache_page() may have done a successful job at papering it
-> which means there might be some performance getting lost there as well.
+> From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+> Sent: Friday, March 23, 2007 10:20 AM
+> To: Miklos Szeredi
+> Cc: linux-mips@linux-mips.org; Ravi Pratap
+> Subject: Re: flush_anon_page for MIPS
+> 
+> On Thu, Mar 22, 2007 at 11:28:40PM +0100, Miklos Szeredi wrote:
+> 
+> > It seems that MIPS needs to implement flush_anon_page() for correct
+> > operation of get_user_pages() on anonymous pages.
+> > 
+> > This function is already implemented in PARISC and ARM.  Also see
+> > Documentation/cachetlb.txt.
 >
+> Was this one found by code inspection or actually triggered 
+> by like FUSE?
 
-Just to understand, doesn't all mappings of shared anonymous pages and
-kernel addresses of them share the same cache lines ?
+It was actually triggered by FUSE.
 
-thanks,
--- 
-               Franck
+
+Ravi.

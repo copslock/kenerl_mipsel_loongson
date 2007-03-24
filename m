@@ -1,84 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2007 03:32:47 +0000 (GMT)
-Received: from sccrmhc12.comcast.net ([204.127.200.82]:45210 "EHLO
-	sccrmhc12.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S20022600AbXCXDcq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Mar 2007 03:32:46 +0000
-Received: from [192.168.1.4] (c-69-251-93-234.hsd1.md.comcast.net[69.251.93.234])
-          by comcast.net (sccrmhc12) with ESMTP
-          id <2007032403320201200004hoe>; Sat, 24 Mar 2007 03:32:02 +0000
-Message-ID: <46049BAD.1010705@gentoo.org>
-Date:	Fri, 23 Mar 2007 23:31:57 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0b2 (Windows/20070116)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, vagabon.xyz@gmail.com
-Subject: Re: Building 64 bit kernel on Cobalt
-References: <20070322.020756.25910272.anemo@mba.ocn.ne.jp>	<cda58cb80703211231u68e2f3b0g3a8a490a35f9d07f@mail.gmail.com>	<4603DA74.70707@gentoo.org> <20070324.002440.93023010.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070324.002440.93023010.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2007 06:23:45 +0000 (GMT)
+Received: from mail.blastwave.org ([147.87.98.10]:64158 "EHLO
+	mail.blastwave.org") by ftp.linux-mips.org with ESMTP
+	id S20022497AbXCXGXn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 24 Mar 2007 06:23:43 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by mail.blastwave.org (Postfix) with ESMTP id 79A70F988;
+	Sat, 24 Mar 2007 07:23:12 +0100 (MET)
+X-Virus-Scanned: amavisd-new at blastwave.org
+Received: from mail.blastwave.org ([127.0.0.1])
+	by localhost (enterprise.blastwave.org [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id s40jtGPl9UNr; Sat, 24 Mar 2007 07:23:09 +0100 (MET)
+Received: from jashugan.kinali.ch (jashugan.kinali.ch [213.144.135.203])
+	by mail.blastwave.org (Postfix) with SMTP id C559BF97F;
+	Sat, 24 Mar 2007 07:23:08 +0100 (MET)
+Date:	Sat, 24 Mar 2007 07:23:08 +0100
+From:	Attila Kinali <attila@kinali.ch>
+To:	"Marco Braga" <marco.braga@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Au1500 and TI PCI1510 cardbus
+Message-Id: <20070324072308.c69557d0.attila@kinali.ch>
+In-Reply-To: <d459bb380703200933w501736cfmfbd19cc1b03f8ed1@mail.gmail.com>
+References: <d459bb380703190755n3f05b8e1v850bb8347e574d68@mail.gmail.com>
+	<200703200204.l2K24WgH020041@centurysys.co.jp>
+	<45FFEDED.6060708@ru.mvista.com>
+	<d459bb380703200747y13ba427ek83cc32b503c33bc7@mail.gmail.com>
+	<45FFFE8B.1010806@ru.mvista.com>
+	<d459bb380703200850m1077be9cnecb8283750763a4f@mail.gmail.com>
+	<4600052B.40901@ru.mvista.com>
+	<d459bb380703200908t2ab759f0u352dc0014ebe0b17@mail.gmail.com>
+	<46000ADD.3050309@ru.mvista.com>
+	<d459bb380703200933w501736cfmfbd19cc1b03f8ed1@mail.gmail.com>
+Organization: NERV
+X-Mailer: Sylpheed 2.4.0beta4 (GTK+ 2.8.20; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Return-Path: <attila@kinali.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14656
+X-archive-position: 14657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: attila@kinali.ch
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> 
-> Let me ask again:  Why do you want to use CONFIG_BUILD_ELF64=y ?
-> 
-> If your board use CKSEG0 load address, I can not see any point setting
-> CONFIG_BUILD_ELF64=y.  I think the description in Kconfig (and the
-> name of CONFIG_BUILD_ELF64 itself) should be changed to make people
-> enable it only if really needed.  And it is already done by Franck's
-> pending patchset.
+On Tue, 20 Mar 2007 17:33:54 +0100
+"Marco Braga" <marco.braga@gmail.com> wrote:
 
-Well, the story, as it's been explained to me a half-dozen times, cause I keep 
-forgetting, is that three particular machines, IP22, IP32 (R5K/Nevada/RM7K), and 
-apparently cobalt, ran best when built with the old -mabi=o64 hack, because it 
-generated less instructions for certain routines (loads, I think).  Especially 
-in the case of cobalt, you lack a L2 cache, so you want to squeeze every thing 
-possible out of the cpu.
+> To sum it up, Cardbus bridge is not a viable solution on Au1500 for
+> hotswapping devices, since any decent one (bus mastering) will not work.
+> USB2.0 should instead work with PCI based controllers, that must be
+> connected to the main PCI device (directly to Au1500).
 
-Well, o64 went away as we all know.  It was never a favourable option for very 
-good reasons (although I used it right up until it died and I was forced off of 
-it).  The replacement for it, that was more preferred and resulted in similar 
-code was building a kernel for any of these three systems using 
-CONFIG_BUILD_ELF64 + -msym32 (auto selected in the Makefile) + the make 
-vmlinux.32 target.  I believe this method is what Debian uses for building their 
-mips kernels for SGI systems, but don't quote me on that.  If someone from 
-Debian wants to comment, please do.
+We are using a board with a Au1550 with cardbus (PCI1520) and
+USB2.0. The USB controller is directly connected to PCI.
+Although cardbus isn't fully tested yet, USB seems to work fine
+(atleast i haven't heard of any problems), but i don't know
+from the top of my head which chip they used.
 
-The idea being to stuff 64bit code into a 32bit object/kernel, since at least 
-one of these systems, namely IP22, will only accept a 32bit object for booting. 
-  It can't understand 64bit kernel objects.  Cobalt's colo bootloader will 
-handle 64bit I believe, but my experience a year or two ago showed that a 
-32bit/64bit hybrid kernel ran much faster than a pure 64bit kernel, simply due 
-to the decreased overhead.  IP32's prom usually has no problem booting either, 
-but I seem to also see a minor improvement in console redraw speed under the 
-hyrbid kernel as well.
-
-The issue is, if this method is broken, what's its replacement?  Is this 
-replacement capable of generating the same (or near enough) code w/o incurring a 
-penalty hit?  I mean, part of the reason for discussion going on for as long as 
-it has been is the relative confusion surrounding the proper way to build these 
-kernels for these particular systems.  If someone can hash that out, I think 
-we'll all figure out what track to get on and get something in the tree that 
-works, and works well.
+Also, the Au1550 doesn't seem to have the master-behind-bridge
+bug as the 1500 does (at least according to the datasheet),
+so i guess cardbus should work also with "decent" cards :)
 
 
+HTH 
+			Attila Kinali
 
---Kumba
 
 -- 
-Gentoo/MIPS Team Lead
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+Linux ist... wenn man einfache Dinge auch mit einer kryptischen
+post-fix Sprache loesen kann
+                        -- Daniel Hottinger

@@ -1,107 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2007 19:49:13 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:17782 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20022847AbXCXTtJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Mar 2007 19:49:09 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 736FC3ECA; Sat, 24 Mar 2007 12:48:35 -0700 (PDT)
-Message-ID: <460580BF.4040904@ru.mvista.com>
-Date:	Sat, 24 Mar 2007 22:49:19 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	mason <mason@broadcom.com>
-Cc:	linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] NAPI support for Sibyte MAC
-References: <20070323171132.GA1464@broadcom.com>
-In-Reply-To: <20070323171132.GA1464@broadcom.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2007 23:23:56 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:14263 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022907AbXCXXXz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 24 Mar 2007 23:23:55 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2ONNoNj032572;
+	Sat, 24 Mar 2007 23:23:51 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2ONNol3032571;
+	Sat, 24 Mar 2007 23:23:50 GMT
+Date:	Sat, 24 Mar 2007 23:23:49 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Andrew Sharp <tigerand@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] 64-bit TO_PHYS_MASK macro for RM9000 processors
+Message-ID: <20070324232349.GA23432@linux-mips.org>
+References: <20070323191511.GA10277@onstor.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070323191511.GA10277@onstor.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14665
+X-archive-position: 14666
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello, you wrote:
+On Fri, Mar 23, 2007 at 12:15:18PM -0700, Andrew Sharp wrote:
 
->   This patch completes the NAPI functionality for SB1250 MAC, including making
->   NAPI a kernel option that can be turned on or off and adds the "sbmac_poll"
->   routine.
+> Either I'm missing something, or people don't run their RM9Ks in 64 bit
+> mode too often.
 
-> Index: linux-2.6.14-cgl/drivers/net/Kconfig
-> ===================================================================
-> --- linux-2.6.14-cgl.orig/drivers/net/Kconfig	2006-09-20 14:58:54.000000000 -0700
-> +++ linux-2.6.14-cgl/drivers/net/Kconfig	2006-09-20 17:04:31.000000000 -0700
+Or they silently fix it up.  There is a giant gap between the number of
+people hacking the kernel in some way and those who actually care and
+contribute.
 
-[...]
+Thanks, applied.
 
-> @@ -2075,12 +2143,52 @@
->  		 */
->  
->  		if (isr & (M_MAC_INT_CHANNEL << S_MAC_TX_CH0)) {
-> -			sbdma_tx_process(sc,&(sc->sbm_txdma));
-> +			sbdma_tx_process(sc,&(sc->sbm_txdma), 0);
-> +#ifdef CONFIG_NETPOLL_TRAP
-> +		       if (netpoll_trap()) {
-> +			       if (test_and_clear_bit(__LINK_STATE_XOFF, &dev->state)) 
-> +				       __netif_schedule(dev);
-> +		       }
-> +#endif
->  		}
-
-    This just doesn't make sense. That option is enabled to *prevent* calls to 
-__netif_schedule() -- you can't override it that way. (Well, how it works 
-currently, doesn't make much sense either since it totally breaks the TX queue 
-control -- I was going to post a patch).
-
-> +	if (isr & (M_MAC_INT_CHANNEL << S_MAC_RX_CH0)) {
-> +		if (netif_rx_schedule_prep(dev)) {
-> +			__raw_writeq(0, sc->sbm_imr);
-> +			__netif_rx_schedule(dev);
-> +			/* Depend on the exit from poll to reenable intr */
-> +		}
-> +		else {
-> +			/* may leave some packets behind */
-> +			sbdma_rx_process(sc,&(sc->sbm_rxdma),
-> +					 SBMAC_MAX_RXDESCR * 2, 0);
-> +		}
-> +	}
-> +#else
-> +	/* Non NAPI */
-> +	for (;;) {
-> + 
->  		/*
-> -		 * Receives on channel 0
-> +		 * Read the ISR (this clears the bits in the real
-> +		 * register, except for counter addr)
->  		 */
-> +		isr = __raw_readq(sc->sbm_isr) & ~M_MAC_COUNTER_ADDR;
-> +
-> +		if (isr == 0)
-> +			break;
-> +
-> +		handled = 1;
-> +
-> +		if (isr & (M_MAC_INT_CHANNEL << S_MAC_TX_CH0)) {
-> +			sbdma_tx_process(sc,&(sc->sbm_txdma),
-> +					 SBMAC_MAX_RXDESCR * 2);
-> +#ifdef CONFIG_NETPOLL_TRAP
-> +		       if (netpoll_trap()) {
-> +			       if (test_and_clear_bit(__LINK_STATE_XOFF, &dev->state)) 
-> +				       __netif_schedule(dev);
-> +		       }
-> +#endif
-> +		}
-
-    Same here.
-
-WBR, Sergei
+  Ralf

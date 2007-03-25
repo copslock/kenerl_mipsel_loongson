@@ -1,50 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Mar 2007 18:08:27 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:29438 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022647AbXCYRIZ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 25 Mar 2007 18:08:25 +0100
-Received: from localhost (p7179-ipad25funabasi.chiba.ocn.ne.jp [220.104.85.179])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 93041B821; Mon, 26 Mar 2007 02:07:05 +0900 (JST)
-Date:	Mon, 26 Mar 2007 02:07:05 +0900 (JST)
-Message-Id: <20070326.020705.63742150.anemo@mba.ocn.ne.jp>
-To:	kumba@gentoo.org
-Cc:	linux-mips@linux-mips.org, ths@networkno.de, ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Mar 2007 19:33:53 +0100 (BST)
+Received: from sccrmhc15.comcast.net ([63.240.77.85]:47596 "EHLO
+	sccrmhc15.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20022740AbXCYSdv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 25 Mar 2007 19:33:51 +0100
+Received: from [192.168.1.4] (c-69-251-93-234.hsd1.md.comcast.net[69.251.93.234])
+          by comcast.net (sccrmhc15) with ESMTP
+          id <20070325183307015009ngvhe>; Sun, 25 Mar 2007 18:33:08 +0000
+Message-ID: <4606C063.1030802@gentoo.org>
+Date:	Sun, 25 Mar 2007 14:33:07 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0b2 (Windows/20070116)
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org, ths@networkno.de, ralf@linux-mips.org
 Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4606AA74.3070907@gentoo.org>
-References: <46062400.8080307@gentoo.org>
-	<20070326.011000.75185255.anemo@mba.ocn.ne.jp>
-	<4606AA74.3070907@gentoo.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+References: <46062400.8080307@gentoo.org>	<20070326.011000.75185255.anemo@mba.ocn.ne.jp>	<4606AA74.3070907@gentoo.org> <20070326.020705.63742150.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070326.020705.63742150.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14676
+X-archive-position: 14677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 25 Mar 2007 12:59:32 -0400, Kumba <kumba@gentoo.org> wrote:
-> > So I think Franck's approach, which enables -msym32 and defines
-> > KBUILD_64BIT_SYM32 automatically if load-y was CKSEG0, is better.  Are
-> > there any problem with his patchset?
+Atsushi Nemoto wrote:
+> On Sun, 25 Mar 2007 12:59:32 -0400, Kumba <kumba@gentoo.org> wrote:
+>>> So I think Franck's approach, which enables -msym32 and defines
+>>> KBUILD_64BIT_SYM32 automatically if load-y was CKSEG0, is better.  Are
+>>> there any problem with his patchset?
+>> I missed the other two additions to this patch, which is probably why it didn't 
+>> work :)  Taken as a whole, they also boot my O2 now.
 > 
-> I missed the other two additions to this patch, which is probably why it didn't 
-> work :)  Taken as a whole, they also boot my O2 now.
+> Thanks, good news!
+> 
+> And Ralf's number shows that we can use -msym32 even for IP27.
+> Another good news.
 
-Thanks, good news!
+Actually, I just realized I didn't rehash my dhcpd, so it booted the wrong 
+kernel.  A kernel built with this patchset won't boot without the following 
+change in include/asm-mips/stackframe.h:
 
-And Ralf's number shows that we can use -msym32 even for IP27.
-Another good news.
+--- include/asm-mips/stackframe.h.orig	2007-03-25 14:22:04.000000000 -0400
++++ include/asm-mips/stackframe.h	2007-03-25 14:22:21.000000000 -0400
+@@ -70,7 +70,7 @@
+  #else
+  		MFC0	k0, CP0_CONTEXT
+  #endif
+-#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
++#if defined(CONFIG_32BIT) || !defined(KBUILD_64BIT_SYM32)
+  		lui	k1, %hi(kernelsp)
+  #else
+  		lui	k1, %highest(kernelsp)
+@@ -95,7 +95,7 @@
+  		.endm
+  #else
+  		.macro	get_saved_sp	/* Uniprocessor variation */
+-#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
++#if defined(CONFIG_32BIT) || !defined(KBUILD_64BIT_SYM32)
+  		lui	k1, %hi(kernelsp)
+  #else
+  		lui	k1, %highest(kernelsp)
 
----
-Atsushi Nemoto
+
+
+
+You'll just get a silent hang after ARCS jumps into the kernel.  My guess is 
+these systems need the extra asm commands.  Perhaps the use of CONFIG_32BIT is 
+incorrect?
+
+Maybe we should use the older form instead, with appropriate change?
+
+--- include/asm-mips/stackframe.h.orig	2007-03-25 14:22:04.000000000 -0400
++++ include/asm-mips/stackframe.h.2	2007-03-25 14:30:01.000000000 -0400
+@@ -70,14 +70,14 @@
+  #else
+  		MFC0	k0, CP0_CONTEXT
+  #endif
+-#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
+-		lui	k1, %hi(kernelsp)
+-#else
++#if defined(CONFIG_64BIT) || defined(KBUILD_64BIT_SYM32)
+  		lui	k1, %highest(kernelsp)
+  		daddiu	k1, %higher(kernelsp)
+  		dsll	k1, 16
+  		daddiu	k1, %hi(kernelsp)
+  		dsll	k1, 16
++#else
++		lui	k1, %hi(kernelsp)
+  #endif
+  		LONG_SRL	k0, PTEBASE_SHIFT
+  		LONG_ADDU	k1, k0
+@@ -95,14 +95,14 @@
+  		.endm
+  #else
+  		.macro	get_saved_sp	/* Uniprocessor variation */
+-#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
+-		lui	k1, %hi(kernelsp)
+-#else
++#if defined(CONFIG_64BIT) || defined(KBUILD_64BIT_SYM32)
+  		lui	k1, %highest(kernelsp)
+  		daddiu	k1, %higher(kernelsp)
+  		dsll	k1, k1, 16
+  		daddiu	k1, %hi(kernelsp)
+  		dsll	k1, k1, 16
++#else
++		lui	k1, %hi(kernelsp)
+  #endif
+  		LONG_L	k1, %lo(kernelsp)(k1)
+  		.endm
+
+
+
+--Kumba
+
+-- 
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 22:58:37 +0100 (BST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:39071 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 22:59:47 +0100 (BST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:58783 "HELO
 	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20022763AbXCZV6U (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 22:58:20 +0100
-Received: (qmail 28282 invoked by uid 101); 26 Mar 2007 21:58:08 -0000
+	id S20023042AbXCZV7n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Mar 2007 22:59:43 +0100
+Received: (qmail 28684 invoked by uid 101); 26 Mar 2007 21:59:19 -0000
 Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by father.pmc-sierra.com with SMTP; 26 Mar 2007 21:58:08 -0000
+  by father.pmc-sierra.com with SMTP; 26 Mar 2007 21:59:19 -0000
 Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2QLw6Kj013867;
-	Mon, 26 Mar 2007 13:58:06 -0800
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2QLxIDI013939;
+	Mon, 26 Mar 2007 13:59:18 -0800
 From:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2QLw6i5012817;
-	Mon, 26 Mar 2007 15:58:06 -0600
-Date:	Mon, 26 Mar 2007 15:58:06 -0600
-Message-Id: <200703262158.l2QLw6i5012817@pasqua.pmc-sierra.bc.ca>
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2QLxIDh013039;
+	Mon, 26 Mar 2007 15:59:18 -0600
+Date:	Mon, 26 Mar 2007 15:59:18 -0600
+Message-Id: <200703262159.l2QLxIDh013039@pasqua.pmc-sierra.bc.ca>
 To:	akpm@linux-foundation.org
-Subject: [PATCH 5/12] mtd: PMC MSP71xx flash/rootfs mappings
+Subject: [PATCH 6/12] drivers: PMC MSP71xx serial driver
 Cc:	linux-mips@linux-mips.org
 Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14711
+X-archive-position: 14712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,9 +30,9 @@ X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH 5/12] mtd: PMC MSP71xx flash/rootfs mappings
+[PATCH 6/12] drivers: PMC MSP71xx serial driver
 
-Patch to add flash and rootfs mappings for the PMC-Sierra
+Patch to add serial driver support for the PMC-Sierra
 MSP71xx devices.
 
 Reposting patches as a single set at the request of akpm.
@@ -45,83 +45,159 @@ Marc
 Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
 Re-posting patch with recommended changes:
--No changes.
+-Implemented support for putchar() in msp_serial.c
 
- Kconfig          |   33 +++++++++
- Makefile         |    2 
- pmcmsp-flash.c   |  184 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- pmcmsp-ramroot.c |  105 +++++++++++++++++++++++++++++++
- 4 files changed, 324 insertions(+)
+ arch/mips/pmc-sierra/msp71xx/msp_serial.c |  185 ++++++++++++++++++++++++++++++
+ drivers/serial/8250.c                     |   30 ++++
+ drivers/serial/serial_core.c              |    2 
+ include/linux/serial_core.h               |    2 
+ include/linux/serial_reg.h                |    2 
+ 5 files changed, 221 insertions(+)
 
-diff --git a/drivers/mtd/maps/Kconfig b/drivers/mtd/maps/Kconfig
-index bbf0553..e28a1ad 100644
---- a/drivers/mtd/maps/Kconfig
-+++ b/drivers/mtd/maps/Kconfig
-@@ -69,6 +69,39 @@ config MTD_PHYSMAP_OF
- 	  physically into the CPU's memory. The mapping description here is
- 	  taken from OF device tree.
+diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
+index c129a0e..cfb37fd 100644
+--- a/drivers/serial/8250.c
++++ b/drivers/serial/8250.c
+@@ -308,6 +308,7 @@ static unsigned int serial_in(struct uart_8250_port *up, int offset)
+ 		return inb(up->port.iobase + 1);
  
-+config MTD_PMC_MSP_EVM
-+	tristate "CFI Flash device mapped on PMC-Sierra MSP"
-+	depends on PMC_MSP && MTD_CFI
-+	select MTD_PARTITIONS
-+	help
-+	  This provides a 'mapping' driver which support the way
-+          in which user-programmable flash chips are connected on the
-+          PMC-Sierra MSP eval/demo boards
+ 	case UPIO_MEM:
++	case UPIO_DWAPB:
+ 		return readb(up->port.membase + offset);
+ 
+ 	case UPIO_MEM32:
+@@ -333,6 +334,8 @@ static unsigned int serial_in(struct uart_8250_port *up, int offset)
+ static void
+ serial_out(struct uart_8250_port *up, int offset, int value)
+ {
++	/* Save the offset before it's remapped */
++	int save_offset = offset;
+ 	offset = map_8250_out_reg(up, offset) << up->port.regshift;
+ 
+ 	switch (up->port.iotype) {
+@@ -359,6 +362,18 @@ serial_out(struct uart_8250_port *up, int offset, int value)
+ 			writeb(value, up->port.membase + offset);
+ 		break;
+ 
++	case UPIO_DWAPB:
++		/* Save the LCR value so it can be re-written when a
++		 * Busy Detect interrupt occurs. */
++		if (save_offset == UART_LCR)
++			up->lcr = value;
++		writeb(value, up->port.membase + offset);
++		/* Read the IER to ensure any interrupt is cleared before
++		 * returning from ISR. */
++		if (save_offset == UART_TX || save_offset == UART_IER)
++			serial_in(up, UART_IER);
++		break;
++		
+ 	default:
+ 		outb(value, up->port.iobase + offset);
+ 	}
+@@ -373,6 +388,7 @@ serial_out_sync(struct uart_8250_port *up, int offset, int value)
+ #ifdef CONFIG_SERIAL_8250_AU1X00
+ 	case UPIO_AU:
+ #endif
++	case UPIO_DWAPB:
+ 		serial_out(up, offset, value);
+ 		serial_in(up, UART_LCR);	/* safe, no side-effects */
+ 		break;
+@@ -1387,6 +1403,18 @@ static irqreturn_t serial8250_interrupt(int irq, void *dev_id)
+ 			handled = 1;
+ 
+ 			end = NULL;
++		} else if (up->port.iotype == UPIO_DWAPB &&
++			  (iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
++			/* The DesignWare APB UART has an Busy Detect (0x07)
++			 * interrupt meaning an LCR write attempt occured while the
++			 * UART was busy. The interrupt must be cleared by reading
++			 * the UART status register (USR) and the LCR re-written. */
++			__raw_readl(up->port.private_data);
++			serial_out(up, UART_LCR, up->lcr);
 +
-+choice
-+	prompt "Maximum mappable memory avialable for flash IO"
-+	depends on MTD_PMC_MSP_EVM
-+	default MSP_FLASH_MAP_LIMIT_32M
++			handled = 1;
 +
-+config MSP_FLASH_MAP_LIMIT_32M
-+	bool "32M"
++			end = NULL;
+ 		} else if (end == NULL)
+ 			end = l;
+ 
+@@ -2088,6 +2116,7 @@ static int serial8250_request_std_resource(struct uart_8250_port *up)
+ 	case UPIO_TSI:
+ 	case UPIO_MEM32:
+ 	case UPIO_MEM:
++	case UPIO_DWAPB:
+ 		if (!up->port.mapbase)
+ 			break;
+ 
+@@ -2125,6 +2154,7 @@ static void serial8250_release_std_resource(struct uart_8250_port *up)
+ 	case UPIO_TSI:
+ 	case UPIO_MEM32:
+ 	case UPIO_MEM:
++	case UPIO_DWAPB:
+ 		if (!up->port.mapbase)
+ 			break;
+ 
+diff --git a/drivers/serial/serial_core.c b/drivers/serial/serial_core.c
+index 0422c0f..a677133 100644
+--- a/drivers/serial/serial_core.c
++++ b/drivers/serial/serial_core.c
+@@ -2064,6 +2064,7 @@ uart_report_port(struct uart_driver *drv, struct uart_port *port)
+ 	case UPIO_MEM32:
+ 	case UPIO_AU:
+ 	case UPIO_TSI:
++	case UPIO_DWAPB:
+ 		snprintf(address, sizeof(address),
+ 			 "MMIO 0x%lx", port->mapbase);
+ 		break;
+@@ -2409,6 +2410,7 @@ int uart_match_port(struct uart_port *port1, struct uart_port *port2)
+ 	case UPIO_MEM32:
+ 	case UPIO_AU:
+ 	case UPIO_TSI:
++	case UPIO_DWAPB:
+ 		return (port1->mapbase == port2->mapbase);
+ 	}
+ 	return 0;
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index 586aaba..8b5592e 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -230,6 +230,7 @@ struct uart_port {
+ #define UPIO_MEM32		(3)
+ #define UPIO_AU			(4)			/* Au1x00 type IO */
+ #define UPIO_TSI		(5)			/* Tsi108/109 type IO */
++#define UPIO_DWAPB		(6)			/* DesignWare APB UART */
+ 
+ 	unsigned int		read_status_mask;	/* driver specific */
+ 	unsigned int		ignore_status_mask;	/* driver specific */
+@@ -276,6 +277,7 @@ struct uart_port {
+ 	struct device		*dev;			/* parent device */
+ 	unsigned char		hub6;			/* this should be in the 8250 driver */
+ 	unsigned char		unused[3];
++	void			*private_data;		/* generic platform data pointer */
+ };
+ 
+ /*
+diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
+index 3c8a6aa..1c5ed7d 100644
+--- a/include/linux/serial_reg.h
++++ b/include/linux/serial_reg.h
+@@ -38,6 +38,8 @@
+ #define UART_IIR_RDI		0x04 /* Receiver data interrupt */
+ #define UART_IIR_RLSI		0x06 /* Receiver line status interrupt */
+ 
++#define UART_IIR_BUSY		0x07 /* DesignWare APB Busy Detect */
 +
-+endchoice
-+
-+config MSP_FLASH_MAP_LIMIT
-+	hex
-+	default "0x02000000"
-+	depends on MSP_FLASH_MAP_LIMIT_32M
-+
-+config MTD_PMC_MSP_RAMROOT
-+	tristate "Embedded RAM block device for root on PMC-Sierra MSP"
-+	depends on PMC_MSP_EMBEDDED_ROOTFS && \
-+			(MTD_BLOCK || MTD_BLOCK_RO) && \
-+			MTD_RAM
-+	help
-+	  This provides support for the embedded root file system
-+          on PMC MSP devices.  This memory is mapped as a MTD block device. 
-+
- config MTD_SUN_UFLASH
- 	tristate "Sun Microsystems userflash support"
- 	depends on SPARC && MTD_CFI
-diff --git a/drivers/mtd/maps/Makefile b/drivers/mtd/maps/Makefile
-index 071d0bf..de036c5 100644
---- a/drivers/mtd/maps/Makefile
-+++ b/drivers/mtd/maps/Makefile
-@@ -27,6 +27,8 @@ obj-$(CONFIG_MTD_CEIVA)		+= ceiva.o
- obj-$(CONFIG_MTD_OCTAGON)	+= octagon-5066.o
- obj-$(CONFIG_MTD_PHYSMAP)	+= physmap.o
- obj-$(CONFIG_MTD_PHYSMAP_OF)	+= physmap_of.o
-+obj-$(CONFIG_MTD_PMC_MSP_EVM)   += pmcmsp-flash.o
-+obj-$(CONFIG_MTD_PMC_MSP_RAMROOT)+= pmcmsp-ramroot.o
- obj-$(CONFIG_MTD_PNC2000)	+= pnc2000.o
- obj-$(CONFIG_MTD_PCMCIA)	+= pcmciamtd.o
- obj-$(CONFIG_MTD_RPXLITE)	+= rpxlite.o
-diff --git a/drivers/mtd/maps/pmcmsp-flash.c b/drivers/mtd/maps/pmcmsp-flash.c
+ #define UART_FCR	2	/* Out: FIFO Control Register */
+ #define UART_FCR_ENABLE_FIFO	0x01 /* Enable the FIFO */
+ #define UART_FCR_CLEAR_RCVR	0x02 /* Clear the RCVR FIFO */
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_serial.c b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
 new file mode 100644
-index 0000000..24cd8c0
+index 0000000..3b956e9
 --- /dev/null
-+++ b/drivers/mtd/maps/pmcmsp-flash.c
-@@ -0,0 +1,184 @@
++++ b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+@@ -0,0 +1,185 @@
 +/*
-+ * Mapping of a custom board with both AMD CFI and JEDEC flash in partitions.
-+ * Config with both CFI and JEDEC device support.
-+ *
-+ * Basically physmap.c with the addition of partitions and 
-+ * an array of mapping info to accomodate more than one flash type per board.
++ * The setup file for serial related hardware on PMC-Sierra MSP processors.
 + *
 + * Copyright 2005-2007 PMC-Sierra, Inc.
 + *
@@ -146,268 +222,162 @@ index 0000000..24cd8c0
 + *  675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/map.h>
-+#include <linux/mtd/partitions.h>
++#include <linux/serial.h>
++#include <linux/serial_core.h>
++#include <linux/serial_reg.h>
 +
++#include <asm/bootinfo.h>
 +#include <asm/io.h>
++#include <asm/processor.h>
++#include <asm/serial.h>
 +
 +#include <msp_prom.h>
++#include <msp_int.h>
 +#include <msp_regs.h>
 +
++/* console uses serial port 0 */
++#define CONSOLE_PORT_BASE KSEG1ADDR(MSP_UART0_BASE)
 +
-+static struct mtd_info **msp_flash;
-+static struct mtd_partition **msp_parts;
-+static struct map_info *msp_maps;
-+static int fcnt;
-+
-+#define DEBUG_MARKER printk(KERN_NOTICE "%s[%d]\n",__FUNCTION__,__LINE__)
-+
-+int __init init_msp_flash(void)
++static void putchar(char c)
 +{
-+	int i, j;
-+	int offset, coff;
-+	char *env;
-+	int pcnt;
-+	char flash_name[] = "flash0";
-+	char part_name[] = "flash0_0";
-+	unsigned addr, size;
++	volatile uint32_t *uart = (volatile uint32_t *)CONSOLE_PORT_BASE;
++	uint32_t val = (uint32_t)c;
 +
-+	/* If ELB is disabled by "ful-mux" mode, we can't get at flash */
-+	if ((*DEV_ID_REG & DEV_ID_SINGLE_PC) &&
-+	    (*ELB_1PC_EN_REG & SINGLE_PCCARD)) {
-+		printk(KERN_NOTICE "Single PC Card mode: no flash access\n");
-+		return -ENXIO;
-+	}
++	if (c == '\n')
++		putchar('\r');
 +
-+	/* examine the prom environment for flash devices */
-+	for (fcnt = 0; (env = prom_getenv(flash_name)); fcnt++)
-+		flash_name[5] = '0' + fcnt + 1;
-+
-+	if (fcnt < 1)
-+		return -ENXIO;
-+
-+	printk(KERN_NOTICE "Found %d PMC flash devices\n", fcnt);
-+	msp_flash = (struct mtd_info **)kmalloc(
-+			fcnt * sizeof(struct map_info *), GFP_KERNEL);
-+	msp_parts = (struct mtd_partition **)kmalloc(
-+			fcnt * sizeof(struct mtd_partition *), GFP_KERNEL);
-+	msp_maps = (struct map_info *)kmalloc(
-+			fcnt * sizeof(struct mtd_info), GFP_KERNEL);
-+	memset(msp_maps, 0, fcnt * sizeof(struct mtd_info));
-+
-+	/* loop over the flash devices, initializing each */
-+	for (i = 0; i < fcnt; i++) {
-+		/* examine the prom environment for flash partititions */
-+		part_name[5] = '0' + i;
-+		part_name[7] = '0';
-+		for (pcnt = 0; (env = prom_getenv(part_name)); pcnt++)
-+			part_name[7] = '0' + pcnt + 1;
-+
-+		if (pcnt == 0) {
-+			printk(KERN_NOTICE "Skipping flash device %d "
-+				"(no partitions defined)\n", i);
-+			continue;
-+		}
-+
-+		msp_parts[i] = (struct mtd_partition *)kmalloc(
-+			pcnt * sizeof(struct mtd_partition), GFP_KERNEL);
-+		memset(msp_parts[i], 0, pcnt * sizeof(struct mtd_partition));
-+
-+		/* now initialize the devices proper */
-+		flash_name[5] = '0' + i;
-+		env = prom_getenv(flash_name);
-+
-+		if (sscanf(env, "%x:%x", &addr, &size) < 2)
-+			return -ENXIO;
-+		addr = CPHYSADDR(addr);
-+
-+		printk(KERN_NOTICE
-+			"MSP flash device \"%s\": 0x%08x at 0x%08x\n",
-+			flash_name, size, addr);
-+		/* This must matchs the actual size of the flash chip */
-+		msp_maps[i].size = size;
-+		msp_maps[i].phys = addr;
-+
-+		/*
-+		 * Platforms have a specific limit of the size of memory
-+		 * which may be mapped for flash:
-+		 */
-+		if (size > CONFIG_MSP_FLASH_MAP_LIMIT)
-+			size = CONFIG_MSP_FLASH_MAP_LIMIT;
-+		msp_maps[i].virt = ioremap(addr, size);
-+		msp_maps[i].bankwidth = 1;
-+		msp_maps[i].name = strncpy(kmalloc(7, GFP_KERNEL),
-+					flash_name, 7);
-+
-+		if (msp_maps[i].virt == NULL)
-+			return -ENXIO;
-+
-+		for (j = 0; j < pcnt; j++) {
-+			part_name[5] = '0' + i;
-+			part_name[7] = '0' + j;
-+
-+			env = prom_getenv(part_name);
-+
-+			if (sscanf(env, "%x:%x:%n", &offset, &size, &coff) < 2)
-+				return -ENXIO;
-+
-+			msp_parts[i][j].size = size;
-+			msp_parts[i][j].offset = offset;
-+			msp_parts[i][j].name = env + coff;
-+		}
-+
-+		/* now probe and add the device */
-+		simple_map_init(&msp_maps[i]);
-+		msp_flash[i] = do_map_probe("cfi_probe", &msp_maps[i]);
-+		if (msp_flash[i]) {
-+			msp_flash[i]->owner = THIS_MODULE;
-+			add_mtd_partitions(msp_flash[i], msp_parts[i], pcnt);
-+		} else {
-+			printk(KERN_ERR "map probe failed for flash\n");
-+			return -ENXIO;
-+		}
-+	}
-+	
-+	return 0;
++	local_irq_disable();
++	while (!(uart[5] & 0x20)); /* Wait for TXRDY */
++	uart[0] = val;
++	while (!(uart[5] & 0x20)); /* Wait for TXRDY */
++	local_irq_enable();
 +}
 +
-+static void __exit cleanup_msp_flash(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < sizeof(msp_flash) / sizeof(struct mtd_info **); i++) {
-+		del_mtd_partitions(msp_flash[i]);
-+		map_destroy(msp_flash[i]);
-+		iounmap((void *)msp_maps[i].virt);
-+
-+		/* free the memory */
-+		kfree(msp_maps[i].name);
-+		kfree(msp_parts[i]);
-+	}
-+
-+	kfree(msp_flash);
-+	kfree(msp_parts);
-+	kfree(msp_maps);
-+}
-+
-+MODULE_AUTHOR("PMC-Sierra, Inc");
-+MODULE_DESCRIPTION("MTD map driver for PMC-Sierra MSP boards");
-+MODULE_LICENSE("GPL");
-+
-+module_init(init_msp_flash);
-+module_exit(cleanup_msp_flash);
-diff --git a/drivers/mtd/maps/pmcmsp-ramroot.c b/drivers/mtd/maps/pmcmsp-ramroot.c
-new file mode 100644
-index 0000000..18049bc
---- /dev/null
-+++ b/drivers/mtd/maps/pmcmsp-ramroot.c
-@@ -0,0 +1,105 @@
++#ifdef CONFIG_KGDB
 +/*
-+ * Mapping of the rootfs in a physical region of memory
-+ *
-+ * Copyright (C) 2005-2007 PMC-Sierra Inc.
-+ * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ * kgdb uses serial port 1 so the console can remain on port 0.
++ * To use port 0 change the definition to read as follows:
++ * #define DEBUG_PORT_BASE KSEG1ADDR(MSP_UART0_BASE)
 + */
++#define DEBUG_PORT_BASE KSEG1ADDR(MSP_UART1_BASE)
 +
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/slab.h>
-+#include <linux/fs.h>
-+#include <linux/root_dev.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/map.h>
-+
-+#include <asm/io.h>
-+
-+#include <msp_prom.h>
-+
-+static struct mtd_info *rr_mtd;
-+
-+struct map_info rr_map = {
-+	.name = "ramroot",
-+	.bankwidth = 4,
-+};
-+
-+static int __init init_rrmap(void)
++int putDebugChar(char c)
 +{
-+	void *ramroot_start;
-+	unsigned long ramroot_size;
++	volatile uint32_t *uart = (volatile uint32_t *)DEBUG_PORT_BASE;
++	uint32_t val = (uint32_t)c;
 +
-+	/* Check for supported rootfs types */
-+	if (get_ramroot(&ramroot_start, &ramroot_size)) {
-+		rr_map.phys = CPHYSADDR(ramroot_start);
-+		rr_map.size = ramroot_size;
++	local_irq_disable();
++	while (!(uart[5] & 0x20)); /* Wait for TXRDY */
++	uart[0] = val;
++	while (!(uart[5] & 0x20)); /* Wait for TXRDY */
++	local_irq_enable();
 +
-+		printk(KERN_NOTICE
-+			"PMC embedded root device: 0x%08lx @ 0x%08lx\n",
-+			rr_map.size, (unsigned long)rr_map.phys);
-+	} else {
-+		printk(KERN_ERR
-+			"init_rrmap: no supported embedded rootfs detected!\n");
-+		return -ENXIO;
-+	}
-+
-+	/* Map rootfs to I/O space for block device driver */
-+	rr_map.virt = ioremap(rr_map.phys, rr_map.size);
-+	if (!rr_map.virt) {
-+		printk(KERN_ERR "Failed to ioremap\n");
-+		return -EIO;
-+	}
-+
-+	simple_map_init(&rr_map);
-+
-+	rr_mtd = do_map_probe("map_ram", &rr_map);
-+	if (rr_mtd) {
-+		rr_mtd->owner = THIS_MODULE;
-+
-+		add_mtd_device(rr_mtd);
-+		ROOT_DEV = MKDEV(MTD_BLOCK_MAJOR, rr_mtd->index);
-+
-+		return 0;
-+	}
-+
-+	iounmap(rr_map.virt);
-+	return -ENXIO;
++	return 1;
 +}
 +
-+static void __exit cleanup_rrmap(void)
++char getDebugChar(void)
 +{
-+	del_mtd_device(rr_mtd);
-+	map_destroy(rr_mtd);
++	volatile uint32_t *uart = (volatile uint32_t *)DEBUG_PORT_BASE;
++	uint32_t val;
 +
-+	iounmap(rr_map.virt);
-+	rr_map.virt = NULL;
++	while (!(uart[5] & 0x01)); /* Wait for RXRDY */
++	val = uart[0];
++
++	return (char)val;
 +}
 +
-+MODULE_AUTHOR("PMC-Sierra, Inc");
-+MODULE_DESCRIPTION("MTD map driver for embedded PMC-Sierra MSP filesystem");
-+MODULE_LICENSE("GPL");
++void initDebugPort(unsigned int uartclk, unsigned int baudrate)
++{
++	unsigned int baud_divisor = (uartclk + 8 * baudrate)/(16 * baudrate);
 +
-+module_init(init_rrmap);
-+module_exit(cleanup_rrmap);
++	/* Enable FIFOs */
++	writeb(UART_FCR_ENABLE_FIFO | UART_FCR_CLEAR_RCVR |
++		UART_FCR_CLEAR_XMIT | UART_FCR_TRIGGER_4,
++		(char *)DEBUG_PORT_BASE + (UART_FCR * 4));
++
++	/* Select brtc divisor */
++	writeb(UART_LCR_DLAB, (char *)DEBUG_PORT_BASE + (UART_LCR * 4));
++
++	/* Store divisor lsb */
++	writeb(baud_divisor, (char *)DEBUG_PORT_BASE + (UART_TX * 4));
++
++	/* Store divisor msb */
++	writeb(baud_divisor >> 8, (char *)DEBUG_PORT_BASE + (UART_IER * 4));
++
++	/* Set 8N1 mode */
++	writeb(UART_LCR_WLEN8, (char *)DEBUG_PORT_BASE + (UART_LCR * 4));
++
++	/* Disable flow control */
++	writeb(0, (char *)DEBUG_PORT_BASE + (UART_MCR * 4));
++
++	/* Disable receive interrupt(!) */
++	writeb(0, (char *)DEBUG_PORT_BASE + (UART_IER * 4));
++}
++#endif
++
++void __init msp_serial_setup(void)
++{
++	char *s;
++	char *endp;
++	unsigned int uartclk;
++	struct uart_port up;
++
++	/* Check if clock was specified in environment */
++	s = prom_getenv("uartfreqhz");
++	if (!(s && *s &&
++	    (uartclk = simple_strtoul(s, &endp, 10)) && *endp == 0))
++		uartclk = MSP_BASE_BAUD;
++	ppfinit("UART clock set to %d\n", uartclk);
++
++	/* Initialize first serial port */
++	memset(&up, 0, sizeof(up));
++	up.mapbase      = MSP_UART0_BASE;
++	up.membase      = ioremap_nocache(up.mapbase, MSP_UART_REG_LEN);
++	up.irq          = MSP_INT_UART0;
++	up.uartclk      = uartclk;
++	up.regshift     = 2;
++	up.iotype       = UPIO_DWAPB; /* UPIO_MEM like */
++	up.flags        = STD_COM_FLAGS;
++	up.type         = PORT_16550A;
++	up.line         = 0;
++	up.private_data	= ioremap_nocache(
++		CPHYSADDR(UART0_STATUS_REG), sizeof(unsigned long));
++	if (early_serial_setup(&up))
++		printk(KERN_ERR "Early serial init of port 0 failed\n");
++
++	/* Initialize the second serial port, if one exists */
++	switch (mips_machtype) {
++	case MACH_MSP4200_EVAL:
++	case MACH_MSP4200_GW:
++	case MACH_MSP4200_FPGA:
++	case MACH_MSP7120_EVAL:
++	case MACH_MSP7120_GW:
++	case MACH_MSP7120_FPGA:
++		/* Enable UART1 on MSP4200 and MSP7120 */
++		*GPIO_CFG2_REG = 0x00002299;
++
++#ifdef CONFIG_KGDB
++		/* Initialize UART1 for kgdb since PMON doesn't */
++		if (DEBUG_PORT_BASE == KSEG1ADDR(MSP_UART1_BASE)) {
++			if (mips_machtype == MACH_MSP4200_FPGA ||
++			    mips_machtype == MACH_MSP7120_FPGA)
++				initDebugPort(uartclk,19200);
++			else
++				initDebugPort(uartclk,57600);
++		}
++#endif
++		break;
++
++	default:
++		return; /* No second serial port, good-bye. */
++	}
++
++	up.mapbase      = MSP_UART1_BASE;
++	up.membase      = ioremap_nocache(up.mapbase, MSP_UART_REG_LEN);
++	up.irq          = MSP_INT_UART1;
++	up.line         = 1;
++	up.private_data	= ioremap_nocache(
++		CPHYSADDR(UART1_STATUS_REG), sizeof(unsigned long));
++	if (early_serial_setup(&up))
++		printk(KERN_ERR "Early serial init of port 1 failed\n");
++}

@@ -1,8 +1,8 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 23:39:11 +0100 (BST)
-Received: from mail.hcrest.com ([12.173.51.131]:33073 "EHLO mail.hcrest.com")
-	by ftp.linux-mips.org with ESMTP id S20022763AbXCZWjJ convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 00:25:16 +0100 (BST)
+Received: from mail.hcrest.com ([12.173.51.131]:2104 "EHLO mail.hcrest.com")
+	by ftp.linux-mips.org with ESMTP id S20023005AbXCZXZP convert rfc822-to-8bit
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 23:39:09 +0100
+	Tue, 27 Mar 2007 00:25:15 +0100
 X-MimeOLE: Produced By Microsoft Exchange V6.5
 Content-class: urn:content-classes:message
 MIME-Version: 1.0
@@ -10,13 +10,13 @@ Content-Type: text/plain;
 	charset="US-ASCII"
 Content-Transfer-Encoding: 8BIT
 Subject: RE: flush_anon_page for MIPS
-Date:	Mon, 26 Mar 2007 18:38:42 -0400
-Message-ID: <36E4692623C5974BA6661C0B18EE8EDF6CD4AA@MAILSERV.hcrest.com>
+Date:	Mon, 26 Mar 2007 19:24:45 -0400
+Message-ID: <36E4692623C5974BA6661C0B18EE8EDF6CD4AF@MAILSERV.hcrest.com>
 In-Reply-To: <20070326140542.GA14354@linux-mips.org>
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 thread-topic: flush_anon_page for MIPS
-Thread-Index: Acdvr+MldaVjQjb1Q5S/w84d7Qm9/QARk21g
+Thread-Index: Acdvr+MldaVjQjb1Q5S/w84d7Qm9/QATXHDQ
 From:	"Ravi Pratap" <Ravi.Pratap@hillcrestlabs.com>
 To:	"Ralf Baechle" <ralf@linux-mips.org>
 Cc:	"David Daney" <ddaney@avtrex.com>,
@@ -26,7 +26,7 @@ Return-Path: <Ravi.Pratap@hillcrestlabs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14716
+X-archive-position: 14717
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,8 +42,6 @@ X-list: linux-mips
 > Subject: Re: flush_anon_page for MIPS
 > 
 > On Mon, Mar 26, 2007 at 09:33:10AM -0400, Ravi Pratap wrote:
-> 
-> > 
 > > Yes, but isn't it a lot of work considering the lack of a 
 > > flush_anon_page in 2.6.15?
 > 
@@ -56,14 +54,19 @@ X-list: linux-mips
 > 
 > 03beb07664d768db97bf454ae5c9581cd4737bb4
 > df7c814ea6385fea8ccf54c80ec78326f78b743e
-> f036773e8760a79ad9fdeea6665f86d3493d40d1
-> 4c40981a5c0fe1ee5c755a55a4a8e5e3527f0bca
-> 
 
-Thanks for the info. I think I'm going to go with backporting these
-changesets for now while still talking to the vendors about upgrading
-their kernel. The problem is that these guys are just notoriously slow
-and we have work to get done :-)
+So I'm trying to backport these changesets and it seems that I need the
+changeset that originally introduced kmap_coherent, etc. I tried some
+Google searching and found this but I need your help in figuring out
+which exact changesets I need.
 
+Is it this one:
+
+b895b66990f22a8a030c41390c538660a02bb97f
+
+?
+
+
+Thanks,
 
 Ravi.

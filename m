@@ -1,57 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 13:34:51 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:26016 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022781AbXCZMeu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 13:34:50 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2QCYkPO012476;
-	Mon, 26 Mar 2007 13:34:46 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2QCYjuT012475;
-	Mon, 26 Mar 2007 13:34:45 +0100
-Date:	Mon, 26 Mar 2007 13:34:45 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Thiemo Seufer <ths@networkno.de>, Kumba <kumba@gentoo.org>,
-	Linux MIPS List <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 14:26:54 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:49392 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022783AbXCZN0u (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2007 14:26:50 +0100
+Received: from localhost (p8030-ipad27funabasi.chiba.ocn.ne.jp [220.107.199.30])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 301589AA4; Mon, 26 Mar 2007 22:25:30 +0900 (JST)
+Date:	Mon, 26 Mar 2007 22:25:30 +0900 (JST)
+Message-Id: <20070326.222530.25910042.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	kumba@gentoo.org, linux-mips@linux-mips.org, ths@networkno.de
 Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
-Message-ID: <20070326123445.GA12447@linux-mips.org>
-References: <4603DA74.70707@gentoo.org> <20070324.002440.93023010.anemo@mba.ocn.ne.jp> <46049BAD.1010705@gentoo.org> <20070324.234727.25910303.anemo@mba.ocn.ne.jp> <20070324231602.GP2311@networkno.de> <46062400.8080307@gentoo.org> <20070325144515.GB21439@networkno.de> <Pine.LNX.4.64N.0703261234260.16083@blysk.ds.pg.gda.pl> <20070326115656.GA12086@linux-mips.org> <Pine.LNX.4.64N.0703261257590.16083@blysk.ds.pg.gda.pl>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070325221919.GA12088@linux-mips.org>
+References: <20070326.011000.75185255.anemo@mba.ocn.ne.jp>
+	<4606AA74.3070907@gentoo.org>
+	<20070325221919.GA12088@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0703261257590.16083@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14687
+X-archive-position: 14688
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 26, 2007 at 01:09:37PM +0100, Maciej W. Rozycki wrote:
+On Sun, 25 Mar 2007 23:19:19 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> --- a/include/asm-mips/stackframe.h
+> +++ b/include/asm-mips/stackframe.h
+> @@ -79,7 +79,7 @@
+>  #else
+>  		MFC0	k0, CP0_CONTEXT
+>  #endif
+> -#if defined(CONFIG_BUILD_ELF64) || (defined(CONFIG_64BIT) && __GNUC__ < 4)
+> +#if !defined(CONFIG_KERNEL_LOADS_IN_CKSEG0) || (defined(CONFIG_64BIT) && __GNUC__ < 4)
+>  		lui	k1, %highest(kernelsp)
+>  		daddiu	k1, %higher(kernelsp)
+>  		dsll	k1, 16
 
-> 
->  Hmm, from the back of my head I think it should not be a problem -- IIRC 
-> the versions of GCC that did not support explicit relocs for 64-bit ELF 
-> would force "-mno-explicit-relocs" internally even if asked otherwise.  
-> They did not support "-msym32" either, which went in later, and then 
-> non-PIC support for 64-bit explicit relocs went in earlier than for PIC -- 
-> quite unsurprisingly, as %higher() and %highest() are not necessarily 
-> rocket science unlike %disp() and friends.
-> 
->  If anybody cares I could probably make the excavations needed to verify 
-> the above.
+CONFIG_KERNEL_LOADS_IN_CKSEG0 is not defined on 32-bit kernel.
 
-That would be appreciated.  I did that on my side, I also tried to build
-a few 64-bit test kernels with gcc 3.3 and 4.1.2 yesterday and did not
-find any real reason why we would still need -mno-explicit-relocs.  Thiemo
-said there was something like a modern gcc in combination with old
-binutils.  That's the comination I haven't tested.
+#if defined(CONFIG_64BIT) && (!defined(CONFIG_KERNEL_LOADS_IN_CKSEG0) || __GNUC__ < 4)
 
-  Ralf
+Perhaps?
+---
+Atsushi Nemoto

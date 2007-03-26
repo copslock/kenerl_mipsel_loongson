@@ -1,76 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 17:08:32 +0100 (BST)
-Received: from nz-out-0506.google.com ([64.233.162.226]:1198 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022806AbXCZQI2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 17:08:28 +0100
-Received: by nz-out-0506.google.com with SMTP id x7so1488437nzc
-        for <linux-mips@linux-mips.org>; Mon, 26 Mar 2007 09:07:22 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=OamvYOuNtpa8hKReiiCeGCfet4FYNa4rjFM4jTxtSmU4L59aYQjW5BS4j/jv94PtREGMkn2+tjzgZCFR5oLhBZFc3cK7ouoKlwOU5wLmtN/VhBKxmUCd7R5yeMAtOsLhokIgSun9HT4HO9fQIUeozgVFMySl2W1UgxHDxwtZ6V0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=ZRJ4m1zC30SERimTUsBa0Qsk5dsacZwIqudyq1CByCO+5fPTnexymMo8k2DCMXa42AuyAYmxuyCIecd+rDwg5shLXFgJFSxMQ702JdEtgchfRdk1up9KO6E2gBkQnaXjujX1vHZLzUZHPw5vxMNz+v6T93l1uN/Z/Bx5SssrrM0=
-Received: by 10.115.76.1 with SMTP id d1mr2696557wal.1174925241264;
-        Mon, 26 Mar 2007 09:07:21 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Mon, 26 Mar 2007 09:07:21 -0700 (PDT)
-Message-ID: <cda58cb80703260907g6f349298xf85b2e2954a7b6a7@mail.gmail.com>
-Date:	Mon, 26 Mar 2007 18:07:21 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
-Cc:	ralf@linux-mips.org, kumba@gentoo.org, linux-mips@linux-mips.org,
-	ths@networkno.de
-In-Reply-To: <20070327.004511.31449250.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 21:29:00 +0100 (BST)
+Received: from 70-89-178-179-BusName-Oregon.hfc.comcastbusiness.net ([70.89.178.179]:42136
+	"EHLO hawaii.site") by ftp.linux-mips.org with ESMTP
+	id S20022591AbXCZU26 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Mar 2007 21:28:58 +0100
+Received: by hawaii.site (Postfix, from userid 500)
+	id 1A8745484C7; Mon, 26 Mar 2007 13:28:26 -0700 (PDT)
+Date:	Mon, 26 Mar 2007 13:28:26 -0700
+From:	Mark Mason <mmason@upwardaccess.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] fix irq affinity for bcm1480
+Message-ID: <20070326202825.GA12250@upwardaccess.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <cda58cb80703260654u4435b90axa28507f6c9011c00@mail.gmail.com>
-	 <20070326.234821.30439266.anemo@mba.ocn.ne.jp>
-	 <cda58cb80703260831t576ff7c5wef1e34e3367e7c45@mail.gmail.com>
-	 <20070327.004511.31449250.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <mmason@upwardaccess.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14702
+X-archive-position: 14703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: mmason@upwardaccess.com
 Precedence: bulk
 X-list: linux-mips
 
-On 3/26/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> I think dropping gcc 3.x support for 64-bit kernel is not what we
-> wanted.  And -msym32 is just an optimization and kernel should be
-> buildable without it.  So "remove -msym32 silently" is not so bad, I
-> suppose.
->
-> "If you used newer compiler, you can get better result" is natural
-> thing, isn't it? ;)
+Fix irq affinity setting for bcm1480.
 
-ok, I suppose a warning is fine. What about this patch on top of the patchset ?
+Signed-off-by: Mark Mason (mason@broadcom.com)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 3ec0c12..b886945 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -627,7 +627,12 @@ ifdef CONFIG_64BIT
-   endif
-
-   ifeq ($(KBUILD_SYM32), y)
--    cflags-y += -msym32 -DKBUILD_64BIT_SYM32
-+    ifeq ($(call cc-option-yn,-msym32), y)
-+      cflags-y += -msym32 -DKBUILD_64BIT_SYM32
-+    else
-+      $(warning '-msym32' option is not supported by your compiler. \
-+               You should use a new one to get best result)
-+    endif
-   endif
- endif
--- 
-               Franck
+diff --git a/arch/mips/sibyte/bcm1480/irq.c b/arch/mips/sibyte/bcm1480/irq.c
+index 20af0f1..ba0c4b7 100644
+--- a/arch/mips/sibyte/bcm1480/irq.c
++++ b/arch/mips/sibyte/bcm1480/irq.c
+@@ -141,11 +141,11 @@ static void bcm1480_set_affinity(unsigne
+ 	unsigned long flags;
+ 	unsigned int irq_dirty;
+ 
+-	i = first_cpu(mask);
+-	if (next_cpu(i, mask) <= NR_CPUS) {
++	if (cpus_weight(mask) != 1) {
+ 		printk("attempted to set irq affinity for irq %d to multiple CPUs\n", irq);
+ 		return;
+ 	}
++	i = first_cpu(mask);
+ 
+ 	/* Convert logical CPU to physical CPU */
+ 	cpu = cpu_logical_map(i);

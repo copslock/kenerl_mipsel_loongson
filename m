@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 23:01:07 +0100 (BST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:24224 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 23:05:02 +0100 (BST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:52642 "HELO
 	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20022803AbXCZWBE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 23:01:04 +0100
-Received: (qmail 29384 invoked by uid 101); 26 Mar 2007 22:00:54 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 26 Mar 2007 22:00:54 -0000
+	id S20022622AbXCZWE7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Mar 2007 23:04:59 +0100
+Received: (qmail 1195 invoked by uid 101); 26 Mar 2007 22:04:52 -0000
+Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
+  by father.pmc-sierra.com with SMTP; 26 Mar 2007 22:04:52 -0000
 Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2QM0qfc019070;
-	Mon, 26 Mar 2007 14:00:53 -0800
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2QM4pAt014579;
+	Mon, 26 Mar 2007 14:04:52 -0800
 From:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2QM0q4Z013333;
-	Mon, 26 Mar 2007 16:00:52 -0600
-Date:	Mon, 26 Mar 2007 16:00:52 -0600
-Message-Id: <200703262200.l2QM0q4Z013333@pasqua.pmc-sierra.bc.ca>
-To:	akpm@linux-foundation.org
-Subject: [PATCH 7/12] drivers: PMC MSP71xx GPIO char driver
-Cc:	linux-mips@linux-mips.org
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2QM4hXO014040;
+	Mon, 26 Mar 2007 16:04:43 -0600
+Date:	Mon, 26 Mar 2007 16:04:43 -0600
+Message-Id: <200703262204.l2QM4hXO014040@pasqua.pmc-sierra.bc.ca>
+To:	akpm@linux-foundation.org, khali@linux-fr.org
+Subject: [PATCH 8/12] drivers: PMC MSP71xx TWI driver
+Cc:	i2c@lm-sensors.org, linux-mips@linux-mips.org
 Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14713
+X-archive-position: 14714
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,10 +30,9 @@ X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH 7/12] drivers: PMC MSP71xx GPIO char driver
+[PATCH 8/12] drivers: PMC MSP71xx TWI driver
 
-Patch to add a GPIO char driver for the PMC-Sierra
-MSP71xx devices.
+Patch to add TWI driver for the PMC-Sierra MSP71xx devices.
 
 Reposting patches as a single set at the request of akpm.
 Only 9 of 12 will be posted at this time, 3 more to follow
@@ -45,52 +44,83 @@ Marc
 Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
 Re-posting patch with recommended changes:
--Removed typedefs.
--Dropped msp_gpio_macros.h include from msp_gpio.h and
-defined msp_gpio_mode and MSP_GPIO_MODE_ALLOWED.
--Added extern to msp_gpio_blink declaration.
+-Minor whitespace cleanup.
+-Merged i2c-algo-pmctwi.c and i2c-algo-pmctwi.h with i2c-pmcmsp.c,
+eliminated pmcmsp_priv_data, and normalized naming scheme.
 
- drivers/char/Kconfig                           |    4 
- drivers/char/Makefile                          |    1 
- drivers/char/pmcmsp_gpio.c                     |  645 +++++++++++++++++++++++++
- include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h |  119 ++++
- 4 files changed, 769 insertions(+)
+ algos/Kconfig       |    9 
+ algos/Makefile      |    1 
+ busses/Kconfig      |    7 
+ busses/Makefile     |    1 
+ busses/i2c-pmcmsp.c |  689 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 706 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
-index ed5453f..dea96a0 100644
---- a/drivers/char/Kconfig
-+++ b/drivers/char/Kconfig
-@@ -372,6 +372,10 @@ config ISTALLION
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called istallion.
+diff --git a/drivers/i2c/algos/Kconfig b/drivers/i2c/algos/Kconfig
+index af02034..794f7bb 100644
+--- a/drivers/i2c/algos/Kconfig
++++ b/drivers/i2c/algos/Kconfig
+@@ -49,5 +49,12 @@ config I2C_ALGO_SGI
+ 	  Supports the SGI interfaces like the ones found on SGI Indy VINO
+ 	  or SGI O2 MACE.
  
-+config PMCMSP_GPIO
-+	tristate "PMC MSP 7120 GPIO device support"
-+	depends on MIPS && (PMC_MSP7120_EVAL || PMC_MSP7120_GW || PMC_MSP7120_FPGA)
-+	  
- config AU1X00_GPIO
- 	tristate "Alchemy Au1000 GPIO device support"
- 	depends on MIPS && SOC_AU1X00
-diff --git a/drivers/char/Makefile b/drivers/char/Makefile
-index 3ed7647..9abbcc1 100644
---- a/drivers/char/Makefile
-+++ b/drivers/char/Makefile
-@@ -86,6 +86,7 @@ obj-$(CONFIG_DS1620)		+= ds1620.o
- obj-$(CONFIG_HW_RANDOM)		+= hw_random/
- obj-$(CONFIG_COBALT_LCD)	+= lcd.o
- obj-$(CONFIG_AU1000_GPIO)	+= au1000_gpio.o
-+obj-$(CONFIG_PMCMSP_GPIO)	+= pmcmsp_gpio.o
- obj-$(CONFIG_PPDEV)		+= ppdev.o
- obj-$(CONFIG_NWBUTTON)		+= nwbutton.o
- obj-$(CONFIG_NWFLASH)		+= nwflash.o
-diff --git a/drivers/char/pmcmsp_gpio.c b/drivers/char/pmcmsp_gpio.c
+-endmenu
++config I2C_ALGO_PMCTWI
++	tristate "I2C PMC TWI interfaces"
++	depends on I2C && PMC_MSP
++	help
++	  Implements the PMC TWI SoC algorithm for various implementations.
+ 
++	  Be sure to select the proper bus for your platform below.
++
++endmenu
+diff --git a/drivers/i2c/algos/Makefile b/drivers/i2c/algos/Makefile
+index cac1051..2645d00 100644
+--- a/drivers/i2c/algos/Makefile
++++ b/drivers/i2c/algos/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_I2C_ALGOBIT)	+= i2c-algo-bit.o
+ obj-$(CONFIG_I2C_ALGOPCF)	+= i2c-algo-pcf.o
+ obj-$(CONFIG_I2C_ALGOPCA)	+= i2c-algo-pca.o
+ obj-$(CONFIG_I2C_ALGO_SGI)	+= i2c-algo-sgi.o
++obj-$(CONFIG_I2C_ALGO_PMCTWI)	+= i2c-algo-pmctwi.o
+ 
+ ifeq ($(CONFIG_I2C_DEBUG_ALGO),y)
+ EXTRA_CFLAGS += -DDEBUG
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 4d44a2d..f2998b8 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -573,4 +573,11 @@ config I2C_PNX
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-pnx.
+ 
++config I2C_PMCMSP
++	tristate "PMC MSP I2C Controller"
++	depends on I2C && PMC_MSP
++	select I2C_ALGO_PMCTWI
++	help
++	  Supports the special PMC TWI SoC chip on the MSP platform
++
+ endmenu
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index 03505aa..8923878 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -30,6 +30,7 @@ obj-$(CONFIG_I2C_PARPORT_LIGHT)	+= i2c-parport-light.o
+ obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi.o
+ obj-$(CONFIG_I2C_PCA_ISA)	+= i2c-pca-isa.o
+ obj-$(CONFIG_I2C_PIIX4)		+= i2c-piix4.o
++obj-$(CONFIG_I2C_PMCMSP)	+= i2c-pmcmsp.o
+ obj-$(CONFIG_I2C_PNX)		+= i2c-pnx.o
+ obj-$(CONFIG_I2C_PROSAVAGE)	+= i2c-prosavage.o
+ obj-$(CONFIG_I2C_PXA)		+= i2c-pxa.o
+diff --git a/drivers/i2c/busses/i2c-pmcmsp.c b/drivers/i2c/busses/i2c-pmcmsp.c
 new file mode 100644
-index 0000000..b8d7f7d
+index 0000000..4a15290
 --- /dev/null
-+++ b/drivers/char/pmcmsp_gpio.c
-@@ -0,0 +1,645 @@
++++ b/drivers/i2c/busses/i2c-pmcmsp.c
+@@ -0,0 +1,689 @@
 +/*
-+ * Driver for the PMC MSP71xx reference board GPIO pins
++ * Specific bus support for PMC-TWI compliant implementation on MSP71xx.
 + *
 + * Copyright 2005-2007 PMC-Sierra, Inc.
 + *
@@ -115,747 +145,666 @@ index 0000000..b8d7f7d
 + *  675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
++#include <linux/init.h>
 +#include <linux/module.h>
-+#include <linux/ioport.h>
-+#include <linux/spinlock.h>
-+#include <linux/miscdevice.h>
-+#include <linux/fs.h>
-+#include <linux/kthread.h>
-+#include <linux/sched.h>
++#include <linux/kernel.h>
++#include <linux/errno.h>
++#include <linux/delay.h>
++#include <linux/interrupt.h>
 +#include <linux/completion.h>
-+#include <linux/freezer.h>
++#include <linux/i2c.h>
++#include <linux/mutex.h>
 +
 +#include <asm/io.h>
-+#include <asm/war.h>
 +
 +#include <msp_regs.h>
-+#include <msp_regops.h>
-+#include <msp_gpio.h>
++#include <msp_cic_int.h>
 +
-+/* -- Private definitions -- */
++#define MSP_TWI_SF_CLK_REG_OFFSET	0x00
++#define MSP_TWI_HS_CLK_REG_OFFSET	0x04
++#define MSP_TWI_CFG_REG_OFFSET		0x08
++#define MSP_TWI_CMD_REG_OFFSET		0x0c
++#define MSP_TWI_ADD_REG_OFFSET		0x10
++#define MSP_TWI_DAT_0_REG_OFFSET	0x14
++#define MSP_TWI_DAT_1_REG_OFFSET	0x18
++#define MSP_TWI_INT_STS_REG_OFFSET	0x1c
++#define MSP_TWI_INT_MSK_REG_OFFSET	0x20
++#define MSP_TWI_BUSY_REG_OFFSET		0x24
++#define MSP_TWI_REG_SIZE		0x28
 +
-+/* Special bitflags and whatnot for the driver's convenience */
-+#define GPIO_REG_COUNT		4
-+const u32 GPIO_DATA_COUNT[] = { 2, 4, 4, 6 };
-+const u32 GPIO_DATA_SHIFT[] = { 0, 2, 6, 10 };
-+const u32 GPIO_DATA_MASK[] = { 0x03, 0x0f, 0x0f, 0x3f };
-+u32 * const GPIO_DATA_REG[] = {
-+	(u32 *)GPIO_DATA1_REG, (u32 *)GPIO_DATA2_REG,
-+	(u32 *)GPIO_DATA3_REG, (u32 *)GPIO_DATA4_REG,
-+};
-+const u32 GPIO_CFG_MASK[] = { 0x0000ff, 0x00ffff, 0x00ffff, 0xffffff };
-+u32 * const GPIO_CFG_REG[] = {
-+	(u32 *)GPIO_CFG1_REG, (u32 *)GPIO_CFG2_REG,
-+	(u32 *)GPIO_CFG3_REG, (u32 *)GPIO_CFG4_REG,
-+};
++#define MSP_TWI_INT_STS_DONE			(1 << 0)
++#define MSP_TWI_INT_STS_LOST_ARBITRATION	(1 << 1)
++#define MSP_TWI_INT_STS_NO_RESPONSE		(1 << 2)
++#define MSP_TWI_INT_STS_DATA_COLLISION		(1 << 3)
++#define MSP_TWI_INT_STS_BUSY			(1 << 4)
++#define MSP_TWI_INT_STS_ALL			0x1f
 +
-+#define GPIO_CFG_SHIFT(i)	(i * 4)
-+#define GPIO_CFG_PINMASK	0xf
++#define MSP_MAX_BYTES_PER_RW		8
++#define MSP_MAX_POLL			5
++#define MSP_POLL_DELAY			10
++#define MSP_IRQ_TIMEOUT			(MSP_MAX_POLL * MSP_POLL_DELAY)
 +
-+/* The extended gpio register */
++#define MSP_TWI_IRQ 			MSP_INT_2WIRE
++/* Use the following instead to disable interrupt mode */
++/* #define MSP_TWI_IRQ 			0 */
 +
-+#define EXTENDED_GPIO_COUNT	4
-+#define EXTENDED_GPIO_SHIFT	16
-+#define EXTENDED_GPIO_MASK	0x0f
++/* IO Operation macros */
++#define pmcmsptwi_readl		__raw_readl
++#define pmcmsptwi_writel	__raw_writel
 +
-+#define EXTENDED_GPIO_DATA_SHIFT(i)	(i * 2)
-+#define EXTENDED_GPIO_DATA_MASK(i)	(0x3 << (i*2))
-+#define EXTENDED_GPIO_DATA_SET		0x2
-+#define EXTENDED_GPIO_DATA_CLR		0x1
-+#define EXTENDED_GPIO_CFG_SHIFT(i)	((i * 2) + 16)
-+#define EXTENDED_GPIO_CFG_MASK(i)	(0x3 << ((i*2)+16))
-+#define EXTENDED_GPIO_CFG_DISABLE	0x2
-+#define EXTENDED_GPIO_CFG_ENABLE	0x1
-+
-+/* -- Data structures -- */
-+
-+static DEFINE_SPINLOCK(msp_gpio_spinlock);
-+
-+static struct task_struct *msp_blinkthread;
-+static DEFINE_SPINLOCK(msp_blink_lock);
-+static DECLARE_COMPLETION(msp_blink_wait);
-+
-+struct blink_table {
-+	u32 count;
-+	u32 period;
-+	u32 dcycle;
++/* TWI command type */
++enum pmcmsptwi_cmd_type {
++	MSP_TWI_CMD_WRITE	= 0, /* Write only */
++	MSP_TWI_CMD_READ	= 1, /* Read only */
++	MSP_TWI_CMD_WRITE_READ	= 2, /* Write then Read */
++	MSP_TWI_CMD_RESERVED	= 3,
 +};
 +
-+static struct blink_table blink_table[MSP_NUM_GPIOS];
++/* Corresponds to a PMCTWI clock configuration register */
++struct pmcmsptwi_clock {
++	u8 filter;	/* Bits 15:12,	default = 0x03 */
++	u16 clock;	/* Bits 9:0,	default = 0x001f */
++};
 +
-+/* -- Utility functions -- */
++struct pmcmsptwi_clockcfg {
++	struct pmcmsptwi_clock standard;  /* The standard/fast clock config */
++	struct pmcmsptwi_clock highspeed; /* The highspeed clock config */
++};
 +
-+/* Define the following for extra debug output */
-+#undef DEBUG
++/* Corresponds to the main TWI configuration register */
++struct pmcmsptwi_cfg {
++	u8 arbf;	/* Bits 15:12,	default=0x03 */
++	u8 nak;		/* Bits 11:8,	default=0x03 */
++	u8 add10;	/* Bit 7,	default=0x00 */
++	u8 mst_code;	/* Bits 6:4,	default=0x00 */
++	u8 arb;		/* Bit 1,	default=0x01 */
++	u8 highspeed;	/* Bit 0,	default=0x00 */
++};
 +
-+#ifdef DEBUG
-+#define DBG(args...) printk(args)
-+#else
-+#define DBG(args...) do {} while (0)
-+#endif
++/* A single pmctwi command to issue */
++struct pmcmsptwi_cmd {
++	u16 addr;	/* The slave address (7 or 10 bits) */
++	enum pmcmsptwi_cmd_type type;	/* The command type */
++	u8 write_len;	/* Number of bytes in the write buffer */
++	u8 read_len;	/* Number of bytes in the read buffer */
++	u8 *write_data;	/* Buffer of characters to send */
++	u8 *read_data;	/* Buffer to fill with incoming data */
++};
 +
-+/* Reads the data bits from a single register set */
-+static u32 msp_gpio_read_data_basic(int reg)
++/* The possible results of the xferCmd */
++enum pmcmsptwi_xfer_result {
++	MSP_TWI_XFER_OK	= 0,
++	MSP_TWI_XFER_TIMEOUT,
++	MSP_TWI_XFER_BUSY,
++	MSP_TWI_XFER_DATA_COLLISION,
++	MSP_TWI_XFER_NO_RESPONSE,
++	MSP_TWI_XFER_LOST_ARBITRATION,
++};
++
++/* The default settings */
++const static struct pmcmsptwi_clockcfg pmcmsptwi_defclockcfg = {
++	.standard = {
++		.filter = 0x3,
++		.clock = 0x1f,
++	},
++	.highspeed = {
++		.filter = 0x3,
++		.clock = 0x1f,
++	},
++};
++
++const static struct pmcmsptwi_cfg pmcmsptwi_defcfg = {
++	.arbf		= 0x03,
++	.nak		= 0x03,
++	.add10		= 0x00,
++	.mst_code	= 0x00,
++	.arb		= 0x01,
++	.highspeed	= 0x00,
++};
++
++/* The set of operations each bus must implement to use this algorithm */
++struct pmcmsptwi_algo_data {
++	void __iomem *iobase;			/* iomapped base for IO */
++	enum pmcmsptwi_xfer_result last_result;	/* result of last xfer */
++	int irq;				/* IRQ to use (0 disables) */
++	struct completion wait;			/* Completion for xfer */
++	struct mutex lock;			/* Used for threadsafeness */
++
++	/* Get both clock configuration registers */
++	void (*get_clock_config)(struct pmcmsptwi_clockcfg *cfg, void *data);
++
++	/* Set both clock configuration registers */
++	void (*set_clock_config)(const struct pmcmsptwi_clockcfg *cfg,
++					void *data);
++
++	/* Get the TWI configuration register */
++	void (*get_twi_config)(struct pmcmsptwi_cfg *cfg, void *data);
++
++	/* Set the TWI configuration register */
++	void (*set_twi_config)(const struct pmcmsptwi_cfg *cfg, void *data);
++
++	/* Send the command, reading and/or writing all data specified */
++	enum pmcmsptwi_xfer_result (*xfer_cmd)(struct pmcmsptwi_cmd *cmd,
++						void *data);
++};
++
++static struct i2c_adapter pmcmsptwi_adapter;
++
++static inline u32 pmcmsptwi_clock_to_reg(
++			const struct pmcmsptwi_clock *clock)
 +{
-+	return read_reg32(GPIO_DATA_REG[reg], GPIO_DATA_MASK[reg]);
++	return (u32)(((clock->filter & 0xf) << 12) |
++			(clock->clock & 0x03ff));
 +}
 +
-+/* Reads the data bits from the extended register set */
-+static u32 msp_gpio_read_data_extended(void)
++static inline void pmcmsptwi_reg_to_clock(
++			u32 reg, struct pmcmsptwi_clock *clock)
 +{
-+	int pin;
-+	u32 tmp = *EXTENDED_GPIO_REG;
-+	u32 retval = 0;
++	clock->filter = (u8)((reg >> 12) & 0xf);
++	clock->clock = (u16)(reg & 0x03ff);
++}
++
++static inline u32 pmcmsptwi_cfg_to_reg(const struct pmcmsptwi_cfg *cfg)
++{
++	return (u32)(((cfg->arbf & 0xf) << 12) |
++			((cfg->nak & 0xf) << 8) |
++			((cfg->add10 & 0x1) << 7) |
++			((cfg->mst_code & 0x7) << 4) |
++			((cfg->arb & 0x1) << 1) |
++			((cfg->highspeed & 0x1) << 0));
++}
++
++static inline void pmcmsptwi_reg_to_cfg(u32 reg, struct pmcmsptwi_cfg *cfg)
++{
++	cfg->arbf = (u8)((reg >> 12) & 0xf);
++	cfg->nak = (u8)((reg >> 8) & 0xf);
++	cfg->add10 = (u8)((reg >> 7) & 0x1);
++	cfg->mst_code = (u8)((reg >> 4) & 0x7);
++	cfg->arb = (u8)((reg >> 1) & 0x1);
++	cfg->highspeed = (u8)(reg & 0x1);
++}
++
++/*
++ * Gets the current clock configuration
++ */
++static void pmcmsptwi_get_clock_config(struct pmcmsptwi_clockcfg *cfg,
++					void *data)
++{
++	struct pmcmsptwi_algo_data *p = data;
 +	
-+	for (pin = 0; pin < EXTENDED_GPIO_COUNT; pin++) {
-+		u32 bit = 0;
++	mutex_lock(&p->lock);
++	pmcmsptwi_reg_to_clock(pmcmsptwi_readl(p->iobase +
++				MSP_TWI_SF_CLK_REG_OFFSET),
++				&(cfg->standard));
++	pmcmsptwi_reg_to_clock(pmcmsptwi_readl(p->iobase +
++				MSP_TWI_HS_CLK_REG_OFFSET),
++				&(cfg->highspeed));
++	mutex_unlock(&p->lock);
++}
++
++/*
++ * Sets the current clock configuration
++ */
++static void pmcmsptwi_set_clock_config(const struct pmcmsptwi_clockcfg *cfg,
++					void *data)
++{
++	struct pmcmsptwi_algo_data *p = data;
++	
++	mutex_lock(&p->lock);
++	pmcmsptwi_writel(pmcmsptwi_clock_to_reg(&(cfg->standard)),
++				p->iobase + MSP_TWI_SF_CLK_REG_OFFSET);
++	pmcmsptwi_writel(pmcmsptwi_clock_to_reg(&(cfg->highspeed)),
++				p->iobase + MSP_TWI_HS_CLK_REG_OFFSET);
++	mutex_unlock(&p->lock);
++}
++
++/*
++ * Gets the current TWI bus configuration
++ */
++static void pmcmsptwi_get_twi_config(struct pmcmsptwi_cfg *cfg, void *data)
++{
++	struct pmcmsptwi_algo_data *p = data;
++	
++	mutex_lock(&p->lock);
++	pmcmsptwi_reg_to_cfg(pmcmsptwi_readl(
++				p->iobase + MSP_TWI_CFG_REG_OFFSET), cfg);
++	mutex_unlock(&p->lock);
++}
++
++/*
++ * Sets the current TWI bus configuration
++ */
++static void pmcmsptwi_set_twi_config(const struct pmcmsptwi_cfg *cfg,
++					void *data)
++{
++	struct pmcmsptwi_algo_data *p = data;
++	
++	mutex_lock(&p->lock);
++	pmcmsptwi_writel(pmcmsptwi_cfg_to_reg(cfg),
++				p->iobase + MSP_TWI_CFG_REG_OFFSET);
++	mutex_unlock(&p->lock);
++}
++
++/*
++ * Parses the 'int_sts' register and returns a well-defined error code
++ */
++static enum pmcmsptwi_xfer_result pmcmsptwi_get_result(u32 reg)
++{
++	if (reg & MSP_TWI_INT_STS_LOST_ARBITRATION) {
++		dev_dbg(&pmcmsptwi_adapter.dev,
++			"  Result: Lost arbitration\n");
++		return MSP_TWI_XFER_LOST_ARBITRATION;
++	} else if (reg & MSP_TWI_INT_STS_NO_RESPONSE) {
++		dev_dbg(&pmcmsptwi_adapter.dev,
++			"  Result: No response\n");
++		return MSP_TWI_XFER_NO_RESPONSE;
++	} else if (reg & MSP_TWI_INT_STS_DATA_COLLISION) {
++		dev_dbg(&pmcmsptwi_adapter.dev,
++			"  Result: Data collision\n");
++		return MSP_TWI_XFER_DATA_COLLISION;
++	} else if (reg & MSP_TWI_INT_STS_BUSY) {
++		dev_dbg(&pmcmsptwi_adapter.dev,
++			"  Result: Bus busy\n");
++		return MSP_TWI_XFER_BUSY;
++	}
++
++	dev_dbg(&pmcmsptwi_adapter.dev, "  Result: Operation succeeded\n");
++	return MSP_TWI_XFER_OK;
++}
++
++/*
++ * Polls the 'busy' register until the command is complete
++ * Note: Assumes p->lock is held.
++ */
++static void pmcmsptwi_poll_complete(struct pmcmsptwi_algo_data* p)
++{
++	int i;
++	u32 val = 0;
++	
++	for (i = 0; i < MSP_MAX_POLL; i++) {
++		val = pmcmsptwi_readl(p->iobase + MSP_TWI_BUSY_REG_OFFSET);
++		if (val == 0) {
++			u32 reason = pmcmsptwi_readl(p->iobase +
++						MSP_TWI_INT_STS_REG_OFFSET);
++			pmcmsptwi_writel(reason, p->iobase +
++						MSP_TWI_INT_STS_REG_OFFSET);
++			p->last_result = pmcmsptwi_get_result(reason);
++			return;
++		}
++		udelay(MSP_POLL_DELAY);
++	}
++
++	dev_dbg(&pmcmsptwi_adapter.dev, "  Result: Poll timeout\n");
++	p->last_result = MSP_TWI_XFER_TIMEOUT;
++}
++
++/*
++ * In interrupt mode, handle the interrupt
++ * Note: Assumes p->lock is held.
++ */
++static irqreturn_t pmcmsptwi_interrupt(int irq, void* data)
++{
++	struct pmcmsptwi_algo_data *p = data;
++	
++	u32 reason = pmcmsptwi_readl(p->iobase + MSP_TWI_INT_STS_REG_OFFSET);
++	pmcmsptwi_writel(reason, p->iobase + MSP_TWI_INT_STS_REG_OFFSET);
++
++	dev_dbg(&pmcmsptwi_adapter.dev, "    Got interrupt 0x%08x\n",
++			reason);
++	if (!(reason & MSP_TWI_INT_STS_DONE))
++		return IRQ_NONE;
++
++	p->last_result = pmcmsptwi_get_result(reason);
++	complete(&p->wait);
++
++	return IRQ_HANDLED;
++}
++
++/*
++ * Do the transfer (low level):
++ *  - May use interrupt-driven or polling, depending on if an IRQ is
++ *  presently registered
++ * Note: Assumes p->lock is held
++ */
++static enum pmcmsptwi_xfer_result pmcmsptwi_do_xfer(
++			u32 reg, struct pmcmsptwi_algo_data *p)
++{
++	dev_dbg(&pmcmsptwi_adapter.dev, "  Writing cmd reg 0x%08x\n", reg);
++	pmcmsptwi_writel(reg, p->iobase + MSP_TWI_CMD_REG_OFFSET);
++	if (p->irq) {
++		unsigned long timeleft = wait_for_completion_timeout(
++						&p->wait, MSP_IRQ_TIMEOUT);
++		if (timeleft == 0) {
++			dev_dbg(&pmcmsptwi_adapter.dev,
++				"  Result: IRQ timeout\n");
++			complete(&p->wait);
++			p->last_result = MSP_TWI_XFER_TIMEOUT;
++		}
++	} else
++		pmcmsptwi_poll_complete(p);
++
++	return p->last_result;
++}
++
++/*
++ * Helper routine, converts 'pmctwi_cmd' struct to register format
++ */
++static inline u32 pmcmsptwi_cmd_to_reg(const struct pmcmsptwi_cmd *cmd)
++{
++	return (u32)(((cmd->type & 0x3) << 8) |
++			(((cmd->write_len - 1) & 0x7) << 4) |
++			(((cmd->read_len - 1) & 0x7) << 0));
++}
++
++/*
++ * Do the transfer (high level)
++ */
++static enum pmcmsptwi_xfer_result pmcmsptwi_xfer_cmd(
++			struct pmcmsptwi_cmd *cmd, void *data)
++{
++	struct pmcmsptwi_algo_data *p = data;
++	u64 *write_data, *read_data;
++	enum pmcmsptwi_xfer_result retval;
++
++	write_data = (u64*)cmd->write_data;
++	read_data = (u64*)cmd->read_data;
++
++	if ((cmd->type == MSP_TWI_CMD_WRITE && cmd->write_len == 0) ||
++	    (cmd->type == MSP_TWI_CMD_READ && cmd->read_len == 0) ||
++	    (cmd->type == MSP_TWI_CMD_WRITE_READ &&
++	    (cmd->read_len == 0 || cmd->write_len == 0))) {
++		printk(KERN_ERR "%s: Cannot transfer less than 1 byte\n",
++		        __FUNCTION__);
++		return -1;
++	}
++
++	if ((cmd->read_len > MSP_MAX_BYTES_PER_RW) ||
++	    (cmd->write_len > MSP_MAX_BYTES_PER_RW)) {
++		printk(KERN_ERR "%s: Cannot transfer more than %d bytes\n",
++			__FUNCTION__, MSP_MAX_BYTES_PER_RW);
++	}
++
++	mutex_lock(&p->lock);
++	dev_dbg(&pmcmsptwi_adapter.dev, "Setting address to 0x%08x\n",
++		cmd->addr);
++	pmcmsptwi_writel(cmd->addr, p->iobase + MSP_TWI_ADD_REG_OFFSET);
++
++	if ((cmd->type == MSP_TWI_CMD_WRITE) ||
++	    (cmd->type == MSP_TWI_CMD_WRITE_READ)) {
++		u64 tmp = be64_to_cpu(*write_data);
++		tmp >>= (8 - cmd->write_len) * 8;
++		dev_dbg(&pmcmsptwi_adapter.dev, "Writing 0x%016llx\n", tmp);
++		pmcmsptwi_writel((u32)(tmp & 0x00000000ffffffffLL),
++				p->iobase + MSP_TWI_DAT_0_REG_OFFSET);
++		if (cmd->write_len > 4)
++			pmcmsptwi_writel((u32)(tmp >> 32),
++					p->iobase + MSP_TWI_DAT_1_REG_OFFSET);
++	}
++
++	retval = pmcmsptwi_do_xfer(pmcmsptwi_cmd_to_reg(cmd), p);
++
++	if ((cmd->type == MSP_TWI_CMD_READ) ||
++	    (cmd->type == MSP_TWI_CMD_WRITE_READ)) {
++		int i;
++		u64 rmsk = ~(0xffffffffffffffffLL << (cmd->read_len*8));
++		u64 tmp = (u64)pmcmsptwi_readl(p->iobase +
++					MSP_TWI_DAT_0_REG_OFFSET);
++		if (cmd->read_len > 4)
++			tmp |= (u64)pmcmsptwi_readl(p->iobase +
++					MSP_TWI_DAT_1_REG_OFFSET) << 32;
++		tmp &= rmsk;
++		dev_dbg(&pmcmsptwi_adapter.dev, "Read 0x%016llx\n", tmp);
 +		
-+		/*
-+		 * In output mode, read CLR bit
-+		 * In input mode, read SET bit
-+		 */
-+		if (tmp & (EXTENDED_GPIO_CFG_ENABLE <<
-+				EXTENDED_GPIO_CFG_SHIFT(pin)))
-+			bit = EXTENDED_GPIO_DATA_CLR <<
-+				EXTENDED_GPIO_DATA_SHIFT(pin);
-+		else
-+			bit = EXTENDED_GPIO_DATA_SET <<
-+				EXTENDED_GPIO_DATA_SHIFT(pin);
-+
-+		if (tmp & bit)
-+			retval |= 1 << pin;
++		for (i = 0; i < cmd->read_len; i++)
++			cmd->read_data[i] = (u8)((tmp >> i) & 0xff);
 +	}
++	mutex_unlock(&p->lock);
 +	
 +	return retval;
 +}
 +
-+/*
-+ * Reads the current state of all 20 pins, putting the values in
-+ * the lowest 20 bits (1=HI, 0=LO)
-+ */
-+static u32 msp_gpio_read_data(void)
-+{
-+	int reg;
-+	u32 retval = 0;
-+	
-+	spin_lock(&msp_gpio_spinlock);
-+	for (reg = 0; reg < GPIO_REG_COUNT; reg++)
-+		retval |= msp_gpio_read_data_basic(reg) <<
-+				GPIO_DATA_SHIFT[reg];
-+	retval |= msp_gpio_read_data_extended() << EXTENDED_GPIO_SHIFT;
-+	spin_unlock(&msp_gpio_spinlock);
-+	
-+	DBG("%s: 0x%08x\n", __FUNCTION__, retval);
-+	return retval;
-+}
-+
-+/*
-+ * This assumes both data and mask are register-ready, and does
-+ * the set atomically
-+ */
-+static void msp_gpio_write_data_basic(int reg, u32 data, u32 mask)
-+{
-+	set_value_reg32(GPIO_DATA_REG[reg], mask, data);
-+}
-+
-+/*
-+ * The four lowest bits of 'data' and 'mask' are used, and the set
-+ * is done atomically
-+ */
-+static void msp_gpio_write_data_extended(u32 data, u32 mask)
-+{
-+	int i;
-+	u32 tmpmask = 0xffffffff, tmpdata = 0;
-+
-+	/* Set all SET/CLR values based on data bits passed in */
-+	for (i = 0; i < EXTENDED_GPIO_COUNT; i++) {
-+		if (mask & (1 << i)) {
-+			if (data & (1 << i))
-+				/* Set the bit HI */
-+				tmpdata |= EXTENDED_GPIO_DATA_SET <<
-+					   EXTENDED_GPIO_DATA_SHIFT(i);
-+			else
-+				/* Set the bit LO */
-+				tmpdata |= EXTENDED_GPIO_DATA_CLR <<
-+					   EXTENDED_GPIO_DATA_SHIFT(i);
-+		}
-+	}
-+	
-+	set_value_reg32(EXTENDED_GPIO_REG, tmpmask, tmpdata);
-+}
-+
-+/*
-+ * Sets all masked GPIOs based on the first 20 bits of the data
-+ * passed in (1=HI, 0=LO)
-+ */
-+static void msp_gpio_write_data(u32 data, u32 mask)
-+{
-+	int reg;
-+	
-+	spin_lock(&msp_gpio_spinlock);
-+	for (reg = 0; reg < GPIO_REG_COUNT; reg++) {
-+		u32 tmpdata = (data >> GPIO_DATA_SHIFT[reg]) &
-+					GPIO_DATA_MASK[reg];
-+		u32 tmpmask = (mask >> GPIO_DATA_SHIFT[reg]) &
-+					GPIO_DATA_MASK[reg];
-+		if (tmpmask > 0)
-+			msp_gpio_write_data_basic(reg, tmpdata, tmpmask);
-+	}
-+	msp_gpio_write_data_extended(data >> EXTENDED_GPIO_SHIFT,
-+					mask >> EXTENDED_GPIO_SHIFT);
-+	spin_unlock(&msp_gpio_spinlock);
-+}
-+
-+/* Reads the config bits from a single register set */
-+static u32 msp_gpio_read_cfg_basic(int reg)
-+{
-+	return read_reg32(GPIO_CFG_REG[reg], GPIO_CFG_MASK[reg]);
-+}
-+
-+/*
-+ * This assumes both data and mask are register-ready, and does
-+ * the write atomically
-+ */
-+static void msp_gpio_write_cfg_basic(int reg, u32 data, u32 mask)
-+{
-+	set_value_reg32(GPIO_CFG_REG[reg], mask, data);
-+}
-+
-+/*
-+ * Reads the configuration of the extended pins, returning the current
-+ * configuration in the lowest 4 bits (1-output, 0-input)
-+ */
-+static u32 msp_gpio_read_cfg_extended(void)
-+{
-+	int i;
-+	u32 tmp = *EXTENDED_GPIO_REG;
-+	u32 retval = 0;
-+
-+	/* Read all ENABLE/DISABLE values and translate to single bits */
-+	for (i = 0; i < EXTENDED_GPIO_COUNT; i++) {
-+		if (tmp & (EXTENDED_GPIO_CFG_ENABLE <<
-+				EXTENDED_GPIO_CFG_SHIFT(i)))
-+			/* Pin is OUTPUT */
-+			retval |= 1 << i;
-+		else
-+			/* Pin is INPUT */
-+			retval &= ~(1 << i);
-+	}
-+	
-+	return retval;
-+}
-+
-+/*
-+ * Sets the masked extended pins to (1-output, 0-input)
-+ * (uses 4 lowest bits of the mask)
-+ * Does the write atomically
-+ */
-+static void msp_gpio_write_cfg_extended(u32 data, u32 mask)
-+{
-+	int i;
-+	u32 tmpmask = 0xffffffff, tmpdata = 0;
-+
-+	/* Set all ENABLE/DISABLE values based on mask bits passed in */
-+	for (i = 0; i < EXTENDED_GPIO_COUNT; i++) {
-+		if (mask & (1 << i)) {
-+			if (data & (1 << i))
-+				/* Set the pin to OUTPUT */
-+				tmpdata |= EXTENDED_GPIO_CFG_ENABLE <<
-+					   EXTENDED_GPIO_CFG_SHIFT(i);
-+			else
-+				/* Set the pin to INPUT */
-+				tmpdata |= EXTENDED_GPIO_CFG_DISABLE <<
-+					   EXTENDED_GPIO_CFG_SHIFT(i);
-+		}
-+	}
-+	
-+	set_value_reg32(EXTENDED_GPIO_REG, tmpmask, tmpdata);
-+}
-+
-+/*
-+ * Sets all GPIOs to input/output based on the first 20 bits of the mask
-+ * (1-output, 0-input)
-+ */
-+static void msp_gpio_write_cfg(enum msp_gpio_mode mode, u32 mask)
-+{
-+	int reg;
-+	u32 extdata = 0, extmask = 0;
-+	
-+	spin_lock(&msp_gpio_spinlock);
-+	for (reg = 0; reg < GPIO_REG_COUNT; reg++) {
-+		int pin;
-+		u32 tmpdata = 0, tmpmask = 0;
-+		for (pin = 0; pin < GPIO_DATA_COUNT[reg]; pin++) {
-+			if (mask & (1 << (GPIO_DATA_SHIFT[reg] + pin))) {
-+				tmpmask |= GPIO_CFG_PINMASK <<
-+					   GPIO_CFG_SHIFT(pin);
-+				tmpdata |= (u32)mode <<
-+					   GPIO_CFG_SHIFT(pin);
-+			}
-+		}
-+		if (tmpmask)
-+			msp_gpio_write_cfg_basic(reg, tmpdata, tmpmask);
-+	}
-+
-+	extmask = mask >> EXTENDED_GPIO_SHIFT;
-+	if (mode == MSP_GPIO_INPUT)
-+		extdata = 0;
-+	else if (mode == MSP_GPIO_OUTPUT)
-+		extdata = 0xf;
-+	else
-+		extmask = 0;
-+	if (extmask)
-+		msp_gpio_write_cfg_extended(extdata, extmask);
-+	spin_unlock(&msp_gpio_spinlock);
-+}
-+
-+/*
-+ * Reads all GPIO config values and checks if they match the pin mode given,
-+ * placing the result in the lowest 20 bits of the result, one bit per pin
-+ * (1-pin matches mode give, 0-pin does not match)
-+ */
-+static u32 msp_gpio_read_cfg(u32 mode)
-+{
-+	u32 retval = 0;
-+	int reg;
-+	
-+	spin_lock(&msp_gpio_spinlock);
-+	for (reg = 0; reg < GPIO_REG_COUNT; reg++) {
-+		int pin;
-+		u32 tmpdata = msp_gpio_read_cfg_basic(reg);
-+		for (pin = 0; pin < GPIO_DATA_COUNT[reg]; pin++) {
-+			u32 val = (tmpdata >> GPIO_CFG_SHIFT(pin)) &
-+					GPIO_CFG_PINMASK;
-+			if (val == mode)
-+				retval |= 1 << (GPIO_DATA_SHIFT[reg] + pin);
-+		}
-+	}
-+	
-+	/* Extended pins only have INPUT or OUTPUT pins */
-+	if (mode == MSP_GPIO_INPUT)
-+		retval |= (~msp_gpio_read_cfg_extended() & EXTENDED_GPIO_MASK)
-+			  << EXTENDED_GPIO_SHIFT;
-+	else if (mode == MSP_GPIO_OUTPUT)
-+		retval |= (msp_gpio_read_cfg_extended() & EXTENDED_GPIO_MASK)
-+			  << EXTENDED_GPIO_SHIFT;
-+	spin_unlock(&msp_gpio_spinlock);
-+	
-+	DBG("%s(0x%02x): 0x%08x\n", __FUNCTION__, mode, retval);
-+	return retval;
-+}
-+
-+/* -- Public functions -- */
-+
-+/*
-+ * Reads the bits specified by the mask and puts the values in data.
-+ * May include output statuses also, if in mask.
-+ *
-+ * Returns 0 on success
-+ */
-+int msp_gpio_in(u32 *data, u32 mask)
-+{
-+	*data = msp_gpio_read_data() & mask;
-+	
-+	return 0;
-+}
-+
-+/*
-+ * Sets the specified data on the masked pins
-+ *
-+ * Returns 0 on success or one of the following:
-+ *  -EINVAL if any of the pins in the mask are not free or not already
-+ *  in output mode
-+ */
-+int msp_gpio_out(u32 data, u32 mask)
-+{
-+	if ((mask & ~MSP_GPIO_FREE_MASK) != 0) {
-+		printk(KERN_WARNING
-+			"Invalid GPIO mask - References non-free pins\n");
-+		return -EINVAL;
-+	}
-+	if ((mask & ~msp_gpio_read_cfg(MSP_GPIO_OUTPUT)) != 0) {
-+		printk(KERN_WARNING
-+			"Invalid GPIO mask - Cannot set non-output pins\n");
-+		return -EINVAL;
-+	}
-+	
-+	msp_gpio_noblink(mask);
-+	msp_gpio_write_data(data, mask);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Sets masked pins to the specified msp_gpio_mode
-+ *
-+ * Returns 0 on success or one of the following:
-+ *  -EINVAL if any of the pins in the mask are not free or if any pins
-+ *  are not allowed to be set to the specified mode
-+ */
-+int msp_gpio_mode(enum msp_gpio_mode mode, u32 mask)
-+{
-+	u32 allowedmask;
-+
-+	if ((mask & ~MSP_GPIO_FREE_MASK) != 0) {
-+		printk(KERN_WARNING
-+			"Invalid GPIO mask - References non-free pins\n");
-+		return -EINVAL;
-+	}
-+	
-+	/* Enforce pin-mode rules */
-+	allowedmask = MSP_GPIO_MODE_ALLOWED[mode];
-+	if ((mask & ~allowedmask) != 0) {
-+		printk(KERN_WARNING
-+			"Invalid GPIO mode for masked pins\n");
-+		return -EINVAL;
-+	}
-+
-+	msp_gpio_noblink(mask);
-+	msp_gpio_write_cfg(mode, mask);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Stops the specified GPIOs from blinking
-+ */
-+int msp_gpio_noblink(u32 mask)
-+{
-+	int i;
-+
-+	if ((mask & ~msp_gpio_read_cfg(MSP_GPIO_OUTPUT)) != 0)
-+		return -EINVAL;
-+
-+	spin_lock(&msp_blink_lock);
-+	for (i = 0; i < MSP_NUM_GPIOS; i++) {
-+		if (mask & (1 << i)) {
-+			blink_table[i].count = 0;
-+			blink_table[i].period = 0;
-+			blink_table[i].dcycle = 0;
-+		}
-+	}
-+	spin_unlock(&msp_blink_lock);
-+
-+	msp_gpio_write_data(0, mask);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Configures GPIO(s) to blink
-+ *  - mask shows which GPIOs to blink
-+ *  - period is the time in 100ths of a second for the total period
-+ *    (0 disables blinking)
-+ *  - dcycle is the percentage of the period where the GPIO is HI
-+ */
-+int msp_gpio_blink(u32 mask, u32 period, u32 dcycle)
-+{
-+	int i;
-+
-+	if ((mask & ~msp_gpio_read_cfg(MSP_GPIO_OUTPUT)) != 0) {
-+		printk(KERN_WARNING
-+			"Invalid GPIO mask - Cannot blink non-output pins\n");
-+		return -EINVAL;
-+	}
-+
-+	if (period == 0) 
-+		return msp_gpio_noblink(mask);
-+
-+	spin_lock(&msp_blink_lock);
-+	for (i = 0; i < MSP_NUM_GPIOS; i++) {
-+		if (mask & (1 << i)) {
-+			blink_table[i].count = 0;
-+			blink_table[i].period = period;
-+			blink_table[i].dcycle = dcycle;
-+		}
-+	}
-+	spin_unlock(&msp_blink_lock);
-+
-+	complete(&msp_blink_wait);
-+
-+	return 0;
-+}
-+
-+/* -- File functions -- */
-+
-+static int msp_gpio_open(struct inode *inode, struct file *file)
-+{
-+	return 0;
-+}
-+
-+static int msp_gpio_release(struct inode *inode, struct file *file)
-+{
-+	return 0;
-+}
-+
-+static int msp_gpio_ioctl(struct inode *inode, struct file *file,
-+			  unsigned int cmd, unsigned long arg)
-+{
-+	static struct msp_gpio_ioctl_io_data data;
-+	static struct msp_gpio_ioctl_blink_data blink;
-+
-+	switch (cmd) {
-+	case MSP_GPIO_BLINK:
-+		if (copy_from_user(&blink,
-+		    (struct msp_gpio_ioctl_blink_data *)arg, sizeof(blink)))
-+			return -EFAULT;
-+		break;
-+	default:
-+		if (copy_from_user(&data,
-+		    (struct msp_gpio_ioctl_io_data *)arg, sizeof(data)))
-+			return -EFAULT;
-+		break;
-+	}
-+
-+	switch (cmd) {
-+	case MSP_GPIO_IN:
-+		if (msp_gpio_in(&data.data, data.mask))
-+			return -EFAULT;
-+		if (copy_to_user((struct msp_gpio_ioctl_io_data *)arg,
-+		    &data, sizeof(data)))
-+			return -EFAULT;
-+		break;
-+	case MSP_GPIO_OUT:
-+		if (msp_gpio_out(data.data, data.mask))
-+			return -EFAULT;
-+		break;
-+	case MSP_GPIO_MODE:
-+		if (msp_gpio_mode(data.data, data.mask))
-+			return -EFAULT;
-+		break;
-+	case MSP_GPIO_BLINK:
-+		if (msp_gpio_blink(blink.mask, blink.period, blink.dcycle))
-+			return -EFAULT;
-+		break;
-+	default:
-+		return -ENOIOCTLCMD;
-+	}
-+	
-+	return 0;
-+}
-+
-+static struct file_operations msp_gpio_fops = {
-+	.owner		= THIS_MODULE,
-+	.ioctl		= msp_gpio_ioctl,
-+	.open		= msp_gpio_open,
-+	.release	= msp_gpio_release,
-+};
-+
-+static struct miscdevice msp_gpio_miscdev = {
-+	MISC_DYNAMIC_MINOR,
-+	"pmcmsp_gpio",
-+	&msp_gpio_fops
-+};
-+
-+static int msp_gpio_blinkthread(void *none)
-+{
-+	int firstrun = 1;
-+	
-+	do {
-+		u32 mask = 0, data = 0;
-+		int i, blinking = 0;
-+		spin_lock(&msp_blink_lock);
-+		for (i = 0; i < MSP_NUM_GPIOS; i++) {
-+			/* use blink_table[i].period as 'blink enabled' test */
-+			if (blink_table[i].period) {
-+				blinking = 1;
-+				mask |= 1 << i;
-+				blink_table[i].count++;
-+
-+				if (blink_table[i].count >=
-+				    blink_table[i].period)
-+					blink_table[i].count = 0;
-+
-+				if (blink_table[i].count <
-+				    (blink_table[i].period *
-+				    blink_table[i].dcycle / 100))
-+					data |= 1 << i;
-+			}
-+		}
-+		spin_unlock(&msp_blink_lock);
-+
-+		if (!firstrun || blinking)
-+			msp_gpio_write_data(data, mask);
-+		else
-+			firstrun = 0;
-+
-+		if (blinking)
-+			schedule_timeout_interruptible(HZ/100);
-+		else
-+			wait_for_completion_interruptible(&msp_blink_wait);
-+		
-+		/* make swsusp happy with our thread */
-+		try_to_freeze();
-+	} while (!kthread_should_stop());
-+
-+	return 0;
-+}
-+
-+/* -- Module functions -- */
-+
-+static int __init msp_gpio_init(void)
-+{
-+	if (misc_register(&msp_gpio_miscdev)) {
-+		printk(KERN_ERR "Device registration failed\n");
-+		goto err_miscdev;
-+	}
-+
-+	msp_blinkthread = kthread_run(msp_gpio_blinkthread,NULL, "gpio_blink");
-+	if (msp_blinkthread == NULL) {
-+		printk(KERN_ERR "Could not start kthread\n");
-+		goto err_blinkthread;
-+	}
-+
-+	printk(KERN_WARNING "MSP7120 GPIO subsystem initialized\n");
-+	return 0;
-+
-+err_blinkthread:
-+	misc_deregister(&msp_gpio_miscdev);
-+err_miscdev:
-+	return -ENOMEM;
-+}
-+
-+static void __exit msp_gpio_exit(void)
-+{
-+	complete(&msp_blink_wait);
-+	kthread_stop(msp_blinkthread);
-+
-+	misc_deregister(&msp_gpio_miscdev);
-+}
-+
-+EXPORT_SYMBOL(msp_gpio_in);
-+EXPORT_SYMBOL(msp_gpio_out);
-+EXPORT_SYMBOL(msp_gpio_mode);
-+EXPORT_SYMBOL(msp_gpio_noblink);
-+EXPORT_SYMBOL(msp_gpio_blink);
-+
-+MODULE_DESCRIPTION("PMC MSP GPIO driver");
-+MODULE_LICENSE("GPL");
-+
-+module_init(msp_gpio_init);
-+module_exit(msp_gpio_exit);
-diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h b/include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h
-new file mode 100644
-index 0000000..f06c4aa
---- /dev/null
-+++ b/include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h
-@@ -0,0 +1,119 @@
-+/*
-+ * Driver for the PMC MSP71xx reference board GPIO pins
-+ *
-+ * Copyright 2005-2007 PMC-Sierra, Inc.
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ */
-+
-+#ifndef __MSP_GPIO_H__
-+#define __MSP_GPIO_H__
-+
-+#include <linux/ioctl.h>
-+
-+enum msp_gpio_mode {
-+	MSP_GPIO_INPUT		= 0x0,
-+	/* MSP_GPIO_ INTERRUPT	= 0x1,	Not supported yet */
-+	MSP_GPIO_UART_INPUT	= 0x2,	/* Only GPIO 4 or 5 */
-+	MSP_GPIO_OUTPUT		= 0x8,
-+	MSP_GPIO_UART_OUTPUT	= 0x9,	/* Only GPIO 2 or 3 */
-+	MSP_GPIO_PERIF_TIMERA	= 0x9,	/* Only GPIO 0 or 1 */
-+	MSP_GPIO_PERIF_TIMERB	= 0xa,	/* Only GPIO 0 or 1 */
-+	MSP_GPIO_UNKNOWN	= 0xb,  /* No such GPIO or mode */
-+};
-+
-+/* Maps MODE to allowed pin mask */
-+static unsigned int MSP_GPIO_MODE_ALLOWED[] = {
-+	0xfffff,	/* Mode 0 - INPUT */
-+	0x00000,	/* Mode 1 - INTERRUPT */
-+	0x00030,	/* Mode 2 - UART_INPUT (GPIO 4, 5)*/
-+	0, 0, 0, 0, 0,	/* Modes 3, 4, 5, 6, and 7 are reserved */
-+	0xfffff,	/* Mode 8 - OUTPUT */
-+	0x0000f,	/* Mode 9 - UART_OUTPUT/PERF_TIMERA (GPIO 0,1,2,3) */
-+	0x00003,	/* Mode a - PERF_TIMERB (GPIO 0, 1) */
-+	0x00000,	/* Mode b - Not really a mode! */
-+};
-+
-+/* IOCTL structs macros */
-+
-+struct msp_gpio_ioctl_io_data {
-+	u32 data;
-+	u32 mask;
-+};
-+
-+struct msp_gpio_ioctl_blink_data {
-+	u32 mask;
-+	u32 period;
-+	u32 dcycle;
-+};
-+
-+#define MSP_GPIO_IOCTL_BASE	'Z'
-+
-+/* Reads the current data bits */
-+#define MSP_GPIO_IN	_IOWR(MSP_GPIO_IOCTL_BASE, 0, \
-+			      struct msp_gpio_ioctl_io_data)
-+
-+/* Writes data bits */
-+#define MSP_GPIO_OUT	_IOW(MSP_GPIO_IOCTL_BASE, 1, \
-+			      struct msp_gpio_ioctl_io_data)
-+
-+/* Sets all masked pins to the msp_gpio_mode given in the data field */
-+#define MSP_GPIO_MODE	_IOW(MSP_GPIO_IOCTL_BASE, 2, \
-+			      struct msp_gpio_ioctl_io_data)
++/* -- Algorithm functions -- */
 +
 +/* 
-+ * Starts any masked LEDs blinking with parameters as follows:
-+ *   - period - The time in 100ths of a second for a single period
-+ *              (set to '0' to stop blinking)
-+ *   - dcycle - The 'duty cycle' - what percentage of the period should
-+ *              the gpio be on?
++ * Sends an i2c command out on the adapter
++ * Return -1 on error.
 + */
-+#define MSP_GPIO_BLINK	_IOW(MSP_GPIO_IOCTL_BASE, 3, \
-+			      struct msp_gpio_ioctl_blink_data)
++static int pmcmsptwi_master_xfer(struct i2c_adapter *adap,
++				struct i2c_msg *m, int num)
++{
++	struct pmcmsptwi_algo_data *busops = adap->algo_data;
++	int i, ret = 0, dual, probe;
++	struct i2c_msg *cmsg, *nmsg;
++	u8 detect_buffer[] = { 0 };
 +
-+/* Bit flags and masks for GPIOs */
-+#define MSP_NUM_GPIOS		20
-+#define MSP_GPIO_ALL_MASK 	((1 << MSP_NUM_GPIOS) - 1)
-+#define MSP_GPIO_NONE_MASK 	0LL
-+#define MSP_GPIO_FREE_MASK	MSP_GPIO_ALL_MASK
++	for (i = 0; i < num; i++) {
++		struct pmcmsptwi_cmd cmd;
++		struct pmcmsptwi_cfg oldcfg, newcfg;
 +
-+/* The following is only available to other modules */
++		probe = 0;
++		dual = 0;
++		cmsg = m + i;
++		nmsg = NULL;
 +
-+#ifdef __KERNEL__
++		if ((num - i) >= 2) {
++			/* Check for a dual write-then-read command */
++			nmsg = cmsg + 1;
++			dual = !((cmsg->flags & I2C_M_RD)) &&
++			       (nmsg->flags & I2C_M_RD) &&
++			       (cmsg->addr == nmsg->addr);
++		}
 +
-+/* Reads the bits specified by the mask and puts the values in data */
-+extern int msp_gpio_in(u32 *data, u32 mask);
++		if (dual)
++			dev_dbg(&adap->dev, "Doing ops %d&%d of %d\n",
++				(i + 1), (i + 2), num);
++		else
++			dev_dbg(&adap->dev, "Doing op %d of %d\n",
++				(i + 1), num);
 +
-+/* Sets the specified data on the masked pins */
-+extern int msp_gpio_out(u32 data, u32 mask);
++		if (dual) {
++			cmd.type = MSP_TWI_CMD_WRITE_READ;
++			cmd.write_len = cmsg->len;
++			cmd.write_data = (u8*)cmsg->buf;
++			cmd.read_len = nmsg->len;
++			cmd.read_data = (u8*)nmsg->buf;
++		} else if (cmsg->flags & I2C_M_RD) {
++			cmd.type = MSP_TWI_CMD_READ;
++			cmd.read_len = cmsg->len;
++			cmd.read_data = (u8*)cmsg->buf;
++			cmd.write_len = 0;
++			cmd.write_data = NULL;
++		} else {
++			cmd.type = MSP_TWI_CMD_WRITE;
++			cmd.read_len = 0;
++			cmd.read_data = NULL;
++			cmd.write_len = cmsg->len;
++			cmd.write_data = (u8*)cmsg->buf;
++		}
 +
-+/* Sets masked pins to the specified msp_gpio_mode */
-+extern int msp_gpio_mode(enum msp_gpio_mode mode, u32 mask);
++		if (cmsg->len == 0) {
++			if (cmsg->flags & I2C_M_RD) {
++				dev_dbg(&adap->dev,
++					"Read of 0 bytes!  (illegal!)\n");
++				return -1;
++			} else {
++				dev_dbg(&adap->dev,
++					"Probing for slave at 0x%02x\n",
++					(cmsg->addr & 0xff));
++				probe = 1;
 +
-+/* Stops the specified GPIOs from blinking */
-+extern int msp_gpio_noblink(u32 mask);
++				/*
++				 * Probe is a special read of 1 byte.
++				 * We don't care about the result, we just
++				 * want to see that it is successful.
++				 */
++				cmd.write_len = 1;
++				cmd.write_data = detect_buffer;
++				cmd.read_len = 1;
++				cmd.read_data = NULL;
++			}
++		}
 +
-+/* Configures GPIO(s) to blink */
-+extern int msp_gpio_blink(u32 mask, u32 period, u32 dcycle);
++		cmd.addr = cmsg->addr;
 +
-+#endif /* __KERNEL__ */
++		if (probe || (cmsg->flags & I2C_M_TEN)) {
++			busops->get_twi_config(&newcfg, busops);
++			busops->get_twi_config(&oldcfg, busops);
 +
-+#endif /* !__MSP_GPIO_H__ */
++			/* For probes, we don't want any retries */
++			if (probe)
++				newcfg.nak = 0;
++
++			/* Set the special 10-bit address flag, if required */
++			if (cmsg->flags & I2C_M_TEN)
++				newcfg.add10 = 1;
++
++			busops->set_twi_config(&newcfg, busops);
++		}
++
++		ret = busops->xfer_cmd(&cmd, busops);
++
++		if (probe || (cmsg->flags & I2C_M_TEN))
++			busops->set_twi_config(&oldcfg, busops);
++
++		switch (ret) {
++		case MSP_TWI_XFER_LOST_ARBITRATION:
++			dev_dbg(&adap->dev, "We lost arbitration: "
++				"Could not become bus master\n");
++			break;
++		case MSP_TWI_XFER_NO_RESPONSE:
++			dev_dbg(&adap->dev, "No response\n");
++			break;
++		case MSP_TWI_XFER_DATA_COLLISION:
++			dev_dbg(&adap->dev, "Data collision\n");
++			break;
++		case MSP_TWI_XFER_BUSY:
++			dev_dbg(&adap->dev, "Port was busy\n");
++			/*
++			 *  TODO: We could potentially loop and retry
++			 *        in this case
++			 */
++			break;
++		case MSP_TWI_XFER_TIMEOUT:
++			dev_dbg(&adap->dev, "Transfer timeout\n");
++			break;
++		}
++		
++		if (ret != MSP_TWI_XFER_OK) {
++			if (probe)
++				dev_dbg(&adap->dev, "Probe failed\n");
++			return -1;
++		}
++
++		if (dual) {
++			dev_dbg(&adap->dev,
++				"SMBus read 0x%02x from reg 0x%02x\n",
++				nmsg->buf[0], cmsg->buf[0]);
++
++			/* Skip one more ahead, since we just did 2 commands */
++			i++;
++		} else {
++			if (probe)
++				dev_dbg(&adap->dev, "Probe successful\n");
++			else
++				dev_dbg(&adap->dev,
++					"I2C %s %d bytes successfully\n",
++					(cmsg->flags & I2C_M_RD) ?
++						"read" : "wrote",
++					cmsg->len);
++		}
++	}
++
++	return 0;
++}
++
++static u32 pmcmsptwi_i2c_func(struct i2c_adapter *adapter)
++{
++	return I2C_FUNC_I2C | I2C_FUNC_10BIT_ADDR | I2C_FUNC_SMBUS_EMUL;
++}
++
++/* -- Initialization -- */
++
++static struct pmcmsptwi_algo_data pmcmsptwi_algo_data = {
++	.get_clock_config	= pmcmsptwi_get_clock_config,
++	.set_clock_config	= pmcmsptwi_set_clock_config,
++	.get_twi_config		= pmcmsptwi_get_twi_config,
++	.set_twi_config		= pmcmsptwi_set_twi_config,
++	.xfer_cmd		= pmcmsptwi_xfer_cmd,
++};
++
++struct i2c_algorithm pmcmsptwi_algo = {
++	.master_xfer	= pmcmsptwi_master_xfer,
++	.smbus_xfer	= NULL,
++	.algo_control	= NULL,	/* TODO: someday */
++	.functionality	= pmcmsptwi_i2c_func,
++};
++
++static struct i2c_adapter pmcmsptwi_adapter = {
++	.owner		= THIS_MODULE,
++	.class		= I2C_CLASS_HWMON,
++	.algo		= &pmcmsptwi_algo,
++	.algo_data	= &pmcmsptwi_algo_data,
++	.name		= "pmcmsptwi",
++};
++
++static int __init pmcmsptwi_init(void)
++{
++	pmcmsptwi_algo_data.iobase = ioremap(MSP_TWI_BASE, MSP_TWI_REG_SIZE);
++	if (pmcmsptwi_algo_data.iobase == NULL)
++		return -ENOMEM;
++
++	init_completion(&pmcmsptwi_algo_data.wait); 
++	mutex_init(&pmcmsptwi_algo_data.lock);
++	pmcmsptwi_algo_data.irq = MSP_TWI_IRQ;
++
++	if (pmcmsptwi_algo_data.irq) {
++		int rc = request_irq(
++				pmcmsptwi_algo_data.irq, pmcmsptwi_interrupt,
++				SA_SHIRQ | SA_INTERRUPT | SA_SAMPLE_RANDOM,
++				"TWI", &pmcmsptwi_algo_data);
++		if (rc == 0) {
++			/*
++			 * Enable 'DONE' interrupt only
++			 *
++			 * If you enable all interrupts, you will get one on
++			 * error and another when the operation completes.
++			 * This way you only have to handle one interrupt,
++			 * but you can still check all result flags.
++			 */
++			pmcmsptwi_writel(MSP_TWI_INT_STS_DONE,
++					pmcmsptwi_algo_data.iobase +
++					MSP_TWI_INT_MSK_REG_OFFSET);
++		} else {
++			printk(KERN_WARNING
++				"Could not assign TWI IRQ handler "
++				"to irq %d (continuing with poll)\n",
++				pmcmsptwi_algo_data.irq);
++			pmcmsptwi_algo_data.irq = 0;
++		}
++	}
++
++	pmcmsptwi_set_clock_config(&pmcmsptwi_defclockcfg,
++				   &pmcmsptwi_algo_data);
++	pmcmsptwi_set_twi_config(&pmcmsptwi_defcfg, &pmcmsptwi_algo_data);
++
++	printk(KERN_WARNING "pmcmsptwi: Registering MSP71xx I2C adapter\n");
++
++	return i2c_add_adapter(&pmcmsptwi_adapter);
++}
++
++static void __exit pmcmsptwi_exit(void)
++{
++	if (pmcmsptwi_algo_data.irq) {
++		pmcmsptwi_writel(0,
++			pmcmsptwi_algo_data.iobase +
++			MSP_TWI_INT_MSK_REG_OFFSET);
++		free_irq(pmcmsptwi_algo_data.irq, &pmcmsptwi_algo_data);
++	}
++	i2c_del_adapter(&pmcmsptwi_adapter);
++}
++
++MODULE_DESCRIPTION("PMC MSP TWI/SMB/I2C driver");
++MODULE_LICENSE("GPL");
++
++module_init(pmcmsptwi_init);
++module_exit(pmcmsptwi_exit);

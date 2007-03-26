@@ -1,77 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 11:37:09 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:21255 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20022722AbXCZKhH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 11:37:07 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 26 Mar 2007 19:37:05 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 337D02022A;
-	Mon, 26 Mar 2007 19:36:42 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 286C420112;
-	Mon, 26 Mar 2007 19:36:42 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l2QAafW0078958;
-	Mon, 26 Mar 2007 19:36:41 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 26 Mar 2007 19:36:41 +0900 (JST)
-Message-Id: <20070326.193641.15269037.nemoto@toshiba-tops.co.jp>
-To:	kumba@gentoo.org
-Cc:	linux-mips@linux-mips.org, ths@networkno.de, ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 12:44:53 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:1544 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022751AbXCZLov (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Mar 2007 12:44:51 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 63463E1C72;
+	Mon, 26 Mar 2007 13:43:40 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id nWqYYqh1FXwn; Mon, 26 Mar 2007 13:43:39 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 5A49EE1F4F;
+	Mon, 26 Mar 2007 13:35:55 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l2QBa4go007218;
+	Mon, 26 Mar 2007 13:36:04 +0200
+Date:	Mon, 26 Mar 2007 12:35:59 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+cc:	Kumba <kumba@gentoo.org>,
+	Linux MIPS List <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4606C063.1030802@gentoo.org>
-References: <4606AA74.3070907@gentoo.org>
-	<20070326.020705.63742150.anemo@mba.ocn.ne.jp>
-	<4606C063.1030802@gentoo.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070325144515.GB21439@networkno.de>
+Message-ID: <Pine.LNX.4.64N.0703261234260.16083@blysk.ds.pg.gda.pl>
+References: <4603DA74.70707@gentoo.org> <20070324.002440.93023010.anemo@mba.ocn.ne.jp>
+ <46049BAD.1010705@gentoo.org> <20070324.234727.25910303.anemo@mba.ocn.ne.jp>
+ <20070324231602.GP2311@networkno.de> <46062400.8080307@gentoo.org>
+ <20070325144515.GB21439@networkno.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.1/2931/Mon Mar 26 10:43:40 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14683
+X-archive-position: 14684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 25 Mar 2007 14:33:07 -0400, Kumba <kumba@gentoo.org> wrote:
-> Actually, I just realized I didn't rehash my dhcpd, so it booted the wrong 
-> kernel.  A kernel built with this patchset won't boot without the following 
-> change in include/asm-mips/stackframe.h:
-> 
-> --- include/asm-mips/stackframe.h.orig	2007-03-25 14:22:04.000000000 -0400
-> +++ include/asm-mips/stackframe.h	2007-03-25 14:22:21.000000000 -0400
-> @@ -70,7 +70,7 @@
->   #else
->   		MFC0	k0, CP0_CONTEXT
->   #endif
-> -#if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
-> +#if defined(CONFIG_32BIT) || !defined(KBUILD_64BIT_SYM32)
->   		lui	k1, %hi(kernelsp)
->   #else
+On Sun, 25 Mar 2007, Thiemo Seufer wrote:
 
-It looks very strange.  "lui k1, %hi(kernelsp)" should be enough for
-the -msym32 kernel.  What is a version of binutils and gcc you are using?
+> AFAICS this loses -mno-explicit-relocs completely, but it is needed for
+> all non-ckseg0 CONFIG_64BIT builds.
 
-And could you show me disassembled list of handle_int (or some other
-rountines using get_saved_sp) of failed kernel?
+ Why?  I reckon GCC should support them just fine these days.
 
-If you were using gcc 3.x, does this fix work for you?
-
-#if defined(CONFIG_32BIT) || (defined(KBUILD_64BIT_SYM32) &&  __GNUC__ >= 4)
-  		lui	k1, %hi(kernelsp)
-#else
-...
-
-
----
-Atsushi Nemoto
+  Maciej

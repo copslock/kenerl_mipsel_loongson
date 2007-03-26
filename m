@@ -1,47 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 15:34:06 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:60345 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021456AbXCZOeD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 15:34:03 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2QEXo0k015698;
-	Mon, 26 Mar 2007 15:33:50 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2QEXmoj015696;
-	Mon, 26 Mar 2007 15:33:48 +0100
-Date:	Mon, 26 Mar 2007 15:33:48 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Ravi Pratap <Ravi.Pratap@hillcrestlabs.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, miklos@szeredi.hu,
-	linux-mips@linux-mips.org
-Subject: Re: flush_anon_page for MIPS
-Message-ID: <20070326143348.GB14354@linux-mips.org>
-References: <20070326.223134.79300616.anemo@mba.ocn.ne.jp> <36E4692623C5974BA6661C0B18EE8EDF6CD3FC@MAILSERV.hcrest.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 15:44:39 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:18384 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022812AbXCZOoh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2007 15:44:37 +0100
+Received: from localhost (p8030-ipad27funabasi.chiba.ocn.ne.jp [220.107.199.30])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id DB797A41F; Mon, 26 Mar 2007 23:43:16 +0900 (JST)
+Date:	Mon, 26 Mar 2007 23:43:16 +0900 (JST)
+Message-Id: <20070326.234316.23009158.anemo@mba.ocn.ne.jp>
+To:	kumba@gentoo.org
+Cc:	linux-mips@linux-mips.org, ths@networkno.de, ralf@linux-mips.org
+Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <4607CF1D.50904@gentoo.org>
+References: <4606C063.1030802@gentoo.org>
+	<20070326.193641.15269037.nemoto@toshiba-tops.co.jp>
+	<4607CF1D.50904@gentoo.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <36E4692623C5974BA6661C0B18EE8EDF6CD3FC@MAILSERV.hcrest.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14695
+X-archive-position: 14696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 26, 2007 at 09:36:33AM -0400, Ravi Pratap wrote:
-
-> > I confirmed current git tree works fine for me.  Thanks.
+On Mon, 26 Mar 2007 09:48:13 -0400, Kumba <kumba@gentoo.org> wrote:
+> # mips64-unknown-linux-gnu-ld --version
+> GNU ld version 2.16.1
 > 
-> Great! Pardon my ignorance in asking this question but when will I be
-> able to grab a stable release that includes this change?
+> # mips64-unknown-linux-gnu-gcc --version
+> mips64-unknown-linux-gnu-gcc (GCC) 4.1.1 (Gentoo 4.1.1-r3)
+> 
+> And the disassembly of vmlinux.32 for the handle_int function is attached.
 
-Yes, at this time either directly from the lmo git tree or the
-linux-2.6.20.4 tarball also from lmo.
+Thanks.  Is this a disassembly of _failed_ kernel?
 
-  Ralf
+If so, it looks KBUILD_64BIT_SYM32 is not defined.  So strange...
+
+And even if %highest, etc. were used, it should work for CKSEG0
+kernel, while using only %hi should be just an optimization.  Another
+strangeness.
+
+> 80006ad0:	3c1b0000 	lui	k1,0x0
+> 80006ad4:	677b0000 	daddiu	k1,k1,0
+> 80006ad8:	001bdc38 	dsll	k1,k1,0x10
+> 80006adc:	677b8047 	daddiu	k1,k1,-32697
+> 80006ae0:	001bdc38 	dsll	k1,k1,0x10
+> 80006ae4:	df7b5008 	ld	k1,20488(k1)
+
+The address of kernelsp should be 0xffffffff80475008.  It seems
+a regular value.
+
+---
+Atsushi Nemoto

@@ -1,66 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 16:50:00 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:31192 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022845AbXCZPt7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2007 16:49:59 +0100
-Received: from localhost (p8030-ipad27funabasi.chiba.ocn.ne.jp [220.107.199.30])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 0A898BC04; Tue, 27 Mar 2007 00:48:40 +0900 (JST)
-Date:	Tue, 27 Mar 2007 00:48:39 +0900 (JST)
-Message-Id: <20070327.004839.61947600.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] cleanup ret_from_exception
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 16:56:48 +0100 (BST)
+Received: from phoenix.bawue.net ([193.7.176.60]:65411 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20022843AbXCZP4q (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2007 16:56:46 +0100
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 1D0C6B8419;
+	Mon, 26 Mar 2007 17:56:11 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.63)
+	(envelope-from <ths@networkno.de>)
+	id 1HVrYg-0004gx-0U; Mon, 26 Mar 2007 16:56:34 +0100
+Date:	Mon, 26 Mar 2007 16:56:33 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
+	kumba@gentoo.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
+Message-ID: <20070326155633.GE23564@networkno.de>
+References: <4606AA74.3070907@gentoo.org> <20070325221919.GA12088@linux-mips.org> <cda58cb80703260654u4435b90axa28507f6c9011c00@mail.gmail.com> <20070326.234821.30439266.anemo@mba.ocn.ne.jp> <cda58cb80703260831t576ff7c5wef1e34e3367e7c45@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cda58cb80703260831t576ff7c5wef1e34e3367e7c45@mail.gmail.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14700
+X-archive-position: 14701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Remove unnecessary local_irq_disable() from ret_from_exception.  The
-local_irq_disable() came from preempt_stop macro which was removed by
-recent cleanup.  And perhaps the preempt_stop macro had been wrong
-since bf0b3bb876115b1e69b2266477128d8270d0b356.
+Franck Bui-Huu wrote:
+> Hi Atsushi,
+> 
+> On 3/26/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> >One thing I noticed recently: Your patchset dropped gcc test for
+> >availability of -msym32, so may not work with gcc 3.x.
+> >
+> 
+> I suspect you're asking why I did not do this:
+> 
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index 3ec0c12..b0d8240 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -627,7 +627,7 @@ ifdef CONFIG_64BIT
+>   endif
+> 
+>   ifeq ($(KBUILD_SYM32), y)
+> -    cflags-y += -msym32 -DKBUILD_64BIT_SYM32
+> +    cflags-y += $(call cc-option,-msym32) -DKBUILD_64BIT_SYM32
+>   endif
+> endif
+> 
+> I remove the call to cc-option because this function removes
+> _silently_ '-msym32' option if it's not supported by the compiler. IOW
+> it's really not what we want.
 
-This patch also cleanup __ret_from_irq which is not used now.
+It is _exactly_ what we want. -msym32 is always an optional optimization.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
-index 0b78fcb..6e4f766 100644
---- a/arch/mips/kernel/entry.S
-+++ b/arch/mips/kernel/entry.S
-@@ -22,20 +22,13 @@
- 
- #ifndef CONFIG_PREEMPT
- #define resume_kernel	restore_all
--#else
--#define __ret_from_irq	ret_from_exception
- #endif
- 
- 	.text
- 	.align	5
--#ifndef CONFIG_PREEMPT
--FEXPORT(ret_from_exception)
--	local_irq_disable			# preempt stop
--	b	__ret_from_irq
--#endif
- FEXPORT(ret_from_irq)
- 	LONG_S	s0, TI_REGS($28)
--FEXPORT(__ret_from_irq)
-+FEXPORT(ret_from_exception)
- 	LONG_L	t0, PT_STATUS(sp)		# returning to kernel mode?
- 	andi	t0, t0, KU_USER
- 	beqz	t0, resume_kernel
+
+Thiemo

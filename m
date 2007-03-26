@@ -1,100 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 22:19:40 +0100 (BST)
-Received: from smtp-ext.int-evry.fr ([157.159.11.17]:37024 "EHLO
-	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20022622AbXCZVTi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 22:19:38 +0100
-Received: from mini.int.alphacore.net (florian.maisel.int-evry.fr [157.159.41.36])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 70D048D1695;
-	Mon, 26 Mar 2007 23:18:21 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@int-evry.fr>
-To:	Thiemo Seufer <ths@networkno.de>
-Subject: Re: [PATCH] Fix a warning in lib-64/dump_tlb.c
-Date:	Mon, 26 Mar 2007 23:16:23 +0200
-User-Agent: KMail/1.9.6
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-References: <45FABA5A.5000007@int-evry.fr> <20070321165521.GI2311@networkno.de> <200703262309.57577.florian.fainelli@int-evry.fr>
-In-Reply-To: <200703262309.57577.florian.fainelli@int-evry.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 22:34:54 +0100 (BST)
+Received: from mms1.broadcom.com ([216.31.210.17]:46095 "EHLO
+	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S20022789AbXCZVew convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2007 22:34:52 +0100
+Received: from [10.10.64.154] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.1)); Mon, 26 Mar 2007 14:34:13 -0700
+X-Server-Uuid: 6B5CFB92-F616-4477-B110-55F967A57302
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ DFB482B0; Mon, 26 Mar 2007 14:34:12 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id E448B2C0; Mon, 26 Mar
+ 2007 14:34:09 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id FCQ34592; Mon, 26 Mar 2007 14:33:58 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
+ [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 93EAC20501; Mon, 26 Mar 2007 14:33:58 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart4466807.I0LEuth0cH";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200703262316.24160.florian.fainelli@int-evry.fr>
-Return-Path: <florian.fainelli@int-evry.fr>
+Subject: RE: [PATCH] NAPI support for Sibyte MAC
+Date:	Mon, 26 Mar 2007 14:33:57 -0700
+Message-ID: <7E000E7F06B05C49BDBB769ADAF44D070206E93D@NT-SJCA-0750.brcm.ad.broadcom.com>
+In-Reply-To: <460580BF.4040904@ru.mvista.com>
+Thread-Topic: [PATCH] NAPI support for Sibyte MAC
+Thread-Index: AcduTXKYz5prVHl0TU+OKwVmIK1CZABoKKiQ
+From:	"Mark E Mason" <mason@broadcom.com>
+To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>
+cc:	linux-mips@linux-mips.org, netdev@vger.kernel.org
+X-WSS-ID: 6A16E3DF3708907207-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mason@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14705
+X-archive-position: 14706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@int-evry.fr
+X-original-sender: mason@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
---nextPart4466807.I0LEuth0cH
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Hello, 
 
-=46orgot including bug.h. Final fix :
+> -----Original Message-----
+> From: Sergei Shtylyov [mailto:sshtylyov@ru.mvista.com] 
+> Sent: Saturday, March 24, 2007 12:49 PM
+> To: Mark E Mason
+> Cc: linux-mips@linux-mips.org; netdev@vger.kernel.org
+> Subject: Re: [PATCH] NAPI support for Sibyte MAC
 
-Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
-=2D-----
-diff --git a/arch/mips/lib-64/dump_tlb.c b/arch/mips/lib-64/dump_tlb.c
-index 8232900..a2a12ee 100644
-=2D-- a/arch/mips/lib-64/dump_tlb.c
-+++ b/arch/mips/lib-64/dump_tlb.c
-@@ -15,6 +15,7 @@
- #include <asm/mipsregs.h>
- #include <asm/page.h>
- #include <asm/pgtable.h>
-+#include <asm/bug.h>
+[snip]
+> > @@ -2075,12 +2143,52 @@
+> >  		 */
+> >  
+> >  		if (isr & (M_MAC_INT_CHANNEL << S_MAC_TX_CH0)) {
+> > -			sbdma_tx_process(sc,&(sc->sbm_txdma));
+> > +			sbdma_tx_process(sc,&(sc->sbm_txdma), 0);
+> > +#ifdef CONFIG_NETPOLL_TRAP
+> > +		       if (netpoll_trap()) {
+> > +			       if 
+> (test_and_clear_bit(__LINK_STATE_XOFF, &dev->state)) 
+> > +				       __netif_schedule(dev);
+> > +		       }
+> > +#endif
+> >  		}
+> 
+>     This just doesn't make sense. That option is enabled to 
+> *prevent* calls to 
+> __netif_schedule() -- you can't override it that way. (Well, 
+> how it works 
+> currently, doesn't make much sense either since it totally 
+> breaks the TX queue 
+> control -- I was going to post a patch).
 
- static inline const char *msk2str(unsigned int mask)
- {
-@@ -30,6 +31,7 @@ static inline const char *msk2str(unsigned int mask)
-        case PM_64M:    return "64Mb";
-        case PM_256M:   return "256Mb";
- #endif
-+       default:        BUG();
-        }
- }
+I'll admit - this was just copied over from the non-NAPI version we
+started with ;-).
 
+Are you saying that the #ifdef test should simply be an #ifndef here?
 
-Le lundi 26 mars 2007, Florian Fainelli a =E9crit=A0:
-> Hello,
->
-> Here is the patch taking into account your remarks. Thanks !
->
-> Signed-off-by: Florian Fainelli <florian.fainelli@int-evry.fr>
-> ------
-> diff --git a/arch/mips/lib-64/dump_tlb.c b/arch/mips/lib-64/dump_tlb.c
-> index 8232900..a320944 100644
-> --- a/arch/mips/lib-64/dump_tlb.c
-> +++ b/arch/mips/lib-64/dump_tlb.c
-> @@ -30,6 +30,7 @@ static inline const char *msk2str(unsigned int mask)
->         case PM_64M:    return "64Mb";
->         case PM_256M:   return "256Mb";
->  #endif
-> +       default:        BUG();
->         }
->  }
+[I'm working on a revised patch based on feedback from Ralf and others
+which removes the Kconfig option for NAPI - it'll just be on, all the
+time.]
 
---nextPart4466807.I0LEuth0cH
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.3 (GNU/Linux)
-
-iD8DBQBGCDgokwOXMtq9F3IRAiFaAJ9t2Ss2+HnkOpGLFOj07J6OPQQc+wCfb6X/
-fqe6/txq/0iPFeBu+pLYRfk=
-=2HaB
------END PGP SIGNATURE-----
-
---nextPart4466807.I0LEuth0cH--
+Thanks,
+Mark

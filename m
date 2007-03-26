@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 23:05:02 +0100 (BST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:52642 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2007 23:05:59 +0100 (BST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:4771 "HELO
 	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20022622AbXCZWE7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Mar 2007 23:04:59 +0100
-Received: (qmail 1195 invoked by uid 101); 26 Mar 2007 22:04:52 -0000
+	id S20022622AbXCZWF5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Mar 2007 23:05:57 +0100
+Received: (qmail 1359 invoked by uid 101); 26 Mar 2007 22:05:47 -0000
 Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by father.pmc-sierra.com with SMTP; 26 Mar 2007 22:04:52 -0000
+  by father.pmc-sierra.com with SMTP; 26 Mar 2007 22:05:47 -0000
 Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2QM4pAt014579;
-	Mon, 26 Mar 2007 14:04:52 -0800
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2QM5k3R014636;
+	Mon, 26 Mar 2007 14:05:46 -0800
 From:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2QM4hXO014040;
-	Mon, 26 Mar 2007 16:04:43 -0600
-Date:	Mon, 26 Mar 2007 16:04:43 -0600
-Message-Id: <200703262204.l2QM4hXO014040@pasqua.pmc-sierra.bc.ca>
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l2QM5js4014237;
+	Mon, 26 Mar 2007 16:05:45 -0600
+Date:	Mon, 26 Mar 2007 16:05:45 -0600
+Message-Id: <200703262205.l2QM5js4014237@pasqua.pmc-sierra.bc.ca>
 To:	akpm@linux-foundation.org, khali@linux-fr.org
-Subject: [PATCH 8/12] drivers: PMC MSP71xx TWI driver
+Subject: [PATCH 9/12] drivers: PMC MSP71xx LED driver
 Cc:	i2c@lm-sensors.org, linux-mips@linux-mips.org
 Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14714
+X-archive-position: 14715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,9 +30,9 @@ X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH 8/12] drivers: PMC MSP71xx TWI driver
+[PATCH 9/12] drivers: PMC MSP71xx LED driver
 
-Patch to add TWI driver for the PMC-Sierra MSP71xx devices.
+Patch to add LED driver for the PMC-Sierra MSP71xx devices.
 
 Reposting patches as a single set at the request of akpm.
 Only 9 of 12 will be posted at this time, 3 more to follow
@@ -44,85 +44,595 @@ Marc
 Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
 Re-posting patch with recommended changes:
--Minor whitespace cleanup.
--Merged i2c-algo-pmctwi.c and i2c-algo-pmctwi.h with i2c-pmcmsp.c,
-eliminated pmcmsp_priv_data, and normalized naming scheme.
+-Minor naming changes.
+-Changed CONFIG_SENSORS_PMCTWILED to CONFIG_PMCTWILED.
+-Added check for adapter type before attaching.
+-Changed name of client to pmctwiled_pca9554.
+-CHanged thread name to pmctwiled_poll.
 
- algos/Kconfig       |    9 
- algos/Makefile      |    1 
- busses/Kconfig      |    7 
- busses/Makefile     |    1 
- busses/i2c-pmcmsp.c |  689 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 706 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/algos/Kconfig b/drivers/i2c/algos/Kconfig
-index af02034..794f7bb 100644
---- a/drivers/i2c/algos/Kconfig
-+++ b/drivers/i2c/algos/Kconfig
-@@ -49,5 +49,12 @@ config I2C_ALGO_SGI
- 	  Supports the SGI interfaces like the ones found on SGI Indy VINO
- 	  or SGI O2 MACE.
+ drivers/i2c/chips/Kconfig                            |    9 
+ drivers/i2c/chips/Makefile                           |    1 
+ drivers/i2c/chips/pmctwiled.c                        |  527 +++++++++++++++++++
+ include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h |  272 +++++++++
+ 4 files changed, 809 insertions(+)
+
+diff --git a/drivers/i2c/chips/Kconfig b/drivers/i2c/chips/Kconfig
+index 87ee3ce..6afde93 100644
+--- a/drivers/i2c/chips/Kconfig
++++ b/drivers/i2c/chips/Kconfig
+@@ -50,6 +50,15 @@ config SENSORS_PCF8574
+ 	  These devices are hard to detect and rarely found on mainstream
+ 	  hardware.  If unsure, say N.
  
--endmenu
-+config I2C_ALGO_PMCTWI
-+	tristate "I2C PMC TWI interfaces"
++config PMCTWILED
++	tristate "PMC Led-over-TWI driver"
 +	depends on I2C && PMC_MSP
 +	help
-+	  Implements the PMC TWI SoC algorithm for various implementations.
- 
-+	  Be sure to select the proper bus for your platform below.
++	  The new VPE-safe backend driver for all the LEDs on the 7120 platform.
 +
-+endmenu
-diff --git a/drivers/i2c/algos/Makefile b/drivers/i2c/algos/Makefile
-index cac1051..2645d00 100644
---- a/drivers/i2c/algos/Makefile
-+++ b/drivers/i2c/algos/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_I2C_ALGOBIT)	+= i2c-algo-bit.o
- obj-$(CONFIG_I2C_ALGOPCF)	+= i2c-algo-pcf.o
- obj-$(CONFIG_I2C_ALGOPCA)	+= i2c-algo-pca.o
- obj-$(CONFIG_I2C_ALGO_SGI)	+= i2c-algo-sgi.o
-+obj-$(CONFIG_I2C_ALGO_PMCTWI)	+= i2c-algo-pmctwi.o
- 
- ifeq ($(CONFIG_I2C_DEBUG_ALGO),y)
- EXTRA_CFLAGS += -DDEBUG
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 4d44a2d..f2998b8 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -573,4 +573,11 @@ config I2C_PNX
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called i2c-pnx.
- 
-+config I2C_PMCMSP
-+	tristate "PMC MSP I2C Controller"
-+	depends on I2C && PMC_MSP
-+	select I2C_ALGO_PMCTWI
-+	help
-+	  Supports the special PMC TWI SoC chip on the MSP platform
++	  While you may build this as a module, it is recommended you build it
++	  into the kernel monolithic so all drivers may access it at all times.
 +
- endmenu
-diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index 03505aa..8923878 100644
---- a/drivers/i2c/busses/Makefile
-+++ b/drivers/i2c/busses/Makefile
-@@ -30,6 +30,7 @@ obj-$(CONFIG_I2C_PARPORT_LIGHT)	+= i2c-parport-light.o
- obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi.o
- obj-$(CONFIG_I2C_PCA_ISA)	+= i2c-pca-isa.o
- obj-$(CONFIG_I2C_PIIX4)		+= i2c-piix4.o
-+obj-$(CONFIG_I2C_PMCMSP)	+= i2c-pmcmsp.o
- obj-$(CONFIG_I2C_PNX)		+= i2c-pnx.o
- obj-$(CONFIG_I2C_PROSAVAGE)	+= i2c-prosavage.o
- obj-$(CONFIG_I2C_PXA)		+= i2c-pxa.o
-diff --git a/drivers/i2c/busses/i2c-pmcmsp.c b/drivers/i2c/busses/i2c-pmcmsp.c
+ config SENSORS_PCA9539
+ 	tristate "Philips PCA9539 16-bit I/O port"
+ 	depends on I2C && EXPERIMENTAL
+diff --git a/drivers/i2c/chips/Makefile b/drivers/i2c/chips/Makefile
+index 779868e..32c9ed4 100644
+--- a/drivers/i2c/chips/Makefile
++++ b/drivers/i2c/chips/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_SENSORS_M41T00)	+= m41t00.o
+ obj-$(CONFIG_SENSORS_PCA9539)	+= pca9539.o
+ obj-$(CONFIG_SENSORS_PCF8574)	+= pcf8574.o
+ obj-$(CONFIG_SENSORS_PCF8591)	+= pcf8591.o
++obj-$(CONFIG_PMCTWILED)		+= pmctwiled.o
+ obj-$(CONFIG_ISP1301_OMAP)	+= isp1301_omap.o
+ obj-$(CONFIG_TPS65010)		+= tps65010.o
+ 
+diff --git a/drivers/i2c/chips/pmctwiled.c b/drivers/i2c/chips/pmctwiled.c
 new file mode 100644
-index 0000000..4a15290
+index 0000000..2454c1e
 --- /dev/null
-+++ b/drivers/i2c/busses/i2c-pmcmsp.c
-@@ -0,0 +1,689 @@
++++ b/drivers/i2c/chips/pmctwiled.c
+@@ -0,0 +1,527 @@
 +/*
-+ * Specific bus support for PMC-TWI compliant implementation on MSP71xx.
++ * Special LED-over-TWI-PCA9554 driver for the PMC Sierra
++ * Residential Gateway demo board (and potentially others).
 + *
-+ * Copyright 2005-2007 PMC-Sierra, Inc.
++ * Based on pca9539.c Copyright (C) 2005 Ben Gardner <bgardner@wabtec.com>
++ * Modified by Copyright 2006-2007 PMC-Sierra, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ */
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/kthread.h>
++#include <linux/i2c.h>
++#include <linux/freezer.h>
++
++#include <msp_led_macros.h>
++
++/*
++ * The externally available "registers"
++ * 
++ * TODO: We must ensure these are in "shared memory" for the other VPE
++ *       to access
++ */
++u32 msp_led_register[MSP_LED_COUNT];
++
++#ifdef CONFIG_PMC_MSP7120_GW
++/*
++ * For each device, which pins will be in "input" mode:
++ * One byte per device:
++ *  0 = Output
++ *  1 = Input
++ */
++static const u8 msp_led_initial_input_state[] = {
++	/* No outputs on device 0 or 1, these are inputs only */
++	MSP_LED_INPUT_MODE, MSP_LED_INPUT_MODE,
++	/* All outputs on device 2 through 4 */
++	MSP_LED_OUTPUT_MODE, MSP_LED_OUTPUT_MODE, MSP_LED_OUTPUT_MODE,
++};
++
++/*
++ * For each device, which output pins should start on and off:
++ * One byte per device:
++ *  0 = OFF = HI
++ *  1 = ON  = Lo
++ */
++static const u8 msp_led_initial_pin_state[] = {
++	0, 0, 	/* No initial state, these are input only */
++	1 << 1,	/* PWR_GREEN LED on, all others off */
++	0,	/* All off */
++	0,	/* All off */
++};
++#endif /* CONFIG_PMC_MSP7120_GW */
++
++/* Internal polling data */
++#define POLL_PERIOD msecs_to_jiffies(125) /* Poll at 125ms */
++
++static struct i2c_client *pmctwiled_device[MSP_LED_NUM_DEVICES];
++static struct task_struct *pmctwiled_pollthread;
++static u32 msp_led_register_priv[MSP_LED_COUNT];
++static u16 current_period;
++
++/* Addresses to scan */
++#define PMCTWILED_BASEADDRESS	0x38
++
++static unsigned short normal_i2c[] = {
++	PMCTWILED_BASEADDRESS + 0,
++	PMCTWILED_BASEADDRESS + 1,
++	PMCTWILED_BASEADDRESS + 2,
++	PMCTWILED_BASEADDRESS + 3,
++	PMCTWILED_BASEADDRESS + 4,
++	I2C_CLIENT_END
++};
++
++/* Insmod parameters */
++I2C_CLIENT_INSMOD_1(pmctwiled);
++
++enum pca9554_cmd {
++	PCA9554_INPUT		= 0,
++	PCA9554_OUTPUT		= 1,
++	PCA9554_INVERT		= 2,
++	PCA9554_DIRECTION	= 3,
++};
++
++static int pmctwiled_attach_adapter(struct i2c_adapter *adapter);
++static int pmctwiled_detect(struct i2c_adapter *adapter,
++				int address, int kind);
++static int pmctwiled_detach_client(struct i2c_client *client);
++
++/* This is the driver that will be inserted */
++static struct i2c_driver pmctwiled_driver = {
++	.driver = {
++		.name	= "pmctwiled",
++	},
++	.attach_adapter	= pmctwiled_attach_adapter,
++	.detach_client	= pmctwiled_detach_client,
++};
++
++struct pmctwiled_data {
++	struct i2c_client client;
++};
++
++static int pmctwiled_attach_adapter(struct i2c_adapter *adapter)
++{
++	/* Check if adapter is for device adpater/bus */
++	if (strcmp(adapter->name, "pmcmsptwi") != 0)
++		return -EINVAL;
++		
++	return i2c_probe(adapter, &addr_data, pmctwiled_detect);
++}
++
++/* This function is called by i2c_probe */
++static int pmctwiled_detect(struct i2c_adapter *adapter,
++				int address, int kind)
++{
++	struct i2c_client *client = NULL;	/* client structure */
++	struct pmctwiled_data *data = NULL;	/* local data structure */
++	int err = 0;
++	int dev_id = address - PMCTWILED_BASEADDRESS;
++
++	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA))
++		goto exit;
++
++	/*
++	 * For now, we presume we have a valid client. We now create the
++	 * client structure, even though we cannot fill it completely yet.
++	 */
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
++	if (!data) {
++		err = -ENOMEM;
++		goto exit;
++	}
++
++	client = &data->client;
++	i2c_set_clientdata(client, data);
++	client->addr = address;
++	client->adapter = adapter;
++	client->driver = &pmctwiled_driver;
++
++	/*
++	 * Detection:
++	 *   The pca9554 only has 4 registers (0-3).
++	 *   All other reads should fail.
++	 */
++	if (i2c_smbus_read_byte_data(client, 3) < 0 ||
++	    i2c_smbus_read_byte_data(client, 4) >= 0)
++		goto exit_kfree;
++
++	/* Found PCA9554 (probably) */
++	strlcpy(client->name, "pmctwiled_pca9554", I2C_NAME_SIZE);
++	printk(KERN_WARNING
++		"pmctwiled: Detected PCA9554 I/O chip (device %d) at 0x%02x\n",
++		dev_id, address);
++
++	/* Tell the I2C layer a new client has arrived */
++	err = i2c_attach_client(client);
++	if (err)
++		goto exit_kfree;
++
++	/*
++	 * Register this in the list of available devices, and set up the
++	 * initial state
++	 */
++	i2c_smbus_write_byte_data(client, PCA9554_OUTPUT,
++			i2c_smbus_read_byte_data(client, PCA9554_INPUT));
++	i2c_smbus_write_byte_data(client, PCA9554_DIRECTION,
++			msp_led_initial_input_state[dev_id]);
++	pmctwiled_device[dev_id] = client;
++
++	return 0;
++
++exit_kfree:
++	kfree(data);
++exit:
++	return err;
++}
++
++static int pmctwiled_detach_client(struct i2c_client *client)
++{
++	int err;
++	int dev_id = client->addr - PMCTWILED_BASEADDRESS;
++
++	/* Clear reference so poll thread doesn't use while detaching */
++	pmctwiled_device[dev_id] = NULL;
++
++	/* Remove this device from the list of devices */
++	err = i2c_detach_client(client);
++	if (err)
++		return err;
++
++	kfree(i2c_get_clientdata(client));
++
++	return 0;
++}
++
++/*
++ * mode_bits_update - Sets the mode bits of the given led register
++ * @led_reg_ptr: Pointer to the led register value that needs to be updated
++ * 		with the given mode.
++ * @mode: new mode value to be set to the register
++ *
++ * Sets the given mode value to the given led register.
++ */
++inline void mode_bits_update(u32 *led_reg_ptr, enum msp_led_mode mode)
++{
++	/* TODO: validate mode */
++	*led_reg_ptr |= MSP_LED_MODE_MASK;
++	*led_reg_ptr &= (~((u32) MSP_LED_MODE_MASK) | mode);
++}
++
++/*
++ * sync_led_timer_with_polling_count - Synchronizes the led timer with
++ * 	polling thread count
++ * @led_id: Index for the private led register used to obtain timer
++ * 	information
++ * @led_reg_ptr: Pointer to the new led register value
++ *  
++ * returns 0: If led is in its final period
++ * returns 1: If led is in its initial period
++ * 
++ * This function determines if the led timer is in its initial period or
++ * the final, relative to the TWI-polling thread count (current_period)
++ * and updates the previous timer value in the private led register.  If
++ * the state of the led needs to be turned off (i.e. when the led has
++ * timed out) then the mode bits in the current led register pointer is
++ * set to MSP_LED_OFF and the other data bits are set to 0.
++ */
++int sync_led_timer_with_polling_count(int led_id, u32 *led_reg_ptr)
++{
++	/* Timer variables */
++	int is_in_initial_period = 0;
++	u8 timer, led_timeout, initial_period, final_period;
++	u16 total_period;
++
++	/* 
++	 * Determine the progress into the current cycle, relative to
++	 * the POLL_PERIOD
++	 */
++	initial_period = *led_reg_ptr >> MSP_LED_INITIALPERIOD_SHIFT;
++	final_period = *led_reg_ptr >> MSP_LED_FINALPERIOD_SHIFT;
++	led_timeout = *led_reg_ptr >> MSP_LED_WATCHDOG_SHIFT;
++	timer = msp_led_register_priv[led_id] >> MSP_LED_WATCHDOG_SHIFT;
++
++	total_period = initial_period + final_period;
++	if (total_period != 0)
++		is_in_initial_period = (current_period % total_period) <
++					initial_period;
++
++	/*
++	 * if the led_timeout is set, adjust the current state to be either
++	 * ON or OFF
++	 */
++	if (led_timeout > 0) {
++		if (timer >= led_timeout) {
++			/* set the register to OFF state */
++			mode_bits_update(led_reg_ptr, MSP_LED_OFF);
++			timer = 0;
++
++			/*
++			 * TODO:
++			 * This introduces a race condition with other
++			 * thread using shared memory and must be fixed.
++			 */
++			msp_led_turn_off(led_id);
++		} else
++			timer += 1;
++
++		/* update timer */
++		*led_reg_ptr &= ~(0xff << MSP_LED_WATCHDOG_SHIFT);
++		*led_reg_ptr |= (timer << MSP_LED_WATCHDOG_SHIFT);
++	}
++
++	return is_in_initial_period;
++}
++
++/*
++ * led_update - Sets the mode bits of the given led register
++ * @led_id - id pertaining to the led that needs update
++ * @prev_direction_bits_ptr - points to the previous direction bits on the bus
++ * @prev_data_bits_ptr - points to the previous data bits on the bus
++ * @curr_direction_bits_ptr - points to the new direction bits for bus update
++ * @curr_data_bits_ptr - points to the new data bits for bus update
++ * 
++ * returns 1 - led is in output mode
++ *         0 - led is in input mode and hasn't been updated
++ * 
++ * Sets the given mode value to the given led register.
++ */
++int led_update(int led_id,
++		u8 *prev_direction_bits_ptr, u8 *prev_data_bits_ptr,
++		u8 *curr_direction_bits_ptr, u8 *curr_data_bits_ptr)
++{
++	u32 curr_led_reg;
++	enum msp_led_mode curr_mode, prev_mode;
++	enum msp_led_direction curr_direction, prev_direction;
++	int is_in_initial_period;
++
++	/* Read the shared memory into a temporary variable */
++	int pin = led_id % MSP_LED_NUM_DEVICE_PINS;
++	curr_led_reg = msp_led_register[led_id];
++
++	/* Check if the input direction has changed to output */
++	prev_direction = (enum msp_led_direction)
++			((msp_led_register_priv[led_id] &
++			MSP_LED_DIRECTION_MASK) >> MSP_LED_DIRECTION_SHIFT);
++	curr_direction = (enum msp_led_direction)((curr_led_reg &
++			MSP_LED_DIRECTION_MASK) >> MSP_LED_DIRECTION_SHIFT);
++	if ((prev_direction == MSP_LED_INPUT) &&
++	    (curr_direction != MSP_LED_OUTPUT))
++		return 0;
++
++	/* get the previous mode of the LED */
++	prev_mode = (enum msp_led_mode)(msp_led_register_priv[led_id] &
++			MSP_LED_MODE_MASK);
++
++	if (prev_mode == MSP_LED_ON)
++		*prev_data_bits_ptr |= 1 << pin;
++
++	if (prev_direction == MSP_LED_INPUT)
++		*prev_direction_bits_ptr |= 1 << pin;
++
++	/* Update timer and obtain the current period */
++	is_in_initial_period = sync_led_timer_with_polling_count(
++					led_id, &curr_led_reg);
++
++	/* get the current mode of the LED */
++	curr_mode = (enum msp_led_mode)(curr_led_reg & MSP_LED_MODE_MASK);
++
++	switch (curr_mode) {
++	case MSP_LED_BLINK:
++		if (is_in_initial_period) {
++			*curr_data_bits_ptr |= 1 << pin;
++			mode_bits_update(&curr_led_reg, MSP_LED_ON);
++		} else
++			mode_bits_update(&curr_led_reg,MSP_LED_OFF);
++		break;
++	case MSP_LED_BLINK_INVERT:
++		if (!is_in_initial_period) {
++			*curr_data_bits_ptr |= 1 << pin;
++			mode_bits_update(&curr_led_reg, MSP_LED_ON);
++		} else
++			mode_bits_update(&curr_led_reg,MSP_LED_OFF);
++		break;
++	case MSP_LED_OFF:
++		/*
++		 * Assuming that the led be turned off when set to
++		 * output mode
++		 */
++		break;
++	case MSP_LED_ON:
++		*curr_data_bits_ptr |= 1 << pin;
++		break;
++	}
++
++	if (curr_direction == MSP_LED_INPUT)
++		*curr_direction_bits_ptr |= 1 << pin;
++
++	/* save the current mode */
++	msp_led_register_priv[led_id] = curr_led_reg;
++
++	return 1;
++}
++
++/*
++ * device_update - Updates led device(s) on GPIO
++ * @dev_id - id pertaining to the device that needs update
++ * 
++ * returns 1 - device exists
++ * 		   0 - device does not exist 
++ * 
++ * Every pin connected to the GPIO is updated if the state of the pin has
++ * changed from its previous value stored in the memory register.  A temporary
++ * variable, curr_led_reg is used to store the current value of the register
++ * corresponding to the pin under focus.  curLedReg gets its value from the
++ * global shared memory registers for leds.  This value is compared with the
++ * previous value to determine if a change to the led pin is required.  The
++ * previous values are stored in the private led register,
++ * msp_led_register_priv.
++ */
++int device_update(int dev_id)
++{
++	int pin;
++	u8 curr_direction_bits = 0;
++	u8 curr_data_bits = 0;
++	u8 prev_data_bits = 0;
++	u8 prev_direction_bits = 0;
++
++	/* if the device wasn't detected */
++	if (pmctwiled_device[dev_id] == NULL)
++		return 0;
++
++	/* iterate through each pin of the device and update as necessary */
++	for (pin = 0; pin < MSP_LED_NUM_DEVICE_PINS; pin++) {
++		int led_id = MSP_LED_DEVPIN(dev_id, pin);
++		led_update(led_id, &prev_direction_bits, &prev_data_bits,
++				&curr_direction_bits, &curr_data_bits);
++	}
++
++	/*
++	 * BUS OPERATIONS: if the previous state is different from the
++	 * current state
++	 */
++	if (curr_data_bits != prev_data_bits)
++		i2c_smbus_write_byte_data(pmctwiled_device[dev_id],
++				PCA9554_OUTPUT, ~(curr_data_bits));
++
++	if (curr_direction_bits != prev_direction_bits)
++		i2c_smbus_write_byte_data(pmctwiled_device[dev_id],
++				PCA9554_DIRECTION, curr_direction_bits);
++
++	return 1;
++}
++
++static int pmctwiled_poll(void *data)
++{
++	current_period = 0;
++
++	/* start the polling loop */
++	do {
++		/* Starting Time */
++		unsigned long poll_end;
++		unsigned long time_left;
++		unsigned int poll_start = jiffies;
++
++		/* update every device in here for the current period */
++		int dev_id;
++		for (dev_id = 0; dev_id < MSP_LED_NUM_DEVICES; dev_id++)
++			device_update(dev_id);
++
++		/* Ending Time */
++		poll_end = jiffies;
++		if (poll_end >= poll_start) {
++			time_left = POLL_PERIOD - (poll_end - poll_start);
++		} else {
++			time_left = POLL_PERIOD - ((0xffffffff - poll_start) +
++					poll_end);
++			printk(KERN_WARNING
++				"Warning: Delaying for %lu jiffies. This may "
++				"not be correct because of clock wrapping\n",
++				time_left);
++		}
++		if (time_left > POLL_PERIOD) {
++			printk(KERN_WARNING
++				"Warning: Delay of %lu jiffies requested, "
++				"defaulting back to %lu\n",
++				time_left, POLL_PERIOD);
++			time_left = POLL_PERIOD;
++		}
++
++		/* reshedule next polling interval */
++		schedule_timeout_interruptible(time_left);
++
++		/* make swsusp happy with our thread */
++		try_to_freeze();
++
++		current_period++;
++	} while (!kthread_should_stop());
++
++	return 0;
++}
++
++void __init pmctwiled_setup(void)
++{
++	static int called;
++	int dev;
++
++	/* check if already initialized from platform initialization */
++	if (called)
++		return;
++
++	/* initialize LEDs to default state */
++	for (dev = 0; dev < MSP_LED_NUM_DEVICES; dev++) {
++		int pin;
++		pmctwiled_device[dev] = NULL;
++
++		for (pin = 0; pin < 8; pin++) {
++			int led = MSP_LED_DEVPIN(dev, pin);
++			if (msp_led_initial_input_state[dev] & (1 << pin)) {
++				msp_led_disable(led);
++			} else {
++				msp_led_enable(led);
++				if (msp_led_initial_pin_state[dev] & (1 << pin))
++					msp_led_turn_on(led);
++				else
++					msp_led_turn_off(led);
++			}
++
++			/* Initialize the private led register memory */
++			msp_led_register_priv[led] = 0;
++		}
++	}
++
++	/* indicate initialised */
++	called++;
++}
++
++static int __init pmctwiled_init(void)
++{
++	/* setup twi led interface */
++	pmctwiled_setup();
++
++	/* start the polling thread */
++	pmctwiled_pollthread = kthread_run(pmctwiled_poll, NULL,
++					"pmctwiled_poll");
++	if (pmctwiled_pollthread == NULL) {
++		printk(KERN_ERR "Could not start polling thread\n");
++		return -ENOMEM;
++	}
++
++	return i2c_add_driver(&pmctwiled_driver);
++}
++
++static void __exit pmctwiled_exit(void)
++{
++	/* stop the polling thread */
++	kthread_stop(pmctwiled_pollthread);
++
++	i2c_del_driver(&pmctwiled_driver);
++}
++
++MODULE_DESCRIPTION("PMC MSP TWI-LED driver");
++MODULE_LICENSE("GPL");
++
++module_init(pmctwiled_init);
++module_exit(pmctwiled_exit);
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h b/include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h
+new file mode 100644
+index 0000000..8786aab
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_led_macros.h
+@@ -0,0 +1,272 @@
++/*
++ * Macros for external SMP-safe access to the PMC MSP7120
++ * Residential Gateway demo board LEDs (over TWI)
++ *
++ * Copyright 2006-2007 PMC-Sierra, Inc.
 + *
 + *  This program is free software; you can redistribute  it and/or modify it
 + *  under  the terms of  the GNU General  Public License as published by the
@@ -145,666 +655,248 @@ index 0000000..4a15290
 + *  675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/errno.h>
-+#include <linux/delay.h>
-+#include <linux/interrupt.h>
-+#include <linux/completion.h>
-+#include <linux/i2c.h>
-+#include <linux/mutex.h>
++#ifndef __MSP_LED_MACROS_H__
++#define __MSP_LED_MACROS_H__
 +
-+#include <asm/io.h>
++#include <msp_regops.h>
 +
-+#include <msp_regs.h>
-+#include <msp_cic_int.h>
++/* Generic macros for board setup */
++#define MSP_LED_DEVPIN(DEVICE, PIN)	((DEVICE * 8) + PIN)
 +
-+#define MSP_TWI_SF_CLK_REG_OFFSET	0x00
-+#define MSP_TWI_HS_CLK_REG_OFFSET	0x04
-+#define MSP_TWI_CFG_REG_OFFSET		0x08
-+#define MSP_TWI_CMD_REG_OFFSET		0x0c
-+#define MSP_TWI_ADD_REG_OFFSET		0x10
-+#define MSP_TWI_DAT_0_REG_OFFSET	0x14
-+#define MSP_TWI_DAT_1_REG_OFFSET	0x18
-+#define MSP_TWI_INT_STS_REG_OFFSET	0x1c
-+#define MSP_TWI_INT_MSK_REG_OFFSET	0x20
-+#define MSP_TWI_BUSY_REG_OFFSET		0x24
-+#define MSP_TWI_REG_SIZE		0x28
++/* ----- Per-board configuration ----- */
 +
-+#define MSP_TWI_INT_STS_DONE			(1 << 0)
-+#define MSP_TWI_INT_STS_LOST_ARBITRATION	(1 << 1)
-+#define MSP_TWI_INT_STS_NO_RESPONSE		(1 << 2)
-+#define MSP_TWI_INT_STS_DATA_COLLISION		(1 << 3)
-+#define MSP_TWI_INT_STS_BUSY			(1 << 4)
-+#define MSP_TWI_INT_STS_ALL			0x1f
++/* TODO: Maybe break this out into one file per board? */
 +
-+#define MSP_MAX_BYTES_PER_RW		8
-+#define MSP_MAX_POLL			5
-+#define MSP_POLL_DELAY			10
-+#define MSP_IRQ_TIMEOUT			(MSP_MAX_POLL * MSP_POLL_DELAY)
++#ifdef CONFIG_PMC_MSP7120_GW
++/* Specific LEDs and PINs which can be controlled on the RG demo board: */
++#define MSP_LED_PWRSTANDBY_RED 		MSP_LED_DEVPIN(2, 0)
++#define MSP_LED_PWRSTANDBY_GREEN	MSP_LED_DEVPIN(2, 1) 
++#define MSP_LED_LAN1_10			MSP_LED_DEVPIN(2, 2)
++#define MSP_LED_LAN1_100		MSP_LED_DEVPIN(2, 3)
++#define MSP_LED_LAN2_10			MSP_LED_DEVPIN(2, 4)
++#define MSP_LED_LAN2_100		MSP_LED_DEVPIN(2, 5)
++#define MSP_LED_LAN3_10			MSP_LED_DEVPIN(2, 6)
++#define MSP_LED_LAN3_100		MSP_LED_DEVPIN(2, 7)
++#define MSP_LED_LAN4_10			MSP_LED_DEVPIN(3, 0)
++#define MSP_LED_LAN4_100		MSP_LED_DEVPIN(3, 1)
++#define MSP_LED_LAN5_10			MSP_LED_DEVPIN(3, 2)
++#define MSP_LED_LAN5_100		MSP_LED_DEVPIN(3, 3)
++#define MSP_LED_RFU_10			MSP_LED_LAN5_10
++#define MSP_LED_RFU_100			MSP_LED_LAN5_100
++#define MSP_PIN_FLASH_RESETB		MSP_LED_DEVPIN(3, 4)
++#define MSP_LED_PSTN			MSP_LED_DEVPIN(3, 5)
++#define MSP_PIN_FLASH_BANK		MSP_LED_DEVPIN(3, 6)
++#define MSP_PIN_USB_HOST_DEV		MSP_LED_DEVPIN(3, 7)
++#define MSP_LED_PHONE1			MSP_LED_DEVPIN(4, 0)
++#define MSP_LED_PHONE2			MSP_LED_DEVPIN(4, 1)
++#define MSP_LED_USB			MSP_LED_DEVPIN(4, 2)
++#define MSP_LED_WIRELESS		MSP_LED_DEVPIN(4, 3)
++#define MSP_LED_DSL_RED			MSP_LED_DEVPIN(4, 4)
++#define MSP_LED_DSL_GREEN		MSP_LED_DEVPIN(4, 5)
++#define MSP_LED_INTERNET_RED		MSP_LED_DEVPIN(4, 6)
++#define MSP_LED_INTERNET_GREEN		MSP_LED_DEVPIN(4, 7)
 +
-+#define MSP_TWI_IRQ 			MSP_INT_2WIRE
-+/* Use the following instead to disable interrupt mode */
-+/* #define MSP_TWI_IRQ 			0 */
++#define MSP_LED_NUM_DEVICES		5
++#define MSP_LED_NUM_DEVICE_PINS		8
++#define MSP_LED_COUNT			(MSP_LED_NUM_DEVICE_PINS * \
++					 MSP_LED_NUM_DEVICES)
++#define MSP_LED_INPUT_MODE		0xff
++#define MSP_LED_OUTPUT_MODE		0x00
++#endif /* CONFIG_PMC_MSP7120_GW */
 +
-+/* IO Operation macros */
-+#define pmcmsptwi_readl		__raw_readl
-+#define pmcmsptwi_writel	__raw_writel
++/* ----- End of Per-board configuration ----- */
 +
-+/* TWI command type */
-+enum pmcmsptwi_cmd_type {
-+	MSP_TWI_CMD_WRITE	= 0, /* Write only */
-+	MSP_TWI_CMD_READ	= 1, /* Read only */
-+	MSP_TWI_CMD_WRITE_READ	= 2, /* Write then Read */
-+	MSP_TWI_CMD_RESERVED	= 3,
++/* Definitions for LED blink rate value */
++#define MSP_LED_RATE_MAX	0xff
++
++/* -- The actual LED register list -- */
++extern u32 msp_led_register[];
++
++/*
++ * Each 'register' has the following format:
++ *
++ * +-------+-----------------------------+
++ * | BITS  | DESCRIPTION                 |
++ * +-------+-----------------------------+
++ * | 31:24 | Watchdog timer              |
++ * |       |   Set to non-zero to start  |
++ * |       |   or to kick, this number   |
++ * |       |   will be decremented every |
++ * |       |   125ms, if it reaches zero |
++ * |       |   the LED will be turned off|
++ * +-------+-----------------------------+
++ * | 23:16 | Initial Period              |
++ * |       |   125ms increments          |
++ * +-------+-----------------------------+
++ * |  15:8 | Final Period                |
++ * |       |   125ms increments          |
++ * +-------+-----------------------------+
++ * |  7:7  | Direction                   |
++ * |       |   See msp_led_direction     |
++ * +-------+-----------------------------+
++ * |  6:0  | Mode                        |
++ * |       |   See msp_led_mode          |
++ * +-------+-----------------------------+
++ *
++ * NOTE: You should probably not affect these registers directly but use
++ * the macros in this file.  That said, if you need to touch them, be sure
++ * to use ll/sc instructions (or the macros in regops.h) so that values are
++ * preserved safely.
++ */
++
++/* Direction modes */
++enum msp_led_direction {
++	MSP_LED_INPUT = 0,
++	MSP_LED_OUTPUT,
 +};
 +
-+/* Corresponds to a PMCTWI clock configuration register */
-+struct pmcmsptwi_clock {
-+	u8 filter;	/* Bits 15:12,	default = 0x03 */
-+	u16 clock;	/* Bits 9:0,	default = 0x001f */
++/* Output modes */
++enum msp_led_mode {
++	MSP_LED_OFF = 0,/* Off steady */
++	MSP_LED_ON,	/* On steady */
++	MSP_LED_BLINK,	/* On for initial_period, off for final_period */
++	MSP_LED_BLINK_INVERT,
++			/* Off for initial_period, on for final_period */
 +};
 +
-+struct pmcmsptwi_clockcfg {
-+	struct pmcmsptwi_clock standard;  /* The standard/fast clock config */
-+	struct pmcmsptwi_clock highspeed; /* The highspeed clock config */
-+};
++#define MSP_LED_MODE_MASK		0x7f
++#define MSP_LED_DIRECTION_MASK		0x80
++#define MSP_LED_DIRECTION_SHIFT		7
++#define MSP_LED_INITIALPERIOD_SHIFT	8
++#define MSP_LED_FINALPERIOD_SHIFT	16
++#define MSP_LED_WATCHDOG_SHIFT		24
 +
-+/* Corresponds to the main TWI configuration register */
-+struct pmcmsptwi_cfg {
-+	u8 arbf;	/* Bits 15:12,	default=0x03 */
-+	u8 nak;		/* Bits 11:8,	default=0x03 */
-+	u8 add10;	/* Bit 7,	default=0x00 */
-+	u8 mst_code;	/* Bits 6:4,	default=0x00 */
-+	u8 arb;		/* Bit 1,	default=0x01 */
-+	u8 highspeed;	/* Bit 0,	default=0x00 */
-+};
++/* -- Public API functions -- */
 +
-+/* A single pmctwi command to issue */
-+struct pmcmsptwi_cmd {
-+	u16 addr;	/* The slave address (7 or 10 bits) */
-+	enum pmcmsptwi_cmd_type type;	/* The command type */
-+	u8 write_len;	/* Number of bytes in the write buffer */
-+	u8 read_len;	/* Number of bytes in the read buffer */
-+	u8 *write_data;	/* Buffer of characters to send */
-+	u8 *read_data;	/* Buffer to fill with incoming data */
-+};
-+
-+/* The possible results of the xferCmd */
-+enum pmcmsptwi_xfer_result {
-+	MSP_TWI_XFER_OK	= 0,
-+	MSP_TWI_XFER_TIMEOUT,
-+	MSP_TWI_XFER_BUSY,
-+	MSP_TWI_XFER_DATA_COLLISION,
-+	MSP_TWI_XFER_NO_RESPONSE,
-+	MSP_TWI_XFER_LOST_ARBITRATION,
-+};
-+
-+/* The default settings */
-+const static struct pmcmsptwi_clockcfg pmcmsptwi_defclockcfg = {
-+	.standard = {
-+		.filter = 0x3,
-+		.clock = 0x1f,
-+	},
-+	.highspeed = {
-+		.filter = 0x3,
-+		.clock = 0x1f,
-+	},
-+};
-+
-+const static struct pmcmsptwi_cfg pmcmsptwi_defcfg = {
-+	.arbf		= 0x03,
-+	.nak		= 0x03,
-+	.add10		= 0x00,
-+	.mst_code	= 0x00,
-+	.arb		= 0x01,
-+	.highspeed	= 0x00,
-+};
-+
-+/* The set of operations each bus must implement to use this algorithm */
-+struct pmcmsptwi_algo_data {
-+	void __iomem *iobase;			/* iomapped base for IO */
-+	enum pmcmsptwi_xfer_result last_result;	/* result of last xfer */
-+	int irq;				/* IRQ to use (0 disables) */
-+	struct completion wait;			/* Completion for xfer */
-+	struct mutex lock;			/* Used for threadsafeness */
-+
-+	/* Get both clock configuration registers */
-+	void (*get_clock_config)(struct pmcmsptwi_clockcfg *cfg, void *data);
-+
-+	/* Set both clock configuration registers */
-+	void (*set_clock_config)(const struct pmcmsptwi_clockcfg *cfg,
-+					void *data);
-+
-+	/* Get the TWI configuration register */
-+	void (*get_twi_config)(struct pmcmsptwi_cfg *cfg, void *data);
-+
-+	/* Set the TWI configuration register */
-+	void (*set_twi_config)(const struct pmcmsptwi_cfg *cfg, void *data);
-+
-+	/* Send the command, reading and/or writing all data specified */
-+	enum pmcmsptwi_xfer_result (*xfer_cmd)(struct pmcmsptwi_cmd *cmd,
-+						void *data);
-+};
-+
-+static struct i2c_adapter pmcmsptwi_adapter;
-+
-+static inline u32 pmcmsptwi_clock_to_reg(
-+			const struct pmcmsptwi_clock *clock)
++/* Low-level macro, explicitly sets the specified LED with the values */
++static inline void msp_led_set_mode(u16 led,
++				    enum msp_led_mode mode, u8 initial_period,
++				    u8 final_period, u8 watchdog_timeout)
 +{
-+	return (u32)(((clock->filter & 0xf) << 12) |
-+			(clock->clock & 0x03ff));
++	set_value_reg32(&msp_led_register[led],
++			0xffffff7f,
++			watchdog_timeout << MSP_LED_WATCHDOG_SHIFT |
++			initial_period << MSP_LED_INITIALPERIOD_SHIFT |
++			final_period << MSP_LED_FINALPERIOD_SHIFT | 
++			((u8)mode & MSP_LED_MODE_MASK));
 +}
 +
-+static inline void pmcmsptwi_reg_to_clock(
-+			u32 reg, struct pmcmsptwi_clock *clock)
++static inline void msp_led_set_direction(u16 led,
++					 enum msp_led_direction direction)
 +{
-+	clock->filter = (u8)((reg >> 12) & 0xf);
-+	clock->clock = (u16)(reg & 0x03ff);
++	set_value_reg32(&msp_led_register[led],
++			0x00000080,
++			((u8)direction << MSP_LED_DIRECTION_SHIFT));
 +}
 +
-+static inline u32 pmcmsptwi_cfg_to_reg(const struct pmcmsptwi_cfg *cfg)
++/* Turns the LED on */
++static inline void msp_led_turn_on(u16 led)
 +{
-+	return (u32)(((cfg->arbf & 0xf) << 12) |
-+			((cfg->nak & 0xf) << 8) |
-+			((cfg->add10 & 0x1) << 7) |
-+			((cfg->mst_code & 0x7) << 4) |
-+			((cfg->arb & 0x1) << 1) |
-+			((cfg->highspeed & 0x1) << 0));
++	msp_led_set_mode(led, MSP_LED_ON, 0, 0, 0);
 +}
 +
-+static inline void pmcmsptwi_reg_to_cfg(u32 reg, struct pmcmsptwi_cfg *cfg)
++/* Set pin LO */
++static inline void msp_led_pin_lo(u16 pin)
 +{
-+	cfg->arbf = (u8)((reg >> 12) & 0xf);
-+	cfg->nak = (u8)((reg >> 8) & 0xf);
-+	cfg->add10 = (u8)((reg >> 7) & 0x1);
-+	cfg->mst_code = (u8)((reg >> 4) & 0x7);
-+	cfg->arb = (u8)((reg >> 1) & 0x1);
-+	cfg->highspeed = (u8)(reg & 0x1);
++	msp_led_set_mode(pin, MSP_LED_ON, 0, 0, 0);
++}
++
++/* Turns the LED off */
++static inline void msp_led_turn_off(u16 led)
++{
++	msp_led_set_mode(led, MSP_LED_OFF, 0, 0, 0);
++}
++
++/* Set pin HI */
++static inline void msp_led_pin_hi(u16 pin)
++{
++	msp_led_set_mode(pin, MSP_LED_OFF, 0, 0, 0);
 +}
 +
 +/*
-+ * Gets the current clock configuration
++ * Blinks a single LED
++ * Period is specified in 125ms chunks
 + */
-+static void pmcmsptwi_get_clock_config(struct pmcmsptwi_clockcfg *cfg,
-+					void *data)
++static inline void msp_led_blink(u16 led, u8 initial_period, u8 final_period)
 +{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_reg_to_clock(pmcmsptwi_readl(p->iobase +
-+				MSP_TWI_SF_CLK_REG_OFFSET),
-+				&(cfg->standard));
-+	pmcmsptwi_reg_to_clock(pmcmsptwi_readl(p->iobase +
-+				MSP_TWI_HS_CLK_REG_OFFSET),
-+				&(cfg->highspeed));
-+	mutex_unlock(&p->lock);
++	msp_led_set_mode(led, MSP_LED_BLINK, initial_period, 
++			 final_period, 0);
++}
++
++static inline void msp_led_blink_2Hz(u16 led)
++{
++	msp_led_set_mode(led, MSP_LED_BLINK, 2, 2, 0);
++}
++
++static inline void msp_led_blink_4Hz(u16 led)
++{
++	msp_led_set_mode(led, MSP_LED_BLINK, 1, 1, 0);
 +}
 +
 +/*
-+ * Sets the current clock configuration
++ * Blinks one LED, then the other
++ * Period is specified in 125ms chunks
 + */
-+static void pmcmsptwi_set_clock_config(const struct pmcmsptwi_clockcfg *cfg,
-+					void *data)
++static inline void msp_led_alternate(u16 led1, u16 led2,
++				     u8 led1_period, u8 led2_period)
 +{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_writel(pmcmsptwi_clock_to_reg(&(cfg->standard)),
-+				p->iobase + MSP_TWI_SF_CLK_REG_OFFSET);
-+	pmcmsptwi_writel(pmcmsptwi_clock_to_reg(&(cfg->highspeed)),
-+				p->iobase + MSP_TWI_HS_CLK_REG_OFFSET);
-+	mutex_unlock(&p->lock);
++	msp_led_set_mode(led1, MSP_LED_BLINK, led1_period, 
++				led2_period, 0);
++	msp_led_set_mode(led2, MSP_LED_BLINK_INVERT, led1_period, 
++				led2_period, 0);
 +}
 +
 +/*
-+ * Gets the current TWI bus configuration
++ * Stops both alternating LEDs from blinking, leaving 'on_led' on
++ * and 'off_led' off.
 + */
-+static void pmcmsptwi_get_twi_config(struct pmcmsptwi_cfg *cfg, void *data)
++static inline void msp_led_alternate_stop(u16 on_led, u16 off_led)
 +{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_reg_to_cfg(pmcmsptwi_readl(
-+				p->iobase + MSP_TWI_CFG_REG_OFFSET), cfg);
-+	mutex_unlock(&p->lock);
++	msp_led_turn_on(on_led);
++	msp_led_turn_off(off_led);
 +}
 +
 +/*
-+ * Sets the current TWI bus configuration
++ * Starts the LED blinking at the specified rate until the watchdog_timeout
++ * (specified in 125ms increments) expires, when the LED is turned off.
++ *
++ * This can also be used to kick the watchdog.
++ *
++ * Calling any other 'msp_led_...' macro will disable the watchdog,
++ * as will kicking this watchdog with a watchdogtimeout value of 0.
++ * When the watchdog is disabled, the LED will blink forever.
 + */
-+static void pmcmsptwi_set_twi_config(const struct pmcmsptwi_cfg *cfg,
-+					void *data)
++static inline void msp_led_watchdog_init(u16 led, u8 initial_period,
++					 u8 final_period, u8 watchdog_timeout)
 +{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_writel(pmcmsptwi_cfg_to_reg(cfg),
-+				p->iobase + MSP_TWI_CFG_REG_OFFSET);
-+	mutex_unlock(&p->lock);
++	msp_led_set_mode(led, MSP_LED_BLINK, initial_period,
++			 final_period, watchdog_timeout);
 +}
 +
 +/*
-+ * Parses the 'int_sts' register and returns a well-defined error code
++ * Kicks a 'watchdog' LED.  If the LED is already blinking or on,
++ * it will start the watchdog countdown.  If the LED is already off or
++ * the wathdog timeout given is 0, it will ensure the LED is off and
++ * the watchdog timer has stopped.
 + */
-+static enum pmcmsptwi_xfer_result pmcmsptwi_get_result(u32 reg)
++static inline void msp_led_watchdog_kick(u16 led, u8 watchdog_timeout)
 +{
-+	if (reg & MSP_TWI_INT_STS_LOST_ARBITRATION) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: Lost arbitration\n");
-+		return MSP_TWI_XFER_LOST_ARBITRATION;
-+	} else if (reg & MSP_TWI_INT_STS_NO_RESPONSE) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: No response\n");
-+		return MSP_TWI_XFER_NO_RESPONSE;
-+	} else if (reg & MSP_TWI_INT_STS_DATA_COLLISION) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: Data collision\n");
-+		return MSP_TWI_XFER_DATA_COLLISION;
-+	} else if (reg & MSP_TWI_INT_STS_BUSY) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: Bus busy\n");
-+		return MSP_TWI_XFER_BUSY;
-+	}
-+
-+	dev_dbg(&pmcmsptwi_adapter.dev, "  Result: Operation succeeded\n");
-+	return MSP_TWI_XFER_OK;
++	set_value_reg32(&msp_led_register[led],
++			0xff << MSP_LED_WATCHDOG_SHIFT,
++			watchdog_timeout << MSP_LED_WATCHDOG_SHIFT);
 +}
-+
-+/*
-+ * Polls the 'busy' register until the command is complete
-+ * Note: Assumes p->lock is held.
-+ */
-+static void pmcmsptwi_poll_complete(struct pmcmsptwi_algo_data* p)
-+{
-+	int i;
-+	u32 val = 0;
-+	
-+	for (i = 0; i < MSP_MAX_POLL; i++) {
-+		val = pmcmsptwi_readl(p->iobase + MSP_TWI_BUSY_REG_OFFSET);
-+		if (val == 0) {
-+			u32 reason = pmcmsptwi_readl(p->iobase +
-+						MSP_TWI_INT_STS_REG_OFFSET);
-+			pmcmsptwi_writel(reason, p->iobase +
-+						MSP_TWI_INT_STS_REG_OFFSET);
-+			p->last_result = pmcmsptwi_get_result(reason);
-+			return;
-+		}
-+		udelay(MSP_POLL_DELAY);
-+	}
-+
-+	dev_dbg(&pmcmsptwi_adapter.dev, "  Result: Poll timeout\n");
-+	p->last_result = MSP_TWI_XFER_TIMEOUT;
-+}
-+
-+/*
-+ * In interrupt mode, handle the interrupt
-+ * Note: Assumes p->lock is held.
-+ */
-+static irqreturn_t pmcmsptwi_interrupt(int irq, void* data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	u32 reason = pmcmsptwi_readl(p->iobase + MSP_TWI_INT_STS_REG_OFFSET);
-+	pmcmsptwi_writel(reason, p->iobase + MSP_TWI_INT_STS_REG_OFFSET);
-+
-+	dev_dbg(&pmcmsptwi_adapter.dev, "    Got interrupt 0x%08x\n",
-+			reason);
-+	if (!(reason & MSP_TWI_INT_STS_DONE))
-+		return IRQ_NONE;
-+
-+	p->last_result = pmcmsptwi_get_result(reason);
-+	complete(&p->wait);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+/*
-+ * Do the transfer (low level):
-+ *  - May use interrupt-driven or polling, depending on if an IRQ is
-+ *  presently registered
-+ * Note: Assumes p->lock is held
-+ */
-+static enum pmcmsptwi_xfer_result pmcmsptwi_do_xfer(
-+			u32 reg, struct pmcmsptwi_algo_data *p)
-+{
-+	dev_dbg(&pmcmsptwi_adapter.dev, "  Writing cmd reg 0x%08x\n", reg);
-+	pmcmsptwi_writel(reg, p->iobase + MSP_TWI_CMD_REG_OFFSET);
-+	if (p->irq) {
-+		unsigned long timeleft = wait_for_completion_timeout(
-+						&p->wait, MSP_IRQ_TIMEOUT);
-+		if (timeleft == 0) {
-+			dev_dbg(&pmcmsptwi_adapter.dev,
-+				"  Result: IRQ timeout\n");
-+			complete(&p->wait);
-+			p->last_result = MSP_TWI_XFER_TIMEOUT;
-+		}
-+	} else
-+		pmcmsptwi_poll_complete(p);
-+
-+	return p->last_result;
-+}
-+
-+/*
-+ * Helper routine, converts 'pmctwi_cmd' struct to register format
-+ */
-+static inline u32 pmcmsptwi_cmd_to_reg(const struct pmcmsptwi_cmd *cmd)
-+{
-+	return (u32)(((cmd->type & 0x3) << 8) |
-+			(((cmd->write_len - 1) & 0x7) << 4) |
-+			(((cmd->read_len - 1) & 0x7) << 0));
-+}
-+
-+/*
-+ * Do the transfer (high level)
-+ */
-+static enum pmcmsptwi_xfer_result pmcmsptwi_xfer_cmd(
-+			struct pmcmsptwi_cmd *cmd, void *data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	u64 *write_data, *read_data;
-+	enum pmcmsptwi_xfer_result retval;
-+
-+	write_data = (u64*)cmd->write_data;
-+	read_data = (u64*)cmd->read_data;
-+
-+	if ((cmd->type == MSP_TWI_CMD_WRITE && cmd->write_len == 0) ||
-+	    (cmd->type == MSP_TWI_CMD_READ && cmd->read_len == 0) ||
-+	    (cmd->type == MSP_TWI_CMD_WRITE_READ &&
-+	    (cmd->read_len == 0 || cmd->write_len == 0))) {
-+		printk(KERN_ERR "%s: Cannot transfer less than 1 byte\n",
-+		        __FUNCTION__);
-+		return -1;
-+	}
-+
-+	if ((cmd->read_len > MSP_MAX_BYTES_PER_RW) ||
-+	    (cmd->write_len > MSP_MAX_BYTES_PER_RW)) {
-+		printk(KERN_ERR "%s: Cannot transfer more than %d bytes\n",
-+			__FUNCTION__, MSP_MAX_BYTES_PER_RW);
-+	}
-+
-+	mutex_lock(&p->lock);
-+	dev_dbg(&pmcmsptwi_adapter.dev, "Setting address to 0x%08x\n",
-+		cmd->addr);
-+	pmcmsptwi_writel(cmd->addr, p->iobase + MSP_TWI_ADD_REG_OFFSET);
-+
-+	if ((cmd->type == MSP_TWI_CMD_WRITE) ||
-+	    (cmd->type == MSP_TWI_CMD_WRITE_READ)) {
-+		u64 tmp = be64_to_cpu(*write_data);
-+		tmp >>= (8 - cmd->write_len) * 8;
-+		dev_dbg(&pmcmsptwi_adapter.dev, "Writing 0x%016llx\n", tmp);
-+		pmcmsptwi_writel((u32)(tmp & 0x00000000ffffffffLL),
-+				p->iobase + MSP_TWI_DAT_0_REG_OFFSET);
-+		if (cmd->write_len > 4)
-+			pmcmsptwi_writel((u32)(tmp >> 32),
-+					p->iobase + MSP_TWI_DAT_1_REG_OFFSET);
-+	}
-+
-+	retval = pmcmsptwi_do_xfer(pmcmsptwi_cmd_to_reg(cmd), p);
-+
-+	if ((cmd->type == MSP_TWI_CMD_READ) ||
-+	    (cmd->type == MSP_TWI_CMD_WRITE_READ)) {
-+		int i;
-+		u64 rmsk = ~(0xffffffffffffffffLL << (cmd->read_len*8));
-+		u64 tmp = (u64)pmcmsptwi_readl(p->iobase +
-+					MSP_TWI_DAT_0_REG_OFFSET);
-+		if (cmd->read_len > 4)
-+			tmp |= (u64)pmcmsptwi_readl(p->iobase +
-+					MSP_TWI_DAT_1_REG_OFFSET) << 32;
-+		tmp &= rmsk;
-+		dev_dbg(&pmcmsptwi_adapter.dev, "Read 0x%016llx\n", tmp);
-+		
-+		for (i = 0; i < cmd->read_len; i++)
-+			cmd->read_data[i] = (u8)((tmp >> i) & 0xff);
-+	}
-+	mutex_unlock(&p->lock);
-+	
-+	return retval;
-+}
-+
-+/* -- Algorithm functions -- */
 +
 +/* 
-+ * Sends an i2c command out on the adapter
-+ * Return -1 on error.
++ * Set the direction of the led pins.
 + */
-+static int pmcmsptwi_master_xfer(struct i2c_adapter *adap,
-+				struct i2c_msg *m, int num)
++static inline void msp_led_enable(u16 led)
 +{
-+	struct pmcmsptwi_algo_data *busops = adap->algo_data;
-+	int i, ret = 0, dual, probe;
-+	struct i2c_msg *cmsg, *nmsg;
-+	u8 detect_buffer[] = { 0 };
++	msp_led_set_direction(led, MSP_LED_OUTPUT);
++} 
 +
-+	for (i = 0; i < num; i++) {
-+		struct pmcmsptwi_cmd cmd;
-+		struct pmcmsptwi_cfg oldcfg, newcfg;
-+
-+		probe = 0;
-+		dual = 0;
-+		cmsg = m + i;
-+		nmsg = NULL;
-+
-+		if ((num - i) >= 2) {
-+			/* Check for a dual write-then-read command */
-+			nmsg = cmsg + 1;
-+			dual = !((cmsg->flags & I2C_M_RD)) &&
-+			       (nmsg->flags & I2C_M_RD) &&
-+			       (cmsg->addr == nmsg->addr);
-+		}
-+
-+		if (dual)
-+			dev_dbg(&adap->dev, "Doing ops %d&%d of %d\n",
-+				(i + 1), (i + 2), num);
-+		else
-+			dev_dbg(&adap->dev, "Doing op %d of %d\n",
-+				(i + 1), num);
-+
-+		if (dual) {
-+			cmd.type = MSP_TWI_CMD_WRITE_READ;
-+			cmd.write_len = cmsg->len;
-+			cmd.write_data = (u8*)cmsg->buf;
-+			cmd.read_len = nmsg->len;
-+			cmd.read_data = (u8*)nmsg->buf;
-+		} else if (cmsg->flags & I2C_M_RD) {
-+			cmd.type = MSP_TWI_CMD_READ;
-+			cmd.read_len = cmsg->len;
-+			cmd.read_data = (u8*)cmsg->buf;
-+			cmd.write_len = 0;
-+			cmd.write_data = NULL;
-+		} else {
-+			cmd.type = MSP_TWI_CMD_WRITE;
-+			cmd.read_len = 0;
-+			cmd.read_data = NULL;
-+			cmd.write_len = cmsg->len;
-+			cmd.write_data = (u8*)cmsg->buf;
-+		}
-+
-+		if (cmsg->len == 0) {
-+			if (cmsg->flags & I2C_M_RD) {
-+				dev_dbg(&adap->dev,
-+					"Read of 0 bytes!  (illegal!)\n");
-+				return -1;
-+			} else {
-+				dev_dbg(&adap->dev,
-+					"Probing for slave at 0x%02x\n",
-+					(cmsg->addr & 0xff));
-+				probe = 1;
-+
-+				/*
-+				 * Probe is a special read of 1 byte.
-+				 * We don't care about the result, we just
-+				 * want to see that it is successful.
-+				 */
-+				cmd.write_len = 1;
-+				cmd.write_data = detect_buffer;
-+				cmd.read_len = 1;
-+				cmd.read_data = NULL;
-+			}
-+		}
-+
-+		cmd.addr = cmsg->addr;
-+
-+		if (probe || (cmsg->flags & I2C_M_TEN)) {
-+			busops->get_twi_config(&newcfg, busops);
-+			busops->get_twi_config(&oldcfg, busops);
-+
-+			/* For probes, we don't want any retries */
-+			if (probe)
-+				newcfg.nak = 0;
-+
-+			/* Set the special 10-bit address flag, if required */
-+			if (cmsg->flags & I2C_M_TEN)
-+				newcfg.add10 = 1;
-+
-+			busops->set_twi_config(&newcfg, busops);
-+		}
-+
-+		ret = busops->xfer_cmd(&cmd, busops);
-+
-+		if (probe || (cmsg->flags & I2C_M_TEN))
-+			busops->set_twi_config(&oldcfg, busops);
-+
-+		switch (ret) {
-+		case MSP_TWI_XFER_LOST_ARBITRATION:
-+			dev_dbg(&adap->dev, "We lost arbitration: "
-+				"Could not become bus master\n");
-+			break;
-+		case MSP_TWI_XFER_NO_RESPONSE:
-+			dev_dbg(&adap->dev, "No response\n");
-+			break;
-+		case MSP_TWI_XFER_DATA_COLLISION:
-+			dev_dbg(&adap->dev, "Data collision\n");
-+			break;
-+		case MSP_TWI_XFER_BUSY:
-+			dev_dbg(&adap->dev, "Port was busy\n");
-+			/*
-+			 *  TODO: We could potentially loop and retry
-+			 *        in this case
-+			 */
-+			break;
-+		case MSP_TWI_XFER_TIMEOUT:
-+			dev_dbg(&adap->dev, "Transfer timeout\n");
-+			break;
-+		}
-+		
-+		if (ret != MSP_TWI_XFER_OK) {
-+			if (probe)
-+				dev_dbg(&adap->dev, "Probe failed\n");
-+			return -1;
-+		}
-+
-+		if (dual) {
-+			dev_dbg(&adap->dev,
-+				"SMBus read 0x%02x from reg 0x%02x\n",
-+				nmsg->buf[0], cmsg->buf[0]);
-+
-+			/* Skip one more ahead, since we just did 2 commands */
-+			i++;
-+		} else {
-+			if (probe)
-+				dev_dbg(&adap->dev, "Probe successful\n");
-+			else
-+				dev_dbg(&adap->dev,
-+					"I2C %s %d bytes successfully\n",
-+					(cmsg->flags & I2C_M_RD) ?
-+						"read" : "wrote",
-+					cmsg->len);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static u32 pmcmsptwi_i2c_func(struct i2c_adapter *adapter)
++static inline void msp_led_disable(u16 led)
 +{
-+	return I2C_FUNC_I2C | I2C_FUNC_10BIT_ADDR | I2C_FUNC_SMBUS_EMUL;
++	msp_led_set_direction(led, MSP_LED_INPUT);
 +}
-+
-+/* -- Initialization -- */
-+
-+static struct pmcmsptwi_algo_data pmcmsptwi_algo_data = {
-+	.get_clock_config	= pmcmsptwi_get_clock_config,
-+	.set_clock_config	= pmcmsptwi_set_clock_config,
-+	.get_twi_config		= pmcmsptwi_get_twi_config,
-+	.set_twi_config		= pmcmsptwi_set_twi_config,
-+	.xfer_cmd		= pmcmsptwi_xfer_cmd,
-+};
-+
-+struct i2c_algorithm pmcmsptwi_algo = {
-+	.master_xfer	= pmcmsptwi_master_xfer,
-+	.smbus_xfer	= NULL,
-+	.algo_control	= NULL,	/* TODO: someday */
-+	.functionality	= pmcmsptwi_i2c_func,
-+};
-+
-+static struct i2c_adapter pmcmsptwi_adapter = {
-+	.owner		= THIS_MODULE,
-+	.class		= I2C_CLASS_HWMON,
-+	.algo		= &pmcmsptwi_algo,
-+	.algo_data	= &pmcmsptwi_algo_data,
-+	.name		= "pmcmsptwi",
-+};
-+
-+static int __init pmcmsptwi_init(void)
-+{
-+	pmcmsptwi_algo_data.iobase = ioremap(MSP_TWI_BASE, MSP_TWI_REG_SIZE);
-+	if (pmcmsptwi_algo_data.iobase == NULL)
-+		return -ENOMEM;
-+
-+	init_completion(&pmcmsptwi_algo_data.wait); 
-+	mutex_init(&pmcmsptwi_algo_data.lock);
-+	pmcmsptwi_algo_data.irq = MSP_TWI_IRQ;
-+
-+	if (pmcmsptwi_algo_data.irq) {
-+		int rc = request_irq(
-+				pmcmsptwi_algo_data.irq, pmcmsptwi_interrupt,
-+				SA_SHIRQ | SA_INTERRUPT | SA_SAMPLE_RANDOM,
-+				"TWI", &pmcmsptwi_algo_data);
-+		if (rc == 0) {
-+			/*
-+			 * Enable 'DONE' interrupt only
-+			 *
-+			 * If you enable all interrupts, you will get one on
-+			 * error and another when the operation completes.
-+			 * This way you only have to handle one interrupt,
-+			 * but you can still check all result flags.
-+			 */
-+			pmcmsptwi_writel(MSP_TWI_INT_STS_DONE,
-+					pmcmsptwi_algo_data.iobase +
-+					MSP_TWI_INT_MSK_REG_OFFSET);
-+		} else {
-+			printk(KERN_WARNING
-+				"Could not assign TWI IRQ handler "
-+				"to irq %d (continuing with poll)\n",
-+				pmcmsptwi_algo_data.irq);
-+			pmcmsptwi_algo_data.irq = 0;
-+		}
-+	}
-+
-+	pmcmsptwi_set_clock_config(&pmcmsptwi_defclockcfg,
-+				   &pmcmsptwi_algo_data);
-+	pmcmsptwi_set_twi_config(&pmcmsptwi_defcfg, &pmcmsptwi_algo_data);
-+
-+	printk(KERN_WARNING "pmcmsptwi: Registering MSP71xx I2C adapter\n");
-+
-+	return i2c_add_adapter(&pmcmsptwi_adapter);
-+}
-+
-+static void __exit pmcmsptwi_exit(void)
-+{
-+	if (pmcmsptwi_algo_data.irq) {
-+		pmcmsptwi_writel(0,
-+			pmcmsptwi_algo_data.iobase +
-+			MSP_TWI_INT_MSK_REG_OFFSET);
-+		free_irq(pmcmsptwi_algo_data.irq, &pmcmsptwi_algo_data);
-+	}
-+	i2c_del_adapter(&pmcmsptwi_adapter);
-+}
-+
-+MODULE_DESCRIPTION("PMC MSP TWI/SMB/I2C driver");
-+MODULE_LICENSE("GPL");
-+
-+module_init(pmcmsptwi_init);
-+module_exit(pmcmsptwi_exit);
++  
++#endif /* !__MSP_LED_MACROS_H__ */

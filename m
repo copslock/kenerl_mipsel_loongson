@@ -1,63 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 18:55:56 +0100 (BST)
-Received: from alpha.total-knowledge.com ([205.217.158.170]:13721 "EHLO
-	total-knowledge.com") by ftp.linux-mips.org with ESMTP
-	id S20022367AbXC0Rzu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Mar 2007 18:55:50 +0100
-Received: (qmail 31282 invoked from network); 27 Mar 2007 10:54:34 -0700
-Received: from unknown (HELO ?192.168.0.217?) (ilya@209.157.142.202)
-  by alpha.total-knowledge.com with ESMTPA; 27 Mar 2007 10:54:34 -0700
-Message-ID: <46095A60.5070605@total-knowledge.com>
-Date:	Tue, 27 Mar 2007 10:54:40 -0700
-From:	"Ilya A. Volynets-Evenbakh" <ilya@total-knowledge.com>
-Organization: Total Knowledge
-User-Agent: Thunderbird 1.5.0.10 (X11/20070312)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
-References: <4607CF1D.50904@gentoo.org>	<20070326.234316.23009158.anemo@mba.ocn.ne.jp>	<46086A90.7070402@gentoo.org> <20070327.235310.128618679.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070327.235310.128618679.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <ilya@total-knowledge.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 18:57:41 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:54751 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022676AbXC0R5j (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Mar 2007 18:57:39 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2RHvYoH026539;
+	Tue, 27 Mar 2007 18:57:34 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2RHvXTa026538;
+	Tue, 27 Mar 2007 18:57:33 +0100
+Date:	Tue, 27 Mar 2007 18:57:33 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: Early printk recent changes.
+Message-ID: <20070327175733.GA26496@linux-mips.org>
+References: <cda58cb80703270716s6c95c66cgd03482a4852a69eb@mail.gmail.com> <Pine.LNX.4.64N.0703271526000.5547@blysk.ds.pg.gda.pl> <cda58cb80703270803g7c1119e4w22272e9e18c0d251@mail.gmail.com> <Pine.LNX.4.64N.0703271620080.5547@blysk.ds.pg.gda.pl> <cda58cb80703270906j74d6bf6fsb6259f24427faff5@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cda58cb80703270906j74d6bf6fsb6259f24427faff5@mail.gmail.com>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14736
+X-archive-position: 14737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilya@total-knowledge.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Because we are too lazy to get HIGHMEM working in order to get
-support for all of its memory. Not to mention that HIGHMEM is Evil(TM).
+On Tue, Mar 27, 2007 at 06:06:10PM +0200, Franck Bui-Huu wrote:
 
-Atsushi Nemoto wrote:
-> On Mon, 26 Mar 2007 20:51:28 -0400, Kumba <kumba@gentoo.org> wrote:
->   
->> Lets try this one; the kernel was built with gcc-4.1.2 and binutils-2.17 this 
->> time around, and I tested it before running objdump on it.  It just hangs right 
->> after loading:
->>
->>  > bootp(): console=ttyS0,38400 root=/dev/md0
->> Setting $netaddr to 192.168.1.12 (from server )
->> Obtaining  from server
->> 4358278+315290 entry: 0x80401000
->>     
->
-> Now I can not see any problem with the disassembled code.  No idea why
-> it does not work at all...
->
-> BTW, why IP32 does not support 32-bit kernel, though it has 32-bit
-> firmware?
-> ---
-> Atsushi Nemoto
->
->   
+> > In this case I gather this was a bulk change and some platforms have
+> >benefited and the DECstation has lost.  You seem to have problems as well.
+> >These issues can be dealt with somehow and they do not mean the change was
+> >bad as a whole.
+> 
+> I think that's the reason why I started this thread: To see if this
+> change is good and really woth...
+> 
+> Making a new file 'early_printk' to gather 3 tiny functions. In the
+> other way we lose the possibilty to register the console earlier, and
+> we need to make some hacks to configure the console if it needs to be.
+> 
+> I understand that such change is needed by x86 arch but for mips I'm 
+> skeptical.
 
--- 
-Ilya A. Volynets-Evenbakh
-Total Knowledge. CTO
-http://www.total-knowledge.com
+I decieded to rush the whole early printk thing since we had several
+copies of early printk in the MIPS code already.  Add plenty of
+variations of prom_putchar / prom_printf.  We certainly now have less
+loose ends in the code than before.  And since we're always in the trade
+of better mouse trap I certainly won't object if submits has one :-)
+
+  Ralf

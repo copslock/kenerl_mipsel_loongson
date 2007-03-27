@@ -1,60 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 18:57:41 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:54751 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022676AbXC0R5j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Mar 2007 18:57:39 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2RHvYoH026539;
-	Tue, 27 Mar 2007 18:57:34 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2RHvXTa026538;
-	Tue, 27 Mar 2007 18:57:33 +0100
-Date:	Tue, 27 Mar 2007 18:57:33 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Early printk recent changes.
-Message-ID: <20070327175733.GA26496@linux-mips.org>
-References: <cda58cb80703270716s6c95c66cgd03482a4852a69eb@mail.gmail.com> <Pine.LNX.4.64N.0703271526000.5547@blysk.ds.pg.gda.pl> <cda58cb80703270803g7c1119e4w22272e9e18c0d251@mail.gmail.com> <Pine.LNX.4.64N.0703271620080.5547@blysk.ds.pg.gda.pl> <cda58cb80703270906j74d6bf6fsb6259f24427faff5@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80703270906j74d6bf6fsb6259f24427faff5@mail.gmail.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 19:36:52 +0100 (BST)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:8424 "HELO
+	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S20022669AbXC0Sgu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Mar 2007 19:36:50 +0100
+Received: (qmail 26196 invoked by uid 101); 27 Mar 2007 18:35:42 -0000
+Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
+  by mother.pmc-sierra.com with SMTP; 27 Mar 2007 18:35:42 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l2RIZgpk022896;
+	Tue, 27 Mar 2007 10:35:42 -0800
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
+	id <FGCQCD6K>; Tue, 27 Mar 2007 11:35:39 -0800
+Message-ID: <460963FB.9090101@pmc-sierra.com>
+From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 6/12] drivers: PMC MSP71xx serial driver
+Date:	Tue, 27 Mar 2007 10:35:39 -0800
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2657.72)
+x-originalarrivaltime: 27 Mar 2007 19:35:33.0250 (UTC) FILETIME=[15E49620:01C770A7]
+user-agent: Thunderbird 1.5.0.10 (X11/20070221)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Marc_St-Jean@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14737
+X-archive-position: 14738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Marc_St-Jean@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 27, 2007 at 06:06:10PM +0200, Franck Bui-Huu wrote:
-
-> > In this case I gather this was a bulk change and some platforms have
-> >benefited and the DECstation has lost.  You seem to have problems as well.
-> >These issues can be dealt with somehow and they do not mean the change was
-> >bad as a whole.
+Sergei Shtylyov wrote:
+> Hello.
 > 
-> I think that's the reason why I started this thread: To see if this
-> change is good and really woth...
+> Marc St-Jean wrote:
 > 
-> Making a new file 'early_printk' to gather 3 tiny functions. In the
-> other way we lose the possibilty to register the console earlier, and
-> we need to make some hacks to configure the console if it needs to be.
+>  > Patch to add serial driver support for the PMC-Sierra
+>  > MSP71xx devices.
 > 
-> I understand that such change is needed by x86 arch but for mips I'm 
-> skeptical.
+>  > Reposting patches as a single set at the request of akpm.
+>  > Only 9 of 12 will be posted at this time, 3 more to follow
+>  > when cleanups are complete.
+> 
+>  > Thanks,
+>  > Marc
+> 
+>  > Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+>  > ---
+>  > Re-posting patch with recommended changes:
+>  > -Implemented support for putchar() in msp_serial.c
+> 
+>  > diff --git a/arch/mips/pmc-sierra/msp71xx/msp_serial.c 
+> b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+>  > new file mode 100644
+>  > index 0000000..3b956e9
+>  > --- /dev/null
+>  > +++ b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+>  > @@ -0,0 +1,185 @@
+> [...]
+>  > +#ifdef CONFIG_KGDB
+>  > +/*
+>  > + * kgdb uses serial port 1 so the console can remain on port 0.
+>  > + * To use port 0 change the definition to read as follows:
+>  > + * #define DEBUG_PORT_BASE KSEG1ADDR(MSP_UART0_BASE)
+>  > + */
+>  > +#define DEBUG_PORT_BASE KSEG1ADDR(MSP_UART1_BASE)
+>  > +
+>  > +int putDebugChar(char c)
+>  > +{
+>  > +     volatile uint32_t *uart = (volatile uint32_t *)DEBUG_PORT_BASE;
+>  > +     uint32_t val = (uint32_t)c;
+>  > +
+>  > +     local_irq_disable();
+>  > +     while (!(uart[5] & 0x20)); /* Wait for TXRDY */
+>  > +     uart[0] = val;
+>  > +     while (!(uart[5] & 0x20)); /* Wait for TXRDY */
+>  > +     local_irq_enable();
+> 
+>     Gah, why you decided to put local_irq_enable() there?!  KGDB expects
+> interrupts to be *disabled* while it has control, else some subtle state
+> corruptions will ensue, and it will eventually lock up. Please remove 
+> these 2 calls completely.
 
-I decieded to rush the whole early printk thing since we had several
-copies of early printk in the MIPS code already.  Add plenty of
-variations of prom_putchar / prom_printf.  We certainly now have less
-loose ends in the code than before.  And since we're always in the trade
-of better mouse trap I certainly won't object if submits has one :-)
+Hmmm, this has been working for several months. I'll remove, retest and
+resubmit.
 
-  Ralf
+Are you aware if this is the case for the "putchar" used by early_printk
+as well?
+
+Thanks,
+Marc

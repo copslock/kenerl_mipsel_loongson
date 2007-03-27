@@ -1,62 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 15:32:25 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:40452 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021900AbXC0OcX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Mar 2007 15:32:23 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 38467E1E6B;
-	Tue, 27 Mar 2007 16:31:39 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id XnZpubzue9jV; Tue, 27 Mar 2007 16:31:38 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B941CE1DDB;
-	Tue, 27 Mar 2007 16:31:38 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l2REVnXZ025968;
-	Tue, 27 Mar 2007 16:31:49 +0200
-Date:	Tue, 27 Mar 2007 15:31:44 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Early printk recent changes.
-In-Reply-To: <cda58cb80703270716s6c95c66cgd03482a4852a69eb@mail.gmail.com>
-Message-ID: <Pine.LNX.4.64N.0703271526000.5547@blysk.ds.pg.gda.pl>
-References: <cda58cb80703270716s6c95c66cgd03482a4852a69eb@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 15:51:51 +0100 (BST)
+Received: from mail.hcrest.com ([12.173.51.131]:44144 "EHLO mail.hcrest.com")
+	by ftp.linux-mips.org with ESMTP id S20021815AbXC0Ovt convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Mar 2007 15:51:49 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.1/2939/Tue Mar 27 15:30:21 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: flush_anon_page for MIPS
+Date:	Tue, 27 Mar 2007 10:51:10 -0400
+Message-ID: <36E4692623C5974BA6661C0B18EE8EDF6CD4D6@MAILSERV.hcrest.com>
+In-Reply-To: <20070327.121733.130850411.nemoto@toshiba-tops.co.jp>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+thread-topic: flush_anon_page for MIPS
+Thread-Index: AcdwHnicH50nus1LTUKot6+qrbm7JwAYL4GQ
+From:	"Ravi Pratap" <Ravi.Pratap@hillcrestlabs.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Cc:	<ralf@linux-mips.org>, <ddaney@avtrex.com>, <miklos@szeredi.hu>,
+	<linux-mips@linux-mips.org>
+Return-Path: <Ravi.Pratap@hillcrestlabs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14729
+X-archive-position: 14730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: Ravi.Pratap@hillcrestlabs.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-> I'm wondering how arch/mips/kernel/early_printk.c is supposed to be used.
+> From: Atsushi Nemoto [mailto:anemo@mba.ocn.ne.jp] 
+> Sent: Monday, March 26, 2007 11:18 PM
+> To: Ravi Pratap
+> Cc: ralf@linux-mips.org; ddaney@avtrex.com; 
+> miklos@szeredi.hu; linux-mips@linux-mips.org
+> Subject: Re: flush_anon_page for MIPS
 > 
-> I've already an early console that needs some setup before registering
-> it. In the current context I can't do that anymore. Of course I can do
-> it once in prom_putchar() but quite frankly I do not see the real
-> point to make this common for all platforms.
+> On Mon, 26 Mar 2007 19:24:45 -0400, "Ravi Pratap" 
+> <Ravi.Pratap@hillcrestlabs.com> wrote:
+> > So I'm trying to backport these changesets and it seems that I need 
+> > the changeset that originally introduced kmap_coherent, 
+> etc. I tried 
+> > some Google searching and found this but I need your help 
+> in figuring 
+> > out which exact changesets I need.
+> > 
+> > Is it this one:
+> > 
+> > b895b66990f22a8a030c41390c538660a02bb97f
+> > 
+> > ?
 > 
-> Moreover I used to call setup_early_printk() sooner in my prom setup code.
+> It was splitted into some parts when merged to mainline.
+> 
+> At 2.6.19 cycle:
+> f8829caee311207afbc882794bdc5aa0db5caf33
+> At 2.6.20 cycle:
+> bcd022801ee514e28c32837f0b3ce18c775f1a7b
+> 9de455b20705f36384a711d4a20bcf7ba1ab180b
+> 77fff4ae2b7bba6d66a8287d9ab948e2b6c16145
+> 
+> If you only needed kmap_coherent, the first one might be enough.
 
- I suppose you do not have to use it.  I cannot be satisfied with the 
-implementation for the use by the DECstation either, so I am going to 
-revive the old code as soon as I upgrade my setup. ;-)  Feel free to use 
-the old version of arch/mips/dec/prom/console.c as a template.
+Thanks - the first one, with some minor updates was good enough to apply
+to 2.6.15.
 
- Don't fix what isn't broken...
 
-  Maciej
+Ravi.

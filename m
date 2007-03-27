@@ -1,78 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 17:07:14 +0100 (BST)
-Received: from nz-out-0506.google.com ([64.233.162.238]:30474 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021955AbXC0QHM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Mar 2007 17:07:12 +0100
-Received: by nz-out-0506.google.com with SMTP id x7so1790812nzc
-        for <linux-mips@linux-mips.org>; Tue, 27 Mar 2007 09:06:11 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=awpwRox12s78MCC5duqQ8S9TXUrnYrQGvp1ifjS5aySXya2Fitw85kjeZzWeSBaRCNktoeV843l10SCIbtpJGpwFNNfk4bcNwIPBunJJpMvLpao1tq7HzjCHEC6aeQncz6dJjfQBMrpvH5FNXYoXpAgQKudAQ4K5bQ/g730Bwvk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=Zd77u1ICOn/mS2R9sUdzydgwlape+ZiukEvYqKbtFf38kccv3jnuv0PLEV9gWlIWjZsJPUta0B7eG8/ftORDknnvIJzT5z6fmyIHF0aDgjmSxzjrkjLUQxI4LFhYdlIMO2e2/yWj2SSZVXApJNUNZYXMbaKggG7dZqtFuEUdJVY=
-Received: by 10.115.61.1 with SMTP id o1mr3217457wak.1175011570750;
-        Tue, 27 Mar 2007 09:06:10 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Tue, 27 Mar 2007 09:06:10 -0700 (PDT)
-Message-ID: <cda58cb80703270906j74d6bf6fsb6259f24427faff5@mail.gmail.com>
-Date:	Tue, 27 Mar 2007 18:06:10 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: Early printk recent changes.
-Cc:	"Ralf Baechle" <ralf@linux-mips.org>,
-	"Linux MIPS List" <linux-mips@linux-mips.org>
-In-Reply-To: <Pine.LNX.4.64N.0703271620080.5547@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 17:12:23 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:15599 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20021852AbXC0QMV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2007 17:12:21 +0100
+Received: from localhost (p3060-ipad207funabasi.chiba.ocn.ne.jp [222.145.85.60])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id 2B290BA9B
+	for <linux-mips@linux-mips.org>; Wed, 28 Mar 2007 01:11:00 +0900 (JST)
+Date:	Wed, 28 Mar 2007 01:11:00 +0900 (JST)
+Message-Id: <20070328.011100.07456480.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Subject: missimg system calls
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <cda58cb80703270716s6c95c66cgd03482a4852a69eb@mail.gmail.com>
-	 <Pine.LNX.4.64N.0703271526000.5547@blysk.ds.pg.gda.pl>
-	 <cda58cb80703270803g7c1119e4w22272e9e18c0d251@mail.gmail.com>
-	 <Pine.LNX.4.64N.0703271620080.5547@blysk.ds.pg.gda.pl>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14734
+X-archive-position: 14735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 3/27/07, Maciej W. Rozycki <macro@linux-mips.org> wrote:
-> On Tue, 27 Mar 2007, Franck Bui-Huu wrote:
->
-> > >  Don't fix what isn't broken...
-> > >
-> >
-> > Well with such advice, Linux would have been stuck to version 0.4 ;)
->
->  Fortunately, there is a feature called "common sense" and it has
-> prevented a halt from happening.  Also I wouldn't be brave enough to claim
-> any particular version of Linux, nor any other piece of software, is
-> perfect, though, admittedly, the level of imperfection varies highly
-> across different versions and pieces.
->
+Nice patches to check unwired system calls are available recently:
 
-you did notice the smiley, didn't you ?
+http://lkml.org/lkml/2007/3/21/358
+http://lkml.org/lkml/2007/3/21/360
+http://lkml.org/lkml/2007/3/21/361
 
->  In this case I gather this was a bulk change and some platforms have
-> benefited and the DECstation has lost.  You seem to have problems as well.
-> These issues can be dealt with somehow and they do not mean the change was
-> bad as a whole.
+These patches are already in -mm tree.
 
-I think that's the reason why I started this thread: To see if this
-change is good and really woth...
+I tried it with quick and dirty hack for N32/O32 on 64-bit kernel.
+Many of these warnings seem false positive but it might be worth to
+look at.
 
-Making a new file 'early_printk' to gather 3 tiny functions. In the
-other way we lose the possibilty to register the console earlier, and
-we need to make some hacks to configure the console if it needs to be.
+On 32-bit kernel:
+  CC      init/missing_syscalls.o
+In file included from /work/linux-mips/init/missing_syscalls.c:97:
+init/missing_syscalls.h:331:2: warning: #warning syscall select not implemented
+init/missing_syscalls.h:763:2: warning: #warning syscall vfork not implemented
+init/missing_syscalls.h:1083:2: warning: #warning syscall fadvise64_64 not implemented
 
-I understand that such change is needed by x86 arch but for mips I'm skeptical.
--- 
-               Franck
+On 64-bit kernel:
+  CC      init/missing_syscalls.o
+In file included from /work/linux-mips/init/missing_syscalls.c:97:
+init/missing_syscalls.h:55:2: warning: #warning syscall time not implemented
+init/missing_syscalls.h:279:2: warning: #warning syscall ssetmask not implemented
+init/missing_syscalls.h:331:2: warning: #warning syscall select not implemented
+init/missing_syscalls.h:347:2: warning: #warning syscall uselib not implemented
+init/missing_syscalls.h:763:2: warning: #warning syscall vfork not implemented
+init/missing_syscalls.h:887:2: warning: #warning syscall getdents64 not implemented
+  CC      arch/mips/kernel/missing_syscalls_n32.o
+In file included from /work/linux-mips/arch/mips/kernel/missing_syscalls.h:1,
+                 from /work/linux-mips/arch/mips/kernel/../../../init/missing_syscalls.c:97,
+                 from /work/linux-mips/arch/mips/kernel/missing_syscalls_n32.c:1:
+arch/mips/kernel/../../../init/missing_syscalls.h:55:2: warning: #warning syscall time not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:279:2: warning: #warning syscall ssetmask not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:331:2: warning: #warning syscall select not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:347:2: warning: #warning syscall uselib not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:763:2: warning: #warning syscall vfork not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:775:2: warning: #warning syscall truncate64 not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:779:2: warning: #warning syscall ftruncate64 not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:783:2: warning: #warning syscall stat64 not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:787:2: warning: #warning syscall lstat64 not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:791:2: warning: #warning syscall fstat64 not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:887:2: warning: #warning syscall getdents64 not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:1083:2: warning: #warning syscall fadvise64_64 not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:1191:2: warning: #warning syscall fstatat64 not implemented
+  CC      arch/mips/kernel/missing_syscalls_o32.o
+In file included from /work/linux-mips/arch/mips/kernel/missing_syscalls.h:1,
+                 from /work/linux-mips/arch/mips/kernel/../../../init/missing_syscalls.c:97,
+                 from /work/linux-mips/arch/mips/kernel/missing_syscalls_o32.c:1:
+arch/mips/kernel/../../../init/missing_syscalls.h:331:2: warning: #warning syscall select not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:763:2: warning: #warning syscall vfork not implemented
+arch/mips/kernel/../../../init/missing_syscalls.h:1083:2: warning: #warning syscall fadvise64_64 not implemented
+
+
+And here's my hack.  Advices from kbuild gurus are highly appreciated.
+
+ arch/mips/kernel/Makefile               |   11 +++++++++++
+ arch/mips/kernel/missing_syscalls.h     |    1 +
+ arch/mips/kernel/missing_syscalls_n32.c |    1 +
+ arch/mips/kernel/missing_syscalls_o32.c |    1 +
+ 4 files changed, 14 insertions(+)
+
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 4924626..d6abdc5 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -4,6 +4,17 @@
+ 
+ extra-y		:= head.o init_task.o vmlinux.lds
+ 
++ifdef CONFIG_MIPS32_N32
++missing_syscalls_n32.o: missing_syscalls_n32.c
++CFLAGS_missing_syscalls_n32.o = -mabi=n32
++always += missing_syscalls_n32.o
++endif
++ifdef CONFIG_MIPS32_O32
++missing_syscalls_o32.o: missing_syscalls_o32.c
++CFLAGS_missing_syscalls_o32.o = -mabi=32
++always += missing_syscalls_o32.o
++endif
++
+ obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
+ 		   ptrace.o reset.o semaphore.o setup.o signal.o syscall.o \
+ 		   time.o topology.o traps.o unaligned.o
+diff --git a/arch/mips/kernel/missing_syscalls.h b/arch/mips/kernel/missing_syscalls.h
+new file mode 100644
+index 0000000..9c4f2e9
+--- /dev/null
++++ b/arch/mips/kernel/missing_syscalls.h
+@@ -0,0 +1 @@
++#include "../../../init/missing_syscalls.h"
+diff --git a/arch/mips/kernel/missing_syscalls_n32.c b/arch/mips/kernel/missing_syscalls_n32.c
+new file mode 100644
+index 0000000..ce527c6
+--- /dev/null
++++ b/arch/mips/kernel/missing_syscalls_n32.c
+@@ -0,0 +1 @@
++#include "../../../init/missing_syscalls.c"
+diff --git a/arch/mips/kernel/missing_syscalls_o32.c b/arch/mips/kernel/missing_syscalls_o32.c
+new file mode 100644
+index 0000000..ce527c6
+--- /dev/null
++++ b/arch/mips/kernel/missing_syscalls_o32.c
+@@ -0,0 +1 @@
++#include "../../../init/missing_syscalls.c"
+
+---
+Atsushi Nemoto

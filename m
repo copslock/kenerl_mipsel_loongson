@@ -1,54 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 15:17:31 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.170]:35332 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021858AbXC0OR2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Mar 2007 15:17:28 +0100
-Received: by ug-out-1314.google.com with SMTP id 40so2116673uga
-        for <linux-mips@linux-mips.org>; Tue, 27 Mar 2007 07:16:27 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Kg9doZFwgCoC/hLc4ebZYd4+zjWtVvntLkSRXtMeoiXOXRL5Sb4Em1InKSGyAmhvMdNq0XwaE0Nu/6AVYt8YlBDO6cnQe9qH4I6keeFOte+0nhXLcFdMJ9M85hU31PMAiYXa7a7YPsvfxfLb9BCyM6UCZ98hI7gTaitzR1KIKoU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Z9EncHQBUFQtPO9jCmymh3cCe6GyIGJVBJr+qEoLhhukPDupnPV6VlasLfE/zbRzhFzVhcIDfE+/dmIgWz6WLY+wdhYLaRGNjwhk2xs9UXcXXdV8fGENDmngn2GSRHCyhhWWDmRXcR06aZ7hVZDJNd8dx6fif4FLnJB/AT26DGg=
-Received: by 10.114.130.1 with SMTP id c1mr3169024wad.1175004986456;
-        Tue, 27 Mar 2007 07:16:26 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Tue, 27 Mar 2007 07:16:26 -0700 (PDT)
-Message-ID: <cda58cb80703270716s6c95c66cgd03482a4852a69eb@mail.gmail.com>
-Date:	Tue, 27 Mar 2007 16:16:26 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Early printk recent changes.
-Cc:	"Linux MIPS List" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 15:30:04 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:62950 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20021892AbXC0OaC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2007 15:30:02 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 5C3293ECA; Tue, 27 Mar 2007 07:29:27 -0700 (PDT)
+Message-ID: <46092A6F.9010800@ru.mvista.com>
+Date:	Tue, 27 Mar 2007 18:30:07 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Marc St-Jean <stjeanma@pmc-sierra.com>
+Cc:	akpm@linux-foundation.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 6/12] drivers: PMC MSP71xx serial driver
+References: <200703262159.l2QLxIDh013039@pasqua.pmc-sierra.bc.ca>
+In-Reply-To: <200703262159.l2QLxIDh013039@pasqua.pmc-sierra.bc.ca>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14727
+X-archive-position: 14728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello.
 
-I'm wondering how arch/mips/kernel/early_printk.c is supposed to be used.
+Marc St-Jean wrote:
 
-I've already an early console that needs some setup before registering
-it. In the current context I can't do that anymore. Of course I can do
-it once in prom_putchar() but quite frankly I do not see the real
-point to make this common for all platforms.
+> Patch to add serial driver support for the PMC-Sierra
+> MSP71xx devices.
 
-Moreover I used to call setup_early_printk() sooner in my prom setup code.
+> Reposting patches as a single set at the request of akpm.
+> Only 9 of 12 will be posted at this time, 3 more to follow
+> when cleanups are complete.
 
-BTW, it seems some '__init' and '__init_data' are missing...
--- 
-               Franck
+> Thanks,
+> Marc
+
+> Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+> ---
+> Re-posting patch with recommended changes:
+> -Implemented support for putchar() in msp_serial.c
+
+> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_serial.c b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+> new file mode 100644
+> index 0000000..3b956e9
+> --- /dev/null
+> +++ b/arch/mips/pmc-sierra/msp71xx/msp_serial.c
+> @@ -0,0 +1,185 @@
+[...]
+> +#ifdef CONFIG_KGDB
+> +/*
+> + * kgdb uses serial port 1 so the console can remain on port 0.
+> + * To use port 0 change the definition to read as follows:
+> + * #define DEBUG_PORT_BASE KSEG1ADDR(MSP_UART0_BASE)
+> + */
+> +#define DEBUG_PORT_BASE KSEG1ADDR(MSP_UART1_BASE)
+> +
+> +int putDebugChar(char c)
+> +{
+> +	volatile uint32_t *uart = (volatile uint32_t *)DEBUG_PORT_BASE;
+> +	uint32_t val = (uint32_t)c;
+> +
+> +	local_irq_disable();
+> +	while (!(uart[5] & 0x20)); /* Wait for TXRDY */
+> +	uart[0] = val;
+> +	while (!(uart[5] & 0x20)); /* Wait for TXRDY */
+> +	local_irq_enable();
+
+    Gah, why you decided to put local_irq_enable() there?!  KGDB expects 
+interrupts to be *disabled* while it has control, else some subtle state 
+corruptions will ensue, and it will eventually lock up. Please remove these 2 
+calls completely.
+
+WBR, Sergei

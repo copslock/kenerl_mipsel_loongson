@@ -1,69 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 04:18:00 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:15304 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20021288AbXC0DR6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Mar 2007 04:17:58 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 27 Mar 2007 12:17:57 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 2B10920494;
-	Tue, 27 Mar 2007 12:17:35 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 1DFC0203F1;
-	Tue, 27 Mar 2007 12:17:35 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l2R3HXW0082363;
-	Tue, 27 Mar 2007 12:17:33 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 27 Mar 2007 12:17:33 +0900 (JST)
-Message-Id: <20070327.121733.130850411.nemoto@toshiba-tops.co.jp>
-To:	Ravi.Pratap@hillcrestlabs.com
-Cc:	ralf@linux-mips.org, ddaney@avtrex.com, miklos@szeredi.hu,
-	linux-mips@linux-mips.org
-Subject: Re: flush_anon_page for MIPS
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <36E4692623C5974BA6661C0B18EE8EDF6CD4AF@MAILSERV.hcrest.com>
-References: <20070326140542.GA14354@linux-mips.org>
-	<36E4692623C5974BA6661C0B18EE8EDF6CD4AF@MAILSERV.hcrest.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.3 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2007 09:02:21 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.175]:18890 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021590AbXC0ICT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Mar 2007 09:02:19 +0100
+Received: by ug-out-1314.google.com with SMTP id 40so2022516uga
+        for <linux-mips@linux-mips.org>; Tue, 27 Mar 2007 01:01:19 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=PsfNGRiRoIFL5RjMAaW76AwRu9AeeyIwwtoqloOGPKlMKb+3LVE1IkyQXY9VlrVNlwuasIbb5x0cZk5ayxM/IRZ7lk8Q9KXJixbvTi7FzLPAp4AJUMNDKOx/yeg11qNYVKSLtoFLWVS42R88l+Ct2u6AGsfGHY6hCpB4rTCKr7U=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=M7grxJReSRR7mWby7GtHhMKBfZOTky4VW6IW6lHDkuXbbcqnYl+nybGSs5oGht+ltTMg+gzDChOqUvxewhx9h2EYaiZUa7llaBnhUTcm787gCjmSAF7b4S9Fvvj0I5y1IIaZJfhEDtoyoO8TFSRB1mwUULkaenF79DGxiJYGmhc=
+Received: by 10.115.74.1 with SMTP id b1mr3049956wal.1174982478006;
+        Tue, 27 Mar 2007 01:01:18 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Tue, 27 Mar 2007 01:01:17 -0700 (PDT)
+Message-ID: <cda58cb80703270101p1641cfctdef455e55f275dec@mail.gmail.com>
+Date:	Tue, 27 Mar 2007 10:01:17 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
+Cc:	ralf@linux-mips.org, kumba@gentoo.org, linux-mips@linux-mips.org,
+	ths@networkno.de
+In-Reply-To: <20070327.121232.71086507.nemoto@toshiba-tops.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+References: <cda58cb80703260831t576ff7c5wef1e34e3367e7c45@mail.gmail.com>
+	 <20070327.004511.31449250.anemo@mba.ocn.ne.jp>
+	 <cda58cb80703260907g6f349298xf85b2e2954a7b6a7@mail.gmail.com>
+	 <20070327.121232.71086507.nemoto@toshiba-tops.co.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14720
+X-archive-position: 14721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 26 Mar 2007 19:24:45 -0400, "Ravi Pratap" <Ravi.Pratap@hillcrestlabs.com> wrote:
-> So I'm trying to backport these changesets and it seems that I need the
-> changeset that originally introduced kmap_coherent, etc. I tried some
-> Google searching and found this but I need your help in figuring out
-> which exact changesets I need.
-> 
-> Is it this one:
-> 
-> b895b66990f22a8a030c41390c538660a02bb97f
-> 
-> ?
+On 3/27/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> On Mon, 26 Mar 2007 18:07:21 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> > ok, I suppose a warning is fine. What about this patch on top of the patchset ?
+> >
+> > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> > index 3ec0c12..b886945 100644
+> > --- a/arch/mips/Makefile
+> > +++ b/arch/mips/Makefile
+> > @@ -627,7 +627,12 @@ ifdef CONFIG_64BIT
+> >    endif
+> >
+> >    ifeq ($(KBUILD_SYM32), y)
+> > -    cflags-y += -msym32 -DKBUILD_64BIT_SYM32
+> > +    ifeq ($(call cc-option-yn,-msym32), y)
+> > +      cflags-y += -msym32 -DKBUILD_64BIT_SYM32
+> > +    else
+> > +      $(warning '-msym32' option is not supported by your compiler. \
+> > +               You should use a new one to get best result)
+> > +    endif
+> >    endif
+> >  endif
+>
+> Well, I feel even a warning is intrusive, while it is not necessary
+> optimization.
+>
 
-It was splitted into some parts when merged to mainline.
+OK, I'll remove it.
 
-At 2.6.19 cycle:
-f8829caee311207afbc882794bdc5aa0db5caf33
-At 2.6.20 cycle:
-bcd022801ee514e28c32837f0b3ce18c775f1a7b
-9de455b20705f36384a711d4a20bcf7ba1ab180b
-77fff4ae2b7bba6d66a8287d9ab948e2b6c16145
-
-If you only needed kmap_coherent, the first one might be enough.
----
-Atsushi Nemoto
+thanks
+-- 
+               Franck

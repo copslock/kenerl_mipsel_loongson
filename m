@@ -1,59 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 00:53:33 +0100 (BST)
-Received: from mailout.stusta.mhn.de ([141.84.69.5]:38798 "EHLO
-	mailhub.stusta.mhn.de") by ftp.linux-mips.org with ESMTP
-	id S20023050AbXC0Xxc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Mar 2007 00:53:32 +0100
-Received: from r063144.stusta.swh.mhn.de (r063144.stusta.swh.mhn.de [10.150.63.144])
-	by mailhub.stusta.mhn.de (Postfix) with ESMTP id 868D9181C22;
-	Wed, 28 Mar 2007 01:53:15 +0200 (CEST)
-Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
-	id 82839115B5F; Wed, 28 Mar 2007 01:53:00 +0200 (CEST)
-Date:	Wed, 28 Mar 2007 01:53:00 +0200
-From:	Adrian Bunk <bunk@stusta.de>
-To:	"Robert P. J. Day" <rpjday@mindspring.com>, ralf@linux-mips.org
-Cc:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 03:37:39 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:4826 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023075AbXC1Chf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Mar 2007 03:37:35 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2S2bR0V032019;
+	Wed, 28 Mar 2007 03:37:27 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2S2bOcl032018;
+	Wed, 28 Mar 2007 03:37:24 +0100
+Date:	Wed, 28 Mar 2007 03:37:24 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Linus Torvalds <torvalds@linux-foundation.org>
+Cc:	Adrian Bunk <bunk@stusta.de>,
+	"Robert P. J. Day" <rpjday@mindspring.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	linux-mips@linux-mips.org
-Subject: Re: dead CONFIG variables in kernel Makefiles
-Message-ID: <20070327235259.GL16477@stusta.de>
-References: <Pine.LNX.4.64.0703261924470.26815@CPE00045a9c397f-CM001225dbafb6>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Subject: [CHAR] Wire up DEC serial drivers in Kconfig
+Message-ID: <20070328023724.GA31980@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0703261924470.26815@CPE00045a9c397f-CM001225dbafb6>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <bunk@stusta.de>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14743
+X-archive-position: 14744
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@stusta.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 26, 2007 at 07:32:00PM -0400, Robert P. J. Day wrote:
-> 
->   the output from a short script i wrote, locating all CONFIG_
-> variables in makefiles that don't appear to exist in any Kconfig file
-> anywhere in the source tree.
-> 
->   first, from the drivers/ directory:
->...
-> ===== ZS =====
-> ./drivers/tc/Makefile:obj-$(CONFIG_ZS) += zs.o
->...
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-Ralf, is there any reason why the code for this driver is in Linus' 
-tree, but the option (that is in the mips tree) is missing?
+ drivers/char/Kconfig |   33 +++++++++++++++++++++++++++++++++
 
-cu
-Adrian
-
--- 
-
-       "Is there not promise of rain?" Ling Tan asked suddenly out
-        of the darkness. There had been need of rain for many days.
-       "Only a promise," Lao Er said.
-                                       Pearl S. Buck - Dragon Seed
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index 3429ece..d0c978f 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -386,6 +386,39 @@ config AU1000_SERIAL_CONSOLE
+ 	  If you have an Alchemy AU1000 processor (MIPS based) and you want
+ 	  to use a console on a serial port, say Y.  Otherwise, say N.
+ 
++config SERIAL_DEC
++	bool "DECstation serial support"
++	depends on MACH_DECSTATION
++	default y
++	help
++	  This selects whether you want to be asked about drivers for
++	  DECstation serial ports.
++
++	  Note that the answer to this question won't directly affect the
++	  kernel: saying N will just cause the configurator to skip all
++	  the questions about DECstation serial ports.
++
++config SERIAL_DEC_CONSOLE
++	bool "Support for console on a DECstation serial port"
++	depends on SERIAL_DEC
++	default y
++	help
++	  If you say Y here, it will be possible to use a serial port as the
++	  system console (the system console is the device which receives all
++	  kernel messages and warnings and which allows logins in single user
++	  mode).  Note that the firmware uses ttyS0 as the serial console on
++	  the Maxine and ttyS2 on the others.
++
++	  If unsure, say Y.
++
++config ZS
++	bool "Z85C30 Serial Support"
++	depends on SERIAL_DEC
++	default y
++	help
++	  Documentation on the Zilog 85C350 serial communications controller
++	  is downloadable at <http://www.zilog.com/pdfs/serial/z85c30.pdf>
++
+ config A2232
+ 	tristate "Commodore A2232 serial support (EXPERIMENTAL)"
+ 	depends on EXPERIMENTAL && ZORRO && BROKEN_ON_SMP

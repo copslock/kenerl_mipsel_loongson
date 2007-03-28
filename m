@@ -1,84 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 03:37:39 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:4826 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023075AbXC1Chf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Mar 2007 03:37:35 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2S2bR0V032019;
-	Wed, 28 Mar 2007 03:37:27 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2S2bOcl032018;
-	Wed, 28 Mar 2007 03:37:24 +0100
-Date:	Wed, 28 Mar 2007 03:37:24 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Linus Torvalds <torvalds@linux-foundation.org>
-Cc:	Adrian Bunk <bunk@stusta.de>,
-	"Robert P. J. Day" <rpjday@mindspring.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mips@linux-mips.org
-Subject: [CHAR] Wire up DEC serial drivers in Kconfig
-Message-ID: <20070328023724.GA31980@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 08:38:44 +0100 (BST)
+Received: from wr-out-0506.google.com ([64.233.184.239]:41209 "EHLO
+	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021871AbXC1Hik (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Mar 2007 08:38:40 +0100
+Received: by wr-out-0506.google.com with SMTP id 58so1087207wri
+        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2007 00:37:39 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=V5xQmAGsFIacFNsBdjufXFG4jRd9dM5MYISsf/SJJnz/tFwYFHGN3oH3kXk9PCowUmbtXHMcRPoN8nhttewVzSgpzFs3fjMaio2sDc/oxa7BflVxLKMdx6RuUgS7z+KPAYg8RydRsNx/j0sNSvGfuccZLgHXqrAqMp8sfWPyqdM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=fsq23VgQf2ej4V44MiBOSN7bhcK3QcJA3VPoC1U1hDfJ4DBODSdlRWjXOAz6k+JwlIfiXBLLlFStcRr1lLzYq5eeiRXNWNI1rz0GebsMPhoSCLlyPRmkP679baUD7Y0fLdQt38NYEhW3tMqSDJoynafSDsN7lzsdkALEje7Esvc=
+Received: by 10.114.201.1 with SMTP id y1mr3564922waf.1175067459374;
+        Wed, 28 Mar 2007 00:37:39 -0700 (PDT)
+Received: by 10.114.136.11 with HTTP; Wed, 28 Mar 2007 00:37:39 -0700 (PDT)
+Message-ID: <cda58cb80703280037s72964594jccab64866a54c4a6@mail.gmail.com>
+Date:	Wed, 28 Mar 2007 09:37:39 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: Early printk recent changes.
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	"Linux MIPS List" <linux-mips@linux-mips.org>
+In-Reply-To: <20070327175733.GA26496@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+References: <cda58cb80703270716s6c95c66cgd03482a4852a69eb@mail.gmail.com>
+	 <Pine.LNX.4.64N.0703271526000.5547@blysk.ds.pg.gda.pl>
+	 <cda58cb80703270803g7c1119e4w22272e9e18c0d251@mail.gmail.com>
+	 <Pine.LNX.4.64N.0703271620080.5547@blysk.ds.pg.gda.pl>
+	 <cda58cb80703270906j74d6bf6fsb6259f24427faff5@mail.gmail.com>
+	 <20070327175733.GA26496@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14744
+X-archive-position: 14745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+On 3/27/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> loose ends in the code than before.  And since we're always in the trade
+> of better mouse trap I certainly won't object if submits has one :-)
+>
 
- drivers/char/Kconfig |   33 +++++++++++++++++++++++++++++++++
-
-diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
-index 3429ece..d0c978f 100644
---- a/drivers/char/Kconfig
-+++ b/drivers/char/Kconfig
-@@ -386,6 +386,39 @@ config AU1000_SERIAL_CONSOLE
- 	  If you have an Alchemy AU1000 processor (MIPS based) and you want
- 	  to use a console on a serial port, say Y.  Otherwise, say N.
- 
-+config SERIAL_DEC
-+	bool "DECstation serial support"
-+	depends on MACH_DECSTATION
-+	default y
-+	help
-+	  This selects whether you want to be asked about drivers for
-+	  DECstation serial ports.
-+
-+	  Note that the answer to this question won't directly affect the
-+	  kernel: saying N will just cause the configurator to skip all
-+	  the questions about DECstation serial ports.
-+
-+config SERIAL_DEC_CONSOLE
-+	bool "Support for console on a DECstation serial port"
-+	depends on SERIAL_DEC
-+	default y
-+	help
-+	  If you say Y here, it will be possible to use a serial port as the
-+	  system console (the system console is the device which receives all
-+	  kernel messages and warnings and which allows logins in single user
-+	  mode).  Note that the firmware uses ttyS0 as the serial console on
-+	  the Maxine and ttyS2 on the others.
-+
-+	  If unsure, say Y.
-+
-+config ZS
-+	bool "Z85C30 Serial Support"
-+	depends on SERIAL_DEC
-+	default y
-+	help
-+	  Documentation on the Zilog 85C350 serial communications controller
-+	  is downloadable at <http://www.zilog.com/pdfs/serial/z85c30.pdf>
-+
- config A2232
- 	tristate "Commodore A2232 serial support (EXPERIMENTAL)"
- 	depends on EXPERIMENTAL && ZORRO && BROKEN_ON_SMP
+since you agree to consider them, I'll do that shortly.
+-- 
+               Franck

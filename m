@@ -1,71 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 08:53:00 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.185]:18714 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021908AbXC1Hwf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Mar 2007 08:52:35 +0100
-Received: by nf-out-0910.google.com with SMTP id q29so2672130nfc
-        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2007 00:51:35 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=sakjqrabotrKktXTQ0ChNisXej4vAXK1uLhydHsRma9MUYKY+HuxyZoZafqznOdAv4/3XbRi+FfuHGhsB83IHL+3krfE+2Fo824svRSvwyj7GQx7q99784mHQwlCPWU8OQU9WGYPQQv6RwP82npZqqqYXbRQOox7zFYcF9kPW2k=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=ns80NuXa2g0fY9olQu6O+KmasVyHesZ8fVZf/75gOS3FNWcgqIqZxsceC4rqhPgb+mMlRXIMqmTJqwv8K2pnQKb/R3quit7THSnq2G9QWfMTflWZXpF4jf1/bVq4/Na1vDCKnSBM4+qvpfYcA4mdlc951eSA3WCH1xpDTEZ0Rgw=
-Received: by 10.82.110.4 with SMTP id i4mr314391buc.1175068294661;
-        Wed, 28 Mar 2007 00:51:34 -0700 (PDT)
-Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id c24sm22444170ika.2007.03.28.00.51.33;
-        Wed, 28 Mar 2007 00:51:33 -0700 (PDT)
-Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 5803023F76E; Wed, 28 Mar 2007 08:51:30 +0200 (CEST)
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH 2/2] early_printk: allow the early console to run earlier
-Date:	Wed, 28 Mar 2007 08:51:30 +0200
-Message-Id: <11750646903145-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.5.1.rc1.27.g1d848
-In-Reply-To: <11750646902981-git-send-email-fbuihuu@gmail.com>
-References: <20070327175733.GA26496@linux-mips.org> <11750646902981-git-send-email-fbuihuu@gmail.com>
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 11:33:18 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:20491 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021977AbXC1KdQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Mar 2007 11:33:16 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 5E1CAE1C95;
+	Wed, 28 Mar 2007 12:32:20 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id cc8w-QI8+qrg; Wed, 28 Mar 2007 12:32:20 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id D1882E1C72;
+	Wed, 28 Mar 2007 12:32:19 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l2SAWiZn024301;
+	Wed, 28 Mar 2007 12:32:44 +0200
+Date:	Wed, 28 Mar 2007 11:32:39 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Linus Torvalds <torvalds@linux-foundation.org>,
+	Adrian Bunk <bunk@stusta.de>,
+	"Robert P. J. Day" <rpjday@mindspring.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [CHAR] Wire up DEC serial drivers in Kconfig
+In-Reply-To: <20070328023724.GA31980@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0703281128010.25992@blysk.ds.pg.gda.pl>
+References: <20070328023724.GA31980@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.1/2946/Wed Mar 28 11:36:58 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14747
+X-archive-position: 14748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Franck Bui-Huu <fbuihuu@gmail.com>
+On Wed, 28 Mar 2007, Ralf Baechle wrote:
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/kernel/early_printk.c |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-diff --git a/arch/mips/kernel/early_printk.c b/arch/mips/kernel/early_printk.c
-index 57ba73a..f68f82f 100644
---- a/arch/mips/kernel/early_printk.c
-+++ b/arch/mips/kernel/early_printk.c
-@@ -30,8 +30,14 @@ static struct console early_console __initdata = {
- 	.index	= -1
- };
- 
-+static int early_console_initialized __initdata;
-+
- void __init setup_early_printk(void)
- {
-+	if (early_console_initialized)
-+		return;
-+	early_console_initialized = 1;
-+
- 	register_console(&early_console);
- }
- 
--- 
-1.5.1.rc1.27.g1d848
+Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
+
+ I'm not sure it's worth the hassle -- I'm in the middle of moving the 
+driver to drivers/serial/, which I should finish soon after I reestablish 
+my home network.  Otherwise I'm fine with it.  Has anybody actually 
+requested it?
+
+  Maciej

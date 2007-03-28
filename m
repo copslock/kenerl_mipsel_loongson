@@ -1,83 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 16:22:13 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:6860 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022473AbXC1PWI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2007 16:22:08 +0100
-Received: from localhost (p4133-ipad207funabasi.chiba.ocn.ne.jp [222.145.86.133])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 5D342C65A; Thu, 29 Mar 2007 00:20:48 +0900 (JST)
-Date:	Thu, 29 Mar 2007 00:20:48 +0900 (JST)
-Message-Id: <20070329.002048.126761099.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 16:23:02 +0100 (BST)
+Received: from mail.blastwave.org ([147.87.98.10]:44258 "EHLO
+	mail.blastwave.org") by ftp.linux-mips.org with ESMTP
+	id S20023079AbXC1PXA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Mar 2007 16:23:00 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mail.blastwave.org (Postfix) with ESMTP id 0EDCAF98D;
+	Wed, 28 Mar 2007 17:22:28 +0200 (MEST)
+X-Virus-Scanned: amavisd-new at blastwave.org
+Received: from mail.blastwave.org ([127.0.0.1])
+	by localhost (enterprise.blastwave.org [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id iVCguldp+BTy; Wed, 28 Mar 2007 17:22:18 +0200 (MEST)
+Received: from unknown (66-132.63-81.stat.fixnetdata.ch [81.63.132.66])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.blastwave.org (Postfix) with ESMTP id F2A97F97B;
+	Wed, 28 Mar 2007 17:22:17 +0200 (MEST)
+Date:	Wed, 28 Mar 2007 17:22:16 +0200
+From:	Attila Kinali <attila@kinali.ch>
+To:	Markus Gothe <markus.gothe@27m.se>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: missimg system calls
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <cda58cb80703280401h7ef54d23i19766f453f085c5e@mail.gmail.com>
-References: <20070328.011100.07456480.anemo@mba.ocn.ne.jp>
-	<cda58cb80703280401h7ef54d23i19766f453f085c5e@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Subject: Re: Power loss and system time when not having a battery backed RTC
+Message-Id: <20070328172216.06552898.attila@kinali.ch>
+In-Reply-To: <460A8014.1020100@27m.se>
+References: <20070328163914.b7187fcb.attila@kinali.ch>
+	<460A8014.1020100@27m.se>
+Organization: NERV
+X-Mailer: Sylpheed 2.3.0 (GTK+ 2.10.6; i686-pc-mingw32)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <attila@kinali.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14755
+X-archive-position: 14756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: attila@kinali.ch
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 28 Mar 2007 13:01:30 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> +obj-$(CONFIG_MIPS32_N32)	+= missing_syscalls_n32.o
-> +obj-$(CONFIG_MIPS32_O32)	+= missing_syscalls_o32.o
-> +
-> +CFLAGS_missing_syscalls_n32.o = -mabi=n32
-> +CFLAGS_missing_syscalls_o32.o = -mabi=32
-> +
+N'abend,
 
-We can not link n32/o32 objects into n64 kernel.
+On Wed, 28 Mar 2007 16:47:48 +0200
+Markus Gothe <markus.gothe@27m.se> wrote:
 
-Hmm, lib- instead of obj- seems to work.  At least mips64-linux-ar
-from binutils-2.17 does not complain.
+> Attila Kinali wrote:
+> > How do you handle this issue with the back jumps, if you cannot
+> > stick in a batter backed RTC?
 
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 4924626..b82324e 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -67,4 +67,10 @@ obj-$(CONFIG_I8253)		+= i8253.o
- obj-$(CONFIG_KEXEC)		+= machine_kexec.o relocate_kernel.o
- obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
- 
-+lib-$(CONFIG_MIPS32_N32)	+= missing_syscalls_n32.o
-+lib-$(CONFIG_MIPS32_O32)	+= missing_syscalls_o32.o
-+
-+CFLAGS_missing_syscalls_n32.o = -mabi=n32
-+CFLAGS_missing_syscalls_o32.o = -mabi=32
-+
- CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(CFLAGS) -Wa,-mdaddi -c -o /dev/null -xc /dev/null >/dev/null 2>&1; then echo "-DHAVE_AS_SET_DADDI"; fi)
-diff --git a/arch/mips/kernel/missing_syscalls.h b/arch/mips/kernel/missing_syscalls.h
-new file mode 100644
-index 0000000..9c4f2e9
---- /dev/null
-+++ b/arch/mips/kernel/missing_syscalls.h
-@@ -0,0 +1 @@
-+#include "../../../init/missing_syscalls.h"
-diff --git a/arch/mips/kernel/missing_syscalls_n32.c b/arch/mips/kernel/missing_syscalls_n32.c
-new file mode 100644
-index 0000000..ce527c6
---- /dev/null
-+++ b/arch/mips/kernel/missing_syscalls_n32.c
-@@ -0,0 +1 @@
-+#include "../../../init/missing_syscalls.c"
-diff --git a/arch/mips/kernel/missing_syscalls_o32.c b/arch/mips/kernel/missing_syscalls_o32.c
-new file mode 100644
-index 0000000..ce527c6
---- /dev/null
-+++ b/arch/mips/kernel/missing_syscalls_o32.c
-@@ -0,0 +1 @@
-+#include "../../../init/missing_syscalls.c"
+> Be creative or use the battery, you could for example set a timestamp
+> in a file at shutdown and use it to set the date on power up, alas
+> this would be incorrect, so go for the battery.
+
+We cannot stick in a battery as there is not enough space
+in the housing of the print (to be exact, we don't have enough
+height).
+
+I already thought about storing the last known time somewhere
+in the flash. But unfortunately the device can be unplugged
+suddenly w/o correct shutdown (actualy this is the normal case).
+The only way around this i could came up with was to periodically
+store the current time. But this is then a trade off between
+jump back period length and how long the flash will last the
+continous writes, with no sweet spot that looks good.
+
+
+Tack och ha det sa bra
+
+				Attila Kinali
+-- 
+Praised are the Fountains of Shelieth, the silver harp of the waters,
+But blest in my name forever this stream that stanched my thirst!
+                         -- Deed of Morred

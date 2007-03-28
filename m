@@ -1,92 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 12:02:36 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.170]:13430 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021986AbXC1LCd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Mar 2007 12:02:33 +0100
-Received: by ug-out-1314.google.com with SMTP id 40so182137uga
-        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2007 04:01:32 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=RUkX/MrdznrA2PSTvMVKxSPVpAN1k3CrAzQV41PKdm/TUfpS+I+ka52KZUI3NYpbBsTjvaG7kEAJWg6G4f/lkWZ1RuhCmMoFTLvjRps56r0MUibQUi6qJ8MKhVKwNnKjEW1Ph//7zn9NZ7KE9ajUCpTyl/EV/cFxAeiIjSZMIbo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=S0HvZlzlyBJPdd8Nsi6GlGkUSTHNER28qde1vC8ur4ul1uTHfs6rJN2wFL1bnvF4/+1ljJhr9aS8kAvFbu9hR+cUBUQUedQKm4KjXkQzLamvCT37+dnnJlZVaP1NGHKpMqbK0GGjP4deh/kVZ9c4L6dMX5MmlrJGQgKWAbP4guM=
-Received: by 10.114.26.1 with SMTP id 1mr3636205waz.1175079690995;
-        Wed, 28 Mar 2007 04:01:30 -0700 (PDT)
-Received: by 10.114.136.11 with HTTP; Wed, 28 Mar 2007 04:01:30 -0700 (PDT)
-Message-ID: <cda58cb80703280401h7ef54d23i19766f453f085c5e@mail.gmail.com>
-Date:	Wed, 28 Mar 2007 13:01:30 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: missimg system calls
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070328.011100.07456480.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 14:26:51 +0100 (BST)
+Received: from alnrmhc16.comcast.net ([206.18.177.56]:65535 "EHLO
+	alnrmhc16.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20022005AbXC1N0t (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Mar 2007 14:26:49 +0100
+Received: from [192.168.1.4] (c-69-251-93-234.hsd1.md.comcast.net[69.251.93.234])
+          by comcast.net (alnrmhc16) with ESMTP
+          id <20070328132605b1600dibvae>; Wed, 28 Mar 2007 13:26:06 +0000
+Message-ID: <460A6CED.1070308@gentoo.org>
+Date:	Wed, 28 Mar 2007 09:26:05 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0b2 (Windows/20070116)
 MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org, ths@networkno.de, ralf@linux-mips.org
+Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
+References: <4607CF1D.50904@gentoo.org>	<20070326.234316.23009158.anemo@mba.ocn.ne.jp>	<46086A90.7070402@gentoo.org> <20070327.235310.128618679.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070327.235310.128618679.anemo@mba.ocn.ne.jp>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20070328.011100.07456480.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14749
+X-archive-position: 14750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Atsushi,
+Atsushi Nemoto wrote:
+> On Mon, 26 Mar 2007 20:51:28 -0400, Kumba <kumba@gentoo.org> wrote:
+>> Lets try this one; the kernel was built with gcc-4.1.2 and binutils-2.17 this 
+>> time around, and I tested it before running objdump on it.  It just hangs right 
+>> after loading:
+>>
+>>  > bootp(): console=ttyS0,38400 root=/dev/md0
+>> Setting $netaddr to 192.168.1.12 (from server )
+>> Obtaining  from server
+>> 4358278+315290 entry: 0x80401000
+> 
+> Now I can not see any problem with the disassembled code.  No idea why
+> it does not work at all...
+> 
+> BTW, why IP32 does not support 32-bit kernel, though it has 32-bit
+> firmware?
 
-On 3/27/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
->
-> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-> index 4924626..d6abdc5 100644
-> --- a/arch/mips/kernel/Makefile
-> +++ b/arch/mips/kernel/Makefile
-> @@ -4,6 +4,17 @@
->
->  extra-y                := head.o init_task.o vmlinux.lds
->
-> +ifdef CONFIG_MIPS32_N32
-> +missing_syscalls_n32.o: missing_syscalls_n32.c
-> +CFLAGS_missing_syscalls_n32.o = -mabi=n32
-> +always += missing_syscalls_n32.o
-> +endif
-> +ifdef CONFIG_MIPS32_O32
-> +missing_syscalls_o32.o: missing_syscalls_o32.c
-> +CFLAGS_missing_syscalls_o32.o = -mabi=32
-> +always += missing_syscalls_o32.o
-> +endif
-> +
->  obj-y          += cpu-probe.o branch.o entry.o genex.o irq.o process.o \
->                    ptrace.o reset.o semaphore.o setup.o signal.o syscall.o \
->                    time.o topology.o traps.o unaligned.o
+Well, what's the need to use the move/lui/ld sequence over 
+move/lui/daddui/dsll/daddui/dsll//ld anyways?  I'll have to warm the Indy up and 
+try a 64bit kernel there I guess, to see if it exhibits similar issues with this 
+segment of code.
 
-Isn't this simpler ?
 
--- >8 --
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 4924626..2408432 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -67,4 +67,10 @@ obj-$(CONFIG_I8253)		+= i8253.o
- obj-$(CONFIG_KEXEC)		+= machine_kexec.o relocate_kernel.o
- obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
-
-+obj-$(CONFIG_MIPS32_N32)	+= missing_syscalls_n32.o
-+obj-$(CONFIG_MIPS32_O32)	+= missing_syscalls_o32.o
-+
-+CFLAGS_missing_syscalls_n32.o = -mabi=n32
-+CFLAGS_missing_syscalls_o32.o = -mabi=32
-+
- CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(CFLAGS) -Wa,-mdaddi -c -o
-/dev/null -xc /dev/null >/dev/null 2>&1; then echo
-"-DHAVE_AS_SET_DADDI"; fi)
+--Kumba
 
 -- 
-               Franck
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

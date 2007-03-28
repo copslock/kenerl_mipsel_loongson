@@ -1,76 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 16:23:02 +0100 (BST)
-Received: from mail.blastwave.org ([147.87.98.10]:44258 "EHLO
-	mail.blastwave.org") by ftp.linux-mips.org with ESMTP
-	id S20023079AbXC1PXA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Mar 2007 16:23:00 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by mail.blastwave.org (Postfix) with ESMTP id 0EDCAF98D;
-	Wed, 28 Mar 2007 17:22:28 +0200 (MEST)
-X-Virus-Scanned: amavisd-new at blastwave.org
-Received: from mail.blastwave.org ([127.0.0.1])
-	by localhost (enterprise.blastwave.org [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id iVCguldp+BTy; Wed, 28 Mar 2007 17:22:18 +0200 (MEST)
-Received: from unknown (66-132.63-81.stat.fixnetdata.ch [81.63.132.66])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.blastwave.org (Postfix) with ESMTP id F2A97F97B;
-	Wed, 28 Mar 2007 17:22:17 +0200 (MEST)
-Date:	Wed, 28 Mar 2007 17:22:16 +0200
-From:	Attila Kinali <attila@kinali.ch>
-To:	Markus Gothe <markus.gothe@27m.se>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Power loss and system time when not having a battery backed RTC
-Message-Id: <20070328172216.06552898.attila@kinali.ch>
-In-Reply-To: <460A8014.1020100@27m.se>
-References: <20070328163914.b7187fcb.attila@kinali.ch>
-	<460A8014.1020100@27m.se>
-Organization: NERV
-X-Mailer: Sylpheed 2.3.0 (GTK+ 2.10.6; i686-pc-mingw32)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2007 16:26:17 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:36565 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023097AbXC1P0M (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2007 16:26:12 +0100
+Received: from localhost (p4133-ipad207funabasi.chiba.ocn.ne.jp [222.145.86.133])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id F344EC660; Thu, 29 Mar 2007 00:24:52 +0900 (JST)
+Date:	Thu, 29 Mar 2007 00:24:53 +0900 (JST)
+Message-Id: <20070329.002453.18311528.anemo@mba.ocn.ne.jp>
+To:	kumba@gentoo.org
+Cc:	linux-mips@linux-mips.org, ths@networkno.de, ralf@linux-mips.org
+Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <460A6CED.1070308@gentoo.org>
+References: <46086A90.7070402@gentoo.org>
+	<20070327.235310.128618679.anemo@mba.ocn.ne.jp>
+	<460A6CED.1070308@gentoo.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 3.3 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <attila@kinali.ch>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14756
+X-archive-position: 14757
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: attila@kinali.ch
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-N'abend,
+On Wed, 28 Mar 2007 09:26:05 -0400, Kumba <kumba@gentoo.org> wrote:
+> Well, what's the need to use the move/lui/ld sequence over 
+> move/lui/daddui/dsll/daddui/dsll//ld anyways?  I'll have to warm the Indy up and 
+> try a 64bit kernel there I guess, to see if it exhibits similar issues with this 
+> segment of code.
 
-On Wed, 28 Mar 2007 16:47:48 +0200
-Markus Gothe <markus.gothe@27m.se> wrote:
+Just an optimization.  For CKSEG0 symbol, a LUI instruction can fill
+high 32-bit by sign-extention.  Either code should work for CKSEG0
+kernel.
 
-> Attila Kinali wrote:
-> > How do you handle this issue with the back jumps, if you cannot
-> > stick in a batter backed RTC?
-
-> Be creative or use the battery, you could for example set a timestamp
-> in a file at shutdown and use it to set the date on power up, alas
-> this would be incorrect, so go for the battery.
-
-We cannot stick in a battery as there is not enough space
-in the housing of the print (to be exact, we don't have enough
-height).
-
-I already thought about storing the last known time somewhere
-in the flash. But unfortunately the device can be unplugged
-suddenly w/o correct shutdown (actualy this is the normal case).
-The only way around this i could came up with was to periodically
-store the current time. But this is then a trade off between
-jump back period length and how long the flash will last the
-continous writes, with no sweet spot that looks good.
-
-
-Tack och ha det sa bra
-
-				Attila Kinali
--- 
-Praised are the Fountains of Shelieth, the silver harp of the waters,
-But blest in my name forever this stream that stanched my thirst!
-                         -- Deed of Morred
+---
+Atsushi Nemoto

@@ -1,46 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2007 20:53:58 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:49416 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021292AbXC2Tx5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Mar 2007 20:53:57 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id CA6C3E1CC6;
-	Thu, 29 Mar 2007 21:53:08 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id CMbRCljjLZ1S; Thu, 29 Mar 2007 21:53:08 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 663EFE1CBF;
-	Thu, 29 Mar 2007 21:53:08 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l2TJrMJg018141;
-	Thu, 29 Mar 2007 21:53:22 +0200
-Date:	Thu, 29 Mar 2007 20:53:17 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2007 22:11:02 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:59266 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021344AbXC2VLA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Mar 2007 22:11:00 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2TLAqAX022881;
+	Thu, 29 Mar 2007 22:10:53 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2TLAolL022880;
+	Thu, 29 Mar 2007 22:10:50 +0100
+Date:	Thu, 29 Mar 2007 22:10:50 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Gary Smith <gary.smith@3phoenix.com>
-cc:	linux-mips@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 Subject: Re: 'mem= ' Kernel Boot Parameter on BCM1250/1480 Platform
-In-Reply-To: <001301c77234$04d014c0$8eacaac0@3PiGAS>
-Message-ID: <Pine.LNX.4.64N.0703292043490.20097@blysk.ds.pg.gda.pl>
+Message-ID: <20070329211050.GA22703@linux-mips.org>
 References: <001301c77234$04d014c0$8eacaac0@3PiGAS>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.1/2961/Thu Mar 29 16:06:01 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <001301c77234$04d014c0$8eacaac0@3PiGAS>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14770
+X-archive-position: 14771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 29 Mar 2007, Gary Smith wrote:
+On Thu, Mar 29, 2007 at 02:56:49PM -0400, Gary Smith wrote:
 
 > I'd like to ask a question about use of the 'mem=' kernel parameter.  When
 > booting without this parameter, the kernel automatically detects the amount
@@ -53,8 +46,11 @@ On Thu, 29 Mar 2007, Gary Smith wrote:
 > platforms when running Debian linux.  The 2.6.17-2 kernel is used with the
 > system.
 
- Make sure the overridden ranges as reported in the "User-defined physical 
-RAM map" dump do not claim any reserved areas reported in the "Determined 
-physical RAM map" dump at the beginning of the bootstrap.
+mem=989020k tells the kernel there is 989020k of memory starting at
+address 0.  On these SOCs there first 512MB of memory are at physical
+address 0, the next 256MB at address 0x80000000, the next 256MB at
+0xc0000000 and the rest of memory goes starting at 0x100000000.  So to
+override the automatically detected memory map if you had 1GB you'd
+need something like: mem=512M@0 mem=256M@0x80000000 mem=256M=0xc0000000.
 
-  Maciej
+  Ralf

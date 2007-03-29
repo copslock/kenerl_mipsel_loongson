@@ -1,1309 +1,928 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2007 19:40:39 +0100 (BST)
-Received: from 70-89-178-179-BusName-Oregon.hfc.comcastbusiness.net ([70.89.178.179]:41684
-	"EHLO hawaii.site") by ftp.linux-mips.org with ESMTP
-	id S20023234AbXC2Skg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Mar 2007 19:40:36 +0100
-Received: by hawaii.site (Postfix, from userid 500)
-	id 321275484C8; Thu, 29 Mar 2007 11:39:56 -0700 (PDT)
-Date:	Thu, 29 Mar 2007 11:39:56 -0700
-From:	Mark Mason <mmason@upwardaccess.com>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] add bcm1480 ZBus trace support, fix wait related bugs
-Message-ID: <20070329183956.GA10855@upwardaccess.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2007 19:59:11 +0100 (BST)
+Received: from 3phoenix.com ([207.234.209.100]:39869 "EHLO
+	dedicated.3phoenix.com") by ftp.linux-mips.org with ESMTP
+	id S20023203AbXC2S7H (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Mar 2007 19:59:07 +0100
+X-ClientAddr: 24.106.202.234
+Received: from 3PiGAS (rrcs-24-106-202-234.se.biz.rr.com [24.106.202.234] (may be forged))
+	(authenticated bits=0)
+	by dedicated.3phoenix.com (8.13.6/8.13.6) with ESMTP id l2TIx7sC006551;
+	Thu, 29 Mar 2007 14:59:08 -0400
+From:	"Gary Smith" <gary.smith@3phoenix.com>
+To:	<linux-mips@linux-mips.org>
+Subject: 'mem= ' Kernel Boot Parameter on BCM1250/1480 Platform
+Date:	Thu, 29 Mar 2007 14:56:49 -0400
+Organization: 3 Phoenix, Inc.
+Message-ID: <001301c77234$04d014c0$8eacaac0@3PiGAS>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <mmason@upwardaccess.com>
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0014_01C77212.7DBE74C0"
+X-Mailer: Microsoft Office Outlook 11
+Thread-Index: AcdyNAE1qiw3sdP2R5OSpi6yavpHpw==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3028
+X-3PHOENIX-MailScanner-Information: Please contact the ISP for more information
+X-3PHOENIX-MailScanner:	Found to be clean
+X-3PHOENIX-MailScanner-From: gary.smith@3phoenix.com
+Return-Path: <gary.smith@3phoenix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14768
+X-archive-position: 14769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mmason@upwardaccess.com
+X-original-sender: gary.smith@3phoenix.com
 Precedence: bulk
 X-list: linux-mips
 
-Make ZBus tracing generic - moving it to a common direcotry under
-arch/mips/sibyte, add bcm1480 support and fix some wait related
-bugs (thanks to Ralf for assistance on that).
+This is a multi-part message in MIME format.
 
-Signed-off-by: Mark Mason <mason@broadcom.com>
+------=_NextPart_000_0014_01C77212.7DBE74C0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
----
- arch/mips/Makefile                       |    6 +-
- arch/mips/sibyte/Kconfig                 |    2 +
- arch/mips/sibyte/common/Makefile         |    5 +
- arch/mips/sibyte/common/sb_tbprof.c      |  601 ++++++++++++++++++++++++++++++
- arch/mips/sibyte/sb1250/Makefile         |    1 -
- arch/mips/sibyte/sb1250/bcm1250_tbprof.c |  571 ----------------------------
- 6 files changed, 613 insertions(+), 573 deletions(-)
- create mode 100644 arch/mips/sibyte/common/Makefile
- create mode 100644 arch/mips/sibyte/common/sb_tbprof.c
- delete mode 100644 arch/mips/sibyte/sb1250/bcm1250_tbprof.c
+Dear Linux-Mips Developers:
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 92bca6a..f2f742d 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -530,25 +530,29 @@ cflags-$(CONFIG_SGI_IP32)	+= -Iinclude/asm-mips/mach-ip32
- load-$(CONFIG_SGI_IP32)		+= 0xffffffff80004000
  
- #
--# Sibyte SB1250 SOC
-+# Sibyte SB1250/BCM1480 SOC
- #
- # This is a LIB so that it links at the end, and initcalls are later
- # the sequence; but it is built as an object so that modules don't get
- # removed (as happens, even if they have __initcall/module_init)
- #
- core-$(CONFIG_SIBYTE_BCM112X)	+= arch/mips/sibyte/sb1250/
-+core-$(CONFIG_SIBYTE_BCM112X)	+= arch/mips/sibyte/common/
- cflags-$(CONFIG_SIBYTE_BCM112X)	+= -Iinclude/asm-mips/mach-sibyte \
- 			-DSIBYTE_HDR_FEATURES=SIBYTE_HDR_FMASK_1250_112x_ALL
+
+I'd like to ask a question about use of the 'mem=' kernel parameter.  When
+booting without this parameter, the kernel automatically detects the amount
+of memory as 989020 kB.  If a kernel parameter is added to specify
+'mem=989020k' a TLB Miss error is encountered.  Do you all have guidance
+about how the memory parameter can be specified without causing the error?
+Since the mem= parameter was set to an identical value as the memory
+reported by meminfo in the /proc filesystem, use of this kernel parameter
+should be OK.  This behavior has been observed on both the BCM1250/1480
+platforms when running Debian linux.  The 2.6.17-2 kernel is used with the
+system.
+
  
- core-$(CONFIG_SIBYTE_SB1250)	+= arch/mips/sibyte/sb1250/
-+core-$(CONFIG_SIBYTE_SB1250)	+= arch/mips/sibyte/common/
- cflags-$(CONFIG_SIBYTE_SB1250)	+= -Iinclude/asm-mips/mach-sibyte \
- 			-DSIBYTE_HDR_FEATURES=SIBYTE_HDR_FMASK_1250_112x_ALL
+
+Thanks,
+
+Gary
+
+--
+
+Gary A. Smith, ABD PhD
+Engineer, 3Phoenix, Inc.
+
+3331 Heritage Trade Drive
+
+Suite 101
+
+Wake Forest, NC  27587
+
+919.562.5333 x107
+
+ <http://www.3Phoenix.com> http://www.3Phoenix.com
+
+Gary.Smith@3Phoenix.com
+
  
- core-$(CONFIG_SIBYTE_BCM1x55)	+= arch/mips/sibyte/bcm1480/
-+core-$(CONFIG_SIBYTE_BCM1x55)	+= arch/mips/sibyte/common/
- cflags-$(CONFIG_SIBYTE_BCM1x55)	+= -Iinclude/asm-mips/mach-sibyte \
- 			-DSIBYTE_HDR_FEATURES=SIBYTE_HDR_FMASK_1480_ALL
+
  
- core-$(CONFIG_SIBYTE_BCM1x80)	+= arch/mips/sibyte/bcm1480/
-+core-$(CONFIG_SIBYTE_BCM1x80)	+= arch/mips/sibyte/common/
- cflags-$(CONFIG_SIBYTE_BCM1x80)	+= -Iinclude/asm-mips/mach-sibyte \
- 			-DSIBYTE_HDR_FEATURES=SIBYTE_HDR_FMASK_1480_ALL
+
+debian:/proc# more meminfo
+
+MemTotal:       989020 kB
+
+MemFree:        957876 kB
+
+Buffers:          1660 kB
+
+Cached:          12076 kB
+
+SwapCached:          0 kB
+
+Active:          10308 kB
+
+Inactive:         5224 kB
+
+HighTotal:           0 kB
+
+HighFree:            0 kB
+
+LowTotal:       989020 kB
+
+LowFree:        957876 kB
+
+SwapTotal:       72252 kB
+
+SwapFree:        72252 kB
+
+Dirty:             524 kB
+
+Writeback:           0 kB
+
+Mapped:           4496 kB
+
+Slab:             7236 kB
+
+CommitLimit:    566760 kB
+
+Committed_AS:     4360 kB
+
+PageTables:        188 kB
+
+VmallocTotal: 1073741824 kB
+
+VmallocUsed:       916 kB
+
+VmallocChunk: 1073739640 kB
+
  
-diff --git a/arch/mips/sibyte/Kconfig b/arch/mips/sibyte/Kconfig
-index bdf24a7..e6b003e 100644
---- a/arch/mips/sibyte/Kconfig
-+++ b/arch/mips/sibyte/Kconfig
-@@ -2,6 +2,7 @@ config SIBYTE_SB1250
- 	bool
- 	select HW_HAS_PCI
- 	select SIBYTE_ENABLE_LDT_IF_PCI
-+	select SIBYTE_HAS_ZBUS_PROFILING
- 	select SIBYTE_SB1xxx_SOC
- 	select SYS_SUPPORTS_SMP
+
  
-@@ -34,6 +35,7 @@ config SIBYTE_BCM112X
- config SIBYTE_BCM1x80
- 	bool
- 	select HW_HAS_PCI
-+	select SIBYTE_HAS_ZBUS_PROFILING
- 	select SIBYTE_SB1xxx_SOC
- 	select SYS_SUPPORTS_SMP
+
+CFE version 1.3.3 for SWARM (64bit,MP,BE,MIPS) Build Date: Tue Dec 19
+06:41:38 EST 2006 (root@static-host) Copyright (C)
+2000,2001,2002,2003,2004,2005 Broadcom Corporation.
+
  
-diff --git a/arch/mips/sibyte/common/Makefile b/arch/mips/sibyte/common/Makefile
-new file mode 100644
-index 0000000..8a06a4f
---- /dev/null
-+++ b/arch/mips/sibyte/common/Makefile
-@@ -0,0 +1,5 @@
-+obj-y :=
-+
-+obj-$(CONFIG_SIBYTE_TBPROF)		+= sb_tbprof.o
-+
-+EXTRA_AFLAGS := $(CFLAGS)
-diff --git a/arch/mips/sibyte/common/sb_tbprof.c b/arch/mips/sibyte/common/sb_tbprof.c
-new file mode 100644
-index 0000000..4fcdaa8
---- /dev/null
-+++ b/arch/mips/sibyte/common/sb_tbprof.c
-@@ -0,0 +1,601 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-+ *
-+ * Copyright (C) 2001, 2002, 2003 Broadcom Corporation
-+ * Copyright (C) 2007 Ralf Baechle <ralf@linux-mips.org>
-+ * Copyright (C) 2007 MIPS Technologies, Inc.
-+ *    written by Ralf Baechle <ralf@linux-mips.org>
-+ */
-+
-+#undef DEBUG
-+
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/types.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/slab.h>
-+#include <linux/vmalloc.h>
-+#include <linux/fs.h>
-+#include <linux/errno.h>
-+#include <linux/wait.h>
-+#include <asm/io.h>
-+#include <asm/sibyte/sb1250.h>
-+
-+#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
-+#include <asm/sibyte/bcm1480_regs.h>
-+#include <asm/sibyte/bcm1480_scd.h>
-+#include <asm/sibyte/bcm1480_int.h>
-+#elif defined(CONFIG_SIBYTE_SB1250) || defined(CONFIG_SIBYTE_BCM112X)
-+#include <asm/sibyte/sb1250_regs.h>
-+#include <asm/sibyte/sb1250_scd.h>
-+#include <asm/sibyte/sb1250_int.h>
-+#else
-+#error invalid SiByte UART configuation
-+#endif
-+
-+#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
-+#undef K_INT_TRACE_FREEZE
-+#define K_INT_TRACE_FREEZE K_BCM1480_INT_TRACE_FREEZE
-+#undef K_INT_PERF_CNT
-+#define K_INT_PERF_CNT K_BCM1480_INT_PERF_CNT
-+#endif
-+
-+#include <asm/system.h>
-+#include <asm/uaccess.h>
-+
-+#define SBPROF_TB_MAJOR 240
-+
-+typedef u64 tb_sample_t[6*256];
-+
-+enum open_status {
-+	SB_CLOSED,
-+	SB_OPENING,
-+	SB_OPEN
-+};
-+
-+struct sbprof_tb {
-+	wait_queue_head_t	tb_sync;
-+	wait_queue_head_t	tb_read;
-+	struct mutex		lock;
-+	enum open_status	open;
-+	tb_sample_t		*sbprof_tbbuf;
-+	int			next_tb_sample;
-+
-+	volatile int		tb_enable;
-+	volatile int		tb_armed;
-+
-+};
-+
-+static struct sbprof_tb sbp;
-+
-+#define MAX_SAMPLE_BYTES (24*1024*1024)
-+#define MAX_TBSAMPLE_BYTES (12*1024*1024)
-+
-+#define MAX_SAMPLES (MAX_SAMPLE_BYTES/sizeof(u_int32_t))
-+#define TB_SAMPLE_SIZE (sizeof(tb_sample_t))
-+#define MAX_TB_SAMPLES (MAX_TBSAMPLE_BYTES/TB_SAMPLE_SIZE)
-+
-+/* ioctls */
-+#define SBPROF_ZBSTART		_IOW('s', 0, int)
-+#define SBPROF_ZBSTOP		_IOW('s', 1, int)
-+#define SBPROF_ZBWAITFULL	_IOW('s', 2, int)
-+
-+/*
-+ * Routines for using 40-bit SCD cycle counter
-+ *
-+ * Client responsible for either handling interrupts or making sure
-+ * the cycles counter never saturates, e.g., by doing
-+ * zclk_timer_init(0) at least every 2^40 - 1 ZCLKs.
-+ */
-+
-+/*
-+ * Configures SCD counter 0 to count ZCLKs starting from val;
-+ * Configures SCD counters1,2,3 to count nothing.
-+ * Must not be called while gathering ZBbus profiles.
-+ */
-+
-+#define zclk_timer_init(val) \
-+  __asm__ __volatile__ (".set push;" \
-+			".set mips64;" \
-+			"la   $8, 0xb00204c0;" /* SCD perf_cnt_cfg */ \
-+			"sd   %0, 0x10($8);"   /* write val to counter0 */ \
-+			"sd   %1, 0($8);"      /* config counter0 for zclks*/ \
-+			".set pop" \
-+			: /* no outputs */ \
-+						     /* enable, counter0 */ \
-+			: /* inputs */ "r"(val), "r" ((1ULL << 33) | 1ULL) \
-+			: /* modifies */ "$8" )
-+
-+
-+/* Reads SCD counter 0 and puts result in value
-+   unsigned long long val; */
-+#define zclk_get(val) \
-+  __asm__ __volatile__ (".set push;" \
-+			".set mips64;" \
-+			"la   $8, 0xb00204c0;" /* SCD perf_cnt_cfg */ \
-+			"ld   %0, 0x10($8);"   /* write val to counter0 */ \
-+			".set pop" \
-+			: /* outputs */ "=r"(val) \
-+			: /* inputs */ \
-+			: /* modifies */ "$8" )
-+
-+#define DEVNAME "sb_tbprof"
-+
-+#define TB_FULL (sbp.next_tb_sample == MAX_TB_SAMPLES)
-+
-+/*
-+ * Support for ZBbus sampling using the trace buffer
-+ *
-+ * We use the SCD performance counter interrupt, caused by a Zclk counter
-+ * overflow, to trigger the start of tracing.
-+ *
-+ * We set the trace buffer to sample everything and freeze on
-+ * overflow.
-+ *
-+ * We map the interrupt for trace_buffer_freeze to handle it on CPU 0.
-+ *
-+ */
-+
-+static u64 tb_period;
-+
-+static void arm_tb(void)
-+{
-+        u64 scdperfcnt;
-+	u64 next = (1ULL << 40) - tb_period;
-+	u64 tb_options = M_SCD_TRACE_CFG_FREEZE_FULL;
-+
-+	/*
-+	 * Generate an SCD_PERFCNT interrupt in TB_PERIOD Zclks to
-+	 * trigger start of trace.  XXX vary sampling period
-+	 */
-+	__raw_writeq(0, IOADDR(A_SCD_PERF_CNT_1));
-+	scdperfcnt = __raw_readq(IOADDR(A_SCD_PERF_CNT_CFG));
-+
-+	/*
-+	 * Unfortunately, in Pass 2 we must clear all counters to knock down
-+	 * a previous interrupt request.  This means that bus profiling
-+	 * requires ALL of the SCD perf counters.
-+	 */
-+#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
-+	__raw_writeq((scdperfcnt & ~M_SPC_CFG_SRC1) |
-+						/* keep counters 0,2,3,4,5,6,7 as is */
-+		     V_SPC_CFG_SRC1(1),		/* counter 1 counts cycles */
-+		     IOADDR(A_BCM1480_SCD_PERF_CNT_CFG0));
-+	__raw_writeq(
-+		     M_SPC_CFG_ENABLE |		/* enable counting */
-+		     M_SPC_CFG_CLEAR |		/* clear all counters */
-+		     V_SPC_CFG_SRC1(1),		/* counter 1 counts cycles */
-+		     IOADDR(A_BCM1480_SCD_PERF_CNT_CFG1));
-+#else
-+	__raw_writeq((scdperfcnt & ~M_SPC_CFG_SRC1) |
-+						/* keep counters 0,2,3 as is */
-+		     M_SPC_CFG_ENABLE |		/* enable counting */
-+		     M_SPC_CFG_CLEAR |		/* clear all counters */
-+		     V_SPC_CFG_SRC1(1),		/* counter 1 counts cycles */
-+		     IOADDR(A_SCD_PERF_CNT_CFG));
-+#endif
-+	__raw_writeq(next, IOADDR(A_SCD_PERF_CNT_1));
-+	/* Reset the trace buffer */
-+	__raw_writeq(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
-+#if 0 && defined(M_SCD_TRACE_CFG_FORCECNT)
-+	/* XXXKW may want to expose control to the data-collector */
-+	tb_options |= M_SCD_TRACE_CFG_FORCECNT;
-+#endif
-+	__raw_writeq(tb_options, IOADDR(A_SCD_TRACE_CFG));
-+	sbp.tb_armed = 1;
-+}
-+
-+static irqreturn_t sbprof_tb_intr(int irq, void *dev_id)
-+{
-+	int i;
-+
-+	pr_debug(DEVNAME ": tb_intr\n");
-+
-+	if (sbp.next_tb_sample < MAX_TB_SAMPLES) {
-+		/* XXX should use XKPHYS to make writes bypass L2 */
-+		u64 *p = sbp.sbprof_tbbuf[sbp.next_tb_sample++];
-+		/* Read out trace */
-+		__raw_writeq(M_SCD_TRACE_CFG_START_READ,
-+			     IOADDR(A_SCD_TRACE_CFG));
-+		__asm__ __volatile__ ("sync" : : : "memory");
-+		/* Loop runs backwards because bundles are read out in reverse order */
-+		for (i = 256 * 6; i > 0; i -= 6) {
-+			/* Subscripts decrease to put bundle in the order */
-+			/*   t0 lo, t0 hi, t1 lo, t1 hi, t2 lo, t2 hi */
-+			p[i - 1] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
-+			/* read t2 hi */
-+			p[i - 2] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
-+			/* read t2 lo */
-+			p[i - 3] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
-+			/* read t1 hi */
-+			p[i - 4] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
-+			/* read t1 lo */
-+			p[i - 5] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
-+			/* read t0 hi */
-+			p[i - 6] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
-+			/* read t0 lo */
-+		}
-+		if (!sbp.tb_enable) {
-+			pr_debug(DEVNAME ": tb_intr shutdown\n");
-+			__raw_writeq(M_SCD_TRACE_CFG_RESET,
-+				     IOADDR(A_SCD_TRACE_CFG));
-+			sbp.tb_armed = 0;
-+			wake_up_interruptible(&sbp.tb_sync);
-+		} else {
-+			/* knock down current interrupt and get another one later */
-+			arm_tb();
-+		}
-+	} else {
-+		/* No more trace buffer samples */
-+		pr_debug(DEVNAME ": tb_intr full\n");
-+		__raw_writeq(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
-+		sbp.tb_armed = 0;
-+		if (!sbp.tb_enable)
-+			wake_up_interruptible(&sbp.tb_sync);
-+		wake_up_interruptible(&sbp.tb_read);
-+	}
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t sbprof_pc_intr(int irq, void *dev_id)
-+{
-+	printk(DEVNAME ": unexpected pc_intr");
-+	return IRQ_NONE;
-+}
-+
-+/*
-+ * Requires: Already called zclk_timer_init with a value that won't
-+ *           saturate 40 bits.  No subsequent use of SCD performance counters
-+ *           or trace buffer.
-+ */
-+
-+static int sbprof_zbprof_start(struct file *filp)
-+{
-+	u64 scdperfcnt;
-+	int err;
-+
-+	if (xchg(&sbp.tb_enable, 1))
-+		return -EBUSY;
-+
-+	pr_debug(DEVNAME ": starting\n");
-+
-+	sbp.next_tb_sample = 0;
-+	filp->f_pos = 0;
-+
-+	err = request_irq (K_INT_TRACE_FREEZE, sbprof_tb_intr, 0,
-+			   DEVNAME " trace freeze", &sbp);
-+	if (err)
-+		return -EBUSY;
-+
-+	/* Make sure there isn't a perf-cnt interrupt waiting */
-+	scdperfcnt = __raw_readq(IOADDR(A_SCD_PERF_CNT_CFG));
-+	/* Disable and clear counters, override SRC_1 */
-+	__raw_writeq((scdperfcnt & ~(M_SPC_CFG_SRC1 | M_SPC_CFG_ENABLE)) |
-+		     M_SPC_CFG_ENABLE | M_SPC_CFG_CLEAR | V_SPC_CFG_SRC1(1),
-+		     IOADDR(A_SCD_PERF_CNT_CFG));
-+
-+	/*
-+	 * We grab this interrupt to prevent others from trying to use
-+         * it, even though we don't want to service the interrupts
-+         * (they only feed into the trace-on-interrupt mechanism)
-+	 */
-+	if (request_irq(K_INT_PERF_CNT, sbprof_pc_intr, 0, DEVNAME " scd perfcnt", &sbp)) {
-+		free_irq(K_INT_TRACE_FREEZE, &sbp);
-+		return -EBUSY;
-+	}
-+
-+	/*
-+	 * I need the core to mask these, but the interrupt mapper to
-+	 *  pass them through.  I am exploiting my knowledge that
-+	 *  cp0_status masks out IP[5]. krw
-+	 */
-+#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
-+	__raw_writeq(K_BCM1480_INT_MAP_I3,
-+		     IOADDR(A_BCM1480_IMR_REGISTER(0, R_BCM1480_IMR_INTERRUPT_MAP_BASE_L) +
-+			    ((K_BCM1480_INT_PERF_CNT & 0x3f) << 3)));
-+#else
-+	__raw_writeq(K_INT_MAP_I3,
-+		     IOADDR(A_IMR_REGISTER(0, R_IMR_INTERRUPT_MAP_BASE) +
-+			    (K_INT_PERF_CNT << 3)));
-+#endif
-+
-+	/* Initialize address traps */
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_0));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_1));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_2));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_3));
-+
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_0));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_1));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_2));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_3));
-+
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_0));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_1));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_2));
-+	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_3));
-+
-+	/* Initialize Trace Event 0-7 */
-+	/*				when interrupt  */
-+	__raw_writeq(M_SCD_TREVT_INTERRUPT, IOADDR(A_SCD_TRACE_EVENT_0));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_1));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_2));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_3));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_4));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_5));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_6));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_7));
-+
-+	/* Initialize Trace Sequence 0-7 */
-+	/*				     Start on event 0 (interrupt) */
-+	__raw_writeq(V_SCD_TRSEQ_FUNC_START | 0x0fff,
-+		     IOADDR(A_SCD_TRACE_SEQUENCE_0));
-+	/*			  dsamp when d used | asamp when a used */
-+	__raw_writeq(M_SCD_TRSEQ_ASAMPLE | M_SCD_TRSEQ_DSAMPLE |
-+		     K_SCD_TRSEQ_TRIGGER_ALL,
-+		     IOADDR(A_SCD_TRACE_SEQUENCE_1));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_2));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_3));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_4));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_5));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_6));
-+	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_7));
-+
-+	/* Now indicate the PERF_CNT interrupt as a trace-relevant interrupt */
-+#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
-+	__raw_writeq(1ULL << (K_BCM1480_INT_PERF_CNT & 0x3f),
-+		     IOADDR(A_BCM1480_IMR_REGISTER(0, R_BCM1480_IMR_INTERRUPT_TRACE_L)));
-+#else
-+	__raw_writeq(1ULL << K_INT_PERF_CNT,
-+		     IOADDR(A_IMR_REGISTER(0, R_IMR_INTERRUPT_TRACE)));
-+#endif
-+	arm_tb();
-+
-+	pr_debug(DEVNAME ": done starting\n");
-+
-+	return 0;
-+}
-+
-+static int sbprof_zbprof_stop(void)
-+{
-+	int err = 0;
-+
-+	pr_debug(DEVNAME ": stopping\n");
-+
-+	if (sbp.tb_enable) {
-+		/*
-+		 * XXXKW there is a window here where the intr handler may run,
-+		 * see the disable, and do the wake_up before this sleep
-+		 * happens.
-+		 */
-+		pr_debug(DEVNAME ": wait for disarm\n");
-+		err = wait_event_interruptible(sbp.tb_sync, !sbp.tb_armed);
-+		pr_debug(DEVNAME ": disarm complete, stat %d\n", err);
-+
-+		if (err)
-+			return err;
-+
-+		sbp.tb_enable = 0;
-+		free_irq(K_INT_TRACE_FREEZE, &sbp);
-+		free_irq(K_INT_PERF_CNT, &sbp);
-+	}
-+
-+	pr_debug(DEVNAME ": done stopping\n");
-+
-+	return err;
-+}
-+
-+static int sbprof_tb_open(struct inode *inode, struct file *filp)
-+{
-+	int minor;
-+
-+	minor = iminor(inode);
-+	if (minor != 0)
-+		return -ENODEV;
-+
-+	if (xchg(&sbp.open, SB_OPENING) != SB_CLOSED)
-+		return -EBUSY;
-+
-+	memset(&sbp, 0, sizeof(struct sbprof_tb));
-+	sbp.sbprof_tbbuf = vmalloc(MAX_TBSAMPLE_BYTES);
-+	if (!sbp.sbprof_tbbuf)
-+		return -ENOMEM;
-+	memset(sbp.sbprof_tbbuf, 0, MAX_TBSAMPLE_BYTES);
-+	init_waitqueue_head(&sbp.tb_sync);
-+	init_waitqueue_head(&sbp.tb_read);
-+	mutex_init(&sbp.lock);
-+
-+	sbp.open = SB_OPEN;
-+
-+	return 0;
-+}
-+
-+static int sbprof_tb_release(struct inode *inode, struct file *filp)
-+{
-+	int minor;
-+
-+	minor = iminor(inode);
-+	if (minor != 0 || !sbp.open)
-+		return -ENODEV;
-+
-+	mutex_lock(&sbp.lock);
-+
-+	if (sbp.tb_armed || sbp.tb_enable)
-+		sbprof_zbprof_stop();
-+
-+	vfree(sbp.sbprof_tbbuf);
-+	sbp.open = 0;
-+
-+	mutex_unlock(&sbp.lock);
-+
-+	return 0;
-+}
-+
-+static ssize_t sbprof_tb_read(struct file *filp, char *buf,
-+			      size_t size, loff_t *offp)
-+{
-+	int cur_sample, sample_off, cur_count, sample_left;
-+	char *src;
-+	int   count   =	 0;
-+	char *dest    =	 buf;
-+	long  cur_off = *offp;
-+
-+	if (!access_ok(VERIFY_WRITE, buf, size))
-+		return -EFAULT;
-+
-+	mutex_lock(&sbp.lock);
-+
-+	count = 0;
-+	cur_sample = cur_off / TB_SAMPLE_SIZE;
-+	sample_off = cur_off % TB_SAMPLE_SIZE;
-+	sample_left = TB_SAMPLE_SIZE - sample_off;
-+
-+	while (size && (cur_sample < sbp.next_tb_sample)) {
-+		int err;
-+
-+		cur_count = size < sample_left ? size : sample_left;
-+		src = (char *)(((long)sbp.sbprof_tbbuf[cur_sample])+sample_off);
-+		err = __copy_to_user(dest, src, cur_count);
-+		if (err) {
-+			*offp = cur_off + cur_count - err;
-+			mutex_unlock(&sbp.lock);
-+			return err;
-+		}
-+		pr_debug(DEVNAME ": read from sample %d, %d bytes\n",
-+		         cur_sample, cur_count);
-+		size -= cur_count;
-+		sample_left -= cur_count;
-+		if (!sample_left) {
-+			cur_sample++;
-+			sample_off = 0;
-+			sample_left = TB_SAMPLE_SIZE;
-+		} else {
-+			sample_off += cur_count;
-+		}
-+		cur_off += cur_count;
-+		dest += cur_count;
-+		count += cur_count;
-+	}
-+	*offp = cur_off;
-+	mutex_unlock(&sbp.lock);
-+
-+	return count;
-+}
-+
-+static long sbprof_tb_ioctl(struct file *filp,
-+			    unsigned int command,
-+			    unsigned long arg)
-+{
-+	int err = 0;
-+
-+	switch (command) {
-+	case SBPROF_ZBSTART:
-+		mutex_lock(&sbp.lock);
-+		err = sbprof_zbprof_start(filp);
-+		mutex_unlock(&sbp.lock);
-+		break;
-+
-+	case SBPROF_ZBSTOP:
-+		mutex_lock(&sbp.lock);
-+		err = sbprof_zbprof_stop();
-+		mutex_unlock(&sbp.lock);
-+		break;
-+
-+	case SBPROF_ZBWAITFULL: {
-+		err = wait_event_interruptible(sbp.tb_read, TB_FULL);
-+		if (err)
-+			break;
-+
-+		err = put_user(TB_FULL, (int *) arg);
-+		break;
-+	}
-+
-+	default:
-+		err = -EINVAL;
-+		break;
-+	}
-+
-+	return err;
-+}
-+
-+static const struct file_operations sbprof_tb_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= sbprof_tb_open,
-+	.release	= sbprof_tb_release,
-+	.read		= sbprof_tb_read,
-+	.unlocked_ioctl	= sbprof_tb_ioctl,
-+	.compat_ioctl	= sbprof_tb_ioctl,
-+	.mmap		= NULL,
-+};
-+
-+static struct class *tb_class;
-+static struct device *tb_dev;
-+
-+static int __init sbprof_tb_init(void)
-+{
-+	struct device *dev;
-+	struct class *tbc;
-+	int err;
-+
-+	if (register_chrdev(SBPROF_TB_MAJOR, DEVNAME, &sbprof_tb_fops)) {
-+		printk(KERN_WARNING DEVNAME ": initialization failed (dev %d)\n",
-+		       SBPROF_TB_MAJOR);
-+		return -EIO;
-+	}
-+
-+	tbc = class_create(THIS_MODULE, "sb_tracebuffer");
-+	if (IS_ERR(tbc)) {
-+		err = PTR_ERR(tbc);
-+		goto out_chrdev;
-+	}
-+
-+	tb_class = tbc;
-+
-+	dev = device_create(tbc, NULL, MKDEV(SBPROF_TB_MAJOR, 0), "tb");
-+	if (IS_ERR(dev)) {
-+		err = PTR_ERR(dev);
-+		goto out_class;
-+	}
-+	tb_dev = dev;
-+
-+	sbp.open = 0;
-+	tb_period = zbbus_mhz * 10000LL;
-+	pr_info(DEVNAME ": initialized - tb_period = %lld\n",
-+		(long long) tb_period);
-+	return 0;
-+
-+out_class:
-+	class_destroy(tb_class);
-+out_chrdev:
-+	unregister_chrdev(SBPROF_TB_MAJOR, DEVNAME);
-+
-+	return err;
-+}
-+
-+static void __exit sbprof_tb_cleanup(void)
-+{
-+	device_destroy(tb_class, MKDEV(SBPROF_TB_MAJOR, 0));
-+	unregister_chrdev(SBPROF_TB_MAJOR, DEVNAME);
-+	class_destroy(tb_class);
-+}
-+
-+module_init(sbprof_tb_init);
-+module_exit(sbprof_tb_cleanup);
-+
-+MODULE_ALIAS_CHARDEV_MAJOR(SBPROF_TB_MAJOR);
-+MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
-+MODULE_LICENSE("GPL");
-diff --git a/arch/mips/sibyte/sb1250/Makefile b/arch/mips/sibyte/sb1250/Makefile
-index 04c0f1a..df662c6 100644
---- a/arch/mips/sibyte/sb1250/Makefile
-+++ b/arch/mips/sibyte/sb1250/Makefile
-@@ -1,6 +1,5 @@
- obj-y := setup.o irq.o time.o
+
+Initializing Arena.
+
+Initializing Devices.
+
+SWARM board revision 3
+
+sbeth: found phy 1, vendor 000818 part 0C
+
+sbeth: found phy 1, vendor 000818 part 0C Config switch: 0
+
+CPU: BCM1250 B2
+
+L2 Cache Status: OK
+
+Wafer ID:   0x7F21A009  [Lot 8136, Wafer 13]
+
+Manuf Test: Bin A [2CPU_FI_FD_F2 (OK)]
+
+SysCfg: 0000000008C20800 [PLL_DIV: 16, IOB0_DIV: CPUCLK/4, IOB1_DIV:
+
+CPUCLK/3]
+
+CPU type 0x1040102: 800MHz
+
+Total memory: 0x40000000 bytes (1024MB)
+
  
- obj-$(CONFIG_SMP)			+= smp.o
--obj-$(CONFIG_SIBYTE_TBPROF)		+= bcm1250_tbprof.o
- obj-$(CONFIG_SIBYTE_STANDALONE)		+= prom.o
- obj-$(CONFIG_SIBYTE_BUS_WATCHER)	+= bus_watcher.o
-diff --git a/arch/mips/sibyte/sb1250/bcm1250_tbprof.c b/arch/mips/sibyte/sb1250/bcm1250_tbprof.c
-deleted file mode 100644
-index ea0ca13..0000000
---- a/arch/mips/sibyte/sb1250/bcm1250_tbprof.c
-+++ /dev/null
-@@ -1,571 +0,0 @@
--/*
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * as published by the Free Software Foundation; either version 2
-- * of the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-- *
-- * Copyright (C) 2001, 2002, 2003 Broadcom Corporation
-- * Copyright (C) 2007 Ralf Baechle <ralf@linux-mips.org>
-- * Copyright (C) 2007 MIPS Technologies, Inc.
-- *    written by Ralf Baechle <ralf@linux-mips.org>
-- */
--
--#undef DEBUG
--
--#include <linux/device.h>
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/slab.h>
--#include <linux/vmalloc.h>
--#include <linux/fs.h>
--#include <linux/errno.h>
--#include <linux/types.h>
--#include <linux/wait.h>
--
--#include <asm/io.h>
--#include <asm/sibyte/sb1250.h>
--#include <asm/sibyte/sb1250_regs.h>
--#include <asm/sibyte/sb1250_scd.h>
--#include <asm/sibyte/sb1250_int.h>
--#include <asm/system.h>
--#include <asm/uaccess.h>
--
--#define SBPROF_TB_MAJOR 240
--
--typedef u64 tb_sample_t[6*256];
--
--enum open_status {
--	SB_CLOSED,
--	SB_OPENING,
--	SB_OPEN
--};
--
--struct sbprof_tb {
--	wait_queue_head_t	tb_sync;
--	wait_queue_head_t	tb_read;
--	struct mutex		lock;
--	enum open_status	open;
--	tb_sample_t		*sbprof_tbbuf;
--	int			next_tb_sample;
--
--	volatile int		tb_enable;
--	volatile int		tb_armed;
--
--};
--
--static struct sbprof_tb sbp;
--
--#define MAX_SAMPLE_BYTES (24*1024*1024)
--#define MAX_TBSAMPLE_BYTES (12*1024*1024)
--
--#define MAX_SAMPLES (MAX_SAMPLE_BYTES/sizeof(u_int32_t))
--#define TB_SAMPLE_SIZE (sizeof(tb_sample_t))
--#define MAX_TB_SAMPLES (MAX_TBSAMPLE_BYTES/TB_SAMPLE_SIZE)
--
--/* ioctls */
--#define SBPROF_ZBSTART		_IOW('s', 0, int)
--#define SBPROF_ZBSTOP		_IOW('s', 1, int)
--#define SBPROF_ZBWAITFULL	_IOW('s', 2, int)
--
--/*
-- * Routines for using 40-bit SCD cycle counter
-- *
-- * Client responsible for either handling interrupts or making sure
-- * the cycles counter never saturates, e.g., by doing
-- * zclk_timer_init(0) at least every 2^40 - 1 ZCLKs.
-- */
--
--/*
-- * Configures SCD counter 0 to count ZCLKs starting from val;
-- * Configures SCD counters1,2,3 to count nothing.
-- * Must not be called while gathering ZBbus profiles.
-- */
--
--#define zclk_timer_init(val) \
--  __asm__ __volatile__ (".set push;" \
--			".set mips64;" \
--			"la   $8, 0xb00204c0;" /* SCD perf_cnt_cfg */ \
--			"sd   %0, 0x10($8);"   /* write val to counter0 */ \
--			"sd   %1, 0($8);"      /* config counter0 for zclks*/ \
--			".set pop" \
--			: /* no outputs */ \
--						     /* enable, counter0 */ \
--			: /* inputs */ "r"(val), "r" ((1ULL << 33) | 1ULL) \
--			: /* modifies */ "$8" )
--
--
--/* Reads SCD counter 0 and puts result in value
--   unsigned long long val; */
--#define zclk_get(val) \
--  __asm__ __volatile__ (".set push;" \
--			".set mips64;" \
--			"la   $8, 0xb00204c0;" /* SCD perf_cnt_cfg */ \
--			"ld   %0, 0x10($8);"   /* write val to counter0 */ \
--			".set pop" \
--			: /* outputs */ "=r"(val) \
--			: /* inputs */ \
--			: /* modifies */ "$8" )
--
--#define DEVNAME "bcm1250_tbprof"
--
--#define TB_FULL (sbp.next_tb_sample == MAX_TB_SAMPLES)
--
--/*
-- * Support for ZBbus sampling using the trace buffer
-- *
-- * We use the SCD performance counter interrupt, caused by a Zclk counter
-- * overflow, to trigger the start of tracing.
-- *
-- * We set the trace buffer to sample everything and freeze on
-- * overflow.
-- *
-- * We map the interrupt for trace_buffer_freeze to handle it on CPU 0.
-- */
--
--static u64 tb_period;
--
--static void arm_tb(void)
--{
--        u64 scdperfcnt;
--	u64 next = (1ULL << 40) - tb_period;
--	u64 tb_options = M_SCD_TRACE_CFG_FREEZE_FULL;
--
--	/*
--	 * Generate an SCD_PERFCNT interrupt in TB_PERIOD Zclks to trigger
--	 *start of trace.  XXX vary sampling period
--	 */
--	__raw_writeq(0, IOADDR(A_SCD_PERF_CNT_1));
--	scdperfcnt = __raw_readq(IOADDR(A_SCD_PERF_CNT_CFG));
--
--	/*
--	 * Unfortunately, in Pass 2 we must clear all counters to knock down a
--	 * previous interrupt request.  This means that bus profiling requires
--	 * ALL of the SCD perf counters.
--	 */
--	__raw_writeq((scdperfcnt & ~M_SPC_CFG_SRC1) |
--						/* keep counters 0,2,3 as is */
--		     M_SPC_CFG_ENABLE |		/* enable counting */
--		     M_SPC_CFG_CLEAR |		/* clear all counters */
--		     V_SPC_CFG_SRC1(1),		/* counter 1 counts cycles */
--		     IOADDR(A_SCD_PERF_CNT_CFG));
--	__raw_writeq(next, IOADDR(A_SCD_PERF_CNT_1));
--
--	/* Reset the trace buffer */
--	__raw_writeq(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
--#if 0 && defined(M_SCD_TRACE_CFG_FORCECNT)
--	/* XXXKW may want to expose control to the data-collector */
--	tb_options |= M_SCD_TRACE_CFG_FORCECNT;
--#endif
--	__raw_writeq(tb_options, IOADDR(A_SCD_TRACE_CFG));
--	sbp.tb_armed = 1;
--}
--
--static irqreturn_t sbprof_tb_intr(int irq, void *dev_id)
--{
--	int i;
--
--	pr_debug(DEVNAME ": tb_intr\n");
--
--	if (sbp.next_tb_sample < MAX_TB_SAMPLES) {
--		/* XXX should use XKPHYS to make writes bypass L2 */
--		u64 *p = sbp.sbprof_tbbuf[sbp.next_tb_sample++];
--		/* Read out trace */
--		__raw_writeq(M_SCD_TRACE_CFG_START_READ,
--			     IOADDR(A_SCD_TRACE_CFG));
--		__asm__ __volatile__ ("sync" : : : "memory");
--		/* Loop runs backwards because bundles are read out in reverse order */
--		for (i = 256 * 6; i > 0; i -= 6) {
--			/* Subscripts decrease to put bundle in the order */
--			/*   t0 lo, t0 hi, t1 lo, t1 hi, t2 lo, t2 hi */
--			p[i - 1] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
--								/* read t2 hi */
--			p[i - 2] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
--								/* read t2 lo */
--			p[i - 3] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
--								/* read t1 hi */
--			p[i - 4] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
--								/* read t1 lo */
--			p[i - 5] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
--								/* read t0 hi */
--			p[i - 6] = __raw_readq(IOADDR(A_SCD_TRACE_READ));
--								/* read t0 lo */
--		}
--		if (!sbp.tb_enable) {
--			pr_debug(DEVNAME ": tb_intr shutdown\n");
--			__raw_writeq(M_SCD_TRACE_CFG_RESET,
--				     IOADDR(A_SCD_TRACE_CFG));
--			sbp.tb_armed = 0;
--			wake_up(&sbp.tb_sync);
--		} else {
--			arm_tb();	/* knock down current interrupt and get another one later */
--		}
--	} else {
--		/* No more trace buffer samples */
--		pr_debug(DEVNAME ": tb_intr full\n");
--		__raw_writeq(M_SCD_TRACE_CFG_RESET, IOADDR(A_SCD_TRACE_CFG));
--		sbp.tb_armed = 0;
--		if (!sbp.tb_enable) {
--			wake_up(&sbp.tb_sync);
--		}
--		wake_up(&sbp.tb_read);
--	}
--
--	return IRQ_HANDLED;
--}
--
--static irqreturn_t sbprof_pc_intr(int irq, void *dev_id)
--{
--	printk(DEVNAME ": unexpected pc_intr");
--	return IRQ_NONE;
--}
--
--/*
-- * Requires: Already called zclk_timer_init with a value that won't
-- *           saturate 40 bits.  No subsequent use of SCD performance counters
-- *           or trace buffer.
-- */
--
--static int sbprof_zbprof_start(struct file *filp)
--{
--	u64 scdperfcnt;
--	int err;
--
--	if (xchg(&sbp.tb_enable, 1))
--		return -EBUSY;
--
--	pr_debug(DEVNAME ": starting\n");
--
--	sbp.next_tb_sample = 0;
--	filp->f_pos = 0;
--
--	err = request_irq(K_INT_TRACE_FREEZE, sbprof_tb_intr, 0,
--	                DEVNAME " trace freeze", &sbp);
--	if (err)
--		return -EBUSY;
--
--	/* Make sure there isn't a perf-cnt interrupt waiting */
--	scdperfcnt = __raw_readq(IOADDR(A_SCD_PERF_CNT_CFG));
--	/* Disable and clear counters, override SRC_1 */
--	__raw_writeq((scdperfcnt & ~(M_SPC_CFG_SRC1 | M_SPC_CFG_ENABLE)) |
--		     M_SPC_CFG_ENABLE | M_SPC_CFG_CLEAR | V_SPC_CFG_SRC1(1),
--		     IOADDR(A_SCD_PERF_CNT_CFG));
--
--	/*
--	 * We grab this interrupt to prevent others from trying to use it, even
--	 * though we don't want to service the interrupts (they only feed into
--	 * the trace-on-interrupt mechanism)
--	 */
--	err = request_irq(K_INT_PERF_CNT, sbprof_pc_intr, 0,
--	                DEVNAME " scd perfcnt", &sbp);
--	if (err)
--		goto out_free_irq;
--
--	/*
--	 * I need the core to mask these, but the interrupt mapper to pass them
--	 * through.  I am exploiting my knowledge that cp0_status masks out
--	 * IP[5]. krw
--	 */
--	__raw_writeq(K_INT_MAP_I3,
--		     IOADDR(A_IMR_REGISTER(0, R_IMR_INTERRUPT_MAP_BASE) +
--			    (K_INT_PERF_CNT << 3)));
--
--	/* Initialize address traps */
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_0));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_1));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_2));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_UP_3));
--
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_0));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_1));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_2));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_DOWN_3));
--
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_0));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_1));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_2));
--	__raw_writeq(0, IOADDR(A_ADDR_TRAP_CFG_3));
--
--	/* Initialize Trace Event 0-7 */
--	/*				when interrupt */
--	__raw_writeq(M_SCD_TREVT_INTERRUPT, IOADDR(A_SCD_TRACE_EVENT_0));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_1));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_2));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_3));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_4));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_5));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_6));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_EVENT_7));
--
--	/* Initialize Trace Sequence 0-7 */
--	/*				     Start on event 0 (interrupt) */
--	__raw_writeq(V_SCD_TRSEQ_FUNC_START | 0x0fff,
--		     IOADDR(A_SCD_TRACE_SEQUENCE_0));
--	/*			  dsamp when d used | asamp when a used */
--	__raw_writeq(M_SCD_TRSEQ_ASAMPLE | M_SCD_TRSEQ_DSAMPLE |
--		     K_SCD_TRSEQ_TRIGGER_ALL,
--		     IOADDR(A_SCD_TRACE_SEQUENCE_1));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_2));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_3));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_4));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_5));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_6));
--	__raw_writeq(0, IOADDR(A_SCD_TRACE_SEQUENCE_7));
--
--	/* Now indicate the PERF_CNT interrupt as a trace-relevant interrupt */
--	__raw_writeq(1ULL << K_INT_PERF_CNT,
--		     IOADDR(A_IMR_REGISTER(0, R_IMR_INTERRUPT_TRACE)));
--
--	arm_tb();
--
--	pr_debug(DEVNAME ": done starting\n");
--
--	return 0;
--
--out_free_irq:
--	free_irq(K_INT_TRACE_FREEZE, &sbp);
--
--	return err;
--}
--
--static int sbprof_zbprof_stop(void)
--{
--	int err;
--
--	pr_debug(DEVNAME ": stopping\n");
--
--	if (sbp.tb_enable) {
--		/*
--		 * XXXKW there is a window here where the intr handler may run,
--		 * see the disable, and do the wake_up before this sleep
--		 * happens.
--		 */
--		pr_debug(DEVNAME ": wait for disarm\n");
--		err = wait_event_interruptible(sbp.tb_sync, !sbp.tb_armed);
--		pr_debug(DEVNAME ": disarm complete, stat %d\n", err);
--
--		if (err)
--			return err;
--
--		sbp.tb_enable = 0;
--		free_irq(K_INT_TRACE_FREEZE, &sbp);
--		free_irq(K_INT_PERF_CNT, &sbp);
--	}
--
--	pr_debug(DEVNAME ": done stopping\n");
--
--	return 0;
--}
--
--static int sbprof_tb_open(struct inode *inode, struct file *filp)
--{
--	int minor;
--
--	minor = iminor(inode);
--	if (minor != 0)
--		return -ENODEV;
--
--	if (xchg(&sbp.open, SB_OPENING) != SB_CLOSED)
--		return -EBUSY;
--
--	memset(&sbp, 0, sizeof(struct sbprof_tb));
--
--	sbp.sbprof_tbbuf = vmalloc(MAX_TBSAMPLE_BYTES);
--	if (!sbp.sbprof_tbbuf)
--		return -ENOMEM;
--
--	memset(sbp.sbprof_tbbuf, 0, MAX_TBSAMPLE_BYTES);
--	init_waitqueue_head(&sbp.tb_sync);
--	init_waitqueue_head(&sbp.tb_read);
--	mutex_init(&sbp.lock);
--
--	sbp.open = SB_OPEN;
--
--	return 0;
--}
--
--static int sbprof_tb_release(struct inode *inode, struct file *filp)
--{
--	int minor = iminor(inode);
--
--	if (minor != 0 || !sbp.open)
--		return -ENODEV;
--
--	mutex_lock(&sbp.lock);
--
--	if (sbp.tb_armed || sbp.tb_enable)
--		sbprof_zbprof_stop();
--
--	vfree(sbp.sbprof_tbbuf);
--	sbp.open = 0;
--
--	mutex_unlock(&sbp.lock);
--
--	return 0;
--}
--
--static ssize_t sbprof_tb_read(struct file *filp, char *buf,
--			      size_t size, loff_t *offp)
--{
--	int cur_sample, sample_off, cur_count, sample_left;
--	long  cur_off = *offp;
--	char *dest    =	 buf;
--	int   count   =	 0;
--	char *src;
--
--	if (!access_ok(VERIFY_WRITE, buf, size))
--		return -EFAULT;
--
--	mutex_lock(&sbp.lock);
--
--	count = 0;
--	cur_sample = cur_off / TB_SAMPLE_SIZE;
--	sample_off = cur_off % TB_SAMPLE_SIZE;
--	sample_left = TB_SAMPLE_SIZE - sample_off;
--
--	while (size && (cur_sample < sbp.next_tb_sample)) {
--		int err;
--
--		cur_count = size < sample_left ? size : sample_left;
--		src = (char *)(((long)sbp.sbprof_tbbuf[cur_sample])+sample_off);
--		err = __copy_to_user(dest, src, cur_count);
--		if (err) {
--			*offp = cur_off + cur_count - err;
--			mutex_unlock(&sbp.lock);
--			return err;
--		}
--
--		pr_debug(DEVNAME ": read from sample %d, %d bytes\n",
--		         cur_sample, cur_count);
--		size -= cur_count;
--		sample_left -= cur_count;
--		if (!sample_left) {
--			cur_sample++;
--			sample_off = 0;
--			sample_left = TB_SAMPLE_SIZE;
--		} else {
--			sample_off += cur_count;
--		}
--		cur_off += cur_count;
--		dest += cur_count;
--		count += cur_count;
--	}
--
--	*offp = cur_off;
--	mutex_unlock(&sbp.lock);
--
--	return count;
--}
--
--static long sbprof_tb_ioctl(struct file *filp, unsigned int command,
--	unsigned long arg)
--{
--	int error = 0;
--
--	switch (command) {
--	case SBPROF_ZBSTART:
--		mutex_lock(&sbp.lock);
--		error = sbprof_zbprof_start(filp);
--		mutex_unlock(&sbp.lock);
--		break;
--
--	case SBPROF_ZBSTOP:
--		mutex_lock(&sbp.lock);
--		error = sbprof_zbprof_stop();
--		mutex_unlock(&sbp.lock);
--		break;
--
--	case SBPROF_ZBWAITFULL:
--		error = wait_event_interruptible(sbp.tb_read, TB_FULL);
--		if (error)
--			break;
--
--		error = put_user(TB_FULL, (int *) arg);
--		break;
--
--	default:
--		error = -EINVAL;
--		break;
--	}
--
--	return error;
--}
--
--static const struct file_operations sbprof_tb_fops = {
--	.owner		= THIS_MODULE,
--	.open		= sbprof_tb_open,
--	.release	= sbprof_tb_release,
--	.read		= sbprof_tb_read,
--	.unlocked_ioctl	= sbprof_tb_ioctl,
--	.compat_ioctl	= sbprof_tb_ioctl,
--	.mmap		= NULL,
--};
--
--static struct class *tb_class;
--static struct device *tb_dev;
--
--static int __init sbprof_tb_init(void)
--{
--	struct device *dev;
--	struct class *tbc;
--	int err;
--
--	if (register_chrdev(SBPROF_TB_MAJOR, DEVNAME, &sbprof_tb_fops)) {
--		printk(KERN_WARNING DEVNAME ": initialization failed (dev %d)\n",
--		       SBPROF_TB_MAJOR);
--		return -EIO;
--	}
--
--	tbc = class_create(THIS_MODULE, "sb_tracebuffer");
--	if (IS_ERR(tbc)) {
--		err = PTR_ERR(tbc);
--		goto out_chrdev;
--	}
--
--	tb_class = tbc;
--
--	dev = device_create(tbc, NULL, MKDEV(SBPROF_TB_MAJOR, 0), "tb");
--	if (IS_ERR(dev)) {
--		err = PTR_ERR(dev);
--		goto out_class;
--	}
--	tb_dev = dev;
--
--	sbp.open = 0;
--	tb_period = zbbus_mhz * 10000LL;
--	pr_info(DEVNAME ": initialized - tb_period = %lld\n", tb_period);
--
--	return 0;
--
--out_class:
--	class_destroy(tb_class);
--out_chrdev:
--	unregister_chrdev(SBPROF_TB_MAJOR, DEVNAME);
--
--	return err;
--}
--
--static void __exit sbprof_tb_cleanup(void)
--{
--	device_destroy(tb_class, MKDEV(SBPROF_TB_MAJOR, 0));
--	unregister_chrdev(SBPROF_TB_MAJOR, DEVNAME);
--	class_destroy(tb_class);
--}
--
--module_init(sbprof_tb_init);
--module_exit(sbprof_tb_cleanup);
--
--MODULE_ALIAS_CHARDEV_MAJOR(SBPROF_TB_MAJOR);
--MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
--MODULE_LICENSE("GPL");
--- 
-1.1.6.g9c88
+
+Total memory used by CFE:  0x8FEB3000 - 0x8FFFF520 (1361184)
+
+Initialized Data:          0x8FEF5408 - 0x8FEFD100 (31992)
+
+BSS Area:                  0x8FEFD100 - 0x8FEFD520 (1056)
+
+Local Heap:                0x8FEFD520 - 0x8FFFD520 (1048576)
+
+Stack Area:                0x8FFFD520 - 0x8FFFF520 (8192)
+
+Text (code) segment:       0x8FEB3000 - 0x8FEF4C75 (269429)
+
+Boot area (physical):      0x0FE72000 - 0x0FEB2000
+
+Relocation Factor:         I:F02B3000 - D:F02B3000
+
+ 
+
+ 
+
+*** Autoboot: Trying device 'ide0.0' file  (ide0.0,raw)
+
+ 
+
+Loader:raw Filesys:raw Dev:ide0.0 File: Options:(null)
+
+Loading: ........... 130560 bytes read
+
+Entry at 0x20000000
+
+Starting program at 0x20000000
+
+ 
+
+SiByte Loader, version 2.4.2
+
+Built on Oct  4 2005
+
+Getting configuration file ext2:ide0.0:*:sibyl.conf...
+
+Config file retrieved.
+
+Loading kernel (ELF64):
+
+    4256456@0x80100000
+
+done
+
+Set up command line arguments to: root=/dev/hda3 console=duart0 mem=989020k
+Setting up initial prom_init arguments **Exception 32: EPC=0000000020000BC8,
+Cause=00009008 (TLBMissRd) (CPU0)
+
+                RA=0000000020000BB4, VAddr=0000000000000000, SR=00000082
+
+ 
+
+        0  ($00) = 0000000000000000     AT ($01) = 0000000000000001
+
+        v0 ($02) = FFFFFFFF8FEFCC70     v1 ($03) = 0000000000000000
+
+        a0 ($04) = 0000000000000010     a1 ($05) = 0000000000000000
+
+        a2 ($06) = 000000008FEB3CDC     a3 ($07) = 0000000000000000
+
+        t0 ($08) = 0000000000000080     t1 ($09) = 0000000000000001
+
+        t2 ($10) = 0000000000000001     t3 ($11) = 0000000000000000
+
+        t4 ($12) = 0000000000000000     t5 ($13) = 0000000000000000
+
+        t6 ($14) = 0000000000000015     t7 ($15) = 0000000045000000
+
+        s0 ($16) = FFFFFFFF8FEB3AF4     s1 ($17) = FFFFFFFF8FEFD4E0
+
+        s2 ($18) = FFFFFFFF8FFFF250     s3 ($19) = FFFFFFFF8FEFD0B8
+
+        s4 ($20) = 0000000000000000     s5 ($21) = 0000000000000000
+
+        s6 ($22) = 0000000000000000     s7 ($23) = FFFFFFFF8FEB3000
+
+        t8 ($24) = 0000000000000000     t9 ($25) = 0000000000000000
+
+        k0 ($26) = 0000000000000001     k1 ($27) = 000000008FEB3CDC
+
+        gp ($28) = 00000000200278F0     sp ($29) = FFFFFFFF8FFFECE0
+
+        fp ($30) = FFFFFFFF8FFFECE0     ra ($31) = 0000000020000BB4
+
+
+------=_NextPart_000_0014_01C77212.7DBE74C0
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Courier New";
+	color:black;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:none none;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier New";color:black'>Dear =
+Linux-Mips
+Developers:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier =
+New";color:black'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier =
+New";color:black'>I&#8217;d like
+to ask a question about use of the &#8216;mem=3D&#8217; kernel =
+parameter.&nbsp;
+When booting without this parameter, the kernel automatically detects =
+the
+amount of memory as </span></font><font size=3D2 face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier New"'>989020 kB.&nbsp; If =
+a kernel
+parameter is added to specify &#8216;mem=3D989020k&#8217; a TLB Miss =
+error is
+encountered.&nbsp; Do you all have guidance about how the memory =
+parameter can
+be specified without causing the error?&nbsp; Since the mem=3D parameter =
+was set
+to an identical value as the memory reported by meminfo in the /proc
+filesystem, use of this kernel parameter should be OK.&nbsp; This =
+behavior has
+been observed on both the BCM1250/1480 platforms when running Debian =
+linux.&nbsp;
+The 2.6.17-2 kernel is used with the system.<font color=3Dblack><span
+style=3D'color:black'><o:p></o:p></span></font></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier =
+New";color:black'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Thanks,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Gary<font color=3Dblack><span =
+style=3D'color:black'><o:p></o:p></span></font></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier =
+New";color:black'>--</span></font><font
+color=3Dblack><span style=3D'color:black'><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier New";color:black'>Gary A. =
+Smith,
+ABD PhD<br>
+Engineer, 3Phoenix, Inc.</span></font><font color=3Dblack><span =
+style=3D'color:
+black'><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier New";color:black'>3331 =
+Heritage
+Trade Drive</span></font><font color=3Dblack><span =
+style=3D'color:black'><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier New";color:black'>Suite =
+101</span></font><font
+color=3Dblack><span style=3D'color:black'><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier New";color:black'>Wake =
+Forest,
+NC&nbsp; 27587</span></font><font color=3Dblack><span =
+style=3D'color:black'><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier =
+New";color:black'>919.562.5333
+x107</span></font><font color=3Dblack><span =
+style=3D'color:black'><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'><a =
+href=3D"http://www.3Phoenix.com"
+title=3D"blocked::http://www.3phoenix.com/"><font size=3D2 =
+face=3D"Courier New"
+title=3D"blocked::http://www.3phoenix.com/"><span
+title=3D"blocked::http://www.3phoenix.com/"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>http://www.3Phoenix.com</span></span></font></a><o:p></o:p></span><=
+/font></p>
+
+<p class=3DMsoNormal><font size=3D2 color=3Dblack face=3D"Courier =
+New"><span
+style=3D'font-size:10.0pt;font-family:"Courier =
+New";color:black'>Gary.Smith@3Phoenix.com<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>debian:/proc# more =
+meminfo<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>MemTotal:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+989020
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>MemFree:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+957876 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>Buffers:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1660 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>Cached:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+12076 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>SwapCached:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>Active:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+10308 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Inactive:&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;5224 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>HighTotal:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;
+0 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>HighFree:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;
+0 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>LowTotal:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+989020
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>LowFree:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+957876 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>SwapTotal:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 72252
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>SwapFree:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+72252 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>Dirty:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;
+524 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>Writeback:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;
+0 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>Mapped:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+
+4496 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>Slab:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;
+7236 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>CommitLimit:&nbsp;&nbsp;&nbsp; 566760 =
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Committed_AS:&nbsp;&nbsp;&nbsp;&nbsp; 4360 =
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>PageTables:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+188 kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>VmallocTotal: 1073741824 =
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>VmallocUsed:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 916
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>VmallocChunk: 1073739640 =
+kB<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>CFE version 1.3.3 for SWARM =
+(64bit,MP,BE,MIPS) Build
+Date: Tue Dec 19 06:41:38 EST 2006 (root@static-host) Copyright (C)
+2000,2001,2002,2003,2004,2005 Broadcom =
+Corporation.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Initializing =
+Arena.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Initializing =
+Devices.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>SWARM board revision =
+3<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>sbeth: found phy 1, vendor 000818 part =
+0C<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>sbeth: found phy 1, vendor 000818 part 0C =
+Config
+switch: 0<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>CPU: BCM1250 B2<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>L2 Cache Status: =
+OK<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Wafer ID:&nbsp;&nbsp; 0x7F21A009&nbsp; [Lot =
+8136,
+Wafer 13]<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Manuf Test: Bin A [2CPU_FI_FD_F2 =
+(OK)]<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>SysCfg: 0000000008C20800 [PLL_DIV: 16, =
+IOB0_DIV:
+CPUCLK/4, IOB1_DIV:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>CPUCLK/3]<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>CPU type 0x1040102: =
+800MHz<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Total memory: 0x40000000 bytes =
+(1024MB)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Total memory used by CFE:&nbsp; 0x8FEB3000 -
+0x8FFFF520 (1361184)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Initialized
+Data:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0x8FEF5408 -
+0x8FEFD100 (31992)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>BSS
+Area:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0x8FEFD100 - 0x8FEFD520 (1056)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Local
+Heap:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;
+0x8FEFD520 - 0x8FFFD520 (1048576)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Stack
+Area:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;
+0x8FFFD520 - 0x8FFFF520 (8192)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Text (code)
+segment:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0x8FEB3000 - 0x8FEF4C75 =
+(269429)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Boot area =
+(physical):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+0x0FE72000 - 0x0FEB2000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Relocation
+Factor:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I:F02B3000 - =
+D:F02B3000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>*** Autoboot: Trying device 'ide0.0' =
+file&nbsp;
+(ide0.0,raw)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Loader:raw Filesys:raw Dev:ide0.0 File:
+Options:(null)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Loading: ........... 130560 bytes =
+read<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Entry at =
+0x20000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Starting program at =
+0x20000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>SiByte Loader, version =
+2.4.2<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Built on Oct&nbsp; 4 =
+2005<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Getting configuration file
+ext2:ide0.0:*:sibyl.conf...<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Config file =
+retrieved.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Loading kernel =
+(ELF64):<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp; =
+4256456@0x80100000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>done<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>Set up command line arguments to: =
+root=3D/dev/hda3
+console=3Dduart0 mem=3D989020k Setting up initial prom_init arguments =
+**Exception
+32: EPC=3D0000000020000BC8, Cause=3D00009008 (TLBMissRd) =
+(CPU0)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier =
+New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;
+RA=3D0000000020000BB4, VAddr=3D0000000000000000, =
+SR=3D00000082<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+0&nbsp;
+($00) =3D 0000000000000000&nbsp;&nbsp;&nbsp;&nbsp; AT ($01) =3D =
+0000000000000001<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v0 =
+($02)
+=3D FFFFFFFF8FEFCC70&nbsp;&nbsp;&nbsp;&nbsp; v1 ($03) =3D =
+0000000000000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a0 =
+($04)
+=3D 0000000000000010&nbsp;&nbsp;&nbsp;&nbsp; a1 ($05) =3D =
+0000000000000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a2 =
+($06)
+=3D 000000008FEB3CDC&nbsp;&nbsp;&nbsp;&nbsp; a3 ($07) =3D =
+0000000000000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t0 =
+($08)
+=3D 0000000000000080&nbsp;&nbsp;&nbsp;&nbsp; t1 ($09) =3D =
+0000000000000001<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t2 =
+($10)
+=3D 0000000000000001&nbsp;&nbsp;&nbsp;&nbsp; t3 ($11) =3D =
+0000000000000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t4 =
+($12)
+=3D 0000000000000000&nbsp;&nbsp;&nbsp;&nbsp; t5 ($13) =3D =
+0000000000000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t6 =
+($14)
+=3D 0000000000000015&nbsp;&nbsp;&nbsp;&nbsp; t7 ($15) =3D =
+0000000045000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s0 =
+($16)
+=3D FFFFFFFF8FEB3AF4&nbsp;&nbsp;&nbsp;&nbsp; s1 ($17) =3D =
+FFFFFFFF8FEFD4E0<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s2 =
+($18)
+=3D FFFFFFFF8FFFF250&nbsp;&nbsp;&nbsp;&nbsp; s3 ($19) =3D =
+FFFFFFFF8FEFD0B8<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s4 =
+($20)
+=3D 0000000000000000&nbsp;&nbsp;&nbsp;&nbsp; s5 ($21) =3D =
+0000000000000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s6 =
+($22)
+=3D 0000000000000000&nbsp;&nbsp;&nbsp;&nbsp; s7 ($23) =3D =
+FFFFFFFF8FEB3000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t8 =
+($24)
+=3D 0000000000000000&nbsp;&nbsp;&nbsp;&nbsp; t9 ($25) =3D =
+0000000000000000<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; k0 =
+($26)
+=3D 0000000000000001&nbsp;&nbsp;&nbsp;&nbsp; k1 ($27) =3D =
+000000008FEB3CDC<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gp =
+($28)
+=3D 00000000200278F0&nbsp;&nbsp;&nbsp;&nbsp; sp ($29) =3D =
+FFFFFFFF8FFFECE0<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3D"Courier New"><span =
+style=3D'font-size:10.0pt;
+font-family:"Courier New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fp =
+($30)
+=3D FFFFFFFF8FFFECE0&nbsp;&nbsp;&nbsp;&nbsp; ra ($31) =3D =
+0000000020000BB4<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0014_01C77212.7DBE74C0--

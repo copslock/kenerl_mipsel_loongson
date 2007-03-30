@@ -1,50 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2007 23:06:54 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:12191 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021389AbXC2WGx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Mar 2007 23:06:53 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l2TM6i23029728;
-	Thu, 29 Mar 2007 23:06:46 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l2TM6fHW029727;
-	Thu, 29 Mar 2007 23:06:41 +0100
-Date:	Thu, 29 Mar 2007 23:06:41 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Mark Mason <mmason@upwardaccess.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] updated Sibyte headers
-Message-ID: <20070329220641.GA27724@linux-mips.org>
-References: <20070328214025.GA18413@upwardaccess.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070328214025.GA18413@upwardaccess.com>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2007 03:21:39 +0100 (BST)
+Received: from alnrmhc11.comcast.net ([204.127.225.91]:56538 "EHLO
+	alnrmhc11.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20021856AbXC3CVi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 Mar 2007 03:21:38 +0100
+Received: from [192.168.1.4] (c-69-251-93-234.hsd1.md.comcast.net[69.251.93.234])
+          by comcast.net (alnrmhc11) with ESMTP
+          id <20070330022052b1100lum3ge>; Fri, 30 Mar 2007 02:20:53 +0000
+Message-ID: <460C7404.2020209@gentoo.org>
+Date:	Thu, 29 Mar 2007 22:20:52 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0b2 (Windows/20070116)
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org, ths@networkno.de, ralf@linux-mips.org,
+	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Subject: Re: [PATCH]: Remove CONFIG_BUILD_ELF64 entirely
+References: <46086A90.7070402@gentoo.org>	<20070327.235310.128618679.anemo@mba.ocn.ne.jp>	<460A6CED.1070308@gentoo.org> <20070329.002453.18311528.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070329.002453.18311528.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14774
+X-archive-position: 14775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 28, 2007 at 02:40:25PM -0700, Mark Mason wrote:
-
-> This is an update to the earlier patch for the sibyte headers, and superceeds
-> the previous patch.  Changes were necessary to get the tbprof driver working
-> on the bcm1480.
+Atsushi Nemoto wrote:
+> On Wed, 28 Mar 2007 09:26:05 -0400, Kumba <kumba@gentoo.org> wrote:
+>> Well, what's the need to use the move/lui/ld sequence over 
+>> move/lui/daddui/dsll/daddui/dsll//ld anyways?  I'll have to warm the Indy up and 
+>> try a 64bit kernel there I guess, to see if it exhibits similar issues with this 
+>> segment of code.
 > 
-> Patch to update Sibyte header files to match master versions maintained
-> at Broadcom.  This patch also corrects some whitespace problems, and
-> (hopefully) shouldn't introduce any new ones.
-> 
-> Signed-off-by: Mark Mason <mason@broadcom.com>
+> Just an optimization.  For CKSEG0 symbol, a LUI instruction can fill
+> high 32-bit by sign-extention.  Either code should work for CKSEG0
+> kernel.
 
-Queued for 2.6.22 - with the usual pile of trailing whitespace stripped.
+Well, thinking about it some more, can this stackframe change be segmented out 
+of Frank's main patches, so we can get them into git, and spend time in 
+2.6.21/2.6.22/2.6.23 chasing down what exactly is up with this specific asm 
+sequence?
 
-  Ralf
+Of course, wiring in a quick check on !defined(CONFIG_SGI_IP32) would also work, 
+but that's not proper to go kludging in specific machine checks in a generic 
+file like stackframe, IMHO.
+
+
+--Kumba
+
+-- 
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

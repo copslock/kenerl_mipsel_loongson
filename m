@@ -1,106 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2007 15:50:56 +0100 (BST)
-Received: from webmail.ict.ac.cn ([159.226.39.7]:30851 "EHLO ict.ac.cn")
-	by ftp.linux-mips.org with ESMTP id S20021376AbXC3Ouu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2007 15:50:50 +0100
-Received: (qmail 18329 invoked by uid 507); 30 Mar 2007 22:50:08 +0800
-Received: from unknown (HELO ?192.168.1.3?) (fxzhang@210.77.15.146)
-  by ict.ac.cn with SMTP; 30 Mar 2007 22:50:08 +0800
-Message-ID: <460D2602.6060003@ict.ac.cn>
-Date:	Fri, 30 Mar 2007 23:00:18 +0800
-From:	Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Icedove 1.5.0.8 (X11/20061116)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2007 02:01:45 +0100 (BST)
+Received: from mail.infostreet.com ([206.62.140.1]:16489 "EHLO
+	mail.infostreet.com") by ftp.linux-mips.org with ESMTP
+	id S20021546AbXCaBBn convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2007 02:01:43 +0100
+Received: (qmail 23795 invoked by uid 48); 31 Mar 2007 00:58:40 -0000
+Received: from unknown (HELO server) (sp@iperlman.mystreetsmart.com@71.131.8.153)
+  by blade7 with SMTP; 31 Mar 2007 00:58:40 -0000
+Message-ID: <043b01c7732f$b4fa53f0$0202a8c0@server>
+From:	"Sandy Perlman" <sp@i-perlman.com>
+To:	<linux-mips@linux-mips.org>
+Subject: Software Manager Position
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: kbuild O= support broken?
-Content-Type: text/plain; charset=GB18030; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Mailer: Microsoft Outlook Express 6.00.2900.3028
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3028
+X-BitDefender-Scanner: Clean, Agent: BitDefender Qmail 1.6.2 on blade7
+Date:	Sat, 31 Mar 2007 02:01:43 +0100
+Return-Path: <sp@i-perlman.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14780
+X-archive-position: 14781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: sp@i-perlman.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+I am a working with a Silicon Valley "profitable" start-up company that is looking for full-time Hands-on Software Manager. This is a full-time position is located in Fremont, CA.
 
-  Recently I meet a strange error when building a kernel: if I build the 
-kernel in the source tree, then it will work well; but if I build it 
-with O=../build, then the resulting kernel is unstable.
+Our client's customers are worldwide leaders in wireless, cellular, avionics, military, video entertainment, broadcasting, automotive.  Their breakthrough patented coding technologies are now being implemented as worldwide standards for upcoming communications designs in international standards bodies. Their technology allows for reliable transmission of data on unreliable wireless or wired networks.
 
-  Looking into the problem, I find that these two kernel is quite 
-different, e.g.
+Primary Responsibilities
+Drives the delivery of embedded software products for IP-based streaming and file delivery applications. Ensures customer success through the delivery of well-designed, flexible, extensible, robust and richly supported software products.
+ 
+Leveraging past product successes, provides domain expertise in the area of IP-based networking architectures and protocols. Provides technical guidance on multimedia session/transport protocol implementations, limitations, and applications including IP/UDP, RTP/RTCP, firewalls, and performance enhancing proxies.
 
-ls -l */built-in.o in build/ dir:
--rw-r--r-- 1 loongson loongson  155239 2007-03-30 10:21 block/built-in.o
--rw-r--r-- 1 loongson loongson   18923 2007-03-30 10:20 crypto/built-in.o
--rw-r--r-- 1 loongson loongson 1498144 2007-03-30 10:30 drivers/built-in.o
--rw-r--r-- 1 loongson loongson 1075678 2007-03-30 10:20 fs/built-in.o
--rw-r--r-- 1 loongson loongson   48747 2007-03-30 22:24 init/built-in.o
--rw-r--r-- 1 loongson loongson   38110 2007-03-30 10:20 ipc/built-in.o
--rw-r--r-- 1 loongson loongson  468469 2007-03-30 10:18 kernel/built-in.o
--rw-r--r-- 1 loongson loongson   18898 2007-03-30 10:41 lib/built-in.o
--rw-r--r-- 1 loongson loongson  313511 2007-03-30 10:12 mm/built-in.o
--rw-r--r-- 1 loongson loongson  974689 2007-03-30 10:40 net/built-in.o
--rw-r--r-- 1 loongson loongson    6774 2007-03-30 10:20 security/built-in.o
--rw-r--r-- 1 loongson loongson       8 2007-03-30 22:43 sound/built-in.o
--rw-r--r-- 1 loongson loongson     913 2007-03-30 10:07 usr/built-in.o
+Works closely with development team to ensure that core technology implementations are highly portable and scalable to a broad range of client and server environments.
 
-ls -l */built-in.o in src tree:
--rw-r--r-- 1 loongson loongson  155484 2007-03-29 23:03 block/built-in.o
--rw-r--r-- 1 loongson loongson   21702 2007-03-29 23:01 crypto/built-in.o
--rw-r--r-- 1 loongson loongson 1771957 2007-03-29 23:26 drivers/built-in.o
--rw-r--r-- 1 loongson loongson 1087193 2007-03-29 23:00 fs/built-in.o
--rw-r--r-- 1 loongson loongson   48747 2007-03-30 22:21 init/built-in.o
--rw-r--r-- 1 loongson loongson   54546 2007-03-29 23:01 ipc/built-in.o
--rw-r--r-- 1 loongson loongson  470917 2007-03-30 10:16 kernel/built-in.o
--rw-r--r-- 1 loongson loongson   23356 2007-03-29 23:51 lib/built-in.o
--rw-r--r-- 1 loongson loongson  314543 2007-03-29 22:30 mm/built-in.o
--rw-r--r-- 1 loongson loongson  935894 2007-03-29 23:50 net/built-in.o
--rw-r--r-- 1 loongson loongson    6774 2007-03-29 23:01 security/built-in.o
--rw-r--r-- 1 loongson loongson   12154 2007-03-30 22:21 sound/built-in.o
--rw-r--r-- 1 loongson loongson     894 2007-03-29 22:20 usr/built-in.o
+Required Skills & Experience
+An innovative and technical professional with a proven track record as a technical software manager in the area of IP-based networking protocols. Minimum of 10 years relevant experience, including at least 3 years experience in a management capacity.
 
-loongson@debian:~/old$ ls -l vmlinux ../build-old/vmlinux
--rwxr-xr-x 1 loongson loongson 3856719 2007-03-30 22:24 ../build-old/vmlinux
--rwxr-xr-x 1 loongson loongson 4079730 2007-03-30 22:21 vmlinux
+Depth of knowledge in many of the following protocols and technologies: IP/UDP/TCP, NAT/ALG, firewall, VPN, RTP/RTCP, FTP, DHCP, FTP, DiffServ, including a comprehensive knowledge of the architecture, design, development, limitations and use as applied to streaming and file broadcast applications.
 
-the size different is around 200K!
+Proven technical manager; must have practical, hands-on experience in leading teams in the development of complex multimedia networking solutions. Demonstrated success in the early stages of product development through participation in product and roadmap definitions with product management. Strong project execution skills covering task definition, team mentoring, and recruiting. Demonstrated success in delivering best of breed solutions and ensuring customer success.
 
+Bachelor's Degree in CS or EE
 
-Take the "sound" subdir for example, I use Make V=1 to check the output 
-and find that
-while in the src tree, obj-y is correctly set to soundcore.o, so 
-built-in.o will be linked
-using: (CONFIG_SOUND=y)
-  make -f scripts/Makefile.build obj=sound
-   ld  -m elf32ltsmip  -r -o sound/built-in.o sound/soundcore.o
-while with O= option:
-  make -f /home/loongson/old/scripts/Makefile.build obj=sound
-   rm -f sound/built-in.o; ar rcs sound/built-in.o
+If you know someone that would be a good fit, please forward this email to him or her. If you want to apply, reply to this email with your resume. For more information, send an email to info@ctsearch.com.
 
-check scripts/Makefile.build we can find that it indicates that obj-y is 
-null:
-around line 260:
-
-ifdef builtin-target
-quiet_cmd_link_o_target = LD      $@
-# If the list of objects to link is empty, just create an empty built-in.o
-cmd_link_o_target = $(if $(strip $(obj-y)),\
-                      $(LD) $(ld_flags) -r -o $@ $(filter $(obj-y), $^),\
-                      rm -f $@; $(AR) rcs $@)
-
-$(builtin-target): $(obj-y) FORCE
-        $(call if_changed,link_o_target)
-
-Anybody can help explain this?
-
-Thank you.
-
-
-yours
-Fuxin Zhang
+Sandy Perlman
+Principal & Senior Recruiter, BSEE
+http://www.ctsearch.com
+https://www.linkedin.com/in/sandyperlman

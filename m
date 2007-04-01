@@ -1,58 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2007 02:01:45 +0100 (BST)
-Received: from mail.infostreet.com ([206.62.140.1]:16489 "EHLO
-	mail.infostreet.com") by ftp.linux-mips.org with ESMTP
-	id S20021546AbXCaBBn convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2007 02:01:43 +0100
-Received: (qmail 23795 invoked by uid 48); 31 Mar 2007 00:58:40 -0000
-Received: from unknown (HELO server) (sp@iperlman.mystreetsmart.com@71.131.8.153)
-  by blade7 with SMTP; 31 Mar 2007 00:58:40 -0000
-Message-ID: <043b01c7732f$b4fa53f0$0202a8c0@server>
-From:	"Sandy Perlman" <sp@i-perlman.com>
-To:	<linux-mips@linux-mips.org>
-Subject: Software Manager Position
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: Microsoft Outlook Express 6.00.2900.3028
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3028
-X-BitDefender-Scanner: Clean, Agent: BitDefender Qmail 1.6.2 on blade7
-Date:	Sat, 31 Mar 2007 02:01:43 +0100
-Return-Path: <sp@i-perlman.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Apr 2007 13:23:25 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.169]:10000 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022092AbXDAMXV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 1 Apr 2007 13:23:21 +0100
+Received: by ug-out-1314.google.com with SMTP id 40so1414217uga
+        for <linux-mips@linux-mips.org>; Sun, 01 Apr 2007 05:22:21 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
+        b=OIsOnIc/nn72fyNsbYZyrwp/5+yFw2AZAsZF6rmT+m/YXfF/xoKeZcpryT9skF8fCFd25tanLpWtRQiwqAHUr+LvQbYDk3A/O2ctA/skdJgGSRgQfORzcnSh+sJZPkNkvreNPmu3MXmaDD7jcQXXxCpF+Lmgoa3OeEyZC1XA8h0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
+        b=Lo6AQ98DPI0i4inUNbdJL+9qUL3g8g2VMdG5B/1xruksc59ayC8odA7DLHg+bJMtTjXAQEXXVso/6jDmDHipBBiUX4i3/iVtBu9O7ECETHvw/QCsKLNKeNHl0YwwUd4k/w+cXjXsDw/Wuie38uwaj5LbLGawyDf7w8CltsdfsMw=
+Received: by 10.67.95.3 with SMTP id x3mr3465960ugl.1175430141370;
+        Sun, 01 Apr 2007 05:22:21 -0700 (PDT)
+Received: from localhost ( [59.95.8.28])
+        by mx.google.com with ESMTP id e34sm5681534ugd.2007.04.01.05.22.17;
+        Sun, 01 Apr 2007 05:22:20 -0700 (PDT)
+Date:	Sun, 1 Apr 2007 17:53:19 +0530
+From:	Milind Arun Choudhary <milindchoudhary@gmail.com>
+To:	kernel-janitors@lists.osdl.org
+Cc:	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [KJ][PATCH] ROUND_UP cleanup in arch/mips/kernel/sysirix.c
+Message-ID: <20070401122319.GA10178@arun.site>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.6i
+Return-Path: <milindchoudhary@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14781
+X-archive-position: 14782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sp@i-perlman.com
+X-original-sender: milindchoudhary@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I am a working with a Silicon Valley "profitable" start-up company that is looking for full-time Hands-on Software Manager. This is a full-time position is located in Fremont, CA.
+ROUND_UP(32|64) cleanup, use ALIGN
 
-Our client's customers are worldwide leaders in wireless, cellular, avionics, military, video entertainment, broadcasting, automotive.  Their breakthrough patented coding technologies are now being implemented as worldwide standards for upcoming communications designs in international standards bodies. Their technology allows for reliable transmission of data on unreliable wireless or wired networks.
+Signed-off-by: Milind Arun Choudhary <milindchoudhary@gmail.com>
 
-Primary Responsibilities
-Drives the delivery of embedded software products for IP-based streaming and file delivery applications. Ensures customer success through the delivery of well-designed, flexible, extensible, robust and richly supported software products.
+---
+ sysirix.c |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
+
+
+diff --git a/arch/mips/kernel/sysirix.c b/arch/mips/kernel/sysirix.c
+index 93a1484..59c25bc 100644
+--- a/arch/mips/kernel/sysirix.c
++++ b/arch/mips/kernel/sysirix.c
+@@ -1736,14 +1736,13 @@ struct irix_dirent32_callback {
+ };
  
-Leveraging past product successes, provides domain expertise in the area of IP-based networking architectures and protocols. Provides technical guidance on multimedia session/transport protocol implementations, limitations, and applications including IP/UDP, RTP/RTCP, firewalls, and performance enhancing proxies.
+ #define NAME_OFFSET32(de) ((int) ((de)->d_name - (char *) (de)))
+-#define ROUND_UP32(x) (((x)+sizeof(u32)-1) & ~(sizeof(u32)-1))
+ 
+ static int irix_filldir32(void *__buf, const char *name,
+ 	int namlen, loff_t offset, u64 ino, unsigned int d_type)
+ {
+ 	struct irix_dirent32 __user *dirent;
+ 	struct irix_dirent32_callback *buf = __buf;
+-	unsigned short reclen = ROUND_UP32(NAME_OFFSET32(dirent) + namlen + 1);
++	unsigned short reclen = ALIGN(NAME_OFFSET32(dirent) + namlen + 1, sizeof(u32));
+ 	int err = 0;
+ 	u32 d_ino;
+ 
+@@ -1838,14 +1837,13 @@ struct irix_dirent64_callback {
+ };
+ 
+ #define NAME_OFFSET64(de) ((int) ((de)->d_name - (char *) (de)))
+-#define ROUND_UP64(x) (((x)+sizeof(u64)-1) & ~(sizeof(u64)-1))
+ 
+ static int irix_filldir64(void *__buf, const char *name,
+ 	int namlen, loff_t offset, u64 ino, unsigned int d_type)
+ {
+ 	struct irix_dirent64 __user *dirent;
+ 	struct irix_dirent64_callback * buf = __buf;
+-	unsigned short reclen = ROUND_UP64(NAME_OFFSET64(dirent) + namlen + 1);
++	unsigned short reclen = ALIGN(NAME_OFFSET64(dirent) + namlen + 1,sizeof(u64));
+ 	int err = 0;
+ 
+ 	if (!access_ok(VERIFY_WRITE, buf, sizeof(*buf)))
 
-Works closely with development team to ensure that core technology implementations are highly portable and scalable to a broad range of client and server environments.
-
-Required Skills & Experience
-An innovative and technical professional with a proven track record as a technical software manager in the area of IP-based networking protocols. Minimum of 10 years relevant experience, including at least 3 years experience in a management capacity.
-
-Depth of knowledge in many of the following protocols and technologies: IP/UDP/TCP, NAT/ALG, firewall, VPN, RTP/RTCP, FTP, DHCP, FTP, DiffServ, including a comprehensive knowledge of the architecture, design, development, limitations and use as applied to streaming and file broadcast applications.
-
-Proven technical manager; must have practical, hands-on experience in leading teams in the development of complex multimedia networking solutions. Demonstrated success in the early stages of product development through participation in product and roadmap definitions with product management. Strong project execution skills covering task definition, team mentoring, and recruiting. Demonstrated success in delivering best of breed solutions and ensuring customer success.
-
-Bachelor's Degree in CS or EE
-
-If you know someone that would be a good fit, please forward this email to him or her. If you want to apply, reply to this email with your resume. For more information, send an email to info@ctsearch.com.
-
-Sandy Perlman
-Principal & Senior Recruiter, BSEE
-http://www.ctsearch.com
-https://www.linkedin.com/in/sandyperlman
+-- 
+Milind Arun Choudhary

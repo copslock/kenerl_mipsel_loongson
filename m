@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Apr 2007 15:35:45 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:21735 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20021934AbXDDObU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Apr 2007 15:31:20 +0100
-Received: (qmail 16908 invoked by uid 511); 4 Apr 2007 14:30:20 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Apr 2007 15:36:09 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:20455 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20021982AbXDDOb0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Apr 2007 15:31:26 +0100
+Received: (qmail 16942 invoked by uid 511); 4 Apr 2007 14:30:21 -0000
 Received: from unknown (HELO heart.lemote.com) (192.168.2.206)
-  by lemote.com with SMTP; 4 Apr 2007 14:30:20 -0000
-Message-ID: <510138.627930672-sendEmail@heart>
+  by lemote.com with SMTP; 4 Apr 2007 14:30:21 -0000
+Message-ID: <418767.882601486-sendEmail@heart>
 From:	"zhangfx@lemote.com" <zhangfx@lemote.com>
 To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject:  [PATCH 3/16] Kconfig update for lemote fulong mini-PC
-Date:	Wed, 4 Apr 2007 14:38:18 +0000
+Subject:  [PATCH 14/16] tlb handling support for Loongson2 processor
+Date:	Wed, 4 Apr 2007 14:38:20 +0000
 X-Mailer: sendEmail-1.55
 MIME-Version: 1.0
-Content-Type: multipart/related; boundary="----MIME delimiter for sendEmail-661401.500533433"
+Content-Type: multipart/related; boundary="----MIME delimiter for sendEmail-680318.29952179"
 Return-Path: <zhangfx@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14802
+X-archive-position: 14803
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,7 +27,7 @@ X-list: linux-mips
 
 This is a multi-part message in MIME format. To properly display this message you need a MIME-Version 1.0 compliant Email program.
 
-------MIME delimiter for sendEmail-661401.500533433
+------MIME delimiter for sendEmail-680318.29952179
 Content-Type: text/plain;
         charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
@@ -35,81 +35,127 @@ Content-Transfer-Encoding: 7bit
 
 Signed-off-by: Fuxin Zhang <zhangfx@lemote.com>
 ---
- arch/mips/Kconfig |   37 +++++++++++++++++++++++++++++++++++++
- 1 files changed, 37 insertions(+), 0 deletions(-)
+ arch/mips/mm/tlb-r4k.c |   21 ++++++++++++++++++++-
+ arch/mips/mm/tlbex.c   |    8 +++++---
+ 2 files changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 338bfa3..cedb0fa 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -16,6 +16,26 @@ choice
- 	prompt "System type"
- 	default SGI_IP22
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 65160d4..cf1c893 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -48,6 +48,20 @@ extern void build_tlb_refill_handler(void);
  
-+config LEMOTE_FULONG
-+	bool "Support for Lemote's fulong mini-PC"
-+	select SYS_HAS_CPU_LOONGSON2
-+	select DMA_NONCOHERENT
-+	select BOOT_ELF32
-+	select BOARD_SCACHE
-+	select HW_HAS_PCI
-+	select I8259
-+	select ISA
-+	select IRQ_CPU
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_64BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_HIGHMEM
-+	select SYS_HAS_EARLY_PRINTK
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
-+	help
-+        Lemote Fulong mini-PC board, which uses Chinese Loongson-2E CPU and a fpga north bridge 
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 
++#if defined(CONFIG_CPU_LOONGSON2) 
++/* LOONGSON2 has a 4 entry itlb which is a subset of dtlb, unfortrunately, itlb is not totally transparent to software.
++ */
++#define FLUSH_ITLB write_c0_diag(4);
 +
++#define FLUSH_ITLB_VM(vma) { if ((vma)->vm_flags & VM_EXEC)  write_c0_diag(4); }
 +
- config MIPS_MTX1
- 	bool "4G Systems MTX-1 board"
- 	select DMA_NONCOHERENT
-@@ -1142,6 +1162,13 @@ choice
- 	prompt "CPU type"
- 	default CPU_R4X00
- 
-+config CPU_LOONGSON2	
-+	bool "LOONGSON2"
-+	depends on SYS_HAS_CPU_LOONGSON2
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select CPU_SUPPORTS_64BIT_KERNEL
-+	select CPU_SUPPORTS_HIGHMEM
++#else
 +
- config CPU_MIPS32_R1
- 	bool "MIPS32 Release 1"
- 	depends on SYS_HAS_CPU_MIPS32_R1
-@@ -1352,6 +1379,9 @@ config CPU_SB1
- 
- endchoice
- 
-+config SYS_HAS_CPU_LOONGSON2
-+	bool
++#define FLUSH_ITLB
++#define FLUSH_ITLB_VM(vma)
 +
- config SYS_HAS_CPU_MIPS32_R1
- 	bool
- 
-@@ -1681,6 +1711,13 @@ config CPU_HAS_SMARTMIPS
- config CPU_HAS_WB
- 	bool
- 
-+config 64BIT_CONTEXT
-+	bool "Save 64bit integer registers" if CPU_LOONGSON2 && 32BIT
-+	help
-+	  Loongson2 CPU is 64bit , when used in 32BIT mode, its integer registers
-+	  can still be accessed as 64bit, mainly for multimedia instructions. We must have
-+	  all 64bit save/restored to make sure those instructions to get correct result.
++#endif
 +
- #
- # Vectored interrupt mode is an R2 feature
- #
+ void local_flush_tlb_all(void)
+ {
+ 	unsigned long flags;
+@@ -73,6 +87,7 @@ void local_flush_tlb_all(void)
+ 	}
+ 	tlbw_use_hazard();
+ 	write_c0_entryhi(old_ctx);
++	FLUSH_ITLB;
+ 	EXIT_CRITICAL(flags);
+ }
+ 
+@@ -136,6 +151,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 		} else {
+ 			drop_mmu_context(mm, cpu);
+ 		}
++		FLUSH_ITLB;
+ 		EXIT_CRITICAL(flags);
+ 	}
+ }
+@@ -178,6 +194,7 @@ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ 	} else {
+ 		local_flush_tlb_all();
+ 	}
++	FLUSH_ITLB;
+ 	EXIT_CRITICAL(flags);
+ }
+ 
+@@ -210,6 +227,7 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long page)
+ 
+ 	finish:
+ 		write_c0_entryhi(oldpid);
++		FLUSH_ITLB_VM(vma);
+ 		EXIT_CRITICAL(flags);
+ 	}
+ }
+@@ -241,7 +259,7 @@ void local_flush_tlb_one(unsigned long page)
+ 		tlbw_use_hazard();
+ 	}
+ 	write_c0_entryhi(oldpid);
+-
++	FLUSH_ITLB;
+ 	EXIT_CRITICAL(flags);
+ }
+ 
+@@ -293,6 +311,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
+ 	else
+ 		tlb_write_indexed();
+ 	tlbw_use_hazard();
++	FLUSH_ITLB_VM(vma);
+ 	EXIT_CRITICAL(flags);
+ }
+ 
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 492c518..e1a58d9 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -893,6 +893,7 @@ static __init void build_tlb_write_entry(u32 **p, struct label **l,
+ 	case CPU_4KSC:
+ 	case CPU_20KC:
+ 	case CPU_25KF:
++	case CPU_LOONGSON2:
+ 		tlbw(p);
+ 		break;
+ 
+@@ -1276,7 +1277,8 @@ static void __init build_r4000_tlb_refill_handler(void)
+ 	 * need three, with the second nop'ed and the third being
+ 	 * unused.
+ 	 */
+-#ifdef CONFIG_32BIT
++	/* Loongson2 ebase is different than r4k, we have more space */
++#if defined(CONFIG_32BIT) || defined(CONFIG_CPU_LOONGSON2)
+ 	if ((p - tlb_handler) > 64)
+ 		panic("TLB refill handler space exceeded");
+ #else
+@@ -1289,7 +1291,7 @@ static void __init build_r4000_tlb_refill_handler(void)
+ 	/*
+ 	 * Now fold the handler in the TLB refill handler space.
+ 	 */
+-#ifdef CONFIG_32BIT
++#if defined(CONFIG_32BIT) || defined(CONFIG_CPU_LOONGSON2)
+ 	f = final_handler;
+ 	/* Simplest case, just copy the handler. */
+ 	copy_handler(relocs, labels, tlb_handler, p, f);
+@@ -1336,7 +1338,7 @@ static void __init build_r4000_tlb_refill_handler(void)
+ 		final_len);
+ 
+ 	f = final_handler;
+-#ifdef CONFIG_64BIT
++#if defined(CONFIG_64BIT) && !defined(CONFIG_CPU_LOONGSON2)
+ 	if (final_len > 32)
+ 		final_len = 64;
+ 	else
 -- 
 1.4.4.4
 
 
 
-------MIME delimiter for sendEmail-661401.500533433--
+------MIME delimiter for sendEmail-680318.29952179--

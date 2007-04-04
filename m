@@ -1,71 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Apr 2007 14:35:50 +0100 (BST)
-Received: from web7907.mail.in.yahoo.com ([202.86.4.83]:58758 "HELO
-	web7907.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20021970AbXDDNfo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 4 Apr 2007 14:35:44 +0100
-Received: (qmail 96667 invoked by uid 60001); 4 Apr 2007 13:34:29 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=DaEumORm0clT254KP0qq2VZgUZwDuV0OYSIUOsyZmgyotVyAVGy2fSgPWuAgcxRjjTDWghWKRfsG/Ab8ZmsocCjLqQNvDNLjPe8bOjMUdhRX3lXrkqclH4tCy2kmmnEpVyCF2H/hwcLoxSwoZt+NcjXleR/g7t8cISp6YOYZIbc=;
-X-YMail-OSG: Lk8FnbYVM1mNvnjVvlIGdqRn5ibc32iLDpkvNUOFpjC_zNB7yCqoscP5kcjtYmkOvO9DrNQZAiKvdSYA.U1N49L3pHZLpf5ZIeIsCa7HdTJZlMkCv4PSTk9ipgiUSQ--
-Received: from [199.239.167.162] by web7907.mail.in.yahoo.com via HTTP; Wed, 04 Apr 2007 14:34:29 BST
-Date:	Wed, 4 Apr 2007 14:34:29 +0100 (BST)
-From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
-Subject: Back ground user process display issue on linux-2.6.18 kernel  
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Apr 2007 15:31:12 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:19943 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20021836AbXDDObK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Apr 2007 15:31:10 +0100
+Received: (qmail 16936 invoked by uid 511); 4 Apr 2007 14:30:21 -0000
+Received: from unknown (HELO heart.lemote.com) (192.168.2.206)
+  by lemote.com with SMTP; 4 Apr 2007 14:30:21 -0000
+Message-ID: <667328.695158602-sendEmail@heart>
+From:	"zhangfx@lemote.com" <zhangfx@lemote.com>
+To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject:  [PATCH 12/16] cheat for support of more than 256MB memory
+Date:	Wed, 4 Apr 2007 14:38:19 +0000
+X-Mailer: sendEmail-1.55
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-875335224-1175693669=:96419"
-Content-Transfer-Encoding: 8bit
-Message-ID: <718603.96419.qm@web7907.mail.in.yahoo.com>
-Return-Path: <sathesh_edara2003@yahoo.co.in>
+Content-Type: multipart/related; boundary="----MIME delimiter for sendEmail-279305.257908167"
+Return-Path: <zhangfx@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14789
+X-archive-position: 14790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sathesh_edara2003@yahoo.co.in
+X-original-sender: zhangfx@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
---0-875335224-1175693669=:96419
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+This is a multi-part message in MIME format. To properly display this message you need a MIME-Version 1.0 compliant Email program.
 
-Hi ,
-    
-  We are running a sample user application "samp_app" in the background using "samp_app &" form rcS script file.
-  We are using linux-2.6.18 kernel.
-  In this application code we have put some debug messages to display it on console using printf() function.
-  We are unable to see any of these debug messages on the console.
-  When we run the same application in the foreground (without &) from same rcS script, we are getting these messages on console.
-   
-  WE RAN THE SAME APPLICATION AS A BACKGROUND PROCESS ('samp_app &') ON LINUX-2.6.12 KERNEL. WE ARE ABLE TO GET THESE DEBUG PRINTS.
-   
-  Could you please tell us what might be the reason for this behavior on linux-2.6.18.
-  Did we miss any configuration option in the 2.6.18 kernel.
-   
-  Note that we are using same toolchain for both the kernel versions.
-   
-  Thanks in Advance.
-   
-  Regards,
-  Sathesh.
+------MIME delimiter for sendEmail-279305.257908167
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 
- 				
----------------------------------
- Here’s a new way to find what you're looking for - Yahoo! Answers 
---0-875335224-1175693669=:96419
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
 
-<div>Hi ,</div>  <div>&nbsp; </div>  <div>We are running a sample user application&nbsp;"samp_app"&nbsp;in the background using "samp_app &amp;" form rcS script file.</div>  <div>We are using linux-2.6.18 kernel.</div>  <div>In this application code we&nbsp;have put some debug messages to&nbsp;display it on&nbsp;console&nbsp;using printf() function.</div>  <div>We are unable to see any of these debug messages on the console.</div>  <div>When we run the same application in the foreground (without &amp;) from same rcS script, we are getting these messages on console.</div>  <div>&nbsp;</div>  <div>WE RAN THE SAME APPLICATION AS A BACKGROUND PROCESS ('samp_app &amp;') ON LINUX-2.6.12 KERNEL. WE ARE ABLE TO GET THESE DEBUG PRINTS.</div>  <div>&nbsp;</div>  <div>Could you please tell us what might be the reason for this behavior on linux-2.6.18.</div>  <div>Did we miss any configuration option in the 2.6.18 kernel.</div>  <div>&nbsp;</div>  <div><STRONG><EM>Note that we are
- using same toolchain for both the kernel versions</EM>.</STRONG></div>  <div>&nbsp;</div>  <div>Thanks in Advance.</div>  <div>&nbsp;</div>  <div>Regards,</div>  <div>Sathesh.</div><p>&#32;
-	
+Signed-off-by: Fuxin Zhang <zhangfx@lemote.com>
+---
+ arch/mips/kernel/setup.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
 
-	
-		<hr size=1></hr> 
-Here’s a new way to find what you're looking for - <a href="http://us.rd.yahoo.com/mail/in/yanswers/*http://in.answers.yahoo.com/">Yahoo! Answers</a> 
---0-875335224-1175693669=:96419--
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 4975da0..92a27bb 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -509,6 +509,14 @@ static void __init resource_init(void)
+ 		res->end = end;
+ 
+ 		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
++#if defined(CONFIG_LEMOTE_FULONG) && defined(CONFIG_64BIT)
++		/* to keep memory continous, we tell system 0x10000000 - 0x20000000 is reserved
++		 * for memory, in fact it is io region, don't occupy it
++		 *
++		 * SPARSEMEM? 
++		 */
++		if (boot_mem_map.map[i].type != BOOT_MEM_RESERVED)
++#endif
+ 		request_resource(&iomem_resource, res);
+ 
+ 		/*
+-- 
+1.4.4.4
+
+
+
+------MIME delimiter for sendEmail-279305.257908167--

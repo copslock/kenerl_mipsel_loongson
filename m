@@ -1,93 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2007 00:27:52 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:19680 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20022768AbXDHX13 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2007 00:27:29 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1Hagk6-0007Fk-00; Mon, 09 Apr 2007 01:24:18 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 10154C223D; Mon,  9 Apr 2007 01:07:10 +0200 (CEST)
-Date:	Mon, 9 Apr 2007 01:07:10 +0200
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2007 09:29:41 +0100 (BST)
+Received: from asia.telenet-ops.be ([195.130.137.74]:43451 "EHLO
+	asia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20022855AbXDII3h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Apr 2007 09:29:37 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by asia.telenet-ops.be (Postfix) with SMTP id 4302ED41B9;
+	Mon,  9 Apr 2007 10:29:27 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by asia.telenet-ops.be (Postfix) with ESMTP id 449F3D418E;
+	Mon,  9 Apr 2007 10:29:26 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.13.8/8.13.8/Debian-3) with ESMTP id l398TP1Q020259
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 9 Apr 2007 10:29:25 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.13.8/8.13.8/Submit) with ESMTP id l398TOCn020255;
+	Mon, 9 Apr 2007 10:29:24 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Mon, 9 Apr 2007 10:29:24 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Change PCI host bridge setup/resources
-Message-ID: <20070408230710.GA9092@alpha.franken.de>
+In-Reply-To: <20070408230710.GA9092@alpha.franken.de>
+Message-ID: <Pine.LNX.4.64.0704091028010.1807@anakin>
 References: <20070408113457.GB7553@alpha.franken.de> <4619245F.4030704@ru.mvista.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4619245F.4030704@ru.mvista.com>
-User-Agent: Mutt/1.5.9i
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+ <20070408230710.GA9092@alpha.franken.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14820
+X-archive-position: 14821
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Apr 08, 2007 at 09:20:31PM +0400, Sergei Shtylyov wrote:
-> > static struct plat_serial8250_port pcit_cplus_data[] = {
-> >-	PORT(0x3f8, 4),
-> >+	PORT(0x3f8, 0),
-> > 	PORT(0x2f8, 3),
-> > 	PORT(0x3e8, 4),
-> > 	PORT(0x2e8, 3),
+On Mon, 9 Apr 2007, Thomas Bogendoerfer wrote:
+> On Sun, Apr 08, 2007 at 09:20:31PM +0400, Sergei Shtylyov wrote:
+> >    This is certainly *not* a PCI or [E]ISA resource. It's decoded by the 
+> > *host* bridge.
 > 
->    Hm, what is that -- UART #1 without IRQ?
+> so ? It's an IO address no device should use, because it won't work.
+> Therefore mark it busy. That's all the code does.
 
-workaround for not fully working interrupts on UART1. IRQ 0 means
-polling. Read the source.
+Yep, it's transparently decoded ISA (which is behind PCI) to control the PCI
+bus. Just traditional PC legacy hacks :-)
 
-> > static struct resource sni_io_resource = {
-> >-	.start	= 0x00001000UL,
-> >+	.start	= 0x00000000UL,
-> > 	.end	= 0x03bfffffUL,
-> >-	.name	= "PCIT IO MEM",
-> >+	.name	= "PCIT IO",
-> > 	.flags	= IORESOURCE_IO,
-> > };
-> 
->    Why us this necessary, only beacuse compatible peripherals are behind 
->    PCI?
-> EISA is behind PCI as well, yet you're setting PCIBIOS_MIN_IO to 0x9000. 
-> Does this all really make sense? :-/
+Gr{oetje,eeting}s,
 
-it does, how about reading the PCI code ?
+						Geert
 
-EISA IO address space is 0x0000 - 0xffff, so this IO addresses need to
-be forwarded by the PCI host bridge. PCIBIOS_MIN_IO is for the PCI
-address assignment code, and tells this code to start allocating IO
-space starting at 0x9000. This is needed because the pci eisa code
-will use n + 0x1000 as EISA slot base addresses, which gives 0x8000
-for the 8th (last) slot. So it's IMHO a good idea to avoid collisions
-between EISA and PCI for IO space.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
->    This is certainly *not* a PCI or [E]ISA resource. It's decoded by the 
-> *host* bridge.
-
-so ? It's an IO address no device should use, because it won't work.
-Therefore mark it busy. That's all the code does.
-
-> > 		.start	=  0xcfc,
-> > 		.end	= 0xcff,
-> > 		.name	= "PCI config data",
-> 
->    Well, why not just join them into one?
-
-what's your point ? This stuff is all about giving some hints and
-avoiding address assignment collisions. I could just drop the whole
-table and nothing will change, because the PCI code doesn't assign
-IO addresses below 0x9000. Fine with me, but I think it doesn't hurt
-to know, what IO addresses are used for some stuff.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

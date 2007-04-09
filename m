@@ -1,115 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2007 16:10:55 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:9154 "HELO mail.dev.rtsoft.ru")
-	by ftp.linux-mips.org with SMTP id S20022965AbXDIPKy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2007 16:10:54 +0100
-Received: (qmail 22895 invoked from network); 9 Apr 2007 15:10:47 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 9 Apr 2007 15:10:47 -0000
-Message-ID: <461A57B4.8020309@ru.mvista.com>
-Date:	Mon, 09 Apr 2007 19:11:48 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Register PCI host bridge resource earlier
-References: <20070408112844.GA7553@alpha.franken.de> <4618DDF0.1020604@ru.mvista.com> <20070408131228.GA7819@alpha.franken.de> <4618ED95.6040304@ru.mvista.com> <20070408135244.GA8016@alpha.franken.de> <4619008D.1030803@ru.mvista.com> <20070408161027.GA8265@alpha.franken.de> <46191F42.6020409@ru.mvista.com> <20070408232406.GB9092@alpha.franken.de>
-In-Reply-To: <20070408232406.GB9092@alpha.franken.de>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2007 16:21:48 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:23971 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20022973AbXDIPVr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2007 16:21:47 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1Havdc-0000eh-00; Mon, 09 Apr 2007 17:18:36 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 2B488C223F; Mon,  9 Apr 2007 17:16:30 +0200 (CEST)
+Date:	Mon, 9 Apr 2007 17:16:30 +0200
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Change PCI host bridge setup/resources
+Message-ID: <20070409151630.GA9284@alpha.franken.de>
+References: <20070408113457.GB7553@alpha.franken.de> <4619245F.4030704@ru.mvista.com> <20070408230710.GA9092@alpha.franken.de> <461A50E0.1060602@ru.mvista.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <461A50E0.1060602@ru.mvista.com>
+User-Agent: Mutt/1.5.9i
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14824
+X-archive-position: 14825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Mon, Apr 09, 2007 at 06:42:40PM +0400, Sergei Shtylyov wrote:
+> >workaround for not fully working interrupts on UART1. IRQ 0 means
+> >polling. Read the source.
+> 
+>    Thanks, I've read it quite a lot already. But is UART3 IRQ working 
+>    (being the same as UART1's)?
 
-Thomas Bogendoerfer wrote:
+right now, none of the ISA interrupts are working on that machine,
+probably because I'm missing some IRQ routing setup. The workaround is
+there to get serial console working in userspace.
 
->>>request_resource will fail, because the range is already taken by
->>>sni_io_resource, while insert_region inserts the resource into 
->>>sni_io_resource.
+>    To me, it doesn't make much sense with or without reading the code.
+> And note that no other boards claim ports 0x0000 thru 0x0fff to PCI.
 
->>   No, it shouldn't according to what I'm seeing in the code.  Perhaps I'm 
->>missing something and need to actually try executing alike code a see...
+no other board MIPS board has EISA behind PCI afaik. So this is a new
+situation.
 
-> after startup there is ioport_resource, which is 0x0000-IO_SPACE_LIMIT.
-> My change in register_pci_controller will request the PCI IO space
-> from 0x0000 to 0x3bffff (the maximum the PCI host bridge could address).
+>    Yeah, and I'd given 0x00009000 as PCI I/O start address for that same 
+> purpose. [E]ISA resources, while being accessed (via PCI bus as a proxy) 
+> are generally not a part of PCI bus.
 
-    Why do you need to claim I/O ports from 0, at the first place (especially 
-if nobody else does this)? Apparently in your EISA system, ports 0x0 thru 
-0x100 are reserved for ISA compat pereiplerals (they are behind the PCI-ISA 
-bridge but that doesn't matter for this purpose), ports 0x100-0x3ff are not 
-for PCI anyway (besides, that's legacy ISA card range, along with all the 
-aliases), 0x1000-0x1cff, 0x2000-0x2cff, ... 0x8000-0x8cff are reserved for 
-EISA slots and everything in beetween you're marking as unavailable to PCI too 
-(besides, those ranges are ISA card alias ranges). So, what was the point of 
-claiming all the lagacy ranges to belong to PCI and then prevent it from using 
-them, (and break 8259 code by doing that)?
+it would help, if you would try to understand the stuff first. Just read
+the EISA code...
 
-> request_resource from ioport_resource, which i8259.c tried to do, will
-> fail now in that range, because it'ss taken by the PCI bridge. Therefore
-> anybody wanting IO space in that range, must take it from the PCI 
-> IO space. So doing request_region (&sni_io_resource, &pci1_io_resource);
-> would have worked as well. But the code right now doesn't have a
-> handle for the parent resource. insert_region() on the other side
-> searches for the parent resource over the whole given resource and
-> plugs the wanted resource to the right sub resource.
+>    You're changing PCI I/O space start address for no apparent reason which 
+> seems to break general 8259 code.
 
-    OK, seeing my mistake in the code interpretation now. But I must note that 
-the comment to that function *is* misguiding:
+could you try to understand the issue please ? I could leave the i8259
+code alone and everything will work as before. Only the entries for
+the PIC would be missing in /proc/iomem (which I could kludge around
+by adding them to the pcit/pcimt resource list). Every other platform 
+won't see a difference, because no other platform needs to request the
+PCI IO space starting at 0x0000. 
 
-> Fine for simple house keeping, which is IMHO ok in that place.
+I've checked the platform device code, and it uses insert_region() like
+my proposed change for i8259. So I'm pretty sure, that's the way to
+go.
 
-    It's OK but I'm still not seeing why we need it at all.
+Thomas.
 
->>>The problem is that init_i8259 doesn't have the right
->>>resource for doing the request_resource, if ioport_resource starting from
->>>0x0000 is already taken by a PCI host bridge.
-
->>   I'm not at all sure that giving out I/O addresses from 0 to PCI is a 
->>   great idea -- is it indeed necessary?
-
-> I'm feeling like an oldtimer right now. Ever heard of ISA busses ? The
-
-    Alas, your irony is lost on me. :-)
-
-> address space there starts from 0x0000. There is this infamous DMA
-> controller waiting exactly at IO address 0x0000-0x001f. Floppy DMA
-> needs to use that for example. Of course this would work even without
-
-    I even programmed ISA bus masters. :-)
-
-> the silly resource stuff (inb/outb don't care), EISA code wants to see
-> 0x0000 as base address of the PCI/EISA bridge.
-
-    Does EISA code care about PCI bridge?
-    Well, looking at drivers/eisa/pci_eisa.c looks like it indeed may care. 
-Well, then I've probably lost the case. :-)
-
->>>I could probably write a
->>>patch, which adds a parameter to init_i8259 for the resource, where the
->>>request_resource is correct. No idea, whether this is worth the efford.
-
->>>Opions ?
-
->>   Did you mean options, opinions, or something else? :-)
-
-> I wanted to know from someone, who knows what I talking about, if my
-> current code is acceptable or needs more workout.
-
-    You wanted it, you got it.
-
-> Thomas.
-
-WBR, Sergei
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

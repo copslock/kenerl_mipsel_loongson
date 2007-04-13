@@ -1,225 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Apr 2007 15:49:43 +0100 (BST)
-Received: from rtsoft2.corbina.net ([85.21.88.2]:63934 "HELO
-	mail.dev.rtsoft.ru") by ftp.linux-mips.org with SMTP
-	id S20023158AbXDLOtk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Apr 2007 15:49:40 +0100
-Received: (qmail 29266 invoked from network); 12 Apr 2007 14:48:19 -0000
-Received: from wasted.dev.rtsoft.ru (HELO ?192.168.1.248?) (192.168.1.248)
-  by mail.dev.rtsoft.ru with SMTP; 12 Apr 2007 14:48:19 -0000
-Message-ID: <461E46EF.4060004@ru.mvista.com>
-Date:	Thu, 12 Apr 2007 18:49:19 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Markus Gothe <markus.gothe@27m.se>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] EMMA2RH I2C driver
-References: <461DF11F.404@27m.se>
-In-Reply-To: <461DF11F.404@27m.se>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2007 18:17:09 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:47083 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022007AbXDMRRH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2007 18:17:07 +0100
+Received: from localhost (p6152-ipad02funabasi.chiba.ocn.ne.jp [61.214.24.152])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8C5B4B486; Sat, 14 Apr 2007 02:15:45 +0900 (JST)
+Date:	Sat, 14 Apr 2007 02:15:45 +0900 (JST)
+Message-Id: <20070414.021545.79071827.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Re: [PATCH] Allow CpU exception in kernel partially
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070310.012811.108982622.anemo@mba.ocn.ne.jp>
+References: <20070310.012811.108982622.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14833
+X-archive-position: 14834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Markus Gothe wrote:
+On Sat, 10 Mar 2007 01:28:11 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> The save_fp_context()/restore_fp_context() might sleep on accessing
+> user stack and therefore might lose FPU ownership in middle of them.
+> Also we should not disable preempt around these functions.  This patch
+> files this problem by allowing CpU exception in kernel partially.
+> 
+> * Introduce TIF_ALLOW_FP_IN_KERNEL thread flag.  If the flag was set,
+>   CpU exception handler enables CU1 bit in interrupted kernel context
+>   and returns without enabling interrupt (preempt) to make sure keep
+>   FPU ownership until resume.
+> * Introduce enable_fp_in_kernel() and disable_fp_in_kernel().  While
+>   we might lost FPU ownership in middle of CP0_STATUS manipulation
+>   (for example local_irq_disable()), we can not assume CU1 bit always
+>   reflects TIF_USEDFPU.  Therefore enable_fp_in_kernel() must drop CU1
+>   bit if TIF_USEDFPU was cleared.
+> * The resume() function must drop CU1 bit in CP0_STATUS which are to
+>   be saved.
 
-> As Ralf pointed out in march I've been polishing the IIC-driver for
-> EMMA2RH.
+Unfortunately this is broken.
 
-> I've shaped up the I2C-driver to be a platform-device-driver and added
-> accurately memory-mapping/unmapping and irq-request/free.
+> +static inline void disable_fp_in_kernel(void)
+> +{
+> +	BUG_ON(!__is_fpu_owner() && __fpu_enabled());
+> +	clear_thread_flag(TIF_ALLOW_FP_IN_KERNEL);
+> +}
 
-> There was a datastructure missing which was pretty straight forward to
-> figure out how to rebuild (i.e. i2c_algo_emma_data).
+This BUG_ON hits me sometimes when I run debian installer.
 
-   Below are a few comments...
+I tracked down the problem and understand why.  If kernel preempted in
+middle of save_fp_context() and resumed, the CU1 bit will be enabled
+without TIF_USEDFPU flag.
 
-> --- drivers/i2c/algos/i2c-algo-emma2rh.c.orig	2007-03-15 13:32:35.000000000 +0100
-> +++ drivers/i2c/algos/i2c-algo-emma2rh.c	2007-04-12 10:08:58.000000000 +0200
-[...]
-> @@ -73,13 +71,15 @@
->  #define EMMA2RH_I2C_RETRIES 3
->  #define EMMA2RH_I2C_TIMEOUT 100
->  
-> -/* --- setting states on the bus with the right timing: --------------- */
-> +/* --- setting states on the bus with the right timing: ---------------        
-> +*/
->  #define set_emma(adap, ctl, val) adap->setemma(adap->data, ctl, val)
->  #define get_emma(adap, ctl) adap->getemma(adap->data, ctl)
->  #define get_own(adap) adap->getown(adap->data)
->  #define get_clock(adap) adap->getclock(adap->data)
->  
-> -/* --- other auxiliary functions -------------------------------------- */
-> +/* --- other auxiliary functions --------------------------------------        
-> +*/
->  
->  static void i2c_start(struct i2c_algo_emma_data *adap)
->  {
-> @@ -168,7 +168,8 @@
->                 udelay(adap->udelay);
->         }
->         DEB2(if (i)
-> -            printk(KERN_DEBUG "%s: needed %d retries for %d\n", __FUNCTION__, i, addr)) ;
-> +            printk(KERN_DEBUG "%s: needed %d retries for %d\n", __FUNCTION__, 
-> +i, addr)) ;
+1. Task A calls a system call.  CP0_STATUS is saved on top of kernel stack.
+2. setup_sigcontext() is called.
+3. Task A own FPU.  CP0_STATUS.CU1 in top of kernel stack is set.
+4. save_fp_context() is called.
+5. A timer interrupt happens.  CP0_STATUS is saved on next kernel stack.
+6. Task A is preempted by Task B.  Both CP0_STATUS.CU1 in top of
+   kernel stack and CP0_STATUS.CU1 in task_struct are both cleared.
+7. Task A is resumed.  On returning from resume(), CP0_STATUS.CU1 is 0.
+8. On returning to save_fp_context(), RESUME_SOME() restores
+   CP0_STATUS saved at (5).  The CU1 bit in this value is 1.
+9. Now CU1 is enabled without TIF_USEDFPU.
 
-   Please don't "uglify" the code. If you intend to carry it to the new line indent properlu (by starting it under paren).
+This problem might be fixed by dropping CU1 on RESUME_SOME() if
+TIF_USEDFPU was cleared.  But this adds some codes to critical path.
 
-> --- drivers/i2c/algos/i2c-algo-emma2rh.h.orig	2007-03-15 13:32:50.000000000 +0100
-> +++ drivers/i2c/algos/i2c-algo-emma2rh.h	2007-04-12 10:08:18.000000000 +0200
-> @@ -17,7 +17,8 @@
->      You should have received a copy of the GNU General Public License
->      along with this program; if not, write to the Free Software
->      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA*/
-> -/* -------------------------------------------------------------------- */
-> +/* --------------------------------------------------------------------        
-> +*/
+So I'd like to revert this patch.  I will send some patches in a few
+days:
 
-   No need to make the comment more ugly too.
- 
->  #ifndef I2C_EMMA2RH_H
->  #define I2C_EMMA2RH_H
-> @@ -102,4 +103,19 @@
->  #define I2C_EMMA_SHR            0x40
->  #define I2C_EMMA_INT            0x50
->  #define I2C_EMMA_INTM           0x60
-> +
-> +struct i2c_algo_emma_data {
-> +        void *data;             /* private data for lolevel routines    */
-> +        void (*setemma) (void *data, int ctl, int val);
-> +        int  (*getemma) (void *data, int ctl);
-> +        int  (*getown) (void *data);
-> +        int  (*getclock) (void *data);
-> +        void (*waitforpin) (void *data);
-> +
-> +        /* local settings */
-> +        int udelay;
-> +        int timeout;
-> +
-> +};
-> +
->  #endif                         /* I2C_EMMA2RH_H */
-> --- drivers/i2c/busses/i2c-emma2rh.c.orig	2007-03-15 13:33:45.000000000 +0100
-> +++ drivers/i2c/busses/i2c-emma2rh.c	2007-04-12 10:06:48.000000000 +0200
-> @@ -14,7 +14,7 @@
->       Copyright (C) 1995-97 Simon G. Vogl
->                     1998-99 Hans Berglund
->  
-> -    With some changes from KyУЖsti MУЄlkki <kmalkki@cc.hut.fi> and even
-> +    With some changes from Kyіsti Mфlkki <kmalkki@cc.hut.fi> and even
->      Frodo Looijaard <frodol@dds.nl>
+* a patch to revert this patch
+* updated "first way" patch (rewrites restore_fp_context/save_fp_context)
+* "third way" patch
 
-  I'm not sure what that change is.
- 
-> @@ -167,81 +167,108 @@
->         dd->alg.getclock = i2c_emma_getclock;
->         dd->alg.waitforpin = i2c_emma_waitforpin;
->         dd->alg.udelay = 80;
-> -       dd->alg.mdelay = 80;
->         dd->alg.timeout = 200;
->  
-> -       strcpy(dd->adap.name, dev->bus_id);
-> +       strcpy(dd->adap.name, pdev->name);
->         dd->adap.id = 0x00;
->         dd->adap.algo = NULL;
->         dd->adap.algo_data = &dd->alg;
->         dd->adap.client_register = i2c_emma_reg;
->         dd->adap.client_unregister = i2c_emma_unreg;
->  
-> -       spin_lock_init(&dd->lock);
-> -
-> -       atomic_set(&dd->pending,0);
-> -       init_waitqueue_head(&dd->wait);
-> -
-> -       dev_set_drvdata(dev, dd);
-> -
-> -       r = platform_get_resource(pdev, 0, 0);
-> -       /* get resource of type '0' with #0 */
->  
-> +       r = platform_get_resource(pdev, IORESOURCE_MEM, 0);/* get resource of type '0' with #0 */
-> +       
+The "third way" I'm thinking of is something like this:
 
-   Put at least one space between ; and comment, and no trailing whitespace, please.
+static int protected_save_fp_context(struct sigcontext __user *sc)
+{
+	int err;
+	while (1) {
+		preempt_disable();
+		own_fpu(1);
+		err = save_fp_context(sc); /* this might fail */
+		preempt_enable();
+		if (likely(!err))
+			break;
+		/* touch the sigcontext and try again */
+		err = __put_user(0, &sc->sc_fpregs[0]) |
+			__put_user(0, &sc->sc_fpregs[31]) |
+			__put_user(0, &sc->sc_fpc_csr);
+		if (err)
+			break;	/* really bad sigcontext */
+	}
+	return err;
+}
 
->         if (!r) {
->                 printk("Cannot get resource\n");
->                 err = -ENODEV;
->                 goto out_free;
-> -       }
-> -       dd->base = r->start;
-> -
-> +	}
-> +	
-> +	if (!request_mem_region(r->start, r->end - r->start + 1, pdev->name)) {
-> +		printk("Memory region busy\n");
-> +		err = -EBUSY;
-> +		goto out_mem_region;
+The save_fp_context intentionally is called in atomic context, and if
+it failed, touch the sigcontext in nonatomic context (this might lose
+FPU ownership), and try again.  I'll try some tests with this and send
+a patch if it worked fine.
 
-   You've already failed to request region, why then free it?
-
-> +	}
-> +	
-> +	dd->base = ioremap_nocache(r->start, r->end - r->start);
-> +	if (!dd->base) {
-> +		printk("Unable to map registers\n");
-> +		err = -EIO;
-> +		goto out_ioremap;
-
-   You've already failed to ioremap() it, why call iounmap()?
-
-> +	}
-> +	
->         dd->irq = platform_get_irq(pdev,0);
->         dd->clock = FAST397;
->         dd->own = 0x40 + pdev->id * 4;
->  
-> -       err = request_irq(dd->irq, i2c_emma_handler, 0, dev->bus_id, dd);
-> +       err = request_irq(dd->irq, i2c_emma_handler, 0, pdev->name, dd);
->         if (err < 0)
->                 goto out_free;
-
-   And you've forgetten to call iounmap() and release_mem_region() in this case...
-
-> +       
-> +       spin_lock_init(&dd->lock);
->  
-> +       atomic_set(&dd->pending,0);
-> +       init_waitqueue_head(&dd->wait);
-> +
-> +       platform_set_drvdata(pdev, dd);
-> +       
->         if ((err = i2c_emma_add_bus(&dd->adap)) < 0)
->                 goto out_irq;
->  
->         return 0;
-> +
->  out_irq:
-> -       free_irq(dd->irq, dev->bus_id);
-> +	free_irq(dd->irq, dd);
-> +out_ioremap:
-> +	iounmap(dd->base);
-> +out_mem_region:
-> +	release_mem_region(r->start, r->end - r->start + 1);
->  out_free:
-> -       kfree(dd);
-> +	kfree(dd);
->  out:
-> -       return err;
-> +	return err;
->  }
-
-   The cleanup code needs fixing, as you can see...
-
-
-WBR, Sergei
+---
+Atsushi Nemoto

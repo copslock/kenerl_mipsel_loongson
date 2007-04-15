@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Apr 2007 16:30:22 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:13017 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20022653AbXDOP1Z (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Apr 2007 16:30:45 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:14041 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20022623AbXDOP1Z (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Sun, 15 Apr 2007 16:27:25 +0100
-Received: (qmail 19498 invoked by uid 511); 15 Apr 2007 15:28:06 -0000
+Received: (qmail 19493 invoked by uid 511); 15 Apr 2007 15:28:06 -0000
 Received: from unknown (HELO localhost.localdomain) (192.168.2.197)
   by lemote.com with SMTP; 15 Apr 2007 15:28:06 -0000
 From:	tiansm@lemote.com
 To:	linux-mips@linux-mips.org
 Cc:	Fuxin Zhang <zhangfx@lemote.com>
-Subject: [PATCH 14/16] tlb handling support for Loongson2 processor
-Date:	Sun, 15 Apr 2007 23:26:03 +0800
-Message-Id: <11766507672298-git-send-email-tiansm@lemote.com>
+Subject: [PATCH 13/16] define MODULE_PROC_FAMILY for Loongson2
+Date:	Sun, 15 Apr 2007 23:26:02 +0800
+Message-Id: <11766507661790-git-send-email-tiansm@lemote.com>
 X-Mailer: git-send-email 1.4.4.1
-In-Reply-To: <11766507661790-git-send-email-tiansm@lemote.com>
-References: <11766507651736-git-send-email-tiansm@lemote.com> <11766507661317-git-send-email-tiansm@lemote.com> <11766507661726-git-send-email-tiansm@lemote.com> <11766507662638-git-send-email-tiansm@lemote.com> <11766507661133-git-send-email-tiansm@lemote.com> <11766507661526-git-send-email-tiansm@lemote.com> <11766507662650-git-send-email-tiansm@lemote.com> <11766507661684-git-send-email-tiansm@lemote.com> <117665076617-git-send-email-tiansm@lemote.com> <1176650766907-git-send-email-tiansm@lemote.com> <11766507663301-git-send-email-tiansm@lemote.com> <11766507663039-git-send-email-tiansm@lemote.com> <1176650766685-git-send-email-tiansm@lemote.com> <11766507661790-git-send-email-tiansm@lemote.com>
+In-Reply-To: <1176650766685-git-send-email-tiansm@lemote.com>
+References: <11766507651736-git-send-email-tiansm@lemote.com> <11766507661317-git-send-email-tiansm@lemote.com> <11766507661726-git-send-email-tiansm@lemote.com> <11766507662638-git-send-email-tiansm@lemote.com> <11766507661133-git-send-email-tiansm@lemote.com> <11766507661526-git-send-email-tiansm@lemote.com> <11766507662650-git-send-email-tiansm@lemote.com> <11766507661684-git-send-email-tiansm@lemote.com> <117665076617-git-send-email-tiansm@lemote.com> <1176650766907-git-send-email-tiansm@lemote.com> <11766507663301-git-send-email-tiansm@lemote.com> <11766507663039-git-send-email-tiansm@lemote.com> <1176650766685-git-send-email-tiansm@lemote.com>
 Return-Path: <tiansm@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14850
+X-archive-position: 14851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,125 +30,104 @@ From: Fuxin Zhang <zhangfx@lemote.com>
 
 Signed-off-by: Fuxin Zhang <zhangfx@lemote.com>
 ---
- arch/mips/mm/tlb-r4k.c |   23 ++++++++++++++++++++++-
- arch/mips/mm/tlbex.c   |    8 +++++---
- 2 files changed, 27 insertions(+), 4 deletions(-)
+ arch/mips/mm/c-r4k.c |   57 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 57 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 65160d4..26284bd 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -48,6 +48,22 @@ extern void build_tlb_refill_handler(void);
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index df04a31..6e6eac6 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -335,6 +335,10 @@ static void r4k_flush_cache_all(void)
  
- #endif /* CONFIG_MIPS_MT_SMTC */
- 
-+#if defined(CONFIG_CPU_LOONGSON2)
-+/* 
-+ * LOONGSON2 has a 4 entry itlb which is a subset of dtlb, 
-+ * unfortrunately, itlb is not totally transparent to software.
-+ */
-+#define FLUSH_ITLB write_c0_diag(4);
-+
-+#define FLUSH_ITLB_VM(vma) { if ((vma)->vm_flags & VM_EXEC)  write_c0_diag(4); }
-+
-+#else
-+
-+#define FLUSH_ITLB
-+#define FLUSH_ITLB_VM(vma)
-+
-+#endif
-+
- void local_flush_tlb_all(void)
+ static inline void local_r4k___flush_cache_all(void * args)
  {
- 	unsigned long flags;
-@@ -73,6 +89,7 @@ void local_flush_tlb_all(void)
- 	}
- 	tlbw_use_hazard();
- 	write_c0_entryhi(old_ctx);
-+	FLUSH_ITLB;
- 	EXIT_CRITICAL(flags);
- }
++#if defined(CONFIG_CPU_LOONGSON2)
++	r4k_blast_scache();
++	return;
++#endif
+ 	r4k_blast_dcache();
+ 	r4k_blast_icache();
  
-@@ -136,6 +153,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 		} else {
- 			drop_mmu_context(mm, cpu);
- 		}
-+		FLUSH_ITLB;
- 		EXIT_CRITICAL(flags);
- 	}
- }
-@@ -178,6 +196,7 @@ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
- 	} else {
- 		local_flush_tlb_all();
- 	}
-+	FLUSH_ITLB;
- 	EXIT_CRITICAL(flags);
- }
- 
-@@ -210,6 +229,7 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long page)
- 
- 	finish:
- 		write_c0_entryhi(oldpid);
-+		FLUSH_ITLB_VM(vma);
- 		EXIT_CRITICAL(flags);
- 	}
- }
-@@ -241,7 +261,7 @@ void local_flush_tlb_one(unsigned long page)
- 		tlbw_use_hazard();
- 	}
- 	write_c0_entryhi(oldpid);
--
-+	FLUSH_ITLB;
- 	EXIT_CRITICAL(flags);
- }
- 
-@@ -293,6 +313,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
- 	else
- 		tlb_write_indexed();
- 	tlbw_use_hazard();
-+	FLUSH_ITLB_VM(vma);
- 	EXIT_CRITICAL(flags);
- }
- 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 492c518..e1a58d9 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -893,6 +893,7 @@ static __init void build_tlb_write_entry(u32 **p, struct label **l,
- 	case CPU_4KSC:
- 	case CPU_20KC:
- 	case CPU_25KF:
-+	case CPU_LOONGSON2:
- 		tlbw(p);
+@@ -848,6 +852,26 @@ static void __init probe_pcache(void)
+ 		c->options |= MIPS_CPU_PREFETCH;
  		break;
  
-@@ -1276,7 +1277,8 @@ static void __init build_r4000_tlb_refill_handler(void)
- 	 * need three, with the second nop'ed and the third being
- 	 * unused.
- 	 */
--#ifdef CONFIG_32BIT
-+	/* Loongson2 ebase is different than r4k, we have more space */
-+#if defined(CONFIG_32BIT) || defined(CONFIG_CPU_LOONGSON2)
- 	if ((p - tlb_handler) > 64)
- 		panic("TLB refill handler space exceeded");
- #else
-@@ -1289,7 +1291,7 @@ static void __init build_r4000_tlb_refill_handler(void)
- 	/*
- 	 * Now fold the handler in the TLB refill handler space.
- 	 */
--#ifdef CONFIG_32BIT
-+#if defined(CONFIG_32BIT) || defined(CONFIG_CPU_LOONGSON2)
- 	f = final_handler;
- 	/* Simplest case, just copy the handler. */
- 	copy_handler(relocs, labels, tlb_handler, p, f);
-@@ -1336,7 +1338,7 @@ static void __init build_r4000_tlb_refill_handler(void)
- 		final_len);
++	case CPU_LOONGSON2:
++		icache_size = 1 << (12 + ((config & CONF_IC) >> 9));
++		c->icache.linesz = 16 << ((config & CONF_IB) >> 5);
++		if (prid & 0x3) {
++		  c->icache.ways = 4;
++		} else {
++		  c->icache.ways = 2;
++		}
++		c->icache.waybit= 0;
++
++		dcache_size = 1 << (12 + ((config & CONF_DC) >> 6));
++		c->dcache.linesz = 16 << ((config & CONF_DB) >> 4);
++		if (prid & 0x3) {
++		  c->dcache.ways = 4;
++		} else {
++		  c->dcache.ways = 2;
++		}
++		c->dcache.waybit = 0;
++		break;
++
+ 	default:
+ 		if (!(config & MIPS_CONF_M))
+ 			panic("Don't know how to probe P-caches on this cpu.");
+@@ -963,6 +987,14 @@ static void __init probe_pcache(void)
+ 		break;
+ 	}
  
- 	f = final_handler;
--#ifdef CONFIG_64BIT
-+#if defined(CONFIG_64BIT) && !defined(CONFIG_CPU_LOONGSON2)
- 	if (final_len > 32)
- 		final_len = 64;
- 	else
++#ifdef  CONFIG_CPU_LOONGSON2
++	/* 
++	 * LOONGSON2 has 4 way icache, but when using indexed cache op, 
++	 * one op will act on all 4 ways
++	 */
++	c->icache.ways = 1;
++#endif
++
+ 	printk("Primary instruction cache %ldkB, %s, %s, linesize %d bytes.\n",
+ 	       icache_size >> 10,
+ 	       cpu_has_vtag_icache ? "virtually tagged" : "physically tagged",
+@@ -1036,6 +1068,25 @@ static int __init probe_scache(void)
+ 	return 1;
+ }
+ 
++#if defined(CONFIG_CPU_LOONGSON2)
++static void __init loongson2_sc_init(void)
++{
++    struct cpuinfo_mips *c = &current_cpu_data;
++
++    scache_size = 512*1024;
++    c->scache.linesz = 32;
++    c->scache.ways = 4;
++    c->scache.waybit = 0;
++    c->scache.waysize = scache_size / (c->scache.ways);
++    c->scache.sets = scache_size /(c->scache.linesz * c->scache.ways);
++    printk("Unified secondary cache %ldkB %s, linesize %d bytes.\n",
++		    scache_size >> 10, way_string[c->scache.ways], c->scache.linesz);
++
++    c->options |= MIPS_CPU_INCLUSIVE_CACHES;
++    return;
++}
++#endif
++
+ extern int r5k_sc_init(void);
+ extern int rm7k_sc_init(void);
+ extern int mips_sc_init(void);
+@@ -1085,6 +1136,12 @@ static void __init setup_scache(void)
+ #endif
+ 		return;
+ 
++#if defined(CONFIG_CPU_LOONGSON2)
++	case CPU_LOONGSON2:
++		loongson2_sc_init();
++		return;
++#endif
++
+ 	default:
+ 		if (c->isa_level == MIPS_CPU_ISA_M32R1 ||
+ 		    c->isa_level == MIPS_CPU_ISA_M32R2 ||
 -- 
 1.4.4.1

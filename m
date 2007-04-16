@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2007 09:49:53 +0100 (BST)
-Received: from webmail.ict.ac.cn ([159.226.39.7]:27834 "EHLO ict.ac.cn")
-	by ftp.linux-mips.org with ESMTP id S20022616AbXDPItw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2007 09:49:52 +0100
-Received: (qmail 10017 invoked by uid 507); 16 Apr 2007 16:52:46 +0800
-Received: from unknown (HELO ?192.168.1.63?) (fxzhang@222.92.8.142)
-  by ict.ac.cn with SMTP; 16 Apr 2007 16:52:46 +0800
-Message-ID: <46233872.7010206@ict.ac.cn>
-Date:	Mon, 16 Apr 2007 16:48:50 +0800
-From:	Fuxin Zhang <fxzhang@ict.ac.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2007 09:50:18 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:33260 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20022625AbXDPIuP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2007 09:50:15 +0100
+Received: (qmail 5338 invoked by uid 511); 16 Apr 2007 08:51:58 -0000
+Received: from unknown (HELO ?192.168.1.63?) (222.92.8.142)
+  by lemote.com with SMTP; 16 Apr 2007 08:51:58 -0000
+Message-ID: <4623387F.3070905@lemote.com>
+Date:	Mon, 16 Apr 2007 16:49:03 +0800
+From:	Zhang Fuxin <zhangfx@lemote.com>
 User-Agent: Thunderbird 1.5.0.10 (Windows/20070221)
 MIME-Version: 1.0
 To:	Thiemo Seufer <ths@networkno.de>
@@ -16,18 +16,17 @@ CC:	tiansm@lemote.com, linux-mips@linux-mips.org,
 Subject: Re: [PATCH 2/16] arch related Makefile update for lemote fulong mini-PC
 References: <11766507651736-git-send-email-tiansm@lemote.com> <11766507661317-git-send-email-tiansm@lemote.com> <11766507661726-git-send-email-tiansm@lemote.com> <20070415222847.GA1402@networkno.de>
 In-Reply-To: <20070415222847.GA1402@networkno.de>
-X-Enigmail-Version: 0.93.0.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Return-Path: <zhangfx@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14862
+X-archive-position: 14863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: zhangfx@lemote.com
 Precedence: bulk
 X-list: linux-mips
 

@@ -1,53 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Apr 2007 23:31:53 +0100 (BST)
-Received: from phoenix.bawue.net ([193.7.176.60]:46727 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20022957AbXDOWbv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 15 Apr 2007 23:31:51 +0100
-Received: from lagash (88-106-169-123.dynamic.dsl.as9105.com [88.106.169.123])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id D4D7EBBCA3;
-	Mon, 16 Apr 2007 00:28:12 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.63)
-	(envelope-from <ths@networkno.de>)
-	id 1HdDDD-0000Nx-8U; Sun, 15 Apr 2007 23:28:47 +0100
-Date:	Sun, 15 Apr 2007 23:28:47 +0100
-To:	tiansm@lemote.com
-Cc:	linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>
-Subject: Re: [PATCH 2/16] arch related Makefile update for lemote fulong mini-PC
-Message-ID: <20070415222847.GA1402@networkno.de>
-References: <11766507651736-git-send-email-tiansm@lemote.com> <11766507661317-git-send-email-tiansm@lemote.com> <11766507661726-git-send-email-tiansm@lemote.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11766507661726-git-send-email-tiansm@lemote.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2007 06:09:19 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:56136 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20021898AbXDPFJP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2007 06:09:15 +0100
+Received: by mo.po.2iij.net (mo32) id l3G59BQe047736; Mon, 16 Apr 2007 14:09:11 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox33) id l3G59A97089571
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 16 Apr 2007 14:09:10 +0900 (JST)
+Date:	Mon, 16 Apr 2007 14:09:10 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] remove double config entries in drivers/char/Kconfig
+Message-Id: <20070416140910.47937dcf.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14857
+X-archive-position: 14858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-tiansm@lemote.com wrote:
-[snip]
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 92bca6a..2a6742d 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -118,6 +118,7 @@ cflags-$(CONFIG_CPU_R4300)	+= -march=r4300 -Wa,--trap
->  cflags-$(CONFIG_CPU_VR41XX)	+= -march=r4100 -Wa,--trap
->  cflags-$(CONFIG_CPU_R4X00)	+= -march=r4600 -Wa,--trap
->  cflags-$(CONFIG_CPU_TX49XX)	+= -march=r4600 -Wa,--trap
-> +cflags-$(CONFIG_CPU_LOONGSON2)	+= -march=r4600 -Wa,--trap
+Hi Ralf,
 
-I wonder why this is r4600. I heard the Loongson2 is MIPS IV compatible,
-so r5000 / r8000 / r10000 would be better choices.
+This patch has removed double config entries in drivers/char/Kconfig.
+This problem is only in linux-mips.org tree.
 
+Yoichi
 
-Thiemo
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/char/Kconfig mips/drivers/char/Kconfig
+--- mips-orig/drivers/char/Kconfig	2007-04-14 23:23:32.671598000 +0900
++++ mips/drivers/char/Kconfig	2007-04-15 00:35:22.059197250 +0900
+@@ -396,41 +396,6 @@ config SERIAL_DEC
+ 	  kernel: saying N will just cause the configurator to skip all
+ 	  the questions about DECstation serial ports.
+ 
+-	  If unsure, say Y.
+-
+-config SERIAL_DEC_CONSOLE
+-	bool "Support for console on a DECstation serial port"
+-	depends on SERIAL_DEC
+-	default y
+-	help
+-	  If you say Y here, it will be possible to use a serial port as the
+-	  system console (the system console is the device which receives all
+-	  kernel messages and warnings and which allows logins in single user
+-	  mode).  Note that the firmware uses ttyS0 as the serial console on
+-	  the Maxine and ttyS2 on the others.
+-
+-	  If unsure, say Y.
+-
+-config ZS
+-	bool "Z85C30 Serial Support"
+-	depends on SERIAL_DEC
+-	default y
+-	help
+-	  Documentation on the Zilog 85C350 serial communications controller
+-	  is downloadable at <http://www.zilog.com/pdfs/serial/z85c30.pdf>.
+-
+-config SERIAL_DEC
+-	bool "DECstation serial support"
+-	depends on MACH_DECSTATION
+-	default y
+-	help
+-	  This selects whether you want to be asked about drivers for
+-	  DECstation serial ports.
+-
+-	  Note that the answer to this question won't directly affect the
+-	  kernel: saying N will just cause the configurator to skip all
+-	  the questions about DECstation serial ports.
+-
+ config SERIAL_DEC_CONSOLE
+ 	bool "Support for console on a DECstation serial port"
+ 	depends on SERIAL_DEC

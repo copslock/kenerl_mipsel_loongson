@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2007 16:11:15 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:38016 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20023319AbXDPPLN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2007 16:11:13 +0100
-Received: (qmail 8073 invoked by uid 511); 16 Apr 2007 15:13:13 -0000
-Received: from unknown (HELO ?192.168.1.63?) (222.92.8.142)
-  by lemote.com with SMTP; 16 Apr 2007 15:13:13 -0000
-Message-ID: <462391D5.90707@lemote.com>
-Date:	Mon, 16 Apr 2007 23:10:13 +0800
-From:	Zhang Fuxin <zhangfx@lemote.com>
-User-Agent: Thunderbird 1.5.0.10 (Windows/20070221)
-MIME-Version: 1.0
-To:	Thiemo Seufer <ths@networkno.de>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2/16] arch related Makefile update for lemote fulong mini-PC
-References: <11766507651736-git-send-email-tiansm@lemote.com> <11766507661317-git-send-email-tiansm@lemote.com> <11766507661726-git-send-email-tiansm@lemote.com> <20070415222847.GA1402@networkno.de> <4623387F.3070905@lemote.com> <20070416124422.GB1402@networkno.de>
-In-Reply-To: <20070416124422.GB1402@networkno.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <zhangfx@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2007 11:16:49 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:23324 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20023603AbXDQKQp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2007 11:16:45 +0100
+Received: by mo.po.2iij.net (mo31) id l3HAFODs040681; Tue, 17 Apr 2007 19:15:24 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox33) id l3HAFMsS091358
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 17 Apr 2007 19:15:22 +0900 (JST)
+Date:	Tue, 17 Apr 2007 19:15:22 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] fix NEC VR4100 series explanation
+Message-Id: <20070417191522.6382f086.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14871
+X-archive-position: 14872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhangfx@lemote.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer 写道:
-> Maybe. The 'mips3' maps to -march=r4000, it would assume more memory
-> latency and a slower integer divider then -march=r4600.
->   
-Just like Ralf has said, -march might not lead to significant
-performance difference, but -mtune=
-may. Two years ago, I found that adding a machine.def to descripe
-pipeline and resources for loongson2
-and -mtune=loongson boost many programs by 2-5%。
+Hi Ralf,
 
->
-> Thiemo
->
->
->   
+This patch has fixed NEC VR4100 series explanation in arch/mips/Kconfig.
+This small fix is only for linux-mips.org tree.
+It's already fixed in linus tree.
+
+Yoichi
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
+--- mips-orig/arch/mips/Kconfig	2007-04-14 22:14:15.756283750 +0900
++++ mips/arch/mips/Kconfig	2007-04-14 22:15:46.073928250 +0900
+@@ -1233,7 +1233,7 @@ config CPU_VR41XX
+ 	select CPU_SUPPORTS_32BIT_KERNEL
+ 	select CPU_SUPPORTS_64BIT_KERNEL
+ 	help
+-	  The options selects support for the NEC VR41xx series of processors.
++	  The options selects support for the NEC VR4100 series of processors.
+ 	  Only choose this option if you have one of these processors as a
+ 	  kernel built with this option will not run on any other type of
+ 	  processor or vice versa.

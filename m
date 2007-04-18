@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Apr 2007 17:17:11 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:39808 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Apr 2007 17:38:16 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:50053 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021726AbXDRQRJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 18 Apr 2007 17:17:09 +0100
+	id S20021892AbXDRQiO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 18 Apr 2007 17:38:14 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l3IGH8k9026845;
-	Wed, 18 Apr 2007 17:17:09 +0100
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l3IGcBsi027260;
+	Wed, 18 Apr 2007 17:38:11 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l3IGH74Q026844;
-	Wed, 18 Apr 2007 17:17:07 +0100
-Date:	Wed, 18 Apr 2007 17:17:07 +0100
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l3IGc699027259;
+	Wed, 18 Apr 2007 17:38:06 +0100
+Date:	Wed, 18 Apr 2007 17:38:06 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dave Johnson <djohnson+linux-mips@sw.starentnetworks.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix wrong checksum for split TCP packets on 64-bit MIPS
-Message-ID: <20070418161707.GB24160@linux-mips.org>
-References: <17958.11693.953285.795311@zeus.sw.starentnetworks.com>
+To:	"Uhler, Mike" <uhler@mips.com>
+Cc:	Fuxin Zhang <fxzhang@ict.ac.cn>, tiansm@lemote.com,
+	linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>
+Subject: Re: [PATCH 3/16] Kconfig update for lemote fulong mini-PC
+Message-ID: <20070418163806.GA27199@linux-mips.org>
+References: <11766507651736-git-send-email-tiansm@lemote.com> <11766507661317-git-send-email-tiansm@lemote.com> <11766507661726-git-send-email-tiansm@lemote.com> <11766507662638-git-send-email-tiansm@lemote.com> <20070418120620.GE3938@linux-mips.org> <46261DE2.5040908@ict.ac.cn> <692AB3595F5D76428B34B9BEFE20BC1FC1D723@Exchange.mips.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <17958.11693.953285.795311@zeus.sw.starentnetworks.com>
+In-Reply-To: <692AB3595F5D76428B34B9BEFE20BC1FC1D723@Exchange.mips.com>
 User-Agent: Mutt/1.4.2.2i
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14888
+X-archive-position: 14889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,37 +34,51 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 18, 2007 at 10:39:41AM -0400, Dave Johnson wrote:
+On Wed, Apr 18, 2007 at 08:28:16AM -0700, Uhler, Mike wrote:
 
-> the following conditions:
+> > Yes. Most 64bit MIPS processors cannot access 64bit content 
+> > of registers when it is in 32bit mode.
 > 
-> 1) The TCP code needs to split a full-sized packet due to a reduced
->    MSS (typically due to the addition of TCP options mid-stream like
->    SACK).
->    _AND_
-> 2) The checksum of the 2nd fragment is larger than the checksum of the
->    original packet.  After subtraction this results in a checksum for
->    the 1st fragment with bits 16..31 set to 1. (this is ok)
->    _AND_
-> 3) The checksum of the 1st fragment's TCP header plus the previously
->    32bit checksum of the 1st fragment DOES NOT cause a 32bit overflow
->    when added together.  This results in a checksum of the TCP header
->    plus TCP data that still has the upper 16 bits as 1's.
->    _THEN_
-> 4) The TCP+data checksum is added to the checksum of the pseudo IP
->    header with csum_tcpudp_nofold() incorrectly (the bug).
+> For clarity, there is no 32/64-bit mode in MIPS processors.  There is a
+> mode in which 64-bit OPERATIONS are enabled (that is, those instructions
+> which operate on the full width of the registers) - See the definition
+> of 64-bit Operations Enable in the MIPS64 Architecture for Programmers,
+> volume III.  Note that such operations are always enabled while the
+> processor is running in Kernel Mode.
 > 
-> The problem is the checksum of the TCP+data is passed to
-> csum_tcpudp_nofold() as an 32bit unsigned value, however the assembly
-> code acts on it as if it is a 64bit unsigned value.
-> 
-> This causes an incorrect 32->64bit extension if the sum has bit 31
-> set.  The resulting checksum is off by one.
+> The patch is a little short on context, but if you've got a 64-bit
+> kernel, I had always assumed that save/restore of context is always done
+> with LD/SD, not by figuring out whether a process has 64-bit operations
+> enabled, then doing a conditional LD/SD or LW/SW.
 
-Sigh.  The second bug of this kind.  As clever and apparently elegent as
-the sign extension stuff happens to look on MIPS as prone to unobvious
-accidents it is at times.  Oh well.
+Here's a funny one where we have something like a mode.  This is a
+reposting from Bill Earl:
 
-Applied & thanks!
+[...]
+     One other issue is that UX should always be set, to allow use of
+MIPS3 instructions, and that XX (bit 31) should be set on R5000 and
+R10000 processors, to enable MIPS4 instructions.  This in turn means
+that, to avoid various illegal address exceptions, the VM system
+should not allow a 32-bit user program to map anything into the top 32
+KB of the user address space.
+
+     The problem has to do with some compilers using integer
+arithmetic to compute a base for some variables in the current stack
+frame, and then using negative displacements to address the variables,
+for cases where the stack frame exceeds 32 KB, but is located near the
+top of memory.  The 32-bit unsigned integer add to, say, 0x7fffff00
+(64-bit address 0x000000007fffff00) produces a signed 32-bit value
+such as 0x80000f00, which is the 64-bit value 0xffffffff80000f00,
+since all 32-bit values, signed or unsigned, are stored as 32-bit
+signed values sign-extended to 64 bits.  When you do a load with a
+negative offset of, say, -0x1000, you get an address
+0xffffffff7fffff00, not 0x000000007fffff00.  With UX=0, this would be
+fine, but, with UX=1 (to enable MIPS3 instructions), the above address
+is illegal.  If the $sp is always at least 32 KB below the top of the
+address space, this problem does not arise, since any such intermediate
+pointer generated by the compiler will always be below 0x80000000.
+[...]
+
+The original posting is at http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=14452.59571.970106.514001%40liveoak.engr.sgi.com
 
   Ralf

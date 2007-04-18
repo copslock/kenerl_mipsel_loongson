@@ -1,74 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Apr 2007 14:56:55 +0100 (BST)
-Received: from webmail.ict.ac.cn ([159.226.39.7]:15072 "EHLO ict.ac.cn")
-	by ftp.linux-mips.org with ESMTP id S20021825AbXDRN4x (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Apr 2007 14:56:53 +0100
-Received: (qmail 12523 invoked by uid 507); 18 Apr 2007 22:00:11 +0800
-Received: from unknown (HELO ?192.168.1.7?) (fxzhang@222.92.8.142)
-  by ict.ac.cn with SMTP; 18 Apr 2007 22:00:11 +0800
-Message-ID: <46262377.3080406@ict.ac.cn>
-Date:	Wed, 18 Apr 2007 21:56:07 +0800
-From:	Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: Icedove 1.5.0.8 (X11/20061116)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	tiansm@lemote.com, linux-mips@linux-mips.org,
-	Fuxin Zhang <zhangfx@lemote.com>
-Subject: Re: [PATCH 6/16] define Hit_Invalidate_I to Index_Invalidate_I for
- loongson2
-References: <11766507651736-git-send-email-tiansm@lemote.com> <11766507661317-git-send-email-tiansm@lemote.com> <11766507661726-git-send-email-tiansm@lemote.com> <11766507662638-git-send-email-tiansm@lemote.com> <11766507661133-git-send-email-tiansm@lemote.com> <11766507661526-git-send-email-tiansm@lemote.com> <11766507662650-git-send-email-tiansm@lemote.com> <20070418121139.GF3938@linux-mips.org> <4626227E.4010703@ict.ac.cn>
-In-Reply-To: <4626227E.4010703@ict.ac.cn>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Apr 2007 15:13:21 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:12234 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20021843AbXDRONU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Apr 2007 15:13:20 +0100
+Received: from localhost (p8009-ipad27funabasi.chiba.ocn.ne.jp [220.107.199.9])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 0F12CA82D; Wed, 18 Apr 2007 23:13:16 +0900 (JST)
+Date:	Wed, 18 Apr 2007 23:13:15 +0900 (JST)
+Message-Id: <20070418.231315.41198460.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Retry {save,restore}_fp_context if failed in atomic
+ context.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070418113046.GC3938@linux-mips.org>
+References: <20070416.231944.41198415.anemo@mba.ocn.ne.jp>
+	<20070416.233235.75185596.anemo@mba.ocn.ne.jp>
+	<20070418113046.GC3938@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <fxzhang@ict.ac.cn>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14881
+X-archive-position: 14882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Sorry, no english version of datasheet yet.
+On Wed, 18 Apr 2007 12:30:46 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > And this is for 2.6.20-stable.
+> 
+> Both applied, also to older -stable branches except 2.6.16.  In case of
+> 2.6.16 it would have been more time consuming than justifyable and since
+> the bug this patch fixes is comparable to what we had before starting the
+> whole surgery I have no problem to leave 2.6.16 as it is.  Anybody still
+> using 2.6.16 should upgrade anyway ...
 
-Fuxin Zhang wrote:
-> Yes, Loongson2 has no Hit_invalidate_I in fact. And although it has 
-> 4-way icache, one Index_invalidate_I will invalidate all 4 ways of the 
-> same set.
->
-> The usermanual and datasheet can be downloaded from:
->
-> http://www.lemote.com/upfiles/godson2e-user-manual-V0.6.pdf
->
->
-> Ralf Baechle wrote:
->> On Sun, Apr 15, 2007 at 11:25:55PM +0800, tiansm@lemote.com wrote:
->>
->>  
->>> +#if defined(CONFIG_CPU_LOONGSON2)
->>> +#define Hit_Invalidate_I        0x00
->>>     
->>
->> This #ifdef means Index_Invalidate_I and Hit_Invalidate_I will both be
->> defined as zero, is that really correct?
->>
->> (This is the point where I would really like to have a CPU manual ...)
->>
->>  
->>> +#else
->>>  #define Hit_Invalidate_I    0x10
->>> +#endif
->>>     
->>
->>   Ralf
->>
->>
->>
->>
->>   
->
->
->
->
+I agree this patch is not critical for older kernel.  But
+2.6.16-stable already applied the broken "Allow CpU exception in
+kernel partially" patch.  This should be reverted.  Just revert the
+commit a0d2a152ec0917b0c1b0c84a00fd95d17090a5f8 should be enough.
+
+---
+Atsushi Nemoto

@@ -1,89 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2007 10:39:32 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:714 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20021666AbXDTJjb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Apr 2007 10:39:31 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 20 Apr 2007 18:39:29 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 0F24641BCF;
-	Fri, 20 Apr 2007 18:39:27 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 020F220502;
-	Fri, 20 Apr 2007 18:39:27 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l3K9dKW0096444;
-	Fri, 20 Apr 2007 18:39:24 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 20 Apr 2007 18:39:20 +0900 (JST)
-Message-Id: <20070420.183920.128619859.nemoto@toshiba-tops.co.jp>
-To:	fxzhang@ict.ac.cn
-Cc:	ralf@linux-mips.org, tiansm@lemote.com, perex@suse.cz,
-	alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org, zhangfx@lemote.com
-Subject: Re: [PATCH 16/16] alsa sound support for mips
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4626276E.3000303@ict.ac.cn>
-References: <11766507674145-git-send-email-tiansm@lemote.com>
-	<20070418135412.GG3938@linux-mips.org>
-	<4626276E.3000303@ict.ac.cn>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2007 15:03:12 +0100 (BST)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:50397 "EHLO
+	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
+	id S20021675AbXDWODI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Apr 2007 15:03:08 +0100
+Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
+	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l3NE6ewh007881;
+	Mon, 23 Apr 2007 15:06:40 +0100
+Date:	Mon, 23 Apr 2007 15:06:40 +0100
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH] IOC3: Switch to pci refcounting safe APIs
+Message-ID: <20070423150640.1faf693f@the-village.bc.nu>
+X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.8; i386-redhat-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14896
+X-archive-position: 14897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 18 Apr 2007 22:13:02 +0800, Fuxin Zhang <fxzhang@ict.ac.cn> wrote:
-> >> +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
-> >> +	/* all mmap using uncached mode */
-> >> +	area->vm_page_prot = pgprot_noncached(area->vm_page_prot);
-> >> +	area->vm_flags |= ( VM_RESERVED | VM_IO);
-> >>     
-> >
-> > VM_RESERVED will prevent the buffer from being freed.  I assume that is
-> > another workaround for some kernel subsystem blowing up when being fed a
-> > pointer to an uncached RAM address?  This smells like a memory leak.
-> >
-> >   
-> Oh, VM_RESERVED should be a memory leak problem, we can remove it.
-> I don't remember any case of other subsystem's problem, just did not 
-> think much
-> to add those flags.
+Untested as I don't have any IOC3 hardware so if someone could give this
+a check that would be great.
 
-I think pgprot_noncached() is needed because user mapping for a DMA
-buffer (runtime->dma_area) should be uncache.  If so, doing this in
-snd_pcm_mmap() looks a bit suspicious.  It seems snd_pcm_mmap_data()
-is a place to do such an adjustment.  But for now, both
-snd_pcm_mmap_status() and snd_pcm_mmap_control() returns -ENXIO for
-MIPS so this is not a real problem.
+Signed-off-by: Alan Cox <alan@redhat.com>
 
-And I wonder if VM_IO is really needed.  The area is a DMA buffer,
-_not_ a memory mapped IO area, isn't it?
-
-> > I would suggest to get rid of this ifdef with a new arch-specific function
-> > like vmap_io_buffer which will do whatever a platform seems fit for this
-> > case?
-> >   
-> I think arch-specific function is the correct way, but don't know what 
-> the alsa gods think.
-
-JFYI, there were some discussions on this topic a while ago:
-
-http://lkml.org/lkml/2006/1/25/117
-
-and I'v seen MIPS version of dma_mmap_coherent(), etc. somewhere...
-
----
-Atsushi Nemoto
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c linux-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c
+--- linux.vanilla-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c	2007-04-12 14:15:04.000000000 +0100
++++ linux-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c	2007-04-23 11:49:32.708000752 +0100
+@@ -1103,20 +1103,30 @@
+  * MiniDINs; all other subdevices are left swinging in the wind, leave
+  * them disabled.
+  */
+-static inline int ioc3_is_menet(struct pci_dev *pdev)
++ 
++static int ioc3_adjacent_is_ioc3(struct pci_dev *pdev, int dev)
++{
++	struct pci_dev *dev = pci_get_bus_and_slot(pdev->bus->number, 
++							PCI_DEVFN(dev, 0));
++	int ret = 0;
++	
++	if (dev) {
++		if (dev->vendor == PCI_VENDOR_ID_SGI &&
++			dev->device == PCI_DEVICE_ID_SGI_IOC3)
++			ret = 1;
++		pci_dev_put(dev);
++	}
++	return ret;
++}
++
++static int ioc3_is_menet(struct pci_dev *pdev)
+ {
+ 	struct pci_dev *dev;
+ 
+-	return pdev->bus->parent == NULL
+-	       && (dev = pci_find_slot(pdev->bus->number, PCI_DEVFN(0, 0)))
+-	       && dev->vendor == PCI_VENDOR_ID_SGI
+-	       && dev->device == PCI_DEVICE_ID_SGI_IOC3
+-	       && (dev = pci_find_slot(pdev->bus->number, PCI_DEVFN(1, 0)))
+-	       && dev->vendor == PCI_VENDOR_ID_SGI
+-	       && dev->device == PCI_DEVICE_ID_SGI_IOC3
+-	       && (dev = pci_find_slot(pdev->bus->number, PCI_DEVFN(2, 0)))
+-	       && dev->vendor == PCI_VENDOR_ID_SGI
+-	       && dev->device == PCI_DEVICE_ID_SGI_IOC3;
++	return pdev->bus->parent == NULL &&
++	       ioc3_adjacent_is_ioc3(pdev, 0) &&
++	       ioc3_adjacent_is_ioc3(pdev, 1) &&
++	       ioc3_adjacent_is_ioc3(pdev, 2));
+ }
+ 
+ #ifdef CONFIG_SERIAL_8250

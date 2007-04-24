@@ -1,96 +1,243 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2007 16:15:01 +0100 (BST)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:28546 "EHLO
-	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
-	id S20021740AbXDWPPA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Apr 2007 16:15:00 +0100
-Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
-	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l3NFIZMM008133;
-	Mon, 23 Apr 2007 16:18:35 +0100
-Date:	Mon, 23 Apr 2007 16:18:35 +0100
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] IOC3: Switch to pci refcounting safe APIs
-Message-ID: <20070423161835.4ae29965@the-village.bc.nu>
-In-Reply-To: <20070423143507.GA8877@linux-mips.org>
-References: <20070423150640.1faf693f@the-village.bc.nu>
-	<462CBE33.2060208@ru.mvista.com>
-	<20070423151918.477ffb6a@the-village.bc.nu>
-	<20070423143507.GA8877@linux-mips.org>
-X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.8; i386-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Apr 2007 17:54:59 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:64250 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022261AbXDXQy4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Apr 2007 17:54:56 +0100
+Received: from localhost (p3087-ipad201funabasi.chiba.ocn.ne.jp [222.146.66.87])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id BA42DA56E; Wed, 25 Apr 2007 01:54:49 +0900 (JST)
+Date:	Wed, 25 Apr 2007 01:54:50 +0900 (JST)
+Message-Id: <20070425.015450.25909765.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	netdev@vger.kernel.org, jeff@garzik.org, ralf@linux-mips.org,
+	sshtylyov@ru.mvista.com, akpm@linux-foundation.org
+Subject: [PATCH 1/3] ne: Add platform_driver
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14902
+X-archive-position: 14903
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-> > Makes no real difference, but if you know the MIPS tree never ends up
-> > with pdev->bus = NULL for the root bus then its a trivial change
-> 
-> That's the case on MIPS.
+Currently ne.c has some codes to support RBTX49XX boards but it is not
+complete.  Instead of adding more hacks to fix it, this patch add an
+generic platform_driver interface to the driver and let RBTX49XX use
+it.  This is a first step.
 
-Revised patch then
+* Add platform_driver interface to ne driver.
+  (Existing legacy ports did not covered by this ne_driver for now)
+* Make ioaddr 'unsigned long'.
+* Move a printk down to show dev->name assigned in register_netdev.
 
-
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
+ drivers/net/ne.c |  103 +++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 files changed, 95 insertions(+), 8 deletions(-)
 
-Convert the IOC3 driver to use ref counting pci interfaces so that we can
-obsolete the (usually unsafe) pci_find_{slot/device} interfaces and avoid
-future authors writing hotplug-unsafe device drivers.
-
-Signed-off-by: Alan Cox <alan@redhat.com>
-
-diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c linux-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c
---- linux.vanilla-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c	2007-04-12 14:15:04.000000000 +0100
-+++ linux-2.6.21-rc6-mm1/drivers/net/ioc3-eth.c	2007-04-23 15:58:21.431489816 +0100
-@@ -1103,20 +1103,29 @@
-  * MiniDINs; all other subdevices are left swinging in the wind, leave
-  * them disabled.
-  */
--static inline int ioc3_is_menet(struct pci_dev *pdev)
-+ 
-+static int ioc3_adjacent_is_ioc3(struct pci_dev *pdev, int dev)
-+{
-+	struct pci_dev *dev = pci_get_slot(pdev->bus, PCI_DEVFN(dev, 0));
-+	int ret = 0;
-+	
-+	if (dev) {
-+		if (dev->vendor == PCI_VENDOR_ID_SGI &&
-+			dev->device == PCI_DEVICE_ID_SGI_IOC3)
-+			ret = 1;
-+		pci_dev_put(dev);
-+	}
-+	return ret;
-+}
-+
-+static int ioc3_is_menet(struct pci_dev *pdev)
- {
- 	struct pci_dev *dev;
+diff --git a/drivers/net/ne.c b/drivers/net/ne.c
+index a5c4199..b8a181f 100644
+--- a/drivers/net/ne.c
++++ b/drivers/net/ne.c
+@@ -51,6 +51,7 @@ static const char version2[] =
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+ #include <linux/jiffies.h>
++#include <linux/platform_device.h>
  
--	return pdev->bus->parent == NULL
--	       && (dev = pci_find_slot(pdev->bus->number, PCI_DEVFN(0, 0)))
--	       && dev->vendor == PCI_VENDOR_ID_SGI
--	       && dev->device == PCI_DEVICE_ID_SGI_IOC3
--	       && (dev = pci_find_slot(pdev->bus->number, PCI_DEVFN(1, 0)))
--	       && dev->vendor == PCI_VENDOR_ID_SGI
--	       && dev->device == PCI_DEVICE_ID_SGI_IOC3
--	       && (dev = pci_find_slot(pdev->bus->number, PCI_DEVFN(2, 0)))
--	       && dev->vendor == PCI_VENDOR_ID_SGI
--	       && dev->device == PCI_DEVICE_ID_SGI_IOC3;
-+	return pdev->bus->parent == NULL &&
-+	       ioc3_adjacent_is_ioc3(pdev, 0) &&
-+	       ioc3_adjacent_is_ioc3(pdev, 1) &&
-+	       ioc3_adjacent_is_ioc3(pdev, 2));
+ #include <asm/system.h>
+ #include <asm/io.h>
+@@ -146,7 +147,7 @@ bad_clone_list[] __initdata = {
+ #  define DCR_VAL 0x49
+ #endif
+ 
+-static int ne_probe1(struct net_device *dev, int ioaddr);
++static int ne_probe1(struct net_device *dev, unsigned long ioaddr);
+ static int ne_probe_isapnp(struct net_device *dev);
+ 
+ static int ne_open(struct net_device *dev);
+@@ -184,7 +185,7 @@ static void ne_block_output(struct net_device *dev, const int count,
+ 
+ static int __init do_ne_probe(struct net_device *dev)
+ {
+-	unsigned int base_addr = dev->base_addr;
++	unsigned long base_addr = dev->base_addr;
+ #ifndef MODULE
+ 	int orig_irq = dev->irq;
+ #endif
+@@ -285,7 +286,7 @@ static int __init ne_probe_isapnp(struct net_device *dev)
+ 	return -ENODEV;
  }
  
- #ifdef CONFIG_SERIAL_8250
+-static int __init ne_probe1(struct net_device *dev, int ioaddr)
++static int __init ne_probe1(struct net_device *dev, unsigned long ioaddr)
+ {
+ 	int i;
+ 	unsigned char SA_prom[32];
+@@ -324,7 +325,7 @@ static int __init ne_probe1(struct net_device *dev, int ioaddr)
+ 	if (ei_debug  &&  version_printed++ == 0)
+ 		printk(KERN_INFO "%s" KERN_INFO "%s", version1, version2);
+ 
+-	printk(KERN_INFO "NE*000 ethercard probe at %#3x:", ioaddr);
++	printk(KERN_INFO "NE*000 ethercard probe at %#3lx:", ioaddr);
+ 
+ 	/* A user with a poor card that fails to ack the reset, or that
+ 	   does not have a valid 0x57,0x57 signature can still use this
+@@ -516,8 +517,7 @@ static int __init ne_probe1(struct net_device *dev, int ioaddr)
+ 	}
+ #endif
+ 
+-	printk("\n%s: %s found at %#x, using IRQ %d.\n",
+-		dev->name, name, ioaddr, dev->irq);
++	printk("\n");
+ 
+ 	ei_status.name = name;
+ 	ei_status.tx_start_page = start_page;
+@@ -547,6 +547,8 @@ static int __init ne_probe1(struct net_device *dev, int ioaddr)
+ 	ret = register_netdev(dev);
+ 	if (ret)
+ 		goto out_irq;
++	printk(KERN_INFO "%s: %s found at %#lx, using IRQ %d.\n",
++	       dev->name, name, ioaddr, dev->irq);
+ 	return 0;
+ 
+ out_irq:
+@@ -807,6 +809,86 @@ retry:
+ 	return;
+ }
+ 
++static int __init ne_drv_probe(struct platform_device *pdev)
++{
++	struct net_device *dev;
++	struct resource *res;
++	int err, irq;
++
++	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
++	irq = platform_get_irq(pdev, 0);
++	if (!res || irq < 0)
++		return -ENODEV;
++
++	dev = alloc_ei_netdev();
++	if (!dev)
++		return -ENOMEM;
++	dev->irq = irq;
++	dev->base_addr = res->start;
++	err = do_ne_probe(dev);
++	if (err) {
++		free_netdev(dev);
++		return err;
++	}
++	platform_set_drvdata(pdev, dev);
++	return 0;
++}
++
++static int __exit ne_drv_remove(struct platform_device *pdev)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++
++	unregister_netdev(dev);
++	free_irq(dev->irq, dev);
++	release_region(dev->base_addr, NE_IO_EXTENT);
++	free_netdev(dev);
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int ne_drv_suspend(struct platform_device *pdev, pm_message_t state)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++
++	if (netif_running(dev))
++		netif_device_detach(dev);
++	return 0;
++}
++
++static int ne_drv_resume(struct platform_device *pdev)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++
++	if (netif_running(dev)) {
++		ne_reset_8390(dev);
++		NS8390_init(dev, 1);
++		netif_device_attach(dev);
++	}
++	return 0;
++}
++#endif
++
++static struct platform_driver ne_driver = {
++	.remove		= __exit_p(ne_drv_remove),
++#ifdef CONFIG_PM
++	.suspend	= ne_drv_suspend,
++	.resume		= ne_drv_resume,
++#endif
++	.driver		= {
++		.name	= DRV_NAME,
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init ne_init(void)
++{
++	return platform_driver_probe(&ne_driver, ne_drv_probe);
++}
++
++static void __exit ne_exit(void)
++{
++	platform_driver_unregister(&ne_driver);
++}
+ 
+ #ifdef MODULE
+ #define MAX_NE_CARDS	4	/* Max number of NE cards per module */
+@@ -832,6 +914,7 @@ ISA device autoprobes on a running machine are not recommended anyway. */
+ int __init init_module(void)
+ {
+ 	int this_dev, found = 0;
++	int plat_found = !ne_init();
+ 
+ 	for (this_dev = 0; this_dev < MAX_NE_CARDS; this_dev++) {
+ 		struct net_device *dev = alloc_ei_netdev();
+@@ -845,7 +928,7 @@ int __init init_module(void)
+ 			continue;
+ 		}
+ 		free_netdev(dev);
+-		if (found)
++		if (found || plat_found)
+ 			break;
+ 		if (io[this_dev] != 0)
+ 			printk(KERN_WARNING "ne.c: No NE*000 card found at i/o = %#x\n", io[this_dev]);
+@@ -853,7 +936,7 @@ int __init init_module(void)
+ 			printk(KERN_NOTICE "ne.c: You must supply \"io=0xNNN\" value(s) for ISA cards.\n");
+ 		return -ENXIO;
+ 	}
+-	if (found)
++	if (found || plat_found)
+ 		return 0;
+ 	return -ENODEV;
+ }
+@@ -871,6 +954,7 @@ void __exit cleanup_module(void)
+ {
+ 	int this_dev;
+ 
++	ne_exit();
+ 	for (this_dev = 0; this_dev < MAX_NE_CARDS; this_dev++) {
+ 		struct net_device *dev = dev_ne[this_dev];
+ 		if (dev) {
+@@ -880,4 +964,7 @@ void __exit cleanup_module(void)
+ 		}
+ 	}
+ }
++#else /* MODULE */
++module_init(ne_init);
++module_exit(ne_exit);
+ #endif /* MODULE */

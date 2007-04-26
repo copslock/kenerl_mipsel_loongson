@@ -1,53 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2007 11:57:36 +0100 (BST)
-Received: from mo32.po.2iij.NET ([210.128.50.17]:20519 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20023375AbXDZK5M (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Apr 2007 11:57:12 +0100
-Received: by mo.po.2iij.net (mo32) id l3QAttNZ051584; Thu, 26 Apr 2007 19:55:55 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox32) id l3QAtpJ8003441
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 26 Apr 2007 19:55:51 +0900 (JST)
-Message-Id: <200704261055.l3QAtpJ8003441@mbox32.po.2iij.net>
-Date:	Thu, 26 Apr 2007 19:51:31 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] remove 2 select entries for VR41xx
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Apr 2007 15:24:14 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:41177 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023430AbXDZOYM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 26 Apr 2007 15:24:12 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l3QEO6U7017352;
+	Thu, 26 Apr 2007 15:24:06 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l3QEO58M017351;
+	Thu, 26 Apr 2007 15:24:05 +0100
+Date:	Thu, 26 Apr 2007 15:24:04 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] rename VR41XX to VR4100 series
+Message-ID: <20070426142404.GA11177@linux-mips.org>
+References: <200704261055.l3QAto68097382@mbox33.po.2iij.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200704261055.l3QAto68097382@mbox33.po.2iij.net>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14914
+X-archive-position: 14915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Thu, Apr 26, 2007 at 07:45:09PM +0900, Yoichi Yuasa wrote:
 
-This patch has removed 2 select entries for VR41xx.
-These entries are selected in arch/mips/vr41xx/Kconfig.
+> This patch has renamed VR41XX to VR4100 series.
+> That's better.
 
-Yoichi
+Queued, thanks.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X vr41xx/Documentation/dontdiff vr41xx-orig/arch/mips/Kconfig vr41xx/arch/mips/Kconfig
---- vr41xx-orig/arch/mips/Kconfig	2007-04-26 19:14:20.753714750 +0900
-+++ vr41xx/arch/mips/Kconfig	2007-04-26 19:15:59.763902500 +0900
-@@ -503,8 +503,6 @@ config DDB5477
- config MACH_VR41XX
- 	bool "NEC VR4100 series based machines"
- 	select SYS_HAS_CPU_VR41XX
--	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
- 	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
- config PMC_YOSEMITE
+  Ralf

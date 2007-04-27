@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2007 21:09:47 +0100 (BST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:51404 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2007 21:17:47 +0100 (BST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:21454 "HELO
 	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20021502AbXD0UJp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Apr 2007 21:09:45 +0100
-Received: (qmail 2447 invoked by uid 101); 27 Apr 2007 20:08:38 -0000
-Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by father.pmc-sierra.com with SMTP; 27 Apr 2007 20:08:38 -0000
+	id S20021500AbXD0URp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Apr 2007 21:17:45 +0100
+Received: (qmail 5247 invoked by uid 101); 27 Apr 2007 20:17:38 -0000
+Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
+  by father.pmc-sierra.com with SMTP; 27 Apr 2007 20:17:38 -0000
 Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l3RK8aoK028944;
-	Fri, 27 Apr 2007 13:08:37 -0700
+	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l3RKHb7Z007450;
+	Fri, 27 Apr 2007 13:17:37 -0700
 From:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l3RK8ajD001656;
-	Fri, 27 Apr 2007 14:08:36 -0600
-Date:	Fri, 27 Apr 2007 14:08:36 -0600
-Message-Id: <200704272008.l3RK8ajD001656@pasqua.pmc-sierra.bc.ca>
-To:	khali@linux-fr.org
-Subject: [PATCH 8/12] drivers: PMC MSP71xx TWI driver
-Cc:	akpm@linux-foundation.org, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, ralf@linux-mips.org
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l3RKHbAH003505;
+	Fri, 27 Apr 2007 14:17:37 -0600
+Date:	Fri, 27 Apr 2007 14:17:37 -0600
+Message-Id: <200704272017.l3RKHbAH003505@pasqua.pmc-sierra.bc.ca>
+To:	dwmw2@infradead.org
+Subject: [PATCH 5/12] mtd: PMC MSP71xx flash/rootfs mappings
+Cc:	akpm@linux-foundation.org, linux-mips@linux-mips.org,
+	linux-mtd@lists.infradead.org, ralf@linux-mips.org
 Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14928
+X-archive-position: 14929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,9 +31,10 @@ X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH 8/12] drivers: PMC MSP71xx TWI driver
+[PATCH 5/12] mtd: PMC MSP71xx flash/rootfs mappings
 
-Patch to add TWI driver for the PMC-Sierra MSP71xx devices.
+Patch to add flash and rootfs mappings for the PMC-Sierra
+MSP71xx devices.
 
 Thanks,
 Marc
@@ -41,53 +42,84 @@ Marc
 Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
 Changes since last posting:
--Removed i2c-algo-pmctwi from Kconfig and Makefile as the file
-was previously dropped.
+-No changes, resending to get feedback from linux-mtd list
+and dwmw2@infradead.org.
 
- algos/Kconfig       |    0 
- algos/Makefile      |    0 
- busses/Kconfig      |    6 
- busses/Makefile     |    1 
- busses/i2c-pmcmsp.c |  689 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 696 insertions(+)
+ Kconfig          |   33 +++++++++
+ Makefile         |    2 
+ pmcmsp-flash.c   |  184 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ pmcmsp-ramroot.c |  105 +++++++++++++++++++++++++++++++
+ 4 files changed, 324 insertions(+)
 
-diff --git a/drivers/i2c/algos/Kconfig b/drivers/i2c/algos/Kconfig
-diff --git a/drivers/i2c/algos/Makefile b/drivers/i2c/algos/Makefile
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 4d44a2d..108e3b6 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -573,4 +573,10 @@ config I2C_PNX
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called i2c-pnx.
+diff --git a/drivers/mtd/maps/Kconfig b/drivers/mtd/maps/Kconfig
+index bbf0553..e28a1ad 100644
+--- a/drivers/mtd/maps/Kconfig
++++ b/drivers/mtd/maps/Kconfig
+@@ -69,6 +69,39 @@ config MTD_PHYSMAP_OF
+ 	  physically into the CPU's memory. The mapping description here is
+ 	  taken from OF device tree.
  
-+config I2C_PMCMSP
-+	tristate "PMC MSP I2C Controller"
-+	depends on I2C && PMC_MSP
++config MTD_PMC_MSP_EVM
++	tristate "CFI Flash device mapped on PMC-Sierra MSP"
++	depends on PMC_MSP && MTD_CFI
++	select MTD_PARTITIONS
 +	help
-+	  Supports the special PMC TWI SoC chip on the MSP platform
++	  This provides a 'mapping' driver which support the way
++          in which user-programmable flash chips are connected on the
++          PMC-Sierra MSP eval/demo boards
 +
- endmenu
-diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index 03505aa..8923878 100644
---- a/drivers/i2c/busses/Makefile
-+++ b/drivers/i2c/busses/Makefile
-@@ -30,6 +30,7 @@ obj-$(CONFIG_I2C_PARPORT_LIGHT)	+= i2c-parport-light.o
- obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi.o
- obj-$(CONFIG_I2C_PCA_ISA)	+= i2c-pca-isa.o
- obj-$(CONFIG_I2C_PIIX4)		+= i2c-piix4.o
-+obj-$(CONFIG_I2C_PMCMSP)	+= i2c-pmcmsp.o
- obj-$(CONFIG_I2C_PNX)		+= i2c-pnx.o
- obj-$(CONFIG_I2C_PROSAVAGE)	+= i2c-prosavage.o
- obj-$(CONFIG_I2C_PXA)		+= i2c-pxa.o
-diff --git a/drivers/i2c/busses/i2c-pmcmsp.c b/drivers/i2c/busses/i2c-pmcmsp.c
++choice
++	prompt "Maximum mappable memory avialable for flash IO"
++	depends on MTD_PMC_MSP_EVM
++	default MSP_FLASH_MAP_LIMIT_32M
++
++config MSP_FLASH_MAP_LIMIT_32M
++	bool "32M"
++
++endchoice
++
++config MSP_FLASH_MAP_LIMIT
++	hex
++	default "0x02000000"
++	depends on MSP_FLASH_MAP_LIMIT_32M
++
++config MTD_PMC_MSP_RAMROOT
++	tristate "Embedded RAM block device for root on PMC-Sierra MSP"
++	depends on PMC_MSP_EMBEDDED_ROOTFS && \
++			(MTD_BLOCK || MTD_BLOCK_RO) && \
++			MTD_RAM
++	help
++	  This provides support for the embedded root file system
++          on PMC MSP devices.  This memory is mapped as a MTD block device. 
++
+ config MTD_SUN_UFLASH
+ 	tristate "Sun Microsystems userflash support"
+ 	depends on SPARC && MTD_CFI
+diff --git a/drivers/mtd/maps/Makefile b/drivers/mtd/maps/Makefile
+index 071d0bf..de036c5 100644
+--- a/drivers/mtd/maps/Makefile
++++ b/drivers/mtd/maps/Makefile
+@@ -27,6 +27,8 @@ obj-$(CONFIG_MTD_CEIVA)		+= ceiva.o
+ obj-$(CONFIG_MTD_OCTAGON)	+= octagon-5066.o
+ obj-$(CONFIG_MTD_PHYSMAP)	+= physmap.o
+ obj-$(CONFIG_MTD_PHYSMAP_OF)	+= physmap_of.o
++obj-$(CONFIG_MTD_PMC_MSP_EVM)   += pmcmsp-flash.o
++obj-$(CONFIG_MTD_PMC_MSP_RAMROOT)+= pmcmsp-ramroot.o
+ obj-$(CONFIG_MTD_PNC2000)	+= pnc2000.o
+ obj-$(CONFIG_MTD_PCMCIA)	+= pcmciamtd.o
+ obj-$(CONFIG_MTD_RPXLITE)	+= rpxlite.o
+diff --git a/drivers/mtd/maps/pmcmsp-flash.c b/drivers/mtd/maps/pmcmsp-flash.c
 new file mode 100644
-index 0000000..4a15290
+index 0000000..24cd8c0
 --- /dev/null
-+++ b/drivers/i2c/busses/i2c-pmcmsp.c
-@@ -0,0 +1,689 @@
++++ b/drivers/mtd/maps/pmcmsp-flash.c
+@@ -0,0 +1,184 @@
 +/*
-+ * Specific bus support for PMC-TWI compliant implementation on MSP71xx.
++ * Mapping of a custom board with both AMD CFI and JEDEC flash in partitions.
++ * Config with both CFI and JEDEC device support.
++ *
++ * Basically physmap.c with the addition of partitions and 
++ * an array of mapping info to accomodate more than one flash type per board.
 + *
 + * Copyright 2005-2007 PMC-Sierra, Inc.
 + *
@@ -112,666 +144,268 @@ index 0000000..4a15290
 + *  675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
-+#include <linux/init.h>
 +#include <linux/module.h>
++#include <linux/types.h>
 +#include <linux/kernel.h>
-+#include <linux/errno.h>
-+#include <linux/delay.h>
-+#include <linux/interrupt.h>
-+#include <linux/completion.h>
-+#include <linux/i2c.h>
-+#include <linux/mutex.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/map.h>
++#include <linux/mtd/partitions.h>
 +
 +#include <asm/io.h>
 +
++#include <msp_prom.h>
 +#include <msp_regs.h>
-+#include <msp_cic_int.h>
 +
-+#define MSP_TWI_SF_CLK_REG_OFFSET	0x00
-+#define MSP_TWI_HS_CLK_REG_OFFSET	0x04
-+#define MSP_TWI_CFG_REG_OFFSET		0x08
-+#define MSP_TWI_CMD_REG_OFFSET		0x0c
-+#define MSP_TWI_ADD_REG_OFFSET		0x10
-+#define MSP_TWI_DAT_0_REG_OFFSET	0x14
-+#define MSP_TWI_DAT_1_REG_OFFSET	0x18
-+#define MSP_TWI_INT_STS_REG_OFFSET	0x1c
-+#define MSP_TWI_INT_MSK_REG_OFFSET	0x20
-+#define MSP_TWI_BUSY_REG_OFFSET		0x24
-+#define MSP_TWI_REG_SIZE		0x28
 +
-+#define MSP_TWI_INT_STS_DONE			(1 << 0)
-+#define MSP_TWI_INT_STS_LOST_ARBITRATION	(1 << 1)
-+#define MSP_TWI_INT_STS_NO_RESPONSE		(1 << 2)
-+#define MSP_TWI_INT_STS_DATA_COLLISION		(1 << 3)
-+#define MSP_TWI_INT_STS_BUSY			(1 << 4)
-+#define MSP_TWI_INT_STS_ALL			0x1f
++static struct mtd_info **msp_flash;
++static struct mtd_partition **msp_parts;
++static struct map_info *msp_maps;
++static int fcnt;
 +
-+#define MSP_MAX_BYTES_PER_RW		8
-+#define MSP_MAX_POLL			5
-+#define MSP_POLL_DELAY			10
-+#define MSP_IRQ_TIMEOUT			(MSP_MAX_POLL * MSP_POLL_DELAY)
++#define DEBUG_MARKER printk(KERN_NOTICE "%s[%d]\n",__FUNCTION__,__LINE__)
 +
-+#define MSP_TWI_IRQ 			MSP_INT_2WIRE
-+/* Use the following instead to disable interrupt mode */
-+/* #define MSP_TWI_IRQ 			0 */
-+
-+/* IO Operation macros */
-+#define pmcmsptwi_readl		__raw_readl
-+#define pmcmsptwi_writel	__raw_writel
-+
-+/* TWI command type */
-+enum pmcmsptwi_cmd_type {
-+	MSP_TWI_CMD_WRITE	= 0, /* Write only */
-+	MSP_TWI_CMD_READ	= 1, /* Read only */
-+	MSP_TWI_CMD_WRITE_READ	= 2, /* Write then Read */
-+	MSP_TWI_CMD_RESERVED	= 3,
-+};
-+
-+/* Corresponds to a PMCTWI clock configuration register */
-+struct pmcmsptwi_clock {
-+	u8 filter;	/* Bits 15:12,	default = 0x03 */
-+	u16 clock;	/* Bits 9:0,	default = 0x001f */
-+};
-+
-+struct pmcmsptwi_clockcfg {
-+	struct pmcmsptwi_clock standard;  /* The standard/fast clock config */
-+	struct pmcmsptwi_clock highspeed; /* The highspeed clock config */
-+};
-+
-+/* Corresponds to the main TWI configuration register */
-+struct pmcmsptwi_cfg {
-+	u8 arbf;	/* Bits 15:12,	default=0x03 */
-+	u8 nak;		/* Bits 11:8,	default=0x03 */
-+	u8 add10;	/* Bit 7,	default=0x00 */
-+	u8 mst_code;	/* Bits 6:4,	default=0x00 */
-+	u8 arb;		/* Bit 1,	default=0x01 */
-+	u8 highspeed;	/* Bit 0,	default=0x00 */
-+};
-+
-+/* A single pmctwi command to issue */
-+struct pmcmsptwi_cmd {
-+	u16 addr;	/* The slave address (7 or 10 bits) */
-+	enum pmcmsptwi_cmd_type type;	/* The command type */
-+	u8 write_len;	/* Number of bytes in the write buffer */
-+	u8 read_len;	/* Number of bytes in the read buffer */
-+	u8 *write_data;	/* Buffer of characters to send */
-+	u8 *read_data;	/* Buffer to fill with incoming data */
-+};
-+
-+/* The possible results of the xferCmd */
-+enum pmcmsptwi_xfer_result {
-+	MSP_TWI_XFER_OK	= 0,
-+	MSP_TWI_XFER_TIMEOUT,
-+	MSP_TWI_XFER_BUSY,
-+	MSP_TWI_XFER_DATA_COLLISION,
-+	MSP_TWI_XFER_NO_RESPONSE,
-+	MSP_TWI_XFER_LOST_ARBITRATION,
-+};
-+
-+/* The default settings */
-+const static struct pmcmsptwi_clockcfg pmcmsptwi_defclockcfg = {
-+	.standard = {
-+		.filter = 0x3,
-+		.clock = 0x1f,
-+	},
-+	.highspeed = {
-+		.filter = 0x3,
-+		.clock = 0x1f,
-+	},
-+};
-+
-+const static struct pmcmsptwi_cfg pmcmsptwi_defcfg = {
-+	.arbf		= 0x03,
-+	.nak		= 0x03,
-+	.add10		= 0x00,
-+	.mst_code	= 0x00,
-+	.arb		= 0x01,
-+	.highspeed	= 0x00,
-+};
-+
-+/* The set of operations each bus must implement to use this algorithm */
-+struct pmcmsptwi_algo_data {
-+	void __iomem *iobase;			/* iomapped base for IO */
-+	enum pmcmsptwi_xfer_result last_result;	/* result of last xfer */
-+	int irq;				/* IRQ to use (0 disables) */
-+	struct completion wait;			/* Completion for xfer */
-+	struct mutex lock;			/* Used for threadsafeness */
-+
-+	/* Get both clock configuration registers */
-+	void (*get_clock_config)(struct pmcmsptwi_clockcfg *cfg, void *data);
-+
-+	/* Set both clock configuration registers */
-+	void (*set_clock_config)(const struct pmcmsptwi_clockcfg *cfg,
-+					void *data);
-+
-+	/* Get the TWI configuration register */
-+	void (*get_twi_config)(struct pmcmsptwi_cfg *cfg, void *data);
-+
-+	/* Set the TWI configuration register */
-+	void (*set_twi_config)(const struct pmcmsptwi_cfg *cfg, void *data);
-+
-+	/* Send the command, reading and/or writing all data specified */
-+	enum pmcmsptwi_xfer_result (*xfer_cmd)(struct pmcmsptwi_cmd *cmd,
-+						void *data);
-+};
-+
-+static struct i2c_adapter pmcmsptwi_adapter;
-+
-+static inline u32 pmcmsptwi_clock_to_reg(
-+			const struct pmcmsptwi_clock *clock)
++int __init init_msp_flash(void)
 +{
-+	return (u32)(((clock->filter & 0xf) << 12) |
-+			(clock->clock & 0x03ff));
-+}
++	int i, j;
++	int offset, coff;
++	char *env;
++	int pcnt;
++	char flash_name[] = "flash0";
++	char part_name[] = "flash0_0";
++	unsigned addr, size;
 +
-+static inline void pmcmsptwi_reg_to_clock(
-+			u32 reg, struct pmcmsptwi_clock *clock)
-+{
-+	clock->filter = (u8)((reg >> 12) & 0xf);
-+	clock->clock = (u16)(reg & 0x03ff);
-+}
-+
-+static inline u32 pmcmsptwi_cfg_to_reg(const struct pmcmsptwi_cfg *cfg)
-+{
-+	return (u32)(((cfg->arbf & 0xf) << 12) |
-+			((cfg->nak & 0xf) << 8) |
-+			((cfg->add10 & 0x1) << 7) |
-+			((cfg->mst_code & 0x7) << 4) |
-+			((cfg->arb & 0x1) << 1) |
-+			((cfg->highspeed & 0x1) << 0));
-+}
-+
-+static inline void pmcmsptwi_reg_to_cfg(u32 reg, struct pmcmsptwi_cfg *cfg)
-+{
-+	cfg->arbf = (u8)((reg >> 12) & 0xf);
-+	cfg->nak = (u8)((reg >> 8) & 0xf);
-+	cfg->add10 = (u8)((reg >> 7) & 0x1);
-+	cfg->mst_code = (u8)((reg >> 4) & 0x7);
-+	cfg->arb = (u8)((reg >> 1) & 0x1);
-+	cfg->highspeed = (u8)(reg & 0x1);
-+}
-+
-+/*
-+ * Gets the current clock configuration
-+ */
-+static void pmcmsptwi_get_clock_config(struct pmcmsptwi_clockcfg *cfg,
-+					void *data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_reg_to_clock(pmcmsptwi_readl(p->iobase +
-+				MSP_TWI_SF_CLK_REG_OFFSET),
-+				&(cfg->standard));
-+	pmcmsptwi_reg_to_clock(pmcmsptwi_readl(p->iobase +
-+				MSP_TWI_HS_CLK_REG_OFFSET),
-+				&(cfg->highspeed));
-+	mutex_unlock(&p->lock);
-+}
-+
-+/*
-+ * Sets the current clock configuration
-+ */
-+static void pmcmsptwi_set_clock_config(const struct pmcmsptwi_clockcfg *cfg,
-+					void *data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_writel(pmcmsptwi_clock_to_reg(&(cfg->standard)),
-+				p->iobase + MSP_TWI_SF_CLK_REG_OFFSET);
-+	pmcmsptwi_writel(pmcmsptwi_clock_to_reg(&(cfg->highspeed)),
-+				p->iobase + MSP_TWI_HS_CLK_REG_OFFSET);
-+	mutex_unlock(&p->lock);
-+}
-+
-+/*
-+ * Gets the current TWI bus configuration
-+ */
-+static void pmcmsptwi_get_twi_config(struct pmcmsptwi_cfg *cfg, void *data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_reg_to_cfg(pmcmsptwi_readl(
-+				p->iobase + MSP_TWI_CFG_REG_OFFSET), cfg);
-+	mutex_unlock(&p->lock);
-+}
-+
-+/*
-+ * Sets the current TWI bus configuration
-+ */
-+static void pmcmsptwi_set_twi_config(const struct pmcmsptwi_cfg *cfg,
-+					void *data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	mutex_lock(&p->lock);
-+	pmcmsptwi_writel(pmcmsptwi_cfg_to_reg(cfg),
-+				p->iobase + MSP_TWI_CFG_REG_OFFSET);
-+	mutex_unlock(&p->lock);
-+}
-+
-+/*
-+ * Parses the 'int_sts' register and returns a well-defined error code
-+ */
-+static enum pmcmsptwi_xfer_result pmcmsptwi_get_result(u32 reg)
-+{
-+	if (reg & MSP_TWI_INT_STS_LOST_ARBITRATION) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: Lost arbitration\n");
-+		return MSP_TWI_XFER_LOST_ARBITRATION;
-+	} else if (reg & MSP_TWI_INT_STS_NO_RESPONSE) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: No response\n");
-+		return MSP_TWI_XFER_NO_RESPONSE;
-+	} else if (reg & MSP_TWI_INT_STS_DATA_COLLISION) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: Data collision\n");
-+		return MSP_TWI_XFER_DATA_COLLISION;
-+	} else if (reg & MSP_TWI_INT_STS_BUSY) {
-+		dev_dbg(&pmcmsptwi_adapter.dev,
-+			"  Result: Bus busy\n");
-+		return MSP_TWI_XFER_BUSY;
++	/* If ELB is disabled by "ful-mux" mode, we can't get at flash */
++	if ((*DEV_ID_REG & DEV_ID_SINGLE_PC) &&
++	    (*ELB_1PC_EN_REG & SINGLE_PCCARD)) {
++		printk(KERN_NOTICE "Single PC Card mode: no flash access\n");
++		return -ENXIO;
 +	}
 +
-+	dev_dbg(&pmcmsptwi_adapter.dev, "  Result: Operation succeeded\n");
-+	return MSP_TWI_XFER_OK;
-+}
++	/* examine the prom environment for flash devices */
++	for (fcnt = 0; (env = prom_getenv(flash_name)); fcnt++)
++		flash_name[5] = '0' + fcnt + 1;
 +
-+/*
-+ * Polls the 'busy' register until the command is complete
-+ * Note: Assumes p->lock is held.
-+ */
-+static void pmcmsptwi_poll_complete(struct pmcmsptwi_algo_data* p)
-+{
-+	int i;
-+	u32 val = 0;
-+	
-+	for (i = 0; i < MSP_MAX_POLL; i++) {
-+		val = pmcmsptwi_readl(p->iobase + MSP_TWI_BUSY_REG_OFFSET);
-+		if (val == 0) {
-+			u32 reason = pmcmsptwi_readl(p->iobase +
-+						MSP_TWI_INT_STS_REG_OFFSET);
-+			pmcmsptwi_writel(reason, p->iobase +
-+						MSP_TWI_INT_STS_REG_OFFSET);
-+			p->last_result = pmcmsptwi_get_result(reason);
-+			return;
-+		}
-+		udelay(MSP_POLL_DELAY);
-+	}
++	if (fcnt < 1)
++		return -ENXIO;
 +
-+	dev_dbg(&pmcmsptwi_adapter.dev, "  Result: Poll timeout\n");
-+	p->last_result = MSP_TWI_XFER_TIMEOUT;
-+}
++	printk(KERN_NOTICE "Found %d PMC flash devices\n", fcnt);
++	msp_flash = (struct mtd_info **)kmalloc(
++			fcnt * sizeof(struct map_info *), GFP_KERNEL);
++	msp_parts = (struct mtd_partition **)kmalloc(
++			fcnt * sizeof(struct mtd_partition *), GFP_KERNEL);
++	msp_maps = (struct map_info *)kmalloc(
++			fcnt * sizeof(struct mtd_info), GFP_KERNEL);
++	memset(msp_maps, 0, fcnt * sizeof(struct mtd_info));
 +
-+/*
-+ * In interrupt mode, handle the interrupt
-+ * Note: Assumes p->lock is held.
-+ */
-+static irqreturn_t pmcmsptwi_interrupt(int irq, void* data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	
-+	u32 reason = pmcmsptwi_readl(p->iobase + MSP_TWI_INT_STS_REG_OFFSET);
-+	pmcmsptwi_writel(reason, p->iobase + MSP_TWI_INT_STS_REG_OFFSET);
++	/* loop over the flash devices, initializing each */
++	for (i = 0; i < fcnt; i++) {
++		/* examine the prom environment for flash partititions */
++		part_name[5] = '0' + i;
++		part_name[7] = '0';
++		for (pcnt = 0; (env = prom_getenv(part_name)); pcnt++)
++			part_name[7] = '0' + pcnt + 1;
 +
-+	dev_dbg(&pmcmsptwi_adapter.dev, "    Got interrupt 0x%08x\n",
-+			reason);
-+	if (!(reason & MSP_TWI_INT_STS_DONE))
-+		return IRQ_NONE;
-+
-+	p->last_result = pmcmsptwi_get_result(reason);
-+	complete(&p->wait);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+/*
-+ * Do the transfer (low level):
-+ *  - May use interrupt-driven or polling, depending on if an IRQ is
-+ *  presently registered
-+ * Note: Assumes p->lock is held
-+ */
-+static enum pmcmsptwi_xfer_result pmcmsptwi_do_xfer(
-+			u32 reg, struct pmcmsptwi_algo_data *p)
-+{
-+	dev_dbg(&pmcmsptwi_adapter.dev, "  Writing cmd reg 0x%08x\n", reg);
-+	pmcmsptwi_writel(reg, p->iobase + MSP_TWI_CMD_REG_OFFSET);
-+	if (p->irq) {
-+		unsigned long timeleft = wait_for_completion_timeout(
-+						&p->wait, MSP_IRQ_TIMEOUT);
-+		if (timeleft == 0) {
-+			dev_dbg(&pmcmsptwi_adapter.dev,
-+				"  Result: IRQ timeout\n");
-+			complete(&p->wait);
-+			p->last_result = MSP_TWI_XFER_TIMEOUT;
-+		}
-+	} else
-+		pmcmsptwi_poll_complete(p);
-+
-+	return p->last_result;
-+}
-+
-+/*
-+ * Helper routine, converts 'pmctwi_cmd' struct to register format
-+ */
-+static inline u32 pmcmsptwi_cmd_to_reg(const struct pmcmsptwi_cmd *cmd)
-+{
-+	return (u32)(((cmd->type & 0x3) << 8) |
-+			(((cmd->write_len - 1) & 0x7) << 4) |
-+			(((cmd->read_len - 1) & 0x7) << 0));
-+}
-+
-+/*
-+ * Do the transfer (high level)
-+ */
-+static enum pmcmsptwi_xfer_result pmcmsptwi_xfer_cmd(
-+			struct pmcmsptwi_cmd *cmd, void *data)
-+{
-+	struct pmcmsptwi_algo_data *p = data;
-+	u64 *write_data, *read_data;
-+	enum pmcmsptwi_xfer_result retval;
-+
-+	write_data = (u64*)cmd->write_data;
-+	read_data = (u64*)cmd->read_data;
-+
-+	if ((cmd->type == MSP_TWI_CMD_WRITE && cmd->write_len == 0) ||
-+	    (cmd->type == MSP_TWI_CMD_READ && cmd->read_len == 0) ||
-+	    (cmd->type == MSP_TWI_CMD_WRITE_READ &&
-+	    (cmd->read_len == 0 || cmd->write_len == 0))) {
-+		printk(KERN_ERR "%s: Cannot transfer less than 1 byte\n",
-+		        __FUNCTION__);
-+		return -1;
-+	}
-+
-+	if ((cmd->read_len > MSP_MAX_BYTES_PER_RW) ||
-+	    (cmd->write_len > MSP_MAX_BYTES_PER_RW)) {
-+		printk(KERN_ERR "%s: Cannot transfer more than %d bytes\n",
-+			__FUNCTION__, MSP_MAX_BYTES_PER_RW);
-+	}
-+
-+	mutex_lock(&p->lock);
-+	dev_dbg(&pmcmsptwi_adapter.dev, "Setting address to 0x%08x\n",
-+		cmd->addr);
-+	pmcmsptwi_writel(cmd->addr, p->iobase + MSP_TWI_ADD_REG_OFFSET);
-+
-+	if ((cmd->type == MSP_TWI_CMD_WRITE) ||
-+	    (cmd->type == MSP_TWI_CMD_WRITE_READ)) {
-+		u64 tmp = be64_to_cpu(*write_data);
-+		tmp >>= (8 - cmd->write_len) * 8;
-+		dev_dbg(&pmcmsptwi_adapter.dev, "Writing 0x%016llx\n", tmp);
-+		pmcmsptwi_writel((u32)(tmp & 0x00000000ffffffffLL),
-+				p->iobase + MSP_TWI_DAT_0_REG_OFFSET);
-+		if (cmd->write_len > 4)
-+			pmcmsptwi_writel((u32)(tmp >> 32),
-+					p->iobase + MSP_TWI_DAT_1_REG_OFFSET);
-+	}
-+
-+	retval = pmcmsptwi_do_xfer(pmcmsptwi_cmd_to_reg(cmd), p);
-+
-+	if ((cmd->type == MSP_TWI_CMD_READ) ||
-+	    (cmd->type == MSP_TWI_CMD_WRITE_READ)) {
-+		int i;
-+		u64 rmsk = ~(0xffffffffffffffffLL << (cmd->read_len*8));
-+		u64 tmp = (u64)pmcmsptwi_readl(p->iobase +
-+					MSP_TWI_DAT_0_REG_OFFSET);
-+		if (cmd->read_len > 4)
-+			tmp |= (u64)pmcmsptwi_readl(p->iobase +
-+					MSP_TWI_DAT_1_REG_OFFSET) << 32;
-+		tmp &= rmsk;
-+		dev_dbg(&pmcmsptwi_adapter.dev, "Read 0x%016llx\n", tmp);
-+		
-+		for (i = 0; i < cmd->read_len; i++)
-+			cmd->read_data[i] = (u8)((tmp >> i) & 0xff);
-+	}
-+	mutex_unlock(&p->lock);
-+	
-+	return retval;
-+}
-+
-+/* -- Algorithm functions -- */
-+
-+/* 
-+ * Sends an i2c command out on the adapter
-+ * Return -1 on error.
-+ */
-+static int pmcmsptwi_master_xfer(struct i2c_adapter *adap,
-+				struct i2c_msg *m, int num)
-+{
-+	struct pmcmsptwi_algo_data *busops = adap->algo_data;
-+	int i, ret = 0, dual, probe;
-+	struct i2c_msg *cmsg, *nmsg;
-+	u8 detect_buffer[] = { 0 };
-+
-+	for (i = 0; i < num; i++) {
-+		struct pmcmsptwi_cmd cmd;
-+		struct pmcmsptwi_cfg oldcfg, newcfg;
-+
-+		probe = 0;
-+		dual = 0;
-+		cmsg = m + i;
-+		nmsg = NULL;
-+
-+		if ((num - i) >= 2) {
-+			/* Check for a dual write-then-read command */
-+			nmsg = cmsg + 1;
-+			dual = !((cmsg->flags & I2C_M_RD)) &&
-+			       (nmsg->flags & I2C_M_RD) &&
-+			       (cmsg->addr == nmsg->addr);
++		if (pcnt == 0) {
++			printk(KERN_NOTICE "Skipping flash device %d "
++				"(no partitions defined)\n", i);
++			continue;
 +		}
 +
-+		if (dual)
-+			dev_dbg(&adap->dev, "Doing ops %d&%d of %d\n",
-+				(i + 1), (i + 2), num);
-+		else
-+			dev_dbg(&adap->dev, "Doing op %d of %d\n",
-+				(i + 1), num);
++		msp_parts[i] = (struct mtd_partition *)kmalloc(
++			pcnt * sizeof(struct mtd_partition), GFP_KERNEL);
++		memset(msp_parts[i], 0, pcnt * sizeof(struct mtd_partition));
 +
-+		if (dual) {
-+			cmd.type = MSP_TWI_CMD_WRITE_READ;
-+			cmd.write_len = cmsg->len;
-+			cmd.write_data = (u8*)cmsg->buf;
-+			cmd.read_len = nmsg->len;
-+			cmd.read_data = (u8*)nmsg->buf;
-+		} else if (cmsg->flags & I2C_M_RD) {
-+			cmd.type = MSP_TWI_CMD_READ;
-+			cmd.read_len = cmsg->len;
-+			cmd.read_data = (u8*)cmsg->buf;
-+			cmd.write_len = 0;
-+			cmd.write_data = NULL;
++		/* now initialize the devices proper */
++		flash_name[5] = '0' + i;
++		env = prom_getenv(flash_name);
++
++		if (sscanf(env, "%x:%x", &addr, &size) < 2)
++			return -ENXIO;
++		addr = CPHYSADDR(addr);
++
++		printk(KERN_NOTICE
++			"MSP flash device \"%s\": 0x%08x at 0x%08x\n",
++			flash_name, size, addr);
++		/* This must matchs the actual size of the flash chip */
++		msp_maps[i].size = size;
++		msp_maps[i].phys = addr;
++
++		/*
++		 * Platforms have a specific limit of the size of memory
++		 * which may be mapped for flash:
++		 */
++		if (size > CONFIG_MSP_FLASH_MAP_LIMIT)
++			size = CONFIG_MSP_FLASH_MAP_LIMIT;
++		msp_maps[i].virt = ioremap(addr, size);
++		msp_maps[i].bankwidth = 1;
++		msp_maps[i].name = strncpy(kmalloc(7, GFP_KERNEL),
++					flash_name, 7);
++
++		if (msp_maps[i].virt == NULL)
++			return -ENXIO;
++
++		for (j = 0; j < pcnt; j++) {
++			part_name[5] = '0' + i;
++			part_name[7] = '0' + j;
++
++			env = prom_getenv(part_name);
++
++			if (sscanf(env, "%x:%x:%n", &offset, &size, &coff) < 2)
++				return -ENXIO;
++
++			msp_parts[i][j].size = size;
++			msp_parts[i][j].offset = offset;
++			msp_parts[i][j].name = env + coff;
++		}
++
++		/* now probe and add the device */
++		simple_map_init(&msp_maps[i]);
++		msp_flash[i] = do_map_probe("cfi_probe", &msp_maps[i]);
++		if (msp_flash[i]) {
++			msp_flash[i]->owner = THIS_MODULE;
++			add_mtd_partitions(msp_flash[i], msp_parts[i], pcnt);
 +		} else {
-+			cmd.type = MSP_TWI_CMD_WRITE;
-+			cmd.read_len = 0;
-+			cmd.read_data = NULL;
-+			cmd.write_len = cmsg->len;
-+			cmd.write_data = (u8*)cmsg->buf;
-+		}
-+
-+		if (cmsg->len == 0) {
-+			if (cmsg->flags & I2C_M_RD) {
-+				dev_dbg(&adap->dev,
-+					"Read of 0 bytes!  (illegal!)\n");
-+				return -1;
-+			} else {
-+				dev_dbg(&adap->dev,
-+					"Probing for slave at 0x%02x\n",
-+					(cmsg->addr & 0xff));
-+				probe = 1;
-+
-+				/*
-+				 * Probe is a special read of 1 byte.
-+				 * We don't care about the result, we just
-+				 * want to see that it is successful.
-+				 */
-+				cmd.write_len = 1;
-+				cmd.write_data = detect_buffer;
-+				cmd.read_len = 1;
-+				cmd.read_data = NULL;
-+			}
-+		}
-+
-+		cmd.addr = cmsg->addr;
-+
-+		if (probe || (cmsg->flags & I2C_M_TEN)) {
-+			busops->get_twi_config(&newcfg, busops);
-+			busops->get_twi_config(&oldcfg, busops);
-+
-+			/* For probes, we don't want any retries */
-+			if (probe)
-+				newcfg.nak = 0;
-+
-+			/* Set the special 10-bit address flag, if required */
-+			if (cmsg->flags & I2C_M_TEN)
-+				newcfg.add10 = 1;
-+
-+			busops->set_twi_config(&newcfg, busops);
-+		}
-+
-+		ret = busops->xfer_cmd(&cmd, busops);
-+
-+		if (probe || (cmsg->flags & I2C_M_TEN))
-+			busops->set_twi_config(&oldcfg, busops);
-+
-+		switch (ret) {
-+		case MSP_TWI_XFER_LOST_ARBITRATION:
-+			dev_dbg(&adap->dev, "We lost arbitration: "
-+				"Could not become bus master\n");
-+			break;
-+		case MSP_TWI_XFER_NO_RESPONSE:
-+			dev_dbg(&adap->dev, "No response\n");
-+			break;
-+		case MSP_TWI_XFER_DATA_COLLISION:
-+			dev_dbg(&adap->dev, "Data collision\n");
-+			break;
-+		case MSP_TWI_XFER_BUSY:
-+			dev_dbg(&adap->dev, "Port was busy\n");
-+			/*
-+			 *  TODO: We could potentially loop and retry
-+			 *        in this case
-+			 */
-+			break;
-+		case MSP_TWI_XFER_TIMEOUT:
-+			dev_dbg(&adap->dev, "Transfer timeout\n");
-+			break;
-+		}
-+		
-+		if (ret != MSP_TWI_XFER_OK) {
-+			if (probe)
-+				dev_dbg(&adap->dev, "Probe failed\n");
-+			return -1;
-+		}
-+
-+		if (dual) {
-+			dev_dbg(&adap->dev,
-+				"SMBus read 0x%02x from reg 0x%02x\n",
-+				nmsg->buf[0], cmsg->buf[0]);
-+
-+			/* Skip one more ahead, since we just did 2 commands */
-+			i++;
-+		} else {
-+			if (probe)
-+				dev_dbg(&adap->dev, "Probe successful\n");
-+			else
-+				dev_dbg(&adap->dev,
-+					"I2C %s %d bytes successfully\n",
-+					(cmsg->flags & I2C_M_RD) ?
-+						"read" : "wrote",
-+					cmsg->len);
++			printk(KERN_ERR "map probe failed for flash\n");
++			return -ENXIO;
 +		}
 +	}
-+
++	
 +	return 0;
 +}
 +
-+static u32 pmcmsptwi_i2c_func(struct i2c_adapter *adapter)
++static void __exit cleanup_msp_flash(void)
 +{
-+	return I2C_FUNC_I2C | I2C_FUNC_10BIT_ADDR | I2C_FUNC_SMBUS_EMUL;
-+}
++	int i;
 +
-+/* -- Initialization -- */
++	for (i = 0; i < sizeof(msp_flash) / sizeof(struct mtd_info **); i++) {
++		del_mtd_partitions(msp_flash[i]);
++		map_destroy(msp_flash[i]);
++		iounmap((void *)msp_maps[i].virt);
 +
-+static struct pmcmsptwi_algo_data pmcmsptwi_algo_data = {
-+	.get_clock_config	= pmcmsptwi_get_clock_config,
-+	.set_clock_config	= pmcmsptwi_set_clock_config,
-+	.get_twi_config		= pmcmsptwi_get_twi_config,
-+	.set_twi_config		= pmcmsptwi_set_twi_config,
-+	.xfer_cmd		= pmcmsptwi_xfer_cmd,
-+};
-+
-+struct i2c_algorithm pmcmsptwi_algo = {
-+	.master_xfer	= pmcmsptwi_master_xfer,
-+	.smbus_xfer	= NULL,
-+	.algo_control	= NULL,	/* TODO: someday */
-+	.functionality	= pmcmsptwi_i2c_func,
-+};
-+
-+static struct i2c_adapter pmcmsptwi_adapter = {
-+	.owner		= THIS_MODULE,
-+	.class		= I2C_CLASS_HWMON,
-+	.algo		= &pmcmsptwi_algo,
-+	.algo_data	= &pmcmsptwi_algo_data,
-+	.name		= "pmcmsptwi",
-+};
-+
-+static int __init pmcmsptwi_init(void)
-+{
-+	pmcmsptwi_algo_data.iobase = ioremap(MSP_TWI_BASE, MSP_TWI_REG_SIZE);
-+	if (pmcmsptwi_algo_data.iobase == NULL)
-+		return -ENOMEM;
-+
-+	init_completion(&pmcmsptwi_algo_data.wait); 
-+	mutex_init(&pmcmsptwi_algo_data.lock);
-+	pmcmsptwi_algo_data.irq = MSP_TWI_IRQ;
-+
-+	if (pmcmsptwi_algo_data.irq) {
-+		int rc = request_irq(
-+				pmcmsptwi_algo_data.irq, pmcmsptwi_interrupt,
-+				SA_SHIRQ | SA_INTERRUPT | SA_SAMPLE_RANDOM,
-+				"TWI", &pmcmsptwi_algo_data);
-+		if (rc == 0) {
-+			/*
-+			 * Enable 'DONE' interrupt only
-+			 *
-+			 * If you enable all interrupts, you will get one on
-+			 * error and another when the operation completes.
-+			 * This way you only have to handle one interrupt,
-+			 * but you can still check all result flags.
-+			 */
-+			pmcmsptwi_writel(MSP_TWI_INT_STS_DONE,
-+					pmcmsptwi_algo_data.iobase +
-+					MSP_TWI_INT_MSK_REG_OFFSET);
-+		} else {
-+			printk(KERN_WARNING
-+				"Could not assign TWI IRQ handler "
-+				"to irq %d (continuing with poll)\n",
-+				pmcmsptwi_algo_data.irq);
-+			pmcmsptwi_algo_data.irq = 0;
-+		}
++		/* free the memory */
++		kfree(msp_maps[i].name);
++		kfree(msp_parts[i]);
 +	}
 +
-+	pmcmsptwi_set_clock_config(&pmcmsptwi_defclockcfg,
-+				   &pmcmsptwi_algo_data);
-+	pmcmsptwi_set_twi_config(&pmcmsptwi_defcfg, &pmcmsptwi_algo_data);
-+
-+	printk(KERN_WARNING "pmcmsptwi: Registering MSP71xx I2C adapter\n");
-+
-+	return i2c_add_adapter(&pmcmsptwi_adapter);
++	kfree(msp_flash);
++	kfree(msp_parts);
++	kfree(msp_maps);
 +}
 +
-+static void __exit pmcmsptwi_exit(void)
-+{
-+	if (pmcmsptwi_algo_data.irq) {
-+		pmcmsptwi_writel(0,
-+			pmcmsptwi_algo_data.iobase +
-+			MSP_TWI_INT_MSK_REG_OFFSET);
-+		free_irq(pmcmsptwi_algo_data.irq, &pmcmsptwi_algo_data);
-+	}
-+	i2c_del_adapter(&pmcmsptwi_adapter);
-+}
-+
-+MODULE_DESCRIPTION("PMC MSP TWI/SMB/I2C driver");
++MODULE_AUTHOR("PMC-Sierra, Inc");
++MODULE_DESCRIPTION("MTD map driver for PMC-Sierra MSP boards");
 +MODULE_LICENSE("GPL");
 +
-+module_init(pmcmsptwi_init);
-+module_exit(pmcmsptwi_exit);
++module_init(init_msp_flash);
++module_exit(cleanup_msp_flash);
+diff --git a/drivers/mtd/maps/pmcmsp-ramroot.c b/drivers/mtd/maps/pmcmsp-ramroot.c
+new file mode 100644
+index 0000000..18049bc
+--- /dev/null
++++ b/drivers/mtd/maps/pmcmsp-ramroot.c
+@@ -0,0 +1,105 @@
++/*
++ * Mapping of the rootfs in a physical region of memory
++ *
++ * Copyright (C) 2005-2007 PMC-Sierra Inc.
++ * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/slab.h>
++#include <linux/fs.h>
++#include <linux/root_dev.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/map.h>
++
++#include <asm/io.h>
++
++#include <msp_prom.h>
++
++static struct mtd_info *rr_mtd;
++
++struct map_info rr_map = {
++	.name = "ramroot",
++	.bankwidth = 4,
++};
++
++static int __init init_rrmap(void)
++{
++	void *ramroot_start;
++	unsigned long ramroot_size;
++
++	/* Check for supported rootfs types */
++	if (get_ramroot(&ramroot_start, &ramroot_size)) {
++		rr_map.phys = CPHYSADDR(ramroot_start);
++		rr_map.size = ramroot_size;
++
++		printk(KERN_NOTICE
++			"PMC embedded root device: 0x%08lx @ 0x%08lx\n",
++			rr_map.size, (unsigned long)rr_map.phys);
++	} else {
++		printk(KERN_ERR
++			"init_rrmap: no supported embedded rootfs detected!\n");
++		return -ENXIO;
++	}
++
++	/* Map rootfs to I/O space for block device driver */
++	rr_map.virt = ioremap(rr_map.phys, rr_map.size);
++	if (!rr_map.virt) {
++		printk(KERN_ERR "Failed to ioremap\n");
++		return -EIO;
++	}
++
++	simple_map_init(&rr_map);
++
++	rr_mtd = do_map_probe("map_ram", &rr_map);
++	if (rr_mtd) {
++		rr_mtd->owner = THIS_MODULE;
++
++		add_mtd_device(rr_mtd);
++		ROOT_DEV = MKDEV(MTD_BLOCK_MAJOR, rr_mtd->index);
++
++		return 0;
++	}
++
++	iounmap(rr_map.virt);
++	return -ENXIO;
++}
++
++static void __exit cleanup_rrmap(void)
++{
++	del_mtd_device(rr_mtd);
++	map_destroy(rr_mtd);
++
++	iounmap(rr_map.virt);
++	rr_map.virt = NULL;
++}
++
++MODULE_AUTHOR("PMC-Sierra, Inc");
++MODULE_DESCRIPTION("MTD map driver for embedded PMC-Sierra MSP filesystem");
++MODULE_LICENSE("GPL");
++
++module_init(init_rrmap);
++module_exit(cleanup_rrmap);

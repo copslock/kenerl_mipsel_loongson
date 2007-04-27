@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2007 21:04:07 +0100 (BST)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:14277 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2007 21:05:27 +0100 (BST)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:32453 "HELO
 	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20021487AbXD0UEF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Apr 2007 21:04:05 +0100
-Received: (qmail 6878 invoked by uid 101); 27 Apr 2007 20:02:54 -0000
+	id S20021487AbXD0UFW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Apr 2007 21:05:22 +0100
+Received: (qmail 7428 invoked by uid 101); 27 Apr 2007 20:05:08 -0000
 Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by mother.pmc-sierra.com with SMTP; 27 Apr 2007 20:02:54 -0000
+  by mother.pmc-sierra.com with SMTP; 27 Apr 2007 20:05:08 -0000
 Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l3RK2qoj027204;
-	Fri, 27 Apr 2007 13:02:53 -0700
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l3RK57ZS027934;
+	Fri, 27 Apr 2007 13:05:08 -0700
 From:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Received: (from stjeanma@localhost)
-	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l3RK2qQF000598;
-	Fri, 27 Apr 2007 14:02:52 -0600
-Date:	Fri, 27 Apr 2007 14:02:52 -0600
-Message-Id: <200704272002.l3RK2qQF000598@pasqua.pmc-sierra.bc.ca>
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l3RK57BZ001019;
+	Fri, 27 Apr 2007 14:05:07 -0600
+Date:	Fri, 27 Apr 2007 14:05:07 -0600
+Message-Id: <200704272005.l3RK57BZ001019@pasqua.pmc-sierra.bc.ca>
 To:	ralf@linux-mips.org
-Subject: [PATCH 4/12] mips: PMC MSP71xx default configuration
+Subject: [PATCH 7/12] drivers: PMC MSP71xx GPIO char driver
 Cc:	akpm@linux-foundation.org, linux-mips@linux-mips.org
 Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14926
+X-archive-position: 14927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,9 +30,9 @@ X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-[PATCH 4/12] mips: PMC MSP71xx default configuration
+[PATCH 7/12] drivers: PMC MSP71xx GPIO char driver
 
-Patch to add default configuration for the PMC-Sierra
+Patch to add a GPIO char driver for the PMC-Sierra
 MSP71xx devices.
 
 Thanks,
@@ -41,1513 +41,870 @@ Marc
 Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
 ---
 Changes since last posting:
--Added ethernet driver config items.
--Removed i2c-algo-pmctwi config item.
--A few items added/removed from updated 2.6.21 code base.
+-Moved MSP_GPIO_MODE_ALLOWED from msp_gpio.h to .c.
+-Added some macros originally in previously dropped msp_gpio_macros.h
+file back into msp_gpio.h to simply calling code.
 
- msp71xx_defconfig | 1497 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 1497 insertions(+)
+ drivers/char/Kconfig                           |    4 
+ drivers/char/Makefile                          |    1 
+ drivers/char/pmcmsp_gpio.c                     |  657 +++++++++++++++++++++++++
+ include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h |  161 ++++++
+ 4 files changed, 823 insertions(+)
 
-diff --git a/arch/mips/configs/msp71xx_defconfig b/arch/mips/configs/msp71xx_defconfig
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index ed5453f..dea96a0 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -372,6 +372,10 @@ config ISTALLION
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called istallion.
+ 
++config PMCMSP_GPIO
++	tristate "PMC MSP 7120 GPIO device support"
++	depends on MIPS && (PMC_MSP7120_EVAL || PMC_MSP7120_GW || PMC_MSP7120_FPGA)
++	  
+ config AU1X00_GPIO
+ 	tristate "Alchemy Au1000 GPIO device support"
+ 	depends on MIPS && SOC_AU1X00
+diff --git a/drivers/char/Makefile b/drivers/char/Makefile
+index 3ed7647..9abbcc1 100644
+--- a/drivers/char/Makefile
++++ b/drivers/char/Makefile
+@@ -86,6 +86,7 @@ obj-$(CONFIG_DS1620)		+= ds1620.o
+ obj-$(CONFIG_HW_RANDOM)		+= hw_random/
+ obj-$(CONFIG_COBALT_LCD)	+= lcd.o
+ obj-$(CONFIG_AU1000_GPIO)	+= au1000_gpio.o
++obj-$(CONFIG_PMCMSP_GPIO)	+= pmcmsp_gpio.o
+ obj-$(CONFIG_PPDEV)		+= ppdev.o
+ obj-$(CONFIG_NWBUTTON)		+= nwbutton.o
+ obj-$(CONFIG_NWFLASH)		+= nwflash.o
+diff --git a/drivers/char/pmcmsp_gpio.c b/drivers/char/pmcmsp_gpio.c
 new file mode 100644
-index 0000000..05ba439
+index 0000000..54ad539
 --- /dev/null
-+++ b/arch/mips/configs/msp71xx_defconfig
-@@ -0,0 +1,1497 @@
-+#
-+# Automatically generated make config: don't edit
-+# Linux kernel version: 2.6.21-rc4
-+# Thu Apr 26 18:11:29 2007
-+#
-+CONFIG_MIPS=y
-+
-+#
-+# Machine selection
-+#
-+CONFIG_ZONE_DMA=y
-+# CONFIG_MIPS_MTX1 is not set
-+# CONFIG_MIPS_BOSPORUS is not set
-+# CONFIG_MIPS_PB1000 is not set
-+# CONFIG_MIPS_PB1100 is not set
-+# CONFIG_MIPS_PB1500 is not set
-+# CONFIG_MIPS_PB1550 is not set
-+# CONFIG_MIPS_PB1200 is not set
-+# CONFIG_MIPS_DB1000 is not set
-+# CONFIG_MIPS_DB1100 is not set
-+# CONFIG_MIPS_DB1500 is not set
-+# CONFIG_MIPS_DB1550 is not set
-+# CONFIG_MIPS_DB1200 is not set
-+# CONFIG_MIPS_MIRAGE is not set
-+# CONFIG_BASLER_EXCITE is not set
-+# CONFIG_MIPS_COBALT is not set
-+# CONFIG_MACH_DECSTATION is not set
-+# CONFIG_MIPS_EV64120 is not set
-+# CONFIG_MACH_JAZZ is not set
-+# CONFIG_LASAT is not set
-+# CONFIG_MIPS_ATLAS is not set
-+# CONFIG_MIPS_MALTA is not set
-+# CONFIG_MIPS_SEAD is not set
-+# CONFIG_WR_PPMC is not set
-+# CONFIG_MIPS_SIM is not set
-+# CONFIG_MOMENCO_JAGUAR_ATX is not set
-+# CONFIG_MOMENCO_OCELOT is not set
-+# CONFIG_MOMENCO_OCELOT_3 is not set
-+# CONFIG_MOMENCO_OCELOT_C is not set
-+# CONFIG_MOMENCO_OCELOT_G is not set
-+# CONFIG_MIPS_XXS1500 is not set
-+# CONFIG_PNX8550_JBS is not set
-+# CONFIG_PNX8550_STB810 is not set
-+# CONFIG_DDB5477 is not set
-+# CONFIG_MACH_VR41XX is not set
-+CONFIG_PMC_MSP=y
-+# CONFIG_PMC_YOSEMITE is not set
-+# CONFIG_QEMU is not set
-+# CONFIG_MARKEINS is not set
-+# CONFIG_SGI_IP22 is not set
-+# CONFIG_SGI_IP27 is not set
-+# CONFIG_SGI_IP32 is not set
-+# CONFIG_SIBYTE_BIGSUR is not set
-+# CONFIG_SIBYTE_SWARM is not set
-+# CONFIG_SIBYTE_SENTOSA is not set
-+# CONFIG_SIBYTE_RHONE is not set
-+# CONFIG_SIBYTE_CARMEL is not set
-+# CONFIG_SIBYTE_PTSWARM is not set
-+# CONFIG_SIBYTE_LITTLESUR is not set
-+# CONFIG_SIBYTE_CRHINE is not set
-+# CONFIG_SIBYTE_CRHONE is not set
-+# CONFIG_SNI_RM is not set
-+# CONFIG_TOSHIBA_JMR3927 is not set
-+# CONFIG_TOSHIBA_RBTX4927 is not set
-+# CONFIG_TOSHIBA_RBTX4938 is not set
-+# CONFIG_PMC_MSP4200_EVAL is not set
-+# CONFIG_PMC_MSP4200_GW is not set
-+# CONFIG_PMC_MSP7120_EVAL is not set
-+CONFIG_PMC_MSP7120_GW=y
-+# CONFIG_PMC_MSP7120_FPGA is not set
-+
-+#
-+# Options for PMC-Sierra MSP chipsets
-+#
-+CONFIG_PMC_MSP_EMBEDDED_ROOTFS=y
-+CONFIG_RWSEM_GENERIC_SPINLOCK=y
-+# CONFIG_ARCH_HAS_ILOG2_U32 is not set
-+# CONFIG_ARCH_HAS_ILOG2_U64 is not set
-+CONFIG_GENERIC_FIND_NEXT_BIT=y
-+CONFIG_GENERIC_HWEIGHT=y
-+CONFIG_GENERIC_CALIBRATE_DELAY=y
-+CONFIG_GENERIC_TIME=y
-+CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
-+# CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ is not set
-+CONFIG_BOOT_RAW=y
-+CONFIG_DMA_NONCOHERENT=y
-+CONFIG_DMA_NEED_PCI_MAP_STATE=y
-+CONFIG_NO_EXCEPT_FILL=y
-+CONFIG_CPU_BIG_ENDIAN=y
-+# CONFIG_CPU_LITTLE_ENDIAN is not set
-+CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
-+CONFIG_IRQ_CPU=y
-+CONFIG_IRQ_MSP_CIC=y
-+CONFIG_MSP_USB=y
-+CONFIG_SWAP_IO_SPACE=y
-+CONFIG_MIPS_L1_CACHE_SHIFT=5
-+
-+#
-+# CPU selection
-+#
-+# CONFIG_CPU_MIPS32_R1 is not set
-+CONFIG_CPU_MIPS32_R2=y
-+# CONFIG_CPU_MIPS64_R1 is not set
-+# CONFIG_CPU_MIPS64_R2 is not set
-+# CONFIG_CPU_R3000 is not set
-+# CONFIG_CPU_TX39XX is not set
-+# CONFIG_CPU_VR41XX is not set
-+# CONFIG_CPU_R4300 is not set
-+# CONFIG_CPU_R4X00 is not set
-+# CONFIG_CPU_TX49XX is not set
-+# CONFIG_CPU_R5000 is not set
-+# CONFIG_CPU_R5432 is not set
-+# CONFIG_CPU_R6000 is not set
-+# CONFIG_CPU_NEVADA is not set
-+# CONFIG_CPU_R8000 is not set
-+# CONFIG_CPU_R10000 is not set
-+# CONFIG_CPU_RM7000 is not set
-+# CONFIG_CPU_RM9000 is not set
-+# CONFIG_CPU_SB1 is not set
-+CONFIG_SYS_HAS_CPU_MIPS32_R1=y
-+CONFIG_SYS_HAS_CPU_MIPS32_R2=y
-+CONFIG_CPU_MIPS32=y
-+CONFIG_CPU_MIPSR2=y
-+CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
-+CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
-+
-+#
-+# Kernel type
-+#
-+CONFIG_32BIT=y
-+# CONFIG_64BIT is not set
-+CONFIG_PAGE_SIZE_4KB=y
-+# CONFIG_PAGE_SIZE_8KB is not set
-+# CONFIG_PAGE_SIZE_16KB is not set
-+# CONFIG_PAGE_SIZE_64KB is not set
-+CONFIG_CPU_HAS_PREFETCH=y
-+CONFIG_MIPS_MT_DISABLED=y
-+# CONFIG_MIPS_MT_SMP is not set
-+# CONFIG_MIPS_MT_SMTC is not set
-+# CONFIG_MIPS_VPE_LOADER is not set
-+CONFIG_SYS_SUPPORTS_MULTITHREADING=y
-+# CONFIG_64BIT_PHYS_ADDR is not set
-+CONFIG_CPU_HAS_LLSC=y
-+CONFIG_CPU_HAS_SYNC=y
-+CONFIG_GENERIC_HARDIRQS=y
-+CONFIG_GENERIC_IRQ_PROBE=y
-+CONFIG_CPU_SUPPORTS_HIGHMEM=y
-+CONFIG_ARCH_FLATMEM_ENABLE=y
-+CONFIG_SELECT_MEMORY_MODEL=y
-+CONFIG_FLATMEM_MANUAL=y
-+# CONFIG_DISCONTIGMEM_MANUAL is not set
-+# CONFIG_SPARSEMEM_MANUAL is not set
-+CONFIG_FLATMEM=y
-+CONFIG_FLAT_NODE_MEM_MAP=y
-+# CONFIG_SPARSEMEM_STATIC is not set
-+CONFIG_SPLIT_PTLOCK_CPUS=4
-+# CONFIG_RESOURCES_64BIT is not set
-+CONFIG_ZONE_DMA_FLAG=1
-+# CONFIG_HZ_48 is not set
-+# CONFIG_HZ_100 is not set
-+# CONFIG_HZ_128 is not set
-+CONFIG_HZ_250=y
-+# CONFIG_HZ_256 is not set
-+# CONFIG_HZ_1000 is not set
-+# CONFIG_HZ_1024 is not set
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=250
-+# CONFIG_PREEMPT_NONE is not set
-+# CONFIG_PREEMPT_VOLUNTARY is not set
-+CONFIG_PREEMPT=y
-+# CONFIG_PREEMPT_BKL is not set
-+# CONFIG_KEXEC is not set
-+CONFIG_LOCKDEP_SUPPORT=y
-+CONFIG_STACKTRACE_SUPPORT=y
-+CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
-+
-+#
-+# Code maturity level options
-+#
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_BROKEN_ON_SMP=y
-+CONFIG_LOCK_KERNEL=y
-+CONFIG_INIT_ENV_ARG_LIMIT=32
-+
-+#
-+# General setup
-+#
-+CONFIG_LOCALVERSION="-pmc"
-+CONFIG_LOCALVERSION_AUTO=y
-+# CONFIG_SWAP is not set
-+CONFIG_SYSVIPC=y
-+# CONFIG_IPC_NS is not set
-+CONFIG_SYSVIPC_SYSCTL=y
-+# CONFIG_POSIX_MQUEUE is not set
-+# CONFIG_BSD_PROCESS_ACCT is not set
-+# CONFIG_TASKSTATS is not set
-+# CONFIG_UTS_NS is not set
-+# CONFIG_AUDIT is not set
-+# CONFIG_IKCONFIG is not set
-+CONFIG_SYSFS_DEPRECATED=y
-+# CONFIG_RELAY is not set
-+# CONFIG_BLK_DEV_INITRD is not set
-+# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
-+CONFIG_SYSCTL=y
-+CONFIG_EMBEDDED=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_KALLSYMS=y
-+# CONFIG_KALLSYMS_ALL is not set
-+# CONFIG_KALLSYMS_EXTRA_PASS is not set
-+CONFIG_HOTPLUG=y
-+CONFIG_PRINTK=y
-+CONFIG_BUG=y
-+CONFIG_ELF_CORE=y
-+CONFIG_BASE_FULL=y
-+CONFIG_FUTEX=y
-+CONFIG_EPOLL=y
-+# CONFIG_SHMEM is not set
-+CONFIG_SLAB=y
-+CONFIG_VM_EVENT_COUNTERS=y
-+CONFIG_RT_MUTEXES=y
-+CONFIG_TINY_SHMEM=y
-+CONFIG_BASE_SMALL=0
-+# CONFIG_SLOB is not set
-+
-+#
-+# Loadable module support
-+#
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+# CONFIG_MODULE_FORCE_UNLOAD is not set
-+CONFIG_MODVERSIONS=y
-+# CONFIG_MODULE_SRCVERSION_ALL is not set
-+CONFIG_KMOD=y
-+
-+#
-+# Block layer
-+#
-+CONFIG_BLOCK=y
-+# CONFIG_LBD is not set
-+# CONFIG_BLK_DEV_IO_TRACE is not set
-+# CONFIG_LSF is not set
-+
-+#
-+# IO Schedulers
-+#
-+CONFIG_IOSCHED_NOOP=y
-+CONFIG_IOSCHED_AS=y
-+# CONFIG_IOSCHED_DEADLINE is not set
-+# CONFIG_IOSCHED_CFQ is not set
-+CONFIG_DEFAULT_AS=y
-+# CONFIG_DEFAULT_DEADLINE is not set
-+# CONFIG_DEFAULT_CFQ is not set
-+# CONFIG_DEFAULT_NOOP is not set
-+CONFIG_DEFAULT_IOSCHED="anticipatory"
-+
-+#
-+# Bus options (PCI, PCMCIA, EISA, ISA, TC)
-+#
-+CONFIG_HW_HAS_PCI=y
-+CONFIG_PCI=y
-+# CONFIG_PCI_DEBUG is not set
-+CONFIG_MMU=y
-+
-+#
-+# PCCARD (PCMCIA/CardBus) support
-+#
-+# CONFIG_PCCARD is not set
-+
-+#
-+# PCI Hotplug Support
-+#
-+# CONFIG_HOTPLUG_PCI is not set
-+
-+#
-+# Executable file formats
-+#
-+CONFIG_BINFMT_ELF=y
-+# CONFIG_BINFMT_MISC is not set
-+CONFIG_TRAD_SIGNALS=y
-+
-+#
-+# Power management options
-+#
-+# CONFIG_PM is not set
-+
-+#
-+# Networking
-+#
-+CONFIG_NET=y
-+
-+#
-+# Networking options
-+#
-+# CONFIG_NETDEBUG is not set
-+# CONFIG_PACKET is not set
-+CONFIG_UNIX=y
-+CONFIG_XFRM=y
-+CONFIG_XFRM_USER=y
-+# CONFIG_XFRM_SUB_POLICY is not set
-+# CONFIG_XFRM_MIGRATE is not set
-+CONFIG_NET_KEY=y
-+# CONFIG_NET_KEY_MIGRATE is not set
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+# CONFIG_IP_ADVANCED_ROUTER is not set
-+CONFIG_IP_FIB_HASH=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_IP_PNP_BOOTP=y
-+# CONFIG_IP_PNP_RARP is not set
-+# CONFIG_NET_IPIP is not set
-+# CONFIG_NET_IPGRE is not set
-+# CONFIG_IP_MROUTE is not set
-+# CONFIG_ARPD is not set
-+# CONFIG_SYN_COOKIES is not set
-+CONFIG_INET_AH=y
-+CONFIG_INET_ESP=y
-+CONFIG_INET_IPCOMP=y
-+CONFIG_INET_XFRM_TUNNEL=y
-+CONFIG_INET_TUNNEL=y
-+CONFIG_INET_XFRM_MODE_TRANSPORT=y
-+CONFIG_INET_XFRM_MODE_TUNNEL=y
-+CONFIG_INET_XFRM_MODE_BEET=y
-+CONFIG_INET_DIAG=y
-+CONFIG_INET_TCP_DIAG=y
-+# CONFIG_TCP_CONG_ADVANCED is not set
-+CONFIG_TCP_CONG_CUBIC=y
-+CONFIG_DEFAULT_TCP_CONG="cubic"
-+# CONFIG_TCP_MD5SIG is not set
-+
-+#
-+# IP: Virtual Server Configuration
-+#
-+# CONFIG_IP_VS is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_INET6_XFRM_TUNNEL is not set
-+# CONFIG_INET6_TUNNEL is not set
-+# CONFIG_NETWORK_SECMARK is not set
-+CONFIG_NETFILTER=y
-+# CONFIG_NETFILTER_DEBUG is not set
-+CONFIG_BRIDGE_NETFILTER=y
-+
-+#
-+# Core Netfilter Configuration
-+#
-+# CONFIG_NETFILTER_NETLINK is not set
-+# CONFIG_NF_CONNTRACK_ENABLED is not set
-+CONFIG_NETFILTER_XTABLES=y
-+# CONFIG_NETFILTER_XT_TARGET_CLASSIFY is not set
-+# CONFIG_NETFILTER_XT_TARGET_MARK is not set
-+# CONFIG_NETFILTER_XT_TARGET_NFQUEUE is not set
-+# CONFIG_NETFILTER_XT_TARGET_NFLOG is not set
-+# CONFIG_NETFILTER_XT_TARGET_TCPMSS is not set
-+# CONFIG_NETFILTER_XT_MATCH_COMMENT is not set
-+# CONFIG_NETFILTER_XT_MATCH_DCCP is not set
-+# CONFIG_NETFILTER_XT_MATCH_DSCP is not set
-+# CONFIG_NETFILTER_XT_MATCH_ESP is not set
-+# CONFIG_NETFILTER_XT_MATCH_LENGTH is not set
-+# CONFIG_NETFILTER_XT_MATCH_LIMIT is not set
-+# CONFIG_NETFILTER_XT_MATCH_MAC is not set
-+# CONFIG_NETFILTER_XT_MATCH_MARK is not set
-+# CONFIG_NETFILTER_XT_MATCH_POLICY is not set
-+# CONFIG_NETFILTER_XT_MATCH_MULTIPORT is not set
-+# CONFIG_NETFILTER_XT_MATCH_PHYSDEV is not set
-+# CONFIG_NETFILTER_XT_MATCH_PKTTYPE is not set
-+# CONFIG_NETFILTER_XT_MATCH_QUOTA is not set
-+# CONFIG_NETFILTER_XT_MATCH_REALM is not set
-+# CONFIG_NETFILTER_XT_MATCH_SCTP is not set
-+# CONFIG_NETFILTER_XT_MATCH_STATISTIC is not set
-+# CONFIG_NETFILTER_XT_MATCH_STRING is not set
-+# CONFIG_NETFILTER_XT_MATCH_TCPMSS is not set
-+# CONFIG_NETFILTER_XT_MATCH_HASHLIMIT is not set
-+
-+#
-+# IP: Netfilter Configuration
-+#
-+# CONFIG_IP_NF_QUEUE is not set
-+CONFIG_IP_NF_IPTABLES=y
-+# CONFIG_IP_NF_MATCH_IPRANGE is not set
-+# CONFIG_IP_NF_MATCH_TOS is not set
-+# CONFIG_IP_NF_MATCH_RECENT is not set
-+# CONFIG_IP_NF_MATCH_ECN is not set
-+# CONFIG_IP_NF_MATCH_AH is not set
-+# CONFIG_IP_NF_MATCH_TTL is not set
-+# CONFIG_IP_NF_MATCH_OWNER is not set
-+# CONFIG_IP_NF_MATCH_ADDRTYPE is not set
-+CONFIG_IP_NF_FILTER=y
-+CONFIG_IP_NF_TARGET_REJECT=y
-+# CONFIG_IP_NF_TARGET_LOG is not set
-+# CONFIG_IP_NF_TARGET_ULOG is not set
-+# CONFIG_IP_NF_MANGLE is not set
-+# CONFIG_IP_NF_RAW is not set
-+# CONFIG_IP_NF_ARPTABLES is not set
-+
-+#
-+# Bridge: Netfilter Configuration
-+#
-+# CONFIG_BRIDGE_NF_EBTABLES is not set
-+
-+#
-+# DCCP Configuration (EXPERIMENTAL)
-+#
-+# CONFIG_IP_DCCP is not set
-+
-+#
-+# SCTP Configuration (EXPERIMENTAL)
-+#
-+# CONFIG_IP_SCTP is not set
-+
-+#
-+# TIPC Configuration (EXPERIMENTAL)
-+#
-+# CONFIG_TIPC is not set
-+# CONFIG_ATM is not set
-+CONFIG_BRIDGE=y
-+# CONFIG_VLAN_8021Q is not set
-+# CONFIG_DECNET is not set
-+CONFIG_LLC=y
-+# CONFIG_LLC2 is not set
-+# CONFIG_IPX is not set
-+# CONFIG_ATALK is not set
-+# CONFIG_X25 is not set
-+# CONFIG_LAPB is not set
-+# CONFIG_ECONET is not set
-+# CONFIG_WAN_ROUTER is not set
-+
-+#
-+# QoS and/or fair queueing
-+#
-+# CONFIG_NET_SCHED is not set
-+
-+#
-+# Network testing
-+#
-+# CONFIG_NET_PKTGEN is not set
-+# CONFIG_HAMRADIO is not set
-+# CONFIG_IRDA is not set
-+# CONFIG_BT is not set
-+# CONFIG_IEEE80211 is not set
-+CONFIG_WIRELESS_EXT=y
-+
-+#
-+# Device Drivers
-+#
-+
-+#
-+# Generic Driver Options
-+#
-+CONFIG_STANDALONE=y
-+# CONFIG_PREVENT_FIRMWARE_BUILD is not set
-+# CONFIG_FW_LOADER is not set
-+# CONFIG_DEBUG_DRIVER is not set
-+# CONFIG_DEBUG_DEVRES is not set
-+# CONFIG_SYS_HYPERVISOR is not set
-+
-+#
-+# Connector - unified userspace <-> kernelspace linker
-+#
-+# CONFIG_CONNECTOR is not set
-+
-+#
-+# Memory Technology Devices (MTD)
-+#
-+CONFIG_MTD=y
-+# CONFIG_MTD_DEBUG is not set
-+# CONFIG_MTD_CONCAT is not set
-+CONFIG_MTD_PARTITIONS=y
-+# CONFIG_MTD_REDBOOT_PARTS is not set
-+# CONFIG_MTD_CMDLINE_PARTS is not set
-+
-+#
-+# User Modules And Translation Layers
-+#
-+CONFIG_MTD_CHAR=y
-+CONFIG_MTD_BLKDEVS=y
-+CONFIG_MTD_BLOCK=y
-+# CONFIG_FTL is not set
-+# CONFIG_NFTL is not set
-+# CONFIG_INFTL is not set
-+# CONFIG_RFD_FTL is not set
-+# CONFIG_SSFDC is not set
-+
-+#
-+# RAM/ROM/Flash chip drivers
-+#
-+CONFIG_MTD_CFI=y
-+# CONFIG_MTD_JEDECPROBE is not set
-+CONFIG_MTD_GEN_PROBE=y
-+# CONFIG_MTD_CFI_ADV_OPTIONS is not set
-+CONFIG_MTD_MAP_BANK_WIDTH_1=y
-+CONFIG_MTD_MAP_BANK_WIDTH_2=y
-+CONFIG_MTD_MAP_BANK_WIDTH_4=y
-+# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
-+# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
-+# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
-+CONFIG_MTD_CFI_I1=y
-+CONFIG_MTD_CFI_I2=y
-+# CONFIG_MTD_CFI_I4 is not set
-+# CONFIG_MTD_CFI_I8 is not set
-+# CONFIG_MTD_CFI_INTELEXT is not set
-+CONFIG_MTD_CFI_AMDSTD=y
-+# CONFIG_MTD_CFI_STAA is not set
-+CONFIG_MTD_CFI_UTIL=y
-+CONFIG_MTD_RAM=y
-+# CONFIG_MTD_ROM is not set
-+# CONFIG_MTD_ABSENT is not set
-+# CONFIG_MTD_OBSOLETE_CHIPS is not set
-+
-+#
-+# Mapping drivers for chip access
-+#
-+# CONFIG_MTD_COMPLEX_MAPPINGS is not set
-+# CONFIG_MTD_PHYSMAP is not set
-+CONFIG_MTD_PMC_MSP_EVM=y
-+CONFIG_MSP_FLASH_MAP_LIMIT_32M=y
-+CONFIG_MSP_FLASH_MAP_LIMIT=0x02000000
-+CONFIG_MTD_PMC_MSP_RAMROOT=y
-+# CONFIG_MTD_PLATRAM is not set
-+
-+#
-+# Self-contained MTD device drivers
-+#
-+# CONFIG_MTD_PMC551 is not set
-+# CONFIG_MTD_SLRAM is not set
-+# CONFIG_MTD_PHRAM is not set
-+# CONFIG_MTD_MTDRAM is not set
-+# CONFIG_MTD_BLOCK2MTD is not set
-+
-+#
-+# Disk-On-Chip Device Drivers
-+#
-+# CONFIG_MTD_DOC2000 is not set
-+# CONFIG_MTD_DOC2001 is not set
-+# CONFIG_MTD_DOC2001PLUS is not set
-+
-+#
-+# NAND Flash Device Drivers
-+#
-+# CONFIG_MTD_NAND is not set
-+
-+#
-+# OneNAND Flash Device Drivers
-+#
-+# CONFIG_MTD_ONENAND is not set
-+
-+#
-+# Parallel port support
-+#
-+# CONFIG_PARPORT is not set
-+
-+#
-+# Plug and Play support
-+#
-+# CONFIG_PNPACPI is not set
-+
-+#
-+# Block devices
-+#
-+# CONFIG_BLK_CPQ_DA is not set
-+# CONFIG_BLK_CPQ_CISS_DA is not set
-+# CONFIG_BLK_DEV_DAC960 is not set
-+# CONFIG_BLK_DEV_UMEM is not set
-+# CONFIG_BLK_DEV_COW_COMMON is not set
-+# CONFIG_BLK_DEV_LOOP is not set
-+# CONFIG_BLK_DEV_NBD is not set
-+# CONFIG_BLK_DEV_SX8 is not set
-+# CONFIG_BLK_DEV_UB is not set
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_RAM_COUNT=16
-+CONFIG_BLK_DEV_RAM_SIZE=4096
-+CONFIG_BLK_DEV_RAM_BLOCKSIZE=1024
-+# CONFIG_CDROM_PKTCDVD is not set
-+# CONFIG_ATA_OVER_ETH is not set
-+
-+#
-+# Misc devices
-+#
-+# CONFIG_SGI_IOC4 is not set
-+# CONFIG_TIFM_CORE is not set
-+
-+#
-+# ATA/ATAPI/MFM/RLL support
-+#
-+# CONFIG_IDE is not set
-+
-+#
-+# SCSI device support
-+#
-+# CONFIG_RAID_ATTRS is not set
-+CONFIG_SCSI=y
-+# CONFIG_SCSI_TGT is not set
-+# CONFIG_SCSI_NETLINK is not set
-+CONFIG_SCSI_PROC_FS=y
-+
-+#
-+# SCSI support type (disk, tape, CD-ROM)
-+#
-+CONFIG_BLK_DEV_SD=y
-+# CONFIG_CHR_DEV_ST is not set
-+# CONFIG_CHR_DEV_OSST is not set
-+# CONFIG_BLK_DEV_SR is not set
-+# CONFIG_CHR_DEV_SG is not set
-+# CONFIG_CHR_DEV_SCH is not set
-+
-+#
-+# Some SCSI devices (e.g. CD jukebox) support multiple LUNs
-+#
-+# CONFIG_SCSI_MULTI_LUN is not set
-+# CONFIG_SCSI_CONSTANTS is not set
-+# CONFIG_SCSI_LOGGING is not set
-+# CONFIG_SCSI_SCAN_ASYNC is not set
-+
-+#
-+# SCSI Transports
-+#
-+# CONFIG_SCSI_SPI_ATTRS is not set
-+# CONFIG_SCSI_FC_ATTRS is not set
-+# CONFIG_SCSI_ISCSI_ATTRS is not set
-+# CONFIG_SCSI_SAS_ATTRS is not set
-+# CONFIG_SCSI_SAS_LIBSAS is not set
-+
-+#
-+# SCSI low-level drivers
-+#
-+# CONFIG_ISCSI_TCP is not set
-+# CONFIG_BLK_DEV_3W_XXXX_RAID is not set
-+# CONFIG_SCSI_3W_9XXX is not set
-+# CONFIG_SCSI_ACARD is not set
-+# CONFIG_SCSI_AACRAID is not set
-+# CONFIG_SCSI_AIC7XXX is not set
-+# CONFIG_SCSI_AIC7XXX_OLD is not set
-+# CONFIG_SCSI_AIC79XX is not set
-+# CONFIG_SCSI_AIC94XX is not set
-+# CONFIG_SCSI_DPT_I2O is not set
-+# CONFIG_SCSI_ARCMSR is not set
-+# CONFIG_MEGARAID_NEWGEN is not set
-+# CONFIG_MEGARAID_LEGACY is not set
-+# CONFIG_MEGARAID_SAS is not set
-+# CONFIG_SCSI_HPTIOP is not set
-+# CONFIG_SCSI_DMX3191D is not set
-+# CONFIG_SCSI_FUTURE_DOMAIN is not set
-+# CONFIG_SCSI_IPS is not set
-+# CONFIG_SCSI_INITIO is not set
-+# CONFIG_SCSI_INIA100 is not set
-+# CONFIG_SCSI_STEX is not set
-+# CONFIG_SCSI_SYM53C8XX_2 is not set
-+# CONFIG_SCSI_QLOGIC_1280 is not set
-+# CONFIG_SCSI_QLA_FC is not set
-+# CONFIG_SCSI_QLA_ISCSI is not set
-+# CONFIG_SCSI_LPFC is not set
-+# CONFIG_SCSI_DC395x is not set
-+# CONFIG_SCSI_DC390T is not set
-+# CONFIG_SCSI_NSP32 is not set
-+# CONFIG_SCSI_DEBUG is not set
-+# CONFIG_SCSI_SRP is not set
-+
-+#
-+# Serial ATA (prod) and Parallel ATA (experimental) drivers
-+#
-+# CONFIG_ATA is not set
-+
-+#
-+# Multi-device support (RAID and LVM)
-+#
-+# CONFIG_MD is not set
-+
-+#
-+# Fusion MPT device support
-+#
-+# CONFIG_FUSION is not set
-+# CONFIG_FUSION_SPI is not set
-+# CONFIG_FUSION_FC is not set
-+# CONFIG_FUSION_SAS is not set
-+
-+#
-+# IEEE 1394 (FireWire) support
-+#
-+# CONFIG_IEEE1394 is not set
-+
-+#
-+# I2O device support
-+#
-+# CONFIG_I2O is not set
-+
-+#
-+# Network device support
-+#
-+CONFIG_NETDEVICES=y
-+CONFIG_DUMMY=y
-+# CONFIG_BONDING is not set
-+# CONFIG_EQUALIZER is not set
-+# CONFIG_TUN is not set
-+
-+#
-+# ARCnet devices
-+#
-+# CONFIG_ARCNET is not set
-+
-+#
-+# PHY device support
-+#
-+# CONFIG_PHYLIB is not set
-+
-+#
-+# Ethernet (10 or 100Mbit)
-+#
-+CONFIG_NET_ETHERNET=y
-+CONFIG_MII=y
-+CONFIG_MSPETH=y
-+CONFIG_MSPETH_NAPI=y
-+# CONFIG_MSPETH_SKB_RECYCLE is not set
-+# CONFIG_HAPPYMEAL is not set
-+# CONFIG_SUNGEM is not set
-+# CONFIG_CASSINI is not set
-+# CONFIG_NET_VENDOR_3COM is not set
-+# CONFIG_DM9000 is not set
-+
-+#
-+# Tulip family network device support
-+#
-+# CONFIG_NET_TULIP is not set
-+# CONFIG_HP100 is not set
-+# CONFIG_NET_PCI is not set
-+
-+#
-+# Ethernet (1000 Mbit)
-+#
-+# CONFIG_ACENIC is not set
-+# CONFIG_DL2K is not set
-+# CONFIG_E1000 is not set
-+# CONFIG_NS83820 is not set
-+# CONFIG_HAMACHI is not set
-+# CONFIG_YELLOWFIN is not set
-+# CONFIG_R8169 is not set
-+# CONFIG_SIS190 is not set
-+# CONFIG_SKGE is not set
-+# CONFIG_SKY2 is not set
-+# CONFIG_SK98LIN is not set
-+# CONFIG_TIGON3 is not set
-+# CONFIG_BNX2 is not set
-+# CONFIG_QLA3XXX is not set
-+# CONFIG_ATL1 is not set
-+
-+#
-+# Ethernet (10000 Mbit)
-+#
-+# CONFIG_CHELSIO_T1 is not set
-+# CONFIG_CHELSIO_T3 is not set
-+# CONFIG_IXGB is not set
-+# CONFIG_S2IO is not set
-+# CONFIG_MYRI10GE is not set
-+# CONFIG_NETXEN_NIC is not set
-+
-+#
-+# Token Ring devices
-+#
-+# CONFIG_TR is not set
-+
-+#
-+# Wireless LAN (non-hamradio)
-+#
-+CONFIG_NET_RADIO=y
-+# CONFIG_NET_WIRELESS_RTNETLINK is not set
-+
-+#
-+# Obsolete Wireless cards support (pre-802.11)
-+#
-+# CONFIG_STRIP is not set
-+
-+#
-+# Wireless 802.11b ISA/PCI cards support
-+#
-+# CONFIG_IPW2100 is not set
-+# CONFIG_IPW2200 is not set
-+# CONFIG_HERMES is not set
-+# CONFIG_ATMEL is not set
-+
-+#
-+# Prism GT/Duette 802.11(a/b/g) PCI/Cardbus support
-+#
-+# CONFIG_PRISM54 is not set
-+# CONFIG_USB_ZD1201 is not set
-+# CONFIG_HOSTAP is not set
-+CONFIG_NET_WIRELESS=y
-+
-+#
-+# Wan interfaces
-+#
-+# CONFIG_WAN is not set
-+# CONFIG_FDDI is not set
-+# CONFIG_HIPPI is not set
-+CONFIG_PPP=y
-+# CONFIG_PPP_MULTILINK is not set
-+# CONFIG_PPP_FILTER is not set
-+# CONFIG_PPP_ASYNC is not set
-+# CONFIG_PPP_SYNC_TTY is not set
-+# CONFIG_PPP_DEFLATE is not set
-+# CONFIG_PPP_BSDCOMP is not set
-+# CONFIG_PPP_MPPE is not set
-+# CONFIG_PPPOE is not set
-+# CONFIG_SLIP is not set
-+CONFIG_SLHC=y
-+# CONFIG_NET_FC is not set
-+# CONFIG_SHAPER is not set
-+# CONFIG_NETCONSOLE is not set
-+# CONFIG_NETPOLL is not set
-+# CONFIG_NET_POLL_CONTROLLER is not set
-+
-+#
-+# ISDN subsystem
-+#
-+# CONFIG_ISDN is not set
-+
-+#
-+# Telephony Support
-+#
-+# CONFIG_PHONE is not set
-+
-+#
-+# Input device support
-+#
-+CONFIG_INPUT=y
-+# CONFIG_INPUT_FF_MEMLESS is not set
-+
-+#
-+# Userland interfaces
-+#
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_INPUT_JOYDEV is not set
-+# CONFIG_INPUT_TSDEV is not set
-+# CONFIG_INPUT_EVDEV is not set
-+# CONFIG_INPUT_EVBUG is not set
-+
-+#
-+# Input Device Drivers
-+#
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_INPUT_JOYSTICK is not set
-+# CONFIG_INPUT_TOUCHSCREEN is not set
-+# CONFIG_INPUT_MISC is not set
-+
-+#
-+# Hardware I/O ports
-+#
-+# CONFIG_SERIO is not set
-+# CONFIG_GAMEPORT is not set
-+
-+#
-+# Character devices
-+#
-+# CONFIG_VT is not set
-+# CONFIG_SERIAL_NONSTANDARD is not set
-+CONFIG_PMCMSP_GPIO=y
-+
-+#
-+# Serial drivers
-+#
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+# CONFIG_SERIAL_8250_PCI is not set
-+CONFIG_SERIAL_8250_NR_UARTS=2
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=2
-+# CONFIG_SERIAL_8250_EXTENDED is not set
-+
-+#
-+# Non-8250 serial port support
-+#
-+CONFIG_SERIAL_CORE=y
-+CONFIG_SERIAL_CORE_CONSOLE=y
-+# CONFIG_SERIAL_JSM is not set
-+CONFIG_UNIX98_PTYS=y
-+# CONFIG_LEGACY_PTYS is not set
-+
-+#
-+# IPMI
-+#
-+# CONFIG_IPMI_HANDLER is not set
-+
-+#
-+# Watchdog Cards
-+#
-+# CONFIG_WATCHDOG is not set
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_RTC is not set
-+# CONFIG_GEN_RTC is not set
-+# CONFIG_DTLK is not set
-+# CONFIG_R3964 is not set
-+# CONFIG_APPLICOM is not set
-+# CONFIG_DRM is not set
-+# CONFIG_RAW_DRIVER is not set
-+
-+#
-+# TPM devices
-+#
-+# CONFIG_TCG_TPM is not set
-+
-+#
-+# I2C support
-+#
-+CONFIG_I2C=y
-+CONFIG_I2C_CHARDEV=y
-+
-+#
-+# I2C Algorithms
-+#
-+# CONFIG_I2C_ALGOBIT is not set
-+# CONFIG_I2C_ALGOPCF is not set
-+# CONFIG_I2C_ALGOPCA is not set
-+
-+#
-+# I2C Hardware Bus support
-+#
-+# CONFIG_I2C_ALI1535 is not set
-+# CONFIG_I2C_ALI1563 is not set
-+# CONFIG_I2C_ALI15X3 is not set
-+# CONFIG_I2C_AMD756 is not set
-+# CONFIG_I2C_AMD8111 is not set
-+# CONFIG_I2C_I801 is not set
-+# CONFIG_I2C_I810 is not set
-+# CONFIG_I2C_PIIX4 is not set
-+# CONFIG_I2C_NFORCE2 is not set
-+# CONFIG_I2C_OCORES is not set
-+# CONFIG_I2C_PARPORT_LIGHT is not set
-+# CONFIG_I2C_PASEMI is not set
-+# CONFIG_I2C_PROSAVAGE is not set
-+# CONFIG_I2C_SAVAGE4 is not set
-+# CONFIG_I2C_SIS5595 is not set
-+# CONFIG_I2C_SIS630 is not set
-+# CONFIG_I2C_SIS96X is not set
-+# CONFIG_I2C_STUB is not set
-+# CONFIG_I2C_VIA is not set
-+# CONFIG_I2C_VIAPRO is not set
-+# CONFIG_I2C_VOODOO3 is not set
-+# CONFIG_I2C_PCA_ISA is not set
-+CONFIG_I2C_PMCMSP=y
-+
-+#
-+# Miscellaneous I2C Chip support
-+#
-+# CONFIG_SENSORS_DS1337 is not set
-+# CONFIG_SENSORS_DS1374 is not set
-+# CONFIG_SENSORS_EEPROM is not set
-+# CONFIG_SENSORS_PCF8574 is not set
-+CONFIG_PMCTWILED=y
-+# CONFIG_SENSORS_PCA9539 is not set
-+# CONFIG_SENSORS_PCF8591 is not set
-+# CONFIG_SENSORS_MAX6875 is not set
-+# CONFIG_I2C_DEBUG_CORE is not set
-+# CONFIG_I2C_DEBUG_ALGO is not set
-+# CONFIG_I2C_DEBUG_BUS is not set
-+# CONFIG_I2C_DEBUG_CHIP is not set
-+
-+#
-+# SPI support
-+#
-+# CONFIG_SPI is not set
-+# CONFIG_SPI_MASTER is not set
-+
-+#
-+# Dallas's 1-wire bus
-+#
-+# CONFIG_W1 is not set
-+
-+#
-+# Hardware Monitoring support
-+#
-+CONFIG_HWMON=y
-+# CONFIG_HWMON_VID is not set
-+# CONFIG_SENSORS_ABITUGURU is not set
-+# CONFIG_SENSORS_ADM1021 is not set
-+# CONFIG_SENSORS_ADM1025 is not set
-+# CONFIG_SENSORS_ADM1026 is not set
-+# CONFIG_SENSORS_ADM1029 is not set
-+# CONFIG_SENSORS_ADM1031 is not set
-+# CONFIG_SENSORS_ADM9240 is not set
-+# CONFIG_SENSORS_ASB100 is not set
-+# CONFIG_SENSORS_ATXP1 is not set
-+# CONFIG_SENSORS_DS1621 is not set
-+# CONFIG_SENSORS_F71805F is not set
-+# CONFIG_SENSORS_FSCHER is not set
-+# CONFIG_SENSORS_FSCPOS is not set
-+# CONFIG_SENSORS_GL518SM is not set
-+# CONFIG_SENSORS_GL520SM is not set
-+# CONFIG_SENSORS_IT87 is not set
-+# CONFIG_SENSORS_LM63 is not set
-+# CONFIG_SENSORS_LM75 is not set
-+# CONFIG_SENSORS_LM77 is not set
-+# CONFIG_SENSORS_LM78 is not set
-+# CONFIG_SENSORS_LM80 is not set
-+# CONFIG_SENSORS_LM83 is not set
-+# CONFIG_SENSORS_LM85 is not set
-+# CONFIG_SENSORS_LM87 is not set
-+# CONFIG_SENSORS_LM90 is not set
-+# CONFIG_SENSORS_LM92 is not set
-+# CONFIG_SENSORS_MAX1619 is not set
-+# CONFIG_SENSORS_PC87360 is not set
-+# CONFIG_SENSORS_PC87427 is not set
-+# CONFIG_SENSORS_SIS5595 is not set
-+# CONFIG_SENSORS_SMSC47M1 is not set
-+# CONFIG_SENSORS_SMSC47M192 is not set
-+# CONFIG_SENSORS_SMSC47B397 is not set
-+# CONFIG_SENSORS_VIA686A is not set
-+# CONFIG_SENSORS_VT1211 is not set
-+# CONFIG_SENSORS_VT8231 is not set
-+# CONFIG_SENSORS_W83781D is not set
-+# CONFIG_SENSORS_W83791D is not set
-+# CONFIG_SENSORS_W83792D is not set
-+# CONFIG_SENSORS_W83793 is not set
-+# CONFIG_SENSORS_W83L785TS is not set
-+# CONFIG_SENSORS_W83627HF is not set
-+# CONFIG_SENSORS_W83627EHF is not set
-+# CONFIG_HWMON_DEBUG_CHIP is not set
-+
-+#
-+# Multifunction device drivers
-+#
-+# CONFIG_MFD_SM501 is not set
-+
-+#
-+# Multimedia devices
-+#
-+# CONFIG_VIDEO_DEV is not set
-+
-+#
-+# Digital Video Broadcasting Devices
-+#
-+# CONFIG_DVB is not set
-+# CONFIG_USB_DABUSB is not set
-+
-+#
-+# Graphics support
-+#
-+# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
-+# CONFIG_FB is not set
-+
-+#
-+# Sound
-+#
-+# CONFIG_SOUND is not set
-+
-+#
-+# HID Devices
-+#
-+CONFIG_HID=y
-+# CONFIG_HID_DEBUG is not set
-+
-+#
-+# USB support
-+#
-+CONFIG_USB_ARCH_HAS_HCD=y
-+CONFIG_USB_ARCH_HAS_OHCI=y
-+CONFIG_USB_ARCH_HAS_EHCI=y
-+CONFIG_USB=y
-+# CONFIG_USB_DEBUG is not set
-+
-+#
-+# Miscellaneous USB options
-+#
-+CONFIG_USB_DEVICEFS=y
-+# CONFIG_USB_DYNAMIC_MINORS is not set
-+# CONFIG_USB_OTG is not set
-+
-+#
-+# USB Host Controller Drivers
-+#
-+CONFIG_USB_EHCI_HCD=y
-+# CONFIG_USB_EHCI_SPLIT_ISO is not set
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+# CONFIG_USB_EHCI_TT_NEWSCHED is not set
-+# CONFIG_USB_EHCI_BIG_ENDIAN_MMIO is not set
-+# CONFIG_USB_ISP116X_HCD is not set
-+# CONFIG_USB_OHCI_HCD is not set
-+# CONFIG_USB_UHCI_HCD is not set
-+# CONFIG_USB_SL811_HCD is not set
-+
-+#
-+# USB Device Class drivers
-+#
-+# CONFIG_USB_ACM is not set
-+# CONFIG_USB_PRINTER is not set
-+
-+#
-+# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
-+#
-+
-+#
-+# may also be needed; see USB_STORAGE Help for more information
-+#
-+CONFIG_USB_STORAGE=y
-+# CONFIG_USB_STORAGE_DEBUG is not set
-+# CONFIG_USB_STORAGE_DATAFAB is not set
-+# CONFIG_USB_STORAGE_FREECOM is not set
-+# CONFIG_USB_STORAGE_DPCM is not set
-+# CONFIG_USB_STORAGE_USBAT is not set
-+# CONFIG_USB_STORAGE_SDDR09 is not set
-+# CONFIG_USB_STORAGE_SDDR55 is not set
-+# CONFIG_USB_STORAGE_JUMPSHOT is not set
-+# CONFIG_USB_STORAGE_ALAUDA is not set
-+# CONFIG_USB_STORAGE_KARMA is not set
-+# CONFIG_USB_LIBUSUAL is not set
-+
-+#
-+# USB Input Devices
-+#
-+# CONFIG_USB_HID is not set
-+
-+#
-+# USB HID Boot Protocol drivers
-+#
-+# CONFIG_USB_KBD is not set
-+# CONFIG_USB_MOUSE is not set
-+# CONFIG_USB_AIPTEK is not set
-+# CONFIG_USB_WACOM is not set
-+# CONFIG_USB_ACECAD is not set
-+# CONFIG_USB_KBTAB is not set
-+# CONFIG_USB_POWERMATE is not set
-+# CONFIG_USB_TOUCHSCREEN is not set
-+# CONFIG_USB_YEALINK is not set
-+# CONFIG_USB_XPAD is not set
-+# CONFIG_USB_ATI_REMOTE is not set
-+# CONFIG_USB_ATI_REMOTE2 is not set
-+# CONFIG_USB_KEYSPAN_REMOTE is not set
-+# CONFIG_USB_APPLETOUCH is not set
-+# CONFIG_USB_GTCO is not set
-+
-+#
-+# USB Imaging devices
-+#
-+# CONFIG_USB_MDC800 is not set
-+# CONFIG_USB_MICROTEK is not set
-+
-+#
-+# USB Network Adapters
-+#
-+# CONFIG_USB_CATC is not set
-+# CONFIG_USB_KAWETH is not set
-+# CONFIG_USB_PEGASUS is not set
-+# CONFIG_USB_RTL8150 is not set
-+# CONFIG_USB_USBNET_MII is not set
-+# CONFIG_USB_USBNET is not set
-+CONFIG_USB_MON=y
-+
-+#
-+# USB port drivers
-+#
-+
-+#
-+# USB Serial Converter support
-+#
-+# CONFIG_USB_SERIAL is not set
-+
-+#
-+# USB Miscellaneous drivers
-+#
-+# CONFIG_USB_EMI62 is not set
-+# CONFIG_USB_EMI26 is not set
-+# CONFIG_USB_ADUTUX is not set
-+# CONFIG_USB_AUERSWALD is not set
-+# CONFIG_USB_RIO500 is not set
-+# CONFIG_USB_LEGOTOWER is not set
-+# CONFIG_USB_LCD is not set
-+# CONFIG_USB_BERRY_CHARGE is not set
-+# CONFIG_USB_LED is not set
-+# CONFIG_USB_CYPRESS_CY7C63 is not set
-+# CONFIG_USB_CYTHERM is not set
-+# CONFIG_USB_PHIDGET is not set
-+# CONFIG_USB_IDMOUSE is not set
-+# CONFIG_USB_FTDI_ELAN is not set
-+# CONFIG_USB_APPLEDISPLAY is not set
-+# CONFIG_USB_SISUSBVGA is not set
-+# CONFIG_USB_LD is not set
-+# CONFIG_USB_TRANCEVIBRATOR is not set
-+# CONFIG_USB_IOWARRIOR is not set
-+# CONFIG_USB_TEST is not set
-+
-+#
-+# USB DSL modem support
-+#
-+
-+#
-+# USB Gadget Support
-+#
-+# CONFIG_USB_GADGET is not set
-+
-+#
-+# MMC/SD Card support
-+#
-+# CONFIG_MMC is not set
-+
-+#
-+# LED devices
-+#
-+# CONFIG_NEW_LEDS is not set
-+
-+#
-+# LED drivers
-+#
-+
-+#
-+# LED Triggers
-+#
-+
-+#
-+# InfiniBand support
-+#
-+# CONFIG_INFINIBAND is not set
-+
-+#
-+# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
-+#
-+
-+#
-+# Real Time Clock
-+#
-+# CONFIG_RTC_CLASS is not set
-+
-+#
-+# DMA Engine support
-+#
-+# CONFIG_DMA_ENGINE is not set
-+
-+#
-+# DMA Clients
-+#
-+
-+#
-+# DMA Devices
-+#
-+
-+#
-+# Auxiliary Display support
-+#
-+
-+#
-+# Virtualization
-+#
-+
-+#
-+# File systems
-+#
-+CONFIG_EXT2_FS=y
-+# CONFIG_EXT2_FS_XATTR is not set
-+# CONFIG_EXT2_FS_XIP is not set
-+# CONFIG_EXT3_FS is not set
-+# CONFIG_EXT4DEV_FS is not set
-+# CONFIG_REISERFS_FS is not set
-+# CONFIG_JFS_FS is not set
-+# CONFIG_FS_POSIX_ACL is not set
-+# CONFIG_XFS_FS is not set
-+# CONFIG_GFS2_FS is not set
-+# CONFIG_OCFS2_FS is not set
-+# CONFIG_MINIX_FS is not set
-+# CONFIG_ROMFS_FS is not set
-+# CONFIG_INOTIFY is not set
-+# CONFIG_QUOTA is not set
-+# CONFIG_DNOTIFY is not set
-+# CONFIG_AUTOFS_FS is not set
-+# CONFIG_AUTOFS4_FS is not set
-+# CONFIG_FUSE_FS is not set
-+
-+#
-+# CD-ROM/DVD Filesystems
-+#
-+# CONFIG_ISO9660_FS is not set
-+# CONFIG_UDF_FS is not set
-+
-+#
-+# DOS/FAT/NT Filesystems
-+#
-+CONFIG_FAT_FS=y
-+CONFIG_MSDOS_FS=y
-+CONFIG_VFAT_FS=y
-+CONFIG_FAT_DEFAULT_CODEPAGE=437
-+CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
-+# CONFIG_NTFS_FS is not set
-+
-+#
-+# Pseudo filesystems
-+#
-+CONFIG_PROC_FS=y
-+# CONFIG_PROC_KCORE is not set
-+CONFIG_PROC_SYSCTL=y
-+CONFIG_SYSFS=y
-+CONFIG_TMPFS=y
-+# CONFIG_TMPFS_POSIX_ACL is not set
-+# CONFIG_HUGETLB_PAGE is not set
-+CONFIG_RAMFS=y
-+# CONFIG_CONFIGFS_FS is not set
-+
-+#
-+# Miscellaneous filesystems
-+#
-+# CONFIG_ADFS_FS is not set
-+# CONFIG_AFFS_FS is not set
-+# CONFIG_HFS_FS is not set
-+# CONFIG_HFSPLUS_FS is not set
-+# CONFIG_BEFS_FS is not set
-+# CONFIG_BFS_FS is not set
-+# CONFIG_EFS_FS is not set
-+CONFIG_JFFS2_FS=y
-+CONFIG_JFFS2_FS_DEBUG=0
-+CONFIG_JFFS2_FS_WRITEBUFFER=y
-+# CONFIG_JFFS2_SUMMARY is not set
-+# CONFIG_JFFS2_FS_XATTR is not set
-+# CONFIG_JFFS2_COMPRESSION_OPTIONS is not set
-+CONFIG_JFFS2_ZLIB=y
-+CONFIG_JFFS2_RTIME=y
-+# CONFIG_JFFS2_RUBIN is not set
-+# CONFIG_CRAMFS is not set
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_EMBEDDED=y
-+CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
-+CONFIG_SQUASHFS_VMALLOC=y
-+# CONFIG_VXFS_FS is not set
-+# CONFIG_HPFS_FS is not set
-+# CONFIG_QNX4FS_FS is not set
-+# CONFIG_SYSV_FS is not set
-+# CONFIG_UFS_FS is not set
-+
-+#
-+# Network File Systems
-+#
-+# CONFIG_NFS_FS is not set
-+# CONFIG_NFSD is not set
-+# CONFIG_SMB_FS is not set
-+# CONFIG_CIFS is not set
-+# CONFIG_NCP_FS is not set
-+# CONFIG_CODA_FS is not set
-+# CONFIG_AFS_FS is not set
-+# CONFIG_9P_FS is not set
-+
-+#
-+# Partition Types
-+#
-+# CONFIG_PARTITION_ADVANCED is not set
-+CONFIG_MSDOS_PARTITION=y
-+
-+#
-+# Native Language Support
-+#
-+CONFIG_NLS=y
-+CONFIG_NLS_DEFAULT="iso8859-1"
-+CONFIG_NLS_CODEPAGE_437=y
-+# CONFIG_NLS_CODEPAGE_737 is not set
-+# CONFIG_NLS_CODEPAGE_775 is not set
-+# CONFIG_NLS_CODEPAGE_850 is not set
-+# CONFIG_NLS_CODEPAGE_852 is not set
-+# CONFIG_NLS_CODEPAGE_855 is not set
-+# CONFIG_NLS_CODEPAGE_857 is not set
-+# CONFIG_NLS_CODEPAGE_860 is not set
-+# CONFIG_NLS_CODEPAGE_861 is not set
-+# CONFIG_NLS_CODEPAGE_862 is not set
-+# CONFIG_NLS_CODEPAGE_863 is not set
-+# CONFIG_NLS_CODEPAGE_864 is not set
-+# CONFIG_NLS_CODEPAGE_865 is not set
-+# CONFIG_NLS_CODEPAGE_866 is not set
-+# CONFIG_NLS_CODEPAGE_869 is not set
-+# CONFIG_NLS_CODEPAGE_936 is not set
-+# CONFIG_NLS_CODEPAGE_950 is not set
-+# CONFIG_NLS_CODEPAGE_932 is not set
-+# CONFIG_NLS_CODEPAGE_949 is not set
-+# CONFIG_NLS_CODEPAGE_874 is not set
-+# CONFIG_NLS_ISO8859_8 is not set
-+# CONFIG_NLS_CODEPAGE_1250 is not set
-+# CONFIG_NLS_CODEPAGE_1251 is not set
-+# CONFIG_NLS_ASCII is not set
-+CONFIG_NLS_ISO8859_1=y
-+# CONFIG_NLS_ISO8859_2 is not set
-+# CONFIG_NLS_ISO8859_3 is not set
-+# CONFIG_NLS_ISO8859_4 is not set
-+# CONFIG_NLS_ISO8859_5 is not set
-+# CONFIG_NLS_ISO8859_6 is not set
-+# CONFIG_NLS_ISO8859_7 is not set
-+# CONFIG_NLS_ISO8859_9 is not set
-+# CONFIG_NLS_ISO8859_13 is not set
-+# CONFIG_NLS_ISO8859_14 is not set
-+# CONFIG_NLS_ISO8859_15 is not set
-+# CONFIG_NLS_KOI8_R is not set
-+# CONFIG_NLS_KOI8_U is not set
-+# CONFIG_NLS_UTF8 is not set
-+
-+#
-+# Distributed Lock Manager
-+#
-+# CONFIG_DLM is not set
-+
-+#
-+# Profiling support
-+#
-+# CONFIG_PROFILING is not set
-+
-+#
-+# Kernel hacking
-+#
-+CONFIG_TRACE_IRQFLAGS_SUPPORT=y
-+# CONFIG_PRINTK_TIME is not set
-+CONFIG_ENABLE_MUST_CHECK=y
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_UNUSED_SYMBOLS is not set
-+# CONFIG_DEBUG_FS is not set
-+# CONFIG_HEADERS_CHECK is not set
-+CONFIG_DEBUG_KERNEL=y
-+# CONFIG_DEBUG_SHIRQ is not set
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_DETECT_SOFTLOCKUP=y
-+# CONFIG_SCHEDSTATS is not set
-+# CONFIG_TIMER_STATS is not set
-+# CONFIG_DEBUG_SLAB is not set
-+CONFIG_DEBUG_PREEMPT=y
-+# CONFIG_DEBUG_RT_MUTEXES is not set
-+# CONFIG_RT_MUTEX_TESTER is not set
-+# CONFIG_DEBUG_SPINLOCK is not set
-+# CONFIG_DEBUG_MUTEXES is not set
-+# CONFIG_DEBUG_LOCK_ALLOC is not set
-+# CONFIG_PROVE_LOCKING is not set
-+# CONFIG_DEBUG_SPINLOCK_SLEEP is not set
-+# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
-+# CONFIG_DEBUG_KOBJECT is not set
-+# CONFIG_DEBUG_INFO is not set
-+# CONFIG_DEBUG_VM is not set
-+# CONFIG_DEBUG_LIST is not set
-+CONFIG_FORCED_INLINING=y
-+# CONFIG_RCU_TORTURE_TEST is not set
-+# CONFIG_FAULT_INJECTION is not set
-+CONFIG_CROSSCOMPILE=y
-+CONFIG_CMDLINE=""
-+# CONFIG_DEBUG_STACK_USAGE is not set
-+# CONFIG_KGDB is not set
-+CONFIG_SYS_SUPPORTS_KGDB=y
-+# CONFIG_RUNTIME_DEBUG is not set
-+# CONFIG_MIPS_UNCACHED is not set
-+
-+#
-+# Security options
-+#
-+# CONFIG_KEYS is not set
-+# CONFIG_SECURITY is not set
-+
-+#
-+# Cryptographic options
-+#
-+CONFIG_CRYPTO=y
-+CONFIG_CRYPTO_ALGAPI=y
-+CONFIG_CRYPTO_BLKCIPHER=y
-+CONFIG_CRYPTO_HASH=y
-+CONFIG_CRYPTO_MANAGER=y
-+CONFIG_CRYPTO_HMAC=y
-+# CONFIG_CRYPTO_XCBC is not set
-+CONFIG_CRYPTO_NULL=y
-+# CONFIG_CRYPTO_MD4 is not set
-+CONFIG_CRYPTO_MD5=y
-+CONFIG_CRYPTO_SHA1=y
-+# CONFIG_CRYPTO_SHA256 is not set
-+# CONFIG_CRYPTO_SHA512 is not set
-+# CONFIG_CRYPTO_WP512 is not set
-+# CONFIG_CRYPTO_TGR192 is not set
-+# CONFIG_CRYPTO_GF128MUL is not set
-+# CONFIG_CRYPTO_ECB is not set
-+CONFIG_CRYPTO_CBC=y
-+# CONFIG_CRYPTO_PCBC is not set
-+# CONFIG_CRYPTO_LRW is not set
-+CONFIG_CRYPTO_DES=y
-+# CONFIG_CRYPTO_FCRYPT is not set
-+# CONFIG_CRYPTO_BLOWFISH is not set
-+# CONFIG_CRYPTO_TWOFISH is not set
-+# CONFIG_CRYPTO_SERPENT is not set
-+CONFIG_CRYPTO_AES=y
-+# CONFIG_CRYPTO_CAST5 is not set
-+# CONFIG_CRYPTO_CAST6 is not set
-+# CONFIG_CRYPTO_TEA is not set
-+# CONFIG_CRYPTO_ARC4 is not set
-+# CONFIG_CRYPTO_KHAZAD is not set
-+# CONFIG_CRYPTO_ANUBIS is not set
-+CONFIG_CRYPTO_DEFLATE=y
-+# CONFIG_CRYPTO_MICHAEL_MIC is not set
-+# CONFIG_CRYPTO_CRC32C is not set
-+# CONFIG_CRYPTO_CAMELLIA is not set
-+# CONFIG_CRYPTO_TEST is not set
-+
-+#
-+# Hardware crypto devices
-+#
-+
-+#
-+# Library routines
-+#
-+CONFIG_BITREVERSE=y
-+# CONFIG_CRC_CCITT is not set
-+# CONFIG_CRC16 is not set
-+CONFIG_CRC32=y
-+# CONFIG_LIBCRC32C is not set
-+CONFIG_ZLIB_INFLATE=y
-+CONFIG_ZLIB_DEFLATE=y
-+CONFIG_PLIST=y
-+CONFIG_HAS_IOMEM=y
-+CONFIG_HAS_IOPORT=y
++++ b/drivers/char/pmcmsp_gpio.c
+@@ -0,0 +1,657 @@
++/*
++ * Driver for the PMC MSP71xx reference board GPIO pins
++ *
++ * Copyright 2005-2007 PMC-Sierra, Inc.
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/module.h>
++#include <linux/ioport.h>
++#include <linux/spinlock.h>
++#include <linux/miscdevice.h>
++#include <linux/fs.h>
++#include <linux/kthread.h>
++#include <linux/sched.h>
++#include <linux/completion.h>
++#include <linux/freezer.h>
++
++#include <asm/io.h>
++#include <asm/war.h>
++
++#include <msp_regs.h>
++#include <msp_regops.h>
++#include <msp_gpio.h>
++
++/* -- Private definitions -- */
++
++/* Special bitflags and whatnot for the driver's convenience */
++#define GPIO_REG_COUNT		4
++const u32 GPIO_DATA_COUNT[] = { 2, 4, 4, 6 };
++const u32 GPIO_DATA_SHIFT[] = { 0, 2, 6, 10 };
++const u32 GPIO_DATA_MASK[] = { 0x03, 0x0f, 0x0f, 0x3f };
++u32 * const GPIO_DATA_REG[] = {
++	(u32 *)GPIO_DATA1_REG, (u32 *)GPIO_DATA2_REG,
++	(u32 *)GPIO_DATA3_REG, (u32 *)GPIO_DATA4_REG,
++};
++const u32 GPIO_CFG_MASK[] = { 0x0000ff, 0x00ffff, 0x00ffff, 0xffffff };
++u32 * const GPIO_CFG_REG[] = {
++	(u32 *)GPIO_CFG1_REG, (u32 *)GPIO_CFG2_REG,
++	(u32 *)GPIO_CFG3_REG, (u32 *)GPIO_CFG4_REG,
++};
++
++/* Maps MODE to allowed pin mask */
++const u32 MSP_GPIO_MODE_ALLOWED[] = {
++	0xfffff,	/* Mode 0 - INPUT */
++	0x00000,	/* Mode 1 - INTERRUPT */
++	0x00030,	/* Mode 2 - UART_INPUT (GPIO 4, 5)*/
++	0, 0, 0, 0, 0,	/* Modes 3, 4, 5, 6, and 7 are reserved */
++	0xfffff,	/* Mode 8 - OUTPUT */
++	0x0000f,	/* Mode 9 - UART_OUTPUT/PERF_TIMERA (GPIO 0,1,2,3) */
++	0x00003,	/* Mode a - PERF_TIMERB (GPIO 0, 1) */
++	0x00000,	/* Mode b - Not really a mode! */
++};
++
++#define GPIO_CFG_SHIFT(i)	(i * 4)
++#define GPIO_CFG_PINMASK	0xf
++
++/* The extended gpio register */
++
++#define EXTENDED_GPIO_COUNT	4
++#define EXTENDED_GPIO_SHIFT	16
++#define EXTENDED_GPIO_MASK	0x0f
++
++#define EXTENDED_GPIO_DATA_SHIFT(i)	(i * 2)
++#define EXTENDED_GPIO_DATA_MASK(i)	(0x3 << (i*2))
++#define EXTENDED_GPIO_DATA_SET		0x2
++#define EXTENDED_GPIO_DATA_CLR		0x1
++#define EXTENDED_GPIO_CFG_SHIFT(i)	((i * 2) + 16)
++#define EXTENDED_GPIO_CFG_MASK(i)	(0x3 << ((i*2)+16))
++#define EXTENDED_GPIO_CFG_DISABLE	0x2
++#define EXTENDED_GPIO_CFG_ENABLE	0x1
++
++/* -- Data structures -- */
++
++static DEFINE_SPINLOCK(msp_gpio_spinlock);
++
++static struct task_struct *msp_blinkthread;
++static DEFINE_SPINLOCK(msp_blink_lock);
++static DECLARE_COMPLETION(msp_blink_wait);
++
++struct blink_table {
++	u32 count;
++	u32 period;
++	u32 dcycle;
++};
++
++static struct blink_table blink_table[MSP_NUM_GPIOS];
++
++/* -- Utility functions -- */
++
++/* Define the following for extra debug output */
++#undef DEBUG
++
++#ifdef DEBUG
++#define DBG(args...) printk(args)
++#else
++#define DBG(args...) do {} while (0)
++#endif
++
++/* Reads the data bits from a single register set */
++static u32 msp_gpio_read_data_basic(int reg)
++{
++	return read_reg32(GPIO_DATA_REG[reg], GPIO_DATA_MASK[reg]);
++}
++
++/* Reads the data bits from the extended register set */
++static u32 msp_gpio_read_data_extended(void)
++{
++	int pin;
++	u32 tmp = *EXTENDED_GPIO_REG;
++	u32 retval = 0;
++	
++	for (pin = 0; pin < EXTENDED_GPIO_COUNT; pin++) {
++		u32 bit = 0;
++		
++		/*
++		 * In output mode, read CLR bit
++		 * In input mode, read SET bit
++		 */
++		if (tmp & (EXTENDED_GPIO_CFG_ENABLE <<
++				EXTENDED_GPIO_CFG_SHIFT(pin)))
++			bit = EXTENDED_GPIO_DATA_CLR <<
++				EXTENDED_GPIO_DATA_SHIFT(pin);
++		else
++			bit = EXTENDED_GPIO_DATA_SET <<
++				EXTENDED_GPIO_DATA_SHIFT(pin);
++
++		if (tmp & bit)
++			retval |= 1 << pin;
++	}
++	
++	return retval;
++}
++
++/*
++ * Reads the current state of all 20 pins, putting the values in
++ * the lowest 20 bits (1=HI, 0=LO)
++ */
++static u32 msp_gpio_read_data(void)
++{
++	int reg;
++	u32 retval = 0;
++	
++	spin_lock(&msp_gpio_spinlock);
++	for (reg = 0; reg < GPIO_REG_COUNT; reg++)
++		retval |= msp_gpio_read_data_basic(reg) <<
++				GPIO_DATA_SHIFT[reg];
++	retval |= msp_gpio_read_data_extended() << EXTENDED_GPIO_SHIFT;
++	spin_unlock(&msp_gpio_spinlock);
++	
++	DBG("%s: 0x%08x\n", __FUNCTION__, retval);
++	return retval;
++}
++
++/*
++ * This assumes both data and mask are register-ready, and does
++ * the set atomically
++ */
++static void msp_gpio_write_data_basic(int reg, u32 data, u32 mask)
++{
++	set_value_reg32(GPIO_DATA_REG[reg], mask, data);
++}
++
++/*
++ * The four lowest bits of 'data' and 'mask' are used, and the set
++ * is done atomically
++ */
++static void msp_gpio_write_data_extended(u32 data, u32 mask)
++{
++	int i;
++	u32 tmpmask = 0xffffffff, tmpdata = 0;
++
++	/* Set all SET/CLR values based on data bits passed in */
++	for (i = 0; i < EXTENDED_GPIO_COUNT; i++) {
++		if (mask & (1 << i)) {
++			if (data & (1 << i))
++				/* Set the bit HI */
++				tmpdata |= EXTENDED_GPIO_DATA_SET <<
++					   EXTENDED_GPIO_DATA_SHIFT(i);
++			else
++				/* Set the bit LO */
++				tmpdata |= EXTENDED_GPIO_DATA_CLR <<
++					   EXTENDED_GPIO_DATA_SHIFT(i);
++		}
++	}
++	
++	set_value_reg32(EXTENDED_GPIO_REG, tmpmask, tmpdata);
++}
++
++/*
++ * Sets all masked GPIOs based on the first 20 bits of the data
++ * passed in (1=HI, 0=LO)
++ */
++static void msp_gpio_write_data(u32 data, u32 mask)
++{
++	int reg;
++	
++	spin_lock(&msp_gpio_spinlock);
++	for (reg = 0; reg < GPIO_REG_COUNT; reg++) {
++		u32 tmpdata = (data >> GPIO_DATA_SHIFT[reg]) &
++					GPIO_DATA_MASK[reg];
++		u32 tmpmask = (mask >> GPIO_DATA_SHIFT[reg]) &
++					GPIO_DATA_MASK[reg];
++		if (tmpmask > 0)
++			msp_gpio_write_data_basic(reg, tmpdata, tmpmask);
++	}
++	msp_gpio_write_data_extended(data >> EXTENDED_GPIO_SHIFT,
++					mask >> EXTENDED_GPIO_SHIFT);
++	spin_unlock(&msp_gpio_spinlock);
++}
++
++/* Reads the config bits from a single register set */
++static u32 msp_gpio_read_cfg_basic(int reg)
++{
++	return read_reg32(GPIO_CFG_REG[reg], GPIO_CFG_MASK[reg]);
++}
++
++/*
++ * This assumes both data and mask are register-ready, and does
++ * the write atomically
++ */
++static void msp_gpio_write_cfg_basic(int reg, u32 data, u32 mask)
++{
++	set_value_reg32(GPIO_CFG_REG[reg], mask, data);
++}
++
++/*
++ * Reads the configuration of the extended pins, returning the current
++ * configuration in the lowest 4 bits (1-output, 0-input)
++ */
++static u32 msp_gpio_read_cfg_extended(void)
++{
++	int i;
++	u32 tmp = *EXTENDED_GPIO_REG;
++	u32 retval = 0;
++
++	/* Read all ENABLE/DISABLE values and translate to single bits */
++	for (i = 0; i < EXTENDED_GPIO_COUNT; i++) {
++		if (tmp & (EXTENDED_GPIO_CFG_ENABLE <<
++				EXTENDED_GPIO_CFG_SHIFT(i)))
++			/* Pin is OUTPUT */
++			retval |= 1 << i;
++		else
++			/* Pin is INPUT */
++			retval &= ~(1 << i);
++	}
++	
++	return retval;
++}
++
++/*
++ * Sets the masked extended pins to (1-output, 0-input)
++ * (uses 4 lowest bits of the mask)
++ * Does the write atomically
++ */
++static void msp_gpio_write_cfg_extended(u32 data, u32 mask)
++{
++	int i;
++	u32 tmpmask = 0xffffffff, tmpdata = 0;
++
++	/* Set all ENABLE/DISABLE values based on mask bits passed in */
++	for (i = 0; i < EXTENDED_GPIO_COUNT; i++) {
++		if (mask & (1 << i)) {
++			if (data & (1 << i))
++				/* Set the pin to OUTPUT */
++				tmpdata |= EXTENDED_GPIO_CFG_ENABLE <<
++					   EXTENDED_GPIO_CFG_SHIFT(i);
++			else
++				/* Set the pin to INPUT */
++				tmpdata |= EXTENDED_GPIO_CFG_DISABLE <<
++					   EXTENDED_GPIO_CFG_SHIFT(i);
++		}
++	}
++	
++	set_value_reg32(EXTENDED_GPIO_REG, tmpmask, tmpdata);
++}
++
++/*
++ * Sets all GPIOs to input/output based on the first 20 bits of the mask
++ * (1-output, 0-input)
++ */
++static void msp_gpio_write_cfg(enum msp_gpio_mode mode, u32 mask)
++{
++	int reg;
++	u32 extdata = 0, extmask = 0;
++	
++	spin_lock(&msp_gpio_spinlock);
++	for (reg = 0; reg < GPIO_REG_COUNT; reg++) {
++		int pin;
++		u32 tmpdata = 0, tmpmask = 0;
++		for (pin = 0; pin < GPIO_DATA_COUNT[reg]; pin++) {
++			if (mask & (1 << (GPIO_DATA_SHIFT[reg] + pin))) {
++				tmpmask |= GPIO_CFG_PINMASK <<
++					   GPIO_CFG_SHIFT(pin);
++				tmpdata |= (u32)mode <<
++					   GPIO_CFG_SHIFT(pin);
++			}
++		}
++		if (tmpmask)
++			msp_gpio_write_cfg_basic(reg, tmpdata, tmpmask);
++	}
++
++	extmask = mask >> EXTENDED_GPIO_SHIFT;
++	if (mode == MSP_GPIO_INPUT)
++		extdata = 0;
++	else if (mode == MSP_GPIO_OUTPUT)
++		extdata = 0xf;
++	else
++		extmask = 0;
++	if (extmask)
++		msp_gpio_write_cfg_extended(extdata, extmask);
++	spin_unlock(&msp_gpio_spinlock);
++}
++
++/*
++ * Reads all GPIO config values and checks if they match the pin mode given,
++ * placing the result in the lowest 20 bits of the result, one bit per pin
++ * (1-pin matches mode give, 0-pin does not match)
++ */
++static u32 msp_gpio_read_cfg(u32 mode)
++{
++	u32 retval = 0;
++	int reg;
++	
++	spin_lock(&msp_gpio_spinlock);
++	for (reg = 0; reg < GPIO_REG_COUNT; reg++) {
++		int pin;
++		u32 tmpdata = msp_gpio_read_cfg_basic(reg);
++		for (pin = 0; pin < GPIO_DATA_COUNT[reg]; pin++) {
++			u32 val = (tmpdata >> GPIO_CFG_SHIFT(pin)) &
++					GPIO_CFG_PINMASK;
++			if (val == mode)
++				retval |= 1 << (GPIO_DATA_SHIFT[reg] + pin);
++		}
++	}
++	
++	/* Extended pins only have INPUT or OUTPUT pins */
++	if (mode == MSP_GPIO_INPUT)
++		retval |= (~msp_gpio_read_cfg_extended() & EXTENDED_GPIO_MASK)
++			  << EXTENDED_GPIO_SHIFT;
++	else if (mode == MSP_GPIO_OUTPUT)
++		retval |= (msp_gpio_read_cfg_extended() & EXTENDED_GPIO_MASK)
++			  << EXTENDED_GPIO_SHIFT;
++	spin_unlock(&msp_gpio_spinlock);
++	
++	DBG("%s(0x%02x): 0x%08x\n", __FUNCTION__, mode, retval);
++	return retval;
++}
++
++/* -- Public functions -- */
++
++/*
++ * Reads the bits specified by the mask and puts the values in data.
++ * May include output statuses also, if in mask.
++ *
++ * Returns 0 on success
++ */
++int msp_gpio_in(u32 *data, u32 mask)
++{
++	*data = msp_gpio_read_data() & mask;
++	
++	return 0;
++}
++
++/*
++ * Sets the specified data on the masked pins
++ *
++ * Returns 0 on success or one of the following:
++ *  -EINVAL if any of the pins in the mask are not free or not already
++ *  in output mode
++ */
++int msp_gpio_out(u32 data, u32 mask)
++{
++	if ((mask & ~MSP_GPIO_FREE_MASK) != 0) {
++		printk(KERN_WARNING
++			"Invalid GPIO mask - References non-free pins\n");
++		return -EINVAL;
++	}
++	if ((mask & ~msp_gpio_read_cfg(MSP_GPIO_OUTPUT)) != 0) {
++		printk(KERN_WARNING
++			"Invalid GPIO mask - Cannot set non-output pins\n");
++		return -EINVAL;
++	}
++	
++	msp_gpio_noblink(mask);
++	msp_gpio_write_data(data, mask);
++
++	return 0;
++}
++
++/*
++ * Sets masked pins to the specified msp_gpio_mode
++ *
++ * Returns 0 on success or one of the following:
++ *  -EINVAL if any of the pins in the mask are not free or if any pins
++ *  are not allowed to be set to the specified mode
++ */
++int msp_gpio_mode(enum msp_gpio_mode mode, u32 mask)
++{
++	u32 allowedmask;
++
++	if ((mask & ~MSP_GPIO_FREE_MASK) != 0) {
++		printk(KERN_WARNING
++			"Invalid GPIO mask - References non-free pins\n");
++		return -EINVAL;
++	}
++	
++	/* Enforce pin-mode rules */
++	allowedmask = MSP_GPIO_MODE_ALLOWED[mode];
++	if ((mask & ~allowedmask) != 0) {
++		printk(KERN_WARNING
++			"Invalid GPIO mode for masked pins\n");
++		return -EINVAL;
++	}
++
++	msp_gpio_noblink(mask);
++	msp_gpio_write_cfg(mode, mask);
++
++	return 0;
++}
++
++/*
++ * Stops the specified GPIOs from blinking
++ */
++int msp_gpio_noblink(u32 mask)
++{
++	int i;
++
++	if ((mask & ~msp_gpio_read_cfg(MSP_GPIO_OUTPUT)) != 0)
++		return -EINVAL;
++
++	spin_lock(&msp_blink_lock);
++	for (i = 0; i < MSP_NUM_GPIOS; i++) {
++		if (mask & (1 << i)) {
++			blink_table[i].count = 0;
++			blink_table[i].period = 0;
++			blink_table[i].dcycle = 0;
++		}
++	}
++	spin_unlock(&msp_blink_lock);
++
++	msp_gpio_write_data(0, mask);
++
++	return 0;
++}
++
++/*
++ * Configures GPIO(s) to blink
++ *  - mask shows which GPIOs to blink
++ *  - period is the time in 100ths of a second for the total period
++ *    (0 disables blinking)
++ *  - dcycle is the percentage of the period where the GPIO is HI
++ */
++int msp_gpio_blink(u32 mask, u32 period, u32 dcycle)
++{
++	int i;
++
++	if ((mask & ~msp_gpio_read_cfg(MSP_GPIO_OUTPUT)) != 0) {
++		printk(KERN_WARNING
++			"Invalid GPIO mask - Cannot blink non-output pins\n");
++		return -EINVAL;
++	}
++
++	if (period == 0) 
++		return msp_gpio_noblink(mask);
++
++	spin_lock(&msp_blink_lock);
++	for (i = 0; i < MSP_NUM_GPIOS; i++) {
++		if (mask & (1 << i)) {
++			blink_table[i].count = 0;
++			blink_table[i].period = period;
++			blink_table[i].dcycle = dcycle;
++		}
++	}
++	spin_unlock(&msp_blink_lock);
++
++	complete(&msp_blink_wait);
++
++	return 0;
++}
++
++/* -- File functions -- */
++
++static int msp_gpio_open(struct inode *inode, struct file *file)
++{
++	return 0;
++}
++
++static int msp_gpio_release(struct inode *inode, struct file *file)
++{
++	return 0;
++}
++
++static int msp_gpio_ioctl(struct inode *inode, struct file *file,
++			  unsigned int cmd, unsigned long arg)
++{
++	static struct msp_gpio_ioctl_io_data data;
++	static struct msp_gpio_ioctl_blink_data blink;
++
++	switch (cmd) {
++	case MSP_GPIO_BLINK:
++		if (copy_from_user(&blink,
++		    (struct msp_gpio_ioctl_blink_data *)arg, sizeof(blink)))
++			return -EFAULT;
++		break;
++	default:
++		if (copy_from_user(&data,
++		    (struct msp_gpio_ioctl_io_data *)arg, sizeof(data)))
++			return -EFAULT;
++		break;
++	}
++
++	switch (cmd) {
++	case MSP_GPIO_IN:
++		if (msp_gpio_in(&data.data, data.mask))
++			return -EFAULT;
++		if (copy_to_user((struct msp_gpio_ioctl_io_data *)arg,
++		    &data, sizeof(data)))
++			return -EFAULT;
++		break;
++	case MSP_GPIO_OUT:
++		if (msp_gpio_out(data.data, data.mask))
++			return -EFAULT;
++		break;
++	case MSP_GPIO_MODE:
++		if (msp_gpio_mode(data.data, data.mask))
++			return -EFAULT;
++		break;
++	case MSP_GPIO_BLINK:
++		if (msp_gpio_blink(blink.mask, blink.period, blink.dcycle))
++			return -EFAULT;
++		break;
++	default:
++		return -ENOIOCTLCMD;
++	}
++	
++	return 0;
++}
++
++static struct file_operations msp_gpio_fops = {
++	.owner		= THIS_MODULE,
++	.ioctl		= msp_gpio_ioctl,
++	.open		= msp_gpio_open,
++	.release	= msp_gpio_release,
++};
++
++static struct miscdevice msp_gpio_miscdev = {
++	MISC_DYNAMIC_MINOR,
++	"pmcmsp_gpio",
++	&msp_gpio_fops
++};
++
++static int msp_gpio_blinkthread(void *none)
++{
++	int firstrun = 1;
++	
++	do {
++		u32 mask = 0, data = 0;
++		int i, blinking = 0;
++		spin_lock(&msp_blink_lock);
++		for (i = 0; i < MSP_NUM_GPIOS; i++) {
++			/* use blink_table[i].period as 'blink enabled' test */
++			if (blink_table[i].period) {
++				blinking = 1;
++				mask |= 1 << i;
++				blink_table[i].count++;
++
++				if (blink_table[i].count >=
++				    blink_table[i].period)
++					blink_table[i].count = 0;
++
++				if (blink_table[i].count <
++				    (blink_table[i].period *
++				    blink_table[i].dcycle / 100))
++					data |= 1 << i;
++			}
++		}
++		spin_unlock(&msp_blink_lock);
++
++		if (!firstrun || blinking)
++			msp_gpio_write_data(data, mask);
++		else
++			firstrun = 0;
++
++		if (blinking)
++			schedule_timeout_interruptible(HZ/100);
++		else
++			wait_for_completion_interruptible(&msp_blink_wait);
++		
++		/* make swsusp happy with our thread */
++		try_to_freeze();
++	} while (!kthread_should_stop());
++
++	return 0;
++}
++
++/* -- Module functions -- */
++
++static int __init msp_gpio_init(void)
++{
++	if (misc_register(&msp_gpio_miscdev)) {
++		printk(KERN_ERR "Device registration failed\n");
++		goto err_miscdev;
++	}
++
++	msp_blinkthread = kthread_run(msp_gpio_blinkthread,NULL, "gpio_blink");
++	if (msp_blinkthread == NULL) {
++		printk(KERN_ERR "Could not start kthread\n");
++		goto err_blinkthread;
++	}
++
++	printk(KERN_WARNING "MSP7120 GPIO subsystem initialized\n");
++	return 0;
++
++err_blinkthread:
++	misc_deregister(&msp_gpio_miscdev);
++err_miscdev:
++	return -ENOMEM;
++}
++
++static void __exit msp_gpio_exit(void)
++{
++	complete(&msp_blink_wait);
++	kthread_stop(msp_blinkthread);
++
++	misc_deregister(&msp_gpio_miscdev);
++}
++
++EXPORT_SYMBOL(msp_gpio_in);
++EXPORT_SYMBOL(msp_gpio_out);
++EXPORT_SYMBOL(msp_gpio_mode);
++EXPORT_SYMBOL(msp_gpio_noblink);
++EXPORT_SYMBOL(msp_gpio_blink);
++
++MODULE_DESCRIPTION("PMC MSP GPIO driver");
++MODULE_LICENSE("GPL");
++
++module_init(msp_gpio_init);
++module_exit(msp_gpio_exit);
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h b/include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h
+new file mode 100644
+index 0000000..7eb631e
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_gpio.h
+@@ -0,0 +1,161 @@
++/*
++ * Driver for the PMC MSP71xx reference board GPIO pins
++ *
++ * Copyright 2005-2007 PMC-Sierra, Inc.
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#ifndef __MSP_GPIO_H__
++#define __MSP_GPIO_H__
++
++#include <linux/ioctl.h>
++
++/* Enumerations */
++enum msp_gpio_mode {
++	MSP_GPIO_INPUT		= 0x0,
++	/* MSP_GPIO_ INTERRUPT	= 0x1,	Not supported yet */
++	MSP_GPIO_UART_INPUT	= 0x2,	/* Only GPIO 4 or 5 */
++	MSP_GPIO_OUTPUT		= 0x8,
++	MSP_GPIO_UART_OUTPUT	= 0x9,	/* Only GPIO 2 or 3 */
++	MSP_GPIO_PERIF_TIMERA	= 0x9,	/* Only GPIO 0 or 1 */
++	MSP_GPIO_PERIF_TIMERB	= 0xa,	/* Only GPIO 0 or 1 */
++	MSP_GPIO_UNKNOWN	= 0xb,  /* No such GPIO or mode */
++};
++
++/* Maps 'basic' pins to relative offset from 0 per register */
++static int const MSP_GPIO_OFFSET[] = {
++	/* GPIO 0 and 1 on the first register */
++	0, 0,
++	/* GPIO 2, 3, 4, and 5 on the second register */
++	2, 2, 2, 2,
++	/* GPIO 6, 7, 8, and 9 on the third register */
++	6, 6, 6, 6,
++	/* GPIO 10, 11, 12, 13, 14, and 15 on the fourth register */
++	10, 10, 10, 10, 10, 10,
++};
++
++/* This gives you the 'register relative ofet gpio' number */
++#define OFFSET_GPIO_NUMBER(gpio)	(gpio - MSP_GPIO_OFFSET[gpio])
++
++/* These take the 'register relative offset gpio' number */
++#define BASIC_MODE_REG_SHIFT(ogpio)	(ogpio * 4)
++#define BASIC_MODE_REG_VALUE(mode, ogpio) \
++			(mode << BASIC_MODE_REG_SHIFT(ogpio))
++#define BASIC_MODE_REG_MASK(ogpio) \
++			BASIC_MODE_REG_VALUE(0xf, ogpio)
++#define BASIC_DATA_REG_MASK(ogpio)	(1 << ogpio)
++
++/* These take the actual GPIO number (0 through 15) */
++#define BASIC_DATA_MASK(gpio) \
++		BASIC_DATA_REG_MASK(OFFSET_GPIO_NUMBER(gpio))
++#define BASIC_MODE_MASK(gpio) \
++		BASIC_MODE_REG_MASK(OFFSET_GPIO_NUMBER(gpio))
++#define BASIC_MODE(mode, gpio) \
++		BASIC_MODE_REG_VALUE(mode, OFFSET_GPIO_NUMBER(gpio))
++#define BASIC_MODE_SHIFT(gpio) \
++		BASIC_MODE_REG_SHIFT(OFFSET_GPIO_NUMBER(gpio))
++#define BASIC_MODE_FROM_REG(data, gpio)	\
++		BASIC_MODE_REG_FROM_REG(data,OFFSET_GPIO_NUMBER(gpio))
++
++/* This gives you the 'register relative offset gpio' number */
++#define EXTENDED_OFFSET_GPIO(gpio)	(gpio - 16)
++
++/* These take the 'register relative offset gpio' number */
++#define EXTENDED_REG_DISABLE(ogpio)	(0x2 << ((ogpio * 2) + 16))
++#define EXTENDED_REG_ENABLE(ogpio)	(0x1 << ((ogpio * 2) + 16))
++#define EXTENDED_REG_SET(ogpio)		(0x2 << (ogpio * 2))
++#define EXTENDED_REG_CLR(ogpio)		(0x1 << (ogpio * 2))
++
++/* These take the actual GPIO number (16 through 19) */
++#define EXTENDED_DISABLE(gpio) \
++		EXTENDED_REG_DISABLE(EXTENDED_OFFSET_GPIO(gpio))
++#define EXTENDED_ENABLE(gpio) \
++		EXTENDED_REG_ENABLE(EXTENDED_OFFSET_GPIO(gpio))
++#define EXTENDED_SET(gpio) \
++		EXTENDED_REG_SET(EXTENDED_OFFSET_GPIO(gpio))
++#define EXTENDED_CLR(gpio) \
++		EXTENDED_REG_CLR(EXTENDED_OFFSET_GPIO(gpio))
++
++/* IOCTL structs macros */
++struct msp_gpio_ioctl_io_data {
++	u32 data;
++	u32 mask;
++};
++
++struct msp_gpio_ioctl_blink_data {
++	u32 mask;
++	u32 period;
++	u32 dcycle;
++};
++
++#define MSP_GPIO_IOCTL_BASE	'Z'
++
++/* Reads the current data bits */
++#define MSP_GPIO_IN	_IOWR(MSP_GPIO_IOCTL_BASE, 0, \
++			      struct msp_gpio_ioctl_io_data)
++
++/* Writes data bits */
++#define MSP_GPIO_OUT	_IOW(MSP_GPIO_IOCTL_BASE, 1, \
++			      struct msp_gpio_ioctl_io_data)
++
++/* Sets all masked pins to the msp_gpio_mode given in the data field */
++#define MSP_GPIO_MODE	_IOW(MSP_GPIO_IOCTL_BASE, 2, \
++			      struct msp_gpio_ioctl_io_data)
++
++/* 
++ * Starts any masked LEDs blinking with parameters as follows:
++ *   - period - The time in 100ths of a second for a single period
++ *              (set to '0' to stop blinking)
++ *   - dcycle - The 'duty cycle' - what percentage of the period should
++ *              the gpio be on?
++ */
++#define MSP_GPIO_BLINK	_IOW(MSP_GPIO_IOCTL_BASE, 3, \
++			      struct msp_gpio_ioctl_blink_data)
++
++/* Bit flags and masks for GPIOs */
++#define MSP_NUM_GPIOS		20
++#define MSP_GPIO_ALL_MASK 	((1 << MSP_NUM_GPIOS) - 1)
++#define MSP_GPIO_NONE_MASK 	0LL
++#define MSP_GPIO_FREE_MASK	MSP_GPIO_ALL_MASK
++
++/* The following is only available to other modules */
++
++#ifdef __KERNEL__
++
++/* Reads the bits specified by the mask and puts the values in data */
++extern int msp_gpio_in(u32 *data, u32 mask);
++
++/* Sets the specified data on the masked pins */
++extern int msp_gpio_out(u32 data, u32 mask);
++
++/* Sets masked pins to the specified msp_gpio_mode */
++extern int msp_gpio_mode(enum msp_gpio_mode mode, u32 mask);
++
++/* Stops the specified GPIOs from blinking */
++extern int msp_gpio_noblink(u32 mask);
++
++/* Configures GPIO(s) to blink */
++extern int msp_gpio_blink(u32 mask, u32 period, u32 dcycle);
++
++#endif /* __KERNEL__ */
++
++#endif /* !__MSP_GPIO_H__ */

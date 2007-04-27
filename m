@@ -1,1110 +1,3247 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2007 19:43:24 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.175]:41364 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021450AbXD0SnT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Apr 2007 19:43:19 +0100
-Received: by ug-out-1314.google.com with SMTP id 40so749654uga
-        for <linux-mips@linux-mips.org>; Fri, 27 Apr 2007 11:42:18 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:content-type;
-        b=FvoogL413hfkm2+FlPke6MMMW2x17pqUwiP163dO9zqnjKjGpnVPQbBd21OEAz39peWPPn5ro+q3lWpLeqRmcS9HMw2JvUH27KMdQfVCAaCjUzb9DmDGcJ4/OO42rkrjuvSmADuyhGohiKblgozYsc9TTTjvN6l9bpI6acBuQ5k=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:content-type;
-        b=DiO+bH9RDz3NLsPtRULzY2vdqxLsGg7IOOZZuoAH+9JcKKnA5JDo+yy6q4EPSWwNku4E7MHTk5TrhBX64ebQhFqfUGJlOYw6LahNXuv7TlG0QgjBOwKQ++i0UOHusH4fu9cvtVWH89WkT+5hg2E6VjA5rECGQgiVsyuw0/iGdW8=
-Received: by 10.82.175.2 with SMTP id x2mr6365371bue.1177699337750;
-        Fri, 27 Apr 2007 11:42:17 -0700 (PDT)
-Received: from ?194.132.8.27? ( [85.70.229.122])
-        by mx.google.com with ESMTP id c22sm591760ika.2007.04.27.11.42.15;
-        Fri, 27 Apr 2007 11:42:16 -0700 (PDT)
-Message-ID: <46324403.4080606@gmail.com>
-Date:	Fri, 27 Apr 2007 20:42:11 +0200
-From:	Jan Nikitenko <jan.nikitenko@gmail.com>
-User-Agent: Thunderbird 1.5.0.10 (X11/20070327)
-MIME-Version: 1.0
-To:	David Brownell <david-b@pacbell.net>
-CC:	spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org
-Subject: spi: Add support for au1550 spi controller
-Content-Type: multipart/mixed;
- boundary="------------060606060301060801020402"
-Return-Path: <jan.nikitenko@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2007 21:00:40 +0100 (BST)
+Received: from mother.pmc-sierra.com ([216.241.224.12]:33988 "HELO
+	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S20021494AbXD0UAf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 27 Apr 2007 21:00:35 +0100
+Received: (qmail 6108 invoked by uid 101); 27 Apr 2007 20:00:02 -0000
+Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
+  by mother.pmc-sierra.com with SMTP; 27 Apr 2007 20:00:02 -0000
+Received: from pasqua.pmc-sierra.bc.ca (pasqua.pmc-sierra.bc.ca [134.87.183.161])
+	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l3RJxw7n006537;
+	Fri, 27 Apr 2007 12:59:58 -0700
+From:	Marc St-Jean <stjeanma@pmc-sierra.com>
+Received: (from stjeanma@localhost)
+	by pasqua.pmc-sierra.bc.ca (8.13.4/8.12.11) id l3RJxoB2032491;
+	Fri, 27 Apr 2007 13:59:50 -0600
+Date:	Fri, 27 Apr 2007 13:59:50 -0600
+Message-Id: <200704271959.l3RJxoB2032491@pasqua.pmc-sierra.bc.ca>
+To:	ralf@linux-mips.org
+Subject: [PATCH 1/12] mips: PMC MSP71xx core platform
+Cc:	akpm@linux-foundation.org, jgarzik@pobox.com,
+	linux-mips@linux-mips.org
+Return-Path: <stjeanma@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14924
+X-archive-position: 14925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jan.nikitenko@gmail.com
+X-original-sender: stjeanma@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------060606060301060801020402
-Content-Type: text/plain; charset=ISO-8859-2; format=flowed
-Content-Transfer-Encoding: 7bit
+[PATCH 1/12] mips: PMC MSP71xx core platform
 
-Here is a patch (for 2.6.21 git as of 2007-04-27) with complete support 
-for alchemy au1550 psc spi controller.
+Patch to add core platform support for the PMC-Sierra
+MSP71xx devices.
 
-It supports dma transfers using alchemy descriptor based dma controller 
-for 4 to 8 bits per spi word transfers.
-For 9 to 24 bits per spi word transfers, pio irq based mode is used to 
-avoid setup of dma channels from scratch on each number of bits per word 
-change.
+Thanks,
+Marc
 
-Tested with au1550, may also work on other mips alchemy cpus, like 
-au1200/au1210/au1250.
-Used extensively with SD card connected via SPI, handles 8.1MHz spi 
-clock transfers using dma without any problem (the highest spi clock 
-freq possible to get internally with au1550 running on 324MHz).
+Signed-off-by: Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+---
+Changes since last posting:
+-Added definitions for board reset GPIO.
+-Made msp_regops.h assembly macros safer and added a blocking_read_reg32
+(moved from ethernet driver [PATCH 10/12]).
 
-The driver supports sharing of spi bus by multiple devices, all features 
-of alchemy spi controller are supported (all spi modes, msb/lsb first, 
-bits per word in 4 to 24 range).
+ arch/mips/pmc-sierra/msp71xx/Makefile             |   11 
+ arch/mips/pmc-sierra/msp71xx/msp_elb.c            |   46 +
+ arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c       |  178 +++++
+ arch/mips/pmc-sierra/msp71xx/msp_irq.c            |  124 ++++
+ arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c        |  134 ++++
+ arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c        |  109 +++
+ arch/mips/pmc-sierra/msp71xx/msp_prom.c           |  570 ++++++++++++++++++
+ arch/mips/pmc-sierra/msp71xx/msp_setup.c          |  258 ++++++++
+ arch/mips/pmc-sierra/msp71xx/msp_time.c           |   94 +++
+ arch/mips/pmc-sierra/msp71xx/msp_usb.c            |  147 ++++
+ include/asm-mips/pmc-sierra/msp71xx/msp_cic_int.h |  151 ++++
+ include/asm-mips/pmc-sierra/msp71xx/msp_int.h     |   43 +
+ include/asm-mips/pmc-sierra/msp71xx/msp_prom.h    |  176 +++++
+ include/asm-mips/pmc-sierra/msp71xx/msp_regops.h  |  236 +++++++
+ include/asm-mips/pmc-sierra/msp71xx/msp_regs.h    |  667 ++++++++++++++++++++++
+ include/asm-mips/pmc-sierra/msp71xx/msp_slp_int.h |  141 ++++
+ 16 files changed, 3085 insertions(+)
 
-As the spi clock of the controller depends on main input clock that 
-shall be configured externally, platform data structure for au1550 spi 
-controller driver contains mainclk_hz attribute to define the input 
-clock hz - from this value, dividers of the controller for spi clock are 
-set up for required frequency.
-
-Jan
-
-Signed-off-by: Jan Nikitenko <jan.nikitenko@gmail.com>
-
-  drivers/spi/Kconfig                       |   11
-  drivers/spi/Makefile                      |    1
-  drivers/spi/au1550_spi.c                  |  959 
-++++++++++++++++++++++++++++++
-  include/asm-mips/mach-au1x00/au1550_spi.h |   16
-  4 files changed, 987 insertions(+)
-
-
-
-
---------------060606060301060801020402
-Content-Type: text/plain;
- name="au1550-spi.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="au1550-spi.patch"
-
-diff -urN linux-git.orig/drivers/spi/au1550_spi.c linux-git/drivers/spi/au1550_spi.c
---- linux-git.orig/drivers/spi/au1550_spi.c	1970-01-01 01:00:00.000000000 +0100
-+++ linux-git/drivers/spi/au1550_spi.c	2007-04-27 20:20:32.000000000 +0200
-@@ -0,0 +1,959 @@
+diff --git a/arch/mips/pmc-sierra/msp71xx/Makefile b/arch/mips/pmc-sierra/msp71xx/Makefile
+new file mode 100644
+index 0000000..288457c
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/Makefile
+@@ -0,0 +1,11 @@
++#
++# Makefile for the PMC-Sierra MSP SOCs
++#
++obj-y += msp_prom.o msp_setup.o msp_irq.o \
++	 msp_time.o msp_serial.o msp_elb.o
++obj-$(CONFIG_PMC_MSP7120_GW) += msp_hwbutton.o
++obj-$(CONFIG_IRQ_MSP_SLP) += msp_irq_slp.o
++obj-$(CONFIG_IRQ_MSP_CIC) += msp_irq_cic.o
++obj-$(CONFIG_PCI) += msp_pci.o
++obj-$(CONFIG_MSPETH) += msp_eth.o
++obj-$(CONFIG_MSP_USB) += msp_usb.o
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_elb.c b/arch/mips/pmc-sierra/msp71xx/msp_elb.c
+new file mode 100644
+index 0000000..3e96410
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_elb.c
+@@ -0,0 +1,46 @@
 +/*
-+ * au1550_spi.c - au1550 psc spi controller driver
-+ * may work also with au1200, au1210, au1250
-+ * will not work on au1000, au1100 and au1500 (no full spi controller there)
++ * Sets up the proper Chip Select configuration registers.  It is assumed that
++ * PMON sets up the ADDR and MASK registers properly.
 + *
-+ * Copyright (c) 2006 ATRON electronic GmbH
-+ * Author: Jan Nikitenko <jan.nikitenko@gmail.com>
++ * Copyright 2005-2006 PMC-Sierra, Inc.
++ * Author: Marc St-Jean, Marc_St-Jean@pmc-sierra.com
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <msp_regs.h>
++
++static int __init msp_elb_setup(void)
++{
++#if defined(CONFIG_PMC_MSP7120_GW) \
++ || defined(CONFIG_PMC_MSP7120_EVAL)
++	/*
++	 * Force all CNFG to be identical and equal to CS0,
++	 * according to OPS doc
++	 */
++	*CS1_CNFG_REG = *CS2_CNFG_REG = *CS3_CNFG_REG = *CS0_CNFG_REG;
++#endif
++	return 0;
++}
++
++subsys_initcall(msp_elb_setup);
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c b/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c
+new file mode 100644
+index 0000000..1acb025
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c
+@@ -0,0 +1,178 @@
++/*
++ * Sets up interrupt handlers for various hardware switches which are
++ * connected to interrupt lines.
++ *
++ * Copyright 2005-2207 PMC-Sierra, Inc.
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++
++#include <msp_int.h>
++#include <msp_regs.h>
++#include <msp_regops.h>
++#ifdef CONFIG_PMCTWILED
++#include <msp_led_macros.h>
++#endif
++
++/* For hwbutton_interrupt->initial_state */
++#define HWBUTTON_HI	0x1
++#define HWBUTTON_LO	0x2
++
++/*
++ * This struct describes a hardware button
++ */
++struct hwbutton_interrupt {
++	char *name;			/* Name of button */
++	int irq;			/* Actual LINUX IRQ */
++	int eirq;			/* Extended IRQ number (0-7) */
++	int initial_state;		/* The "normal" state of the switch */
++	void (*handle_hi)(void*);	/* Handler: switch input has gone HI */
++	void (*handle_lo)(void*);	/* Handler: switch input has gone LO */
++	void *data;			/* Optional data to pass to handler */
++};
++
++#ifdef CONFIG_PMC_MSP7120_GW
++extern void msp_restart(char *);
++
++static void softreset_push(void *data)
++{
++	printk(KERN_WARNING "SOFTRESET switch was pushed\n");
++
++	/*
++	 * In the future you could move this to the release handler,
++	 * timing the difference between the 'push' and 'release', and only
++	 * doing this ungraceful restart if the button has been down for
++	 * a certain amount of time; otherwise doing a graceful restart.
++	 */
++
++	msp_restart(NULL);
++}
++
++static void softreset_release(void *data)
++{
++	printk(KERN_WARNING "SOFTRESET switch was released\n");
++
++	/* Do nothing */
++}
++
++static void standby_on(void *data)
++{
++	printk(KERN_WARNING "STANDBY switch was set to ON (not implemented)\n");
++
++	/* TODO: Put board in standby mode */
++#ifdef CONFIG_PMCTWILED
++	msp_led_turn_off(MSP_LED_PWRSTANDBY_GREEN); 
++	msp_led_turn_on(MSP_LED_PWRSTANDBY_RED); 
++#endif
++}
++
++static void standby_off(void *data)
++{
++	printk(KERN_WARNING "STANDBY switch was set to OFF (not implemented)\n");
++
++	/* TODO: Take out of standby mode */
++#ifdef CONFIG_PMCTWILED
++	msp_led_turn_on(MSP_LED_PWRSTANDBY_GREEN); 
++	msp_led_turn_off(MSP_LED_PWRSTANDBY_RED); 
++#endif
++}
++
++static struct hwbutton_interrupt softreset_sw = {
++	.name = "Softreset button",
++	.irq = MSP_INT_EXT0,
++	.eirq = 0,
++	.initial_state = HWBUTTON_HI,
++	.handle_hi = softreset_release,
++	.handle_lo = softreset_push,
++	.data = NULL,
++};
++
++static struct hwbutton_interrupt standby_sw = {
++	.name = "Standby switch",
++	.irq = MSP_INT_EXT1,
++	.eirq = 1,
++	.initial_state = HWBUTTON_HI,
++	.handle_hi = standby_off,
++	.handle_lo = standby_on,
++	.data = NULL,
++};
++#endif /* CONFIG_PMC_MSP7120_GW */
++
++static irqreturn_t hwbutton_handler(int irq, void* data)
++{
++	struct hwbutton_interrupt *hirq = data;
++	unsigned long cic_ext = *CIC_EXT_CFG_REG;
++
++	if (irq != hirq->irq)
++		return IRQ_NONE;
++
++	if (CIC_EXT_IS_ACTIVE_HI(cic_ext, hirq->eirq)) {
++		/* Interrupt: pin is now HI */
++		CIC_EXT_SET_ACTIVE_LO(cic_ext, hirq->eirq);
++		hirq->handle_hi(hirq->data);
++	} else {
++		/* Interrupt: pin is now LO */
++		CIC_EXT_SET_ACTIVE_HI(cic_ext, hirq->eirq);
++		hirq->handle_lo(hirq->data);
++	}
++
++	/* 
++	 * Invert the POLARITY of this level interrupt to ack the interrupt
++	 * Thus next state change will invoke the opposite message
++	 */
++	*CIC_EXT_CFG_REG = cic_ext;
++
++	return IRQ_HANDLED;
++}
++
++static int msp_hwbutton_register(struct hwbutton_interrupt *hirq)
++{
++	unsigned long cic_ext;
++
++	if (hirq->handle_hi == NULL || hirq->handle_lo == NULL)
++		return -EINVAL;
++       
++	cic_ext = *CIC_EXT_CFG_REG;
++	CIC_EXT_SET_TRIGGER_LEVEL(cic_ext, hirq->eirq);
++	if (hirq->initial_state == HWBUTTON_HI)
++		CIC_EXT_SET_ACTIVE_LO(cic_ext, hirq->eirq);
++	else
++		CIC_EXT_SET_ACTIVE_HI(cic_ext, hirq->eirq);
++	*CIC_EXT_CFG_REG = cic_ext;
++
++	return request_irq(hirq->irq, hwbutton_handler, SA_INTERRUPT,
++				hirq->name, (void*)hirq);
++}
++
++static int __init msp_hwbutton_setup(void)
++{
++#ifdef CONFIG_PMC_MSP7120_GW
++	msp_hwbutton_register(&softreset_sw);
++	msp_hwbutton_register(&standby_sw);
++#endif
++	return 0;
++}
++
++subsys_initcall(msp_hwbutton_setup);
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq.c b/arch/mips/pmc-sierra/msp71xx/msp_irq.c
+new file mode 100644
+index 0000000..3b78f81
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_irq.c
+@@ -0,0 +1,124 @@
++/*
++ * IRQ vector handles
++ *
++ * Copyright (C) 1995, 1996, 1997, 2003 by Ralf Baechle
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/irq.h>
++#include <linux/interrupt.h>
++
++#include <asm/irq_cpu.h>
++#include <asm/ptrace.h>
++#include <asm/time.h>
++
++#include <msp_int.h>
++
++extern void msp_int_handle(void);
++
++/* SLP bases systems */
++extern void msp_slp_irq_init(void);
++extern void msp_slp_irq_dispatch(void);
++
++/* CIC based systems */
++extern void msp_cic_irq_init(void);
++extern void msp_cic_irq_dispatch(void);
++
++/*
++ * The PMC-Sierra MSP interrupts are arranged in a 3 level cascaded
++ * hierarchical system.  The first level are the direct MIPS interrupts
++ * and are assigned the interrupt range 0-7.  The second level is the SLM
++ * interrupt controller and is assigned the range 8-39.  The third level
++ * comprises the Peripherial block, the PCI block, the PCI MSI block and
++ * the SLP.  The PCI interrupts and the SLP errors are handled by the
++ * relevant subsystems so the core interrupt code needs only concern
++ * itself with the Peripheral block.  These are assigned interrupts in
++ * the range 40-71.
++ */
++
++asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
++{
++	u32 pending;
++
++	pending = read_c0_status() & read_c0_cause();
++	
++	/*
++	 * jump to the correct interrupt routine
++	 * These are arranged in priority order and the timer
++	 * comes first!
++	 */
++
++#ifdef CONFIG_IRQ_MSP_CIC	/* break out the CIC stuff for now */
++	if (pending & C_IRQ4)	/* do the peripherals first, that's the timer */
++		msp_cic_irq_dispatch();
++		
++	else if (pending & C_IRQ0)
++		do_IRQ(MSP_INT_MAC0);
++		
++	else if (pending & C_IRQ1)
++		do_IRQ(MSP_INT_MAC1);
++
++	else if (pending & C_IRQ2)
++		do_IRQ(MSP_INT_USB);
++	
++	else if (pending & C_IRQ3)
++		do_IRQ(MSP_INT_SAR);
++
++	else if (pending & C_IRQ5)
++		do_IRQ(MSP_INT_SEC);
++
++#else
++	if (pending & C_IRQ5)
++		do_IRQ(MSP_INT_TIMER);
++	
++	else if (pending & C_IRQ0)
++		do_IRQ(MSP_INT_MAC0);
++
++	else if (pending & C_IRQ1)
++		do_IRQ(MSP_INT_MAC1);
++	
++	else if (pending & C_IRQ3)
++		do_IRQ(MSP_INT_VE);
++
++	else if (pending & C_IRQ4)
++		msp_slp_irq_dispatch();
++#endif
++
++	else if (pending & C_SW0)	/* do software after hardware */
++		do_IRQ(MSP_INT_SW0);
++
++	else if (pending & C_SW1)
++		do_IRQ(MSP_INT_SW1);
++}
++
++static struct irqaction cascade_msp = {
++	.handler = no_action,
++	.name	 = "MSP cascade"
++};
++
++
++void __init arch_init_irq(void)
++{
++	/* initialize the 1st-level CPU based interrupt controller */
++	mips_cpu_irq_init();
++
++#ifdef CONFIG_IRQ_MSP_CIC
++	msp_cic_irq_init();
++
++	/* setup the cascaded interrupts */
++	setup_irq(MSP_INT_CIC, &cascade_msp);
++	setup_irq(MSP_INT_PER, &cascade_msp);
++#else
++	/* setup the 2nd-level SLP register based interrupt controller */
++	msp_slp_irq_init();
++
++	/* setup the cascaded SLP/PER interrupts */
++	setup_irq(MSP_INT_SLP, &cascade_msp);
++	setup_irq(MSP_INT_PER, &cascade_msp);
++#endif
++}
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c
+new file mode 100644
+index 0000000..3abdc83
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c
+@@ -0,0 +1,134 @@
++/*
++ * This file define the irq handler for MSP SLM subsystem interrupts.
++ *
++ * Copyright 2005-2007 PMC-Sierra, Inc, derived from irq_cpu.c
++ * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
 + */
 +
 +#include <linux/init.h>
 +#include <linux/interrupt.h>
-+#include <linux/errno.h>
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_bitbang.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/completion.h>
-+#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-au1x00/au1xxx_psc.h>
-+#include <asm/mach-au1x00/au1xxx_dbdma.h>
++#include <linux/kernel.h>
 +
-+#include <asm/mach-au1x00/au1550_spi.h>
++#include <asm/system.h>
++#include <asm/bitops.h>
 +
-+static unsigned usedma = 1;
-+module_param(usedma, uint, 0644);
++#include <msp_cic_int.h>
++#include <msp_regs.h>
 +
 +/*
-+#define AU1550_SPI_DEBUG_LOOPBACK
-+*/
-+
-+
-+#define AU1550_SPI_DBDMA_DESCRIPTORS 1
-+#define AU1550_SPI_DMA_RXTMP_MINSIZE 2048U
-+
-+struct au1550_spi {
-+	struct spi_bitbang bitbang;
-+
-+	volatile psc_spi_t __iomem *regs;
-+	int irq;
-+	unsigned freq_max;
-+	unsigned freq_min;
-+	
-+	unsigned len;
-+	unsigned tx_count;
-+	unsigned rx_count;
-+	const u8 *tx;
-+	u8 *rx;
-+	
-+	void (*rx_word)(struct au1550_spi *hw);
-+	void (*tx_word)(struct au1550_spi *hw);
-+	int (*txrx_bufs)(struct spi_device *spi, struct spi_transfer *t);
-+	irqreturn_t (*irq_callback)(struct au1550_spi *hw);
-+	
-+	struct completion master_done;
-+	
-+	u32 dma_tx_id;
-+	u32 dma_rx_id;
-+	u32 dma_tx_ch;
-+	u32 dma_rx_ch;
-+
-+	u8 *dma_rx_tmpbuf;
-+	unsigned dma_rx_tmpbuf_size;
-+	u32 dma_rx_tmpbuf_addr;
-+
-+	struct spi_master *master;
-+	struct device *dev;
-+	struct au1550_spi_info *pdata;
-+};
-+
-+
-+static u64 au1550_spi_dma_mask = ~(u32)0;
-+
-+/* we need 8-bit memory device for dma transfers to/from spi fifo */
-+static dbdev_tab_t au1550_spi_mem_dbdev =
-+{
-+	DSCR_CMD0_ALWAYS, DEV_FLAGS_ANYUSE|DEV_FLAGS_SYNC,0,8,0x00000000,0,0
-+};
-+
-+static void au1550_spi_bits_handlers_set(struct au1550_spi *hw, int bpw);
-+
-+
-+/**
-+ *  compute BRG and DIV bits to setup spi clock based on main input clock rate
-+ *  that was specified in platform data structure
-+ *  according to au1550 datasheet:
-+ *    psc_tempclk = psc_mainclk / (2 << DIV)
-+ *    spiclk = psc_tempclk / (2 * (BRG + 1))
-+ *    BRG valid range is 4..63
-+ *    DIV valid range is 0..3
++ * NOTE: We are only enabling support for VPE0 right now.
 + */
-+static u32 au1550_spi_baudcfg(struct au1550_spi *hw, unsigned speed_hz)
++
++static inline void unmask_msp_cic_irq(unsigned int irq)
 +{
-+	u32 mainclk_hz = hw->pdata->mainclk_hz;
-+	u32 div, brg;
 +
-+	for (div = 0; div < 4; div++) {
-+		brg = mainclk_hz / speed_hz / (4 << div);
-+		/* now we have BRG+1 in brg, so count with that */
-+		if (brg < (4 + 1)) {
-+			brg = (4 + 1);	/* speed_hz too big */
-+			break;		/* set lowest brg (div is == 0) */
-+		}
-+		if (brg <= (63 + 1))
-+			break;		/* we have valid brg and div */
-+	}
-+	if (div == 4) {
-+		div = 3;		/* speed_hz too small */
-+		brg = (63 + 1);		/* set highest brg and div */
-+	}
-+	brg--;
-+	return PSC_SPICFG_SET_BAUD(brg) | PSC_SPICFG_SET_DIV(div);
-+}
-+
-+static inline void au1550_spi_mask_ack_all(struct au1550_spi *hw)
-+{
-+	hw->regs->psc_spimsk =
-+	    PSC_SPIMSK_MM | PSC_SPIMSK_RR | PSC_SPIMSK_RO |
-+	    PSC_SPIMSK_RU | PSC_SPIMSK_TR | PSC_SPIMSK_TO |
-+	    PSC_SPIMSK_TU | PSC_SPIMSK_SD | PSC_SPIMSK_MD;
-+	au_sync();
-+
-+	hw->regs->psc_spievent = PSC_SPIEVNT_MM | PSC_SPIEVNT_RR
-+	    | PSC_SPIEVNT_RO | PSC_SPIEVNT_RU | PSC_SPIEVNT_TR
-+	    | PSC_SPIEVNT_TO | PSC_SPIEVNT_TU | PSC_SPIEVNT_SD
-+	    | PSC_SPIEVNT_MD;
-+	au_sync();
-+}
-+
-+static void au1550_spi_reset_fifos(struct au1550_spi *hw)
-+{
-+	u32 pcr;
-+	hw->regs->psc_spipcr = PSC_SPIPCR_RC | PSC_SPIPCR_TC;
-+	au_sync();
-+	do {
-+		pcr = hw->regs->psc_spipcr;
-+		au_sync();
-+	} while (pcr != 0);
-+}
-+
-+/*
-+ * dma transfers are used for the most common spi word size of 8-bits
-+ * we cannot easily change already set up dma channels' width, so if we wanted
-+ * dma support for more than 8-bit words (up to 24 bits), we would need to
-+ * setup dma channels from scratch on each spi transfer, based on bits_per_word
-+ * instead we have pre set up 8 bit dma channels supporting spi 4 to 8 bits
-+ * transfers, and 9 to 24 bits spi transfers will be done in pio irq based mode
-+ * callbacks to handle dma or pio are set up in au1550_spi_bits_handlers_set()
-+ */
-+static void au1550_spi_chipsel(struct spi_device *spi, int value)
-+{
-+	struct au1550_spi *hw = spi_master_get_devdata(spi->master);
-+	unsigned cspol = spi->mode & SPI_CS_HIGH ? 1 : 0;
-+	u32 cfg, stat;
-+
-+	switch (value) {
-+	case BITBANG_CS_INACTIVE:
-+		if (hw->pdata->deactivate_cs)
-+			hw->pdata->deactivate_cs(hw->pdata, spi->chip_select,
-+						 cspol);
-+		break;
-+
-+	case BITBANG_CS_ACTIVE:
-+		au1550_spi_bits_handlers_set(hw, spi->bits_per_word);
-+		
-+		cfg = hw->regs->psc_spicfg;
-+		au_sync();
-+		hw->regs->psc_spicfg = cfg & ~PSC_SPICFG_DE_ENABLE;
-+		au_sync();
-+
-+		if (spi->mode & SPI_CPOL)
-+			cfg |= PSC_SPICFG_BI;
-+		else
-+			cfg &= ~PSC_SPICFG_BI;
-+		if (spi->mode & SPI_CPHA)
-+			cfg &= ~PSC_SPICFG_CDE;
-+		else
-+			cfg |= PSC_SPICFG_CDE;
-+			
-+		if (spi->mode & SPI_LSB_FIRST)
-+			cfg |= PSC_SPICFG_MLF;
-+		else
-+			cfg &= ~PSC_SPICFG_MLF;
-+
-+		if (usedma && spi->bits_per_word <= 8)
-+			cfg &= ~PSC_SPICFG_DD_DISABLE;
-+		else
-+			cfg |= PSC_SPICFG_DD_DISABLE;
-+		cfg = PSC_SPICFG_CLR_LEN(cfg);
-+		cfg |= PSC_SPICFG_SET_LEN(spi->bits_per_word);
-+
-+		cfg = PSC_SPICFG_CLR_BAUD(cfg);
-+		cfg &= ~PSC_SPICFG_SET_DIV(3);
-+		cfg |= au1550_spi_baudcfg(hw, spi->max_speed_hz);
-+
-+		hw->regs->psc_spicfg = cfg | PSC_SPICFG_DE_ENABLE;
-+		au_sync();
-+		do {
-+			stat = hw->regs->psc_spistat;
-+			au_sync();
-+		} while ((stat & PSC_SPISTAT_DR) == 0);
-+
-+		if (hw->pdata->activate_cs)
-+			hw->pdata->activate_cs(hw->pdata, spi->chip_select,
-+					       cspol);
-+		break;
-+	}
-+}
-+
-+static int au1550_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct au1550_spi *hw = spi_master_get_devdata(spi->master);
-+	unsigned bpw, hz;
-+	u32 cfg, stat;
-+
-+	bpw = t ? t->bits_per_word : spi->bits_per_word;
-+	hz = t ? t->speed_hz : spi->max_speed_hz;
-+
-+	if (bpw < 4 || bpw > 24) {
-+		dev_err(&spi->dev, "setupxfer: invalid bits_per_word=%d\n",
-+			bpw);
-+		return -EINVAL;
-+	}
-+	if (hz > spi->max_speed_hz || hz > hw->freq_max || hz < hw->freq_min) {
-+		dev_err(&spi->dev, "setupxfer: clock rate=%d out of range\n",
-+			hz);
-+		return -EINVAL;
-+	}
-+	
-+	au1550_spi_bits_handlers_set(hw, spi->bits_per_word);
-+
-+	cfg = hw->regs->psc_spicfg;
-+	au_sync();
-+	hw->regs->psc_spicfg = cfg & ~PSC_SPICFG_DE_ENABLE;
-+	au_sync();
-+
-+	if (usedma && bpw <= 8)
-+		cfg &= ~PSC_SPICFG_DD_DISABLE;
++	/* check for PER interrupt range */
++	if (irq < MSP_PER_INTBASE)
++		*CIC_VPE0_MSK_REG |= (1 << (irq - MSP_CIC_INTBASE));
 +	else
-+		cfg |= PSC_SPICFG_DD_DISABLE;
-+	cfg = PSC_SPICFG_CLR_LEN(cfg);
-+	cfg |= PSC_SPICFG_SET_LEN(bpw);
-+
-+	cfg = PSC_SPICFG_CLR_BAUD(cfg);
-+	cfg &= ~PSC_SPICFG_SET_DIV(3);
-+	cfg |= au1550_spi_baudcfg(hw, hz);
-+
-+	hw->regs->psc_spicfg = cfg;
-+	au_sync();
-+
-+	if (cfg & PSC_SPICFG_DE_ENABLE) {
-+		do {
-+			stat = hw->regs->psc_spistat;
-+			au_sync();
-+		} while ((stat & PSC_SPISTAT_DR) == 0);
-+	}
-+
-+	au1550_spi_reset_fifos(hw);
-+	au1550_spi_mask_ack_all(hw);
-+	return 0;
++		*PER_INT_MSK_REG |= (1 << (irq - MSP_PER_INTBASE));
 +}
 +
-+static int au1550_spi_setup(struct spi_device *spi)
++static inline void mask_msp_cic_irq(unsigned int irq)
 +{
-+	struct au1550_spi *hw = spi_master_get_devdata(spi->master);
-+
-+	if (spi->bits_per_word == 0)
-+		spi->bits_per_word = 8;
-+	if (spi->bits_per_word < 4 || spi->bits_per_word > 24) {
-+		dev_err(&spi->dev, "setup: invalid bits_per_word=%d\n",
-+			spi->bits_per_word);
-+		return -EINVAL;
-+	}
-+
-+	if (spi->max_speed_hz == 0)
-+		spi->max_speed_hz = hw->freq_max;
-+	if (spi->max_speed_hz > hw->freq_max
-+		|| spi->max_speed_hz < hw->freq_min)
-+			return -EINVAL;
-+	/*
-+	 * NOTE: cannot change speed and other hw settings immediately,
-+	 *       otherwise sharing of spi bus is not possible,
-+	 *       so do not call setupxfer(spi, NULL) here
-+	 */
-+	return 0;
++	/* check for PER interrupt range */
++	if (irq < MSP_PER_INTBASE)
++		*CIC_VPE0_MSK_REG &= ~(1 << (irq - MSP_CIC_INTBASE));
++	else
++		*PER_INT_MSK_REG &= ~(1 << (irq - MSP_PER_INTBASE));
 +}
 +
 +/*
-+ * for dma spi transfers, we have to setup rx channel, otherwise there is
-+ * no reliable way how to recognize that spi transfer is done
-+ * dma complete callbacks are called before real spi transfer is finished
-+ * and if only tx dma channel is set up (and rx fifo overflow event masked)
-+ * spi master done event irq is not generated unless rx fifo is empty (emptied)
-+ * so we need rx tmp buffer to use for rx dma if user does not provide one
++ * While we ack the interrupt interrupts are disabled and thus we don't need
++ * to deal with concurrency issues.  Same for msp_cic_irq_end.
 + */
-+static int au1550_spi_dma_rxtmp_alloc(struct au1550_spi *hw, unsigned size)
++static inline void ack_msp_cic_irq(unsigned int irq)
 +{
-+	hw->dma_rx_tmpbuf = kmalloc(size, GFP_KERNEL);
-+	if (!hw->dma_rx_tmpbuf)
-+		return -ENOMEM;
-+	hw->dma_rx_tmpbuf_size = size;
-+	hw->dma_rx_tmpbuf_addr = dma_map_single(hw->dev, hw->dma_rx_tmpbuf,
-+		size, DMA_FROM_DEVICE);
-+	if (dma_mapping_error(hw->dma_rx_tmpbuf_addr)) {
-+		kfree(hw->dma_rx_tmpbuf);
-+		hw->dma_rx_tmpbuf = 0;
-+		hw->dma_rx_tmpbuf_size = 0;
-+		return -EFAULT;
-+	}
-+	return 0;
-+}
-+
-+static void au1550_spi_dma_rxtmp_free(struct au1550_spi *hw)
-+{
-+	dma_unmap_single(hw->dev, hw->dma_rx_tmpbuf_addr,
-+		hw->dma_rx_tmpbuf_size, DMA_FROM_DEVICE);
-+	kfree(hw->dma_rx_tmpbuf);
-+	hw->dma_rx_tmpbuf = 0;
-+	hw->dma_rx_tmpbuf_size = 0;
-+}
-+
-+static int au1550_spi_dma_txrxb(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct au1550_spi *hw = spi_master_get_devdata(spi->master);
-+	dma_addr_t dma_tx_addr;
-+	dma_addr_t dma_rx_addr;
-+	u32 res;
-+
-+	hw->len = t->len;
-+	hw->tx_count = 0;
-+	hw->rx_count = 0;
-+	
-+	hw->tx = t->tx_buf;
-+	hw->rx = t->rx_buf;
-+	dma_tx_addr = t->tx_dma;
-+	dma_rx_addr = t->rx_dma;
-+	
-+	/*
-+	 * check if buffers are already dma mapped, map them otherwise
-+	 * use rx buffer in place of tx if tx buffer was not provided
-+	 * use temp rx buffer (preallocated or realloc to fit) for rx dma
-+	 */
-+	if (t->rx_buf) {
-+		if (t->rx_dma == 0) {	/* if DMA_ADDR_INVALID, map it */
-+			dma_rx_addr = dma_map_single(hw->dev,
-+				(void *)t->rx_buf, t->len, DMA_FROM_DEVICE);
-+			if (dma_mapping_error(dma_rx_addr))
-+				dev_err(hw->dev, "rx dma map error\n");
-+		}
-+	} else {
-+		if (t->len > hw->dma_rx_tmpbuf_size) {
-+			int ret;
-+			au1550_spi_dma_rxtmp_free(hw);
-+			ret = au1550_spi_dma_rxtmp_alloc(hw,
-+				max(t->len, AU1550_SPI_DMA_RXTMP_MINSIZE));
-+			if (ret < 0)
-+				return ret;
-+		}
-+		hw->rx = hw->dma_rx_tmpbuf;
-+		dma_rx_addr = hw->dma_rx_tmpbuf_addr;
-+		dma_sync_single_for_device(hw->dev, dma_rx_addr,
-+			t->len, DMA_FROM_DEVICE);
-+	}
-+	if (t->tx_buf) {
-+		if (t->tx_dma == 0) {	/* if DMA_ADDR_INVALID, map it */
-+			dma_tx_addr = dma_map_single(hw->dev,
-+				(void *)t->tx_buf, t->len, DMA_TO_DEVICE);
-+			if (dma_mapping_error(dma_tx_addr))
-+				dev_err(hw->dev, "tx dma map error\n");
-+		}
-+	} else {
-+		dma_sync_single_for_device(hw->dev, dma_rx_addr,
-+			t->len, DMA_BIDIRECTIONAL);
-+		hw->tx = hw->rx;
-+	}
-+	
-+	/* put buffers on the ring */
-+	res = au1xxx_dbdma_put_dest(hw->dma_rx_ch, hw->rx, t->len);
-+	if (!res)
-+		dev_err(hw->dev, "rx dma put dest error\n");
-+
-+	res = au1xxx_dbdma_put_source(hw->dma_tx_ch, (void *)hw->tx, t->len);
-+	if (!res)
-+		dev_err(hw->dev, "tx dma put source error\n");
-+
-+	au1xxx_dbdma_start(hw->dma_rx_ch);
-+	au1xxx_dbdma_start(hw->dma_tx_ch);
-+
-+	/* by default enable nearly all events interrupt */
-+	hw->regs->psc_spimsk = PSC_SPIMSK_SD;
-+	au_sync();
-+
-+	/* start the transfer */
-+	hw->regs->psc_spipcr = PSC_SPIPCR_MS;
-+	au_sync();
-+	
-+	wait_for_completion(&hw->master_done);
-+
-+	au1xxx_dbdma_stop(hw->dma_tx_ch);
-+	au1xxx_dbdma_stop(hw->dma_rx_ch);
-+
-+	if (!t->rx_buf) {
-+		/* using the temporal preallocated and premapped buffer */
-+		dma_sync_single_for_cpu(hw->dev, dma_rx_addr, t->len,
-+			DMA_FROM_DEVICE);
-+	}
-+	/* unmap buffers if mapped above */
-+	if (t->rx_buf && t->rx_dma == 0 )
-+		dma_unmap_single(hw->dev, dma_rx_addr, t->len,
-+			DMA_FROM_DEVICE);
-+	if (t->tx_buf && t->tx_dma == 0 )
-+		dma_unmap_single(hw->dev, dma_tx_addr, t->len,
-+			DMA_TO_DEVICE);
-+
-+	return hw->rx_count < hw->tx_count ? hw->rx_count : hw->tx_count;
-+}
-+
-+static irqreturn_t au1550_spi_dma_irq_callback(struct au1550_spi *hw)
-+{
-+	u32 stat, evnt;
-+
-+	stat = hw->regs->psc_spistat;
-+	evnt = hw->regs->psc_spievent;
-+	au_sync();
-+	if ((stat & PSC_SPISTAT_DI) == 0) {
-+		dev_err(hw->dev, "Unexpected IRQ!\n");
-+		return IRQ_NONE;
-+	}
-+
-+	if ((evnt &
-+	     (PSC_SPIEVNT_MM | PSC_SPIEVNT_RO | PSC_SPIEVNT_RU | PSC_SPIEVNT_TO
-+	      | PSC_SPIEVNT_TU | PSC_SPIEVNT_SD)) != 0) {
-+		/*
-+		 * due to an spi error we consider transfer as done,
-+		 * so mask all events until before next transfer start
-+		 * and stop the possibly running dma immediatelly
-+		 */
-+		au1550_spi_mask_ack_all(hw);
-+		au1xxx_dbdma_stop(hw->dma_rx_ch);
-+		au1xxx_dbdma_stop(hw->dma_tx_ch);
-+
-+		/* get number of transfered bytes */
-+		hw->rx_count = hw->len - au1xxx_get_dma_residue(hw->dma_rx_ch);
-+		hw->tx_count = hw->len - au1xxx_get_dma_residue(hw->dma_tx_ch);
-+		
-+		au1xxx_dbdma_reset(hw->dma_rx_ch);
-+		au1xxx_dbdma_reset(hw->dma_tx_ch);
-+		au1550_spi_reset_fifos(hw);
-+
-+		dev_err(hw->dev,
-+			"Unexpected SPI error: event=0x%x stat=0x%x!\n",
-+			evnt, stat);
-+
-+		complete(&hw->master_done);
-+		return IRQ_HANDLED;
-+	}
-+
-+	if ((evnt & PSC_SPIEVNT_MD) != 0) {
-+		/* transfer completed successfully */
-+		au1550_spi_mask_ack_all(hw);
-+		hw->rx_count = hw->len;
-+		hw->tx_count = hw->len;
-+		complete(&hw->master_done);
-+	}
-+	return IRQ_HANDLED;
-+}
-+
-+
-+/* routines to handle different word sizes in pio mode */
-+#define AU1550_SPI_RX_WORD(size, mask)					\
-+static void au1550_spi_rx_word_##size(struct au1550_spi *hw)		\
-+{									\
-+	u32 fifoword = hw->regs->psc_spitxrx & (u32)(mask);		\
-+	au_sync();							\
-+	if (hw->rx)							\
-+		*(u##size *)hw->rx = (u##size)fifoword;			\
-+	hw->rx += (size) / 8;						\
-+	hw->rx_count += (size) / 8;					\
-+}
-+
-+#define AU1550_SPI_TX_WORD(size, mask)					\
-+static void au1550_spi_tx_word_##size(struct au1550_spi *hw)		\
-+{									\
-+	u32 fifoword = 0;						\
-+	if (hw->tx)							\
-+		fifoword = *(u##size *)hw->tx & (u32)(mask);		\
-+	hw->tx += (size) / 8;						\
-+	hw->tx_count += (size) / 8;					\
-+	if (hw->tx_count >= hw->len)					\
-+		fifoword |= PSC_SPITXRX_LC;				\
-+	hw->regs->psc_spitxrx = fifoword;				\
-+	au_sync();							\
-+}
-+
-+AU1550_SPI_RX_WORD(8,0xff)
-+AU1550_SPI_RX_WORD(16,0xffff)
-+AU1550_SPI_RX_WORD(32,0xffffff)
-+AU1550_SPI_TX_WORD(8,0xff)
-+AU1550_SPI_TX_WORD(16,0xffff)
-+AU1550_SPI_TX_WORD(32,0xffffff)
-+
-+static int au1550_spi_pio_txrxb(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	u32 stat, mask;
-+	struct au1550_spi *hw = spi_master_get_devdata(spi->master);
-+
-+	hw->tx = t->tx_buf;
-+	hw->rx = t->rx_buf;
-+	hw->len = t->len;
-+	hw->tx_count = 0;
-+	hw->rx_count = 0;
-+
-+	/* by default enable nearly all events after filling tx fifo */
-+	mask = PSC_SPIMSK_SD;
-+
-+	/* fill the transmit FIFO */
-+	while (hw->tx_count < hw->len) {
-+		
-+		hw->tx_word(hw);
-+		
-+		if (hw->tx_count >= hw->len) {
-+			/* mask tx fifo request interrupt as we are done */
-+			mask |= PSC_SPIMSK_TR;
-+		}
-+
-+		stat = hw->regs->psc_spistat;
-+		au_sync();
-+		if (stat & PSC_SPISTAT_TF)
-+			break;
-+	}
-+
-+	/* enable event interrupts */
-+	hw->regs->psc_spimsk = mask;
-+	au_sync();
-+
-+	/* start the transfer */
-+	hw->regs->psc_spipcr = PSC_SPIPCR_MS;
-+	au_sync();
-+
-+	wait_for_completion(&hw->master_done);
-+
-+	return hw->rx_count < hw->tx_count ? hw->rx_count : hw->tx_count;
-+}
-+
-+static irqreturn_t au1550_spi_pio_irq_callback(struct au1550_spi *hw)
-+{
-+	int busy;
-+	u32 stat, evnt;
-+
-+	stat = hw->regs->psc_spistat;
-+	evnt = hw->regs->psc_spievent;
-+	au_sync();
-+	if ((stat & PSC_SPISTAT_DI) == 0) {
-+		dev_err(hw->dev, "Unexpected IRQ!\n");
-+		return IRQ_NONE;
-+	}
-+
-+	if ((evnt &
-+	     (PSC_SPIEVNT_MM | PSC_SPIEVNT_RO | PSC_SPIEVNT_RU | PSC_SPIEVNT_TO
-+	      | PSC_SPIEVNT_TU | PSC_SPIEVNT_SD)) != 0) {
-+		dev_err(hw->dev,
-+			"Unexpected SPI error: event=0x%x stat=0x%x!\n",
-+			evnt, stat);
-+		/*
-+		 * due to an error we consider transfer as done,
-+		 * so mask all events until before next transfer start
-+		 */
-+		au1550_spi_mask_ack_all(hw);
-+		complete(&hw->master_done);
-+		return IRQ_HANDLED;
-+	}
++	mask_msp_cic_irq(irq);
 +
 +	/*
-+	 * while there is something to read from rx fifo
-+	 * or there is a space to write to tx fifo:
++	 * only really necessary for 18, 16-14 and sometimes 3:0 (since
++	 * these can be edge sensitive) but it doesn't hurt for the others.
++	 */ 
++
++	/* check for PER interrupt range */
++	if (irq < MSP_PER_INTBASE)
++		*CIC_STS_REG = (1 << (irq - MSP_CIC_INTBASE));
++	else
++		*PER_INT_STS_REG = (1 << (irq - MSP_PER_INTBASE));
++}
++
++static struct irq_chip msp_cic_irq_controller = {
++	.name = "MSP_CIC",
++	.ack = ack_msp_cic_irq,
++	.mask = ack_msp_cic_irq,
++	.mask_ack = ack_msp_cic_irq,
++	.unmask = unmask_msp_cic_irq,
++};
++
++
++void __init msp_cic_irq_init(void)
++{
++ 	int i;
++
++	/* Mask/clear interrupts. */
++	*CIC_VPE0_MSK_REG = 0x00000000;
++	*PER_INT_MSK_REG  = 0x00000000;	
++	*CIC_STS_REG      = 0xFFFFFFFF;
++	*PER_INT_STS_REG  = 0xFFFFFFFF;
++ 
++#if defined(CONFIG_PMC_MSP7120_GW) || \
++    defined(CONFIG_PMC_MSP7120_EVAL)
++	/* 
++	 * The MSP7120 RG and EVBD boards use IRQ[6:4] for PCI.
++	 * These inputs map to EXT_INT_POL[6:4] inside the CIC.
++	 * They are to be active low, level sensitive.
 +	 */
-+	do {
-+		busy = 0;
-+		stat = hw->regs->psc_spistat;
-+		au_sync();
-+
-+		if ((stat & PSC_SPISTAT_RE) == 0 && hw->rx_count < hw->len) {
-+			hw->rx_word(hw);
-+			/* ack the receive request event */
-+			hw->regs->psc_spievent = PSC_SPIEVNT_RR;
-+			au_sync();
-+			busy = 1;
-+		}
-+
-+		if ((stat & PSC_SPISTAT_TF) == 0 && hw->tx_count < hw->len) {
-+			hw->tx_word(hw);
-+			/* ack the transmit request event */
-+			hw->regs->psc_spievent = PSC_SPIEVNT_TR;
-+			au_sync();
-+			busy = 1;
-+		}
-+	} while (busy);
-+
-+	evnt = hw->regs->psc_spievent;
-+	au_sync();
-+
-+	if (hw->rx_count >= hw->len || (evnt & PSC_SPIEVNT_MD) != 0) {
-+		/* transfer completed successfully */
-+		au1550_spi_mask_ack_all(hw);
-+		complete(&hw->master_done);
-+	}
-+	return IRQ_HANDLED;
-+}
-+
-+static int au1550_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct au1550_spi *hw = spi_master_get_devdata(spi->master);
-+	return hw->txrx_bufs(spi, t);
-+}
-+
-+static irqreturn_t au1550_spi_irq(int irq, void *dev, struct pt_regs *regs)
-+{
-+	struct au1550_spi *hw = dev;
-+	return hw->irq_callback(hw);
-+}
-+
-+static void au1550_spi_bits_handlers_set(struct au1550_spi *hw, int bpw)
-+{
-+	if (bpw <= 8) {
-+		if (usedma) {
-+			hw->txrx_bufs = &au1550_spi_dma_txrxb;
-+			hw->irq_callback = &au1550_spi_dma_irq_callback;
-+		} else {
-+			hw->rx_word = &au1550_spi_rx_word_8;
-+			hw->tx_word = &au1550_spi_tx_word_8;
-+			hw->txrx_bufs = &au1550_spi_pio_txrxb;
-+			hw->irq_callback = &au1550_spi_pio_irq_callback;
-+		}
-+	} else if (bpw <= 16) {
-+		hw->rx_word = &au1550_spi_rx_word_16;
-+		hw->tx_word = &au1550_spi_tx_word_16;
-+		hw->txrx_bufs = &au1550_spi_pio_txrxb;
-+		hw->irq_callback = &au1550_spi_pio_irq_callback;
-+	} else {
-+		hw->rx_word = &au1550_spi_rx_word_32;
-+		hw->tx_word = &au1550_spi_tx_word_32;
-+		hw->txrx_bufs = &au1550_spi_pio_txrxb;
-+		hw->irq_callback = &au1550_spi_pio_irq_callback;
-+	}
-+}
-+
-+static void au1550_spi_setup_psc_as_spi(struct au1550_spi *hw)
-+{
-+	u32 stat, cfg;
-+	
-+	/* set up the PSC for SPI mode */
-+	hw->regs->psc_ctrl = PSC_CTRL_DISABLE;
-+	au_sync();
-+	hw->regs->psc_sel = PSC_SEL_PS_SPIMODE;
-+	au_sync();
-+
-+	hw->regs->psc_spicfg = 0;
-+	au_sync();
-+
-+	hw->regs->psc_ctrl = PSC_CTRL_ENABLE;
-+	au_sync();
-+
-+	do {
-+		stat = hw->regs->psc_spistat;
-+		au_sync();
-+	} while ((stat & PSC_SPISTAT_SR) == 0);
-+
-+
-+	cfg = usedma ? 0 : PSC_SPICFG_DD_DISABLE;
-+	cfg |= PSC_SPICFG_SET_LEN(8);
-+	cfg |= PSC_SPICFG_RT_FIFO8 | PSC_SPICFG_TT_FIFO8;
-+	/* use minimal allowed brg and div values as initial setting: */
-+	cfg |= PSC_SPICFG_SET_BAUD(4) | PSC_SPICFG_SET_DIV(0);
-+
-+#ifdef AU1550_SPI_DEBUG_LOOPBACK
-+	cfg |= PSC_SPICFG_LB;
++	*CIC_EXT_CFG_REG &= 0xFFFF8F8F;
 +#endif
 +
-+	hw->regs->psc_spicfg = cfg;
-+	au_sync();
-+
-+	au1550_spi_mask_ack_all(hw);
-+
-+	hw->regs->psc_spicfg |= PSC_SPICFG_DE_ENABLE;
-+	au_sync();
-+
-+	do {
-+		stat = hw->regs->psc_spistat;
-+		au_sync();
-+	} while ((stat & PSC_SPISTAT_DR) == 0);
++	/* initialize all the IRQ descriptors */
++	for (i = MSP_CIC_INTBASE; i < MSP_PER_INTBASE + 32; i++)
++		set_irq_chip_and_handler(i, &msp_cic_irq_controller,
++					 handle_level_irq);
 +}
 +
-+
-+static int au1550_spi_probe(struct platform_device *pdev)
++void msp_cic_irq_dispatch(void)
 +{
-+	struct au1550_spi *hw;
-+	struct spi_master *master;
-+	int err = 0;
++	u32 pending;
++	int intbase;
 +
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct au1550_spi));
-+	if (master == NULL) {
-+		dev_err(&pdev->dev, "No memory for spi_master\n");
-+		err = -ENOMEM;
-+		goto err_nomem;
++	intbase = MSP_CIC_INTBASE;
++	pending = *CIC_STS_REG & *CIC_VPE0_MSK_REG;
++
++	/* check for PER interrupt */
++	if (pending == (1 << (MSP_INT_PER - MSP_CIC_INTBASE))) {
++		intbase = MSP_PER_INTBASE;
++		pending = *PER_INT_STS_REG & *PER_INT_MSK_REG;
 +	}
 +
-+	hw = spi_master_get_devdata(master);
-+	memset(hw, 0, sizeof(struct au1550_spi));
-+
-+	hw->master = spi_master_get(master);
-+	hw->pdata = pdev->dev.platform_data;
-+	hw->dev = &pdev->dev;
-+
-+	if (hw->pdata == NULL) {
-+		dev_err(&pdev->dev, "No platform data supplied\n");
-+		err = -ENOENT;
-+		goto err_no_pdata;
-+	}
-+	
-+	platform_set_drvdata(pdev, hw);
-+
-+	init_completion(&hw->master_done);
-+	
-+	hw->bitbang.master = hw->master;
-+	hw->bitbang.setup_transfer = au1550_spi_setupxfer;
-+	hw->bitbang.chipselect = au1550_spi_chipsel;
-+	hw->bitbang.master->setup = au1550_spi_setup;
-+	hw->bitbang.txrx_bufs = au1550_spi_txrx_bufs;
-+
-+	switch (hw->pdata->bus_num) {
-+	case 0:
-+		hw->irq = AU1550_PSC0_INT;
-+		hw->regs = (volatile psc_spi_t *)PSC0_BASE_ADDR;
-+		hw->dma_rx_id = DSCR_CMD0_PSC0_RX;
-+		hw->dma_tx_id = DSCR_CMD0_PSC0_TX;
-+		break;
-+	case 1:
-+		hw->irq = AU1550_PSC1_INT;
-+		hw->regs = (volatile psc_spi_t *)PSC1_BASE_ADDR;
-+		hw->dma_rx_id = DSCR_CMD0_PSC1_RX;
-+		hw->dma_tx_id = DSCR_CMD0_PSC1_TX;
-+		break;
-+	case 2:
-+		hw->irq = AU1550_PSC2_INT;
-+		hw->regs = (volatile psc_spi_t *)PSC2_BASE_ADDR;
-+		hw->dma_rx_id = DSCR_CMD0_PSC2_RX;
-+		hw->dma_tx_id = DSCR_CMD0_PSC2_TX;
-+		break;
-+	case 3:
-+		hw->irq = AU1550_PSC3_INT;
-+		hw->regs = (volatile psc_spi_t *)PSC3_BASE_ADDR;
-+		hw->dma_rx_id = DSCR_CMD0_PSC3_RX;
-+		hw->dma_tx_id = DSCR_CMD0_PSC3_TX;
-+		break;
-+	default:
-+		dev_err(&pdev->dev, "Wrong bus_num of SPI\n");
-+		err = -ENOENT;
-+		goto err_no_pdata;
++	/* check for spurious interrupt */
++	if (pending == 0x00000000) {
++		printk(KERN_ERR
++			"Spurious %s interrupt? status %08x, mask %08x\n",
++			(intbase == MSP_CIC_INTBASE) ? "CIC" : "PER",
++			(intbase == MSP_CIC_INTBASE) ?
++				*CIC_STS_REG : *PER_INT_STS_REG,
++			(intbase == MSP_CIC_INTBASE) ?
++				*CIC_VPE0_MSK_REG : *PER_INT_MSK_REG);
++		return;
 +	}
 +
-+	if (request_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t),
-+			       pdev->name) == NULL) {
-+		dev_err(&pdev->dev, "Cannot reserve iomem region\n");
-+		err = -ENXIO;
-+		goto err_no_iores;
-+	}
++	/* check for the timer and dispatch it first */
++	if ((intbase == MSP_CIC_INTBASE) &&
++	    (pending & (1 << (MSP_INT_VPE0_TIMER - MSP_CIC_INTBASE))))
++		do_IRQ(MSP_INT_VPE0_TIMER);
++	else
++		do_IRQ(ffs(pending) + intbase - 1);
++}
 +
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
+new file mode 100644
+index 0000000..b5feb5d
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
+@@ -0,0 +1,109 @@
++/*
++ * This file define the irq handler for MSP SLM subsystem interrupts.
++ *
++ * Copyright 2005-2006 PMC-Sierra, Inc, derived from irq_cpu.c
++ * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++ 
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
 +
-+	if (usedma) {
-+		/*
-+		 * create memory device with 8 bits dev_devwidth
-+		 * needed for proper byte ordering to spi fifo
-+		 */
-+		int memid = au1xxx_ddma_add_device(&au1550_spi_mem_dbdev);
-+		if (!memid) {
-+			dev_err(&pdev->dev,
-+				"Cannot create dma 8 bit mem device\n");
-+			err = -ENXIO;
-+			goto err_dma_add_dev;
-+		}
++#include <asm/mipsregs.h>
++#include <asm/system.h>
++#include <asm/bitops.h>
 +
-+		hw->dma_tx_ch = au1xxx_dbdma_chan_alloc(memid,
-+			hw->dma_tx_id, NULL, (void *)hw);
-+		if (hw->dma_tx_ch == 0) {
-+			dev_err(&pdev->dev,
-+				"Cannot allocate tx dma channel\n");
-+			err = -ENXIO;
-+			goto err_no_txdma;
-+		}
-+		au1xxx_dbdma_set_devwidth(hw->dma_tx_ch, 8);
-+		if (au1xxx_dbdma_ring_alloc(hw->dma_tx_ch,
-+			AU1550_SPI_DBDMA_DESCRIPTORS) == 0) {
-+			dev_err(&pdev->dev,
-+				"Cannot allocate tx dma descriptors\n");
-+			err = -ENXIO;
-+			goto err_no_txdma_descr;
-+		}
-+		
++#include <msp_slp_int.h>
++#include <msp_regs.h>
 +
-+		hw->dma_rx_ch = au1xxx_dbdma_chan_alloc(hw->dma_rx_id,
-+			memid, NULL, (void *)hw);
-+		if (hw->dma_rx_ch == 0) {
-+			dev_err(&pdev->dev,
-+				"Cannot allocate rx dma channel\n");
-+			err = -ENXIO;
-+			goto err_no_rxdma;
-+		}
-+		au1xxx_dbdma_set_devwidth(hw->dma_rx_ch, 8);
-+		if (au1xxx_dbdma_ring_alloc(hw->dma_rx_ch,
-+			AU1550_SPI_DBDMA_DESCRIPTORS) == 0) {
-+			dev_err(&pdev->dev,
-+				"Cannot allocate rx dma descriptors\n");
-+			err = -ENXIO;
-+			goto err_no_rxdma_descr;
-+		}
-+		
-+		err = au1550_spi_dma_rxtmp_alloc(hw,
-+			AU1550_SPI_DMA_RXTMP_MINSIZE);
-+		if (err < 0) {
-+			dev_err(&pdev->dev,
-+				"Cannot allocate initial rx dma tmp buffer\n");
-+			goto err_dma_rxtmp_alloc;
-+		}
++static inline void unmask_msp_slp_irq(unsigned int irq)
++{
++	/* check for PER interrupt range */
++	if (irq < MSP_PER_INTBASE)
++		*SLP_INT_MSK_REG |= (1 << (irq - MSP_SLP_INTBASE));
++	else
++		*PER_INT_MSK_REG |= (1 << (irq - MSP_PER_INTBASE));
++}
 +
-+		if (pdev->dev.dma_mask == NULL)
-+			pdev->dev.dma_mask = &au1550_spi_dma_mask;
-+	}
-+	
-+	au1550_spi_bits_handlers_set(hw, 8);
-+	
-+	err = request_irq(hw->irq, au1550_spi_irq, 0, pdev->name, hw);
-+	if (err) {
-+		dev_err(&pdev->dev, "Cannot claim IRQ\n");
-+		goto err_no_irq;
-+	}
++static inline void mask_msp_slp_irq(unsigned int irq)
++{
++	/* check for PER interrupt range */
++	if (irq < MSP_PER_INTBASE)
++		*SLP_INT_MSK_REG &= ~(1 << (irq - MSP_SLP_INTBASE));
++	else
++		*PER_INT_MSK_REG &= ~(1 << (irq - MSP_PER_INTBASE));
++}
 +
-+	master->bus_num = hw->pdata->bus_num;
-+	master->num_chipselect = hw->pdata->num_chipselect;
++/*
++ * While we ack the interrupt interrupts are disabled and thus we don't need
++ * to deal with concurrency issues.  Same for msp_slp_irq_end.
++ */
++static inline void ack_msp_slp_irq(unsigned int irq)
++{
++	mask_slp_irq(irq);
 +
 +	/*
-+	 *  precompute valid range for spi freq - from au1550 datasheet:
-+	 *    psc_tempclk = psc_mainclk / (2 << DIV)
-+	 *    spiclk = psc_tempclk / (2 * (BRG + 1))
-+	 *    BRG valid range is 4..63
-+	 *    DIV valid range is 0..3
-+	 *  round the min and max frequencies to values that would still
-+	 *  produce valid brg and div
++	 * only really necessary for 18, 16-14 and sometimes 3:0 (since
++	 * these can be edge sensitive) but it doesn't hurt  for the others.
 +	 */
-+	{
-+		int min_div = (2 << 0) * (2 * (4 + 1));
-+		int max_div = (2 << 3) * (2 * (63 + 1));
-+		hw->freq_max = hw->pdata->mainclk_hz / min_div;
-+		hw->freq_min = hw->pdata->mainclk_hz / (max_div + 1) + 1;
-+	}
 +
-+	au1550_spi_setup_psc_as_spi(hw);
-+
-+	err = spi_bitbang_start(&hw->bitbang);
-+	if (err) {
-+		dev_err(&pdev->dev, "Failed to register SPI master\n");
-+		goto err_register;
-+	}
-+
-+	dev_info(&pdev->dev,
-+		 "spi master registered: bus_num=%d num_chipselect=%d\n",
-+		 master->bus_num, master->num_chipselect);
-+
-+	return 0;
-+
-+      err_register:
-+	free_irq(hw->irq, hw);
-+
-+      err_no_irq:
-+	au1550_spi_dma_rxtmp_free(hw);
-+
-+      err_dma_rxtmp_alloc:
-+      err_no_rxdma_descr:
-+	if (usedma)
-+		au1xxx_dbdma_chan_free(hw->dma_rx_ch);
-+
-+      err_no_rxdma:
-+      err_no_txdma_descr:
-+	if (usedma)
-+		au1xxx_dbdma_chan_free(hw->dma_tx_ch);
-+
-+      err_no_txdma:
-+      err_dma_add_dev:
-+	release_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t));
-+
-+      err_no_iores:
-+      err_no_pdata:
-+	spi_master_put(hw->master);
-+
-+      err_nomem:
-+	return err;
++	/* check for PER interrupt range */
++	if (irq < MSP_PER_INTBASE)
++		*SLP_INT_STS_REG = (1 << (irq - MSP_SLP_INTBASE));
++	else
++		*PER_INT_STS_REG = (1 << (irq - MSP_PER_INTBASE));
 +}
 +
-+static int au1550_spi_remove(struct platform_device *pdev)
++static struct irq_chip msp_slp_irq_controller = {
++	.name = "MSP_SLP",
++	.ack = ack_msp_slp_irq,
++	.mask = ack_msp_slp_irq,
++	.mask_ack = ack_msp_slp_irq,
++	.unmask = unmask_msp_slp_irq,
++};
++
++void __init msp_slp_irq_init(void)
 +{
-+	struct au1550_spi *hw = platform_get_drvdata(pdev);
++	int i;
 +
-+	dev_info(&pdev->dev, "spi master remove: bus_num=%d\n",
-+		 hw->master->bus_num);
++	/* Mask/clear interrupts. */
++	*SLP_INT_MSK_REG = 0x00000000;
++	*PER_INT_MSK_REG = 0x00000000;	
++	*SLP_INT_STS_REG = 0xFFFFFFFF;
++	*PER_INT_STS_REG = 0xFFFFFFFF;
 +
-+	spi_bitbang_stop(&hw->bitbang);
-+	free_irq(hw->irq, hw);
-+	release_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t));
++	/* initialize all the IRQ descriptors */
++	for (i = MSP_SLP_INTBASE; i < MSP_PER_INTBASE + 32; i++)
++		set_irq_chip_and_handler(i, &msp_slp_irq_controller
++					 handle_level_irq);
++}
 +
-+	if (usedma) {
-+		au1550_spi_dma_rxtmp_free(hw);
-+		au1xxx_dbdma_chan_free(hw->dma_rx_ch);
-+		au1xxx_dbdma_chan_free(hw->dma_tx_ch);
++void msp_slp_irq_dispatch(void)
++{
++	u32 pending;
++	int intbase;
++
++	intbase = MSP_SLP_INTBASE;
++	pending = *SLP_INT_STS_REG & *SLP_INT_MSK_REG;
++
++	/* check for PER interrupt */
++	if (pending == (1 << (MSP_INT_PER - MSP_SLP_INTBASE))) {
++		intbase = MSP_PER_INTBASE;
++		pending = *PER_INT_STS_REG & *PER_INT_MSK_REG;
 +	}
 +
-+	platform_set_drvdata(pdev, NULL);
++	/* check for spurious interrupt */
++	if (pending == 0x00000000) {
++		printk(KERN_ERR "Spurious %s interrupt?\n",
++			(intbase == MSP_SLP_INTBASE) ? "SLP" : "PER");
++		return;
++	}
 +
-+	spi_master_put(hw->master);
++	/* dispatch the irq */
++	do_IRQ(ffs(pending) + intbase - 1);
++}
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_prom.c b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+new file mode 100644
+index 0000000..0bf4666
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+@@ -0,0 +1,570 @@
++/*
++ * BRIEF MODULE DESCRIPTION
++ *    PROM library initialisation code, assuming a version of
++ *    pmon is the boot code.
++ *
++ * Copyright 2000,2001 MontaVista Software Inc.
++ * Author: MontaVista Software, Inc.
++ *         	ppopov@mvista.com or source@mvista.com
++ *
++ * This file was derived from Carsten Langgaard's
++ * arch/mips/mips-boards/xx files.
++ *
++ * Carsten Langgaard, carstenl@mips.com
++ * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/string.h>
++#include <linux/interrupt.h>
++#include <linux/mm.h>
++#ifdef CONFIG_CRAMFS
++#include <linux/cramfs_fs.h>
++#endif
++#ifdef CONFIG_SQUASHFS
++#include <linux/squashfs_fs.h>
++#endif
++
++#include <asm/addrspace.h>
++#include <asm/bootinfo.h>
++#include <asm-generic/sections.h>
++#include <asm/page.h>
++
++#include <msp_prom.h>
++#include <msp_regs.h>
++
++/* global PROM environment variables and pointers */
++int prom_argc;
++char **prom_argv, **prom_envp;
++int *prom_vec;
++
++/* debug flag */
++int init_debug = 1;
++
++/* memory blocks */
++struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
++
++/* default feature sets */
++static char msp_default_features[] = 
++#if defined(CONFIG_PMC_MSP4200_EVAL) \
++ || defined(CONFIG_PMC_MSP4200_GW)
++	"ERER";
++#elif defined(CONFIG_PMC_MSP7120_EVAL) \
++ || defined(CONFIG_PMC_MSP7120_GW)
++	"EMEMSP";
++#elif defined(CONFIG_PMC_MSP7120_FPGA)
++	"EMEM";
++#endif
++
++/* conversion functions */
++static inline unsigned char str2hexnum(unsigned char c)
++{
++	if (c >= '0' && c <= '9')
++		return c - '0';
++	if (c >= 'a' && c <= 'f')
++		return c - 'a' + 10;
++	return 0; /* foo */
++}
++
++static inline int str2eaddr(unsigned char *ea, unsigned char *str)
++{
++	int index = 0;
++	unsigned char num = 0;
++
++	while (*str != '\0') {
++		if ((*str == '.') || (*str == ':')) {
++			ea[index++] = num;
++			num = 0;
++			str++;
++		} else {
++			num = num << 4;
++			num |= str2hexnum(*str++);
++		}
++	}
++
++	if (index == 5)	{
++		ea[index++] = num;
++		return 0;
++	} else
++		return -1;
++}
++
++static inline unsigned long str2hex(unsigned char *str)
++{
++	int value = 0;
++
++	while (*str) {
++		value = value << 4;
++		value |= str2hexnum(*str++);
++	}
++
++	return value;
++}
++
++/* function to query the system information */
++const char *get_system_type(void)
++{
++#if defined(CONFIG_PMC_MSP4200_EVAL)
++	return "PMC-Sierra MSP4200 Eval Board";
++#elif defined(CONFIG_PMC_MSP4200_GW)
++	return "PMC-Sierra MSP4200 VoIP Gateway";
++#elif defined(CONFIG_PMC_MSP7120_EVAL)
++	return "PMC-Sierra MSP7120 Eval Board";
++#elif defined(CONFIG_PMC_MSP7120_GW)
++	return "PMC-Sierra MSP7120 Residential Gateway";
++#elif defined(CONFIG_PMC_MSP7120_FPGA)
++	return "PMC-Sierra MSP7120 FPGA";
++#else
++	#error "What is the type of *your* MSP?"
++#endif
++}
++
++int get_ethernet_addr(char * ethaddr_name, char *ethernet_addr)
++{
++	char *ethaddr_str;
++
++	ethaddr_str = prom_getenv(ethaddr_name);
++	if (!ethaddr_str) {
++		printk(KERN_WARNING "%s not set in boot prom\n", ethaddr_name);
++		return -1;
++	}
++		
++	if (str2eaddr(ethernet_addr, ethaddr_str) == -1) {
++		printk(KERN_WARNING "%s badly formatted-<%s>\n",
++			ethaddr_name, ethaddr_str);
++		return -1;
++	}
++
++	if (init_debug > 1) {
++		int i;
++		printk(KERN_DEBUG "get_ethernet_addr: for %s ", ethaddr_name);
++		for (i=0; i<5; i++)
++			printk(KERN_DEBUG "%02x:",
++				(unsigned char)*(ethernet_addr+i));
++		printk(KERN_DEBUG "%02x\n", *(ethernet_addr+i));
++	}
++
 +	return 0;
 +}
 +
-+static struct platform_driver au1550_spi_drv = {
-+	.probe = au1550_spi_probe,
-+	.remove = au1550_spi_remove,
-+	.driver = {
-+		.name = "au1550-spi",
-+		.owner = THIS_MODULE,
++static char *get_features(void)
++{
++	char *feature = prom_getenv(FEATURES);
++
++	if (feature == NULL) {
++		/* default features based on MACHINE_TYPE */
++		feature = msp_default_features;
++	}
++
++	return feature;
++}
++
++static char test_feature(char c)
++{
++	char *feature = get_features();
++
++	while (*feature) {
++		if (*feature++ == c)
++			return *feature;
++		feature++;
++	}
++
++	return FEATURE_NOEXIST;
++}
++
++unsigned long get_deviceid(void)
++{
++	char *deviceid = prom_getenv(DEVICEID);
++
++	if (deviceid == NULL)
++		return *DEV_ID_REG;
++	else
++		return str2hex(deviceid);
++}
++
++char identify_pci(void)
++{
++	return test_feature(PCI_KEY);
++}
++
++char identify_pcimux(void)
++{
++	return test_feature(PCIMUX_KEY);
++}
++
++char identify_sec(void)
++{
++	return test_feature(SEC_KEY);
++}
++
++char identify_spad(void)
++{
++	return test_feature(SPAD_KEY);
++}
++
++char identify_tdm(void)
++{
++	return test_feature(TDM_KEY);
++}
++
++char identify_zsp(void)
++{
++	return test_feature(ZSP_KEY);
++}
++
++static char identify_enetfeature(char key, unsigned long interface_num)
++{
++	char *feature = get_features();
++
++	while (*feature) {
++		if (*feature++ == key && interface_num-- == 0)
++			return *feature;
++		feature++;
++	}
++
++	return FEATURE_NOEXIST;
++}
++
++char identify_enet(unsigned long interface_num)
++{
++	return identify_enetfeature(ENET_KEY, interface_num);
++}
++
++char identify_enetTxD(unsigned long interface_num)
++{
++	return identify_enetfeature(ENETTXD_KEY, interface_num);
++}
++
++unsigned long identify_family(void)
++{
++	unsigned long deviceid;
++
++	deviceid = get_deviceid();
++
++	return deviceid & CPU_DEVID_FAMILY;
++}
++
++unsigned long identify_revision(void)
++{
++	unsigned long deviceid;
++
++	deviceid = get_deviceid();
++
++	return deviceid & CPU_DEVID_REVISION;
++}
++
++
++/* PROM environment functions */
++char *prom_getenv(char *env_name)
++{
++	/*
++	 * Return a pointer to the given environment variable.  prom_envp
++	 * points to a null terminated array of pointers to variables.
++	 * Environment variables are stored in the form of "memsize=64"
++	 */
++
++	char **var = prom_envp;
++	int i = strlen(env_name);
++
++	while (*var) {
++		if (strncmp(env_name, *var, i) == 0) {
++			return (*var + strlen(env_name) + 1);
++		}
++		var++;
++	}
++	
++	return NULL;
++}
++
++/* PROM commandline functions */
++char * prom_getcmdline(void)
++{
++	return &(arcs_cmdline[0]);
++}
++
++void  __init prom_init_cmdline(void)
++{
++	char *cp;
++	int actr;
++
++	actr = 1; /* Always ignore argv[0] */
++
++	cp = &(arcs_cmdline[0]);
++	while (actr < prom_argc) {
++		strcpy(cp, prom_argv[actr]);
++		cp += strlen(prom_argv[actr]);
++		*cp++ = ' ';
++		actr++;
++	}
++	if (cp != &(arcs_cmdline[0])) /* get rid of trailing space */
++		--cp;
++	*cp = '\0';
++}
++
++/* memory allocation functions */
++static int __init prom_memtype_classify(unsigned int type)
++{
++	switch (type) {
++	case yamon_free:
++		return BOOT_MEM_RAM;
++	case yamon_prom:
++		return BOOT_MEM_ROM_DATA;
++	default:
++		return BOOT_MEM_RESERVED;
++	}
++}
++
++void __init prom_meminit(void)
++{
++	struct prom_pmemblock *p;
++
++	p = prom_getmdesc();
++
++	while (p->size) {
++		long type;
++		unsigned long base, size;
++
++		type = prom_memtype_classify(p->type);
++		base = p->base;
++		size = p->size;
++
++		add_memory_region(base, size, type);
++		p++; 
++	}
++}
++
++void __init prom_free_prom_memory(void)
++{
++	int	argc;
++	char	**argv;
++	char	**envp;
++	char	*ptr;
++	int	len = 0;
++	int	i;
++	unsigned long addr;
++
++	/*
++	 * preserve environment variables and command line from pmon/bbload
++	 * first preserve the command line
++	 */
++	for (argc = 0; argc < prom_argc; argc++) {
++		len += sizeof(char *);			/* length of pointer */
++		len += strlen(prom_argv[argc]) + 1;	/* length of string */
++	}
++	len += sizeof(char *);		/* plus length of null pointer */
++
++	argv = kmalloc(len, GFP_KERNEL);
++	ptr = (char *) &argv[prom_argc + 1];	/* strings follow array */
++
++	for (argc = 0; argc < prom_argc; argc++) {
++		argv[argc] = ptr;
++		strcpy(ptr, prom_argv[argc]);
++		ptr += strlen(prom_argv[argc]) + 1;
++	}
++	argv[prom_argc] = NULL;		/* end array with null pointer */
++	prom_argv = argv;
++
++	/* next preserve the environment variables */
++	len = 0;
++	i = 0;
++	for (envp = prom_envp; *envp != NULL; envp++) {
++		i++;		/* count number of environment variables */
++		len += sizeof(char *);		/* length of pointer */
++		len += strlen(*envp) + 1;	/* length of string */
++	}
++	len += sizeof(char *);		/* plus length of null pointer */
++
++	envp = kmalloc(len, GFP_KERNEL);
++	ptr = (char *) &envp[i+1];
++
++	for (argc = 0; argc < i; argc++) {
++		envp[argc] = ptr;
++		strcpy(ptr, prom_envp[argc]);
++		ptr += strlen(prom_envp[argc]) + 1;
++	}
++	envp[i] = NULL;			/* end array with null pointer */
++	prom_envp = envp;
++
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		if (boot_mem_map.map[i].type != BOOT_MEM_ROM_DATA)
++			continue;
++
++		addr = boot_mem_map.map[i].addr;
++		free_init_pages("prom memory",
++				addr, addr + boot_mem_map.map[i].size);
++	}
++}
++
++struct prom_pmemblock * __init prom_getmdesc(void)
++{
++	static char	memsz_env[] __initdata = "memsize";
++	static char	heaptop_env[] __initdata = "heaptop";
++	char		*str;
++	unsigned int	memsize;
++	unsigned int	heaptop;
++#ifdef CONFIG_MTD_PMC_MSP_RAMROOT
++	void		*ramroot_start;
++	unsigned long	ramroot_size;
++#endif
++	int i;
++
++	str = prom_getenv(memsz_env);
++	if (!str) {
++		ppfinit("memsize not set in boot prom, "
++			"set to default (32Mb)\n");
++		memsize = 0x02000000;
++	} else {
++		memsize = simple_strtol(str, NULL, 0);
++
++		if (memsize == 0) {
++			/* if memsize is a bad size, use reasonable default */
++			memsize = 0x02000000;
++		}
++
++		/* convert to physical address (removing caching bits, etc) */
++		memsize = CPHYSADDR(memsize);
++	}
++
++	str = prom_getenv(heaptop_env);
++	if (!str) {
++		heaptop = CPHYSADDR((u32)&_text);
++		ppfinit("heaptop not set in boot prom, "
++			"set to default 0x%08x\n", heaptop);
++	} else {
++		heaptop = simple_strtol(str, NULL, 16);
++		if (heaptop == 0) {
++			/* heaptop conversion bad, might have 0xValue */
++			heaptop = simple_strtol(str, NULL, 0);
++
++			if (heaptop == 0) {
++				/* heaptop still bad, use reasonable default */
++				heaptop = CPHYSADDR((u32)&_text);
++			}
++		}
++
++		/* convert to physical address (removing caching bits, etc) */
++		heaptop = CPHYSADDR((u32)heaptop);
++	}
++
++	/* the base region */
++	i = 0;
++	mdesc[i].type = BOOT_MEM_RESERVED;
++	mdesc[i].base = 0x00000000;
++	mdesc[i].size = PAGE_ALIGN(0x300 + 0x80);
++		/* jtag interrupt vector + sizeof vector */
++
++	/* PMON data */
++	if (heaptop > mdesc[i].base + mdesc[i].size) {
++		i++;			/* 1 */
++		mdesc[i].type = BOOT_MEM_ROM_DATA;
++		mdesc[i].base = mdesc[i-1].base + mdesc[i-1].size;
++		mdesc[i].size = heaptop - mdesc[i].base;
++	}
++
++	/* end of PMON data to start of kernel -- probably zero .. */
++	if (heaptop != CPHYSADDR((u32)_text)) {
++		i++;	/* 2 */
++		mdesc[i].type = BOOT_MEM_RAM;
++		mdesc[i].base = heaptop;
++		mdesc[i].size = CPHYSADDR((u32)_text) - mdesc[i].base;
++	}
++
++	/*  kernel proper */
++	i++;			/* 3 */
++	mdesc[i].type = BOOT_MEM_RESERVED;
++	mdesc[i].base = CPHYSADDR((u32)_text);
++#ifdef CONFIG_MTD_PMC_MSP_RAMROOT
++	if (get_ramroot(&ramroot_start, &ramroot_size)) {
++		/*
++		 * Rootfs in RAM -- follows kernel
++		 * Combine rootfs image with kernel block so a
++		 * page (4k) isn't wasted between memory blocks
++		 */
++		mdesc[i].size = CPHYSADDR(PAGE_ALIGN(
++			(u32)ramroot_start + ramroot_size)) - mdesc[i].base;
++	} else
++#endif
++		mdesc[i].size = CPHYSADDR(PAGE_ALIGN(
++			(u32)_end)) - mdesc[i].base;
++
++	/* Remainder of RAM -- under memsize */
++	i++;			/* 5 */				
++	mdesc[i].type = yamon_free;
++	mdesc[i].base = mdesc[i-1].base + mdesc[i-1].size;
++	mdesc[i].size = memsize - mdesc[i].base;
++
++	return &mdesc[0];
++}
++
++/* rootfs functions */
++#ifdef CONFIG_MTD_PMC_MSP_RAMROOT
++bool get_ramroot(void **start, unsigned long *size)
++{
++	extern char _end[];
++	
++	/* Check for start following the end of the kernel */
++	void *check_start = (void *)_end;
++
++	/* Check for supported rootfs types */
++#ifdef CONFIG_CRAMFS
++	if (*(__u32 *)check_start == CRAMFS_MAGIC) {
++		/* Get CRAMFS size */
++		*start = check_start;
++		*size = PAGE_ALIGN(((struct cramfs_super *)
++				   check_start)->size);
++		
++		return true;
++	}
++#endif
++#ifdef CONFIG_SQUASHFS
++	if (*((unsigned int *)check_start) == SQUASHFS_MAGIC) {
++		/* Get SQUASHFS size */
++		*start = check_start;
++		*size = PAGE_ALIGN(((struct squashfs_super_block *)
++				   check_start)->bytes_used);
++		
++		return true;
++	}
++#endif
++
++	return false;
++}
++
++EXPORT_SYMBOL(get_ramroot);
++#endif
++
++EXPORT_SYMBOL(get_ethernet_addr);
++EXPORT_SYMBOL(identify_pci);
++EXPORT_SYMBOL(identify_sec);
++EXPORT_SYMBOL(identify_spad);
++EXPORT_SYMBOL(identify_tdm);
++EXPORT_SYMBOL(identify_zsp);
++EXPORT_SYMBOL(identify_enet);
++EXPORT_SYMBOL(identify_enetTxD);
++EXPORT_SYMBOL(identify_family);
++EXPORT_SYMBOL(identify_revision);
++
++EXPORT_SYMBOL(prom_getcmdline);
++EXPORT_SYMBOL(str2eaddr);
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+new file mode 100644
+index 0000000..1f656ef
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+@@ -0,0 +1,258 @@
++/*
++ * The generic setup file for PMC-Sierra MSP processors
++ *
++ * Copyright 2005-2007 PMC-Sierra, Inc,
++ * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <asm/bootinfo.h>
++#include <asm/cacheflush.h>
++#include <asm/r4kcache.h>
++#include <asm/reboot.h>
++#include <asm/time.h>
++
++#include <msp_prom.h>
++#include <msp_regs.h>
++
++#if defined(CONFIG_PMC_MSP7120_GW)
++#include <msp_regops.h>
++#include <msp_gpio.h>
++#define MSP_BOARD_RESET_GPIO	9
++#define MSP_BOARD_RESET_OGPIO	(MSP_BOARD_RESET_GPIO - 6)
++#endif
++
++extern void msp_timer_init(void);
++extern void msp_serial_setup(void);
++extern void pmctwiled_setup(void);
++
++#if defined(CONFIG_PMC_MSP7120_EVAL) || \
++    defined(CONFIG_PMC_MSP7120_GW) || \
++    defined(CONFIG_PMC_MSP7120_FPGA)
++/*
++ * Performs the reset for MSP7120-based boards
++ */
++void msp7120_reset(void)
++{
++	void *start, *end, *iptr;
++	int i;
++
++	/* Diasble all interrupts */
++	local_irq_disable();
++#ifdef CONFIG_SYS_SUPPORTS_MULTITHREADING
++	dvpe();
++#endif
++
++	/* Cache the reset code of this function */
++	__asm__ __volatile__ (
++		"	.set	push				\n"
++		"	.set	mips3				\n"
++		"	la	%0,startpoint			\n"
++		"	la	%1,endpoint			\n"
++		"	.set	pop				\n"
++		: "=r" (start), "=r" (end)
++		: 
++	);
++	;
++	for (iptr = (void *)((unsigned int)start & ~(L1_CACHE_BYTES - 1));
++	     iptr < end; iptr += L1_CACHE_BYTES)
++		cache_op(Fill, iptr);
++	
++	__asm__ __volatile__ (
++		"startpoint:					\n"
++	);
++
++	/* Put the DDRC into self-refresh mode */
++	DDRC_INDIRECT_WRITE(DDRC_CTL(10), 0xb, (1<<16));
++	
++	/*
++	 * IMPORTANT! 
++	 * DO NOT do anything from here on out that might even
++	 * think about fetching from RAM - i.e., don't call any 
++	 * non-inlined functions, and be VERY sure that any inline 
++	 * functions you do call do NOT access any sort of RAM
++	 * anywhere!
++	 */
++
++	/* Wait a bit for the DDRC to settle */
++	for (i = 0; i < 100000000; i++);
++
++#if defined(CONFIG_PMC_MSP7120_GW)
++	/*
++	 * Set GPIO 9 HI, (tied to board reset logic)
++	 * GPIO 9 is the 4th GPIO of register 3
++	 *
++	 * Note, we cannot use the higher-level 'msp_gpio_pin_...'
++	 * functions as they look up data in a static table somewhere
++	 * else in RAM!
++	 */
++	set_value_reg32(GPIO_CFG3_REG,
++			BASIC_MODE_REG_MASK(MSP_BOARD_RESET_OGPIO),
++			BASIC_MODE_REG_VALUE(MSP_GPIO_OUTPUT,
++						MSP_BOARD_RESET_OGPIO));
++	set_reg32(GPIO_DATA3_REG, 
++			BASIC_DATA_REG_MASK(MSP_BOARD_RESET_OGPIO));
++
++	/*
++	 * In case GPIO9 doesn't reset the board (jumper configurable!)
++	 * fallback to device reset below.
++	 */
++#endif
++	/* Set bit 1 of the MSP7120 reset register */
++	*RST_SET_REG = 0x00000001;
++
++	__asm__ __volatile__ (
++		"endpoint:					\n"
++	);
++}
++#endif
++
++void msp_restart(char *command)
++{
++	printk(KERN_WARNING "Now rebooting .......\n");
++
++#if defined(CONFIG_PMC_MSP7120_EVAL) || \
++    defined(CONFIG_PMC_MSP7120_GW) || \
++    defined(CONFIG_PMC_MSP7120_FPGA)
++	msp7120_reset();
++#else
++	/* No chip-specific reset code, just jump to the ROM reset vector */
++	set_c0_status(ST0_BEV | ST0_ERL);
++	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
++	flush_cache_all();
++	write_c0_wired(0);
++
++	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
++#endif
++}
++
++void msp_halt(void)
++{
++	printk(KERN_WARNING "\n** You can safely turn off the power\n");
++	while (1)
++		/* If possible call official function to get CPU WARs */
++		if (cpu_wait)
++			(*cpu_wait)();
++		else
++			__asm__(".set\tmips3\n\t" "wait\n\t" ".set\tmips0");
++}
++
++void msp_power_off(void)
++{
++	msp_halt();
++}
++
++void __init plat_mem_setup(void)
++{
++	_machine_restart = msp_restart;
++	_machine_halt = msp_halt;
++	pm_power_off = msp_power_off;
++
++	board_time_init = msp_timer_init;
++}
++
++void __init prom_init(void)
++{
++	unsigned long family;
++	unsigned long revision;
++
++	prom_argc = fw_arg0;
++	prom_argv = (char **)fw_arg1;
++	prom_envp = (char **)fw_arg2;
++
++	/* 
++	 * Someday we can use this with PMON2000 to get a
++	 * platform call prom routines for output etc. without
++	 * having to use grody hacks.  For now it's unused.
++	 *
++	 * struct callvectors *cv = (struct callvectors *) fw_arg3;
++	 */
++	family = identify_family();
++	revision = identify_revision();
++
++	switch (family)	{
++	case FAMILY_FPGA:
++		if (FPGA_IS_MSP4200(revision)) {
++			/* Old-style revision ID */
++			mips_machgroup = MACH_GROUP_MSP;
++			mips_machtype = MACH_MSP4200_FPGA;
++		} else { 
++			mips_machgroup = MACH_GROUP_MSP;
++			mips_machtype = MACH_MSP_OTHER;
++		}
++		break;
++
++	case FAMILY_MSP4200:
++		mips_machgroup = MACH_GROUP_MSP;
++#if defined(CONFIG_PMC_MSP4200_EVAL)
++		mips_machtype  = MACH_MSP4200_EVAL;
++#elif defined(CONFIG_PMC_MSP4200_GW)
++		mips_machtype  = MACH_MSP4200_GW;
++#else
++		mips_machtype = MACH_MSP_OTHER;
++#endif
++		break;
++
++	case FAMILY_MSP4200_FPGA:
++		mips_machgroup = MACH_GROUP_MSP;
++		mips_machtype  = MACH_MSP4200_FPGA;
++		break;
++
++	case FAMILY_MSP7100:
++		mips_machgroup = MACH_GROUP_MSP;
++#if defined(CONFIG_PMC_MSP7120_EVAL)
++		mips_machtype = MACH_MSP7120_EVAL;
++#elif defined(CONFIG_PMC_MSP7120_GW)
++		mips_machtype = MACH_MSP7120_GW;
++#else
++		mips_machtype = MACH_MSP_OTHER;
++#endif
++		break;
++
++	case FAMILY_MSP7100_FPGA:
++		mips_machgroup = MACH_GROUP_MSP;
++		mips_machtype  = MACH_MSP7120_FPGA;
++		break;
++
++	default:
++		/* we don't recognize the machine */
++		mips_machgroup = MACH_GROUP_UNKNOWN;
++		mips_machtype  = MACH_UNKNOWN;
++		break;
++	}
++	
++	/* make sure we have the right initialization routine - sanity */
++	if (mips_machgroup != MACH_GROUP_MSP) {
++		ppfinit("Unknown machine group in a "
++			"MSP initialization routine\n");
++		panic("***Bogosity factor five***, exiting\n");
++	}
++
++	prom_init_cmdline();
++	
++	prom_meminit();
++
++	/*
++	 * Sub-system setup follows.
++	 * Setup functions can  either be called here or using the
++	 * subsys_initcall mechanism (i.e. see msp_pci_setup). The
++	 * order in which they are called can be changed by using the
++	 * link order in arch/mips/pmc-sierra/msp71xx/Makefile.
++	 * 
++	 * NOTE: Please keep sub-system specific initialization code
++	 * in separate specific files.
++	 */
++	msp_serial_setup();
++	 
++#ifdef CONFIG_PMCTWILED
++	/*
++	 * Setup LED states before the subsys_initcall loads other
++	 * dependant drivers/modules.
++	 */
++	pmctwiled_setup();
++#endif
++}
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+new file mode 100644
+index 0000000..73a5ac5
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+@@ -0,0 +1,94 @@
++/*
++ * Setting up the clock on MSP SOCs.  No RTC typically.
++ *
++ * Carsten Langgaard, carstenl@mips.com
++ * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
++ *
++ * ########################################################################
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * ########################################################################
++ */
++
++#include <linux/init.h>
++#include <linux/kernel_stat.h>
++#include <linux/sched.h>
++#include <linux/spinlock.h>
++#include <linux/module.h>
++
++#include <asm/mipsregs.h>
++#include <asm/ptrace.h>
++#include <asm/time.h>
++
++#include <msp_prom.h>
++#include <msp_int.h>
++#include <msp_regs.h>
++
++void __init msp_timer_init(void)
++{
++	char    *endp,*s;
++	unsigned long cpu_rate = 0;
++    
++	if (cpu_rate == 0) {
++		s = prom_getenv("clkfreqhz");
++		cpu_rate = simple_strtoul(s,&endp,10);
++		if (endp != NULL && *endp != 0) {
++			printk(KERN_ERR
++				"Clock rate in Hz parse error: %s\n", s);
++			cpu_rate = 0;
++		}
++	}
++	
++	if (cpu_rate == 0) {
++		s = prom_getenv("clkfreq");
++		cpu_rate = 1000*simple_strtoul(s,&endp,10);        
++		if (endp != NULL && *endp != 0) {
++			printk(KERN_ERR
++				"Clock rate in MHz parse error: %s\n", s);
++			cpu_rate = 0;
++		}
++	}
++	
++	if (cpu_rate == 0) {
++#if defined(CONFIG_PMC_MSP7120_EVAL) \
++ || defined(CONFIG_PMC_MSP7120_GW)
++		cpu_rate = 400000000;
++#elif defined(CONFIG_PMC_MSP7120_FPGA)
++		cpu_rate = 25000000;
++#else                
++		cpu_rate = 150000000;
++#endif
++		printk(KERN_ERR
++			"Failed to determine CPU clock rate, "
++			"assuming %ld hz ...\n", cpu_rate);
++	}
++	
++	printk(KERN_WARNING "Clock rate set to %ld\n",cpu_rate);
++	
++	/* timer frequency is 1/2 clock rate */
++	mips_hpt_frequency = cpu_rate/2;
++}
++
++
++void __init plat_timer_setup(struct irqaction *irq)
++{
++#ifdef CONFIG_IRQ_MSP_CIC
++	/* we are using the vpe0 counter for timer interrupts */
++	setup_irq(MSP_INT_VPE0_TIMER, irq);
++#else
++	/* we are using the mips counter for timer interrupts */
++	setup_irq(MSP_INT_TIMER, irq);
++#endif
++}
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_usb.c b/arch/mips/pmc-sierra/msp71xx/msp_usb.c
+new file mode 100644
+index 0000000..f514872
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_usb.c
+@@ -0,0 +1,147 @@
++/*
++ * The setup file for USB related hardware on PMC-Sierra MSP processors.
++ *
++ * Copyright 2006-2007 PMC-Sierra, Inc.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/dma-mapping.h>
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/platform_device.h>
++
++#include <asm/mipsregs.h>
++
++#include <msp_regs.h>
++#include <msp_int.h>
++#include <msp_prom.h>
++
++#if defined (CONFIG_USB_EHCI_HCD)
++static struct resource msp_usbhost_resources [] = {
++	[0] = {
++		.start	= MSP_USB_BASE_START,
++		.end	= MSP_USB_BASE_END,
++		.flags 	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= MSP_INT_USB,
++		.end	= MSP_INT_USB,
++		.flags	= IORESOURCE_IRQ,
 +	},
 +};
 +
-+static int __init au1550_spi_init(void)
-+{
-+	return platform_driver_register(&au1550_spi_drv);
-+}
++static u64 msp_usbhost_dma_mask = DMA_32BIT_MASK;
 +
-+static void __exit au1550_spi_exit(void)
-+{
-+	platform_driver_unregister(&au1550_spi_drv);
-+}
++static struct platform_device msp_usbhost_device = {
++	.name	= "pmcmsp-ehci",
++	.id	= 0,
++	.dev	= {
++		.dma_mask = &msp_usbhost_dma_mask,
++		.coherent_dma_mask = DMA_32BIT_MASK,
++	},
++	.num_resources 	= ARRAY_SIZE (msp_usbhost_resources),
++	.resource	= msp_usbhost_resources,
++};
++#endif /* CONFIG_USB_EHCI_HCD */
 +
-+module_init(au1550_spi_init);
-+module_exit(au1550_spi_exit);
-+
-+MODULE_DESCRIPTION("Au1550 PSC SPI Driver");
-+MODULE_AUTHOR("Jan Nikitenko <jan.nikitenko@gmail.com>");
-+MODULE_LICENSE("GPL");
-diff -urN linux-git.orig/drivers/spi/Kconfig linux-git/drivers/spi/Kconfig
---- linux-git.orig/drivers/spi/Kconfig	2007-03-02 08:59:28.000000000 +0100
-+++ linux-git/drivers/spi/Kconfig	2007-04-27 19:18:34.000000000 +0200
-@@ -58,6 +58,17 @@
- 	  This selects a driver for the Atmel SPI Controller, present on
- 	  many AT32 (AVR32) and AT91 (ARM) chips.
- 
-+config SPI_AU1550
-+	tristate "Au1550/Au12x0 SPI Controller"
-+	depends on SPI_MASTER && (SOC_AU1550 || SOC_AU1200) && EXPERIMENTAL
-+	select SPI_BITBANG
-+	help
-+	  If you say yes to this option, support will be included for the
-+	  Au1550 SPI controller (may also work with Au1200,Au1210,Au1250).
-+
-+	  This driver can also be built as a module.  If so, the module
-+	  will be called au1550_spi.
-+
- config SPI_BITBANG
- 	tristate "Bitbanging SPI master"
- 	depends on SPI_MASTER && EXPERIMENTAL
-diff -urN linux-git.orig/drivers/spi/Makefile linux-git/drivers/spi/Makefile
---- linux-git.orig/drivers/spi/Makefile	2007-03-02 08:59:28.000000000 +0100
-+++ linux-git/drivers/spi/Makefile	2007-04-27 19:19:58.000000000 +0200
-@@ -13,6 +13,7 @@
- # SPI master controller drivers (bus)
- obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
- obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
-+obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
- obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
- obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
- obj-$(CONFIG_SPI_PXA2XX)		+= pxa2xx_spi.o
-diff -urN linux-git.orig/include/asm-mips/mach-au1x00/au1550_spi.h linux-git/include/asm-mips/mach-au1x00/au1550_spi.h
---- linux-git.orig/include/asm-mips/mach-au1x00/au1550_spi.h	1970-01-01 01:00:00.000000000 +0100
-+++ linux-git/include/asm-mips/mach-au1x00/au1550_spi.h	2007-04-27 19:35:50.000000000 +0200
-@@ -0,0 +1,16 @@
-+/*
-+ * au1550_spi.h - au1550 psc spi controller driver - platform data struct
-+ */
-+
-+#ifndef _AU1550_SPI_H_
-+#define _AU1550_SPI_H_
-+
-+struct au1550_spi_info {
-+	s16 bus_num;		/* defines which PSC and IRQ to use */
-+	u32 mainclk_hz;		/* main input clock frequency of PSC */
-+	u16 num_chipselect;	/* number of chipselects supported */
-+	void (*activate_cs)(struct au1550_spi_info *spi, int cs, int polarity);
-+	void (*deactivate_cs)(struct au1550_spi_info *spi, int cs, int polarity);
++#if defined (CONFIG_USB_GADGET)
++static struct resource msp_usbdev_resources [] = {
++	[0] = {
++		.start	= MSP_USB_BASE,
++		.end	= MSP_USB_BASE_END,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= MSP_INT_USB,
++		.end	= MSP_INT_USB,
++		.flags	= IORESOURCE_IRQ,
++	},
 +};
 +
++static u64 msp_usbdev_dma_mask = DMA_32BIT_MASK;
++
++static struct platform_device msp_usbdev_device = {
++	.name	= "msp71xx_udc",
++	.id	= 0,
++	.dev	= {
++		.dma_mask = &msp_usbdev_dma_mask,
++		.coherent_dma_mask = DMA_32BIT_MASK,
++	},
++	.num_resources	= ARRAY_SIZE (msp_usbdev_resources),
++	.resource	= msp_usbdev_resources,
++};
++#endif /* CONFIG_USB_GADGET */
++
++#if defined (CONFIG_USB_EHCI_HCD) || defined (CONFIG_USB_GADGET)
++static struct platform_device *msp_devs[1];
 +#endif
-
---------------060606060301060801020402--
++
++
++static int __init msp_usb_setup(void)
++{
++#if defined (CONFIG_USB_EHCI_HCD) || defined (CONFIG_USB_GADGET)
++	char *strp;
++	char envstr[32];
++	unsigned int val;
++	
++	/*
++	 * construct environment name usbmode
++	 * set usbmode <host/device> as pmon environment var
++	 */
++	snprintf((char *)&envstr[0], sizeof(envstr), "usbmode");
++
++	/* default to host mode */
++	val = 1;
++
++	/* get environment string */
++	strp = prom_getenv((char *)&envstr[0]);
++	if (strp) {
++		if (!strcmp(strp, "device"))
++			val = 0;
++	}
++
++	if (val) {
++#if defined (CONFIG_USB_EHCI_HCD)
++		/* get host mode device */
++		msp_devs[0] = &msp_usbhost_device;
++		ppfinit("platform add USB HOST done %s.\n",
++			    msp_devs[0]->name);
++
++		platform_add_devices (msp_devs, ARRAY_SIZE (msp_devs));
++#endif /* CONFIG_USB_EHCI_HCD */
++	}
++#if defined (CONFIG_USB_GADGET)
++	else {
++		/* get device mode structure */
++		msp_devs[0] = &msp_usbdev_device;
++		ppfinit("platform add USB DEVICE done %s.\n",
++			    msp_devs[0]->name);
++
++		platform_add_devices (msp_devs, ARRAY_SIZE (msp_devs));
++	}
++#endif /* CONFIG_USB_GADGET */
++#endif /* CONFIG_USB_EHCI_HCD || CONFIG_USB_GADGET */
++
++	return 0;
++}
++
++subsys_initcall(msp_usb_setup);
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_cic_int.h b/include/asm-mips/pmc-sierra/msp71xx/msp_cic_int.h
+new file mode 100644
+index 0000000..8e5fd9f
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_cic_int.h
+@@ -0,0 +1,151 @@
++/*
++ * Defines for the MSP interrupt controller.
++ *
++ * Copyright (C) 1999 MIPS Technologies, Inc.  All rights reserved.
++ * Author: Carsten Langgaard, carstenl@mips.com
++ *
++ * ########################################################################
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * ########################################################################
++ */
++
++#ifndef _MSP_CIC_INT_H
++#define _MSP_CIC_INT_H
++
++/*
++ * The PMC-Sierra CIC interrupts are all centrally managed by the
++ * CIC sub-system.
++ * We attempt to keep the interrupt numbers as consistent as possible
++ * across all of the MSP devices, but some differences will creep in ...
++ * The interrupts which are directly forwarded to the MIPS core interrupts
++ * are assigned interrupts in the range 0-7, interrupts cascaded through
++ * the CIC are assigned interrupts 8-39.  The cascade occurs on C_IRQ4
++ * (MSP_INT_CIC).  Currently we don't really distinguish between VPE1 
++ * and VPE0 (or thread contexts for that matter).  Will have to fix.
++ * The PER interrupts are assigned interrupts in the range 40-71.
++*/
++
++
++/*
++ * IRQs directly forwarded to the CPU
++ */
++#define MSP_MIPS_INTBASE	0
++#define MSP_INT_SW0		0	/* IRQ for swint0,       C_SW0  */
++#define MSP_INT_SW1		1	/* IRQ for swint1,       C_SW1  */
++#define MSP_INT_MAC0		2	/* IRQ for MAC 0,        C_IRQ0 */
++#define MSP_INT_MAC1		3	/* IRQ for MAC 1,        C_IRQ1 */
++#define MSP_INT_USB		4	/* IRQ for USB,          C_IRQ2 */
++#define MSP_INT_SAR		5	/* IRQ for ADSL2+ SAR,   C_IRQ3 */
++#define MSP_INT_CIC		6	/* IRQ for CIC block,    C_IRQ4 */
++#define MSP_INT_SEC		7	/* IRQ for Sec engine,   C_IRQ5 */
++
++/*
++ * IRQs cascaded on CPU interrupt 4 (CAUSE bit 12, C_IRQ4)
++ * These defines should be tied to the register definitions for the CIC
++ * interrupt routine.  For now, just use hard-coded values.
++ */
++#define MSP_CIC_INTBASE		(MSP_MIPS_INTBASE + 8) 
++#define MSP_INT_EXT0		(MSP_CIC_INTBASE + 0)  
++					/* External interrupt 0         */
++#define MSP_INT_EXT1		(MSP_CIC_INTBASE + 1)  
++					/* External interrupt 1         */
++#define MSP_INT_EXT2		(MSP_CIC_INTBASE + 2)
++					/* External interrupt 2         */
++#define MSP_INT_EXT3		(MSP_CIC_INTBASE + 3)  
++					/* External interrupt 3         */
++#define MSP_INT_CPUIF		(MSP_CIC_INTBASE + 4)  
++					/* CPU interface interrupt      */
++#define MSP_INT_EXT4		(MSP_CIC_INTBASE + 5)  
++					/* External interrupt 4         */
++#define MSP_INT_CIC_USB		(MSP_CIC_INTBASE + 6)
++					/* Cascaded IRQ for USB         */
++#define MSP_INT_MBOX		(MSP_CIC_INTBASE + 7)
++					/* Sec engine mailbox IRQ       */
++#define MSP_INT_EXT5		(MSP_CIC_INTBASE + 8)
++					/* External interrupt 5         */
++#define MSP_INT_TDM		(MSP_CIC_INTBASE + 9)
++					/* TDM interrupt                */
++#define MSP_INT_CIC_MAC0	(MSP_CIC_INTBASE + 10)
++					/* Cascaded IRQ for MAC 0       */
++#define MSP_INT_CIC_MAC1	(MSP_CIC_INTBASE + 11)
++					/* Cascaded IRQ for MAC 1       */
++#define MSP_INT_CIC_SEC		(MSP_CIC_INTBASE + 12)
++					/* Cascaded IRQ for sec engine  */
++#define	MSP_INT_PER		(MSP_CIC_INTBASE + 13)
++					/* Peripheral interrupt         */
++#define	MSP_INT_TIMER0		(MSP_CIC_INTBASE + 14)
++					/* SLP timer 0                  */
++#define	MSP_INT_TIMER1		(MSP_CIC_INTBASE + 15)
++					/* SLP timer 1                  */
++#define	MSP_INT_TIMER2		(MSP_CIC_INTBASE + 16)
++					/* SLP timer 2                  */
++#define	MSP_INT_VPE0_TIMER	(MSP_CIC_INTBASE + 17)
++					/* VPE0 MIPS timer              */
++#define MSP_INT_BLKCP		(MSP_CIC_INTBASE + 18)
++					/* Block Copy                   */
++#define MSP_INT_UART0		(MSP_CIC_INTBASE + 19)
++					/* UART 0                       */
++#define MSP_INT_PCI		(MSP_CIC_INTBASE + 20)
++					/* PCI subsystem                */
++#define MSP_INT_EXT6		(MSP_CIC_INTBASE + 21)
++					/* External interrupt 5         */
++#define MSP_INT_PCI_MSI		(MSP_CIC_INTBASE + 22) 
++					/* PCI Message Signal           */
++#define MSP_INT_CIC_SAR		(MSP_CIC_INTBASE + 23)
++					/* Cascaded ADSL2+ SAR IRQ      */
++#define MSP_INT_DSL		(MSP_CIC_INTBASE + 24)
++					/* ADSL2+ IRQ                   */
++#define MSP_INT_CIC_ERR		(MSP_CIC_INTBASE + 25)
++					/* SLP error condition          */
++#define MSP_INT_VPE1_TIMER	(MSP_CIC_INTBASE + 26)
++					/* VPE1 MIPS timer              */
++#define MSP_INT_VPE0_PC		(MSP_CIC_INTBASE + 27)
++					/* VPE0 Performance counter     */
++#define MSP_INT_VPE1_PC		(MSP_CIC_INTBASE + 28)
++					/* VPE1 Performance counter     */
++#define MSP_INT_EXT7		(MSP_CIC_INTBASE + 29)
++					/* External interrupt 5         */
++#define MSP_INT_VPE0_SW		(MSP_CIC_INTBASE + 30)
++					/* VPE0 Software interrupt      */
++#define MSP_INT_VPE1_SW		(MSP_CIC_INTBASE + 31)
++					/* VPE0 Software interrupt      */
++
++/* 
++ * IRQs cascaded on CIC PER interrupt (MSP_INT_PER)
++ */
++#define MSP_PER_INTBASE		(MSP_CIC_INTBASE + 32)
++/* Reserved					   0-1                  */
++#define MSP_INT_UART1		(MSP_PER_INTBASE + 2) 
++					/* UART 1                       */
++/* Reserved					   3-5                  */
++#define MSP_INT_2WIRE		(MSP_PER_INTBASE + 6)
++					/* 2-wire                       */
++#define MSP_INT_TM0		(MSP_PER_INTBASE + 7)
++					/* Peripheral timer block out 0 */
++#define MSP_INT_TM1		(MSP_PER_INTBASE + 8)
++					/* Peripheral timer block out 1 */
++/* Reserved					   9                    */
++#define MSP_INT_SPRX		(MSP_PER_INTBASE + 10)
++					/* SPI RX complete              */
++#define MSP_INT_SPTX		(MSP_PER_INTBASE + 11)
++					/* SPI TX complete              */
++#define MSP_INT_GPIO		(MSP_PER_INTBASE + 12)
++					/* GPIO                         */
++#define MSP_INT_PER_ERR		(MSP_PER_INTBASE + 13)
++					/* Peripheral error             */
++/* Reserved					   14-31                */
++
++#endif /* !_MSP_CIC_INT_H */
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_int.h b/include/asm-mips/pmc-sierra/msp71xx/msp_int.h
+new file mode 100644
+index 0000000..28e1bb5
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_int.h
+@@ -0,0 +1,43 @@
++/*
++ * Defines for the MSP interrupt handlers.
++ * 
++ * Copyright (C) 2005, PMC-Sierra, Inc.  All rights reserved.
++ * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
++ * 
++ * ########################################################################
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * ########################################################################
++ */
++
++#ifndef _MSP_INT_H
++#define _MSP_INT_H
++
++/*
++ * The PMC-Sierra MSP product line has at least two different interrupt
++ * controllers, the SLP register based scheme and the CIC interrupt
++ * controller block mechanism.  This file distinguishes between them
++ * so that devices see a uniform interface.
++ */
++
++#if defined(CONFIG_IRQ_MSP_SLP)
++        #include "msp_slp_int.h"
++#elif defined(CONFIG_IRQ_MSP_CIC)
++        #include "msp_cic_int.h"
++#else
++        #error "What sort of interrupt controller does *your* MSP have?"
++#endif
++
++#endif /* !_MSP_INT_H */
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_prom.h b/include/asm-mips/pmc-sierra/msp71xx/msp_prom.h
+new file mode 100644
+index 0000000..539e1b1
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_prom.h
+@@ -0,0 +1,176 @@
++/*
++ * MIPS boards bootprom interface for the Linux kernel.
++ * 
++ * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
++ * Author: Carsten Langgaard, carstenl@mips.com
++ *
++ * ########################################################################
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * ########################################################################
++ */
++
++#ifndef _ASM_MSP_PROM_H
++#define _ASM_MSP_PROM_H
++
++#include <linux/types.h>
++
++#define DEVICEID			"deviceid"
++#define FEATURES			"features"
++#define PROM_ENV			"prom_env"
++#define PROM_ENV_FILE			"/proc/"PROM_ENV
++#define PROM_ENV_SIZE			256
++
++#define CPU_DEVID_FAMILY		0x0000ff00
++#define CPU_DEVID_REVISION		0x000000ff
++
++#define FPGA_IS_POLO(revision) \
++		(((revision >= 0xb0) && (revision < 0xd0)))
++#define FPGA_IS_5000(revision) \
++		((revision >= 0x80) && (revision <= 0x90))
++#define	FPGA_IS_ZEUS(revision)		((revision < 0x7f))
++#define FPGA_IS_DUET(revision) \
++		(((revision >= 0xa0) && (revision < 0xb0)))
++#define FPGA_IS_MSP4200(revision)	((revision >= 0xd0))
++#define FPGA_IS_MSP7100(revision)	((revision >= 0xd0))
++
++#define MACHINE_TYPE_POLO		"POLO"
++#define MACHINE_TYPE_DUET		"DUET"
++#define	MACHINE_TYPE_ZEUS		"ZEUS"
++#define MACHINE_TYPE_MSP2000REVB	"MSP2000REVB"
++#define MACHINE_TYPE_MSP5000		"MSP5000"
++#define MACHINE_TYPE_MSP4200		"MSP4200"
++#define MACHINE_TYPE_MSP7120		"MSP7120"
++#define MACHINE_TYPE_MSP7130		"MSP7130"
++#define MACHINE_TYPE_OTHER		"OTHER"
++
++#define MACHINE_TYPE_POLO_FPGA		"POLO-FPGA"
++#define MACHINE_TYPE_DUET_FPGA		"DUET-FPGA"
++#define	MACHINE_TYPE_ZEUS_FPGA		"ZEUS_FPGA"
++#define MACHINE_TYPE_MSP2000REVB_FPGA	"MSP2000REVB-FPGA"
++#define MACHINE_TYPE_MSP5000_FPGA	"MSP5000-FPGA"
++#define MACHINE_TYPE_MSP4200_FPGA	"MSP4200-FPGA"
++#define MACHINE_TYPE_MSP7100_FPGA	"MSP7100-FPGA"
++#define MACHINE_TYPE_OTHER_FPGA		"OTHER-FPGA"
++
++/* Device Family definitions */
++#define FAMILY_FPGA			0x0000
++#define FAMILY_ZEUS			0x1000
++#define FAMILY_POLO			0x2000
++#define FAMILY_DUET			0x4000
++#define FAMILY_TRIAD			0x5000
++#define FAMILY_MSP4200			0x4200
++#define FAMILY_MSP4200_FPGA		0x4f00
++#define FAMILY_MSP7100			0x7100
++#define FAMILY_MSP7100_FPGA		0x7f00
++
++/* Device Type definitions */
++#define TYPE_MSP7120			0x7120
++#define TYPE_MSP7130			0x7130
++
++#define ENET_KEY		'E'
++#define ENETTXD_KEY		'e'
++#define PCI_KEY			'P'
++#define PCIMUX_KEY		'p'
++#define SEC_KEY			'S'
++#define SPAD_KEY		'D'
++#define TDM_KEY			'T'
++#define ZSP_KEY			'Z'
++
++#define FEATURE_NOEXIST		'-'
++#define FEATURE_EXIST		'+'
++
++#define ENET_MII		'M'
++#define ENET_RMII		'R'
++
++#define	ENETTXD_FALLING		'F'
++#define ENETTXD_RISING		'R'
++
++#define PCI_HOST		'H'
++#define PCI_PERIPHERAL		'P'
++
++#define PCIMUX_FULL		'F'
++#define PCIMUX_SINGLE		'S'
++
++#define SEC_DUET		'D'
++#define SEC_POLO		'P'
++#define SEC_SLOW		'S'
++#define SEC_TRIAD		'T'
++
++#define SPAD_POLO		'P'
++
++#define TDM_DUET		'D'	/* DUET TDMs might exist */
++#define TDM_POLO		'P'	/* POLO TDMs might exist */
++#define TDM_TRIAD		'T'	/* TRIAD TDMs might exist */
++
++#define ZSP_DUET		'D'	/* one DUET zsp engine */
++#define ZSP_TRIAD		'T'	/* two TRIAD zsp engines */
++
++extern char *prom_getcmdline(void);
++extern char *prom_getenv(char *name);
++extern void prom_init_cmdline(void);
++extern void prom_meminit(void);
++extern void prom_fixup_mem_map(unsigned long start_mem,
++			       unsigned long end_mem);
++
++#ifdef CONFIG_MTD_PMC_MSP_RAMROOT
++extern bool get_ramroot(void **start, unsigned long *size);
++#endif
++
++extern int get_ethernet_addr(char *ethaddr_name, char *ethernet_addr);
++extern unsigned long get_deviceid(void);
++extern char identify_enet(unsigned long interface_num);
++extern char identify_enetTxD(unsigned long interface_num);
++extern char identify_pci(void);
++extern char identify_sec(void);
++extern char identify_spad(void);
++extern char identify_sec(void);
++extern char identify_tdm(void);
++extern char identify_zsp(void);
++extern unsigned long identify_family(void);
++extern unsigned long identify_revision(void);
++
++/*
++ * The following macro calls prom_printf and puts the format string
++ * into an init section so it can be reclaimed.
++ */
++#define ppfinit(f, x...) \
++	do { \
++		static char _f[] __initdata = f; \
++		printk(_f, ## x); \
++	} while (0)
++
++/* Memory descriptor management. */
++#define PROM_MAX_PMEMBLOCKS    7	/* 6 used */
++
++enum yamon_memtypes {
++        yamon_dontuse,
++        yamon_prom,
++        yamon_free,
++};
++
++struct prom_pmemblock {
++        unsigned long base; /* Within KSEG0. */
++        unsigned int size;  /* In bytes. */
++        unsigned int type;  /* free or prom memory */
++};
++
++extern int prom_argc;
++extern char **prom_argv;
++extern char **prom_envp;
++extern int *prom_vec;
++extern struct prom_pmemblock *prom_getmdesc(void);
++
++#endif /* !_ASM_MSP_PROM_H */
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_regs.h b/include/asm-mips/pmc-sierra/msp71xx/msp_regs.h
+new file mode 100644
+index 0000000..1110caf
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_regs.h
+@@ -0,0 +1,667 @@
++/*
++ * Defines for the address space, registers and register configuration
++ * (bit masks, access macros etc) for the PMC-Sierra line of MSP products.
++ * This file contains addess maps for all the devices in the line of
++ * products but only has register definitions and configuration masks for
++ * registers which aren't definitely associated with any device.  Things
++ * like clock settings, reset access, the ELB etc.  Individual device
++ * drivers will reference the appropriate XXX_BASE value defined here
++ * and have individual registers offset from that.
++ * 
++ * Copyright (C) 2005-2007 PMC-Sierra, Inc.  All rights reserved.
++ * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
++ * 
++ * ########################################################################
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * ########################################################################
++ */
++
++#include <asm/addrspace.h>
++#include <linux/types.h>
++
++#ifndef _ASM_MSP_REGS_H
++#define _ASM_MSP_REGS_H
++
++/*
++ ########################################################################
++ #  Address space and device base definitions                           #
++ ########################################################################
++ */
++
++/*
++ ***************************************************************************
++ * System Logic and Peripherals (ELB, UART0, etc) device address space     *
++ ***************************************************************************
++ */
++#define MSP_SLP_BASE		0x1c000000
++					/* System Logic and Peripherals */
++#define MSP_RST_BASE		(MSP_SLP_BASE + 0x10)
++					/* System reset register base	*/
++#define MSP_RST_SIZE		0x0C	/* System reset register space	*/
++
++#define MSP_WTIMER_BASE		(MSP_SLP_BASE + 0x04C)
++					/* watchdog timer base          */
++#define MSP_ITIMER_BASE		(MSP_SLP_BASE + 0x054)
++					/* internal timer base          */
++#define MSP_UART0_BASE		(MSP_SLP_BASE + 0x100)
++					/* UART0 controller base        */
++#define MSP_BCPY_CTRL_BASE	(MSP_SLP_BASE + 0x120)
++					/* Block Copy controller base   */
++#define MSP_BCPY_DESC_BASE	(MSP_SLP_BASE + 0x160)
++					/* Block Copy descriptor base   */
++
++/*
++ ***************************************************************************
++ * PCI address space                                                       *
++ ***************************************************************************
++ */
++#define MSP_PCI_BASE		0x19000000
++
++/*
++ ***************************************************************************
++ * MSbus device address space                                              *
++ ***************************************************************************
++ */
++#define MSP_MSB_BASE		0x18000000
++					/* MSbus address start          */
++#define MSP_PER_BASE		(MSP_MSB_BASE + 0x400000)
++					/* Peripheral device registers  */
++#define MSP_MAC0_BASE		(MSP_MSB_BASE + 0x600000)
++					/* MAC A device registers       */
++#define MSP_MAC1_BASE		(MSP_MSB_BASE + 0x700000)
++					/* MAC B device registers       */
++#define MSP_MAC_SIZE		0xE0	/* MAC register space		*/
++
++#define MSP_SEC_BASE		(MSP_MSB_BASE + 0x800000)
++					/* Security Engine registers    */
++#define MSP_MAC2_BASE		(MSP_MSB_BASE + 0x900000)
++					/* MAC C device registers       */
++#define MSP_ADSL2_BASE		(MSP_MSB_BASE + 0xA80000)
++					/* ADSL2 device registers       */
++#define MSP_USB_BASE		(MSP_MSB_BASE + 0xB40000)
++					/* USB device registers         */
++#define MSP_USB_BASE_START	(MSP_MSB_BASE + 0xB40100)
++					/* USB device registers         */
++#define MSP_USB_BASE_END	(MSP_MSB_BASE + 0xB401FF)
++					/* USB device registers         */
++#define MSP_CPUIF_BASE		(MSP_MSB_BASE + 0xC00000)
++					/* CPU interface registers      */
++
++/* Devices within the MSbus peripheral block */
++#define MSP_UART1_BASE		(MSP_PER_BASE + 0x030)
++					/* UART1 controller base        */
++#define MSP_SPI_BASE		(MSP_PER_BASE + 0x058)
++					/* SPI/MPI control registers    */
++#define MSP_TWI_BASE		(MSP_PER_BASE + 0x090)
++					/* Two-wire control registers   */
++#define MSP_PTIMER_BASE		(MSP_PER_BASE + 0x0F0)
++					/* Programmable timer control   */
++
++/*
++ ***************************************************************************
++ * Physical Memory configuration address space                             *
++ ***************************************************************************
++ */
++#define MSP_MEM_CFG_BASE	0x17f00000
++
++#define MSP_MEM_INDIRECT_CTL_10	0x10
++
++/*
++ * Notes:
++ *  1) The SPI registers are split into two blocks, one offset from the
++ *     MSP_SPI_BASE by 0x00 and the other offset from the MSP_SPI_BASE by
++ *     0x68.  The SPI driver definitions for the register must be aware
++ *     of this.
++ *  2) The block copy engine register are divided into two regions, one
++ *     for the control/configuration of the engine proper and one for the
++ *     values of the descriptors used in the copy process.  These have
++ *     different base defines (CTRL_BASE vs DESC_BASE)
++ *  3) These constants are for physical addresses which means that they
++ *     work correctly with "ioremap" and friends.  This means that device
++ *     drivers will need to remap these addresses using ioremap and perhaps
++ *     the readw/writew macros.  Or they could use the regptr() macro
++ *     defined below, but the readw/writew calls are the correct thing.
++ *  4) The UARTs have an additional status register offset from the base
++ *     address.  This register isn't used in the standard 8250 driver but
++ *     may be used in other software.  Consult the hardware datasheet for
++ *     offset details.
++ *  5) For some unknown reason the security engine (MSP_SEC_BASE) registers
++ *     start at an offset of 0x84 from the base address but the block of
++ *     registers before this is reserved for the security engine.  The
++ *     driver will have to be aware of this but it makes the register
++ *     definitions line up better with the documentation.
++ */
++
++/*
++ ########################################################################
++ #  System register definitions.  Not associated with a specific device #
++ ########################################################################
++ */
++
++/*
++ * This macro maps the physical register number into uncached space
++ * and (for C code) casts it into a u32 pointer so it can be dereferenced
++ * Normally these would be accessed with ioremap and readX/writeX, but
++ * these are convenient for a lot of internal kernel code.
++ */
++#ifdef __ASSEMBLER__
++        #define regptr(addr) (KSEG1ADDR(addr))
++#else
++        #define regptr(addr) ((volatile u32 * const)(KSEG1ADDR(addr)))
++#endif
++
++/*
++ ***************************************************************************
++ * System Logic and Peripherals (RESET, ELB, etc) registers                *
++ ***************************************************************************
++ */
++
++/* System Control register definitions */
++#define	DEV_ID_REG	regptr(MSP_SLP_BASE + 0x00)
++					/* Device-ID                 RO */
++#define	FWR_ID_REG	regptr(MSP_SLP_BASE + 0x04)
++					/* Firmware-ID Register      RW */
++#define	SYS_ID_REG0	regptr(MSP_SLP_BASE + 0x08)
++					/* System-ID Register-0      RW */
++#define	SYS_ID_REG1	regptr(MSP_SLP_BASE + 0x0C)
++					/* System-ID Register-1      RW */
++
++/* System Reset register definitions */
++#define	RST_STS_REG	regptr(MSP_SLP_BASE + 0x10)
++					/* System Reset Status       RO */
++#define	RST_SET_REG	regptr(MSP_SLP_BASE + 0x14)
++					/* System Set Reset          WO */
++#define	RST_CLR_REG	regptr(MSP_SLP_BASE + 0x18)
++					/* System Clear Reset        WO */
++
++/* System Clock Registers */
++#define PCI_SLP_REG	regptr(MSP_SLP_BASE + 0x1C)
++					/* PCI clock generator       RW */
++#define URT_SLP_REG	regptr(MSP_SLP_BASE + 0x20)
++					/* UART clock generator      RW */
++/* reserved		      (MSP_SLP_BASE + 0x24)                     */
++/* reserved		      (MSP_SLP_BASE + 0x28)                     */
++#define PLL1_SLP_REG	regptr(MSP_SLP_BASE + 0x2C)
++					/* PLL1 clock generator      RW */
++#define PLL0_SLP_REG	regptr(MSP_SLP_BASE + 0x30)
++					/* PLL0 clock generator      RW */
++#define MIPS_SLP_REG	regptr(MSP_SLP_BASE + 0x34)
++					/* MIPS clock generator      RW */
++#define	VE_SLP_REG	regptr(MSP_SLP_BASE + 0x38)
++					/* Voice Eng clock generator RW */
++/* reserved		      (MSP_SLP_BASE + 0x3C)                     */
++#define MSB_SLP_REG	regptr(MSP_SLP_BASE + 0x40)
++					/* MS-Bus clock generator    RW */
++#define SMAC_SLP_REG	regptr(MSP_SLP_BASE + 0x44)
++					/* Sec & MAC clock generator RW */
++#define PERF_SLP_REG	regptr(MSP_SLP_BASE + 0x48)
++					/* Per & TDM clock generator RW */
++
++/* Interrupt Controller Registers */
++#define SLP_INT_STS_REG regptr(MSP_SLP_BASE + 0x70)
++					/* Interrupt status register RW */
++#define SLP_INT_MSK_REG regptr(MSP_SLP_BASE + 0x74)
++					/* Interrupt enable/mask     RW */
++#define SE_MBOX_REG	regptr(MSP_SLP_BASE + 0x78)
++					/* Security Engine mailbox   RW */
++#define VE_MBOX_REG	regptr(MSP_SLP_BASE + 0x7C)
++					/* Voice Engine mailbox      RW */
++
++/* ELB Controller Registers */
++#define CS0_CNFG_REG	regptr(MSP_SLP_BASE + 0x80)
++					/* ELB CS0 Configuration Reg    */
++#define CS0_ADDR_REG	regptr(MSP_SLP_BASE + 0x84) 
++					/* ELB CS0 Base Address Reg     */
++#define CS0_MASK_REG	regptr(MSP_SLP_BASE + 0x88)
++					/* ELB CS0 Mask Register        */
++#define CS0_ACCESS_REG	regptr(MSP_SLP_BASE + 0x8C)
++					/* ELB CS0 access register      */
++
++#define CS1_CNFG_REG	regptr(MSP_SLP_BASE + 0x90)
++					/* ELB CS1 Configuration Reg    */
++#define CS1_ADDR_REG	regptr(MSP_SLP_BASE + 0x94)
++					/* ELB CS1 Base Address Reg     */
++#define CS1_MASK_REG	regptr(MSP_SLP_BASE + 0x98)
++					/* ELB CS1 Mask Register        */
++#define CS1_ACCESS_REG	regptr(MSP_SLP_BASE + 0x9C)
++					/* ELB CS1 access register      */
++
++#define CS2_CNFG_REG	regptr(MSP_SLP_BASE + 0xA0)
++					/* ELB CS2 Configuration Reg    */
++#define CS2_ADDR_REG	regptr(MSP_SLP_BASE + 0xA4)
++					/* ELB CS2 Base Address Reg     */
++#define CS2_MASK_REG	regptr(MSP_SLP_BASE + 0xA8)
++					/* ELB CS2 Mask Register        */
++#define CS2_ACCESS_REG	regptr(MSP_SLP_BASE + 0xAC)
++					/* ELB CS2 access register      */
++
++#define CS3_CNFG_REG	regptr(MSP_SLP_BASE + 0xB0)
++					/* ELB CS3 Configuration Reg    */
++#define CS3_ADDR_REG	regptr(MSP_SLP_BASE + 0xB4)
++					/* ELB CS3 Base Address Reg     */
++#define CS3_MASK_REG	regptr(MSP_SLP_BASE + 0xB8)
++					/* ELB CS3 Mask Register        */
++#define CS3_ACCESS_REG	regptr(MSP_SLP_BASE + 0xBC)
++					/* ELB CS3 access register      */
++
++#define CS4_CNFG_REG	regptr(MSP_SLP_BASE + 0xC0)
++					/* ELB CS4 Configuration Reg    */
++#define CS4_ADDR_REG	regptr(MSP_SLP_BASE + 0xC4)
++					/* ELB CS4 Base Address Reg     */
++#define CS4_MASK_REG	regptr(MSP_SLP_BASE + 0xC8)
++					/* ELB CS4 Mask Register        */
++#define CS4_ACCESS_REG	regptr(MSP_SLP_BASE + 0xCC)
++					/* ELB CS4 access register      */
++
++#define CS5_CNFG_REG	regptr(MSP_SLP_BASE + 0xD0)
++					/* ELB CS5 Configuration Reg    */
++#define CS5_ADDR_REG	regptr(MSP_SLP_BASE + 0xD4)
++					/* ELB CS5 Base Address Reg     */
++#define CS5_MASK_REG	regptr(MSP_SLP_BASE + 0xD8)
++					/* ELB CS5 Mask Register        */
++#define CS5_ACCESS_REG	regptr(MSP_SLP_BASE + 0xDC)
++					/* ELB CS5 access register      */
++
++/* reserved			       0xE0 - 0xE8                      */
++#define ELB_1PC_EN_REG	regptr(MSP_SLP_BASE + 0xEC)
++					/* ELB single PC card detect    */
++
++/* reserved			       0xF0 - 0xF8                      */
++#define ELB_CLK_CFG_REG	regptr(MSP_SLP_BASE + 0xFC)
++					/* SDRAM read/ELB timing Reg    */
++
++/* Extended UART status registers */
++#define UART0_STATUS_REG	regptr(MSP_UART0_BASE + 0x0c0)
++					/* UART Status Register 0       */
++#define UART1_STATUS_REG	regptr(MSP_UART1_BASE + 0x170)
++					/* UART Status Register 1       */
++
++/* Performance monitoring registers */
++#define PERF_MON_CTRL_REG	regptr(MSP_SLP_BASE + 0x140)
++					/* Performance monitor control  */
++#define PERF_MON_CLR_REG	regptr(MSP_SLP_BASE + 0x144)
++					/* Performance monitor clear    */
++#define PERF_MON_CNTH_REG	regptr(MSP_SLP_BASE + 0x148)
++					/* Perf monitor counter high    */
++#define PERF_MON_CNTL_REG	regptr(MSP_SLP_BASE + 0x14C)
++					/* Perf monitor counter low     */
++
++/* System control registers */
++#define SYS_CTRL_REG		regptr(MSP_SLP_BASE + 0x150)
++					/* System control register      */
++#define SYS_ERR1_REG		regptr(MSP_SLP_BASE + 0x154)
++					/* System Error status 1        */
++#define SYS_ERR2_REG		regptr(MSP_SLP_BASE + 0x158)
++					/* System Error status 2        */
++#define SYS_INT_CFG_REG		regptr(MSP_SLP_BASE + 0x15C)
++					/* System Interrupt config      */
++
++/* Voice Engine Memory configuration */
++#define VE_MEM_REG		regptr(MSP_SLP_BASE + 0x17C)
++					/* Voice engine memory config   */
++
++/* CPU/SLP Error Status registers */
++#define CPU_ERR1_REG		regptr(MSP_SLP_BASE + 0x180)
++					/* CPU/SLP Error status 1       */
++#define CPU_ERR2_REG		regptr(MSP_SLP_BASE + 0x184)
++					/* CPU/SLP Error status 1       */
++
++#define EXTENDED_GPIO_REG	regptr(MSP_SLP_BASE + 0x188)
++					/* Extended GPIO register       */
++
++/* System Error registers */
++#define SLP_ERR_STS_REG		regptr(MSP_SLP_BASE + 0x190)
++					/* Int status for SLP errors    */
++#define SLP_ERR_MSK_REG		regptr(MSP_SLP_BASE + 0x194)
++					/* Int mask for SLP errors      */
++#define SLP_ELB_ERST_REG	regptr(MSP_SLP_BASE + 0x198)
++					/* External ELB reset           */
++#define SLP_BOOT_STS_REG	regptr(MSP_SLP_BASE + 0x19C)
++					/* Boot Status                  */
++
++/* Extended ELB addressing */
++#define CS0_EXT_ADDR_REG	regptr(MSP_SLP_BASE + 0x1A0)
++					/* CS0 Extended address         */
++#define CS1_EXT_ADDR_REG	regptr(MSP_SLP_BASE + 0x1A4)
++					/* CS1 Extended address         */
++#define CS2_EXT_ADDR_REG	regptr(MSP_SLP_BASE + 0x1A8)
++					/* CS2 Extended address         */
++#define CS3_EXT_ADDR_REG	regptr(MSP_SLP_BASE + 0x1AC)
++					/* CS3 Extended address         */
++/* reserved					      0x1B0             */  
++#define CS5_EXT_ADDR_REG	regptr(MSP_SLP_BASE + 0x1B4)
++					/* CS5 Extended address         */
++
++/* PLL Adjustment registers */
++#define PLL_LOCK_REG		regptr(MSP_SLP_BASE + 0x200)
++					/* PLL0 lock status             */
++#define PLL_ARST_REG		regptr(MSP_SLP_BASE + 0x204)
++					/* PLL Analog reset status      */
++#define PLL0_ADJ_REG		regptr(MSP_SLP_BASE + 0x208)
++					/* PLL0 Adjustment value        */
++#define PLL1_ADJ_REG		regptr(MSP_SLP_BASE + 0x20C)
++					/* PLL1 Adjustment value        */
++
++/*
++ ***************************************************************************
++ * Peripheral Register definitions                                         *
++ ***************************************************************************
++ */
++
++/* Peripheral status */
++#define PER_CTRL_REG		regptr(MSP_PER_BASE + 0x50)
++					/* Peripheral control register  */
++#define PER_STS_REG		regptr(MSP_PER_BASE + 0x54)
++					/* Peripheral status register   */
++
++/* SPI/MPI Registers */
++#define SMPI_TX_SZ_REG		regptr(MSP_PER_BASE + 0x58)
++					/* SPI/MPI Tx Size register     */
++#define SMPI_RX_SZ_REG		regptr(MSP_PER_BASE + 0x5C)
++					/* SPI/MPI Rx Size register     */
++#define SMPI_CTL_REG		regptr(MSP_PER_BASE + 0x60)
++					/* SPI/MPI Control register     */
++#define SMPI_MS_REG		regptr(MSP_PER_BASE + 0x64)
++					/* SPI/MPI Chip Select reg      */
++#define SMPI_CORE_DATA_REG	regptr(MSP_PER_BASE + 0xC0)
++					/* SPI/MPI Core Data reg        */
++#define SMPI_CORE_CTRL_REG	regptr(MSP_PER_BASE + 0xC4)
++					/* SPI/MPI Core Control reg     */
++#define SMPI_CORE_STAT_REG	regptr(MSP_PER_BASE + 0xC8)
++					/* SPI/MPI Core Status reg      */
++#define SMPI_CORE_SSEL_REG	regptr(MSP_PER_BASE + 0xCC)
++					/* SPI/MPI Core Ssel reg        */
++#define SMPI_FIFO_REG		regptr(MSP_PER_BASE + 0xD0)
++					/* SPI/MPI Data FIFO reg        */
++
++/* Peripheral Block Error Registers           */
++#define PER_ERR_STS_REG		regptr(MSP_PER_BASE + 0x70)
++					/* Error Bit Status Register    */
++#define PER_ERR_MSK_REG		regptr(MSP_PER_BASE + 0x74)
++					/* Error Bit Mask Register      */
++#define PER_HDR1_REG		regptr(MSP_PER_BASE + 0x78)
++					/* Error Header 1 Register      */
++#define PER_HDR2_REG		regptr(MSP_PER_BASE + 0x7C)
++					/* Error Header 2 Register      */
++
++/* Peripheral Block Interrupt Registers       */
++#define PER_INT_STS_REG		regptr(MSP_PER_BASE + 0x80)
++					/* Interrupt status register    */
++#define PER_INT_MSK_REG		regptr(MSP_PER_BASE + 0x84)
++					/* Interrupt Mask Register      */
++#define GPIO_INT_STS_REG	regptr(MSP_PER_BASE + 0x88)
++					/* GPIO interrupt status reg    */
++#define GPIO_INT_MSK_REG	regptr(MSP_PER_BASE + 0x8C)
++					/* GPIO interrupt MASK Reg      */
++
++/* POLO GPIO registers                        */
++#define POLO_GPIO_DAT1_REG	regptr(MSP_PER_BASE + 0x0E0)  
++					/* Polo GPIO[8:0]  data reg     */
++#define POLO_GPIO_CFG1_REG	regptr(MSP_PER_BASE + 0x0E4)
++					/* Polo GPIO[7:0]  config reg   */
++#define POLO_GPIO_CFG2_REG	regptr(MSP_PER_BASE + 0x0E8)
++					/* Polo GPIO[15:8] config reg   */
++#define POLO_GPIO_OD1_REG	regptr(MSP_PER_BASE + 0x0EC)
++					/* Polo GPIO[31:0] output drive */
++#define POLO_GPIO_CFG3_REG	regptr(MSP_PER_BASE + 0x170)
++					/* Polo GPIO[23:16] config reg  */
++#define POLO_GPIO_DAT2_REG	regptr(MSP_PER_BASE + 0x174)
++					/* Polo GPIO[15:9]  data reg    */
++#define POLO_GPIO_DAT3_REG	regptr(MSP_PER_BASE + 0x178)
++					/* Polo GPIO[23:16]  data reg   */
++#define POLO_GPIO_DAT4_REG	regptr(MSP_PER_BASE + 0x17C)
++					/* Polo GPIO[31:24]  data reg   */
++#define POLO_GPIO_DAT5_REG	regptr(MSP_PER_BASE + 0x180)
++					/* Polo GPIO[39:32]  data reg   */
++#define POLO_GPIO_DAT6_REG	regptr(MSP_PER_BASE + 0x184)
++					/* Polo GPIO[47:40]  data reg   */
++#define POLO_GPIO_DAT7_REG	regptr(MSP_PER_BASE + 0x188)
++					/* Polo GPIO[54:48]  data reg   */
++#define POLO_GPIO_CFG4_REG	regptr(MSP_PER_BASE + 0x18C)
++					/* Polo GPIO[31:24] config reg  */
++#define POLO_GPIO_CFG5_REG	regptr(MSP_PER_BASE + 0x190)
++					/* Polo GPIO[39:32] config reg  */
++#define POLO_GPIO_CFG6_REG	regptr(MSP_PER_BASE + 0x194)
++					/* Polo GPIO[47:40] config reg  */
++#define POLO_GPIO_CFG7_REG	regptr(MSP_PER_BASE + 0x198)
++					/* Polo GPIO[54:48] config reg  */
++#define POLO_GPIO_OD2_REG	regptr(MSP_PER_BASE + 0x19C)
++					/* Polo GPIO[54:32] output drive */
++
++/* Generic GPIO registers                     */
++#define GPIO_DATA1_REG		regptr(MSP_PER_BASE + 0x170)
++					/* GPIO[1:0] data register      */
++#define GPIO_DATA2_REG		regptr(MSP_PER_BASE + 0x174)
++					/* GPIO[5:2] data register      */
++#define GPIO_DATA3_REG		regptr(MSP_PER_BASE + 0x178)
++					/* GPIO[9:6] data register      */
++#define GPIO_DATA4_REG		regptr(MSP_PER_BASE + 0x17C)
++					/* GPIO[15:10] data register    */
++#define GPIO_CFG1_REG		regptr(MSP_PER_BASE + 0x180)
++					/* GPIO[1:0] config register    */
++#define GPIO_CFG2_REG		regptr(MSP_PER_BASE + 0x184)
++					/* GPIO[5:2] config register    */
++#define GPIO_CFG3_REG		regptr(MSP_PER_BASE + 0x188)
++					/* GPIO[9:6] config register    */
++#define GPIO_CFG4_REG		regptr(MSP_PER_BASE + 0x18C)
++					/* GPIO[15:10] config register  */
++#define GPIO_OD_REG		regptr(MSP_PER_BASE + 0x190)
++					/* GPIO[15:0] output drive      */
++
++/*
++ ***************************************************************************
++ * CPU Interface register definitions                                      *
++ ***************************************************************************
++ */
++#define PCI_FLUSH_REG		regptr(MSP_CPUIF_BASE + 0x00)
++					/* PCI-SDRAM queue flush trigger */
++#define OCP_ERR1_REG		regptr(MSP_CPUIF_BASE + 0x04)
++					/* OCP Error Attribute 1        */
++#define OCP_ERR2_REG		regptr(MSP_CPUIF_BASE + 0x08)
++					/* OCP Error Attribute 2        */
++#define OCP_STS_REG		regptr(MSP_CPUIF_BASE + 0x0C)
++					/* OCP Error Status             */
++#define CPUIF_PM_REG		regptr(MSP_CPUIF_BASE + 0x10)
++					/* CPU policy configuration     */
++#define CPUIF_CFG_REG		regptr(MSP_CPUIF_BASE + 0x10)
++					/* Misc configuration options   */
++
++/* Central Interrupt Controller Registers */
++#define MSP_CIC_BASE		(MSP_CPUIF_BASE + 0x8000)
++					/* Central Interrupt registers  */
++#define CIC_EXT_CFG_REG		regptr(MSP_CIC_BASE + 0x00)
++					/* External interrupt config    */
++#define CIC_STS_REG		regptr(MSP_CIC_BASE + 0x04)
++					/* CIC Interrupt Status         */
++#define CIC_VPE0_MSK_REG	regptr(MSP_CIC_BASE + 0x08)
++					/* VPE0 Interrupt Mask          */
++#define CIC_VPE1_MSK_REG	regptr(MSP_CIC_BASE + 0x0C)
++					/* VPE1 Interrupt Mask          */
++#define CIC_TC0_MSK_REG		regptr(MSP_CIC_BASE + 0x10)
++					/* Thread Context 0 Int Mask    */
++#define CIC_TC1_MSK_REG		regptr(MSP_CIC_BASE + 0x14)
++					/* Thread Context 1 Int Mask    */
++#define CIC_TC2_MSK_REG		regptr(MSP_CIC_BASE + 0x18)
++					/* Thread Context 2 Int Mask    */
++#define CIC_TC3_MSK_REG		regptr(MSP_CIC_BASE + 0x18)
++					/* Thread Context 3 Int Mask    */
++#define CIC_TC4_MSK_REG		regptr(MSP_CIC_BASE + 0x18)
++					/* Thread Context 4 Int Mask    */
++#define CIC_PCIMSI_STS_REG	regptr(MSP_CIC_BASE + 0x18)
++#define CIC_PCIMSI_MSK_REG	regptr(MSP_CIC_BASE + 0x18)
++#define CIC_PCIFLSH_REG		regptr(MSP_CIC_BASE + 0x18)
++#define CIC_VPE0_SWINT_REG	regptr(MSP_CIC_BASE + 0x08)
++
++
++/*
++ ***************************************************************************
++ * Memory controller registers                                             *
++ ***************************************************************************
++ */
++#define MEM_CFG1_REG		regptr(MSP_MEM_CFG_BASE + 0x00)
++#define MEM_SS_ADDR		regptr(MSP_MEM_CFG_BASE + 0x00)
++#define MEM_SS_DATA		regptr(MSP_MEM_CFG_BASE + 0x04)
++#define MEM_SS_WRITE		regptr(MSP_MEM_CFG_BASE + 0x08)
++
++/*
++ ***************************************************************************
++ * PCI controller registers                                                *
++ ***************************************************************************
++ */
++#define PCI_BASE_REG		regptr(MSP_PCI_BASE + 0x00)
++#define PCI_CONFIG_SPACE_REG	regptr(MSP_PCI_BASE + 0x800)
++#define PCI_JTAG_DEVID_REG	regptr(MSP_SLP_BASE + 0x13c)
++
++/* 
++ ########################################################################
++ #  Register content & macro definitions                                #
++ ########################################################################
++ */
++
++/*
++ ***************************************************************************
++ * DEV_ID defines                                                          *
++ ***************************************************************************
++ */
++#define DEV_ID_PCI_DIS		(1 << 26)       /* Set if PCI disabled */
++#define DEV_ID_PCI_HOST		(1 << 20)       /* Set if PCI host */
++#define DEV_ID_SINGLE_PC	(1 << 19)       /* Set if single PC Card */
++#define DEV_ID_FAMILY		(0xff << 8)     /* family ID code */
++#define POLO_ZEUS_SUB_FAMILY	(0x7  << 16)    /* sub family for Polo/Zeus */
++
++#define MSPFPGA_ID		(0x00  << 8)    /* you are on your own here */
++#define MSP5000_ID		(0x50  << 8)
++#define MSP4F00_ID		(0x4f  << 8)    /* FPGA version of MSP4200 */
++#define MSP4E00_ID		(0x4f  << 8)    /* FPGA version of MSP7120 */
++#define MSP4200_ID		(0x42  << 8)
++#define MSP4000_ID		(0x40  << 8)
++#define MSP2XXX_ID		(0x20  << 8)
++#define MSPZEUS_ID		(0x10  << 8)
++
++#define MSP2004_SUB_ID		(0x0   << 16)
++#define MSP2005_SUB_ID		(0x1   << 16)
++#define MSP2006_SUB_ID		(0x1   << 16)
++#define MSP2007_SUB_ID		(0x2   << 16)
++#define MSP2010_SUB_ID		(0x3   << 16)
++#define MSP2015_SUB_ID		(0x4   << 16)
++#define MSP2020_SUB_ID		(0x5   << 16)
++#define MSP2100_SUB_ID		(0x6   << 16)
++
++/*
++ ***************************************************************************
++ * RESET defines                                                           *
++ ***************************************************************************
++ */
++#define MSP_GR_RST		(0x01 << 0)     /* Global reset bit     */
++#define MSP_MR_RST		(0x01 << 1)     /* MIPS reset bit       */
++#define MSP_PD_RST		(0x01 << 2)     /* PVC DMA reset bit    */
++#define MSP_PP_RST		(0x01 << 3)     /* PVC reset bit        */
++/* reserved                                                             */
++#define MSP_EA_RST		(0x01 << 6)     /* Mac A reset bit      */
++#define MSP_EB_RST		(0x01 << 7)     /* Mac B reset bit      */
++#define MSP_SE_RST		(0x01 << 8)     /* Security Eng reset bit */
++#define MSP_PB_RST		(0x01 << 9)     /* Per block reset bit  */
++#define MSP_EC_RST		(0x01 << 10)    /* Mac C reset bit      */
++#define MSP_TW_RST		(0x01 << 11)    /* TWI reset bit        */
++#define MSP_SPI_RST		(0x01 << 12)    /* SPI/MPI reset bit    */
++#define MSP_U1_RST		(0x01 << 13)    /* UART1 reset bit      */
++#define MSP_U0_RST		(0x01 << 14)    /* UART0 reset bit      */
++
++/*
++ ***************************************************************************
++ * UART defines                                                            *
++ ***************************************************************************
++ */
++#ifndef CONFIG_MSP_FPGA
++#define MSP_BASE_BAUD		25000000
++#else
++#define MSP_BASE_BAUD		6000000
++#endif
++#define MSP_UART_REG_LEN	0x20
++
++/*
++ ***************************************************************************
++ * ELB defines                                                             *
++ ***************************************************************************
++ */
++#define PCCARD_32		0x02    /* Set if is PCCARD 32 (Cardbus) */
++#define SINGLE_PCCARD		0x01    /* Set to enable single PC card */
++
++/*
++ ***************************************************************************
++ * CIC defines                                                             *
++ ***************************************************************************
++ */
++
++/* CIC_EXT_CFG_REG */
++#define EXT_INT_POL(eirq)			(1 << (eirq + 8))
++#define EXT_INT_EDGE(eirq)			(1 << eirq)
++
++#define CIC_EXT_SET_TRIGGER_LEVEL(reg, eirq)	(reg &= ~EXT_INT_EDGE(eirq))
++#define CIC_EXT_SET_TRIGGER_EDGE(reg, eirq)	(reg |= EXT_INT_EDGE(eirq))
++#define CIC_EXT_SET_ACTIVE_HI(reg, eirq)	(reg |= EXT_INT_POL(eirq))
++#define CIC_EXT_SET_ACTIVE_LO(reg, eirq)	(reg &= ~EXT_INT_POL(eirq))
++#define CIC_EXT_SET_ACTIVE_RISING		CIC_EXT_SET_ACTIVE_HI
++#define CIC_EXT_SET_ACTIVE_FALLING		CIC_EXT_SET_ACTIVE_LO
++
++#define CIC_EXT_IS_TRIGGER_LEVEL(reg, eirq) \
++				((reg & EXT_INT_EDGE(eirq)) == 0)
++#define CIC_EXT_IS_TRIGGER_EDGE(reg, eirq)	(reg & EXT_INT_EDGE(eirq))
++#define CIC_EXT_IS_ACTIVE_HI(reg, eirq)		(reg & EXT_INT_POL(eirq))
++#define CIC_EXT_IS_ACTIVE_LO(reg, eirq) \
++				((reg & EXT_INT_POL(eirq)) == 0)
++#define CIC_EXT_IS_ACTIVE_RISING		CIC_EXT_IS_ACTIVE_HI
++#define CIC_EXT_IS_ACTIVE_FALLING		CIC_EXT_IS_ACTIVE_LO
++
++/*
++ ***************************************************************************
++ * Memory Controller defines                                               *
++ ***************************************************************************
++ */
++
++/* Indirect memory controller registers */
++#define DDRC_CFG(n)		(n)
++#define DDRC_DEBUG(n)		(0x04 + n)
++#define DDRC_CTL(n)		(0x40 + n)
++
++/* Macro to perform DDRC indirect write */
++#define DDRC_INDIRECT_WRITE(reg, mask, value) \
++({ \
++	*MEM_SS_ADDR = ((mask & 0xf) << 8) | (reg & 0xff); \
++	*MEM_SS_DATA = value; \
++	*MEM_SS_WRITE = 1; \
++})
++
++/*
++ ***************************************************************************
++ * SPI/MPI Mode                                                            *
++ ***************************************************************************
++ */
++#define SPI_MPI_RX_BUSY		0x00008000	/* SPI/MPI Receive Busy */
++#define SPI_MPI_FIFO_EMPTY	0x00004000	/* SPI/MPI Fifo Empty   */
++#define SPI_MPI_TX_BUSY		0x00002000	/* SPI/MPI Transmit Busy */
++#define SPI_MPI_FIFO_FULL	0x00001000	/* SPI/MPU FIFO full    */
++
++/*
++ ***************************************************************************
++ * SPI/MPI Control Register                                                *
++ ***************************************************************************
++ */
++#define SPI_MPI_RX_START	0x00000004	/* Start receive command */
++#define SPI_MPI_FLUSH_Q		0x00000002	/* Flush SPI/MPI Queue */
++#define SPI_MPI_TX_START	0x00000001	/* Start Transmit Command */
++
++#endif /* !_ASM_MSP_REGS_H */
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_slp_int.h b/include/asm-mips/pmc-sierra/msp71xx/msp_slp_int.h
+new file mode 100644
+index 0000000..2ca3f56
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_slp_int.h
+@@ -0,0 +1,141 @@
++/*
++ * Defines for the MSP interrupt controller.
++ * 
++ * Copyright (C) 1999 MIPS Technologies, Inc.  All rights reserved.
++ * Author: Carsten Langgaard, carstenl@mips.com
++ *
++ * ########################################################################
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * ########################################################################
++ */
++
++#ifndef _MSP_SLP_INT_H
++#define _MSP_SLP_INT_H
++
++/* 
++ * The PMC-Sierra SLP interrupts are arranged in a 3 level cascaded
++ * hierarchical system.  The first level are the direct MIPS interrupts
++ * and are assigned the interrupt range 0-7.  The second level is the SLM
++ * interrupt controller and is assigned the range 8-39.  The third level
++ * comprises the Peripherial block, the PCI block, the PCI MSI block and
++ * the SLP.  The PCI interrupts and the SLP errors are handled by the
++ * relevant subsystems so the core interrupt code needs only concern
++ * itself with the Peripheral block.  These are assigned interrupts in
++ * the range 40-71. 
++ */
++
++/*
++ * IRQs directly connected to CPU
++ */
++#define MSP_MIPS_INTBASE	0
++#define MSP_INT_SW0		0  /* IRQ for swint0,         C_SW0  */
++#define MSP_INT_SW1		1  /* IRQ for swint1,         C_SW1  */
++#define MSP_INT_MAC0 		2  /* IRQ for MAC 0,          C_IRQ0 */
++#define MSP_INT_MAC1		3  /* IRQ for MAC 1,          C_IRQ1 */
++#define MSP_INT_C_IRQ2		4  /* Wired off,              C_IRQ2 */
++#define MSP_INT_VE		5  /* IRQ for Voice Engine,   C_IRQ3 */
++#define MSP_INT_SLP		6  /* IRQ for SLM block,      C_IRQ4 */
++#define MSP_INT_TIMER		7  /* IRQ for the MIPS timer, C_IRQ5 */
++
++/*
++ * IRQs cascaded on CPU interrupt 4 (CAUSE bit 12, C_IRQ4)
++ * These defines should be tied to the register definition for the SLM
++ * interrupt routine.  For now, just use hard-coded values.
++ */
++#define MSP_SLP_INTBASE		(MSP_MIPS_INTBASE + 8)
++#define MSP_INT_EXT0		(MSP_SLP_INTBASE + 0) 
++					/* External interrupt 0         */
++#define MSP_INT_EXT1		(MSP_SLP_INTBASE + 1) 
++					/* External interrupt 1         */
++#define MSP_INT_EXT2		(MSP_SLP_INTBASE + 2)
++					/* External interrupt 2         */
++#define MSP_INT_EXT3		(MSP_SLP_INTBASE + 3)
++					/* External interrupt 3         */
++/* Reserved					   4-7                  */
++
++/*
++ *************************************************************************
++ * DANGER/DANGER/DANGER/DANGER/DANGER/DANGER/DANGER/DANGER/DANGER/DANGER *
++ * Some MSP produces have this interrupt labelled as Voice and some are  *
++ * SEC mbox ...                                                          *
++ *************************************************************************
++ */
++#define MSP_INT_SLP_VE		(MSP_SLP_INTBASE + 8)
++					/* Cascaded IRQ for Voice Engine*/
++#define MSP_INT_SLP_TDM		(MSP_SLP_INTBASE + 9)
++					/* TDM interrupt                */
++#define MSP_INT_SLP_MAC0	(MSP_SLP_INTBASE + 10)
++					/* Cascaded IRQ for MAC 0       */
++#define MSP_INT_SLP_MAC1	(MSP_SLP_INTBASE + 11)
++					/* Cascaded IRQ for MAC 1       */
++#define MSP_INT_SEC		(MSP_SLP_INTBASE + 12)
++					/* IRQ for security engine      */
++#define	MSP_INT_PER		(MSP_SLP_INTBASE + 13)
++					/* Peripheral interrupt         */
++#define	MSP_INT_TIMER0		(MSP_SLP_INTBASE + 14)
++					/* SLP timer 0                  */
++#define	MSP_INT_TIMER1		(MSP_SLP_INTBASE + 15)
++					/* SLP timer 1                  */
++#define	MSP_INT_TIMER2		(MSP_SLP_INTBASE + 16)
++					/* SLP timer 2                  */
++#define	MSP_INT_SLP_TIMER	(MSP_SLP_INTBASE + 17)
++					/* Cascaded MIPS timer          */
++#define MSP_INT_BLKCP		(MSP_SLP_INTBASE + 18)
++					/* Block Copy                   */
++#define MSP_INT_UART0		(MSP_SLP_INTBASE + 19)
++					/* UART 0                       */
++#define MSP_INT_PCI		(MSP_SLP_INTBASE + 20)
++					/* PCI subsystem                */
++#define MSP_INT_PCI_DBELL	(MSP_SLP_INTBASE + 21)
++					/* PCI doorbell                 */
++#define MSP_INT_PCI_MSI		(MSP_SLP_INTBASE + 22)
++					/* PCI Message Signal           */
++#define MSP_INT_PCI_BC0		(MSP_SLP_INTBASE + 23)
++					/* PCI Block Copy 0             */
++#define MSP_INT_PCI_BC1		(MSP_SLP_INTBASE + 24)
++					/* PCI Block Copy 1             */
++#define MSP_INT_SLP_ERR		(MSP_SLP_INTBASE + 25)
++					/* SLP error condition          */
++#define MSP_INT_MAC2		(MSP_SLP_INTBASE + 26)
++					/* IRQ for MAC2                 */
++/* Reserved					   26-31                */
++
++/* 
++ * IRQs cascaded on SLP PER interrupt (MSP_INT_PER)
++ */
++#define MSP_PER_INTBASE		(MSP_SLP_INTBASE + 32)
++/* Reserved					   0-1                  */
++#define MSP_INT_UART1		(MSP_PER_INTBASE + 2)
++					/* UART 1                       */
++/* Reserved					   3-5                  */
++#define MSP_INT_2WIRE		(MSP_PER_INTBASE + 6) 
++					/* 2-wire                       */
++#define MSP_INT_TM0		(MSP_PER_INTBASE + 7)
++					/* Peripheral timer block out 0 */
++#define MSP_INT_TM1		(MSP_PER_INTBASE + 8)
++					/* Peripheral timer block out 1 */
++/* Reserved					   9                    */
++#define MSP_INT_SPRX		(MSP_PER_INTBASE + 10)
++					/* SPI RX complete              */
++#define MSP_INT_SPTX		(MSP_PER_INTBASE + 11)
++					/* SPI TX complete              */
++#define MSP_INT_GPIO		(MSP_PER_INTBASE + 12)
++					/* GPIO                         */
++#define MSP_INT_PER_ERR		(MSP_PER_INTBASE + 13)
++					/* Peripheral error             */
++/* Reserved					   14-31                */
++
++#endif /* !_MSP_SLP_INT_H */
+diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_regops.h b/include/asm-mips/pmc-sierra/msp71xx/msp_regops.h
+new file mode 100644
+index 0000000..ff6bdce
+--- /dev/null
++++ b/include/asm-mips/pmc-sierra/msp71xx/msp_regops.h
+@@ -0,0 +1,236 @@
++/*
++ * SMP/VPE-safe functions to access "registers" (see note).
++ * 
++ * NOTES:
++* - These macros use ll/sc instructions, so it is your responsibility to
++ * ensure these are available on your platform before including this file.
++ * - The MIPS32 spec states that ll/sc results are undefined for uncached
++ * accesses. This means they can't be used on HW registers accessed
++ * through kseg1. Code which requires these macros for this purpose must
++ * front-end the registers with cached memory "registers" and have a single
++ * thread update the actual HW registers.
++ * - A maximum of 2k of code can be inserted between ll and sc. Every
++ * memory accesses between the instructions will increase the chance of
++ * sc failing and having to loop.
++ * - When using custom_read_reg32/custom_write_reg32 only perform the
++ * necessary logical operations on the register value in between these
++ * two calls. All other logic should be performed before the first call.
++  * - There is a bug on the R10000 chips which has a workaround. If you
++ * are affected by this bug, make sure to define the symbol 'R10000_LLSC_WAR'
++ * to be non-zero.  If you are using this header from within linux, you may
++ * include <asm/war.h> before including this file to have this defined
++ * appropriately for you.
++ *
++ * Copyright 2005-2007 PMC-Sierra, Inc.
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
++ *  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ *  LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF USE,
++ *  DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++ *  THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc., 675
++ *  Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#ifndef __ASM_REGOPS_H__
++#define __ASM_REGOPS_H__
++
++#include <linux/types.h>
++
++#include <asm/war.h>
++
++#ifndef R10000_LLSC_WAR
++#define R10000_LLSC_WAR 0
++#endif
++
++#if R10000_LLSC_WAR == 1
++#define __beqz	"beqzl	"
++#else
++#define __beqz	"beqz	"
++#endif
++
++#ifndef _LINUX_TYPES_H
++typedef unsigned int u32;
++#endif
++
++/*
++ * Sets all the masked bits to the corresponding value bits
++ */
++static inline void set_value_reg32(volatile u32 * const addr,
++					u32 const mask,
++					u32 const value)
++{
++	u32 temp;
++
++	__asm__ __volatile__(
++	"	.set	push				\n"
++	"	.set	mips3				\n"
++	"1:	ll	%0, %1	# set_value_reg32	\n"
++	"	and	%0, %2				\n"
++	"	or	%0, %3				\n"
++	"	sc	%0, %1				\n"
++	"	"__beqz"%0, 1b				\n"
++	"	nop					\n"
++	"	.set	pop				\n"
++	: "=&r" (temp), "=m" (*addr)
++	: "ir" (~mask), "ir" (value), "m" (*addr));
++}
++
++/*
++ * Sets all the masked bits to '1'
++ */
++static inline void set_reg32(volatile u32 * const addr,
++				u32 const mask)
++{
++	u32 temp;
++
++	__asm__ __volatile__(
++	"	.set	push				\n"
++	"	.set	mips3				\n"
++	"1:	ll	%0, %1		# set_reg32	\n"
++	"	or	%0, %2				\n"
++	"	sc	%0, %1				\n"
++	"	"__beqz"%0, 1b				\n"
++	"	nop					\n"
++	"	.set	pop				\n"
++	: "=&r" (temp), "=m" (*addr)
++	: "ir" (mask), "m" (*addr));
++}
++
++/*
++ * Sets all the masked bits to '0'
++ */
++static inline void clear_reg32(volatile u32 * const addr,
++				u32 const mask)
++{
++	u32 temp;
++
++	__asm__ __volatile__(
++	"	.set	push				\n"
++	"	.set	mips3				\n"
++	"1:	ll	%0, %1		# clear_reg32	\n"
++	"	and	%0, %2				\n"
++	"	sc	%0, %1				\n"
++	"	"__beqz"%0, 1b				\n"
++	"	nop					\n"
++	"	.set	pop				\n"
++	: "=&r" (temp), "=m" (*addr)
++	: "ir" (~mask), "m" (*addr));
++}
++
++/*
++ * Toggles all masked bits from '0' to '1' and '1' to '0'
++ */
++static inline void toggle_reg32(volatile u32 * const addr,
++				u32 const mask)
++{
++	u32 temp;
++
++	__asm__ __volatile__(
++	"	.set	push				\n"
++	"	.set	mips3				\n"
++	"1:	ll	%0, %1		# toggle_reg32	\n"
++	"	xor	%0, %2				\n"
++	"	sc	%0, %1				\n"
++	"	"__beqz"%0, 1b				\n"
++	"	nop					\n"
++	"	.set	pop				\n"
++	: "=&r" (temp), "=m" (*addr)
++	: "ir" (mask), "m" (*addr));
++}
++
++/*
++ * Read all masked bits others are returned as '0'
++ */
++static inline u32 read_reg32(volatile u32 * const addr,
++				u32 const mask)
++{
++	u32 temp;
++
++	__asm__ __volatile__(
++	"	.set	push				\n"
++	"	.set	noreorder			\n"
++	"	lw	%0, %1		# read		\n"
++	"	and	%0, %2		# mask		\n"
++	"	.set	pop				\n"
++	: "=&r" (temp)
++	: "m" (*addr), "ir" (mask));
++
++	return temp;
++}
++
++/*
++ * blocking_read_reg32 - Read address with blocking load
++ *
++ * Uncached writes need to be read back to ensure they reach RAM.
++ * The returned value must be 'used' to prevent from becoming a
++ * non-blocking load.
++ */
++static inline u32 blocking_read_reg32(volatile u32 * const addr)
++{
++	u32 temp;
++
++	__asm__ __volatile__(
++	"	.set	push				\n"
++	"	.set	noreorder			\n"
++	"	lw	%0, %1		# read		\n"
++	"	move	%0, %0		# block		\n"
++	"	.set	pop				\n"
++	: "=&r" (temp)
++	: "m" (*addr));
++
++	return temp;
++}
++
++/*
++ * For special strange cases only:
++ *
++ * If you need custom processing within a ll/sc loop, use the following macros
++ * VERY CAREFULLY:
++ *
++ *   u32 tmp;				<-- Define a variable to hold the data
++ *
++ *   custom_read_reg32(address, tmp);	<-- Reads the address and put the value
++ *						in the 'tmp' variable given
++ *
++ *	From here on out, you are (basicly) atomic, so don't do anything too
++ *	fancy!
++ *	Also, this code may loop if the end of this block fails to write
++ *	everything back safely due do the other CPU, so do NOT do anything
++ *	with side-effects!
++ *
++ *   custom_write_reg32(address, tmp);	<-- Writes back 'tmp' safely. 
++ */
++#define custom_read_reg32(address, tmp)				\
++	__asm__ __volatile__(					\
++	"	.set	push				\n"	\
++	"	.set	mips3				\n"	\
++	"1:	ll	%0, %1	#custom_read_reg32	\n"	\
++	"	.set	pop				\n"	\
++	: "=r" (tmp), "=m" (*address)				\
++	: "m" (*address))
++
++#define custom_write_reg32(address, tmp)			\
++	__asm__ __volatile__(					\
++	"	.set	push				\n"	\
++	"	.set	mips3				\n"	\
++	"	sc	%0, %1	#custom_write_reg32	\n"	\
++	"	"__beqz"%0, 1b				\n"	\
++	"	nop					\n"	\
++	"	.set	pop				\n"	\
++	: "=&r" (tmp), "=m" (*address)				\
++	: "0" (tmp), "m" (*address))
++
++#endif  /* __ASM_REGOPS_H__ */

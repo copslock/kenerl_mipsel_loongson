@@ -1,54 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2007 09:06:45 +0100 (BST)
-Received: from smtp1.linux-foundation.org ([65.172.181.25]:9657 "EHLO
-	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S20021781AbXD1IGn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 28 Apr 2007 09:06:43 +0100
-Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
-	by smtp1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l3S86Xmk006001
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Sat, 28 Apr 2007 01:06:34 -0700
-Received: from box (shell0.pdx.osdl.net [10.9.0.31])
-	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id l3S86WDq017685;
-	Sat, 28 Apr 2007 01:06:32 -0700
-Date:	Sat, 28 Apr 2007 01:06:32 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2007 16:07:38 +0100 (BST)
+Received: from srv5.dvmed.net ([207.36.208.214]:59850 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S20021884AbXD1PHf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 28 Apr 2007 16:07:35 +0100
+Received: from cpe-065-190-194-075.nc.res.rr.com ([65.190.194.75] helo=[10.10.10.10])
+	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
+	id 1HhoWI-000542-1G; Sat, 28 Apr 2007 15:07:30 +0000
+Message-ID: <4633632E.5030607@garzik.org>
+Date:	Sat, 28 Apr 2007 11:07:26 -0400
+From:	Jeff Garzik <jeff@garzik.org>
+User-Agent: Thunderbird 1.5.0.10 (X11/20070302)
+MIME-Version: 1.0
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, jeff@garzik.org, ralf@linux-mips.org,
-	sshtylyov@ru.mvista.com
-Subject: Re: [PATCH 3/3] MIPS: Drop unnecessary CONFIG_ISA from RBTX49XX
-Message-Id: <20070428010632.7042b2d5.akpm@linux-foundation.org>
-In-Reply-To: <20070425.015625.96686329.anemo@mba.ocn.ne.jp>
-References: <20070425.015625.96686329.anemo@mba.ocn.ne.jp>
-X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.17; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+CC:	linux-mips@linux-mips.org, netdev@vger.kernel.org,
+	ralf@linux-mips.org, sshtylyov@ru.mvista.com,
+	akpm@linux-foundation.org
+Subject: Re: [PATCH 1/3] ne: Add platform_driver
+References: <20070425.015450.25909765.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070425.015450.25909765.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: osdl$Revision: 1.177 $
-X-Scanned-By: MIMEDefang 2.53 on 65.172.181.25
-Return-Path: <akpm@linux-foundation.org>
+Return-Path: <jeff@garzik.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14935
+X-archive-position: 14936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: jeff@garzik.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 25 Apr 2007 01:56:25 +0900 (JST) Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+Atsushi Nemoto wrote:
+> * Add platform_driver interface to ne driver.
+>   (Existing legacy ports did not covered by this ne_driver for now)
+> * Make ioaddr 'unsigned long'.
+> * Move a printk down to show dev->name assigned in register_netdev.
 
-> Those boards do not need CONFIG_ISA if the ne driver could be
-> selectable without it.  Disable it and update a defconfig.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> ---
->  arch/mips/Kconfig                     |    2 --
->  arch/mips/configs/rbhma4500_defconfig |   31 -------------------------------
 
-This patch doesn't touch drivers/net, but is related to it, and to the
-other two patches.
-
-I will treat patches 1 and 2 as Jeff things, and patch 3 as a Ralf thing. 
-Hopefully everything will work OK if they get merged out-of-order.
+Please split this patch into two patches: one patch does platform_driver 
+conversion, and the other patch is the other two items you describe above.

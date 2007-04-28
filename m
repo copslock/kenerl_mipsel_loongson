@@ -1,61 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2007 04:04:54 +0100 (BST)
-Received: from smtp107.sbc.mail.mud.yahoo.com ([68.142.198.206]:11928 "HELO
-	smtp107.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20021608AbXD1DEw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 28 Apr 2007 04:04:52 +0100
-Received: (qmail 85387 invoked from network); 28 Apr 2007 03:04:44 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=pacbell.net;
-  h=Received:X-YMail-OSG:From:To:Subject:Date:User-Agent:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-Disposition:Message-Id;
-  b=ka5YtlRA8mszOAS0dZ0MlQjW0RyQus2+sjTOavMM3iDTYMy1gD9eWc9KlpykgfdYcaUGjuQ6vPjXw68xScbMq2KStvL6le0wh8Jea3xiX97d6JEIPXCwVGa0ltAPUvQJBXRH1lGxelhlpjHqVPb4ADppAEmJV/LOLAZgqBfuJik=  ;
-Received: from unknown (HELO ascent) (david-b@pacbell.net@69.226.223.45 with plain)
-  by smtp107.sbc.mail.mud.yahoo.com with SMTP; 28 Apr 2007 03:04:43 -0000
-X-YMail-OSG: e5tgwVMVM1mz7vbkUT5meiBLObNfBe0vdxbFrE_J6LQKrnlJeCYEhmIcDUKRAlfbsTim0rUDHQ--
-From:	David Brownell <david-b@pacbell.net>
-To:	Jan Nikitenko <jan.nikitenko@gmail.com>
-Subject: Re: spi: Add support for au1550 spi controller
-Date:	Fri, 27 Apr 2007 20:04:41 -0700
-User-Agent: KMail/1.9.6
-Cc:	spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org
-References: <46324403.4080606@gmail.com>
-In-Reply-To: <46324403.4080606@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2007 08:57:43 +0100 (BST)
+Received: from smtp1.linux-foundation.org ([65.172.181.25]:26528 "EHLO
+	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S20021775AbXD1H5l (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 28 Apr 2007 08:57:41 +0100
+Received: from shell0.pdx.osdl.net (fw.osdl.org [65.172.181.6])
+	by smtp1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l3S7vTi2005713
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 28 Apr 2007 00:57:30 -0700
+Received: from box (shell0.pdx.osdl.net [10.9.0.31])
+	by shell0.pdx.osdl.net (8.13.1/8.11.6) with SMTP id l3S7vSHj017561;
+	Sat, 28 Apr 2007 00:57:28 -0700
+Date:	Sat, 28 Apr 2007 00:57:27 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, netdev@vger.kernel.org, jeff@garzik.org,
+	ralf@linux-mips.org, sshtylyov@ru.mvista.com
+Subject: Re: [PATCH 1/3] ne: Add platform_driver
+Message-Id: <20070428005727.6414a24e.akpm@linux-foundation.org>
+In-Reply-To: <20070425.015450.25909765.anemo@mba.ocn.ne.jp>
+References: <20070425.015450.25909765.anemo@mba.ocn.ne.jp>
+X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.17; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200704272004.42164.david-b@pacbell.net>
-Return-Path: <david-b@pacbell.net>
+X-MIMEDefang-Filter: osdl$Revision: 1.177 $
+X-Scanned-By: MIMEDefang 2.53 on 65.172.181.25
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14932
+X-archive-position: 14933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david-b@pacbell.net
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 27 April 2007, Jan Nikitenko wrote:
+On Wed, 25 Apr 2007 01:54:50 +0900 (JST) Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
 
-> As the spi clock of the controller depends on main input clock that 
-> shall be configured externally, platform data structure for au1550 spi 
-> controller driver contains mainclk_hz attribute to define the input 
-> clock hz ...
+> @@ -880,4 +964,7 @@ void __exit cleanup_module(void)
+>  		}
+>  	}
+>  }
+> +#else /* MODULE */
+> +module_init(ne_init);
+> +module_exit(ne_exit);
+>  #endif /* MODULE */
 
-I suppose the only reason this isn't more or less just
-
-	mainclk_hz = clk_get_rate(clk_get(hw->dev, "main"));
-
-is that arch/mips/au1000/* doesn't support <linux/clk.h> yet...
-
-In general I think it's much preferable to support that common
-infrastructure than invent alternative solutions.  But I won't
-be antisocial and try to hold back this driver on _that_ account!
-
-But I will feel free to point out this particular bit of missing
-infrastructure.  I hope that supporting it is on the agenda of
-the MIPS subset of the embedded Linux world.  :)
-
-- Dave
+Are we sure about this part?  It is unusual to have special treatment dependent
+upon MODULE.

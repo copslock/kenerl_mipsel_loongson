@@ -1,57 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2007 23:25:19 +0100 (BST)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:49381 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20021525AbXD0WZR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 27 Apr 2007 23:25:17 +0100
-Received: (qmail 13384 invoked by uid 101); 27 Apr 2007 22:24:06 -0000
-Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by mother.pmc-sierra.com with SMTP; 27 Apr 2007 22:24:06 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l3RMO6lZ009556;
-	Fri, 27 Apr 2007 15:24:06 -0700
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <2MBSVNCM>; Fri, 27 Apr 2007 15:24:06 -0700
-Message-ID: <5C1FD43E5F1B824E83985A74F396286E03AD7765@bby1exm08.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	"'David Woodhouse'" <dwmw2@infradead.org>
-Cc:	linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
-Subject: RE: [PATCH 5/12] mtd: PMC MSP71xx flash/rootfs mappings
-Date:	Fri, 27 Apr 2007 15:24:02 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2007 04:04:54 +0100 (BST)
+Received: from smtp107.sbc.mail.mud.yahoo.com ([68.142.198.206]:11928 "HELO
+	smtp107.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20021608AbXD1DEw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 28 Apr 2007 04:04:52 +0100
+Received: (qmail 85387 invoked from network); 28 Apr 2007 03:04:44 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=pacbell.net;
+  h=Received:X-YMail-OSG:From:To:Subject:Date:User-Agent:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-Disposition:Message-Id;
+  b=ka5YtlRA8mszOAS0dZ0MlQjW0RyQus2+sjTOavMM3iDTYMy1gD9eWc9KlpykgfdYcaUGjuQ6vPjXw68xScbMq2KStvL6le0wh8Jea3xiX97d6JEIPXCwVGa0ltAPUvQJBXRH1lGxelhlpjHqVPb4ADppAEmJV/LOLAZgqBfuJik=  ;
+Received: from unknown (HELO ascent) (david-b@pacbell.net@69.226.223.45 with plain)
+  by smtp107.sbc.mail.mud.yahoo.com with SMTP; 28 Apr 2007 03:04:43 -0000
+X-YMail-OSG: e5tgwVMVM1mz7vbkUT5meiBLObNfBe0vdxbFrE_J6LQKrnlJeCYEhmIcDUKRAlfbsTim0rUDHQ--
+From:	David Brownell <david-b@pacbell.net>
+To:	Jan Nikitenko <jan.nikitenko@gmail.com>
+Subject: Re: spi: Add support for au1550 spi controller
+Date:	Fri, 27 Apr 2007 20:04:41 -0700
+User-Agent: KMail/1.9.6
+Cc:	spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org
+References: <46324403.4080606@gmail.com>
+In-Reply-To: <46324403.4080606@gmail.com>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-Content-Type: text/plain
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200704272004.42164.david-b@pacbell.net>
+Return-Path: <david-b@pacbell.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14931
+X-archive-position: 14932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: david-b@pacbell.net
 Precedence: bulk
 X-list: linux-mips
 
-Thanks David. I hadn't received any mail after the last posting so I was just making sure.
+On Friday 27 April 2007, Jan Nikitenko wrote:
 
-Marc
+> As the spi clock of the controller depends on main input clock that 
+> shall be configured externally, platform data structure for au1550 spi 
+> controller driver contains mainclk_hz attribute to define the input 
+> clock hz ...
 
-> -----Original Message-----
-> From: David Woodhouse [mailto:dwmw2@infradead.org] 
-> Sent: Friday, April 27, 2007 4:00 PM
-> To: Marc St-Jean
-> Cc: linux-mips@linux-mips.org; akpm@linux-foundation.org; 
-> linux-mtd@lists.infradead.org; ralf@linux-mips.org
-> Subject: Re: [PATCH 5/12] mtd: PMC MSP71xx flash/rootfs mappings
-> 
-> On Fri, 2007-04-27 at 14:17 -0600, Marc St-Jean wrote:
-> > [PATCH 5/12] mtd: PMC MSP71xx flash/rootfs mappings
-> > 
-> > Patch to add flash and rootfs mappings for the PMC-Sierra
-> > MSP71xx devices. 
-> 
-> I have this in my tree already.
-> 
-> -- 
-> dwmw2
-> 
+I suppose the only reason this isn't more or less just
+
+	mainclk_hz = clk_get_rate(clk_get(hw->dev, "main"));
+
+is that arch/mips/au1000/* doesn't support <linux/clk.h> yet...
+
+In general I think it's much preferable to support that common
+infrastructure than invent alternative solutions.  But I won't
+be antisocial and try to hold back this driver on _that_ account!
+
+But I will feel free to point out this particular bit of missing
+infrastructure.  I hope that supporting it is on the agenda of
+the MIPS subset of the embedded Linux world.  :)
+
+- Dave

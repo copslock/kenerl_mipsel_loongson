@@ -1,55 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2007 18:31:32 +0100 (BST)
-Received: from srv5.dvmed.net ([207.36.208.214]:2766 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20021938AbXD1Rba (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 28 Apr 2007 18:31:30 +0100
-Received: from cpe-065-190-194-075.nc.res.rr.com ([65.190.194.75] helo=[10.10.10.10])
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1HhqiZ-0005RX-M8; Sat, 28 Apr 2007 17:28:20 +0000
-Message-ID: <46338432.5060105@garzik.org>
-Date:	Sat, 28 Apr 2007 13:28:18 -0400
-From:	Jeff Garzik <jeff@garzik.org>
-User-Agent: Thunderbird 1.5.0.10 (X11/20070302)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, netdev@vger.kernel.org,
-	ralf@linux-mips.org, sshtylyov@ru.mvista.com,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH 2/3] ne: MIPS: Use platform_driver for ne on RBTX49XX
-References: <20070425.015549.108742168.anemo@mba.ocn.ne.jp>	<463363ED.3050307@garzik.org> <20070429.022428.71103613.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070429.022428.71103613.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jeff@garzik.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Apr 2007 23:06:16 +0100 (BST)
+Received: from verein.lst.de ([213.95.11.210]:25248 "EHLO mail.lst.de")
+	by ftp.linux-mips.org with ESMTP id S20022276AbXD2WGO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Apr 2007 23:06:14 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id l3TM5nLD023559
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Mon, 30 Apr 2007 00:05:49 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id l3TM5nwb023557;
+	Mon, 30 Apr 2007 00:05:49 +0200
+Date:	Mon, 30 Apr 2007 00:05:48 +0200
+From:	Christoph Hellwig <hch@lst.de>
+To:	jejb@steeleye.com, davem@davemloft.net
+Cc:	linux-scsi@vger.kernel.org, linux-m68k@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: [PATCH] deprecate the old NCR53C9x driver
+Message-ID: <20070429220548.GA22666@lst.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14944
+X-archive-position: 14945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff@garzik.org
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Sat, 28 Apr 2007 11:10:37 -0400, Jeff Garzik <jeff@garzik.org> wrote:
->>>  static unsigned int netcard_portlist[] __initdata = {
->>> -	0x300, 0x280, 0x320, 0x340, 0x360, 0x380, 0
->>> +#if defined(CONFIG_ISA) || defined(CONFIG_M32R)
->>> +	0x300, 0x280, 0x320, 0x340, 0x360, 0x380,
->>> +#endif
->>> +	0
->> This looks a bit strange, and perhaps more difficult to maintain long term.
->>
->> I would suggest creating a NEEDS_PORTLIST cpp macro at the top of ne.c, 
->> to be defined or undefined based on CONFIG_xxx symbols.  Then, down in 
->> the code itself, conditionally include or exclude all portlist related 
->> data tables and code.
->>
->> Sound sane?
-> 
-> Sure.  Do you mean something like this?
+Now that we have the much better esp_scsi driver and low level drivers
+are easy to port over deprecate the old NCR53C9x driver.
 
-Correct.
+I've Cc'ed the m68k and mips lists because all but one bus glues are
+for these platforms.  Chances stand bad for the remaining driver,
+mca_53c9x which hasn't gotten any non-trivial update since it was
+merge in late 2.1.x and whos maintainers mail address bounces.
 
-	Jeff
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+
+Index: linux-2.6/Documentation/feature-removal-schedule.txt
+===================================================================
+--- linux-2.6.orig/Documentation/feature-removal-schedule.txt	2007-04-29 23:44:46.000000000 +0200
++++ linux-2.6/Documentation/feature-removal-schedule.txt	2007-04-29 23:45:55.000000000 +0200
+@@ -6,6 +6,13 @@ be removed from this file.
+ 
+ ---------------------------
+ 
++What:	old NCR53C9x driver
++When:	October 2007
++Why:	Replaced by the much better esp_scsi driver.  Actual low-level
++	driver can ported over almost trivially.
++Who:	David Miller <davem@davemloft.net>
++	Christoph Hellwig <hch@lst.de>
++
+ What:	V4L2 VIDIOC_G_MPEGCOMP and VIDIOC_S_MPEGCOMP
+ When:	October 2007
+ Why:	Broken attempt to set MPEG compression parameters. These ioctls are

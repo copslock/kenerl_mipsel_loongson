@@ -1,16 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Apr 2007 16:29:21 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:29164 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022453AbXD3P3U (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 30 Apr 2007 16:29:20 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Apr 2007 16:31:10 +0100 (BST)
+Received: from p549F758F.dip.t-dialin.net ([84.159.117.143]:13718 "EHLO
+	p549F758F.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S20022516AbXD3PbJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 30 Apr 2007 16:31:09 +0100
+Received: from mba.ocn.ne.jp ([122.1.175.29]:54780 "HELO smtp.mba.ocn.ne.jp")
+	by lappi.linux-mips.net with SMTP id S1098809AbXD3P3t (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 30 Apr 2007 17:29:49 +0200
 Received: from localhost (p4067-ipad203funabasi.chiba.ocn.ne.jp [222.146.83.67])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 24FE3B4CD; Tue,  1 May 2007 00:28:00 +0900 (JST)
-Date:	Tue, 01 May 2007 00:28:03 +0900 (JST)
-Message-Id: <20070501.002803.95061116.anemo@mba.ocn.ne.jp>
+	id 87065A012; Tue,  1 May 2007 00:27:54 +0900 (JST)
+Date:	Tue, 01 May 2007 00:27:58 +0900 (JST)
+Message-Id: <20070501.002758.15250764.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	netdev@vger.kernel.org, jeff@garzik.org, ralf@linux-mips.org,
 	sshtylyov@ru.mvista.com, akpm@linux-foundation.org
-Subject: [PATCH 5/5] MIPS: Drop unnecessary CONFIG_ISA from RBTX49XX
+Subject: [PATCH 4/5] ne: MIPS: Use platform_driver for ne on RBTX49XX
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -22,7 +26,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14952
+X-archive-position: 14953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,137 +34,119 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Those boards do not need CONFIG_ISA if the ne driver could be
-selectable without it.  Disable it and update a defconfig.
+This patch lets RBTX49XX boards use generic platform_driver interface
+for the ne driver.
+
+* Use platform_device to pass ioaddr and irq to the ne driver.
+* Remove unnecessary ifdefs for RBTX49XX from the ne driver.
+* Make the ne driver selectable on these boards regardless of CONFIG_ISA
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/Kconfig                     |    2 --
- arch/mips/configs/rbhma4500_defconfig |   31 -------------------------------
- 2 files changed, 0 insertions(+), 33 deletions(-)
+ .../toshiba_rbtx4927/toshiba_rbtx4927_setup.c      |   19 +++++++++++++++++++
+ arch/mips/tx4938/toshiba_rbtx4938/setup.c          |   20 ++++++++++++++++++++
+ drivers/net/Kconfig                                |    2 +-
+ drivers/net/ne.c                                   |    8 --------
+ 4 files changed, 40 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c78b143..e1e08dc 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -786,7 +786,6 @@ config TOSHIBA_RBTX4927
- 	select HAS_TXX9_SERIAL
- 	select HW_HAS_PCI
- 	select I8259
--	select ISA
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_TX49XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
-@@ -808,7 +807,6 @@ config TOSHIBA_RBTX4938
- 	select HAS_TXX9_SERIAL
- 	select HW_HAS_PCI
- 	select I8259
--	select ISA
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_TX49XX
- 	select SYS_SUPPORTS_32BIT_KERNEL
-diff --git a/arch/mips/configs/rbhma4500_defconfig b/arch/mips/configs/rbhma4500_defconfig
-index 29e0df9..7d0f217 100644
---- a/arch/mips/configs/rbhma4500_defconfig
-+++ b/arch/mips/configs/rbhma4500_defconfig
-@@ -245,7 +245,6 @@ CONFIG_DEFAULT_IOSCHED="anticipatory"
- #
- CONFIG_HW_HAS_PCI=y
- CONFIG_PCI=y
--CONFIG_ISA=y
- CONFIG_MMU=y
+diff --git a/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c b/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c
+index 0f7576d..a0c11ef 100644
+--- a/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c
++++ b/arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c
+@@ -1049,3 +1049,22 @@ static int __init toshiba_rbtx4927_rtc_init(void)
+ 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
+ }
+ device_initcall(toshiba_rbtx4927_rtc_init);
++
++static int __init rbtx4927_ne_init(void)
++{
++	static struct resource __initdata res[] = {
++		{
++			.start	= RBTX4927_RTL_8019_BASE,
++			.end	= RBTX4927_RTL_8019_BASE + 0x20 - 1,
++			.flags	= IORESOURCE_IO,
++		}, {
++			.start	= RBTX4927_RTL_8019_IRQ,
++			.flags	= IORESOURCE_IRQ,
++		}
++	};
++	struct platform_device *dev =
++		platform_device_register_simple("ne", -1,
++						res, ARRAY_SIZE(res));
++	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
++}
++device_initcall(rbtx4927_ne_init);
+diff --git a/arch/mips/tx4938/toshiba_rbtx4938/setup.c b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+index 66163ba..f5d1ce7 100644
+--- a/arch/mips/tx4938/toshiba_rbtx4938/setup.c
++++ b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+@@ -20,6 +20,7 @@
+ #include <linux/console.h>
+ #include <linux/pci.h>
+ #include <linux/pm.h>
++#include <linux/platform_device.h>
  
- #
-@@ -573,7 +572,6 @@ CONFIG_MTD_CFI_UTIL=y
- #
- # Plug and Play support
- #
--# CONFIG_PNP is not set
- # CONFIG_PNPACPI is not set
+ #include <asm/wbflush.h>
+ #include <asm/reboot.h>
+@@ -1037,3 +1038,22 @@ static int __init tx4938_spi_proc_setup(void)
  
- #
-@@ -658,7 +656,6 @@ CONFIG_BLK_DEV_IT8213=m
- # CONFIG_BLK_DEV_VIA82CXXX is not set
- CONFIG_BLK_DEV_TC86C001=m
- # CONFIG_IDE_ARM is not set
--# CONFIG_IDE_CHIPSETS is not set
- CONFIG_BLK_DEV_IDEDMA=y
- # CONFIG_IDEDMA_IVB is not set
- # CONFIG_IDEDMA_AUTO is not set
-@@ -677,11 +674,6 @@ CONFIG_RAID_ATTRS=m
- # CONFIG_ATA is not set
+ __initcall(tx4938_spi_proc_setup);
+ #endif
++
++static int __init rbtx4938_ne_init(void)
++{
++	struct resource res[] = {
++		{
++			.start	= RBTX4938_RTL_8019_BASE,
++			.end	= RBTX4938_RTL_8019_BASE + 0x20 - 1,
++			.flags	= IORESOURCE_IO,
++		}, {
++			.start	= RBTX4938_RTL_8019_IRQ,
++			.flags	= IORESOURCE_IRQ,
++		}
++	};
++	struct platform_device *dev =
++		platform_device_register_simple("ne", -1,
++						res, ARRAY_SIZE(res));
++	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
++}
++device_initcall(rbtx4938_ne_init);
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 88d924d..3796366 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -1088,7 +1088,7 @@ config ETH16I
  
- #
--# Old CD-ROM drivers (not SCSI, not IDE)
--#
--# CONFIG_CD_NO_IDESCSI is not set
+ config NE2000
+ 	tristate "NE2000/NE1000 support"
+-	depends on NET_ISA || (Q40 && m) || M32R
++	depends on NET_ISA || (Q40 && m) || M32R || TOSHIBA_RBTX4927 || TOSHIBA_RBTX4938
+ 	select CRC32
+ 	---help---
+ 	  If you have a network (Ethernet) card of this type, say Y and read
+diff --git a/drivers/net/ne.c b/drivers/net/ne.c
+index 22d6fe4..c9f74bf 100644
+--- a/drivers/net/ne.c
++++ b/drivers/net/ne.c
+@@ -56,10 +56,6 @@ static const char version2[] =
+ #include <asm/system.h>
+ #include <asm/io.h>
+ 
+-#if defined(CONFIG_TOSHIBA_RBTX4927) || defined(CONFIG_TOSHIBA_RBTX4938)
+-#include <asm/tx4938/rbtx4938.h>
+-#endif
 -
--#
- # Multi-device support (RAID and LVM)
- #
- # CONFIG_MD is not set
-@@ -742,37 +734,20 @@ CONFIG_NET_ETHERNET=y
- # CONFIG_SUNGEM is not set
- # CONFIG_CASSINI is not set
- # CONFIG_NET_VENDOR_3COM is not set
--# CONFIG_NET_VENDOR_SMC is not set
- # CONFIG_DM9000 is not set
--# CONFIG_NET_VENDOR_RACAL is not set
+ #include "8390.h"
  
- #
- # Tulip family network device support
- #
- # CONFIG_NET_TULIP is not set
--# CONFIG_AT1700 is not set
--# CONFIG_DEPCA is not set
- # CONFIG_HP100 is not set
--CONFIG_NET_ISA=y
--# CONFIG_E2100 is not set
--# CONFIG_EWRK3 is not set
--# CONFIG_EEXPRESS is not set
--# CONFIG_EEXPRESS_PRO is not set
--# CONFIG_HPLAN_PLUS is not set
--# CONFIG_HPLAN is not set
--# CONFIG_LP486E is not set
--# CONFIG_ETH16I is not set
- CONFIG_NE2000=y
--# CONFIG_SEEQ8005 is not set
- CONFIG_NET_PCI=y
- # CONFIG_PCNET32 is not set
- # CONFIG_AMD8111_ETH is not set
- # CONFIG_ADAPTEC_STARFIRE is not set
--# CONFIG_AC3200 is not set
--# CONFIG_APRICOT is not set
- # CONFIG_B44 is not set
- # CONFIG_FORCEDETH is not set
--# CONFIG_CS89x0 is not set
- # CONFIG_DGRS is not set
- # CONFIG_EEPRO100 is not set
- # CONFIG_E100 is not set
-@@ -833,8 +808,6 @@ CONFIG_NET_RADIO=y
- # Obsolete Wireless cards support (pre-802.11)
- #
- # CONFIG_STRIP is not set
--# CONFIG_ARLAN is not set
--# CONFIG_WAVELAN is not set
+ #define DRV_NAME "ne"
+@@ -232,10 +228,6 @@ struct net_device * __init ne_probe(int unit)
+ 	sprintf(dev->name, "eth%d", unit);
+ 	netdev_boot_setup_check(dev);
  
- #
- # Wireless 802.11b ISA/PCI cards support
-@@ -920,9 +893,6 @@ CONFIG_KEYBOARD_ATKBD=y
- CONFIG_INPUT_MOUSE=y
- CONFIG_MOUSE_PS2=y
- # CONFIG_MOUSE_SERIAL is not set
--# CONFIG_MOUSE_INPORT is not set
--# CONFIG_MOUSE_LOGIBM is not set
--# CONFIG_MOUSE_PC110PAD is not set
- # CONFIG_MOUSE_VSXXXAA is not set
- # CONFIG_INPUT_JOYSTICK is not set
- # CONFIG_INPUT_TOUCHSCREEN is not set
-@@ -1072,7 +1042,6 @@ CONFIG_FB_ATY_CT=y
- #
- CONFIG_VGA_CONSOLE=y
- # CONFIG_VGACON_SOFT_SCROLLBACK is not set
--# CONFIG_MDA_CONSOLE is not set
- CONFIG_DUMMY_CONSOLE=y
- # CONFIG_FRAMEBUFFER_CONSOLE is not set
- 
+-#ifdef CONFIG_TOSHIBA_RBTX4938
+-	dev->base_addr = RBTX4938_RTL_8019_BASE;
+-	dev->irq = RBTX4938_RTL_8019_IRQ;
+-#endif
+ 	err = do_ne_probe(dev);
+ 	if (err)
+ 		goto out;

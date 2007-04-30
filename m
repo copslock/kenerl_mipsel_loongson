@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Apr 2007 16:28:07 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:34263 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022528AbXD3P1t (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 30 Apr 2007 16:27:49 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Apr 2007 16:28:49 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:20196 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022451AbXD3P2r (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 30 Apr 2007 16:28:47 +0100
 Received: from localhost (p4067-ipad203funabasi.chiba.ocn.ne.jp [222.146.83.67])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id ECF09A012; Tue,  1 May 2007 00:27:45 +0900 (JST)
-Date:	Tue, 01 May 2007 00:27:49 +0900 (JST)
-Message-Id: <20070501.002749.21593079.anemo@mba.ocn.ne.jp>
+	id 67DDCA82D; Tue,  1 May 2007 00:27:27 +0900 (JST)
+Date:	Tue, 01 May 2007 00:27:31 +0900 (JST)
+Message-Id: <20070501.002731.104031408.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	netdev@vger.kernel.org, jeff@garzik.org, ralf@linux-mips.org,
 	sshtylyov@ru.mvista.com, akpm@linux-foundation.org
-Subject: [PATCH 3/5] ne: Add NEEDS_PORTLIST to control ISA auto-probe
+Subject: [PATCH 1/5] ne: Add platform_driver
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -22,7 +22,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14950
+X-archive-position: 14951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,48 +30,153 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Add NEEDS_PORTLIST cpp macro to control ISA auto-probe.
-(I'm not sure M32R needs auto-probe but it is current behavior)
+Add a platform_driver interface to ne driver.
+(Existing legacy ports did not covered by this ne_driver for now)
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- drivers/net/ne.c |   11 ++++++++---
- 1 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ne.c |   91 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 89 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ne.c b/drivers/net/ne.c
-index 32ae91b..22d6fe4 100644
+index a5c4199..aef470d 100644
 --- a/drivers/net/ne.c
 +++ b/drivers/net/ne.c
-@@ -78,8 +78,13 @@ static const char version2[] =
- /* Do we have a non std. amount of memory? (in units of 256 byte pages) */
- /* #define PACKETBUF_MEMSIZE	0x40 */
+@@ -51,6 +51,7 @@ static const char version2[] =
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+ #include <linux/jiffies.h>
++#include <linux/platform_device.h>
  
-+#if !defined(MODULE) && (defined(CONFIG_ISA) || defined(CONFIG_M32R))
-+/* Do we need a portlist for the ISA auto-probe ? */
-+#define NEEDS_PORTLIST
+ #include <asm/system.h>
+ #include <asm/io.h>
+@@ -807,6 +808,87 @@ retry:
+ 	return;
+ }
+ 
++static int __init ne_drv_probe(struct platform_device *pdev)
++{
++	struct net_device *dev;
++	struct resource *res;
++	int err, irq;
++
++	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
++	irq = platform_get_irq(pdev, 0);
++	if (!res || irq < 0)
++		return -ENODEV;
++
++	dev = alloc_ei_netdev();
++	if (!dev)
++		return -ENOMEM;
++	dev->irq = irq;
++	dev->base_addr = res->start;
++	err = do_ne_probe(dev);
++	if (err) {
++		free_netdev(dev);
++		return err;
++	}
++	platform_set_drvdata(pdev, dev);
++	return 0;
++}
++
++static int __exit ne_drv_remove(struct platform_device *pdev)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++
++	unregister_netdev(dev);
++	free_irq(dev->irq, dev);
++	release_region(dev->base_addr, NE_IO_EXTENT);
++	free_netdev(dev);
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int ne_drv_suspend(struct platform_device *pdev, pm_message_t state)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++
++	if (netif_running(dev))
++		netif_device_detach(dev);
++	return 0;
++}
++
++static int ne_drv_resume(struct platform_device *pdev)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++
++	if (netif_running(dev)) {
++		ne_reset_8390(dev);
++		NS8390_init(dev, 1);
++		netif_device_attach(dev);
++	}
++	return 0;
++}
++#else
++#define ne_drv_suspend NULL
++#define ne_drv_resume NULL
 +#endif
 +
- /* A zero-terminated list of I/O addresses to be probed at boot. */
--#ifndef MODULE
-+#ifdef NEEDS_PORTLIST
- static unsigned int netcard_portlist[] __initdata = {
- 	0x300, 0x280, 0x320, 0x340, 0x360, 0x380, 0
- };
-@@ -186,7 +191,7 @@ static void ne_block_output(struct net_device *dev, const int count,
- static int __init do_ne_probe(struct net_device *dev)
++static struct platform_driver ne_driver = {
++	.remove		= __exit_p(ne_drv_remove),
++	.suspend	= ne_drv_suspend,
++	.resume		= ne_drv_resume,
++	.driver		= {
++		.name	= DRV_NAME,
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init ne_init(void)
++{
++	return platform_driver_probe(&ne_driver, ne_drv_probe);
++}
++
++static void __exit ne_exit(void)
++{
++	platform_driver_unregister(&ne_driver);
++}
+ 
+ #ifdef MODULE
+ #define MAX_NE_CARDS	4	/* Max number of NE cards per module */
+@@ -832,6 +914,7 @@ ISA device autoprobes on a running machine are not recommended anyway. */
+ int __init init_module(void)
  {
- 	unsigned long base_addr = dev->base_addr;
--#ifndef MODULE
-+#ifdef NEEDS_PORTLIST
- 	int orig_irq = dev->irq;
- #endif
+ 	int this_dev, found = 0;
++	int plat_found = !ne_init();
  
-@@ -202,7 +207,7 @@ static int __init do_ne_probe(struct net_device *dev)
- 	if (isapnp_present() && (ne_probe_isapnp(dev) == 0))
+ 	for (this_dev = 0; this_dev < MAX_NE_CARDS; this_dev++) {
+ 		struct net_device *dev = alloc_ei_netdev();
+@@ -845,7 +928,7 @@ int __init init_module(void)
+ 			continue;
+ 		}
+ 		free_netdev(dev);
+-		if (found)
++		if (found || plat_found)
+ 			break;
+ 		if (io[this_dev] != 0)
+ 			printk(KERN_WARNING "ne.c: No NE*000 card found at i/o = %#x\n", io[this_dev]);
+@@ -853,7 +936,7 @@ int __init init_module(void)
+ 			printk(KERN_NOTICE "ne.c: You must supply \"io=0xNNN\" value(s) for ISA cards.\n");
+ 		return -ENXIO;
+ 	}
+-	if (found)
++	if (found || plat_found)
  		return 0;
+ 	return -ENODEV;
+ }
+@@ -871,6 +954,7 @@ void __exit cleanup_module(void)
+ {
+ 	int this_dev;
  
--#ifndef MODULE
-+#ifdef NEEDS_PORTLIST
- 	/* Last resort. The semi-risky ISA auto-probe. */
- 	for (base_addr = 0; netcard_portlist[base_addr] != 0; base_addr++) {
- 		int ioaddr = netcard_portlist[base_addr];
++	ne_exit();
+ 	for (this_dev = 0; this_dev < MAX_NE_CARDS; this_dev++) {
+ 		struct net_device *dev = dev_ne[this_dev];
+ 		if (dev) {
+@@ -880,4 +964,7 @@ void __exit cleanup_module(void)
+ 		}
+ 	}
+ }
++#else /* MODULE */
++module_init(ne_init);
++module_exit(ne_exit);
+ #endif /* MODULE */

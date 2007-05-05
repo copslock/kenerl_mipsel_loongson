@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 May 2007 17:03:31 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:49143 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022578AbXEEQD0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 5 May 2007 17:03:26 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 May 2007 17:17:58 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:216 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022580AbXEEQR4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 5 May 2007 17:17:56 +0100
 Received: from localhost (p1094-ipad26funabasi.chiba.ocn.ne.jp [220.104.87.94])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id CA0BFA104; Sun,  6 May 2007 01:03:05 +0900 (JST)
-Date:	Sun, 06 May 2007 01:03:13 +0900 (JST)
-Message-Id: <20070506.010313.41199101.anemo@mba.ocn.ne.jp>
+	id 25266969E; Sun,  6 May 2007 01:16:28 +0900 (JST)
+Date:	Sun, 06 May 2007 01:16:36 +0900 (JST)
+Message-Id: <20070506.011636.92588372.anemo@mba.ocn.ne.jp>
 To:	vagabon.xyz@gmail.com
 Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH 2/3] time: replace board_time_init() by plat_clk_setup()
@@ -24,7 +24,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14966
+X-archive-position: 14967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,35 +33,37 @@ Precedence: bulk
 X-list: linux-mips
 
 On Fri,  4 May 2007 17:36:45 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> This patch introduces plat_clk_setup() which is a hook that platforms
-> can implement to setup clock and mips_hpt_frequency.
-> 
-> This was done by board_time_init function pointer previously.
-> 
-> There are 3 reasons why we should prefer plat_clk_setup() over
-> board_time_init:
-> 
->     1/ There's no need for platforms to initialize a function
->     pointer anymore.
-> 
->     2/ board_time_init was previously initialized in plat_mem_setup()
->     which is normally used to setup platform's *memories*.
-> 
->     3/ plat_clk_setup() is called earlier in boot process. Therefore
->     others subsystems can get the time during their initialisation,
->     timekeeping subsystem is an example.
+> --- a/arch/mips/kernel/time.c
+> +++ b/arch/mips/kernel/time.c
+> @@ -239,21 +239,14 @@ asmlinkage void ll_local_timer_interrupt(int irq)
+>  /*
+>   * time_init() - it does the following things.
+>   *
+> - * 1) board_time_init() -
+> - * 	a) (optional) set up RTC routines,
+> - *      b) (optional) calibrate and set the mips_hpt_frequency
+> - *	    (only needed if you intended to use cpu counter as timer interrupt
+> - *	     source)
+> - * 2) setup xtime based on rtc_mips_get_time().
+> - * 3) calculate a couple of cached variables for later usage
+> - * 4) plat_timer_setup() -
+> + * 1) setup xtime based on rtc_mips_get_time().
+> + * 2) calculate a couple of cached variables for later usage
+> + * 3) plat_timer_setup() -
+>   *	a) (optional) over-write any choices made above by time_init().
+>   *	b) machine specific code should setup the timer irqaction.
+>   *	c) enable the timer interrupt
+>   */
+>  
+> -void (*board_time_init)(void);
+> -
+>  unsigned int mips_hpt_frequency;
+>  
+>  static struct irqaction timer_irqaction = {
 
-Though providing plat_clk_setup() for timekeeping code might be a good
-idea, I think your patch break at least those two platforms:
-
-MOMENCO_JAGUAR_ATX: momenco_time_init() assumes tlb_init() was already
-called.  (wire_stupidity_into_tlb() calls local_flush_tlb_all())
-
-MOMENCO_OCELOT_G: gt64240_time_init() assumes IRQ subsystem are
-already initialized.
-
-How about keeping board_time_init pointer as is and adding
-plat_clk_setup only for simple platforms?
+As I wrote in another mail I think we can not remove board_time_init
+for now, but if you really removed it please update
+Documentation/mips/time.README too.
 
 ---
 Atsushi Nemoto

@@ -1,65 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2007 10:28:47 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:64226 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20021984AbXEGJ2p (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 May 2007 10:28:45 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Mon, 7 May 2007 18:28:43 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 105B24220B;
-	Mon,  7 May 2007 18:28:38 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 04FFD204C3;
-	Mon,  7 May 2007 18:28:38 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l479SbW0068428;
-	Mon, 7 May 2007 18:28:37 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 07 May 2007 18:28:37 +0900 (JST)
-Message-Id: <20070507.182837.126143175.nemoto@toshiba-tops.co.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 May 2007 11:09:08 +0100 (BST)
+Received: from wr-out-0506.google.com ([64.233.184.224]:48216 "EHLO
+	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021928AbXEGKJG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 May 2007 11:09:06 +0100
+Received: by wr-out-0506.google.com with SMTP id q50so1555911wrq
+        for <linux-mips@linux-mips.org>; Mon, 07 May 2007 03:08:05 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=j0dAkv4fnT1g01eKe4/0j7u2jLnnlc6VtTpIXhrUJ0x3cO2/0oXwhSjfdPrFHCYzmVekX0eA0tfh20gZt2mbK6HXM9PEbHG+Hbphpn/3IV15+9n/xXYaPe+O/Yskbdd6pDg/Qx2RmxpRNmLeLhJA1aamtn1Jx0gB6TVkyixc61M=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=raAbReImDrvq6GS1qMrUQbOSRURo2Xo4ypbjyi0hsaVc9AVKCBXibKirGCWHhwT/StjaNYFoXQQqL/XuZvShAWrW+gzY/oLDpBw6UPM00ZN118giiu8HgOn06HBjNpzGp5X/WE2I0MzWfFTH1Je/D/cvk+BJn4fjFVnaiatgg8Q=
+Received: by 10.114.75.1 with SMTP id x1mr140829waa.1178532485029;
+        Mon, 07 May 2007 03:08:05 -0700 (PDT)
+Received: by 10.115.94.16 with HTTP; Mon, 7 May 2007 03:08:04 -0700 (PDT)
+Message-ID: <cda58cb80705070308g7ac76ef2o79bec6fd5f6f8fb1@mail.gmail.com>
+Date:	Mon, 7 May 2007 12:08:04 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
 Subject: Re: [PATCH 2/3] time: replace board_time_init() by plat_clk_setup()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <cda58cb80705070150u75165c47n252a664fc92646f3@mail.gmail.com>
-References: <11782930063123-git-send-email-fbuihuu@gmail.com>
-	<20070506.010313.41199101.anemo@mba.ocn.ne.jp>
-	<cda58cb80705070150u75165c47n252a664fc92646f3@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+In-Reply-To: <20070507.182837.126143175.nemoto@toshiba-tops.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+References: <11782930063123-git-send-email-fbuihuu@gmail.com>
+	 <20070506.010313.41199101.anemo@mba.ocn.ne.jp>
+	 <cda58cb80705070150u75165c47n252a664fc92646f3@mail.gmail.com>
+	 <20070507.182837.126143175.nemoto@toshiba-tops.co.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14970
+X-archive-position: 14971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 7 May 2007 10:50:20 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> > How about keeping board_time_init pointer as is and adding
-> > plat_clk_setup only for simple platforms?
-> 
-> Not sure that would force us to duplicate all timekeeping stuff in
-> time_init() hook because of several hacks. If this is really true,
-> let's try to clean up some code.
+On 5/7/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+>
+> Well, I have not looked closer those hackish board_time_init functions
+> yet.  Maybe we can do the cleanups, but frankly, now I think it is a
+> time for removal of them.
+>
 
-Well, I have not looked closer those hackish board_time_init functions
-yet.  Maybe we can do the cleanups, but frankly, now I think it is a
-time for removal of them.
+Amen.
 
-Both boards have been listed on
+Unfortunately I don't know and don't have any idea if it's now a good
+thing to get rid of these 2 board supports...
 
-http://www.linux-mips.org/wiki/Category:Deprecated
+Maybe submitting a patch to linux-mips which does that could be a good start...
 
-since Jun 2006.
-
----
-Atsushi Nemoto
+Let's see...
+-- 
+               Franck

@@ -1,25 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 16:05:25 +0100 (BST)
-Received: from post2.wesleyan.edu ([129.133.6.128]:50898 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 16:19:43 +0100 (BST)
+Received: from post2.wesleyan.edu ([129.133.6.128]:39380 "EHLO
 	post2.wesleyan.edu") by ftp.linux-mips.org with ESMTP
-	id S20022226AbXEHPFX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 May 2007 16:05:23 +0100
+	id S20022229AbXEHPTk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 May 2007 16:19:40 +0100
 Received: from pony1.wesleyan.edu (pony1.wesleyan.edu [129.133.6.192])
-	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l48F26Ks000364
-	for <linux-mips@linux-mips.org>; Tue, 8 May 2007 11:02:07 -0400
+	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l48FGOtI002450
+	for <linux-mips@linux-mips.org>; Tue, 8 May 2007 11:16:24 -0400
 Received: (from apache@localhost)
-	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l48F261g025322;
-	Tue, 8 May 2007 11:02:06 -0400
+	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l48FGNac028599;
+	Tue, 8 May 2007 11:16:23 -0400
 Received: from 129.133.92.31
         (SquirrelMail authenticated user sknauert)
         by webmail.wesleyan.edu with HTTP;
-        Tue, 8 May 2007 11:02:06 -0400 (EDT)
-Message-ID: <38827.129.133.92.31.1178636526.squirrel@webmail.wesleyan.edu>
-In-Reply-To: <20070508140457.13458d63.attila@kinali.ch>
+        Tue, 8 May 2007 11:16:23 -0400 (EDT)
+Message-ID: <55699.129.133.92.31.1178637383.squirrel@webmail.wesleyan.edu>
+In-Reply-To: <20070508122700.262caec4@the-village.bc.nu>
 References: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu>
-    <876473x0jx.wl@betelheise.deep.net>
-    <Pine.LNX.4.64.0705080920150.24717@anakin>
-    <20070508140457.13458d63.attila@kinali.ch>
-Date:	Tue, 8 May 2007 11:02:06 -0400 (EDT)
+    <20070508122700.262caec4@the-village.bc.nu>
+Date:	Tue, 8 May 2007 11:16:23 -0400 (EDT)
 Subject: Re: PCI video card on SGI O2
 From:	sknauert@wesleyan.edu
 To:	linux-mips@linux-mips.org
@@ -37,7 +35,7 @@ Return-Path: <sknauert@wesleyan.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14993
+X-archive-position: 14994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,43 +43,34 @@ X-original-sender: sknauert@wesleyan.edu
 Precedence: bulk
 X-list: linux-mips
 
-> On Tue, 8 May 2007 09:22:02 +0200 (CEST)
-> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>> 3) I tried a Voodoo 1, ATI Mach 64, S3 Virge DX, GX, etc., I actually
+>> have
+>> a Millenium I but it won't fit in the O2. I mention these since they
+>> were
+>> listed here http://www.linux-mips.org/wiki/PCI_graphics_cards as
+>> potentially working. I'm assuming I need more kernel support?
+>> Surprisingly, the character device drivers will compile and boot, and
+>> lspci and other tools will recognize the card as a VGA device. I just
+>> can't get a console or X to use them.
 >
->> It's a pity the Millenium doesn't fit, as matroxfb is about the only
->> frame buffer device that can initialize a graphics card from scratch,
->> without help from the BIOS...
+> The voodoo1 and voodoo2 should work - they are not VGA devices and don't
+> have any compatibility vga gunk on them at all. You will need the voodoo
+> frame buffer and/or X server driver, neither of which needs BIOS support.
+> There is no 3D support on them as I could never be bothered to write the
+> 3D engine bootstrap code.
 >
-> Why does the Millenium not fit?
-> I'm asking because OGP might be a good replacement
-> card for such systems (when it will be finished).
-> And if the Millenium has some problems working in such
-> systems, we could try not to do the same mistake with OGP.
->
-> 			Attila Kinali
-> --
-> Praised are the Fountains of Shelieth, the silver harp of the waters,
-> But blest in my name forever this stream that stanched my thirst!
->                          -- Deed of Morred
+> Alan
 >
 >
-Wow, so many responses... I'll try to answer everyone. The O2, has a PCI
-cage on a daughter card which is 6.875" deep. A 64-bit PCI card with no
-overhang will just barely fit.
+I agree the Voodoo 1 should work. The issue here is that I can compile in
+tdfx character support for the kernel and still have it boot, but can't
+boot with tdfx framebuffer support on the O2 for some reason. With just
+character support lspci IDs the card
 
-You can see images of the PCI cage here:
-http://hardware.majix.org/computers/sgi.o2/images/o2.18.big.jpg
-http://hardware.majix.org/computers/sgi.o2/images/o2.26.big.jpg
+00:03.0 PCI VGA compatible controller: ...
 
-The Millenium I that I have does not fit, physically. It is 7.5" deep. I
-already removed the metal cage (only using the daughter board), but the
-end of the metal cage butts up against the metal housing, so while I might
-be able to fit a 7.25" PCI card this way (though it would be unsupported
-and this might not be the best idea) 7.5" is just too big. For example, I
-have a 3ware Escalade 8500 which is 7" deep and does not fit. It would fit
-without the metal cage (I only mention since its a PCI 64-bit card I have
-handy, I know putting an SATA RAID card into an O2 would be silly).
+However, trying to start X.org gives the following errors:
 
-If the Open Graphics Project (assuming this is the OGP you refer to) board
-does not have overhang, i.e. it is just the size of a 32 or even 64 bit
-PCI slot, it will fit the O2 just fine.
+(EE) TDFX(0): V_BIOS address 0x0 out of range
+(EE) end of block range 0x1ffffef < begin 0xfffffff0
+(EE) end of block range 0xfef < begin 0xffffff0

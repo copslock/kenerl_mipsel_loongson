@@ -1,47 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 12:22:53 +0100 (BST)
-Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:2998 "EHLO
-	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
-	id S20022083AbXEHLWv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 May 2007 12:22:51 +0100
-Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
-	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l48BR07K022693;
-	Tue, 8 May 2007 12:27:00 +0100
-Date:	Tue, 8 May 2007 12:27:00 +0100
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	sknauert@wesleyan.edu
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 13:05:49 +0100 (BST)
+Received: from mail.blastwave.org ([147.87.98.10]:48599 "EHLO
+	mail.blastwave.org") by ftp.linux-mips.org with ESMTP
+	id S20022149AbXEHMFr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 May 2007 13:05:47 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mail.blastwave.org (Postfix) with ESMTP id 47746F92E;
+	Tue,  8 May 2007 14:05:17 +0200 (MEST)
+X-Virus-Scanned: amavisd-new at blastwave.org
+Received: from mail.blastwave.org ([127.0.0.1])
+	by localhost (enterprise.blastwave.org [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 3YWILGIhbQ9p; Tue,  8 May 2007 14:05:14 +0200 (MEST)
+Received: from aki.intern.liechtiag.ch (66-132.63-81.stat.fixnetdata.ch [81.63.132.66])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.blastwave.org (Postfix) with ESMTP id 2290EF8F7;
+	Tue,  8 May 2007 14:04:58 +0200 (MEST)
+Date:	Tue, 8 May 2007 14:04:57 +0200
+From:	Attila Kinali <attila@kinali.ch>
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:	Samium Gromoff <_deepfire@feelingofgreen.ru>,
+	sknauert@wesleyan.edu, linux-mips@linux-mips.org
 Subject: Re: PCI video card on SGI O2
-Message-ID: <20070508122700.262caec4@the-village.bc.nu>
-In-Reply-To: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu>
+Message-Id: <20070508140457.13458d63.attila@kinali.ch>
+In-Reply-To: <Pine.LNX.4.64.0705080920150.24717@anakin>
 References: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu>
-X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.8; i386-redhat-linux-gnu)
+	<876473x0jx.wl@betelheise.deep.net>
+	<Pine.LNX.4.64.0705080920150.24717@anakin>
+Organization: SEELE
+X-Mailer: Sylpheed 2.4.0rc (GTK+ 2.8.20; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Return-Path: <attila@kinali.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14989
+X-archive-position: 14990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: attila@kinali.ch
 Precedence: bulk
 X-list: linux-mips
 
-> 3) I tried a Voodoo 1, ATI Mach 64, S3 Virge DX, GX, etc., I actually have
-> a Millenium I but it won't fit in the O2. I mention these since they were
-> listed here http://www.linux-mips.org/wiki/PCI_graphics_cards as
-> potentially working. I'm assuming I need more kernel support?
-> Surprisingly, the character device drivers will compile and boot, and
-> lspci and other tools will recognize the card as a VGA device. I just
-> can't get a console or X to use them.
+On Tue, 8 May 2007 09:22:02 +0200 (CEST)
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
-The voodoo1 and voodoo2 should work - they are not VGA devices and don't
-have any compatibility vga gunk on them at all. You will need the voodoo
-frame buffer and/or X server driver, neither of which needs BIOS support.
-There is no 3D support on them as I could never be bothered to write the
-3D engine bootstrap code.
+> It's a pity the Millenium doesn't fit, as matroxfb is about the only
+> frame buffer device that can initialize a graphics card from scratch,
+> without help from the BIOS...
 
-Alan
+Why does the Millenium not fit?
+I'm asking because OGP might be a good replacement
+card for such systems (when it will be finished).
+And if the Millenium has some problems working in such
+systems, we could try not to do the same mistake with OGP.
+
+			Attila Kinali
+-- 
+Praised are the Fountains of Shelieth, the silver harp of the waters,
+But blest in my name forever this stream that stanched my thirst!
+                         -- Deed of Morred

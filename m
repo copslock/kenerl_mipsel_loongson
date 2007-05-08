@@ -1,72 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 08:22:05 +0100 (BST)
-Received: from assei1bl6.telenet-ops.be ([195.130.133.68]:44181 "EHLO
-	assei1bl6.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20021835AbXEHHWD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 May 2007 08:22:03 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by assei1bl6.telenet-ops.be (Postfix) with SMTP id 5B176220097;
-	Tue,  8 May 2007 09:22:03 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by assei1bl6.telenet-ops.be (Postfix) with ESMTP id 31954220087;
-	Tue,  8 May 2007 09:22:03 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.13.8/8.13.8/Debian-3) with ESMTP id l487M29N000918
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 8 May 2007 09:22:02 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.13.8/8.13.8/Submit) with ESMTP id l487M26U000915;
-	Tue, 8 May 2007 09:22:02 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Tue, 8 May 2007 09:22:02 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Samium Gromoff <_deepfire@feelingofgreen.ru>
-Cc:	sknauert@wesleyan.edu, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 08:51:18 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:58991 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20021972AbXEHHvR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 May 2007 08:51:17 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 8 May 2007 16:51:15 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 60F174209F;
+	Tue,  8 May 2007 16:50:49 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 5539B204C3;
+	Tue,  8 May 2007 16:50:49 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l487omW0072627;
+	Tue, 8 May 2007 16:50:48 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 08 May 2007 16:50:48 +0900 (JST)
+Message-Id: <20070508.165048.96687706.nemoto@toshiba-tops.co.jp>
+To:	sknauert@wesleyan.edu
+Cc:	linux-mips@linux-mips.org
 Subject: Re: PCI video card on SGI O2
-In-Reply-To: <876473x0jx.wl@betelheise.deep.net>
-Message-ID: <Pine.LNX.4.64.0705080920150.24717@anakin>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu>
 References: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu>
- <876473x0jx.wl@betelheise.deep.net>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14987
+X-archive-position: 14988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 8 May 2007, Samium Gromoff wrote:
-> At Tue, 8 May 2007 02:24:20 -0400 (EDT),
-> sknauert@wesleyan.edu wrote:
-> [snip]
-> > 3) I tried a Voodoo 1, ATI Mach 64, S3 Virge DX, GX, etc., I actually have
-> > a Millenium I but it won't fit in the O2.
-> 
-> Are you sure those have/need not to have proper BIOSen flashed onto them?
-> 
-> As i imagine, a videocard with x86 cr^Bode flashed into it is pretty useless,
-> or worse than useless, on anything but x86...
+On Tue, 8 May 2007 02:24:20 -0400 (EDT), sknauert@wesleyan.edu wrote:
+> 3) I tried a Voodoo 1, ATI Mach 64, S3 Virge DX, GX, etc., I actually have
+> a Millenium I but it won't fit in the O2. I mention these since they were
+> listed here http://www.linux-mips.org/wiki/PCI_graphics_cards as
+> potentially working. I'm assuming I need more kernel support?
 
-You can run the x86 emulator to execute the BIOS code. IIRC, (some version of)
-the X server has such an emulator included.  But that indeeds need `legacy I/O
-port' access to work.
+IIRC, patch for ATI Rage XL without BIOS was floating around a while
+ago (kernel 2.4 era?), but never merged to mainline in good shape.
+And the halfway codes are removed at kernel 2.6.16.
 
-It's a pity the Millenium doesn't fit, as matroxfb is about the only
-frame buffer device that can initialize a graphics card from scratch,
-without help from the BIOS...
+commit cb639258f92b2407c50f79a95364f42932481389
+Author: Antonino A. Daplas <adaplas@gmail.com>
+Date:   Mon Jan 9 20:53:13 2006 -0800
 
-Gr{oetje,eeting}s,
+    [PATCH] fbdev: atyfb: Remove BIOS-less booting
+    
+    CONFIG_ATYFB_XL_INIT option is broken for a long time.  It will always cause a
+    kernel hang.
+    
+    Since no one has fixed this problem for some time now, remove it from atyfb.
 
-						Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+---
+Atsushi Nemoto

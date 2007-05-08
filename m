@@ -1,67 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 08:51:18 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:58991 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20021972AbXEHHvR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 May 2007 08:51:17 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Tue, 8 May 2007 16:51:15 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 60F174209F;
-	Tue,  8 May 2007 16:50:49 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 5539B204C3;
-	Tue,  8 May 2007 16:50:49 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l487omW0072627;
-	Tue, 8 May 2007 16:50:48 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 08 May 2007 16:50:48 +0900 (JST)
-Message-Id: <20070508.165048.96687706.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2007 12:22:53 +0100 (BST)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:2998 "EHLO
+	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
+	id S20022083AbXEHLWv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 May 2007 12:22:51 +0100
+Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
+	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l48BR07K022693;
+	Tue, 8 May 2007 12:27:00 +0100
+Date:	Tue, 8 May 2007 12:27:00 +0100
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
 To:	sknauert@wesleyan.edu
 Cc:	linux-mips@linux-mips.org
 Subject: Re: PCI video card on SGI O2
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Message-ID: <20070508122700.262caec4@the-village.bc.nu>
 In-Reply-To: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu>
 References: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.8; i386-redhat-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14988
+X-archive-position: 14989
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 8 May 2007 02:24:20 -0400 (EDT), sknauert@wesleyan.edu wrote:
 > 3) I tried a Voodoo 1, ATI Mach 64, S3 Virge DX, GX, etc., I actually have
 > a Millenium I but it won't fit in the O2. I mention these since they were
 > listed here http://www.linux-mips.org/wiki/PCI_graphics_cards as
 > potentially working. I'm assuming I need more kernel support?
+> Surprisingly, the character device drivers will compile and boot, and
+> lspci and other tools will recognize the card as a VGA device. I just
+> can't get a console or X to use them.
 
-IIRC, patch for ATI Rage XL without BIOS was floating around a while
-ago (kernel 2.4 era?), but never merged to mainline in good shape.
-And the halfway codes are removed at kernel 2.6.16.
+The voodoo1 and voodoo2 should work - they are not VGA devices and don't
+have any compatibility vga gunk on them at all. You will need the voodoo
+frame buffer and/or X server driver, neither of which needs BIOS support.
+There is no 3D support on them as I could never be bothered to write the
+3D engine bootstrap code.
 
-commit cb639258f92b2407c50f79a95364f42932481389
-Author: Antonino A. Daplas <adaplas@gmail.com>
-Date:   Mon Jan 9 20:53:13 2006 -0800
-
-    [PATCH] fbdev: atyfb: Remove BIOS-less booting
-    
-    CONFIG_ATYFB_XL_INIT option is broken for a long time.  It will always cause a
-    kernel hang.
-    
-    Since no one has fixed this problem for some time now, remove it from atyfb.
-
-
----
-Atsushi Nemoto
+Alan

@@ -1,65 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 May 2007 11:11:47 +0100 (BST)
-Received: from mail.domino-printing.com ([64.212.99.82]:9221 "EHLO
-	UK-HC-PS1.domino-printing.com") by ftp.linux-mips.org with ESMTP
-	id S20022384AbXEIKLp convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 9 May 2007 11:11:45 +0100
-Received: from emea-exchange3.emea.dps.local (emea-exchange3.emea.dps.local) 
-    by UK-HC-PS1.domino-printing.com (Clearswift SMTPRS 5.2.5) with ESMTP 
-    id <T7f7cf3d8fb40d46352f78@UK-HC-PS1.domino-printing.com> for 
-    <linux-mips@linux-mips.org>; Wed, 9 May 2007 11:13:22 +0100
-Received: from tuxator2.emea.dps.local ([192.168.55.75]) by 
-    emea-exchange3.emea.dps.local with Microsoft SMTPSVC(6.0.3790.1830); 
-    Wed, 9 May 2007 12:13:27 +0200
-From:	Ulrich Eckhardt <eckhardt@satorlaser.com>
-Organization: Sator Laser GmbH
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 May 2007 13:06:53 +0100 (BST)
+Received: from assei1bl6.telenet-ops.be ([195.130.133.68]:44187 "EHLO
+	assei1bl6.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20023079AbXEIMGv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 9 May 2007 13:06:51 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by assei1bl6.telenet-ops.be (Postfix) with SMTP id 7755A22008D;
+	Wed,  9 May 2007 14:06:50 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by assei1bl6.telenet-ops.be (Postfix) with ESMTP id 4F5BD220079;
+	Wed,  9 May 2007 14:06:50 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.13.8/8.13.8/Debian-3) with ESMTP id l49C6nDi008195
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 9 May 2007 14:06:49 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.13.8/8.13.8/Submit) with ESMTP id l49C6nT2008192;
+	Wed, 9 May 2007 14:06:49 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Wed, 9 May 2007 14:06:49 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Ulrich Eckhardt <eckhardt@satorlaser.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: PCI video card on SGI O2
-Date:	Wed, 9 May 2007 12:12:31 +0200
-User-Agent: KMail/1.9.5
+In-Reply-To: <200705091212.32061.eckhardt@satorlaser.com>
+Message-ID: <Pine.LNX.4.64.0705091406260.5466@anakin>
 References: <1978.129.133.142.66.1178605460.squirrel@webmail.wesleyan.edu> 
-    <876473x0jx.wl@betelheise.deep.net> 
-    <Pine.LNX.4.64.0705080920150.24717@anakin>
-In-Reply-To: <Pine.LNX.4.64.0705080920150.24717@anakin>
+ <876473x0jx.wl@betelheise.deep.net>  <Pine.LNX.4.64.0705080920150.24717@anakin>
+ <200705091212.32061.eckhardt@satorlaser.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200705091212.32061.eckhardt@satorlaser.com>
-X-OriginalArrivalTime: 09 May 2007 10:13:27.0778 (UTC) 
-    FILETIME=[AFB53420:01C79222]
-Return-Path: <Eckhardt@satorlaser.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 14998
+X-archive-position: 14999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eckhardt@satorlaser.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 08 May 2007 09:22, Geert Uytterhoeven wrote:
-> It's a pity the Millenium doesn't fit, as matroxfb is about the only
-> frame buffer device that can initialize a graphics card from scratch,
-> without help from the BIOS...
+On Wed, 9 May 2007, Ulrich Eckhardt wrote:
+> On Tuesday 08 May 2007 09:22, Geert Uytterhoeven wrote:
+> > It's a pity the Millenium doesn't fit, as matroxfb is about the only
+> > frame buffer device that can initialize a graphics card from scratch,
+> > without help from the BIOS...
+> 
+> I'm not sure if this is the same thing you are referring to, but I have a G4 
+> Mac Mini which has a Radeon 9200 chip. The autodetection does not find a BIOS 
+> ROM (is that what you meant?) but it works nonetheless, both with FB and 
+> X.org. From reading the sources, it seems that this is even normal, in 
+> particular for embedded graphic chips as typically found in laptops.
 
-I'm not sure if this is the same thing you are referring to, but I have a G4 
-Mac Mini which has a Radeon 9200 chip. The autodetection does not find a BIOS 
-ROM (is that what you meant?) but it works nonetheless, both with FB and 
-X.org. From reading the sources, it seems that this is even normal, in 
-particular for embedded graphic chips as typically found in laptops.
+Open Firmware in your Mac Mini has F-code to initialize the Radeon 9200.
 
-Uli
+Gr{oetje,eeting}s,
 
--- 
-Sator Laser GmbH
-Geschäftsführer: Ronald Boers, Amtsgericht Hamburg HR B62 932
+						Geert
 
-**************************************************************************************
-           Visit our website at <http://www.satorlaser.de/>
-**************************************************************************************
-Diese E-Mail einschließlich sämtlicher Anhänge ist nur für den Adressaten bestimmt und kann vertrauliche Informationen enthalten. Bitte benachrichtigen Sie den Absender umgehend, falls Sie nicht der beabsichtigte Empfänger sein sollten. Die E-Mail ist in diesem Fall zu löschen und darf weder gelesen, weitergeleitet, veröffentlicht oder anderweitig benutzt werden.
-E-Mails können durch Dritte gelesen werden und Viren sowie nichtautorisierte Änderungen enthalten. Sator Laser GmbH ist für diese Folgen nicht verantwortlich.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-**************************************************************************************
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

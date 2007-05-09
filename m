@@ -1,139 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 May 2007 15:39:19 +0100 (BST)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:49419 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20023605AbXEIOjQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 9 May 2007 15:39:16 +0100
-Received: by mo.po.2iij.net (mo31) id l49EbwX2081853; Wed, 9 May 2007 23:37:58 +0900 (JST)
-Received: from localhost.localdomain (70.27.30.125.dy.iij4u.or.jp [125.30.27.70])
-	by mbox.po.2iij.net (mbox31) id l49Ebs5k013518
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 9 May 2007 23:37:54 +0900 (JST)
-Date:	Wed, 9 May 2007 23:31:46 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS][1/2] update tb0229_defconfig
-Message-Id: <20070509233146.6e82a301.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 May 2007 15:42:37 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:35780 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023610AbXEIOme (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 9 May 2007 15:42:34 +0100
+Received: from localhost (p3015-ipad31funabasi.chiba.ocn.ne.jp [221.189.127.15])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 5DBA2B629; Wed,  9 May 2007 23:42:27 +0900 (JST)
+Date:	Wed, 09 May 2007 23:42:38 +0900 (JST)
+Message-Id: <20070509.234238.25909573.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, sshtylyov@ru.mvista.com
+Subject: [PATCH] Remove unused CONFIG_TOSHIBA_BOARDS
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15006
+X-archive-position: 15007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/Kconfig                     |    6 ------
+ arch/mips/configs/jmr3927_defconfig   |    1 -
+ arch/mips/configs/rbhma4500_defconfig |    1 -
+ 3 files changed, 0 insertions(+), 8 deletions(-)
 
-This patch has updated tb0229_defconfig.
-It's added CONFIG_GPIO_TB0219.
-
-Yoichi
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0229_defconfig mips/arch/mips/configs/tb0229_defconfig
---- mips-orig/arch/mips/configs/tb0229_defconfig	2007-04-15 01:01:05.341956750 +0900
-+++ mips/arch/mips/configs/tb0229_defconfig	2007-04-15 01:10:51.182569500 +0900
-@@ -1,7 +1,7 @@
- #
- # Automatically generated make config: don't edit
--# Linux kernel version: 2.6.20
--# Tue Feb 20 21:47:41 2007
-+# Linux kernel version: 2.6.21-rc6
-+# Sun Apr 15 01:06:01 2007
- #
- CONFIG_MIPS=y
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4a4d94c..8959126 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -736,7 +736,6 @@ config TOSHIBA_JMR3927
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+-	select TOSHIBA_BOARDS
+ 	select GENERIC_HARDIRQS_NO__DO_IRQ
  
-@@ -66,10 +66,11 @@ CONFIG_MACH_VR41XX=y
- # CONFIG_IBM_WORKPAD is not set
- # CONFIG_NEC_CMBVR4133 is not set
- CONFIG_TANBAC_TB022X=y
--# CONFIG_TANBAC_TB0226 is not set
--# CONFIG_TANBAC_TB0287 is not set
- # CONFIG_VICTOR_MPC30X is not set
- # CONFIG_ZAO_CAPCELLA is not set
-+CONFIG_TANBAC_TB0219=y
-+# CONFIG_TANBAC_TB0226 is not set
-+# CONFIG_TANBAC_TB0287 is not set
- CONFIG_PCI_VR41XX=y
- CONFIG_RWSEM_GENERIC_SPINLOCK=y
- # CONFIG_ARCH_HAS_ILOG2_U32 is not set
-@@ -184,6 +185,7 @@ CONFIG_SYSVIPC_SYSCTL=y
- # CONFIG_IKCONFIG is not set
- CONFIG_SYSFS_DEPRECATED=y
- # CONFIG_RELAY is not set
-+# CONFIG_BLK_DEV_INITRD is not set
- # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
- CONFIG_SYSCTL=y
- CONFIG_EMBEDDED=y
-@@ -375,7 +377,7 @@ CONFIG_FIB_RULES=y
- #
- CONFIG_STANDALONE=y
- CONFIG_PREVENT_FIRMWARE_BUILD=y
--# CONFIG_FW_LOADER is not set
-+CONFIG_FW_LOADER=m
- # CONFIG_SYS_HYPERVISOR is not set
+ config TOSHIBA_RBTX4927
+@@ -752,7 +751,6 @@ config TOSHIBA_RBTX4927
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_KGDB
+-	select TOSHIBA_BOARDS
+ 	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	help
+ 	  This Toshiba board is based on the TX4927 processor. Say Y here to
+@@ -772,7 +770,6 @@ config TOSHIBA_RBTX4938
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_KGDB
+-	select TOSHIBA_BOARDS
+ 	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	help
+ 	  This Toshiba board is based on the TX4938 processor. Say Y here to
+@@ -1086,9 +1083,6 @@ config ARC64
+ config BOOT_ELF64
+ 	bool
+ 
+-config TOSHIBA_BOARDS
+-	bool
+-
+ menu "CPU selection"
+ 
+ choice
+diff --git a/arch/mips/configs/jmr3927_defconfig b/arch/mips/configs/jmr3927_defconfig
+index 068e48e..1b364cf 100644
+--- a/arch/mips/configs/jmr3927_defconfig
++++ b/arch/mips/configs/jmr3927_defconfig
+@@ -80,7 +80,6 @@ CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+ CONFIG_MIPS_TX3927=y
+ CONFIG_SWAP_IO_SPACE=y
+ CONFIG_MIPS_L1_CACHE_SHIFT=5
+-CONFIG_TOSHIBA_BOARDS=y
  
  #
-@@ -415,7 +417,6 @@ CONFIG_BLK_DEV_RAM=y
- CONFIG_BLK_DEV_RAM_COUNT=16
- CONFIG_BLK_DEV_RAM_SIZE=4096
- CONFIG_BLK_DEV_RAM_BLOCKSIZE=1024
--# CONFIG_BLK_DEV_INITRD is not set
- # CONFIG_CDROM_PKTCDVD is not set
- # CONFIG_ATA_OVER_ETH is not set
- 
-@@ -646,7 +647,7 @@ CONFIG_LEGACY_PTY_COUNT=256
- # CONFIG_DTLK is not set
- # CONFIG_R3964 is not set
- # CONFIG_APPLICOM is not set
--CONFIG_TANBAC_TB0219=y
-+CONFIG_GPIO_TB0219=y
- # CONFIG_DRM is not set
- CONFIG_GPIO_VR41XX=y
- # CONFIG_RAW_DRIVER is not set
-@@ -679,6 +680,11 @@ CONFIG_GPIO_VR41XX=y
- # CONFIG_HWMON_VID is not set
+ # CPU selection
+diff --git a/arch/mips/configs/rbhma4500_defconfig b/arch/mips/configs/rbhma4500_defconfig
+index 7d0f217..41011f7 100644
+--- a/arch/mips/configs/rbhma4500_defconfig
++++ b/arch/mips/configs/rbhma4500_defconfig
+@@ -89,7 +89,6 @@ CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+ CONFIG_SWAP_IO_SPACE=y
+ CONFIG_MIPS_L1_CACHE_SHIFT=5
+ CONFIG_HAVE_STD_PC_SERIAL_PORT=y
+-CONFIG_TOSHIBA_BOARDS=y
  
  #
-+# Multifunction device drivers
-+#
-+# CONFIG_MFD_SM501 is not set
-+
-+#
- # Multimedia devices
- #
- # CONFIG_VIDEO_DEV is not set
-@@ -692,7 +698,7 @@ CONFIG_GPIO_VR41XX=y
- #
- # Graphics support
- #
--# CONFIG_FIRMWARE_EDID is not set
-+# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
- # CONFIG_FB is not set
- 
- #
-@@ -700,7 +706,6 @@ CONFIG_GPIO_VR41XX=y
- #
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_DUMMY_CONSOLE=y
--# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
- 
- #
- # Sound
-@@ -831,6 +836,7 @@ CONFIG_USB_MON=y
- # CONFIG_USB_SISUSBVGA is not set
- # CONFIG_USB_LD is not set
- # CONFIG_USB_TRANCEVIBRATOR is not set
-+# CONFIG_USB_IOWARRIOR is not set
- # CONFIG_USB_TEST is not set
- 
- #
+ # CPU selection

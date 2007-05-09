@@ -1,55 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 May 2007 17:14:09 +0100 (BST)
-Received: from nz-out-0506.google.com ([64.233.162.234]:38280 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023784AbXEIQOH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 9 May 2007 17:14:07 +0100
-Received: by nz-out-0506.google.com with SMTP id x7so262359nzc
-        for <linux-mips@linux-mips.org>; Wed, 09 May 2007 09:14:03 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=FMh2jAzqrwDrntDbFakZ4OvXftuZRbgXll864JFCpMzgmoaGUidzdtW88j4bniHos+KwXGLo9z66iikbvMkpDL1XFgpfVTtKKrfXkOXA7hcxRGxSCXlNYxuig+fRhSN4sBZ1is2vsCY/IAwTLVrvFMy/MOz4LwjAWASg/cm8d6I=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=grLDDWaHcAgX218Zo+TdZfCogFLz1ftRz+zS66FPBViojYVeMKLMz99QaevcgJwVgvtmyanSd0EQgYODhVqovSKFULKobPgq5feFtY8vqa/jWVwd92Hq/31HEqCMqqFykLdqvRrfmhGSvUgp04ha1NgwwYiis8HJ519LihrO5Co=
-Received: by 10.114.166.1 with SMTP id o1mr96974wae.1178727243413;
-        Wed, 09 May 2007 09:14:03 -0700 (PDT)
-Received: by 10.114.134.16 with HTTP; Wed, 9 May 2007 09:14:03 -0700 (PDT)
-Message-ID: <cda58cb80705090914g12d0356fld67d75b35bd44b5e@mail.gmail.com>
-Date:	Wed, 9 May 2007 18:14:03 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH 3/3] Remove LIMITED_DMA support
-Cc:	anemo@mba.ocn.ne.jp, linux-mips@linux-mips.org
-In-Reply-To: <20070509131607.GC25192@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 May 2007 17:15:00 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:3312 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023796AbXEIQO6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 9 May 2007 17:14:58 +0100
+Received: from localhost (p3015-ipad31funabasi.chiba.ocn.ne.jp [221.189.127.15])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id E3D089805; Thu, 10 May 2007 01:13:37 +0900 (JST)
+Date:	Thu, 10 May 2007 01:13:48 +0900 (JST)
+Message-Id: <20070510.011348.25233649.anemo@mba.ocn.ne.jp>
+To:	guido.zeiger@mailprocessor.de
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Segmentation Fault from MP3-Player with Etch on Qube2
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <8FBE82E8-F399-426A-A263-E0EA85095A08@mailprocessor.de>
+References: <8FBE82E8-F399-426A-A263-E0EA85095A08@mailprocessor.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <11785537132378-git-send-email-fbuihuu@gmail.com>
-	 <11785537142626-git-send-email-fbuihuu@gmail.com>
-	 <20070509131607.GC25192@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15011
+X-archive-position: 15012
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 5/9/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Mon, May 07, 2007 at 06:01:53PM +0200, Franck Bui-Huu wrote:
->
-> > Subject: [PATCH 3/3] Remove LIMITED_DMA support
->
-> Pleased to say goodbye to this one also,
->
+On Mon, 7 May 2007 19:37:40 +0200, Guido Zeiger <guido.zeiger@mailprocessor.de> wrote:
+> after reinstalling debian, (now etch , therefore sid) on my Qube2,  
+> because of changing to a 2.5" HD (from 3.5") and installing the
+> current debian version I got a Segmentation Fault on every usage of a  
+> program which should produce sound  :-((
+> 
+> The programs are
+> 
+> > mpg123
+> > mpg321
+> > mp3blaster
+> 
+> The programs did work with this qube2, soundcard and mp3-file under  
+> debian sid,
+> but now with etch it didnt work anymore.
 
-Thanks !
--- 
-               Franck
+There are know problems with PCI soundcard on noncoherent MIPS
+platform (including cobalt) and some patches are floating around.  For
+example:
+http://www.linux-mips.org/archives/linux-mips/2007-04/msg00072.html
+
+This is a long standing issue and I wonder why your soundcard _did_
+work with debian sid.  The kernel of sid contains fixes for this
+issue?
+
+---
+Atsushi Nemoto

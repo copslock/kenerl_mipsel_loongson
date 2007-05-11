@@ -1,109 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2007 11:30:02 +0100 (BST)
-Received: from mo30.po.2iij.NET ([210.128.50.53]:40492 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022391AbXEKK36 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2007 11:29:58 +0100
-Received: by mo.po.2iij.net (mo30) id l4BAToAo076028; Fri, 11 May 2007 19:29:50 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (mbox30) id l4BATmTg063898
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 11 May 2007 19:29:49 +0900 (JST)
-Date:	Fri, 11 May 2007 19:29:48 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Pierre Ossman <drzeus@drzeus.cx>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
-Subject: [PATCH] mmc: au1xmmc command types check from data flags
-Message-Id: <20070511192948.38937fd0.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <4643FD2B.8020103@drzeus.cx>
-References: <20070511125919.350c53a8.yoichi_yuasa@tripeaks.co.jp>
-	<4643F57C.5060409@drzeus.cx>
-	<200705110516.l4B5GMQJ053603@mbox33.po.2iij.net>
-	<4643FD2B.8020103@drzeus.cx>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2007 11:49:12 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:42455 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022400AbXEKKtK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 11 May 2007 11:49:10 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l4BAn5jh003208;
+	Fri, 11 May 2007 11:49:05 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l4BAn4Vp003207;
+	Fri, 11 May 2007 11:49:04 +0100
+Date:	Fri, 11 May 2007 11:49:04 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, sam@ravnborg.org
+Subject: Re: [PATCH] MIPS: Run checksyscalls for N32 and O32 ABI
+Message-ID: <20070511104904.GE2732@linux-mips.org>
+References: <20070511.010234.74566169.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070511.010234.74566169.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15027
+X-archive-position: 15028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 11 May 2007 07:20:43 +0200
-Pierre Ossman <drzeus@drzeus.cx> wrote:
+On Fri, May 11, 2007 at 01:02:34AM +0900, Atsushi Nemoto wrote:
 
-> Yoichi Yuasa wrote:
-> > 
-> > The commands of au1xmmc controller are different from standard commands. 
-> > au1xmmc_send_command() convert standard commands to local commands for au1xmmc host controller,
-> > and send local commands to controller.
-> > 
-> 
-> A quick glance at the code seems to suggest it's specifying the type of command.
-> And it should be able to figure that out in a more generic way.
+> On 64-bit MIPS, only N64 ABI is checked by default.  This patch adds
+> some rules for other ABIs.  This results in these warnings at the
+> moment:
 
-Ok, I updated the patch for au1xmmc.c .
+These warnings are definately valuable so I applied your patch.  Some of
+the warnings are a little useless though, for example the ones about the
+uselib syscall.
 
-This patch has changed command types check from data flags.
-
-MMC_STOP_TRANSMISSION is never passed to au1xmmc_send_command().
-SEND_STOP() is used for MMC_STOP_TRANSMISSION.
-
-Yoichi
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/mmc/host/au1xmmc.c mips/drivers/mmc/host/au1xmmc.c
---- mips-orig/drivers/mmc/host/au1xmmc.c	2007-05-11 10:27:01.068483750 +0900
-+++ mips/drivers/mmc/host/au1xmmc.c	2007-05-11 19:13:11.426283750 +0900
-@@ -189,7 +189,7 @@ static void au1xmmc_tasklet_finish(unsig
- static int au1xmmc_send_command(struct au1xmmc_host *host, int wait,
- 				struct mmc_command *cmd)
- {
--
-+	unsigned int flags;
- 	u32 mmccmd = (cmd->opcode << SD_CMD_CI_SHIFT);
- 
- 	switch (mmc_resp_type(cmd)) {
-@@ -213,24 +213,17 @@ static int au1xmmc_send_command(struct a
- 		return MMC_ERR_INVALID;
- 	}
- 
--	switch(cmd->opcode) {
--	case MMC_READ_SINGLE_BLOCK:
--	case SD_APP_SEND_SCR:
--		mmccmd |= SD_CMD_CT_2;
--		break;
--	case MMC_READ_MULTIPLE_BLOCK:
--		mmccmd |= SD_CMD_CT_4;
--		break;
--	case MMC_WRITE_BLOCK:
--		mmccmd |= SD_CMD_CT_1;
--		break;
--
--	case MMC_WRITE_MULTIPLE_BLOCK:
--		mmccmd |= SD_CMD_CT_3;
--		break;
--	case MMC_STOP_TRANSMISSION:
--		mmccmd |= SD_CMD_CT_7;
--		break;
-+	flags = cmd->data->flags;
-+	if (flags & MMC_DATA_READ) {
-+		if (flags & MMC_DATA_MULTI)
-+			mmccmd |= SD_CMD_CT_4;
-+		else
-+			mmccmd |= SD_CMD_CT_2;
-+	} else if (flags & MMC_DATA_WRITE) {
-+		if (flags & MMC_DATA_MULTI)
-+			mmccmd |= SD_CMD_CT_3;
-+		else
-+			mmccmd |= SD_CMD_CT_1;
- 	}
- 
- 	au_writel(cmd->arg, HOST_CMDARG(host));
+  Ralf

@@ -1,82 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2007 14:56:46 +0100 (BST)
-Received: from phoenix.bawue.net ([193.7.176.60]:7865 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20022616AbXEKN4o (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2007 14:56:44 +0100
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id 8D6158648B;
-	Fri, 11 May 2007 15:50:15 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.67)
-	(envelope-from <ths@networkno.de>)
-	id 1HmVWc-0004U6-8S; Fri, 11 May 2007 14:51:14 +0100
-Date:	Fri, 11 May 2007 14:51:14 +0100
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2007 15:42:44 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:36068 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022635AbXEKOmn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2007 15:42:43 +0100
+Received: from localhost (p6018-ipad206funabasi.chiba.ocn.ne.jp [222.145.80.18])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 64F49AF1E; Fri, 11 May 2007 23:41:22 +0900 (JST)
+Date:	Fri, 11 May 2007 23:41:34 +0900 (JST)
+Message-Id: <20070511.234134.126573972.anemo@mba.ocn.ne.jp>
+To:	ths@networkno.de
+Cc:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org,
 	ralf@linux-mips.org, sam@ravnborg.org
 Subject: Re: [PATCH] MIPS: Run checksyscalls for N32 and O32 ABI
-Message-ID: <20070511135114.GA16014@networkno.de>
-References: <20070511.010234.74566169.anemo@mba.ocn.ne.jp> <cda58cb80705110514g1098de81lec547e774eb76482@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80705110514g1098de81lec547e774eb76482@mail.gmail.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	Thiemo Seufer <ths@networkno.de>
-Return-Path: <ths@networkno.de>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070511135114.GA16014@networkno.de>
+References: <20070511.010234.74566169.anemo@mba.ocn.ne.jp>
+	<cda58cb80705110514g1098de81lec547e774eb76482@mail.gmail.com>
+	<20070511135114.GA16014@networkno.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15041
+X-archive-position: 15042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-> Hi Atsushi,
+On Fri, 11 May 2007 14:51:14 +0100, Thiemo Seufer <ths@networkno.de> wrote:
+> > woah, quite a lot of works are waiting for you ;)
 > 
-> On 5/10/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> >On 64-bit MIPS, only N64 ABI is checked by default.  This patch adds
-> >some rules for other ABIs.  This results in these warnings at the
-> >moment:
-> >
-> 
-> nice to see this second version which is nicer IMHO.
-> 
-> >  CALL-N32 /home/git/linux-mips/scripts/checksyscalls.sh
-> ><stdin>:148:2: warning: #warning syscall time not implemented
-> ><stdin>:424:2: warning: #warning syscall select not implemented
-> ><stdin>:440:2: warning: #warning syscall uselib not implemented
-> ><stdin>:856:2: warning: #warning syscall vfork not implemented
-> ><stdin>:868:2: warning: #warning syscall truncate64 not implemented
-> ><stdin>:872:2: warning: #warning syscall ftruncate64 not implemented
-> ><stdin>:876:2: warning: #warning syscall stat64 not implemented
-> ><stdin>:880:2: warning: #warning syscall lstat64 not implemented
-> ><stdin>:884:2: warning: #warning syscall fstat64 not implemented
-> ><stdin>:980:2: warning: #warning syscall getdents64 not implemented
-> ><stdin>:1176:2: warning: #warning syscall fadvise64_64 not implemented
-> ><stdin>:1284:2: warning: #warning syscall fstatat64 not implemented
-> ><stdin>:1364:2: warning: #warning syscall utimensat not implemented
-> >  CALL-O32 /home/git/linux-mips/scripts/checksyscalls.sh
-> ><stdin>:424:2: warning: #warning syscall select not implemented
-> ><stdin>:856:2: warning: #warning syscall vfork not implemented
-> ><stdin>:1176:2: warning: #warning syscall fadvise64_64 not implemented
-> ><stdin>:1364:2: warning: #warning syscall utimensat not implemented
-> >  CALL    /home/git/linux-mips/scripts/checksyscalls.sh
-> ><stdin>:148:2: warning: #warning syscall time not implemented
-> ><stdin>:424:2: warning: #warning syscall select not implemented
-> ><stdin>:440:2: warning: #warning syscall uselib not implemented
-> ><stdin>:856:2: warning: #warning syscall vfork not implemented
-> ><stdin>:980:2: warning: #warning syscall getdents64 not implemented
-> ><stdin>:1364:2: warning: #warning syscall utimensat not implemented
-> >
-> 
-> woah, quite a lot of works are waiting for you ;)
+> AFAICS everything except utimensat is a false positive.
 
-AFAICS everything except utimensat is a false positive.
+Well, fadvise64_64 is not a false positive, isn't it?  LFS version of
+posix_fadvise needs fadvise64_64, not fadvise64.
 
-
-Thiemo
+And anyway fadvise64_64 needs some fix to adjust longlong argument as
+I said before.
+---
+Atsushi Nemoto

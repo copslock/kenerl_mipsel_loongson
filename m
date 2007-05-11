@@ -1,61 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2007 20:01:14 +0100 (BST)
-Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:21165 "EHLO
-	bluesmobile.specifix.com") by ftp.linux-mips.org with ESMTP
-	id S20022919AbXEJTBM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 10 May 2007 20:01:12 +0100
-Received: from localhost.localdomain (bluesmobile.specifix.com [64.220.152.99])
-	by bluesmobile.specifix.com (Postfix) with ESMTP id 98F323B8F2;
-	Thu, 10 May 2007 12:00:31 -0700 (PDT)
-Subject: Re: Building a cross kernel for the IP27/Origin System
-From:	Jim Wilson <wilson@specifix.com>
-To:	Claus Herrmann <claus.herrmann@cybits.de>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <4640911A.4080801@cybits.de>
-References: <4640911A.4080801@cybits.de>
-Content-Type: text/plain
-Date:	Thu, 10 May 2007 12:00:35 -0700
-Message-Id: <1178823635.2740.6.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2007 04:59:36 +0100 (BST)
+Received: from mo32.po.2iij.NET ([210.128.50.17]:37178 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20021773AbXEKD7f (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2007 04:59:35 +0100
+Received: by mo.po.2iij.net (mo32) id l4B3xP4Z032929; Fri, 11 May 2007 12:59:25 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (mbox32) id l4B3xJbn089751
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 11 May 2007 12:59:20 +0900 (JST)
+Date:	Fri, 11 May 2007 12:59:19 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	drzeus@drzeus.cx
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] mmc: add include <linux/mmc/mmc.h> to au1xmmc.c
+Message-Id: <20070511125919.350c53a8.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.6.3 (2.6.3-2.fc5) 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <wilson@specifix.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15020
+X-archive-position: 15021
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilson@specifix.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2007-05-08 at 17:02 +0200, Claus Herrmann wrote:
-> mips-linux-ld: Dwarf Error: found dwarf version '0', this reader only handles version 2 information.
+Hi,
 
-When GNU ld prints an error message, it first looks to see if you
-compiled with debug info, and if you did, it tries to read and parse the
-debug info so it can pretty-print the error message with source file and
-source line number info.  This makes it easier to figure out where the
-problem is.  Unfortunately, this code sometimes fails.  The linker must
-modify the debug info during the linking process by applying
-relocations.  If we try to read the debug info at the wrong time, we may
-get an inconsistent view of it, and may fail to read it correctly.  The
-code is fail soft, so this is harmless, except that you get annoying
-messages that make no sense to you.  Newer GNU ld versions handle this
-much better than older GNU ld versions.  I suspect this is what is
-happening in your case.
+This patch has fixed the following error about au1xmmc.c .
 
-Just edit out the annoying and useless dwarf error messages, and you get
+drivers/mmc/host/au1xmmc.c: In function 'au1xmmc_send_command':
+drivers/mmc/host/au1xmmc.c:217: error: 'MMC_READ_SINGLE_BLOCK' undeclared (first use in this function)
+drivers/mmc/host/au1xmmc.c:217: error: (Each undeclared identifier is reported only once
+drivers/mmc/host/au1xmmc.c:217: error: for each function it appears in.)
+drivers/mmc/host/au1xmmc.c:218: error: 'SD_APP_SEND_SCR' undeclared (first use in this function)
+drivers/mmc/host/au1xmmc.c:221: error: 'MMC_READ_MULTIPLE_BLOCK' undeclared (first use in this function)
+drivers/mmc/host/au1xmmc.c:224: error: 'MMC_WRITE_BLOCK' undeclared (first use in this function)
+drivers/mmc/host/au1xmmc.c:228: error: 'MMC_WRITE_MULTIPLE_BLOCK' undeclared (first use in this function)
+drivers/mmc/host/au1xmmc.c:231: error: 'MMC_STOP_TRANSMISSION' undeclared (first use in this function)
 
-> arch/mips/mm/built-in.o: In function `mem_init':
-> : multiple definition of `mem_init'
-> arch/mips/sgi-ip27/built-in.o:: first defined here
-> arch/mips/mm/built-in.o: In function `paging_init':
-> : multiple definition of `paging_init'
-> arch/mips/sgi-ip27/built-in.o:: first defined here
+Yoichi
 
-which is your real problem.  Looks like a problem with your mips kernel
-configuration.
--- 
-Jim Wilson, GNU Tools Support, http://www.specifix.com
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/mmc/host/au1xmmc.c mips/drivers/mmc/host/au1xmmc.c
+--- mips-orig/drivers/mmc/host/au1xmmc.c	2007-05-10 15:14:44.705610250 +0900
++++ mips/drivers/mmc/host/au1xmmc.c	2007-05-10 18:12:02.785248000 +0900
+@@ -42,6 +42,7 @@
+ #include <linux/dma-mapping.h>
+ 
+ #include <linux/mmc/host.h>
++#include <linux/mmc/mmc.h>
+ #include <asm/io.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_dbdma.h>

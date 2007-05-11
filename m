@@ -1,78 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2007 16:49:48 +0100 (BST)
-Received: from 85.8.24.16.se.wasadata.net ([85.8.24.16]:27271 "EHLO
-	smtp.drzeus.cx") by ftp.linux-mips.org with ESMTP id S28573710AbXEKPtq
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 11 May 2007 16:49:46 +0100
-Received: from poseidon.drzeus.cx (wlan152.drzeus.cx [::ffff:10.8.2.152])
-  (AUTH: LOGIN drzeus)
-  by smtp.drzeus.cx with esmtp; Fri, 11 May 2007 17:49:40 +0200
-  id 00062A6C.46449095.00005936
-Message-ID: <46449065.3050904@drzeus.cx>
-Date:	Fri, 11 May 2007 17:48:53 +0200
-From:	Pierre Ossman <drzeus@drzeus.cx>
-User-Agent: Thunderbird 2.0.0.0 (X11/20070419)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 May 2007 16:59:03 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:46557 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28573712AbXEKP66 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 May 2007 16:58:58 +0100
+Received: from localhost (p6018-ipad206funabasi.chiba.ocn.ne.jp [222.145.80.18])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A5214A9EC; Sat, 12 May 2007 00:58:52 +0900 (JST)
+Date:	Sat, 12 May 2007 00:59:05 +0900 (JST)
+Message-Id: <20070512.005905.26096031.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org, sam@ravnborg.org
+Subject: Re: [PATCH] MIPS: Run checksyscalls for N32 and O32 ABI
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <cda58cb80705110514g1098de81lec547e774eb76482@mail.gmail.com>
+References: <20070511.010234.74566169.anemo@mba.ocn.ne.jp>
+	<cda58cb80705110514g1098de81lec547e774eb76482@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=_hera.drzeus.cx-22838-1178898581-0001-2"
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] mmc: au1xmmc command types check from data flags
-References: <20070511125919.350c53a8.yoichi_yuasa@tripeaks.co.jp>	<4643F57C.5060409@drzeus.cx>	<200705110516.l4B5GMQJ053603@mbox33.po.2iij.net>	<4643FD2B.8020103@drzeus.cx> <20070511192948.38937fd0.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20070511192948.38937fd0.yoichi_yuasa@tripeaks.co.jp>
-X-Enigmail-Version: 0.95.0
-Return-Path: <drzeus@drzeus.cx>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15043
+X-archive-position: 15044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: drzeus@drzeus.cx
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is a MIME-formatted message.  If you see this text it means that your
-E-mail software does not support MIME-formatted messages.
+On Fri, 11 May 2007 14:14:47 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> or can't we do instead:
+> 
+> $(Q)$(MAKE) $(build)=. missing-syscalls EXTRA_CFLAGS="-mabi=n32"
+> 
+> and get rid of "missing-syscalls-n32" rule. Thus this avoids to
+> duplicate "missing-syscalls" command.
 
---=_hera.drzeus.cx-22838-1178898581-0001-2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Yoichi Yuasa wrote:
->=20
-> Ok, I updated the patch for au1xmmc.c .
->=20
-> This patch has changed command types check from data flags.
->=20
-
-Perfect. That's just the way things should be.
-
-> MMC_STOP_TRANSMISSION is never passed to au1xmmc_send_command().
-> SEND_STOP() is used for MMC_STOP_TRANSMISSION.
->=20
-
-That SEND_STOP however is a long standing bug in this driver. Could I bot=
-her you
-with fixing the driver so that it respects mrq->data->stop?
-
-Rgds
-Pierre
+Thank you for suggestion.  How about this?
 
 
+Subject: [PATCH] MIPS: Simplify missing-syscalls for N32 and O32
 
---=_hera.drzeus.cx-22838-1178898581-0001-2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Transfer-Encoding: 7bit
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+Use standard missing-syscalls with EXTRA_CFLAGS instead of duplicating
+the command.  Suggested by Franck Bui-Huu.  Also add "echo" to show
+the target ABI.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.7 (GNU/Linux)
-Comment: Using GnuPG with Fedora - http://enigmail.mozdev.org
-
-iD8DBQFGRJBq7b8eESbyJLgRAmSNAJ98/CqDUmaa7wUjCm1fbqiSMM4NoACeMFCr
-edfHrMO6cPRKi85SKPUwWVA=
-=08FX
------END PGP SIGNATURE-----
-
---=_hera.drzeus.cx-22838-1178898581-0001-2--
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index f450066..25c7318 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -710,24 +710,12 @@ CLEAN_FILES += vmlinux.32 \
+ 	       vmlinux.64 \
+ 	       vmlinux.ecoff
+ 
+-quiet_cmd_syscalls_n32 = CALL-N32 $<
+-      cmd_syscalls_n32 = $(CONFIG_SHELL) $< $(CC) $(c_flags) -mabi=n32
+-
+-quiet_cmd_syscalls_o32 = CALL-O32 $<
+-      cmd_syscalls_o32 = $(CONFIG_SHELL) $< $(CC) $(c_flags) -mabi=32
+-
+-PHONY += missing-syscalls-n32 missing-syscalls-o32
+-
+-missing-syscalls-n32: scripts/checksyscalls.sh FORCE
+-	$(call cmd,syscalls_n32)
+-
+-missing-syscalls-o32: scripts/checksyscalls.sh FORCE
+-	$(call cmd,syscalls_o32)
+-
+ archprepare:
+ ifdef CONFIG_MIPS32_N32
+-	$(Q)$(MAKE) $(build)=arch/mips missing-syscalls-n32
++	@echo '  Checking missing-syscalls for N32'
++	$(Q)$(MAKE) $(build)=. missing-syscalls EXTRA_CFLAGS="-mabi=n32"
+ endif
+ ifdef CONFIG_MIPS32_O32
+-	$(Q)$(MAKE) $(build)=arch/mips missing-syscalls-o32
++	@echo '  Checking missing-syscalls for O32'
++	$(Q)$(MAKE) $(build)=. missing-syscalls EXTRA_CFLAGS="-mabi=32"
+ endif

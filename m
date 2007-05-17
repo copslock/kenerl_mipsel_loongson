@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2007 15:04:22 +0100 (BST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:24075 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 May 2007 16:16:59 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:38160 "EHLO
 	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S20023467AbXEQOEU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 17 May 2007 15:04:20 +0100
+	id S20023474AbXEQPQ5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 17 May 2007 16:16:57 +0100
 Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id E61DDD8E1; Thu, 17 May 2007 14:03:42 +0000 (UTC)
+	id 0B824D8E1; Thu, 17 May 2007 15:16:50 +0000 (UTC)
 Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id B3813543E0; Thu, 17 May 2007 16:03:27 +0200 (CEST)
-Date:	Thu, 17 May 2007 16:03:27 +0200
+	id 1BDED543E0; Thu, 17 May 2007 17:16:37 +0200 (CEST)
+Date:	Thu, 17 May 2007 17:16:37 +0200
 From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	guido.zeiger@mailprocessor.de, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: Segmentation Fault from MP3-Player with Etch on Qube2
-Message-ID: <20070517140327.GA3586@deprecation.cyrius.com>
-References: <8FBE82E8-F399-426A-A263-E0EA85095A08@mailprocessor.de> <20070510.011348.25233649.anemo@mba.ocn.ne.jp> <20070516142849.GD19816@deprecation.cyrius.com> <20070517.201214.15246811.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Subject: SGI O2 meth: missing sysfs device symlink
+Message-ID: <20070517151636.GJ3586@deprecation.cyrius.com>
+References: <1178743456.15447.41.camel@scarafaggio> <20070516151939.GH19816@deprecation.cyrius.com> <20070516160313.GA3409@bongo.bofh.it> <50621.192.168.2.50.1179383217.squirrel@eppesuigoccas.homedns.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20070517.201214.15246811.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <50621.192.168.2.50.1179383217.squirrel@eppesuigoccas.homedns.org>
 User-Agent: Mutt/1.5.13 (2006-08-11)
 Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15076
+X-archive-position: 15077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,17 +31,31 @@ X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-* Atsushi Nemoto <anemo@mba.ocn.ne.jp> [2007-05-17 20:12]:
-> Did the 2.4 kernel use ALSA or OSS?  I think ALSA for kernel 2.4 had
-> same problem.
+Apparently udev fails to rename the SGI O2 interface because it
+doesn't have a sysfs device symlink.  Does someone here know how to
+fix this?
 
-Yes, that was with OSS, sorry.
+* Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org> [2007-05-17 08:26]:
+> [...]
+> > Interfaces must have a device symlink (in /sys/class/net/$IFACE/, which
+> > some broken drivers lack) and unique MAC addresses.
+> 
+> Hi Marco,
+> this "device" link is missing for this driver. So probably this is a
+> kernel bug.
+> 
+> giuseppe@sgi:~$ ls -ld /sys/class/net/*{,/device}
+> drwxr-xr-x 3 root root 0 2007-05-17 08:22 /sys/class/net/eth0
+> drwxr-xr-x 3 root root 0 2007-05-17 08:22 /sys/class/net/eth100
+> lrwxrwxrwx 1 root root 0 2007-05-17 08:22 /sys/class/net/eth100/device ->
+> ../../../devices/pci0000:00/0000:00:03.0
+> drwxr-xr-x 3 root root 0 2007-05-12 23:35 /sys/class/net/lo
+> drwxr-xr-x 3 root root 0 2007-05-12 15:10 /sys/class/net/ppp0
+> drwxr-xr-x 3 root root 0 2007-05-12 21:35 /sys/class/net/sit0
+> 
+> Thanks,
+> Giuseppe
 
-> And this is a minimal patch for current git tree.  But I'm not sure if
-> this patch really fixes the reported segfault.
-
-Gudio, can you try this patch or should I compile a kernel for you
-with it?
 -- 
 Martin Michlmayr
 http://www.cyrius.com/

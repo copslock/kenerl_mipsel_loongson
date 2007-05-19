@@ -1,61 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 May 2007 13:38:56 +0100 (BST)
-Received: from smtp-105-friday.nerim.net ([62.4.16.105]:9491 "EHLO
-	kraid.nerim.net") by ftp.linux-mips.org with ESMTP
-	id S20023726AbXERMiy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 May 2007 13:38:54 +0100
-Received: from hyperion.delvare (jdelvare.pck.nerim.net [62.212.121.182])
-	by kraid.nerim.net (Postfix) with ESMTP id B22C8410B6;
-	Fri, 18 May 2007 14:38:20 +0200 (CEST)
-Date:	Fri, 18 May 2007 14:38:39 +0200
-From:	Jean Delvare <khali@linux-fr.org>
-To:	Domen Puncer <domen.puncer@telargo.com>
-Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] i2c-au1550: convert to platform driver
-Message-ID: <20070518143839.41117729@hyperion.delvare>
-In-Reply-To: <20070518072427.GC20713@moe.telargo.com>
-References: <20070516053439.GB12986@roarinelk.homelinux.net>
-	<20070517123853.4ae91d25@hyperion.delvare>
-	<20070518072427.GC20713@moe.telargo.com>
-X-Mailer: Sylpheed-Claws 2.5.5 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 May 2007 07:51:48 +0100 (BST)
+Received: from host51-222-dynamic.2-87-r.retail.telecomitalia.it ([87.2.222.51]:13828
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20022627AbXESGvq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 19 May 2007 07:51:46 +0100
+Received: from localhost ([127.0.0.1] helo=eppesuigoccas.homedns.org)
+	by eppesuigoccas.homedns.org with esmtp (Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1HpImu-0000Lh-Ub
+	for linux-mips@linux-mips.org; Sat, 19 May 2007 08:51:39 +0200
+Received: from 193.253.35.188
+        (SquirrelMail authenticated user giuseppe)
+        by eppesuigoccas.homedns.org with HTTP;
+        Sat, 19 May 2007 08:51:36 +0200 (CEST)
+Message-ID: <49027.193.253.35.188.1179557496.squirrel@eppesuigoccas.homedns.org>
+Date:	Sat, 19 May 2007 08:51:36 +0200 (CEST)
+Subject: R1000 status
+From:	"Giuseppe Sacco" <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+User-Agent: SquirrelMail/1.4.9a
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15083
+X-archive-position: 15084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Domen,
+Hi all,
+reading many web pages I think to understand that R10000 is supported on
+IP22 systems and is unsupported on IP32 systems because of its cache.
 
-On Fri, 18 May 2007 09:24:27 +0200, Domen Puncer wrote:
-> On 17/05/07 12:38 +0200, Jean Delvare wrote:
-> > On Wed, 16 May 2007 07:34:40 +0200, Manuel Lauss wrote:
-> > >  	if (!(stat & PSC_SMBSTAT_TE) || !(stat & PSC_SMBSTAT_RE)) {
-> > > -		sp->psc_smbpcr = PSC_SMBPCR_DC;
-> > > +		au_writel(PSC_SMBPCR_DC, base + PSC_SMBPCR);
-> > >  		au_sync();
-> > > -		do {
-> > > -			stat = sp->psc_smbpcr;
-> > > -			au_sync();
-> > > -		} while ((stat & PSC_SMBPCR_DC) != 0);
-> > > +		while (au_readl(base + PSC_SMBPCR) & PSC_SMBPCR_DC)
-> > > +			msleep(0);
-> > 
-> > You are changing the behavior here, while this patch is supposed to
-> > only convert the driver to the new device driver model.
-> 
-> Well... since msleep(0) is nothing, it's the same, but it does
-> look weird.
+The page http://www.linux-mips.org/wiki/Silicon_Graphics display a
+different result: R10000 on SIGG O2 is supported.
 
-msleep(0) isn't nothing. It sleeps until the next tick.
+Is there any news or a list of known problems?
 
--- 
-Jean Delvare
+Thanks,
+Giuseppe

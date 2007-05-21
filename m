@@ -1,74 +1,173 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2007 08:55:34 +0100 (BST)
-Received: from web94304.mail.in2.yahoo.com ([203.104.16.214]:16533 "HELO
-	web94304.mail.in2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20022056AbXEUHzc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 21 May 2007 08:55:32 +0100
-Received: (qmail 28778 invoked by uid 60001); 21 May 2007 07:54:25 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=Ox+EzNtPkLdc5qBfowkKr9soKpmP8GWMnii737Kpna39S8KpbRUxmTGKiCowegSnWLYLxAvamN8VQbO2bPsizdt3RTk9Yd9qinX6R8QZRbdxs1V7sbyf9eE2ElWn6Q7h5vc1hoMpc+VcUxhRjC2C43QZI7wFdPfOnoYEYK4jx2o=;
-X-YMail-OSG: ddWFLdQVM1ntO6dt9j9Ujmo9WDdgGo_I2muTG5dJ
-Received: from [59.92.76.206] by web94304.mail.in2.yahoo.com via HTTP; Mon, 21 May 2007 08:54:25 BST
-Date:	Mon, 21 May 2007 08:54:25 +0100 (BST)
-From:	saravanan sar <sar_van81@yahoo.co.in>
-Subject: toolchain procedure for AU1200
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 May 2007 13:47:28 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:5383 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022720AbXEUMr0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 21 May 2007 13:47:26 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 536A2E1E26;
+	Mon, 21 May 2007 14:47:16 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id B52K8glP49xX; Mon, 21 May 2007 14:47:16 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id EC8ADE1E0F;
+	Mon, 21 May 2007 14:47:15 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l4LClPFh010246;
+	Mon, 21 May 2007 14:47:25 +0200
+Date:	Mon, 21 May 2007 13:47:22 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
+Subject: [PATCH] Fix KMODE for the R3000
+Message-ID: <Pine.LNX.4.64N.0705211331001.8263@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-1340054889-1179734065=:27594"
-Content-Transfer-Encoding: 8bit
-Message-ID: <243199.27594.qm@web94304.mail.in2.yahoo.com>
-Return-Path: <sar_van81@yahoo.co.in>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.2/3273/Mon May 21 07:31:50 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15102
+X-archive-position: 15103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sar_van81@yahoo.co.in
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0-1340054889-1179734065=:27594
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+ This must be the oldest bug that we have got.  Leaving interrupts "as 
+they are" for the R3000 obviously means copying IEp to IEc.  Since we have 
+got STATMASK now, I took this opportunity to mask the status register 
+"correctly" for the R3000 now too.  Oh, and the R3000 hardly ever is 
+64-bit.
 
-Hi ,
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+ The KMODE change is important, the others -- not so much, but I have 
+thought there is not much point in separating these into three patches -- 
+they are just too trivial.  Call them "R3000 fixes for <asm/stackframe.h>" 
+if you like instead.
 
-Has anyone successfully compiled the toolchain for RMI Alchemy processor-DB1200 board with AU1200 processor ? if so can you please mail me the documents or any links regarding that? I followed the PDF documents (which i had attached) but i could not compile successfully. the following error :
-sysdeps/unix/inet sysdeps/unix/sysv sysdeps/unix/mips sysdeps/unix sysdeps/posix sysdeps/mips/mipsel sysdeps/mips/fpu sysdeps/mips sysdeps/wordsize-32 sysdeps/ieee754/flt-32 sysdeps/ieee754/dbl-64 sysdeps/ieee754 sysdeps/generic/elf sysdeps/generic
-checking for a BSD-compatible install... /usr/bin/install -c
-checking whether ln -s works... yes
-checking for pwd... /bin/pwd
-checking for mipsel-linux-gcc... gcc
-checking version of gcc... 4.1.0, bad
-checking for gnumake... no
-checking for gmake... gmake
-checking version of gmake... 3.80, ok
-configure: error:
-*** These critical programs are missing or too old: gcc
-*** Check the INSTALL file for required versions.
-suse:/home/downloads/crosstool-0.35 #
+ Please apply.
 
-can anyone provide me any suggestions or solutions for this ?
+  Maciej
 
-thanks in advance,
-
-saravanan.
-
- 			
----------------------------------
- Here’s a new way to find what you're looking for - Yahoo! Answers 
---0-1340054889-1179734065=:27594
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-Hi ,<br><br>Has anyone successfully compiled the toolchain for RMI Alchemy processor-DB1200 board with AU1200 processor ? if so can you please mail me the documents or any links regarding that? I followed the PDF documents (which i had attached) but i could not compile successfully. the following error :<br>sysdeps/unix/inet sysdeps/unix/sysv sysdeps/unix/mips sysdeps/unix sysdeps/posix sysdeps/mips/mipsel sysdeps/mips/fpu sysdeps/mips sysdeps/wordsize-32 sysdeps/ieee754/flt-32 sysdeps/ieee754/dbl-64 sysdeps/ieee754 sysdeps/generic/elf sysdeps/generic<br>checking for a BSD-compatible install... /usr/bin/install -c<br>checking whether ln -s works... yes<br>checking for pwd... /bin/pwd<br>checking for mipsel-linux-gcc... gcc<br>checking version of gcc... 4.1.0, bad<br>checking for gnumake... no<br>checking for gmake... gmake<br>checking version of gmake... 3.80, ok<br>configure: error:<br>*** These critical programs are missing or too old: gcc<br>*** Check the INSTALL file
- for required versions.<br>suse:/home/downloads/crosstool-0.35 #<br><br>can anyone provide me any suggestions or solutions for this ?<br><br>thanks in advance,<br><br>saravanan.<br><p>&#32;
-
-
-	
-		<hr size=1></hr> 
-Here’s a new way to find what you're looking for - <a href="http://us.rd.yahoo.com/mail/in/yanswers/*http://in.answers.yahoo.com/">Yahoo! Answers</a> 
---0-1340054889-1179734065=:27594--
+patch-mips-2.6.18-20060920-r3000-kmode-2
+diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/include/asm-mips/stackframe.h linux-mips-2.6.18-20060920/include/asm-mips/stackframe.h
+--- linux-mips-2.6.18-20060920.macro/include/asm-mips/stackframe.h	2006-06-22 05:11:41.000000000 +0000
++++ linux-mips-2.6.18-20060920/include/asm-mips/stackframe.h	2007-05-21 00:03:57.000000000 +0000
+@@ -17,6 +17,18 @@
+ #include <asm/mipsregs.h>
+ #include <asm/asm-offsets.h>
+ 
++/*
++ * For SMTC kernel, global IE should be left set, and interrupts
++ * controlled exclusively via IXMT.
++ */
++#ifdef CONFIG_MIPS_MT_SMTC
++#define STATMASK 0x1e
++#elif defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
++#define STATMASK 0x3f
++#else
++#define STATMASK 0x1f
++#endif
++
+ #ifdef CONFIG_MIPS_MT_SMTC
+ #include <asm/mipsmtregs.h>
+ #endif /* CONFIG_MIPS_MT_SMTC */
+@@ -244,10 +256,10 @@
+ 		.set	reorder
+ 		.set	noat
+ 		mfc0	a0, CP0_STATUS
+-		ori	a0, 0x1f
+-		xori	a0, 0x1f
+-		mtc0	a0, CP0_STATUS
+ 		li	v1, 0xff00
++		ori	a0, STATMASK
++		xori	a0, STATMASK
++		mtc0	a0, CP0_STATUS
+ 		and	a0, v1
+ 		LONG_L	v0, PT_STATUS(sp)
+ 		nor	v1, $0, v1
+@@ -257,10 +269,6 @@
+ 		LONG_L	$31, PT_R31(sp)
+ 		LONG_L	$28, PT_R28(sp)
+ 		LONG_L	$25, PT_R25(sp)
+-#ifdef CONFIG_64BIT
+-		LONG_L	$8, PT_R8(sp)
+-		LONG_L	$9, PT_R9(sp)
+-#endif
+ 		LONG_L	$7,  PT_R7(sp)
+ 		LONG_L	$6,  PT_R6(sp)
+ 		LONG_L	$5,  PT_R5(sp)
+@@ -281,16 +289,6 @@
+ 		.endm
+ 
+ #else
+-/*
+- * For SMTC kernel, global IE should be left set, and interrupts
+- * controlled exclusively via IXMT.
+- */
+-
+-#ifdef CONFIG_MIPS_MT_SMTC
+-#define STATMASK 0x1e
+-#else
+-#define STATMASK 0x1f
+-#endif
+ 		.macro	RESTORE_SOME
+ 		.set	push
+ 		.set	reorder
+@@ -393,9 +391,9 @@
+ 		.macro	CLI
+ #if !defined(CONFIG_MIPS_MT_SMTC)
+ 		mfc0	t0, CP0_STATUS
+-		li	t1, ST0_CU0 | 0x1f
++		li	t1, ST0_CU0 | STATMASK
+ 		or	t0, t1
+-		xori	t0, 0x1f
++		xori	t0, STATMASK
+ 		mtc0	t0, CP0_STATUS
+ #else /* CONFIG_MIPS_MT_SMTC */
+ 		/*
+@@ -428,9 +426,9 @@
+ 		.macro	STI
+ #if !defined(CONFIG_MIPS_MT_SMTC)
+ 		mfc0	t0, CP0_STATUS
+-		li	t1, ST0_CU0 | 0x1f
++		li	t1, ST0_CU0 | STATMASK
+ 		or	t0, t1
+-		xori	t0, 0x1e
++		xori	t0, STATMASK & ~1
+ 		mtc0	t0, CP0_STATUS
+ #else /* CONFIG_MIPS_MT_SMTC */
+ 		/*
+@@ -459,7 +457,8 @@
+ 		.endm
+ 
+ /*
+- * Just move to kernel mode and leave interrupts as they are.
++ * Just move to kernel mode and leave interrupts as they are.  Note
++ * for the R3000 this means copying the previous enable from IEp.
+  * Set cp0 enable bit as sign that we're running on the kernel stack
+  */
+ 		.macro	KMODE
+@@ -490,9 +489,14 @@
+ 		move	ra, t0
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 		mfc0	t0, CP0_STATUS
+-		li	t1, ST0_CU0 | 0x1e
++		li	t1, ST0_CU0 | (STATMASK & ~1)
++#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
++		andi	t2, t0, ST0_IEP
++		srl	t2, 2
++		or	t0, t2
++#endif
+ 		or	t0, t1
+-		xori	t0, 0x1e
++		xori	t0, STATMASK & ~1
+ 		mtc0	t0, CP0_STATUS
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 		_ehb

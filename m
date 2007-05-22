@@ -1,55 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2007 12:39:40 +0100 (BST)
-Received: from dmz.mips-uk.com ([194.74.144.194]:51214 "EHLO dmz.mips-uk.com")
-	by ftp.linux-mips.org with ESMTP id S20022564AbXEVLji (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 22 May 2007 12:39:38 +0100
-Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
-	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
-	id 1HqSiG-00069S-00; Tue, 22 May 2007 12:39:36 +0100
-Received: from hendon.mips.com ([192.168.192.184])
-	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1HqSi1-0001RX-00; Tue, 22 May 2007 12:39:21 +0100
-Message-ID: <4652D669.6030409@mips.com>
-Date:	Tue, 22 May 2007 12:39:21 +0100
-From:	Chris Dearman <chris@mips.com>
-Organization: MIPS Technologies (UK)
-User-Agent: Icedove 1.5.0.8 (X11/20061208)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 May 2007 13:05:41 +0100 (BST)
+Received: from post2.wesleyan.edu ([129.133.6.128]:54405 "EHLO
+	post2.wesleyan.edu") by ftp.linux-mips.org with ESMTP
+	id S20022567AbXEVMFg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 May 2007 13:05:36 +0100
+Received: from pony1.wesleyan.edu (pony1.wesleyan.edu [129.133.6.192])
+	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l4MC1siM020808;
+	Tue, 22 May 2007 08:01:54 -0400
+Received: (from apache@localhost)
+	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l4MC1rc7008321;
+	Tue, 22 May 2007 08:01:53 -0400
+Received: from 129.133.92.31
+        (SquirrelMail authenticated user sknauert)
+        by webmail.wesleyan.edu with HTTP;
+        Tue, 22 May 2007 08:01:53 -0400 (EDT)
+Message-ID: <34888.129.133.92.31.1179835313.squirrel@webmail.wesleyan.edu>
+In-Reply-To: <1179834093.7896.23.camel@scarafaggio>
+References: <1178743456.15447.41.camel@scarafaggio>
+    <20070516151939.GH19816@deprecation.cyrius.com>
+    <20070516160313.GA3409@bongo.bofh.it>
+    <50621.192.168.2.50.1179383217.squirrel@eppesuigoccas.homedns.org>
+    <20070517151636.GJ3586@deprecation.cyrius.com>
+    <20070521154726.GE5943@linux-mips.org>
+    <20070522110956.GB29118@linux-mips.org>
+    <1179834093.7896.23.camel@scarafaggio>
+Date:	Tue, 22 May 2007 08:01:53 -0400 (EDT)
+Subject: Re: SGI O2 meth: missing sysfs device symlink
+From:	sknauert@wesleyan.edu
+To:	"Giuseppe Sacco" <giuseppe@eppesuigoccas.homedns.org>
+Cc:	"Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+User-Agent: SquirrelMail/1.4.9a
 MIME-Version: 1.0
-To:	Martin Michlmayr <tbm@cyrius.com>
-CC:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: malta broken on mainline
-References: <20070522102538.GY18323@deprecation.cyrius.com>
-In-Reply-To: <20070522102538.GY18323@deprecation.cyrius.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MIPS-Technologies-UK-MailScanner: Found to be clean
-X-MIPS-Technologies-UK-MailScanner-From: chris@mips.com
-Return-Path: <chris@mips.com>
+Content-Type: text/plain;charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Wesleyan-MailScanner-Information: Please contact the ISP for more information
+X-Wesleyan-MailScanner:	Found to be clean
+X-Originating-IP: 129.133.6.192
+X-MailScanner-From: sknauert@wesleyan.edu
+Return-Path: <sknauert@wesleyan.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15123
+X-archive-position: 15124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chris@mips.com
+X-original-sender: sknauert@wesleyan.edu
 Precedence: bulk
 X-list: linux-mips
 
-Martin Michlmayr wrote:
-> malta is broken on mainline.  lmo contain a patch "[MIPS] SOCitSC support"
-> (which looks okay but mainline has a different change, namely "[MIPS] MT:
-> Reenable EIC support and add support for SOCit SC" which uses some defines
-> without updating the header file.
+I've noticed that besides kernel complied from the Debian 2.6.18, I can't
+get any other kernel (vanilla from kernel.org or the separate linux-MIPS
+repository) to boot on my O2.
 
-   There were 2 separate patches. Unfortunately they got applied in the 
-wrong order several days apart. I suppose that in the intervening period 
-the changes got pushed to kernel.org.
-See 
-http://www.linux-mips.org/git?p=linux.git;a=commit;h=d1d5c41425124d5fa4a1ce6a59e13c7da48279c6
-for the other patch
+If you need beta testers, I can try, but it will take a day or so
+(compiling on the O2 is slow).
 
-Chris
+Finally, I've been working on the PCI Legacy IO issue (progress is sadly
+slow - don't have a fully compiling patchset yet), would this patch be
+relevant since its also an O2 sysfs issue?
 
--- 
-Chris Dearman          7200 Cambridge Research Park     +44 1223 203108
-MIPS Technologies (UK) Waterbeach, Cambs CB25 9TL  fax  +44 1223 203181
+> Il giorno mar, 22/05/2007 alle 12.09 +0100, Ralf Baechle ha scritto:
+>> On Mon, May 21, 2007 at 04:47:26PM +0100, Ralf Baechle wrote:
+>>
+>> Below patch is meant to cure the problem.  It's against HEAD but should
+>> apply to somewhat older problems as well.
+>>
+>> I appreciate testing asap so I can try to still push this upstream
+>> for 2.6.22.
+> [...]
+>
+> I may test it against 2.6.18, the standard debian kernel for stable; but
+> I will be on the console only in two days :-(
+>
+> Bye,
+> Giuseppe
+>
+>
+>
+>

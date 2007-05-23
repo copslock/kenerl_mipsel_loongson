@@ -1,192 +1,405 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 18:45:11 +0100 (BST)
-Received: from post2.wesleyan.edu ([129.133.6.128]:42653 "EHLO
-	post2.wesleyan.edu") by ftp.linux-mips.org with ESMTP
-	id S20021719AbXEWRpG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 May 2007 18:45:06 +0100
-Received: from pony1.wesleyan.edu (pony1.wesleyan.edu [129.133.6.192])
-	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l4NHflka031576
-	for <linux-mips@linux-mips.org>; Wed, 23 May 2007 13:41:48 -0400
-Received: (from apache@localhost)
-	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l4NHflGs023129;
-	Wed, 23 May 2007 13:41:47 -0400
-Received: from 129.133.92.31
-        (SquirrelMail authenticated user sknauert)
-        by webmail.wesleyan.edu with HTTP;
-        Wed, 23 May 2007 13:41:47 -0400 (EDT)
-Message-ID: <58292.129.133.92.31.1179942107.squirrel@webmail.wesleyan.edu>
-In-Reply-To: <4653B81E.9010802@gentoo.org>
-References: <20070516151939.GH19816@deprecation.cyrius.com>
-    <20070516160313.GA3409@bongo.bofh.it>
-    <50621.192.168.2.50.1179383217.squirrel@eppesuigoccas.homedns.org>
-    <20070517151636.GJ3586@deprecation.cyrius.com>
-    <20070521154726.GE5943@linux-mips.org>
-    <20070522110956.GB29118@linux-mips.org>
-    <1179834093.7896.23.camel@scarafaggio>
-    <34888.129.133.92.31.1179835313.squirrel@webmail.wesleyan.edu>
-    <20070522122808.GD32557@linux-mips.org>
-    <36324.129.133.92.31.1179840724.squirrel@webmail.wesleyan.edu>
-    <20070522151848.GB19833@networkno.de>
-    <33252.129.133.92.31.1179852417.squirrel@webmail.wesleyan.edu>
-    <Pine.LNX.4.64.0705221931380.11196@anakin>
-    <51450.129.133.92.31.1179873846.squirrel@webmail.wesleyan.edu>
-    <4653B81E.9010802@gentoo.org>
-Date:	Wed, 23 May 2007 13:41:47 -0400 (EDT)
-Subject: Re: Cross-Compile difficulties
-From:	sknauert@wesleyan.edu
-To:	linux-mips@linux-mips.org
-User-Agent: SquirrelMail/1.4.9a
-MIME-Version: 1.0
-Content-Type: text/plain;charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-Wesleyan-MailScanner-Information: Please contact the ISP for more information
-X-Wesleyan-MailScanner:	Found to be clean
-X-Originating-IP: 129.133.6.192
-X-MailScanner-From: sknauert@wesleyan.edu
-Return-Path: <sknauert@wesleyan.edu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 20:54:40 +0100 (BST)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:51098 "EHLO
+	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
+	id S20021740AbXEWTyi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 May 2007 20:54:38 +0100
+Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
+	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l4NJujN8020307;
+	Wed, 23 May 2007 20:56:45 +0100
+Date:	Wed, 23 May 2007 20:56:45 +0100
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:	Roman Zippel <zippel@linux-m68k.org>,
+	Linux Kernel Development <linux-kernel@vger.kernel.org>,
+	akpm@osdl.org, rmk@arm.linux.kernel.org, spyro@f2s.com,
+	<starvik@axis.com>, <ysato@users.sourceforge.jp>,
+	"Luck, Tony" <tony.luck@intel.com>, <takata@linux-m32r.org>,
+	chris@zankel.net, <uclinux-v850@lsi.nec.co.jp>,
+	kyle@parisc-linux.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] m68k: Enable arbitary speed tty support
+Message-ID: <20070523205645.07b03581@the-village.bc.nu>
+In-Reply-To: <Pine.LNX.4.64.0705232117260.10610@anakin>
+References: <20070523174446.37abfa7a@the-village.bc.nu>
+	<Pine.LNX.4.64.0705232117260.10610@anakin>
+X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.8; i386-redhat-linux-gnu)
+Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
+ Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
+ Lloegr o'r rhif cofrestru 3798903
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15147
+X-archive-position: 15148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sknauert@wesleyan.edu
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-> sknauert@wesleyan.edu wrote:
->>> On Tue, 22 May 2007, sknauert@wesleyan.edu wrote:
->>>> scripts/basic/fixdep.c:107:23: error: sys/types.h: No such file or
->>>> directory
->>> You're missing the basic libraries for native compilation.
->>>
->>> | apt-get install libc6-dev
->>>
->>> Gr{oetje,eeting}s,
->>>
->>>
->>
->> Thanks, I feel like a real idiot. Somehow a bunch of development
->> packages
->> (libc6-dev, ncurses5-dev, and a few others) got uninstalled on that
->> machine.
->>
->> Anyway... I was somewhat able to cross-compile a kernel.
->>
->> Shiva:/usr/src/linux-2.6.21.1# file vmlinux
->> vmlinux: ELF 64-bit MSB executable, MIPS, MIPS-IV version 1 (SYSV),
->> statically linked, not stripped
->>
->> However, when I rsync it over to my O2, it does not boot. It panics
->> almost
->> immediately, like all other kernels I compiled natively (on the O2) from
->> something other than the Debian sources. This is the full panic as
->> displayed from the PROM:
->>
->> Status register: 0x34010082<CUI,CU0,FR,DE,IPL=8,KX,MODE=KERNEL>
->> Cause register: 0x8014<CE=0,IP8,EXC=WADE>
->> Exception PC: 0x801da9fc, Exception RA: 0x8047b0ec
->> Write address error exception, bad address: 0xfffff000
->> Saved user regs in hex (&gpda 0x81061838, &_regs 0x81061a38):
->> arg: 81070000 50000 8049f510 2
->> tmp: 81070000 a800 804b5808 fff804d9 ffffffff 81412ef4 a13fab68 8
->> sve: 81070000 c064d6ca 0 46136478 0 c02b80ce 0 be4acb69
->> t8 81070000 0 t9 0 at 0 v0 c04936d8 v1 0 k1 fffff000
->> gp 81070000 fp0 sp 0 ra 0
->>
->> Just to make sure I'm not doing something stupid. Here are the command
->> in
->> my kernel build sequence:
->>
->> make CROSS_COMPILE=mips-linux-gnu- oldconfig
->> make -j 3 CROSS_COMPILE=mips-linux-gnu- all
->> make CROSS_COMPILE=mips-linux-gnu- INSTALL_MOD_PATH=~/ modules_install
->> cp vmlinux ~/boot/vmlinux-2.6.21.1
->> cp System.map ~/boot/System.map-2.6.21.1
->> cp .config ~/boot/config-2.6.21.1
->> cd ~/
->> tar -cf kernel.tar lib boot
->>
->> CONFIG_CROSSCOMPILE=y in my .config.
->>
->> I also tried rsyncing the Debian sources over to my Core Duo 2 Debian
->> machine for cross-compiling. I was unable to get past the .config step.
->> Debian's patches must hinder cross-compiling in some manner. For
->> example,
->> make menuconfig seems to refuse to display MIPS as the architecture
->> anymore.
->>
->> I've been mainly using a working Debian 2.6.18 config (i.e. the one from
->> their package which lets me compile working 2.6.18 from the Debian
->> sources), but the default config (set to IP32, RK5, etc.) panics at boot
->> as well. Not sure if the message is 100% identical, I can double check
->> if
->> anyone thinks that would help.
->>
->> Thanks again for all the help, it's appreciated.
->>
->
-> One, make sure you're doing "make vmlinux.32", and two, CONFIG_BUILD_ELF64
-> is
-> _not_ enabled. For 2.6.20, I had to cram in a patch from Frank to get
-> these
-> things to not PROM crash (due to the elimination of CPHYSADDY and
-> replacement by
-> __pa()), but on 2.6.21, this patch was unnecessary.  Unsure about
-> 2.6.22-rcX.
->
+> > +#define TCSETS2		_IOW('T',0x2B, struct termios2)
+> > +#define TCSETSW2	_IOW('T',0x2C, struct termios2)
+> > +#define TCSETSF2	_IOW('T',0x2D, struct termios2)
+> 
+> Where is `struct termios2' defined? Right now it doesn't compile because
+> of that.
+> 
 
-I tried the vmlinux.32 I had been generating previously, same response
-from the PROM.
+Sorry, shortage of qualified gnomes: One of them forgot to post this diff first
 
-Didn't see any options something like CONFIG_BUILD_ELF64 in menuconfig
-(the closest thing was kernel code model which is 64-bit only), so I just
-manually edited the .config. I think my issue is that Debian's working
-.config is setting some options contrary to what they need to be for a
-later kernel or one without Debian's patches. With CONFIG_BUILD_ELF64=n
-and the Debian .config I got compile errors.
+Add the termios2 structure ready for enabling on most platforms. One or two like
+Sparc are plain weird so have been left alone. Most can use the same structure as
+ktermios for termios2 (ie the newer ioctl uses the structure matching the current
+kernel structure)
 
-Building from the default make menuconfig, then selecting the appropriate
-O2 hardware, actually compiled and didn't panic at boot. However, nothing
-happened after the PROM loaded the kernel. This happens for both the
-vmlinux and vmlinux.32 kernels produced. The framebuffer (4Mb) didn't
-start and I couldn't ssh in. This is more or less the same behavior as the
-2.6.22-rc test kernel posted.
+(cc'd various maintainers who get stuff)
 
-Anybody have a confirmed working .config for an O2?
+Signed-off-by: Alan Cox <alan@redhat.com>
 
-> O2's will boot a pure 64bit kernel, but my experience is that they are
-> ridiculously slow at it (the console lags severely).  vmlinux.32 is the
-> modern
-> method of 64bit-code-in-a-32bit-shell, which the O2's and IP22 systems
-> will
-> swallow much better.
->
-> Also, gbefb must be no greater than 4MB memory in menuconfig.
->
-> And what's the MHz of your R5000?  300MHz?, if so, it'll be the RM5200,
-> and
-> you'll want "RM52xx" for CPU instead.
->
-
-Its 300 Mhz, but I'm not actually sure as to whether its an R5000 or
-R5200. hinv and dmesg show it as R5000, though apparently this is normal
-hinv behavior for the R5200. If I switched R5000 to R5200 in the Debian
-sources, the resulting kernel won't boot. Is it possible that my compiling
-woes might be from the necessity to compile for R5200? Or should it be
-backwards compatible, so I only miss out on optimizations.
-
->
-> --Kumba
->
-> --
-> Gentoo/MIPS Team Lead
->
-> "Such is oft the course of deeds that move the wheels of the world: small
-> hands
-> do them because they must, while the eyes of the great are elsewhere."
-> --Elrond
->
->
+ddiff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-arm/termbits.h linux-2.6.22-rc1-mm1/include/asm-arm/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-arm/termbits.h	2007-04-30 10:48:14.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-arm/termbits.h	2007-05-23 20:23:25.000000000 +0100
+@@ -15,6 +15,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios_2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-arm26/termbits.h linux-2.6.22-rc1-mm1/include/asm-arm26/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-arm26/termbits.h	2007-04-30 10:48:14.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-arm26/termbits.h	2007-05-23 20:23:49.391177216 +0100
+@@ -15,7 +15,7 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
+-struct ktermios {
++struct termios2 {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+ 	tcflag_t c_cflag;		/* control mode flags */
+@@ -26,6 +26,16 @@
+ 	speed_t c_ospeed;		/* output speed */
+ };
+ 
++struct ktermios {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
+ 
+ /* c_cc characters */
+ #define VINTR 0
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-avr32/termbits.h linux-2.6.22-rc1-mm1/include/asm-avr32/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-avr32/termbits.h	2007-04-30 10:48:23.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-avr32/termbits.h	2007-05-23 20:24:26.447543792 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-blackfin/termbits.h linux-2.6.22-rc1-mm1/include/asm-blackfin/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-blackfin/termbits.h	2007-05-18 16:22:03.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-blackfin/termbits.h	2007-05-23 20:24:08.401287240 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];	/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;               /* input mode flags */
++	tcflag_t c_oflag;               /* output mode flags */
++	tcflag_t c_cflag;               /* control mode flags */
++	tcflag_t c_lflag;               /* local mode flags */
++	cc_t c_line;                    /* line discipline */
++	cc_t c_cc[NCCS];                /* control characters */
++	speed_t c_ispeed;               /* input speed */
++	speed_t c_ospeed;               /* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;               /* input mode flags */
+ 	tcflag_t c_oflag;               /* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-cris/termbits.h linux-2.6.22-rc1-mm1/include/asm-cris/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-cris/termbits.h	2007-04-30 10:48:14.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-cris/termbits.h	2007-05-23 20:25:05.976534472 +0100
+@@ -19,6 +19,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-frv/termbits.h linux-2.6.22-rc1-mm1/include/asm-frv/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-frv/termbits.h	2007-04-30 10:48:14.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-frv/termbits.h	2007-05-23 20:24:43.107011168 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-h8300/termbits.h linux-2.6.22-rc1-mm1/include/asm-h8300/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-h8300/termbits.h	2007-04-30 10:48:15.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-h8300/termbits.h	2007-05-23 20:25:24.482721104 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-ia64/termbits.h linux-2.6.22-rc1-mm1/include/asm-ia64/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-ia64/termbits.h	2007-04-30 10:48:16.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-ia64/termbits.h	2007-05-23 20:21:59.400898280 +0100
+@@ -26,6 +26,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-m32r/termbits.h linux-2.6.22-rc1-mm1/include/asm-m32r/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-m32r/termbits.h	2007-04-30 11:00:07.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-m32r/termbits.h	2007-05-23 20:25:49.042987376 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-m68k/termbits.h linux-2.6.22-rc1-mm1/include/asm-m68k/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-m68k/termbits.h	2007-04-30 10:48:17.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-m68k/termbits.h	2007-05-23 20:21:00.208896832 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-mips/termbits.h linux-2.6.22-rc1-mm1/include/asm-mips/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-mips/termbits.h	2007-04-30 10:48:18.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-mips/termbits.h	2007-05-23 20:26:11.453580448 +0100
+@@ -30,6 +30,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-parisc/termbits.h linux-2.6.22-rc1-mm1/include/asm-parisc/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-parisc/termbits.h	2007-04-30 10:48:18.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-parisc/termbits.h	2007-05-23 20:23:07.292577176 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-s390/termbits.h linux-2.6.22-rc1-mm1/include/asm-s390/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-s390/termbits.h	2007-04-30 10:48:19.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-s390/termbits.h	2007-05-23 20:26:30.484687280 +0100
+@@ -25,6 +25,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-sh/termbits.h linux-2.6.22-rc1-mm1/include/asm-sh/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-sh/termbits.h	2007-04-30 10:48:19.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-sh/termbits.h	2007-05-23 20:26:48.510946872 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-v850/termbits.h linux-2.6.22-rc1-mm1/include/asm-v850/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-v850/termbits.h	2007-04-30 10:48:19.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-v850/termbits.h	2007-05-23 20:27:13.174197488 +0100
+@@ -17,6 +17,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */
+diff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-xtensa/termbits.h linux-2.6.22-rc1-mm1/include/asm-xtensa/termbits.h
+--- linux.vanilla-2.6.22-rc1-mm1/include/asm-xtensa/termbits.h	2007-04-30 10:48:19.000000000 +0100
++++ linux-2.6.22-rc1-mm1/include/asm-xtensa/termbits.h	2007-05-23 20:27:28.654844072 +0100
+@@ -30,6 +30,17 @@
+ 	cc_t c_cc[NCCS];		/* control characters */
+ };
+ 
++struct termios2 {
++	tcflag_t c_iflag;		/* input mode flags */
++	tcflag_t c_oflag;		/* output mode flags */
++	tcflag_t c_cflag;		/* control mode flags */
++	tcflag_t c_lflag;		/* local mode flags */
++	cc_t c_line;			/* line discipline */
++	cc_t c_cc[NCCS];		/* control characters */
++	speed_t c_ispeed;		/* input speed */
++	speed_t c_ospeed;		/* output speed */
++};
++
+ struct ktermios {
+ 	tcflag_t c_iflag;		/* input mode flags */
+ 	tcflag_t c_oflag;		/* output mode flags */

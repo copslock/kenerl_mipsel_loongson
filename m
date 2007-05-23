@@ -1,90 +1,265 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 12:46:41 +0100 (BST)
-Received: from host51-222-dynamic.2-87-r.retail.telecomitalia.it ([87.2.222.51]:4879
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S20021611AbXEWLqf convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 23 May 2007 12:46:35 +0100
-Received: from [80.76.68.90] (helo=pc01.bm.loc)
-	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1HqpEn-00078o-DR; Wed, 23 May 2007 13:42:42 +0200
-Subject: Re: SGI O2 meth: missing sysfs device symlink
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, Martin Michlmayr <tbm@cyrius.com>
-In-Reply-To: <1179835991.7896.32.camel@scarafaggio>
-References: <1178743456.15447.41.camel@scarafaggio>
-	 <20070516151939.GH19816@deprecation.cyrius.com>
-	 <20070516160313.GA3409@bongo.bofh.it>
-	 <50621.192.168.2.50.1179383217.squirrel@eppesuigoccas.homedns.org>
-	 <20070517151636.GJ3586@deprecation.cyrius.com>
-	 <20070521154726.GE5943@linux-mips.org>
-	 <20070522110956.GB29118@linux-mips.org>
-	 <1179834093.7896.23.camel@scarafaggio>
-	 <1179835991.7896.32.camel@scarafaggio>
-Content-Type: text/plain; charset=utf-8
-Date:	Wed, 23 May 2007 13:45:35 +0200
-Message-Id: <1179920735.6770.6.camel@scarafaggio>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 16:11:43 +0100 (BST)
+Received: from mail.engel-kg.com ([212.6.249.86]:17125 "EHLO mail.epcp.de")
+	by ftp.linux-mips.org with ESMTP id S20021703AbXEWPLl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 23 May 2007 16:11:41 +0100
+Received: from _HOSTNAME_ (sirius.engel-kg.com [192.168.3.112])
+	by mail.epcp.de (Postfix) with SMTP id 0F95DB8C3;
+	Wed, 23 May 2007 17:10:42 +0200 (CEST)
+Received: by _HOSTNAME_ (sSMTP sendmail emulation); Wed, 23 May 2007 17:09:29 +0200
+From:	"elmar gerdes" <elmar.gerdes@epcp.de>
+Date:	Wed, 23 May 2007 17:09:29 +0200
+To:	linux-mips@linux-mips.org
+Subject: Subject: tmpfs/ramfs with no swap oopses on Au1550/mips(el)
+Message-ID: <20070523150929.GA10257@engel-kg.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.6.3 
-Content-Transfer-Encoding: 8BIT
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <elmar.gerdes@epcp.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15143
+X-archive-position: 15144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: elmar.gerdes@epcp.de
 Precedence: bulk
 X-list: linux-mips
 
-Il giorno mar, 22/05/2007 alle 14.13 +0200, Giuseppe Sacco ha scritto:
-> Il giorno mar, 22/05/2007 alle 13.41 +0200, Giuseppe Sacco ha scritto:
-> > Il giorno mar, 22/05/2007 alle 12.09 +0100, Ralf Baechle ha scritto:
-> > > On Mon, May 21, 2007 at 04:47:26PM +0100, Ralf Baechle wrote:
-> > > 
-> > > Below patch is meant to cure the problem.  It's against HEAD but should
-> > > apply to somewhat older problems as well.
-> > > 
-> > > I appreciate testing asap so I can try to still push this upstream
-> > > for 2.6.22.
-> > [...]
-> > 
-> > I may test it against 2.6.18, the standard debian kernel for stable; but
-> > I will be on the console only in two days :-(
-> 
-> It seems the patch doesn't apply on 2.6.18, so I will recompile
-> 2.6.22-rc2, but I do not know if it works on my SGI. I never tried it.
 
-I got 2.6.21.1 source, then I applied patch-2.6.22-rc2.bz2 and your
-patch. I compiled everything with this command:
+Hello,
 
-# make-kpkg clean
-# time make-kpkg --revision 2:2.6.22~rc2 \
--append-to-version -r5k-ip32 --arch-in-name buildpackage
 
-and got this result:
+I am experiencing oopses when using tmpfs heavily on an embedded
 
-[...]
-  CC [M]  net/ipv6/reassembly.o
-  CC [M]  net/ipv6/tcp_ipv6.o
-  CC [M]  net/ipv6/exthdrs.o
-net/ipv6/exthdrs.c: In function ‘ipv6_rthdr_rcv’:
-net/ipv6/exthdrs.c:390: error: ‘struct sk_buff’ has no member named ‘h’
-net/ipv6/exthdrs.c:391: error: ‘struct sk_buff’ has no member named ‘h’
-net/ipv6/exthdrs.c:391: error: ‘struct sk_buff’ has no member named ‘h’
-net/ipv6/exthdrs.c:398: error: ‘struct sk_buff’ has no member named ‘h’
-make[4]: *** [net/ipv6/exthdrs.o] Error 1
-make[3]: *** [net/ipv6] Error 2
-make[2]: *** [net] Error 2
-make[2]: Leaving directory `/home/src/linux-2.6.22-rc2'
-make[1]: *** [debian/stamp-build-kernel] Error 2
-make[1]: Leaving directory `/home/src/linux-2.6.22-rc2'
-make: *** [stamp-buildpackage] Error 2
+	Au1550-based board (MIPS 32-bit core, little-endian, 128MB RAM).
 
-real    409m49.142s
-user    250m33.296s
-sys     15m41.356s
-sgi:/usr/local/src/linux-2.6.22-rc2# bc
+Everything I need seemed to work (PCI, USB, JFFS2, busybox, tools like
+mtools, WLAN, network, ...).  The system currently uses busybox-1.00 and
+glibc-2.3.2.  Everything has been compiled using mipsel-linux-gcc 3.3.3
+created from Dan Kegel's crosstool-0.38.
+
+
+But when I use tmpfs heavily using mcopy or appending to a file using
+
+	cat filename >> /tmp/xxx
+
+I either get "No space left on device" (kernel 2.6.21-rc7) which is what
+I expect, or I get a sequence of oopses (2.6.14, 2.6.18.2, 2.6.19.2).
+When getting "No space left on device", inserting a USB-stick might then
+cause an oops ("Bad page state in process 'hotplug'").
+
+
+I have seen various types of oopses, but they all(?)/usually start with
+one like these:
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      5da7bee4, epc == 801795c0, ra == 802b61c8
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      00000000, epc == 8015b728, ra == 8015ba20
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      000000c4, epc == 80160b58, ra == 801604c4
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      000000c4, epc == 80160b58, ra == 801604c4
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      000000d4, epc == 8015e724, ra == 8015dee8
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      00000104, epc == 801748bc, ra == 80174844
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      00000000, epc == 80159858, ra == 80159b70
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      24ba4d88, epc == 801ace7c, ra == 801b1e84
+
+  CPU 0 Unable to handle kernel paging request at virtual address\
+      00000128, epc == 80155628, ra == 8015575c
+
+
+
+I tested this using kernel 2.6.19.2, 2.6.18.2, 2.6.14, and 2.6.21-rc7
+like this:
+
+
+
+# uname -a
+Linux mybox 2.6.18.2 #1 Tue May 22 16:58:12 CEST 2007 mips unknown
+
+
+df(1) under 2.6.18.2 does not show /var, being 40M of tmpfs as 2.6.19.2
+would tell us.  /tmp is a symlink to /var/tmp.
+
+
+Filling tmpfs:
+
+# cat /lib/libc.so.6 >> /tmp/abc
+# cat /lib/libc.so.6 >> /tmp/abc
+# cat /lib/libc.so.6 >> /tmp/abc
+# cat /lib/libc.so.6 >> /tmp/abc
+# cat /lib/libc.so.6 >> /tmp/abc
+# cat /lib/libc.so.6 >> /tmp/abc
+
+# ll -h /tmp/abc*
+-rw-r--r--    1 root     root         9.1M Jan  1 00:02 /tmp/abc
+
+# cp /tmp/abc /tmp/abc2
+# cp /tmp/abc /tmp/abc3
+# cp /tmp/abc /tmp/abc4
+
+# ll -h /tmp/abc*
+-rw-r--r--    1 root     root         9.1M Jan  1 00:02 /tmp/abc
+-rw-r--r--    1 root     root         9.1M Jan  1 00:02 /tmp/abc2
+-rw-r--r--    1 root     root         9.1M Jan  1 00:02 /tmp/abc3
+-rw-r--r--    1 root     root         9.1M Jan  1 00:02 /tmp/abc4
+
+# cp /tmp/abc /tmp/abc5
+
+
+
+On 2.6.14, 2.6.18.2, and 2.6.19.2 I get this:
+
+
+CPU 0 Unable to handle kernel paging request at virtual address 00000000,\
+   epc == 80159858, ra == 80159b70
+Oops[#1]:
+Cpu 0
+$ 0   : 00000000 1000fc00 8f818018 810a1458
+$ 4   : 00100100 00000000 00200200 803c2054
+$ 8   : 0000475d 00000001 00000001 fffffff8
+$12   : 0055a000 00000000 00001000 03200008
+$16   : 803c2028 1000fc01 803c2048 803c2028
+$20   : 00000000 00000000 000280d2 00000000
+$24   : 00000000 2ac6342c
+$28   : 804c6000 804c7d90 803c2550 80159b70
+Hi    : 307d2bf7
+Lo    : a60e8300
+epc   : 80159858 buffered_rmqueue+0x9c/0x1f4     Not tainted
+ra    : 80159b70 get_page_from_freelist+0x10c/0x134
+Status: 1000fc02    KERNEL EXL
+Cause : 0080000c
+BadVA : 00000000
+PrId  : 03030200
+Modules linked in: aes blowfish llc vfat fat
+Process cp (pid: 853, threadinfo=804c6000, task=804d2500)
+Stack : 804d2500 00000000 00000000 00000000 803c2550 00000000 00000000 00000000
+        00000044 00000000 00000004 80159b70 100d0eb0 87b54e60 00000001 802327fc
+        00000044 100cf050 803c2550 804d2500 000280d2 87c8abc8 00000000 00000000
+        803c2550 00000558 00000010 80159c00 000280d2 80170d28 801536ac 801549a0
+        00001000 386d4434 80704880 00000000 00000000 87c8abc8 87c8ac28 00000000
+        ...
+Call Trace:
+ [<80159b70>] get_page_from_freelist+0x10c/0x134
+ [<802327fc>] radix_tree_insert+0x190/0x1e0
+ [<80159c00>] __alloc_pages+0x68/0x2fc
+ [<80170d28>] shmem_swp_alloc+0xb4/0x254
+ [<801536ac>] unlock_page+0x68/0xd8
+ [<801549a0>] file_read_actor+0x0/0x100
+ [<80171d94>] shmem_getpage+0x234/0x65c
+ [<80172824>] shmem_file_write+0x160/0x2b0
+ [<80172d08>] shmem_file_read+0x70/0x80
+ [<8017a1d4>] vfs_write+0xd4/0x1a0
+ [<801340f0>] update_process_times+0x58/0x90
+ [<801340d4>] update_process_times+0x3c/0x90
+ [<8017a394>] sys_write+0x54/0xa0
+ [<8010d380>] stack_done+0x20/0x3c
+
+
+Code: 8c650004  34840100  34c60200 <aca20000> ac450004  ac640000\
+   ac660004  8e020020  2472ffe8
+Break instruction in kernel code[#2]:
+Cpu 0
+(((oops #2 follows)))
+
+Code: 00000040  080579ca  8cc300d4 <0000800d> 080579bf  00000000\
+   27bdffe8  afb00010  afbf0014
+Fixing recursive fault but reboot is needed!
+Unhandled kernel unaligned access[#3]:
+Cpu 0
+(((oops #3 follows)))
+
+Code: 30630001  14600044  00000000 <8c820000> 000211c2  30420001\
+   1040003c  00000000  8c90001c
+Break instruction in kernel code[#4]:
+Cpu 0
+(((oops #4 follows)))
+
+Code: 0000800d  0805d97b  00000000 <0000800d> 0805d979  8ca20018\
+   0805d973  8ca5000c  27bdffe0
+Kernel panic - not syncing: Attempted to kill init!
+ Break instruction in kernel code[#5]:
+Cpu 0
+(((oops #5 follows)))
+
+Code: 8fb00010  03e00008  27bd0020 <0000800d> 0805d9c7  8c840018\
+   0805d9c1  8c84000c  03e00008
+Kernel panic - not syncing: Aiee, killing interrupt handler!
+(((no more messages)))
+
+
+
+On 2.6.21-rc7 I get this:
+
+Bad page state in process 'hotplug'
+page:8100cd80 flags:0x00000000 mapping:00000000 mapcount:1 count:0
+Trying to fix it up, but a reboot is needed
+Backtrace:
+Call Trace:
+[<80109964>] dump_stack+0x8/0x34
+[<8015aa1c>] bad_page+0x6c/0xb0
+[<8015ba50>] free_hot_cold_page+0x1b8/0x1c8
+[<8015ba70>] free_hot_page+0x10/0x1c
+[<8015ff38>] __page_cache_release+0x138/0x2ec
+[<8016020c>] put_page+0x68/0xd4
+[<80157398>] filemap_nopage+0x368/0x578
+[<8016b930>] do_no_page+0x90/0x470
+[<8016c118>] __handle_mm_fault+0x168/0x3dc
+[<8010e2c0>] do_page_fault+0x100/0x360
+[<80103a80>] ret_from_exception+0x0/0x20
+
+Bad page state in process 'hotplug'
+page:8100cd80 flags:0x00080000 mapping:00000000 mapcount:0 count:0
+Trying to fix it up, but a reboot is needed
+(((same backtrace as before, then
+CPU 0 Unable to handle kernel paging request at virtual address\
+    00100104, epc == 8015adc4, ra == 8015ba34
+(((further messages)))
+
+
+
+Some thoughts on this:
+
+ - I can reproduce the oops whether root is a JFFS2 partition or
+   NFS-root, so I expect that no MTD/JFFS2-stuff is involved.
+
+ - Before I used 40M of tmpfs, I had 64M (of the 128M of RAM).  Filling
+   that tmpfs partition lead to the oops when about 40M were reached.
+   Using 32M of tmpfs leads to "No space left on device" (as was seen
+   for kernel 2.6.21-rc7).  But inserting a USB-stick can already
+   provoke the oops after "No space left"...
+
+ - I tried (a) ramfs and (b) a large ramdisk instead of tmpfs, as I
+   expected that the missing swap (as backing store) for tmpfs to be the
+   reason.  But both lead to oopses.  So I expect that the missing swap
+   is not the reason.
+
+ - Since swap seems to not be involved, I expect that commit
+   6ebba0e2f56ee77270a9ef8e92c1b4ec38e5f419 ([MIPS] Fix swap entry for
+   MIPS32 36-bit physical address) is not involved either.
+
+ - I could not reproduce the oopses on a x86 system, so I think this
+   could/should be mips-specific.
+
+
+
+Does someone have an idea on how to fix this?
+
+
+Thank you
+
+	Elmar

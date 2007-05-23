@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 00:16:44 +0100 (BST)
-Received: from [69.90.147.196] ([69.90.147.196]:10957 "EHLO mail.kenati.com")
-	by ftp.linux-mips.org with ESMTP id S20024476AbXEVXQm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 23 May 2007 00:16:42 +0100
-Received: from [192.168.1.67] (adsl-71-130-109-177.dsl.snfc21.pacbell.net [71.130.109.177])
-	by mail.kenati.com (Postfix) with ESMTP id 2DF6EE4052;
-	Tue, 22 May 2007 16:21:55 -0700 (PDT)
-Message-ID: <46537C2F.6010000@kenati.com>
-Date:	Tue, 22 May 2007 16:26:39 -0700
-From:	Carlos Munoz <carlos@kenati.com>
-User-Agent: Thunderbird 1.5.0.10 (X11/20070306)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 04:43:08 +0100 (BST)
+Received: from sccrmhc13.comcast.net ([204.127.200.83]:2804 "EHLO
+	sccrmhc13.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20021363AbXEWDnG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 May 2007 04:43:06 +0100
+Received: from [192.168.1.4] (c-76-106-119-205.hsd1.md.comcast.net[76.106.119.205])
+          by comcast.net (sccrmhc13) with ESMTP
+          id <20070523034223013008drv4e>; Wed, 23 May 2007 03:42:23 +0000
+Message-ID: <4653B81E.9010802@gentoo.org>
+Date:	Tue, 22 May 2007 23:42:22 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.0 (Windows/20070326)
 MIME-Version: 1.0
 To:	sknauert@wesleyan.edu
 CC:	linux-mips@linux-mips.org
@@ -17,19 +18,59 @@ References: <20070516151939.GH19816@deprecation.cyrius.com>    <20070516160313.G
 In-Reply-To: <51450.129.133.92.31.1179873846.squirrel@webmail.wesleyan.edu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <carlos@kenati.com>
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15136
+X-archive-position: 15137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carlos@kenati.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
 sknauert@wesleyan.edu wrote:
+>> On Tue, 22 May 2007, sknauert@wesleyan.edu wrote:
+>>> scripts/basic/fixdep.c:107:23: error: sys/types.h: No such file or
+>>> directory
+>> You're missing the basic libraries for native compilation.
+>>
+>> | apt-get install libc6-dev
+>>
+>> Gr{oetje,eeting}s,
+>>
+>>
+> 
+> Thanks, I feel like a real idiot. Somehow a bunch of development packages
+> (libc6-dev, ncurses5-dev, and a few others) got uninstalled on that
+> machine.
+> 
+> Anyway... I was somewhat able to cross-compile a kernel.
+> 
+> Shiva:/usr/src/linux-2.6.21.1# file vmlinux
+> vmlinux: ELF 64-bit MSB executable, MIPS, MIPS-IV version 1 (SYSV),
+> statically linked, not stripped
+> 
+> However, when I rsync it over to my O2, it does not boot. It panics almost
+> immediately, like all other kernels I compiled natively (on the O2) from
+> something other than the Debian sources. This is the full panic as
+> displayed from the PROM:
+> 
+> Status register: 0x34010082<CUI,CU0,FR,DE,IPL=8,KX,MODE=KERNEL>
+> Cause register: 0x8014<CE=0,IP8,EXC=WADE>
+> Exception PC: 0x801da9fc, Exception RA: 0x8047b0ec
+> Write address error exception, bad address: 0xfffff000
+> Saved user regs in hex (&gpda 0x81061838, &_regs 0x81061a38):
+> arg: 81070000 50000 8049f510 2
+> tmp: 81070000 a800 804b5808 fff804d9 ffffffff 81412ef4 a13fab68 8
+> sve: 81070000 c064d6ca 0 46136478 0 c02b80ce 0 be4acb69
+> t8 81070000 0 t9 0 at 0 v0 c04936d8 v1 0 k1 fffff000
+> gp 81070000 fp0 sp 0 ra 0
+> 
+> Just to make sure I'm not doing something stupid. Here are the command in
+> my kernel build sequence:
+> 
 > make CROSS_COMPILE=mips-linux-gnu- oldconfig
 > make -j 3 CROSS_COMPILE=mips-linux-gnu- all
 > make CROSS_COMPILE=mips-linux-gnu- INSTALL_MOD_PATH=~/ modules_install
@@ -38,8 +79,44 @@ sknauert@wesleyan.edu wrote:
 > cp .config ~/boot/config-2.6.21.1
 > cd ~/
 > tar -cf kernel.tar lib boot
->   
-Don't know if it makes any difference, but I always specify the 
-architecture on the command line:
+> 
+> CONFIG_CROSSCOMPILE=y in my .config.
+> 
+> I also tried rsyncing the Debian sources over to my Core Duo 2 Debian
+> machine for cross-compiling. I was unable to get past the .config step.
+> Debian's patches must hinder cross-compiling in some manner. For example,
+> make menuconfig seems to refuse to display MIPS as the architecture
+> anymore.
+> 
+> I've been mainly using a working Debian 2.6.18 config (i.e. the one from
+> their package which lets me compile working 2.6.18 from the Debian
+> sources), but the default config (set to IP32, RK5, etc.) panics at boot
+> as well. Not sure if the message is 100% identical, I can double check if
+> anyone thinks that would help.
+> 
+> Thanks again for all the help, it's appreciated.
+> 
 
-make ARCH=mips -j 3 CROSS_COMPILE=mips-linux-gnu all
+One, make sure you're doing "make vmlinux.32", and two, CONFIG_BUILD_ELF64 is 
+_not_ enabled.  For 2.6.20, I had to cram in a patch from Frank to get these 
+things to not PROM crash (due to the elimination of CPHYSADDY and replacement by 
+__pa()), but on 2.6.21, this patch was unnecessary.  Unsure about 2.6.22-rcX.
+
+O2's will boot a pure 64bit kernel, but my experience is that they are 
+ridiculously slow at it (the console lags severely).  vmlinux.32 is the modern 
+method of 64bit-code-in-a-32bit-shell, which the O2's and IP22 systems will 
+swallow much better.
+
+Also, gbefb must be no greater than 4MB memory in menuconfig.
+
+And what's the MHz of your R5000?  300MHz?, if so, it'll be the RM5200, and 
+you'll want "RM52xx" for CPU instead.
+
+
+--Kumba
+
+-- 
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

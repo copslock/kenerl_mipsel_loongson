@@ -1,25 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 21:38:33 +0100 (BST)
-Received: from adicia.telenet-ops.be ([195.130.132.56]:13492 "EHLO
-	adicia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20021765AbXEWUib (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 May 2007 21:38:31 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by adicia.telenet-ops.be (Postfix) with SMTP id 7EEA62300C6;
-	Wed, 23 May 2007 22:38:31 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by adicia.telenet-ops.be (Postfix) with ESMTP id 00604230109;
-	Wed, 23 May 2007 22:38:27 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.13.8/8.13.8/Debian-3) with ESMTP id l4NKcRcf004287
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 23 May 2007 22:38:27 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.13.8/8.13.8/Submit) with ESMTP id l4NKcLDH004174;
-	Wed, 23 May 2007 22:38:21 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Wed, 23 May 2007 22:38:21 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 22:27:50 +0100 (BST)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:40585 "EHLO
+	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
+	id S20021775AbXEWV1t (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 May 2007 22:27:49 +0100
+Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
+	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l4NLU92F020566;
+	Wed, 23 May 2007 22:30:09 +0100
+Date:	Wed, 23 May 2007 22:30:08 +0100
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:	Roman Zippel <zippel@linux-m68k.org>,
 	Linux Kernel Development <linux-kernel@vger.kernel.org>,
 	akpm@osdl.org, rmk@arm.linux.kernel.org, spyro@f2s.com,
@@ -28,50 +17,38 @@ Cc:	Roman Zippel <zippel@linux-m68k.org>,
 	chris@zankel.net, uclinux-v850@lsi.nec.co.jp,
 	kyle@parisc-linux.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] m68k: Enable arbitary speed tty support
-In-Reply-To: <20070523205645.07b03581@the-village.bc.nu>
-Message-ID: <Pine.LNX.4.64.0705232233360.10610@anakin>
+Message-ID: <20070523223008.32f65e0a@the-village.bc.nu>
+In-Reply-To: <Pine.LNX.4.64.0705232233360.10610@anakin>
 References: <20070523174446.37abfa7a@the-village.bc.nu>
- <Pine.LNX.4.64.0705232117260.10610@anakin> <20070523205645.07b03581@the-village.bc.nu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+	<Pine.LNX.4.64.0705232117260.10610@anakin>
+	<20070523205645.07b03581@the-village.bc.nu>
+	<Pine.LNX.4.64.0705232233360.10610@anakin>
+X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.8; i386-redhat-linux-gnu)
+Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
+ Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
+ Lloegr o'r rhif cofrestru 3798903
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15150
+X-archive-position: 15151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 23 May 2007, Alan Cox wrote:
-> > > +#define TCSETS2		_IOW('T',0x2B, struct termios2)
-> > > +#define TCSETSW2	_IOW('T',0x2C, struct termios2)
-> > > +#define TCSETSF2	_IOW('T',0x2D, struct termios2)
-> > 
-> > Where is `struct termios2' defined? Right now it doesn't compile because
-> > of that.
-> > 
-> 
-> Sorry, shortage of qualified gnomes: One of them forgot to post this diff first
-> 
-> Add the termios2 structure ready for enabling on most platforms. One or two like
-> Sparc are plain weird so have been left alone. Most can use the same structure as
-> ktermios for termios2 (ie the newer ioctl uses the structure matching the current
-> kernel structure)
+> Why not `#define termios2 ktermios' (or vice versa) on platforms where
+> they are the same?
 
-Why not `#define termios2 ktermios' (or vice versa) on platforms where
-they are the same?
+Because #define is a bit of a loose cannon when it comes to substitutions
+and I didn't want nasty suprises. Also because ktermios may change in
+future and I don't want to have to liase with 4 million port maintainers
+when it does. The whole point of ktermios was to isolate the kernel and
+user space views.
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Alan

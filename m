@@ -1,59 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2007 05:32:18 +0100 (BST)
-Received: from wa-out-1112.google.com ([209.85.146.177]:27756 "EHLO
-	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021600AbXEXEcP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 24 May 2007 05:32:15 +0100
-Received: by wa-out-1112.google.com with SMTP id m16so120747waf
-        for <linux-mips@linux-mips.org>; Wed, 23 May 2007 21:31:41 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=b9kfEOJ5Q6hosw2H8aOQwtoorEdYUwE82vfSo/OY7U9Jdqg+bY/sKxg57l6x1vMPvroV9R51ep3Ypm0jQ2z7Rd/MPqEx+cFLqPLLfvgIgPSYxSdEobxT/JIoBbSoUXUOh+50AxNjlKUmZzErhVvmpCt7ymDQzSe9D9g44+Edj68=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=KVJlkmhHNvQcV/qiilFbM3z93PLOdcFPK0bwwaEif0Ebbx7zqvwHv4xP3hyb0Zs78Xxa4LmTon8xgt96ZIeGHEcqgge5RE83nOQtjrtumZ/W7N/jnKzBxDv6YHab5mYl34pUSRP1BV/LBpLJ9WC8utTdt+PJlPmn01h00ym6xv8=
-Received: by 10.114.78.1 with SMTP id a1mr671048wab.1179981101381;
-        Wed, 23 May 2007 21:31:41 -0700 (PDT)
-Received: by 10.114.177.11 with HTTP; Wed, 23 May 2007 21:31:41 -0700 (PDT)
-Message-ID: <7b5da6b00705232131l54db9bbbl53e7730e3296d6c3@mail.gmail.com>
-Date:	Wed, 23 May 2007 21:31:41 -0700
-From:	"Y Yang" <yyang702@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Q: vailable memory when initrd exists?
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2007 12:47:39 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:15309 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021939AbXEXLrh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 24 May 2007 12:47:37 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l4OBlOii031848;
+	Thu, 24 May 2007 12:47:24 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l4OBlNd4031847;
+	Thu, 24 May 2007 12:47:23 +0100
+Date:	Thu, 24 May 2007 12:47:23 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Cc:	linux-mips@linux-mips.org, Martin Michlmayr <tbm@cyrius.com>
+Subject: Re: SGI O2 meth: missing sysfs device symlink
+Message-ID: <20070524114723.GA27073@linux-mips.org>
+References: <1178743456.15447.41.camel@scarafaggio> <20070516151939.GH19816@deprecation.cyrius.com> <20070516160313.GA3409@bongo.bofh.it> <50621.192.168.2.50.1179383217.squirrel@eppesuigoccas.homedns.org> <20070517151636.GJ3586@deprecation.cyrius.com> <20070521154726.GE5943@linux-mips.org> <20070522110956.GB29118@linux-mips.org> <1179834093.7896.23.camel@scarafaggio> <1179835991.7896.32.camel@scarafaggio> <1179920735.6770.6.camel@scarafaggio>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Return-Path: <yyang702@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1179920735.6770.6.camel@scarafaggio>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15153
+X-archive-position: 15154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yyang702@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-In "arch/mips/kernel/setup.c", it appears that the "free memory" pool
-is the memory area after kernel code and initrd if configured. Since
-the location of "initrd" is set by "rd_start", it is possible that
-there will be "memory hole" between the kernel and "initrd". It is my
-understanding that the memory area up to the "free memory" pool will
-not be available, even after "initrd" is freed later in the boot
-process. I am curious as why it is necessary to do it this way? What
-if we treat the whole area after the kernel code as the "free memory"
-pool? This shouldn't affect "initrd", as the memory used by "initrd"
-is reserved.
+On Wed, May 23, 2007 at 01:45:35PM +0200, Giuseppe Sacco wrote:
 
-I looked at both older 2.6.14 and the latest kernel code. That part of
-the logic seems largely unchanged. I suspect I must have missed
-something.
+> I got 2.6.21.1 source, then I applied patch-2.6.22-rc2.bz2 and your
+> patch. I compiled everything with this command:
+> 
+> # make-kpkg clean
+> # time make-kpkg --revision 2:2.6.22~rc2 \
+> -append-to-version -r5k-ip32 --arch-in-name buildpackage
+> 
+> and got this result:
+> 
+> [...]
+>   CC [M]  net/ipv6/reassembly.o
+>   CC [M]  net/ipv6/tcp_ipv6.o
+>   CC [M]  net/ipv6/exthdrs.o
+> net/ipv6/exthdrs.c: In function ‘ipv6_rthdr_rcv’:
+> net/ipv6/exthdrs.c:390: error: ‘struct sk_buff’ has no member named ‘h’
+> net/ipv6/exthdrs.c:391: error: ‘struct sk_buff’ has no member named ‘h’
+> net/ipv6/exthdrs.c:391: error: ‘struct sk_buff’ has no member named ‘h’
+> net/ipv6/exthdrs.c:398: error: ‘struct sk_buff’ has no member named ‘h’
+> make[4]: *** [net/ipv6/exthdrs.o] Error 1
+> make[3]: *** [net/ipv6] Error 2
+> make[2]: *** [net] Error 2
+> make[2]: Leaving directory `/home/src/linux-2.6.22-rc2'
+> make[1]: *** [debian/stamp-build-kernel] Error 2
+> make[1]: Leaving directory `/home/src/linux-2.6.22-rc2'
+> make: *** [stamp-buildpackage] Error 2
+> 
+> real    409m49.142s
+> user    250m33.296s
+> sys     15m41.356s
+> sgi:/usr/local/src/linux-2.6.22-rc2# bc
 
-Thanks for your help in advance.
+Unrelated problem.  If you can reproduce it with a vanilla kernel report
+to netdev@vger.kernel.org.
 
-Regards,
+  Ralf
 
-Steve.
+  Ralf

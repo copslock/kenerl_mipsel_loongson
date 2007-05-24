@@ -1,65 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 May 2007 23:41:38 +0100 (BST)
-Received: from mx2.suse.de ([195.135.220.15]:45757 "EHLO mx2.suse.de")
-	by ftp.linux-mips.org with ESMTP id S20021792AbXEWWlg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 23 May 2007 23:41:36 +0100
-Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx2.suse.de (Postfix) with ESMTP id 31C1921946;
-	Thu, 24 May 2007 00:41:22 +0200 (CEST)
-From:	Andreas Schwab <schwab@suse.de>
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Roman Zippel <zippel@linux-m68k.org>,
-	Linux Kernel Development <linux-kernel@vger.kernel.org>,
-	akpm@osdl.org, rmk@arm.linux.kernel.org, spyro@f2s.com,
-	<starvik@axis.com>, <ysato@users.sourceforge.jp>,
-	"Luck, Tony" <tony.luck@intel.com>, <takata@linux-m32r.org>,
-	chris@zankel.net, <uclinux-v850@lsi.nec.co.jp>,
-	kyle@parisc-linux.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] m68k: Enable arbitary speed tty support
-References: <20070523174446.37abfa7a@the-village.bc.nu>
-	<Pine.LNX.4.64.0705232117260.10610@anakin>
-	<20070523205645.07b03581@the-village.bc.nu>
-X-Yow:	I'm using my X-RAY VISION to obtain a rare glimpse of the
- INNER WORKINGS of this POTATO!!
-Date:	Thu, 24 May 2007 00:40:46 +0200
-In-Reply-To: <20070523205645.07b03581@the-village.bc.nu> (Alan Cox's message
-	of "Wed\, 23 May 2007 20\:56\:45 +0100")
-Message-ID: <je7iqzf9jl.fsf@sykes.suse.de>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.0.97 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2007 05:32:18 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.177]:27756 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021600AbXEXEcP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 24 May 2007 05:32:15 +0100
+Received: by wa-out-1112.google.com with SMTP id m16so120747waf
+        for <linux-mips@linux-mips.org>; Wed, 23 May 2007 21:31:41 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=b9kfEOJ5Q6hosw2H8aOQwtoorEdYUwE82vfSo/OY7U9Jdqg+bY/sKxg57l6x1vMPvroV9R51ep3Ypm0jQ2z7Rd/MPqEx+cFLqPLLfvgIgPSYxSdEobxT/JIoBbSoUXUOh+50AxNjlKUmZzErhVvmpCt7ymDQzSe9D9g44+Edj68=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=KVJlkmhHNvQcV/qiilFbM3z93PLOdcFPK0bwwaEif0Ebbx7zqvwHv4xP3hyb0Zs78Xxa4LmTon8xgt96ZIeGHEcqgge5RE83nOQtjrtumZ/W7N/jnKzBxDv6YHab5mYl34pUSRP1BV/LBpLJ9WC8utTdt+PJlPmn01h00ym6xv8=
+Received: by 10.114.78.1 with SMTP id a1mr671048wab.1179981101381;
+        Wed, 23 May 2007 21:31:41 -0700 (PDT)
+Received: by 10.114.177.11 with HTTP; Wed, 23 May 2007 21:31:41 -0700 (PDT)
+Message-ID: <7b5da6b00705232131l54db9bbbl53e7730e3296d6c3@mail.gmail.com>
+Date:	Wed, 23 May 2007 21:31:41 -0700
+From:	"Y Yang" <yyang702@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Q: vailable memory when initrd exists?
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <schwab@suse.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Return-Path: <yyang702@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15152
+X-archive-position: 15153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: schwab@suse.de
+X-original-sender: yyang702@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Alan Cox <alan@lxorguk.ukuu.org.uk> writes:
+In "arch/mips/kernel/setup.c", it appears that the "free memory" pool
+is the memory area after kernel code and initrd if configured. Since
+the location of "initrd" is set by "rd_start", it is possible that
+there will be "memory hole" between the kernel and "initrd". It is my
+understanding that the memory area up to the "free memory" pool will
+not be available, even after "initrd" is freed later in the boot
+process. I am curious as why it is necessary to do it this way? What
+if we treat the whole area after the kernel code as the "free memory"
+pool? This shouldn't affect "initrd", as the memory used by "initrd"
+is reserved.
 
-> ddiff -u --new-file --recursive --exclude-from /usr/src/exclude linux.vanilla-2.6.22-rc1-mm1/include/asm-arm/termbits.h linux-2.6.22-rc1-mm1/include/asm-arm/termbits.h
-> --- linux.vanilla-2.6.22-rc1-mm1/include/asm-arm/termbits.h	2007-04-30 10:48:14.000000000 +0100
-> +++ linux-2.6.22-rc1-mm1/include/asm-arm/termbits.h	2007-05-23 20:23:25.000000000 +0100
-> @@ -15,6 +15,17 @@
->  	cc_t c_cc[NCCS];		/* control characters */
->  };
->  
-> +struct termios_2 {
+I looked at both older 2.6.14 and the latest kernel code. That part of
+the logic seems largely unchanged. I suspect I must have missed
+something.
 
-s/_//
+Thanks for your help in advance.
 
-Andreas.
+Regards,
 
--- 
-Andreas Schwab, SuSE Labs, schwab@suse.de
-SuSE Linux Products GmbH, Maxfeldstraße 5, 90409 Nürnberg, Germany
-PGP key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
-"And now for something completely different."
+Steve.

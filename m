@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2007 16:32:45 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:49040 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021983AbXEXPcn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 24 May 2007 16:32:43 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l4OFWUu6010354;
-	Thu, 24 May 2007 16:32:30 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l4OFWTWC010353;
-	Thu, 24 May 2007 16:32:29 +0100
-Date:	Thu, 24 May 2007 16:32:29 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2007 20:44:29 +0100 (BST)
+Received: from w099.z064220152.sjc-ca.dsl.cnc.net ([64.220.152.99]:63980 "EHLO
+	bluesmobile.specifix.com") by ftp.linux-mips.org with ESMTP
+	id S20022038AbXEXTo1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 24 May 2007 20:44:27 +0100
+Received: from localhost.localdomain (bluesmobile.specifix.com [64.220.152.99])
+	by bluesmobile.specifix.com (Postfix) with ESMTP id C068A3B938;
+	Thu, 24 May 2007 12:44:14 -0700 (PDT)
+Subject: Re: toolchain procedure for AU1200
+From:	Jim Wilson <wilson@specifix.com>
+To:	saravanan sar <sar_van81@yahoo.co.in>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH UPDATE] Add generic GPIO to Au1x00
-Message-ID: <20070524153229.GA10327@linux-mips.org>
-References: <200705222144.45791.florian.fainelli@telecomint.eu>
+In-Reply-To: <243199.27594.qm@web94304.mail.in2.yahoo.com>
+References: <243199.27594.qm@web94304.mail.in2.yahoo.com>
+Content-Type: text/plain
+Date:	Thu, 24 May 2007 12:44:39 -0700
+Message-Id: <1180035880.23076.5.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200705222144.45791.florian.fainelli@telecomint.eu>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Evolution 2.6.3 (2.6.3-2.fc5) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wilson@specifix.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15158
+X-archive-position: 15159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wilson@specifix.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 22, 2007 at 09:44:42PM +0200, Florian Fainelli wrote:
+On Mon, 2007-05-21 at 08:54 +0100, saravanan sar wrote:
+> checking version of gcc... 4.1.0, bad
 
-> target using it, can you queue these patchset for 2.6.22 ? Thank you very 
-> much in advance.
-
-Let's see what is still possible, we're already relativly late in the
-game but this is certainly reasonably harmless stuff.  For the time
-being the patch is just in the 2.6.23 queue.
-
-  Ralf
+Here is your problem.  It looks like you are compiling glibc, and your
+glibc version doesn't work with the gcc version you are using.  You
+didn't mention the glibc sources version.  You can try looking at the
+glibc configure file to see what gcc version it wants.  Just search for
+the string "checking version of gcc" and look a few lines down for the
+regexp that matches the expected gcc versions.  You will likely either
+need to use a different glibc version or a different gcc version.  Since
+you are probably using a RMI gcc port with non-public patches, changing
+the gcc version may not be possible.
+-- 
+Jim Wilson, GNU Tools Support, http://www.specifix.com

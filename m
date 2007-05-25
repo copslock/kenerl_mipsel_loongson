@@ -1,74 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 May 2007 23:50:28 +0100 (BST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:46466 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20022068AbXEXWu1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 24 May 2007 23:50:27 +0100
-Received: (qmail 18432 invoked by uid 101); 24 May 2007 22:49:20 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 24 May 2007 22:49:20 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l4OMnGwV015856;
-	Thu, 24 May 2007 15:49:16 -0700
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <LGNWYHJH>; Thu, 24 May 2007 15:49:16 -0700
-Message-ID: <46561667.1070105@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Jeff Garzik <jeff@garzik.org>
-Cc:	Marc St-Jean <stjeanma@pmc-sierra.com>, akpm@linux-foundation.org,
-	linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 10/12] drivers: PMC MSP71xx ethernet driver
-Date:	Thu, 24 May 2007 15:49:11 -0700
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 24 May 2007 22:49:11.0382 (UTC) FILETIME=[BECC5760:01C79E55]
-user-agent: Thunderbird 1.5.0.10 (X11/20070221)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 May 2007 00:58:54 +0100 (BST)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:1410 "EHLO
+	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
+	id S20022078AbXEXX6w (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 25 May 2007 00:58:52 +0100
+Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
+	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l4P00S6V000913;
+	Fri, 25 May 2007 01:00:28 +0100
+Date:	Fri, 25 May 2007 01:00:28 +0100
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Roman Zippel <zippel@linux-m68k.org>,
+	Linux Kernel Development <linux-kernel@vger.kernel.org>,
+	rmk@arm.linux.kernel.org, spyro@f2s.com, <starvik@axis.com>,
+	<ysato@users.sourceforge.jp>, "Luck, Tony" <tony.luck@intel.com>,
+	<takata@linux-m32r.org>, chris@zankel.net,
+	<uclinux-v850@lsi.nec.co.jp>, kyle@parisc-linux.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] m68k: Enable arbitary speed tty support
+Message-ID: <20070525010028.7ddd3a73@the-village.bc.nu>
+In-Reply-To: <20070524134015.e89843db.akpm@linux-foundation.org>
+References: <20070523174446.37abfa7a@the-village.bc.nu>
+	<Pine.LNX.4.64.0705232117260.10610@anakin>
+	<20070523205645.07b03581@the-village.bc.nu>
+	<20070524134015.e89843db.akpm@linux-foundation.org>
+X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.8; i386-redhat-linux-gnu)
+Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
+ Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
+ Lloegr o'r rhif cofrestru 3798903
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15165
+X-archive-position: 15166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 24 May 2007 13:40:15 -0700
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-Jeff Garzik wrote:
-> Marc St-Jean wrote:
->  > I asked if the remaining section (above) was acceptable so we could 
-> retain our
->  > buffer recycling which enhances throughput. I never received a rely 
-> so it was
->  > left in my last patch.
->  >
->  > The above comment now answers my part of my initial question. Are you 
-> aware of
->  > a better way to implement this or must we lose all our recycling 
-> enhancements?
+> Alan, I'm all dazed and confused about these patches:
 > 
+> arm-enable-arbitary-speed-tty-ioctls-and-split.patch
+> arm26-enable-arbitary-speed-tty-ioctls-and-split.patch
+> ia64-arbitary-speed-tty-ioctl-support.patch
+> xtensa-enable-arbitary-tty-speed-setting-ioctls.patch
+> h8300-enable-arbitary-speed-tty-port-setup.patch
+> m32r-enable-arbitary-speed-tty-rate-setting.patch
+> etrax-enable-arbitary-speed-setting-on-tty-ports.patch
+> v850-enable-arbitary-speed-tty-ioctls.patch
+> lots-of-architectures-enable-arbitary-speed-tty-support.patch
 > 
-> You can poke around on netdev and ask about skb recycling in a new
-> thread, and propose something.
-> 
-> I just know that having your own custom skb initialization is a
-> non-starter.  Any updates the main skb init code receives will
-> inevitably -not- be propagate to your code, rapidly leading to an
-> unmaintainable disconnect.
-> 
-> skb recycling in general is an interesting area to explore, and others
-> have poked around that area before.  I bet googling for skb recycling
-> would turn up some useful thoughts and past efforts.
-> 
->         Jeff
-> 
+> are there any interdependencies here, or can the various patches
+> go into the various trees in random order without ill effects?
 
-I will resend the driver without the skb recycling shortly. We will need
-to see if we can allocate resources to contribute to recycling at the
-stack level later.
+The only ordering requirement is that the patch which adds all the
+termios2 structures goes first.
 
-Thanks,
-Marc
+Alan

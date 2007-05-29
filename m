@@ -1,132 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 May 2007 14:43:00 +0100 (BST)
-Received: from dns0.mips.com ([63.167.95.198]:47755 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20022698AbXE2Nm6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 29 May 2007 14:42:58 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id l4TDh9Gp002914
-	for <linux-mips@linux-mips.org>; Tue, 29 May 2007 06:43:09 -0700 (PDT)
-Received: from [192.168.236.12] (cthulhu [192.168.236.12])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id l4TDgmew004802
-	for <linux-mips@linux-mips.org>; Tue, 29 May 2007 06:42:49 -0700 (PDT)
-Message-ID: <465C2DD8.6090208@mips.com>
-Date:	Tue, 29 May 2007 15:42:48 +0200
-From:	"Kevin D. Kissell" <kevink@mips.com>
-User-Agent: Thunderbird 1.5.0.10 (X11/20070302)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 May 2007 15:04:35 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:46340 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022734AbXE2OEb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 29 May 2007 15:04:31 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 348C5E1C92;
+	Tue, 29 May 2007 16:03:50 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id VngYWRDBcvRZ; Tue, 29 May 2007 16:03:49 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B6ADCE1C63;
+	Tue, 29 May 2007 16:03:49 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l4TE40Hc002134;
+	Tue, 29 May 2007 16:04:00 +0200
+Date:	Tue, 29 May 2007 15:03:56 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
+Subject: [PATCH] die(): Properly declare as non-returning
+Message-ID: <Pine.LNX.4.64N.0705291456520.14456@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: SMTC Patch
-Content-Type: multipart/mixed;
- boundary="------------050307040309060702090900"
-Return-Path: <kevink@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.2/3322/Tue May 29 11:46:18 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15182
+X-archive-position: 15183
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------050307040309060702090900
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+ This marks the declaration of die() correctly, removing "control reaches 
+end of non-void function" warnings from non-void functions that die() at 
+the end.
 
-The attached patch fixes some problems with the linux-mips.org
-2.6.21 kernel for SMTC kernels for the Malta platform.
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
 
-The fix to smtc.c just eliminates a warning that crept in.
+ I've noticed there is an ongoing discussion about the use of NORET_TYPE 
+and ATTRIB_NORET, but until that is resolved this change is useful.
 
-The fixes to traps.c eliminate a hypothetical problem with
-out-of-bounds arguments (which were being reported, but acted
-upon anyway, which was somewhat insane) and a real one with
-PageMask going uninitialized in VPE 1 on any MIPS MT processor
-that doesn't reset PageMask to a sane value, which the archtecture
-does not require.
+ Please apply.
 
-The restoration of the #define in mips-boards/generic/time.c
-is necessary to make the Malta SMTC kernel build.  If whoever
-deleted it has a good reason for it not to be done the way it's
-done, that's OK, but *some* definition must be provided.
+  Maciej
 
-			Regards,
-
-			Kevin K.
-
---------------050307040309060702090900
-Content-Type: text/plain;
- name="smtc_patch_29052007"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="smtc_patch_29052007"
-
-diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
-index b361edb..21eb599 100644
---- a/arch/mips/kernel/smtc.c
-+++ b/arch/mips/kernel/smtc.c
-@@ -611,12 +611,12 @@ void smtc_cpus_done(void)
- int setup_irq_smtc(unsigned int irq, struct irqaction * new,
- 			unsigned long hwmask)
+patch-mips-2.6.21-20070502-die-noret-0
+diff -up --recursive --new-file linux-mips-2.6.21-20070502.macro/include/asm-mips/ptrace.h linux-mips-2.6.21-20070502/include/asm-mips/ptrace.h
+--- linux-mips-2.6.21-20070502.macro/include/asm-mips/ptrace.h	2007-02-21 05:57:58.000000000 +0000
++++ linux-mips-2.6.21-20070502/include/asm-mips/ptrace.h	2007-05-27 21:15:00.000000000 +0000
+@@ -86,7 +86,7 @@ struct pt_regs {
+ 
+ extern asmlinkage void do_syscall_trace(struct pt_regs *regs, int entryexit);
+ 
+-extern NORET_TYPE void die(const char *, struct pt_regs *);
++extern NORET_TYPE void die(const char *, struct pt_regs *) ATTRIB_NORET;
+ 
+ static inline void die_if_kernel(const char *str, struct pt_regs *regs)
  {
-+#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
- 	unsigned int vpe = current_cpu_data.vpe_id;
- 
--	irq_hwmask[irq] = hwmask;
--#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
- 	vpemask[vpe][irq - MIPSCPU_INT_BASE] = 1;
- #endif
-+	irq_hwmask[irq] = hwmask;
- 
- 	return setup_irq(irq, new);
- }
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 48c8b25..b42db85 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1190,10 +1190,12 @@ static void *set_vi_srs_handler(int n, vi_handler_t addr, int srs)
- 
- 		memcpy (b, &except_vec_vi, handler_len);
- #ifdef CONFIG_MIPS_MT_SMTC
--		if (n > 7)
-+		if (n < 8) {
-+			w = (u32 *)(b + mori_offset);
-+			*w = (*w & 0xffff0000) | (0x100 << n);
-+		} else {
- 			printk("Vector index %d exceeds SMTC maximum\n", n);
--		w = (u32 *)(b + mori_offset);
--		*w = (*w & 0xffff0000) | (0x100 << n);
-+		}
- #endif /* CONFIG_MIPS_MT_SMTC */
- 		w = (u32 *)(b + lui_offset);
- 		*w = (*w & 0xffff0000) | (((u32)handler >> 16) & 0xffff);
-@@ -1383,6 +1385,13 @@ void __init per_cpu_trap_init(void)
- 		cpu_cache_init();
- 		tlb_init();
- #ifdef CONFIG_MIPS_MT_SMTC
-+	} else if(!secondaryTC) {
-+	/*
-+	 * First TC in non-boot VPE must do subset of tlb_init()
-+	 * for MMU countrol registers.
-+	 */
-+		write_c0_pagemask(PM_DEFAULT_MASK);
-+		write_c0_wired(0);
- 	}
- #endif /* CONFIG_MIPS_MT_SMTC */
- }
-diff --git a/arch/mips/mips-boards/generic/time.c b/arch/mips/mips-boards/generic/time.c
-index f0366af..2f73c34 100644
---- a/arch/mips/mips-boards/generic/time.c
-+++ b/arch/mips/mips-boards/generic/time.c
-@@ -51,6 +51,8 @@
- #include <asm/mips-boards/seadint.h>
- #endif
- 
-+#define CPUCTR_IMASKBIT (0x100 << MIPSCPU_INT_CPUCTR)
-+
- unsigned long cpu_khz;
- 
- static int mips_cpu_timer_irq;
-
---------------050307040309060702090900--

@@ -1,69 +1,213 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 May 2007 11:09:53 +0100 (BST)
-Received: from caramon.arm.linux.org.uk ([217.147.92.249]:3087 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20022921AbXE3KJv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 30 May 2007 11:09:51 +0100
-Received: from flint.arm.linux.org.uk ([2002:d993:5cf9:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.62)
-	(envelope-from <rmk@arm.linux.org.uk>)
-	id 1HtL7a-0007Rq-Uh; Wed, 30 May 2007 11:09:39 +0100
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.62)
-	(envelope-from <rmk@flint.arm.linux.org.uk>)
-	id 1HtL7Y-0007Ev-1s; Wed, 30 May 2007 11:09:36 +0100
-Date:	Wed, 30 May 2007 11:09:35 +0100
-From:	Russell King <rmk+lkml@arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 May 2007 13:07:08 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:18701 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022523AbXE3MHF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 30 May 2007 13:07:05 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 53628E1E57;
+	Wed, 30 May 2007 14:06:25 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id B0JO5i1aXgpj; Wed, 30 May 2007 14:06:25 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id DC7F3E1E26;
+	Wed, 30 May 2007 14:06:24 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l4UC6XUw024756;
+	Wed, 30 May 2007 14:06:33 +0200
+Date:	Wed, 30 May 2007 13:06:30 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
 	linux-kernel@vger.kernel.org, Andy Whitcroft <apw@shadowen.org>
 Subject: Re: [PATCH] zs: Move to the serial subsystem
-Message-ID: <20070530100935.GC19552@flint.arm.linux.org.uk>
-Mail-Followup-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Andy Whitcroft <apw@shadowen.org>
-References: <Pine.LNX.4.64N.0705291258390.14456@blysk.ds.pg.gda.pl> <20070530011224.bf36d2df.akpm@linux-foundation.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20070530011224.bf36d2df.akpm@linux-foundation.org>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+Message-ID: <Pine.LNX.4.64N.0705301136150.27697@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0705291258390.14456@blysk.ds.pg.gda.pl>
+ <20070530011224.bf36d2df.akpm@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.2/3331/Wed May 30 08:48:34 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15191
+X-archive-position: 15192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk+lkml@arm.linux.org.uk
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 30, 2007 at 01:12:24AM -0700, Andrew Morton wrote:
-> > +			if (status & (Rx_SYS | Rx_BRK))
-> > +				icount->brk++;
-> > +			else if (status & FRM_ERR)
-> > +				icount->frame++;
-> > +			else if (status & PAR_ERR)
-> > +				icount->parity++;
+Hi Andrew!
+
+ Thanks for the review -- I'll address all the issues below.
+
+> So..  how many people use this, and how do we know when it's been tested
+> enough?
+
+ Well, the reality is the current code as in Linus tree is unusable at all 
+-- there is no way to build drivers/char/decserial.c whis is the wrapper 
+that calls zs_init().  So even a broken driver is probably an improvement 
+and it works as a console device for me, so it's not that entirely broken.
+
+ You can actually use the linux-mips.org tree to make the old driver work, 
+but given the number of reports about the DECstation I have seen recently 
+(none for at least a year or something) the response for a testing request 
+may take a long, long time.  If someone complains of the new driver I'll 
+take care of investigating the problem.
+
+ One is certain -- at least one person uses it. ;-)
+
+> For starters, let's see what the new checkpatch.pl says:
+
+ Didn't know about this one -- thanks for the point.
+
+> Use #include <linux/bug.h> instead of <asm/bug.h>
+
+ Will fix -- wasn't there in 2.6.18 that I used for testing.
+
+> Use #include <linux/io.h> instead of <asm/io.h>
+
+ Will fix.
+
+> line over 80 characters
+
+ Tricky -- not visible on the terminal, thanks.
+
+> printk() should include KERN_ facility level
+
+ Debugging stuff, not normally build, but could use some annotation for 
+purity, indeed.
+
+> Hey, you have volatiles and checkpatch.pl didn't complain.  Andy, a
+> reference to Documentation/volatile-considered-harmful.txt would suit.
+
+ Fixed. 
+
+> > +#define RECOVERY_DELAY  udelay(2)
 > 
+> static inline void recovery_delay(void)
+> {
+> 	udelay(2);
+> }
+> 
+> ?
+
+ Hmm, maybe...
+
+> > +#define to_zport(uport) container_of(uport, struct zs_port, port)
+> 
+> This could be a C function too.
+
+ Everybody else seems to use a macro for it.
+
+> > +static u8 zs_init_regs[ZS_NUM_REGS] __initdata = {
+> > +	0,				/* write 0 */
+> > +	PAR_SPEC,			/* write 1 */
+> > +	0,				/* write 2 */
+> > +	0,				/* write 3 */
+> > +	X16CLK | SB1,			/* write 4 */
+> > +	0,				/* write 5 */
+> > +	0, 0, 0,			/* write 6, 7, 8 */
+> > +	MIE | DLC | NV,			/* write 9 */
+> > +	NRZ,				/* write 10 */
+> > +	TCBR | RCBR,			/* write 11 */
+> > +	0, 0,				/* BRG time constant, write 12 + 13 */
+> > +	BRSRC | BRENABL,		/* write 14 */
+> > +	0,				/* write 15 */
+> > +};
+> 
+> one could use the [1] = PAR_SPEC, thingy here, but the above seems clear
+> enough to me.
+
+ I'd say it would be unnecessary clutter otherwise -- this is not a 
+struct!
+
+> This is too large to inline (I suspect) and it has many callsites, and some
+> of those callsites are inlined too.
+> 
+> You'll probably get some nice savings by nuking the lot.
+
+ Yes, probably -- after the fight with the modem lines I forgot to have 
+this fixed.  As none of these functions are actually required to be 
+inline, I'll just remove the marking entirely and let GCC do its job.
+
+> Make this static?
+
+ Could potentially be called by a debugging module.  Not compiled by 
+default anyway.
+
+> > +static inline void zs_spin_lock_cond_irq(spinlock_t* lock, int irq)
+> > +{
+> > +	if (irq)
+> > +		spin_lock_irq(lock);
+> > +	else
+> > +		spin_lock(lock);
+> > +}
+> 
+> This `irq' thing looks a bit hacky.
+
+ Probably the best solution I could thought of -- I want to relieve the 
+system for the duration of the delay, so I want to enable the interrupts 
+if possible.  But the callers of this function may be called indirectly 
+from outside of the driver with an arbitrary state of the interrupt mask, 
+so what else could I do?  At slow bps rates, draining of the transmit 
+buffer register may take a looong time.  The chip has a single character 
+transmit "FIFO".
+
+> > +	spin_lock_irqsave(&scc->zlock, flags);
+> > +	status = read_zsreg(zport, R1);
+> > +	spin_unlock_irqrestore(&scc->zlock, flags);
+> 
+> How come this read_zsreg() needs the lock
+
+ Well, because it is not atomic?  A read of any register but the R0 
+consists of a write of the index to the control register and then a read 
+of same which retrieves data from the indexed register.  If another 
+operation is performed on the control register inbetween, then not only 
+the wrong register will be read, but also some internal state will be 
+corrupted as the subsequent write to the the control register after the 
+first one will actually write the value to the register indexed previously 
+rather than selecting a new value of the index.
+
+ And please be kind enough not to curse the design of this chip -- it's 
+over 25 years old!  It's a follow-on to the SIO, a member of the family of 
+chips surrounding the Z80.
+
+> Actually the callers _do_ seem kinda OK, but please chech that carefully.
+
+ Did already.  All *_raw_* functions assume locking has been done by the 
+caller.
+
+> Some of the callers are using spin_lock(zlock) and some others are using
+> spin_lock_irq().  Could be deadlocky - please review all of that.
+
+ No need for spin_lock_irq() in the interrupt handler (AFAIK).
+
 > FRM_ERR and PAR_ERR are mutually exclusive, and cannot be set if either
 > Rx_SYS or Rx_BRK are set?
 
-That's actually fairly normal.  A break condition is by definition
-a framing error, and possibly a parity error as well.  Also, a break
-condition is not an error per-se.
+ Correct.  FRM_ERR overrules PAR_ERR, because it means the reception was 
+completely garbled and as such there was nothing to parity-protect in the 
+first place (or, IOW, PAR_ERR == random()).
 
-Also, if you do add in the associated framing or parity errors, you're
-likely to get different results from different hardware - some hardware
-mask off the framing and parity errors when detecting a break condition.
-Others don't.
+ The Rx_SYS or Rx_BRK bits are merely software flags -- the chip leaves a 
+single null character in its receive buffer with no special conditions by 
+definition once the BREAK condition has been removed.  It's a dummy 
+reception -- nothing has actually been received, so nothing could have 
+been corrupted (OK, I suppose this is just a side effect of how the 
+receiver works -- BREAK drives the receive line low and this state is 
+being shifted through the receive register for the duration of the 
+condition; note that for the purpose of detecting the condition BREAK is 
+defined as a null character with a framing error).  The driver records a 
+BREAK condition seen (this chip signals it as a status change, not a 
+receive condition) and later on when a null character is "received", it is 
+discarded according to the chip spec.
 
-> > +/*
-> > + * Finally, routines used to initialize the serial port.
-> > + */
 > > +static int zs_startup(struct uart_port *uport)
 > > +{
 > > +	struct zs_port *zport = to_zport(uport);
@@ -87,10 +231,95 @@ Others don't.
 > Perhaps higher-level locks prevent this.  If so, a comment explaining this
 > would be reassuring.
 
-Does look racy if "scc" is shared between several ports.  The locking
-here is only per-port, so this is racy.
+ The serial API says this function is called with port_sem taken -- I can 
+certainly paste the comment here too.
 
--- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:
+> > +static void zs_shutdown(struct uart_port *uport)
+> > +{
+> > +	struct zs_port *zport = to_zport(uport);
+> > +	struct zs_scc *scc = zport->scc;
+> > +	unsigned long flags;
+> > +
+> > +	spin_lock_irqsave(&scc->zlock, flags);
+> > +
+> > +	zport->regs[5] &= ~TxENAB;
+> > +	zport->regs[3] &= ~RxENABLE;
+> > +	write_zsreg(zport, R5, zport->regs[5]);
+> > +	write_zsreg(zport, R3, zport->regs[3]);
+> > +
+> > +	spin_unlock_irqrestore(&scc->zlock, flags);
+> > +
+> > +	scc->irq_guard--;
+> 
+> Ditto.
+
+ Ditto. :-)
+
+> > +static void zs_reset(struct zs_port *zport)
+> > +{
+> > +	struct zs_scc *scc = zport->scc;
+> > +	int irq;
+> > +	unsigned long flags;
+> > +
+> > +	spin_lock_irqsave(&scc->zlock, flags);
+> > +	irq = !irqs_disabled_flags(flags);
+> 
+> hacky?
+
+ See the comment above -- any ideas?
+
+> > +	switch (zport->clk_mode) {
+> > +	case 64:
+> > +		zport->regs[4] |= X64CLK;
+> > +		break;
+> > +	case 32:
+> > +		zport->regs[4] |= X32CLK;
+> > +		break;
+> > +	case 16:
+> > +		zport->regs[4] |= X16CLK;
+> > +		break;
+> > +	case 1:
+> > +		zport->regs[4] |= X1CLK;
+> > +		break;
+> > +	default:
+> > +		BUG();
+> > +	}
+> 
+> afacit clk_mode = 16 is the only value possible in this driver.
+
+ I doesn't hurt to handle all the cases.  Perhaps I'll add an ioctl() to 
+handle changing of clk_mode for `setserial' or suchalike.  Note that X1CLK 
+is isochronous mode. ;-)
+
+> > +static struct uart_driver zs_reg;
+> > +static struct console zs_sercons = {
+> > +	.name	= "ttyS",
+> > +	.write	= zs_console_write,
+> > +	.device	= uart_console_device,
+> > +	.setup	= zs_console_setup,
+> > +	.flags	= CON_PRINTBUFFER,
+> 
+> You might want to set CON_BOOT here.  See the recently-merged
+> ftp://ftp.kernel.org/pub/linux/kernel/people/akpm/patches/2.6/2.6.21-rc7/2.6.21-rc7-mm2/broken-out/fixes-and-cleanups-for-earlyprintk-aka-boot-console.patch
+
+ Done.  Thanks for the point (now I recall seeing the patch, but I have 
+obviously already forgotten about it).
+
+> I think there was some great controversy recently concerning the naming of
+> the device which the z8530 driver drives.  Perhaps you're not affected
+> here.  It was dwmw2 vs Stephen Rothwell ;)
+
+ Hmm, it sounds intriguing, but Google doesn't seem to be able to find 
+anything relevant for me -- any pointers?
+
+ Now the real fun with this thing will happen if I ever get to supporting 
+synchronous operation as well -- these chips are certainly capable of (in 
+addition to that isochronous thingy mentioned above) and they indeed are 
+wired correctly for this to work, which generally means TxC and RxC lines 
+are on the respective connectors. ;-)
+
+ I can see you have applied the patch regardless, so I'll send you just a 
+diff with updates shortly -- once I have tested the changes with a piece 
+of hardware.
+
+  Maciej

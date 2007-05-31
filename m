@@ -1,49 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2007 13:46:51 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:41659 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20025518AbXEaMqu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 31 May 2007 13:46:50 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l4VCkcrw001484;
-	Thu, 31 May 2007 13:46:38 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l4VCkbTA001483;
-	Thu, 31 May 2007 13:46:37 +0100
-Date:	Thu, 31 May 2007 13:46:37 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"J. Scott Kasten" <jscottkasten@yahoo.com>
-Cc:	debian-mips@lists.debian.org,
-	Linux/MIPS Development <linux-mips@linux-mips.org>
-Subject: Re: Several packages whose page size is 4k.
-Message-ID: <20070531124637.GA1437@linux-mips.org>
-References: <464A7C53.3010309@lemote.com> <464A805C.5020606@ict.ac.cn> <20070516081555.GA22169@networkno.de> <464AC466.4000907@lemote.com> <20070516085737.GD22169@networkno.de> <20070516094617.GJ19816@deprecation.cyrius.com> <464ADF9B.6050602@lemote.com> <464AE59E.2070004@ict.ac.cn> <20070528131703.GA10298@linux-mips.org> <Pine.LNX.4.64.0705310834040.26620@bluefang.tetracon-eng.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0705310834040.26620@bluefang.tetracon-eng.net>
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2007 14:21:17 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:2821 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20025518AbXEaNVQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 31 May 2007 14:21:16 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 00D76E1D01;
+	Thu, 31 May 2007 15:21:04 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ayk0b+dhr7yq; Thu, 31 May 2007 15:21:04 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 7C4CEE1CD1;
+	Thu, 31 May 2007 15:21:04 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l4VDLFO1017417;
+	Thu, 31 May 2007 15:21:15 +0200
+Date:	Thu, 31 May 2007 14:21:11 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] No I/O ports on the DECstation
+In-Reply-To: <20070531121521.GE28936@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0705311359250.7856@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0705291505370.14456@blysk.ds.pg.gda.pl>
+ <20070531121521.GE28936@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.2/3334/Thu May 31 10:54:25 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15210
+X-archive-position: 15211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 31, 2007 at 08:38:59AM -0400, J. Scott Kasten wrote:
+On Thu, 31 May 2007, Ralf Baechle wrote:
 
-> Ralf, could you please elaborate on the "generic ALSA/MIPS" issue?
+> >  There are no I/O ports on the DECstation whatsoever in any configuration 
+> > as neither the CPU nor the peripheral buses used have a concept of such.
+> > 
+> > Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 > 
-> My interest is that there's a marginally functional IP32 sound driver 
-> floating around that I'm trying to find the time to fix up and get in 
-> tree.  Anything ALSA/MIPS is of interest right now.
+> Stale patch?
 
-See the thread at
+ Not at all, it would seem.  It applies just fine and is still required as 
+of 2.6.22-rc3.  These CONFIG_HAS_IOMEM and CONFIG_HAS_IOPORT options are 
+pretty recent anyway -- there is little chance for anything about them to 
+get stale yet.
 
-  http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=11766507674145-git-send-email-tiansm%40lemote.com
-
-  Ralf
+  Maciej

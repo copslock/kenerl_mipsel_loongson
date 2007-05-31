@@ -1,39 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 May 2007 18:26:25 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:7432 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2007 11:05:00 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:45578 "EHLO
 	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022723AbXE3R0X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 30 May 2007 18:26:23 +0100
+	id S20025460AbXEaKE6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 31 May 2007 11:04:58 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3590EE1FBB;
-	Wed, 30 May 2007 19:25:38 +0200 (CEST)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3664BE1D4B;
+	Thu, 31 May 2007 12:04:49 +0200 (CEST)
 X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
 	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id c5W6S+5zVCqO; Wed, 30 May 2007 19:25:37 +0200 (CEST)
+	with ESMTP id 2pWYjQ-diJOy; Thu, 31 May 2007 12:04:48 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B1AC2E1FAE;
-	Wed, 30 May 2007 19:25:37 +0200 (CEST)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B4FBCE1C97;
+	Thu, 31 May 2007 12:04:48 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l4UHPpaw006255;
-	Wed, 30 May 2007 19:25:51 +0200
-Date:	Wed, 30 May 2007 18:25:46 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l4VA4uVr006445;
+	Thu, 31 May 2007 12:04:56 +0200
+Date:	Thu, 31 May 2007 11:04:53 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Jan Rekorajski <baggins@sith.mimuw.edu.pl>
-cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] zs: Move to the serial subsystem
-In-Reply-To: <20070530165842.GL29894@sith.mimuw.edu.pl>
-Message-ID: <Pine.LNX.4.64N.0705301802570.27697@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0705291258390.14456@blysk.ds.pg.gda.pl>
- <20070530165842.GL29894@sith.mimuw.edu.pl>
+To:	Andrew Morton <akpm@linux-foundation.org>
+cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] zs: Updates to fix issues raised
+Message-ID: <Pine.LNX.4.64N.0705311023100.7856@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.2/3331/Wed May 30 08:48:34 2007 on piorun.ds.pg.gda.pl
+X-Virus-Scanned: ClamAV 0.90.2/3333/Wed May 30 16:42:37 2007 on piorun.ds.pg.gda.pl
 X-Virus-Status:	Clean
 Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15194
+X-archive-position: 15195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,88 +39,260 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 30 May 2007, Jan Rekorajski wrote:
+ This is a set of fixes to the initial revision of the zs driver port to 
+the serial subsystem.  They include an update to the recovery delay, and 
+the race on interrupt handler registration.  As well as a number of style 
+fixes throughout.
 
-> Look functional to me (just booted my DecStation 5000/240) :)
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+Andrew,
 
- Great!  Thanks for testing.
+ It looks like port_sem is not enough to protect against a race in the 
+startup() call -- while the serial API spec refers to it as "an overall 
+semaphore" as opposed to "per-port" as it documents the other locks, the 
+actual code contradicts it. ;-)  I had to resist the temptation to use 
+scc->zlock here as it leads to a spinlock recursion and hence a deadlock.  
+The reason is with CONFIG_DEBUG_SHIRQ a call to zs_interrupt() is made 
+from beneath request_irq() even though local interrupts are disabled.  
+I'm not sure if it is intentional, a design limitation or a bug.  Anyway, 
+using an atomic counter is better as it makes the duration of interrupts 
+being disabled shorter.
 
-> Any chance to get LK201/401 keyboard and vsxxxaa mouse working with this?
+ In the end I have not added the CON_BOOT flag, because this is a 
+full-featured console driver, not an early one.  I have not updated 
+printk() calls in zs_dump() either -- I figured out adding pr_info("") 
+calls before the loops would add little value.  I fixed the other instance 
+though.
 
- For the time being a solution is the patch below and then:
+ Removing "inline" clauses reduced the text size by about 50% ;-) and 
+branches are essentially free on the R3000 and not that horribly expensive 
+on the R4000/R4400 either -- which exhaust the possible CPU configurations 
+for this driver at the moment (one day this driver could be used for DEC 
+3000 AXP systems as well as they reuse the same setup of these bits).
 
-CONFIG_INPUT=y
-CONFIG_INPUT_KEYBOARD=y
-CONFIG_KEYBOARD_LKKBD=y
-CONFIG_INPUT_MOUSE=y
-CONFIG_MOUSE_VSXXXAA=y
-CONFIG_SERIO=y
-CONFIG_SERIO_SERPORT=y
-CONFIG_VT=y
-CONFIG_VT_CONSOLE=y
-CONFIG_HW_CONSOLE=y
-CONFIG_VT_HW_CONSOLE_BINDING=y
-
-plus your framebuffer of choice.  To activate the keyboard you have to run 
-the following program:
-
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
-
-#define SPIOCSTYPE _IOW('q', 0x01, unsigned long)
-#define SERIO_LKKBD 0x28
-
-int main(void)
-{
-	int fd, ldisc = N_MOUSE, type = SERIO_LKKBD;
-	char buf;
-
-	fd = open("/dev/ttyS2", O_RDWR | O_NONBLOCK);
-	ioctl(fd, TIOCSETD, &ldisc);
-	ioctl(fd, SPIOCSTYPE, &type);
-	read(fd, &buf, 1);
-	close(fd);
-
-	return 0;
-}
-
-Use "/dev/ttyS0" and:
-
-#define SERIO_VSXXXAA 0x08
-
-for the mouse as appropriate.  Before you run the program you need to set 
-the line settings correctly -- that would be:
-
-# stty -F /dev/ttyS2 4800 cstopb raw -echo -echoe -echok noflsh
-
-for the keyboard and:
-
-# stty -F /dev/ttyS0 4800 cstopb raw -echo -echoe -echok noflsh parenb parodd
-
-for the mouse (considering it a temporary hack I have not added that bit 
-to the program above).  Lacking a suitable rodent at hand I have only 
-tested the keyboard -- it worked.  Please note that killing the program 
-(which normally does not terminate -- read() blocks forever) removes the 
-binding.
-
- I am looking into a solution that would make it automatic without the 
-need of involving userland which just does not seem right here -- you do 
-want to run your kernel with "init=/bin/bash" or suchlike and have your 
-virtual terminal console usable.  I will remove the old lk201 bits then.
+ Please apply.
 
   Maciej
 
-patch-mips-2.6.18-20060920-nolk201-1
-diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/tc/Makefile linux-mips-2.6.18-20060920/drivers/tc/Makefile
---- linux-mips-2.6.18-20060920.macro/drivers/tc/Makefile	2007-01-07 18:04:10.000000000 +0000
-+++ linux-mips-2.6.18-20060920/drivers/tc/Makefile	2007-01-07 18:33:47.000000000 +0000
-@@ -5,7 +5,7 @@
- # Object file lists.
+patch-2.6.22-rc2-serial-zs-fix-4
+diff -up --recursive --new-file linux-2.6.22-rc2.macro/drivers/serial/zs.c linux-2.6.22-rc2/drivers/serial/zs.c
+--- linux-2.6.22-rc2.macro/drivers/serial/zs.c	2007-05-29 12:42:14.000000000 +0000
++++ linux-2.6.22-rc2/drivers/serial/zs.c	2007-05-30 22:25:42.000000000 +0000
+@@ -47,11 +47,13 @@
+ #define SUPPORT_SYSRQ
+ #endif
  
- obj-$(CONFIG_TC) += tc.o tc-driver.o
--obj-$(CONFIG_VT) += lk201.o lk201-map.o lk201-remap.o
-+# obj-$(CONFIG_VT) += lk201.o lk201-map.o lk201-remap.o
++#include <linux/bug.h>
+ #include <linux/console.h>
+ #include <linux/delay.h>
+ #include <linux/errno.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
++#include <linux/io.h>
+ #include <linux/ioport.h>
+ #include <linux/irqflags.h>
+ #include <linux/kernel.h>
+@@ -62,8 +64,7 @@
+ #include <linux/sysrq.h>
+ #include <linux/tty.h>
  
- $(obj)/lk201-map.o: $(obj)/lk201-map.c
+-#include <asm/bug.h>
+-#include <asm/io.h>
++#include <asm/atomic.h>
+ #include <asm/system.h>
  
+ #include <asm/dec/interrupts.h>
+@@ -86,11 +87,10 @@ static char zs_version[] __initdata = "0
+ #define ZS_CHAN_B	1		/* Index of the channel B.  */
+ #define ZS_CHAN_IO_SIZE 8		/* IOMEM space size.  */
+ #define ZS_CHAN_IO_STRIDE 4		/* Register alignment.  */
+-#define ZS_CHAN_IO_OFFSET 1		/* The SCC resides on the high byte						   of the 16-bit IOBUS.  */
++#define ZS_CHAN_IO_OFFSET 1		/* The SCC resides on the high byte
++					   of the 16-bit IOBUS.  */
+ #define ZS_CLOCK        7372800 	/* Z85C30 PCLK input clock rate.  */
+ 
+-#define RECOVERY_DELAY  udelay(2)
+-
+ #define to_zport(uport) container_of(uport, struct zs_port, port)
+ 
+ struct zs_parms {
+@@ -126,53 +126,59 @@ static u8 zs_init_regs[ZS_NUM_REGS] __in
+ /*
+  * Reading and writing Z85C30 registers.
+  */
+-static inline u8 read_zsreg(struct zs_port *zport, int reg)
++static void recovery_delay(void)
++{
++	udelay(2);
++}
++
++static u8 read_zsreg(struct zs_port *zport, int reg)
+ {
+-	volatile void __iomem *control = zport->port.membase +
+-					 ZS_CHAN_IO_OFFSET;
++	void __iomem *control = zport->port.membase + ZS_CHAN_IO_OFFSET;
+ 	u8 retval;
+ 
+ 	if (reg != 0) {
+ 		writeb(reg & 0xf, control);
+-		fast_iob(); RECOVERY_DELAY;
++		fast_iob();
++		recovery_delay();
+ 	}
+ 	retval = readb(control);
+-	RECOVERY_DELAY;
++	recovery_delay();
+ 	return retval;
+ }
+ 
+-static inline void write_zsreg(struct zs_port *zport, int reg, u8 value)
++static void write_zsreg(struct zs_port *zport, int reg, u8 value)
+ {
+-	volatile void __iomem *control = zport->port.membase +
+-					 ZS_CHAN_IO_OFFSET;
++	void __iomem *control = zport->port.membase + ZS_CHAN_IO_OFFSET;
+ 
+ 	if (reg != 0) {
+ 		writeb(reg & 0xf, control);
+-		fast_iob(); RECOVERY_DELAY;
++		fast_iob(); recovery_delay();
+ 	}
+ 	writeb(value, control);
+-	fast_iob(); RECOVERY_DELAY;
++	fast_iob();
++	recovery_delay();
+ 	return;
+ }
+ 
+-static inline u8 read_zsdata(struct zs_port *zport)
++static u8 read_zsdata(struct zs_port *zport)
+ {
+-	volatile void __iomem *data = zport->port.membase +
+-				      ZS_CHAN_IO_STRIDE + ZS_CHAN_IO_OFFSET;
++	void __iomem *data = zport->port.membase +
++			     ZS_CHAN_IO_STRIDE + ZS_CHAN_IO_OFFSET;
+ 	u8 retval;
+ 
+ 	retval = readb(data);
+-	RECOVERY_DELAY;
++	recovery_delay();
+ 	return retval;
+ }
+ 
+-static inline void write_zsdata(struct zs_port *zport, u8 value)
++static void write_zsdata(struct zs_port *zport, u8 value)
+ {
+-	volatile void __iomem *data = zport->port.membase +
+-				      ZS_CHAN_IO_STRIDE + ZS_CHAN_IO_OFFSET;
++	void __iomem *data = zport->port.membase +
++			     ZS_CHAN_IO_STRIDE + ZS_CHAN_IO_OFFSET;
+ 
+ 	writeb(value, data);
+-	fast_iob(); RECOVERY_DELAY;
++	fast_iob();
++	recovery_delay();
+ 	return;
+ }
+ 
+@@ -196,7 +202,7 @@ void zs_dump(void)
+ #endif
+ 
+ 
+-static inline void zs_spin_lock_cond_irq(spinlock_t* lock, int irq)
++static void zs_spin_lock_cond_irq(spinlock_t *lock, int irq)
+ {
+ 	if (irq)
+ 		spin_lock_irq(lock);
+@@ -204,7 +210,7 @@ static inline void zs_spin_lock_cond_irq
+ 		spin_lock(lock);
+ }
+ 
+-static inline void zs_spin_unlock_cond_irq(spinlock_t* lock, int irq)
++static void zs_spin_unlock_cond_irq(spinlock_t *lock, int irq)
+ {
+ 	if (irq)
+ 		spin_unlock_irq(lock);
+@@ -235,7 +241,7 @@ static int zs_transmit_drain(struct zs_p
+ }
+ 
+ 
+-static inline void load_zsregs(struct zs_port *zport, u8 *regs, int irq)
++static void load_zsregs(struct zs_port *zport, u8 *regs, int irq)
+ {
+ 	zs_transmit_drain(zport, irq);
+ 	/* Load 'em up.  */
+@@ -288,8 +294,8 @@ static unsigned int zs_tx_empty(struct u
+ 	return status & ALL_SNT ? TIOCSER_TEMT : 0;
+ }
+ 
+-static inline unsigned int zs_raw_get_ab_mctrl(struct zs_port *zport_a,
+-					       struct zs_port *zport_b)
++static unsigned int zs_raw_get_ab_mctrl(struct zs_port *zport_a,
++					struct zs_port *zport_b)
+ {
+ 	u8 status_a, status_b;
+ 	unsigned int mctrl;
+@@ -728,18 +734,20 @@ static int zs_startup(struct uart_port *
+ 	struct zs_port *zport = to_zport(uport);
+ 	struct zs_scc *scc = zport->scc;
+ 	unsigned long flags;
++	int irq_guard;
+ 	int ret;
+ 
+-	if (!scc->irq_guard) {
++	irq_guard = atomic_add_return(1, &scc->irq_guard);
++	if (irq_guard == 1) {
+ 		ret = request_irq(zport->port.irq, zs_interrupt,
+ 				  IRQF_SHARED, "scc", scc);
+ 		if (ret) {
++			atomic_add(-1, &scc->irq_guard);
+ 			printk(KERN_ERR "zs: can't get irq %d\n",
+ 			       zport->port.irq);
+ 			return ret;
+ 		}
+ 	}
+-	scc->irq_guard++;
+ 
+ 	spin_lock_irqsave(&scc->zlock, flags);
+ 
+@@ -780,6 +788,7 @@ static void zs_shutdown(struct uart_port
+ 	struct zs_port *zport = to_zport(uport);
+ 	struct zs_scc *scc = zport->scc;
+ 	unsigned long flags;
++	int irq_guard;
+ 
+ 	spin_lock_irqsave(&scc->zlock, flags);
+ 
+@@ -790,8 +799,8 @@ static void zs_shutdown(struct uart_port
+ 
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+ 
+-	scc->irq_guard--;
+-	if (!scc->irq_guard)
++	irq_guard = atomic_add_return(-1, &scc->irq_guard);
++	if (!irq_guard)
+ 		free_irq(zport->port.irq, scc);
+ }
+ 
+@@ -1203,7 +1212,7 @@ static int __init zs_init(void)
+ {
+ 	int i, ret;
+ 
+-	printk("%s%s\n", zs_name, zs_version);
++	pr_info("%s%s\n", zs_name, zs_version);
+ 
+ 	/* Find out how many Z85C30 SCCs we have.  */
+ 	ret = zs_probe_sccs();
+diff -up --recursive --new-file linux-2.6.22-rc2.macro/drivers/serial/zs.h linux-2.6.22-rc2/drivers/serial/zs.h
+--- linux-2.6.22-rc2.macro/drivers/serial/zs.h	2007-05-29 12:34:38.000000000 +0000
++++ linux-2.6.22-rc2/drivers/serial/zs.h	2007-05-30 21:28:27.000000000 +0000
+@@ -39,7 +39,7 @@ struct zs_port {
+ struct zs_scc {
+ 	struct zs_port	zport[2];
+ 	spinlock_t	zlock;
+-	int		irq_guard;
++	atomic_t	irq_guard;
+ 	int		initialised;
+ };
+ 	

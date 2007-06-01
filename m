@@ -1,96 +1,137 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jun 2007 14:48:06 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:42768 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20025600AbXFANsE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 1 Jun 2007 14:48:04 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id DE92EE1CFF;
-	Fri,  1 Jun 2007 15:47:22 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id c7kpi+LUPcJT; Fri,  1 Jun 2007 15:47:22 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 91727E1C85;
-	Fri,  1 Jun 2007 15:47:22 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l51DlYNE031600;
-	Fri, 1 Jun 2007 15:47:34 +0200
-Date:	Fri, 1 Jun 2007 14:47:29 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Jan Rekorajski <baggins@sith.mimuw.edu.pl>
-cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jun 2007 15:04:03 +0100 (BST)
+Received: from lug-owl.de ([195.71.106.12]:14312 "EHLO lug-owl.de")
+	by ftp.linux-mips.org with ESMTP id S20025610AbXFAOEC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Jun 2007 15:04:02 +0100
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id 42637F0057; Fri,  1 Jun 2007 16:03:31 +0200 (CEST)
+Date:	Fri, 1 Jun 2007 16:03:31 +0200
+From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Jan Rekorajski <baggins@sith.mimuw.edu.pl>,
+	linux-mips@linux-mips.org
 Subject: Re: [PATCH] zs: Move to the serial subsystem
-In-Reply-To: <20070601125052.GA15787@sith.mimuw.edu.pl>
-Message-ID: <Pine.LNX.4.64N.0706011406170.26841@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0705291258390.14456@blysk.ds.pg.gda.pl>
- <20070530165842.GL29894@sith.mimuw.edu.pl> <Pine.LNX.4.64N.0705301802570.27697@blysk.ds.pg.gda.pl>
- <20070601125052.GA15787@sith.mimuw.edu.pl>
+Message-ID: <20070601140331.GH2649@lug-owl.de>
+Mail-Followup-To: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	Jan Rekorajski <baggins@sith.mimuw.edu.pl>,
+	linux-mips@linux-mips.org
+References: <Pine.LNX.4.64N.0705291258390.14456@blysk.ds.pg.gda.pl> <20070530165842.GL29894@sith.mimuw.edu.pl> <Pine.LNX.4.64N.0705301802570.27697@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.2/3335/Thu May 31 12:16:21 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="KIzF6Cje4W/osXrF"
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0705301802570.27697@blysk.ds.pg.gda.pl>
+X-Operating-System: Linux mail 2.6.18-4-686 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15215
+X-archive-position: 15216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 1 Jun 2007, Jan Rekorajski wrote:
 
-> >  I am looking into a solution that would make it automatic without the 
-> > need of involving userland which just does not seem right here -- you do 
-> > want to run your kernel with "init=/bin/bash" or suchlike and have your 
-> > virtual terminal console usable.  I will remove the old lk201 bits then.
-> 
-> Why not do that in the driver? AFAIK there can't be anything else on
-> those ports.
+--KIzF6Cje4W/osXrF
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- Well, with some soldering skills you can make an adapter that will 
-convert each of them to an ordinary 3-wire serial line.  Therefore I think 
-the best approach would be only doing the binding of the keyboard and the 
-mouse port to the input subsystem if the virtual terminal device is 
-opened.
+On Wed, 2007-05-30 18:25:46 +0100, Maciej W. Rozycki <macro@linux-mips.org>=
+ wrote:
+> On Wed, 30 May 2007, Jan Rekorajski wrote:
+> > Any chance to get LK201/401 keyboard and vsxxxaa mouse working with thi=
+s?
+>=20
+>  For the time being a solution is the patch below and then:
+>=20
+> CONFIG_INPUT=3Dy
+> CONFIG_INPUT_KEYBOARD=3Dy
+> CONFIG_KEYBOARD_LKKBD=3Dy
+> CONFIG_INPUT_MOUSE=3Dy
+> CONFIG_MOUSE_VSXXXAA=3Dy
+> CONFIG_SERIO=3Dy
+> CONFIG_SERIO_SERPORT=3Dy
+> CONFIG_VT=3Dy
+> CONFIG_VT_CONSOLE=3Dy
+> CONFIG_HW_CONSOLE=3Dy
+> CONFIG_VT_HW_CONSOLE_BINDING=3Dy
+>=20
+> plus your framebuffer of choice.  To activate the keyboard you have to ru=
+n=20
+> the following program:
+>=20
+> #include <fcntl.h>
+> #include <sys/ioctl.h>
+> #include <unistd.h>
+>=20
+> #define SPIOCSTYPE _IOW('q', 0x01, unsigned long)
+> #define SERIO_LKKBD 0x28
+>=20
+> int main(void)
+> {
+> 	int fd, ldisc =3D N_MOUSE, type =3D SERIO_LKKBD;
+> 	char buf;
+>=20
+> 	fd =3D open("/dev/ttyS2", O_RDWR | O_NONBLOCK);
+> 	ioctl(fd, TIOCSETD, &ldisc);
+> 	ioctl(fd, SPIOCSTYPE, &type);
+> 	read(fd, &buf, 1);
+> 	close(fd);
+>=20
+> 	return 0;
+> }
 
- This is unfortunately not the way how things are set up right now.  
-Opening the VT does not trigger a query for the associated input devices 
-that could pull the necessary drivers.  It merely uses whatever got 
-registered beforehand (or actually at any point) and for the DECstation it 
-means dummy devices (how useful!).
+Another way would be to use the `inputattach' program, which is
+shipped with the `joystick' package (sic) and also does line speed
+setting etc. for you.
 
- But that is not the most important reason.  That in fact is the way how 
-it could be implemented in the driver.  It means at least hacks to the 
-receive interrupt and another hack to implement an alternative transmit 
-interrupt handler.  I refuse to do polled transmission with this chip 
-because of its performance hit, sorry, and with the dz driver, which 
-requires a corresponding change, the hit would be even worse.
+MfG, JBG
 
- Finally, the lone reason for introducing the serial subsystem was to 
-abstract serial ports from the TTY layer, so any sort of devices could use 
-them, regardless of whether they resemble a terminal or not.  And there is 
-a proper serio driver for this abstract serial port already implemented.  
-Therefore introducing hacks to the serial driver "under the bonnet" is 
-certainly not the way to go.  We did have such hacks in 2.4, but that was 
-because there was no generic serial port layer back then and all serial 
-ports were TTYs. ;-)
+>  I am looking into a solution that would make it automatic without the=20
+> need of involving userland which just does not seem right here -- you do=
+=20
+> want to run your kernel with "init=3D/bin/bash" or suchlike and have your=
+=20
+> virtual terminal console usable.  I will remove the old lk201 bits then.
 
- Besides, I think the driver should not enforce any policy, because it 
-does not "know" or enforce the external wiring of the serial ports.  
-These are the part of the platform (and please note that there are two 
-variations available for the DECstation and other two for the DEC 3000 
-AXP) and it's the platform that should mark each port appropriately.  I do 
-admit at the moment the device handled by the driver is not handled as a 
-platform device as it should, but I'd like to avoid short-term hacks that 
-do not add value.  The DECstation port needs a generic way of registering 
-platform devices (all the bits on the motherboard that do not pretend to 
-be TURBOchannel options) like some other platforms already do and when 
-this is implemented the serial ports will be handled as necessary as a 
-part of it.
+IIRC the serial port needs to register a serio device, set correct
+baud/cstopb/... settings and set VSXXXAA/LKKBD identity on the two
+serio ports. I *hope* the rest happens automatically then. (Another
+way would be to look into how the Sun guys get their keyboards
+up'n'running...)
 
-  Maciej
+MfG, JBG
+
+--=20
+      Jan-Benedict Glaw      jbglaw@lug-owl.de              +49-172-7608481
+Signature of: 23:53 <@jbglaw> So, ich kletter' jetzt mal ins Bett.
+the second  : 23:57 <@jever2> .oO( kletter ..., hat er noch Gitter vorm Bet=
+t, wie fr=C3=BCher meine Kinder?)
+              00:00 <@jbglaw> jever2: *patsch*
+              00:01 <@jever2> *aua*, wof=C3=BCr, Gedanken sind frei!
+              00:02 <@jbglaw> Nee, freie Gedanken, die sind seit 1984 doch =
+aus!
+              00:03 <@jever2> 1984? ich bin erst seit 1985 verheiratet!
+
+--KIzF6Cje4W/osXrF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFGYCczHb1edYOZ4bsRAiuTAKCStrSWG2GfdCeIX3jjKmIXGPdtMACfZQ5J
+LovqjD15JqjBCnCG0rLuGE4=
+=GI1u
+-----END PGP SIGNATURE-----
+
+--KIzF6Cje4W/osXrF--

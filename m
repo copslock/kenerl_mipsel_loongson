@@ -1,47 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 May 2007 17:43:56 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:4234 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20025541AbXEaQny (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 31 May 2007 17:43:54 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.13.8/8.13.8) with ESMTP id l4VGhhZg013489
-	for <linux-mips@linux-mips.org>; Thu, 31 May 2007 17:43:43 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.13.8/8.13.8/Submit) id l4VGhgXV013488
-	for linux-mips@linux-mips.org; Thu, 31 May 2007 17:43:42 +0100
-Date:	Thu, 31 May 2007 17:43:42 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: 2.6.22 fixes and 2.6.23 patches
-Message-ID: <20070531164342.GA13399@linux-mips.org>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Jun 2007 13:50:58 +0100 (BST)
+Received: from sith.mimuw.edu.pl ([193.0.96.4]:28439 "EHLO sith.mimuw.edu.pl")
+	by ftp.linux-mips.org with ESMTP id S20025593AbXFAMu4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 1 Jun 2007 13:50:56 +0100
+Received: by sith.mimuw.edu.pl (Postfix, from userid 1062)
+	id 2E1E830A4B2; Fri,  1 Jun 2007 14:50:52 +0200 (CEST)
+Date:	Fri, 1 Jun 2007 14:50:52 +0200
+From:	Jan Rekorajski <baggins@sith.mimuw.edu.pl>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] zs: Move to the serial subsystem
+Message-ID: <20070601125052.GA15787@sith.mimuw.edu.pl>
+Mail-Followup-To: Jan Rekorajski <baggins@sith.mimuw.edu.pl>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+References: <Pine.LNX.4.64N.0705291258390.14456@blysk.ds.pg.gda.pl> <20070530165842.GL29894@sith.mimuw.edu.pl> <Pine.LNX.4.64N.0705301802570.27697@blysk.ds.pg.gda.pl>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.4.2.2i
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.64N.0705301802570.27697@blysk.ds.pg.gda.pl>
+X-Operating-System: Linux 2.6.19.1 i686
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <baggins@sith.mimuw.edu.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15213
+X-archive-position: 15214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: baggins@sith.mimuw.edu.pl
 Precedence: bulk
 X-list: linux-mips
 
-In the past there was a strong tendence that people were sending me patches
-for 2.6.$(n + 1) only after 2.6.n was released.  That's a bit painful for
-me as it leaves me only the merge window to sort out all the dependencies
-and issues that may arise from those patches and oh yes, sometimes my
-employer wants me something else to do in the same time.  So if you have
-patches pending, send them in time.  I can always drop stuff for $(n + 1)
-in the -queue tree even when we're in deep freeze.  Think of it as the
-Linux/MIPS -mm tree.
+On Wed, 30 May 2007, Maciej W. Rozycki wrote:
 
-Also it's high time to get all fixes for 2.6.22 upstream so if you have
-something send it ASAP, if you think I may have lost it send again.
+> On Wed, 30 May 2007, Jan Rekorajski wrote:
+> 
+> > Look functional to me (just booted my DecStation 5000/240) :)
+> 
+>  Great!  Thanks for testing.
+> 
+> > Any chance to get LK201/401 keyboard and vsxxxaa mouse working with this?
+> 
+>  For the time being a solution is the patch below and then:
+[...]
 
-Thanks,
+Keyboard works, I have functional console :)
+Mouse looks good too, but I'll test it when I install a functional
+system on that machine.
 
-  Ralf
+>  I am looking into a solution that would make it automatic without the 
+> need of involving userland which just does not seem right here -- you do 
+> want to run your kernel with "init=/bin/bash" or suchlike and have your 
+> virtual terminal console usable.  I will remove the old lk201 bits then.
+
+Why not do that in the driver? AFAIK there can't be anything else on
+those ports.
+
+Janek
+-- 
+Jan Rekorajski            |  ALL SUSPECTS ARE GUILTY. PERIOD!
+baggins<at>mimuw.edu.pl   |  OTHERWISE THEY WOULDN'T BE SUSPECTS, WOULD THEY?
+BOFH, MANIAC              |                   -- TROOPS by Kevin Rubio

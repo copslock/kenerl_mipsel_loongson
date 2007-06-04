@@ -1,56 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2007 16:14:58 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:804 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20022454AbXFDPO4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 4 Jun 2007 16:14:56 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 08F803EC9; Mon,  4 Jun 2007 08:14:20 -0700 (PDT)
-Message-ID: <46642CA9.20103@ru.mvista.com>
-Date:	Mon, 04 Jun 2007 19:15:53 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2007 16:24:08 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:3078 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022453AbXFDPYG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 4 Jun 2007 16:24:06 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id DC3A8E1CF5;
+	Mon,  4 Jun 2007 17:23:21 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Zldui7yqERii; Mon,  4 Jun 2007 17:23:21 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 6790AE1C69;
+	Mon,  4 Jun 2007 17:23:21 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l54FNXx7005550;
+	Mon, 4 Jun 2007 17:23:33 +0200
+Date:	Mon, 4 Jun 2007 16:23:29 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
 Subject: Re: [PATCH] Unify watch.S and remove arch/mips/lib-{32,64}
-References: <20070605.000239.31638706.anemo@mba.ocn.ne.jp> <20070604151048.GA30128@linux-mips.org>
 In-Reply-To: <20070604151048.GA30128@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Message-ID: <Pine.LNX.4.64N.0706041620500.863@blysk.ds.pg.gda.pl>
+References: <20070605.000239.31638706.anemo@mba.ocn.ne.jp>
+ <20070604151048.GA30128@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3348/Mon Jun  4 12:51:57 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15235
+X-archive-position: 15236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
-
-Ralf Baechle wrote:
-
->>Unify lib-{32,64}/watch.S into lib/watch.S and remove lib-{32,64}
->>completely.
-
->>The old 64-bit __watch_set() expected an physical address and the old
->>32-bit __watch_set() expected a KSEG0 virtual address.  The new
->>unified __watch_set() is based on the 64-bit one.  Since there is no
->>real user of the __watch_set(), this incompatibility would not cause
->>any problem.
+On Mon, 4 Jun 2007, Ralf Baechle wrote:
 
 > I think we can simply drop the entire watchpoint support.  This was
 > only ever working on R4000/R4400 and even there only somewhat useful
 > for kernel debugging.  So if we ever use watchpoint support I think
 > something needs to be developed from scratch.
 
-    Watchpoints *could* be supported as part of KGDB, BTW.
+ A long-term plan is to make them available to userland through ptrace() 
+in a uniform way covering MIPS32/64 watchpoints as well for gdb and 
+suchlike.
 
->   Ralf
-
-WBR, Sergei
+  Maciej

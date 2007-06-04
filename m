@@ -1,55 +1,172 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2007 16:24:08 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:3078 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022453AbXFDPYG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 4 Jun 2007 16:24:06 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id DC3A8E1CF5;
-	Mon,  4 Jun 2007 17:23:21 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Zldui7yqERii; Mon,  4 Jun 2007 17:23:21 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 6790AE1C69;
-	Mon,  4 Jun 2007 17:23:21 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l54FNXx7005550;
-	Mon, 4 Jun 2007 17:23:33 +0200
-Date:	Mon, 4 Jun 2007 16:23:29 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Unify watch.S and remove arch/mips/lib-{32,64}
-In-Reply-To: <20070604151048.GA30128@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0706041620500.863@blysk.ds.pg.gda.pl>
-References: <20070605.000239.31638706.anemo@mba.ocn.ne.jp>
- <20070604151048.GA30128@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.3/3348/Mon Jun  4 12:51:57 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2007 16:41:24 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.173]:48393 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022447AbXFDPlW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 4 Jun 2007 16:41:22 +0100
+Received: by ug-out-1314.google.com with SMTP id m3so851211ugc
+        for <linux-mips@linux-mips.org>; Mon, 04 Jun 2007 08:41:17 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
+        b=SvUDyLdb3bhb+ejrdlm7VUkQw4on458otsWyAIZgJEnhUeQRUOl7PLY4QCBD+KEexe/RLOLDMAkzs8ZxSVCS9/2FTz7gGsPVUkmBOmBAcyB2H7UpqBFEe034FDBxLddBHxnRy/k7cu/ifPZeZI3CFpjMOseDX3GbZaDZ2Mcj39A=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
+        b=A5WlfWj8Vj2phvZ77KRXFOnkay29PGaxdxxKSl2gLLcfrUd4uHqRBEcbUFDIQu5jU8WBvTqDKNLJDKsAS+18xizAxYJcIP1GpvMFVzhMnWh1ud/dNN6Snc9SHwFLEAa05Xx8uN57sB46rw/7wjeMdyfmOaKfyCOg6NORnjWGbGI=
+Received: by 10.67.28.2 with SMTP id f2mr3171595ugj.1180971677922;
+        Mon, 04 Jun 2007 08:41:17 -0700 (PDT)
+Received: from spoutnik.innova-card.com ( [81.252.61.1])
+        by mx.google.com with ESMTP id z33sm1053080ikz.2007.06.04.08.41.16;
+        Mon, 04 Jun 2007 08:41:17 -0700 (PDT)
+Received: by spoutnik.innova-card.com (Postfix, from userid 500)
+	id 1540D23F76A; Mon,  4 Jun 2007 17:46:36 +0200 (CEST)
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH 2/5] Clean up asm-mips/mach-generic/spaces.h
+Date:	Mon,  4 Jun 2007 17:46:32 +0200
+Message-Id: <118097199516-git-send-email-fbuihuu@gmail.com>
+X-Mailer: git-send-email 1.5.1.4
+In-Reply-To: <1180971995757-git-send-email-fbuihuu@gmail.com>
+References: <1180971995757-git-send-email-fbuihuu@gmail.com>
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15236
+X-archive-position: 15237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 4 Jun 2007, Ralf Baechle wrote:
+From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-> I think we can simply drop the entire watchpoint support.  This was
-> only ever working on R4000/R4400 and even there only somewhat useful
-> for kernel debugging.  So if we ever use watchpoint support I think
-> something needs to be developed from scratch.
+PAGE_OFFSET definition is now using CAC_BASE by default.
 
- A long-term plan is to make them available to userland through ptrace() 
-in a uniform way covering MIPS32/64 watchpoints as well for gdb and 
-suchlike.
+This patch also reorder some macros to make them appear
+in the same order for both 32 and 64 bits configs.
 
-  Maciej
+It also makes use of const.h generic header file to
+annotate constants.
+
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
+ include/asm-mips/mach-generic/spaces.h |   66 +++++++++++++------------------
+ 1 files changed, 28 insertions(+), 38 deletions(-)
+
+diff --git a/include/asm-mips/mach-generic/spaces.h b/include/asm-mips/mach-generic/spaces.h
+index 9a3c521..c90900b 100644
+--- a/include/asm-mips/mach-generic/spaces.h
++++ b/include/asm-mips/mach-generic/spaces.h
+@@ -10,74 +10,56 @@
+ #ifndef _ASM_MACH_GENERIC_SPACES_H
+ #define _ASM_MACH_GENERIC_SPACES_H
+ 
++#include <linux/const.h>
+ 
+ #ifdef CONFIG_32BIT
+ 
+-#define CAC_BASE		0x80000000
+-#define IO_BASE			0xa0000000
+-#define UNCAC_BASE		0xa0000000
++#define CAC_BASE		_AC(0x80000000,UL)
++#define IO_BASE			_AC(0xa0000000,UL)
++#define UNCAC_BASE		_AC(0xa0000000,UL)
+ 
+ #ifndef MAP_BASE
+-#define MAP_BASE		0xc0000000
+-#endif
+-
+-/*
+- * This handles the memory map.
+- * We handle pages at KSEG0 for kernels with 32 bit address space.
+- */
+-#ifndef PAGE_OFFSET
+-#define PAGE_OFFSET		0x80000000UL
++#define MAP_BASE		_AC(0xc0000000,UL)
+ #endif
+ 
+ /*
+  * Memory above this physical address will be considered highmem.
+  */
+ #ifndef HIGHMEM_START
+-#define HIGHMEM_START		0x20000000UL
++#define HIGHMEM_START		_AC(0x20000000,UL)
+ #endif
+ 
+ #endif /* CONFIG_32BIT */
+ 
+ #ifdef CONFIG_64BIT
+ 
+-/*
+- * This handles the memory map.
+- */
+-#ifndef PAGE_OFFSET
+-#ifdef CONFIG_DMA_NONCOHERENT
+-#define PAGE_OFFSET	0x9800000000000000UL
+-#else
+-#define PAGE_OFFSET	0xa800000000000000UL
+-#endif
+-#endif
+-
+-/*
+- * Memory above this physical address will be considered highmem.
+- * Fixme: 59 bits is a fictive number and makes assumptions about processors
+- * in the distant future.  Nobody will care for a few years :-)
+- */
+-#ifndef HIGHMEM_START
+-#define HIGHMEM_START		(1UL << 59UL)
+-#endif
+-
+ #ifndef CAC_BASE
+ #ifdef CONFIG_DMA_NONCOHERENT
+-#define CAC_BASE		0x9800000000000000UL
++#define CAC_BASE		_AC(0x9800000000000000,UL)
+ #else
+-#define CAC_BASE		0xa800000000000000UL
++#define CAC_BASE		_AC(0xa800000000000000,UL)
+ #endif
+ #endif
+ 
+ #ifndef IO_BASE
+-#define IO_BASE			0x9000000000000000UL
++#define IO_BASE			_AC(0x9000000000000000,UL)
+ #endif
+ 
+ #ifndef UNCAC_BASE
+-#define UNCAC_BASE		0x9000000000000000UL
++#define UNCAC_BASE		_AC(0x9000000000000000,UL)
+ #endif
+ 
+ #ifndef MAP_BASE
+-#define MAP_BASE		0xc000000000000000UL
++#define MAP_BASE		_AC(0xc000000000000000,UL)
++#endif
++
++/*
++ * Memory above this physical address will be considered highmem.
++ * Fixme: 59 bits is a fictive number and makes assumptions about processors
++ * in the distant future.  Nobody will care for a few years :-)
++ */
++#ifndef HIGHMEM_START
++#define HIGHMEM_START		(_AC(1,UL) << _AC(59,UL))
+ #endif
+ 
+ #define TO_PHYS(x)		(             ((x) & TO_PHYS_MASK))
+@@ -86,4 +68,12 @@
+ 
+ #endif /* CONFIG_64BIT */
+ 
++/*
++ * This handles the memory map.
++ */
++#ifndef PAGE_OFFSET
++#define PAGE_OFFSET		CAC_BASE
++#endif
++
++
+ #endif /* __ASM_MACH_GENERIC_SPACES_H */
+-- 
+1.5.1.4

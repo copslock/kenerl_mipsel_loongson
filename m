@@ -1,52 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2007 16:43:01 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:42718 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022483AbXFDPl5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 4 Jun 2007 16:41:57 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l54FfalG030940;
-	Mon, 4 Jun 2007 16:41:36 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l54FfaBF030939;
-	Mon, 4 Jun 2007 16:41:36 +0100
-Date:	Mon, 4 Jun 2007 16:41:36 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Unify watch.S and remove arch/mips/lib-{32,64}
-Message-ID: <20070604154135.GA30296@linux-mips.org>
-References: <20070605.000239.31638706.anemo@mba.ocn.ne.jp> <20070604151048.GA30128@linux-mips.org> <Pine.LNX.4.64N.0706041620500.863@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0706041620500.863@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jun 2007 16:43:24 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.172]:56334 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022491AbXFDPmU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 4 Jun 2007 16:42:20 +0100
+Received: by ug-out-1314.google.com with SMTP id m3so851214ugc
+        for <linux-mips@linux-mips.org>; Mon, 04 Jun 2007 08:41:18 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
+        b=NjPQKiYGHry3KqoXYyoWgMeelk67gIZJ1PtmX9wx75+icnY1X1OCpF4HMNHUC+V0K8Sr4RQ9SMnHyJ1kdg7Q49RCsm5KnSziW9cryyQ2dYwSZnhl75sD2zDY62Q+Jncg62NND6i8oXDjAPpMIJN71sS9rNfEo5a0O2HZeK3wo2A=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
+        b=VUwbJ1GKYr9Sfh6xNACSlMfEZk6ACL0u7t2GkWSdf85Z7WKHmU+FYv5ZDXIuGn7eVsQbc4khgKgCGHUv2qDwnXOH040wKs8//wakULV4+ygIuhetr/kLGxfQy/TDJwGQTD9TZJnGnCmnm3PbWm6yYo6haMIFKUNJ9dqH83jkNwI=
+Received: by 10.67.19.13 with SMTP id w13mr3212659ugi.1180971678518;
+        Mon, 04 Jun 2007 08:41:18 -0700 (PDT)
+Received: from spoutnik.innova-card.com ( [81.252.61.1])
+        by mx.google.com with ESMTP id b33sm1072117ika.2007.06.04.08.41.16;
+        Mon, 04 Jun 2007 08:41:17 -0700 (PDT)
+Received: by spoutnik.innova-card.com (Postfix, from userid 500)
+	id 76FF723F773; Mon,  4 Jun 2007 17:46:36 +0200 (CEST)
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH 3/5] Make PAGE_OFFSET aware of PHYS_OFFSET
+Date:	Mon,  4 Jun 2007 17:46:33 +0200
+Message-Id: <1180971996831-git-send-email-fbuihuu@gmail.com>
+X-Mailer: git-send-email 1.5.1.4
+In-Reply-To: <1180971995757-git-send-email-fbuihuu@gmail.com>
+References: <1180971995757-git-send-email-fbuihuu@gmail.com>
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15241
+X-archive-position: 15242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 04, 2007 at 04:23:29PM +0100, Maciej W. Rozycki wrote:
+From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-> > I think we can simply drop the entire watchpoint support.  This was
-> > only ever working on R4000/R4400 and even there only somewhat useful
-> > for kernel debugging.  So if we ever use watchpoint support I think
-> > something needs to be developed from scratch.
-> 
->  A long-term plan is to make them available to userland through ptrace() 
-> in a uniform way covering MIPS32/64 watchpoints as well for gdb and 
-> suchlike.
+For platforms that use PHYS_OFFSET and do not use a mapped kernel,
+this patch automatically adds PHYS_OFFSET into PAGE_OFFSET.
+Therefore there are no more needs for them to redefine PAGE_OFFSET.
 
-Sure, one of infinitly many things on the to do list.  However the code
-we currently havee isn't very useful for that purpose.  For maintenance
-sake it should rather be rewritten in C and it needs to learn about
-processors of the post R4400 era.
+For mapped kernel, they need to redefine PAGE_OFFSET anyways.
 
-  Ralf
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
+ include/asm-mips/mach-generic/spaces.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/include/asm-mips/mach-generic/spaces.h b/include/asm-mips/mach-generic/spaces.h
+index c90900b..96c8971 100644
+--- a/include/asm-mips/mach-generic/spaces.h
++++ b/include/asm-mips/mach-generic/spaces.h
+@@ -72,7 +72,7 @@
+  * This handles the memory map.
+  */
+ #ifndef PAGE_OFFSET
+-#define PAGE_OFFSET		CAC_BASE
++#define PAGE_OFFSET		(CAC_BASE + PHYS_OFFSET)
+ #endif
+ 
+ 
+-- 
+1.5.1.4

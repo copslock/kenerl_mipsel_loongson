@@ -1,165 +1,150 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2007 10:43:04 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.168]:29996 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021765AbXFEJnB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Jun 2007 10:43:01 +0100
-Received: by ug-out-1314.google.com with SMTP id m3so127159ugc
-        for <linux-mips@linux-mips.org>; Tue, 05 Jun 2007 02:42:00 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:date:from:x-mailer:reply-to:x-priority:message-id:to:subject:mime-version:content-type;
-        b=XC7CMK5pd6IYW7lHPvaj/rTOG+Rj5RkCR0hGJuc1qYkm9BTaGsSaDzPTA7ecg7OQwGi2M8r+AiiDi7LOJto1ncAEim4S7ohTHZxTsSKwBPSmX8koIE+kbsB2qngeBkUXBj+gQa1D7eMpGGNravsQk5IU8EB/FhAFtALjfwB4yK4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:date:from:x-mailer:reply-to:x-priority:message-id:to:subject:mime-version:content-type;
-        b=UPNrzo9qArqP7mjgRIzZ4P3/qXZh6Jn/qgy9rQdPuDFLmrK1OHeL4ZpQrdES0R7HBmimgAqF+KMicTLQi3QU8psizA4lZkUWcMR9knbznvQLXGPn+eAylwdZGYbESjkfkJbfniWIJT0RxdTiZpD7DUKX6NoYT4gELUlyINPYVOU=
-Received: by 10.78.170.6 with SMTP id s6mr2338779hue.1181036520671;
-        Tue, 05 Jun 2007 02:42:00 -0700 (PDT)
-Received: from PAVEL-57E50373D ( [85.141.175.237])
-        by mx.google.com with ESMTP id 34sm515066nfu.2007.06.05.02.41.58;
-        Tue, 05 Jun 2007 02:41:59 -0700 (PDT)
-Date:	Tue, 5 Jun 2007 13:42:20 +0400
-From:	Pavel Kiryukhin <vksavl@gmail.com>
-X-Mailer: The Bat! (v3.80.06) Professional
-Reply-To: Pavel Kiryukhin <vksavl@gmail.com>
-X-Priority: 3 (Normal)
-Message-ID: <97136920.20070605134220@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: use compat_siginfo in rt_sigframe_n32
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2007 11:45:46 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:18450 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021841AbXFEKpo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 5 Jun 2007 11:45:44 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 10898E1CA8;
+	Tue,  5 Jun 2007 12:45:05 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id hI1TMtaqXzhs; Tue,  5 Jun 2007 12:45:04 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 35E67E1C6F;
+	Tue,  5 Jun 2007 12:45:03 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l55AjAMY028600;
+	Tue, 5 Jun 2007 12:45:10 +0200
+Date:	Tue, 5 Jun 2007 11:45:07 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
+Subject: [PATCH] DECstation: Optimised early printk()
+Message-ID: <Pine.LNX.4.64N.0706051128210.15653@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="----------671721163521A93E"
-Return-Path: <vksavl@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3360/Tue Jun  5 06:32:46 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15253
+X-archive-position: 15254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vksavl@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-------------671721163521A93E
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+ This is an optimised implementation of early printk() for the DECstation.  
+After the recent conversion to a MIPS-specific generic routine using a 
+character-by-character output the performance dropped significantly.  
+This change reverts to the previous speed -- even at 9600 bps of the 
+serial console the difference is visible with a naked eye; I presume for a 
+framebuffer it is even worse (it may depend on exactly which one is used 
+though).
 
-There was an old patch
-<http://www.linux-mips.org/archives/linux-mips/2006-07/msg00216.html>
-that suggested (also) to use compat_siginfo in rt_sigframe_n32.
-It seems that it is still an issue.
--- 
-Regards,
- Pavel                          mailto:vksavl@gmail.com
-------------671721163521A93E
-Content-Type: application/octet-stream; name="compat_siginfo-in-copy_siginfo_to_user32.patch"
-Content-transfer-encoding: base64
-Content-Disposition: attachment; filename="compat_siginfo-in-copy_siginfo_to_user32.patch"
+ Additionally the change includes a fix for a problem that the old 
+implementation had -- the format used would not actually limit the length 
+of the string output.  This new implementation uses a local buffer to deal 
+with it -- even with this additional copying it is much faster than the 
+generic function.
 
-RnJvbTogUGF2ZWwgS2lyeXVraGluIDx2a3NhdmxAZ21haWwuY29tPgpEYXRlOiBUdWUsIDUg
-SnVuIDIwMDcgMTE6NTE6MTkgKzA0MDAKU3ViamVjdDogW1BBVENIXSBVc2UgY29tcGF0X3Np
-Z2luZm8gYW5kIGNvcHlfc2lnaW5mb190b191c2VyMzIgaW4gc2V0dXBfcnRfZnJhbWVfbjMy
-KCkuClNpZ25lZC1vZmYtYnk6IFBhdmVsIEtpcnl1a2hpbiA8dmtzYXZsQGdtYWlsLmNvbT4K
-CmRpZmYgLS1naXQgYS9hcmNoL21pcHMva2VybmVsL3NpZ25hbC1jb21tb24uaCBiL2FyY2gv
-bWlwcy9rZXJuZWwvc2lnbmFsLWNvbW1vbi5oCmluZGV4IGMwZmFhYmQuLjhjYzhhODggMTAw
-NjQ0Ci0tLSBhL2FyY2gvbWlwcy9rZXJuZWwvc2lnbmFsLWNvbW1vbi5oCisrKyBiL2FyY2gv
-bWlwcy9rZXJuZWwvc2lnbmFsLWNvbW1vbi5oCkBAIC00Myw0ICs0Myw2OCBAQCBleHRlcm4g
-aW50IGZwY3NyX3BlbmRpbmcodW5zaWduZWQgaW50IF9fdXNlciAqZnBjc3IpOwogI2RlZmlu
-ZSB1bmxvY2tfZnB1X293bmVyKCkJcGFnZWZhdWx0X2VuYWJsZSgpCiAjZW5kaWYKIAorI2lu
-Y2x1ZGUgPGxpbnV4L2NvbXBhdC5oPgorCisjZGVmaW5lIFNJX1BBRF9TSVpFMzIgICAoKFNJ
-X01BWF9TSVpFL3NpemVvZihpbnQpKSAtIDMpCisKK3R5cGVkZWYgc3RydWN0IGNvbXBhdF9z
-aWdpbmZvIHsKKyAgICAgICAgaW50IHNpX3NpZ25vOworICAgICAgICBpbnQgc2lfY29kZTsK
-KyAgICAgICAgaW50IHNpX2Vycm5vOworCisgICAgICAgIHVuaW9uIHsKKyAgICAgICAgICAg
-ICAgICBpbnQgX3BhZFtTSV9QQURfU0laRTMyXTsKKworICAgICAgICAgICAgICAgIC8qIGtp
-bGwoKSAqLworICAgICAgICAgICAgICAgIHN0cnVjdCB7CisgICAgICAgICAgICAgICAgICAg
-ICAgICBjb21wYXRfcGlkX3QgX3BpZDsgICAgICAvKiBzZW5kZXIncyBwaWQgKi8KKyAgICAg
-ICAgICAgICAgICAgICAgICAgIGNvbXBhdF91aWRfdCBfdWlkOyAgICAgIC8qIHNlbmRlcidz
-IHVpZCAqLworICAgICAgICAgICAgICAgIH0gX2tpbGw7CisKKyAgICAgICAgICAgICAgICAv
-KiBTSUdDSExEICovCisgICAgICAgICAgICAgICAgc3RydWN0IHsKKyAgICAgICAgICAgICAg
-ICAgICAgICAgIGNvbXBhdF9waWRfdCBfcGlkOyAgICAgIC8qIHdoaWNoIGNoaWxkICovCisg
-ICAgICAgICAgICAgICAgICAgICAgICBjb21wYXRfdWlkX3QgX3VpZDsgICAgICAvKiBzZW5k
-ZXIncyB1aWQgKi8KKyAgICAgICAgICAgICAgICAgICAgICAgIGludCBfc3RhdHVzOyAgICAg
-ICAgICAgIC8qIGV4aXQgY29kZSAqLworICAgICAgICAgICAgICAgICAgICAgICAgY29tcGF0
-X2Nsb2NrX3QgX3V0aW1lOworICAgICAgICAgICAgICAgICAgICAgICAgY29tcGF0X2Nsb2Nr
-X3QgX3N0aW1lOworICAgICAgICAgICAgICAgIH0gX3NpZ2NobGQ7CisKKyAgICAgICAgICAg
-ICAgICAvKiBJUklYIFNJR0NITEQgKi8KKyAgICAgICAgICAgICAgICBzdHJ1Y3QgeworICAg
-ICAgICAgICAgICAgICAgICAgICAgY29tcGF0X3BpZF90IF9waWQ7ICAgICAgLyogd2hpY2gg
-Y2hpbGQgKi8KKyAgICAgICAgICAgICAgICAgICAgICAgIGNvbXBhdF9jbG9ja190IF91dGlt
-ZTsKKyAgICAgICAgICAgICAgICAgICAgICAgIGludCBfc3RhdHVzOyAgICAgICAgICAgIC8q
-IGV4aXQgY29kZSAqLworICAgICAgICAgICAgICAgICAgICAgICAgY29tcGF0X2Nsb2NrX3Qg
-X3N0aW1lOworICAgICAgICAgICAgICAgIH0gX2lyaXhfc2lnY2hsZDsKKworICAgICAgICAg
-ICAgICAgIC8qIFNJR0lMTCwgU0lHRlBFLCBTSUdTRUdWLCBTSUdCVVMgKi8KKyAgICAgICAg
-ICAgICAgICBzdHJ1Y3QgeworICAgICAgICAgICAgICAgICAgICAgICAgczMyIF9hZGRyOyAv
-KiBmYXVsdGluZyBpbnNuL21lbW9yeSByZWYuICovCisgICAgICAgICAgICAgICAgfSBfc2ln
-ZmF1bHQ7CisKKyAgICAgICAgICAgICAgICAvKiBTSUdQT0xMLCBTSUdYRlNaIChUbyBkbyAu
-Li4pICAqLworICAgICAgICAgICAgICAgIHN0cnVjdCB7CisgICAgICAgICAgICAgICAgICAg
-ICAgICBpbnQgX2JhbmQ7ICAgICAgLyogUE9MTF9JTiwgUE9MTF9PVVQsIFBPTExfTVNHICov
-CisgICAgICAgICAgICAgICAgICAgICAgICBpbnQgX2ZkOworICAgICAgICAgICAgICAgIH0g
-X3NpZ3BvbGw7CisKKyAgICAgICAgICAgICAgICAvKiBQT1NJWC4xYiB0aW1lcnMgKi8KKyAg
-ICAgICAgICAgICAgICBzdHJ1Y3QgeworICAgICAgICAgICAgICAgICAgICAgICAgdGltZXJf
-dCBfdGlkOyAgICAgICAgICAgLyogdGltZXIgaWQgKi8KKyAgICAgICAgICAgICAgICAgICAg
-ICAgIGludCBfb3ZlcnJ1bjsgICAgICAgICAgIC8qIG92ZXJydW4gY291bnQgKi8KKyAgICAg
-ICAgICAgICAgICAgICAgICAgIGNvbXBhdF9zaWd2YWxfdCBfc2lndmFsOy8qIHNhbWUgYXMg
-YmVsb3cgKi8KKyAgICAgICAgICAgICAgICAgICAgICAgIGludCBfc3lzX3ByaXZhdGU7ICAg
-ICAgIC8qIG5vdCB0byBiZSBwYXNzZWQgdG8gdXNlciAqLworICAgICAgICAgICAgICAgIH0g
-X3RpbWVyOworCisgICAgICAgICAgICAgICAgLyogUE9TSVguMWIgc2lnbmFscyAqLworICAg
-ICAgICAgICAgICAgIHN0cnVjdCB7CisgICAgICAgICAgICAgICAgICAgICAgICBjb21wYXRf
-cGlkX3QgX3BpZDsgICAgICAvKiBzZW5kZXIncyBwaWQgKi8KKyAgICAgICAgICAgICAgICAg
-ICAgICAgIGNvbXBhdF91aWRfdCBfdWlkOyAgICAgIC8qIHNlbmRlcidzIHVpZCAqLworICAg
-ICAgICAgICAgICAgICAgICAgICAgY29tcGF0X3NpZ3ZhbF90IF9zaWd2YWw7CisgICAgICAg
-ICAgICAgICAgfSBfcnQ7CisKKyAgICAgICAgfSBfc2lmaWVsZHM7Cit9IGNvbXBhdF9zaWdp
-bmZvX3Q7CisKICNlbmRpZgkvKiBfX1NJR05BTF9DT01NT05fSCAqLwpkaWZmIC0tZ2l0IGEv
-YXJjaC9taXBzL2tlcm5lbC9zaWduYWwzMi5jIGIvYXJjaC9taXBzL2tlcm5lbC9zaWduYWwz
-Mi5jCmluZGV4IDAwM2Y4MTUuLjQ4NmI4ZTUgMTAwNjQ0Ci0tLSBhL2FyY2gvbWlwcy9rZXJu
-ZWwvc2lnbmFsMzIuYworKysgYi9hcmNoL21pcHMva2VybmVsL3NpZ25hbDMyLmMKQEAgLTM2
-LDY4ICszNiw2IEBACiAKICNpbmNsdWRlICJzaWduYWwtY29tbW9uLmgiCiAKLSNkZWZpbmUg
-U0lfUEFEX1NJWkUzMiAgICgoU0lfTUFYX1NJWkUvc2l6ZW9mKGludCkpIC0gMykKLQotdHlw
-ZWRlZiBzdHJ1Y3QgY29tcGF0X3NpZ2luZm8gewotCWludCBzaV9zaWdubzsKLQlpbnQgc2lf
-Y29kZTsKLQlpbnQgc2lfZXJybm87Ci0KLQl1bmlvbiB7Ci0JCWludCBfcGFkW1NJX1BBRF9T
-SVpFMzJdOwotCi0JCS8qIGtpbGwoKSAqLwotCQlzdHJ1Y3QgewotCQkJY29tcGF0X3BpZF90
-IF9waWQ7CS8qIHNlbmRlcidzIHBpZCAqLwotCQkJY29tcGF0X3VpZF90IF91aWQ7CS8qIHNl
-bmRlcidzIHVpZCAqLwotCQl9IF9raWxsOwotCi0JCS8qIFNJR0NITEQgKi8KLQkJc3RydWN0
-IHsKLQkJCWNvbXBhdF9waWRfdCBfcGlkOwkvKiB3aGljaCBjaGlsZCAqLwotCQkJY29tcGF0
-X3VpZF90IF91aWQ7CS8qIHNlbmRlcidzIHVpZCAqLwotCQkJaW50IF9zdGF0dXM7CQkvKiBl
-eGl0IGNvZGUgKi8KLQkJCWNvbXBhdF9jbG9ja190IF91dGltZTsKLQkJCWNvbXBhdF9jbG9j
-a190IF9zdGltZTsKLQkJfSBfc2lnY2hsZDsKLQotCQkvKiBJUklYIFNJR0NITEQgKi8KLQkJ
-c3RydWN0IHsKLQkJCWNvbXBhdF9waWRfdCBfcGlkOwkvKiB3aGljaCBjaGlsZCAqLwotCQkJ
-Y29tcGF0X2Nsb2NrX3QgX3V0aW1lOwotCQkJaW50IF9zdGF0dXM7CQkvKiBleGl0IGNvZGUg
-Ki8KLQkJCWNvbXBhdF9jbG9ja190IF9zdGltZTsKLQkJfSBfaXJpeF9zaWdjaGxkOwotCi0J
-CS8qIFNJR0lMTCwgU0lHRlBFLCBTSUdTRUdWLCBTSUdCVVMgKi8KLQkJc3RydWN0IHsKLQkJ
-CXMzMiBfYWRkcjsgLyogZmF1bHRpbmcgaW5zbi9tZW1vcnkgcmVmLiAqLwotCQl9IF9zaWdm
-YXVsdDsKLQotCQkvKiBTSUdQT0xMLCBTSUdYRlNaIChUbyBkbyAuLi4pICAqLwotCQlzdHJ1
-Y3QgewotCQkJaW50IF9iYW5kOwkvKiBQT0xMX0lOLCBQT0xMX09VVCwgUE9MTF9NU0cgKi8K
-LQkJCWludCBfZmQ7Ci0JCX0gX3NpZ3BvbGw7Ci0KLQkJLyogUE9TSVguMWIgdGltZXJzICov
-Ci0JCXN0cnVjdCB7Ci0JCQl0aW1lcl90IF90aWQ7CQkvKiB0aW1lciBpZCAqLwotCQkJaW50
-IF9vdmVycnVuOwkJLyogb3ZlcnJ1biBjb3VudCAqLwotCQkJY29tcGF0X3NpZ3ZhbF90IF9z
-aWd2YWw7Lyogc2FtZSBhcyBiZWxvdyAqLwotCQkJaW50IF9zeXNfcHJpdmF0ZTsgICAgICAg
-Lyogbm90IHRvIGJlIHBhc3NlZCB0byB1c2VyICovCi0JCX0gX3RpbWVyOwotCi0JCS8qIFBP
-U0lYLjFiIHNpZ25hbHMgKi8KLQkJc3RydWN0IHsKLQkJCWNvbXBhdF9waWRfdCBfcGlkOwkv
-KiBzZW5kZXIncyBwaWQgKi8KLQkJCWNvbXBhdF91aWRfdCBfdWlkOwkvKiBzZW5kZXIncyB1
-aWQgKi8KLQkJCWNvbXBhdF9zaWd2YWxfdCBfc2lndmFsOwotCQl9IF9ydDsKLQotCX0gX3Np
-ZmllbGRzOwotfSBjb21wYXRfc2lnaW5mb190OwotCiAvKgogICogSW5jbHVkaW5nIDxhc20v
-dW5pc3RkLmg+IHdvdWxkIGdpdmUgdXNlIHRoZSA2NC1iaXQgc3lzY2FsbCBudW1iZXJzIC4u
-LgogICovCmRpZmYgLS1naXQgYS9hcmNoL21pcHMva2VybmVsL3NpZ25hbF9uMzIuYyBiL2Fy
-Y2gvbWlwcy9rZXJuZWwvc2lnbmFsX24zMi5jCmluZGV4IDRjZjlmZjIuLmViN2UwNTkgMTAw
-NjQ0Ci0tLSBhL2FyY2gvbWlwcy9rZXJuZWwvc2lnbmFsX24zMi5jCisrKyBiL2FyY2gvbWlw
-cy9rZXJuZWwvc2lnbmFsX24zMi5jCkBAIC03Miw3ICs3Miw3IEBAIHN0cnVjdCB1Y29udGV4
-dG4zMiB7CiBzdHJ1Y3QgcnRfc2lnZnJhbWVfbjMyIHsKIAl1MzIgcnNfYXNzWzRdOwkJCS8q
-IGFyZ3VtZW50IHNhdmUgc3BhY2UgZm9yIG8zMiAqLwogCXUzMiByc19jb2RlWzJdOwkJCS8q
-IHNpZ25hbCB0cmFtcG9saW5lICovCi0Jc3RydWN0IHNpZ2luZm8gcnNfaW5mbzsKKwlzdHJ1
-Y3QgY29tcGF0X3NpZ2luZm8gcnNfaW5mbzsKIAlzdHJ1Y3QgdWNvbnRleHRuMzIgcnNfdWM7
-CiB9OwogCkBAIC04MSw3ICs4MSw3IEBAIHN0cnVjdCBydF9zaWdmcmFtZV9uMzIgewogc3Ry
-dWN0IHJ0X3NpZ2ZyYW1lX24zMiB7CiAJdTMyIHJzX2Fzc1s0XTsJCQkvKiBhcmd1bWVudCBz
-YXZlIHNwYWNlIGZvciBvMzIgKi8KIAl1MzIgcnNfcGFkWzJdOwotCXN0cnVjdCBzaWdpbmZv
-IHJzX2luZm87CisJc3RydWN0IGNvbXBhdF9zaWdpbmZvIHJzX2luZm87CiAJc3RydWN0IHVj
-b250ZXh0bjMyIHJzX3VjOwogCXUzMiByc19jb2RlWzhdIF9fX19jYWNoZWxpbmVfYWxpZ25l
-ZDsJCS8qIHNpZ25hbCB0cmFtcG9saW5lICovCiB9OwpAQCAtMTg3LDcgKzE4Nyw3IEBAIHN0
-YXRpYyBpbnQgc2V0dXBfcnRfZnJhbWVfbjMyKHN0cnVjdCBrX3NpZ2FjdGlvbiAqIGthLAog
-CWluc3RhbGxfc2lndHJhbXAoZnJhbWUtPnJzX2NvZGUsIF9fTlJfTjMyX3J0X3NpZ3JldHVy
-bik7CiAKIAkvKiBDcmVhdGUgc2lnaW5mby4gICovCi0JZXJyIHw9IGNvcHlfc2lnaW5mb190
-b191c2VyKCZmcmFtZS0+cnNfaW5mbywgaW5mbyk7CisJZXJyIHw9IGNvcHlfc2lnaW5mb190
-b191c2VyMzIoJmZyYW1lLT5yc19pbmZvLCBpbmZvKTsKIAogCS8qIENyZWF0ZSB0aGUgdWNv
-bnRleHQuICAqLwogCWVyciB8PSBfX3B1dF91c2VyKDAsICZmcmFtZS0+cnNfdWMudWNfZmxh
-Z3MpOwotLSAKMS41LjIuMQoK
-------------671721163521A93E--
+ Plus this driver is registered much earlier than the generic one, 
+allowing one to see critical messages, such as one about an incorrect CPU 
+setting used, that are produced beforehand. :-)
+
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+Hi,
+
+ As a side note, the SYS_HAS_EARLY_PRINTK option could probably be called 
+SYS_HAS_GENERIC_EARLY_PRINTK or something...
+
+ Note this patch depends on "patch-mips-2.6.21-20070502-dec-no_ioport-0"; 
+please let me know if you want them to be applied in the other order.
+
+ Please apply,
+
+  Maciej
+
+patch-mips-2.6.21-20070502-dec-prom-console-3
+diff -up --recursive --new-file linux-mips-2.6.21-20070502.macro/arch/mips/Kconfig linux-mips-2.6.21-20070502/arch/mips/Kconfig
+--- linux-mips-2.6.21-20070502.macro/arch/mips/Kconfig	2007-05-27 22:19:35.000000000 +0000
++++ linux-mips-2.6.21-20070502/arch/mips/Kconfig	2007-06-04 22:59:11.000000000 +0000
+@@ -178,7 +178,6 @@ config MACH_DECSTATION
+ 	select BOOT_ELF32
+ 	select DMA_NONCOHERENT
+ 	select NO_IOPORT
+-	select SYS_HAS_EARLY_PRINTK
+ 	select IRQ_CPU
+ 	select SYS_HAS_CPU_R3000
+ 	select SYS_HAS_CPU_R4X00
+diff -up --recursive --new-file linux-mips-2.6.21-20070502.macro/arch/mips/dec/prom/console.c linux-mips-2.6.21-20070502/arch/mips/dec/prom/console.c
+--- linux-mips-2.6.21-20070502.macro/arch/mips/dec/prom/console.c	2007-05-02 04:55:33.000000000 +0000
++++ linux-mips-2.6.21-20070502/arch/mips/dec/prom/console.c	2007-06-04 22:38:34.000000000 +0000
+@@ -3,7 +3,7 @@
+  *
+  *	DECstation PROM-based early console support.
+  *
+- *	Copyright (C) 2004  Maciej W. Rozycki
++ *	Copyright (C) 2004, 2007  Maciej W. Rozycki
+  *
+  *	This program is free software; you can redistribute it and/or
+  *	modify it under the terms of the GNU General Public License
+@@ -13,15 +13,35 @@
+ #include <linux/console.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
++#include <linux/string.h>
+ 
+ #include <asm/dec/prom.h>
+ 
+-void prom_putchar(char c)
++static void __init prom_console_write(struct console *con, const char *s,
++				      unsigned int c)
+ {
+-	char s[2];
++	char buf[81];
++	unsigned int chunk = sizeof(buf) - 1;
+ 
+-	s[0] = c;
+-	s[1] = '\0';
++	while (c > 0) {
++		if (chunk > c)
++			chunk = c;
++		memcpy(buf, s, chunk);
++		buf[chunk] = '\0';
++		prom_printf("%s", buf);
++		s += chunk;
++		c -= chunk;
++	}
++}
++
++static struct console promcons __initdata = {
++	.name	= "prom",
++	.write	= prom_console_write,
++	.flags	= CON_BOOT | CON_PRINTBUFFER,
++	.index	= -1,
++};
+ 
+-	prom_printf( s);
++void __init register_prom_console(void)
++{
++	register_console(&promcons);
+ }
+diff -up --recursive --new-file linux-mips-2.6.21-20070502.macro/arch/mips/dec/prom/init.c linux-mips-2.6.21-20070502/arch/mips/dec/prom/init.c
+--- linux-mips-2.6.21-20070502.macro/arch/mips/dec/prom/init.c	2007-05-02 04:55:33.000000000 +0000
++++ linux-mips-2.6.21-20070502/arch/mips/dec/prom/init.c	2007-06-04 22:42:39.000000000 +0000
+@@ -103,6 +103,9 @@ void __init prom_init(void)
+ 	if (prom_is_rex(magic))
+ 		rex_clear_cache();
+ 
++	/* Register the early console.  */
++	register_prom_console();
++
+ 	/* Were we compiled with the right CPU option? */
+ #if defined(CONFIG_CPU_R3000)
+ 	if ((current_cpu_data.cputype == CPU_R4000SC) ||

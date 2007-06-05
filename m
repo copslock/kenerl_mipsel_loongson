@@ -1,51 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2007 00:58:05 +0100 (BST)
-Received: from cantor.suse.de ([195.135.220.2]:691 "EHLO mx1.suse.de")
-	by ftp.linux-mips.org with ESMTP id S20026650AbXFDX6C (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Jun 2007 00:58:02 +0100
-Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.suse.de (Postfix) with ESMTP id 5C1C0127B1;
-	Tue,  5 Jun 2007 01:57:53 +0200 (CEST)
-Date:	Mon, 4 Jun 2007 16:35:26 -0700
-From:	Greg KH <gregkh@suse.de>
-To:	Marc St-Jean <stjeanma@pmc-sierra.com>,
-	dbrownell@users.sourceforge.net
-Cc:	akpm@linux-foundation.org, linux-mips@linux-mips.org,
-	linux-usb-devel@lists.sourceforge.net
-Subject: Re: [PATCH 11/12] drivers: PMC MSP71xx USB driver
-Message-ID: <20070604233526.GA18567@suse.de>
-References: <200706042323.l54NNi6e013258@pasqua.pmc-sierra.bc.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2007 01:06:27 +0100 (BST)
+Received: from terminus.zytor.com ([192.83.249.54]:18392 "EHLO
+	terminus.zytor.com") by ftp.linux-mips.org with ESMTP
+	id S20026674AbXFEAGW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 5 Jun 2007 01:06:22 +0100
+Received: from tazenda.hos.anvin.org (c-67-169-144-158.hsd1.ca.comcast.net [67.169.144.158])
+	(authenticated bits=0)
+	by terminus.zytor.com (8.13.8/8.13.8) with ESMTP id l5504C0L008097
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 4 Jun 2007 17:04:13 -0700
+Message-ID: <4664A87C.5040609@zytor.com>
+Date:	Mon, 04 Jun 2007 17:04:12 -0700
+From:	"H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Thunderbird 2.0.0.0 (X11/20070419)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200706042323.l54NNi6e013258@pasqua.pmc-sierra.bc.ca>
-User-Agent: Mutt/1.5.15 (2007-04-06)
-Return-Path: <gregkh@suse.de>
+To:	David Miller <davem@davemloft.net>
+CC:	joseph@codesourcery.com, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org, linux-arch@vger.kernel.org
+Subject: Re: 64-bit syscall ABI issue
+References: <Pine.LNX.4.64.0706042051280.16431@digraph.polyomino.org.uk> <20070604.142557.68139332.davem@davemloft.net>
+In-Reply-To: <20070604.142557.68139332.davem@davemloft.net>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV 0.88.7/3351/Mon Jun  4 15:52:05 2007 on terminus.zytor.com
+X-Virus-Status:	Clean
+Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15248
+X-archive-position: 15249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 04, 2007 at 05:23:44PM -0600, Marc St-Jean wrote:
-> [PATCH 11/12] drivers: PMC MSP71xx USB driver
+David Miller wrote:
+> From: "Joseph S. Myers" <joseph@codesourcery.com>
+> Date: Mon, 4 Jun 2007 20:56:57 +0000 (UTC)
 > 
-> Patch to add an USB driver for the PMC-Sierra MSP71xx devices.
+> [ added linux-arch which is a great place to discuss these
+>   kinds of issues. ]
 > 
-> Patches 1 through 10 were posted to linux-mips@linux-mips.org as well
-> as other sub-system lists/maintainers as appropriate. This patch has
-> some dependencies on the first few patches in the set. If you would
-> like to receive these or the entire set, please email me.
+>> What should the kernel syscall ABI be in such cases (any case where the 
+>> syscall implementations expect arguments narrower than registers, so 
+>> mainly 32-bit arguments on 64-bit platforms)?  There are two obvious 
+>> possibilities:
+> 
+> In general we've taken the stance that the syscall dispatch
+> should create the proper calling environment for C code
+> implementing the system calls, and this thus means properly
+> sign and zero extending the arguments as expected by the C
+> calling convention.
 
-Note, David Brownell is the USB Gadget maintainer, he should ack this
-before going into the tree.
+This is, in fact, rather fundamental (some ABIs don't require sign or
+zero extension, e.g. x86-64); otherwise libc's job becomes a whole lot
+harder.
 
-thanks,
-
-greg k-h
+	-hpa

@@ -1,52 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jun 2007 23:29:29 +0100 (BST)
-Received: from smtp109.sbc.mail.mud.yahoo.com ([68.142.198.208]:36502 "HELO
-	smtp109.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20021917AbXFEW31 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Jun 2007 23:29:27 +0100
-Received: (qmail 37580 invoked from network); 5 Jun 2007 22:29:18 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=pacbell.net;
-  h=Received:X-YMail-OSG:Received:Date:From:To:Subject:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id;
-  b=UOCXJCTFAVBpcAnmYnvJnzuFfOkeCIEDyxlZrnifeqGNh+V1uxs26qqc5owx25cNQ4Ss3cU8jwWLu1T1vqGkQCpTjHMXYdaD1uCLyTobr0PmJ6FWDE2j2aqcvuZ1l+pjbzpwA7VuppWvoYx4XxD0ugvMMBJ9TR+WacaYfr1RMk4=  ;
-Received: from unknown (HELO adsl-69-226-248-13.dsl.pltn13.pacbell.net) (david-b@pacbell.net@69.226.212.132 with login)
-  by smtp109.sbc.mail.mud.yahoo.com with SMTP; 5 Jun 2007 22:29:18 -0000
-X-YMail-OSG: AtTQ7CUVM1lNabwFvJm1ZisN0mUCrvaVSmfX34xcIG3AXXxzwMjaZMn2KjvRB0Kpd6dTlWOEnw--
-Received: by adsl-69-226-248-13.dsl.pltn13.pacbell.net (Postfix, from userid 500)
-	id B61BD230C66; Tue,  5 Jun 2007 15:28:53 -0700 (PDT)
-Date:	Tue, 05 Jun 2007 15:28:53 -0700
-From:	David Brownell <david-b@pacbell.net>
-To:	stjeanma@pmc-sierra.com, stern@rowland.harvard.edu
-Subject: Re: [linux-usb-devel] [PATCH 11/12] drivers: PMC MSP71xx USB driver
-Cc:	linux-usb-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
-	gregkh@suse.de, akpm@linux-foundation.org
-References: <Pine.LNX.4.44L0.0706051706550.4003-100000@iolanthe.rowland.org>
-In-Reply-To: <Pine.LNX.4.44L0.0706051706550.4003-100000@iolanthe.rowland.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2007 01:47:29 +0100 (BST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:56530 "HELO
+	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S20021971AbXFFAr1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 6 Jun 2007 01:47:27 +0100
+Received: (qmail 29958 invoked by uid 101); 6 Jun 2007 00:47:19 -0000
+Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
+  by father.pmc-sierra.com with SMTP; 6 Jun 2007 00:47:19 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l560lF9N024091;
+	Tue, 5 Jun 2007 17:47:15 -0700
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
+	id <LGNW5D32>; Tue, 5 Jun 2007 17:47:15 -0700
+Message-ID: <46660410.3070703@pmc-sierra.com>
+From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+To:	Alan Stern <stern@rowland.harvard.edu>
+Cc:	david-b@pacbell.net, gregkh@suse.de, linux-mips@linux-mips.org,
+	akpm@linux-foundation.org, linux-usb-devel@lists.sourceforge.net
+Subject: Re: [linux-usb-devel] [PATCH 11/12] drivers: PMC MSP71xx USB driv
+	er
+Date:	Tue, 5 Jun 2007 17:47:12 -0700 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20070605222853.B61BD230C66@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-Return-Path: <david-b@pacbell.net>
+X-Mailer: Internet Mail Service (5.5.2657.72)
+x-originalarrivaltime: 06 Jun 2007 00:47:12.0587 (UTC) FILETIME=[387B79B0:01C7A7D4]
+user-agent: Thunderbird 1.5.0.12 (X11/20070509)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Return-Path: <Marc_St-Jean@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15258
+X-archive-position: 15259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david-b@pacbell.net
+X-original-sender: Marc_St-Jean@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
+
+Alan Stern wrote:
+> On Mon, 4 Jun 2007, Marc St-Jean wrote:
+> 
+>  > [PATCH 11/12] drivers: PMC MSP71xx USB driver
+>  >
+>  > Patch to add an USB driver for the PMC-Sierra MSP71xx devices.
+>  >
+>  > Patches 1 through 10 were posted to linux-mips@linux-mips.org as well
+>  > as other sub-system lists/maintainers as appropriate. This patch has
+>  > some dependencies on the first few patches in the set. If you would
+>  > like to receive these or the entire set, please email me.
+> 
+> My personal impressions:
+> 
 > This does far too much to be a single patch.  It needs to be broken up.
+> 
+> The change to hub.c looks more complicated than necessary.  You ought
+> to be able to share more of the code.  Turning off power to the
+> overcurrent port would probably be okay for any hub.
+> 
+> The changes to file_storage.c and other gadget drivers look completely
+> unnecessary.  You're apparently trying to disallow 0-length transfers
+> on endpoint 0.  For one thing, that's liable to break some protocols. 
+> For another, it would be better to make the test at one place, in your
+> controller driver, instead of spread out among multiple gadget drivers.
+> 
+> Alan Stern
 
-Agreed.  300+ KB is not digestible at all.
 
-Most maintainers like to see patches on the order of 10 KB; that much
-is easy to review.  New drivers are rarely that small of course, but
-that should give you some understanding of just how excessive this is...
+Thanks to everyone that provided feedback. I'll be resubmitting the host
+code only and will resume with gadget once the host is accepted.
 
-But the fact that this one "driver" patch touched so many other files
-outside its own directory is a dead giveaway that it's got something
-pretty wrong...
+The host only patch is still ~50k but that's mostly due to all the
+le32 -> ehci32 conversion in order to support the big endian controller.
+The actual platform driver code is small.
 
-- Dave
+Marc

@@ -1,72 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2007 09:02:33 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.176]:32790 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021575AbXFFICb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 6 Jun 2007 09:02:31 +0100
-Received: by py-out-1112.google.com with SMTP id f31so109873pyh
-        for <linux-mips@linux-mips.org>; Wed, 06 Jun 2007 01:01:30 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=XsRr3fLqOLtlW/d0TG68Kn0IqrajI0XGXrqtsKXfPFpws1k/O0vhy16CvwT5bjJccSFYc1J+RGC2HbtPyJLg8n10nSFfNAqhNJguDUHxRzvYkz/nW2akzJTwtA1EK95kCibxGDOhE4cYng6o7cpUBN0FP7SQu6CK5cNse47s8Is=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=aMDpmvlzR1ABFsjRnNx2BfELCHQQxtzT0/F4IXFiydAH9uZMF0hc68NE7pw9a+B4Sch96smFfTHCYr4YVizo8QPJWHPRkyQ5w5qsfhqiQ5zjelV6vfxiiMZgYmSe0fw4nSisDgYpg7agdjb0ljOrghntfQ0j52xXg+CfLqY9VMI=
-Received: by 10.65.219.20 with SMTP id w20mr396497qbq.1181116889831;
-        Wed, 06 Jun 2007 01:01:29 -0700 (PDT)
-Received: by 10.65.241.19 with HTTP; Wed, 6 Jun 2007 01:01:29 -0700 (PDT)
-Message-ID: <cda58cb80706060101n64dd973fxdd282379595c0b1@mail.gmail.com>
-Date:	Wed, 6 Jun 2007 10:01:29 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"tiansm@lemote.com" <tiansm@lemote.com>
-Subject: Re: [PATCH 15/15] work around for more than 256MB memory support
-Cc:	linux-mips@linux-mips.org, "Fuxin Zhang" <zhangfx@lemote.com>
-In-Reply-To: <11811127744038-git-send-email-tiansm@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2007 10:07:41 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:29967 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021466AbXFFJHj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 6 Jun 2007 10:07:39 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3A56CE1CC0;
+	Wed,  6 Jun 2007 11:07:31 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id U+bzqJx5Mgsw; Wed,  6 Jun 2007 11:07:31 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id E3A71E1C7F;
+	Wed,  6 Jun 2007 11:07:30 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l5697bXW018717;
+	Wed, 6 Jun 2007 11:07:38 +0200
+Date:	Wed, 6 Jun 2007 10:07:34 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@linux-foundation.org>
+cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] zs.c: Drain the transmission line
+Message-ID: <Pine.LNX.4.64N.0706051145260.15653@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <11811127722019-git-send-email-tiansm@lemote.com>
-	 <11811127744038-git-send-email-tiansm@lemote.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3367/Wed Jun  6 07:14:43 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15300
+X-archive-position: 15301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 6/6/07, tiansm@lemote.com <tiansm@lemote.com> wrote:
-> From: Fuxin Zhang <zhangfx@lemote.com>
->
-> Signed-off-by: Fuxin Zhang <zhangfx@lemote.com>
-> ---
->  drivers/char/mem.c |    4 ++++
->  1 files changed, 4 insertions(+), 0 deletions(-)
->
-> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-> index cc9a9d0..a19b46a 100644
-> --- a/drivers/char/mem.c
-> +++ b/drivers/char/mem.c
-> @@ -82,8 +82,12 @@ static inline int uncached_access(struct file *file, unsigned long addr)
->          */
->         if (file->f_flags & O_SYNC)
->                 return 1;
-> +#if defined(CONFIG_LEMOTE_FULONG) && defined(CONFIG_64BIT)
-> +       return (addr >= __pa(high_memory)) || ((addr >=0x10000000) && (addr < 0x20000000));
-> +#else
->         return addr >= __pa(high_memory);
->  #endif
-> +#endif
->  }
+ This is an update to the zs.c driver to make it wait for the transmission 
+line to become idle before disabling the transmitter or resetting the 
+chip.  This way the character that is on the way at the time one of these 
+actions is about to be performed does not get corrupted.
 
-That would be nice to have a nice log to justify such a hack....
+ Plus a change to reset the index/data pointer first before issuing a chip 
+reset just in case the state is wrong when control of the chip is taken 
+the first time.
 
-Thanks
--- 
-               Franck
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+ These are almost obvious, but I have run-time tested them just in case.  
+They make the switch from the initial (early printk) PROM-based console 
+less disruptive.  The change to load_zsregs() also affects set_termios().
+
+ Please apply,
+
+  Maciej
+
+patch-mips-2.6.21-20070502-zs-serial-drain-3
+diff -up --recursive --new-file linux-mips-2.6.21-20070502.macro/drivers/serial/zs.c linux-mips-2.6.21-20070502/drivers/serial/zs.c
+--- linux-mips-2.6.21-20070502.macro/drivers/serial/zs.c	2007-06-05 11:08:24.000000000 +0000
++++ linux-mips-2.6.21-20070502/drivers/serial/zs.c	2007-06-05 11:08:57.000000000 +0000
+@@ -240,10 +240,24 @@ static int zs_transmit_drain(struct zs_p
+ 	return loops;
+ }
+ 
++static int zs_line_drain(struct zs_port *zport, int irq)
++{
++	struct zs_scc *scc = zport->scc;
++	int loops = 10000;
++
++	while (!(read_zsreg(zport, R1) & ALL_SNT) && loops--) {
++		zs_spin_unlock_cond_irq(&scc->zlock, irq);
++		udelay(2);
++		zs_spin_lock_cond_irq(&scc->zlock, irq);
++	}
++	return loops;
++}
++
+ 
+ static void load_zsregs(struct zs_port *zport, u8 *regs, int irq)
+ {
+-	zs_transmit_drain(zport, irq);
++	/* Let the current transmission finish.  */
++	zs_line_drain(zport, irq);
+ 	/* Load 'em up.  */
+ 	write_zsreg(zport, R3, regs[3] & ~RxENABLE);
+ 	write_zsreg(zport, R5, regs[5] & ~TxENAB);
+@@ -814,6 +828,10 @@ static void zs_reset(struct zs_port *zpo
+ 	spin_lock_irqsave(&scc->zlock, flags);
+ 	irq = !irqs_disabled_flags(flags);
+ 	if (!scc->initialised) {
++		/* Reset the pointer first, just in case...  */
++		read_zsreg(zport, R0);
++		/* And let the current transmission finish.  */
++		zs_line_drain(zport, irq);
+ 		write_zsreg(zport, R9, FHWRES);
+ 		udelay(10);
+ 		write_zsreg(zport, R9, 0);

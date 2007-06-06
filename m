@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2007 07:53:55 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:56457 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20021488AbXFFGxF (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2007 07:54:19 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:55689 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20021494AbXFFGxF (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2007 07:53:05 +0100
-Received: (qmail 7091 invoked by uid 511); 6 Jun 2007 07:00:19 -0000
+Received: (qmail 7076 invoked by uid 511); 6 Jun 2007 07:00:19 -0000
 Received: from unknown (HELO localhost.localdomain) (192.168.2.233)
   by lemote.com with SMTP; 6 Jun 2007 07:00:19 -0000
 From:	tiansm@lemote.com
 To:	linux-mips@linux-mips.org
-Cc:	Fuxin Zhang <zhangfx@lemote.com>
-Subject: [PATCH 12/15] cheat for support of more than 256MB memory
-Date:	Wed,  6 Jun 2007 14:52:49 +0800
-Message-Id: <11811127741078-git-send-email-tiansm@lemote.com>
+Cc:	Songmao Tian <tiansm@lemote.com>
+Subject: [PATCH 09/15] add serial port definition for lemote fulong
+Date:	Wed,  6 Jun 2007 14:52:46 +0800
+Message-Id: <11811127741719-git-send-email-tiansm@lemote.com>
 X-Mailer: git-send-email 1.5.2.1
 In-Reply-To: <11811127722019-git-send-email-tiansm@lemote.com>
 References: <11811127722019-git-send-email-tiansm@lemote.com>
@@ -18,7 +18,7 @@ Return-Path: <tiansm@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15283
+X-archive-position: 15284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,31 +26,38 @@ X-original-sender: tiansm@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Fuxin Zhang <zhangfx@lemote.com>
+From: Songmao Tian <tiansm@lemote.com>
 
 Signed-off-by: Fuxin Zhang <zhangfx@lemote.com>
 ---
- arch/mips/kernel/setup.c |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+ include/asm-mips/serial.h |    9 ++++++++-
+ 1 files changed, 8 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 4975da0..62ef100 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -509,6 +509,14 @@ static void __init resource_init(void)
- 		res->end = end;
+diff --git a/include/asm-mips/serial.h b/include/asm-mips/serial.h
+index ce51213..1237704 100644
+--- a/include/asm-mips/serial.h
++++ b/include/asm-mips/serial.h
+@@ -164,6 +164,12 @@
+ #define IP32_SERIAL_PORT_DEFNS
+ #endif /* CONFIG_SGI_IP32 */
  
- 		res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
-+#if defined(CONFIG_LEMOTE_FULONG) && defined(CONFIG_64BIT)
-+		/* to keep memory continous, we tell system 0x10000000 - 0x20000000 is reserved
-+		 * for memory, in fact it is io region, don't occupy it
-+		 *
-+		 * SPARSEMEM?
-+		 */
-+		if (boot_mem_map.map[i].type != BOOT_MEM_RESERVED)
++#if defined(CONFIG_LEMOTE_FULONG)
++#define LEMOTE_FULONG_SERIAL_PORT_DEFNS			\
++	/* UART CLK   PORT IRQ     FLAGS        */	\
++	{ 0, BASE_BAUD, 0x3F8, 4, STD_COM_FLAGS },	/* ttyS0 */
 +#endif
- 		request_resource(&iomem_resource, res);
++
+ #define SERIAL_PORT_DFNS				\
+ 	DDB5477_SERIAL_PORT_DEFNS			\
+ 	EV64120_SERIAL_PORT_DEFNS			\
+@@ -172,6 +178,7 @@
+ 	STD_SERIAL_PORT_DEFNS				\
+ 	MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS		\
+ 	MOMENCO_OCELOT_SERIAL_PORT_DEFNS		\
+-	MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS
++	MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS		\
++	LEMOTE_FULONG_SERIAL_PORT_DEFNS
  
- 		/*
+ #endif /* _ASM_SERIAL_H */
 -- 
 1.5.2.1

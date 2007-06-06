@@ -1,49 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2007 15:27:40 +0100 (BST)
-Received: from ra.tuxdriver.com ([70.61.120.52]:47378 "EHLO ra.tuxdriver.com")
-	by ftp.linux-mips.org with ESMTP id S20027067AbXFFO1i (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Jun 2007 15:27:38 +0100
-Received: from ra.tuxdriver.com (ra.tuxdriver.com [127.0.0.1])
-	by ra.tuxdriver.com (8.14.0/8.13.7) with ESMTP id l56EOCX0008289
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Wed, 6 Jun 2007 10:24:18 -0400
-Received: (from uucp@localhost)
-	by ra.tuxdriver.com (8.14.0/8.14.0/Submit) with UUCP id l56E0VWS007924;
-	Wed, 6 Jun 2007 10:00:31 -0400
-Received: from linville-t43.mobile (linville-t43.mobile [127.0.0.1])
-	by linville-t43.mobile (8.13.8/8.13.8) with ESMTP id l56DtpkG004931;
-	Wed, 6 Jun 2007 09:55:51 -0400
-Received: (from linville@localhost)
-	by linville-t43.mobile (8.13.8/8.13.8/Submit) id l56DtpMF004930;
-	Wed, 6 Jun 2007 09:55:51 -0400
-Date:	Wed, 6 Jun 2007 09:55:51 -0400
-From:	"John W. Linville" <linville@tuxdriver.com>
-To:	tiansm@lemote.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Lemote Loongson 2E patch update
-Message-ID: <20070606135551.GA4572@tuxdriver.com>
-References: <11811049622818-git-send-email-tiansm@lemote.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11811049622818-git-send-email-tiansm@lemote.com>
-User-Agent: Mutt/1.4.2.3i
-Return-Path: <linville@tuxdriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jun 2007 15:43:33 +0100 (BST)
+Received: from iolanthe.rowland.org ([192.131.102.54]:46995 "HELO
+	iolanthe.rowland.org") by ftp.linux-mips.org with SMTP
+	id S20027075AbXFFOnb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 6 Jun 2007 15:43:31 +0100
+Received: (qmail 3537 invoked by uid 2102); 6 Jun 2007 10:42:23 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 6 Jun 2007 10:42:23 -0400
+Date:	Wed, 6 Jun 2007 10:42:23 -0400 (EDT)
+From:	Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:	Marc St-Jean <stjeanma@pmc-sierra.com>
+cc:	gregkh@suse.de, <linux-mips@linux-mips.org>,
+	<akpm@linux-foundation.org>, <dbrownell@users.sourceforge.net>,
+	<linux-usb-devel@lists.sourceforge.net>
+Subject: Re: [linux-usb-devel] [PATCH 11/12] drivers: PMC MSP71xx USB driver
+In-Reply-To: <200706060048.l560moU4007288@pasqua.pmc-sierra.bc.ca>
+Message-ID: <Pine.LNX.4.44L0.0706061039280.3533-100000@iolanthe.rowland.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <stern@rowland.harvard.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15302
+X-archive-position: 15303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@tuxdriver.com
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 X-list: linux-mips
 
-No comment on the patches, but...
+On Tue, 5 Jun 2007, Marc St-Jean wrote:
 
-Any chance I'm ever going to be able to buy one of these in the USA?
+> @@ -2749,12 +2749,33 @@ static void hub_events(void)
+>  			}
+>  			
+>  			if (portchange & USB_PORT_STAT_C_OVERCURRENT) {
+> -				dev_err (hub_dev,
+> -					"over-current change on port %d\n",
+> -					i);
+> +				/* clear OCC bit */
+>  				clear_port_feature(hdev, i,
+>  					USB_PORT_FEAT_C_OVER_CURRENT);
+> +
+> +				/*
+> +				 * This step is required to toggle the
+> +				 * PP bit to 0 and 1 (by hub_power_on)
+> +				 * in order the CSC bit to be transitioned
+> +				 * properly for device hotplug.
+> +				 */
+> +				/* clear PP bit */
+> +				clear_port_feature(hdev, i,
+> +						USB_PORT_FEAT_POWER);
+> +
+> +				/* resume power */
+>  				hub_power_on(hub);
+> +
+> +				udelay(100);
+> +
+> +				/* read OCA bit */
+> +				if (portstatus &
+> +				    (1 << USB_PORT_FEAT_OVER_CURRENT)) {
+> +					/* declare overcurrent */
+> +					dev_err(hub_dev,
+> +						"over-current change "
+> +						"on port %d\n", i);
+> +				}
+>  			}
 
-John
--- 
-John W. Linville
-linville@tuxdriver.com
+Quite apart from all the issues David mentioned, you shouldn't change 
+the way errors are reported.  The dev_err() statement should always be 
+executed when there is an overcurrent change; it shouldn't depend on 
+whether the overcurrent feature is set at the moment.
+
+Remember, the message reports an overcurrent _change_, not an 
+overcurrent _state_.
+
+Alan Stern

@@ -1,57 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 15:48:16 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:43955 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20022670AbXFGOsO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2007 15:48:14 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id D39B03EC9; Thu,  7 Jun 2007 07:48:10 -0700 (PDT)
-Message-ID: <46681B17.2080207@ru.mvista.com>
-Date:	Thu, 07 Jun 2007 18:49:59 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 16:04:43 +0100 (BST)
+Received: from web94311.mail.in2.yahoo.com ([203.104.16.221]:65455 "HELO
+	web94311.mail.in2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20027220AbXFGPEk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Jun 2007 16:04:40 +0100
+Received: (qmail 39018 invoked by uid 60001); 6 Jun 2007 11:19:41 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=3jqEXGkbIk1HuBGC65s6pZ7QVgqX9E18+ZltfDKipxoaXvMaE5lugjOOTOXsFkehRKhLsSC9gu+MahKPOPD6A2Qe0qFCr71oQ0IDGg2p3XwTZXxWaC9uQczPEg/zj6ThZBbVHdUqdEBM7bAAhVV+j7XAJbdv54T0QuIeHxGHUfk=;
+X-YMail-OSG: 3XyBt6AVM1k7_HDRK1yE9H6up76p3kywbfHFGRvi
+Received: from [59.92.55.239] by web94311.mail.in2.yahoo.com via HTTP; Wed, 06 Jun 2007 12:19:41 BST
+Date:	Wed, 6 Jun 2007 12:19:41 +0100 (BST)
+From:	saravanan <sar_van81@yahoo.co.in>
+Subject: Re: porting linux to DBau1200
+To:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20070602184450.GD28306@dusktilldawn.nl>
 MIME-Version: 1.0
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Tickless/dyntick kernel, highres timer and general time crapectomy
-References: <20070606185450.GA10511@linux-mips.org>	 <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com>	 <20070607113032.GA26047@linux-mips.org>	 <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>	 <46680B75.5040809@ru.mvista.com> <cda58cb80706070744v21e1bbf3sa28990b4477a8844@mail.gmail.com>
-In-Reply-To: <cda58cb80706070744v21e1bbf3sa28990b4477a8844@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: multipart/alternative; boundary="0-294751016-1181128781=:36765"
+Content-Transfer-Encoding: 8bit
+Message-ID: <687058.36765.qm@web94311.mail.in2.yahoo.com>
+Return-Path: <sar_van81@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15333
+X-archive-position: 15334
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: sar_van81@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+--0-294751016-1181128781=:36765
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Franck Bui-Huu wrote:
+Hi,
 
-> [ weird, Gmail thought you were a spamer... ]
+can you say me to create a simple rootfilesystem for MIPS? i searched in the net but i could not find anything. i tried cross compiling busybox for our MIPS but that too was not successfull.
 
-    Well, I guess I should thank my ISP which indeed hosts many spammers. :-)
+can you please help me ? 
 
-> Sergei Shtylyov wrote:
 
->>    No, it doesn't. Even on dyntick kernels, interrupts do happen several
->> times a second. Dynticks have nothing to do with disabling timer
->> interrupts...
->>
-> 
-> That's true however if your system has 2 clock devices. One is the r4k-hpt
-> and the other one soemthing else with a higher rating. If you don't stop
-> r4k-hpt interrupts, how does it work ?
+saravanan.
 
-    The unwanted events just gets ignored by higher-level code, IIRC... 
-Classic PowerPC CPUs have the same problem (even worse, actually) -- one can't 
-disable the decrementer interrupt at all.
+       
+---------------------------------
+ Looking for people who are YOUR TYPE?  Find them here!
+--0-294751016-1181128781=:36765
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-WBR, Sergei
+Hi,<br><br>can you say me to create a simple rootfilesystem for MIPS? i searched in the net but i could not find anything. i tried cross compiling busybox for our MIPS but that too was not successfull.<br><br>can you please help me ? <br><b><i></i></b><br><br>saravanan.<br><p>&#32;
+
+
+      <hr size=1></hr> 
+Looking for people who are YOUR TYPE? <a href="http://us.rd.yahoo.com/mail/in/ygroups/*http://in.groups.yahoo.com"> Find them here!</a>
+--0-294751016-1181128781=:36765--

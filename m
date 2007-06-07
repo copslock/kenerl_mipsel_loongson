@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 12:35:30 +0100 (BST)
-Received: from wf1.mips-uk.com ([194.74.144.154]:23967 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 13:28:43 +0100 (BST)
+Received: from wf1.mips-uk.com ([194.74.144.154]:41158 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20027194AbXFGLf2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Jun 2007 12:35:28 +0100
+	id S20027204AbXFGM2k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Jun 2007 13:28:40 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l57BUWER026602;
-	Thu, 7 Jun 2007 12:30:32 +0100
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l57CNiYM020050;
+	Thu, 7 Jun 2007 13:23:44 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l57BUWL2026601;
-	Thu, 7 Jun 2007 12:30:32 +0100
-Date:	Thu, 7 Jun 2007 12:30:32 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l57CNiMG020049;
+	Thu, 7 Jun 2007 13:23:44 +0100
+Date:	Thu, 7 Jun 2007 13:23:44 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Tickless/dyntick kernel, highres timer and general time
-	crapectomy
-Message-ID: <20070607113032.GA26047@linux-mips.org>
-References: <20070606185450.GA10511@linux-mips.org> <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com>
+Subject: Re: smp_mb() in asm-mips/bitops.h
+Message-ID: <20070607122344.GD26047@linux-mips.org>
+References: <20070607.165301.63743560.nemoto@toshiba-tops.co.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com>
+In-Reply-To: <20070607.165301.63743560.nemoto@toshiba-tops.co.jp>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15325
+X-archive-position: 15326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,72 +33,196 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 07, 2007 at 09:59:53AM +0200, Franck Bui-Huu wrote:
+On Thu, Jun 07, 2007 at 04:53:01PM +0900, Atsushi Nemoto wrote:
 
-> >I'm working on getting dyntick and highres timer support working for MIPS.
-> >This unavoidably implies dumping most of the MIPS-private time
-> >infrastructure we've piled up over the past decade.  Which really is a
-> >major crapectomy.  A first cut of the patches which are tested to
-> >run
-> 
-> That's definitely true. I wrote my own version of clockevent support
-> yesterday based on your patchset "dyntick-quilt" and I end up rewrite
-> the whole time.c. The biggest part of the job would be to split this
-> into several patches to ease the review but I doubt it worth it since
-> we rewrite it almost from scratch.
+> I found some funny usages of smp_mb() in asm-mips/bitops.h:
 
-I'm actually getting closer and closer to the point where keep things in
-a nicely split patchset stops being workable.
+Funny indeed ;-)  Below patch should do the trick.
 
-> Another issue I have is to implement clockevent set_mode() method. You
-> left it empty but I think we need at least to shut down the timer
-> interrupt when setting the clock event device. Strangely I haven't
-> found a "generic" way to stop them through cp0. Have I missed
-> something ?
-
-You can mask the count/compare interrupt in the status register like any
-other interrupt.  Keep in mind that on many CPUs this interrupt is
-shared with the performance counter interrupt so cannot always be disabled.
-There is no other disable bit for this interrupt than the IE bit in the
-status register.  So it may just have to be ignored.
-
-Other issues to solve:
-
-  o The R4000/R4400 (others?) allow the use of hwint5 for either the
-    count/compare interrupt or as a normal hardware interrupt.  The switch
-    happens based on a bootstream setting.  There is no config register
-    bit for this, so we either have to hardcode the knowledge about the
-    affected machines or construct a probe.  Where the count/compare is
-    not usable we cannot use this as a clockevent device.
-  o Old revisions of the R4000 have a bug where if the count register is
-    read in exactly the moment where it matches the compare register the
-    timer interrupt is lost.  This means the system will be interrupt-less
-    for the next typicall like 86s (at the typical 100MHz clock for the
-    affected processors).  The workaround needs to be implemented.
-
-Both are currently the least of my concerns, there is much bigger fish to
-catch ...
-
-> BTW any idea when "time-ntp-make-cmos-update-generic.patch" is going
-> to be merged into mainline ? Note: I think there's a bug in
-> notify_cmos_timer(). The following test should be negated, shouldn't
-> it ?
-> 
-> +	if (no_sync_cmos_clock)
-> +		mod_timer(&sync_cmos_timer, jiffies + 1);
-
-In theory the patch should be in -mm to be merged early just after .22.
-
-> The other patch named "time-move-to_tm-to-lib.patch" create a new file
-> in arch/mips/lib directory. This new file is called
-> "to_tm.c". Shouldn't we call it something less specific like "time.c" ?
-
-I actually may drop that one for now.  Two problems with it:
-
- o to_tm() is being used in modules but having the function in a lib means
-   it may not be linked into the kernel so the modules might fail.
- o arch/mips/lib is not the right place anyway.  There are several nearly
-   identical copies of the function around under arch/ so they should be
-   unified.
+Due to very inagressive memory reordering on the few non-strongly ordered
+MIPS SMP systems I am somewhat confident this didn't break anything but
+if so, Sibyte and PMC-Sierra RM9000 SMP systems are affected.
 
   Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+diff --git a/include/asm-mips/bitops.h b/include/asm-mips/bitops.h
+index d995413..ffe245b 100644
+--- a/include/asm-mips/bitops.h
++++ b/include/asm-mips/bitops.h
+@@ -238,10 +238,11 @@ static inline int test_and_set_bit(unsigned long nr,
+ 	volatile unsigned long *addr)
+ {
+ 	unsigned short bit = nr & SZLONG_MASK;
++	unsigned long res;
+ 
+ 	if (cpu_has_llsc && R10000_LLSC_WAR) {
+ 		unsigned long *m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
+-		unsigned long temp, res;
++		unsigned long temp;
+ 
+ 		__asm__ __volatile__(
+ 		"	.set	mips3					\n"
+@@ -254,11 +255,9 @@ static inline int test_and_set_bit(unsigned long nr,
+ 		: "=&r" (temp), "=m" (*m), "=&r" (res)
+ 		: "r" (1UL << bit), "m" (*m)
+ 		: "memory");
+-
+-		return res != 0;
+ 	} else if (cpu_has_llsc) {
+ 		unsigned long *m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
+-		unsigned long temp, res;
++		unsigned long temp;
+ 
+ 		__asm__ __volatile__(
+ 		"	.set	push					\n"
+@@ -277,25 +276,22 @@ static inline int test_and_set_bit(unsigned long nr,
+ 		: "=&r" (temp), "=m" (*m), "=&r" (res)
+ 		: "r" (1UL << bit), "m" (*m)
+ 		: "memory");
+-
+-		return res != 0;
+ 	} else {
+ 		volatile unsigned long *a = addr;
+ 		unsigned long mask;
+-		int retval;
+ 		unsigned long flags;
+ 
+ 		a += nr >> SZLONG_LOG;
+ 		mask = 1UL << bit;
+ 		raw_local_irq_save(flags);
+-		retval = (mask & *a) != 0;
++		res = (mask & *a);
+ 		*a |= mask;
+ 		raw_local_irq_restore(flags);
+-
+-		return retval;
+ 	}
+ 
+ 	smp_mb();
++
++	return res != 0;
+ }
+ 
+ /*
+@@ -310,6 +306,7 @@ static inline int test_and_clear_bit(unsigned long nr,
+ 	volatile unsigned long *addr)
+ {
+ 	unsigned short bit = nr & SZLONG_MASK;
++	unsigned long res;
+ 
+ 	if (cpu_has_llsc && R10000_LLSC_WAR) {
+ 		unsigned long *m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
+@@ -327,12 +324,10 @@ static inline int test_and_clear_bit(unsigned long nr,
+ 		: "=&r" (temp), "=m" (*m), "=&r" (res)
+ 		: "r" (1UL << bit), "m" (*m)
+ 		: "memory");
+-
+-		return res != 0;
+ #ifdef CONFIG_CPU_MIPSR2
+ 	} else if (__builtin_constant_p(nr)) {
+ 		unsigned long *m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
+-		unsigned long temp, res;
++		unsigned long temp;
+ 
+ 		__asm__ __volatile__(
+ 		"1:	" __LL	"%0, %1		# test_and_clear_bit	\n"
+@@ -346,12 +341,10 @@ static inline int test_and_clear_bit(unsigned long nr,
+ 		: "=&r" (temp), "=m" (*m), "=&r" (res)
+ 		: "ri" (bit), "m" (*m)
+ 		: "memory");
+-
+-		return res;
+ #endif
+ 	} else if (cpu_has_llsc) {
+ 		unsigned long *m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
+-		unsigned long temp, res;
++		unsigned long temp;
+ 
+ 		__asm__ __volatile__(
+ 		"	.set	push					\n"
+@@ -371,25 +364,22 @@ static inline int test_and_clear_bit(unsigned long nr,
+ 		: "=&r" (temp), "=m" (*m), "=&r" (res)
+ 		: "r" (1UL << bit), "m" (*m)
+ 		: "memory");
+-
+-		return res != 0;
+ 	} else {
+ 		volatile unsigned long *a = addr;
+ 		unsigned long mask;
+-		int retval;
+ 		unsigned long flags;
+ 
+ 		a += nr >> SZLONG_LOG;
+ 		mask = 1UL << bit;
+ 		raw_local_irq_save(flags);
+-		retval = (mask & *a) != 0;
++		res = (mask & *a);
+ 		*a &= ~mask;
+ 		raw_local_irq_restore(flags);
+-
+-		return retval;
+ 	}
+ 
+ 	smp_mb();
++
++	return res != 0;
+ }
+ 
+ /*
+@@ -404,10 +394,11 @@ static inline int test_and_change_bit(unsigned long nr,
+ 	volatile unsigned long *addr)
+ {
+ 	unsigned short bit = nr & SZLONG_MASK;
++	unsigned long res;
+ 
+ 	if (cpu_has_llsc && R10000_LLSC_WAR) {
+ 		unsigned long *m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
+-		unsigned long temp, res;
++		unsigned long temp;
+ 
+ 		__asm__ __volatile__(
+ 		"	.set	mips3					\n"
+@@ -420,11 +411,9 @@ static inline int test_and_change_bit(unsigned long nr,
+ 		: "=&r" (temp), "=m" (*m), "=&r" (res)
+ 		: "r" (1UL << bit), "m" (*m)
+ 		: "memory");
+-
+-		return res != 0;
+ 	} else if (cpu_has_llsc) {
+ 		unsigned long *m = ((unsigned long *) addr) + (nr >> SZLONG_LOG);
+-		unsigned long temp, res;
++		unsigned long temp;
+ 
+ 		__asm__ __volatile__(
+ 		"	.set	push					\n"
+@@ -443,24 +432,22 @@ static inline int test_and_change_bit(unsigned long nr,
+ 		: "=&r" (temp), "=m" (*m), "=&r" (res)
+ 		: "r" (1UL << bit), "m" (*m)
+ 		: "memory");
+-
+-		return res != 0;
+ 	} else {
+ 		volatile unsigned long *a = addr;
+-		unsigned long mask, retval;
++		unsigned long mask;
+ 		unsigned long flags;
+ 
+ 		a += nr >> SZLONG_LOG;
+ 		mask = 1UL << bit;
+ 		raw_local_irq_save(flags);
+-		retval = (mask & *a) != 0;
++		res = (mask & *a);
+ 		*a ^= mask;
+ 		raw_local_irq_restore(flags);
+-
+-		return retval;
+ 	}
+ 
+ 	smp_mb();
++
++	return res != 0;
+ }
+ 
+ #include <asm-generic/bitops/non-atomic.h>

@@ -1,49 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 15:42:09 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:19702 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20027211AbXFGOmH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2007 15:42:07 +0100
-Received: from localhost (p2004-ipad22funabasi.chiba.ocn.ne.jp [220.104.80.4])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C6E46B499; Thu,  7 Jun 2007 23:40:45 +0900 (JST)
-Date:	Thu, 07 Jun 2007 23:41:17 +0900 (JST)
-Message-Id: <20070607.234117.61509367.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: smp_mb() in asm-mips/bitops.h
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070607122344.GD26047@linux-mips.org>
-References: <20070607.165301.63743560.nemoto@toshiba-tops.co.jp>
-	<20070607122344.GD26047@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 15:44:24 +0100 (BST)
+Received: from ik-out-1112.google.com ([66.249.90.177]:17223 "EHLO
+	ik-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022694AbXFGOoW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Jun 2007 15:44:22 +0100
+Received: by ik-out-1112.google.com with SMTP id b35so448905ika
+        for <linux-mips@linux-mips.org>; Thu, 07 Jun 2007 07:44:12 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=B3Y9WFujKMzKjyfnQ5jL0ZazMAZyaffUlmQt37EzPlJW5xqhYfuqTNh127n/S7PAJm/jqFonexLNbNgvjMBycpAVIjvofUA7C/QDMX9JRW2Rjrq/D0MmxPO+zbrl9LCuFRT6I8hdArCRfSFnIPe3jQuFH5s+dB69pxTFngvRbOg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=IHjAgE1br5Ce4U3NzGfCFGSv+ApiXYiH6h0spFlqHDmanV86Fe+wz9Xmdp4EXZ/MruKQ2EGRDAdD/C/RtNip1AdTye0rFeABLZ+oeqv10XE2svxCdbvvJamZHNQaT2kKaPF298mBbtmfFTsA1zR+fjgagbeP97qOxqSyV+P2WjU=
+Received: by 10.65.222.11 with SMTP id z11mr12371871qbq.1181227452011;
+        Thu, 07 Jun 2007 07:44:12 -0700 (PDT)
+Received: by 10.65.204.8 with HTTP; Thu, 7 Jun 2007 07:44:11 -0700 (PDT)
+Message-ID: <cda58cb80706070744v21e1bbf3sa28990b4477a8844@mail.gmail.com>
+Date:	Thu, 7 Jun 2007 16:44:11 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>
+Subject: Re: Tickless/dyntick kernel, highres timer and general time crapectomy
+Cc:	"Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+In-Reply-To: <46680B75.5040809@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+References: <20070606185450.GA10511@linux-mips.org>
+	 <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com>
+	 <20070607113032.GA26047@linux-mips.org>
+	 <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>
+	 <46680B75.5040809@ru.mvista.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15331
+X-archive-position: 15332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 7 Jun 2007 13:23:44 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> Funny indeed ;-)  Below patch should do the trick.
-> 
-> Due to very inagressive memory reordering on the few non-strongly ordered
-> MIPS SMP systems I am somewhat confident this didn't break anything but
-> if so, Sibyte and PMC-Sierra RM9000 SMP systems are affected.
-> 
->   Ralf
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Hi,
 
-Thanks, looks good for me.
+[ weird, Gmail thought you were a spamer... ]
 
----
-Atsushi Nemoto
+Sergei Shtylyov wrote:
+>
+>    No, it doesn't. Even on dyntick kernels, interrupts do happen several
+> times a second. Dynticks have nothing to do with disabling timer
+> interrupts...
+>
+
+That's true however if your system has 2 clock devices. One is the r4k-hpt
+and the other one soemthing else with a higher rating. If you don't stop
+r4k-hpt interrupts, how does it work ?
+
+-- 
+               Franck

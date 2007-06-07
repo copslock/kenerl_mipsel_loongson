@@ -1,60 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 16:04:43 +0100 (BST)
-Received: from web94311.mail.in2.yahoo.com ([203.104.16.221]:65455 "HELO
-	web94311.mail.in2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20027220AbXFGPEk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Jun 2007 16:04:40 +0100
-Received: (qmail 39018 invoked by uid 60001); 6 Jun 2007 11:19:41 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=3jqEXGkbIk1HuBGC65s6pZ7QVgqX9E18+ZltfDKipxoaXvMaE5lugjOOTOXsFkehRKhLsSC9gu+MahKPOPD6A2Qe0qFCr71oQ0IDGg2p3XwTZXxWaC9uQczPEg/zj6ThZBbVHdUqdEBM7bAAhVV+j7XAJbdv54T0QuIeHxGHUfk=;
-X-YMail-OSG: 3XyBt6AVM1k7_HDRK1yE9H6up76p3kywbfHFGRvi
-Received: from [59.92.55.239] by web94311.mail.in2.yahoo.com via HTTP; Wed, 06 Jun 2007 12:19:41 BST
-Date:	Wed, 6 Jun 2007 12:19:41 +0100 (BST)
-From:	saravanan <sar_van81@yahoo.co.in>
-Subject: Re: porting linux to DBau1200
-To:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 16:07:52 +0100 (BST)
+Received: from wf1.mips-uk.com ([194.74.144.154]:12960 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20027230AbXFGPHu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Jun 2007 16:07:50 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l57F2pGe023981;
+	Thu, 7 Jun 2007 16:02:51 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l57F2o9P023980;
+	Thu, 7 Jun 2007 16:02:50 +0100
+Date:	Thu, 7 Jun 2007 16:02:50 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070602184450.GD28306@dusktilldawn.nl>
+Subject: Re: Tickless/dyntick kernel, highres timer and general time
+	crapectomy
+Message-ID: <20070607150250.GE26047@linux-mips.org>
+References: <20070606185450.GA10511@linux-mips.org> <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com> <20070607113032.GA26047@linux-mips.org> <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-294751016-1181128781=:36765"
-Content-Transfer-Encoding: 8bit
-Message-ID: <687058.36765.qm@web94311.mail.in2.yahoo.com>
-Return-Path: <sar_van81@yahoo.co.in>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15334
+X-archive-position: 15335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sar_van81@yahoo.co.in
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0-294751016-1181128781=:36765
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+On Thu, Jun 07, 2007 at 03:11:48PM +0200, Franck Bui-Huu wrote:
 
-Hi,
+> >In theory the patch should be in -mm to be merged early just after .22.
 
-can you say me to create a simple rootfilesystem for MIPS? i searched in the net but i could not find anything. i tried cross compiling busybox for our MIPS but that too was not successfull.
+My bad, I meant -rt - which I'm not following.  Realtime is one step
+further than I want to look ahead right now.
 
-can you please help me ? 
-
-
-saravanan.
-
-       
----------------------------------
- Looking for people who are YOUR TYPE?  Find them here!
---0-294751016-1181128781=:36765
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-Hi,<br><br>can you say me to create a simple rootfilesystem for MIPS? i searched in the net but i could not find anything. i tried cross compiling busybox for our MIPS but that too was not successfull.<br><br>can you please help me ? <br><b><i></i></b><br><br>saravanan.<br><p>&#32;
-
-
-      <hr size=1></hr> 
-Looking for people who are YOUR TYPE? <a href="http://us.rd.yahoo.com/mail/in/ygroups/*http://in.groups.yahoo.com"> Find them here!</a>
---0-294751016-1181128781=:36765--
+  Ralf

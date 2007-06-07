@@ -1,54 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 19:02:16 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:42765 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022694AbXFGSCO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Jun 2007 19:02:14 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 73627E1D38;
-	Thu,  7 Jun 2007 20:01:27 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Sg3-9mJPEz2Z; Thu,  7 Jun 2007 20:01:27 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 13386E1C6B;
-	Thu,  7 Jun 2007 20:01:27 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l57I1fG4032689;
-	Thu, 7 Jun 2007 20:01:41 +0200
-Date:	Thu, 7 Jun 2007 19:01:36 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] No I/O ports on the DECstation
-In-Reply-To: <20070607174749.GB1893@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0706071859290.18949@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0705291505370.14456@blysk.ds.pg.gda.pl>
- <20070531121521.GE28936@linux-mips.org> <Pine.LNX.4.64N.0705311359250.7856@blysk.ds.pg.gda.pl>
- <20070607174749.GB1893@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 19:11:06 +0100 (BST)
+Received: from wf1.mips-uk.com ([194.74.144.154]:29905 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20027233AbXFGSLD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Jun 2007 19:11:03 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l57I44vN005341;
+	Thu, 7 Jun 2007 19:04:04 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l57I44eA005340;
+	Thu, 7 Jun 2007 19:04:04 +0100
+Date:	Thu, 7 Jun 2007 19:04:04 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] DECstation: Optimised early printk()
+Message-ID: <20070607180404.GA3285@linux-mips.org>
+References: <Pine.LNX.4.64N.0706051128210.15653@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.3/3376/Thu Jun  7 10:39:26 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0706051128210.15653@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15346
+X-archive-position: 15347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 7 Jun 2007, Ralf Baechle wrote:
+On Tue, Jun 05, 2007 at 11:45:07AM +0100, Maciej W. Rozycki wrote:
 
-> Git is pickier than patch.  Anything that will still be applied by patch
-> with a fuzz will be rejected by git-apply.  For good reason, I several
-> times ended with a corrupt tree thanks to patch happily (miss-)applying
-> some stale patch with fuzz.  Heck, it hit akpm recently ...
+>  This is an optimised implementation of early printk() for the DECstation.  
+> After the recent conversion to a MIPS-specific generic routine using a 
+> character-by-character output the performance dropped significantly.  
+> This change reverts to the previous speed -- even at 9600 bps of the 
+> serial console the difference is visible with a naked eye; I presume for a 
+> framebuffer it is even worse (it may depend on exactly which one is used 
+> though).
+> 
+>  Additionally the change includes a fix for a problem that the old 
+> implementation had -- the format used would not actually limit the length 
+> of the string output.  This new implementation uses a local buffer to deal 
+> with it -- even with this additional copying it is much faster than the 
+> generic function.
+> 
+>  Plus this driver is registered much earlier than the generic one, 
+> allowing one to see critical messages, such as one about an incorrect CPU 
+> setting used, that are produced beforehand. :-)
 
- I see -- I'll regenerate patches if they are fuzzy then.  Thanks.
+Queued up for 2.6.23, too.
 
-  Maciej
+>  As a side note, the SYS_HAS_EARLY_PRINTK option could probably be called 
+> SYS_HAS_GENERIC_EARLY_PRINTK or something...
+
+I take a patch to rename this :-)
+
+  Ralf

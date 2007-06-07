@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 07:06:05 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:35729 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20022684AbXFGGFk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2007 07:05:40 +0100
-Received: (qmail 1856 invoked by uid 511); 7 Jun 2007 06:13:04 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 07:24:17 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:39825 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20022670AbXFGGYO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2007 07:24:14 +0100
+Received: (qmail 9566 invoked by uid 511); 7 Jun 2007 06:30:41 -0000
 Received: from unknown (HELO ?192.168.1.9?) (222.92.8.142)
-  by lemote.com with SMTP; 7 Jun 2007 06:13:04 -0000
-Message-ID: <4667A022.509@lemote.com>
-Date:	Thu, 07 Jun 2007 14:05:22 +0800
+  by lemote.com with SMTP; 7 Jun 2007 06:30:41 -0000
+Message-ID: <4667A443.8060105@lemote.com>
+Date:	Thu, 07 Jun 2007 14:22:59 +0800
 From:	Fuxin Zhang <zhangfx@lemote.com>
 User-Agent: Thunderbird 2.0.0.0 (Windows/20070326)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	"John W. Linville" <linville@tuxdriver.com>, tiansm@lemote.com,
-	linux-mips@linux-mips.org
-Subject: Re: Lemote Loongson 2E patch update
-References: <11811049622818-git-send-email-tiansm@lemote.com> <20070606135551.GA4572@tuxdriver.com> <20070606165058.GB30017@linux-mips.org>
-In-Reply-To: <20070606165058.GB30017@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:	tiansm@lemote.com
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] override of arch/mips/mm/cache.c: __uncached_access
+References: <20070606182814.GD30017@linux-mips.org> <11811962573610-git-send-email-tiansm@lemote.com>
+In-Reply-To: <11811962573610-git-send-email-tiansm@lemote.com>
+Content-Type: text/plain; charset=GB2312
 Content-Transfer-Encoding: 8bit
 Return-Path: <zhangfx@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15313
+X-archive-position: 15314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,40 +29,79 @@ X-original-sender: zhangfx@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
+Recent Xorg depends on this hack/patch.
 
+For example,if we are using this memory layout:
+0-256MB phys mem
+256-512M pci io/mem region
+512-768MB phys mem
+Xorg will crash due to pci video memory mapping problem.
 
-Ralf Baechle å†™é“:
-> On Wed, Jun 06, 2007 at 09:55:51AM -0400, John W. Linville wrote:
+So this is not really only for Fulong.
+
+BTW:
+Songmao, we'd better add a comment to justify this code.
+
+tiansm@lemote.com Ğ´µÀ:
+> From: Songmao Tian <tiansm@lemote.com>
 >
->   
->> Any chance I'm ever going to be able to buy one of these in the USA?
->>     
-Strictly speaking we cannot sell to USA yet, because we did not get some 
-required certifications for USA and Europe market(e.g. FCC, RoHS).
-But we can provide a sample if the customer can understand the status.
+> Signed-off-by: Songmao Tian <tiansm@lemote.com>
+> ---
+>  arch/mips/lemote/lm2e/Makefile |    2 +-
+>  arch/mips/lemote/lm2e/mem.c    |   25 +++++++++++++++++++++++++
+>  2 files changed, 26 insertions(+), 1 deletions(-)
+>  create mode 100644 arch/mips/lemote/lm2e/mem.c
 >
-> I haven't heared of a distributor for these boxes outside of China yet.
-> As I understand the few Lemots that are out in the wild are still not
-> from mass production.  But I guess Fuxin may answer that better than I
-> can.
->   
-Lemote has sold out around 1000 sets of Fulong, most users are in China. 
-We don't have a distributor ourside of China yet, due to the lack of 
-certifications and experience of oversea business. I think we will 
-probably get some such distributors within this year, along with the 
-upgraded versions of Fulong.
->   Ralf
->
->
->
->
+> diff --git a/arch/mips/lemote/lm2e/Makefile b/arch/mips/lemote/lm2e/Makefile
+> index 0ba6f12..fb1b48c 100644
+> --- a/arch/mips/lemote/lm2e/Makefile
+> +++ b/arch/mips/lemote/lm2e/Makefile
+> @@ -2,6 +2,6 @@
+>  # Makefile for Lemote Fulong mini-PC board.
+>  #
+>  
+> -obj-y += setup.o prom.o reset.o irq.o pci.o bonito-irq.o dbg_io.o
+> +obj-y += setup.o prom.o reset.o irq.o pci.o bonito-irq.o dbg_io.o mem.o
+>  EXTRA_AFLAGS := $(CFLAGS)
+>  
+> diff --git a/arch/mips/lemote/lm2e/mem.c b/arch/mips/lemote/lm2e/mem.c
+> new file mode 100644
+> index 0000000..6068a17
+> --- /dev/null
+> +++ b/arch/mips/lemote/lm2e/mem.c
+> @@ -0,0 +1,25 @@
+> +/*
+> + * This program is free software; you can redistribute  it and/or modify it
+> + * under  the terms of  the GNU General  Public License as published by the
+> + * Free Software Foundation;  either version 2 of the  License, or (at your
+> + * option) any later version.
+> + */
+> +
+> +#include <linux/fs.h>
+> +#include <linux/fcntl.h>
+> +#include <linux/mm.h>
+> +
+> +/* override of arch/mips/mm/cache.c: __uncached_access */
+> +int __uncached_access(struct file *file, unsigned long addr)
+> +{
+> +	if (file->f_flags & O_SYNC)
+> +		return 1;
+> +
+> +	/* 
+> +	 * on lemote loongson 2e system, peripheral register 
+> +	 * reside between 0x1000 0000 and 0x2000 0000
+> +	 */
+> +	return addr >= __pa(high_memory) ||
+> +		((addr >=0x10000000) && (addr < 0x20000000));
+> +}
+> +
 >   
 
 -- 
 ------------------------------------------------
-å¼ ç¦æ–°
-æ±Ÿè‹ä¸­ç§‘é¾™æ¢¦ç§‘æŠ€æœ‰é™å…¬å¸
-åœ°å€ï¼šæ±Ÿè‹çœå¸¸ç†Ÿå¸‚è™å±±é•‡æ¢¦å…°å·¥ä¸šå›­
+ÕÅ¸£ĞÂ
+½­ËÕÖĞ¿ÆÁúÃÎ¿Æ¼¼ÓĞÏŞ¹«Ë¾
+µØÖ·£º½­ËÕÊ¡³£ÊìÊĞÓİÉ½ÕòÃÎÀ¼¹¤ÒµÔ°
 
 General Manager
 JiangSu Lemote Corp. Ltd.

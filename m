@@ -1,70 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 14:41:33 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:37553 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20027221AbXFGNla (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2007 14:41:30 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 4437D3EC9; Thu,  7 Jun 2007 06:41:28 -0700 (PDT)
-Message-ID: <46680B75.5040809@ru.mvista.com>
-Date:	Thu, 07 Jun 2007 17:43:17 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Tickless/dyntick kernel, highres timer and general time crapectomy
-References: <20070606185450.GA10511@linux-mips.org>	 <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com>	 <20070607113032.GA26047@linux-mips.org> <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>
-In-Reply-To: <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jun 2007 15:42:09 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:19702 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20027211AbXFGOmH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Jun 2007 15:42:07 +0100
+Received: from localhost (p2004-ipad22funabasi.chiba.ocn.ne.jp [220.104.80.4])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C6E46B499; Thu,  7 Jun 2007 23:40:45 +0900 (JST)
+Date:	Thu, 07 Jun 2007 23:41:17 +0900 (JST)
+Message-Id: <20070607.234117.61509367.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: smp_mb() in asm-mips/bitops.h
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070607122344.GD26047@linux-mips.org>
+References: <20070607.165301.63743560.nemoto@toshiba-tops.co.jp>
+	<20070607122344.GD26047@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15330
+X-archive-position: 15331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Thu, 7 Jun 2007 13:23:44 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Funny indeed ;-)  Below patch should do the trick.
+> 
+> Due to very inagressive memory reordering on the few non-strongly ordered
+> MIPS SMP systems I am somewhat confident this didn't break anything but
+> if so, Sibyte and PMC-Sierra RM9000 SMP systems are affected.
+> 
+>   Ralf
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-Franck Bui-Huu wrote:
+Thanks, looks good for me.
 
-> Actually I'm wondering if we shouldn't create a new file
-> "arch/mips/kernel/time2.c" which will be a complete rewrite of the
-> old one (interrupt handler, function pointers, clocksource,
-> clockevent). This file would be the future replacement of the old
-> time.c. This new file would be used only if the board have been
-> updated accordingly. That may help to migrate...
-
-    We've been there and done that -- for George Anzinger's HRT. :-)
-
->>> Another issue I have is to implement clockevent set_mode() method. You
->>> left it empty but I think we need at least to shut down the timer
->>> interrupt when setting the clock event device. Strangely I haven't
->>> found a "generic" way to stop them through cp0. Have I missed
->>> something ?
-
->> You can mask the count/compare interrupt in the status register like any
->> other interrupt.  Keep in mind that on many CPUs this interrupt is
->> shared with the performance counter interrupt so cannot always be
->> disabled.
-
-> Well this interrupt could be shared with other devices too, couldn't it ?
-> If so only the board code can disable it.
-
->> There is no other disable bit for this interrupt than the IE bit in the
->> status register.  So it may just have to be ignored.
-
-> That would mean we can't have a tickless system in these cases, wouldn't
-> it ?
-
-    No, it doesn't. Even on dyntick kernels, interrupts do happen several 
-times a second. Dynticks have nothing to do with disabling timer interrupts...
-
-WBR, Sergei
+---
+Atsushi Nemoto

@@ -1,160 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2007 08:55:24 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:23448 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20021807AbXFHHzW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 Jun 2007 08:55:22 +0100
-Received: (qmail 18573 invoked by uid 511); 8 Jun 2007 08:02:54 -0000
-Received: from unknown (HELO ?192.168.2.233?) (192.168.2.233)
-  by lemote.com with SMTP; 8 Jun 2007 08:02:54 -0000
-Message-ID: <46690B52.8070600@lemote.com>
-Date:	Fri, 08 Jun 2007 15:54:58 +0800
-From:	Tian <tiansm@lemote.com>
-User-Agent: Icedove 1.5.0.8 (X11/20061116)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2007 09:29:47 +0100 (BST)
+Received: from wr-out-0506.google.com ([64.233.184.233]:57276 "EHLO
+	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021576AbXFHI3p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 Jun 2007 09:29:45 +0100
+Received: by wr-out-0506.google.com with SMTP id 69so613382wri
+        for <linux-mips@linux-mips.org>; Fri, 08 Jun 2007 01:29:42 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=TgJUem85BINlU5uy5xmPww98hOQutQo1j7m9EbMrXcSQmKYYf+21xlcLX9hjvFrGHMWacHDcmSJyKhORyDEEXjikgiH7W4rwkfb3JMQA1EwtLVAFzNT8lACQvC9yslZRuvgvF8a93h4IsO6taVZ88zIhUgA4S5KC9lIXYHdMvIU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=ahKRB+Ny55TSoXUqzAs4WEUn8rHQdK0AX671gZ1PMbYN6ZsDDIBMN7q1frFxXOa5GTm41DhmHNT52JYLMKLgnvSzV5hr3JxtoMMLQFmxo29NvZG1iCT+OqSmxZRjt9hXjEYrAecKKSSi8zUZoHijZpTg13QiiA+a8jVK375z0vA=
+Received: by 10.65.103.14 with SMTP id f14mr4696680qbm.1181291382134;
+        Fri, 08 Jun 2007 01:29:42 -0700 (PDT)
+Received: by 10.65.204.8 with HTTP; Fri, 8 Jun 2007 01:29:42 -0700 (PDT)
+Message-ID: <cda58cb80706080129h77450e6cx52824a4dbb654717@mail.gmail.com>
+Date:	Fri, 8 Jun 2007 10:29:42 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: Tickless/dyntick kernel, highres timer and general time crapectomy
+Cc:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
+In-Reply-To: <20070607154801.GG26047@linux-mips.org>
 MIME-Version: 1.0
-To:	Tian <tiansm@lemote.com>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	Franck Bui-Huu <vagabon.xyz@gmail.com>,
-	linux-mips@linux-mips.org, Fuxin Zhang <zhangfx@lemote.com>
-Subject: Re: [PATCH] cheat for support of more than 256MB memory
-References: <11811049622818-git-send-email-tiansm@lemote.com> <11811049643791-git-send-email-tiansm@lemote.com> <cda58cb80706052338y461f707fq790e204f55a23cc0@mail.gmail.com> <20070606164018.GA30017@linux-mips.org> <4668DF7A.6040807@lemote.com> <46690AC3.8000805@lemote.com>
-In-Reply-To: <46690AC3.8000805@lemote.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <tiansm@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <20070606185450.GA10511@linux-mips.org>
+	 <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com>
+	 <20070607113032.GA26047@linux-mips.org>
+	 <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>
+	 <46680B75.5040809@ru.mvista.com>
+	 <cda58cb80706070744v21e1bbf3sa28990b4477a8844@mail.gmail.com>
+	 <20070607154801.GG26047@linux-mips.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15354
+X-archive-position: 15355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiansm@lemote.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Tian wrote:
-> Tian wrote:
->> Ralf Baechle wrote:
->>> On Wed, Jun 06, 2007 at 08:38:18AM +0200, Franck Bui-Huu wrote:
+Hi Ralf,
+
+Ralf Baechle wrote:
+> On Thu, Jun 07, 2007 at 04:44:11PM +0200, Franck Bui-Huu wrote:
+>
+>>>   No, it doesn't. Even on dyntick kernels, interrupts do happen several
+>>> times a second. Dynticks have nothing to do with disabling timer
+>>> interrupts...
 >>>
->>>  
->>>>> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
->>>>> index 4975da0..62ef100 100644
->>>>> --- a/arch/mips/kernel/setup.c
->>>>> +++ b/arch/mips/kernel/setup.c
->>>>> @@ -509,6 +509,14 @@ static void __init resource_init(void)
->>>>>                res->end = end;
->>>>>
->>>>>                res->flags = IORESOURCE_MEM | IORESOURCE_BUSY;
->>>>> +#if defined(CONFIG_LEMOTE_FULONG) && defined(CONFIG_64BIT)
->>>>> +               /* to keep memory continous, we tell system 
->>>>> 0x10000000 - 0x20000000 is reserved
->>>>> +                * for memory, in fact it is io region, don't 
->>>>> occupy it
->>>>> +                *
->>>>> +                * SPARSEMEM?
->>>>>       
->>>> Definetly yes ! It has been designed for such issue and it should save
->>>> you some memory.
->>>>     
->>>
->>> A hole of 256MB size in the memory address map will cost 3.5MB with 
->>> a 64-bit
->>> kernel.  The other reason why I don't like this patch is that it drags
->>> platform specific code into the generic MIPS code.
->>>
->>>   Ralf
->>>
->>>
->>>   
->> we use 16k page，so it's cheaper than that:)
->>
->> Before I work out sparse memory solution, I think I can drop this 
->> patch and make some trivial fix of the first patch.
->>
->> Subject: [PATCH] simply ignore the memory hole
->>
->> Signed-off-by: Songmao Tian <tiansm@lemote.com>
->> ---
->> arch/mips/lemote/lm2e/setup.c |    1 -
->> 1 files changed, 0 insertions(+), 1 deletions(-)
->>
->> diff --git a/arch/mips/lemote/lm2e/setup.c 
->> b/arch/mips/lemote/lm2e/setup.c
->> index 3030518..2498bbf 100644
->> --- a/arch/mips/lemote/lm2e/setup.c
->> +++ b/arch/mips/lemote/lm2e/setup.c
->> @@ -112,7 +112,6 @@ void __init plat_mem_setup(void)
->>     add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
->> #ifdef CONFIG_64BIT
->>     if (highmemsize > 0) {
->> -        add_memory_region(0x10000000, 0x10000000, BOOT_MEM_RESERVED);
->>         add_memory_region(0x20000000, highmemsize << 20, BOOT_MEM_RAM);
->>     }
->> #endif
->>
->>
->>
-> It seems it's no need to modify code, just config to use
-> sparse memory will be ok, paging_init can handle the
-> non-flat-memory situatioins, and i notify the pages drop down as 
-> expected.
-Well, I mean notice...forgive me, I don't speak english often:)
+>> That's true however if your system has 2 clock devices. One is the r4k-hpt
+>> and the other one soemthing else with a higher rating. If you don't stop
+>> r4k-hpt interrupts, how does it work ?
 >
+> To some degree this question is hypothetic because generally the cp0
+> count/compare timer will be the highest rated counter.
 >
-> Subject: [PATCH] use SPARSEMEM to deal with the memory hole of 
-> peripheral IO
+
+Well it increments every other clock. So it's not impossible to have a
+an other higher rated counter.
+
+> But even if so, the basic solution is the same - just ignore the interrupt
+> whenever it happens to be triggered.  Or if it isn't shared with an
+> active performance counter interrupt, you could even disable_irq() it.
 >
-> Signed-off-by: Songmao Tian <tiansm@lemote.com>
-> ---
-> arch/mips/Kconfig                  |    1 +
-> arch/mips/configs/fulong_defconfig |   13 +++++++------
-> 2 files changed, 8 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 16f1861..376cbd6 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -957,6 +957,7 @@ config CPU_LOONGSON2
->     depends on SYS_HAS_CPU_LOONGSON2
->     select CPU_SUPPORTS_32BIT_KERNEL
->     select CPU_SUPPORTS_64BIT_KERNEL
-> +    select ARCH_SPARSEMEM_ENABLE
->     select CPU_SUPPORTS_HIGHMEM
->
-> config CPU_MIPS32_R1
-> diff --git a/arch/mips/configs/fulong_defconfig 
-> b/arch/mips/configs/fulong_defconfig
-> index cd6563a..92d9772 100644
-> --- a/arch/mips/configs/fulong_defconfig
-> +++ b/arch/mips/configs/fulong_defconfig
-> @@ -1,7 +1,7 @@
-> #
-> # Automatically generated make config: don't edit
-> # Linux kernel version: 2.6.22-rc3
-> -# Wed Jun  6 11:42:13 2007
-> +# Fri Jun  8 15:09:24 2007
-> #
-> CONFIG_MIPS=y
->
-> @@ -118,13 +118,14 @@ CONFIG_GENERIC_IRQ_PROBE=y
-> CONFIG_CPU_SUPPORTS_HIGHMEM=y
-> CONFIG_SYS_SUPPORTS_HIGHMEM=y
-> CONFIG_ARCH_FLATMEM_ENABLE=y
-> +CONFIG_ARCH_SPARSEMEM_ENABLE=y
-> CONFIG_SELECT_MEMORY_MODEL=y
-> -CONFIG_FLATMEM_MANUAL=y
-> +# CONFIG_FLATMEM_MANUAL is not set
-> # CONFIG_DISCONTIGMEM_MANUAL is not set
-> -# CONFIG_SPARSEMEM_MANUAL is not set
-> -CONFIG_FLATMEM=y
-> -CONFIG_FLAT_NODE_MEM_MAP=y
-> -# CONFIG_SPARSEMEM_STATIC is not set
-> +CONFIG_SPARSEMEM_MANUAL=y
-> +CONFIG_SPARSEMEM=y
-> +CONFIG_HAVE_MEMORY_PRESENT=y
-> +CONFIG_SPARSEMEM_STATIC=y
-> CONFIG_SPLIT_PTLOCK_CPUS=4
-> CONFIG_RESOURCES_64BIT=y
-> CONFIG_ZONE_DMA_FLAG=0
->
->
+
+OK, but the current code doesn't seem to support very well multiple
+clock event devices. For example the global_cd array is not updated if
+a new clock event device is registered. Even ll_timer_interrupt()
+handler should be renamed something like ll_hpt_interrupt() for
+example.
+
+Thanks,
+
+
+-- 
+               Franck

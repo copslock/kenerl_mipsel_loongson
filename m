@@ -1,108 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2007 10:08:28 +0100 (BST)
-Received: from wx-out-0506.google.com ([66.249.82.224]:8329 "EHLO
-	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021601AbXFHJIZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 8 Jun 2007 10:08:25 +0100
-Received: by wx-out-0506.google.com with SMTP id s14so638911wxc
-        for <linux-mips@linux-mips.org>; Fri, 08 Jun 2007 02:07:24 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=W0PlsBGnT+xG7hBwxPzsSJxM/FOLaVc/o5ObTrJ28JAtFAXqF9dT0yY8haLt5yhTwo2BQ48Zb6zoiA3UGd6ugYVHbYCEdofviuZIWWNRN+CFPedc4CbqJBk/gYvRdJtQXHxZVQFwfEdjp8fofL8dNMkpxsCOS2WdB/3KXAfftOU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=uQz+ozmFdP/QX8lsm7zBWKy034kj/P+mte8HIl3cFA44k0Vhal8rfE/YsL7sOH62QGDKlhRjYYE0IIvM+XSxAPVGt3jei6fdPLxtZnCimh3uFmYPcuJWK73lnUk8yHUpZxX+jD28E+v3RAqI7g9oVX5C4ruLAK2kh+DZ864NU14=
-Received: by 10.65.163.8 with SMTP id q8mr4756046qbo.1181293643776;
-        Fri, 08 Jun 2007 02:07:23 -0700 (PDT)
-Received: by 10.65.204.8 with HTTP; Fri, 8 Jun 2007 02:07:23 -0700 (PDT)
-Message-ID: <cda58cb80706080207ia8a6633na921c5faa69344cd@mail.gmail.com>
-Date:	Fri, 8 Jun 2007 11:07:23 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: Tickless/dyntick kernel, highres timer and general time crapectomy
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070607151447.GF26047@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2007 10:49:02 +0100 (BST)
+Received: from wf1.mips-uk.com ([194.74.144.154]:17327 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021756AbXFHJtA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 Jun 2007 10:49:00 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l589fsOV016453;
+	Fri, 8 Jun 2007 10:41:55 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l589frD2016452;
+	Fri, 8 Jun 2007 10:41:53 +0100
+Date:	Fri, 8 Jun 2007 10:41:53 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: Tickless/dyntick kernel, highres timer and general time
+	crapectomy
+Message-ID: <20070608094153.GA13686@linux-mips.org>
+References: <20070606185450.GA10511@linux-mips.org> <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com> <20070607113032.GA26047@linux-mips.org> <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com> <46680B75.5040809@ru.mvista.com> <cda58cb80706070744v21e1bbf3sa28990b4477a8844@mail.gmail.com> <20070607154801.GG26047@linux-mips.org> <cda58cb80706080129h77450e6cx52824a4dbb654717@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <20070606185450.GA10511@linux-mips.org>
-	 <cda58cb80706070059k3765cbf6w7e8907a2f0d83e1d@mail.gmail.com>
-	 <20070607113032.GA26047@linux-mips.org>
-	 <cda58cb80706070611t3083f026p769e3e1beee1f11e@mail.gmail.com>
-	 <20070607151447.GF26047@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <cda58cb80706080129h77450e6cx52824a4dbb654717@mail.gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15356
+X-archive-position: 15357
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 6/7/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Thu, Jun 07, 2007 at 03:11:48PM +0200, Franck Bui-Huu wrote:
->
-> > Actually I'm wondering if we shouldn't create a new file
-> > "arch/mips/kernel/time2.c" which will be a complete rewrite of the
-> > old one (interrupt handler, function pointers, clocksource,
-> > clockevent). This file would be the future replacement of the old
-> > time.c. This new file would be used only if the board have been
-> > updated accordingly. That may help to migrate...
->
-> And we'll still be stuck with the compat crap for years - no thank you.
-> One of the strength of Linux has always been that if necessary we've been
-> able to turn the code base upside down as needed - even if sometimes it
-> takes a snow plough to move old stuff out of the way ;-)
->
+On Fri, Jun 08, 2007 at 10:29:42AM +0200, Franck Bui-Huu wrote:
 
-OK.
+> Well it increments every other clock. So it's not impossible to have a
+> an other higher rated counter.
 
-> > >You can mask the count/compare interrupt in the status register like any
-> > >other interrupt.  Keep in mind that on many CPUs this interrupt is
-> > >shared with the performance counter interrupt so cannot always be
-> > >disabled.
-> >
-> > Well this interrupt could be shared with other devices too, couldn't it ?
-> > If so only the board code can disable it.
->
-> No, the boot mode bit controls a multiplexer so there is either count/compare
-> or the external interrupt.
->
+In practice that's very rare.  Otoh there are reasons why the cp0 counter
+might be unusable - clockscaling, no interrupt, CPU powered off.
 
-The board I'm working on shares count/compare interrupt with others
-devices. Actually an external interrupt controller, which is a simple
-MUX, allows several devices to share the same irq line. To know which
-device generates an irq you need to probe this irq controller.
+> >But even if so, the basic solution is the same - just ignore the interrupt
+> >whenever it happens to be triggered.  Or if it isn't shared with an
+> >active performance counter interrupt, you could even disable_irq() it.
+> 
+> OK, but the current code doesn't seem to support very well multiple
+> clock event devices. For example the global_cd array is not updated if
+> a new clock event device is registered. Even ll_timer_interrupt()
+> handler should be renamed something like ll_hpt_interrupt() for
+> example.
 
-So it seems to me that if the hardware designers decide to not reserve
-the highest irq line for the timer irq, you're in trouble...
+global_cd is meant to only hold the pointers to all processors' count/compare
+clockevent devices, nothing else.  So if another clockevent device should
+have a higher rating on a particular CPU the content of global_cd[] just
+doesn't matter.
 
-> > >There is no other disable bit for this interrupt than the IE bit in the
-> > >status register.  So it may just have to be ignored.
-> > >
-> >
-> > That would mean we can't have a tickless system in these cases, wouldn't
-> > it ?
->
-> It would simply mean we will receive a useless every 2^32 cycles - nothing
-> terrible.  The tickless kernel isn't really tickless.  It's more accurately
-> called dyntick.  One thing that keeps us from completly getting rid of
-> regular timer interrupts under all circumstances is the current scheduler.
-> Only if a CPU is idle Linux can stop the regular timer interrupts for it.
-> With all the software interrupts that happen to be running on a usual
-> system we expect just a hand full of interrupts per second.  And the good
-> news is that mingo's current scheduler work is going to remove the concept
-> of time slices from the scheduler and once that is done we _finally_ will
-> be able to go even on non-idle CPUs.
->
-
-OK.
-
-thanks,
--- 
-               Franck
+  Ralf

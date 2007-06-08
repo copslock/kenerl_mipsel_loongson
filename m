@@ -1,63 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2007 08:27:24 +0100 (BST)
-Received: from n10a.bullet.mail.re3.yahoo.com ([68.142.236.51]:58002 "HELO
-	n10a.bullet.mail.re3.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20021775AbXFHH1W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 8 Jun 2007 08:27:22 +0100
-Received: from [68.142.230.28] by n10.bullet.re3.yahoo.com with NNFMP; 08 Jun 2007 07:27:15 -0000
-Received: from [66.196.101.133] by t1.bullet.re2.yahoo.com with NNFMP; 08 Jun 2007 07:27:15 -0000
-Received: from [127.0.0.1] by rrr4.mail.re1.yahoo.com with NNFMP; 08 Jun 2007 07:27:15 -0000
-X-Yahoo-Newman-Property: ymail-5
-X-Yahoo-Newman-Id: 784046.4008.bm@rrr4.mail.re1.yahoo.com
-Received: (qmail 18938 invoked by uid 60001); 8 Jun 2007 05:20:25 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=KgGB2Jx/TIN9Av8dY0rlIHiqAfgUV3lxlE3t6wlFaucRLfYE6yYShw6VGM/Htzc3vtgfYCKJsbJ6e1DeGU3jq/yeJ9A0G+LA3jcA08Mknzw1vt0zw3uw1wUJoh3+JgIj1hiTOlEu7LN2NVLqyaRj7ptZuMdYdSzye/JOVuDZPZE=;
-X-YMail-OSG: LRWxqHMVM1ldtB7RKaWtRzLNQJxR3mQNUv2c9q.T
-Received: from [59.92.92.15] by web94312.mail.in2.yahoo.com via HTTP; Fri, 08 Jun 2007 06:20:25 BST
-Date:	Fri, 8 Jun 2007 06:20:25 +0100 (BST)
-From:	saravanan <sar_van81@yahoo.co.in>
-Subject: web browser support for MIPS DBAU1200
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jun 2007 08:34:00 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:45067 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20021758AbXFHHd6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 Jun 2007 08:33:58 +0100
+Received: (qmail 8309 invoked from network); 8 Jun 2007 09:33:56 +0200
+Received: from scarran.roarinelk.net (HELO ?192.168.0.242?) (192.168.0.242)
+  by wormhole.roarinelk.net with SMTP; 8 Jun 2007 09:33:56 +0200
+Message-ID: <4669063A.9030306@roarinelk.homelinux.net>
+Date:	Fri, 08 Jun 2007 09:33:14 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+User-Agent: Thunderbird/1.0 Mnenhy/0.7
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-168749831-1181280025=:91989"
-Content-Transfer-Encoding: 8bit
-Message-ID: <308540.91989.qm@web94312.mail.in2.yahoo.com>
-Return-Path: <sar_van81@yahoo.co.in>
+To:	saravanan <sar_van81@yahoo.co.in>
+CC:	linux-mips@linux-mips.org
+Subject: Re: web browser support for MIPS DBAU1200
+References: <308540.91989.qm@web94312.mail.in2.yahoo.com>
+In-Reply-To: <308540.91989.qm@web94312.mail.in2.yahoo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15351
+X-archive-position: 15352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sar_van81@yahoo.co.in
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
---0-168749831-1181280025=:91989
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+saravanan wrote:
 
-hi,
+> i need to port a web browser into AU1200.can anyone suggest me any browsers ?
 
-i need to port a web browser into AU1200.can anyone suggest me any browsers ?
+you can start with w3m or lynx and if you have X running, "dillo" works really well.
 
-also if anyone has any docs regarding this can you send me  ?
+> also if anyone has any docs regarding this can you send me  ?
 
-thanks in advance,
+simply compile the apps/libs of your choice for mips32r1 arch.
+At least that's what I do and it has never failed me so far...
 
-saravanan.
-
-       
----------------------------------
- Did you know? You can CHAT without downloading messenger.  Know how!
---0-168749831-1181280025=:91989
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-hi,<br><br>i need to port a web browser into AU1200.can anyone suggest me any browsers ?<br><br>also if anyone has any docs regarding this can you send me&nbsp; ?<br><br>thanks in advance,<br><br>saravanan.<br><p>&#32;
-
-
-      <hr size=1></hr> Did you know? You can CHAT without downloading messenger. <a href="http://us.rd.yahoo.com/mail/in/ywebmessenger1/*http://in.messenger.yahoo.com/webmessengerpromo.php"> Know how!</a>
---0-168749831-1181280025=:91989--
+Greetings,
+	Manuel Lauss

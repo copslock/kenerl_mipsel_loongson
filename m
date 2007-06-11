@@ -1,122 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2007 14:10:20 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.168]:16292 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024015AbXFKNKB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Jun 2007 14:10:01 +0100
-Received: by ug-out-1314.google.com with SMTP id m3so1568807ugc
-        for <linux-mips@linux-mips.org>; Mon, 11 Jun 2007 06:08:58 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:received:to:cc:subject:date:message-id:x-mailer:from;
-        b=i226MN5HjnxBWY7RMvf++jbc94XzR+2LPNC5uMjpotbNu+ebWJFZC9nTHjjnO/iaN5fHa2xIvwSoj8F1SPa68DseImsGcCksv1xnx5GHwvTwS40yS13yjTJVEELoi4wGUlhjSs/tDD21IQihveqgP5UdzA20atBZbPABstUQ1j4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:to:cc:subject:date:message-id:x-mailer:from;
-        b=Leu79fyTFfaUGSbh7um9aWHHgJcu9GBg/MJbUPqfiRwn/T2kNsXKPGrO5ZTncQQGkbXr+A3xmaFu+AE4CaDFjUl8eD3t8No+HlLMhAHBOJH8/WPR8EjEhCkrBYRCpzef4kj/1uTFr4CCnJhhqzPKWnIyX/9ept9acY0s8l7vBwo=
-Received: by 10.82.112.3 with SMTP id k3mr10874534buc.1181567338466;
-        Mon, 11 Jun 2007 06:08:58 -0700 (PDT)
-Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id c25sm13861088ika.2007.06.11.06.08.53
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 11 Jun 2007 06:08:54 -0700 (PDT)
-Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 0623923F76F; Mon, 11 Jun 2007 15:08:55 +0200 (CEST)
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Remove obsolete board support
-Date:	Mon, 11 Jun 2007 15:08:52 +0200
-Message-Id: <11815673353523-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.5.2.1
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Return-Path: <vagabon.xyz@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2007 14:27:39 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:35087 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20024007AbXFKN1h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 11 Jun 2007 14:27:37 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3355CE1CA8;
+	Mon, 11 Jun 2007 15:26:56 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id q8WZRmXjJNBa; Mon, 11 Jun 2007 15:26:56 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id CC6B9E1C97;
+	Mon, 11 Jun 2007 15:26:55 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l5BDR6FT010591;
+	Mon, 11 Jun 2007 15:27:06 +0200
+Date:	Mon, 11 Jun 2007 14:27:02 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/3] Remove MIPS SEAD support
+In-Reply-To: <11815673362011-git-send-email-fbuihuu@gmail.com>
+Message-ID: <Pine.LNX.4.64N.0706111425110.6714@blysk.ds.pg.gda.pl>
+References: <11815673353523-git-send-email-fbuihuu@gmail.com>
+ <11815673362011-git-send-email-fbuihuu@gmail.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3399/Mon Jun 11 09:27:52 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15365
+X-archive-position: 15366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Mon, 11 Jun 2007, Franck Bui-Huu wrote:
 
-This patchset finishes to remove deprecated board support.
+> Mips Sead support is deprecated and scheduled for removal
+> since September 2006.
 
-It should simplify a bit the hrtimer migration work.
+ Oh, is it?  The last time I tried it worked.  Have you tried it and 
+failed to build?  That should be easy to fix.
 
-Please consider,
-
-		Franck
-
----
-
- arch/mips/Kconfig                           |   66 --
- arch/mips/Makefile                          |   31 -
- arch/mips/configs/atlas_defconfig           | 1481 ---------------------------
- arch/mips/configs/ocelot_c_defconfig        |  982 ------------------
- arch/mips/configs/sead_defconfig            |  651 ------------
- arch/mips/mips-boards/atlas/Makefile        |   20 -
- arch/mips/mips-boards/atlas/atlas_gdb.c     |   97 --
- arch/mips/mips-boards/atlas/atlas_int.c     |  271 -----
- arch/mips/mips-boards/atlas/atlas_setup.c   |   92 --
- arch/mips/mips-boards/generic/console.c     |   22 -
- arch/mips/mips-boards/generic/init.c        |   22 +-
- arch/mips/mips-boards/generic/reset.c       |   20 -
- arch/mips/mips-boards/generic/time.c        |   16 +-
- arch/mips/mips-boards/sead/Makefile         |   26 -
- arch/mips/mips-boards/sead/sead_int.c       |  117 ---
- arch/mips/mips-boards/sead/sead_setup.c     |   81 --
- arch/mips/momentum/ocelot_c/Makefile        |    8 -
- arch/mips/momentum/ocelot_c/cpci-irq.c      |  100 --
- arch/mips/momentum/ocelot_c/dbg_io.c        |  121 ---
- arch/mips/momentum/ocelot_c/irq.c           |  107 --
- arch/mips/momentum/ocelot_c/ocelot_c_fpga.h |   61 --
- arch/mips/momentum/ocelot_c/platform.c      |  183 ----
- arch/mips/momentum/ocelot_c/prom.c          |  183 ----
- arch/mips/momentum/ocelot_c/reset.c         |   58 --
- arch/mips/momentum/ocelot_c/setup.c         |  362 -------
- arch/mips/momentum/ocelot_c/uart-irq.c      |   91 --
- arch/mips/pci/Makefile                      |    2 -
- arch/mips/pci/fixup-atlas.c                 |   91 --
- arch/mips/pci/fixup-ocelot-c.c              |   41 -
- arch/mips/pci/pci-ocelot-c.c                |  145 ---
- include/asm-mips/bootinfo.h                 |    2 +-
- include/asm-mips/mach-atlas/mc146818rtc.h   |   60 --
- include/asm-mips/mips-boards/atlas.h        |   80 --
- include/asm-mips/mips-boards/atlasint.h     |  115 ---
- include/asm-mips/mips-boards/generic.h      |   10 +-
- include/asm-mips/mips-boards/sead.h         |   36 -
- include/asm-mips/mips-boards/seadint.h      |   35 -
- include/asm-mips/serial.h                   |   26 -
- include/asm-mips/war.h                      |    6 +-
- 39 files changed, 11 insertions(+), 5907 deletions(-)
- delete mode 100644 arch/mips/configs/atlas_defconfig
- delete mode 100644 arch/mips/configs/ocelot_c_defconfig
- delete mode 100644 arch/mips/configs/sead_defconfig
- delete mode 100644 arch/mips/mips-boards/atlas/Makefile
- delete mode 100644 arch/mips/mips-boards/atlas/atlas_gdb.c
- delete mode 100644 arch/mips/mips-boards/atlas/atlas_int.c
- delete mode 100644 arch/mips/mips-boards/atlas/atlas_setup.c
- delete mode 100644 arch/mips/mips-boards/sead/Makefile
- delete mode 100644 arch/mips/mips-boards/sead/sead_int.c
- delete mode 100644 arch/mips/mips-boards/sead/sead_setup.c
- delete mode 100644 arch/mips/momentum/ocelot_c/Makefile
- delete mode 100644 arch/mips/momentum/ocelot_c/cpci-irq.c
- delete mode 100644 arch/mips/momentum/ocelot_c/dbg_io.c
- delete mode 100644 arch/mips/momentum/ocelot_c/irq.c
- delete mode 100644 arch/mips/momentum/ocelot_c/ocelot_c_fpga.h
- delete mode 100644 arch/mips/momentum/ocelot_c/platform.c
- delete mode 100644 arch/mips/momentum/ocelot_c/prom.c
- delete mode 100644 arch/mips/momentum/ocelot_c/reset.c
- delete mode 100644 arch/mips/momentum/ocelot_c/setup.c
- delete mode 100644 arch/mips/momentum/ocelot_c/uart-irq.c
- delete mode 100644 arch/mips/pci/fixup-atlas.c
- delete mode 100644 arch/mips/pci/fixup-ocelot-c.c
- delete mode 100644 arch/mips/pci/pci-ocelot-c.c
- delete mode 100644 include/asm-mips/mach-atlas/mc146818rtc.h
- delete mode 100644 include/asm-mips/mips-boards/atlas.h
- delete mode 100644 include/asm-mips/mips-boards/atlasint.h
- delete mode 100644 include/asm-mips/mips-boards/sead.h
- delete mode 100644 include/asm-mips/mips-boards/seadint.h
+  Maciej

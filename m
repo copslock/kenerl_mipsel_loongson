@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2007 14:09:04 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.170]:44704 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024012AbXFKNJA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Jun 2007 14:09:00 +0100
-Received: by ug-out-1314.google.com with SMTP id m3so1568811ugc
-        for <linux-mips@linux-mips.org>; Mon, 11 Jun 2007 06:08:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jun 2007 14:09:29 +0100 (BST)
+Received: from mu-out-0910.google.com ([209.85.134.185]:33687 "EHLO
+	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024015AbXFKNJB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 11 Jun 2007 14:09:01 +0100
+Received: by mu-out-0910.google.com with SMTP id w1so828502mue
+        for <linux-mips@linux-mips.org>; Mon, 11 Jun 2007 06:09:00 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=W4+nFUhmEMuJbcQEZgbIPq1iH1+uUaDdBqDGWsY6h/TtYKS/j52wzAvkwnGedp4bNJT1pkukSO3JEYfK7WIy4Fcrj/W2ujSWHAqVr8JIq7dZUF/aQanvE361fym5EJ9vzTByX/Di5YgYSTVXecUyoANfRk8JacZwYMzAj3DHuic=
+        b=FPhfWkyViW1nRvFnFyTcPb6Ao9jSZcuZTIxMN2tETDm9agi+k3aTtquB6g5H5llXjultCftl/PaEuXYwWov+nGp+Cuz460UxaiLG+AJp8IyflEdE0/03w7d3Qj1bWuL8HZ1P7OYSGxstKKKTSHA7TzE5DhB0cqQQNeGV+JVn1JQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=SsZakm/z6DJwgOZbYOhtvrU7unVz/w2vxIqLxzu9kcz8hrRqhnyhZm1E+Qyg75EDuVNa4HU5t9Y+kW3W9Hb78JyvuNYGGglqeLNEqxrb/LeUOmcmGjMtZzMH4ZQr3j2jbcv6wGHaPuwEEH/ssxY7wcLnQMD0KiB4li8fqn4zn74=
-Received: by 10.82.126.5 with SMTP id y5mr10840158buc.1181567339164;
+        b=Zlt9Qix1fr3ya23AUIWwXKkXy4cLToIjbc5yWYmAhT16+sVijrzghQMMI1xQelcMEv6bd84dkzRsr86UOZzhYPmN+UPsJgIbmwwictwbD97mMvxL6iOMC6gcy3p0gMUFpXeR5gYpqyv0dt3/RdN/2BlNFF5iRB9CxVTlzyDuU08=
+Received: by 10.82.156.12 with SMTP id d12mr10855356bue.1181567339670;
         Mon, 11 Jun 2007 06:08:59 -0700 (PDT)
 Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id z34sm13865042ikz.2007.06.11.06.08.54
+        by mx.google.com with ESMTP id c22sm13877344ika.2007.06.11.06.08.54
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 11 Jun 2007 06:08:54 -0700 (PDT)
+        Mon, 11 Jun 2007 06:08:55 -0700 (PDT)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 4F77323F770; Mon, 11 Jun 2007 15:08:56 +0200 (CEST)
+	id 1D27123F76A; Mon, 11 Jun 2007 15:08:56 +0200 (CEST)
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org
-Subject: [PATCH 2/3] Remove MIPS SEAD support
-Date:	Mon, 11 Jun 2007 15:08:54 +0200
-Message-Id: <11815673362011-git-send-email-fbuihuu@gmail.com>
+Subject: [PATCH 1/3] Remove MIPS ATLAS support
+Date:	Mon, 11 Jun 2007 15:08:53 +0200
+Message-Id: <11815673352362-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.5.2.1
 In-Reply-To: <11815673353523-git-send-email-fbuihuu@gmail.com>
 References: <11815673353523-git-send-email-fbuihuu@gmail.com>
@@ -34,7 +34,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15362
+X-archive-position: 15363
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,102 +44,119 @@ X-list: linux-mips
 
 From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-Mips Sead support is deprecated and scheduled for removal
+Mips Atlas support is deprecated and scheduled for removal
 since September 2006.
 
 Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
 ---
- arch/mips/Kconfig                       |   19 -
- arch/mips/Makefile                      |   11 -
- arch/mips/configs/sead_defconfig        |  651 -------------------------------
- arch/mips/mips-boards/generic/console.c |   13 -
- arch/mips/mips-boards/generic/init.c    |    5 +-
- arch/mips/mips-boards/generic/reset.c   |    2 -
- arch/mips/mips-boards/generic/time.c    |   11 +-
- arch/mips/mips-boards/sead/Makefile     |   26 --
- arch/mips/mips-boards/sead/sead_int.c   |  117 ------
- arch/mips/mips-boards/sead/sead_setup.c |   81 ----
- include/asm-mips/mips-boards/generic.h  |   10 +-
- include/asm-mips/mips-boards/sead.h     |   36 --
- include/asm-mips/mips-boards/seadint.h  |   35 --
- include/asm-mips/war.h                  |    4 +-
- 14 files changed, 5 insertions(+), 1016 deletions(-)
- delete mode 100644 arch/mips/configs/sead_defconfig
- delete mode 100644 arch/mips/mips-boards/sead/Makefile
- delete mode 100644 arch/mips/mips-boards/sead/sead_int.c
- delete mode 100644 arch/mips/mips-boards/sead/sead_setup.c
- delete mode 100644 include/asm-mips/mips-boards/sead.h
- delete mode 100644 include/asm-mips/mips-boards/seadint.h
+ arch/mips/Kconfig                         |   29 -
+ arch/mips/Makefile                        |   12 -
+ arch/mips/configs/atlas_defconfig         | 1481 -----------------------------
+ arch/mips/mips-boards/atlas/Makefile      |   20 -
+ arch/mips/mips-boards/atlas/atlas_gdb.c   |   97 --
+ arch/mips/mips-boards/atlas/atlas_int.c   |  271 ------
+ arch/mips/mips-boards/atlas/atlas_setup.c |   92 --
+ arch/mips/mips-boards/generic/console.c   |   11 +-
+ arch/mips/mips-boards/generic/init.c      |   17 +-
+ arch/mips/mips-boards/generic/reset.c     |   18 -
+ arch/mips/mips-boards/generic/time.c      |    5 +-
+ arch/mips/pci/Makefile                    |    1 -
+ arch/mips/pci/fixup-atlas.c               |   91 --
+ include/asm-mips/mach-atlas/mc146818rtc.h |   60 --
+ include/asm-mips/mips-boards/atlas.h      |   80 --
+ include/asm-mips/mips-boards/atlasint.h   |  115 ---
+ include/asm-mips/war.h                    |    6 +-
+ 17 files changed, 8 insertions(+), 2398 deletions(-)
+ delete mode 100644 arch/mips/configs/atlas_defconfig
+ delete mode 100644 arch/mips/mips-boards/atlas/Makefile
+ delete mode 100644 arch/mips/mips-boards/atlas/atlas_gdb.c
+ delete mode 100644 arch/mips/mips-boards/atlas/atlas_int.c
+ delete mode 100644 arch/mips/mips-boards/atlas/atlas_setup.c
+ delete mode 100644 arch/mips/pci/fixup-atlas.c
+ delete mode 100644 include/asm-mips/mach-atlas/mc146818rtc.h
+ delete mode 100644 include/asm-mips/mips-boards/atlas.h
+ delete mode 100644 include/asm-mips/mips-boards/atlasint.h
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3e1de55..731b438 100644
+index c20cd90..3e1de55 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -172,25 +172,6 @@ config MIPS_MALTA
- 	  This enables support for the MIPS Technologies Malta evaluation
- 	  board.
+@@ -140,35 +140,6 @@ config LASAT
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select GENERIC_HARDIRQS_NO__DO_IRQ
  
--config MIPS_SEAD
--	bool "MIPS SEAD board (EXPERIMENTAL)"
--	depends on EXPERIMENTAL
--	select IRQ_CPU
+-config MIPS_ATLAS
+-	bool "MIPS Atlas board"
+-	select BOOT_ELF32
 -	select DMA_NONCOHERENT
 -	select SYS_HAS_EARLY_PRINTK
+-	select IRQ_CPU
+-	select HW_HAS_PCI
 -	select MIPS_BOARDS_GEN
+-	select MIPS_BONITO64
+-	select PCI_GT64XXX_PCI0
+-	select MIPS_MSC
+-	select RM7000_CPU_SCACHE
+-	select SWAP_IO_SPACE
 -	select SYS_HAS_CPU_MIPS32_R1
 -	select SYS_HAS_CPU_MIPS32_R2
 -	select SYS_HAS_CPU_MIPS64_R1
+-	select SYS_HAS_CPU_NEVADA
+-	select SYS_HAS_CPU_RM7000
 -	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	select SYS_SUPPORTS_64BIT_KERNEL
 -	select SYS_SUPPORTS_BIG_ENDIAN
 -	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select SYS_SUPPORTS_MULTITHREADING if EXPERIMENTAL
 -	select SYS_SUPPORTS_SMARTMIPS
+-	select GENERIC_HARDIRQS_NO__DO_IRQ
 -	help
--	  This enables support for the MIPS Technologies SEAD evaluation
+-	  This enables support for the MIPS Technologies Atlas evaluation
 -	  board.
 -
- config WR_PPMC
- 	bool "Wind River PPMC board"
- 	select IRQ_CPU
+ config MIPS_MALTA
+ 	bool "MIPS Malta board"
+ 	select ARCH_MAY_HAVE_PC_FDC
 diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 8ce1075..1f0fb74 100644
+index 2b19605..8ce1075 100644
 --- a/arch/mips/Makefile
 +++ b/arch/mips/Makefile
-@@ -310,13 +310,6 @@ cflags-$(CONFIG_MIPS_MALTA)	+= -Iinclude/asm-mips/mach-mips
- load-$(CONFIG_MIPS_MALTA)	+= 0xffffffff80100000
+@@ -303,14 +303,6 @@ load-$(CONFIG_WR_PPMC)		+= 0xffffffff80100000
+ core-$(CONFIG_MIPS_BOARDS_GEN)	+= arch/mips/mips-boards/generic/
  
  #
--# MIPS SEAD board
+-# MIPS Atlas board
 -#
--core-$(CONFIG_MIPS_SEAD)	+= arch/mips/mips-boards/sead/
--cflags-$(CONFIG_MIPS_SEAD)	+= -Iinclude/asm-mips/mach-mips
--load-$(CONFIG_MIPS_SEAD)	+= 0xffffffff80100000
+-core-$(CONFIG_MIPS_ATLAS)	+= arch/mips/mips-boards/atlas/
+-cflags-$(CONFIG_MIPS_ATLAS)	+= -Iinclude/asm-mips/mach-atlas
+-cflags-$(CONFIG_MIPS_ATLAS)	+= -Iinclude/asm-mips/mach-mips
+-load-$(CONFIG_MIPS_ATLAS)	+= 0xffffffff80100000
 -
 -#
- # MIPS SIM
+ # MIPS Malta board
  #
- core-$(CONFIG_MIPS_SIM)		+= arch/mips/mips-boards/sim/
-@@ -666,10 +659,6 @@ ifdef CONFIG_MIPS_MALTA
- all:	vmlinux.srec
+ core-$(CONFIG_MIPS_MALTA)	+= arch/mips/mips-boards/malta/
+@@ -670,10 +662,6 @@ ifdef CONFIG_BOOT_ELF64
+ all:	$(vmlinux-64)
  endif
  
--ifdef CONFIG_MIPS_SEAD
+-ifdef CONFIG_MIPS_ATLAS
 -all:	vmlinux.srec
 -endif
 -
- ifdef CONFIG_QEMU
- all:	vmlinux.bin
+ ifdef CONFIG_MIPS_MALTA
+ all:	vmlinux.srec
  endif
-diff --git a/arch/mips/configs/sead_defconfig b/arch/mips/configs/sead_defconfig
+diff --git a/arch/mips/configs/atlas_defconfig b/arch/mips/configs/atlas_defconfig
 deleted file mode 100644
-index 988b9cd..0000000
---- a/arch/mips/configs/sead_defconfig
+index 39e2513..0000000
+--- a/arch/mips/configs/atlas_defconfig
 +++ /dev/null
-@@ -1,651 +0,0 @@
+@@ -1,1481 +0,0 @@
 -#
 -# Automatically generated make config: don't edit
 -# Linux kernel version: 2.6.20
--# Sun Feb 18 21:28:10 2007
+-# Sun Feb 18 21:27:35 2007
 -#
 -CONFIG_MIPS=y
 -
@@ -166,9 +183,9 @@ index 988b9cd..0000000
 -# CONFIG_MIPS_EV64120 is not set
 -# CONFIG_MACH_JAZZ is not set
 -# CONFIG_LASAT is not set
--# CONFIG_MIPS_ATLAS is not set
+-CONFIG_MIPS_ATLAS=y
 -# CONFIG_MIPS_MALTA is not set
--CONFIG_MIPS_SEAD=y
+-# CONFIG_MIPS_SEAD is not set
 -# CONFIG_WR_PPMC is not set
 -# CONFIG_MIPS_SIM is not set
 -# CONFIG_MOMENCO_JAGUAR_ATX is not set
@@ -208,15 +225,20 @@ index 988b9cd..0000000
 -CONFIG_GENERIC_CALIBRATE_DELAY=y
 -CONFIG_GENERIC_TIME=y
 -CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
--# CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ is not set
+-CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
 -CONFIG_DMA_NONCOHERENT=y
 -CONFIG_DMA_NEED_PCI_MAP_STATE=y
+-CONFIG_MIPS_BONITO64=y
+-CONFIG_MIPS_MSC=y
 -# CONFIG_CPU_BIG_ENDIAN is not set
 -CONFIG_CPU_LITTLE_ENDIAN=y
 -CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
 -CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
 -CONFIG_IRQ_CPU=y
 -CONFIG_MIPS_BOARDS_GEN=y
+-CONFIG_MIPS_GT64120=y
+-CONFIG_SWAP_IO_SPACE=y
+-CONFIG_BOOT_ELF32=y
 -CONFIG_MIPS_L1_CACHE_SHIFT=5
 -
 -#
@@ -244,6 +266,8 @@ index 988b9cd..0000000
 -CONFIG_SYS_HAS_CPU_MIPS32_R1=y
 -CONFIG_SYS_HAS_CPU_MIPS32_R2=y
 -CONFIG_SYS_HAS_CPU_MIPS64_R1=y
+-CONFIG_SYS_HAS_CPU_NEVADA=y
+-CONFIG_SYS_HAS_CPU_RM7000=y
 -CONFIG_CPU_MIPS32=y
 -CONFIG_CPU_MIPSR1=y
 -CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
@@ -259,11 +283,14 @@ index 988b9cd..0000000
 -# CONFIG_PAGE_SIZE_8KB is not set
 -# CONFIG_PAGE_SIZE_16KB is not set
 -# CONFIG_PAGE_SIZE_64KB is not set
+-CONFIG_BOARD_SCACHE=y
+-CONFIG_RM7000_CPU_SCACHE=y
 -CONFIG_CPU_HAS_PREFETCH=y
 -CONFIG_MIPS_MT_DISABLED=y
 -# CONFIG_MIPS_MT_SMP is not set
 -# CONFIG_MIPS_MT_SMTC is not set
 -# CONFIG_MIPS_VPE_LOADER is not set
+-CONFIG_SYS_SUPPORTS_MULTITHREADING=y
 -# CONFIG_64BIT_PHYS_ADDR is not set
 -CONFIG_CPU_HAS_LLSC=y
 -# CONFIG_CPU_HAS_SMARTMIPS is not set
@@ -284,14 +311,14 @@ index 988b9cd..0000000
 -# CONFIG_RESOURCES_64BIT is not set
 -CONFIG_ZONE_DMA_FLAG=1
 -# CONFIG_HZ_48 is not set
--# CONFIG_HZ_100 is not set
+-CONFIG_HZ_100=y
 -# CONFIG_HZ_128 is not set
 -# CONFIG_HZ_250 is not set
 -# CONFIG_HZ_256 is not set
--CONFIG_HZ_1000=y
+-# CONFIG_HZ_1000 is not set
 -# CONFIG_HZ_1024 is not set
 -CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
--CONFIG_HZ=1000
+-CONFIG_HZ=100
 -CONFIG_PREEMPT_NONE=y
 -# CONFIG_PREEMPT_VOLUNTARY is not set
 -# CONFIG_PREEMPT is not set
@@ -312,23 +339,25 @@ index 988b9cd..0000000
 -#
 -CONFIG_LOCALVERSION=""
 -CONFIG_LOCALVERSION_AUTO=y
--# CONFIG_SWAP is not set
+-CONFIG_SWAP=y
 -CONFIG_SYSVIPC=y
 -# CONFIG_IPC_NS is not set
 -CONFIG_SYSVIPC_SYSCTL=y
+-# CONFIG_POSIX_MQUEUE is not set
 -# CONFIG_BSD_PROCESS_ACCT is not set
+-# CONFIG_TASKSTATS is not set
 -# CONFIG_UTS_NS is not set
+-# CONFIG_AUDIT is not set
 -# CONFIG_IKCONFIG is not set
 -CONFIG_SYSFS_DEPRECATED=y
 -CONFIG_RELAY=y
--CONFIG_INITRAMFS_SOURCE=""
 -# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
 -CONFIG_SYSCTL=y
 -CONFIG_EMBEDDED=y
 -CONFIG_SYSCTL_SYSCALL=y
 -CONFIG_KALLSYMS=y
 -# CONFIG_KALLSYMS_EXTRA_PASS is not set
--# CONFIG_HOTPLUG is not set
+-CONFIG_HOTPLUG=y
 -CONFIG_PRINTK=y
 -CONFIG_BUG=y
 -CONFIG_ELF_CORE=y
@@ -346,7 +375,12 @@ index 988b9cd..0000000
 -#
 -# Loadable module support
 -#
--# CONFIG_MODULES is not set
+-CONFIG_MODULES=y
+-CONFIG_MODULE_UNLOAD=y
+-# CONFIG_MODULE_FORCE_UNLOAD is not set
+-CONFIG_MODVERSIONS=y
+-CONFIG_MODULE_SRCVERSION_ALL=y
+-CONFIG_KMOD=y
 -
 -#
 -# Block layer
@@ -372,15 +406,19 @@ index 988b9cd..0000000
 -#
 -# Bus options (PCI, PCMCIA, EISA, ISA, TC)
 -#
+-CONFIG_HW_HAS_PCI=y
+-CONFIG_PCI=y
 -CONFIG_MMU=y
 -
 -#
 -# PCCARD (PCMCIA/CardBus) support
 -#
+-# CONFIG_PCCARD is not set
 -
 -#
 -# PCI Hotplug Support
 -#
+-# CONFIG_HOTPLUG_PCI is not set
 -
 -#
 -# Executable file formats
@@ -400,7 +438,362 @@ index 988b9cd..0000000
 -#
 -# Networking
 -#
--# CONFIG_NET is not set
+-CONFIG_NET=y
+-
+-#
+-# Networking options
+-#
+-# CONFIG_NETDEBUG is not set
+-CONFIG_PACKET=y
+-CONFIG_PACKET_MMAP=y
+-CONFIG_UNIX=y
+-CONFIG_XFRM=y
+-CONFIG_XFRM_USER=m
+-# CONFIG_XFRM_SUB_POLICY is not set
+-CONFIG_XFRM_MIGRATE=y
+-CONFIG_NET_KEY=y
+-CONFIG_NET_KEY_MIGRATE=y
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-CONFIG_IP_ADVANCED_ROUTER=y
+-CONFIG_ASK_IP_FIB_HASH=y
+-# CONFIG_IP_FIB_TRIE is not set
+-CONFIG_IP_FIB_HASH=y
+-CONFIG_IP_MULTIPLE_TABLES=y
+-CONFIG_IP_ROUTE_MULTIPATH=y
+-# CONFIG_IP_ROUTE_MULTIPATH_CACHED is not set
+-CONFIG_IP_ROUTE_VERBOSE=y
+-CONFIG_IP_PNP=y
+-CONFIG_IP_PNP_DHCP=y
+-CONFIG_IP_PNP_BOOTP=y
+-# CONFIG_IP_PNP_RARP is not set
+-CONFIG_NET_IPIP=m
+-CONFIG_NET_IPGRE=m
+-CONFIG_NET_IPGRE_BROADCAST=y
+-CONFIG_IP_MROUTE=y
+-CONFIG_IP_PIMSM_V1=y
+-CONFIG_IP_PIMSM_V2=y
+-# CONFIG_ARPD is not set
+-CONFIG_SYN_COOKIES=y
+-CONFIG_INET_AH=m
+-CONFIG_INET_ESP=m
+-CONFIG_INET_IPCOMP=m
+-CONFIG_INET_XFRM_TUNNEL=m
+-CONFIG_INET_TUNNEL=m
+-CONFIG_INET_XFRM_MODE_TRANSPORT=m
+-CONFIG_INET_XFRM_MODE_TUNNEL=m
+-CONFIG_INET_XFRM_MODE_BEET=m
+-CONFIG_INET_DIAG=y
+-CONFIG_INET_TCP_DIAG=y
+-# CONFIG_TCP_CONG_ADVANCED is not set
+-CONFIG_TCP_CONG_CUBIC=y
+-CONFIG_DEFAULT_TCP_CONG="cubic"
+-CONFIG_TCP_MD5SIG=y
+-
+-#
+-# IP: Virtual Server Configuration
+-#
+-CONFIG_IP_VS=m
+-# CONFIG_IP_VS_DEBUG is not set
+-CONFIG_IP_VS_TAB_BITS=12
+-
+-#
+-# IPVS transport protocol load balancing support
+-#
+-CONFIG_IP_VS_PROTO_TCP=y
+-CONFIG_IP_VS_PROTO_UDP=y
+-CONFIG_IP_VS_PROTO_ESP=y
+-CONFIG_IP_VS_PROTO_AH=y
+-
+-#
+-# IPVS scheduler
+-#
+-CONFIG_IP_VS_RR=m
+-CONFIG_IP_VS_WRR=m
+-CONFIG_IP_VS_LC=m
+-CONFIG_IP_VS_WLC=m
+-CONFIG_IP_VS_LBLC=m
+-CONFIG_IP_VS_LBLCR=m
+-CONFIG_IP_VS_DH=m
+-CONFIG_IP_VS_SH=m
+-CONFIG_IP_VS_SED=m
+-CONFIG_IP_VS_NQ=m
+-
+-#
+-# IPVS application helper
+-#
+-CONFIG_IP_VS_FTP=m
+-CONFIG_IPV6=m
+-CONFIG_IPV6_PRIVACY=y
+-CONFIG_IPV6_ROUTER_PREF=y
+-CONFIG_IPV6_ROUTE_INFO=y
+-CONFIG_INET6_AH=m
+-CONFIG_INET6_ESP=m
+-CONFIG_INET6_IPCOMP=m
+-CONFIG_IPV6_MIP6=y
+-CONFIG_INET6_XFRM_TUNNEL=m
+-CONFIG_INET6_TUNNEL=m
+-CONFIG_INET6_XFRM_MODE_TRANSPORT=m
+-CONFIG_INET6_XFRM_MODE_TUNNEL=m
+-CONFIG_INET6_XFRM_MODE_BEET=m
+-CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
+-CONFIG_IPV6_SIT=m
+-CONFIG_IPV6_TUNNEL=m
+-CONFIG_IPV6_MULTIPLE_TABLES=y
+-CONFIG_IPV6_SUBTREES=y
+-CONFIG_NETWORK_SECMARK=y
+-CONFIG_NETFILTER=y
+-# CONFIG_NETFILTER_DEBUG is not set
+-CONFIG_BRIDGE_NETFILTER=y
+-
+-#
+-# Core Netfilter Configuration
+-#
+-CONFIG_NETFILTER_NETLINK=m
+-CONFIG_NETFILTER_NETLINK_QUEUE=m
+-CONFIG_NETFILTER_NETLINK_LOG=m
+-CONFIG_NF_CONNTRACK_ENABLED=m
+-CONFIG_NF_CONNTRACK_SUPPORT=y
+-# CONFIG_IP_NF_CONNTRACK_SUPPORT is not set
+-CONFIG_NF_CONNTRACK=m
+-CONFIG_NF_CT_ACCT=y
+-CONFIG_NF_CONNTRACK_MARK=y
+-CONFIG_NF_CONNTRACK_SECMARK=y
+-CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_GRE=m
+-CONFIG_NF_CT_PROTO_SCTP=m
+-CONFIG_NF_CONNTRACK_AMANDA=m
+-CONFIG_NF_CONNTRACK_FTP=m
+-CONFIG_NF_CONNTRACK_H323=m
+-CONFIG_NF_CONNTRACK_IRC=m
+-# CONFIG_NF_CONNTRACK_NETBIOS_NS is not set
+-CONFIG_NF_CONNTRACK_PPTP=m
+-CONFIG_NF_CONNTRACK_SANE=m
+-CONFIG_NF_CONNTRACK_SIP=m
+-CONFIG_NF_CONNTRACK_TFTP=m
+-CONFIG_NF_CT_NETLINK=m
+-CONFIG_NETFILTER_XTABLES=m
+-CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
+-CONFIG_NETFILTER_XT_TARGET_CONNMARK=m
+-CONFIG_NETFILTER_XT_TARGET_DSCP=m
+-CONFIG_NETFILTER_XT_TARGET_MARK=m
+-CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
+-CONFIG_NETFILTER_XT_TARGET_NFLOG=m
+-CONFIG_NETFILTER_XT_TARGET_NOTRACK=m
+-CONFIG_NETFILTER_XT_TARGET_SECMARK=m
+-CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=m
+-CONFIG_NETFILTER_XT_TARGET_TCPMSS=m
+-CONFIG_NETFILTER_XT_MATCH_COMMENT=m
+-CONFIG_NETFILTER_XT_MATCH_CONNBYTES=m
+-CONFIG_NETFILTER_XT_MATCH_CONNMARK=m
+-CONFIG_NETFILTER_XT_MATCH_CONNTRACK=m
+-CONFIG_NETFILTER_XT_MATCH_DCCP=m
+-CONFIG_NETFILTER_XT_MATCH_DSCP=m
+-CONFIG_NETFILTER_XT_MATCH_ESP=m
+-CONFIG_NETFILTER_XT_MATCH_HELPER=m
+-CONFIG_NETFILTER_XT_MATCH_LENGTH=m
+-CONFIG_NETFILTER_XT_MATCH_LIMIT=m
+-CONFIG_NETFILTER_XT_MATCH_MAC=m
+-CONFIG_NETFILTER_XT_MATCH_MARK=m
+-CONFIG_NETFILTER_XT_MATCH_POLICY=m
+-CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
+-CONFIG_NETFILTER_XT_MATCH_PHYSDEV=m
+-CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
+-CONFIG_NETFILTER_XT_MATCH_QUOTA=m
+-CONFIG_NETFILTER_XT_MATCH_REALM=m
+-CONFIG_NETFILTER_XT_MATCH_SCTP=m
+-CONFIG_NETFILTER_XT_MATCH_STATE=m
+-CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
+-CONFIG_NETFILTER_XT_MATCH_STRING=m
+-CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
+-CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=m
+-
+-#
+-# IP: Netfilter Configuration
+-#
+-CONFIG_NF_CONNTRACK_IPV4=m
+-CONFIG_NF_CONNTRACK_PROC_COMPAT=y
+-CONFIG_IP_NF_QUEUE=m
+-CONFIG_IP_NF_IPTABLES=m
+-CONFIG_IP_NF_MATCH_IPRANGE=m
+-CONFIG_IP_NF_MATCH_TOS=m
+-CONFIG_IP_NF_MATCH_RECENT=m
+-CONFIG_IP_NF_MATCH_ECN=m
+-CONFIG_IP_NF_MATCH_AH=m
+-CONFIG_IP_NF_MATCH_TTL=m
+-CONFIG_IP_NF_MATCH_OWNER=m
+-CONFIG_IP_NF_MATCH_ADDRTYPE=m
+-CONFIG_IP_NF_FILTER=m
+-CONFIG_IP_NF_TARGET_REJECT=m
+-CONFIG_IP_NF_TARGET_LOG=m
+-CONFIG_IP_NF_TARGET_ULOG=m
+-CONFIG_NF_NAT=m
+-CONFIG_NF_NAT_NEEDED=y
+-CONFIG_IP_NF_TARGET_MASQUERADE=m
+-CONFIG_IP_NF_TARGET_REDIRECT=m
+-CONFIG_IP_NF_TARGET_NETMAP=m
+-CONFIG_IP_NF_TARGET_SAME=m
+-CONFIG_NF_NAT_SNMP_BASIC=m
+-CONFIG_NF_NAT_PROTO_GRE=m
+-CONFIG_NF_NAT_FTP=m
+-CONFIG_NF_NAT_IRC=m
+-CONFIG_NF_NAT_TFTP=m
+-CONFIG_NF_NAT_AMANDA=m
+-CONFIG_NF_NAT_PPTP=m
+-CONFIG_NF_NAT_H323=m
+-CONFIG_NF_NAT_SIP=m
+-CONFIG_IP_NF_MANGLE=m
+-CONFIG_IP_NF_TARGET_TOS=m
+-CONFIG_IP_NF_TARGET_ECN=m
+-CONFIG_IP_NF_TARGET_TTL=m
+-# CONFIG_IP_NF_TARGET_CLUSTERIP is not set
+-CONFIG_IP_NF_RAW=m
+-CONFIG_IP_NF_ARPTABLES=m
+-CONFIG_IP_NF_ARPFILTER=m
+-CONFIG_IP_NF_ARP_MANGLE=m
+-
+-#
+-# IPv6: Netfilter Configuration (EXPERIMENTAL)
+-#
+-CONFIG_NF_CONNTRACK_IPV6=m
+-CONFIG_IP6_NF_QUEUE=m
+-CONFIG_IP6_NF_IPTABLES=m
+-CONFIG_IP6_NF_MATCH_RT=m
+-CONFIG_IP6_NF_MATCH_OPTS=m
+-CONFIG_IP6_NF_MATCH_FRAG=m
+-CONFIG_IP6_NF_MATCH_HL=m
+-CONFIG_IP6_NF_MATCH_OWNER=m
+-CONFIG_IP6_NF_MATCH_IPV6HEADER=m
+-CONFIG_IP6_NF_MATCH_AH=m
+-CONFIG_IP6_NF_MATCH_MH=m
+-CONFIG_IP6_NF_MATCH_EUI64=m
+-CONFIG_IP6_NF_FILTER=m
+-CONFIG_IP6_NF_TARGET_LOG=m
+-CONFIG_IP6_NF_TARGET_REJECT=m
+-CONFIG_IP6_NF_MANGLE=m
+-CONFIG_IP6_NF_TARGET_HL=m
+-CONFIG_IP6_NF_RAW=m
+-
+-#
+-# Bridge: Netfilter Configuration
+-#
+-CONFIG_BRIDGE_NF_EBTABLES=m
+-CONFIG_BRIDGE_EBT_BROUTE=m
+-CONFIG_BRIDGE_EBT_T_FILTER=m
+-CONFIG_BRIDGE_EBT_T_NAT=m
+-CONFIG_BRIDGE_EBT_802_3=m
+-CONFIG_BRIDGE_EBT_AMONG=m
+-CONFIG_BRIDGE_EBT_ARP=m
+-CONFIG_BRIDGE_EBT_IP=m
+-CONFIG_BRIDGE_EBT_LIMIT=m
+-CONFIG_BRIDGE_EBT_MARK=m
+-CONFIG_BRIDGE_EBT_PKTTYPE=m
+-CONFIG_BRIDGE_EBT_STP=m
+-CONFIG_BRIDGE_EBT_VLAN=m
+-CONFIG_BRIDGE_EBT_ARPREPLY=m
+-CONFIG_BRIDGE_EBT_DNAT=m
+-CONFIG_BRIDGE_EBT_MARK_T=m
+-CONFIG_BRIDGE_EBT_REDIRECT=m
+-CONFIG_BRIDGE_EBT_SNAT=m
+-CONFIG_BRIDGE_EBT_LOG=m
+-CONFIG_BRIDGE_EBT_ULOG=m
+-
+-#
+-# DCCP Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_IP_DCCP is not set
+-
+-#
+-# SCTP Configuration (EXPERIMENTAL)
+-#
+-CONFIG_IP_SCTP=m
+-# CONFIG_SCTP_DBG_MSG is not set
+-# CONFIG_SCTP_DBG_OBJCNT is not set
+-# CONFIG_SCTP_HMAC_NONE is not set
+-# CONFIG_SCTP_HMAC_SHA1 is not set
+-CONFIG_SCTP_HMAC_MD5=y
+-
+-#
+-# TIPC Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_TIPC is not set
+-# CONFIG_ATM is not set
+-CONFIG_BRIDGE=m
+-CONFIG_VLAN_8021Q=m
+-# CONFIG_DECNET is not set
+-CONFIG_LLC=m
+-# CONFIG_LLC2 is not set
+-# CONFIG_IPX is not set
+-CONFIG_ATALK=m
+-CONFIG_DEV_APPLETALK=m
+-CONFIG_IPDDP=m
+-CONFIG_IPDDP_ENCAP=y
+-CONFIG_IPDDP_DECAP=y
+-# CONFIG_X25 is not set
+-# CONFIG_LAPB is not set
+-# CONFIG_ECONET is not set
+-# CONFIG_WAN_ROUTER is not set
+-
+-#
+-# QoS and/or fair queueing
+-#
+-CONFIG_NET_SCHED=y
+-CONFIG_NET_SCH_FIFO=y
+-CONFIG_NET_SCH_CLK_JIFFIES=y
+-# CONFIG_NET_SCH_CLK_GETTIMEOFDAY is not set
+-# CONFIG_NET_SCH_CLK_CPU is not set
+-
+-#
+-# Queueing/Scheduling
+-#
+-CONFIG_NET_SCH_CBQ=m
+-CONFIG_NET_SCH_HTB=m
+-CONFIG_NET_SCH_HFSC=m
+-CONFIG_NET_SCH_PRIO=m
+-CONFIG_NET_SCH_RED=m
+-CONFIG_NET_SCH_SFQ=m
+-CONFIG_NET_SCH_TEQL=m
+-CONFIG_NET_SCH_TBF=m
+-CONFIG_NET_SCH_GRED=m
+-CONFIG_NET_SCH_DSMARK=m
+-CONFIG_NET_SCH_NETEM=m
+-CONFIG_NET_SCH_INGRESS=m
+-
+-#
+-# Classification
+-#
+-CONFIG_NET_CLS=y
+-CONFIG_NET_CLS_BASIC=m
+-CONFIG_NET_CLS_TCINDEX=m
+-CONFIG_NET_CLS_ROUTE4=m
+-CONFIG_NET_CLS_ROUTE=y
+-CONFIG_NET_CLS_FW=m
+-CONFIG_NET_CLS_U32=m
+-# CONFIG_CLS_U32_PERF is not set
+-# CONFIG_CLS_U32_MARK is not set
+-CONFIG_NET_CLS_RSVP=m
+-CONFIG_NET_CLS_RSVP6=m
+-# CONFIG_NET_EMATCH is not set
+-# CONFIG_NET_CLS_ACT is not set
+-CONFIG_NET_CLS_POLICE=y
+-CONFIG_NET_CLS_IND=y
+-CONFIG_NET_ESTIMATOR=y
+-
+-#
+-# Network testing
+-#
+-# CONFIG_NET_PKTGEN is not set
+-# CONFIG_HAMRADIO is not set
+-# CONFIG_IRDA is not set
+-# CONFIG_BT is not set
+-CONFIG_IEEE80211=m
+-# CONFIG_IEEE80211_DEBUG is not set
+-CONFIG_IEEE80211_CRYPT_WEP=m
+-CONFIG_IEEE80211_CRYPT_CCMP=m
+-CONFIG_IEEE80211_SOFTMAC=m
+-# CONFIG_IEEE80211_SOFTMAC_DEBUG is not set
+-CONFIG_WIRELESS_EXT=y
+-CONFIG_FIB_RULES=y
 -
 -#
 -# Device Drivers
@@ -411,11 +804,13 @@ index 988b9cd..0000000
 -#
 -CONFIG_STANDALONE=y
 -CONFIG_PREVENT_FIRMWARE_BUILD=y
+-CONFIG_FW_LOADER=y
 -# CONFIG_SYS_HYPERVISOR is not set
 -
 -#
 -# Connector - unified userspace <-> kernelspace linker
 -#
+-CONFIG_CONNECTOR=m
 -
 -#
 -# Memory Technology Devices (MTD)
@@ -434,31 +829,137 @@ index 988b9cd..0000000
 -#
 -# Block devices
 -#
+-# CONFIG_BLK_CPQ_DA is not set
+-# CONFIG_BLK_CPQ_CISS_DA is not set
+-# CONFIG_BLK_DEV_DAC960 is not set
+-CONFIG_BLK_DEV_UMEM=m
 -# CONFIG_BLK_DEV_COW_COMMON is not set
--CONFIG_BLK_DEV_LOOP=y
--# CONFIG_BLK_DEV_CRYPTOLOOP is not set
+-CONFIG_BLK_DEV_LOOP=m
+-CONFIG_BLK_DEV_CRYPTOLOOP=m
+-CONFIG_BLK_DEV_NBD=m
+-# CONFIG_BLK_DEV_SX8 is not set
 -CONFIG_BLK_DEV_RAM=y
 -CONFIG_BLK_DEV_RAM_COUNT=16
--CONFIG_BLK_DEV_RAM_SIZE=18432
+-CONFIG_BLK_DEV_RAM_SIZE=4096
 -CONFIG_BLK_DEV_RAM_BLOCKSIZE=1024
--CONFIG_BLK_DEV_INITRD=y
--# CONFIG_CDROM_PKTCDVD is not set
+-# CONFIG_BLK_DEV_INITRD is not set
+-CONFIG_CDROM_PKTCDVD=m
+-CONFIG_CDROM_PKTCDVD_BUFFERS=8
+-# CONFIG_CDROM_PKTCDVD_WCACHE is not set
+-CONFIG_ATA_OVER_ETH=m
 -
 -#
 -# Misc devices
 -#
+-CONFIG_SGI_IOC4=m
+-# CONFIG_TIFM_CORE is not set
 -
 -#
 -# ATA/ATAPI/MFM/RLL support
 -#
--# CONFIG_IDE is not set
+-CONFIG_IDE=y
+-CONFIG_IDE_MAX_HWIFS=4
+-CONFIG_BLK_DEV_IDE=y
+-
+-#
+-# Please see Documentation/ide.txt for help/info on IDE drives
+-#
+-# CONFIG_BLK_DEV_IDE_SATA is not set
+-CONFIG_BLK_DEV_IDEDISK=y
+-# CONFIG_IDEDISK_MULTI_MODE is not set
+-CONFIG_BLK_DEV_IDECD=y
+-# CONFIG_BLK_DEV_IDETAPE is not set
+-# CONFIG_BLK_DEV_IDEFLOPPY is not set
+-# CONFIG_BLK_DEV_IDESCSI is not set
+-# CONFIG_IDE_TASK_IOCTL is not set
+-
+-#
+-# IDE chipset support/bugfixes
+-#
+-CONFIG_IDE_GENERIC=y
+-# CONFIG_BLK_DEV_IDEPCI is not set
+-# CONFIG_IDE_ARM is not set
+-# CONFIG_BLK_DEV_IDEDMA is not set
+-# CONFIG_IDEDMA_AUTO is not set
+-# CONFIG_BLK_DEV_HD is not set
 -
 -#
 -# SCSI device support
 -#
--CONFIG_RAID_ATTRS=y
--# CONFIG_SCSI is not set
--# CONFIG_SCSI_NETLINK is not set
+-CONFIG_RAID_ATTRS=m
+-CONFIG_SCSI=y
+-CONFIG_SCSI_TGT=m
+-CONFIG_SCSI_NETLINK=y
+-CONFIG_SCSI_PROC_FS=y
+-
+-#
+-# SCSI support type (disk, tape, CD-ROM)
+-#
+-CONFIG_BLK_DEV_SD=y
+-CONFIG_CHR_DEV_ST=m
+-CONFIG_CHR_DEV_OSST=m
+-CONFIG_BLK_DEV_SR=m
+-CONFIG_BLK_DEV_SR_VENDOR=y
+-CONFIG_CHR_DEV_SG=m
+-CONFIG_CHR_DEV_SCH=m
+-
+-#
+-# Some SCSI devices (e.g. CD jukebox) support multiple LUNs
+-#
+-CONFIG_SCSI_MULTI_LUN=y
+-CONFIG_SCSI_CONSTANTS=y
+-CONFIG_SCSI_LOGGING=y
+-CONFIG_SCSI_SCAN_ASYNC=y
+-
+-#
+-# SCSI Transports
+-#
+-CONFIG_SCSI_SPI_ATTRS=y
+-CONFIG_SCSI_FC_ATTRS=y
+-CONFIG_SCSI_ISCSI_ATTRS=m
+-CONFIG_SCSI_SAS_ATTRS=m
+-CONFIG_SCSI_SAS_LIBSAS=m
+-CONFIG_SCSI_SAS_LIBSAS_DEBUG=y
+-
+-#
+-# SCSI low-level drivers
+-#
+-CONFIG_ISCSI_TCP=m
+-# CONFIG_BLK_DEV_3W_XXXX_RAID is not set
+-# CONFIG_SCSI_3W_9XXX is not set
+-# CONFIG_SCSI_ACARD is not set
+-# CONFIG_SCSI_AACRAID is not set
+-# CONFIG_SCSI_AIC7XXX is not set
+-# CONFIG_SCSI_AIC7XXX_OLD is not set
+-# CONFIG_SCSI_AIC79XX is not set
+-CONFIG_SCSI_AIC94XX=m
+-# CONFIG_AIC94XX_DEBUG is not set
+-# CONFIG_SCSI_DPT_I2O is not set
+-# CONFIG_SCSI_ARCMSR is not set
+-# CONFIG_MEGARAID_NEWGEN is not set
+-# CONFIG_MEGARAID_LEGACY is not set
+-# CONFIG_MEGARAID_SAS is not set
+-# CONFIG_SCSI_HPTIOP is not set
+-# CONFIG_SCSI_DMX3191D is not set
+-# CONFIG_SCSI_FUTURE_DOMAIN is not set
+-# CONFIG_SCSI_IPS is not set
+-# CONFIG_SCSI_INITIO is not set
+-# CONFIG_SCSI_INIA100 is not set
+-# CONFIG_SCSI_STEX is not set
+-CONFIG_SCSI_SYM53C8XX_2=y
+-CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=0
+-CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS=16
+-CONFIG_SCSI_SYM53C8XX_MAX_TAGS=64
+-CONFIG_SCSI_SYM53C8XX_MMIO=y
+-# CONFIG_SCSI_QLOGIC_1280 is not set
+-# CONFIG_SCSI_QLA_FC is not set
+-# CONFIG_SCSI_QLA_ISCSI is not set
+-# CONFIG_SCSI_LPFC is not set
+-# CONFIG_SCSI_DC395x is not set
+-# CONFIG_SCSI_DC390T is not set
+-# CONFIG_SCSI_NSP32 is not set
+-# CONFIG_SCSI_DEBUG is not set
+-# CONFIG_SCSI_SRP is not set
 -
 -#
 -# Serial ATA (prod) and Parallel ATA (experimental) drivers
@@ -468,24 +969,172 @@ index 988b9cd..0000000
 -#
 -# Multi-device support (RAID and LVM)
 -#
--# CONFIG_MD is not set
+-CONFIG_MD=y
+-CONFIG_BLK_DEV_MD=m
+-CONFIG_MD_LINEAR=m
+-CONFIG_MD_RAID0=m
+-CONFIG_MD_RAID1=m
+-CONFIG_MD_RAID10=m
+-CONFIG_MD_RAID456=m
+-CONFIG_MD_RAID5_RESHAPE=y
+-CONFIG_MD_MULTIPATH=m
+-CONFIG_MD_FAULTY=m
+-CONFIG_BLK_DEV_DM=m
+-# CONFIG_DM_DEBUG is not set
+-CONFIG_DM_CRYPT=m
+-CONFIG_DM_SNAPSHOT=m
+-CONFIG_DM_MIRROR=m
+-CONFIG_DM_ZERO=m
+-CONFIG_DM_MULTIPATH=m
+-CONFIG_DM_MULTIPATH_EMC=m
 -
 -#
 -# Fusion MPT device support
 -#
 -# CONFIG_FUSION is not set
+-# CONFIG_FUSION_SPI is not set
+-# CONFIG_FUSION_FC is not set
+-# CONFIG_FUSION_SAS is not set
 -
 -#
 -# IEEE 1394 (FireWire) support
 -#
+-# CONFIG_IEEE1394 is not set
 -
 -#
 -# I2O device support
 -#
+-# CONFIG_I2O is not set
+-
+-#
+-# Network device support
+-#
+-CONFIG_NETDEVICES=y
+-CONFIG_DUMMY=m
+-CONFIG_BONDING=m
+-CONFIG_EQUALIZER=m
+-CONFIG_TUN=m
+-
+-#
+-# ARCnet devices
+-#
+-# CONFIG_ARCNET is not set
+-
+-#
+-# PHY device support
+-#
+-CONFIG_PHYLIB=m
+-
+-#
+-# MII PHY device drivers
+-#
+-CONFIG_MARVELL_PHY=m
+-CONFIG_DAVICOM_PHY=m
+-CONFIG_QSEMI_PHY=m
+-CONFIG_LXT_PHY=m
+-CONFIG_CICADA_PHY=m
+-CONFIG_VITESSE_PHY=m
+-CONFIG_SMSC_PHY=m
+-# CONFIG_BROADCOM_PHY is not set
+-# CONFIG_FIXED_PHY is not set
+-
+-#
+-# Ethernet (10 or 100Mbit)
+-#
+-CONFIG_NET_ETHERNET=y
+-CONFIG_MII=y
+-# CONFIG_HAPPYMEAL is not set
+-# CONFIG_SUNGEM is not set
+-# CONFIG_CASSINI is not set
+-# CONFIG_NET_VENDOR_3COM is not set
+-# CONFIG_DM9000 is not set
+-
+-#
+-# Tulip family network device support
+-#
+-# CONFIG_NET_TULIP is not set
+-# CONFIG_HP100 is not set
+-CONFIG_NET_PCI=y
+-CONFIG_PCNET32=y
+-# CONFIG_PCNET32_NAPI is not set
+-# CONFIG_AMD8111_ETH is not set
+-# CONFIG_ADAPTEC_STARFIRE is not set
+-# CONFIG_B44 is not set
+-# CONFIG_FORCEDETH is not set
+-# CONFIG_DGRS is not set
+-# CONFIG_EEPRO100 is not set
+-# CONFIG_E100 is not set
+-# CONFIG_FEALNX is not set
+-# CONFIG_NATSEMI is not set
+-# CONFIG_NE2K_PCI is not set
+-# CONFIG_8139CP is not set
+-# CONFIG_8139TOO is not set
+-# CONFIG_SIS900 is not set
+-# CONFIG_EPIC100 is not set
+-# CONFIG_SUNDANCE is not set
+-# CONFIG_TLAN is not set
+-# CONFIG_VIA_RHINE is not set
+-CONFIG_LAN_SAA9730=y
+-# CONFIG_SC92031 is not set
+-
+-#
+-# Ethernet (1000 Mbit)
+-#
+-# CONFIG_ACENIC is not set
+-# CONFIG_DL2K is not set
+-# CONFIG_E1000 is not set
+-# CONFIG_NS83820 is not set
+-# CONFIG_HAMACHI is not set
+-# CONFIG_YELLOWFIN is not set
+-# CONFIG_R8169 is not set
+-# CONFIG_SIS190 is not set
+-# CONFIG_SKGE is not set
+-# CONFIG_SKY2 is not set
+-# CONFIG_SK98LIN is not set
+-# CONFIG_VIA_VELOCITY is not set
+-# CONFIG_TIGON3 is not set
+-# CONFIG_BNX2 is not set
+-CONFIG_QLA3XXX=m
+-# CONFIG_ATL1 is not set
+-
+-#
+-# Ethernet (10000 Mbit)
+-#
+-# CONFIG_CHELSIO_T1 is not set
+-CONFIG_CHELSIO_T3=m
+-# CONFIG_IXGB is not set
+-# CONFIG_S2IO is not set
+-# CONFIG_MYRI10GE is not set
+-CONFIG_NETXEN_NIC=m
+-
+-#
+-# Token Ring devices
+-#
+-# CONFIG_TR is not set
+-
+-#
+-# Wireless LAN (non-hamradio)
+-#
+-# CONFIG_NET_RADIO is not set
+-
+-#
+-# Wan interfaces
+-#
+-# CONFIG_WAN is not set
+-# CONFIG_FDDI is not set
+-# CONFIG_HIPPI is not set
+-# CONFIG_PPP is not set
+-# CONFIG_SLIP is not set
+-# CONFIG_NET_FC is not set
+-# CONFIG_SHAPER is not set
+-# CONFIG_NETCONSOLE is not set
+-# CONFIG_NETPOLL is not set
+-# CONFIG_NET_POLL_CONTROLLER is not set
 -
 -#
 -# ISDN subsystem
 -#
+-# CONFIG_ISDN is not set
 -
 -#
 -# Telephony Support
@@ -495,18 +1144,51 @@ index 988b9cd..0000000
 -#
 -# Input device support
 -#
--# CONFIG_INPUT is not set
+-CONFIG_INPUT=y
+-# CONFIG_INPUT_FF_MEMLESS is not set
+-
+-#
+-# Userland interfaces
+-#
+-CONFIG_INPUT_MOUSEDEV=m
+-CONFIG_INPUT_MOUSEDEV_PSAUX=y
+-CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
+-CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
+-# CONFIG_INPUT_JOYDEV is not set
+-# CONFIG_INPUT_TSDEV is not set
+-# CONFIG_INPUT_EVDEV is not set
+-# CONFIG_INPUT_EVBUG is not set
+-
+-#
+-# Input Device Drivers
+-#
+-# CONFIG_INPUT_KEYBOARD is not set
+-CONFIG_INPUT_MOUSE=y
+-# CONFIG_MOUSE_PS2 is not set
+-CONFIG_MOUSE_SERIAL=m
+-# CONFIG_MOUSE_VSXXXAA is not set
+-# CONFIG_INPUT_JOYSTICK is not set
+-# CONFIG_INPUT_TOUCHSCREEN is not set
+-# CONFIG_INPUT_MISC is not set
 -
 -#
 -# Hardware I/O ports
 -#
--# CONFIG_SERIO is not set
+-CONFIG_SERIO=y
+-# CONFIG_SERIO_I8042 is not set
+-CONFIG_SERIO_SERPORT=y
+-# CONFIG_SERIO_PCIPS2 is not set
+-CONFIG_SERIO_LIBPS2=y
+-CONFIG_SERIO_RAW=y
 -# CONFIG_GAMEPORT is not set
 -
 -#
 -# Character devices
 -#
--# CONFIG_VT is not set
+-CONFIG_VT=y
+-CONFIG_VT_CONSOLE=y
+-CONFIG_HW_CONSOLE=y
+-CONFIG_VT_HW_CONSOLE_BINDING=y
 -# CONFIG_SERIAL_NONSTANDARD is not set
 -
 -#
@@ -514,6 +1196,7 @@ index 988b9cd..0000000
 -#
 -CONFIG_SERIAL_8250=y
 -CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_SERIAL_8250_PCI=m
 -CONFIG_SERIAL_8250_NR_UARTS=4
 -CONFIG_SERIAL_8250_RUNTIME_UARTS=4
 -# CONFIG_SERIAL_8250_EXTENDED is not set
@@ -523,6 +1206,7 @@ index 988b9cd..0000000
 -#
 -CONFIG_SERIAL_CORE=y
 -CONFIG_SERIAL_CORE_CONSOLE=y
+-# CONFIG_SERIAL_JSM is not set
 -CONFIG_UNIX98_PTYS=y
 -CONFIG_LEGACY_PTYS=y
 -CONFIG_LEGACY_PTY_COUNT=256
@@ -541,6 +1225,8 @@ index 988b9cd..0000000
 -# CONFIG_GEN_RTC is not set
 -# CONFIG_DTLK is not set
 -# CONFIG_R3964 is not set
+-# CONFIG_APPLICOM is not set
+-# CONFIG_DRM is not set
 -# CONFIG_RAW_DRIVER is not set
 -
 -#
@@ -578,12 +1264,19 @@ index 988b9cd..0000000
 -#
 -# Digital Video Broadcasting Devices
 -#
+-# CONFIG_DVB is not set
 -
 -#
 -# Graphics support
 -#
 -# CONFIG_FIRMWARE_EDID is not set
 -# CONFIG_FB is not set
+-
+-#
+-# Console display driver support
+-#
+-# CONFIG_VGA_CONSOLE is not set
+-CONFIG_DUMMY_CONSOLE=y
 -# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
 -
 -#
@@ -592,11 +1285,18 @@ index 988b9cd..0000000
 -# CONFIG_SOUND is not set
 -
 -#
+-# HID Devices
+-#
+-CONFIG_HID=y
+-# CONFIG_HID_DEBUG is not set
+-
+-#
 -# USB support
 -#
--# CONFIG_USB_ARCH_HAS_HCD is not set
--# CONFIG_USB_ARCH_HAS_OHCI is not set
--# CONFIG_USB_ARCH_HAS_EHCI is not set
+-CONFIG_USB_ARCH_HAS_HCD=y
+-CONFIG_USB_ARCH_HAS_OHCI=y
+-CONFIG_USB_ARCH_HAS_EHCI=y
+-# CONFIG_USB is not set
 -
 -#
 -# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
@@ -628,6 +1328,7 @@ index 988b9cd..0000000
 -#
 -# InfiniBand support
 -#
+-# CONFIG_INFINIBAND is not set
 -
 -#
 -# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
@@ -665,34 +1366,64 @@ index 988b9cd..0000000
 -CONFIG_EXT2_FS=y
 -# CONFIG_EXT2_FS_XATTR is not set
 -# CONFIG_EXT2_FS_XIP is not set
--# CONFIG_EXT3_FS is not set
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_XATTR=y
+-# CONFIG_EXT3_FS_POSIX_ACL is not set
+-# CONFIG_EXT3_FS_SECURITY is not set
 -# CONFIG_EXT4DEV_FS is not set
--# CONFIG_REISERFS_FS is not set
--# CONFIG_JFS_FS is not set
--# CONFIG_FS_POSIX_ACL is not set
--# CONFIG_XFS_FS is not set
+-CONFIG_JBD=y
+-# CONFIG_JBD_DEBUG is not set
+-CONFIG_FS_MBCACHE=y
+-CONFIG_REISERFS_FS=m
+-# CONFIG_REISERFS_CHECK is not set
+-CONFIG_REISERFS_PROC_INFO=y
+-CONFIG_REISERFS_FS_XATTR=y
+-CONFIG_REISERFS_FS_POSIX_ACL=y
+-CONFIG_REISERFS_FS_SECURITY=y
+-CONFIG_JFS_FS=m
+-CONFIG_JFS_POSIX_ACL=y
+-CONFIG_JFS_SECURITY=y
+-# CONFIG_JFS_DEBUG is not set
+-# CONFIG_JFS_STATISTICS is not set
+-CONFIG_FS_POSIX_ACL=y
+-CONFIG_XFS_FS=m
+-CONFIG_XFS_QUOTA=y
+-CONFIG_XFS_SECURITY=y
+-CONFIG_XFS_POSIX_ACL=y
+-# CONFIG_XFS_RT is not set
 -# CONFIG_GFS2_FS is not set
--# CONFIG_MINIX_FS is not set
--# CONFIG_ROMFS_FS is not set
+-# CONFIG_OCFS2_FS is not set
+-CONFIG_MINIX_FS=m
+-CONFIG_ROMFS_FS=m
 -CONFIG_INOTIFY=y
 -CONFIG_INOTIFY_USER=y
--# CONFIG_QUOTA is not set
+-CONFIG_QUOTA=y
+-# CONFIG_QFMT_V1 is not set
+-CONFIG_QFMT_V2=y
+-CONFIG_QUOTACTL=y
 -CONFIG_DNOTIFY=y
--# CONFIG_AUTOFS_FS is not set
+-CONFIG_AUTOFS_FS=y
 -# CONFIG_AUTOFS4_FS is not set
--CONFIG_FUSE_FS=y
+-CONFIG_FUSE_FS=m
+-CONFIG_GENERIC_ACL=y
 -
 -#
 -# CD-ROM/DVD Filesystems
 -#
--# CONFIG_ISO9660_FS is not set
--# CONFIG_UDF_FS is not set
+-CONFIG_ISO9660_FS=m
+-CONFIG_JOLIET=y
+-CONFIG_ZISOFS=y
+-CONFIG_UDF_FS=m
+-CONFIG_UDF_NLS=y
 -
 -#
 -# DOS/FAT/NT Filesystems
 -#
--# CONFIG_MSDOS_FS is not set
--# CONFIG_VFAT_FS is not set
+-CONFIG_FAT_FS=m
+-CONFIG_MSDOS_FS=m
+-CONFIG_VFAT_FS=m
+-CONFIG_FAT_DEFAULT_CODEPAGE=437
+-CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
 -# CONFIG_NTFS_FS is not set
 -
 -#
@@ -702,49 +1433,117 @@ index 988b9cd..0000000
 -CONFIG_PROC_KCORE=y
 -CONFIG_PROC_SYSCTL=y
 -CONFIG_SYSFS=y
--# CONFIG_TMPFS is not set
+-CONFIG_TMPFS=y
+-CONFIG_TMPFS_POSIX_ACL=y
 -# CONFIG_HUGETLB_PAGE is not set
 -CONFIG_RAMFS=y
--# CONFIG_CONFIGFS_FS is not set
+-CONFIG_CONFIGFS_FS=m
 -
 -#
 -# Miscellaneous filesystems
 -#
 -# CONFIG_ADFS_FS is not set
--# CONFIG_AFFS_FS is not set
--# CONFIG_HFS_FS is not set
--# CONFIG_HFSPLUS_FS is not set
--# CONFIG_BEFS_FS is not set
--# CONFIG_BFS_FS is not set
--# CONFIG_EFS_FS is not set
--# CONFIG_CRAMFS is not set
--# CONFIG_VXFS_FS is not set
+-CONFIG_AFFS_FS=m
+-CONFIG_HFS_FS=m
+-CONFIG_HFSPLUS_FS=m
+-CONFIG_BEFS_FS=m
+-# CONFIG_BEFS_DEBUG is not set
+-CONFIG_BFS_FS=m
+-CONFIG_EFS_FS=m
+-CONFIG_CRAMFS=m
+-CONFIG_VXFS_FS=m
 -# CONFIG_HPFS_FS is not set
 -# CONFIG_QNX4FS_FS is not set
--# CONFIG_SYSV_FS is not set
--# CONFIG_UFS_FS is not set
+-CONFIG_SYSV_FS=m
+-CONFIG_UFS_FS=m
+-# CONFIG_UFS_FS_WRITE is not set
+-# CONFIG_UFS_DEBUG is not set
+-
+-#
+-# Network File Systems
+-#
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V3=y
+-# CONFIG_NFS_V3_ACL is not set
+-# CONFIG_NFS_V4 is not set
+-# CONFIG_NFS_DIRECTIO is not set
+-CONFIG_NFSD=y
+-CONFIG_NFSD_V3=y
+-# CONFIG_NFSD_V3_ACL is not set
+-# CONFIG_NFSD_V4 is not set
+-# CONFIG_NFSD_TCP is not set
+-CONFIG_ROOT_NFS=y
+-CONFIG_LOCKD=y
+-CONFIG_LOCKD_V4=y
+-CONFIG_EXPORTFS=y
+-CONFIG_NFS_COMMON=y
+-CONFIG_SUNRPC=y
+-# CONFIG_RPCSEC_GSS_KRB5 is not set
+-# CONFIG_RPCSEC_GSS_SPKM3 is not set
+-# CONFIG_SMB_FS is not set
+-# CONFIG_CIFS is not set
+-# CONFIG_NCP_FS is not set
+-# CONFIG_CODA_FS is not set
+-# CONFIG_AFS_FS is not set
+-# CONFIG_9P_FS is not set
 -
 -#
 -# Partition Types
 -#
--CONFIG_PARTITION_ADVANCED=y
--# CONFIG_ACORN_PARTITION is not set
--# CONFIG_OSF_PARTITION is not set
--# CONFIG_AMIGA_PARTITION is not set
--# CONFIG_ATARI_PARTITION is not set
--# CONFIG_MAC_PARTITION is not set
--# CONFIG_MSDOS_PARTITION is not set
--# CONFIG_LDM_PARTITION is not set
--# CONFIG_SGI_PARTITION is not set
--# CONFIG_ULTRIX_PARTITION is not set
--# CONFIG_SUN_PARTITION is not set
--# CONFIG_KARMA_PARTITION is not set
--# CONFIG_EFI_PARTITION is not set
+-# CONFIG_PARTITION_ADVANCED is not set
+-CONFIG_MSDOS_PARTITION=y
 -
 -#
 -# Native Language Support
 -#
--# CONFIG_NLS is not set
+-CONFIG_NLS=m
+-CONFIG_NLS_DEFAULT="iso8859-1"
+-CONFIG_NLS_CODEPAGE_437=m
+-CONFIG_NLS_CODEPAGE_737=m
+-CONFIG_NLS_CODEPAGE_775=m
+-CONFIG_NLS_CODEPAGE_850=m
+-CONFIG_NLS_CODEPAGE_852=m
+-CONFIG_NLS_CODEPAGE_855=m
+-CONFIG_NLS_CODEPAGE_857=m
+-CONFIG_NLS_CODEPAGE_860=m
+-CONFIG_NLS_CODEPAGE_861=m
+-CONFIG_NLS_CODEPAGE_862=m
+-CONFIG_NLS_CODEPAGE_863=m
+-CONFIG_NLS_CODEPAGE_864=m
+-CONFIG_NLS_CODEPAGE_865=m
+-CONFIG_NLS_CODEPAGE_866=m
+-CONFIG_NLS_CODEPAGE_869=m
+-CONFIG_NLS_CODEPAGE_936=m
+-CONFIG_NLS_CODEPAGE_950=m
+-CONFIG_NLS_CODEPAGE_932=m
+-CONFIG_NLS_CODEPAGE_949=m
+-CONFIG_NLS_CODEPAGE_874=m
+-CONFIG_NLS_ISO8859_8=m
+-CONFIG_NLS_CODEPAGE_1250=m
+-CONFIG_NLS_CODEPAGE_1251=m
+-CONFIG_NLS_ASCII=m
+-CONFIG_NLS_ISO8859_1=m
+-CONFIG_NLS_ISO8859_2=m
+-CONFIG_NLS_ISO8859_3=m
+-CONFIG_NLS_ISO8859_4=m
+-CONFIG_NLS_ISO8859_5=m
+-CONFIG_NLS_ISO8859_6=m
+-CONFIG_NLS_ISO8859_7=m
+-CONFIG_NLS_ISO8859_9=m
+-CONFIG_NLS_ISO8859_13=m
+-CONFIG_NLS_ISO8859_14=m
+-CONFIG_NLS_ISO8859_15=m
+-CONFIG_NLS_KOI8_R=m
+-CONFIG_NLS_KOI8_U=m
+-CONFIG_NLS_UTF8=m
+-
+-#
+-# Distributed Lock Manager
+-#
+-CONFIG_DLM=m
+-CONFIG_DLM_TCP=y
+-# CONFIG_DLM_SCTP is not set
+-# CONFIG_DLM_DEBUG is not set
 -
 -#
 -# Profiling support
@@ -775,119 +1574,75 @@ index 988b9cd..0000000
 -#
 -# Cryptographic options
 -#
--# CONFIG_CRYPTO is not set
+-CONFIG_CRYPTO=y
+-CONFIG_CRYPTO_ALGAPI=y
+-CONFIG_CRYPTO_BLKCIPHER=m
+-CONFIG_CRYPTO_HASH=y
+-CONFIG_CRYPTO_MANAGER=y
+-CONFIG_CRYPTO_HMAC=y
+-CONFIG_CRYPTO_XCBC=m
+-CONFIG_CRYPTO_NULL=m
+-CONFIG_CRYPTO_MD4=m
+-CONFIG_CRYPTO_MD5=y
+-CONFIG_CRYPTO_SHA1=m
+-CONFIG_CRYPTO_SHA256=m
+-CONFIG_CRYPTO_SHA512=m
+-CONFIG_CRYPTO_WP512=m
+-CONFIG_CRYPTO_TGR192=m
+-CONFIG_CRYPTO_GF128MUL=m
+-CONFIG_CRYPTO_ECB=m
+-CONFIG_CRYPTO_CBC=m
+-CONFIG_CRYPTO_PCBC=m
+-CONFIG_CRYPTO_LRW=m
+-CONFIG_CRYPTO_DES=m
+-CONFIG_CRYPTO_FCRYPT=m
+-CONFIG_CRYPTO_BLOWFISH=m
+-CONFIG_CRYPTO_TWOFISH=m
+-CONFIG_CRYPTO_TWOFISH_COMMON=m
+-CONFIG_CRYPTO_SERPENT=m
+-CONFIG_CRYPTO_AES=m
+-CONFIG_CRYPTO_CAST5=m
+-CONFIG_CRYPTO_CAST6=m
+-CONFIG_CRYPTO_TEA=m
+-CONFIG_CRYPTO_ARC4=m
+-CONFIG_CRYPTO_KHAZAD=m
+-CONFIG_CRYPTO_ANUBIS=m
+-CONFIG_CRYPTO_DEFLATE=m
+-CONFIG_CRYPTO_MICHAEL_MIC=m
+-CONFIG_CRYPTO_CRC32C=m
+-CONFIG_CRYPTO_CAMELLIA=m
+-# CONFIG_CRYPTO_TEST is not set
+-
+-#
+-# Hardware crypto devices
+-#
 -
 -#
 -# Library routines
 -#
+-CONFIG_BITREVERSE=y
 -# CONFIG_CRC_CCITT is not set
--CONFIG_CRC16=y
--# CONFIG_CRC32 is not set
--# CONFIG_LIBCRC32C is not set
+-CONFIG_CRC16=m
+-CONFIG_CRC32=y
+-CONFIG_LIBCRC32C=m
+-CONFIG_ZLIB_INFLATE=m
+-CONFIG_ZLIB_DEFLATE=m
+-CONFIG_TEXTSEARCH=y
+-CONFIG_TEXTSEARCH_KMP=m
+-CONFIG_TEXTSEARCH_BM=m
+-CONFIG_TEXTSEARCH_FSM=m
 -CONFIG_PLIST=y
 -CONFIG_HAS_IOMEM=y
 -CONFIG_HAS_IOPORT=y
-diff --git a/arch/mips/mips-boards/generic/console.c b/arch/mips/mips-boards/generic/console.c
-index 202fcee..17a2a0a 100644
---- a/arch/mips/mips-boards/generic/console.c
-+++ b/arch/mips/mips-boards/generic/console.c
-@@ -22,21 +22,8 @@
- #include <linux/serial_reg.h>
- #include <asm/io.h>
- 
--#ifdef CONFIG_MIPS_SEAD
--
--#include <asm/mips-boards/sead.h>
--
--#ifdef CONFIG_CPU_LITTLE_ENDIAN
--#define PORT(offset) (SEAD_UART0_REGS_BASE     + ((offset)<<3))
--#else
--#define PORT(offset) (SEAD_UART0_REGS_BASE + 3 + ((offset)<<3))
--#endif
--
--#else
--
- #define PORT(offset) (0x3f8 + (offset))
- 
--#endif
- 
- static inline unsigned int serial_in(int offset)
- {
-diff --git a/arch/mips/mips-boards/generic/init.c b/arch/mips/mips-boards/generic/init.c
-index d6436a6..c110490 100644
---- a/arch/mips/mips-boards/generic/init.c
-+++ b/arch/mips/mips-boards/generic/init.c
-@@ -249,9 +249,6 @@ void __init prom_init(void)
- 
- 	mips_display_message("LINUX");
- 
--#ifdef CONFIG_MIPS_SEAD
--	set_io_port_base(KSEG1);
--#else
- 	/*
- 	 * early setup of _pcictrl_bonito so that we can determine
- 	 * the system controller on a CORE_EMUL board
-@@ -396,7 +393,7 @@ void __init prom_init(void)
- 		mips_display_message("SC Error");
- 		while (1);   /* We die here... */
- 	}
--#endif
-+
- 	board_nmi_handler_setup = mips_nmi_setup;
- 	board_ejtag_handler_setup = mips_ejtag_setup;
- 
-diff --git a/arch/mips/mips-boards/generic/reset.c b/arch/mips/mips-boards/generic/reset.c
-index f9ae162..6a14da7 100644
---- a/arch/mips/mips-boards/generic/reset.c
-+++ b/arch/mips/mips-boards/generic/reset.c
-@@ -49,7 +49,5 @@ void mips_reboot_setup(void)
- {
- 	_machine_restart = mips_machine_restart;
- 	_machine_halt = mips_machine_halt;
--#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_SEAD)
- 	pm_power_off = mips_machine_halt;
--#endif
- }
-diff --git a/arch/mips/mips-boards/generic/time.c b/arch/mips/mips-boards/generic/time.c
-index d7fe97f..bd5021d 100644
---- a/arch/mips/mips-boards/generic/time.c
-+++ b/arch/mips/mips-boards/generic/time.c
-@@ -44,9 +44,6 @@
- #ifdef CONFIG_MIPS_MALTA
- #include <asm/mips-boards/maltaint.h>
- #endif
--#ifdef CONFIG_MIPS_SEAD
--#include <asm/mips-boards/seadint.h>
--#endif
- 
- unsigned long cpu_khz;
- 
-@@ -174,13 +171,7 @@ static unsigned int __init estimate_cpu_frequency(void)
- 	unsigned int prid = read_c0_prid() & 0xffff00;
- 	unsigned int count;
- 
--#if defined(CONFIG_MIPS_SEAD) || defined(CONFIG_MIPS_SIM)
--	/*
--	 * The SEAD board doesn't have a real time clock, so we can't
--	 * really calculate the timer frequency
--	 * For now we hardwire the SEAD board frequency to 12MHz.
--	 */
--
-+#if defined(CONFIG_MIPS_SIM)
- 	if ((prid == (PRID_COMP_MIPS | PRID_IMP_20KC)) ||
- 	    (prid == (PRID_COMP_MIPS | PRID_IMP_25KF)))
- 		count = 12000000;
-diff --git a/arch/mips/mips-boards/sead/Makefile b/arch/mips/mips-boards/sead/Makefile
+diff --git a/arch/mips/mips-boards/atlas/Makefile b/arch/mips/mips-boards/atlas/Makefile
 deleted file mode 100644
-index 224bb84..0000000
---- a/arch/mips/mips-boards/sead/Makefile
+index d8dab75..0000000
+--- a/arch/mips/mips-boards/atlas/Makefile
 +++ /dev/null
-@@ -1,26 +0,0 @@
+@@ -1,20 +0,0 @@
 -#
 -# Carsten Langgaard, carstenl@mips.com
--# Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.
--#
--# ########################################################################
+-# Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 -#
 -# This program is free software; you can distribute it and/or modify it
 -# under the terms of the GNU General Public License (Version 2) as
@@ -902,24 +1657,18 @@ index 224bb84..0000000
 -# with this program; if not, write to the Free Software Foundation, Inc.,
 -# 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
 -#
--# #######################################################################
--#
--# Makefile for the MIPS SEAD specific kernel interface routines
--# under Linux.
--#
 -
--obj-y		:= sead_int.o sead_setup.o
-diff --git a/arch/mips/mips-boards/sead/sead_int.c b/arch/mips/mips-boards/sead/sead_int.c
+-obj-y			:= atlas_int.o atlas_setup.o
+-obj-$(CONFIG_KGDB)	+= atlas_gdb.o
+diff --git a/arch/mips/mips-boards/atlas/atlas_gdb.c b/arch/mips/mips-boards/atlas/atlas_gdb.c
 deleted file mode 100644
-index c4b9de3..0000000
---- a/arch/mips/mips-boards/sead/sead_int.c
+index fb65280..0000000
+--- a/arch/mips/mips-boards/atlas/atlas_gdb.c
 +++ /dev/null
-@@ -1,117 +0,0 @@
+@@ -1,97 +0,0 @@
 -/*
 - * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.
-- * Copyright (C) 2003 Ralf Baechle (ralf@linux-mips.org)
-- * Copyright (C) 2004  Maciej W. Rozycki
+- * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
 - *
 - *  This program is free software; you can distribute it and/or modify it
 - *  under the terms of the GNU General Public License (Version 2) as
@@ -934,17 +1683,203 @@ index c4b9de3..0000000
 - *  with this program; if not, write to the Free Software Foundation, Inc.,
 - *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
 - *
-- * Routines for generic manipulation of the interrupts found on the MIPS
-- * Sead board.
+- * This is the interface to the remote debugger stub.
 - */
+-#include <asm/io.h>
+-#include <asm/mips-boards/atlas.h>
+-#include <asm/mips-boards/saa9730_uart.h>
+-
+-#define INB(a)     inb((unsigned long)a)
+-#define OUTB(x,a)  outb(x,(unsigned long)a)
+-
+-/*
+- * This is the interface to the remote debugger stub
+- * if the Philips part is used for the debug port,
+- * called from the platform setup code.
+- */
+-void *saa9730_base = (void *)ATLAS_SAA9730_REG;
+-
+-static int saa9730_kgdb_active = 0;
+-
+-#define SAA9730_BAUDCLOCK(baud) (((ATLAS_SAA9730_BAUDCLOCK/(baud))/16)-1)
+-
+-int saa9730_kgdb_hook(int speed)
+-{
+-	int baudclock;
+-	t_uart_saa9730_regmap *kgdb_uart = (t_uart_saa9730_regmap *)(saa9730_base + SAA9730_UART_REGS_ADDR);
+-
+-        /*
+-         * Clear all interrupts
+-         */
+-	(void) INB(&kgdb_uart->Lsr);
+-	(void) INB(&kgdb_uart->Msr);
+-	(void) INB(&kgdb_uart->Thr_Rbr);
+-	(void) INB(&kgdb_uart->Iir_Fcr);
+-
+-        /*
+-         * Now, initialize the UART
+-         */
+-	/* 8 data bits, one stop bit, no parity */
+-	OUTB(SAA9730_LCR_DATA8, &kgdb_uart->Lcr);
+-
+-	baudclock = SAA9730_BAUDCLOCK(speed);
+-
+-	OUTB((baudclock >> 16) & 0xff, &kgdb_uart->BaudDivMsb);
+-	OUTB( baudclock        & 0xff, &kgdb_uart->BaudDivLsb);
+-
+-	/* Set RTS/DTR active */
+-	OUTB(SAA9730_MCR_DTR | SAA9730_MCR_RTS, &kgdb_uart->Mcr);
+-	saa9730_kgdb_active = 1;
+-
+-	return speed;
+-}
+-
+-int saa9730_putDebugChar(char c)
+-{
+-	t_uart_saa9730_regmap *kgdb_uart = (t_uart_saa9730_regmap *)(saa9730_base + SAA9730_UART_REGS_ADDR);
+-
+-        if (!saa9730_kgdb_active) {     /* need to init device first */
+-                return 0;
+-        }
+-
+-        while (!(INB(&kgdb_uart->Lsr) & SAA9730_LSR_THRE))
+-                ;
+-	OUTB(c, &kgdb_uart->Thr_Rbr);
+-
+-        return 1;
+-}
+-
+-char saa9730_getDebugChar(void)
+-{
+-	t_uart_saa9730_regmap *kgdb_uart = (t_uart_saa9730_regmap *)(saa9730_base + SAA9730_UART_REGS_ADDR);
+-	char c;
+-
+-        if (!saa9730_kgdb_active) {     /* need to init device first */
+-                return 0;
+-        }
+-        while (!(INB(&kgdb_uart->Lsr) & SAA9730_LSR_DR))
+-                ;
+-
+-	c = INB(&kgdb_uart->Thr_Rbr);
+-	return(c);
+-}
+diff --git a/arch/mips/mips-boards/atlas/atlas_int.c b/arch/mips/mips-boards/atlas/atlas_int.c
+deleted file mode 100644
+index 9f49da9..0000000
+--- a/arch/mips/mips-boards/atlas/atlas_int.c
++++ /dev/null
+@@ -1,271 +0,0 @@
+-/*
+- * Copyright (C) 1999, 2000, 2006  MIPS Technologies, Inc.
+- *	All rights reserved.
+- *	Authors: Carsten Langgaard <carstenl@mips.com>
+- *		 Maciej W. Rozycki <macro@mips.com>
+- *
+- * ########################################################################
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * ########################################################################
+- *
+- * Routines for generic manipulation of the interrupts found on the MIPS
+- * Atlas board.
+- *
+- */
+-#include <linux/compiler.h>
 -#include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/sched.h>
+-#include <linux/slab.h>
 -#include <linux/interrupt.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/kernel.h>
 -
+-#include <asm/gdb-stub.h>
+-#include <asm/io.h>
 -#include <asm/irq_cpu.h>
--#include <asm/mipsregs.h>
--#include <asm/system.h>
+-#include <asm/msc01_ic.h>
 -
--#include <asm/mips-boards/seadint.h>
+-#include <asm/mips-boards/atlas.h>
+-#include <asm/mips-boards/atlasint.h>
+-#include <asm/mips-boards/generic.h>
+-
+-static struct atlas_ictrl_regs *atlas_hw0_icregs;
+-
+-#if 0
+-#define DEBUG_INT(x...) printk(x)
+-#else
+-#define DEBUG_INT(x...)
+-#endif
+-
+-void disable_atlas_irq(unsigned int irq_nr)
+-{
+-	atlas_hw0_icregs->intrsten = 1 << (irq_nr - ATLAS_INT_BASE);
+-	iob();
+-}
+-
+-void enable_atlas_irq(unsigned int irq_nr)
+-{
+-	atlas_hw0_icregs->intseten = 1 << (irq_nr - ATLAS_INT_BASE);
+-	iob();
+-}
+-
+-static void end_atlas_irq(unsigned int irq)
+-{
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
+-		enable_atlas_irq(irq);
+-}
+-
+-static struct irq_chip atlas_irq_type = {
+-	.name = "Atlas",
+-	.ack = disable_atlas_irq,
+-	.mask = disable_atlas_irq,
+-	.mask_ack = disable_atlas_irq,
+-	.unmask = enable_atlas_irq,
+-	.eoi = enable_atlas_irq,
+-	.end = end_atlas_irq,
+-};
+-
+-static inline int ls1bit32(unsigned int x)
+-{
+-	int b = 31, s;
+-
+-	s = 16; if (x << 16 == 0) s = 0; b -= s; x <<= s;
+-	s =  8; if (x <<  8 == 0) s = 0; b -= s; x <<= s;
+-	s =  4; if (x <<  4 == 0) s = 0; b -= s; x <<= s;
+-	s =  2; if (x <<  2 == 0) s = 0; b -= s; x <<= s;
+-	s =  1; if (x <<  1 == 0) s = 0; b -= s;
+-
+-	return b;
+-}
+-
+-static inline void atlas_hw0_irqdispatch(void)
+-{
+-	unsigned long int_status;
+-	int irq;
+-
+-	int_status = atlas_hw0_icregs->intstatus;
+-
+-	/* if int_status == 0, then the interrupt has already been cleared */
+-	if (unlikely(int_status == 0))
+-		return;
+-
+-	irq = ATLAS_INT_BASE + ls1bit32(int_status);
+-
+-	DEBUG_INT("atlas_hw0_irqdispatch: irq=%d\n", irq);
+-
+-	do_IRQ(irq);
+-}
 -
 -static inline int clz(unsigned long x)
 -{
@@ -993,15 +1928,15 @@ index c4b9de3..0000000
 -}
 -
 -/*
-- * IRQs on the SEAD board look basically are combined together on hardware
-- * interrupt 0 (MIPS IRQ 2)) like:
+- * IRQs on the Atlas board look basically like (all external interrupt
+- * sources are combined together on hardware interrupt 0 (MIPS IRQ 2)):
 - *
-- *	MIPS IRQ	Source
+- *      MIPS IRQ        Source
 - *      --------        ------
-- *             0	Software (ignored)
-- *             1        Software (ignored)
-- *             2        UART0 (hw0)
-- *             3        UART1 (hw1)
+- *             0        Software 0 (reschedule IPI on MT)
+- *             1        Software 1 (remote call IPI on MT)
+- *             2        Combined Atlas hardware interrupt (hw0)
+- *             3        Hardware (ignored)
 - *             4        Hardware (ignored)
 - *             5        Hardware (ignored)
 - *             6        Hardware (ignored)
@@ -1010,7 +1945,7 @@ index c4b9de3..0000000
 - * We handle the IRQ according to _our_ priority which is:
 - *
 - * Highest ----     R4k Timer
-- * Lowest  ----     Combined hardware interrupt
+- * Lowest  ----     Software 0
 - *
 - * then we just return, if multiple IRQs are pending then we will just take
 - * another exception, big deal.
@@ -1022,25 +1957,98 @@ index c4b9de3..0000000
 -
 -	irq = irq_ffs(pending);
 -
--	if (irq >= 0)
+-	if (irq == MIPSCPU_INT_ATLAS)
+-		atlas_hw0_irqdispatch();
+-	else if (irq >= 0)
 -		do_IRQ(MIPSCPU_INT_BASE + irq);
 -	else
 -		spurious_interrupt();
 -}
 -
+-static inline void init_atlas_irqs (int base)
+-{
+-	int i;
+-
+-	atlas_hw0_icregs = (struct atlas_ictrl_regs *)
+-			   ioremap(ATLAS_ICTRL_REGS_BASE,
+-				   sizeof(struct atlas_ictrl_regs *));
+-
+-	/*
+-	 * Mask out all interrupt by writing "1" to all bit position in
+-	 * the interrupt reset reg.
+-	 */
+-	atlas_hw0_icregs->intrsten = 0xffffffff;
+-
+-	for (i = ATLAS_INT_BASE; i <= ATLAS_INT_END; i++)
+-		set_irq_chip_and_handler(i, &atlas_irq_type, handle_level_irq);
+-}
+-
+-static struct irqaction atlasirq = {
+-	.handler = no_action,
+-	.name = "Atlas cascade"
+-};
+-
+-msc_irqmap_t __initdata msc_irqmap[] = {
+-	{MSC01C_INT_TMR,		MSC01_IRQ_EDGE, 0},
+-	{MSC01C_INT_PCI,		MSC01_IRQ_LEVEL, 0},
+-};
+-int __initdata msc_nr_irqs = ARRAY_SIZE(msc_irqmap);
+-
+-msc_irqmap_t __initdata msc_eicirqmap[] = {
+-	{MSC01E_INT_SW0,		MSC01_IRQ_LEVEL, 0},
+-	{MSC01E_INT_SW1,		MSC01_IRQ_LEVEL, 0},
+-	{MSC01E_INT_ATLAS,		MSC01_IRQ_LEVEL, 0},
+-	{MSC01E_INT_TMR,		MSC01_IRQ_EDGE, 0},
+-	{MSC01E_INT_PCI,		MSC01_IRQ_LEVEL, 0},
+-	{MSC01E_INT_PERFCTR,		MSC01_IRQ_LEVEL, 0},
+-	{MSC01E_INT_CPUCTR,		MSC01_IRQ_LEVEL, 0}
+-};
+-int __initdata msc_nr_eicirqs = ARRAY_SIZE(msc_eicirqmap);
+-
 -void __init arch_init_irq(void)
 -{
--	mips_cpu_irq_init();
+-	init_atlas_irqs(ATLAS_INT_BASE);
+-
+-	if (!cpu_has_veic)
+-		mips_cpu_irq_init();
+-
+-	switch(mips_revision_corid) {
+-	case MIPS_REVISION_CORID_CORE_MSC:
+-	case MIPS_REVISION_CORID_CORE_FPGA2:
+-	case MIPS_REVISION_CORID_CORE_FPGA3:
+-	case MIPS_REVISION_CORID_CORE_24K:
+-	case MIPS_REVISION_CORID_CORE_EMUL_MSC:
+-		if (cpu_has_veic)
+-			init_msc_irqs (MSC01E_INT_BASE, MSC01E_INT_BASE,
+-				       msc_eicirqmap, msc_nr_eicirqs);
+-		else
+-			init_msc_irqs (MSC01E_INT_BASE, MSC01C_INT_BASE,
+-				       msc_irqmap, msc_nr_irqs);
+-	}
+-
+-	if (cpu_has_veic) {
+-		set_vi_handler (MSC01E_INT_ATLAS, atlas_hw0_irqdispatch);
+-		setup_irq (MSC01E_INT_BASE + MSC01E_INT_ATLAS, &atlasirq);
+-	} else if (cpu_has_vint) {
+-		set_vi_handler (MIPSCPU_INT_ATLAS, atlas_hw0_irqdispatch);
+-#ifdef CONFIG_MIPS_MT_SMTC
+-		setup_irq_smtc (MIPSCPU_INT_BASE + MIPSCPU_INT_ATLAS,
+-				&atlasirq, (0x100 << MIPSCPU_INT_ATLAS));
+-#else /* Not SMTC */
+-		setup_irq(MIPSCPU_INT_BASE + MIPSCPU_INT_ATLAS, &atlasirq);
+-#endif /* CONFIG_MIPS_MT_SMTC */
+-	} else
+-		setup_irq(MIPSCPU_INT_BASE + MIPSCPU_INT_ATLAS, &atlasirq);
 -}
-diff --git a/arch/mips/mips-boards/sead/sead_setup.c b/arch/mips/mips-boards/sead/sead_setup.c
+diff --git a/arch/mips/mips-boards/atlas/atlas_setup.c b/arch/mips/mips-boards/atlas/atlas_setup.c
 deleted file mode 100644
-index 811aba1..0000000
---- a/arch/mips/mips-boards/sead/sead_setup.c
+index 1cc6ebb..0000000
+--- a/arch/mips/mips-boards/atlas/atlas_setup.c
 +++ /dev/null
-@@ -1,81 +0,0 @@
+@@ -1,92 +0,0 @@
 -/*
 - * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.
+- * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
 - *
 - *  This program is free software; you can distribute it and/or modify it
 - *  under the terms of the GNU General Public License (Version 2) as
@@ -1054,10 +2062,9 @@ index 811aba1..0000000
 - *  You should have received a copy of the GNU General Public License along
 - *  with this program; if not, write to the Free Software Foundation, Inc.,
 - *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-- *
-- * SEAD specific setup.
 - */
 -#include <linux/init.h>
+-#include <linux/interrupt.h>
 -#include <linux/sched.h>
 -#include <linux/ioport.h>
 -#include <linux/tty.h>
@@ -1069,31 +2076,43 @@ index 811aba1..0000000
 -#include <asm/irq.h>
 -#include <asm/mips-boards/generic.h>
 -#include <asm/mips-boards/prom.h>
--#include <asm/mips-boards/sead.h>
--#include <asm/mips-boards/seadint.h>
+-#include <asm/mips-boards/atlas.h>
+-#include <asm/mips-boards/atlasint.h>
 -#include <asm/time.h>
+-#include <asm/traps.h>
 -
 -extern void mips_reboot_setup(void);
 -extern void mips_time_init(void);
+-extern unsigned long mips_rtc_get_time(void);
+-
+-#ifdef CONFIG_KGDB
+-extern void kgdb_config(void);
+-#endif
 -
 -static void __init serial_init(void);
 -
 -const char *get_system_type(void)
 -{
--	return "MIPS SEAD";
+-	return "MIPS Atlas";
 -}
 -
--const char display_string[] = "        LINUX ON SEAD       ";
+-const char display_string[] = "        LINUX ON ATLAS       ";
 -
 -void __init plat_mem_setup(void)
 -{
+-	mips_pcibios_init();
+-
 -	ioport_resource.end = 0x7fffffff;
 -
 -	serial_init ();
 -
--	board_time_init = mips_time_init;
--
+-#ifdef CONFIG_KGDB
+-	kgdb_config();
+-#endif
 -	mips_reboot_setup();
+-
+-	board_time_init = mips_time_init;
+-	rtc_mips_get_time = mips_rtc_get_time;
 -}
 -
 -static void __init serial_init(void)
@@ -1104,12 +2123,12 @@ index 811aba1..0000000
 -	memset(&s, 0, sizeof(s));
 -
 -#ifdef CONFIG_CPU_LITTLE_ENDIAN
--	s.iobase = SEAD_UART0_REGS_BASE;
+-	s.iobase = ATLAS_UART_REGS_BASE;
 -#else
--	s.iobase = SEAD_UART0_REGS_BASE+3;
+-	s.iobase = ATLAS_UART_REGS_BASE+3;
 -#endif
--	s.irq = MIPSCPU_INT_BASE + MIPSCPU_INT_UART0;
--	s.uartclk = SEAD_BASE_BAUD * 16;
+-	s.irq = ATLAS_INT_UART;
+-	s.uartclk = ATLAS_BASE_BAUD * 16;
 -	s.flags = UPF_BOOT_AUTOCONF | UPF_SKIP_TEST | UPF_AUTO_IRQ;
 -	s.iotype = UPIO_PORT;
 -	s.regshift = 3;
@@ -1119,47 +2138,306 @@ index 811aba1..0000000
 -	}
 -#endif
 -}
-diff --git a/include/asm-mips/mips-boards/generic.h b/include/asm-mips/mips-boards/generic.h
-index c8ebcc3..ab88e8c 100644
---- a/include/asm-mips/mips-boards/generic.h
-+++ b/include/asm-mips/mips-boards/generic.h
-@@ -27,12 +27,8 @@
- /*
-  * Display register base.
-  */
--#ifdef CONFIG_MIPS_SEAD
--#define ASCII_DISPLAY_POS_BASE     0x1f0005c0
--#else
- #define ASCII_DISPLAY_WORD_BASE    0x1f000410
- #define ASCII_DISPLAY_POS_BASE     0x1f000418
--#endif
+diff --git a/arch/mips/mips-boards/generic/console.c b/arch/mips/mips-boards/generic/console.c
+index 4d8ab99..202fcee 100644
+--- a/arch/mips/mips-boards/generic/console.c
++++ b/arch/mips/mips-boards/generic/console.c
+@@ -22,16 +22,7 @@
+ #include <linux/serial_reg.h>
+ #include <asm/io.h>
  
- 
- /*
-@@ -44,13 +40,9 @@
- /*
-  * Reset register.
-  */
--#ifdef CONFIG_MIPS_SEAD
--#define SOFTRES_REG       0x1e800050
--#define GORESET           0x4d
+-#ifdef CONFIG_MIPS_ATLAS
+-#include <asm/mips-boards/atlas.h>
+-
+-#ifdef CONFIG_CPU_LITTLE_ENDIAN
+-#define PORT(offset) (ATLAS_UART_REGS_BASE     + ((offset)<<3))
 -#else
- #define SOFTRES_REG       0x1f000500
- #define GORESET           0x42
+-#define PORT(offset) (ATLAS_UART_REGS_BASE + 3 + ((offset)<<3))
 -#endif
+-
+-#elif defined(CONFIG_MIPS_SEAD)
++#ifdef CONFIG_MIPS_SEAD
+ 
+ #include <asm/mips-boards/sead.h>
+ 
+diff --git a/arch/mips/mips-boards/generic/init.c b/arch/mips/mips-boards/generic/init.c
+index 4eabc1e..d6436a6 100644
+--- a/arch/mips/mips-boards/generic/init.c
++++ b/arch/mips/mips-boards/generic/init.c
+@@ -197,19 +197,10 @@ void __init kgdb_config (void)
+ 			while ((c = *++argptr) && ('0' <= c && c <= '9'))
+ 				speed = speed * 10 + c - '0';
+ 		}
+-#ifdef CONFIG_MIPS_ATLAS
+-		if (line == 1) {
+-			speed = saa9730_kgdb_hook(speed);
+-			generic_putDebugChar = saa9730_putDebugChar;
+-			generic_getDebugChar = saa9730_getDebugChar;
+-		}
+-		else
+-#endif
+-		{
+-			speed = rs_kgdb_hook(line, speed);
+-			generic_putDebugChar = rs_putDebugChar;
+-			generic_getDebugChar = rs_getDebugChar;
+-		}
 +
++		speed = rs_kgdb_hook(line, speed);
++		generic_putDebugChar = rs_putDebugChar;
++		generic_getDebugChar = rs_getDebugChar;
  
- /*
-  * Revision register.
-diff --git a/include/asm-mips/mips-boards/sead.h b/include/asm-mips/mips-boards/sead.h
+ 		pr_info("KGDB: Using serial line /dev/ttyS%d at %d for "
+ 		        "session, please connect your debugger\n",
+diff --git a/arch/mips/mips-boards/generic/reset.c b/arch/mips/mips-boards/generic/reset.c
+index 7a1bb51..f9ae162 100644
+--- a/arch/mips/mips-boards/generic/reset.c
++++ b/arch/mips/mips-boards/generic/reset.c
+@@ -27,15 +27,9 @@
+ #include <asm/io.h>
+ #include <asm/reboot.h>
+ #include <asm/mips-boards/generic.h>
+-#if defined(CONFIG_MIPS_ATLAS)
+-#include <asm/mips-boards/atlas.h>
+-#endif
+ 
+ static void mips_machine_restart(char *command);
+ static void mips_machine_halt(void);
+-#if defined(CONFIG_MIPS_ATLAS)
+-static void atlas_machine_power_off(void);
+-#endif
+ 
+ static void mips_machine_restart(char *command)
+ {
+@@ -51,22 +45,10 @@ static void mips_machine_halt(void)
+ 	writew(GORESET, softres_reg);
+ }
+ 
+-#if defined(CONFIG_MIPS_ATLAS)
+-static void atlas_machine_power_off(void)
+-{
+-	unsigned int __iomem *psustby_reg = ioremap(ATLAS_PSUSTBY_REG, sizeof(unsigned int));
+-
+-	writew(ATLAS_GOSTBY, psustby_reg);
+-}
+-#endif
+-
+ void mips_reboot_setup(void)
+ {
+ 	_machine_restart = mips_machine_restart;
+ 	_machine_halt = mips_machine_halt;
+-#if defined(CONFIG_MIPS_ATLAS)
+-	pm_power_off = atlas_machine_power_off;
+-#endif
+ #if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_SEAD)
+ 	pm_power_off = mips_machine_halt;
+ #endif
+diff --git a/arch/mips/mips-boards/generic/time.c b/arch/mips/mips-boards/generic/time.c
+index 8f1000f..d7fe97f 100644
+--- a/arch/mips/mips-boards/generic/time.c
++++ b/arch/mips/mips-boards/generic/time.c
+@@ -41,9 +41,6 @@
+ #include <asm/mips-boards/generic.h>
+ #include <asm/mips-boards/prom.h>
+ 
+-#ifdef CONFIG_MIPS_ATLAS
+-#include <asm/mips-boards/atlasint.h>
+-#endif
+ #ifdef CONFIG_MIPS_MALTA
+ #include <asm/mips-boards/maltaint.h>
+ #endif
+@@ -190,7 +187,7 @@ static unsigned int __init estimate_cpu_frequency(void)
+ 	else
+ 		count = 6000000;
+ #endif
+-#if defined(CONFIG_MIPS_ATLAS) || defined(CONFIG_MIPS_MALTA)
++#ifdef CONFIG_MIPS_MALTA
+ 	unsigned long flags;
+ 	unsigned int start;
+ 
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index aba3dbf..ddb964e 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -23,7 +23,6 @@ obj-$(CONFIG_MARKEINS)		+= ops-emma2rh.o pci-emma2rh.o fixup-emma2rh.o
+ obj-$(CONFIG_BASLER_EXCITE)	+= ops-titan.o pci-excite.o fixup-excite.o
+ obj-$(CONFIG_DDB5477)		+= fixup-ddb5477.o pci-ddb5477.o ops-ddb5477.o
+ obj-$(CONFIG_LASAT)		+= pci-lasat.o
+-obj-$(CONFIG_MIPS_ATLAS)	+= fixup-atlas.o
+ obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
+ obj-$(CONFIG_MIPS_EV64120)	+= pci-ev64120.o
+ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000.o ops-au1000.o
+diff --git a/arch/mips/pci/fixup-atlas.c b/arch/mips/pci/fixup-atlas.c
 deleted file mode 100644
-index 68c69de..0000000
---- a/include/asm-mips/mips-boards/sead.h
+index c6cd6e9..0000000
+--- a/arch/mips/pci/fixup-atlas.c
 +++ /dev/null
-@@ -1,36 +0,0 @@
+@@ -1,91 +0,0 @@
+-/*
+- * Copyright (C) 2003, 2004  Ralf Baechle (ralf@linux-mips.org)
+- * Copyright (C) 2005  MIPS Technologies, Inc.  All rights reserved.
+- *	Author:	 Maciej W. Rozycki <macro@mips.com>
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- */
+-#include <linux/init.h>
+-#include <linux/pci.h>
+-
+-#include <asm/mips-boards/atlasint.h>
+-
+-#define PCIA		ATLAS_INT_PCIA
+-#define PCIB		ATLAS_INT_PCIB
+-#define PCIC		ATLAS_INT_PCIC
+-#define PCID		ATLAS_INT_PCID
+-#define INTA		ATLAS_INT_INTA
+-#define INTB		ATLAS_INT_INTB
+-#define ETH		ATLAS_INT_ETH
+-#define INTC		ATLAS_INT_INTC
+-#define SCSI		ATLAS_INT_SCSI
+-#define INTD		ATLAS_INT_INTD
+-
+-static char irq_tab[][5] __initdata = {
+-	/*      INTA    INTB    INTC    INTD */
+-	{0,	0,	0,	0,	0 },	/*  0: Unused */
+-	{0,	0,	0,	0,	0 },	/*  1: Unused */
+-	{0,	0,	0,	0,	0 },	/*  2: Unused */
+-	{0,	0,	0,	0,	0 },	/*  3: Unused */
+-	{0,	0,	0,	0,	0 },	/*  4: Unused */
+-	{0,	0,	0,	0,	0 },	/*  5: Unused */
+-	{0,	0,	0,	0,	0 },	/*  6: Unused */
+-	{0,	0,	0,	0,	0 },	/*  7: Unused */
+-	{0,	0,	0,	0,	0 },	/*  8: Unused */
+-	{0,	0,	0,	0,	0 },	/*  9: Unused */
+-	{0,	0,	0,	0,	0 },	/* 10: Unused */
+-	{0,	0,	0,	0,	0 },	/* 11: Unused */
+-	{0,	0,	0,	0,	0 },	/* 12: Unused */
+-	{0,	0,	0,	0,	0 },	/* 13: Unused */
+-	{0,	0,	0,	0,	0 },	/* 14: Unused */
+-	{0,	PCIA,	PCIB,	PCIC,	PCID },	/* 15: cPCI (behind 21150) */
+-	{0,	SCSI,	0,	0,	0 },	/* 16: SYM53C810A SCSI */
+-	{0,	0,	0,	0,	0 },	/* 17: Core */
+-	{0,	INTA,	INTB,	INTC,	INTD },	/* 18: PCI Slot */
+-	{0,	ETH,	0,	0,	0 },	/* 19: SAA9730 Eth. et al. */
+-	{0,	0,	0,	0,	0 },	/* 20: Unused */
+-	{0,	0,	0,	0,	0 }	/* 21: Unused */
+-};
+-
+-int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+-{
+-	return irq_tab[slot][pin];
+-}
+-
+-/* Do platform specific device initialization at pci_enable_device() time */
+-int pcibios_plat_dev_init(struct pci_dev *dev)
+-{
+-	return 0;
+-}
+-
+-#ifdef CONFIG_KGDB
+-/*
+- * The PCI scan may have moved the saa9730 I/O address, so reread
+- * the address here.
+- * This does mean that it's not possible to debug the PCI bus configuration
+- * code, but it is better than nothing...
+- */
+-
+-static void atlas_saa9730_base_fixup (struct pci_dev *pdev)
+-{
+-	extern void *saa9730_base;
+-	if (pdev->bus == 0 && PCI_SLOT(pdev->devfn) == 19)
+-		(void) pci_read_config_dword (pdev, 0x14, (u32 *)&saa9730_base);
+-	printk ("saa9730_base = %x\n", saa9730_base);
+-}
+-
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_PHILIPS, PCI_DEVICE_ID_PHILIPS_SAA9730,
+-	 atlas_saa9730_base_fixup);
+-
+-#endif
+diff --git a/include/asm-mips/mach-atlas/mc146818rtc.h b/include/asm-mips/mach-atlas/mc146818rtc.h
+deleted file mode 100644
+index 51d337e..0000000
+--- a/include/asm-mips/mach-atlas/mc146818rtc.h
++++ /dev/null
+@@ -1,60 +0,0 @@
+-/*
+- * Copyright (C) 1999, 2000, 2005  MIPS Technologies, Inc.
+- *	All rights reserved.
+- *	Authors: Carsten Langgaard <carstenl@mips.com>
+- *		 Maciej W. Rozycki <macro@mips.com>
+- * Copyright (C) 2003, 05 Ralf Baechle (ralf@linux-mips.org)
+- *
+- * This program is free software; you can distribute it and/or modify it
+- * under the terms of the GNU General Public License (Version 2) as
+- * published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- * for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- */
+-#ifndef __ASM_MACH_ATLAS_MC146818RTC_H
+-#define __ASM_MACH_ATLAS_MC146818RTC_H
+-
+-#include <linux/types.h>
+-
+-#include <asm/addrspace.h>
+-
+-#include <asm/mips-boards/atlas.h>
+-#include <asm/mips-boards/atlasint.h>
+-
+-#define ARCH_RTC_LOCATION
+-
+-#define RTC_PORT(x)	(ATLAS_RTC_ADR_REG + (x) * 8)
+-#define RTC_IO_EXTENT	0x100
+-#define RTC_IOMAPPED	0
+-#define RTC_IRQ		ATLAS_INT_RTC
+-
+-static inline unsigned char CMOS_READ(unsigned long addr)
+-{
+-	volatile u32 *ireg = (void *)CKSEG1ADDR(RTC_PORT(0));
+-	volatile u32 *dreg = (void *)CKSEG1ADDR(RTC_PORT(1));
+-
+-	*ireg = addr;
+-	return *dreg;
+-}
+-
+-static inline void CMOS_WRITE(unsigned char data, unsigned long addr)
+-{
+-	volatile u32 *ireg = (void *)CKSEG1ADDR(RTC_PORT(0));
+-	volatile u32 *dreg = (void *)CKSEG1ADDR(RTC_PORT(1));
+-
+-	*ireg = addr;
+-	*dreg = data;
+-}
+-
+-#define RTC_ALWAYS_BCD	0
+-
+-#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1900)
+-
+-#endif /* __ASM_MACH_ATLAS_MC146818RTC_H */
+diff --git a/include/asm-mips/mips-boards/atlas.h b/include/asm-mips/mips-boards/atlas.h
+deleted file mode 100644
+index a8ae12d..0000000
+--- a/include/asm-mips/mips-boards/atlas.h
++++ /dev/null
+@@ -1,80 +0,0 @@
 -/*
 - * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.
+- * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
 - *
 - * ########################################################################
 - *
@@ -1178,30 +2456,77 @@ index 68c69de..0000000
 - *
 - * ########################################################################
 - *
-- * Defines of the SEAD board specific address-MAP, registers, etc.
+- * Defines of the Atlas board specific address-MAP, registers, etc.
 - *
 - */
--#ifndef _MIPS_SEAD_H
--#define _MIPS_SEAD_H
+-#ifndef _MIPS_ATLAS_H
+-#define _MIPS_ATLAS_H
 -
 -#include <asm/addrspace.h>
 -
 -/*
-- * SEAD UART register base.
+- * Atlas RTC-device indirect register access.
 - */
--#define SEAD_UART0_REGS_BASE    (0x1f000800)
--#define SEAD_BASE_BAUD ( 3686400 / 16 )
+-#define ATLAS_RTC_ADR_REG       0x1f000800
+-#define ATLAS_RTC_DAT_REG       0x1f000808
 -
--#endif /* !(_MIPS_SEAD_H) */
-diff --git a/include/asm-mips/mips-boards/seadint.h b/include/asm-mips/mips-boards/seadint.h
-deleted file mode 100644
-index 4f6a393..0000000
---- a/include/asm-mips/mips-boards/seadint.h
-+++ /dev/null
-@@ -1,35 +0,0 @@
 -/*
-- * Carsten Langgaard, carstenl@mips.com
-- * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.
+- * Atlas interrupt controller register base.
+- */
+-#define ATLAS_ICTRL_REGS_BASE   0x1f000000
+-
+-/*
+- * Atlas registers are memory mapped on 64-bit aligned boundaries and
+- * only word access are allowed.
+- */
+-struct atlas_ictrl_regs {
+-	volatile unsigned int intraw;
+-	int dummy1;
+-	volatile unsigned int intseten;
+-	int dummy2;
+-	volatile unsigned int intrsten;
+-	int dummy3;
+-	volatile unsigned int intenable;
+-	int dummy4;
+-	volatile unsigned int intstatus;
+-	int dummy5;
+-};
+-
+-/*
+- * Atlas UART register base.
+- */
+-#define ATLAS_UART_REGS_BASE    0x1f000900
+-#define ATLAS_BASE_BAUD ( 3686400 / 16 )
+-
+-/*
+- * Atlas PSU standby register.
+- */
+-#define ATLAS_PSUSTBY_REG       0x1f000600
+-#define ATLAS_GOSTBY            0x4d
+-
+-/*
+- * We make a universal assumption about the way the bootloader (YAMON)
+- * have located the Philips SAA9730 chip.
+- * This is not ideal, but is needed for setting up remote debugging as
+- * soon as possible.
+- */
+-#define ATLAS_SAA9730_REG	0x10800000
+-
+-#define ATLAS_SAA9730_BAUDCLOCK	3692300
+-
+-#endif /* !(_MIPS_ATLAS_H) */
+diff --git a/include/asm-mips/mips-boards/atlasint.h b/include/asm-mips/mips-boards/atlasint.h
+deleted file mode 100644
+index 76add42..0000000
+--- a/include/asm-mips/mips-boards/atlasint.h
++++ /dev/null
+@@ -1,115 +0,0 @@
+-/*
+- * Copyright (C) 1999, 2006  MIPS Technologies, Inc.  All rights reserved.
+- *	Authors: Carsten Langgaard <carstenl@mips.com>
+- *		 Maciej W. Rozycki <macro@mips.com>
+- *
+- * ########################################################################
 - *
 - *  This program is free software; you can distribute it and/or modify it
 - *  under the terms of the GNU General Public License (Version 2) as
@@ -1216,43 +2541,122 @@ index 4f6a393..0000000
 - *  with this program; if not, write to the Free Software Foundation, Inc.,
 - *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
 - *
-- * Defines for the SEAD interrupt controller.
+- * ########################################################################
+- *
+- * Defines for the Atlas interrupt controller.
+- *
 - */
--#ifndef _MIPS_SEADINT_H
--#define _MIPS_SEADINT_H
+-#ifndef _MIPS_ATLASINT_H
+-#define _MIPS_ATLASINT_H
 -
 -#include <irq.h>
 -
 -/*
-- * Interrupts 0..7 are used for SEAD CPU interrupts
+- * Interrupts 0..7 are used for Atlas CPU interrupts (nonEIC mode)
 - */
 -#define MIPSCPU_INT_BASE	MIPS_CPU_IRQ_BASE
 -
--#define MIPSCPU_INT_UART0	2
--#define MIPSCPU_INT_UART1	3
--
+-/* CPU interrupt offsets */
+-#define MIPSCPU_INT_SW0		0
+-#define MIPSCPU_INT_SW1		1
+-#define MIPSCPU_INT_MB0		2
+-#define MIPSCPU_INT_ATLAS	MIPSCPU_INT_MB0
+-#define MIPSCPU_INT_MB1		3
+-#define MIPSCPU_INT_MB2		4
+-#define MIPSCPU_INT_MB3		5
+-#define MIPSCPU_INT_MB4		6
 -#define MIPSCPU_INT_CPUCTR	7
 -
--#endif /* !(_MIPS_SEADINT_H) */
+-/*
+- * Interrupts 8..39 are used for Atlas interrupt controller interrupts
+- */
+-#define ATLAS_INT_BASE		8
+-#define ATLAS_INT_UART		(ATLAS_INT_BASE + 0)
+-#define ATLAS_INT_TIM0		(ATLAS_INT_BASE + 1)
+-#define ATLAS_INT_RES2		(ATLAS_INT_BASE + 2)
+-#define ATLAS_INT_RES3		(ATLAS_INT_BASE + 3)
+-#define ATLAS_INT_RTC		(ATLAS_INT_BASE + 4)
+-#define ATLAS_INT_COREHI	(ATLAS_INT_BASE + 5)
+-#define ATLAS_INT_CORELO	(ATLAS_INT_BASE + 6)
+-#define ATLAS_INT_RES7		(ATLAS_INT_BASE + 7)
+-#define ATLAS_INT_PCIA		(ATLAS_INT_BASE + 8)
+-#define ATLAS_INT_PCIB		(ATLAS_INT_BASE + 9)
+-#define ATLAS_INT_PCIC		(ATLAS_INT_BASE + 10)
+-#define ATLAS_INT_PCID		(ATLAS_INT_BASE + 11)
+-#define ATLAS_INT_ENUM		(ATLAS_INT_BASE + 12)
+-#define ATLAS_INT_DEG		(ATLAS_INT_BASE + 13)
+-#define ATLAS_INT_ATXFAIL	(ATLAS_INT_BASE + 14)
+-#define ATLAS_INT_INTA		(ATLAS_INT_BASE + 15)
+-#define ATLAS_INT_INTB		(ATLAS_INT_BASE + 16)
+-#define ATLAS_INT_ETH		ATLAS_INT_INTB
+-#define ATLAS_INT_INTC		(ATLAS_INT_BASE + 17)
+-#define ATLAS_INT_SCSI		ATLAS_INT_INTC
+-#define ATLAS_INT_INTD		(ATLAS_INT_BASE + 18)
+-#define ATLAS_INT_SERR		(ATLAS_INT_BASE + 19)
+-#define ATLAS_INT_RES20		(ATLAS_INT_BASE + 20)
+-#define ATLAS_INT_RES21		(ATLAS_INT_BASE + 21)
+-#define ATLAS_INT_RES22		(ATLAS_INT_BASE + 22)
+-#define ATLAS_INT_RES23		(ATLAS_INT_BASE + 23)
+-#define ATLAS_INT_RES24		(ATLAS_INT_BASE + 24)
+-#define ATLAS_INT_RES25		(ATLAS_INT_BASE + 25)
+-#define ATLAS_INT_RES26		(ATLAS_INT_BASE + 26)
+-#define ATLAS_INT_RES27		(ATLAS_INT_BASE + 27)
+-#define ATLAS_INT_RES28		(ATLAS_INT_BASE + 28)
+-#define ATLAS_INT_RES29		(ATLAS_INT_BASE + 29)
+-#define ATLAS_INT_RES30		(ATLAS_INT_BASE + 30)
+-#define ATLAS_INT_RES31		(ATLAS_INT_BASE + 31)
+-#define ATLAS_INT_END		(ATLAS_INT_BASE + 31)
+-
+-/*
+- * Interrupts 64..127 are used for Soc-it Classic interrupts
+- */
+-#define MSC01C_INT_BASE		64
+-
+-/* SOC-it Classic interrupt offsets */
+-#define MSC01C_INT_TMR		0
+-#define MSC01C_INT_PCI		1
+-
+-/*
+- * Interrupts 64..127 are used for Soc-it EIC interrupts
+- */
+-#define MSC01E_INT_BASE		64
+-
+-/* SOC-it EIC interrupt offsets */
+-#define	MSC01E_INT_SW0		1
+-#define	MSC01E_INT_SW1		2
+-#define	MSC01E_INT_MB0		3
+-#define	MSC01E_INT_ATLAS	MSC01E_INT_MB0
+-#define	MSC01E_INT_MB1		4
+-#define	MSC01E_INT_MB2		5
+-#define	MSC01E_INT_MB3		6
+-#define	MSC01E_INT_MB4		7
+-#define	MSC01E_INT_TMR		8
+-#define	MSC01E_INT_PCI		9
+-#define	MSC01E_INT_PERFCTR	10
+-#define	MSC01E_INT_CPUCTR	11
+-
+-#endif /* !(_MIPS_ATLASINT_H) */
 diff --git a/include/asm-mips/war.h b/include/asm-mips/war.h
-index a37a237..0a0d7b9 100644
+index 13a3502..a37a237 100644
 --- a/include/asm-mips/war.h
 +++ b/include/asm-mips/war.h
-@@ -131,7 +131,7 @@
+@@ -131,8 +131,7 @@
   * Affects:
   *  MIPS 4K		RTL revision <3.0, PRID revision <4
   */
--#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_SEAD)
-+#if defined(CONFIG_MIPS_MALTA)
+-#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_ATLAS) || \
+-    defined(CONFIG_MIPS_SEAD)
++#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_SEAD)
  #define MIPS4K_ICACHE_REFILL_WAR 1
  #endif
  
-@@ -150,7 +150,7 @@
+@@ -151,8 +150,7 @@
   *   MIPS 5Kc,5Kf	RTL revision <2.3, PRID revision <8
   *   MIPS 20Kc		RTL revision <4.0, PRID revision <?
   */
--#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_SEAD)
-+#if defined(CONFIG_MIPS_MALTA)
+-#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_ATLAS) || \
+-    defined(CONFIG_MIPS_SEAD)
++#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_SEAD)
  #define MIPS_CACHE_SYNC_WAR 1
  #endif
  

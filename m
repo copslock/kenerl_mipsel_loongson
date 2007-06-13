@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2007 20:00:12 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:36814 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jun 2007 20:06:02 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:3507 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022433AbXFMTAK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 13 Jun 2007 20:00:10 +0100
+	id S20022479AbXFMTF7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 13 Jun 2007 20:05:59 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5DIqWxX027681;
-	Wed, 13 Jun 2007 19:52:57 +0100
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5DIvgie027774;
+	Wed, 13 Jun 2007 19:58:07 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5DIqWtC027680;
-	Wed, 13 Jun 2007 19:52:32 +0100
-Date:	Wed, 13 Jun 2007 19:52:32 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5DIvdnq027773;
+	Wed, 13 Jun 2007 19:57:39 +0100
+Date:	Wed, 13 Jun 2007 19:57:39 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/3] Remove Momenco Ocelot C support
-Message-ID: <20070613185232.GA27392@linux-mips.org>
-References: <11815673353523-git-send-email-fbuihuu@gmail.com> <118156733610-git-send-email-fbuihuu@gmail.com>
+To:	Fuxin Zhang <fxzhang@ict.ac.cn>
+Cc:	tiansm@lemote.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH 09/15] add serial port definition for lemote fulong
+Message-ID: <20070613185739.GB27392@linux-mips.org>
+References: <11811127722019-git-send-email-tiansm@lemote.com> <11811127741719-git-send-email-tiansm@lemote.com> <20070612123440.GC2926@linux-mips.org> <466E9833.4000302@ict.ac.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <118156733610-git-send-email-fbuihuu@gmail.com>
+In-Reply-To: <466E9833.4000302@ict.ac.cn>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15384
+X-archive-position: 15385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,15 +33,16 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 11, 2007 at 03:08:55PM +0200, Franck Bui-Huu wrote:
+On Tue, Jun 12, 2007 at 08:57:23PM +0800, Fuxin Zhang wrote:
 
-> Momenco Ocelot C support is deprecated and scheduled for removal
-> since September 2006.
+> I think CONFIG_HAVE_STD_PC_SERIAL_PORT is ok, especially for that we now 
+> have CONFIG_SERIAL_8250_NR_UARTS.
+> Nothing special for Fulong's serial ports(we used to have a special 
+> serial port inside the northbridge FPGA), and the 686B is
+> "Standard PC" chip:)
+> We can take the simple way.
 
-And totally untested since ages.  2.6.22 will be its last summer ;-)
-
-Patch queued up to 2.6.23, actually already a few days ago.
-
-Thanks,
+So the serial port initialization rewrite is in -queue, now it needs some
+testing - on all platforms.
 
   Ralf

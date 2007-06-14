@@ -1,37 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 11:20:33 +0100 (BST)
-Received: from hu-out-0506.google.com ([72.14.214.235]:21312 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022742AbXFNKTo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 14 Jun 2007 11:19:44 +0100
-Received: by hu-out-0506.google.com with SMTP id 31so87380huc
-        for <linux-mips@linux-mips.org>; Thu, 14 Jun 2007 03:19:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 11:20:57 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.170]:32579 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022751AbXFNKUl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Jun 2007 11:20:41 +0100
+Received: by ug-out-1314.google.com with SMTP id m3so647570ugc
+        for <linux-mips@linux-mips.org>; Thu, 14 Jun 2007 03:19:40 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:received:to:subject:date:message-id:x-mailer:from;
-        b=qXwhsIWYAll4biAV1CLqwIt+F4M5eViJw8VfNorHrjQ7byrYVWMHegWe7xvqiyJTfckiEXJzZNek+M+kQyr05pq8Rh6OoAG0OT0bgxk9vcHSdcRBlooVy9m8wCjKi7psQKrTdXChjAL0c5K2YFv+fOVw6BEuBWB2SGkrKgdBkgU=
+        h=domainkey-signature:received:received:received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
+        b=Wc26omsWJh32yY3Lj6Mji+GOfieHTmhlWzKV261sALs+5lNmknarOKaNiy9O0Lk3AqaxL+oPypDDtzkmXM0rs7atHajG1HLwmQ9M+snKbA3UNYQazReWWxqJA/wZpaA8LqQLpaM60TY4wAQq7umb1dztOWctZ9NVmFayb5pQV9U=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:to:subject:date:message-id:x-mailer:from;
-        b=Z4BnGWetEJyX1Tt7rSC9OI9fC0N4jtOqtpk5INr92IMHHFZlVVB7VwfFJVU94SMZw6ZX7LmrHC0wU+nANbMo2O1kDZlQmvP4UEOKR24Pm6AT7x4Z1GTwqrCtDCiX2xNeGnS4/2Cp7+/Mrm8DPjE+0cOoPZwVvlsR5NTNn71+ArE=
-Received: by 10.67.22.12 with SMTP id z12mr1951076ugi.1181816383342;
-        Thu, 14 Jun 2007 03:19:43 -0700 (PDT)
+        h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
+        b=eoMXWOqruUxa60OFEXyEPwH7hBXKHdP2SSW6nykubpt0hSBe3ObEcnWHuzPWQ3wU00tJxBq84Om9qCUr0vOv5pfZ+NIIxi1bHWHd5/M2FyKtJ1+OiPlzA0vVJn9lvSvS3Ogq3m6PWvuTWvtvwTy1XFFr5G1WSGAKEAVFtFqfa5I=
+Received: by 10.67.103.16 with SMTP id f16mr1970272ugm.1181816380692;
+        Thu, 14 Jun 2007 03:19:40 -0700 (PDT)
 Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id z37sm3863704ikz.2007.06.14.03.19.40
+        by mx.google.com with ESMTP id y37sm3882209iky.2007.06.14.03.19.39
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 14 Jun 2007 03:19:42 -0700 (PDT)
+        Thu, 14 Jun 2007 03:19:40 -0700 (PDT)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 1375E23F76E; Thu, 14 Jun 2007 12:20:02 +0200 (CEST)
+	id 3948123F76A; Thu, 14 Jun 2007 12:20:02 +0200 (CEST)
 To:	linux-mips@linux-mips.org
-Subject: [RFD] Time rework [take #2]
-Date:	Thu, 14 Jun 2007 12:19:56 +0200
-Message-Id: <11818164011355-git-send-email-fbuihuu@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 1/5] Use generic NTP code for all MIPS platforms
+Date:	Thu, 14 Jun 2007 12:19:57 +0200
+Message-Id: <11818164021503-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.5.2.1
+In-Reply-To: <11818164011355-git-send-email-fbuihuu@gmail.com>
+References: <11818164011355-git-send-email-fbuihuu@gmail.com>
 From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
 Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15393
+X-archive-position: 15394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,84 +42,113 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-OK, I don't get any feedbacks since my original post but I had time to
-make some changes...
+From: Ralf Baechle <ralf@linux-mips.org>
 
-It's now based on "linux-2.6.22-rc4-357-g7518784", with a part of Ralf's
-linux-time patches.
-
-I'd like to port some 'interesting' platforms as a proof of
-concept. Could anybody name them ? I'd like to port a platform that
-uses the 'hpt' as clock source and timer. A second one that uses the
-hpt only as a timer, and a third one that doesn't uses it at all. A
-small description can help too...
-
-Thanks
-
-		Franck
 ---
- arch/mips/Kconfig                         |   13 +
- arch/mips/au1000/common/irq.c             |    3 +-
- arch/mips/au1000/common/setup.c           |    2 -
- arch/mips/au1000/common/time.c            |   44 ---
- arch/mips/basler/excite/excite_setup.c    |    5 +-
- arch/mips/ddb5xxx/common/rtc_ds1386.c     |   10 +-
- arch/mips/ddb5xxx/ddb5477/setup.c         |    4 +-
- arch/mips/dec/setup.c                     |    4 -
- arch/mips/dec/time.c                      |   12 +-
- arch/mips/emma2rh/markeins/setup.c        |    4 +-
- arch/mips/gt64120/wrppmc/setup.c          |    4 -
- arch/mips/gt64120/wrppmc/time.c           |    2 +-
- arch/mips/jmr3927/rbhma3100/setup.c       |    4 +-
- arch/mips/kernel/Makefile                 |    2 +
- arch/mips/kernel/hpt.c                    |  294 ++++++++++++++++++
- arch/mips/kernel/process.c                |    2 +
- arch/mips/kernel/smp.c                    |    1 +
- arch/mips/kernel/smtc.c                   |    2 +-
- arch/mips/kernel/time.c                   |  468 ++--------------------------
- arch/mips/lasat/ds1603.c                  |    6 +-
- arch/mips/lasat/ds1603.h                  |    2 -
- arch/mips/lasat/setup.c                   |    6 +-
- arch/mips/lasat/sysctl.c                  |   59 ----
- arch/mips/lib/Makefile                    |    2 +-
- arch/mips/lib/time.c                      |   52 ++++
- arch/mips/mips-boards/atlas/atlas_setup.c |    5 -
- arch/mips/mips-boards/generic/time.c      |  101 +------
- arch/mips/mips-boards/malta/malta_setup.c |    4 -
- arch/mips/mips-boards/sead/sead_setup.c   |    3 -
- arch/mips/mips-boards/sim/sim_setup.c     |    3 -
- arch/mips/mips-boards/sim/sim_time.c      |   72 +-----
- arch/mips/momentum/ocelot_3/setup.c       |   12 +-
- arch/mips/momentum/ocelot_c/setup.c       |   15 +-
- arch/mips/philips/pnx8550/common/setup.c  |    3 -
- arch/mips/philips/pnx8550/common/time.c   |    7 +-
- arch/mips/pmc-sierra/yosemite/setup.c     |   18 +-
- arch/mips/sgi-ip22/ip22-int.c             |    3 +-
- arch/mips/sgi-ip22/ip22-setup.c           |    2 -
- arch/mips/sgi-ip22/ip22-time.c            |   25 +--
- arch/mips/sgi-ip27/ip27-init.c            |    3 -
- arch/mips/sgi-ip27/ip27-timer.c           |   24 +--
- arch/mips/sgi-ip32/ip32-setup.c           |   12 +-
- arch/mips/sibyte/bcm1480/time.c           |   13 +-
- arch/mips/sibyte/sb1250/time.c            |   13 +-
- arch/mips/sibyte/swarm/setup.c            |   48 +++-
- arch/mips/sibyte/swarm/time.c             |  244 ---------------
- arch/mips/sni/a20r.c                      |    1 -
- arch/mips/sni/ds1216.c                    |    4 +-
- arch/mips/sni/pcimt.c                     |    3 -
- arch/mips/sni/pcit.c                      |    3 -
- arch/mips/sni/rm200.c                     |    2 -
- arch/mips/sni/time.c                      |    2 +-
- arch/mips/tx4927/common/tx4927_setup.c    |    9 +-
- arch/mips/tx4938/common/rtc_rx5c348.c     |   10 +-
- arch/mips/tx4938/common/setup.c           |    9 -
- arch/mips/tx4938/toshiba_rbtx4938/setup.c |    4 +-
- arch/mips/vr41xx/common/init.c            |    8 +-
- include/asm-mips/hpt.h                    |   16 +
- include/asm-mips/rtc.h                    |    6 +-
- include/asm-mips/time.h                   |   51 +---
- 60 files changed, 516 insertions(+), 1249 deletions(-)
- create mode 100644 arch/mips/kernel/hpt.c
- create mode 100644 arch/mips/lib/time.c
- delete mode 100644 arch/mips/sibyte/swarm/time.c
- create mode 100644 include/asm-mips/hpt.h
+ arch/mips/Kconfig               |    4 ++++
+ arch/mips/kernel/time.c         |   24 ++++--------------------
+ arch/mips/sgi-ip27/ip27-timer.c |   18 ------------------
+ 3 files changed, 8 insertions(+), 38 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index da253bc..7bcf38d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -723,6 +723,10 @@ config GENERIC_TIME
+ 	bool
+ 	default y
+ 
++config GENERIC_CMOS_UPDATE
++	bool
++	default y
++
+ config SCHED_NO_NO_OMIT_FRAME_POINTER
+ 	bool
+ 	default y
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index 7def1ff..376e127 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -66,6 +66,10 @@ unsigned long (*rtc_mips_get_time)(void) = null_rtc_get_time;
+ int (*rtc_mips_set_time)(unsigned long) = null_rtc_set_time;
+ int (*rtc_mips_set_mmss)(unsigned long);
+ 
++int update_persistent_clock(struct timespec now)
++{
++	return rtc_mips_set_mmss(now.tv_sec);
++}
+ 
+ /* how many counter cycles in a jiffy */
+ static unsigned long cycles_per_jiffy __read_mostly;
+@@ -124,9 +128,6 @@ static void __init c0_hpt_timer_init(void)
+ int (*mips_timer_state)(void);
+ void (*mips_timer_ack)(void);
+ 
+-/* last time when xtime and rtc are sync'ed up */
+-static long last_rtc_update;
+-
+ /*
+  * local_timer_interrupt() does profiling and process accounting
+  * on a per-CPU basis.
+@@ -158,23 +159,6 @@ irqreturn_t timer_interrupt(int irq, void *dev_id)
+ 	 */
+ 	do_timer(1);
+ 
+-	/*
+-	 * If we have an externally synchronized Linux clock, then update
+-	 * CMOS clock accordingly every ~11 minutes. rtc_mips_set_time() has to be
+-	 * called as close as possible to 500 ms before the new second starts.
+-	 */
+-	if (ntp_synced() &&
+-	    xtime.tv_sec > last_rtc_update + 660 &&
+-	    (xtime.tv_nsec / 1000) >= 500000 - ((unsigned) TICK_SIZE) / 2 &&
+-	    (xtime.tv_nsec / 1000) <= 500000 + ((unsigned) TICK_SIZE) / 2) {
+-		if (rtc_mips_set_mmss(xtime.tv_sec) == 0) {
+-			last_rtc_update = xtime.tv_sec;
+-		} else {
+-			/* do it again in 60 s */
+-			last_rtc_update = xtime.tv_sec - 600;
+-		}
+-	}
+-
+ 	write_sequnlock(&xtime_lock);
+ 
+ 	/*
+diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
+index 8c3c78c..3134616 100644
+--- a/arch/mips/sgi-ip27/ip27-timer.c
++++ b/arch/mips/sgi-ip27/ip27-timer.c
+@@ -40,7 +40,6 @@
+ #define TICK_SIZE (tick_nsec / 1000)
+ 
+ static unsigned long ct_cur[NR_CPUS];	/* What counter should be at next timer irq */
+-static long last_rtc_update;		/* Last time the rtc clock got updated */
+ 
+ #if 0
+ static int set_rtc_mmss(unsigned long nowtime)
+@@ -113,23 +112,6 @@ again:
+ 
+ 	update_process_times(user_mode(get_irq_regs()));
+ 
+-	/*
+-	 * If we have an externally synchronized Linux clock, then update
+-	 * RTC clock accordingly every ~11 minutes. Set_rtc_mmss() has to be
+-	 * called as close as possible to when a second starts.
+-	 */
+-	if (ntp_synced() &&
+-	    xtime.tv_sec > last_rtc_update + 660 &&
+-	    (xtime.tv_nsec / 1000) >= 500000 - ((unsigned) TICK_SIZE) / 2 &&
+-	    (xtime.tv_nsec / 1000) <= 500000 + ((unsigned) TICK_SIZE) / 2) {
+-		if (rtc_mips_set_time(xtime.tv_sec) == 0) {
+-			last_rtc_update = xtime.tv_sec;
+-		} else {
+-			last_rtc_update = xtime.tv_sec - 600;
+-			/* do it again in 60 s */
+-		}
+-	}
+-
+ 	write_sequnlock(&xtime_lock);
+ 	irq_exit();
+ }
+-- 
+1.5.2.1

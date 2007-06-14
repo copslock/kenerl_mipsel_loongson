@@ -1,53 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 12:18:50 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:54735 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20022792AbXFNLSs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 14 Jun 2007 12:18:48 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1HynLj-00064s-00; Thu, 14 Jun 2007 13:18:47 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 2EE14DE3F5; Thu, 14 Jun 2007 13:17:48 +0200 (CEST)
-Date:	Thu, 14 Jun 2007 13:17:48 +0200
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time code.
-Message-ID: <20070614111748.GA8223@alpha.franken.de>
-References: <11818164011355-git-send-email-fbuihuu@gmail.com> <11818164023940-git-send-email-fbuihuu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 13:29:47 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:55268 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20021911AbXFNM3p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Jun 2007 13:29:45 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 14 Jun 2007 21:29:43 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 9C6C83EEE9;
+	Thu, 14 Jun 2007 21:29:14 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 8980C20468;
+	Thu, 14 Jun 2007 21:29:14 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l5ECTDAF081097;
+	Thu, 14 Jun 2007 21:29:14 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 14 Jun 2007 21:29:13 +0900 (JST)
+Message-Id: <20070614.212913.82089068.nemoto@toshiba-tops.co.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 5/5] Implement clockevents for R4000-style cp0 timer
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <11818164024053-git-send-email-fbuihuu@gmail.com>
+References: <11818164011355-git-send-email-fbuihuu@gmail.com>
+	<11818164024053-git-send-email-fbuihuu@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11818164023940-git-send-email-fbuihuu@gmail.com>
-User-Agent: Mutt/1.5.9i
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15397
+X-archive-position: 15398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 14, 2007 at 12:19:59PM +0200, Franck Bui-Huu wrote:
->  arch/mips/sni/a20r.c                      |    1 -
->  arch/mips/sni/ds1216.c                    |    4 +-
->  arch/mips/sni/pcimt.c                     |    3 -
->  arch/mips/sni/pcit.c                      |    3 -
->  arch/mips/sni/rm200.c                     |    2 -
->  arch/mips/sni/time.c                      |    2 +-
+On Thu, 14 Jun 2007 12:20:01 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>  create mode 100644 arch/mips/lib/time.c
 
-the SNI part is broken and can't work that way.
+I think this to_tm() cleanup should be done in separate patch.
 
-1. SNI used two different RTC chips (ds126 and mc146818) and it's no big
-   deal support them in just one kernel with the current framework 
-2. One line of SNI machines (a20r) can't use the cp0 counter, so it's not
-   a really good idea to calibrate it
+Maybe selecting RTC_LIB in Kconfig and replace all to_tm() calls with
 
-Thomas.
+	rtc_time_to_tm(tim, tm);
+	tm->tm_year += 1900;
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+would be enough.
+
+---
+Atsushi Nemoto

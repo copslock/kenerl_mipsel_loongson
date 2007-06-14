@@ -1,82 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 14:44:50 +0100 (BST)
-Received: from qb-out-0506.google.com ([72.14.204.233]:45260 "EHLO
-	qb-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022934AbXFNNos (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 14 Jun 2007 14:44:48 +0100
-Received: by qb-out-0506.google.com with SMTP id q17so209187qba
-        for <linux-mips@linux-mips.org>; Thu, 14 Jun 2007 06:43:47 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=VjVszxTQgDUrdwuzzUwo/0Zttgaxi1T4PP/tPEuKFHKE67c+E8oEUyu2DKzuyaPSFmXG+A2dSc/lOQLvMY5hQ1HrSjiiUlaLep1143+BmIXL4EoTft7x7pZNXFxlpxWzqex8s5O2w3d6CGUtPI9EYNcNKD/+daSr9gdrmVyv8z0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=UYIoFSypvpNyDrtyD7VJpJnABv7ON8aeEiMEQmrVCLRiYBUtf80Yk5ZDNWo3rZHBJqp2BViiltkmk64/Ybge2dr/QFxJ+/RQbIhzs6N7Av4LY+cYxDSwMdLcF1hnxQOojaS5h7PQ09Howeh+I1iPp8lRLmd4zsfd1FEt9KSsHFk=
-Received: by 10.65.237.15 with SMTP id o15mr3220253qbr.1181828627061;
-        Thu, 14 Jun 2007 06:43:47 -0700 (PDT)
-Received: by 10.65.204.8 with HTTP; Thu, 14 Jun 2007 06:43:47 -0700 (PDT)
-Message-ID: <cda58cb80706140643g63c3bf34sbd5b843a15653c3d@mail.gmail.com>
-Date:	Thu, 14 Jun 2007 15:43:47 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time code.
-Cc:	linux-mips@linux-mips.org, "Ralf Baechle" <ralf@linux-mips.org>
-In-Reply-To: <20070614111748.GA8223@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 15:09:38 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:26634 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022938AbXFNOJg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Jun 2007 15:09:36 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 8CE66E1D18;
+	Thu, 14 Jun 2007 16:09:24 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id bX0WJvaK8kKd; Thu, 14 Jun 2007 16:09:24 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 39EB8E1C6B;
+	Thu, 14 Jun 2007 16:09:24 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l5EE9Zo1013851;
+	Thu, 14 Jun 2007 16:09:35 +0200
+Date:	Thu, 14 Jun 2007 15:09:31 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
+ code.
+In-Reply-To: <cda58cb80706140643g63c3bf34sbd5b843a15653c3d@mail.gmail.com>
+Message-ID: <Pine.LNX.4.64N.0706141501080.25868@blysk.ds.pg.gda.pl>
+References: <11818164011355-git-send-email-fbuihuu@gmail.com> 
+ <11818164023940-git-send-email-fbuihuu@gmail.com>  <20070614111748.GA8223@alpha.franken.de>
+ <cda58cb80706140643g63c3bf34sbd5b843a15653c3d@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <11818164011355-git-send-email-fbuihuu@gmail.com>
-	 <11818164023940-git-send-email-fbuihuu@gmail.com>
-	 <20070614111748.GA8223@alpha.franken.de>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3419/Thu Jun 14 15:49:39 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15400
+X-archive-position: 15401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, 14 Jun 2007, Franck Bui-Huu wrote:
 
-On 6/14/07, Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote:
-> On Thu, Jun 14, 2007 at 12:19:59PM +0200, Franck Bui-Huu wrote:
-> >  arch/mips/sni/a20r.c                      |    1 -
-> >  arch/mips/sni/ds1216.c                    |    4 +-
-> >  arch/mips/sni/pcimt.c                     |    3 -
-> >  arch/mips/sni/pcit.c                      |    3 -
-> >  arch/mips/sni/rm200.c                     |    2 -
-> >  arch/mips/sni/time.c                      |    2 +-
->
-> the SNI part is broken and can't work that way.
->
+> The current code doesn't automatically calibrate any hpt. It was
+> really hard to guess which ones need that so now if you need to
+> calibrate your hpt, then you have to call calibrate_hpt().
 
-I don't get you there. Are you talking about patch 3/5 (you're
-replying on this one) or the patch 5/5 ?
+ You are wrong -- calibration is currently automatic if a platform 
+provides a HPT, but has not set up its frequency:
 
-patch #3 is only clean up, so it shouldn't break anything....
-patch #5 does not migrate any platforms, so it's actually broken for
-all current platforms.
+		if (!mips_hpt_frequency)
+			mips_hpt_frequency = calibrate_hpt();
 
-> 1. SNI used two different RTC chips (ds126 and mc146818) and it's no big
->    deal support them in just one kernel with the current framework
+Which should normally be the case unless there is no way to do 
+calibration, when a platform can provide a hardcoded value.  There is 
+nothing to guess here.
 
-That's the point now, if the current implementation can fit well with
-all platforms.
+ I'll have a look at your patches, but I hope you have got about the most 
+interesting configuration right, which is the DEC platform, where you can 
+have one of these:
 
-> 2. One line of SNI machines (a20r) can't use the cp0 counter, so it's not
->    a really good idea to calibrate it
->
+1. No HPT at all.
 
-The current code doesn't automatically calibrate any hpt. It was
-really hard to guess which ones need that so now if you need to
-calibrate your hpt, then you have to call calibrate_hpt().
+2. HPT in the chipset.
 
-Thanks
--- 
-               Franck
+3. HPT in CP0.
+
+depending on the configuration as determined at the run time, with no 
+predefined frequency in the cases #2 and #3.
+
+  Maciej

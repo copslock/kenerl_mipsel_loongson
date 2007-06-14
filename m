@@ -1,84 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 08:11:53 +0100 (BST)
-Received: from mo32.po.2iij.NET ([210.128.50.17]:23365 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022362AbXFNHLv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 14 Jun 2007 08:11:51 +0100
-Received: by mo.po.2iij.net (mo32) id l5E7BjMQ035746; Thu, 14 Jun 2007 16:11:45 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox300) id l5E7BirR019881
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 14 Jun 2007 16:11:44 +0900
-Date:	Thu, 14 Jun 2007 16:11:44 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, vagabon.xyz@gmail.com,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 08:37:32 +0100 (BST)
+Received: from py-out-1112.google.com ([64.233.166.181]:42564 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022662AbXFNHha (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Jun 2007 08:37:30 +0100
+Received: by py-out-1112.google.com with SMTP id f31so862620pyh
+        for <linux-mips@linux-mips.org>; Thu, 14 Jun 2007 00:36:29 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Gxb8Nz0/JW9DB6ZLpw3et1ys0cI9raEtdcNi53Q6GWv3JFpRLDpUeRgPOW3SyHsGn3jnqEbiqORm0YbIRuypUGpABjJoKn8CW28WmVX5vmsOS3XXcMvhFGBzugM2rJE3Rq/M93KOGZH7/0/mizeUomljawFEcqq7yPc77aFx9Mk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=mQXiGM32mfAJhUZjf0U853s+Tqw0ou0O8kfjl2RTnAjeSRL9DQtuowQAKK0ebL8uNXsjEaGdCrCqEV42h4h/DU7M7LvcXNm0vlcFIflxTovnX01AWfkJh/U0++EAB7L9md9qi2eMB9/jke7f4f08B9B8R4lQiNuuHMEXJwhMsjY=
+Received: by 10.65.81.10 with SMTP id i10mr2619010qbl.1181806587851;
+        Thu, 14 Jun 2007 00:36:27 -0700 (PDT)
+Received: by 10.65.204.8 with HTTP; Thu, 14 Jun 2007 00:36:27 -0700 (PDT)
+Message-ID: <cda58cb80706140036p2771be21n5ed5474c029e779c@mail.gmail.com>
+Date:	Thu, 14 Jun 2007 09:36:27 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Yoichi Yuasa" <yoichi_yuasa@tripeaks.co.jp>
 Subject: Re: [PATCH 3/3] Remove Momenco Ocelot C support
-Message-Id: <20070614161144.5725a8d5.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20070613185232.GA27392@linux-mips.org>
-References: <11815673353523-git-send-email-fbuihuu@gmail.com>
-	<118156733610-git-send-email-fbuihuu@gmail.com>
-	<20070613185232.GA27392@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Cc:	"Ralf Baechle" <ralf@linux-mips.org>, linux-mips@linux-mips.org
+In-Reply-To: <20070614161144.5725a8d5.yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Disposition: inline
+References: <11815673353523-git-send-email-fbuihuu@gmail.com>
+	 <118156733610-git-send-email-fbuihuu@gmail.com>
+	 <20070613185232.GA27392@linux-mips.org>
+	 <20070614161144.5725a8d5.yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15389
+X-archive-position: 15390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 13 Jun 2007 19:52:32 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
+Hi Yoichi,
 
-> On Mon, Jun 11, 2007 at 03:08:55PM +0200, Franck Bui-Huu wrote:
-> 
-> > Momenco Ocelot C support is deprecated and scheduled for removal
-> > since September 2006.
-> 
-> And totally untested since ages.  2.6.22 will be its last summer ;-)
-> 
-> Patch queued up to 2.6.23, actually already a few days ago.
+On 6/14/07, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
+> On Wed, 13 Jun 2007 19:52:32 +0100
+> Ralf Baechle <ralf@linux-mips.org> wrote:
+>
+> > On Mon, Jun 11, 2007 at 03:08:55PM +0200, Franck Bui-Huu wrote:
+> >
+> > > Momenco Ocelot C support is deprecated and scheduled for removal
+> > > since September 2006.
+> >
+> > And totally untested since ages.  2.6.22 will be its last summer ;-)
+> >
+> > Patch queued up to 2.6.23, actually already a few days ago.
+>
+> Please queue this patch too.
+>
 
-Please queue this patch too.
+Good catch !
 
-Yoichi
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
----
-
-Already dropped Momenco Ocelot C/G boards support.
-also remove their MTD support.
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/mtd/devices/docprobe.c mips/drivers/mtd/devices/docprobe.c
---- mips-orig/drivers/mtd/devices/docprobe.c	2007-06-14 13:22:04.698797000 +0900
-+++ mips/drivers/mtd/devices/docprobe.c	2007-06-14 13:19:38.473658500 +0900
-@@ -84,8 +84,6 @@ static unsigned long __initdata doc_loca
- #elif defined(CONFIG_MOMENCO_OCELOT)
- 	0x2f000000,
- 	0xff000000,
--#elif defined(CONFIG_MOMENCO_OCELOT_G) || defined (CONFIG_MOMENCO_OCELOT_C)
--	0xff000000,
- #else
- #warning Unknown architecture for DiskOnChip. No default probe locations defined
- #endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/mtd/nand/diskonchip.c mips/drivers/mtd/nand/diskonchip.c
---- mips-orig/drivers/mtd/nand/diskonchip.c	2007-06-14 13:22:05.482846000 +0900
-+++ mips/drivers/mtd/nand/diskonchip.c	2007-06-14 13:19:12.008004500 +0900
-@@ -59,8 +59,6 @@ static unsigned long __initdata doc_loca
- #elif defined(CONFIG_MOMENCO_OCELOT)
- 	0x2f000000,
- 	0xff000000,
--#elif defined(CONFIG_MOMENCO_OCELOT_G) || defined (CONFIG_MOMENCO_OCELOT_C)
--	0xff000000,
- #else
- #warning Unknown architecture for DiskOnChip. No default probe locations defined
- #endif
+Thanks
+-- 
+               Franck

@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 11:19:45 +0100 (BST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jun 2007 11:20:09 +0100 (BST)
 Received: from ug-out-1314.google.com ([66.249.92.175]:54845 "EHLO
 	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022745AbXFNKTm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 14 Jun 2007 11:19:42 +0100
+	id S20022747AbXFNKTo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Jun 2007 11:19:44 +0100
 Received: by ug-out-1314.google.com with SMTP id m3so647571ugc
-        for <linux-mips@linux-mips.org>; Thu, 14 Jun 2007 03:19:42 -0700 (PDT)
+        for <linux-mips@linux-mips.org>; Thu, 14 Jun 2007 03:19:43 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=Vj/gxDyXGbgudhbi+3kKBJ4zTmHJJ+4k2vYFEJxgTWtZVRFPGn6oEU3AbT6/h2YV5kOBgZlQNO48T/SLj7qoPcLV0pba6V0wZ6VolKjNTBfaclN0twrZZOHLhgJRzteFSs7yt4JUKMVBYBi7ZsBfnK0bUxTZAL6OCLTWJMse898=
+        b=mLBrb5gYTBsJN3RXvQaVCEUemWcJipI9gZ+rRnT9ErinqJLRcMjJEAfIE878hjGhDD41qXNdGOGdj/yw9F6vAMt73ijekmqU6/YB0zh4N8BvIU6w33nXFKyiDWbBFtxZ2TAkfVsQWZNtpqa0+fayk//9sdStTehOhuRd3pXVcXI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:to:cc:subject:date:message-id:x-mailer:in-reply-to:references:from;
-        b=hGDcCcaeBwEkQmnhLsQWS+Fus5tubCkQ+gI3Xralo8MxgWiAbIAxbagJLWWGkYDByYBji7D+vtArtO9FZMoBFM3+bzKg9jPQlnWt7XY1/Q5Bs2L1U7CMx8UF37YbERU87D6Lnhz8hzpdzPDBQZurlXCyCtuD477iyKxG+//ocvg=
-Received: by 10.67.89.5 with SMTP id r5mr1957893ugl.1181816382172;
-        Thu, 14 Jun 2007 03:19:42 -0700 (PDT)
+        b=NzLk8qVpjMuoQXhkWbLfJDIhjE3CyuWGxYAfBg6W4Z3Y02M6HJGzw+3VFRRHn+Nqw0SOcnJ8DhxphT9PyPRmzN2U61p6TKkrcSCv3bTO6Y2WsIrtMLRFLUg2l9p5gelCvZ+bp9G8dqrVHARNLE8hzbxQj2km2lqXBmQ/yOtIpmU=
+Received: by 10.66.217.5 with SMTP id p5mr1967936ugg.1181816383800;
+        Thu, 14 Jun 2007 03:19:43 -0700 (PDT)
 Received: from spoutnik.innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTP id y37sm3882217iky.2007.06.14.03.19.39
+        by mx.google.com with ESMTP id z37sm3863714ikz.2007.06.14.03.19.40
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 14 Jun 2007 03:19:40 -0700 (PDT)
+        Thu, 14 Jun 2007 03:19:43 -0700 (PDT)
 Received: by spoutnik.innova-card.com (Postfix, from userid 500)
-	id 7762423F770; Thu, 14 Jun 2007 12:20:02 +0200 (CEST)
+	id D2F7723F773; Thu, 14 Jun 2007 12:20:02 +0200 (CEST)
 To:	linux-mips@linux-mips.org
-Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Subject: [PATCH 2/5] Remove unused time.c for swarm
-Date:	Thu, 14 Jun 2007 12:19:58 +0200
-Message-Id: <11818164023978-git-send-email-fbuihuu@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 4/5] Consolidate all variants of MIPS cp0 timer interrupt handlers.
+Date:	Thu, 14 Jun 2007 12:20:00 +0200
+Message-Id: <118181640247-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.5.2.1
 In-Reply-To: <11818164011355-git-send-email-fbuihuu@gmail.com>
 References: <11818164011355-git-send-email-fbuihuu@gmail.com>
@@ -34,7 +34,7 @@ Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15391
+X-archive-position: 15392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,262 +42,566 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+From: Ralf Baechle <ralf@linux-mips.org>
 
 ---
- arch/mips/sibyte/swarm/time.c |  244 -----------------------------------------
- 1 files changed, 0 insertions(+), 244 deletions(-)
- delete mode 100644 arch/mips/sibyte/swarm/time.c
+ arch/mips/au1000/common/irq.c        |    3 +-
+ arch/mips/au1000/common/time.c       |   40 --------------
+ arch/mips/kernel/smtc.c              |    2 +-
+ arch/mips/kernel/time.c              |   81 +++++++++++++++++++++++++---
+ arch/mips/mips-boards/generic/time.c |   97 ----------------------------------
+ arch/mips/mips-boards/sim/sim_time.c |   70 ------------------------
+ arch/mips/sgi-ip22/ip22-int.c        |    3 +-
+ arch/mips/sgi-ip22/ip22-time.c       |   10 ----
+ arch/mips/sibyte/bcm1480/time.c      |   13 +----
+ arch/mips/sibyte/sb1250/time.c       |   13 +----
+ include/asm-mips/time.h              |    5 +-
+ 11 files changed, 80 insertions(+), 257 deletions(-)
 
-diff --git a/arch/mips/sibyte/swarm/time.c b/arch/mips/sibyte/swarm/time.c
-deleted file mode 100644
-index 97c73c7..0000000
---- a/arch/mips/sibyte/swarm/time.c
-+++ /dev/null
-@@ -1,244 +0,0 @@
--/*
-- * Copyright (C) 2000, 2001 Broadcom Corporation
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * as published by the Free Software Foundation; either version 2
-- * of the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-- */
--
--/*
-- * Time routines for the swarm board.  We pass all the hard stuff
-- * through to the sb1250 handling code.  Only thing we really keep
-- * track of here is what time of day we think it is.  And we don't
-- * really even do a good job of that...
-- */
--
--
--#include <linux/bcd.h>
--#include <linux/init.h>
--#include <linux/time.h>
--#include <linux/sched.h>
--#include <linux/spinlock.h>
--#include <asm/system.h>
--#include <asm/addrspace.h>
--#include <asm/io.h>
--
--#include <asm/sibyte/sb1250.h>
--#include <asm/sibyte/sb1250_regs.h>
--#include <asm/sibyte/sb1250_smbus.h>
--
--static unsigned long long sec_bias = 0;
--static unsigned int usec_bias = 0;
--
--/* Xicor 1241 definitions */
--
--/*
-- * Register bits
-- */
--
--#define X1241REG_SR_BAT	0x80		/* currently on battery power */
--#define X1241REG_SR_RWEL 0x04		/* r/w latch is enabled, can write RTC */
--#define X1241REG_SR_WEL 0x02		/* r/w latch is unlocked, can enable r/w now */
--#define X1241REG_SR_RTCF 0x01		/* clock failed */
--#define X1241REG_BL_BP2 0x80		/* block protect 2 */
--#define X1241REG_BL_BP1 0x40		/* block protect 1 */
--#define X1241REG_BL_BP0 0x20		/* block protect 0 */
--#define X1241REG_BL_WD1	0x10
--#define X1241REG_BL_WD0	0x08
--#define X1241REG_HR_MIL 0x80		/* military time format */
--
--/*
-- * Register numbers
-- */
--
--#define X1241REG_BL	0x10		/* block protect bits */
--#define X1241REG_INT	0x11		/*  */
--#define X1241REG_SC	0x30		/* Seconds */
--#define X1241REG_MN	0x31		/* Minutes */
--#define X1241REG_HR	0x32		/* Hours */
--#define X1241REG_DT	0x33		/* Day of month */
--#define X1241REG_MO	0x34		/* Month */
--#define X1241REG_YR	0x35		/* Year */
--#define X1241REG_DW	0x36		/* Day of Week */
--#define X1241REG_Y2K	0x37		/* Year 2K */
--#define X1241REG_SR	0x3F		/* Status register */
--
--#define X1241_CCR_ADDRESS	0x6F
--
--#define SMB_CSR(reg) (IOADDR(A_SMB_REGISTER(1, reg)))
--
--static int xicor_read(uint8_t addr)
+diff --git a/arch/mips/au1000/common/irq.c b/arch/mips/au1000/common/irq.c
+index ea6e99f..cb33d9e 100644
+--- a/arch/mips/au1000/common/irq.c
++++ b/arch/mips/au1000/common/irq.c
+@@ -67,7 +67,6 @@
+ 
+ extern void set_debug_traps(void);
+ extern irq_cpustat_t irq_stat [NR_CPUS];
+-extern void mips_timer_interrupt(void);
+ 
+ static void setup_local_irq(unsigned int irq, int type, int int_req);
+ static void end_irq(unsigned int irq_nr);
+@@ -646,7 +645,7 @@ asmlinkage void plat_irq_dispatch(void)
+ 	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
+ 
+ 	if (pending & CAUSEF_IP7)
+-		mips_timer_interrupt();
++		ll_timer_interrupt(63);
+ 	else if (pending & CAUSEF_IP2)
+ 		intc0_req0_irqdispatch();
+ 	else if (pending & CAUSEF_IP3)
+diff --git a/arch/mips/au1000/common/time.c b/arch/mips/au1000/common/time.c
+index b32bf46..7028025 100644
+--- a/arch/mips/au1000/common/time.c
++++ b/arch/mips/au1000/common/time.c
+@@ -64,48 +64,8 @@ static unsigned long last_pc0, last_match20;
+ 
+ static DEFINE_SPINLOCK(time_lock);
+ 
+-static inline void ack_r4ktimer(unsigned long newval)
 -{
--        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
--                ;
--
--	__raw_writeq((addr >> 8) & 0x7, SMB_CSR(R_SMB_CMD));
--	__raw_writeq(addr & 0xff, SMB_CSR(R_SMB_DATA));
--	__raw_writeq(V_SMB_ADDR(X1241_CCR_ADDRESS) | V_SMB_TT_WR2BYTE,
--		     SMB_CSR(R_SMB_START));
--
--        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
--                ;
--
--	__raw_writeq(V_SMB_ADDR(X1241_CCR_ADDRESS) | V_SMB_TT_RD1BYTE,
--		     SMB_CSR(R_SMB_START));
--
--        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
--                ;
--
--        if (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_ERROR) {
--                /* Clear error bit by writing a 1 */
--                __raw_writeq(M_SMB_ERROR, SMB_CSR(R_SMB_STATUS));
--                return -1;
--        }
--
--	return (__raw_readq(SMB_CSR(R_SMB_DATA)) & 0xff);
--}
--
--static int xicor_write(uint8_t addr, int b)
--{
--        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
--                ;
--
--	__raw_writeq(addr, SMB_CSR(R_SMB_CMD));
--	__raw_writeq((addr & 0xff) | ((b & 0xff) << 8), SMB_CSR(R_SMB_DATA));
--	__raw_writeq(V_SMB_ADDR(X1241_CCR_ADDRESS) | V_SMB_TT_WR3BYTE,
--		     SMB_CSR(R_SMB_START));
--
--        while (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_BUSY)
--                ;
--
--        if (__raw_readq(SMB_CSR(R_SMB_STATUS)) & M_SMB_ERROR) {
--                /* Clear error bit by writing a 1 */
--                __raw_writeq(M_SMB_ERROR, SMB_CSR(R_SMB_STATUS));
--                return -1;
--        } else {
--		return 0;
--	}
+-	write_c0_compare(newval);
 -}
 -
 -/*
-- * In order to set the CMOS clock precisely, set_rtc_mmss has to be
-- * called 500 ms after the second nowtime has started, because when
-- * nowtime is written into the registers of the CMOS clock, it will
-- * jump to the next second precisely 500 ms later. Check the Motorola
-- * MC146818A or Dallas DS12887 data sheet for details.
-- *
-- * BUG: This routine does not handle hour overflow properly; it just
-- *      sets the minutes. Usually you'll only notice that after reboot!
+- * There are a lot of conceptually broken versions of the MIPS timer interrupt
+- * handler floating around.  This one is rather different, but the algorithm
+- * is provably more robust.
 - */
--int set_rtc_mmss(unsigned long nowtime)
+ unsigned long wtimer;
+ 
+-void mips_timer_interrupt(void)
 -{
--	int retval = 0;
--	int real_seconds, real_minutes, cmos_minutes;
+-	int irq = 63;
 -
--	cmos_minutes = xicor_read(X1241REG_MN);
--	cmos_minutes = BCD2BIN(cmos_minutes);
+-	irq_enter();
+-	kstat_this_cpu.irqs[irq]++;
+-
+-	if (r4k_offset == 0)
+-		goto null;
+-
+-	do {
+-		kstat_this_cpu.irqs[irq]++;
+-		do_timer(1);
+-#ifndef CONFIG_SMP
+-		update_process_times(user_mode(get_irq_regs()));
+-#endif
+-		r4k_cur += r4k_offset;
+-		ack_r4ktimer(r4k_cur);
+-
+-	} while (((unsigned long)read_c0_count()
+-	         - r4k_cur) < 0x7fffffff);
+-
+-	irq_exit();
+-	return;
+-
+-null:
+-	ack_r4ktimer(0);
+-	irq_exit();
+-}
+-
+ #ifdef CONFIG_PM
+ irqreturn_t counter0_irq(int irq, void *dev_id)
+ {
+diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
+index 21eb599..8b95808 100644
+--- a/arch/mips/kernel/smtc.c
++++ b/arch/mips/kernel/smtc.c
+@@ -828,7 +828,7 @@ void ipi_decode(struct smtc_ipi *pipi)
+ #ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
+ 		clock_hang_reported[dest_copy] = 0;
+ #endif /* CONFIG_SMTC_IDLE_HOOK_DEBUG */
+-		local_timer_interrupt(0, NULL);
++		local_timer_interrupt(0);
+ 		irq_exit();
+ 		break;
+ 	case LINUX_SMP_IPI:
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index d176e91..a75d63b 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -131,7 +131,7 @@ void (*mips_timer_ack)(void);
+  * a broadcasted inter-processor interrupt which itself is triggered
+  * by the global timer interrupt.
+  */
+-void local_timer_interrupt(int irq, void *dev_id)
++void local_timer_interrupt(int irq)
+ {
+ 	profile_tick(CPU_PROFILING);
+ 	update_process_times(user_mode(get_irq_regs()));
+@@ -161,7 +161,7 @@ irqreturn_t timer_interrupt(int irq, void *dev_id)
+ 	 * In SMP mode, local_timer_interrupt() is invoked by appropriate
+ 	 * low-level local timer interrupt handler.
+ 	 */
+-	local_timer_interrupt(irq, dev_id);
++	local_timer_interrupt(irq);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -171,9 +171,10 @@ int null_perf_irq(void)
+ 	return 0;
+ }
+ 
++EXPORT_SYMBOL(null_perf_irq);
++
+ int (*perf_irq)(void) = null_perf_irq;
+ 
+-EXPORT_SYMBOL(null_perf_irq);
+ EXPORT_SYMBOL(perf_irq);
+ 
+ /*
+@@ -186,7 +187,7 @@ EXPORT_SYMBOL(mipsxx_perfcount_irq);
+  * Possibly handle a performance counter interrupt.
+  * Return true if the timer interrupt should not be checked
+  */
+-static inline int handle_perf_irq (int r2)
++static inline int handle_perf_irq(int r2)
+ {
+ 	/*
+ 	 * The performance counter overflow interrupt may be shared with the
+@@ -200,25 +201,89 @@ static inline int handle_perf_irq (int r2)
+ 		!r2;
+ }
+ 
+-asmlinkage void ll_timer_interrupt(int irq)
++extern void smtc_timer_broadcast(int);
++
++void ll_timer_interrupt(int irq)
+ {
++	int cpu = smp_processor_id();
+ 	int r2 = cpu_has_mips_r2;
+ 
+ 	irq_enter();
+ 	kstat_this_cpu.irqs[irq]++;
+ 
++#ifdef CONFIG_MIPS_MT_SMTC
++	/*
++	 *  In an SMTC system, one Count/Compare set exists per VPE.
++	 *  Which TC within a VPE gets the interrupt is essentially
++	 *  random - we only know that it shouldn't be one with
++	 *  IXMT set. Whichever TC gets the interrupt needs to
++	 *  send special interprocessor interrupts to the other
++	 *  TCs to make sure that they schedule, etc.
++	 *
++	 *  That code is specific to the SMTC kernel, not to
++	 *  the a particular platform, so it's invoked from
++	 *  the general MIPS timer_interrupt routine.
++	 */
++
++	/*
++	 * We could be here due to timer interrupt,
++	 * perf counter overflow, or both.
++	 */
++	(void) handle_perf_irq(1);
++
++	if (read_c0_cause() & (1 << 30)) {
++		/*
++		 * There are things we only want to do once per tick
++		 * in an "MP" system.   One TC of each VPE will take
++		 * the actual timer interrupt.  The others will get
++		 * timer broadcast IPIs. We use whoever it is that takes
++		 * the tick on VPE 0 to run the full timer_interrupt().
++		 */
++		if (cpu_data[cpu].vpe_id == 0) {
++			timer_interrupt(irq, NULL);
++		} else {
++			write_c0_compare(read_c0_count() +
++			                 (mips_hpt_frequency/HZ));
++			local_timer_interrupt(irq);
++		}
++		smtc_timer_broadcast(cpu_data[cpu].vpe_id);
++	}
++#else /* CONFIG_MIPS_MT_SMTC */
+ 	if (handle_perf_irq(r2))
+ 		goto out;
+ 
+ 	if (r2 && ((read_c0_cause() & (1 << 30)) == 0))
+ 		goto out;
+ 
+-	timer_interrupt(irq, NULL);
+-
++	if (cpu == 0) {
++		/*
++		 * CPU 0 handles the global timer interrupt job and process
++		 * accounting resets count/compare registers to trigger next
++		 * timer int.
++		 */
++		timer_interrupt(irq, NULL);
++	} else {
++		/* Everyone else needs to reset the timer int here as
++		   ll_local_timer_interrupt doesn't */
++		/*
++		 * FIXME: need to cope with counter underflow.
++		 * More support needs to be added to kernel/time for
++		 * counter/timer interrupts on multiple CPU's
++		 */
++		write_c0_compare(read_c0_count() + (mips_hpt_frequency/HZ));
++
++		/*
++		 * Other CPUs should do profiling and process accounting
++		 */
++		local_timer_interrupt(irq);
++	}
+ out:
++#endif /* CONFIG_MIPS_MT_SMTC */
++
+ 	irq_exit();
+ }
+ 
++
+ asmlinkage void ll_local_timer_interrupt(int irq)
+ {
+ 	irq_enter();
+@@ -226,7 +291,7 @@ asmlinkage void ll_local_timer_interrupt(int irq)
+ 		kstat_this_cpu.irqs[irq]++;
+ 
+ 	/* we keep interrupt disabled all the time */
+-	local_timer_interrupt(irq, NULL);
++	local_timer_interrupt(irq);
+ 
+ 	irq_exit();
+ }
+diff --git a/arch/mips/mips-boards/generic/time.c b/arch/mips/mips-boards/generic/time.c
+index 67a0718..1470318 100644
+--- a/arch/mips/mips-boards/generic/time.c
++++ b/arch/mips/mips-boards/generic/time.c
+@@ -75,101 +75,6 @@ extern int null_perf_irq(void);
+ extern int (*perf_irq)(void);
+ 
+ /*
+- * Possibly handle a performance counter interrupt.
+- * Return true if the timer interrupt should not be checked
+- */
+-static inline int handle_perf_irq (int r2)
+-{
+-	/*
+-	 * The performance counter overflow interrupt may be shared with the
+-	 * timer interrupt (mipsxx_perfcount_irq < 0). If it is and a
+-	 * performance counter has overflowed (perf_irq() == IRQ_HANDLED)
+-	 * and we can't reliably determine if a counter interrupt has also
+-	 * happened (!r2) then don't check for a timer interrupt.
+-	 */
+-	return (mipsxx_perfcount_irq < 0) &&
+-		perf_irq() == IRQ_HANDLED &&
+-		!r2;
+-}
+-
+-irqreturn_t mips_timer_interrupt(int irq, void *dev_id)
+-{
+-	int cpu = smp_processor_id();
+-
+-#ifdef CONFIG_MIPS_MT_SMTC
+-	/*
+-	 *  In an SMTC system, one Count/Compare set exists per VPE.
+-	 *  Which TC within a VPE gets the interrupt is essentially
+-	 *  random - we only know that it shouldn't be one with
+-	 *  IXMT set. Whichever TC gets the interrupt needs to
+-	 *  send special interprocessor interrupts to the other
+-	 *  TCs to make sure that they schedule, etc.
+-	 *
+-	 *  That code is specific to the SMTC kernel, not to
+-	 *  the a particular platform, so it's invoked from
+-	 *  the general MIPS timer_interrupt routine.
+-	 */
 -
 -	/*
--	 * since we're only adjusting minutes and seconds,
--	 * don't interfere with hour overflow. This avoids
--	 * messing with unknown time zones but requires your
--	 * RTC not to be off by more than 15 minutes
+-	 * We could be here due to timer interrupt,
+-	 * perf counter overflow, or both.
 -	 */
--	real_seconds = nowtime % 60;
--	real_minutes = nowtime / 60;
--	if (((abs(real_minutes - cmos_minutes) + 15)/30) & 1)
--		real_minutes += 30;		/* correct for half hour time zone */
--	real_minutes %= 60;
+-	(void) handle_perf_irq(1);
 -
--	/* unlock writes to the CCR */
--	xicor_write(X1241REG_SR, X1241REG_SR_WEL);
--	xicor_write(X1241REG_SR, X1241REG_SR_WEL | X1241REG_SR_RWEL);
--
--	if (abs(real_minutes - cmos_minutes) < 30) {
--		real_seconds = BIN2BCD(real_seconds);
--		real_minutes = BIN2BCD(real_minutes);
--		xicor_write(X1241REG_SC, real_seconds);
--		xicor_write(X1241REG_MN, real_minutes);
--	} else {
--		printk(KERN_WARNING
--		       "set_rtc_mmss: can't update from %d to %d\n",
--		       cmos_minutes, real_minutes);
--		retval = -1;
+-	if (read_c0_cause() & (1 << 30)) {
+-		/*
+-		 * There are things we only want to do once per tick
+-		 * in an "MP" system.   One TC of each VPE will take
+-		 * the actual timer interrupt.  The others will get
+-		 * timer broadcast IPIs. We use whoever it is that takes
+-		 * the tick on VPE 0 to run the full timer_interrupt().
+-		 */
+-		if (cpu_data[cpu].vpe_id == 0) {
+-			timer_interrupt(irq, NULL);
+-		} else {
+-			write_c0_compare(read_c0_count() +
+-			                 (mips_hpt_frequency/HZ));
+-			local_timer_interrupt(irq, dev_id);
+-		}
+-		smtc_timer_broadcast(cpu_data[cpu].vpe_id);
 -	}
+-#else /* CONFIG_MIPS_MT_SMTC */
+-	int r2 = cpu_has_mips_r2;
 -
--	xicor_write(X1241REG_SR, 0);
+-	if (handle_perf_irq(r2))
+-		goto out;
 -
--	printk("set_rtc_mmss: %02d:%02d\n", real_minutes, real_seconds);
+-	if (r2 && ((read_c0_cause() & (1 << 30)) == 0))
+-		goto out;
 -
--	return retval;
--}
--
--static unsigned long __init get_swarm_time(void)
--{
--	unsigned int year, mon, day, hour, min, sec, y2k;
--
--	sec = xicor_read(X1241REG_SC);
--	min = xicor_read(X1241REG_MN);
--	hour = xicor_read(X1241REG_HR);
--
--	if (hour & X1241REG_HR_MIL) {
--		hour &= 0x3f;
+-	if (cpu == 0) {
+-		/*
+-		 * CPU 0 handles the global timer interrupt job and process
+-		 * accounting resets count/compare registers to trigger next
+-		 * timer int.
+-		 */
+-		timer_interrupt(irq, NULL);
 -	} else {
--		if (hour & 0x20)
--			hour = (hour & 0xf) + 0x12;
+-		/* Everyone else needs to reset the timer int here as
+-		   ll_local_timer_interrupt doesn't */
+-		/*
+-		 * FIXME: need to cope with counter underflow.
+-		 * More support needs to be added to kernel/time for
+-		 * counter/timer interrupts on multiple CPU's
+-		 */
+-		write_c0_compare(read_c0_count() + (mips_hpt_frequency/HZ));
+-
+-		/*
+-		 * Other CPUs should do profiling and process accounting
+-		 */
+-		local_timer_interrupt(irq, dev_id);
 -	}
--
--	sec = BCD2BIN(sec);
--	min = BCD2BIN(min);
--	hour = BCD2BIN(hour);
--
--	day = xicor_read(X1241REG_DT);
--	mon = xicor_read(X1241REG_MO);
--	year = xicor_read(X1241REG_YR);
--	y2k = xicor_read(X1241REG_Y2K);
--
--	day = BCD2BIN(day);
--	mon = BCD2BIN(mon);
--	year = BCD2BIN(year);
--	y2k = BCD2BIN(y2k);
--
--	year += (y2k * 100);
--
--	return mktime(year, mon, day, hour, min, sec);
+-out:
+-#endif /* CONFIG_MIPS_MT_SMTC */
+-	return IRQ_HANDLED;
 -}
 -
 -/*
-- *  Bring up the timer at 100 Hz.
-- */
--void __init swarm_time_init(void)
+  * Estimate CPU frequency.  Sets mips_hpt_frequency as a side-effect
+  */
+ static unsigned int __init estimate_cpu_frequency(void)
+@@ -315,8 +220,6 @@ void __init plat_timer_setup(struct irqaction *irq)
+ 		mips_cpu_timer_irq = MIPSCPU_INT_BASE + hwint;
+ 	}
+ 
+-	/* we are using the cpu counter for timer interrupts */
+-	irq->handler = mips_timer_interrupt;	/* we use our own handler */
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 	setup_irq_smtc(mips_cpu_timer_irq, irq, 0x100 << hwint);
+ #else
+diff --git a/arch/mips/mips-boards/sim/sim_time.c b/arch/mips/mips-boards/sim/sim_time.c
+index f8b8dff..32f2097 100644
+--- a/arch/mips/mips-boards/sim/sim_time.c
++++ b/arch/mips/mips-boards/sim/sim_time.c
+@@ -25,75 +25,6 @@
+ 
+ unsigned long cpu_khz;
+ 
+-irqreturn_t sim_timer_interrupt(int irq, void *dev_id)
 -{
--	unsigned int flags;
--	int status;
+-#ifdef CONFIG_SMP
+-	int cpu = smp_processor_id();
 -
--	/* Set up the scd general purpose timer 0 to cpu 0 */
--	sb1250_time_init();
--
--	/* Establish communication with the Xicor 1241 RTC */
--	/* XXXKW how do I share the SMBus with the I2C subsystem? */
--
--	__raw_writeq(K_SMB_FREQ_400KHZ, SMB_CSR(R_SMB_FREQ));
--	__raw_writeq(0, SMB_CSR(R_SMB_CONTROL));
--
--	if ((status = xicor_read(X1241REG_SR_RTCF)) < 0) {
--		printk("x1241: couldn't detect on SWARM SMBus 1\n");
--	} else {
--		if (status & X1241REG_SR_RTCF)
--			printk("x1241: battery failed -- time is probably wrong\n");
--		write_seqlock_irqsave(&xtime_lock, flags);
--		xtime.tv_sec = get_swarm_time();
--		xtime.tv_nsec = 0;
--		write_sequnlock_irqrestore(&xtime_lock, flags);
+-	/*
+-	 * CPU 0 handles the global timer interrupt job
+-	 * resets count/compare registers to trigger next timer int.
+-	 */
+-#ifndef CONFIG_MIPS_MT_SMTC
+-	if (cpu == 0) {
+-		timer_interrupt(irq, dev_id);
 -	}
+-	else {
+-		/* Everyone else needs to reset the timer int here as
+-		   ll_local_timer_interrupt doesn't */
+-		/*
+-		 * FIXME: need to cope with counter underflow.
+-		 * More support needs to be added to kernel/time for
+-		 * counter/timer interrupts on multiple CPU's
+-		 */
+-		write_c0_compare (read_c0_count() + ( mips_hpt_frequency/HZ));
+-	}
+-#else /* SMTC */
+-	/*
+-	 *  In SMTC system, one Count/Compare set exists per VPE.
+-	 *  Which TC within a VPE gets the interrupt is essentially
+-	 *  random - we only know that it shouldn't be one with
+-	 *  IXMT set. Whichever TC gets the interrupt needs to
+-	 *  send special interprocessor interrupts to the other
+-	 *  TCs to make sure that they schedule, etc.
+-	 *
+-	 *  That code is specific to the SMTC kernel, not to
+-	 *  the simulation platform, so it's invoked from
+-	 *  the general MIPS timer_interrupt routine.
+-	 *
+-	 * We have a problem in that the interrupt vector code
+-	 * had to turn off the timer IM bit to avoid redundant
+-	 * entries, but we may never get to mips_cpu_irq_end
+-	 * to turn it back on again if the scheduler gets
+-	 * involved.  So we clear the pending timer here,
+-	 * and re-enable the mask...
+-	 */
+-
+-	int vpflags = dvpe();
+-	write_c0_compare (read_c0_count() - 1);
+-	clear_c0_cause(0x100 << MIPSCPU_INT_CPUCTR);
+-	set_c0_status(0x100 << MIPSCPU_INT_CPUCTR);
+-	irq_enable_hazard();
+-	evpe(vpflags);
+-
+-	if(cpu_data[cpu].vpe_id == 0) timer_interrupt(irq, dev_id);
+-	else write_c0_compare (read_c0_count() + ( mips_hpt_frequency/HZ));
+-	smtc_timer_broadcast(cpu_data[cpu].vpe_id);
+-
+-#endif /* CONFIG_MIPS_MT_SMTC */
+-
+-	/*
+-	 * every CPU should do profiling and process accounting
+-	 */
+- 	local_timer_interrupt (irq, dev_id);
+-	return IRQ_HANDLED;
+-#else
+-	return timer_interrupt (irq, dev_id);
+-#endif
 -}
+-
+-
+-
+ /*
+  * Estimate CPU frequency.  Sets mips_hpt_frequency as a side-effect
+  */
+@@ -188,7 +119,6 @@ void __init plat_timer_setup(struct irqaction *irq)
+ 	}
+ 
+ 	/* we are using the cpu counter for timer interrupts */
+-	irq->handler = sim_timer_interrupt;
+ 	setup_irq(mips_cpu_timer_irq, irq);
+ 
+ #ifdef CONFIG_SMP
+diff --git a/arch/mips/sgi-ip22/ip22-int.c b/arch/mips/sgi-ip22/ip22-int.c
+index 1834832..790ccc5 100644
+--- a/arch/mips/sgi-ip22/ip22-int.c
++++ b/arch/mips/sgi-ip22/ip22-int.c
+@@ -204,7 +204,6 @@ static struct irqaction map1_cascade = {
+ #define SGI_INTERRUPTS	SGINT_LOCAL3
+ #endif
+ 
+-extern void indy_r4k_timer_interrupt(void);
+ extern void indy_8254timer_irq(void);
+ 
+ /*
+@@ -243,7 +242,7 @@ asmlinkage void plat_irq_dispatch(void)
+ 	 * First we check for r4k counter/timer IRQ.
+ 	 */
+ 	if (pending & CAUSEF_IP7)
+-		indy_r4k_timer_interrupt();
++		ll_timer_interrupt(SGI_TIMER_IRQ);
+ 	else if (pending & CAUSEF_IP2)
+ 		indy_local0_irqdispatch();
+ 	else if (pending & CAUSEF_IP3)
+diff --git a/arch/mips/sgi-ip22/ip22-time.c b/arch/mips/sgi-ip22/ip22-time.c
+index 77f0c30..7f4e3b1 100644
+--- a/arch/mips/sgi-ip22/ip22-time.c
++++ b/arch/mips/sgi-ip22/ip22-time.c
+@@ -189,16 +189,6 @@ void indy_8254timer_irq(void)
+ 	irq_exit();
+ }
+ 
+-void indy_r4k_timer_interrupt(void)
+-{
+-	int irq = SGI_TIMER_IRQ;
+-
+-	irq_enter();
+-	kstat_this_cpu.irqs[irq]++;
+-	timer_interrupt(irq, NULL);
+-	irq_exit();
+-}
+-
+ void __init plat_timer_setup(struct irqaction *irq)
+ {
+ 	/* over-write the handler, we use our own way */
+diff --git a/arch/mips/sibyte/bcm1480/time.c b/arch/mips/sibyte/bcm1480/time.c
+index 6f3f71b..8519091 100644
+--- a/arch/mips/sibyte/bcm1480/time.c
++++ b/arch/mips/sibyte/bcm1480/time.c
+@@ -103,18 +103,7 @@ void bcm1480_timer_interrupt(void)
+ 	__raw_writeq(M_SCD_TIMER_ENABLE|M_SCD_TIMER_MODE_CONTINUOUS,
+ 	      IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG)));
+ 
+-	if (cpu == 0) {
+-		/*
+-		 * CPU 0 handles the global timer interrupt job
+-		 */
+-		ll_timer_interrupt(irq);
+-	}
+-	else {
+-		/*
+-		 * other CPUs should just do profiling and process accounting
+-		 */
+-		ll_local_timer_interrupt(irq);
+-	}
++	ll_timer_interrupt(irq);
+ }
+ 
+ static cycle_t bcm1480_hpt_read(void)
+diff --git a/arch/mips/sibyte/sb1250/time.c b/arch/mips/sibyte/sb1250/time.c
+index 2efffe1..5bb83cd 100644
+--- a/arch/mips/sibyte/sb1250/time.c
++++ b/arch/mips/sibyte/sb1250/time.c
+@@ -125,18 +125,7 @@ void sb1250_timer_interrupt(void)
+ 	____raw_writeq(M_SCD_TIMER_ENABLE | M_SCD_TIMER_MODE_CONTINUOUS,
+ 		       IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG)));
+ 
+-	if (cpu == 0) {
+-		/*
+-		 * CPU 0 handles the global timer interrupt job
+-		 */
+-		ll_timer_interrupt(irq);
+-	}
+-	else {
+-		/*
+-		 * other CPUs should just do profiling and process accounting
+-		 */
+-		ll_local_timer_interrupt(irq);
+-	}
++	ll_timer_interrupt(irq);
+ }
+ 
+ /*
+diff --git a/include/asm-mips/time.h b/include/asm-mips/time.h
+index 74ab331..9a49a93 100644
+--- a/include/asm-mips/time.h
++++ b/include/asm-mips/time.h
+@@ -63,13 +63,12 @@ extern irqreturn_t timer_interrupt(int irq, void *dev_id);
+ /*
+  * the corresponding low-level timer interrupt routine.
+  */
+-extern asmlinkage void ll_timer_interrupt(int irq);
++extern void ll_timer_interrupt(int irq);
+ 
+ /*
+  * profiling and process accouting is done separately in local_timer_interrupt
+  */
+-extern void local_timer_interrupt(int irq, void *dev_id);
+-extern asmlinkage void ll_local_timer_interrupt(int irq);
++extern void local_timer_interrupt(int irq);
+ 
+ /*
+  * board specific routines required by time_init().
 -- 
 1.5.2.1

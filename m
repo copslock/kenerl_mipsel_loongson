@@ -1,65 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2007 15:25:58 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.183]:29927 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022465AbXFOOZi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 15 Jun 2007 15:25:38 +0100
-Received: by py-out-1112.google.com with SMTP id f31so1704640pyh
-        for <linux-mips@linux-mips.org>; Fri, 15 Jun 2007 07:24:37 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=dt+KFBnjWIEpgFNdPW9D9wz0DicTX/T/Nd9lNDD+XHtigCGikJL44orFviklQTUsHDuSc/5DzOpd8Fop02R/FEQeg7zB+nfJTC/ksoq63FJAAv5sVUfdfJtx1qkal7qIRCkCuVzKG7kT3CpR2I9qNf9Oy03qmf/eAaUWM9GZGy8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=lXo1j4kr+lJNnd21Da2xLWF/C9b/ThuT3uSg9SE6Rnx1bgwZ0pOCg61XIJhdnqisEIe0m9/Tz47M2FR/sp/HZ3UFSC61NSdJCM3Lh4VbxdLvzxj2HWFdajmQIGjtMUujcJFSUONmHcBmlMIHarkBdtitThPoFf6HD/TPBMyj5w0=
-Received: by 10.64.143.12 with SMTP id q12mr5309201qbd.1181917476924;
-        Fri, 15 Jun 2007 07:24:36 -0700 (PDT)
-Received: by 10.65.204.8 with HTTP; Fri, 15 Jun 2007 07:24:36 -0700 (PDT)
-Message-ID: <cda58cb80706150724i1cbbfd1aw51d23d18e35f6266@mail.gmail.com>
-Date:	Fri, 15 Jun 2007 16:24:36 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time code.
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	"Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-	linux-mips@linux-mips.org
-In-Reply-To: <20070615132613.GA16133@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2007 15:34:43 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:54041 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20022471AbXFOOel (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 Jun 2007 15:34:41 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 3EF3F3ECA; Fri, 15 Jun 2007 07:34:07 -0700 (PDT)
+Message-ID: <4672A3C8.70308@ru.mvista.com>
+Date:	Fri, 15 Jun 2007 18:35:52 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
+ code.
+References: <11818164011355-git-send-email-fbuihuu@gmail.com>  <11818164023940-git-send-email-fbuihuu@gmail.com>  <20070614111748.GA8223@alpha.franken.de>  <cda58cb80706140643g63c3bf34sbd5b843a15653c3d@mail.gmail.com>  <Pine.LNX.4.64N.0706141501080.25868@blysk.ds.pg.gda.pl>  <cda58cb80706140731j1b6e8e36l96d4423db1ffd9e7@mail.gmail.com>  <Pine.LNX.4.64N.0706141648540.25868@blysk.ds.pg.gda.pl> <cda58cb80706150159j5c3d5b7p4293dc529d5ee97c@mail.gmail.com> <Pine.LNX.4.64N.0706151117180.3754@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0706151117180.3754@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <11818164011355-git-send-email-fbuihuu@gmail.com>
-	 <11818164023940-git-send-email-fbuihuu@gmail.com>
-	 <20070614111748.GA8223@alpha.franken.de>
-	 <cda58cb80706140643g63c3bf34sbd5b843a15653c3d@mail.gmail.com>
-	 <Pine.LNX.4.64N.0706141501080.25868@blysk.ds.pg.gda.pl>
-	 <cda58cb80706140731j1b6e8e36l96d4423db1ffd9e7@mail.gmail.com>
-	 <Pine.LNX.4.64N.0706141648540.25868@blysk.ds.pg.gda.pl>
-	 <cda58cb80706150159j5c3d5b7p4293dc529d5ee97c@mail.gmail.com>
-	 <Pine.LNX.4.64N.0706151117180.3754@blysk.ds.pg.gda.pl>
-	 <20070615132613.GA16133@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15423
+X-archive-position: 15424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On 6/15/07, Ralf Baechle <ralf@linux-mips.org> wrote:
->
-> For some reason the calibration turned out to be rather trick on Indys, so
-> arch/mips/sgi-ip22/ip22-time.c's plat_time_init is a well working example
-> for calibration of the cp0 timer against a timer of know speed.
->
+Maciej W. Rozycki wrote:
 
-Do you think it's possible to work out a common version of this
-calibration without to many hacks ? Or should we simply move the
-current generic one into the dec code and resolve this point later ?
--- 
-               Franck
+>>I don't see how you can have hrtimer support if you choose a periodic
+>>timer...
+
+>  Well, periodic timers do seem to work somehow for everybody else with no 
+> hassle whatsoever,
+
+    Except the purely periodic timers can't serve as HRT (unless one cheats 
+and also declares them as one-shot).
+
+> starting from the DEC code I referred to and including 
+> other platforms, like the i386, which uses the 8254 for the timer 
+> interrupt and as a HPT, by default, the very same counter or the TSC in 
+
+    What do you mean by HPT -- clocksource?
+
+> the CPU if available or, I think, some chipset timer, because some 
+
+    Weel there was ACPI timer (32-bit free running counter, IIRC) -- but 
+somehow I was unable to find the code for it in the current source. And there 
+is HPET which is indeed preferred over broken TSC.
+
+> brilliant soul decided to break the TSC at one point.
+
+>  Note that the 8254 can be reprogrammed into a one-shot mode, but somehow 
+> nobody does it. ;-)
+
+    Well, hrtimers can do it but the LAPIC timer is preferred over 8254.
+
+>  Similarly for the local APIC timer that is used for 
+> scheduling on i386 systems (if available).
+
+    LAPIC timer is also used for HRT, i.e. in one-shot mode (simply because 
+it's the best choice for such purpose -- HRTs are per-CPU).
+
+>>>mips_timer_state appropriately, i.e. to flip at the HZ rate (it may be
+>>>based on one of the south bridge choices mentioned above or some
+>>>free-running counter for example), but people seem to prefer to write
+>>>their own code for some reason. ;-)
+
+>>Do you have any examples in mind which rewrite their own calibration
+>>code ? I'm too lazy to search into all board code.
+
+>  See arch/mips/mips-boards/generic/time.c for example.  Or any platform 
+> that uses the CP0 timer interrupt and has a configurable CPU frequency -- 
+> you can find them easily by looking for ones that calculate 
+> mips_hpt_frequency rather than set it to a fixed value.
+
+    Alchemy for one.
+
+>   Maciej
+
+WBR, Sergei

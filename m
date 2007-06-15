@@ -1,89 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2007 16:57:19 +0100 (BST)
-Received: from NeSTGROUP.NET ([203.200.158.40]:43956 "EHLO ns2.nestgroup.net")
-	by ftp.linux-mips.org with ESMTP id S20022471AbXFOP5P convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 15 Jun 2007 16:57:15 +0100
-Received: from MAIL-TVM.tvm.nestgroup.net ([192.168.192.74])
-	by ns2.nestgroup.net (8.13.1/8.13.1) with ESMTP id l5FG0nRN015562
-	for <linux-mips@linux-mips.org>; Fri, 15 Jun 2007 21:30:49 +0530
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2007 20:40:15 +0100 (BST)
+Received: from father.pmc-sierra.com ([216.241.224.13]:35715 "HELO
+	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
+	id S20022619AbXFOTkN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 15 Jun 2007 20:40:13 +0100
+Received: (qmail 23055 invoked by uid 101); 15 Jun 2007 19:39:05 -0000
+Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
+  by father.pmc-sierra.com with SMTP; 15 Jun 2007 19:39:05 -0000
+Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
+	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l5FJcc1s010447;
+	Fri, 15 Jun 2007 12:38:38 -0700
+Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
+	id <LGNW6VDP>; Fri, 15 Jun 2007 12:38:38 -0700
+Message-ID: <4672EAB5.3000903@pmc-sierra.com>
+From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
+To:	Evgeniy Polyakov <johnpol@2ka.mipt.ru>
+Cc:	Marc St-Jean <stjeanma@pmc-sierra.com>, davem@davemloft.net,
+	herbert@gondor.apana.org.au, linux-crypto@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 12/12] drivers: PMC MSP71xx security engine driver
+Date:	Fri, 15 Jun 2007 12:38:29 -0700
 MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2657.72)
+x-originalarrivaltime: 15 Jun 2007 19:38:29.0661 (UTC) FILETIME=[C016C4D0:01C7AF84]
+user-agent: Thunderbird 1.5.0.12 (X11/20070509)
 Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: "Segfault/illegal instruction" - udevd - ntpd - glibc
-Date:	Fri, 15 Jun 2007 21:23:34 +0530
-Message-ID: <9A1299C7A40D7447A108107E951450CA01C9E015@MAIL-TVM.tvm.nestgroup.net>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: "Segfault/illegal instruction" - udevd - ntpd - glibc
-Thread-Index: AcevZVs+b9/97TH7ROKu3oW///IoHw==
-From:	"Sadarul Firos" <sadarul.firos@nestgroup.net>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <sadarul.firos@nestgroup.net>
+	charset="koi8-r"
+Return-Path: <Marc_St-Jean@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15428
+X-archive-position: 15429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sadarul.firos@nestgroup.net
+X-original-sender: Marc_St-Jean@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Evgeniy Polyakov wrote:
+> Hi Marc.
+> 
+> On Thu, Jun 14, 2007 at 04:12:53PM -0600, Marc St-Jean 
+> (stjeanma@pmc-sierra.com) wrote:
+>  > [PATCH 12/12] drivers: PMC MSP71xx security engine driver
+>  >
+>  > Patch to add an security engien driver for the PMC-Sierra MSP71xx 
+> devices.
+> 
+> Does this board have SMP config or can this adapter be found in SMP
+> systems, since you only protect against interrupts, but not
+> simultaneous SMP access to the engine.
 
-I am working with two MIPS based boards (one is MIPS and the other is
-MIPSEL) running linux-2.6.18/glibc-2.3.5. I am performing a consecutive
-reboot test on these boards. After some number of reboots (say 80) I  am
-getting "segmentaion fault/illegal instruction" while running udevd and
-ntpd during bootup. Upon observing the core dump, it is noted that the
-segfault occured from the _init function of libnss_dns.so (in the case
-of ntpd) and libnss_compat.so (in the case of udevd). I assume that
-there might be a problem somewhere in the call_init function in
-glibc-2.3.5/elf/dl-init.c. After I put some printf statements for
-debugging in the call_init function, there is no segfault/illegal
-instruction in the reboot testing. I have also used gdb to debug the
-problem but the "segfault/illegal instruction" doesn't occur during the
-reboot test. Could anyone please help me to sort out this problem. The
-gdb output using coredump is attached.
+It has been uni-processing only but SMP support is planned soon.
 
-Any help will be appreciated
-Firos
+> 
+> And as a minor nit: there is no check for dma_alloc_coherent() return 
+> value.
 
--------------------------GDB O/P---------------------
+I will look into it.
 
--bash-3.00# gdb -c core udevd
-GNU gdb 6.2.1
-Copyright 2004 Free Software Foundation, Inc.
-GDB is free software, covered by the GNU General Public License, and you
-are welcome to change it and/or distribute copies of it under certain
-conditions.
-Type "show copying" to see the conditions.
-There is absolutely no warranty for GDB. Type "show warranty" for
-details.
-This GDB was configured as "--host=i686-pc-linux-gnu
---target=mipsel-linux-gnu"...
-Core was generated by `/sbin/udevd --daemon'.
-Program terminated with signal 11, Segmentation fault.
-Reading symbols from /lib/libgcc_s.so.1...done.
-Loaded symbols for /lib/libgcc_s.so.1
-Reading symbols from /lib/libc.so.6...done.
-Loaded symbols for /lib/libc.so.6
-Reading symbols from /lib/ld.so.1...done.
-Loaded symbols for /lib/ld.so.1
-Reading symbols from /lib/libnss_compat.so.2...done.
-Loaded symbols for /lib/libnss_compat.so.2 Reading symbols from
-/lib/libnsl.so.1...done.
-Loaded symbols for /lib/libnsl.so.1
-#0  0x2ad02ef8 in _init () from /lib/libnss_compat.so.2
-(gdb)
-(gdb) bt
-#0  0x2ad02ef8 in _init () from /lib/libnss_compat.so.2
-#1  0x00000001 in ?? ()
-Cannot access memory at address 0xfffffffe
-(gdb)
-
- 
+Thanks,
+Marc

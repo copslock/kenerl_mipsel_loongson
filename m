@@ -1,122 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jun 2007 23:45:14 +0100 (BST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:65464 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20024085AbXFOWpM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 15 Jun 2007 23:45:12 +0100
-Received: (qmail 21896 invoked by uid 101); 15 Jun 2007 22:44:00 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 15 Jun 2007 22:44:00 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l5FMhskn008914;
-	Fri, 15 Jun 2007 15:43:54 -0700
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <LGNW6WHX>; Fri, 15 Jun 2007 15:43:54 -0700
-Message-ID: <46731626.1000700@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/12] mips: PMC MSP71xx mips common
-Date:	Fri, 15 Jun 2007 15:43:50 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jun 2007 21:48:45 +0100 (BST)
+Received: from farad.aurel32.net ([82.232.2.251]:33060 "EHLO mail.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20024456AbXFPUsm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 16 Jun 2007 21:48:42 +0100
+Received: from farad.aurel32.net ([2001:618:400:fc13:216:3eff:fe00:100c])
+	by mail.aurel32.net with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <aurel32@farad.aurel32.net>)
+	id 1HzfCF-0006tq-7F; Sat, 16 Jun 2007 22:48:35 +0200
+Received: from aurel32 by farad.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurel32@farad.aurel32.net>)
+	id 1HzfCE-00009z-OS; Sat, 16 Jun 2007 22:48:34 +0200
+Date:	Sat, 16 Jun 2007 22:48:34 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	linux-mips@linux-mips.org
+Cc:	qemu-devel@nongnu.org
+Subject: 2.6.21 kernel on emulated/real Malta board
+Message-ID: <20070616204834.GA610@farad.aurel32.net>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 15 Jun 2007 22:43:51.0434 (UTC) FILETIME=[A52EA6A0:01C7AF9E]
-user-agent: Thunderbird 1.5.0.12 (X11/20070509)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurel32@farad.aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15433
+X-archive-position: 15434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
+Hi all,
 
+Since I switch to 2.6.21 kernel on my emulated Malta board (QEMU), I
+have noticed something strange. The kernel starts to boot up to the
+timer calibration, and then it restart the boot again. A small example:
 
-Yoichi Yuasa wrote:
-> On Fri, 15 Jun 2007 13:36:40 -0700
-> Marc St-Jean <Marc_St-Jean@pmc-sierra.com> wrote:
-> 
->  > Yoichi Yuasa wrote:
->  > > Hi,
->  > >
->  > > On Thu, 14 Jun 2007 15:55:31 -0600
->  > > Marc St-Jean <stjeanma@pmc-sierra.com> wrote:
->  > >
->  > >  > @@ -823,6 +845,55 @@ config TOSHIBA_RBTX4938
->  > >  >
->  > >  >  endchoice
->  > >  >
->  > >  > +choice
->  > >  > +     prompt "PMC-Sierra MSP SOC type"
->  > >  > +     depends on PMC_MSP
->  > >  > +
->  > >  > +config PMC_MSP4200_EVAL
->  > >  > +     bool "PMC-Sierra MSP4200 Eval Board"
->  > >  > +     select IRQ_MSP_SLP
->  > >  > +     select HW_HAS_PCI
->  > >  > +
->  > >  > +config PMC_MSP4200_GW
->  > >  > +     bool "PMC-Sierra MSP4200 VoIP Gateway"
->  > >  > +     select IRQ_MSP_SLP
->  > >  > +     select HW_HAS_PCI
->  > >  > +
->  > >  > +config PMC_MSP7120_EVAL
->  > >  > +     bool "PMC-Sierra MSP7120 Eval Board"
->  > >  > +     select SYS_SUPPORTS_MULTITHREADING
->  > >  > +     select IRQ_MSP_CIC
->  > >  > +     select HW_HAS_PCI
->  > >  > +     select USB_MSP71XX
->  > >  > +
->  > >  > +config PMC_MSP7120_GW
->  > >  > +     bool "PMC-Sierra MSP7120 Residential Gateway"
->  > >  > +     select SYS_SUPPORTS_MULTITHREADING
->  > >  > +     select IRQ_MSP_CIC
->  > >  > +     select HW_HAS_PCI
->  > >  > +     select USB_MSP71XX
->  > >  > +
->  > >  > +config PMC_MSP7120_FPGA
->  > >  > +     bool "PMC-Sierra MSP7120 FPGA"
->  > >  > +     select SYS_SUPPORTS_MULTITHREADING
->  > >  > +     select IRQ_MSP_CIC
->  > >  > +     select HW_HAS_PCI
->  > >  > +     select USB_MSP71XX
->  > >  > +
->  > >  > +endchoice
->  > >  > +
->  > >  > +menu "Options for PMC-Sierra MSP chipsets"
->  > >  > +     depends on PMC_MSP
->  > >  > +
->  > >  > +config PMC_MSP_EMBEDDED_ROOTFS
->  > >  > +     bool "Root filesystem embedded in kernel image"
->  > >  > +     select MTD
->  > >  > +     select MTD_BLOCK
->  > >  > +     select MTD_PMC_MSP_RAMROOT
->  > >  > +     select MTD_RAM
->  > >  > +
->  > >  > +endmenu
->  > >  > +
->  > >
->  > > This part should be in arch/mips/pmc-sierra/msp71xxx/Kconfig.
->  >
->  > Hi Yoichi,
->  >
->  > Just to verify, you do mean just the last menu "Options for 
-> PMC-Sierra MSP chipsets"?
-> 
-> This part means choice "PMC-Sierra MSP SOC type" and menu "Options for 
-> PMC-Sierra MSP chipsets".
-> arch/mips/au1000/Kconfig is a good reference.
-> 
-> Yoichi
-> 
+  ...
 
-OK, I will move them to arch/mips/pmc-sierra/Kconfig so the PMC_MSP
-generic options can be shared with future MSP devices not in the msp71xx
-directory.
+  Primary data cache 0kB, 4-way, linesize 0 bytes.
+  Synthesized TLB refill handler (36 instructions).
+  Synthesized TLB load handler fastpath (48 instructions).
+  Synthesized TLB store handler fastpath (48 instructions).
+  Synthesized TLB modify handler fastpath (47 instructions).
+  Enable cache parity protection for MIPS 20KC/25KF CPUs.
+  PID hash table entries: 512 (order: 9, 4096 bytes)
+  CPU frequency 100.00 MHz
+  Using 100.003 MHz high precision timer.
+  Linux version 2.6.21.1 (aurel32@i386) (gcc version 4.1.1 ()) #1 Tue May 15 12:22:07 CEST 2007
 
-Marc
+  LINUX started...
+  CPU revision is: 000182a0
+  FPU revision is: 000f8200
+
+  ...
+
+I have traced the problem down to the CONFIG_EARLY_PRINTK option. 
+Disabling it in the .config file (be aware that running make *config 
+will reenable this function), removes the problem.
+
+The problem occurs for kernel 2.6.21 from both linux-mips.org and
+kernel.org, on both endianness, and for both 32- and 64-bit kernels.
+
+It would be nice if somebody could tell me if the real board (I don't
+own one) suffers from the same problem or not, so that I can look for a
+possible bug in QEMU.
+
+Thanks,
+Aurelien
+
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

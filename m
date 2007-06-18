@@ -1,96 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2007 10:38:37 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.181]:27033 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023195AbXFRJif (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 Jun 2007 10:38:35 +0100
-Received: by py-out-1112.google.com with SMTP id f31so3134476pyh
-        for <linux-mips@linux-mips.org>; Mon, 18 Jun 2007 02:38:29 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=VLEagSDgoRe3g/TC2aWu8QnHl0AfS50ErBqkwAFfCNxnsmb+ec8WWb+ZHqOW6/YMpeBwHisNv+hkTUTtjIpVJrLvI95zjM3tXkKrZVYyFF9Ws0LqCG/fKXhKN/r93TUYqq6rRekj2b42QhzNrlJSRx3gu/HYw4QITkobBYEo+1U=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=Rwwb+Sh27dMm0ZuIFAzie9zzcRfuftSAcxEphob+eoJs3qbXbTL4/IZykJbHjhf0iCUButvO6AcEVul3/JHALSmAGaqeWuJpDyHNGXcR9XdjPnsnzL81ycSbyu5FT+ADnrQF490rO04L6yYOhstGxgCURPkEym1ePPPdieaeSnc=
-Received: by 10.65.197.13 with SMTP id z13mr1247708qbp.1182159509058;
-        Mon, 18 Jun 2007 02:38:29 -0700 (PDT)
-Received: by 10.65.204.8 with HTTP; Mon, 18 Jun 2007 02:38:28 -0700 (PDT)
-Message-ID: <cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com>
-Date:	Mon, 18 Jun 2007 11:38:28 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time code.
-Cc:	ralf@linux-mips.org, macro@linux-mips.org, sshtylyov@ru.mvista.com,
-	linux-mips@linux-mips.org
-In-Reply-To: <20070618.011425.93018724.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2007 10:55:18 +0100 (BST)
+Received: from NeSTGROUP.NET ([203.200.158.40]:37790 "EHLO ns2.nestgroup.net")
+	by ftp.linux-mips.org with ESMTP id S20023209AbXFRJzO convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 18 Jun 2007 10:55:14 +0100
+Received: from MAIL-TVM.tvm.nestgroup.net ([192.168.192.74])
+	by ns2.nestgroup.net (8.13.1/8.13.1) with ESMTP id l5I9x4Ea002410;
+	Mon, 18 Jun 2007 15:29:05 +0530
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <cda58cb80706150159j5c3d5b7p4293dc529d5ee97c@mail.gmail.com>
-	 <20070615134948.GB16133@linux-mips.org>
-	 <cda58cb80706170636kbff000cw849fa1d5ccf31152@mail.gmail.com>
-	 <20070618.011425.93018724.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: "Segfault/illegal instruction" - udevd - ntpd - glibc
+Date:	Mon, 18 Jun 2007 15:21:29 +0530
+Message-ID: <9A1299C7A40D7447A108107E951450CA01C9E01C@MAIL-TVM.tvm.nestgroup.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: "Segfault/illegal instruction" - udevd - ntpd - glibc
+Thread-Index: AcexAQS/8o5iaXsVRBW3fMJuu+ZjbAAiqDjwAACNqiA=
+From:	"Sadarul Firos" <sadarul.firos@nestgroup.net>
+To:	<ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+Return-Path: <sadarul.firos@nestgroup.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15444
+X-archive-position: 15445
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: sadarul.firos@nestgroup.net
 Precedence: bulk
 X-list: linux-mips
 
-Hi Atsushi,
 
-On 6/17/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Sun, 17 Jun 2007 15:36:53 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
-> > b) Are there some weird MIPS CPUs out there which don't read/ack cp0
-> > hpt in the normal way ?
->
-> PNX8550?  Their count/compare interrupt altomatically clears the count
-> register.  Please refer this thread:
->
-> http://www.linux-mips.org/archives/linux-mips/2006-12/msg00194.html
->
+Thanks Ralf for the reply.
 
-Oh no, another weirdo :(
+Regarding kernel, I am using the final release version of linux 2.6.18
+kernel with some customizations. Out of the two boards which I have one
+has MSP8150 Multi-Service Processor(MIPS 64) and the other has ITE 8172
+system controller with RM7035C, 64-bit MIPS RISC microprocessor(MIPS V).
 
-What is suprising me is that there's no comment explaining what is
-going on in pnx8550/common/time.c...
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+Sent: Sunday, June 17, 2007 1:04 AM
+To: Sadarul Firos
+Cc: linux-mips@linux-mips.org
+Subject: Re: "Segfault/illegal instruction" - udevd - ntpd - glibc
 
-> I'm not sure this fits new clockevent codes or not.
+On Fri, Jun 15, 2007 at 09:23:34PM +0530, Sadarul Firos wrote:
 
-Not really. What could be done in this case is to use cp0 hpt for
-dealing with clock events _only_. I don't think it's an issue if the
-count register is automatically cleared in this case.
+> I am working with two MIPS based boards (one is MIPS and the other is
+> MIPSEL) running linux-2.6.18/glibc-2.3.5. I am performing a
+consecutive
+> reboot test on these boards. After some number of reboots (say 80) I
+am
+> getting "segmentaion fault/illegal instruction" while running udevd
+and
+> ntpd during bootup. Upon observing the core dump, it is noted that the
+> segfault occured from the _init function of libnss_dns.so (in the case
+> of ntpd) and libnss_compat.so (in the case of udevd). I assume that
+> there might be a problem somewhere in the call_init function in
+> glibc-2.3.5/elf/dl-init.c. After I put some printf statements for
+> debugging in the call_init function, there is no segfault/illegal
+> instruction in the reboot testing. I have also used gdb to debug the
+> problem but the "segfault/illegal instruction" doesn't occur during
+the
+> reboot test. Could anyone please help me to sort out this problem. The
+> gdb output using coredump is attached.
 
-And it should write it's own clocksource support which would use
-different timer.
+Normally the address space layout and most other variables during a
+program load should be identical each time so userspace should behave
+identical.   So I sense the scent of a TLB or more likely cache
+managment
+problem.
 
-It shoud result in something like this:
+What 2.6.18 variant exactly are you running, that is where & when did
+download it, what CPU?
 
-unsigned __init get_freq(int cpu)
-{
-	return 27UL * ((1000000UL * n)/(m * pow2p));
-}
-
-void __init plat_timer_init()
-{
-	struct cp0_hpt_info info;
-
-	info.get_freq = get_freq;
-	info.irq = PNX8550_INT_TIMER1;
-	setup_cp0_hpt(&info, CLKEVT_ONLY);
-
-	setup_my_clocksource_using_a_different_timer();
-}
-
-Note that 'CLKEVT_ONLY' flag currently doesn't exist.
-
-What do you think ?
--- 
-               Franck
+  Ralf

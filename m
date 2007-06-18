@@ -1,76 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2007 16:39:50 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.176]:38674 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023203AbXFRPjs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 Jun 2007 16:39:48 +0100
-Received: by py-out-1112.google.com with SMTP id f31so3321791pyh
-        for <linux-mips@linux-mips.org>; Mon, 18 Jun 2007 08:38:47 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=tQw9RS7MzcT9mlGuxj/yLzLLS+CvOwVSi38yBM/nRQiPLoGLh1kqIXhBrW9ZDwZumf3ESj6vWf+rq4AVAcKadQySSy+FXGB7HzMSgzFWFrVvuFaeysLjgmBpqJ+0kmvYqrBJYIG9Ub4GMGsDRTb59AxgsbFaUxQWdfXP9eLwfcs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=Ns39vvcQWUC7OjXN+eQzbmsooW4wxnuWGnar/GLsQNKJiPB2CvMVrQmos9oKcB2iEZUOgx7J96mAP+mj9sycBxn2QNRN1y2AxUDfykyJrPchSBVfsER9BAzcSUgz/Cmd6+zPL7hMFaBRB0rkjUu5/ws9pmmiyXCFx4CFN9fht3U=
-Received: by 10.65.251.17 with SMTP id d17mr9633028qbs.1182181127159;
-        Mon, 18 Jun 2007 08:38:47 -0700 (PDT)
-Received: by 10.65.204.8 with HTTP; Mon, 18 Jun 2007 08:38:47 -0700 (PDT)
-Message-ID: <cda58cb80706180838t4b51c3e4v1392ab4c76773d43@mail.gmail.com>
-Date:	Mon, 18 Jun 2007 17:38:47 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2007 16:44:41 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:9932 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023254AbXFRPoj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 18 Jun 2007 16:44:39 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5IFbJTZ015845;
+	Mon, 18 Jun 2007 16:37:19 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5IFbIPc015844;
+	Mon, 18 Jun 2007 16:37:18 +0100
+Date:	Mon, 18 Jun 2007 16:37:18 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
 Subject: Re: [PATCH 5/5] Implement clockevents for R4000-style cp0 timer
-Cc:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-In-Reply-To: <20070618151422.GA4864@linux-mips.org>
+Message-ID: <20070618153718.GA13597@linux-mips.org>
+References: <11818164011355-git-send-email-fbuihuu@gmail.com> <11818164024053-git-send-email-fbuihuu@gmail.com> <20070614.212913.82089068.nemoto@toshiba-tops.co.jp> <20070617000448.GA30807@linux-mips.org> <cda58cb80706180722n18e79a49vfa61450526e6af76@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <11818164011355-git-send-email-fbuihuu@gmail.com>
-	 <11818164024053-git-send-email-fbuihuu@gmail.com>
-	 <20070614.212913.82089068.nemoto@toshiba-tops.co.jp>
-	 <20070617000448.GA30807@linux-mips.org>
-	 <cda58cb80706180722n18e79a49vfa61450526e6af76@mail.gmail.com>
-	 <20070618151422.GA4864@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <cda58cb80706180722n18e79a49vfa61450526e6af76@mail.gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15450
+X-archive-position: 15451
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Mon, Jun 18, 2007 at 04:22:39PM +0200, Franck Bui-Huu wrote:
 
-On 6/18/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Mon, Jun 18, 2007 at 04:22:39PM +0200, Franck Bui-Huu wrote:
->
-> > were an interface for _generic_ rtc only. But all the following
-> > platforms don't seem to use the generic rtc though it initialises
-> > these function pointers... Any idea why ?
->
-> Because unless drivers/char/Kconfig is getting changed to prevent that is
-> is possible to enable CONFIG_GEN_RTC, so this code was necessary for
-> correctness.
+> Since very few boards are using GEN_RTC:
+> 
+> 	$ git grep -l "GEN_RTC=y" arch/mips/configs/
+> 	arch/mips/configs/bigsur_defconfig
+> 	arch/mips/configs/yosemite_defconfig
 
-Sorry I don't understand...
+Btw, you missed emma2rh_defconfig which builds GEN_RTC as a module.  Silly
+because it doesn't initialize rtc_mips_get_time or rtc_mips_set_time so
+hasn't possible a chance to work as anything but a dummy rtc.
 
-> Aside I think it did simply propagate through cutnpaste.
-> That at least was the reason in the 2.4 days when the old kernel
-> configuration language made it way to painful to deal with such
-> configurations.  These days I think we should rather get rid of genrtc.
-
-I think so...
-
-> Genrtc used to be nice candy but like most sweets long term it results in
-> caries ;-)
-
-:)
-
--- 
-               Franck
+  Ralf

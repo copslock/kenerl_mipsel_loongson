@@ -1,48 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2007 16:44:41 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:9932 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023254AbXFRPoj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 Jun 2007 16:44:39 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5IFbJTZ015845;
-	Mon, 18 Jun 2007 16:37:19 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5IFbIPc015844;
-	Mon, 18 Jun 2007 16:37:18 +0100
-Date:	Mon, 18 Jun 2007 16:37:18 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 5/5] Implement clockevents for R4000-style cp0 timer
-Message-ID: <20070618153718.GA13597@linux-mips.org>
-References: <11818164011355-git-send-email-fbuihuu@gmail.com> <11818164024053-git-send-email-fbuihuu@gmail.com> <20070614.212913.82089068.nemoto@toshiba-tops.co.jp> <20070617000448.GA30807@linux-mips.org> <cda58cb80706180722n18e79a49vfa61450526e6af76@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80706180722n18e79a49vfa61450526e6af76@mail.gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jun 2007 16:52:06 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:39884 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023259AbXFRPwE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Jun 2007 16:52:04 +0100
+Received: from localhost (p3065-ipad207funabasi.chiba.ocn.ne.jp [222.145.85.65])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id CC1FEB363; Tue, 19 Jun 2007 00:50:43 +0900 (JST)
+Date:	Tue, 19 Jun 2007 00:51:21 +0900 (JST)
+Message-Id: <20070619.005121.118948229.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	ralf@linux-mips.org, macro@linux-mips.org, sshtylyov@ru.mvista.com,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
+ code.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com>
+References: <cda58cb80706170636kbff000cw849fa1d5ccf31152@mail.gmail.com>
+	<20070618.011425.93018724.anemo@mba.ocn.ne.jp>
+	<cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15451
+X-archive-position: 15452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 18, 2007 at 04:22:39PM +0200, Franck Bui-Huu wrote:
+On Mon, 18 Jun 2007 11:38:28 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> And it should write it's own clocksource support which would use
+> different timer.
 
-> Since very few boards are using GEN_RTC:
+I suppose so.
+
+> It shoud result in something like this:
 > 
-> 	$ git grep -l "GEN_RTC=y" arch/mips/configs/
-> 	arch/mips/configs/bigsur_defconfig
-> 	arch/mips/configs/yosemite_defconfig
+> unsigned __init get_freq(int cpu)
+> {
+> 	return 27UL * ((1000000UL * n)/(m * pow2p));
+> }
+> 
+> void __init plat_timer_init()
+> {
+> 	struct cp0_hpt_info info;
+> 
+> 	info.get_freq = get_freq;
+> 	info.irq = PNX8550_INT_TIMER1;
+> 	setup_cp0_hpt(&info, CLKEVT_ONLY);
+> 
+> 	setup_my_clocksource_using_a_different_timer();
+> }
+> 
+> Note that 'CLKEVT_ONLY' flag currently doesn't exist.
+> 
+> What do you think ?
 
-Btw, you missed emma2rh_defconfig which builds GEN_RTC as a module.  Silly
-because it doesn't initialize rtc_mips_get_time or rtc_mips_set_time so
-hasn't possible a chance to work as anything but a dummy rtc.
+For now, I think bloating generic setup_cp0_hpt() for this particular
+chip is not good.  The pnx8550 can have customized copy of cp0_hpt
+routines.  But it's just a thought...
 
-  Ralf
+---
+Atsushi Nemoto

@@ -1,62 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 18:29:51 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:62615 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20023663AbXFSR3s (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2007 18:29:48 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 35CF13EC9; Tue, 19 Jun 2007 10:29:46 -0700 (PDT)
-Message-ID: <467812F2.6040700@ru.mvista.com>
-Date:	Tue, 19 Jun 2007 21:31:30 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 19:18:51 +0100 (BST)
+Received: from mail.lysator.liu.se ([130.236.254.3]:2719 "EHLO
+	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
+	id S20023725AbXFSSSr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 19 Jun 2007 19:18:47 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.lysator.liu.se (Postfix) with ESMTP id A9E11200A20D;
+	Tue, 19 Jun 2007 20:18:20 +0200 (CEST)
+Received: from mail.lysator.liu.se ([127.0.0.1])
+	by localhost (lenin.lysator.liu.se [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 07456-01-22; Tue, 19 Jun 2007 20:18:09 +0200 (CEST)
+Received: from [192.168.27.65] (6.240.216.81.static.lk.siwnet.net [81.216.240.6])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.lysator.liu.se (Postfix) with ESMTP id 30628200A1F2;
+	Tue, 19 Jun 2007 20:18:07 +0200 (CEST)
+Message-ID: <46781DD4.7020304@27m.se>
+Date:	Tue, 19 Jun 2007 20:17:56 +0200
+From:	Markus Gothe <markus.gothe@27m.se>
+User-Agent: Icedove 1.5.0.12 (X11/20070607)
 MIME-Version: 1.0
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
-	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
- code.
-References: <cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com>	 <20070619.005121.118948229.anemo@mba.ocn.ne.jp>	 <cda58cb80706190033y47ccec58u8fc8254ced24f96f@mail.gmail.com>	 <20070620.010805.23009775.anemo@mba.ocn.ne.jp> <cda58cb80706191000o4e08dbd1t719f8f61ddd8abca@mail.gmail.com> <467811D0.3070409@ru.mvista.com>
-In-Reply-To: <467811D0.3070409@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Sadarul Firos <sadarul.firos@nestgroup.net>,
+	linux-mips@linux-mips.org
+Subject: Re: [SPAM] Re: "Segfault/illegal instruction" - udevd - ntpd - glibc
+References: <9A1299C7A40D7447A108107E951450CA01C9E015@MAIL-TVM.tvm.nestgroup.net> <20070616193358.GA22195@linux-mips.org>
+In-Reply-To: <20070616193358.GA22195@linux-mips.org>
+X-Enigmail-Version: 0.94.2.0
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lysator.liu.se
+Return-Path: <markus.gothe@27m.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15471
+X-archive-position: 15472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: markus.gothe@27m.se
 Precedence: bulk
 X-list: linux-mips
 
-Hello, I wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
->>> On Tue, 19 Jun 2007 09:33:33 +0200, "Franck Bui-Huu" 
->>> <vagabon.xyz@gmail.com> wrote:
->>> > What do you mean by "pnx8550 can have customized copy of cp0_hpt
->>> > routines" ? Do you mean that it should copy the whole clock event
->>> > driver ?
+Ralf Baechle wrote:
+> On Fri, Jun 15, 2007 at 09:23:34PM +0530, Sadarul Firos wrote:
+>
+>> I am working with two MIPS based boards (one is MIPS and the other is
+>> MIPSEL) running linux-2.6.18/glibc-2.3.5. I am performing a consecutive
+>> reboot test on these boards. After some number of reboots (say 80) I  am
+>> getting "segmentaion fault/illegal instruction" while running udevd and
+>> ntpd during bootup. Upon observing the core dump, it is noted that the
+>> segfault occured from the _init function of libnss_dns.so (in the case
+>> of ntpd) and libnss_compat.so (in the case of udevd). I assume that
+>> there might be a problem somewhere in the call_init function in
+>> glibc-2.3.5/elf/dl-init.c. After I put some printf statements for
+>> debugging in the call_init function, there is no segfault/illegal
+>> instruction in the reboot testing. I have also used gdb to debug the
+>> problem but the "segfault/illegal instruction" doesn't occur during the
+>> reboot test. Could anyone please help me to sort out this problem. The
+>> gdb output using coredump is attached.
+>
+> Normally the address space layout and most other variables during a
+> program load should be identical each time so userspace should behave
+> identical.   So I sense the scent of a TLB or more likely cache managment
+> problem.
+>
+> What 2.6.18 variant exactly are you running, that is where & when did
+> download it, what CPU?
+>
+>   Ralf
+>
+Seems to me like a timing issue if printf'ing helps. You should try
+invoking udevd by gdb (without the printf's).
 
->>> > It seems to me that using cp0 hpt as a clock event only is a valid 
->>> usage...
+- --
+_______________________________________
 
->>> Well, I thought the customized cp0 clockevent codes (custom
->>> .set_next_event routine is needed anyway, isn't it?)
+Mr Markus Gothe
+Software Engineer
 
->> I don't think so.
+Phone: +46 (0)13 21 81 20 (ext. 1046)
+Fax: +46 (0)13 21 21 15
+Mobile: +46 (0)73 718 72 80
+Diskettgatan 11, SE-583 35 Linköping, Sweden
+www.27m.com
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
 
->> hpt-cp0.c clock event part doesn't care if the counter is cleared when
->> an interrupt is triggered.
-
->    Well, in the generic case it must read back the Count reg. before 
-> writing to the Compare reg. and for PNX8550 this is unnecessary -- but 
-> indeed, should not harm...
-
-    Well, I was thinking the counter stops at 0 after being clearesd by the 
-match when writing this, which is not the case.  So, ignore this sentese.
-
-WBR, Sergei
+iD8DBQFGeB3S6I0XmJx2NrwRCNxBAJ9vZb0+ngxP3nW02nXvKlEKY7DDQwCglXkW
+ntaDNcvzn2pNdYruCxyZqt8=
+=2MG9
+-----END PGP SIGNATURE-----

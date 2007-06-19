@@ -1,243 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 22:13:54 +0100 (BST)
-Received: from smtp2.linux-foundation.org ([207.189.120.14]:29931 "EHLO
-	smtp2.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S20023675AbXFSVNu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 19 Jun 2007 22:13:50 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [207.189.120.55])
-	by smtp2.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l5JLD1mB006524
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Tue, 19 Jun 2007 14:13:03 -0700
-Received: from akpm.corp.google.com (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id l5JLCuaj021297;
-	Tue, 19 Jun 2007 14:12:56 -0700
-Date:	Tue, 19 Jun 2007 14:12:56 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
-To:	Marc St-Jean <stjeanma@pmc-sierra.com>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 7/12] drivers: PMC MSP71xx GPIO char driver
-Message-Id: <20070619141256.3d573a41.akpm@linux-foundation.org>
-In-Reply-To: <200706152046.l5FKk3NU015608@pasqua.pmc-sierra.bc.ca>
-References: <200706152046.l5FKk3NU015608@pasqua.pmc-sierra.bc.ca>
-X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.6; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: osdl$Revision: 1.181 $
-X-Scanned-By: MIMEDefang 2.53 on 207.189.120.14
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 23:06:38 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:3474 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023896AbXFSWGg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 19 Jun 2007 23:06:36 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5JLx0ar021854;
+	Tue, 19 Jun 2007 22:59:01 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5JLwxnb021853;
+	Tue, 19 Jun 2007 22:58:59 +0100
+Date:	Tue, 19 Jun 2007 22:58:59 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	vagabon.xyz@gmail.com, Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
+	code.
+Message-ID: <20070619215859.GA11831@linux-mips.org>
+References: <cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com> <20070619.005121.118948229.anemo@mba.ocn.ne.jp> <cda58cb80706190033y47ccec58u8fc8254ced24f96f@mail.gmail.com> <20070620.010805.23009775.anemo@mba.ocn.ne.jp> <467802E3.4040703@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <467802E3.4040703@ru.mvista.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15476
+X-archive-position: 15477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 15 Jun 2007 14:46:03 -0600
-Marc St-Jean <stjeanma@pmc-sierra.com> wrote:
-
-> [PATCH 7/12] drivers: PMC MSP71xx GPIO char driver
+On Tue, Jun 19, 2007 at 08:22:59PM +0400, Sergei Shtylyov wrote:
+> From: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+> Date: Tue, 19 Jun 2007 20:22:59 +0400
+> To: vagabon.xyz@gmail.com
+> Cc: Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
+> 	macro@linux-mips.org, linux-mips@linux-mips.org
+> Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
+> 	code.
+> Content-Type: text/plain; charset=us-ascii; format=flowed
 > 
-> Patch to add a GPIO char driver for the PMC-Sierra MSP71xx devices.
+> Atsushi Nemoto wrote:
+> 
+> >>What do you mean by "pnx8550 can have customized copy of cp0_hpt
+> >>routines" ? Do you mean that it should copy the whole clock event
+> >>driver ?
+> 
+> >>It seems to me that using cp0 hpt as a clock event only is a valid 
+> >>usage...
+> 
+> >Well, I thought the customized cp0 clockevent codes (custom
+> >.set_next_event routine is needed anyway, isn't it?) would be small
+> >enough.  But I did not investigate deeply.  If generic cp0 hpt can
+> >handle this beast without much bloating, it would be great.
+> 
+>    IMO, the generic code should only have the standard MIPS count/compare 
+> support and let the platform code to initialize it if it choses so and also 
+> register its own specific clock[source|event] devices if it choses so -- 
+> i.e *not* what the current clocksource code does...
 
+For practically every type of timer there are reasons why it is may be
+undesierable such as being configured in a way that makes it undesirable
+or unusable, unpredictable clock changes and more.  So in practice only
+the platform specific code can drive the initialization of all timer
+devices and interrupts which reduces the generic code to sort of a
+library and driver collection.
 
-> +const u32 GPIO_DATA_COUNT[] = { 2, 4, 4, 6 };
-> +const u32 GPIO_DATA_SHIFT[] = { 0, 2, 6, 10 };
-> +const u32 GPIO_DATA_MASK[] = { 0x03, 0x0f, 0x0f, 0x3f };
-> +u32 * const GPIO_DATA_REG[] = {
-> +	(u32 *)GPIO_DATA1_REG, (u32 *)GPIO_DATA2_REG,
-> +	(u32 *)GPIO_DATA3_REG, (u32 *)GPIO_DATA4_REG,
-> +};
-> +const u32 GPIO_CFG_MASK[] = { 0x0000ff, 0x00ffff, 0x00ffff, 0xffffff };
-> +u32 * const GPIO_CFG_REG[] = {
-> +	(u32 *)GPIO_CFG1_REG, (u32 *)GPIO_CFG2_REG,
-> +	(u32 *)GPIO_CFG3_REG, (u32 *)GPIO_CFG4_REG,
-> +};
-> +
-> +/* Maps MODE to allowed pin mask */
-> +const u32 MSP_GPIO_MODE_ALLOWED[] = {
-> +	0xfffff,	/* Mode 0 - INPUT */
-> +	0x00000,	/* Mode 1 - INTERRUPT */
-> +	0x00030,	/* Mode 2 - UART_INPUT (GPIO 4, 5)*/
-> +	0, 0, 0, 0, 0,	/* Modes 3, 4, 5, 6, and 7 are reserved */
-> +	0xfffff,	/* Mode 8 - OUTPUT */
-> +	0x0000f,	/* Mode 9 - UART_OUTPUT/PERF_TIMERA (GPIO 0,1,2,3) */
-> +	0x00003,	/* Mode a - PERF_TIMERB (GPIO 0, 1) */
-> +	0x00000,	/* Mode b - Not really a mode! */
-> +};
-
-all the above should be lower-case and have static scope.
-
-> +#define GPIO_CFG_SHIFT(i)	(i * 4)
-> +#define GPIO_CFG_PINMASK	0xf
-> +
-> +/* The extended gpio register */
-> +
-> +#define EXTENDED_GPIO_COUNT	4
-> +#define EXTENDED_GPIO_SHIFT	16
-> +#define EXTENDED_GPIO_MASK	0x0f
-> +
-> +#define EXTENDED_GPIO_DATA_SHIFT(i)	(i * 2)
-> +#define EXTENDED_GPIO_DATA_MASK(i)	(0x3 << (i*2))
-> +#define EXTENDED_GPIO_DATA_SET		0x2
-> +#define EXTENDED_GPIO_DATA_CLR		0x1
-> +#define EXTENDED_GPIO_CFG_SHIFT(i)	((i * 2) + 16)
-> +#define EXTENDED_GPIO_CFG_MASK(i)	(0x3 << ((i*2)+16))
-> +#define EXTENDED_GPIO_CFG_DISABLE	0x2
-> +#define EXTENDED_GPIO_CFG_ENABLE	0x1
-> +
-> +/* -- Data structures -- */
-> +
-> +static DEFINE_SPINLOCK(msp_gpio_spinlock);
-> +
-> +static struct task_struct *msp_blinkthread;
-> +static DEFINE_SPINLOCK(msp_blink_lock);
-> +static DECLARE_COMPLETION(msp_blink_wait);
-> +
-> +struct blink_table {
-> +	u32 count;
-> +	u32 period;
-> +	u32 dcycle;
-> +};
-> +
-> +static struct blink_table blink_table[MSP_NUM_GPIOS];
-> +
-> +/* -- Utility functions -- */
-> +
-> +/* Define the following for extra debug output */
-> +#undef DEBUG
-
-The under shouldn't be needed: -DDEBUG can be provided on the kbuild
-command line.
-
-> +#ifdef DEBUG
-> +#define DBG(args...) printk(KERN_DEBUG args)
-> +#else
-> +#define DBG(args...) do {} while (0)
-> +#endif
-> +
-> +/* Reads the data bits from a single register set */
-> +static u32 msp_gpio_read_data_basic(int reg)
-> +{
-> +	return read_reg32(GPIO_DATA_REG[reg], GPIO_DATA_MASK[reg]);
-> +}
-> +
-> +/* Reads the data bits from the extended register set */
-> +static u32 msp_gpio_read_data_extended(void)
-> +{
-> +	int pin;
-> +	u32 tmp = *EXTENDED_GPIO_REG;
-
-`tmp' is always a bad name for a variable.
-
-> +	u32 retval = 0;
-> +	
-> +	for (pin = 0; pin < EXTENDED_GPIO_COUNT; pin++) {
-> +		u32 bit = 0;
-> +		
-> +		/*
-> +		 * In output mode, read CLR bit
-> +		 * In input mode, read SET bit
-> +		 */
-> +		if (tmp & (EXTENDED_GPIO_CFG_ENABLE <<
-> +				EXTENDED_GPIO_CFG_SHIFT(pin)))
-> +			bit = EXTENDED_GPIO_DATA_CLR <<
-> +				EXTENDED_GPIO_DATA_SHIFT(pin);
-> +		else
-> +			bit = EXTENDED_GPIO_DATA_SET <<
-> +				EXTENDED_GPIO_DATA_SHIFT(pin);
-> +
-> +		if (tmp & bit)
-> +			retval |= 1 << pin;
-> +	}
-> +	
-> +	return retval;
-> +}
-> +
-> +/*
-> + * Reads the current state of all 20 pins, putting the values in
-> + * the lowest 20 bits (1=HI, 0=LO)
-> + */
-> +static u32 msp_gpio_read_data(void)
-> +{
-> +	int reg;
-> +	u32 retval = 0;
-> +	
-> +	spin_lock(&msp_gpio_spinlock);
-> +	for (reg = 0; reg < GPIO_REG_COUNT; reg++)
-> +		retval |= msp_gpio_read_data_basic(reg) <<
-> +				GPIO_DATA_SHIFT[reg];
-> +	retval |= msp_gpio_read_data_extended() << EXTENDED_GPIO_SHIFT;
-> +	spin_unlock(&msp_gpio_spinlock);
-> +	
-> +	DBG("%s: 0x%08x\n", __FUNCTION__, retval);
-> +	return retval;
-> +}
-> +
->
-> ...
->
-> +/* Maps 'basic' pins to relative offset from 0 per register */
-> +static int const MSP_GPIO_OFFSET[] = {
-> +	/* GPIO 0 and 1 on the first register */
-> +	0, 0,
-> +	/* GPIO 2, 3, 4, and 5 on the second register */
-> +	2, 2, 2, 2,
-> +	/* GPIO 6, 7, 8, and 9 on the third register */
-> +	6, 6, 6, 6,
-> +	/* GPIO 10, 11, 12, 13, 14, and 15 on the fourth register */
-> +	10, 10, 10, 10, 10, 10,
-> +};
-
-This shouldn't be in a header file.  Because each compilation unit which
-includes this header will (potentially) get its own copy of the data.
-
-That includes any userspace apps which include this header(!)
-
-> +/* This gives you the 'register relative ofet gpio' number */
-> +#define OFFSET_GPIO_NUMBER(gpio)	(gpio - MSP_GPIO_OFFSET[gpio])
-> +
-> +/* These take the 'register relative offset gpio' number */
-> +#define BASIC_MODE_REG_SHIFT(ogpio)	(ogpio * 4)
-> +#define BASIC_MODE_REG_VALUE(mode, ogpio) \
-> +			(mode << BASIC_MODE_REG_SHIFT(ogpio))
-> +#define BASIC_MODE_REG_MASK(ogpio) \
-> +			BASIC_MODE_REG_VALUE(0xf, ogpio)
-> +#define BASIC_DATA_REG_MASK(ogpio)	(1 << ogpio)
-> +
-> +/* These take the actual GPIO number (0 through 15) */
-> +#define BASIC_DATA_MASK(gpio) \
-> +		BASIC_DATA_REG_MASK(OFFSET_GPIO_NUMBER(gpio))
-> +#define BASIC_MODE_MASK(gpio) \
-> +		BASIC_MODE_REG_MASK(OFFSET_GPIO_NUMBER(gpio))
-> +#define BASIC_MODE(mode, gpio) \
-> +		BASIC_MODE_REG_VALUE(mode, OFFSET_GPIO_NUMBER(gpio))
-> +#define BASIC_MODE_SHIFT(gpio) \
-> +		BASIC_MODE_REG_SHIFT(OFFSET_GPIO_NUMBER(gpio))
-> +#define BASIC_MODE_FROM_REG(data, gpio)	\
-> +		BASIC_MODE_REG_FROM_REG(data, OFFSET_GPIO_NUMBER(gpio))
-> +
-> +/* This gives you the 'register relative offset gpio' number */
-> +#define EXTENDED_OFFSET_GPIO(gpio)	(gpio - 16)
-> +
-> +/* These take the 'register relative offset gpio' number */
-> +#define EXTENDED_REG_DISABLE(ogpio)	(0x2 << ((ogpio * 2) + 16))
-> +#define EXTENDED_REG_ENABLE(ogpio)	(0x1 << ((ogpio * 2) + 16))
-> +#define EXTENDED_REG_SET(ogpio)		(0x2 << (ogpio * 2))
-> +#define EXTENDED_REG_CLR(ogpio)		(0x1 << (ogpio * 2))
-> +
-> +/* These take the actual GPIO number (16 through 19) */
-> +#define EXTENDED_DISABLE(gpio) \
-> +		EXTENDED_REG_DISABLE(EXTENDED_OFFSET_GPIO(gpio))
-> +#define EXTENDED_ENABLE(gpio) \
-> +		EXTENDED_REG_ENABLE(EXTENDED_OFFSET_GPIO(gpio))
-> +#define EXTENDED_SET(gpio) \
-> +		EXTENDED_REG_SET(EXTENDED_OFFSET_GPIO(gpio))
-> +#define EXTENDED_CLR(gpio) \
-> +		EXTENDED_REG_CLR(EXTENDED_OFFSET_GPIO(gpio))
-
-inlined functions are preferred over macros.  Only use macros when for some
-reason you *must* use macros.
+  Ralf

@@ -1,57 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 17:21:20 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:6806 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20023619AbXFSQVS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2007 17:21:18 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 1A94E3EC9; Tue, 19 Jun 2007 09:21:15 -0700 (PDT)
-Message-ID: <467802E3.4040703@ru.mvista.com>
-Date:	Tue, 19 Jun 2007 20:22:59 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	vagabon.xyz@gmail.com
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
-	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
- code.
-References: <cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com>	<20070619.005121.118948229.anemo@mba.ocn.ne.jp>	<cda58cb80706190033y47ccec58u8fc8254ced24f96f@mail.gmail.com> <20070620.010805.23009775.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070620.010805.23009775.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 17:21:44 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:31972 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023628AbXFSQVb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2007 17:21:31 +0100
+Received: from localhost (p2028-ipad208funabasi.chiba.ocn.ne.jp [60.43.103.28])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A88C0A7B3; Wed, 20 Jun 2007 01:21:27 +0900 (JST)
+Date:	Wed, 20 Jun 2007 01:22:06 +0900 (JST)
+Message-Id: <20070620.012206.30438292.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
+Cc:	sknauert@wesleyan.edu, linux-mips@linux-mips.org
+Subject: Re: Legacy PCI IO for PCI graphics on SGI O2...Anybody?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.64N.0706191246060.15474@blysk.ds.pg.gda.pl>
+References: <54672.129.133.92.31.1182184357.squirrel@webmail.wesleyan.edu>
+	<20070619.121030.130240189.nemoto@toshiba-tops.co.jp>
+	<Pine.LNX.4.64N.0706191246060.15474@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15465
+X-archive-position: 15466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
+On Tue, 19 Jun 2007 13:03:24 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+>  That should be taken care of in glibc (or your libc of choice) -- with 
+> ioperm() or iopl() and then in{b,w,l}() and out{b,w,l}() as appropriate.  
+> Either of the two formers are used to mmap() the right area of /dev/mem 
+> and then the latters are used access the area with the desired width (and 
+> stride, if applicable -- portable code should not assume subsequent I/O 
+> port addresses are adjacent in the MMIO space).  It has worked like this 
+> for other platforms for at least ten years now.
+> 
+>  Of course the function doing mmap() still has to know the CPU physical 
+> address of the I/O space from somewhere.  For quite some time my feeling 
+> has been it should come from /proc/iomem, where we actually fail to 
+> register the I/O space, but these days sysfs is probably better (though I 
+> plan to have a look at /proc/iomem for the use of human beings anyway).  
 
->>What do you mean by "pnx8550 can have customized copy of cp0_hpt
->>routines" ? Do you mean that it should copy the whole clock event
->>driver ?
+Oh I thought ioperm() or iopl() on archs other then x86 are all dummy
+routines, but apparently that was wrong.  Now I have looked some
+ioperm.c in glibc and am very suprised by so many hard-coded
+boardname/addresses ;)
 
->>It seems to me that using cp0 hpt as a clock event only is a valid usage...
+>  That still does not solve the problem of multiple independent I/O spaces, 
+> but I gather such configurations are very rare indeed.
 
-> Well, I thought the customized cp0 clockevent codes (custom
-> .set_next_event routine is needed anyway, isn't it?) would be small
-> enough.  But I did not investigate deeply.  If generic cp0 hpt can
-> handle this beast without much bloating, it would be great.
-
-    IMO, the generic code should only have the standard MIPS count/compare 
-support and let the platform code to initialize it if it choses so and also 
-register its own specific clock[source|event] devices if it choses so -- i.e 
-*not* what the current clocksource code does...
-
-> ---
-> Atsushi Nemoto
-
-WBR, Sergei
+I agree.
+---
+Atsushi Nemoto

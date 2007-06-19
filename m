@@ -1,62 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 20:32:50 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:1691 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20023768AbXFSTcs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Jun 2007 20:32:48 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id CEF573EC9; Tue, 19 Jun 2007 12:32:45 -0700 (PDT)
-Message-ID: <46782FC5.7000901@ru.mvista.com>
-Date:	Tue, 19 Jun 2007 23:34:29 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jun 2007 21:27:26 +0100 (BST)
+Received: from mailout.stusta.mhn.de ([141.84.69.5]:34179 "EHLO
+	mailhub.stusta.mhn.de") by ftp.linux-mips.org with ESMTP
+	id S20023790AbXFSU1X (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 19 Jun 2007 21:27:23 +0100
+Received: from r063144.stusta.swh.mhn.de (r063144.stusta.swh.mhn.de [10.150.63.144])
+	by mailhub.stusta.mhn.de (Postfix) with ESMTP id E98D8181C21;
+	Tue, 19 Jun 2007 22:26:47 +0200 (CEST)
+Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
+	id 0345E3CE3F6; Tue, 19 Jun 2007 22:27:04 +0200 (CEST)
+Date:	Tue, 19 Jun 2007 22:27:04 +0200
+From:	Adrian Bunk <bunk@stusta.de>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [2.6 patch] more MOMENCO_JAGUAR_ATX removal
+Message-ID: <20070619202704.GG12950@stusta.de>
 MIME-Version: 1.0
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
-	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time
- code.
-References: <cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com>	 <20070619.005121.118948229.anemo@mba.ocn.ne.jp>	 <cda58cb80706190033y47ccec58u8fc8254ced24f96f@mail.gmail.com>	 <20070620.010805.23009775.anemo@mba.ocn.ne.jp> <cda58cb80706191000o4e08dbd1t719f8f61ddd8abca@mail.gmail.com> <467811D0.3070409@ru.mvista.com>
-In-Reply-To: <467811D0.3070409@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.5.15+20070412 (2007-04-11)
+Return-Path: <bunk@stusta.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15474
+X-archive-position: 15475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: bunk@stusta.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello, I wrote:
+This patch removes the few leftovers of the MOMENCO_JAGUAR_ATX removal.
 
->> It matters only for clock source (well I
->> think) that's why I suggested to rewrite a clock source driver only
->> for this platform...
+Signed-off-by: Adrian Bunk <bunk@stusta.de>
 
->    Yeah, this platform certainly *needs* another clocksource than the 
+---
 
-    Not necessarily so -- we could use count1 *exclusively* as clocksource 
-after some setup, i.e. setting its comparator to all ones, hooking its IRQ and 
-enabling the counting.
+ drivers/net/Kconfig    |    2 +-
+ include/asm-mips/war.h |    7 +++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-> counter used for the clock events -- currently it's count/compare 2.
-
-    ... and use that one as clockevent.
-
->    And this platform also *needs* a separate clocksource driver as well 
-
-    I meant to say "clockevent" here. :-)
-
-> since the PNX8550 counters *do* support auto-reaload mode here -- in 
-> fact, this seems to be the only supported mode from the manual excerpt 
-> cited here:
-
-> http://www.linux-mips.org/archives/linux-mips/2006-12/msg00194.html
-
-WBR, Sergei
+--- linux-2.6.22-rc4-mm2/drivers/net/Kconfig.old	2007-06-18 15:24:49.000000000 +0200
++++ linux-2.6.22-rc4-mm2/drivers/net/Kconfig	2007-06-18 15:25:02.000000000 +0200
+@@ -2362,7 +2362,7 @@
+ 
+ config MV643XX_ETH
+ 	tristate "MV-643XX Ethernet support"
+-	depends on MOMENCO_OCELOT_C || MOMENCO_JAGUAR_ATX || MV64360 || MV64X60 || MOMENCO_OCELOT_3 || (PPC_MULTIPLATFORM && PPC32)
++	depends on MOMENCO_OCELOT_C || MV64360 || MV64X60 || MOMENCO_OCELOT_3 || (PPC_MULTIPLATFORM && PPC32)
+ 	select MII
+ 	help
+ 	  This driver supports the gigabit Ethernet on the Marvell MV643XX
+--- linux-2.6.22-rc4-mm2/include/asm-mips/war.h.old	2007-06-18 15:25:20.000000000 +0200
++++ linux-2.6.22-rc4-mm2/include/asm-mips/war.h	2007-06-18 15:26:03.000000000 +0200
+@@ -171,8 +171,7 @@
+  * On the RM9000 there is a problem which makes the CreateDirtyExclusive
+  * cache operation unusable on SMP systems.
+  */
+-#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_PMC_YOSEMITE) || \
+-    defined(CONFIG_BASLER_EXCITE)
++#if defined(CONFIG_PMC_YOSEMITE) || defined(CONFIG_BASLER_EXCITE)
+ #define  RM9000_CDEX_SMP_WAR		1
+ #endif
+ 
+@@ -181,8 +180,8 @@
+  * where invalid instructions in the same I-cache line worth of instructions
+  * being fetched may case spurious exceptions.
+  */
+-#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_MOMENCO_OCELOT_3) || \
+-    defined(CONFIG_PMC_YOSEMITE) || defined(CONFIG_BASLER_EXCITE)
++#if defined(CONFIG_MOMENCO_OCELOT_3) || defined(CONFIG_PMC_YOSEMITE) || \
++    defined(CONFIG_BASLER_EXCITE)
+ #define ICACHE_REFILLS_WORKAROUND_WAR	1
+ #endif
+ 

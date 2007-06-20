@@ -1,69 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2007 11:28:44 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.179]:58803 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024610AbXFTK2m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 Jun 2007 11:28:42 +0100
-Received: by py-out-1112.google.com with SMTP id f31so262011pyh
-        for <linux-mips@linux-mips.org>; Wed, 20 Jun 2007 03:27:40 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=JlUhluXYH/u7yydPSV71LqTh7MM9z60Dor+jnIQY8YxEJlUUd0ibcLshvS9MXqCod3JFOWO1dbLTms3Zi07wovfMAcX8Xuv1wwvJ1MZWduppJCos8XXAVzAqpSpNlLBO2Maz89flefDcdToePxwHSaVWiIdA15VsmIrxtYoGzTI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=bLR0k3oeO2l/aOlXb3zXMjsNkx9N7zAnGxc1ocB4eK2DcTIkkvja6Kb1FpPz2usMzgptbZScLz16T4GheZGPSZMpnNUZ8eyQMulQ/Pb2koCRCCqj5YwZoOvGiKswE+YQqixfbrNiTRbHqQ28+tBKsmu4PhfZWaKFVl2EyttdvUQ=
-Received: by 10.65.250.11 with SMTP id c11mr1098681qbs.1182335260273;
-        Wed, 20 Jun 2007 03:27:40 -0700 (PDT)
-Received: by 10.65.204.8 with HTTP; Wed, 20 Jun 2007 03:27:40 -0700 (PDT)
-Message-ID: <cda58cb80706200327i7e1cba84if830f9df08d9a6a8@mail.gmail.com>
-Date:	Wed, 20 Jun 2007 12:27:40 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: [PATCH 3/5] Deforest the function pointer jungle in the time code.
-Cc:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>,
-	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>, macro@linux-mips.org,
-	linux-mips@linux-mips.org
-In-Reply-To: <20070619215859.GA11831@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Jun 2007 14:55:05 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:52612 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20024676AbXFTNzD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 20 Jun 2007 14:55:03 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5KDlRYO030654;
+	Wed, 20 Jun 2007 14:47:27 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5K8R87X026812;
+	Wed, 20 Jun 2007 09:27:08 +0100
+Date:	Wed, 20 Jun 2007 09:27:08 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Marc St-Jean <stjeanma@pmc-sierra.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/12] mips: PMC MSP71xx core platform
+Message-ID: <20070620082708.GA25270@linux-mips.org>
+References: <200706142154.l5ELslhw021385@pasqua.pmc-sierra.bc.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <cda58cb80706180238r17da4434jcdee307b0385729b@mail.gmail.com>
-	 <20070619.005121.118948229.anemo@mba.ocn.ne.jp>
-	 <cda58cb80706190033y47ccec58u8fc8254ced24f96f@mail.gmail.com>
-	 <20070620.010805.23009775.anemo@mba.ocn.ne.jp>
-	 <467802E3.4040703@ru.mvista.com>
-	 <20070619215859.GA11831@linux-mips.org>
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <200706142154.l5ELslhw021385@pasqua.pmc-sierra.bc.ca>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15481
+X-archive-position: 15482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 6/19/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> For practically every type of timer there are reasons why it is may be
-> undesierable such as being configured in a way that makes it undesirable
-> or unusable, unpredictable clock changes and more.  So in practice only
-> the platform specific code can drive the initialization of all timer
-> devices and interrupts which reduces the generic code to sort of a
-> library and driver collection.
->
+On Thu, Jun 14, 2007 at 03:54:47PM -0600, Marc St-Jean wrote:
 
-Yeah that's true. If you look at time_init() arch hook after patch 5/5
-is applied, you can see that it's now:
+> Re-posting patch as requested by Ralf. Changes since last post:
+> -Minor cleanups as recommended by checkpatch.pl.
 
-void __init time_init(void)
-{
-        plat_time_init();
-        plat_timer_setup();
-}
+Be careful with that script.  Some of it's recommendations are harmful,
+for example when it sees an inclusion of <asm/time.h> it will suggest
+to use <linux/time.h>.  That's all fine because generally the file under
+linux/ will include the asm/ version but there are exception.
 
--- 
-               Franck
+But it's great that you discovered it already, it saves me the for both
+sides annoying part of dealing out tons of trivialities, first such as
+formatting trivialities.  One thing checkpatch.pl doesn't yet complain
+about is trailing whitespace such as in the first of the patches you
+sent:
+
+Warning: trailing whitespace in line 106 of arch/mips/pmc-sierra/msp71xx/msp_usb.c
+Warning: trailing whitespace in line 12 of arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
+Warning: trailing whitespace in lines 43,53,63,79 of arch/mips/pmc-sierra/msp71xx/msp_time.c
+Warning: trailing whitespace in lines 49,59,62,68,78,84 of arch/mips/pmc-sierra/msp71xx/msp_irq.c
+Warning: trailing whitespace in line 84 of arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c
+Warning: trailing whitespace in line 157 of arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c
+Warning: trailing whitespace in lines 154,307,537,548,558 of arch/mips/pmc-sierra/msp71xx/msp_prom.c
+Warning: trailing whitespace in lines 66,229,238,252 of arch/mips/pmc-sierra/msp71xx/msp_setup.c
+
+No need to resend the patch, I can strip that of trivially
+
+  Ralf

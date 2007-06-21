@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jun 2007 15:35:10 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:34760 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jun 2007 18:02:53 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:13203 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021578AbXFUOfI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 Jun 2007 15:35:08 +0100
+	id S20021701AbXFURCv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 21 Jun 2007 18:02:51 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5LERL73024760;
-	Thu, 21 Jun 2007 15:27:22 +0100
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5LGt33L027636;
+	Thu, 21 Jun 2007 17:55:03 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5LERLdm024759;
-	Thu, 21 Jun 2007 15:27:21 +0100
-Date:	Thu, 21 Jun 2007 15:27:21 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5LGt1tG027627;
+	Thu, 21 Jun 2007 17:55:01 +0100
+Date:	Thu, 21 Jun 2007 17:55:01 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Daniel Laird <daniel.j.laird@nxp.com>
+To:	Marc St-Jean <stjeanma@pmc-sierra.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Philips(NXP)/STB810 changes
-Message-ID: <20070621142721.GC21938@linux-mips.org>
-References: <11229250.post@talk.nabble.com> <467A67B6.6090909@ru.mvista.com> <11232209.post@talk.nabble.com>
+Subject: Re: [PATCH 1/12] mips: PMC MSP71xx core platform
+Message-ID: <20070621165501.GB26691@linux-mips.org>
+References: <200706142154.l5ELslhw021385@pasqua.pmc-sierra.bc.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <11232209.post@talk.nabble.com>
+In-Reply-To: <200706142154.l5ELslhw021385@pasqua.pmc-sierra.bc.ca>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15501
+X-archive-position: 15502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,29 +33,177 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 21, 2007 at 05:37:25AM -0700, Daniel Laird wrote:
+On Thu, Jun 14, 2007 at 03:54:47PM -0600, Marc St-Jean wrote:
 
-> Please find the new patch below - I hope it is following the correct rules
-> now.
+General comment all the first ~ 2900 of your patch is that it's rather
+heavy on #ifdef.  #ifdef is a nasty construct that has a tendency to hard
+to read code which in trun results in bugs.  Or a test compile fails to
+find real issues in the code because it's hidden in a dead #if construct.
 
-This is a good opportunity to advertise the checkpatch.pl script which is
-part of the latest kernel once more.  For example running it against your
-patch results gives:
+> diff --git a/include/asm-mips/pmc-sierra/msp71xx/msp_regops.h b/include/asm-mips/pmc-sierra/msp71xx/msp_regops.h
+> new file mode 100644
+> index 0000000..60a5a38
+> --- /dev/null
+> +++ b/include/asm-mips/pmc-sierra/msp71xx/msp_regops.h
+> @@ -0,0 +1,236 @@
+> +/*
+> + * SMP/VPE-safe functions to access "registers" (see note).
+> + *
+> + * NOTES:
+> +* - These macros use ll/sc instructions, so it is your responsibility to
+> + * ensure these are available on your platform before including this file.
+> + * - The MIPS32 spec states that ll/sc results are undefined for uncached
+> + * accesses. This means they can't be used on HW registers accessed
+> + * through kseg1. Code which requires these macros for this purpose must
+> + * front-end the registers with cached memory "registers" and have a single
+> + * thread update the actual HW registers.
 
-[ralf@denk linux-queue]$ scripts/checkpatch.pl /tmp/xxx 
-line over 80 characters
-#107: FILE: arch/mips/philips/pnx8550/common/setup.c:117:
-+                                  (PR4450_CMEM_SIZE_128MB << PR4450_CMEMB_SIZE) |
+You basically betting on undefined behaviour of the architecture.  I did
+indeed verify this specific case with a processor design guy and the answer
+was a "should be ok".  That is I heared people speak in a more convincing
+tone already ;-)
 
-line over 80 characters
-#112: FILE: arch/mips/philips/pnx8550/common/setup.c:122:
-+                                  (PR4450_CMEM_SIZE_128MB << PR4450_CMEMB_SIZE) |
+A SC with an uncached address on some other MIPS processors will always fail.
+So this isn't just a theoretical footnote in a manual.
 
-trailing whitespace
-#141: 
->> +++ kernel-new/arch/mips/philips/pnx8550/common/setup.c $
+The way things are implemented LL/SC I am certain that uncached LL/SC will
+fail on any MIPS multiprocessor system.  Fortunately while SMTC pretends
+to be multiprocessor it's really just a single core, which saves your day.
 
-Your patch has style problems, please review.  If any of these errors
-are false positives report them to the maintainer, see
-CHECKPATCH in MAINTAINERS.
-[ralf@denk linux-queue]$ 
+> + * - A maximum of 2k of code can be inserted between ll and sc. Every
+> + * memory accesses between the instructions will increase the chance of
+> + * sc failing and having to loop.
+
+Any memory access between LL/SC makes the LL/SC sequence invalid that is
+it will have undefined effects.
+
+> + * - When using custom_read_reg32/custom_write_reg32 only perform the
+> + * necessary logical operations on the register value in between these
+> + * two calls. All other logic should be performed before the first call.
+> +  * - There is a bug on the R10000 chips which has a workaround. If you
+> + * are affected by this bug, make sure to define the symbol 'R10000_LLSC_WAR'
+> + * to be non-zero.  If you are using this header from within linux, you may
+> + * include <asm/war.h> before including this file to have this defined
+> + * appropriately for you.
+
+> +#ifndef __ASM_REGOPS_H__
+> +#define __ASM_REGOPS_H__
+> +
+> +#include <linux/types.h>
+> +
+> +#include <asm/war.h>
+> +
+> +#ifndef R10000_LLSC_WAR
+> +#define R10000_LLSC_WAR 0
+> +#endif
+
+This symbol is supposed to be defined by <asm/war.h> only.  Anyway, this
+#ifndef will never be true because you already include <asm/war.h>, so
+this is dead code.
+
+> +#if R10000_LLSC_WAR == 1
+> +#define __beqz	"beqzl	"
+> +#else
+> +#define __beqz	"beqz	"
+> +#endif
+> +
+> +#ifndef _LINUX_TYPES_H
+> +typedef unsigned int u32;
+> +#endif
+
+Redefining a stanard Linux type is a no-no as is relying on include
+wrapper symbols like _LINUX_TYPES_H.  Anyway, this #ifndef will never
+be true because you already include <linux/types.h>, so this is dead code.
+
+> +static inline u32 read_reg32(volatile u32 *const addr,
+> +				u32 const mask)
+> +{
+> +	u32 temp;
+> +
+> +	__asm__ __volatile__(
+> +	"	.set	push				\n"
+> +	"	.set	noreorder			\n"
+> +	"	lw	%0, %1		# read		\n"
+> +	"	and	%0, %2		# mask		\n"
+> +	"	.set	pop				\n"
+> +	: "=&r" (temp)
+> +	: "m" (*addr), "ir" (mask));
+> +
+> +	return temp;
+> +}
+
+No need for inline assembler here; plain C can achieve the same.  Or just
+use a standard Linux function such as readl() or ioread32() or similar.
+
+> +/*
+> + * For special strange cases only:
+> + *
+> + * If you need custom processing within a ll/sc loop, use the following macros
+> + * VERY CAREFULLY:
+> + *
+> + *   u32 tmp;				<-- Define a variable to hold the data
+> + *
+> + *   custom_read_reg32(address, tmp);	<-- Reads the address and put the value
+> + *						in the 'tmp' variable given
+> + *
+> + *	From here on out, you are (basicly) atomic, so don't do anything too
+> + *	fancy!
+> + *	Also, this code may loop if the end of this block fails to write
+> + *	everything back safely due do the other CPU, so do NOT do anything
+> + *	with side-effects!
+> + *
+> + *   custom_write_reg32(address, tmp);	<-- Writes back 'tmp' safely.
+> + */
+> +#define custom_read_reg32(address, tmp)				\
+> +	__asm__ __volatile__(					\
+> +	"	.set	push				\n"	\
+> +	"	.set	mips3				\n"	\
+> +	"1:	ll	%0, %1	#custom_read_reg32	\n"	\
+> +	"	.set	pop				\n"	\
+> +	: "=r" (tmp), "=m" (*address)				\
+> +	: "m" (*address))
+> +
+> +#define custom_write_reg32(address, tmp)			\
+> +	__asm__ __volatile__(					\
+> +	"	.set	push				\n"	\
+> +	"	.set	mips3				\n"	\
+> +	"	sc	%0, %1	#custom_write_reg32	\n"	\
+> +	"	"__beqz"%0, 1b				\n"	\
+> +	"	nop					\n"	\
+> +	"	.set	pop				\n"	\
+> +	: "=&r" (tmp), "=m" (*address)				\
+> +	: "0" (tmp), "m" (*address))
+
+These two are *really* fragile stuff.  Modern gcc rearranges code in
+amazing ways, so you might end up with other loads or stores being moved
+into the ll/sc sequence or the 1: label of another inline assembler
+construct being taken as the destination of the branch.  So I would
+suggest to safely store the two function in a nice yellow barrel ;-)
+
+General suggestion, you can make about every access atomic if you do
+something like
+
+#include <linux/modules.h>
+#include <linux/spinlocks.h>
+
+DEFINE_SPINLOCK(register_lock);
+EXPORT_SYMBOL(register_lock);
+
+static inline void set_value_reg32(u32 *const addr,
+                                       u32 const mask,
+                                       u32 const value)
+{
+	unsigned long flags;
+	u32 bits;
+
+	spinlock_irqsave(&register_lock, flags);
+	bits = readl(addr);
+	bits &= mask;
+	bits |= value;
+	writel(bits, addr);
+}
+
+Maybe slower but definately more portable and not waiting before some
+CPU designer screws your code by accident :-)
+
+  Ralf

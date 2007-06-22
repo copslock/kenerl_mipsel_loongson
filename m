@@ -1,87 +1,141 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2007 00:08:18 +0100 (BST)
-Received: from mother.pmc-sierra.com ([216.241.224.12]:52453 "HELO
-	mother.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20021956AbXFUXIQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 22 Jun 2007 00:08:16 +0100
-Received: (qmail 15180 invoked by uid 101); 21 Jun 2007 23:07:07 -0000
-Received: from unknown (HELO pmxedge2.pmc-sierra.bc.ca) (216.241.226.184)
-  by mother.pmc-sierra.com with SMTP; 21 Jun 2007 23:07:07 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l5LN73GQ004097;
-	Thu, 21 Jun 2007 16:07:06 -0700
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <LGNW7TNP>; Thu, 21 Jun 2007 16:07:03 -0700
-Message-ID: <467B0492.1080007@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Satyam Sharma <satyam.sharma@gmail.com>
-Cc:	Christoph Hellwig <hch@infradead.org>,
-	Satyam Sharma <satyam.sharma@gmail.com>,
-	Tom Spink <tspink@gmail.com>,
-	Toralf F?rster <toralf.foerster@gmx.de>,
-	linux-kernel@vger.kernel.org,
-	Paolo Giarrusso <blaisorblade@yahoo.it>,
-	David Woodhouse <dwmw2@infradead.org>,
-	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
-	Brian Oostenbrink <Brian_Oostenbrink@pmc-sierra.com>,
-	Dan Doucette <Dan_Doucette@pmc-sierra.com>
-Subject: Re: build failure due to ROOT_DEV in mtd module (was Re: linux-2.
-	6.22-rc5-g7c8545e build #298 failed ...)
-Date:	Thu, 21 Jun 2007 16:06:58 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2007 07:33:54 +0100 (BST)
+Received: from kuber.nabble.com ([216.139.236.158]:19417 "EHLO
+	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
+	id S20022064AbXFVGdv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 22 Jun 2007 07:33:51 +0100
+Received: from isper.nabble.com ([192.168.236.156])
+	by kuber.nabble.com with esmtp (Exim 4.63)
+	(envelope-from <lists@nabble.com>)
+	id 1I1ciK-0001ce-TJ
+	for linux-mips@linux-mips.org; Thu, 21 Jun 2007 23:33:48 -0700
+Message-ID: <11246928.post@talk.nabble.com>
+Date:	Thu, 21 Jun 2007 23:33:48 -0700 (PDT)
+From:	Daniel Laird <daniel.j.laird@nxp.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Philips(NXP)/STB810 changes
+In-Reply-To: <20070621142721.GC21938@linux-mips.org>
 MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 21 Jun 2007 23:06:59.0299 (UTC) FILETIME=[DEE48B30:01C7B458]
-user-agent: Thunderbird 1.5.0.12 (X11/20070509)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Nabble-From: daniel.j.laird@nxp.com
+References: <11229250.post@talk.nabble.com> <467A67B6.6090909@ru.mvista.com> <11232209.post@talk.nabble.com> <20070621142721.GC21938@linux-mips.org>
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15505
+X-archive-position: 15506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: daniel.j.laird@nxp.com
 Precedence: bulk
 X-list: linux-mips
 
-> On Thu, Jun 21, 2007 at 04:13:27 EST, Satyam Sharma wrote:
-> On 6/21/07, Christoph Hellwig <hch@infradead.org> wrote:
->> On Thu, Jun 21, 2007 at 12:22:01PM +0530, Satyam Sharma wrote:
->> > >> The build seems to fail because of:
->> > >> ERROR: "ROOT_DEV" [drivers/mtd/maps/nettel.ko] undefined!
->> > >>
->> > >> After taking a quick look at the code, I can't immediately see why
->> > >> this would be, since there is an include for linux/root_dev.h at the
->> > >> top, there.
->> > >>
->> > >> There's only one occurrence of ROOT_DEV (line 425), and after a quick
->> > >> look at the git history, it seems the include was originally missing,
->> > >> but was put back in, in commit
->> > >> 6cc449c7d0292cb9b993f0df84fd3225e3099492.
->>
->> Please just the reference to ROOT_DEV from this driver.  Just because
->> someone builds this driver there should be no change in the default root
->> device.
-> 
-> I agree, but this (drivers/mtd/maps/nettel.c) isn't the only modular driver
-> referencing ROOT_DEV. We also have drivers/mtd/maps/pmcmsp-ramroot.c
-> using ROOT_DEV (in fact the purpose of that driver seems to be precisely
-> to special-case the root fs and do something with it ...) but considering
-> that other driver's (tristate) Kconfig option depends on another symbol that
-> is non-existent in the mainline tree, there is no way someone can build
-> pmcmsp-ramroot and so we'll never actually  hit that problem even with an
-> allmodconfig build.
-> 
-> Anyway, I'll leave this up to David / linux-mtd to sort out. [ No other
-> modular user of ROOT_DEV in the tree other than the two mtd drivers
-> mentioned here. ]han the two mtd drivers
-> mentioned here. ]]
 
-Hi Satyam,
+Useful script that checkpatch.pl! 
+Okay third attempt.  
 
-The support for the platform which introduced drivers/mtd/maps/pmcmsp-ramroot.c
-is being queued in the linux-mips tree at linux-mips.org. At some point it should
-work it's way to the main tree and be buildable.
+Please find attached a patch that sets up the CMEM registers for PNX8550
+properly:
 
-Marc
+Setup the CMEM registers for PNX8550 correctly.
+
+Signed-off-by: Daniel Laird <daniel.j.laird@NXP.com>
+---
+
+--- kernel/include/asm-mips/mipsregs.h
++++ kernel-new/include/asm-mips/mipsregs.h 
+@@ -498,6 +498,25 @@
+ #define MIPS_CONF_AT		(_ULCAST_(3) << 13)
+ #define MIPS_CONF_M		(_ULCAST_(1) << 31)
+ 
++/* Bits specific to the PR4450 CMEM Registers */
++#define PR4450_CMEMF_BBA     (_ULCAST_(2047) << 20)
++#define PR4450_CMEMB_BBA     20
++#define PR4450_CMEMF_SIZE    (_ULCAST_(15) << 1)
++#define PR4450_CMEMB_SIZE    1
++#define PR4450_CMEM_SIZE_1MB    0
++#define PR4450_CMEM_SIZE_2MB    1
++#define PR4450_CMEM_SIZE_4MB    2
++#define PR4450_CMEM_SIZE_8MB    3
++#define PR4450_CMEM_SIZE_16MB   4
++#define PR4450_CMEM_SIZE_32MB   5
++#define PR4450_CMEM_SIZE_64MB   6
++#define PR4450_CMEM_SIZE_128MB  7
++#define PR4450_CMEM_SIZE_256MB  8
++#define PR4450_CMEM_SIZE_512MB  9
++#define PR4450_CMEM_SIZE_1GB   10
++#define PR4450_CMEMF_VALID   (_ULCAST_(1) << 0)
++#define PR4450_CMEMB_VALID   0
++
+ /*
+  * Bits in the MIPS32/64 PRA coprocessor 0 config registers 1 and above.
+  */
+@@ -917,6 +936,14 @@
+ #define read_c0_diag5()		__read_32bit_c0_register($22, 5)
+ #define write_c0_diag5(val)	__write_32bit_c0_register($22, 5, val)
+ 
++#ifdef CONFIG_SOC_PNX8550
++#define read_c0_diag6()		__read_32bit_c0_register($22, 6)
++#define write_c0_diag6(val)	__write_32bit_c0_register($22, 6, val)
++
++#define read_c0_diag7()		__read_32bit_c0_register($22, 7)
++#define write_c0_diag7(val)	__write_32bit_c0_register($22, 7, val)
++#endif
++
+ #define read_c0_debug()		__read_32bit_c0_register($23, 0)
+ #define write_c0_debug(val)	__write_32bit_c0_register($23, 0, val)
+ 
+--- kernel/arch/mips/philips/pnx8550/common/setup.c
++++ kernel-new/arch/mips/philips/pnx8550/common/setup.c 
+@@ -75,6 +75,20 @@
+ 	},
+ };
+ 
++/* Define the CMEM regions for the processor. */
++#define CMEM_VALID       (1 << PR4450_CMEMB_VALID)
++#define CMEM_REGION      (0x1be00000 & PR4450_CMEMF_BBA)
++#define MMIO_CMEM_SIZE   (PR4450_CMEM_SIZE_2MB << PR4450_CMEMB_SIZE)
++#define MMIO_CMEM_ENABLE (CMEM_REGION | MMIO_CMEM_SIZE | CMEM_VALID)
++
++#define XIO_CMEM_REGION  (0x10000000 & PR4450_CMEMF_BBA)
++#define XIO_CMEM_SIZE    (PR4450_CMEM_SIZE_128MB << PR4450_CMEMB_SIZE)
++#define XIO_CMEM_ENABLE  (XIO_CMEM_REGION | XIO_CMEM_SIZE | CMEM_VALID)
++
++#define PCI_CMEM_REGION  (0x20000000 & PR4450_CMEMF_BBA)
++#define PCI_CMEM_SIZE    (PR4450_CMEM_SIZE_128MB << PR4450_CMEMB_SIZE)
++#define PCI_CMEM_ENABLE  (PCI_CMEM_REGION | PCI_CMEM_SIZE | CMEM_VALID)
++
+ #define STANDARD_IO_RESOURCES (sizeof(standard_io_resources)/sizeof(struct
+resource))
+ 
+ extern struct resource pci_io_resource;
+@@ -105,6 +119,19 @@
+         pm_power_off = pnx8550_machine_power_off;
+ 
+ 	board_time_init = pnx8550_time_init;
++
++	/* Setup CMEM Registers */
++	/* CMEM0 = MMIO */
++	write_c0_diag4(MMIO_REGION_ENABLE);
++
++	/* CMEM1 = XIO */
++	write_c0_diag5(XIO_CMEM_ENABLE);
++
++	/* CMEM2 = PCI */
++	write_c0_diag6(PCI_CMEM_ENABLE);
++
++	/* CMEM3 = Not used */
++	write_c0_diag7(0);
+ 
+ 	/* Clear the Global 2 Register, PCI Inta Output Enable Registers
+ 	   Bit 1:Enable DAC Powerdown
+
+Attached Email:
+http://www.nabble.com/file/p11246928/pnx8550_cmem_setup.patch
+pnx8550_cmem_setup.patch 
+Cheers
+Daniel Laird
+-- 
+View this message in context: http://www.nabble.com/-PATCH--Philips%28NXP%29-STB810-changes-tf3957431.html#a11246928
+Sent from the linux-mips main mailing list archive at Nabble.com.

@@ -1,62 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2007 15:07:01 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:1799 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022321AbXFVOG6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 22 Jun 2007 15:06:58 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 63435E1C6E;
-	Fri, 22 Jun 2007 16:06:18 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id XGauBIihJovW; Fri, 22 Jun 2007 16:06:18 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id F3327E1C63;
-	Fri, 22 Jun 2007 16:06:17 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l5ME6SMP019482;
-	Fri, 22 Jun 2007 16:06:28 +0200
-Date:	Fri, 22 Jun 2007 15:06:24 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	sknauert@wesleyan.edu
-cc:	linux-mips@linux-mips.org
-Subject: Re: Legacy PCI IO for PCI graphics on SGI O2...Anybody?
-In-Reply-To: <53391.129.133.92.31.1182519298.squirrel@webmail.wesleyan.edu>
-Message-ID: <Pine.LNX.4.64N.0706221456140.30780@blysk.ds.pg.gda.pl>
-References: <54672.129.133.92.31.1182184357.squirrel@webmail.wesleyan.edu> 
-   <20070619.121030.130240189.nemoto@toshiba-tops.co.jp>   
- <Pine.LNX.4.64N.0706191246060.15474@blysk.ds.pg.gda.pl>   
- <20070620.012206.30438292.anemo@mba.ocn.ne.jp>
- <53391.129.133.92.31.1182519298.squirrel@webmail.wesleyan.edu>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.3/3493/Fri Jun 22 11:18:44 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jun 2007 15:19:49 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:56811 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022324AbXFVOTq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Jun 2007 15:19:46 +0100
+Received: from localhost (p1126-ipad201funabasi.chiba.ocn.ne.jp [222.146.64.126])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id BEB28B771; Fri, 22 Jun 2007 23:19:42 +0900 (JST)
+Date:	Fri, 22 Jun 2007 23:20:23 +0900 (JST)
+Message-Id: <20070622.232023.29573321.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Create fallback gpio.h
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15509
+X-archive-position: 15510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 22 Jun 2007, sknauert@wesleyan.edu wrote:
+Create fallback gpio.h which only contains prototypes for gpio API.
 
-> > Oh I thought ioperm() or iopl() on archs other then x86 are all dummy
-> > routines, but apparently that was wrong.  Now I have looked some
-> > ioperm.c in glibc and am very suprised by so many hard-coded
-> > boardname/addresses ;)
-> >
-> 
-> This seems like a mistake, shouldn't the hardware specific chunks be in
-> the kernel?
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ include/asm-mips/mach-generic/gpio.h |   15 +++++++++++++++
+ 1 files changed, 15 insertions(+), 0 deletions(-)
 
- No particular need for this -- libc is a part of the operating system 
-API.  Anything below this API is up to the system implementation and the 
-more bits moved to the userland the better.
-
-  Maciej
+diff --git a/include/asm-mips/mach-generic/gpio.h b/include/asm-mips/mach-generic/gpio.h
+new file mode 100644
+index 0000000..6eaf5ef
+--- /dev/null
++++ b/include/asm-mips/mach-generic/gpio.h
+@@ -0,0 +1,15 @@
++#ifndef __ASM_MACH_GENERIC_GPIO_H
++#define __ASM_MACH_GENERIC_GPIO_H
++
++int gpio_request(unsigned gpio, const char *label);
++void gpio_free(unsigned gpio);
++int gpio_direction_input(unsigned gpio);
++int gpio_direction_output(unsigned gpio, int value);
++int gpio_get_value(unsigned gpio);
++void gpio_set_value(unsigned gpio, int value);
++int gpio_to_irq(unsigned gpio);
++int irq_to_gpio(unsigned irq);
++
++#include <asm-generic/gpio.h>		/* cansleep wrappers */
++
++#endif /* __ASM_MACH_GENERIC_GPIO_H */

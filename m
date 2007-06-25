@@ -1,19 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2007 15:35:59 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:43491 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021943AbXFYOf5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Jun 2007 15:35:57 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jun 2007 17:12:03 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:28119 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20021953AbXFYQMA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Jun 2007 17:12:00 +0100
 Received: from localhost (p3129-ipad201funabasi.chiba.ocn.ne.jp [222.146.66.129])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 3E6E4B615; Mon, 25 Jun 2007 23:35:54 +0900 (JST)
-Date:	Mon, 25 Jun 2007 23:36:37 +0900 (JST)
-Message-Id: <20070625.233637.79301366.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/4] rbtx4938: Add generic GPIO support
+	id 768ADB8B9; Tue, 26 Jun 2007 01:11:54 +0900 (JST)
+Date:	Tue, 26 Jun 2007 01:12:37 +0900 (JST)
+Message-Id: <20070626.011237.44099374.anemo@mba.ocn.ne.jp>
+To:	david-b@pacbell.net
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	sshtylyov@ru.mvista.com, mlachwani@mvista.com,
+	spi-devel-general@lists.sourceforge.net
+Subject: Re: [PATCH] TXx9 SPI controller driver
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070624205429.GB5814@linux-mips.org>
-References: <20070622.232155.122616682.anemo@mba.ocn.ne.jp>
-	<20070624205429.GB5814@linux-mips.org>
+In-Reply-To: <200706221103.19761.david-b@pacbell.net>
+References: <20070622.232111.36926005.anemo@mba.ocn.ne.jp>
+	<200706221103.19761.david-b@pacbell.net>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
@@ -24,7 +26,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15532
+X-archive-position: 15533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,55 +34,161 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 24 Jun 2007 22:54:29 +0200, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > GPIO 0..15 are for TX4938 PIO pins, GPIO 16..18 are for FPGA-driven
-> > chipselect signals for SPI devices.
+On Fri, 22 Jun 2007 11:03:18 -0700, David Brownell <david-b@pacbell.net> wrote:
+> > +	/* calc real speed */
+> > +	n = (c->baseclk + spi->max_speed_hz - 1) / spi->max_speed_hz;
+> > +	if (n < 1)
+> > +		n = 1;
+> > +	else if (n > 0xff)
+> > +		return -EINVAL;
+> > +	spi->max_speed_hz = c->baseclk / n;
 > 
-> Queued also.
+> That's not right -- given the current API definitions.  The max_speed_hz
+> value should be read-only to controller drivers.
+> 
+> On the other hand, I've also wondered how the actual rate should be
+> reported to drivers, and that approach might be a reasonable solution
+> to that problem.  Can you discuss this proposed change on the spi
+> development list?
 
-Thanks.  And please queue this too.
+As for this driver, anyway I should move this calculation to the
+transfer function to handle per-transfer speed_hz, so there is no
+serious requirement to modify max_speed_hz here.
+
+I agree reporting the actual speed to the protocol driver might be
+useful, but I should think a bit more.
+
+> > +static int txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
+> > +{
+> > +	...
+> > +	nsecs = 100 + 1000000000 / spi->max_speed_hz / 2;
+> 
+> ... which is why we can't just strike that line changing max_speed_hz.
+> But please use only a single division in that expression, and explain
+> what the value is used for.  (A good variable name would do wonders.
+> Is this "nsecs per fortnight", or what?)
+> 
+> I suspect "nsecs" and the actual bitrate should probably be stored
+> with the other spi->controller_state data.
+
+These nsecs delays are all comes from spi_bitbang driver I referred
+when writing this driver.  As you already found, this controller does
+not have dedicated chipselect signals and generic GPIO is used for
+them.  As the controller do nothing about CS, the driver should take
+care of CS setup/hold/recovery time.
+
+I will move these delays to cs_func() and add some comments.
+
+> > +	list_for_each_entry (t, &m->transfers, transfer_list) {
+> > +		const void *txbuf = t->tx_buf;
+> > +		void *rxbuf = t->rx_buf;
+> > +		u32 data;
+> > +		unsigned int len = t->len;
+> > +		unsigned int wsize = spi->bits_per_word >> 3; /* in bytes */
+> 
+> But on the other hand, here you're ignoring t->max_speed_hz as
+> well as t->bits_per_word.  If you do that, you must check those
+> values in txx9spi_transfer() and reject message which include
+> transfers using those per-transfer overrides.
+> 
+> Given that this controller only seems to allow 8 or 16 bit
+> transfers, you're going to need checks in the transfer() path
+> even if you do support the per-transfer overrides someday.
+
+Oh I had missed these per-transfer parameters.  I will add some
+checking for them.
+
+> > +		if ((!txbuf && !rxbuf && len) || (len & (wsize - 1))) {
+> 
+> That's confusing.  But it's also something that belongs with
+> per-transfer checks -- doing it here is needlessly late.
+
+Sure.  I will move it before actual transfer.
+
+> > +				data = txbuf ? (wsize == 1 ?
+> > +						*(const u8 *)txbuf :
+> > +						*(const u16 *)txbuf) : 0;
+> 
+> Double "?:" expressions == confusing.  Please use at most one.
+
+Will fix.
+
+> > +	if (!(status == 0 && cs_change)) {
+> > +		ndelay(nsecs);
+> 
+> Again:  if drivers need an extra delay, that's what delay_usec is for.
+> 
+> > +		txx9spi_cs_func(spi, 0);
+> > +		ndelay(nsecs);
+> 
+> ... and I don't see why this delay is needed at all.  If your
+> hardware needs extra delays around chipselect toggles, surely
+> that should be built into your cs_func()?
+> 
+> But it looks to me like you have a bug here too.  You're trying
+> to implement this behavioral hint, which is fine, but you're
+> not recording that you did it.  So if the next message goes
+> to a different chip, both chips will be selected at the same
+> time -- right?  Bug... quickest for you to ignore this hint.
+
+Oh it should be a bug.  I will fix by recording last chipselect.
+
+> > +	if (res->start >= TXX9_DIRECTMAP_BASE)
+> > +		c->membase = (void __iomem *)(unsigned long)(int)res->start;
+> > +	else {
+> > +		c->membase = ioremap(res->start, res->end - res->start + 1);
+> > +		c->mapped = 1;
+> > +	}
+> 
+> That looks plain wrong.  Maybe it reflects a platform-level bug,
+> but ioremap(res->start) should Just Work even when it performs
+> an identity mapping on a given system.  Remove this ugly code.
+> Always map.
+
+Yes this was a hack...  I will try to make MIPS ioremap() can handle
+this special case.
+
+> > +	c->baseclk = platform_get_irq_byname(dev, "baseclk");
+> > +	if (c->baseclk < 0)
+> > +		goto res_and_exit;
+> 
+> Yeech!!   If you're getting a clock, then clk_get(dev, "baseclk").
+> That's very clearly not an IRQ.  If you need values that don't fit
+> into the current resource framework, either extend that framework
+> or use platform_data to pass the values.
+> 
+> In this case, extending the ioresource framework would be the wrong
+> answer, since the clock framework is there to handle clocks.  If
+> this platform doesn't support the clock framework, then you must
+> use platform_data to pass such nonstandard clock data.
+
+Another hack.  Good to know about the clock framework.  That's what
+I wanted.  I will try to implement them for MIPS.
+
+> > +	master->bus_num = dev->id;
+> > +	master->setup = txx9spi_setup;
+> > +	master->transfer = txx9spi_transfer;
+> > +	master->cleanup = txx9spi_cleanup;
+> 
+> Something else that seems incorrect here is the lack of setup
+> for master->num_chipselect.  It seems that you're using the
+> spi->chip_select value as a GPIO number.  That's unusual, but
+> not wrong.  Just set num_chipselect to the number of GPIOs on
+> the platform.  Otherwise, just map from chipselect to GPIO
+> like the other drivers do.  Such mappings fit naturally into
+> platform_data.
+> 
+> The fact that this works at all is a temporary bug in the
+> SPI core.
+
+Yes, I'm using GPIO number as chipselect value.  This controller
+itself does not have any constraint about chipselect, I wanted to set
+num_chipselect as "unlimited".  Though providing max GPIO number or
+mapping table might be safe, I think just using chipselect number for
+GPIO as is would be simple and enough.  I will do explicitly
+initialize num_chipselect as 0 and add a comment for it.
 
 
-Subject: [PATCH] rbtx4938: Add mmio barriers for GPIO.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+I will send an updated patch in a few days.  Thank you.
 ---
- arch/mips/tx4938/toshiba_rbtx4938/setup.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/tx4938/toshiba_rbtx4938/setup.c b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-index a835870..330ee43 100644
---- a/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-+++ b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-@@ -1021,6 +1021,7 @@ static void rbtx4938_spi_gpio_set(unsigned gpio, int value)
- 	else
- 		val &= ~(1 << gpio);
- 	*rbtx4938_spics_ptr = val;
-+	mmiowb();
- 	spin_unlock_irqrestore(&rbtx4938_spi_gpio_lock, flags);
- }
- 
-@@ -1053,6 +1054,7 @@ static void tx4938_gpio_set(unsigned gpio, int value)
- 	unsigned long flags;
- 	spin_lock_irqsave(&tx4938_gpio_lock, flags);
- 	tx4938_gpio_set_raw(gpio, value);
-+	mmiowb();
- 	spin_unlock_irqrestore(&tx4938_gpio_lock, flags);
- }
- 
-@@ -1060,6 +1062,7 @@ static int tx4938_gpio_dir_in(unsigned gpio)
- {
- 	spin_lock_irq(&tx4938_gpio_lock);
- 	tx4938_pioptr->dir &= ~(1 << gpio);
-+	mmiowb();
- 	spin_unlock_irq(&tx4938_gpio_lock);
- 	return 0;
- }
-@@ -1069,6 +1072,7 @@ static int tx4938_gpio_dir_out(unsigned int gpio, int value)
- 	spin_lock_irq(&tx4938_gpio_lock);
- 	tx4938_gpio_set_raw(gpio, value);
- 	tx4938_pioptr->dir |= 1 << gpio;
-+	mmiowb();
- 	spin_unlock_irq(&tx4938_gpio_lock);
- 	return 0;
- }
+Atsushi Nemoto

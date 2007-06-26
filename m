@@ -1,65 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2007 22:10:30 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.171]:19296 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022141AbXFZVKZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Jun 2007 22:10:25 +0100
-Received: by ug-out-1314.google.com with SMTP id m3so197152ugc
-        for <linux-mips@linux-mips.org>; Tue, 26 Jun 2007 14:10:25 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
-        b=tRot5kA5Mrt5FR0CPfBrqhA2u+ydD4MzuZhHix9Vy1leLzv32dT6fl2tPFNJ/VvFix/5l0/5fRFbKq5O7DdXApIqbsjAyyRWZZnk0pOTvAHcLVRpEv/P/ekvFPd1x9oae9R5fV1sEvjPsDaOxaqr9di27SmuVPr/lbzwHQSL/HU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:date:from:to:cc:subject:message-id:mime-version:content-type:content-disposition:user-agent;
-        b=S3rNY3heI9AJjnSBwpGH9DfxBj/2mBwf0RCZbxsSq1yic9jbPsIKoW+1uQBZjGPcCL+rjbHGHT6L3W+AxsAzI+f6/X3yygjfD9RICl0SspEC2ALDPbsXh7WV64tYmfK9TIbqq08R9i9cfOXWdB7w0miihV+RM1mWEumhoUZcjVg=
-Received: by 10.66.242.20 with SMTP id p20mr638119ugh.1182892225111;
-        Tue, 26 Jun 2007 14:10:25 -0700 (PDT)
-Received: from gmail.com ( [217.67.117.64])
-        by mx.google.com with ESMTP id m1sm1156965uge.2007.06.26.14.10.23
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 26 Jun 2007 14:10:24 -0700 (PDT)
-Received: by gmail.com (nbSMTP-1.00) for uid 1000
-	(using TLSv1/SSLv3 with cipher DES-CBC3-SHA (168/168 bits))
-	adobriyan@gmail.com; Wed, 27 Jun 2007 01:10:47 +0400 (MSD)
-Date:	Wed, 27 Jun 2007 01:10:45 +0400
-From:	Alexey Dobriyan <adobriyan@gmail.com>
-To:	ralf@linux-mips.org, akpm@osdl.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jun 2007 00:50:30 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:56033 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022193AbXFZXu2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 27 Jun 2007 00:50:28 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l5QNoJGl027311;
+	Wed, 27 Jun 2007 01:50:19 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l5QNoH4j027310;
+	Wed, 27 Jun 2007 01:50:18 +0200
+Date:	Wed, 27 Jun 2007 01:50:17 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] mips-jazz: correct flags for timer io resource
-Message-ID: <20070626211045.GA5801@martell.zuzino.mipt.ru>
+Subject: Re: [PATCH] Make ioremap() work on TX39/49 special unmapped segment
+Message-ID: <20070626235017.GA24949@linux-mips.org>
+References: <20070626.011401.103777892.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <adobriyan@gmail.com>
+In-Reply-To: <20070626.011401.103777892.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15545
+X-archive-position: 15546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adobriyan@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-arch/mips/jazz/setup.c:55:4: error: Initializer entry defined twice
+On Tue, Jun 26, 2007 at 01:14:01AM +0900, Atsushi Nemoto wrote:
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
----
+> TX39XX and TX49XX have "reserved" segment in CKSEG3 area.
+> 0xff000000-0xff3fffff on TX49XX and 0xff000000-0xfffeffff on TX39XX
+> are reserved (unmapped, uncached).  Controllers on these SoCs are
+> placed in this segment.
+> 
+> This patch add plat_ioremap() and plat_iounmap() to override default
+> behavior and implement these hooks for TX39/TX49.
 
- arch/mips/jazz/setup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Queued.  Thanks!
 
---- a/arch/mips/jazz/setup.c
-+++ b/arch/mips/jazz/setup.c
-@@ -54,7 +54,7 @@ static struct resource jazz_io_resources[] = {
- 		.start	= 0x40,
- 		.end	= 0x5f,
- 		.name	= "timer",
--		.end	= IORESOURCE_BUSY
-+		.flags	= IORESOURCE_BUSY
- 	}, {
- 		.start	= 0x80,
- 		.end	= 0x8f,
+  Ralf

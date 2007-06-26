@@ -1,63 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2007 10:37:46 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.177]:18808 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022076AbXFZJhm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Jun 2007 10:37:42 +0100
-Received: by py-out-1112.google.com with SMTP id p76so3035960pyb
-        for <linux-mips@linux-mips.org>; Tue, 26 Jun 2007 02:37:31 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=BHfI0Ugj16RPUyRvme8FpVZB6PCMVFidDVU4R5HfyxbQLjZvaFflwqD62aJ4MWbGkgoIQGPQMVE9C+qQMWLBdUh3rviIOsz9T7rC2EShcoeidNcms8WMqpBFCfAPKhGnlYAg1dVdsD+kYldCk/pGhxFEWKgxM3BNKQvl3zPoUxQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=FnoXWVqIIa/NMD5mtFqluhvCsGpv1wjGHI+OC4ewvCOIKWSQ794I4xTsfAx6MXo2XYtHiXfqSqhc52dlKk3HJXVhKwHEhNeU/1rJWjrURweYlJsYPQ2n/r/s+t9OvHsBPervjV+wbComKO9CfQmYPLSI3qQV4SehxFJgLrJdPf4=
-Received: by 10.65.113.17 with SMTP id q17mr10862702qbm.1182850651234;
-        Tue, 26 Jun 2007 02:37:31 -0700 (PDT)
-Received: by 10.65.185.1 with HTTP; Tue, 26 Jun 2007 02:37:31 -0700 (PDT)
-Message-ID: <cda58cb80706260237r60a0b6b3obeba7daac7cf114a@mail.gmail.com>
-Date:	Tue, 26 Jun 2007 11:37:31 +0200
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH] generic clk API implementation for MIPS
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-In-Reply-To: <20070626.011449.132112302.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2007 14:29:18 +0100 (BST)
+Received: from mail.blastwave.org ([147.87.98.10]:37260 "EHLO
+	mail.blastwave.org") by ftp.linux-mips.org with ESMTP
+	id S20022116AbXFZN3O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 26 Jun 2007 14:29:14 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mail.blastwave.org (Postfix) with ESMTP id A97C0F94A;
+	Tue, 26 Jun 2007 15:28:43 +0200 (MEST)
+X-Virus-Scanned: amavisd-new at blastwave.org
+Received: from mail.blastwave.org ([127.0.0.1])
+	by localhost (enterprise.blastwave.org [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id mC8dw2py9FQB; Tue, 26 Jun 2007 15:28:40 +0200 (MEST)
+Received: from aki.intern.liechtiag.ch (66-132.63-81.stat.fixnetdata.ch [81.63.132.66])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.blastwave.org (Postfix) with ESMTP id 18038F947;
+	Tue, 26 Jun 2007 15:28:39 +0200 (MEST)
+Date:	Tue, 26 Jun 2007 15:28:38 +0200
+From:	Attila Kinali <attila@kinali.ch>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: au1550 ac97 driver
+Message-Id: <20070626152838.4c925972.attila@kinali.ch>
+In-Reply-To: <20070625131814.GA27621@roarinelk.homelinux.net>
+References: <20070625150506.a0cd7f9b.attila@kinali.ch>
+	<20070625131814.GA27621@roarinelk.homelinux.net>
+Organization: SEELE
+X-Mailer: Sylpheed 2.4.0rc (GTK+ 2.10.12; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20070626.011449.132112302.anemo@mba.ocn.ne.jp>
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <attila@kinali.ch>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15536
+X-archive-position: 15537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: attila@kinali.ch
 Precedence: bulk
 X-list: linux-mips
 
-Hi Atsushi,
+Moin Manuel,
 
-On 6/25/07, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> The clock framework (clk_get(), etc.) would be useful to provide some
-> clock values to platform devices or so.
->
+On Mon, 25 Jun 2007 15:18:14 +0200
+Manuel Lauss <mano@roarinelk.homelinux.net> wrote:
 
-yes it can be usefull.
+> I wrote experimental ALSA ASoC drivers for the Au1200 PSC in AC97
+> and I2S mode.  From my limited understanding, the Au1550 PSCs are
+> identical to the ones on the Au1200, so the drivers *should* work.
+> on the 1550 (All the proper PSC base addresses are already in there;
+> all you'd need to do is add code for your board)
+> 
+> An update to the dbdma api is required to get proper DMA ringbuffers.
+> 
+> If you're interested, I put 2 patches online:
 
-> This MIPS implementation is derived (and stripped) from the SH
-> implementation.
->
+Thanks a lot, i'll take a look at them.
+But unfortunately, the AC97 subproject got preempted by
+someething more important, so it will take a while until
+i can give you some feedback.
 
-Did you consider Atmel implementation which is even more stripped ?
+			Attila Kinali
 
-The main difference seems that your version has module support. I'm
-not sure how usefull it is though.
-
-Thanks
 -- 
-               Franck
+Praised are the Fountains of Shelieth, the silver harp of the waters,
+But blest in my name forever this stream that stanched my thirst!
+                         -- Deed of Morred

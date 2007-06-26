@@ -1,99 +1,308 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2007 15:30:12 +0100 (BST)
-Received: from NeSTGROUP.NET ([203.200.158.40]:13787 "EHLO ns2.nestgroup.net")
-	by ftp.linux-mips.org with ESMTP id S20022134AbXFZOaE convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Jun 2007 15:30:04 +0100
-Received: from MAIL-TVM.tvm.nestgroup.net ([192.168.192.74])
-	by ns2.nestgroup.net (8.13.1/8.13.1) with ESMTP id l5QEYo7s010785;
-	Tue, 26 Jun 2007 20:04:51 +0530
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: "Segfault/illegal instruction" - udevd - ntpd - glibc
-Date:	Tue, 26 Jun 2007 19:56:11 +0530
-Message-ID: <9A1299C7A40D7447A108107E951450CA01C9E04A@MAIL-TVM.tvm.nestgroup.net>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: "Segfault/illegal instruction" - udevd - ntpd - glibc
-Thread-Index: AcexAQS/8o5iaXsVRBW3fMJuu+ZjbAAiqDjwAACNqiABmwanwA==
-From:	"Sadarul Firos" <sadarul.firos@nestgroup.net>
-To:	<ralf@linux-mips.org>
-Cc:	<linux-mips@linux-mips.org>
-Return-Path: <sadarul.firos@nestgroup.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jun 2007 15:34:13 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:40650 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022134AbXFZOeI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 26 Jun 2007 15:34:08 +0100
+Received: from localhost (p6214-ipad208funabasi.chiba.ocn.ne.jp [60.43.107.214])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 9F351A567; Tue, 26 Jun 2007 23:32:48 +0900 (JST)
+Date:	Tue, 26 Jun 2007 23:33:32 +0900 (JST)
+Message-Id: <20070626.233332.74753130.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] generic clk API implementation for MIPS
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <cda58cb80706260237r60a0b6b3obeba7daac7cf114a@mail.gmail.com>
+References: <20070626.011449.132112302.anemo@mba.ocn.ne.jp>
+	<cda58cb80706260237r60a0b6b3obeba7daac7cf114a@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15538
+X-archive-position: 15539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sadarul.firos@nestgroup.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+On Tue, 26 Jun 2007 11:37:31 +0200, "Franck Bui-Huu" <vagabon.xyz@gmail.com> wrote:
+> Did you consider Atmel implementation which is even more stripped ?
 
-As an immediate workaround I've added a dummy _init/_fini functions in
-nss_dns and nss_compat libraries and no segfault/illegal instruction
-error was observed for over 800 successive reboots. Since I knew
-overriding _init/_fini is dangerous, added constructor/destructor fns
-replacing the dummy _init/_fini. But this time again I got the
-segmentation fault/illegal instruction errors. I think this will give
-you more insight. I'm really stuck up in the problem :(
+Well, it seems simpler, but I suppose clk_register() is very useful ;)
 
------Original Message-----
-From: Sadarul Firos 
-Sent: Monday, June 18, 2007 3:21 PM
-To: 'ralf@linux-mips.org'
-Cc: 'linux-mips@linux-mips.org'
-Subject: RE: "Segfault/illegal instruction" - udevd - ntpd - glibc
+> The main difference seems that your version has module support. I'm
+> not sure how usefull it is though.
+
+Indeed.  Revised.
 
 
-Thanks Ralf for the reply.
+Subject: [PATCH] generic clk API implementation for MIPS
 
-Regarding kernel, I am using the final release version of linux 2.6.18
-kernel with some customizations. Out of the two boards which I have one
-has MSP8150 Multi-Service Processor(MIPS 64) and the other has ITE 8172
-system controller with RM7035C, 64-bit MIPS RISC microprocessor(MIPS V).
+The clock framework (clk_get(), etc.) would be useful to provide some
+clock values to platform devices or so.
 
------Original Message-----
-From: Ralf Baechle [mailto:ralf@linux-mips.org] 
-Sent: Sunday, June 17, 2007 1:04 AM
-To: Sadarul Firos
-Cc: linux-mips@linux-mips.org
-Subject: Re: "Segfault/illegal instruction" - udevd - ntpd - glibc
+This MIPS implementation is derived (and stripped) from the SH
+implementation.
 
-On Fri, Jun 15, 2007 at 09:23:34PM +0530, Sadarul Firos wrote:
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/lib/Makefile   |    2 +-
+ arch/mips/lib/clock.c    |  185 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/asm-mips/clock.h |   38 ++++++++++
+ 3 files changed, 224 insertions(+), 1 deletions(-)
 
-> I am working with two MIPS based boards (one is MIPS and the other is
-> MIPSEL) running linux-2.6.18/glibc-2.3.5. I am performing a
-consecutive
-> reboot test on these boards. After some number of reboots (say 80) I
-am
-> getting "segmentaion fault/illegal instruction" while running udevd
-and
-> ntpd during bootup. Upon observing the core dump, it is noted that the
-> segfault occured from the _init function of libnss_dns.so (in the case
-> of ntpd) and libnss_compat.so (in the case of udevd). I assume that
-> there might be a problem somewhere in the call_init function in
-> glibc-2.3.5/elf/dl-init.c. After I put some printf statements for
-> debugging in the call_init function, there is no segfault/illegal
-> instruction in the reboot testing. I have also used gdb to debug the
-> problem but the "segfault/illegal instruction" doesn't occur during
-the
-> reboot test. Could anyone please help me to sort out this problem. The
-> gdb output using coredump is attached.
-
-Normally the address space layout and most other variables during a
-program load should be identical each time so userspace should behave
-identical.   So I sense the scent of a TLB or more likely cache
-managment
-problem.
-
-What 2.6.18 variant exactly are you running, that is where & when did
-download it, what CPU?
-
-  Ralf
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index a960c05..ecea595 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -3,7 +3,7 @@
+ #
+ 
+ lib-y	+= csum_partial.o memcpy.o memcpy-inatomic.o memset.o strlen_user.o \
+-	   strncpy_user.o strnlen_user.o uncached.o
++	   strncpy_user.o strnlen_user.o uncached.o clock.o
+ 
+ obj-y			+= iomap.o
+ obj-$(CONFIG_PCI)	+= iomap-pci.o
+diff --git a/arch/mips/lib/clock.c b/arch/mips/lib/clock.c
+new file mode 100644
+index 0000000..2bfd0b4
+--- /dev/null
++++ b/arch/mips/lib/clock.c
+@@ -0,0 +1,185 @@
++/*
++ * arch/mips/lib/clock.c - MIPS clock framework
++ *
++ * This clock framework is derived from the SH version by:
++ *
++ *  Copyright (C) 2005, 2006  Paul Mundt
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/mutex.h>
++#include <linux/list.h>
++#include <linux/kref.h>
++#include <linux/err.h>
++#include <linux/platform_device.h>
++#include <asm/clock.h>
++
++static LIST_HEAD(clock_list);
++static DEFINE_SPINLOCK(clock_lock);
++static DEFINE_MUTEX(clock_list_lock);
++
++static int __clk_enable(struct clk *clk)
++{
++	/*
++	 * See if this is the first time we're enabling the clock, some
++	 * clocks that are always enabled still require "special"
++	 * initialization. This is especially true if the clock mode
++	 * changes and the clock needs to hunt for the proper set of
++	 * divisors to use before it can effectively recalc.
++	 */
++	if (unlikely(atomic_read(&clk->kref.refcount) == 1))
++		if (clk->ops && clk->ops->init)
++			clk->ops->init(clk);
++
++	if (clk->flags & CLK_ALWAYS_ENABLED)
++		return 0;
++
++	if (likely(clk->ops && clk->ops->enable))
++		clk->ops->enable(clk);
++
++	kref_get(&clk->kref);
++	return 0;
++}
++
++int clk_enable(struct clk *clk)
++{
++	unsigned long flags;
++	int ret;
++
++	spin_lock_irqsave(&clock_lock, flags);
++	ret = __clk_enable(clk);
++	spin_unlock_irqrestore(&clock_lock, flags);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(clk_enable);
++
++static void clk_kref_release(struct kref *kref)
++{
++	/* Nothing to do */
++}
++
++static void __clk_disable(struct clk *clk)
++{
++	if (clk->flags & CLK_ALWAYS_ENABLED)
++		return;
++
++	kref_put(&clk->kref, clk_kref_release);
++}
++
++void clk_disable(struct clk *clk)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&clock_lock, flags);
++	__clk_disable(clk);
++	spin_unlock_irqrestore(&clock_lock, flags);
++}
++EXPORT_SYMBOL_GPL(clk_disable);
++
++int clk_register(struct clk *clk)
++{
++	mutex_lock(&clock_list_lock);
++
++	list_add(&clk->node, &clock_list);
++	kref_init(&clk->kref);
++
++	mutex_unlock(&clock_list_lock);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(clk_register);
++
++void clk_unregister(struct clk *clk)
++{
++	mutex_lock(&clock_list_lock);
++	list_del(&clk->node);
++	mutex_unlock(&clock_list_lock);
++}
++EXPORT_SYMBOL_GPL(clk_unregister);
++
++unsigned long clk_get_rate(struct clk *clk)
++{
++	return clk->rate;
++}
++EXPORT_SYMBOL_GPL(clk_get_rate);
++
++int clk_set_rate(struct clk *clk, unsigned long rate)
++{
++	int ret = -EOPNOTSUPP;
++
++	if (likely(clk->ops && clk->ops->set_rate)) {
++		unsigned long flags;
++
++		spin_lock_irqsave(&clock_lock, flags);
++		ret = clk->ops->set_rate(clk, rate);
++		spin_unlock_irqrestore(&clock_lock, flags);
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(clk_set_rate);
++
++/*
++ * Returns a clock. Note that we first try to use device id on the bus
++ * and clock name. If this fails, we try to use clock name only.
++ */
++struct clk *clk_get(struct device *dev, const char *id)
++{
++	struct clk *p, *clk = ERR_PTR(-ENOENT);
++	int idno;
++
++	if (dev == NULL || dev->bus != &platform_bus_type)
++		idno = -1;
++	else
++		idno = to_platform_device(dev)->id;
++
++	mutex_lock(&clock_list_lock);
++	list_for_each_entry(p, &clock_list, node) {
++		if (p->id == idno && strcmp(id, p->name) == 0) {
++			clk = p;
++			goto found;
++		}
++	}
++
++	list_for_each_entry(p, &clock_list, node) {
++		if (strcmp(id, p->name) == 0) {
++			clk = p;
++			break;
++		}
++	}
++
++found:
++	mutex_unlock(&clock_list_lock);
++
++	return clk;
++}
++EXPORT_SYMBOL_GPL(clk_get);
++
++void clk_put(struct clk *clk)
++{
++}
++EXPORT_SYMBOL_GPL(clk_put);
++
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	return rate;
++}
++EXPORT_SYMBOL_GPL(clk_round_rate);
++
++int clk_set_parent(struct clk *clk, struct clk *parent)
++{
++	clk->parent = parent;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(clk_set_parent);
++
++struct clk *clk_get_parent(struct clk *clk)
++{
++	return clk->parent ?: ERR_PTR(-ENODEV);
++}
++EXPORT_SYMBOL_GPL(clk_get_parent);
+diff --git a/include/asm-mips/clock.h b/include/asm-mips/clock.h
+new file mode 100644
+index 0000000..1c1429b
+--- /dev/null
++++ b/include/asm-mips/clock.h
+@@ -0,0 +1,38 @@
++#ifndef __ASM_MIPS_CLOCK_H
++#define __ASM_MIPS_CLOCK_H
++
++/* generic clk API implementation --- derived from include/asm-sh/clock.h */
++
++#include <linux/kref.h>
++#include <linux/list.h>
++#include <linux/clk.h>
++
++struct clk;
++
++struct clk_ops {
++	void (*init)(struct clk *clk);
++	void (*enable)(struct clk *clk);
++	void (*disable)(struct clk *clk);
++	int (*set_rate)(struct clk *clk, unsigned long rate);
++};
++
++struct clk {
++	struct list_head	node;
++	const char		*name;
++	int			id;
++
++	struct clk		*parent;
++	struct clk_ops		*ops;
++
++	struct kref		kref;
++
++	unsigned long		rate;
++	unsigned long		flags;
++};
++
++#define CLK_ALWAYS_ENABLED	(1 << 0)
++
++int clk_register(struct clk *);
++void clk_unregister(struct clk *);
++
++#endif /* __ASM_MIPS_CLOCK_H */

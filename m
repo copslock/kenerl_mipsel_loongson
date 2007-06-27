@@ -1,17 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jun 2007 14:24:23 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:24571 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022376AbXF0NYS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 27 Jun 2007 14:24:18 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jun 2007 14:31:36 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:37335 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022368AbXF0Nba (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 27 Jun 2007 14:31:30 +0100
 Received: from localhost (p3155-ipad11funabasi.chiba.ocn.ne.jp [219.162.38.155])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 00876B6A0; Wed, 27 Jun 2007 22:24:13 +0900 (JST)
-Date:	Wed, 27 Jun 2007 22:24:58 +0900 (JST)
-Message-Id: <20070627.222458.27955527.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, sshtylyov@ru.mvista.com, mlachwani@mvista.com,
-	david-b@pacbell.net, spi-devel-general@lists.sourceforge.net
-Subject: [PATCH] TXx9 SPI controller driver (take 2)
+	id 31F6AA5B4; Wed, 27 Jun 2007 22:31:27 +0900 (JST)
+Date:	Wed, 27 Jun 2007 22:32:11 +0900 (JST)
+Message-Id: <20070627.223211.59651242.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, sshtylyov@ru.mvista.com,
+	mlachwani@mvista.com, vagabon.xyz@gmail.com
+Subject: Re: [PATCH 2/4] rbtx4938: Convert SPI codes to use generic SPI
+ drivers
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070624205444.GC5814@linux-mips.org>
+References: <20070622.232206.88704003.anemo@mba.ocn.ne.jp>
+	<20070624205444.GC5814@linux-mips.org>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
@@ -22,7 +26,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15553
+X-archive-position: 15554
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,522 +34,83 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is a driver for SPI controller built into TXx9 MIPS SoCs.
-This driver is derived from arch/mips/tx4938/toshiba_rbtx4938/spi_txx9.c.
+On Sun, 24 Jun 2007 22:54:44 +0200, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > Use rtc-rs5c348 and at25 spi protocol driver and spi_txx9 spi
+> > controller driver instead of platform dependent codes.
+> > 
+> > This patch also removes dependencies to old RTC interfaces such as
+> > rtc_mips_get_time, etc.
+> 
+> Queued also,
+
+Please queue this (or fold this into the patch) too.
+
+
+Subject: [PATCH] rbtx4938: Provide minimum CLK API implementation
+
+Do not abuse resource framework to pass "baseclk" to txx9spi driver.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
-Changes from previous version:
+ arch/mips/tx4938/toshiba_rbtx4938/setup.c |   37 +++++++++++++++++++++++++---
+ 1 files changed, 33 insertions(+), 4 deletions(-)
 
-* Whitespace cleanup.
-* spi->mode checking.
-* Remove I/O barrier after gpio_set_value()
-* Do not modify spi->max_speed_hz in _setup function.
-* Deselect chip in _setup function.
-* Check per-transfer parameters.
-* Move all ndelay() into txx9spi_cs_func().
-* Fix cs_change hint handling.
-* Remove mapping hack, expecting ioremap() just works.
-* Use the clock framework (clk_get()) instead of abusing resource framework.
-* Initialize num_chipselect explicitly.
-* Use platform_driver_probe() instead of platform_driver_register().
-
- drivers/spi/Kconfig    |    6 +
- drivers/spi/Makefile   |    1 +
- drivers/spi/spi_txx9.c |  459 ++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 466 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 5e3f748..36911b6 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -156,6 +156,12 @@ config SPI_S3C24XX_GPIO
- 	  GPIO lines to provide the SPI bus. This can be used where
- 	  the inbuilt hardware cannot provide the transfer mode, or
- 	  where the board is using non hardware connected pins.
-+
-+config SPI_TXX9
-+	tristate "Toshiba TXx9 SPI controller"
-+	depends on SPI_MASTER && GENERIC_GPIO && CPU_TX49XX
-+	help
-+	  SPI driver for Toshiba TXx9 MIPS SoCs
- #
- # Add new SPI master controllers in alphabetical order above this line
- #
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 5788d86..7869eb5 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -23,6 +23,7 @@ obj-$(CONFIG_SPI_MPC52xx_PSC)		+= mpc52xx_psc_spi.o
- obj-$(CONFIG_SPI_MPC83xx)		+= spi_mpc83xx.o
- obj-$(CONFIG_SPI_S3C24XX_GPIO)		+= spi_s3c24xx_gpio.o
- obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24xx.o
-+obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
- # 	... add above this line ...
- 
- # SPI protocol drivers (device/link on bus)
-diff --git a/drivers/spi/spi_txx9.c b/drivers/spi/spi_txx9.c
-new file mode 100644
-index 0000000..fd6a939
---- /dev/null
-+++ b/drivers/spi/spi_txx9.c
-@@ -0,0 +1,459 @@
-+/*
-+ * spi_txx9.c - TXx9 SPI controller driver.
-+ *
-+ * Based on linux/arch/mips/tx4938/toshiba_rbtx4938/spi_txx9.c
-+ * Copyright (C) 2000-2001 Toshiba Corporation
-+ *
-+ * 2003-2005 (c) MontaVista Software, Inc. This file is licensed under the
-+ * terms of the GNU General Public License version 2. This program is
-+ * licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
-+ *
-+ * Support for TX4938 in 2.6 - Manish Lachwani (mlachwani@mvista.com)
-+ *
-+ * Convert to generic SPI framework - Atsushi Nemoto (anemo@mba.ocn.ne.jp)
-+ */
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/errno.h>
-+#include <linux/interrupt.h>
-+#include <linux/platform_device.h>
-+#include <linux/sched.h>
-+#include <linux/spinlock.h>
-+#include <linux/workqueue.h>
-+#include <linux/spi/spi.h>
-+#include <linux/err.h>
+diff --git a/arch/mips/tx4938/toshiba_rbtx4938/setup.c b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+index 330ee43..361d89a 100644
+--- a/arch/mips/tx4938/toshiba_rbtx4938/setup.c
++++ b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+@@ -20,6 +20,7 @@
+ #include <linux/pci.h>
+ #include <linux/pm.h>
+ #include <linux/platform_device.h>
 +#include <linux/clk.h>
-+#include <asm/gpio.h>
+ 
+ #include <asm/wbflush.h>
+ #include <asm/reboot.h>
+@@ -1121,10 +1122,6 @@ static void __init txx9_spi_init(unsigned long base, int irq)
+ 		}, {
+ 			.start	= irq,
+ 			.flags	= IORESOURCE_IRQ,
+-		}, {
+-			.name	= "baseclk",
+-			.start	= txx9_gbus_clock / 2 / 4,
+-			.flags	= IORESOURCE_IRQ,
+ 		},
+ 	};
+ 	platform_device_register_simple("txx9spi", 0,
+@@ -1149,3 +1146,35 @@ static int __init rbtx4938_spi_init(void)
+ 	return 0;
+ }
+ arch_initcall(rbtx4938_spi_init);
 +
++/* Minimum CLK support */
 +
-+#define SPI_FIFO_SIZE 4
-+
-+#define TXx9_SPMCR		0x00
-+#define TXx9_SPCR0		0x04
-+#define TXx9_SPCR1		0x08
-+#define TXx9_SPFS		0x0c
-+#define TXx9_SPSR		0x14
-+#define TXx9_SPDR		0x18
-+
-+/* SPMCR : SPI Master Control */
-+#define TXx9_SPMCR_OPMODE	0xc0
-+#define TXx9_SPMCR_CONFIG	0x40
-+#define TXx9_SPMCR_ACTIVE	0x80
-+#define TXx9_SPMCR_SPSTP	0x02
-+#define TXx9_SPMCR_BCLR		0x01
-+
-+/* SPCR0 : SPI Control 0 */
-+#define TXx9_SPCR0_TXIFL_MASK	0xc000
-+#define TXx9_SPCR0_RXIFL_MASK	0x3000
-+#define TXx9_SPCR0_SIDIE	0x0800
-+#define TXx9_SPCR0_SOEIE	0x0400
-+#define TXx9_SPCR0_RBSIE	0x0200
-+#define TXx9_SPCR0_TBSIE	0x0100
-+#define TXx9_SPCR0_IFSPSE	0x0010
-+#define TXx9_SPCR0_SBOS		0x0004
-+#define TXx9_SPCR0_SPHA		0x0002
-+#define TXx9_SPCR0_SPOL		0x0001
-+
-+/* SPSR : SPI Status */
-+#define TXx9_SPSR_TBSI		0x8000
-+#define TXx9_SPSR_RBSI		0x4000
-+#define TXx9_SPSR_TBS_MASK	0x3800
-+#define TXx9_SPSR_RBS_MASK	0x0700
-+#define TXx9_SPSR_SPOE		0x0080
-+#define TXx9_SPSR_IFSD		0x0008
-+#define TXx9_SPSR_SIDLE		0x0004
-+#define TXx9_SPSR_STRDY		0x0002
-+#define TXx9_SPSR_SRRDY		0x0001
-+
-+
-+struct txx9spi {
-+	struct workqueue_struct	*workqueue;
-+	struct work_struct work;
-+	spinlock_t lock;	/* protect 'queue' */
-+	struct list_head queue;
-+	wait_queue_head_t waitq;
-+	void __iomem *membase;
-+	int irq;
-+	int baseclk;
-+	struct clk *clk;
-+	u32 max_speed_hz, min_speed_hz;
-+	int last_chipselect;
-+	int last_chipselect_val;
-+};
-+
-+static u32 txx9spi_rd(struct txx9spi *c, int reg)
++struct clk *clk_get(struct device *dev, const char *id)
 +{
-+	return __raw_readl(c->membase + reg);
++	if (!strcmp(id, "spi-baseclk"))
++		return (struct clk *)(txx9_gbus_clock / 2 / 4);
++	return ERR_PTR(-ENOENT);
 +}
-+static void txx9spi_wr(struct txx9spi *c, u32 val, int reg)
++EXPORT_SYMBOL(clk_get);
++
++int clk_enable(struct clk *clk)
 +{
-+	__raw_writel(val, c->membase + reg);
-+}
-+
-+static void txx9spi_cs_func(struct spi_device *spi, struct txx9spi *c,
-+			    int on, unsigned int cs_delay)
-+{
-+	int val = (spi->mode & SPI_CS_HIGH) ? on : !on;
-+	if (on) {
-+		/* deselect the chip with cs_change hint in last transfer */
-+		if (c->last_chipselect >= 0)
-+			gpio_set_value(c->last_chipselect,
-+				       !c->last_chipselect_val);
-+		c->last_chipselect = spi->chip_select;
-+		c->last_chipselect_val = val;
-+	} else {
-+		c->last_chipselect = -1;
-+		ndelay(cs_delay);	/* CS Hold Time */
-+	}
-+	gpio_set_value(spi->chip_select, val);
-+	ndelay(cs_delay);	/* CS Setup Time / CS Recovery Time */
-+}
-+
-+/* the spi->mode bits understood by this driver: */
-+#define MODEBITS	(SPI_CS_HIGH|SPI_CPOL|SPI_CPHA)
-+
-+static int txx9spi_setup(struct spi_device *spi)
-+{
-+	struct txx9spi *c = spi_master_get_devdata(spi->master);
-+	u8 bits_per_word;
-+
-+	if (spi->mode & ~MODEBITS)
-+		return -EINVAL;
-+
-+	if (!spi->max_speed_hz ||
-+	    spi->max_speed_hz > c->max_speed_hz ||
-+	    spi->max_speed_hz < c->min_speed_hz)
-+		return -EINVAL;
-+
-+	bits_per_word = spi->bits_per_word ?: 8;
-+	if (bits_per_word != 8 && bits_per_word != 16)
-+		return -EINVAL;
-+
-+	if (gpio_direction_output(spi->chip_select,
-+				  !(spi->mode & SPI_CS_HIGH))) {
-+		dev_err(&spi->dev, "Cannot setup GPIO for chipselect.\n");
-+		return -EINVAL;
-+	}
-+
-+	/* deselect chip */
-+	spin_lock(&c->lock);
-+	txx9spi_cs_func(spi, c, 0, 1000000000 / 2 / spi->max_speed_hz);
-+	spin_unlock(&c->lock);
-+
 +	return 0;
 +}
++EXPORT_SYMBOL(clk_enable);
 +
-+static irqreturn_t txx9spi_interrupt(int irq, void *dev_id)
++void clk_disable(struct clk *clk)
 +{
-+	struct txx9spi *c = dev_id;
-+
-+	/* disable rx intr */
-+	txx9spi_wr(c, txx9spi_rd(c, TXx9_SPCR0) & ~TXx9_SPCR0_RBSIE,
-+		   TXx9_SPCR0);
-+	wake_up(&c->waitq);
-+	return IRQ_HANDLED;
 +}
++EXPORT_SYMBOL(clk_disable);
 +
-+static int txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
++unsigned long clk_get_rate(struct clk *clk)
 +{
-+	struct spi_device *spi = m->spi;
-+	struct spi_transfer *t;
-+	unsigned int cs_delay;
-+	unsigned int cs_change;
-+	int status;
-+	u32 mcr;
-+	u8 bits_per_word = spi->bits_per_word ?: 8;
-+	u32 speed_hz = 0, n;
-+
-+	/* check each transter parameters */
-+	list_for_each_entry (t, &m->transfers, transfer_list) {
-+		if (!t->tx_buf && !t->rx_buf && t->len)
-+			return -EINVAL;
-+		if (t->bits_per_word && t->bits_per_word != bits_per_word)
-+			return -EINVAL;
-+		if (t->len & ((bits_per_word >> 3) - 1))
-+			return -EINVAL;
-+		if (!speed_hz)
-+			speed_hz = t->speed_hz;
-+		else if (speed_hz != t->speed_hz)
-+			return -EINVAL;
-+	}
-+	if (!speed_hz)
-+		speed_hz = spi->max_speed_hz;
-+	if (!speed_hz || speed_hz > c->max_speed_hz)
-+		speed_hz = c->max_speed_hz;
-+	else if (speed_hz < c->min_speed_hz)
-+		return -EINVAL;
-+	n = (c->baseclk + speed_hz - 1) / speed_hz;
-+	if (n < 1)
-+		n = 1;
-+	else if (n > 0xff)
-+		n = 0xff;
-+
-+	mcr = txx9spi_rd(c, TXx9_SPMCR);
-+	if (unlikely((mcr & TXx9_SPMCR_OPMODE) == TXx9_SPMCR_ACTIVE)) {
-+		dev_err(&spi->dev, "Bad mode.\n");
-+		return -EIO;
-+	}
-+
-+	/* enter config mode */
-+	mcr &= ~(TXx9_SPMCR_OPMODE | TXx9_SPMCR_SPSTP | TXx9_SPMCR_BCLR);
-+	txx9spi_wr(c, mcr | TXx9_SPMCR_CONFIG | TXx9_SPMCR_BCLR, TXx9_SPMCR);
-+	txx9spi_wr(c, TXx9_SPCR0_SBOS |
-+		   ((spi->mode & SPI_CPOL) ? TXx9_SPCR0_SPOL : 0) |
-+		   ((spi->mode & SPI_CPHA) ? TXx9_SPCR0_SPHA : 0) |
-+		   0x08,
-+		   TXx9_SPCR0);
-+	txx9spi_wr(c, (n << 8) | bits_per_word, TXx9_SPCR1);
-+	/* enter active mode */
-+	txx9spi_wr(c, mcr | TXx9_SPMCR_ACTIVE, TXx9_SPMCR);
-+
-+	cs_change = 1;
-+	status = 0;
-+	/* CS setup/hold/recovery time in nsec */
-+	cs_delay = 100 + 1000000000 / 2 / speed_hz;
-+	list_for_each_entry (t, &m->transfers, transfer_list) {
-+		const void *txbuf = t->tx_buf;
-+		void *rxbuf = t->rx_buf;
-+		u32 data;
-+		unsigned int len = t->len;
-+		unsigned int wsize = bits_per_word >> 3; /* in bytes */
-+
-+		if (cs_change)
-+			txx9spi_cs_func(spi, c, 1, cs_delay);
-+		cs_change = t->cs_change;
-+		while (len) {
-+			unsigned int count = SPI_FIFO_SIZE;
-+			int i;
-+			u32 cr0;
-+			if (len < count * wsize)
-+				count = len / wsize;
-+			/* now tx must be idle... */
-+			while (!(txx9spi_rd(c, TXx9_SPSR) & TXx9_SPSR_SIDLE))
-+				;
-+			cr0 = txx9spi_rd(c, TXx9_SPCR0);
-+			cr0 &= ~TXx9_SPCR0_RXIFL_MASK;
-+			cr0 |= (count - 1) << 12;
-+			/* enable rx intr */
-+			cr0 |= TXx9_SPCR0_RBSIE;
-+			txx9spi_wr(c, cr0, TXx9_SPCR0);
-+			/* send */
-+			for (i = 0; i < count; i++) {
-+				if (txbuf) {
-+					data = wsize == 1 ?
-+						*(const u8 *)txbuf :
-+						*(const u16 *)txbuf;
-+					txx9spi_wr(c, data, TXx9_SPDR);
-+					txbuf += wsize;
-+				} else
-+					txx9spi_wr(c, 0, TXx9_SPDR);
-+			}
-+			/* wait all rx data */
-+			wait_event(c->waitq,
-+				   txx9spi_rd(c, TXx9_SPSR) & TXx9_SPSR_RBSI);
-+			/* receive */
-+			for (i = 0; i < count; i++) {
-+				data = txx9spi_rd(c, TXx9_SPDR);
-+				if (rxbuf) {
-+					if (wsize == 1)
-+						*(u8 *)rxbuf = data;
-+					else
-+						*(u16 *)rxbuf = data;
-+					rxbuf += wsize;
-+				}
-+			}
-+			len -= count * wsize;
-+		}
-+		m->actual_length += t->len;
-+		if (t->delay_usecs)
-+			udelay(t->delay_usecs);
-+
-+		if (!cs_change)
-+			continue;
-+		if (t->transfer_list.next == &m->transfers)
-+			break;
-+		/* sometimes a short mid-message deselect of the chip
-+		 * may be needed to terminate a mode or command
-+		 */
-+		txx9spi_cs_func(spi, c, 0, cs_delay);
-+	}
-+
-+	m->status = status;
-+	m->complete(m->context);
-+
-+	/* normally deactivate chipselect ... unless no error and
-+	 * cs_change has hinted that the next message will probably
-+	 * be for this chip too.
-+	 */
-+	if (!(status == 0 && cs_change))
-+		txx9spi_cs_func(spi, c, 0, cs_delay);
-+
-+	/* enter config mode */
-+	txx9spi_wr(c, mcr | TXx9_SPMCR_CONFIG | TXx9_SPMCR_BCLR, TXx9_SPMCR);
-+	return status;
++	return (unsigned long)clk;
 +}
++EXPORT_SYMBOL(clk_get_rate);
 +
-+static void txx9spi_work(struct work_struct *work)
++void clk_put(struct clk *clk)
 +{
-+	struct txx9spi *c = container_of(work, struct txx9spi, work);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&c->lock, flags);
-+	while (!list_empty(&c->queue)) {
-+		struct spi_message *m;
-+
-+		m = container_of(c->queue.next, struct spi_message, queue);
-+		list_del_init(&m->queue);
-+		spin_unlock_irqrestore(&c->lock, flags);
-+
-+		txx9spi_work_one(c, m);
-+
-+		spin_lock_irqsave(&c->lock, flags);
-+	}
-+	spin_unlock_irqrestore(&c->lock, flags);
 +}
-+
-+static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
-+{
-+	struct spi_master *master = spi->master;
-+	struct txx9spi *c = spi_master_get_devdata(master);
-+	unsigned long flags;
-+
-+	m->actual_length = 0;
-+	spin_lock_irqsave(&c->lock, flags);
-+	list_add_tail(&m->queue, &c->queue);
-+	queue_work(c->workqueue, &c->work);
-+	spin_unlock_irqrestore(&c->lock, flags);
-+
-+	return 0;
-+}
-+
-+static int __init txx9spi_probe(struct platform_device *dev)
-+{
-+	struct spi_master *master;
-+	struct txx9spi *c;
-+	struct resource *res;
-+	int ret = -ENODEV;
-+	u32 mcr;
-+
-+	master = spi_alloc_master(&dev->dev, sizeof(*c));
-+	if (!master)
-+		return ret;
-+	c = spi_master_get_devdata(master);
-+	c->irq = -1;
-+	platform_set_drvdata(dev, master);
-+
-+	INIT_WORK(&c->work, txx9spi_work);
-+	spin_lock_init(&c->lock);
-+	INIT_LIST_HEAD(&c->queue);
-+	init_waitqueue_head(&c->waitq);
-+
-+	c->clk = clk_get(&dev->dev, "spi-baseclk");
-+	if (IS_ERR(c->clk)) {
-+		ret = PTR_ERR(c->clk);
-+		c->clk = NULL;
-+		goto exit;
-+	}
-+	if (clk_enable(c->clk)) {
-+		clk_put(c->clk);
-+		c->clk = NULL;
-+		goto exit;
-+	}
-+	c->baseclk = clk_get_rate(c->clk);
-+	c->min_speed_hz = (c->baseclk + 0xff - 1) / 0xff;
-+	c->max_speed_hz = c->baseclk;
-+
-+	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		goto exit;
-+	c->membase = ioremap(res->start, res->end - res->start + 1);
-+	if (!c->membase)
-+		goto exit;
-+
-+	/* enter config mode */
-+	mcr = txx9spi_rd(c, TXx9_SPMCR);
-+	mcr &= ~(TXx9_SPMCR_OPMODE | TXx9_SPMCR_SPSTP | TXx9_SPMCR_BCLR);
-+	txx9spi_wr(c, mcr | TXx9_SPMCR_CONFIG | TXx9_SPMCR_BCLR, TXx9_SPMCR);
-+
-+	c->irq = platform_get_irq(dev, 0);
-+	if (c->irq < 0)
-+		goto exit;
-+	ret = request_irq(c->irq, txx9spi_interrupt, 0, dev->name, c);
-+	if (ret) {
-+		c->irq = -1;
-+		goto exit;
-+	}
-+
-+	c->workqueue = create_singlethread_workqueue(master->cdev.dev->bus_id);
-+	if (!c->workqueue)
-+		goto exit;
-+	c->last_chipselect = -1;
-+
-+	dev_info(&dev->dev, "at %#llx, irq %d, %dMHz\n",
-+		 (unsigned long long)res->start, c->irq,
-+		 (c->baseclk + 500000) / 1000000);
-+
-+	master->bus_num = dev->id;
-+	master->setup = txx9spi_setup;
-+	master->transfer = txx9spi_transfer;
-+	master->num_chipselect = 0;	/* unlimited: any GPIO numbers */
-+
-+	ret = spi_register_master(master);
-+	if (ret)
-+		goto exit;
-+	return 0;
-+exit:
-+	if (c->workqueue)
-+		destroy_workqueue(c->workqueue);
-+	if (c->irq >= 0)
-+		free_irq(c->irq, c);
-+	if (c->membase)
-+		iounmap(c->membase);
-+	if (c->clk) {
-+		clk_disable(c->clk);
-+		clk_put(c->clk);
-+	}
-+	platform_set_drvdata(dev, NULL);
-+	spi_master_put(master);
-+	return ret;
-+}
-+
-+static int __exit txx9spi_remove(struct platform_device *dev)
-+{
-+	struct spi_master *master = spi_master_get(platform_get_drvdata(dev));
-+	struct txx9spi *c = spi_master_get_devdata(master);
-+
-+	spi_unregister_master(master);
-+	platform_set_drvdata(dev, NULL);
-+	destroy_workqueue(c->workqueue);
-+	free_irq(c->irq, c);
-+	iounmap(c->membase);
-+	clk_disable(c->clk);
-+	clk_put(c->clk);
-+	spi_master_put(master);
-+	return 0;
-+}
-+
-+static struct platform_driver txx9spi_driver = {
-+	.remove = __exit_p(txx9spi_remove),
-+	.driver = {
-+		.name = "txx9spi",
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+static int __init txx9spi_init(void)
-+{
-+	return platform_driver_probe(&txx9spi_driver, txx9spi_probe);
-+}
-+subsys_initcall(txx9spi_init);
-+
-+static void __exit txx9spi_exit(void)
-+{
-+	platform_driver_unregister(&txx9spi_driver);
-+}
-+module_exit(txx9spi_exit);
-+
-+MODULE_DESCRIPTION("TXx9 SPI Driver");
-+MODULE_LICENSE("GPL");
++EXPORT_SYMBOL(clk_put);

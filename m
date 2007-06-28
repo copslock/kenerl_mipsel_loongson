@@ -1,42 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 15:54:24 +0100 (BST)
-Received: from srv5.dvmed.net ([207.36.208.214]:64704 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20022664AbXF1OyT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Jun 2007 15:54:19 +0100
-Received: from cpe-065-190-165-210.nc.res.rr.com ([65.190.165.210] helo=[10.10.10.10])
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1I3vNv-0002YC-J7; Thu, 28 Jun 2007 14:54:16 +0000
-Message-ID: <4683CB96.9090609@garzik.org>
-Date:	Thu, 28 Jun 2007 10:54:14 -0400
-From:	Jeff Garzik <jeff@garzik.org>
-User-Agent: Thunderbird 1.5.0.12 (X11/20070530)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 16:03:36 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:14306 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022665AbXF1PDb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Jun 2007 16:03:31 +0100
+Received: from localhost (p2089-ipad207funabasi.chiba.ocn.ne.jp [222.145.84.89])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 7E9C5B6B2; Fri, 29 Jun 2007 00:03:28 +0900 (JST)
+Date:	Fri, 29 Jun 2007 00:04:14 +0900 (JST)
+Message-Id: <20070629.000414.14979024.anemo@mba.ocn.ne.jp>
+To:	jeff@garzik.org
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
 	sshtylyov@ru.mvista.com, mlachwani@mvista.com
 Subject: Re: [PATCH 3/4] rbtx4938: Fix secondary PCIC and glue internal NICs
-References: <20070622.232219.48807177.anemo@mba.ocn.ne.jp>	<20070625002822.GD5814@linux-mips.org>	<20070625.231502.69024828.anemo@mba.ocn.ne.jp> <20070628.230050.27955707.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070628.230050.27955707.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <4683CB96.9090609@garzik.org>
+References: <20070625.231502.69024828.anemo@mba.ocn.ne.jp>
+	<20070628.230050.27955707.anemo@mba.ocn.ne.jp>
+	<4683CB96.9090609@garzik.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <jeff@garzik.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15563
+X-archive-position: 15564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff@garzik.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Seems to sane to me, by my quick read.
+On Thu, 28 Jun 2007 10:54:14 -0400, Jeff Garzik <jeff@garzik.org> wrote:
+> Seems to sane to me, by my quick read.
+> 
+> My only comment is:  if invalid MAC address, generate a random one using 
+> get_random_bytes() like some other net drivers do, rather than just failing.
+> 
+> Users should be able to use the NIC even if the MAC is invalid -- after 
+> all, they can set one using ifconfig even if it is not available at 
+> driver load time.
 
-My only comment is:  if invalid MAC address, generate a random one using 
-get_random_bytes() like some other net drivers do, rather than just failing.
+Thank you for quick review!  I will update my patch with
+get_random_bytes(). (maybe tomorrow ...)
 
-Users should be able to use the NIC even if the MAC is invalid -- after 
-all, they can set one using ifconfig even if it is not available at 
-driver load time.
-
-	Jeff
+---
+Atsushi Nemoto

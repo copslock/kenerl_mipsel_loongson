@@ -1,70 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 15:37:25 +0100 (BST)
-Received: from gw-eur4.philips.com ([161.85.125.10]:13669 "EHLO
-	gw-eur4.philips.com") by ftp.linux-mips.org with ESMTP
-	id S20022640AbXF1OhT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 Jun 2007 15:37:19 +0100
-Received: from smtpscan-eur8.philips.com (smtpscan-eur8.mail.philips.com [130.144.57.173])
-	by gw-eur4.philips.com (Postfix) with ESMTP id 5443649704
-	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 14:37:13 +0000 (UTC)
-Received: from smtpscan-eur8.philips.com (localhost [127.0.0.1])
-	by localhost.philips.com (Postfix) with ESMTP id 3592D258
-	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 14:37:13 +0000 (GMT)
-Received: from smtprelay-eur1.philips.com (smtprelay-eur1.philips.com [130.144.57.170])
-	by smtpscan-eur8.philips.com (Postfix) with ESMTP id 18556DC
-	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 14:37:13 +0000 (GMT)
-Received: from lnx32www01.soton.sc.philips.com (pww.osrp.sc.philips.com [130.141.89.1])
-	by smtprelay-eur1.philips.com (Postfix) with ESMTP id C6D56C82
-	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 14:37:12 +0000 (GMT)
-Received: from krate.soton.sc.philips.com (krate [130.141.7.10])
-	by lnx32www01.soton.sc.philips.com (8.13.7/8.13.7) with ESMTP id l5SEbCqG004616
-	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 15:37:12 +0100
-Received: from stout.soton.sc.philips.com (root@stout [130.141.7.8])
-	by krate.soton.sc.philips.com (8.12.11/8.12.11) with ESMTP id l5SEb7kX003019
-	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 15:37:07 +0100 (BST)
-Received: from [130.141.93.19] (host9319 [130.141.93.19])
-	by stout.soton.sc.philips.com (8.11.3/8.11.3) with ESMTP id l5SEb7l22403
-	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 15:37:07 +0100 (BST)
-Message-ID: <4683C792.4000100@nxp.com>
-Date:	Thu, 28 Jun 2007 15:37:06 +0100
-From:	Daniel Laird <daniel.j.laird@nxp.com>
-User-Agent: Thunderbird 2.0.0.4 (Windows/20070604)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 15:54:24 +0100 (BST)
+Received: from srv5.dvmed.net ([207.36.208.214]:64704 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S20022664AbXF1OyT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Jun 2007 15:54:19 +0100
+Received: from cpe-065-190-165-210.nc.res.rr.com ([65.190.165.210] helo=[10.10.10.10])
+	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
+	id 1I3vNv-0002YC-J7; Thu, 28 Jun 2007 14:54:16 +0000
+Message-ID: <4683CB96.9090609@garzik.org>
+Date:	Thu, 28 Jun 2007 10:54:14 -0400
+From:	Jeff Garzik <jeff@garzik.org>
+User-Agent: Thunderbird 1.5.0.12 (X11/20070530)
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Generating patches and using checkpatch.pl
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	sshtylyov@ru.mvista.com, mlachwani@mvista.com
+Subject: Re: [PATCH 3/4] rbtx4938: Fix secondary PCIC and glue internal NICs
+References: <20070622.232219.48807177.anemo@mba.ocn.ne.jp>	<20070625002822.GD5814@linux-mips.org>	<20070625.231502.69024828.anemo@mba.ocn.ne.jp> <20070628.230050.27955707.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070628.230050.27955707.anemo@mba.ocn.ne.jp>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <daniel.j.laird@nxp.com>
+Return-Path: <jeff@garzik.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15562
+X-archive-position: 15563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.j.laird@nxp.com
+X-original-sender: jeff@garzik.org
 Precedence: bulk
 X-list: linux-mips
 
-I am trying to start feeding back various patches to do with supporting 
-the hardware I work on.
-The company also decided upon a name change so I thought I would do this 
-as well.
-So I moved arch/mips/philips to arch/mips/nxp.
+Seems to sane to me, by my quick read.
 
-I generated a patch
-I ran checkpatch.pl as Ralf suggested before.
+My only comment is:  if invalid MAC address, generate a random one using 
+get_random_bytes() like some other net drivers do, rather than just failing.
 
-I now have pages of errors in the patch
+Users should be able to use the NIC even if the MAC is invalid -- after 
+all, they can set one using ifconfig even if it is not available at 
+driver load time.
 
-- Line over 80 chars
-- printk must have KERN_ debug level
-- must have a space after this (, or *)
-- use tabs not spaces
-- Do not use C99 comments.
-To name but a few
-
-My question is:
-If you do a patch and find all these errors is it expected that I fix 
-all these problems, or I just make sure my changes do not make it worse!
-
-Dan
+	Jeff

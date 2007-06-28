@@ -1,51 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 16:03:36 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:14306 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022665AbXF1PDb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Jun 2007 16:03:31 +0100
-Received: from localhost (p2089-ipad207funabasi.chiba.ocn.ne.jp [222.145.84.89])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 7E9C5B6B2; Fri, 29 Jun 2007 00:03:28 +0900 (JST)
-Date:	Fri, 29 Jun 2007 00:04:14 +0900 (JST)
-Message-Id: <20070629.000414.14979024.anemo@mba.ocn.ne.jp>
-To:	jeff@garzik.org
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	sshtylyov@ru.mvista.com, mlachwani@mvista.com
-Subject: Re: [PATCH 3/4] rbtx4938: Fix secondary PCIC and glue internal NICs
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4683CB96.9090609@garzik.org>
-References: <20070625.231502.69024828.anemo@mba.ocn.ne.jp>
-	<20070628.230050.27955707.anemo@mba.ocn.ne.jp>
-	<4683CB96.9090609@garzik.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 18:45:59 +0100 (BST)
+Received: from lug-owl.de ([195.71.106.12]:58270 "EHLO lug-owl.de")
+	by ftp.linux-mips.org with ESMTP id S20022694AbXF1Rpw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Jun 2007 18:45:52 +0100
+Received: by lug-owl.de (Postfix, from userid 1001)
+	id C4873F0055; Thu, 28 Jun 2007 19:45:21 +0200 (CEST)
+Date:	Thu, 28 Jun 2007 19:45:21 +0200
+From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+To:	Daniel Laird <daniel.j.laird@nxp.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Generating patches and using checkpatch.pl
+Message-ID: <20070628174521.GD27862@lug-owl.de>
+Mail-Followup-To: Daniel Laird <daniel.j.laird@nxp.com>,
+	linux-mips@linux-mips.org
+References: <4683C792.4000100@nxp.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gRZ38brEgCoUohoa"
+Content-Disposition: inline
+In-Reply-To: <4683C792.4000100@nxp.com>
+X-Operating-System: Linux mail 2.6.18-4-686 
+X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
+X-gpg-key: wwwkeys.de.pgp.net
+X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <jbglaw@lug-owl.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15564
+X-archive-position: 15565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: jbglaw@lug-owl.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 28 Jun 2007 10:54:14 -0400, Jeff Garzik <jeff@garzik.org> wrote:
-> Seems to sane to me, by my quick read.
-> 
-> My only comment is:  if invalid MAC address, generate a random one using 
-> get_random_bytes() like some other net drivers do, rather than just failing.
-> 
-> Users should be able to use the NIC even if the MAC is invalid -- after 
-> all, they can set one using ifconfig even if it is not available at 
-> driver load time.
 
-Thank you for quick review!  I will update my patch with
-get_random_bytes(). (maybe tomorrow ...)
+--gRZ38brEgCoUohoa
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
----
-Atsushi Nemoto
+On Thu, 2007-06-28 15:37:06 +0100, Daniel Laird <daniel.j.laird@nxp.com> wr=
+ote:
+> I ran checkpatch.pl as Ralf suggested before.
+[...]
+> - Line over 80 chars
+> - printk must have KERN_ debug level
+> - must have a space after this (, or *)
+> - use tabs not spaces
+> - Do not use C99 comments.
+> To name but a few
+>=20
+> My question is:
+> If you do a patch and find all these errors is it expected that I fix=20
+> all these problems, or I just make sure my changes do not make it worse!
+
+General rules of thumb:
+
+  * Keep the coding style of the file if you're only doing minor
+    patching. Don't introduce leading whitespace, leading tabs before
+    spaces. Maybe keep the comment and indention style.
+
+  * If it's more like a rewrite, fix it entirely.
+
+MfG, JBG
+
+--=20
+      Jan-Benedict Glaw      jbglaw@lug-owl.de              +49-172-7608481
+Signature of:                 Gib Dein Bestes. Dann =C3=BCbertriff Dich sel=
+bst!
+the second  :
+
+--gRZ38brEgCoUohoa
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFGg/OxHb1edYOZ4bsRApQkAJ0e4AwuQ+WPb535lMH3DytjkwAm4ACeKDaa
+Uisoh0mYq5eNk3QMimh9pH4=
+=fhcJ
+-----END PGP SIGNATURE-----
+
+--gRZ38brEgCoUohoa--

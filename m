@@ -1,89 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 18:45:59 +0100 (BST)
-Received: from lug-owl.de ([195.71.106.12]:58270 "EHLO lug-owl.de")
-	by ftp.linux-mips.org with ESMTP id S20022694AbXF1Rpw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Jun 2007 18:45:52 +0100
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id C4873F0055; Thu, 28 Jun 2007 19:45:21 +0200 (CEST)
-Date:	Thu, 28 Jun 2007 19:45:21 +0200
-From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
-To:	Daniel Laird <daniel.j.laird@nxp.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Generating patches and using checkpatch.pl
-Message-ID: <20070628174521.GD27862@lug-owl.de>
-Mail-Followup-To: Daniel Laird <daniel.j.laird@nxp.com>,
-	linux-mips@linux-mips.org
-References: <4683C792.4000100@nxp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jun 2007 21:45:36 +0100 (BST)
+Received: from sj-iport-2-in.cisco.com ([171.71.176.71]:11066 "EHLO
+	sj-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S20022731AbXF1Up1 convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Jun 2007 21:45:27 +0100
+Received: from sj-dkim-1.cisco.com ([171.71.179.21])
+  by sj-iport-2.cisco.com with ESMTP; 28 Jun 2007 13:45:14 -0700
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AgAAAG+6g0arR7MVh2dsb2JhbACPKwIJDiw
+X-IronPort-AV: i="4.16,472,1175497200"; 
+   d="scan'208"; a="382492753:sNHT130325724"
+Received: from sj-core-4.cisco.com (sj-core-4.cisco.com [171.68.223.138])
+	by sj-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id l5SKjCDD023545
+	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 13:45:12 -0700
+Received: from xbh-sjc-211.amer.cisco.com (xbh-sjc-211.cisco.com [171.70.151.144])
+	by sj-core-4.cisco.com (8.12.10/8.12.6) with ESMTP id l5SKisH0005995
+	for <linux-mips@linux-mips.org>; Thu, 28 Jun 2007 20:45:12 GMT
+Received: from xmb-sjc-237.amer.cisco.com ([128.107.191.123]) by xbh-sjc-211.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 28 Jun 2007 13:45:03 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="gRZ38brEgCoUohoa"
-Content-Disposition: inline
-In-Reply-To: <4683C792.4000100@nxp.com>
-X-Operating-System: Linux mail 2.6.18-4-686 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <jbglaw@lug-owl.de>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: gdbserver
+Date:	Thu, 28 Jun 2007 13:45:02 -0700
+Message-ID: <27801B4D04E7CA45825B0E0CE60FE10A0410F0D6@xmb-sjc-237.amer.cisco.com>
+In-Reply-To: <20070628083725.GA23394@lst.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: gdbserver
+Thread-Index: Ace5X7Stx5Yc3VyoRzC57j9WjyFsIAAYR/1g
+References: <cda58cb80706260820y4db3eacnae4dff0101852d52@mail.gmail.com> <20070627.013312.25479645.anemo@mba.ocn.ne.jp> <20070627153932.GA6016@lst.de> <20070628.112223.96686654.nemoto@toshiba-tops.co.jp> <20070628083725.GA23394@lst.de>
+From:	"Ratin Rahman \(mratin\)" <mratin@cisco.com>
+To:	<linux-mips@linux-mips.org>
+Cc:	"Ratin Rahman \(mratin\)" <mratin@cisco.com>
+X-OriginalArrivalTime: 28 Jun 2007 20:45:03.0270 (UTC) FILETIME=[33D5E460:01C7B9C5]
+DKIM-Signature:	v=0.5; a=rsa-sha256; q=dns/txt; l=1917; t=1183063513; x=1183927513;
+	c=relaxed/simple; s=sjdkim1004;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=mratin@cisco.com;
+	z=From:=20=22Ratin=20Rahman=20\(mratin\)=22=20<mratin@cisco.com>
+	|Subject:=20gdbserver
+	|Sender:=20;
+	bh=6svw3SC+t2lkBIbMQnOCYwbt4pNYm/HgdYf7Qzchvvw=;
+	b=dX0gaITO0TwCV/zDPjyJIkwigd/WwrqWfbF1yBrc+GWlp32+HmRGX4CZg1DmyfvuONmPcyGc
+	Vp0r4hdnyv4YVxV+LXy6fhOtu77HKjeDuuyeQtUo4eCWRtxvr2cozx0yJsNobsPlSV5pMnrhZB
+	lcx54dKsuXfDuMt2E6uerXonE=;
+Authentication-Results:	sj-dkim-1; header.From=mratin@cisco.com; dkim=pass (
+	sig from cisco.com/sjdkim1004 verified; ); 
+Return-Path: <mratin@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15565
+X-archive-position: 15566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: mratin@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
+Anybody had luck with compiling gdbserver for mipsel? I am using x86
+based machine running Fedora 2.6.11 kernel, the target device is IDT 434
+running Mipsel 2.6.10 kernel. The gcc crosscompiler is mipsel-linux-gcc
+and version 3.2.3.
 
---gRZ38brEgCoUohoa
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I did a ./configure --host=mipsel-linux-gnu --target=mipsel-linux-gnu
+followed by a make. Make failed with the messages: 
 
-On Thu, 2007-06-28 15:37:06 +0100, Daniel Laird <daniel.j.laird@nxp.com> wr=
-ote:
-> I ran checkpatch.pl as Ralf suggested before.
-[...]
-> - Line over 80 chars
-> - printk must have KERN_ debug level
-> - must have a space after this (, or *)
-> - use tabs not spaces
-> - Do not use C99 comments.
-> To name but a few
->=20
-> My question is:
-> If you do a patch and find all these errors is it expected that I fix=20
-> all these problems, or I just make sure my changes do not make it worse!
+/opt/mipseltools/mipsel-linux/sys-include/sys/ptrace.h:33: syntax error
+before numeric constant
+/opt/mipseltools/mipsel-linux/sys-include/sys/ptrace.h:49: syntax error
+before numeric constant
+/opt/mipseltools/mipsel-linux/sys-include/sys/ptrace.h:61: syntax error
+before numeric constant
+/opt/mipseltools/mipsel-linux/sys-include/sys/ptrace.h:94: syntax error
+before numeric constant
+/opt/mipseltools/mipsel-linux/sys-include/sys/ptrace.h:112: syntax error
+before numeric constant
+linux-low.c: In function `kill_lwp':
+linux-low.c:760: warning: unused variable `tkill_failed'
+make: *** [linux-low.o] Error 1
+[root@Clearnet gdbserver]# nano
+/opt/mipseltools/mipsel-linux/sys-include/sys/ptrace.h
+[root@Clearnet gdbserver]# nano
+/opt/mipseltools/mipsel-linux/sys-include/sys/ptrace.h
 
-General rules of thumb:
 
-  * Keep the coding style of the file if you're only doing minor
-    patching. Don't introduce leading whitespace, leading tabs before
-    spaces. Maybe keep the comment and indention style.
+The content of ptrace.h has the enums declared as 
 
-  * If it's more like a rewrite, fix it entirely.
+/* Type of the REQUEST argument to `ptrace.'  */
+enum __ptrace_request
+{
+  /* Indicate that the process making this request should be traced.
+     All signals received by this process can be intercepted by its
+     parent, and its parent can use the other `ptrace' requests.  */
+  PTRACE_TRACEME = 0,
+<==================================line 33
+#define PT_TRACE_ME PTRACE_TRACEME
 
-MfG, JBG
+  /* Return the word in the process's text space at address ADDR.  */
+  PTRACE_PEEKTEXT = 1,
+#define PT_READ_I PTRACE_PEEKTEXT
 
---=20
-      Jan-Benedict Glaw      jbglaw@lug-owl.de              +49-172-7608481
-Signature of:                 Gib Dein Bestes. Dann =C3=BCbertriff Dich sel=
-bst!
-the second  :
 
---gRZ38brEgCoUohoa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+..which looks pretty normal to me , anybod yhave any clue? 
+Thanks,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFGg/OxHb1edYOZ4bsRApQkAJ0e4AwuQ+WPb535lMH3DytjkwAm4ACeKDaa
-Uisoh0mYq5eNk3QMimh9pH4=
-=fhcJ
------END PGP SIGNATURE-----
-
---gRZ38brEgCoUohoa--
+Ratin 

@@ -1,69 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jun 2007 02:33:40 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:50446 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022817AbXF2Bdf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Jun 2007 02:33:35 +0100
-Received: by mo.po.2iij.net (mo30) id l5T1XW29029293; Fri, 29 Jun 2007 10:33:32 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox300) id l5T1XU8i017622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 29 Jun 2007 10:33:30 +0900
-Date:	Fri, 29 Jun 2007 10:33:30 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Marc St-Jean <stjeanma@pmc-sierra.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
-	Brian_Oostenbrink@pmc-sierra.com, linux-mips@linux-mips.org,
-	Rod_Sillett@pmc-sierra.com
-Subject: Re: [PATCH 1/12] mips: PMC MSP71xx core platform
-Message-Id: <20070629103330.035cb021.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <200706290105.l5T15UJC032272@pasqua.pmc-sierra.bc.ca>
-References: <200706290105.l5T15UJC032272@pasqua.pmc-sierra.bc.ca>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jun 2007 03:03:56 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:18849 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20022876AbXF2CDv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 29 Jun 2007 03:03:51 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id D12F98AD8C;
+	Fri, 29 Jun 2007 02:03:13 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Fri, 29 Jun 2007 02:03:13 +0000 (UTC)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 28 Jun 2007 19:03:12 -0700
+Message-ID: <4684685E.4090805@avtrex.com>
+Date:	Thu, 28 Jun 2007 19:03:10 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20070530)
+MIME-Version: 1.0
+To:	"Ratin Rahman (mratin)" <mratin@cisco.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: upgrading glibc for mipsel
+References: <cda58cb80706260820y4db3eacnae4dff0101852d52@mail.gmail.com> <20070627.013312.25479645.anemo@mba.ocn.ne.jp> <20070627153932.GA6016@lst.de> <20070628.112223.96686654.nemoto@toshiba-tops.co.jp> <20070628083725.GA23394@lst.de> <27801B4D04E7CA45825B0E0CE60FE10A0410F0D6@xmb-sjc-237.amer.cisco.com> <46842B05.5050103@avtrex.com> <27801B4D04E7CA45825B0E0CE60FE10A01F971CF@xmb-sjc-237.amer.cisco.com>
+In-Reply-To: <27801B4D04E7CA45825B0E0CE60FE10A01F971CF@xmb-sjc-237.amer.cisco.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+X-OriginalArrivalTime: 29 Jun 2007 02:03:12.0365 (UTC) FILETIME=[A5D2A1D0:01C7B9F1]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15571
+X-archive-position: 15572
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Ratin Rahman (mratin) wrote:
+> In an effort to build gdbserver, I am trying to upgrade my glibc and 
+> gcc cross compile tools. I am  having
+> problem while bulding glibc-2.3.3, mipsel compiler version 3.2.3 and 
+> current glibc ver
+> is 2.2.5.
+>  
 
-On Thu, 28 Jun 2007 19:05:30 -0600
-Marc St-Jean <stjeanma@pmc-sierra.com> wrote:
+Stock glibc-2.3.3 will not work on mipsel-linux.  I posted the patch I 
+use few years ago to this list.  You could try with that patch.  Or look 
+at the cross-tool project.  Some people have had success using it to 
+build toolchains.
 
-> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c b/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c
-> new file mode 100644
-> index 0000000..6fa8572
-> --- /dev/null
-> +++ b/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c
-> @@ -0,0 +1,179 @@
-> +/*
-> + * Sets up interrupt handlers for various hardware switches which are
-> + * connected to interrupt lines.
-> + *
-> + * Copyright 2005-2207 PMC-Sierra, Inc.
-                     ^^^^
-
-
-> +
-> +#ifdef CONFIG_PMC_MSP7120_GW
-
-You have already set "obj-$(CONFIG_PMC_MSP7120_GW) += msp_hwbutton.o" in Makefile.
-It is not necessary.
-
-> +
-> +static int __init msp_hwbutton_setup(void)
-> +{
-> +#ifdef CONFIG_PMC_MSP7120_GW
-
-same.
-
-Yoichi
+David Daney

@@ -1,84 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jun 2007 18:19:36 +0100 (BST)
-Received: from father.pmc-sierra.com ([216.241.224.13]:55172 "HELO
-	father.pmc-sierra.bc.ca") by ftp.linux-mips.org with SMTP
-	id S20021743AbXF2RTb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Jun 2007 18:19:31 +0100
-Received: (qmail 10538 invoked by uid 101); 29 Jun 2007 17:19:22 -0000
-Received: from unknown (HELO pmxedge1.pmc-sierra.bc.ca) (216.241.226.183)
-  by father.pmc-sierra.com with SMTP; 29 Jun 2007 17:19:22 -0000
-Received: from bby1exi01.pmc_nt.nt.pmc-sierra.bc.ca (bby1exi01.pmc-sierra.bc.ca [216.241.231.251])
-	by pmxedge1.pmc-sierra.bc.ca (8.13.4/8.12.7) with ESMTP id l5THIJkj032068;
-	Fri, 29 Jun 2007 10:19:03 -0700
-Received: by bby1exi01.pmc-sierra.bc.ca with Internet Mail Service (5.5.2657.72)
-	id <LGNW8ZCF>; Fri, 29 Jun 2007 10:18:18 -0700
-Message-ID: <46853ED1.6050600@pmc-sierra.com>
-From:	Marc St-Jean <Marc_St-Jean@pmc-sierra.com>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	ralf@linux-mips.org,
-	Brian Oostenbrink <Brian_Oostenbrink@pmc-sierra.com>,
-	linux-mips@linux-mips.org, Rod Sillett <Rod_Sillett@pmc-sierra.com>
-Subject: Re: [PATCH 1/12] mips: PMC MSP71xx core platform
-Date:	Fri, 29 Jun 2007 10:18:09 -0700
-MIME-Version: 1.0
-X-Mailer: Internet Mail Service (5.5.2657.72)
-x-originalarrivaltime: 29 Jun 2007 17:18:09.0481 (UTC) FILETIME=[770DC390:01C7BA71]
-user-agent: Thunderbird 1.5.0.12 (X11/20070509)
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Return-Path: <Marc_St-Jean@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jun 2007 17:44:15 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:5575 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022052AbXF3QoN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 30 Jun 2007 17:44:13 +0100
+Received: from localhost (p2031-ipad213funabasi.chiba.ocn.ne.jp [124.85.67.31])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 66A1BB64C; Sun,  1 Jul 2007 01:44:07 +0900 (JST)
+Date:	Sun, 01 Jul 2007 01:44:54 +0900 (JST)
+Message-Id: <20070701.014454.126142904.anemo@mba.ocn.ne.jp>
+To:	michael@frogfoot.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Unhandled kernel unaligned access debugging
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070629163951.GG5929@marmite.frogfoot.net>
+References: <20070629163951.GG5929@marmite.frogfoot.net>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15581
+X-archive-position: 15582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Marc_St-Jean@pmc-sierra.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 29 Jun 2007 18:39:51 +0200, Michael Wood <michael@frogfoot.com> wrote:
+> I think understand more or less what this means, but am unsure of how to
+> debug it.  I think OpenWRT is using the vanilla kernel, but maybe I'm
+> missing something.  Is this because I'm not using the kernel from
+> linux-mips.org?
 
+It is not vanilla kernel.  squashfs is not merged mainline yet.
 
-Yoichi Yuasa wrote:
-> Hi,
-> 
-> On Thu, 28 Jun 2007 19:05:30 -0600
-> Marc St-Jean <stjeanma@pmc-sierra.com> wrote:
-> 
->  > diff --git a/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c 
-> b/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c
->  > new file mode 100644
->  > index 0000000..6fa8572
->  > --- /dev/null
->  > +++ b/arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c
->  > @@ -0,0 +1,179 @@
->  > +/*
->  > + * Sets up interrupt handlers for various hardware switches which are
->  > + * connected to interrupt lines.
->  > + *
->  > + * Copyright 2005-2207 PMC-Sierra, Inc.
+> Unhandled kernel unaligned access[#1]:
+> Cpu 0
+> $ 0   : 00000000 10008400 69725020 94001b90
+> $ 4   : 94003200 7265746e 00000002 00000000
+> $ 8   : 94016338 940162b0 94016228 940161a0
+> $12   : 94e5653c 943a0000 943a0000 94e5659c
+> $16   : 94001b80 00000000 94003200 00000002
+> $20   : 00000000 00000000 00000000 00000000
+> $24   : 00000000 9410b8a0
+> $28   : 943e4000 943e5ec0 00000000 94175e40
+> Hi    : 00000003
+> Lo    : 00000002
+> epc   : 941742bc drain_freelist+0x6c/0xf8     Not tainted
+> ra    : 94175e40 cache_reap+0xc0/0x124
+> Status: 10008402    KERNEL EXL
+> Cause : 10800010
+> BadVA : 7265746e
+> PrId  : 00018448
+...
+> 0xffffffff941742bc <drain_freelist+108>:        lw      v1,0(a1)
 
-Hi Yoichi,
-I'm just making sure future updates are accounted for! ;)
+The value of a1 (0x7265746e) is not a kernel address and I do not
+think drain_freelist use such an address.  So it would not be an
+"unaligned access" problem.  I support it would be some sort of memory
+corruption.
 
->  > +
->  > +#ifdef CONFIG_PMC_MSP7120_GW
-> 
-> You have already set "obj-$(CONFIG_PMC_MSP7120_GW) += msp_hwbutton.o" in 
-> Makefile.
-> It is not necessary.
-> 
->  > +
->  > +static int __init msp_hwbutton_setup(void)
->  > +{
->  > +#ifdef CONFIG_PMC_MSP7120_GW
-> 
-> same.
-
-The file was actually coded so boards other than the MSP7120_GW can make use of 
-it. At some point the "obj-$(CONFIG_PMC_MSP7120_GW) += msp_hwbutton.o" will be 
-removed from the Makefile. I'd prefer to leave the board dependent code in the 
-source at this time, but of course if this will gate acceptance I will remove it.
-
-Thanks,
-Marc
+---
+Atsushi Nemoto

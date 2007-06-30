@@ -1,119 +1,222 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jun 2007 17:56:08 +0100 (BST)
-Received: from smtp-ext.int-evry.fr ([157.159.11.17]:7123 "EHLO
-	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20021960AbXF3Q4G (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 30 Jun 2007 17:56:06 +0100
-Received: from mini.int.alphacore.net (florian.maisel.int-evry.fr [157.159.41.36])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 3C015D0E315;
-	Sat, 30 Jun 2007 18:55:30 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jun 2007 18:13:47 +0100 (BST)
+Received: from smtp105.sbc.mail.mud.yahoo.com ([68.142.198.204]:60796 "HELO
+	smtp105.sbc.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20021961AbXF3RNp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 30 Jun 2007 18:13:45 +0100
+Received: (qmail 63249 invoked from network); 30 Jun 2007 17:13:38 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=pacbell.net;
+  h=Received:X-YMail-OSG:From:To:Subject:Date:User-Agent:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-Disposition:Message-Id;
+  b=QlbSt/67J1qHDtYHJJEaG2X3/ClqDwZbOymFoTpaGUrGxAjT3075u6WRpqUD5ysCXSOL2OpTL4mG7XeVhsP/gU0pnFA3NWjcErAW4DXaPWyRkhryPcGJ06lcqsx7VFZRCKltoj4P8mivPeztX1rOkwppYbLa3OHLrzWpSrvV9Sw=  ;
+Received: from unknown (HELO ascent) (david-b@pacbell.net@69.226.213.6 with plain)
+  by smtp105.sbc.mail.mud.yahoo.com with SMTP; 30 Jun 2007 17:13:37 -0000
+X-YMail-OSG: VlGWoR0VM1miL4IKRBa0sGpUf5FHu_VRZJSLKNKs0moDINKn3ROxmbMk_GMJPJkWymQn6W_gGA--
+From:	David Brownell <david-b@pacbell.net>
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: Re: Unhandled kernel unaligned access debugging
-Date:	Sat, 30 Jun 2007 18:53:59 +0200
-User-Agent: KMail/1.9.7
-Cc:	michael@frogfoot.com, linux-mips@linux-mips.org
-References: <20070629163951.GG5929@marmite.frogfoot.net> <20070701.014454.126142904.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070701.014454.126142904.anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] TXx9 SPI controller driver (take 2)
+Date:	Sat, 30 Jun 2007 09:53:19 -0700
+User-Agent: KMail/1.9.6
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	sshtylyov@ru.mvista.com, mlachwani@mvista.com,
+	spi-devel-general@lists.sourceforge.net
+References: <20070627.222458.27955527.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070627.222458.27955527.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart12075449.Hm0HrBcBbM";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <200706301854.01564.florian.fainelli@telecomint.eu>
-Return-Path: <florian.fainelli@telecomint.eu>
+Content-Disposition: inline
+Message-Id: <200706300953.20156.david-b@pacbell.net>
+Return-Path: <david-b@pacbell.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15583
+X-archive-position: 15584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: david-b@pacbell.net
 Precedence: bulk
 X-list: linux-mips
 
---nextPart12075449.Hm0HrBcBbM
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+On Wednesday 27 June 2007, Atsushi Nemoto wrote:
+> This is a driver for SPI controller built into TXx9 MIPS SoCs.
+> This driver is derived from arch/mips/tx4938/toshiba_rbtx4938/spi_txx9.c.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> ---
+> Changes from previous version:
 
-Hello Michael,
+Better, but still not there yet.
+ 
+> * Whitespace cleanup.
+> * spi->mode checking.
+> * Remove I/O barrier after gpio_set_value()
+> * Do not modify spi->max_speed_hz in _setup function.
+> * Deselect chip in _setup function.
+> * Check per-transfer parameters.
 
-The OpenWrt kernel is based on the mainline kernel plus some other patches =
-we=20
-maintain for memory footprint or features.=20
+Checking these parameters is done at the wrong place though,
+and is done incorrectly.  That's the main issue with this
+patch.
 
-I suggets you disable mini_fo in the kernel configuration because it was=20
-responsible for some memory corruption.
+> * Move all ndelay() into txx9spi_cs_func().
+> * Fix cs_change hint handling.
+> * Remove mapping hack, expecting ioremap() just works.
+> * Use the clock framework (clk_get()) instead of abusing resource framework.
+> * Initialize num_chipselect explicitly.
 
-You could also have reported the bug to our bug tracking system at=20
-https://dev.openwrt.org. You will see that there a lot of other people tryi=
-ng=20
-to get AR7 work (better ?).
+Yeah, but ... still not correctly!!
 
-Best regards, Florian
 
-Le samedi 30 juin 2007, Atsushi Nemoto a =E9crit=A0:
-> On Fri, 29 Jun 2007 18:39:51 +0200, Michael Wood <michael@frogfoot.com>=20
-wrote:
-> > I think understand more or less what this means, but am unsure of how to
-> > debug it.  I think OpenWRT is using the vanilla kernel, but maybe I'm
-> > missing something.  Is this because I'm not using the kernel from
-> > linux-mips.org?
->
-> It is not vanilla kernel.  squashfs is not merged mainline yet.
->
-> > Unhandled kernel unaligned access[#1]:
-> > Cpu 0
-> > $ 0   : 00000000 10008400 69725020 94001b90
-> > $ 4   : 94003200 7265746e 00000002 00000000
-> > $ 8   : 94016338 940162b0 94016228 940161a0
-> > $12   : 94e5653c 943a0000 943a0000 94e5659c
-> > $16   : 94001b80 00000000 94003200 00000002
-> > $20   : 00000000 00000000 00000000 00000000
-> > $24   : 00000000 9410b8a0
-> > $28   : 943e4000 943e5ec0 00000000 94175e40
-> > Hi    : 00000003
-> > Lo    : 00000002
-> > epc   : 941742bc drain_freelist+0x6c/0xf8     Not tainted
-> > ra    : 94175e40 cache_reap+0xc0/0x124
-> > Status: 10008402    KERNEL EXL
-> > Cause : 10800010
-> > BadVA : 7265746e
-> > PrId  : 00018448
->
+> * Use platform_driver_probe() instead of platform_driver_register().
+> 
 > ...
 >
-> > 0xffffffff941742bc <drain_freelist+108>:        lw      v1,0(a1)
->
-> The value of a1 (0x7265746e) is not a kernel address and I do not
-> think drain_freelist use such an address.  So it would not be an
-> "unaligned access" problem.  I support it would be some sort of memory
-> corruption.
->
-> ---
-> Atsushi Nemoto
+> +static int txx9spi_setup(struct spi_device *spi)
+> +{
+> +	...
+> +
+> +	/* deselect chip */
+> +	spin_lock(&c->lock);
+> +	txx9spi_cs_func(spi, c, 0, 1000000000 / 2 / spi->max_speed_hz);
+
+You still use this confusing A/2/B syntax.  Please
+rewrite that using one "/" and one "*".  (And there
+is similar usage elsewhere.)
 
 
+> +	spin_unlock(&c->lock);
+> +
+> +	return 0;
+> +}
+> +
+> +...
+> +
+> +static int txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
+> +{
+> +	struct spi_device *spi = m->spi;
+> +	struct spi_transfer *t;
+> +	unsigned int cs_delay;
+> +	unsigned int cs_change;
+> +	int status;
+> +	u32 mcr;
+> +	u8 bits_per_word = spi->bits_per_word ?: 8;
+> +	u32 speed_hz = 0, n;
+> +
 
-=2D-=20
-Cordialement, Florian Fainelli
-=2D--------------------------------------------
+These checks here should be in txx9_spi_transfer(), where
+returning EINVAL will do some good.  The single caller to
+this routine doesn't even look at its return value ... and
+returning without issuing the message's completion callback
+is just a bug.
 
---nextPart12075449.Hm0HrBcBbM
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.4 (GNU/Linux)
+> +	/* check each transter parameters */
+> +	list_for_each_entry (t, &m->transfers, transfer_list) {
+> +		if (!t->tx_buf && !t->rx_buf && t->len)
+> +			return -EINVAL;
+> +		if (t->bits_per_word && t->bits_per_word != bits_per_word)
+> +			return -EINVAL;
+> +		if (t->len & ((bits_per_word >> 3) - 1))
+> +			return -EINVAL;
+> +		if (!speed_hz)
+> +			speed_hz = t->speed_hz;
+> +		else if (speed_hz != t->speed_hz)
 
-iD8DBQBGhoqpmx9n1G/316sRAsI0AJ0X+UdUaL+n6Xh794r3/UYSzCkeXwCgxe3R
-ruKipj+cR3mZbGxVTcBk9ck=
-=tlHN
------END PGP SIGNATURE-----
+That speed check is wrong.  There's no reason two transfers
+shouldn't have different speeds ... e.g. flash chips often
+have speed limits in certain bulk reads, which don't apply
+to other operations.
 
---nextPart12075449.Hm0HrBcBbM--
+
+> +			return -EINVAL;
+> +	}
+> +	if (!speed_hz)
+> +		speed_hz = spi->max_speed_hz;
+> +	if (!speed_hz || speed_hz > c->max_speed_hz)
+> +		speed_hz = c->max_speed_hz;
+> +	else if (speed_hz < c->min_speed_hz)
+> +		return -EINVAL;
+
+Also, you can't replace per-transfer speed checks with one
+for the overall message... each transfer could have a
+very different speed.
+
+
+> +	...
+> +}
+> +
+> +...
+> +
+> +static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
+> +{
+> +	struct spi_master *master = spi->master;
+> +	struct txx9spi *c = spi_master_get_devdata(master);
+> +	unsigned long flags;
+> +
+
+Here's where the (corrected) checks for each spi_transfer in the
+message belong:  if the message is invalid, don't even queue it,
+just return -EINVAL.
+
+
+> +	m->actual_length = 0;
+> +	spin_lock_irqsave(&c->lock, flags);
+> +	list_add_tail(&m->queue, &c->queue);
+> +	queue_work(c->workqueue, &c->work);
+> +	spin_unlock_irqrestore(&c->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __init txx9spi_probe(struct platform_device *dev)
+> +{
+> +	struct spi_master *master;
+> +	struct txx9spi *c;
+> +	struct resource *res;
+> +	int ret = -ENODEV;
+> +	u32 mcr;
+> +
+> +	master = spi_alloc_master(&dev->dev, sizeof(*c));
+> +	if (!master)
+> +		return ret;
+> +	c = spi_master_get_devdata(master);
+> +	c->irq = -1;
+> +	platform_set_drvdata(dev, master);
+> +
+> +	INIT_WORK(&c->work, txx9spi_work);
+> +	spin_lock_init(&c->lock);
+> +	INIT_LIST_HEAD(&c->queue);
+> +	init_waitqueue_head(&c->waitq);
+> +
+> +	c->clk = clk_get(&dev->dev, "spi-baseclk");
+> +	if (IS_ERR(c->clk)) {
+> +		ret = PTR_ERR(c->clk);
+> +		c->clk = NULL;
+> +		goto exit;
+> +	}
+> +	if (clk_enable(c->clk)) {
+
+Minor comment:  if power management is a concern, you might
+consider leaving the clock disabled except when transfers
+are active or you're accessing controller registers.  On
+most chips, leaving a clock enabled all the time (like this)
+means power is needlessly consumed.  (This isn't wrong, just
+sub-optimal in terms of power reduction.)
+
+> +	...
+> +
+> +	master->bus_num = dev->id;
+> +	master->setup = txx9spi_setup;
+> +	master->transfer = txx9spi_transfer;
+> +	master->num_chipselect = 0;	/* unlimited: any GPIO numbers */
+
+No, actually it means "no chipselects" as I said before;
+the fact that this works right now is a bug that will be
+fixed at some point.  INT_MAX would allow any GPIO.
+
+
+... almost mergeable!
+
+- Dave

@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2007 14:08:53 +0100 (BST)
-Received: from post2.wesleyan.edu ([129.133.6.128]:20905 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Jul 2007 14:12:01 +0100 (BST)
+Received: from post2.wesleyan.edu ([129.133.6.128]:34729 "EHLO
 	post2.wesleyan.edu") by ftp.linux-mips.org with ESMTP
-	id S20022701AbXGBNIu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 2 Jul 2007 14:08:50 +0100
+	id S20022726AbXGBNL6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 2 Jul 2007 14:11:58 +0100
 Received: from pony1.wesleyan.edu (pony1.wesleyan.edu [129.133.6.192])
-	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l62D8htn029218
-	for <linux-mips@linux-mips.org>; Mon, 2 Jul 2007 09:08:43 -0400
+	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l62D8cT9029208
+	for <linux-mips@linux-mips.org>; Mon, 2 Jul 2007 09:08:42 -0400
 Received: (from apache@localhost)
-	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l62D8hj2006914;
-	Mon, 2 Jul 2007 09:08:43 -0400
+	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l62D8XGg006901;
+	Mon, 2 Jul 2007 09:08:33 -0400
 Received: from 70.107.91.207
         (SquirrelMail authenticated user sknauert)
         by webmail.wesleyan.edu with HTTP;
-        Mon, 2 Jul 2007 09:08:43 -0400 (EDT)
-Message-ID: <50451.70.107.91.207.1183381723.squirrel@webmail.wesleyan.edu>
+        Mon, 2 Jul 2007 09:08:33 -0400 (EDT)
+Message-ID: <50447.70.107.91.207.1183381713.squirrel@webmail.wesleyan.edu>
 In-Reply-To: <468825BE.6090001@gmx.net>
 References: <4687DCE2.8070302@gentoo.org> <468825BE.6090001@gmx.net>
-Date:	Mon, 2 Jul 2007 09:08:43 -0400 (EDT)
+Date:	Mon, 2 Jul 2007 09:08:33 -0400 (EDT)
 Subject: Re: O2 RM7000 Issues
 From:	sknauert@wesleyan.edu
 To:	"Linux MIPS List" <linux-mips@linux-mips.org>
@@ -34,7 +34,7 @@ Return-Path: <sknauert@wesleyan.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15592
+X-archive-position: 15593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

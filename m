@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Jul 2007 19:31:50 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:37567 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022363AbXGCSbs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Jul 2007 19:31:48 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l63ITEt4017964;
-	Tue, 3 Jul 2007 20:29:14 +0200
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l63IT0oC017963;
-	Tue, 3 Jul 2007 20:29:00 +0200
-Date:	Tue, 3 Jul 2007 20:29:00 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jeff Garzik <jeff@garzik.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	sshtylyov@ru.mvista.com, mlachwani@mvista.com
-Subject: Re: [PATCH] tc35815: Load MAC address via platform_device
-Message-ID: <20070703182900.GA17935@linux-mips.org>
-References: <20070629.223453.106262827.anemo@mba.ocn.ne.jp> <46850C03.9030904@garzik.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Jul 2007 00:03:02 +0100 (BST)
+Received: from smtp119.sbc.mail.sp1.yahoo.com ([69.147.64.92]:49788 "HELO
+	smtp119.sbc.mail.sp1.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20022489AbXGCXDA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 4 Jul 2007 00:03:00 +0100
+Received: (qmail 73057 invoked from network); 3 Jul 2007 23:02:52 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=pacbell.net;
+  h=Received:X-YMail-OSG:From:To:Subject:Date:User-Agent:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-Disposition:Message-Id;
+  b=gE57zmHqly+bO4cQynB492vPilAE0qBL9or1gZWMoPWD+gztv2q8+iBf22klgc67eg/75xoE4955XQUtjgrt6OBh6EyG6ZNo8FTSkpPsuWh2M6jb9cw57P0PTyqoQEIP3ohcxN3osm11WH7VUTw7I9xwx63/X1uBsNaLsbcjOZU=  ;
+Received: from unknown (HELO ascent) (david-b@pacbell.net@69.226.213.6 with plain)
+  by smtp119.sbc.mail.sp1.yahoo.com with SMTP; 3 Jul 2007 23:02:52 -0000
+X-YMail-OSG: EUB3pq0VM1ksXNUsdOT4sNN6XaF6wzzoaS4Vh40YYS4.MTHSRuqkiODucJFzSbrDEJvMuwMJVQ--
+From:	David Brownell <david-b@pacbell.net>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] TXx9 SPI controller driver (take 3)
+Date:	Tue, 3 Jul 2007 15:18:54 -0700
+User-Agent: KMail/1.9.6
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	sshtylyov@ru.mvista.com, mlachwani@mvista.com,
+	spi-devel-general@lists.sourceforge.net
+References: <20070702.230210.130241293.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070702.230210.130241293.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <46850C03.9030904@garzik.org>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200707031518.55506.david-b@pacbell.net>
+Return-Path: <david-b@pacbell.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15599
+X-archive-position: 15600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: david-b@pacbell.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jun 29, 2007 at 09:41:23AM -0400, Jeff Garzik wrote:
-
-> ACK.
+On Monday 02 July 2007, Atsushi Nemoto wrote:
+> This is a driver for SPI controller built into TXx9 MIPS SoCs.
+> This driver is derived from arch/mips/tx4938/toshiba_rbtx4938/spi_txx9.c.
 > 
-> Due to platform dependency, I would prefer that Ralf push this upstream, 
-> when he pushes the associated rbtx4938 patch.
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Will do.
+Thanks.  I fixed a few whitespace bugs (indents *ONLY* tabs etc)
+and forwarded it for merging.
 
-  Ralf
+- Dave

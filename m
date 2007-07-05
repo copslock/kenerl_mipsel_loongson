@@ -1,120 +1,207 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 05:36:34 +0100 (BST)
-Received: from NeSTGROUP.NET ([203.200.158.40]:5059 "EHLO ns2.nestgroup.net")
-	by ftp.linux-mips.org with ESMTP id S20022066AbXGEEg2 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Jul 2007 05:36:28 +0100
-Received: from MAIL-TVM.tvm.nestgroup.net ([192.168.192.74])
-	by ns2.nestgroup.net (8.13.1/8.13.1) with ESMTP id l654iARY022023
-	for <linux-mips@linux-mips.org>; Thu, 5 Jul 2007 10:14:11 +0530
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: Glibc - Segmentation Fault
-Date:	Thu, 5 Jul 2007 10:04:25 +0530
-Message-ID: <9A1299C7A40D7447A108107E951450CA01C9E087@MAIL-TVM.tvm.nestgroup.net>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Glibc - Segmentation Fault
-Thread-Index: Ace+vcSXj/zuIAL9TnqBSv5wVHu3Pw==
-From:	"Sadarul Firos" <sadarul.firos@nestgroup.net>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <sadarul.firos@nestgroup.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 14:30:10 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:26316 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023017AbXGENaF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Jul 2007 14:30:05 +0100
+Received: from localhost (p8154-ipad202funabasi.chiba.ocn.ne.jp [222.146.79.154])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 08EAC81A6; Thu,  5 Jul 2007 22:30:01 +0900 (JST)
+Date:	Thu, 05 Jul 2007 22:30:50 +0900 (JST)
+Message-Id: <20070705.223050.65192436.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: diffs between lmo and mainline
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15606
+X-archive-position: 15607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sadarul.firos@nestgroup.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
-
-I have already posted this issue to this list but without more details,
-I think that may be the reason why I am not getting more replies. This
-time I have come up with all the steps which I have tried to solve the
-problem. I think these will give you more insight into the problem.
-
-The problem:
-I'm performing continuous reboot test on a MIPS based board running
-linux-2.6.18/glibc-2.3.5/gcc-3.3.6. After several hours of rebooting
-(say after 80, purely random) I've observed Segmentation fault or
-Illegal instruction error while starting the udevd and ntpd programs
-during the startup. The error appears pretty much random, it doesn't
-usually take more than an hour or two to catch an instance of the
-Segfault.
-
-Steps I have tried to resolve the problem:
-1. Used environment variable LD_DEBUG=all for debugging ntpd and udevd.
-After a few hours of reboot test I could observe segmentation fault. The
-last line printed on the console at the time of segmentation fault was
-"calling init". From the log file it was observed that the segmentation
-fault occur after the "init" function call of libnss_dns.so (in the case
-of ntpd) and libnss_compat.so/libnss_files.so (in the case of udevd).
-But the function "init" doesn't present in both libraries, I think a
-default "init" would be used if none is present.
+There are some commits in lmo which are not mainlined yet.
+IMO the commit 4ecfa04... is the most critical one.
 
 
-2. Added printf statements in the call_init function in
-glibc-2.3.5/elf/dl-init.c. Since putting those printf statements into
-the call_init function I have NOT seen a single segfault or illegal
-instruction in over 2400 reboots!
+commit 87268cc40b143bdbe35d2e8f22e1ae6c359fe368
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Mon Jan 15 14:17:19 2007 +0000
+
+    [MIPS] Malta: Fix SMTC crash on bootup with idebus= boot argument
+    
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 92444ade23a0c40bfe429f68b48d3f8728ff3db0
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Tue Mar 20 15:22:53 2007 +0000
+
+    [CHAR] Alchemy: Remove ADS7846 driver.
+    
+    With the makefile bits for this driver missing the config option has only
+    been a dummy since the merge with 2.5.32 on 31 October 2002.  So I can
+    only assume nobody cares anymore.
+    
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit e19e38a0945c3a79c8cb933ea463f6761678feb0
+Author: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Date:   Tue May 1 01:49:20 2007 +0900
+
+    [MIPS] Make resources for ds1742 "static __initdata"
+    
+    We can make resources for platform_device_register_simple() "static
+    __initdata".
+    
+    Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit fe03efaa0fc61f1a3f0570206f12c13518251a5c
+Author: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Date:   Wed May 9 00:03:02 2007 +0900
+
+    [MIPS] separate platform_device registration for VR41xx serial interface
+    
+    Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 959367f13931b88a1bf70b892d9ebf6ca43d7356
+Author: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Date:   Thu May 10 22:21:35 2007 +0900
+
+    [MIPS] Separate platform_device registration for VR41xx GPIO
+    
+    Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 9bef20296e185a7dccb1a11fde3d8c2d08ab224c
+Author: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Date:   Fri May 11 21:18:48 2007 +0900
+
+    [MIPS] separate platform_device registration for VR41xx RTC
+    
+    Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 540c3c90766d50d39eabdb217e426230bf2c8092
+Author: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Date:   Mon May 21 23:00:38 2007 +0900
+
+    [MIPS] remove unused definitions for Cobalt
+    
+    Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit eea79ad66a55ceb346987e8052c54c122a3ce2b5
+Author: Andrew Sharp <tigerand@gmail.com>
+Date:   Fri Mar 23 12:15:18 2007 -0700
+
+    [MIPS] 64-bit TO_PHYS_MASK macro for RM9000 processors
+    
+    Signed-off-by: Andrew Sharp <tigerand@gmail.com>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 609df5dadf7cdd3ce8ff3823e261c2634e80da37
+Author: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Date:   Mon May 28 22:56:35 2007 +0900
+
+    [MIPS] Remove unused config entries
+    
+    Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 30debda95cacfc2b8b3088dec0f6a526dc7f29f1
+Author: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Date:   Wed May 30 00:38:07 2007 +0900
+
+    [MIPS] Simplify missing-syscalls for N32 and O32
+    
+    Use standard missing-syscalls with EXTRA_CFLAGS instead of duplicating
+    the command.  And move the archprepare rule before the archclean rule.
+    Suggested by Franck Bui-Huu.  Also add "echo" to show the target ABI.
+    
+    Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 3525f1d25c2cc5d2ae3827fff3305eb0a5a4972a
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Thu Jun 7 08:44:32 2007 +0100
+
+    [MIPS] AP/SP: Avoid triggering the 34K E125 performance issue
+    
+    C0_status doesn't need to be initialized at this point anyway; the register
+    will be initialized later.
+    
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit b0e05a32a745a6e3ec5203f28a6bc044653e411a
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Thu Jun 21 00:22:34 2007 +0100
+
+    [MIPS] Fix scheduling latency issue on 24K, 34K and 74K cores
+    
+    The idle loop goes to sleep using the WAIT instruction if !need_resched().
+    This has is suffering from from a race condition that if if just after
+    need_resched has returned 0 an interrupt might set TIF_NEED_RESCHED but
+    we've just completed the test so go to sleep anyway.  This would be
+    trivial to fix by just disabling interrupts during that sequence as in:
+    
+            local_irq_disable();
+            if (!need_resched())
+                    __asm__("wait");
+            local_irq_enable();
+    
+    but the processor architecture leaves it undefined if a processor calling
+    WAIT with interrupts disabled will ever restart its pipeline and indeed
+    some processors have made use of the freedom provided by the architecture
+    definition.  This has been resolved and the Config7.WII bit indicates that
+    the use of WAIT is safe on 24K, 24KE and 34K cores.  It also is safe on
+    74K EA so enable the use of WAIT with interrupts disabled for all 74K
+    cores.
+    
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit 4ecfa04bbe2d8a9add45bb09ade69af7eb21ba5c
+Author: Chris Dearman <chris@mips.com>
+Date:   Thu Jun 21 12:59:57 2007 +0100
+
+    [MIPS] Fix timer/performance interrupt detection
+    
+    Signed-off-by: Chris Dearman <chris@mips.com>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+commit d4ab609936cb2f813503b7524229620991c583e4
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Tue Jun 26 20:19:00 2007 +0200
+
+    [MIPS] Change libgcc-style functions from lib-y to obj-y
+    
+    Reported by Eugene Surovegin <ebs@ebshome.net>.
+    
+    If only modules were users of these functions they did not get linked into
+    the kernel proper, so later module loads would fail as well.
+    
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
 
-3. Run the application udevd and ntpd during startup using gdb. Couldn't
-observe segfault/illegal instruction error for long hours of reboot.
+Note:
 
+* QEMU VGA support is not in mainline but I cannot find a
+  corresponding commit.
 
-4. Registered a signal handler in ntpd and udevd to get the backtrace
-using sigaction at the time of segmentation fault, but got only a single
-address location (NOT a full stack trace). After that, tried to map this
-address with the application using 'nm' utility, but couldn't locate the
-same.
+* The commit e19e38a... has been in mm tree.
 
+* There are some diffs in arch/mips/kernel/trace.c but it might be
+  intentional.
 
-5. Generated core dump at the time of segfault. Analyzed the core dump
-using gdb and observed that the segfault occur at init function of
-libnss_compat.so (in the case of udevd) and libnss_dns.so (in the case
-of ntpd). 
-
-6. As per my understanding, the default init that would be used is
-located in sysdep/generic/initfini.c. Compared this file for glibc
-version 2.3.5 and 2.5 but no differences were found. 
-
-
-7. Compiled ntpd and udevd statically and performed the reboot test. But
-segfault was observed after 34 reboots.
-
-
-8. Added a dummy _init/_fini function in both the nss libraries
-(libnss_dns.so and libnss_compat.so) to override the default init
-functions. But segfault was observed after 207 reboots.
-
-
-9. Added constructor/destructor routine in libnss_dns.so and
-libnss_compat.so. Segmentation fault occurred after several hours of
-reboot. 
-
-
-10. Used LD_BIND_NOW option (enabled this option just before
-ntpd/udevd), using this option all symbols will be resolved at the
-loading time. Even after enabling this feature, didn't observe any
-difference in the issue i.e. observed segfault after 265 reboots 
-
-11. Changed the order of invocation of the programs udevd and ntpd.
-Previously, in the init scripts, udevd was started first and ntpd was
-called somewhere near the last stage of init scripts. Now ntpd is
-started immediately after invoking udevd. Surprisingly, the frequency of
-appearing segfault was increased, ie previously it would take nearly 100
-reboots to observe a segfault, but now it would take nearly 10 reboots
-to observe a segfault!
-
-Hope these will give you inputs to comment on this problem. Waiting for
-your valuable replies
-
-Firos
+---
+Atsushi Nemoto

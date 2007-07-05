@@ -1,66 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 16:28:25 +0100 (BST)
-Received: from nic.NetDirect.CA ([216.16.235.2]:16770 "EHLO
-	rubicon.netdirect.ca") by ftp.linux-mips.org with ESMTP
-	id S20023039AbXGEP2L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Jul 2007 16:28:11 +0100
-X-Originating-Ip: 72.143.66.27
-Received: from [192.168.1.102] (CPE0018396a01fc-CM001225dbafb6.cpe.net.cable.rogers.com [72.143.66.27])
-	(authenticated bits=0)
-	by rubicon.netdirect.ca (8.13.1/8.13.1) with ESMTP id l65FRqgE009172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Thu, 5 Jul 2007 11:28:02 -0400
-Date:	Thu, 5 Jul 2007 11:26:02 -0400 (EDT)
-From:	"Robert P. J. Day" <rpjday@mindspring.com>
-X-X-Sender: rpjday@localhost.localdomain
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: dead(?) MIPS config stuff
-In-Reply-To: <20070705152638.GB21170@linux-mips.org>
-Message-ID: <Pine.LNX.4.64.0707051125360.24602@localhost.localdomain>
-References: <20070705144641.GA20210@linux-mips.org>
- <Pine.LNX.4.64.0707051100590.23045@localhost.localdomain>
- <20070705152638.GB21170@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 17:01:19 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:53660 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20023042AbXGEQBO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Jul 2007 17:01:14 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id F07043EC9; Thu,  5 Jul 2007 09:01:09 -0700 (PDT)
+Message-ID: <468D163B.9070907@ru.mvista.com>
+Date:	Thu, 05 Jul 2007 20:03:07 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Net-Direct-Inc-MailScanner-Information: Please contact the ISP for more information
-X-Net-Direct-Inc-MailScanner: Found to be clean
-X-Net-Direct-Inc-MailScanner-SpamCheck:	not spam, SpamAssassin (not cached,
-	score=-16.8, required 5, autolearn=not spam, ALL_TRUSTED -1.80,
-	BAYES_00 -15.00, INIT_RECVD_OUR_AUTH -20.00,
-	RCVD_IN_SORBS_DUL 20.00)
-X-Net-Direct-Inc-MailScanner-From: rpjday@mindspring.com
-Return-Path: <rpjday@mindspring.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org,
+	"Robert P. J. Day" <rpjday@mindspring.com>
+Subject: Re: dead(?) MIPS config stuff
+References: <20070705144641.GA20210@linux-mips.org>
+In-Reply-To: <20070705144641.GA20210@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15615
+X-archive-position: 15616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpjday@mindspring.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 5 Jul 2007, Ralf Baechle wrote:
+Hello.
 
-> On Thu, Jul 05, 2007 at 11:01:51AM -0400, Robert P. J. Day wrote:
->
-> >   ... all CONFIG output snipped ...
-> >
-> > in any event, i'll leave all that output in your capable hands, and
-> > you can deal with it any way you wish.  ciao.
->
-> Are you planning to contribute your script for the kernel's scripts/
-> directory?
+Ralf Baechle wrote:
 
-ah, i'd never thought of that.   after i clean it up, sure.
+>   a brute force run of my latest dead CONFIG variable script, you can
+> decide if any of it is of interest.
 
-rday
--- 
-========================================================================
-Robert P. J. Day
-Linux Consulting, Training and Annoying Kernel Pedantry
-Waterloo, Ontario, CANADA
+> ========== AU1000_SRC_CLK ==========
+> arch/mips/au1000/common/time.c:206:#ifdef CONFIG_AU1000_SRC_CLK
+> arch/mips/au1000/common/time.c:207:#define AU1000_SRC_CLK	CONFIG_AU1000_SRC_CLK
+> arch/mips/au1000/common/time.c:207:#define AU1000_SRC_CLK	CONFIG_AU1000_SRC_CLK
+> arch/mips/au1000/common/time.c:209:#define AU1000_SRC_CLK	12000000
+> arch/mips/au1000/common/time.c:275:			AU1000_SRC_CLK;
+> arch/mips/au1000/common/time.c:283:		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) * AU1000_SRC_CLK;
+> ========== AU1000_USE32K ==========
+> arch/mips/au1000/common/time.c:250:#if defined(CONFIG_AU1000_USE32K)
 
-http://fsdev.net/wiki/index.php?title=Main_Page
-========================================================================
+    Erm, maybe it's worth to declare these options instead?
+
+> ========== AU1XXX_PSC_SPI ==========
+> arch/mips/au1000/pb1200/board_setup.c:134:#if defined(CONFIG_AU1XXX_PSC_SPI) && defined(CONFIG_I2C_AU1550)
+> arch/mips/au1000/pb1200/board_setup.c:137:#elif defined( CONFIG_AU1XXX_PSC_SPI )
+
+    I think that CONFIG_AU1XXX_PSC_SPI needs to be changed to CONFIG_SPI_AU1550...
+
+> ========== MIPS_HYDROGEN3 ==========
+> arch/mips/au1000/common/setup.c:103:#ifdef CONFIG_MIPS_HYDROGEN3
+
+    Hm, hasn't Hydrogen3 support been removed?
+
+> ========== PCMCIA_XXS1500 ==========
+> arch/mips/au1000/xxs1500/board_setup.c:66:#ifdef CONFIG_PCMCIA_XXS1500
+
+    Actually, that PCMCIA driver is controlled by CONFIG_MIPS_XXS1500 itself, 
+so #ifdef/#endif should just go, leaving what's between them always compiled.
+
+> ========== SIBYTE_BCM1480_PROF ==========
+> arch/mips/sibyte/bcm1480/irq.c:460:#ifdef CONFIG_SIBYTE_BCM1480_PROF
+> arch/mips/sibyte/bcm1480/irq.c:467:#ifdef CONFIG_SIBYTE_BCM1480_PROF
+
+    Hm, that could probably be killed. The referenced function isn't defined 
+anywhere. Same about CONFIG_SIBYTE_BCM1250_PROF which is here but the kernel 
+won't build w/it anyway...
+
+> ========== SIBYTE_SB1250_DUART ==========
+> arch/mips/configs/sb1250-swarm_defconfig:665:CONFIG_SIBYTE_SB1250_DUART=y
+> arch/mips/configs/bigsur_defconfig:673:CONFIG_SIBYTE_SB1250_DUART=y
+> arch/mips/sibyte/bcm1480/irq.c:79:#ifdef CONFIG_SIBYTE_SB1250_DUART
+> arch/mips/sibyte/bcm1480/irq.c:407:#ifdef CONFIG_SIBYTE_SB1250_DUART
+> arch/mips/sibyte/sb1250/irq.c:64:#ifdef CONFIG_SIBYTE_SB1250_DUART
+> arch/mips/sibyte/sb1250/irq.c:362:#ifdef CONFIG_SIBYTE_SB1250_DUART
+> arch/mips/sibyte/cfe/console.c:49:#ifdef CONFIG_SIBYTE_SB1250_DUART
+
+    This belongs to drivers/char/sb1350_duart.c which is only maintained in 
+the Linux/MIPS tree...
+
+> ========== SOUND_AU1X00 ==========
+> arch/mips/au1000/common/setup.c:116:#if defined(CONFIG_SOUND_AU1X00) && !defined(CONFIG_SOC_AU1000)
+
+    The OSS driver has been obsoleted. Kill this piece, it doesn't apply to 
+the ALSA driver.
+
+> ========== TX4927BUG_WORKAROUND ==========
+> arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c:141:#define CONFIG_TX4927BUG_WORKAROUND
+> arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c:672:#ifdef CONFIG_TX4927BUG_WORKAROUND
+> arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c:914:#ifdef CONFIG_TX4927BUG_WORKAROUND
+
+    This one shouldn't have been called CONFIG_* and might be just killed as 
+well....
+
+> ========== USB_OHCI ==========
+> arch/mips/au1000/pb1000/board_setup.c:57:#ifdef CONFIG_USB_OHCI
+> arch/mips/au1000/pb1000/board_setup.c:105:#ifdef CONFIG_USB_OHCI
+> arch/mips/au1000/pb1000/board_setup.c:119:#endif // defined (CONFIG_USB_OHCI)
+> arch/mips/au1000/pb1500/board_setup.c:59:#ifdef CONFIG_USB_OHCI
+> arch/mips/au1000/pb1500/board_setup.c:88:#ifdef CONFIG_USB_OHCI
+> arch/mips/au1000/pb1500/board_setup.c:98:#endif // defined (CONFIG_USB_OHCI)
+> arch/mips/au1000/pb1100/board_setup.c:57:#ifdef CONFIG_USB_OHCI
+> arch/mips/au1000/pb1100/board_setup.c:101:#endif // defined (CONFIG_USB_OHCI)
+> arch/mips/au1000/mtx-1/board_setup.c:57:#ifdef CONFIG_USB_OHCI
+> arch/mips/au1000/mtx-1/board_setup.c:61:#endif // defined (CONFIG_USB_OHCI)
+
+    Should be changed to CONFIG_USB_OHCI_HCD.
+
+WBR, Sergei

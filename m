@@ -1,71 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 17:45:33 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:39128 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023062AbXGEQpa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Jul 2007 17:45:30 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l65GjTkI023372;
-	Thu, 5 Jul 2007 17:45:29 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l65GjSMU023371;
-	Thu, 5 Jul 2007 17:45:28 +0100
-Date:	Thu, 5 Jul 2007 17:45:28 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 17:49:10 +0100 (BST)
+Received: from asia.telenet-ops.be ([195.130.137.74]:52147 "EHLO
+	asia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20022070AbXGEQtG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jul 2007 17:49:06 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by asia.telenet-ops.be (Postfix) with SMTP id 500F6D41B0;
+	Thu,  5 Jul 2007 18:49:05 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by asia.telenet-ops.be (Postfix) with ESMTP id D57FBD41C0;
+	Thu,  5 Jul 2007 18:49:02 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-4) with ESMTP id l65Gn20Y029302
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 5 Jul 2007 18:49:02 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l65Gmx3q029299;
+	Thu, 5 Jul 2007 18:48:59 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Thu, 5 Jul 2007 18:48:59 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	"Robert P. J. Day" <rpjday@mindspring.com>,
+	"Kevin D. Kissell" <kevink@mips.com>, linux-mips@linux-mips.org
 Subject: Re: dead(?) MIPS config stuff
-Message-ID: <20070705164528.GA23340@linux-mips.org>
-References: <20070705144641.GA20210@linux-mips.org> <01dc01c7bf20$e03f6c20$10eca8c0@grendel> <20070705163658.GA22652@linux-mips.org>
+In-Reply-To: <20070705163730.GB22652@linux-mips.org>
+Message-ID: <Pine.LNX.4.64.0707051848410.23477@anakin>
+References: <20070705144641.GA20210@linux-mips.org> <01dc01c7bf20$e03f6c20$10eca8c0@grendel>
+ <Pine.LNX.4.64.0707051228170.28497@localhost.localdomain>
+ <20070705163730.GB22652@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070705163658.GA22652@linux-mips.org>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15621
+X-archive-position: 15622
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 05, 2007 at 05:36:58PM +0100, Ralf Baechle wrote:
-
-> All this email was about were kernel configuration options that can't be
-> enabled for some reason.  Of course these automated checkers such as
-> Robert's make the assumption that the CONFIG_* preprocessor namespace
-> is rserved for the Kconfig system.  In this particular case the reason
-> is quite simple:
+On Thu, 5 Jul 2007, Ralf Baechle wrote:
+> On Thu, Jul 05, 2007 at 12:28:59PM -0400, Robert P. J. Day wrote:
+> >   if it makes it any easier, there's no need to continue to CC me on
+> > these messages.  there's nothing i'm going to do beyond just reporting
+> > what i found.
 > 
-> > arch/mips/kernel/process.c:54:#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
-> > arch/mips/Kconfig.debug:40:config CONFIG_SMTC_IDLE_HOOK_DEBUG
-> 
-> The kconfig system itself does prefix names with CONFIG_ so kconfig
-> ends up defining CONFIG_CONFIG_SMTC_IDLE_HOOK_DEBUG (are we stuttuttering?)
+> Bah, we want you to enjoy the email storm you started ;-)
 
+Indeed, and what happened to `Show me the code^Wpatch?' ;-)
 
-From: Ralf Baechle <ralf@linux-mips.org>
-Date: Thu, 5 Jul 2007 17:39:48 +0100
-Subject: [MIPS] SMTC: Fix cut'n'paste bug in Kconfig.debug
+Gr{oetje,eeting}s,
 
-This effectivly turned the SMTC_IDLE_HOOK_DEBUG debug option into a no-op.
+						Geert
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
-index 72d5c19..3efe117 100644
---- a/arch/mips/Kconfig.debug
-+++ b/arch/mips/Kconfig.debug
-@@ -37,7 +37,7 @@ config DEBUG_STACK_USAGE
- 
- 	  This option will slow down process creation somewhat.
- 
--config CONFIG_SMTC_IDLE_HOOK_DEBUG
-+config SMTC_IDLE_HOOK_DEBUG
- 	bool "Enable additional debug checks before going into CPU idle loop"
- 	depends on DEBUG_KERNEL && MIPS_MT_SMTC
- 	help
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

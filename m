@@ -1,59 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 17:24:04 +0100 (BST)
-Received: from mx.mips.com ([63.167.95.198]:35465 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20023048AbXGEQYA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Jul 2007 17:24:00 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id l65GNwtI012547;
-	Thu, 5 Jul 2007 09:23:58 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id l65GNj2c013994;
-	Thu, 5 Jul 2007 09:23:50 -0700 (PDT)
-Message-ID: <01dc01c7bf20$e03f6c20$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
-	"Robert P. J. Day" <rpjday@mindspring.com>
-References: <20070705144641.GA20210@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jul 2007 17:32:13 +0100 (BST)
+Received: from nic.NetDirect.CA ([216.16.235.2]:8341 "EHLO
+	rubicon.netdirect.ca") by ftp.linux-mips.org with ESMTP
+	id S20022058AbXGEQcJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jul 2007 17:32:09 +0100
+X-Originating-Ip: 72.143.66.27
+Received: from [192.168.1.102] (CPE0018396a01fc-CM001225dbafb6.cpe.net.cable.rogers.com [72.143.66.27])
+	(authenticated bits=0)
+	by rubicon.netdirect.ca (8.13.1/8.13.1) with ESMTP id l65GUnVU022188
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 5 Jul 2007 12:31:01 -0400
+Date:	Thu, 5 Jul 2007 12:28:59 -0400 (EDT)
+From:	"Robert P. J. Day" <rpjday@mindspring.com>
+X-X-Sender: rpjday@localhost.localdomain
+To:	"Kevin D. Kissell" <kevink@mips.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: dead(?) MIPS config stuff
-Date:	Thu, 5 Jul 2007 18:23:45 +0200
+In-Reply-To: <01dc01c7bf20$e03f6c20$10eca8c0@grendel>
+Message-ID: <Pine.LNX.4.64.0707051228170.28497@localhost.localdomain>
+References: <20070705144641.GA20210@linux-mips.org> <01dc01c7bf20$e03f6c20$10eca8c0@grendel>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1896
-Return-Path: <kevink@mips.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Net-Direct-Inc-MailScanner-Information: Please contact the ISP for more information
+X-Net-Direct-Inc-MailScanner: Found to be clean
+X-Net-Direct-Inc-MailScanner-SpamCheck:	not spam, SpamAssassin (not cached,
+	score=-16.8, required 5, autolearn=not spam, ALL_TRUSTED -1.80,
+	BAYES_00 -15.00, INIT_RECVD_OUR_AUTH -20.00,
+	RCVD_IN_SORBS_DUL 20.00)
+X-Net-Direct-Inc-MailScanner-From: rpjday@mindspring.com
+Return-Path: <rpjday@mindspring.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15617
+X-archive-position: 15618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: rpjday@mindspring.com
 Precedence: bulk
 X-list: linux-mips
 
-> ========== SMTC_IDLE_HOOK_DEBUG ==========
-> arch/mips/kernel/smtc.c:146:#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
-> arch/mips/kernel/smtc.c:181:#endif /* CONFIG_SMTC_IDLE_HOOK_DEBUG */
-> arch/mips/kernel/smtc.c:399:#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
-> arch/mips/kernel/smtc.c:402:#endif /* CONFIG_SMTC_IDLE_HOOK_DEBUG */
-> arch/mips/kernel/smtc.c:614:#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
-> arch/mips/kernel/smtc.c:828:#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
-> arch/mips/kernel/smtc.c:830:#endif /* CONFIG_SMTC_IDLE_HOOK_DEBUG */
-> arch/mips/kernel/smtc.c:1055:#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
-> arch/mips/kernel/smtc.c:1148:#endif /* CONFIG_SMTC_IDLE_HOOK_DEBUG */
-> arch/mips/kernel/process.c:54:#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
-> arch/mips/Kconfig.debug:40:config CONFIG_SMTC_IDLE_HOOK_DEBUG
 
-It's cruft, but it's cruft that does have some utility when porting SMTC to a new
-platform, as it helps identify interrupt management bugs.  It needs to be eliminated
-or replaced with a revision of the interface between architecture and platform 
-support for SMTC, toward which I've made some small progress recently, 
-but I'd prefer not to see it disappear before reinforcements arrive.
+  if it makes it any easier, there's no need to continue to CC me on
+these messages.  there's nothing i'm going to do beyond just reporting
+what i found.
 
-            Regards,
-
-            Kevin K.
+rday

@@ -1,20 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jul 2007 08:53:09 +0100 (BST)
-Received: from post2.wesleyan.edu ([129.133.6.128]:45281 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jul 2007 09:11:03 +0100 (BST)
+Received: from post2.wesleyan.edu ([129.133.6.128]:41698 "EHLO
 	post2.wesleyan.edu") by ftp.linux-mips.org with ESMTP
-	id S20022408AbXGFHxD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Jul 2007 08:53:03 +0100
+	id S20022423AbXGFIK6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Jul 2007 09:10:58 +0100
 Received: from pony1.wesleyan.edu (pony1.wesleyan.edu [129.133.6.192])
-	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l667njPJ022393;
-	Fri, 6 Jul 2007 03:49:45 -0400
+	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l668AngZ023761;
+	Fri, 6 Jul 2007 04:10:49 -0400
 Received: (from apache@localhost)
-	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l667nju4015061;
-	Fri, 6 Jul 2007 03:49:45 -0400
+	by pony1.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l668Anj3016383;
+	Fri, 6 Jul 2007 04:10:49 -0400
 Received: from 129.133.92.31
         (SquirrelMail authenticated user sknauert)
         by webmail.wesleyan.edu with HTTP;
-        Fri, 6 Jul 2007 10:49:45 +0300 (IDT)
-Message-ID: <40406.129.133.92.31.1183708185.squirrel@webmail.wesleyan.edu>
-Date:	Fri, 6 Jul 2007 10:49:45 +0300 (IDT)
+        Fri, 6 Jul 2007 11:10:49 +0300 (IDT)
+Message-ID: <43914.129.133.92.31.1183709449.squirrel@webmail.wesleyan.edu>
+In-Reply-To: <6849c8890707040125x34cb2b0jf7acfabfa0bf351f@mail.gmail.com>
+References: <6849c8890707020427q47704326od05ebb8241c3cf@mail.gmail.com>
+    <6849c8890707040125x34cb2b0jf7acfabfa0bf351f@mail.gmail.com>
+Date:	Fri, 6 Jul 2007 11:10:49 +0300 (IDT)
 Subject: Re: Fwd: [RFC] SGI O2 MACE audio ALSA module
 From:	sknauert@wesleyan.edu
 To:	"TJ" <tj.trevelyan@gmail.com>
@@ -33,7 +36,7 @@ Return-Path: <sknauert@wesleyan.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15624
+X-archive-position: 15625
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,17 +44,27 @@ X-original-sender: sknauert@wesleyan.edu
 Precedence: bulk
 X-list: linux-mips
 
-First off, thanks for your work on this. Second, I tried to compile with
-2.6.21.3 and Debian's gcc 4.1.1-27 cross-compiler. The kernel compiled,
-but make modules failed with the errors below. Something's definitely
-wrong with the typedefs and structs for use in a newer kernel. I tried the
-linux-MIPS 2.6.19.7 and while the kernel compiles it doesn't boot. I've
-been here before and don't think its an issue with your module. The issue
-is probably that selecting O2 in the machine selection doesn't turn on the
-correct options for the O2 and finding them takes me a few tries,
-especially since they may have moved/ changed between kernel revisions.
-Since you obviously have a working 2.6.19.7, I'd be more than happy to try
-out the module further if you can send me a known working .config.
+First off, thanks for your work on this.
+
+I tried to compile with 2.6.21.3 and Debian's gcc 4.1.1-27 cross-compiler.
+The kernel compiled, but make modules failed with the errors below.
+Something's definitely wrong with the typedefs and structs for use in a
+newer kernel.
+
+I also tried the linux-MIPS 2.6.19.7 and while the kernel compiles it
+doesn't boot. I've been stuck here before and don't think its an issue
+with your module. The issue is probably that selecting O2 in the machine
+selection doesn't turn on the correct options for the O2 and finding them
+takes me a few tries, especially since they may have moved/ changed
+between kernel revisions. I did a search and enabled all the O2/MACE stuff
+I found, but there's probably a conflict with something enabled by
+default, etc. Since you obviously have a working 2.6.19.7, I'd be more
+than happy to try out the module further if you can send me a known
+working .config.
+
+I have both the audio and A/V O2 modules so I can test both with the ALSA
+driver in case you didn't and am willing to lend my help to any effort to
+get more Linux functionality on the O2.
 
 Shiva:/usr/src/linux-2.6.21.3_patch# make CROSS_COMPILE=mips-linux-gnu- all
   CHK     include/linux/version.h

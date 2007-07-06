@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jul 2007 16:23:55 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:64128 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021862AbXGFPXx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Jul 2007 16:23:53 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l66FGM1Z026328;
-	Fri, 6 Jul 2007 16:16:22 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l66FGLWC026327;
-	Fri, 6 Jul 2007 16:16:21 +0100
-Date:	Fri, 6 Jul 2007 16:16:21 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] 74K: Only use WAIT with interrupts disabled for core
-	rev >= 2.1.0
-Message-ID: <20070706151621.GC25576@linux-mips.org>
-References: <S20021769AbXGFOZl/20070706142541Z+11993@ftp.linux-mips.org> <20070707.001718.74753856.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jul 2007 16:46:36 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:43527 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20021801AbXGFPqc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Jul 2007 16:46:32 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 32522D8DA; Fri,  6 Jul 2007 15:46:26 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 6EF195435D; Fri,  6 Jul 2007 17:46:00 +0200 (CEST)
+Date:	Fri, 6 Jul 2007 17:46:00 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Thiemo Seufer <ths@networkno.de>,
+	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [RFC] add to Category:Deprecated
+Message-ID: <20070706154559.GA20633@deprecation.cyrius.com>
+References: <200707060702.l6672Eq9011401@po-mbox300.hop.2iij.net> <20070706115100.GB8551@linux-mips.org> <20070705204922.GC24487@networkno.de> <20070706141001.GA17737@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20070707.001718.74753856.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20070706141001.GA17737@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15641
+X-archive-position: 15642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 07, 2007 at 12:17:18AM +0900, Atsushi Nemoto wrote:
+* Ralf Baechle <ralf@linux-mips.org> [2007-07-06 15:10]:
+> As I recall the LASAT machines were prototypes and only a small
+> number ever in circulation because the company Lasat did fold.  So
+> chances are there is no remaining user, is that true?
 
-> Isn't this needed?
-
-Not strictly needed but definately useful.
-
-Thanks,
-
-  Ralf
+Yeah, that's probably a good summary.
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,79 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jul 2007 10:01:46 +0100 (BST)
-Received: from europa.telenet-ops.be ([195.130.137.75]:64944 "EHLO
-	europa.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20022501AbXGFJBl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Jul 2007 10:01:41 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by europa.telenet-ops.be (Postfix) with SMTP id 2594B416E;
-	Fri,  6 Jul 2007 11:01:41 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by europa.telenet-ops.be (Postfix) with ESMTP id F29364183;
-	Fri,  6 Jul 2007 11:01:40 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-4) with ESMTP id l6691ehp002946
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 6 Jul 2007 11:01:40 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l6691e7l002943;
-	Fri, 6 Jul 2007 11:01:40 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Fri, 6 Jul 2007 11:01:40 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	TJ <tj.trevelyan@gmail.com>
-Cc:	"sknauert@wesleyan.edu" <sknauert@wesleyan.edu>,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Fwd: [RFC] SGI O2 MACE audio ALSA module
-In-Reply-To: <6849c8890707060130q79a2890eq51001b18fd21519f@mail.gmail.com>
-Message-ID: <Pine.LNX.4.64.0707061058410.2286@anakin>
-References: <6849c8890707020427q47704326od05ebb8241c3cf@mail.gmail.com>
- <6849c8890707040125x34cb2b0jf7acfabfa0bf351f@mail.gmail.com>
- <43914.129.133.92.31.1183709449.squirrel@webmail.wesleyan.edu>
- <6849c8890707060130q79a2890eq51001b18fd21519f@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jul 2007 10:06:54 +0100 (BST)
+Received: from web94306.mail.in2.yahoo.com ([203.104.16.216]:42625 "HELO
+	web94306.mail.in2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20022521AbXGFJGt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Jul 2007 10:06:49 +0100
+Received: (qmail 93775 invoked by uid 60001); 6 Jul 2007 09:05:41 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=To5hA1YWgGRGGlq/dMBBMwSQjuBDkDgWGdxgGMfrF8BILeIu3gf7LBsE+zvq1nSw323FA+3kYQZCke+XOOB3zO0DNnEDfTXUiAS1SG1IL0LvWhF6l/Kl257rvXBnkSptLoFd5tu5kGTNsFP8715fd8EWEPZPZylbUoWrM6swnRY=;
+X-YMail-OSG: hFugb.kVM1kAlQzveD3S9D.KT_Tqn9nEpI6rZQmaGOO1osEcsUrJ1ZehbnHWFW1LEw--
+Received: from [59.92.93.181] by web94306.mail.in2.yahoo.com via HTTP; Fri, 06 Jul 2007 10:05:41 BST
+Date:	Fri, 6 Jul 2007 10:05:41 +0100 (BST)
+From:	saravanan <sar_van81@yahoo.co.in>
+Subject: error in crosscompiling autoboot for MIPS
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: multipart/alternative; boundary="0-2053808565-1183712741=:93280"
+Content-Transfer-Encoding: 8bit
+Message-ID: <357682.93280.qm@web94306.mail.in2.yahoo.com>
+Return-Path: <sar_van81@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15627
+X-archive-position: 15628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: sar_van81@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 6 Jul 2007, TJ wrote:
-> I can see the case against other uses of typedef, but I really do not
-> see why typedef struct is so bad. seeing 'struct mything_s *foo;'
-> doesn't really tell you anything more about foo then 'mything_t *foo;'
-> does. If a typedef was something other then a struct then I would want
-> it to have an obvious name that said such, eg 'u64'. (I really don't
-> like 'size_t')
+--0-2053808565-1183712741=:93280
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-You can have simple forward declarations for structs:
+hi,
+ 
+ i download(au1xxx-booter-src-1.0-r000007.tar.gz ) an tried to cross compile for MIPS DBAU1200 board, but was nto succesfull. i used to toolchain created using buildroot. the following is the error message i got:
+ 
+ Building /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/sd.o
+      Building /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/booter.o
+      Building /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/DB1200_booter.rec
+ /home/LINUXAU1200/oldbuildroot/secondbuild/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-ld: section .data [000000009fd08778 -> 000000009fd08807] overlaps section .MIPS.stubs [000000009fd08778 -> 000000009fd08787]
+ /home/LINUXAU1200/oldbuildroot/secondbuild/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-ld: /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/DB1200_booter.rec.elf: The first section in the PT_DYNAMIC segment is not the .dynamic section
+ /home/LINUXAU1200/oldbuildroot/secondbuild/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-ld: final link failed: Bad value
+ make[3]: *** [/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/DB1200_booter.rec] Error 1
+ rm /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/fat.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/flash.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/booter.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/partition.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/filesystem.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/sd.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/srec.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/bin.o
+ /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/elf.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/util.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/functions.o
+ make[3]: Leaving directory `/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter'
+ make[2]: *** [all] Error 2
+ make[2]: Leaving directory `/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications'
+ make[1]: *** [apps] Error 2
+ make[1]: Leaving directory `/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07'
+ make: *** [all] Error 2
+ linux:/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07 # ..
+ linux:/home/LINUXAU1200/autobootloader #
+ 
+ 
+ i think there is memory range overlapping between the two sections.
+ 
+ can anyone suggest me any solution or suggestion for this ?
+ 
+ thanks in advance,
+ 
+ saravanan.
+ 
+ Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
+--0-2053808565-1183712741=:93280
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-    struct mystruct;
-
-    extern void myfunc(struct mystruct *p);
-
-while you need the full struct definition for typedefs:
-
-    typedef struct mystruct {
-	int myfield;
-    } mytype_t;
-
-    extern void myfunc(mytype_t *p);
-
-I.e. more (possibly circular) include dependencies.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+hi,<br> <br> i download(au1xxx-booter-src-1.0-r000007.tar.gz ) an tried to cross compile for MIPS DBAU1200 board, but was nto succesfull. i used to toolchain created using buildroot. the following is the error message i got:<br> <br> Building /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/sd.o<br> &nbsp;&nbsp;&nbsp;&nbsp; Building /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/booter.o<br> &nbsp;&nbsp;&nbsp;&nbsp; Building /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/DB1200_booter.rec<br> /home/LINUXAU1200/oldbuildroot/secondbuild/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-ld: section .data [000000009fd08778 -&gt; 000000009fd08807] overlaps section .MIPS.stubs [000000009fd08778 -&gt; 000000009fd08787]<br>
+ /home/LINUXAU1200/oldbuildroot/secondbuild/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-ld: /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/DB1200_booter.rec.elf: The first section in the PT_DYNAMIC segment is not the .dynamic section<br> /home/LINUXAU1200/oldbuildroot/secondbuild/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-ld: final link failed: Bad value<br> make[3]: *** [/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/DB1200_booter.rec] Error 1<br> rm /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/fat.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/flash.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/booter.o
+ /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/partition.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/filesystem.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/sd.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/srec.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/bin.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/elf.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/util.o /home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter/obj/DB1200/EL/booter/functions.o<br> make[3]: Leaving directory
+ `/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications/booter'<br> make[2]: *** [all] Error 2<br> make[2]: Leaving directory `/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07/applications'<br> make[1]: *** [apps] Error 2<br> make[1]: Leaving directory `/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07'<br> make: *** [all] Error 2<br> linux:/home/LINUXAU1200/autobootloader/Booter_Common_Au1xxx_00.00.07 # ..<br> linux:/home/LINUXAU1200/autobootloader #<br> <br> <br> i think there is memory range overlapping between the two sections.<br> <br> can anyone suggest me any solution or suggestion for this ?<br> <br> thanks in advance,<br> <br> saravanan.<br> <p>&#32;Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
+--0-2053808565-1183712741=:93280--

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2007 15:21:05 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:14786 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20023000AbXGGOVD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2007 15:21:03 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2007 15:57:53 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:8388 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023028AbXGGO5v (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2007 15:57:51 +0100
 Received: from localhost (p2176-ipad32funabasi.chiba.ocn.ne.jp [221.189.134.176])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 696F78845; Sat,  7 Jul 2007 23:20:58 +0900 (JST)
-Date:	Sat, 07 Jul 2007 23:21:49 +0900 (JST)
-Message-Id: <20070707.232149.25909198.anemo@mba.ocn.ne.jp>
+	id 899C9AF49; Sat,  7 Jul 2007 23:56:29 +0900 (JST)
+Date:	Sat, 07 Jul 2007 23:57:20 +0900 (JST)
+Message-Id: <20070707.235720.92586759.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH] Add debugfs files to show fpuemu statistics
+Subject: [PATCH] rbtx4938: Provide minimum CLK API implementation
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -21,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15647
+X-archive-position: 15648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,65 +29,74 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Export contents of struct mips_fpu_emulator_stats via debugfs.
-
-There is no way to read these statistics for now but they (at least
-the "emulated" count) might be sometimes useful for performance tuning
-on FPU-less CPUs.
+Implement a minimum CLK API to pass a base clock to spi_txx9 driver.
+This patch also remove old hack (abusing resource framework) which was
+only for preliminary version of the spi_txx9 driver.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
-This patch can be applied to linux-queue tree.
+This patch can be folded into a patch in linux-queue tree titled:
+"[MIPS] rbtx4938: Convert SPI codes to use generic SPI drivers"
 
- arch/mips/math-emu/cp1emu.c |   34 ++++++++++++++++++++++++++++++++++
- 1 files changed, 34 insertions(+), 0 deletions(-)
+ arch/mips/tx4938/toshiba_rbtx4938/setup.c |   37 +++++++++++++++++++++++++---
+ 1 files changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index 80531b3..d7f05b0 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -35,6 +35,7 @@
-  * better performance by compiling with -msoft-float!
-  */
- #include <linux/sched.h>
-+#include <linux/debugfs.h>
+diff --git a/arch/mips/tx4938/toshiba_rbtx4938/setup.c b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+index 330ee43..361d89a 100644
+--- a/arch/mips/tx4938/toshiba_rbtx4938/setup.c
++++ b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+@@ -20,6 +20,7 @@
+ #include <linux/pci.h>
+ #include <linux/pm.h>
+ #include <linux/platform_device.h>
++#include <linux/clk.h>
  
- #include <asm/inst.h>
- #include <asm/bootinfo.h>
-@@ -1277,3 +1278,36 @@ int fpu_emulator_cop1Handler(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 
- 	return sig;
+ #include <asm/wbflush.h>
+ #include <asm/reboot.h>
+@@ -1121,10 +1122,6 @@ static void __init txx9_spi_init(unsigned long base, int irq)
+ 		}, {
+ 			.start	= irq,
+ 			.flags	= IORESOURCE_IRQ,
+-		}, {
+-			.name	= "baseclk",
+-			.start	= txx9_gbus_clock / 2 / 4,
+-			.flags	= IORESOURCE_IRQ,
+ 		},
+ 	};
+ 	platform_device_register_simple("txx9spi", 0,
+@@ -1149,3 +1146,35 @@ static int __init rbtx4938_spi_init(void)
+ 	return 0;
  }
+ arch_initcall(rbtx4938_spi_init);
 +
-+#ifdef CONFIG_DEBUG_FS
-+extern struct dentry *mips_debugfs_dir;
-+static int __init debugfs_fpuemu(void)
++/* Minimum CLK support */
++
++struct clk *clk_get(struct device *dev, const char *id)
 +{
-+	struct dentry *d, *dir;
-+	int i;
-+	static struct {
-+		const char *name;
-+		unsigned int *v;
-+	} vars[] __initdata = {
-+		{ "emulated", &fpuemustats.emulated },
-+		{ "loads",    &fpuemustats.loads },
-+		{ "stores",   &fpuemustats.stores },
-+		{ "cp1ops",   &fpuemustats.cp1ops },
-+		{ "cp1xops",  &fpuemustats.cp1xops },
-+		{ "errors",   &fpuemustats.errors },
-+	};
++	if (!strcmp(id, "spi-baseclk"))
++		return (struct clk *)(txx9_gbus_clock / 2 / 4);
++	return ERR_PTR(-ENOENT);
++}
++EXPORT_SYMBOL(clk_get);
 +
-+	if (!mips_debugfs_dir)
-+		return -ENODEV;
-+	dir = debugfs_create_dir("fpuemustats", mips_debugfs_dir);
-+	if (IS_ERR(dir))
-+		return PTR_ERR(dir);
-+	for (i = 0; i < ARRAY_SIZE(vars); i++) {
-+		d = debugfs_create_u32(vars[i].name, S_IRUGO, dir, vars[i].v);
-+		if (IS_ERR(d))
-+			return PTR_ERR(d);
-+	}
++int clk_enable(struct clk *clk)
++{
 +	return 0;
 +}
-+__initcall(debugfs_fpuemu);
-+#endif
++EXPORT_SYMBOL(clk_enable);
++
++void clk_disable(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_disable);
++
++unsigned long clk_get_rate(struct clk *clk)
++{
++	return (unsigned long)clk;
++}
++EXPORT_SYMBOL(clk_get_rate);
++
++void clk_put(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_put);

@@ -1,66 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2007 05:16:52 +0100 (BST)
-Received: from web94302.mail.in2.yahoo.com ([203.104.16.212]:47519 "HELO
-	web94302.mail.in2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20022556AbXGGEQZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 7 Jul 2007 05:16:25 +0100
-Received: (qmail 75876 invoked by uid 60001); 7 Jul 2007 04:15:17 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=6PYCDxhTOsRIkp+CA90TyAPiYrVpfdw+aYdNpPqwtgyCiyVWVU06F5QWGcFPtrLlsI5HQcfRKjtaOx6hGmW2IJ+FV4UwtQUKg7S04yWVAi2EnlC7+swlvmkyDpvCJ6EtKRn6f9O4mV4KOKKkMvqjiNGJsJ6/kht9Zjw5VQ3PnYQ=;
-X-YMail-OSG: IbHqHHEVM1mjZgSacN1QKHZEgrq9ir_R4cb8B5MU4cTBHoclbHPs9gil4kLBrdx6I3_eyLWPwKgC3U7lzA_SMQ1M6fJsksICQV7SAelHKRydLKJEPToxyccf1A--
-Received: from [59.92.50.213] by web94302.mail.in2.yahoo.com via HTTP; Sat, 07 Jul 2007 05:15:16 BST
-Date:	Sat, 7 Jul 2007 05:15:16 +0100 (BST)
-From:	saravanan <sar_van81@yahoo.co.in>
-Subject: Re: error in crosscompiling autoboot for MIPS
-To:	mano@roarinelk.homelinux.net
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070706094451.GB27044@roarinelk.homelinux.net>
-MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-727162940-1183781716=:66060"
-Content-Transfer-Encoding: 8bit
-Message-ID: <379910.66060.qm@web94302.mail.in2.yahoo.com>
-Return-Path: <sar_van81@yahoo.co.in>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Jul 2007 15:21:05 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:14786 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023000AbXGGOVD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 7 Jul 2007 15:21:03 +0100
+Received: from localhost (p2176-ipad32funabasi.chiba.ocn.ne.jp [221.189.134.176])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 696F78845; Sat,  7 Jul 2007 23:20:58 +0900 (JST)
+Date:	Sat, 07 Jul 2007 23:21:49 +0900 (JST)
+Message-Id: <20070707.232149.25909198.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Add debugfs files to show fpuemu statistics
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15646
+X-archive-position: 15647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sar_van81@yahoo.co.in
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
---0-727162940-1183781716=:66060
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Export contents of struct mips_fpu_emulator_stats via debugfs.
 
-hi ,
- 
- using the updated script you sent .but still the error persists. th efollowing are the steps i followed.
- 
- 1) Untarred the source au1xxx-booter-src-1.0-r000007.tar.gz.
- 
- 2) Edit the make.rules to inlude the buildroot toolchain and the path to that.
- 
- 3) configured the package by entering make menuconfig and selecting the following options:
- 
- Platform --> DB1200 platform.
- Application --> Au1xxx Autoboot --> AutoBoot (YAMON assist).
- 
- 4). Edit the applications/booter/booter.ld to include the script you sent.
- 
- 5). entered make.
- 
-  Are these steps correct ? or Am i missing something ?
- 
- 
+There is no way to read these statistics for now but they (at least
+the "emulated" count) might be sometimes useful for performance tuning
+on FPU-less CPUs.
 
- Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
---0-727162940-1183781716=:66060
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+This patch can be applied to linux-queue tree.
 
-hi ,<br> <br> using the updated script you sent .but still the error persists. th efollowing are the steps i followed.<br> <br> 1) Untarred the source au1xxx-booter-src-1.0-r000007.tar.gz.<br> <br> 2) Edit the make.rules to inlude the buildroot toolchain and the path to that.<br> <br> 3) configured the package by entering make menuconfig and selecting the following options:<br> <br> Platform --&gt; DB1200 platform.<br> Application --&gt; Au1xxx Autoboot --&gt; AutoBoot (YAMON assist).<br> <br> 4). Edit the applications/booter/booter.ld to include the script you sent.<br> <br> 5). entered make.<br> <br> &nbsp;Are these steps correct ? or Am i missing something ?<br> <br> <br><p>&#32;Send free SMS to your Friends on Mobile from your Yahoo! Messenger. Download Now! http://messenger.yahoo.com/download.php
---0-727162940-1183781716=:66060--
+ arch/mips/math-emu/cp1emu.c |   34 ++++++++++++++++++++++++++++++++++
+ 1 files changed, 34 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 80531b3..d7f05b0 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -35,6 +35,7 @@
+  * better performance by compiling with -msoft-float!
+  */
+ #include <linux/sched.h>
++#include <linux/debugfs.h>
+ 
+ #include <asm/inst.h>
+ #include <asm/bootinfo.h>
+@@ -1277,3 +1278,36 @@ int fpu_emulator_cop1Handler(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
+ 
+ 	return sig;
+ }
++
++#ifdef CONFIG_DEBUG_FS
++extern struct dentry *mips_debugfs_dir;
++static int __init debugfs_fpuemu(void)
++{
++	struct dentry *d, *dir;
++	int i;
++	static struct {
++		const char *name;
++		unsigned int *v;
++	} vars[] __initdata = {
++		{ "emulated", &fpuemustats.emulated },
++		{ "loads",    &fpuemustats.loads },
++		{ "stores",   &fpuemustats.stores },
++		{ "cp1ops",   &fpuemustats.cp1ops },
++		{ "cp1xops",  &fpuemustats.cp1xops },
++		{ "errors",   &fpuemustats.errors },
++	};
++
++	if (!mips_debugfs_dir)
++		return -ENODEV;
++	dir = debugfs_create_dir("fpuemustats", mips_debugfs_dir);
++	if (IS_ERR(dir))
++		return PTR_ERR(dir);
++	for (i = 0; i < ARRAY_SIZE(vars); i++) {
++		d = debugfs_create_u32(vars[i].name, S_IRUGO, dir, vars[i].v);
++		if (IS_ERR(d))
++			return PTR_ERR(d);
++	}
++	return 0;
++}
++__initcall(debugfs_fpuemu);
++#endif

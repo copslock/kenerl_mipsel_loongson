@@ -1,53 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2007 15:09:55 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:14314 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021592AbXGJOJw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Jul 2007 15:09:52 +0100
-Received: from localhost (p1061-ipad210funabasi.chiba.ocn.ne.jp [58.88.120.61])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 470A48901; Tue, 10 Jul 2007 23:09:48 +0900 (JST)
-Date:	Tue, 10 Jul 2007 23:10:41 +0900 (JST)
-Message-Id: <20070710.231041.05598442.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2007 15:37:33 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:16390 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021625AbXGJOha (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 10 Jul 2007 15:37:30 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 37463E1C69;
+	Tue, 10 Jul 2007 16:37:26 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 8bNPRPP0pLOn; Tue, 10 Jul 2007 16:37:26 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id E24ECE1C65;
+	Tue, 10 Jul 2007 16:37:25 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6AEbWuZ025807;
+	Tue, 10 Jul 2007 16:37:32 +0200
+Date:	Tue, 10 Jul 2007 15:37:30 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
 Subject: Re: [MIPS] DEC: Fix modpost warning.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 In-Reply-To: <20070710130409.GA14723@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0707101524490.18036@blysk.ds.pg.gda.pl>
 References: <S20022577AbXGJLug/20070710115036Z+13637@ftp.linux-mips.org>
-	<Pine.LNX.4.64N.0707101401001.18036@blysk.ds.pg.gda.pl>
-	<20070710130409.GA14723@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+ <Pine.LNX.4.64N.0707101401001.18036@blysk.ds.pg.gda.pl>
+ <20070710130409.GA14723@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3621/Tue Jul 10 15:01:04 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15667
+X-archive-position: 15668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 10 Jul 2007 14:04:09 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+On Tue, 10 Jul 2007, Ralf Baechle wrote:
+
+> >  It looks like a bogus warning -- I presume it comes from a reference from 
+> > "sercons" to serial_console_setup() -- but the driver is going away, so I 
+> > could not care less...
+> 
 > Yes, the root cause was the reference to serial_console_setup.  It's hard
 > to teach modpost that this reference is bogus so I fixed the driver instead.
 > Other console drivers had the same issue.
 
-The modpost has "_console" name in its whitelist.  So minimum
-workaround would be something like this:
+ I would not call this change a fix -- the cure is worse than the disease.
 
---- a/drivers/tc/zs.c
-+++ b/drivers/tc/zs.c
-@@ -136,6 +136,7 @@ struct dec_serial *zs_chain;	/* list of all channels */
- struct tty_struct zs_ttys[NUM_CHANNELS];
- 
- #ifdef CONFIG_SERIAL_DEC_CONSOLE
-+#define sercons ser_console
- static struct console sercons;
- #endif
- #if defined(CONFIG_SERIAL_DEC_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ) && \
+ We should maintain a table of references to ignore for modpost then.  It 
+should be discarded together with other init data and given the number of 
+such references it would be rather minuscule compared to code held in 
+memory unnecessarily throughout the boot cycle of the system just to 
+satisfy a debugging tool.  Which is a very useful one, no doubt, but 
+please do not forget about the common sense.
+
+  Maciej

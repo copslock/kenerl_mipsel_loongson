@@ -1,30 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2007 18:45:29 +0100 (BST)
-Received: from static-72-72-73-123.bstnma.east.verizon.net ([72.72.73.123]:5897
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2007 19:08:08 +0100 (BST)
+Received: from static-72-72-73-123.bstnma.east.verizon.net ([72.72.73.123]:28681
 	"EHLO mail.sicortex.com") by ftp.linux-mips.org with ESMTP
-	id S20021784AbXGJRp1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Jul 2007 18:45:27 +0100
+	id S20021852AbXGJSIG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 10 Jul 2007 19:08:06 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by mail.sicortex.com (Postfix) with ESMTP id E2B5C2074C8;
-	Tue, 10 Jul 2007 13:44:51 -0400 (EDT)
+	by mail.sicortex.com (Postfix) with ESMTP id 3F56E208872
+	for <linux-mips@linux-mips.org>; Tue, 10 Jul 2007 14:08:00 -0400 (EDT)
 X-Virus-Scanned: amavisd-new at sicortex.com
 Received: from mail.sicortex.com ([127.0.0.1])
 	by localhost (mail.sicortex.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id hVL1IkBqvxYG; Tue, 10 Jul 2007 13:44:51 -0400 (EDT)
-Received: from localhost.localdomain (gsrv020.sicortex.com [10.2.2.20])
-	by mail.sicortex.com (Postfix) with ESMTP id 354352074C4;
-	Tue, 10 Jul 2007 13:44:51 -0400 (EDT)
-From:	pwatkins@sicortex.com
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:	Peter Watkins <pwatkins@sicortex.com>
-Subject: [PATCH] [MIPS] Fix resume for 64k page size (#2).
-Date:	Tue, 10 Jul 2007 13:44:51 -0400
-Message-Id: <11840894911139-git-send-email-pwatkins@sicortex.com>
-X-Mailer: git-send-email 1.4.2.4
+	with ESMTP id eb6EVzsxYNnN; Tue, 10 Jul 2007 14:07:59 -0400 (EDT)
+Received: from [10.0.1.104] (gs104.sicortex.com [10.0.1.104])
+	by mail.sicortex.com (Postfix) with ESMTP id 7D1DD201DBD;
+	Tue, 10 Jul 2007 14:07:59 -0400 (EDT)
+Message-ID: <4693CAFF.6000101@sicortex.com>
+Date:	Tue, 10 Jul 2007 14:07:59 -0400
+From:	Peter Watkins <pwatkins@sicortex.com>
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050831)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+CC:	Peter Watkins <pwatkins@sicortex.com>
+Subject: start_secondary flushing remote icaches?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Return-Path: <pwatkins@sicortex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15675
+X-archive-position: 15676
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,27 +36,23 @@ X-original-sender: pwatkins@sicortex.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Peter Watkins <pwatkins@sicortex.com>
+Greetings,
 
-Fixup according to Thiemo and Maciej's comments.
+I'm updating our port to 2.6.22 and I notice that r4k_flush_icache_range 
+no longer has a check for irqs_disabled (to force local-only flush).
 
-Signed-off-by: Peter Watkins <pwatkins@sicortex.com>
----
- arch/mips/kernel/r4k_switch.S |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+This hits the BUG_ON(!cpu_online(cpu)) assertion in smp_call_function 
+since cpu's aren't marked online until after start_secondary:
 
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 65f0f91..ca7f71a 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -85,7 +85,7 @@ #endif
- 	move	$28, a2
- 	cpu_restore_nonscratch a1
- 
--#if (_THREAD_SIZE) < 0x10000
-+#if (_THREAD_SIZE - 32) < 0x8000
- 	PTR_ADDIU	t0, $28, _THREAD_SIZE - 32
- #else
- 	PTR_LI		t0, _THREAD_SIZE - 32
--- 
-1.4.2.4
+Call Trace:
+[<ffffffff8010d394>] smp_call_function+0x84/0x1f0
+[<ffffffff8011dec0>] r4k_flush_icache_range+0x28/0x48
+[<ffffffff80434a4c>] r4k_cache_init+0x6dc/0x1070
+[<ffffffff8042fca0>] per_cpu_trap_init+0x180/0x288
+[<ffffffff804304b4>] start_secondary+0x24/0x118
+[<ffffffff80101c40>] prom_smp_bootstrap+0x10/0x50
+
+So, the question is, how should the remote icache flush be avoided in 
+this case?
+
+-p

@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 17:20:09 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:7940 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 17:51:10 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:55566 "EHLO
 	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021652AbXGKQUH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jul 2007 17:20:07 +0100
+	id S20021672AbXGKQvI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jul 2007 17:51:08 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 30CB0E1D02;
-	Wed, 11 Jul 2007 18:19:32 +0200 (CEST)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C5B15E1CC1;
+	Wed, 11 Jul 2007 18:51:02 +0200 (CEST)
 X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
 Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
 	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id dWhZlsNfE5A5; Wed, 11 Jul 2007 18:19:31 +0200 (CEST)
+	with ESMTP id h0-7nWT4ORsk; Wed, 11 Jul 2007 18:51:02 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id BF6B8E1C67;
-	Wed, 11 Jul 2007 18:19:31 +0200 (CEST)
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 78335E1C67;
+	Wed, 11 Jul 2007 18:51:02 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6BGJcMU020867;
-	Wed, 11 Jul 2007 18:19:38 +0200
-Date:	Wed, 11 Jul 2007 17:19:36 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6BGp8Vu025257;
+	Wed, 11 Jul 2007 18:51:09 +0200
+Date:	Wed, 11 Jul 2007 17:51:05 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org, sibyte-users@bitmover.com,
-	Mark Mason <mason@broadcom.com>
-Subject: Re: [PATCH][CFT] Move SB1250 DUART support to the serial subsystem
-In-Reply-To: <20070711155021.GA26548@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0707111712100.26459@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0707111206200.26459@blysk.ds.pg.gda.pl>
- <20070711155021.GA26548@linux-mips.org>
+To:	Songmao Tian <tiansm@lemote.com>
+cc:	LinuxBIOS Mailing List <linuxbios@linuxbios.org>,
+	marc.jones@amd.com, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: about cs5536 interrupt ack
+In-Reply-To: <Pine.LNX.4.64N.0707111634430.26459@blysk.ds.pg.gda.pl>
+Message-ID: <Pine.LNX.4.64N.0707111729310.26459@blysk.ds.pg.gda.pl>
+References: <4694A495.1050006@lemote.com> <Pine.LNX.4.64N.0707111347360.26459@blysk.ds.pg.gda.pl>
+ <4694F4EB.8040000@lemote.com> <Pine.LNX.4.64N.0707111634430.26459@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.90.3/3635/Wed Jul 11 13:30:51 2007 on piorun.ds.pg.gda.pl
@@ -34,7 +35,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15710
+X-archive-position: 15711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,24 +43,38 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 11 Jul 2007, Ralf Baechle wrote:
+On Wed, 11 Jul 2007, Maciej W. Rozycki wrote:
 
-> How far do you trust this driver?  Unless the answer is "not as far as
-> I can throw a hardcopy of the code on marble" I suggest you feed this
+> > > You can still dispatch interrupts manually by examining the IRR register,
+> > > but having a way to ask the 8259A's prioritiser would be nice.  Although
+> > > given such a lethal erratum you report I would not count on the prioritiser
+> > > to provide any useful flexibility...
+> > >   
+> > yeah, that's a straight thought, tried but failed:(, patch followed.
+> 
+>  You may have to modify other functions from arch/mips/kernel/i8259.c; 
+> yes, this makes the whole experience not as pretty as one would hope...
 
- As much as I would trust myself to be coherent.  Is that a compatible 
-answer?
+ BTW, have you considered skipping the whole 8259A legacy burden and using 
+the interrupt mapper directly?  From a brief look at the datasheet I 
+conclude you should be able to OR all the interrupt lines to a single 
+8259A input (say IRQ0 for the sake of this consideration -- it does not 
+matter), set it to the level triggered mode, mask all the 8259A inputs but 
+this one and ignore the device from then on.
 
- Honestly I would not mind if somebody tested it with some real as opposed 
-to toy use.  SLIP or PPP would qualify; checking against a modem would be 
-a good idea too.
+ It would work as a "virtual wire", using the Intel's terminology, with 
+its INT output simply following its IR0 input.  You can type:
 
-> driver upstream ASAP such that Sibyte can finally become usable from
-> kernel.org.  I don't mind keeping this old driver in the lmo git tree
-> for another while.
+$ grep '8259A Virtual Wire' arch/i386/kernel/io_apic.c
 
- Except it is unlikely to work if build at all after the changes to the 
-headers anymore.  Though that could be trivially dealt with if somebody 
-really admires the old code (no, I am not going to do that).
+for a reference; ;-) you can skip the AEOI setup as in a system based on a 
+MIPS processor an INTA cycle will be unlikely to reach the 8259A by 
+accident (which may happen in the wild world of broken PCs) -- which you 
+have learnt the hard way by now already.
+
+ You can then dispatch interrupts based on the interrupt mapper registers 
+which has this nice side effect of much of the sharing having been 
+removed.  It will not work with edge-triggered interrupts, but you do not 
+need that 8254 timer, do you?
 
   Maciej

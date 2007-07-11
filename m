@@ -1,85 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 17:05:43 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:3345 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021649AbXGKQF3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jul 2007 17:05:29 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 3324CE1D03;
-	Wed, 11 Jul 2007 18:05:24 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 76E11tNp0PXn; Wed, 11 Jul 2007 18:05:23 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C8F9BE1C67;
-	Wed, 11 Jul 2007 18:05:23 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6BG5TYH019483;
-	Wed, 11 Jul 2007 18:05:29 +0200
-Date:	Wed, 11 Jul 2007 17:05:26 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-cc:	Songmao Tian <tiansm@lemote.com>,
-	LinuxBIOS Mailing List <linuxbios@linuxbios.org>,
-	marc.jones@amd.com, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: about cs5536 interrupt ack
-In-Reply-To: <4694FA7B.6030409@ru.mvista.com>
-Message-ID: <Pine.LNX.4.64N.0707111653130.26459@blysk.ds.pg.gda.pl>
-References: <4694A495.1050006@lemote.com> <Pine.LNX.4.64N.0707111347360.26459@blysk.ds.pg.gda.pl>
- <4694FA7B.6030409@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 17:08:44 +0100 (BST)
+Received: from smtp115.sbc.mail.sp1.yahoo.com ([69.147.64.88]:37040 "HELO
+	smtp115.sbc.mail.sp1.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20021638AbXGKQIm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jul 2007 17:08:42 +0100
+Received: (qmail 41655 invoked from network); 11 Jul 2007 16:08:35 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=pacbell.net;
+  h=Received:X-YMail-OSG:From:To:Subject:Date:User-Agent:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-Disposition:Message-Id;
+  b=WZAFku+W3BpFkdz6yAl06HX/yHDW+YXhje0nZILEbmQCgzDK2vTDwZUjhbza3wJ1zFsDIq9Gvhs5GEPNLDvyyhH9XYEgGiP+st6peKwhBIw6PX2p4A8obbmGE40wiVlIcsfS14SUCSiTlivhjEsYgUakRj0BHc3YYmrwEowFx98=  ;
+Received: from unknown (HELO ascent) (david-b@pacbell.net@69.226.213.6 with plain)
+  by smtp115.sbc.mail.sp1.yahoo.com with SMTP; 11 Jul 2007 16:08:33 -0000
+X-YMail-OSG: SmAZxiQVM1kiCRNGkisXdBsa1T5aUEyu7qVqCcWrjRi1SPKUBPeXk7nTnamOwUpbVZAboBTeww--
+From:	David Brownell <david-b@pacbell.net>
+To:	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 1/3] powerpc clk.h interface for platforms
+Date:	Wed, 11 Jul 2007 08:56:58 -0700
+User-Agent: KMail/1.9.6
+Cc:	Domen Puncer <domen.puncer@telargo.com>, linuxppc-dev@ozlabs.org,
+	Sylvain Munaut <tnt@246tnt.com>, linux-mips@linux-mips.org,
+	Russell King <rmk@arm.linux.org.uk>
+References: <20070711093113.GE4375@moe.telargo.com> <20070711093220.GF4375@moe.telargo.com> <20070711103640.GB15536@lst.de>
+In-Reply-To: <20070711103640.GB15536@lst.de>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.90.3/3635/Wed Jul 11 13:30:51 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200707110856.58463.david-b@pacbell.net>
+Return-Path: <david-b@pacbell.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15707
+X-archive-position: 15708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: david-b@pacbell.net
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-> > does it return if you write 0xc to the address 0x20 in the I/O port space
-> > and then read back from that location?  You should complain to the
-> > manufacturer -- they may be able to fix the problem in a later revision.
+On Wednesday 11 July 2007, Christoph Hellwig wrote:
+> On Wed, Jul 11, 2007 at 11:32:20AM +0200, Domen Puncer wrote:
+> > clk interface for arch/powerpc, platforms should fill
+> > clk_functions.
 > 
->    Haha, here's an excerpt form CS5535 spec. update:
+> Umm, this is about the fifth almost identical implementation of
+> the clk_ functions.  Please, please put it into common code.
 > 
-> 96. PIC does not support Polling mode
-> 
-> [...]
-> 
-> Implications: This mode is not normally used in x86 systems.
-> Resolution: None.
+> And talk to the mips folks which just got a similar comment from me.
 
- Yes, of course:
+You mean like a lib/clock.c core, rather than an opsvector?
 
-$ grep OCW3 arch/i386/kernel/*.c
-arch/i386/kernel/time.c:		outb(0x0c, PIC_MASTER_OCW3);
+ISTR that allowing custom platform-specific implementations
+was intended to be a feature.  But it's also true that some
+folks see lack of shared implementation code as a drawback;
+so I've CC'd Russell King (who originated the interface for
+ARM platforms).
 
-not at all, indeed!
-
-> > You can still dispatch interrupts manually by examining the IRR register,
-> > but having a way to ask the 8259A's prioritiser would be nice.  Although
-> > given such a lethal erratum you report I would not count on the prioritiser
-> > to provide any useful flexibility...
-> 
->    Why not? AMD just decided not to implement poll mode, that's all.
-
- If they have decided to skip such an "unimportant" bit of logic, they 
-could have skipped more, only providing support for the basic FNM 
-INT/INTA/EOI scheme -- the only one "architecturally" supported from the 
-original IBM PC on.  And indeed, a brief look at the datasheed reveals 
-they claim to have removed the SFNM too (which IMO provides a more 
-reasonable nesting resolution and should be the default for setups where 
-nesting is used, such as the environment as set up at the bootstrap by the 
-PC BIOS).
-
-  Maciej
+- Dave

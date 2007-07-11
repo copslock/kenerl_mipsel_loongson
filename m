@@ -1,51 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 17:16:56 +0100 (BST)
-Received: from verein.lst.de ([213.95.11.210]:13806 "EHLO mail.lst.de")
-	by ftp.linux-mips.org with ESMTP id S20021656AbXGKQQy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 17:16:54 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id l6BGGXNK004941
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Wed, 11 Jul 2007 18:16:33 +0200
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id l6BGGXRF004939;
-	Wed, 11 Jul 2007 18:16:33 +0200
-Date:	Wed, 11 Jul 2007 18:16:33 +0200
-From:	Christoph Hellwig <hch@lst.de>
-To:	David Brownell <david-b@pacbell.net>
-Cc:	Christoph Hellwig <hch@lst.de>,
-	Domen Puncer <domen.puncer@telargo.com>,
-	linuxppc-dev@ozlabs.org, Sylvain Munaut <tnt@246tnt.com>,
-	linux-mips@linux-mips.org, Russell King <rmk@arm.linux.org.uk>
-Subject: Re: [PATCH 1/3] powerpc clk.h interface for platforms
-Message-ID: <20070711161633.GA4846@lst.de>
-References: <20070711093113.GE4375@moe.telargo.com> <20070711093220.GF4375@moe.telargo.com> <20070711103640.GB15536@lst.de> <200707110856.58463.david-b@pacbell.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200707110856.58463.david-b@pacbell.net>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 17:20:09 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:7940 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021652AbXGKQUH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jul 2007 17:20:07 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 30CB0E1D02;
+	Wed, 11 Jul 2007 18:19:32 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id dWhZlsNfE5A5; Wed, 11 Jul 2007 18:19:31 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id BF6B8E1C67;
+	Wed, 11 Jul 2007 18:19:31 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6BGJcMU020867;
+	Wed, 11 Jul 2007 18:19:38 +0200
+Date:	Wed, 11 Jul 2007 17:19:36 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org, sibyte-users@bitmover.com,
+	Mark Mason <mason@broadcom.com>
+Subject: Re: [PATCH][CFT] Move SB1250 DUART support to the serial subsystem
+In-Reply-To: <20070711155021.GA26548@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0707111712100.26459@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0707111206200.26459@blysk.ds.pg.gda.pl>
+ <20070711155021.GA26548@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3635/Wed Jul 11 13:30:51 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15709
+X-archive-position: 15710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 11, 2007 at 08:56:58AM -0700, David Brownell wrote:
-> > Umm, this is about the fifth almost identical implementation of
-> > the clk_ functions.  Please, please put it into common code.
-> > 
-> > And talk to the mips folks which just got a similar comment from me.
-> 
-> You mean like a lib/clock.c core, rather than an opsvector?
+On Wed, 11 Jul 2007, Ralf Baechle wrote:
 
-I mean an ops vector and surrounding wrappers.  Every architecture
-is reimplementing their own dispatch table which is rather annoying.
+> How far do you trust this driver?  Unless the answer is "not as far as
+> I can throw a hardcopy of the code on marble" I suggest you feed this
 
-What would a lib/clock.c do?
+ As much as I would trust myself to be coherent.  Is that a compatible 
+answer?
+
+ Honestly I would not mind if somebody tested it with some real as opposed 
+to toy use.  SLIP or PPP would qualify; checking against a modem would be 
+a good idea too.
+
+> driver upstream ASAP such that Sibyte can finally become usable from
+> kernel.org.  I don't mind keeping this old driver in the lmo git tree
+> for another while.
+
+ Except it is unlikely to work if build at all after the changes to the 
+headers anymore.  Though that could be trivially dealt with if somebody 
+really admires the old code (no, I am not going to do that).
+
+  Maciej

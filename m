@@ -1,58 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jul 2007 19:08:08 +0100 (BST)
-Received: from static-72-72-73-123.bstnma.east.verizon.net ([72.72.73.123]:28681
-	"EHLO mail.sicortex.com") by ftp.linux-mips.org with ESMTP
-	id S20021852AbXGJSIG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Jul 2007 19:08:06 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by mail.sicortex.com (Postfix) with ESMTP id 3F56E208872
-	for <linux-mips@linux-mips.org>; Tue, 10 Jul 2007 14:08:00 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at sicortex.com
-Received: from mail.sicortex.com ([127.0.0.1])
-	by localhost (mail.sicortex.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id eb6EVzsxYNnN; Tue, 10 Jul 2007 14:07:59 -0400 (EDT)
-Received: from [10.0.1.104] (gs104.sicortex.com [10.0.1.104])
-	by mail.sicortex.com (Postfix) with ESMTP id 7D1DD201DBD;
-	Tue, 10 Jul 2007 14:07:59 -0400 (EDT)
-Message-ID: <4693CAFF.6000101@sicortex.com>
-Date:	Tue, 10 Jul 2007 14:07:59 -0400
-From:	Peter Watkins <pwatkins@sicortex.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050831)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-CC:	Peter Watkins <pwatkins@sicortex.com>
-Subject: start_secondary flushing remote icaches?
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 06:04:45 +0100 (BST)
+Received: from mo32.po.2iij.NET ([210.128.50.17]:17175 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022682AbXGKFEn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 06:04:43 +0100
+Received: by mo.po.2iij.net (mo32) id l6B53NEK055845; Wed, 11 Jul 2007 14:03:23 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox300) id l6B53LWt025159
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 11 Jul 2007 14:03:21 +0900
+Date:	Wed, 11 Jul 2007 14:03:21 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
+Subject: Re: [RFC] add to Category:Deprecated
+Message-Id: <20070711140321.2e5d1721.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20070706155955.GA28695@linux-mips.org>
+References: <200707060702.l6672Eq9011401@po-mbox300.hop.2iij.net>
+	<20070706115100.GB8551@linux-mips.org>
+	<20070705204922.GC24487@networkno.de>
+	<20070706141001.GA17737@linux-mips.org>
+	<20070706154559.GA20633@deprecation.cyrius.com>
+	<20070706155955.GA28695@linux-mips.org>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <pwatkins@sicortex.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15676
+X-archive-position: 15677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pwatkins@sicortex.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Greetings,
+Hi Ralf,
 
-I'm updating our port to 2.6.22 and I notice that r4k_flush_icache_range 
-no longer has a check for irqs_disabled (to force local-only flush).
+On Fri, 6 Jul 2007 16:59:55 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-This hits the BUG_ON(!cpu_online(cpu)) assertion in smp_call_function 
-since cpu's aren't marked online until after start_secondary:
+> On Fri, Jul 06, 2007 at 05:46:00PM +0200, Martin Michlmayr wrote:
+> 
+> > Yeah, that's probably a good summary.
+> 
+> Not even Flo objects.  Consider it dead.
 
-Call Trace:
-[<ffffffff8010d394>] smp_call_function+0x84/0x1f0
-[<ffffffff8011dec0>] r4k_flush_icache_range+0x28/0x48
-[<ffffffff80434a4c>] r4k_cache_init+0x6dc/0x1070
-[<ffffffff8042fca0>] per_cpu_trap_init+0x180/0x288
-[<ffffffff804304b4>] start_secondary+0x24/0x118
-[<ffffffff80101c40>] prom_smp_bootstrap+0x10/0x50
+Do you have any comment for Momentum Ocelot?
 
-So, the question is, how should the remote icache flush be avoided in 
-this case?
+It seems to be not maintained for one year or more.
+Moreover, the Ocelot PCI support has been broken.
 
--p
+Yoichi

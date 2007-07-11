@@ -1,119 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 16:40:54 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:42341 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20021517AbXGKPkw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 16:40:52 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 4AEFC3EC9; Wed, 11 Jul 2007 08:40:49 -0700 (PDT)
-Message-ID: <4694FA7B.6030409@ru.mvista.com>
-Date:	Wed, 11 Jul 2007 19:42:51 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Songmao Tian <tiansm@lemote.com>,
-	LinuxBIOS Mailing List <linuxbios@linuxbios.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 16:49:08 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:15109 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021598AbXGKPtG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jul 2007 16:49:06 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 991A6E1D03;
+	Wed, 11 Jul 2007 17:48:31 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Fa3Xsp9VAZqh; Wed, 11 Jul 2007 17:48:31 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 51549E1C67;
+	Wed, 11 Jul 2007 17:48:31 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6BFmcQa017508;
+	Wed, 11 Jul 2007 17:48:38 +0200
+Date:	Wed, 11 Jul 2007 16:48:35 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Songmao Tian <tiansm@lemote.com>
+cc:	LinuxBIOS Mailing List <linuxbios@linuxbios.org>,
 	marc.jones@amd.com, linux-kernel@vger.kernel.org,
 	linux-mips@linux-mips.org
 Subject: Re: about cs5536 interrupt ack
+In-Reply-To: <4694F4EB.8040000@lemote.com>
+Message-ID: <Pine.LNX.4.64N.0707111634430.26459@blysk.ds.pg.gda.pl>
 References: <4694A495.1050006@lemote.com> <Pine.LNX.4.64N.0707111347360.26459@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0707111347360.26459@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+ <4694F4EB.8040000@lemote.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3635/Wed Jul 11 13:30:51 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15701
+X-archive-position: 15702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Wed, 11 Jul 2007, Songmao Tian wrote:
 
-Maciej W. Rozycki wrote:
+> > Huh?  Have you managed to find an 8259A clone *that* broken?  So what does
+> > it return if you write 0xc to the address 0x20 in the I/O port space and
+> > then read back from that location?  You should complain to the 
+> >   
+> 
+> It's the value of IRR, so guess IRR. AMD has well documented cs5536, I
+> appreciate that.
 
->>"Control Logic
->>The INT output goes directly to the CPU interrupt input.
->>When an INT signal is activated, the CPU responds with an
->>Interrupt Acknowledge access that is translated to two
->>pulses on the INTA input of the PIC. At the first INTA pulse,
->>the highest priority IRR bit is loaded into the corresponding
->>ISR bit, and that IRR bit is reset. The second INTA pulse
->>instructs the PIC to present the 8-bit vector of the interrupt
->>handler onto the data bus."
+ Indeed.  I am surprised they have decided to drop the poll command -- it 
+surely does not require much logic as it mostly reuses what's used to 
+produce the vector anyway and it is commonly used when 8259A 
+implementations are interfaced to non-i386 processors.  PPC is another 
+example.
 
->>Is it the responsibility of north bridge to reponse to intr with a PCI
->>Interrupt Ack cycle?
+> > More or less -- 3-5 should probably be the outcome of a single read
+> > transaction from the north bridge.  I.e. you issue a read to a "magic"
+> > location, 3-5 happen, and the data value returned is the vector presented by
+> > the interrupt controller on the PCI bus.
+> >   
+> yeah, we can implement a register in north bridge.
 
->  With an i386 system such a pair of INTA cycles would be generated by the 
-> CPU itself and translated by the north bridge to a PCI Interrupt 
-> Acknowledge cycle (see the PCI spec for a more elaborate description).
+ Strictly speaking it would not be a register, but a "PCI INTA address 
+space" much like PCI memory or I/O port address spaces.  Though as the 
+former ignores addresses driven on the bus, the space occupied does not 
+have to be extensive -- I would assume whatever slot size is available 
+with the address decoder you have implemented would do.
 
->  If the CPU does not generate INTA cycles, it is a common practice to let 
-> it ask the north bridge for a PCI Interrupt Acknowledge in some other way, 
-> typically by issuing a read cycle that returns the vector reported by the 
-> interrupt controller.
+> > You can still dispatch interrupts manually by examining the IRR register,
+> > but having a way to ask the 8259A's prioritiser would be nice.  Although
+> > given such a lethal erratum you report I would not count on the prioritiser
+> > to provide any useful flexibility...
+> >   
+> yeah, that's a straight thought, tried but failed:(, patch followed.
 
->>it's a problem that my northbridge didn't implement that! Fortunately we use a
->>fpga as a northbridge.
+ You may have to modify other functions from arch/mips/kernel/i8259.c; 
+yes, this makes the whole experience not as pretty as one would hope...
 
->>it seem it's no way to fix this by software, for OCW3 didn't implemnt Poll
->>command:(
-
->  Huh?  Have you managed to find an 8259A clone *that* broken?  So what 
-
-    It's not such a problem, believe me. ;-)
-    Some PPC boards use such clones -- you can see the comment in 
-arch/powerpc/sysdev/i8259.c.
-
-> does it return if you write 0xc to the address 0x20 in the I/O port space 
-> and then read back from that location?  You should complain to the 
-> manufacturer -- they may be able to fix the problem in a later revision.
-
-    Haha, here's an excerpt form CS5535 spec. update:
-
-96. PIC does not support Polling mode
-
-[...]
-
-Implications: This mode is not normally used in x86 systems.
-Resolution: None.
-
->>so I guess the the process is:
->>1) 8259 receive a int, a bit irr got set.
->>2) 8259 assert intr.
->>3) northbrige generate a int ack cycle.
->>4) cs5536 translate the ack into two INTA pulse, and the reponse northbridge
->>with a interrupt vector.
->>5) then my program can get the vector from northbridge?
-
->>Is that right?
-
-    Indeed, this would seem right but one step skipped -- where CPU tells 
-northbridge that it's accepted an interrupt (via INTA).
-
->  More or less -- 3-5 should probably be the outcome of a single read 
-> transaction from the north bridge.  I.e. you issue a read to a "magic" 
-> location, 3-5 happen, and the data value returned is the vector presented 
-> by the interrupt controller on the PCI bus.
-
-    Yeah, another way of doing the missed step.
-
->>Without int ack, generic linux-mips 8259 code can't work.
-
->  You can still dispatch interrupts manually by examining the IRR register, 
-> but having a way to ask the 8259A's prioritiser would be nice.  Although 
-> given such a lethal erratum you report I would not count on the 
-> prioritiser to provide any useful flexibility...
-
-    Why not? AMD just decided not to implement poll mode, that's all.
-
->   Maciej
-
-WBR, Sergei
+  Maciej

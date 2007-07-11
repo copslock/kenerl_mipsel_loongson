@@ -1,45 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 11:36:44 +0100 (BST)
-Received: from verein.lst.de ([213.95.11.210]:60620 "EHLO mail.lst.de")
-	by ftp.linux-mips.org with ESMTP id S20022997AbXGKKgm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 11:36:42 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id l6BAafNK015950
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Wed, 11 Jul 2007 12:36:41 +0200
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id l6BAae1g015948;
-	Wed, 11 Jul 2007 12:36:40 +0200
-Date:	Wed, 11 Jul 2007 12:36:40 +0200
-From:	Christoph Hellwig <hch@lst.de>
-To:	Domen Puncer <domen.puncer@telargo.com>
-Cc:	linuxppc-dev@ozlabs.org, David Brownell <david-b@pacbell.net>,
-	Sylvain Munaut <tnt@246tNt.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3] powerpc clk.h interface for platforms
-Message-ID: <20070711103640.GB15536@lst.de>
-References: <20070711093113.GE4375@moe.telargo.com> <20070711093220.GF4375@moe.telargo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070711093220.GF4375@moe.telargo.com>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 11:59:04 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:63370 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20022978AbXGKK7C (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 11:59:02 +0100
+Received: (qmail 18939 invoked by uid 511); 11 Jul 2007 11:02:51 -0000
+Received: from unknown (HELO ?192.168.2.233?) (192.168.2.233)
+  by lemote.com with SMTP; 11 Jul 2007 11:02:51 -0000
+Message-ID: <4694B7E1.2010009@lemote.com>
+Date:	Wed, 11 Jul 2007 18:58:41 +0800
+From:	Songmao Tian <tiansm@lemote.com>
+User-Agent: Icedove 1.5.0.8 (X11/20061116)
+MIME-Version: 1.0
+To:	Songmao Tian <tiansm@lemote.com>, linux-mips@linux-mips.org
+Subject: Re: about cs5536 interrupt ack
+References: <4694A495.1050006@lemote.com>
+In-Reply-To: <4694A495.1050006@lemote.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <tiansm@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15686
+X-archive-position: 15687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: tiansm@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 11, 2007 at 11:32:20AM +0200, Domen Puncer wrote:
-> clk interface for arch/powerpc, platforms should fill
-> clk_functions.
+Songmao Tian wrote:
+> Hi,
+>    I am trying to use a mips cpu the cs5536. I have some problem with 
+> the 8259 of cs5536.  The  databook said,
 
-Umm, this is about the fifth almost identical implementation of
-the clk_ functions.  Please, please put it into common code.
+cs5536 is a south bridge, cpu, of couse, is loongson:)
 
-And talk to the mips folks which just got a similar comment from me.
+>
+> "Control Logic
+> The INT output goes directly to the CPU interrupt input.
+> When an INT signal is activated, the CPU responds with an
+> Interrupt Acknowledge access that is translated to two
+> pulses on the INTA input of the PIC. At the first INTA pulse,
+> the highest priority IRR bit is loaded into the corresponding
+> ISR bit, and that IRR bit is reset. The second INTA pulse
+> instructs the PIC to present the 8-bit vector of the interrupt
+> handler onto the data bus."
+>
+> Is it the responsibility of north bridge to reponse to intr with a PCI 
+> Interrupt Ack cycle?
+> it's a problem that my northbridge didn't implement that! Fortunately 
+> we use a fpga as a northbridge.
+>
+> it seem it's no way to fix this by software, for OCW3 didn't implemnt 
+> Poll command:(
+>
+> so I guess the the process is:
+> 1) 8259 receive a int, a bit irr got set.
+> 2) 8259 assert intr.
+> 3) northbrige generate a int ack cycle.
+> 4) cs5536 translate the ack into two INTA pulse, and the reponse 
+> northbridge with a interrupt vector.
+> 5) then my program can get the vector from northbridge?
+>
+> Is that right?
+>
+> Without int ack, generic linux-mips 8259 code can't work.
+>
+> Greetings,
+> Tian
+>
+>
+>
+>
+>
+>

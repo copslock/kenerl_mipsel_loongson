@@ -1,66 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 15:53:33 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:59849 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021506AbXGKOxb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 15:53:31 +0100
-Received: from localhost (p7242-ipad32funabasi.chiba.ocn.ne.jp [221.189.139.242])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 32602A96E; Wed, 11 Jul 2007 23:53:26 +0900 (JST)
-Date:	Wed, 11 Jul 2007 23:54:20 +0900 (JST)
-Message-Id: <20070711.235420.18311683.anemo@mba.ocn.ne.jp>
-To:	macro@linux-mips.org
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] Workaround for a sparse warning in
- include/asm-mips/io.h
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.64N.0707111516250.26459@blysk.ds.pg.gda.pl>
-References: <20070711.231200.05599385.anemo@mba.ocn.ne.jp>
-	<Pine.LNX.4.64N.0707111516250.26459@blysk.ds.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 16:07:33 +0100 (BST)
+Received: from mu-out-0910.google.com ([209.85.134.191]:50738 "EHLO
+	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021496AbXGKPHb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jul 2007 16:07:31 +0100
+Received: by mu-out-0910.google.com with SMTP id w1so1402563mue
+        for <linux-mips@linux-mips.org>; Wed, 11 Jul 2007 08:07:19 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=K9wte67JQWPGLUzRGJp8tgm+E5LXLmFdGHIHQLjSTBqGt3il8QJ9QPv4ReQB1GyLk9h5P8Ylw21AvZB0ignZikcJipn+5z/fu9b1AYDC0U1plDwSKrrBLKp4xoRNOZjUZfALZssGwJNpREOW9E2Uz2tgQ7Rb2Wx1sbjRsConegk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=oGLq2k3xmj2n0ywxA8hDYcoLJmRhUX0lLspZtyI3GbCgTtPCaUpAhlIumx57tEaaBItwj3PXf9/XfmuRy326S/36FLrl1qHFXw9Xcnb2od0SFyRzUg9kWUB0QHXh5cYmKVIjfmvQdLauq523jX/DEs3c9YCmAVzu11edYEOEnpA=
+Received: by 10.82.183.19 with SMTP id g19mr11023452buf.1184166439092;
+        Wed, 11 Jul 2007 08:07:19 -0700 (PDT)
+Received: by 10.82.185.8 with HTTP; Wed, 11 Jul 2007 08:07:19 -0700 (PDT)
+Message-ID: <40378e40707110807n2cd32c68tdb8604c5d39e72a6@mail.gmail.com>
+Date:	Wed, 11 Jul 2007 17:07:19 +0200
+From:	"Mohamed Bamakhrama" <bamakhrama@gmail.com>
+Reply-To: bamakhrama@gmail.com
+To:	linux-mips@linux-mips.org
+Subject: Porting SMP kernel into a dual-core MIPS architecture
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+Return-Path: <bamakhrama@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15694
+X-archive-position: 15695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: bamakhrama@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 11 Jul 2007 15:28:19 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
->  It looks like a bug in sparse.  The result of CKSEG1ADDR() has the same 
-> size as the pointer.  Perhaps we could append 'L' to the expansion of 
-> KSEG1 et al, but that should not really matter.
+Hi all,
+Is there any guidelines/tutorial for porting the SMP kernel into a
+dual core new architecture based on MIPS32?
+AFAIK, in the x86 world we have Intel MPS 1.4 standard. I wonder if
+there exists a similar thing for MIPS. In other words, what are the
+minimum requirements needed to port the SMP kernel into such an
+architecture?
 
-Yes, adding 'L' to KSEG1 is another way to silence the warnings.  But
-I just thought it was a bit intrusive.  And I'm not sure all code are
-OK if KSEG1 is 'signed' ...
+Thanks a lot in advance.
 
->  But -- I have just checked two example calls to this function, one with a 
-> 32-bit configuration and another one with a 64-bit one and sparse did not 
-> complain.  The cpp expansions of the expression in question are:
-> 
-> return (void *)((((int)(int)(phys_addr)) & 0x1fffffff) | 0xa0000000);
-> 
-> and:
-> 
-> return (void *)((((long int)(int)(phys_addr)) & 0x1fffffff) | 0xffffffffa0000000L);
-> 
-> respectively, so your cast is definitely redundant in these cases.  What 
-> sort of configuration are you using?  What's the preprocessor output for 
-> the problematic case?
+Best Regards,
 
-I see the warnings on 32-bit qemu kernel.  drivers/serial/8250.c,
-lib/devres.c, etc.
-
-I think sparse complains on casting to "void __iomem *" from "int".
-It looks sparse accepts casting from "long".
-
----
-Atsushi Nemoto
+-- 
+Mohamed A. Bamakhrama

@@ -1,90 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 21:38:56 +0100 (BST)
-Received: from caramon.arm.linux.org.uk ([217.147.92.249]:34777 "EHLO
-	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20021808AbXGKUiy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jul 2007 21:38:54 +0100
-Received: from flint.arm.linux.org.uk ([2002:d993:5cf9:1:201:2ff:fe14:8fad])
-	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.62)
-	(envelope-from <rmk@arm.linux.org.uk>)
-	id 1I8itl-0003Z8-Hg; Wed, 11 Jul 2007 21:34:58 +0100
-Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.62)
-	(envelope-from <rmk@flint.arm.linux.org.uk>)
-	id 1I8itj-0002hs-Gr; Wed, 11 Jul 2007 21:34:55 +0100
-Date:	Wed, 11 Jul 2007 21:34:54 +0100
-From:	Russell King <rmk@arm.linux.org.uk>
-To:	David Brownell <david-b@pacbell.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 21:53:55 +0100 (BST)
+Received: from smtp116.sbc.mail.sp1.yahoo.com ([69.147.64.89]:16540 "HELO
+	smtp116.sbc.mail.sp1.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20021858AbXGKUxx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jul 2007 21:53:53 +0100
+Received: (qmail 87579 invoked from network); 11 Jul 2007 20:52:46 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=pacbell.net;
+  h=Received:X-YMail-OSG:From:To:Subject:Date:User-Agent:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-Disposition:Message-Id;
+  b=i7PohNNclTU3aj+uL4neYh2KqCs1/wtok5YY/30haXgJbw4RaDuws9J3hwasYdovKZ0kcNPwC2Z0/xB/s8mRMD7onuj1xM3SSydY2Vm7+S+/KJE8UQpHeV362dX1+JnqNYHWqJ5lYXVUxX4pzX5iyWC4TvmvKvE+4a7laAaxSNQ=  ;
+Received: from unknown (HELO ascent) (david-b@pacbell.net@69.226.213.6 with plain)
+  by smtp116.sbc.mail.sp1.yahoo.com with SMTP; 11 Jul 2007 20:52:45 -0000
+X-YMail-OSG: Db0ehBAVM1me69JoW8VtzC737jYNC7Gx08FOmjjxSrDRthmOrVP2Nsd..83AiIPB66mIoC6r_A--
+From:	David Brownell <david-b@pacbell.net>
+To:	Russell King <rmk@arm.linux.org.uk>
+Subject: Re: [PATCH 1/3] powerpc clk.h interface for platforms
+Date:	Wed, 11 Jul 2007 13:52:43 -0700
+User-Agent: KMail/1.9.6
 Cc:	Christoph Hellwig <hch@lst.de>,
 	Domen Puncer <domen.puncer@telargo.com>,
 	linuxppc-dev@ozlabs.org, Sylvain Munaut <tnt@246tnt.com>,
 	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3] powerpc clk.h interface for platforms
-Message-ID: <20070711203454.GC2301@flint.arm.linux.org.uk>
-References: <20070711093113.GE4375@moe.telargo.com> <200707110856.58463.david-b@pacbell.net> <20070711161633.GA4846@lst.de> <200707111002.55119.david-b@pacbell.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+References: <20070711093113.GE4375@moe.telargo.com> <200707111002.55119.david-b@pacbell.net> <20070711203454.GC2301@flint.arm.linux.org.uk>
+In-Reply-To: <20070711203454.GC2301@flint.arm.linux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <200707111002.55119.david-b@pacbell.net>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
+Message-Id: <200707111352.44135.david-b@pacbell.net>
+Return-Path: <david-b@pacbell.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15715
+X-archive-position: 15716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmk@arm.linux.org.uk
+X-original-sender: david-b@pacbell.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 11, 2007 at 10:02:54AM -0700, David Brownell wrote:
-> On Wednesday 11 July 2007, Christoph Hellwig wrote:
-> > On Wed, Jul 11, 2007 at 08:56:58AM -0700, David Brownell wrote:
-> > > > Umm, this is about the fifth almost identical implementation of
-> > > > the clk_ functions.  Please, please put it into common code.
-> > > > 
-> > > > And talk to the mips folks which just got a similar comment from me.
-> > > 
-> > > You mean like a lib/clock.c core, rather than an opsvector?
-> > 
-> > I mean an ops vector and surrounding wrappers.  Every architecture
-> > is reimplementing their own dispatch table which is rather annoying.
+On Wednesday 11 July 2007, Russell King wrote:
 > 
-> ARM doesn't.  :)
-> 
-> But then, nobody expects one kernel to support more than one
-> vendor's ARM chips; or usually, more than one generation of
-> that vendor's chips.  So any dispatch table is specific to
-> a given platform, and tuned to its quirks.  Not much to share
-> between OMAP and AT91, for example, except in some cases maybe
-> an arm926ejs block.
+> IOW, talk to me and I'll talk back.  Ignore me and I'll ignore them.
 
-And also the information stored within a 'struct clk' is very platform
-dependent.  In the most basic situation, 'struct clk' may not actually
-be a structure, but the clock rate.  All functions with the exception of
-clk_get() and clk_get_rate() could well be no-ops, clk_get() just returns
-the 'struct clk' representing the rate and 'clk_get_rate' returns that
-as an integer.
+Exactly why I cc'd you ... if folk want any more sharable
+cross-platform code than just the clk.h interface, I expect
+you'll have useful comments.
 
-More complex setups might want 'struct clk' to contain the address of a
-clock enable register, the bit position to enable that clock source, the
-clock rate, a refcount, and so on, all of which would be utterly useless
-for a platform which had fixed rate clocks.
-
-> I've not seen a solid proposal for such a thing, and it's not
-> clear to me how that would play with with older code (e.g. any
-> of the ARM implementations).
-
-If people are implementing their own incompatible changes without reference
-to the API they're invalid implementations as far as I'm concerned.  If
-they can't bothered to lift a finger to even _talk_ to me about their
-requirements they just don't have any say concerning any future
-developments IMO.
-
-IOW, talk to me and I'll talk back.  Ignore me and I'll ignore them.
-
--- 
-Russell King
- Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
- maintainer of:
+- Dave

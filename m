@@ -1,49 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 16:56:07 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:6866 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021479AbXGKP4F (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 16:56:05 +0100
-Received: from localhost (p7242-ipad32funabasi.chiba.ocn.ne.jp [221.189.139.242])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 087C5BE1D; Thu, 12 Jul 2007 00:54:46 +0900 (JST)
-Date:	Thu, 12 Jul 2007 00:55:40 +0900 (JST)
-Message-Id: <20070712.005540.78730346.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Include cacheflush.h in uncache.c
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 16:57:47 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:57224 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021596AbXGKP5p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jul 2007 16:57:45 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6BFgoko026604;
+	Wed, 11 Jul 2007 16:42:51 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6BFgoDj026603;
+	Wed, 11 Jul 2007 16:42:50 +0100
+Date:	Wed, 11 Jul 2007 16:42:50 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Mohamed Bamakhrama <bamakhrama@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Porting SMP kernel into a dual-core MIPS architecture
+Message-ID: <20070711154250.GA25553@linux-mips.org>
+References: <40378e40707110807n2cd32c68tdb8604c5d39e72a6@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <40378e40707110807n2cd32c68tdb8604c5d39e72a6@mail.gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15704
+X-archive-position: 15705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This fixes this sparse warning:
+On Wed, Jul 11, 2007 at 05:07:19PM +0200, Mohamed Bamakhrama wrote:
 
-arch/mips/lib/uncached.c:38:22: warning: symbol 'run_uncached' was not declared. Should it be static?
+> Is there any guidelines/tutorial for porting the SMP kernel into a
+> dual core new architecture based on MIPS32?
+> AFAIK, in the x86 world we have Intel MPS 1.4 standard. I wonder if
+> there exists a similar thing for MIPS. In other words, what are the
+> minimum requirements needed to port the SMP kernel into such an
+> architecture?
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/lib/uncached.c b/arch/mips/lib/uncached.c
-index 2388f7f..58d14f4 100644
---- a/arch/mips/lib/uncached.c
-+++ b/arch/mips/lib/uncached.c
-@@ -12,6 +12,7 @@
- 
- #include <asm/addrspace.h>
- #include <asm/bug.h>
-+#include <asm/cacheflush.h>
- 
- #ifndef CKSEG2
- #define CKSEG2 CKSSEG
+The MIPS Architecture definition defines the behaviour of the processor
+in great detail.  It doesn't define the system level or firmware.  I
+suggest you download the architecture manual from www.mips.com and if
+that leaves any questions open, post again.
+
+  Ralf

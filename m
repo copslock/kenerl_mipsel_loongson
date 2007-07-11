@@ -1,43 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 10:59:46 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:42687 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022964AbXGKJ7U (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jul 2007 10:59:20 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6B9iOeV014070;
-	Wed, 11 Jul 2007 10:44:30 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6ANKpba023404;
-	Wed, 11 Jul 2007 00:20:51 +0100
-Date:	Wed, 11 Jul 2007 00:20:51 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] DEC: Fix modpost warning.
-Message-ID: <20070710232051.GA17288@linux-mips.org>
-References: <S20022577AbXGJLug/20070710115036Z+13637@ftp.linux-mips.org> <Pine.LNX.4.64N.0707101401001.18036@blysk.ds.pg.gda.pl> <20070710130409.GA14723@linux-mips.org> <Pine.LNX.4.64N.0707101524490.18036@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jul 2007 11:36:44 +0100 (BST)
+Received: from verein.lst.de ([213.95.11.210]:60620 "EHLO mail.lst.de")
+	by ftp.linux-mips.org with ESMTP id S20022997AbXGKKgm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jul 2007 11:36:42 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id l6BAafNK015950
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Wed, 11 Jul 2007 12:36:41 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id l6BAae1g015948;
+	Wed, 11 Jul 2007 12:36:40 +0200
+Date:	Wed, 11 Jul 2007 12:36:40 +0200
+From:	Christoph Hellwig <hch@lst.de>
+To:	Domen Puncer <domen.puncer@telargo.com>
+Cc:	linuxppc-dev@ozlabs.org, David Brownell <david-b@pacbell.net>,
+	Sylvain Munaut <tnt@246tNt.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/3] powerpc clk.h interface for platforms
+Message-ID: <20070711103640.GB15536@lst.de>
+References: <20070711093113.GE4375@moe.telargo.com> <20070711093220.GF4375@moe.telargo.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0707101524490.18036@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20070711093220.GF4375@moe.telargo.com>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15685
+X-archive-position: 15686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 10, 2007 at 03:37:30PM +0100, Maciej W. Rozycki wrote:
+On Wed, Jul 11, 2007 at 11:32:20AM +0200, Domen Puncer wrote:
+> clk interface for arch/powerpc, platforms should fill
+> clk_functions.
 
-> satisfy a debugging tool.  Which is a very useful one, no doubt, but 
-> please do not forget about the common sense.
+Umm, this is about the fifth almost identical implementation of
+the clk_ functions.  Please, please put it into common code.
 
-As usual common sense is prefered with patches attached ;-)
-
-  Ralf
+And talk to the mips folks which just got a similar comment from me.

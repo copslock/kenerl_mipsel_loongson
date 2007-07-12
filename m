@@ -1,83 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 17:14:42 +0100 (BST)
-Received: from mu-out-0910.google.com ([209.85.134.187]:62857 "EHLO
-	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022563AbXGLQOk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jul 2007 17:14:40 +0100
-Received: by mu-out-0910.google.com with SMTP id w1so205571mue
-        for <linux-mips@linux-mips.org>; Thu, 12 Jul 2007 09:14:29 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Zvas0NVNKQCHAfgQHI0flCoZku2zr5S82rD6FP1IJZjBg6qCgIJ8xWi/XMCGIB3Ib45HFWWOo4veO4tzCLZWzLCPw0mZI9k45fQMdsPvQNR2IlAXEKJ1oXk1R9heLu1U84huDUH6AGGeBXnmgYJqPGz8u+T9d/q3UEh/qEk5XUE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=R7hy2VVnvbfXMY4KnsP/A7/p3llvX52ElR97g7L5xca6o7ENJQbxxsEVI/0rCMFuSpc++fRbcGVXPR9krIRiA4j6fYBNQjxFK5S4x9bqqREWi/qqWZvd72IXW6lX492y7XoZROuEpZeiV/PblP9XP/R13nX7ngxOFZKvgAQnd+I=
-Received: by 10.82.170.2 with SMTP id s2mr752971bue.1184256869324;
-        Thu, 12 Jul 2007 09:14:29 -0700 (PDT)
-Received: by 10.82.185.8 with HTTP; Thu, 12 Jul 2007 09:14:29 -0700 (PDT)
-Message-ID: <40378e40707120914i623809che646d79c03c6439@mail.gmail.com>
-Date:	Thu, 12 Jul 2007 18:14:29 +0200
-From:	"Mohamed Bamakhrama" <bamakhrama@gmail.com>
-Reply-To: bamakhrama@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 17:15:36 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:40176 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022465AbXGLQPe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Jul 2007 17:15:34 +0100
+Received: from localhost (p7217-ipad201funabasi.chiba.ocn.ne.jp [222.146.70.217])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 0457BB570; Fri, 13 Jul 2007 01:15:31 +0900 (JST)
+Date:	Fri, 13 Jul 2007 01:16:25 +0900 (JST)
+Message-Id: <20070713.011625.37531838.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: CACHE instruction on MIPS32 24KE
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix gcc warning in arch/mips/pci/pci.c
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <bamakhrama@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15737
+X-archive-position: 15738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bamakhrama@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi list,
-I have one question regarding the cache instruction. In the MIPS32
-24KE software user's manual (page 317), it mentions that it is
-possible to perform "fetch & lock" operation on a given cache line.
-I am developing a driver for 2.4.31 kernel and I want to be able to
-lock some "hot spots" inside the instruction cache to maximize the
-throughput. Nevertheless, the manual states that if all the 4-ways of
-the cache set were locked, then the core will just replace one of
-them. So theoretically, the core should overwrite one of the ways in
-case of the first collision and then use that overwritten line for
-subsequent collisions. What I observe in my program is different. The
-# of I$ misses is the same. I tried to move the locking code around
-and when I did it just before the basic block I got an improvement of
-20% only!!
-My questions are:
-1) Is there any parts in the kernel which unlocks the I$ lines under
-some circumstances?
-2) Is there anyone who worked with the cache instruction under MIPS
-before and have any ideas about this behaviour?
+Now pcibios_map_irq() takes a const pointer.  Cast it to adapt
+pci_fixup_irqs().
 
-Here is the macro used for cache locking:
-
-
-***** BEGIN CODE *****
-
-#define	LOCK_IN_CACHE(address, lines)	\
-	asm volatile (	".set	mips32 \n"	\
-			".set	noreorder \n"	\
-			"lock_me_" #address ": \n"	\
-			"	cache	0x1C, 0x00(%0) \n"	\
-			"	addiu	%z0, %z0, 0x20 \n"	\
-			"	sub	%z1, %z1, %z3  \n"	\
-			"	bgez	%z1, lock_me_" #address " \n" 	\
-			".set	mips0 \n"	\
-			: : "Jr" (&address),	\
-			"Jr" (lines), "Jr" (0), "Jr" (1));
-
-***** END CODE *****
-
-Best Regards,
-
--- 
-Mohamed
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index 67e01fd..ecfb144 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -160,7 +160,8 @@ static int __init pcibios_init(void)
+ 
+ 	if (!pci_probe_only)
+ 		pci_assign_unassigned_resources();
+-	pci_fixup_irqs(common_swizzle, pcibios_map_irq);
++	pci_fixup_irqs(common_swizzle,
++		       (int (*)(struct pci_dev *, u8, u8))pcibios_map_irq);
+ 
+ 	if ((dev = pci_get_class(PCI_CLASS_BRIDGE_EISA << 8, NULL)) != NULL ||
+ 	    (dev = pci_get_class(PCI_CLASS_BRIDGE_ISA << 8, NULL)) != NULL) {

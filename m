@@ -1,95 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 20:10:26 +0100 (BST)
-Received: from mra05.ch.as12513.net ([82.153.254.73]:42705 "EHLO
-	mra05.ch.as12513.net") by ftp.linux-mips.org with ESMTP
-	id S20022673AbXGLTKX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jul 2007 20:10:23 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by mra05.ch.as12513.net (Postfix) with ESMTP id 40234C4661;
-	Thu, 12 Jul 2007 20:10:18 +0100 (BST)
-Received: from mra05.ch.as12513.net ([127.0.0.1])
- by localhost (mra05.ch.as12513.net [127.0.0.1]) (amavisd-new, port 10024)
- with LMTP id 16058-01-32; Thu, 12 Jul 2007 20:10:17 +0100 (BST)
-Received: from mcrowe.com (deneb.mcrowe.com [82.152.148.4])
-	by mra05.ch.as12513.net (Postfix) with ESMTP id 8C354C46AE;
-	Thu, 12 Jul 2007 20:10:17 +0100 (BST)
-Received: from mac by mcrowe.com with local (Exim 4.63)
-	(envelope-from <mac@mcrowe.com>)
-	id 1I943L-0001Xh-8U; Thu, 12 Jul 2007 20:10:15 +0100
-Date:	Thu, 12 Jul 2007 20:10:15 +0100
-From:	Mike Crowe <mac@mcrowe.com>
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Strange gp corruption problem
-Message-ID: <20070712191015.GA5167@mcrowe.com>
-References: <20070712170624.GA31776@mcrowe.com> <20070712172152.GC30622@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 20:15:39 +0100 (BST)
+Received: from smtp-out4.blueyonder.co.uk ([195.188.213.7]:1940 "EHLO
+	smtp-out4.blueyonder.co.uk") by ftp.linux-mips.org with ESMTP
+	id S20022692AbXGLTPh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jul 2007 20:15:37 +0100
+Received: from [172.23.170.145] (helo=anti-virus03-08)
+	by smtp-out4.blueyonder.co.uk with smtp (Exim 4.52)
+	id 1I948I-0003rM-5k; Thu, 12 Jul 2007 20:15:22 +0100
+Received: from [80.192.9.150] (helo=[192.168.0.12])
+	by asmtp-out2.blueyonder.co.uk with esmtp (Exim 4.52)
+	id 1I948F-0005rP-D3; Thu, 12 Jul 2007 20:15:21 +0100
+From:	Alistair John Strachan <alistair@devzero.co.uk>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH] sb1250-duart.c: SB1250 DUART serial support
+Date:	Thu, 12 Jul 2007 20:15:11 +0100
+User-Agent: KMail/1.9.7
+Cc:	Andy Whitcroft <apw@shadowen.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Mark Mason <mason@broadcom.com>,
+	Randy Dunlap <rdunlap@xenotime.net>,
+	Joel Schopp <jschopp@austin.ibm.com>,
+	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+References: <Pine.LNX.4.64N.0707121745010.3029@blysk.ds.pg.gda.pl> <469669F5.6070906@shadowen.org> <Pine.LNX.4.64N.0707121904211.3029@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0707121904211.3029@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20070712172152.GC30622@networkno.de>
-X-url:	http://www.mcrowe.com/
-User-Agent: Mutt/1.5.13 (2006-08-11)
-X-Virus-Scanned: by Eclipse VIRUSshield at eclipse.net.uk
-Return-Path: <mac@mcrowe.com>
+Message-Id: <200707122015.12078.alistair@devzero.co.uk>
+Return-Path: <alistair@devzero.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15755
+X-archive-position: 15756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mac@mcrowe.com
+X-original-sender: alistair@devzero.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-I wrote:
->> We have a function that does some string manipulation (not
->> particularly dangerous manipulation and I've been through it
->> carefully) and then calls atol. As expected the prologue of this
->> function calculates the value of the gp register by applying an offset
->> to the t9 register which contains the address of the start of the
->> function like this:
->> 
->>  47995c:       3c1c0fba        lui     gp,0xfba
- 
-On Thu, Jul 12, 2007 at 06:21:52PM +0100, Thiemo Seufer wrote:
-> Looks weird as an entry point. Normally entries are 8 byte aligned.
+On Thursday 12 July 2007 19:16:20 Maciej W. Rozycki wrote:
+> On Thu, 12 Jul 2007, Andy Whitcroft wrote:
+[snip]
+> > WARNING: declaring multiple variables together should be avoided
+> > #372: FILE: drivers/serial/sb1250-duart.c:246:
+> > +	unsigned int mctrl, status;
+>
+>  Well, this is probably superfluous -- why would anyone prefer:
+>
+> 	int r0;
+> 	int r1;
+> 	int r2;
+> 	int r3;
+> 	int r4;
+>
+> to:
+>
+> 	int r0, r1, r2, r3, r4;
+>
+> unconditionally?
 
-Many of the entry points in the image are only four byte aligned. :(
+Imagine you're working on a piece of kernel code that has a lot of parallel 
+churn. Conflicts on lines like "int a,b,c,d;" are more likely to cause Andrew 
+et al pain, which I guess is the rationale for discouraging it. Conversely, 
+if the variables are kept separate, diff handles it fine.
 
->> The only user-space reason I can come up with for this happening is if
->> the caller jumped into this function one instruction late. This seems
->> unlikely because t9 contains the correct value and the stack looks
->> fine.
-> 
-> Check the value of $ra (e.g. with a gdb breakpoint) after entering the
-> function.
+I think as long as the variables are logically grouped, the pain is minimised, 
+but there's a few good reasons for the verbose style.
 
-I should have mentioned that this problem doesn't occur every time the
-function is called. The reproduction case I have calls the function
-over and over again from a higher level (in fact the loop is in a
-scripting language). I believe that it usually fails on the second
-invocation but if I make unrelated changes to the code it can
-sometimes happen after ten or twenty invocations. As soon as I try and
-put breakpoints into the function it doesn't happen (although if I
-disable the breakpoint and continue it does tend to strike). It looks
-like something asynchronous but it's difficult to work out why it
-likes to strike only this function.
+-- 
+Cheers,
+Alistair.
 
-At the point of the segfault $ra = 0x479fe8 which is the value I would
-expect.
-
-  479fcc:       8fc20048        lw      v0,72(s8)
-  479fd0:       8c420000        lw      v0,0(v0)
-  479fd4:       8fc40040        lw      a0,64(s8)
-  479fd8:       00402821        move    a1,v0
-  479fdc:       8f999750        lw      t9,-26800(gp)
-  479fe0:       0320f809        jalr    t9
-  479fe4:       00000000        nop
-  479fe8:       8fdc0010        lw      gp,16(s8)
-  479fec:       afc20018        sw      v0,24(s8)
-
-I also failed to mention that we're using binutils-2.16.1.
-
-Thanks for your response.
-
-Mike.
+137/1 Warrender Park Road, Edinburgh, UK.

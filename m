@@ -1,43 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 15:57:50 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:4261 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022488AbXGLO5s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jul 2007 15:57:48 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6CEgknR020146;
-	Thu, 12 Jul 2007 15:42:46 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6CEgi6s020145;
-	Thu, 12 Jul 2007 15:42:44 +0100
-Date:	Thu, 12 Jul 2007 15:42:44 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 16:22:31 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:4593 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022520AbXGLPW3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Jul 2007 16:22:29 +0100
+Received: from localhost (p7217-ipad201funabasi.chiba.ocn.ne.jp [222.146.70.217])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 9A13BB653; Fri, 13 Jul 2007 00:22:23 +0900 (JST)
+Date:	Fri, 13 Jul 2007 00:23:18 +0900 (JST)
+Message-Id: <20070713.002318.41198921.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [RFC] add to Category:Deprecated
-Message-ID: <20070712144244.GA20116@linux-mips.org>
-References: <200707060702.l6672Eq9011401@po-mbox300.hop.2iij.net> <20070706115100.GB8551@linux-mips.org> <20070705204922.GC24487@networkno.de> <20070706141001.GA17737@linux-mips.org> <20070706154559.GA20633@deprecation.cyrius.com> <20070706155955.GA28695@linux-mips.org> <20070711140321.2e5d1721.yoichi_yuasa@tripeaks.co.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070711140321.2e5d1721.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Subject: Re: [MIPS] Workaround for a sparse warning in include/asm-mips/io.h
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.64N.0707121541190.3029@blysk.ds.pg.gda.pl>
+References: <S20022480AbXGLO2a/20070712142830Z+14663@ftp.linux-mips.org>
+	<Pine.LNX.4.64N.0707121541190.3029@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15734
+X-archive-position: 15735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 11, 2007 at 02:03:21PM +0900, Yoichi Yuasa wrote:
+On Thu, 12 Jul 2007 15:47:04 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+> > CKSEG1ADDR() returns unsigned int value on 32bit kernel.  Cast it to
+> 
+>  This is not true.  With a 32-bit kernel CKSEG1ADDR(), quite 
+> intentionally, returns a *signed* int.
 
-> It seems to be not maintained for one year or more.
-> Moreover, the Ocelot PCI support has been broken.
+Yes, the comment was wrong.  Thanks.
 
-I removed that code as well.
+>  Since you have decided to fix the symptom rather than the bug I would at 
+> least suggest to cast the result to "long" first and only then drop the 
+> signedness.  Otherwise it looks misleading to a casual reader.
 
-  Ralf
+OK, I added cast to "long", and a comment to why the cast was
+introduced.
+
+
+Subject: [MIPS] Workaround for a sparse warning in include/asm-mips/io.h (part 2)
+
+Since CKSEG1ADDR() returns "signed int" (on 32bit), cast it to "long"
+first to avoid misleading.  Also add a comment why the cast to
+"unsigned long" was introduced.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/include/asm-mips/io.h b/include/asm-mips/io.h
+index 7ba9289..ad60863 100644
+--- a/include/asm-mips/io.h
++++ b/include/asm-mips/io.h
+@@ -212,8 +212,9 @@ static inline void __iomem * __ioremap_mode(phys_t offset, unsigned long size,
+ 		 */
+ 		if (__IS_LOW512(phys_addr) && __IS_LOW512(last_addr) &&
+ 		    flags == _CACHE_UNCACHED)
++			/* The cast to unsigned long makes sparse happy */
+ 			return (void __iomem *)
+-				(unsigned long)CKSEG1ADDR(phys_addr);
++				(unsigned long)(long)CKSEG1ADDR(phys_addr);
+ 	}
+ 
+ 	return __ioremap(offset, size, flags);

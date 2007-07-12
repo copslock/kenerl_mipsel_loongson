@@ -1,43 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 16:36:39 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:49867 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022566AbXGLPgg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Jul 2007 16:36:36 +0100
-Received: from localhost (p7217-ipad201funabasi.chiba.ocn.ne.jp [222.146.70.217])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 29C84120B; Fri, 13 Jul 2007 00:36:33 +0900 (JST)
-Date:	Fri, 13 Jul 2007 00:37:27 +0900 (JST)
-Message-Id: <20070713.003727.08076834.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 17:14:42 +0100 (BST)
+Received: from mu-out-0910.google.com ([209.85.134.187]:62857 "EHLO
+	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022563AbXGLQOk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jul 2007 17:14:40 +0100
+Received: by mu-out-0910.google.com with SMTP id w1so205571mue
+        for <linux-mips@linux-mips.org>; Thu, 12 Jul 2007 09:14:29 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Zvas0NVNKQCHAfgQHI0flCoZku2zr5S82rD6FP1IJZjBg6qCgIJ8xWi/XMCGIB3Ib45HFWWOo4veO4tzCLZWzLCPw0mZI9k45fQMdsPvQNR2IlAXEKJ1oXk1R9heLu1U84huDUH6AGGeBXnmgYJqPGz8u+T9d/q3UEh/qEk5XUE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=R7hy2VVnvbfXMY4KnsP/A7/p3llvX52ElR97g7L5xca6o7ENJQbxxsEVI/0rCMFuSpc++fRbcGVXPR9krIRiA4j6fYBNQjxFK5S4x9bqqREWi/qqWZvd72IXW6lX492y7XoZROuEpZeiV/PblP9XP/R13nX7ngxOFZKvgAQnd+I=
+Received: by 10.82.170.2 with SMTP id s2mr752971bue.1184256869324;
+        Thu, 12 Jul 2007 09:14:29 -0700 (PDT)
+Received: by 10.82.185.8 with HTTP; Thu, 12 Jul 2007 09:14:29 -0700 (PDT)
+Message-ID: <40378e40707120914i623809che646d79c03c6439@mail.gmail.com>
+Date:	Thu, 12 Jul 2007 18:14:29 +0200
+From:	"Mohamed Bamakhrama" <bamakhrama@gmail.com>
+Reply-To: bamakhrama@gmail.com
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [MIPS] Enable support for the userlocal hardware register
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <S20023433AbXGIOIU/20070709140820Z+13176@ftp.linux-mips.org>
-References: <S20023433AbXGIOIU/20070709140820Z+13176@ftp.linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Subject: CACHE instruction on MIPS32 24KE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+Return-Path: <bamakhrama@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15736
+X-archive-position: 15737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: bamakhrama@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 09 Jul 2007 15:08:15 +0100, linux-mips@linux-mips.org wrote:
-> Which will cut down the cost of RDHWR $29 which is used to obtain the
-> TLS pointer and so far being emulated in software down to a single cycle
-> operation.
+Hi list,
+I have one question regarding the cache instruction. In the MIPS32
+24KE software user's manual (page 317), it mentions that it is
+possible to perform "fetch & lock" operation on a given cache line.
+I am developing a driver for 2.4.31 kernel and I want to be able to
+lock some "hot spots" inside the instruction cache to maximize the
+throughput. Nevertheless, the manual states that if all the 4-ways of
+the cache set were locked, then the core will just replace one of
+them. So theoretically, the core should overwrite one of the ways in
+case of the first collision and then use that overwritten line for
+subsequent collisions. What I observe in my program is different. The
+# of I$ misses is the same. I tried to move the locking code around
+and when I did it just before the basic block I got an improvement of
+20% only!!
+My questions are:
+1) Is there any parts in the kernel which unlocks the I$ lines under
+some circumstances?
+2) Is there anyone who worked with the cache instruction under MIPS
+before and have any ideas about this behaviour?
 
-Since cpu_has_userlocal is used in a critical path (switch_to),
-overriding in each cpu-feature-overrides.h might be expected.
+Here is the macro used for cache locking:
 
----
-Atsushi Nemoto
+
+***** BEGIN CODE *****
+
+#define	LOCK_IN_CACHE(address, lines)	\
+	asm volatile (	".set	mips32 \n"	\
+			".set	noreorder \n"	\
+			"lock_me_" #address ": \n"	\
+			"	cache	0x1C, 0x00(%0) \n"	\
+			"	addiu	%z0, %z0, 0x20 \n"	\
+			"	sub	%z1, %z1, %z3  \n"	\
+			"	bgez	%z1, lock_me_" #address " \n" 	\
+			".set	mips0 \n"	\
+			: : "Jr" (&address),	\
+			"Jr" (lines), "Jr" (0), "Jr" (1));
+
+***** END CODE *****
+
+Best Regards,
+
+-- 
+Mohamed

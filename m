@@ -1,161 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 08:26:27 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:26816 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20022216AbXGLH0Y (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Jul 2007 08:26:24 +0100
-Received: (qmail 1661 invoked by uid 511); 12 Jul 2007 07:30:29 -0000
-Received: from unknown (HELO ?192.168.2.233?) (192.168.2.233)
-  by lemote.com with SMTP; 12 Jul 2007 07:30:29 -0000
-Message-ID: <4695D78F.8010806@lemote.com>
-Date:	Thu, 12 Jul 2007 15:26:07 +0800
-From:	Songmao Tian <tiansm@lemote.com>
-User-Agent: Icedove 1.5.0.8 (X11/20061116)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 08:53:42 +0100 (BST)
+Received: from post2.wesleyan.edu ([129.133.6.128]:18659 "EHLO
+	post2.wesleyan.edu") by ftp.linux-mips.org with ESMTP
+	id S20022228AbXGLHxk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jul 2007 08:53:40 +0100
+Received: from pony2.wesleyan.edu (pony2.wesleyan.edu [129.133.6.193])
+	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l6C7oDI6020016;
+	Thu, 12 Jul 2007 03:50:13 -0400
+Received: from pony2.wesleyan.edu (pony2.wesleyan.edu [127.0.0.1])
+	by pony2.wesleyan.edu (8.12.11.20060308/8.12.11) with ESMTP id l6C7oDQ5001112;
+	Thu, 12 Jul 2007 03:50:13 -0400
+Received: (from apache@localhost)
+	by pony2.wesleyan.edu (8.12.11.20060308/8.12.11/Submit) id l6C7oCdu001110;
+	Thu, 12 Jul 2007 03:50:12 -0400
+Received: from 129.133.89.141
+        (SquirrelMail authenticated user sknauert)
+        by webmail.wesleyan.edu with HTTP;
+        Thu, 12 Jul 2007 01:50:12 -0600 (MDT)
+Message-ID: <37831.129.133.89.141.1184226612.squirrel@webmail.wesleyan.edu>
+In-Reply-To: <s5h644rjmn2.wl%tiwai@suse.de>
+References: <6849c8890707020427q47704326od05ebb8241c3cf@mail.gmail.com>
+    <s5hejjpaiwa.wl%tiwai@suse.de>
+    <6849c8890707091407g61fe2f01jc4eb8ee41e624f15@mail.gmail.com>
+    <s5h644rjmn2.wl%tiwai@suse.de>
+Date:	Thu, 12 Jul 2007 01:50:12 -0600 (MDT)
+Subject: Re: [alsa-devel] [RFC] SGI O2 MACE audio ALSA module
+From:	sknauert@wesleyan.edu
+To:	"Takashi Iwai" <tiwai@suse.de>
+Cc:	"TJ" <tj.trevelyan@gmail.com>,
+	"Linux MIPS List" <linux-mips@linux-mips.org>,
+	"ALSA Dev List" <alsa-devel@alsa-project.org>
+User-Agent: SquirrelMail/1.4.9a
 MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	LinuxBIOS Mailing List <linuxbios@linuxbios.org>,
-	marc.jones@amd.com, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: about cs5536 interrupt ack
-References: <4694A495.1050006@lemote.com> <Pine.LNX.4.64N.0707111347360.26459@blysk.ds.pg.gda.pl> <4694F4EB.8040000@lemote.com> <Pine.LNX.4.64N.0707111634430.26459@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0707111634430.26459@blysk.ds.pg.gda.pl>
-Content-Type: multipart/mixed;
- boundary="------------000806090703090504080000"
-Return-Path: <tiansm@lemote.com>
+Content-Type: text/plain;charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Wesleyan-MailScanner-Information: Please contact the ISP for more information
+X-Wesleyan-MailScanner:	Found to be clean
+X-Originating-IP: 129.133.6.193
+X-MailScanner-From: sknauert@wesleyan.edu
+Return-Path: <sknauert@wesleyan.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15723
+X-archive-position: 15724
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiansm@lemote.com
+X-original-sender: sknauert@wesleyan.edu
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------000806090703090504080000
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Okay, I got the module compiled and it and ALSA installed.
 
-8259 problem  seems to be done with the attached patch, IDE hung seems 
-to be the dma setting problem.
+I noticed the timing bug, I doubt its a frequency issue as the ALSA guides
+to downsample (i.e. if it were doing 48kHz instead of 44.1kHz) didn't
+help.
 
-Thanks all for your advise, comments. I have learned a lot. now I 
-continue to trace down the IDE problem.
-
-Mao
-
-Maciej W. Rozycki wrote:
-> On Wed, 11 Jul 2007, Songmao Tian wrote:
->
->   
->>> Huh?  Have you managed to find an 8259A clone *that* broken?  So what does
->>> it return if you write 0xc to the address 0x20 in the I/O port space and
->>> then read back from that location?  You should complain to the 
->>>   
->>>       
->> It's the value of IRR, so guess IRR. AMD has well documented cs5536, I
->> appreciate that.
->>     
->
->  Indeed.  I am surprised they have decided to drop the poll command -- it 
-> surely does not require much logic as it mostly reuses what's used to 
-> produce the vector anyway and it is commonly used when 8259A 
-> implementations are interfaced to non-i386 processors.  PPC is another 
-> example.
->
->   
->>> More or less -- 3-5 should probably be the outcome of a single read
->>> transaction from the north bridge.  I.e. you issue a read to a "magic"
->>> location, 3-5 happen, and the data value returned is the vector presented by
->>> the interrupt controller on the PCI bus.
->>>   
->>>       
->> yeah, we can implement a register in north bridge.
->>     
->
->  Strictly speaking it would not be a register, but a "PCI INTA address 
-> space" much like PCI memory or I/O port address spaces.  Though as the 
-> former ignores addresses driven on the bus, the space occupied does not 
-> have to be extensive -- I would assume whatever slot size is available 
-> with the address decoder you have implemented would do.
->
->   
->>> You can still dispatch interrupts manually by examining the IRR register,
->>> but having a way to ask the 8259A's prioritiser would be nice.  Although
->>> given such a lethal erratum you report I would not count on the prioritiser
->>> to provide any useful flexibility...
->>>   
->>>       
->> yeah, that's a straight thought, tried but failed:(, patch followed.
->>     
->
->  You may have to modify other functions from arch/mips/kernel/i8259.c; 
-> yes, this makes the whole experience not as pretty as one would hope...
->
->   Maciej
->
->
->
->   
-
-
---------------000806090703090504080000
-Content-Type: text/plain;
- name="diff"
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
- filename="diff"
-
-ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9rZXJuZWwvaTgyNTkuYyBiL2FyY2gvbWlwcy9rZXJu
-ZWwvaTgyNTkuYwppbmRleCA5Yzc5NzAzLi5mZDdmNGJhIDEwMDY0NAotLS0gYS9hcmNoL21p
-cHMva2VybmVsL2k4MjU5LmMKKysrIGIvYXJjaC9taXBzL2tlcm5lbC9pODI1OS5jCkBAIC00
-NywxMSArNDcsNyBAQCBzdGF0aWMgc3RydWN0IGlycV9jaGlwIGk4MjU5QV9jaGlwID0gewog
-LyoKICAqIFRoaXMgY29udGFpbnMgdGhlIGlycSBtYXNrIGZvciBib3RoIDgyNTlBIGlycSBj
-b250cm9sbGVycywKICAqLwotc3RhdGljIHVuc2lnbmVkIGludCBjYWNoZWRfaXJxX21hc2sg
-PSAweGZmZmY7Ci0KLSNkZWZpbmUgY2FjaGVkX21hc3Rlcl9tYXNrCShjYWNoZWRfaXJxX21h
-c2spCi0jZGVmaW5lIGNhY2hlZF9zbGF2ZV9tYXNrCShjYWNoZWRfaXJxX21hc2sgPj4gOCkK
-LQordW5zaWduZWQgaW50IGNhY2hlZF9pcnFfbWFzayA9IDB4ZmZmZjsKIHZvaWQgZGlzYWJs
-ZV84MjU5QV9pcnEodW5zaWduZWQgaW50IGlycSkKIHsKIAl1bnNpZ25lZCBpbnQgbWFzazsK
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvYXNtLW1pcHMvaTgyNTkuaCBiL2luY2x1ZGUvYXNtLW1p
-cHMvaTgyNTkuaAppbmRleCBlODhhMDE2Li5lN2RjZjdiIDEwMDY0NAotLS0gYS9pbmNsdWRl
-L2FzbS1taXBzL2k4MjU5LmgKKysrIGIvaW5jbHVkZS9hc20tbWlwcy9pODI1OS5oCkBAIC0z
-NywxMSArMzcsNTUgQEAKIAogZXh0ZXJuIHNwaW5sb2NrX3QgaTgyNTlBX2xvY2s7CiAKK2V4
-dGVybiB1bnNpZ25lZCBpbnQgY2FjaGVkX2lycV9tYXNrOworI2RlZmluZSBjYWNoZWRfbWFz
-dGVyX21hc2sJKGNhY2hlZF9pcnFfbWFzaykKKyNkZWZpbmUgY2FjaGVkX3NsYXZlX21hc2sJ
-KGNhY2hlZF9pcnFfbWFzayA+PiA4KQorCiBleHRlcm4gdm9pZCBpbml0XzgyNTlBKGludCBh
-dXRvX2VvaSk7CiBleHRlcm4gdm9pZCBlbmFibGVfODI1OUFfaXJxKHVuc2lnbmVkIGludCBp
-cnEpOwogZXh0ZXJuIHZvaWQgZGlzYWJsZV84MjU5QV9pcnEodW5zaWduZWQgaW50IGlycSk7
-CiAKIGV4dGVybiB2b2lkIGluaXRfaTgyNTlfaXJxcyh2b2lkKTsKKyNkZWZpbmUgQ09ORklH
-X05PX0lOVEVSUlVQVF9BQ0sKKyNpZmRlZiBDT05GSUdfTk9fSU5URVJSVVBUX0FDSworc3Rh
-dGljIGlubGluZSBpbnQgX2J5dGVfZmZzKHU4IHdvcmQpCit7CisJaW50IG51bSA9IDA7CisJ
-aWYgKCh3b3JkICYgMHhmKSA9PSAwKSB7CisJCW51bSArPSA0OworCQl3b3JkID4+PSA0Owor
-CX0KKwlpZiAoKHdvcmQgJiAweDMpID09IDApIHsKKwkJbnVtICs9IDI7CisJCXdvcmQgPj49
-IDI7CisJfQorCWlmICgod29yZCAmIDB4MSkgPT0gMCkKKwkJbnVtICs9IDE7CisJcmV0dXJu
-IG51bTsKK30KKworc3RhdGljIGlubGluZSBpbnQgcmVhZF9pcnEoaW50IHBvcnQpCit7CisJ
-aW50IGlycTsKKwlvdXRiKDB4MEEsIHBvcnQpOworCWlmIChwb3J0ID09IFBJQ19NQVNURVJf
-Q01EKSB7CisJCWlycSA9IGluYihwb3J0KSAmIH5jYWNoZWRfbWFzdGVyX21hc2s7CisJfSBl
-bHNlIHsKKwkJaXJxID0gaW5iKHBvcnQpICYgfmNhY2hlZF9zbGF2ZV9tYXNrOworCX0KKwlp
-ZiAoaXJxID09IDApCisJCXJldHVybiAtMTsKKwllbHNlCisJCXJldHVybiBfYnl0ZV9mZnMo
-aXJxKTsKK30KKyNlbHNlCitzdGF0aWMgaW5saW5lIGludCByZWFkX2lycShpbnQgcG9ydCkK
-K3sKKwkvKiBQZXJmb3JtIGFuIGludGVycnVwdCBhY2tub3dsZWRnZSBjeWNsZSBvbiBjb250
-cm9sbGVyIDEuICovCisJb3V0YigweDBDLCBwb3J0KTsJCS8qIHByZXBhcmUgZm9yIHBvbGwg
-Ki8KKwlyZXR1cm4gaW5iKHBvcnQpICYgNzsKK30KKyNlbmRpZgogCiAvKgogICogRG8gdGhl
-IHRyYWRpdGlvbmFsIGk4MjU5IGludGVycnVwdCBwb2xsaW5nIHRoaW5nLiAgVGhpcyBpcyBm
-b3IgdGhlIGZldwpAQCAtNTQsMTggKzk4LDE2IEBAIHN0YXRpYyBpbmxpbmUgaW50IGk4MjU5
-X2lycSh2b2lkKQogCiAJc3Bpbl9sb2NrKCZpODI1OUFfbG9jayk7CiAKLQkvKiBQZXJmb3Jt
-IGFuIGludGVycnVwdCBhY2tub3dsZWRnZSBjeWNsZSBvbiBjb250cm9sbGVyIDEuICovCi0J
-b3V0YigweDBDLCBQSUNfTUFTVEVSX0NNRCk7CQkvKiBwcmVwYXJlIGZvciBwb2xsICovCi0J
-aXJxID0gaW5iKFBJQ19NQVNURVJfQ01EKSAmIDc7CisJaXJxID0gcmVhZF9pcnEoUElDX01B
-U1RFUl9DTUQpOwogCWlmIChpcnEgPT0gUElDX0NBU0NBREVfSVIpIHsKIAkJLyoKIAkJICog
-SW50ZXJydXB0IGlzIGNhc2NhZGVkIHNvIHBlcmZvcm0gaW50ZXJydXB0CiAJCSAqIGFja25v
-d2xlZGdlIG9uIGNvbnRyb2xsZXIgMi4KIAkJICovCi0JCW91dGIoMHgwQywgUElDX1NMQVZF
-X0NNRCk7CQkvKiBwcmVwYXJlIGZvciBwb2xsICovCi0JCWlycSA9IChpbmIoUElDX1NMQVZF
-X0NNRCkgJiA3KSArIDg7Ci0JfQorCQlpcnEgPSByZWFkX2lycShQSUNfU0xBVkVfQ01EKSAr
-IDg7CisJfSAKIAorI2lmbmRlZiBDT05GSUdfTk9fSU5URVJSVVBUX0FDSwogCWlmICh1bmxp
-a2VseShpcnEgPT0gNykpIHsKIAkJLyoKIAkJICogVGhpcyBtYXkgYmUgYSBzcHVyaW91cyBp
-bnRlcnJ1cHQuCkBAIC03OCw2ICsxMjAsMTEgQEAgc3RhdGljIGlubGluZSBpbnQgaTgyNTlf
-aXJxKHZvaWQpCiAJCWlmKH5pbmIoUElDX01BU1RFUl9JU1IpICYgMHg4MCkKIAkJCWlycSA9
-IC0xOwogCX0KKyNlbHNlCisJaWYgKGNhY2hlZF9pcnFfbWFzayAmICgxIDw8IGlycSkpIHsK
-KwkJaXJxID0gLTE7CisJfQorI2VuZGlmCiAKIAlzcGluX3VubG9jaygmaTgyNTlBX2xvY2sp
-OwogCg==
---------------000806090703090504080000--
+You mentioned on some players it would sound okay? I tried everything from
+aplay to xmms and always seemed to play too fast. What CPU are you running
+this on, by the way? Aplay does give underruns if I'm heavily
+multitasking, though sound output seems the same.

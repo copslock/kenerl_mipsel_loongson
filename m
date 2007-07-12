@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 17:55:21 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:59093 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022613AbXGLQzT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Jul 2007 17:55:19 +0100
-Received: from localhost (p7217-ipad201funabasi.chiba.ocn.ne.jp [222.146.70.217])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 4947FA24C; Fri, 13 Jul 2007 01:55:16 +0900 (JST)
-Date:	Fri, 13 Jul 2007 01:56:11 +0900 (JST)
-Message-Id: <20070713.015611.15246984.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	rpjday@mindspring.com
-Subject: Re: dead(?) MIPS config stuff
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <468D163B.9070907@ru.mvista.com>
-References: <20070705144641.GA20210@linux-mips.org>
-	<468D163B.9070907@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 17:57:59 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:28576 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022561AbXGLQ54 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jul 2007 17:57:56 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6CGgrSH021226;
+	Thu, 12 Jul 2007 17:42:53 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6CGgqdQ021225;
+	Thu, 12 Jul 2007 17:42:52 +0100
+Date:	Thu, 12 Jul 2007 17:42:52 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Use NULL for pointer
+Message-ID: <20070712164252.GA21194@linux-mips.org>
+References: <20070713.014949.55147875.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070713.014949.55147875.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15744
+X-archive-position: 15745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 05 Jul 2007 20:03:07 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > ========== TX4927BUG_WORKAROUND ==========
-> > arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c:141:#define CONFIG_TX4927BUG_WORKAROUND
-> > arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c:672:#ifdef CONFIG_TX4927BUG_WORKAROUND
-> > arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c:914:#ifdef CONFIG_TX4927BUG_WORKAROUND
+On Fri, Jul 13, 2007 at 01:49:49AM +0900, Atsushi Nemoto wrote:
+
+> This fixes a sparse warning:
 > 
->     This one shouldn't have been called CONFIG_* and might be just killed as 
-> well....
+> arch/mips/kernel/traps.c:376:44: warning: Using plain integer as NULL pointer
 
-That was workarounds for very early chip.  I believe we can kill them all.
+Also applied.
 
----
-Atsushi Nemoto
+  Ralf

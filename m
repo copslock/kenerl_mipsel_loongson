@@ -1,75 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 05:13:21 +0100 (BST)
-Received: from nic.NetDirect.CA ([216.16.235.2]:4024 "EHLO
-	rubicon.netdirect.ca") by ftp.linux-mips.org with ESMTP
-	id S20021669AbXGLENT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jul 2007 05:13:19 +0100
-X-Originating-Ip: 72.143.66.27
-Received: from [192.168.1.102] (CPE0018396a01fc-CM001225dbafb6.cpe.net.cable.rogers.com [72.143.66.27])
-	(authenticated bits=0)
-	by rubicon.netdirect.ca (8.13.1/8.13.1) with ESMTP id l6C4D21d016293
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Thu, 12 Jul 2007 00:13:11 -0400
-Date:	Thu, 12 Jul 2007 00:11:18 -0400 (EDT)
-From:	"Robert P. J. Day" <rpjday@mindspring.com>
-X-X-Sender: rpjday@localhost.localdomain
-To:	Shane McDonald <mcdonald.shane@gmail.com>
-cc:	linux-mips@linux-mips.org
-Subject: Re: latest list of apparently "dead" CONFIG variables under arch/mips
-In-Reply-To: <b2b2f2320707111914t5ac80d24ie374999e35db4c8f@mail.gmail.com>
-Message-ID: <Pine.LNX.4.64.0707120010150.13471@localhost.localdomain>
-References: <Pine.LNX.4.64.0707111437480.12345@localhost.localdomain> 
- <b2b2f2320707111546p5b7e1c6dv60a8d600a28634e7@mail.gmail.com> 
- <Pine.LNX.4.64.0707111901110.28156@localhost.localdomain>
- <b2b2f2320707111914t5ac80d24ie374999e35db4c8f@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jul 2007 08:05:09 +0100 (BST)
+Received: from web94311.mail.in2.yahoo.com ([203.104.16.221]:29551 "HELO
+	web94311.mail.in2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20022216AbXGLHFH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jul 2007 08:05:07 +0100
+Received: (qmail 94743 invoked by uid 60001); 12 Jul 2007 07:03:55 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=BhSMRRfuhqaNeHKnzkQlTZ1KEa7Klo7KhkU2jEzdRe0OilPzjbR87TppQMsYfqcZDTiVHEDl0cqfFdBRF8poh6D0oyN5nAVuvNbIoIZL+ZaxOS+HVV6M0aOoxZ463zvJvs+XIY+2PSGVhhRH3kfwHYMd/jz+zLRR/gWe5BrpJmY=;
+X-YMail-OSG: HSy9l.sVM1mH6evU3ozbDHxuWRTnQvf.kFZsPvcY4dKQS325RzLzc6cistVFDG1o8g--
+Received: from [59.92.36.37] by web94311.mail.in2.yahoo.com via HTTP; Thu, 12 Jul 2007 08:03:54 BST
+Date:	Thu, 12 Jul 2007 08:03:54 +0100 (BST)
+From:	saravanan <sar_van81@yahoo.co.in>
+Subject: yamon on DBAU1200
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Net-Direct-Inc-MailScanner-Information: Please contact the ISP for more information
-X-Net-Direct-Inc-MailScanner: Found to be clean
-X-Net-Direct-Inc-MailScanner-SpamCheck:	not spam, SpamAssassin (not cached,
-	score=-36.8, required 5, autolearn=not spam, ALL_TRUSTED -1.80,
-	BAYES_00 -15.00, INIT_RECVD_OUR_AUTH -20.00)
-X-Net-Direct-Inc-MailScanner-From: rpjday@mindspring.com
-Return-Path: <rpjday@mindspring.com>
+Content-Type: multipart/alternative; boundary="0-1935004644-1184223834=:94566"
+Content-Transfer-Encoding: 8bit
+Message-ID: <985016.94566.qm@web94311.mail.in2.yahoo.com>
+Return-Path: <sar_van81@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15721
+X-archive-position: 15722
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpjday@mindspring.com
+X-original-sender: sar_van81@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 11 Jul 2007, Shane McDonald wrote:
+--0-1935004644-1184223834=:94566
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-> > > On 7/11/07, Robert P. J. Day <rpjday@mindspring.com> wrote:
-> > > >
-> > > > ========== PMCTWILED ==========
-> > > > arch/mips/configs/msp71xx_defconfig:941:CONFIG_PMCTWILED=y
-> > > > arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c:35:#ifdef CONFIG_PMCTWILED
-> > > > arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c:85:#ifdef CONFIG_PMCTWILED
-> > > > arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c:97:#ifdef CONFIG_PMCTWILED
-> > > > arch/mips/pmc-sierra/msp71xx/msp_setup.c:249:#ifdef CONFIG_PMCTWILED
-> > > > ========== SQUASHFS ==========
-> > > > arch/mips/configs/msp71xx_defconfig:1307:CONFIG_SQUASHFS=y
-> > > > arch/mips/pmc-sierra/msp71xx/msp_prom.c:46:#ifdef CONFIG_SQUASHFS
-> > > > arch/mips/pmc-sierra/msp71xx/msp_prom.c:552:#ifdef CONFIG_SQUASHFS
-> > > > arch/mips/pmc-sierra/msp71xx/msp_prom.c:554:            /* Get
-> > SQUASHFS
-> > > > size */
+hi,
 
-by the way, there were still a pile of *other* variables in that
-original list that are potential candidates for
-deletion/fixing/whatever since they're not defined in any Kconfig
-file.
+has anyone compiled yamon bootloader ? i tried to compile yamon bootloader (yamon-0227.zip) which came in along with my board -DBAU1200. but i was not successful. the following is the error :
 
-rday
--- 
-========================================================================
-Robert P. J. Day
-Linux Consulting, Training and Annoying Kernel Pedantry
-Waterloo, Ontario, CANADA
+suse:/home/alchemy/ALCHEMY/YAMON/02.27/yamon/bin # make
+rm -f ./EL/comptime.o ./EB/comptime.o
+mipsel-linux-uclibc-gcc -G 0 -mips32 -mno-abicalls -fno-pic -D_32_ -c -g -O2 -Wimplicit -Wformat '-D_REVMAJ_="02"' '-D_REVMIN_="27GDB1200"' -I./../include -I./../arch/include   -DDB1200_CONFIG=1 -D_ASSEMBLER_ -EL -DEL -o reset.o ./../init/reset/reset.S
+mipsel-linux-uclibc-gcc: unrecognized option `-EL'
+mipsel-linux-uclibc-ld -G 0 -T ./link/link.xn -o ./reset-02.27GDB1200.elf -Map ./reset-02.27GDB1200.map --oformat elf32-littlemips  reset.o
+mipsel-linux-uclibc-ld: target elf32-littlemips not found
+make: *** [reset-02.27GDB1200.elf] Error 1
 
-http://fsdev.net/wiki/index.php?title=Main_Page
-========================================================================
+
+does yamon have support for producing image in little endian format ?
+
+can anyone provide me any suggestions or solutions for this ?
+
+thanks in advance,
+
+saravanan.
+
+       
+---------------------------------
+ Unlimited freedom, unlimited storage. Get it now
+--0-1935004644-1184223834=:94566
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+hi,<br><br>has anyone compiled yamon bootloader ? i tried to compile yamon bootloader (yamon-0227.zip) which came in along with my board -DBAU1200. but i was not successful. the following is the error :<br><br>suse:/home/alchemy/ALCHEMY/YAMON/02.27/yamon/bin # make<br>rm -f ./EL/comptime.o ./EB/comptime.o<br>mipsel-linux-uclibc-gcc -G 0 -mips32 -mno-abicalls -fno-pic -D_32_ -c -g -O2 -Wimplicit -Wformat '-D_REVMAJ_="02"' '-D_REVMIN_="27GDB1200"' -I./../include -I./../arch/include&nbsp;&nbsp; -DDB1200_CONFIG=1 -D_ASSEMBLER_ -EL -DEL -o reset.o ./../init/reset/reset.S<br>mipsel-linux-uclibc-gcc: unrecognized option `-EL'<br>mipsel-linux-uclibc-ld -G 0 -T ./link/link.xn -o ./reset-02.27GDB1200.elf -Map ./reset-02.27GDB1200.map --oformat elf32-littlemips&nbsp; reset.o<br>mipsel-linux-uclibc-ld: target elf32-littlemips not found<br>make: *** [reset-02.27GDB1200.elf] Error 1<br><br><br>does yamon have support for producing image in little endian format ?<br><br>can anyone provide
+ me any suggestions or solutions for this ?<br><br>thanks in advance,<br><br>saravanan.<br><p>&#32;
+
+
+      <!--2--><hr size=1></hr> Unlimited freedom, unlimited storage. <a href="http://in.rd.yahoo.com/tagline_mail_2/*http://help.yahoo.com/l/in/yahoo/mail/yahoomail/tools/tools-08.html/">Get it now</a>
+--0-1935004644-1184223834=:94566--

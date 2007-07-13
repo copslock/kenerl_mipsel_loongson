@@ -1,40 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 15:54:59 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:51076 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023692AbXGMOyp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 13 Jul 2007 15:54:45 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6DEsiVO009037;
-	Fri, 13 Jul 2007 15:54:44 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6DEsifa009036;
-	Fri, 13 Jul 2007 15:54:44 +0100
-Date:	Fri, 13 Jul 2007 15:54:44 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Make show_code static and add __user tag
-Message-ID: <20070713145444.GB8961@linux-mips.org>
-References: <20070713.235146.75426959.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070713.235146.75426959.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 16:07:12 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:30185 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023700AbXGMPHK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2007 16:07:10 +0100
+Received: from localhost (p3184-ipad31funabasi.chiba.ocn.ne.jp [221.189.127.184])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 1C9EA72A4; Sat, 14 Jul 2007 00:05:49 +0900 (JST)
+Date:	Sat, 14 Jul 2007 00:06:44 +0900 (JST)
+Message-Id: <20070714.000644.11621589.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Workaround for a sparse warning in
+ include/asm-mips/mach-tx4927/ioremap.h
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15776
+X-archive-position: 15777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 13, 2007 at 11:51:46PM +0900, Atsushi Nemoto wrote:
+include2/asm/mach-tx49xx/ioremap.h:39:52: warning: cast truncates bits from constant value (fff000000 becomes ff000000)
 
-Applied.  Thanks,
-
-  Ralf
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/include/asm-mips/mach-tx49xx/ioremap.h b/include/asm-mips/mach-tx49xx/ioremap.h
+index 88cf546..1e7beae 100644
+--- a/include/asm-mips/mach-tx49xx/ioremap.h
++++ b/include/asm-mips/mach-tx49xx/ioremap.h
+@@ -36,7 +36,8 @@ static inline void __iomem *plat_ioremap(phys_t offset, unsigned long size,
+ 
+ static inline int plat_iounmap(const volatile void __iomem *addr)
+ {
+-	return (unsigned long)addr >= (unsigned long)(int)TXX9_DIRECTMAP_BASE;
++	return (unsigned long)addr >=
++		(unsigned long)(int)(TXX9_DIRECTMAP_BASE & 0xffffffff);
+ }
+ 
+ #endif /* __ASM_MACH_TX49XX_IOREMAP_H */

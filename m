@@ -1,49 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 08:37:06 +0100 (BST)
-Received: from mo30.po.2iij.NET ([210.128.50.53]:57881 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022980AbXGMHhE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2007 08:37:04 +0100
-Received: by mo.po.2iij.net (mo30) id l6D7axhn098957; Fri, 13 Jul 2007 16:36:59 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox301) id l6D7avTA028326
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 13 Jul 2007 16:36:57 +0900
-Date:	Fri, 13 Jul 2007 16:36:57 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 09:06:06 +0100 (BST)
+Received: from smtp-ext.int-evry.fr ([157.159.11.17]:35211 "EHLO
+	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
+	id S20023478AbXGMIGE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 13 Jul 2007 09:06:04 +0100
+Received: from [192.168.10.156] (mla78-1-82-240-17-188.fbx.proxad.net [82.240.17.188])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id EE1E28D1693;
+	Fri, 13 Jul 2007 10:05:56 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] fix MIPSsim cflags
-Message-Id: <20070713163657.4348a72a.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: Alchemy driver sediments to be deleted?
+Date:	Fri, 13 Jul 2007 10:05:58 +0200
+User-Agent: KMail/1.9.7
+Cc:	linux-mips@linux-mips.org
+References: <20070712180445.GA22748@linux-mips.org>
+In-Reply-To: <20070712180445.GA22748@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed;
+  boundary="nextPart2981164.FTAqaWMUtM";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Message-Id: <200707131006.02010.florian.fainelli@telecomint.eu>
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15760
+X-archive-position: 15761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
+--nextPart2981164.FTAqaWMUtM
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Fix MIPSsim cflags.
+Hi Ralf,
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+You can safely remove the au1000_gpio file because au1000 will now use the=
+=20
+generic GPIO implementation.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Makefile mips/arch/mips/Makefile
---- mips-orig/arch/mips/Makefile	2007-07-13 13:06:04.179097750 +0900
-+++ mips/arch/mips/Makefile	2007-07-13 16:23:05.796996000 +0900
-@@ -328,7 +328,7 @@ load-$(CONFIG_MIPS_SEAD)	+= 0xffffffff80
- # MIPS SIM
- #
- core-$(CONFIG_MIPS_SIM)		+= arch/mips/mipssim/
--cflags-$(CONFIG_MIPS_SIM)	+= -Iinclude/asm-mips/mach-sim
-+cflags-$(CONFIG_MIPS_SIM)	+= -Iinclude/asm-mips/mach-mipssim
- load-$(CONFIG_MIPS_SIM)		+= 0x80100000
- 
- #
+Instead of removing the touchscreen driver, I would move it to=20
+drivers/input/touchscreen for now. There is probably some work to do to mak=
+e=20
+the ads7846 driver be usable with au1000.
+
+=46lorian=20
+
+Le jeudi 12 juillet 2007, Ralf Baechle a =E9crit=A0:
+> So there are these two drivers
+>
+>  b/drivers/char/au1000_gpio.c                                 |  262 +
+>  b/drivers/char/au1000_ts.c                                   |  677 +++
+>
+> sitting in the lmo kernel tree since ages.  au1000_ts isn't even
+> wired up in the Makefile since years, so unless somebody yells "stop",
+> I'm going to kill it.
+>
+> Also, is there anybody still interested in the au1000_gpio driver?
+>
+>   Ralf
+
+--nextPart2981164.FTAqaWMUtM
+Content-Type: application/pgp-signature; name=signature.asc 
+Content-Description: This is a digitally signed message part.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.5 (GNU/Linux)
+
+iD8DBQBGlzJpmx9n1G/316sRAu83AJ0Q5mBhmC2oBD8L6nm9okMiSQiMCgCgmJkY
+q7JbP4/tedJjoCMX9N6jCHo=
+=WtPt
+-----END PGP SIGNATURE-----
+
+--nextPart2981164.FTAqaWMUtM--

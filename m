@@ -1,19 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 14:07:39 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:24778 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20023621AbXGMNHg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2007 14:07:36 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 15:01:40 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:25074 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023629AbXGMOBi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2007 15:01:38 +0100
 Received: from localhost (p3184-ipad31funabasi.chiba.ocn.ne.jp [221.189.127.184])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 8671AADEF; Fri, 13 Jul 2007 22:06:16 +0900 (JST)
-Date:	Fri, 13 Jul 2007 22:07:11 +0900 (JST)
-Message-Id: <20070713.220711.61510713.anemo@mba.ocn.ne.jp>
-To:	post@pfrst.de
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Use NULL for pointer
+	id F2EDBB5CC; Fri, 13 Jul 2007 23:01:33 +0900 (JST)
+Date:	Fri, 13 Jul 2007 23:02:29 +0900 (JST)
+Message-Id: <20070713.230229.93204964.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] math-emu minor cleanup
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.21.0707130135090.1523-100000@Opal.Peter>
-References: <20070713.014949.55147875.anemo@mba.ocn.ne.jp>
-	<Pine.LNX.4.21.0707130135090.1523-100000@Opal.Peter>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
@@ -24,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15767
+X-archive-position: 15768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,21 +29,78 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 13 Jul 2007 01:50:07 +0200 (CEST), post@pfrst.de wrote:
-> Please excuse me, i couldn't restrain myself from commenting on this.
-> It's a pity, that a weird warning (which gcc version with what settings
-> did produce it ?) urges one to (re-)introduce this obsolescent macro.
+Declaring emulpc and contpc as "unsigned long" can get rid of some
+casts.  This also get rid of some sparse warnings.
 
-The warning is produced by sparse, not gcc.
-
-http://www.kernel.org/pub/software/devel/sparse/
-
-I know C++ dislike NULL, but it seems kernel developpers like NULL for
-a null pointer.  There is another way to convert a pointer to a bool:
-
-		action = board_be_handler(regs, !!fixup);
-
-It might satisfy both people, but might surprise other people a bit :)
-
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
-Atsushi Nemoto
+ arch/mips/math-emu/cp1emu.c |   19 +++++++++----------
+ 1 files changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index d7f05b0..17419e1 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -205,7 +205,7 @@ static int isBranchInstr(mips_instruction * i)
+ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ {
+ 	mips_instruction ir;
+-	void * emulpc, *contpc;
++	unsigned long emulpc, contpc;
+ 	unsigned int cond;
+ 
+ 	if (get_user(ir, (mips_instruction __user *) xcp->cp0_epc)) {
+@@ -230,7 +230,7 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ 		 * Linux MIPS branch emulator operates on context, updating the
+ 		 * cp0_epc.
+ 		 */
+-		emulpc = (void *) (xcp->cp0_epc + 4);	/* Snapshot emulation target */
++		emulpc = xcp->cp0_epc + 4;	/* Snapshot emulation target */
+ 
+ 		if (__compute_return_epc(xcp)) {
+ #ifdef CP1DBG
+@@ -244,12 +244,12 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ 			return SIGBUS;
+ 		}
+ 		/* __compute_return_epc() will have updated cp0_epc */
+-		contpc = (void *)  xcp->cp0_epc;
++		contpc = xcp->cp0_epc;
+ 		/* In order not to confuse ptrace() et al, tweak context */
+-		xcp->cp0_epc = (unsigned long) emulpc - 4;
++		xcp->cp0_epc = emulpc - 4;
+ 	} else {
+-		emulpc = (void *)  xcp->cp0_epc;
+-		contpc = (void *) (xcp->cp0_epc + 4);
++		emulpc = xcp->cp0_epc;
++		contpc = xcp->cp0_epc + 4;
+ 	}
+ 
+       emul:
+@@ -427,8 +427,7 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ 				 * instruction
+ 				 */
+ 				xcp->cp0_epc += 4;
+-				contpc = (void *)
+-					(xcp->cp0_epc +
++				contpc = (xcp->cp0_epc +
+ 					(MIPSInst_SIMM(ir) << 2));
+ 
+ 				if (get_user(ir,
+@@ -462,7 +461,7 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ 				 * Single step the non-cp1
+ 				 * instruction in the dslot
+ 				 */
+-				return mips_dsemul(xcp, ir, (unsigned long) contpc);
++				return mips_dsemul(xcp, ir, contpc);
+ 			}
+ 			else {
+ 				/* branch not taken */
+@@ -521,7 +520,7 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ 	}
+ 
+ 	/* we did it !! */
+-	xcp->cp0_epc = (unsigned long) contpc;
++	xcp->cp0_epc = contpc;
+ 	xcp->cp0_cause &= ~CAUSEF_BD;
+ 
+ 	return 0;

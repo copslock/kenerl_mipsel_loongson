@@ -1,42 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 13:58:27 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:58247 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023637AbXGMM6Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 13 Jul 2007 13:58:25 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6DCcBQf020105;
-	Fri, 13 Jul 2007 13:38:11 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6DCc9E5020104;
-	Fri, 13 Jul 2007 13:38:09 +0100
-Date:	Fri, 13 Jul 2007 13:38:09 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] fix MIPSsim cflags
-Message-ID: <20070713123809.GA20009@linux-mips.org>
-References: <20070713163657.4348a72a.yoichi_yuasa@tripeaks.co.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070713163657.4348a72a.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 14:07:39 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:24778 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023621AbXGMNHg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2007 14:07:36 +0100
+Received: from localhost (p3184-ipad31funabasi.chiba.ocn.ne.jp [221.189.127.184])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8671AADEF; Fri, 13 Jul 2007 22:06:16 +0900 (JST)
+Date:	Fri, 13 Jul 2007 22:07:11 +0900 (JST)
+Message-Id: <20070713.220711.61510713.anemo@mba.ocn.ne.jp>
+To:	post@pfrst.de
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Use NULL for pointer
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.21.0707130135090.1523-100000@Opal.Peter>
+References: <20070713.014949.55147875.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.21.0707130135090.1523-100000@Opal.Peter>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15766
+X-archive-position: 15767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 13, 2007 at 04:36:57PM +0900, Yoichi Yuasa wrote:
+On Fri, 13 Jul 2007 01:50:07 +0200 (CEST), post@pfrst.de wrote:
+> Please excuse me, i couldn't restrain myself from commenting on this.
+> It's a pity, that a weird warning (which gcc version with what settings
+> did produce it ?) urges one to (re-)introduce this obsolescent macro.
 
-> Fix MIPSsim cflags.
+The warning is produced by sparse, not gcc.
 
-Applied.  Thanks,
+http://www.kernel.org/pub/software/devel/sparse/
 
-  Ralf
+I know C++ dislike NULL, but it seems kernel developpers like NULL for
+a null pointer.  There is another way to convert a pointer to a bool:
+
+		action = board_be_handler(regs, !!fixup);
+
+It might satisfy both people, but might surprise other people a bit :)
+
+---
+Atsushi Nemoto

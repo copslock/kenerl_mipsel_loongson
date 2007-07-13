@@ -1,247 +1,154 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 10:12:42 +0100 (BST)
-Received: from kukmak.uni-mb.si ([164.8.100.3]:44167 "EHLO kukmak.uni-mb.si")
-	by ftp.linux-mips.org with ESMTP id S20023494AbXGMJMj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jul 2007 10:12:39 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jul 2007 10:42:10 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:19728 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20023512AbXGMJmH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 13 Jul 2007 10:42:07 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by kukmak.uni-mb.si (Postfix) with ESMTP id BC77EBEE6B;
-	Fri, 13 Jul 2007 11:12:07 +0200 (CEST)
-Received: from localhost ([127.0.0.1])
- by localhost (kukmak.uni-mb.si [127.0.0.1]) (amavisd-new, port 10024)
- with LMTP id 20556-03-2; Fri, 13 Jul 2007 11:12:04 +0200 (CEST)
-Received: from localhost (um-sd06-229-2.uni-mb.si [164.8.213.91])
-	by kukmak.uni-mb.si (Postfix) with ESMTP id 71B82BEE65;
-	Fri, 13 Jul 2007 11:12:03 +0200 (CEST)
-Date:	Fri, 13 Jul 2007 11:12:03 +0200
-From:	Domen Puncer <domen.puncer@telargo.com>
-To:	Russell King <rmk@arm.linux.org.uk>
-Cc:	David Brownell <david-b@pacbell.net>,
-	Christoph Hellwig <hch@lst.de>, linuxppc-dev@ozlabs.org,
-	Sylvain Munaut <tnt@246tnt.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3] powerpc clk.h interface for platforms
-Message-ID: <20070713091203.GE11476@nd47.coderock.org>
-References: <20070711093113.GE4375@moe.telargo.com> <200707110856.58463.david-b@pacbell.net> <20070711161633.GA4846@lst.de> <200707111002.55119.david-b@pacbell.net> <20070711203454.GC2301@flint.arm.linux.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070711203454.GC2301@flint.arm.linux.org.uk>
-User-Agent: Mutt/1.4.2.2i
-X-Virus-Scanned: by amavisd-new / Sophos+Sophie & ClamAV at kukmak.uni-mb.si
-Return-Path: <domen.puncer@telargo.com>
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 748F3E1C99;
+	Fri, 13 Jul 2007 11:41:34 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id pLw5HhZIvBa1; Fri, 13 Jul 2007 11:41:34 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 04E1BE1C61;
+	Fri, 13 Jul 2007 11:41:34 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6D9fagC016232;
+	Fri, 13 Jul 2007 11:41:36 +0200
+Date:	Fri, 13 Jul 2007 10:41:35 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@linux-foundation.org>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Mark Mason <mason@broadcom.com>,
+	Andy Whitcroft <apw@shadowen.org>,
+	Randy Dunlap <rdunlap@xenotime.net>,
+	Joel Schopp <jschopp@austin.ibm.com>,
+	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sb1250-duart.c: SB1250 DUART serial support
+In-Reply-To: <20070712114712.de5d6c9d.akpm@linux-foundation.org>
+Message-ID: <Pine.LNX.4.64N.0707131019060.32029@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0707121745010.3029@blysk.ds.pg.gda.pl>
+ <20070712114712.de5d6c9d.akpm@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.90.3/3654/Fri Jul 13 02:23:32 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15762
+X-archive-position: 15763
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: domen.puncer@telargo.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 11/07/07 21:34 +0100, Russell King wrote:
-> On Wed, Jul 11, 2007 at 10:02:54AM -0700, David Brownell wrote:
-> > On Wednesday 11 July 2007, Christoph Hellwig wrote:
-> > > On Wed, Jul 11, 2007 at 08:56:58AM -0700, David Brownell wrote:
-> > > > > Umm, this is about the fifth almost identical implementation of
-> > > > > the clk_ functions.  Please, please put it into common code.
-> > > > > 
-> > > > > And talk to the mips folks which just got a similar comment from me.
-> > > > 
-> > > > You mean like a lib/clock.c core, rather than an opsvector?
-> > > 
-> > > I mean an ops vector and surrounding wrappers.  Every architecture
-> > > is reimplementing their own dispatch table which is rather annoying.
+On Thu, 12 Jul 2007, Andrew Morton wrote:
+
+> On Thu, 12 Jul 2007 18:39:00 +0100 (BST)
+> "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+> 
+> >  This is a driver for the SB1250 DUART, a dual serial port implementation 
+> > included in the Broadcom family of SOCs descending from the SiByte SB1250 
+> > MIPS64 chip multiprocessor.  It is a new implementation replacing the 
+> > old-fashioned driver currently present in the linux-mips.org tree.  It 
+> > supports all the usual features one would expect from a(n asynchronous) 
+> > serial driver, including modem line control (as far as hardware supports 
+> > it -- there is edge detection logic missing from the DCD and RI lines and 
+> > the driver does not implement polling of these lines at the moment), the 
+> > serial console, BREAK transmission and reception, including the magic 
+> > SysRq.  The receive FIFO threshold is not maintained though.
 > > 
-> > ARM doesn't.  :)
-> > 
-> > But then, nobody expects one kernel to support more than one
-> > vendor's ARM chips; or usually, more than one generation of
-> > that vendor's chips.  So any dispatch table is specific to
-> > a given platform, and tuned to its quirks.  Not much to share
-> > between OMAP and AT91, for example, except in some cases maybe
-> > an arm926ejs block.
+> > ...
+> >
+> > +
+> > +#if defined(CONFIG_SIBYTE_BCM1x55) || defined(CONFIG_SIBYTE_BCM1x80)
+> > +#include <asm/sibyte/bcm1480_regs.h>
+> > +#include <asm/sibyte/bcm1480_int.h>
+> > +
+> > +#define SBD_CHANREGS(line)	A_BCM1480_DUART_CHANREG((line), 0)
+> > +#define SBD_CTRLREGS(line)	A_BCM1480_DUART_CTRLREG((line), 0)
+> > +#define SBD_INT(line)		(K_BCM1480_INT_UART_0 + (line))
+> > +
+> > +#elif defined(CONFIG_SIBYTE_SB1250) || defined(CONFIG_SIBYTE_BCM112X)
+> > +#include <asm/sibyte/sb1250_regs.h>
+> > +#include <asm/sibyte/sb1250_int.h>
+> > +
+> > +#define SBD_CHANREGS(line)	A_DUART_CHANREG((line), 0)
+> > +#define SBD_CTRLREGS(line)	A_DUART_CTRLREG(0)
+> > +#define SBD_INT(line)		(K_INT_UART_0 + (line))
+> > +
+> > +#else
+> > +#error invalid SB1250 UART configuration
+> > +
+> > +#endif
 > 
-> And also the information stored within a 'struct clk' is very platform
-> dependent.  In the most basic situation, 'struct clk' may not actually
-> be a structure, but the clock rate.  All functions with the exception of
-> clk_get() and clk_get_rate() could well be no-ops, clk_get() just returns
-> the 'struct clk' representing the rate and 'clk_get_rate' returns that
-> as an integer.
+> If the #error can trigger, the Kconfig is broken, yes?  (No action is
+> required though - it's always good to have checks)
+
+ It should not trigger, because to the best of my knowledge all the chip 
+variations we support are covered above.  Ultimately, this should become a 
+platform device, where this will become a non-issue.  The conditions have 
+been copied verbatim from the original driver.
+
+> > +#define to_sport(uport) container_of(uport, struct sbd_port, port)
 > 
-> More complex setups might want 'struct clk' to contain the address of a
-> clock enable register, the bit position to enable that clock source, the
-> clock rate, a refcount, and so on, all of which would be utterly useless
-> for a platform which had fixed rate clocks.
+> That didn't need to be implemented as a macro.
 
-The patch that triggered this discussion is at the end.
-It doesn't make any assumption on struct clk, it's just a
-wrapper around functions from clk.h.
-Point of this patch was to abstract exported functions, since
-arch/powerpc/ can support multiple platfroms in one binary.
+ Like the last time -- everybody seems to implement it as such.  If you 
+think that should be changed, I could see if I find some time to grep the 
+tree and reimplement all the to_*() macros.
 
+> > +#define __unused __attribute__((__unused__))
 > 
-> > I've not seen a solid proposal for such a thing, and it's not
-> > clear to me how that would play with with older code (e.g. any
-> > of the ARM implementations).
+> Please use the generic implementations here.  `grep unused
+> include/linux/compiler*.h'.
+
+ Any changes there in the last few days?  Hmm, I must have missed them...  
+I'll fix it up next week.
+
+> > +/*
+> > + * In bug 1956, we get glitches that can mess up uart registers.  This
+> > + * "read-mode-reg after any register access" is an accepted workaround.
+> > + */
 > 
-> If people are implementing their own incompatible changes without reference
-> to the API they're invalid implementations as far as I'm concerned.  If
-> they can't bothered to lift a finger to even _talk_ to me about their
-> requirements they just don't have any say concerning any future
-> developments IMO.
-
-My changes were implemented according to clk.h API.
-And honestly, I just wanted to rework clocks in some SPI driver and
-others made me do all the clk work. ;-)
-
-
-	Domen
-
+> <looks in bugzilla.kernel.org>
 > 
-> IOW, talk to me and I'll talk back.  Ignore me and I'll ignore them.
+> <wonders how a uart driver can fix an smbfs bug>
 > 
-> -- 
-> Russell King
->  Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
->  maintainer of:
+> Perhaps a reference to where that bug number came from?
 
+ Again, copied verbatim from the original driver.  It must be a chip 
+erratum.  Which is not publicly available, but I think it is still better 
+to have it referred to from here than not at all, in case someone wants to 
+pester Broadcom about this one.  I can s/bug/erratum/, but I am not sure 
+if it won't confuse them then if contacted. ;-)
 
+> > +static void __war_sbd1956(struct sbd_port *sport)
+> > +{
+> > +	__read_sbdchn(sport, R_DUART_MODE_REG_1);
+> > +	__read_sbdchn(sport, R_DUART_MODE_REG_2);
+> > +}
+> >
+> > ...
+> >
+> > +static struct uart_ops sbd_ops = {
+> 
+> I suppose if we made this const, something would blow up.
 
+ No problem at the moment -- I'll change it.  Though I have a strong 
+suspicion .startup may have to be overridden at the run time at one point 
+because of the way the port #1 is wired on the SWARM board (but nowhere 
+else) -- the port is shared with a sound device (if it sounds odd, I can 
+provide an overview of the hardware configuration).  Then again, perhaps I 
+will do it in a different way...
 
-clk interface for arch/powerpc, platforms should fill
-clk_functions.
+> There is no power management support in this driver.
 
-Signed-off-by: Domen Puncer <domen.puncer@telargo.com>
+ Like nowhere in the chip.
 
----
- arch/powerpc/kernel/Makefile        |    3 -
- arch/powerpc/kernel/clock.c         |   82 ++++++++++++++++++++++++++++++++++++
- include/asm-powerpc/clk_interface.h |   20 ++++++++
- 3 files changed, 104 insertions(+), 1 deletion(-)
-
-Index: work-powerpc.git/arch/powerpc/kernel/clock.c
-===================================================================
---- /dev/null
-+++ work-powerpc.git/arch/powerpc/kernel/clock.c
-@@ -0,0 +1,82 @@
-+/*
-+ * Dummy clk implementations for powerpc.
-+ * These need to be overridden in platform code.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/errno.h>
-+#include <linux/module.h>
-+#include <asm/clk_interface.h>
-+
-+struct clk_interface clk_functions;
-+
-+struct clk *clk_get(struct device *dev, const char *id)
-+{
-+	if (clk_functions.clk_get)
-+		return clk_functions.clk_get(dev, id);
-+	return ERR_PTR(-ENOSYS);
-+}
-+EXPORT_SYMBOL(clk_get);
-+
-+void clk_put(struct clk *clk)
-+{
-+	if (clk_functions.clk_put)
-+		clk_functions.clk_put(clk);
-+}
-+EXPORT_SYMBOL(clk_put);
-+
-+int clk_enable(struct clk *clk)
-+{
-+	if (clk_functions.clk_enable)
-+		return clk_functions.clk_enable(clk);
-+	return -ENOSYS;
-+}
-+EXPORT_SYMBOL(clk_enable);
-+
-+void clk_disable(struct clk *clk)
-+{
-+	if (clk_functions.clk_disable)
-+		clk_functions.clk_disable(clk);
-+}
-+EXPORT_SYMBOL(clk_disable);
-+
-+unsigned long clk_get_rate(struct clk *clk)
-+{
-+	if (clk_functions.clk_get_rate)
-+		return clk_functions.clk_get_rate(clk);
-+	return 0;
-+}
-+EXPORT_SYMBOL(clk_get_rate);
-+
-+long clk_round_rate(struct clk *clk, unsigned long rate)
-+{
-+	if (clk_functions.clk_round_rate)
-+		return clk_functions.clk_round_rate(clk, rate);
-+	return -ENOSYS;
-+}
-+EXPORT_SYMBOL(clk_round_rate);
-+
-+int clk_set_rate(struct clk *clk, unsigned long rate)
-+{
-+	if (clk_functions.clk_set_rate)
-+		return clk_functions.clk_set_rate(clk, rate);
-+	return -ENOSYS;
-+}
-+EXPORT_SYMBOL(clk_set_rate);
-+
-+struct clk *clk_get_parent(struct clk *clk)
-+{
-+	if (clk_functions.clk_get_parent)
-+		return clk_functions.clk_get_parent(clk);
-+	return ERR_PTR(-ENOSYS);
-+}
-+EXPORT_SYMBOL(clk_get_parent);
-+
-+int clk_set_parent(struct clk *clk, struct clk *parent)
-+{
-+	if (clk_functions.clk_set_parent)
-+		return clk_functions.clk_set_parent(clk, parent);
-+	return -ENOSYS;
-+}
-+EXPORT_SYMBOL(clk_set_parent);
-Index: work-powerpc.git/include/asm-powerpc/clk_interface.h
-===================================================================
---- /dev/null
-+++ work-powerpc.git/include/asm-powerpc/clk_interface.h
-@@ -0,0 +1,20 @@
-+#ifndef __ASM_POWERPC_CLK_INTERFACE_H
-+#define __ASM_POWERPC_CLK_INTERFACE_H
-+
-+#include <linux/clk.h>
-+
-+struct clk_interface {
-+	struct clk*	(*clk_get)	(struct device *dev, const char *id);
-+	int		(*clk_enable)	(struct clk *clk);
-+	void		(*clk_disable)	(struct clk *clk);
-+	unsigned long	(*clk_get_rate)	(struct clk *clk);
-+	void		(*clk_put)	(struct clk *clk);
-+	long		(*clk_round_rate) (struct clk *clk, unsigned long rate);
-+	int 		(*clk_set_rate)	(struct clk *clk, unsigned long rate);
-+	int		(*clk_set_parent) (struct clk *clk, struct clk *parent);
-+	struct clk*	(*clk_get_parent) (struct clk *clk);
-+};
-+
-+extern struct clk_interface clk_functions;
-+
-+#endif /* __ASM_POWERPC_CLK_INTERFACE_H */
-Index: work-powerpc.git/arch/powerpc/kernel/Makefile
-===================================================================
---- work-powerpc.git.orig/arch/powerpc/kernel/Makefile
-+++ work-powerpc.git/arch/powerpc/kernel/Makefile
-@@ -12,7 +12,8 @@ endif
- 
- obj-y				:= semaphore.o cputable.o ptrace.o syscalls.o \
- 				   irq.o align.o signal_32.o pmc.o vdso.o \
--				   init_task.o process.o systbl.o idle.o
-+				   init_task.o process.o systbl.o idle.o \
-+				   clock.o
- obj-y				+= vdso32/
- obj-$(CONFIG_PPC64)		+= setup_64.o binfmt_elf32.o sys_ppc32.o \
- 				   signal_64.o ptrace32.o \
+  Maciej

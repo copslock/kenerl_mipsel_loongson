@@ -1,73 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2007 13:33:48 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:55722 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20024697AbXGPMdq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jul 2007 13:33:46 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6GCXiS0013999;
-	Mon, 16 Jul 2007 13:33:44 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6GCXit7013998;
-	Mon, 16 Jul 2007 13:33:44 +0100
-Date:	Mon, 16 Jul 2007 13:33:44 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergey Rogozhkin <rogozhkin@niisi.msk.ru>
-Cc:	kumba@gentoo.org, linux-mips@linux-mips.org
-Subject: Re: O2 RM7000 Issues
-Message-ID: <20070716123343.GA13439@linux-mips.org>
-References: <4687DCE2.8070302@gentoo.org> <468825BE.6090001@gmx.net> <50451.70.107.91.207.1183381723.squirrel@webmail.wesleyan.edu> <20070704152729.GA2925@linux-mips.org> <20070704192208.GA7873@linux-mips.org> <469B5C2E.5080905@niisi.msk.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jul 2007 16:11:49 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:35088 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20024722AbXGPPLr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Jul 2007 16:11:47 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id E91DFE1CBB;
+	Mon, 16 Jul 2007 17:11:43 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id gGEcnFzwpPFA; Mon, 16 Jul 2007 17:11:43 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 8B840E1C63;
+	Mon, 16 Jul 2007 17:11:43 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6GFBk6L017549;
+	Mon, 16 Jul 2007 17:11:48 +0200
+Date:	Mon, 16 Jul 2007 16:11:45 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Songmao Tian <tiansm@lemote.com>
+cc:	LinuxBIOS Mailing List <linuxbios@linuxbios.org>,
+	marc.jones@amd.com, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: about cs5536 interrupt ack
+In-Reply-To: <4695D78F.8010806@lemote.com>
+Message-ID: <Pine.LNX.4.64N.0707161556560.15539@blysk.ds.pg.gda.pl>
+References: <4694A495.1050006@lemote.com> <Pine.LNX.4.64N.0707111347360.26459@blysk.ds.pg.gda.pl>
+ <4694F4EB.8040000@lemote.com> <Pine.LNX.4.64N.0707111634430.26459@blysk.ds.pg.gda.pl>
+ <4695D78F.8010806@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <469B5C2E.5080905@niisi.msk.ru>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91/3681/Mon Jul 16 15:16:18 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15781
+X-archive-position: 15782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 16, 2007 at 03:53:18PM +0400, Sergey Rogozhkin wrote:
+On Thu, 12 Jul 2007, Songmao Tian wrote:
 
-> >Big loud bell began ringing.  The RM7000 fetches and decodes multiple
-> >instructions in one go.  And just like the E9000 cores it does
-> >throw an exception if it doesn't like one of the opcodes even if that
-> >doesn't actually get executed.  The kernel has a workaround for this
-> >PMC-Sierra peculiarity (I call it a bug) but it's only being activated
-> >for E9000 platforms.
+> 8259 problem  seems to be done with the attached patch, IDE hung seems to be
+> the dma setting problem.
 > 
-> We have had a similar problems with shell on RM7000 based system. It 
-> seems, the reason listed above is only half of the problem, another is: 
-> linux works incorrectly with RM7000 caches hierarchy. One visible effect 
->  is errors in userspace on signal delivery trampolines.
-> Lets imagine we deliver a signal to application: we write signal 
-> trampoline instructions to stack, writeback (and invalidate) 
-> corresponding dcache line, invalidate corresponding icache line. Thats 
-> all, and we think that we can safely execute the trampoline, but this is 
-> wrong on RM7000! Our trampoline is now in scache, and everything seems 
-> to be ok, but after some number of load/stores corresponding scache line 
-> can be moved to dcache, replaced in scache by another data and not 
-> written to memory (this is a feature of RM7000 caches, its dcache is not 
-> a subset of scache, you can find a possible scenario of similar (but not 
-> the same) cache line transference in RM7000 manual (7.1.5 Orphaned Cache 
-> Lines)). After that it is possible that on signal trampoline execution 
-> icache fetch old memory content instead of instruction written. If we 
-> want to execute instruction written by cpu, we must not only writeback 
-> corresponding dcache lines, but also writeback corresponding scache 
-> lines after it. The error is very sensitively to kernel/user code and 
-> data arrangement, it can be visible with one kernel configuration and 
-> irreproducible with another.
-> The problem affects not only signal trampoline flush to memory, but most 
-> cases of icache invalidation in kernel.
+> Thanks all for your advise, comments. I have learned a lot. now I continue to
+> trace down the IDE problem.
 
-Hmm...  Makes sense.  I guess I can cook up a patch based on that analysis.
+ I would still recommend you to investigate the option of making the 8259A 
+cores "transparent" and using the mapper registers to dispatch interrupts 
+directly -- it would make processing of interrupt requests considerably 
+faster and less complicated.  Please note that ffs() is O(1) and actually 
+some two or three machine instructions on MIPS architecture processors and 
+the model used by the mapper is closer to the spirit of how MIPS 
+processors do interrupt handling.  With such an approach it will also 
+likely be easier to integrate your changes upstream, than it would for 
+your changes to i8259.{c,h} needed for your unusual setup to work.
 
-Thanks!
+ Of course as an intermediate solution during development to make the 
+whole thing work the complicated use of the 8259A cores may be justified.
 
-  Ralf
+  Maciej

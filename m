@@ -1,56 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2007 10:11:59 +0100 (BST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:20389 "EHLO
-	t111.niisi.ras.ru") by ftp.linux-mips.org with ESMTP
-	id S20021348AbXGQJL5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 17 Jul 2007 10:11:57 +0100
-Received: from t111.niisi.ras.ru (localhost [127.0.0.1])
-	by t111.niisi.ras.ru (8.13.4/8.13.4) with ESMTP id l6H9BfpD005485;
-	Tue, 17 Jul 2007 13:11:41 +0400
-Received: (from uucp@localhost)
-	by t111.niisi.ras.ru (8.13.4/8.13.4/Submit) with UUCP id l6H9BfBc005482;
-	Tue, 17 Jul 2007 13:11:41 +0400
-Received: from [192.168.173.21] (aa248 [172.16.0.248])
-	by aa19.niisi.msk.ru (8.12.8/8.12.8) with ESMTP id l6H9BrGh020799;
-	Tue, 17 Jul 2007 13:11:53 +0400
-Message-ID: <469C8600.7090208@niisi.msk.ru>
-Date:	Tue, 17 Jul 2007 13:04:00 +0400
-From:	Sergey Rogozhkin <rogozhkin@niisi.msk.ru>
-User-Agent: Thunderbird 1.5.0.9 (X11/20070102)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jul 2007 10:16:57 +0100 (BST)
+Received: from pasmtpa.tele.dk ([80.160.77.114]:48769 "EHLO pasmtpA.tele.dk")
+	by ftp.linux-mips.org with ESMTP id S20021373AbXGQJQz (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jul 2007 10:16:55 +0100
+Received: from ravnborg.org (0x535d98d8.vgnxx8.adsl-dhcp.tele.dk [83.93.152.216])
+	by pasmtpA.tele.dk (Postfix) with ESMTP id 5F4CA80056C;
+	Tue, 17 Jul 2007 11:16:24 +0200 (CEST)
+Received: by ravnborg.org (Postfix, from userid 1000)
+	id D0478580D2; Tue, 17 Jul 2007 11:17:38 +0200 (CEST)
+Date:	Tue, 17 Jul 2007 11:17:38 +0200
+From:	Sam Ravnborg <sam@ravnborg.org>
 To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>,
-	"Gleb O. Raiko" <raiko@niisi.msk.ru>, Kumba <kumba@gentoo.org>
-Subject: Re: O2 RM7000 Issues
-References: <4687DCE2.8070302@gentoo.org> <468825BE.6090001@gmx.net> <50451.70.107.91.207.1183381723.squirrel@webmail.wesleyan.edu> <20070704152729.GA2925@linux-mips.org> <20070704192208.GA7873@linux-mips.org>
-In-Reply-To: <20070704192208.GA7873@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <rogozhkin@niisi.msk.ru>
+Cc:	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [KBUILD] Whitelist references from __dbe_table to .init
+Message-ID: <20070717091738.GB19679@uranus.ravnborg.org>
+References: <20070710081632.GA10559@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070710081632.GA10559@linux-mips.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15786
+X-archive-position: 15787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rogozhkin@niisi.msk.ru
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Jul 10, 2007 at 09:16:32AM +0100, Ralf Baechle wrote:
+> This is needed on MIPS where the same mechanism as get_user() is used to
+> intercept bus error exceptions for some hardware probes.  Without this
+> patch modpost will throw spurious warnings:
+> 
+>   LD      vmlinux
+>   SYSMAP  System.map
+>   SYSMAP  .tmp_System.map
+>   MODPOST vmlinux
+> WARNING: arch/mips/sgi-ip22/built-in.o(__dbe_table+0x0): Section mismatch: reference to .init.text:
 
-> Big loud bell began ringing.  The RM7000 fetches and decodes multiple
-> instructions in one go.  And just like the E9000 cores it does
-> throw an exception if it doesn't like one of the opcodes even if that
-> doesn't actually get executed.  The kernel has a workaround for this
-> PMC-Sierra peculiarity (I call it a bug) but it's only being activated
-> for E9000 platforms.
+Applied,
 
-Are you really sure RM7000 has this bug? Workaround mentioned above 
-breaks gcc signal frame unwinding mechanism: it search for sigcontext 
-struct at fixed offset from signal trampoline.
-
-And one another known RM7000 bug, maybe not taken into account by linux: 
-errata 38. r4k_wait is not suitable for RM7000 on some systems. I don't 
-know if "O2" is affected.
-
-Sergey Rogozhkin
+	Sam

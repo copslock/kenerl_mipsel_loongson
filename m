@@ -1,158 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 21:17:09 +0100 (BST)
-Received: from bay0-omc3-s35.bay0.hotmail.com ([65.54.246.235]:27108 "EHLO
-	bay0-omc3-s35.bay0.hotmail.com") by ftp.linux-mips.org with ESMTP
-	id S20022629AbXGSURH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Jul 2007 21:17:07 +0100
-Received: from BAY124-DS3 ([207.46.11.158]) by bay0-omc3-s35.bay0.hotmail.com with Microsoft SMTPSVC(6.0.3790.2668);
-	 Thu, 19 Jul 2007 13:17:00 -0700
-X-Originating-IP: [82.152.169.203]
-X-Originating-Email: [danieljlaird@hotmail.com]
-Message-ID: <BAY124-DS362D171D52D42DEA949D3DCFB0@phx.gbl>
-From:	<danieljlaird@hotmail.com>
-To:	<linux-mips@linux-mips.org>
-References: <469F822D.9040209@nxp.com> <469FA03E.7070209@ru.mvista.com>
-Subject: Re: [PATCH] Fix known HW bug with MIPS core on NXP/Philips PNX8550
-Date:	Thu, 19 Jul 2007 21:16:52 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 23:27:24 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.181]:18140 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022645AbXGSW1W (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Jul 2007 23:27:22 +0100
+Received: by wa-out-1112.google.com with SMTP id m16so777971waf
+        for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 15:27:00 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=O0C3yQBkzspbxbpaW9729tZjS+uaSE1TtPyNEiQroVjZigOaEHWYZy02btpZ4RKdimvkLR5FIPXS18Ic3Uf/UqDHy1jNw11IIbcweMbdGstNQQZQ/UCIFmKwF1AcTAQ2dSaAcdMwRGrXqUSGEGsu00VuVg2EUSy3db9isPHvCko=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=iDY7gGscW1uUm1AspOKh2tJMIJtEG2TqqEbqResPV8tJC2ydkgVvH5fXsLEcDG3/w4Arq84x4aJPsB+jAlFSeERtz+OMCGHlv2pos+to7FFVTZislPGNlCL2M9T757UkN8QgWoYdCRqJnNVCNzrhlYCX1eYkj//hp1o5JVRA4A8=
+Received: by 10.114.37.1 with SMTP id k1mr2122498wak.1184884019901;
+        Thu, 19 Jul 2007 15:26:59 -0700 (PDT)
+Received: by 10.114.110.6 with HTTP; Thu, 19 Jul 2007 15:26:59 -0700 (PDT)
+Message-ID: <b2b2f2320707191526y4b505e66q51fb2e4bf1dc991f@mail.gmail.com>
+Date:	Thu, 19 Jul 2007 16:26:59 -0600
+From:	"Shane McDonald" <mcdonald.shane@gmail.com>
+To:	"Andrew Sharp" <andy.sharp@onstor.com>
+Subject: Re: O2 RM7000 Issues
+Cc:	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+In-Reply-To: <20070719115822.027a8891@ripper.onstor.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=response
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-Importance: Normal
-X-Mailer: Microsoft Windows Live Mail 12.0.1184
-X-MimeOLE: Produced By Microsoft MimeOLE V12.0.1184
-X-OriginalArrivalTime: 19 Jul 2007 20:17:00.0559 (UTC) FILETIME=[C38951F0:01C7CA41]
-Return-Path: <danieljlaird@hotmail.com>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_117275_8138886.1184884019867"
+References: <4687DCE2.8070302@gentoo.org> <468825BE.6090001@gmx.net>
+	 <50451.70.107.91.207.1183381723.squirrel@webmail.wesleyan.edu>
+	 <20070704152729.GA2925@linux-mips.org>
+	 <20070704192208.GA7873@linux-mips.org> <469B5C2E.5080905@niisi.msk.ru>
+	 <20070716123343.GA13439@linux-mips.org>
+	 <20070716103823.3fe9aef4@ripper.onstor.net>
+	 <469CCBB4.60005@gentoo.org>
+	 <20070719115822.027a8891@ripper.onstor.net>
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15824
+X-archive-position: 15825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Cheers for all comments, will
-1.) remove reinvented code
-2.) Add explanation of exact bug (corruption of TLB)
-3.) Use runtime checking instead of #ifdef
-4.) Not use Thunderbird to post patches!
+------=_Part_117275_8138886.1184884019867
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Cheers
-Dan
+I have been having similar problems to Andrew and Kumba on my setup -- a
+PMC-Sierra Xiao Hu thin client computer (RM7035C based) running Debian etch
+with a PMC 2.6.18 kernel.  Running large complicated shell scripts, such as
+inetutils' configure script, consistently dies on (usually) an illegal
+instruction, but always in a different place.  I've just added my machine to
+the ICACHE_REFILLS_WORKAROUND_WAR, and that seems to have fixed it.
 
+I also tried adding in Ralf's rm7k_wait_irqoff() patch, but it didn't
+improve things, although it didn't appear to break anything, either.  Is
+there some behaviour I should be looking for to notice if WAIT is / isn't
+working on my platform?
 
------ Original Message -----
-From: "Sergei Shtylyov" <sshtylyov@ru.mvista.com>
-To: "Daniel Laird" <daniel.j.laird@nxp.com>
-Cc: <linux-mips@linux-mips.org>
-Sent: Thursday, July 19, 2007 6:32 PM
-Subject: Re: [PATCH] Fix known HW bug with MIPS core on NXP/Philips PNX8550
+Shane
 
-> Hello.
+On 7/19/07, Andrew Sharp <andy.sharp@onstor.com> wrote:
 >
-> Daniel Laird wrote:
+> On Tue, 17 Jul 2007 10:01:24 -0400 Kumba <kumba@gentoo.org> wrote:
 >
-> > Fix known bug with MIPS core when using TLB on NXP/Philips PNX8550
+> > Andrew Sharp wrote:
+> > >
+> > > I hungrily await said patch, as I believe this is a problem on
+> > > RM9000 processors as well.  I'm seeing "random" SIGILLs on user
+> > > processes, particularly large complicated shell scripts like
+> > > configure on an RM9k platform.
+> >
+> > This was more or less exactly what I was seeing on an O2 RM7000 setup
+> > until the fix for errata #28 was put in (which should already be
+> > enabled for RM9000 systems).
+> >
+> > Check include/asm-mips/war.h and make sure your machine is included
+> > in the list that define ICACHE_REFILLS_WORKAROUND_WAR.  If not, add
+> > it and test; and fire off a patch.  Should fix that issue (especially
+> > if bash is the only userland process dying while complex g++ compiles
+> > behave fine)
 >
->    Would've been god to somehow document it too...
+> Thanks, I had added this about a month ago, but the l-users were
+> reporting that the problem persisted.  Now that I've had a chance to
+> examine it myself, it appears they were confused.  There's a first time
+> for everything.
 >
->> Signed-off-by: Daniel Laird <daniel.j.laird@nxp.com>
+> I will be sending some patches to be sure, once I get all the bugs
+> worked out.  This architecture, a bifurcated RM9000x2 together with a
+> marvell south bridge, is a searing pain I have to deal with daily.
 >
->> Index: linux-2.6.22.1/arch/mips/mm/tlbex.c
->> ===================================================================
->> --- linux-2.6.22.1/arch/mips/mm/tlbex.c    (revision 8)
->> +++ linux-2.6.22.1/arch/mips/mm/tlbex.c    (working copy)
-> [...]
->> @@ -705,6 +719,7 @@
->>
->> /* Some CP0 registers */
->> #define C0_INDEX    0, 0
->> +#define C0_RANDOM   1, 0
->> #define C0_ENTRYLO0    2, 0
->> #define C0_TCBIND    2, 2
->> #define C0_ENTRYLO1    3, 0
->> @@ -712,6 +727,7 @@
->> #define C0_BADVADDR    8, 0
->> #define C0_ENTRYHI    10, 0
->> #define C0_EPC        14, 0
->> +#define C0_CONFIG    16, 0
->> #define C0_XCONTEXT    20, 0
->>
->> #ifdef CONFIG_64BIT
->> @@ -734,6 +750,57 @@
->> static __initdata struct label labels[128];
->> static __initdata struct reloc relocs[128];
->>
->> +#ifdef CONFIG_PNX8550
->> +static void __init build_pnx8550_bug_fix( u32 **p, struct label **l, 
->> struct reloc **r)
->> +{
->> +#define MFC0(_reg, _cp, _sel)    \
->> +    ((cop0_op)  << OP_SH    \
->> +    | (mfc_op) << RS_SH    \
->> +    | (_reg)   << RT_SH    \
->> +    | (_cp)    << RD_SH    \
->> +    | (_sel))
->> +
->> +#define MTC0(_reg, _cp, _sel)    \
->> +    ((cop0_op)  << OP_SH    \
->> +    | (mtc_op) << RS_SH    \
->> +    | (_reg)   << RT_SH    \
->> +    | (_cp)    << RD_SH    \
->> +    | (_sel))
->> +
+> Cheers,
 >
->    Macro defs inside function, isn't that er... too much?
->    And don't we already have macro M() doing exactly what these two macros 
-> are doing?
+> a
 >
->> +    /* load epc and badvaddr to k0 and k1 */
->> +    i_MFC0(p, K0, C0_EPC);
->> +    i_MFC0(p, K1, C0_BADVADDR);
->> +
->> +    /* branch if code entry  */
->> +    il_beq(p, r, K0, K1, label_pnx8550_bac_reset);
->> +    i_addiu(p, K0, K0, 4);
->> +
->> +    /* branch if code entry in BDS */
->> +    il_beq(p, r, K0, K1, label_pnx8550_bac_reset);
->> +    i_nop(p);
->> +    /* Write data tlb entry 11..31 */
->> +    i_tlbwr(p);
->> +    i_eret(p);
->> +    /* BAC Reset */
->> +    l_pnx8550_bac_reset(l, *p);
->> +    **p = MFC0(K0, C0_CONFIG, 7);
->> +    (*p)++;
 >
->    Hmmm, why we need another version of i_MFC0? After looking at the 
-> currecnt code it seemed to me that i_M[FT]C0 are just using i_[d]m[ft]c0 
-> incorrectly -- 
-> those are difined to have 3 opcode args (by being built as I_u1u2u3() but 
-> only get passed 2 args.  Hmm, I don't understand how i_[d]m[ft]c0() 
-> invocations used to work before since they're alsway passing only 2 opcode 
-> args where 3 are requiered...
->    Ah, that must be due to those tricky macros above -- with commas 
-> inside.
-> David, then this trickery is unacceptable -- add the needed macro instead; 
-> and there's no need to use i_M[FT]C0() on a 32-bit only CPU, just use 
-> i_m[ft]c0().
->
->> +    i_ori(p, K0, K0, (1<<14));
->> +
->> +    **p = MTC0(K0, C0_CONFIG, 7);
->> +    (*p)++;
->
->    So, this also won't do.
->
-> [...]
->
-> WBR, Sergei
->
-> 
+
+------=_Part_117275_8138886.1184884019867
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+I have been having similar problems to Andrew and Kumba on my setup -- a PMC-Sierra Xiao Hu thin client computer (RM7035C based) running Debian etch with a PMC 2.6.18 kernel.&nbsp; Running large complicated shell scripts, such as inetutils&#39; configure script, consistently dies on (usually) an illegal instruction, but always in a different place.&nbsp; I&#39;ve just added my machine to the ICACHE_REFILLS_WORKAROUND_WAR, and that seems to have fixed it.
+<br><br>I also tried adding in Ralf&#39;s rm7k_wait_irqoff() patch, but it didn&#39;t improve things, although it didn&#39;t appear to break anything, either.&nbsp; Is there some behaviour I should be looking for to notice if WAIT is / isn&#39;t working on my platform?
+<br><br>Shane<br><br><div><span class="gmail_quote">On 7/19/07, <b class="gmail_sendername">Andrew Sharp</b> &lt;<a href="mailto:andy.sharp@onstor.com">andy.sharp@onstor.com</a>&gt; wrote:</span><blockquote class="gmail_quote" style="border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+On Tue, 17 Jul 2007 10:01:24 -0400 Kumba &lt;<a href="mailto:kumba@gentoo.org">kumba@gentoo.org</a>&gt; wrote:<br><br>&gt; Andrew Sharp wrote:<br>&gt; &gt;<br>&gt; &gt; I hungrily await said patch, as I believe this is a problem on
+<br>&gt; &gt; RM9000 processors as well.&nbsp;&nbsp;I&#39;m seeing &quot;random&quot; SIGILLs on user<br>&gt; &gt; processes, particularly large complicated shell scripts like<br>&gt; &gt; configure on an RM9k platform.<br>&gt;<br>
+&gt; This was more or less exactly what I was seeing on an O2 RM7000 setup<br>&gt; until the fix for errata #28 was put in (which should already be<br>&gt; enabled for RM9000 systems).<br>&gt;<br>&gt; Check include/asm-mips/war.h and make sure your machine is included
+<br>&gt; in the list that define ICACHE_REFILLS_WORKAROUND_WAR.&nbsp;&nbsp;If not, add<br>&gt; it and test; and fire off a patch.&nbsp;&nbsp;Should fix that issue (especially<br>&gt; if bash is the only userland process dying while complex g++ compiles
+<br>&gt; behave fine)<br><br>Thanks, I had added this about a month ago, but the l-users were<br>reporting that the problem persisted.&nbsp;&nbsp;Now that I&#39;ve had a chance to<br>examine it myself, it appears they were confused.&nbsp;&nbsp;There&#39;s a first time
+<br>for everything.<br><br>I will be sending some patches to be sure, once I get all the bugs<br>worked out.&nbsp;&nbsp;This architecture, a bifurcated RM9000x2 together with a<br>marvell south bridge, is a searing pain I have to deal with daily.
+<br><br>Cheers,<br><br>a<br><br></blockquote></div><br>
+
+------=_Part_117275_8138886.1184884019867--

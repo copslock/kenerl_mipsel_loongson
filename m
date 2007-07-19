@@ -1,94 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 16:29:13 +0100 (BST)
-Received: from lug-owl.de ([195.71.106.12]:24278 "EHLO lug-owl.de")
-	by ftp.linux-mips.org with ESMTP id S20022528AbXGSP3L (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 19 Jul 2007 16:29:11 +0100
-Received: by lug-owl.de (Postfix, from userid 1001)
-	id B6D22F006D; Thu, 19 Jul 2007 17:28:40 +0200 (CEST)
-Date:	Thu, 19 Jul 2007 17:28:40 +0200
-From:	Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 16:31:46 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:3592 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022638AbXGSPbn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Jul 2007 16:31:43 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B0475E1C77;
+	Thu, 19 Jul 2007 17:31:39 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ISl7PG-EduC2; Thu, 19 Jul 2007 17:31:39 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 6576EE1C65;
+	Thu, 19 Jul 2007 17:31:39 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6JFVm9V003840;
+	Thu, 19 Jul 2007 17:31:49 +0200
+Date:	Thu, 19 Jul 2007 16:31:43 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Daniel Laird <daniel.j.laird@nxp.com>
-Cc:	linux-mips@linux-mips.org
+cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] Fix known HW bug with MIPS core on NXP/Philips PNX8550
-Message-ID: <20070719152840.GH22998@lug-owl.de>
-Mail-Followup-To: Daniel Laird <daniel.j.laird@nxp.com>,
-	linux-mips@linux-mips.org
+In-Reply-To: <469F822D.9040209@nxp.com>
+Message-ID: <Pine.LNX.4.64N.0707191629200.1861@blysk.ds.pg.gda.pl>
 References: <469F822D.9040209@nxp.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3ecMC0kzqsE2ddMN"
-Content-Disposition: inline
-In-Reply-To: <469F822D.9040209@nxp.com>
-X-Operating-System: Linux mail 2.6.18-4-686 
-X-gpg-fingerprint: 250D 3BCF 7127 0D8C A444  A961 1DBD 5E75 8399 E1BB
-X-gpg-key: wwwkeys.de.pgp.net
-X-Echelon-Enable: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-X-TKUeV: howto poison arsenous mail psychological biological nuclear warfare test the bombastical terror of flooding the spy listeners explosion sex drugs and rock'n'roll
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <jbglaw@lug-owl.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.1/3700/Thu Jul 19 15:13:47 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15819
+X-archive-position: 15820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jbglaw@lug-owl.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 19 Jul 2007, Daniel Laird wrote:
 
---3ecMC0kzqsE2ddMN
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 2007-07-19 16:24:29 +0100, Daniel Laird <daniel.j.laird@nxp.com> wr=
-ote:
-> Update Patch
->=20
-> Fix known bug with MIPS core when using TLB on NXP/Philips PNX8550
-
-Both versions are whitespace damaged...
-
-> Index: linux-2.6.22.1/arch/mips/mm/tlb-r4k.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-2.6.22.1/arch/mips/mm/tlb-r4k.c    (revision 8)
-> +++ linux-2.6.22.1/arch/mips/mm/tlb-r4k.c    (working copy)
-> @@ -456,7 +456,11 @@
->      */
->     probe_tlb(config);
->     write_c0_pagemask(PM_DEFAULT_MASK);
-> +#ifdef CONFIG_SOC_PNX8550
-> +    write_c0_wired(11);
-> +#else
->     write_c0_wired(0);
+> @@ -435,6 +435,9 @@
+>     label_nopage_tlbm,
+>     label_smp_pgtable_change,
+>     label_r3000_write_probe_fail,
+> +#ifdef CONFIG_PNX8550
+> +    label_pnx8550_bac_reset
 > +#endif
->     write_c0_framemask(0);
->     temp_tlb_entry =3D current_cpu_data.tlbsize - 1;
+> };
+> 
+> struct label {
 
-Magic constants?
+ You have formatting problems (mailer suspected), a comma is missing from 
+the above fragment and the whole proposal is a horrible #ifdef maze.  Can 
+you please rewrite it in a more orderly fashion?
 
-MfG, JBG
-
---=20
-      Jan-Benedict Glaw      jbglaw@lug-owl.de              +49-172-7608481
-  Signature of:                           Wenn ich wach bin, tr=C3=A4ume ic=
-h.
-  the second  :
-
---3ecMC0kzqsE2ddMN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFGn4MoHb1edYOZ4bsRAjSrAJ901RE+JhaWAz4f7ZOKFexlmjA+kwCfXkC2
-Fw9Bitj2ASeW8EEwP3GDgxI=
-=26If
------END PGP SIGNATURE-----
-
---3ecMC0kzqsE2ddMN--
+  Maciej

@@ -1,57 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 13:01:33 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:6606 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022562AbXGSMBb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Jul 2007 13:01:31 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6JC1UQK021392;
-	Thu, 19 Jul 2007 13:01:30 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6JC1UjH021391;
-	Thu, 19 Jul 2007 13:01:30 +0100
-Date:	Thu, 19 Jul 2007 13:01:30 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [RFC] User stack pointer randomisation
-Message-ID: <20070719120130.GB16258@linux-mips.org>
-References: <469F0E5F.4050005@innova-card.com> <20070719111440.GA19916@linux-mips.org> <cda58cb80707190447m1cd9b37fye7d330b50331b199@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 13:04:54 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.171]:36903 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022562AbXGSMEw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Jul 2007 13:04:52 +0100
+Received: by ug-out-1314.google.com with SMTP id u2so416144uge
+        for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 05:04:51 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:x-enigmail-version:content-type:content-transfer-encoding:from;
+        b=UKWo6bCz0EXUrlOTuHLpuSIZGBoqNI26CvpD2+D3acXxKmHDCYC4DjdFGQYaF1BokU33z+t1HlzMWnFR3OOs4ynDuOGjjQt388bFmDIboFUFD51zLgKbLpfKp1TMkB/37cTSwEEBIkuuvPEPf6gIao/YZKsYjlyV9pjGBTy03sM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:reply-to:user-agent:mime-version:to:cc:subject:x-enigmail-version:content-type:content-transfer-encoding:from;
+        b=F9zW5QnQlwR+gmHHYnEqtTZVNTwUXw8hhNnc019ocY3FF8bjA19/riZXxihedAxXOkEdudsdL2/5Kp9NOWwg4EBKoAbisUxdHZYXdR/UNojUD6X8quSq3YSrWgZbHukbtt7TfBQPFz/a9Xpx3FEYXZV26HpWCxl8UPPgvmlqevE=
+Received: by 10.86.79.19 with SMTP id c19mr1876429fgb.1184846691233;
+        Thu, 19 Jul 2007 05:04:51 -0700 (PDT)
+Received: from ?192.168.0.24? ( [81.252.61.1])
+        by mx.google.com with ESMTPS id 31sm4293823fkt.2007.07.19.05.04.50
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 19 Jul 2007 05:04:50 -0700 (PDT)
+Message-ID: <469F5345.5010209@innova-card.com>
+Date:	Thu, 19 Jul 2007 14:04:21 +0200
+Reply-To: franck.bui-huu@innova-card.com
+User-Agent: Thunderbird 1.5.0.4 (X11/20060614)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cda58cb80707190447m1cd9b37fye7d330b50331b199@mail.gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	nigel@mips.com, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] User stack pointer randomisation
+X-Enigmail-Version: 0.94.4.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15806
+X-archive-position: 15807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 19, 2007 at 01:47:19PM +0200, Franck Bui-Huu wrote:
+From: Franck Bui-Huu <fbuihuu@gmail.com>
 
-> this is weird I would have defined them like this instead:
-> 
-> #if (_MIPS_SIM == _MIPS_SIM_ABI32)
-> #define ALSZ 8
-> #elif (_MIPS_SIM == _MIPS_SIM_NABI32) || (_MIPS_SIM == _MIPS_SIM_ABI64)
-> #define ALSZ 16
-> #endif
-> 
-> #define ALMASK (~(ALSZ-1))
+This patch adds a page size range randomisation to the user
+stack pointer.
 
-<asm/asm.h> which is fairly similar to it's userspace equivalent <sys/asm.h>
-contains definitions which are some sort of pseudo-standard in the MIPS
-world, including ALSZ and ALMASK.  If I had choosen them I'd have set
-ALSZ to 8 rsp. 16, just like you ...  Anyway, having similar macros makes
-porting of assembler code easier.  This also is why <asm/regdef.h> and
-<asm/fpregdef.h> are as they are.  RISC/os, IRIX, some of the BSD variants,
-even the non-Linux SDE variants for example for baremetal use a similar
-set of macros and headers.
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
 
-  Ralf
+  Hi Ralf,
+
+ This is taken from the x86 architecture. I modified it a bit so the
+ randomisation range is only a page size range. Since the top of the
+ stack is already randomised, I don't see any point to make the range
+ bigger as this is the case in x86 arch.
+
+ I tested it and it works fine so far.
+
+ Please try to have a look,
+
+		Franck
+
+ arch/mips/kernel/process.c |   14 ++++++++++++++
+ include/asm-mips/system.h  |    2 +-
+ 2 files changed, 15 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 6bdfb5a..42a60b4 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -25,7 +25,9 @@
+ #include <linux/init.h>
+ #include <linux/completion.h>
+ #include <linux/kallsyms.h>
++#include <linux/random.h>
+ 
++#include <asm/asm.h>
+ #include <asm/bootinfo.h>
+ #include <asm/cpu.h>
+ #include <asm/dsp.h>
+@@ -460,3 +462,15 @@ unsigned long get_wchan(struct task_struct *task)
+ out:
+ 	return pc;
+ }
++
++/*
++ * Don't forget that the stack pointer must be aligned on a 8 bytes
++ * boundary for 32-bits ABI and 16 bytes for 64-bits ABI.
++ */
++unsigned long arch_align_stack(unsigned long sp)
++{
++	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
++		sp -= get_random_int() & ~PAGE_MASK;
++
++	return sp & ALMASK;
++}
+diff --git a/include/asm-mips/system.h b/include/asm-mips/system.h
+index 2908870..0cfb6e1 100644
+--- a/include/asm-mips/system.h
++++ b/include/asm-mips/system.h
+@@ -355,6 +355,6 @@ extern int stop_a_enabled;
+  */
+ #define __ARCH_WANT_UNLOCKED_CTXSW
+ 
+-#define arch_align_stack(x) (x)
++extern unsigned long arch_align_stack(unsigned long sp);
+ 
+ #endif /* _ASM_SYSTEM_H */
+-- 
+1.5.2.2

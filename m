@@ -1,83 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 16:12:55 +0100 (BST)
-Received: from gw-eur4.philips.com ([161.85.125.10]:65346 "EHLO
-	gw-eur4.philips.com") by ftp.linux-mips.org with ESMTP
-	id S20022618AbXGSPMx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Jul 2007 16:12:53 +0100
-Received: from smtpscan-eur7.philips.com (smtpscan-eur7.mail.philips.com [130.144.57.172])
-	by gw-eur4.philips.com (Postfix) with ESMTP id B0E2B49713
-	for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 15:12:17 +0000 (UTC)
-Received: from smtpscan-eur7.philips.com (localhost [127.0.0.1])
-	by localhost.philips.com (Postfix) with ESMTP id 7C2D6C0
-	for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 15:12:17 +0000 (GMT)
-Received: from smtprelay-eur1.philips.com (smtprelay-eur1.philips.com [130.144.57.170])
-	by smtpscan-eur7.philips.com (Postfix) with ESMTP id D2453402
-	for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 15:12:16 +0000 (GMT)
-Received: from lnx32www01.soton.sc.philips.com (pww.osrp.sc.philips.com [130.141.89.1])
-	by smtprelay-eur1.philips.com (Postfix) with ESMTP id 6F061241E
-	for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 15:12:16 +0000 (GMT)
-Received: from krate.soton.sc.philips.com (krate [130.141.7.10])
-	by lnx32www01.soton.sc.philips.com (8.13.7/8.13.7) with ESMTP id l6JFCFjf025108
-	for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 16:12:15 +0100
-Received: from stout.soton.sc.philips.com (root@stout [130.141.7.8])
-	by krate.soton.sc.philips.com (8.12.11/8.12.11) with ESMTP id l6JFCBHX029067
-	for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 16:12:11 +0100 (BST)
-Received: from [130.141.93.19] (host9319 [130.141.93.19])
-	by stout.soton.sc.philips.com (8.11.3/8.11.3) with ESMTP id l6JFCBl23516
-	for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 16:12:11 +0100 (BST)
-Message-ID: <469F7F4A.1060507@nxp.com>
-Date:	Thu, 19 Jul 2007 16:12:10 +0100
-From:	Daniel Laird <daniel.j.laird@nxp.com>
-User-Agent: Thunderbird 2.0.0.4 (Windows/20070604)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jul 2007 16:16:13 +0100 (BST)
+Received: from py-out-1112.google.com ([64.233.166.179]:44411 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022485AbXGSPQL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Jul 2007 16:16:11 +0100
+Received: by py-out-1112.google.com with SMTP id p76so1137354pyb
+        for <linux-mips@linux-mips.org>; Thu, 19 Jul 2007 08:16:09 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=fTBfKVSOrWYc6F8Q2M0tSnIojdtllbaiIXVrdvTNlKOIOdFEle47GswL0KEEnohf6A+QxTHGoPF1YF4lPkTUsfW9gswEA3G09e3WgLLd5OWEf3SgJl5VlVInFu+3AlrencuNzHs6AEQRcWckRczxUjHaEVCUk+McyZSfVDaRcHo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=ozwip5JuuzvOvr8KEwEkGlzroYo4A19+eUUh+ECiKnKoo0ZpYZXazM6ByDzxpQF4XEIGfLX7TUBSRsOXBS8yG+oUvlnYbPrgdqZddfWMD2jJzlmCQaMxGziRVY77599vK95fDZopEJNcKOx3e3PA79mxLKf4ziiMKiICx1mMizM=
+Received: by 10.64.76.15 with SMTP id y15mr4872706qba.1184858169243;
+        Thu, 19 Jul 2007 08:16:09 -0700 (PDT)
+Received: by 10.65.204.8 with HTTP; Thu, 19 Jul 2007 08:16:09 -0700 (PDT)
+Message-ID: <cda58cb80707190816u3ec05063pc702d2250cfabc7@mail.gmail.com>
+Date:	Thu, 19 Jul 2007 17:16:09 +0200
+From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: [PATCH] User stack pointer randomisation
+Cc:	nigel@mips.com, linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <469F5BD9.3080601@innova-card.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] Add missing interrupts for STB810/PNX8550 system 
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <daniel.j.laird@nxp.com>
+Content-Disposition: inline
+References: <469F5345.5010209@innova-card.com>
+	 <20070719123030.GA21934@linux-mips.org>
+	 <469F5BD9.3080601@innova-card.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15816
+X-archive-position: 15817
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.j.laird@nxp.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Add Missing interrupts for STB810 systems
+On 7/19/07, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>         if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
 
-Signed-off-by: Daniel Laird <daniel.j.laird@nxp.com>
----
- irqmap.c |   15 ++++++++++++---
- 1 files changed, 12 insertions(+), 3 deletions(-)
----
- 
-Index: linux-2.6.22.1_nxp/arch/mips/philips/pnx8550/stb810/irqmap.c
-===================================================================
---- linux-2.6.22.1_orig/arch/mips/philips/pnx8550/stb810/irqmap.c   
- (revision 9)
-+++ linux-2.6.22.1_new/arch/mips/philips/pnx8550/stb810/irqmap.c   
- (working copy)
-@@ -15,9 +15,18 @@
- #include <linux/init.h>
- #include <int.h>
- 
-+/* Fill in the correct interrupts for STB810
-+ * [8]  = SATA Controller
-+ * [9]  = USB Controller
-+ * [10] = Ethernet Controller
-+ * [11] = External PCI Slot
-+ * [12] = Mini PCI Slot
-+ */
- char pnx8550_irq_tab[][5] __initdata = {
--    [8]    = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
--    [9]    = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
--    [10]    = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-+    [8]    = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-+    [9]    = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-+    [10]    = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-+    [11] = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
-+    [12] = { -1, PNX8550_INT_PCI_INTA, 0xff, 0xff, 0xff},
- };
- 
+actually this condition can be replaced by this simpler one:
+
+        if (current->flags & PF_RANDOMIZE)
+
+since PF_RANDOMIZE flag is raised if and only if the old condition is true.
+
+At this point do you prefer a patch to amend these modifications or to
+replace the old one ?
+
+Sorry for the annoyance.
+-- 
+               Franck

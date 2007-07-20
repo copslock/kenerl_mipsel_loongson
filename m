@@ -1,120 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2007 13:23:11 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:5650 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022902AbXGTMXI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jul 2007 13:23:08 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C06A8E1C83;
-	Fri, 20 Jul 2007 14:23:03 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 9Fwis7CBTWy9; Fri, 20 Jul 2007 14:23:03 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 6A3F8E1C65;
-	Fri, 20 Jul 2007 14:23:03 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6KCNAGV027671;
-	Fri, 20 Jul 2007 14:23:10 +0200
-Date:	Fri, 20 Jul 2007 13:23:06 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2007 17:44:13 +0100 (BST)
+Received: from astra.telenet-ops.be ([195.130.132.58]:35732 "EHLO
+	astra.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20022989AbXGTQoL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jul 2007 17:44:11 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by astra.telenet-ops.be (Postfix) with SMTP id C31AA380FD;
+	Fri, 20 Jul 2007 18:44:10 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by astra.telenet-ops.be (Postfix) with ESMTP id 62EF2380EE;
+	Fri, 20 Jul 2007 18:44:10 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-7) with ESMTP id l6KGiA9b020066
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 20 Jul 2007 18:44:10 +0200
+Received: (from geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) id l6KGi9cr020065;
+	Fri, 20 Jul 2007 18:44:09 +0200
+Message-Id: <20070720164324.097994947@mail.of.borg>
+References: <20070720164043.523003359@mail.of.borg>
+User-Agent: quilt/0.46-1
+Date:	Fri, 20 Jul 2007 18:40:46 +0200
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
 To:	Andrew Morton <akpm@linux-foundation.org>
-cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	sibyte-users@bitmover.com
-Subject: [PATCH] sb1250-duart: __maybe_unused, etc. fixes
-Message-ID: <Pine.LNX.4.64N.0707201314300.7402@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.1/3702/Fri Jul 20 11:04:11 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Cc:	linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@SteelEye.com>,
+	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [patch 3/3] scsi: wd33c93 needs <asm/irq.h>
+Content-Disposition: inline; filename=m68k-wd33c93-needs-asm-irq.diff
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15830
+X-archive-position: 15831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
- This is a set of small fixes addressing points raised with the original 
-driver submission.  In particular, __maybe_unused is used rather than a 
-local hack and sbd_ops is made const.  Additionally I have made two local 
-string variables automatic as rodata space was wasted for pointers 
-unnecessarily.
+wd33c93 SCSI needs <asm/irq.h> on m68k
 
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+drivers/scsi/wd33c93.c: In function 'wd33c93_host_reset':
+drivers/scsi/wd33c93.c:1582: error: implicit declaration of function 'disable_irq'
+drivers/scsi/wd33c93.c:1603: error: implicit declaration of function 'enable_irq'
+
+The driver still compiles on MIPS (CONFIG_SGIWD93_SCSI=y)
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
-Hi,
+ drivers/scsi/wd33c93.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
- This should be obvious.  It builds.  Please apply.
+--- a/drivers/scsi/wd33c93.c
++++ b/drivers/scsi/wd33c93.c
+@@ -89,6 +89,8 @@
+ #include <scsi/scsi_device.h>
+ #include <scsi/scsi_host.h>
+ 
++#include <asm/irq.h>
++
+ #include "wd33c93.h"
+ 
+ #define optimum_sx_per(hostdata) (hostdata)->sx_table[1].period_ns
 
-  Maciej
+-- 
+Gr{oetje,eeting}s,
 
-patch-mips-2.6.22-20070710-serial-sb1250-duart-fix-0
-diff -up --recursive --new-file linux-mips-2.6.22-20070710.macro/drivers/serial/sb1250-duart.c linux-mips-2.6.22-20070710/drivers/serial/sb1250-duart.c
---- linux-mips-2.6.22-20070710.macro/drivers/serial/sb1250-duart.c	2007-07-11 02:21:42.000000000 +0000
-+++ linux-mips-2.6.22-20070710/drivers/serial/sb1250-duart.c	2007-07-19 23:46:33.000000000 +0000
-@@ -25,6 +25,7 @@
- #define SUPPORT_SYSRQ
- #endif
- 
-+#include <linux/compiler.h>
- #include <linux/console.h>
- #include <linux/delay.h>
- #include <linux/errno.h>
-@@ -103,8 +104,6 @@ struct sbd_duart {
- 
- static struct sbd_duart sbd_duarts[DUART_MAX_CHIP];
- 
--#define __unused __attribute__((__unused__))
--
- 
- /*
-  * Reading and writing SB1250 DUART registers.
-@@ -204,12 +203,12 @@ static int sbd_receive_drain(struct sbd_
- 	return loops;
- }
- 
--static int __unused sbd_transmit_ready(struct sbd_port *sport)
-+static int __maybe_unused sbd_transmit_ready(struct sbd_port *sport)
- {
- 	return read_sbdchn(sport, R_DUART_STATUS) & M_DUART_TX_RDY;
- }
- 
--static int __unused sbd_transmit_drain(struct sbd_port *sport)
-+static int __maybe_unused sbd_transmit_drain(struct sbd_port *sport)
- {
- 	int loops = 10000;
- 
-@@ -664,7 +663,7 @@ static void sbd_release_port(struct uart
- 
- static int sbd_map_port(struct uart_port *uport)
- {
--	static const char *err = KERN_ERR "sbd: Cannot map MMIO\n";
-+	const char *err = KERN_ERR "sbd: Cannot map MMIO\n";
- 	struct sbd_port *sport = to_sport(uport);
- 	struct sbd_duart *duart = sport->duart;
- 
-@@ -691,8 +690,7 @@ static int sbd_map_port(struct uart_port
- 
- static int sbd_request_port(struct uart_port *uport)
- {
--	static const char *err = KERN_ERR
--				 "sbd: Unable to reserve MMIO resource\n";
-+	const char *err = KERN_ERR "sbd: Unable to reserve MMIO resource\n";
- 	struct sbd_duart *duart = to_sport(uport)->duart;
- 	int map_guard;
- 	int ret = 0;
-@@ -755,7 +753,7 @@ static int sbd_verify_port(struct uart_p
- }
- 
- 
--static struct uart_ops sbd_ops = {
-+static const struct uart_ops sbd_ops = {
- 	.tx_empty	= sbd_tx_empty,
- 	.set_mctrl	= sbd_set_mctrl,
- 	.get_mctrl	= sbd_get_mctrl,
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

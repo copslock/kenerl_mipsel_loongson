@@ -1,60 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2007 09:10:52 +0100 (BST)
-Received: from nz-out-0506.google.com ([64.233.162.232]:39821 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022264AbXGTIKt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jul 2007 09:10:49 +0100
-Received: by nz-out-0506.google.com with SMTP id n1so632826nzf
-        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2007 01:10:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2007 10:25:30 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.172]:34355 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022306AbXGTJZ2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jul 2007 10:25:28 +0100
+Received: by ug-out-1314.google.com with SMTP id u2so614614uge
+        for <linux-mips@linux-mips.org>; Fri, 20 Jul 2007 02:25:10 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Onx/KKBZ+73ORwW4suTwQiaBZ5P/zvr6ResYhS+r2jfqQlKwtKW2xw7QN3V00YYe5K2a4EUj3fitCAy1CxT4lUTlLbcq+s4eKimXeQxZHELjJkD+PwEnf3mECxHc/PrXn1Z3GP5OjSWpDMuZWORVQOIdFIj/Tz138J40PNkok58=
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
+        b=qBYC0ZYelqatteZMWHLriIU3ZyOT5QMaUM+9+ftNM+qhCKfrqn6/fP4bi4q4GzcaaNk5Gnjx1/wuJRNIZthXd6asQvmuedPDIzHWkGJX0eg99KzPaeKMuaRlwgNENvpy5GfwvKDG8gufFEMUxG0hGjjNAiNyQhohIo2343AQLOY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Z5lFYnVXPy0JtezpNzmRREmWG+GQaT95lwWbBwvO5H1nerTOa1xLGKwzOeofZpjYgSsbjC4X8M/ND6pBRV5f+HGlfn2IJTjFh5yDaK0ikqhn4HbA9iLNLgbDtpniuoyTlETZ9KAjZyD8d0KotQBa9XPgenk5HZHuxlrohf2EVm4=
-Received: by 10.115.107.1 with SMTP id j1mr231566wam.1184919038088;
-        Fri, 20 Jul 2007 01:10:38 -0700 (PDT)
-Received: by 10.114.67.6 with HTTP; Fri, 20 Jul 2007 01:10:38 -0700 (PDT)
-Message-ID: <5861a7880707200110w588eacb8v98b1481b4a2dbd5c@mail.gmail.com>
-Date:	Fri, 20 Jul 2007 12:10:38 +0400
-From:	"Dajie Tan" <jiankemeng@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] 16KB page size in mips32
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
+        b=oz+l3JmQ6D35I0sggw5XzPJ6NN1SMBQxkQR9+ALl/3B8I40shJZN8bQtmJXK/cJckbCcRkZoQrVvWV/2Wbt1TIZ8OC+Ad6vrR53r3pT532nziZ9J8+JDUVTbZNivmpvbq6c8SjLtLhkQZrMhO3AJRP6NqcZwL+8GVpAVLBap2lY=
+Received: by 10.66.218.3 with SMTP id q3mr1833432ugg.1184923510915;
+        Fri, 20 Jul 2007 02:25:10 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id y1sm295612uge.2007.07.20.02.25.09
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 20 Jul 2007 02:25:09 -0700 (PDT)
+Message-ID: <46A07F67.8050506@gmail.com>
+Date:	Fri, 20 Jul 2007 11:24:55 +0200
+From:	Franck Bui-Huu <fbuihuu@gmail.com>
+User-Agent: Thunderbird 2.0.0.4 (X11/20070615)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips <linux-mips@linux-mips.org>, nigel@mips.com
+Subject: [PATCH] Improve previous user stack pointer randomisation patch
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <jiankemeng@gmail.com>
+Return-Path: <fbuihuu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15827
+X-archive-position: 15828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiankemeng@gmail.com
+X-original-sender: fbuihuu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+This patch improves commit acc6f0110cf735e6c6e0f53736dbb054eafcd13c
+by:
+    - not using ALMASK to align stack pointer because this macro
+      is used for kernel context. The kernel and the application
+      are not always compiled with the same ABI.
 
-32-bit Kernel for loongson2e currently use 16KB page size to avoid
-cache alias problem.So, the definiton of PGDIR_SHIFT muse be 14+12.
+    - testing PF_RANDOMIZE process flag which is raised when the
+      old condition we tested is true.
 
-The last is the patch. It's been tested on FuLong mini PC(loongson2e inside).
+The first improvement was suggested by Nigel Stephens.
 
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
+ arch/mips/kernel/process.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
---------------------
-
---- a/include/asm-mips/pgtable-32.h 2007-07-19 08:22:43.000000000 +0800
-+++ b/include/asm-mips/pgtable-32.h 2007-07-20 11:12:40.000000000 +0800
-@@ -46,7 +46,7 @@
- #ifdef CONFIG_64BIT_PHYS_ADDR
- #define PGDIR_SHIFT    21
- #else
--#define PGDIR_SHIFT    22
-+#define PGDIR_SHIFT    (PAGE_SHIFT + (PAGE_SHIFT + PTE_ORDER - 2))
- #endif
- #define PGDIR_SIZE (1UL << PGDIR_SHIFT)
- #define PGDIR_MASK (~(PGDIR_SIZE-1))
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index bd05f5a..b5b2f31 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -27,7 +27,6 @@
+ #include <linux/kallsyms.h>
+ #include <linux/random.h>
+ 
+-#include <asm/asm.h>
+ #include <asm/bootinfo.h>
+ #include <asm/cpu.h>
+ #include <asm/dsp.h>
+@@ -464,13 +463,14 @@ out:
+ }
+ 
+ /*
+- * Don't forget that the stack pointer must be aligned on a 8 bytes
+- * boundary for 32-bits ABI and 16 bytes for 64-bits ABI.
++ * The stack pointer must be aligned on a 8 bytes boundary for 32-bits
++ * ABI and 16 bytes for 64-bits ABI. To make things simple we force to
++ * the maximum alignment required by any ABI.
+  */
+ unsigned long arch_align_stack(unsigned long sp)
+ {
+-	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
++	if (current->flags & PF_RANDOMIZE)
+ 		sp -= get_random_int() & ~PAGE_MASK;
+ 
+-	return sp & ALMASK;
++	return sp & ~0xf;
+ }
+-- 
+1.5.2.3

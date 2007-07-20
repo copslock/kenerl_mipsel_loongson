@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2007 19:03:38 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:3983 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023019AbXGTSDg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Jul 2007 19:03:36 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6KI3aqC011258
-	for <linux-mips@linux-mips.org>; Fri, 20 Jul 2007 19:03:36 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6KI3adF011257
-	for linux-mips@linux-mips.org; Fri, 20 Jul 2007 19:03:36 +0100
-Date:	Fri, 20 Jul 2007 19:03:36 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: PMC Big Sur platform
-Message-ID: <20070720180335.GA11248@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jul 2007 19:14:48 +0100 (BST)
+Received: from real.realitydiluted.com ([66.43.201.61]:29573 "EHLO
+	real.realitydiluted.com") by ftp.linux-mips.org with ESMTP
+	id S20023048AbXGTSOq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Jul 2007 19:14:46 +0100
+Received: from sjhill by real.realitydiluted.com with local (Exim 4.67)
+	(envelope-from <sjhill@real.realitydiluted.com>)
+	id 1IBwz6-0007xQ-9Q; Fri, 20 Jul 2007 13:13:48 -0500
+Date:	Fri, 20 Jul 2007 13:13:48 -0500
+From:	"Steven J. Hill" <sjhill@realitydiluted.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: PMC Big Sur platform
+Message-ID: <20070720181348.GA30343@real.realitydiluted.com>
+References: <20070720180335.GA11248@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20070720180335.GA11248@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <sjhill@real.realitydiluted.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15841
+X-archive-position: 15842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sjhill@realitydiluted.com
 Precedence: bulk
 X-list: linux-mips
 
-Does anybody still care about this platform?
-
-  Ralf
+On Fri, Jul 20, 2007 at 07:03:36PM +0100, Ralf Baechle wrote:
+> Does anybody still care about this platform?
+> 
+No, kill it! [FIRST-KILL-POST]

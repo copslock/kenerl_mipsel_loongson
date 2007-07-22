@@ -1,150 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2007 09:01:50 +0100 (BST)
-Received: from smtp-out.google.com ([216.239.45.13]:61480 "EHLO
-	smtp-out.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022063AbXGVIBs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Jul 2007 09:01:48 +0100
-Received: from zps37.corp.google.com (zps37.corp.google.com [172.25.146.37])
-	by smtp-out.google.com with ESMTP id l6M81jGE003470;
-	Sun, 22 Jul 2007 01:01:45 -0700
-DomainKey-Signature: a=rsa-sha1; s=beta; d=google.com; c=nofws; q=dns;
-	h=received:date:from:x-x-sender:to:cc:subject:message-id:
-	mime-version:content-type;
-	b=EKwLVE4bnPzcQEPafqMygbkBgfXi5y3OOnTVfbJ8DixQi0Ut9PFfGgoE0xepVPjhs
-	bceIOCiO6UjKR8MdsxuNQ==
-Received: from localhost (chino.kir.corp.google.com [172.29.12.61])
-	by zps37.corp.google.com with ESMTP id l6M81drX022610;
-	Sun, 22 Jul 2007 01:01:40 -0700
-Received: by localhost (Postfix, from userid 24081)
-	id 83009E4049; Sun, 22 Jul 2007 01:01:39 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by localhost (Postfix) with ESMTP id 822E4E4046;
-	Sun, 22 Jul 2007 01:01:39 -0700 (PDT)
-Date:	Sun, 22 Jul 2007 01:01:39 -0700 (PDT)
-From:	David Rientjes <rientjes@google.com>
-X-X-Sender: rientjes@chino.kir.corp.google.com
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org
-Subject: [patch] mips: replace __attribute_used__ with __used
-Message-ID: <alpine.DEB.0.99.0707220101130.4908@chino.kir.corp.google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2007 09:24:40 +0100 (BST)
+Received: from phoenix.bawue.net ([193.7.176.60]:62696 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20022063AbXGVIYi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Jul 2007 09:24:38 +0100
+Received: from lagash (88-106-245-10.dynamic.dsl.as9105.com [88.106.245.10])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 17C53BA50B;
+	Sun, 22 Jul 2007 09:55:16 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.67)
+	(envelope-from <ths@networkno.de>)
+	id 1ICWHb-0006x0-Hj; Sun, 22 Jul 2007 08:55:15 +0100
+Date:	Sun, 22 Jul 2007 08:55:15 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] bcm1480 serial build fix
+Message-ID: <20070722075515.GB23747@networkno.de>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=us-ascii
-Return-Path: <rientjes@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15849
+X-archive-position: 15850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rientjes@google.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Replaces the deprecated __attribute_used__ with __used.  Also makes some
-style adjustments to abide by the kernel coding conventions.
+The appended patch restores serial functionality for the bcm1480.
 
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: David Rientjes <rientjes@google.com>
----
- arch/mips/kernel/gdb-stub.c |    4 ++--
- arch/mips/kernel/linux32.c  |    2 +-
- arch/mips/kernel/rtlx.c     |    2 +-
- arch/mips/kernel/syscall.c  |    4 ++--
- arch/mips/kernel/vpe.c      |    3 +--
- arch/mips/mm/c-sb1.c        |    2 +-
- 6 files changed, 8 insertions(+), 9 deletions(-)
+I glued this together without reading documentation, so I'm not sure if
+it is fully correct. It is good enough to build a kernel and have a
+working serial console.
 
-diff --git a/arch/mips/kernel/gdb-stub.c b/arch/mips/kernel/gdb-stub.c
---- a/arch/mips/kernel/gdb-stub.c
-+++ b/arch/mips/kernel/gdb-stub.c
-@@ -1099,12 +1099,12 @@ void adel(void)
-  * malloc is needed by gdb client in "call func()", even a private one
-  * will make gdb happy
-  */
--static void * __attribute_used__ malloc(size_t size)
-+static void __used *malloc(size_t size)
- {
- 	return kmalloc(size, GFP_ATOMIC);
- }
+
+Signed-Off-By: Thiemo Seufer <ths@networkno.de>
+
+diff --git a/drivers/serial/sb1250-duart.c b/drivers/serial/sb1250-duart.c
+index 1d9d728..e7f5c0e 100644
+--- a/drivers/serial/sb1250-duart.c
++++ b/drivers/serial/sb1250-duart.c
+@@ -57,6 +57,12 @@
+ #define SBD_CTRLREGS(line)	A_BCM1480_DUART_CTRLREG((line), 0)
+ #define SBD_INT(line)		(K_BCM1480_INT_UART_0 + (line))
  
--static void __attribute_used__ free (void *where)
-+static void __used free(void *where)
- {
- 	kfree(where);
- }
-diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
---- a/arch/mips/kernel/linux32.c
-+++ b/arch/mips/kernel/linux32.c
-@@ -567,7 +567,7 @@ asmlinkage long sys32_fadvise64_64(int fd, int __pad,
- }
++#define DUART_CHANREG_SPACING	BCM1480_DUART_CHANREG_SPACING
++
++#define R_DUART_IMRREG(line)	R_BCM1480_DUART_IMRREG(line)
++#define R_DUART_INCHREG(line)	R_BCM1480_DUART_INCHREG(line)
++#define R_DUART_ISRREG(line)	R_BCM1480_DUART_ISRREG(line)
++
+ #elif defined(CONFIG_SIBYTE_SB1250) || defined(CONFIG_SIBYTE_BCM112X)
+ #include <asm/sibyte/sb1250_regs.h>
+ #include <asm/sibyte/sb1250_int.h>
+diff --git a/include/asm-mips/sibyte/bcm1480_regs.h b/include/asm-mips/sibyte/bcm1480_regs.h
+index 2738c13..c34d36b 100644
+--- a/include/asm-mips/sibyte/bcm1480_regs.h
++++ b/include/asm-mips/sibyte/bcm1480_regs.h
+@@ -227,10 +227,15 @@
+ 	(A_BCM1480_DUART(chan) +					\
+ 	 BCM1480_DUART_CHANREG_SPACING * 3 + (reg))
  
- save_static_function(sys32_clone);
--__attribute_used__ noinline static int
-+static int noinline __used
- _sys32_clone(nabi_no_regargs struct pt_regs regs)
- {
- 	unsigned long clone_flags;
-diff --git a/arch/mips/kernel/rtlx.c b/arch/mips/kernel/rtlx.c
---- a/arch/mips/kernel/rtlx.c
-+++ b/arch/mips/kernel/rtlx.c
-@@ -85,7 +85,7 @@ static irqreturn_t rtlx_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
++#define DUART_IMRISR_SPACING	    0x20
++#define DUART_INCHNG_SPACING	    0x10
++
+ #define R_BCM1480_DUART_IMRREG(chan)					\
+ 	(R_DUART_IMR_A + ((chan) & 1) * DUART_IMRISR_SPACING)
+ #define R_BCM1480_DUART_ISRREG(chan)					\
+ 	(R_DUART_ISR_A + ((chan) & 1) * DUART_IMRISR_SPACING)
++#define R_BCM1480_DUART_INCHREG(chan)					\
++	(R_DUART_IN_CHNG_A + ((chan) & 1) * DUART_INCHNG_SPACING)
  
--static __attribute_used__ void dump_rtlx(void)
-+static void __used dump_rtlx(void)
- {
- 	int i;
- 
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -167,14 +167,14 @@ sys_mmap2(unsigned long addr, unsigned long len, unsigned long prot,
- }
- 
- save_static_function(sys_fork);
--__attribute_used__ noinline static int
-+static int __used noinline
- _sys_fork(nabi_no_regargs struct pt_regs regs)
- {
- 	return do_fork(SIGCHLD, regs.regs[29], &regs, 0, NULL, NULL);
- }
- 
- save_static_function(sys_clone);
--__attribute_used__ noinline static int
-+static int __used noinline
- _sys_clone(nabi_no_regargs struct pt_regs regs)
- {
- 	unsigned long clone_flags;
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -154,7 +154,6 @@ struct {
- };
- 
- static void release_progmem(void *ptr);
--/* static __attribute_used__ void dump_vpe(struct vpe * v); */
- extern void save_gp_address(unsigned int secbase, unsigned int rel);
- 
- /* get the vpe associated with this minor */
-@@ -1024,7 +1023,7 @@ static int vpe_elfload(struct vpe * v)
- 	return 0;
- }
- 
--__attribute_used__ void dump_vpe(struct vpe * v)
-+void __used dump_vpe(struct vpe * v)
- {
- 	struct tc *t;
- 
-diff --git a/arch/mips/mm/c-sb1.c b/arch/mips/mm/c-sb1.c
---- a/arch/mips/mm/c-sb1.c
-+++ b/arch/mips/mm/c-sb1.c
-@@ -272,7 +272,7 @@ void sb1_flush_cache_data_page(unsigned long)
- /*
-  * Invalidate all caches on this CPU
-  */
--static void __attribute_used__ local_sb1___flush_cache_all(void)
-+static void __used local_sb1___flush_cache_all(void)
- {
- 	__sb1_writeback_inv_dcache_all();
- 	__sb1_flush_icache_all();
+ #define A_BCM1480_DUART_IMRREG(chan)					\
+ 	(A_BCM1480_DUART_CTRLREG((chan), R_BCM1480_DUART_IMRREG(chan)))

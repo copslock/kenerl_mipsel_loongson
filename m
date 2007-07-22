@@ -1,71 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jul 2007 23:25:43 +0100 (BST)
-Received: from phoenix.bawue.net ([193.7.176.60]:35481 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20022500AbXGVWZk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Jul 2007 23:25:40 +0100
-Received: from lagash (88-106-245-10.dynamic.dsl.as9105.com [88.106.245.10])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id BA22CBBAF1;
-	Sun, 22 Jul 2007 23:45:41 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.67)
-	(envelope-from <ths@networkno.de>)
-	id 1ICjFE-0004kB-Sh; Sun, 22 Jul 2007 22:45:40 +0100
-Date:	Sun, 22 Jul 2007 22:45:40 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] bcm1480 pci build fix
-Message-ID: <20070722214540.GA18207@networkno.de>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 00:34:31 +0100 (BST)
+Received: from zeniv.linux.org.uk ([195.92.253.2]:60331 "EHLO
+	ZenIV.linux.org.uk") by ftp.linux-mips.org with ESMTP
+	id S20022515AbXGVXe3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jul 2007 00:34:29 +0100
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.52 #1 (Red Hat Linux))
+	id 1ICkw7-0000z0-Sy; Mon, 23 Jul 2007 00:34:03 +0100
+Date:	Mon, 23 Jul 2007 00:34:03 +0100
+From:	Al Viro <viro@ftp.linux.org.uk>
+To:	Matthew Wilcox <matthew@wil.cx>
+Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@SteelEye.com>,
+	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [patch 3/3] scsi: wd33c93 needs <asm/irq.h>
+Message-ID: <20070722233403.GD21668@ftp.linux.org.uk>
+References: <20070720164043.523003359@mail.of.borg> <20070720164324.097994947@mail.of.borg> <20070720173132.GB19424@linux-mips.org> <20070720173359.GA22423@infradead.org> <46A0F453.60005@ru.mvista.com> <20070720175050.GI14791@parisc-linux.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+In-Reply-To: <20070720175050.GI14791@parisc-linux.org>
+User-Agent: Mutt/1.4.1i
+Return-Path: <viro@ftp.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15853
+X-archive-position: 15854
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: viro@ftp.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-The appended patch restores building the bcm1480 kernel. The brokenness
-noted there is apparently not immediately fatal, as the resulting kernel
-successfully drives a SATA RAID on PCI-X.
+On Fri, Jul 20, 2007 at 11:50:50AM -0600, Matthew Wilcox wrote:
+> On Fri, Jul 20, 2007 at 09:43:47PM +0400, Sergei Shtylyov wrote:
+> > Hello Christoph:
+> > 
+> > >>>+#include <asm/irq.h>
+> > 
+> > >>These days that should probably be <linux/irq.h>.
+> > 
+> > >Not at all, linux/irq.h is something entirely different.
+> > 
+> >    Actually, <linux/interrupt.h>
+> 
+> Not for enable/disable_irq.  For request_irq, yes.
+> 
+> This is something that should be fixed.
 
-Presumably the sb1250 pcibios_map_irq is broken in the same way. 
+Now it is...  FWIW, I suspect that absolute majority of asm/irq.h
+uses can be removed now.
 
-
-Thiemo
-
-
-Signed-Off-By: Thiemo Seufer <ths@networkno.de>
-
-diff --git a/arch/mips/pci/pci-bcm1480.c b/arch/mips/pci/pci-bcm1480.c
-index 2b4e30c..0193aad 100644
---- a/arch/mips/pci/pci-bcm1480.c
-+++ b/arch/mips/pci/pci-bcm1480.c
-@@ -76,7 +76,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
- 
- int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- {
--	This is b0rked.
-+	/* XXX: This is b0rked. */
- 	return dev->irq;
- }
- 
-diff --git a/arch/mips/pci/pci-sb1250.c b/arch/mips/pci/pci-sb1250.c
-index c1ac649..7af499e 100644
---- a/arch/mips/pci/pci-sb1250.c
-+++ b/arch/mips/pci/pci-sb1250.c
-@@ -86,6 +86,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
- 
- int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- {
-+	/* XXX: This is b0rked. */
- 	return dev->irq;
- }
- 
+Next steps in irq.h/interrupt.h cleanups:
+	* scouring asm/irq.h like it had been done for sparc32;
+the parts that are only used by relevant arch/ code should be
+taken there and includes _in_ asm/irq.h trimmed to minimum
+	* separating tasklet.h, with interrupt.h still including it.
+Using it where needed.
+	* asm/softirq.h (with stuff mostly taken there from asm/hardirq.h)
+and linux/softirq.h; again interrupt.h still should include it.
+	* mechanical adding include of linux/interrupt.h to files that use
+request_irq/free_irq/enable_irq/disable_irq/irqreturn_t/IRQF_...
+---> in the next merge window:
+	* replace include of linux/interrupt.h in netdevice.h with
+that of linux/softirq.h.
+	* trim uses of linux/interrupt.h that are not needed anymore.

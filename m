@@ -1,47 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 13:37:45 +0100 (BST)
-Received: from web8405.mail.in.yahoo.com ([202.43.219.153]:63156 "HELO
-	web8405.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20022646AbXGWMhn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jul 2007 13:37:43 +0100
-Received: (qmail 7958 invoked by uid 60001); 23 Jul 2007 12:37:35 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=YW5L7jM+3DshAAIoDj8bPVQKZOWQpADYzcZKZiyPbmPe5rM+NO75uz+ZfoqMw5wayq9EENaGE755dLhCt7hycV++vZ5cR4BeKcRKIlVqoKwIKsj663+tINTmaX+YqQ/qw+xLYCjM/FJdB6goCPSbK+S3jFCHtogsGh/puQPv83Q=;
-X-YMail-OSG: .BARUq0VM1kljH9rv71qIjVFE0CKEMCZQDr7JWVysoYjgXlthRGggGyx3hELN8iTUgrtvDnLGQAZH046cN5rPM7ESur.GX4MihggnXfm2zvZXfaEF.M-
-Received: from [199.239.167.162] by web8405.mail.in.yahoo.com via HTTP; Mon, 23 Jul 2007 13:37:34 BST
-Date:	Mon, 23 Jul 2007 13:37:34 +0100 (BST)
-From:	veerasena reddy <veerasena_b@yahoo.co.in>
-Subject: Intel Strataflash P30
-To:	"linux-kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-mips <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 13:58:01 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:39873 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022655AbXGWM57 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jul 2007 13:57:59 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6NCvwG7000857;
+	Mon, 23 Jul 2007 13:57:58 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6NCvvoi000856;
+	Mon, 23 Jul 2007 13:57:57 +0100
+Date:	Mon, 23 Jul 2007 13:57:57 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] remove unused arch/mips/jazz/io.c
+Message-ID: <20070723125757.GB31040@linux-mips.org>
+References: <20070722130337.122e2fbd.yoichi_yuasa@tripeaks.co.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <214692.7935.qm@web8405.mail.in.yahoo.com>
-Return-Path: <veerasena_b@yahoo.co.in>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070722130337.122e2fbd.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15858
+X-archive-position: 15859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: veerasena_b@yahoo.co.in
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sun, Jul 22, 2007 at 01:03:37PM +0900, Yoichi Yuasa wrote:
 
-Does Linux-2.6.12 or linux-2.6.18 has MTD flash device
-support for "Intel Strataflash P30" device?
+> Remove unused arch/mips/jazz/io.c
 
-I appreciate your early response.
+Applied.
 
-Thanks in Advance.
-
-Regards,
-Veerasena.
-
-
-      Get the freedom to save as many mails as you wish. To know how, go to http://help.yahoo.com/l/in/yahoo/mail/yahoomail/tools/tools-08.html
+  Ralf

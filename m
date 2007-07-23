@@ -1,50 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 19:09:06 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:52959 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022742AbXGWSJE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jul 2007 19:09:04 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6NI93uS001296;
-	Mon, 23 Jul 2007 19:09:03 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6NI929I001292;
-	Mon, 23 Jul 2007 19:09:02 +0100
-Date:	Mon, 23 Jul 2007 19:09:02 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Silicon Motion framebuffer
-Message-ID: <20070723180902.GA1086@linux-mips.org>
-References: <20070723155814.GA19111@linux-mips.org> <20070723160555.GA2608@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 21:06:42 +0100 (BST)
+Received: from smtp-ext.int-evry.fr ([157.159.11.17]:36517 "EHLO
+	smtp-ext.int-evry.fr") by ftp.linux-mips.org with ESMTP
+	id S20022745AbXGWUGk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jul 2007 21:06:40 +0100
+Received: from localhost (anaconda.int-evry.fr [157.159.15.19])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 3A0A8D0E317
+	for <linux-mips@linux-mips.org>; Mon, 23 Jul 2007 22:06:04 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+To:	linux-mips@linux-mips.org
+Subject: PCI resource conflict with Au1000
+Date:	Mon, 23 Jul 2007 22:05:59 +0200
+User-Agent: KMail/1.9.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070723160555.GA2608@roarinelk.homelinux.net>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: multipart/signed;
+  boundary="nextPart3562217.2MErxZDiPB";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
+Content-Transfer-Encoding: 7bit
+Message-Id: <200707232206.00150.florian.fainelli@telecomint.eu>
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15870
+X-archive-position: 15871
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 23, 2007 at 06:05:55PM +0200, Manuel Lauss wrote:
+--nextPart3562217.2MErxZDiPB
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-> On Mon, Jul 23, 2007 at 04:58:14PM +0100, Ralf Baechle wrote:
-> > So there is this SM501 Voyager sitting in the lmo tree for ages.  So the
-> > usual question, is anybody still using / interested in this driver?  Or
-> > possibly even interested in taking over maintainership for the thing and
-> > pushing it upstream?
-> 
-> There's already a well-working SM501 MFD and framebuffer driver in upstream
-> since about 2.6.21.  I'd say get rid of the mips version and encourage
-> people to test the new driver.
+Hello,
 
-So I removed it.
+I tried running a 2.6.22.1 kernel on the Accesscube, and it looks like ther=
+e=20
+is an error with the PCI code/resource declaration causing the MIPS pci cod=
+e=20
+to output this message : Skipping PCI bus scan due to resource conflict
 
-  Ralf
+The problem is because request_region fails at arch/mips/pci.c:80. Looking =
+at=20
+the au1000 pci code does not make it far different from the other boards,=20
+where it does not fail.
+
+If any of you has an idea why this message shows up, I will take it ;-) ?=20
+Hint : it worked up to 2.6.19.2 (last version I tested with the board).
+
+Thank you very much in advance for your answer.
+=2D-=20
+Best regards, Florian
+
+--nextPart3562217.2MErxZDiPB
+Content-Type: application/pgp-signature; name=signature.asc 
+Content-Description: This is a digitally signed message part.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.5 (GNU/Linux)
+
+iD8DBQBGpQoomx9n1G/316sRAuYPAKCZqgWOfk9WxsUoJnGb7x7m6T7N0gCfYWIj
+S6K1KzOyE0dqDC4k9juPHeg=
+=dtUA
+-----END PGP SIGNATURE-----
+
+--nextPart3562217.2MErxZDiPB--

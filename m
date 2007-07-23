@@ -1,64 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 14:00:20 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:12301 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022355AbXGWNAS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jul 2007 14:00:18 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 33F32E1CCE;
-	Mon, 23 Jul 2007 15:00:14 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id TCHJpDdZWTPU; Mon, 23 Jul 2007 15:00:14 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 52AA1E1CCA;
-	Mon, 23 Jul 2007 15:00:13 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l6ND0HM4005663;
-	Mon, 23 Jul 2007 15:00:18 +0200
-Date:	Mon, 23 Jul 2007 14:00:16 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Thiemo Seufer <ths@networkno.de>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] bcm1480 serial build fix
-In-Reply-To: <20070722075515.GB23747@networkno.de>
-Message-ID: <Pine.LNX.4.64N.0707231353030.13557@blysk.ds.pg.gda.pl>
-References: <20070722075515.GB23747@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 14:19:49 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:29379 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022655AbXGWNTr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jul 2007 14:19:47 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6NDJjGC001680;
+	Mon, 23 Jul 2007 14:19:45 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6NDJiGb001679;
+	Mon, 23 Jul 2007 14:19:44 +0100
+Date:	Mon, 23 Jul 2007 14:19:44 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] remove unneeded reset function for jazz
+Message-ID: <20070723131944.GC31040@linux-mips.org>
+References: <20070722130649.439bf4c2.yoichi_yuasa@tripeaks.co.jp>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.1/3741/Mon Jul 23 07:50:22 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070722130649.439bf4c2.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15860
+X-archive-position: 15861
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 22 Jul 2007, Thiemo Seufer wrote:
+On Sun, Jul 22, 2007 at 01:06:49PM +0900, Yoichi Yuasa wrote:
 
-> diff --git a/include/asm-mips/sibyte/bcm1480_regs.h b/include/asm-mips/sibyte/bcm1480_regs.h
-> index 2738c13..c34d36b 100644
-> --- a/include/asm-mips/sibyte/bcm1480_regs.h
-> +++ b/include/asm-mips/sibyte/bcm1480_regs.h
-> @@ -227,10 +227,15 @@
->  	(A_BCM1480_DUART(chan) +					\
->  	 BCM1480_DUART_CHANREG_SPACING * 3 + (reg))
+> remove unneeded reset function for jazz
+
+Thanks, ok?  Or do you instead want to put something into these functions?
+
+  Ralf
+
+> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> 
+> diff -pruN -X generic/Documentation/dontdiff generic-orig/arch/mips/jazz/reset.c generic/arch/mips/jazz/reset.c
+> --- generic-orig/arch/mips/jazz/reset.c	2007-07-21 21:55:08.089094250 +0900
+> +++ generic/arch/mips/jazz/reset.c	2007-07-21 22:22:10.724855500 +0900
+> @@ -6,10 +6,6 @@
+>   */
+>  #include <linux/jiffies.h>
+>  #include <asm/jazz.h>
+> -#include <asm/io.h>
+> -#include <asm/system.h>
+> -#include <asm/reboot.h>
+> -#include <asm/delay.h>
 >  
-> +#define DUART_IMRISR_SPACING	    0x20
-> +#define DUART_INCHNG_SPACING	    0x10
-> +
+>  #define KBD_STAT_IBF		0x02	/* Keyboard input buffer full */
+>  
+> @@ -58,12 +54,3 @@ void jazz_machine_restart(char *command)
+>  		jazz_write_output (0x00);
+>  	}
+>  }
+> -
+> -void jazz_machine_halt(void)
+> -{
+> -}
+> -
+> -void jazz_machine_power_off(void)
+> -{
+> -	/* Jazz machines don't have a software power switch */
+> -}
+> diff -pruN -X generic/Documentation/dontdiff generic-orig/arch/mips/jazz/setup.c generic/arch/mips/jazz/setup.c
+> --- generic-orig/arch/mips/jazz/setup.c	2007-07-21 21:55:08.101095000 +0900
+> +++ generic/arch/mips/jazz/setup.c	2007-07-21 22:20:20.045938500 +0900
+> @@ -34,8 +34,6 @@
+>  extern asmlinkage void jazz_handle_int(void);
+>  
+>  extern void jazz_machine_restart(char *command);
+> -extern void jazz_machine_halt(void);
+> -extern void jazz_machine_power_off(void);
+>  
+>  void __init plat_timer_setup(struct irqaction *irq)
+>  {
+> @@ -95,8 +93,6 @@ void __init plat_mem_setup(void)
+>  	/* The RTC is outside the port address space */
+>  
+>  	_machine_restart = jazz_machine_restart;
+> -	_machine_halt = jazz_machine_halt;
+> -	pm_power_off = jazz_machine_power_off;
+>  
+>  	screen_info = (struct screen_info) {
+>  		0, 0,		/* orig-x, orig-y */
 
- Aren't all the bits in "bcm1480_regs.h" meant to be prefixed with 
-BCM1480_DUART?  If these are to be the same as for the BCM1250, then they 
-can probably be defined "in sb1250_regs.h" unconditionally.
-
- These headers are a horrible mess anyway -- a single definition should be 
-enough to access the two DUARTs the BCM1480 seems to have...
-
-  Maciej
+  Ralf

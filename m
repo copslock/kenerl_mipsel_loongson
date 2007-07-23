@@ -1,38 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 16:58:17 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:46012 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022701AbXGWP6P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jul 2007 16:58:15 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6NFwFa3023418
-	for <linux-mips@linux-mips.org>; Mon, 23 Jul 2007 16:58:15 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6NFwEtS023408
-	for linux-mips@linux-mips.org; Mon, 23 Jul 2007 16:58:14 +0100
-Date:	Mon, 23 Jul 2007 16:58:14 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: Silicon Motion framebuffer
-Message-ID: <20070723155814.GA19111@linux-mips.org>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 17:05:58 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:43025 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20022720AbXGWQF4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jul 2007 17:05:56 +0100
+Received: (qmail 2862 invoked by uid 1000); 23 Jul 2007 18:05:55 +0200
+Date:	Mon, 23 Jul 2007 18:05:55 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Silicon Motion framebuffer
+Message-ID: <20070723160555.GA2608@roarinelk.homelinux.net>
+References: <20070723155814.GA19111@linux-mips.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20070723155814.GA19111@linux-mips.org>
+User-Agent: Mutt/1.5.11
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15868
+X-archive-position: 15869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-So there is this SM501 Voyager sitting in the lmo tree for ages.  So the
-usual question, is anybody still using / interested in this driver?  Or
-possibly even interested in taking over maintainership for the thing and
-pushing it upstream?
+On Mon, Jul 23, 2007 at 04:58:14PM +0100, Ralf Baechle wrote:
+> So there is this SM501 Voyager sitting in the lmo tree for ages.  So the
+> usual question, is anybody still using / interested in this driver?  Or
+> possibly even interested in taking over maintainership for the thing and
+> pushing it upstream?
 
-  Ralf
+There's already a well-working SM501 MFD and framebuffer driver in upstream
+since about 2.6.21.  I'd say get rid of the mips version and encourage
+people to test the new driver.
+
+Thanks,
+	Manuel Lauss

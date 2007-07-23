@@ -1,43 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 14:24:33 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:2025 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022686AbXGWNYb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Jul 2007 14:24:31 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6NDOUZS001876;
-	Mon, 23 Jul 2007 14:24:30 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6NDOUck001875;
-	Mon, 23 Jul 2007 14:24:30 +0100
-Date:	Mon, 23 Jul 2007 14:24:30 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Rientjes <rientjes@google.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [patch] mips: replace __attribute_used__ with __used
-Message-ID: <20070723132430.GE31040@linux-mips.org>
-References: <alpine.DEB.0.99.0707220101130.4908@chino.kir.corp.google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 14:58:58 +0100 (BST)
+Received: from an-out-0708.google.com ([209.85.132.240]:56608 "EHLO
+	an-out-0708.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022679AbXGWN6z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jul 2007 14:58:55 +0100
+Received: by an-out-0708.google.com with SMTP id d26so313388and
+        for <linux-mips@linux-mips.org>; Mon, 23 Jul 2007 06:58:44 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=sZiHCOi4N7HLiA9TCY76+DgWTU81MI8AUzrmzQMfbpVmwF0E0/Zmg+fQghkAYA2oFDBVabgbxsgsogg/hQa73mRjYTOeauJLduyvSVUwu1Y2R8xYo1F520xZ4XRXBV5S88dYqAHJrm+dk6DNWyhMFXosVm9wt31QXe1iqLYGOnI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=AeKxLezjlQHPp6Peq+BGNBOO85XWCAbeKEgxQmm2MX8WmW2CXEGPdSFMgKmvd/jIC2jTbsnMxzCdRfBO7Tves8c1jhTDB+YK4VhQwQBf5NXmlD4pRBxYoKD5iUl8Qa0Ycz7Pp+merMKO3JuOk1SFG8iUyTZHV18ZwK7vOdLtHVI=
+Received: by 10.142.99.21 with SMTP id w21mr226352wfb.1185199124000;
+        Mon, 23 Jul 2007 06:58:44 -0700 (PDT)
+Received: by 10.142.82.5 with HTTP; Mon, 23 Jul 2007 06:58:43 -0700 (PDT)
+Message-ID: <625fc13d0707230658v2531ef3bt3dd18ba6c37f5411@mail.gmail.com>
+Date:	Mon, 23 Jul 2007 08:58:43 -0500
+From:	"Josh Boyer" <jwboyer@gmail.com>
+To:	"veerasena reddy" <veerasena_b@yahoo.co.in>
+Subject: Re: Intel Strataflash P30
+Cc:	linux-kernel.org <linux-kernel@vger.kernel.org>, 
+	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <214692.7935.qm@web8405.mail.in.yahoo.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.0.99.0707220101130.4908@chino.kir.corp.google.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+References: <214692.7935.qm@web8405.mail.in.yahoo.com>
+Return-Path: <jwboyer@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15863
+X-archive-position: 15864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jwboyer@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jul 22, 2007 at 01:01:39AM -0700, David Rientjes wrote:
+On 7/23/07, veerasena reddy <veerasena_b@yahoo.co.in> wrote:
+> Hi,
+>
+> Does Linux-2.6.12 or linux-2.6.18 has MTD flash device
+> support for "Intel Strataflash P30" device?
 
-> Replaces the deprecated __attribute_used__ with __used.  Also makes some
-> style adjustments to abide by the kernel coding conventions.
+2.6.18 does from what I remember.
 
-Thanks, applied.
-
-  Ralf
+josh

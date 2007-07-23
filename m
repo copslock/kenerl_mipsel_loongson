@@ -1,54 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 06:02:07 +0100 (BST)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:13355 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022575AbXGWFCF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jul 2007 06:02:05 +0100
-Received: by mo.po.2iij.net (mo31) id l6N521dR001223; Mon, 23 Jul 2007 14:02:01 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox302) id l6N51wgf022101
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 23 Jul 2007 14:01:59 +0900
-Date:	Mon, 23 Jul 2007 14:01:58 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 13:02:45 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:10712 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022647AbXGWMCn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Jul 2007 13:02:43 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6NC2ekw032005;
+	Mon, 23 Jul 2007 13:02:40 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6NC2Xnu032004;
+	Mon, 23 Jul 2007 13:02:33 +0100
+Date:	Mon, 23 Jul 2007 13:02:33 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
 Subject: Re: [PATCH][MIPS] fix section mismatch prom_free_prom_memory()
-Message-Id: <20070723140158.0913e1d1.yoichi_yuasa@tripeaks.co.jp>
+Message-ID: <20070723120233.GA31040@linux-mips.org>
+References: <20070722130046.085e0f8d.yoichi_yuasa@tripeaks.co.jp> <20070722.234420.25908731.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20070722.234420.25908731.anemo@mba.ocn.ne.jp>
-References: <20070722130046.085e0f8d.yoichi_yuasa@tripeaks.co.jp>
-	<20070722.234420.25908731.anemo@mba.ocn.ne.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15856
+X-archive-position: 15857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Jul 22, 2007 at 11:44:20PM +0900, Atsushi Nemoto wrote:
 
-On Sun, 22 Jul 2007 23:44:20 +0900 (JST)
-Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+Applied.
 
-> On Sun, 22 Jul 2007 13:00:46 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
-> > Fix section mismatch prom_free_prom_memory().
-> > 
-> > WARNING: vmlinux.o(.text+0xbf20): Section mismatch: reference to
-> > .init.text:prom_free_prom_memory (between 'free_initmem' and 'copy_from_user_page')
-> 
-> prom_free_prom_memory() is called _before_ freeing init sections, so
-> it is false positive.  __init_refok can be used for such cases.
-
-It's right.
-
-Thank you for correcting it,
-
-Yoichi
+  Ralf

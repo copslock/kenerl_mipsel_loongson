@@ -1,114 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jul 2007 23:19:59 +0100 (BST)
-Received: from phoenix.bawue.net ([193.7.176.60]:9604 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20022868AbXGWWT5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jul 2007 23:19:57 +0100
-Received: from lagash (88-106-245-10.dynamic.dsl.as9105.com [88.106.245.10])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id 1B86686E94;
-	Mon, 23 Jul 2007 23:09:08 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.67)
-	(envelope-from <ths@networkno.de>)
-	id 1ID59P-00064j-I1; Mon, 23 Jul 2007 22:09:07 +0100
-Date:	Mon, 23 Jul 2007 22:09:07 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Silence warning for bcm1480
-Message-ID: <20070723210907.GA20558@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2007 01:59:09 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:16580 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20022473AbXGXA7H (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2007 01:59:07 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1ID8jy-0006yH-00; Tue, 24 Jul 2007 02:59:06 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 5266011A3D0; Tue, 24 Jul 2007 02:54:52 +0200 (CEST)
+Date:	Tue, 24 Jul 2007 02:54:52 +0200
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] remove unneeded reset function for jazz
+Message-ID: <20070724005452.GA10195@alpha.franken.de>
+References: <20070722130649.439bf4c2.yoichi_yuasa@tripeaks.co.jp> <20070723131944.GC31040@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+In-Reply-To: <20070723131944.GC31040@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15872
+X-archive-position: 15873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-The appended patch effectively syncs up the setup of sb1250 and bcm1480.
+On Mon, Jul 23, 2007 at 02:19:44PM +0100, Ralf Baechle wrote:
+> On Sun, Jul 22, 2007 at 01:06:49PM +0900, Yoichi Yuasa wrote:
+> 
+> > remove unneeded reset function for jazz
+> 
+> Thanks, ok?  Or do you instead want to put something into these functions?
 
-For bcm1480/setup.c:
-- include <linux/module.h>, as needed for EXPORT_SYMBOL
-- include <linux/init.h>, and add __init specifiers to the setup code
-- remove explicit inline for those functions
-- export zbbus_mhz as it is done for sb1250
+yes. Looks like jazz doesn't support software controlled power down.
 
-For sb1250/setup.c:
-- remove bogus inline keywords
-
-
-Thiemo
+Thomas.
 
 
-Signed-Off-By: Thiemo Seufer <ths@networkno.de>
-
---- a/arch/mips/sibyte/bcm1480/setup.c
-+++ b/arch/mips/sibyte/bcm1480/setup.c
-@@ -15,6 +15,8 @@
-  * along with this program; if not, write to the Free Software
-  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-  */
-+#include <linux/init.h>
-+#include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/reboot.h>
- #include <linux/string.h>
-@@ -34,17 +36,18 @@ unsigned int soc_type;
- EXPORT_SYMBOL(soc_type);
- unsigned int periph_rev;
- unsigned int zbbus_mhz;
-+EXPORT_SYMBOL(zbbus_mhz);
- 
- static unsigned int part_type;
- 
- static char *soc_str;
- static char *pass_str;
- 
--static inline int setup_bcm1x80_bcm1x55(void);
-+static int setup_bcm1x80_bcm1x55(void);
- 
- /* Setup code likely to be common to all SiByte platforms */
- 
--static inline int sys_rev_decode(void)
-+static int __init sys_rev_decode(void)
- {
- 	int ret = 0;
- 
-@@ -77,7 +80,7 @@ static inline int sys_rev_decode(void)
- 	return ret;
- }
- 
--static inline int setup_bcm1x80_bcm1x55(void)
-+static int __init setup_bcm1x80_bcm1x55(void)
- {
- 	int ret = 0;
- 
-@@ -111,7 +114,7 @@ static inline int setup_bcm1x80_bcm1x55(void)
- 	return ret;
- }
- 
--void bcm1480_setup(void)
-+void __init bcm1480_setup(void)
- {
- 	uint64_t sys_rev;
- 	int plldiv;
---- a/arch/mips/sibyte/sb1250/setup.c
-+++ b/arch/mips/sibyte/sb1250/setup.c
-@@ -40,8 +40,8 @@ static char *soc_str;
- static char *pass_str;
- static unsigned int war_pass;	/* XXXKW don't overload PASS defines? */
- 
--static inline int setup_bcm1250(void);
--static inline int setup_bcm112x(void);
-+static int setup_bcm1250(void);
-+static int setup_bcm112x(void);
- 
- /* Setup code likely to be common to all SiByte platforms */
- 
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

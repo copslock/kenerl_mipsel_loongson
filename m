@@ -1,95 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2007 08:09:45 +0100 (BST)
-Received: from mf2.realtek.com.tw ([60.248.182.6]:60676 "EHLO
-	mf2.realtek.com.tw") by ftp.linux-mips.org with ESMTP
-	id S20022937AbXGXHJn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Jul 2007 08:09:43 +0100
-Received: from msx.realtek.com.tw (unverified [172.21.1.77]) by mf2.realtek.com.tw
- (Clearswift SMTPRS 5.1.7) with ESMTP id <T810530c5e8dc803816820@mf2.realtek.com.tw> for <linux-mips@linux-mips.org>;
- Tue, 24 Jul 2007 15:11:03 +0800
-Received: from rtpdii3098 ([172.21.98.16])
-          by msx.realtek.com.tw (Lotus Domino Release 6.5.3)
-          with ESMTP id 2007072415093717-4422363 ;
-          Tue, 24 Jul 2007 15:09:37 +0800 
-Message-ID: <014201c7cdc1$984e50c0$106215ac@realtek.com.tw>
-From:	"colin" <colin@realtek.com.tw>
-To:	<linux-mips@linux-mips.org>
-Subject: Linux 2.6.12 cannot run on 24K. Please give me some clues.
-Date:	Tue, 24 Jul 2007 15:09:37 +0800
-MIME-Version: 1.0
-X-Priority: 3 (Normal)
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1896
-X-MIMETrack: Itemize by SMTP Server on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2007/07/24 =?Bog5?B?pFWkyCAwMzowOTozNw==?=,
-	Serialize by Router on msx/Realtek(Release 6.5.3|September 14, 2004) at
- 2007/07/24 =?Bog5?B?pFWkyCAwMzowOTozOQ==?=,
-	Serialize complete at 2007/07/24 =?Bog5?B?pFWkyCAwMzowOTozOQ==?=
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain;
-	charset="big5"
-Return-Path: <colin@realtek.com.tw>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2007 08:39:27 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:44828 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022940AbXGXHjZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2007 08:39:25 +0100
+Received: by mo.po.2iij.net (mo30) id l6O7c6be030789; Tue, 24 Jul 2007 16:38:06 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox303) id l6O7c3lP031410
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 24 Jul 2007 16:38:04 +0900
+Date:	Tue, 24 Jul 2007 16:38:04 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] Remove unused arch/mips/arc/console.c
+Message-Id: <20070724163804.01073714.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15875
+X-archive-position: 15876
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: colin@realtek.com.tw
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
+Remove unused arch/mips/arc/console.c
 
-Hi all,
-Could you help me on porting MIPS Linux?
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-Our first embedded system using 4Kec is running very well on Linux 2.6.12.
-Now the second chip using 24K has problems. I found that mtf0 and mtc0 have
-hazard problem and I have solved it.
-static inline void unmask_mips_irq(unsigned int irq)
-{
-        set_c0_status(0x100 << (irq - mips_cpu_irq_base));
-        irq_enable_hazard();
-}
-
-Now Linux can continue running and then it will encounter problems when
-running the first application, init. I will appreciate your clues for
-helping me on this probem. :D
-
-Colin
-
-ÿttyS0 at MMIO 0x0 (irq = 3) is a 16550A
-ttyS1 at MMIO 0x0 (irq = 3) is a 16550A
-io scheduler noop registered
-Freeing prom memory: 0kb freed
-Reclaim bootloader memory from 80010000 to 800f0000
-Freeing unused kernel memory: 252k freed
-CPU 0 Unable to handle kernel paging request at virtual address ffffff88,
-epc == 00440f10, ra == 004000e4
-Oops in arch/mips/mm/fault.c::do_page_fault, line 167[#1]:
-Cpu 0
-$ 0   : 00000000 10000990 00400090 00000000
-$ 4   : 7fdd5ed0 7fdd5f94 00000000 7fdd5f94
-$ 8   : 00000000 00000000 80001cb2 00000b3b
-$12   : 7f1c0300 0001ffff 0001ffff 00000115
-$16   : 801f5e04 00000000 00000000 00000000
-$20   : 00000000 00000000 00000000 00000000
-$24   : 00000000 00440f00
-$28   : 10008c70 7fdd5e18 7fdd5e38 004000e4
-Hi    : 00000000
-Lo    : 00000000
-epc   : 00440f10     Not tainted
-ra    : 004000e4 Status: 00006802    KERNEL EXL
-Cause : 0880400c
-BadVA : ffffff88
-PrId  : 00019378
-Process init (pid: 1, threadinfo=80848000, task=80854bd8)
-Stack : 00000000 00000000 10008c70 00000000 10008c70 7fdd5e38 10008c70
-004276e4
-        00000000 00000000 00000000 00000000 10008c70 00000000 7fdd5f9c
-00000000
-        00000000 00000000 00000000 00000000 00000000 00000000 00000003
-00400034
-        00000004 00000020 00000005 00000002 00000006 00001000 00000007
-000000
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/arc/console.c mips/arch/mips/arc/console.c
+--- mips-orig/arch/mips/arc/console.c	2007-07-23 17:38:10.053280000 +0900
++++ mips/arch/mips/arc/console.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,31 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1996 David S. Miller (dm@sgi.com)
+- * Compability with board caches, Ulf Carlsson
+- */
+-#include <linux/kernel.h>
+-#include <asm/sgialib.h>
+-#include <asm/bcache.h>
+-
+-/*
+- * IP22 boardcache is not compatible with board caches.  Thus we disable it
+- * during romvec action.  Since r4xx0.c is always compiled and linked with your
+- * kernel, this shouldn't cause any harm regardless what MIPS processor you
+- * have.
+- *
+- * The ARC write and read functions seem to interfere with the serial lines
+- * in some way. You should be careful with them.
+- */
+-
+-void prom_putchar(char c)
+-{
+-	ULONG cnt;
+-	CHAR it = c;
+-
+-	bc_disable();
+-	ArcWrite(1, &it, 1, &cnt);
+-	bc_enable();
+-}

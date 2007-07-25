@@ -1,54 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2007 13:52:55 +0100 (BST)
-Received: from 87-237-56-54.northerncolo.co.uk ([87.237.56.54]:43983 "EHLO
-	totally.trollied.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20021506AbXGYMww (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 25 Jul 2007 13:52:52 +0100
-Received: from localhost ([127.0.0.1] helo=totally.trollied.org.uk)
-	by totally.trollied.org.uk with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.62)
-	(envelope-from <movement@totally.trollied.org.uk>)
-	id 1IDgM1-000302-AH; Wed, 25 Jul 2007 13:52:37 +0100
-Received: (from movement@localhost)
-	by totally.trollied.org.uk (8.13.7/8.13.7/Submit) id l6PCqZiN011533;
-	Wed, 25 Jul 2007 13:52:35 +0100
-Date:	Wed, 25 Jul 2007 13:52:35 +0100
-From:	John Levon <levon@movementarian.org>
-To:	Dajie Tan <jiankemeng@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	inux-mips <linux-mips@linux-mips.org>, phil.el@wanadoo.fr,
-	oprofile-list@lists.sourceforge.net
-Subject: Re: [PATCH] Add support for profiling Loongson 2E
-Message-ID: <20070725125235.GD8454@totally.trollied.org.uk>
-References: <5861a7880707240220g5d8129anc95e10bea833e323@mail.gmail.com> <20070724144051.GA17256@linux-mips.org> <5861a7880707242041w32811dal6e2765747cbada32@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5861a7880707242041w32811dal6e2765747cbada32@mail.gmail.com>
-X-Url:	http://www.movementarian.org/
-User-Agent: Mutt/1.5.9i
-Return-Path: <movement@totally.trollied.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2007 15:01:22 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:27742 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20021617AbXGYOBU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 25 Jul 2007 15:01:20 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 4E2D33EC9; Wed, 25 Jul 2007 07:01:17 -0700 (PDT)
+Message-ID: <46A75827.4060801@ru.mvista.com>
+Date:	Wed, 25 Jul 2007 18:03:19 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	ths@networkno.de, linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] tx49xx: add some mach specific headers
+References: <20070725.015008.78730579.anemo@mba.ocn.ne.jp>	<46A6302A.5010105@ru.mvista.com>	<20070724212034.GA26960@networkno.de> <20070725.123236.97297895.nemoto@toshiba-tops.co.jp>
+In-Reply-To: <20070725.123236.97297895.nemoto@toshiba-tops.co.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15895
+X-archive-position: 15896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: levon@movementarian.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 25, 2007 at 07:41:21AM +0400, Dajie Tan wrote:
+Hello.
 
-> >Why do you need this change?  It almost looks as if you're papering over
-> >a bug where add_sample should not be called at all.
-> 
-> Yeah,this change is to enhance the robust of oprofile. When using
-> performace counter manually(writting control register in a module, no
-> need to use the oprofile),I usually make kernel panic if I do not
-> initialize the oprofile and enable the overflow interrupt carelessly.
-> So, this change can avoid this panic. :D
+Atsushi Nemoto wrote:
 
-This panic is good and should stay. It shows that you've made a mistake.
+>>>>+#define cpu_has_mips32r1	0
+>>>>+#define cpu_has_mips32r2	0
+>>>>+#define cpu_has_mips64r1	0
+>>>>+#define cpu_has_mips64r2	0
 
-john
+>>>   Hm, really?
+
+    I'm not good at arch generations, so forgive me a silly complaint. ;-)
+
+>>IIRC it is MIPS IV. (tx99 is MIPS64R1).
+
+> It is MIPS III.
+
+    "Upward compatible" with it as the manual says.
+
+> ---
+> Atsushi Nemoto
+
+WBR, Sergei

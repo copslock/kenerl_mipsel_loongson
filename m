@@ -1,61 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jul 2007 22:41:17 +0100 (BST)
-Received: from phoenix.bawue.net ([193.7.176.60]:50070 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20021967AbXGXVlP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jul 2007 22:41:15 +0100
-Received: from lagash (88-106-245-10.dynamic.dsl.as9105.com [88.106.245.10])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id AB7EABA12B;
-	Tue, 24 Jul 2007 23:20:35 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.67)
-	(envelope-from <ths@networkno.de>)
-	id 1IDRo2-0004By-QC; Tue, 24 Jul 2007 22:20:34 +0100
-Date:	Tue, 24 Jul 2007 22:20:34 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jul 2007 04:33:13 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:53225 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20021848AbXGYDdK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 25 Jul 2007 04:33:10 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Wed, 25 Jul 2007 12:33:08 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 726D041753;
+	Wed, 25 Jul 2007 12:32:40 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 5F49E416FC;
+	Wed, 25 Jul 2007 12:32:40 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l6P3WaAF068857;
+	Wed, 25 Jul 2007 12:32:36 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Wed, 25 Jul 2007 12:32:36 +0900 (JST)
+Message-Id: <20070725.123236.97297895.nemoto@toshiba-tops.co.jp>
+To:	ths@networkno.de
+Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org,
 	ralf@linux-mips.org
 Subject: Re: [PATCH] tx49xx: add some mach specific headers
-Message-ID: <20070724212034.GA26960@networkno.de>
-References: <20070725.015008.78730579.anemo@mba.ocn.ne.jp> <46A6302A.5010105@ru.mvista.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46A6302A.5010105@ru.mvista.com>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070724212034.GA26960@networkno.de>
+References: <20070725.015008.78730579.anemo@mba.ocn.ne.jp>
+	<46A6302A.5010105@ru.mvista.com>
+	<20070724212034.GA26960@networkno.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15892
+X-archive-position: 15893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Sergei Shtylyov wrote:
-> Hello.
->
-> Atsushi Nemoto wrote:
->
->> diff --git a/include/asm-mips/mach-tx49xx/cpu-feature-overrides.h 
->> b/include/asm-mips/mach-tx49xx/cpu-feature-overrides.h
->> new file mode 100644
->> index 0000000..275eaf9
->> --- /dev/null
->> +++ b/include/asm-mips/mach-tx49xx/cpu-feature-overrides.h
->> @@ -0,0 +1,23 @@
-> [...]
->> +#define cpu_has_mips32r1	0
->> +#define cpu_has_mips32r2	0
->> +#define cpu_has_mips64r1	0
->> +#define cpu_has_mips64r2	0
->
->    Hm, really?
+On Tue, 24 Jul 2007 22:20:34 +0100, Thiemo Seufer <ths@networkno.de> wrote:
+> >> +#define cpu_has_mips32r1	0
+> >> +#define cpu_has_mips32r2	0
+> >> +#define cpu_has_mips64r1	0
+> >> +#define cpu_has_mips64r2	0
+> >
+> >    Hm, really?
+> 
+> IIRC it is MIPS IV. (tx99 is MIPS64R1).
 
-IIRC it is MIPS IV. (tx99 is MIPS64R1).
+It is MIPS III.
 
-
-Thiemo
+---
+Atsushi Nemoto

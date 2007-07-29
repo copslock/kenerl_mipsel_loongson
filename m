@@ -1,49 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jul 2007 13:18:42 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:34322 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022738AbXG2MSk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Jul 2007 13:18:40 +0100
-Received: by mo.po.2iij.net (mo31) id l6TCHLgq053370; Sun, 29 Jul 2007 21:17:21 +0900 (JST)
-Received: from localhost.localdomain (231.26.30.125.dy.iij4u.or.jp [125.30.26.231])
-	by mbox.po.2iij.net (po-mbox301) id l6TCHJMN024825
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 29 Jul 2007 21:17:20 +0900
-Date:	Sun, 29 Jul 2007 21:17:18 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] remove unused GROUP_TOSHIBA_NAMES
-Message-Id: <20070729211718.4a2b52e2.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jul 2007 14:43:47 +0100 (BST)
+Received: from terminus.zytor.com ([198.137.202.10]:22755 "EHLO
+	terminus.zytor.com") by ftp.linux-mips.org with ESMTP
+	id S20022775AbXG2Nnp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 29 Jul 2007 14:43:45 +0100
+Received: from mail.hos.anvin.org (c-67-169-144-158.hsd1.ca.comcast.net [67.169.144.158])
+	(authenticated bits=0)
+	by terminus.zytor.com (8.13.8/8.13.8) with ESMTP id l6TDhY1X021925
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 29 Jul 2007 06:43:36 -0700
+Received: from titan.hos.anvin.org (hpa-laptop.hos.anvin.org [172.27.60.1])
+	by mail.hos.anvin.org (8.13.8/8.13.8) with ESMTP id l6TDhTAV031149;
+	Sun, 29 Jul 2007 06:43:33 -0700
+Message-ID: <46AC997B.2030706@zytor.com>
+Date:	Sun, 29 Jul 2007 06:43:23 -0700
+From:	"H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+MIME-Version: 1.0
+To:	maximilian attems <max@stro.at>
+CC:	ralf@linux-mips.org, linux-mips@linux-mips.org, klibc@zytor.com
+Subject: Re: [klibc] klibc kernelheaders build failure on mips/mipsel
+References: <20070729095217.GE7448@stro.at>
+In-Reply-To: <20070729095217.GE7448@stro.at>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+X-Virus-Scanned: ClamAV 0.88.7/3804/Sat Jul 28 21:09:31 2007 on terminus.zytor.com
+X-Virus-Status:	Clean
+Return-Path: <hpa@zytor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15921
+X-archive-position: 15922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 X-list: linux-mips
 
-Remove unused GROUP_TOSHIBA_NAMES.
+maximilian attems wrote:
+>  switching to newer linux-libc-dev linux-2.6 provided kernel
+>  headers worked fine beside on mips mipsel:
+> 
+>   In file included from usr/klibc/arch/mips/crt0.S:11:
+>   usr/include/arch/mips/machine/asm.h:8:24: error: asm/regdef.h: No such
+>   file or directory
+>   usr/include/arch/mips/machine/asm.h:9:21: error: asm/asm.h: No such file
+>   or directory
+> 
+>   i'm not sure if you want to export both headers in the make
+>   kernelheaders target or if it is the fault of klibc to assume
+>   that those are available?
+> 
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+If I remember correctly (sorry, I'm on the road at the moment), those 
+files should be exportable.  They wouldn't be all that hard to replicate 
+in klibc, though.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/bootinfo.h mips/include/asm-mips/bootinfo.h
---- mips-orig/include/asm-mips/bootinfo.h	2007-07-29 20:36:29.970282000 +0900
-+++ mips/include/asm-mips/bootinfo.h	2007-07-29 20:54:33.285985000 +0900
-@@ -145,9 +145,6 @@
- #define  MACH_TOSHIBA_RBTX4937	5
- #define  MACH_TOSHIBA_RBTX4938	6
- 
--#define GROUP_TOSHIBA_NAMES	{ "Pallas", "TopasCE", "JMR", "JMR TX3927", \
--				  "RBTX4927", "RBTX4937" }
--
- /*
-  * Valid machtype for group Alchemy
-  */
+	-hpa

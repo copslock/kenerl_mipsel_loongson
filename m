@@ -1,47 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jul 2007 11:42:37 +0100 (BST)
-Received: from baikonur.stro.at ([213.239.196.228]:8709 "EHLO baikonur.stro.at")
-	by ftp.linux-mips.org with ESMTP id S20022728AbXG2Kmf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Jul 2007 11:42:35 +0100
-Received: from stro.at (localhost [127.0.0.1])
-	by baikonur.stro.at (Postfix) with ESMTP id B9C715C011;
-	Sun, 29 Jul 2007 12:19:44 +0200 (CEST)
-Received: by stro.at (Postfix, from userid 1000)
-	id 85839181E6; Sun, 29 Jul 2007 11:52:17 +0200 (CEST)
-Date:	Sun, 29 Jul 2007 11:52:17 +0200
-From:	maximilian attems <max@stro.at>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, klibc@zytor.com, tbm@cyrius.com
-Subject: klibc kernelheaders build failure on mips/mipsel
-Message-ID: <20070729095217.GE7448@stro.at>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-11)
-X-Virus-Scanned: by Amavis (ClamAV) at stro.at
-Return-Path: <max@stro.at>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jul 2007 13:18:42 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:34322 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022738AbXG2MSk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Jul 2007 13:18:40 +0100
+Received: by mo.po.2iij.net (mo31) id l6TCHLgq053370; Sun, 29 Jul 2007 21:17:21 +0900 (JST)
+Received: from localhost.localdomain (231.26.30.125.dy.iij4u.or.jp [125.30.26.231])
+	by mbox.po.2iij.net (po-mbox301) id l6TCHJMN024825
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sun, 29 Jul 2007 21:17:20 +0900
+Date:	Sun, 29 Jul 2007 21:17:18 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove unused GROUP_TOSHIBA_NAMES
+Message-Id: <20070729211718.4a2b52e2.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15920
+X-archive-position: 15921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: max@stro.at
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
- switching to newer linux-libc-dev linux-2.6 provided kernel
- headers worked fine beside on mips mipsel:
+Remove unused GROUP_TOSHIBA_NAMES.
 
-  In file included from usr/klibc/arch/mips/crt0.S:11:
-  usr/include/arch/mips/machine/asm.h:8:24: error: asm/regdef.h: No such
-  file or directory
-  usr/include/arch/mips/machine/asm.h:9:21: error: asm/asm.h: No such file
-  or directory
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-  i'm not sure if you want to export both headers in the make
-  kernelheaders target or if it is the fault of klibc to assume
-  that those are available?
-
--- 
-maks
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/bootinfo.h mips/include/asm-mips/bootinfo.h
+--- mips-orig/include/asm-mips/bootinfo.h	2007-07-29 20:36:29.970282000 +0900
++++ mips/include/asm-mips/bootinfo.h	2007-07-29 20:54:33.285985000 +0900
+@@ -145,9 +145,6 @@
+ #define  MACH_TOSHIBA_RBTX4937	5
+ #define  MACH_TOSHIBA_RBTX4938	6
+ 
+-#define GROUP_TOSHIBA_NAMES	{ "Pallas", "TopasCE", "JMR", "JMR TX3927", \
+-				  "RBTX4927", "RBTX4937" }
+-
+ /*
+  * Valid machtype for group Alchemy
+  */

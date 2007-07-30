@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 13:10:33 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:20955 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 13:13:00 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:38108 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022607AbXG3MKb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jul 2007 13:10:31 +0100
+	id S20022608AbXG3MM6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 30 Jul 2007 13:12:58 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6UCAVEu014364;
-	Mon, 30 Jul 2007 13:10:31 +0100
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6UCCvWo014415;
+	Mon, 30 Jul 2007 13:12:57 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6UCAUOC014363;
-	Mon, 30 Jul 2007 13:10:30 +0100
-Date:	Mon, 30 Jul 2007 13:10:30 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6UCCvUZ014414;
+	Mon, 30 Jul 2007 13:12:57 +0100
+Date:	Mon, 30 Jul 2007 13:12:57 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Songmao Tian <tiansm@lemote.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] [MIPS]Remove unneeded header file
-Message-ID: <20070730121030.GG11436@linux-mips.org>
-References: <11857576051105-git-send-email-tiansm@lemote.com>
+To:	"H. Peter Anvin" <hpa@zytor.com>
+Cc:	maximilian attems <max@stro.at>, linux-mips@linux-mips.org,
+	klibc@zytor.com
+Subject: Re: [klibc] klibc kernelheaders build failure on mips/mipsel
+Message-ID: <20070730121257.GA14368@linux-mips.org>
+References: <20070729095217.GE7448@stro.at> <46AC997B.2030706@zytor.com> <20070730120557.GE11436@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <11857576051105-git-send-email-tiansm@lemote.com>
+In-Reply-To: <20070730120557.GE11436@linux-mips.org>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15942
+X-archive-position: 15943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,8 +34,28 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 30, 2007 at 09:06:45AM +0800, Songmao Tian wrote:
+On Mon, Jul 30, 2007 at 01:05:57PM +0100, Ralf Baechle wrote:
 
-Applied.
+> > >  In file included from usr/klibc/arch/mips/crt0.S:11:
+> > >  usr/include/arch/mips/machine/asm.h:8:24: error: asm/regdef.h: No such
+> > >  file or directory
+> > >  usr/include/arch/mips/machine/asm.h:9:21: error: asm/asm.h: No such file
+> > >  or directory
+> > >
+> > >  i'm not sure if you want to export both headers in the make
+> > >  kernelheaders target or if it is the fault of klibc to assume
+> > >  that those are available?
+> > >
+> > 
+> > If I remember correctly (sorry, I'm on the road at the moment), those 
+> > files should be exportable.  They wouldn't be all that hard to replicate 
+> > in klibc, though.
+> 
+> <asm/asm.h> would need to add __KERNEL__ wrappers around the CONFIG_* bits.
+> In addition you probably want to have <asm/fpregdef.h> exported.  With a
+> few changes you should be able to get away without using <asm/sgidefs.h>.
+
+Oh, the canonical place for these headers outside the kernel is either
+<{regdef,fpregdef,asm}.h> and <sys/{regdef,fpregdef,asm}.h>, not <asm/...>.
 
   Ralf

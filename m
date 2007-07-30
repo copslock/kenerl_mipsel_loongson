@@ -1,73 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 18:18:08 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:34000 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022997AbXG3RSG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jul 2007 18:18:06 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l6UHI5rL029844;
-	Mon, 30 Jul 2007 18:18:05 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l6UHI4qW029843;
-	Mon, 30 Jul 2007 18:18:04 +0100
-Date:	Mon, 30 Jul 2007 18:18:04 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Songmao Tian <tiansm@lemote.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: A blind patch:)
-Message-ID: <20070730171804.GB29600@linux-mips.org>
-References: <46AE049C.6040500@lemote.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46AE049C.6040500@lemote.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 23:02:12 +0100 (BST)
+Received: from static-72-72-73-123.bstnma.east.verizon.net ([72.72.73.123]:13674
+	"EHLO mail.sicortex.com") by ftp.linux-mips.org with ESMTP
+	id S20023029AbXG3WCJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 30 Jul 2007 23:02:09 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mail.sicortex.com (Postfix) with ESMTP id 30B13223421;
+	Mon, 30 Jul 2007 18:01:31 -0400 (EDT)
+X-Virus-Scanned: amavisd-new at sicortex.com
+Received: from mail.sicortex.com ([127.0.0.1])
+	by localhost (mail.sicortex.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id xU3YhFmsKKG9; Mon, 30 Jul 2007 18:01:29 -0400 (EDT)
+Received: from localhost.localdomain (gsrv020.sicortex.com [10.2.2.20])
+	by mail.sicortex.com (Postfix) with ESMTP id D6C2E21F526;
+	Mon, 30 Jul 2007 18:01:29 -0400 (EDT)
+From:	pwatkins@sicortex.com
+To:	eranian@hpl.hp.com, heiko.carstens@de.ibm.com
+Cc:	pwatkins@sicortex.com, mucci@cs.utk.edu, ralf@linux-mips.org,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	ak@suse.de, akpm@linux-foundation.org, tony.luck@intel.com,
+	avi@qumranet.com
+Subject: Re: [PATCH] MIPS: Add smp_call_function_single()
+Date:	Mon, 30 Jul 2007 18:01:29 -0400
+Message-Id: <11858328891389-git-send-email-pwatkins@sicortex.com>
+X-Mailer: git-send-email 1.4.2.4
+Return-Path: <pwatkins@sicortex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15954
+X-archive-position: 15955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pwatkins@sicortex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 30, 2007 at 11:32:44PM +0800, Songmao Tian wrote:
+How about this to handle the "call yourself" semantic?
 
-> commit 5fabf601a53079c182d5c25f6e850d6a7bd48988 is broken. since the 
-> regptr is disappeared in the signature of the function, I think the 
-> regptr is useless.
+In the other archs, there is more factoring of smp call code, and more care in
+the use of get_cpu(). That can be a follow-up MIPS patch.
 
-Indeed, you found a bug but your fix wasn't right.
+Signed-off-by: Peter Watkins <pwatkins@sicortex.com>
 
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
-index bbf20ce..d34b1fb 100644
---- a/arch/mips/kernel/unaligned.c
-+++ b/arch/mips/kernel/unaligned.c
-@@ -281,9 +281,8 @@ static void emulate_load_store_insn(struct pt_regs *regs,
- 			: "r" (addr), "i" (-EFAULT));
- 		if (res)
- 			goto fault;
--		*regptr = &regs->regs[insn.i_format.rt];
- 		compute_return_epc(regs);
--		*regptr = value;
-+		regs->regs[insn.i_format.rt] = value;
- 		break;
- #endif /* CONFIG_64BIT */
+---
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 67edfa7..33712ff 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -203,6 +203,61 @@ void smp_call_function_interrupt(void)
+ 	}
+ }
  
-@@ -324,9 +323,8 @@ static void emulate_load_store_insn(struct pt_regs *regs,
- 			: "r" (addr), "i" (-EFAULT));
- 		if (res)
- 			goto fault;
--		*regptr = &regs->regs[insn.i_format.rt];
- 		compute_return_epc(regs);
--		*regptr = value;
-+		regs->regs[insn.i_format.rt] = value;
- 		break;
- #endif /* CONFIG_64BIT */
- 
++int smp_call_function_single (int cpu, void (*func) (void *info), void *info, int retry,
++			      int wait)
++{
++	struct call_data_struct data;
++	int me;
++
++	/*
++	 * Can die spectacularly if this CPU isn't yet marked online
++	 */
++	if (!cpu_online(cpu))
++		return 0;
++
++	me = get_cpu();
++	BUG_ON(!cpu_online(me));
++
++	if (cpu == me) {
++		local_irq_disable()
++		func(info);
++		local_irq_enable();
++		put_cpu();
++		return 0;
++	}
++
++	/* Can deadlock when called with interrupts disabled */
++	WARN_ON(irqs_disabled());
++
++	data.func = func;
++	data.info = info;
++	atomic_set(&data.started, 0);
++	data.wait = wait;
++	if (wait)
++		atomic_set(&data.finished, 0);
++
++	spin_lock(&smp_call_lock);
++	call_data = &data;
++	smp_mb();
++
++	/* Send a message to the other CPU */
++	core_send_ipi(cpu, SMP_CALL_FUNCTION);
++
++	/* Wait for response */
++	/* FIXME: lock-up detection, backtrace on lock-up */
++	while (atomic_read(&data.started) != 1)
++		barrier();
++
++	if (wait)
++		while (atomic_read(&data.finished) != 1)
++			barrier();
++	call_data = NULL;
++	spin_unlock(&smp_call_lock);
++
++	put_cpu();
++	return 0;
++}
++
+ static void stop_this_cpu(void *dummy)
+ {
+ 	/*

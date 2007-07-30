@@ -1,98 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jul 2007 23:01:28 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.171]:13817 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022945AbXG2WBZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 29 Jul 2007 23:01:25 +0100
-Received: by ug-out-1314.google.com with SMTP id u2so1009813uge
-        for <linux-mips@linux-mips.org>; Sun, 29 Jul 2007 15:01:08 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:subject:date:user-agent:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=JeIXaok1hpVs2sFfiLUddA/3PT2LA/tjkjGdPzM2DhRP8rYQwrIQPABzPR0DW1F1YCU9Ei55QqwKEAuHhnQH/o8a2U3CbFo1L6tNBlnUUbxcYGoJfz6Bn4zu5ENVm5kd+wkI1E8M28R2G1oaio6RA2bqYaaigU6PpvF7HUo/Suw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:from:to:subject:date:user-agent:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=mXHc8rNIEIHYQtM5IPUgUoU0mgg6cBD2sVHTUUUE63NrzHXjFzmIwAAAAHEHOLM7a0z14NVLA7LqJ28EknkfKHKKqTkwY2VoE58aCmRyvfatXxMdMnTMApJzMn2omFj1HvX+eyto7VbDCtot6wv/yF0pHIDK+iG5obpLp69FtT0=
-Received: by 10.86.26.11 with SMTP id 11mr3481971fgz.1185746467911;
-        Sun, 29 Jul 2007 15:01:07 -0700 (PDT)
-Received: from ?192.168.1.34? ( [90.184.90.115])
-        by mx.google.com with ESMTPS id e8sm10894981muf.2007.07.29.15.01.06
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 29 Jul 2007 15:01:07 -0700 (PDT)
-From:	Jesper Juhl <jesper.juhl@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 01:38:22 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:22938 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20022963AbXG3AiT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 30 Jul 2007 01:38:19 +0100
+Received: (qmail 21777 invoked by uid 511); 30 Jul 2007 00:41:57 -0000
+Received: from unknown (HELO localhost.localdomain) (192.168.2.233)
+  by lemote.com with SMTP; 30 Jul 2007 00:41:57 -0000
+From:	Songmao Tian <tiansm@lemote.com>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH] mips: remove some duplicate includes
-Date:	Sun, 29 Jul 2007 23:59:35 +0200
-User-Agent: KMail/1.9.7
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Fuxin Zhang <zhangfx@lemote.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jesper Juhl <jesper.juhl@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200707292359.35971.jesper.juhl@gmail.com>
-Return-Path: <jesper.juhl@gmail.com>
+Cc:	Songmao Tian <tiansm@lemote.com>
+Subject: [PATCH] [MIPS] Fix name conflict
+Date:	Mon, 30 Jul 2007 08:37:07 +0800
+Message-Id: <11857558271466-git-send-email-tiansm@lemote.com>
+X-Mailer: git-send-email 1.5.2.2
+Return-Path: <tiansm@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15926
+X-archive-position: 15927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jesper.juhl@gmail.com
+X-original-sender: tiansm@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+error: 'cpu_clock' redeclared as different kind of symbol
+include/linux/sched.h:1356: error: previous declaration of 'cpu_clock' was here
 
-This patch removes some duplicate includes from arch/mips/
-
-
-Signed-off-by: Jesper Juhl <jesper.juhl@gmail.com>
+Signed-off-by: Songmao Tian <tiansm@lemote.com>
 ---
+ arch/mips/lemote/lm2e/prom.c          |    6 +++---
+ arch/mips/lemote/lm2e/setup.c         |    4 ++--
+ arch/mips/pmc-sierra/yosemite/prom.c  |    4 ++--
+ arch/mips/pmc-sierra/yosemite/setup.c |    4 ++--
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
- arch/mips/kernel/signal32.c   |    1 -
- arch/mips/lemote/lm2e/irq.c   |    1 -
- arch/mips/mipssim/sim_setup.c |    1 -
- 3 files changed, 0 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index 486b8e5..64b612a 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -18,7 +18,6 @@
- #include <linux/errno.h>
- #include <linux/wait.h>
- #include <linux/ptrace.h>
--#include <linux/compat.h>
- #include <linux/suspend.h>
- #include <linux/compiler.h>
- #include <linux/uaccess.h>
-diff --git a/arch/mips/lemote/lm2e/irq.c b/arch/mips/lemote/lm2e/irq.c
-index 05693bc..3e0b7be 100644
---- a/arch/mips/lemote/lm2e/irq.c
-+++ b/arch/mips/lemote/lm2e/irq.c
-@@ -25,7 +25,6 @@
-  */
- #include <linux/delay.h>
- #include <linux/io.h>
--#include <linux/irq.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
-diff --git a/arch/mips/mipssim/sim_setup.c b/arch/mips/mipssim/sim_setup.c
-index 17819b5..d012719 100644
---- a/arch/mips/mipssim/sim_setup.c
-+++ b/arch/mips/mipssim/sim_setup.c
-@@ -22,7 +22,6 @@
- #include <linux/io.h>
- #include <linux/irq.h>
- #include <linux/ioport.h>
--#include <linux/serial.h>
- #include <linux/tty.h>
- #include <linux/serial.h>
- #include <linux/serial_core.h>
+diff --git a/arch/mips/lemote/lm2e/prom.c b/arch/mips/lemote/lm2e/prom.c
+index 67312d7..535674e 100644
+--- a/arch/mips/lemote/lm2e/prom.c
++++ b/arch/mips/lemote/lm2e/prom.c
+@@ -23,7 +23,7 @@
+ #include <asm/bootinfo.h>
+ 
+ extern unsigned long bus_clock;
+-extern unsigned long cpu_clock;
++extern unsigned long mips_cpu_clock;
+ extern unsigned int memsize, highmemsize;
+ extern int putDebugChar(unsigned char byte);
+ 
+@@ -81,7 +81,7 @@ do {									\
+ 	l = (long)*env;
+ 	while (l != 0) {
+ 		parse_even_earlier(bus_clock, "busclock", l);
+-		parse_even_earlier(cpu_clock, "cpuclock", l);
++		parse_even_earlier(mips_cpu_clock, "cpuclock", l);
+ 		parse_even_earlier(memsize, "memsize", l);
+ 		parse_even_earlier(highmemsize, "highmemsize", l);
+ 		env++;
+@@ -91,7 +91,7 @@ do {									\
+ 		memsize = 256;
+ 
+ 	pr_info("busclock=%ld, cpuclock=%ld,memsize=%d,highmemsize=%d\n",
+-	       bus_clock, cpu_clock, memsize, highmemsize);
++	       bus_clock, mips_cpu_clock, memsize, highmemsize);
+ }
+ 
+ void __init prom_free_prom_memory(void)
+diff --git a/arch/mips/lemote/lm2e/setup.c b/arch/mips/lemote/lm2e/setup.c
+index 0e4d1fa..c043c9c 100644
+--- a/arch/mips/lemote/lm2e/setup.c
++++ b/arch/mips/lemote/lm2e/setup.c
+@@ -58,7 +58,7 @@ extern void mips_reboot_setup(void);
+ #define PTR_PAD(p) (p)
+ #endif
+ 
+-unsigned long cpu_clock;
++unsigned long mips_cpu_clock;
+ unsigned long bus_clock;
+ unsigned int memsize;
+ unsigned int highmemsize = 0;
+@@ -71,7 +71,7 @@ void __init plat_timer_setup(struct irqaction *irq)
+ static void __init loongson2e_time_init(void)
+ {
+ 	/* setup mips r4k timer */
+-	mips_hpt_frequency = cpu_clock / 2;
++	mips_hpt_frequency = mips_cpu_clock / 2;
+ }
+ 
+ static unsigned long __init mips_rtc_get_time(void)
+diff --git a/arch/mips/pmc-sierra/yosemite/prom.c b/arch/mips/pmc-sierra/yosemite/prom.c
+index 1e1685e..83628ba 100644
+--- a/arch/mips/pmc-sierra/yosemite/prom.c
++++ b/arch/mips/pmc-sierra/yosemite/prom.c
+@@ -34,7 +34,7 @@ extern void prom_grab_secondary(void);
+ struct callvectors *debug_vectors;
+ 
+ extern unsigned long yosemite_base;
+-extern unsigned long cpu_clock;
++extern unsigned long mips_cpu_clock;
+ 
+ const char *get_system_type(void)
+ {
+@@ -119,7 +119,7 @@ void __init prom_init(void)
+ 					  16);
+ 
+ 		if (strncmp("cpuclock", *env, strlen("cpuclock")) == 0)
+-			cpu_clock =
++			mips_cpu_clock =
+ 			    simple_strtol(*env + strlen("cpuclock="), NULL,
+ 					  10);
+ 
+diff --git a/arch/mips/pmc-sierra/yosemite/setup.c b/arch/mips/pmc-sierra/yosemite/setup.c
+index f7f93ae..17fdb8d 100644
+--- a/arch/mips/pmc-sierra/yosemite/setup.c
++++ b/arch/mips/pmc-sierra/yosemite/setup.c
+@@ -59,7 +59,7 @@ unsigned char titan_ge_mac_addr_base[6] = {
+ 	0x00, 0xe0, 0x04, 0x00, 0x00, 0x21
+ };
+ 
+-unsigned long cpu_clock;
++unsigned long mips_cpu_clock;
+ unsigned long yosemite_base;
+ 
+ static struct m48t37_rtc *m48t37_base;
+@@ -140,7 +140,7 @@ void __init plat_timer_setup(struct irqaction *irq)
+ 
+ void yosemite_time_init(void)
+ {
+-	mips_hpt_frequency = cpu_clock / 2;
++	mips_hpt_frequency = mips_cpu_clock / 2;
+ mips_hpt_frequency = 33000000 * 3 * 5;
+ }
+ 
+-- 
+1.5.2.2

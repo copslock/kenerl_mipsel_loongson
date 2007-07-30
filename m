@@ -1,47 +1,6659 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 13:41:51 +0100 (BST)
-Received: from terminus.zytor.com ([198.137.202.10]:12228 "EHLO
-	terminus.zytor.com") by ftp.linux-mips.org with ESMTP
-	id S20022636AbXG3Mlt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jul 2007 13:41:49 +0100
-Received: from titan.hos.anvin.org ([66.0.95.132])
-	(authenticated bits=0)
-	by terminus.zytor.com (8.13.8/8.13.8) with ESMTP id l6UCff7n003534
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Mon, 30 Jul 2007 05:41:45 -0700
-Message-ID: <46ADDC78.8080405@zytor.com>
-Date:	Mon, 30 Jul 2007 05:41:28 -0700
-From:	"H. Peter Anvin" <hpa@zytor.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 14:41:09 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:62500 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022608AbXG3NlC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 30 Jul 2007 14:41:02 +0100
+Received: by mo.po.2iij.net (mo31) id l6UDegUk082948; Mon, 30 Jul 2007 22:40:42 +0900 (JST)
+Received: from localhost.localdomain (231.26.30.125.dy.iij4u.or.jp [125.30.26.231])
+	by mbox.po.2iij.net (po-mbox302) id l6UDeZjv024179
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 30 Jul 2007 22:40:36 +0900
+Date:	Mon, 30 Jul 2007 22:40:35 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	maximilian attems <max@stro.at>, linux-mips@linux-mips.org,
-	klibc@zytor.com
-Subject: Re: [klibc] klibc kernelheaders build failure on mips/mipsel
-References: <20070729095217.GE7448@stro.at> <46AC997B.2030706@zytor.com> <20070730120557.GE11436@linux-mips.org> <20070730121257.GA14368@linux-mips.org>
-In-Reply-To: <20070730121257.GA14368@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove DDB5477 support
+Message-Id: <20070730224035.10802420.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV 0.88.7/3820/Mon Jul 30 05:13:24 2007 on terminus.zytor.com
-X-Virus-Status:	Clean
-Return-Path: <hpa@zytor.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15944
+X-archive-position: 15945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hpa@zytor.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> 
-> Oh, the canonical place for these headers outside the kernel is either
-> <{regdef,fpregdef,asm}.h> and <sys/{regdef,fpregdef,asm}.h>, not <asm/...>.
-> 
+Hi Ralf,
 
-Well, yes, but klibc implements a lot of headers by #including 
-appropriate kernel bits.
+There is no objection.
+Please remove it.
 
-	-hpa
+Yoichi
+---
+
+Remove DDB5477 support
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
+--- mips-orig/arch/mips/Kconfig	2007-07-30 22:01:15.936545500 +0900
++++ mips/arch/mips/Kconfig	2007-07-30 22:20:06.607208000 +0900
+@@ -227,26 +227,6 @@ config MIPS_SIM
+ 	  This option enables support for MIPS Technologies MIPSsim software
+ 	  emulator.
+ 
+-config DDB5477
+-	bool "NEC DDB Vrc-5477"
+-	select DDB5XXX_COMMON
+-	select DMA_NONCOHERENT
+-	select HW_HAS_PCI
+-	select I8259
+-	select IRQ_CPU
+-	select SYS_HAS_CPU_R5432
+-	select SYS_SUPPORTS_32BIT_KERNEL
+-	select SYS_SUPPORTS_64BIT_KERNEL if EXPERIMENTAL
+-	select SYS_SUPPORTS_KGDB
+-	select SYS_SUPPORTS_KGDB
+-	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	help
+-	  This enables support for the R5432-based NEC DDB Vrc-5477,
+-	  or Rockhopper/SolutionGear boards with R5432/R5500 CPUs.
+-
+-	  Features : kernel debugging, serial terminal, NFS root fs, on-board
+-	  ether port USB, AC97, PCI, etc.
+-
+ config MARKEINS
+ 	bool "NEC EMMA2RH Mark-eins"
+ 	select DMA_NONCOHERENT
+@@ -617,7 +597,6 @@ config WR_PPMC
+ endchoice
+ 
+ source "arch/mips/au1000/Kconfig"
+-source "arch/mips/ddb5xxx/Kconfig"
+ source "arch/mips/jazz/Kconfig"
+ source "arch/mips/pmc-sierra/Kconfig"
+ source "arch/mips/sgi-ip27/Kconfig"
+@@ -789,10 +768,6 @@ config IRQ_MSP_SLP
+ config IRQ_MSP_CIC
+ 	bool
+ 
+-config DDB5XXX_COMMON
+-	bool
+-	select SYS_SUPPORTS_KGDB
+-
+ config MIPS_BOARDS_GEN
+ 	bool
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Makefile mips/arch/mips/Makefile
+--- mips-orig/arch/mips/Makefile	2007-07-30 22:01:15.952546500 +0900
++++ mips/arch/mips/Makefile	2007-07-30 22:20:06.611208250 +0900
+@@ -367,17 +367,6 @@ cflags-$(CONFIG_BASLER_EXCITE)	+= -Iincl
+ load-$(CONFIG_BASLER_EXCITE)	+= 0x80100000
+ 
+ #
+-# NEC DDB
+-#
+-core-$(CONFIG_DDB5XXX_COMMON)	+= arch/mips/ddb5xxx/common/
+-
+-#
+-# NEC DDB Vrc-5477
+-#
+-core-$(CONFIG_DDB5477)		+= arch/mips/ddb5xxx/ddb5477/
+-load-$(CONFIG_DDB5477)		+= 0xffffffff80100000
+-
+-#
+ # Common VR41xx
+ #
+ core-$(CONFIG_MACH_VR41XX)	+= arch/mips/vr41xx/common/
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/atlas_defconfig mips/arch/mips/configs/atlas_defconfig
+--- mips-orig/arch/mips/configs/atlas_defconfig	2007-07-30 22:01:16.448577500 +0900
++++ mips/arch/mips/configs/atlas_defconfig	2007-07-30 22:20:55.258248500 +0900
+@@ -35,7 +35,6 @@ CONFIG_MIPS_ATLAS=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/bigsur_defconfig mips/arch/mips/configs/bigsur_defconfig
+--- mips-orig/arch/mips/configs/bigsur_defconfig	2007-07-30 22:01:16.464578500 +0900
++++ mips/arch/mips/configs/bigsur_defconfig	2007-07-30 22:21:00.854598250 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/capcella_defconfig mips/arch/mips/configs/capcella_defconfig
+--- mips-orig/arch/mips/configs/capcella_defconfig	2007-07-30 22:01:16.468578750 +0900
++++ mips/arch/mips/configs/capcella_defconfig	2007-07-30 22:21:11.075237000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ CONFIG_MACH_VR41XX=y
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/cobalt_defconfig mips/arch/mips/configs/cobalt_defconfig
+--- mips-orig/arch/mips/configs/cobalt_defconfig	2007-07-30 22:01:16.468578750 +0900
++++ mips/arch/mips/configs/cobalt_defconfig	2007-07-30 22:21:17.499638500 +0900
+@@ -20,7 +20,6 @@ CONFIG_MIPS_COBALT=y
+ # CONFIG_MIPS_SIM is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/db1000_defconfig mips/arch/mips/configs/db1000_defconfig
+--- mips-orig/arch/mips/configs/db1000_defconfig	2007-07-30 22:01:16.468578750 +0900
++++ mips/arch/mips/configs/db1000_defconfig	2007-07-30 22:21:28.088300250 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_DB1000=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/db1100_defconfig mips/arch/mips/configs/db1100_defconfig
+--- mips-orig/arch/mips/configs/db1100_defconfig	2007-07-30 22:01:16.468578750 +0900
++++ mips/arch/mips/configs/db1100_defconfig	2007-07-30 22:21:36.492825500 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_DB1100=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/db1200_defconfig mips/arch/mips/configs/db1200_defconfig
+--- mips-orig/arch/mips/configs/db1200_defconfig	2007-07-30 22:01:16.484579750 +0900
++++ mips/arch/mips/configs/db1200_defconfig	2007-07-30 22:21:43.853285500 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_DB1200=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/db1500_defconfig mips/arch/mips/configs/db1500_defconfig
+--- mips-orig/arch/mips/configs/db1500_defconfig	2007-07-30 22:01:16.484579750 +0900
++++ mips/arch/mips/configs/db1500_defconfig	2007-07-30 22:21:50.245685000 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_DB1500=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/db1550_defconfig mips/arch/mips/configs/db1550_defconfig
+--- mips-orig/arch/mips/configs/db1550_defconfig	2007-07-30 22:01:16.484579750 +0900
++++ mips/arch/mips/configs/db1550_defconfig	2007-07-30 22:21:56.694088000 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_DB1550=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ddb5477_defconfig mips/arch/mips/configs/ddb5477_defconfig
+--- mips-orig/arch/mips/configs/ddb5477_defconfig	2007-07-30 22:01:16.484579750 +0900
++++ mips/arch/mips/configs/ddb5477_defconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,988 +0,0 @@
+-#
+-# Automatically generated make config: don't edit
+-# Linux kernel version: 2.6.20
+-# Tue Feb 20 21:47:28 2007
+-#
+-CONFIG_MIPS=y
+-
+-#
+-# Machine selection
+-#
+-CONFIG_ZONE_DMA=y
+-# CONFIG_MIPS_MTX1 is not set
+-# CONFIG_MIPS_BOSPORUS is not set
+-# CONFIG_MIPS_PB1000 is not set
+-# CONFIG_MIPS_PB1100 is not set
+-# CONFIG_MIPS_PB1500 is not set
+-# CONFIG_MIPS_PB1550 is not set
+-# CONFIG_MIPS_PB1200 is not set
+-# CONFIG_MIPS_DB1000 is not set
+-# CONFIG_MIPS_DB1100 is not set
+-# CONFIG_MIPS_DB1500 is not set
+-# CONFIG_MIPS_DB1550 is not set
+-# CONFIG_MIPS_DB1200 is not set
+-# CONFIG_MIPS_MIRAGE is not set
+-# CONFIG_BASLER_EXCITE is not set
+-# CONFIG_MIPS_COBALT is not set
+-# CONFIG_MACH_DECSTATION is not set
+-# CONFIG_MACH_JAZZ is not set
+-# CONFIG_MIPS_ATLAS is not set
+-# CONFIG_MIPS_MALTA is not set
+-# CONFIG_MIPS_SEAD is not set
+-# CONFIG_WR_PPMC is not set
+-# CONFIG_MIPS_SIM is not set
+-# CONFIG_MOMENCO_JAGUAR_ATX is not set
+-# CONFIG_MIPS_XXS1500 is not set
+-# CONFIG_PNX8550_JBS is not set
+-# CONFIG_PNX8550_STB810 is not set
+-CONFIG_DDB5477=y
+-# CONFIG_MACH_VR41XX is not set
+-# CONFIG_PMC_YOSEMITE is not set
+-# CONFIG_QEMU is not set
+-# CONFIG_MARKEINS is not set
+-# CONFIG_SGI_IP22 is not set
+-# CONFIG_SGI_IP27 is not set
+-# CONFIG_SGI_IP32 is not set
+-# CONFIG_SIBYTE_BIGSUR is not set
+-# CONFIG_SIBYTE_SWARM is not set
+-# CONFIG_SIBYTE_SENTOSA is not set
+-# CONFIG_SIBYTE_RHONE is not set
+-# CONFIG_SIBYTE_CARMEL is not set
+-# CONFIG_SIBYTE_PTSWARM is not set
+-# CONFIG_SIBYTE_LITTLESUR is not set
+-# CONFIG_SIBYTE_CRHINE is not set
+-# CONFIG_SIBYTE_CRHONE is not set
+-# CONFIG_SNI_RM is not set
+-# CONFIG_TOSHIBA_JMR3927 is not set
+-# CONFIG_TOSHIBA_RBTX4927 is not set
+-# CONFIG_TOSHIBA_RBTX4938 is not set
+-CONFIG_DDB5477_BUS_FREQUENCY=0
+-CONFIG_RWSEM_GENERIC_SPINLOCK=y
+-# CONFIG_ARCH_HAS_ILOG2_U32 is not set
+-# CONFIG_ARCH_HAS_ILOG2_U64 is not set
+-CONFIG_GENERIC_FIND_NEXT_BIT=y
+-CONFIG_GENERIC_HWEIGHT=y
+-CONFIG_GENERIC_CALIBRATE_DELAY=y
+-CONFIG_GENERIC_TIME=y
+-CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
+-# CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ is not set
+-CONFIG_DMA_NONCOHERENT=y
+-CONFIG_DMA_NEED_PCI_MAP_STATE=y
+-CONFIG_I8259=y
+-# CONFIG_CPU_BIG_ENDIAN is not set
+-CONFIG_CPU_LITTLE_ENDIAN=y
+-CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+-CONFIG_IRQ_CPU=y
+-CONFIG_DDB5XXX_COMMON=y
+-CONFIG_MIPS_L1_CACHE_SHIFT=5
+-
+-#
+-# CPU selection
+-#
+-# CONFIG_CPU_MIPS32_R1 is not set
+-# CONFIG_CPU_MIPS32_R2 is not set
+-# CONFIG_CPU_MIPS64_R1 is not set
+-# CONFIG_CPU_MIPS64_R2 is not set
+-# CONFIG_CPU_R3000 is not set
+-# CONFIG_CPU_TX39XX is not set
+-# CONFIG_CPU_VR41XX is not set
+-# CONFIG_CPU_R4300 is not set
+-# CONFIG_CPU_R4X00 is not set
+-# CONFIG_CPU_TX49XX is not set
+-# CONFIG_CPU_R5000 is not set
+-CONFIG_CPU_R5432=y
+-# CONFIG_CPU_R6000 is not set
+-# CONFIG_CPU_NEVADA is not set
+-# CONFIG_CPU_R8000 is not set
+-# CONFIG_CPU_R10000 is not set
+-# CONFIG_CPU_RM7000 is not set
+-# CONFIG_CPU_RM9000 is not set
+-# CONFIG_CPU_SB1 is not set
+-CONFIG_SYS_HAS_CPU_R5432=y
+-CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
+-
+-#
+-# Kernel type
+-#
+-CONFIG_32BIT=y
+-# CONFIG_64BIT is not set
+-CONFIG_PAGE_SIZE_4KB=y
+-# CONFIG_PAGE_SIZE_8KB is not set
+-# CONFIG_PAGE_SIZE_16KB is not set
+-# CONFIG_PAGE_SIZE_64KB is not set
+-CONFIG_MIPS_MT_DISABLED=y
+-# CONFIG_MIPS_MT_SMP is not set
+-# CONFIG_MIPS_MT_SMTC is not set
+-# CONFIG_MIPS_VPE_LOADER is not set
+-CONFIG_CPU_HAS_LLSC=y
+-CONFIG_CPU_HAS_SYNC=y
+-CONFIG_GENERIC_HARDIRQS=y
+-CONFIG_GENERIC_IRQ_PROBE=y
+-CONFIG_ARCH_FLATMEM_ENABLE=y
+-CONFIG_SELECT_MEMORY_MODEL=y
+-CONFIG_FLATMEM_MANUAL=y
+-# CONFIG_DISCONTIGMEM_MANUAL is not set
+-# CONFIG_SPARSEMEM_MANUAL is not set
+-CONFIG_FLATMEM=y
+-CONFIG_FLAT_NODE_MEM_MAP=y
+-# CONFIG_SPARSEMEM_STATIC is not set
+-CONFIG_SPLIT_PTLOCK_CPUS=4
+-# CONFIG_RESOURCES_64BIT is not set
+-CONFIG_ZONE_DMA_FLAG=1
+-# CONFIG_HZ_48 is not set
+-# CONFIG_HZ_100 is not set
+-# CONFIG_HZ_128 is not set
+-# CONFIG_HZ_250 is not set
+-# CONFIG_HZ_256 is not set
+-CONFIG_HZ_1000=y
+-# CONFIG_HZ_1024 is not set
+-CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
+-CONFIG_HZ=1000
+-CONFIG_PREEMPT_NONE=y
+-# CONFIG_PREEMPT_VOLUNTARY is not set
+-# CONFIG_PREEMPT is not set
+-# CONFIG_KEXEC is not set
+-CONFIG_LOCKDEP_SUPPORT=y
+-CONFIG_STACKTRACE_SUPPORT=y
+-CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
+-
+-#
+-# Code maturity level options
+-#
+-CONFIG_EXPERIMENTAL=y
+-CONFIG_BROKEN_ON_SMP=y
+-CONFIG_INIT_ENV_ARG_LIMIT=32
+-
+-#
+-# General setup
+-#
+-CONFIG_LOCALVERSION=""
+-CONFIG_LOCALVERSION_AUTO=y
+-CONFIG_SWAP=y
+-CONFIG_SYSVIPC=y
+-# CONFIG_IPC_NS is not set
+-CONFIG_SYSVIPC_SYSCTL=y
+-# CONFIG_POSIX_MQUEUE is not set
+-# CONFIG_BSD_PROCESS_ACCT is not set
+-# CONFIG_TASKSTATS is not set
+-# CONFIG_UTS_NS is not set
+-# CONFIG_AUDIT is not set
+-# CONFIG_IKCONFIG is not set
+-CONFIG_SYSFS_DEPRECATED=y
+-CONFIG_RELAY=y
+-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+-CONFIG_SYSCTL=y
+-CONFIG_EMBEDDED=y
+-CONFIG_SYSCTL_SYSCALL=y
+-CONFIG_KALLSYMS=y
+-# CONFIG_KALLSYMS_EXTRA_PASS is not set
+-CONFIG_HOTPLUG=y
+-CONFIG_PRINTK=y
+-CONFIG_BUG=y
+-CONFIG_ELF_CORE=y
+-CONFIG_BASE_FULL=y
+-CONFIG_FUTEX=y
+-CONFIG_EPOLL=y
+-CONFIG_SHMEM=y
+-CONFIG_SLAB=y
+-CONFIG_VM_EVENT_COUNTERS=y
+-CONFIG_RT_MUTEXES=y
+-# CONFIG_TINY_SHMEM is not set
+-CONFIG_BASE_SMALL=0
+-# CONFIG_SLOB is not set
+-
+-#
+-# Loadable module support
+-#
+-# CONFIG_MODULES is not set
+-
+-#
+-# Block layer
+-#
+-CONFIG_BLOCK=y
+-# CONFIG_LBD is not set
+-# CONFIG_BLK_DEV_IO_TRACE is not set
+-# CONFIG_LSF is not set
+-
+-#
+-# IO Schedulers
+-#
+-CONFIG_IOSCHED_NOOP=y
+-CONFIG_IOSCHED_AS=y
+-CONFIG_IOSCHED_DEADLINE=y
+-CONFIG_IOSCHED_CFQ=y
+-CONFIG_DEFAULT_AS=y
+-# CONFIG_DEFAULT_DEADLINE is not set
+-# CONFIG_DEFAULT_CFQ is not set
+-# CONFIG_DEFAULT_NOOP is not set
+-CONFIG_DEFAULT_IOSCHED="anticipatory"
+-
+-#
+-# Bus options (PCI, PCMCIA, EISA, ISA, TC)
+-#
+-CONFIG_HW_HAS_PCI=y
+-CONFIG_PCI=y
+-CONFIG_MMU=y
+-
+-#
+-# PCCARD (PCMCIA/CardBus) support
+-#
+-# CONFIG_PCCARD is not set
+-
+-#
+-# PCI Hotplug Support
+-#
+-# CONFIG_HOTPLUG_PCI is not set
+-
+-#
+-# Executable file formats
+-#
+-CONFIG_BINFMT_ELF=y
+-# CONFIG_BINFMT_MISC is not set
+-CONFIG_TRAD_SIGNALS=y
+-
+-#
+-# Power management options
+-#
+-CONFIG_PM=y
+-# CONFIG_PM_LEGACY is not set
+-# CONFIG_PM_DEBUG is not set
+-# CONFIG_PM_SYSFS_DEPRECATED is not set
+-
+-#
+-# Networking
+-#
+-CONFIG_NET=y
+-
+-#
+-# Networking options
+-#
+-# CONFIG_NETDEBUG is not set
+-CONFIG_PACKET=y
+-# CONFIG_PACKET_MMAP is not set
+-CONFIG_UNIX=y
+-CONFIG_XFRM=y
+-CONFIG_XFRM_USER=y
+-# CONFIG_XFRM_SUB_POLICY is not set
+-CONFIG_XFRM_MIGRATE=y
+-CONFIG_NET_KEY=y
+-CONFIG_NET_KEY_MIGRATE=y
+-CONFIG_INET=y
+-# CONFIG_IP_MULTICAST is not set
+-# CONFIG_IP_ADVANCED_ROUTER is not set
+-CONFIG_IP_FIB_HASH=y
+-CONFIG_IP_PNP=y
+-# CONFIG_IP_PNP_DHCP is not set
+-CONFIG_IP_PNP_BOOTP=y
+-# CONFIG_IP_PNP_RARP is not set
+-# CONFIG_NET_IPIP is not set
+-# CONFIG_NET_IPGRE is not set
+-# CONFIG_ARPD is not set
+-# CONFIG_SYN_COOKIES is not set
+-# CONFIG_INET_AH is not set
+-# CONFIG_INET_ESP is not set
+-# CONFIG_INET_IPCOMP is not set
+-# CONFIG_INET_XFRM_TUNNEL is not set
+-# CONFIG_INET_TUNNEL is not set
+-CONFIG_INET_XFRM_MODE_TRANSPORT=y
+-CONFIG_INET_XFRM_MODE_TUNNEL=y
+-CONFIG_INET_XFRM_MODE_BEET=y
+-CONFIG_INET_DIAG=y
+-CONFIG_INET_TCP_DIAG=y
+-# CONFIG_TCP_CONG_ADVANCED is not set
+-CONFIG_TCP_CONG_CUBIC=y
+-CONFIG_DEFAULT_TCP_CONG="cubic"
+-CONFIG_TCP_MD5SIG=y
+-# CONFIG_IPV6 is not set
+-# CONFIG_INET6_XFRM_TUNNEL is not set
+-# CONFIG_INET6_TUNNEL is not set
+-CONFIG_NETWORK_SECMARK=y
+-# CONFIG_NETFILTER is not set
+-
+-#
+-# DCCP Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_IP_DCCP is not set
+-
+-#
+-# SCTP Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_IP_SCTP is not set
+-
+-#
+-# TIPC Configuration (EXPERIMENTAL)
+-#
+-# CONFIG_TIPC is not set
+-# CONFIG_ATM is not set
+-# CONFIG_BRIDGE is not set
+-# CONFIG_VLAN_8021Q is not set
+-# CONFIG_DECNET is not set
+-# CONFIG_LLC2 is not set
+-# CONFIG_IPX is not set
+-# CONFIG_ATALK is not set
+-# CONFIG_X25 is not set
+-# CONFIG_LAPB is not set
+-# CONFIG_ECONET is not set
+-# CONFIG_WAN_ROUTER is not set
+-
+-#
+-# QoS and/or fair queueing
+-#
+-# CONFIG_NET_SCHED is not set
+-
+-#
+-# Network testing
+-#
+-# CONFIG_NET_PKTGEN is not set
+-# CONFIG_HAMRADIO is not set
+-# CONFIG_IRDA is not set
+-# CONFIG_BT is not set
+-CONFIG_IEEE80211=y
+-# CONFIG_IEEE80211_DEBUG is not set
+-CONFIG_IEEE80211_CRYPT_WEP=y
+-CONFIG_IEEE80211_CRYPT_CCMP=y
+-CONFIG_IEEE80211_SOFTMAC=y
+-# CONFIG_IEEE80211_SOFTMAC_DEBUG is not set
+-CONFIG_WIRELESS_EXT=y
+-
+-#
+-# Device Drivers
+-#
+-
+-#
+-# Generic Driver Options
+-#
+-CONFIG_STANDALONE=y
+-CONFIG_PREVENT_FIRMWARE_BUILD=y
+-CONFIG_FW_LOADER=y
+-# CONFIG_SYS_HYPERVISOR is not set
+-
+-#
+-# Connector - unified userspace <-> kernelspace linker
+-#
+-CONFIG_CONNECTOR=y
+-CONFIG_PROC_EVENTS=y
+-
+-#
+-# Memory Technology Devices (MTD)
+-#
+-# CONFIG_MTD is not set
+-
+-#
+-# Parallel port support
+-#
+-# CONFIG_PARPORT is not set
+-
+-#
+-# Plug and Play support
+-#
+-# CONFIG_PNPACPI is not set
+-
+-#
+-# Block devices
+-#
+-# CONFIG_BLK_CPQ_DA is not set
+-# CONFIG_BLK_CPQ_CISS_DA is not set
+-# CONFIG_BLK_DEV_DAC960 is not set
+-# CONFIG_BLK_DEV_UMEM is not set
+-# CONFIG_BLK_DEV_COW_COMMON is not set
+-# CONFIG_BLK_DEV_LOOP is not set
+-# CONFIG_BLK_DEV_NBD is not set
+-# CONFIG_BLK_DEV_SX8 is not set
+-# CONFIG_BLK_DEV_RAM is not set
+-# CONFIG_BLK_DEV_INITRD is not set
+-CONFIG_CDROM_PKTCDVD=y
+-CONFIG_CDROM_PKTCDVD_BUFFERS=8
+-# CONFIG_CDROM_PKTCDVD_WCACHE is not set
+-CONFIG_ATA_OVER_ETH=y
+-
+-#
+-# Misc devices
+-#
+-CONFIG_SGI_IOC4=y
+-# CONFIG_TIFM_CORE is not set
+-
+-#
+-# ATA/ATAPI/MFM/RLL support
+-#
+-# CONFIG_IDE is not set
+-
+-#
+-# SCSI device support
+-#
+-CONFIG_RAID_ATTRS=y
+-# CONFIG_SCSI is not set
+-# CONFIG_SCSI_NETLINK is not set
+-
+-#
+-# Serial ATA (prod) and Parallel ATA (experimental) drivers
+-#
+-# CONFIG_ATA is not set
+-
+-#
+-# Multi-device support (RAID and LVM)
+-#
+-# CONFIG_MD is not set
+-
+-#
+-# Fusion MPT device support
+-#
+-# CONFIG_FUSION is not set
+-
+-#
+-# IEEE 1394 (FireWire) support
+-#
+-# CONFIG_IEEE1394 is not set
+-
+-#
+-# I2O device support
+-#
+-# CONFIG_I2O is not set
+-
+-#
+-# Network device support
+-#
+-CONFIG_NETDEVICES=y
+-# CONFIG_DUMMY is not set
+-# CONFIG_BONDING is not set
+-# CONFIG_EQUALIZER is not set
+-# CONFIG_TUN is not set
+-
+-#
+-# ARCnet devices
+-#
+-# CONFIG_ARCNET is not set
+-
+-#
+-# PHY device support
+-#
+-CONFIG_PHYLIB=y
+-
+-#
+-# MII PHY device drivers
+-#
+-CONFIG_MARVELL_PHY=y
+-CONFIG_DAVICOM_PHY=y
+-CONFIG_QSEMI_PHY=y
+-CONFIG_LXT_PHY=y
+-CONFIG_CICADA_PHY=y
+-CONFIG_VITESSE_PHY=y
+-CONFIG_SMSC_PHY=y
+-# CONFIG_BROADCOM_PHY is not set
+-# CONFIG_FIXED_PHY is not set
+-
+-#
+-# Ethernet (10 or 100Mbit)
+-#
+-CONFIG_NET_ETHERNET=y
+-CONFIG_MII=y
+-# CONFIG_HAPPYMEAL is not set
+-# CONFIG_SUNGEM is not set
+-# CONFIG_CASSINI is not set
+-# CONFIG_NET_VENDOR_3COM is not set
+-# CONFIG_DM9000 is not set
+-
+-#
+-# Tulip family network device support
+-#
+-# CONFIG_NET_TULIP is not set
+-# CONFIG_HP100 is not set
+-CONFIG_NET_PCI=y
+-CONFIG_PCNET32=y
+-# CONFIG_PCNET32_NAPI is not set
+-# CONFIG_AMD8111_ETH is not set
+-# CONFIG_ADAPTEC_STARFIRE is not set
+-# CONFIG_B44 is not set
+-# CONFIG_FORCEDETH is not set
+-# CONFIG_DGRS is not set
+-# CONFIG_EEPRO100 is not set
+-# CONFIG_E100 is not set
+-# CONFIG_FEALNX is not set
+-# CONFIG_NATSEMI is not set
+-# CONFIG_NE2K_PCI is not set
+-# CONFIG_8139CP is not set
+-# CONFIG_8139TOO is not set
+-# CONFIG_SIS900 is not set
+-# CONFIG_EPIC100 is not set
+-# CONFIG_SUNDANCE is not set
+-# CONFIG_TLAN is not set
+-# CONFIG_VIA_RHINE is not set
+-# CONFIG_SC92031 is not set
+-
+-#
+-# Ethernet (1000 Mbit)
+-#
+-# CONFIG_ACENIC is not set
+-# CONFIG_DL2K is not set
+-# CONFIG_E1000 is not set
+-# CONFIG_NS83820 is not set
+-# CONFIG_HAMACHI is not set
+-# CONFIG_YELLOWFIN is not set
+-# CONFIG_R8169 is not set
+-# CONFIG_SIS190 is not set
+-# CONFIG_SKGE is not set
+-# CONFIG_SKY2 is not set
+-# CONFIG_SK98LIN is not set
+-# CONFIG_VIA_VELOCITY is not set
+-# CONFIG_TIGON3 is not set
+-# CONFIG_BNX2 is not set
+-CONFIG_QLA3XXX=y
+-# CONFIG_ATL1 is not set
+-
+-#
+-# Ethernet (10000 Mbit)
+-#
+-# CONFIG_CHELSIO_T1 is not set
+-CONFIG_CHELSIO_T3=y
+-# CONFIG_IXGB is not set
+-# CONFIG_S2IO is not set
+-# CONFIG_MYRI10GE is not set
+-CONFIG_NETXEN_NIC=y
+-
+-#
+-# Token Ring devices
+-#
+-# CONFIG_TR is not set
+-
+-#
+-# Wireless LAN (non-hamradio)
+-#
+-# CONFIG_NET_RADIO is not set
+-
+-#
+-# Wan interfaces
+-#
+-# CONFIG_WAN is not set
+-# CONFIG_FDDI is not set
+-# CONFIG_HIPPI is not set
+-# CONFIG_PPP is not set
+-# CONFIG_SLIP is not set
+-# CONFIG_SHAPER is not set
+-# CONFIG_NETCONSOLE is not set
+-# CONFIG_NETPOLL is not set
+-# CONFIG_NET_POLL_CONTROLLER is not set
+-
+-#
+-# ISDN subsystem
+-#
+-# CONFIG_ISDN is not set
+-
+-#
+-# Telephony Support
+-#
+-# CONFIG_PHONE is not set
+-
+-#
+-# Input device support
+-#
+-CONFIG_INPUT=y
+-# CONFIG_INPUT_FF_MEMLESS is not set
+-
+-#
+-# Userland interfaces
+-#
+-CONFIG_INPUT_MOUSEDEV=y
+-CONFIG_INPUT_MOUSEDEV_PSAUX=y
+-CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
+-CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
+-# CONFIG_INPUT_JOYDEV is not set
+-# CONFIG_INPUT_TSDEV is not set
+-# CONFIG_INPUT_EVDEV is not set
+-# CONFIG_INPUT_EVBUG is not set
+-
+-#
+-# Input Device Drivers
+-#
+-# CONFIG_INPUT_KEYBOARD is not set
+-# CONFIG_INPUT_MOUSE is not set
+-# CONFIG_INPUT_JOYSTICK is not set
+-# CONFIG_INPUT_TOUCHSCREEN is not set
+-# CONFIG_INPUT_MISC is not set
+-
+-#
+-# Hardware I/O ports
+-#
+-CONFIG_SERIO=y
+-# CONFIG_SERIO_I8042 is not set
+-CONFIG_SERIO_SERPORT=y
+-# CONFIG_SERIO_PCIPS2 is not set
+-# CONFIG_SERIO_LIBPS2 is not set
+-CONFIG_SERIO_RAW=y
+-# CONFIG_GAMEPORT is not set
+-
+-#
+-# Character devices
+-#
+-CONFIG_VT=y
+-CONFIG_VT_CONSOLE=y
+-CONFIG_HW_CONSOLE=y
+-CONFIG_VT_HW_CONSOLE_BINDING=y
+-# CONFIG_SERIAL_NONSTANDARD is not set
+-
+-#
+-# Serial drivers
+-#
+-CONFIG_SERIAL_8250=y
+-CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_SERIAL_8250_PCI=y
+-CONFIG_SERIAL_8250_NR_UARTS=4
+-CONFIG_SERIAL_8250_RUNTIME_UARTS=4
+-# CONFIG_SERIAL_8250_EXTENDED is not set
+-
+-#
+-# Non-8250 serial port support
+-#
+-CONFIG_SERIAL_CORE=y
+-CONFIG_SERIAL_CORE_CONSOLE=y
+-# CONFIG_SERIAL_JSM is not set
+-CONFIG_UNIX98_PTYS=y
+-CONFIG_LEGACY_PTYS=y
+-CONFIG_LEGACY_PTY_COUNT=256
+-
+-#
+-# IPMI
+-#
+-# CONFIG_IPMI_HANDLER is not set
+-
+-#
+-# Watchdog Cards
+-#
+-# CONFIG_WATCHDOG is not set
+-# CONFIG_HW_RANDOM is not set
+-# CONFIG_RTC is not set
+-# CONFIG_GEN_RTC is not set
+-# CONFIG_DTLK is not set
+-# CONFIG_R3964 is not set
+-# CONFIG_APPLICOM is not set
+-# CONFIG_DRM is not set
+-# CONFIG_RAW_DRIVER is not set
+-
+-#
+-# TPM devices
+-#
+-# CONFIG_TCG_TPM is not set
+-
+-#
+-# I2C support
+-#
+-# CONFIG_I2C is not set
+-
+-#
+-# SPI support
+-#
+-# CONFIG_SPI is not set
+-# CONFIG_SPI_MASTER is not set
+-
+-#
+-# Dallas's 1-wire bus
+-#
+-# CONFIG_W1 is not set
+-
+-#
+-# Hardware Monitoring support
+-#
+-# CONFIG_HWMON is not set
+-# CONFIG_HWMON_VID is not set
+-
+-#
+-# Multimedia devices
+-#
+-# CONFIG_VIDEO_DEV is not set
+-
+-#
+-# Digital Video Broadcasting Devices
+-#
+-# CONFIG_DVB is not set
+-
+-#
+-# Graphics support
+-#
+-# CONFIG_FIRMWARE_EDID is not set
+-# CONFIG_FB is not set
+-
+-#
+-# Console display driver support
+-#
+-# CONFIG_VGA_CONSOLE is not set
+-CONFIG_DUMMY_CONSOLE=y
+-# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
+-
+-#
+-# Sound
+-#
+-# CONFIG_SOUND is not set
+-
+-#
+-# HID Devices
+-#
+-# CONFIG_HID is not set
+-
+-#
+-# USB support
+-#
+-CONFIG_USB_ARCH_HAS_HCD=y
+-CONFIG_USB_ARCH_HAS_OHCI=y
+-CONFIG_USB_ARCH_HAS_EHCI=y
+-# CONFIG_USB is not set
+-
+-#
+-# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
+-#
+-
+-#
+-# USB Gadget Support
+-#
+-# CONFIG_USB_GADGET is not set
+-
+-#
+-# MMC/SD Card support
+-#
+-# CONFIG_MMC is not set
+-
+-#
+-# LED devices
+-#
+-# CONFIG_NEW_LEDS is not set
+-
+-#
+-# LED drivers
+-#
+-
+-#
+-# LED Triggers
+-#
+-
+-#
+-# InfiniBand support
+-#
+-# CONFIG_INFINIBAND is not set
+-
+-#
+-# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
+-#
+-
+-#
+-# Real Time Clock
+-#
+-# CONFIG_RTC_CLASS is not set
+-
+-#
+-# DMA Engine support
+-#
+-# CONFIG_DMA_ENGINE is not set
+-
+-#
+-# DMA Clients
+-#
+-
+-#
+-# DMA Devices
+-#
+-
+-#
+-# Auxiliary Display support
+-#
+-
+-#
+-# Virtualization
+-#
+-
+-#
+-# File systems
+-#
+-CONFIG_EXT2_FS=y
+-# CONFIG_EXT2_FS_XATTR is not set
+-# CONFIG_EXT2_FS_XIP is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_EXT4DEV_FS is not set
+-# CONFIG_REISERFS_FS is not set
+-# CONFIG_JFS_FS is not set
+-# CONFIG_FS_POSIX_ACL is not set
+-# CONFIG_XFS_FS is not set
+-# CONFIG_GFS2_FS is not set
+-# CONFIG_OCFS2_FS is not set
+-# CONFIG_MINIX_FS is not set
+-# CONFIG_ROMFS_FS is not set
+-CONFIG_INOTIFY=y
+-CONFIG_INOTIFY_USER=y
+-# CONFIG_QUOTA is not set
+-CONFIG_DNOTIFY=y
+-CONFIG_AUTOFS_FS=y
+-CONFIG_AUTOFS4_FS=y
+-CONFIG_FUSE_FS=y
+-
+-#
+-# CD-ROM/DVD Filesystems
+-#
+-# CONFIG_ISO9660_FS is not set
+-# CONFIG_UDF_FS is not set
+-
+-#
+-# DOS/FAT/NT Filesystems
+-#
+-# CONFIG_MSDOS_FS is not set
+-# CONFIG_VFAT_FS is not set
+-# CONFIG_NTFS_FS is not set
+-
+-#
+-# Pseudo filesystems
+-#
+-CONFIG_PROC_FS=y
+-CONFIG_PROC_KCORE=y
+-CONFIG_PROC_SYSCTL=y
+-CONFIG_SYSFS=y
+-# CONFIG_TMPFS is not set
+-# CONFIG_HUGETLB_PAGE is not set
+-CONFIG_RAMFS=y
+-CONFIG_CONFIGFS_FS=y
+-
+-#
+-# Miscellaneous filesystems
+-#
+-# CONFIG_ADFS_FS is not set
+-# CONFIG_AFFS_FS is not set
+-# CONFIG_ECRYPT_FS is not set
+-# CONFIG_HFS_FS is not set
+-# CONFIG_HFSPLUS_FS is not set
+-# CONFIG_BEFS_FS is not set
+-# CONFIG_BFS_FS is not set
+-# CONFIG_EFS_FS is not set
+-# CONFIG_CRAMFS is not set
+-# CONFIG_VXFS_FS is not set
+-# CONFIG_HPFS_FS is not set
+-# CONFIG_QNX4FS_FS is not set
+-# CONFIG_SYSV_FS is not set
+-# CONFIG_UFS_FS is not set
+-
+-#
+-# Network File Systems
+-#
+-CONFIG_NFS_FS=y
+-# CONFIG_NFS_V3 is not set
+-# CONFIG_NFS_V4 is not set
+-# CONFIG_NFS_DIRECTIO is not set
+-CONFIG_NFSD=y
+-# CONFIG_NFSD_V3 is not set
+-# CONFIG_NFSD_TCP is not set
+-CONFIG_ROOT_NFS=y
+-CONFIG_LOCKD=y
+-CONFIG_EXPORTFS=y
+-CONFIG_NFS_COMMON=y
+-CONFIG_SUNRPC=y
+-# CONFIG_RPCSEC_GSS_KRB5 is not set
+-# CONFIG_RPCSEC_GSS_SPKM3 is not set
+-# CONFIG_SMB_FS is not set
+-# CONFIG_CIFS is not set
+-# CONFIG_NCP_FS is not set
+-# CONFIG_CODA_FS is not set
+-# CONFIG_AFS_FS is not set
+-# CONFIG_9P_FS is not set
+-
+-#
+-# Partition Types
+-#
+-# CONFIG_PARTITION_ADVANCED is not set
+-CONFIG_MSDOS_PARTITION=y
+-
+-#
+-# Native Language Support
+-#
+-# CONFIG_NLS is not set
+-
+-#
+-# Distributed Lock Manager
+-#
+-CONFIG_DLM=y
+-CONFIG_DLM_TCP=y
+-# CONFIG_DLM_SCTP is not set
+-# CONFIG_DLM_DEBUG is not set
+-
+-#
+-# Profiling support
+-#
+-# CONFIG_PROFILING is not set
+-
+-#
+-# Kernel hacking
+-#
+-CONFIG_TRACE_IRQFLAGS_SUPPORT=y
+-# CONFIG_PRINTK_TIME is not set
+-CONFIG_ENABLE_MUST_CHECK=y
+-# CONFIG_MAGIC_SYSRQ is not set
+-# CONFIG_UNUSED_SYMBOLS is not set
+-# CONFIG_DEBUG_FS is not set
+-# CONFIG_HEADERS_CHECK is not set
+-# CONFIG_DEBUG_KERNEL is not set
+-CONFIG_LOG_BUF_SHIFT=14
+-CONFIG_CROSSCOMPILE=y
+-CONFIG_CMDLINE="ip=any"
+-CONFIG_SYS_SUPPORTS_KGDB=y
+-
+-#
+-# Security options
+-#
+-CONFIG_KEYS=y
+-CONFIG_KEYS_DEBUG_PROC_KEYS=y
+-# CONFIG_SECURITY is not set
+-
+-#
+-# Cryptographic options
+-#
+-CONFIG_CRYPTO=y
+-CONFIG_CRYPTO_ALGAPI=y
+-CONFIG_CRYPTO_BLKCIPHER=y
+-CONFIG_CRYPTO_HASH=y
+-CONFIG_CRYPTO_MANAGER=y
+-CONFIG_CRYPTO_HMAC=y
+-CONFIG_CRYPTO_XCBC=y
+-CONFIG_CRYPTO_NULL=y
+-CONFIG_CRYPTO_MD4=y
+-CONFIG_CRYPTO_MD5=y
+-CONFIG_CRYPTO_SHA1=y
+-CONFIG_CRYPTO_SHA256=y
+-CONFIG_CRYPTO_SHA512=y
+-CONFIG_CRYPTO_WP512=y
+-CONFIG_CRYPTO_TGR192=y
+-CONFIG_CRYPTO_GF128MUL=y
+-CONFIG_CRYPTO_ECB=y
+-CONFIG_CRYPTO_CBC=y
+-CONFIG_CRYPTO_PCBC=y
+-CONFIG_CRYPTO_LRW=y
+-CONFIG_CRYPTO_DES=y
+-CONFIG_CRYPTO_FCRYPT=y
+-CONFIG_CRYPTO_BLOWFISH=y
+-CONFIG_CRYPTO_TWOFISH=y
+-CONFIG_CRYPTO_TWOFISH_COMMON=y
+-CONFIG_CRYPTO_SERPENT=y
+-CONFIG_CRYPTO_AES=y
+-CONFIG_CRYPTO_CAST5=y
+-CONFIG_CRYPTO_CAST6=y
+-CONFIG_CRYPTO_TEA=y
+-CONFIG_CRYPTO_ARC4=y
+-CONFIG_CRYPTO_KHAZAD=y
+-CONFIG_CRYPTO_ANUBIS=y
+-CONFIG_CRYPTO_DEFLATE=y
+-CONFIG_CRYPTO_MICHAEL_MIC=y
+-CONFIG_CRYPTO_CRC32C=y
+-CONFIG_CRYPTO_CAMELLIA=y
+-
+-#
+-# Hardware crypto devices
+-#
+-
+-#
+-# Library routines
+-#
+-CONFIG_BITREVERSE=y
+-# CONFIG_CRC_CCITT is not set
+-CONFIG_CRC16=y
+-CONFIG_CRC32=y
+-CONFIG_LIBCRC32C=y
+-CONFIG_ZLIB_INFLATE=y
+-CONFIG_ZLIB_DEFLATE=y
+-CONFIG_PLIST=y
+-CONFIG_HAS_IOMEM=y
+-CONFIG_HAS_IOPORT=y
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/decstation_defconfig mips/arch/mips/configs/decstation_defconfig
+--- mips-orig/arch/mips/configs/decstation_defconfig	2007-07-30 22:01:16.484579750 +0900
++++ mips/arch/mips/configs/decstation_defconfig	2007-07-30 22:22:02.866473750 +0900
+@@ -35,7 +35,6 @@ CONFIG_MACH_DECSTATION=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/e55_defconfig mips/arch/mips/configs/e55_defconfig
+--- mips-orig/arch/mips/configs/e55_defconfig	2007-07-30 22:01:16.488580000 +0900
++++ mips/arch/mips/configs/e55_defconfig	2007-07-30 22:22:09.014858000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ CONFIG_MACH_VR41XX=y
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/emma2rh_defconfig mips/arch/mips/configs/emma2rh_defconfig
+--- mips-orig/arch/mips/configs/emma2rh_defconfig	2007-07-30 22:01:16.488580000 +0900
++++ mips/arch/mips/configs/emma2rh_defconfig	2007-07-30 22:22:16.115301750 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/excite_defconfig mips/arch/mips/configs/excite_defconfig
+--- mips-orig/arch/mips/configs/excite_defconfig	2007-07-30 22:01:16.488580000 +0900
++++ mips/arch/mips/configs/excite_defconfig	2007-07-30 22:22:23.195744250 +0900
+@@ -36,7 +36,6 @@ CONFIG_BASLER_EXCITE=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/fulong_defconfig mips/arch/mips/configs/fulong_defconfig
+--- mips-orig/arch/mips/configs/fulong_defconfig	2007-07-30 22:01:16.492580250 +0900
++++ mips/arch/mips/configs/fulong_defconfig	2007-07-30 22:22:29.984168500 +0900
+@@ -21,7 +21,6 @@ CONFIG_LEMOTE_FULONG=y
+ # CONFIG_MIPS_SIM is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ip22_defconfig mips/arch/mips/configs/ip22_defconfig
+--- mips-orig/arch/mips/configs/ip22_defconfig	2007-07-30 22:01:16.504581000 +0900
++++ mips/arch/mips/configs/ip22_defconfig	2007-07-30 22:22:43.645022250 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ip27_defconfig mips/arch/mips/configs/ip27_defconfig
+--- mips-orig/arch/mips/configs/ip27_defconfig	2007-07-30 22:01:16.504581000 +0900
++++ mips/arch/mips/configs/ip27_defconfig	2007-07-30 22:22:49.945416000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/ip32_defconfig mips/arch/mips/configs/ip32_defconfig
+--- mips-orig/arch/mips/configs/ip32_defconfig	2007-07-30 22:01:16.504581000 +0900
++++ mips/arch/mips/configs/ip32_defconfig	2007-07-30 22:22:55.309751250 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jazz_defconfig mips/arch/mips/configs/jazz_defconfig
+--- mips-orig/arch/mips/configs/jazz_defconfig	2007-07-30 22:01:16.504581000 +0900
++++ mips/arch/mips/configs/jazz_defconfig	2007-07-30 22:23:01.198119250 +0900
+@@ -35,7 +35,6 @@ CONFIG_MACH_JAZZ=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/jmr3927_defconfig mips/arch/mips/configs/jmr3927_defconfig
+--- mips-orig/arch/mips/configs/jmr3927_defconfig	2007-07-30 22:01:16.504581000 +0900
++++ mips/arch/mips/configs/jmr3927_defconfig	2007-07-30 22:23:33.064110750 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/malta_defconfig mips/arch/mips/configs/malta_defconfig
+--- mips-orig/arch/mips/configs/malta_defconfig	2007-07-30 22:01:16.504581000 +0900
++++ mips/arch/mips/configs/malta_defconfig	2007-07-30 22:23:06.294437750 +0900
+@@ -35,7 +35,6 @@ CONFIG_MIPS_MALTA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/mipssim_defconfig mips/arch/mips/configs/mipssim_defconfig
+--- mips-orig/arch/mips/configs/mipssim_defconfig	2007-07-30 22:01:16.508581250 +0900
++++ mips/arch/mips/configs/mipssim_defconfig	2007-07-30 22:23:11.822783250 +0900
+@@ -35,7 +35,6 @@ CONFIG_MIPS_SIM=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/mpc30x_defconfig mips/arch/mips/configs/mpc30x_defconfig
+--- mips-orig/arch/mips/configs/mpc30x_defconfig	2007-07-30 22:01:16.508581250 +0900
++++ mips/arch/mips/configs/mpc30x_defconfig	2007-07-30 22:23:41.416632750 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ CONFIG_MACH_VR41XX=y
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/msp71xx_defconfig mips/arch/mips/configs/msp71xx_defconfig
+--- mips-orig/arch/mips/configs/msp71xx_defconfig	2007-07-30 22:01:16.508581250 +0900
++++ mips/arch/mips/configs/msp71xx_defconfig	2007-07-30 22:23:50.849222250 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ CONFIG_PMC_MSP=y
+ # CONFIG_PMC_YOSEMITE is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pb1100_defconfig mips/arch/mips/configs/pb1100_defconfig
+--- mips-orig/arch/mips/configs/pb1100_defconfig	2007-07-30 22:01:16.508581250 +0900
++++ mips/arch/mips/configs/pb1100_defconfig	2007-07-30 22:23:56.521576750 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_PB1100=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pb1500_defconfig mips/arch/mips/configs/pb1500_defconfig
+--- mips-orig/arch/mips/configs/pb1500_defconfig	2007-07-30 22:01:16.508581250 +0900
++++ mips/arch/mips/configs/pb1500_defconfig	2007-07-30 22:24:02.005919500 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_PB1500=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pb1550_defconfig mips/arch/mips/configs/pb1550_defconfig
+--- mips-orig/arch/mips/configs/pb1550_defconfig	2007-07-30 22:01:16.512581500 +0900
++++ mips/arch/mips/configs/pb1550_defconfig	2007-07-30 22:24:08.102300500 +0900
+@@ -36,7 +36,6 @@ CONFIG_MIPS_PB1550=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-jbs_defconfig mips/arch/mips/configs/pnx8550-jbs_defconfig
+--- mips-orig/arch/mips/configs/pnx8550-jbs_defconfig	2007-07-30 22:01:16.512581500 +0900
++++ mips/arch/mips/configs/pnx8550-jbs_defconfig	2007-07-30 22:24:13.822658000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ CONFIG_PNX8550_JBS=y
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/pnx8550-stb810_defconfig mips/arch/mips/configs/pnx8550-stb810_defconfig
+--- mips-orig/arch/mips/configs/pnx8550-stb810_defconfig	2007-07-30 22:01:16.540583250 +0900
++++ mips/arch/mips/configs/pnx8550-stb810_defconfig	2007-07-30 22:24:18.678961500 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ CONFIG_PNX8550_STB810=y
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/qemu_defconfig mips/arch/mips/configs/qemu_defconfig
+--- mips-orig/arch/mips/configs/qemu_defconfig	2007-07-30 22:01:16.548583750 +0900
++++ mips/arch/mips/configs/qemu_defconfig	2007-07-30 22:24:25.487387000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ CONFIG_QEMU=y
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/rbhma4200_defconfig mips/arch/mips/configs/rbhma4200_defconfig
+--- mips-orig/arch/mips/configs/rbhma4200_defconfig	2007-07-30 22:01:16.548583750 +0900
++++ mips/arch/mips/configs/rbhma4200_defconfig	2007-07-30 22:24:31.283749250 +0900
+@@ -33,7 +33,6 @@ CONFIG_MIPS=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/rbhma4500_defconfig mips/arch/mips/configs/rbhma4500_defconfig
+--- mips-orig/arch/mips/configs/rbhma4500_defconfig	2007-07-30 22:01:16.548583750 +0900
++++ mips/arch/mips/configs/rbhma4500_defconfig	2007-07-30 22:24:38.280186500 +0900
+@@ -22,7 +22,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_SIM is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_MSP is not set
+ # CONFIG_PMC_YOSEMITE is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/rm200_defconfig mips/arch/mips/configs/rm200_defconfig
+--- mips-orig/arch/mips/configs/rm200_defconfig	2007-07-30 22:01:16.548583750 +0900
++++ mips/arch/mips/configs/rm200_defconfig	2007-07-30 22:24:44.464573000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/sb1250-swarm_defconfig mips/arch/mips/configs/sb1250-swarm_defconfig
+--- mips-orig/arch/mips/configs/sb1250-swarm_defconfig	2007-07-30 22:01:16.552584000 +0900
++++ mips/arch/mips/configs/sb1250-swarm_defconfig	2007-07-30 22:24:49.912913500 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/sead_defconfig mips/arch/mips/configs/sead_defconfig
+--- mips-orig/arch/mips/configs/sead_defconfig	2007-07-30 22:01:16.552584000 +0900
++++ mips/arch/mips/configs/sead_defconfig	2007-07-30 22:24:54.997231250 +0900
+@@ -35,7 +35,6 @@ CONFIG_MIPS_SEAD=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0219_defconfig mips/arch/mips/configs/tb0219_defconfig
+--- mips-orig/arch/mips/configs/tb0219_defconfig	2007-07-30 22:01:16.552584000 +0900
++++ mips/arch/mips/configs/tb0219_defconfig	2007-07-30 22:25:00.141552750 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ CONFIG_MACH_VR41XX=y
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_defconfig mips/arch/mips/configs/tb0226_defconfig
+--- mips-orig/arch/mips/configs/tb0226_defconfig	2007-07-30 22:01:16.552584000 +0900
++++ mips/arch/mips/configs/tb0226_defconfig	2007-07-30 22:25:05.657897500 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ CONFIG_MACH_VR41XX=y
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0287_defconfig mips/arch/mips/configs/tb0287_defconfig
+--- mips-orig/arch/mips/configs/tb0287_defconfig	2007-07-30 22:01:16.576585500 +0900
++++ mips/arch/mips/configs/tb0287_defconfig	2007-07-30 22:25:11.154241000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ CONFIG_MACH_VR41XX=y
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/workpad_defconfig mips/arch/mips/configs/workpad_defconfig
+--- mips-orig/arch/mips/configs/workpad_defconfig	2007-07-30 22:01:16.584586000 +0900
++++ mips/arch/mips/configs/workpad_defconfig	2007-07-30 22:25:16.482574000 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ CONFIG_MACH_VR41XX=y
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/wrppmc_defconfig mips/arch/mips/configs/wrppmc_defconfig
+--- mips-orig/arch/mips/configs/wrppmc_defconfig	2007-07-30 22:01:16.584586000 +0900
++++ mips/arch/mips/configs/wrppmc_defconfig	2007-07-30 22:25:23.603019000 +0900
+@@ -35,7 +35,6 @@ CONFIG_WR_PPMC=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/yosemite_defconfig mips/arch/mips/configs/yosemite_defconfig
+--- mips-orig/arch/mips/configs/yosemite_defconfig	2007-07-30 22:01:16.584586000 +0900
++++ mips/arch/mips/configs/yosemite_defconfig	2007-07-30 22:25:28.567329250 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ CONFIG_PMC_YOSEMITE=y
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/Kconfig mips/arch/mips/ddb5xxx/Kconfig
+--- mips-orig/arch/mips/ddb5xxx/Kconfig	2007-07-30 22:01:16.584586000 +0900
++++ mips/arch/mips/ddb5xxx/Kconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1,4 +0,0 @@
+-config DDB5477_BUS_FREQUENCY
+-	int "bus frequency (in kHZ, 0 for auto-detect)"
+-	depends on DDB5477
+-	default 0
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/common/Makefile mips/arch/mips/ddb5xxx/common/Makefile
+--- mips-orig/arch/mips/ddb5xxx/common/Makefile	2007-07-30 22:01:16.584586000 +0900
++++ mips/arch/mips/ddb5xxx/common/Makefile	1970-01-01 09:00:00.000000000 +0900
+@@ -1,7 +0,0 @@
+-#
+-# Makefile for the common code of NEC DDB-Vrc5xxx board
+-#
+-
+-obj-y	 += nile4.o prom.o rtc_ds1386.o
+-
+-EXTRA_CFLAGS += -Werror
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/common/nile4.c mips/arch/mips/ddb5xxx/common/nile4.c
+--- mips-orig/arch/mips/ddb5xxx/common/nile4.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/common/nile4.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,130 +0,0 @@
+-/*
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * arch/mips/ddb5xxx/common/nile4.c
+- *     misc low-level routines for vrc-5xxx controllers.
+- *
+- * derived from original code by Geert Uytterhoeven <geert@sonycom.com>
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/types.h>
+-#include <linux/kernel.h>
+-
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-
+-u32
+-ddb_calc_pdar(u32 phys, u32 size, int width,
+-	      int on_memory_bus, int pci_visible)
+-{
+-        u32 maskbits;
+-        u32 widthbits;
+-
+-        switch (size) {
+-#if 0                           /* We don't support 4 GB yet */
+-        case 0x100000000:       /* 4 GB */
+-                maskbits = 4;
+-                break;
+-#endif
+-        case 0x80000000:        /* 2 GB */
+-                maskbits = 5;
+-                break;
+-        case 0x40000000:        /* 1 GB */
+-                maskbits = 6;
+-                break;
+-        case 0x20000000:        /* 512 MB */
+-                maskbits = 7;
+-                break;
+-        case 0x10000000:        /* 256 MB */
+-                maskbits = 8;
+-                break;
+-        case 0x08000000:        /* 128 MB */
+-                maskbits = 9;
+-                break;
+-        case 0x04000000:        /* 64 MB */
+-                maskbits = 10;
+-                break;
+-        case 0x02000000:        /* 32 MB */
+-                maskbits = 11;
+-                break;
+-        case 0x01000000:        /* 16 MB */
+-                maskbits = 12;
+-                break;
+-        case 0x00800000:        /* 8 MB */
+-                maskbits = 13;
+-                break;
+-        case 0x00400000:        /* 4 MB */
+-                maskbits = 14;
+-                break;
+-        case 0x00200000:        /* 2 MB */
+-                maskbits = 15;
+-                break;
+-        case 0:         /* OFF */
+-                maskbits = 0;
+-                break;
+-        default:
+-                panic("nile4_set_pdar: unsupported size %p", (void *) size);
+-        }
+-        switch (width) {
+-        case 8:
+-                widthbits = 0;
+-                break;
+-        case 16:
+-                widthbits = 1;
+-                break;
+-        case 32:
+-                widthbits = 2;
+-                break;
+-        case 64:
+-                widthbits = 3;
+-                break;
+-        default:
+-                panic("nile4_set_pdar: unsupported width %d", width);
+-        }
+-
+-	return maskbits | (on_memory_bus ? 0x10 : 0) |
+-		(pci_visible ? 0x20 : 0) | (widthbits << 6) |
+-		(phys & 0xffe00000);
+-}
+-
+-void
+-ddb_set_pdar(u32 pdar, u32 phys, u32 size, int width,
+-	     int on_memory_bus, int pci_visible)
+-{
+-	u32 temp= ddb_calc_pdar(phys, size, width, on_memory_bus, pci_visible);
+-	ddb_out32(pdar, temp);
+-	ddb_out32(pdar + 4, 0);
+-
+-        /*
+-         * When programming a PDAR, the register should be read immediately
+-         * after writing it. This ensures that address decoders are properly
+-         * configured.
+-	 * [jsun] is this really necessary?
+-         */
+-        ddb_in32(pdar);
+-        ddb_in32(pdar + 4);
+-}
+-
+-/*
+- * routines that mess with PCIINITx registers
+- */
+-
+-void ddb_set_pmr(u32 pmr, u32 type, u32 addr, u32 options)
+-{
+-        switch (type) {
+-        case DDB_PCICMD_IACK: /* PCI Interrupt Acknowledge */
+-        case DDB_PCICMD_IO:   /* PCI I/O Space */
+-        case DDB_PCICMD_MEM:  /* PCI Memory Space */
+-        case DDB_PCICMD_CFG:  /* PCI Configuration Space */
+-                break;
+-        default:
+-                panic("nile4_set_pmr: invalid type %d", type);
+-        }
+-        ddb_out32(pmr, (type << 1) | (addr & 0xffe00000) | options );
+-        ddb_out32(pmr + 4, 0);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/common/prom.c mips/arch/mips/ddb5xxx/common/prom.c
+--- mips-orig/arch/mips/ddb5xxx/common/prom.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/common/prom.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,132 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-
+-#include <asm/addrspace.h>
+-#include <asm/bootinfo.h>
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-#include <asm/debug.h>
+-
+-const char *get_system_type(void)
+-{
+-	switch (mips_machtype) {
+-	case MACH_NEC_DDB5477:		return "NEC DDB Vrc-5477";
+-	case MACH_NEC_ROCKHOPPER:	return "NEC Rockhopper";
+-	case MACH_NEC_ROCKHOPPERII:     return "NEC RockhopperII";
+-	default:			return "Unknown NEC board";
+-	}
+-}
+-
+-#if defined(CONFIG_DDB5477)
+-void ddb5477_runtime_detection(void);
+-#endif
+-
+-/* [jsun@junsun.net] PMON passes arguments in C main() style */
+-void __init prom_init(void)
+-{
+-	int argc = fw_arg0;
+-	char **arg = (char**) fw_arg1;
+-	int i;
+-
+-	/* if user passes kernel args, ignore the default one */
+-	if (argc > 1)
+-		arcs_cmdline[0] = '\0';
+-
+-	/* arg[0] is "g", the rest is boot parameters */
+-	for (i = 1; i < argc; i++) {
+-		if (strlen(arcs_cmdline) + strlen(arg[i] + 1)
+-		    >= sizeof(arcs_cmdline))
+-			break;
+-		strcat(arcs_cmdline, arg[i]);
+-		strcat(arcs_cmdline, " ");
+-	}
+-
+-	mips_machgroup = MACH_GROUP_NEC_DDB;
+-
+-#if defined(CONFIG_DDB5477)
+-	ddb5477_runtime_detection();
+-	add_memory_region(0, board_ram_size, BOOT_MEM_RAM);
+-#endif
+-}
+-
+-void __init prom_free_prom_memory(void)
+-{
+-}
+-
+-#if defined(CONFIG_DDB5477)
+-
+-#define DEFAULT_LCS1_BASE 0x19000000
+-#define TESTVAL1 'K'
+-#define TESTVAL2 'S'
+-
+-int board_ram_size;
+-void ddb5477_runtime_detection(void)
+-{
+-	volatile char *test_offset;
+-	char saved_test_byte;
+-
+-        /* Determine if this is a DDB5477 board, or a BSB-VR0300
+-           base board.  We can tell by checking for the location of
+-           the NVRAM.  It lives at the beginning of LCS1 on the DDB5477,
+-           and the beginning of LCS1 on the BSB-VR0300 is flash memory.
+-           The first 2K of the NVRAM are reserved, so don't we'll poke
+-           around just after that.
+-         */
+-
+-	/* We can only use the PCI bus to distinquish between
+-	   the Rockhopper and RockhopperII backplanes and this must
+-	   wait until ddb5477_board_init() in setup.c after the 5477
+-	   is initialized.  So, until then handle
+-	   both Rockhopper and RockhopperII backplanes as Rockhopper 1
+-	 */
+-
+-        test_offset = (char *)KSEG1ADDR(DEFAULT_LCS1_BASE + 0x800);
+-        saved_test_byte = *test_offset;
+-
+-        *test_offset = TESTVAL1;
+-        if (*test_offset != TESTVAL1) {
+-                /* We couldn't set our test value, so it must not be NVRAM,
+-                   so it's a BSB_VR0300 */
+-		mips_machtype = MACH_NEC_ROCKHOPPER;
+-        } else {
+-                /* We may have gotten lucky, and the TESTVAL1 was already
+-                   stored at the test location, so we must check a second
+-                   test value */
+-                *test_offset = TESTVAL2;
+-                if (*test_offset != TESTVAL2) {
+-                        /* OK, we couldn't set this value either, so it must
+-                           definately be a BSB_VR0300 */
+-			mips_machtype = MACH_NEC_ROCKHOPPER;
+-                } else {
+-                        /* We could change the value twice, so it must be
+-                        NVRAM, so it's a DDB_VRC5477 */
+-			mips_machtype = MACH_NEC_DDB5477;
+-                }
+-        }
+-        /* Restore the original byte */
+-        *test_offset = saved_test_byte;
+-
+-	/* before we know a better way, we will trust PMON for getting
+-	 * RAM size
+-	 */
+-	board_ram_size = 1 << (36 - (ddb_in32(DDB_SDRAM0) & 0xf));
+-
+-	db_run(printk("DDB run-time detection : %s, %d MB RAM\n",
+-				mips_machtype == MACH_NEC_DDB5477 ?
+-				"DDB5477" : "Rockhopper",
+-				board_ram_size >> 20));
+-
+-	/* we can't handle ram size > 128 MB */
+-	db_assert(board_ram_size <= (128 << 20));
+-}
+-#endif
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/common/rtc_ds1386.c mips/arch/mips/ddb5xxx/common/rtc_ds1386.c
+--- mips-orig/arch/mips/ddb5xxx/common/rtc_ds1386.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/common/rtc_ds1386.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,170 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * arch/mips/ddb5xxx/common/rtc_ds1386.c
+- *     low-level RTC hookups for s for Dallas 1396 chip.
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-
+-
+-/*
+- * This file exports a function, rtc_ds1386_init(), which expects an
+- * uncached base address as the argument.  It will set the two function
+- * pointers expected by the MIPS generic timer code.
+- */
+-
+-#include <linux/types.h>
+-#include <linux/time.h>
+-#include <linux/bcd.h>
+-
+-#include <asm/time.h>
+-#include <asm/addrspace.h>
+-
+-#include <asm/mc146818rtc.h>
+-#include <asm/debug.h>
+-
+-#define	EPOCH		2000
+-
+-#define	READ_RTC(x)	*(volatile unsigned char*)(rtc_base+x)
+-#define	WRITE_RTC(x, y)	*(volatile unsigned char*)(rtc_base+x) = y
+-
+-static unsigned long rtc_base;
+-
+-static unsigned long
+-rtc_ds1386_get_time(void)
+-{
+-	u8 byte;
+-	u8 temp;
+-	unsigned int year, month, day, hour, minute, second;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	/* let us freeze external registers */
+-	byte = READ_RTC(0xB);
+-	byte &= 0x3f;
+-	WRITE_RTC(0xB, byte);
+-
+-	/* read time data */
+-	year = BCD2BIN(READ_RTC(0xA)) + EPOCH;
+-	month = BCD2BIN(READ_RTC(0x9) & 0x1f);
+-	day = BCD2BIN(READ_RTC(0x8));
+-	minute = BCD2BIN(READ_RTC(0x2));
+-	second = BCD2BIN(READ_RTC(0x1));
+-
+-	/* hour is special - deal with it later */
+-	temp = READ_RTC(0x4);
+-
+-	/* enable time transfer */
+-	byte |= 0x80;
+-	WRITE_RTC(0xB, byte);
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-
+-	/* calc hour */
+-	if (temp & 0x40) {
+-		/* 12 hour format */
+-		hour = BCD2BIN(temp & 0x1f);
+-		if (temp & 0x20) hour += 12; 		/* PM */
+-	} else {
+-		/* 24 hour format */
+-		hour = BCD2BIN(temp & 0x3f);
+-	}
+-
+-	return mktime(year, month, day, hour, minute, second);
+-}
+-
+-static int
+-rtc_ds1386_set_time(unsigned long t)
+-{
+-	struct rtc_time tm;
+-	u8 byte;
+-	u8 temp;
+-	u8 year, month, day, hour, minute, second;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	/* let us freeze external registers */
+-	byte = READ_RTC(0xB);
+-	byte &= 0x3f;
+-	WRITE_RTC(0xB, byte);
+-
+-	/* convert */
+-	to_tm(t, &tm);
+-
+-
+-	/* check each field one by one */
+-	year = BIN2BCD(tm.tm_year - EPOCH);
+-	if (year != READ_RTC(0xA)) {
+-		WRITE_RTC(0xA, year);
+-	}
+-
+-	temp = READ_RTC(0x9);
+-	month = BIN2BCD(tm.tm_mon+1);	/* tm_mon starts from 0 to 11 */
+-	if (month != (temp & 0x1f)) {
+-		WRITE_RTC( 0x9,
+-			   (month & 0x1f) | (temp & ~0x1f) );
+-	}
+-
+-	day = BIN2BCD(tm.tm_mday);
+-	if (day != READ_RTC(0x8)) {
+-		WRITE_RTC(0x8, day);
+-	}
+-
+-	temp = READ_RTC(0x4);
+-	if (temp & 0x40) {
+-		/* 12 hour format */
+-		hour = 0x40;
+-		if (tm.tm_hour > 12) {
+-			hour |= 0x20 | (BIN2BCD(hour-12) & 0x1f);
+-		} else {
+-			hour |= BIN2BCD(tm.tm_hour);
+-		}
+-	} else {
+-		/* 24 hour format */
+-		hour = BIN2BCD(tm.tm_hour) & 0x3f;
+-	}
+-	if (hour != temp) WRITE_RTC(0x4, hour);
+-
+-	minute = BIN2BCD(tm.tm_min);
+-	if (minute != READ_RTC(0x2)) {
+-		WRITE_RTC(0x2, minute);
+-	}
+-
+-	second = BIN2BCD(tm.tm_sec);
+-	if (second != READ_RTC(0x1)) {
+-		WRITE_RTC(0x1, second);
+-	}
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-
+-	return 0;
+-}
+-
+-void
+-rtc_ds1386_init(unsigned long base)
+-{
+-	unsigned char byte;
+-
+-	/* remember the base */
+-	rtc_base = base;
+-	db_assert((rtc_base & 0xe0000000) == KSEG1);
+-
+-	/* turn on RTC if it is not on */
+-	byte = READ_RTC(0x9);
+-	if (byte & 0x80) {
+-		byte &= 0x7f;
+-		WRITE_RTC(0x9, byte);
+-	}
+-
+-	/* enable time transfer */
+-	byte = READ_RTC(0xB);
+-	byte |= 0x80;
+-	WRITE_RTC(0xB, byte);
+-
+-	/* set the function pointers */
+-	rtc_mips_get_time = rtc_ds1386_get_time;
+-	rtc_mips_set_time = rtc_ds1386_set_time;
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/Makefile mips/arch/mips/ddb5xxx/ddb5477/Makefile
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/Makefile	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/Makefile	1970-01-01 09:00:00.000000000 +0900
+@@ -1,11 +0,0 @@
+-#
+-# Makefile for NEC DDB-Vrc5477 board
+-#
+-
+-obj-y	 		+= ddb5477-platform.o irq.o irq_5477.o setup.o \
+-			   lcd44780.o
+-
+-obj-$(CONFIG_RUNTIME_DEBUG) 	+= debug.o
+-obj-$(CONFIG_KGDB)		+= kgdb_io.o
+-
+-EXTRA_CFLAGS += -Werror
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/ddb5477-platform.c mips/arch/mips/ddb5xxx/ddb5477/ddb5477-platform.c
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/ddb5477-platform.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/ddb5477-platform.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,49 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2007 Ralf Baechle (ralf@linux-mips.org)
+- */
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/serial_8250.h>
+-
+-#include <asm/ddb5xxx/ddb5477.h>
+-
+-#define DDB_UART_FLAGS (UPF_BOOT_AUTOCONF | UPF_SKIP_TEST | UPF_IOREMAP)
+-
+-#define DDB5477_PORT(base, int)						\
+-{									\
+-	.mapbase	= base,						\
+-	.irq		= int,						\
+-	.uartclk	= 1843200,					\
+-	.iotype		= UPIO_MEM,					\
+-	.flags		= DDB_UART_FLAGS,				\
+-	.regshift	= 3,						\
+-}
+-
+-static struct plat_serial8250_port uart8250_data[] = {
+-	DDB5477_PORT(0xbfa04200, VRC5477_IRQ_UART0),
+-	DDB5477_PORT(0xbfa04240, VRC5477_IRQ_UART1),
+-	{ },
+-};
+-
+-static struct platform_device uart8250_device = {
+-	.name			= "serial8250",
+-	.id			= PLAT8250_DEV_PLATFORM,
+-	.dev			= {
+-		.platform_data	= uart8250_data,
+-	},
+-};
+-
+-static int __init uart8250_init(void)
+-{
+-	return platform_device_register(&uart8250_device);
+-}
+-
+-module_init(uart8250_init);
+-
+-MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
+-MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("8250 UART probe driver for the NEC DDB5477");
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/debug.c mips/arch/mips/ddb5xxx/ddb5477/debug.c
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/debug.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/debug.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,160 +0,0 @@
+-/***********************************************************************
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * arch/mips/ddb5xxx/ddb5477/debug.c
+- *     vrc5477 specific debug routines.
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- ***********************************************************************
+- */
+-
+-#include <linux/kernel.h>
+-
+-#include <asm/mipsregs.h>
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-
+-typedef struct {
+-       const char *regname;
+-       unsigned regaddr;
+-} Register;
+-
+-void jsun_show_regs(char *name, Register *regs)
+-{
+-	int i;
+-
+-	printk("\nshow regs: %s\n", name);
+-	for(i=0;regs[i].regname!= NULL; i++) {
+-		printk("%-16s= %08x\t\t(@%08x)\n",
+-		       regs[i].regname,
+-		       *(unsigned *)(regs[i].regaddr),
+-		       regs[i].regaddr);
+-	}
+-}
+-
+-static Register int_regs[] = {
+-	{"DDB_INTCTRL0", DDB_BASE + DDB_INTCTRL0},
+-	{"DDB_INTCTRL1", DDB_BASE + DDB_INTCTRL1},
+-	{"DDB_INTCTRL2", DDB_BASE + DDB_INTCTRL2},
+-	{"DDB_INTCTRL3", DDB_BASE + DDB_INTCTRL3},
+-	{"DDB_INT0STAT", DDB_BASE + DDB_INT0STAT},
+-	{"DDB_INT1STAT", DDB_BASE + DDB_INT1STAT},
+-	{"DDB_INT2STAT", DDB_BASE + DDB_INT2STAT},
+-	{"DDB_INT3STAT", DDB_BASE + DDB_INT3STAT},
+-	{"DDB_INT4STAT", DDB_BASE + DDB_INT4STAT},
+-	{"DDB_NMISTAT", DDB_BASE + DDB_NMISTAT},
+-	{"DDB_INTPPES0", DDB_BASE + DDB_INTPPES0},
+-	{"DDB_INTPPES1", DDB_BASE + DDB_INTPPES1},
+-	{NULL, 0x0}
+-};
+-
+-void vrc5477_show_int_regs()
+-{
+-	jsun_show_regs("interrupt registers", int_regs);
+-	printk("CPU CAUSE = %08x\n", read_c0_cause());
+-	printk("CPU STATUS = %08x\n", read_c0_status());
+-}
+-static Register pdar_regs[] = {
+-        {"DDB_SDRAM0", DDB_BASE + DDB_SDRAM0},
+-        {"DDB_SDRAM1", DDB_BASE + DDB_SDRAM1},
+-        {"DDB_LCS0", DDB_BASE + DDB_LCS0},
+-        {"DDB_LCS1", DDB_BASE + DDB_LCS1},
+-        {"DDB_LCS2", DDB_BASE + DDB_LCS2},
+-        {"DDB_INTCS", DDB_BASE + DDB_INTCS},
+-        {"DDB_BOOTCS", DDB_BASE + DDB_BOOTCS},
+-        {"DDB_PCIW0", DDB_BASE + DDB_PCIW0},
+-        {"DDB_PCIW1", DDB_BASE + DDB_PCIW1},
+-        {"DDB_IOPCIW0", DDB_BASE + DDB_IOPCIW0},
+-        {"DDB_IOPCIW1", DDB_BASE + DDB_IOPCIW1},
+-        {NULL, 0x0}
+-};
+-void vrc5477_show_pdar_regs(void)
+-{
+-        jsun_show_regs("PDAR regs", pdar_regs);
+-}
+-
+-static Register bar_regs[] = {
+-        {"DDB_BARC0", DDB_BASE + DDB_BARC0},
+-        {"DDB_BARM010", DDB_BASE + DDB_BARM010},
+-        {"DDB_BARM230", DDB_BASE + DDB_BARM230},
+-        {"DDB_BAR00", DDB_BASE + DDB_BAR00},
+-        {"DDB_BAR10", DDB_BASE + DDB_BAR10},
+-        {"DDB_BAR20", DDB_BASE + DDB_BAR20},
+-        {"DDB_BAR30", DDB_BASE + DDB_BAR30},
+-        {"DDB_BAR40", DDB_BASE + DDB_BAR40},
+-        {"DDB_BAR50", DDB_BASE + DDB_BAR50},
+-        {"DDB_BARB0", DDB_BASE + DDB_BARB0},
+-        {"DDB_BARC1", DDB_BASE + DDB_BARC1},
+-        {"DDB_BARM011", DDB_BASE + DDB_BARM011},
+-        {"DDB_BARM231", DDB_BASE + DDB_BARM231},
+-        {"DDB_BAR01", DDB_BASE + DDB_BAR01},
+-        {"DDB_BAR11", DDB_BASE + DDB_BAR11},
+-        {"DDB_BAR21", DDB_BASE + DDB_BAR21},
+-        {"DDB_BAR31", DDB_BASE + DDB_BAR31},
+-        {"DDB_BAR41", DDB_BASE + DDB_BAR41},
+-        {"DDB_BAR51", DDB_BASE + DDB_BAR51},
+-        {"DDB_BARB1", DDB_BASE + DDB_BARB1},
+-        {NULL, 0x0}
+-};
+-void vrc5477_show_bar_regs(void)
+-{
+-        jsun_show_regs("BAR regs", bar_regs);
+-}
+-
+-static Register pci_regs[] = {
+-        {"DDB_PCIW0", DDB_BASE + DDB_PCIW0},
+-        {"DDB_PCIW1", DDB_BASE + DDB_PCIW1},
+-        {"DDB_PCIINIT00", DDB_BASE + DDB_PCIINIT00},
+-        {"DDB_PCIINIT10", DDB_BASE + DDB_PCIINIT10},
+-        {"DDB_PCICTL0_L", DDB_BASE + DDB_PCICTL0_L},
+-        {"DDB_PCICTL0_H", DDB_BASE + DDB_PCICTL0_H},
+-        {"DDB_PCIARB0_L", DDB_BASE + DDB_PCIARB0_L},
+-        {"DDB_PCIARB0_H", DDB_BASE + DDB_PCIARB0_H},
+-        {"DDB_PCISWP0", DDB_BASE + DDB_PCISWP0},
+-        {"DDB_PCIERR0", DDB_BASE + DDB_PCIERR0},
+-        {"DDB_IOPCIW0", DDB_BASE + DDB_IOPCIW0},
+-        {"DDB_IOPCIW1", DDB_BASE + DDB_IOPCIW1},
+-        {"DDB_PCIINIT01", DDB_BASE + DDB_PCIINIT01},
+-        {"DDB_PCIINIT11", DDB_BASE + DDB_PCIINIT11},
+-        {"DDB_PCICTL1_L", DDB_BASE + DDB_PCICTL1_L},
+-        {"DDB_PCICTL1_H", DDB_BASE + DDB_PCICTL1_H},
+-        {"DDB_PCIARB1_L", DDB_BASE + DDB_PCIARB1_L},
+-        {"DDB_PCIARB1_H", DDB_BASE + DDB_PCIARB1_H},
+-        {"DDB_PCISWP1", DDB_BASE + DDB_PCISWP1},
+-        {"DDB_PCIERR1", DDB_BASE + DDB_PCIERR1},
+-        {NULL, 0x0}
+-};
+-void vrc5477_show_pci_regs(void)
+-{
+-        jsun_show_regs("PCI regs", pci_regs);
+-}
+-
+-static Register lb_regs[] = {
+-        {"DDB_LCNFG", DDB_BASE + DDB_LCNFG},
+-        {"DDB_LCST0", DDB_BASE + DDB_LCST0},
+-        {"DDB_LCST1", DDB_BASE + DDB_LCST1},
+-        {"DDB_LCST2", DDB_BASE + DDB_LCST2},
+-        {"DDB_ERRADR", DDB_BASE + DDB_ERRADR},
+-        {"DDB_ERRCS", DDB_BASE + DDB_ERRCS},
+-        {"DDB_BTM", DDB_BASE + DDB_BTM},
+-        {"DDB_BCST", DDB_BASE + DDB_BCST},
+-        {NULL, 0x0}
+-};
+-void vrc5477_show_lb_regs(void)
+-{
+-        jsun_show_regs("Local Bus regs", lb_regs);
+-}
+-
+-void vrc5477_show_all_regs(void)
+-{
+-	vrc5477_show_pdar_regs();
+-	vrc5477_show_pci_regs();
+-	vrc5477_show_bar_regs();
+-	vrc5477_show_int_regs();
+-	vrc5477_show_lb_regs();
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/irq.c mips/arch/mips/ddb5xxx/ddb5477/irq.c
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/irq.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/irq.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,209 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- *  arch/mips/ddb5xxx/ddb5477/irq.c
+- *     The irq setup and misc routines for DDB5476.
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+-#include <linux/types.h>
+-#include <linux/ptrace.h>
+-
+-#include <asm/i8259.h>
+-#include <asm/irq_cpu.h>
+-#include <asm/system.h>
+-#include <asm/mipsregs.h>
+-#include <asm/debug.h>
+-#include <asm/addrspace.h>
+-#include <asm/bootinfo.h>
+-
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-
+-
+-/*
+- * IRQ mapping
+- *
+- *  0-7: 8 CPU interrupts
+- *	0 -	software interrupt 0
+- *	1 - 	software interrupt 1
+- *	2 - 	most Vrc5477 interrupts are routed to this pin
+- *	3 - 	(optional) some other interrupts routed to this pin for debugg
+- *	4 - 	not used
+- *	5 - 	not used
+- *	6 - 	not used
+- *	7 - 	cpu timer (used by default)
+- *
+- *  8-39: 32 Vrc5477 interrupt sources
+- *	(refer to the Vrc5477 manual)
+- */
+-
+-#define	PCI0			DDB_INTPPES0
+-#define	PCI1			DDB_INTPPES1
+-
+-#define	ACTIVE_LOW		1
+-#define	ACTIVE_HIGH		0
+-
+-#define	LEVEL_SENSE		2
+-#define	EDGE_TRIGGER		0
+-
+-#define	INTA			0
+-#define	INTB			1
+-#define	INTC			2
+-#define	INTD			3
+-#define	INTE			4
+-
+-static inline void
+-set_pci_int_attr(u32 pci, u32 intn, u32 active, u32 trigger)
+-{
+-	u32 reg_value;
+-	u32 reg_bitmask;
+-
+-	reg_value = ddb_in32(pci);
+-	reg_bitmask = 0x3 << (intn * 2);
+-
+-	reg_value &= ~reg_bitmask;
+-	reg_value |= (active | trigger) << (intn * 2);
+-	ddb_out32(pci, reg_value);
+-}
+-
+-extern void vrc5477_irq_init(u32 base);
+-static struct irqaction irq_cascade = { no_action, 0, CPU_MASK_NONE, "cascade", NULL, NULL };
+-
+-void __init arch_init_irq(void)
+-{
+-	/* by default, we disable all interrupts and route all vrc5477
+-	 * interrupts to pin 0 (irq 2) */
+-	ddb_out32(DDB_INTCTRL0, 0);
+-	ddb_out32(DDB_INTCTRL1, 0);
+-	ddb_out32(DDB_INTCTRL2, 0);
+-	ddb_out32(DDB_INTCTRL3, 0);
+-
+-	clear_c0_status(0xff00);
+-	set_c0_status(0x0400);
+-
+-	/* setup PCI interrupt attributes */
+-	set_pci_int_attr(PCI0, INTA, ACTIVE_LOW, LEVEL_SENSE);
+-	set_pci_int_attr(PCI0, INTB, ACTIVE_LOW, LEVEL_SENSE);
+-	if (mips_machtype == MACH_NEC_ROCKHOPPERII)
+-		set_pci_int_attr(PCI0, INTC, ACTIVE_HIGH, LEVEL_SENSE);
+-	else
+-		set_pci_int_attr(PCI0, INTC, ACTIVE_LOW, LEVEL_SENSE);
+-	set_pci_int_attr(PCI0, INTD, ACTIVE_LOW, LEVEL_SENSE);
+-	set_pci_int_attr(PCI0, INTE, ACTIVE_LOW, LEVEL_SENSE);
+-
+-	set_pci_int_attr(PCI1, INTA, ACTIVE_LOW, LEVEL_SENSE);
+-	set_pci_int_attr(PCI1, INTB, ACTIVE_LOW, LEVEL_SENSE);
+-	set_pci_int_attr(PCI1, INTC, ACTIVE_LOW, LEVEL_SENSE);
+-	set_pci_int_attr(PCI1, INTD, ACTIVE_LOW, LEVEL_SENSE);
+-	set_pci_int_attr(PCI1, INTE, ACTIVE_LOW, LEVEL_SENSE);
+-
+-	/*
+-	 * for debugging purpose, we enable several error interrupts
+-	 * and route them to pin 1. (IP3)
+-	 */
+-	/* cpu parity check - 0 */
+-	ll_vrc5477_irq_route(0, 1); ll_vrc5477_irq_enable(0);
+-	/* cpu no-target decode - 1 */
+-	ll_vrc5477_irq_route(1, 1); ll_vrc5477_irq_enable(1);
+-	/* local bus read time-out - 7 */
+-	ll_vrc5477_irq_route(7, 1); ll_vrc5477_irq_enable(7);
+-	/* PCI SERR# - 14 */
+-	ll_vrc5477_irq_route(14, 1); ll_vrc5477_irq_enable(14);
+-	/* PCI internal error - 15 */
+-	ll_vrc5477_irq_route(15, 1); ll_vrc5477_irq_enable(15);
+-	/* IOPCI SERR# - 30 */
+-	ll_vrc5477_irq_route(30, 1); ll_vrc5477_irq_enable(30);
+-	/* IOPCI internal error - 31 */
+-	ll_vrc5477_irq_route(31, 1); ll_vrc5477_irq_enable(31);
+-
+-	/* init all controllers */
+-	init_i8259_irqs();
+-	mips_cpu_irq_init();
+-	vrc5477_irq_init(VRC5477_IRQ_BASE);
+-
+-
+-	/* setup cascade interrupts */
+-	setup_irq(VRC5477_IRQ_BASE + VRC5477_I8259_CASCADE, &irq_cascade);
+-	setup_irq(CPU_IRQ_BASE + CPU_VRC5477_CASCADE, &irq_cascade);
+-}
+-
+-u8 i8259_interrupt_ack(void)
+-{
+-	u8 irq;
+-	u32 reg;
+-
+-	/* Set window 0 for interrupt acknowledge */
+-	reg = ddb_in32(DDB_PCIINIT10);
+-
+-	ddb_set_pmr(DDB_PCIINIT10, DDB_PCICMD_IACK, 0, DDB_PCI_ACCESS_32);
+-	irq = *(volatile u8 *) KSEG1ADDR(DDB_PCI_IACK_BASE);
+-	ddb_out32(DDB_PCIINIT10, reg);
+-
+-	return irq;
+-}
+-/*
+- * the first level int-handler will jump here if it is a vrc5477 irq
+- */
+-#define	NUM_5477_IRQS	32
+-static void vrc5477_irq_dispatch(void)
+-{
+-	u32 intStatus;
+-	u32 bitmask;
+-	u32 i;
+-
+-	db_assert(ddb_in32(DDB_INT2STAT) == 0);
+-	db_assert(ddb_in32(DDB_INT3STAT) == 0);
+-	db_assert(ddb_in32(DDB_INT4STAT) == 0);
+-	db_assert(ddb_in32(DDB_NMISTAT) == 0);
+-
+-	if (ddb_in32(DDB_INT1STAT) != 0) {
+-#if defined(CONFIG_RUNTIME_DEBUG)
+-		vrc5477_show_int_regs();
+-#endif
+-		panic("error interrupt has happened.");
+-	}
+-
+-	intStatus = ddb_in32(DDB_INT0STAT);
+-
+-	if (mips_machtype == MACH_NEC_ROCKHOPPERII) {
+-		/* check for i8259 interrupts */
+-		if (intStatus & (1 << VRC5477_I8259_CASCADE)) {
+-			int i8259_irq = i8259_interrupt_ack();
+-			do_IRQ(i8259_irq);
+-			return;
+-		}
+-	}
+-
+-	for (i=0, bitmask=1; i<= NUM_5477_IRQS; bitmask <<=1, i++) {
+-		/* do we need to "and" with the int mask? */
+-		if (intStatus & bitmask) {
+-			do_IRQ(VRC5477_IRQ_BASE + i);
+-			return;
+-		}
+-	}
+-}
+-
+-#define VR5477INTS (STATUSF_IP2|STATUSF_IP3|STATUSF_IP4|STATUSF_IP5|STATUSF_IP6)
+-
+-asmlinkage void plat_irq_dispatch(void)
+-{
+-	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+-
+-	if (pending & STATUSF_IP7)
+-		do_IRQ(CPU_IRQ_BASE + 7);
+-	else if (pending & VR5477INTS)
+-		vrc5477_irq_dispatch();
+-	else if (pending & STATUSF_IP0)
+-		do_IRQ(CPU_IRQ_BASE);
+-	else if (pending & STATUSF_IP1)
+-		do_IRQ(CPU_IRQ_BASE + 1);
+-	else
+-		spurious_interrupt();
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/irq_5477.c mips/arch/mips/ddb5xxx/ddb5477/irq_5477.c
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/irq_5477.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/irq_5477.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,154 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- *  arch/mips/ddb5xxx/ddb5477/irq_5477.c
+- *     This file defines the irq handler for Vrc5477.
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-/*
+- * Vrc5477 defines 32 IRQs.
+- *
+- * This file exports one function:
+- *	vrc5477_irq_init(u32 irq_base);
+- */
+-
+-#include <linux/interrupt.h>
+-#include <linux/types.h>
+-#include <linux/ptrace.h>
+-
+-#include <asm/debug.h>
+-
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-
+-/* number of total irqs supported by Vrc5477 */
+-#define	NUM_5477_IRQ		32
+-
+-static int vrc5477_irq_base = -1;
+-
+-
+-static void
+-vrc5477_irq_enable(unsigned int irq)
+-{
+-	db_assert(vrc5477_irq_base != -1);
+-	db_assert(irq >= vrc5477_irq_base);
+-	db_assert(irq < vrc5477_irq_base+ NUM_5477_IRQ);
+-
+-	ll_vrc5477_irq_enable(irq - vrc5477_irq_base);
+-}
+-
+-static void
+-vrc5477_irq_disable(unsigned int irq)
+-{
+-	db_assert(vrc5477_irq_base != -1);
+-	db_assert(irq >= vrc5477_irq_base);
+-	db_assert(irq < vrc5477_irq_base + NUM_5477_IRQ);
+-
+-	ll_vrc5477_irq_disable(irq - vrc5477_irq_base);
+-}
+-
+-static void
+-vrc5477_irq_ack(unsigned int irq)
+-{
+-	db_assert(vrc5477_irq_base != -1);
+-	db_assert(irq >= vrc5477_irq_base);
+-	db_assert(irq < vrc5477_irq_base+ NUM_5477_IRQ);
+-
+-	/* clear the interrupt bit */
+-	/* some irqs require the driver to clear the sources */
+-	ddb_out32(DDB_INTCLR32, 1 << (irq - vrc5477_irq_base));
+-
+-	/* disable interrupt - some handler will re-enable the irq
+-	 * and if the interrupt is leveled, we will have infinite loop
+-	 */
+-	ll_vrc5477_irq_disable(irq - vrc5477_irq_base);
+-}
+-
+-static void
+-vrc5477_irq_end(unsigned int irq)
+-{
+-	db_assert(vrc5477_irq_base != -1);
+-	db_assert(irq >= vrc5477_irq_base);
+-	db_assert(irq < vrc5477_irq_base + NUM_5477_IRQ);
+-
+-	if(!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
+-		ll_vrc5477_irq_enable( irq - vrc5477_irq_base);
+-}
+-
+-struct irq_chip vrc5477_irq_controller = {
+-	.name = "vrc5477_irq",
+-	.ack = vrc5477_irq_ack,
+-	.mask = vrc5477_irq_disable,
+-	.mask_ack = vrc5477_irq_ack,
+-	.unmask = vrc5477_irq_enable,
+-	.end = vrc5477_irq_end
+-};
+-
+-void __init vrc5477_irq_init(u32 irq_base)
+-{
+-	u32 i;
+-
+-	for (i= irq_base; i< irq_base+ NUM_5477_IRQ; i++)
+-		set_irq_chip(i, &vrc5477_irq_controller);
+-
+-	vrc5477_irq_base = irq_base;
+-}
+-
+-void ll_vrc5477_irq_route(int vrc5477_irq, int ip)
+-{
+-	u32 reg_value;
+-	u32 reg_bitmask;
+-	u32 reg_index;
+-
+-	db_assert(vrc5477_irq >= 0);
+-	db_assert(vrc5477_irq < NUM_5477_IRQ);
+-	db_assert(ip >= 0);
+-	db_assert((ip < 5) || (ip == 6));
+-
+-	reg_index = DDB_INTCTRL0 + vrc5477_irq/8*4;
+-	reg_value = ddb_in32(reg_index);
+-	reg_bitmask = 7 << (vrc5477_irq % 8 * 4);
+-	reg_value &= ~reg_bitmask;
+-	reg_value |= ip << (vrc5477_irq % 8 * 4);
+-	ddb_out32(reg_index, reg_value);
+-}
+-
+-void ll_vrc5477_irq_enable(int vrc5477_irq)
+-{
+-	u32 reg_value;
+-	u32 reg_bitmask;
+-	u32 reg_index;
+-
+-	db_assert(vrc5477_irq >= 0);
+-	db_assert(vrc5477_irq < NUM_5477_IRQ);
+-
+-	reg_index = DDB_INTCTRL0 + vrc5477_irq/8*4;
+-	reg_value = ddb_in32(reg_index);
+-	reg_bitmask = 8 << (vrc5477_irq % 8 * 4);
+-	db_assert((reg_value & reg_bitmask) == 0);
+-	ddb_out32(reg_index, reg_value | reg_bitmask);
+-}
+-
+-void ll_vrc5477_irq_disable(int vrc5477_irq)
+-{
+-	u32 reg_value;
+-	u32 reg_bitmask;
+-	u32 reg_index;
+-
+-	db_assert(vrc5477_irq >= 0);
+-	db_assert(vrc5477_irq < NUM_5477_IRQ);
+-
+-	reg_index = DDB_INTCTRL0 + vrc5477_irq/8*4;
+-	reg_value = ddb_in32(reg_index);
+-	reg_bitmask = 8 << (vrc5477_irq % 8 * 4);
+-
+-	/* we assert that the interrupt is enabled (perhaps over-zealous) */
+-	db_assert( (reg_value & reg_bitmask) != 0);
+-	ddb_out32(reg_index, reg_value & ~reg_bitmask);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/kgdb_io.c mips/arch/mips/ddb5xxx/ddb5477/kgdb_io.c
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/kgdb_io.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/kgdb_io.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,136 +0,0 @@
+-/*
+- * kgdb io functions for DDB5477.  We use the second serial port (upper one).
+- *
+- * Copyright (C) 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-/* ======================= CONFIG ======================== */
+-
+-/* [jsun] we use the second serial port for kdb */
+-#define         BASE                    0xbfa04240
+-#define         MAX_BAUD                115200
+-
+-/* distance in bytes between two serial registers */
+-#define         REG_OFFSET              8
+-
+-/*
+- * 0 - kgdb does serial init
+- * 1 - kgdb skip serial init
+- */
+-static int remoteDebugInitialized = 0;
+-
+-/*
+- * the default baud rate *if* kgdb does serial init
+- */
+-#define		BAUD_DEFAULT		UART16550_BAUD_38400
+-
+-/* ======================= END OF CONFIG ======================== */
+-
+-typedef unsigned char uint8;
+-typedef unsigned int uint32;
+-
+-#define         UART16550_BAUD_2400             2400
+-#define         UART16550_BAUD_4800             4800
+-#define         UART16550_BAUD_9600             9600
+-#define         UART16550_BAUD_19200            19200
+-#define         UART16550_BAUD_38400            38400
+-#define         UART16550_BAUD_57600            57600
+-#define         UART16550_BAUD_115200           115200
+-
+-#define         UART16550_PARITY_NONE           0
+-#define         UART16550_PARITY_ODD            0x08
+-#define         UART16550_PARITY_EVEN           0x18
+-#define         UART16550_PARITY_MARK           0x28
+-#define         UART16550_PARITY_SPACE          0x38
+-
+-#define         UART16550_DATA_5BIT             0x0
+-#define         UART16550_DATA_6BIT             0x1
+-#define         UART16550_DATA_7BIT             0x2
+-#define         UART16550_DATA_8BIT             0x3
+-
+-#define         UART16550_STOP_1BIT             0x0
+-#define         UART16550_STOP_2BIT             0x4
+-
+-/* register offset */
+-#define         OFS_RCV_BUFFER          0
+-#define         OFS_TRANS_HOLD          0
+-#define         OFS_SEND_BUFFER         0
+-#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
+-#define         OFS_INTR_ID             (2*REG_OFFSET)
+-#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
+-#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
+-#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
+-#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
+-#define         OFS_LINE_STATUS         (5*REG_OFFSET)
+-#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
+-#define         OFS_RS232_INPUT         (6*REG_OFFSET)
+-#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
+-
+-#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
+-#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
+-
+-
+-/* memory-mapped read/write of the port */
+-#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
+-#define         UART16550_WRITE(y, z)  ((*((volatile uint8*)(BASE + y))) = z)
+-
+-void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
+-{
+-        /* disable interrupts */
+-        UART16550_WRITE(OFS_INTR_ENABLE, 0);
+-
+-        /* set up baud rate */
+-        {
+-                uint32 divisor;
+-
+-                /* set DIAB bit */
+-                UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
+-
+-                /* set divisor */
+-                divisor = MAX_BAUD / baud;
+-                UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
+-                UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
+-
+-                /* clear DIAB bit */
+-                UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
+-        }
+-
+-        /* set data format */
+-        UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
+-}
+-
+-
+-uint8 getDebugChar(void)
+-{
+-        if (!remoteDebugInitialized) {
+-                remoteDebugInitialized = 1;
+-                debugInit(BAUD_DEFAULT,
+-                          UART16550_DATA_8BIT,
+-                          UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-        }
+-
+-        while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0);
+-        return UART16550_READ(OFS_RCV_BUFFER);
+-}
+-
+-
+-int putDebugChar(uint8 byte)
+-{
+-        if (!remoteDebugInitialized) {
+-                remoteDebugInitialized = 1;
+-                debugInit(BAUD_DEFAULT,
+-                          UART16550_DATA_8BIT,
+-                          UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-        }
+-
+-        while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0);
+-        UART16550_WRITE(OFS_SEND_BUFFER, byte);
+-        return 1;
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/lcd44780.c mips/arch/mips/ddb5xxx/ddb5477/lcd44780.c
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/lcd44780.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/lcd44780.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,96 +0,0 @@
+-/*
+- * lcd44780.c
+- * Simple "driver" for a memory-mapped 44780-style LCD display.
+- *
+- * Copyright 2001 Bradley D. LaRonde <brad@ltc.com>
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-#define LCD44780_COMMAND   ((volatile unsigned char *)0xbe020000)
+-#define LCD44780_DATA      ((volatile unsigned char *)0xbe020001)
+-
+-#define LCD44780_4BIT_1LINE        0x20
+-#define LCD44780_4BIT_2LINE        0x28
+-#define LCD44780_8BIT_1LINE        0x30
+-#define LCD44780_8BIT_2LINE        0x38
+-#define LCD44780_MODE_DEC          0x04
+-#define LCD44780_MODE_DEC_SHIFT    0x05
+-#define LCD44780_MODE_INC          0x06
+-#define LCD44780_MODE_INC_SHIFT    0x07
+-#define LCD44780_SCROLL_LEFT       0x18
+-#define LCD44780_SCROLL_RIGHT      0x1e
+-#define LCD44780_CURSOR_UNDERLINE  0x0e
+-#define LCD44780_CURSOR_BLOCK      0x0f
+-#define LCD44780_CURSOR_OFF        0x0c
+-#define LCD44780_CLEAR             0x01
+-#define LCD44780_BLANK             0x08
+-#define LCD44780_RESTORE           0x0c  // Same as CURSOR_OFF
+-#define LCD44780_HOME              0x02
+-#define LCD44780_LEFT              0x10
+-#define LCD44780_RIGHT             0x14
+-
+-void lcd44780_wait(void)
+-{
+-	int i, j;
+-	for(i=0; i < 400; i++)
+-		for(j=0; j < 10000; j++);
+-}
+-
+-void lcd44780_command(unsigned char c)
+-{
+-	*LCD44780_COMMAND = c;
+-	lcd44780_wait();
+-}
+-
+-void lcd44780_data(unsigned char c)
+-{
+-	*LCD44780_DATA = c;
+-	lcd44780_wait();
+-}
+-
+-void lcd44780_puts(const char* s)
+-{
+-	int j;
+-	int pos = 0;
+-
+-	lcd44780_command(LCD44780_CLEAR);
+-	while(*s) {
+-		lcd44780_data(*s);
+-		s++;
+-		pos++;
+-		if (pos == 8) {
+-		  /* We must write 32 of spaces to get cursor to 2nd line */
+-		  for (j=0; j<32; j++) {
+-		    lcd44780_data(' ');
+-		  }
+-		}
+-		if (pos == 16) {
+-		  /* We have filled all 16 character positions, so stop
+-		     outputing data */
+-		  break;
+-		}
+-	}
+-#ifdef LCD44780_PUTS_PAUSE
+-	{
+-		int i;
+-
+-		for(i = 1; i < 2000; i++)
+-			lcd44780_wait();
+-	}
+-#endif
+-}
+-
+-void lcd44780_init(void)
+-{
+-	// The display on the RockHopper is physically a single
+-	// 16 char line (two 8 char lines concatenated).  bdl
+-	lcd44780_command(LCD44780_8BIT_2LINE);
+-	lcd44780_command(LCD44780_MODE_INC);
+-	lcd44780_command(LCD44780_CURSOR_BLOCK);
+-	lcd44780_command(LCD44780_CLEAR);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/lcd44780.h mips/arch/mips/ddb5xxx/ddb5477/lcd44780.h
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/lcd44780.h	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/lcd44780.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,15 +0,0 @@
+-/*
+- * lcd44780.h
+- * Simple "driver" for a memory-mapped 44780-style LCD display.
+- *
+- * Copyright 2001 Bradley D. LaRonde <brad@ltc.com>
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-void lcd44780_puts(const char* s);
+-void lcd44780_init(void);
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/ddb5xxx/ddb5477/setup.c mips/arch/mips/ddb5xxx/ddb5477/setup.c
+--- mips-orig/arch/mips/ddb5xxx/ddb5477/setup.c	2007-07-30 22:01:16.588586250 +0900
++++ mips/arch/mips/ddb5xxx/ddb5477/setup.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,399 +0,0 @@
+-/*
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)
+- *
+- * arch/mips/ddb5xxx/ddb5477/setup.c
+- *     Setup file for DDB5477.
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/types.h>
+-#include <linux/sched.h>
+-#include <linux/pci.h>
+-#include <linux/ide.h>
+-#include <linux/irq.h>
+-#include <linux/fs.h>
+-#include <linux/ioport.h>
+-#include <linux/param.h>	/* for HZ */
+-#include <linux/major.h>
+-#include <linux/kdev_t.h>
+-#include <linux/root_dev.h>
+-#include <linux/pm.h>
+-
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/addrspace.h>
+-#include <asm/time.h>
+-#include <asm/bcache.h>
+-#include <asm/irq.h>
+-#include <asm/reboot.h>
+-#include <asm/gdb-stub.h>
+-#include <asm/traps.h>
+-#include <asm/debug.h>
+-
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-
+-#include "lcd44780.h"
+-
+-
+-#define	USE_CPU_COUNTER_TIMER	/* whether we use cpu counter */
+-
+-#define	SP_TIMER_BASE			DDB_SPT1CTRL_L
+-#define	SP_TIMER_IRQ			VRC5477_IRQ_SPT1
+-
+-static int bus_frequency = CONFIG_DDB5477_BUS_FREQUENCY*1000;
+-
+-static void ddb_machine_restart(char *command)
+-{
+-	static void (*back_to_prom) (void) = (void (*)(void)) 0xbfc00000;
+-
+-	u32 t;
+-
+-	/* PCI cold reset */
+-	ddb_pci_reset_bus();
+-
+-	/* CPU cold reset */
+-	t = ddb_in32(DDB_CPUSTAT);
+-	db_assert((t&1));
+-	ddb_out32(DDB_CPUSTAT, t);
+-
+-	/* Call the PROM */
+-	back_to_prom();
+-}
+-
+-static void ddb_machine_halt(void)
+-{
+-	printk("DDB Vrc-5477 halted.\n");
+-	while (1);
+-}
+-
+-static void ddb_machine_power_off(void)
+-{
+-	printk("DDB Vrc-5477 halted. Please turn off the power.\n");
+-	while (1);
+-}
+-
+-extern void rtc_ds1386_init(unsigned long base);
+-
+-static unsigned int __init detect_bus_frequency(unsigned long rtc_base)
+-{
+-	unsigned int freq;
+-	unsigned char c;
+-	unsigned int t1, t2;
+-	unsigned i;
+-
+-	ddb_out32(SP_TIMER_BASE, 0xffffffff);
+-	ddb_out32(SP_TIMER_BASE+4, 0x1);
+-	ddb_out32(SP_TIMER_BASE+8, 0xffffffff);
+-
+-	/* check if rtc is running */
+-	c= *(volatile unsigned char*)rtc_base;
+-	for(i=0; (c == *(volatile unsigned char*)rtc_base) && (i<100000000); i++);
+-	if (c == *(volatile unsigned char*)rtc_base) {
+-		printk("Failed to detect bus frequency.  Use default 83.3MHz.\n");
+-		return 83333000;
+-	}
+-
+-	c= *(volatile unsigned char*)rtc_base;
+-	while (c == *(volatile unsigned char*)rtc_base);
+-	/* we are now at the turn of 1/100th second, if no error. */
+-	t1 = ddb_in32(SP_TIMER_BASE+8);
+-
+-	for (i=0; i< 10; i++) {
+-		c= *(volatile unsigned char*)rtc_base;
+-		while (c == *(volatile unsigned char*)rtc_base);
+-		/* we are now at the turn of another 1/100th second */
+-		t2 = ddb_in32(SP_TIMER_BASE+8);
+-	}
+-
+-	ddb_out32(SP_TIMER_BASE+4, 0x0);	/* disable it again */
+-
+-	freq = (t1 - t2)*10;
+-	printk("DDB bus frequency detection : %u \n", freq);
+-	return freq;
+-}
+-
+-static void __init ddb_time_init(void)
+-{
+-	unsigned long rtc_base;
+-	unsigned int i;
+-
+-	/* we have ds1396 RTC chip */
+-	if (mips_machtype == MACH_NEC_ROCKHOPPER
+-		||  mips_machtype == MACH_NEC_ROCKHOPPERII) {
+-		rtc_base = KSEG1ADDR(DDB_LCS2_BASE);
+-	} else {
+-		rtc_base = KSEG1ADDR(DDB_LCS1_BASE);
+-	}
+-	rtc_ds1386_init(rtc_base);
+-
+-	/* do we need to do run-time detection of bus speed? */
+-	if (bus_frequency == 0) {
+-		bus_frequency = detect_bus_frequency(rtc_base);
+-	}
+-
+-	/* mips_hpt_frequency is 1/2 of the cpu core freq */
+-	i =  (read_c0_config() >> 28 ) & 7;
+-	if ((current_cpu_data.cputype == CPU_R5432) && (i == 3))
+-		i = 4;
+-	mips_hpt_frequency = bus_frequency*(i+4)/4;
+-}
+-
+-void __init plat_timer_setup(struct irqaction *irq)
+-{
+-#if defined(USE_CPU_COUNTER_TIMER)
+-
+-        /* we are using the cpu counter for timer interrupts */
+-	setup_irq(CPU_IRQ_BASE + 7, irq);
+-
+-#else
+-
+-	/* if we use Special purpose timer 1 */
+-	ddb_out32(SP_TIMER_BASE, bus_frequency/HZ);
+-	ddb_out32(SP_TIMER_BASE+4, 0x1);
+-	setup_irq(SP_TIMER_IRQ, irq);
+-
+-#endif
+-}
+-
+-static void ddb5477_board_init(void);
+-
+-extern struct pci_controller ddb5477_ext_controller;
+-extern struct pci_controller ddb5477_io_controller;
+-
+-void __init plat_mem_setup(void)
+-{
+-	/* initialize board - we don't trust the loader */
+-        ddb5477_board_init();
+-
+-	set_io_port_base(KSEG1ADDR(DDB_PCI_IO_BASE));
+-
+-	board_time_init = ddb_time_init;
+-
+-	_machine_restart = ddb_machine_restart;
+-	_machine_halt = ddb_machine_halt;
+-	pm_power_off = ddb_machine_power_off;
+-
+-	/* setup resource limits */
+-	ioport_resource.end = DDB_PCI0_IO_SIZE + DDB_PCI1_IO_SIZE - 1;
+-	iomem_resource.end = 0xffffffff;
+-
+-	/* Reboot on panic */
+-	panic_timeout = 180;
+-
+-	register_pci_controller (&ddb5477_ext_controller);
+-	register_pci_controller (&ddb5477_io_controller);
+-}
+-
+-static void __init ddb5477_board_init(void)
+-{
+-	/* ----------- setup PDARs ------------ */
+-
+-	/* SDRAM should have been set */
+-	db_assert(ddb_in32(DDB_SDRAM0) ==
+-		    ddb_calc_pdar(DDB_SDRAM_BASE, board_ram_size, 32, 0, 1));
+-
+-	/* SDRAM1 should be turned off.  What is this for anyway ? */
+-	db_assert( (ddb_in32(DDB_SDRAM1) & 0xf) == 0);
+-
+-	/* Setup local bus. */
+-
+-	/* Flash U12 PDAR and timing. */
+-	ddb_set_pdar(DDB_LCS0, DDB_LCS0_BASE, DDB_LCS0_SIZE, 16, 0, 0);
+-	ddb_out32(DDB_LCST0, 0x00090842);
+-
+-	/* We need to setup LCS1 and LCS2 differently based on the
+-	   board_version */
+-	if (mips_machtype == MACH_NEC_ROCKHOPPER) {
+-		/* Flash U13 PDAR and timing. */
+-		ddb_set_pdar(DDB_LCS1, DDB_LCS1_BASE, DDB_LCS1_SIZE, 16, 0, 0);
+-		ddb_out32(DDB_LCST1, 0x00090842);
+-
+-		/* EPLD (NVRAM, switch, LCD, and mezzanie). */
+-		ddb_set_pdar(DDB_LCS2, DDB_LCS2_BASE, DDB_LCS2_SIZE, 8, 0, 0);
+-	} else {
+-		/* misc */
+-		ddb_set_pdar(DDB_LCS1, DDB_LCS1_BASE, DDB_LCS1_SIZE, 8, 0, 0);
+-		/* mezzanie (?) */
+-		ddb_set_pdar(DDB_LCS2, DDB_LCS2_BASE, DDB_LCS2_SIZE, 16, 0, 0);
+-	}
+-
+-	/* verify VRC5477 base addr */
+-	db_assert(ddb_in32(DDB_VRC5477) ==
+-		  ddb_calc_pdar(DDB_VRC5477_BASE, DDB_VRC5477_SIZE, 32, 0, 1));
+-
+-	/* verify BOOT ROM addr */
+-	db_assert(ddb_in32(DDB_BOOTCS) ==
+-		  ddb_calc_pdar(DDB_BOOTCS_BASE, DDB_BOOTCS_SIZE, 8, 0, 0));
+-
+-	/* setup PCI windows - window0 for MEM/config, window1 for IO */
+-	ddb_set_pdar(DDB_PCIW0, DDB_PCI0_MEM_BASE, DDB_PCI0_MEM_SIZE, 32, 0, 1);
+-	ddb_set_pdar(DDB_PCIW1, DDB_PCI0_IO_BASE, DDB_PCI0_IO_SIZE, 32, 0, 1);
+-	ddb_set_pdar(DDB_IOPCIW0, DDB_PCI1_MEM_BASE, DDB_PCI1_MEM_SIZE, 32, 0, 1);
+-	ddb_set_pdar(DDB_IOPCIW1, DDB_PCI1_IO_BASE, DDB_PCI1_IO_SIZE, 32, 0, 1);
+-
+-	/* ------------ reset PCI bus and BARs ----------------- */
+-	ddb_pci_reset_bus();
+-
+-	ddb_out32(DDB_BARM010, 0x00000008);
+-	ddb_out32(DDB_BARM011, 0x00000008);
+-
+-	ddb_out32(DDB_BARC0, 0xffffffff);
+-	ddb_out32(DDB_BARM230, 0xffffffff);
+-	ddb_out32(DDB_BAR00, 0xffffffff);
+-	ddb_out32(DDB_BAR10, 0xffffffff);
+-	ddb_out32(DDB_BAR20, 0xffffffff);
+-	ddb_out32(DDB_BAR30, 0xffffffff);
+-	ddb_out32(DDB_BAR40, 0xffffffff);
+-	ddb_out32(DDB_BAR50, 0xffffffff);
+-	ddb_out32(DDB_BARB0, 0xffffffff);
+-
+-	ddb_out32(DDB_BARC1, 0xffffffff);
+-	ddb_out32(DDB_BARM231, 0xffffffff);
+-	ddb_out32(DDB_BAR01, 0xffffffff);
+-	ddb_out32(DDB_BAR11, 0xffffffff);
+-	ddb_out32(DDB_BAR21, 0xffffffff);
+-	ddb_out32(DDB_BAR31, 0xffffffff);
+-	ddb_out32(DDB_BAR41, 0xffffffff);
+-	ddb_out32(DDB_BAR51, 0xffffffff);
+-	ddb_out32(DDB_BARB1, 0xffffffff);
+-
+-	/*
+-	 * We use pci master register 0  for memory space / config space
+-	 * And we use register 1 for IO space.
+-	 * Note that for memory space, we bump up the pci base address
+-	 * so that we have 1:1 mapping between PCI memory and cpu physical.
+-	 * For PCI IO space, it starts from 0 in PCI IO space but with
+-	 * DDB_xx_IO_BASE in CPU physical address space.
+-	 */
+-	ddb_set_pmr(DDB_PCIINIT00, DDB_PCICMD_MEM, DDB_PCI0_MEM_BASE,
+-		    DDB_PCI_ACCESS_32);
+-	ddb_set_pmr(DDB_PCIINIT10, DDB_PCICMD_IO, 0, DDB_PCI_ACCESS_32);
+-
+-	ddb_set_pmr(DDB_PCIINIT01, DDB_PCICMD_MEM, DDB_PCI1_MEM_BASE,
+-		    DDB_PCI_ACCESS_32);
+-	ddb_set_pmr(DDB_PCIINIT11, DDB_PCICMD_IO, DDB_PCI0_IO_SIZE,
+-                    DDB_PCI_ACCESS_32);
+-
+-
+-	/* PCI cross window should be set properly */
+-	ddb_set_pdar(DDB_BARP00, DDB_PCI1_MEM_BASE, DDB_PCI1_MEM_SIZE, 32, 0, 1);
+-	ddb_set_pdar(DDB_BARP10, DDB_PCI1_IO_BASE, DDB_PCI1_IO_SIZE, 32, 0, 1);
+-	ddb_set_pdar(DDB_BARP01, DDB_PCI0_MEM_BASE, DDB_PCI0_MEM_SIZE, 32, 0, 1);
+-	ddb_set_pdar(DDB_BARP11, DDB_PCI0_IO_BASE, DDB_PCI0_IO_SIZE, 32, 0, 1);
+-
+-	if (mips_machtype == MACH_NEC_ROCKHOPPER
+-	   ||  mips_machtype == MACH_NEC_ROCKHOPPERII) {
+-		/* Disable bus diagnostics. */
+-		ddb_out32(DDB_PCICTL0_L, 0);
+-		ddb_out32(DDB_PCICTL0_H, 0);
+-		ddb_out32(DDB_PCICTL1_L, 0);
+-		ddb_out32(DDB_PCICTL1_H, 0);
+-	}
+-
+-	if (mips_machtype == MACH_NEC_ROCKHOPPER) {
+-		u16			vid;
+-		struct pci_bus		bus;
+-		struct pci_dev		dev_m1533;
+-		extern struct pci_ops 	ddb5477_ext_pci_ops;
+-
+-		bus.parent      = NULL;    /* we scan the top level only */
+-		bus.ops         = &ddb5477_ext_pci_ops;
+-		dev_m1533.bus         = &bus;
+-		dev_m1533.sysdata     = NULL;
+-		dev_m1533.devfn       = 7*8;     // slot 7: M1533 SouthBridge.
+-		pci_read_config_word(&dev_m1533, 0, &vid);
+-		if (vid == PCI_VENDOR_ID_AL) {
+-			printk("Changing mips_machtype to MACH_NEC_ROCKHOPPERII\n");
+-			mips_machtype = MACH_NEC_ROCKHOPPERII;
+-		}
+-	}
+-
+-	/* enable USB input buffers */
+-	ddb_out32(DDB_PIBMISC, 0x00000007);
+-
+-	/* For dual-function pins, make them all non-GPIO */
+-	ddb_out32(DDB_GIUFUNSEL, 0x0);
+-	// ddb_out32(DDB_GIUFUNSEL, 0xfe0fcfff);  /* NEC recommanded value */
+-
+-	if (mips_machtype == MACH_NEC_ROCKHOPPERII) {
+-
+-		/* enable IDE controller on Ali chip (south bridge) */
+-		u8			temp8;
+-		struct pci_bus		bus;
+-		struct pci_dev		dev_m1533;
+-		struct pci_dev		dev_m5229;
+-		extern struct pci_ops 	ddb5477_ext_pci_ops;
+-
+-		/* Setup M1535 registers */
+-		bus.parent      = NULL;    /* we scan the top level only */
+-		bus.ops         = &ddb5477_ext_pci_ops;
+-		dev_m1533.bus         = &bus;
+-		dev_m1533.sysdata     = NULL;
+-		dev_m1533.devfn       = 7*8;     // slot 7: M1533 SouthBridge.
+-
+-		/* setup IDE controller
+-		 * enable IDE controller (bit 6 - 1)
+-		 * IDE IDSEL to be addr:A15 (bit 4:5 - 11)
+-		 * disable IDE ATA Secondary Bus Signal Pad Control (bit 3 - 0)
+-		 * enable IDE ATA Primary Bus Signal Pad Control (bit 2 - 1)
+-		 */
+-		pci_write_config_byte(&dev_m1533, 0x58, 0x74);
+-
+-		/*
+-		 * positive decode (bit6 -0)
+-		 * enable IDE controler interrupt (bit 4 -1)
+-		 * setup SIRQ to point to IRQ 14 (bit 3:0 - 1101)
+-		 */
+-		pci_write_config_byte(&dev_m1533, 0x44, 0x1d);
+-
+-		/* Setup M5229 registers */
+-		dev_m5229.bus = &bus;
+-		dev_m5229.sysdata = NULL;
+-		dev_m5229.devfn = 4*8;  	// slot 4 (AD15): M5229 IDE
+-
+-		/*
+-		 * enable IDE in the M5229 config register 0x50 (bit 0 - 1)
+-		 * M5229 IDSEL is addr:15; see above setting
+-		 */
+-		pci_read_config_byte(&dev_m5229, 0x50, &temp8);
+-		pci_write_config_byte(&dev_m5229, 0x50, temp8 | 0x1);
+-
+-		/*
+-		 * enable bus master (bit 2)  and IO decoding  (bit 0)
+-		 */
+-		pci_read_config_byte(&dev_m5229, 0x04, &temp8);
+-		pci_write_config_byte(&dev_m5229, 0x04, temp8 | 0x5);
+-
+-		/*
+-		 * enable native, copied from arch/ppc/k2boot/head.S
+-		 * TODO - need volatile, need to be portable
+-		 */
+-		pci_write_config_byte(&dev_m5229, 0x09, 0xef);
+-
+-		/* Set Primary Channel Command Block Timing */
+-		pci_write_config_byte(&dev_m5229, 0x59, 0x31);
+-
+-		/*
+-		 * Enable primary channel 40-pin cable
+-		 * M5229 register 0x4a (bit 0)
+-		 */
+-		pci_read_config_byte(&dev_m5229, 0x4a, &temp8);
+-		pci_write_config_byte(&dev_m5229, 0x4a, temp8 | 0x1);
+-	}
+-
+-	if (mips_machtype == MACH_NEC_ROCKHOPPER
+-	   ||  mips_machtype == MACH_NEC_ROCKHOPPERII) {
+-		printk("lcd44780: initializing\n");
+-		lcd44780_init();
+-		lcd44780_puts("MontaVista Linux");
+-	}
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/defconfig mips/arch/mips/defconfig
+--- mips-orig/arch/mips/defconfig	2007-07-30 22:01:16.616588000 +0900
++++ mips/arch/mips/defconfig	2007-07-30 22:29:49.999667750 +0900
+@@ -35,7 +35,6 @@ CONFIG_ZONE_DMA=y
+ # CONFIG_MIPS_XXS1500 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_DDB5477 is not set
+ # CONFIG_MACH_VR41XX is not set
+ # CONFIG_PMC_YOSEMITE is not set
+ # CONFIG_QEMU is not set
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/Makefile mips/arch/mips/pci/Makefile
+--- mips-orig/arch/mips/pci/Makefile	2007-07-30 22:01:17.324632250 +0900
++++ mips/arch/mips/pci/Makefile	2007-07-30 22:20:06.627209250 +0900
+@@ -19,7 +19,6 @@ obj-$(CONFIG_MARKEINS)		+= ops-emma2rh.o
+ # These are still pretty much in the old state, watch, go blind.
+ #
+ obj-$(CONFIG_BASLER_EXCITE)	+= ops-titan.o pci-excite.o fixup-excite.o
+-obj-$(CONFIG_DDB5477)		+= fixup-ddb5477.o pci-ddb5477.o ops-ddb5477.o
+ obj-$(CONFIG_MIPS_ATLAS)	+= fixup-atlas.o
+ obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
+ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000.o ops-au1000.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-ddb5477.c mips/arch/mips/pci/fixup-ddb5477.c
+--- mips-orig/arch/mips/pci/fixup-ddb5477.c	2007-07-30 22:01:17.328632500 +0900
++++ mips/arch/mips/pci/fixup-ddb5477.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,78 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Board specific pci fixups.
+- *
+- * Copyright 2001, 2002, 2003 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-
+-static void ddb5477_fixup(struct pci_dev *dev)
+-{
+-	u8 old;
+-
+-	printk(KERN_NOTICE "Enabling ALI M1533/35 PS2 keyboard/mouse.\n");
+-	pci_read_config_byte(dev, 0x41, &old);
+-	pci_write_config_byte(dev, 0x41, old | 0xd0);
+-}
+-
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AL, PCI_DEVICE_ID_AL_M1533,
+-	  ddb5477_fixup);
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AL, PCI_DEVICE_ID_AL_M1535,
+-	  ddb5477_fixup);
+-
+-/*
+- * Fixup baseboard AMD chip so that tx does not underflow.
+- *      bcr_18 |= 0x0800
+- * This sets NOUFLO bit which makes tx not start until whole pkt
+- * is fetched to the chip.
+- */
+-#define PCNET32_WIO_RDP		0x10
+-#define PCNET32_WIO_RAP		0x12
+-#define PCNET32_WIO_RESET	0x14
+-#define PCNET32_WIO_BDP		0x16
+-
+-static void ddb5477_amd_lance_fixup(struct pci_dev *dev)
+-{
+-	unsigned long ioaddr;
+-	u16 temp;
+-
+-	ioaddr = pci_resource_start(dev, 0);
+-
+-	inw(ioaddr + PCNET32_WIO_RESET);	/* reset chip */
+-
+-	/* bcr_18 |= 0x0800 */
+-	outw(18, ioaddr + PCNET32_WIO_RAP);
+-	temp = inw(ioaddr + PCNET32_WIO_BDP);
+-	temp |= 0x0800;
+-	outw(18, ioaddr + PCNET32_WIO_RAP);
+-	outw(temp, ioaddr + PCNET32_WIO_BDP);
+-}
+-
+-DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_LANCE,
+-	  ddb5477_amd_lance_fixup);
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/ops-ddb5477.c mips/arch/mips/pci/ops-ddb5477.c
+--- mips-orig/arch/mips/pci/ops-ddb5477.c	2007-07-30 22:01:17.340633250 +0900
++++ mips/arch/mips/pci/ops-ddb5477.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,278 +0,0 @@
+-/***********************************************************************
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * arch/mips/ddb5xxx/ddb5477/pci_ops.c
+- *     Define the pci_ops for DB5477.
+- *
+- * Much of the code is derived from the original DDB5074 port by
+- * Geert Uytterhoeven <geert@sonycom.com>
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- ***********************************************************************
+- */
+-
+-/*
+- * DDB5477 has two PCI channels, external PCI and IOPIC (internal)
+- * Therefore we provide two sets of pci_ops.
+- */
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/types.h>
+-
+-#include <asm/addrspace.h>
+-#include <asm/debug.h>
+-
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-
+-/*
+- * config_swap structure records what set of pdar/pmr are used
+- * to access pci config space.  It also provides a place hold the
+- * original values for future restoring.
+- */
+-struct pci_config_swap {
+-	u32 pdar;
+-	u32 pmr;
+-	u32 config_base;
+-	u32 config_size;
+-	u32 pdar_backup;
+-	u32 pmr_backup;
+-};
+-
+-/*
+- * On DDB5477, we have two sets of swap registers, for ext PCI and IOPCI.
+- */
+-struct pci_config_swap ext_pci_swap = {
+-	DDB_PCIW0,
+-	DDB_PCIINIT00,
+-	DDB_PCI0_CONFIG_BASE,
+-	DDB_PCI0_CONFIG_SIZE
+-};
+-struct pci_config_swap io_pci_swap = {
+-	DDB_IOPCIW0,
+-	DDB_PCIINIT01,
+-	DDB_PCI1_CONFIG_BASE,
+-	DDB_PCI1_CONFIG_SIZE
+-};
+-
+-
+-/*
+- * access config space
+- */
+-static inline u32 ddb_access_config_base(struct pci_config_swap *swap, u32 bus,	/* 0 means top level bus */
+-					 u32 slot_num)
+-{
+-	u32 pci_addr = 0;
+-	u32 pciinit_offset = 0;
+-	u32 virt_addr;
+-	u32 option;
+-
+-	/* minimum pdar (window) size is 2MB */
+-	db_assert(swap->config_size >= (2 << 20));
+-
+-	db_assert(slot_num < (1 << 5));
+-	db_assert(bus < (1 << 8));
+-
+-	/* backup registers */
+-	swap->pdar_backup = ddb_in32(swap->pdar);
+-	swap->pmr_backup = ddb_in32(swap->pmr);
+-
+-	/* set the pdar (pci window) register */
+-	ddb_set_pdar(swap->pdar, swap->config_base, swap->config_size, 32,	/* 32 bit wide */
+-		     0,		/* not on local memory bus */
+-		     0);	/* not visible from PCI bus (N/A) */
+-
+-	/*
+-	 * calcuate the absolute pci config addr;
+-	 * according to the spec, we start scanning from adr:11 (0x800)
+-	 */
+-	if (bus == 0) {
+-		/* type 0 config */
+-		pci_addr = 0x800 << slot_num;
+-	} else {
+-		/* type 1 config */
+-		pci_addr = (bus << 16) | (slot_num << 11);
+-	}
+-
+-	/*
+-	 * if pci_addr is less than pci config window size,  we set
+-	 * pciinit_offset to 0 and adjust the virt_address.
+-	 * Otherwise we will try to adjust pciinit_offset.
+-	 */
+-	if (pci_addr < swap->config_size) {
+-		virt_addr = KSEG1ADDR(swap->config_base + pci_addr);
+-		pciinit_offset = 0;
+-	} else {
+-		db_assert((pci_addr & (swap->config_size - 1)) == 0);
+-		virt_addr = KSEG1ADDR(swap->config_base);
+-		pciinit_offset = pci_addr;
+-	}
+-
+-	/* set the pmr register */
+-	option = DDB_PCI_ACCESS_32;
+-	if (bus != 0)
+-		option |= DDB_PCI_CFGTYPE1;
+-	ddb_set_pmr(swap->pmr, DDB_PCICMD_CFG, pciinit_offset, option);
+-
+-	return virt_addr;
+-}
+-
+-static inline void ddb_close_config_base(struct pci_config_swap *swap)
+-{
+-	ddb_out32(swap->pdar, swap->pdar_backup);
+-	ddb_out32(swap->pmr, swap->pmr_backup);
+-}
+-
+-static int read_config_dword(struct pci_config_swap *swap,
+-			     struct pci_bus *bus, u32 devfn, u32 where,
+-			     u32 * val)
+-{
+-	u32 bus_num, slot_num, func_num;
+-	u32 base;
+-
+-	db_assert((where & 3) == 0);
+-	db_assert(where < (1 << 8));
+-
+-	/* check if the bus is top-level */
+-	if (bus->parent != NULL) {
+-		bus_num = bus->number;
+-		db_assert(bus_num != 0);
+-	} else {
+-		bus_num = 0;
+-	}
+-
+-	slot_num = PCI_SLOT(devfn);
+-	func_num = PCI_FUNC(devfn);
+-	base = ddb_access_config_base(swap, bus_num, slot_num);
+-	*val = *(volatile u32 *) (base + (func_num << 8) + where);
+-	ddb_close_config_base(swap);
+-	return PCIBIOS_SUCCESSFUL;
+-}
+-
+-static int read_config_word(struct pci_config_swap *swap,
+-			    struct pci_bus *bus, u32 devfn, u32 where,
+-			    u16 * val)
+-{
+-	int status;
+-	u32 result;
+-
+-	db_assert((where & 1) == 0);
+-
+-	status = read_config_dword(swap, bus, devfn, where & ~3, &result);
+-	if (where & 2)
+-		result >>= 16;
+-	*val = result & 0xffff;
+-	return status;
+-}
+-
+-static int read_config_byte(struct pci_config_swap *swap,
+-			    struct pci_bus *bus, u32 devfn, u32 where,
+-			    u8 * val)
+-{
+-	int status;
+-	u32 result;
+-
+-	status = read_config_dword(swap, bus, devfn, where & ~3, &result);
+-	if (where & 1)
+-		result >>= 8;
+-	if (where & 2)
+-		result >>= 16;
+-	*val = result & 0xff;
+-
+-	return status;
+-}
+-
+-static int write_config_dword(struct pci_config_swap *swap,
+-			      struct pci_bus *bus, u32 devfn, u32 where,
+-			      u32 val)
+-{
+-	u32 bus_num, slot_num, func_num;
+-	u32 base;
+-
+-	db_assert((where & 3) == 0);
+-	db_assert(where < (1 << 8));
+-
+-	/* check if the bus is top-level */
+-	if (bus->parent != NULL) {
+-		bus_num = bus->number;
+-		db_assert(bus_num != 0);
+-	} else {
+-		bus_num = 0;
+-	}
+-
+-	slot_num = PCI_SLOT(devfn);
+-	func_num = PCI_FUNC(devfn);
+-	base = ddb_access_config_base(swap, bus_num, slot_num);
+-	*(volatile u32 *) (base + (func_num << 8) + where) = val;
+-	ddb_close_config_base(swap);
+-	return PCIBIOS_SUCCESSFUL;
+-}
+-
+-static int write_config_word(struct pci_config_swap *swap,
+-			     struct pci_bus *bus, u32 devfn, u32 where, u16 val)
+-{
+-	int status, shift = 0;
+-	u32 result;
+-
+-	db_assert((where & 1) == 0);
+-
+-	status = read_config_dword(swap, bus, devfn, where & ~3, &result);
+-	if (status != PCIBIOS_SUCCESSFUL)
+-		return status;
+-
+-	if (where & 2)
+-		shift += 16;
+-	result &= ~(0xffff << shift);
+-	result |= val << shift;
+-	return write_config_dword(swap, bus, devfn, where & ~3, result);
+-}
+-
+-static int write_config_byte(struct pci_config_swap *swap,
+-			     struct pci_bus *bus, u32 devfn, u32 where, u8 val)
+-{
+-	int status, shift = 0;
+-	u32 result;
+-
+-	status = read_config_dword(swap, bus, devfn, where & ~3, &result);
+-	if (status != PCIBIOS_SUCCESSFUL)
+-		return status;
+-
+-	if (where & 2)
+-		shift += 16;
+-	if (where & 1)
+-		shift += 8;
+-	result &= ~(0xff << shift);
+-	result |= val << shift;
+-	return write_config_dword(swap, bus, devfn, where & ~3, result);
+-}
+-
+-#define        MAKE_PCI_OPS(prefix, rw, pciswap, star) \
+-static int prefix##_##rw##_config(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 star val) \
+-{ \
+-	if (size == 1) \
+-		return rw##_config_byte(pciswap, bus, devfn, where, (u8 star)val); \
+-	else if (size == 2) \
+-		return rw##_config_word(pciswap, bus, devfn, where, (u16 star)val); \
+-	/* Size must be 4 */ \
+-     	return rw##_config_dword(pciswap, bus, devfn, where, val); \
+-}
+-
+-MAKE_PCI_OPS(extpci, read, &ext_pci_swap, *)
+-MAKE_PCI_OPS(extpci, write, &ext_pci_swap,)
+-
+-MAKE_PCI_OPS(iopci, read, &io_pci_swap, *)
+-MAKE_PCI_OPS(iopci, write, &io_pci_swap,)
+-
+-struct pci_ops ddb5477_ext_pci_ops = {
+-	.read = extpci_read_config,
+-	.write = extpci_write_config
+-};
+-
+-
+-struct pci_ops ddb5477_io_pci_ops = {
+-	.read = iopci_read_config,
+-	.write = iopci_write_config
+-};
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/pci-ddb5477.c mips/arch/mips/pci/pci-ddb5477.c
+--- mips-orig/arch/mips/pci/pci-ddb5477.c	2007-07-30 22:01:17.348633750 +0900
++++ mips/arch/mips/pci/pci-ddb5477.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,207 +0,0 @@
+-/*
+- * PCI code for DDB5477.
+- *
+- * Copyright (C) 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/debug.h>
+-
+-#include <asm/ddb5xxx/ddb5xxx.h>
+-
+-static struct resource extpci_io_resource = {
+-	.start	= DDB_PCI0_IO_BASE - DDB_PCI_IO_BASE + 0x4000,
+-	.end	= DDB_PCI0_IO_BASE - DDB_PCI_IO_BASE + DDB_PCI0_IO_SIZE - 1,
+-	.name	= "ext pci IO space",
+-	.flags	= IORESOURCE_IO
+-};
+-
+-static struct resource extpci_mem_resource = {
+-	.start	= DDB_PCI0_MEM_BASE + 0x100000,
+-	.end	= DDB_PCI0_MEM_BASE + DDB_PCI0_MEM_SIZE - 1,
+-	.name	= "ext pci memory space",
+-	.flags	= IORESOURCE_MEM
+-};
+-
+-static struct resource iopci_io_resource = {
+-	.start	= DDB_PCI1_IO_BASE - DDB_PCI_IO_BASE,
+-	.end	= DDB_PCI1_IO_BASE - DDB_PCI_IO_BASE + DDB_PCI1_IO_SIZE - 1,
+-	.name	= "io pci IO space",
+-	.flags	= IORESOURCE_IO
+-};
+-
+-static struct resource iopci_mem_resource = {
+-	.start	= DDB_PCI1_MEM_BASE,
+-	.end	= DDB_PCI1_MEM_BASE + DDB_PCI1_MEM_SIZE - 1,
+-	.name	= "ext pci memory space",
+-	.flags	= IORESOURCE_MEM
+-};
+-
+-extern struct pci_ops ddb5477_ext_pci_ops;
+-extern struct pci_ops ddb5477_io_pci_ops;
+-
+-struct pci_controller ddb5477_ext_controller = {
+-	.pci_ops	= &ddb5477_ext_pci_ops,
+-	.io_resource	= &extpci_io_resource,
+-	.mem_resource	= &extpci_mem_resource
+-};
+-
+-struct pci_controller ddb5477_io_controller = {
+-	.pci_ops	= &ddb5477_io_pci_ops,
+-	.io_resource	= &iopci_io_resource,
+-	.mem_resource	= &iopci_mem_resource
+-};
+-
+-
+-
+-/*
+- * we fix up irqs based on the slot number.
+- * The first entry is at AD:11.
+- * Fortunately this works because, although we have two pci buses,
+- * they all have different slot numbers (except for rockhopper slot 20
+- * which is handled below).
+- *
+- */
+-
+-/*
+- * irq mapping : device -> pci int # -> vrc4377 irq# ,
+- * ddb5477 board manual page 4  and vrc5477 manual page 46
+- */
+-
+-/*
+- * based on ddb5477 manual page 11
+- */
+-#define		MAX_SLOT_NUM		21
+-static unsigned char irq_map[MAX_SLOT_NUM] = {
+-	/* SLOT:  0, AD:11 */ 0xff,
+-	/* SLOT:  1, AD:12 */ 0xff,
+-	/* SLOT:  2, AD:13 */ 0xff,
+-	/* SLOT:  3, AD:14 */ 0xff,
+-	/* SLOT:  4, AD:15 */ VRC5477_IRQ_INTA, /* onboard tulip */
+-	/* SLOT:  5, AD:16 */ VRC5477_IRQ_INTB, /* slot 1 */
+-	/* SLOT:  6, AD:17 */ VRC5477_IRQ_INTC, /* slot 2 */
+-	/* SLOT:  7, AD:18 */ VRC5477_IRQ_INTD, /* slot 3 */
+-	/* SLOT:  8, AD:19 */ VRC5477_IRQ_INTE, /* slot 4 */
+-	/* SLOT:  9, AD:20 */ 0xff,
+-	/* SLOT: 10, AD:21 */ 0xff,
+-	/* SLOT: 11, AD:22 */ 0xff,
+-	/* SLOT: 12, AD:23 */ 0xff,
+-	/* SLOT: 13, AD:24 */ 0xff,
+-	/* SLOT: 14, AD:25 */ 0xff,
+-	/* SLOT: 15, AD:26 */ 0xff,
+-	/* SLOT: 16, AD:27 */ 0xff,
+-	/* SLOT: 17, AD:28 */ 0xff,
+-	/* SLOT: 18, AD:29 */ VRC5477_IRQ_IOPCI_INTC, /* vrc5477 ac97 */
+-	/* SLOT: 19, AD:30 */ VRC5477_IRQ_IOPCI_INTB, /* vrc5477 usb peri */
+-	/* SLOT: 20, AD:31 */ VRC5477_IRQ_IOPCI_INTA, /* vrc5477 usb host */
+-};
+-static unsigned char rockhopperII_irq_map[MAX_SLOT_NUM] = {
+-	/* SLOT:  0, AD:11 */ 0xff,
+-	/* SLOT:  1, AD:12 */ VRC5477_IRQ_INTB, /* onboard AMD PCNET */
+-	/* SLOT:  2, AD:13 */ 0xff,
+-	/* SLOT:  3, AD:14 */ 0xff,
+-	/* SLOT:  4, AD:15 */ 14, /* M5229 ide ISA irq */
+-	/* SLOT:  5, AD:16 */ VRC5477_IRQ_INTD, /* slot 3 */
+-	/* SLOT:  6, AD:17 */ VRC5477_IRQ_INTA, /* slot 4 */
+-	/* SLOT:  7, AD:18 */ VRC5477_IRQ_INTD, /* slot 5 */
+-	/* SLOT:  8, AD:19 */ 0, /* M5457 modem nop */
+-	/* SLOT:  9, AD:20 */ VRC5477_IRQ_INTA, /* slot 2 */
+-	/* SLOT: 10, AD:21 */ 0xff,
+-	/* SLOT: 11, AD:22 */ 0xff,
+-	/* SLOT: 12, AD:23 */ 0xff,
+-	/* SLOT: 13, AD:24 */ 0xff,
+-	/* SLOT: 14, AD:25 */ 0xff,
+-	/* SLOT: 15, AD:26 */ 0xff,
+-	/* SLOT: 16, AD:27 */ 0xff,
+-	/* SLOT: 17, AD:28 */ 0, /* M7101 PMU nop */
+-	/* SLOT: 18, AD:29 */ VRC5477_IRQ_IOPCI_INTC, /* vrc5477 ac97 */
+-	/* SLOT: 19, AD:30 */ VRC5477_IRQ_IOPCI_INTB, /* vrc5477 usb peri */
+-	/* SLOT: 20, AD:31 */ VRC5477_IRQ_IOPCI_INTA, /* vrc5477 usb host */
+-};
+-
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+-{
+-	int slot_num;
+-	unsigned char *slot_irq_map;
+-	unsigned char irq;
+-
+-	/*
+-	 * We ignore the swizzled slot and pin values.  The original
+-	 * pci_fixup_irq() codes largely base irq number on the dev slot
+-	 * numbers because except for one case they are unique even
+-	 * though there are multiple pci buses.
+-	 */
+-
+-	if (mips_machtype == MACH_NEC_ROCKHOPPERII)
+-		slot_irq_map = rockhopperII_irq_map;
+-	else
+-		slot_irq_map = irq_map;
+-
+-	slot_num = PCI_SLOT(dev->devfn);
+-	irq = slot_irq_map[slot_num];
+-
+-	db_assert(slot_num < MAX_SLOT_NUM);
+-
+-	db_assert(irq != 0xff);
+-
+-	pci_write_config_byte(dev, PCI_INTERRUPT_LINE, irq);
+-
+-	if (mips_machtype == MACH_NEC_ROCKHOPPERII) {
+-		/* hack to distinquish overlapping slot 20s, one
+-		 * on bus 0 (ALI USB on the M1535 on the backplane),
+-		 * and one on bus 2 (NEC USB controller on the CPU board)
+-		 * Make the M1535 USB - ISA IRQ number 9.
+-		 */
+-		if (slot_num == 20 && dev->bus->number == 0) {
+-			pci_write_config_byte(dev,
+-					      PCI_INTERRUPT_LINE,
+-					      9);
+-			irq = 9;
+-		}
+-
+-	}
+-
+-	return irq;
+-}
+-
+-/* Do platform specific device initialization at pci_enable_device() time */
+-int pcibios_plat_dev_init(struct pci_dev *dev)
+-{
+-	return 0;
+-}
+-
+-void ddb_pci_reset_bus(void)
+-{
+-	u32 temp;
+-
+-	/*
+-	 * I am not sure about the "official" procedure, the following
+-	 * steps work as far as I know:
+-	 * We first set PCI cold reset bit (bit 31) in PCICTRL-H.
+-	 * Then we clear the PCI warm reset bit (bit 30) to 0 in PCICTRL-H.
+-	 * The same is true for both PCI channels.
+-	 */
+-	temp = ddb_in32(DDB_PCICTL0_H);
+-	temp |= 0x80000000;
+-	ddb_out32(DDB_PCICTL0_H, temp);
+-	temp &= ~0xc0000000;
+-	ddb_out32(DDB_PCICTL0_H, temp);
+-
+-	temp = ddb_in32(DDB_PCICTL1_H);
+-	temp |= 0x80000000;
+-	ddb_out32(DDB_PCICTL1_H, temp);
+-	temp &= ~0xc0000000;
+-	ddb_out32(DDB_PCICTL1_H, temp);
+-}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/net/tulip/tulip_core.c mips/drivers/net/tulip/tulip_core.c
+--- mips-orig/drivers/net/tulip/tulip_core.c	2007-07-30 22:02:02.195436500 +0900
++++ mips/drivers/net/tulip/tulip_core.c	2007-07-30 22:20:06.631209500 +0900
+@@ -1471,14 +1471,6 @@ static int __devinit tulip_init_one (str
+ 			sa_offset = 2;		/* Grrr, damn Matrox boards. */
+ 			multiport_cnt = 4;
+ 		}
+-#ifdef CONFIG_DDB5477
+-               if ((pdev->bus->number == 0) && (PCI_SLOT(pdev->devfn) == 4)) {
+-                       /* DDB5477 MAC address in first EEPROM locations. */
+-                       sa_offset = 0;
+-                       /* No media table either */
+-                       tp->flags &= ~HAS_MEDIA_TABLE;
+-               }
+-#endif
+ #ifdef CONFIG_MIPS_COBALT
+                if ((pdev->bus->number == 0) &&
+                    ((PCI_SLOT(pdev->devfn) == 7) ||
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/serial/8250_pci.c mips/drivers/serial/8250_pci.c
+--- mips-orig/drivers/serial/8250_pci.c	2007-07-30 22:02:13.960171750 +0900
++++ mips/drivers/serial/8250_pci.c	2007-07-30 22:20:06.631209500 +0900
+@@ -976,7 +976,6 @@ enum pci_board_num_t {
+ 	pbn_oxsemi,
+ 	pbn_intel_i960,
+ 	pbn_sgi_ioc3,
+-	pbn_nec_nile4,
+ 	pbn_computone_4,
+ 	pbn_computone_6,
+ 	pbn_computone_8,
+@@ -1443,18 +1442,6 @@ static struct pciserial_board pci_boards
+ 	},
+ 
+ 	/*
+-	 * NEC Vrc-5074 (Nile 4) builtin UART.
+-	 */
+-	[pbn_nec_nile4] = {
+-		.flags		= FL_BASE0,
+-		.num_ports	= 1,
+-		.base_baud	= 520833,
+-		.uart_offset	= 8 << 3,
+-		.reg_shift	= 3,
+-		.first_offset	= 0x300,
+-	},
+-
+-	/*
+ 	 * Computone - uses IOMEM.
+ 	 */
+ 	[pbn_computone_4] = {
+@@ -2345,13 +2332,6 @@ static struct pci_device_id serial_pci_t
+ 		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
+ 		pbn_b2_1_115200 },
+ 
+-	/*
+-	 * NEC Vrc-5074 (Nile 4) builtin UART.
+-	 */
+-	{	PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_NILE4,
+-		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
+-		pbn_nec_nile4 },
+-
+ 	{	PCI_VENDOR_ID_DCI, PCI_DEVICE_ID_DCI_PCCOM2,
+ 		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
+ 		pbn_b3_2_115200 },
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/bootinfo.h mips/include/asm-mips/bootinfo.h
+--- mips-orig/include/asm-mips/bootinfo.h	2007-07-30 22:02:41.773910000 +0900
++++ mips/include/asm-mips/bootinfo.h	2007-07-30 22:20:06.631209500 +0900
+@@ -86,16 +86,6 @@
+ #define  MACH_COBALT_27		0	/* Proto "27" hardware		*/
+ 
+ /*
+- * Valid machtype for group NEC DDB
+- */
+-#define MACH_GROUP_NEC_DDB	8	/* NEC DDB			*/
+-#define  MACH_NEC_DDB5074	0	/* NEC DDB Vrc-5074 */
+-#define  MACH_NEC_DDB5476	1	/* NEC DDB Vrc-5476 */
+-#define  MACH_NEC_DDB5477	2	/* NEC DDB Vrc-5477 */
+-#define  MACH_NEC_ROCKHOPPER	3	/* Rockhopper base board */
+-#define  MACH_NEC_ROCKHOPPERII	4	/* Rockhopper II base board */
+-
+-/*
+  * Valid machtype for group BAGET
+  */
+ #define MACH_GROUP_BAGET	9	/* Baget			*/
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/ddb5xxx/ddb5477.h mips/include/asm-mips/ddb5xxx/ddb5477.h
+--- mips-orig/include/asm-mips/ddb5xxx/ddb5477.h	2007-07-30 22:02:41.777910250 +0900
++++ mips/include/asm-mips/ddb5xxx/ddb5477.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,342 +0,0 @@
+-/***********************************************************************
+- *
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * include/asm-mips/ddb5xxx/ddb5477.h
+- *     DDB 5477 specific definitions and macros.
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- ***********************************************************************
+- */
+-
+-#ifndef __ASM_DDB5XXX_DDB5477_H
+-#define __ASM_DDB5XXX_DDB5477_H
+-
+-#include <irq.h>
+-
+-/*
+- * This contains macros that are specific to DDB5477 or renamed from
+- * DDB5476.
+- */
+-
+-/*
+- * renamed PADRs
+- */
+-#define	DDB_LCS0	DDB_DCS2
+-#define	DDB_LCS1	DDB_DCS3
+-#define	DDB_LCS2	DDB_DCS4
+-#define	DDB_VRC5477	DDB_INTCS
+-
+-/*
+- * New CPU interface registers
+- */
+-#define	DDB_INTCTRL0	0x0400	/* Interrupt Control 0 */
+-#define	DDB_INTCTRL1	0x0404	/* Interrupt Control 1 */
+-#define	DDB_INTCTRL2	0x0408	/* Interrupt Control 2 */
+-#define	DDB_INTCTRL3	0x040c	/* Interrupt Control 3 */
+-
+-#define	DDB_INT0STAT	0x0420 	/* INT0 Status [R] */
+-#define	DDB_INT1STAT	0x0428 	/* INT1 Status [R] */
+-#define	DDB_INT2STAT	0x0430 	/* INT2 Status [R] */
+-#define	DDB_INT3STAT	0x0438 	/* INT3 Status [R] */
+-#define	DDB_INT4STAT	0x0440 	/* INT4 Status [R] */
+-#define	DDB_NMISTAT	0x0450	/* NMI Status [R] */
+-
+-#define	DDB_INTCLR32	0x0468	/* Interrupt Clear */
+-
+-#define	DDB_INTPPES0	0x0470	/* PCI0 Interrupt Control */
+-#define	DDB_INTPPES1	0x0478	/* PCI1 Interrupt Control */
+-
+-#undef  DDB_CPUSTAT		/* duplicate in Vrc-5477 */
+-#define	DDB_CPUSTAT	0x0480	/* CPU Status [R] */
+-#define	DDB_BUSCTRL	0x0488	/* Internal Bus Control */
+-
+-
+-/*
+- * Timer registers
+- */
+-#define	DDB_REFCTRL_L	DDB_T0CTRL
+-#define	DDB_REFCTRL_H	(DDB_T0CTRL+4)
+-#define	DDB_REFCNTR	DDB_T0CNTR
+-#define	DDB_SPT0CTRL_L	DDB_T1CTRL
+-#define	DDB_SPT0CTRL_H	(DDB_T1CTRL+4)
+-#define	DDB_SPT1CTRL_L	DDB_T2CTRL
+-#define	DDB_SPT1CTRL_H	(DDB_T2CTRL+4)
+-#define DDB_SPT1CNTR	DDB_T1CTRL
+-#define	DDB_WDTCTRL_L	DDB_T3CTRL
+-#define	DDB_WDTCTRL_H	(DDB_T3CTRL+4)
+-#define	DDB_WDTCNTR	DDB_T3CNTR
+-
+-/*
+- * DMA registers are moved.  We don't care about it for now. TODO.
+- */
+-
+-/*
+- * BARs for ext PCI (PCI0)
+- */
+-#undef	DDB_BARC
+-#undef	DDB_BARB
+-
+-#define DDB_BARC0	0x0210	/* PCI0 Control */
+-#define DDB_BARM010	0x0218	/* PCI0 SDRAM bank01 */
+-#define	DDB_BARM230	0x0220	/* PCI0 SDRAM bank23 */
+-#define	DDB_BAR00	0x0240	/* PCI0 LDCS0 */
+-#define	DDB_BAR10	0x0248	/* PCI0 LDCS1 */
+-#define	DDB_BAR20	0x0250	/* PCI0 LDCS2 */
+-#define	DDB_BAR30	0x0258	/* PCI0 LDCS3 */
+-#define	DDB_BAR40	0x0260	/* PCI0 LDCS4 */
+-#define	DDB_BAR50	0x0268	/* PCI0 LDCS5 */
+-#define	DDB_BARB0	0x0280	/* PCI0 BOOT */
+-#define	DDB_BARP00	0x0290	/* PCI0 for IOPCI Window0 */
+-#define	DDB_BARP10	0x0298	/* PCI0 for IOPCI Window1 */
+-
+-/*
+- * BARs for IOPIC (PCI1)
+- */
+-#define DDB_BARC1	0x0610	/* PCI1 Control */
+-#define DDB_BARM011	0x0618	/* PCI1 SDRAM bank01 */
+-#define	DDB_BARM231	0x0620	/* PCI1 SDRAM bank23 */
+-#define	DDB_BAR01	0x0640	/* PCI1 LDCS0 */
+-#define	DDB_BAR11	0x0648	/* PCI1 LDCS1 */
+-#define	DDB_BAR21	0x0650	/* PCI1 LDCS2 */
+-#define	DDB_BAR31	0x0658	/* PCI1 LDCS3 */
+-#define	DDB_BAR41	0x0660	/* PCI1 LDCS4 */
+-#define	DDB_BAR51	0x0668	/* PCI1 LDCS5 */
+-#define	DDB_BARB1	0x0680	/* PCI1 BOOT */
+-#define	DDB_BARP01	0x0690	/* PCI1 for ext PCI Window0 */
+-#define	DDB_BARP11	0x0698	/* PCI1 for ext PCI Window1 */
+-
+-/*
+- * Other registers for ext PCI (PCI0)
+- */
+-#define	DDB_PCIINIT00	0x02f0	/* PCI0 Initiator 0 */
+-#define	DDB_PCIINIT10	0x02f8	/* PCI0 Initiator 1 */
+-
+-#define	DDB_PCISWP0	0x02b0	/* PCI0 Swap */
+-#define	DDB_PCIERR0	0x02b8	/* PCI0 Error */
+-
+-#define	DDB_PCICTL0_L	0x02e0	/* PCI0 Control-L */
+-#define	DDB_PCICTL0_H	0x02e4	/* PCI0 Control-H */
+-#define	DDB_PCIARB0_L	0x02e8	/* PCI0 Arbitration-L */
+-#define	DDB_PCIARB0_H	0x02ec	/* PCI0 Arbitration-H */
+-
+-/*
+- * Other registers for IOPCI (PCI1)
+- */
+-#define DDB_IOPCIW0	0x00d0	/* PCI Address Window 0 [R/W] */
+-#define DDB_IOPCIW1	0x00d8	/* PCI Address Window 1 [R/W] */
+-
+-#define	DDB_PCIINIT01	0x06f0	/* PCI1 Initiator 0 */
+-#define	DDB_PCIINIT11	0x06f8	/* PCI1 Initiator 1 */
+-
+-#define	DDB_PCISWP1	0x06b0	/* PCI1 Swap */
+-#define	DDB_PCIERR1	0x06b8	/* PCI1 Error */
+-
+-#define	DDB_PCICTL1_L	0x06e0	/* PCI1 Control-L */
+-#define	DDB_PCICTL1_H	0x06e4	/* PCI1 Control-H */
+-#define	DDB_PCIARB1_L	0x06e8	/* PCI1 Arbitration-L */
+-#define	DDB_PCIARB1_H	0x06ec	/* PCI1 Arbitration-H */
+-
+-/*
+- * Local Bus
+- */
+-#define DDB_LCST0	0x0110  /* LB Chip Select Timing 0 */
+-#define DDB_LCST1	0x0118  /* LB Chip Select Timing 1 */
+-#undef DDB_LCST2
+-#define DDB_LCST2	0x0120  /* LB Chip Select Timing 2 */
+-#undef DDB_LCST3
+-#undef DDB_LCST4
+-#undef DDB_LCST5
+-#undef DDB_LCST6
+-#undef DDB_LCST7
+-#undef DDB_LCST8
+-#define DDB_ERRADR	0x0150  /* Error Address Register */
+-#define DDB_ERRCS       0x0160
+-#define DDB_BTM		0x0170  /* Boot Time Mode value */
+-
+-/*
+- * MISC registers
+- */
+-#define DDB_GIUFUNSEL	0x4040  /* select dual-func pins */
+-#define DDB_PIBMISC	0x0750	/* USB buffer enable / power saving */
+-
+-/*
+- *  Memory map (physical address)
+- *
+- *  Note most of the following address must be properly aligned by the
+- *  corresponding size.  For example, if PCI_IO_SIZE is 16MB, then
+- *  PCI_IO_BASE must be aligned along 16MB boundary.
+- */
+-
+-/* the actual ram size is detected at run-time */
+-#define	DDB_SDRAM_BASE		0x00000000
+-#define	DDB_MAX_SDRAM_SIZE	0x08000000	/* less than 128MB */
+-
+-#define	DDB_PCI0_MEM_BASE	0x08000000
+-#define	DDB_PCI0_MEM_SIZE	0x08000000	/* 128 MB */
+-
+-#define	DDB_PCI1_MEM_BASE	0x10000000
+-#define	DDB_PCI1_MEM_SIZE	0x08000000	/* 128 MB */
+-
+-#define	DDB_PCI0_CONFIG_BASE	0x18000000
+-#define	DDB_PCI0_CONFIG_SIZE	0x01000000	/* 16 MB */
+-
+-#define	DDB_PCI1_CONFIG_BASE	0x19000000
+-#define	DDB_PCI1_CONFIG_SIZE	0x01000000	/* 16 MB */
+-
+-#define	DDB_PCI_IO_BASE		0x1a000000	/* we concatenate two IOs */
+-#define	DDB_PCI0_IO_BASE	0x1a000000
+-#define	DDB_PCI0_IO_SIZE	0x01000000	/* 16 MB */
+-#define	DDB_PCI1_IO_BASE	0x1b000000
+-#define	DDB_PCI1_IO_SIZE	0x01000000	/* 16 MB */
+-
+-#define	DDB_LCS0_BASE		0x1c000000	/* flash memory */
+-#define	DDB_LCS0_SIZE		0x01000000	/* 16 MB */
+-
+-#define	DDB_LCS1_BASE		0x1d000000	/* misc */
+-#define	DDB_LCS1_SIZE		0x01000000	/* 16 MB */
+-
+-#define	DDB_LCS2_BASE		0x1e000000	/* Mezzanine */
+-#define	DDB_LCS2_SIZE		0x01000000	/* 16 MB */
+-
+-#define	DDB_VRC5477_BASE	0x1fa00000	/* VRC5477 control regs */
+-#define	DDB_VRC5477_SIZE	0x00200000	/* 2MB */
+-
+-#define	DDB_BOOTCS_BASE		0x1fc00000	/* Boot ROM / EPROM /Flash */
+-#define	DDB_BOOTCS_SIZE		0x00200000	/* 2 MB - doc says 4MB */
+-
+-#define	DDB_LED			DDB_LCS1_BASE + 0x10000
+-
+-
+-/*
+- * DDB5477 specific functions
+- */
+-#ifndef __ASSEMBLY__
+-extern void ddb5477_irq_setup(void);
+-
+-/* route irq to cpu int pin */
+-extern void ll_vrc5477_irq_route(int vrc5477_irq, int ip);
+-
+-/* low-level routine for enabling vrc5477 irq, bypassing high-level */
+-extern void ll_vrc5477_irq_enable(int vrc5477_irq);
+-extern void ll_vrc5477_irq_disable(int vrc5477_irq);
+-#endif /* !__ASSEMBLY__ */
+-
+-/* PCI intr ack share PCIW0 with PCI IO */
+-#define	DDB_PCI_IACK_BASE	DDB_PCI_IO_BASE
+-
+-/*
+- * Interrupt mapping
+- *
+- * We have three interrupt controllers:
+- *
+- *   . CPU itself - 8 sources
+- *   . i8259 - 16 sources
+- *   . vrc5477 - 32 sources
+- *
+- *  They connected as follows:
+- *    all vrc5477 interrupts are routed to cpu IP2 (by software setting)
+- *    all i8359 are routed to INTC in vrc5477 (by hardware connection)
+- *
+- *  All VRC5477 PCI interrupts are level-triggered (no ack needed).
+- *  All PCI irq but INTC are active low.
+- */
+-
+-/*
+- * irq number block assignment
+- */
+-
+-#define	NUM_CPU_IRQ		8
+-#define	NUM_VRC5477_IRQ		32
+-
+-#define	CPU_IRQ_BASE		MIPS_CPU_IRQ_BASE
+-#define	VRC5477_IRQ_BASE	(CPU_IRQ_BASE + NUM_CPU_IRQ)
+-
+-/*
+- * vrc5477 irq defs
+- */
+-
+-#define VRC5477_IRQ_CPCE	(0 + VRC5477_IRQ_BASE)	/* cpu parity error */
+-#define VRC5477_IRQ_CNTD	(1 + VRC5477_IRQ_BASE)	/* cpu no target */
+-#define VRC5477_IRQ_I2C		(2 + VRC5477_IRQ_BASE)	/* I2C */
+-#define VRC5477_IRQ_DMA		(3 + VRC5477_IRQ_BASE)	/* DMA */
+-#define VRC5477_IRQ_UART0	(4 + VRC5477_IRQ_BASE)
+-#define VRC5477_IRQ_WDOG	(5 + VRC5477_IRQ_BASE)	/* watchdog timer */
+-#define VRC5477_IRQ_SPT1	(6 + VRC5477_IRQ_BASE)    /* special purpose timer 1 */
+-#define VRC5477_IRQ_LBRT	(7 + VRC5477_IRQ_BASE)	/* local bus read timeout */
+-#define VRC5477_IRQ_INTA	(8 + VRC5477_IRQ_BASE)	/* PCI INT #A */
+-#define VRC5477_IRQ_INTB	(9 + VRC5477_IRQ_BASE)	/* PCI INT #B */
+-#define VRC5477_IRQ_INTC	(10 + VRC5477_IRQ_BASE)	/* PCI INT #C */
+-#define VRC5477_IRQ_INTD	(11 + VRC5477_IRQ_BASE)	/* PCI INT #D */
+-#define VRC5477_IRQ_INTE	(12 + VRC5477_IRQ_BASE)	/* PCI INT #E */
+-#define VRC5477_IRQ_RESERVED_13	(13 + VRC5477_IRQ_BASE)	/* reserved  */
+-#define VRC5477_IRQ_PCIS	(14 + VRC5477_IRQ_BASE)	/* PCI SERR #  */
+-#define VRC5477_IRQ_PCI		(15 + VRC5477_IRQ_BASE)	/* PCI internal error */
+-#define VRC5477_IRQ_IOPCI_INTA	(16 + VRC5477_IRQ_BASE)      /* USB-H */
+-#define VRC5477_IRQ_IOPCI_INTB	(17 + VRC5477_IRQ_BASE)      /* USB-P */
+-#define VRC5477_IRQ_IOPCI_INTC	(18 + VRC5477_IRQ_BASE)      /* AC97 */
+-#define VRC5477_IRQ_IOPCI_INTD	(19 + VRC5477_IRQ_BASE)      /* Reserved */
+-#define VRC5477_IRQ_UART1	(20 + VRC5477_IRQ_BASE)
+-#define VRC5477_IRQ_SPT0	(21 + VRC5477_IRQ_BASE)      /* special purpose timer 0 */
+-#define VRC5477_IRQ_GPT0	(22 + VRC5477_IRQ_BASE)      /* general purpose timer 0 */
+-#define VRC5477_IRQ_GPT1	(23 + VRC5477_IRQ_BASE)      /* general purpose timer 1 */
+-#define VRC5477_IRQ_GPT2	(24 + VRC5477_IRQ_BASE)      /* general purpose timer 2 */
+-#define VRC5477_IRQ_GPT3	(25 + VRC5477_IRQ_BASE)      /* general purpose timer 3 */
+-#define VRC5477_IRQ_GPIO	(26 + VRC5477_IRQ_BASE)
+-#define VRC5477_IRQ_SIO0	(27 + VRC5477_IRQ_BASE)
+-#define VRC5477_IRQ_SIO1        (28 + VRC5477_IRQ_BASE)
+-#define VRC5477_IRQ_RESERVED_29 (29 + VRC5477_IRQ_BASE)      /* reserved */
+-#define VRC5477_IRQ_IOPCISERR	(30 + VRC5477_IRQ_BASE)      /* IO PCI SERR # */
+-#define VRC5477_IRQ_IOPCI	(31 + VRC5477_IRQ_BASE)
+-
+-/*
+- * i2859 irq assignment
+- */
+-#define I8259_IRQ_RESERVED_0	(0 + I8259A_IRQ_BASE)
+-#define I8259_IRQ_KEYBOARD	(1 + I8259A_IRQ_BASE)	/* M1543 default */
+-#define I8259_IRQ_CASCADE	(2 + I8259A_IRQ_BASE)
+-#define I8259_IRQ_UART_B	(3 + I8259A_IRQ_BASE)	/* M1543 default, may conflict with RTC according to schematic diagram  */
+-#define I8259_IRQ_UART_A	(4 + I8259A_IRQ_BASE)	/* M1543 default */
+-#define I8259_IRQ_PARALLEL	(5 + I8259A_IRQ_BASE)	/* M1543 default */
+-#define I8259_IRQ_RESERVED_6	(6 + I8259A_IRQ_BASE)
+-#define I8259_IRQ_RESERVED_7	(7 + I8259A_IRQ_BASE)
+-#define I8259_IRQ_RTC		(8 + I8259A_IRQ_BASE)	/* who set this? */
+-#define I8259_IRQ_USB		(9 + I8259A_IRQ_BASE)	/* ddb_setup */
+-#define I8259_IRQ_PMU		(10 + I8259A_IRQ_BASE)	/* ddb_setup */
+-#define I8259_IRQ_RESERVED_11	(11 + I8259A_IRQ_BASE)
+-#define I8259_IRQ_RESERVED_12	(12 + I8259A_IRQ_BASE)	/* m1543_irq_setup */
+-#define I8259_IRQ_RESERVED_13	(13 + I8259A_IRQ_BASE)
+-#define I8259_IRQ_HDC1		(14 + I8259A_IRQ_BASE)	/* default and ddb_setup */
+-#define I8259_IRQ_HDC2		(15 + I8259A_IRQ_BASE)	/* default */
+-
+-
+-/*
+- * misc
+- */
+-#define	VRC5477_I8259_CASCADE	(VRC5477_IRQ_INTC - VRC5477_IRQ_BASE)
+-#define	CPU_VRC5477_CASCADE	2
+-
+-/*
+- * debug routines
+- */
+-#ifndef __ASSEMBLY__
+-#if defined(CONFIG_RUNTIME_DEBUG)
+-extern void vrc5477_show_pdar_regs(void);
+-extern void vrc5477_show_pci_regs(void);
+-extern void vrc5477_show_bar_regs(void);
+-extern void vrc5477_show_int_regs(void);
+-extern void vrc5477_show_all_regs(void);
+-#endif
+-
+-/*
+- * RAM size
+- */
+-extern int board_ram_size;
+-#endif /* !__ASSEMBLY__ */
+-
+-#endif /* __ASM_DDB5XXX_DDB5477_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/ddb5xxx/ddb5xxx.h mips/include/asm-mips/ddb5xxx/ddb5xxx.h
+--- mips-orig/include/asm-mips/ddb5xxx/ddb5xxx.h	2007-07-30 22:02:41.777910250 +0900
++++ mips/include/asm-mips/ddb5xxx/ddb5xxx.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,263 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * Copyright (C) 2000 Geert Uytterhoeven <geert@sonycom.com>
+- *                    Sony Software Development Center Europe (SDCE), Brussels
+- *
+- * include/asm-mips/ddb5xxx/ddb5xxx.h
+- *     Common header for all NEC DDB 5xxx boards, including 5074, 5476, 5477.
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- */
+-
+-#ifndef __ASM_DDB5XXX_DDB5XXX_H
+-#define __ASM_DDB5XXX_DDB5XXX_H
+-
+-#include <linux/types.h>
+-
+-/*
+- *  This file is based on the following documentation:
+- *
+- *	NEC Vrc 5074 System Controller Data Sheet, June 1998
+- *
+- * [jsun] It is modified so that this file only contains the macros
+- * that are true for all DDB 5xxx boards.  The modification is based on
+- *
+- *	uPD31577(VRC5477) VR5432-SDRAM/PCI Bridge (Luke)
+- *	Preliminary Specification Decoment, Rev 1.1, 27 Dec, 2000
+- *
+- */
+-
+-
+-#define DDB_BASE		0xbfa00000
+-#define DDB_SIZE		0x00200000		/* 2 MB */
+-
+-
+-/*
+- *  Physical Device Address Registers (PDARs)
+- */
+-
+-#define DDB_SDRAM0	0x0000	/* SDRAM Bank 0 [R/W] */
+-#define DDB_SDRAM1	0x0008	/* SDRAM Bank 1 [R/W] */
+-#define DDB_DCS2	0x0010	/* Device Chip-Select 2 [R/W] */
+-#define DDB_DCS3	0x0018	/* Device Chip-Select 3 [R/W] */
+-#define DDB_DCS4	0x0020	/* Device Chip-Select 4 [R/W] */
+-#define DDB_DCS5	0x0028	/* Device Chip-Select 5 [R/W] */
+-#define DDB_DCS6	0x0030	/* Device Chip-Select 6 [R/W] */
+-#define DDB_DCS7	0x0038	/* Device Chip-Select 7 [R/W] */
+-#define DDB_DCS8	0x0040	/* Device Chip-Select 8 [R/W] */
+-#define DDB_PCIW0	0x0060	/* PCI Address Window 0 [R/W] */
+-#define DDB_PCIW1	0x0068	/* PCI Address Window 1 [R/W] */
+-#define DDB_INTCS	0x0070	/* Controller Internal Registers and Devices */
+-				/* [R/W] */
+-#define DDB_BOOTCS	0x0078	/* Boot ROM Chip-Select [R/W] */
+-/* Vrc5477 has two more, IOPCIW0, IOPCIW1 */
+-
+-/*
+- *  CPU Interface Registers
+- */
+-#define DDB_CPUSTAT	0x0080	/* CPU Status [R/W] */
+-#define DDB_INTCTRL	0x0088	/* Interrupt Control [R/W] */
+-#define DDB_INTSTAT0	0x0090	/* Interrupt Status 0 [R] */
+-#define DDB_INTSTAT1	0x0098	/* Interrupt Status 1 and CPU Interrupt */
+-				/* Enable [R/W] */
+-#define DDB_INTCLR	0x00A0	/* Interrupt Clear [R/W] */
+-#define DDB_INTPPES	0x00A8	/* PCI Interrupt Control [R/W] */
+-
+-
+-/*
+- *  Memory-Interface Registers
+- */
+-#define DDB_MEMCTRL	0x00C0	/* Memory Control */
+-#define DDB_ACSTIME	0x00C8	/* Memory Access Timing [R/W] */
+-#define DDB_CHKERR	0x00D0	/* Memory Check Error Status [R] */
+-
+-
+-/*
+- *  PCI-Bus Registers
+- */
+-#define DDB_PCICTRL	0x00E0	/* PCI Control [R/W] */
+-#define DDB_PCIARB	0x00E8	/* PCI Arbiter [R/W] */
+-#define DDB_PCIINIT0	0x00F0	/* PCI Master (Initiator) 0 [R/W] */
+-#define DDB_PCIINIT1	0x00F8	/* PCI Master (Initiator) 1 [R/W] */
+-#define DDB_PCIERR	0x00B8	/* PCI Error [R/W] */
+-
+-
+-/*
+- *  Local-Bus Registers
+- */
+-#define DDB_LCNFG	0x0100	/* Local Bus Configuration [R/W] */
+-#define DDB_LCST2	0x0110	/* Local Bus Chip-Select Timing 2 [R/W] */
+-#define DDB_LCST3	0x0118	/* Local Bus Chip-Select Timing 3 [R/W] */
+-#define DDB_LCST4	0x0120	/* Local Bus Chip-Select Timing 4 [R/W] */
+-#define DDB_LCST5	0x0128	/* Local Bus Chip-Select Timing 5 [R/W] */
+-#define DDB_LCST6	0x0130	/* Local Bus Chip-Select Timing 6 [R/W] */
+-#define DDB_LCST7	0x0138	/* Local Bus Chip-Select Timing 7 [R/W] */
+-#define DDB_LCST8	0x0140	/* Local Bus Chip-Select Timing 8 [R/W] */
+-#define DDB_DCSFN	0x0150	/* Device Chip-Select Muxing and Output */
+-				/* Enables [R/W] */
+-#define DDB_DCSIO	0x0158	/* Device Chip-Selects As I/O Bits [R/W] */
+-#define DDB_BCST	0x0178	/* Local Boot Chip-Select Timing [R/W] */
+-
+-
+-/*
+- *  DMA Registers
+- */
+-#define DDB_DMACTRL0	0x0180	/* DMA Control 0 [R/W] */
+-#define DDB_DMASRCA0	0x0188	/* DMA Source Address 0 [R/W] */
+-#define DDB_DMADESA0	0x0190	/* DMA Destination Address 0 [R/W] */
+-#define DDB_DMACTRL1	0x0198	/* DMA Control 1 [R/W] */
+-#define DDB_DMASRCA1	0x01A0	/* DMA Source Address 1 [R/W] */
+-#define DDB_DMADESA1	0x01A8	/* DMA Destination Address 1 [R/W] */
+-
+-
+-/*
+- *  Timer Registers
+- */
+-#define DDB_T0CTRL	0x01C0	/* SDRAM Refresh Control [R/W] */
+-#define DDB_T0CNTR	0x01C8	/* SDRAM Refresh Counter [R/W] */
+-#define DDB_T1CTRL	0x01D0	/* CPU-Bus Read Time-Out Control [R/W] */
+-#define DDB_T1CNTR	0x01D8	/* CPU-Bus Read Time-Out Counter [R/W] */
+-#define DDB_T2CTRL	0x01E0	/* General-Purpose Timer Control [R/W] */
+-#define DDB_T2CNTR	0x01E8	/* General-Purpose Timer Counter [R/W] */
+-#define DDB_T3CTRL	0x01F0	/* Watchdog Timer Control [R/W] */
+-#define DDB_T3CNTR	0x01F8	/* Watchdog Timer Counter [R/W] */
+-
+-
+-/*
+- *  PCI Configuration Space Registers
+- */
+-#define DDB_PCI_BASE	0x0200
+-
+-#define DDB_VID		0x0200	/* PCI Vendor ID [R] */
+-#define DDB_DID		0x0202	/* PCI Device ID [R] */
+-#define DDB_PCICMD	0x0204	/* PCI Command [R/W] */
+-#define DDB_PCISTS	0x0206	/* PCI Status [R/W] */
+-#define DDB_REVID	0x0208	/* PCI Revision ID [R] */
+-#define DDB_CLASS	0x0209	/* PCI Class Code [R] */
+-#define DDB_CLSIZ	0x020C	/* PCI Cache Line Size [R/W] */
+-#define DDB_MLTIM	0x020D	/* PCI Latency Timer [R/W] */
+-#define DDB_HTYPE	0x020E	/* PCI Header Type [R] */
+-#define DDB_BIST	0x020F	/* BIST [R] (unimplemented) */
+-#define DDB_BARC	0x0210	/* PCI Base Address Register Control [R/W] */
+-#define DDB_BAR0	0x0218	/* PCI Base Address Register 0 [R/W] */
+-#define DDB_BAR1	0x0220	/* PCI Base Address Register 1 [R/W] */
+-#define DDB_CIS		0x0228	/* PCI Cardbus CIS Pointer [R] */
+-				/* (unimplemented) */
+-#define DDB_SSVID	0x022C	/* PCI Sub-System Vendor ID [R/W] */
+-#define DDB_SSID	0x022E	/* PCI Sub-System ID [R/W] */
+-#define DDB_ROM		0x0230	/* Expansion ROM Base Address [R] */
+-				/* (unimplemented) */
+-#define DDB_INTLIN	0x023C	/* PCI Interrupt Line [R/W] */
+-#define DDB_INTPIN	0x023D	/* PCI Interrupt Pin [R] */
+-#define DDB_MINGNT	0x023E	/* PCI Min_Gnt [R] (unimplemented) */
+-#define DDB_MAXLAT	0x023F	/* PCI Max_Lat [R] (unimplemented) */
+-#define DDB_BAR2	0x0240	/* PCI Base Address Register 2 [R/W] */
+-#define DDB_BAR3	0x0248	/* PCI Base Address Register 3 [R/W] */
+-#define DDB_BAR4	0x0250	/* PCI Base Address Register 4 [R/W] */
+-#define DDB_BAR5	0x0258	/* PCI Base Address Register 5 [R/W] */
+-#define DDB_BAR6	0x0260	/* PCI Base Address Register 6 [R/W] */
+-#define DDB_BAR7	0x0268	/* PCI Base Address Register 7 [R/W] */
+-#define DDB_BAR8	0x0270	/* PCI Base Address Register 8 [R/W] */
+-#define DDB_BARB	0x0278	/* PCI Base Address Register BOOT [R/W] */
+-
+-
+-/*
+- *  Nile 4 Register Access
+- */
+-
+-static inline void ddb_sync(void)
+-{
+-    volatile u32 *p = (volatile u32 *)0xbfc00000;
+-    (void)(*p);
+-}
+-
+-static inline void ddb_out32(u32 offset, u32 val)
+-{
+-    *(volatile u32 *)(DDB_BASE+offset) = val;
+-    ddb_sync();
+-}
+-
+-static inline u32 ddb_in32(u32 offset)
+-{
+-    u32 val = *(volatile u32 *)(DDB_BASE+offset);
+-    ddb_sync();
+-    return val;
+-}
+-
+-static inline void ddb_out16(u32 offset, u16 val)
+-{
+-    *(volatile u16 *)(DDB_BASE+offset) = val;
+-    ddb_sync();
+-}
+-
+-static inline u16 ddb_in16(u32 offset)
+-{
+-    u16 val = *(volatile u16 *)(DDB_BASE+offset);
+-    ddb_sync();
+-    return val;
+-}
+-
+-static inline void ddb_out8(u32 offset, u8 val)
+-{
+-    *(volatile u8 *)(DDB_BASE+offset) = val;
+-    ddb_sync();
+-}
+-
+-static inline u8 ddb_in8(u32 offset)
+-{
+-    u8 val = *(volatile u8 *)(DDB_BASE+offset);
+-    ddb_sync();
+-    return val;
+-}
+-
+-
+-/*
+- *  Physical Device Address Registers
+- */
+-
+-extern u32
+-ddb_calc_pdar(u32 phys, u32 size, int width, int on_memory_bus, int pci_visible);
+-extern void
+-ddb_set_pdar(u32 pdar, u32 phys, u32 size, int width,
+-	     int on_memory_bus, int pci_visible);
+-
+-/*
+- *  PCI Master Registers
+- */
+-
+-#define DDB_PCICMD_IACK		0	/* PCI Interrupt Acknowledge */
+-#define DDB_PCICMD_IO		1	/* PCI I/O Space */
+-#define DDB_PCICMD_MEM		3	/* PCI Memory Space */
+-#define DDB_PCICMD_CFG		5	/* PCI Configuration Space */
+-
+-/*
+- * additional options for pci init reg (no shifting needed)
+- */
+-#define DDB_PCI_CFGTYPE1     0x200   /* for pci init0/1 regs */
+-#define DDB_PCI_ACCESS_32    0x10    /* for pci init0/1 regs */
+-
+-
+-extern void ddb_set_pmr(u32 pmr, u32 type, u32 addr, u32 options);
+-
+-/*
+- * we need to reset pci bus when we start up and shutdown
+- */
+-extern void ddb_pci_reset_bus(void);
+-
+-
+-/*
+- * include the board dependent part
+- */
+-#if defined(CONFIG_DDB5477)
+-#include <asm/ddb5xxx/ddb5477.h>
+-#else
+-#error "Unknown DDB board!"
+-#endif
+-
+-#endif /* __ASM_DDB5XXX_DDB5XXX_H */
+diff -pruN -X mips/Documentation/dontdiff mips-orig/sound/oss/Kconfig mips/sound/oss/Kconfig
+--- mips-orig/sound/oss/Kconfig	2007-07-30 22:03:13.491892250 +0900
++++ mips/sound/oss/Kconfig	2007-07-30 22:20:06.635209750 +0900
+@@ -31,14 +31,6 @@ config SOUND_HAL2
+ 	  Say Y or M if you have an SGI Indy or Indigo2 system and want to be able to
+ 	  use its on-board A2 audio system.
+ 
+-config SOUND_VRC5477
+-	tristate "NEC Vrc5477 AC97 sound"
+-	depends on SOUND_PRIME && DDB5477
+-	help
+-	  Say Y here to enable sound support for the NEC Vrc5477 chip, an
+-	  integrated, multi-function controller chip for MIPS CPUs.  Works
+-	  with the AC97 codec.
+-
+ config SOUND_AU1550_AC97
+ 	tristate "Au1550/Au1200 AC97 Sound"
+ 	select SND_AC97_CODEC
+diff -pruN -X mips/Documentation/dontdiff mips-orig/sound/oss/Makefile mips/sound/oss/Makefile
+--- mips-orig/sound/oss/Makefile	2007-07-30 22:03:13.495892500 +0900
++++ mips/sound/oss/Makefile	2007-07-30 22:20:06.635209750 +0900
+@@ -37,7 +37,6 @@ obj-$(CONFIG_SOUND_MSNDPIN)	+= msnd.o ms
+ obj-$(CONFIG_SOUND_VWSND)	+= vwsnd.o
+ obj-$(CONFIG_SOUND_ICH)		+= i810_audio.o ac97_codec.o
+ obj-$(CONFIG_SOUND_ES1371)	+= es1371.o ac97_codec.o
+-obj-$(CONFIG_SOUND_VRC5477)	+= nec_vrc5477.o ac97_codec.o
+ obj-$(CONFIG_SOUND_AU1550_AC97)	+= au1550_ac97.o ac97_codec.o
+ obj-$(CONFIG_SOUND_TRIDENT)	+= trident.o ac97_codec.o
+ obj-$(CONFIG_SOUND_BCM_CS4297A)	+= swarm_cs4297a.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/sound/oss/nec_vrc5477.c mips/sound/oss/nec_vrc5477.c
+--- mips-orig/sound/oss/nec_vrc5477.c	2007-07-30 22:03:13.663903000 +0900
++++ mips/sound/oss/nec_vrc5477.c	1970-01-01 09:00:00.000000000 +0900
+@@ -1,2060 +0,0 @@
+-/***********************************************************************
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * drivers/sound/nec_vrc5477.c
+- *     AC97 sound dirver for NEC Vrc5477 chip (an integrated, 
+- *     multi-function controller chip for MIPS CPUs)
+- *
+- * VRA support Copyright 2001 Bradley D. LaRonde <brad@ltc.com>
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- ***********************************************************************
+- */
+-
+-/*
+- * This code is derived from ite8172.c, which is written by Steve Longerbeam.
+- *
+- * Features:
+- *   Currently we only support the following capabilities:
+- *	. mono output to PCM L/R (line out).
+- *	. stereo output to PCM L/R (line out).
+- *	. mono input from PCM L (line in).
+- *	. stereo output from PCM (line in).
+- *	. sampling rate at 48k or variable sampling rate 
+- *	. support /dev/dsp, /dev/mixer devices, standard OSS devices.
+- *	. only support 16-bit PCM format (hardware limit, no software
+- *	  translation) 
+- *	. support duplex, but no trigger or realtime.
+- *	
+- *   Specifically the following are not supported:
+- *	. app-set frag size.
+- *	. mmap'ed buffer access
+- */
+-
+-/* 
+- * Original comments from ite8172.c file.
+- */
+-
+-/*
+- *
+- * Notes:
+- *
+- *  1. Much of the OSS buffer allocation, ioctl's, and mmap'ing are
+- *     taken, slightly modified or not at all, from the ES1371 driver,
+- *     so refer to the credits in es1371.c for those. The rest of the
+- *     code (probe, open, read, write, the ISR, etc.) is new.
+- *  2. The following support is untested:
+- *      * Memory mapping the audio buffers, and the ioctl controls that go
+- *        with it.
+- *      * S/PDIF output.
+- *  3. The following is not supported:
+- *      * I2S input.
+- *      * legacy audio mode.
+- *  4. Support for volume button interrupts is implemented but doesn't
+- *     work yet.
+- *
+- *  Revision history
+- *    02.08.2001  0.1   Initial release
+- */
+-
+-#include <linux/module.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
+-#include <linux/ioport.h>
+-#include <linux/sched.h>
+-#include <linux/delay.h>
+-#include <linux/sound.h>
+-#include <linux/slab.h>
+-#include <linux/soundcard.h>
+-#include <linux/pci.h>
+-#include <linux/init.h>
+-#include <linux/poll.h>
+-#include <linux/bitops.h>
+-#include <linux/proc_fs.h>
+-#include <linux/spinlock.h>
+-#include <linux/smp_lock.h>
+-#include <linux/ac97_codec.h>
+-#include <linux/mutex.h>
+-
+-#include <asm/io.h>
+-#include <asm/dma.h>
+-#include <asm/uaccess.h>
+-
+-/* -------------------debug macros -------------------------------------- */
+-/* #undef VRC5477_AC97_DEBUG */
+-#define VRC5477_AC97_DEBUG
+-
+-#undef VRC5477_AC97_VERBOSE_DEBUG
+-/* #define VRC5477_AC97_VERBOSE_DEBUG */
+-
+-#if defined(VRC5477_AC97_VERBOSE_DEBUG)
+-#define VRC5477_AC97_DEBUG
+-#endif
+-
+-#if defined(VRC5477_AC97_DEBUG)
+-#define ASSERT(x)  if (!(x)) { \
+-	panic("assertion failed at %s:%d: %s\n", __FILE__, __LINE__, #x); }
+-#else
+-#define	ASSERT(x)
+-#endif /* VRC5477_AC97_DEBUG */
+-
+-#if defined(VRC5477_AC97_VERBOSE_DEBUG)
+-static u16 inTicket; 		/* check sync between intr & write */
+-static u16 outTicket;
+-#endif
+-
+-/* --------------------------------------------------------------------- */
+-
+-#undef OSS_DOCUMENTED_MIXER_SEMANTICS
+-
+-static const unsigned sample_shift[] = { 0, 1, 1, 2 };
+-
+-#define         VRC5477_INT_CLR         0x0
+-#define         VRC5477_INT_STATUS	0x0
+-#define         VRC5477_CODEC_WR        0x4
+-#define         VRC5477_CODEC_RD        0x8
+-#define         VRC5477_CTRL            0x18
+-#define         VRC5477_ACLINK_CTRL     0x1c
+-#define         VRC5477_INT_MASK        0x24
+-
+-#define		VRC5477_DAC1_CTRL	0x30
+-#define		VRC5477_DAC1L		0x34
+-#define		VRC5477_DAC1_BADDR	0x38
+-#define		VRC5477_DAC2_CTRL	0x3c
+-#define		VRC5477_DAC2L		0x40
+-#define		VRC5477_DAC2_BADDR	0x44
+-#define		VRC5477_DAC3_CTRL	0x48
+-#define		VRC5477_DAC3L		0x4c
+-#define		VRC5477_DAC3_BADDR	0x50
+-
+-#define		VRC5477_ADC1_CTRL	0x54
+-#define		VRC5477_ADC1L		0x58
+-#define		VRC5477_ADC1_BADDR	0x5c
+-#define		VRC5477_ADC2_CTRL	0x60
+-#define		VRC5477_ADC2L		0x64
+-#define		VRC5477_ADC2_BADDR	0x68
+-#define		VRC5477_ADC3_CTRL	0x6c
+-#define		VRC5477_ADC3L		0x70
+-#define		VRC5477_ADC3_BADDR	0x74
+-
+-#define		VRC5477_CODEC_WR_RWC	(1 << 23)
+-
+-#define		VRC5477_CODEC_RD_RRDYA	(1 << 31)
+-#define		VRC5477_CODEC_RD_RRDYD	(1 << 30)
+-
+-#define		VRC5477_ACLINK_CTRL_RST_ON	(1 << 15)
+-#define		VRC5477_ACLINK_CTRL_RST_TIME	0x7f
+-#define		VRC5477_ACLINK_CTRL_SYNC_ON	(1 << 30)
+-#define		VRC5477_ACLINK_CTRL_CK_STOP_ON	(1 << 31)
+-
+-#define		VRC5477_CTRL_DAC2ENB		(1 << 15) 
+-#define		VRC5477_CTRL_ADC2ENB		(1 << 14) 
+-#define		VRC5477_CTRL_DAC1ENB		(1 << 13) 
+-#define		VRC5477_CTRL_ADC1ENB		(1 << 12) 
+-
+-#define		VRC5477_INT_MASK_NMASK		(1 << 31) 
+-#define		VRC5477_INT_MASK_DAC1END	(1 << 5) 
+-#define		VRC5477_INT_MASK_DAC2END	(1 << 4) 
+-#define		VRC5477_INT_MASK_DAC3END	(1 << 3) 
+-#define		VRC5477_INT_MASK_ADC1END	(1 << 2) 
+-#define		VRC5477_INT_MASK_ADC2END	(1 << 1) 
+-#define		VRC5477_INT_MASK_ADC3END	(1 << 0) 
+-
+-#define		VRC5477_DMA_ACTIVATION		(1 << 31)
+-#define		VRC5477_DMA_WIP			(1 << 30)
+-
+-
+-#define VRC5477_AC97_MODULE_NAME "NEC_Vrc5477_audio"
+-#define PFX VRC5477_AC97_MODULE_NAME ": "
+-
+-/* --------------------------------------------------------------------- */
+-
+-struct vrc5477_ac97_state {
+-	/* list of vrc5477_ac97 devices */
+-	struct list_head devs;
+-
+-	/* the corresponding pci_dev structure */
+-	struct pci_dev *dev;
+-
+-	/* soundcore stuff */
+-	int dev_audio;
+-
+-	/* hardware resources */
+-	unsigned long io;
+-	unsigned int irq;
+-
+-#ifdef VRC5477_AC97_DEBUG
+-	/* debug /proc entry */
+-	struct proc_dir_entry *ps;
+-	struct proc_dir_entry *ac97_ps;
+-#endif /* VRC5477_AC97_DEBUG */
+-
+-	struct ac97_codec *codec;
+-
+-	unsigned dacChannels, adcChannels;
+-	unsigned short dacRate, adcRate;
+-	unsigned short extended_status;
+-
+-	spinlock_t lock;
+-	struct mutex open_mutex;
+-	mode_t open_mode;
+-	wait_queue_head_t open_wait;
+-
+-	struct dmabuf {
+-		void *lbuf, *rbuf;
+-		dma_addr_t lbufDma, rbufDma;
+-		unsigned bufOrder;
+-		unsigned numFrag;
+-		unsigned fragShift;
+-		unsigned fragSize;	/* redundant */
+-		unsigned fragTotalSize;	/* = numFrag * fragSize(real)  */
+-		unsigned nextIn;
+-		unsigned nextOut;
+-		int count;
+-		unsigned error; /* over/underrun */
+-		wait_queue_head_t wait;
+-		/* OSS stuff */
+-		unsigned stopped:1;
+-		unsigned ready:1;
+-	} dma_dac, dma_adc;
+-
+-	#define	WORK_BUF_SIZE	2048
+-	struct {
+-		u16 lchannel;
+-		u16 rchannel;
+-	} workBuf[WORK_BUF_SIZE/4];
+-};
+-
+-/* --------------------------------------------------------------------- */
+-
+-static LIST_HEAD(devs);
+-
+-/* --------------------------------------------------------------------- */
+-
+-static inline unsigned ld2(unsigned int x)
+-{
+-    unsigned r = 0;
+-	
+-    if (x >= 0x10000) {
+-	x >>= 16;
+-	r += 16;
+-    }
+-    if (x >= 0x100) {
+-	x >>= 8;
+-	r += 8;
+-    }
+-    if (x >= 0x10) {
+-	x >>= 4;
+-	r += 4;
+-    }
+-    if (x >= 4) {
+-	x >>= 2;
+-	r += 2;
+-    }
+-    if (x >= 2)
+-	r++;
+-    return r;
+-}
+-
+-/* --------------------------------------------------------------------- */
+-
+-static u16 rdcodec(struct ac97_codec *codec, u8 addr)
+-{
+-	struct vrc5477_ac97_state *s = 
+-		(struct vrc5477_ac97_state *)codec->private_data;
+-	unsigned long flags;
+-	u32 result;
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	/* wait until we can access codec registers */
+-	while (inl(s->io + VRC5477_CODEC_WR) & 0x80000000);
+-
+-	/* write the address and "read" command to codec */
+-	addr = addr & 0x7f;
+-	outl((addr << 16) | VRC5477_CODEC_WR_RWC, s->io + VRC5477_CODEC_WR);
+-
+-	/* get the return result */
+-	udelay(100); /* workaround hardware bug */
+-	while ( (result = inl(s->io + VRC5477_CODEC_RD)) & 
+-                (VRC5477_CODEC_RD_RRDYA | VRC5477_CODEC_RD_RRDYD) ) {
+-		/* we get either addr or data, or both */
+-		if (result & VRC5477_CODEC_RD_RRDYA) {
+-			ASSERT(addr == ((result >> 16) & 0x7f) );
+-		}
+-		if (result & VRC5477_CODEC_RD_RRDYD) {
+-			break;
+-		}
+-	}
+-
+-	spin_unlock_irqrestore(&s->lock, flags);
+-
+-	return result & 0xffff;
+-}
+-
+-
+-static void wrcodec(struct ac97_codec *codec, u8 addr, u16 data)
+-{
+-	struct vrc5477_ac97_state *s = 
+-		(struct vrc5477_ac97_state *)codec->private_data;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	/* wait until we can access codec registers */
+-	while (inl(s->io + VRC5477_CODEC_WR) & 0x80000000);
+-
+-	/* write the address and value to codec */
+-	outl((addr << 16) | data, s->io + VRC5477_CODEC_WR);
+-
+-	spin_unlock_irqrestore(&s->lock, flags);
+-}
+-
+-
+-static void waitcodec(struct ac97_codec *codec)
+-{
+-	struct vrc5477_ac97_state *s = 
+-		(struct vrc5477_ac97_state *)codec->private_data;
+-
+-	/* wait until we can access codec registers */
+-	while (inl(s->io + VRC5477_CODEC_WR) & 0x80000000);
+-}
+-
+-static int ac97_codec_not_present(struct ac97_codec *codec)
+-{
+-	struct vrc5477_ac97_state *s = 
+-		(struct vrc5477_ac97_state *)codec->private_data;
+-	unsigned long flags;
+-	unsigned short count  = 0xffff; 
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	/* wait until we can access codec registers */
+-	do {
+-	       if (!(inl(s->io + VRC5477_CODEC_WR) & 0x80000000))
+-		       break;
+-	} while (--count);
+-
+-	if (count == 0) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return -1;
+-	}
+-
+-	/* write 0 to reset */
+-	outl((AC97_RESET << 16) | 0, s->io + VRC5477_CODEC_WR);
+-
+-	/* test whether we get a response from ac97 chip */
+-	count  = 0xffff; 
+-	do { 
+-	       if (!(inl(s->io + VRC5477_CODEC_WR) & 0x80000000))
+-		       break;
+-	} while (--count);
+-
+-	if (count == 0) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return -1;
+-	}
+-	spin_unlock_irqrestore(&s->lock, flags);
+-	return 0;
+-}
+-
+-/* --------------------------------------------------------------------- */
+-
+-static void vrc5477_ac97_delay(int msec)
+-{
+-	unsigned long tmo;
+-	signed long tmo2;
+-
+-	if (in_interrupt())
+-		return;
+-    
+-	tmo = jiffies + (msec*HZ)/1000;
+-	for (;;) {
+-		tmo2 = tmo - jiffies;
+-		if (tmo2 <= 0)
+-			break;
+-		schedule_timeout(tmo2);
+-	}
+-}
+-
+-
+-static void set_adc_rate(struct vrc5477_ac97_state *s, unsigned rate)
+-{
+-	wrcodec(s->codec, AC97_PCM_LR_ADC_RATE, rate);
+-	s->adcRate = rate;
+-}
+-
+-
+-static void set_dac_rate(struct vrc5477_ac97_state *s, unsigned rate)
+-{
+-	if(s->extended_status & AC97_EXTSTAT_VRA) {
+-	wrcodec(s->codec, AC97_PCM_FRONT_DAC_RATE, rate);
+-		s->dacRate = rdcodec(s->codec, AC97_PCM_FRONT_DAC_RATE);
+-	}
+-}
+-
+-static int ac97_codec_not_present(struct ac97_codec *codec)
+-{
+-	struct vrc5477_ac97_state *s =
+-		(struct vrc5477_ac97_state *)codec->private_data;
+-	unsigned long flags;
+-	unsigned short count  = 0xffff;
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	/* wait until we can access codec registers */
+-	do {
+-	       if (!(inl(s->io + VRC5477_CODEC_WR) & 0x80000000))
+-		       break;
+-	} while (--count);
+-
+-	if (count == 0) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return -1;
+-	}
+-
+-	/* write 0 to reset */
+-	outl((AC97_RESET << 16) | 0, s->io + VRC5477_CODEC_WR);
+-
+-	/* test whether we get a response from ac97 chip */
+-	count  = 0xffff;
+-	do {
+-	       if (!(inl(s->io + VRC5477_CODEC_WR) & 0x80000000))
+-		       break;
+-	} while (--count);
+-
+-	if (count == 0) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return -1;
+-	}
+-	spin_unlock_irqrestore(&s->lock, flags);
+-	return 0;
+-}
+-
+-/* --------------------------------------------------------------------- */
+-
+-static inline void
+-stop_dac(struct vrc5477_ac97_state *s)
+-{
+-	struct dmabuf* db = &s->dma_dac;
+-	unsigned long flags;
+-	u32 temp;
+-    
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	if (db->stopped) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return;
+-	}
+-
+-	/* deactivate the dma */
+-	outl(0, s->io + VRC5477_DAC1_CTRL);
+-	outl(0, s->io + VRC5477_DAC2_CTRL);
+-
+-	/* wait for DAM completely stop */
+-	while (inl(s->io + VRC5477_DAC1_CTRL) & VRC5477_DMA_WIP);
+-	while (inl(s->io + VRC5477_DAC2_CTRL) & VRC5477_DMA_WIP);
+-
+-	/* disable dac slots in aclink */
+-	temp = inl(s->io + VRC5477_CTRL);
+-	temp &= ~ (VRC5477_CTRL_DAC1ENB | VRC5477_CTRL_DAC2ENB);
+-	outl (temp, s->io + VRC5477_CTRL);
+-
+-	/* disable interrupts */
+-	temp = inl(s->io + VRC5477_INT_MASK);
+-	temp &= ~ (VRC5477_INT_MASK_DAC1END | VRC5477_INT_MASK_DAC2END); 
+-	outl (temp, s->io + VRC5477_INT_MASK);
+-
+-	/* clear pending ones */
+-	outl(VRC5477_INT_MASK_DAC1END | VRC5477_INT_MASK_DAC2END, 
+-	     s->io +  VRC5477_INT_CLR);
+-    
+-	db->stopped = 1;
+-    
+-	spin_unlock_irqrestore(&s->lock, flags);
+-}	
+-
+-static void start_dac(struct vrc5477_ac97_state *s)
+-{
+-	struct dmabuf* db = &s->dma_dac;
+-	unsigned long flags;
+-	u32 dmaLength;
+-	u32 temp;
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	if (!db->stopped) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return;
+-	}
+-
+-	/* we should have some data to do the DMA trasnfer */
+-	ASSERT(db->count >= db->fragSize);
+-
+-	/* clear pending fales interrupts */
+-	outl(VRC5477_INT_MASK_DAC1END | VRC5477_INT_MASK_DAC2END, 
+-	     s->io +  VRC5477_INT_CLR);
+-
+-	/* enable interrupts */
+-	temp = inl(s->io + VRC5477_INT_MASK);
+-	temp |= VRC5477_INT_MASK_DAC1END | VRC5477_INT_MASK_DAC2END;
+-	outl(temp, s->io +  VRC5477_INT_MASK);
+-
+-	/* setup dma base addr */
+-	outl(db->lbufDma + db->nextOut, s->io + VRC5477_DAC1_BADDR);
+-	if (s->dacChannels == 1) {
+-		outl(db->lbufDma + db->nextOut, s->io + VRC5477_DAC2_BADDR);
+-	} else {
+-		outl(db->rbufDma + db->nextOut, s->io + VRC5477_DAC2_BADDR);
+-	}
+-
+-	/* set dma length, in the unit of 0x10 bytes */
+-	dmaLength = db->fragSize >> 4;
+-	outl(dmaLength, s->io + VRC5477_DAC1L);
+-	outl(dmaLength, s->io + VRC5477_DAC2L);
+-
+-	/* activate dma */
+-	outl(VRC5477_DMA_ACTIVATION, s->io + VRC5477_DAC1_CTRL);
+-	outl(VRC5477_DMA_ACTIVATION, s->io + VRC5477_DAC2_CTRL);
+-
+-	/* enable dac slots - we should hear the music now! */
+-	temp = inl(s->io + VRC5477_CTRL);
+-	temp |= (VRC5477_CTRL_DAC1ENB | VRC5477_CTRL_DAC2ENB);
+-	outl (temp, s->io + VRC5477_CTRL);
+-
+-	/* it is time to setup next dma transfer */
+-	ASSERT(inl(s->io + VRC5477_DAC1_CTRL) & VRC5477_DMA_WIP);
+-	ASSERT(inl(s->io + VRC5477_DAC2_CTRL) & VRC5477_DMA_WIP);
+-
+-	temp = db->nextOut + db->fragSize;
+-	if (temp >= db->fragTotalSize) {
+-		ASSERT(temp == db->fragTotalSize);
+-		temp = 0;
+-	}
+-
+-	outl(db->lbufDma + temp, s->io + VRC5477_DAC1_BADDR);
+-	if (s->dacChannels == 1) {
+-		outl(db->lbufDma + temp, s->io + VRC5477_DAC2_BADDR);
+-	} else {
+-		outl(db->rbufDma + temp, s->io + VRC5477_DAC2_BADDR);
+-	}
+-
+-	db->stopped = 0;
+-
+-#if defined(VRC5477_AC97_VERBOSE_DEBUG)
+-	outTicket = *(u16*)(db->lbuf+db->nextOut);
+-	if (db->count > db->fragSize) {
+-		ASSERT((u16)(outTicket+1) == *(u16*)(db->lbuf+temp));
+-	}
+-#endif
+-
+-	spin_unlock_irqrestore(&s->lock, flags);
+-}	
+-
+-static inline void stop_adc(struct vrc5477_ac97_state *s)
+-{
+-	struct dmabuf* db = &s->dma_adc;
+-	unsigned long flags;
+-	u32 temp;
+-    
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	if (db->stopped) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return;
+-	}
+-
+-	/* deactivate the dma */
+-	outl(0, s->io + VRC5477_ADC1_CTRL);
+-	outl(0, s->io + VRC5477_ADC2_CTRL);
+-
+-	/* disable adc slots in aclink */
+-	temp = inl(s->io + VRC5477_CTRL);
+-	temp &= ~ (VRC5477_CTRL_ADC1ENB | VRC5477_CTRL_ADC2ENB);
+-	outl (temp, s->io + VRC5477_CTRL);
+-
+-	/* disable interrupts */
+-        temp = inl(s->io + VRC5477_INT_MASK);
+-        temp &= ~ (VRC5477_INT_MASK_ADC1END | VRC5477_INT_MASK_ADC2END); 
+-        outl (temp, s->io + VRC5477_INT_MASK);
+-
+-	/* clear pending ones */
+-	outl(VRC5477_INT_MASK_ADC1END | VRC5477_INT_MASK_ADC2END, 
+-	     s->io +  VRC5477_INT_CLR);
+-    
+-	db->stopped = 1;
+-
+-	spin_unlock_irqrestore(&s->lock, flags);
+-}	
+-
+-static void start_adc(struct vrc5477_ac97_state *s)
+-{
+-	struct dmabuf* db = &s->dma_adc;
+-	unsigned long flags;
+-	u32 dmaLength;
+-	u32 temp;
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	if (!db->stopped) {
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return;
+-	}
+-
+-	/* we should at least have some free space in the buffer */
+-	ASSERT(db->count < db->fragTotalSize - db->fragSize * 2);
+-
+-	/* clear pending ones */
+-	outl(VRC5477_INT_MASK_ADC1END | VRC5477_INT_MASK_ADC2END, 
+-	     s->io +  VRC5477_INT_CLR);
+-
+-        /* enable interrupts */
+-        temp = inl(s->io + VRC5477_INT_MASK);
+-        temp |= VRC5477_INT_MASK_ADC1END | VRC5477_INT_MASK_ADC2END;
+-        outl(temp, s->io +  VRC5477_INT_MASK);
+-
+-	/* setup dma base addr */
+-	outl(db->lbufDma + db->nextIn, s->io + VRC5477_ADC1_BADDR);
+-	outl(db->rbufDma + db->nextIn, s->io + VRC5477_ADC2_BADDR);
+-
+-	/* setup dma length */
+-	dmaLength = db->fragSize >> 4;
+-	outl(dmaLength, s->io + VRC5477_ADC1L);
+-	outl(dmaLength, s->io + VRC5477_ADC2L);
+-
+-	/* activate dma */
+-	outl(VRC5477_DMA_ACTIVATION, s->io + VRC5477_ADC1_CTRL);
+-	outl(VRC5477_DMA_ACTIVATION, s->io + VRC5477_ADC2_CTRL);
+-
+-	/* enable adc slots */
+-	temp = inl(s->io + VRC5477_CTRL);
+-	temp |= (VRC5477_CTRL_ADC1ENB | VRC5477_CTRL_ADC2ENB);
+-	outl (temp, s->io + VRC5477_CTRL);
+-
+-	/* it is time to setup next dma transfer */
+-	temp = db->nextIn + db->fragSize;
+-	if (temp >= db->fragTotalSize) {
+-		ASSERT(temp == db->fragTotalSize);
+-		temp = 0;
+-	}
+-	outl(db->lbufDma + temp, s->io + VRC5477_ADC1_BADDR);
+-	outl(db->rbufDma + temp, s->io + VRC5477_ADC2_BADDR);
+-
+-	db->stopped = 0;
+-
+-	spin_unlock_irqrestore(&s->lock, flags);
+-}	
+-
+-/* --------------------------------------------------------------------- */
+-
+-#define DMABUF_DEFAULTORDER (16-PAGE_SHIFT)
+-#define DMABUF_MINORDER 1
+-
+-static inline void dealloc_dmabuf(struct vrc5477_ac97_state *s,
+-				  struct dmabuf *db)
+-{
+-	if (db->lbuf) {
+-		ASSERT(db->rbuf);
+-		pci_free_consistent(s->dev, PAGE_SIZE << db->bufOrder,
+-				    db->lbuf, db->lbufDma);
+-		pci_free_consistent(s->dev, PAGE_SIZE << db->bufOrder,
+-				    db->rbuf, db->rbufDma);
+-		db->lbuf = db->rbuf = NULL;
+-	}
+-	db->nextIn = db->nextOut = 0;
+-	db->ready = 0;
+-}
+-
+-static int prog_dmabuf(struct vrc5477_ac97_state *s, 
+-		       struct dmabuf *db,
+-		       unsigned rate)
+-{
+-	int order;
+-	unsigned bufsize;
+-
+-	if (!db->lbuf) {
+-		ASSERT(!db->rbuf);
+-
+-		db->ready = 0;
+-		for (order = DMABUF_DEFAULTORDER; 
+-		     order >= DMABUF_MINORDER; 
+-		     order--) {
+-			db->lbuf = pci_alloc_consistent(s->dev,
+-							PAGE_SIZE << order,
+-							&db->lbufDma);
+-			db->rbuf = pci_alloc_consistent(s->dev,
+-							PAGE_SIZE << order,
+-							&db->rbufDma);
+-			if (db->lbuf && db->rbuf) break;
+-			if (db->lbuf) {
+-			    ASSERT(!db->rbuf);
+-			    pci_free_consistent(s->dev, 
+-						PAGE_SIZE << order,
+-						db->lbuf,
+-						db->lbufDma);
+-			}
+-		}
+-		if (!db->lbuf) {
+-			ASSERT(!db->rbuf);
+-			return -ENOMEM;
+-		}
+-
+-		db->bufOrder = order;
+-	}
+-
+-	db->count = 0;
+-	db->nextIn = db->nextOut = 0;
+-    
+-	bufsize = PAGE_SIZE << db->bufOrder;
+-	db->fragShift = ld2(rate * 2 / 100);
+-	if (db->fragShift < 4) db->fragShift = 4;
+-
+-	db->numFrag = bufsize >> db->fragShift;
+-	while (db->numFrag < 4 && db->fragShift > 4) {
+-		db->fragShift--;
+-		db->numFrag = bufsize >> db->fragShift;
+-	}
+-	db->fragSize = 1 << db->fragShift;
+-	db->fragTotalSize = db->numFrag << db->fragShift;
+-	memset(db->lbuf, 0, db->fragTotalSize);
+-	memset(db->rbuf, 0, db->fragTotalSize);
+-    
+-	db->ready = 1;
+-
+-	return 0;
+-}
+-
+-static inline int prog_dmabuf_adc(struct vrc5477_ac97_state *s)
+-{
+-    stop_adc(s);
+-    return prog_dmabuf(s, &s->dma_adc, s->adcRate);
+-}
+-
+-static inline int prog_dmabuf_dac(struct vrc5477_ac97_state *s)
+-{
+-    stop_dac(s);
+-    return prog_dmabuf(s, &s->dma_dac, s->dacRate);
+-}
+-
+-
+-/* --------------------------------------------------------------------- */
+-/* hold spinlock for the following! */
+-
+-static inline void vrc5477_ac97_adc_interrupt(struct vrc5477_ac97_state *s)
+-{
+-	struct dmabuf* adc = &s->dma_adc;
+-	unsigned temp;
+-
+-	/* we need two frags avaiable because one is already being used
+-	 * and the other will be used when next interrupt happens.
+-	 */
+-	if (adc->count >= adc->fragTotalSize - adc->fragSize) {
+-		stop_adc(s);
+-		adc->error++;
+-		printk(KERN_INFO PFX "adc overrun\n");
+-		return;
+-	}
+-
+-	/* set the base addr for next DMA transfer */
+-	temp = adc->nextIn + 2*adc->fragSize;
+-	if (temp >= adc->fragTotalSize) {
+-		ASSERT( (temp == adc->fragTotalSize) ||
+-                             (temp == adc->fragTotalSize + adc->fragSize) );
+-		temp -= adc->fragTotalSize;
+-	}
+-	outl(adc->lbufDma + temp, s->io + VRC5477_ADC1_BADDR);
+-	outl(adc->rbufDma + temp, s->io + VRC5477_ADC2_BADDR);
+-
+-	/* adjust nextIn */
+-	adc->nextIn += adc->fragSize;
+-	if (adc->nextIn >= adc->fragTotalSize) {
+-		ASSERT(adc->nextIn == adc->fragTotalSize);
+-		adc->nextIn = 0;
+-	}
+-
+-	/* adjust count */
+-	adc->count += adc->fragSize;
+-
+-	/* wake up anybody listening */
+-	if (waitqueue_active(&adc->wait)) {
+-		wake_up_interruptible(&adc->wait);
+-	}	
+-}
+-
+-static inline void vrc5477_ac97_dac_interrupt(struct vrc5477_ac97_state *s)
+-{
+-	struct dmabuf* dac = &s->dma_dac;
+-	unsigned temp;
+-
+-	/* next DMA transfer should already started */
+-	// ASSERT(inl(s->io + VRC5477_DAC1_CTRL) & VRC5477_DMA_WIP);
+-	// ASSERT(inl(s->io + VRC5477_DAC2_CTRL) & VRC5477_DMA_WIP);
+-
+-	/* let us set for next next DMA transfer */
+-	temp = dac->nextOut + dac->fragSize*2;
+-	if (temp >= dac->fragTotalSize) {
+-		ASSERT( (temp == dac->fragTotalSize) || 
+-                             (temp == dac->fragTotalSize + dac->fragSize) );
+-		temp -= dac->fragTotalSize;
+-	}
+-	outl(dac->lbufDma + temp, s->io + VRC5477_DAC1_BADDR);
+-	if (s->dacChannels == 1) {
+-		outl(dac->lbufDma + temp, s->io + VRC5477_DAC2_BADDR);
+-	} else {
+-		outl(dac->rbufDma + temp, s->io + VRC5477_DAC2_BADDR);
+-	}
+-
+-#if defined(VRC5477_AC97_VERBOSE_DEBUG)
+-	if (*(u16*)(dac->lbuf +  dac->nextOut) != outTicket) {
+-		printk("assert fail: - %d vs %d\n", 
+-		        *(u16*)(dac->lbuf +  dac->nextOut),
+-                        outTicket);
+-                ASSERT(1 == 0);
+-	}
+-#endif
+-
+-	/* adjust nextOut pointer */
+-	dac->nextOut += dac->fragSize;
+-	if (dac->nextOut >= dac->fragTotalSize) {
+-		ASSERT(dac->nextOut == dac->fragTotalSize);
+-		dac->nextOut = 0;
+-	}
+-
+-	/* adjust count */
+-	dac->count -= dac->fragSize;
+-	if (dac->count <=0 ) {
+-		/* buffer under run */
+-		dac->count = 0;
+-		dac->nextIn = dac->nextOut;
+-		stop_dac(s);
+-	}
+-
+-#if defined(VRC5477_AC97_VERBOSE_DEBUG)
+-	if (dac->count) {
+-		outTicket ++;
+-		ASSERT(*(u16*)(dac->lbuf +  dac->nextOut) == outTicket);
+-	}
+-#endif
+-	
+-	/* we cannot have both under run and someone is waiting on us */
+-	ASSERT(! (waitqueue_active(&dac->wait) && (dac->count <= 0)) );
+-
+-	/* wake up anybody listening */
+-	if (waitqueue_active(&dac->wait))
+-		wake_up_interruptible(&dac->wait);
+-}
+-
+-static irqreturn_t vrc5477_ac97_interrupt(int irq, void *dev_id)
+-{
+-	struct vrc5477_ac97_state *s = (struct vrc5477_ac97_state *)dev_id;
+-	u32 irqStatus;
+-	u32 adcInterrupts, dacInterrupts;
+-
+-	spin_lock(&s->lock);
+-
+-	/* get irqStatus and clear the detected ones */
+-	irqStatus = inl(s->io + VRC5477_INT_STATUS);
+-	outl(irqStatus, s->io + VRC5477_INT_CLR);
+-
+-	/* let us see what we get */
+-	dacInterrupts = VRC5477_INT_MASK_DAC1END | VRC5477_INT_MASK_DAC2END;
+-	adcInterrupts = VRC5477_INT_MASK_ADC1END | VRC5477_INT_MASK_ADC2END;
+-	if (irqStatus & dacInterrupts) {
+-		/* we should get both interrupts, but just in case ...  */
+-		if (irqStatus & VRC5477_INT_MASK_DAC1END) {
+-			vrc5477_ac97_dac_interrupt(s);
+-		}
+-		if ( (irqStatus & dacInterrupts) != dacInterrupts ) {
+-			printk(KERN_WARNING "vrc5477_ac97 : dac interrupts not in sync!!!\n");
+-			stop_dac(s);
+-			start_dac(s);
+-		}
+-	} else if (irqStatus & adcInterrupts) {
+-		/* we should get both interrupts, but just in case ...  */
+-		if(irqStatus & VRC5477_INT_MASK_ADC1END) {
+-			vrc5477_ac97_adc_interrupt(s);
+-		} 
+-		if ( (irqStatus & adcInterrupts) != adcInterrupts ) {
+-			printk(KERN_WARNING "vrc5477_ac97 : adc interrupts not in sync!!!\n");
+-			stop_adc(s);
+-			start_adc(s);
+-		}
+-	}
+-
+-	spin_unlock(&s->lock);
+-	return IRQ_HANDLED;
+-}
+-
+-/* --------------------------------------------------------------------- */
+-
+-static int vrc5477_ac97_open_mixdev(struct inode *inode, struct file *file)
+-{
+-	int minor = iminor(inode);
+-	struct list_head *list;
+-	struct vrc5477_ac97_state *s;
+-
+-	for (list = devs.next; ; list = list->next) {
+-		if (list == &devs)
+-			return -ENODEV;
+-		s = list_entry(list, struct vrc5477_ac97_state, devs);
+-		if (s->codec->dev_mixer == minor)
+-			break;
+-	}
+-	file->private_data = s;
+-	return nonseekable_open(inode, file);
+-}
+-
+-static int vrc5477_ac97_release_mixdev(struct inode *inode, struct file *file)
+-{
+-	return 0;
+-}
+-
+-
+-static int mixdev_ioctl(struct ac97_codec *codec, unsigned int cmd,
+-			unsigned long arg)
+-{
+-	return codec->mixer_ioctl(codec, cmd, arg);
+-}
+-
+-static int vrc5477_ac97_ioctl_mixdev(struct inode *inode, struct file *file,
+-				     unsigned int cmd, unsigned long arg)
+-{
+-    struct vrc5477_ac97_state *s = 
+-	    (struct vrc5477_ac97_state *)file->private_data;
+-    struct ac97_codec *codec = s->codec;
+-
+-    return mixdev_ioctl(codec, cmd, arg);
+-}
+-
+-static /*const*/ struct file_operations vrc5477_ac97_mixer_fops = {
+-	.owner		= THIS_MODULE,
+-	.llseek		= no_llseek,
+-	.ioctl		= vrc5477_ac97_ioctl_mixdev,
+-	.open		= vrc5477_ac97_open_mixdev,
+-	.release	= vrc5477_ac97_release_mixdev,
+-};
+-
+-/* --------------------------------------------------------------------- */
+-
+-static int drain_dac(struct vrc5477_ac97_state *s, int nonblock)
+-{
+-	unsigned long flags;
+-	int count, tmo;
+-	
+-	if (!s->dma_dac.ready)
+-		return 0;
+-
+-	for (;;) {
+-		spin_lock_irqsave(&s->lock, flags);
+-		count = s->dma_dac.count;
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		if (count <= 0)
+-			break;
+-		if (signal_pending(current))
+-			break;
+-		if (nonblock)
+-			return -EBUSY;
+-		tmo = 1000 * count / s->dacRate / 2;
+-		vrc5477_ac97_delay(tmo);
+-	}
+-	if (signal_pending(current))
+-		return -ERESTARTSYS;
+-	return 0;
+-}
+-
+-/* --------------------------------------------------------------------- */
+-
+-static inline int
+-copy_two_channel_adc_to_user(struct vrc5477_ac97_state *s, 
+-		             char *buffer, 
+-			     int copyCount)
+-{
+-	struct dmabuf *db = &s->dma_adc;
+-	int bufStart = db->nextOut;
+-	for (; copyCount > 0; ) {
+-		int i;
+-		int count = copyCount;
+-		if (count > WORK_BUF_SIZE/2) count = WORK_BUF_SIZE/2;
+-		for (i=0; i< count/2; i++) {
+-			s->workBuf[i].lchannel = 
+-				*(u16*)(db->lbuf + bufStart + i*2);
+-			s->workBuf[i].rchannel = 
+-				*(u16*)(db->rbuf + bufStart + i*2);
+-		}
+-		if (copy_to_user(buffer, s->workBuf, count*2)) {
+-			return -1;
+-		}
+-
+-		copyCount -= count;
+-		bufStart += count;
+-		ASSERT(bufStart <= db->fragTotalSize);
+-		buffer += count *2;
+-	}
+-	return 0;
+-}
+-
+-/* return the total bytes that is copied */
+-static inline int
+-copy_adc_to_user(struct vrc5477_ac97_state *s,
+-		 char * buffer,
+-		 size_t count,
+-		 int avail)
+-{
+-	struct dmabuf *db = &s->dma_adc;
+-	int copyCount=0;
+-	int copyFragCount=0;
+-	int totalCopyCount = 0;
+-	int totalCopyFragCount = 0;
+-	unsigned long flags;
+-
+-	/* adjust count to signel channel byte count */
+-	count >>= s->adcChannels - 1;
+-
+-	/* we may have to "copy" twice as ring buffer wraps around */
+-	for (; (avail > 0) && (count > 0); ) {
+-		/* determine max possible copy count for single channel */
+-		copyCount = count;
+-		if (copyCount > avail) {
+-			copyCount = avail;
+-		}
+-		if (copyCount + db->nextOut > db->fragTotalSize) {
+-			copyCount = db->fragTotalSize - db->nextOut;
+-			ASSERT((copyCount % db->fragSize) == 0);
+-		}
+-
+-		copyFragCount = (copyCount-1) >> db->fragShift;
+-		copyFragCount = (copyFragCount+1) << db->fragShift;
+-		ASSERT(copyFragCount >= copyCount);
+-
+-		/* we copy differently based on adc channels */
+-		if (s->adcChannels == 1) {
+-			if (copy_to_user(buffer, 
+-					 db->lbuf + db->nextOut, 
+-					 copyCount)) 
+-				return -1;
+-		} else {
+-			/* *sigh* we have to mix two streams into one  */
+-			if (copy_two_channel_adc_to_user(s, buffer, copyCount))
+-				return -1;
+-		}	
+-
+-		count -= copyCount;
+-		totalCopyCount += copyCount;
+-		avail -= copyFragCount;
+-		totalCopyFragCount += copyFragCount;
+-
+-		buffer += copyCount << (s->adcChannels-1);
+-
+-		db->nextOut += copyFragCount;
+-		if (db->nextOut >= db->fragTotalSize) {
+-			ASSERT(db->nextOut == db->fragTotalSize);
+-			db->nextOut = 0;
+-		}
+-
+-		ASSERT((copyFragCount % db->fragSize) == 0);
+-		ASSERT( (count == 0) || (copyCount == copyFragCount));
+-	}
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-        db->count -= totalCopyFragCount;
+-        spin_unlock_irqrestore(&s->lock, flags);
+-
+-	return totalCopyCount << (s->adcChannels-1);
+-}
+-
+-static ssize_t 
+-vrc5477_ac97_read(struct file *file, 
+-		  char *buffer,
+-		  size_t count, 
+-		  loff_t *ppos)
+-{
+-	struct vrc5477_ac97_state *s = 
+-		(struct vrc5477_ac97_state *)file->private_data;
+-	struct dmabuf *db = &s->dma_adc;
+-	ssize_t ret = 0;
+-	unsigned long flags;
+-	int copyCount;
+-	size_t avail;
+-
+-	if (!access_ok(VERIFY_WRITE, buffer, count))
+-		return -EFAULT;
+-
+-	ASSERT(db->ready);
+-
+-	while (count > 0) {
+-		// wait for samples in capture buffer
+-		do {
+-			spin_lock_irqsave(&s->lock, flags);
+-			if (db->stopped)
+-				start_adc(s);
+-			avail = db->count;
+-			spin_unlock_irqrestore(&s->lock, flags);
+-			if (avail <= 0) {
+-				if (file->f_flags & O_NONBLOCK) {
+-					if (!ret)
+-						ret = -EAGAIN;
+-					return ret;
+-				}
+-				interruptible_sleep_on(&db->wait);
+-				if (signal_pending(current)) {
+-					if (!ret)
+-						ret = -ERESTARTSYS;
+-					return ret;
+-				}
+-			}
+-		} while (avail <= 0);
+-
+-		ASSERT( (avail % db->fragSize) == 0);
+-		copyCount = copy_adc_to_user(s, buffer, count, avail);
+-		if (copyCount <=0 ) {
+-			if (!ret) ret = -EFAULT;
+-			return ret;
+-		}
+-
+-		count -= copyCount;
+-		buffer += copyCount;
+-		ret += copyCount;
+-	} // while (count > 0)
+-
+-	return ret;
+-}
+-
+-static inline int
+-copy_two_channel_dac_from_user(struct vrc5477_ac97_state *s, 
+-			       const char *buffer, 
+-			       int copyCount)
+-{
+-	struct dmabuf *db = &s->dma_dac;
+-	int bufStart = db->nextIn;
+-
+-	ASSERT(db->ready);
+-
+-        for (; copyCount > 0; ) {
+-                int i;
+-                int count = copyCount;
+-                if (count > WORK_BUF_SIZE/2) count = WORK_BUF_SIZE/2;
+-                if (copy_from_user(s->workBuf, buffer, count*2)) {
+-                        return -1;
+-                }
+-                for (i=0; i< count/2; i++) {
+-			*(u16*)(db->lbuf + bufStart + i*2) = 
+-				s->workBuf[i].lchannel;
+-			*(u16*)(db->rbuf + bufStart + i*2) = 
+-				s->workBuf[i].rchannel;
+-                }
+-
+-                copyCount -= count;
+-		bufStart += count;
+-		ASSERT(bufStart <= db->fragTotalSize);
+-                buffer += count *2;
+-        }
+-        return 0;
+-
+-}
+-
+-/* return the total bytes that is copied */
+-static inline int
+-copy_dac_from_user(struct vrc5477_ac97_state *s, 
+-		   const char *buffer, 
+-		   size_t count, 
+-		   int avail)
+-{	
+-        struct dmabuf *db = &s->dma_dac;
+-        int copyCount=0;
+-        int copyFragCount=0;
+-        int totalCopyCount = 0;
+-        int totalCopyFragCount = 0;
+-        unsigned long flags;
+-#if defined(VRC5477_AC97_VERBOSE_DEBUG)
+-	int i;
+-#endif
+-
+-        /* adjust count to signel channel byte count */
+-        count >>= s->dacChannels - 1;
+-
+-        /* we may have to "copy" twice as ring buffer wraps around */
+-        for (; (avail > 0) && (count > 0); ) {
+-                /* determine max possible copy count for single channel */
+-                copyCount = count;
+-                if (copyCount > avail) {
+-                        copyCount = avail;
+-		}
+-                if (copyCount + db->nextIn > db->fragTotalSize) {
+-                        copyCount = db->fragTotalSize - db->nextIn;
+-                        ASSERT(copyCount > 0);
+-                }
+-
+-		copyFragCount = copyCount;
+-		ASSERT(copyFragCount >= copyCount);
+-
+-		/* we copy differently based on the number channels */
+-		if (s->dacChannels == 1) {
+-			if (copy_from_user(db->lbuf + db->nextIn,
+-					   buffer,
+-					   copyCount)) 
+-				return -1;
+-			/* fill gaps with 0 */
+-			memset(db->lbuf + db->nextIn + copyCount,
+-			       0,
+-			       copyFragCount - copyCount);
+-		} else {
+-			/* we have demux the stream into two separate ones */
+-			if (copy_two_channel_dac_from_user(s, buffer, copyCount))
+-				return -1;
+-			/* fill gaps with 0 */
+-			memset(db->lbuf + db->nextIn + copyCount,
+-			       0,
+-			       copyFragCount - copyCount);
+-			memset(db->rbuf + db->nextIn + copyCount,
+-			       0,
+-			       copyFragCount - copyCount);
+-		}
+-
+-#if defined(VRC5477_AC97_VERBOSE_DEBUG)
+-		for (i=0; i< copyFragCount; i+= db->fragSize) {
+-			*(u16*)(db->lbuf + db->nextIn + i) = inTicket ++;
+-		}
+-#endif
+-
+-		count -= copyCount;
+-		totalCopyCount += copyCount;
+-		avail -= copyFragCount;
+-		totalCopyFragCount += copyFragCount;
+-
+-		buffer += copyCount << (s->dacChannels - 1);
+-
+-		db->nextIn += copyFragCount;
+-		if (db->nextIn >= db->fragTotalSize) {
+-			ASSERT(db->nextIn == db->fragTotalSize);
+-			db->nextIn = 0;
+-		}
+-
+-		ASSERT( (count == 0) || (copyCount == copyFragCount));
+-	}
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-        db->count += totalCopyFragCount;
+-	if (db->stopped) {
+-		start_dac(s);
+-	}
+-
+-	/* nextIn should not be equal to nextOut unless we are full */
+-	ASSERT( ( (db->count == db->fragTotalSize) && 
+-                       (db->nextIn == db->nextOut) ) ||
+-                     ( (db->count < db->fragTotalSize) &&
+-                       (db->nextIn != db->nextOut) ) );
+-
+-        spin_unlock_irqrestore(&s->lock, flags);
+-
+-        return totalCopyCount << (s->dacChannels-1);
+-
+-}
+-
+-static ssize_t vrc5477_ac97_write(struct file *file, const char *buffer,
+-				  size_t count, loff_t *ppos)
+-{
+-	struct vrc5477_ac97_state *s = 
+-		(struct vrc5477_ac97_state *)file->private_data;
+-	struct dmabuf *db = &s->dma_dac;
+-	ssize_t ret;
+-	unsigned long flags;
+-	int copyCount, avail;
+-
+-	if (!access_ok(VERIFY_READ, buffer, count))
+-		return -EFAULT;
+-	ret = 0;
+-    
+-	while (count > 0) {
+-		// wait for space in playback buffer
+-		do {
+-			spin_lock_irqsave(&s->lock, flags);
+-			avail = db->fragTotalSize - db->count;
+-			spin_unlock_irqrestore(&s->lock, flags);
+-			if (avail <= 0) {
+-				if (file->f_flags & O_NONBLOCK) {
+-					if (!ret)
+-						ret = -EAGAIN;
+-					return ret;
+-				}
+-				interruptible_sleep_on(&db->wait);
+-				if (signal_pending(current)) {
+-					if (!ret)
+-						ret = -ERESTARTSYS;
+-					return ret;
+-				}
+-			}
+-		} while (avail <= 0);
+-	
+-		copyCount = copy_dac_from_user(s, buffer, count, avail);
+-		if (copyCount < 0) {
+-			if (!ret) ret = -EFAULT;
+-			return ret;
+-		}
+-
+-		count -= copyCount;
+-		buffer += copyCount;
+-		ret += copyCount;
+-	} // while (count > 0)
+-	
+-	return ret;
+-}
+-
+-/* No kernel lock - we have our own spinlock */
+-static unsigned int vrc5477_ac97_poll(struct file *file,
+-				      struct poll_table_struct *wait)
+-{
+-	struct vrc5477_ac97_state *s = (struct vrc5477_ac97_state *)file->private_data;
+-	unsigned long flags;
+-	unsigned int mask = 0;
+-
+-	if (file->f_mode & FMODE_WRITE)
+-		poll_wait(file, &s->dma_dac.wait, wait);
+-	if (file->f_mode & FMODE_READ)
+-		poll_wait(file, &s->dma_adc.wait, wait);
+-	spin_lock_irqsave(&s->lock, flags);
+-	if (file->f_mode & FMODE_READ) {
+-		if (s->dma_adc.count >= (signed)s->dma_adc.fragSize)
+-			mask |= POLLIN | POLLRDNORM;
+-	}
+-	if (file->f_mode & FMODE_WRITE) {
+-		if ((signed)s->dma_dac.fragTotalSize >=
+-		    s->dma_dac.count + (signed)s->dma_dac.fragSize)
+-			mask |= POLLOUT | POLLWRNORM;
+-	}
+-	spin_unlock_irqrestore(&s->lock, flags);
+-	return mask;
+-}
+-
+-#ifdef VRC5477_AC97_DEBUG
+-static struct ioctl_str_t {
+-    unsigned int cmd;
+-    const char* str;
+-} ioctl_str[] = {
+-    {SNDCTL_DSP_RESET, "SNDCTL_DSP_RESET"},
+-    {SNDCTL_DSP_SYNC, "SNDCTL_DSP_SYNC"},
+-    {SNDCTL_DSP_SPEED, "SNDCTL_DSP_SPEED"},
+-    {SNDCTL_DSP_STEREO, "SNDCTL_DSP_STEREO"},
+-    {SNDCTL_DSP_GETBLKSIZE, "SNDCTL_DSP_GETBLKSIZE"},
+-    {SNDCTL_DSP_SETFMT, "SNDCTL_DSP_SETFMT"},
+-    {SNDCTL_DSP_SAMPLESIZE, "SNDCTL_DSP_SAMPLESIZE"},
+-    {SNDCTL_DSP_CHANNELS, "SNDCTL_DSP_CHANNELS"},
+-    {SOUND_PCM_WRITE_CHANNELS, "SOUND_PCM_WRITE_CHANNELS"},
+-    {SOUND_PCM_WRITE_FILTER, "SOUND_PCM_WRITE_FILTER"},
+-    {SNDCTL_DSP_POST, "SNDCTL_DSP_POST"},
+-    {SNDCTL_DSP_SUBDIVIDE, "SNDCTL_DSP_SUBDIVIDE"},
+-    {SNDCTL_DSP_SETFRAGMENT, "SNDCTL_DSP_SETFRAGMENT"},
+-    {SNDCTL_DSP_GETFMTS, "SNDCTL_DSP_GETFMTS"},
+-    {SNDCTL_DSP_GETOSPACE, "SNDCTL_DSP_GETOSPACE"},
+-    {SNDCTL_DSP_GETISPACE, "SNDCTL_DSP_GETISPACE"},
+-    {SNDCTL_DSP_NONBLOCK, "SNDCTL_DSP_NONBLOCK"},
+-    {SNDCTL_DSP_GETCAPS, "SNDCTL_DSP_GETCAPS"},
+-    {SNDCTL_DSP_GETTRIGGER, "SNDCTL_DSP_GETTRIGGER"},
+-    {SNDCTL_DSP_SETTRIGGER, "SNDCTL_DSP_SETTRIGGER"},
+-    {SNDCTL_DSP_GETIPTR, "SNDCTL_DSP_GETIPTR"},
+-    {SNDCTL_DSP_GETOPTR, "SNDCTL_DSP_GETOPTR"},
+-    {SNDCTL_DSP_MAPINBUF, "SNDCTL_DSP_MAPINBUF"},
+-    {SNDCTL_DSP_MAPOUTBUF, "SNDCTL_DSP_MAPOUTBUF"},
+-    {SNDCTL_DSP_SETSYNCRO, "SNDCTL_DSP_SETSYNCRO"},
+-    {SNDCTL_DSP_SETDUPLEX, "SNDCTL_DSP_SETDUPLEX"},
+-    {SNDCTL_DSP_GETODELAY, "SNDCTL_DSP_GETODELAY"},
+-    {SNDCTL_DSP_GETCHANNELMASK, "SNDCTL_DSP_GETCHANNELMASK"},
+-    {SNDCTL_DSP_BIND_CHANNEL, "SNDCTL_DSP_BIND_CHANNEL"},
+-    {OSS_GETVERSION, "OSS_GETVERSION"},
+-    {SOUND_PCM_READ_RATE, "SOUND_PCM_READ_RATE"},
+-    {SOUND_PCM_READ_CHANNELS, "SOUND_PCM_READ_CHANNELS"},
+-    {SOUND_PCM_READ_BITS, "SOUND_PCM_READ_BITS"},
+-    {SOUND_PCM_READ_FILTER, "SOUND_PCM_READ_FILTER"}
+-};
+-#endif    
+-
+-static int vrc5477_ac97_ioctl(struct inode *inode, struct file *file,
+-			unsigned int cmd, unsigned long arg)
+-{
+-	struct vrc5477_ac97_state *s = (struct vrc5477_ac97_state *)file->private_data;
+-	unsigned long flags;
+-	audio_buf_info abinfo;
+-	int count;
+-	int val, ret;
+-
+-#ifdef VRC5477_AC97_DEBUG
+-	for (count = 0; count < ARRAY_SIZE(ioctl_str); count++) {
+-		if (ioctl_str[count].cmd == cmd)
+-			break;
+-	}
+-	if (count < ARRAY_SIZE(ioctl_str))
+-		printk(KERN_INFO PFX "ioctl %s\n", ioctl_str[count].str);
+-	else
+-		printk(KERN_INFO PFX "ioctl unknown, 0x%x\n", cmd);
+-#endif
+-    
+-	switch (cmd) {
+-	case OSS_GETVERSION:
+-		return put_user(SOUND_VERSION, (int *)arg);
+-
+-	case SNDCTL_DSP_SYNC:
+-		if (file->f_mode & FMODE_WRITE)
+-			return drain_dac(s, file->f_flags & O_NONBLOCK);
+-		return 0;
+-		
+-	case SNDCTL_DSP_SETDUPLEX:
+-		return 0;
+-
+-	case SNDCTL_DSP_GETCAPS:
+-		return put_user(DSP_CAP_DUPLEX, (int *)arg);
+-		
+-	case SNDCTL_DSP_RESET:
+-		if (file->f_mode & FMODE_WRITE) {
+-			stop_dac(s);
+-			synchronize_irq(s->irq);
+-			s->dma_dac.count = 0;
+-			s->dma_dac.nextIn = s->dma_dac.nextOut = 0;
+-		}
+-		if (file->f_mode & FMODE_READ) {
+-			stop_adc(s);
+-			synchronize_irq(s->irq);
+-			s->dma_adc.count = 0;
+-			s->dma_adc.nextIn = s->dma_adc.nextOut = 0;
+-		}
+-		return 0;
+-
+-	case SNDCTL_DSP_SPEED:
+-		if (get_user(val, (int *)arg))
+-			return -EFAULT;
+-		if (val >= 0) {
+-			if (file->f_mode & FMODE_READ) {
+-				stop_adc(s);
+-				set_adc_rate(s, val);
+-				if ((ret = prog_dmabuf_adc(s)))
+-					return ret;
+-			}
+-			if (file->f_mode & FMODE_WRITE) {
+-				stop_dac(s);
+-				set_dac_rate(s, val);
+-				if ((ret = prog_dmabuf_dac(s)))
+-					return ret;
+-			}
+-		}
+-		return put_user((file->f_mode & FMODE_READ) ?
+-				s->adcRate : s->dacRate, (int *)arg);
+-
+-	case SNDCTL_DSP_STEREO:
+-		if (get_user(val, (int *)arg))
+-			return -EFAULT;
+-		if (file->f_mode & FMODE_READ) {
+-			stop_adc(s);
+-			if (val)
+-				s->adcChannels = 2;
+-			else
+-				s->adcChannels = 1;
+-			if ((ret = prog_dmabuf_adc(s)))
+-				return ret;
+-		}
+-		if (file->f_mode & FMODE_WRITE) {
+-			stop_dac(s);
+-			if (val)
+-				s->dacChannels = 2;
+-			else
+-				s->dacChannels = 1;
+-			if ((ret = prog_dmabuf_dac(s)))
+-				return ret;
+-		}
+-		return 0;
+-
+-	case SNDCTL_DSP_CHANNELS:
+-		if (get_user(val, (int *)arg))
+-			return -EFAULT;
+-		if (val != 0) {
+-			if ( (val != 1) && (val != 2)) val = 2;
+-
+-			if (file->f_mode & FMODE_READ) {
+-				stop_adc(s);
+-				s->dacChannels = val;
+-				if ((ret = prog_dmabuf_adc(s)))
+-					return ret;
+-			}
+-			if (file->f_mode & FMODE_WRITE) {
+-				stop_dac(s);
+-				s->dacChannels = val;
+-				if ((ret = prog_dmabuf_dac(s)))
+-					return ret;
+-			}
+-		}
+-		return put_user(val, (int *)arg);
+-		
+-	case SNDCTL_DSP_GETFMTS: /* Returns a mask */
+-		return put_user(AFMT_S16_LE, (int *)arg);
+-		
+-	case SNDCTL_DSP_SETFMT: /* Selects ONE fmt*/
+-		if (get_user(val, (int *)arg))
+-			return -EFAULT;
+-		if (val != AFMT_QUERY) {
+-			if (val != AFMT_S16_LE) return -EINVAL;
+-			if (file->f_mode & FMODE_READ) {
+-				stop_adc(s);
+-				if ((ret = prog_dmabuf_adc(s)))
+-					return ret;
+-			}
+-			if (file->f_mode & FMODE_WRITE) {
+-				stop_dac(s);
+-				if ((ret = prog_dmabuf_dac(s)))
+-					return ret;
+-			}
+-		} else {
+-			val = AFMT_S16_LE;
+-		}
+-		return put_user(val, (int *)arg);
+-		
+-	case SNDCTL_DSP_POST:
+-		return 0;
+-
+-	case SNDCTL_DSP_GETTRIGGER:
+-	case SNDCTL_DSP_SETTRIGGER:
+-		/* NO trigger */
+-		return -EINVAL;
+-
+-	case SNDCTL_DSP_GETOSPACE:
+-		if (!(file->f_mode & FMODE_WRITE))
+-			return -EINVAL;
+-		abinfo.fragsize = s->dma_dac.fragSize << (s->dacChannels-1);
+-		spin_lock_irqsave(&s->lock, flags);
+-		count = s->dma_dac.count;
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		abinfo.bytes = (s->dma_dac.fragTotalSize - count) << 
+-			(s->dacChannels-1);
+-		abinfo.fragstotal = s->dma_dac.numFrag;
+-		abinfo.fragments = abinfo.bytes >> s->dma_dac.fragShift >> 
+-			(s->dacChannels-1);      
+-		return copy_to_user((void *)arg, &abinfo, sizeof(abinfo)) ? -EFAULT : 0;
+-
+-	case SNDCTL_DSP_GETISPACE:
+-		if (!(file->f_mode & FMODE_READ))
+-			return -EINVAL;
+-		abinfo.fragsize = s->dma_adc.fragSize << (s->adcChannels-1);
+-		spin_lock_irqsave(&s->lock, flags);
+-		count = s->dma_adc.count;
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		if (count < 0)
+-			count = 0;
+-		abinfo.bytes = count << (s->adcChannels-1);
+-		abinfo.fragstotal = s->dma_adc.numFrag;
+-		abinfo.fragments = (abinfo.bytes >> s->dma_adc.fragShift) >>
+-			(s->adcChannels-1);      
+-		return copy_to_user((void *)arg, &abinfo, sizeof(abinfo)) ? -EFAULT : 0;
+-		
+-	case SNDCTL_DSP_NONBLOCK:
+-		file->f_flags |= O_NONBLOCK;
+-		return 0;
+-
+-	case SNDCTL_DSP_GETODELAY:
+-		if (!(file->f_mode & FMODE_WRITE))
+-			return -EINVAL;
+-		spin_lock_irqsave(&s->lock, flags);
+-		count = s->dma_dac.count;
+-		spin_unlock_irqrestore(&s->lock, flags);
+-		return put_user(count, (int *)arg);
+-
+-	case SNDCTL_DSP_GETIPTR:
+-	case SNDCTL_DSP_GETOPTR:
+-		/* we cannot get DMA ptr */
+-		return -EINVAL;
+-
+-	case SNDCTL_DSP_GETBLKSIZE:
+-		if (file->f_mode & FMODE_WRITE)
+-			return put_user(s->dma_dac.fragSize << (s->dacChannels-1), (int *)arg);
+-		else
+-			return put_user(s->dma_adc.fragSize << (s->adcChannels-1), (int *)arg);
+-
+-	case SNDCTL_DSP_SETFRAGMENT:
+-		/* we ignore fragment size request */
+-		return 0;
+-
+-	case SNDCTL_DSP_SUBDIVIDE:
+-		/* what is this for? [jsun] */
+-		return 0;
+-
+-	case SOUND_PCM_READ_RATE:
+-		return put_user((file->f_mode & FMODE_READ) ?
+-				s->adcRate : s->dacRate, (int *)arg);
+-
+-	case SOUND_PCM_READ_CHANNELS:
+-		if (file->f_mode & FMODE_READ)
+-			return put_user(s->adcChannels, (int *)arg);
+-		else
+-			return put_user(s->dacChannels ? 2 : 1, (int *)arg);
+-	    
+-	case SOUND_PCM_READ_BITS:
+-		return put_user(16, (int *)arg);
+-
+-	case SOUND_PCM_WRITE_FILTER:
+-	case SNDCTL_DSP_SETSYNCRO:
+-	case SOUND_PCM_READ_FILTER:
+-		return -EINVAL;
+-	}
+-
+-	return mixdev_ioctl(s->codec, cmd, arg);
+-}
+-
+-
+-static int vrc5477_ac97_open(struct inode *inode, struct file *file)
+-{
+-	int minor = iminor(inode);
+-	DECLARE_WAITQUEUE(wait, current);
+-	unsigned long flags;
+-	struct list_head *list;
+-	struct vrc5477_ac97_state *s;
+-	int ret=0;
+-
+-	nonseekable_open(inode, file);    
+-	for (list = devs.next; ; list = list->next) {
+-		if (list == &devs)
+-			return -ENODEV;
+-		s = list_entry(list, struct vrc5477_ac97_state, devs);
+-		if (!((s->dev_audio ^ minor) & ~0xf))
+-			break;
+-	}
+-	file->private_data = s;
+-
+-	/* wait for device to become free */
+-	mutex_lock(&s->open_mutex);
+-	while (s->open_mode & file->f_mode) {
+-
+-		if (file->f_flags & O_NONBLOCK) {
+-			mutex_unlock(&s->open_mutex);
+-			return -EBUSY;
+-		}
+-		add_wait_queue(&s->open_wait, &wait);
+-		__set_current_state(TASK_INTERRUPTIBLE);
+-		mutex_unlock(&s->open_mutex);
+-		schedule();
+-		remove_wait_queue(&s->open_wait, &wait);
+-		set_current_state(TASK_RUNNING);
+-		if (signal_pending(current))
+-			return -ERESTARTSYS;
+-		mutex_lock(&s->open_mutex);
+-	}
+-
+-	spin_lock_irqsave(&s->lock, flags);
+-
+-	if (file->f_mode & FMODE_READ) {
+-		/* set default settings */
+-		set_adc_rate(s, 48000);
+-		s->adcChannels = 2;
+-
+-		ret = prog_dmabuf_adc(s);
+-		if (ret) goto bailout;
+-	}
+-	if (file->f_mode & FMODE_WRITE) {
+-		/* set default settings */
+-		set_dac_rate(s, 48000);
+-		s->dacChannels = 2;
+-
+-		ret = prog_dmabuf_dac(s);
+-		if (ret) goto bailout;
+-	}
+-
+-	s->open_mode |= file->f_mode & (FMODE_READ | FMODE_WRITE);
+-
+- bailout:
+-	spin_unlock_irqrestore(&s->lock, flags);
+-
+-	mutex_unlock(&s->open_mutex);
+-	return ret;
+-}
+-
+-static int vrc5477_ac97_release(struct inode *inode, struct file *file)
+-{
+-	struct vrc5477_ac97_state *s = 
+-		(struct vrc5477_ac97_state *)file->private_data;
+-
+-	lock_kernel();
+-	if (file->f_mode & FMODE_WRITE)
+-		drain_dac(s, file->f_flags & O_NONBLOCK);
+-	mutex_lock(&s->open_mutex);
+-	if (file->f_mode & FMODE_WRITE) {
+-		stop_dac(s);
+-		dealloc_dmabuf(s, &s->dma_dac);
+-	}
+-	if (file->f_mode & FMODE_READ) {
+-		stop_adc(s);
+-		dealloc_dmabuf(s, &s->dma_adc);
+-	}
+-	s->open_mode &= (~file->f_mode) & (FMODE_READ|FMODE_WRITE);
+-	mutex_unlock(&s->open_mutex);
+-	wake_up(&s->open_wait);
+-	unlock_kernel();
+-	return 0;
+-}
+-
+-static /*const*/ struct file_operations vrc5477_ac97_audio_fops = {
+-	.owner		= THIS_MODULE,
+-	.llseek		= no_llseek,
+-	.read		= vrc5477_ac97_read,
+-	.write		= vrc5477_ac97_write,
+-	.poll		= vrc5477_ac97_poll,
+-	.ioctl		= vrc5477_ac97_ioctl,
+-	// .mmap	= vrc5477_ac97_mmap,
+-	.open		= vrc5477_ac97_open,
+-	.release	= vrc5477_ac97_release,
+-};
+-
+-
+-/* --------------------------------------------------------------------- */
+-
+-
+-/* --------------------------------------------------------------------- */
+-
+-/*
+- * for debugging purposes, we'll create a proc device that dumps the
+- * CODEC chipstate
+- */
+-
+-#ifdef VRC5477_AC97_DEBUG
+-
+-struct {
+-       const char *regname;
+-       unsigned regaddr;
+-} vrc5477_ac97_regs[] = {
+-	{"VRC5477_INT_STATUS", VRC5477_INT_STATUS},
+-	{"VRC5477_CODEC_WR", VRC5477_CODEC_WR},
+-	{"VRC5477_CODEC_RD", VRC5477_CODEC_RD},
+-	{"VRC5477_CTRL", VRC5477_CTRL},
+-	{"VRC5477_ACLINK_CTRL", VRC5477_ACLINK_CTRL},
+-	{"VRC5477_INT_MASK", VRC5477_INT_MASK},
+-	{"VRC5477_DAC1_CTRL", VRC5477_DAC1_CTRL},
+-	{"VRC5477_DAC1L", VRC5477_DAC1L},
+-	{"VRC5477_DAC1_BADDR", VRC5477_DAC1_BADDR},
+-	{"VRC5477_DAC2_CTRL", VRC5477_DAC2_CTRL},
+-	{"VRC5477_DAC2L", VRC5477_DAC2L},
+-	{"VRC5477_DAC2_BADDR", VRC5477_DAC2_BADDR},
+-	{"VRC5477_DAC3_CTRL", VRC5477_DAC3_CTRL},
+-	{"VRC5477_DAC3L", VRC5477_DAC3L},
+-	{"VRC5477_DAC3_BADDR", VRC5477_DAC3_BADDR},
+-	{"VRC5477_ADC1_CTRL", VRC5477_ADC1_CTRL},
+-	{"VRC5477_ADC1L", VRC5477_ADC1L},
+-	{"VRC5477_ADC1_BADDR", VRC5477_ADC1_BADDR},
+-	{"VRC5477_ADC2_CTRL", VRC5477_ADC2_CTRL},
+-	{"VRC5477_ADC2L", VRC5477_ADC2L},
+-	{"VRC5477_ADC2_BADDR", VRC5477_ADC2_BADDR},
+-	{"VRC5477_ADC3_CTRL", VRC5477_ADC3_CTRL},
+-	{"VRC5477_ADC3L", VRC5477_ADC3L},
+-	{"VRC5477_ADC3_BADDR", VRC5477_ADC3_BADDR},
+-	{NULL, 0x0}
+-};
+-
+-static int proc_vrc5477_ac97_dump (char *buf, char **start, off_t fpos,
+-				   int length, int *eof, void *data)
+-{
+-	struct vrc5477_ac97_state *s;
+-	int cnt, len = 0;
+-
+-	if (list_empty(&devs))
+-		return 0;
+-	s = list_entry(devs.next, struct vrc5477_ac97_state, devs);
+-
+-	/* print out header */
+-	len += sprintf(buf + len, "\n\t\tVrc5477 Audio Debug\n\n");
+-
+-	// print out digital controller state
+-	len += sprintf (buf + len, "NEC Vrc5477 Audio Controller registers\n");
+-	len += sprintf (buf + len, "---------------------------------\n");
+-	for (cnt=0; vrc5477_ac97_regs[cnt].regname != NULL; cnt++) {
+-		len+= sprintf (buf + len, "%-20s = %08x\n",
+-			       vrc5477_ac97_regs[cnt].regname,
+-			       inl(s->io + vrc5477_ac97_regs[cnt].regaddr));
+-	}
+-   
+-	/* print out driver state */
+-	len += sprintf (buf + len, "NEC Vrc5477 Audio driver states\n");
+-	len += sprintf (buf + len, "---------------------------------\n");
+-	len += sprintf (buf + len, "dacChannels  = %d\n", s->dacChannels);
+-	len += sprintf (buf + len, "adcChannels  = %d\n", s->adcChannels);
+-	len += sprintf (buf + len, "dacRate  = %d\n", s->dacRate);
+-	len += sprintf (buf + len, "adcRate  = %d\n", s->adcRate);
+-
+-	len += sprintf (buf + len, "dma_dac is %s ready\n",  
+-	                s->dma_dac.ready? "" : "not");
+-        if (s->dma_dac.ready) {
+-		len += sprintf (buf + len, "dma_dac is %s stopped.\n",  
+-	                        s->dma_dac.stopped? "" : "not");
+-		len += sprintf (buf + len, "dma_dac.fragSize = %x\n", 
+-                                s->dma_dac.fragSize);
+-		len += sprintf (buf + len, "dma_dac.fragShift = %x\n", 
+-                                s->dma_dac.fragShift);
+-		len += sprintf (buf + len, "dma_dac.numFrag = %x\n", 
+-                                s->dma_dac.numFrag);
+-		len += sprintf (buf + len, "dma_dac.fragTotalSize = %x\n", 
+-                                s->dma_dac.fragTotalSize);
+-		len += sprintf (buf + len, "dma_dac.nextIn = %x\n", 
+-                                s->dma_dac.nextIn);
+-		len += sprintf (buf + len, "dma_dac.nextOut = %x\n", 
+-                                s->dma_dac.nextOut);
+-		len += sprintf (buf + len, "dma_dac.count = %x\n", 
+-                                s->dma_dac.count);
+-	}
+-
+-	len += sprintf (buf + len, "dma_adc is %s ready\n",  
+-	                s->dma_adc.ready? "" : "not");
+-        if (s->dma_adc.ready) {
+-		len += sprintf (buf + len, "dma_adc is %s stopped.\n",  
+-	                        s->dma_adc.stopped? "" : "not");
+-		len += sprintf (buf + len, "dma_adc.fragSize = %x\n", 
+-                                s->dma_adc.fragSize);
+-		len += sprintf (buf + len, "dma_adc.fragShift = %x\n", 
+-                                s->dma_adc.fragShift);
+-		len += sprintf (buf + len, "dma_adc.numFrag = %x\n", 
+-                                s->dma_adc.numFrag);
+-		len += sprintf (buf + len, "dma_adc.fragTotalSize = %x\n", 
+-                                s->dma_adc.fragTotalSize);
+-		len += sprintf (buf + len, "dma_adc.nextIn = %x\n", 
+-                                s->dma_adc.nextIn);
+-		len += sprintf (buf + len, "dma_adc.nextOut = %x\n", 
+-                                s->dma_adc.nextOut);
+-		len += sprintf (buf + len, "dma_adc.count = %x\n", 
+-                                s->dma_adc.count);
+-	}
+-	 
+-	/* print out CODEC state */
+-	len += sprintf (buf + len, "\nAC97 CODEC registers\n");
+-	len += sprintf (buf + len, "----------------------\n");
+-	for (cnt=0; cnt <= 0x7e; cnt = cnt +2)
+-		len+= sprintf (buf + len, "reg %02x = %04x\n",
+-			       cnt, rdcodec(s->codec, cnt));
+-
+-	if (fpos >=len){
+-		*start = buf;
+-		*eof =1;
+-		return 0;
+-	}
+-	*start = buf + fpos;
+-	if ((len -= fpos) > length)
+-		return length;
+-	*eof =1;
+-	return len;
+-
+-}
+-#endif /* VRC5477_AC97_DEBUG */
+-
+-/* --------------------------------------------------------------------- */
+-
+-/* maximum number of devices; only used for command line params */
+-#define NR_DEVICE 5
+-
+-static unsigned int devindex;
+-
+-MODULE_AUTHOR("Monta Vista Software, jsun@mvista.com or jsun@junsun.net");
+-MODULE_DESCRIPTION("NEC Vrc5477 audio (AC97) Driver");
+-MODULE_LICENSE("GPL");
+-
+-static int __devinit vrc5477_ac97_probe(struct pci_dev *pcidev,
+-					const struct pci_device_id *pciid)
+-{
+-	struct vrc5477_ac97_state *s;
+-#ifdef VRC5477_AC97_DEBUG
+-	char proc_str[80];
+-#endif
+-
+-	if (pcidev->irq == 0) 
+-		return -1;
+-
+-	if (!(s = kzalloc(sizeof(struct vrc5477_ac97_state), GFP_KERNEL))) {
+-		printk(KERN_ERR PFX "alloc of device struct failed\n");
+-		return -1;
+-	}
+-
+-	init_waitqueue_head(&s->dma_adc.wait);
+-	init_waitqueue_head(&s->dma_dac.wait);
+-	init_waitqueue_head(&s->open_wait);
+-	mutex_init(&s->open_mutex);
+-	spin_lock_init(&s->lock);
+-
+-	s->dev = pcidev;
+-	s->io = pci_resource_start(pcidev, 0);
+-	s->irq = pcidev->irq;
+-	
+-	s->codec = ac97_alloc_codec();
+-
+-	s->codec->private_data = s;
+-	s->codec->id = 0;
+-	s->codec->codec_read = rdcodec;
+-	s->codec->codec_write = wrcodec;
+-	s->codec->codec_wait = waitcodec;
+-
+-	/* setting some other default values such as
+-	 * adcChannels, adcRate is done in open() so that
+-         * no persistent state across file opens.
+-	 */
+-
+-	/* test if get response from ac97, if not return */
+-        if (ac97_codec_not_present(s->codec)) {
+-		printk(KERN_ERR PFX "no ac97 codec\n");
+-		goto err_region;
+-
+-        }
+-
+-	/* test if get response from ac97, if not return */
+-        if (ac97_codec_not_present(&(s->codec))) {
+-		printk(KERN_ERR PFX "no ac97 codec\n");
+-		goto err_region;
+-
+-        }
+-
+-	if (!request_region(s->io, pci_resource_len(pcidev,0),
+-			    VRC5477_AC97_MODULE_NAME)) {
+-		printk(KERN_ERR PFX "io ports %#lx->%#lx in use\n",
+-		       s->io, s->io + pci_resource_len(pcidev,0)-1);
+-		goto err_region;
+-	}
+-	if (request_irq(s->irq, vrc5477_ac97_interrupt, IRQF_DISABLED,
+-			VRC5477_AC97_MODULE_NAME, s)) {
+-		printk(KERN_ERR PFX "irq %u in use\n", s->irq);
+-		goto err_irq;
+-	}
+-
+-	printk(KERN_INFO PFX "IO at %#lx, IRQ %d\n", s->io, s->irq);
+-
+-	/* register devices */
+-	if ((s->dev_audio = register_sound_dsp(&vrc5477_ac97_audio_fops, -1)) < 0)
+-		goto err_dev1;
+-	if ((s->codec->dev_mixer =
+-	     register_sound_mixer(&vrc5477_ac97_mixer_fops, -1)) < 0)
+-		goto err_dev2;
+-
+-#ifdef VRC5477_AC97_DEBUG
+-	/* initialize the debug proc device */
+-	s->ps = create_proc_read_entry(VRC5477_AC97_MODULE_NAME, 0, NULL,
+-				       proc_vrc5477_ac97_dump, NULL);
+-#endif /* VRC5477_AC97_DEBUG */
+-	
+-	/* enable pci io and bus mastering */
+-	if (pci_enable_device(pcidev))
+-		goto err_dev3;
+-	pci_set_master(pcidev);
+-
+-	/* cold reset the AC97 */
+-	outl(VRC5477_ACLINK_CTRL_RST_ON | VRC5477_ACLINK_CTRL_RST_TIME,
+-	     s->io + VRC5477_ACLINK_CTRL);
+-	while (inl(s->io + VRC5477_ACLINK_CTRL) & VRC5477_ACLINK_CTRL_RST_ON);
+-
+-	/* codec init */
+-	if (!ac97_probe_codec(s->codec))
+-		goto err_dev3;
+-
+-#ifdef VRC5477_AC97_DEBUG
+-	sprintf(proc_str, "driver/%s/%d/ac97", 
+-		VRC5477_AC97_MODULE_NAME, s->codec->id);
+-	s->ac97_ps = create_proc_read_entry (proc_str, 0, NULL,
+-					     ac97_read_proc, s->codec);
+-	/* TODO : why this proc file does not show up? */
+-#endif
+-
+-	/* Try to enable variable rate audio mode. */
+-	wrcodec(s->codec, AC97_EXTENDED_STATUS,
+-		rdcodec(s->codec, AC97_EXTENDED_STATUS) | AC97_EXTSTAT_VRA);
+-	/* Did we enable it? */
+-	if(rdcodec(s->codec, AC97_EXTENDED_STATUS) & AC97_EXTSTAT_VRA)
+-		s->extended_status |= AC97_EXTSTAT_VRA;
+-	else {
+-		s->dacRate = 48000;
+-		printk(KERN_INFO PFX "VRA mode not enabled; rate fixed at %d.",
+-			s->dacRate);
+-	}
+-
+-        /* let us get the default volumne louder */
+-        wrcodec(s->codec, 0x2, 0x1010);	/* master volume, middle */
+-        wrcodec(s->codec, 0xc, 0x10);		/* phone volume, middle */
+-        // wrcodec(s->codec, 0xe, 0x10);		/* misc volume, middle */
+-	wrcodec(s->codec, 0x10, 0x8000);	/* line-in 2 line-out disable */
+-        wrcodec(s->codec, 0x18, 0x0707);	/* PCM out (line out) middle */
+-
+-
+-	/* by default we select line in the input */
+-	wrcodec(s->codec, 0x1a, 0x0404);
+-	wrcodec(s->codec, 0x1c, 0x0f0f);
+-	wrcodec(s->codec, 0x1e, 0x07);
+-
+-	/* enable the master interrupt but disable all others */
+-	outl(VRC5477_INT_MASK_NMASK, s->io + VRC5477_INT_MASK);
+-
+-	/* store it in the driver field */
+-	pci_set_drvdata(pcidev, s);
+-	pcidev->dma_mask = 0xffffffff;
+-	/* put it into driver list */
+-	list_add_tail(&s->devs, &devs);
+-	/* increment devindex */
+-	if (devindex < NR_DEVICE-1)
+-		devindex++;
+-	return 0;
+-
+- err_dev3:
+-	unregister_sound_mixer(s->codec->dev_mixer);
+- err_dev2:
+-	unregister_sound_dsp(s->dev_audio);
+- err_dev1:
+-	printk(KERN_ERR PFX "cannot register misc device\n");
+-	free_irq(s->irq, s);
+- err_irq:
+-	release_region(s->io, pci_resource_len(pcidev,0));
+- err_region:
+- 	ac97_release_codec(codec);
+-	kfree(s);
+-	return -1;
+-}
+-
+-static void __devexit vrc5477_ac97_remove(struct pci_dev *dev)
+-{
+-	struct vrc5477_ac97_state *s = pci_get_drvdata(dev);
+-
+-	if (!s)
+-		return;
+-	list_del(&s->devs);
+-
+-#ifdef VRC5477_AC97_DEBUG
+-	if (s->ps)
+-		remove_proc_entry(VRC5477_AC97_MODULE_NAME, NULL);
+-#endif /* VRC5477_AC97_DEBUG */
+-
+-	synchronize_irq();
+-	free_irq(s->irq, s);
+-	release_region(s->io, pci_resource_len(dev,0));
+-	unregister_sound_dsp(s->dev_audio);
+-	unregister_sound_mixer(s->codec->dev_mixer);
+-	ac97_release_codec(s->codec);
+-	kfree(s);
+-	pci_set_drvdata(dev, NULL);
+-}
+-
+-
+-static struct pci_device_id id_table[] = {
+-    { PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_VRC5477_AC97, 
+-      PCI_ANY_ID, PCI_ANY_ID, 0, 0 },
+-    { 0, }
+-};
+-
+-MODULE_DEVICE_TABLE(pci, id_table);
+-
+-static struct pci_driver vrc5477_ac97_driver = {
+-	.name		= VRC5477_AC97_MODULE_NAME,
+-	.id_table	= id_table,
+-	.probe		= vrc5477_ac97_probe,
+-	.remove		= __devexit_p(vrc5477_ac97_remove)
+-};
+-
+-static int __init init_vrc5477_ac97(void)
+-{
+-	printk("Vrc5477 AC97 driver: version v0.2 time " __TIME__ " " __DATE__ " by Jun Sun\n");
+-	return pci_register_driver(&vrc5477_ac97_driver);
+-}
+-
+-static void __exit cleanup_vrc5477_ac97(void)
+-{
+-	printk(KERN_INFO PFX "unloading\n");
+-	pci_unregister_driver(&vrc5477_ac97_driver);
+-}
+-
+-module_init(init_vrc5477_ac97);
+-module_exit(cleanup_vrc5477_ac97);
+-

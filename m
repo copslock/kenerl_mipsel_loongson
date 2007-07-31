@@ -1,111 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jul 2007 23:02:12 +0100 (BST)
-Received: from static-72-72-73-123.bstnma.east.verizon.net ([72.72.73.123]:13674
-	"EHLO mail.sicortex.com") by ftp.linux-mips.org with ESMTP
-	id S20023029AbXG3WCJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jul 2007 23:02:09 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by mail.sicortex.com (Postfix) with ESMTP id 30B13223421;
-	Mon, 30 Jul 2007 18:01:31 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at sicortex.com
-Received: from mail.sicortex.com ([127.0.0.1])
-	by localhost (mail.sicortex.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id xU3YhFmsKKG9; Mon, 30 Jul 2007 18:01:29 -0400 (EDT)
-Received: from localhost.localdomain (gsrv020.sicortex.com [10.2.2.20])
-	by mail.sicortex.com (Postfix) with ESMTP id D6C2E21F526;
-	Mon, 30 Jul 2007 18:01:29 -0400 (EDT)
-From:	pwatkins@sicortex.com
-To:	eranian@hpl.hp.com, heiko.carstens@de.ibm.com
-Cc:	pwatkins@sicortex.com, mucci@cs.utk.edu, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	ak@suse.de, akpm@linux-foundation.org, tony.luck@intel.com,
-	avi@qumranet.com
-Subject: Re: [PATCH] MIPS: Add smp_call_function_single()
-Date:	Mon, 30 Jul 2007 18:01:29 -0400
-Message-Id: <11858328891389-git-send-email-pwatkins@sicortex.com>
-X-Mailer: git-send-email 1.4.2.4
-Return-Path: <pwatkins@sicortex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2007 01:48:00 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:44185 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20023048AbXGaAr6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Jul 2007 01:47:58 +0100
+Received: (qmail 10403 invoked by uid 511); 31 Jul 2007 00:51:49 -0000
+Received: from unknown (HELO ?192.168.2.233?) (192.168.2.233)
+  by lemote.com with SMTP; 31 Jul 2007 00:51:49 -0000
+Message-ID: <46AE8674.7020702@lemote.com>
+Date:	Tue, 31 Jul 2007 08:46:44 +0800
+From:	Songmao Tian <tiansm@lemote.com>
+User-Agent: Icedove 1.5.0.8 (X11/20061116)
+MIME-Version: 1.0
+To:	"Steven J. Hill" <sjhill@realitydiluted.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Add errno definition to pm.h
+References: <46AE05DE.1020109@lemote.com> <20070730154552.GA4937@real.realitydiluted.com>
+In-Reply-To: <20070730154552.GA4937@real.realitydiluted.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <tiansm@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15955
+X-archive-position: 15956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pwatkins@sicortex.com
+X-original-sender: tiansm@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-How about this to handle the "call yourself" semantic?
+Steven J. Hill wrote:
+> On Mon, Jul 30, 2007 at 11:38:06PM +0800, Songmao Tian wrote:
+>   
+>> commit 296699de6bdc717189a331ab6bbe90e05c94db06 add
+>> static inline int pm_suspend(suspend_state_t state) { return -ENOSYS; }
+>> which need errno definition
+>>
+>> Signed-off-by: Songmao Tian <tiansm@lemote.com>
+>>
+>> diff --git a/include/linux/pm.h b/include/linux/pm.h
+>> index e52f6f8..48b71ba 100644
+>> --- a/include/linux/pm.h
+>> +++ b/include/linux/pm.h
+>> @@ -25,6 +25,7 @@
+>>
+>> #include <linux/list.h>
+>> #include <asm/atomic.h>
+>> +#include <asm/errno.h>
+>>
+>>     
+> You should be including <linux/errno.h> which then includes the
+> architecture-specific file. This patch should be rejected.
+>
+> -Steve
+>
+>
+>
+>   
 
-In the other archs, there is more factoring of smp call code, and more care in
-the use of get_cpu(). That can be a follow-up MIPS patch.
+Oh I see:)
 
-Signed-off-by: Peter Watkins <pwatkins@sicortex.com>
 
----
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 67edfa7..33712ff 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -203,6 +203,61 @@ void smp_call_function_interrupt(void)
- 	}
- }
- 
-+int smp_call_function_single (int cpu, void (*func) (void *info), void *info, int retry,
-+			      int wait)
-+{
-+	struct call_data_struct data;
-+	int me;
-+
-+	/*
-+	 * Can die spectacularly if this CPU isn't yet marked online
-+	 */
-+	if (!cpu_online(cpu))
-+		return 0;
-+
-+	me = get_cpu();
-+	BUG_ON(!cpu_online(me));
-+
-+	if (cpu == me) {
-+		local_irq_disable()
-+		func(info);
-+		local_irq_enable();
-+		put_cpu();
-+		return 0;
-+	}
-+
-+	/* Can deadlock when called with interrupts disabled */
-+	WARN_ON(irqs_disabled());
-+
-+	data.func = func;
-+	data.info = info;
-+	atomic_set(&data.started, 0);
-+	data.wait = wait;
-+	if (wait)
-+		atomic_set(&data.finished, 0);
-+
-+	spin_lock(&smp_call_lock);
-+	call_data = &data;
-+	smp_mb();
-+
-+	/* Send a message to the other CPU */
-+	core_send_ipi(cpu, SMP_CALL_FUNCTION);
-+
-+	/* Wait for response */
-+	/* FIXME: lock-up detection, backtrace on lock-up */
-+	while (atomic_read(&data.started) != 1)
-+		barrier();
-+
-+	if (wait)
-+		while (atomic_read(&data.finished) != 1)
-+			barrier();
-+	call_data = NULL;
-+	spin_unlock(&smp_call_lock);
-+
-+	put_cpu();
-+	return 0;
-+}
-+
- static void stop_this_cpu(void *dummy)
- {
- 	/*
+Songmao Tian

@@ -1,47 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2007 15:39:12 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:37764 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20021678AbXGaOjK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Jul 2007 15:39:10 +0100
-Received: (qmail 31966 invoked by uid 511); 31 Jul 2007 14:44:10 -0000
-Received: from unknown (HELO ?192.168.2.233?) (192.168.2.233)
-  by lemote.com with SMTP; 31 Jul 2007 14:44:10 -0000
-Message-ID: <46AF4981.1090601@lemote.com>
-Date:	Tue, 31 Jul 2007 22:38:57 +0800
-From:	Songmao Tian <tiansm@lemote.com>
-User-Agent: Icedove 1.5.0.8 (X11/20061116)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jul 2007 19:49:24 +0100 (BST)
+Received: from xdsl-664.zgora.dialog.net.pl ([81.168.226.152]:23818 "EHLO
+	tuxland.pl") by ftp.linux-mips.org with ESMTP id S20021732AbXGaStS
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Jul 2007 19:49:18 +0100
+Received: from [192.168.1.3] (xdsl-664.zgora.dialog.net.pl [81.168.226.152])
+	by tuxland.pl (Postfix) with ESMTP id 01DF4D1F65;
+	Tue, 31 Jul 2007 20:47:43 +0200 (CEST)
+Received: from [192.168.1.3] (unknown [192.168.1.3])
+	by tuxland.pl (AISK); Tue, 31 Jul 2007 20:47:43 +0200 (CEST)
+From:	Mariusz Kozlowski <m.kozlowski@tuxland.pl>
+To:	linux-kernel@vger.kernel.org
+Subject: [PATCH 48] include/asm-mips/thread_info.h: kmalloc + memset conversion to kzalloc
+Date:	Tue, 31 Jul 2007 20:48:41 +0200
+User-Agent: KMail/1.9.5
+Cc:	kernel-janitors@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+References: <200707311845.48807.m.kozlowski@tuxland.pl>
+In-Reply-To: <200707311845.48807.m.kozlowski@tuxland.pl>
 MIME-Version: 1.0
-To:	linux-mips <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: [RFC] Calculate exactly how many ptr is needed for pgd
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain;
+  charset="iso-8859-2"
 Content-Transfer-Encoding: 7bit
-Return-Path: <tiansm@lemote.com>
+Content-Disposition: inline
+Message-Id: <200707312048.42172.m.kozlowski@tuxland.pl>
+Return-Path: <m.kozlowski@tuxland.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15965
+X-archive-position: 15966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiansm@lemote.com
+X-original-sender: m.kozlowski@tuxland.pl
 Precedence: bulk
 X-list: linux-mips
 
-Under 32-bit kernel with 4k page, a page is needed for a pgd,
-but when page size > 4k, a page will be too much.
+Signed-off-by: Mariusz Kozlowski <m.kozlowski@tuxland.pl>
 
-diff --git a/include/asm-mips/pgtable-32.h b/include/asm-mips/pgtable-32.h
-index 2fbd47e..2a16240 100644
---- a/include/asm-mips/pgtable-32.h
-+++ b/include/asm-mips/pgtable-32.h
-@@ -67,7 +67,8 @@ extern int add_temporary_entry(unsigned long entrylo0, 
-unsigned long entrylo1,
- #define PTE_ORDER    0
- #endif
- 
--#define PTRS_PER_PGD    ((PAGE_SIZE << PGD_ORDER) / sizeof(pgd_t))
-+/* Using a page for pgd will be a waste when page size > 4k */
-+#define PTRS_PER_PGD    (1 << (32 - PGDIR_SHIFT))
- #define PTRS_PER_PTE    ((PAGE_SIZE << PTE_ORDER) / sizeof(pte_t))
- 
- #define USER_PTRS_PER_PGD    (0x80000000UL/PGDIR_SIZE)
+ include/asm-mips/thread_info.h |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+--- linux-2.6.23-rc1-mm1-a/include/asm-mips/thread_info.h	2007-07-26 13:07:40.000000000 +0200
++++ linux-2.6.23-rc1-mm1-b/include/asm-mips/thread_info.h	2007-07-31 15:09:01.000000000 +0200
+@@ -87,9 +87,8 @@ register struct thread_info *__current_t
+ ({								\
+ 	struct thread_info *ret;				\
+ 								\
+-	ret = kmalloc(THREAD_SIZE, GFP_KERNEL);			\
+-	if (ret)						\
+-		memset(ret, 0, THREAD_SIZE);			\
++	ret = kzalloc(THREAD_SIZE, GFP_KERNEL);			\
++								\
+ 	ret;							\
+ })
+ #else

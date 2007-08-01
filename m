@@ -1,57 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 12:26:33 +0100 (BST)
-Received: from web94312.mail.in2.yahoo.com ([203.104.16.222]:57445 "HELO
-	web94312.mail.in2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20021767AbXHAL0b (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Aug 2007 12:26:31 +0100
-Received: (qmail 52714 invoked by uid 60001); 1 Aug 2007 11:26:21 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=nHAxgI4IMuw6iWyx5ugsIExOUavHotAeuZTOlUWwj9xs+zlWnzb86HUGGHcmgxEO8ak/jaElrWWRJtFk3rBm7pF12KYhyetnfFGelxQZerxrQAAb6/lSX6cuzypMC7Ih5Pm8QrrV/uBKEf0lQZLZGQReppFnjLibtr7Mx3c7vDE=;
-X-YMail-OSG: QIY7uvwVM1m_i1ZxT1jDNiTk8kQ6lTR2VJV4xMqTUIaATxXMygDCu5ZRKhWe5DwOEVSEcCkpZzwRf5Ov4ST.kYmnCg--
-Received: from [121.100.32.51] by web94312.mail.in2.yahoo.com via HTTP; Wed, 01 Aug 2007 12:26:21 BST
-Date:	Wed, 1 Aug 2007 12:26:21 +0100 (BST)
-From:	Naren chandru <naren_lin@yahoo.co.in>
-Subject: Re: tx4927 patch for linux-2.6.22.1
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070725.001433.118975997.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 12:52:34 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:32980 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021794AbXHALwc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Aug 2007 12:52:32 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l71BqWMf020439
+	for <linux-mips@linux-mips.org>; Wed, 1 Aug 2007 12:52:32 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l71BqVBG020438
+	for linux-mips@linux-mips.org; Wed, 1 Aug 2007 12:52:31 +0100
+Date:	Wed, 1 Aug 2007 12:52:31 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Modpost warning on Alchemy
+Message-ID: <20070801115231.GA20323@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <900995.51898.qm@web94312.mail.in2.yahoo.com>
-Return-Path: <naren_lin@yahoo.co.in>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15973
+X-archive-position: 15974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: naren_lin@yahoo.co.in
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+Somebody with a clue on the Alchemy stuff may want to look into this
+mostpost warning:
 
+  MODPOST vmlinux.o
+WARNING: vmlinux.o(.text+0x1e32dc): Section mismatch: reference to .init.text:add_wired_entry (between 'config_access' and 'config_write')
+  LD      vmlinux
 
+All the PCI config space accessors on Alchemy will call
+arch/mips/pci/ops-au1000.c:config_access which in turn calls add_wired_entry
+add_wired_entry in turn is an __init function so it's only a matter of
+luck if the PCI code doesn't explode on Alchemy.
 
---- Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-
-> On Mon, 23 Jul 2007 22:23:23 -0700 (PDT), naren_lin
->> Any patches is available for 2.6.22.1 
-> > kernel for tx4927 mips?
-> 
-> I could build 2.6.22.1 successfully with
-> rbhma4200_defconfig at least.
-> Exact error log?
-> 
-
-I could build it for tx4927 
+So could somebody Alchemist try to rewrite this to use ioremap() instead?
 
 Thanks,
-Naren
 
-
-
-
-      Once upon a time there was 1 GB storage in your inbox. To know the happy ending go to http://help.yahoo.com/l/in/yahoo/mail/yahoomail/tools/tools-08.html
+  Ralf

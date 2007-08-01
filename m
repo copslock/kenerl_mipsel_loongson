@@ -1,50 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 15:40:04 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:59062 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021864AbXHAOkC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Aug 2007 15:40:02 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l71Ee1Xt012923;
-	Wed, 1 Aug 2007 15:40:01 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l71Ee1WE012918;
-	Wed, 1 Aug 2007 15:40:01 +0100
-Date:	Wed, 1 Aug 2007 15:40:01 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Mohamed Bamakhrama <bamakhrama@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: cacheops.h & r4kcache.h
-Message-ID: <20070801144001.GA12840@linux-mips.org>
-References: <40378e40708010618r7a93e58br206e7c47e685a05e@mail.gmail.com> <20070801140114.GA23858@linux-mips.org> <40378e40708010713p3d866a9dva7d69132e61497d6@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <40378e40708010713p3d866a9dva7d69132e61497d6@mail.gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 16:32:17 +0100 (BST)
+Received: from outpipe-village-512-1.bc.nu ([81.2.110.250]:39556 "EHLO
+	the-village.bc.nu") by ftp.linux-mips.org with ESMTP
+	id S20021883AbXHAPcM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Aug 2007 16:32:12 +0100
+Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
+	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l71FdQX4015584;
+	Wed, 1 Aug 2007 16:39:27 +0100
+Date:	Wed, 1 Aug 2007 16:39:26 +0100
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Modpost warning on Alchemy
+Message-ID: <20070801163926.038c48db@the-village.bc.nu>
+In-Reply-To: <46B086EB.2030101@ru.mvista.com>
+References: <20070801115231.GA20323@linux-mips.org>
+	<46B07B36.1000501@ru.mvista.com>
+	<Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl>
+	<46B086EB.2030101@ru.mvista.com>
+X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.13; i386-redhat-linux-gnu)
+Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
+ Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
+ Lloegr o'r rhif cofrestru 3798903
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15984
+X-archive-position: 15985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 01, 2007 at 04:13:05PM +0200, Mohamed Bamakhrama wrote:
+On Wed, 01 Aug 2007 17:13:15 +0400
+Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
 
-> I agree with you that it fits more to real-time systems. My point was
-> that such a functionality can be added to the list of available macros
-> (i.e. Fetch, invalidate) so that when the developer (of an embedded
-> system for example) needs it, he/she can use it directly.
+> Maciej W. Rozycki wrote:
 > 
-> Is it possible to submit a patch which adds this functionality?
+> >>>So could somebody Alchemist try to rewrite this to use ioremap() instead?
+> 
+> >>   Will ioremap() work for 4 GB range? I guess not.
+> 
+> >  Of course it will.  It shall work with whatever physical address space is 
+> > supported by your MMU.  As long as the MMU is handled correctly that is, 
+> > but I guess I may have omitted this clarification as obvious.
+> 
+>     Even on a CPU with 36-bit physical address? ;-)
 
-It takes more than a small patch to add a few cacheop definitions.  Linux
-generiously uses Index cacheops and so would also blow away wired cache
-lines and that would need to be prevented.  But to answer your question,
-with these notes, yes.
-
-  Ralf
+Nope. This is one problem for example with ioremap on a Pentium Pro.

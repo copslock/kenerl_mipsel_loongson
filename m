@@ -1,59 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 13:42:05 +0100 (BST)
-Received: from 87-237-56-54.northerncolo.co.uk ([87.237.56.54]:21917 "EHLO
-	totally.trollied.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20021761AbXHAMmD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Aug 2007 13:42:03 +0100
-Received: from localhost ([127.0.0.1] helo=totally.trollied.org.uk)
-	by totally.trollied.org.uk with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.62)
-	(envelope-from <movement@totally.trollied.org.uk>)
-	id 1IGDTN-0007sU-N1; Wed, 01 Aug 2007 13:38:41 +0100
-Received: (from movement@localhost)
-	by totally.trollied.org.uk (8.13.7/8.13.7/Submit) id l71CcekF030283;
-	Wed, 1 Aug 2007 13:38:40 +0100
-Date:	Wed, 1 Aug 2007 13:38:40 +0100
-From:	John Levon <levon@movementarian.org>
-To:	Dajie Tan <jiankemeng@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>,
-	oprofile-list@lists.sourceforge.net
-Subject: Re: [PATCH][resend] add support for profiling loongson2e
-Message-ID: <20070801123840.GA29950@totally.trollied.org.uk>
-References: <20070801130109.GA5170@sw-linux.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070801130109.GA5170@sw-linux.com>
-X-Url:	http://www.movementarian.org/
-User-Agent: Mutt/1.5.9i
-Return-Path: <movement@totally.trollied.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 13:54:32 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:57093 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021817AbXHAMya (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Aug 2007 13:54:30 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id D154DE1C78;
+	Wed,  1 Aug 2007 14:53:56 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id xZ5wY530dPtM; Wed,  1 Aug 2007 14:53:56 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 806D2E1C63;
+	Wed,  1 Aug 2007 14:53:56 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l71Cs36d007343;
+	Wed, 1 Aug 2007 14:54:04 +0200
+Date:	Wed, 1 Aug 2007 13:53:59 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Modpost warning on Alchemy
+In-Reply-To: <46B07B36.1000501@ru.mvista.com>
+Message-ID: <Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl>
+References: <20070801115231.GA20323@linux-mips.org> <46B07B36.1000501@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.1/3846/Wed Aug  1 09:27:07 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15976
+X-archive-position: 15977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: levon@movementarian.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 01, 2007 at 05:01:09PM +0400, Dajie Tan wrote:
+On Wed, 1 Aug 2007, Sergei Shtylyov wrote:
 
-> diff --git a/drivers/oprofile/cpu_buffer.c b/drivers/oprofile/cpu_buffer.c
-> index a83c3db..fde9819 100644
-> --- a/drivers/oprofile/cpu_buffer.c
-> +++ b/drivers/oprofile/cpu_buffer.c
-> @@ -148,6 +148,10 @@ add_sample(struct oprofile_cpu_buffer * cpu_buf,
->             unsigned long pc, unsigned long event)
->  {
->  	struct op_sample * entry = &cpu_buf->buffer[cpu_buf->head_pos];
-> +
-> +	if(!entry)
-> +		return;
-> +
+> > So could somebody Alchemist try to rewrite this to use ioremap() instead?
+> 
+>    Will ioremap() work for 4 GB range? I guess not.
 
-Perhaps I wasn't clear. This change is unacceptable and must not be
-merged.
+ Of course it will.  It shall work with whatever physical address space is 
+supported by your MMU.  As long as the MMU is handled correctly that is, 
+but I guess I may have omitted this clarification as obvious.
 
-john
+  Maciej

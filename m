@@ -1,71 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 15:13:26 +0100 (BST)
-Received: from fk-out-0910.google.com ([209.85.128.184]:7655 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021828AbXHAONY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Aug 2007 15:13:24 +0100
-Received: by fk-out-0910.google.com with SMTP id f40so188567fka
-        for <linux-mips@linux-mips.org>; Wed, 01 Aug 2007 07:13:05 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=pqng43wNFsEnd7MqbjrTdRIw8ueJGdyKf0sJZqTIb1NbNPK6o4Cghp/rQRu376r7tX/LUNDV6N8lpVv+f/r1oMPaEfAXpbR/PNwUbCL3/gmfq7tsWVDPVaUuCBiU0RptFfE82yBVwF2iHQgC39hSreQN3lz1RJ7HIwKJ0xICJ+o=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=qa+dESB4D6xdM40wkd9K+AwGADQI7f14+iLRxgEaIAOOkHSSH6q8pgDhH61baQjggIIKlKLUqyINTnAjwsJWBVTFjdQnToCQrMSowG8/stvn3JbttCv6REW1iFnYBmDOB5EKPKo2xsTVmM8x/AKPBGce5ztUz2hNaliNcTs8w8Y=
-Received: by 10.82.134.12 with SMTP id h12mr877106bud.1185977585159;
-        Wed, 01 Aug 2007 07:13:05 -0700 (PDT)
-Received: by 10.82.148.14 with HTTP; Wed, 1 Aug 2007 07:13:05 -0700 (PDT)
-Message-ID: <40378e40708010713p3d866a9dva7d69132e61497d6@mail.gmail.com>
-Date:	Wed, 1 Aug 2007 16:13:05 +0200
-From:	"Mohamed Bamakhrama" <bamakhrama@gmail.com>
-Reply-To: bamakhrama@gmail.com
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: cacheops.h & r4kcache.h
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 15:40:04 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:59062 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021864AbXHAOkC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Aug 2007 15:40:02 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l71Ee1Xt012923;
+	Wed, 1 Aug 2007 15:40:01 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l71Ee1WE012918;
+	Wed, 1 Aug 2007 15:40:01 +0100
+Date:	Wed, 1 Aug 2007 15:40:01 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Mohamed Bamakhrama <bamakhrama@gmail.com>
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20070801140114.GA23858@linux-mips.org>
+Subject: Re: cacheops.h & r4kcache.h
+Message-ID: <20070801144001.GA12840@linux-mips.org>
+References: <40378e40708010618r7a93e58br206e7c47e685a05e@mail.gmail.com> <20070801140114.GA23858@linux-mips.org> <40378e40708010713p3d866a9dva7d69132e61497d6@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <40378e40708010618r7a93e58br206e7c47e685a05e@mail.gmail.com>
-	 <20070801140114.GA23858@linux-mips.org>
-Return-Path: <bamakhrama@gmail.com>
+In-Reply-To: <40378e40708010713p3d866a9dva7d69132e61497d6@mail.gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15983
+X-archive-position: 15984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bamakhrama@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 8/1/07, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Wed, Aug 01, 2007 at 03:18:00PM +0200, Mohamed Bamakhrama wrote:
->
-> > In those two header files, flush & invalidate operations were
-> > implemented. Nevertheless, the MIPS32 core supports cache locking as
-> > well. Is there any implementations for Fetch&Lock instructions within
-> > the kernel?
->
-> No.  The primary use for cache locking seems to be the rather extreme
-> realtime requirements, a league where Linux isn't playing quite yet.
-> For a more general purpose OS locking has a good chance of doing more
-> harm than help.
->
->   Ralf
->
+On Wed, Aug 01, 2007 at 04:13:05PM +0200, Mohamed Bamakhrama wrote:
 
-I agree with you that it fits more to real-time systems. My point was
-that such a functionality can be added to the list of available macros
-(i.e. Fetch, invalidate) so that when the developer (of an embedded
-system for example) needs it, he/she can use it directly.
+> I agree with you that it fits more to real-time systems. My point was
+> that such a functionality can be added to the list of available macros
+> (i.e. Fetch, invalidate) so that when the developer (of an embedded
+> system for example) needs it, he/she can use it directly.
+> 
+> Is it possible to submit a patch which adds this functionality?
 
-Is it possible to submit a patch which adds this functionality?
+It takes more than a small patch to add a few cacheop definitions.  Linux
+generiously uses Index cacheops and so would also blow away wired cache
+lines and that would need to be prevented.  But to answer your question,
+with these notes, yes.
 
-Regards,
-
---
-Mohamed
+  Ralf

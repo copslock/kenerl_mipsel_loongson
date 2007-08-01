@@ -1,61 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 13:58:06 +0100 (BST)
-Received: from verein.lst.de ([213.95.11.210]:54660 "EHLO mail.lst.de")
-	by ftp.linux-mips.org with ESMTP id S20021823AbXHAM6E (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Aug 2007 13:58:04 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id l71CvrA5027401
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Wed, 1 Aug 2007 14:57:53 +0200
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id l71CvrL2027399;
-	Wed, 1 Aug 2007 14:57:53 +0200
-Date:	Wed, 1 Aug 2007 14:57:53 +0200
-From:	Christoph Hellwig <hch@lst.de>
-To:	Domen Puncer <domen.puncer@telargo.com>
-Cc:	Russell King <rmk@arm.linux.org.uk>,
-	David Brownell <david-b@pacbell.net>, linuxppc-dev@ozlabs.org,
-	Christoph Hellwig <hch@lst.de>, linux-mips@linux-mips.org
-Subject: Re: Generic clk.h wrappers? [Was: Re: [PATCH 1/3] powerpc clk.h interface for platforms]
-Message-ID: <20070801125753.GB27199@lst.de>
-References: <20070711093113.GE4375@moe.telargo.com> <200707110856.58463.david-b@pacbell.net> <20070711161633.GA4846@lst.de> <200707111002.55119.david-b@pacbell.net> <20070711203454.GC2301@flint.arm.linux.org.uk> <20070713091203.GE11476@nd47.coderock.org> <20070801072807.GL4529@moe.telargo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070801072807.GL4529@moe.telargo.com>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 14:11:19 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:41820 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20021814AbXHANLR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Aug 2007 14:11:17 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 228BA3EC9; Wed,  1 Aug 2007 06:11:15 -0700 (PDT)
+Message-ID: <46B086EB.2030101@ru.mvista.com>
+Date:	Wed, 01 Aug 2007 17:13:15 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Modpost warning on Alchemy
+References: <20070801115231.GA20323@linux-mips.org> <46B07B36.1000501@ru.mvista.com> <Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15978
+X-archive-position: 15979
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 01, 2007 at 09:28:07AM +0200, Domen Puncer wrote:
-> > It doesn't make any assumption on struct clk, it's just a
-> > wrapper around functions from clk.h.
-> > Point of this patch was to abstract exported functions, since
-> > arch/powerpc/ can support multiple platfroms in one binary.
-> 
-> So... the thread just ended without any consensus, ACK or whatever.
-> 
-> Choices I see:
-> - have EXPORT_SYMBOL for clk.h functions in ie. lib/clock.c and have
->   every implemenation fill some global struct.
-> - leave this patch as it is, abstraction only for arch/powerpc/.
-> - or I can just forget about this, and leave it for the next sucker
->   who will want nicer clock handling in some driver
+Maciej W. Rozycki wrote:
 
-It seems like arm really wants this optimized to the last cycle
-and no abstraction inbetween so we're probably stuck with the status
-quo.   I'm pretty sure this will get too messy sooner and later and
-people will clean the mess up, but due to the political issues I
-don't think it's fair to put that burden on you just for submitting
-the powerpc implementation.
+>>>So could somebody Alchemist try to rewrite this to use ioremap() instead?
 
-So, please leave the patch as-is.
+>>   Will ioremap() work for 4 GB range? I guess not.
+
+>  Of course it will.  It shall work with whatever physical address space is 
+> supported by your MMU.  As long as the MMU is handled correctly that is, 
+> but I guess I may have omitted this clarification as obvious.
+
+    Even on a CPU with 36-bit physical address? ;-)
+
+>   Maciej
+
+WBR, Sergei

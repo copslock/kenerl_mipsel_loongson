@@ -1,58 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 13:21:53 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:17755 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20021798AbXHAMVv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Aug 2007 13:21:51 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 85A443EC9; Wed,  1 Aug 2007 05:21:18 -0700 (PDT)
-Message-ID: <46B07B36.1000501@ru.mvista.com>
-Date:	Wed, 01 Aug 2007 16:23:18 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Modpost warning on Alchemy
-References: <20070801115231.GA20323@linux-mips.org>
-In-Reply-To: <20070801115231.GA20323@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 13:42:05 +0100 (BST)
+Received: from 87-237-56-54.northerncolo.co.uk ([87.237.56.54]:21917 "EHLO
+	totally.trollied.org.uk") by ftp.linux-mips.org with ESMTP
+	id S20021761AbXHAMmD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Aug 2007 13:42:03 +0100
+Received: from localhost ([127.0.0.1] helo=totally.trollied.org.uk)
+	by totally.trollied.org.uk with esmtps (TLSv1:AES256-SHA:256)
+	(Exim 4.62)
+	(envelope-from <movement@totally.trollied.org.uk>)
+	id 1IGDTN-0007sU-N1; Wed, 01 Aug 2007 13:38:41 +0100
+Received: (from movement@localhost)
+	by totally.trollied.org.uk (8.13.7/8.13.7/Submit) id l71CcekF030283;
+	Wed, 1 Aug 2007 13:38:40 +0100
+Date:	Wed, 1 Aug 2007 13:38:40 +0100
+From:	John Levon <levon@movementarian.org>
+To:	Dajie Tan <jiankemeng@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>,
+	oprofile-list@lists.sourceforge.net
+Subject: Re: [PATCH][resend] add support for profiling loongson2e
+Message-ID: <20070801123840.GA29950@totally.trollied.org.uk>
+References: <20070801130109.GA5170@sw-linux.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070801130109.GA5170@sw-linux.com>
+X-Url:	http://www.movementarian.org/
+User-Agent: Mutt/1.5.9i
+Return-Path: <movement@totally.trollied.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15975
+X-archive-position: 15976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: levon@movementarian.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Wed, Aug 01, 2007 at 05:01:09PM +0400, Dajie Tan wrote:
 
-> Somebody with a clue on the Alchemy stuff may want to look into this
-> mostpost warning:
+> diff --git a/drivers/oprofile/cpu_buffer.c b/drivers/oprofile/cpu_buffer.c
+> index a83c3db..fde9819 100644
+> --- a/drivers/oprofile/cpu_buffer.c
+> +++ b/drivers/oprofile/cpu_buffer.c
+> @@ -148,6 +148,10 @@ add_sample(struct oprofile_cpu_buffer * cpu_buf,
+>             unsigned long pc, unsigned long event)
+>  {
+>  	struct op_sample * entry = &cpu_buf->buffer[cpu_buf->head_pos];
+> +
+> +	if(!entry)
+> +		return;
+> +
 
->   MODPOST vmlinux.o
-> WARNING: vmlinux.o(.text+0x1e32dc): Section mismatch: reference to .init.text:add_wired_entry (between 'config_access' and 'config_write')
->   LD      vmlinux
+Perhaps I wasn't clear. This change is unacceptable and must not be
+merged.
 
-> All the PCI config space accessors on Alchemy will call
-> arch/mips/pci/ops-au1000.c:config_access which in turn calls add_wired_entry
-> add_wired_entry in turn is an __init function so it's only a matter of
-> luck if the PCI code doesn't explode on Alchemy.
-
-> So could somebody Alchemist try to rewrite this to use ioremap() instead?
-
-    Will ioremap() work for 4 GB range? I guess not.
-    What actually needs to be done is move this code under if (first_cfg) into 
-__init function...
-
-> Thanks,
-
->   Ralf
-
-MBR, Sergei
+john

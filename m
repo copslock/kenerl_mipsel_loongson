@@ -1,85 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 17:55:14 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:25354 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021437AbXHAQzH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Aug 2007 17:55:07 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 0BD38E1C7B;
-	Wed,  1 Aug 2007 18:54:33 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Dpz2Pa28hqHp; Wed,  1 Aug 2007 18:54:32 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id B8CC4E1C66;
-	Wed,  1 Aug 2007 18:54:32 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l71Gsh9P003488;
-	Wed, 1 Aug 2007 18:54:43 +0200
-Date:	Wed, 1 Aug 2007 17:54:37 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 18:03:21 +0100 (BST)
+Received: from [81.2.110.250] ([81.2.110.250]:31156 "EHLO the-village.bc.nu")
+	by ftp.linux-mips.org with ESMTP id S20021981AbXHARDQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Aug 2007 18:03:16 +0100
+Received: from the-village.bc.nu (localhost.localdomain [127.0.0.1])
+	by the-village.bc.nu (8.13.8/8.13.8) with ESMTP id l71HAV8L015836;
+	Wed, 1 Aug 2007 18:10:31 +0100
+Date:	Wed, 1 Aug 2007 18:10:31 +0100
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: Modpost warning on Alchemy
-In-Reply-To: <46B0B6B4.5090103@ru.mvista.com>
-Message-ID: <Pine.LNX.4.64N.0708011737170.20314@blysk.ds.pg.gda.pl>
-References: <20070801115231.GA20323@linux-mips.org> <46B07B36.1000501@ru.mvista.com>
- <Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl> <46B086EB.2030101@ru.mvista.com>
- <46B0880B.2000009@ru.mvista.com> <Pine.LNX.4.64N.0708011629010.20314@blysk.ds.pg.gda.pl>
- <46B0AA74.7040100@ru.mvista.com> <Pine.LNX.4.64N.0708011708250.20314@blysk.ds.pg.gda.pl>
- <46B0B6B4.5090103@ru.mvista.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.1/3846/Wed Aug  1 09:27:07 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Message-ID: <20070801181031.390d4f3a@the-village.bc.nu>
+In-Reply-To: <Pine.LNX.4.64N.0708011737170.20314@blysk.ds.pg.gda.pl>
+References: <20070801115231.GA20323@linux-mips.org>
+	<46B07B36.1000501@ru.mvista.com>
+	<Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl>
+	<46B086EB.2030101@ru.mvista.com>
+	<46B0880B.2000009@ru.mvista.com>
+	<Pine.LNX.4.64N.0708011629010.20314@blysk.ds.pg.gda.pl>
+	<46B0AA74.7040100@ru.mvista.com>
+	<Pine.LNX.4.64N.0708011708250.20314@blysk.ds.pg.gda.pl>
+	<46B0B6B4.5090103@ru.mvista.com>
+	<Pine.LNX.4.64N.0708011737170.20314@blysk.ds.pg.gda.pl>
+X-Mailer: Claws Mail 2.9.1 (GTK+ 2.10.13; i386-redhat-linux-gnu)
+Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
+ Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
+ Lloegr o'r rhif cofrestru 3798903
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 15997
+X-archive-position: 15998
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 1 Aug 2007, Sergei Shtylyov wrote:
-
-> > And regarding what you have written above and the size issue you mentioned
-> > in another e-mail (do you map the whole PCI config space linearly in the
-> > physical address space of the CPU or suchlike?) -- PCI 
+> >    That depends on the drivers used (some IDE drivers access it really often).
 > 
->    No, I don't.  But that was why the original code preferred the wired entry
-> approach over ioremap() -- not to map a whole range...
+>  It is their problem I would say -- there is a design problem either in 
+> these drivers or the hardware handled.  The PCI spec is very explicit that 
+> the config space is meant to be seldom accessed only.  Device 
+> initialization/shutdown and bus error recovery are the normal places.
 
- So what is the issue with the size then?  How big is the area?
-
-> > config space accesses are rare (by design rather than chance), so 
-> 
->    That depends on the drivers used (some IDE drivers access it really often).
-
- It is their problem I would say -- there is a design problem either in 
-these drivers or the hardware handled.  The PCI spec is very explicit that 
-the config space is meant to be seldom accessed only.  Device 
-initialization/shutdown and bus error recovery are the normal places.
-
-> > performance is a non-issue and it should be absolutely fine for you to call
-> > ioremap() and iounmap() in code specific for your PCI host bridge for the
-> > required fragment upon every access.  There is no need for a permanent 
-> 
->    That's an idea -- however, as the currecnt code uses a cached mapping, this
-> part would certainly need to be saved in the new implementaion -- if someone
-> will go and fix it eventually. :-)
-
- Well, cached mapping does not seem particularly wise with PCI 
-configuration registers, but you have got the ioremap_cachable() call if 
-you insist. ;-)
-
-> > Well, more about Linux perhaps than MIPS in general. :-)
-> 
->    Let's say that was about Linux/MIPS.  But the key word was "wasting". ;-)
-
- I reckon the key is how you look at it. ;-)
-
-  Maciej
+An awful lot of vendors get it horribly wrong and many end up needing
+configuration space access even in IRQ handlers. Dishonourable mentions
+to ATI for example ;)

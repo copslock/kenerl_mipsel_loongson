@@ -1,47 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2007 12:10:34 +0100 (BST)
-Received: from an-out-0708.google.com ([209.85.132.248]:10999 "EHLO
-	an-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023855AbXHCLKb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 3 Aug 2007 12:10:31 +0100
-Received: by an-out-0708.google.com with SMTP id d26so142776and
-        for <linux-mips@linux-mips.org>; Fri, 03 Aug 2007 04:10:13 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=KJ6PrYDbKtfC9R0fLbtp6S1K9mXLrINMBYl9jjh3V+4YL7gO3yVQ3cR+PKzndnHzeUh+A7X7LmiiKVIx5tIIBB6K6TH0rSpOSQAsdB0ph2hBUFRcyBtK6O77r02E6qsjq40qQ5LBFv+HISHw3uDSkpdPRTyZAUVA2xVvWpRJee0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=hokuZYwWGvtvQX0mz/6PopT052p6tflKdqKsZZ423EsWn/S4PG8ncjGqMca+tIvbBTiIfNOrCVBoAQ4XFfwh+o7MPmVNjN7ClWhP7lj2fQytKIprkRA8azQ3UsSmCrEPbwlOWE3ibyGPnbLDSeFyZc65qRO2S2LOKZhOnRw1iJg=
-Received: by 10.100.112.19 with SMTP id k19mr1657098anc.1186139413048;
-        Fri, 03 Aug 2007 04:10:13 -0700 (PDT)
-Received: by 10.100.125.17 with HTTP; Fri, 3 Aug 2007 04:10:13 -0700 (PDT)
-Message-ID: <4ac2955e0708030410m5d1ec15cma1bfcc4f920dc494@mail.gmail.com>
-Date:	Fri, 3 Aug 2007 16:40:13 +0530
-From:	"mahendra varman" <mahendravarman15@gmail.com>
-To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: reg : SM722 Linux driver
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Aug 2007 13:25:29 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:39589 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023875AbXHCMZ1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 3 Aug 2007 13:25:27 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l73CPQ5E018576;
+	Fri, 3 Aug 2007 13:25:26 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l72MN7jI015704;
+	Thu, 2 Aug 2007 23:23:07 +0100
+Date:	Thu, 2 Aug 2007 23:23:07 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Alex Gonzalez <langabe@gmail.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Kernel space access to 2GB of physical memory
+Message-ID: <20070802222307.GA12056@linux-mips.org>
+References: <c58a7a270708020647q7a0c55f4l6904e864609c7304@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <mahendravarman15@gmail.com>
+In-Reply-To: <c58a7a270708020647q7a0c55f4l6904e864609c7304@mail.gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16047
+X-archive-position: 16048
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mahendravarman15@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Members
+On Thu, Aug 02, 2007 at 02:47:37PM +0100, Alex Gonzalez wrote:
 
-Iam in need of SM722 linux 2.6 or Linux 2.4 source....
+> I have a system booting the 2.6.12-rc3 32bits kernel on an RM9000
+> processor and I am trying to get my head around how to access up to
+> 2GB of physical memory with a mem=256MB command line booting
+> parameter. I read that on the MIPS kernel this is split 2GB/2GB
+> between kernel and user space, so the kernel should be able to access
+> directly 2GB of physical memory.
 
-If any members have the driver Please attach me
+No.  You assume there is nothing else in the 2GB of kernel address space.
 
-Thanks
-Mahendra
+> Kernel drivers will access the memory above 256MB using ioremaps. I
+> need it this way as the memory above 256MB will be used in special
+> ways.
+>
+> What I struggle to understand is whether it would be possible to
+> access all the memory up to 2GB using the ioremap method.
+
+Ioremap is meant to be used for MMIO regions only.
+
+> The only way I can think of achieving this would be to use ksseg and
+> dynamic TLB entries to access it in 256MB chunks. The fact that I can
+> access ksseg must mean that the kernel is not clearing the TLB entries
+> that the bootloader sets up before launching the kernel, so I would
+> expect to be able to add/remove TLB entries dynamically without
+> affecting the kernel's own memory management.
+> 
+> 1) Is there a simpler mechanism to achieve this?
+
+It's called 64-bit kernel.
+
+> 2) Any ill effect on the kernel from the method described above?
+
+You're basically reinventing high memory in an application optimized
+variant and that probably includes a similar set of problems.
+
+  Ralf

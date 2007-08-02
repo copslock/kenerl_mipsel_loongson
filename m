@@ -1,62 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2007 14:36:21 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:53004 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022115AbXHBNgS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Aug 2007 14:36:18 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id C044EE1C69;
-	Thu,  2 Aug 2007 15:35:44 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 6QQJW4ViLko8; Thu,  2 Aug 2007 15:35:44 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 76DC8E1C64;
-	Thu,  2 Aug 2007 15:35:44 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l72DZqPG026590;
-	Thu, 2 Aug 2007 15:35:52 +0200
-Date:	Thu, 2 Aug 2007 14:35:48 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Modpost warning on Alchemy
-In-Reply-To: <46B1D3CE.6070507@ru.mvista.com>
-Message-ID: <Pine.LNX.4.64N.0708021428290.22591@blysk.ds.pg.gda.pl>
-References: <20070801115231.GA20323@linux-mips.org> <46B07B36.1000501@ru.mvista.com>
- <Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl> <46B086EB.2030101@ru.mvista.com>
- <46B0880B.2000009@ru.mvista.com> <Pine.LNX.4.64N.0708011629010.20314@blysk.ds.pg.gda.pl>
- <46B0AA74.7040100@ru.mvista.com> <Pine.LNX.4.64N.0708011708250.20314@blysk.ds.pg.gda.pl>
- <46B0B6B4.5090103@ru.mvista.com> <46B0BE52.4000302@ru.mvista.com>
- <Pine.LNX.4.64N.0708021024200.22591@blysk.ds.pg.gda.pl> <46B1D3CE.6070507@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2007 14:47:58 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.188]:57077 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022119AbXHBNr4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Aug 2007 14:47:56 +0100
+Received: by fk-out-0910.google.com with SMTP id f40so449788fka
+        for <linux-mips@linux-mips.org>; Thu, 02 Aug 2007 06:47:38 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=CO9w6eamRo94O+cYQLGIGu2ZNodtPPeF3Fp1IuLpqzTCC52sILS6ylMseNkKd2HcZY34TbGQyxR4YBotEV54LbduICBpgFVp8OiPnEUIC9LEnweVakjI2kDjmGEd6nQrRWo12K9rbIKcxZTyhsK7NrDL7iodKKJqG1irLbIrGiQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=mjlFqWz5x+gghlaImWqpISUM1rgvKK8IGOAD3KZluVrew8IOUQCmgE2677T0j/A0KNDXpjIR3cYoV1ZiTaeRkcAdAoVR6C5LioJsDsPdaPvusuKiKbMG8xGDsDZLCJ8fW/wk+MgwRljK2ezdl0GuU4ku4LZDNaELXE9K715crm0=
+Received: by 10.82.178.11 with SMTP id a11mr2445434buf.1186062457934;
+        Thu, 02 Aug 2007 06:47:37 -0700 (PDT)
+Received: by 10.82.156.11 with HTTP; Thu, 2 Aug 2007 06:47:37 -0700 (PDT)
+Message-ID: <c58a7a270708020647q7a0c55f4l6904e864609c7304@mail.gmail.com>
+Date:	Thu, 2 Aug 2007 14:47:37 +0100
+From:	"Alex Gonzalez" <langabe@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: Kernel space access to 2GB of physical memory
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.1/3846/Wed Aug  1 09:27:07 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Return-Path: <langabe@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16027
+X-archive-position: 16028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: langabe@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2 Aug 2007, Sergei Shtylyov wrote:
+Hi,
 
-> > How about using a softirq then?  
-> 
->    Using softirq for what?
+I have a system booting the 2.6.12-rc3 32bits kernel on an RM9000
+processor and I am trying to get my head around how to access up to
+2GB of physical memory with a mem=256MB command line booting
+parameter. I read that on the MIPS kernel this is split 2GB/2GB
+between kernel and user space, so the kernel should be able to access
+directly 2GB of physical memory.
 
- For what you would otherwise want to do in the interrupt context.
+Kernel drivers will access the memory above 256MB using ioremaps. I
+need it this way as the memory above 256MB will be used in special
+ways.
 
- If you want an example, then please have a look at phylib, where in the 
-interrupt handler you cannot even access the interrupt status register of 
-the originating device (there may be a number of them sharing the same 
-line too), because in general it is impossible to access the MDIO bus from 
-the interrupt context.
+What I struggle to understand is whether it would be possible to
+access all the memory up to 2GB using the ioremap method.
 
-  Maciej
+The only way I can think of achieving this would be to use ksseg and
+dynamic TLB entries to access it in 256MB chunks. The fact that I can
+access ksseg must mean that the kernel is not clearing the TLB entries
+that the bootloader sets up before launching the kernel, so I would
+expect to be able to add/remove TLB entries dynamically without
+affecting the kernel's own memory management.
+
+1) Is there a simpler mechanism to achieve this?
+
+2) Any ill effect on the kernel from the method described above?
+
+Many thanks,
+Alex

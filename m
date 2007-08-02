@@ -1,64 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Aug 2007 18:07:46 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:40546 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20021981AbXHARHk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Aug 2007 18:07:40 +0100
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id BA2973EC9; Wed,  1 Aug 2007 10:07:38 -0700 (PDT)
-Message-ID: <46B0BE52.4000302@ru.mvista.com>
-Date:	Wed, 01 Aug 2007 21:09:38 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Modpost warning on Alchemy
-References: <20070801115231.GA20323@linux-mips.org> <46B07B36.1000501@ru.mvista.com> <Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl> <46B086EB.2030101@ru.mvista.com> <46B0880B.2000009@ru.mvista.com> <Pine.LNX.4.64N.0708011629010.20314@blysk.ds.pg.gda.pl> <46B0AA74.7040100@ru.mvista.com> <Pine.LNX.4.64N.0708011708250.20314@blysk.ds.pg.gda.pl> <46B0B6B4.5090103@ru.mvista.com>
-In-Reply-To: <46B0B6B4.5090103@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2007 04:44:54 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:13132 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20021437AbXHBDou (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Aug 2007 04:44:50 +0100
+Received: by mo.po.2iij.net (mo31) id l723ik1s014689; Thu, 2 Aug 2007 12:44:46 +0900 (JST)
+Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox302) id l723iiOt002957
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 2 Aug 2007 12:44:45 +0900
+Date:	Thu, 2 Aug 2007 12:44:44 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove unused pnx8550 Kconfig
+Message-Id: <20070802124444.5dda6060.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16000
+X-archive-position: 16001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Sergei Shtylyov wrote:
->>  It is still just fine with ioremap() -- it will simply use KSEG2 in 
->> this case.  You cannot bypass the TLB here with a 32-bit processor no 
->> matter what.
+Remove unused pnx8550 Kconfig
 
->>  And regarding what you have written above and the size issue you 
->> mentioned in another e-mail (do you map the whole PCI config space 
->> linearly in the physical address space of the CPU or suchlike?) -- PCI 
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
->    No, I don't.  But that was why the original code preferred the wired 
-> entry approach over ioremap() -- not to map a whole range...
-
-    Not the only one: dynamic ioremap() seems to be impossible in interrupt 
-context.
-
->> config space accesses are rare (by design rather than chance), so 
-
->    That depends on the drivers used (some IDE drivers access it really 
-> often).
-
->> performance is a non-issue and it should be absolutely fine for you to 
->> call ioremap() and iounmap() in code specific for your PCI host bridge 
->> for the required fragment upon every access.  There is no need for a 
->> permanent 
-
->    That's an idea -- however, as the currecnt code uses a cached 
-
-    No, it seems this actually is not an option. So, the path of least 
-resistence should be taken.
-
-WBR, Sergei
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
+--- mips-orig/arch/mips/Kconfig	2007-08-01 11:25:02.551361500 +0900
++++ mips/arch/mips/Kconfig	2007-08-01 11:46:19.307153750 +0900
+@@ -604,7 +604,6 @@ source "arch/mips/sibyte/Kconfig"
+ source "arch/mips/tx4927/Kconfig"
+ source "arch/mips/tx4938/Kconfig"
+ source "arch/mips/vr41xx/Kconfig"
+-source "arch/mips/philips/pnx8550/common/Kconfig"
+ 
+ endmenu
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/philips/pnx8550/common/Kconfig mips/arch/mips/philips/pnx8550/common/Kconfig
+--- mips-orig/arch/mips/philips/pnx8550/common/Kconfig	2007-08-01 11:25:03.967450000 +0900
++++ mips/arch/mips/philips/pnx8550/common/Kconfig	1970-01-01 09:00:00.000000000 +0900
+@@ -1 +0,0 @@
+-# Place holder

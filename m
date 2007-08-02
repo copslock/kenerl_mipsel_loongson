@@ -1,71 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2007 04:49:23 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:59664 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20021408AbXHBDtT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Aug 2007 04:49:19 +0100
-Received: by mo.po.2iij.net (mo31) id l723m1mt017268; Thu, 2 Aug 2007 12:48:02 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox300) id l723m0jQ001528
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 2 Aug 2007 12:48:00 +0900
-Message-Id: <200708020348.l723m0jQ001528@po-mbox300.hop.2iij.net>
-Date:	Thu, 2 Aug 2007 12:48:00 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] fix au1xxx_gpio_direction_* return value
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2007 04:56:16 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.180]:12266 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021794AbXHBD4M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Aug 2007 04:56:12 +0100
+Received: by wa-out-1112.google.com with SMTP id m16so400611waf
+        for <linux-mips@linux-mips.org>; Wed, 01 Aug 2007 20:55:53 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=ud7qtqygjYT12dxYt72qHtwfDM4+K+MVoKRd+7Hy9wLtIZc9BXTf9XfqCP14rw0vECAfFqRZ6TQQdfrWW1YdX3w03V0IvTnlYcUtXijcv/bOVFX7lE3OW/FXVz8Mq0AGVr4DqbQ/ns735/kj5U/6yqwDjRBlCcQgHMMmPATdw2g=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=PPb7U+TzksNQtB3pwPSoRr2aSeydt8R5iXNtF7mNZTfuWZmR+rHGzUaiKX1TqGAFeKmVHpe4D5oI3pKUNv1EjVD2WXEcRHXr8VldlqM5ZDxz2VYnbsDk7n+Pgdgt/d2CRb7v2JFFNYQvPWqdQRuX8IQz++aMjN+lvLyyHPfLO8Q=
+Received: by 10.114.36.1 with SMTP id j1mr1410871waj.1186026953476;
+        Wed, 01 Aug 2007 20:55:53 -0700 (PDT)
+Received: by 10.115.111.14 with HTTP; Wed, 1 Aug 2007 20:55:48 -0700 (PDT)
+Message-ID: <5861a7880708012055g5350b09akc610dd84cf63c5a2@mail.gmail.com>
+Date:	Thu, 2 Aug 2007 07:55:48 +0400
+From:	"Dajie Tan" <jiankemeng@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>, Ralf <ralf@linux-mips.org>
+Subject: Fwd: [RFC] Calculate exactly how many ptr is needed for pgd
+In-Reply-To: <5861a7880708012054u404c9b02s7141d1811d4a7fdf@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+References: <46AF4981.1090601@lemote.com>
+	 <5861a7880708012054u404c9b02s7141d1811d4a7fdf@mail.gmail.com>
+Return-Path: <jiankemeng@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16002
+X-archive-position: 16003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: jiankemeng@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Fix au1xxx_gpio_direction_* return value.
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/au1000/common/gpio.c mips/arch/mips/au1000/common/gpio.c
---- mips-orig/arch/mips/au1000/common/gpio.c	2007-08-02 10:49:14.849705000 +0900
-+++ mips/arch/mips/au1000/common/gpio.c	2007-08-02 10:49:35.158974250 +0900
-@@ -131,12 +131,12 @@ int au1xxx_gpio_direction_input(unsigned
- {
- 	if (gpio >= AU1XXX_GPIO_BASE)
- #if defined(CONFIG_SOC_AU1000)
--		;
-+		return -ENODEV;
- #else
- 		return au1xxx_gpio2_direction_input(gpio);
- #endif
--	else
--		return au1xxx_gpio1_direction_input(gpio);
-+
-+	return au1xxx_gpio1_direction_input(gpio);
- }
- 
- EXPORT_SYMBOL(au1xxx_gpio_direction_input);
-@@ -145,12 +145,12 @@ int au1xxx_gpio_direction_output(unsigne
- {
- 	if (gpio >= AU1XXX_GPIO_BASE)
- #if defined(CONFIG_SOC_AU1000)
--		;
-+		return -ENODEV;
- #else
- 		return au1xxx_gpio2_direction_output(gpio, value);
- #endif
--	else
--		return au1xxx_gpio1_direction_output(gpio, value);
-+
-+	return au1xxx_gpio1_direction_output(gpio, value);
- }
- 
- EXPORT_SYMBOL(au1xxx_gpio_direction_output);
+SXQgd29ya3Mgd2VsbC4gSWYgSSBzdGFydCB4b3JnK3hmY2UsIGl0IGNhbiBzYXZlIDIuNU1CIG1l
+bW9yeSBpbiBteSBzeXN0ZW0uCgpUaGFua3MsIHNvbmdtYW8uCgoyMDA3LzcvMzEsIFNvbmdtYW8g
+VGlhbiA8dGlhbnNtQGxlbW90ZS5jb20+Ogo+IFVuZGVyIDMyLWJpdCBrZXJuZWwgd2l0aCA0ayBw
+YWdlLCBhIHBhZ2UgaXMgbmVlZGVkIGZvciBhIHBnZCwKPiBidXQgd2hlbiBwYWdlIHNpemUgPiA0
+aywgYSBwYWdlIHdpbGwgYmUgdG9vIG11Y2guCj4KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9hc20t
+bWlwcy9wZ3RhYmxlLTMyLmggYi9pbmNsdWRlL2FzbS1taXBzL3BndGFibGUtMzIuaAo+IGluZGV4
+IDJmYmQ0N2UuLjJhMTYyNDAgMTAwNjQ0Cj4gLS0tIGEvaW5jbHVkZS9hc20tbWlwcy9wZ3RhYmxl
+LTMyLmgKPiArKysgYi9pbmNsdWRlL2FzbS1taXBzL3BndGFibGUtMzIuaAo+IEBAIC02Nyw3ICs2
+Nyw4IEBAIGV4dGVybiBpbnQgYWRkX3RlbXBvcmFyeV9lbnRyeSh1bnNpZ25lZCBsb25nIGVudHJ5
+bG8wLAo+IHVuc2lnbmVkIGxvbmcgZW50cnlsbzEsCj4gICNkZWZpbmUgUFRFX09SREVSICAgIDAK
+PiAgI2VuZGlmCj4KPiAtI2RlZmluZSBQVFJTX1BFUl9QR0QgICAgKChQQUdFX1NJWkUgPDwgUEdE
+X09SREVSKSAvIHNpemVvZihwZ2RfdCkpCj4gKy8qIFVzaW5nIGEgcGFnZSBmb3IgcGdkIHdpbGwg
+YmUgYSB3YXN0ZSB3aGVuIHBhZ2Ugc2l6ZSA+IDRrICovCj4gKyNkZWZpbmUgUFRSU19QRVJfUEdE
+ICAgICgxIDw8ICgzMiAtIFBHRElSX1NISUZUKSkKPiAgI2RlZmluZSBQVFJTX1BFUl9QVEUgICAg
+KChQQUdFX1NJWkUgPDwgUFRFX09SREVSKSAvIHNpemVvZihwdGVfdCkpCj4KPiAgI2RlZmluZSBV
+U0VSX1BUUlNfUEVSX1BHRCAgICAoMHg4MDAwMDAwMFVML1BHRElSX1NJWkUpCj4KPgoKCi0tIArk
+uLrlpKnlnLDnq4vlv4MK5Li655Sf5rCR56uL5ZG9CuS4uuW+gOWco+e7p+e7neWtpgrkuLrkuIfk
+uJblvIDlpKrlubMK

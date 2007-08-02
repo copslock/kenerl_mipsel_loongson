@@ -1,76 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2007 09:06:36 +0100 (BST)
-Received: from smtp1.int-evry.fr ([157.159.10.44]:64419 "EHLO
-	smtp1.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20021917AbXHBIGd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Aug 2007 09:06:33 +0100
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id 67B438E6588;
-	Thu,  2 Aug 2007 10:05:42 +0200 (CEST)
-Received: from ibook.lan (mla78-1-82-240-17-188.fbx.proxad.net [82.240.17.188])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 3E5B2D0E315;
-	Thu,  2 Aug 2007 10:05:42 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Subject: Re: [PATCH][MIPS] fix au1xxx_gpio_direction_* return value
-Date:	Thu, 2 Aug 2007 10:05:39 +0200
-User-Agent: KMail/1.9.7
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-References: <200708020348.l723m0jQ001528@po-mbox300.hop.2iij.net>
-In-Reply-To: <200708020348.l723m0jQ001528@po-mbox300.hop.2iij.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Aug 2007 10:14:53 +0100 (BST)
+Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:7945 "EHLO
+	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021941AbXHBJOv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Aug 2007 10:14:51 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 70288E1C78;
+	Thu,  2 Aug 2007 11:14:48 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
+Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
+	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id nnmlz6XyWO1I; Thu,  2 Aug 2007 11:14:48 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 1DCE6E1C66;
+	Thu,  2 Aug 2007 11:14:48 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l729EqxN030127;
+	Thu, 2 Aug 2007 11:14:53 +0200
+Date:	Thu, 2 Aug 2007 10:14:49 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Modpost warning on Alchemy
+In-Reply-To: <46B0BD99.6070901@ru.mvista.com>
+Message-ID: <Pine.LNX.4.64N.0708020945020.22591@blysk.ds.pg.gda.pl>
+References: <20070801115231.GA20323@linux-mips.org> <46B07B36.1000501@ru.mvista.com>
+ <Pine.LNX.4.64N.0708011337390.20314@blysk.ds.pg.gda.pl> <46B086EB.2030101@ru.mvista.com>
+ <46B0880B.2000009@ru.mvista.com> <Pine.LNX.4.64N.0708011629010.20314@blysk.ds.pg.gda.pl>
+ <46B0AA74.7040100@ru.mvista.com> <Pine.LNX.4.64N.0708011708250.20314@blysk.ds.pg.gda.pl>
+ <46B0B6B4.5090103@ru.mvista.com> <Pine.LNX.4.64N.0708011737170.20314@blysk.ds.pg.gda.pl>
+ <46B0BD99.6070901@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart13039651.UYDCJJmYjm";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200708021005.40371.florian.fainelli@telecomint.eu>
-X-int-MailScanner-Information: Please contact the ISP for more information
-X-int-MailScanner: Found to be clean
-X-int-MailScanner-SpamCheck: n'est pas un polluriel,
-	SpamAssassin (pas en cache, score=-0.305, requis 4.01, AWL -0.30)
-X-int-MailScanner-From:	florian.fainelli@telecomint.eu
-Return-Path: <florian.fainelli@telecomint.eu>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.1/3846/Wed Aug  1 09:27:07 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16004
+X-archive-position: 16005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---nextPart13039651.UYDCJJmYjm
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+On Wed, 1 Aug 2007, Sergei Shtylyov wrote:
 
-Hello Yoichi,
+> > So what is the issue with the size then?  How big is the area?
+> 
+>    I've already said: 4 gigs! At least in theory, actually it's 2 gigs due to
 
-Thanks for fixing this.
+ Oh, I mistook it for the base physical address, sorry.
 
-Le jeudi 2 ao=FBt 2007, Yoichi Yuasa a =E9crit=A0:
-> Fix au1xxx_gpio_direction_* return value.
->
-> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
->
-Acked-by: Florian Fainelli <florian.fainelli@telecomint.eu>
+> a device # being limited to 0 thru 19 (address bits 11 thru 30 are used as
+> IDSELx).
 
---nextPart13039651.UYDCJJmYjm
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
+ It does not help too much with a 32-bit virtual address space indeed.  
+Though I gather it has to be very sparsely populated as 16MiB is enough to 
+cover the whole configuration space of a single PCI bus tree.  Thus it has 
+to be another example where the chip designer "forgot" to talk to software 
+people.  Or a shifter was traded for software performance and complexity. 
+;-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.5 (GNU/Linux)
+>    I meant that the implementation "caches" the 8 KiB mapping used for the
+> last config. access.
 
-iD8DBQBGsZBUmx9n1G/316sRAtB6AKCNCOdD3LorAHBoU0u6jYhZ2V6OJQCeJkVe
-I3EoCIWIywqes5fiDQeUO7A=
-=XPGn
------END PGP SIGNATURE-----
+ Ah, that can certainly be done with ioremap().
 
---nextPart13039651.UYDCJJmYjm--
+>    There was no need to tell me about how KSEG0/1/2 work -- that's why I
+> cosidered it wasting time. :-)
+
+ As I say -- the key is how you look at it.  There are other readers on 
+the list who may benefit; it is archived too.  In this sense I can hardly 
+consider it a waste of time.  And it was fun to explain and no fun shall 
+be ever considered of no use. :-)
+
+  Maciej

@@ -1,38 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Aug 2007 14:58:34 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:39398 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20024437AbXHDN6c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 4 Aug 2007 14:58:32 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l74DwWR1005620;
-	Sat, 4 Aug 2007 14:58:32 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l74DwV6U005619;
-	Sat, 4 Aug 2007 14:58:31 +0100
-Date:	Sat, 4 Aug 2007 14:58:31 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	John Crispin <john@phrozen.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH][au1x00/mtx1] - usb power switch
-Message-ID: <20070804135831.GA5426@linux-mips.org>
-References: <46B3A543.5020007@phrozen.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46B3A543.5020007@phrozen.org>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Aug 2007 15:26:16 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:54062 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20024440AbXHDO0N (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 4 Aug 2007 15:26:13 +0100
+Received: by mo.po.2iij.net (mo30) id l74EOt47066352; Sat, 4 Aug 2007 23:24:55 +0900 (JST)
+Received: from localhost.localdomain (231.26.30.125.dy.iij4u.or.jp [125.30.26.231])
+	by mbox.po.2iij.net (po-mbox302) id l74EOpmN023783
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 4 Aug 2007 23:24:51 +0900
+Date:	Sat, 4 Aug 2007 23:24:51 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove unneeded sni_machine_halt
+Message-Id: <20070804232451.14382e50.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16060
+X-archive-position: 16061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Aug 03, 2007 at 11:59:31PM +0200, John Crispin wrote:
+Remove unneeded sni_machine_halt
 
-Patch doesn't apply.
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/sni/reset.c mips/arch/mips/sni/reset.c
+--- mips-orig/arch/mips/sni/reset.c	2007-08-04 16:17:56.532228000 +0900
++++ mips/arch/mips/sni/reset.c	2007-08-04 16:23:31.429157750 +0900
+@@ -40,10 +40,6 @@ void sni_machine_restart(char *command)
+ 	}
+ }
+ 
+-void sni_machine_halt(void)
+-{
+-}
+-
+ void sni_machine_power_off(void)
+ {
+ 	*(volatile unsigned char *)PCIMT_CSWCSM = 0xfd;
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/sni/setup.c mips/arch/mips/sni/setup.c
+--- mips-orig/arch/mips/sni/setup.c	2007-08-04 16:17:56.532228000 +0900
++++ mips/arch/mips/sni/setup.c	2007-08-04 16:23:41.309775250 +0900
+@@ -26,7 +26,6 @@
+ unsigned int sni_brd_type;
+ 
+ extern void sni_machine_restart(char *command);
+-extern void sni_machine_halt(void);
+ extern void sni_machine_power_off(void);
+ 
+ static void __init sni_display_setup(void)
+@@ -87,7 +86,6 @@ void __init plat_mem_setup(void)
+ 	}
+ 
+ 	_machine_restart = sni_machine_restart;
+-	_machine_halt = sni_machine_halt;
+ 	pm_power_off = sni_machine_power_off;
+ 
+ 	sni_display_setup();

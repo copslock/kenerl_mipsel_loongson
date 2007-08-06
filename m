@@ -1,48 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 19:17:09 +0100 (BST)
-Received: from nbd.name ([88.198.39.176]:49351 "EHLO ds10.mine.nu")
-	by ftp.linux-mips.org with ESMTP id S20021633AbXHFSRG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2007 19:17:06 +0100
-Received: from e177167218.adsl.alicedsl.de ([85.177.167.218] helo=dhcp-242.hh.ccc.de)
-	by ds10.mine.nu with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.63)
-	(envelope-from <nbd@openwrt.org>)
-	id 1II76m-0005Q2-5k; Mon, 06 Aug 2007 20:15:12 +0200
-Message-ID: <46B764D3.2030402@openwrt.org>
-Date:	Mon, 06 Aug 2007 20:13:39 +0200
-From:	Felix Fietkau <nbd@openwrt.org>
-User-Agent: Thunderbird 2.0.0.6 (Macintosh/20070728)
-MIME-Version: 1.0
-To:	Michael Buesch <mb@bu3sch.de>
-CC:	Aurelien Jarno <aurelien@aurel32.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 19:28:13 +0100 (BST)
+Received: from static-ip-62-75-166-246.inaddr.intergenia.de ([62.75.166.246]:32745
+	"EHLO vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
+	id S20021633AbXHFS2L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Aug 2007 19:28:11 +0100
+Received: from t000e.t.pppool.de ([89.55.0.14] helo=pbook.local)
+	by vs166246.vserver.de with esmtpa (Exim 4.50)
+	id 1II7GG-00042T-6E; Mon, 06 Aug 2007 20:25:00 +0200
+From:	Michael Buesch <mb@bu3sch.de>
+To:	Felix Fietkau <nbd@openwrt.org>
+Subject: Re: [PATCH -mm 3/4] MIPS: Add BCM947XX to Kconfig
+Date:	Mon, 6 Aug 2007 20:24:53 +0200
+User-Agent: KMail/1.9.6
+Cc:	Aurelien Jarno <aurelien@aurel32.net>,
 	Andrew Morton <akpm@osdl.org>, linux-mips@linux-mips.org,
 	Waldemar Brodkorb <wbx@openwrt.org>,
 	Florian Schirmer <jolt@tuxbox.org>
-Subject: Re: [PATCH -mm 3/4] MIPS: Add BCM947XX to Kconfig
-References: <20070806150931.GH24308@hall.aurel32.net> <200708062009.14971.mb@bu3sch.de>
-In-Reply-To: <200708062009.14971.mb@bu3sch.de>
-Content-Type: text/plain; charset=ISO-8859-15
+References: <20070806150931.GH24308@hall.aurel32.net> <200708062009.14971.mb@bu3sch.de> <46B764D3.2030402@openwrt.org>
+In-Reply-To: <46B764D3.2030402@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-15"
 Content-Transfer-Encoding: 7bit
-Return-Path: <nbd@openwrt.org>
+Content-Disposition: inline
+Message-Id: <200708062024.53952.mb@bu3sch.de>
+Return-Path: <mb@bu3sch.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16082
+X-archive-position: 16083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nbd@openwrt.org
+X-original-sender: mb@bu3sch.de
 Precedence: bulk
 X-list: linux-mips
 
-Michael Buesch wrote:
+On Monday 06 August 2007, Felix Fietkau wrote:
+> Michael Buesch wrote:
+> 
+> > Shouldn't we leave the PCICORE an option instead of force selecting
+> > it here?
+> > My WRT54G doesn't have a (usable) PCI core. So it would work
+> > without the driver for it.
+> > Especially on the small WAP54G disabling PCIcore support could
+> > be useful to reduce the kernel size.
+> Yeah, leave it as an option, but I think a 'default y if BCM947XX' on
+> the PCICORE option would be reasonable, since many 47xx devices do have pci.
 
-> Shouldn't we leave the PCICORE an option instead of force selecting
-> it here?
-> My WRT54G doesn't have a (usable) PCI core. So it would work
-> without the driver for it.
-> Especially on the small WAP54G disabling PCIcore support could
-> be useful to reduce the kernel size.
-Yeah, leave it as an option, but I think a 'default y if BCM947XX' on
-the PCICORE option would be reasonable, since many 47xx devices do have pci.
-
-- Felix
+Yeah, probably a good idea.

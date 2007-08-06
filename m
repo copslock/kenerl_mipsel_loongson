@@ -1,71 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 16:12:49 +0100 (BST)
-Received: from hall.aurel32.net ([88.191.38.19]:30851 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20026192AbXHFPMq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2007 16:12:46 +0100
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.63)
-	(envelope-from <aurel32@hall.aurel32.net>)
-	id 1II4D6-0006SF-1F; Mon, 06 Aug 2007 17:09:32 +0200
-Date:	Mon, 6 Aug 2007 17:09:31 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
-To:	Andrew Morton <akpm@osdl.org>, linux-mips@linux-mips.org
-Cc:	Michael Buesch <mb@bu3sch.de>, Waldemar Brodkorb <wbx@openwrt.org>,
-	Felix Fietkau <nbd@openwrt.org>,
-	Florian Schirmer <jolt@tuxbox.org>
-Subject: [PATCH -mm 3/4] MIPS: Add BCM947XX to Kconfig
-Message-ID: <20070806150931.GH24308@hall.aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 18:45:30 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:46267 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021395AbXHFRp2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 6 Aug 2007 18:45:28 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l76HjQ45004444;
+	Mon, 6 Aug 2007 18:45:27 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l76HjPqF004443;
+	Mon, 6 Aug 2007 18:45:25 +0100
+Date:	Mon, 6 Aug 2007 18:45:25 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] vr41xx: add cpu_wait
+Message-ID: <20070806174525.GA11275@linux-mips.org>
+References: <20070807000917.6bbd2c19.yoichi_yuasa@tripeaks.co.jp>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: Mutt 1.5.13 (2006-08-11)
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <aurel32@hall.aurel32.net>
+In-Reply-To: <20070807000917.6bbd2c19.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16077
+X-archive-position: 16078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-The patch below against 2.6.23-rc1-mm2 adds a BCM947XX option to 
-Kconfig.
+On Tue, Aug 07, 2007 at 12:09:17AM +0900, Yoichi Yuasa wrote:
 
-Cc: Michael Buesch <mb@bu3sch.de>
-Cc: Waldemar Brodkorb <wbx@openwrt.org>
-Cc: Felix Fietkau <nbd@openwrt.org>
-Cc: Florian Schirmer <jolt@tuxbox.org>
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+> Add cpu_wait for NEC VR41xx
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -38,6 +38,22 @@
- 	  Lemote Fulong mini-PC board based on the Chinese Loongson-2E CPU and
- 	  an FPGA northbridge
- 
-+config BCM947XX
-+	bool "Support for BCM947xx based boards"
-+	select DMA_NONCOHERENT
-+	select HW_HAS_PCI
-+	select IRQ_CPU
-+	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SSB
-+	select SSB_SERIAL
-+	select SSB_DRIVER_PCICORE
-+	select SSB_PCICORE_HOSTMODE
-+	select GENERIC_GPIO
-+	help
-+	 Support for BCM947xx based boards
-+
- config MACH_ALCHEMY
- 	bool "Alchemy processor based machines"
- 
--- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+Queued for 2.6.24.
+
+Thanks,
+
+  Ralf
+
+PS: I take it you've verified that using the standby instruction with
+    interrupts is safe on VR41xx?  There are alot of architectural
+    restrictions in that area.

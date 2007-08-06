@@ -1,89 +1,174 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 21:22:14 +0100 (BST)
-Received: from static-ip-62-75-166-246.inaddr.intergenia.de ([62.75.166.246]:1747
-	"EHLO vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
-	id S20022086AbXHFUWM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Aug 2007 21:22:12 +0100
-Received: from t000e.t.pppool.de ([89.55.0.14] helo=powermac.local)
-	by vs166246.vserver.de with esmtpa (Exim 4.50)
-	id 1II92e-0006tb-L4; Mon, 06 Aug 2007 22:19:04 +0200
-From:	Michael Buesch <mb@bu3sch.de>
-To:	Aurelien Jarno <aurelien@aurel32.net>
-Subject: Re: [PATCH -mm 3/4] MIPS: Add BCM947XX to Kconfig (v2)
-Date:	Mon, 6 Aug 2007 22:18:27 +0200
-User-Agent: KMail/1.9.6
-Cc:	Felix Fietkau <nbd@openwrt.org>, Andrew Morton <akpm@osdl.org>,
-	linux-mips@linux-mips.org, Waldemar Brodkorb <wbx@openwrt.org>,
-	Florian Schirmer <jolt@tuxbox.org>
-References: <20070806150931.GH24308@hall.aurel32.net> <200708062024.53952.mb@bu3sch.de> <20070806201650.GA4645@hall.aurel32.net>
-In-Reply-To: <20070806201650.GA4645@hall.aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 21:27:54 +0100 (BST)
+Received: from mailgate01.ni.ber.native-instruments.com ([85.158.2.40]:5058
+	"EHLO mailgate01.ni.ber.native-instruments.com") by ftp.linux-mips.org
+	with ESMTP id S20021997AbXHFU1v (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2007 21:27:51 +0100
+Received: (qmail 6856 invoked from network); 6 Aug 2007 20:26:43 -0000
+Received: from unknown (HELO florian-schirmers-computer.local) (florian.schirmer@[88.73.95.215])
+          (envelope-sender <jolt@tuxbox.org>)
+          by 192.168.2.11 (qmail-ldap-1.03) with SMTP
+          for <aurelien@aurel32.net>; 6 Aug 2007 20:26:43 -0000
+Message-ID: <46B78404.1020908@tuxbox.org>
+Date:	Mon, 06 Aug 2007 22:26:44 +0200
+From:	Florian Schirmer <jolt@tuxbox.org>
+User-Agent: Thunderbird 2.0.0.6 (Macintosh/20070728)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-15"
+To:	Aurelien Jarno <aurelien@aurel32.net>
+CC:	Andrew Morton <akpm@osdl.org>, linux-mips@linux-mips.org,
+	Michael Buesch <mb@bu3sch.de>,
+	Waldemar Brodkorb <wbx@openwrt.org>,
+	Felix Fietkau <nbd@openwrt.org>
+Subject: Re: [PATCH -mm 1/4] MIPS: Detect BCM947xx CPUs
+References: <20070806150821.GF24308@hall.aurel32.net>
+In-Reply-To: <20070806150821.GF24308@hall.aurel32.net>
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200708062218.27783.mb@bu3sch.de>
-Return-Path: <mb@bu3sch.de>
+Return-Path: <jolt@tuxbox.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16091
+X-archive-position: 16092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mb@bu3sch.de
+X-original-sender: jolt@tuxbox.org
 Precedence: bulk
 X-list: linux-mips
 
-On Monday 06 August 2007 22:16:50 Aurelien Jarno wrote:
-> The patch below against 2.6.23-rc1-mm2 adds a BCM947XX option to 
-> Kconfig and modify the SSB Kconfig to select SSB_PCICORE_HOSTMODE by
-> default with BCM947XX CPUs.
-> 
+Hi,
+
+Aurelien Jarno wrote:
+> The patch below against 2.6.23-rc1-mm2 adds a few constants for BCM947xx
+> CPUs and detect them in cpu-probe.c and tlbex.c. Note that the BCM4710 
+> does not support the wait instruction, this is not a mistake in the 
+> code.
+>
+> This part is not dependent of other patches (though useless without 
+> them), and could already be merged in the current linux-mips git tree.
+>
 > Cc: Michael Buesch <mb@bu3sch.de>
 > Cc: Waldemar Brodkorb <wbx@openwrt.org>
 > Cc: Felix Fietkau <nbd@openwrt.org>
 > Cc: Florian Schirmer <jolt@tuxbox.org>
 > Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+>
+>   
 
-Acked-by: Michael Buesch <mb@bu3sch.de>
+Looks good.
 
-> 
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -67,6 +67,20 @@
->  	  note that a kernel built with this option selected will not be
->  	  able to run on normal units.
+Acked-by: Florian Schirmer <jolt@tuxbox.org>
+
+Best,
+  Florian
+
+
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -159,6 +159,7 @@
+>  	case CPU_5KC:
+>  	case CPU_25KF:
+>  	case CPU_PR4450:
+> +	case CPU_BCM3302:
+>  		cpu_wait = r4k_wait;
+>  		break;
 >  
-> +config BCM947XX
-> +	bool "BCM947xx based boards"
-> +	select DMA_NONCOHERENT
-> +	select HW_HAS_PCI
-> +	select IRQ_CPU
-> +	select SYS_HAS_CPU_MIPS32_R1
-> +	select SYS_SUPPORTS_32BIT_KERNEL
-> +	select SYS_SUPPORTS_LITTLE_ENDIAN
-> +	select SSB
-> +	select SSB_DRIVER_MIPS
-> +	select GENERIC_GPIO
-> +	help
-> +	 Support for BCM947xx based boards
+> @@ -786,6 +787,22 @@
+>  }
+>  
+>  
+> +static inline void cpu_probe_broadcom(struct cpuinfo_mips *c)
+> +{
+> +	decode_configs(c);
+> +	switch (c->processor_id & 0xff00) {
+> +	case PRID_IMP_BCM3302:
+> +		c->cputype = CPU_BCM3302;
+> +		break;
+> +	case PRID_IMP_BCM4710:
+> +		c->cputype = CPU_BCM4710;
+> +		break;
+> +	default:
+> +		c->cputype = CPU_UNKNOWN;
+> +		break;
+> +	}
+> +}
 > +
->  config MIPS_COBALT
->  	bool "Cobalt Server"
->  	select DMA_NONCOHERENT
-> --- a/drivers/ssb/Kconfig
-> +++ b/drivers/ssb/Kconfig
-> @@ -67,6 +67,7 @@
->  config SSB_PCICORE_HOSTMODE
->  	bool "Hostmode support for SSB PCI core"
->  	depends on SSB_DRIVER_PCICORE && SSB_DRIVER_MIPS
-> +	default y if BCM947XX
->  	help
->  	  PCIcore hostmode operation (external PCI bus).
+>  __init void cpu_probe(void)
+>  {
+>  	struct cpuinfo_mips *c = &current_cpu_data;
+> @@ -808,6 +825,9 @@
+>  	case PRID_COMP_SIBYTE:
+>  		cpu_probe_sibyte(c);
+>  		break;
+> +	case PRID_COMP_BROADCOM:
+> +		cpu_probe_broadcom(c);
+> +		break;
+>  	case PRID_COMP_SANDCRAFT:
+>  		cpu_probe_sandcraft(c);
+>  		break;
+> --- a/arch/mips/kernel/proc.c	
+> +++ b/arch/mips/kernel/proc.c
+> @@ -82,6 +82,8 @@
+>  	[CPU_VR4181]	= "NEC VR4181",
+>  	[CPU_VR4181A]	= "NEC VR4181A",
+>  	[CPU_SR71000]	= "Sandcraft SR71000",
+> +	[CPU_BCM3302]	= "Broadcom BCM3302",
+> +	[CPU_BCM4710]	= "Broadcom BCM4710",
+>  	[CPU_PR4450]	= "Philips PR4450",
+>  	[CPU_LOONGSON2]	= "ICT Loongson-2",
+>  };
+> --- a/arch/mips/mm/tlbex.c	
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -893,6 +893,8 @@
+>  	case CPU_4KSC:
+>  	case CPU_20KC:
+>  	case CPU_25KF:
+> + 	case CPU_BCM3302:
+> + 	case CPU_BCM4710:
+>  	case CPU_LOONGSON2:
+>  		tlbw(p);
+>  		break;
+> --- a/include/asm-mips/bootinfo.h
+> +++ b/include/asm-mips/bootinfo.h
+> @@ -221,6 +221,12 @@
+>  #define MACH_GROUP_WINDRIVER   28	/* Windriver boards */
+>  #define MACH_WRPPMC             1
 >  
-> 
-
-
-
--- 
-Greetings Michael.
+> +/*
+> + * Valid machtype for group Broadcom
+> + */
+> +#define MACH_GROUP_BRCM		23	/* Broadcom			*/
+> +#define  MACH_BCM947XX		1	/* Broadcom BCM947xx		*/
+> +
+>  #define CL_SIZE			COMMAND_LINE_SIZE
+>  
+>  const char *get_system_type(void);
+> --- a/include/asm-mips/cpu.h	
+> +++ b/include/asm-mips/cpu.h
+> @@ -106,6 +106,13 @@
+>  #define PRID_IMP_SR71000        0x0400
+>  
+>  /*
+> + * These are the PRID's for when 23:16 == PRID_COMP_BROADCOM
+> + */
+> +
+> +#define PRID_IMP_BCM4710	0x4000
+> +#define PRID_IMP_BCM3302	0x9000
+> +
+> +/*
+>   * Definitions for 7:0 on legacy processors
+>   */
+>  
+> @@ -217,8 +224,9 @@
+>  #define CPU_R14000		64
+>  #define CPU_LOONGSON1           65
+>  #define CPU_LOONGSON2           66
+> -
+> -#define CPU_LAST		66
+> +#define CPU_BCM3302		67
+> +#define CPU_BCM4710		68
+> +#define CPU_LAST		68
+>  
+>  /*
+>   * ISA Level encodings
+>
+>   

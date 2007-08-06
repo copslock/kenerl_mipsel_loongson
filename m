@@ -1,84 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 19:09:22 +0100 (BST)
-Received: from static-ip-62-75-166-246.inaddr.intergenia.de ([62.75.166.246]:20190
-	"EHLO vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
-	id S20021541AbXHFSJT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Aug 2007 19:09:19 +0100
-Received: from t000e.t.pppool.de ([89.55.0.14] helo=pbook.local)
-	by vs166246.vserver.de with esmtpa (Exim 4.50)
-	id 1II717-0006Cv-Be; Mon, 06 Aug 2007 20:09:21 +0200
-From:	Michael Buesch <mb@bu3sch.de>
-To:	Aurelien Jarno <aurelien@aurel32.net>
-Subject: Re: [PATCH -mm 3/4] MIPS: Add BCM947XX to Kconfig
-Date:	Mon, 6 Aug 2007 20:09:14 +0200
-User-Agent: KMail/1.9.6
-Cc:	Andrew Morton <akpm@osdl.org>, linux-mips@linux-mips.org,
-	Waldemar Brodkorb <wbx@openwrt.org>,
-	Felix Fietkau <nbd@openwrt.org>,
-	Florian Schirmer <jolt@tuxbox.org>
-References: <20070806150931.GH24308@hall.aurel32.net>
-In-Reply-To: <20070806150931.GH24308@hall.aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Aug 2007 19:17:09 +0100 (BST)
+Received: from nbd.name ([88.198.39.176]:49351 "EHLO ds10.mine.nu")
+	by ftp.linux-mips.org with ESMTP id S20021633AbXHFSRG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Aug 2007 19:17:06 +0100
+Received: from e177167218.adsl.alicedsl.de ([85.177.167.218] helo=dhcp-242.hh.ccc.de)
+	by ds10.mine.nu with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <nbd@openwrt.org>)
+	id 1II76m-0005Q2-5k; Mon, 06 Aug 2007 20:15:12 +0200
+Message-ID: <46B764D3.2030402@openwrt.org>
+Date:	Mon, 06 Aug 2007 20:13:39 +0200
+From:	Felix Fietkau <nbd@openwrt.org>
+User-Agent: Thunderbird 2.0.0.6 (Macintosh/20070728)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-15"
+To:	Michael Buesch <mb@bu3sch.de>
+CC:	Aurelien Jarno <aurelien@aurel32.net>,
+	Andrew Morton <akpm@osdl.org>, linux-mips@linux-mips.org,
+	Waldemar Brodkorb <wbx@openwrt.org>,
+	Florian Schirmer <jolt@tuxbox.org>
+Subject: Re: [PATCH -mm 3/4] MIPS: Add BCM947XX to Kconfig
+References: <20070806150931.GH24308@hall.aurel32.net> <200708062009.14971.mb@bu3sch.de>
+In-Reply-To: <200708062009.14971.mb@bu3sch.de>
+Content-Type: text/plain; charset=ISO-8859-15
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200708062009.14971.mb@bu3sch.de>
-Return-Path: <mb@bu3sch.de>
+Return-Path: <nbd@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16081
+X-archive-position: 16082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mb@bu3sch.de
+X-original-sender: nbd@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Monday 06 August 2007, Aurelien Jarno wrote:
-> The patch below against 2.6.23-rc1-mm2 adds a BCM947XX option to 
-> Kconfig.
-> 
-> Cc: Michael Buesch <mb@bu3sch.de>
-> Cc: Waldemar Brodkorb <wbx@openwrt.org>
-> Cc: Felix Fietkau <nbd@openwrt.org>
-> Cc: Florian Schirmer <jolt@tuxbox.org>
-> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-> 
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -38,6 +38,22 @@
->  	  Lemote Fulong mini-PC board based on the Chinese Loongson-2E CPU and
->  	  an FPGA northbridge
->  
-> +config BCM947XX
-> +	bool "Support for BCM947xx based boards"
-> +	select DMA_NONCOHERENT
-> +	select HW_HAS_PCI
+Michael Buesch wrote:
 
-Not sure what this does.
-My 47xx machines do _not_ have a PCI bus.
+> Shouldn't we leave the PCICORE an option instead of force selecting
+> it here?
+> My WRT54G doesn't have a (usable) PCI core. So it would work
+> without the driver for it.
+> Especially on the small WAP54G disabling PCIcore support could
+> be useful to reduce the kernel size.
+Yeah, leave it as an option, but I think a 'default y if BCM947XX' on
+the PCICORE option would be reasonable, since many 47xx devices do have pci.
 
-> +	select IRQ_CPU
-> +	select SYS_HAS_CPU_MIPS32_R1
-> +	select SYS_SUPPORTS_32BIT_KERNEL
-> +	select SYS_SUPPORTS_LITTLE_ENDIAN
-> +	select SSB
-> +	select SSB_SERIAL
-> +	select SSB_DRIVER_PCICORE
-> +	select SSB_PCICORE_HOSTMODE
-
-Shouldn't we leave the PCICORE an option instead of force selecting
-it here?
-My WRT54G doesn't have a (usable) PCI core. So it would work
-without the driver for it.
-Especially on the small WAP54G disabling PCIcore support could
-be useful to reduce the kernel size.
-
-> +	select GENERIC_GPIO
-> +	help
-> +	 Support for BCM947xx based boards
-> +
->  config MACH_ALCHEMY
->  	bool "Alchemy processor based machines"
->  
+- Felix

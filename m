@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 06:53:37 +0100 (BST)
-Received: from wa-out-1112.google.com ([209.85.146.177]:59590 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 07:18:29 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.179]:19825 "EHLO
 	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023803AbXHGFxf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Aug 2007 06:53:35 +0100
-Received: by wa-out-1112.google.com with SMTP id m16so2046610waf
-        for <linux-mips@linux-mips.org>; Mon, 06 Aug 2007 22:53:16 -0700 (PDT)
+	id S20023822AbXHGGS0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 7 Aug 2007 07:18:26 +0100
+Received: by wa-out-1112.google.com with SMTP id m16so2052312waf
+        for <linux-mips@linux-mips.org>; Mon, 06 Aug 2007 23:18:08 -0700 (PDT)
 DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=AL7247v1gUxRwD11+v5tJe7PUzB0xzXxyyHGdlOba4BaByOsxgBtohqhqn0ijB+7RueWRoXpwmJTglmlolWFUwz1xcaEEv7HnA2BYMh6nERDO0LgZY5U222Mxc8BDzsmx9YcxjIGrh/OWWHEY9EwXVtSfv4sDqlJLFcXEgnqqms=
+        b=MkhEM+nFEc180iLmmQzbJc/XeFHkVeVQHxYcna6IR3+aoYH46WvIdUVzm8G5Xu3XRE2+T//U9a5AFvChH25Cenmq45oyoZJQG8zPP+wvYdhlzb6SldJRnImQXFH/XWcCNXUpSQJTHqKLsBJvEKSwRJ9Ty4Am+7AAUwncmur3CO0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=jqO5vRHKldKh3v+OtVG1LwpieofuJyifwJw58BdLwzgYbWKQ8UneP9z957jLyn4X/EH+G5uwa09eyFlmJjgM7KszHSDPPf/s7pG2ki20MoOoldCb0VumLeF9ACSj78YTYi6wfn+xQdccgpIuWvqe1uCrSrXXTY/MeOBmM/7CYJI=
-Received: by 10.115.111.1 with SMTP id o1mr6385865wam.1186465995988;
-        Mon, 06 Aug 2007 22:53:15 -0700 (PDT)
-Received: by 10.115.111.14 with HTTP; Mon, 6 Aug 2007 22:53:15 -0700 (PDT)
-Message-ID: <5861a7880708062253x7133659cm1ff17f451e4f82f8@mail.gmail.com>
-Date:	Tue, 7 Aug 2007 09:53:15 +0400
+        b=DZ9RH76YNha9mO3bmMIdYEJuJ0FLzBKOxZcMk8mt6tkbUQj/olIVWMPd690dEKYHZypxinile1fKJHqIUPCJDP1ZA3YwD0QTCJOGYW8e8kZY5l3IPrBDyUeJcSofL0FviK0Fgz3jlB4NjpS0XwT6Ffh6d5s3nPPNITB7ToiPQjs=
+Received: by 10.114.95.1 with SMTP id s1mr6393344wab.1186467484617;
+        Mon, 06 Aug 2007 23:18:04 -0700 (PDT)
+Received: by 10.115.111.14 with HTTP; Mon, 6 Aug 2007 23:17:57 -0700 (PDT)
+Message-ID: <5861a7880708062317t21970c81w3f16580858bf50af@mail.gmail.com>
+Date:	Tue, 7 Aug 2007 10:18:04 +0400
 From:	"Dajie Tan" <jiankemeng@gmail.com>
 To:	"Songmao Tian" <tiansm@lemote.com>
 Subject: Re: ALSA on MIPS platform
@@ -25,19 +25,20 @@ Cc:	linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
 	Ralf <ralf@linux-mips.org>,
 	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>,
 	"Takashi Iwai" <tiwai@suse.de>, greg@kroah.com
-In-Reply-To: <46B332AC.8020403@lemote.com>
+In-Reply-To: <5861a7880708062253x7133659cm1ff17f451e4f82f8@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 Content-Disposition: inline
 References: <46B03CC0.3090000@lemote.com>
 	 <20070802.235606.122255120.anemo@mba.ocn.ne.jp>
 	 <46B332AC.8020403@lemote.com>
+	 <5861a7880708062253x7133659cm1ff17f451e4f82f8@mail.gmail.com>
 Return-Path: <jiankemeng@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16098
+X-archive-position: 16099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,101 +46,72 @@ X-original-sender: jiankemeng@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I think this problem can be solved by revising the __pa macro like this:
-
---- a/include/asm-mips/page.h      2007-08-07 09:45:00.000000000 +0800
-+++ b/include/asm-mips/page.h     2007-08-07 09:46:59.000000000 +0800
-@@ -150,7 +150,7 @@
- })
- #else
- #define __pa(x)
-         \
--    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
-+    (((unsigned long)(x) & 0x1fffffff) + PHYS_OFFSET)
- #endif
-
-So, the virt_to_page can accept all cached or uncached address.
-
-
-Tan
-
-2007/8/3, Songmao Tian <tiansm@lemote.com>:
-> Atsushi Nemoto wrote:
-> > On Wed, 01 Aug 2007 15:56:48 +0800, Songmao Tian <tiansm@lemote.com> wrote:
-> >
-> >>     The problem is clear:
-> >> 1. dma_alloc_noncoherent() return a non-cached address, and
-> >> virt_to_page() need a cached logical addr (Have I named it right?)
-> >> 2. mmaped dam buffer should be non-cached.
-> >>
-> >> We have a ugly patch, but we want to solve the problem cleanly, so can
-> >> anyone show me the way?
-> >>
-> >
-> > virt_to_page() is used in many place in mm so making it robust might
-> > affect performance.  IMHO virt_to_page() seems too low-level as DMA
-> > API.
-> >
-> > If something like dma_virt_to_page(dev, cpu_addr) which can take a cpu
-> > address returned by dma_xxx APIs was defined, MIPS can implement it
-> > appropriately.
-> >
-> > And then pgprot_noncached issues still exist...
-> >
-> > ---
-> > Atsushi Nemoto
-> >
-> >
-> >
-> >
->
-> I agree, and I am investigating to implement a dma_map_coherent, but It
-> seems dma_map_coherent doesn't solve all the problem and will change a
-> lot of code:(
->
->
-> dma_virt_to_page can be something like this.
->
-> diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
-> index b92dd8c..d2ead8a 100644
-> --- a/include/asm-mips/page.h
-> +++ b/include/asm-mips/page.h
-> @@ -181,6 +181,8 @@ typedef struct { unsigned long pgprot; } pgprot_t;
->  #define virt_to_page(kaddr)    pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
->  #define virt_addr_valid(kaddr)    pfn_valid(PFN_DOWN(virt_to_phys(kaddr)))
->
-> +#define dma_virt_to_page(dma_addr)
-> pfn_to_page(PFN_DOWN(virt_to_phys(CAC_ADDR(kaddr))))
-> +
->  #define VM_DATA_DEFAULT_FLAGS    (VM_READ | VM_WRITE | VM_EXEC | \
->                   VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 655094d..5e694dd 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -39,6 +39,10 @@ extern int sysctl_legacy_va_layout;
->  #include <asm/pgtable.h>
->  #include <asm/processor.h>
->
-> +#ifndef dma_virt_to_page
-> +#define dma_virt_to_page virt_to_page
-> +#endif
-> +
->  #define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
->
->  /*
-> diff --git a/sound/core/sgbuf.c b/sound/core/sgbuf.c
-> index cefd228..8b29bfd 100644
-> --- a/sound/core/sgbuf.c
-> +++ b/sound/core/sgbuf.c
-> @@ -91,7 +91,7 @@ void *snd_malloc_sgbuf_pages(struct device *device,
->          }
->          sgbuf->table[i].buf = tmpb.area;
->          sgbuf->table[i].addr = tmpb.addr;
-> -        sgbuf->page_table[i] = virt_to_page(tmpb.area);
-> +        sgbuf->page_table[i] = dma_virt_to_page(tmpb.area);
->          sgbuf->pages++;
->      }
->
->
+U29ycnksIHRoYXQgYWltIGF0IDIuNi4xOC4KCkluIHRoZSBsYXRlc3Qga2VybmVsOgoKLS0tIGEv
+aW5jbHVkZS9hc20tbWlwcy9pby5oICAgICAyMDA3LTA4LTA3IDEwOjE4OjAzLjAwMDAwMDAwMCAr
+MDgwMAorKysgYi9pbmNsdWRlL2FzbS1taXBzL2lvLmggICAgIDIwMDctMDgtMDcgMTA6MTg6NTYu
+MDAwMDAwMDAwICswODAwCkBAIC0xMTYsNyArMTE2LDcgQEAKICAqLwogc3RhdGljIGlubGluZSB1
+bnNpZ25lZCBsb25nIHZpcnRfdG9fcGh5cyh2b2xhdGlsZSBjb25zdCB2b2lkICphZGRyZXNzKQog
+ewotICAgICAgIHJldHVybiAodW5zaWduZWQgbG9uZylhZGRyZXNzIC0gUEFHRV9PRkZTRVQgKyBQ
+SFlTX09GRlNFVDsKKyAgICAgICByZXR1cm4gKCh1bnNpZ25lZCBsb25nKWFkZHJlc3MgJiAweDFm
+ZmZmZmZmKSArIFBIWVNfT0ZGU0VUOwogfQoKSSB0aGluayB2aXJ0X3RvX3BoeXMgb3IgX19wYSBz
+aG91bGQgYWNjZXB0IGtzZWcxIGFkZHJlc3MuCgpUYW4KCjIwMDcvOC83LCBEYWppZSBUYW4gPGpp
+YW5rZW1lbmdAZ21haWwuY29tPjoKPiBJIHRoaW5rIHRoaXMgcHJvYmxlbSBjYW4gYmUgc29sdmVk
+IGJ5IHJldmlzaW5nIHRoZSBfX3BhIG1hY3JvIGxpa2UgdGhpczoKPgo+IC0tLSBhL2luY2x1ZGUv
+YXNtLW1pcHMvcGFnZS5oICAgICAgMjAwNy0wOC0wNyAwOTo0NTowMC4wMDAwMDAwMDAgKzA4MDAK
+PiArKysgYi9pbmNsdWRlL2FzbS1taXBzL3BhZ2UuaCAgICAgMjAwNy0wOC0wNyAwOTo0Njo1OS4w
+MDAwMDAwMDAgKzA4MDAKPiBAQCAtMTUwLDcgKzE1MCw3IEBACj4gIH0pCj4gICNlbHNlCj4gICNk
+ZWZpbmUgX19wYSh4KQo+ICAgICAgICAgIFwKPiAtICAgICgodW5zaWduZWQgbG9uZykoeCkgLSBQ
+QUdFX09GRlNFVCArIFBIWVNfT0ZGU0VUKQo+ICsgICAgKCgodW5zaWduZWQgbG9uZykoeCkgJiAw
+eDFmZmZmZmZmKSArIFBIWVNfT0ZGU0VUKQo+ICAjZW5kaWYKPgo+IFNvLCB0aGUgdmlydF90b19w
+YWdlIGNhbiBhY2NlcHQgYWxsIGNhY2hlZCBvciB1bmNhY2hlZCBhZGRyZXNzLgo+Cj4KPiBUYW4K
+Pgo+IDIwMDcvOC8zLCBTb25nbWFvIFRpYW4gPHRpYW5zbUBsZW1vdGUuY29tPjoKPiA+IEF0c3Vz
+aGkgTmVtb3RvIHdyb3RlOgo+ID4gPiBPbiBXZWQsIDAxIEF1ZyAyMDA3IDE1OjU2OjQ4ICswODAw
+LCBTb25nbWFvIFRpYW4gPHRpYW5zbUBsZW1vdGUuY29tPiB3cm90ZToKPiA+ID4KPiA+ID4+ICAg
+ICBUaGUgcHJvYmxlbSBpcyBjbGVhcjoKPiA+ID4+IDEuIGRtYV9hbGxvY19ub25jb2hlcmVudCgp
+IHJldHVybiBhIG5vbi1jYWNoZWQgYWRkcmVzcywgYW5kCj4gPiA+PiB2aXJ0X3RvX3BhZ2UoKSBu
+ZWVkIGEgY2FjaGVkIGxvZ2ljYWwgYWRkciAoSGF2ZSBJIG5hbWVkIGl0IHJpZ2h0PykKPiA+ID4+
+IDIuIG1tYXBlZCBkYW0gYnVmZmVyIHNob3VsZCBiZSBub24tY2FjaGVkLgo+ID4gPj4KPiA+ID4+
+IFdlIGhhdmUgYSB1Z2x5IHBhdGNoLCBidXQgd2Ugd2FudCB0byBzb2x2ZSB0aGUgcHJvYmxlbSBj
+bGVhbmx5LCBzbyBjYW4KPiA+ID4+IGFueW9uZSBzaG93IG1lIHRoZSB3YXk/Cj4gPiA+Pgo+ID4g
+Pgo+ID4gPiB2aXJ0X3RvX3BhZ2UoKSBpcyB1c2VkIGluIG1hbnkgcGxhY2UgaW4gbW0gc28gbWFr
+aW5nIGl0IHJvYnVzdCBtaWdodAo+ID4gPiBhZmZlY3QgcGVyZm9ybWFuY2UuICBJTUhPIHZpcnRf
+dG9fcGFnZSgpIHNlZW1zIHRvbyBsb3ctbGV2ZWwgYXMgRE1BCj4gPiA+IEFQSS4KPiA+ID4KPiA+
+ID4gSWYgc29tZXRoaW5nIGxpa2UgZG1hX3ZpcnRfdG9fcGFnZShkZXYsIGNwdV9hZGRyKSB3aGlj
+aCBjYW4gdGFrZSBhIGNwdQo+ID4gPiBhZGRyZXNzIHJldHVybmVkIGJ5IGRtYV94eHggQVBJcyB3
+YXMgZGVmaW5lZCwgTUlQUyBjYW4gaW1wbGVtZW50IGl0Cj4gPiA+IGFwcHJvcHJpYXRlbHkuCj4g
+PiA+Cj4gPiA+IEFuZCB0aGVuIHBncHJvdF9ub25jYWNoZWQgaXNzdWVzIHN0aWxsIGV4aXN0Li4u
+Cj4gPiA+Cj4gPiA+IC0tLQo+ID4gPiBBdHN1c2hpIE5lbW90bwo+ID4gPgo+ID4gPgo+ID4gPgo+
+ID4gPgo+ID4KPiA+IEkgYWdyZWUsIGFuZCBJIGFtIGludmVzdGlnYXRpbmcgdG8gaW1wbGVtZW50
+IGEgZG1hX21hcF9jb2hlcmVudCwgYnV0IEl0Cj4gPiBzZWVtcyBkbWFfbWFwX2NvaGVyZW50IGRv
+ZXNuJ3Qgc29sdmUgYWxsIHRoZSBwcm9ibGVtIGFuZCB3aWxsIGNoYW5nZSBhCj4gPiBsb3Qgb2Yg
+Y29kZTooCj4gPgo+ID4KPiA+IGRtYV92aXJ0X3RvX3BhZ2UgY2FuIGJlIHNvbWV0aGluZyBsaWtl
+IHRoaXMuCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvYXNtLW1pcHMvcGFnZS5oIGIvaW5j
+bHVkZS9hc20tbWlwcy9wYWdlLmgKPiA+IGluZGV4IGI5MmRkOGMuLmQyZWFkOGEgMTAwNjQ0Cj4g
+PiAtLS0gYS9pbmNsdWRlL2FzbS1taXBzL3BhZ2UuaAo+ID4gKysrIGIvaW5jbHVkZS9hc20tbWlw
+cy9wYWdlLmgKPiA+IEBAIC0xODEsNiArMTgxLDggQEAgdHlwZWRlZiBzdHJ1Y3QgeyB1bnNpZ25l
+ZCBsb25nIHBncHJvdDsgfSBwZ3Byb3RfdDsKPiA+ICAjZGVmaW5lIHZpcnRfdG9fcGFnZShrYWRk
+cikgICAgcGZuX3RvX3BhZ2UoUEZOX0RPV04odmlydF90b19waHlzKGthZGRyKSkpCj4gPiAgI2Rl
+ZmluZSB2aXJ0X2FkZHJfdmFsaWQoa2FkZHIpICAgIHBmbl92YWxpZChQRk5fRE9XTih2aXJ0X3Rv
+X3BoeXMoa2FkZHIpKSkKPiA+Cj4gPiArI2RlZmluZSBkbWFfdmlydF90b19wYWdlKGRtYV9hZGRy
+KQo+ID4gcGZuX3RvX3BhZ2UoUEZOX0RPV04odmlydF90b19waHlzKENBQ19BRERSKGthZGRyKSkp
+KQo+ID4gKwo+ID4gICNkZWZpbmUgVk1fREFUQV9ERUZBVUxUX0ZMQUdTICAgIChWTV9SRUFEIHwg
+Vk1fV1JJVEUgfCBWTV9FWEVDIHwgXAo+ID4gICAgICAgICAgICAgICAgICAgVk1fTUFZUkVBRCB8
+IFZNX01BWVdSSVRFIHwgVk1fTUFZRVhFQykKPiA+Cj4gPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9s
+aW51eC9tbS5oIGIvaW5jbHVkZS9saW51eC9tbS5oCj4gPiBpbmRleCA2NTUwOTRkLi41ZTY5NGRk
+IDEwMDY0NAo+ID4gLS0tIGEvaW5jbHVkZS9saW51eC9tbS5oCj4gPiArKysgYi9pbmNsdWRlL2xp
+bnV4L21tLmgKPiA+IEBAIC0zOSw2ICszOSwxMCBAQCBleHRlcm4gaW50IHN5c2N0bF9sZWdhY3lf
+dmFfbGF5b3V0Owo+ID4gICNpbmNsdWRlIDxhc20vcGd0YWJsZS5oPgo+ID4gICNpbmNsdWRlIDxh
+c20vcHJvY2Vzc29yLmg+Cj4gPgo+ID4gKyNpZm5kZWYgZG1hX3ZpcnRfdG9fcGFnZQo+ID4gKyNk
+ZWZpbmUgZG1hX3ZpcnRfdG9fcGFnZSB2aXJ0X3RvX3BhZ2UKPiA+ICsjZW5kaWYKPiA+ICsKPiA+
+ICAjZGVmaW5lIG50aF9wYWdlKHBhZ2UsbikgcGZuX3RvX3BhZ2UocGFnZV90b19wZm4oKHBhZ2Up
+KSArIChuKSkKPiA+Cj4gPiAgLyoKPiA+IGRpZmYgLS1naXQgYS9zb3VuZC9jb3JlL3NnYnVmLmMg
+Yi9zb3VuZC9jb3JlL3NnYnVmLmMKPiA+IGluZGV4IGNlZmQyMjguLjhiMjliZmQgMTAwNjQ0Cj4g
+PiAtLS0gYS9zb3VuZC9jb3JlL3NnYnVmLmMKPiA+ICsrKyBiL3NvdW5kL2NvcmUvc2didWYuYwo+
+ID4gQEAgLTkxLDcgKzkxLDcgQEAgdm9pZCAqc25kX21hbGxvY19zZ2J1Zl9wYWdlcyhzdHJ1Y3Qg
+ZGV2aWNlICpkZXZpY2UsCj4gPiAgICAgICAgICB9Cj4gPiAgICAgICAgICBzZ2J1Zi0+dGFibGVb
+aV0uYnVmID0gdG1wYi5hcmVhOwo+ID4gICAgICAgICAgc2didWYtPnRhYmxlW2ldLmFkZHIgPSB0
+bXBiLmFkZHI7Cj4gPiAtICAgICAgICBzZ2J1Zi0+cGFnZV90YWJsZVtpXSA9IHZpcnRfdG9fcGFn
+ZSh0bXBiLmFyZWEpOwo+ID4gKyAgICAgICAgc2didWYtPnBhZ2VfdGFibGVbaV0gPSBkbWFfdmly
+dF90b19wYWdlKHRtcGIuYXJlYSk7Cj4gPiAgICAgICAgICBzZ2J1Zi0+cGFnZXMrKzsKPiA+ICAg
+ICAgfQo+ID4KPiA+Cj4KCgotLSAK5Li65aSp5Zyw56uL5b+DCuS4uueUn+awkeeri+WRvQrkuLrl
+voDlnKPnu6fnu53lraYK5Li65LiH5LiW5byA5aSq5bmzCg==

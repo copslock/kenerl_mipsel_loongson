@@ -1,54 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 16:32:22 +0100 (BST)
-Received: from fk-out-0910.google.com ([209.85.128.190]:3217 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024430AbXHGPcU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Aug 2007 16:32:20 +0100
-Received: by fk-out-0910.google.com with SMTP id f40so1772337fka
-        for <linux-mips@linux-mips.org>; Tue, 07 Aug 2007 08:32:01 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=JqRKBx6M1aupLdmAtrZzKsZnqh0tdajeeqHPhWE5PsRX7iZycWK5Gr7mXSCcOTvAmvkDs4BVCkXtEocpQqHCQnFX2EulyOyAHuunJsXodhUOhE73a66XldmweMtHLw7Ygpe35cncLEYJbtZ7yNbS2UqnSiz/JryfCOZytEKNPXE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=sUaAokzBW8B6JinRLsyJQX1biPBA6oHaHMe/4wel+owffwhPQkcRe7zJ4DsKjK4Rd7YerokNuJssB3wTyTuQC/mHF7WhcoBsQWkdcw2/uO5VLEeYxehU55BCh7sA4Yhouwfmh35RVwx3cr8fQS8HZuWstrTLmSnpZcAfkVFCGjI=
-Received: by 10.82.162.14 with SMTP id k14mr6819475bue.1186500720472;
-        Tue, 07 Aug 2007 08:32:00 -0700 (PDT)
-Received: by 10.82.148.14 with HTTP; Tue, 7 Aug 2007 08:32:00 -0700 (PDT)
-Message-ID: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
-Date:	Tue, 7 Aug 2007 17:32:00 +0200
-From:	"Mohamed Bamakhrama" <bamakhrama@gmail.com>
-Reply-To: bamakhrama@gmail.com
-To:	linux-mips@linux-mips.org
-Subject: ELF to S-Record convertor
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 16:44:09 +0100 (BST)
+Received: from ananke.telenet-ops.be ([195.130.137.78]:39323 "EHLO
+	ananke.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20022931AbXHGPoA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 7 Aug 2007 16:44:00 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by ananke.telenet-ops.be (Postfix) with SMTP id 344CE3923E5;
+	Tue,  7 Aug 2007 17:43:50 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by ananke.telenet-ops.be (Postfix) with ESMTP id 231C43923D7;
+	Tue,  7 Aug 2007 17:43:50 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-8) with ESMTP id l77Fhn0L003865
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 7 Aug 2007 17:43:49 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l77FhnIg003862;
+	Tue, 7 Aug 2007 17:43:49 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Tue, 7 Aug 2007 17:43:49 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Mohamed Bamakhrama <bamakhrama@gmail.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: ELF to S-Record convertor
+In-Reply-To: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
+Message-ID: <Pine.LNX.4.64.0708071743380.29955@anakin>
+References: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <bamakhrama@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16115
+X-archive-position: 16116
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bamakhrama@gmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi *,
-Does anyone know of any open source tool for converting ELF images to
-S-Record images?
-I am using Malta board with MIPS32 core.
+On Tue, 7 Aug 2007, Mohamed Bamakhrama wrote:
+> Does anyone know of any open source tool for converting ELF images to
+> S-Record images?
 
-Regards,
+objcopy from binutils?
 
--- 
-Mohamed A. Bamakhrama
-Am Schaeferanger 15, room 035
-85764 Oberschleissheim, Germany
-Email: bamakhra@cs.tum.edu
-Web: http://home.cs.tum.edu/~bamakhra/
-Mobile: +49-160-9349-2711
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

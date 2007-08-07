@@ -1,57 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 16:44:09 +0100 (BST)
-Received: from ananke.telenet-ops.be ([195.130.137.78]:39323 "EHLO
-	ananke.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20022931AbXHGPoA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Aug 2007 16:44:00 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by ananke.telenet-ops.be (Postfix) with SMTP id 344CE3923E5;
-	Tue,  7 Aug 2007 17:43:50 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by ananke.telenet-ops.be (Postfix) with ESMTP id 231C43923D7;
-	Tue,  7 Aug 2007 17:43:50 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-8) with ESMTP id l77Fhn0L003865
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 7 Aug 2007 17:43:49 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l77FhnIg003862;
-	Tue, 7 Aug 2007 17:43:49 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Tue, 7 Aug 2007 17:43:49 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 16:44:39 +0100 (BST)
+Received: from tool.snarl.nl ([82.95.241.19]:15629 "EHLO tool.snarl.nl")
+	by ftp.linux-mips.org with ESMTP id S20022150AbXHGPoS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2007 16:44:18 +0100
+Received: from localhost (tool.local.snarl.nl [127.0.0.1])
+	by tool.snarl.nl (Postfix) with ESMTP id D0CBE5E1DA;
+	Tue,  7 Aug 2007 17:43:42 +0200 (CEST)
+Received: from tool.snarl.nl ([127.0.0.1])
+	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id iKaSeLnTeL91; Tue,  7 Aug 2007 17:43:42 +0200 (CEST)
+Received: by tool.snarl.nl (Postfix, from userid 1000)
+	id 59AFB5DFA1; Tue,  7 Aug 2007 17:43:42 +0200 (CEST)
+Date:	Tue, 7 Aug 2007 17:43:42 +0200
+From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
 To:	Mohamed Bamakhrama <bamakhrama@gmail.com>
-cc:	linux-mips@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 Subject: Re: ELF to S-Record convertor
-In-Reply-To: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
-Message-ID: <Pine.LNX.4.64.0708071743380.29955@anakin>
+Message-ID: <20070807154342.GX4004@dusktilldawn.nl>
 References: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="HLiOwqdVwqQciAhA"
+Content-Disposition: inline
+In-Reply-To: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
+X-User-Agent-Feature: All mail clients suck. This one just sucks less.
+X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <freddy@dusktilldawn.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16116
+X-archive-position: 16117
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: freddy@dusktilldawn.nl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 7 Aug 2007, Mohamed Bamakhrama wrote:
+
+--HLiOwqdVwqQciAhA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Mohamed,
+
+On Tue, Aug 07, 2007 at 05:32:00PM +0200, Mohamed Bamakhrama wrote:
 > Does anyone know of any open source tool for converting ELF images to
 > S-Record images?
 
-objcopy from binutils?
+Have you already looked into objcopy?
 
-Gr{oetje,eeting}s,
 
-						Geert
+--=20
+$ cat ~/.signature
+Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
+GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--HLiOwqdVwqQciAhA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFGuJMtbxf9XXlB0eERAnbTAKC4FEldLlOkuo0LFOyft3Wp9K/XfACg1M8X
+ZuWxEPFiB9yaSjdUME0zURE=
+=1tvw
+-----END PGP SIGNATURE-----
+
+--HLiOwqdVwqQciAhA--

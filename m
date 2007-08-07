@@ -1,117 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 07:18:29 +0100 (BST)
-Received: from wa-out-1112.google.com ([209.85.146.179]:19825 "EHLO
-	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023822AbXHGGS0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Aug 2007 07:18:26 +0100
-Received: by wa-out-1112.google.com with SMTP id m16so2052312waf
-        for <linux-mips@linux-mips.org>; Mon, 06 Aug 2007 23:18:08 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=MkhEM+nFEc180iLmmQzbJc/XeFHkVeVQHxYcna6IR3+aoYH46WvIdUVzm8G5Xu3XRE2+T//U9a5AFvChH25Cenmq45oyoZJQG8zPP+wvYdhlzb6SldJRnImQXFH/XWcCNXUpSQJTHqKLsBJvEKSwRJ9Ty4Am+7AAUwncmur3CO0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=DZ9RH76YNha9mO3bmMIdYEJuJ0FLzBKOxZcMk8mt6tkbUQj/olIVWMPd690dEKYHZypxinile1fKJHqIUPCJDP1ZA3YwD0QTCJOGYW8e8kZY5l3IPrBDyUeJcSofL0FviK0Fgz3jlB4NjpS0XwT6Ffh6d5s3nPPNITB7ToiPQjs=
-Received: by 10.114.95.1 with SMTP id s1mr6393344wab.1186467484617;
-        Mon, 06 Aug 2007 23:18:04 -0700 (PDT)
-Received: by 10.115.111.14 with HTTP; Mon, 6 Aug 2007 23:17:57 -0700 (PDT)
-Message-ID: <5861a7880708062317t21970c81w3f16580858bf50af@mail.gmail.com>
-Date:	Tue, 7 Aug 2007 10:18:04 +0400
-From:	"Dajie Tan" <jiankemeng@gmail.com>
-To:	"Songmao Tian" <tiansm@lemote.com>
-Subject: Re: ALSA on MIPS platform
-Cc:	linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
-	Ralf <ralf@linux-mips.org>,
-	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>,
-	"Takashi Iwai" <tiwai@suse.de>, greg@kroah.com
-In-Reply-To: <5861a7880708062253x7133659cm1ff17f451e4f82f8@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 09:03:36 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.38.19]:61104 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20023841AbXHGIDc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2007 09:03:32 +0100
+Received: from anguille.univ-lyon1.fr ([134.214.4.207])
+	by hall.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1IIK1T-0008Ns-C7; Tue, 07 Aug 2007 10:03:25 +0200
+Message-ID: <46B82714.5020002@aurel32.net>
+Date:	Tue, 07 Aug 2007 10:02:28 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
+User-Agent: IceDove 1.5.0.10 (X11/20070329)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-References: <46B03CC0.3090000@lemote.com>
-	 <20070802.235606.122255120.anemo@mba.ocn.ne.jp>
-	 <46B332AC.8020403@lemote.com>
-	 <5861a7880708062253x7133659cm1ff17f451e4f82f8@mail.gmail.com>
-Return-Path: <jiankemeng@gmail.com>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+CC:	mb@bu3sch.de, akpm@osdl.org, linux-mips@linux-mips.org,
+	wbx@openwrt.org, nbd@openwrt.org, jolt@tuxbox.org
+Subject: Re: [PATCH -mm 2/4] MIPS: BCM947xx support (v2)
+References: <20070806150900.GG24308@hall.aurel32.net>	<200708062005.29657.mb@bu3sch.de>	<20070806183316.GB32465@hall.aurel32.net>	<200708062037.05995.mb@bu3sch.de>	<20070806191712.GA2019@hall.aurel32.net> <20070807094045.2c6eaa38.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20070807094045.2c6eaa38.yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16099
+X-archive-position: 16100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiankemeng@gmail.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-U29ycnksIHRoYXQgYWltIGF0IDIuNi4xOC4KCkluIHRoZSBsYXRlc3Qga2VybmVsOgoKLS0tIGEv
-aW5jbHVkZS9hc20tbWlwcy9pby5oICAgICAyMDA3LTA4LTA3IDEwOjE4OjAzLjAwMDAwMDAwMCAr
-MDgwMAorKysgYi9pbmNsdWRlL2FzbS1taXBzL2lvLmggICAgIDIwMDctMDgtMDcgMTA6MTg6NTYu
-MDAwMDAwMDAwICswODAwCkBAIC0xMTYsNyArMTE2LDcgQEAKICAqLwogc3RhdGljIGlubGluZSB1
-bnNpZ25lZCBsb25nIHZpcnRfdG9fcGh5cyh2b2xhdGlsZSBjb25zdCB2b2lkICphZGRyZXNzKQog
-ewotICAgICAgIHJldHVybiAodW5zaWduZWQgbG9uZylhZGRyZXNzIC0gUEFHRV9PRkZTRVQgKyBQ
-SFlTX09GRlNFVDsKKyAgICAgICByZXR1cm4gKCh1bnNpZ25lZCBsb25nKWFkZHJlc3MgJiAweDFm
-ZmZmZmZmKSArIFBIWVNfT0ZGU0VUOwogfQoKSSB0aGluayB2aXJ0X3RvX3BoeXMgb3IgX19wYSBz
-aG91bGQgYWNjZXB0IGtzZWcxIGFkZHJlc3MuCgpUYW4KCjIwMDcvOC83LCBEYWppZSBUYW4gPGpp
-YW5rZW1lbmdAZ21haWwuY29tPjoKPiBJIHRoaW5rIHRoaXMgcHJvYmxlbSBjYW4gYmUgc29sdmVk
-IGJ5IHJldmlzaW5nIHRoZSBfX3BhIG1hY3JvIGxpa2UgdGhpczoKPgo+IC0tLSBhL2luY2x1ZGUv
-YXNtLW1pcHMvcGFnZS5oICAgICAgMjAwNy0wOC0wNyAwOTo0NTowMC4wMDAwMDAwMDAgKzA4MDAK
-PiArKysgYi9pbmNsdWRlL2FzbS1taXBzL3BhZ2UuaCAgICAgMjAwNy0wOC0wNyAwOTo0Njo1OS4w
-MDAwMDAwMDAgKzA4MDAKPiBAQCAtMTUwLDcgKzE1MCw3IEBACj4gIH0pCj4gICNlbHNlCj4gICNk
-ZWZpbmUgX19wYSh4KQo+ICAgICAgICAgIFwKPiAtICAgICgodW5zaWduZWQgbG9uZykoeCkgLSBQ
-QUdFX09GRlNFVCArIFBIWVNfT0ZGU0VUKQo+ICsgICAgKCgodW5zaWduZWQgbG9uZykoeCkgJiAw
-eDFmZmZmZmZmKSArIFBIWVNfT0ZGU0VUKQo+ICAjZW5kaWYKPgo+IFNvLCB0aGUgdmlydF90b19w
-YWdlIGNhbiBhY2NlcHQgYWxsIGNhY2hlZCBvciB1bmNhY2hlZCBhZGRyZXNzLgo+Cj4KPiBUYW4K
-Pgo+IDIwMDcvOC8zLCBTb25nbWFvIFRpYW4gPHRpYW5zbUBsZW1vdGUuY29tPjoKPiA+IEF0c3Vz
-aGkgTmVtb3RvIHdyb3RlOgo+ID4gPiBPbiBXZWQsIDAxIEF1ZyAyMDA3IDE1OjU2OjQ4ICswODAw
-LCBTb25nbWFvIFRpYW4gPHRpYW5zbUBsZW1vdGUuY29tPiB3cm90ZToKPiA+ID4KPiA+ID4+ICAg
-ICBUaGUgcHJvYmxlbSBpcyBjbGVhcjoKPiA+ID4+IDEuIGRtYV9hbGxvY19ub25jb2hlcmVudCgp
-IHJldHVybiBhIG5vbi1jYWNoZWQgYWRkcmVzcywgYW5kCj4gPiA+PiB2aXJ0X3RvX3BhZ2UoKSBu
-ZWVkIGEgY2FjaGVkIGxvZ2ljYWwgYWRkciAoSGF2ZSBJIG5hbWVkIGl0IHJpZ2h0PykKPiA+ID4+
-IDIuIG1tYXBlZCBkYW0gYnVmZmVyIHNob3VsZCBiZSBub24tY2FjaGVkLgo+ID4gPj4KPiA+ID4+
-IFdlIGhhdmUgYSB1Z2x5IHBhdGNoLCBidXQgd2Ugd2FudCB0byBzb2x2ZSB0aGUgcHJvYmxlbSBj
-bGVhbmx5LCBzbyBjYW4KPiA+ID4+IGFueW9uZSBzaG93IG1lIHRoZSB3YXk/Cj4gPiA+Pgo+ID4g
-Pgo+ID4gPiB2aXJ0X3RvX3BhZ2UoKSBpcyB1c2VkIGluIG1hbnkgcGxhY2UgaW4gbW0gc28gbWFr
-aW5nIGl0IHJvYnVzdCBtaWdodAo+ID4gPiBhZmZlY3QgcGVyZm9ybWFuY2UuICBJTUhPIHZpcnRf
-dG9fcGFnZSgpIHNlZW1zIHRvbyBsb3ctbGV2ZWwgYXMgRE1BCj4gPiA+IEFQSS4KPiA+ID4KPiA+
-ID4gSWYgc29tZXRoaW5nIGxpa2UgZG1hX3ZpcnRfdG9fcGFnZShkZXYsIGNwdV9hZGRyKSB3aGlj
-aCBjYW4gdGFrZSBhIGNwdQo+ID4gPiBhZGRyZXNzIHJldHVybmVkIGJ5IGRtYV94eHggQVBJcyB3
-YXMgZGVmaW5lZCwgTUlQUyBjYW4gaW1wbGVtZW50IGl0Cj4gPiA+IGFwcHJvcHJpYXRlbHkuCj4g
-PiA+Cj4gPiA+IEFuZCB0aGVuIHBncHJvdF9ub25jYWNoZWQgaXNzdWVzIHN0aWxsIGV4aXN0Li4u
-Cj4gPiA+Cj4gPiA+IC0tLQo+ID4gPiBBdHN1c2hpIE5lbW90bwo+ID4gPgo+ID4gPgo+ID4gPgo+
-ID4gPgo+ID4KPiA+IEkgYWdyZWUsIGFuZCBJIGFtIGludmVzdGlnYXRpbmcgdG8gaW1wbGVtZW50
-IGEgZG1hX21hcF9jb2hlcmVudCwgYnV0IEl0Cj4gPiBzZWVtcyBkbWFfbWFwX2NvaGVyZW50IGRv
-ZXNuJ3Qgc29sdmUgYWxsIHRoZSBwcm9ibGVtIGFuZCB3aWxsIGNoYW5nZSBhCj4gPiBsb3Qgb2Yg
-Y29kZTooCj4gPgo+ID4KPiA+IGRtYV92aXJ0X3RvX3BhZ2UgY2FuIGJlIHNvbWV0aGluZyBsaWtl
-IHRoaXMuCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvYXNtLW1pcHMvcGFnZS5oIGIvaW5j
-bHVkZS9hc20tbWlwcy9wYWdlLmgKPiA+IGluZGV4IGI5MmRkOGMuLmQyZWFkOGEgMTAwNjQ0Cj4g
-PiAtLS0gYS9pbmNsdWRlL2FzbS1taXBzL3BhZ2UuaAo+ID4gKysrIGIvaW5jbHVkZS9hc20tbWlw
-cy9wYWdlLmgKPiA+IEBAIC0xODEsNiArMTgxLDggQEAgdHlwZWRlZiBzdHJ1Y3QgeyB1bnNpZ25l
-ZCBsb25nIHBncHJvdDsgfSBwZ3Byb3RfdDsKPiA+ICAjZGVmaW5lIHZpcnRfdG9fcGFnZShrYWRk
-cikgICAgcGZuX3RvX3BhZ2UoUEZOX0RPV04odmlydF90b19waHlzKGthZGRyKSkpCj4gPiAgI2Rl
-ZmluZSB2aXJ0X2FkZHJfdmFsaWQoa2FkZHIpICAgIHBmbl92YWxpZChQRk5fRE9XTih2aXJ0X3Rv
-X3BoeXMoa2FkZHIpKSkKPiA+Cj4gPiArI2RlZmluZSBkbWFfdmlydF90b19wYWdlKGRtYV9hZGRy
-KQo+ID4gcGZuX3RvX3BhZ2UoUEZOX0RPV04odmlydF90b19waHlzKENBQ19BRERSKGthZGRyKSkp
-KQo+ID4gKwo+ID4gICNkZWZpbmUgVk1fREFUQV9ERUZBVUxUX0ZMQUdTICAgIChWTV9SRUFEIHwg
-Vk1fV1JJVEUgfCBWTV9FWEVDIHwgXAo+ID4gICAgICAgICAgICAgICAgICAgVk1fTUFZUkVBRCB8
-IFZNX01BWVdSSVRFIHwgVk1fTUFZRVhFQykKPiA+Cj4gPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9s
-aW51eC9tbS5oIGIvaW5jbHVkZS9saW51eC9tbS5oCj4gPiBpbmRleCA2NTUwOTRkLi41ZTY5NGRk
-IDEwMDY0NAo+ID4gLS0tIGEvaW5jbHVkZS9saW51eC9tbS5oCj4gPiArKysgYi9pbmNsdWRlL2xp
-bnV4L21tLmgKPiA+IEBAIC0zOSw2ICszOSwxMCBAQCBleHRlcm4gaW50IHN5c2N0bF9sZWdhY3lf
-dmFfbGF5b3V0Owo+ID4gICNpbmNsdWRlIDxhc20vcGd0YWJsZS5oPgo+ID4gICNpbmNsdWRlIDxh
-c20vcHJvY2Vzc29yLmg+Cj4gPgo+ID4gKyNpZm5kZWYgZG1hX3ZpcnRfdG9fcGFnZQo+ID4gKyNk
-ZWZpbmUgZG1hX3ZpcnRfdG9fcGFnZSB2aXJ0X3RvX3BhZ2UKPiA+ICsjZW5kaWYKPiA+ICsKPiA+
-ICAjZGVmaW5lIG50aF9wYWdlKHBhZ2UsbikgcGZuX3RvX3BhZ2UocGFnZV90b19wZm4oKHBhZ2Up
-KSArIChuKSkKPiA+Cj4gPiAgLyoKPiA+IGRpZmYgLS1naXQgYS9zb3VuZC9jb3JlL3NnYnVmLmMg
-Yi9zb3VuZC9jb3JlL3NnYnVmLmMKPiA+IGluZGV4IGNlZmQyMjguLjhiMjliZmQgMTAwNjQ0Cj4g
-PiAtLS0gYS9zb3VuZC9jb3JlL3NnYnVmLmMKPiA+ICsrKyBiL3NvdW5kL2NvcmUvc2didWYuYwo+
-ID4gQEAgLTkxLDcgKzkxLDcgQEAgdm9pZCAqc25kX21hbGxvY19zZ2J1Zl9wYWdlcyhzdHJ1Y3Qg
-ZGV2aWNlICpkZXZpY2UsCj4gPiAgICAgICAgICB9Cj4gPiAgICAgICAgICBzZ2J1Zi0+dGFibGVb
-aV0uYnVmID0gdG1wYi5hcmVhOwo+ID4gICAgICAgICAgc2didWYtPnRhYmxlW2ldLmFkZHIgPSB0
-bXBiLmFkZHI7Cj4gPiAtICAgICAgICBzZ2J1Zi0+cGFnZV90YWJsZVtpXSA9IHZpcnRfdG9fcGFn
-ZSh0bXBiLmFyZWEpOwo+ID4gKyAgICAgICAgc2didWYtPnBhZ2VfdGFibGVbaV0gPSBkbWFfdmly
-dF90b19wYWdlKHRtcGIuYXJlYSk7Cj4gPiAgICAgICAgICBzZ2J1Zi0+cGFnZXMrKzsKPiA+ICAg
-ICAgfQo+ID4KPiA+Cj4KCgotLSAK5Li65aSp5Zyw56uL5b+DCuS4uueUn+awkeeri+WRvQrkuLrl
-voDlnKPnu6fnu53lraYK5Li65LiH5LiW5byA5aSq5bmzCg==
+Yoichi Yuasa a écrit :
+> On Mon, 6 Aug 2007 21:17:12 +0200
+> Aurelien Jarno <aurelien@aurel32.net> wrote:
+> 
+>> The patch below against 2.6.23-rc1-mm2 adds support for BCM947xx CPUs.
+>> It originally comes from the OpenWrt patches.
+> <snip>
+>> --- a/arch/mips/bcm947xx/prom.c
+>> +++ b/arch/mips/bcm947xx/prom.c
+>> @@ -0,0 +1,58 @@
+>> +/*
+>> + *  Copyright (C) 2004 Florian Schirmer <jolt@tuxbox.org>
+>> + *
+>> + *  This program is free software; you can redistribute  it and/or modify it
+>> + *  under  the terms of  the GNU General  Public License as published by the
+>> + *  Free Software Foundation;  either version 2 of the  License, or (at your
+>> + *  option) any later version.
+>> + *
+>> + *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+>> + *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+>> + *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+>> + *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+>> + *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+>> + *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+>> + *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+>> + *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+>> + *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+>> + *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+>> + *
+>> + *  You should have received a copy of the  GNU General Public License along
+>> + *  with this program; if not, write  to the Free Software Foundation, Inc.,
+>> + *  675 Mass Ave, Cambridge, MA 02139, USA.
+>> + */
+>> +
+>> +#include <linux/init.h>
+>> +#include <linux/mm.h>
+>> +#include <linux/sched.h>
+>> +#include <linux/bootmem.h>
+>> +
+>> +#include <asm/addrspace.h>
+>> +#include <asm/bootinfo.h>
+>> +#include <asm/pmon.h>
+>> +
+>> +const char *get_system_type(void)
+>> +{
+>> +	return "Broadcom BCM947xx";
+>> +}
+>> +
+>> +void __init prom_init(void)
+>> +{
+>> +	unsigned long mem;
+>> +
+>> +	mips_machgroup = MACH_GROUP_BRCM;
+>> +	mips_machtype = MACH_BCM947XX;
+> 
+> If you don't have a plan using mips_machgroup/mips_machtype,
+> it is not a must. 
+
+It is not used in other parts of the code, so we can remove that part. I
+will update my patch.
+
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

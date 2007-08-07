@@ -1,74 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 16:44:39 +0100 (BST)
-Received: from tool.snarl.nl ([82.95.241.19]:15629 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S20022150AbXHGPoS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2007 16:44:18 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id D0CBE5E1DA;
-	Tue,  7 Aug 2007 17:43:42 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id iKaSeLnTeL91; Tue,  7 Aug 2007 17:43:42 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 59AFB5DFA1; Tue,  7 Aug 2007 17:43:42 +0200 (CEST)
-Date:	Tue, 7 Aug 2007 17:43:42 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	Mohamed Bamakhrama <bamakhrama@gmail.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 17:34:18 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.189]:47935 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024433AbXHGQeK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 7 Aug 2007 17:34:10 +0100
+Received: by fk-out-0910.google.com with SMTP id f40so1785364fka
+        for <linux-mips@linux-mips.org>; Tue, 07 Aug 2007 09:33:52 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=ocCRNcHs5ka6EcPMBVKVWIWzycAwRDIiLJoYyTS3SPRlKI5edQan5qOMYV2NqLV1ZUnB6pMt5GixEXSHRs7z5bxDmRZNKo1ikvdovWiVkBlqyeXB3cKVvnQbKn28TNnZoLp28FBJK3Z8PgV+Kt7Or5zd2tWOjTabBjNY6Kzmkk8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=VawbMaS8BmeYiVUwPZs66oRpwJnEfoxV8wPV48KaIvnubAxbW2/Ko4aiZHnpNiUcKqG9odsu7fERVdWbNEJ+7cHRGHGHGHJjDVqywu+4kWDWyCgX/g19yha/XdslrDzC8BKTdR1CWptrJzk0PwngIi0RrRQRhIeDSI4yNeJKpjc=
+Received: by 10.82.151.14 with SMTP id y14mr6910671bud.1186504431931;
+        Tue, 07 Aug 2007 09:33:51 -0700 (PDT)
+Received: by 10.82.148.14 with HTTP; Tue, 7 Aug 2007 09:33:51 -0700 (PDT)
+Message-ID: <40378e40708070933v6d555948p7a94601ed105dd2d@mail.gmail.com>
+Date:	Tue, 7 Aug 2007 18:33:51 +0200
+From:	"Mohamed Bamakhrama" <bamakhrama@gmail.com>
+Reply-To: bamakhrama@gmail.com
+To:	"Geert Uytterhoeven" <geert@linux-m68k.org>,
+	"Freddy Spierenburg" <freddy@dusktilldawn.nl>
 Subject: Re: ELF to S-Record convertor
-Message-ID: <20070807154342.GX4004@dusktilldawn.nl>
-References: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.64.0708071743380.29955@anakin>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HLiOwqdVwqQciAhA"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <freddy@dusktilldawn.nl>
+References: <40378e40708070832g1aa613fcg7e486d0d778bb84f@mail.gmail.com>
+	 <Pine.LNX.4.64.0708071743380.29955@anakin>
+Return-Path: <bamakhrama@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16117
+X-archive-position: 16118
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: bamakhrama@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-
---HLiOwqdVwqQciAhA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Mohamed,
-
-On Tue, Aug 07, 2007 at 05:32:00PM +0200, Mohamed Bamakhrama wrote:
-> Does anyone know of any open source tool for converting ELF images to
-> S-Record images?
-
-Have you already looked into objcopy?
+Thanks all.
+It is working now.
 
 
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+On 8/7/07, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Tue, 7 Aug 2007, Mohamed Bamakhrama wrote:
+> > Does anyone know of any open source tool for converting ELF images to
+> > S-Record images?
+>
+> objcopy from binutils?
+>
+> Gr{oetje,eeting}s,
+>
+>                                                 Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                                             -- Linus Torvalds
+>
 
---HLiOwqdVwqQciAhA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFGuJMtbxf9XXlB0eERAnbTAKC4FEldLlOkuo0LFOyft3Wp9K/XfACg1M8X
-ZuWxEPFiB9yaSjdUME0zURE=
-=1tvw
------END PGP SIGNATURE-----
-
---HLiOwqdVwqQciAhA--
+-- 
+Mohamed A. Bamakhrama
+Am Schaeferanger 15, room 035
+85764 Oberschleissheim, Germany
+Email: bamakhra@cs.tum.edu
+Web: http://home.cs.tum.edu/~bamakhra/
+Mobile: +49-160-9349-2711

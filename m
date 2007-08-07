@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 09:06:39 +0100 (BST)
-Received: from hall.aurel32.net ([88.191.38.19]:46257 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20023841AbXHGIGg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2007 09:06:36 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 09:08:13 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.38.19]:2449 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20023857AbXHGIIK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2007 09:08:10 +0100
 Received: from anguille.univ-lyon1.fr ([134.214.4.207])
 	by hall.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
 	(Exim 4.63)
 	(envelope-from <aurelien@aurel32.net>)
-	id 1IIK0D-0008Kk-Fz; Tue, 07 Aug 2007 10:03:17 +0200
-Message-ID: <46B826C7.2090709@aurel32.net>
-Date:	Tue, 07 Aug 2007 10:01:11 +0200
+	id 1IIK3h-0008PU-Mx; Tue, 07 Aug 2007 10:04:53 +0200
+Message-ID: <46B8279F.1050404@aurel32.net>
+Date:	Tue, 07 Aug 2007 10:04:47 +0200
 From:	Aurelien Jarno <aurelien@aurel32.net>
 User-Agent: IceDove 1.5.0.10 (X11/20070329)
 MIME-Version: 1.0
@@ -24,7 +24,7 @@ Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16102
+X-archive-position: 16103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

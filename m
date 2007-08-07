@@ -1,31 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 09:06:06 +0100 (BST)
-Received: from hall.aurel32.net ([88.191.38.19]:44977 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20022946AbXHGIGE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2007 09:06:04 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Aug 2007 09:06:39 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.38.19]:46257 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20023841AbXHGIGg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Aug 2007 09:06:36 +0100
 Received: from anguille.univ-lyon1.fr ([134.214.4.207])
 	by hall.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
 	(Exim 4.63)
 	(envelope-from <aurelien@aurel32.net>)
-	id 1IIK4i-0008QS-Fj; Tue, 07 Aug 2007 10:05:56 +0200
-Message-ID: <46B827DE.4040406@aurel32.net>
-Date:	Tue, 07 Aug 2007 10:05:50 +0200
+	id 1IIK0D-0008Kk-Fz; Tue, 07 Aug 2007 10:03:17 +0200
+Message-ID: <46B826C7.2090709@aurel32.net>
+Date:	Tue, 07 Aug 2007 10:01:11 +0200
 From:	Aurelien Jarno <aurelien@aurel32.net>
 User-Agent: IceDove 1.5.0.10 (X11/20070329)
 MIME-Version: 1.0
-To:	Florian Schirmer <jolt@tuxbox.org>
-CC:	Michael Buesch <mb@bu3sch.de>, Andrew Morton <akpm@osdl.org>,
-	linux-mips@linux-mips.org, Waldemar Brodkorb <wbx@openwrt.org>,
-	Felix Fietkau <nbd@openwrt.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+CC:	mb@bu3sch.de, akpm@osdl.org, linux-mips@linux-mips.org,
+	wbx@openwrt.org, nbd@openwrt.org, jolt@tuxbox.org
 Subject: Re: [PATCH -mm 2/4] MIPS: BCM947xx support (v2)
-References: <20070806150900.GG24308@hall.aurel32.net> <200708062005.29657.mb@bu3sch.de> <20070806183316.GB32465@hall.aurel32.net> <200708062037.05995.mb@bu3sch.de> <20070806191712.GA2019@hall.aurel32.net> <46B7851B.1050008@tuxbox.org>
-In-Reply-To: <46B7851B.1050008@tuxbox.org>
-Content-Type: text/plain; charset=ISO-8859-15
+References: <20070806150900.GG24308@hall.aurel32.net>	<200708062005.29657.mb@bu3sch.de>	<20070806183316.GB32465@hall.aurel32.net>	<200708062037.05995.mb@bu3sch.de>	<20070806191712.GA2019@hall.aurel32.net> <20070807094045.2c6eaa38.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20070807094045.2c6eaa38.yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8bit
 Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16101
+X-archive-position: 16102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,28 +32,66 @@ X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-Florian Schirmer a écrit :
-> Hi,
+Yoichi Yuasa a écrit :
+> On Mon, 6 Aug 2007 21:17:12 +0200
+> Aurelien Jarno <aurelien@aurel32.net> wrote:
 > 
-> Aurelien Jarno wrote:
 >> The patch below against 2.6.23-rc1-mm2 adds support for BCM947xx CPUs.
 >> It originally comes from the OpenWrt patches.
->>
->> Cc: Michael Buesch <mb@bu3sch.de>
->> Cc: Waldemar Brodkorb <wbx@openwrt.org>
->> Cc: Felix Fietkau <nbd@openwrt.org>
->> Cc: Florian Schirmer <jolt@tuxbox.org>
->> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
->>   
+> <snip>
+>> --- a/arch/mips/bcm947xx/prom.c
+>> +++ b/arch/mips/bcm947xx/prom.c
+>> @@ -0,0 +1,58 @@
+>> +/*
+>> + *  Copyright (C) 2004 Florian Schirmer <jolt@tuxbox.org>
+>> + *
+>> + *  This program is free software; you can redistribute  it and/or modify it
+>> + *  under  the terms of  the GNU General  Public License as published by the
+>> + *  Free Software Foundation;  either version 2 of the  License, or (at your
+>> + *  option) any later version.
+>> + *
+>> + *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+>> + *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+>> + *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+>> + *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+>> + *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+>> + *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+>> + *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+>> + *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+>> + *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+>> + *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+>> + *
+>> + *  You should have received a copy of the  GNU General Public License along
+>> + *  with this program; if not, write  to the Free Software Foundation, Inc.,
+>> + *  675 Mass Ave, Cambridge, MA 02139, USA.
+>> + */
+>> +
+>> +#include <linux/init.h>
+>> +#include <linux/mm.h>
+>> +#include <linux/sched.h>
+>> +#include <linux/bootmem.h>
+>> +
+>> +#include <asm/addrspace.h>
+>> +#include <asm/bootinfo.h>
+>> +#include <asm/pmon.h>
+>> +
+>> +const char *get_system_type(void)
+>> +{
+>> +	return "Broadcom BCM947xx";
+>> +}
+>> +
+>> +void __init prom_init(void)
+>> +{
+>> +	unsigned long mem;
+>> +
+>> +	mips_machgroup = MACH_GROUP_BRCM;
+>> +	mips_machtype = MACH_BCM947XX;
 > 
-> I'm not sure whether it's a good idea to export a symbol named "ssb". 
-> Maybe bcm47xx_ssb would be a better name? I've no idea what the general 
-> rule on exporting symbols is though. Otherwise:
+> If you don't have a plan using mips_machgroup/mips_machtype,
+> it is not a must. 
 
-I don't not either, but looking in other parts of the kernel it seems it
-is done the other way, ie ssb_bcm947xx would be the correct name.
-
-I will send an updated patch.
+It is not used in other parts of the code, so we can remove that part. I
+will update my patch.
 
 -- 
   .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73

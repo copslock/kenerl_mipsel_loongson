@@ -1,171 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Aug 2007 02:34:43 +0100 (BST)
-Received: from smtp2.linux-foundation.org ([207.189.120.14]:61867 "EHLO
-	smtp2.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S20026394AbXHHBec (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 8 Aug 2007 02:34:32 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [207.189.120.55])
-	by smtp2.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l781X9fc001236
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Tue, 7 Aug 2007 18:33:10 -0700
-Received: from akpm.corp.google.com (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id l781X2lh014826;
-	Tue, 7 Aug 2007 18:33:02 -0700
-Date:	Tue, 7 Aug 2007 18:33:02 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
-To:	Aurelien Jarno <aurelien@aurel32.net>
-Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>, mb@bu3sch.de,
-	linux-mips@linux-mips.org, nbd@openwrt.org, jolt@tuxbox.org
-Subject: Re: [PATCH -mm 2/4] MIPS: BCM947xx support (v3)
-Message-Id: <20070807183302.1e38a4df.akpm@linux-foundation.org>
-In-Reply-To: <20070807121638.GA9953@hall.aurel32.net>
-References: <20070806150900.GG24308@hall.aurel32.net>
-	<200708062005.29657.mb@bu3sch.de>
-	<20070806183316.GB32465@hall.aurel32.net>
-	<200708062037.05995.mb@bu3sch.de>
-	<20070806191712.GA2019@hall.aurel32.net>
-	<20070807094045.2c6eaa38.yoichi_yuasa@tripeaks.co.jp>
-	<20070807121638.GA9953@hall.aurel32.net>
-X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.6; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Aug 2007 11:19:12 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.187]:26196 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20026854AbXHHKTK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 8 Aug 2007 11:19:10 +0100
+Received: by fk-out-0910.google.com with SMTP id f40so112349fka
+        for <linux-mips@linux-mips.org>; Wed, 08 Aug 2007 03:18:52 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=HXRMr2K9DcAtUjLhtsiBXpDxwu9XrmysDkaJTcqJIFzbwn8u7yQD+lbpzS4XbtdRu9nqsWVrPFEd4bYol4CKNsrhMyjCzAQYNOwFWy2sQCc2dnr3WYWzcmxGRCcXMNffESG5bntygkzuXjZxEENFM/p5xEIuFGrKBKt5fgXbfAE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=thYDnEYDyt9Lqr0vVIVMpwtDBWSJ7MnBU+U/UEpzcoF+qs1ZXgLgSTjB543a+ULNQSyyxpm7YSWIR7I0cNYdZVrCb2og7bndZuguGR8drvkAi2PtipI5CoqbiJF3ep0ZNMRhuDKgAL+KVNfXA9llgQKUAdIV71p7OWV9TRxO2xM=
+Received: by 10.82.111.8 with SMTP id j8mr358060buc.1186568331655;
+        Wed, 08 Aug 2007 03:18:51 -0700 (PDT)
+Received: by 10.82.148.14 with HTTP; Wed, 8 Aug 2007 03:18:51 -0700 (PDT)
+Message-ID: <40378e40708080318w7dc0f0b7s4c94c98acd72ec2c@mail.gmail.com>
+Date:	Wed, 8 Aug 2007 12:18:51 +0200
+From:	"Mohamed Bamakhrama" <bamakhrama@gmail.com>
+Reply-To: bamakhrama@gmail.com
+To:	linux-mips@linux-mips.org
+Subject: Problems with NFS boot
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.184 $
-X-Scanned-By: MIMEDefang 2.53 on 207.189.120.14
-Return-Path: <akpm@linux-foundation.org>
+Content-Disposition: inline
+Return-Path: <bamakhrama@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16122
+X-archive-position: 16123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: bamakhrama@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 7 Aug 2007 14:16:38 +0200
-Aurelien Jarno <aurelien@aurel32.net> wrote:
+Hi list,
+I have a Malta board for which I was able to build the kernel, load it
+and start it. The problem comes when it tries to boot through the NFS.
 
-> The patch below against 2.6.23-rc1-mm2 adds support for BCM947xx CPUs.
-> It originally comes from the OpenWrt patches.
-> 
-> Cc: Michael Buesch <mb@bu3sch.de>
-> Cc: Felix Fietkau <nbd@openwrt.org>
-> Cc: Florian Schirmer <jolt@tuxbox.org>
-> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-> 
-> --- a/arch/mips/bcm947xx/irq.c
-> +++ b/arch/mips/bcm947xx/irq.c
+I start the kernel with the following command:
+go . nfsroot=192.168.1.1/mnt/danube_rootfs ip=192.168.1.4:192.168.1.1:::
 
-It's a MIPS patch.  I can merge it, I guess, if Ralf is OK with that.
+The kernel starts up and I get the following output:
 
-> ...
->
-> +void __init plat_mem_setup(void)
-> +{
-> +	int i, err;
-> +	struct ssb_mipscore *mcore;
-> +
-> +	err = ssb_bus_ssbbus_register(&ssb_bcm947xx, SSB_ENUM_BASE, bcm947xx_get_invariants);
-> +	if (err)
-> +		panic("Failed to initialize SSB bus (err %d)\n", err);
-> +	mcore = &ssb_bcm947xx.mipscore;
-> +
-> +#ifdef CONFIG_SERIAL_8250
-> +	for (i = 0; i < mcore->nr_serial_ports; i++) {
-> +		struct ssb_serial_port *port = &(mcore->serial_ports[i]);
-> +		struct uart_port s;
-> +	
-> +		memset(&s, 0, sizeof(s));
-> +		s.line = i;
-> +		s.membase = port->regs;
-> +		s.irq = port->irq + 2;
-> +		s.uartclk = port->baud_base;
-> +		s.flags = UPF_BOOT_AUTOCONF | UPF_SHARE_IRQ;
-> +		s.iotype = SERIAL_IO_MEM;
-> +		s.regshift = port->reg_shift;
-> +
-> +		early_serial_setup(&s);
-> +	}
-> +#endif
-> +
-> +	_machine_restart = bcm947xx_machine_restart;
-> +	_machine_halt = bcm947xx_machine_halt;
-> +	pm_power_off = bcm947xx_machine_halt;
-> +	board_time_init = bcm947xx_time_init;
-> +}
+***** BEGIN OUTPUT *****
+YAMON> go . nfsroot=192.168.1.1/mnt/danube_rootfs ip=192.168.1.4:192.168.1.1:::
+Linux version 2.6.22.1-default (danube@peng) (gcc version 3.3.6) #3 Tue Aug 7 18
+:59:37 CEST 2007
 
-Won't this break if CONFIG_SERIAL_8250=m?
+LINUX started...
+Config serial console: console=ttyS0,38400n8r
+CPU revision is: 00019640
+Determined physical RAM map:
+memory: 00001000 @ 00000000 (reserved)
+memory: 000ef000 @ 00001000 (ROM data)
+memory: 003cc000 @ 000f0000 (reserved)
+memory: 03b43000 @ 004bc000 (usable)
+Wasting 38784 bytes for tracking 1212 unused pages
+Initrd not found or empty - disabling initrd
+Built 1 zonelists.  Total pages: 16256
+Kernel command line: nfsroot=192.168.1.1/mnt/danube_rootfs ip=192.168.1.4:192.16
+8.1.1::: console=ttyS0,38400n8r
+Primary instruction cache 64kB, physically tagged, 4-way, linesize 32 bytes.
+Primary data cache 64kB, 4-way, linesize 32 bytes.
+Synthesized TLB refill handler (20 instructions).
+Synthesized TLB load handler fastpath (32 instructions).
+Synthesized TLB store handler fastpath (32 instructions).
+Synthesized TLB modify handler fastpath (31 instructions).
+Cache parity protection disabled
+PID hash table entries: 256 (order: 8, 1024 bytes)
+CPU frequency 33.00 MHz
+Using 16.501 MHz high precision timer.
+console handover: boot [early0] -> real [ttyS0]
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 60096k/60684k available (2684k kernel code, 572k reserved, 695k data, 15
+6k init, 0k highmem)
+Security Framework v1.0.0 initialized
+Mount-cache hash table entries: 512
+NET: Registered protocol family 16
+SCSI subsystem initialized
+Time: MIPS clocksource has been installed.
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
+TCP: Hash tables configured (established 2048 bind 2048)
+TCP reno registered
+audit: initializing netlink socket (disabled)
+audit(1186573381.443:1): initialized
+VFS: Disk quotas dquot_6.5.1
+Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+Installing knfsd (copyright (C) 1996 okir@monad.swb.de).
+io scheduler noop registered
+io scheduler anticipatory registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+rtc: SRM (post-2000) epoch (2000) detected
+Real Time Clock Driver v1.12ac
+Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing enabled
+serial8250: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
+serial8250: ttyS1 at I/O 0x2f8 (irq = 3) is a 16550A
+RAMDISK driver initialized: 16 RAM disks of 64000K size 1024 blocksize
+serio: i8042 KBD port at 0x60,0x64 irq 1
+serio: i8042 AUX port at 0x60,0x64 irq 12
+mice: PS/2 mouse device common for all mice
+atkbd.c: keyboard reset failed on isa0060/serio0
+atkbd.c: keyboard reset failed on isa0060/serio1
+oprofile: using mips/24K performance monitoring.
+NET: Registered protocol family 1
+md: Autodetecting RAID arrays.
+md: autorun ...
+md: ... autorun DONE.
+VFS: Cannot open root device "<NULL>" or unknown-block(0,0)
+Please append a correct "root=" boot option; here are the available partitions:
+Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+***** END OUTPUT *****
 
-> +EXPORT_SYMBOL(ssb_bcm947xx);
-> --- a/arch/mips/bcm947xx/time.c
-> +++ b/arch/mips/bcm947xx/time.c
-> @@ -0,0 +1,62 @@
-> +/*
-> + *  Copyright (C) 2004 Florian Schirmer <jolt@tuxbox.org>
-> + *
-> + *  This program is free software; you can redistribute  it and/or modify it
-> + *  under  the terms of  the GNU General  Public License as published by the
-> + *  Free Software Foundation;  either version 2 of the  License, or (at your
-> + *  option) any later version.
-> + *
-> + *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-> + *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-> + *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-> + *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-> + *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-> + *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-> + *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-> + *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-> + *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-> + *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-> + *
-> + *  You should have received a copy of the  GNU General Public License along
-> + *  with this program; if not, write  to the Free Software Foundation, Inc.,
-> + *  675 Mass Ave, Cambridge, MA 02139, USA.
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/sched.h>
-> +#include <linux/serial_reg.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/ssb/ssb.h>
-> +#include <asm/addrspace.h>
-> +#include <asm/io.h>
-> +#include <asm/time.h>
-> +
-> +extern struct ssb_bus ssb_bcm947xx;
 
-No.  Please, never ever put extern declarations in C files.  Find a
-suitable header file for it.
 
-We have scripts/checkpatch.pl which will tell you this (and a lot of other
-stuff too).  Please incorporate checkpatch into your workflow.
+I am sure that all my NFS settings are correct since I have another
+board which is working fine with that server. Does anyone know how to
+boot the board over NFS?
 
-> +void __init
-> +bcm947xx_time_init(void)
-> +{
-> +	unsigned long hz;
-> +
-> +	/*
-> +	 * Use deterministic values for initial counter interrupt
-> +	 * so that calibrate delay avoids encountering a counter wrap.
-> +	 */
-> +	write_c0_count(0);
-> +	write_c0_compare(0xffff);
-> +
-> +	hz = ssb_cpu_clock(&ssb_bcm947xx.mipscore) / 2;
-> +	if (!hz)
-> +		hz = 100000000;
-> +
-> +	/* Set MIPS counter frequency for fixed_rate_gettimeoffset() */
-> +	mips_hpt_frequency = hz;
-> +}
-> +
-> +void __init
-> +plat_timer_setup(struct irqaction *irq)
-> +{
-> +	/* Enable the timer interrupt */
-> +	setup_irq(7, irq);
-> +}
+Best regards,
+
+-- 
+Mohamed A. Bamakhrama
+Am Schaeferanger 15, room 035
+85764 Oberschleissheim, Germany
+Email: bamakhra@cs.tum.edu
+Web: http://home.cs.tum.edu/~bamakhra/
+Mobile: +49-160-9349-2711

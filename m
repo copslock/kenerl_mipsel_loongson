@@ -1,57 +1,160 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 01:09:04 +0100 (BST)
-Received: from mail.onstor.com ([66.201.51.107]:65343 "EHLO mail.onstor.com")
-	by ftp.linux-mips.org with ESMTP id S20021404AbXHIAI4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2007 01:08:56 +0100
-Received: from onstor-exch02.onstor.net ([66.201.51.106]) by mail.onstor.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 8 Aug 2007 17:08:48 -0700
-Received: from ripper.onstor.net ([10.0.0.42]) by onstor-exch02.onstor.net with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 8 Aug 2007 17:08:48 -0700
-Date:	Wed, 8 Aug 2007 17:08:46 -0700
-From:	Andrew Sharp <andy.sharp@onstor.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 01:43:57 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.38.19]:63137 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20021518AbXHIAnt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2007 01:43:49 +0100
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurel32@hall.aurel32.net>)
+	id 1IIw7s-0001T6-IH; Thu, 09 Aug 2007 02:43:44 +0200
+Date:	Thu, 9 Aug 2007 02:43:44 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
 To:	linux-mips@linux-mips.org
-Subject: kexec - not happening on mipsel?
-Message-ID: <20070808170846.7d395891@ripper.onstor.net>
-Organization: Onstor
-X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 09 Aug 2007 00:08:48.0599 (UTC) FILETIME=[75A2CE70:01C7DA19]
-Return-Path: <andy.sharp@onstor.com>
+Cc:	Andrew Morton <akpm@linux-foundation.org>, mb@bu3sch.de,
+	nbd@openwrt.org, jolt@tuxbox.org
+Subject: [PATCH 1/4][RFC] MIPS: Detect BCM947xx CPUs
+Message-ID: <20070809004344.GB4682@hall.aurel32.net>
+References: <20070806150900.GG24308@hall.aurel32.net> <200708062005.29657.mb@bu3sch.de> <20070806183316.GB32465@hall.aurel32.net> <200708062037.05995.mb@bu3sch.de> <20070806191712.GA2019@hall.aurel32.net> <20070807094045.2c6eaa38.yoichi_yuasa@tripeaks.co.jp> <20070807121638.GA9953@hall.aurel32.net> <20070807183302.1e38a4df.akpm@linux-foundation.org> <20070809004156.GA4682@hall.aurel32.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20070809004156.GA4682@hall.aurel32.net>
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurel32@hall.aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16138
+X-archive-position: 16139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.sharp@onstor.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-We could sure make use of kexec for quick reboots (it bloody takes
-forever for the PROM to set up ECC memory).  The config option is in
-Kconfig; I haven't checked the kernel source.  But the userspace package
-kexec-tools barfs on the mipsel arch in configure.
+The patch below against 2.6.23-rc1-mm2 adds a few constants for BCM947xx
+CPUs and detect them in cpu-probe.c and tlbex.c. Note that the BCM4710 
+does not support the wait instruction, this is not a mistake in the 
+code.
 
-Is anybody using this on MIPS?  Do the kernel portions work for anyone?
+This part is not dependent of other patches (though useless without 
+them), and could already be merged in the current linux-mips git tree.
 
-Cheers,
+Cc: Michael Buesch <mb@bu3sch.de>
+Cc: Felix Fietkau <nbd@openwrt.org>
+Cc: Florian Schirmer <jolt@tuxbox.org>
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
 
-a
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -159,6 +159,7 @@
+ 	case CPU_5KC:
+ 	case CPU_25KF:
+ 	case CPU_PR4450:
++	case CPU_BCM3302:
+ 		cpu_wait = r4k_wait;
+ 		break;
+ 
+@@ -786,6 +787,22 @@
+ }
+ 
+ 
++static inline void cpu_probe_broadcom(struct cpuinfo_mips *c)
++{
++	decode_configs(c);
++	switch (c->processor_id & 0xff00) {
++	case PRID_IMP_BCM3302:
++		c->cputype = CPU_BCM3302;
++		break;
++	case PRID_IMP_BCM4710:
++		c->cputype = CPU_BCM4710;
++		break;
++	default:
++		c->cputype = CPU_UNKNOWN;
++		break;
++	}
++}
++
+ __init void cpu_probe(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+@@ -808,6 +825,9 @@
+ 	case PRID_COMP_SIBYTE:
+ 		cpu_probe_sibyte(c);
+ 		break;
++	case PRID_COMP_BROADCOM:
++		cpu_probe_broadcom(c);
++		break;
+ 	case PRID_COMP_SANDCRAFT:
+ 		cpu_probe_sandcraft(c);
+ 		break;
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -82,6 +82,8 @@
+ 	[CPU_VR4181]	= "NEC VR4181",
+ 	[CPU_VR4181A]	= "NEC VR4181A",
+ 	[CPU_SR71000]	= "Sandcraft SR71000",
++	[CPU_BCM3302]	= "Broadcom BCM3302",
++	[CPU_BCM4710]	= "Broadcom BCM4710",
+ 	[CPU_PR4450]	= "Philips PR4450",
+ 	[CPU_LOONGSON2]	= "ICT Loongson-2",
+ };
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -893,6 +893,8 @@
+ 	case CPU_4KSC:
+ 	case CPU_20KC:
+ 	case CPU_25KF:
++	case CPU_BCM3302:
++	case CPU_BCM4710:
+ 	case CPU_LOONGSON2:
+ 		tlbw(p);
+ 		break;
+--- a/include/asm-mips/bootinfo.h
++++ b/include/asm-mips/bootinfo.h
+@@ -221,6 +221,12 @@
+ #define MACH_GROUP_WINDRIVER   28	/* Windriver boards */
+ #define MACH_WRPPMC             1
+ 
++/*
++ * Valid machtype for group Broadcom
++ */
++#define MACH_GROUP_BRCM		23	/* Broadcom			*/
++#define  MACH_BCM947XX		1	/* Broadcom BCM947xx		*/
++
+ #define CL_SIZE			COMMAND_LINE_SIZE
+ 
+ const char *get_system_type(void);
+--- a/include/asm-mips/cpu.h
++++ b/include/asm-mips/cpu.h
+@@ -106,6 +106,13 @@
+ #define PRID_IMP_SR71000        0x0400
+ 
+ /*
++ * These are the PRID's for when 23:16 == PRID_COMP_BROADCOM
++ */
++
++#define PRID_IMP_BCM4710	0x4000
++#define PRID_IMP_BCM3302	0x9000
++
++/*
+  * Definitions for 7:0 on legacy processors
+  */
+ 
+@@ -217,8 +224,9 @@
+ #define CPU_R14000		64
+ #define CPU_LOONGSON1           65
+ #define CPU_LOONGSON2           66
+-
+-#define CPU_LAST		66
++#define CPU_BCM3302		67
++#define CPU_BCM4710		68
++#define CPU_LAST		68
+ 
+ /*
+  * ISA Level encodings
 
-
-kexec-tools-1.101-kdump10$ dpkg-buildpackage -us -uc -nc -b -d -rfakeroot
-dpkg-buildpackage: source package is kexec-tools
-dpkg-buildpackage: source version is 1.101-kdump10-2
-dpkg-buildpackage: source changed by Khalid Aziz <khalid@debian.org>
-dpkg-buildpackage: host architecture mipsel
-dpkg-buildpackage: source version without epoch 1.101-kdump10-2
- debian/rules build
-dh_testdir
-# Add here commands to configure the package.
-(cd kexec-tools-1.101; ./configure --prefix=/usr --sbindir=/sbin --mandir=/usr/share/man --datadir=/usr/share)
-checking build system type... mipsel-unknown-linux-gnu
-checking host system type... mipsel-unknown-linux-gnu
-configure: error:  unsupported architecture mipsel
-make: *** [configure-stamp] Error 1
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

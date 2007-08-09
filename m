@@ -1,61 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 02:26:08 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:39854 "HELO lemote.com")
-	by ftp.linux-mips.org with SMTP id S20022020AbXHIB0F (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2007 02:26:05 +0100
-Received: (qmail 9503 invoked by uid 511); 9 Aug 2007 01:32:01 -0000
-Received: from unknown (HELO ?192.168.2.233?) (192.168.2.233)
-  by lemote.com with SMTP; 9 Aug 2007 01:32:01 -0000
-Message-ID: <46BA6CDD.7020907@lemote.com>
-Date:	Thu, 09 Aug 2007 09:24:45 +0800
-From:	Songmao Tian <tiansm@lemote.com>
-User-Agent: Icedove 1.5.0.8 (X11/20061116)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, jiankemeng@gmail.com,
-	linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
-	tiwai@suse.de, greg@kroah.com
-Subject: Re: ALSA on MIPS platform
-References: <46B332AC.8020403@lemote.com> <5861a7880708062253x7133659cm1ff17f451e4f82f8@mail.gmail.com> <5861a7880708062317t21970c81w3f16580858bf50af@mail.gmail.com> <20070807.230157.59463765.anemo@mba.ocn.ne.jp> <20070807175402.GA24731@linux-mips.org>
-In-Reply-To: <20070807175402.GA24731@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 02:41:31 +0100 (BST)
+Received: from mail.onstor.com ([66.201.51.107]:14925 "EHLO mail.onstor.com")
+	by ftp.linux-mips.org with ESMTP id S20022101AbXHIBl3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2007 02:41:29 +0100
+Received: from onstor-exch02.onstor.net ([66.201.51.106]) by mail.onstor.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 8 Aug 2007 18:41:22 -0700
+Received: from ripper.onstor.net ([10.0.0.42]) by onstor-exch02.onstor.net with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 8 Aug 2007 18:41:21 -0700
+Date:	Wed, 8 Aug 2007 18:41:20 -0700
+From:	Andrew Sharp <andy.sharp@onstor.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: kexec - not happening on mipsel?
+Message-ID: <20070808184120.40b6b5d5@ripper.onstor.net>
+In-Reply-To: <20070808170846.7d395891@ripper.onstor.net>
+References: <20070808170846.7d395891@ripper.onstor.net>
+Organization: Onstor
+X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <tiansm@lemote.com>
+X-OriginalArrivalTime: 09 Aug 2007 01:41:21.0551 (UTC) FILETIME=[637409F0:01C7DA26]
+Return-Path: <andy.sharp@onstor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16144
+X-archive-position: 16145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiansm@lemote.com
+X-original-sender: andy.sharp@onstor.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Tue, Aug 07, 2007 at 11:01:57PM +0900, Atsushi Nemoto wrote:
->
->   
->> On Tue, 7 Aug 2007 10:18:04 +0400, "Dajie Tan" <jiankemeng@gmail.com> wrote:
->>     
->>>  static inline unsigned long virt_to_phys(volatile const void *address)
->>>  {
->>> -       return (unsigned long)address - PAGE_OFFSET + PHYS_OFFSET;
->>> +       return ((unsigned long)address & 0x1fffffff) + PHYS_OFFSET;
->>>  }
->>>       
->> This makes virt_to_phys() a bit slower, and more importantly, breaks
->> 64-bit kernel.
->>     
->
-> It's ALSA that is doing funny things here so there is no point in fixing
-> the arch code to work for ALSA.
->
->   Ralf
->
->
->   
-arm has made a dma_mmap_coherent, but I don't quite understand the code 
-and I am not sure the situation is the same.
+On Wed, 8 Aug 2007 17:08:46 -0700 Andrew Sharp <andy.sharp@onstor.com>
+wrote:
 
+> We could sure make use of kexec for quick reboots (it bloody takes
+> forever for the PROM to set up ECC memory).  The config option is in
+> Kconfig; I haven't checked the kernel source.  But the userspace
+> package kexec-tools barfs on the mipsel arch in configure.
 
-Tian
+Answering my own question on this part at least, it didn't take long to
+find this patch, so we'll see how that goes.
+
+http://lists.infradead.org/pipermail/kexec/2007-June/000214.html
+
+> Is anybody using this on MIPS?  Do the kernel portions work for
+> anyone?

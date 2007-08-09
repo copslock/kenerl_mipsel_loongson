@@ -1,48 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 02:41:31 +0100 (BST)
-Received: from mail.onstor.com ([66.201.51.107]:14925 "EHLO mail.onstor.com")
-	by ftp.linux-mips.org with ESMTP id S20022101AbXHIBl3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2007 02:41:29 +0100
-Received: from onstor-exch02.onstor.net ([66.201.51.106]) by mail.onstor.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 8 Aug 2007 18:41:22 -0700
-Received: from ripper.onstor.net ([10.0.0.42]) by onstor-exch02.onstor.net with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 8 Aug 2007 18:41:21 -0700
-Date:	Wed, 8 Aug 2007 18:41:20 -0700
-From:	Andrew Sharp <andy.sharp@onstor.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: kexec - not happening on mipsel?
-Message-ID: <20070808184120.40b6b5d5@ripper.onstor.net>
-In-Reply-To: <20070808170846.7d395891@ripper.onstor.net>
-References: <20070808170846.7d395891@ripper.onstor.net>
-Organization: Onstor
-X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 11:00:47 +0100 (BST)
+Received: from static-ip-62-75-166-246.inaddr.intergenia.de ([62.75.166.246]:48030
+	"EHLO vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
+	id S20021672AbXHIKAi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 9 Aug 2007 11:00:38 +0100
+Received: from t5ea7.t.pppool.de ([89.55.94.167] helo=powermac.local)
+	by vs166246.vserver.de with esmtpa (Exim 4.50)
+	id 1IJ4on-0007Kw-IA; Thu, 09 Aug 2007 12:00:37 +0200
+From:	Michael Buesch <mb@bu3sch.de>
+To:	Aurelien Jarno <aurelien@aurel32.net>
+Subject: Re: [PATCH 2/4][RFC] MIPS: BCM947xx support
+Date:	Thu, 9 Aug 2007 12:00:09 +0200
+User-Agent: KMail/1.9.6
+Cc:	linux-mips@linux-mips.org,
+	Andrew Morton <akpm@linux-foundation.org>, nbd@openwrt.org,
+	jolt@tuxbox.org
+References: <20070806150900.GG24308@hall.aurel32.net> <20070809004156.GA4682@hall.aurel32.net> <20070809004430.GC4682@hall.aurel32.net>
+In-Reply-To: <20070809004430.GC4682@hall.aurel32.net>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-15"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 09 Aug 2007 01:41:21.0551 (UTC) FILETIME=[637409F0:01C7DA26]
-Return-Path: <andy.sharp@onstor.com>
+Content-Disposition: inline
+Message-Id: <200708091200.09615.mb@bu3sch.de>
+Return-Path: <mb@bu3sch.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16145
+X-archive-position: 16146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.sharp@onstor.com
+X-original-sender: mb@bu3sch.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 8 Aug 2007 17:08:46 -0700 Andrew Sharp <andy.sharp@onstor.com>
-wrote:
+On Thursday 09 August 2007 02:44:30 Aurelien Jarno wrote:
+> +struct ssb_bus ssb_bcm947xx;
+> +EXPORT_SYMBOL(ssb_bcm947xx);
 
-> We could sure make use of kexec for quick reboots (it bloody takes
-> forever for the PROM to set up ECC memory).  The config option is in
-> Kconfig; I haven't checked the kernel source.  But the userspace
-> package kexec-tools barfs on the mipsel arch in configure.
+Huh, which module does need this internal structure?
 
-Answering my own question on this part at least, it didn't take long to
-find this patch, so we'll see how that goes.
-
-http://lists.infradead.org/pipermail/kexec/2007-June/000214.html
-
-> Is anybody using this on MIPS?  Do the kernel portions work for
-> anyone?
+-- 
+Greetings Michael.

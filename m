@@ -1,60 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 16:18:25 +0100 (BST)
-Received: from NaN.false.org ([208.75.86.248]:9348 "EHLO nan.false.org")
-	by ftp.linux-mips.org with ESMTP id S20023865AbXHIPSR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Aug 2007 16:18:17 +0100
-Received: from nan.false.org (localhost [127.0.0.1])
-	by nan.false.org (Postfix) with ESMTP id 34FA2982CE;
-	Thu,  9 Aug 2007 15:18:15 +0000 (GMT)
-Received: from caradoc.them.org (22.svnf5.xdsl.nauticom.net [209.195.183.55])
-	by nan.false.org (Postfix) with ESMTP id DC0F6982C5;
-	Thu,  9 Aug 2007 15:18:14 +0000 (GMT)
-Received: from drow by caradoc.them.org with local (Exim 4.67)
-	(envelope-from <drow@caradoc.them.org>)
-	id 1IJ9m8-00029E-Is; Thu, 09 Aug 2007 11:18:12 -0400
-Date:	Thu, 9 Aug 2007 11:18:12 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3] Remove '-mno-explicit-relocs' option when
-	CONFIG_BUILD_ELF64
-Message-ID: <20070809151812.GA28142@caradoc.them.org>
-References: <11715446603241-git-send-email-fbuihuu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Aug 2007 20:40:13 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.190]:23372 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024460AbXHITkD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 9 Aug 2007 20:40:03 +0100
+Received: by nf-out-0910.google.com with SMTP id c10so157796nfd
+        for <linux-mips@linux-mips.org>; Thu, 09 Aug 2007 12:39:46 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=kz6OH/cHWckmITOBs4jrRWq6qOLcLFomk/wvLuVqxBQ6kQsl8X0qHroposgNew/YvZAPKzt9BeckF1DKwOxvzCyTf+BjfXtk3JbKUzjIMrZgi5Yd6Kl1loN24Of7VIASiKD3mj3AyDdL1+iTdB0I6Ugg0LkQUh4pxnkvkgzcb3Q=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=Awpp27wKMr6XMjYQxYIh4LpsETx70VA9VeuGOW7XuOyteT0N0A40w+XRbvJEKr6knxVKl/H0SUTCSU/BDqFjESRbTvEmB00Msw8JSuGAjwA4NEh48tmyev9risZmLtWFpVKCMZpJnd/0asLOBhrFD4/ikewkdIHEvNMO/qnlmDg=
+Received: by 10.86.100.7 with SMTP id x7mr1390902fgb.1186688386129;
+        Thu, 09 Aug 2007 12:39:46 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id e32sm4047267fke.2007.08.09.12.39.44
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 09 Aug 2007 12:39:45 -0700 (PDT)
+Message-ID: <46BB6D6C.2050601@gmail.com>
+Date:	Thu, 09 Aug 2007 21:39:24 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11715446603241-git-send-email-fbuihuu@gmail.com>
-User-Agent: Mutt/1.5.15 (2007-04-09)
-Return-Path: <drow@false.org>
+To:	Daniel Jacobowitz <dan@debian.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/3] Remove '-mno-explicit-relocs' option when	CONFIG_BUILD_ELF64
+References: <11715446603241-git-send-email-fbuihuu@gmail.com> <20070809151812.GA28142@caradoc.them.org>
+In-Reply-To: <20070809151812.GA28142@caradoc.them.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16153
+X-archive-position: 16154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 15, 2007 at 02:04:18PM +0100, Franck Bui-Huu wrote:
-> From: Franck Bui-Huu <fbuihuu@gmail.com>
+Daniel Jacobowitz wrote:
+> On Thu, Feb 15, 2007 at 02:04:18PM +0100, Franck Bui-Huu wrote:
+>> From: Franck Bui-Huu <fbuihuu@gmail.com>
+>>
+>> This patch removes '-mno-explicit-relocs' usage when
+>> CONFIG_BUILD_ELF64 is set since this option was only required
+>> with the old hack to truncate addresses at the assembly level
+>> where "-mabi=64 -Wa,-mabi=32" was used.
+>>
+>> This should yield a small code size improvement for inline
+>> assembly, where the R constraint is used.
+>>
+>> The idea is coming from Maciej <macro@linux-mips.org>.
 > 
-> This patch removes '-mno-explicit-relocs' usage when
-> CONFIG_BUILD_ELF64 is set since this option was only required
-> with the old hack to truncate addresses at the assembly level
-> where "-mabi=64 -Wa,-mabi=32" was used.
+> It looks like nothing ever came of these patches?  
+
+yes it seems a common rule which is applied to the patches I send to
+this mailing list ;)
+
+> I tried to boot my
+> Sentosa again today, and needed a slightly updated version of them.
 > 
-> This should yield a small code size improvement for inline
-> assembly, where the R constraint is used.
+
+What do you mean by "slightly updated version" ? Did you rebase them
+on top the current linux-mips tree, or something ? If not, what's your
+kernel version ?
+
+> I'm not positive I did the update correctly, though, since the board
+> panics in swapper after jumping to a bogus pointer.
 > 
-> The idea is coming from Maciej <macro@linux-mips.org>.
 
-It looks like nothing ever came of these patches?  I tried to boot my
-Sentosa again today, and needed a slightly updated version of them.
+Sorry I don't understand this. Do you mean:
 
-I'm not positive I did the update correctly, though, since the board
-panics in swapper after jumping to a bogus pointer.
+  a) My kernel crashed, so I gave your patchset a try but it's still
+     crahshing
 
--- 
-Daniel Jacobowitz
-CodeSourcery
+  b) My kernel crashed, so I gave your patchset a try and it makes my
+     kernel running fine.
+
+I assume you're saying a).
+
+Can you give a try to 2.6.23-rc2 because it includes commit
+b1c65b3988c6e29ac371ab1cbbf6c4f8fb7092f8 which might fix your
+issue. That would be a side effect but it gives us a hint on your
+problem.
+
+Also your .config, dmesg files are welcome.
+
+		Franck

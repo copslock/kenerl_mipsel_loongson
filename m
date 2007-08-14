@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2007 12:38:19 +0100 (BST)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:31239 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022201AbXHNLhk (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2007 12:38:49 +0100 (BST)
+Received: from mo32.po.2iij.NET ([210.128.50.17]:9001 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022402AbXHNLhk (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Aug 2007 12:37:40 +0100
-Received: by mo.po.2iij.net (mo31) id l7EBbZnu099826; Tue, 14 Aug 2007 20:37:35 +0900 (JST)
+Received: by mo.po.2iij.net (mo32) id l7EBbblM071521; Tue, 14 Aug 2007 20:37:37 +0900 (JST)
 Received: from localhost.localdomain (231.26.30.125.dy.iij4u.or.jp [125.30.26.231])
-	by mbox.po.2iij.net (po-mbox300) id l7EBbXFk016159
+	by mbox.po.2iij.net (po-mbox302) id l7EBbZrj015281
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 14 Aug 2007 20:37:34 +0900
-Date:	Tue, 14 Aug 2007 20:32:47 +0900
+	Tue, 14 Aug 2007 20:37:35 +0900
+Date:	Tue, 14 Aug 2007 20:33:54 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] update tb0226_defconfig
-Message-Id: <20070814203247.1e10922e.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH][MIPS] update tb0287_defconfig
+Message-Id: <20070814203354.170e4304.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +22,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16170
+X-archive-position: 16171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,20 +31,20 @@ Precedence: bulk
 X-list: linux-mips
 
 
-Update tb0226_defconfig
+Update tb0287_defconfig
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_defconfig mips/arch/mips/configs/tb0226_defconfig
---- mips-orig/arch/mips/configs/tb0226_defconfig	2007-08-09 10:04:28.278961000 +0900
-+++ mips/arch/mips/configs/tb0226_defconfig	2007-08-09 11:17:19.224392750 +0900
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0287_defconfig mips/arch/mips/configs/tb0287_defconfig
+--- mips-orig/arch/mips/configs/tb0287_defconfig	2007-08-09 10:04:28.278961000 +0900
++++ mips/arch/mips/configs/tb0287_defconfig	2007-08-09 14:04:03.329868250 +0900
 @@ -1,68 +1,56 @@
  #
  # Automatically generated make config: don't edit
--# Linux kernel version: 2.6.20
--# Tue Feb 20 21:47:41 2007
+-# Linux kernel version: 2.6.21-rc1
+-# Thu Feb 22 10:38:09 2007
 +# Linux kernel version: 2.6.23-rc2
-+# Thu Aug  9 11:16:55 2007
++# Thu Aug  9 14:03:54 2007
  #
  CONFIG_MIPS=y
  
@@ -114,13 +114,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_IBM_WORKPAD is not set
  # CONFIG_NEC_CMBVR4133 is not set
  CONFIG_TANBAC_TB022X=y
--CONFIG_TANBAC_TB0226=y
--# CONFIG_TANBAC_TB0287 is not set
+-# CONFIG_TANBAC_TB0226 is not set
+-CONFIG_TANBAC_TB0287=y
  # CONFIG_VICTOR_MPC30X is not set
  # CONFIG_ZAO_CAPCELLA is not set
 +# CONFIG_TANBAC_TB0219 is not set
-+CONFIG_TANBAC_TB0226=y
-+# CONFIG_TANBAC_TB0287 is not set
++# CONFIG_TANBAC_TB0226 is not set
++CONFIG_TANBAC_TB0287=y
  CONFIG_PCI_VR41XX=y
  CONFIG_RWSEM_GENERIC_SPINLOCK=y
  # CONFIG_ARCH_HAS_ILOG2_U32 is not set
@@ -157,7 +157,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  CONFIG_CPU_HAS_SYNC=y
  CONFIG_GENERIC_HARDIRQS=y
  CONFIG_GENERIC_IRQ_PROBE=y
-@@ -135,48 +124,47 @@ CONFIG_FLAT_NODE_MEM_MAP=y
+@@ -135,86 +124,83 @@ CONFIG_FLAT_NODE_MEM_MAP=y
  # CONFIG_SPARSEMEM_STATIC is not set
  CONFIG_SPLIT_PTLOCK_CPUS=4
  # CONFIG_RESOURCES_64BIT is not set
@@ -216,7 +216,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
  CONFIG_SYSCTL=y
  CONFIG_EMBEDDED=y
-@@ -189,32 +177,30 @@ CONFIG_BUG=y
+ # CONFIG_SYSCTL_SYSCALL is not set
+ CONFIG_KALLSYMS=y
+ # CONFIG_KALLSYMS_EXTRA_PASS is not set
+-# CONFIG_HOTPLUG is not set
++CONFIG_HOTPLUG=y
+ CONFIG_PRINTK=y
+ CONFIG_BUG=y
  CONFIG_ELF_CORE=y
  CONFIG_BASE_FULL=y
  CONFIG_FUTEX=y
@@ -258,7 +264,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # IO Schedulers
-@@ -234,16 +220,13 @@ CONFIG_DEFAULT_IOSCHED="anticipatory"
+@@ -234,15 +220,14 @@ CONFIG_DEFAULT_IOSCHED="anticipatory"
  #
  CONFIG_HW_HAS_PCI=y
  CONFIG_PCI=y
@@ -268,15 +274,16 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  #
  # PCCARD (PCMCIA/CardBus) support
  #
- # CONFIG_PCCARD is not set
 -
 -#
 -# PCI Hotplug Support
 -#
- # CONFIG_HOTPLUG_PCI is not set
++# CONFIG_PCCARD is not set
++# CONFIG_HOTPLUG_PCI is not set
  
  #
-@@ -256,10 +239,7 @@ CONFIG_TRAD_SIGNALS=y
+ # Executable file formats
+@@ -254,10 +239,7 @@ CONFIG_TRAD_SIGNALS=y
  #
  # Power management options
  #
@@ -288,7 +295,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # Networking
-@@ -269,14 +249,9 @@ CONFIG_NET=y
+@@ -267,14 +249,9 @@ CONFIG_NET=y
  #
  # Networking options
  #
@@ -303,7 +310,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_NET_KEY is not set
  CONFIG_INET=y
  CONFIG_IP_MULTICAST=y
-@@ -286,7 +261,6 @@ CONFIG_ASK_IP_FIB_HASH=y
+@@ -284,7 +261,6 @@ CONFIG_ASK_IP_FIB_HASH=y
  CONFIG_IP_FIB_HASH=y
  CONFIG_IP_MULTIPLE_TABLES=y
  CONFIG_IP_ROUTE_MULTIPATH=y
@@ -311,21 +318,32 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  CONFIG_IP_ROUTE_VERBOSE=y
  CONFIG_IP_PNP=y
  # CONFIG_IP_PNP_DHCP is not set
-@@ -302,34 +276,25 @@ CONFIG_SYN_COOKIES=y
+@@ -301,9 +277,9 @@ CONFIG_SYN_COOKIES=y
  # CONFIG_INET_IPCOMP is not set
  # CONFIG_INET_XFRM_TUNNEL is not set
- # CONFIG_INET_TUNNEL is not set
+ CONFIG_INET_TUNNEL=m
 -CONFIG_INET_XFRM_MODE_TRANSPORT=m
 -CONFIG_INET_XFRM_MODE_TUNNEL=m
--CONFIG_INET_XFRM_MODE_BEET=m
+-CONFIG_INET_XFRM_MODE_BEET=y
 +# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
 +# CONFIG_INET_XFRM_MODE_TUNNEL is not set
 +# CONFIG_INET_XFRM_MODE_BEET is not set
  CONFIG_INET_DIAG=y
  CONFIG_INET_TCP_DIAG=y
- # CONFIG_TCP_CONG_ADVANCED is not set
- CONFIG_TCP_CONG_CUBIC=y
- CONFIG_DEFAULT_TCP_CONG="cubic"
+ CONFIG_TCP_CONG_ADVANCED=y
+@@ -317,6 +293,8 @@ CONFIG_TCP_CONG_HTCP=m
+ # CONFIG_TCP_CONG_SCALABLE is not set
+ # CONFIG_TCP_CONG_LP is not set
+ # CONFIG_TCP_CONG_VENO is not set
++# CONFIG_TCP_CONG_YEAH is not set
++# CONFIG_TCP_CONG_ILLINOIS is not set
+ CONFIG_DEFAULT_BIC=y
+ # CONFIG_DEFAULT_CUBIC is not set
+ # CONFIG_DEFAULT_HTCP is not set
+@@ -324,26 +302,14 @@ CONFIG_DEFAULT_BIC=y
+ # CONFIG_DEFAULT_WESTWOOD is not set
+ # CONFIG_DEFAULT_RENO is not set
+ CONFIG_DEFAULT_TCP_CONG="bic"
 -CONFIG_TCP_MD5SIG=y
 +# CONFIG_TCP_MD5SIG is not set
  # CONFIG_IPV6 is not set
@@ -347,13 +365,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -#
 -# TIPC Configuration (EXPERIMENTAL)
 -#
-+# CONFIG_SCTP_HMAC_NONE is not set
-+# CONFIG_SCTP_HMAC_SHA1 is not set
-+# CONFIG_SCTP_HMAC_MD5 is not set
  # CONFIG_TIPC is not set
  # CONFIG_ATM is not set
  # CONFIG_BRIDGE is not set
-@@ -355,10 +320,20 @@ CONFIG_NETWORK_SECMARK=y
+@@ -369,10 +335,20 @@ CONFIG_NETWORK_SECMARK=y
  # CONFIG_HAMRADIO is not set
  # CONFIG_IRDA is not set
  # CONFIG_BT is not set
@@ -375,20 +390,21 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # Device Drivers
  #
  
-@@ -369,30 +344,10 @@ CONFIG_STANDALONE=y
+@@ -381,31 +357,12 @@ CONFIG_FIB_RULES=y
+ #
+ CONFIG_STANDALONE=y
  CONFIG_PREVENT_FIRMWARE_BUILD=y
- CONFIG_FW_LOADER=y
++CONFIG_FW_LOADER=m
  # CONFIG_SYS_HYPERVISOR is not set
 -
 -#
 -# Connector - unified userspace <-> kernelspace linker
 -#
--CONFIG_CONNECTOR=m
+ # CONFIG_CONNECTOR is not set
 -
 -#
 -# Memory Technology Devices (MTD)
 -#
-+# CONFIG_CONNECTOR is not set
  # CONFIG_MTD is not set
 -
 -#
@@ -408,7 +424,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_BLK_CPQ_DA is not set
  # CONFIG_BLK_CPQ_CISS_DA is not set
  # CONFIG_BLK_DEV_DAC960 is not set
-@@ -407,19 +362,9 @@ CONFIG_BLK_DEV_RAM=y
+@@ -420,19 +377,9 @@ CONFIG_BLK_DEV_RAM=y
  CONFIG_BLK_DEV_RAM_COUNT=16
  CONFIG_BLK_DEV_RAM_SIZE=4096
  CONFIG_BLK_DEV_RAM_BLOCKSIZE=1024
@@ -429,7 +445,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_IDE is not set
  
  #
-@@ -427,6 +372,7 @@ CONFIG_SGI_IOC4=m
+@@ -440,6 +387,7 @@ CONFIG_SGI_IOC4=m
  #
  # CONFIG_RAID_ATTRS is not set
  CONFIG_SCSI=y
@@ -437,7 +453,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  CONFIG_SCSI_TGT=m
  # CONFIG_SCSI_NETLINK is not set
  CONFIG_SCSI_PROC_FS=y
-@@ -448,6 +394,7 @@ CONFIG_SCSI_MULTI_LUN=y
+@@ -461,6 +409,7 @@ CONFIG_BLK_DEV_SD=y
  # CONFIG_SCSI_CONSTANTS is not set
  # CONFIG_SCSI_LOGGING is not set
  CONFIG_SCSI_SCAN_ASYNC=y
@@ -445,10 +461,12 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # SCSI Transports
-@@ -458,51 +405,8 @@ CONFIG_SCSI_SCAN_ASYNC=y
- CONFIG_SCSI_SAS_ATTRS=m
- CONFIG_SCSI_SAS_LIBSAS=m
- # CONFIG_SCSI_SAS_LIBSAS_DEBUG is not set
+@@ -468,48 +417,8 @@ CONFIG_SCSI_SCAN_ASYNC=y
+ # CONFIG_SCSI_SPI_ATTRS is not set
+ # CONFIG_SCSI_FC_ATTRS is not set
+ # CONFIG_SCSI_ISCSI_ATTRS is not set
+-# CONFIG_SCSI_SAS_ATTRS is not set
+ # CONFIG_SCSI_SAS_LIBSAS is not set
 -
 -#
 -# SCSI low-level drivers
@@ -461,8 +479,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# CONFIG_SCSI_AIC7XXX is not set
 -# CONFIG_SCSI_AIC7XXX_OLD is not set
 -# CONFIG_SCSI_AIC79XX is not set
--CONFIG_SCSI_AIC94XX=m
--# CONFIG_AIC94XX_DEBUG is not set
+-# CONFIG_SCSI_AIC94XX is not set
 -# CONFIG_SCSI_DPT_I2O is not set
 -# CONFIG_SCSI_ARCMSR is not set
 -# CONFIG_MEGARAID_NEWGEN is not set
@@ -476,6 +493,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# CONFIG_SCSI_INIA100 is not set
 -# CONFIG_SCSI_STEX is not set
 -# CONFIG_SCSI_SYM53C8XX_2 is not set
+-# CONFIG_SCSI_IPR is not set
 -# CONFIG_SCSI_QLOGIC_1280 is not set
 -# CONFIG_SCSI_QLA_FC is not set
 -# CONFIG_SCSI_QLA_ISCSI is not set
@@ -490,7 +508,21 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# Serial ATA (prod) and Parallel ATA (experimental) drivers
 -#
 +# CONFIG_SCSI_LOWLEVEL is not set
- # CONFIG_ATA is not set
+ CONFIG_ATA=y
+ # CONFIG_ATA_NONSTANDARD is not set
+ # CONFIG_SATA_AHCI is not set
+@@ -532,6 +441,7 @@ CONFIG_ATA=y
+ # CONFIG_PATA_AMD is not set
+ # CONFIG_PATA_ARTOP is not set
+ # CONFIG_PATA_ATIIXP is not set
++# CONFIG_PATA_CMD640_PCI is not set
+ # CONFIG_PATA_CMD64X is not set
+ # CONFIG_PATA_CS5520 is not set
+ # CONFIG_PATA_CS5530 is not set
+@@ -564,10 +474,6 @@ CONFIG_PATA_SIL680=y
+ # CONFIG_PATA_VIA is not set
+ # CONFIG_PATA_WINBOND is not set
+ # CONFIG_PATA_PLATFORM is not set
 -
 -#
 -# Multi-device support (RAID and LVM)
@@ -498,12 +530,40 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_MD is not set
  
  #
-@@ -516,59 +420,26 @@ CONFIG_SCSI_AIC94XX=m
+@@ -581,17 +487,16 @@ CONFIG_PATA_SIL680=y
  #
  # IEEE 1394 (FireWire) support
  #
 +# CONFIG_FIREWIRE is not set
- # CONFIG_IEEE1394 is not set
+ CONFIG_IEEE1394=m
+ 
+ #
+ # Subsystem Options
+ #
+ # CONFIG_IEEE1394_VERBOSEDEBUG is not set
+-CONFIG_IEEE1394_EXTRA_CONFIG_ROMS=y
+-CONFIG_IEEE1394_CONFIG_ROM_IP1394=y
+ 
+ #
+-# Device Drivers
++# Controllers
+ #
+ 
+ #
+@@ -600,59 +505,63 @@ CONFIG_IEEE1394_CONFIG_ROM_IP1394=y
+ CONFIG_IEEE1394_OHCI1394=m
+ 
+ #
+-# Protocol Drivers
++# Protocols
+ #
+ CONFIG_IEEE1394_VIDEO1394=m
+ CONFIG_IEEE1394_SBP2=m
++# CONFIG_IEEE1394_SBP2_PHYS_DMA is not set
++CONFIG_IEEE1394_ETH1394_ROM_ENTRY=y
+ CONFIG_IEEE1394_ETH1394=m
+ CONFIG_IEEE1394_DV1394=m
+ CONFIG_IEEE1394_RAWIO=m
 -
 -#
 -# I2O device support
@@ -514,8 +574,9 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# Network device support
 -#
  CONFIG_NETDEVICES=y
+-CONFIG_DUMMY=m
 +# CONFIG_NETDEVICES_MULTIQUEUE is not set
- # CONFIG_DUMMY is not set
++# CONFIG_DUMMY is not set
  # CONFIG_BONDING is not set
 +# CONFIG_MACVLAN is not set
  # CONFIG_EQUALIZER is not set
@@ -529,25 +590,11 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -#
 -# PHY device support
 -#
--CONFIG_PHYLIB=m
--
--#
--# MII PHY device drivers
--#
--CONFIG_MARVELL_PHY=m
--CONFIG_DAVICOM_PHY=m
--CONFIG_QSEMI_PHY=m
--CONFIG_LXT_PHY=m
--CONFIG_CICADA_PHY=m
--CONFIG_VITESSE_PHY=m
--CONFIG_SMSC_PHY=m
--# CONFIG_BROADCOM_PHY is not set
--# CONFIG_FIXED_PHY is not set
+ # CONFIG_PHYLIB is not set
 -
 -#
 -# Ethernet (10 or 100Mbit)
 -#
-+# CONFIG_PHYLIB is not set
  CONFIG_NET_ETHERNET=y
  CONFIG_MII=y
 +# CONFIG_AX88796 is not set
@@ -562,39 +609,52 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -#
  # CONFIG_NET_TULIP is not set
  # CONFIG_HP100 is not set
- CONFIG_NET_PCI=y
-@@ -577,6 +448,7 @@ CONFIG_NET_PCI=y
- # CONFIG_ADAPTEC_STARFIRE is not set
- # CONFIG_B44 is not set
- # CONFIG_FORCEDETH is not set
-+# CONFIG_TC35815 is not set
- # CONFIG_DGRS is not set
- # CONFIG_EEPRO100 is not set
- CONFIG_E100=y
-@@ -591,50 +463,25 @@ CONFIG_E100=y
- # CONFIG_TLAN is not set
- # CONFIG_VIA_RHINE is not set
- # CONFIG_SC92031 is not set
+-# CONFIG_NET_PCI is not set
 -
 -#
 -# Ethernet (1000 Mbit)
 -#
--# CONFIG_ACENIC is not set
--# CONFIG_DL2K is not set
--# CONFIG_E1000 is not set
--# CONFIG_NS83820 is not set
--# CONFIG_HAMACHI is not set
--# CONFIG_YELLOWFIN is not set
--# CONFIG_R8169 is not set
--# CONFIG_SIS190 is not set
--# CONFIG_SKGE is not set
--# CONFIG_SKY2 is not set
++CONFIG_NET_PCI=y
++# CONFIG_PCNET32 is not set
++# CONFIG_AMD8111_ETH is not set
++# CONFIG_ADAPTEC_STARFIRE is not set
++# CONFIG_B44 is not set
++# CONFIG_FORCEDETH is not set
++# CONFIG_TC35815 is not set
++# CONFIG_DGRS is not set
++# CONFIG_EEPRO100 is not set
++# CONFIG_E100 is not set
++# CONFIG_FEALNX is not set
++# CONFIG_NATSEMI is not set
++# CONFIG_NE2K_PCI is not set
++# CONFIG_8139CP is not set
++CONFIG_8139TOO=y
++CONFIG_8139TOO_PIO=y
++# CONFIG_8139TOO_TUNE_TWISTER is not set
++# CONFIG_8139TOO_8129 is not set
++# CONFIG_8139_OLD_RX_RESET is not set
++# CONFIG_SIS900 is not set
++# CONFIG_EPIC100 is not set
++# CONFIG_SUNDANCE is not set
++# CONFIG_TLAN is not set
++CONFIG_VIA_RHINE=y
++CONFIG_VIA_RHINE_MMIO=y
++# CONFIG_VIA_RHINE_NAPI is not set
++# CONFIG_SC92031 is not set
++CONFIG_NETDEV_1000=y
+ # CONFIG_ACENIC is not set
+ # CONFIG_DL2K is not set
+ # CONFIG_E1000 is not set
+@@ -664,35 +573,29 @@ CONFIG_R8169=y
+ # CONFIG_SIS190 is not set
+ # CONFIG_SKGE is not set
+ # CONFIG_SKY2 is not set
 -# CONFIG_SK98LIN is not set
--# CONFIG_VIA_VELOCITY is not set
--# CONFIG_TIGON3 is not set
--# CONFIG_BNX2 is not set
--CONFIG_QLA3XXX=m
--# CONFIG_ATL1 is not set
++CONFIG_VIA_VELOCITY=y
+ # CONFIG_TIGON3 is not set
+ # CONFIG_BNX2 is not set
+ # CONFIG_QLA3XXX is not set
+ # CONFIG_ATL1 is not set
 -
 -#
 -# Ethernet (10000 Mbit)
@@ -609,7 +669,6 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -#
 -# Token Ring devices
 -#
-+# CONFIG_NETDEV_1000 is not set
 +# CONFIG_NETDEV_10000 is not set
  # CONFIG_TR is not set
  
@@ -625,16 +684,16 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# Wan interfaces
 +# USB Network Adapters
  #
-+CONFIG_USB_CATC=m
-+CONFIG_USB_KAWETH=m
-+CONFIG_USB_PEGASUS=m
-+CONFIG_USB_RTL8150=m
++# CONFIG_USB_CATC is not set
++# CONFIG_USB_KAWETH is not set
++# CONFIG_USB_PEGASUS is not set
++# CONFIG_USB_RTL8150 is not set
 +# CONFIG_USB_USBNET_MII is not set
 +# CONFIG_USB_USBNET is not set
  # CONFIG_WAN is not set
  # CONFIG_FDDI is not set
  # CONFIG_HIPPI is not set
-@@ -645,15 +492,7 @@ CONFIG_NETXEN_NIC=m
+@@ -703,15 +606,7 @@ CONFIG_NETXEN_NIC=m
  # CONFIG_NETCONSOLE is not set
  # CONFIG_NETPOLL is not set
  # CONFIG_NET_POLL_CONTROLLER is not set
@@ -650,7 +709,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_PHONE is not set
  
  #
-@@ -661,6 +500,7 @@ CONFIG_NETXEN_NIC=m
+@@ -719,11 +614,15 @@ CONFIG_NETXEN_NIC=m
  #
  CONFIG_INPUT=y
  # CONFIG_INPUT_FF_MEMLESS is not set
@@ -658,7 +717,16 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # Userland interfaces
-@@ -677,6 +517,7 @@ CONFIG_INPUT=y
+ #
+-# CONFIG_INPUT_MOUSEDEV is not set
++CONFIG_INPUT_MOUSEDEV=y
++CONFIG_INPUT_MOUSEDEV_PSAUX=y
++CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
++CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
+ # CONFIG_INPUT_JOYDEV is not set
+ # CONFIG_INPUT_TSDEV is not set
+ # CONFIG_INPUT_EVDEV is not set
+@@ -735,6 +634,7 @@ CONFIG_INPUT=y
  # CONFIG_INPUT_KEYBOARD is not set
  # CONFIG_INPUT_MOUSE is not set
  # CONFIG_INPUT_JOYSTICK is not set
@@ -666,7 +734,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_INPUT_TOUCHSCREEN is not set
  # CONFIG_INPUT_MISC is not set
  
-@@ -711,35 +552,18 @@ CONFIG_SERIAL_VR41XX_CONSOLE=y
+@@ -769,35 +669,18 @@ CONFIG_SERIAL_VR41XX_CONSOLE=y
  CONFIG_UNIX98_PTYS=y
  CONFIG_LEGACY_PTYS=y
  CONFIG_LEGACY_PTY_COUNT=256
@@ -704,7 +772,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  # CONFIG_I2C is not set
  
  #
-@@ -747,33 +571,33 @@ CONFIG_GPIO_VR41XX=y
+@@ -805,17 +688,9 @@ CONFIG_GPIO_VR41XX=y
  #
  # CONFIG_SPI is not set
  # CONFIG_SPI_MASTER is not set
@@ -713,18 +781,17 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# Dallas's 1-wire bus
 -#
  # CONFIG_W1 is not set
-+# CONFIG_POWER_SUPPLY is not set
-+# CONFIG_HWMON is not set
- 
- #
+-
+-#
 -# Hardware Monitoring support
-+# Multifunction device drivers
- #
--# CONFIG_HWMON is not set
+-#
++# CONFIG_POWER_SUPPLY is not set
+ # CONFIG_HWMON is not set
 -# CONFIG_HWMON_VID is not set
-+# CONFIG_MFD_SM501 is not set
  
  #
+ # Multifunction device drivers
+@@ -826,23 +701,31 @@ CONFIG_MFD_SM501=y
  # Multimedia devices
  #
  # CONFIG_VIDEO_DEV is not set
@@ -743,57 +810,118 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# Graphics support
 +# Display device support
  #
--# CONFIG_FIRMWARE_EDID is not set
+-# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
 +# CONFIG_DISPLAY_SUPPORT is not set
 +# CONFIG_VGASTATE is not set
-+# CONFIG_VIDEO_OUTPUT_CONTROL is not set
- # CONFIG_FB is not set
++CONFIG_VIDEO_OUTPUT_CONTROL=m
+ CONFIG_FB=y
+ # CONFIG_FIRMWARE_EDID is not set
+ # CONFIG_FB_DDC is not set
+ CONFIG_FB_CFB_FILLRECT=y
+ CONFIG_FB_CFB_COPYAREA=y
+ CONFIG_FB_CFB_IMAGEBLIT=y
++# CONFIG_FB_SYS_FILLRECT is not set
++# CONFIG_FB_SYS_COPYAREA is not set
++# CONFIG_FB_SYS_IMAGEBLIT is not set
++# CONFIG_FB_SYS_FOPS is not set
++CONFIG_FB_DEFERRED_IO=y
+ # CONFIG_FB_SVGALIB is not set
+ # CONFIG_FB_MACMODES is not set
+ # CONFIG_FB_BACKLIGHT is not set
+@@ -850,7 +733,7 @@ CONFIG_FB_CFB_IMAGEBLIT=y
+ # CONFIG_FB_TILEBLITTING is not set
  
  #
-@@ -781,22 +605,13 @@ CONFIG_GPIO_VR41XX=y
+-# Frambuffer hardware drivers
++# Frame buffer hardware drivers
+ #
+ # CONFIG_FB_CIRRUS is not set
+ # CONFIG_FB_PM2 is not set
+@@ -871,8 +754,10 @@ CONFIG_FB_CFB_IMAGEBLIT=y
+ # CONFIG_FB_KYRO is not set
+ # CONFIG_FB_3DFX is not set
+ # CONFIG_FB_VOODOO1 is not set
+-# CONFIG_FB_SMIVGX is not set
++# CONFIG_FB_VT8623 is not set
+ # CONFIG_FB_TRIDENT is not set
++# CONFIG_FB_ARK is not set
++# CONFIG_FB_PM3 is not set
+ CONFIG_FB_SM501=y
+ # CONFIG_FB_VIRTUAL is not set
+ 
+@@ -881,27 +766,44 @@ CONFIG_FB_SM501=y
  #
  # CONFIG_VGA_CONSOLE is not set
  CONFIG_DUMMY_CONSOLE=y
--# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
+-# CONFIG_FRAMEBUFFER_CONSOLE is not set
+-
+-#
+-# Logo configuration
+-#
++CONFIG_FRAMEBUFFER_CONSOLE=y
++# CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY is not set
++# CONFIG_FRAMEBUFFER_CONSOLE_ROTATION is not set
++CONFIG_FONTS=y
++CONFIG_FONT_8x8=y
++CONFIG_FONT_8x16=y
++# CONFIG_FONT_6x11 is not set
++# CONFIG_FONT_7x14 is not set
++# CONFIG_FONT_PEARL_8x8 is not set
++# CONFIG_FONT_ACORN_8x8 is not set
++# CONFIG_FONT_MINI_4x6 is not set
++# CONFIG_FONT_SUN8x16 is not set
++# CONFIG_FONT_SUN12x22 is not set
++# CONFIG_FONT_10x18 is not set
+ # CONFIG_LOGO is not set
  
  #
  # Sound
  #
  # CONFIG_SOUND is not set
--
--#
++CONFIG_HID_SUPPORT=y
++CONFIG_HID=y
++# CONFIG_HID_DEBUG is not set
+ 
+ #
 -# HID Devices
--#
++# USB Input Devices
+ #
 -CONFIG_HID=y
 -# CONFIG_HID_DEBUG is not set
--
--#
++CONFIG_USB_HID=m
++# CONFIG_USB_HIDINPUT_POWERBOOK is not set
++# CONFIG_HID_FF is not set
++# CONFIG_USB_HIDDEV is not set
+ 
+ #
 -# USB support
--#
-+# CONFIG_HID_SUPPORT is not set
++# USB HID Boot Protocol drivers
+ #
++# CONFIG_USB_KBD is not set
++# CONFIG_USB_MOUSE is not set
 +CONFIG_USB_SUPPORT=y
  CONFIG_USB_ARCH_HAS_HCD=y
  CONFIG_USB_ARCH_HAS_OHCI=y
  CONFIG_USB_ARCH_HAS_EHCI=y
-@@ -807,8 +622,8 @@ CONFIG_USB=y
+@@ -912,8 +814,8 @@ CONFIG_USB=m
  # Miscellaneous USB options
  #
- CONFIG_USB_DEVICEFS=y
+ # CONFIG_USB_DEVICEFS is not set
 +CONFIG_USB_DEVICE_CLASS=y
  # CONFIG_USB_DYNAMIC_MINORS is not set
 -# CONFIG_USB_SUSPEND is not set
  # CONFIG_USB_OTG is not set
  
  #
-@@ -818,7 +633,6 @@ CONFIG_USB_EHCI_HCD=y
+@@ -923,7 +825,6 @@ CONFIG_USB_EHCI_HCD=m
  # CONFIG_USB_EHCI_SPLIT_ISO is not set
  # CONFIG_USB_EHCI_ROOT_HUB_TT is not set
  # CONFIG_USB_EHCI_TT_NEWSCHED is not set
 -# CONFIG_USB_EHCI_BIG_ENDIAN_MMIO is not set
  # CONFIG_USB_ISP116X_HCD is not set
- CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_OHCI_HCD=m
  # CONFIG_USB_OHCI_BIG_ENDIAN_DESC is not set
-@@ -826,11 +640,12 @@ CONFIG_USB_OHCI_HCD=y
+@@ -931,6 +832,7 @@ CONFIG_USB_OHCI_HCD=m
  CONFIG_USB_OHCI_LITTLE_ENDIAN=y
  # CONFIG_USB_UHCI_HCD is not set
  # CONFIG_USB_SL811_HCD is not set
@@ -801,19 +929,16 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # USB Device Class drivers
- #
--# CONFIG_USB_ACM is not set
-+CONFIG_USB_ACM=y
- # CONFIG_USB_PRINTER is not set
- 
- #
-@@ -854,44 +669,10 @@ CONFIG_USB_STORAGE=y
+@@ -959,47 +861,10 @@ CONFIG_USB_STORAGE=m
  # CONFIG_USB_LIBUSUAL is not set
  
  #
 -# USB Input Devices
 -#
--# CONFIG_USB_HID is not set
+-CONFIG_USB_HID=m
+-# CONFIG_USB_HIDINPUT_POWERBOOK is not set
+-# CONFIG_HID_FF is not set
+-# CONFIG_USB_HIDDEV is not set
 -
 -#
 -# USB HID Boot Protocol drivers
@@ -849,18 +974,18 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -# CONFIG_USB_RTL8150 is not set
 -# CONFIG_USB_USBNET_MII is not set
 -# CONFIG_USB_USBNET is not set
- # CONFIG_USB_MON is not set
+ CONFIG_USB_MON=y
  
  #
-@@ -924,6 +705,7 @@ CONFIG_USB_STORAGE=y
+@@ -1032,6 +897,7 @@ CONFIG_USB_MON=y
  # CONFIG_USB_SISUSBVGA is not set
  # CONFIG_USB_LD is not set
  # CONFIG_USB_TRANCEVIBRATOR is not set
 +# CONFIG_USB_IOWARRIOR is not set
- # CONFIG_USB_TEST is not set
  
  #
-@@ -934,37 +716,9 @@ CONFIG_USB_STORAGE=y
+ # USB DSL modem support
+@@ -1041,37 +907,9 @@ CONFIG_USB_MON=y
  # USB Gadget Support
  #
  # CONFIG_USB_GADGET is not set
@@ -895,43 +1020,10 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
 -#
 -# Real Time Clock
 -#
- CONFIG_RTC_LIB=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_HCTOSYS=y
-@@ -978,18 +732,29 @@ CONFIG_RTC_INTF_SYSFS=y
- CONFIG_RTC_INTF_PROC=y
- CONFIG_RTC_INTF_DEV=y
- # CONFIG_RTC_INTF_DEV_UIE_EMUL is not set
-+# CONFIG_RTC_DRV_TEST is not set
+ # CONFIG_RTC_CLASS is not set
  
  #
--# RTC drivers
-+# SPI RTC drivers
- #
-+
-+#
-+# Platform RTC drivers
-+#
-+# CONFIG_RTC_DRV_CMOS is not set
- # CONFIG_RTC_DRV_DS1553 is not set
-+# CONFIG_RTC_DRV_STK17TA8 is not set
- # CONFIG_RTC_DRV_DS1742 is not set
- # CONFIG_RTC_DRV_M48T86 is not set
--CONFIG_RTC_DRV_VR41XX=y
--# CONFIG_RTC_DRV_TEST is not set
-+# CONFIG_RTC_DRV_M48T59 is not set
- # CONFIG_RTC_DRV_V3020 is not set
- 
- #
-+# on-CPU RTC drivers
-+#
-+CONFIG_RTC_DRV_VR41XX=y
-+
-+#
- # DMA Engine support
- #
- # CONFIG_DMA_ENGINE is not set
-@@ -1003,12 +768,9 @@ CONFIG_RTC_DRV_VR41XX=y
+@@ -1088,12 +926,9 @@ CONFIG_USB_MON=y
  #
  
  #
@@ -946,17 +1038,34 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # File systems
-@@ -1032,7 +794,7 @@ CONFIG_INOTIFY_USER=y
- CONFIG_DNOTIFY=y
+@@ -1111,7 +946,7 @@ CONFIG_JBD=y
+ CONFIG_FS_MBCACHE=y
+ # CONFIG_REISERFS_FS is not set
+ # CONFIG_JFS_FS is not set
+-# CONFIG_FS_POSIX_ACL is not set
++CONFIG_FS_POSIX_ACL=y
+ CONFIG_XFS_FS=y
+ CONFIG_XFS_QUOTA=y
+ # CONFIG_XFS_SECURITY is not set
+@@ -1125,10 +960,11 @@ CONFIG_INOTIFY=y
+ CONFIG_INOTIFY_USER=y
+ # CONFIG_QUOTA is not set
+ CONFIG_QUOTACTL=y
+-# CONFIG_DNOTIFY is not set
++CONFIG_DNOTIFY=y
  # CONFIG_AUTOFS_FS is not set
  CONFIG_AUTOFS4_FS=y
--CONFIG_FUSE_FS=m
-+# CONFIG_FUSE_FS is not set
- CONFIG_GENERIC_ACL=y
+ # CONFIG_FUSE_FS is not set
++CONFIG_GENERIC_ACL=y
  
  #
-@@ -1059,7 +821,7 @@ CONFIG_TMPFS=y
- CONFIG_TMPFS_POSIX_ACL=y
+ # CD-ROM/DVD Filesystems
+@@ -1151,10 +987,10 @@ CONFIG_PROC_KCORE=y
+ CONFIG_PROC_SYSCTL=y
+ CONFIG_SYSFS=y
+ CONFIG_TMPFS=y
+-# CONFIG_TMPFS_POSIX_ACL is not set
++CONFIG_TMPFS_POSIX_ACL=y
  # CONFIG_HUGETLB_PAGE is not set
  CONFIG_RAMFS=y
 -CONFIG_CONFIGFS_FS=m
@@ -964,15 +1073,27 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # Miscellaneous filesystems
-@@ -1097,6 +859,7 @@ CONFIG_LOCKD_V4=y
- CONFIG_EXPORTFS=m
+@@ -1181,12 +1017,18 @@ CONFIG_NFS_V3=y
+ # CONFIG_NFS_V3_ACL is not set
+ # CONFIG_NFS_V4 is not set
+ # CONFIG_NFS_DIRECTIO is not set
+-# CONFIG_NFSD is not set
++CONFIG_NFSD=m
++CONFIG_NFSD_V3=y
++# CONFIG_NFSD_V3_ACL is not set
++# CONFIG_NFSD_V4 is not set
++CONFIG_NFSD_TCP=y
+ CONFIG_ROOT_NFS=y
+ CONFIG_LOCKD=y
+ CONFIG_LOCKD_V4=y
++CONFIG_EXPORTFS=m
  CONFIG_NFS_COMMON=y
  CONFIG_SUNRPC=y
 +# CONFIG_SUNRPC_BIND34 is not set
  # CONFIG_RPCSEC_GSS_KRB5 is not set
  # CONFIG_RPCSEC_GSS_SPKM3 is not set
  # CONFIG_SMB_FS is not set
-@@ -1104,7 +867,6 @@ CONFIG_SUNRPC=y
+@@ -1194,7 +1036,6 @@ CONFIG_SUNRPC=y
  # CONFIG_NCP_FS is not set
  # CONFIG_CODA_FS is not set
  # CONFIG_AFS_FS is not set
@@ -980,7 +1101,7 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # Partition Types
-@@ -1120,10 +882,7 @@ CONFIG_MSDOS_PARTITION=y
+@@ -1210,10 +1051,7 @@ CONFIG_MSDOS_PARTITION=y
  #
  # Distributed Lock Manager
  #
@@ -992,15 +1113,15 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  
  #
  # Profiling support
-@@ -1141,7 +900,6 @@ CONFIG_ENABLE_MUST_CHECK=y
+@@ -1231,7 +1069,6 @@ CONFIG_ENABLE_MUST_CHECK=y
  # CONFIG_DEBUG_FS is not set
  # CONFIG_HEADERS_CHECK is not set
  # CONFIG_DEBUG_KERNEL is not set
 -CONFIG_LOG_BUF_SHIFT=14
  CONFIG_CROSSCOMPILE=y
- CONFIG_CMDLINE="mem=32M console=ttyVR0,115200"
+ CONFIG_CMDLINE="mem=64M console=ttyVR0,115200 ip=any root=/dev/nfs"
  
-@@ -1150,62 +908,20 @@ CONFIG_CMDLINE="mem=32M console=ttyVR0,1
+@@ -1240,63 +1077,20 @@ CONFIG_CMDLINE="mem=64M console=ttyVR0,1
  #
  # CONFIG_KEYS is not set
  # CONFIG_SECURITY is not set
@@ -1055,13 +1176,13 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/configs/tb0226_def
  #
  # Library routines
  #
-+CONFIG_BITREVERSE=m
- # CONFIG_CRC_CCITT is not set
+ CONFIG_BITREVERSE=y
+-# CONFIG_CRC_CCITT is not set
++CONFIG_CRC_CCITT=y
  # CONFIG_CRC16 is not set
--# CONFIG_CRC32 is not set
--CONFIG_LIBCRC32C=m
 +# CONFIG_CRC_ITU_T is not set
-+CONFIG_CRC32=m
+ CONFIG_CRC32=y
+-CONFIG_LIBCRC32C=m
 +# CONFIG_CRC7 is not set
 +# CONFIG_LIBCRC32C is not set
  CONFIG_ZLIB_INFLATE=m

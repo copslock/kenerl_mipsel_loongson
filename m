@@ -1,49 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2007 15:07:34 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:8323 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022420AbXHNOHc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Aug 2007 15:07:32 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7EDwH9Y030584;
-	Tue, 14 Aug 2007 14:58:17 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7EDwG7E030561;
-	Tue, 14 Aug 2007 14:58:16 +0100
-Date:	Tue, 14 Aug 2007 14:58:16 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2007 15:11:52 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:30147 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023237AbXHNOLn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Aug 2007 15:11:43 +0100
+Received: from localhost (p6135-ipad28funabasi.chiba.ocn.ne.jp [220.107.205.135])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 6140E7E40; Tue, 14 Aug 2007 23:11:40 +0900 (JST)
+Date:	Tue, 14 Aug 2007 23:12:55 +0900 (JST)
+Message-Id: <20070814.231255.74753150.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH][MIPS] update Cobalt defconfig
-Message-ID: <20070814135816.GA29016@linux-mips.org>
-References: <20070807120701.GA22096@linux-mips.org> <20070807232021.2c3b9329.yoichi_yuasa@tripeaks.co.jp> <20070807143515.GA26401@linux-mips.org> <20070814222356.5426a301.yoichi_yuasa@tripeaks.co.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070814222356.5426a301.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Subject: Re: [MIPS] Use generic NTP code for all MIPS platforms
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <46C0A83B.2090003@gmail.com>
+References: <46C07F36.1070308@gmail.com>
+	<20070814.020229.29578157.anemo@mba.ocn.ne.jp>
+	<46C0A83B.2090003@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16178
+X-archive-position: 16179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 14, 2007 at 10:23:56PM +0900, Yoichi Yuasa wrote:
-
-> On Tue, 7 Aug 2007 15:35:15 +0100
-> Ralf Baechle <ralf@linux-mips.org> wrote:
+On Mon, 13 Aug 2007 20:51:39 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> Well a more general question could be how is the RTC class layer
+> supposed to interact with the kernel ?
 > 
-> > On Tue, Aug 07, 2007 at 11:20:21PM +0900, Yoichi Yuasa wrote:
-> > 
-> > Applied.
-> 
-> It does not exist yet.
+> Should RTC class layer implement a general service to update/read the
+> RTC, IOW should it implement {read,update}_persistent_clock() ?
 
-I don't always push things immediately as you just found :-)
+Some difficulties are:
 
-  Ralf
+* timekeeping subsystem calls {read,update}_persistent_clock() with
+  irq-disabled.  But most RTC class routines might sleep.
+
+* RTC class can have multiple RTCs on the system.
+
+* There are already some conflicting features in RTC class ---
+  rtc_suspend and rtc_resume try to adjust the wall clock.
+
+* IIRC Some people said "NTP sync can be done all in userland" ;-)
+
+
+Does anybody know if there was "general consensus" on this topic?
+
+---
+Atsushi Nemoto

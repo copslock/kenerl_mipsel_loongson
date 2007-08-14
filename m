@@ -1,61 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2007 16:26:23 +0100 (BST)
-Received: from pollux.ds.pg.gda.pl ([153.19.208.7]:64260 "EHLO
-	pollux.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20023257AbXHNP0P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Aug 2007 16:26:15 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id EFAD0E28B9;
-	Tue, 14 Aug 2007 17:26:09 +0200 (CEST)
-X-Virus-Scanned: by amavisd-new at pollux.ds.pg.gda.pl
-Received: from pollux.ds.pg.gda.pl ([127.0.0.1])
-	by localhost (pollux.ds.pg.gda.pl [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 9LtgJJjdaU2M; Tue, 14 Aug 2007 17:26:09 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by pollux.ds.pg.gda.pl (Postfix) with ESMTP id 9FA06E1F30;
-	Tue, 14 Aug 2007 17:26:09 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l7EFQJnm017983;
-	Tue, 14 Aug 2007 17:26:19 +0200
-Date:	Tue, 14 Aug 2007 16:26:13 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	vagabon.xyz@gmail.com, linux-mips@linux-mips.org
-Subject: Re: [MIPS] Use generic NTP code for all MIPS platforms
-In-Reply-To: <20070814.231255.74753150.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0708141621240.7206@blysk.ds.pg.gda.pl>
-References: <46C07F36.1070308@gmail.com> <20070814.020229.29578157.anemo@mba.ocn.ne.jp>
- <46C0A83B.2090003@gmail.com> <20070814.231255.74753150.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2007 17:22:54 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.169]:25618 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023262AbXHNQWp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Aug 2007 17:22:45 +0100
+Received: by ug-out-1314.google.com with SMTP id u2so109983uge
+        for <linux-mips@linux-mips.org>; Tue, 14 Aug 2007 09:22:28 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=VRztNMkme4dghJD6eADybM0ZMyqedcYfo0k72CxBt1q6itdixjd4cCUVL48wzRtX6310J1OsBls6KcN/ISaxsaVmw278KVFvA+iKU/6Mvj9RMROhK4ZYmamXbt/07Nd2VMxnsvgX7JRWly4duT3285rlEvQ8xG+vgbWaYWzunOQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=qT/oWi9oN0wsW127Wk5JP8THpX1UrNhPuSlILTnsNrnjVv2sfn9corov8MFXZVnLBmr9dweaYubCDLkjcCAA6or9e1r2v7RRsJ1UQgdzK3wcgNG6tWfNXaPdF7yfY3OfBeZSnqN2G13DgVqhzID5dfuH1ZFdDj/KrmkXWK1xRUc=
+Received: by 10.67.92.1 with SMTP id u1mr740272ugl.1187108548165;
+        Tue, 14 Aug 2007 09:22:28 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id u9sm24634872muf.2007.08.14.09.22.25
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 14 Aug 2007 09:22:26 -0700 (PDT)
+Message-ID: <46C1D6AB.6040205@gmail.com>
+Date:	Tue, 14 Aug 2007 18:22:03 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.1/3957/Tue Aug 14 07:48:58 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+To:	Daniel Jacobowitz <dan@debian.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/3] Remove '-mno-explicit-relocs' option when	CONFIG_BUILD_ELF64
+References: <11715446603241-git-send-email-fbuihuu@gmail.com> <20070809151812.GA28142@caradoc.them.org> <46BB6D6C.2050601@gmail.com> <20070813193059.GA17969@caradoc.them.org>
+In-Reply-To: <20070813193059.GA17969@caradoc.them.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16180
+X-archive-position: 16181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 14 Aug 2007, Atsushi Nemoto wrote:
+Daniel Jacobowitz wrote:
+> Yes, I rebased them on top of linux-mips HEAD as of Thursday.
+> 
 
-> Some difficulties are:
-> 
-> * timekeeping subsystem calls {read,update}_persistent_clock() with
->   irq-disabled.  But most RTC class routines might sleep.
-> 
-> * RTC class can have multiple RTCs on the system.
-> 
-> * There are already some conflicting features in RTC class ---
->   rtc_suspend and rtc_resume try to adjust the wall clock.
-> 
-> * IIRC Some people said "NTP sync can be done all in userland" ;-)
+Ok, I rebased them too, and compare them to your diff and got almost
+the same result except that you seem to not use the last patch 3/3
+version. But it shouldn't hurt.
 
- NTP sync in the kernel disturbs the timer interrupt with some setups, 
-affecting the dispersion and thus the quality of timekeeping horribly.
+> My kernel crashed, so I gave your patchset a try, and it got a lot
+> further and crashed somewhere different.
+> 
 
-  Maciej
+It just means that before applying the patchset your kernel was
+wrongly configured: you probably set "CONFIG_BUILD_ELF64=y" whereas
+your kernel load address is in CKSEG0, is that correct ?
+
+If so, your current issue may be related to a completely different
+area and maybe a git-bisect session could help but don't forget to set
+"CONFIG_BUILD_ELF64=n" before.
+
+Oh, maybe before doing the git-bisect session, there's one thing you
+could try: when building the kernel with the patchset applied do:
+
+		$ make KBUILD_SYM32=no
+
+It's equivalent to "CONFIG_BUILD_ELF64=y" _but_ the kernel will use
+the correct definitions for kernel address translations.
+
+In any cases, your dmesg could help.
+
+		Franck

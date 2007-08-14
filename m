@@ -1,106 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Aug 2007 22:23:39 +0100 (BST)
-Received: from hydra.gt.owl.de ([195.71.99.218]:46550 "EHLO hydra.gt.owl.de")
-	by ftp.linux-mips.org with ESMTP id S20023010AbXHMVXb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Aug 2007 22:23:31 +0100
-Received: by hydra.gt.owl.de (Postfix, from userid 1000)
-	id 4E3DA93707; Mon, 13 Aug 2007 23:23:31 +0200 (CEST)
-Date:	Mon, 13 Aug 2007 23:23:31 +0200
-From:	Florian Lohoff <flo@rfc822.org>
-To:	linux-mips@linux-mips.org, debian-mips@lists.debian.org
-Cc:	tsbogend@alpha.franken.de
-Subject: SNI RM - booting from disk
-Message-ID: <20070813212331.GA2108@paradigm.rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Aug 2007 10:56:57 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:38326 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022215AbXHNJ4y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 14 Aug 2007 10:56:54 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7E9ld2J018892;
+	Tue, 14 Aug 2007 10:47:39 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7E9lcqg018891;
+	Tue, 14 Aug 2007 10:47:38 +0100
+Date:	Tue, 14 Aug 2007 10:47:38 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Nicolas Schichan <nschichan@freebox.fr>
+Cc:	Andrew Sharp <andy.sharp@onstor.com>, linux-mips@linux-mips.org
+Subject: Re: kexec - not happening on mipsel?
+Message-ID: <20070814094738.GC16958@linux-mips.org>
+References: <20070808170846.7d395891@ripper.onstor.net> <20070808184120.40b6b5d5@ripper.onstor.net> <20070809123530.GA14183@linux-mips.org> <200708101857.15567.nschichan@freebox.fr>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="zhXaljGHf11kAtnf"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Organization: rfc822 - pure communication
-X-SpiderMe: mh-200708132252@listme.rfc822.org
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <flo@hydra.gt.owl.de>
+In-Reply-To: <200708101857.15567.nschichan@freebox.fr>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16166
+X-archive-position: 16167
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, Aug 10, 2007 at 06:57:15PM +0200, Nicolas Schichan wrote:
 
---zhXaljGHf11kAtnf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-
-Hi,
-this is just a short announcement about a rough way to boot the SNI RM
-series from disk. As Thomas Bogendoerfer found out the SNI RM needs
-an additional "Volume Trailer" to the SGI Volhdr to find its partitions.
-
-Last weekend we wrote a little program to generate a minimal Volume
-Trailer and thus allow the Prom to find the partitions and volume
-header.
-
-Also we modified arcboot to be able to boot on the SNI machines. This
-contains a very crude hack to find the prom_seek entry point which is
-not officially exported by the SNI Prom.=20
-
-We successfully bootet an RM200-225, RM200-C40 and an RM400-220.
+> I now use __flush_cache_all(), since flush_cache_all() is mostly a noop on r4k 
+> if cpu_has_dc_aliases evaluates to 0 (and it is the case on the MIPS cpu I 
+> have access to). To avoid caching problem in the relocation code, I disable 
+> the cache in KSEG0 (using the K0 field in CP0 CONFIG register) before jumping 
+> to the relocation code. I don't know how clean this solution is, but this 
+> avoids having to add non-portable cache flush code to relocate_kernel.S.
 
 
+> 
+> Regards,
+> 
+> Signed-off-by: Nicolas Schichan <nschichan@freebox.fr>
+> 
+> --- linux/arch/mips/kernel/machine_kexec.c	(revision 5939)
+> +++ linux/arch/mips/kernel/machine_kexec.c	(revision 5941)
+> @@ -50,8 +50,10 @@
+>  	reboot_code_buffer =
+>  	  (unsigned long)page_address(image->control_code_page);
+>  
+> +	printk(KERN_INFO "reboot code is at %08lx\n", reboot_code_buffer);
+> +
+>  	kexec_start_address = image->start;
+> -	kexec_indirection_page = phys_to_virt(image->head & PAGE_MASK);
+> +	kexec_indirection_page = (long)phys_to_virt(image->head & PAGE_MASK);
+>  
+>  	memcpy((void*)reboot_code_buffer, relocate_new_kernel,
+>  	       relocate_new_kernel_size);
+> @@ -75,11 +77,17 @@
+>  	 */
+>  	local_irq_disable();
+>  
+> -	flush_icache_range(reboot_code_buffer,
+> -			   reboot_code_buffer + KEXEC_CONTROL_CODE_SIZE);
+> +	__flush_cache_all();
+> +	flush_icache_all();
 
-Here is the tool to write the SNI Volume Trailer. Beware - this writes
-to your disk and probably even within your last partition. The Volume
-Trailer is on the last cylinder the last 2 tracks so you better shrink
-your last partition by one cylinder. To successfully boot/write a
-Volume Trailer all partitions need to start on a cylinder boundary.
+flush_icache_all() is a nop except on VIVT caches.  Anyway, following a
+__flush_cache_all it's pointless unless you want to flush caches a little
+harder.
 
-Currently it is hardcoded to /dev/sda. It trys to find the Disk Geometry
-with SCSI Mode Page and READ_CAPACITY calls and parses the SGI Volhdr
-into the Volume Trailer.
+> -	printk("Will call new kernel at %08x\n", image->start);
+> -	printk("Bye ...\n");
+> -	flush_cache_all();
+> +	/*
+> +	 * avoid cache operation related headache in
+> +	 * relocate_kernel.S: disable caches in kseg0, the new kernel
+> +	 * will take care to re-enable cache in kseg0.
+> +	 */
+> +	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
 
-This should be integrated into fdisk and/or parted which both have
-bugs in creating cylinder boundary partitions.
+And that line is the kernel's one way ticket to hell on some platforms.
 
-http://silicon-verl.de/home/flo/projects/snirm/software/snitrail.20070813.t=
-gz
+There is a hazard barrier missing here.
 
+Only KSEG0 (or CKSEG0 in 64-bit parlance) is affected by changing Config.K0
+field.  But 64-bit kernels do not necessarily run in one of the 32-bit
+compatibility segments (R8000 doesn't but that's an academic counter
+example) - if they exist at all there is no guarantee that there is any RAM
+mapped in them (IP30 and others).
 
+On IP27 the kernel will run in CKSEG0 and if you switch that to 0 it'll mean
+BRIDGE ASIC will start looking at the uncached attribute which will be
+defaulted to 0 meaning that in CKSEG0 the CPU will no longer address RAM but
+the ECC and Backdoor Directory information.
 
-Here is the modified arcboot. Its not well integrated yet and just a
-hack get it to work. Build the arcboot code with SUBARCH=3DSNIRM
-and store the resulting ext2load with dvhtool into your volume header.
-You should strip the filename as the prom fails to get more than 20
-chars in the bootfile variable (remember the dkncr(0,0,X)).
+Basically it boils down to be very, very careful about cache modes
+on MIPS.  What the kernel does on bootup only happens to work because for
+all the platforms that have potencial issues with the change of the CCA
+for KSEG0 we know that Linux will set the CCA to the same value that is
+already in that field.  So that mode switch is sort of useless for most
+platforms except a few where firmware doesn't initialize Config0.K0.
 
-Currently the OSPartition is hardcoded to "dkncr(0,0,1)" as the SNI Prom
-lacks the option. Also the OSOption is missing thus the arcboot.conf
-label is hardcoded to "linux".
-
-http://silicon-verl.de/home/flo/projects/snirm/software/arcboot-0.3.8.8.sni=
-rm.20070813.tgz
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-171-2280134
-	Those who would give up a little freedom to get a little=20
-          security shall soon have neither - Benjamin Franklin
-
---zhXaljGHf11kAtnf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFGwMvTUaz2rXW+gJcRArP6AJ9LlXFp5Jq1TiCOenDsYiUReH5DxgCfZDtw
-iPkLHK6LMTLOmMf5nEXH7uk=
-=wZon
------END PGP SIGNATURE-----
-
---zhXaljGHf11kAtnf--
+  Ralf

@@ -1,68 +1,2044 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Aug 2007 13:33:06 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:26257 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021397AbXHOMdE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 15 Aug 2007 13:33:04 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7FCWvSo014278;
-	Wed, 15 Aug 2007 13:32:58 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7FCWuAj014277;
-	Wed, 15 Aug 2007 13:32:56 +0100
-Date:	Wed, 15 Aug 2007 13:32:56 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andi Kleen <ak@suse.de>
-Cc:	Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	Christoph Lameter <clameter@sgi.com>,
-	Mel Gorman <mel@skynet.ie>, Lee.Schermerhorn@hp.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/4] Embed zone_id information within the
-	zonelist->zones pointer
-Message-ID: <20070815123256.GD5862@linux-mips.org>
-References: <Pine.LNX.4.64.0708131506030.28502@schroedinger.engr.sgi.com> <20070813230801.GH3406@bingen.suse.de> <Pine.LNX.4.64.0708131536340.29946@schroedinger.engr.sgi.com> <20070813234322.GJ3406@bingen.suse.de> <Pine.LNX.4.64.0708131553050.30626@schroedinger.engr.sgi.com> <20070814000041.GL3406@bingen.suse.de> <20070814002223.2d8d42c5@the-village.bc.nu> <20070814001441.GN3406@bingen.suse.de> <20070815113749.GA5862@linux-mips.org> <20070815125920.GD3406@bingen.suse.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Aug 2007 13:34:14 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.38.19]:43651 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20021412AbXHOMeK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 15 Aug 2007 13:34:10 +0100
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurel32@hall.aurel32.net>)
+	id 1ILI4Z-0005oH-Sk; Wed, 15 Aug 2007 14:34:03 +0200
+Date:	Wed, 15 Aug 2007 14:34:03 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH -mm][MIPS] Move platform independent CFE code into arch/mips/cfe
+Message-ID: <20070815123403.GA22291@hall.aurel32.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20070815125920.GD3406@bingen.suse.de>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurel32@hall.aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16194
+X-archive-position: 16195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Aug 15, 2007 at 02:59:20PM +0200, Andi Kleen wrote:
+The patch below moves the platform independent part of the CFE code to 
+arch/mips/cfe from arch/mips/sibyte/cfe. This way it can be used on 
+other systems.
 
-> On Wed, Aug 15, 2007 at 12:37:49PM +0100, Ralf Baechle wrote:
-> > On Tue, Aug 14, 2007 at 02:14:41AM +0200, Andi Kleen wrote:
-> > 
-> > > meth is only used on SGI O2s which are not that slow and unlikely
-> > > to work in tree anyways.
-> > 
-> > O2 doesn't enable CONFIG_ZONE_DMA so there is no point in using GFP_DMA in
-> > an O2-specific device driver.  Will send out patch in separate mail.
-> 
-> Great.
-> 
-> BTW I suspect this is true for some other GFP_DMA usages too.
-> Some driver writers seem to confuse it with the PCI DMA
-> APIs or believe it is always needed for them.
+The patch looks big but it just because some files are moved, it is
+actually almost trivial.
 
-In case of the O2 the full story is a little more complicated.  The O2 is
-not I/O coherent.  That's a well know and handled configuration for the
-R5000.  But the R10000 which was never designed for such use will do very
-stupid things such as actually performing speculative stores and scribbling
-into DMA buffers left and right.  There are two possible workarounds for
-this; one is software only the other is using a little CPLD codenamed Juice
-on the O2 R10000 board and would require a special memory region for DMA
-buffers, so the ZONE_DMA was really there as some sort of future proofing.
-But in the end the same arguments as for the Lance apply here.
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
 
-  Ralf
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 6595928..716c34d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -658,6 +658,9 @@ config ARCH_MAY_HAVE_PC_FDC
+ config BOOT_RAW
+ 	bool
+ 
++config CFE
++	bool
++
+ config DMA_COHERENT
+ 	bool
+ 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 32c1c8f..a3c31d1 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -154,6 +154,7 @@ endif
+ # Firmware support
+ #
+ libs-$(CONFIG_ARC)		+= arch/mips/arc/
++libs-$(CONFIG_CFE)		+= arch/mips/cfe/
+ libs-$(CONFIG_SIBYTE_CFE)	+= arch/mips/sibyte/cfe/
+ 
+ #
+diff --git a/arch/mips/cfe/Makefile b/arch/mips/cfe/Makefile
+new file mode 100644
+index 0000000..8f20044
+--- /dev/null
++++ b/arch/mips/cfe/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for the Broadcom Common Firmware Environment support
++#
++
++lib-y += cfe_api.o
+diff --git a/arch/mips/cfe/cfe_api.c b/arch/mips/cfe/cfe_api.c
+new file mode 100644
+index 0000000..ac6af11
+--- /dev/null
++++ b/arch/mips/cfe/cfe_api.c
+@@ -0,0 +1,502 @@
++/*
++ * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
++ */
++
++/*  *********************************************************************
++    *
++    *  Broadcom Common Firmware Environment (CFE)
++    *
++    *  Device Function stubs			File: cfe_api.c
++    *
++    *  This module contains device function stubs (small routines to
++    *  call the standard "iocb" interface entry point to CFE).
++    *  There should be one routine here per iocb function call.
++    *
++    *  Authors:  Mitch Lichtenberg, Chris Demetriou
++    *
++    ********************************************************************* */
++
++#include <asm/cfe/cfe_api.h>
++#include "cfe_api_int.h"
++
++/* Cast from a native pointer to a cfe_xptr_t and back.	 */
++#define XPTR_FROM_NATIVE(n)	((cfe_xptr_t) (intptr_t) (n))
++#define NATIVE_FROM_XPTR(x)	((void *) (intptr_t) (x))
++
++#ifdef CFE_API_IMPL_NAMESPACE
++#define cfe_iocb_dispatch(a)		__cfe_iocb_dispatch(a)
++#endif
++int cfe_iocb_dispatch(cfe_xiocb_t * xiocb);
++
++#if defined(CFE_API_common) || defined(CFE_API_ALL)
++/*
++ * Declare the dispatch function with args of "intptr_t".
++ * This makes sure whatever model we're compiling in
++ * puts the pointers in a single register.  For example,
++ * combining -mlong64 and -mips1 or -mips2 would lead to
++ * trouble, since the handle and IOCB pointer will be
++ * passed in two registers each, and CFE expects one.
++ */
++
++static int (*cfe_dispfunc) (intptr_t handle, intptr_t xiocb) = 0;
++static cfe_xuint_t cfe_handle = 0;
++
++int cfe_init(cfe_xuint_t handle, cfe_xuint_t ept)
++{
++	cfe_dispfunc = NATIVE_FROM_XPTR(ept);
++	cfe_handle = handle;
++	return 0;
++}
++
++int cfe_iocb_dispatch(cfe_xiocb_t * xiocb)
++{
++	if (!cfe_dispfunc)
++		return -1;
++	return (*cfe_dispfunc) ((intptr_t) cfe_handle, (intptr_t) xiocb);
++}
++#endif				/* CFE_API_common || CFE_API_ALL */
++
++#if defined(CFE_API_close) || defined(CFE_API_ALL)
++int cfe_close(int handle)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_CLOSE;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = handle;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = 0;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++
++}
++#endif				/* CFE_API_close || CFE_API_ALL */
++
++#if defined(CFE_API_cpu_start) || defined(CFE_API_ALL)
++int cfe_cpu_start(int cpu, void (*fn) (void), long sp, long gp, long a1)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_FW_CPUCTL;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_cpuctl_t);
++	xiocb.plist.xiocb_cpuctl.cpu_number = cpu;
++	xiocb.plist.xiocb_cpuctl.cpu_command = CFE_CPU_CMD_START;
++	xiocb.plist.xiocb_cpuctl.gp_val = gp;
++	xiocb.plist.xiocb_cpuctl.sp_val = sp;
++	xiocb.plist.xiocb_cpuctl.a1_val = a1;
++	xiocb.plist.xiocb_cpuctl.start_addr = (long) fn;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_cpu_start || CFE_API_ALL */
++
++#if defined(CFE_API_cpu_stop) || defined(CFE_API_ALL)
++int cfe_cpu_stop(int cpu)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_FW_CPUCTL;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_cpuctl_t);
++	xiocb.plist.xiocb_cpuctl.cpu_number = cpu;
++	xiocb.plist.xiocb_cpuctl.cpu_command = CFE_CPU_CMD_STOP;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_cpu_stop || CFE_API_ALL */
++
++#if defined(CFE_API_enumenv) || defined(CFE_API_ALL)
++int cfe_enumenv(int idx, char *name, int namelen, char *val, int vallen)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_ENV_SET;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_envbuf_t);
++	xiocb.plist.xiocb_envbuf.enum_idx = idx;
++	xiocb.plist.xiocb_envbuf.name_ptr = XPTR_FROM_NATIVE(name);
++	xiocb.plist.xiocb_envbuf.name_length = namelen;
++	xiocb.plist.xiocb_envbuf.val_ptr = XPTR_FROM_NATIVE(val);
++	xiocb.plist.xiocb_envbuf.val_length = vallen;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_enumenv || CFE_API_ALL */
++
++#if defined(CFE_API_enummem) || defined(CFE_API_ALL)
++int
++cfe_enummem(int idx, int flags, cfe_xuint_t * start, cfe_xuint_t * length,
++	    cfe_xuint_t * type)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_FW_MEMENUM;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = flags;
++	xiocb.xiocb_psize = sizeof(xiocb_meminfo_t);
++	xiocb.plist.xiocb_meminfo.mi_idx = idx;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++
++	*start = xiocb.plist.xiocb_meminfo.mi_addr;
++	*length = xiocb.plist.xiocb_meminfo.mi_size;
++	*type = xiocb.plist.xiocb_meminfo.mi_type;
++
++	return 0;
++}
++#endif				/* CFE_API_enummem || CFE_API_ALL */
++
++#if defined(CFE_API_exit) || defined(CFE_API_ALL)
++int cfe_exit(int warm, int status)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_FW_RESTART;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = warm ? CFE_FLG_WARMSTART : 0;
++	xiocb.xiocb_psize = sizeof(xiocb_exitstat_t);
++	xiocb.plist.xiocb_exitstat.status = status;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_exit || CFE_API_ALL */
++
++#if defined(CFE_API_flushcache) || defined(CFE_API_ALL)
++int cfe_flushcache(int flg)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_FW_FLUSHCACHE;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = flg;
++	xiocb.xiocb_psize = 0;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_flushcache || CFE_API_ALL */
++
++#if defined(CFE_API_getdevinfo) || defined(CFE_API_ALL)
++int cfe_getdevinfo(char *name)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_GETINFO;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
++	xiocb.plist.xiocb_buffer.buf_offset = 0;
++	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(name);
++	xiocb.plist.xiocb_buffer.buf_length = cfe_strlen(name);
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++	return xiocb.plist.xiocb_buffer.buf_devflags;
++}
++#endif				/* CFE_API_getdevinfo || CFE_API_ALL */
++
++#if defined(CFE_API_getenv) || defined(CFE_API_ALL)
++int cfe_getenv(char *name, char *dest, int destlen)
++{
++	cfe_xiocb_t xiocb;
++
++	*dest = 0;
++
++	xiocb.xiocb_fcode = CFE_CMD_ENV_GET;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_envbuf_t);
++	xiocb.plist.xiocb_envbuf.enum_idx = 0;
++	xiocb.plist.xiocb_envbuf.name_ptr = XPTR_FROM_NATIVE(name);
++	xiocb.plist.xiocb_envbuf.name_length = cfe_strlen(name);
++	xiocb.plist.xiocb_envbuf.val_ptr = XPTR_FROM_NATIVE(dest);
++	xiocb.plist.xiocb_envbuf.val_length = destlen;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_getenv || CFE_API_ALL */
++
++#if defined(CFE_API_getfwinfo) || defined(CFE_API_ALL)
++int cfe_getfwinfo(cfe_fwinfo_t * info)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_FW_GETINFO;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_fwinfo_t);
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++
++	info->fwi_version = xiocb.plist.xiocb_fwinfo.fwi_version;
++	info->fwi_totalmem = xiocb.plist.xiocb_fwinfo.fwi_totalmem;
++	info->fwi_flags = xiocb.plist.xiocb_fwinfo.fwi_flags;
++	info->fwi_boardid = xiocb.plist.xiocb_fwinfo.fwi_boardid;
++	info->fwi_bootarea_va = xiocb.plist.xiocb_fwinfo.fwi_bootarea_va;
++	info->fwi_bootarea_pa = xiocb.plist.xiocb_fwinfo.fwi_bootarea_pa;
++	info->fwi_bootarea_size =
++	    xiocb.plist.xiocb_fwinfo.fwi_bootarea_size;
++#if 0
++	info->fwi_reserved1 = xiocb.plist.xiocb_fwinfo.fwi_reserved1;
++	info->fwi_reserved2 = xiocb.plist.xiocb_fwinfo.fwi_reserved2;
++	info->fwi_reserved3 = xiocb.plist.xiocb_fwinfo.fwi_reserved3;
++#endif
++
++	return 0;
++}
++#endif				/* CFE_API_getfwinfo || CFE_API_ALL */
++
++#if defined(CFE_API_getstdhandle) || defined(CFE_API_ALL)
++int cfe_getstdhandle(int flg)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_GETHANDLE;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = flg;
++	xiocb.xiocb_psize = 0;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++	return xiocb.xiocb_handle;
++}
++#endif				/* CFE_API_getstdhandle || CFE_API_ALL */
++
++#if defined(CFE_API_getticks) || defined(CFE_API_ALL)
++int64_t
++#ifdef CFE_API_IMPL_NAMESPACE
++__cfe_getticks(void)
++#else
++cfe_getticks(void)
++#endif
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_FW_GETTIME;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_time_t);
++	xiocb.plist.xiocb_time.ticks = 0;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.plist.xiocb_time.ticks;
++
++}
++#endif				/* CFE_API_getticks || CFE_API_ALL */
++
++#if defined(CFE_API_inpstat) || defined(CFE_API_ALL)
++int cfe_inpstat(int handle)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_INPSTAT;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = handle;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_inpstat_t);
++	xiocb.plist.xiocb_inpstat.inp_status = 0;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++	return xiocb.plist.xiocb_inpstat.inp_status;
++}
++#endif				/* CFE_API_inpstat || CFE_API_ALL */
++
++#if defined(CFE_API_ioctl) || defined(CFE_API_ALL)
++int
++cfe_ioctl(int handle, unsigned int ioctlnum, unsigned char *buffer,
++	  int length, int *retlen, cfe_xuint_t offset)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_IOCTL;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = handle;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
++	xiocb.plist.xiocb_buffer.buf_offset = offset;
++	xiocb.plist.xiocb_buffer.buf_ioctlcmd = ioctlnum;
++	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(buffer);
++	xiocb.plist.xiocb_buffer.buf_length = length;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (retlen)
++		*retlen = xiocb.plist.xiocb_buffer.buf_retlen;
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_ioctl || CFE_API_ALL */
++
++#if defined(CFE_API_open) || defined(CFE_API_ALL)
++int cfe_open(char *name)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_OPEN;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
++	xiocb.plist.xiocb_buffer.buf_offset = 0;
++	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(name);
++	xiocb.plist.xiocb_buffer.buf_length = cfe_strlen(name);
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++	return xiocb.xiocb_handle;
++}
++#endif				/* CFE_API_open || CFE_API_ALL */
++
++#if defined(CFE_API_read) || defined(CFE_API_ALL)
++int cfe_read(int handle, unsigned char *buffer, int length)
++{
++	return cfe_readblk(handle, 0, buffer, length);
++}
++#endif				/* CFE_API_read || CFE_API_ALL */
++
++#if defined(CFE_API_readblk) || defined(CFE_API_ALL)
++int
++cfe_readblk(int handle, cfe_xint_t offset, unsigned char *buffer,
++	    int length)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_READ;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = handle;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
++	xiocb.plist.xiocb_buffer.buf_offset = offset;
++	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(buffer);
++	xiocb.plist.xiocb_buffer.buf_length = length;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++	return xiocb.plist.xiocb_buffer.buf_retlen;
++}
++#endif				/* CFE_API_readblk || CFE_API_ALL */
++
++#if defined(CFE_API_setenv) || defined(CFE_API_ALL)
++int cfe_setenv(char *name, char *val)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_ENV_SET;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = 0;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_envbuf_t);
++	xiocb.plist.xiocb_envbuf.enum_idx = 0;
++	xiocb.plist.xiocb_envbuf.name_ptr = XPTR_FROM_NATIVE(name);
++	xiocb.plist.xiocb_envbuf.name_length = cfe_strlen(name);
++	xiocb.plist.xiocb_envbuf.val_ptr = XPTR_FROM_NATIVE(val);
++	xiocb.plist.xiocb_envbuf.val_length = cfe_strlen(val);
++
++	cfe_iocb_dispatch(&xiocb);
++
++	return xiocb.xiocb_status;
++}
++#endif				/* CFE_API_setenv || CFE_API_ALL */
++
++#if (defined(CFE_API_strlen) || defined(CFE_API_ALL)) \
++    && !defined(CFE_API_STRLEN_CUSTOM)
++int cfe_strlen(char *name)
++{
++	int count = 0;
++
++	while (*name++)
++		count++;
++
++	return count;
++}
++#endif				/* CFE_API_strlen || CFE_API_ALL */
++
++#if defined(CFE_API_write) || defined(CFE_API_ALL)
++int cfe_write(int handle, unsigned char *buffer, int length)
++{
++	return cfe_writeblk(handle, 0, buffer, length);
++}
++#endif				/* CFE_API_write || CFE_API_ALL */
++
++#if defined(CFE_API_writeblk) || defined(CFE_API_ALL)
++int
++cfe_writeblk(int handle, cfe_xint_t offset, unsigned char *buffer,
++	     int length)
++{
++	cfe_xiocb_t xiocb;
++
++	xiocb.xiocb_fcode = CFE_CMD_DEV_WRITE;
++	xiocb.xiocb_status = 0;
++	xiocb.xiocb_handle = handle;
++	xiocb.xiocb_flags = 0;
++	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
++	xiocb.plist.xiocb_buffer.buf_offset = offset;
++	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(buffer);
++	xiocb.plist.xiocb_buffer.buf_length = length;
++
++	cfe_iocb_dispatch(&xiocb);
++
++	if (xiocb.xiocb_status < 0)
++		return xiocb.xiocb_status;
++	return xiocb.plist.xiocb_buffer.buf_retlen;
++}
++#endif				/* CFE_API_writeblk || CFE_API_ALL */
+diff --git a/arch/mips/cfe/cfe_api_int.h b/arch/mips/cfe/cfe_api_int.h
+new file mode 100644
+index 0000000..f7e5a64
+--- /dev/null
++++ b/arch/mips/cfe/cfe_api_int.h
+@@ -0,0 +1,152 @@
++/*
++ * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
++ */
++
++/*  *********************************************************************
++    *
++    *  Broadcom Common Firmware Environment (CFE)
++    *
++    *  Device function prototypes		File: cfe_api_int.h
++    *
++    *  This header defines all internal types and macros for the
++    *  library.  This is stuff that's not exported to an app
++    *  using the library.
++    *
++    *  Authors:  Mitch Lichtenberg, Chris Demetriou
++    *
++    ********************************************************************* */
++
++#ifndef CFE_API_INT_H
++#define CFE_API_INT_H
++
++/*  *********************************************************************
++    *  Constants
++    ********************************************************************* */
++
++#define CFE_CMD_FW_GETINFO	0
++#define CFE_CMD_FW_RESTART	1
++#define CFE_CMD_FW_BOOT		2
++#define CFE_CMD_FW_CPUCTL	3
++#define CFE_CMD_FW_GETTIME      4
++#define CFE_CMD_FW_MEMENUM	5
++#define CFE_CMD_FW_FLUSHCACHE	6
++
++#define CFE_CMD_DEV_GETHANDLE	9
++#define CFE_CMD_DEV_ENUM	10
++#define CFE_CMD_DEV_OPEN	11
++#define CFE_CMD_DEV_INPSTAT	12
++#define CFE_CMD_DEV_READ	13
++#define CFE_CMD_DEV_WRITE	14
++#define CFE_CMD_DEV_IOCTL	15
++#define CFE_CMD_DEV_CLOSE	16
++#define CFE_CMD_DEV_GETINFO	17
++
++#define CFE_CMD_ENV_ENUM	20
++#define CFE_CMD_ENV_GET		22
++#define CFE_CMD_ENV_SET		23
++#define CFE_CMD_ENV_DEL		24
++
++#define CFE_CMD_MAX		32
++
++#define CFE_CMD_VENDOR_USE	0x8000	/* codes above this are for customer use */
++
++/*  *********************************************************************
++    *  Structures
++    ********************************************************************* */
++
++typedef uint64_t cfe_xuint_t;
++typedef int64_t cfe_xint_t;
++typedef int64_t cfe_xptr_t;
++
++typedef struct xiocb_buffer_s {
++	cfe_xuint_t buf_offset;		/* offset on device (bytes) */
++	cfe_xptr_t  buf_ptr;		/* pointer to a buffer */
++	cfe_xuint_t buf_length;		/* length of this buffer */
++	cfe_xuint_t buf_retlen;		/* returned length (for read ops) */
++	cfe_xuint_t buf_ioctlcmd;	/* IOCTL command (used only for IOCTLs) */
++} xiocb_buffer_t;
++
++#define buf_devflags buf_ioctlcmd	/* returned device info flags */
++
++typedef struct xiocb_inpstat_s {
++	cfe_xuint_t inp_status;		/* 1 means input available */
++} xiocb_inpstat_t;
++
++typedef struct xiocb_envbuf_s {
++	cfe_xint_t enum_idx;		/* 0-based enumeration index */
++	cfe_xptr_t name_ptr;		/* name string buffer */
++	cfe_xint_t name_length;		/* size of name buffer */
++	cfe_xptr_t val_ptr;		/* value string buffer */
++	cfe_xint_t val_length;		/* size of value string buffer */
++} xiocb_envbuf_t;
++
++typedef struct xiocb_cpuctl_s {
++	cfe_xuint_t cpu_number;		/* cpu number to control */
++	cfe_xuint_t cpu_command;	/* command to issue to CPU */
++	cfe_xuint_t start_addr;		/* CPU start address */
++	cfe_xuint_t gp_val;		/* starting GP value */
++	cfe_xuint_t sp_val;		/* starting SP value */
++	cfe_xuint_t a1_val;		/* starting A1 value */
++} xiocb_cpuctl_t;
++
++typedef struct xiocb_time_s {
++	cfe_xint_t ticks;		/* current time in ticks */
++} xiocb_time_t;
++
++typedef struct xiocb_exitstat_s {
++	cfe_xint_t status;
++} xiocb_exitstat_t;
++
++typedef struct xiocb_meminfo_s {
++	cfe_xint_t mi_idx;		/* 0-based enumeration index */
++	cfe_xint_t mi_type;		/* type of memory block */
++	cfe_xuint_t mi_addr;		/* physical start address */
++	cfe_xuint_t mi_size;		/* block size */
++} xiocb_meminfo_t;
++
++typedef struct xiocb_fwinfo_s {
++	cfe_xint_t fwi_version;		/* major, minor, eco version */
++	cfe_xint_t fwi_totalmem;	/* total installed mem */
++	cfe_xint_t fwi_flags;		/* various flags */
++	cfe_xint_t fwi_boardid;		/* board ID */
++	cfe_xint_t fwi_bootarea_va;	/* VA of boot area */
++	cfe_xint_t fwi_bootarea_pa;	/* PA of boot area */
++	cfe_xint_t fwi_bootarea_size;	/* size of boot area */
++	cfe_xint_t fwi_reserved1;
++	cfe_xint_t fwi_reserved2;
++	cfe_xint_t fwi_reserved3;
++} xiocb_fwinfo_t;
++
++typedef struct cfe_xiocb_s {
++	cfe_xuint_t xiocb_fcode;	/* IOCB function code */
++	cfe_xint_t xiocb_status;	/* return status */
++	cfe_xint_t xiocb_handle;	/* file/device handle */
++	cfe_xuint_t xiocb_flags;	/* flags for this IOCB */
++	cfe_xuint_t xiocb_psize;	/* size of parameter list */
++	union {
++		xiocb_buffer_t xiocb_buffer;	/* buffer parameters */
++		xiocb_inpstat_t xiocb_inpstat;	/* input status parameters */
++		xiocb_envbuf_t xiocb_envbuf;	/* environment function parameters */
++		xiocb_cpuctl_t xiocb_cpuctl;	/* CPU control parameters */
++		xiocb_time_t xiocb_time;	/* timer parameters */
++		xiocb_meminfo_t xiocb_meminfo;	/* memory arena info parameters */
++		xiocb_fwinfo_t xiocb_fwinfo;	/* firmware information */
++		xiocb_exitstat_t xiocb_exitstat;	/* Exit Status */
++	} plist;
++} cfe_xiocb_t;
++
++#endif				/* CFE_API_INT_H */
+diff --git a/arch/mips/sibyte/Kconfig b/arch/mips/sibyte/Kconfig
+index e6b003e..9be317b 100644
+--- a/arch/mips/sibyte/Kconfig
++++ b/arch/mips/sibyte/Kconfig
+@@ -125,6 +125,7 @@ config SB1_CERR_STALL
+ config SIBYTE_CFE
+ 	bool "Booting from CFE"
+ 	depends on SIBYTE_SB1xxx_SOC
++	select CFE
+ 	select SYS_HAS_EARLY_PRINTK
+ 	help
+ 	  Make use of the CFE API for enumerating available memory,
+diff --git a/arch/mips/sibyte/cfe/Makefile b/arch/mips/sibyte/cfe/Makefile
+index 059d84a..a121493 100644
+--- a/arch/mips/sibyte/cfe/Makefile
++++ b/arch/mips/sibyte/cfe/Makefile
+@@ -1,3 +1,3 @@
+-lib-y					= cfe_api.o setup.o
++lib-y					= setup.o
+ lib-$(CONFIG_SMP)			+= smp.o
+ lib-$(CONFIG_SIBYTE_CFE_CONSOLE)	+= console.o
+diff --git a/arch/mips/sibyte/cfe/cfe_api.c b/arch/mips/sibyte/cfe/cfe_api.c
+deleted file mode 100644
+index c021360..0000000
+--- a/arch/mips/sibyte/cfe/cfe_api.c
++++ /dev/null
+@@ -1,502 +0,0 @@
+-/*
+- * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+- */
+-
+-/*  *********************************************************************
+-    *
+-    *  Broadcom Common Firmware Environment (CFE)
+-    *
+-    *  Device Function stubs			File: cfe_api.c
+-    *
+-    *  This module contains device function stubs (small routines to
+-    *  call the standard "iocb" interface entry point to CFE).
+-    *  There should be one routine here per iocb function call.
+-    *
+-    *  Authors:  Mitch Lichtenberg, Chris Demetriou
+-    *
+-    ********************************************************************* */
+-
+-#include "cfe_api.h"
+-#include "cfe_api_int.h"
+-
+-/* Cast from a native pointer to a cfe_xptr_t and back.	 */
+-#define XPTR_FROM_NATIVE(n)	((cfe_xptr_t) (intptr_t) (n))
+-#define NATIVE_FROM_XPTR(x)	((void *) (intptr_t) (x))
+-
+-#ifdef CFE_API_IMPL_NAMESPACE
+-#define cfe_iocb_dispatch(a)		__cfe_iocb_dispatch(a)
+-#endif
+-int cfe_iocb_dispatch(cfe_xiocb_t * xiocb);
+-
+-#if defined(CFE_API_common) || defined(CFE_API_ALL)
+-/*
+- * Declare the dispatch function with args of "intptr_t".
+- * This makes sure whatever model we're compiling in
+- * puts the pointers in a single register.  For example,
+- * combining -mlong64 and -mips1 or -mips2 would lead to
+- * trouble, since the handle and IOCB pointer will be
+- * passed in two registers each, and CFE expects one.
+- */
+-
+-static int (*cfe_dispfunc) (intptr_t handle, intptr_t xiocb) = 0;
+-static cfe_xuint_t cfe_handle = 0;
+-
+-int cfe_init(cfe_xuint_t handle, cfe_xuint_t ept)
+-{
+-	cfe_dispfunc = NATIVE_FROM_XPTR(ept);
+-	cfe_handle = handle;
+-	return 0;
+-}
+-
+-int cfe_iocb_dispatch(cfe_xiocb_t * xiocb)
+-{
+-	if (!cfe_dispfunc)
+-		return -1;
+-	return (*cfe_dispfunc) ((intptr_t) cfe_handle, (intptr_t) xiocb);
+-}
+-#endif				/* CFE_API_common || CFE_API_ALL */
+-
+-#if defined(CFE_API_close) || defined(CFE_API_ALL)
+-int cfe_close(int handle)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_CLOSE;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = handle;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = 0;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-
+-}
+-#endif				/* CFE_API_close || CFE_API_ALL */
+-
+-#if defined(CFE_API_cpu_start) || defined(CFE_API_ALL)
+-int cfe_cpu_start(int cpu, void (*fn) (void), long sp, long gp, long a1)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_FW_CPUCTL;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_cpuctl_t);
+-	xiocb.plist.xiocb_cpuctl.cpu_number = cpu;
+-	xiocb.plist.xiocb_cpuctl.cpu_command = CFE_CPU_CMD_START;
+-	xiocb.plist.xiocb_cpuctl.gp_val = gp;
+-	xiocb.plist.xiocb_cpuctl.sp_val = sp;
+-	xiocb.plist.xiocb_cpuctl.a1_val = a1;
+-	xiocb.plist.xiocb_cpuctl.start_addr = (long) fn;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_cpu_start || CFE_API_ALL */
+-
+-#if defined(CFE_API_cpu_stop) || defined(CFE_API_ALL)
+-int cfe_cpu_stop(int cpu)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_FW_CPUCTL;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_cpuctl_t);
+-	xiocb.plist.xiocb_cpuctl.cpu_number = cpu;
+-	xiocb.plist.xiocb_cpuctl.cpu_command = CFE_CPU_CMD_STOP;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_cpu_stop || CFE_API_ALL */
+-
+-#if defined(CFE_API_enumenv) || defined(CFE_API_ALL)
+-int cfe_enumenv(int idx, char *name, int namelen, char *val, int vallen)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_ENV_SET;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_envbuf_t);
+-	xiocb.plist.xiocb_envbuf.enum_idx = idx;
+-	xiocb.plist.xiocb_envbuf.name_ptr = XPTR_FROM_NATIVE(name);
+-	xiocb.plist.xiocb_envbuf.name_length = namelen;
+-	xiocb.plist.xiocb_envbuf.val_ptr = XPTR_FROM_NATIVE(val);
+-	xiocb.plist.xiocb_envbuf.val_length = vallen;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_enumenv || CFE_API_ALL */
+-
+-#if defined(CFE_API_enummem) || defined(CFE_API_ALL)
+-int
+-cfe_enummem(int idx, int flags, cfe_xuint_t * start, cfe_xuint_t * length,
+-	    cfe_xuint_t * type)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_FW_MEMENUM;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = flags;
+-	xiocb.xiocb_psize = sizeof(xiocb_meminfo_t);
+-	xiocb.plist.xiocb_meminfo.mi_idx = idx;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-
+-	*start = xiocb.plist.xiocb_meminfo.mi_addr;
+-	*length = xiocb.plist.xiocb_meminfo.mi_size;
+-	*type = xiocb.plist.xiocb_meminfo.mi_type;
+-
+-	return 0;
+-}
+-#endif				/* CFE_API_enummem || CFE_API_ALL */
+-
+-#if defined(CFE_API_exit) || defined(CFE_API_ALL)
+-int cfe_exit(int warm, int status)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_FW_RESTART;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = warm ? CFE_FLG_WARMSTART : 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_exitstat_t);
+-	xiocb.plist.xiocb_exitstat.status = status;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_exit || CFE_API_ALL */
+-
+-#if defined(CFE_API_flushcache) || defined(CFE_API_ALL)
+-int cfe_flushcache(int flg)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_FW_FLUSHCACHE;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = flg;
+-	xiocb.xiocb_psize = 0;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_flushcache || CFE_API_ALL */
+-
+-#if defined(CFE_API_getdevinfo) || defined(CFE_API_ALL)
+-int cfe_getdevinfo(char *name)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_GETINFO;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
+-	xiocb.plist.xiocb_buffer.buf_offset = 0;
+-	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(name);
+-	xiocb.plist.xiocb_buffer.buf_length = cfe_strlen(name);
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-	return xiocb.plist.xiocb_buffer.buf_devflags;
+-}
+-#endif				/* CFE_API_getdevinfo || CFE_API_ALL */
+-
+-#if defined(CFE_API_getenv) || defined(CFE_API_ALL)
+-int cfe_getenv(char *name, char *dest, int destlen)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	*dest = 0;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_ENV_GET;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_envbuf_t);
+-	xiocb.plist.xiocb_envbuf.enum_idx = 0;
+-	xiocb.plist.xiocb_envbuf.name_ptr = XPTR_FROM_NATIVE(name);
+-	xiocb.plist.xiocb_envbuf.name_length = cfe_strlen(name);
+-	xiocb.plist.xiocb_envbuf.val_ptr = XPTR_FROM_NATIVE(dest);
+-	xiocb.plist.xiocb_envbuf.val_length = destlen;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_getenv || CFE_API_ALL */
+-
+-#if defined(CFE_API_getfwinfo) || defined(CFE_API_ALL)
+-int cfe_getfwinfo(cfe_fwinfo_t * info)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_FW_GETINFO;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_fwinfo_t);
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-
+-	info->fwi_version = xiocb.plist.xiocb_fwinfo.fwi_version;
+-	info->fwi_totalmem = xiocb.plist.xiocb_fwinfo.fwi_totalmem;
+-	info->fwi_flags = xiocb.plist.xiocb_fwinfo.fwi_flags;
+-	info->fwi_boardid = xiocb.plist.xiocb_fwinfo.fwi_boardid;
+-	info->fwi_bootarea_va = xiocb.plist.xiocb_fwinfo.fwi_bootarea_va;
+-	info->fwi_bootarea_pa = xiocb.plist.xiocb_fwinfo.fwi_bootarea_pa;
+-	info->fwi_bootarea_size =
+-	    xiocb.plist.xiocb_fwinfo.fwi_bootarea_size;
+-#if 0
+-	info->fwi_reserved1 = xiocb.plist.xiocb_fwinfo.fwi_reserved1;
+-	info->fwi_reserved2 = xiocb.plist.xiocb_fwinfo.fwi_reserved2;
+-	info->fwi_reserved3 = xiocb.plist.xiocb_fwinfo.fwi_reserved3;
+-#endif
+-
+-	return 0;
+-}
+-#endif				/* CFE_API_getfwinfo || CFE_API_ALL */
+-
+-#if defined(CFE_API_getstdhandle) || defined(CFE_API_ALL)
+-int cfe_getstdhandle(int flg)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_GETHANDLE;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = flg;
+-	xiocb.xiocb_psize = 0;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-	return xiocb.xiocb_handle;
+-}
+-#endif				/* CFE_API_getstdhandle || CFE_API_ALL */
+-
+-#if defined(CFE_API_getticks) || defined(CFE_API_ALL)
+-int64_t
+-#ifdef CFE_API_IMPL_NAMESPACE
+-__cfe_getticks(void)
+-#else
+-cfe_getticks(void)
+-#endif
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_FW_GETTIME;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_time_t);
+-	xiocb.plist.xiocb_time.ticks = 0;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.plist.xiocb_time.ticks;
+-
+-}
+-#endif				/* CFE_API_getticks || CFE_API_ALL */
+-
+-#if defined(CFE_API_inpstat) || defined(CFE_API_ALL)
+-int cfe_inpstat(int handle)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_INPSTAT;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = handle;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_inpstat_t);
+-	xiocb.plist.xiocb_inpstat.inp_status = 0;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-	return xiocb.plist.xiocb_inpstat.inp_status;
+-}
+-#endif				/* CFE_API_inpstat || CFE_API_ALL */
+-
+-#if defined(CFE_API_ioctl) || defined(CFE_API_ALL)
+-int
+-cfe_ioctl(int handle, unsigned int ioctlnum, unsigned char *buffer,
+-	  int length, int *retlen, cfe_xuint_t offset)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_IOCTL;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = handle;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
+-	xiocb.plist.xiocb_buffer.buf_offset = offset;
+-	xiocb.plist.xiocb_buffer.buf_ioctlcmd = ioctlnum;
+-	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(buffer);
+-	xiocb.plist.xiocb_buffer.buf_length = length;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (retlen)
+-		*retlen = xiocb.plist.xiocb_buffer.buf_retlen;
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_ioctl || CFE_API_ALL */
+-
+-#if defined(CFE_API_open) || defined(CFE_API_ALL)
+-int cfe_open(char *name)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_OPEN;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
+-	xiocb.plist.xiocb_buffer.buf_offset = 0;
+-	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(name);
+-	xiocb.plist.xiocb_buffer.buf_length = cfe_strlen(name);
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-	return xiocb.xiocb_handle;
+-}
+-#endif				/* CFE_API_open || CFE_API_ALL */
+-
+-#if defined(CFE_API_read) || defined(CFE_API_ALL)
+-int cfe_read(int handle, unsigned char *buffer, int length)
+-{
+-	return cfe_readblk(handle, 0, buffer, length);
+-}
+-#endif				/* CFE_API_read || CFE_API_ALL */
+-
+-#if defined(CFE_API_readblk) || defined(CFE_API_ALL)
+-int
+-cfe_readblk(int handle, cfe_xint_t offset, unsigned char *buffer,
+-	    int length)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_READ;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = handle;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
+-	xiocb.plist.xiocb_buffer.buf_offset = offset;
+-	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(buffer);
+-	xiocb.plist.xiocb_buffer.buf_length = length;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-	return xiocb.plist.xiocb_buffer.buf_retlen;
+-}
+-#endif				/* CFE_API_readblk || CFE_API_ALL */
+-
+-#if defined(CFE_API_setenv) || defined(CFE_API_ALL)
+-int cfe_setenv(char *name, char *val)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_ENV_SET;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = 0;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_envbuf_t);
+-	xiocb.plist.xiocb_envbuf.enum_idx = 0;
+-	xiocb.plist.xiocb_envbuf.name_ptr = XPTR_FROM_NATIVE(name);
+-	xiocb.plist.xiocb_envbuf.name_length = cfe_strlen(name);
+-	xiocb.plist.xiocb_envbuf.val_ptr = XPTR_FROM_NATIVE(val);
+-	xiocb.plist.xiocb_envbuf.val_length = cfe_strlen(val);
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	return xiocb.xiocb_status;
+-}
+-#endif				/* CFE_API_setenv || CFE_API_ALL */
+-
+-#if (defined(CFE_API_strlen) || defined(CFE_API_ALL)) \
+-    && !defined(CFE_API_STRLEN_CUSTOM)
+-int cfe_strlen(char *name)
+-{
+-	int count = 0;
+-
+-	while (*name++)
+-		count++;
+-
+-	return count;
+-}
+-#endif				/* CFE_API_strlen || CFE_API_ALL */
+-
+-#if defined(CFE_API_write) || defined(CFE_API_ALL)
+-int cfe_write(int handle, unsigned char *buffer, int length)
+-{
+-	return cfe_writeblk(handle, 0, buffer, length);
+-}
+-#endif				/* CFE_API_write || CFE_API_ALL */
+-
+-#if defined(CFE_API_writeblk) || defined(CFE_API_ALL)
+-int
+-cfe_writeblk(int handle, cfe_xint_t offset, unsigned char *buffer,
+-	     int length)
+-{
+-	cfe_xiocb_t xiocb;
+-
+-	xiocb.xiocb_fcode = CFE_CMD_DEV_WRITE;
+-	xiocb.xiocb_status = 0;
+-	xiocb.xiocb_handle = handle;
+-	xiocb.xiocb_flags = 0;
+-	xiocb.xiocb_psize = sizeof(xiocb_buffer_t);
+-	xiocb.plist.xiocb_buffer.buf_offset = offset;
+-	xiocb.plist.xiocb_buffer.buf_ptr = XPTR_FROM_NATIVE(buffer);
+-	xiocb.plist.xiocb_buffer.buf_length = length;
+-
+-	cfe_iocb_dispatch(&xiocb);
+-
+-	if (xiocb.xiocb_status < 0)
+-		return xiocb.xiocb_status;
+-	return xiocb.plist.xiocb_buffer.buf_retlen;
+-}
+-#endif				/* CFE_API_writeblk || CFE_API_ALL */
+diff --git a/arch/mips/sibyte/cfe/cfe_api.h b/arch/mips/sibyte/cfe/cfe_api.h
+deleted file mode 100644
+index d8230cc..0000000
+--- a/arch/mips/sibyte/cfe/cfe_api.h
++++ /dev/null
+@@ -1,185 +0,0 @@
+-/*
+- * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+- */
+-
+-/*  *********************************************************************
+-    *
+-    *  Broadcom Common Firmware Environment (CFE)
+-    *
+-    *  Device function prototypes		File: cfe_api.h
+-    *
+-    *  This file contains declarations for doing callbacks to
+-    *  cfe from an application.  It should be the only header
+-    *  needed by the application to use this library
+-    *
+-    *  Authors:  Mitch Lichtenberg, Chris Demetriou
+-    *
+-    ********************************************************************* */
+-
+-#ifndef CFE_API_H
+-#define CFE_API_H
+-
+-/*
+- * Apply customizations here for different OSes.  These need to:
+- *	* typedef uint64_t, int64_t, intptr_t, uintptr_t.
+- *	* define cfe_strlen() if use of an existing function is desired.
+- *	* define CFE_API_IMPL_NAMESPACE if API functions are to use
+- *	  names in the implementation namespace.
+- * Also, optionally, if the build environment does not do so automatically,
+- * CFE_API_* can be defined here as desired.
+- */
+-/* Begin customization. */
+-#include <linux/types.h>
+-#include <linux/string.h>
+-
+-typedef long intptr_t;
+-
+-#define cfe_strlen strlen
+-
+-#define CFE_API_ALL
+-#define CFE_API_STRLEN_CUSTOM
+-/* End customization. */
+-
+-
+-/*  *********************************************************************
+-    *  Constants
+-    ********************************************************************* */
+-
+-/* Seal indicating CFE's presence, passed to user program. */
+-#define CFE_EPTSEAL 0x43464531
+-
+-#define CFE_MI_RESERVED	0	/* memory is reserved, do not use */
+-#define CFE_MI_AVAILABLE 1	/* memory is available */
+-
+-#define CFE_FLG_WARMSTART     0x00000001
+-#define CFE_FLG_FULL_ARENA    0x00000001
+-#define CFE_FLG_ENV_PERMANENT 0x00000001
+-
+-#define CFE_CPU_CMD_START 1
+-#define CFE_CPU_CMD_STOP 0
+-
+-#define CFE_STDHANDLE_CONSOLE	0
+-
+-#define CFE_DEV_NETWORK 	1
+-#define CFE_DEV_DISK		2
+-#define CFE_DEV_FLASH		3
+-#define CFE_DEV_SERIAL		4
+-#define CFE_DEV_CPU		5
+-#define CFE_DEV_NVRAM		6
+-#define CFE_DEV_CLOCK           7
+-#define CFE_DEV_OTHER		8
+-#define CFE_DEV_MASK		0x0F
+-
+-#define CFE_CACHE_FLUSH_D	1
+-#define CFE_CACHE_INVAL_I	2
+-#define CFE_CACHE_INVAL_D	4
+-#define CFE_CACHE_INVAL_L2	8
+-
+-#define CFE_FWI_64BIT		0x00000001
+-#define CFE_FWI_32BIT		0x00000002
+-#define CFE_FWI_RELOC		0x00000004
+-#define CFE_FWI_UNCACHED	0x00000008
+-#define CFE_FWI_MULTICPU	0x00000010
+-#define CFE_FWI_FUNCSIM		0x00000020
+-#define CFE_FWI_RTLSIM		0x00000040
+-
+-typedef struct {
+-	int64_t fwi_version;		/* major, minor, eco version */
+-	int64_t fwi_totalmem;		/* total installed mem */
+-	int64_t fwi_flags;		/* various flags */
+-	int64_t fwi_boardid;		/* board ID */
+-	int64_t fwi_bootarea_va;	/* VA of boot area */
+-	int64_t fwi_bootarea_pa;	/* PA of boot area */
+-	int64_t fwi_bootarea_size;	/* size of boot area */
+-} cfe_fwinfo_t;
+-
+-
+-/*
+- * cfe_strlen is handled specially: If already defined, it has been
+- * overridden in this environment with a standard strlen-like function.
+- */
+-#ifdef cfe_strlen
+-# define CFE_API_STRLEN_CUSTOM
+-#else
+-# ifdef CFE_API_IMPL_NAMESPACE
+-#  define cfe_strlen(a)			__cfe_strlen(a)
+-# endif
+-int cfe_strlen(char *name);
+-#endif
+-
+-/*
+- * Defines and prototypes for functions which take no arguments.
+- */
+-#ifdef CFE_API_IMPL_NAMESPACE
+-int64_t __cfe_getticks(void);
+-#define cfe_getticks()			__cfe_getticks()
+-#else
+-int64_t cfe_getticks(void);
+-#endif
+-
+-/*
+- * Defines and prototypes for the rest of the functions.
+- */
+-#ifdef CFE_API_IMPL_NAMESPACE
+-#define cfe_close(a)			__cfe_close(a)
+-#define cfe_cpu_start(a,b,c,d,e)	__cfe_cpu_start(a,b,c,d,e)
+-#define cfe_cpu_stop(a)			__cfe_cpu_stop(a)
+-#define cfe_enumenv(a,b,d,e,f)		__cfe_enumenv(a,b,d,e,f)
+-#define cfe_enummem(a,b,c,d,e)		__cfe_enummem(a,b,c,d,e)
+-#define cfe_exit(a,b)			__cfe_exit(a,b)
+-#define cfe_flushcache(a)		__cfe_cacheflush(a)
+-#define cfe_getdevinfo(a)		__cfe_getdevinfo(a)
+-#define cfe_getenv(a,b,c)		__cfe_getenv(a,b,c)
+-#define cfe_getfwinfo(a)		__cfe_getfwinfo(a)
+-#define cfe_getstdhandle(a)		__cfe_getstdhandle(a)
+-#define cfe_init(a,b)			__cfe_init(a,b)
+-#define cfe_inpstat(a)			__cfe_inpstat(a)
+-#define cfe_ioctl(a,b,c,d,e,f)		__cfe_ioctl(a,b,c,d,e,f)
+-#define cfe_open(a)			__cfe_open(a)
+-#define cfe_read(a,b,c)			__cfe_read(a,b,c)
+-#define cfe_readblk(a,b,c,d)		__cfe_readblk(a,b,c,d)
+-#define cfe_setenv(a,b)			__cfe_setenv(a,b)
+-#define cfe_write(a,b,c)		__cfe_write(a,b,c)
+-#define cfe_writeblk(a,b,c,d)		__cfe_writeblk(a,b,c,d)
+-#endif				/* CFE_API_IMPL_NAMESPACE */
+-
+-int cfe_close(int handle);
+-int cfe_cpu_start(int cpu, void (*fn) (void), long sp, long gp, long a1);
+-int cfe_cpu_stop(int cpu);
+-int cfe_enumenv(int idx, char *name, int namelen, char *val, int vallen);
+-int cfe_enummem(int idx, int flags, uint64_t * start, uint64_t * length,
+-		uint64_t * type);
+-int cfe_exit(int warm, int status);
+-int cfe_flushcache(int flg);
+-int cfe_getdevinfo(char *name);
+-int cfe_getenv(char *name, char *dest, int destlen);
+-int cfe_getfwinfo(cfe_fwinfo_t * info);
+-int cfe_getstdhandle(int flg);
+-int cfe_init(uint64_t handle, uint64_t ept);
+-int cfe_inpstat(int handle);
+-int cfe_ioctl(int handle, unsigned int ioctlnum, unsigned char *buffer,
+-	      int length, int *retlen, uint64_t offset);
+-int cfe_open(char *name);
+-int cfe_read(int handle, unsigned char *buffer, int length);
+-int cfe_readblk(int handle, int64_t offset, unsigned char *buffer,
+-		int length);
+-int cfe_setenv(char *name, char *val);
+-int cfe_write(int handle, unsigned char *buffer, int length);
+-int cfe_writeblk(int handle, int64_t offset, unsigned char *buffer,
+-		 int length);
+-
+-#endif				/* CFE_API_H */
+diff --git a/arch/mips/sibyte/cfe/cfe_api_int.h b/arch/mips/sibyte/cfe/cfe_api_int.h
+deleted file mode 100644
+index f7e5a64..0000000
+--- a/arch/mips/sibyte/cfe/cfe_api_int.h
++++ /dev/null
+@@ -1,152 +0,0 @@
+-/*
+- * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+- */
+-
+-/*  *********************************************************************
+-    *
+-    *  Broadcom Common Firmware Environment (CFE)
+-    *
+-    *  Device function prototypes		File: cfe_api_int.h
+-    *
+-    *  This header defines all internal types and macros for the
+-    *  library.  This is stuff that's not exported to an app
+-    *  using the library.
+-    *
+-    *  Authors:  Mitch Lichtenberg, Chris Demetriou
+-    *
+-    ********************************************************************* */
+-
+-#ifndef CFE_API_INT_H
+-#define CFE_API_INT_H
+-
+-/*  *********************************************************************
+-    *  Constants
+-    ********************************************************************* */
+-
+-#define CFE_CMD_FW_GETINFO	0
+-#define CFE_CMD_FW_RESTART	1
+-#define CFE_CMD_FW_BOOT		2
+-#define CFE_CMD_FW_CPUCTL	3
+-#define CFE_CMD_FW_GETTIME      4
+-#define CFE_CMD_FW_MEMENUM	5
+-#define CFE_CMD_FW_FLUSHCACHE	6
+-
+-#define CFE_CMD_DEV_GETHANDLE	9
+-#define CFE_CMD_DEV_ENUM	10
+-#define CFE_CMD_DEV_OPEN	11
+-#define CFE_CMD_DEV_INPSTAT	12
+-#define CFE_CMD_DEV_READ	13
+-#define CFE_CMD_DEV_WRITE	14
+-#define CFE_CMD_DEV_IOCTL	15
+-#define CFE_CMD_DEV_CLOSE	16
+-#define CFE_CMD_DEV_GETINFO	17
+-
+-#define CFE_CMD_ENV_ENUM	20
+-#define CFE_CMD_ENV_GET		22
+-#define CFE_CMD_ENV_SET		23
+-#define CFE_CMD_ENV_DEL		24
+-
+-#define CFE_CMD_MAX		32
+-
+-#define CFE_CMD_VENDOR_USE	0x8000	/* codes above this are for customer use */
+-
+-/*  *********************************************************************
+-    *  Structures
+-    ********************************************************************* */
+-
+-typedef uint64_t cfe_xuint_t;
+-typedef int64_t cfe_xint_t;
+-typedef int64_t cfe_xptr_t;
+-
+-typedef struct xiocb_buffer_s {
+-	cfe_xuint_t buf_offset;		/* offset on device (bytes) */
+-	cfe_xptr_t  buf_ptr;		/* pointer to a buffer */
+-	cfe_xuint_t buf_length;		/* length of this buffer */
+-	cfe_xuint_t buf_retlen;		/* returned length (for read ops) */
+-	cfe_xuint_t buf_ioctlcmd;	/* IOCTL command (used only for IOCTLs) */
+-} xiocb_buffer_t;
+-
+-#define buf_devflags buf_ioctlcmd	/* returned device info flags */
+-
+-typedef struct xiocb_inpstat_s {
+-	cfe_xuint_t inp_status;		/* 1 means input available */
+-} xiocb_inpstat_t;
+-
+-typedef struct xiocb_envbuf_s {
+-	cfe_xint_t enum_idx;		/* 0-based enumeration index */
+-	cfe_xptr_t name_ptr;		/* name string buffer */
+-	cfe_xint_t name_length;		/* size of name buffer */
+-	cfe_xptr_t val_ptr;		/* value string buffer */
+-	cfe_xint_t val_length;		/* size of value string buffer */
+-} xiocb_envbuf_t;
+-
+-typedef struct xiocb_cpuctl_s {
+-	cfe_xuint_t cpu_number;		/* cpu number to control */
+-	cfe_xuint_t cpu_command;	/* command to issue to CPU */
+-	cfe_xuint_t start_addr;		/* CPU start address */
+-	cfe_xuint_t gp_val;		/* starting GP value */
+-	cfe_xuint_t sp_val;		/* starting SP value */
+-	cfe_xuint_t a1_val;		/* starting A1 value */
+-} xiocb_cpuctl_t;
+-
+-typedef struct xiocb_time_s {
+-	cfe_xint_t ticks;		/* current time in ticks */
+-} xiocb_time_t;
+-
+-typedef struct xiocb_exitstat_s {
+-	cfe_xint_t status;
+-} xiocb_exitstat_t;
+-
+-typedef struct xiocb_meminfo_s {
+-	cfe_xint_t mi_idx;		/* 0-based enumeration index */
+-	cfe_xint_t mi_type;		/* type of memory block */
+-	cfe_xuint_t mi_addr;		/* physical start address */
+-	cfe_xuint_t mi_size;		/* block size */
+-} xiocb_meminfo_t;
+-
+-typedef struct xiocb_fwinfo_s {
+-	cfe_xint_t fwi_version;		/* major, minor, eco version */
+-	cfe_xint_t fwi_totalmem;	/* total installed mem */
+-	cfe_xint_t fwi_flags;		/* various flags */
+-	cfe_xint_t fwi_boardid;		/* board ID */
+-	cfe_xint_t fwi_bootarea_va;	/* VA of boot area */
+-	cfe_xint_t fwi_bootarea_pa;	/* PA of boot area */
+-	cfe_xint_t fwi_bootarea_size;	/* size of boot area */
+-	cfe_xint_t fwi_reserved1;
+-	cfe_xint_t fwi_reserved2;
+-	cfe_xint_t fwi_reserved3;
+-} xiocb_fwinfo_t;
+-
+-typedef struct cfe_xiocb_s {
+-	cfe_xuint_t xiocb_fcode;	/* IOCB function code */
+-	cfe_xint_t xiocb_status;	/* return status */
+-	cfe_xint_t xiocb_handle;	/* file/device handle */
+-	cfe_xuint_t xiocb_flags;	/* flags for this IOCB */
+-	cfe_xuint_t xiocb_psize;	/* size of parameter list */
+-	union {
+-		xiocb_buffer_t xiocb_buffer;	/* buffer parameters */
+-		xiocb_inpstat_t xiocb_inpstat;	/* input status parameters */
+-		xiocb_envbuf_t xiocb_envbuf;	/* environment function parameters */
+-		xiocb_cpuctl_t xiocb_cpuctl;	/* CPU control parameters */
+-		xiocb_time_t xiocb_time;	/* timer parameters */
+-		xiocb_meminfo_t xiocb_meminfo;	/* memory arena info parameters */
+-		xiocb_fwinfo_t xiocb_fwinfo;	/* firmware information */
+-		xiocb_exitstat_t xiocb_exitstat;	/* Exit Status */
+-	} plist;
+-} cfe_xiocb_t;
+-
+-#endif				/* CFE_API_INT_H */
+diff --git a/arch/mips/sibyte/cfe/cfe_error.h b/arch/mips/sibyte/cfe/cfe_error.h
+deleted file mode 100644
+index 975f000..0000000
+--- a/arch/mips/sibyte/cfe/cfe_error.h
++++ /dev/null
+@@ -1,85 +0,0 @@
+-/*
+- * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version 2
+- * of the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+- */
+-
+-/*  *********************************************************************
+-    *
+-    *  Broadcom Common Firmware Environment (CFE)
+-    *
+-    *  Error codes				File: cfe_error.h
+-    *
+-    *  CFE's global error code list is here.
+-    *
+-    *  Author:  Mitch Lichtenberg
+-    *
+-    ********************************************************************* */
+-
+-
+-#define CFE_OK			 0
+-#define CFE_ERR                 -1	/* generic error */
+-#define CFE_ERR_INV_COMMAND	-2
+-#define CFE_ERR_EOF		-3
+-#define CFE_ERR_IOERR		-4
+-#define CFE_ERR_NOMEM		-5
+-#define CFE_ERR_DEVNOTFOUND	-6
+-#define CFE_ERR_DEVOPEN		-7
+-#define CFE_ERR_INV_PARAM	-8
+-#define CFE_ERR_ENVNOTFOUND	-9
+-#define CFE_ERR_ENVREADONLY	-10
+-
+-#define CFE_ERR_NOTELF		-11
+-#define CFE_ERR_NOT32BIT 	-12
+-#define CFE_ERR_WRONGENDIAN 	-13
+-#define CFE_ERR_BADELFVERS 	-14
+-#define CFE_ERR_NOTMIPS 	-15
+-#define CFE_ERR_BADELFFMT 	-16
+-#define CFE_ERR_BADADDR 	-17
+-
+-#define CFE_ERR_FILENOTFOUND	-18
+-#define CFE_ERR_UNSUPPORTED	-19
+-
+-#define CFE_ERR_HOSTUNKNOWN	-20
+-
+-#define CFE_ERR_TIMEOUT		-21
+-
+-#define CFE_ERR_PROTOCOLERR	-22
+-
+-#define CFE_ERR_NETDOWN		-23
+-#define CFE_ERR_NONAMESERVER	-24
+-
+-#define CFE_ERR_NOHANDLES	-25
+-#define CFE_ERR_ALREADYBOUND	-26
+-
+-#define CFE_ERR_CANNOTSET	-27
+-#define CFE_ERR_NOMORE		-28
+-#define CFE_ERR_BADFILESYS	-29
+-#define CFE_ERR_FSNOTAVAIL	-30
+-
+-#define CFE_ERR_INVBOOTBLOCK	-31
+-#define CFE_ERR_WRONGDEVTYPE	-32
+-#define CFE_ERR_BBCHECKSUM	-33
+-#define CFE_ERR_BOOTPROGCHKSUM	-34
+-
+-#define CFE_ERR_LDRNOTAVAIL	-35
+-
+-#define CFE_ERR_NOTREADY	-36
+-
+-#define CFE_ERR_GETMEM          -37
+-#define CFE_ERR_SETMEM          -38
+-
+-#define CFE_ERR_NOTCONN		-39
+-#define CFE_ERR_ADDRINUSE	-40
+diff --git a/arch/mips/sibyte/cfe/console.c b/arch/mips/sibyte/cfe/console.c
+index c6ec748..d369d93 100644
+--- a/arch/mips/sibyte/cfe/console.c
++++ b/arch/mips/sibyte/cfe/console.c
+@@ -4,8 +4,8 @@
+ 
+ #include <asm/sibyte/board.h>
+ 
+-#include "cfe_api.h"
+-#include "cfe_error.h"
++#include <asm/cfe/cfe_api.h>
++#include <asm/cfe/cfe_error.h>
+ 
+ extern int cfe_cons_handle;
+ 
+diff --git a/arch/mips/sibyte/cfe/setup.c b/arch/mips/sibyte/cfe/setup.c
+index 51898dd..4d6ed6b 100644
+--- a/arch/mips/sibyte/cfe/setup.c
++++ b/arch/mips/sibyte/cfe/setup.c
+@@ -29,8 +29,8 @@
+ #include <asm/reboot.h>
+ #include <asm/sibyte/board.h>
+ 
+-#include "cfe_api.h"
+-#include "cfe_error.h"
++#include <asm/cfe/cfe_api.h>
++#include <asm/cfe/cfe_error.h>
+ 
+ /* Max ram addressable in 32-bit segments */
+ #ifdef CONFIG_64BIT
+diff --git a/arch/mips/sibyte/cfe/smp.c b/arch/mips/sibyte/cfe/smp.c
+index 5de4cff..ffb5a8f 100644
+--- a/arch/mips/sibyte/cfe/smp.c
++++ b/arch/mips/sibyte/cfe/smp.c
+@@ -21,8 +21,8 @@
+ #include <linux/smp.h>
+ #include <asm/processor.h>
+ 
+-#include "cfe_api.h"
+-#include "cfe_error.h"
++#include <asm/cfe/cfe_api.h>
++#include <asm/cfe/cfe_error.h>
+ 
+ /*
+  * Use CFE to find out how many CPUs are available, setting up
+diff --git a/include/asm-mips/cfe/cfe_api.h b/include/asm-mips/cfe/cfe_api.h
+new file mode 100644
+index 0000000..d8230cc
+--- /dev/null
++++ b/include/asm-mips/cfe/cfe_api.h
+@@ -0,0 +1,185 @@
++/*
++ * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
++ */
++
++/*  *********************************************************************
++    *
++    *  Broadcom Common Firmware Environment (CFE)
++    *
++    *  Device function prototypes		File: cfe_api.h
++    *
++    *  This file contains declarations for doing callbacks to
++    *  cfe from an application.  It should be the only header
++    *  needed by the application to use this library
++    *
++    *  Authors:  Mitch Lichtenberg, Chris Demetriou
++    *
++    ********************************************************************* */
++
++#ifndef CFE_API_H
++#define CFE_API_H
++
++/*
++ * Apply customizations here for different OSes.  These need to:
++ *	* typedef uint64_t, int64_t, intptr_t, uintptr_t.
++ *	* define cfe_strlen() if use of an existing function is desired.
++ *	* define CFE_API_IMPL_NAMESPACE if API functions are to use
++ *	  names in the implementation namespace.
++ * Also, optionally, if the build environment does not do so automatically,
++ * CFE_API_* can be defined here as desired.
++ */
++/* Begin customization. */
++#include <linux/types.h>
++#include <linux/string.h>
++
++typedef long intptr_t;
++
++#define cfe_strlen strlen
++
++#define CFE_API_ALL
++#define CFE_API_STRLEN_CUSTOM
++/* End customization. */
++
++
++/*  *********************************************************************
++    *  Constants
++    ********************************************************************* */
++
++/* Seal indicating CFE's presence, passed to user program. */
++#define CFE_EPTSEAL 0x43464531
++
++#define CFE_MI_RESERVED	0	/* memory is reserved, do not use */
++#define CFE_MI_AVAILABLE 1	/* memory is available */
++
++#define CFE_FLG_WARMSTART     0x00000001
++#define CFE_FLG_FULL_ARENA    0x00000001
++#define CFE_FLG_ENV_PERMANENT 0x00000001
++
++#define CFE_CPU_CMD_START 1
++#define CFE_CPU_CMD_STOP 0
++
++#define CFE_STDHANDLE_CONSOLE	0
++
++#define CFE_DEV_NETWORK 	1
++#define CFE_DEV_DISK		2
++#define CFE_DEV_FLASH		3
++#define CFE_DEV_SERIAL		4
++#define CFE_DEV_CPU		5
++#define CFE_DEV_NVRAM		6
++#define CFE_DEV_CLOCK           7
++#define CFE_DEV_OTHER		8
++#define CFE_DEV_MASK		0x0F
++
++#define CFE_CACHE_FLUSH_D	1
++#define CFE_CACHE_INVAL_I	2
++#define CFE_CACHE_INVAL_D	4
++#define CFE_CACHE_INVAL_L2	8
++
++#define CFE_FWI_64BIT		0x00000001
++#define CFE_FWI_32BIT		0x00000002
++#define CFE_FWI_RELOC		0x00000004
++#define CFE_FWI_UNCACHED	0x00000008
++#define CFE_FWI_MULTICPU	0x00000010
++#define CFE_FWI_FUNCSIM		0x00000020
++#define CFE_FWI_RTLSIM		0x00000040
++
++typedef struct {
++	int64_t fwi_version;		/* major, minor, eco version */
++	int64_t fwi_totalmem;		/* total installed mem */
++	int64_t fwi_flags;		/* various flags */
++	int64_t fwi_boardid;		/* board ID */
++	int64_t fwi_bootarea_va;	/* VA of boot area */
++	int64_t fwi_bootarea_pa;	/* PA of boot area */
++	int64_t fwi_bootarea_size;	/* size of boot area */
++} cfe_fwinfo_t;
++
++
++/*
++ * cfe_strlen is handled specially: If already defined, it has been
++ * overridden in this environment with a standard strlen-like function.
++ */
++#ifdef cfe_strlen
++# define CFE_API_STRLEN_CUSTOM
++#else
++# ifdef CFE_API_IMPL_NAMESPACE
++#  define cfe_strlen(a)			__cfe_strlen(a)
++# endif
++int cfe_strlen(char *name);
++#endif
++
++/*
++ * Defines and prototypes for functions which take no arguments.
++ */
++#ifdef CFE_API_IMPL_NAMESPACE
++int64_t __cfe_getticks(void);
++#define cfe_getticks()			__cfe_getticks()
++#else
++int64_t cfe_getticks(void);
++#endif
++
++/*
++ * Defines and prototypes for the rest of the functions.
++ */
++#ifdef CFE_API_IMPL_NAMESPACE
++#define cfe_close(a)			__cfe_close(a)
++#define cfe_cpu_start(a,b,c,d,e)	__cfe_cpu_start(a,b,c,d,e)
++#define cfe_cpu_stop(a)			__cfe_cpu_stop(a)
++#define cfe_enumenv(a,b,d,e,f)		__cfe_enumenv(a,b,d,e,f)
++#define cfe_enummem(a,b,c,d,e)		__cfe_enummem(a,b,c,d,e)
++#define cfe_exit(a,b)			__cfe_exit(a,b)
++#define cfe_flushcache(a)		__cfe_cacheflush(a)
++#define cfe_getdevinfo(a)		__cfe_getdevinfo(a)
++#define cfe_getenv(a,b,c)		__cfe_getenv(a,b,c)
++#define cfe_getfwinfo(a)		__cfe_getfwinfo(a)
++#define cfe_getstdhandle(a)		__cfe_getstdhandle(a)
++#define cfe_init(a,b)			__cfe_init(a,b)
++#define cfe_inpstat(a)			__cfe_inpstat(a)
++#define cfe_ioctl(a,b,c,d,e,f)		__cfe_ioctl(a,b,c,d,e,f)
++#define cfe_open(a)			__cfe_open(a)
++#define cfe_read(a,b,c)			__cfe_read(a,b,c)
++#define cfe_readblk(a,b,c,d)		__cfe_readblk(a,b,c,d)
++#define cfe_setenv(a,b)			__cfe_setenv(a,b)
++#define cfe_write(a,b,c)		__cfe_write(a,b,c)
++#define cfe_writeblk(a,b,c,d)		__cfe_writeblk(a,b,c,d)
++#endif				/* CFE_API_IMPL_NAMESPACE */
++
++int cfe_close(int handle);
++int cfe_cpu_start(int cpu, void (*fn) (void), long sp, long gp, long a1);
++int cfe_cpu_stop(int cpu);
++int cfe_enumenv(int idx, char *name, int namelen, char *val, int vallen);
++int cfe_enummem(int idx, int flags, uint64_t * start, uint64_t * length,
++		uint64_t * type);
++int cfe_exit(int warm, int status);
++int cfe_flushcache(int flg);
++int cfe_getdevinfo(char *name);
++int cfe_getenv(char *name, char *dest, int destlen);
++int cfe_getfwinfo(cfe_fwinfo_t * info);
++int cfe_getstdhandle(int flg);
++int cfe_init(uint64_t handle, uint64_t ept);
++int cfe_inpstat(int handle);
++int cfe_ioctl(int handle, unsigned int ioctlnum, unsigned char *buffer,
++	      int length, int *retlen, uint64_t offset);
++int cfe_open(char *name);
++int cfe_read(int handle, unsigned char *buffer, int length);
++int cfe_readblk(int handle, int64_t offset, unsigned char *buffer,
++		int length);
++int cfe_setenv(char *name, char *val);
++int cfe_write(int handle, unsigned char *buffer, int length);
++int cfe_writeblk(int handle, int64_t offset, unsigned char *buffer,
++		 int length);
++
++#endif				/* CFE_API_H */
+diff --git a/include/asm-mips/cfe/cfe_error.h b/include/asm-mips/cfe/cfe_error.h
+new file mode 100644
+index 0000000..975f000
+--- /dev/null
++++ b/include/asm-mips/cfe/cfe_error.h
+@@ -0,0 +1,85 @@
++/*
++ * Copyright (C) 2000, 2001, 2002 Broadcom Corporation
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
++ */
++
++/*  *********************************************************************
++    *
++    *  Broadcom Common Firmware Environment (CFE)
++    *
++    *  Error codes				File: cfe_error.h
++    *
++    *  CFE's global error code list is here.
++    *
++    *  Author:  Mitch Lichtenberg
++    *
++    ********************************************************************* */
++
++
++#define CFE_OK			 0
++#define CFE_ERR                 -1	/* generic error */
++#define CFE_ERR_INV_COMMAND	-2
++#define CFE_ERR_EOF		-3
++#define CFE_ERR_IOERR		-4
++#define CFE_ERR_NOMEM		-5
++#define CFE_ERR_DEVNOTFOUND	-6
++#define CFE_ERR_DEVOPEN		-7
++#define CFE_ERR_INV_PARAM	-8
++#define CFE_ERR_ENVNOTFOUND	-9
++#define CFE_ERR_ENVREADONLY	-10
++
++#define CFE_ERR_NOTELF		-11
++#define CFE_ERR_NOT32BIT 	-12
++#define CFE_ERR_WRONGENDIAN 	-13
++#define CFE_ERR_BADELFVERS 	-14
++#define CFE_ERR_NOTMIPS 	-15
++#define CFE_ERR_BADELFFMT 	-16
++#define CFE_ERR_BADADDR 	-17
++
++#define CFE_ERR_FILENOTFOUND	-18
++#define CFE_ERR_UNSUPPORTED	-19
++
++#define CFE_ERR_HOSTUNKNOWN	-20
++
++#define CFE_ERR_TIMEOUT		-21
++
++#define CFE_ERR_PROTOCOLERR	-22
++
++#define CFE_ERR_NETDOWN		-23
++#define CFE_ERR_NONAMESERVER	-24
++
++#define CFE_ERR_NOHANDLES	-25
++#define CFE_ERR_ALREADYBOUND	-26
++
++#define CFE_ERR_CANNOTSET	-27
++#define CFE_ERR_NOMORE		-28
++#define CFE_ERR_BADFILESYS	-29
++#define CFE_ERR_FSNOTAVAIL	-30
++
++#define CFE_ERR_INVBOOTBLOCK	-31
++#define CFE_ERR_WRONGDEVTYPE	-32
++#define CFE_ERR_BBCHECKSUM	-33
++#define CFE_ERR_BOOTPROGCHKSUM	-34
++
++#define CFE_ERR_LDRNOTAVAIL	-35
++
++#define CFE_ERR_NOTREADY	-36
++
++#define CFE_ERR_GETMEM          -37
++#define CFE_ERR_SETMEM          -38
++
++#define CFE_ERR_NOTCONN		-39
++#define CFE_ERR_ADDRINUSE	-40
+
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

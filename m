@@ -1,51 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2007 14:34:31 +0100 (BST)
-Received: from bay0-omc2-s36.bay0.hotmail.com ([65.54.246.172]:28411 "EHLO
-	bay0-omc2-s36.bay0.hotmail.com") by ftp.linux-mips.org with ESMTP
-	id S20021926AbXHPNeW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Aug 2007 14:34:22 +0100
-Received: from hotmail.com ([65.55.152.119]) by bay0-omc2-s36.bay0.hotmail.com with Microsoft SMTPSVC(6.0.3790.2668);
-	 Thu, 16 Aug 2007 06:34:15 -0700
-Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
-	 Thu, 16 Aug 2007 06:34:15 -0700
-Message-ID: <BAY141-F39F0F707148D2899FEF184C2DF0@phx.gbl>
-Received: from 65.55.152.123 by by141fd.bay141.hotmail.msn.com with HTTP;
-	Thu, 16 Aug 2007 13:34:13 GMT
-X-Originating-IP: [61.95.197.134]
-X-Originating-Email: [rpoornar@hotmail.com]
-X-Sender: rpoornar@hotmail.com
-From:	"POORNIMA R" <rpoornar@hotmail.com>
-To:	linux-mips@linux-mips.org
-Subject: [MIPS]mcheck error 
-Date:	Thu, 16 Aug 2007 13:34:13 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2007 14:55:36 +0100 (BST)
+Received: from mo30.po.2iij.NET ([210.128.50.53]:15160 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20021971AbXHPNz2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2007 14:55:28 +0100
+Received: by mo.po.2iij.net (mo30) id l7GDsAZF023563; Thu, 16 Aug 2007 22:54:10 +0900 (JST)
+Received: from localhost.localdomain (231.26.30.125.dy.iij4u.or.jp [125.30.26.231])
+	by mbox.po.2iij.net (po-mbox302) id l7GDs31c013057
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 16 Aug 2007 22:54:04 +0900
+Date:	Thu, 16 Aug 2007 22:54:02 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove unneeded extern dump_tlb_all()
+Message-Id: <20070816225402.3e862d42.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-OriginalArrivalTime: 16 Aug 2007 13:34:15.0196 (UTC) FILETIME=[236C8DC0:01C7E00A]
-Return-Path: <rpoornar@hotmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16207
+X-archive-position: 16208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpoornar@hotmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Remove unneeded extern dump_tlb_all().
+It already include tlbdebug.h .
 
-I am working on MIPS architecture and my kernel version
-is linux-2.6.10  and  I am a newbie to MIPS architecture.
-If I try inserting  any module (.ko), I get meck exception
-due to multiple matching entries in TLB
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-1. What is the reason for multiple enteries in TLB
-due to module insertion?
-
-2. Should the TLB operations be performed with interrupts disabled?
-
-Poornima
-
-_________________________________________________________________
-Find a local pizza place, movie theater, and more….then map the best route! 
-http://maps.live.com/default.aspx?v=2&ss=yp.bars~yp.pizza~yp.movie%20theater&cp=42.358996~-71.056691&style=r&lvl=13&tilt=-90&dir=0&alt=-1000&scene=950607&encType=1&FORM=MGAC01
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/sgi-ip27/ip27-berr.c mips/arch/mips/sgi-ip27/ip27-berr.c
+--- mips-orig/arch/mips/sgi-ip27/ip27-berr.c	2007-08-16 14:14:01.953246500 +0900
++++ mips/arch/mips/sgi-ip27/ip27-berr.c	2007-08-16 14:43:27.167565500 +0900
+@@ -21,8 +21,6 @@
+ #include <asm/traps.h>
+ #include <asm/uaccess.h>
+ 
+-extern void dump_tlb_all(void);
+-
+ static void dump_hub_information(unsigned long errst0, unsigned long errst1)
+ {
+ 	static char *err_type[2][8] = {

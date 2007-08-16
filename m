@@ -1,64 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2007 12:05:04 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:30387 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021901AbXHPLFC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Aug 2007 12:05:02 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7GB51uH005805
-	for <linux-mips@linux-mips.org>; Thu, 16 Aug 2007 12:05:02 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7GB51oA005804
-	for linux-mips@linux-mips.org; Thu, 16 Aug 2007 12:05:01 +0100
-Date:	Thu, 16 Aug 2007 12:05:01 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: Alchemy DMA and GFP_DMA
-Message-ID: <20070816110501.GA5701@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2007 14:19:44 +0100 (BST)
+Received: from hellhawk.shadowen.org ([80.68.90.175]:62980 "EHLO
+	hellhawk.shadowen.org") by ftp.linux-mips.org with ESMTP
+	id S20021942AbXHPNTg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Aug 2007 14:19:36 +0100
+Received: from [212.104.150.41] (helo=localhost.localdomain)
+	by hellhawk.shadowen.org with esmtpa (Exim 4.50)
+	id 1ILfYD-0000Bz-LA; Thu, 16 Aug 2007 14:38:13 +0100
+Received: from localhost ([127.0.0.1] helo=localhost.localdomain)
+	by localhost.localdomain with esmtp (Exim 4.63)
+	(envelope-from <apw@shadowen.org>)
+	id 1ILfFN-00020p-VL; Thu, 16 Aug 2007 14:18:46 +0100
+From:	Andy Whitcroft <apw@shadowen.org>
+To:	linux-kernel@vger.kernel.org
+Cc:	Randy Dunlap <rdunlap@xenotime.net>, Andrew Morton <akpm@osdl.org>,
+	Andy Whitcroft <apw@shadowen.org>,
+	Andy Whitcroft <apw@shadowen.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 1/6] mips: irix_getcontext will always fail EFAULT
+References: <exportbomb.1187270320@pinky>
+InReply-To: <exportbomb.1187270320@pinky>
+Message-ID: <0b4bc89aa61d97708ca0f79ba02f6e60@pinky>
+Date:	Thu, 16 Aug 2007 14:18:45 +0100
+Received-SPF: none
+X-SPF-Guess: neutral
+Return-Path: <apw@shadowen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16203
+X-archive-position: 16204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: apw@shadowen.org
 Precedence: bulk
 X-list: linux-mips
 
-arch/mips/au1000/common/dbdma.c uses GFP_DMA in two places and I think
-both instances are uncessary.  Could some alchmist confirm that both are
-unnecessary?
 
-Thanks,
+Seems that a trailing ';' has slipped onto the end of the access_ok
+check here, such that we will always return -EFAULT.
 
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/au1000/common/dbdma.c b/arch/mips/au1000/common/dbdma.c
-index 626de44..708b83b 100644
---- a/arch/mips/au1000/common/dbdma.c
-+++ b/arch/mips/au1000/common/dbdma.c
-@@ -397,7 +397,7 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int entries)
- 	 * slabs of memory.
- 	 */
- 	desc_base = (u32)kmalloc(entries * sizeof(au1x_ddma_desc_t),
--			GFP_KERNEL|GFP_DMA);
-+			GFP_KERNEL);
- 	if (desc_base == 0)
- 		return 0;
+Signed-off-by: Andy Whitcroft <apw@shadowen.org>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/kernel/irixsig.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+diff --git a/arch/mips/kernel/irixsig.c b/arch/mips/kernel/irixsig.c
+index 6980deb..28b2a8f 100644
+--- a/arch/mips/kernel/irixsig.c
++++ b/arch/mips/kernel/irixsig.c
+@@ -725,7 +725,7 @@ asmlinkage int irix_getcontext(struct pt_regs *regs)
+ 	       current->comm, current->pid, ctx);
+ #endif
  
-@@ -408,7 +408,7 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int entries)
- 		kfree((const void *)desc_base);
- 		i = entries * sizeof(au1x_ddma_desc_t);
- 		i += (sizeof(au1x_ddma_desc_t) - 1);
--		if ((desc_base = (u32)kmalloc(i, GFP_KERNEL|GFP_DMA)) == 0)
-+		if ((desc_base = (u32)kmalloc(i, GFP_KERNEL)) == 0)
- 			return 0;
+-	if (!access_ok(VERIFY_WRITE, ctx, sizeof(*ctx)));
++	if (!access_ok(VERIFY_WRITE, ctx, sizeof(*ctx)))
+ 		return -EFAULT;
  
- 		desc_base = ALIGN_ADDR(desc_base, sizeof(au1x_ddma_desc_t));
+ 	error = __put_user(current->thread.irix_oldctx, &ctx->link);

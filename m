@@ -1,66 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2007 14:29:14 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:36631 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20021963AbXHPN3F (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 16 Aug 2007 14:29:05 +0100
-Received: by mo.po.2iij.net (mo31) id l7GDRmXO019557; Thu, 16 Aug 2007 22:27:48 +0900 (JST)
-Received: from localhost.localdomain (231.26.30.125.dy.iij4u.or.jp [125.30.26.231])
-	by mbox.po.2iij.net (po-mbox300) id l7GDRgVb031014
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 16 Aug 2007 22:27:43 +0900
-Date:	Thu, 16 Aug 2007 22:27:05 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
-Subject: [PATCH][MIPS][2/2] vr41xx: replace infinite loop with hibernate
-Message-Id: <20070816222705.35939393.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20070816222011.496f6eb8.yoichi_yuasa@tripeaks.co.jp>
-References: <20070816222011.496f6eb8.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Aug 2007 14:34:31 +0100 (BST)
+Received: from bay0-omc2-s36.bay0.hotmail.com ([65.54.246.172]:28411 "EHLO
+	bay0-omc2-s36.bay0.hotmail.com") by ftp.linux-mips.org with ESMTP
+	id S20021926AbXHPNeW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Aug 2007 14:34:22 +0100
+Received: from hotmail.com ([65.55.152.119]) by bay0-omc2-s36.bay0.hotmail.com with Microsoft SMTPSVC(6.0.3790.2668);
+	 Thu, 16 Aug 2007 06:34:15 -0700
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Thu, 16 Aug 2007 06:34:15 -0700
+Message-ID: <BAY141-F39F0F707148D2899FEF184C2DF0@phx.gbl>
+Received: from 65.55.152.123 by by141fd.bay141.hotmail.msn.com with HTTP;
+	Thu, 16 Aug 2007 13:34:13 GMT
+X-Originating-IP: [61.95.197.134]
+X-Originating-Email: [rpoornar@hotmail.com]
+X-Sender: rpoornar@hotmail.com
+From:	"POORNIMA R" <rpoornar@hotmail.com>
+To:	linux-mips@linux-mips.org
+Subject: [MIPS]mcheck error 
+Date:	Thu, 16 Aug 2007 13:34:13 +0000
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; format=flowed
+X-OriginalArrivalTime: 16 Aug 2007 13:34:15.0196 (UTC) FILETIME=[236C8DC0:01C7E00A]
+Return-Path: <rpoornar@hotmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16206
+X-archive-position: 16207
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: rpoornar@hotmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Replace infinite loop with hibernate.
+Hi,
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+I am working on MIPS architecture and my kernel version
+is linux-2.6.10  and  I am a newbie to MIPS architecture.
+If I try inserting  any module (.ko), I get meck exception
+due to multiple matching entries in TLB
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/vr41xx/common/pmu.c mips/arch/mips/vr41xx/common/pmu.c
---- mips-orig/arch/mips/vr41xx/common/pmu.c	2007-08-06 13:21:36.621511000 +0900
-+++ mips/arch/mips/vr41xx/common/pmu.c	2007-08-06 13:22:17.712079000 +0900
-@@ -91,14 +91,7 @@ static void vr41xx_halt(void)
- {
- 	local_irq_disable();
- 	printk(KERN_NOTICE "\nYou can turn off the power supply\n");
--	while (1) ;
--}
--
--static void vr41xx_power_off(void)
--{
--	local_irq_disable();
--	printk(KERN_NOTICE "\nYou can turn off the power supply\n");
--	while (1) ;
-+	__asm__("hibernate;\n");
- }
- 
- static int __init vr41xx_pmu_init(void)
-@@ -134,7 +127,7 @@ static int __init vr41xx_pmu_init(void)
- 	cpu_wait = vr41xx_cpu_wait;
- 	_machine_restart = vr41xx_restart;
- 	_machine_halt = vr41xx_halt;
--	pm_power_off = vr41xx_power_off;
-+	pm_power_off = vr41xx_halt;
- 
- 	return 0;
- }
+1. What is the reason for multiple enteries in TLB
+due to module insertion?
+
+2. Should the TLB operations be performed with interrupts disabled?
+
+Poornima
+
+_________________________________________________________________
+Find a local pizza place, movie theater, and more….then map the best route! 
+http://maps.live.com/default.aspx?v=2&ss=yp.bars~yp.pizza~yp.movie%20theater&cp=42.358996~-71.056691&style=r&lvl=13&tilt=-90&dir=0&alt=-1000&scene=950607&encType=1&FORM=MGAC01

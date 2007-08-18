@@ -1,96 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Aug 2007 19:10:23 +0100 (BST)
-Received: from agminet01.oracle.com ([141.146.126.228]:64815 "EHLO
-	agminet01.oracle.com") by ftp.linux-mips.org with ESMTP
-	id S20021499AbXHRSKU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 18 Aug 2007 19:10:20 +0100
-Received: from agmgw1.us.oracle.com (agmgw1.us.oracle.com [152.68.180.212])
-	by agminet01.oracle.com (Switch-3.2.4/Switch-3.1.7) with ESMTP id l7IIA54T024159;
-	Sat, 18 Aug 2007 13:10:05 -0500
-Received: from acsmt350.oracle.com (acsmt350.oracle.com [141.146.40.150])
-	by agmgw1.us.oracle.com (Switch-3.2.0/Switch-3.2.0) with ESMTP id l7IIA26O028992;
-	Sat, 18 Aug 2007 12:10:03 -0600
-Received: from pool-71-117-240-242.ptldor.fios.verizon.net by rcsmt252.oracle.com
-	with ESMTP id 3139709371187460534; Sat, 18 Aug 2007 12:08:54 -0600
-Message-ID: <46C7373D.90005@oracle.com>
-Date:	Sat, 18 Aug 2007 11:15:25 -0700
-From:	Randy Dunlap <randy.dunlap@oracle.com>
-User-Agent: Thunderbird 1.5.0.5 (X11/20060719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2007 00:29:05 +0100 (BST)
+Received: from hu-out-0506.google.com ([72.14.214.226]:6090 "EHLO
+	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021950AbXHRX3D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 19 Aug 2007 00:29:03 +0100
+Received: by hu-out-0506.google.com with SMTP id 31so730212huc
+        for <linux-mips@linux-mips.org>; Sat, 18 Aug 2007 16:28:45 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:from:to:subject:date:user-agent:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
+        b=W6HO5ntuFRCZ7Drt+eCaynI3J4EM7HarP0fJo6xzVdCeCgRHG0nuD3oQhiUdLjyE6WChAwyWDLsndWC7N1WLK/rwMfoInDyBEctMO0lyuJhoDuStb0kgJt0TspyNSEPZWmfVHj1wPnX/9ntfoZD8QlUaWon9A2lwb737jRuMfLQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:from:to:subject:date:user-agent:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
+        b=gQ7QNy6P6mUQQePldlisddVHUSTa8FwPh6gM06x6gYLEJnG1fmlxgaiG7BbC6t9xy7L8/zzrkT3b+AhxZzxcA4/PqSKM/G5cbyOvFZQBfubMcXf5iBpXLkyNhRWt0wyJgTUEhRJGZ7+FwaddVqNGjbcC6IipzDNgS53OAWbwVKc=
+Received: by 10.86.100.7 with SMTP id x7mr3309033fgb.1187479725024;
+        Sat, 18 Aug 2007 16:28:45 -0700 (PDT)
+Received: from host-89-229-8-65.torun.mm.pl ( [89.229.8.65])
+        by mx.google.com with ESMTPS id m1sm6718020fke.2007.08.18.16.28.41
+        (version=SSLv3 cipher=OTHER);
+        Sat, 18 Aug 2007 16:28:43 -0700 (PDT)
+From:	Jakub Narebski <jnareb@gmail.com>
+To:	git@vger.kernel.org
+Subject: Git User's Survey 2007
+Date:	Sun, 19 Aug 2007 01:28:41 +0200
+User-Agent: KMail/1.9.3
 MIME-Version: 1.0
-To:	Jiri Slaby <jirislaby@gmail.com>
-CC:	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, source@mvista.com,
-	dougthompson@xmission.com, bluesmoke-devel@lists.sourceforge.net,
-	dtor@mail.ru, linux-input@atrey.karlin.mff.cuni.cz,
-	netdev@vger.kernel.org, James.Bottomley@SteelEye.com,
-	linux-scsi@vger.kernel.org, gtolstolytkin@ru.mvista.com,
-	vitalywool@gmail.com, dsaxena@plexity.net, ralf@linux-mips.org,
-	linux-mips@linux-mips.org, mchehab@infradead.org,
-	video4linux-list@redhat.com, jbenc@suse.cz,
-	flamingice@sourmilk.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 8/9] define global BIT macro
-References: <737828602404912540@wsc.cz>	<428714662539710215@wsc.cz> <20070818094602.0ea69c27.randy.dunlap@oracle.com> <46C728CB.6060102@gmail.com>
-In-Reply-To: <46C728CB.6060102@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain;
+  charset="iso-8859-2"
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: AAAAAQAAAAI=
-X-Brightmail-Tracker: AAAAAQAAAAI=
-X-Whitelist: TRUE
-X-Whitelist: TRUE
-Return-Path: <randy.dunlap@oracle.com>
+Content-Disposition: inline
+Message-Id: <200708190128.43515.jnareb@gmail.com>
+Return-Path: <jnareb@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16217
+X-archive-position: 16218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: randy.dunlap@oracle.com
+X-original-sender: jnareb@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Jiri Slaby wrote:
-> Randy Dunlap napsal(a):
->> On Sat, 18 Aug 2007 11:44:12 +0200 (CEST) Jiri Slaby wrote:
->>
->>> define global BIT macro
->>>
->>> move all local BIT defines to the new globally define macro.
->>>
->>> Signed-off-by: Jiri Slaby <jirislaby@gmail.com>
->>>
->>> ---
->>>
->>>  include/linux/bitops.h                      |    1 +
->>>  include/video/sstfb.h                       |    1 -
->>>  include/video/tdfx.h                        |    2 --
->>>  net/mac80211/ieee80211_i.h                  |    2 --
->>>  18 files changed, 1 insertions(+), 37 deletions(-)
->>>
->>> diff --git a/include/linux/bitops.h b/include/linux/bitops.h
->>> index 3255b06..a57b81f 100644
->>> --- a/include/linux/bitops.h
->>> +++ b/include/linux/bitops.h
->>> @@ -3,6 +3,7 @@
->>>  #include <asm/types.h>
->>>  
->>>  #ifdef	__KERNEL__
->>> +#define BIT(nr)			(1UL << (nr))
->>>  #define BIT_MASK(nr)		(1UL << ((nr) % BITS_PER_LONG))
->>>  #define BIT_WORD(nr)		((nr) / BITS_PER_LONG)
->>>  #define BITS_TO_TYPE(nr, t)	(((nr)+(t)-1)/(t))
->>
->> So users of the BIT() macro in include/linux/input.h can be
->> changed to use the global BIT_MASK() macro...
->> and the former can be removed.
-> 
-> I'm afraid I don't understand you. Maybe, you are writing about changes done in
-> patch no. 7 [1], which didn't go through to the lkml?
-> 
-> [1]
-> http://www.fi.muni.cz/~xslaby/sklad/07-get-rid-of-input-bit-duplicate-defines.patch
+Hi all,
 
-Exactly.  Thanks.
+We would like to ask you a few questions about your use of the GIT
+version control system. This survey is mainly to understand who is
+using GIT, how and why.
+
+The results will be discussed on the git mailing list and published to 
+the GIT wiki at http://git.or.cz/gitwiki/GitSurvey2007
+
+We'll close the survey in three weeks starting from 20 August 2007,
+on 10 September 2007.
+
+Please devote a few minutes of your time to fill this simple
+questionnaire, it will help a lot the git community to understand your
+needs, what you like of GIT, and of course what you don't like  of it.
+
+The survey can be found here:
+  http://www.survey.net.nz/survey.php?94e135ff41e871a1ea5bcda3ee1856d9
+  http://tinyurl.com/26774s
 
 -- 
-~Randy
-*** Remember to use Documentation/SubmitChecklist when testing your code ***
+Jakub Narebski

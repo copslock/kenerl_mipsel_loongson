@@ -1,66 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Aug 2007 00:29:05 +0100 (BST)
-Received: from hu-out-0506.google.com ([72.14.214.226]:6090 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021950AbXHRX3D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 19 Aug 2007 00:29:03 +0100
-Received: by hu-out-0506.google.com with SMTP id 31so730212huc
-        for <linux-mips@linux-mips.org>; Sat, 18 Aug 2007 16:28:45 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:subject:date:user-agent:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=W6HO5ntuFRCZ7Drt+eCaynI3J4EM7HarP0fJo6xzVdCeCgRHG0nuD3oQhiUdLjyE6WChAwyWDLsndWC7N1WLK/rwMfoInDyBEctMO0lyuJhoDuStb0kgJt0TspyNSEPZWmfVHj1wPnX/9ntfoZD8QlUaWon9A2lwb737jRuMfLQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:from:to:subject:date:user-agent:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=gQ7QNy6P6mUQQePldlisddVHUSTa8FwPh6gM06x6gYLEJnG1fmlxgaiG7BbC6t9xy7L8/zzrkT3b+AhxZzxcA4/PqSKM/G5cbyOvFZQBfubMcXf5iBpXLkyNhRWt0wyJgTUEhRJGZ7+FwaddVqNGjbcC6IipzDNgS53OAWbwVKc=
-Received: by 10.86.100.7 with SMTP id x7mr3309033fgb.1187479725024;
-        Sat, 18 Aug 2007 16:28:45 -0700 (PDT)
-Received: from host-89-229-8-65.torun.mm.pl ( [89.229.8.65])
-        by mx.google.com with ESMTPS id m1sm6718020fke.2007.08.18.16.28.41
-        (version=SSLv3 cipher=OTHER);
-        Sat, 18 Aug 2007 16:28:43 -0700 (PDT)
-From:	Jakub Narebski <jnareb@gmail.com>
-To:	git@vger.kernel.org
-Subject: Git User's Survey 2007
-Date:	Sun, 19 Aug 2007 01:28:41 +0200
-User-Agent: KMail/1.9.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2007 08:20:09 +0100 (BST)
+Received: from mail.ok-labs.com ([221.199.209.5]:52927 "EHLO mail.ok-labs.com")
+	by ftp.linux-mips.org with ESMTP id S20021571AbXHTHUH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2007 08:20:07 +0100
+Received: from [10.21.11.188]
+	by mail.ok-labs.com with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.62)
+	(envelope-from <carl@ok-labs.com>)
+	id 1IN1EF-0002h2-Vf
+	for linux-mips@linux-mips.org; Mon, 20 Aug 2007 16:59:12 +1000
+Message-ID: <46C93BB5.9050809@ok-labs.com>
+Date:	Mon, 20 Aug 2007 16:59:01 +1000
+From:	Carl van Schaik <carl@ok-labs.com>
+Organization: Open Kernel Labs Inc.
+User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-2"
+To:	linux-mips@linux-mips.org
+Subject: TLS register for NPTL
+X-Enigmail-Version: 0.95.3
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200708190128.43515.jnareb@gmail.com>
-Return-Path: <jnareb@gmail.com>
+X-SA-Exim-Connect-IP: 10.21.11.188
+X-SA-Exim-Mail-From: carl@ok-labs.com
+X-SA-Exim-Scanned: No (on mail.ok-labs.com); SAEximRunCond expanded to false
+Return-Path: <carl@ok-labs.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16218
+X-archive-position: 16219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jnareb@gmail.com
+X-original-sender: carl@ok-labs.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Hi All,
 
-We would like to ask you a few questions about your use of the GIT
-version control system. This survey is mainly to understand who is
-using GIT, how and why.
+It seems the rdhwr emulation is used/proposed for accessing the thread
+word in NPTL.
+I've been reading some of the posts from 2005 about this choice of this
+and what I have missed is anyone talking about using the "k0" register
+for TLS. It seems logical that the kernel could always restore k0 on
+returning to user-land and having k1 only for the last part of returning
+to user is sufficient. Any reason why this was not looked at?
 
-The results will be discussed on the git mailing list and published to 
-the GIT wiki at http://git.or.cz/gitwiki/GitSurvey2007
-
-We'll close the survey in three weeks starting from 20 August 2007,
-on 10 September 2007.
-
-Please devote a few minutes of your time to fill this simple
-questionnaire, it will help a lot the git community to understand your
-needs, what you like of GIT, and of course what you don't like  of it.
-
-The survey can be found here:
-  http://www.survey.net.nz/survey.php?94e135ff41e871a1ea5bcda3ee1856d9
-  http://tinyurl.com/26774s
-
--- 
-Jakub Narebski
+regards,
+Carl van Schaik

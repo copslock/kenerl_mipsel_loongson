@@ -1,103 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2007 14:13:09 +0100 (BST)
-Received: from smtp1.int-evry.fr ([157.159.10.44]:49586 "EHLO
-	smtp1.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20021652AbXHTNNA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Aug 2007 14:13:00 +0100
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id C88D78E7489;
-	Mon, 20 Aug 2007 15:12:46 +0200 (CEST)
-Received: from ibook.lan (mla78-1-82-240-17-188.fbx.proxad.net [82.240.17.188])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id A126CD0E332;
-	Mon, 20 Aug 2007 15:12:46 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-To:	bamakhrama@gmail.com
-Subject: Re: Problems with linux-mips.org
-Date:	Mon, 20 Aug 2007 15:11:48 +0200
-User-Agent: KMail/1.9.7
-Cc:	linux-mips@linux-mips.org
-References: <40378e40708200607m6b025f1aic65ead07e45a5d4d@mail.gmail.com>
-In-Reply-To: <40378e40708200607m6b025f1aic65ead07e45a5d4d@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2007 14:58:20 +0100 (BST)
+Received: from bobafett.staff.proxad.net ([213.228.1.121]:32959 "EHLO
+	bobafett.staff.proxad.net") by ftp.linux-mips.org with ESMTP
+	id S20021678AbXHTN6M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Aug 2007 14:58:12 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by bobafett.staff.proxad.net (Postfix) with ESMTP id 6C76F28653;
+	Mon, 20 Aug 2007 15:57:40 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at staff.proxad.net
+Received: from bobafett.staff.proxad.net ([127.0.0.1])
+	by localhost (bobafett.staff.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id z10if-CYFrqr; Mon, 20 Aug 2007 15:57:38 +0200 (CEST)
+Received: from nschichan.priv.staff.proxad.net (nschichan.priv.staff.proxad.net [172.18.3.120])
+	by bobafett.staff.proxad.net (Postfix) with ESMTP id C58A21D506;
+	Mon, 20 Aug 2007 15:57:38 +0200 (CEST)
+From:	Nicolas Schichan <nschichan@freebox.fr>
+Organization: Freebox
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: kexec - not happening on mipsel?
+Date:	Mon, 20 Aug 2007 15:57:38 +0200
+User-Agent: KMail/1.9.6
+Cc:	Andrew Sharp <andy.sharp@onstor.com>, linux-mips@linux-mips.org
+References: <20070808170846.7d395891@ripper.onstor.net> <200708101857.15567.nschichan@freebox.fr> <20070814094738.GC16958@linux-mips.org>
+In-Reply-To: <20070814094738.GC16958@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart1565788.TB4EWKRKZ5";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Message-Id: <200708201511.50098.florian.fainelli@telecomint.eu>
-X-int-MailScanner-Information: Please contact the ISP for more information
-X-int-MailScanner: Found to be clean
-X-int-MailScanner-SpamCheck: n'est pas un polluriel (inscrit sur la liste blanche),
-	SpamAssassin (pas en cache, score=-0.888, requis 4.01, AWL 0.54,
-	BAYES_00 -2.60, DRUGS_ANXIETY 0.40, DRUGS_DIET 0.63,
-	FORGED_RCVD_HELO 0.14)
-X-int-MailScanner-From:	florian.fainelli@telecomint.eu
-Return-Path: <florian.fainelli@telecomint.eu>
+Content-Disposition: inline
+Message-Id: <200708201557.38810.nschichan@freebox.fr>
+Return-Path: <nschichan@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16223
+X-archive-position: 16224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: nschichan@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1565788.TB4EWKRKZ5
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+On Tuesday 14 August 2007 11:47:38 Ralf Baechle wrote:
 
-Hi Mohamed,
+Hi,
 
-I confirm I get the same error.
+> flush_icache_all() is a nop except on VIVT caches.  Anyway, following a
+> __flush_cache_all it's pointless unless you want to flush caches a little
+> harder.
 
-Le lundi 20 ao=C3=BBt 2007, Mohamed Bamakhrama a =C3=A9crit=C2=A0:
-> Hi all,
-> I have been trying to access linux-mips.org for the last 3 hours. I
-> get a strange page with the following content:
+The updated patch only uses __flush_cache_all().
+
+> > -	printk("Will call new kernel at %08x\n", image->start);
+> > -	printk("Bye ...\n");
+> > -	flush_cache_all();
+> > +	/*
+> > +	 * avoid cache operation related headache in
+> > +	 * relocate_kernel.S: disable caches in kseg0, the new kernel
+> > +	 * will take care to re-enable cache in kseg0.
+> > +	 */
+> > +	change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
 >
-> "$wgSpamRegex =3D
-> "/diazepam|xenical|coolhost.biz|geocities.co.uk|tripod.com|www.anzwers.or=
-g|
->anzwers.net|bedroom.furniture|boards2go.com|4allfree.com|dynu.com|dynu.net=
-|\
->.hux\.de|hk852\.to|\.hit\.bg|\.1asphost.com|overflow: *auto;|height:
-> *1px;|bravehost\.com|atwork\.to|athome\.to|mrfriendly\.com|linux-mips\.co=
-m|
->top20man\.in\.ua|yukonho.com|buddyprofile\.com|totalvideogames\.com|toutel=
-ap
->oesie\.com|surfbirds\.com|westwoodbapt\.org|justachat\.com|missoula\.com|i=
-fr
->ance\.com|helmed\.info|chaba\.info|nobinters\.org|kinunia\.cn|saibso\.org|=
-am
->ohseni\.info|psisemiya\.com|style=3D\"display:none\"/i"; Error, Setup.php =
-must
-> be included from the file scope, after
-> DefaultSettings.php"
+> And that line is the kernel's one way ticket to hell on some platforms.
 >
+> There is a hazard barrier missing here.
+
+Just for my culture, could you please specify which kind of barrier macro 
+should I use here ? should it be a back_to_back_c0_hazard() ?
+
+> Only KSEG0 (or CKSEG0 in 64-bit parlance) is affected by changing Config.K0
+> field.  But 64-bit kernels do not necessarily run in one of the 32-bit
+> compatibility segments (R8000 doesn't but that's an academic counter
+> example) - if they exist at all there is no guarantee that there is any RAM
+> mapped in them (IP30 and others).
 >
-> Has anyone else tried/experienced the same problem?
+> On IP27 the kernel will run in CKSEG0 and if you switch that to 0 it'll
+> mean BRIDGE ASIC will start looking at the uncached attribute which will be
+> defaulted to 0 meaning that in CKSEG0 the CPU will no longer address RAM
+> but the ECC and Backdoor Directory information.
+>
+> Basically it boils down to be very, very careful about cache modes
+> on MIPS.  What the kernel does on bootup only happens to work because for
+> all the platforms that have potencial issues with the change of the CCA
+> for KSEG0 we know that Linux will set the CCA to the same value that is
+> already in that field.  So that mode switch is sort of useless for most
+> platforms except a few where firmware doesn't initialize Config0.K0.
 
+Ok, updated patch does not try to disable caching in KSEG0 using Config0.K0. 
 
+Hoewever I so feel a bit unsafe now because D-Cache is not wrote-back and 
+I-Cache is not invalidated in relocate_kernel.S, before jumping to the new 
+kernel. This happens to work on my board, but I think that it is mostly 
+because of luck. Maybe using KSEG1 or XKPHYS (not sure about this one, I am 
+not familiar with 64bit mips) when fixing the indirection list addresses 
+should be safer.
 
-=2D-=20
-Cordialement, Florian Fainelli
-=2D-----------------------------
+However, updated patch follows.
 
---nextPart1565788.TB4EWKRKZ5
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
+Regards.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.6 (GNU/Linux)
+Signed-off-by: Nicolas Schichan <nschichan@freebox.fr>
 
-iD8DBQBGyZMWmx9n1G/316sRAsj4AKCtWkg2olCuZu0biUKZlTyV1ZY3NwCgzVN/
-1xpxcinP62JD4ybGMWsPKhs=
-=EVmH
------END PGP SIGNATURE-----
+--- linux/arch/mips/kernel/machine_kexec.c	(revision 5975)
++++ linux/arch/mips/kernel/machine_kexec.c	(revision 5976)
+@@ -78,11 +78,8 @@
+ 	 */
+ 	local_irq_disable();
+ 
+-	flush_icache_range(reboot_code_buffer,
+-			   reboot_code_buffer + KEXEC_CONTROL_CODE_SIZE);
+-
+ 	printk("Will call new kernel at %08lx\n", image->start);
+ 	printk("Bye ...\n");
+-	flush_cache_all();
++	__flush_cache_all();
+ 	((noretfun_t) reboot_code_buffer)();
+ }
 
---nextPart1565788.TB4EWKRKZ5--
+-- 
+Nicolas Schichan

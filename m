@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2007 08:20:09 +0100 (BST)
-Received: from mail.ok-labs.com ([221.199.209.5]:52927 "EHLO mail.ok-labs.com")
-	by ftp.linux-mips.org with ESMTP id S20021571AbXHTHUH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2007 08:20:07 +0100
-Received: from [10.21.11.188]
-	by mail.ok-labs.com with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.62)
-	(envelope-from <carl@ok-labs.com>)
-	id 1IN1EF-0002h2-Vf
-	for linux-mips@linux-mips.org; Mon, 20 Aug 2007 16:59:12 +1000
-Message-ID: <46C93BB5.9050809@ok-labs.com>
-Date:	Mon, 20 Aug 2007 16:59:01 +1000
-From:	Carl van Schaik <carl@ok-labs.com>
-Organization: Open Kernel Labs Inc.
-User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Aug 2007 09:10:08 +0100 (BST)
+Received: from phoenix.bawue.net ([193.7.176.60]:17331 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20021586AbXHTIKG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Aug 2007 09:10:06 +0100
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 88566B83D6;
+	Mon, 20 Aug 2007 10:06:25 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.67)
+	(envelope-from <ths@networkno.de>)
+	id 1IN2HL-0006L8-3O; Mon, 20 Aug 2007 09:06:27 +0100
+Date:	Mon, 20 Aug 2007 09:06:27 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Carl van Schaik <carl@ok-labs.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: TLS register for NPTL
+Message-ID: <20070820080627.GF4479@networkno.de>
+References: <46C93BB5.9050809@ok-labs.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: TLS register for NPTL
-X-Enigmail-Version: 0.95.3
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 10.21.11.188
-X-SA-Exim-Mail-From: carl@ok-labs.com
-X-SA-Exim-Scanned: No (on mail.ok-labs.com); SAEximRunCond expanded to false
-Return-Path: <carl@ok-labs.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46C93BB5.9050809@ok-labs.com>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16219
+X-archive-position: 16220
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carl@ok-labs.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+Carl van Schaik wrote:
+> Hi All,
+> 
+> It seems the rdhwr emulation is used/proposed for accessing the thread
+> word in NPTL.
+> I've been reading some of the posts from 2005 about this choice of this
+> and what I have missed is anyone talking about using the "k0" register
+> for TLS. It seems logical that the kernel could always restore k0 on
+> returning to user-land and having k1 only for the last part of returning
+> to user is sufficient. Any reason why this was not looked at?
 
-It seems the rdhwr emulation is used/proposed for accessing the thread
-word in NPTL.
-I've been reading some of the posts from 2005 about this choice of this
-and what I have missed is anyone talking about using the "k0" register
-for TLS. It seems logical that the kernel could always restore k0 on
-returning to user-land and having k1 only for the last part of returning
-to user is sufficient. Any reason why this was not looked at?
+The TLB handlers need k0/k1 as well and have no good place to save/restore
+a register.
 
-regards,
-Carl van Schaik
+
+Thiemo

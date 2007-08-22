@@ -1,127 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 08:00:11 +0100 (BST)
-Received: from hoboe2bl1.telenet-ops.be ([195.130.137.73]:44227 "EHLO
-	hoboe2bl1.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20022571AbXHVHAJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Aug 2007 08:00:09 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by hoboe2bl1.telenet-ops.be (Postfix) with SMTP id A3DFC124035;
-	Wed, 22 Aug 2007 08:59:58 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by hoboe2bl1.telenet-ops.be (Postfix) with ESMTP id 722F312402D;
-	Wed, 22 Aug 2007 08:59:57 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-8) with ESMTP id l7M6xvHL011797
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 22 Aug 2007 08:59:57 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l7M6xtOA011794;
-	Wed, 22 Aug 2007 08:59:56 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Wed, 22 Aug 2007 08:59:55 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	brm <brm@murphy.dk>, ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Add back support for LASAT platforms
-In-Reply-To: <20070822101425.430da249.yoichi_yuasa@tripeaks.co.jp>
-Message-ID: <Pine.LNX.4.64.0708220858290.9716@anakin>
-References: <200708212034.l7LKYGiD011023@potty.localnet>
- <20070822101425.430da249.yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 08:02:06 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:14809 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20022587AbXHVHCD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2007 08:02:03 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1INkE4-0001Dd-00; Wed, 22 Aug 2007 09:02:00 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id D0A5211ACC6; Wed, 22 Aug 2007 08:59:30 +0200 (CEST)
+Date:	Wed, 22 Aug 2007 08:59:30 +0200
+To:	Glauber de Oliveira Costa <glommer@gmail.com>
+Cc:	Chris Wedgwood <cw@f00f.org>, Adrian Bunk <bunk@kernel.org>,
+	Randy Dunlap <randy.dunlap@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jarek Poplawski <jarkao2@o2.pl>, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: RFC: drop support for gcc < 4.0
+Message-ID: <20070822065930.GA6459@alpha.franken.de>
+References: <20070821132038.GA22254@ff.dom.local> <20070821093103.3c097d4a.randy.dunlap@oracle.com> <20070821173550.GC30705@stusta.de> <20070821182505.GA20968@puku.stupidest.org> <5d6222a80708211341s63f8c1eau922f018e66db49f4@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5d6222a80708211341s63f8c1eau922f018e66db49f4@mail.gmail.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16238
+X-archive-position: 16239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 22 Aug 2007, Yoichi Yuasa wrote:
-> On Tue, 21 Aug 2007 22:34:16 +0200
-> brm <brm@murphy.dk> wrote:
+On Tue, Aug 21, 2007 at 05:41:04PM -0300, Glauber de Oliveira Costa wrote:
+> On 8/21/07, Chris Wedgwood <cw@f00f.org> wrote:
+> > On Tue, Aug 21, 2007 at 07:35:50PM +0200, Adrian Bunk wrote:
+> >
+> > > Are there any architectures still requiring a gcc < 4.0 ?
+> >
+> > Yes, sadly in some places (embedded) there are people with older
+> > compiler who want newer kernels.
 > 
-> > Add back support for LASAT platforms.
-> > 
-> > Signed-off-by: Brian Murphy <brian@murphy.dk>
-> 
-> <snip>
-> 
-> > diff --git a/arch/mips/lasat/Kconfig b/arch/mips/lasat/Kconfig
-> > new file mode 100644
-> > index 0000000..1d2ee8a
-> > --- /dev/null
-> > +++ b/arch/mips/lasat/Kconfig
-> > @@ -0,0 +1,15 @@
-> > +config PICVUE
-> > +	tristate "PICVUE LCD display driver"
-> > +	depends on LASAT
-> > +
-> > +config PICVUE_PROC
-> > +	tristate "PICVUE LCD display driver /proc interface"
-> > +	depends on PICVUE
-> > +
-> > +config DS1603
-> > +	bool "DS1603 RTC driver"
-> > +	depends on LASAT
-> 
-> If you add new RTC driver, it should go to drivers/rtc.
+> Last time I tried a mips build, it would fail the compile unless I was
+> using _exactly_ 3.4.4 (I didn't tried older versions, but did try
+> 3.4.6, for ex.). So I also think the 3.4 series will still have to be
+> around for a while.
 
-Nice! So the way to review existing code, is to remove it (accidentally? ;-)
-and add it back later? ;-)
+that's fixed and I'm happiliy building the MIPS tree with gcc 3.3.3.
+And I would be very unhappy to upgrade all my crosscompiler just because
+someone thinks nobody build -rc kernel with older compilers. I do.
 
-> > diff --git a/include/asm-mips/nile4.h b/include/asm-mips/nile4.h
-> > new file mode 100644
-> > index 0000000..c3ca959
-> > --- /dev/null
-> > +++ b/include/asm-mips/nile4.h
-> > @@ -0,0 +1,310 @@
-> > +/*
-> > + *  asm-mips/nile4.h -- NEC Vrc-5074 Nile 4 definitions
-> 
-> <snip>
-> 
-> > +    /*
-> > +     *  Interrupt Programming
-> > +     */
-> > +
-> > +#define NUM_I8259_INTERRUPTS	16
-> > +#define NUM_NILE4_INTERRUPTS	16
-> > +
-> > +#define IRQ_I8259_CASCADE	NILE4_INT_INTE
-> > +#define is_i8259_irq(irq)	((irq) < NUM_I8259_INTERRUPTS)
-> > +#define nile4_to_irq(n)		((n)+NUM_I8259_INTERRUPTS)
-> > +#define irq_to_nile4(n)		((n)-NUM_I8259_INTERRUPTS)
-> > +
-> > +extern void nile4_map_irq(int nile4_irq, int cpu_irq);
-> > +extern void nile4_map_irq_all(int cpu_irq);
-> > +extern void nile4_enable_irq(unsigned int nile4_irq);
-> > +extern void nile4_disable_irq(unsigned int nile4_irq);
-> > +extern void nile4_disable_irq_all(void);
-> > +extern u16 nile4_get_irq_stat(int cpu_irq);
-> > +extern void nile4_enable_irq_output(int cpu_irq);
-> > +extern void nile4_disable_irq_output(int cpu_irq);
-> > +extern void nile4_set_pci_irq_polarity(int pci_irq, int high);
-> > +extern void nile4_set_pci_irq_level_or_edge(int pci_irq, int level);
-> > +extern void nile4_clear_irq(int nile4_irq);
-> > +extern void nile4_clear_irq_mask(u32 mask);
-> > +extern u8 nile4_i8259_iack(void);
-> > +extern void nile4_dump_irq_status(void);	/* Debug */
-> 
-> nile4 IRQ functions don't exist.
+Thomas.
 
-Yep, those are for the NEC DDB Vrc-5074 (still to be resurrected, one day ;-)
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

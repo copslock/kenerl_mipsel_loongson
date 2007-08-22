@@ -1,121 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 17:48:42 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:64458 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022865AbXHVQsk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Aug 2007 17:48:40 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7MGmeW3001722
-	for <linux-mips@linux-mips.org>; Wed, 22 Aug 2007 17:48:40 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7MGmeKl001721
-	for linux-mips@linux-mips.org; Wed, 22 Aug 2007 17:48:40 +0100
-Date:	Wed, 22 Aug 2007 17:48:40 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] IP22 console font patch, testing needed.
-Message-ID: <20070822164840.GA1648@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 18:31:44 +0100 (BST)
+Received: from mu-out-0910.google.com ([209.85.134.186]:58903 "EHLO
+	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022854AbXHVRbm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Aug 2007 18:31:42 +0100
+Received: by mu-out-0910.google.com with SMTP id w1so240558mue
+        for <linux-mips@linux-mips.org>; Wed, 22 Aug 2007 10:31:24 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=J+//BiW1D9/jCzIqG4icz0zgvbTxsoDawk+AuS3pI5W0hFRlhOmQ1INtnMgrYSYDYPocKXqpYrJ7CTiRcQsChTIOb41TKC+9Z2TnrEw4n4Mg71lze3G7evUAKxApoB4gezta79P52xnJG648uLkGOKEjC9WmFIWfQn0KF482fU4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=W05EPtUDfLe4EGe5+OzLa96tdmiVph+oMmffPrbc65fNzfFo1pkFbFEQ1ESGnhuSrDGdOUR3oHDxcoECpyMVQ8Badw5stEIP0Wrisz/yZrp3I6oAGMun2fuWIGmUV8/Gx28ejiNgrYVTJo6DgxTAoTFPEZ5lUzY3lp80gHJxaYg=
+Received: by 10.82.178.11 with SMTP id a11mr893136buf.1187803882860;
+        Wed, 22 Aug 2007 10:31:22 -0700 (PDT)
+Received: by 10.82.190.1 with HTTP; Wed, 22 Aug 2007 10:31:22 -0700 (PDT)
+Message-ID: <c58a7a270708221031g3fba98d5u8507c2aafd4e16b4@mail.gmail.com>
+Date:	Wed, 22 Aug 2007 18:31:22 +0100
+From:	"Alex Gonzalez" <langabe@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: Bus error after successful mmap of physical address
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <langabe@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16243
+X-archive-position: 16244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: langabe@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Could somebody please test this patch to sort out font handling for the
-IP22 Newport console driver?  Thanks,
+Hi,
 
-  Ralf
+I am sure there is a basic reason why this is not working but I just
+can't see it.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+I am booting with mem=512MB and trying to access a memory region at
+0xC0000000 mapped by a fixed TLB entry.
 
-diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-index 7fa1afe..a2cb77b 100644
---- a/drivers/video/console/newport_con.c
-+++ b/drivers/video/console/newport_con.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/errno.h>
-+#include <linux/font.h>
- #include <linux/kd.h>
- #include <linux/selection.h>
- #include <linux/console.h>
-@@ -33,7 +34,7 @@
- 
- extern unsigned long sgi_gfxaddr;
- 
--#define FONT_DATA ((unsigned char *)font_vga_8x16.data)
-+static const struct font_desc *default_font;
- 
- /* borrowed from fbcon.c */
- #define REFCOUNT(fd)	(((int *)(fd))[-1])
-@@ -300,6 +301,10 @@ static const char *newport_startup(void)
- 	if (!sgi_gfxaddr)
- 		return NULL;
- 
-+	default_font = find_font("VGA8x16");
-+	if (!default_font)
-+		return NULL;
-+
- 	if (!npregs)
- 		npregs = (struct newport_regs *)/* ioremap cannot fail */
- 			ioremap(sgi_gfxaddr, sizeof(struct newport_regs));
-@@ -313,7 +318,7 @@ static const char *newport_startup(void)
- 		goto out_unmap;
- 
- 	for (i = 0; i < MAX_NR_CONSOLES; i++)
--		font_data[i] = FONT_DATA;
-+		font_data[i] = (unsigned char *) default_font->data;
- 
- 	newport_reset();
- 	newport_get_revisions();
-@@ -522,7 +527,7 @@ static int newport_set_font(int unit, struct console_font *op)
- 
- 	/* check if font is already used by other console */
- 	for (i = 0; i < MAX_NR_CONSOLES; i++) {
--		if (font_data[i] != FONT_DATA
-+		if (font_data[i] != default_font->data
- 		    && FNTSIZE(font_data[i]) == size
- 		    && !memcmp(font_data[i], new_data, size)) {
- 			kfree(new_data - FONT_EXTRA_WORDS * sizeof(int));
-@@ -534,7 +539,7 @@ static int newport_set_font(int unit, struct console_font *op)
- 		}
- 	}
- 	/* old font is user font */
--	if (font_data[unit] != FONT_DATA) {
-+	if (font_data[unit] != default_font->data) {
- 		if (--REFCOUNT(font_data[unit]) == 0)
- 			kfree(font_data[unit] -
- 			      FONT_EXTRA_WORDS * sizeof(int));
-@@ -547,11 +552,11 @@ static int newport_set_font(int unit, struct console_font *op)
- 
- static int newport_set_def_font(int unit, struct console_font *op)
- {
--	if (font_data[unit] != FONT_DATA) {
-+	if (font_data[unit] != default_font->data) {
- 		if (--REFCOUNT(font_data[unit]) == 0)
- 			kfree(font_data[unit] -
- 			      FONT_EXTRA_WORDS * sizeof(int));
--		font_data[unit] = FONT_DATA;
-+		font_data[unit] = (unsigned char *) default_font->data;
- 	}
- 
- 	return 0;
-@@ -740,7 +745,7 @@ static int __init newport_console_init(void)
- {
- 
- 	if (!sgi_gfxaddr)
--		return NULL;
-+		return 0;
- 
- 	if (!npregs)
- 		npregs = (struct newport_regs *)/* ioremap cannot fail */
+My driver does,
+
+vma->vm_flags = vma->vm_flags | VM_IO | VM_RESERVED ;
+vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot) ;
+
+	// Map the whole physically contiguous area in one piece
+	if( (ret  = io_remap_pfn_range(vma , vma->vm_start, vma->vm_pgoff ,
+vma->vm_end - vma->vm_start , vma->vm_page_prot)) < 0 )
+    return ret;
+	return 0
+
+And my user space app does:
+
+// open device
+	vadr = mmap( NULL , 1024*1024 ,
+PROT_WRITE|PROT_READ,MAP_NORESERVE|MAP_SHARED,device,0xC0000000);
+	if(vadr == MAP_FAILED)
+	{
+		perror("mmap failed.\n");
+		exit(-1);
+	}
+
+
+That goes OK, but then if I try to read or write from vadr I get a "Bus error".
+
+Isn't that the correct way to map a physical address region to user
+space? I just need to make sure that this is the case before starting
+to debug the issue.
+
+Thank a lot,
+Alex

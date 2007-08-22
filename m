@@ -1,95 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 09:11:33 +0100 (BST)
-Received: from smtp1.int-evry.fr ([157.159.10.44]:8332 "EHLO smtp1.int-evry.fr")
-	by ftp.linux-mips.org with ESMTP id S20022614AbXHVILb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2007 09:11:31 +0100
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id 122398E84F0;
-	Wed, 22 Aug 2007 10:10:48 +0200 (CEST)
-Received: from ibook.lan (mla78-1-82-240-16-241.fbx.proxad.net [82.240.16.241])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 73CFED0E336;
-	Wed, 22 Aug 2007 10:10:47 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-To:	Matteo Croce <technoboy85@gmail.com>
-Subject: Re: [PATCH 1/1] AR7 port
-Date:	Wed, 22 Aug 2007 10:10:03 +0200
-User-Agent: KMail/1.9.7
-Cc:	linux-mips@linux-mips.org
-References: <200708201704.11529.technoboy85@gmail.com>
-In-Reply-To: <200708201704.11529.technoboy85@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 13:48:21 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:16540 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022543AbXHVMsT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Aug 2007 13:48:19 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7MCmIbk029328
+	for <linux-mips@linux-mips.org>; Wed, 22 Aug 2007 13:48:18 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7MCmI61029327
+	for linux-mips@linux-mips.org; Wed, 22 Aug 2007 13:48:18 +0100
+Date:	Wed, 22 Aug 2007 13:48:18 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: [ths@networkno.de: [PATCH] Maintain si_code field properly for FP
+	exceptions]
+Message-ID: <20070822124818.GA7715@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart7919594.qhZgkiqAbv";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200708221010.04274.florian.fainelli@telecomint.eu>
-X-int-MailScanner-Information: Please contact the ISP for more information
-X-int-MailScanner: Found to be clean
-X-int-MailScanner-SpamCheck: n'est pas un polluriel (inscrit sur la liste blanche),
-	SpamAssassin (pas en cache, score=-1.467, requis 4.01,
-	autolearn=not spam, AWL 1.00, BAYES_00 -2.60, FORGED_RCVD_HELO 0.14)
-X-int-MailScanner-From:	florian.fainelli@telecomint.eu
-Return-Path: <florian.fainelli@telecomint.eu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16240
+X-archive-position: 16241
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---nextPart7919594.qhZgkiqAbv
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+----- Forwarded message from Thiemo Seufer <ths@networkno.de> -----
 
-Hi Matteo,
+From: Thiemo Seufer <ths@networkno.de>
+Date: Wed, 22 Aug 2007 01:42:04 +0100
+To: ralf@linux-mips.org
+Subject: [PATCH] Maintain si_code field properly for FP exceptions
+Content-Type: text/plain; charset=us-ascii
 
-I see some things to take into account for a review to be easier :
-
-=2D split the patch into parts : linux-mips, netdev, watchdog, mtd, led=20
-subsystems with the appropriate lists/maintainers in copy
-=2D add the other authors in the Signed-off-by line : Eugene Konev, Felix=20
-=46ietkau, Nicolas Thill
-=2D use a linux-mips git snapshot and rediff against it
-
-Thank you very much for your efforts.
-
-Le lundi 20 ao=FBt 2007, Matteo Croce a =E9crit=A0:
-> Hi,
-> I made a diff for the AR7 port, hoping that it will go in the mainstream
-> kernel.
-> I cared about don't including buggy or non free drivers and code.
-> Also we have to surround the code in arch/mips/kernel/traps.c by some
-> #ifdef since
-> the actual code will break other archs.
-> The code was taken from the OpenWrt project, is quite good, many people
-> uses it daily.
->
-> Cheers
+The appended patch adds code to update siginfo_t's si_code field. It
+fixes e.g. a floating point overflow regression in the SBCL testsuite.
 
 
+Thiemo
 
-=2D-=20
-Cordialement, Florian Fainelli
-=2D-----------------------------
 
---nextPart7919594.qhZgkiqAbv
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
+Signed-Off-By: Thiemo Seufer <ths@linux-mips.org>
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.6 (GNU/Linux)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 5ce5582..20ddf6d 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -606,6 +606,8 @@ asmlinkage void do_ov(struct pt_regs *regs)
+  */
+ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
+ {
++	siginfo_t info;
++
+ 	die_if_kernel("FP exception in kernel code", regs);
+ 
+ 	if (fcr31 & FPU_CSR_UNI_X) {
+@@ -641,9 +643,22 @@ asmlinkage void do_fpe(struct pt_regs *regs, unsigned long fcr31)
+ 			force_sig(sig, current);
+ 
+ 		return;
+-	}
+-
+-	force_sig(SIGFPE, current);
++	} else if (fcr31 & FPU_CSR_INV_X)
++		info.si_code = FPE_FLTINV;
++	else if (fcr31 & FPU_CSR_DIV_X)
++		info.si_code = FPE_FLTDIV;
++	else if (fcr31 & FPU_CSR_OVF_X)
++		info.si_code = FPE_FLTOVF;
++	else if (fcr31 & FPU_CSR_UDF_X)
++		info.si_code = FPE_FLTUND;
++	else if (fcr31 & FPU_CSR_INE_X)
++		info.si_code = FPE_FLTRES;
++	else
++		info.si_code = __SI_FAULT;
++	info.si_signo = SIGFPE;
++	info.si_errno = 0;
++	info.si_addr = (void __user *) regs->cp0_epc;
++	force_sig_info(SIGFPE, &info, current);
+ }
+ 
+ asmlinkage void do_bp(struct pt_regs *regs)
 
-iD8DBQBGy+9cmx9n1G/316sRAgdjAJ9qkaSGcXzPnHnDGdTzkSQX4yz0OwCfaxrG
-t5+AjlmuHUMv4rD4zPVpHHs=
-=6OJL
------END PGP SIGNATURE-----
+----- End forwarded message -----
 
---nextPart7919594.qhZgkiqAbv--
+  Ralf

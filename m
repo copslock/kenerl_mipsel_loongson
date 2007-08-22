@@ -1,278 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 02:15:52 +0100 (BST)
-Received: from mo30.po.2iij.NET ([210.128.50.53]:32829 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022390AbXHVBPu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2007 02:15:50 +0100
-Received: by mo.po.2iij.net (mo30) id l7M1EUx0053105; Wed, 22 Aug 2007 10:14:30 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox301) id l7M1EPD6006451
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 22 Aug 2007 10:14:25 +0900
-Date:	Wed, 22 Aug 2007 10:14:25 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	brm <brm@murphy.dk>
-Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Add back support for LASAT platforms
-Message-Id: <20070822101425.430da249.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <200708212034.l7LKYGiD011023@potty.localnet>
-References: <200708212034.l7LKYGiD011023@potty.localnet>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 07:06:18 +0100 (BST)
+Received: from mx12.go2.pl ([193.17.41.142]:22223 "EHLO poczta.o2.pl")
+	by ftp.linux-mips.org with ESMTP id S20022517AbXHVGGP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2007 07:06:15 +0100
+Received: from poczta.o2.pl (mx12 [127.0.0.1])
+	by poczta.o2.pl (Postfix) with ESMTP id D9F153E8054;
+	Wed, 22 Aug 2007 08:06:08 +0200 (CEST)
+Received: from ff.dom.local (bv170.internetdsl.tpnet.pl [80.53.205.170])
+	by poczta.o2.pl (Postfix) with ESMTP;
+	Wed, 22 Aug 2007 08:06:08 +0200 (CEST)
+Received: (nullmailer pid 2099 invoked by uid 1000);
+	Wed, 22 Aug 2007 06:07:14 -0000
+Date:	Wed, 22 Aug 2007 08:07:13 +0200
+From:	Jarek Poplawski <jarkao2@o2.pl>
+To:	Segher Boessenkool <segher@kernel.crashing.org>
+Cc:	Adrian Bunk <bunk@kernel.org>, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andi Kleen <ak@suse.de>, linux-arch@vger.kernel.org,
+	Randy Dunlap <randy.dunlap@oracle.com>,
+	Chris Wedgwood <cw@f00f.org>,
+	Glauber de Oliveira Costa <glommer@gmail.com>,
+	linux-mips@linux-mips.org, Oliver Pinter <oliver.pntr@gmail.com>,
+	Greg KH <greg@kroah.com>, Al Viro <viro@ftp.linux.org.uk>,
+	len.brown@intel.com
+Subject: Re: RFC: drop support for gcc < 4.0
+Message-ID: <20070822060713.GA1684@ff.dom.local>
+References: <20070821132038.GA22254@ff.dom.local> <20070821093103.3c097d4a.randy.dunlap@oracle.com> <20070821173550.GC30705@stusta.de> <20070821191959.GC2642@bingen.suse.de> <20070821195433.GE30705@stusta.de> <alpine.LFD.0.999.0708211306560.30176@woody.linux-foundation.org> <20070821202113.GF30705@stusta.de> <27c412eea99f1f80a3002e9668bd31f8@kernel.crashing.org> <20070821212129.GG30705@stusta.de> <17c0b56b663fce6f28b46e3c42dfbaf9@kernel.crashing.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17c0b56b663fce6f28b46e3c42dfbaf9@kernel.crashing.org>
+User-Agent: Mutt/1.4.2.2i
+Return-Path: <jarkao2@o2.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16236
+X-archive-position: 16237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: jarkao2@o2.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 21 Aug 2007 22:34:16 +0200
-brm <brm@murphy.dk> wrote:
+On Wed, Aug 22, 2007 at 02:08:33AM +0200, Segher Boessenkool wrote:
+> >>>How many people e.g. test -rc kernels compiled with gcc 3.2?
 
-> Add back support for LASAT platforms.
-> 
-> Signed-off-by: Brian Murphy <brian@murphy.dk>
+I confirm gcc version:
 
-<snip>
+~/src/linux-2.6.23-rc3$ gcc -v
+Reading specs from /usr/lib/gcc-lib/i486-slackware-linux/3.2.3/specs
+Configured with: ../gcc-3.2.3/configure --prefix=/usr --enable-shared
+ --enable-threads=posix --enable-__cxa_atexit --disable-checkingi
+ --with-gnu-ld --verbose --target=i486-slackware-linux
+ --host=i486-slackware-linux
+Thread model: posix
+gcc version 3.2.3
 
-> diff --git a/arch/mips/lasat/Kconfig b/arch/mips/lasat/Kconfig
-> new file mode 100644
-> index 0000000..1d2ee8a
-> --- /dev/null
-> +++ b/arch/mips/lasat/Kconfig
-> @@ -0,0 +1,15 @@
-> +config PICVUE
-> +	tristate "PICVUE LCD display driver"
-> +	depends on LASAT
-> +
-> +config PICVUE_PROC
-> +	tristate "PICVUE LCD display driver /proc interface"
-> +	depends on PICVUE
-> +
-> +config DS1603
-> +	bool "DS1603 RTC driver"
-> +	depends on LASAT
+glibc-2.3.2
 
-If you add new RTC driver, it should go to drivers/rtc.
+Sorry, you have to guess this, but, after reporting long time ago some
+acpi make warnings, I didn't even suspect anybody would be interested
+more this time...
 
-> diff --git a/arch/mips/lasat/reset.c b/arch/mips/lasat/reset.c
-> new file mode 100644
-> index 0000000..9e22acf
-> --- /dev/null
-> +++ b/arch/mips/lasat/reset.c
-> @@ -0,0 +1,69 @@
-> +/*
-> + * Thomas Horsten <thh@lasat.com>
-> + * Copyright (C) 2000 LASAT Networks A/S.
-> + *
-> + *  This program is free software; you can distribute it and/or modify it
-> + *  under the terms of the GNU General Public License (Version 2) as
-> + *  published by the Free Software Foundation.
-> + *
-> + *  This program is distributed in the hope it will be useful, but WITHOUT
-> + *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-> + *  for more details.
-> + *
-> + *  You should have received a copy of the GNU General Public License along
-> + *  with this program; if not, write to the Free Software Foundation, Inc.,
-> + *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
-> + *
-> + * Reset the LASAT board.
-> + */
-> +#include <linux/kernel.h>
-> +#include <linux/pm.h>
-> +
-> +#include <asm/reboot.h>
-> +#include <asm/system.h>
-> +#include <asm/lasat/lasat.h>
-> +
-> +#include "picvue.h"
-> +#include "prom.h"
-> +
-> +static void lasat_machine_restart(char *command);
-> +static void lasat_machine_halt(void);
-> +
-> +/* Used to set machine to boot in service mode via /proc interface */
-> +int lasat_boot_to_service = 0;
-> +
-> +static void lasat_machine_restart(char *command)
-> +{
-> +	local_irq_disable();
-> +
-> +	if (lasat_boot_to_service) {
-> +		printk("machine_restart: Rebooting to service mode\n");
-> +		*(volatile unsigned int *)0xa0000024 = 0xdeadbeef;
-> +		*(volatile unsigned int *)0xa00000fc = 0xfedeabba;
-> +	}
-> +	*lasat_misc->reset_reg = 0xbedead;
-> +	for (;;) ;
-> +}
-> +
-> +#define MESSAGE "System halted"
-> +static void lasat_machine_halt(void)
-> +{
-> +	local_irq_disable();
-> +
-> +	/* Disable interrupts and loop forever */
-> +	printk(KERN_NOTICE MESSAGE "\n");
+It's an old box with Slackware 9.1, and this make is the last stage
+of testing such a hot kernel version... But, according to README gcc
+3.2 seems to be legal. (I hope there would be some warning about gcc
+too old, anyway.)
 
-alreade displayed in kernel_halt().
-
-> diff --git a/include/asm-mips/lasat/lasatint.h b/include/asm-mips/lasat/lasatint.h
-> new file mode 100644
-> index 0000000..065474f
-> --- /dev/null
-> +++ b/include/asm-mips/lasat/lasatint.h
-> @@ -0,0 +1,12 @@
-> +#define LASATINT_END 16
-> +
-> +/* lasat 100 */
-> +#define LASAT_INT_STATUS_REG_100	(KSEG1ADDR(0x1c880000))
-> +#define LASAT_INT_MASK_REG_100		(KSEG1ADDR(0x1c890000))
-> +#define LASATINT_MASK_SHIFT_100		0
-> +
-> +/* lasat 200 */
-> +#define LASAT_INT_STATUS_REG_200	(KSEG1ADDR(0x1104003c))
-> +#define LASAT_INT_MASK_REG_200		(KSEG1ADDR(0x1104003c))
-> +#define LASATINT_MASK_SHIFT_200		16
-> +
-
-Only used in arch/mips/lasat/interrupt.c .
-Please move to interrupt.c .
-
-> diff --git a/include/asm-mips/lasat/picvue.h b/include/asm-mips/lasat/picvue.h
-> new file mode 100644
-> index 0000000..42a492e
-> --- /dev/null
-> +++ b/include/asm-mips/lasat/picvue.h
-> @@ -0,0 +1,15 @@
-> +/* Lasat 100 */
-> +#define PVC_REG_100		KSEG1ADDR(0x1c820000)
-> +#define PVC_DATA_SHIFT_100	0
-> +#define PVC_DATA_M_100		0xFF
-> +#define PVC_E_100		(1 << 8)
-> +#define PVC_RW_100		(1 << 9)
-> +#define PVC_RS_100		(1 << 10)
-> +
-> +/* Lasat 200 */
-> +#define PVC_REG_200		KSEG1ADDR(0x11000000)
-> +#define PVC_DATA_SHIFT_200	24
-> +#define PVC_DATA_M_200		(0xFF << PVC_DATA_SHIFT_200)
-> +#define PVC_E_200		(1 << 16)
-> +#define PVC_RW_200		(1 << 17)
-> +#define PVC_RS_200		(1 << 18)
-
-Only used in arch/mips/lasat/setup.c .
-Please move to setup.c or arch/mips/lasat/picvue.h .
-
-> diff --git a/include/asm-mips/lasat/serial.h b/include/asm-mips/lasat/serial.h
-> new file mode 100644
-> index 0000000..9e88c76
-> --- /dev/null
-> +++ b/include/asm-mips/lasat/serial.h
-> @@ -0,0 +1,13 @@
-> +#include <asm/lasat/lasat.h>
-> +
-> +/* Lasat 100 boards serial configuration */
-> +#define LASAT_BASE_BAUD_100 		( 7372800 / 16 )
-> +#define LASAT_UART_REGS_BASE_100	0x1c8b0000
-> +#define LASAT_UART_REGS_SHIFT_100	2
-> +#define LASATINT_UART_100		8
-> +
-> +/* * LASAT 200 boards serial configuration */
-> +#define LASAT_BASE_BAUD_200		(100000000 / 16 / 12)
-> +#define LASAT_UART_REGS_BASE_200	(Vrc5074_PHYS_BASE + 0x0300)
-> +#define LASAT_UART_REGS_SHIFT_200	3
-> +#define LASATINT_UART_200		13
-
-Only used in arch/mips/lasat/serial.c .
-Please move to serial.c.
-
-> diff --git a/include/asm-mips/mach-lasat/mach-gt64120.h b/include/asm-mips/mach-lasat/mach-gt64120.h
-> new file mode 100644
-> index 0000000..1a9ad45
-> --- /dev/null
-> +++ b/include/asm-mips/mach-lasat/mach-gt64120.h
-> @@ -0,0 +1,27 @@
-> +/*
-> + *  This is a direct copy of the ev96100.h file, with a global
-> + * search and replace.  The numbers are the same.
-> + *
-> + *  The reason I'm duplicating this is so that the 64120/96100
-> + * defines won't be confusing in the source code.
-> + */
-> +#ifndef _ASM_GT64120_LASAT_GT64120_DEP_H
-> +#define _ASM_GT64120_LASAT_GT64120_DEP_H
-> +
-> +/*
-> + *   GT64120 config space base address on Lasat 100
-> + */
-> +#define GT64120_BASE	(KSEG1ADDR(0x14000000))
-> +
-> +/*
-> + *   PCI Bus allocation
-> + *
-> + *   (Guessing ...)
-> + */
-> +#define GT_PCI_MEM_BASE	0x12000000UL
-> +#define GT_PCI_MEM_SIZE	0x02000000UL
-> +#define GT_PCI_IO_BASE	0x10000000UL
-> +#define GT_PCI_IO_SIZE	0x02000000UL
-
-There are already defined in include/asm-mips/gt64120.h
-Please use default definitions.
-
-> +#define GT_ISA_IO_BASE	PCI_IO_BASE
-
-Not used.
-
-> +#endif /* _ASM_GT64120_LASAT_GT64120_DEP_H */
-> diff --git a/include/asm-mips/nile4.h b/include/asm-mips/nile4.h
-> new file mode 100644
-> index 0000000..c3ca959
-> --- /dev/null
-> +++ b/include/asm-mips/nile4.h
-> @@ -0,0 +1,310 @@
-> +/*
-> + *  asm-mips/nile4.h -- NEC Vrc-5074 Nile 4 definitions
-
-<snip>
-
-> +    /*
-> +     *  Interrupt Programming
-> +     */
-> +
-> +#define NUM_I8259_INTERRUPTS	16
-> +#define NUM_NILE4_INTERRUPTS	16
-> +
-> +#define IRQ_I8259_CASCADE	NILE4_INT_INTE
-> +#define is_i8259_irq(irq)	((irq) < NUM_I8259_INTERRUPTS)
-> +#define nile4_to_irq(n)		((n)+NUM_I8259_INTERRUPTS)
-> +#define irq_to_nile4(n)		((n)-NUM_I8259_INTERRUPTS)
-> +
-> +extern void nile4_map_irq(int nile4_irq, int cpu_irq);
-> +extern void nile4_map_irq_all(int cpu_irq);
-> +extern void nile4_enable_irq(unsigned int nile4_irq);
-> +extern void nile4_disable_irq(unsigned int nile4_irq);
-> +extern void nile4_disable_irq_all(void);
-> +extern u16 nile4_get_irq_stat(int cpu_irq);
-> +extern void nile4_enable_irq_output(int cpu_irq);
-> +extern void nile4_disable_irq_output(int cpu_irq);
-> +extern void nile4_set_pci_irq_polarity(int pci_irq, int high);
-> +extern void nile4_set_pci_irq_level_or_edge(int pci_irq, int level);
-> +extern void nile4_clear_irq(int nile4_irq);
-> +extern void nile4_clear_irq_mask(u32 mask);
-> +extern u8 nile4_i8259_iack(void);
-> +extern void nile4_dump_irq_status(void);	/* Debug */
-
-nile4 IRQ functions don't exist.
-
-Yoichi
+Cheers,
+Jarek P.

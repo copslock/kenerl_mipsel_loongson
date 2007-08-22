@@ -1,61 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 08:02:06 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:14809 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20022587AbXHVHCD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2007 08:02:03 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1INkE4-0001Dd-00; Wed, 22 Aug 2007 09:02:00 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id D0A5211ACC6; Wed, 22 Aug 2007 08:59:30 +0200 (CEST)
-Date:	Wed, 22 Aug 2007 08:59:30 +0200
-To:	Glauber de Oliveira Costa <glommer@gmail.com>
-Cc:	Chris Wedgwood <cw@f00f.org>, Adrian Bunk <bunk@kernel.org>,
-	Randy Dunlap <randy.dunlap@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jarek Poplawski <jarkao2@o2.pl>, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: RFC: drop support for gcc < 4.0
-Message-ID: <20070822065930.GA6459@alpha.franken.de>
-References: <20070821132038.GA22254@ff.dom.local> <20070821093103.3c097d4a.randy.dunlap@oracle.com> <20070821173550.GC30705@stusta.de> <20070821182505.GA20968@puku.stupidest.org> <5d6222a80708211341s63f8c1eau922f018e66db49f4@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Aug 2007 09:11:33 +0100 (BST)
+Received: from smtp1.int-evry.fr ([157.159.10.44]:8332 "EHLO smtp1.int-evry.fr")
+	by ftp.linux-mips.org with ESMTP id S20022614AbXHVILb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Aug 2007 09:11:31 +0100
+Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
+	by smtp1.int-evry.fr (Postfix) with ESMTP id 122398E84F0;
+	Wed, 22 Aug 2007 10:10:48 +0200 (CEST)
+Received: from ibook.lan (mla78-1-82-240-16-241.fbx.proxad.net [82.240.16.241])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 73CFED0E336;
+	Wed, 22 Aug 2007 10:10:47 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+To:	Matteo Croce <technoboy85@gmail.com>
+Subject: Re: [PATCH 1/1] AR7 port
+Date:	Wed, 22 Aug 2007 10:10:03 +0200
+User-Agent: KMail/1.9.7
+Cc:	linux-mips@linux-mips.org
+References: <200708201704.11529.technoboy85@gmail.com>
+In-Reply-To: <200708201704.11529.technoboy85@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5d6222a80708211341s63f8c1eau922f018e66db49f4@mail.gmail.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: multipart/signed;
+  boundary="nextPart7919594.qhZgkiqAbv";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
+Content-Transfer-Encoding: 7bit
+Message-Id: <200708221010.04274.florian.fainelli@telecomint.eu>
+X-int-MailScanner-Information: Please contact the ISP for more information
+X-int-MailScanner: Found to be clean
+X-int-MailScanner-SpamCheck: n'est pas un polluriel (inscrit sur la liste blanche),
+	SpamAssassin (pas en cache, score=-1.467, requis 4.01,
+	autolearn=not spam, AWL 1.00, BAYES_00 -2.60, FORGED_RCVD_HELO 0.14)
+X-int-MailScanner-From:	florian.fainelli@telecomint.eu
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16239
+X-archive-position: 16240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 21, 2007 at 05:41:04PM -0300, Glauber de Oliveira Costa wrote:
-> On 8/21/07, Chris Wedgwood <cw@f00f.org> wrote:
-> > On Tue, Aug 21, 2007 at 07:35:50PM +0200, Adrian Bunk wrote:
-> >
-> > > Are there any architectures still requiring a gcc < 4.0 ?
-> >
-> > Yes, sadly in some places (embedded) there are people with older
-> > compiler who want newer kernels.
-> 
-> Last time I tried a mips build, it would fail the compile unless I was
-> using _exactly_ 3.4.4 (I didn't tried older versions, but did try
-> 3.4.6, for ex.). So I also think the 3.4 series will still have to be
-> around for a while.
+--nextPart7919594.qhZgkiqAbv
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-that's fixed and I'm happiliy building the MIPS tree with gcc 3.3.3.
-And I would be very unhappy to upgrade all my crosscompiler just because
-someone thinks nobody build -rc kernel with older compilers. I do.
+Hi Matteo,
 
-Thomas.
+I see some things to take into account for a review to be easier :
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+=2D split the patch into parts : linux-mips, netdev, watchdog, mtd, led=20
+subsystems with the appropriate lists/maintainers in copy
+=2D add the other authors in the Signed-off-by line : Eugene Konev, Felix=20
+=46ietkau, Nicolas Thill
+=2D use a linux-mips git snapshot and rediff against it
+
+Thank you very much for your efforts.
+
+Le lundi 20 ao=FBt 2007, Matteo Croce a =E9crit=A0:
+> Hi,
+> I made a diff for the AR7 port, hoping that it will go in the mainstream
+> kernel.
+> I cared about don't including buggy or non free drivers and code.
+> Also we have to surround the code in arch/mips/kernel/traps.c by some
+> #ifdef since
+> the actual code will break other archs.
+> The code was taken from the OpenWrt project, is quite good, many people
+> uses it daily.
+>
+> Cheers
+
+
+
+=2D-=20
+Cordialement, Florian Fainelli
+=2D-----------------------------
+
+--nextPart7919594.qhZgkiqAbv
+Content-Type: application/pgp-signature; name=signature.asc 
+Content-Description: This is a digitally signed message part.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.6 (GNU/Linux)
+
+iD8DBQBGy+9cmx9n1G/316sRAgdjAJ9qkaSGcXzPnHnDGdTzkSQX4yz0OwCfaxrG
+t5+AjlmuHUMv4rD4zPVpHHs=
+=6OJL
+-----END PGP SIGNATURE-----
+
+--nextPart7919594.qhZgkiqAbv--

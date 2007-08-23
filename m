@@ -1,88 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Aug 2007 02:18:42 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:25165 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20023163AbXHWBSk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Aug 2007 02:18:40 +0100
-Received: by mo.po.2iij.net (mo30) id l7N1HJHa000316; Thu, 23 Aug 2007 10:17:19 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox302) id l7N1HIDK013842
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 23 Aug 2007 10:17:18 +0900
-Message-Id: <200708230117.l7N1HIDK013842@po-mbox302.po.2iij.net>
-Date:	Thu, 23 Aug 2007 10:17:18 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Brian Murphy <brm@murphy.dk>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Add back support for LASAT platforms
-In-Reply-To: <46CC9E2E.5090402@murphy.dk>
-References: <200708212034.l7LKYGiD011023@potty.localnet>
-	<20070822101425.430da249.yoichi_yuasa@tripeaks.co.jp>
-	<46CC9E2E.5090402@murphy.dk>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Aug 2007 11:23:09 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.190]:62999 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023730AbXHWKXH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Aug 2007 11:23:07 +0100
+Received: by fk-out-0910.google.com with SMTP id f40so410171fka
+        for <linux-mips@linux-mips.org>; Thu, 23 Aug 2007 03:22:49 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=d4M140ZdAalHlJFnbCJVB7yHYBnQvDLgmQJPI5EhKwj97hnalpQyqLC2pVQxdg0MFUpVAfjcHTGOFEu8mvnYWhpYiQAghEL5IuZ9ElZTypOpwXO18WLMRHpk7K3T+xUnI04BBbCFHVrATaQxiSgKP9Mvpg3wf5sJpkPBVV0sFpw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=WPY5tTTnW4asb7B67Llso4GRUoTonUwuU56s/elqALYBTjaLk8tJgbh8iXF855nLprasi2yngCVsx6avUi0+S7LJLcIwt870vdpBS+34ILfhXObC5kWAov6OLL5hnMtgm9vF9DoHqsngSEPmLRFgYgMjPpO92HAJfcA2WqYS59E=
+Received: by 10.82.126.5 with SMTP id y5mr3819451buc.1187864569120;
+        Thu, 23 Aug 2007 03:22:49 -0700 (PDT)
+Received: by 10.82.190.1 with HTTP; Thu, 23 Aug 2007 03:22:48 -0700 (PDT)
+Message-ID: <c58a7a270708230322p43b8af7bka9251140938318f3@mail.gmail.com>
+Date:	Thu, 23 Aug 2007 11:22:48 +0100
+From:	"Alex Gonzalez" <langabe@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: Bus error after successful mmap of physical address
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20070822180827.GA3362@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Content-Disposition: inline
+References: <c58a7a270708221031g3fba98d5u8507c2aafd4e16b4@mail.gmail.com>
+	 <20070822180827.GA3362@linux-mips.org>
+Return-Path: <langabe@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16249
+X-archive-position: 16250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: langabe@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi Ralf,
 
-On Wed, 22 Aug 2007 22:35:58 +0200
-Brian Murphy <brm@murphy.dk> wrote:
+Thanks for answer. As always very helpful.
 
-> Yoichi Yuasa wrote:
-> 
-> <much snipping>
-> >> +
-> >> +config DS1603
-> >> +	bool "DS1603 RTC driver"
-> >> +	depends on LASAT
-> >>     
+As you point out 0xC0000000 is not the physical address. It worked
+with ioremap with the fixed TLB mapping and that made me think it was
+the same one here.
+
+I forgot that when mapping it to user space I am using the virtual
+memory subsystem which will deal with the TLB itself.
+
+Uncached access is OK. The memory area is used to share data between
+the two cores and the data can change so I don't want any of them to
+cache it.
+
+Regarding 64bits, for the moment I am stuck with finding a solution
+with a 32bits kernel. Too many drivers and hacks to support custom
+hardware would need to be ported and tested.
+
+Thanks for helping me out of my confusion,
+Alex
+
+On 8/22/07, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Wed, Aug 22, 2007 at 06:31:22PM +0100, Alex Gonzalez wrote:
+>
+> > I am sure there is a basic reason why this is not working but I just
+> > can't see it.
 > >
-> > If you add new RTC driver, it should go to drivers/rtc.
-> >   
-> It's hardly new, is it? It was removed by you with the rest
-> of the LASAT stuff two months ago after it had been in the kernel
-> for 5 years. Why are RTC drivers more important than any others?
-> And why is it important that a platform specific driver goes in a
-> common area when only one platform uses it?
-
-DS1603 can be likely to be used with others.
-But,
-
-> The driver is quite platform specific:
-> 
-> 1) It needs to adjust for a slow transistor on the I/O line to allow
-> for three-stating.
-> 2) A special lasat_ndelay which guesses the clock speed based
-> on platform to allowi the bit-banging interface to control the device
-> before the CP0 timer is calibrated (by the RTC).
-> 3) Platform specific I/O which is not programmable (part of an FPGA/CPLD).
-> 
-> 1 Is basically solved now in an ugly manner with a long delay parameter.
-> 2 I cant really see a sensible solution to.
-> 3 I could use the new fancy gpio interface but as the I/O is neither
-> general or programmable I'm not sure of the point. If someone else
-> needed the driver then I would have no problem in doing this but as
-> it is it seems like a waste of time.
-> 
-> The interface the rtc uses is still used by many drivers implemented
-> in the platform directories and is much simpler and straightforward
-> than the general interface used by the drivers in drivers/rtc and will
-> give more code.
-> 
-> I have no problems with your other points but I would really like the
-> RTC code to stay where it is.
-
-it's OK with me.
-
-Yoichi
+> > I am booting with mem=512MB and trying to access a memory region at
+> > 0xC0000000 mapped by a fixed TLB entry.
+>
+> Is 0xC0000000 a physical or virtual address.  If it's a virtual address
+> your mapping will conflict with other mappings generated by the kernel and
+> you will need additional hacks to protect the address space from being
+> used by the kernel for other purposes.
+>
+> > My driver does,
+> >
+> > vma->vm_flags = vma->vm_flags | VM_IO | VM_RESERVED ;
+> > vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot) ;
+> >
+> > // open device
+> >       vadr = mmap( NULL , 1024*1024 ,
+> > PROT_WRITE|PROT_READ,MAP_NORESERVE|MAP_SHARED,device,0xC0000000);
+>                                                        ^^^^^^^^^^
+>
+> This is the reason why I was asking if 0xC0000000 was a physical address.
+> mmap needs a physical address.
+>
+> >       if(vadr == MAP_FAILED)
+> >       {
+> >               perror("mmap failed.\n");
+> >               exit(-1);
+> >       }
+> >
+> >
+> > That goes OK, but then if I try to read or write from vadr I get a "Bus error".
+>
+> Assuming device is a /dev/mem descriptor that is looking ok.  However - you
+> will be getting an uncached mapping from mmap so the performance will suck
+> rocks through a straw.
+>
+> Anyway, you have 64-bit hardware, use it.  On a 64-bit kernel you can just
+> address all your memory through XKPHYS without the need for any TLB entries.
+>
+>   Ralf
+>

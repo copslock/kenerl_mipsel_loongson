@@ -1,52 +1,162 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 14:23:44 +0100 (BST)
-Received: from webmail.ict.ac.cn ([159.226.39.7]:25790 "EHLO ict.ac.cn")
-	by ftp.linux-mips.org with ESMTP id S20024600AbXHXNXg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Aug 2007 14:23:36 +0100
-Received: (qmail 23885 invoked by uid 507); 24 Aug 2007 22:07:24 +0800
-Received: from unknown (HELO ?10.2.0.23?) (fxzhang@10.2.0.23)
-  by ict.ac.cn with SMTP; 24 Aug 2007 22:07:24 +0800
-Message-ID: <46CEDC47.3010503@ict.ac.cn>
-Date:	Fri, 24 Aug 2007 21:25:27 +0800
-From:	Fuxin Zhang <fxzhang@ict.ac.cn>
-User-Agent: IceDove 1.5.0.10 (X11/20070329)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 15:28:45 +0100 (BST)
+Received: from 85-18-251-172.ip.fastwebnet.it ([85.18.251.172]:25005 "EHLO
+	memento.home.lan") by ftp.linux-mips.org with ESMTP
+	id S20023903AbXHXO2g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Aug 2007 15:28:36 +0100
+Received: from americanbeauty.home.lan (localhost.localdomain [127.0.0.1])
+	by memento.home.lan (Postfix) with ESMTP id BAFB1108B3;
+	Fri, 24 Aug 2007 13:28:57 +0200 (CEST)
+From:	Paolo 'Blaisorblade' Giarrusso <blaisorblade@yahoo.it>
+Subject: [PATCH 1/2] Replace CONFIG_USB_OHCI with CONFIG_USB_OHCI_HCD in a few
+	overlooked files
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	linux-kernel@vger.kernel.org,
+	Giuseppe =?utf-8?q?Patan=C3=A8?= <giuseppe.patane@tvblob.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	<linux-mips@linux-mips.org>,
+	Paolo 'Blaisorblade' Giarrusso <blaisorblade@yahoo.it>
+Date:	Fri, 24 Aug 2007 13:28:57 +0200
+Message-ID: <20070824112857.9607.22924.stgit@americanbeauty.home.lan>
+User-Agent: StGIT/0.12.1
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Sunil Amitkumar Janki <devel.sjanki@gmail.com>,
-	linux-mips@linux-mips.org
-Subject: Re: Kernel 2.6.23-rc3 build error
-References: <46CB0876.5030508@gmail.com> <20070824110729.GA4321@linux-mips.org> <46CEC23D.1090706@gmail.com> <20070824130721.GA27604@linux-mips.org>
-In-Reply-To: <20070824130721.GA27604@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Return-Path: <fxzhang@ict.ac.cn>
+Return-Path: <blaisorblade@yahoo.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16273
+X-archive-position: 16274
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fxzhang@ict.ac.cn
+X-original-sender: blaisorblade@yahoo.it
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle 写道:
->
-> I've just pushed a fix for the __cmpdi2 problem.  It's a generic MIPS issue
-> and I didn't invest the time into figuring out what circumstances exactly
-> are required to trigger it.
->
-> The references to request_dma and free_dma are a separate Fulong-specific
-> issue.  They are the result of platform neither defining GENERIC_ISA_DMA
-> nor GENERIC_ISA_DMA_SUPPORT_BROKEN.  I'm not sure if the Fulong contains
-> ISA-ish peripherals in its south bridge which are actually being used.
-> Maybe else knows?
->   
-We don't have any ISA usage so I think it is safe to define 
-GENERIC_ISA_DMA or the other one.
->   Ralf
->
->
->
->
->   
+Finish the rename of CONFIG_USB_OHCI to CONFIG_USB_OHCI_HCD, which started
+in 2005 (before 2.6.12-rc2). The patch in this message has not been applied yet;
+moreover, it is not something to fix afterwards. I've verified that no more
+instances of 'CONFIG_USB_[UOE]HCI\>' exist in the source tree.
+
+http://www.linux-mips.org/archives/linux-mips/2005-06/msg00060.html
+
+I'm also sending a script to detect undefined Kconfig variables in next patch.
+
+Thanks to my colleague Giuseppe Patanè for the original report: he discovered
+the original mail (above) and for verified that the fix had not yet been
+applied.
+
+Cc: Giuseppe Patanè <giuseppe.patane@tvblob.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: <linux-mips@linux-mips.org>
+Signed-off-by: Paolo 'Blaisorblade' Giarrusso <blaisorblade@yahoo.it>
+---
+
+ arch/mips/au1000/mtx-1/board_setup.c  |    4 ++--
+ arch/mips/au1000/pb1000/board_setup.c |    6 +++---
+ arch/mips/au1000/pb1100/board_setup.c |    4 ++--
+ arch/mips/au1000/pb1500/board_setup.c |    6 +++---
+ 4 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/mips/au1000/mtx-1/board_setup.c b/arch/mips/au1000/mtx-1/board_setup.c
+index 7bc5af8..1688ca9 100644
+--- a/arch/mips/au1000/mtx-1/board_setup.c
++++ b/arch/mips/au1000/mtx-1/board_setup.c
+@@ -54,11 +54,11 @@ void board_reset (void)
+ 
+ void __init board_setup(void)
+ {
+-#ifdef CONFIG_USB_OHCI
++#ifdef CONFIG_USB_OHCI_HCD
+ 	// enable USB power switch
+ 	au_writel( au_readl(GPIO2_DIR) | 0x10, GPIO2_DIR );
+ 	au_writel( 0x100000, GPIO2_OUTPUT );
+-#endif // defined (CONFIG_USB_OHCI)
++#endif // defined (CONFIG_USB_OHCI_HCD)
+ 
+ #ifdef CONFIG_PCI
+ #if defined(__MIPSEB__)
+diff --git a/arch/mips/au1000/pb1000/board_setup.c b/arch/mips/au1000/pb1000/board_setup.c
+index 824cfaf..f25b38f 100644
+--- a/arch/mips/au1000/pb1000/board_setup.c
++++ b/arch/mips/au1000/pb1000/board_setup.c
+@@ -54,7 +54,7 @@ void __init board_setup(void)
+ 	au_writel(0, SYS_PINSTATERD);
+ 	udelay(100);
+ 
+-#ifdef CONFIG_USB_OHCI
++#ifdef CONFIG_USB_OHCI_HCD
+ 	/* zero and disable FREQ2 */
+ 	sys_freqctrl = au_readl(SYS_FREQCTRL0);
+ 	sys_freqctrl &= ~0xFFF00000;
+@@ -102,7 +102,7 @@ void __init board_setup(void)
+ 	/*
+ 	 * Route 48MHz FREQ2 into USB Host and/or Device
+ 	 */
+-#ifdef CONFIG_USB_OHCI
++#ifdef CONFIG_USB_OHCI_HCD
+ 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
+ #endif
+ 	au_writel(sys_clksrc, SYS_CLKSRC);
+@@ -116,7 +116,7 @@ void __init board_setup(void)
+ 	au_writel(pin_func, SYS_PINFUNC);
+ 	au_writel(0x2800, SYS_TRIOUTCLR);
+ 	au_writel(0x0030, SYS_OUTPUTCLR);
+-#endif // defined (CONFIG_USB_OHCI)
++#endif // defined (CONFIG_USB_OHCI_HCD)
+ 
+ 	// make gpio 15 an input (for interrupt line)
+ 	pin_func = au_readl(SYS_PINFUNC) & (u32)(~0x100);
+diff --git a/arch/mips/au1000/pb1100/board_setup.c b/arch/mips/au1000/pb1100/board_setup.c
+index 6bc1f8e..3205f88 100644
+--- a/arch/mips/au1000/pb1100/board_setup.c
++++ b/arch/mips/au1000/pb1100/board_setup.c
+@@ -54,7 +54,7 @@ void __init board_setup(void)
+ 	au_writel(0, SYS_PININPUTEN);
+ 	udelay(100);
+ 
+-#ifdef CONFIG_USB_OHCI
++#ifdef CONFIG_USB_OHCI_HCD
+ 	{
+ 		u32 pin_func, sys_freqctrl, sys_clksrc;
+ 
+@@ -98,7 +98,7 @@ void __init board_setup(void)
+ 		pin_func |= 0x8000;
+ 		au_writel(pin_func, SYS_PINFUNC);
+ 	}
+-#endif // defined (CONFIG_USB_OHCI)
++#endif // defined (CONFIG_USB_OHCI_HCD)
+ 
+ 	/* Enable sys bus clock divider when IDLE state or no bus activity. */
+ 	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
+diff --git a/arch/mips/au1000/pb1500/board_setup.c b/arch/mips/au1000/pb1500/board_setup.c
+index c9b6556..118e32a 100644
+--- a/arch/mips/au1000/pb1500/board_setup.c
++++ b/arch/mips/au1000/pb1500/board_setup.c
+@@ -56,7 +56,7 @@ void __init board_setup(void)
+ 	au_writel(0, SYS_PINSTATERD);
+ 	udelay(100);
+ 
+-#ifdef CONFIG_USB_OHCI
++#ifdef CONFIG_USB_OHCI_HCD
+ 
+ 	/* GPIO201 is input for PCMCIA card detect */
+ 	/* GPIO203 is input for PCMCIA interrupt request */
+@@ -85,7 +85,7 @@ void __init board_setup(void)
+ 	/*
+ 	 * Route 48MHz FREQ2 into USB Host and/or Device
+ 	 */
+-#ifdef CONFIG_USB_OHCI
++#ifdef CONFIG_USB_OHCI_HCD
+ 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
+ #endif
+ 	au_writel(sys_clksrc, SYS_CLKSRC);
+@@ -95,7 +95,7 @@ void __init board_setup(void)
+ 	// 2nd USB port is USB host
+ 	pin_func |= 0x8000;
+ 	au_writel(pin_func, SYS_PINFUNC);
+-#endif // defined (CONFIG_USB_OHCI)
++#endif // defined (CONFIG_USB_OHCI_HCD)
+ 
+ 
+ 

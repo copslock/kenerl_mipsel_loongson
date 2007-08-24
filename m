@@ -1,162 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 15:28:45 +0100 (BST)
-Received: from 85-18-251-172.ip.fastwebnet.it ([85.18.251.172]:25005 "EHLO
-	memento.home.lan") by ftp.linux-mips.org with ESMTP
-	id S20023903AbXHXO2g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Aug 2007 15:28:36 +0100
-Received: from americanbeauty.home.lan (localhost.localdomain [127.0.0.1])
-	by memento.home.lan (Postfix) with ESMTP id BAFB1108B3;
-	Fri, 24 Aug 2007 13:28:57 +0200 (CEST)
-From:	Paolo 'Blaisorblade' Giarrusso <blaisorblade@yahoo.it>
-Subject: [PATCH 1/2] Replace CONFIG_USB_OHCI with CONFIG_USB_OHCI_HCD in a few
-	overlooked files
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	linux-kernel@vger.kernel.org,
-	Giuseppe =?utf-8?q?Patan=C3=A8?= <giuseppe.patane@tvblob.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	<linux-mips@linux-mips.org>,
-	Paolo 'Blaisorblade' Giarrusso <blaisorblade@yahoo.it>
-Date:	Fri, 24 Aug 2007 13:28:57 +0200
-Message-ID: <20070824112857.9607.22924.stgit@americanbeauty.home.lan>
-User-Agent: StGIT/0.12.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 15:33:27 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:39952 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20023920AbXHXOdT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Aug 2007 15:33:19 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 27E32D8C9; Fri, 24 Aug 2007 14:32:43 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 946FC5437A; Fri, 24 Aug 2007 16:32:22 +0200 (CEST)
+Date:	Fri, 24 Aug 2007 16:32:22 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] bcm1480 serial build fix
+Message-ID: <20070824143222.GA5662@deprecation.cyrius.com>
+References: <20070722075515.GB23747@networkno.de> <Pine.LNX.4.64N.0707231353030.13557@blysk.ds.pg.gda.pl> <20070723134431.GB18207@networkno.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Return-Path: <blaisorblade@yahoo.it>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070723134431.GB18207@networkno.de>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16274
+X-archive-position: 16275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blaisorblade@yahoo.it
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Finish the rename of CONFIG_USB_OHCI to CONFIG_USB_OHCI_HCD, which started
-in 2005 (before 2.6.12-rc2). The patch in this message has not been applied yet;
-moreover, it is not something to fix afterwards. I've verified that no more
-instances of 'CONFIG_USB_[UOE]HCI\>' exist in the source tree.
+* Thiemo Seufer <ths@networkno.de> [2007-07-23 14:44]:
+> >  These headers are a horrible mess anyway -- a single definition should be 
+> > enough to access the two DUARTs the BCM1480 seems to have...
+> Indeed. I just took the path of least resistance to make it work again.
 
-http://www.linux-mips.org/archives/linux-mips/2005-06/msg00060.html
+Maybe Ralf can apply it (at least for now).  BCM1480 in git is
+currently broken because of this.
 
-I'm also sending a script to detect undefined Kconfig variables in next patch.
+From: Thiemo Seufer <ths@networkno.de>
 
-Thanks to my colleague Giuseppe Patanè for the original report: he discovered
-the original mail (above) and for verified that the fix had not yet been
-applied.
+Restore serial functionality for the bcm1480.
 
-Cc: Giuseppe Patanè <giuseppe.patane@tvblob.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: <linux-mips@linux-mips.org>
-Signed-off-by: Paolo 'Blaisorblade' Giarrusso <blaisorblade@yahoo.it>
----
+I glued this together without reading documentation, so I'm not sure if
+it is fully correct. It is good enough to build a kernel and have a
+working serial console.
 
- arch/mips/au1000/mtx-1/board_setup.c  |    4 ++--
- arch/mips/au1000/pb1000/board_setup.c |    6 +++---
- arch/mips/au1000/pb1100/board_setup.c |    4 ++--
- arch/mips/au1000/pb1500/board_setup.c |    6 +++---
- 4 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/au1000/mtx-1/board_setup.c b/arch/mips/au1000/mtx-1/board_setup.c
-index 7bc5af8..1688ca9 100644
---- a/arch/mips/au1000/mtx-1/board_setup.c
-+++ b/arch/mips/au1000/mtx-1/board_setup.c
-@@ -54,11 +54,11 @@ void board_reset (void)
+Signed-Off-By: Thiemo Seufer <ths@networkno.de>
+
+diff --git a/drivers/serial/sb1250-duart.c b/drivers/serial/sb1250-duart.c
+index 1d9d728..e7f5c0e 100644
+--- a/drivers/serial/sb1250-duart.c
++++ b/drivers/serial/sb1250-duart.c
+@@ -57,6 +57,12 @@
+ #define SBD_CTRLREGS(line)	A_BCM1480_DUART_CTRLREG((line), 0)
+ #define SBD_INT(line)		(K_BCM1480_INT_UART_0 + (line))
  
- void __init board_setup(void)
- {
--#ifdef CONFIG_USB_OHCI
-+#ifdef CONFIG_USB_OHCI_HCD
- 	// enable USB power switch
- 	au_writel( au_readl(GPIO2_DIR) | 0x10, GPIO2_DIR );
- 	au_writel( 0x100000, GPIO2_OUTPUT );
--#endif // defined (CONFIG_USB_OHCI)
-+#endif // defined (CONFIG_USB_OHCI_HCD)
++#define DUART_CHANREG_SPACING	BCM1480_DUART_CHANREG_SPACING
++
++#define R_DUART_IMRREG(line)	R_BCM1480_DUART_IMRREG(line)
++#define R_DUART_INCHREG(line)	R_BCM1480_DUART_INCHREG(line)
++#define R_DUART_ISRREG(line)	R_BCM1480_DUART_ISRREG(line)
++
+ #elif defined(CONFIG_SIBYTE_SB1250) || defined(CONFIG_SIBYTE_BCM112X)
+ #include <asm/sibyte/sb1250_regs.h>
+ #include <asm/sibyte/sb1250_int.h>
+diff --git a/include/asm-mips/sibyte/bcm1480_regs.h b/include/asm-mips/sibyte/bcm1480_regs.h
+index 2738c13..c34d36b 100644
+--- a/include/asm-mips/sibyte/bcm1480_regs.h
++++ b/include/asm-mips/sibyte/bcm1480_regs.h
+@@ -227,10 +227,15 @@
+ 	(A_BCM1480_DUART(chan) +					\
+ 	 BCM1480_DUART_CHANREG_SPACING * 3 + (reg))
  
- #ifdef CONFIG_PCI
- #if defined(__MIPSEB__)
-diff --git a/arch/mips/au1000/pb1000/board_setup.c b/arch/mips/au1000/pb1000/board_setup.c
-index 824cfaf..f25b38f 100644
---- a/arch/mips/au1000/pb1000/board_setup.c
-+++ b/arch/mips/au1000/pb1000/board_setup.c
-@@ -54,7 +54,7 @@ void __init board_setup(void)
- 	au_writel(0, SYS_PINSTATERD);
- 	udelay(100);
++#define DUART_IMRISR_SPACING	    0x20
++#define DUART_INCHNG_SPACING	    0x10
++
+ #define R_BCM1480_DUART_IMRREG(chan)					\
+ 	(R_DUART_IMR_A + ((chan) & 1) * DUART_IMRISR_SPACING)
+ #define R_BCM1480_DUART_ISRREG(chan)					\
+ 	(R_DUART_ISR_A + ((chan) & 1) * DUART_IMRISR_SPACING)
++#define R_BCM1480_DUART_INCHREG(chan)					\
++	(R_DUART_IN_CHNG_A + ((chan) & 1) * DUART_INCHNG_SPACING)
  
--#ifdef CONFIG_USB_OHCI
-+#ifdef CONFIG_USB_OHCI_HCD
- 	/* zero and disable FREQ2 */
- 	sys_freqctrl = au_readl(SYS_FREQCTRL0);
- 	sys_freqctrl &= ~0xFFF00000;
-@@ -102,7 +102,7 @@ void __init board_setup(void)
- 	/*
- 	 * Route 48MHz FREQ2 into USB Host and/or Device
- 	 */
--#ifdef CONFIG_USB_OHCI
-+#ifdef CONFIG_USB_OHCI_HCD
- 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
- #endif
- 	au_writel(sys_clksrc, SYS_CLKSRC);
-@@ -116,7 +116,7 @@ void __init board_setup(void)
- 	au_writel(pin_func, SYS_PINFUNC);
- 	au_writel(0x2800, SYS_TRIOUTCLR);
- 	au_writel(0x0030, SYS_OUTPUTCLR);
--#endif // defined (CONFIG_USB_OHCI)
-+#endif // defined (CONFIG_USB_OHCI_HCD)
- 
- 	// make gpio 15 an input (for interrupt line)
- 	pin_func = au_readl(SYS_PINFUNC) & (u32)(~0x100);
-diff --git a/arch/mips/au1000/pb1100/board_setup.c b/arch/mips/au1000/pb1100/board_setup.c
-index 6bc1f8e..3205f88 100644
---- a/arch/mips/au1000/pb1100/board_setup.c
-+++ b/arch/mips/au1000/pb1100/board_setup.c
-@@ -54,7 +54,7 @@ void __init board_setup(void)
- 	au_writel(0, SYS_PININPUTEN);
- 	udelay(100);
- 
--#ifdef CONFIG_USB_OHCI
-+#ifdef CONFIG_USB_OHCI_HCD
- 	{
- 		u32 pin_func, sys_freqctrl, sys_clksrc;
- 
-@@ -98,7 +98,7 @@ void __init board_setup(void)
- 		pin_func |= 0x8000;
- 		au_writel(pin_func, SYS_PINFUNC);
- 	}
--#endif // defined (CONFIG_USB_OHCI)
-+#endif // defined (CONFIG_USB_OHCI_HCD)
- 
- 	/* Enable sys bus clock divider when IDLE state or no bus activity. */
- 	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
-diff --git a/arch/mips/au1000/pb1500/board_setup.c b/arch/mips/au1000/pb1500/board_setup.c
-index c9b6556..118e32a 100644
---- a/arch/mips/au1000/pb1500/board_setup.c
-+++ b/arch/mips/au1000/pb1500/board_setup.c
-@@ -56,7 +56,7 @@ void __init board_setup(void)
- 	au_writel(0, SYS_PINSTATERD);
- 	udelay(100);
- 
--#ifdef CONFIG_USB_OHCI
-+#ifdef CONFIG_USB_OHCI_HCD
- 
- 	/* GPIO201 is input for PCMCIA card detect */
- 	/* GPIO203 is input for PCMCIA interrupt request */
-@@ -85,7 +85,7 @@ void __init board_setup(void)
- 	/*
- 	 * Route 48MHz FREQ2 into USB Host and/or Device
- 	 */
--#ifdef CONFIG_USB_OHCI
-+#ifdef CONFIG_USB_OHCI_HCD
- 	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
- #endif
- 	au_writel(sys_clksrc, SYS_CLKSRC);
-@@ -95,7 +95,7 @@ void __init board_setup(void)
- 	// 2nd USB port is USB host
- 	pin_func |= 0x8000;
- 	au_writel(pin_func, SYS_PINFUNC);
--#endif // defined (CONFIG_USB_OHCI)
-+#endif // defined (CONFIG_USB_OHCI_HCD)
- 
- 
- 
+ #define A_BCM1480_DUART_IMRREG(chan)					\
+ 	(A_BCM1480_DUART_CTRLREG((chan), R_BCM1480_DUART_IMRREG(chan)))
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,162 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Aug 2007 21:38:35 +0100 (BST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:24072 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S20023854AbXHWUi1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Aug 2007 21:38:27 +0100
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id E711ED8C9; Thu, 23 Aug 2007 20:38:19 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 4F0145437A; Thu, 23 Aug 2007 22:37:57 +0200 (CEST)
-Date:	Thu, 23 Aug 2007 22:37:57 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Subject: Tulip driver broken on Cobalt RaQ1 in 2.6
-Message-ID: <20070823203757.GA25971@deprecation.cyrius.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="ikeVEW9yuYc//A+q"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <tbm@cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 04:23:14 +0100 (BST)
+Received: from mail.lysator.liu.se ([130.236.254.3]:9655 "EHLO
+	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
+	id S20021444AbXHXDXG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Aug 2007 04:23:06 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.lysator.liu.se (Postfix) with ESMTP id B9DBE200A20B;
+	Fri, 24 Aug 2007 05:22:34 +0200 (CEST)
+Received: from mail.lysator.liu.se ([127.0.0.1])
+	by localhost (lenin.lysator.liu.se [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 15015-01-81; Fri, 24 Aug 2007 05:22:33 +0200 (CEST)
+Received: from [192.168.0.132] (cust.fiber-lan.vnet.lk.85.194.49.238.stunet.se [85.194.49.238])
+	(using TLSv1 with cipher AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	by mail.lysator.liu.se (Postfix) with ESMTP id 718AB200A208;
+	Fri, 24 Aug 2007 05:22:31 +0200 (CEST)
+In-Reply-To: <20070823203757.GA25971@deprecation.cyrius.com>
+References: <20070823203757.GA25971@deprecation.cyrius.com>
+Mime-Version: 1.0 (Apple Message framework v752.3)
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha1; boundary="Apple-Mail-7--834839395"
+Message-Id: <80320FD4-C8A6-4251-9923-58B0954F91D2@27m.se>
+Cc:	linux-mips@linux-mips.org
+Content-Transfer-Encoding: 7bit
+From:	Markus Gothe <markus.gothe@27m.se>
+Subject: Re: Tulip driver broken on Cobalt RaQ1 in 2.6
+Date:	Fri, 24 Aug 2007 05:22:37 +0200
+To:	Martin Michlmayr <tbm@cyrius.com>
+X-Pgp-Agent: GPGMail 1.1.2 (Tiger)
+X-Mailer: Apple Mail (2.752.3)
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lysator.liu.se
+Return-Path: <markus.gothe@27m.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16263
+X-archive-position: 16264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: markus.gothe@27m.se
 Precedence: bulk
 X-list: linux-mips
 
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--Apple-Mail-7--834839395
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ISO-8859-1; delsp=yes; format=flowed
 
---ikeVEW9yuYc//A+q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Have you diffed the two versions against eachother, for the memory =20
+address its running uncached. Check io-remapping.
 
-We have Debian users who happily used 2.4.27 on their Cobalt Raq1 and
-Qube 2700.  However, since we moved to 2.6 these machines stopped
-working.  I found out that the network driver (tulip) is no longer
-working on these machines.  Today I tried to track down when this
-started to happen but I couldn't find a 2.6 release where it actually
-worked.
+//Markus
 
-The 2.4.27 release we have is based on Peter Horton's patches from
-http://www.colonel-panic.org/cobalt-mips/  Today I tested current git,
-and 2.6.18 (which work out of the box), as well as 2.6.12-rc2 and
-2.6.16-rc1 with Peter's patches.  In all of these releases, network
-would work fine on a RaQ2, but not on a RaQ1.  I'm not sure what
-information to report because I found nothing obvious.  In 2.4.27, we
-get:
+On 23 Aug, 2007, at 22:37 , Martin Michlmayr wrote:
 
-PCI: Enabling device 00:07.0 (0045 -> 0047)
-tulip0: Old format EEPROM on 'Cobalt Microserver' board.  Using substitute media control info.
-tulip0:  EEPROM default media type Autosense.
-tulip0:  Index #0 - Media MII (#11) described by a 21142 MII PHY (3) block.
-tulip0:  MII transceiver #1 config 1000 status 7809 advertising 01e1.
-eth0: Digital DS21143 Tulip rev 65 at 0x100000, 00:10:E0:00:27:5C, IRQ 4.
+> We have Debian users who happily used 2.4.27 on their Cobalt Raq1 and
+> Qube 2700.  However, since we moved to 2.6 these machines stopped
+> working.  I found out that the network driver (tulip) is no longer
+> working on these machines.  Today I tried to track down when this
+> started to happen but I couldn't find a 2.6 release where it actually
+> worked.
+>
+> The 2.4.27 release we have is based on Peter Horton's patches from
+> http://www.colonel-panic.org/cobalt-mips/  Today I tested current git,
+> and 2.6.18 (which work out of the box), as well as 2.6.12-rc2 and
+> 2.6.16-rc1 with Peter's patches.  In all of these releases, network
+> would work fine on a RaQ2, but not on a RaQ1.  I'm not sure what
+> information to report because I found nothing obvious.  In 2.4.27, we
+> get:
+>
+> PCI: Enabling device 00:07.0 (0045 -> 0047)
+> tulip0: Old format EEPROM on 'Cobalt Microserver' board.  Using =20
+> substitute media control info.
+> tulip0:  EEPROM default media type Autosense.
+> tulip0:  Index #0 - Media MII (#11) described by a 21142 MII PHY =20
+> (3) block.
+> tulip0:  MII transceiver #1 config 1000 status 7809 advertising 01e1.
+> eth0: Digital DS21143 Tulip rev 65 at 0x100000, 00:10:E0:00:27:5C, =20
+> IRQ 4.
+>
+> wheras 2.6.16-rc1 has:
+>
+> PCI: Enabling device 0000:00:07.0 (0041 -> 0043)
+> tulip0: Old format EEPROM on 'Cobalt Microserver' board.  Using =20
+> substitute media control info.
+> tulip0:  EEPROM default media type Autosense.
+> tulip0:  Index #0 - Media MII (#11) described by a 21142 MII PHY =20
+> (3) block.
+> tulip0:  MII transceiver #1 config 1000 status 7809 advertising 01e1.
+> eth0: Digital DS21143 Tulip rev 65 at b0001000, 00:10:E0:00:27:5C, =20
+> IRQ 20.
+>
+> The address is different but I doubt this makes a difference =20
+> because the
+> RaQ2 shows the same difference and here networking works.  I also =20
+> noticed
+> the following in the boot logs of the RaQ1 with 2.6 that doesn't =20
+> happen
+> with 2.4, but that's because 2.4 doesn't have such a warning:
+>
+> Galileo: revision 2
+> Galileo: PCI retry count exceeded (06.0)
+>
+> Does anyone who knows about Cobalt hardware have any idea where to =20
+> look?
+> I'm happy to send boot logs and test patches if someone wants to
+> investigate this problem.
+>
+> --=20
+> Martin Michlmayr
+> http://www.cyrius.com/<raq1-git>
 
-wheras 2.6.16-rc1 has:
+_______________________________________
 
-PCI: Enabling device 0000:00:07.0 (0041 -> 0043)
-tulip0: Old format EEPROM on 'Cobalt Microserver' board.  Using substitute media control info.
-tulip0:  EEPROM default media type Autosense.
-tulip0:  Index #0 - Media MII (#11) described by a 21142 MII PHY (3) block.
-tulip0:  MII transceiver #1 config 1000 status 7809 advertising 01e1.
-eth0: Digital DS21143 Tulip rev 65 at b0001000, 00:10:E0:00:27:5C, IRQ 20.
+Mr Markus Gothe
+Software Engineer
 
-The address is different but I doubt this makes a difference because the
-RaQ2 shows the same difference and here networking works.  I also noticed
-the following in the boot logs of the RaQ1 with 2.6 that doesn't happen
-with 2.4, but that's because 2.4 doesn't have such a warning:
+Phone: +46 (0)13 21 81 20 (ext. 1046)
+Fax: +46 (0)13 21 21 15
+Mobile: +46 (0)73 718 72 80
+Diskettgatan 11, SE-583 35 Link=F6ping, Sweden
+www.27m.com
 
-Galileo: revision 2
-Galileo: PCI retry count exceeded (06.0)
 
-Does anyone who knows about Cobalt hardware have any idea where to look?
-I'm happy to send boot logs and test patches if someone wants to
-investigate this problem.
 
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+--Apple-Mail-7--834839395
+content-type: application/pgp-signature; x-mac-type=70674453;
+	name=PGP.sig
+content-description: This is a digitally signed message part
+content-disposition: inline; filename=PGP.sig
+content-transfer-encoding: 7bit
 
---ikeVEW9yuYc//A+q
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: attachment; filename=raq1-git
-Content-Transfer-Encoding: 8bit
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (Darwin)
 
-Linux version 2.6.23-rc3-gb377fd39 (tbm@em64t) (gcc version 4.1.2 20061028 (prerelease) (Debian 4.1.1-19)) #46 Thu Aug 23 09:06:46 UTC 2007
-console [early0] enabled
-CPU revision is: 00002810
-FPU revision is: 00002810
-Determined physical RAM map:
- memory: 03000000 @ 00000000 (usable)
-Built 1 zonelists in Zone order.  Total pages: 12192
-Kernel command line: console=ttyS0,115200 root=/dev/sda1
-Primary instruction cache 16kB, physically tagged, 2-way, linesize 32 bytes.
-Primary data cache 16kB, 2-way, linesize 32 bytes.
-Synthesized TLB refill handler (21 instructions).
-Synthesized TLB load handler fastpath (34 instructions).
-Synthesized TLB store handler fastpath (34 instructions).
-Synthesized TLB modify handler fastpath (33 instructions).
-PID hash table entries: 256 (order: 8, 1024 bytes)
-Console: colour dummy device 80x25
-Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
-Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
-Memory: 45080k/49152k available (2445k kernel code, 4056k reserved, 447k data, 96k init, 0k highmem)
-Mount-cache hash table entries: 512
-NET: Registered protocol family 16
-SCSI subsystem initialized
-Galileo: revision 2
-Galileo: PCI retry count exceeded (06.0)
-Cobalt board ID: 4
-NET: Registered protocol family 2
-IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
-TCP established hash table entries: 2048 (order: 2, 16384 bytes)
-TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
-TCP: Hash tables configured (established 2048 bind 2048)
-TCP reno registered
-Installing knfsd (copyright (C) 1996 okir@monad.swb.de).
-io scheduler noop registered
-io scheduler anticipatory registered (default)
-io scheduler deadline registered
-io scheduler cfq registered
-Activating ISA DMA hang workarounds.
-Cobalt LCD Driver v2.10
-Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing disabled
-ÿserial8250.0: ttyS0 at MMIO 0x1c800000 (irq = 21) is a ST16650V2
-console handover: boot [early0] -> real [ttyS0]
-loop: module loaded
-Linux Tulip driver version 1.1.15 (Feb 27, 2007)
-PCI: Enabling device 0000:00:07.0 (0041 -> 0043)
-tulip0: Old format EEPROM on 'Cobalt Microserver' board.  Using substitute media control info.
-tulip0:  EEPROM default media type Autosense.
-tulip0:  Index #0 - Media MII (#11) described by a 21142 MII PHY (3) block.
-tulip0:  MII transceiver #1 config 1000 status 7809 advertising 01e1.
-eth0: Digital DS21142/43 Tulip rev 65 at Port 0x1000, 00:10:E0:00:27:5C, IRQ 20.
-PCI: Unable to reserve I/O region #1:8@f00001f0 for device 0000:00:09.1
-pata_via 0000:00:09.1: failed to request/iomap BARs for port 0 (errno=-16)
-PCI: Unable to reserve I/O region #3:8@f0000170 for device 0000:00:09.1
-pata_via 0000:00:09.1: failed to request/iomap BARs for port 1 (errno=-16)
-pata_via 0000:00:09.1: no available native port
-physmap platform flash device: 00080000 at 1fc00000
-Found: AMD AM29F040
-physmap-flash.0: Found 1 x8 devices at 0x0 in 8-bit bank
-number of JEDEC chips: 1
-cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
-cmdlinepart partition parsing not available
-RedBoot partition parsing not available
-Using physmap partition information
-Creating 1 MTD partitions on "physmap-flash.0":
-0x00000000-0x00080000 : "firmware"
-input: Cobalt buttons as /class/input/input0
-rtc_cmos rtc_cmos: rtc core: registered rtc_cmos as rtc0
-rtc0: alarms up to one day
-TCP cubic registered
-Initializing XFRM netlink socket
-NET: Registered protocol family 1
-NET: Registered protocol family 17
-NET: Registered protocol family 15
+iD8DBQFGzk7+6I0XmJx2NrwRAunsAJ9tQ2cI7R6h6MVXtWXYnouS0FGKxQCfecuZ
+M6RsmhwPWVL08ZV1eKcPteo=
+=Zqbp
+-----END PGP SIGNATURE-----
 
---ikeVEW9yuYc//A+q--
+--Apple-Mail-7--834839395--

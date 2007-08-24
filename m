@@ -1,56 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 12:42:17 +0100 (BST)
-Received: from nz-out-0506.google.com ([64.233.162.229]:22932 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024516AbXHXLmI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Aug 2007 12:42:08 +0100
-Received: by nz-out-0506.google.com with SMTP id n1so447831nzf
-        for <linux-mips@linux-mips.org>; Fri, 24 Aug 2007 04:41:46 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=K5KmgNq+DDtr2t/i5N+ALeNzWPSs5V1rm8lR/HancLH3N9mlXdPZTJbVep8JTJBjYM8TIBareabJyk7qeuppDItPTx0OhzghXayviKV3+3jrXk8VUek/rDY59adCxe6h/f9iaIg+yACg+niZM6X1kH8z4NyI35EWHXBzsDpxzW4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=GXOqjXteXojw5iXTBnUhFM3ah2tUIsrAKhL9Y0DveK0qhEtEL6cPqM3+hfkQn0Yjd2Ax5ax6pLMlDC1Yt1Df/AdqqQIW1vsKbruk43FT0dKPCIJuoHhSDhgwvUNYHoMFbFSgVEGerVC7B+OQsIiruLdJjNAE4i9Lp707oVls6r0=
-Received: by 10.65.139.9 with SMTP id r9mr5352925qbn.1187955706016;
-        Fri, 24 Aug 2007 04:41:46 -0700 (PDT)
-Received: from ?192.168.1.120? ( [77.250.112.35])
-        by mx.google.com with ESMTPS id 6sm851550nfv.2007.08.24.04.41.42
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 24 Aug 2007 04:41:42 -0700 (PDT)
-Message-ID: <46CEC3E9.3020300@gmail.com>
-Date:	Fri, 24 Aug 2007 13:41:29 +0200
-From:	Sunil Amitkumar Janki <devel.sjanki@gmail.com>
-User-Agent: Thunderbird 2.0.0.6 (X11/20070728)
-MIME-Version: 1.0
-CC:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 14:07:24 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:26553 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20024588AbXHXNHW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Aug 2007 14:07:22 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7OD7Lb9027867;
+	Fri, 24 Aug 2007 14:07:21 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7OD7L0u027866;
+	Fri, 24 Aug 2007 14:07:21 +0100
+Date:	Fri, 24 Aug 2007 14:07:21 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Sunil Amitkumar Janki <devel.sjanki@gmail.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Kernel 2.6.23-rc3 build error
-References: <46CB0876.5030508@gmail.com> <20070824110729.GA4321@linux-mips.org> <46CEC0C1.1080603@gmail.com> <20070824113424.GA28274@linux-mips.org>
-In-Reply-To: <20070824113424.GA28274@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <devel.sjanki@gmail.com>
+Message-ID: <20070824130721.GA27604@linux-mips.org>
+References: <46CB0876.5030508@gmail.com> <20070824110729.GA4321@linux-mips.org> <46CEC23D.1090706@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46CEC23D.1090706@gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16271
+X-archive-position: 16272
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: devel.sjanki@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
->
-> I'm only interested in the version of your crosscompiler, not the native
-> one.
->
->   Ralf
+On Fri, Aug 24, 2007 at 01:34:21PM +0200, Sunil Amitkumar Janki wrote:
 
-It is a native compile on the Fu Long box, I have ported Slackware 12.0
-to run on it.
+> >>>ERROR: "__cmpdi2" [drivers/md/dm-snapshot.ko] undefined!
+> >>>      
+> >
+> >The __cmpdi2 one is the interesting one.  Which version of gcc are you
+> >using?  And if you still have it, could you send me your .config file?
 
-  Sunil
+I've just pushed a fix for the __cmpdi2 problem.  It's a generic MIPS issue
+and I didn't invest the time into figuring out what circumstances exactly
+are required to trigger it.
+
+The references to request_dma and free_dma are a separate Fulong-specific
+issue.  They are the result of platform neither defining GENERIC_ISA_DMA
+nor GENERIC_ISA_DMA_SUPPORT_BROKEN.  I'm not sure if the Fulong contains
+ISA-ish peripherals in its south bridge which are actually being used.
+Maybe else knows?
+
+  Ralf

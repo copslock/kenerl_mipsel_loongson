@@ -1,62 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 05:38:29 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:63514 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20024032AbXHXEiU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Aug 2007 05:38:20 +0100
-Received: by mo.po.2iij.net (mo30) id l7O4awcY094119; Fri, 24 Aug 2007 13:36:58 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox300) id l7O4auSf028666
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 24 Aug 2007 13:36:57 +0900
-Date:	Fri, 24 Aug 2007 13:36:56 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Aug 2007 09:02:54 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:7175 "EHLO sorrow.cyrius.com")
+	by ftp.linux-mips.org with ESMTP id S20024252AbXHXICq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Aug 2007 09:02:46 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id AEA03D8D1; Fri, 24 Aug 2007 08:02:33 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 3A4035437A; Fri, 24 Aug 2007 10:02:16 +0200 (CEST)
+Date:	Fri, 24 Aug 2007 10:02:16 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Tulip driver broken on Cobalt RaQ1 in 2.6
-Message-Id: <20070824133656.4163c577.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20070823203757.GA25971@deprecation.cyrius.com>
-References: <20070823203757.GA25971@deprecation.cyrius.com>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Message-ID: <20070824080215.GA31646@deprecation.cyrius.com>
+References: <20070823203757.GA25971@deprecation.cyrius.com> <20070824133656.4163c577.yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070824133656.4163c577.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16265
+X-archive-position: 16266
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+* Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> [2007-08-24 13:36]:
+> What error occurs on Raq1?
 
-On Thu, 23 Aug 2007 22:37:57 +0200
-Martin Michlmayr <tbm@cyrius.com> wrote:
+There is no error, but I never get a DHCP response:
 
-> We have Debian users who happily used 2.4.27 on their Cobalt Raq1 and
-> Qube 2700.  However, since we moved to 2.6 these machines stopped
-> working.  I found out that the network driver (tulip) is no longer
-> working on these machines.  Today I tried to track down when this
-> started to happen but I couldn't find a 2.6 release where it actually
-> worked.
+Listening on LPF/eth0/00:10:e0:00:27:5c
+Sending on   LPF/eth0/00:10:e0:00:27:5c
+Sending on   Socket/fallback/fallback-net
+DHCPREQUEST on eth0 to 255.255.255.255 port 67
+eth0: Setting full-duplex based on MII#1 link partner capability of 45e1.
+DHCPREQUEST on eth0 to 255.255.255.255 port 67
+DHCPDISCOVER on eth0 to 255.255.255.255 port 67 interval 6
+DHCPDISCOVER on eth0 to 255.255.255.255 port 67 interval 10
+DHCPDISCOVER on eth0 to 255.255.255.255 port 67 interval 7
+DHCPDISCOVER on eth0 to 255.255.255.255 port 67 interval 14
+DHCPDISCOVER on eth0 to 255.255.255.255 port 67 interval 17
+DHCPDISCOVER on eth0 to 255.255.255.255 port 67 interval 7
+No DHCPOFFERS received.
+
+> > Galileo: PCI retry count exceeded (06.0)
 > 
-> The 2.4.27 release we have is based on Peter Horton's patches from
-> http://www.colonel-panic.org/cobalt-mips/  Today I tested current git,
-> and 2.6.18 (which work out of the box), as well as 2.6.12-rc2 and
-> 2.6.16-rc1 with Peter's patches.  In all of these releases, network
-> would work fine on a RaQ2, but not on a RaQ1.  I'm not sure what
-> information to report because I found nothing obvious.  In 2.4.27, we
-> get:
+> I cannot find this line in current git.
 
-What error occurs on Raq1?
+It's in arch/mips/cobalt/irq.c
 
-> Galileo: PCI retry count exceeded (06.0)
+> Do you apply any patch for Debian kernel?
 
-I cannot find this line in current git.
-Do you apply any patch for Debian kernel?
+This is a pristine kernel from git (well, I had to apply your patch to
+get IDE going).
 
-Yoichi
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

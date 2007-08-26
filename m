@@ -1,99 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Aug 2007 12:06:46 +0100 (BST)
-Received: from asia.telenet-ops.be ([195.130.137.74]:63137 "EHLO
-	asia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20026238AbXHZLGh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 26 Aug 2007 12:06:37 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by asia.telenet-ops.be (Postfix) with SMTP id 51228D418A;
-	Sun, 26 Aug 2007 13:06:37 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by asia.telenet-ops.be (Postfix) with ESMTP id DFCA0D41A2;
-	Sun, 26 Aug 2007 13:06:35 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-8) with ESMTP id l7QB6ZWA014831
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 26 Aug 2007 13:06:35 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l7QB6VWK014828;
-	Sun, 26 Aug 2007 13:06:31 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Sun, 26 Aug 2007 13:06:31 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Mike Frysinger <vapier.adi@gmail.com>
-Cc:	Joe Perches <joe@perches.com>, linux-kernel@vger.kernel.org,
-	blinux-list@redhat.com, cluster-devel@redhat.com,
-	discuss@x86-64.org, jffs-dev@axis.com, linux-acpi@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-mm@kvack.org, linux-mtd@lists.infradead.org,
-	linux-scsi@vger.kernel.org, mpt_linux_developer@lsi.com,
-	netdev@vger.kernel.org, osst-users@lists.sourceforge.net,
-	parisc-linux@parisc-linux.org, tpmdd-devel@lists.sourceforge.net,
-	uclinux-dist-devel@blackfin.uclinux.org
-Subject: Re: [PATCH] Prefix each line of multiline printk(KERN_<level>
- "foo\nbar") with KERN_<level>
-In-Reply-To: <8bd0f97a0708260354xb4c8546od0cc19a590820f32@mail.gmail.com>
-Message-ID: <Pine.LNX.4.64.0708261305020.31149@anakin>
-References: <1187999098.32738.179.camel@localhost> <Pine.LNX.4.64.0708261028120.31149@anakin>
- <8bd0f97a0708260354xb4c8546od0cc19a590820f32@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Aug 2007 15:46:44 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:28628 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20024007AbXHZOqf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 26 Aug 2007 15:46:35 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id BD98F3EC9; Sun, 26 Aug 2007 07:46:02 -0700 (PDT)
+Message-ID: <46D192C9.7070208@ru.mvista.com>
+Date:	Sun, 26 Aug 2007 18:48:41 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Alchemy DMA and GFP_DMA
+References: <20070816110501.GA5701@linux-mips.org>
+In-Reply-To: <20070816110501.GA5701@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16288
+X-archive-position: 16289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 26 Aug 2007, Mike Frysinger wrote:
-> On 8/26/07, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Fri, 24 Aug 2007, Joe Perches wrote:
-> > > Corrected printk calls with multiple output lines which
-> > > did not correctly preface each line with KERN_<level>
-> > >
-> > > Fixed uses of some single lines with too many KERN_<level>
-> >
-> > > --- a/arch/arm/kernel/ecard.c
-> > > +++ b/arch/arm/kernel/ecard.c
-> > > @@ -547,7 +547,8 @@ static void ecard_check_lockup(struct irq_desc *desc)
-> > >       if (last == jiffies) {
-> > >               lockup += 1;
-> > >               if (lockup > 1000000) {
-> > > -                     printk(KERN_ERR "\nInterrupt lockup detected - "
-> > > +                     printk(KERN_ERR "\n"
-> > > +                            KERN_ERR "Interrupt lockup detected - "
-> > >                              "disabling all expansion card interrupts\n");
-> > >
-> > >                       desc->chip->mask(IRQ_EXPANSIONCARD);
-> >
-> > What's the purpose of having lines printed with e.g. `KERN_ERR "\n"' only?
-> > Shouldn't these just be removed?
-> >
-> > Usually lines starting with `\n' are continuations, but given some other
-> > module may call printk() in between, there's no guarantee continuations
-> > appear on the same line.
-> 
-> erm, i thought the prink lock was grabbed per-buffer, not per-line ...
-> so yes, if the function calls were like printk(KERN_ERR "\n");
-> printk(KERN_ERR "..."); things could be broken up, but this is on
-> function call, so it shouldnt ...
+Hello.
 
-Yes it is.
+Ralf Baechle wrote:
 
-What I mean is that probably there used to be a printk() call starting with
-`\n'. Then someone added a `KERN_ERR' in front of it.
+> arch/mips/au1000/common/dbdma.c uses GFP_DMA in two places and I think
+> both instances are uncessary.  Could some alchmist confirm that both are
+> unnecessary?
 
-Gr{oetje,eeting}s,
+> Thanks,
 
-						Geert
+>   Ralf
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+> diff --git a/arch/mips/au1000/common/dbdma.c b/arch/mips/au1000/common/dbdma.c
+> index 626de44..708b83b 100644
+> --- a/arch/mips/au1000/common/dbdma.c
+> +++ b/arch/mips/au1000/common/dbdma.c
+> @@ -397,7 +397,7 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int entries)
+>  	 * slabs of memory.
+>  	 */
+>  	desc_base = (u32)kmalloc(entries * sizeof(au1x_ddma_desc_t),
+> -			GFP_KERNEL|GFP_DMA);
+> +			GFP_KERNEL);
+>  	if (desc_base == 0)
+>  		return 0;
+>  
+> @@ -408,7 +408,7 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int entries)
+>  		kfree((const void *)desc_base);
+>  		i = entries * sizeof(au1x_ddma_desc_t);
+>  		i += (sizeof(au1x_ddma_desc_t) - 1);
+> -		if ((desc_base = (u32)kmalloc(i, GFP_KERNEL|GFP_DMA)) == 0)
+> +		if ((desc_base = (u32)kmalloc(i, GFP_KERNEL)) == 0)
+>  			return 0;
+>  
+>  		desc_base = ALIGN_ADDR(desc_base, sizeof(au1x_ddma_desc_t));
+
+     Those are probably still necessary because the DBDMA descriptors itselves 
+(not the data they address) must have 32-bit addresses.
+
+WBR, Sergei

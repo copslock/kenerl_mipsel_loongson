@@ -1,52 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Aug 2007 04:46:42 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.187]:58853 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022252AbXH0Dqe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Aug 2007 04:46:34 +0100
-Received: by nf-out-0910.google.com with SMTP id c10so946635nfd
-        for <linux-mips@linux-mips.org>; Sun, 26 Aug 2007 20:46:16 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Nd6wD46V+OjBC6kFQnCC2BoaFSJ2erAdtBTvkxRfmK6zi5QAUg5govSHKZN/bGpgh4QlNK119r/TCWDI1NEMMZ7i/R7WdxdKKs2pXx3kR8RMZuJqWa7M35i5EHCuCUwNttNaJkq1c6rOrpPICokjWg+wkPUxIpTNiAPz6A9wJC8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=QITw+XhqIcs4kFd+aJL0c4/p+XJB5EMfh3BOlo+fMHTbHGlhRBzQrDtTdj3U7hcKt5uSuSCs7oFYjWvwmWmyUEzQdl7Z1/xg1p9tLIS8wMEYtoeXtO6LMUGTCyRYRVCWkKIaKwJlAB9tW7KLzgaqyeXhEDxsMVRHr875IRD4g1o=
-Received: by 10.78.172.20 with SMTP id u20mr3511656hue.1188186376318;
-        Sun, 26 Aug 2007 20:46:16 -0700 (PDT)
-Received: by 10.78.151.16 with HTTP; Sun, 26 Aug 2007 20:46:16 -0700 (PDT)
-Message-ID: <e81c31b60708262046q6e2f0abl1a31c42378913083@mail.gmail.com>
-Date:	Sun, 26 Aug 2007 20:46:16 -0700
-From:	"James Hartley" <jjhartley@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Aug 2007 07:36:02 +0100 (BST)
+Received: from host224-147-dynamic.60-82-r.retail.telecomitalia.it ([82.60.147.224]:64260
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20027149AbXH0Gfy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 27 Aug 2007 07:35:54 +0100
+Received: from eppesuig3 ([192.168.2.50])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1IPYCT-0002W7-3q
+	for linux-mips@linux-mips.org; Mon, 27 Aug 2007 08:35:50 +0200
+Subject: Re: Exception while loading kernel
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
 To:	linux-mips@linux-mips.org
-Subject: enabling second IDE channel on Cobalt RaQ 2?
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+In-Reply-To: <1188030215.13999.14.camel@scarafaggio>
+References: <1188030215.13999.14.camel@scarafaggio>
+Content-Type: text/plain
+Date:	Mon, 27 Aug 2007 08:36:03 +0200
+Message-Id: <1188196563.2177.13.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <jjhartley@gmail.com>
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16292
+X-archive-position: 16293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jjhartley@gmail.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-The following page:
+Hi all,
+I compiled the latest kernel 2.6.22.4 from www.kernel.org and 2.6.23-rc3
+from linux-.mips.org using the .config from Debian
+linux-image-2.6.22-1-r5k_ip32 and activating CONFIG_NFSD_V4 and a few
+network device drivers.
 
-http://www.linux-mips.org/wiki/Cobalt
+The command I used to compile was:
 
-...mentions that with a minimum of changes, the second IDE channel can
-be enabled on a Cobalt RaQ2, yet what resistors, transistors, etc.,
-are not specified nor in what configuration.  Performing a Google
-search keeps coming back to this page.  Does anyone have information
-on what needs to be done in order to enable the second IDE channel?
+$ fakeroot make-kpkg --revision 2:2.6.22 \
+	--append-to-version -1gs-r5k-ip32 --arch-in-name buildpackage
 
-Thanks for any candor shared.
+When I boot an SGI O2 r5k with any of those kernel, I get this error message:
+---------------------------------------------------------------------------
+Loading 64-bit executable
+Loading program segment 1 at 0x80005000, offset=0x0 4000, size = 0x0 4f8086
+5dc000      (cache: 95.0%)Zeroing memory ar 0x82f611, size 0 0x0
+Starting ELF64 kernel
 
-Jim
+Exception: <vector=Normal>
+Status register: 0x34010082<CU1,CU0,FR,DE,IPL=8,KX,MODE=KERNEL>
+Cause register: 0x8014<CE=0,IP8,EXC=WADE>
+Exception PC: 0x802204fc, Exception RA: 0x804da7ac
+Write address error exception, bad address: 0xfffff000
+  Saved user regs in hex (&gpda 0x81060e08, &_regs 0x81061008):
+  arg: 81070000 0 804ff518 1
+  tmp: 81070000 1000 80516868 fff8054b ffffffff 81412ef4 a13fb0d0 8
+  sve: 81070000 4083ae51 0 4608a976 0 0 0 80ee80d5
+  t8 81070000 t9 0 at 0 v0 0 v1 0 k1 fffff000
+  gp 81070000 fp 0 sp 0 ra 0
+
+PANIC: Unexpected exception
+
+[Press reset or ENTER to restart.]
+---------------------------------------------------------------------------
+
+If I understand correctly the problem happened at address 0x802204fc, so
+I checked the system.map file and found
+ffffffff802204c4 T __bzero
+ffffffff80220524 t memset_partial
+
+If I understand correctly, the kernel was executing the __bzero function
+and tried accessing the invalid address 0xfffff000.
+
+Other, maybe useful, addresses from system.map are:
+
+ffffffff804da6e8 t init_bootmem_core
+ffffffff804da7c8 t $L99
+
+ffffffff80516868 b contig_bootmem_data
+
+ffffffff804ff4e8 B boot_mem_map
+ffffffff804ff7f0 B fw_arg0
+
+>From these number, I guess that boot_mem_map contain an invalid address.
+Is this correct?
+
+Bye,
+Giuseppe

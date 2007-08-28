@@ -1,56 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2007 16:05:34 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:64225 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20028960AbXH1PFc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 28 Aug 2007 16:05:32 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7SF5VVW017289;
-	Tue, 28 Aug 2007 16:05:31 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7SF5V8V017282;
-	Tue, 28 Aug 2007 16:05:31 +0100
-Date:	Tue, 28 Aug 2007 16:05:31 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] PCI: Remove __devinit attribute from pcibios_fixup_bus.
-Message-ID: <20070828150531.GG11607@linux-mips.org>
-References: <S20023984AbXHXBUC/20070824012002Z+18840@ftp.linux-mips.org> <20070825.002328.108738360.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070825.002328.108738360.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Aug 2007 18:21:46 +0100 (BST)
+Received: from host86-208-dynamic.0-87-r.retail.telecomitalia.it ([87.0.208.86]:43787
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20021297AbXH1RVi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 28 Aug 2007 18:21:38 +0100
+Received: from eppesuig3 ([192.168.2.50])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1IQ4hm-0000y8-BF
+	for linux-mips@linux-mips.org; Tue, 28 Aug 2007 19:18:20 +0200
+Subject: Re: Exception while loading kernel
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <46D2CB0F.7020505@27m.se>
+References: <1188030215.13999.14.camel@scarafaggio>
+	 <1188196563.2177.13.camel@scarafaggio>  <46D2CB0F.7020505@27m.se>
+Content-Type: text/plain
+Date:	Tue, 28 Aug 2007 19:18:34 +0200
+Message-Id: <1188321514.6882.3.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16302
+X-archive-position: 16303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Aug 25, 2007 at 12:23:28AM +0900, Atsushi Nemoto wrote:
+Hi Markus,
 
-> On Fri, 24 Aug 2007 02:19:57 +0100, linux-mips@linux-mips.org wrote:
-> > Author: Ralf Baechle <ralf@linux-mips.org> Thu Aug 23 14:12:56 2007 +0100
-> > Commit: dda571e0032731ed05b65e365283c54522483b08
-> > Gitweb: http://www.linux-mips.org/g/linux/dda571e0
-> > Branch: master
-> > 
-> > Since 96bde06a2df1b363206d3cdef53134b84ff37813 pcibios_fixup_bus's caller
-> > pci_scan_child_bus is no longer marked __devinit resulting in this modpost
-> > warning if PCI && !HOTPLUG:
+Il giorno lun, 27/08/2007 alle 15.01 +0200, Markus Gothe ha scritto:
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA256
 > 
-> And pci_read_bridge_bases() called by pcibios_fixup_bus is still
-> marked __devinit.
+> What about trying 2.6.22 from linux-mips.org in first place?
 > 
-> Should we drop __devinit from pci_read_bridge_bases() too?
+> //Markus
 
-I already sent such a patch to gregkh on 23/8, so it'll just take a little
-bit until this patch has propagated to Linus.
+2.6.22.2, downloaded from linux-mips.org, display the same problem. I
+got:
 
-  Ralf
+Exception PC: 0x8022051c, Exception RA: 0x804da7ec
+tmp: 81070000 1000 80516868 fff8054b ffffffff 81412ef4 a13fab68 7
+
+and, from my System.map file,
+
+ffffffff802204e4 T __bzero
+ffffffff80220544 t memset_partial
+
+ffffffff804da728 t init_bootmem_core
+ffffffff804da808 t $L99
+
+ffffffff80516860 B percpu_pagelist_fraction
+ffffffff80516868 b contig_bootmem_data
+
+Bye,
+Giuseppe

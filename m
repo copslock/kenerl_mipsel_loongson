@@ -1,70 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2007 05:07:26 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:40619 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20021563AbXH2EHR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 29 Aug 2007 05:07:17 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 9F0BD309DAD;
-	Wed, 29 Aug 2007 04:07:12 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Wed, 29 Aug 2007 04:07:12 +0000 (UTC)
-Received: from [192.168.7.235] ([192.168.7.235]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 28 Aug 2007 21:07:11 -0700
-Message-ID: <46D4F0EF.5030009@avtrex.com>
-Date:	Tue, 28 Aug 2007 21:07:11 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, jschmidt@avtrex.com, sfrancis@avtrex.com
-Subject: Re: O_DIRECT file access and cache aliasing...
-References: <46D4C61C.6010008@avtrex.com> <20070829.115949.75427319.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20070829.115949.75427319.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Aug 2007 07:47:05 +0100 (BST)
+Received: from host86-208-dynamic.0-87-r.retail.telecomitalia.it ([87.0.208.86]:27397
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20022054AbXH2Gq5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Aug 2007 07:46:57 +0100
+Received: from localhost ([127.0.0.1] helo=sgi)
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1IQHK5-0003J6-Bt
+	for linux-mips@linux-mips.org; Wed, 29 Aug 2007 08:46:43 +0200
+Date:	Wed, 29 Aug 2007 08:46:22 +0200
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+Subject: Re: Exception while loading kernel
+Message-Id: <20070829084622.156798b4.giuseppe@eppesuigoccas.homedns.org>
+In-Reply-To: <F288AA63-099B-4140-81B2-6A8E21887057@27m.se>
+References: <1188030215.13999.14.camel@scarafaggio>
+	<1188196563.2177.13.camel@scarafaggio>
+	<46D2CB0F.7020505@27m.se>
+	<1188321514.6882.3.camel@scarafaggio>
+	<F288AA63-099B-4140-81B2-6A8E21887057@27m.se>
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; mips-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 29 Aug 2007 04:07:11.0107 (UTC) FILETIME=[12DB5530:01C7E9F2]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16308
+X-archive-position: 16309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Tue, 28 Aug 2007 18:04:28 -0700, David Daney <ddaney@avtrex.com> wrote:
->   
->> When we write files that were opened with O_DIRECT set, we observe that 
->> there are many 16 byte chunks of data in the files that contain all 
->> zeros instead of the correct data.
->>
->> My understanding is that the cache is virtually indexed.  So I think 
->> what is happening is that when data is written to memory by a user 
->> application that does an O_DIRECT write, the IDE driver is given a list 
->> of pages to transfer to the disk.  The driver then does a 
->> dma_cache_wback() on the KSEG0 address of the pages before initiating 
->> the DMA operation.  Since the KSEG0 address and the USEG address of the 
->> physical memory are different, the data is never flushed to memory 
->> resulting in incorrect data being written to disk.
->>     
->
-> I think get_user_pages() should flush user data for O_DIRECT.
->
-> The get_user_pages() uses flush_anon_page() to do it, and MIPS
-> flush_anon_page() was added on Mar 2007.  Does your kernel have this
-> fix?
->   
-I doubt it.  We are currently using 2.6.15.
+Hi Markus,
 
-We will look at either moving to a recent kernel or back-porting the 
-patch you mention.
+On Wed, 29 Aug 2007 04:25:35 +0200 Markus Gothe <markus.gothe@27m.se> wrote:
+> Use gdb and list the read address.
+> 
+> //Markus
 
-Thanks for the help,
-David Daney
+I never debugged the kernel. From what I read I should use something like kgdb. Did I understand correctly? Would you please point me the some documentation source for debugging as you wish?
+
+Thanks,
+Giuseppe

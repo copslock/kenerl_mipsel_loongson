@@ -1,68 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2007 02:09:12 +0100 (BST)
-Received: from rv-out-0910.google.com ([209.85.198.190]:54717 "EHLO
-	rv-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022592AbXH3BJE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 30 Aug 2007 02:09:04 +0100
-Received: by rv-out-0910.google.com with SMTP id l15so21296rvb
-        for <linux-mips@linux-mips.org>; Wed, 29 Aug 2007 18:08:45 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=mC2NpYxOG7WwuegGQYiGHM0WkhIGTZ1rKEF97epkUu+G6Yu2I+Frme4CQZsCqGm5rS6C1BT2mnj0fkmC9hBatfYGElWEMbktJTi73BcREPPU8110LE2wnX1MvbhVPoUWvyMWz3Wj3wHkFPshXLw3JU6tI0/4e4cvlJ3gwwUcdbU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=BxxDuWlfWHErT5w87oWNghqleMZYg8bJYt8KAzhJ3WNNhYE+NwW98d6X0i2Ssd28KdN7XrAXiXk8tde6oEK0bGw7F4ly6ZD1RNnZtKRoyEWflhfm5GVWysCohhk79/P4sESLl+cE8pu8JKO7s+Pba24dyXki7ml5dEaPFPxfRxY=
-Received: by 10.114.197.1 with SMTP id u1mr594276waf.1188436124943;
-        Wed, 29 Aug 2007 18:08:44 -0700 (PDT)
-Received: by 10.114.155.13 with HTTP; Wed, 29 Aug 2007 18:08:44 -0700 (PDT)
-Message-ID: <50f30abd0708291808m513ad137v8dda3890713b6c51@mail.gmail.com>
-Date:	Wed, 29 Aug 2007 18:08:44 -0700
-From:	"guo guo" <sunnyboyguo@gmail.com>
-To:	"David Daney" <ddaney@avtrex.com>
-Subject: Re: problem about the tool chain for R3000
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <46D60675.2070709@avtrex.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-References: <50f30abd0708291609i72e4aa57oce757d79a7e87fd6@mail.gmail.com>
-	 <46D60675.2070709@avtrex.com>
-Return-Path: <sunnyboyguo@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2007 13:55:27 +0100 (BST)
+Received: from host78-221-dynamic.2-87-r.retail.telecomitalia.it ([87.2.221.78]:51978
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20022321AbXH3MzS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 30 Aug 2007 13:55:18 +0100
+Received: from eppesuig3 ([192.168.2.50])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1IQjVA-00012g-04
+	for linux-mips@linux-mips.org; Thu, 30 Aug 2007 14:52:02 +0200
+Subject: Re: Exception while loading kernel
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <F288AA63-099B-4140-81B2-6A8E21887057@27m.se>
+References: <1188030215.13999.14.camel@scarafaggio>
+	 <1188196563.2177.13.camel@scarafaggio>  <46D2CB0F.7020505@27m.se>
+	 <1188321514.6882.3.camel@scarafaggio>
+	 <F288AA63-099B-4140-81B2-6A8E21887057@27m.se>
+Content-Type: text/plain
+Date:	Thu, 30 Aug 2007 14:52:22 +0200
+Message-Id: <1188478342.6770.14.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16320
+X-archive-position: 16321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sunnyboyguo@gmail.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-RGVhciBEYW5leSwKVGhhbmsgeW91IHZlcnkgbXVjaC4KVW5kZXIgbnB0bCBkaXJlY3RvcnksIHRo
-ZXJlIGFyZSA2IHBsYWNlcyB1c2UgcmRod3IgaW5zdHJ1Y3Rpb24uIFdoYXQncwpkaWZmZXJlbmNl
-IGJldHdlZW4gcmRod3IgYW5kIG1vdmUgaW5zdHJ1Y3Rpb25zPwpDb3VsZCBJIHVzZSBtb3ZlIG9y
-IG90aGVyIHIzMDAwIGluc3RydWN0aW9ucyB0byByZXBsYWNlIHJkaHdyPwoKQW5kIEkgZGlkbid0
-IGZpbmQgbGwvc2MgaW5zdHJ1Y3Rpb25zIGluIGxpYmMtMi41LjkwLnNvLiBtYXliZSBnY2MKYXZv
-aWQgdGhlbSBmb3IgUjMwMDAgY2hpcC4KCkJlc3QgcmVnYXJkcywKVG9ueQoKCjIwMDcvOC8yOSwg
-RGF2aWQgRGFuZXkgPGRkYW5leUBhdnRyZXguY29tPjoKPiBndW8gZ3VvIHdyb3RlOgo+ID4gRGVh
-ciBBbGwsCj4gPgo+ID4gSSdtIHRyeWluZyB0byBidWlsZCB0b29sIGNoYWluIHdpdGggZ2NjNC4y
-LCBiaW51dGlsczIuMTcgYW5kIGdsaWJjMi41Cj4gPiBmb3IgbWlwcyByMzAwMCBjaGlwLgo+ID4g
-RHVyaW5nIGNvbmZpZ3VyZSBnY2MgSSBhZGQgqENtYWJpPTMyIKhDbWFyY2g9cjMwMDAgqENtdHVu
-ZT1yMzAwMC4gYW5kCj4gPiBkdXJpbmcgYnVpbGRpbmcgZ2xpYmMsIEkgYWRkIENGTEFHUz0gLU8y
-IKhDbWFiaT0zMiCoQ21hcmNoPXIzMDAwCj4gPiCoQ210dW5lPXIzMDAwLAo+ID4gVGhlbiBJIGRp
-c3NlbWJsZWQgdGhlIGxpYmMtMi41LjkwLnNvIHRvIGNoZWNrIHRoZSBpbnN0cnVjdGlvbnMuIEkK
-PiA+IGZvdW5kIGl0IGhhcyB0d28gaW5zdHJ1Y3Rpb25zIHJkaHdyKDB4N2MwM2U4M2IpIGFuZCBz
-eW5jKDB4MDAwMDAwMGYpCj4gPiB0aGF0IGRvbid0IGJlbG9uZ3MgdG8gbWlwcyByMzAwMC4KPgo+
-IFRoZSByZGh3ciBhbmQgc3luYyBhcmUgdXNlZCBieSB0aGUgTlBUTCBwdGhyZWFkIGxpYnJhcnkg
-YW5kIG11c3QgYmUKPiBlbXVsYXRlZCBieSB0aGUgbGludXgga2VybmVsLiAgUHJvYmFibHkgeW91
-IHdpbGwgc2VlIGxsIGFuZCBzYyBpbiB0aGVyZQo+IGFzIHdlbGwuICBJZiB5b3UgdXNlIGdsaWJj
-Mi4zLnggd2l0aCBMaW51eCB0aHJlYWRzIHRoZW4gdGhlIHJkaHdyIHdpbGwKPiBub3QgYmUgZ2Vu
-ZXJhdGVkLgo+Cj4gIFByb2JhYmx5IGlmIHlvdSBkaWQgbm90IHVzZSBsaWJwdGhyZWFkIHlvdSB3
-b3VsZCBub3QgbmVlZCBhbnkgb2YgdGhlCj4gdGhyZWFkIHN5bmNocm9uaXphdGlvbiBwcmltaXRp
-dmVzIHRoYXQgY2F1c2UgbGwsc2MsIGFuZCBzeW5jIHRvIGJlCj4gZ2VuZXJhdGVkLgo+Cj4gQnV0
-IGlmIHlvdSB3YW50IGxpYnB0aHJlYWQgYW5kIHlvdXIgQ1BVIGRvZXMgbm90IHN1cHBvcnQgdGhl
-Cj4gaW5zdHJ1Y3Rpb25zLCB5b3Ugd2lsbCBoYXZlIHRvIGVtdWxhdGUgdGhlbS4KPgo+Cj4gRGF2
-aWQgRGFuZXkKPgo=
+Hi Markus,
+
+Il giorno mer, 29/08/2007 alle 04.25 +0200, Markus Gothe ha scritto:
+> Use gdb and list the read address.
+
+I think I understood what you mean. I recompiled the kernel adding the
+debug symbols, stripped it and booted with it.
+There I got those numbers (using the 32bit version):
+
+Exception PC: 0x8021c9fc, Exception RA: 0x804ddc6c
+gpda 0x81060e08, _regs 0x81061008
+arg: 81070000 0 80503518 1
+tmp: 81070000 1000 8051a868 fff8054f ffffffff 81412ef4 a13fab68 7
+sve: 81070000 4083ae51 0 4608a976 0 4085cc91 0 3ed97758
+
+then run gdb and issue those commands:
+
+(gdb) info symbol 0x8021c9fc
+__bzero + 56 in section .text
+(gdb) info symbol 0x804ddc6c
+init_bootmem_core + 196 in section .init.text
+(gdb) list *0x804ddc6c
+0x804ddc6c is in init_bootmem_core (mm/bootmem.c:107).
+102              */
+103             mapsize = get_mapsize(bdata);
+104             memset(bdata->node_bootmem_map, 0xff, mapsize);
+105
+106             return mapsize;
+107     }
+108
+109     /*
+110      * Marks a particular physical memory range as unallocatable. Usable RAM
+111      * might be used for boot-time allocations - or it might get added
+(gdb) list *0x8021c9fc
+No source file for address 0x8021c9fc.
+(gdb) disassemble 0x804ddc6c
+Dump of assembler code for function init_bootmem_core:
+0xffffffff804ddba8 <init_bootmem_core+0>:       daddiu  sp,sp,-32
+0xffffffff804ddbac <init_bootmem_core+4>:       sd      ra,16(sp)
+0xffffffff804ddbb0 <init_bootmem_core+8>:       sd      s1,8(sp)
+0xffffffff804ddbb4 <init_bootmem_core+12>:      sd      s0,0(sp)
+0xffffffff804ddbb8 <init_bootmem_core+16>:      li      v0,-13
+0xffffffff804ddbbc <init_bootmem_core+20>:      ld      s1,648(a0)
+0xffffffff804ddbc0 <init_bootmem_core+24>:      dsll    a1,a1,0xc
+0xffffffff804ddbc4 <init_bootmem_core+28>:      dsll32  v0,v0,0x1b
+0xffffffff804ddbc8 <init_bootmem_core+32>:      daddu   a1,a1,v0
+0xffffffff804ddbcc <init_bootmem_core+36>:      dsll    a2,a2,0xc
+0xffffffff804ddbd0 <init_bootmem_core+40>:      sd      a1,16(s1)
+0xffffffff804ddbd4 <init_bootmem_core+44>:      sd      a3,8(s1)
+0xffffffff804ddbd8 <init_bootmem_core+48>:      sd      a2,0(s1)
+0xffffffff804ddbdc <init_bootmem_core+52>:      lui     v1,0x0
+0xffffffff804ddbe0 <init_bootmem_core+56>:      lui     at,0x8049
+0xffffffff804ddbe4 <init_bootmem_core+60>:      daddiu  v1,v1,0
+0xffffffff804ddbe8 <init_bootmem_core+64>:      dsll32  v1,v1,0x0
+0xffffffff804ddbec <init_bootmem_core+68>:      daddu   v1,v1,at
+0xffffffff804ddbf0 <init_bootmem_core+72>:      ld      v1,2112(v1)
+0xffffffff804ddbf4 <init_bootmem_core+76>:      lui     a1,0x0
+0xffffffff804ddbf8 <init_bootmem_core+80>:      lui     at,0x8049
+0xffffffff804ddbfc <init_bootmem_core+84>:      daddiu  a1,a1,0
+0xffffffff804ddc00 <init_bootmem_core+88>:      daddiu  at,at,2112
+0xffffffff804ddc04 <init_bootmem_core+92>:      dsll32  a1,a1,0x0
+0xffffffff804ddc08 <init_bootmem_core+96>:      daddu   a1,a1,at
+0xffffffff804ddc0c <init_bootmem_core+100>:     bnel    v1,a1,0x804ddc88 <init_bootmem_core+224>
+0xffffffff804ddc10 <init_bootmem_core+104>:     ld      v0,-48(v1)
+0xffffffff804ddc14 <init_bootmem_core+108>:     daddiu  v0,s1,48
+0xffffffff804ddc18 <init_bootmem_core+112>:     sd      a1,48(s1)
+0xffffffff804ddc1c <init_bootmem_core+116>:     move    a0,s1
+0xffffffff804ddc20 <init_bootmem_core+120>:     lui     at,0x0
+0xffffffff804ddc24 <init_bootmem_core+124>:     daddiu  at,at,0
+0xffffffff804ddc28 <init_bootmem_core+128>:     dsll    at,at,0x10
+0xffffffff804ddc2c <init_bootmem_core+132>:     daddiu  at,at,-32695
+0xffffffff804ddc30 <init_bootmem_core+136>:     dsll    at,at,0x10
+0xffffffff804ddc34 <init_bootmem_core+140>:     sd      v0,2120(at)
+0xffffffff804ddc38 <init_bootmem_core+144>:     lui     at,0x0
+0xffffffff804ddc3c <init_bootmem_core+148>:     daddiu  at,at,0
+0xffffffff804ddc40 <init_bootmem_core+152>:     dsll    at,at,0x10
+0xffffffff804ddc44 <init_bootmem_core+156>:     daddiu  at,at,-32695
+0xffffffff804ddc48 <init_bootmem_core+160>:     dsll    at,at,0x10
+0xffffffff804ddc4c <init_bootmem_core+164>:     sd      v0,2112(at)
+0xffffffff804ddc50 <init_bootmem_core+168>:     jal     0x804dd5c8 <get_mapsize>
+0xffffffff804ddc54 <init_bootmem_core+172>:     sd      a1,8(v0)
+0xffffffff804ddc58 <init_bootmem_core+176>:     ld      a0,16(s1)
+0xffffffff804ddc5c <init_bootmem_core+180>:     move    s0,v0
+0xffffffff804ddc60 <init_bootmem_core+184>:     li      a1,255
+0xffffffff804ddc64 <init_bootmem_core+188>:     jal     0x8021c9a0 <memset>
+0xffffffff804ddc68 <init_bootmem_core+192>:     move    a2,v0
+0xffffffff804ddc6c <init_bootmem_core+196>:     move    v0,s0
+0xffffffff804ddc70 <init_bootmem_core+200>:     ld      ra,16(sp)
+0xffffffff804ddc74 <init_bootmem_core+204>:     ld      s1,8(sp)
+0xffffffff804ddc78 <init_bootmem_core+208>:     ld      s0,0(sp)
+0xffffffff804ddc7c <init_bootmem_core+212>:     jr      ra
+[...]
+(gdb) info line *0x804ddc6c
+Line 107 of "mm/bootmem.c" starts at address 0x804ddc6c <init_bootmem_core+196> and ends at 0x804ddc88 <init_bootmem_core+224>.
+(gdb) info line *0x804ddc6b
+Line 104 of "mm/bootmem.c" starts at address 0x804ddc60 <init_bootmem_core+184> and ends at 0x804ddc6c <init_bootmem_core+196>.
+
+
+So, it this what you requested?
+
+>From what I understand the problem may be that bdata->node_bootmem_map
+maybe incorrectly initialised for this machine.
+
+Bye,
+Giuseppe

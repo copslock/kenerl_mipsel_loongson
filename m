@@ -1,53 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2007 22:23:51 +0100 (BST)
-Received: from host78-221-dynamic.2-87-r.retail.telecomitalia.it ([87.2.221.78]:8467
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S20023110AbXH3VXm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 30 Aug 2007 22:23:42 +0100
-Received: from eppesuig3 ([192.168.2.50])
-	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1IQrRC-0005hy-IH
-	for linux-mips@linux-mips.org; Thu, 30 Aug 2007 23:20:28 +0200
-Subject: Re: Exception while loading kernel
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Aug 2007 22:29:08 +0100 (BST)
+Received: from nz-out-0506.google.com ([64.233.162.230]:16929 "EHLO
+	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023113AbXH3V3A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 30 Aug 2007 22:29:00 +0100
+Received: by nz-out-0506.google.com with SMTP id n1so439273nzf
+        for <linux-mips@linux-mips.org>; Thu, 30 Aug 2007 14:28:41 -0700 (PDT)
+Received: by 10.114.53.1 with SMTP id b1mr541978waa.1188509320115;
+        Thu, 30 Aug 2007 14:28:40 -0700 (PDT)
+Received: by 10.114.175.7 with HTTP; Thu, 30 Aug 2007 14:28:39 -0700 (PDT)
+Message-ID: <dd7dc2bc0708301428w4d6f8744t648856081f8d0f7@mail.gmail.com>
+Date:	Fri, 31 Aug 2007 06:28:39 +0900
+From:	"Hyon Lim" <alex@alexlab.net>
 To:	linux-mips@linux-mips.org
-In-Reply-To: <46D722E1.3080205@27m.se>
-References: <1188030215.13999.14.camel@scarafaggio>
-	 <1188196563.2177.13.camel@scarafaggio>  <46D2CB0F.7020505@27m.se>
-	 <1188321514.6882.3.camel@scarafaggio>
-	 <F288AA63-099B-4140-81B2-6A8E21887057@27m.se>
-	 <1188478342.6770.14.camel@scarafaggio>  <46D722E1.3080205@27m.se>
-Content-Type: text/plain
-Date:	Thu, 30 Aug 2007 23:20:49 +0200
-Message-Id: <1188508849.6770.35.camel@scarafaggio>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.10.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Subject: Does anyone who have an experience software suspend in MIPS arch?
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_6661_23940428.1188509320087"
+Return-Path: <alex@alexlab.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16331
+X-archive-position: 16332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: alex@alexlab.net
 Precedence: bulk
 X-list: linux-mips
 
-Il giorno gio, 30/08/2007 alle 22.04 +0200, Markus Gothe ha scritto:
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA256
-> 
-> Yes, this is usually the way (I use) to debug the kernel without using
-> kdbg /
-> adding hooks for kdbg.
-> 
-> Seems to me like a memory-addressing issue.
+------=_Part_6661_23940428.1188509320087
+Content-Type: text/plain; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-May I provide more information on this problem? Is it enought for fixing
-it?
+SSdtIHdvcmtpbmcgd2l0aCBtaXBzIGtlcm5lbCB0byBpbXBsZW1lbnQgc29mdHdhcmUgc3VzcGVu
+ZC4KTXkgd29yayBpcyBhbG1vc3QgZmluaXNoZWQsIGJ1dCBJIGhhdmUgbm8gaWRlYSBhYm91dCBz
+d3N1c3BfYXJjaF9yZXN1bWUoKQpmdW5jdGlvbiBpbiBrZXJuZWwvcG93ZXIvc3dzdXNwLmMKRG9l
+cyBhbnlvbmUgd2hvIGhhdmUgaW1wbGVtZW50ZWQgdGhlIHNvZnR3YXJlIHN1c3BlbmQgb24gTUlQ
+UyBhcmNoPwpJZiB5b3UgZG8gc28sIHBsZWFzZSBsZXQgbWUga25vdyBob3cgY2FuIEkgaW1wbGVt
+ZW50IGl0LgoKLS0gCkh5b24gTGltICjA08f2KQpNb2JpbGUuIDAxMC04MjEyLTEyNDAgKEludGwn
+IENhbGwgOiArODItMTAtODIxMi0xMjQwKQpGYXguIDAzMi0yMzItMDU3OCAoSW50bCcgQXZhaWxh
+YmxlKQpIb21lcGFnZSA6IGh0dHA6Ly93d3cuYWxleGxhYi5uZXQKQmxvZyA6IGh0dHA6Ly93d3cu
+YWxleGxhYi5uZXQvYmxvZwo=
+------=_Part_6661_23940428.1188509320087
+Content-Type: text/html; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-Thanks,
-Giuseppe
+PGRpdj5JJiMzOTttIHdvcmtpbmcgd2l0aCBtaXBzIGtlcm5lbCB0byBpbXBsZW1lbnQgc29mdHdh
+cmUgc3VzcGVuZC48L2Rpdj4KPGRpdj5NeSB3b3JrIGlzIGFsbW9zdCBmaW5pc2hlZCwgYnV0IEkg
+aGF2ZSBubyBpZGVhIGFib3V0IHN3c3VzcF9hcmNoX3Jlc3VtZSgpIGZ1bmN0aW9uIGluIGtlcm5l
+bC9wb3dlci9zd3N1c3AuYzwvZGl2Pgo8ZGl2PkRvZXMgYW55b25lIHdobyZuYnNwO2hhdmUgaW1w
+bGVtZW50ZWQgdGhlIHNvZnR3YXJlIHN1c3BlbmQgb24gTUlQUyBhcmNoPzwvZGl2Pgo8ZGl2Pklm
+IHlvdSBkbyBzbywgcGxlYXNlIGxldCBtZSBrbm93IGhvdyBjYW4gSSBpbXBsZW1lbnQgaXQuPGJy
+IGNsZWFyPSJhbGwiPjxicj4tLSA8YnI+SHlvbiBMaW0gKMDTx/YpPGJyPk1vYmlsZS4gMDEwLTgy
+MTItMTI0MCAoSW50bCYjMzk7IENhbGwgOiArODItMTAtODIxMi0xMjQwKTxicj5GYXguIDAzMi0y
+MzItMDU3OCAoSW50bCYjMzk7IEF2YWlsYWJsZSk8YnI+SG9tZXBhZ2UgOiAKPGEgaHJlZj0iaHR0
+cDovL3d3dy5hbGV4bGFiLm5ldCI+aHR0cDovL3d3dy5hbGV4bGFiLm5ldDwvYT48YnI+QmxvZyA6
+IDxhIGhyZWY9Imh0dHA6Ly93d3cuYWxleGxhYi5uZXQvYmxvZyI+aHR0cDovL3d3dy5hbGV4bGFi
+Lm5ldC9ibG9nPC9hPiA8L2Rpdj4K
+------=_Part_6661_23940428.1188509320087--

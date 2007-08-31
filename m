@@ -1,82 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Sep 2007 16:45:25 +0100 (BST)
-Received: from emailhub.stusta.mhn.de ([141.84.69.5]:61093 "EHLO
-	mailhub.stusta.mhn.de") by ftp.linux-mips.org with ESMTP
-	id S20025821AbXIAPpR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 1 Sep 2007 16:45:17 +0100
-Received: from r063144.stusta.swh.mhn.de (r063144.stusta.swh.mhn.de [10.150.63.144])
-	by mailhub.stusta.mhn.de (Postfix) with ESMTP id 2BB41182DC5;
-	Sat,  1 Sep 2007 17:46:13 +0200 (CEST)
-Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
-	id 128F73CE284; Sat,  1 Sep 2007 17:44:42 +0200 (CEST)
-Date:	Sat, 1 Sep 2007 17:44:41 +0200
-From:	Adrian Bunk <bunk@kernel.org>
-To:	Andrew Morton <akpm@linux-foundation.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@polymtl.ca>,
-	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: 2.6.23-rc4-mm1: mips compile error
-Message-ID: <20070901154441.GJ9260@stusta.de>
-References: <20070831215822.26e1432b.akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Sep 2007 21:25:27 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:3263 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20029603AbXIBUZZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 2 Sep 2007 21:25:25 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l7VNgiNa020463;
+	Sat, 1 Sep 2007 01:50:13 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l7VNghpW020456;
+	Sat, 1 Sep 2007 01:42:43 +0200
+Date:	Sat, 1 Sep 2007 01:42:43 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Markus Gothe <markus.gothe@27m.se>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: flush_kernel_dcache_page() not needed ?
+Message-ID: <20070831234243.GA9979@linux-mips.org>
+References: <46D8089F.3010109@gmail.com> <46D82A9F.5080001@27m.se>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20070831215822.26e1432b.akpm@linux-foundation.org>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <bunk@kernel.org>
+In-Reply-To: <46D82A9F.5080001@27m.se>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16344
+X-archive-position: 16345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@kernel.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Aug 31, 2007 at 09:58:22PM -0700, Andrew Morton wrote:
->...
-> Changes since 2.6.23-rc3-mm1:
->...
->  git-mips.patch
->...
->  git trees
->...
+On Fri, Aug 31, 2007 at 04:50:07PM +0200, Markus Gothe wrote:
 
-<--  snip  -->
+> Ralf added this a while ago:
+> 
+> "arch/mips/mm/cache.c:void __flush_dcache_page(struct page *page)"
 
-...
-  CC      arch/mips/kernel/asm-offsets.s
-In file included from include2/asm/processor.h:22,
-                 from include2/asm/thread_info.h:15,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/thread_info.h:21,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/preempt.h:9,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/spinlock.h:49,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/seqlock.h:29,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/time.h:8,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/timex.h:57,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/sched.h:52,
-                 from 
-/home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/arch/mips/kernel/asm-offsets.c:13:
-include2/asm/system.h:415:39: error: asm-generic/cmpxchg-local.h: No such file or directory
-make[2]: *** [arch/mips/kernel/asm-offsets.s] Error 1
+__flush_dcache_page is just the part of flush_dcache_page which does
+the real work.and has nothing to do with flush_kernel_dcache_page.
 
-<--  snip  -->
-
-
-cu
-Adrian
-
--- 
-
-       "Is there not promise of rain?" Ling Tan asked suddenly out
-        of the darkness. There had been need of rain for many days.
-       "Only a promise," Lao Er said.
-                                       Pearl S. Buck - Dragon Seed
+  Ralf

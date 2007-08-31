@@ -1,57 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2007 16:05:10 +0100 (BST)
-Received: from mu-out-0910.google.com ([209.85.134.188]:1140 "EHLO
-	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023023AbXHaPFC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 31 Aug 2007 16:05:02 +0100
-Received: by mu-out-0910.google.com with SMTP id w1so660958mue
-        for <linux-mips@linux-mips.org>; Fri, 31 Aug 2007 08:04:44 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=D0OBWTBipfSGmGDGbu1PrqjK7dTgyUiBm17l79yXWyqK7gjVNDcCWTEsotftdC4dL1gaevULTwGCR5aHFjBkHf9BMSAFejjoRp/o2bSD/8eyP3n6PYrvCTN0ECev4pp7X05nbR0EeBZexWK5hYSHN/W1ciTuxrHaZuygHE/nDvU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=p0GIQ81pRDH2WCNXQjnLTY11KieS+kQuJ/wZE2awoyaqKLJB1O0rRL3ZO7ODy7V/Wl8ZjPRF+hcYGUN0tuQyNf2v9nVou1ZwPlgsYcQxpg/7WcqEHjCwRSbdiHwfnOGfQ2WMt3eCqzt8SSRq9vCtbsNqbVPE9pcdafZz0CS7qiE=
-Received: by 10.82.160.19 with SMTP id i19mr3842763bue.1188572683963;
-        Fri, 31 Aug 2007 08:04:43 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id j12sm3397915fkf.2007.08.31.08.04.42
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 31 Aug 2007 08:04:43 -0700 (PDT)
-Message-ID: <46D82DFE.2060206@gmail.com>
-Date:	Fri, 31 Aug 2007 17:04:30 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2007 18:50:41 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:33964 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20023214AbXHaRud (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Aug 2007 18:50:33 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id DB2EC3ECA; Fri, 31 Aug 2007 10:50:00 -0700 (PDT)
+Message-ID: <46D85571.1040608@ru.mvista.com>
+Date:	Fri, 31 Aug 2007 21:52:49 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Markus Gothe <markus.gothe@27m.se>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: flush_kernel_dcache_page() not needed ?
-References: <46D8089F.3010109@gmail.com> <46D82A9F.5080001@27m.se>
-In-Reply-To: <46D82A9F.5080001@27m.se>
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Jason Farque <JasonF@pigging.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Cogent CSB655 (au1550) port
+References: <75051CD8EE06384BA32A12C8170FDCEE2FF36A@netserver.cdi.local>
+In-Reply-To: <75051CD8EE06384BA32A12C8170FDCEE2FF36A@netserver.cdi.local>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16342
+X-archive-position: 16343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello.
 
-Markus Gothe wrote:
-> Ralf added this a while ago:
-> 
-> "arch/mips/mm/cache.c:void __flush_dcache_page(struct page *page)"
+Jason Farque wrote:
+> My company is considering a port of Linux 2.6.22+ for the Cogent CSB655
+> MIPS single board computer based on the au1550 chip (info at
+> http://www.cogcomp.com/csb_csb655.htm).  This system has a Linux BSP of
+> 2.6.12 from Microcross and has lost its support.  We're having some
+> problems with this 2.6.12 port and are considering bringing it forward.
 
-I was asking for flush_kernel_dcache_page()...
+> Is anyone else using this computer that would be willing to coordinate
+> an effort to port it forward with us, or does anyone have a more recent
+> port?
 
-Please note the word "kernel" in the name of the function.
+    I guess Linux.MIPS sgould have something more recent in arch/mips/cobalt/...
 
-		Franck
+
+> Thanks,
+
+> Jason
+
+Da nada :-)

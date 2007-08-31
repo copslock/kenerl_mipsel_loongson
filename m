@@ -1,45 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2007 11:53:57 +0100 (BST)
-Received: from srv5.dvmed.net ([207.36.208.214]:22750 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20022652AbXHaKxr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Aug 2007 11:53:47 +0100
-Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1IR48G-0003nT-3o; Fri, 31 Aug 2007 10:53:44 +0000
-Message-ID: <46D7F337.80608@garzik.org>
-Date:	Fri, 31 Aug 2007 06:53:43 -0400
-From:	Jeff Garzik <jeff@garzik.org>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Aug 2007 12:26:40 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.178]:36164 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022709AbXHaL0c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 31 Aug 2007 12:26:32 +0100
+Received: by wa-out-1112.google.com with SMTP id m16so879686waf
+        for <linux-mips@linux-mips.org>; Fri, 31 Aug 2007 04:26:19 -0700 (PDT)
+Received: by 10.114.196.1 with SMTP id t1mr698054waf.1188559577292;
+        Fri, 31 Aug 2007 04:26:17 -0700 (PDT)
+Received: by 10.114.175.7 with HTTP; Fri, 31 Aug 2007 04:26:17 -0700 (PDT)
+Message-ID: <dd7dc2bc0708310426v7066f31dq383e89cdf98001b@mail.gmail.com>
+Date:	Fri, 31 Aug 2007 20:26:17 +0900
+From:	"Hyon Lim" <alex@alexlab.net>
+To:	"Markus Gothe" <markus.gothe@27m.se>
+Subject: Re: Does anyone who have an experience software suspend in MIPS arch?
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <46D7AC2E.40706@27m.se>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] IOC3: Program UART predividers.
-References: <20070826175122.GA16430@linux-mips.org>
-In-Reply-To: <20070826175122.GA16430@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jeff@garzik.org>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_8286_33539812.1188559577253"
+References: <dd7dc2bc0708301428w4d6f8744t648856081f8d0f7@mail.gmail.com>
+	 <46D7AC2E.40706@27m.se>
+Return-Path: <alex@alexlab.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16337
+X-archive-position: 16338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff@garzik.org
+X-original-sender: alex@alexlab.net
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> The IOC3 driver's UART detection bits used to rely on the the firmware
-> setting the UART pre-divider in a way that's apropriate for the 8250
-> driver which doesn't currently program this register.  This happens
-> to work for the console but not rarely for additional ports.
-> 
-> While at it, also program the UART to RS-232 PIO mode; it the UART might
-> have been in mac-serial and/or DMA mode though that hasn't actually been
-> observed in practice.
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+------=_Part_8286_33539812.1188559577253
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-applied
+Tm93IG1vZGlmaWVkIGtlcm5lbCBjYW4gc3RvcmUgYW5kIHJlc3RvcmUgcHJvY2Vzc29yIGNvbnRl
+eHQgKG1pcHMpLgpUaGUgZGlmZmVyZW5jZXMgb2YgdmFuaWxsYSBrZXJuZWwgYW5kIG1pbmUgaXMg
+Y3B1IGNvbnRleHQgc2F2aW5nIHJvdXRpbmUuIEkKbW9kaWZpZWQgeDg2IGNvZGUuCkkgY2FuIHNh
+dmUgbXkgc3lzdGVtIHNuYXBzaG90IHRvIHN3YXAgcGFydGl0aW9uIGFuZCBpdCBjYW4gYmUgbG9h
+ZGVkIG9uIGJvb3QKdGltZQp3aXRoIGFyZ3VtZW50ICJyZXN1bWU9L2Rldi8uLi4iLgpIb3dldmVy
+LCBteSBxdWVzdGlvbiBpcyB0aGF0IHdoYXQgaXMgdGhlIHB1cnBvc2Ugb2Ygc3dzdXNwX2FyY2hf
+cmVzdW1lKCkKZnVuY3Rpb24uCldoYXQgZnVuY3Rpb25hbGl0eSB3aWxsIGJlIHBsYWNlZCB0aGVy
+ZT8KCk9uIDgvMzEvMDcsIE1hcmt1cyBHb3RoZSA8bWFya3VzLmdvdGhlQDI3bS5zZT4gd3JvdGU6
+Cj4KPiAtLS0tLUJFR0lOIFBHUCBTSUdORUQgTUVTU0FHRS0tLS0tCj4gSGFzaDogU0hBMjU2Cj4K
+PiBIb3cgY2FuIGl0IGJlICdhbG1vc3QgZmluaXNoZWQnIGlmIHlvdSd2ZW50IGdvdCBhIGNsdWU/
+Cj4KPiAvL01hcmt1cwo+Cj4gSHlvbiBMaW0gd3JvdGU6Cj4gPiBJJ20gd29ya2luZyB3aXRoIG1p
+cHMga2VybmVsIHRvIGltcGxlbWVudCBzb2Z0d2FyZSBzdXNwZW5kLiBNeSB3b3JrCj4gPiBpcyBh
+bG1vc3QgZmluaXNoZWQsIGJ1dCBJIGhhdmUgbm8gaWRlYSBhYm91dCBzd3N1c3BfYXJjaF9yZXN1
+bWUoKQo+ID4gZnVuY3Rpb24gaW4ga2VybmVsL3Bvd2VyL3N3c3VzcC5jIERvZXMgYW55b25lIHdo
+byBoYXZlIGltcGxlbWVudGVkCj4gPiB0aGUgc29mdHdhcmUgc3VzcGVuZCBvbiBNSVBTIGFyY2g/
+IElmIHlvdSBkbyBzbywgcGxlYXNlIGxldCBtZSBrbm93Cj4gPiBob3cgY2FuIEkgaW1wbGVtZW50
+IGl0Lgo+ID4KPgo+Cj4gLSAtLQo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwo+Cj4gTXIgTWFya3VzIEdvdGhlCj4gU29mdHdhcmUgRW5naW5lZXIKPgo+IFBob25lOiAr
+NDYgKDApMTMgMjEgODEgMjAgKGV4dC4gMTA0NikKPiBGYXg6ICs0NiAoMCkxMyAyMSAyMSAxNQo+
+IE1vYmlsZTogKzQ2ICgwKTczIDcxOCA3MiA4MAo+IERpc2tldHRnYXRhbiAxMSwgU0UtNTgzIDM1
+IExpbmvDtnBpbmcsIFN3ZWRlbgo+IHd3dy4yN20uY29tCj4gLS0tLS1CRUdJTiBQR1AgU0lHTkFU
+VVJFLS0tLS0KPiBWZXJzaW9uOiBHbnVQRyB2MS40LjYgKEdOVS9MaW51eCkKPgo+IGlEOERCUUZH
+MTZ3dDZJMFhtSngyTnJ3UkNPdEZBS0NlL2xFOHhmcDl0WkM5dWxXWjRuclN4WTlyandDZUlkMmoK
+PiBRcCswcTFPZXZLeXFNYVBlaS9aSGZLOD0KPiA9TnpEUQo+IC0tLS0tRU5EIFBHUCBTSUdOQVRV
+UkUtLS0tLQo+Cj4KCgotLSAKSHlvbiBMaW0gKOyehO2YhCkKTW9iaWxlLiAwMTAtODIxMi0xMjQw
+IChJbnRsJyBDYWxsIDogKzgyLTEwLTgyMTItMTI0MCkKRmF4LiAwMzItMjMyLTA1NzggKEludGwn
+IEF2YWlsYWJsZSkKSG9tZXBhZ2UgOiBodHRwOi8vd3d3LmFsZXhsYWIubmV0CkJsb2cgOiBodHRw
+Oi8vd3d3LmFsZXhsYWIubmV0L2Jsb2cK
+------=_Part_8286_33539812.1188559577253
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+PGRpdj5Ob3cgbW9kaWZpZWQga2VybmVsIGNhbiBzdG9yZSBhbmQgcmVzdG9yZSBwcm9jZXNzb3Ig
+Y29udGV4dCAobWlwcykuPC9kaXY+CjxkaXY+VGhlIGRpZmZlcmVuY2VzIG9mIHZhbmlsbGEga2Vy
+bmVsIGFuZCBtaW5lIGlzIGNwdSBjb250ZXh0IHNhdmluZyByb3V0aW5lLiBJIG1vZGlmaWVkIHg4
+NiBjb2RlLjwvZGl2Pgo8ZGl2PkkgY2FuIHNhdmUgbXkgc3lzdGVtIHNuYXBzaG90IHRvIHN3YXAg
+cGFydGl0aW9uIGFuZCBpdCBjYW4gYmUgbG9hZGVkIG9uIGJvb3QgdGltZTwvZGl2Pgo8ZGl2Pndp
+dGggYXJndW1lbnQgJnF1b3Q7cmVzdW1lPS9kZXYvLi4uJnF1b3Q7LjwvZGl2Pgo8ZGl2Pkhvd2V2
+ZXIsIG15IHF1ZXN0aW9uIGlzIHRoYXQgd2hhdCBpcyB0aGUgcHVycG9zZSBvZiZuYnNwO3N3c3Vz
+cF9hcmNoX3Jlc3VtZSgpIGZ1bmN0aW9uLjwvZGl2Pgo8ZGl2PldoYXQmbmJzcDtmdW5jdGlvbmFs
+aXR5IHdpbGwgYmUgcGxhY2VkJm5ic3A7dGhlcmU/PGJyPiZuYnNwOzwvZGl2Pgo8ZGl2PjxzcGFu
+IGNsYXNzPSJnbWFpbF9xdW90ZSI+T24gOC8zMS8wNywgPGIgY2xhc3M9ImdtYWlsX3NlbmRlcm5h
+bWUiPk1hcmt1cyBHb3RoZTwvYj4gJmx0OzxhIG9uY2xpY2s9InJldHVybiB0b3AuanMuT3BlbkV4
+dExpbmsod2luZG93LGV2ZW50LHRoaXMpIiBocmVmPSJtYWlsdG86bWFya3VzLmdvdGhlQDI3bS5z
+ZSIgdGFyZ2V0PSJfYmxhbmsiPm1hcmt1cy5nb3RoZUAyN20uc2U8L2E+CiZndDsgd3JvdGU6PC9z
+cGFuPiAKPGJsb2NrcXVvdGUgY2xhc3M9ImdtYWlsX3F1b3RlIiBzdHlsZT0iUEFERElORy1MRUZU
+OiAxZXg7IE1BUkdJTjogMHB4IDBweCAwcHggMC44ZXg7IEJPUkRFUi1MRUZUOiAjY2NjIDFweCBz
+b2xpZCI+LS0tLS1CRUdJTiBQR1AgU0lHTkVEIE1FU1NBR0UtLS0tLTxicj5IYXNoOiBTSEEyNTY8
+YnI+PGJyPkhvdyBjYW4gaXQgYmUgJiMzOTthbG1vc3QgZmluaXNoZWQmIzM5OyBpZiB5b3UmIzM5
+O3ZlbnQgZ290IGEgY2x1ZT8gCjxicj48YnI+Ly9NYXJrdXM8YnI+PGJyPkh5b24gTGltIHdyb3Rl
+Ojxicj4mZ3Q7IEkmIzM5O20gd29ya2luZyB3aXRoIG1pcHMga2VybmVsIHRvIGltcGxlbWVudCBz
+b2Z0d2FyZSBzdXNwZW5kLiBNeSB3b3JrPGJyPiZndDsgaXMgYWxtb3N0IGZpbmlzaGVkLCBidXQg
+SSBoYXZlIG5vIGlkZWEgYWJvdXQgc3dzdXNwX2FyY2hfcmVzdW1lKCk8YnI+Jmd0OyBmdW5jdGlv
+biBpbiBrZXJuZWwvcG93ZXIvc3dzdXNwLmMgRG9lcyBhbnlvbmUgd2hvIGhhdmUgaW1wbGVtZW50
+ZWQgCjxicj4mZ3Q7IHRoZSBzb2Z0d2FyZSBzdXNwZW5kIG9uIE1JUFMgYXJjaD8gSWYgeW91IGRv
+IHNvLCBwbGVhc2UgbGV0IG1lIGtub3c8YnI+Jmd0OyBob3cgY2FuIEkgaW1wbGVtZW50IGl0Ljxi
+cj4mZ3Q7PGJyPjxicj48YnI+LSAtLTxicj5fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX188YnI+PGJyPk1yIE1hcmt1cyBHb3RoZTxicj5Tb2Z0d2FyZSBFbmdpbmVlcjxicj4K
+PGJyPlBob25lOiArNDYgKDApMTMgMjEgODEgMjAgKGV4dC4gMTA0Nik8YnI+RmF4OiArNDYgKDAp
+MTMgMjEgMjEgMTU8YnI+TW9iaWxlOiArNDYgKDApNzMgNzE4IDcyIDgwPGJyPkRpc2tldHRnYXRh
+biAxMSwgU0UtNTgzIDM1IExpbmvDtnBpbmcsIFN3ZWRlbjxicj48YSBvbmNsaWNrPSJyZXR1cm4g
+dG9wLmpzLk9wZW5FeHRMaW5rKHdpbmRvdyxldmVudCx0aGlzKSIgaHJlZj0iaHR0cDovL3d3dy4y
+N20uY29tLyIgdGFyZ2V0PSJfYmxhbmsiPgp3d3cuMjdtLmNvbTwvYT48YnI+LS0tLS1CRUdJTiBQ
+R1AgU0lHTkFUVVJFLS0tLS0gPGJyPlZlcnNpb246IEdudVBHIHYxLjQuNiAoR05VL0xpbnV4KTxi
+cj48YnI+aUQ4REJRRkcxNnd0NkkwWG1KeDJOcndSQ090RkFLQ2UvbEU4eGZwOXRaQzl1bFdaNG5y
+U3hZOXJqd0NlSWQyajxicj5RcCswcTFPZXZLeXFNYVBlaS9aSGZLOD08YnI+PU56RFE8YnI+LS0t
+LS1FTkQgUEdQIFNJR05BVFVSRS0tLS0tCjxicj48YnI+PC9ibG9ja3F1b3RlPjwvZGl2Pjxicj48
+YnIgY2xlYXI9ImFsbCI+PGJyPi0tIDxicj5IeW9uIExpbSAo7J6E7ZiEKTxicj5Nb2JpbGUuIDAx
+MC04MjEyLTEyNDAgKEludGwmIzM5OyBDYWxsIDogKzgyLTEwLTgyMTItMTI0MCk8YnI+RmF4LiAw
+MzItMjMyLTA1NzggKEludGwmIzM5OyBBdmFpbGFibGUpPGJyPkhvbWVwYWdlIDogPGEgb25jbGlj
+az0icmV0dXJuIHRvcC5qcy5PcGVuRXh0TGluayh3aW5kb3csZXZlbnQsdGhpcykiIGhyZWY9Imh0
+dHA6Ly93d3cuYWxleGxhYi5uZXQvIiB0YXJnZXQ9Il9ibGFuayI+Cmh0dHA6Ly93d3cuYWxleGxh
+Yi5uZXQ8L2E+PGJyPkJsb2cgOiA8YSBvbmNsaWNrPSJyZXR1cm4gdG9wLmpzLk9wZW5FeHRMaW5r
+KHdpbmRvdyxldmVudCx0aGlzKSIgaHJlZj0iaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nIiB0
+YXJnZXQ9Il9ibGFuayI+aHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nPC9hPiAK
+------=_Part_8286_33539812.1188559577253--

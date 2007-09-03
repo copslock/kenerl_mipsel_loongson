@@ -1,59 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2007 16:53:37 +0100 (BST)
-Received: from dmz.mips-uk.com ([194.74.144.194]:41486 "EHLO dmz.mips-uk.com")
-	by ftp.linux-mips.org with ESMTP id S20022912AbXICPx3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2007 16:53:29 +0100
-Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
-	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
-	id 1ISEBs-0007RK-00; Mon, 03 Sep 2007 16:50:16 +0100
-Received: from ukcvpn58.mips-uk.com ([192.168.193.58] helo=[127.0.0.1])
-	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1ISEBk-0006Ez-00; Mon, 03 Sep 2007 16:50:08 +0100
-Message-ID: <46DC2D2E.8080408@mips.com>
-Date:	Mon, 03 Sep 2007 16:50:06 +0100
-From:	Chris Dearman <chris@mips.com>
-User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line argument.
-References: <S20024438AbXHGQ1m/20070807162742Z+2733@ftp.linux-mips.org> <20070904.000501.41013092.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070904.000501.41013092.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2007 16:54:08 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:2542 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022925AbXICPxy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2007 16:53:54 +0100
+Received: from localhost (p7196-ipad03funabasi.chiba.ocn.ne.jp [219.160.87.196])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 770D5DA50; Tue,  4 Sep 2007 00:52:34 +0900 (JST)
+Date:	Tue, 04 Sep 2007 00:54:00 +0900 (JST)
+Message-Id: <20070904.005400.52128244.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: flush_kernel_dcache_page() not needed ?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <46DC29F0.3060200@gmail.com>
+References: <46D8089F.3010109@gmail.com>
+	<20070903.225239.61509667.anemo@mba.ocn.ne.jp>
+	<46DC29F0.3060200@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-MIPS-Technologies-UK-MailScanner: Found to be clean
-X-MIPS-Technologies-UK-MailScanner-From: chris@mips.com
-Return-Path: <chris@mips.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16360
+X-archive-position: 16361
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chris@mips.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> Why pci_get_class() in ide_default_io_base() cause crash on SMTC?
+On Mon, 03 Sep 2007 17:36:16 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> > Now copy_strings() calls this and I'm wondering we should implement or
+> > not.  It seems the kernel works fine for me without the API...
+>  
+> Do you use a cpu with dcache aliasing issue ?
 
-The bug wasn't really SMTC specific, it was just that it showed up on 
-SMTC builds. The failure was caused by the early parsing of the 
-idebus=xx argument. The argument parser ended up calling
-pci_scan that unconditionally enabled interrupts prematurely.
+Yes.  4 way 32KB dcache.
 
-Ralf says this has now been fixed in head of tree:
-> Turns out our dear friends at Intel recently had trouble with some JVC CDROM
-> drive and their changes made a proper fix for us fairly easy.
+> > Do you have any problem due to luck of the API?
 > 
-> master: 00cc123703425aa362b0af75616134cbad4e0689
-> 2.6.22: 50a32ae87aed46b01c8e0c2e90cd6f06a3800c33
+> No, but looking at copy_strings(), I think we can have some trouble.
 > 
-> For older kernels the generic PCI code doesn't have the necessary bits in so
-> that'd be somewhat more surgery than I want in lmo.
+> BTW, do you recall flush_anon_page() and fuse bug ? It seems the same
+> here...
 
-Chris
+Indeed.  But copy_strings() is not rare case (called on each execve),
+so there might be some constraints which make us free from the
+aliasing problem.  I'll look at it further, but any testcase are
+welcome.
 
--- 
-Chris Dearman          7200 Cambridge Research Park     +44 1223 203108
-MIPS Technologies (UK) Waterbeach, Cambs CB25 9TL  fax  +44 1223 203181
+---
+Atsushi Nemoto

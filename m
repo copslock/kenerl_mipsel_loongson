@@ -1,62 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2007 13:16:04 +0100 (BST)
-Received: from smtp-out114.alice.it ([85.37.17.114]:32772 "EHLO
-	smtp-out114.alice.it") by ftp.linux-mips.org with ESMTP
-	id S20022266AbXICMPz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Sep 2007 13:15:55 +0100
-Received: from FBCMMO02.fbc.local ([192.168.68.196]) by smtp-out114.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 3 Sep 2007 14:15:10 +0200
-Received: from FBCMCL01B06.fbc.local ([192.168.69.87]) by FBCMMO02.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 3 Sep 2007 14:15:48 +0200
-Received: from raver.cocorico ([87.11.114.203]) by FBCMCL01B06.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 3 Sep 2007 14:15:10 +0200
-Received: by 10.82.154.20 with SMTP id b20cs876037bue;
-        Wed, 22 Aug 2007 01:11:04 -0700 (PDT)
-Received: by 10.82.112.3 with SMTP id k3mr943124buc.1187770261340;
-        Wed, 22 Aug 2007 01:11:01 -0700 (PDT)
-Received: from smtp1.int-evry.fr (smtp1.int-evry.fr [157.159.10.44])
-        by mx.google.com with ESMTP id j9si1357887mue.2007.08.22.01.10.56;
-        Wed, 22 Aug 2007 01:11:01 -0700 (PDT)
-Received-SPF: neutral (google.com: 157.159.10.44 is neither permitted nor denied by best guess record for domain of florian.fainelli@telecomint.eu) client-ip=157.159.10.44;
-Authentication-Results:	mx.google.com; spf=neutral (google.com: 157.159.10.44 is neither permitted nor denied by best guess record for domain of florian.fainelli@telecomint.eu) smtp.mail=florian.fainelli@telecomint.eu
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id 122398E84F0;
-	Wed, 22 Aug 2007 10:10:48 +0200 (CEST)
-Received: from ibook.lan (mla78-1-82-240-16-241.fbx.proxad.net [82.240.16.241])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 73CFED0E336;
-	Wed, 22 Aug 2007 10:10:47 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-To:	Matteo Croce <technoboy85@gmail.com>
-Subject: [PATCH 0/7] AR7 port 2nd round
-Date:	Mon, 3 Sep 2007 14:15:47 +0200
-User-Agent: KMail/1.9.7
-Cc:	linux-mips@linux-mips.org
-References: <200708201704.11529.technoboy85@gmail.com>
-In-Reply-To: <200708201704.11529.technoboy85@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2007 14:23:13 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.178]:36290 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022402AbXICNXE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Sep 2007 14:23:04 +0100
+Received: by wa-out-1112.google.com with SMTP id m16so1815203waf
+        for <linux-mips@linux-mips.org>; Mon, 03 Sep 2007 06:22:53 -0700 (PDT)
+DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=QuaR5PY/i0/FeZr54S54jXRb554tyIWn3F+M+GrZ7EbO3PjwhdQEv/zLpJcwsoW+Tx4cc9QJuArMWvy56vAiw+/IoFjlExcODP0pSdepbL2xxn1gU6Hej2rBBdyCZQtAhM8+HuuXKOFxBMabJwraFiygYgaZ92dvaCKfVB2L7ME=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=iWMF7PYKlxQa2zHT3oAgPLQ7AFKLE4xSIs1PmNh7l0ovjyOOcxZFlNZaOkjSu0FvH2zeJbn1lTXhFvdDkgVx3cFn5UW2tTHVU+MId9GtL/1vej0sazSaBZkGHFY9OLJDIs2JofhE9nyVX8xq0FtUnoMvtM9VgSkdRo3KiFyZMng=
+Received: by 10.114.157.1 with SMTP id f1mr3769107wae.1188825772707;
+        Mon, 03 Sep 2007 06:22:52 -0700 (PDT)
+Received: by 10.115.111.13 with HTTP; Mon, 3 Sep 2007 06:22:51 -0700 (PDT)
+Message-ID: <40101cc30709030622i6fc970e9h20010069aa660752@mail.gmail.com>
+Date:	Mon, 3 Sep 2007 15:22:51 +0200
+From:	"Matteo Croce" <technoboy85@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH 0/7] AR7: second round
 MIME-Version: 1.0
-Message-Id: <200709031415.47499.florian.fainelli@telecomint.eu>
-X-int-MailScanner-Information: Please contact the ISP for more information
-X-int-MailScanner: Found to be clean
-X-int-MailScanner-SpamCheck: n'est pas un polluriel (inscrit sur la liste blanche),
-	SpamAssassin (pas en cache, score=-1.467, requis 4.01,
-	autolearn=not spam, AWL 1.00, BAYES_00 -2.60, FORGED_RCVD_HELO 0.14)
-X-int-MailScanner-From:	florian.fainelli@telecomint.eu
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-X-OriginalArrivalTime: 03 Sep 2007 12:15:10.0494 (UTC) FILETIME=[12CBFBE0:01C7EE24]
-Return-Path: <florian.fainelli@telecomint.eu>
+Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16347
+X-archive-position: 16348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: technoboy85@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I have followed Florian's instructions, and that are the patches for the AR7
+I have followed Florian's instructions, and that are the patches for
+AR7 against a linux-mips git tree
+I have also included all the drivers since now all the patch are separate

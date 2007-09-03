@@ -1,81 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2007 16:36:51 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.188]:30808 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022902AbXICPgn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Sep 2007 16:36:43 +0100
-Received: by nf-out-0910.google.com with SMTP id 30so1226374nfu
-        for <linux-mips@linux-mips.org>; Mon, 03 Sep 2007 08:36:25 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=IxtEy3WmD96ZLObx0esGxTv80WSgLLzkMrGz9sUpf2vNwWUgkhyodafljFQaK2jXGUAYNIuztrlmEXZzfLjgZA+tBY2PptfRUkx6k/r9fR8uZ+fd+FNJP7yn1kW6XO6yf041e+4S68hvzUi/H5mZbrCYBiQLINBydDkOKqMcLwA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=mAu2UmTPwxsZ8USrKoykrNB5w/2q87l4rNlnthfR7PxQDLvih2H6QMYium7jT/tM8vfKMrwx9DSsYhvipWnc2Qq6SIAwqW5pxntS7xPLyshjep1w9QH8+CUAjwQ6BmI+g8NImJYPONbRLqtZiuCOdt0hEo8Tqp//W/pYAQNbEhg=
-Received: by 10.86.58.3 with SMTP id g3mr3527337fga.1188833784856;
-        Mon, 03 Sep 2007 08:36:24 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id f19sm6162720fka.2007.09.03.08.36.23
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 03 Sep 2007 08:36:24 -0700 (PDT)
-Message-ID: <46DC29F0.3060200@gmail.com>
-Date:	Mon, 03 Sep 2007 17:36:16 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Sep 2007 16:53:37 +0100 (BST)
+Received: from dmz.mips-uk.com ([194.74.144.194]:41486 "EHLO dmz.mips-uk.com")
+	by ftp.linux-mips.org with ESMTP id S20022912AbXICPx3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Sep 2007 16:53:29 +0100
+Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
+	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
+	id 1ISEBs-0007RK-00; Mon, 03 Sep 2007 16:50:16 +0100
+Received: from ukcvpn58.mips-uk.com ([192.168.193.58] helo=[127.0.0.1])
+	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1ISEBk-0006Ez-00; Mon, 03 Sep 2007 16:50:08 +0100
+Message-ID: <46DC2D2E.8080408@mips.com>
+Date:	Mon, 03 Sep 2007 16:50:06 +0100
+From:	Chris Dearman <chris@mips.com>
+User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
 MIME-Version: 1.0
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 CC:	linux-mips@linux-mips.org
-Subject: Re: flush_kernel_dcache_page() not needed ?
-References: <46D8089F.3010109@gmail.com> <20070903.225239.61509667.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070903.225239.61509667.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
+Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line argument.
+References: <S20024438AbXHGQ1m/20070807162742Z+2733@ftp.linux-mips.org> <20070904.000501.41013092.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070904.000501.41013092.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+X-MIPS-Technologies-UK-MailScanner: Found to be clean
+X-MIPS-Technologies-UK-MailScanner-From: chris@mips.com
+Return-Path: <chris@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16359
+X-archive-position: 16360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: chris@mips.com
 Precedence: bulk
 X-list: linux-mips
 
 Atsushi Nemoto wrote:
-> On Fri, 31 Aug 2007 14:25:03 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->> I noticed that there's currently (v2.6.23-rc4) no implementation
->> of this function even for mips CPUs that have dcache aliasing.
->>
->> Could anybody explain why ?
+> Why pci_get_class() in ide_default_io_base() cause crash on SMTC?
+
+The bug wasn't really SMTC specific, it was just that it showed up on 
+SMTC builds. The failure was caused by the early parsing of the 
+idebus=xx argument. The argument parser ended up calling
+pci_scan that unconditionally enabled interrupts prematurely.
+
+Ralf says this has now been fixed in head of tree:
+> Turns out our dear friends at Intel recently had trouble with some JVC CDROM
+> drive and their changes made a proper fix for us fairly easy.
 > 
-> Maybe because the API was not called by anybody until 2.6.23-rc1 :)
+> master: 00cc123703425aa362b0af75616134cbad4e0689
+> 2.6.22: 50a32ae87aed46b01c8e0c2e90cd6f06a3800c33
 > 
+> For older kernels the generic PCI code doesn't have the necessary bits in so
+> that'd be somewhat more surgery than I want in lmo.
 
-But this function has been introduced since commit
-5a3a5a98b6422d05c39eaa32c8b3f83840c7b768 ([PATCH] Add
-flush_kernel_dcache_page() API) which had been merged during 2.6.16
-merge window. So it's more than one year now...
+Chris
 
-Basically it gives a default implementation for all architectures. The
-problem here is that this implementation may be boggus for
-architectures that have dcache aliasing issue.
-
-The sad thing is that the kernel will silently compile this default
-implementation. At least, it could have showed a big fat warning
-during the building process.
-
-> Now copy_strings() calls this and I'm wondering we should implement or
-> not.  It seems the kernel works fine for me without the API...
- 
-Do you use a cpu with dcache aliasing issue ?
-
-> Do you have any problem due to luck of the API?
-
-No, but looking at copy_strings(), I think we can have some trouble.
-
-BTW, do you recall flush_anon_page() and fuse bug ? It seems the same
-here...
-
-		Franck
+-- 
+Chris Dearman          7200 Cambridge Research Park     +44 1223 203108
+MIPS Technologies (UK) Waterbeach, Cambs CB25 9TL  fax  +44 1223 203181

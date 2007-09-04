@@ -1,82 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Sep 2007 13:47:10 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.188]:25580 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024744AbXIDMrA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 4 Sep 2007 13:47:00 +0100
-Received: by nf-out-0910.google.com with SMTP id 30so1440252nfu
-        for <linux-mips@linux-mips.org>; Tue, 04 Sep 2007 05:47:00 -0700 (PDT)
-DKIM-Signature:	a=rsa-sha1; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=PLmKz/QyMIPfLenvOFbMWe3R8LNRdIU6wpwzqHwumqDQO86LLvz8ukkP8InmNHPn1NrofOkzSNfAqQeMBO3quZpGLtJssg5E9RVazNLaiLFO4bN/+PS2lFNXqc67CQi77gzmhTlLFX52Z8yfpxYKYxjRuae9z4IwGCVzQaZmKqs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=OnIU74j3M6zx2b68QV2lARv39PwHYYsY+1M4HvHdAs0sggZoXDX8QpPXWMDMxIKecJk4M9J1ue75mpIo4QqJAzxy74Z5qQvY/ydsRs74RAUbF5PIbLfaPj76JzBmv7zQK65pDDUDODsejKSsKG5eEFkXD+YBssNLKEd03tOMS2Y=
-Received: by 10.86.93.17 with SMTP id q17mr4296934fgb.1188910020329;
-        Tue, 04 Sep 2007 05:47:00 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id k29sm8116855fkk.2007.09.04.05.46.58
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 04 Sep 2007 05:46:59 -0700 (PDT)
-Message-ID: <46DD53BE.2070004@gmail.com>
-Date:	Tue, 04 Sep 2007 14:46:54 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Sep 2007 13:48:48 +0100 (BST)
+Received: from phoenix.bawue.net ([193.7.176.60]:45731 "EHLO mail.bawue.net")
+	by ftp.linux-mips.org with ESMTP id S20024743AbXIDMsk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 4 Sep 2007 13:48:40 +0100
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bawue.net (Postfix) with ESMTP id 16455846CB;
+	Tue,  4 Sep 2007 14:42:32 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.67)
+	(envelope-from <ths@networkno.de>)
+	id 1ISXjj-0002Mq-Ff; Tue, 04 Sep 2007 13:42:31 +0100
+Date:	Tue, 4 Sep 2007 13:42:31 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	Nigel Stephens <nigel@mips.com>, yshi <yang.shi@windriver.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] malta4kec hang in calibrate_delay fix
+Message-ID: <20070904124231.GB848@networkno.de>
+References: <46DD1CD1.5040306@windriver.com> <006901c7eeda$d8049a50$10eca8c0@grendel> <1188901951.4106.16.camel@yshi.CORP> <006f01c7eee5$bbe77c60$10eca8c0@grendel> <20070904115527.GA848@networkno.de> <46DD49B9.2090306@mips.com> <00a601c7eeed$d8095aa0$10eca8c0@grendel>
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org
-Subject: Re: flush_kernel_dcache_page() not needed ?
-References: <46D8089F.3010109@gmail.com>	<20070903.225239.61509667.anemo@mba.ocn.ne.jp>	<46DC29F0.3060200@gmail.com> <20070904.005400.52128244.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070904.005400.52128244.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <00a601c7eeed$d8095aa0$10eca8c0@grendel>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16376
+X-archive-position: 16377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> Indeed.  But copy_strings() is not rare case (called on each execve),
-> so there might be some constraints which make us free from the
-> aliasing problem.
+Kevin D. Kissell wrote:
+> > >> In that case, your core is a 4Kc and not a 4KEc.    
+> > >
+> > > Not quite true, early revisions of the 4KEc were only release 1. This
+> > > seems to be a bug in arch/mips/cpu-probe.c:
+> > >
+> > > static inline void cpu_probe_mips(struct cpuinfo_mips *c)
+> > > {
+> > >         decode_configs(c);
+> > >         switch (c->processor_id & 0xff00) {
+> > >         case PRID_IMP_4KC:
+> > >                 c->cputype = CPU_4KC;
+> > >                 break;
+> > >         case PRID_IMP_4KEC:
+> > >                 c->cputype = CPU_4KEC;
+> > >                 break;
+> > >         case PRID_IMP_4KECR2:
+> > >                 c->cputype = CPU_4KEC;
+> > >                 break;
+> > > ...
+> > >
+> > > The type for PRID_IMP_4KEC should be CPU_4KC.
+> > >
+> > >   
+> > 
+> > Maybe the probing code should read the ISA revision level from the AR 
+> > bits (12:10) of the Config0 register to figure out which revision of the 
+> > ISA is implemented.
+> 
+> It does.
 
-The point is that this _generic_ function has been created so we need
-to understand if MIPS architecture needs to implement it or not,
-whatever its current usages. This was actually what I was trying to
-understand with this thread.
+Indeed.
 
-Whatever the constraints, they don't seem to be intended at all since
-flush_kernel_dcache_page() is called... So even if the current code is
-working fine, it seems very fragile _if_ MIPS needs to implement this
-cache helper.
+> c->cputype isn't what needs to be modulated here, it's c->isa_level,
+> which gets decoded as part of decode_configs(), as near as I can tell correctly
+> in the most recent source tree I've got. And it's isa_level that's being tested
+> by the cpu_has_mips32r2 et. al. macros.
 
-> I'll look at it further, but any testcase are welcome.
+Unless it got hardcoded in include/asm-mips/mach-foo/cpu-features-override.h.
+Maybe Windriver has a local patch which does that by accident.
 
-One thing you might want to try is:
 
-	$ echo 0 > /proc/sys/kernel/randomize_va_space
-
-and see if your system still works fine. This command should avoid a
-data cache flush when moving the stack around. See shift_arg_pages().
-
-With this, maybe you could give this testcase a try:
-
-	$ /bin/echo "`seq 10000`" > seq.txt
-
-and see if seq.txt is correct. This command should pass to echo (not
-the bash builtin one) a long argument that should fill your
-dcache.
-
-That said the execve syscall code is quite 'hairy' and it may not be
-suprising that after this syscall the dcache has been completly
-flushed and thus make the problem disappear.
-
-		Franck
+Thiemo

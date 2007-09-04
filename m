@@ -1,119 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Sep 2007 06:29:30 +0100 (BST)
-Received: from tomts36.bellnexxia.net ([209.226.175.93]:18574 "EHLO
-	tomts36-srv.bellnexxia.net") by ftp.linux-mips.org with ESMTP
-	id S20022527AbXIDF3W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 4 Sep 2007 06:29:22 +0100
-Received: from krystal.dyndns.org ([76.65.103.147])
-          by tomts36-srv.bellnexxia.net
-          (InterMail vM.5.01.06.13 201-253-122-130-113-20050324) with ESMTP
-          id <20070904052735.LYMD7033.tomts36-srv.bellnexxia.net@krystal.dyndns.org>;
-          Tue, 4 Sep 2007 01:27:35 -0400
-Received: from localhost (localhost [127.0.0.1])
-  (uid 1000)
-  by krystal.dyndns.org with local; Tue, 04 Sep 2007 01:27:34 -0400
-  id 002FDF1D.46DCECC6.00000CF0
-Date:	Tue, 4 Sep 2007 01:27:34 -0400
-From:	Mathieu Desnoyers <mathieu.desnoyers@polymtl.ca>
-To:	Adrian Bunk <bunk@kernel.org>
-Cc:	Andrew Morton <akpm@linux-foundation.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: 2.6.23-rc4-mm1: mips compile error
-Message-ID: <20070904052734.GA2991@Krystal>
-References: <20070831215822.26e1432b.akpm@linux-foundation.org> <20070901154441.GJ9260@stusta.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Sep 2007 09:49:56 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:64671 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S20024634AbXIDItq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 4 Sep 2007 09:49:46 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id l848neBG009582
+	for <linux-mips@linux-mips.org>; Tue, 4 Sep 2007 01:49:40 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 4 Sep 2007 01:49:40 -0700
+Received: from [128.224.162.180] ([128.224.162.180]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 4 Sep 2007 01:49:40 -0700
+Message-ID: <46DD1CD1.5040306@windriver.com>
+Date:	Tue, 04 Sep 2007 16:52:33 +0800
+From:	yshi <yang.shi@windriver.com>
+User-Agent: Thunderbird 2.0.0.6 (X11/20070728)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] malta4kec hang in calibrate_delay fix
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-In-Reply-To: <20070901154441.GJ9260@stusta.de>
-X-Editor: vi
-X-Info:	http://krystal.dyndns.org:8080
-X-Operating-System: Linux/2.6.21.3-grsec (i686)
-X-Uptime: 01:22:29 up 36 days,  5:41,  4 users,  load average: 2.22, 1.58, 1.29
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <compudj@krystal.dyndns.org>
+X-OriginalArrivalTime: 04 Sep 2007 08:49:40.0448 (UTC) FILETIME=[87EE0600:01C7EED0]
+Return-Path: <Yang.Shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16364
+X-archive-position: 16365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mathieu.desnoyers@polymtl.ca
+X-original-sender: yang.shi@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-* Adrian Bunk (bunk@kernel.org) wrote:
-> On Fri, Aug 31, 2007 at 09:58:22PM -0700, Andrew Morton wrote:
-> >...
-> > Changes since 2.6.23-rc3-mm1:
-> >...
-> >  git-mips.patch
-> >...
-> >  git trees
-> >...
-> 
-> <--  snip  -->
-> 
-> ...
->   CC      arch/mips/kernel/asm-offsets.s
-> In file included from include2/asm/processor.h:22,
->                  from include2/asm/thread_info.h:15,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/thread_info.h:21,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/preempt.h:9,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/spinlock.h:49,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/seqlock.h:29,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/time.h:8,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/timex.h:57,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/include/linux/sched.h:52,
->                  from 
-> /home/bunk/linux/kernel-2.6/linux-2.6.23-rc4-mm1/arch/mips/kernel/asm-offsets.c:13:
-> include2/asm/system.h:415:39: error: asm-generic/cmpxchg-local.h: No such file or directory
-> make[2]: *** [arch/mips/kernel/asm-offsets.s] Error 1
-> 
-> <--  snip  -->
-> 
+perfmon2 patch changed timer interrupt handler of malta board.
+When kernel handles timer interrupt, interrupt handler will read 30 bit
+of cause register. If this bit is zero, timer interrupt handler will
+exit, won't really handle interrupt. Because Malta 4kec board's core
+revision is CoreFPGA-3, this core's cause register doesn't implement 30
+bit, so kernel always read zero from this bit. This will cause kernel
+hang in calibrate_delay.
 
-Hello,
+Signed-off-by: Yang Shi <yang.shi@windriver.com>
+---
+b/arch/mips/mips-boards/generic/time.c |   17 ++++++++++++-----
+1 file changed, 12 insertions(+), 5 deletions(-)
+---
 
-It is because
-"Add cmpxchg64 and cmpxchg64_local to mips" has been added to the
-git-mips.patch, but it depends on 
-"add-cmpxchg-local-to-generic-for-up.patch" which is not merged yet.
+--- a/arch/mips/mips-boards/generic/time.c
++++ b/arch/mips/mips-boards/generic/time.c
+@@ -136,11 +136,13 @@ irqreturn_t mips_timer_interrupt(int irq
+#else /* CONFIG_MIPS_MT_SMTC */
+      int r2 = cpu_has_mips_r2;
 
-It was an error in my series file.
-add-cmpxchg-local-to-generic-for-up.patch should come before these
-patches:
+-       if (handle_perf_irq(r2))
+-               goto out;
++       if (mips_revision_corid != MIPS_REVISION_CORID_CORE_FPGA3) {
++               if (handle_perf_irq(r2))
++                       goto out;
 
-i386-cmpxchg64-80386-80486-fallback.patch
-add-cmpxchg64-to-alpha.patch
-add-cmpxchg64-to-mips.patch
-add-cmpxchg64-to-powerpc.patch
-add-cmpxchg64-to-x86_64.patch
+-       if (r2 && ((read_c0_cause() & (1 << 30)) == 0))
+-               goto out;
++               if (r2 && ((read_c0_cause() & (1 << 30)) == 0))
++                       goto out;
++       }
 
+      if (cpu == 0) {
+              /*
+@@ -294,7 +296,12 @@ void __init plat_timer_setup(struct irqa
+      {
+              if (cpu_has_vint)
+                      set_vi_handler(cp0_compare_irq, mips_timer_dispatch);
+-               mips_cpu_timer_irq = MIPS_CPU_IRQ_BASE + cp0_compare_irq;
++
++               if (mips_revision_corid != MIPS_REVISION_CORID_CORE_FPGA3)
++                       mips_cpu_timer_irq = MIPS_CPU_IRQ_BASE + 
+cp0_compare_irq;
++               else
++                       mips_cpu_timer_irq = MIPS_CPU_IRQ_BASE +
++                                            CP0_LEGACY_COMPARE_IRQ;
+      }
 
-Mathieu
-
-> 
-> cu
-> Adrian
-> 
-> -- 
-> 
->        "Is there not promise of rain?" Ling Tan asked suddenly out
->         of the darkness. There had been need of rain for many days.
->        "Only a promise," Lao Er said.
->                                        Pearl S. Buck - Dragon Seed
-> 
-
--- 
-Mathieu Desnoyers
-Computer Engineering Ph.D. Student, Ecole Polytechnique de Montreal
-OpenPGP key fingerprint: 8CD5 52C3 8E3C 4140 715F  BA06 3F25 A8FE 3BAE 9A68
+      /* we are using the cpu counter for timer interrupts */

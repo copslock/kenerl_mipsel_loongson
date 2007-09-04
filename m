@@ -1,74 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Sep 2007 13:19:45 +0100 (BST)
-Received: from mx.mips.com ([63.167.95.198]:46742 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20024722AbXIDMTg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 4 Sep 2007 13:19:36 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id l84CJAm8020653;
-	Tue, 4 Sep 2007 05:19:10 -0700 (PDT)
-Received: from grendel (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id l84CJPLx015870;
-	Tue, 4 Sep 2007 05:19:26 -0700 (PDT)
-Message-ID: <00a601c7eeed$d8095aa0$10eca8c0@grendel>
-From:	"Kevin D. Kissell" <kevink@mips.com>
-To:	"Nigel Stephens" <nigel@mips.com>,
-	"Thiemo Seufer" <ths@networkno.de>
-Cc:	"yshi" <yang.shi@windriver.com>, <linux-mips@linux-mips.org>
-References: <46DD1CD1.5040306@windriver.com> <006901c7eeda$d8049a50$10eca8c0@grendel> <1188901951.4106.16.camel@yshi.CORP> <006f01c7eee5$bbe77c60$10eca8c0@grendel> <20070904115527.GA848@networkno.de> <46DD49B9.2090306@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Sep 2007 13:44:49 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:35231 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20024744AbXIDMor (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 4 Sep 2007 13:44:47 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l84CikQu016449;
+	Tue, 4 Sep 2007 13:44:46 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l84Cijm0016448;
+	Tue, 4 Sep 2007 13:44:45 +0100
+Date:	Tue, 4 Sep 2007 13:44:45 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	yshi <yang.shi@windriver.com>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] malta4kec hang in calibrate_delay fix
-Date:	Tue, 4 Sep 2007 14:19:28 +0200
+Message-ID: <20070904124444.GB23736@linux-mips.org>
+References: <46DD1CD1.5040306@windriver.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1896
-Return-Path: <kevink@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46DD1CD1.5040306@windriver.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16374
+X-archive-position: 16375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> >> In that case, your core is a 4Kc and not a 4KEc.    
-> >
-> > Not quite true, early revisions of the 4KEc were only release 1. This
-> > seems to be a bug in arch/mips/cpu-probe.c:
-> >
-> > static inline void cpu_probe_mips(struct cpuinfo_mips *c)
-> > {
-> >         decode_configs(c);
-> >         switch (c->processor_id & 0xff00) {
-> >         case PRID_IMP_4KC:
-> >                 c->cputype = CPU_4KC;
-> >                 break;
-> >         case PRID_IMP_4KEC:
-> >                 c->cputype = CPU_4KEC;
-> >                 break;
-> >         case PRID_IMP_4KECR2:
-> >                 c->cputype = CPU_4KEC;
-> >                 break;
-> > ...
-> >
-> > The type for PRID_IMP_4KEC should be CPU_4KC.
-> >
-> >   
-> 
-> Maybe the probing code should read the ISA revision level from the AR 
-> bits (12:10) of the Config0 register to figure out which revision of the 
-> ISA is implemented.
+On Tue, Sep 04, 2007 at 04:52:33PM +0800, yshi wrote:
 
-It does.  c->cputype isn't what needs to be modulated here, it's c->isa_level,
-which gets decoded as part of decode_configs(), as near as I can tell correctly
-in the most recent source tree I've got. And it's isa_level that's being tested
-by the cpu_has_mips32r2 et. al. macros.
+> perfmon2 patch changed timer interrupt handler of malta board.
+> When kernel handles timer interrupt, interrupt handler will read 30 bit
+> of cause register. If this bit is zero, timer interrupt handler will
+> exit, won't really handle interrupt. Because Malta 4kec board's core
+> revision is CoreFPGA-3, this core's cause register doesn't implement 30
+> bit, so kernel always read zero from this bit. This will cause kernel
+> hang in calibrate_delay.
 
-            Regards,
+You seem to have defined cpu_has_mips_r2 as 1 in your cpu_features_override.h
+file.  Classic cut'n'paste error I'd guess :-)
 
-            Kevin K.
+  Ralf

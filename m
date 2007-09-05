@@ -1,53 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2007 13:13:43 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:41923 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20024998AbXIEMNl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Sep 2007 13:13:41 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l85CDdRs018155;
-	Wed, 5 Sep 2007 13:13:40 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l85CDbKk018154;
-	Wed, 5 Sep 2007 13:13:37 +0100
-Date:	Wed, 5 Sep 2007 13:13:37 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	bo y <byu1000@gmail.com>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: tlbex.c
-Message-ID: <20070905121337.GA18135@linux-mips.org>
-References: <99ac6e0e0708270822w32f8a024gd18c5883c86c8713@mail.gmail.com> <Pine.LNX.4.64N.0708291302350.26167@blysk.ds.pg.gda.pl> <20070905111121.GC9977@networkno.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070905111121.GC9977@networkno.de>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Sep 2007 16:33:27 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:38133 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20025062AbXIEPdS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Sep 2007 16:33:18 +0100
+Received: from localhost (p2126-ipad305funabasi.chiba.ocn.ne.jp [123.217.164.126])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id F2403E5A8; Thu,  6 Sep 2007 00:31:53 +0900 (JST)
+Date:	Thu, 06 Sep 2007 00:33:20 +0900 (JST)
+Message-Id: <20070906.003320.25909195.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: flush_kernel_dcache_page() not needed ?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <46DD53BE.2070004@gmail.com>
+References: <46DC29F0.3060200@gmail.com>
+	<20070904.005400.52128244.anemo@mba.ocn.ne.jp>
+	<46DD53BE.2070004@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16392
+X-archive-position: 16393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 05, 2007 at 12:11:22PM +0100, Thiemo Seufer wrote:
-
-> > > Should the following instruction field masks to be 0x3f ?
-> > > 
-> > >    #define OP_MASK         0x2f
-> > >    #define FUNC_MASK       0x2f
-> > > 
-> > > I do not see OP_MASK is used but FUNC_MASK is used in the same file.
-> > 
-> >  Yes.  Send a patch.
+On Tue, 04 Sep 2007 14:46:54 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> One thing you might want to try is:
 > 
-> Appended, please apply.
+> 	$ echo 0 > /proc/sys/kernel/randomize_va_space
+> 
+> and see if your system still works fine. This command should avoid a
+> data cache flush when moving the stack around. See shift_arg_pages().
+> 
+> With this, maybe you could give this testcase a try:
+> 
+> 	$ /bin/echo "`seq 10000`" > seq.txt
+> 
+> and see if seq.txt is correct. This command should pass to echo (not
+> the bash builtin one) a long argument that should fill your
+> dcache.
 
-Applied, thanks.
+I tried this and everything worked fine with/without the
+flush_kernel_dcache_page() ;)
 
-  Ralf
+> That said the execve syscall code is quite 'hairy' and it may not be
+> suprising that after this syscall the dcache has been completly
+> flushed and thus make the problem disappear.
+
+Yes, there is an yet another path to "flush all dcache".
+
+do_execve()
+  copy_strings()
+    flush_kernel_dcache_page()
+  search_binary_handler()
+    load_elf_binary()
+      flush_old_exec()
+        exec_mmap()
+          mmput()
+            exit_mmap()
+              flush_cache_mm()
+                r4k_blast_dcache()
+
+Anyway, the implementation of flush_kernel_dcache_page() is very
+simple so that we can believe it works correctly without any testcase.
+Too optimistic? :)
+
+---
+Atsushi Nemoto

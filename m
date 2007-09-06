@@ -1,94 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2007 13:34:27 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:56644 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20025657AbXIFMeS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2007 13:34:18 +0100
-Received: by mo.po.2iij.net (mo30) id l86CWxaT079098; Thu, 6 Sep 2007 21:32:59 +0900 (JST)
-Received: from localhost.localdomain (251.25.30.125.dy.iij4u.or.jp [125.30.25.251])
-	by mbox.po.2iij.net (po-mbox301) id l86CWvqv006924
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 6 Sep 2007 21:32:58 +0900
-Date:	Thu, 6 Sep 2007 21:32:57 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] remove remaining Ocelot
-Message-Id: <20070906213257.515bc92c.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2007 13:43:07 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:1705 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20025651AbXIFMnF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 6 Sep 2007 13:43:05 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l86Ch3RZ002976;
+	Thu, 6 Sep 2007 13:43:03 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l86Ch2ZC002975;
+	Thu, 6 Sep 2007 13:43:02 +0100
+Date:	Thu, 6 Sep 2007 13:43:02 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] remove remaining Ocelot
+Message-ID: <20070906124302.GC1585@linux-mips.org>
+References: <20070906213257.515bc92c.yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070906213257.515bc92c.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16398
+X-archive-position: 16399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Remove remaining Ocelot.
+On Thu, Sep 06, 2007 at 09:32:57PM +0900, Yoichi Yuasa wrote:
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> Remove remaining Ocelot.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
---- mips-orig/arch/mips/Kconfig	2007-09-04 11:28:50.522542500 +0900
-+++ mips/arch/mips/Kconfig	2007-09-04 11:29:10.475789500 +0900
-@@ -818,20 +818,6 @@ config EMMA2RH
- config SERIAL_RM9000
- 	bool
- 
--#
--# Unfortunately not all GT64120 systems run the chip at the same clock.
--# As the user for the clock rate and try to minimize the available options.
--#
--choice
--	prompt "Galileo Chip Clock"
--	depends on MOMENCO_OCELOT
--	default SYSCLK_100 if MOMENCO_OCELOT
--
--config SYSCLK_100
--	bool "100" if MOMENCO_OCELOT
--
--endchoice
--
- config ARC32
- 	bool
- 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ocelot/mach-gt64120.h mips/include/asm-mips/mach-ocelot/mach-gt64120.h
---- mips-orig/include/asm-mips/mach-ocelot/mach-gt64120.h	2007-09-04 11:30:19.964132250 +0900
-+++ mips/include/asm-mips/mach-ocelot/mach-gt64120.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,30 +0,0 @@
--/*
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#ifndef _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
--#define _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
--
--/*
-- * PCI address allocation
-- */
--#define GT_PCI_MEM_BASE	(0x22000000UL)
--#define GT_PCI_MEM_SIZE	GT_DEF_PCI0_MEM0_SIZE
--#define GT_PCI_IO_BASE	(0x20000000UL)
--#define GT_PCI_IO_SIZE	GT_DEF_PCI0_IO_SIZE
--
--extern unsigned long gt64120_base;
--
--#define GT64120_BASE	(gt64120_base)
--
--/*
-- * GT timer irq
-- */
--#define	GT_TIMER		6
--
--#endif  /* _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H */
+Thanks, applied.
+
+  Ralf

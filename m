@@ -1,51 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2007 13:00:41 +0100 (BST)
-Received: from host210-152-dynamic.56-82-r.retail.telecomitalia.it ([82.56.152.210]:21511
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S20025646AbXIFMAc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 6 Sep 2007 13:00:32 +0100
-Received: from localhost ([127.0.0.1] helo=sgi)
-	by eppesuigoccas.homedns.org with smtp (Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1ITFz1-0007ou-1R; Thu, 06 Sep 2007 13:57:17 +0200
-Date:	Thu, 6 Sep 2007 13:57:08 +0200
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-To:	debian-mips@lists.debian.org, linux-mips@linux-mips.org
-Subject: Re: Exception while loading kernel
-Message-Id: <20070906135708.dc49a3bc.giuseppe@eppesuigoccas.homedns.org>
-In-Reply-To: <Pine.LNX.4.64.0709060646120.23362@pixie.tetracon-eng.net>
-References: <1188030215.13999.14.camel@scarafaggio>
-	<20070825152536.GA4499@networkno.de>
-	<Pine.SGI.4.60.0708252047260.4891@zeus.tetracon-eng.net>
-	<20070826065054.84c97aef.giuseppe@eppesuigoccas.homedns.org>
-	<Pine.LNX.4.64.0708300931100.14430@pixie.tetracon-eng.net>
-	<1188481891.6770.22.camel@scarafaggio>
-	<Pine.LNX.4.64.0709060646120.23362@pixie.tetracon-eng.net>
-X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; mips-unknown-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Sep 2007 13:34:27 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:56644 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20025657AbXIFMeS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 6 Sep 2007 13:34:18 +0100
+Received: by mo.po.2iij.net (mo30) id l86CWxaT079098; Thu, 6 Sep 2007 21:32:59 +0900 (JST)
+Received: from localhost.localdomain (251.25.30.125.dy.iij4u.or.jp [125.30.25.251])
+	by mbox.po.2iij.net (po-mbox301) id l86CWvqv006924
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 6 Sep 2007 21:32:58 +0900
+Date:	Thu, 6 Sep 2007 21:32:57 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove remaining Ocelot
+Message-Id: <20070906213257.515bc92c.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16397
+X-archive-position: 16398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi -S-,
+Remove remaining Ocelot.
 
-On Thu, 6 Sep 2007 06:58:15 -0400 (EDT) "J. Scott Kasten" <jscottkasten@yahoo.com> wrote:
-[...] 
-> The System.map was OVER 50 MEGS, and the kernel weighed in at a HEFTY 87 
-> MEGS.
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-My kernel and System.map looks very normal. I had the same file sizes you reported, but only when compiling with all debug symbols. Once stripped the kernel became at the normal size, about 8Mb.
-
-When I got the large kernel, I stripped it before copying it in /boot. Arcboot never used the large file.
-
-Bye,
-Giuseppe
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
+--- mips-orig/arch/mips/Kconfig	2007-09-04 11:28:50.522542500 +0900
++++ mips/arch/mips/Kconfig	2007-09-04 11:29:10.475789500 +0900
+@@ -818,20 +818,6 @@ config EMMA2RH
+ config SERIAL_RM9000
+ 	bool
+ 
+-#
+-# Unfortunately not all GT64120 systems run the chip at the same clock.
+-# As the user for the clock rate and try to minimize the available options.
+-#
+-choice
+-	prompt "Galileo Chip Clock"
+-	depends on MOMENCO_OCELOT
+-	default SYSCLK_100 if MOMENCO_OCELOT
+-
+-config SYSCLK_100
+-	bool "100" if MOMENCO_OCELOT
+-
+-endchoice
+-
+ config ARC32
+ 	bool
+ 
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-ocelot/mach-gt64120.h mips/include/asm-mips/mach-ocelot/mach-gt64120.h
+--- mips-orig/include/asm-mips/mach-ocelot/mach-gt64120.h	2007-09-04 11:30:19.964132250 +0900
++++ mips/include/asm-mips/mach-ocelot/mach-gt64120.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,30 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#ifndef _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
+-#define _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H
+-
+-/*
+- * PCI address allocation
+- */
+-#define GT_PCI_MEM_BASE	(0x22000000UL)
+-#define GT_PCI_MEM_SIZE	GT_DEF_PCI0_MEM0_SIZE
+-#define GT_PCI_IO_BASE	(0x20000000UL)
+-#define GT_PCI_IO_SIZE	GT_DEF_PCI0_IO_SIZE
+-
+-extern unsigned long gt64120_base;
+-
+-#define GT64120_BASE	(gt64120_base)
+-
+-/*
+- * GT timer irq
+- */
+-#define	GT_TIMER		6
+-
+-#endif  /* _ASM_GT64120_MOMENCO_OCELOT_GT64120_DEP_H */

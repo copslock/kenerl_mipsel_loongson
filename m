@@ -1,53 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2007 15:59:11 +0100 (BST)
-Received: from kuber.nabble.com ([216.139.236.158]:4749 "EHLO kuber.nabble.com")
-	by ftp.linux-mips.org with ESMTP id S20025553AbXIGO7D (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 7 Sep 2007 15:59:03 +0100
-Received: from isper.nabble.com ([192.168.236.156])
-	by kuber.nabble.com with esmtp (Exim 4.63)
-	(envelope-from <lists@nabble.com>)
-	id 1ITfIT-0007mB-1E
-	for linux-mips@linux-mips.org; Fri, 07 Sep 2007 07:59:01 -0700
-Message-ID: <12556934.post@talk.nabble.com>
-Date:	Fri, 7 Sep 2007 07:59:01 -0700 (PDT)
-From:	dschaeffer <daniel.schaeffer@timesys.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: Revert "[MIPS] BUG_ON() on dirty pages in kmap_coherent()."
-In-Reply-To: <S20024450AbXHDOz0/20070804145526Z+167@ftp.linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Sep 2007 00:04:40 +0100 (BST)
+Received: from srv5.dvmed.net ([207.36.208.214]:60848 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S20025740AbXIGXEc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 8 Sep 2007 00:04:32 +0100
+Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
+	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
+	id 1ITms4-0003KC-EN; Fri, 07 Sep 2007 23:04:17 +0000
+Message-ID: <46E1D8EF.7010608@pobox.com>
+Date:	Fri, 07 Sep 2007 19:04:15 -0400
+From:	Jeff Garzik <jgarzik@pobox.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+To:	Matteo Croce <technoboy85@gmail.com>
+CC:	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mips@linux-mips.org, ejka@imfi.kspu.ru,
+	netdev@vger.kernel.org, davem@davemloft.net, kuznet@ms2.inr.ac.ru,
+	pekkas@netcore.fi, jmorris@namei.org, yoshfuji@linux-ipv6.org,
+	kaber@coreworks.de
+Subject: Re: [PATCH][MIPS][7/7] AR7: ethernet
+References: <200708201704.11529.technoboy85@gmail.com> <200709061734.11170.technoboy85@gmail.com> <20070906153025.7cb71cb1.akpm@linux-foundation.org> <200709070121.42629.technoboy85@gmail.com>
+In-Reply-To: <200709070121.42629.technoboy85@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Nabble-From: daniel.schaeffer@timesys.com
-References: <S20024450AbXHDOz0/20070804145526Z+167@ftp.linux-mips.org>
-Return-Path: <lists@nabble.com>
+Return-Path: <jgarzik@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16416
+X-archive-position: 16417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.schaeffer@timesys.com
+X-original-sender: jgarzik@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
+Matteo Croce wrote:
+> Il Friday 07 September 2007 00:30:25 Andrew Morton ha scritto:
+>>> On Thu, 6 Sep 2007 17:34:10 +0200 Matteo Croce <technoboy85@gmail.com> wrote:
+>>> Driver for the cpmac 100M ethernet driver.
+>>> It works fine disabling napi support, enabling it gives a kernel panic
+>>> when the first IPv6 packet has to be forwarded.
+>>> Other than that works fine.
+>>>
+>> I'm not too sure why I got cc'ed on this (and not on patches 1-6?) but
+>> whatever.
+> 
+> I mailed every maintainer in the respective section in the file MAINTAINERS
+> and you were in the "NETWORK DEVICE DRIVERS" section
+> 
+>> This patch introduces quite a number of basic coding-style mistakes. 
+>> Please run it through scripts/checkpatch.pl and review the output.
+> 
+> Already done. I'm collecting other suggestions before committing
 
-Any update on the root cause of this issue?
+cool, I'll wait for the resend before reviewing, then.
 
+As an author I understand that fixing up coding style / cosmetic stuff 
+rather than "meat" is annoying.
 
-linux-mips main mailing list wrote:
-> 
-> Author: Ralf Baechle <ralf@linux-mips.org> Sat Aug 4 15:53:09 2007 +0100
-> Commit: c4ccdaecc7f61d04a71d30a839e0d0a61aded4e4
-> Gitweb: http://www.linux-mips.org/g/linux/c4ccdaec
-> Branch: master
-> 
-> This reverts commit 982e2ba521287370ee3a6f489400be985b0f9556.
-> 
-> Turns out the BUG_ON() is trivial to trigger.  Still enquiring the root
-> cause.
-> 
-> 
+But it is important to emphasize that a "clean" driver is what makes a 
+good, thorough, effective review possible.
 
--- 
-View this message in context: http://www.nabble.com/Revert-%22-MIPS--BUG_ON%28%29-on-dirty-pages-in-kmap_coherent%28%29.%22-tf4217047.html#a12556934
-Sent from the linux-mips main mailing list archive at Nabble.com.
+	Jeff

@@ -1,91 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2007 10:00:56 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.172]:37327 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20025093AbXIGJAr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Sep 2007 10:00:47 +0100
-Received: by ug-out-1314.google.com with SMTP id u2so292227uge
-        for <linux-mips@linux-mips.org>; Fri, 07 Sep 2007 02:00:29 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=9KVJqN9EDqTeivmn9wys5BLitwMfxK4aATbe4HONg4M=;
-        b=af1Gnx+XZSoLBhsNTTs+/0I8z6pIcaAjeSWU4mSdEc6OK55E+rUBlh1uaeYaPSxh+LwO2E2vp/YBNnVAn0wApuXtcGeSZQkSq2KvW/FqQUv6CYAZHzz7Wu5p3OjoCCzZmExyNZ0aMO+NvUi/u8agVlVTHZOf97/wsmyxRjyA1eM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=U/SusDcvCnkZ/G8VXu7Ylf5JrKhKZasanvZggALKTbuuBG7Zallje3oKlu1VURjMpHssyBfvBs4Qh7PcIP801OUxAFf3QYPAGS+K0RrfWvTK9pFlY2XeU4T+A4oOI8ZM/oCEn91zjSoe+nBeVuqzbmE5UpFMqU9Tel3s8Ch+ccQ=
-Received: by 10.67.16.2 with SMTP id t2mr1120956ugi.1189155629770;
-        Fri, 07 Sep 2007 02:00:29 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id o30sm3342047ugd.2007.09.07.02.00.24
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 07 Sep 2007 02:00:25 -0700 (PDT)
-Message-ID: <46E11314.9010701@gmail.com>
-Date:	Fri, 07 Sep 2007 11:00:04 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2007 13:47:32 +0100 (BST)
+Received: from [203.94.56.252] ([203.94.56.252]:61711 "EHLO
+	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
+	id S20025375AbXIGMrT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Sep 2007 13:47:19 +0100
+Received: (qmail 20325 invoked from network); 7 Sep 2007 12:47:08 -0000
+Received: from unknown (HELO ?10.0.0.7?) (10.0.0.7)
+  by www.longlandclan.hopto.org with ESMTPS (DHE-RSA-AES256-SHA encrypted); 7 Sep 2007 12:47:08 -0000
+Message-ID: <46E14957.7010004@gentoo.org>
+Date:	Fri, 07 Sep 2007 22:51:35 +1000
+From:	Stuart Longland <redhatter@gentoo.org>
+User-Agent: Thunderbird 2.0.0.0 (X11/20070512)
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org
-Subject: Re: flush_kernel_dcache_page() not needed ?
-References: <46DC29F0.3060200@gmail.com>	<20070904.005400.52128244.anemo@mba.ocn.ne.jp>	<46DD53BE.2070004@gmail.com> <20070906.003320.25909195.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070906.003320.25909195.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Processor cores for FPGAs... any recommendations?
+X-Enigmail-Version: 0.95.0
+OpenPGP: id=63264AB9;
+	url=http://dev.gentoo.org/%7Eredhatter/gpgkey.asc
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="------------enig66BF654A9F4FACE933495587"
+Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16414
+X-archive-position: 16415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: redhatter@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> On Tue, 04 Sep 2007 14:46:54 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
->> One thing you might want to try is:
->>
->> 	$ echo 0 > /proc/sys/kernel/randomize_va_space
->>
->> and see if your system still works fine. This command should avoid a
->> data cache flush when moving the stack around. See shift_arg_pages().
->>
->> With this, maybe you could give this testcase a try:
->>
->> 	$ /bin/echo "`seq 10000`" > seq.txt
->>
->> and see if seq.txt is correct. This command should pass to echo (not
->> the bash builtin one) a long argument that should fill your
->> dcache.
-> 
-> I tried this and everything worked fine with/without the
-> flush_kernel_dcache_page() ;)
-> 
->> That said the execve syscall code is quite 'hairy' and it may not be
->> suprising that after this syscall the dcache has been completly
->> flushed and thus make the problem disappear.
-> 
-> Yes, there is an yet another path to "flush all dcache".
-> 
-> do_execve()
->   copy_strings()
->     flush_kernel_dcache_page()
->   search_binary_handler()
->     load_elf_binary()
->       flush_old_exec()
->         exec_mmap()
->           mmput()
->             exit_mmap()
->               flush_cache_mm()
->                 r4k_blast_dcache()
-> 
-> Anyway, the implementation of flush_kernel_dcache_page() is very
-> simple so that we can believe it works correctly without any testcase.
-> Too optimistic? :)
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig66BF654A9F4FACE933495587
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-god only knows ;)
+Hi all...
+	This isn't completely on-topic for this list, but I figured I'd ask
+here since many of you do FPGA development on a daily basis -- some with
+MIPS processor cores, or other embedded CPUs.
 
-		Franck
+	This semester at university, I'm in a group working to produce a
+FPGA-based device -- likely some NTP-synced alarm clock that scrolls
+reminder messages.
+
+	We've been looking around on OpenCores.org, and noticed the Plasma[1]
+MIPS-1 processor core.  We're also looking at JOP[2] and OpenRISC[3],
+but I'm liking the look of the Plasma core, since I'm already familiar
+with MIPS machines[4].
+
+	We've got use of a NIOS-2 Development kit[5], which is based on an
+Altera Cyclone-II FPGA.  It's hoped we can just load another processor
+core instead of the NIOS-2 softcore to drive the whole kit... Or would
+we be better served getting another development board?  (Or just using
+the NIOS-2 softcore?)
+
+	Just wondering what peoples' experiences have been using this processor
+core with Linux and/or =B5Clinux?  Are there other processor cores I coul=
+d
+load onto a FPGA that people would recommend?
+--=20
+Stuart Longland (aka Redhatter)              .'''.
+Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
+=2E . . . . . . . . . . . . . . . . . . . . .   .'.'
+http://dev.gentoo.org/~redhatter             :.'
+
+I haven't lost my mind...
+  ...it's backed up on a tape somewhere.
+
+Footnotes:
+1. http://www.opencores.org/projects.cgi/web/mips/overview
+2. http://www.opencores.org/projects.cgi/web/jop
+3. http://www.opencores.org/projects.cgi/web/or1k
+4. Although I'm very much a beginner ... my point is I don't know the
+others _at all_ ... well, I know Java, but not JOP.
+5. http://www.altera.com/products/devkits/altera/kit-Nios-2c35.html
+
+
+--------------enig66BF654A9F4FACE933495587
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFG4UlYuarJ1mMmSrkRCqj+AJ4yhiuzBzWX4cdkLbDC1d3Qy9JiEwCdGqsM
+NtEY5XDCZyNofExS24r2wss=
+=w1pw
+-----END PGP SIGNATURE-----
+
+--------------enig66BF654A9F4FACE933495587--

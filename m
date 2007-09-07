@@ -1,73 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2007 08:10:45 +0100 (BST)
-Received: from asia.telenet-ops.be ([195.130.137.74]:47045 "EHLO
-	asia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20025008AbXIGHKg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 7 Sep 2007 08:10:36 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by asia.telenet-ops.be (Postfix) with SMTP id 3FEE5D416C;
-	Fri,  7 Sep 2007 09:10:26 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by asia.telenet-ops.be (Postfix) with ESMTP id F3994D413C;
-	Fri,  7 Sep 2007 09:10:12 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-8) with ESMTP id l877ACZA007243
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 7 Sep 2007 09:10:12 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l877A0Lu007200;
-	Fri, 7 Sep 2007 09:10:00 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Fri, 7 Sep 2007 09:10:00 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Matteo Croce <technoboy85@gmail.com>, linux-mips@linux-mips.org,
-	ejka@imfi.kspu.ru, jgarzik@pobox.com, netdev@vger.kernel.org,
-	davem@davemloft.net, kuznet@ms2.inr.ac.ru, pekkas@netcore.fi,
-	jmorris@namei.org, yoshfuji@linux-ipv6.org, kaber@coreworks.de
-Subject: Re: [PATCH][MIPS][7/7] AR7: ethernet
-In-Reply-To: <20070906153025.7cb71cb1.akpm@linux-foundation.org>
-Message-ID: <Pine.LNX.4.64.0709070908200.5202@anakin>
-References: <200708201704.11529.technoboy85@gmail.com>
- <200709061734.11170.technoboy85@gmail.com> <20070906153025.7cb71cb1.akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Sep 2007 10:00:56 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.172]:37327 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20025093AbXIGJAr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 7 Sep 2007 10:00:47 +0100
+Received: by ug-out-1314.google.com with SMTP id u2so292227uge
+        for <linux-mips@linux-mips.org>; Fri, 07 Sep 2007 02:00:29 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=9KVJqN9EDqTeivmn9wys5BLitwMfxK4aATbe4HONg4M=;
+        b=af1Gnx+XZSoLBhsNTTs+/0I8z6pIcaAjeSWU4mSdEc6OK55E+rUBlh1uaeYaPSxh+LwO2E2vp/YBNnVAn0wApuXtcGeSZQkSq2KvW/FqQUv6CYAZHzz7Wu5p3OjoCCzZmExyNZ0aMO+NvUi/u8agVlVTHZOf97/wsmyxRjyA1eM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=U/SusDcvCnkZ/G8VXu7Ylf5JrKhKZasanvZggALKTbuuBG7Zallje3oKlu1VURjMpHssyBfvBs4Qh7PcIP801OUxAFf3QYPAGS+K0RrfWvTK9pFlY2XeU4T+A4oOI8ZM/oCEn91zjSoe+nBeVuqzbmE5UpFMqU9Tel3s8Ch+ccQ=
+Received: by 10.67.16.2 with SMTP id t2mr1120956ugi.1189155629770;
+        Fri, 07 Sep 2007 02:00:29 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id o30sm3342047ugd.2007.09.07.02.00.24
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 07 Sep 2007 02:00:25 -0700 (PDT)
+Message-ID: <46E11314.9010701@gmail.com>
+Date:	Fri, 07 Sep 2007 11:00:04 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org
+Subject: Re: flush_kernel_dcache_page() not needed ?
+References: <46DC29F0.3060200@gmail.com>	<20070904.005400.52128244.anemo@mba.ocn.ne.jp>	<46DD53BE.2070004@gmail.com> <20070906.003320.25909195.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070906.003320.25909195.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16413
+X-archive-position: 16414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 6 Sep 2007, Andrew Morton wrote:
-> > On Thu, 6 Sep 2007 17:34:10 +0200 Matteo Croce <technoboy85@gmail.com> wrote:
-> > Driver for the cpmac 100M ethernet driver.
-> > It works fine disabling napi support, enabling it gives a kernel panic
-> > when the first IPv6 packet has to be forwarded.
-> > Other than that works fine.
+Atsushi Nemoto wrote:
+> On Tue, 04 Sep 2007 14:46:54 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+>> One thing you might want to try is:
+>>
+>> 	$ echo 0 > /proc/sys/kernel/randomize_va_space
+>>
+>> and see if your system still works fine. This command should avoid a
+>> data cache flush when moving the stack around. See shift_arg_pages().
+>>
+>> With this, maybe you could give this testcase a try:
+>>
+>> 	$ /bin/echo "`seq 10000`" > seq.txt
+>>
+>> and see if seq.txt is correct. This command should pass to echo (not
+>> the bash builtin one) a long argument that should fill your
+>> dcache.
 > 
-> The driver does a lot of open-coded dma_cache_inv() calls (in a way which
-> assumes a 32-bit bus, too).  I assume that dma_cache_inv() is some mips
+> I tried this and everything worked fine with/without the
+> flush_kernel_dcache_page() ;)
+> 
+>> That said the execve syscall code is quite 'hairy' and it may not be
+>> suprising that after this syscall the dcache has been completly
+>> flushed and thus make the problem disappear.
+> 
+> Yes, there is an yet another path to "flush all dcache".
+> 
+> do_execve()
+>   copy_strings()
+>     flush_kernel_dcache_page()
+>   search_binary_handler()
+>     load_elf_binary()
+>       flush_old_exec()
+>         exec_mmap()
+>           mmput()
+>             exit_mmap()
+>               flush_cache_mm()
+>                 r4k_blast_dcache()
+> 
+> Anyway, the implementation of flush_kernel_dcache_page() is very
+> simple so that we can believe it works correctly without any testcase.
+> Too optimistic? :)
 
-No, even i386 has it ;-)
+god only knows ;)
 
-> thing.  I'd have thought that it would be better to use the dma mapping API
-> thoughout the driver, and its associated dma invalidation APIs.
-
-However, Ralf just posted a patch to remove it on all architectures, and
-driver writers should consider it gone.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+		Franck

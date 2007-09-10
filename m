@@ -1,54 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2007 16:17:07 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:23792 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022169AbXIJPQy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Sep 2007 16:16:54 +0100
-Received: from localhost (p6039-ipad30funabasi.chiba.ocn.ne.jp [221.184.81.39])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 7929CCF02; Tue, 11 Sep 2007 00:16:49 +0900 (JST)
-Date:	Tue, 11 Sep 2007 00:18:19 +0900 (JST)
-Message-Id: <20070911.001819.126573631.anemo@mba.ocn.ne.jp>
-To:	macro@linux-mips.org
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
- argument.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.64N.0709101406091.25038@blysk.ds.pg.gda.pl>
-References: <S20024438AbXHGQ1m/20070807162742Z+2733@ftp.linux-mips.org>
-	<Pine.LNX.4.64N.0709101406091.25038@blysk.ds.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2007 18:59:15 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:53900 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022378AbXIJR7M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 10 Sep 2007 18:59:12 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8AHxC6d009601;
+	Mon, 10 Sep 2007 18:59:12 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8AGw80V007580;
+	Mon, 10 Sep 2007 17:58:08 +0100
+Date:	Mon, 10 Sep 2007 17:58:08 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Andrew Morton <akpm@linux-foundation.org>,
+	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sb1250-mac.c: De-typedef, de-volatile, de-etc...
+Message-ID: <20070910165808.GA7501@linux-mips.org>
+References: <Pine.LNX.4.64N.0709101310030.25038@blysk.ds.pg.gda.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0709101310030.25038@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16441
+X-archive-position: 16442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 10 Sep 2007 14:27:54 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
-> >  include/asm-mips/mach-generic/ide.h |   76 ++++++++++++-----------------------
-> >  1 files changed, 25 insertions(+), 51 deletions(-)
+On Mon, Sep 10, 2007 at 01:20:38PM +0100, Maciej W. Rozycki wrote:
+
+>  Remove typedefs, volatiles and convert kmalloc()/memset() pairs to
+> kcalloc().  Also reformat the surrounding clutter.
 > 
->  This change breaks the SWARM -- depending on the setting of 
-> CONFIG_IDE_GENERIC, either a bus error happens because of blind probing or 
-> the onboard IDE interface gets designated as "ide2".  I cannot really see 
-> a dependency between "idebus=" (which merely sets a variable somewhere in 
-> drivers/ide/ide.c) and code affected by this change -- what's the reason 
-> behind it?
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> ---
+>  Per your request, Andrew, a while ago.  It builds, runs, passes 
+> checkpatch.pl and sparse.  No semantic changes.
 
-http://www.linux-mips.org/archives/linux-mips/2007-09/msg00016.html
-would be the answer :)
+One step closer to sanity for this driver.  So it's got my ACK.
 
-And how about this patch?  Does this fix the problem on SWARM?
-http://www.linux-mips.org/archives/linux-mips/2007-09/msg00036.html
-
----
-Atsushi Nemoto
+  Ralf

@@ -1,55 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2007 13:30:08 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:46254 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021718AbXIJMaG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 10 Sep 2007 13:30:06 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8ACU5VS010749;
-	Mon, 10 Sep 2007 13:30:05 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8ACU5nt010748;
-	Mon, 10 Sep 2007 13:30:05 +0100
-Date:	Mon, 10 Sep 2007 13:30:05 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jiri Slaby <jirislaby@gmail.com>
-Cc:	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, Adrian Bunk <bunk@kernel.org>,
-	netdev@vger.kernel.org, rth@twiddle.net, dhowells@redhat.com,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] remove asm/bitops.h includes
-Message-ID: <20070910123005.GB10143@linux-mips.org>
-References: <30483262301654323266@pripojeni.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2007 14:03:58 +0100 (BST)
+Received: from emailhub.stusta.mhn.de ([141.84.69.5]:35224 "EHLO
+	mailhub.stusta.mhn.de") by ftp.linux-mips.org with ESMTP
+	id S20021761AbXIJNDu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 10 Sep 2007 14:03:50 +0100
+Received: from r063144.stusta.swh.mhn.de (r063144.stusta.swh.mhn.de [10.150.63.144])
+	by mailhub.stusta.mhn.de (Postfix) with ESMTP id 5A8C1182DC5;
+	Mon, 10 Sep 2007 15:06:02 +0200 (CEST)
+Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
+	id 1C56F3CE833; Mon, 10 Sep 2007 15:03:52 +0200 (CEST)
+Date:	Mon, 10 Sep 2007 15:03:52 +0200
+From:	Adrian Bunk <bunk@kernel.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Jiri Slaby <jirislaby@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, rth@twiddle.net,
+	hskinnemoen@atmel.com, uclinux-dist-devel@blackfin.uclinux.org,
+	dev-etrax@axis.com, dhowells@redhat.com, discuss@x86-64.org,
+	linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+	parisc-linux@parisc-linux.org, sparclinux@vger.kernel.org,
+	chris@zankel.net
+Subject: Re: [PATCH 2/2] forbid asm/bitops.h direct inclusion
+Message-ID: <20070910130352.GF3563@stusta.de>
+References: <30483262301654323266@pripojeni.net> <276116173913632310@pripojeni.net> <20070910122838.GA10143@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <30483262301654323266@pripojeni.net>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20070910122838.GA10143@linux-mips.org>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16438
+X-archive-position: 16439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Sep 08, 2007 at 09:00:08PM +0100, Jiri Slaby wrote:
-
+On Mon, Sep 10, 2007 at 01:28:38PM +0100, Ralf Baechle wrote:
+> On Sat, Sep 08, 2007 at 09:00:48PM +0100, Jiri Slaby wrote:
 > 
-> remove asm/bitops.h includes
+> > forbid asm/bitops.h direct inclusion
+> > 
+> > Because of compile errors that may occur after bit changes if asm/bitops.h is
+> > included directly without e.g. linux/kernel.h which includes linux/bitops.h, forbid
+> > direct inclusion of asm/bitops.h. Thanks to Adrian Bunk.
 > 
-> including asm/bitops directly may cause compile errors. don't include it
-> and include linux/bitops instead. next patch will deny including asm header
-> directly.
-> 
-> Cc: Adrian Bunk <bunk@kernel.org>
-> Signed-off-by: Jiri Slaby <jirislaby@gmail.com>
+> This is the kind of thing that checkpatch.pl is already checking for and
+> I like that idea much more than adding thousands of checks over many of
+> the header files under asm.
 
-For the MIPS and hamradio bits:
+Checks in the header are only for header files where including only the 
+asm header doesn't work which doesn't seem to be the common case.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+>   Ralf
 
-  Ralf
+cu
+Adrian
+
+-- 
+
+       "Is there not promise of rain?" Ling Tan asked suddenly out
+        of the darkness. There had been need of rain for many days.
+       "Only a promise," Lao Er said.
+                                       Pearl S. Buck - Dragon Seed

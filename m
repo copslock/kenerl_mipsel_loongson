@@ -1,51 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2007 13:20:08 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:53993 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022236AbXIKMUF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 11 Sep 2007 13:20:05 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8BCK5Vx026909;
-	Tue, 11 Sep 2007 13:20:05 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8BCK5CE026908;
-	Tue, 11 Sep 2007 13:20:05 +0100
-Date:	Tue, 11 Sep 2007 13:20:05 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Koeller <thomas.koeller@baslerweb.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] [MIPS] Introduced GPI_RM9000 configuration parameter.
-Message-ID: <20070911122005.GC24679@linux-mips.org>
-References: <200709110235.50359.thomas.koeller@baslerweb.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2007 13:33:38 +0100 (BST)
+Received: from [85.186.197.132] ([85.186.197.132]:1234 "HELO swpark.galati.ro")
+	by ftp.linux-mips.org with SMTP id S20022247AbXIKMda (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2007 13:33:30 +0100
+Received: (qmail 27455 invoked by uid 1011); 11 Sep 2007 11:33:37 -0000
+Received: from unknown (HELO ?10.95.12.191?) (vlad@comsys.ro@127.0.0.1)
+  by swpark.galati.ro with SMTP; 11 Sep 2007 11:33:37 -0000
+Message-ID: <46E68AA3.2010907@comsys.ro>
+Date:	Tue, 11 Sep 2007 15:31:31 +0300
+From:	Vlad Lungu <vlad@comsys.ro>
+User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200709110235.50359.thomas.koeller@baslerweb.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	qemu-devel@nongnu.org, linux-mips@linux-mips.org
+Subject: Qemu and Linux 2.4
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <vlad@comsys.ro>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16449
+X-archive-position: 16450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vlad@comsys.ro
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 11, 2007 at 02:35:49AM +0200, Thomas Koeller wrote:
+I know some of you will laugh, but:
 
-> GPI_RM9000 indicates the presence of FM9000-style GPI
-> (General Purpose Interface) hardware.
+- QEMU malta emulation is not really complete, to put it mildly
+- the QEMU target is available only for Linux 2.6
+- despite popular opinion, 2.4 ain't dead yet, at least in the embedded 
+market
 
-Patch itself is ok but there seems to be nothing that depends on GPI_RM9000:
 
-$ git grep -E -w '(CONFIG_|)GPI_RM9000' | cat
-arch/mips/configs/excite_defconfig:CONFIG_GPI_RM9000=y
-$
+I have a port of the QEMU target for Linux 2.4.34.4 (latest 2.4 kernel 
+on linux-mips.org), with NE2000 card working (in both BE and LE modes).
+Still rough at the edges, but it works on stock qemu-0.9.0 with -M mips.
 
-I assume you're about to send more patches which depend on this one?
+If anyone is interested, I can send the patch by e-mail. I have no idea 
+if I can post attachments to the list(s), that's why it's not attached.
 
-Queued, but on hold for now.  Thanks,
-
-  Ralf
+Vlad

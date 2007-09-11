@@ -1,55 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2007 14:41:18 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:23742 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20022315AbXIKNlJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 11 Sep 2007 14:41:09 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C1C7940097;
-	Tue, 11 Sep 2007 15:41:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id h9dklSjmrppV; Tue, 11 Sep 2007 15:41:00 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C3CF740071;
-	Tue, 11 Sep 2007 15:41:00 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8BDf26h016545;
-	Tue, 11 Sep 2007 15:41:04 +0200
-Date:	Tue, 11 Sep 2007 14:40:57 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
- argument.
-In-Reply-To: <20070911.001819.126573631.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0709111431240.30365@blysk.ds.pg.gda.pl>
-References: <S20024438AbXHGQ1m/20070807162742Z+2733@ftp.linux-mips.org>
- <Pine.LNX.4.64N.0709101406091.25038@blysk.ds.pg.gda.pl>
- <20070911.001819.126573631.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2007 14:42:07 +0100 (BST)
+Received: from [85.186.197.132] ([85.186.197.132]:40915 "HELO swpark.galati.ro")
+	by ftp.linux-mips.org with SMTP id S20022345AbXIKNl7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2007 14:41:59 +0100
+Received: (qmail 6575 invoked by uid 1011); 11 Sep 2007 12:42:07 -0000
+Received: from unknown (HELO ?10.95.12.191?) (vlad@comsys.ro@127.0.0.1)
+  by swpark.galati.ro with SMTP; 11 Sep 2007 12:42:07 -0000
+Message-ID: <46E69AAF.2090509@comsys.ro>
+Date:	Tue, 11 Sep 2007 16:39:59 +0300
+From:	Vlad Lungu <vlad@comsys.ro>
+User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4238/Tue Sep 11 05:38:51 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+CC:	qemu-devel@nongnu.org, linux-mips@linux-mips.org
+Subject: Re: [Qemu-devel] Qemu and Linux 2.4
+References: <46E68AA3.2010907@comsys.ro> <20070911125421.GE10713@networkno.de>
+In-Reply-To: <20070911125421.GE10713@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <vlad@comsys.ro>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16454
+X-archive-position: 16455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: vlad@comsys.ro
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 11 Sep 2007, Atsushi Nemoto wrote:
+Thiemo Seufer wrote:
+> Vlad Lungu wrote:
+>> I know some of you will laugh, but:
+>>
+>> - QEMU malta emulation is not really complete, to put it mildly
+> 
+> Out of curiosity, what parts did you miss?
 
-> And how about this patch?  Does this fix the problem on SWARM?
-> http://www.linux-mips.org/archives/linux-mips/2007-09/msg00036.html
+Like, for example, the PCI stuff. So I can use the network card.
+And yes, I am aware of YAMON.
 
- Thanks a lot -- it makes things work for my SWARM as expected.  But 
-doesn't it break systems where there actually is a PCI-(E)ISA bridge and a 
-legacy IDE interface?
+>> - the QEMU target is available only for Linux 2.6
+>> - despite popular opinion, 2.4 ain't dead yet, at least in the embedded 
+>> market
+>>
+>>
+>> I have a port of the QEMU target for Linux 2.4.34.4 (latest 2.4 kernel on 
+>> linux-mips.org), with NE2000 card working (in both BE and LE modes).
+>> Still rough at the edges, but it works on stock qemu-0.9.0 with -M mips.
+> 
+> I recommend to improve the Qemu Malta emulation, and make it work with
+> 2.4 Malta kernels. (ISTR it used to work, so it shouldn't need a lot to
+> get there.)
 
-  Maciej
+I'm sure that improving the Qemu Malta emulation is a very noble goal, 
+but for people that need a working 2.4 kernel NOW, my patch could be 
+useful. Having the QEMU target in 2.6 surely helped me.
+
+Vlad

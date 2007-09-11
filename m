@@ -1,50 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Sep 2007 18:59:15 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:53900 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022378AbXIJR7M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 10 Sep 2007 18:59:12 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8AHxC6d009601;
-	Mon, 10 Sep 2007 18:59:12 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8AGw80V007580;
-	Mon, 10 Sep 2007 17:58:08 +0100
-Date:	Mon, 10 Sep 2007 17:58:08 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Andrew Morton <akpm@linux-foundation.org>,
-	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sb1250-mac.c: De-typedef, de-volatile, de-etc...
-Message-ID: <20070910165808.GA7501@linux-mips.org>
-References: <Pine.LNX.4.64N.0709101310030.25038@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2007 02:49:32 +0100 (BST)
+Received: from mx01.hansenet.de ([213.191.73.25]:5870 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20023124AbXIKBtY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 11 Sep 2007 02:49:24 +0100
+Received: from [80.171.14.88] (80.171.14.88) by webmail.hansenet.de (7.3.118.12) (authenticated as mbx20228207@koeller-hh.org)
+        id 46E1A14F0033FF4E; Tue, 11 Sep 2007 03:49:17 +0200
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by mail.koeller.dyndns.org (Postfix) with ESMTP id 701A6479DF;
+	Tue, 11 Sep 2007 03:49:16 +0200 (CEST)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Date:	Tue, 11 Sep 2007 02:35:49 +0200
+Subject: [PATCH] [MIPS] Introduced GPI_RM9000 configuration parameter.
+X-Length: 963
+X-UID:	14
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0709101310030.25038@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200709110235.50359.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16442
+X-archive-position: 16443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Sep 10, 2007 at 01:20:38PM +0100, Maciej W. Rozycki wrote:
+GPI_RM9000 indicates the presence of FM9000-style GPI
+(General Purpose Interface) hardware.
 
->  Remove typedefs, volatiles and convert kmalloc()/memset() pairs to
-> kcalloc().  Also reformat the surrounding clutter.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> ---
->  Per your request, Andrew, a while ago.  It builds, runs, passes 
-> checkpatch.pl and sparse.  No semantic changes.
+Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
+---
+ arch/mips/Kconfig |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-One step closer to sanity for this driver.  So it's got my ACK.
-
-  Ralf
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4a54d21..23ad4cc 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -791,6 +791,7 @@ config MIPS_TX3927
+ config MIPS_RM9122
+ 	bool
+ 	select SERIAL_RM9000
++	select GPI_RM9000
+ 
+ config PNX8550
+ 	bool
+@@ -818,6 +819,9 @@ config EMMA2RH
+ config SERIAL_RM9000
+ 	bool
+ 
++config GPI_RM9000
++	bool
++
+ #
+ # Unfortunately not all GT64120 systems run the chip at the same clock.
+ # As the user for the clock rate and try to minimize the available options.
+-- 
+1.5.1.2

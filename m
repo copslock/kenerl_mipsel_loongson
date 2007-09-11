@@ -1,64 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2007 22:43:49 +0100 (BST)
-Received: from tim.rpsys.net ([194.106.48.114]:48297 "EHLO tim.rpsys.net")
-	by ftp.linux-mips.org with ESMTP id S20022340AbXIKVnk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Sep 2007 22:43:40 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by tim.rpsys.net (8.13.6/8.13.8) with ESMTP id l8BLhZr0029908;
-	Tue, 11 Sep 2007 22:43:35 +0100
-Received: from tim.rpsys.net ([127.0.0.1])
- by localhost (tim.rpsys.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
- id 29681-06; Tue, 11 Sep 2007 22:43:31 +0100 (BST)
-Received: from [192.168.1.15] (max.rpnet.com [192.168.1.15])
-	(authenticated bits=0)
-	by tim.rpsys.net (8.13.6/8.13.8) with ESMTP id l8BLhU9j029902
-	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
-	Tue, 11 Sep 2007 22:43:30 +0100
-Subject: Re: [PATCH][MIPS][4/7] AR7: leds driver
-From:	Richard Purdie <rpurdie@rpsys.net>
-To:	Matteo Croce <technoboy85@gmail.com>
-Cc:	linux-mips@linux-mips.org, Nicolas Thill <nico@openwrt.org>,
-	openwrt-devel@lists.openwrt.org,
-	Andrew Morton <akpm@linux-foundation.org>
-In-Reply-To: <200709080220.49064.technoboy85@gmail.com>
-References: <200709080143.12345.technoboy85@gmail.com>
-	 <200709080220.49064.technoboy85@gmail.com>
-Content-Type: text/plain
-Date:	Tue, 11 Sep 2007 22:43:29 +0100
-Message-Id: <1189547009.6163.81.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.10.1 
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Sep 2007 23:44:16 +0100 (BST)
+Received: from ag-out-0708.google.com ([72.14.246.250]:18482 "EHLO
+	ag-out-0708.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023328AbXIKWoB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 11 Sep 2007 23:44:01 +0100
+Received: by ag-out-0708.google.com with SMTP id 33so8610agc
+        for <linux-mips@linux-mips.org>; Tue, 11 Sep 2007 15:43:42 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
+        bh=MqHbI7VFs99b2MR2dJfh/LrqapYoqiATMe6BonYSCIU=;
+        b=h9axZhbwpUsx84aevidJofBTTTBiJPAyYaGu+l6/I8z6NyGIgliWeGchXjp7baz8CHuzQ/GKy11yP0BOcPsAVVqTBZXNZm9JzXZQY99merQij8uHi/3N0tXxuD9j5eDNccGNQUfxA0NgHCsEOkvds612iHA2g3ydw6JnM60klaM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
+        b=GQrBFUccnNWvje9O6kKcqx1riIB2quU4Mr5rJc3hG3zzQpMW9VIMJAPC3pVNQONtu0ZbhM0L+hSI1+k0UTgN9QtPlgQF87iduWwOPGk2CKvvQpLd7QgaYqi1AZYeYQBAuwPgIYXWv1G3fCG7ipmEjC71c4iS13yS4XuEDJ04wRo=
+Received: by 10.100.9.19 with SMTP id 19mr7320052ani.1189550622746;
+        Tue, 11 Sep 2007 15:43:42 -0700 (PDT)
+Received: from raver.cocorico ( [79.18.35.53])
+        by mx.google.com with ESMTPS id h38sm11333418wxd.2007.09.11.15.43.38
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 11 Sep 2007 15:43:41 -0700 (PDT)
+From:	Matteo Croce <technoboy85@gmail.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH][MIPS][1/7] AR7: core support
+Date:	Wed, 12 Sep 2007 00:43:42 +0200
+User-Agent: KMail/1.9.6 (enterprise 0.20070831.706792)
+Cc:	linux-mips@linux-mips.org, florian@openwrt.org, nbd@openwrt.org,
+	ejka@imfi.kspu.ru, nico@openwrt.org, ralf@linux-mips.org,
+	openwrt-devel@lists.openwrt.org, akpm@linux-foundation.org
+References: <200709080143.12345.technoboy85@gmail.com> <200709080218.50236.technoboy85@gmail.com> <20070909.024020.61508994.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070909.024020.61508994.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: amavisd-new at rpsys.net
-Return-Path: <rpurdie@rpsys.net>
+Content-Disposition: inline
+Message-Id: <200709120043.43452.technoboy85@gmail.com>
+Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16462
+X-archive-position: 16463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpurdie@rpsys.net
+X-original-sender: technoboy85@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 2007-09-08 at 02:20 +0200, Matteo Croce wrote:
-> Support for the leds in front of the board usually used to show power
-> status, network traffic, connected eth devices etc.
+Il Saturday 08 September 2007 19:40:20 Atsushi Nemoto ha scritto:
+> > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> > index 6379003..75a46ba 100644
+> > --- a/arch/mips/kernel/traps.c
+> > +++ b/arch/mips/kernel/traps.c
+> > @@ -1075,9 +1075,23 @@ void *set_except_vector(int n, void *addr)
+> >  
+> >  	exception_handlers[n] = handler;
+> >  	if (n == 0 && cpu_has_divec) {
+> > +#ifdef CONFIG_AR7
+> > +		/* lui k0, 0x0000 */
+> > +		*(volatile u32 *)(CAC_BASE+0x200) =
+> > +				0x3c1a0000 | (handler >> 16);
+> > +		/* ori k0, 0x0000 */
+> > +		*(volatile u32 *)(CAC_BASE+0x204) =
+> > +				0x375a0000 | (handler & 0xffff);
+> > +		/* jr k0 */
+> > +		*(volatile u32 *)(CAC_BASE+0x208) = 0x03400008;
+> > +		/* nop */
+> > +		*(volatile u32 *)(CAC_BASE+0x20C) = 0x00000000;
+> > +		flush_icache_range(CAC_BASE+0x200, CAC_BASE+0x210);
+> > +#else
+> >  		*(volatile u32 *)(ebase + 0x200) = 0x08000000 |
+> >  		                                 (0x03ffffff & (handler >> 2));
+> >  		flush_icache_range(ebase + 0x200, ebase + 0x204);
+> > +#endif
+> >  	}
+> >  	return (void *)old_handler;
+> >  }
 > 
-> Signed-off-by: Matteo Croce <technoboy85@gmail.com>
-> Signed-off-by: Nicolas Thill <nico@openwrt.org>
-
-The usual approach to drivers like this is to add the device definition
-(ar7_leds_device) to the platform specific code which is probably in
-arch/mips/ somewhere? See arch/arm/mach-pxa/{corgi|poodle|spitz}.c for
-example.
-
-Also, does MIPS have any kind of generic GPIO framework? A quick look at
-the code suggests you might be able to use drivers/leds/leds-gpio.c
-although you might need to add a definition of gpio_set_value_cansleep()
-since MIPS appears to lack it.
-
-Regards,
-
-Richard
-(LED Maintainer)
+> Runtime checking, something like this would be better than ifdef:
+> 
+> 	if ((handler ^ (ebase + 4)) & 0xfc000000)
+> 		/* use jr */
+> 		...
+> 	} else {
+> 		/* use j */
+> 		...
+> 	}
+This will not make the code bigger? What's wrong with #ifdef?

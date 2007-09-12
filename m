@@ -1,67 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 18:19:46 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:30609 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20023574AbXILRTh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 12 Sep 2007 18:19:37 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D5FB6400BE;
-	Wed, 12 Sep 2007 19:19:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id JBebV8XAoA1I; Wed, 12 Sep 2007 19:19:30 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 8E1DC400B2;
-	Wed, 12 Sep 2007 19:19:30 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8CHJZUi015750;
-	Wed, 12 Sep 2007 19:19:35 +0200
-Date:	Wed, 12 Sep 2007 18:19:29 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
- argument.
-In-Reply-To: <20070913.015520.51867978.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0709121815000.24030@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0709111509140.30365@blysk.ds.pg.gda.pl>
- <20070913.001809.106261283.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
- <20070913.015520.51867978.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4255/Wed Sep 12 09:18:47 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 20:37:56 +0100 (BST)
+Received: from mailrelay010.isp.belgacom.be ([195.238.6.177]:2158 "EHLO
+	mailrelay010.isp.belgacom.be") by ftp.linux-mips.org with ESMTP
+	id S20023615AbXILThs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 12 Sep 2007 20:37:48 +0100
+Received: from 174.218-200-80.adsl-dyn.isp.belgacom.be (HELO infomag.iguana.be) ([80.200.218.174])
+  by mailrelay010.isp.belgacom.be with ESMTP; 12 Sep 2007 21:36:41 +0200
+X-Belgacom-Dynamic: yes
+Received: from infomag.iguana.be (localhost.localdomain [127.0.0.1])
+	by infomag.iguana.be (8.13.8/8.12.11) with ESMTP id l8CJfc46003132;
+	Wed, 12 Sep 2007 21:41:38 +0200
+Received: (from wim@localhost)
+	by infomag.iguana.be (8.13.8/8.13.8/Submit) id l8CJfbwO003131;
+	Wed, 12 Sep 2007 21:41:37 +0200
+Date:	Wed, 12 Sep 2007 21:41:37 +0200
+From:	Wim Van Sebroeck <wim@iguana.be>
+To:	Matteo Croce <technoboy85@gmail.com>
+Cc:	linux-mips@linux-mips.org, Nicolas Thill <nico@openwrt.org>,
+	Enrik Berkhan <Enrik.Berkhan@akk.org>,
+	Christer Weinigel <wingel@nano-system.com>
+Subject: Re: [PATCH][MIPS][5/7] AR7: watchdog timer
+Message-ID: <20070912194137.GC2901@infomag.infomag.iguana.be>
+References: <200708201704.11529.technoboy85@gmail.com> <200709061731.26655.technoboy85@gmail.com> <20070909084752.GB2654@infomag.infomag.iguana.be> <200709092019.43471.technoboy85@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200709092019.43471.technoboy85@gmail.com>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <wim@iguana.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16482
+X-archive-position: 16483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: wim@iguana.be
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 13 Sep 2007, Atsushi Nemoto wrote:
+Hi Matteo,
 
-> The pci_get_class() failure was happened only if ide_probe_legacy() was
-> called too early.  That can happen if you specified some IDE boot
-> options, such as "idebus=" option.
+> > > Driver for the watchdog timer. It worked with 2.4, doesn't does with 2.6.
+> > > Apart that it doesn't reboots the device it works :)
+> > 
+> > Can you please explain this a bit more? Is this driver working under 2.4
+> > (and also rebooting the device) but not under 2.6?
 > 
-> So if you do not add any ide boot option, there should be no problem.
-> 
-> If you meant "ide_probe_legacy() has been broken with ide boot options
-> for long years", I agree.
+> Exactly.
+> A guy had it working with the attached patch but it doesn't works for me.
 
- You mean the point ide_probe_legacy() is called at during bootstrap 
-depends on whether some IDE boot options have been specified or not?  
-Well, that is an... interesting approach indeed.
+I'll have a look at the driver this weekend.
 
-> And my recent patch is not to solve this problem.  Just avoid adding
-> legacy ide0/ide1 unconditionally in normal usage.
-
- Of course and it makes perfect sense then.  Thanks for your effort.
-
-  Maciej
+Greetings,
+Wim.

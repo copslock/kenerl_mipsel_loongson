@@ -1,55 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 16:32:00 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:34284 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022977AbXILPbv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2007 16:31:51 +0100
-Received: from localhost (p8044-ipad303funabasi.chiba.ocn.ne.jp [123.217.154.44])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id E2DF5C2E2; Thu, 13 Sep 2007 00:31:47 +0900 (JST)
-Date:	Thu, 13 Sep 2007 00:33:19 +0900 (JST)
-Message-Id: <20070913.003319.41011558.anemo@mba.ocn.ne.jp>
-To:	yoichi_yuasa@tripeaks.co.jp
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH][MIPS] move i8259 functions to include/asm-mips/i8259.h
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070912232333.22c4f7bb.yoichi_yuasa@tripeaks.co.jp>
-References: <20070912232333.22c4f7bb.yoichi_yuasa@tripeaks.co.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 16:54:25 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:9920 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20023190AbXILPyR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 12 Sep 2007 16:54:17 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id CBAC8400BE;
+	Wed, 12 Sep 2007 17:54:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id sRgrELBUrlvn; Wed, 12 Sep 2007 17:54:10 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id E6C44400B2;
+	Wed, 12 Sep 2007 17:54:09 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8CFsEYZ007261;
+	Wed, 12 Sep 2007 17:54:14 +0200
+Date:	Wed, 12 Sep 2007 16:54:08 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
+ argument.
+In-Reply-To: <20070913.001809.106261283.anemo@mba.ocn.ne.jp>
+Message-ID: <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0709111431240.30365@blysk.ds.pg.gda.pl>
+ <20070911.230712.39152979.anemo@mba.ocn.ne.jp>
+ <Pine.LNX.4.64N.0709111509140.30365@blysk.ds.pg.gda.pl>
+ <20070913.001809.106261283.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4255/Wed Sep 12 09:18:47 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16475
+X-archive-position: 16476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 12 Sep 2007 23:23:33 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
-> --- mips-orig/arch/mips/kernel/i8259.c	2007-09-12 14:37:15.447287000 +0900
-> +++ mips/arch/mips/kernel/i8259.c	2007-09-12 14:26:42.007699500 +0900
-> @@ -31,7 +31,10 @@
->  static int i8259A_auto_eoi = -1;
->  DEFINE_SPINLOCK(i8259A_lock);
->  /* some platforms call this... */
-> -void mask_and_ack_8259A(unsigned int);
-> +static void disable_8259A_irq(unsigned int irq);
-> +static void enable_8259A_irq(unsigned int irq);
-> +static void mask_and_ack_8259A(unsigned int irq);
-> +static void init_8259A(int auto_eoi);
->  
->  static struct irq_chip i8259A_chip = {
->  	.name		= "XT-PIC",
+On Thu, 13 Sep 2007, Atsushi Nemoto wrote:
 
-Please drop a comment in this part too.  The comment was there just
-because we had to drop "static" from mask_and_ack_8259A() at that
-time.
+> >  Not quite so.  The test for the PCI-(E)ISA bridge is there so that they 
+> > are handled.  Now I gather the use of no_pci_devices() in 
+> > ide_probe_legacy() effectively disables the test entirely (thus making it 
+> > a candidate for removal).  Or am I missing something?
+> 
+> Well, I missed your point...  please elaborate?
 
----
-Atsushi Nemoto
+ I gather the problem is ide_probe_legacy() is called too early for PCI to 
+have been initialised.  With the old code ide_probe_legacy() called 
+pci_get_class(), which in turn triggered PCI initialisation, which enabled 
+interrupts prematurely and the failure scenario happened.  To rectify Ralf 
+resurrected yet older code that reserved the legacy ports unconditionally.  
+You have put the code that calls pci_get_class() back and introduced this 
+call to no_pci_devices() beforehand.  Please correct me if I have been 
+wrong anywhere here.
+
+ Now because at the point ide_probe_legacy() is called, PCI has not been 
+initialised yet, no_pci_devices() returns true and calls to 
+pci_get_class() are skipped preventing PCI initialisation from triggering 
+at this point.  But the end result is they are not going to be called, 
+because if they were, it would mean no_pci_devices() had returned false 
+and would have been unnecessary in the first place.
+
+ I hope I have been clearer now.
+
+  Maciej

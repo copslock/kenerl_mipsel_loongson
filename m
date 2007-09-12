@@ -1,54 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 17:53:32 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:23260 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023186AbXILQxa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 12 Sep 2007 17:53:30 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8CGrURX010259;
-	Wed, 12 Sep 2007 17:53:30 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8CGrU3P010258;
-	Wed, 12 Sep 2007 17:53:30 +0100
-Date:	Wed, 12 Sep 2007 17:53:30 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	zhuzhenhua <zzh.hust@gmail.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: does the SAVE_ALL nesting in kernel?
-Message-ID: <20070912165330.GH4571@linux-mips.org>
-References: <50c9a2250709111921g1b49cb0du7f97ebb3e1fb7d07@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <50c9a2250709111921g1b49cb0du7f97ebb3e1fb7d07@mail.gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 17:55:17 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.175.29]:14557 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023566AbXILQzJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2007 17:55:09 +0100
+Received: from localhost (p8044-ipad303funabasi.chiba.ocn.ne.jp [123.217.154.44])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id B3CEDC21E; Thu, 13 Sep 2007 01:53:48 +0900 (JST)
+Date:	Thu, 13 Sep 2007 01:55:20 +0900 (JST)
+Message-Id: <20070913.015520.51867978.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
+ argument.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0709111509140.30365@blysk.ds.pg.gda.pl>
+	<20070913.001809.106261283.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16480
+X-archive-position: 16481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 12, 2007 at 10:21:53AM +0800, zhuzhenhua wrote:
+On Wed, 12 Sep 2007 16:54:08 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+>  I gather the problem is ide_probe_legacy() is called too early for PCI to 
+> have been initialised.  With the old code ide_probe_legacy() called 
+> pci_get_class(), which in turn triggered PCI initialisation, which enabled 
+> interrupts prematurely and the failure scenario happened.  To rectify Ralf 
+> resurrected yet older code that reserved the legacy ports unconditionally.  
+> You have put the code that calls pci_get_class() back and introduced this 
+> call to no_pci_devices() beforehand.  Please correct me if I have been 
+> wrong anywhere here.
 
->             i have a mips board,  and the SDRAM speed(bus clock) is not too
-> fast.
->              so i want change  the SAVE_ALL and RESTORE_ALL to use
-> internal-ram(high speed).
->             i just wonder whether the SAVE_ALL netsting in kernel  for mips
-> arch?
->             if not, i think  maybe 1k byte for SAVE_ALL is enough( 32regs
-> X4, and some cp0_regs).
->             but if  the SAVE_ALL nesting, maybe i need to keep a stack in
-> internal-ram.
->             thanks for any hints．
+Right.  That's exactly what I did.
 
-Nesting works but due to the use of k0/k1 you need to ensure SAVE_ALL is
-only invoked with interrupts disabled.
+>  Now because at the point ide_probe_legacy() is called, PCI has not been 
+> initialised yet, no_pci_devices() returns true and calls to 
+> pci_get_class() are skipped preventing PCI initialisation from triggering 
+> at this point.  But the end result is they are not going to be called, 
+> because if they were, it would mean no_pci_devices() had returned false 
+> and would have been unnecessary in the first place.
 
-  Ralf
+The pci_get_class() failure was happened only if ide_probe_legacy() was
+called too early.  That can happen if you specified some IDE boot
+options, such as "idebus=" option.
+
+So if you do not add any ide boot option, there should be no problem.
+
+If you meant "ide_probe_legacy() has been broken with ide boot options
+for long years", I agree.
+
+And my recent patch is not to solve this problem.  Just avoid adding
+legacy ide0/ide1 unconditionally in normal usage.
+
+>  I hope I have been clearer now.
+
+Thank you!
+
+---
+Atsushi Nemoto

@@ -1,73 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 17:55:17 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.175.29]:14557 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20023566AbXILQzJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2007 17:55:09 +0100
-Received: from localhost (p8044-ipad303funabasi.chiba.ocn.ne.jp [123.217.154.44])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id B3CEDC21E; Thu, 13 Sep 2007 01:53:48 +0900 (JST)
-Date:	Thu, 13 Sep 2007 01:55:20 +0900 (JST)
-Message-Id: <20070913.015520.51867978.anemo@mba.ocn.ne.jp>
-To:	macro@linux-mips.org
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 18:19:46 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:30609 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20023574AbXILRTh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 12 Sep 2007 18:19:37 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D5FB6400BE;
+	Wed, 12 Sep 2007 19:19:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id JBebV8XAoA1I; Wed, 12 Sep 2007 19:19:30 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 8E1DC400B2;
+	Wed, 12 Sep 2007 19:19:30 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8CHJZUi015750;
+	Wed, 12 Sep 2007 19:19:35 +0200
+Date:	Wed, 12 Sep 2007 18:19:29 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
  argument.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
+In-Reply-To: <20070913.015520.51867978.anemo@mba.ocn.ne.jp>
+Message-ID: <Pine.LNX.4.64N.0709121815000.24030@blysk.ds.pg.gda.pl>
 References: <Pine.LNX.4.64N.0709111509140.30365@blysk.ds.pg.gda.pl>
-	<20070913.001809.106261283.anemo@mba.ocn.ne.jp>
-	<Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+ <20070913.001809.106261283.anemo@mba.ocn.ne.jp>
+ <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
+ <20070913.015520.51867978.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4255/Wed Sep 12 09:18:47 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16481
+X-archive-position: 16482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 12 Sep 2007 16:54:08 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
->  I gather the problem is ide_probe_legacy() is called too early for PCI to 
-> have been initialised.  With the old code ide_probe_legacy() called 
-> pci_get_class(), which in turn triggered PCI initialisation, which enabled 
-> interrupts prematurely and the failure scenario happened.  To rectify Ralf 
-> resurrected yet older code that reserved the legacy ports unconditionally.  
-> You have put the code that calls pci_get_class() back and introduced this 
-> call to no_pci_devices() beforehand.  Please correct me if I have been 
-> wrong anywhere here.
+On Thu, 13 Sep 2007, Atsushi Nemoto wrote:
 
-Right.  That's exactly what I did.
+> The pci_get_class() failure was happened only if ide_probe_legacy() was
+> called too early.  That can happen if you specified some IDE boot
+> options, such as "idebus=" option.
+> 
+> So if you do not add any ide boot option, there should be no problem.
+> 
+> If you meant "ide_probe_legacy() has been broken with ide boot options
+> for long years", I agree.
 
->  Now because at the point ide_probe_legacy() is called, PCI has not been 
-> initialised yet, no_pci_devices() returns true and calls to 
-> pci_get_class() are skipped preventing PCI initialisation from triggering 
-> at this point.  But the end result is they are not going to be called, 
-> because if they were, it would mean no_pci_devices() had returned false 
-> and would have been unnecessary in the first place.
+ You mean the point ide_probe_legacy() is called at during bootstrap 
+depends on whether some IDE boot options have been specified or not?  
+Well, that is an... interesting approach indeed.
 
-The pci_get_class() failure was happened only if ide_probe_legacy() was
-called too early.  That can happen if you specified some IDE boot
-options, such as "idebus=" option.
+> And my recent patch is not to solve this problem.  Just avoid adding
+> legacy ide0/ide1 unconditionally in normal usage.
 
-So if you do not add any ide boot option, there should be no problem.
+ Of course and it makes perfect sense then.  Thanks for your effort.
 
-If you meant "ide_probe_legacy() has been broken with ide boot options
-for long years", I agree.
-
-And my recent patch is not to solve this problem.  Just avoid adding
-legacy ide0/ide1 unconditionally in normal usage.
-
->  I hope I have been clearer now.
-
-Thank you!
-
----
-Atsushi Nemoto
+  Maciej

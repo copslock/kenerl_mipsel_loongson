@@ -1,74 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 16:54:25 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:9920 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20023190AbXILPyR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 12 Sep 2007 16:54:17 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id CBAC8400BE;
-	Wed, 12 Sep 2007 17:54:17 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id sRgrELBUrlvn; Wed, 12 Sep 2007 17:54:10 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id E6C44400B2;
-	Wed, 12 Sep 2007 17:54:09 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8CFsEYZ007261;
-	Wed, 12 Sep 2007 17:54:14 +0200
-Date:	Wed, 12 Sep 2007 16:54:08 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
- argument.
-In-Reply-To: <20070913.001809.106261283.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0709111431240.30365@blysk.ds.pg.gda.pl>
- <20070911.230712.39152979.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.64N.0709111509140.30365@blysk.ds.pg.gda.pl>
- <20070913.001809.106261283.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Sep 2007 17:22:22 +0100 (BST)
+Received: from mail.gmx.net ([213.165.64.20]:52913 "HELO mail.gmx.net")
+	by ftp.linux-mips.org with SMTP id S20023495AbXILQWO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Sep 2007 17:22:14 +0100
+Received: (qmail invoked by alias); 12 Sep 2007 16:21:08 -0000
+Received: from p548B0E3D.dip0.t-ipconnect.de (EHLO [192.168.120.22]) [84.139.14.61]
+  by mail.gmx.net (mp028) with SMTP; 12 Sep 2007 18:21:08 +0200
+X-Authenticated: #16080105
+X-Provags-ID: V01U2FsdGVkX19sAgFQYwls+jnRJAYTqnPQi+8xT9TWJlXnW4ipk2
+	aYeR5RC6yxvu3O
+Message-ID: <46E8122C.4000505@gmx.de>
+Date:	Wed, 12 Sep 2007 18:22:04 +0200
+From:	Johannes Dickgreber <tanzy@gmx.de>
+User-Agent: Thunderbird 1.5.0.12 (X11/20060911)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4255/Wed Sep 12 09:18:47 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+To:	linux-mips@linux-mips.org
+CC:	ralf@linux-mips.org, kumba@gentoo.org
+Subject: MIPS N32 tar could not change time on unpacked file
+X-Enigmail-Version: 0.95.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Y-GMX-Trusted: 0
+Return-Path: <tanzy@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16476
+X-archive-position: 16477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: tanzy@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 13 Sep 2007, Atsushi Nemoto wrote:
 
-> >  Not quite so.  The test for the PCI-(E)ISA bridge is there so that they 
-> > are handled.  Now I gather the use of no_pci_devices() in 
-> > ide_probe_legacy() effectively disables the test entirely (thus making it 
-> > a candidate for removal).  Or am I missing something?
-> 
-> Well, I missed your point...  please elaborate?
+Hi
 
- I gather the problem is ide_probe_legacy() is called too early for PCI to 
-have been initialised.  With the old code ide_probe_legacy() called 
-pci_get_class(), which in turn triggered PCI initialisation, which enabled 
-interrupts prematurely and the failure scenario happened.  To rectify Ralf 
-resurrected yet older code that reserved the legacy ports unconditionally.  
-You have put the code that calls pci_get_class() back and introduced this 
-call to no_pci_devices() beforehand.  Please correct me if I have been 
-wrong anywhere here.
+After I installed a new glibc-2.5 with linux-headers-2.6.21 on
+my SGI Octane, tar could not change time on unpacked file.
 
- Now because at the point ide_probe_legacy() is called, PCI has not been 
-initialised yet, no_pci_devices() returns true and calls to 
-pci_get_class() are skipped preventing PCI initialisation from triggering 
-at this point.  But the end result is they are not going to be called, 
-because if they were, it would mean no_pci_devices() had returned false 
-and would have been unnecessary in the first place.
+For each file there was "utime invalid argument".
 
- I hope I have been clearer now.
+System Gentoo MIPS N32
+Kernel 2.6.22 with mips-git20070902 plus modified skylark patches
 
-  Maciej
+I changed this
+
+--- linux-2.6.22-mips20070902/arch/mips/kernel/scall64-n32.S	2007-07-09 01:32:17 +0200
++++ linux-octane-1/arch/mips/kernel/scall64-n32.S	2007-09-12 12:14:41 +0200
+@@ -375,7 +375,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_mkdirat
+ 	PTR	sys_mknodat
+ 	PTR	sys_fchownat
+-	PTR	sys_futimesat			/* 6255 */
++	PTR	compat_sys_futimesat		/* 6255 */
+ 	PTR	sys_newfstatat
+ 	PTR	sys_unlinkat
+ 	PTR	sys_renameat
+
+
+Now tar was fully working.
+
+Bye johannes

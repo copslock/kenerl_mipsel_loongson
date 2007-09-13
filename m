@@ -1,32 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 12:29:40 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:50368 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 12:36:04 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:50626 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021738AbXIML30 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Sep 2007 12:29:26 +0100
+	id S20021751AbXIMLgC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 13 Sep 2007 12:36:02 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8DBTPlT032083;
-	Thu, 13 Sep 2007 12:29:25 +0100
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8DBZxP5000345;
+	Thu, 13 Sep 2007 12:35:59 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8DBTNb1032082;
-	Thu, 13 Sep 2007 12:29:23 +0100
-Date:	Thu, 13 Sep 2007 12:29:23 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8DBZl7w000344;
+	Thu, 13 Sep 2007 12:35:47 +0100
+Date:	Thu, 13 Sep 2007 12:35:47 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH][MIPS] add #include <linux/profile.h> to
-	arch/mips/kernel/time.c
-Message-ID: <20070913112923.GA31940@linux-mips.org>
-References: <20070912232333.22c4f7bb.yoichi_yuasa@tripeaks.co.jp> <20070913.003319.41011558.anemo@mba.ocn.ne.jp> <200709130204.l8D244XV029841@po-mbox300.hop.2iij.net> <20070913.112917.76463355.nemoto@toshiba-tops.co.jp> <200709130413.l8D4DS73011392@po-mbox301.hop.2iij.net>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	Matteo Croce <technoboy85@gmail.com>, linux-mips@linux-mips.org,
+	Eugene Konev <ejka@imfi.kspu.ru>, netdev@vger.kernel.org,
+	davem@davemloft.net, kuznet@ms2.inr.ac.ru, pekkas@netcore.fi,
+	jmorris@namei.org, yoshfuji@linux-ipv6.org, kaber@coreworks.de,
+	openwrt-devel@lists.openwrt.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jeff Garzik <jgarzik@pobox.com>
+Subject: Re: [PATCH][MIPS][7/7] AR7: ethernet
+Message-ID: <20070913113547.GC31940@linux-mips.org>
+References: <200709080143.12345.technoboy85@gmail.com> <200709080223.00613.technoboy85@gmail.com> <20070912165029.GG4571@linux-mips.org> <20070913014246.GB15247@networkno.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200709130413.l8D4DS73011392@po-mbox301.hop.2iij.net>
+In-Reply-To: <20070913014246.GB15247@networkno.de>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16493
+X-archive-position: 16494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,28 +39,18 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 13, 2007 at 01:13:28PM +0900, Yoichi Yuasa wrote:
+On Thu, Sep 13, 2007 at 02:42:46AM +0100, Thiemo Seufer wrote:
 
-> > linux/arch/mips/kernel/time.c:142: error: implicit declaration of function 'profile_tick'
-> > 
-> > Proper fix would be including profile.h from time.c, but this is
-> > irrelevant to i8259, so should be a separate patch.
+> > All struct members here are sized such that there is no padding needed, so
+> > the packed attribute doesn't buy you anything - unless of course the
+> > entire structure is missaligned but I don't see how that would be possible
+> > in this driver so the __attribute__ ((packed)) should go - it result in
+> > somwhat larger and slower code.
 > 
-> I found a patch for it in my patch queue.
->  
-> > Other parts looks good to me.  Thanks.
-> 
-> Add #include <linux/profile.h> to arch/mips/kernel/time.c
-> It refer to CPU_PROFILING.
-> 
-> arch/mips/kernel/time.c: In function 'local_timer_interrupt':
-> arch/mips/kernel/time.c:142: error: implicit declaration of function 'profile_tick'
-> arch/mips/kernel/time.c:142: error: 'CPU_PROFILING' undeclared (first use in this function)
-> arch/mips/kernel/time.c:142: error: (Each undeclared identifier is reported only once
-> arch/mips/kernel/time.c:142: error: for each function it appears in.)
-> 
-> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> FWIW, a modern gcc will warn about such superfluous packed attributes,
+> that's another reason to remove those.
 
-Thanks, applied.
+I doubt it will in this case; the packed structure is dereferenced by a
+pointer so no way for gcc to know the alignment.
 
   Ralf

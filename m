@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 11:42:43 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:25226 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 12:29:40 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:50368 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021563AbXIMKmS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Sep 2007 11:42:18 +0100
+	id S20021738AbXIML30 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 13 Sep 2007 12:29:26 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8CNFblP010879;
-	Thu, 13 Sep 2007 00:15:37 +0100
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8DBTPlT032083;
+	Thu, 13 Sep 2007 12:29:25 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8CNFaLt010878;
-	Thu, 13 Sep 2007 00:15:36 +0100
-Date:	Thu, 13 Sep 2007 00:15:36 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8DBTNb1032082;
+	Thu, 13 Sep 2007 12:29:23 +0100
+Date:	Thu, 13 Sep 2007 12:29:23 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: IP22 64bit kernel
-Message-ID: <20070912231536.GI4571@linux-mips.org>
-References: <20070911213048.GA20579@alpha.franken.de>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Subject: Re: [PATCH][MIPS] add #include <linux/profile.h> to
+	arch/mips/kernel/time.c
+Message-ID: <20070913112923.GA31940@linux-mips.org>
+References: <20070912232333.22c4f7bb.yoichi_yuasa@tripeaks.co.jp> <20070913.003319.41011558.anemo@mba.ocn.ne.jp> <200709130204.l8D244XV029841@po-mbox300.hop.2iij.net> <20070913.112917.76463355.nemoto@toshiba-tops.co.jp> <200709130413.l8D4DS73011392@po-mbox301.hop.2iij.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20070911213048.GA20579@alpha.franken.de>
+In-Reply-To: <200709130413.l8D4DS73011392@po-mbox301.hop.2iij.net>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16492
+X-archive-position: 16493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,31 +34,28 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 11, 2007 at 11:30:48PM +0200, Thomas Bogendoerfer wrote:
+On Thu, Sep 13, 2007 at 01:13:28PM +0900, Yoichi Yuasa wrote:
 
-> I finally figured out, why 64bit SGI IP22 kernels are broken (at
-> least when booted with SGI sash). Looks like sash jumps to an uncached
-> XPHYS address instead of the KSEG0 address indicated by the ELF start.
-> This messes up bogomips calculation.
+> > linux/arch/mips/kernel/time.c:142: error: implicit declaration of function 'profile_tick'
+> > 
+> > Proper fix would be including profile.h from time.c, but this is
+> > irrelevant to i8259, so should be a separate patch.
 > 
-> I found an interesting piece of code in head.S:
+> I found a patch for it in my patch queue.
+>  
+> > Other parts looks good to me.  Thanks.
 > 
->         .macro  ARC64_TWIDDLE_PC
-> #if defined(CONFIG_ARC64) || defined(CONFIG_MAPPED_KERNEL)
->         /* We get launched at a XKPHYS address but the kernel is linked
->  * to
->            run at a KSEG0 address, so jump there.  */
->         PTR_LA  t0, \@f
->         jr      t0
-> \@:
-> #endif
->         .endm
+> Add #include <linux/profile.h> to arch/mips/kernel/time.c
+> It refer to CPU_PROFILING.
 > 
+> arch/mips/kernel/time.c: In function 'local_timer_interrupt':
+> arch/mips/kernel/time.c:142: error: implicit declaration of function 'profile_tick'
+> arch/mips/kernel/time.c:142: error: 'CPU_PROFILING' undeclared (first use in this function)
+> arch/mips/kernel/time.c:142: error: (Each undeclared identifier is reported only once
+> arch/mips/kernel/time.c:142: error: for each function it appears in.)
 > 
-> Enabling this for (CONFIG_SGI_IP22 && CONFIG_64BIT) fixes the boot problem.
-> It's not big deal to add this, but I'm wondering why we not just always
-> use this macro ? What platforms do it break with it ?
+> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-I don't think any will break - it's just one of those "optimizations".
+Thanks, applied.
 
   Ralf

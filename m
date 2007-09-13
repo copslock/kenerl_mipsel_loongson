@@ -1,57 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 14:55:27 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:13506 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021900AbXIMNzZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Sep 2007 14:55:25 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8DDtPGR018922;
-	Thu, 13 Sep 2007 14:55:25 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8DDtOVP018921;
-	Thu, 13 Sep 2007 14:55:24 +0100
-Date:	Thu, 13 Sep 2007 14:55:24 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	chris@mips.com, linux-mips@linux-mips.org
-Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
-	argument.
-Message-ID: <20070913135524.GB11396@linux-mips.org>
-References: <20070904.000501.41013092.anemo@mba.ocn.ne.jp> <46DC2D2E.8080408@mips.com> <20070904125010.GA15630@linux-mips.org> <20070904.230202.41011018.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 15:13:54 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:9365 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022213AbXIMONp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 13 Sep 2007 15:13:45 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 4B92C400CC;
+	Thu, 13 Sep 2007 16:13:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id zAjQMkotT9QZ; Thu, 13 Sep 2007 16:13:09 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 078A8400EC;
+	Thu, 13 Sep 2007 16:13:09 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8DEDBWG023954;
+	Thu, 13 Sep 2007 16:13:12 +0200
+Date:	Thu, 13 Sep 2007 15:13:06 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Jeff Garzik <jgarzik@pobox.com>
+cc:	Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sb1250-mac.c: De-typedef, de-volatile, de-etc...
+In-Reply-To: <46E8B56E.7060705@pobox.com>
+Message-ID: <Pine.LNX.4.64N.0709131506040.31069@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0709101310030.25038@blysk.ds.pg.gda.pl>
+ <46E8B56E.7060705@pobox.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070904.230202.41011018.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4264/Thu Sep 13 08:06:05 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16501
+X-archive-position: 16502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 04, 2007 at 11:02:02PM +0900, Atsushi Nemoto wrote:
+On Wed, 12 Sep 2007, Jeff Garzik wrote:
 
-> Hmm, I see.  Then I think no_pci_device() can be used to avoid such
-> case, as like as pci_find_subsys().
+> > Remove typedefs, volatiles and convert kmalloc()/memset() pairs to
+> > kcalloc().  Also reformat the surrounding clutter.
+> > 
+> > Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> > ---
 > 
-> Anyway the commit 00cc123703425aa362b0af75616134cbad4e0689 may change
-> ide numbering for swarm or au1xxx (if those platform did not have ISA
-> brigdes).  How about this?
-> 
-> 
-> Subject: No ide_default_io_base() if PCI IDE was not found
-> 
-> Revert b5438582090406e2ccb4169d9b2df7c9939ae42b and add
-> no_pci_devices() check to avoid crash due to early calling of
-> pci_get_class().
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> ACK, but patch does not apply cleanly to netdev-2.6.git#upstream (nor -mm)
 
-Thanks for you guys discussing it out ;-)   Applied, thanks.
+ Hmm, works fine with linux-2.6.git#master.  I do not recall any recent 
+activity with this driver -- I wonder what the difference is.  Let me 
+see...
 
-  Ralf
+  Maciej

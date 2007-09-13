@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 14:49:46 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:29152 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Sep 2007 14:55:27 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:13506 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021881AbXIMNto (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Sep 2007 14:49:44 +0100
+	id S20021900AbXIMNzZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 13 Sep 2007 14:55:25 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8DDniLL018680;
-	Thu, 13 Sep 2007 14:49:44 +0100
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8DDtPGR018922;
+	Thu, 13 Sep 2007 14:55:25 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8DDnhUt018679;
-	Thu, 13 Sep 2007 14:49:43 +0100
-Date:	Thu, 13 Sep 2007 14:49:43 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8DDtOVP018921;
+	Thu, 13 Sep 2007 14:55:24 +0100
+Date:	Thu, 13 Sep 2007 14:55:24 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	chris@mips.com, linux-mips@linux-mips.org
 Subject: Re: [MIPS] SMTC: Fix crash on bootup with idebus= command line
 	argument.
-Message-ID: <20070913134943.GA11396@linux-mips.org>
-References: <Pine.LNX.4.64N.0709111431240.30365@blysk.ds.pg.gda.pl> <20070911.230712.39152979.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0709111509140.30365@blysk.ds.pg.gda.pl> <20070913.001809.106261283.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
+Message-ID: <20070913135524.GB11396@linux-mips.org>
+References: <20070904.000501.41013092.anemo@mba.ocn.ne.jp> <46DC2D2E.8080408@mips.com> <20070904125010.GA15630@linux-mips.org> <20070904.230202.41011018.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0709121621200.24030@blysk.ds.pg.gda.pl>
+In-Reply-To: <20070904.230202.41011018.anemo@mba.ocn.ne.jp>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16500
+X-archive-position: 16501
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,18 +34,24 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 12, 2007 at 04:54:08PM +0100, Maciej W. Rozycki wrote:
+On Tue, Sep 04, 2007 at 11:02:02PM +0900, Atsushi Nemoto wrote:
 
->  I gather the problem is ide_probe_legacy() is called too early for PCI to 
-> have been initialised.  With the old code ide_probe_legacy() called 
-> pci_get_class(), which in turn triggered PCI initialisation, which enabled 
-> interrupts prematurely and the failure scenario happened.  To rectify Ralf 
-> resurrected yet older code that reserved the legacy ports unconditionally.  
-> You have put the code that calls pci_get_class() back and introduced this 
-> call to no_pci_devices() beforehand.  Please correct me if I have been 
-> wrong anywhere here.
+> Hmm, I see.  Then I think no_pci_device() can be used to avoid such
+> case, as like as pci_find_subsys().
+> 
+> Anyway the commit 00cc123703425aa362b0af75616134cbad4e0689 may change
+> ide numbering for swarm or au1xxx (if those platform did not have ISA
+> brigdes).  How about this?
+> 
+> 
+> Subject: No ide_default_io_base() if PCI IDE was not found
+> 
+> Revert b5438582090406e2ccb4169d9b2df7c9939ae42b and add
+> no_pci_devices() check to avoid crash due to early calling of
+> pci_get_class().
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Pci_get_class doesn't trigger PCI initialization and I don't think it
-should ...
+Thanks for you guys discussing it out ;-)   Applied, thanks.
 
   Ralf

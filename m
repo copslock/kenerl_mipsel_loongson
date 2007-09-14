@@ -1,114 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2007 09:27:28 +0100 (BST)
-Received: from p549F7FC7.dip.t-dialin.net ([84.159.127.199]:38071 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2007 09:44:09 +0100 (BST)
+Received: from p549F7FC7.dip.t-dialin.net ([84.159.127.199]:48262 "EHLO
 	p549F7FC7.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20021625AbXINIZ5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Sep 2007 09:25:57 +0100
-Received: from mo31.po.2iij.NET ([210.128.50.54]:7462 "EHLO mo31.po.2iij.net")
-	by lappi.linux-mips.net with ESMTP id S1095623AbXINISM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 14 Sep 2007 10:18:12 +0200
-Received: by mo.po.2iij.net (mo31) id l8E8FVbi052174; Fri, 14 Sep 2007 17:15:31 +0900 (JST)
-Received: from localhost.localdomain (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox301) id l8E8FUrk010103
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 14 Sep 2007 17:15:30 +0900
-Date:	Fri, 14 Sep 2007 17:14:20 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][1/9][MIPS] move Cobalt PCI definitions to
- arch/mips/pci/fixup-cobalt.c
-Message-Id: <20070914171420.0b8cfd15.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	id S20021682AbXINInz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Sep 2007 09:43:55 +0100
+Received: from ug-out-1314.google.com ([66.249.92.168]:11068 "EHLO
+	ug-out-1314.google.com") by lappi.linux-mips.net with ESMTP
+	id S1097024AbXINIeV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Sep 2007 10:34:21 +0200
+Received: by ug-out-1314.google.com with SMTP id u2so566781uge
+        for <linux-mips@linux-mips.org>; Fri, 14 Sep 2007 01:33:47 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=hEelf7CRmQdvOLOpK3HIEKQ0iHvYfSy1nhtKMr/P/Rg=;
+        b=PSvJCcT4+lCU/CWKotgOIA1GLN6LxqzUdqgMslrPhxXfCHQxQ4RVBUgQDQHG+fyWakAStGDhOXN2S6UjUYcmvhGOFNBLRZTJibPyortuCom5a7GnABYwnqFkMIXO4glL40L/cXTsPgzCmmrwncio7+oWRrXZer77SKu5UtG1XmM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=gt0ajb3ZgbJZfnVKzEMZz8CnYt4Fy8xNT4IPn+yAdzJCcMV1/vCcywURlCG60lndXgIw52n+GGW1mrGd7jOVAZYyefeoGKXGgeKocXkSVJ0yA+dyaTcXtav1oSVFU5161ui5SzU1LeNB5FitAdUwABbxEfL4Ex4LGf75hXwIzQI=
+Received: by 10.67.20.11 with SMTP id x11mr3269712ugi.1189758826617;
+        Fri, 14 Sep 2007 01:33:46 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id 31sm1355183fkt.2007.09.14.01.33.45
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 14 Sep 2007 01:33:45 -0700 (PDT)
+Message-ID: <46EA4730.2070806@gmail.com>
+Date:	Fri, 14 Sep 2007 10:32:48 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org
+Subject: Re: flush_kernel_dcache_page() not needed ?
+References: <46DC29F0.3060200@gmail.com>	<20070904.005400.52128244.anemo@mba.ocn.ne.jp>	<46DD53BE.2070004@gmail.com> <20070906.003320.25909195.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20070906.003320.25909195.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16521
+X-archive-position: 16522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Move Cobalt PCI definitions to arch/mips/pci/fixup-cobalt.c.
+Atsushi Nemoto wrote:
+> Yes, there is an yet another path to "flush all dcache".
+> 
+> do_execve()
+>   copy_strings()
+>     flush_kernel_dcache_page()
+>   search_binary_handler()
+>     load_elf_binary()
+>       flush_old_exec()
+>         exec_mmap()
+>           mmput()
+>             exit_mmap()
+>               flush_cache_mm()
+>                 r4k_blast_dcache()
+> 
 
-These definitions are only used in arch/mips/pci/fixup-cobalt.c.
-They can be moved to fixup-cobalt.c.
+BTW, flush_cache_mm() flushes (write back + invalidate ) the whole
+data cache unconditionnaly, but I'm wondering if it's really necessary
+for cpus which don't have any cache aliasing issues. After all they're
+equivalent to physical caches, aren't they ?
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/fixup-cobalt.c mips/arch/mips/pci/fixup-cobalt.c
---- mips-orig/arch/mips/pci/fixup-cobalt.c	2007-09-14 14:24:04.932503500 +0900
-+++ mips/arch/mips/pci/fixup-cobalt.c	2007-09-14 14:25:01.604045250 +0900
-@@ -20,6 +20,23 @@
- #include <cobalt.h>
- #include <irq.h>
- 
-+/*
-+ * PCI slot numbers
-+ */
-+#define COBALT_PCICONF_CPU	0x06
-+#define COBALT_PCICONF_ETH0	0x07
-+#define COBALT_PCICONF_RAQSCSI	0x08
-+#define COBALT_PCICONF_VIA	0x09
-+#define COBALT_PCICONF_PCISLOT	0x0A
-+#define COBALT_PCICONF_ETH1	0x0C
-+
-+/*
-+ * The Cobalt board ID information.  The boards have an ID number wired
-+ * into the VIA that is available in the high nibble of register 94.
-+ */
-+#define VIA_COBALT_BRD_ID_REG  0x94
-+#define VIA_COBALT_BRD_REG_to_ID(reg)	((unsigned char)(reg) >> 4)
-+
- static void qube_raq_galileo_early_fixup(struct pci_dev *dev)
- {
- 	if (dev->devfn == PCI_DEVFN(0, 0) &&
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-cobalt/cobalt.h mips/include/asm-mips/mach-cobalt/cobalt.h
---- mips-orig/include/asm-mips/mach-cobalt/cobalt.h	2007-09-14 14:24:04.952504750 +0900
-+++ mips/include/asm-mips/mach-cobalt/cobalt.h	2007-09-14 14:21:49.180019500 +0900
-@@ -13,37 +13,15 @@
- #define __ASM_COBALT_H
- 
- /*
-- * PCI configuration space manifest constants.  These are wired into
-- * the board layout according to the PCI spec to enable the software
-- * to probe the hardware configuration space in a well defined manner.
-- *
-- * The PCI_DEVSHFT() macro transforms these values into numbers
-- * suitable for passing as the dev parameter to the various
-- * pcibios_read/write_config routines.
-+ * The Cobalt board ID information.
-  */
--#define COBALT_PCICONF_CPU      0x06
--#define COBALT_PCICONF_ETH0     0x07
--#define COBALT_PCICONF_RAQSCSI  0x08
--#define COBALT_PCICONF_VIA      0x09
--#define COBALT_PCICONF_PCISLOT  0x0A
--#define COBALT_PCICONF_ETH1     0x0C
--
-+extern int cobalt_board_id;
- 
--/*
-- * The Cobalt board id information.  The boards have an ID number wired
-- * into the VIA that is available in the high nibble of register 94.
-- * This register is available in the VIA configuration space through the
-- * interface routines qube_pcibios_read/write_config. See cobalt/pci.c
-- */
--#define VIA_COBALT_BRD_ID_REG  0x94
--#define VIA_COBALT_BRD_REG_to_ID(reg)  ((unsigned char) (reg) >> 4)
- #define COBALT_BRD_ID_QUBE1    0x3
- #define COBALT_BRD_ID_RAQ1     0x4
- #define COBALT_BRD_ID_QUBE2    0x5
- #define COBALT_BRD_ID_RAQ2     0x6
- 
--extern int cobalt_board_id;
--
- #define COBALT_LED_PORT		(*(volatile unsigned char *) CKSEG1ADDR(0x1c000000))
- # define COBALT_LED_BAR_LEFT	(1 << 0)	/* Qube */
- # define COBALT_LED_BAR_RIGHT	(1 << 1)	/* Qube */
+thanks,
+		Franck

@@ -1,78 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2007 13:26:41 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:20864 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021569AbXINM0d (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Sep 2007 13:26:33 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 255C2400EB;
-	Fri, 14 Sep 2007 14:26:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id UdDNX7pzr3Oh; Fri, 14 Sep 2007 14:25:56 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id F35C840090;
-	Fri, 14 Sep 2007 14:25:55 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8ECPwNd000517;
-	Fri, 14 Sep 2007 14:25:58 +0200
-Date:	Fri, 14 Sep 2007 13:25:55 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@linux-foundation.org>,
-	Jeff Garzik <jgarzik@pobox.com>
-cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] sb1250-mac.c: Fix "stats" references
-Message-ID: <Pine.LNX.4.64N.0709141316410.1926@blysk.ds.pg.gda.pl>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4272/Fri Sep 14 10:36:36 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Sep 2007 15:28:01 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:43759 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023704AbXINO1x (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 14 Sep 2007 15:27:53 +0100
+Received: from localhost (p1209-ipad207funabasi.chiba.ocn.ne.jp [222.145.83.209])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 56E01D95F; Fri, 14 Sep 2007 23:27:48 +0900 (JST)
+Date:	Fri, 14 Sep 2007 23:29:15 +0900 (JST)
+Message-Id: <20070914.232915.41199290.anemo@mba.ocn.ne.jp>
+To:	vagabon.xyz@gmail.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: flush_kernel_dcache_page() not needed ?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <46EA4730.2070806@gmail.com>
+References: <46DD53BE.2070004@gmail.com>
+	<20070906.003320.25909195.anemo@mba.ocn.ne.jp>
+	<46EA4730.2070806@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16526
+X-archive-position: 16527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
- Fix build errors resulting from a recent commit that added references to 
-"stats" through "dev" from sbdma_rx_process() and sbdma_tx_process(), but 
-no definitions of that variable.
+On Fri, 14 Sep 2007 10:32:48 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
+> BTW, flush_cache_mm() flushes (write back + invalidate ) the whole
+> data cache unconditionnaly, but I'm wondering if it's really necessary
+> for cpus which don't have any cache aliasing issues. After all they're
+> equivalent to physical caches, aren't they ?
 
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+r4k_flush_cache_mm() returns immediately if !cpu_has_dc_aliases.
+
 ---
- This is probably the simplest fix possible, though at this point it is of 
-question whether it is still "struct sbmac_softc *" that should be passed 
-to these functions.  I'll leave it to another occasion though.
-
- Applies under patch-netdev-2.6.23-rc6-20070913-sb1250-mac-typedef-8.
-
- Please apply,
-
-  Maciej
-
-patch-netdev-2.6.23-rc6-20070913-sb1250-mac-fix-1
-diff -up --recursive --new-file linux-netdev-2.6.23-rc6-20070913.macro/drivers/net/sb1250-mac.c linux-netdev-2.6.23-rc6-20070913/drivers/net/sb1250-mac.c
---- linux-netdev-2.6.23-rc6-20070913.macro/drivers/net/sb1250-mac.c	2007-09-13 17:27:52.000000000 +0000
-+++ linux-netdev-2.6.23-rc6-20070913/drivers/net/sb1250-mac.c	2007-09-14 12:06:15.000000000 +0000
-@@ -1187,6 +1187,7 @@ static void sbmac_netpoll(struct net_dev
- static int sbdma_rx_process(struct sbmac_softc *sc,sbmacdma_t *d,
-                              int work_to_do, int poll)
- {
-+	struct net_device *dev = sc->sbm_dev;
- 	int curidx;
- 	int hwidx;
- 	sbdmadscr_t *dsc;
-@@ -1348,6 +1349,7 @@ done:
- 
- static void sbdma_tx_process(struct sbmac_softc *sc,sbmacdma_t *d, int poll)
- {
-+	struct net_device *dev = sc->sbm_dev;
- 	int curidx;
- 	int hwidx;
- 	sbdmadscr_t *dsc;
+Atsushi Nemoto

@@ -1,105 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2007 00:05:04 +0100 (BST)
-Received: from kuber.nabble.com ([216.139.236.158]:24296 "EHLO
-	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
-	id S20021890AbXIQXEz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Sep 2007 00:04:55 +0100
-Received: from isper.nabble.com ([192.168.236.156])
-	by kuber.nabble.com with esmtp (Exim 4.63)
-	(envelope-from <lists@nabble.com>)
-	id 1IXPe8-0003Px-MR
-	for linux-mips@linux-mips.org; Mon, 17 Sep 2007 16:04:52 -0700
-Message-ID: <12746880.post@talk.nabble.com>
-Date:	Mon, 17 Sep 2007 16:04:52 -0700 (PDT)
-From:	Steve Graham <stgraham2000@yahoo.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: O2 RM7000 Issues
-In-Reply-To: <20070717122711.GA19977@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Nabble-From: stgraham2000@yahoo.com
-References: <4687DCE2.8070302@gentoo.org> <468825BE.6090001@gmx.net> <50451.70.107.91.207.1183381723.squirrel@webmail.wesleyan.edu> <20070704152729.GA2925@linux-mips.org> <20070704192208.GA7873@linux-mips.org> <469C8600.7090208@niisi.msk.ru> <20070717122711.GA19977@linux-mips.org>
-Return-Path: <lists@nabble.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2007 00:12:55 +0100 (BST)
+Received: from mail-out.m-online.net ([212.18.0.10]:42914 "EHLO
+	mail-out.m-online.net") by ftp.linux-mips.org with ESMTP
+	id S20021909AbXIQXMq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Sep 2007 00:12:46 +0100
+Received: from mail01.m-online.net (mail.m-online.net [192.168.3.149])
+	by mail-out.m-online.net (Postfix) with ESMTP id 2AA002237F8;
+	Tue, 18 Sep 2007 01:12:46 +0200 (CEST)
+X-Auth-Info: AtTzLq6rZRzYMOnys33RtHLXBx0ohrulGSLdljQ7UCY=
+X-Auth-Info: AtTzLq6rZRzYMOnys33RtHLXBx0ohrulGSLdljQ7UCY=
+Received: from mail.denx.de (p5496483C.dip.t-dialin.net [84.150.72.60])
+	by smtp-auth.mnet-online.de (Postfix) with ESMTP id 1658C90337;
+	Tue, 18 Sep 2007 01:12:46 +0200 (CEST)
+Received: from gemini.denx.de (gemini.denx.de [10.0.0.2])
+	by mail.denx.de (Postfix) with ESMTP id 981746D00B5;
+	Tue, 18 Sep 2007 01:12:45 +0200 (CEST)
+Received: from gemini.denx.de (localhost.localdomain [127.0.0.1])
+	by gemini.denx.de (Postfix) with ESMTP id 8A733247FE;
+	Tue, 18 Sep 2007 01:12:45 +0200 (CEST)
+To:	Paul Marciano <pm940@yahoo.com>
+cc:	linux-mips@linux-mips.org
+From:	Wolfgang Denk <wd@denx.de>
+Subject: Re: busybox / ELDK fails to run.
+Mime-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+In-reply-to: Your message of "Mon, 17 Sep 2007 15:23:25 PDT."
+             <446032.91533.qm@web54007.mail.re2.yahoo.com>
+Date:	Tue, 18 Sep 2007 01:12:45 +0200
+Message-Id: <20070917231245.8A733247FE@gemini.denx.de>
+Return-Path: <wd@denx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16539
+X-archive-position: 16540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stgraham2000@yahoo.com
+X-original-sender: wd@denx.de
 Precedence: bulk
 X-list: linux-mips
 
+In message <446032.91533.qm@web54007.mail.re2.yahoo.com> you wrote:
+> First, apologies if this is an inappropriate list for
+> this question, but there doesn't seem to be a list for
+> ELDK, and there doesn't seem to be much MIPS traffic
 
-I am having a similar problem where complicated bash scripts on boot randomly
-throw SIGILL.  I am running on a PMC MSP8510 platform - E9000 core.  I have
-applied the patch to "war.h" mentioned in this thread and that did greatly
-reduce the number of occurences of this problem but has not fixed it.  I was
-getting at least 2 illegal instructions every boot and now I can boot
-without any problems about 90% of the time.
+You can always ask us directly...
 
-Does the patch you mention below apply to the E9000 core as well?
+> Is anyone else here using the ELDK and busybox?  If
+
+We are, obviously.
+
+> so, I'd be interested in knowing if you've seen the
+> same problem, or if you think there's something wrong
+> with my setup.  
+
+It works fine in our tests...
+
+Did you try using the NFS root file system for these  tests,  or  the
+included ramdisk images? Which of these is giving you the problems?
 
 
-Ralf Baechle DL5RB wrote:
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index f599e79..7ee0cb0 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -75,6 +75,26 @@ static void r4k_wait_irqoff(void)
->  	local_irq_enable();
->  }
->  
-> +/*
-> + * The RM7000 variant has to handle erratum 38.  The workaround is to not
-> + * have any pending stores when the WAIT instruction is executed.
-> + */
-> +static void rm7k_wait_irqoff(void)
-> +{
-> +	local_irq_disable();
-> +	if (!need_resched())
-> +		__asm__(
-> +		"	.set	push		\n"
-> +		"	.set	mips3		\n"
-> +		"	.set	noat		\n"
-> +		"	mfc0	$1, $12		\n"
-> +		"	sync			\n"
-> +		"	mtc0	$1, $12		\n"
-> +		"	wait			\n"
-> +		"	.set	pop		\n");
-> +	local_irq_enable();
-> +}
-> +
->  /* The Au1xxx wait is available only if using 32khz counter or
->   * external timer source, but specifically not CP0 Counter. */
->  int allow_au1k_wait;
-> @@ -132,7 +152,6 @@ static inline void check_wait(void)
->  	case CPU_R4700:
->  	case CPU_R5000:
->  	case CPU_NEVADA:
-> -	case CPU_RM7000:
->  	case CPU_4KC:
->  	case CPU_4KEC:
->  	case CPU_4KSC:
-> @@ -142,6 +161,10 @@ static inline void check_wait(void)
->  		cpu_wait = r4k_wait;
->  		break;
->  
-> +	case CPU_RM7000:
-> +		cpu_wait = rm7k_wait_irqoff;
-> +		break;
-> +
->  	case CPU_24K:
->  	case CPU_34K:
->  		cpu_wait = r4k_wait;
-> 
-> 
-> 
+Best regards,
+
+Wolfgang Denk
 
 -- 
-View this message in context: http://www.nabble.com/O2-RM7000-Issues-tf4008392.html#a12746880
-Sent from the linux-mips main mailing list archive at Nabble.com.
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-10 Fax: (+49)-8142-66989-80 Email: wd@denx.de
+"There is such a fine line between genius and stupidity."
+- David St. Hubbins, "Spinal Tap"

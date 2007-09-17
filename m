@@ -1,47 +1,1493 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2007 11:17:12 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:16275 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022034AbXIQKRK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Sep 2007 11:17:10 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8HAH8xe030536;
-	Mon, 17 Sep 2007 11:17:08 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8HAH87F030535;
-	Mon, 17 Sep 2007 11:17:08 +0100
-Date:	Mon, 17 Sep 2007 11:17:08 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sam Ravnborg <sam@ravnborg.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips: beautify vmlinux.lds
-Message-ID: <20070917101708.GC16523@linux-mips.org>
-References: <20070915213553.GA15463@uranus.ravnborg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Sep 2007 17:33:03 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:26821 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022445AbXIQQcy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Sep 2007 17:32:54 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 4C8AF40097;
+	Mon, 17 Sep 2007 18:32:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id FAt8k6zEQw7K; Mon, 17 Sep 2007 18:32:44 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id DEB7340070;
+	Mon, 17 Sep 2007 18:32:43 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8HGWmhW025992;
+	Mon, 17 Sep 2007 18:32:48 +0200
+Date:	Mon, 17 Sep 2007 17:32:43 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Andrew Morton <akpm@linux-foundation.org>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] lk201: Remove obsolete driver
+Message-ID: <Pine.LNX.4.64N.0709171712530.17606@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070915213553.GA15463@uranus.ravnborg.org>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: MULTIPART/MIXED; BOUNDARY="328795856-1712221563-1190046763=:17606"
+X-Virus-Scanned: ClamAV 0.91.2/4310/Mon Sep 17 14:47:06 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16532
+X-archive-position: 16533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Sep 15, 2007 at 11:35:53PM +0200, Sam Ravnborg wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> Introduce a consistent style for vmlinux.lds.
-> This style will be consitent with all other arch's - soon.
-> 
-> In addition:
-> - Moved a few labels inside brackets for the sections they specify
->   to prevent that linker alignmnet made them point before the section start
+--328795856-1712221563-1190046763=:17606
+Content-Type: TEXT/PLAIN; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 
-Prettier indeed.  Queued for 2.6.24.  Thanks,
+ Remove the old-fashioned lk201 driver under drivers/tc/ that used to be 
+used by the old dz.c and zs.c drivers, which is now orphan code referred 
+to from nowhere and does not build anymore.  A modern replacement is 
+available as drivers/input/keyboard/lkkbd.c.
 
-  Ralf
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+ There are no plans to do anything about this piece of code and it does 
+not fit anywhere anymore, so it is not just a matter of maintenance or the 
+lack of.  There are still some bits that might be added to the new lkkbd.c 
+driver based on the old code, and the embedded hardware documentation 
+which is otherwise quite hard to get hold of might be useful to keep too.  
+Both of these can be done separately though.  RIP.
+
+ Please apply,
+
+  Maciej
+
+patch-mips-2.6.23-rc5-20070904-nolk201-2
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/Documentation/dontdiff linux-mips-2.6.23-rc5-20070904/Documentation/dontdiff
+--- linux-mips-2.6.23-rc5-20070904.macro/Documentation/dontdiff	2007-09-04 04:55:16.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/Documentation/dontdiff	2007-09-17 14:29:42.000000000 +0000
+@@ -121,7 +121,6 @@ kxgettext
+ lkc_defs.h
+ lex.c*
+ lex.*.c
+-lk201-map.c
+ logo_*.c
+ logo_*_clut224.c
+ logo_*_mono.c
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/arch/mips/Makefile linux-mips-2.6.23-rc5-20070904/arch/mips/Makefile
+--- linux-mips-2.6.23-rc5-20070904.macro/arch/mips/Makefile	2007-09-04 04:55:19.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/arch/mips/Makefile	2007-09-17 14:33:06.000000000 +0000
+@@ -283,7 +283,6 @@ core-$(CONFIG_MACH_DECSTATION)	+= arch/m
+ cflags-$(CONFIG_MACH_DECSTATION)+= -Iinclude/asm-mips/mach-dec
+ libs-$(CONFIG_MACH_DECSTATION)	+= arch/mips/dec/prom/
+ load-$(CONFIG_MACH_DECSTATION)	+= 0xffffffff80040000
+-CLEAN_FILES			+= drivers/tc/lk201-map.c
+ 
+ #
+ # Wind River PPMC Board (4KC + GT64120)
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/.gitignore linux-mips-2.6.23-rc5-20070904/drivers/tc/.gitignore
+--- linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/.gitignore	2005-11-04 17:03:20.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/drivers/tc/.gitignore	1970-01-01 00:00:00.000000000 +0000
+@@ -1 +0,0 @@
+-lk201-map.c
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/Makefile linux-mips-2.6.23-rc5-20070904/drivers/tc/Makefile
+--- linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/Makefile	2007-09-04 04:55:45.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/drivers/tc/Makefile	2007-09-17 14:23:13.000000000 +0000
+@@ -5,18 +5,3 @@
+ # Object file lists.
+ 
+ obj-$(CONFIG_TC) += tc.o tc-driver.o
+-obj-$(CONFIG_VT) += lk201.o lk201-map.o lk201-remap.o
+-
+-$(obj)/lk201-map.o: $(obj)/lk201-map.c
+-
+-# Uncomment if you're changing the keymap and have an appropriate
+-# loadkeys version for the map. By default, we'll use the shipped
+-# versions.
+-# GENERATE_KEYMAP := 1
+-
+-ifdef GENERATE_KEYMAP
+-
+-$(obj)/lk201-map.c: $(obj)/%.c: $(src)/%.map
+-	loadkeys --mktable $< > $@
+-
+-endif
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201-map.c_shipped linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201-map.c_shipped
+--- linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201-map.c_shipped	2002-10-29 12:13:34.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201-map.c_shipped	1970-01-01 00:00:00.000000000 +0000
+@@ -1,265 +0,0 @@
+-
+-/* Do not edit this file! It was automatically generated by   */
+-/*    loadkeys --mktable defkeymap.map > defkeymap.c          */
+-
+-#include <linux/types.h>
+-#include <linux/keyboard.h>
+-#include <linux/kd.h>
+-
+-u_short plain_map[NR_KEYS] = {
+-	0xf200,	0xf100,	0xf101,	0xf102,	0xf103,	0xf104,	0xf105,	0xf106,
+-	0xf107,	0xf108,	0xf109,	0xf10a,	0xf10b,	0xf10c,	0xf10d,	0xf11b,
+-	0xf11c,	0xf110,	0xf111,	0xf112,	0xf113,	0xf060,	0xf031,	0xf032,
+-	0xf033,	0xf034,	0xf035,	0xf036,	0xf037,	0xf038,	0xf039,	0xf030,
+-	0xf02d,	0xf03d,	0xf07f,	0xf114,	0xf115,	0xf116,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf009,	0xfb71,	0xfb77,	0xfb65,	0xfb72,	0xfb74,
+-	0xfb79,	0xfb75,	0xfb69,	0xfb6f,	0xfb70,	0xf05b,	0xf05d,	0xf201,
+-	0xf117,	0xf118,	0xf119,	0xf307,	0xf308,	0xf309,	0xf30b,	0xf702,
+-	0xf207,	0xfb61,	0xfb73,	0xfb64,	0xfb66,	0xfb67,	0xfb68,	0xfb6a,
+-	0xfb6b,	0xfb6c,	0xf03b,	0xf027,	0xf05c,	0xf603,	0xf304,	0xf305,
+-	0xf306,	0xf200,	0xf700,	0xf03e,	0xfb7a,	0xfb78,	0xfb63,	0xfb76,
+-	0xfb62,	0xfb6e,	0xfb6d,	0xf02c,	0xf02e,	0xf02f,	0xf200,	0xf601,
+-	0xf600,	0xf602,	0xf301,	0xf302,	0xf303,	0xf30e,	0xf200,	0xf703,
+-	0xf020,	0xf200,	0xf200,	0xf300,	0xf310,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-};
+-
+-static u_short shift_map[NR_KEYS] = {
+-	0xf200,	0xf100,	0xf101,	0xf102,	0xf103,	0xf104,	0xf105,	0xf106,
+-	0xf107,	0xf108,	0xf109,	0xf10a,	0xf10b,	0xf10c,	0xf10d,	0xf203,
+-	0xf11c,	0xf110,	0xf111,	0xf112,	0xf113,	0xf07e,	0xf021,	0xf040,
+-	0xf023,	0xf024,	0xf025,	0xf05e,	0xf026,	0xf02a,	0xf028,	0xf029,
+-	0xf05f,	0xf02b,	0xf07f,	0xf114,	0xf115,	0xf116,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf009,	0xfb51,	0xfb57,	0xfb45,	0xfb52,	0xfb54,
+-	0xfb59,	0xfb55,	0xfb49,	0xfb4f,	0xfb50,	0xf07b,	0xf07d,	0xf201,
+-	0xf117,	0xf20b,	0xf20a,	0xf307,	0xf308,	0xf309,	0xf30b,	0xf702,
+-	0xf207,	0xfb41,	0xfb53,	0xfb44,	0xfb46,	0xfb47,	0xfb48,	0xfb4a,
+-	0xfb4b,	0xfb4c,	0xf03a,	0xf022,	0xf07c,	0xf603,	0xf304,	0xf305,
+-	0xf306,	0xf200,	0xf700,	0xf03c,	0xfb5a,	0xfb58,	0xfb43,	0xfb56,
+-	0xfb42,	0xfb4e,	0xfb4d,	0xf03c,	0xf03e,	0xf03f,	0xf200,	0xf601,
+-	0xf600,	0xf602,	0xf301,	0xf302,	0xf303,	0xf30e,	0xf200,	0xf703,
+-	0xf020,	0xf200,	0xf200,	0xf300,	0xf310,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-};
+-
+-static u_short altgr_map[NR_KEYS] = {
+-	0xf200,	0xf100,	0xf101,	0xf102,	0xf103,	0xf104,	0xf105,	0xf106,
+-	0xf107,	0xf108,	0xf109,	0xf10a,	0xf10b,	0xf10c,	0xf10d,	0xf202,
+-	0xf11c,	0xf110,	0xf111,	0xf112,	0xf113,	0xf200,	0xf200,	0xf040,
+-	0xf200,	0xf024,	0xf200,	0xf200,	0xf07b,	0xf05b,	0xf05d,	0xf07d,
+-	0xf05c,	0xf200,	0xf200,	0xf114,	0xf115,	0xf116,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xfb71,	0xfb77,	0xf918,	0xfb72,	0xfb74,
+-	0xfb79,	0xfb75,	0xfb69,	0xfb6f,	0xfb70,	0xf200,	0xf07e,	0xf201,
+-	0xf117,	0xf118,	0xf119,	0xf911,	0xf912,	0xf913,	0xf30b,	0xf702,
+-	0xf207,	0xf914,	0xfb73,	0xf917,	0xf919,	0xfb67,	0xfb68,	0xfb6a,
+-	0xfb6b,	0xfb6c,	0xf200,	0xf200,	0xf200,	0xf603,	0xf90e,	0xf90f,
+-	0xf910,	0xf200,	0xf700,	0xf200,	0xfb7a,	0xfb78,	0xf916,	0xfb76,
+-	0xf915,	0xfb6e,	0xfb6d,	0xf200,	0xf200,	0xf200,	0xf200,	0xf601,
+-	0xf600,	0xf602,	0xf90b,	0xf90c,	0xf90d,	0xf30e,	0xf200,	0xf703,
+-	0xf200,	0xf200,	0xf200,	0xf90a,	0xf310,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-};
+-
+-static u_short ctrl_map[NR_KEYS] = {
+-	0xf200,	0xf100,	0xf101,	0xf102,	0xf103,	0xf104,	0xf105,	0xf106,
+-	0xf107,	0xf108,	0xf109,	0xf10a,	0xf10b,	0xf10c,	0xf10d,	0xf204,
+-	0xf11c,	0xf110,	0xf111,	0xf112,	0xf113,	0xf81b,	0xf200,	0xf000,
+-	0xf01b,	0xf01c,	0xf01d,	0xf01e,	0xf01f,	0xf07f,	0xf200,	0xf200,
+-	0xf01f,	0xf200,	0xf008,	0xf114,	0xf115,	0xf116,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf011,	0xf017,	0xf005,	0xf012,	0xf014,
+-	0xf019,	0xf015,	0xf009,	0xf00f,	0xf010,	0xf01b,	0xf01d,	0xf201,
+-	0xf117,	0xf118,	0xf119,	0xf307,	0xf308,	0xf309,	0xf30b,	0xf702,
+-	0xf207,	0xf001,	0xf013,	0xf004,	0xf006,	0xf007,	0xf008,	0xf00a,
+-	0xf00b,	0xf00c,	0xf200,	0xf007,	0xf01c,	0xf603,	0xf304,	0xf305,
+-	0xf306,	0xf200,	0xf700,	0xf200,	0xf01a,	0xf018,	0xf003,	0xf016,
+-	0xf002,	0xf00e,	0xf00d,	0xf200,	0xf20e,	0xf07f,	0xf200,	0xf601,
+-	0xf600,	0xf602,	0xf301,	0xf302,	0xf303,	0xf30e,	0xf200,	0xf703,
+-	0xf000,	0xf200,	0xf200,	0xf300,	0xf310,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-};
+-
+-static u_short shift_ctrl_map[NR_KEYS] = {
+-	0xf200,	0xf100,	0xf101,	0xf102,	0xf103,	0xf104,	0xf105,	0xf106,
+-	0xf107,	0xf108,	0xf109,	0xf10a,	0xf10b,	0xf10c,	0xf10d,	0xf200,
+-	0xf11c,	0xf110,	0xf111,	0xf112,	0xf113,	0xf200,	0xf200,	0xf000,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf01f,	0xf200,	0xf200,	0xf114,	0xf115,	0xf116,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf011,	0xf017,	0xf005,	0xf012,	0xf014,
+-	0xf019,	0xf015,	0xf009,	0xf00f,	0xf010,	0xf200,	0xf200,	0xf201,
+-	0xf117,	0xf118,	0xf119,	0xf307,	0xf308,	0xf309,	0xf30b,	0xf702,
+-	0xf207,	0xf001,	0xf013,	0xf004,	0xf006,	0xf007,	0xf008,	0xf00a,
+-	0xf00b,	0xf00c,	0xf200,	0xf200,	0xf200,	0xf603,	0xf304,	0xf305,
+-	0xf306,	0xf200,	0xf700,	0xf200,	0xf01a,	0xf018,	0xf003,	0xf016,
+-	0xf002,	0xf00e,	0xf00d,	0xf200,	0xf200,	0xf200,	0xf200,	0xf601,
+-	0xf600,	0xf602,	0xf301,	0xf302,	0xf303,	0xf30e,	0xf200,	0xf703,
+-	0xf200,	0xf200,	0xf200,	0xf300,	0xf310,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-};
+-
+-static u_short alt_map[NR_KEYS] = {
+-	0xf200,	0xf500,	0xf501,	0xf502,	0xf503,	0xf504,	0xf505,	0xf506,
+-	0xf507,	0xf508,	0xf509,	0xf50a,	0xf50b,	0xf50c,	0xf50d,	0xf200,
+-	0xf11c,	0xf510,	0xf511,	0xf512,	0xf513,	0xf01b,	0xf831,	0xf832,
+-	0xf833,	0xf834,	0xf835,	0xf836,	0xf837,	0xf838,	0xf839,	0xf830,
+-	0xf82d,	0xf83d,	0xf87f,	0xf114,	0xf115,	0xf116,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf809,	0xf871,	0xf877,	0xf865,	0xf872,	0xf874,
+-	0xf879,	0xf875,	0xf869,	0xf86f,	0xf870,	0xf85b,	0xf85d,	0xf80d,
+-	0xf117,	0xf118,	0xf119,	0xf907,	0xf908,	0xf909,	0xf30b,	0xf702,
+-	0xf207,	0xf861,	0xf873,	0xf864,	0xf866,	0xf867,	0xf868,	0xf86a,
+-	0xf86b,	0xf86c,	0xf83b,	0xf827,	0xf85c,	0xf603,	0xf904,	0xf905,
+-	0xf906,	0xf200,	0xf700,	0xf200,	0xf87a,	0xf878,	0xf863,	0xf876,
+-	0xf862,	0xf86e,	0xf86d,	0xf82c,	0xf82e,	0xf82f,	0xf200,	0xf210,
+-	0xf600,	0xf211,	0xf901,	0xf902,	0xf903,	0xf30e,	0xf200,	0xf703,
+-	0xf820,	0xf200,	0xf200,	0xf900,	0xf310,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-};
+-
+-static u_short ctrl_alt_map[NR_KEYS] = {
+-	0xf200,	0xf500,	0xf501,	0xf502,	0xf503,	0xf504,	0xf505,	0xf506,
+-	0xf507,	0xf508,	0xf509,	0xf50a,	0xf50b,	0xf50c,	0xf50d,	0xf200,
+-	0xf11c,	0xf510,	0xf511,	0xf512,	0xf513,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf114,	0xf115,	0xf20c,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf811,	0xf817,	0xf805,	0xf812,	0xf814,
+-	0xf819,	0xf815,	0xf809,	0xf80f,	0xf810,	0xf200,	0xf200,	0xf201,
+-	0xf117,	0xf118,	0xf119,	0xf307,	0xf308,	0xf309,	0xf30b,	0xf702,
+-	0xf207,	0xf801,	0xf813,	0xf804,	0xf806,	0xf807,	0xf808,	0xf80a,
+-	0xf80b,	0xf80c,	0xf200,	0xf200,	0xf200,	0xf603,	0xf304,	0xf305,
+-	0xf306,	0xf200,	0xf700,	0xf200,	0xf81a,	0xf818,	0xf803,	0xf816,
+-	0xf802,	0xf80e,	0xf80d,	0xf200,	0xf200,	0xf200,	0xf200,	0xf601,
+-	0xf600,	0xf602,	0xf301,	0xf302,	0xf303,	0xf30e,	0xf200,	0xf703,
+-	0xf200,	0xf200,	0xf200,	0xf300,	0xf20c,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,	0xf200,
+-};
+-
+-ushort *key_maps[MAX_NR_KEYMAPS] = {
+-	plain_map, shift_map, altgr_map, 0,
+-	ctrl_map, shift_ctrl_map, 0, 0,
+-	alt_map, 0, 0, 0,
+-	ctrl_alt_map,	0
+-};
+-
+-unsigned int keymap_count = 7;
+-
+-
+-/*
+- * Philosophy: most people do not define more strings, but they who do
+- * often want quite a lot of string space. So, we statically allocate
+- * the default and allocate dynamically in chunks of 512 bytes.
+- */
+-
+-char func_buf[] = {
+-	'\033', '[', '[', 'A', 0, 
+-	'\033', '[', '[', 'B', 0, 
+-	'\033', '[', '[', 'C', 0, 
+-	'\033', '[', '[', 'D', 0, 
+-	'\033', '[', '[', 'E', 0, 
+-	'\033', '[', '1', '7', '~', 0, 
+-	'\033', '[', '1', '8', '~', 0, 
+-	'\033', '[', '1', '9', '~', 0, 
+-	'\033', '[', '2', '0', '~', 0, 
+-	'\033', '[', '2', '1', '~', 0, 
+-	'\033', '[', '2', '3', '~', 0, 
+-	'\033', '[', '2', '4', '~', 0, 
+-	'\033', '[', '2', '5', '~', 0, 
+-	'\033', '[', '2', '6', '~', 0, 
+-	'\033', '[', '2', '8', '~', 0, 
+-	'\033', '[', '2', '9', '~', 0, 
+-	'\033', '[', '3', '1', '~', 0, 
+-	'\033', '[', '3', '2', '~', 0, 
+-	'\033', '[', '3', '3', '~', 0, 
+-	'\033', '[', '3', '4', '~', 0, 
+-	'\033', '[', '1', '~', 0, 
+-	'\033', '[', '2', '~', 0, 
+-	'\033', '[', '3', '~', 0, 
+-	'\033', '[', '4', '~', 0, 
+-	'\033', '[', '5', '~', 0, 
+-	'\033', '[', '6', '~', 0, 
+-	'\033', '[', 'M', 0, 
+-	'\033', '[', 'P', 0, 
+-};
+-
+-
+-char *funcbufptr = func_buf;
+-int funcbufsize = sizeof(func_buf);
+-int funcbufleft = 0;          /* space left */
+-
+-char *func_table[MAX_NR_FUNC] = {
+-	func_buf + 0,
+-	func_buf + 5,
+-	func_buf + 10,
+-	func_buf + 15,
+-	func_buf + 20,
+-	func_buf + 25,
+-	func_buf + 31,
+-	func_buf + 37,
+-	func_buf + 43,
+-	func_buf + 49,
+-	func_buf + 55,
+-	func_buf + 61,
+-	func_buf + 67,
+-	func_buf + 73,
+-	func_buf + 79,
+-	func_buf + 85,
+-	func_buf + 91,
+-	func_buf + 97,
+-	func_buf + 103,
+-	func_buf + 109,
+-	func_buf + 115,
+-	func_buf + 120,
+-	func_buf + 125,
+-	func_buf + 130,
+-	func_buf + 135,
+-	func_buf + 140,
+-	func_buf + 145,
+-	0,
+-	0,
+-	func_buf + 149,
+-	0,
+-};
+-
+-struct kbdiacr accent_table[MAX_DIACR] = {
+-	{'`', 'A', 'À'},	{'`', 'a', 'à'},
+-	{'\'', 'A', 'Á'},	{'\'', 'a', 'á'},
+-	{'^', 'A', 'Â'},	{'^', 'a', 'â'},
+-	{'~', 'A', 'Ã'},	{'~', 'a', 'ã'},
+-	{'"', 'A', 'Ä'},	{'"', 'a', 'ä'},
+-	{'O', 'A', 'Å'},	{'o', 'a', 'å'},
+-	{'0', 'A', 'Å'},	{'0', 'a', 'å'},
+-	{'A', 'A', 'Å'},	{'a', 'a', 'å'},
+-	{'A', 'E', 'Æ'},	{'a', 'e', 'æ'},
+-	{',', 'C', 'Ç'},	{',', 'c', 'ç'},
+-	{'`', 'E', 'È'},	{'`', 'e', 'è'},
+-	{'\'', 'E', 'É'},	{'\'', 'e', 'é'},
+-	{'^', 'E', 'Ê'},	{'^', 'e', 'ê'},
+-	{'"', 'E', 'Ë'},	{'"', 'e', 'ë'},
+-	{'`', 'I', 'Ì'},	{'`', 'i', 'ì'},
+-	{'\'', 'I', 'Í'},	{'\'', 'i', 'í'},
+-	{'^', 'I', 'Î'},	{'^', 'i', 'î'},
+-	{'"', 'I', 'Ï'},	{'"', 'i', 'ï'},
+-	{'-', 'D', 'Ð'},	{'-', 'd', 'ð'},
+-	{'~', 'N', 'Ñ'},	{'~', 'n', 'ñ'},
+-	{'`', 'O', 'Ò'},	{'`', 'o', 'ò'},
+-	{'\'', 'O', 'Ó'},	{'\'', 'o', 'ó'},
+-	{'^', 'O', 'Ô'},	{'^', 'o', 'ô'},
+-	{'~', 'O', 'Õ'},	{'~', 'o', 'õ'},
+-	{'"', 'O', 'Ö'},	{'"', 'o', 'ö'},
+-	{'/', 'O', 'Ø'},	{'/', 'o', 'ø'},
+-	{'`', 'U', 'Ù'},	{'`', 'u', 'ù'},
+-	{'\'', 'U', 'Ú'},	{'\'', 'u', 'ú'},
+-	{'^', 'U', 'Û'},	{'^', 'u', 'û'},
+-	{'"', 'U', 'Ü'},	{'"', 'u', 'ü'},
+-	{'\'', 'Y', 'Ý'},	{'\'', 'y', 'ý'},
+-	{'T', 'H', 'Þ'},	{'t', 'h', 'þ'},
+-	{'s', 's', 'ß'},	{'"', 'y', 'ÿ'},
+-	{'s', 'z', 'ß'},	{'i', 'j', 'ÿ'},
+-};
+-
+-unsigned int accent_table_size = 68;
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201-map.map linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201-map.map
+--- linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201-map.map	2003-11-11 04:56:58.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201-map.map	1970-01-01 00:00:00.000000000 +0000
+@@ -1,356 +0,0 @@
+-# Default kernel keymap. This uses 7 modifier combinations.
+-keymaps 0-2,4-5,8,12
+-# Change the above line into
+-#	keymaps 0-2,4-6,8,12
+-# in case you want the entries
+-#	altgr   control keycode  83 = Boot
+-#	altgr   control keycode 111 = Boot
+-# below.
+-#
+-# In fact AltGr is used very little, and one more keymap can
+-# be saved by mapping AltGr to Alt (and adapting a few entries):
+-# keycode 100 = Alt
+-#
+-keycode   0x15 = grave		tilde
+-	alt     keycode   0x15 = Escape
+-	control keycode   0x15 = Meta_Escape
+-keycode   0x16 = one              exclam
+-	alt     keycode   0x16 = Meta_one
+-keycode   0x17 = two              at               at
+-	control	keycode   0x17 = nul
+-	shift	control	keycode   0x17 = nul
+-	alt	keycode   0x17 = Meta_two
+-keycode   0x18 = three            numbersign
+-	control keycode   0x18 = Escape
+-	alt     keycode   0x18 = Meta_three
+-keycode   0x19 = four             dollar           dollar
+-	control keycode   0x19 = Control_backslash
+-	alt     keycode   0x19 = Meta_four
+-keycode   0x1a = five             percent
+-	control keycode   0x1a = Control_bracketright
+-	alt     keycode   0x1a = Meta_five
+-keycode   0x1b = six              asciicircum
+-	control keycode   0x1b = Control_asciicircum
+-	alt     keycode   0x1b = Meta_six
+-keycode   0x1c = seven            ampersand        braceleft
+-	control keycode   0x1c = Control_underscore
+-	alt     keycode   0x1c = Meta_seven
+-keycode   0x1d = eight            asterisk         bracketleft
+-	control keycode   0x1d = Delete
+-	alt     keycode   0x1d = Meta_eight
+-keycode  0x1e = nine             parenleft        bracketright
+-	alt     keycode  0x1e = Meta_nine
+-keycode  0x1f = zero             parenright       braceright
+-	alt     keycode  0x1f = Meta_zero
+-keycode  0x20 = minus            underscore       backslash
+-	control	keycode  0x20 = Control_underscore
+-	shift	control	keycode  0x20 = Control_underscore
+-	alt	keycode  0x20 = Meta_minus
+-keycode  0x21 = equal            plus
+-	alt     keycode  0x21 = Meta_equal
+-keycode  0x22 = Delete           Delete
+-	control keycode  0x22 = BackSpace
+-	alt     keycode  0x22 = Meta_Delete
+-keycode  0x2a = Tab              Tab
+-	alt     keycode  0x2a = Meta_Tab
+-keycode  0x2b = q
+-keycode  0x2c = w
+-keycode  0x2d = e
+-	altgr   keycode  0x2d = Hex_E
+-keycode  0x2e = r
+-keycode  0x2f = t
+-keycode  0x30 = y
+-keycode  0x31 = u
+-keycode  0x32 = i
+-keycode  0x33 = o
+-keycode  0x34 = p
+-keycode  0x35 = bracketleft      braceleft
+-	control keycode  0x35 = Escape
+-	alt     keycode  0x35 = Meta_bracketleft
+-keycode  0x36 = bracketright     braceright       asciitilde
+-	control keycode  0x36 = Control_bracketright
+-	alt     keycode  0x36 = Meta_bracketright
+-keycode  0x37 = Return
+-	alt     keycode  0x37 = Meta_Control_m
+-keycode  0x3f = Control
+-keycode  0x41 = a
+-	altgr   keycode  0x41 = Hex_A
+-keycode  0x42 = s
+-keycode  0x43 = d
+-	altgr   keycode  0x43 = Hex_D
+-keycode  0x44 = f
+-	altgr   keycode  0x44 = Hex_F
+-keycode  0x45 = g
+-keycode  0x46 = h
+-keycode  0x47 = j
+-keycode  0x48 = k
+-keycode  0x49 = l
+-keycode  0x4a = semicolon        colon
+-	alt     keycode  0x4a = Meta_semicolon
+-keycode  0x4b = apostrophe       quotedbl
+-	control keycode  0x4b = Control_g
+-	alt     keycode  0x4b = Meta_apostrophe
+-# keycode  41 = grave            asciitilde
+-#	control keycode  41 = nul
+-#	alt     keycode  41 = Meta_grave
+-keycode  0x52 = Shift
+-keycode  0x4c = backslash        bar
+-	control keycode  0x4c = Control_backslash
+-	alt     keycode  0x4c = Meta_backslash
+-keycode  0x53 = greater	less
+-keycode  0x54 = z
+-keycode  0x55 = x
+-keycode  0x56 = c
+-	altgr   keycode  0x56 = Hex_C
+-keycode  0x57 = v
+-keycode  0x58 = b
+-	altgr   keycode  0x58 = Hex_B
+-keycode  0x59 = n
+-keycode  0x5a = m
+-keycode  0x5b = comma            less
+-	alt     keycode  0x5b = Meta_comma
+-keycode  0x5c = period           greater
+-	control keycode  0x5c = Compose
+-	alt     keycode  0x5c = Meta_period
+-keycode  0x5d = slash            question
+-	control keycode  0x5d = Delete
+-	alt     keycode  0x5d = Meta_slash
+-
+-keycode  0x67 = Alt
+-keycode  0x68 = space            space
+-	control keycode  0x68 = nul
+-	alt     keycode  0x68 = Meta_space
+-keycode  0x40 = Caps_Lock
+-keycode  0x01 = F1
+-	control keycode  0x01 = F1
+-	alt     keycode  0x01 = Console_1
+-	control alt     keycode  0x01 = Console_1
+-keycode  0x02 = F2
+-	control keycode  0x02 = F2
+-	alt     keycode  0x02 = Console_2
+-	control alt     keycode  0x02 = Console_2
+-keycode  0x03 = F3
+-	control keycode  0x03 = F3
+-	alt     keycode  0x03 = Console_3
+-	control alt     keycode  0x03 = Console_3
+-keycode  0x04 = F4
+-	control keycode  0x04 = F4
+-	alt     keycode  0x04 = Console_4
+-	control alt     keycode  0x04 = Console_4
+-keycode  0x05 = F5
+-	control keycode  0x05 = F5
+-	alt     keycode  0x05 = Console_5
+-	control alt     keycode  0x05 = Console_5
+-keycode  0x06 = F6
+-	control keycode  0x06 = F6
+-	alt     keycode  0x06 = Console_6
+-	control alt     keycode  0x06 = Console_6
+-keycode  0x07 = F7
+-	control keycode  0x07 = F7
+-	alt     keycode  0x07 = Console_7
+-	control alt     keycode  0x07 = Console_7
+-keycode  0x08 = F8
+-	control keycode  0x08 = F8
+-	alt     keycode  0x08 = Console_8
+-	control alt     keycode  0x08 = Console_8
+-keycode  0x09 = F9
+-	control keycode  0x09 = F9
+-	alt     keycode  0x09 = Console_9
+-	control alt     keycode  0x09 = Console_9
+-keycode  0x0a = F10
+-	control keycode  0x0a = F10
+-	alt     keycode  0x0a = Console_10
+-	control alt     keycode  0x0a = Console_10
+-keycode  0x0b = F11
+-	control keycode  0x0b = F11
+-	alt     keycode  0x0b = Console_11
+-	control alt     keycode  0x0b = Console_11
+-keycode  0x0c = F12
+-	control keycode  0x0c = F12
+-	alt     keycode  0x0c = Console_12
+-	control alt     keycode  0x0c = Console_12
+-keycode  0x0d = F13
+-	control keycode  0x0d = F13
+-	alt     keycode  0x0d = Console_13
+-	control alt     keycode  0x0d = Console_13
+-keycode  0x0e = F14
+-	control keycode  0x0e = F14
+-	alt     keycode  0x0e = Console_14
+-	control alt     keycode  0x0e = Console_14
+-
+-keycode  0x11 = F17
+-	control keycode  0x11 = F17
+-	alt     keycode  0x11 = Console_17
+-	control alt     keycode  0x11 = Console_17
+-keycode  0x12 = F18
+-	control keycode  0x12 = F18
+-	alt     keycode  0x12 = Console_18
+-	control alt     keycode  0x12 = Console_18
+-keycode  0x13 = F19
+-	control keycode  0x13 = F19
+-	alt     keycode  0x13 = Console_19
+-	control alt     keycode  0x13 = Console_19
+-keycode  0x14 = F20
+-	control keycode  0x14 = F20
+-	alt     keycode  0x14 = Console_20
+-	control alt     keycode  0x14 = Console_20
+-
+-
+-keycode  0x3b = KP_7
+-	alt     keycode  0x3b = Ascii_7
+-	altgr   keycode  0x3b = Hex_7
+-keycode  0x3c = KP_8
+-	alt     keycode  0x3c = Ascii_8
+-	altgr   keycode  0x3c = Hex_8
+-keycode  0x3d = KP_9
+-	alt     keycode  0x3d = Ascii_9
+-	altgr   keycode  0x3d = Hex_9
+-keycode  0x3e = KP_Subtract
+-keycode  0x4e = KP_4
+-	alt     keycode  0x4e = Ascii_4
+-	altgr   keycode  0x4e = Hex_4
+-keycode  0x4f = KP_5
+-	alt     keycode  0x4f = Ascii_5
+-	altgr   keycode  0x4f = Hex_5
+-keycode  0x50 = KP_6
+-	alt     keycode  0x50 = Ascii_6
+-	altgr   keycode  0x50 = Hex_6
+-keycode  0x62 = KP_1
+-	alt     keycode  0x62 = Ascii_1
+-	altgr   keycode  0x62 = Hex_1
+-keycode  0x63 = KP_2
+-	alt     keycode  0x63 = Ascii_2
+-	altgr   keycode  0x63 = Hex_2
+-keycode  0x64 = KP_3
+-	alt     keycode  0x64 = Ascii_3
+-	altgr   keycode  0x64 = Hex_3
+-keycode  0x6b = KP_0
+-	alt     keycode  0x6b = Ascii_0
+-	altgr   keycode  0x6b = Hex_0
+-keycode  0x6c = KP_Period
+-#	altgr   control keycode  0x6c = Boot
+-	control alt     keycode  0x6c = Boot
+-keycode  0x65 = KP_Enter
+-
+-keycode  0x3f = Control
+-
+-# keycode 100 = AltGr
+-
+-keycode 0x23 = Find
+-keycode 0x4d = Up
+-keycode 0x39 = Prior
+-	shift   keycode 0x39 = Scroll_Backward
+-keycode 0x5f = Left
+-	alt     keycode 0x5f = Decr_Console
+-keycode 0x61 = Right
+-	alt     keycode 0x61 = Incr_Console
+-keycode 0x38 = Select
+-keycode 0x60 = Down
+-keycode 0x3a = Next
+-	shift   keycode 0x3a = Scroll_Forward
+-keycode 0x24 = Insert
+-keycode 0x25 = Remove
+-#	altgr   control keycode 0x25 = Boot
+-	control alt     keycode 0x25 = Boot
+-
+-keycode 0x0f = Help      Show_Memory      Show_Registers
+-	control keycode  0x0f = Show_State
+-
+-keycode 0x10 = Do
+-
+-string F1 = "\033[[A"
+-string F2 = "\033[[B"
+-string F3 = "\033[[C"
+-string F4 = "\033[[D"
+-string F5 = "\033[[E"
+-string F6 = "\033[17~"
+-string F7 = "\033[18~"
+-string F8 = "\033[19~"
+-string F9 = "\033[20~"
+-string F10 = "\033[21~"
+-string F11 = "\033[23~"
+-string F12 = "\033[24~"
+-string F13 = "\033[25~"
+-string F14 = "\033[26~"
+-string F15 = "\033[28~"
+-string F16 = "\033[29~"
+-string F17 = "\033[31~"
+-string F18 = "\033[32~"
+-string F19 = "\033[33~"
+-string F20 = "\033[34~"
+-string Find = "\033[1~"
+-string Insert = "\033[2~"
+-string Remove = "\033[3~"
+-string Select = "\033[4~"
+-string Prior = "\033[5~"
+-string Next = "\033[6~"
+-string Macro = "\033[M"
+-string Pause = "\033[P"
+-compose '`' 'A' to 'À'
+-compose '`' 'a' to 'à'
+-compose '\'' 'A' to 'Á'
+-compose '\'' 'a' to 'á'
+-compose '^' 'A' to 'Â'
+-compose '^' 'a' to 'â'
+-compose '~' 'A' to 'Ã'
+-compose '~' 'a' to 'ã'
+-compose '"' 'A' to 'Ä'
+-compose '"' 'a' to 'ä'
+-compose 'O' 'A' to 'Å'
+-compose 'o' 'a' to 'å'
+-compose '0' 'A' to 'Å'
+-compose '0' 'a' to 'å'
+-compose 'A' 'A' to 'Å'
+-compose 'a' 'a' to 'å'
+-compose 'A' 'E' to 'Æ'
+-compose 'a' 'e' to 'æ'
+-compose ',' 'C' to 'Ç'
+-compose ',' 'c' to 'ç'
+-compose '`' 'E' to 'È'
+-compose '`' 'e' to 'è'
+-compose '\'' 'E' to 'É'
+-compose '\'' 'e' to 'é'
+-compose '^' 'E' to 'Ê'
+-compose '^' 'e' to 'ê'
+-compose '"' 'E' to 'Ë'
+-compose '"' 'e' to 'ë'
+-compose '`' 'I' to 'Ì'
+-compose '`' 'i' to 'ì'
+-compose '\'' 'I' to 'Í'
+-compose '\'' 'i' to 'í'
+-compose '^' 'I' to 'Î'
+-compose '^' 'i' to 'î'
+-compose '"' 'I' to 'Ï'
+-compose '"' 'i' to 'ï'
+-compose '-' 'D' to 'Ð'
+-compose '-' 'd' to 'ð'
+-compose '~' 'N' to 'Ñ'
+-compose '~' 'n' to 'ñ'
+-compose '`' 'O' to 'Ò'
+-compose '`' 'o' to 'ò'
+-compose '\'' 'O' to 'Ó'
+-compose '\'' 'o' to 'ó'
+-compose '^' 'O' to 'Ô'
+-compose '^' 'o' to 'ô'
+-compose '~' 'O' to 'Õ'
+-compose '~' 'o' to 'õ'
+-compose '"' 'O' to 'Ö'
+-compose '"' 'o' to 'ö'
+-compose '/' 'O' to 'Ø'
+-compose '/' 'o' to 'ø'
+-compose '`' 'U' to 'Ù'
+-compose '`' 'u' to 'ù'
+-compose '\'' 'U' to 'Ú'
+-compose '\'' 'u' to 'ú'
+-compose '^' 'U' to 'Û'
+-compose '^' 'u' to 'û'
+-compose '"' 'U' to 'Ü'
+-compose '"' 'u' to 'ü'
+-compose '\'' 'Y' to 'Ý'
+-compose '\'' 'y' to 'ý'
+-compose 'T' 'H' to 'Þ'
+-compose 't' 'h' to 'þ'
+-compose 's' 's' to 'ß'
+-compose '"' 'y' to 'ÿ'
+-compose 's' 'z' to 'ß'
+-compose 'i' 'j' to 'ÿ'
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201-remap.c linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201-remap.c
+--- linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201-remap.c	2003-11-11 04:56:58.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201-remap.c	1970-01-01 00:00:00.000000000 +0000
+@@ -1,172 +0,0 @@
+-/*
+- * Keyboard mappings for DEC LK201/401/501 keyboards
+- *
+- * 17.05.99 Michael Engel (engel@unix-ag.org)
+- *
+- * DEC US keyboards generate keycodes in the range 0x55 - 0xfb
+- *
+- * This conflicts with Linux scancode conventions which define
+- * 0x00-0x7f as "normal" and 0x80-0xff as "shifted" scancodes, so we
+- * have to remap the keycodes to 0x00-0x7f with the scancodeRemap
+- * array. The generated scancode is simply the number of the key counted
+- * from the left upper to the right lower corner of the keyboard ...
+- *
+- * These scancodes are then being remapped (I hope ;-)) with the
+- * lk501*map[] arrays which define scancode -> Linux code mapping
+- *
+- * Oh man is this horrible ;-)
+- *
+- * Scancodes with dual labels exist for keyboards as follows:
+- *
+- * code:  left label          / right label
+- *
+- * 0x73:  LKx01, LK421        / LK443, LK444
+- * 0x74:  LKx01, LK421        / LK443, LK444
+- * 0x7c:  LKx01, LK421        / LK443, LK444
+- * 0x8a:  LKx01, LK421        / LK443, LK444
+- * 0x8b:  LKx01, LK421        / LK443, LK444
+- * 0x8c:  LKx01, LK421        / LK443, LK444
+- * 0x8d:  LKx01, LK421        / LK443, LK444
+- * 0x8e:  LKx01, LK421        / LK443, LK444
+- * 0x8f:  LKx01, LK421        / LK443, LK444
+- * 0x9c:  LKx01, LK421        / LK443, LK444
+- * 0xa1:  LKx01, LK421        / LK443, LK444
+- * 0xa2:  LKx01, LK421        / LK443, LK444
+- * 0xa3:  LKx01, LK421        / LK443, LK444
+- * 0xa4:  LKx01, LK421        / LK443, LK444
+- * 0xad:         LK421        / LK443, LK444
+- * 0xc9:  LKx01, LK421, LK443 /        LK444
+- * 0xf7:  LKx01,        LK443 /        LK444
+- */
+-
+-unsigned char scancodeRemap[256] = {
+-/* ----- 								*/
+-/*  0 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/*  4 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/*  8 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/*  c */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 10 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 14 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 18 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 1c */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 20 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 24 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 28 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 2c */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 30 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 34 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 38 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 3c */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 40 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 44 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 48 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 4c */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 50 */ 0,		0,		0,		0,
+-/* ----- 	 	ESC		F1		F2 		*/
+-/* 54 */ 0,		0,		0x01,  		0x02,
+-/* ----- F3		F4		F5				*/
+-/* 58 */ 0x03,  	0x04,		0x05,		0,
+-/* ----- 								*/
+-/* 5c */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* 60 */ 0,		0,		0,		0,
+-/* ----- F6		F7		F8		F9		*/
+-/* 64 */ 0x06,		0x07,		0x08,		0x09,
+-/* ----- F10								*/
+-/* 68 */ 0x0a,		0,		0,		0,
+-/* ----- 								*/
+-/* 6c */ 0,		0,		0,		0,
+-/* ----- 		F11   		F12		F13/PRNT SCRN	*/
+-/* 70 */ 0,		0x0b,  		0x0c,		0x0d,
+-/* ----- F14/SCRL LCK							*/
+-/* 74 */ 0x0e,		0,		0,		0,
+-/* ----- 								*/
+-/* 78 */ 0,		0,		0,		0,
+-/* ----- HELP/PAUSE	DO						*/
+-/* 7c */ 0x0f,		0x10,		0,		0,
+-/* ----- F17		F18		F19		F20		*/
+-/* 80 */ 0x11,		0x12,		0x13,		0x14,
+-/* ----- 								*/
+-/* 84 */ 0,		0,		0,		0,
+-/* ----- 				FIND/INSERT	INSERT/HOME	*/
+-/* 88 */ 0,		0,		0x23,		0x24,
+-/* ----- REMOVE/PG UP	SELECT/DELETE	PREVIOUS/END	NEXT/PG DN	*/
+-/* 8c */ 0x25,		0x38,		0x39,		0x3a,
+-/* ----- 				KP 0				*/
+-/* 90 */ 0,		0,		0x6b,		0,
+-/* ----- KP .		KP ENTER	KP 1		KP 2		*/
+-/* 94 */ 0x6c,		0x65,		0x62,		0x63,
+-/* ----- KP 3		KP 4		KP 5		KP 6		*/
+-/* 98 */ 0x64,		0x4e,		0x4f,		0x50,
+-/* ----- KP ,/KP +	KP 7		KP 8		KP 9		*/
+-/* 9c */ 0x51,		0x3b,		0x3c,		0x3d,
+-/* ----- KP -		KP F1/NUM LCK	KP F2/KP /	KP F3/KP *	*/
+-/* a0 */ 0x3e,		0x26,		0x27,		0x28,
+-/* ----- KP F4/KP -					LEFT		*/
+-/* a4 */ 0x29,		0,		0,		0x5f,
+-/* ----- RIGHT		DOWN		UP		SHIFT Rt	*/
+-/* a8 */ 0x61,		0x60, 		0x4d,		0x5e,
+-/* ----- ALT		COMP Rt/CTRL Rt	SHIFT		CONTROL		*/
+-/* ac */ 0,		0,		0x52,		0x3f,
+-/* ----- CAPS		COMPOSE		ALT Rt				*/
+-/* b0 */ 0x40,		0x67,		0,		0,
+-/* ----- 								*/
+-/* b4 */ 0,		0,		0,		0,
+-/* ----- 								*/
+-/* b8 */ 0,		0,		0,		0,
+-/* ----- BKSP		RET		TAB		`		*/
+-/* bc */ 0x22,		0x37,		0x2a,		0x15,
+-/* ----- 1		q		a		z		*/
+-/* c0 */ 0x16,		0x2b,		0x41,		0x54,
+-/* ----- 		2		w		s		*/
+-/* c4 */ 0,		0x17,		0x2c,		0x42,
+-/* ----- x		</\\				3		*/
+-/* c8 */ 0x55,		0x53,		0,		0x18,
+-/* ----- e		d		c				*/
+-/* cc */ 0x2d,		0x43,		0x56,		0,
+-/* ----- 4		r		f		v		*/
+-/* d0 */ 0x19,		0x2e,		0x44,		0x57,
+-/* ----- SPACE				5		t		*/
+-/* d4 */ 0x68,		0,		0x1a,		0x2f,
+-/* ----- g		b				6		*/
+-/* d8 */ 0x45,		0x58,		0,		0x1b,
+-/* ----- y		h		n				*/
+-/* dc */ 0x30,		0x46,		0x59,		0,
+-/* ----- 7		u		j		m		*/
+-/* e0 */ 0x1c,		0x31,		0x47,		0x5a,
+-/* ----- 		8		i		k		*/
+-/* e4 */ 0,		0x1d,		0x32,		0x48,
+-/* ----- ,				9		o		*/
+-/* e8 */ 0x5b,		0,		0x1e,		0x33,
+-/* ----- l		.				0		*/
+-/* ec */ 0x49,		0x5c,		0,		0x1f,
+-/* ----- p				;		/		*/
+-/* f0 */ 0x34,		0,		0x4a,		0x5d,
+-/* ----- 		=		]		\\/\'		*/
+-/* f4 */ 0,		0x21,		0x36,		0x4c,
+-/* ----- 		-		[		\'		*/
+-/* f8 */ 0,		0x20,		0x35,		0x4b,
+-/* ----- 								*/
+-/* fc */ 0,		0,		0,		0,
+-};
+-
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201.c linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201.c
+--- linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201.c	2007-02-21 05:56:45.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201.c	1970-01-01 00:00:00.000000000 +0000
+@@ -1,439 +0,0 @@
+-/*
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1999-2002 Harald Koerfgen <hkoerfg@web.de>
+- * Copyright (C) 2001, 2002, 2003, 2004  Maciej W. Rozycki
+- */
+-
+-
+-#include <linux/errno.h>
+-#include <linux/tty.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/delay.h>
+-#include <linux/kbd_ll.h>
+-#include <linux/kbd_kern.h>
+-#include <linux/vt_kern.h>
+-
+-#include <asm/keyboard.h>
+-#include <asm/dec/tc.h>
+-#include <asm/dec/machtype.h>
+-#include <asm/dec/serial.h>
+-
+-#include "lk201.h"
+-
+-/*
+- * Only handle DECstations that have an LK201 interface.
+- * Maxine uses LK501 at the Access.Bus and various DECsystems
+- * have no keyboard interface at all.
+- */
+-#define LK_IFACE	(mips_machtype == MACH_DS23100    || \
+-			 mips_machtype == MACH_DS5000_200 || \
+-			 mips_machtype == MACH_DS5000_1XX || \
+-			 mips_machtype == MACH_DS5000_2X0)
+-/*
+- * These use the Z8530 SCC.  Others use the DZ11.
+- */
+-#define LK_IFACE_ZS	(mips_machtype == MACH_DS5000_1XX || \
+-			 mips_machtype == MACH_DS5000_2X0)
+-
+-/* Simple translation table for the SysRq keys */
+-
+-#ifdef CONFIG_MAGIC_SYSRQ
+-/*
+- * Actually no translation at all, at least until we figure out
+- * how to define SysRq for LK201 and friends. --macro
+- */
+-unsigned char lk201_sysrq_xlate[128];
+-unsigned char *kbd_sysrq_xlate = lk201_sysrq_xlate;
+-
+-unsigned char kbd_sysrq_key = -1;
+-#endif
+-
+-#define KEYB_LINE	3
+-
+-static int __init lk201_init(void *);
+-static void __init lk201_info(void *);
+-static void lk201_rx_char(unsigned char, unsigned char);
+-
+-static struct dec_serial_hook lk201_hook = {
+-	.init_channel	= lk201_init,
+-	.init_info	= lk201_info,
+-	.rx_char	= NULL,
+-	.poll_rx_char	= NULL,
+-	.poll_tx_char	= NULL,
+-	.cflags		= B4800 | CS8 | CSTOPB | CLOCAL,
+-};
+-
+-/*
+- * This is used during keyboard initialisation
+- */
+-static unsigned char lk201_reset_string[] = {
+-	LK_CMD_SET_DEFAULTS,
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 1),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 2),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 3),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 4),
+-	LK_CMD_MODE(LK_MODE_DOWN_UP, 5),
+-	LK_CMD_MODE(LK_MODE_DOWN_UP, 6),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 7),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 8),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 9),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 10),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 11),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 12),
+-	LK_CMD_MODE(LK_MODE_DOWN, 13),
+-	LK_CMD_MODE(LK_MODE_RPT_DOWN, 14),
+-	LK_CMD_DIS_KEYCLK,
+-	LK_CMD_ENB_BELL, LK_PARAM_VOLUME(4),
+-};
+-
+-static void *lk201_handle;
+-
+-static int lk201_send(unsigned char ch)
+-{
+-	if (lk201_hook.poll_tx_char(lk201_handle, ch)) {
+-		printk(KERN_ERR "lk201: transmit timeout\n");
+-		return -EIO;
+-	}
+-	return 0;
+-}
+-
+-static inline int lk201_get_id(void)
+-{
+-	return lk201_send(LK_CMD_REQ_ID);
+-}
+-
+-static int lk201_reset(void)
+-{
+-	int i, r;
+-
+-	for (i = 0; i < sizeof(lk201_reset_string); i++) {
+-		r = lk201_send(lk201_reset_string[i]);
+-		if (r < 0)
+-			return r;
+-	}
+-	return 0;
+-}
+-
+-static void lk201_report(unsigned char id[6])
+-{
+-	char *report = "lk201: keyboard attached, ";
+-
+-	switch (id[2]) {
+-	case LK_STAT_PWRUP_OK:
+-		printk(KERN_INFO "%sself-test OK\n", report);
+-		break;
+-	case LK_STAT_PWRUP_KDOWN:
+-		/* The keyboard will resend the power-up ID
+-		   after all keys are released, so we don't
+-		   bother handling the error specially.  Still
+-		   there may be a short-circuit inside.
+-		 */
+-		printk(KERN_ERR "%skey down (stuck?), code: 0x%02x\n",
+-		       report, id[3]);
+-		break;
+-	case LK_STAT_PWRUP_ERROR:
+-		printk(KERN_ERR "%sself-test failure\n", report);
+-		break;
+-	default:
+-		printk(KERN_ERR "%sunknown error: 0x%02x\n",
+-		       report, id[2]);
+-	}
+-}
+-
+-static void lk201_id(unsigned char id[6])
+-{
+-	/*
+-	 * Report whether there is an LK201 or an LK401
+-	 * The LK401 has ALT keys...
+-	 */
+-	switch (id[4]) {
+-	case 1:
+-		printk(KERN_INFO "lk201: LK201 detected\n");
+-		break;
+-	case 2:
+-		printk(KERN_INFO "lk201: LK401 detected\n");
+-		break;
+-	case 3:
+-		printk(KERN_INFO "lk201: LK443 detected\n");
+-		break;
+-	case 4:
+-		printk(KERN_INFO "lk201: LK421 detected\n");
+-		break;
+-	default:
+-		printk(KERN_WARNING
+-		       "lk201: unknown keyboard detected, ID %d\n", id[4]);
+-		printk(KERN_WARNING "lk201: ... please report to "
+-		       "<linux-mips@linux-mips.org>\n");
+-	}
+-}
+-
+-#define DEFAULT_KEYB_REP_DELAY	(250/5)	/* [5ms] */
+-#define DEFAULT_KEYB_REP_RATE	30	/* [cps] */
+-
+-static struct kbd_repeat kbdrate = {
+-	DEFAULT_KEYB_REP_DELAY,
+-	DEFAULT_KEYB_REP_RATE
+-};
+-
+-static void parse_kbd_rate(struct kbd_repeat *r)
+-{
+-	if (r->delay <= 0)
+-		r->delay = kbdrate.delay;
+-	if (r->rate <= 0)
+-		r->rate = kbdrate.rate;
+-
+-	if (r->delay < 5)
+-		r->delay = 5;
+-	if (r->delay > 630)
+-		r->delay = 630;
+-	if (r->rate < 12)
+-		r->rate = 12;
+-	if (r->rate > 127)
+-		r->rate = 127;
+-	if (r->rate == 125)
+-		r->rate = 124;
+-}
+-
+-static int write_kbd_rate(struct kbd_repeat *rep)
+-{
+-	int delay, rate;
+-	int i;
+-
+-	delay = rep->delay / 5;
+-	rate = rep->rate;
+-	for (i = 0; i < 4; i++) {
+-		if (lk201_hook.poll_tx_char(lk201_handle,
+-					    LK_CMD_RPT_RATE(i)))
+-			return 1;
+-		if (lk201_hook.poll_tx_char(lk201_handle,
+-					    LK_PARAM_DELAY(delay)))
+-			return 1;
+-		if (lk201_hook.poll_tx_char(lk201_handle,
+-					    LK_PARAM_RATE(rate)))
+-			return 1;
+-	}
+-	return 0;
+-}
+-
+-static int lk201_kbd_rate(struct kbd_repeat *rep)
+-{
+-	if (rep == NULL)
+-		return -EINVAL;
+-
+-	parse_kbd_rate(rep);
+-
+-	if (write_kbd_rate(rep)) {
+-		memcpy(rep, &kbdrate, sizeof(struct kbd_repeat));
+-		return -EIO;
+-	}
+-
+-	memcpy(&kbdrate, rep, sizeof(struct kbd_repeat));
+-
+-	return 0;
+-}
+-
+-static void lk201_kd_mksound(unsigned int hz, unsigned int ticks)
+-{
+-	if (!ticks)
+-		return;
+-
+-	/*
+-	 * Can't set frequency and we "approximate"
+-	 * duration by volume. ;-)
+-	 */
+-	ticks /= HZ / 32;
+-	if (ticks > 7)
+-		ticks = 7;
+-	ticks = 7 - ticks;
+-
+-	if (lk201_hook.poll_tx_char(lk201_handle, LK_CMD_ENB_BELL))
+-		return;
+-	if (lk201_hook.poll_tx_char(lk201_handle, LK_PARAM_VOLUME(ticks)))
+-		return;
+-	if (lk201_hook.poll_tx_char(lk201_handle, LK_CMD_BELL))
+-		return;
+-}
+-
+-void kbd_leds(unsigned char leds)
+-{
+-	unsigned char l = 0;
+-
+-	if (!lk201_handle)		/* FIXME */
+-		return;
+-
+-	/* FIXME -- Only Hold and Lock LEDs for now. --macro */
+-	if (leds & LED_SCR)
+-		l |= LK_LED_HOLD;
+-	if (leds & LED_CAP)
+-		l |= LK_LED_LOCK;
+-
+-	if (lk201_hook.poll_tx_char(lk201_handle, LK_CMD_LEDS_ON))
+-		return;
+-	if (lk201_hook.poll_tx_char(lk201_handle, LK_PARAM_LED_MASK(l)))
+-		return;
+-	if (lk201_hook.poll_tx_char(lk201_handle, LK_CMD_LEDS_OFF))
+-		return;
+-	if (lk201_hook.poll_tx_char(lk201_handle, LK_PARAM_LED_MASK(~l)))
+-		return;
+-}
+-
+-int kbd_setkeycode(unsigned int scancode, unsigned int keycode)
+-{
+-	return -EINVAL;
+-}
+-
+-int kbd_getkeycode(unsigned int scancode)
+-{
+-	return -EINVAL;
+-}
+-
+-int kbd_translate(unsigned char scancode, unsigned char *keycode,
+-		  char raw_mode)
+-{
+-	*keycode = scancode;
+-	return 1;
+-}
+-
+-char kbd_unexpected_up(unsigned char keycode)
+-{
+-	return 0x80;
+-}
+-
+-static void lk201_rx_char(unsigned char ch, unsigned char fl)
+-{
+-	static unsigned char id[6];
+-	static int id_i;
+-
+-	static int shift_state = 0;
+-	static int prev_scancode;
+-	unsigned char c = scancodeRemap[ch];
+-
+-	if (fl != TTY_NORMAL && fl != TTY_OVERRUN) {
+-		printk(KERN_ERR "lk201: keyboard receive error: 0x%02x\n", fl);
+-		return;
+-	}
+-
+-	/* Assume this is a power-up ID. */
+-	if (ch == LK_STAT_PWRUP_ID && !id_i) {
+-		id[id_i++] = ch;
+-		return;
+-	}
+-
+-	/* Handle the power-up sequence. */
+-	if (id_i) {
+-		id[id_i++] = ch;
+-		if (id_i == 4) {
+-			/* OK, the power-up concluded. */
+-			lk201_report(id);
+-			if (id[2] == LK_STAT_PWRUP_OK)
+-				lk201_get_id();
+-			else {
+-				id_i = 0;
+-				printk(KERN_ERR "lk201: keyboard power-up "
+-				       "error, skipping initialization\n");
+-			}
+-		} else if (id_i == 6) {
+-			/* We got the ID; report it and start operation. */
+-			id_i = 0;
+-			lk201_id(id);
+-			lk201_reset();
+-		}
+-		return;
+-	}
+-
+-	/* Everything else is a scancode/status response. */
+-	id_i = 0;
+-	switch (ch) {
+-	case LK_STAT_RESUME_ERR:
+-	case LK_STAT_ERROR:
+-	case LK_STAT_INHIBIT_ACK:
+-	case LK_STAT_TEST_ACK:
+-	case LK_STAT_MODE_KEYDOWN:
+-	case LK_STAT_MODE_ACK:
+-		break;
+-	case LK_KEY_LOCK:
+-		shift_state ^= LK_LOCK;
+-		handle_scancode(c, (shift_state & LK_LOCK) ? 1 : 0);
+-		break;
+-	case LK_KEY_SHIFT:
+-		shift_state ^= LK_SHIFT;
+-		handle_scancode(c, (shift_state & LK_SHIFT) ? 1 : 0);
+-		break;
+-	case LK_KEY_CTRL:
+-		shift_state ^= LK_CTRL;
+-		handle_scancode(c, (shift_state & LK_CTRL) ? 1 : 0);
+-		break;
+-	case LK_KEY_COMP:
+-		shift_state ^= LK_COMP;
+-		handle_scancode(c, (shift_state & LK_COMP) ? 1 : 0);
+-		break;
+-	case LK_KEY_RELEASE:
+-		if (shift_state & LK_SHIFT)
+-			handle_scancode(scancodeRemap[LK_KEY_SHIFT], 0);
+-		if (shift_state & LK_CTRL)
+-			handle_scancode(scancodeRemap[LK_KEY_CTRL], 0);
+-		if (shift_state & LK_COMP)
+-			handle_scancode(scancodeRemap[LK_KEY_COMP], 0);
+-		if (shift_state & LK_LOCK)
+-			handle_scancode(scancodeRemap[LK_KEY_LOCK], 0);
+-		shift_state = 0;
+-		break;
+-	case LK_KEY_REPEAT:
+-		handle_scancode(prev_scancode, 1);
+-		break;
+-	default:
+-		prev_scancode = c;
+-		handle_scancode(c, 1);
+-		break;
+-	}
+-	tasklet_schedule(&keyboard_tasklet);
+-}
+-
+-static void __init lk201_info(void *handle)
+-{
+-}
+-
+-static int __init lk201_init(void *handle)
+-{
+-	/* First install handlers. */
+-	lk201_handle = handle;
+-	kbd_rate = lk201_kbd_rate;
+-	kd_mksound = lk201_kd_mksound;
+-
+-	lk201_hook.rx_char = lk201_rx_char;
+-
+-	/* Then just issue a reset -- the handlers will do the rest. */
+-	lk201_send(LK_CMD_POWER_UP);
+-
+-	return 0;
+-}
+-
+-void __init kbd_init_hw(void)
+-{
+-	/* Maxine uses LK501 at the Access.Bus. */
+-	if (!LK_IFACE)
+-		return;
+-
+-	printk(KERN_INFO "lk201: DECstation LK keyboard driver v0.05.\n");
+-
+-	if (LK_IFACE_ZS) {
+-		/*
+-		 * kbd_init_hw() is being called before
+-		 * rs_init() so just register the kbd hook
+-		 * and let zs_init do the rest :-)
+-		 */
+-		if (!register_dec_serial_hook(KEYB_LINE, &lk201_hook))
+-			unregister_dec_serial_hook(KEYB_LINE);
+-	} else {
+-		/*
+-		 * TODO: modify dz.c to allow similar hooks
+-		 * for LK201 handling on DS2100, DS3100, and DS5000/200
+-		 */
+-		printk(KERN_ERR "lk201: support for DZ11 not yet ready.\n");
+-	}
+-}
+diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201.h linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201.h
+--- linux-mips-2.6.23-rc5-20070904.macro/drivers/tc/lk201.h	2003-11-11 04:56:58.000000000 +0000
++++ linux-mips-2.6.23-rc5-20070904/drivers/tc/lk201.h	1970-01-01 00:00:00.000000000 +0000
+@@ -1,125 +0,0 @@
+-/*
+- *	Commands to the keyboard processor
+- */
+-
+-#define LK_PARAM		0x80	/* start/end parameter list */
+-
+-#define LK_CMD_RESUME		0x8b	/* resume transmission to the host */
+-#define LK_CMD_INHIBIT		0x89	/* stop transmission to the host */
+-#define LK_CMD_LEDS_ON		0x13	/* light LEDs */
+-					/* 1st param: led bitmask */
+-#define LK_CMD_LEDS_OFF		0x11	/* turn off LEDs */
+-					/* 1st param: led bitmask */
+-#define LK_CMD_DIS_KEYCLK	0x99	/* disable the keyclick */
+-#define LK_CMD_ENB_KEYCLK	0x1b	/* enable the keyclick */
+-					/* 1st param: volume */
+-#define LK_CMD_DIS_CTLCLK	0xb9	/* disable the Ctrl keyclick */
+-#define LK_CMD_ENB_CTLCLK	0xbb	/* enable the Ctrl keyclick */
+-#define LK_CMD_SOUND_CLK	0x9f	/* emit a keyclick */
+-#define LK_CMD_DIS_BELL		0xa1	/* disable the bell */
+-#define LK_CMD_ENB_BELL		0x23	/* enable the bell */
+-					/* 1st param: volume */
+-#define LK_CMD_BELL		0xa7	/* emit a bell */
+-#define LK_CMD_TMP_NORPT	0xd1	/* disable typematic */
+-					/* for the currently pressed key */
+-#define LK_CMD_ENB_RPT		0xe3	/* enable typematic */
+-					/* for RPT_DOWN groups */
+-#define LK_CMD_DIS_RPT		0xe1	/* disable typematic */
+-					/* for RPT_DOWN groups */
+-#define LK_CMD_RPT_TO_DOWN	0xd9	/* set RPT_DOWN groups to DOWN */
+-#define LK_CMD_REQ_ID		0xab	/* request the keyboard ID */
+-#define LK_CMD_POWER_UP		0xfd	/* init power-up sequence */
+-#define LK_CMD_TEST_MODE	0xcb	/* enter the factory test mode */
+-#define LK_CMD_TEST_EXIT	0x80	/* exit the factory test mode */
+-#define LK_CMD_SET_DEFAULTS	0xd3	/* set power-up defaults */
+-
+-#define LK_CMD_MODE(m,div)	(LK_PARAM|(((div)&0xf)<<3)|(((m)&0x3)<<1))
+-					/* select the repeat mode */
+-					/* for the selected key group */
+-#define LK_CMD_MODE_AR(m,div)	((((div)&0xf)<<3)|(((m)&0x3)<<1))
+-					/* select the repeat mode */
+-					/* and the repeat register */
+-					/* for the selected key group */
+-					/* 1st param: register number */
+-#define LK_CMD_RPT_RATE(r)	(0x78|(((r)&0x3)<<1))
+-					/* set the delay and repeat rate */
+-					/* for the selected repeat register */
+-					/* 1st param: initial delay */
+-					/* 2nd param: repeat rate */
+-
+-/* there are 4 leds, represent them in the low 4 bits of a byte */
+-#define LK_PARAM_LED_MASK(ledbmap)	(LK_PARAM|((ledbmap)&0xf))
+-#define LK_LED_WAIT		0x1	/* Wait LED */
+-#define LK_LED_COMP		0x2	/* Compose LED */
+-#define LK_LED_LOCK		0x4	/* Lock LED */
+-#define LK_LED_HOLD		0x8	/* Hold Screen LED */
+-
+-/* max volume is 0, lowest is 0x7 */
+-#define LK_PARAM_VOLUME(v)		(LK_PARAM|((v)&0x7))
+-
+-/* mode set command details, div is a key group number */
+-#define LK_MODE_DOWN		0x0	/* make only */
+-#define LK_MODE_RPT_DOWN	0x1	/* make and typematic */
+-#define LK_MODE_DOWN_UP		0x3	/* make and release */
+-
+-/* there are 4 repeat registers */
+-#define LK_PARAM_AR(r)		(LK_PARAM|((v)&0x3))
+-
+-/*
+- * Mappings between key groups and keycodes are as follows:
+- *
+- *  1: 0xbf - 0xff -- alphanumeric,
+- *  2: 0x91 - 0xa5 -- numeric keypad,
+- *  3: 0xbc        -- Backspace,
+- *  4: 0xbd - 0xbe -- Tab, Return,
+- *  5: 0xb0 - 0xb2 -- Lock, Compose Character,
+- *  6: 0xad - 0xaf -- Ctrl, Shift,
+- *  7: 0xa6 - 0xa8 -- Left Arrow, Right Arrow,
+- *  8: 0xa9 - 0xac -- Up Arrow, Down Arrow, Right Shift,
+- *  9: 0x88 - 0x90 -- editor keypad,
+- * 10: 0x56 - 0x62 -- F1 - F5,
+- * 11: 0x63 - 0x6e -- F6 - F10,
+- * 12: 0x6f - 0x7a -- F11 - F14,
+- * 13: 0x7b - 0x7d -- Help, Do,
+- * 14: 0x7e - 0x87 -- F17 - F20.
+- *
+- * Notes:
+- * 1. Codes in the 0x00 - 0x40 range are reserved.
+- * 2. The assignment of the 0x41 - 0x55 range is undiscovered, probably 10.
+- */
+-
+-/* delay is 5 - 630 ms; 0x00 and 0x7f are reserved */
+-#define LK_PARAM_DELAY(t)	((t)&0x7f)
+-
+-/* rate is 12 - 127 Hz; 0x00 - 0x0b and 0x7d (power-up!) are reserved */
+-#define LK_PARAM_RATE(r)	(LK_PARAM|((r)&0x7f))
+-
+-#define LK_SHIFT 1<<0
+-#define LK_CTRL 1<<1
+-#define LK_LOCK 1<<2
+-#define LK_COMP 1<<3
+-
+-#define LK_KEY_SHIFT		0xae
+-#define LK_KEY_CTRL		0xaf
+-#define LK_KEY_LOCK		0xb0
+-#define LK_KEY_COMP		0xb1
+-
+-#define LK_KEY_RELEASE		0xb3	/* all keys released */
+-#define LK_KEY_REPEAT		0xb4	/* repeat the last key */
+-
+-/* status responses */
+-#define LK_STAT_RESUME_ERR	0xb5	/* keystrokes lost while inhibited */
+-#define LK_STAT_ERROR		0xb6	/* an invalid command received */
+-#define LK_STAT_INHIBIT_ACK	0xb7	/* transmission inhibited */
+-#define LK_STAT_TEST_ACK	0xb8	/* the factory test mode entered */
+-#define LK_STAT_MODE_KEYDOWN	0xb9	/* a key is down on a change */
+-					/* to the DOWN_UP mode; */
+-					/* the keycode follows */
+-#define LK_STAT_MODE_ACK	0xba	/* the mode command succeeded */
+-
+-#define LK_STAT_PWRUP_ID	0x01	/* the power-up response start mark */
+-#define LK_STAT_PWRUP_OK	0x00	/* the power-up self test OK */
+-#define LK_STAT_PWRUP_KDOWN	0x3d	/* a key was down during the test */
+-#define LK_STAT_PWRUP_ERROR	0x3e	/* keyboard self test failure */
+-
+-extern unsigned char scancodeRemap[256];
+--328795856-1712221563-1190046763=:17606--

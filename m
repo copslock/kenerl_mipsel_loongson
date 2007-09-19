@@ -1,75 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2007 01:13:07 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:18106 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20023291AbXISAM5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 19 Sep 2007 01:12:57 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id ACADD30A817;
-	Wed, 19 Sep 2007 00:13:07 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Wed, 19 Sep 2007 00:13:07 +0000 (UTC)
-Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 18 Sep 2007 17:12:48 -0700
-Message-ID: <46F06980.4080500@avtrex.com>
-Date:	Tue, 18 Sep 2007 17:12:48 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2007 03:33:20 +0100 (BST)
+Received: from NaN.false.org ([208.75.86.248]:33755 "EHLO nan.false.org")
+	by ftp.linux-mips.org with ESMTP id S20024297AbXISCdL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Sep 2007 03:33:11 +0100
+Received: from nan.false.org (localhost [127.0.0.1])
+	by nan.false.org (Postfix) with ESMTP id 68DC998152;
+	Wed, 19 Sep 2007 02:32:38 +0000 (GMT)
+Received: from caradoc.them.org (22.svnf5.xdsl.nauticom.net [209.195.183.55])
+	by nan.false.org (Postfix) with ESMTP id B9E2F9810B;
+	Wed, 19 Sep 2007 02:32:37 +0000 (GMT)
+Received: from drow by caradoc.them.org with local (Exim 4.67)
+	(envelope-from <drow@caradoc.them.org>)
+	id 1IXpMh-000850-Bd; Tue, 18 Sep 2007 22:32:35 -0400
+Date:	Tue, 18 Sep 2007 22:32:35 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	Richard Sandiford <rsandifo@nildram.co.uk>,
+	GCC Mailing List <gcc@gcc.gnu.org>, linux-mips@linux-mips.org
+Subject: Re: MIPS atomic memory operations (A.K.A PR 33479).
+Message-ID: <20070919023235.GA31042@caradoc.them.org>
+Mail-Followup-To: David Daney <ddaney@avtrex.com>,
+	Richard Sandiford <rsandifo@nildram.co.uk>,
+	GCC Mailing List <gcc@gcc.gnu.org>, linux-mips@linux-mips.org
+References: <46F06980.4080500@avtrex.com>
 MIME-Version: 1.0
-To:	Richard Sandiford <rsandifo@nildram.co.uk>,
-	GCC Mailing List <gcc@gcc.gnu.org>
-Cc:	linux-mips@linux-mips.org
-Subject: MIPS atomic memory operations (A.K.A PR 33479).
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Sep 2007 00:12:48.0986 (UTC) FILETIME=[CFDAB3A0:01C7FA51]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46F06980.4080500@avtrex.com>
+User-Agent: Mutt/1.5.15 (2007-04-09)
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16550
+X-archive-position: 16551
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Richard,
+On Tue, Sep 18, 2007 at 05:12:48PM -0700, David Daney wrote:
+> I guess my basic question is:  Should MIPS_COMPARE_AND_SWAP have a 'sync' after 
+> the 'sc'?  I would have thought that 'sc' made the write visible to all CPUs, 
+> but on the SB1 it appears not to be the case.
 
-There seems to be a small problem with the MIPS atomic memory operations 
-patch I recently committed 
-(http://gcc.gnu.org/ml/gcc-patches/2007-08/msg01290.html), in that on a 
-dual CPU machine it does not quite work.
+Yes, a barrier of some sort is definitely necessary.  I believe the
+SB1 is weakly ordered, and the architecture spec permits both strong
+and weak ordering; but it's been a while since I tried this.
 
-You can look at http://gcc.gnu.org/bugzilla/show_bug.cgi?id=33479#c3 for 
-more information.
-
-Here is the code in question (from mips.h):
-
-#define MIPS_COMPARE_AND_SWAP(SUFFIX, OP)	\
-   "%(%<%[sync\n"				\
-   "1:\tll" SUFFIX "\t%0,%1\n"			\
-   "\tbne\t%0,%2,2f\n"				\
-   "\t" OP "\t%@,%3\n"				\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
-   "\tbeq\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "2:%]%>%)"
-
-
-
-I guess my basic question is:  Should MIPS_COMPARE_AND_SWAP have a 
-'sync' after the 'sc'?  I would have thought that 'sc' made the write 
-visible to all CPUs, but on the SB1 it appears not to be the case.
-
-If we do need to add another 'sync' should it go in the delay slot of 
-the branch?  I would say yes because we would expect the branch to 
-rarely taken.
-
-Any feedback from linux-mips people is also solicited.
-
-Thanks,
-David Daney
+-- 
+Daniel Jacobowitz
+CodeSourcery

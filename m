@@ -1,53 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Sep 2007 19:05:26 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:32935 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023738AbXIRSFX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Sep 2007 19:05:23 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8II5Mg4019329;
-	Tue, 18 Sep 2007 19:05:22 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8II5M7m019328;
-	Tue, 18 Sep 2007 19:05:22 +0100
-Date:	Tue, 18 Sep 2007 19:05:21 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] kernel/process.c: R3000 setup for kernel_thread()
-Message-ID: <20070918180521.GA16191@linux-mips.org>
-References: <Pine.LNX.4.64N.0709181834420.18665@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2007 01:13:07 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:18106 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20023291AbXISAM5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 19 Sep 2007 01:12:57 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id ACADD30A817;
+	Wed, 19 Sep 2007 00:13:07 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Wed, 19 Sep 2007 00:13:07 +0000 (UTC)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 18 Sep 2007 17:12:48 -0700
+Message-ID: <46F06980.4080500@avtrex.com>
+Date:	Tue, 18 Sep 2007 17:12:48 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0709181834420.18665@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	Richard Sandiford <rsandifo@nildram.co.uk>,
+	GCC Mailing List <gcc@gcc.gnu.org>
+Cc:	linux-mips@linux-mips.org
+Subject: MIPS atomic memory operations (A.K.A PR 33479).
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 19 Sep 2007 00:12:48.0986 (UTC) FILETIME=[CFDAB3A0:01C7FA51]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16549
+X-archive-position: 16550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 18, 2007 at 06:49:08PM +0100, Maciej W. Rozycki wrote:
+Richard,
 
->  Match the R4000 semantics for the initial state of interrupt/kernel
-> status register flags for the R3000 in kernel_thread().
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> ---
->  The R4000 variation preserves the interrupt/kernel status flags; the 
-> R3000 assumes a certain state.  It may not matter, at least at the current 
-> state of the code, but for consistency I think the R3000 variation should 
-> do the same as the R4000 one, first for purity and second because there is 
-> less maintenance force available for the R3000 and any discrepancy between 
-> the two variations means a greater chance for subtle bugs.  The 
-> performance hit is negligible.
+There seems to be a small problem with the MIPS atomic memory operations 
+patch I recently committed 
+(http://gcc.gnu.org/ml/gcc-patches/2007-08/msg01290.html), in that on a 
+dual CPU machine it does not quite work.
 
-Since it doesn't seem to bite I queued this for 2.6.24.  Thanks,
+You can look at http://gcc.gnu.org/bugzilla/show_bug.cgi?id=33479#c3 for 
+more information.
 
-  Ralf
+Here is the code in question (from mips.h):
+
+#define MIPS_COMPARE_AND_SWAP(SUFFIX, OP)	\
+   "%(%<%[sync\n"				\
+   "1:\tll" SUFFIX "\t%0,%1\n"			\
+   "\tbne\t%0,%2,2f\n"				\
+   "\t" OP "\t%@,%3\n"				\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+   "\tbeq\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "2:%]%>%)"
+
+
+
+I guess my basic question is:  Should MIPS_COMPARE_AND_SWAP have a 
+'sync' after the 'sc'?  I would have thought that 'sc' made the write 
+visible to all CPUs, but on the SB1 it appears not to be the case.
+
+If we do need to add another 'sync' should it go in the delay slot of 
+the branch?  I would say yes because we would expect the branch to 
+rarely taken.
+
+Any feedback from linux-mips people is also solicited.
+
+Thanks,
+David Daney

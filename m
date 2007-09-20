@@ -1,44 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 05:15:16 +0100 (BST)
-Received: from srv5.dvmed.net ([207.36.208.214]:4530 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20023257AbXITEO5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2007 05:14:57 +0100
-Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1IYDOF-0003TL-7N; Thu, 20 Sep 2007 04:11:47 +0000
-Message-ID: <46F1F302.4050905@pobox.com>
-Date:	Thu, 20 Sep 2007 00:11:46 -0400
-From:	Jeff Garzik <jgarzik@pobox.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070727)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 07:17:17 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:35857 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20024550AbXITGRI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Sep 2007 07:17:08 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 42231D8DA; Thu, 20 Sep 2007 06:16:32 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 9AF10540C0; Thu, 20 Sep 2007 08:16:11 +0200 (CEST)
+Date:	Thu, 20 Sep 2007 08:16:11 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Antonino Daplas <adaplas@pol.net>,
+	linux-fbdev-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers/video/pmag-ba-fb.c: Improve diagnostics
+Message-ID: <20070920061611.GE23757@deprecation.cyrius.com>
+References: <Pine.LNX.4.64N.0709171736580.17606@blysk.ds.pg.gda.pl> <Pine.LNX.4.64N.0709181314300.9650@blysk.ds.pg.gda.pl> <20070919172412.725508d0.akpm@linux-foundation.org>
 MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] NET_SB1250_MAC: Rename to SB1250_MAC
-References: <Pine.LNX.4.64N.0709141158010.1926@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0709141158010.1926@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jgarzik@pobox.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070919172412.725508d0.akpm@linux-foundation.org>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16567
+X-archive-position: 16568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jgarzik@pobox.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
->  Rename NET_SB1250_MAC to SB1250_MAC to follow the convention.
+* Andrew Morton <akpm@linux-foundation.org> [2007-09-19 17:24]:
+> I made that change, but am too stupid to be able to work out how to create
+> a config which will let me compile this thing.
 > 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> ---
->  The NET prefix seems to be used mainly for device groups (NET_ISA, 
-> NET_VENDOR_*, etc.) rather than single drivers and adds no information.  I 
-> suggest it to be removed.
-> 
->  Depends on "patch-netdev-2.6.23-rc6-20070913-sb1250-mac-kconfig-0".
+> akpm:/usr/src/25> grep PMAG arch/arm/configs/*
+> akpm:/usr/src/25> 
 
-applied
+It's a driver for mips.
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

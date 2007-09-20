@@ -1,80 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:17:25 +0100 (BST)
-Received: from smtp1.int-evry.fr ([157.159.10.44]:2215 "EHLO smtp1.int-evry.fr")
-	by ftp.linux-mips.org with ESMTP id S20021926AbXITORQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2007 15:17:16 +0100
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id BEE608E755E;
-	Thu, 20 Sep 2007 16:16:29 +0200 (CEST)
-Received: from [157.159.47.53] (unknown [157.159.47.53])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id AE4BBD0E317;
-	Thu, 20 Sep 2007 16:16:29 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Subject: Re: [PATCH][1/6] led: rename leds-cobalt
-Date:	Thu, 20 Sep 2007 16:17:09 +0200
-User-Agent: KMail/1.9.7
-Cc:	Richard Purdie <rpurdie@rpsys.net>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-References: <20070920230204.0ad15513.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20070920230204.0ad15513.yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:21:45 +0100 (BST)
+Received: from pentafluge.infradead.org ([213.146.154.40]:44775 "EHLO
+	pentafluge.infradead.org") by ftp.linux-mips.org with ESMTP
+	id S20021926AbXITOVg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Sep 2007 15:21:36 +0100
+Received: from localhost ([127.0.0.1])
+	by pentafluge.infradead.org with esmtps (Exim 4.63 #1 (Red Hat Linux))
+	id 1IYMuN-0003YI-D1; Thu, 20 Sep 2007 15:21:35 +0100
+Date:	Thu, 20 Sep 2007 19:54:31 +0530 (IST)
+From:	Satyam Sharma <satyam@infradead.org>
+X-X-Sender: satyam@enigma.security.iitk.ac.in
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+cc:	Andrew Morton <akpm@linux-foundation.org>,
+	Antonino Daplas <adaplas@pol.net>,
+	linux-fbdev-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers/video/pmag-ba-fb.c: Improve diagnostics
+In-Reply-To: <Pine.LNX.4.64N.0709201445590.30788@blysk.ds.pg.gda.pl>
+Message-ID: <alpine.LFD.0.999.0709201946130.17093@enigma.security.iitk.ac.in>
+References: <Pine.LNX.4.64N.0709171736580.17606@blysk.ds.pg.gda.pl>
+ <Pine.LNX.4.64N.0709181314300.9650@blysk.ds.pg.gda.pl>
+ <20070919172412.725508d0.akpm@linux-foundation.org>
+ <Pine.LNX.4.64N.0709201342160.30788@blysk.ds.pg.gda.pl>
+ <alpine.LFD.0.999.0709201837160.17093@enigma.security.iitk.ac.in>
+ <Pine.LNX.4.64N.0709201445590.30788@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart1630951.IxmG0x1RPe";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200709201617.12773.florian.fainelli@telecomint.eu>
-X-int-MailScanner-Information: Please contact the ISP for more information
-X-int-MailScanner: Found to be clean
-X-int-MailScanner-SpamCheck: 
-X-int-MailScanner-From:	florian.fainelli@telecomint.eu
-Return-Path: <florian.fainelli@telecomint.eu>
+Content-Type: TEXT/PLAIN; charset=UTF-8
+Return-Path: <satyam@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16580
+X-archive-position: 16581
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: satyam@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1630951.IxmG0x1RPe
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
-
-Le jeudi 20 septembre 2007, Yoichi Yuasa a =E9crit=A0:
-> The leds-cobalt driver only supports the Coable Qube series
-> (not included in Cobalt Raq series).
-> This patch has fixed Kconfig and renamed the driver.
->
-> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
->
-Acked-by: Florian Fainelli <florian.fainelli@telecomint.eu>
-
-Thanks Yoichi !
 
 
-=2D-=20
-Cordialement, Florian Fainelli
-=2D-----------------------------
+On Thu, 20 Sep 2007, Maciej W. Rozycki wrote:
+> 
+>  Perhaps preinitialising to an error value such as -EINVAL would be of
+> more sense.  This way any error paths lacking initialisation are still
+> reported as errors, even though the classification might be wrong.
 
---nextPart1630951.IxmG0x1RPe
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
+Eeee ... at least I wouldn't prefer that. Why not simply use the
+"int x = x;" trick (which is what uninitialized_var() does) -- it shuts
+up the warning, and does *nothing* else. The bug will not be hidden, if
+there's bad misbehaviour happening due to the bug, it will continue to
+happen that way -- thus bringing our attention to it. Pre-initializing
+to -EINVAL (or whatever) has the problem that when the bug actually
+triggers, something unrelated might happen higher up the callchain, and
+we'd be scratching our heads in a "why are we getting a -EINVAL here?"
+kind of way ... worse still, we might think that this was _really_ an
+EINVAL and go about debugging it ...
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.7 (GNU/Linux)
+Plus, pre-initializing to -EINVAL (or even 0) will waste some bytes in
+kernel text size, but no such overhead with uninitialized_var() :-)
 
-iD8DBQBG8oDomx9n1G/316sRAmjYAJ4r8GNTcg1BQzi1Hy7ZrIwdm8/WHwCg2+o0
-Y0wdQFgleO2v67nE0K+Uxms=
-=yeux
------END PGP SIGNATURE-----
 
---nextPart1630951.IxmG0x1RPe--
+Satyam

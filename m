@@ -1,124 +1,206 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:05:11 +0100 (BST)
-Received: from pentafluge.infradead.org ([213.146.154.40]:10889 "EHLO
-	pentafluge.infradead.org") by ftp.linux-mips.org with ESMTP
-	id S20021988AbXITOEo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Sep 2007 15:04:44 +0100
-Received: from localhost ([127.0.0.1])
-	by pentafluge.infradead.org with esmtps (Exim 4.63 #1 (Red Hat Linux))
-	id 1IYMe3-0003EJ-1N; Thu, 20 Sep 2007 15:04:43 +0100
-Date:	Thu, 20 Sep 2007 19:37:39 +0530 (IST)
-From:	Satyam Sharma <satyam@infradead.org>
-X-X-Sender: satyam@enigma.security.iitk.ac.in
-To:	Markus Gothe <markus.gothe@27m.se>
-cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Antonino Daplas <adaplas@pol.net>,
-	linux-fbdev-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drivers/video/pmag-ba-fb.c: Improve diagnostics
-In-Reply-To: <46F27BA3.8060905@27m.se>
-Message-ID: <alpine.LFD.0.999.0709201934300.17093@enigma.security.iitk.ac.in>
-References: <Pine.LNX.4.64N.0709171736580.17606@blysk.ds.pg.gda.pl>
- <Pine.LNX.4.64N.0709181314300.9650@blysk.ds.pg.gda.pl>
- <20070919172412.725508d0.akpm@linux-foundation.org>
- <Pine.LNX.4.64N.0709201342160.30788@blysk.ds.pg.gda.pl>
- <alpine.LFD.0.999.0709201837160.17093@enigma.security.iitk.ac.in>
- <46F27BA3.8060905@27m.se>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=UTF-8
-Return-Path: <satyam@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:12:03 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:64830 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20021988AbXITOLh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2007 15:11:37 +0100
+Received: by mo.po.2iij.net (mo32) id l8KEBYsY009802; Thu, 20 Sep 2007 23:11:34 +0900 (JST)
+Received: from localhost.localdomain (221.25.30.125.dy.iij4u.or.jp [125.30.25.221])
+	by mbox.po.2iij.net (po-mbox302) id l8KEBV2k010855
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 20 Sep 2007 23:11:32 +0900
+Date:	Thu, 20 Sep 2007 23:03:22 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Richard Purdie <rpurdie@rpsys.net>
+Cc:	yoichi_yuasa@tripeaks.co.jp, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2/6] led: add Cobalt Raq series LEDs support
+Message-Id: <20070920230322.6600dd83.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20070920230204.0ad15513.yoichi_yuasa@tripeaks.co.jp>
+References: <20070920230204.0ad15513.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16573
+X-archive-position: 16574
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: satyam@infradead.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
+Add Cobalt Raq series LEDs support.
 
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-On Thu, 20 Sep 2007, Markus Gothe wrote:
-> 
-> GCC 4.1.2 has been stable for a long time now, maybe you better
-> upgrade your binutils instead...
-
-I'd been using 4.2.1 -- I don't want to downgrade to 4.1.2. (btw from
-the discussion on gcc's bugzilla it appears the bug wasn't resolved
-in 4.1.2 either?)
-
-Satyam
-
-> Satyam Sharma wrote:
-> > Hi Maciej,
-> >
-> >
-> > On Thu, 20 Sep 2007, Maciej W. Rozycki wrote:
-> > > 
-> > > On Wed, 19 Sep 2007, Andrew Morton wrote:
-> > > > 
-> > > > This initialisation to zero is not good.
-> > > > 
-> > > > Because if some error-path code forgot to do `err = -EFOO' then
-> > > > probe() will return zero and the driver will leave things in
-> > > > half-initialised state and will then proceed as if things had
-> > > > succeeded.  It will crash.
-> > > 
-> > > GCC used to complain: "`foo' might be used uninitialized..." and
-> > > this is the usual cure; let me see if this not the case anymore
-> > > (I have 4.1.2).
-> >
-> > Even so, initializing to zero isn't quite good. You could use the
-> > uninitialized_var() (once you've confirmed that the warning is
-> > bogus). However, some maintainers may still nack
-> > uninitialized_var() usage, quite legitimately.
-> >
-> >
-> > > > So it's better to leave this local uninitialised, because we
-> > > > really want to get that compiler warning if someone forgot to
-> > > > set the return value.
-> > > Yes of course, barring the issue mentioned.  Note the message
-> > > above is not the same as: "`foo' is used uninitialized..." that
-> > > would be reported in the case which you are concerned of.
-> >
-> > Firstly, "may be used uninitialized" can still be a bug.
-> >
-> > Secondly, latest gcc is *horribly* buggy (and has been so for last
-> > several releases including 4.1, 4.2 and 4.3 -- 3.x was good). See:
-> >
-> > http://gcc.gnu.org/bugzilla/show_bug.cgi?id=33327
-> > http://gcc.gnu.org/bugzilla/show_bug.cgi?id=18501
-> >
-> > We'd been hurling all sorts of abuses on gcc for quite long (when
-> > it fails to detect these "false positive" cases), but now, it turns
-> > out it is quite easy to write *genuinely* buggy code that still
-> > won't get any warnings, neither the "is used" nor "may be used"
-> > one!
-> >
-> > In short, there are three ways to fix these false positive
-> > warnings:
-> >
-> > 1. Do nothing, there are enough "uninitialized variable" warnings
-> > anyway, and hopefully, one day GCC would clean up its act.
-> >
-> > 2. Use uninitialized_var() to shut it up (only if it's genuinely
-> > bogus).
-> >
-> > 3. Do something like the following legendary patch [1]:
-> >
-> > http://kegel.com/crosstool/crosstool-0.43/patches/linux-2.6.11.3/arch_alpha_kernel_srcons.patch
-> >
-> >
-> > i.e., explicitly change the structure/logic of the function to make
-> > it obvious enough to gcc that the variable will not be used
-> > uninitialized.
-> >
-> >
-> > Satyam
-> >
-> > [1] That was a funny case -- the alpha linux maintainer is also a
-> > gcc maintainer. Alpha even sets -Werror, so either he had to fix
-> > the kernel code that produced the warning, or go fix GCC to not
-> > warn about it -- he chose the former :-)
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/leds/Kconfig mips/drivers/leds/Kconfig
+--- mips-orig/drivers/leds/Kconfig	2007-09-14 13:05:27.969928000 +0900
++++ mips/drivers/leds/Kconfig	2007-09-14 13:05:39.450645500 +0900
+@@ -93,6 +93,13 @@ config LEDS_COBALT_QUBE
+ 	help
+ 	  This option enables support for the front LED on Cobalt Qube series
+ 
++config LEDS_COBALT_RAQ
++	bool "LED Support for the Cobalt Raq series"
++	depends on LEDS_CLASS && MIPS_COBALT
++	select LEDS_TRIGGERS
++	help
++	  This option enables support for the Cobalt Raq series LEDs.
++
+ config LEDS_GPIO
+ 	tristate "LED Support for GPIO connected LEDs"
+ 	depends on LEDS_CLASS && GENERIC_GPIO
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/leds/Makefile mips/drivers/leds/Makefile
+--- mips-orig/drivers/leds/Makefile	2007-09-14 13:05:27.981928750 +0900
++++ mips/drivers/leds/Makefile	2007-09-14 13:05:39.450645500 +0900
+@@ -16,6 +16,7 @@ obj-$(CONFIG_LEDS_NET48XX)		+= leds-net4
+ obj-$(CONFIG_LEDS_WRAP)			+= leds-wrap.o
+ obj-$(CONFIG_LEDS_H1940)		+= leds-h1940.o
+ obj-$(CONFIG_LEDS_COBALT_QUBE)		+= leds-cobalt-qube.o
++obj-$(CONFIG_LEDS_COBALT_RAQ)		+= leds-cobalt-raq.o
+ obj-$(CONFIG_LEDS_GPIO)			+= leds-gpio.o
+ 
+ # LED Triggers
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/leds/leds-cobalt-raq.c mips/drivers/leds/leds-cobalt-raq.c
+--- mips-orig/drivers/leds/leds-cobalt-raq.c	1970-01-01 09:00:00.000000000 +0900
++++ mips/drivers/leds/leds-cobalt-raq.c	2007-09-14 13:06:03.900173500 +0900
+@@ -0,0 +1,135 @@
++/*
++ *  LEDs driver for the Cobalt Raq series.
++ *
++ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/leds.h>
++#include <linux/platform_device.h>
++#include <linux/spinlock.h>
++#include <linux/types.h>
++
++#include <asm/io.h>
++
++#define LED_WEB		0x04
++#define LED_POWER_OFF	0x08
++
++static void __iomem *led_port;
++static u8 led_value;
++static DEFINE_SPINLOCK(led_value_lock);
++
++static void raq_web_led_set(struct led_classdev *led_cdev,
++                            enum led_brightness brightness)
++{
++	spin_lock_irq(&led_value_lock);
++
++	if (brightness)
++		led_value |= LED_WEB;
++	else
++		led_value &= ~LED_WEB;
++	writeb(led_value, led_port);
++
++	spin_unlock_irq(&led_value_lock);
++}
++
++static struct led_classdev raq_web_led = {
++	.name		= "raq-web",
++	.brightness_set	= raq_web_led_set,
++};
++
++static void raq_power_off_led_set(struct led_classdev *led_cdev,
++                                  enum led_brightness brightness)
++{
++	spin_lock_irq(&led_value_lock);
++
++	if (brightness)
++		led_value |= LED_POWER_OFF;
++	else
++		led_value &= ~LED_POWER_OFF;
++	writeb(led_value, led_port);
++
++	spin_unlock_irq(&led_value_lock);
++}
++
++static struct led_classdev raq_power_off_led = {
++	.name			= "raq-power-off",
++	.brightness_set		= raq_power_off_led_set,
++	.default_trigger	= "power-off",
++};
++
++static int __devinit cobalt_raq_led_probe(struct platform_device *pdev)
++{
++	struct resource *res;
++	int retval;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -EBUSY;
++
++	led_port = ioremap(res->start, res->end - res->start + 1);
++	if (!led_port)
++		return -ENOMEM;
++
++	retval = led_classdev_register(&pdev->dev, &raq_power_off_led);
++	if (retval)
++		goto err_iounmap;
++
++	retval = led_classdev_register(&pdev->dev, &raq_web_led);
++	if (retval)
++		goto err_unregister;
++
++	return 0;
++
++err_unregister:
++	led_classdev_unregister(&raq_power_off_led);
++
++err_iounmap:
++	iounmap(led_port);
++	led_port = NULL;
++
++	return retval;
++}
++
++static int __devexit cobalt_raq_led_remove(struct platform_device *pdev)
++{
++	led_classdev_unregister(&raq_power_off_led);
++	led_classdev_unregister(&raq_web_led);
++
++	if (led_port) {
++		iounmap(led_port);
++		led_port = NULL;
++	}
++
++	return 0;
++}
++
++static struct platform_driver cobalt_raq_led_driver = {
++	.probe	= cobalt_raq_led_probe,
++	.remove	= __devexit_p(cobalt_raq_led_remove),
++	.driver = {
++		.name	= "Cobalt Raq LEDs",
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init cobalt_raq_led_init(void)
++{
++	return platform_driver_register(&cobalt_raq_led_driver);
++}
++
++module_init(cobalt_raq_led_init);

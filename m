@@ -1,88 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 21:08:30 +0100 (BST)
-Received: from lazybastard.de ([212.112.238.170]:18915 "EHLO
-	longford.lazybastard.org") by ftp.linux-mips.org with ESMTP
-	id S20023738AbXITUIW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Sep 2007 21:08:22 +0100
-Received: from joern by longford.lazybastard.org with local (Exim 4.50)
-	id 1IYSCs-0000WY-1N; Thu, 20 Sep 2007 22:01:02 +0200
-Date:	Thu, 20 Sep 2007 22:00:59 +0200
-From:	=?utf-8?B?SsO2cm4=?= Engel <joern@logfs.org>
-To:	Christoph Hellwig <hch@lst.de>
-Cc:	Matteo Croce <technoboy85@gmail.com>, linux-mips@linux-mips.org,
-	Felix Fietkau <nbd@openwrt.org>,
-	Eugene Konev <ejka@imfi.kspu.ru>,
-	linux-mtd@lists.infradead.org,
-	Andrew Morton <akpm@linux-foundation.org>, dwmw2@infradead.org
-Subject: Re: [PATCH][MIPS][2/7] AR7: mtd partition map
-Message-ID: <20070920200058.GB1692@lazybastard.org>
-References: <200709201728.10866.technoboy85@gmail.com> <20070920175204.GA26132@lst.de> <200709202034.21764.technoboy85@gmail.com> <200709202129.12261.technoboy85@gmail.com> <20070920193547.GA911@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 23:51:26 +0100 (BST)
+Received: from tim.rpsys.net ([194.106.48.114]:10122 "EHLO tim.rpsys.net")
+	by ftp.linux-mips.org with ESMTP id S20024836AbXITWvR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2007 23:51:17 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by tim.rpsys.net (8.13.6/8.13.8) with ESMTP id l8KMpHcO020799;
+	Thu, 20 Sep 2007 23:51:17 +0100
+Received: from tim.rpsys.net ([127.0.0.1])
+ by localhost (tim.rpsys.net [127.0.0.1]) (amavisd-new, port 10024) with LMTP
+ id 20598-06; Thu, 20 Sep 2007 23:51:13 +0100 (BST)
+Received: from [192.168.1.15] (max.rpnet.com [192.168.1.15])
+	(authenticated bits=0)
+	by tim.rpsys.net (8.13.6/8.13.8) with ESMTP id l8KMpBEf020792
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);
+	Thu, 20 Sep 2007 23:51:12 +0100
+Subject: Re: [PATCH][2/6] led: add Cobalt Raq series LEDs support
+From:	Richard Purdie <rpurdie@rpsys.net>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20070920230322.6600dd83.yoichi_yuasa@tripeaks.co.jp>
+References: <20070920230204.0ad15513.yoichi_yuasa@tripeaks.co.jp>
+	 <20070920230322.6600dd83.yoichi_yuasa@tripeaks.co.jp>
+Content-Type: text/plain
+Date:	Thu, 20 Sep 2007 23:51:10 +0100
+Message-Id: <1190328670.5658.77.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20070920193547.GA911@lst.de>
-User-Agent: Mutt/1.5.9i
-Return-Path: <joern@lazybastard.org>
+X-Mailer: Evolution 2.10.1 
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: amavisd-new at rpsys.net
+Return-Path: <rpurdie@rpsys.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16603
+X-archive-position: 16604
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joern@logfs.org
+X-original-sender: rpurdie@rpsys.net
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 20 September 2007 21:35:49 +0200, Christoph Hellwig wrote:
-> On Thu, Sep 20, 2007 at 09:29:11PM +0200, Matteo Croce wrote:
-> > +#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> > +#define LOADER_MAGIC1	0xfeedfa42
-> > +#define LOADER_MAGIC2	0xfeed1281
-> > +#else
-> > +#define LOADER_MAGIC1	0x42faedfe
-> > +#define LOADER_MAGIC2	0x8112edfe
-> > +#endif
+On Thu, 2007-09-20 at 23:03 +0900, Yoichi Yuasa wrote:
+> Add Cobalt Raq series LEDs support.
 > 
-> Please keep only one defintion and use le/be32_to_cpu on it.
+> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 > 
-> > +struct ar7_bin_rec {
-> > +	unsigned int checksum;
-> > +	unsigned int length;
-> > +	unsigned int address;
-> > +};
-> 
-> Wich means you'd need an endianess annotation here.  What about the
-> length and address fields, are they always native-endian unlike
-> the checksum field or will the need to be byte-swapped aswell?
+[...]
+> diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/leds/leds-cobalt-raq.c mips/drivers/leds/leds-cobalt-raq.c
+> --- mips-orig/drivers/leds/leds-cobalt-raq.c	1970-01-01 09:00:00.000000000 +0900
+> +++ mips/drivers/leds/leds-cobalt-raq.c	2007-09-14 13:06:03.900173500 +0900
+> @@ -0,0 +1,135 @@
+[...]
+> +static void __iomem *led_port;
+> +static u8 led_value;
+> +static DEFINE_SPINLOCK(led_value_lock);
+> +
+> +static void raq_web_led_set(struct led_classdev *led_cdev,
+> +                            enum led_brightness brightness)
+> +{
+> +	spin_lock_irq(&led_value_lock);
+> +
+> +	if (brightness)
+> +		led_value |= LED_WEB;
+> +	else
+> +		led_value &= ~LED_WEB;
+> +	writeb(led_value, led_port);
+> +
+> +	spin_unlock_irq(&led_value_lock);
+> +}
 
-<slightly off-topic, feel free to skip>
-If this is indeed the squashfs magic, le/be32_to_cpu won't help.
-Squashfs can have either endianness, tries to detect the one actually
-used by checking either magic and sets a flag in the superblock.
-Afterwards every single access checks the flag and conditionally swaps
-fields around or not.
+You can't use the spin lock like that since the set function can get
+called in interrupt context, you need to use irqsave/irqrestore
+versions. I've already said this once...
 
-If squashfs had a fixed endianness, quite a lot of this logic could get
-removed and both source and object size would shrink.  Some two years
-after requesting this for the first time, I'm thinking about just doing
-it myself.  If I find a sponsor who pays me for it, I might even do it
-soon.
-</offtopic>
-
-
-I don't really understand why the squashfs magic number should be used
-in this code at all.  It may have set a bad example, though.  In general
-you should decide on a fixed endianness (1) and use the beXX_to_cpu
-macros when accessing data unless you have a very good reason to do
-otherwise.
-
-1) Big endian is my preferred choice because it is easy to read in a
-hexdump and the opposite of my notebook.  Being forced to do endian
-conversions during development/testing helps to find problems early.
-
-Jörn
-
--- 
-Joern's library part 13:
-http://www.chip-architect.com/
+Richard

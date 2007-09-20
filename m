@@ -1,64 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Sep 2007 19:28:10 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:50102 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023886AbXISS2H (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 19 Sep 2007 19:28:07 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8JIS5lA018045;
-	Wed, 19 Sep 2007 19:28:06 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8JIS4Ik018044;
-	Wed, 19 Sep 2007 19:28:04 +0100
-Date:	Wed, 19 Sep 2007 19:28:04 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	David Daney <ddaney@avtrex.com>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Richard Sandiford <rsandifo@nildram.co.uk>,
-	GCC Mailing List <gcc@gcc.gnu.org>, linux-mips@linux-mips.org
-Subject: Re: MIPS atomic memory operations (A.K.A PR 33479).
-Message-ID: <20070919182804.GB14767@linux-mips.org>
-References: <46F06980.4080500@avtrex.com> <20070919165809.GA14767@linux-mips.org> <Pine.LNX.4.64N.0709191759361.24627@blysk.ds.pg.gda.pl> <46F15BB3.50107@avtrex.com> <Pine.LNX.4.64N.0709191836140.24627@blysk.ds.pg.gda.pl> <46F16142.1090600@avtrex.com> <20070919181233.GR9972@networkno.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070919181233.GR9972@networkno.de>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 01:24:36 +0100 (BST)
+Received: from smtp2.linux-foundation.org ([207.189.120.14]:27319 "EHLO
+	smtp2.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S20023857AbXITAY2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Sep 2007 01:24:28 +0100
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [207.189.120.55])
+	by smtp2.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l8K0ODFH031804
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 19 Sep 2007 17:24:14 -0700
+Received: from akpm.corp.google.com (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id l8K0OCDe020204;
+	Wed, 19 Sep 2007 17:24:13 -0700
+Date:	Wed, 19 Sep 2007 17:24:12 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Antonino Daplas <adaplas@pol.net>,
+	linux-fbdev-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers/video/pmag-ba-fb.c: Improve diagnostics
+Message-Id: <20070919172412.725508d0.akpm@linux-foundation.org>
+In-Reply-To: <Pine.LNX.4.64N.0709181314300.9650@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0709171736580.17606@blysk.ds.pg.gda.pl>
+	<Pine.LNX.4.64N.0709181314300.9650@blysk.ds.pg.gda.pl>
+X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: lf$Revision: 1.185 $
+X-Scanned-By: MIMEDefang 2.53 on 207.189.120.14
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16562
+X-archive-position: 16563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 19, 2007 at 07:12:33PM +0100, Thiemo Seufer wrote:
+On Tue, 18 Sep 2007 13:18:34 +0100 (BST)
+"Maciej W. Rozycki" <macro@linux-mips.org> wrote:
 
-> >>  Another option is to depend on the setting of -mbranch-likely.  By 
-> >> default it is on only for the processors which implement it and do not 
-> >> discourage it, i.e. these of the MIPS II, MIPS III and MIPS IV ISAs.
-
-All MIPS implementations that have branch likely also support it with
-good performance.  So the deprecation is atm really something that has
-happened on paper.
-
-The approach for LL/SC loops (where it's used for correctness) and the rest
-of the code where we care about code size and performance is not necessarily
-the same.
-
-> > This seems to be the most sensible option.
-> >
-> > I will try to work up the GCC patch tonight.
+>  Add error messages to the probe call.
 > 
-> This means generic MIPS code (MIPS I) wil have broken atomic
-> intrinsics when run on modern MIPS machines.
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> ---
+>  While they may rarely trigger, they may be useful when something weird is 
+> going on.  Also this is good style.
+> 
+>  This is an updated version that addresses an issue raised by Mariusz 
+> Kozlowski for the sibling patch.  Checked with checkpatch.pl.
+> 
+>  Please apply.
+> 
+>   Maciej
+> 
+> patch-mips-2.6.23-rc5-20070904-pmag-ba-err-2
+> diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/video/pmag-ba-fb.c linux-mips-2.6.23-rc5-20070904/drivers/video/pmag-ba-fb.c
+> --- linux-mips-2.6.23-rc5-20070904.macro/drivers/video/pmag-ba-fb.c	2007-02-21 05:56:47.000000000 +0000
+> +++ linux-mips-2.6.23-rc5-20070904/drivers/video/pmag-ba-fb.c	2007-09-18 10:56:51.000000000 +0000
+> @@ -147,16 +147,23 @@ static int __init pmagbafb_probe(struct 
+>  	resource_size_t start, len;
+>  	struct fb_info *info;
+>  	struct pmagbafb_par *par;
+> +	int err = 0;
 
-Oh and if it takes adding new emulations for SYNC (some pseudo MIPS II
-implementations lack SYNC afair) or branch likely to the kernel I will
-certainly support that.
+This initialisation to zero is not good.
 
-  Ralf
+Because if some error-path code forgot to do `err = -EFOO' then probe()
+will return zero and the driver will leave things in half-initialised state
+and will then proceed as if things had succeeded.  It will crash.
+
+So it's better to leave this local uninitialised, because we really want to
+get that compiler warning if someone forgot to set the return value.
+
+I made that change, but am too stupid to be able to work out how to create
+a config which will let me compile this thing.
+
+akpm:/usr/src/25> grep PMAG arch/arm/configs/*
+akpm:/usr/src/25> 
+
+bah.

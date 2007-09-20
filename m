@@ -1,63 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:21:45 +0100 (BST)
-Received: from pentafluge.infradead.org ([213.146.154.40]:44775 "EHLO
-	pentafluge.infradead.org") by ftp.linux-mips.org with ESMTP
-	id S20021926AbXITOVg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Sep 2007 15:21:36 +0100
-Received: from localhost ([127.0.0.1])
-	by pentafluge.infradead.org with esmtps (Exim 4.63 #1 (Red Hat Linux))
-	id 1IYMuN-0003YI-D1; Thu, 20 Sep 2007 15:21:35 +0100
-Date:	Thu, 20 Sep 2007 19:54:31 +0530 (IST)
-From:	Satyam Sharma <satyam@infradead.org>
-X-X-Sender: satyam@enigma.security.iitk.ac.in
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-cc:	Andrew Morton <akpm@linux-foundation.org>,
-	Antonino Daplas <adaplas@pol.net>,
-	linux-fbdev-devel@lists.sourceforge.net, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:23:53 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:24260 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021935AbXITOXo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Sep 2007 15:23:44 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 94C4740090;
+	Thu, 20 Sep 2007 16:23:15 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id e2wMlS79q26C; Thu, 20 Sep 2007 16:23:07 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id DAB1F400C9;
+	Thu, 20 Sep 2007 16:23:05 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8KEN8U9013297;
+	Thu, 20 Sep 2007 16:23:09 +0200
+Date:	Thu, 20 Sep 2007 15:23:03 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Jeff Garzik <jgarzik@pobox.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	netdev@vger.kernel.org, linux-mips@linux-mips.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drivers/video/pmag-ba-fb.c: Improve diagnostics
-In-Reply-To: <Pine.LNX.4.64N.0709201445590.30788@blysk.ds.pg.gda.pl>
-Message-ID: <alpine.LFD.0.999.0709201946130.17093@enigma.security.iitk.ac.in>
-References: <Pine.LNX.4.64N.0709171736580.17606@blysk.ds.pg.gda.pl>
- <Pine.LNX.4.64N.0709181314300.9650@blysk.ds.pg.gda.pl>
- <20070919172412.725508d0.akpm@linux-foundation.org>
- <Pine.LNX.4.64N.0709201342160.30788@blysk.ds.pg.gda.pl>
- <alpine.LFD.0.999.0709201837160.17093@enigma.security.iitk.ac.in>
- <Pine.LNX.4.64N.0709201445590.30788@blysk.ds.pg.gda.pl>
+Subject: Re: [PATCH] sb1250-mac.c: De-typedef, de-volatile, de-etc...
+In-Reply-To: <46F1F2CE.7020300@pobox.com>
+Message-ID: <Pine.LNX.4.64N.0709201354320.30788@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0709101310030.25038@blysk.ds.pg.gda.pl>
+ <46E8B56E.7060705@pobox.com> <Pine.LNX.4.64N.0709131506040.31069@blysk.ds.pg.gda.pl>
+ <20070913151452.GB29665@linux-mips.org> <46E95C7F.1050302@pobox.com>
+ <Pine.LNX.4.64N.0709141135290.1926@blysk.ds.pg.gda.pl> <46F1F2CE.7020300@pobox.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=UTF-8
-Return-Path: <satyam@infradead.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4353/Thu Sep 20 15:47:16 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16581
+X-archive-position: 16582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: satyam@infradead.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 20 Sep 2007, Jeff Garzik wrote:
 
-
-On Thu, 20 Sep 2007, Maciej W. Rozycki wrote:
+> > You may be pleased (or less so) to hear that the version of sb1250-mac.c in
+> > your tree does not even build (because of
+> > 42d53d6be113f974d8152979c88e1061b953bd12) and the patch below does not
+> > address it.  I ran out of time in the evening, but I will send you a fix
+> > shortly.  To be honest I think even with bulk changes it may be worth
+> > checking whether they do not break stuff. ;-)
 > 
->  Perhaps preinitialising to an error value such as -EINVAL would be of
-> more sense.  This way any error paths lacking initialisation are still
-> reported as errors, even though the classification might be wrong.
+> hrm.  I cannot get this to apply on top of linux-2.6.git,
+> netdev-2.6.git#upstream (prior to net-2.6.24 rebase) or
+> netdev-2.6.git#upstream (after net-2.6.24 rebase)
 
-Eeee ... at least I wouldn't prefer that. Why not simply use the
-"int x = x;" trick (which is what uninitialized_var() does) -- it shuts
-up the warning, and does *nothing* else. The bug will not be hidden, if
-there's bad misbehaviour happening due to the bug, it will continue to
-happen that way -- thus bringing our attention to it. Pre-initializing
-to -EINVAL (or whatever) has the problem that when the bug actually
-triggers, something unrelated might happen higher up the callchain, and
-we'd be scratching our heads in a "why are we getting a -EINVAL here?"
-kind of way ... worse still, we might think that this was _really_ an
-EINVAL and go about debugging it ...
+ It applies on top of current -mm.  It seems to apply to a copy of 
+netdev-2.6.git#upstream that I have got, but I am probably missing 
+something...  If I try to clone your repository again I get:
 
-Plus, pre-initializing to -EINVAL (or even 0) will waste some bytes in
-kernel text size, but no such overhead with uninitialized_var() :-)
+$ git clone git://git.kernel.org/pub/scm/linux/kernel/git/jgarzik/linux-netdev-2.6.git linux
+Initialized empty Git repository in /home/macro/GIT-other/linux-netdev/linux/.git/
+fatal: The remote end hung up unexpectedly
+fetch-pack from 'git://git.kernel.org/pub/scm/linux/kernel/git/jgarzik/linux-netdev-2.6.git' failed.
+$
 
+For linux-2.6.git the patch-mips-2.6.23-rc5-20070904-sb1250-mac-typedef-7 
+version applies as submitted originally; I can resubmit this one if you 
+like.
 
-Satyam
+ I am slowly getting lost and I have another big chunk for sb1250-mac.c 
+waiting to be put on top of these...
+
+  Maciej

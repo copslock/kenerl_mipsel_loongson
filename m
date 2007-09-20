@@ -1,68 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:14:28 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:53555 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022036AbXITOM6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2007 15:12:58 +0100
-Received: by mo.po.2iij.net (mo30) id l8KEBeLM025008; Thu, 20 Sep 2007 23:11:40 +0900 (JST)
-Received: from localhost.localdomain (221.25.30.125.dy.iij4u.or.jp [125.30.25.221])
-	by mbox.po.2iij.net (po-mbox302) id l8KEBZsi010917
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 20 Sep 2007 23:11:35 +0900
-Date:	Thu, 20 Sep 2007 23:08:41 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, Richard Purdie <rpurdie@rpsys.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Sep 2007 15:17:25 +0100 (BST)
+Received: from smtp1.int-evry.fr ([157.159.10.44]:2215 "EHLO smtp1.int-evry.fr")
+	by ftp.linux-mips.org with ESMTP id S20021926AbXITORQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Sep 2007 15:17:16 +0100
+Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
+	by smtp1.int-evry.fr (Postfix) with ESMTP id BEE608E755E;
+	Thu, 20 Sep 2007 16:16:29 +0200 (CEST)
+Received: from [157.159.47.53] (unknown [157.159.47.53])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id AE4BBD0E317;
+	Thu, 20 Sep 2007 16:16:29 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Subject: Re: [PATCH][1/6] led: rename leds-cobalt
+Date:	Thu, 20 Sep 2007 16:17:09 +0200
+User-Agent: KMail/1.9.7
+Cc:	Richard Purdie <rpurdie@rpsys.net>,
+	Ralf Baechle <ralf@linux-mips.org>,
 	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][5/6] led: add Cobalt Qube series front LED support to
- platform register
-Message-Id: <20070920230841.5e4b0a05.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20070920230656.640886f5.yoichi_yuasa@tripeaks.co.jp>
 References: <20070920230204.0ad15513.yoichi_yuasa@tripeaks.co.jp>
-	<20070920230322.6600dd83.yoichi_yuasa@tripeaks.co.jp>
-	<20070920230513.1dbb1d6d.yoichi_yuasa@tripeaks.co.jp>
-	<20070920230656.640886f5.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 1.0.6 (GTK+ 1.2.10; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20070920230204.0ad15513.yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
+Content-Type: multipart/signed;
+  boundary="nextPart1630951.IxmG0x1RPe";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Message-Id: <200709201617.12773.florian.fainelli@telecomint.eu>
+X-int-MailScanner-Information: Please contact the ISP for more information
+X-int-MailScanner: Found to be clean
+X-int-MailScanner-SpamCheck: 
+X-int-MailScanner-From:	florian.fainelli@telecomint.eu
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16579
+X-archive-position: 16580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-Add Cobalt Qube series front LED support to platform register.
+--nextPart1630951.IxmG0x1RPe
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Le jeudi 20 septembre 2007, Yoichi Yuasa a =E9crit=A0:
+> The leds-cobalt driver only supports the Coable Qube series
+> (not included in Cobalt Raq series).
+> This patch has fixed Kconfig and renamed the driver.
+>
+> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+>
+Acked-by: Florian Fainelli <florian.fainelli@telecomint.eu>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/led.c mips/arch/mips/cobalt/led.c
---- mips-orig/arch/mips/cobalt/led.c	2007-09-12 13:48:40.740621250 +0900
-+++ mips/arch/mips/cobalt/led.c	2007-09-12 13:47:59.474042250 +0900
-@@ -22,6 +22,8 @@
- #include <linux/ioport.h>
- #include <linux/platform_device.h>
- 
-+#include <cobalt.h>
-+
- static struct resource cobalt_led_resource __initdata = {
- 	.start	= 0x1c000000,
- 	.end	= 0x1c000000,
-@@ -33,7 +35,11 @@ static __init int cobalt_led_add(void)
- 	struct platform_device *pdev;
- 	int retval;
- 
--	pdev = platform_device_alloc("Cobalt Raq LEDs", -1);
-+	if (cobalt_board_id == COBALT_BRD_ID_QUBE1 ||
-+	    cobalt_board_id == COBALT_BRD_ID_QUBE2)
-+		pdev = platform_device_alloc("Cobalt Qube LEDs", -1);
-+	else
-+		pdev = platform_device_alloc("Cobalt Raq LEDs", -1);
- 
- 	if (!pdev)
- 		return -ENOMEM;
+Thanks Yoichi !
+
+
+=2D-=20
+Cordialement, Florian Fainelli
+=2D-----------------------------
+
+--nextPart1630951.IxmG0x1RPe
+Content-Type: application/pgp-signature; name=signature.asc 
+Content-Description: This is a digitally signed message part.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.7 (GNU/Linux)
+
+iD8DBQBG8oDomx9n1G/316sRAmjYAJ4r8GNTcg1BQzi1Hy7ZrIwdm8/WHwCg2+o0
+Y0wdQFgleO2v67nE0K+Uxms=
+=yeux
+-----END PGP SIGNATURE-----
+
+--nextPart1630951.IxmG0x1RPe--

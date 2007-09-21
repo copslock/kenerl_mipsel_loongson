@@ -1,64 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 10:29:18 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:15404 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20024319AbXIUJ2c (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 10:28:32 +0100
-Received: by mo.po.2iij.net (mo30) id l8L9RFp5092575; Fri, 21 Sep 2007 18:27:15 +0900 (JST)
-Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox300) id l8L9REUE018530
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 21 Sep 2007 18:27:14 +0900
-Message-Id: <200709210927.l8L9REUE018530@po-mbox300.hop.2iij.net>
-Date:	Fri, 21 Sep 2007 18:24:50 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, Richard Purdie <rpurdie@rpsys.net>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH take2][4/5] led: add Cobalt Qube series front LED support to
- platform register
-References: <20070921182026.f2adbd6a.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 10:35:28 +0100 (BST)
+Received: from tool.snarl.nl ([82.95.241.19]:33552 "EHLO tool.snarl.nl")
+	by ftp.linux-mips.org with ESMTP id S20024323AbXIUJfU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 10:35:20 +0100
+Received: from localhost (tool.local.snarl.nl [127.0.0.1])
+	by tool.snarl.nl (Postfix) with ESMTP id D4DCB5DFC8;
+	Fri, 21 Sep 2007 11:34:44 +0200 (CEST)
+Received: from tool.snarl.nl ([127.0.0.1])
+	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 57dAKRplY-mh; Fri, 21 Sep 2007 11:34:44 +0200 (CEST)
+Received: by tool.snarl.nl (Postfix, from userid 1000)
+	id 66A9E5DF9C; Fri, 21 Sep 2007 11:34:44 +0200 (CEST)
+Date:	Fri, 21 Sep 2007 11:34:44 +0200
+From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+To:	Winson Yung <winson.yung@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: MIPS assembly question
+Message-ID: <20070921093444.GB15473@dusktilldawn.nl>
+References: <48413e3e0709201614pd8fc58dga6354d5d2330f288@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="tsOsTdHNUZQcU9Ye"
+Content-Disposition: inline
+In-Reply-To: <48413e3e0709201614pd8fc58dga6354d5d2330f288@mail.gmail.com>
+X-User-Agent-Feature: All mail clients suck. This one just sucks less.
+X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <freddy@dusktilldawn.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16621
+X-archive-position: 16622
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: freddy@dusktilldawn.nl
 Precedence: bulk
 X-list: linux-mips
 
-Add Cobalt Qube series front LED support to platform register.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+--tsOsTdHNUZQcU9Ye
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/led.c mips/arch/mips/cobalt/led.c
---- mips-orig/arch/mips/cobalt/led.c	2007-09-21 13:05:53.812412000 +0900
-+++ mips/arch/mips/cobalt/led.c	2007-09-21 13:20:02.105427000 +0900
-@@ -22,6 +22,8 @@
- #include <linux/ioport.h>
- #include <linux/platform_device.h>
- 
-+#include <cobalt.h>
-+
- static struct resource cobalt_led_resource __initdata = {
- 	.start	= 0x1c000000,
- 	.end	= 0x1c000000,
-@@ -33,7 +35,11 @@ static __init int cobalt_led_add(void)
- 	struct platform_device *pdev;
- 	int retval;
- 
--	pdev = platform_device_alloc("cobalt-raq-leds", -1);
-+	if (cobalt_board_id == COBALT_BRD_ID_QUBE1 ||
-+	    cobalt_board_id == COBALT_BRD_ID_QUBE2)
-+		pdev = platform_device_alloc("cobalt-qube-leds", -1);
-+	else
-+		pdev = platform_device_alloc("cobalt-raq-leds", -1);
- 
- 	if (!pdev)
- 		return -ENOMEM;
+Hi Winson,
+
+On Thu, Sep 20, 2007 at 04:14:15PM -0700, Winson Yung wrote:
+> Will appreciate if someone can point out to me a good tutorial on
+> explaining these little things.
+
+Maybe this is too basic, but I liked this tutorial very much:
+
+	http://chortle.ccsu.edu/AssemblyTutorial/TutorialContents.html
+
+
+--=20
+$ cat ~/.signature
+Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
+GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+
+--tsOsTdHNUZQcU9Ye
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFG85A0bxf9XXlB0eERAvviAKDercuB6EH2ep8f63VPLG3dvqvzJQCgs40/
+zdoHQEzcTOjeXydzu4qy/N8=
+=N9PC
+-----END PGP SIGNATURE-----
+
+--tsOsTdHNUZQcU9Ye--

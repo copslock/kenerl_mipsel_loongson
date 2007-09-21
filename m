@@ -1,70 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 09:18:31 +0100 (BST)
-Received: from adicia.telenet-ops.be ([195.130.132.56]:5605 "EHLO
-	adicia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20024241AbXIUISV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Sep 2007 09:18:21 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by adicia.telenet-ops.be (Postfix) with SMTP id 4D838230104;
-	Fri, 21 Sep 2007 10:18:21 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by adicia.telenet-ops.be (Postfix) with ESMTP id 649532300FB;
-	Fri, 21 Sep 2007 10:18:15 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l8L8IFLF030401
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 21 Sep 2007 10:18:15 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l8L8I5V9030396;
-	Fri, 21 Sep 2007 10:18:06 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Fri, 21 Sep 2007 10:18:05 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Matteo Croce <technoboy85@gmail.com>
-Cc:	Christoph Hellwig <hch@lst.de>, linux-mips@linux-mips.org,
-	Felix Fietkau <nbd@openwrt.org>,
-	Eugene Konev <ejka@imfi.kspu.ru>, dwmw2@infradead.org,
-	linux-mtd@lists.infradead.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH][MIPS][2/7] AR7: mtd partition map
-In-Reply-To: <200709202129.12261.technoboy85@gmail.com>
-Message-ID: <Pine.LNX.4.64.0709211017120.5097@anakin>
-References: <200709201728.10866.technoboy85@gmail.com> <20070920175204.GA26132@lst.de>
- <200709202034.21764.technoboy85@gmail.com> <200709202129.12261.technoboy85@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 09:19:37 +0100 (BST)
+Received: from smtp3.infineon.com ([203.126.106.229]:62045 "EHLO
+	smtp3.infineon.com") by ftp.linux-mips.org with ESMTP
+	id S20023362AbXIUIT3 convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 09:19:29 +0100
+X-SBRS:	None
+Received: from unknown (HELO sinse302.ap.infineon.com) ([172.20.70.23])
+  by smtp3.infineon.com with ESMTP; 21 Sep 2007 16:18:23 +0800
+Received: from sinse303.ap.infineon.com ([172.20.70.24]) by sinse302.ap.infineon.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 21 Sep 2007 16:18:20 +0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: YAMON booting Linux kernels from malta board harddisk....
+Date:	Fri, 21 Sep 2007 16:18:19 +0800
+Message-ID: <31E09F73562D7A4D82119D7F6C1729860254C469@sinse303.ap.infineon.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: YAMON booting Linux kernels from malta board harddisk....
+Thread-Index: Acf8J/fbpB5W24HJRmKaGGbt/cSRYg==
+From:	<KokHow.Teh@infineon.com>
+To:	<linux-mips@linux-mips.org>
+Cc:	<Friedrich-Nachtmann.External@infineon.com>
+X-OriginalArrivalTime: 21 Sep 2007 08:18:20.0684 (UTC) FILETIME=[F8868CC0:01C7FC27]
+Return-Path: <KokHow.Teh@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16615
+X-archive-position: 16616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: KokHow.Teh@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 20 Sep 2007, Matteo Croce wrote:
-> +static int create_mtd_partitions(struct mtd_info *master,
-> +				 struct mtd_partition **pparts,
-> +				 unsigned long origin)
-> +{
+Hi list;
+	I read of MIPSboot that is loaded into the MBR which is then
+read from YAMON to boot a selection of kernels from the harddisk.
+However, google-ing for "MIPSboot" does not yield any useful result so
+far. Does anybody have any insight and experience to share as to what
+and how to setup the MBR of a harddisk that I can boot a selection of
+Linux kernels from YAMON on Malta board?
+	Thanks.
 
-    [...]
-
-> +		master->read(master, offset,
-> +			sizeof(header), &len, (u_char *)&header);
-                                              ^^^^^^^^^^^
-Probably we should teach mtd to use `void *' for read and write buffers,
-so all these ugly casts can go away...
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Regards,
+KH

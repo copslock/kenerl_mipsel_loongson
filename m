@@ -1,76 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 10:35:28 +0100 (BST)
-Received: from tool.snarl.nl ([82.95.241.19]:33552 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S20024323AbXIUJfU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 10:35:20 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id D4DCB5DFC8;
-	Fri, 21 Sep 2007 11:34:44 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id 57dAKRplY-mh; Fri, 21 Sep 2007 11:34:44 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 66A9E5DF9C; Fri, 21 Sep 2007 11:34:44 +0200 (CEST)
-Date:	Fri, 21 Sep 2007 11:34:44 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	Winson Yung <winson.yung@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: MIPS assembly question
-Message-ID: <20070921093444.GB15473@dusktilldawn.nl>
-References: <48413e3e0709201614pd8fc58dga6354d5d2330f288@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 10:40:32 +0100 (BST)
+Received: from dmz.mips-uk.com ([194.74.144.194]:51718 "EHLO dmz.mips-uk.com")
+	by ftp.linux-mips.org with ESMTP id S20024316AbXIUJkY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 10:40:24 +0100
+Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
+	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
+	id 1IYewj-00045x-00; Fri, 21 Sep 2007 10:37:13 +0100
+Received: from stanmore.mips.com ([192.168.192.169])
+	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1IYewf-0003Zw-00; Fri, 21 Sep 2007 10:37:09 +0100
+Message-ID: <46F390C5.402@mips.com>
+Date:	Fri, 21 Sep 2007 10:37:09 +0100
+From:	Elizabeth Oldham <beth@mips.com>
+User-Agent: Debian Thunderbird 1.0.2 (X11/20050331)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tsOsTdHNUZQcU9Ye"
-Content-Disposition: inline
-In-Reply-To: <48413e3e0709201614pd8fc58dga6354d5d2330f288@mail.gmail.com>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <freddy@dusktilldawn.nl>
+To:	KokHow.Teh@infineon.com
+CC:	linux-mips@linux-mips.org,
+	Friedrich-Nachtmann.External@infineon.com
+Subject: Re: YAMON booting Linux kernels from malta board harddisk....
+References: <31E09F73562D7A4D82119D7F6C1729860254C469@sinse303.ap.infineon.com>
+In-Reply-To: <31E09F73562D7A4D82119D7F6C1729860254C469@sinse303.ap.infineon.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MIPS-Technologies-UK-MailScanner: Found to be clean
+X-MIPS-Technologies-UK-MailScanner-From: beth@mips.com
+Return-Path: <beth@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16622
+X-archive-position: 16623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: beth@mips.com
 Precedence: bulk
 X-list: linux-mips
 
+KokHow.Teh@infineon.com wrote:
 
---tsOsTdHNUZQcU9Ye
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 	I read of MIPSboot that is loaded into the MBR which is then
+> read from YAMON to boot a selection of kernels from the harddisk.
 
-Hi Winson,
+MIPSboot is my rather hacked bootloader that goes with the MIPS/TimeSys 
+Linux distro, and does not as yet sit in the MBR...one day perhaps.
 
-On Thu, Sep 20, 2007 at 04:14:15PM -0700, Winson Yung wrote:
-> Will appreciate if someone can point out to me a good tutorial on
-> explaining these little things.
+Anyway, it sits at the beginning of the first partition on disk (which 
+should not be formatted with a filesystem and can be very small), and 
+then loaded with a YAMON command line like:
 
-Maybe this is too basic, but I liked this tutorial very much:
+YAMON> disk read hda 3f ff 800d0000; go 800d0000
 
-	http://chortle.ccsu.edu/AssemblyTutorial/TutorialContents.html
+MIPSboot version 0.3
+Loading /boot/mb.conf . ok
+Choose a kernel image to boot:
+   (0) aprp-2.6.19-glibc         root=/dev/hda3
+   (1) smtc-2.6.19-glibc         root=/dev/hda3
+...
 
+You can put that command line in the "start" environment variable to 
+autostart it.
 
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+I've dropped source and binary tarballs together with an example conf 
+file on our ftp site:
 
---tsOsTdHNUZQcU9Ye
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+    ftp://ftp.mips.com/pub/tools/software/timesys/extras/mipsboot/
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFG85A0bxf9XXlB0eERAvviAKDercuB6EH2ep8f63VPLG3dvqvzJQCgs40/
-zdoHQEzcTOjeXydzu4qy/N8=
-=N9PC
------END PGP SIGNATURE-----
-
---tsOsTdHNUZQcU9Ye--
+If you have any queries about it send me email.
+Beth

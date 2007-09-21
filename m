@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 17:08:46 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:19401 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20025958AbXIUQIo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Sep 2007 17:08:44 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8LG8h2p027592;
-	Fri, 21 Sep 2007 17:08:43 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8LG8hkm027591;
-	Fri, 21 Sep 2007 17:08:43 +0100
-Date:	Fri, 21 Sep 2007 17:08:43 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Winson Yung <winson.yung@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: branch delay slot
-Message-ID: <20070921160843.GA21458@linux-mips.org>
-References: <48413e3e0709210901g38e41164pf068f907596ebfeb@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48413e3e0709210901g38e41164pf068f907596ebfeb@mail.gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 20:44:53 +0100 (BST)
+Received: from smtp2.linux-foundation.org ([207.189.120.14]:16329 "EHLO
+	smtp2.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S20022036AbXIUTon (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Sep 2007 20:44:43 +0100
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [207.189.120.55])
+	by smtp2.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l8LJi9Zp029963
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 21 Sep 2007 12:44:10 -0700
+Received: from akpm.corp.google.com (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id l8LJi9M1019454;
+	Fri, 21 Sep 2007 12:44:09 -0700
+Date:	Fri, 21 Sep 2007 12:44:09 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sb1250-mac: Driver model & phylib update
+Message-Id: <20070921124409.7f3d122b.akpm@linux-foundation.org>
+In-Reply-To: <Pine.LNX.4.64N.0709191811040.24627@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0709191811040.24627@blysk.ds.pg.gda.pl>
+X-Mailer: Sylpheed version 2.2.7 (GTK+ 2.8.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: lf$Revision: 1.185 $
+X-Scanned-By: MIMEDefang 2.53 on 207.189.120.14
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16633
+X-archive-position: 16634
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 21, 2007 at 09:01:15AM -0700, Winson Yung wrote:
+On Fri, 21 Sep 2007 12:52:10 +0100 (BST)
+"Maciej W. Rozycki" <macro@linux-mips.org> wrote:
 
-> Hi there, in the following mips 32bit atomic cmp_xchg api, I was
-> wondering why there is no nop after the two branch instructions. Does
-> this introduce a bug, or is it a "feature" in the code to use the
-> delay slot for an instructino to execut something whether or not they
-> take the branch.
-> 
-> #define __arch_compare_and_exchange_xxx_32_int(mem, newval, oldval, rel, acq) \
+>  A driver model and phylib update.
 
-Manual filling of the delay slot is only required when the assembler is
-in .set noreorder mode.  Otherwise - and that's the default mode - it will
-try do something sensible with the delay slot itself.
+akpm:/usr/src/25> diffstat patches/git-net.patch | tail -n 1
+ 1013 files changed, 187667 insertions(+), 23587 deletions(-)
 
-  Ralf
+Sorry, but raising networking patches against Linus's crufty
+old mainline tree just isn't viable at present.

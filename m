@@ -1,49 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 09:04:16 +0100 (BST)
-Received: from verein.lst.de ([213.95.11.210]:41443 "EHLO mail.lst.de")
-	by ftp.linux-mips.org with ESMTP id S20024270AbXIUIEH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 09:04:07 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by mail.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id l8L83oA5005132
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Fri, 21 Sep 2007 10:03:51 +0200
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id l8L83jIP005127;
-	Fri, 21 Sep 2007 10:03:45 +0200
-Date:	Fri, 21 Sep 2007 10:03:45 +0200
-From:	Christoph Hellwig <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 09:18:31 +0100 (BST)
+Received: from adicia.telenet-ops.be ([195.130.132.56]:5605 "EHLO
+	adicia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20024241AbXIUISV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Sep 2007 09:18:21 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by adicia.telenet-ops.be (Postfix) with SMTP id 4D838230104;
+	Fri, 21 Sep 2007 10:18:21 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by adicia.telenet-ops.be (Postfix) with ESMTP id 649532300FB;
+	Fri, 21 Sep 2007 10:18:15 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l8L8IFLF030401
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 21 Sep 2007 10:18:15 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l8L8I5V9030396;
+	Fri, 21 Sep 2007 10:18:06 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Fri, 21 Sep 2007 10:18:05 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
 To:	Matteo Croce <technoboy85@gmail.com>
-Cc:	J??rn Engel <joern@logfs.org>, Christoph Hellwig <hch@lst.de>,
-	linux-mips@linux-mips.org, Felix Fietkau <nbd@openwrt.org>,
-	Eugene Konev <ejka@imfi.kspu.ru>,
+Cc:	Christoph Hellwig <hch@lst.de>, linux-mips@linux-mips.org,
+	Felix Fietkau <nbd@openwrt.org>,
+	Eugene Konev <ejka@imfi.kspu.ru>, dwmw2@infradead.org,
 	linux-mtd@lists.infradead.org,
-	Andrew Morton <akpm@linux-foundation.org>, dwmw2@infradead.org
+	Andrew Morton <akpm@linux-foundation.org>
 Subject: Re: [PATCH][MIPS][2/7] AR7: mtd partition map
-Message-ID: <20070921080345.GA4997@lst.de>
-References: <200709201728.10866.technoboy85@gmail.com> <20070920193547.GA911@lst.de> <20070920200058.GB1692@lazybastard.org> <200709210409.23521.technoboy85@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200709210409.23521.technoboy85@gmail.com>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+In-Reply-To: <200709202129.12261.technoboy85@gmail.com>
+Message-ID: <Pine.LNX.4.64.0709211017120.5097@anakin>
+References: <200709201728.10866.technoboy85@gmail.com> <20070920175204.GA26132@lst.de>
+ <200709202034.21764.technoboy85@gmail.com> <200709202129.12261.technoboy85@gmail.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16614
+X-archive-position: 16615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 21, 2007 at 04:09:22AM +0200, Matteo Croce wrote:
-> I use little endian since 99% of AR7s are little endian. Dunno if
-> le/be32_to_cpu does some runtime calculations. Do they?
+On Thu, 20 Sep 2007, Matteo Croce wrote:
+> +static int create_mtd_partitions(struct mtd_info *master,
+> +				 struct mtd_partition **pparts,
+> +				 unsigned long origin)
+> +{
 
-They do runtime unless the argument is const.  If you say that you cant
-change endianess of a given system during it's lifetime it's probably
-fine to ignore the endianess issue and always use host endian without
-any conversions.  In that case you'll need to remove the ifdef aswell,
-though.
+    [...]
+
+> +		master->read(master, offset,
+> +			sizeof(header), &len, (u_char *)&header);
+                                              ^^^^^^^^^^^
+Probably we should teach mtd to use `void *' for read and write buffers,
+so all these ugly casts can go away...
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,21 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 10:28:20 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:25898 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20024274AbXIUJ1U (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 10:27:20 +0100
-Received: by mo.po.2iij.net (mo30) id l8L9RInO092596; Fri, 21 Sep 2007 18:27:18 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Sep 2007 10:28:49 +0100 (BST)
+Received: from mo31.po.2iij.NET ([210.128.50.54]:43548 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20024318AbXIUJ2c (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Sep 2007 10:28:32 +0100
+Received: by mo.po.2iij.net (mo31) id l8L9RERs084525; Fri, 21 Sep 2007 18:27:14 +0900 (JST)
 Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox303) id l8L9RDp0020099
+	by mbox.po.2iij.net (po-mbox300) id l8L9RCUT018469
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
 	Fri, 21 Sep 2007 18:27:13 +0900
-Message-Id: <200709210927.l8L9RDp0020099@po-mbox303.hop.2iij.net>
-Date:	Fri, 21 Sep 2007 18:22:05 +0900
+Date:	Fri, 21 Sep 2007 18:20:26 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, Richard Purdie <rpurdie@rpsys.net>,
+To:	Richard Purdie <rpurdie@rpsys.net>
+Cc:	yoichi_yuasa@tripeaks.co.jp, Ralf Baechle <ralf@linux-mips.org>,
 	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH take2][2/5]led: add Cobalt Raq LEDs platform register
-In-Reply-To: <20070921182026.f2adbd6a.yoichi_yuasa@tripeaks.co.jp>
-References: <20070921182026.f2adbd6a.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH take2][1/5] led: add Cobalt Raq series LEDs support
+Message-Id: <20070921182026.f2adbd6a.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
@@ -25,7 +23,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16619
+X-archive-position: 16620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,28 +31,44 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Add Cobalt Raq LED platform register and power off trigger.
+Add Cobalt Raq series LEDs support.
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/Makefile mips/arch/mips/cobalt/Makefile
---- mips-orig/arch/mips/cobalt/Makefile	2007-09-21 10:24:16.864636000 +0900
-+++ mips/arch/mips/cobalt/Makefile	2007-09-21 11:25:43.384914000 +0900
-@@ -2,7 +2,7 @@
- # Makefile for the Cobalt micro systems family specific parts of the kernel
- #
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/leds/Kconfig mips/drivers/leds/Kconfig
+--- mips-orig/drivers/leds/Kconfig	2007-09-21 10:51:06.957260500 +0900
++++ mips/drivers/leds/Kconfig	2007-09-21 11:03:03.207908250 +0900
+@@ -93,6 +93,13 @@ config LEDS_COBALT_QUBE
+ 	help
+ 	  This option enables support for the front LED on Cobalt Qube series
  
--obj-y := buttons.o irq.o reset.o rtc.o serial.o setup.o
-+obj-y := buttons.o irq.o led.o reset.o rtc.o serial.o setup.o
++config LEDS_COBALT_RAQ
++	bool "LED Support for the Cobalt Raq series"
++	depends on LEDS_CLASS && MIPS_COBALT
++	select LEDS_TRIGGERS
++	help
++	  This option enables support for the Cobalt Raq series LEDs.
++
+ config LEDS_GPIO
+ 	tristate "LED Support for GPIO connected LEDs"
+ 	depends on LEDS_CLASS && GENERIC_GPIO
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/leds/Makefile mips/drivers/leds/Makefile
+--- mips-orig/drivers/leds/Makefile	2007-09-21 10:51:06.957260500 +0900
++++ mips/drivers/leds/Makefile	2007-09-21 11:03:03.211908500 +0900
+@@ -16,6 +16,7 @@ obj-$(CONFIG_LEDS_NET48XX)		+= leds-net4
+ obj-$(CONFIG_LEDS_WRAP)			+= leds-wrap.o
+ obj-$(CONFIG_LEDS_H1940)		+= leds-h1940.o
+ obj-$(CONFIG_LEDS_COBALT_QUBE)		+= leds-cobalt-qube.o
++obj-$(CONFIG_LEDS_COBALT_RAQ)		+= leds-cobalt-raq.o
+ obj-$(CONFIG_LEDS_GPIO)			+= leds-gpio.o
  
- obj-$(CONFIG_PCI)		+= pci.o
- obj-$(CONFIG_EARLY_PRINTK)	+= console.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/led.c mips/arch/mips/cobalt/led.c
---- mips-orig/arch/mips/cobalt/led.c	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/cobalt/led.c	2007-09-21 11:26:18.519109750 +0900
-@@ -0,0 +1,56 @@
+ # LED Triggers
+diff -pruN -X mips/Documentation/dontdiff mips-orig/drivers/leds/leds-cobalt-raq.c mips/drivers/leds/leds-cobalt-raq.c
+--- mips-orig/drivers/leds/leds-cobalt-raq.c	1970-01-01 09:00:00.000000000 +0900
++++ mips/drivers/leds/leds-cobalt-raq.c	2007-09-21 11:19:06.728124500 +0900
+@@ -0,0 +1,138 @@
 +/*
-+ *  Registration of Cobalt LED platform device.
++ *  LEDs driver for the Cobalt Raq series.
 + *
 + *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 + *
@@ -72,89 +86,122 @@ diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/led.c mips/
 + *  along with this program; if not, write to the Free Software
 + *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 + */
-+#include <linux/errno.h>
 +#include <linux/init.h>
++#include <linux/io.h>
 +#include <linux/ioport.h>
++#include <linux/leds.h>
 +#include <linux/platform_device.h>
++#include <linux/spinlock.h>
++#include <linux/types.h>
 +
-+static struct resource cobalt_led_resource __initdata = {
-+	.start	= 0x1c000000,
-+	.end	= 0x1c000000,
-+	.flags	= IORESOURCE_MEM,
++#define LED_WEB		0x04
++#define LED_POWER_OFF	0x08
++
++static void __iomem *led_port;
++static u8 led_value;
++static DEFINE_SPINLOCK(led_value_lock);
++
++static void raq_web_led_set(struct led_classdev *led_cdev,
++                            enum led_brightness brightness)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&led_value_lock, flags);
++
++	if (brightness)
++		led_value |= LED_WEB;
++	else
++		led_value &= ~LED_WEB;
++	writeb(led_value, led_port);
++
++	spin_unlock_irqrestore(&led_value_lock, flags);
++}
++
++static struct led_classdev raq_web_led = {
++	.name		= "raq-web",
++	.brightness_set	= raq_web_led_set,
 +};
 +
-+static __init int cobalt_led_add(void)
++static void raq_power_off_led_set(struct led_classdev *led_cdev,
++                                  enum led_brightness brightness)
 +{
-+	struct platform_device *pdev;
++	unsigned long flags;
++
++	spin_lock_irqsave(&led_value_lock, flags);
++
++	if (brightness)
++		led_value |= LED_POWER_OFF;
++	else
++		led_value &= ~LED_POWER_OFF;
++	writeb(led_value, led_port);
++
++	spin_unlock_irqrestore(&led_value_lock, flags);
++}
++
++static struct led_classdev raq_power_off_led = {
++	.name			= "raq-power-off",
++	.brightness_set		= raq_power_off_led_set,
++	.default_trigger	= "power-off",
++};
++
++static int __devinit cobalt_raq_led_probe(struct platform_device *pdev)
++{
++	struct resource *res;
 +	int retval;
 +
-+	pdev = platform_device_alloc("cobalt-raq-leds", -1);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -EBUSY;
 +
-+	if (!pdev)
++	led_port = ioremap(res->start, res->end - res->start + 1);
++	if (!led_port)
 +		return -ENOMEM;
 +
-+	retval = platform_device_add_resources(pdev, &cobalt_led_resource, 1);
++	retval = led_classdev_register(&pdev->dev, &raq_power_off_led);
 +	if (retval)
-+		goto err_free_device;
++		goto err_iounmap;
 +
-+	retval = platform_device_add(pdev);
++	retval = led_classdev_register(&pdev->dev, &raq_web_led);
 +	if (retval)
-+		goto err_free_device;
++		goto err_unregister;
 +
 +	return 0;
 +
-+err_free_device:
-+	platform_device_put(pdev);
++err_unregister:
++	led_classdev_unregister(&raq_power_off_led);
++
++err_iounmap:
++	iounmap(led_port);
++	led_port = NULL;
 +
 +	return retval;
 +}
-+device_initcall(cobalt_led_add);
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/reset.c mips/arch/mips/cobalt/reset.c
---- mips-orig/arch/mips/cobalt/reset.c	2007-09-21 10:24:16.864636000 +0900
-+++ mips/arch/mips/cobalt/reset.c	2007-09-21 11:25:43.616928500 +0900
-@@ -8,31 +8,37 @@
-  * Copyright (C) 1995, 1996, 1997 by Ralf Baechle
-  * Copyright (C) 2001 by Liam Davies (ldavies@agile.tv)
-  */
-+#include <linux/init.h>
- #include <linux/jiffies.h>
--
--#include <asm/io.h>
--#include <asm/reboot.h>
-+#include <linux/leds.h>
- 
- #include <cobalt.h>
- 
-+DEFINE_LED_TRIGGER(power_off_led_trigger);
 +
-+static int __init ledtrig_power_off_init(void)
++static int __devexit cobalt_raq_led_remove(struct platform_device *pdev)
 +{
-+	led_trigger_register_simple("power-off", &power_off_led_trigger);
++	led_classdev_unregister(&raq_power_off_led);
++	led_classdev_unregister(&raq_web_led);
++
++	if (led_port) {
++		iounmap(led_port);
++		led_port = NULL;
++	}
++
 +	return 0;
 +}
-+device_initcall(ledtrig_power_off_init);
 +
- void cobalt_machine_halt(void)
- {
- 	int state, last, diff;
- 	unsigned long mark;
- 
- 	/*
--	 * turn off bar on Qube, flash power off LED on RaQ (0.5Hz)
-+	 * turn on power off LED on RaQ
- 	 *
- 	 * restart if ENTER and SELECT are pressed
- 	 */
- 
- 	last = COBALT_KEY_PORT;
- 
--	for (state = 0;;) {
--
--		state ^= COBALT_LED_POWER_OFF;
--		COBALT_LED_PORT = state;
-+	led_trigger_event(power_off_led_trigger, LED_FULL);
- 
-+	for (state = 0;;) {
- 		diff = COBALT_KEY_PORT ^ last;
- 		last ^= diff;
- 
++static struct platform_driver cobalt_raq_led_driver = {
++	.probe	= cobalt_raq_led_probe,
++	.remove	= __devexit_p(cobalt_raq_led_remove),
++	.driver = {
++		.name	= "cobalt-raq-leds",
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init cobalt_raq_led_init(void)
++{
++	return platform_driver_register(&cobalt_raq_led_driver);
++}
++
++module_init(cobalt_raq_led_init);

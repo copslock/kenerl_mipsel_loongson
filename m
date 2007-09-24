@@ -1,69 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Sep 2007 16:45:38 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:46799 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20027274AbXIWPpa (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 23 Sep 2007 16:45:30 +0100
-Received: from localhost (p7008-ipad309funabasi.chiba.ocn.ne.jp [123.217.201.8])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 425318E86; Mon, 24 Sep 2007 00:45:24 +0900 (JST)
-Date:	Mon, 24 Sep 2007 00:47:01 +0900 (JST)
-Message-Id: <20070924.004701.108307934.anemo@mba.ocn.ne.jp>
-To:	david-b@pacbell.net
-Cc:	technoboy85@gmail.com, nico@openwrt.org, linux-mips@linux-mips.org,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH][MIPS][3/7] AR7: gpio char device
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20070922185916.BC8122371A7@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-References: <200709201800.53887.technoboy85@gmail.com>
-	<20070923.014201.75184195.anemo@mba.ocn.ne.jp>
-	<20070922185916.BC8122371A7@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2007 12:58:08 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:61370 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022663AbXIXL6F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Sep 2007 12:58:05 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8OBw5De024180;
+	Mon, 24 Sep 2007 12:58:05 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8OBw5gc024179;
+	Mon, 24 Sep 2007 12:58:05 +0100
+Date:	Mon, 24 Sep 2007 12:58:05 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Steve Graham <stgraham2000@yahoo.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: O2 RM7000 Issues
+Message-ID: <20070924115804.GA12300@linux-mips.org>
+References: <4687DCE2.8070302@gentoo.org> <340C71CD25A7EB49BFA81AE8C839266757076E@BBY1EXM10.pmc_nt.nt.pmc-sierra.bc.ca> <20070921134753.GA8090@linux-mips.org> <12833079.post@talk.nabble.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12833079.post@talk.nabble.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16641
+X-archive-position: 16642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 22 Sep 2007 11:59:16 -0700, David Brownell <david-b@pacbell.net> wrote:
-> > I think there were some discussions about userspace API for GPIO on
-> > LKML, but cannot remember the detail.
-> >
-> > David, give us a comment please?
+On Fri, Sep 21, 2007 at 08:20:13PM -0700, Steve Graham wrote:
+
+> I've just recently fixed this problem on my E9000 core which is a MSP85XX.  I
+> did some digging and found that the problem started to occur in 2.6.16 and
+> is not there in 2.6.15.  I looked into the deltas and found the specific
+> change that broke me.  The file is c-r4k.c.
 > 
-> It's not yet platform-neutral even given those issues; see below.
-> And it's insufficient by itself, which is the main technical point
-> I'd raise:  without even udev/mdev hooks, it needs manual setup.
+> In the function "local_r4k_flush_cache_sigtramp" there is a conditional:
 > 
-> I don't think anyone has yet *proposed* a platform-neutral userspace
-> interface to GPIOs yet.  They all seem to include at least platform
-> specific pinmux setup ... which is probably inevitable, but that
-> would seem to need abstracting into platform-specific hooks.
+> if (!cpu_icache_snoops_remote_store && scache_size)
+>     protected_writeback_scache_line(addr & ~(sc_lsize - 1));
 > 
-> There have been a few folk expressing interest in a userspace GPIO
-> interface, and a few system-specific examples.  The most flexible ones
-> that come to mind are on Gumstix PXA2xx boards.  One enables GPIO
-> IRQs through a gpio-events module; and a /proc/gpio/GPIOnn interface
-> monitors all the pins and their configurations (which may mean they
-> aren't used for GPIOs at all).  On some AVR32 boards, Atmel had a
-> (less capable) configfs interface, mostly used for LED access.
+> This additional "scache_size" has been added to this conditional.  On my
+> platform, "scache_size" is set to zero so the
+> "protected_writeback_scache_line" is now not being called.  I took out the
+> "scache_size" from the conditional and now I boot without any illegal
+> instructions.
 
-Thank you pointing out those issues.  It seems things are much
-complicated than I was thinking of...
+In this case the question is, why is scache_size 0 on your platform?  I
+suppose that's because sc-rm7k.c has it's own scache_size so c-r4k.c never
+gets to see the right value so maybe the sanest fix would be to move
+sc-rm7k.c into c-r4k.c.
 
-> More detailed comments are embedded below.
+> As a side note, I also took out the workaround in "war.h".  This workaround
+> only hid the problem, it didn't fix it.  Before I changed the conditional, I
+> would crash on every boot without the workaround.  The workaround reduced
+> the crashes to maybe 1 in 3.  Now, without the workaround, and with the
+> change in the conditional, I haven't experienced any problems.
+> 
+> I'm sure this change was made for a reason in 2.6.16 so I'm not sure what
+> the official fix needs to be but that solved my issues on my platform.
 
-And these comments help us understanding how to use and implement the
-GPIO API.  Thanks!
+ICACHE_REFILLS_WORKAROUND_WAR is a separate issue - you need to enable it
+for all RM7000 and also unless PMC changed mind also all E9000 cores.  So
+while I can understand that disabling this for testing a fix for the real
+issue you definately should reenable this once you're done.
 
----
-Atsushi Nemoto
+> Let me know if there is anything anyone wants me to try on my platform to
+> help come to an official fix for this problem.
+
+I wrote most of that stuff anyway ...
+
+  Ralf

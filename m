@@ -1,84 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 17:20:31 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:40911 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20022991AbXIYQU3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Sep 2007 17:20:29 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id AB5BD30C8CA;
-	Tue, 25 Sep 2007 16:20:31 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Tue, 25 Sep 2007 16:20:30 +0000 (UTC)
-Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 25 Sep 2007 09:20:14 -0700
-Message-ID: <46F9353D.6050107@avtrex.com>
-Date:	Tue, 25 Sep 2007 09:20:13 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 18:11:23 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:12976 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023287AbXIYRLV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Sep 2007 18:11:21 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8PHBKI1011484;
+	Tue, 25 Sep 2007 18:11:20 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8PHBJAY011483;
+	Tue, 25 Sep 2007 18:11:19 +0100
+Date:	Tue, 25 Sep 2007 18:11:19 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Cc:	linux-mips@linux-mips.org, blogic@openwrt.org, nbd@openwrt.org
+Subject: Re: [PATCH 2/3] Au1000 : fix PCI controller registration
+Message-ID: <20070925171119.GA11350@linux-mips.org>
+References: <200709251707.29067.florian.fainelli@telecomint.eu>
 MIME-Version: 1.0
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	Fuxin Zhang <fxzhang@ict.ac.cn>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Fuxin Zhang <zhangfx@lemote.com>, debian-mips@lists.debian.org,
-	linux-mips@linux-mips.org
-Subject: Re: About openoffice linux/mips porting
-References: <46F90261.1000003@lemote.com> <Pine.LNX.4.64N.0709251406220.23669@blysk.ds.pg.gda.pl> <46F90841.1040903@ict.ac.cn> <20070925133812.GB2333@networkno.de>
-In-Reply-To: <20070925133812.GB2333@networkno.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 25 Sep 2007 16:20:14.0112 (UTC) FILETIME=[F3EC8A00:01C7FF8F]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200709251707.29067.florian.fainelli@telecomint.eu>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16667
+X-archive-position: 16668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> Fuxin Zhang wrote:
->> Maciej W. Rozycki ??????:
->>> On Tue, 25 Sep 2007, Fuxin Zhang wrote:
->>>
->>>   
->>>> It is available at
->>>> http://qa.openoffice.org/issues/show_bug.cgi?id=81482, any comments are
->>>> welcome.
->>>> Have an official openoffice for linux/mips might be a good thing.
-> 
-> A quick glance revealed already several bugs. (alignment issues, ULH for
-> laoding signed shorts, etc.)
-> 
->>>  Hmm, why would anyone need to have asm snippets in a document processing 
->>> suite?  And it looks like the bits are ABI-dependent, so at least three 
->>> variations (if the changes are endianness-safe) would be required to 
->>> handle all the ABIs that we support.
->>>   
->> Openoffice wants to be able to interact with plugins written in many 
->> languages, instead of writting a module for each possible combination it 
->> chooses the so called bridge: every language interact with a common middle 
->> language.
-> 
-> So we have now foreign function interfaces for at least OpenOffice, Mozilla,
-> Clisp and GCC's libffi. libffi recently got support for N32/N64 ABIs, and
-> is the only solution which isn't bound to a specific application (as long
-> as GCC is used).
-> 
-> Using libffi from Openoffice looks like the best long-term approach 
-> to me.
+On Tue, Sep 25, 2007 at 05:07:28PM +0200, Florian Fainelli wrote:
 
-I assume you mean 'Using libffi in...'.  I would tend to agree, but I am 
-a bit biased toward libffi.
+> diff --git a/include/asm-mips/mach-au1x00/au1000.h b/include/asm-mips/mach-au1x00/au1000.h
+> index 58fca8a..046920a 100644
+> --- a/include/asm-mips/mach-au1x00/au1000.h
+> +++ b/include/asm-mips/mach-au1x00/au1000.h
+> @@ -1680,9 +1680,9 @@ extern au1xxx_irq_map_t au1xxx_irq_map[];
+>  #define PCI_LAST_DEVFN  (19<<3)
+>  
+>  #define IOPORT_RESOURCE_START 0x00001000 /* skip legacy probing */
+> -#define IOPORT_RESOURCE_END   0xffffffff
+> +#define IOPORT_RESOURCE_END   0xfffffffffULL
 
-FWIW, GCC's libffi gets full n32/n64 support in version 4.3 (which has 
-not been released yet)  The libffi part seems quite stable though, so 
-you could start experimenting with it now I suppose...
+So you're saying that PCI has just under 64GB worth of ioport address space
+on Alchemy?  That's not how I recall my PCI spec ...
 
-
-David Daney
+  Ralf

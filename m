@@ -1,50 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 19:25:21 +0100 (BST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:3845 "EHLO sorrow.cyrius.com")
-	by ftp.linux-mips.org with ESMTP id S20023538AbXIYSZT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2007 19:25:19 +0100
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id F3CBCD8DD; Tue, 25 Sep 2007 18:25:12 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 25250540C4; Tue, 25 Sep 2007 20:24:54 +0200 (CEST)
-Date:	Tue, 25 Sep 2007 20:24:54 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 19:32:59 +0100 (BST)
+Received: from post1.wesleyan.edu ([129.133.6.131]:18898 "EHLO
+	post1.wesleyan.edu") by ftp.linux-mips.org with ESMTP
+	id S20023581AbXIYSc4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Sep 2007 19:32:56 +0100
+Received: from webmail.wesleyan.edu (pony2.wesleyan.edu [129.133.6.193])
+	by courier1.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l8PIWl5g026827
+	for <linux-mips@linux-mips.org>; Tue, 25 Sep 2007 14:32:47 -0400
+Received: from 69.183.163.198
+        (SquirrelMail authenticated user sknauert)
+        by webmail.wesleyan.edu with HTTP;
+        Tue, 25 Sep 2007 11:32:47 -0700 (PDT)
+Message-ID: <57307.69.183.163.198.1190745167.squirrel@webmail.wesleyan.edu>
+In-Reply-To: <20070925181353.GA15412@deprecation.cyrius.com>
+References: <20070925181353.GA15412@deprecation.cyrius.com>
+Date:	Tue, 25 Sep 2007 11:32:47 -0700 (PDT)
+Subject: Re: CONFIG_BUILD_ELF64 broken on IP32 since 2.6.20
+From:	sknauert@wesleyan.edu
 To:	linux-mips@linux-mips.org
-Cc:	Ricardo Mendoza <mendoza.ricardo@gmail.com>
-Subject: IP32: serial console broken with current git
-Message-ID: <20070925182453.GA15749@deprecation.cyrius.com>
+User-Agent: SquirrelMail/1.4.10a
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <tbm@cyrius.com>
+Content-Type: text/plain;charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-Wesleyan-MailScanner-Information: Please contact the ISP for more information
+X-Wesleyan-MailScanner:	Found to be clean
+X-MailScanner-From: sknauert@wesleyan.edu
+Return-Path: <sknauert@wesleyan.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16673
+X-archive-position: 16674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: sknauert@wesleyan.edu
 Precedence: bulk
 X-list: linux-mips
 
-With current git (and 2.6.23-rc1), nothing shows up on the serial
-console on IP32.  Ricardo Mendoza commented on this on IRC:
+> IP32 kernels that are built with CONFIG_BUILD_ELF64=y only produce an
+> exception when booted.  This worked with 2.6.19 and before.  I haven't
+> had a chance to dig deep yet but it seems both Franck Bui-Huu and
+> Atsushi Nemoto had patches in 2.6.20 that might have caused this.
+> This still happens with 2.6.22.  I cannot boot current git for other
+> reasons.
+>
+> If anyone has an idea which specific patch might have caused this,
+> please let me know.  Otherwise I'll try to find time in the next few
+> days to revert various patches.
+> --
+> Martin Michlmayr
+> http://www.cyrius.com/
+>
 
-> I think it was that using iobase member in the plat_serial8250_port
-> struct was not working, swapping to membase gave console messages
-> but kind of stopped printing messages at some point (further in than
-> first line of C tho)
+Nice to know someone's still working on Linux on the O2. I can confirm
+that its been broken, and I had believed I was even told why by Kumba
+http://www.nabble.com/Re:-Cross-Compile-difficulties-p10769217.html:
 
-He also sent me a patch to test.  With this patch, I get serial
-console output - but only until:
+> One, make sure you're doing "make vmlinux.32", and two, CONFIG_BUILD_ELF64
+> is
+> _not_ enabled. For 2.6.20, I had to cram in a patch from Frank to get
+> these
+> things to not PROM crash (due to the elimination of CPHYSADDY and
+> replacement by
+> __pa()), but on 2.6.21, this patch was unnecessary.  Unsure about
+> 2.6.22-rcX.
 
-| Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing disabled
-| serial8250.0: ttyS0 at MMIO 0x0 (irq = 53) is a 16550A
-| console [ttyS0] enabled
-
-Maybe Ricardo can post his patch for comments and someone can look
-into the second issue.
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Anyway... sad to say this is a little beyond my understanding, but maybe
+it can help you start hacking. For what its worth, I'll gladly test
+patches on my O2s as I have an R5K 200 and RM7K 600.

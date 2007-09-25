@@ -1,74 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 16:10:25 +0100 (BST)
-Received: from smtp1.int-evry.fr ([157.159.10.44]:9693 "EHLO smtp1.int-evry.fr")
-	by ftp.linux-mips.org with ESMTP id S20023250AbXIYPKX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2007 16:10:23 +0100
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id 4C6998E6EF3
-	for <linux-mips@linux-mips.org>; Tue, 25 Sep 2007 17:06:13 +0200 (CEST)
-Received: from [157.159.47.53] (unknown [157.159.47.53])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id DED40D0E315
-	for <linux-mips@linux-mips.org>; Tue, 25 Sep 2007 17:06:12 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] 0/3 MTX1 fixes for PCI and USB
-Date:	Tue, 25 Sep 2007 17:07:10 +0200
-User-Agent: KMail/1.9.7
-MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart1209105.DjSXaW58Vk";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 17:18:41 +0100 (BST)
+Received: from smtp2.linux-foundation.org ([207.189.120.14]:54989 "EHLO
+	smtp2.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S20022543AbXIYQSi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Sep 2007 17:18:38 +0100
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [207.189.120.55])
+	by smtp2.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l8PGIP74032049
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 25 Sep 2007 09:18:26 -0700
+Received: from box (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id l8PGIOpX025850;
+	Tue, 25 Sep 2007 09:18:24 -0700
+Date:	Tue, 25 Sep 2007 09:18:24 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sb1250-mac: Driver model & phylib update
+Message-Id: <20070925091824.ffbd0386.akpm@linux-foundation.org>
+In-Reply-To: <20070925131817.GA28402@linux-mips.org>
+References: <Pine.LNX.4.64N.0709191811040.24627@blysk.ds.pg.gda.pl>
+	<20070921124409.7f3d122b.akpm@linux-foundation.org>
+	<20070925131817.GA28402@linux-mips.org>
+X-Mailer: Sylpheed 2.4.1 (GTK+ 2.8.17; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <200709251707.12925.florian.fainelli@telecomint.eu>
-X-int-MailScanner-Information: Please contact the ISP for more information
-X-int-MailScanner: Found to be clean
-X-int-MailScanner-SpamCheck: 
-X-int-MailScanner-From:	florian.fainelli@telecomint.eu
-Return-Path: <florian.fainelli@telecomint.eu>
+X-MIMEDefang-Filter: lf$Revision: 1.185 $
+X-Scanned-By: MIMEDefang 2.53 on 207.189.120.14
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16665
+X-archive-position: 16666
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1209105.DjSXaW58Vk
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+On Tue, 25 Sep 2007 14:18:17 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
 
-Hi Ralf,
+> On Fri, Sep 21, 2007 at 12:44:09PM -0700, Andrew Morton wrote:
+> 
+> > >  A driver model and phylib update.
+> > 
+> > akpm:/usr/src/25> diffstat patches/git-net.patch | tail -n 1
+> >  1013 files changed, 187667 insertions(+), 23587 deletions(-)
+> > 
+> > Sorry, but raising networking patches against Linus's crufty
+> > old mainline tree just isn't viable at present.
+> 
+> Out of curiosity:
+> 
+> [ralf@denk linux-queue]$ git diff $(git merge-base master v2.6.23-rc8-mm1)..v2.6.23-rc8-mm1 | wc -cl
+> 1046669 31900996
+> [ralf@denk linux-queue]$ git diff $(git merge-base master v2.6.23-rc8-mm1)..v2.6.23-rc8-mm1 | diffstat | tail -1
+>  6049 files changed, 573635 insertions(+), 207630 deletions(-)
 
-This patchset fixes various MTX-1 problems :
+A few years ago I thought it might slow down soon.
 
-Patch1 will fix the wrong ifdef in the MTX-1 code causing the USB switch no=
-t=20
-to be powered.
+> [ralf@denk linux-queue]$ 
+> 
+> We're all a little too productive ;-)
 
-Patch 2 fixes the Au1000 PCI resource declaration
-
-Patch 3 fixes the Au1000 controller base for IOs.
-=2D-=20
-Cordialement, Florian Fainelli
-=2D-----------------------------
-
---nextPart1209105.DjSXaW58Vk
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.7 (GNU/Linux)
-
-iD8DBQBG+SQgmx9n1G/316sRAmTKAJ9t1JHG9QtLbF++BZ5El8LetAqnoQCeLoM5
-qK6L9Od/tkuc2Lmd4aizrHU=
-=MZvI
------END PGP SIGNATURE-----
-
---nextPart1209105.DjSXaW58Vk--
+s/prod/destr/

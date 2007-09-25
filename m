@@ -1,68 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 17:18:41 +0100 (BST)
-Received: from smtp2.linux-foundation.org ([207.189.120.14]:54989 "EHLO
-	smtp2.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S20022543AbXIYQSi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Sep 2007 17:18:38 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [207.189.120.55])
-	by smtp2.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l8PGIP74032049
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Tue, 25 Sep 2007 09:18:26 -0700
-Received: from box (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id l8PGIOpX025850;
-	Tue, 25 Sep 2007 09:18:24 -0700
-Date:	Tue, 25 Sep 2007 09:18:24 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sb1250-mac: Driver model & phylib update
-Message-Id: <20070925091824.ffbd0386.akpm@linux-foundation.org>
-In-Reply-To: <20070925131817.GA28402@linux-mips.org>
-References: <Pine.LNX.4.64N.0709191811040.24627@blysk.ds.pg.gda.pl>
-	<20070921124409.7f3d122b.akpm@linux-foundation.org>
-	<20070925131817.GA28402@linux-mips.org>
-X-Mailer: Sylpheed 2.4.1 (GTK+ 2.8.17; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 17:20:31 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:40911 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20022991AbXIYQU3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Sep 2007 17:20:29 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id AB5BD30C8CA;
+	Tue, 25 Sep 2007 16:20:31 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Tue, 25 Sep 2007 16:20:30 +0000 (UTC)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 25 Sep 2007 09:20:14 -0700
+Message-ID: <46F9353D.6050107@avtrex.com>
+Date:	Tue, 25 Sep 2007 09:20:13 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
+MIME-Version: 1.0
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	Fuxin Zhang <fxzhang@ict.ac.cn>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Fuxin Zhang <zhangfx@lemote.com>, debian-mips@lists.debian.org,
+	linux-mips@linux-mips.org
+Subject: Re: About openoffice linux/mips porting
+References: <46F90261.1000003@lemote.com> <Pine.LNX.4.64N.0709251406220.23669@blysk.ds.pg.gda.pl> <46F90841.1040903@ict.ac.cn> <20070925133812.GB2333@networkno.de>
+In-Reply-To: <20070925133812.GB2333@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.185 $
-X-Scanned-By: MIMEDefang 2.53 on 207.189.120.14
-Return-Path: <akpm@linux-foundation.org>
+X-OriginalArrivalTime: 25 Sep 2007 16:20:14.0112 (UTC) FILETIME=[F3EC8A00:01C7FF8F]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16666
+X-archive-position: 16667
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 25 Sep 2007 14:18:17 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Fri, Sep 21, 2007 at 12:44:09PM -0700, Andrew Morton wrote:
+Thiemo Seufer wrote:
+> Fuxin Zhang wrote:
+>> Maciej W. Rozycki ??????:
+>>> On Tue, 25 Sep 2007, Fuxin Zhang wrote:
+>>>
+>>>   
+>>>> It is available at
+>>>> http://qa.openoffice.org/issues/show_bug.cgi?id=81482, any comments are
+>>>> welcome.
+>>>> Have an official openoffice for linux/mips might be a good thing.
 > 
-> > >  A driver model and phylib update.
-> > 
-> > akpm:/usr/src/25> diffstat patches/git-net.patch | tail -n 1
-> >  1013 files changed, 187667 insertions(+), 23587 deletions(-)
-> > 
-> > Sorry, but raising networking patches against Linus's crufty
-> > old mainline tree just isn't viable at present.
+> A quick glance revealed already several bugs. (alignment issues, ULH for
+> laoding signed shorts, etc.)
 > 
-> Out of curiosity:
+>>>  Hmm, why would anyone need to have asm snippets in a document processing 
+>>> suite?  And it looks like the bits are ABI-dependent, so at least three 
+>>> variations (if the changes are endianness-safe) would be required to 
+>>> handle all the ABIs that we support.
+>>>   
+>> Openoffice wants to be able to interact with plugins written in many 
+>> languages, instead of writting a module for each possible combination it 
+>> chooses the so called bridge: every language interact with a common middle 
+>> language.
 > 
-> [ralf@denk linux-queue]$ git diff $(git merge-base master v2.6.23-rc8-mm1)..v2.6.23-rc8-mm1 | wc -cl
-> 1046669 31900996
-> [ralf@denk linux-queue]$ git diff $(git merge-base master v2.6.23-rc8-mm1)..v2.6.23-rc8-mm1 | diffstat | tail -1
->  6049 files changed, 573635 insertions(+), 207630 deletions(-)
-
-A few years ago I thought it might slow down soon.
-
-> [ralf@denk linux-queue]$ 
+> So we have now foreign function interfaces for at least OpenOffice, Mozilla,
+> Clisp and GCC's libffi. libffi recently got support for N32/N64 ABIs, and
+> is the only solution which isn't bound to a specific application (as long
+> as GCC is used).
 > 
-> We're all a little too productive ;-)
+> Using libffi from Openoffice looks like the best long-term approach 
+> to me.
 
-s/prod/destr/
+I assume you mean 'Using libffi in...'.  I would tend to agree, but I am 
+a bit biased toward libffi.
+
+FWIW, GCC's libffi gets full n32/n64 support in version 4.3 (which has 
+not been released yet)  The libffi part seems quite stable though, so 
+you could start experimenting with it now I suppose...
+
+
+David Daney

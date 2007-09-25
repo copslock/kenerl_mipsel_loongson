@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 16:08:31 +0100 (BST)
-Received: from smtp1.int-evry.fr ([157.159.10.44]:64445 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 16:08:56 +0100 (BST)
+Received: from smtp1.int-evry.fr ([157.159.10.44]:17044 "EHLO
 	smtp1.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20023256AbXIYPI2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S20023258AbXIYPI2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Tue, 25 Sep 2007 16:08:28 +0100
 Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id 780158E6874;
-	Tue, 25 Sep 2007 17:06:29 +0200 (CEST)
+	by smtp1.int-evry.fr (Postfix) with ESMTP id A1C8B8E61DF;
+	Tue, 25 Sep 2007 17:06:27 +0200 (CEST)
 Received: from [157.159.47.53] (unknown [157.159.47.53])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 80BF5D0E315;
-	Tue, 25 Sep 2007 17:06:29 +0200 (CEST)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id A124CD0E315;
+	Tue, 25 Sep 2007 17:06:27 +0200 (CEST)
 From:	Florian Fainelli <florian.fainelli@telecomint.eu>
 To:	linux-mips@linux-mips.org, blogic@openwrt.org, nbd@openwrt.org
-Subject: [PATCH 3/3] Au1000 : set the PCI controller IO base
-Date:	Tue, 25 Sep 2007 17:07:30 +0200
+Subject: [PATCH 2/3] Au1000 : fix PCI controller registration
+Date:	Tue, 25 Sep 2007 17:07:28 +0200
 User-Agent: KMail/1.9.7
 MIME-Version: 1.0
 Content-Type: multipart/signed;
-  boundary="nextPart1922573.nNVhlbXleH";
+  boundary="nextPart2989421.Z4l169PWNj";
   protocol="application/pgp-signature";
   micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-Message-Id: <200709251707.30915.florian.fainelli@telecomint.eu>
+Message-Id: <200709251707.29067.florian.fainelli@telecomint.eu>
 X-int-MailScanner-Information: Please contact the ISP for more information
 X-int-MailScanner: Found to be clean
 X-int-MailScanner-SpamCheck: 
@@ -31,7 +31,7 @@ Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16663
+X-archive-position: 16664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,58 +39,68 @@ X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1922573.nNVhlbXleH
+--nextPart2989421.Z4l169PWNj
 Content-Type: multipart/mixed;
-  boundary="Boundary-01=_yQS+GNOlShf4oH6"
+  boundary="Boundary-01=_wQS+GMP+2LtXpi8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
---Boundary-01=_yQS+GNOlShf4oH6
+--Boundary-01=_wQS+GMP+2LtXpi8
 Content-Type: text/plain;
-  charset="us-ascii"
+  charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
 
-The PCI controller IO base was not set in the au1000 pci code.
+The PCI controller fails to register, as PCI_MEM_END was greater than =A0
+IOMEM_RESOURCE_END and Au1500_PCI_IO_END was greater than =A0
+IOPORT_RESOURCE_END
+
+IO{MEM,PORT}_RESOURCE_END value were adjust to represent the actual =A0
+memory map of the au1x00.
 
 Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
 =2D-=20
 
---Boundary-01=_yQS+GNOlShf4oH6
+--Boundary-01=_wQS+GMP+2LtXpi8
 Content-Type: text/plain;
-  charset="us-ascii";
-  name="pci-io.patch"
+  charset="iso-8859-1";
+  name="io-resources.patch"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: attachment;
-	filename="pci-io.patch"
+	filename="io-resources.patch"
 
-diff --git a/arch/mips/au1000/common/pci.c b/arch/mips/au1000/common/pci.c
-index 6c25e6c..9be99a6 100644
-=2D-- a/arch/mips/au1000/common/pci.c
-+++ b/arch/mips/au1000/common/pci.c
-@@ -74,6 +74,7 @@ static int __init au1x_pci_setup(void)
- 		printk(KERN_ERR "Unable to ioremap pci space\n");
- 		return 1;
- 	}
-+	au1x_controller.io_map_base =3D virt_io_addr;
+diff --git a/include/asm-mips/mach-au1x00/au1000.h b/include/asm-mips/mach-=
+au1x00/au1000.h
+index 58fca8a..046920a 100644
+=2D-- a/include/asm-mips/mach-au1x00/au1000.h
++++ b/include/asm-mips/mach-au1x00/au1000.h
+@@ -1680,9 +1680,9 @@ extern au1xxx_irq_map_t au1xxx_irq_map[];
+ #define PCI_LAST_DEVFN  (19<<3)
 =20
- #ifdef CONFIG_DMA_NONCOHERENT
- 	{
+ #define IOPORT_RESOURCE_START 0x00001000 /* skip legacy probing */
+=2D#define IOPORT_RESOURCE_END   0xffffffff
++#define IOPORT_RESOURCE_END   0xfffffffffULL
+ #define IOMEM_RESOURCE_START  0x10000000
+=2D#define IOMEM_RESOURCE_END    0xffffffff
++#define IOMEM_RESOURCE_END    0xfffffffffULL
+=20
+   /*
+    * Borrowed from the PPC arch:
 
---Boundary-01=_yQS+GNOlShf4oH6--
+--Boundary-01=_wQS+GMP+2LtXpi8--
 
---nextPart1922573.nNVhlbXleH
+--nextPart2989421.Z4l169PWNj
 Content-Type: application/pgp-signature; name=signature.asc 
 Content-Description: This is a digitally signed message part.
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.7 (GNU/Linux)
 
-iD8DBQBG+SQymx9n1G/316sRAhNsAJ9KjUkoXdUqTPgnoVfrXqGb7PM6XQCgzZvq
-TOuqCslPJcCwcykx0fCMB/s=
-=J0bT
+iD8DBQBG+SQxmx9n1G/316sRAqSpAKDb8m03DsfVPCv+Z4CRnySKp0bOMgCguXSJ
+zY+jIaiQAQ5sTXQKNVrmeNQ=
+=jUxi
 -----END PGP SIGNATURE-----
 
---nextPart1922573.nNVhlbXleH--
+--nextPart2989421.Z4l169PWNj--

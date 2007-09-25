@@ -1,64 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 15:06:11 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:50069 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023120AbXIYOGI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Sep 2007 15:06:08 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8PE67pB022363;
-	Tue, 25 Sep 2007 15:06:08 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8PE67Cv022362;
-	Tue, 25 Sep 2007 15:06:07 +0100
-Date:	Tue, 25 Sep 2007 15:06:07 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Aurelien Jarno <aurelien@aurel32.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/4][MIPS] Add support for BCM47XX CPUs.
-Message-ID: <20070925140607.GB19803@linux-mips.org>
-References: <20070925133847.GA14227@hall.aurel32.net> <20070925134012.GB14227@hall.aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 15:06:56 +0100 (BST)
+Received: from webmail.ict.ac.cn ([159.226.39.7]:60362 "EHLO ict.ac.cn")
+	by ftp.linux-mips.org with ESMTP id S20023123AbXIYOGy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2007 15:06:54 +0100
+Received: (qmail 4800 invoked by uid 507); 25 Sep 2007 22:04:12 +0800
+Received: from unknown (HELO ?127.0.0.1?) (fxzhang@222.92.8.142)
+  by ict.ac.cn with SMTP; 25 Sep 2007 22:04:12 +0800
+Message-ID: <46F91334.6080005@ict.ac.cn>
+Date:	Tue, 25 Sep 2007 21:55:00 +0800
+From:	Fuxin Zhang <fxzhang@ict.ac.cn>
+User-Agent: Thunderbird 2.0.0.0 (Windows/20070326)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070925134012.GB14227@hall.aurel32.net>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+CC:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	debian-mips@lists.debian.org, linux-mips@linux-mips.org
+Subject: Re: About openoffice linux/mips porting
+References: <46F90261.1000003@lemote.com> <Pine.LNX.4.64N.0709251406220.23669@blysk.ds.pg.gda.pl> <46F90841.1040903@ict.ac.cn> <20070925133812.GB2333@networkno.de>
+In-Reply-To: <20070925133812.GB2333@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16659
+X-archive-position: 16660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Sep 25, 2007 at 03:40:12PM +0200, Aurelien Jarno wrote:
 
-> 
-> This patch replaces commit ceb550f7d4b24ee5d5de1a8f7ac07f8a2fe3bf1d in
-> order to replace BCM947XX into BCM47XX.
-> 
-> 
->     [MIPS] Add support for BCM47XX CPUs.
->     
->     Note that the BCM4710 does not support the wait instruction, this
->     is not a mistake in the code.
->     
->     It originally comes from the OpenWrt patches.
->     
->     Cc: Michael Buesch <mb@bu3sch.de>
->     Cc: Felix Fietkau <nbd@openwrt.org>
->     Cc: Florian Schirmer <jolt@tuxbox.org>
->     Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
->     Cc: Ralf Baechle <ralf@linux-mips.org>
->     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->     Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-All four updated.  But please
-
-  o don't indent the log message.  I have to undo that formatting damage.
-  o commit IDs are very useless as reference in the queue branch where they
-    change each time I respin the tree.  Which could be three times a minute.
-
-  Ralf
+>   
+>>>  Hmm, why would anyone need to have asm snippets in a document processing 
+>>> suite?  And it looks like the bits are ABI-dependent, so at least three 
+>>> variations (if the changes are endianness-safe) would be required to 
+>>> handle all the ABIs that we support.
+>>>   
+>>>       
+>> Openoffice wants to be able to interact with plugins written in many 
+>> languages, instead of writting a module for each possible combination it 
+>> chooses the so called bridge: every language interact with a common middle 
+>> language.
+>>     
+>
+> So we have now foreign function interfaces for at least OpenOffice, Mozilla,
+> Clisp and GCC's libffi. libffi recently got support for N32/N64 ABIs, and
+> is the only solution which isn't bound to a specific application (as long
+> as GCC is used).
+>
+> Using libffi from Openoffice looks like the best long-term approach 
+> to me.
+>   
+Good to know the library:) 
+I am not very familiar with the ABI details so the code is more or less 
+only a hack to get the most part work.
+Maybe the occasional crashes of our OOo are related to the bugs.
+>
+> Thiemo
+>
+>
+>
+>
+>   

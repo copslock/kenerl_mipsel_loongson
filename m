@@ -1,48 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Sep 2007 19:57:10 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:32180 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021385AbXIXS5I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 24 Sep 2007 19:57:08 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8OIv6P1028443;
-	Mon, 24 Sep 2007 19:57:07 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8OIv62b028442;
-	Mon, 24 Sep 2007 19:57:06 +0100
-Date:	Mon, 24 Sep 2007 19:57:06 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Johannes Dickgreber <tanzy@gmx.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Question:  sighand_cache is bigger than a page ( it has 4120
-	byte) on MIPS64
-Message-ID: <20070924185706.GA27812@linux-mips.org>
-References: <46F8079F.40108@gmx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 13:56:11 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:14778 "HELO lemote.com")
+	by ftp.linux-mips.org with SMTP id S20023030AbXIYM4J (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2007 13:56:09 +0100
+Received: (qmail 17538 invoked by uid 511); 25 Sep 2007 13:08:35 -0000
+Received: from unknown (HELO ?127.0.0.1?) (222.92.8.142)
+  by lemote.com with SMTP; 25 Sep 2007 13:08:35 -0000
+Message-ID: <46F90261.1000003@lemote.com>
+Date:	Tue, 25 Sep 2007 20:43:13 +0800
+From:	Fuxin Zhang <zhangfx@lemote.com>
+User-Agent: Thunderbird 2.0.0.0 (Windows/20070326)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46F8079F.40108@gmx.de>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	debian-mips@lists.debian.org
+CC:	linux-mips@linux-mips.org
+Subject: About openoffice linux/mips porting 
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: 8bit
+Return-Path: <zhangfx@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16646
+X-archive-position: 16647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: zhangfx@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Sep 24, 2007 at 08:53:19PM +0200, Johannes Dickgreber wrote:
+Dear all,
+Someone(Sunil Amitkumar Jank) is trying to make my old patches for
+linux/mips OOo into openoffice.org tree, might be some of your gurus can
+help to have a look at the most important part: the bridge code.
+It is available at
+http://qa.openoffice.org/issues/show_bug.cgi?id=81482, any comments are
+welcome.
+Have an official openoffice for linux/mips might be a good thing.
 
-> im running MIPS64 kernel on a SGI Octane with 1GByte.
-> 
-> The cache is that big, because _NSIG on Mips is set to 128.
-> On all other arch it is only set to 64.
-> Could MIPS use the lower Value ?
+-- 
+------------------------------------------------
+张福新
+江苏中科龙梦科技有限公司
+地址：江苏省常熟市虞山镇梦兰工业园
 
-One of the historical sins.  Not easy to fix because it would break binary
-compatibility.
-
-  Ralf
+General Manager
+JiangSu Lemote Corp. Ltd.
+MengLan, Yushan, Changshu, JiangSu Province, China
+ZIP: 215500 
+Tel: 86-512-52308679
+Fax: 86-512-52308688
+Email: zhangfx@lemote.com
+http://www.lemote.com
+------------------------------------------------
+ 

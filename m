@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 14:42:27 +0100 (BST)
-Received: from hall.aurel32.net ([88.191.38.19]:34462 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20023110AbXIYNmO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2007 14:42:14 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 14:43:15 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.38.19]:2254 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20023088AbXIYNnM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Sep 2007 14:43:12 +0100
 Received: from aurel32 by hall.aurel32.net with local (Exim 4.63)
 	(envelope-from <aurel32@hall.aurel32.net>)
-	id 1IaAfx-0003nH-6V; Tue, 25 Sep 2007 15:42:09 +0200
-Date:	Tue, 25 Sep 2007 15:42:09 +0200
+	id 1IaAgt-0003oo-Iu; Tue, 25 Sep 2007 15:43:07 +0200
+Date:	Tue, 25 Sep 2007 15:43:07 +0200
 From:	Aurelien Jarno <aurelien@aurel32.net>
 To:	linux-mips@linux-mips.org
 Cc:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 3/4][MIPS] Add gpio support to the BCM47XX platform
-Message-ID: <20070925134209.GD14227@hall.aurel32.net>
+Subject: Re: [PATCH 4/4][MIPS] GPIO LED driver for the WGT634U machine
+Message-ID: <20070925134307.GE14227@hall.aurel32.net>
 References: <20070925133847.GA14227@hall.aurel32.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-15
@@ -22,7 +22,7 @@ Return-Path: <aurel32@hall.aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16655
+X-archive-position: 16656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,14 +30,14 @@ X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-This patch replaces commit 67fc54603bff71e54001d61b54f448293b76f48a in
+This patch replaces commit f2a399f458d1ba88291e9748b068d932a0993dce in
 order to replace BCM947XX into BCM47XX.
 
 
-    [MIPS] Add gpio support to the BCM47XX platform
+    [MIPS] GPIO LED driver for the WGT634U machine
     
-    Add GPIO support to the BCM47XX platform.  It will be used by a GPIO
-    LED driver.
+    Add LED support to the WGT634U machine.  It uses the new gpio-led
+    driver and a platform driver for the pin definitions.
     
     Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
     Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
@@ -48,11 +48,11 @@ order to replace BCM947XX into BCM47XX.
  # under Linux.
  #
  
--obj-y := irq.o prom.o serial.o setup.o time.o
-+obj-y := gpio.o irq.o prom.o serial.o setup.o time.o
+-obj-y := gpio.o irq.o prom.o serial.o setup.o time.o
++obj-y := gpio.o irq.o prom.o serial.o setup.o time.o wgt634u.o
 --- /dev/null
-+++ b/arch/mips/bcm47xx/gpio.c
-@@ -0,0 +1,79 @@
++++ b/arch/mips/bcm47xx/wgt634u.c
+@@ -0,0 +1,64 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
@@ -61,139 +61,62 @@ order to replace BCM947XX into BCM47XX.
 + * Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
 + */
 +
++#include <linux/platform_device.h>
++#include <linux/module.h>
++#include <linux/leds.h>
 +#include <linux/ssb/ssb.h>
-+#include <linux/ssb/ssb_driver_chipcommon.h>
-+#include <linux/ssb/ssb_driver_extif.h>
 +#include <asm/mach-bcm47xx/bcm47xx.h>
-+#include <asm/mach-bcm47xx/gpio.h>
 +
-+int bcm47xx_gpio_to_irq(unsigned gpio)
++/* GPIO definitions for the WGT634U */
++#define WGT634U_GPIO_LED	3
++#define WGT634U_GPIO_RESET	2
++#define WGT634U_GPIO_TP1	7
++#define WGT634U_GPIO_TP2	6
++#define WGT634U_GPIO_TP3	5
++#define WGT634U_GPIO_TP4	4
++#define WGT634U_GPIO_TP5	1
++
++static struct gpio_led wgt634u_leds[] = {
++	{
++		.name = "power",
++		.gpio = WGT634U_GPIO_LED,
++		.active_low = 1,
++		.default_trigger = "heartbeat",
++	},
++};
++
++static struct gpio_led_platform_data wgt634u_led_data = {
++	.num_leds =     ARRAY_SIZE(wgt634u_leds),
++	.leds =         wgt634u_leds,
++};
++
++static struct platform_device wgt634u_gpio_leds = {
++	.name =         "leds-gpio",
++	.id =           -1,
++	.dev = {
++		.platform_data = &wgt634u_led_data,
++	}
++};
++
++static int __init wgt634u_init(void)
 +{
-+	if (ssb_bcm47xx.chipco.dev)
-+		return ssb_mips_irq(ssb_bcm47xx.chipco.dev) + 2;
-+	else if (ssb_bcm47xx.extif.dev)
-+		return ssb_mips_irq(ssb_bcm47xx.extif.dev) + 2;
++	/* There is no easy way to detect that we are running on a WGT634U
++	 * machine. Use the MAC address as an heuristic. Netgear Inc. has
++	 * been allocated ranges 00:09:5b:xx:xx:xx and 00:0f:b5:xx:xx:xx.
++	 */
++
++	u8 *et0mac = ssb_bcm47xx.sprom.r1.et0mac;
++
++	if (et0mac[0] == 0x00 &&
++	    ((et0mac[1] == 0x09 && et0mac[2] == 0x5b) ||
++	     (et0mac[1] == 0x0f && et0mac[2] == 0xb5)))
++		return platform_device_register(&wgt634u_gpio_leds);
 +	else
-+		return -EINVAL;
-+}
-+EXPORT_SYMBOL_GPL(bcm47xx_gpio_to_irq);
-+
-+int bcm47xx_gpio_get_value(unsigned gpio)
-+{
-+	if (ssb_bcm47xx.chipco.dev)
-+		return ssb_chipco_gpio_in(&ssb_bcm47xx.chipco, 1 << gpio);
-+	else if (ssb_bcm47xx.extif.dev)
-+		return ssb_extif_gpio_in(&ssb_bcm47xx.extif, 1 << gpio);
-+	else
-+		return 0;
-+}
-+EXPORT_SYMBOL_GPL(bcm47xx_gpio_get_value);
-+
-+void bcm47xx_gpio_set_value(unsigned gpio, int value)
-+{
-+	if (ssb_bcm47xx.chipco.dev)
-+		ssb_chipco_gpio_out(&ssb_bcm47xx.chipco,
-+				    1 << gpio,
-+				    value ? 1 << gpio : 0);
-+	else if (ssb_bcm47xx.extif.dev)
-+		ssb_extif_gpio_out(&ssb_bcm47xx.extif,
-+				   1 << gpio,
-+				   value ? 1 << gpio : 0);
-+}
-+EXPORT_SYMBOL_GPL(bcm47xx_gpio_set_value);
-+
-+int bcm47xx_gpio_direction_input(unsigned gpio)
-+{
-+	if (ssb_bcm47xx.chipco.dev && (gpio < BCM47XX_CHIPCO_GPIO_LINES))
-+		ssb_chipco_gpio_outen(&ssb_bcm47xx.chipco,
-+				      1 << gpio, 0);
-+	else if (ssb_bcm47xx.extif.dev && (gpio < BCM47XX_EXTIF_GPIO_LINES))
-+		ssb_extif_gpio_outen(&ssb_bcm47xx.extif,
-+				     1 << gpio, 0);
-+	else
-+		return -EINVAL;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(bcm47xx_gpio_direction_input);
-+
-+int bcm47xx_gpio_direction_output(unsigned gpio, int value)
-+{
-+	bcm47xx_gpio_set_value(gpio, value);
-+
-+	if (ssb_bcm47xx.chipco.dev && (gpio < BCM47XX_CHIPCO_GPIO_LINES))
-+		ssb_chipco_gpio_outen(&ssb_bcm47xx.chipco,
-+				      1 << gpio, 1 << gpio);
-+	else if (ssb_bcm47xx.extif.dev && (gpio < BCM47XX_EXTIF_GPIO_LINES))
-+		ssb_extif_gpio_outen(&ssb_bcm47xx.extif,
-+				     1 << gpio, 1 << gpio);
-+	else
-+		return -EINVAL;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(bcm47xx_gpio_direction_output);
-+
---- /dev/null
-+++ b/include/asm-mips/mach-bcm47xx/gpio.h
-@@ -0,0 +1,59 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2007 Aurelien Jarno <aurelien@aurel32.net>
-+ */
-+
-+#ifndef __BCM47XX_GPIO_H
-+#define __BCM47XX_GPIO_H
-+
-+#define BCM47XX_EXTIF_GPIO_LINES	5
-+#define BCM47XX_CHIPCO_GPIO_LINES	16
-+
-+extern int bcm47xx_gpio_to_irq(unsigned gpio);
-+extern int bcm47xx_gpio_get_value(unsigned gpio);
-+extern void bcm47xx_gpio_set_value(unsigned gpio, int value);
-+extern int bcm47xx_gpio_direction_input(unsigned gpio);
-+extern int bcm47xx_gpio_direction_output(unsigned gpio, int value);
-+
-+static inline int gpio_request(unsigned gpio, const char *label)
-+{
-+       return 0;
++		return -ENODEV;
 +}
 +
-+static inline void gpio_free(unsigned gpio)
-+{
-+}
++module_init(wgt634u_init);
 +
-+static inline int gpio_to_irq(unsigned gpio)
-+{
-+	return bcm47xx_gpio_to_irq(gpio);
-+}
-+
-+static inline int gpio_get_value(unsigned gpio)
-+{
-+	return bcm47xx_gpio_get_value(gpio);
-+}
-+
-+static inline void gpio_set_value(unsigned gpio, int value)
-+{
-+	bcm47xx_gpio_set_value(gpio, value);
-+}
-+
-+static inline int gpio_direction_input(unsigned gpio)
-+{
-+	return bcm47xx_gpio_direction_input(gpio);
-+}
-+
-+static inline int gpio_direction_output(unsigned gpio, int value)
-+{
-+	return bcm47xx_gpio_direction_output(gpio, value);
-+}
-+
-+
-+/* cansleep wrappers */
-+#include <asm-generic/gpio.h>
-+
-+#endif /* __BCM47XX_GPIO_H */
 
 -- 
   .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73

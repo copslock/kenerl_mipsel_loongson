@@ -1,57 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 14:10:41 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:62688 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20023042AbXIYNKi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Sep 2007 14:10:38 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 17333400B6;
-	Tue, 25 Sep 2007 15:10:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id DKWYPRvDHZuK; Tue, 25 Sep 2007 15:10:34 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 0984D400A9;
-	Tue, 25 Sep 2007 15:10:34 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8PDAaLu025845;
-	Tue, 25 Sep 2007 15:10:37 +0200
-Date:	Tue, 25 Sep 2007 14:10:31 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Fuxin Zhang <zhangfx@lemote.com>
-cc:	debian-mips@lists.debian.org, linux-mips@linux-mips.org
-Subject: Re: About openoffice linux/mips porting 
-In-Reply-To: <46F90261.1000003@lemote.com>
-Message-ID: <Pine.LNX.4.64N.0709251406220.23669@blysk.ds.pg.gda.pl>
-References: <46F90261.1000003@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Sep 2007 14:18:46 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:54488 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023053AbXIYNSo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Sep 2007 14:18:44 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8PDILbI001888;
+	Tue, 25 Sep 2007 14:18:23 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8PDIH4x001887;
+	Tue, 25 Sep 2007 14:18:17 +0100
+Date:	Tue, 25 Sep 2007 14:18:17 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Jeff Garzik <jgarzik@pobox.com>, netdev@vger.kernel.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sb1250-mac: Driver model & phylib update
+Message-ID: <20070925131817.GA28402@linux-mips.org>
+References: <Pine.LNX.4.64N.0709191811040.24627@blysk.ds.pg.gda.pl> <20070921124409.7f3d122b.akpm@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4388/Tue Sep 25 04:51:32 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20070921124409.7f3d122b.akpm@linux-foundation.org>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16648
+X-archive-position: 16649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 25 Sep 2007, Fuxin Zhang wrote:
+On Fri, Sep 21, 2007 at 12:44:09PM -0700, Andrew Morton wrote:
 
-> It is available at
-> http://qa.openoffice.org/issues/show_bug.cgi?id=81482, any comments are
-> welcome.
-> Have an official openoffice for linux/mips might be a good thing.
+> >  A driver model and phylib update.
+> 
+> akpm:/usr/src/25> diffstat patches/git-net.patch | tail -n 1
+>  1013 files changed, 187667 insertions(+), 23587 deletions(-)
+> 
+> Sorry, but raising networking patches against Linus's crufty
+> old mainline tree just isn't viable at present.
 
- Hmm, why would anyone need to have asm snippets in a document processing 
-suite?  And it looks like the bits are ABI-dependent, so at least three 
-variations (if the changes are endianness-safe) would be required to 
-handle all the ABIs that we support.
+Out of curiosity:
 
- It smells like OpenOffice is doing something outrageously wrong here...
+[ralf@denk linux-queue]$ git diff $(git merge-base master v2.6.23-rc8-mm1)..v2.6.23-rc8-mm1 | wc -cl
+1046669 31900996
+[ralf@denk linux-queue]$ git diff $(git merge-base master v2.6.23-rc8-mm1)..v2.6.23-rc8-mm1 | diffstat | tail -1
+ 6049 files changed, 573635 insertions(+), 207630 deletions(-)
+[ralf@denk linux-queue]$ 
 
-  Maciej
+We're all a little too productive ;-)
+
+  Ralf

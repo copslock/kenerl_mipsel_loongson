@@ -1,73 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 17:59:38 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:1679 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20029808AbXIZQ7F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Sep 2007 17:59:05 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l8QGx2H4014973;
-	Wed, 26 Sep 2007 17:59:03 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l8QGx1fV014972;
-	Wed, 26 Sep 2007 17:59:01 +0100
-Date:	Wed, 26 Sep 2007 17:59:01 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Alexander Voropay <alec@nwpi.ru>
-Cc:	qemu-devel@nongnu.org, Thiemo Seufer <ths@networkno.de>,
-	linux-mips@linux-mips.org, vlad@comsys.ro
-Subject: Re: [Qemu-devel] Qemu and Linux 2.4
-Message-ID: <20070926165901.GA13582@linux-mips.org>
-References: <46E68AA3.2010907@comsys.ro> <20070911125421.GE10713@networkno.de> <46E69AAF.2090509@comsys.ro> <029001c80059$d7a14960$e90d11ac@spb.in.rosprint.ru>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 18:09:20 +0100 (BST)
+Received: from kuber.nabble.com ([216.139.236.158]:33458 "EHLO
+	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
+	id S20029811AbXIZRJL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Sep 2007 18:09:11 +0100
+Received: from isper.nabble.com ([192.168.236.156])
+	by kuber.nabble.com with esmtp (Exim 4.63)
+	(envelope-from <lists@nabble.com>)
+	id 1IaaKm-0002oJ-G4
+	for linux-mips@linux-mips.org; Wed, 26 Sep 2007 10:06:00 -0700
+Message-ID: <12905373.post@talk.nabble.com>
+Date:	Wed, 26 Sep 2007 10:06:00 -0700 (PDT)
+From:	Steve Graham <stgraham2000@yahoo.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: O2 RM7000 Issues
+In-Reply-To: <20070924115804.GA12300@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <029001c80059$d7a14960$e90d11ac@spb.in.rosprint.ru>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+X-Nabble-From: stgraham2000@yahoo.com
+References: <4687DCE2.8070302@gentoo.org> <340C71CD25A7EB49BFA81AE8C839266757076E@BBY1EXM10.pmc_nt.nt.pmc-sierra.bc.ca> <20070921134753.GA8090@linux-mips.org> <12833079.post@talk.nabble.com> <20070924115804.GA12300@linux-mips.org>
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16702
+X-archive-position: 16703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: stgraham2000@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 26, 2007 at 08:25:18PM +0400, Alexander Voropay wrote:
 
-> >>>- QEMU malta emulation is not really complete, to put it mildly
-> >>Out of curiosity, what parts did you miss?
-> >Like, for example, the PCI stuff. So I can use the network card.
-> 
-> PCI stuff in the QEMU/Malta works fine, but pseudo-bootrom
-> does not perform PCI enumeration and leaves uninitialized PCI BARs.
-> 
-> Linux MIPS/Malta 2.4 can not perform PCI enumeration too.  The LANCE
-> Ethernet driver *requres* a pre-initialized BARs. The situation even worse,
-> since current Linux 2.4 can't be even built with NEW_PCI and PCI_AUTO
-> options at all (due to linkage error).
-> 
-> http://www.linux-mips.org/wiki/PCI_Subsystem
-> 
-> There is the same PCI problem with NetBSD/evbmips and seems VxWorks/Malta.
+Yes, the reason my platform has scache_size=0 is because the sc-rm7k.c
+handles this.  As a result, I found a few more issues in the current c-r4k.c
+file.  In "r4k_blash_scache_page_setup",
+"r4k_blash_scache_page_indexed_setup", "r4k_blash_scache_setup", and
+"local_r4k_flush_icache_range", there are similar checks on "scache_size"
+that need to be removed for my platform.  I was still getting the odd "seg
+fault" during boots and this seems to have fixed it.
 
-Both CONFIG_PCI_NEW and PCI_AUTO were amazingly broken in both concept
-and implementation.  It is possible to get them to work well for particular
-configurations but for the general case nothing else nothing but rewrite
-can rescue things.
-
-> >And yes, I am aware of YAMON.
-> 
-> AFAIK, YAMON may runs on the MIPS hardware only, and may not
-> be redistribuded in the source or binary form.
-
-Alchemy boards run YAMON, too.
-
-> *******************************************************************************************************
-> This message and any attachments (the "message") are confidential and 
-> intended solely for the addressees. Any unauthorised use or dissemination 
-
-Soley for all the billion internet users, I assume ;-)
-
-  Ralf
+One question I have regarding this is, does anyone have a tool that I can
+run to test this cache code and really exercise the cache?  The problems are
+so random and infrequent that it's difficult to know if the problem is gone
+or just more hidden.  Ralf, I imagine since you are the one with intimate
+knowledge of this code that you may have developed a tool or have used a
+tool to really test this code.
+-- 
+View this message in context: http://www.nabble.com/O2-RM7000-Issues-tf4008392.html#a12905373
+Sent from the linux-mips main mailing list archive at Nabble.com.

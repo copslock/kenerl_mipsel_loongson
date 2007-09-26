@@ -1,96 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 15:23:32 +0100 (BST)
-Received: from mail.lysator.liu.se ([130.236.254.3]:3760 "EHLO
-	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
-	id S20029717AbXIZOXX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Sep 2007 15:23:23 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id 3C714200A25A;
-	Wed, 26 Sep 2007 16:22:50 +0200 (CEST)
-Received: from mail.lysator.liu.se ([127.0.0.1])
-	by localhost (lenin.lysator.liu.se [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id 05155-01-50; Wed, 26 Sep 2007 16:22:45 +0200 (CEST)
-Received: from [192.168.27.65] (6.240.216.81.static.lk.siwnet.net [81.216.240.6])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id 2F1C3200A25B;
-	Wed, 26 Sep 2007 16:22:41 +0200 (CEST)
-Message-ID: <46FA6B27.6050204@27m.se>
-Date:	Wed, 26 Sep 2007 16:22:31 +0200
-From:	Markus Gothe <markus.gothe@27m.se>
-User-Agent: Icedove 1.5.0.12 (X11/20070730)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 15:29:33 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.174]:30393 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20029710AbXIZO3Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Sep 2007 15:29:24 +0100
+Received: by ug-out-1314.google.com with SMTP id u2so1307654uge
+        for <linux-mips@linux-mips.org>; Wed, 26 Sep 2007 07:29:06 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=6hjJRoVPW9V9uVjlc2yVyN6+PxGbki9KPHCAWKsmO6U=;
+        b=Dvy7L8wx7k9nbdsdeAfejzBGVNKfn1szskCFmeU09sTb9osMMuK0UcaXkKuX+Zrm3RZsQBGVWSVetgBeOQk7t14JLJ2Xh6gUjG7jMxRpQIe9B56OuZt7En9pp59QLxLrHkYK4sam5CAomik29Mf3NtsTdhRoA6NC38WBIIBxN5I=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=o8hA7W8YIx9KfKSuV9H50aZ1QMluezDUlCI+w3RP2nDhBrs3cMTblteBd2R1NuRBxne+wTeVKbKAonPGSeihWz+B0ZWUs8WC7nsgnp297DD1mc1KuFAiVN7gcJe7coDihZ7oyfIDWI7y9TEwiUj3IJStvBM7dQYlYaYR4cV95Q0=
+Received: by 10.67.26.7 with SMTP id d7mr2246217ugj.1190816946336;
+        Wed, 26 Sep 2007 07:29:06 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id f31sm1780147fkf.2007.09.26.07.29.05
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 26 Sep 2007 07:29:05 -0700 (PDT)
+Message-ID: <46FA6C3F.6090605@gmail.com>
+Date:	Wed, 26 Sep 2007 16:27:11 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, nigel@mips.com,
+To:	Markus Gothe <markus.gothe@27m.se>
+CC:	Ralf Baechle <ralf@linux-mips.org>, nigel@mips.com,
 	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: Useless stack randomization patch
-References: <46FA6846.2080704@gmail.com>
-In-Reply-To: <46FA6846.2080704@gmail.com>
-X-Enigmail-Version: 0.94.2.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lysator.liu.se
-Return-Path: <markus.gothe@27m.se>
+References: <46FA6846.2080704@gmail.com> <46FA6B27.6050204@27m.se>
+In-Reply-To: <46FA6B27.6050204@27m.se>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16693
+X-archive-position: 16694
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markus.gothe@27m.se
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Markus Gothe wrote:
+> I think you mean this in specific:
+> 
+> "/* This yields a string that ld.so will use to load implementation
+>    specific libraries for optimization.  This is more specific in
+>    intent than poking at uname or /proc/cpuinfo.
+> 
+>    For the moment, we have only optimizations for the Intel generations,
+>    but that could change... */
+> 
+> #define ELF_PLATFORM  (NULL)"
+> 
+> Right?
+> 
 
-Franck Bui-Huu wrote:
-> Ralf,
->
-> We started stack inside page randomization through commit
-> 941091024ef0f2f7e09eb81201d293ac18833cc8 but it currently does nothing
-> usefull because ELF_PLATFORM is not defined on MIPS (see
-> fs/binfm_elf.c, create_elf_tables() for details).
->
-> I tried several times to get information on lkml about that dependency
-> but unfortunately I got no answer.
->
-> I'm not sure how ELF_PLATFORM is used by ld.so and I don't think it's
-> a good idea to define it just for enabling stack randomization.
->
-> What do you think ?
->
-> thanks
->         Franck
->
-I think you mean this in specific:
+Correct...
 
-"/* This yields a string that ld.so will use to load implementation
-   specific libraries for optimization.  This is more specific in
-   intent than poking at uname or /proc/cpuinfo.
-
-   For the moment, we have only optimizations for the Intel generations,
-   but that could change... */
-
-#define ELF_PLATFORM  (NULL)"
-
-Right?
-
-- --
-_______________________________________
-
-Mr Markus Gothe
-Software Engineer
-
-Phone: +46 (0)13 21 81 20 (ext. 1046)
-Fax: +46 (0)13 21 21 15
-Mobile: +46 (0)73 718 72 80
-Diskettgatan 11, SE-583 35 Linköping, Sweden
-www.27m.com
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFG+msl6I0XmJx2NrwRCBm0AJ99yMRx1Kkre9bPa3y9lkV+xHSvVwCcC6qP
-5AoYOLF7HLEOPrnr8fIhBuk=
-=+uD/
------END PGP SIGNATURE-----
+		Franck

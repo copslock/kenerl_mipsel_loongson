@@ -1,108 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 09:06:03 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.170]:31898 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022267AbXIZIFz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Sep 2007 09:05:55 +0100
-Received: by ug-out-1314.google.com with SMTP id u2so1243506uge
-        for <linux-mips@linux-mips.org>; Wed, 26 Sep 2007 01:05:37 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=fL8BhB2rH8F8U0OalTgKfLErDqlfe47+CPLOGG0nPOw=;
-        b=aqEpgzbdGZ7y25ELvX9mIkP85b9qajmKR/jRWIVGOGohjzpRqkU9cbnDp3+pciG6YwPURmbQa4TWDjhdZwThRESVrhGT/+1s+U/DaFMXU6yYs0cDIC6qkAlsuW8/5yMAQeCaVsJ9OgeuqtpVgQ3Z0dQbHdzxG6S14L0LttC1Ppc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=qdr+dXL9v0r0L9AxSj0XsgZBOhlScd3aA+jSHiIUL3FUUDp9brLZuM0GBpskC8bGz8z8P8iXTFer+RBu1t2EVFsTXSpFhqOkX41FbTrVYXWJ7++XR4MHjR7I3w/uA0G9csj86PIuMhr2DeyfybEh7g18qFoYcyfT9Rur33RO8ok=
-Received: by 10.67.28.3 with SMTP id f3mr1827527ugj.1190793936957;
-        Wed, 26 Sep 2007 01:05:36 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id v23sm1000705fkd.2007.09.26.01.05.35
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 26 Sep 2007 01:05:36 -0700 (PDT)
-Message-ID: <46FA1260.4000404@gmail.com>
-Date:	Wed, 26 Sep 2007 10:03:44 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
-To:	Martin Michlmayr <tbm@cyrius.com>
-CC:	linux-mips@linux-mips.org, Franck Bui-Huu <fbuihuu@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 10:15:13 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:36626 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20029430AbXIZJPF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Sep 2007 10:15:05 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id E92AED8DF; Wed, 26 Sep 2007 09:14:57 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 53CAA542CF; Wed, 26 Sep 2007 11:14:43 +0200 (CEST)
+Date:	Wed, 26 Sep 2007 11:14:43 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	linux-mips@linux-mips.org, Franck Bui-Huu <fbuihuu@gmail.com>,
 	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Subject: Re: CONFIG_BUILD_ELF64 broken on IP32 since 2.6.20
-References: <20070925181353.GA15412@deprecation.cyrius.com>
-In-Reply-To: <20070925181353.GA15412@deprecation.cyrius.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Message-ID: <20070926091443.GA10236@deprecation.cyrius.com>
+References: <20070925181353.GA15412@deprecation.cyrius.com> <46FA1260.4000404@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46FA1260.4000404@gmail.com>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16683
+X-archive-position: 16684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Martin Michlmayr wrote:
-> IP32 kernels that are built with CONFIG_BUILD_ELF64=y only produce an
-> exception when booted.  This worked with 2.6.19 and before.  I haven't
-> had a chance to dig deep yet but it seems both Franck Bui-Huu and
-> Atsushi Nemoto had patches in 2.6.20 that might have caused this.
+* Franck Bui-Huu <vagabon.xyz@gmail.com> [2007-09-26 10:03]:
+> To verify this, could you apply the following patch _without_ Ralf's
+> commit and report back the trace. You may need to enable early printk
+> to see something and be sure CONFIG_KALLSYMS_ALL is set.
 
-I'm the culprit ;) but...
+5152902+253674 entry: 0x804ac000
+Linux version 2.6.22-2-r5k-ip32 (2.6.22-5) (tbm@em64t) (gcc version 4.1.2 20061115 (prerelease) (Debian 4.1.1-21)) #3 Wed Sep 26 09:10:31 UTC 2007
+ARCH: SGI-IP32
+PROMLIB: ARC firmware Version 1 Revision 10
+CRIME id a rev 1 at 0x0000000014000000
+CRIME MC: bank 0 base 0x0000000000000000 size 128MiB
+CRIME MC: bank 1 base 0x0000000008000000 size 128MiB
+CRIME MC: bank 2 base 0x0000000050000000 size 32MiB
+CRIME MC: bank 3 base 0x0000000052000000 size 32MiB
+CPU revision is: 00002321
+FPU revision is: 00002310
+Determined physical RAM map:
+ memory: 0000000010000000 @ 0000000000000000 (usable)
+ memory: 0000000004000000 @ 0000000050000000 (usable)
+*** __pa: symbol in CKSEG0 found: wireless_nlevent_queue+0x20/0x20
 
-> This still happens with 2.6.22.  I cannot boot current git for other
-> reasons.
-> 
-> If anyone has an idea which specific patch might have caused this,
-> please let me know.  Otherwise I'll try to find time in the next few
-> days to revert various patches.
+Exception: <vector=Normal>
+Status register: 0x34010082<CU1,CU0,FR,DE,IPL=8,KX,MODE=KERNEL>
+Cause register: 0x8024<CE=0,IP8,EXC=BREAK>
+Exception PC: 0x804bbc2c, Exception RA: 0x804bbc2c
+Breakpoint exception at address 0xbffffff7
+  Saved user regs in hex (&gpda 0x810617b8, &_regs 0x810619b8):
+  arg: 81070000 2f1 0 1
+  tmp: 81070000 8052bf70 a13fb518 81077d40 8052bf70 a13fba0c 810723b0 81054090
+  sve: 81070000 4015fa0c 0 4618fbd8 0 4047cfc7 0 3ebf5e51
+  t8 81070000 t9 0 at 0 v0 402003f7 v1 0 k1 46
+  gp 81070000 fp 0 sp 0 ra 0
 
-It's sad to see this issue is still not fixed. Some people complained
-about IPxx kernels broken by CONFIG_BUILD_ELF64 config but disappear
-once they reported the problem. Anyways, hopefully this time we could
-do a better job...
+PANIC: Unexpected exception
 
-OK, it seems that Ralf's commit
-db423f6e86c3c4c70edf3eaf504e22c467b9f97c fixes your issue. But
-actually I think it just hides another problem. Because with
-CONFIG_BUILD_ELF64=y you claim to run a kernel with 64 bit
-symbols. However if the previous commit fixes your issue then it shows
-that your kernel handles a symbol linked in CKSEG0 although
-CONFIG_BUILD_ELF64 is set.
-
-To verify this, could you apply the following patch _without_ Ralf's
-commit and report back the trace. You may need to enable early printk
-to see something and be sure CONFIG_KALLSYMS_ALL is set.
-
-thanks,
-		Franck
-
--- 8< --
-
-diff --git a/include/asm-mips/page.h b/include/asm-mips/page.h
-index b92dd8c..a469cf1 100644
---- a/include/asm-mips/page.h
-+++ b/include/asm-mips/page.h
-@@ -149,8 +149,17 @@ typedef struct { unsigned long pgprot; } pgprot_t;
-     __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
- })
- #else
--#define __pa(x)								\
--    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
-+static inline unsigned long __pa(void *p)
-+{
-+	unsigned long x = (unsigned long)p;
-+
-+	if (x > CKSEG0 - 1) {
-+		__print_symbol("*** __pa: symbol in CKSEG0 found: %s\n", x);
-+		BUG();
-+	}
-+
-+	return x - PAGE_OFFSET + PHYS_OFFSET;
-+}
- #endif
- #define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
- #define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x),0))
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

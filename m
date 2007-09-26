@@ -1,52 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 15:41:21 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:56797 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20029726AbXIZOlN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Sep 2007 15:41:13 +0100
-Received: from localhost (p2188-ipad308funabasi.chiba.ocn.ne.jp [123.217.188.188])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id DEA4FCF34; Wed, 26 Sep 2007 23:41:07 +0900 (JST)
-Date:	Wed, 26 Sep 2007 23:42:46 +0900 (JST)
-Message-Id: <20070926.234246.128619502.anemo@mba.ocn.ne.jp>
-To:	vagabon.xyz@gmail.com
-Cc:	tbm@cyrius.com, linux-mips@linux-mips.org, fbuihuu@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Sep 2007 15:50:26 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:55251 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20029464AbXIZOuR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Sep 2007 15:50:17 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 129F9400ED;
+	Wed, 26 Sep 2007 16:49:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id zD-WqecO8htc; Wed, 26 Sep 2007 16:49:43 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 5F7A4400A9;
+	Wed, 26 Sep 2007 16:49:43 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l8QEnkmm019633;
+	Wed, 26 Sep 2007 16:49:46 +0200
+Date:	Wed, 26 Sep 2007 15:49:41 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Subject: Re: CONFIG_BUILD_ELF64 broken on IP32 since 2.6.20
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <46FA2307.3090600@gmail.com>
-References: <20070925181353.GA15412@deprecation.cyrius.com>
-	<20070926.110814.41629599.nemoto@toshiba-tops.co.jp>
-	<46FA2307.3090600@gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+In-Reply-To: <46FA5FFA.1060704@gmail.com>
+Message-ID: <Pine.LNX.4.64N.0709261525510.30122@blysk.ds.pg.gda.pl>
+References: <20070925181353.GA15412@deprecation.cyrius.com> <46FA1260.4000404@gmail.com>
+ <20070926091443.GA10236@deprecation.cyrius.com> <46FA2C39.9020503@gmail.com>
+ <20070926102412.GK3337@deprecation.cyrius.com>
+ <Pine.LNX.4.64N.0709261226340.30122@blysk.ds.pg.gda.pl> <46FA5FFA.1060704@gmail.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4404/Wed Sep 26 14:53:15 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16695
+X-archive-position: 16696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 26 Sep 2007 11:14:47 +0200, Franck Bui-Huu <vagabon.xyz@gmail.com> wrote:
-> Ah but as I suggested I think we should get rid of
-> KBUILD_64BIT_SYM32 in the code. This patchset won't work if the kernel
-> symbols are modified latter through objcopy or whatever...
+On Wed, 26 Sep 2007, Franck Bui-Huu wrote:
+
+> Except that if CONFIG_BUILD_ELF64 is set then we assume that the kernel
+> is linked in XKPHYS which results in Martin's crash since his kernel is
+> linked in CKSEG0.
 > 
-> What do you think ?
+> If you can recall that was done for a micro-optimization in __pa() but it
+> was a huge mistake because it relies on the configuration of BUILD_ELF64
+> to be setup correctly by the user... So in this case there's no point to
+> set CONFIG_BUILD_ELF64='y' since it makes the kernel bigger and slower.
+> But it used to work until my change, so my own fault.
 
-Well, KBUILD_64BIT_SYM32 in stackframe.h is in critical path.
+ While, as expressed previously, the assumption of CONFIG_BUILD_ELF64 
+meaning XKPHYS mapping is questionable, a requirement for the user to 
+somehow magically know that the two became related somehow is 
+unreasonable.  Especially as in many cases people just copy an old .config 
+over to a new version of the kernel and run `make oldconfig'; I have 
+certainly not done anything else for years.
 
-And for KBUILD_64BIT_SYM32 in pgtable-64, I'm not sure non-sym32
-module can work on CKSSEG.  It might work but it seems XKSEG is more
-natural for non-sym32 module.
+ Given the dependency is quite straightforward it could have been sorted 
+out with a reverse dependency in Kconfig based on the load addresses 
+specified in Makefile -- boring, but easily done.  That assuming the 
+failure of -msym32 resulting from the use of an older unsupported 
+toolchain would be reported as fatal to the user, together with 
+information of which versions are the minimum.
 
-So now I'm happy with your patchset as is in linux-queue tree ;)
+ Of course requiring a different version of the toolchain based on whether 
+XKPHYS or KSEG0 mapping is used (i.e. newer for the latter!) is 
+questionable too, but that is a different matter.
 
----
-Atsushi Nemoto
+  Maciej

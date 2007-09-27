@@ -1,68 +1,207 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2007 09:14:01 +0100 (BST)
-Received: from fk-out-0910.google.com ([209.85.128.189]:63607 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021894AbXI0INw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Sep 2007 09:13:52 +0100
-Received: by fk-out-0910.google.com with SMTP id f40so2495734fka
-        for <linux-mips@linux-mips.org>; Thu, 27 Sep 2007 01:13:52 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=xkCH4DOOmT2OI8ey0AU0M3Z0MhmFLzFCjHY/IgW6RJg=;
-        b=RAzlJShk2K8T9ndkeo1sHDsBgf23WDVY3f/QkgSzgLLwvumOMnRmVdgCXBZiSSOvsHyg96e9WEhbufuITOx537UD9/VXnCNUuSvdxg/ODo7ZUCaMli15w8Jc8ta2v2Qn4Z/KiIwbiRJz3nPi8vxdJI1BEu+k1oJV2cuNJdMRyxk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=JbBef4674YKAAe1fMngrf9vE6hx18NlDReyxgIVLobhIFnKUxoB+LW1kt3RJ2ftwyJeGsrKWmVX5aQcySz2bs7wTlw724GT5jnGHBLxEJs8AOUder1f95/VTtDhnBjgnZZAGQOzSnWs8BDmjmU8u6B/N4K7giq+MuHkKwpZGl0k=
-Received: by 10.82.111.8 with SMTP id j8mr3943808buc.1190880831575;
-        Thu, 27 Sep 2007 01:13:51 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id c28sm3880691fka.2007.09.27.01.13.47
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 27 Sep 2007 01:13:48 -0700 (PDT)
-Message-ID: <46FB65C5.2000202@gmail.com>
-Date:	Thu, 27 Sep 2007 10:11:49 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, tbm@cyrius.com,
-	linux-mips@linux-mips.org
-Subject: Re: CONFIG_BUILD_ELF64 broken on IP32 since 2.6.20
-References: <Pine.LNX.4.64N.0709261226340.30122@blysk.ds.pg.gda.pl> <46FA5FFA.1060704@gmail.com> <Pine.LNX.4.64N.0709261525510.30122@blysk.ds.pg.gda.pl> <20070927.003400.108121785.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0709261644500.30122@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0709261644500.30122@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2007 09:51:53 +0100 (BST)
+Received: from mo30.po.2iij.NET ([210.128.50.53]:24887 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022987AbXI0Ivp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Sep 2007 09:51:45 +0100
+Received: by mo.po.2iij.net (mo30) id l8R8pfYW032863; Thu, 27 Sep 2007 17:51:41 +0900 (JST)
+Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox301) id l8R8pdjw012181
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 27 Sep 2007 17:51:40 +0900
+Date:	Thu, 27 Sep 2007 17:51:05 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Richard Purdie <rpurdie@rpsys.net>
+Cc:	yoichi_yuasa@tripeaks.co.jp, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] led: add Cobalt Raq series LEDs support
+Message-Id: <20070927175105.cf0ccb10.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16706
+X-archive-position: 16707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Thu, 27 Sep 2007, Atsushi Nemoto wrote:
-> 
->> Current linux-queue code adds -msym32 if the load address was CKSEG0,
->> so it can not be compiled with gcc 3.x.  I think this patch fixes the
->> problem:
->>
->> http://www.linux-mips.org/archives/linux-mips/2007-03/msg00404.html
-> 
->  It looks like it should -- why hasn't it been pushed?
-> 
+Add Cobalt Raq series LEDs support.
 
-I don't remember. I thought the last patchset had the fix.
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-Just to be sure I understand both of you correctly, could
-you confirm that in case of '-msym32' switch isn't supported,
-we should _silently_ drop this option ? That's what Atsushi
-was suggesting. But reading what Maciej wrote, it seems that
-we should notify the user...
-
-		Franck
+diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/Kconfig leds/drivers/leds/Kconfig
+--- leds-orig/drivers/leds/Kconfig	2007-09-27 14:49:12.873471250 +0900
++++ leds/drivers/leds/Kconfig	2007-09-27 14:49:12.557451500 +0900
+@@ -93,6 +93,13 @@ config LEDS_COBALT_QUBE
+ 	help
+ 	  This option enables support for the front LED on Cobalt Qube series
+ 
++config LEDS_COBALT_RAQ
++	bool "LED Support for the Cobalt Raq series"
++	depends on LEDS_CLASS && MIPS_COBALT
++	select LEDS_TRIGGERS
++	help
++	  This option enables support for the Cobalt Raq series LEDs.
++
+ config LEDS_GPIO
+ 	tristate "LED Support for GPIO connected LEDs"
+ 	depends on LEDS_CLASS && GENERIC_GPIO
+diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/Makefile leds/drivers/leds/Makefile
+--- leds-orig/drivers/leds/Makefile	2007-09-27 14:49:13.005479500 +0900
++++ leds/drivers/leds/Makefile	2007-09-27 14:49:12.557451500 +0900
+@@ -16,6 +16,7 @@ obj-$(CONFIG_LEDS_NET48XX)		+= leds-net4
+ obj-$(CONFIG_LEDS_WRAP)			+= leds-wrap.o
+ obj-$(CONFIG_LEDS_H1940)		+= leds-h1940.o
+ obj-$(CONFIG_LEDS_COBALT_QUBE)		+= leds-cobalt-qube.o
++obj-$(CONFIG_LEDS_COBALT_RAQ)		+= leds-cobalt-raq.o
+ obj-$(CONFIG_LEDS_GPIO)			+= leds-gpio.o
+ 
+ # LED Triggers
+diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/leds-cobalt-raq.c leds/drivers/leds/leds-cobalt-raq.c
+--- leds-orig/drivers/leds/leds-cobalt-raq.c	1970-01-01 09:00:00.000000000 +0900
++++ leds/drivers/leds/leds-cobalt-raq.c	2007-09-27 14:49:12.557451500 +0900
+@@ -0,0 +1,138 @@
++/*
++ *  LEDs driver for the Cobalt Raq series.
++ *
++ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/leds.h>
++#include <linux/platform_device.h>
++#include <linux/spinlock.h>
++#include <linux/types.h>
++
++#define LED_WEB		0x04
++#define LED_POWER_OFF	0x08
++
++static void __iomem *led_port;
++static u8 led_value;
++static DEFINE_SPINLOCK(led_value_lock);
++
++static void raq_web_led_set(struct led_classdev *led_cdev,
++                            enum led_brightness brightness)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&led_value_lock, flags);
++
++	if (brightness)
++		led_value |= LED_WEB;
++	else
++		led_value &= ~LED_WEB;
++	writeb(led_value, led_port);
++
++	spin_unlock_irqrestore(&led_value_lock, flags);
++}
++
++static struct led_classdev raq_web_led = {
++	.name		= "raq-web",
++	.brightness_set	= raq_web_led_set,
++};
++
++static void raq_power_off_led_set(struct led_classdev *led_cdev,
++                                  enum led_brightness brightness)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&led_value_lock, flags);
++
++	if (brightness)
++		led_value |= LED_POWER_OFF;
++	else
++		led_value &= ~LED_POWER_OFF;
++	writeb(led_value, led_port);
++
++	spin_unlock_irqrestore(&led_value_lock, flags);
++}
++
++static struct led_classdev raq_power_off_led = {
++	.name			= "raq-power-off",
++	.brightness_set		= raq_power_off_led_set,
++	.default_trigger	= "power-off",
++};
++
++static int __devinit cobalt_raq_led_probe(struct platform_device *pdev)
++{
++	struct resource *res;
++	int retval;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -EBUSY;
++
++	led_port = ioremap(res->start, res->end - res->start + 1);
++	if (!led_port)
++		return -ENOMEM;
++
++	retval = led_classdev_register(&pdev->dev, &raq_power_off_led);
++	if (retval)
++		goto err_iounmap;
++
++	retval = led_classdev_register(&pdev->dev, &raq_web_led);
++	if (retval)
++		goto err_unregister;
++
++	return 0;
++
++err_unregister:
++	led_classdev_unregister(&raq_power_off_led);
++
++err_iounmap:
++	iounmap(led_port);
++	led_port = NULL;
++
++	return retval;
++}
++
++static int __devexit cobalt_raq_led_remove(struct platform_device *pdev)
++{
++	led_classdev_unregister(&raq_power_off_led);
++	led_classdev_unregister(&raq_web_led);
++
++	if (led_port) {
++		iounmap(led_port);
++		led_port = NULL;
++	}
++
++	return 0;
++}
++
++static struct platform_driver cobalt_raq_led_driver = {
++	.probe	= cobalt_raq_led_probe,
++	.remove	= __devexit_p(cobalt_raq_led_remove),
++	.driver = {
++		.name	= "cobalt-raq-leds",
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init cobalt_raq_led_init(void)
++{
++	return platform_driver_register(&cobalt_raq_led_driver);
++}
++
++module_init(cobalt_raq_led_init);

@@ -1,60 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2007 01:24:42 +0100 (BST)
-Received: from phoenix.bawue.net ([193.7.176.60]:51153 "EHLO mail.bawue.net")
-	by ftp.linux-mips.org with ESMTP id S20021597AbXI0AYc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Sep 2007 01:24:32 +0100
-Received: from lagash (88-106-176-50.dynamic.dsl.as9105.com [88.106.176.50])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bawue.net (Postfix) with ESMTP id 4A600E03AB;
-	Thu, 27 Sep 2007 02:24:26 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.67)
-	(envelope-from <ths@networkno.de>)
-	id 1IahB0-0006fG-5u; Thu, 27 Sep 2007 01:24:22 +0100
-Date:	Thu, 27 Sep 2007 01:24:22 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	fbuihuu@gmail.com
-Subject: Re: CONFIG_BUILD_ELF64 broken on IP32 since 2.6.20
-Message-ID: <20070927002421.GA18945@networkno.de>
-References: <20070925181353.GA15412@deprecation.cyrius.com> <20070926.110814.41629599.nemoto@toshiba-tops.co.jp> <20070926055912.GA3337@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2007 09:14:01 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.189]:63607 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021894AbXI0INw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Sep 2007 09:13:52 +0100
+Received: by fk-out-0910.google.com with SMTP id f40so2495734fka
+        for <linux-mips@linux-mips.org>; Thu, 27 Sep 2007 01:13:52 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=xkCH4DOOmT2OI8ey0AU0M3Z0MhmFLzFCjHY/IgW6RJg=;
+        b=RAzlJShk2K8T9ndkeo1sHDsBgf23WDVY3f/QkgSzgLLwvumOMnRmVdgCXBZiSSOvsHyg96e9WEhbufuITOx537UD9/VXnCNUuSvdxg/ODo7ZUCaMli15w8Jc8ta2v2Qn4Z/KiIwbiRJz3nPi8vxdJI1BEu+k1oJV2cuNJdMRyxk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=JbBef4674YKAAe1fMngrf9vE6hx18NlDReyxgIVLobhIFnKUxoB+LW1kt3RJ2ftwyJeGsrKWmVX5aQcySz2bs7wTlw724GT5jnGHBLxEJs8AOUder1f95/VTtDhnBjgnZZAGQOzSnWs8BDmjmU8u6B/N4K7giq+MuHkKwpZGl0k=
+Received: by 10.82.111.8 with SMTP id j8mr3943808buc.1190880831575;
+        Thu, 27 Sep 2007 01:13:51 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id c28sm3880691fka.2007.09.27.01.13.47
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 27 Sep 2007 01:13:48 -0700 (PDT)
+Message-ID: <46FB65C5.2000202@gmail.com>
+Date:	Thu, 27 Sep 2007 10:11:49 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20070926055912.GA3337@deprecation.cyrius.com>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, tbm@cyrius.com,
+	linux-mips@linux-mips.org
+Subject: Re: CONFIG_BUILD_ELF64 broken on IP32 since 2.6.20
+References: <Pine.LNX.4.64N.0709261226340.30122@blysk.ds.pg.gda.pl> <46FA5FFA.1060704@gmail.com> <Pine.LNX.4.64N.0709261525510.30122@blysk.ds.pg.gda.pl> <20070927.003400.108121785.anemo@mba.ocn.ne.jp> <Pine.LNX.4.64N.0709261644500.30122@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0709261644500.30122@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16705
+X-archive-position: 16706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Martin Michlmayr wrote:
-> * Atsushi Nemoto <anemo@mba.ocn.ne.jp> [2007-09-26 11:08]:
-> > I think this is solved on current git a few weeks ago by this commit
-> > (not mainlined yet):
-> > > Subject: [MIPS] Fix CONFIG_BUILD_ELF64 kernels with symbols in CKSEG0.
-> > > Gitweb: http://www.linux-mips.org/g/linux/db423f6e
-> > It is just one liner and can be backported easily.
+Maciej W. Rozycki wrote:
+> On Thu, 27 Sep 2007, Atsushi Nemoto wrote:
 > 
-> I put this into 2.6.22 and it works.  Thanks a lot for the link.
+>> Current linux-queue code adds -msym32 if the load address was CKSEG0,
+>> so it can not be compiled with gcc 3.x.  I think this patch fixes the
+>> problem:
+>>
+>> http://www.linux-mips.org/archives/linux-mips/2007-03/msg00404.html
 > 
-> > I still think CONFIG_BUILD_ELF64=n is best choice.  You can get
-> > smaller and faster kernel with this.  Are there any reason to use
-> > CONFIG_BUILD_ELF64=y for IP32?
+>  It looks like it should -- why hasn't it been pushed?
 > 
-> I don't know.  All I know is that it's enabled in the Debian kernel
-> for IP22 and IP32 and has broken the kernel.  Thiemo, do you remember
-> why this option is enabled in our kernels?
 
-ISTR we needed this for older toolchains, it should be obsolete now
-(for ip32).
+I don't remember. I thought the last patchset had the fix.
 
+Just to be sure I understand both of you correctly, could
+you confirm that in case of '-msym32' switch isn't supported,
+we should _silently_ drop this option ? That's what Atsushi
+was suggesting. But reading what Maciej wrote, it seems that
+we should notify the user...
 
-Thiemo
+		Franck

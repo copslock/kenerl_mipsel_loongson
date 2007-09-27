@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2007 09:51:53 +0100 (BST)
-Received: from mo30.po.2iij.NET ([210.128.50.53]:24887 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022987AbXI0Ivp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Sep 2007 09:51:45 +0100
-Received: by mo.po.2iij.net (mo30) id l8R8pfYW032863; Thu, 27 Sep 2007 17:51:41 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Sep 2007 09:53:09 +0100 (BST)
+Received: from mo30.po.2iij.NET ([210.128.50.53]:42809 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022994AbXI0Iw7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Sep 2007 09:52:59 +0100
+Received: by mo.po.2iij.net (mo30) id l8R8pgAM032874; Thu, 27 Sep 2007 17:51:42 +0900 (JST)
 Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox301) id l8R8pdjw012181
+	by mbox.po.2iij.net (po-mbox303) id l8R8peE9025629
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
 	Thu, 27 Sep 2007 17:51:40 +0900
-Date:	Thu, 27 Sep 2007 17:51:05 +0900
+Message-Id: <200709270851.l8R8peE9025629@po-mbox303.hop.2iij.net>
+Date:	Thu, 27 Sep 2007 17:51:17 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Richard Purdie <rpurdie@rpsys.net>
 Cc:	yoichi_yuasa@tripeaks.co.jp, Ralf Baechle <ralf@linux-mips.org>,
 	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] led: add Cobalt Raq series LEDs support
-Message-Id: <20070927175105.cf0ccb10.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH] led: update Cobalt Qube series front LED support
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
@@ -23,7 +23,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16707
+X-archive-position: 16708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,120 +31,57 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Add Cobalt Raq series LEDs support.
+Update Cobalt Qube series front LED support.
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/Kconfig leds/drivers/leds/Kconfig
---- leds-orig/drivers/leds/Kconfig	2007-09-27 14:49:12.873471250 +0900
-+++ leds/drivers/leds/Kconfig	2007-09-27 14:49:12.557451500 +0900
-@@ -93,6 +93,13 @@ config LEDS_COBALT_QUBE
- 	help
- 	  This option enables support for the front LED on Cobalt Qube series
- 
-+config LEDS_COBALT_RAQ
-+	bool "LED Support for the Cobalt Raq series"
-+	depends on LEDS_CLASS && MIPS_COBALT
-+	select LEDS_TRIGGERS
-+	help
-+	  This option enables support for the Cobalt Raq series LEDs.
-+
- config LEDS_GPIO
- 	tristate "LED Support for GPIO connected LEDs"
- 	depends on LEDS_CLASS && GENERIC_GPIO
-diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/Makefile leds/drivers/leds/Makefile
---- leds-orig/drivers/leds/Makefile	2007-09-27 14:49:13.005479500 +0900
-+++ leds/drivers/leds/Makefile	2007-09-27 14:49:12.557451500 +0900
-@@ -16,6 +16,7 @@ obj-$(CONFIG_LEDS_NET48XX)		+= leds-net4
- obj-$(CONFIG_LEDS_WRAP)			+= leds-wrap.o
- obj-$(CONFIG_LEDS_H1940)		+= leds-h1940.o
- obj-$(CONFIG_LEDS_COBALT_QUBE)		+= leds-cobalt-qube.o
-+obj-$(CONFIG_LEDS_COBALT_RAQ)		+= leds-cobalt-raq.o
- obj-$(CONFIG_LEDS_GPIO)			+= leds-gpio.o
- 
- # LED Triggers
-diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/leds-cobalt-raq.c leds/drivers/leds/leds-cobalt-raq.c
---- leds-orig/drivers/leds/leds-cobalt-raq.c	1970-01-01 09:00:00.000000000 +0900
-+++ leds/drivers/leds/leds-cobalt-raq.c	2007-09-27 14:49:12.557451500 +0900
-@@ -0,0 +1,138 @@
-+/*
-+ *  LEDs driver for the Cobalt Raq series.
-+ *
-+ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-+ */
+diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/leds-cobalt-qube.c leds/drivers/leds/leds-cobalt-qube.c
+--- leds-orig/drivers/leds/leds-cobalt-qube.c	2007-09-27 14:49:13.005479500 +0900
++++ leds/drivers/leds/leds-cobalt-qube.c	2007-09-27 14:55:49.558262500 +0900
+@@ -3,40 +3,99 @@
+  *
+  * Control the Cobalt Qube series front LED
+  */
+-
 +#include <linux/init.h>
 +#include <linux/io.h>
 +#include <linux/ioport.h>
 +#include <linux/leds.h>
+ #include <linux/module.h>
 +#include <linux/platform_device.h>
-+#include <linux/spinlock.h>
-+#include <linux/types.h>
-+
-+#define LED_WEB		0x04
-+#define LED_POWER_OFF	0x08
+ #include <linux/types.h>
+-#include <linux/kernel.h>
+-#include <linux/device.h>
+-#include <linux/leds.h>
+-#include <asm/mach-cobalt/cobalt.h>
+ 
+-static void cobalt_led_set(struct led_classdev *led_cdev, enum led_brightness brightness)
++#define LED_FRONT_LEFT	0x01
++#define LED_FRONT_RIGHT	0x02
 +
 +static void __iomem *led_port;
 +static u8 led_value;
-+static DEFINE_SPINLOCK(led_value_lock);
 +
-+static void raq_web_led_set(struct led_classdev *led_cdev,
-+                            enum led_brightness brightness)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&led_value_lock, flags);
-+
-+	if (brightness)
-+		led_value |= LED_WEB;
-+	else
-+		led_value &= ~LED_WEB;
++static void qube_front_led_set(struct led_classdev *led_cdev,
++                               enum led_brightness brightness)
+ {
+ 	if (brightness)
+-		COBALT_LED_PORT = COBALT_LED_BAR_LEFT | COBALT_LED_BAR_RIGHT;
++		led_value = LED_FRONT_LEFT | LED_FRONT_RIGHT;
+ 	else
+-		COBALT_LED_PORT = 0;
++		led_value = ~(LED_FRONT_LEFT | LED_FRONT_RIGHT);
 +	writeb(led_value, led_port);
-+
-+	spin_unlock_irqrestore(&led_value_lock, flags);
 +}
 +
-+static struct led_classdev raq_web_led = {
-+	.name		= "raq-web",
-+	.brightness_set	= raq_web_led_set,
++static struct led_classdev qube_front_led = {
++	.name			= "qube-front",
++	.brightness		= LED_FULL,
++	.brightness_set		= qube_front_led_set,
++	.default_trigger	= "ide-disk",
 +};
 +
-+static void raq_power_off_led_set(struct led_classdev *led_cdev,
-+                                  enum led_brightness brightness)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&led_value_lock, flags);
-+
-+	if (brightness)
-+		led_value |= LED_POWER_OFF;
-+	else
-+		led_value &= ~LED_POWER_OFF;
-+	writeb(led_value, led_port);
-+
-+	spin_unlock_irqrestore(&led_value_lock, flags);
-+}
-+
-+static struct led_classdev raq_power_off_led = {
-+	.name			= "raq-power-off",
-+	.brightness_set		= raq_power_off_led_set,
-+	.default_trigger	= "power-off",
-+};
-+
-+static int __devinit cobalt_raq_led_probe(struct platform_device *pdev)
++static int __devinit cobalt_qube_led_probe(struct platform_device *pdev)
 +{
 +	struct resource *res;
 +	int retval;
@@ -157,18 +94,14 @@ diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/leds-cobalt-raq
 +	if (!led_port)
 +		return -ENOMEM;
 +
-+	retval = led_classdev_register(&pdev->dev, &raq_power_off_led);
++	led_value = LED_FRONT_LEFT | LED_FRONT_RIGHT;
++	writeb(led_value, led_port);
++
++	retval = led_classdev_register(&pdev->dev, &qube_front_led);
 +	if (retval)
 +		goto err_iounmap;
 +
-+	retval = led_classdev_register(&pdev->dev, &raq_web_led);
-+	if (retval)
-+		goto err_unregister;
-+
 +	return 0;
-+
-+err_unregister:
-+	led_classdev_unregister(&raq_power_off_led);
 +
 +err_iounmap:
 +	iounmap(led_port);
@@ -177,10 +110,9 @@ diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/leds-cobalt-raq
 +	return retval;
 +}
 +
-+static int __devexit cobalt_raq_led_remove(struct platform_device *pdev)
++static int __devexit cobalt_qube_led_remove(struct platform_device *pdev)
 +{
-+	led_classdev_unregister(&raq_power_off_led);
-+	led_classdev_unregister(&raq_web_led);
++	led_classdev_unregister(&qube_front_led);
 +
 +	if (led_port) {
 +		iounmap(led_port);
@@ -188,20 +120,39 @@ diff -pruN -X leds/Documentation/dontdiff leds-orig/drivers/leds/leds-cobalt-raq
 +	}
 +
 +	return 0;
-+}
-+
-+static struct platform_driver cobalt_raq_led_driver = {
-+	.probe	= cobalt_raq_led_probe,
-+	.remove	= __devexit_p(cobalt_raq_led_remove),
-+	.driver = {
-+		.name	= "cobalt-raq-leds",
+ }
+ 
+-static struct led_classdev cobalt_led = {
+-       .name = "cobalt-front-led",
+-       .brightness_set = cobalt_led_set,
+-       .default_trigger = "ide-disk",
++static struct platform_driver cobalt_qube_led_driver = {
++	.probe	= cobalt_qube_led_probe,
++	.remove	= __devexit_p(cobalt_qube_led_remove),
++	.driver	= {
++		.name	= "cobalt-qube-leds",
 +		.owner	= THIS_MODULE,
 +	},
-+};
-+
-+static int __init cobalt_raq_led_init(void)
-+{
-+	return platform_driver_register(&cobalt_raq_led_driver);
-+}
-+
-+module_init(cobalt_raq_led_init);
+ };
+ 
+-static int __init cobalt_led_init(void)
++static int __init cobalt_qube_led_init(void)
+ {
+-	return led_classdev_register(NULL, &cobalt_led);
++	return platform_driver_register(&cobalt_qube_led_driver);
+ }
+ 
+-static void __exit cobalt_led_exit(void)
++static void __exit cobalt_qube_led_exit(void)
+ {
+-	led_classdev_unregister(&cobalt_led);
++	platform_driver_unregister(&cobalt_qube_led_driver);
+ }
+ 
+-module_init(cobalt_led_init);
+-module_exit(cobalt_led_exit);
++module_init(cobalt_qube_led_init);
++module_exit(cobalt_qube_led_exit);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Front LED support for Cobalt Qube series");

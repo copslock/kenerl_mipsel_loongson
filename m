@@ -1,53 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2007 06:23:52 +0100 (BST)
-Received: from hu-out-0506.google.com ([72.14.214.232]:39352 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022769AbXI1FXn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Sep 2007 06:23:43 +0100
-Received: by hu-out-0506.google.com with SMTP id 31so1375357huc
-        for <linux-mips@linux-mips.org>; Thu, 27 Sep 2007 22:23:25 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        bh=dGKn1X/yEUx6iK+BANb/U5Bn6IWmSm6cZ3zOacw/Aco=;
-        b=FlkSs1P6ppp/gQlnt8/8ldN/j1FS0r5HyEWIqmNasjrnjrk+n5GitpSLHt/IXqLqkv50eJ9e9R/v0qdl0E0zUJLuR2qMK5w9dUs/7GULw/4EyPMT7skOZwmCggBkGp0M+xtlZHP2QkHXJjRETtGSNMm5654bX0js8Ni/ENrlpxk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=gqx1kTGreCobz7MDK33qTL0gvDtD+03fOjQp8OskUsH26rEShpy3pxQyTrBPPUJjVYVWN+cDt4or5IeM2ud5+wO1RdrVAV3kNEAxYFC7lldXd1Lue1QBmG3dk/6Cnvzmdygv6zpeZ7VB9yHPk2qp9wZp/63BlG5pt/+88EuldSE=
-Received: by 10.66.219.16 with SMTP id r16mr4541826ugg.1190957005367;
-        Thu, 27 Sep 2007 22:23:25 -0700 (PDT)
-Received: by 10.86.71.18 with HTTP; Thu, 27 Sep 2007 22:23:25 -0700 (PDT)
-Message-ID: <52163af60709272223n72212e2bh197c7e622e3ba155@mail.gmail.com>
-Date:	Fri, 28 Sep 2007 10:53:25 +0530
-From:	"Suprasad Mutalik Desai" <suprasad.desai@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: mapping a userspace thread to a kernelspace thread
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2007 07:08:55 +0100 (BST)
+Received: from mx.mips.com ([63.167.95.198]:38549 "EHLO dns0.mips.com")
+	by ftp.linux-mips.org with ESMTP id S20022876AbXI1GIr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Sep 2007 07:08:47 +0100
+Received: from mercury.mips.com (mercury [192.168.64.101])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id l8S68BrP006352;
+	Thu, 27 Sep 2007 23:08:11 -0700 (PDT)
+Received: from grendel (grendel [192.168.236.16])
+	by mercury.mips.com (8.13.5/8.13.5) with SMTP id l8S68UWl027848;
+	Thu, 27 Sep 2007 23:08:31 -0700 (PDT)
+Message-ID: <002801c80196$003f4dd0$10eca8c0@grendel>
+From:	"Kevin D. Kissell" <kevink@mips.com>
+To:	"Suprasad Mutalik Desai" <suprasad.desai@gmail.com>,
+	<linux-mips@linux-mips.org>
+References: <52163af60709272223n72212e2bh197c7e622e3ba155@mail.gmail.com>
+Subject: Re: mapping a userspace thread to a kernelspace thread
+Date:	Fri, 28 Sep 2007 08:08:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <suprasad.desai@gmail.com>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1807
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1896
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16721
+X-archive-position: 16722
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: suprasad.desai@gmail.com
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi list ,
+You seem to be laboring under a misconception or two, here.  NPTL is a 1:1 threading
+model (it would have been damned convenient for me for it not to have been).  Both
+linuxthreads and NPTL will create a native, known-to-the-kernel thread, which is what
+I think you mean by a "kernel thread", in response to a pthread_create().  The new thread
+will start life on the same CPU that created it, but normal load balancing will generally
+migrate it elsewhere pretty quickly.  If you want to manage thread->CPU binding
+explicitly, the sys_sched_setaffinity() system call can be used.
 
-            I want to know how can we map a userspace thread to a
-kernel thread as mentioned in 1:1 threading model (linuxthreads) or
-M:N model (NPTL)  . Does this happen by just calling a
-pthread_create() in the userspace program or i need to do something
-more in the kernel space . i am using 2.6.20 kernel  .
-       I want to use this for multi threading operation in a SMP
-environment where in i want to schedule a userspace program on another
-processor by spawning a thread  . Can anyone help me in this.
+            Regards,
 
-Thanks and regards,
-Suprasad.
+            Kevin K.
+
+----- Original Message ----- 
+From: "Suprasad Mutalik Desai" <suprasad.desai@gmail.com>
+To: <linux-mips@linux-mips.org>
+Sent: Friday, September 28, 2007 7:23 AM
+Subject: mapping a userspace thread to a kernelspace thread
+
+
+> Hi list ,
+> 
+>             I want to know how can we map a userspace thread to a
+> kernel thread as mentioned in 1:1 threading model (linuxthreads) or
+> M:N model (NPTL)  . Does this happen by just calling a
+> pthread_create() in the userspace program or i need to do something
+> more in the kernel space . i am using 2.6.20 kernel  .
+>        I want to use this for multi threading operation in a SMP
+> environment where in i want to schedule a userspace program on another
+> processor by spawning a thread  . Can anyone help me in this.
+> 
+> Thanks and regards,
+> Suprasad.
+> 
+> 

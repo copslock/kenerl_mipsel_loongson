@@ -1,82 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Sep 2007 20:23:35 +0100 (BST)
-Received: from smtp2.linux-foundation.org ([207.189.120.14]:3560 "EHLO
-	smtp2.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S20030496AbXI1TX1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Sep 2007 20:23:27 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [207.189.120.55])
-	by smtp2.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id l8SJNJAB002292
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Fri, 28 Sep 2007 12:23:20 -0700
-Received: from box (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id l8SJNIND013693;
-	Fri, 28 Sep 2007 12:23:18 -0700
-Date:	Fri, 28 Sep 2007 12:23:18 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] hugetlb: Fix clear_user_highpage arguments
-Message-Id: <20070928122318.57b99a0a.akpm@linux-foundation.org>
-In-Reply-To: <20070928185335.GA10976@linux-mips.org>
-References: <20070928163545.GA5933@linux-mips.org>
-	<20070928114526.3398c462.akpm@linux-foundation.org>
-	<20070928185335.GA10976@linux-mips.org>
-X-Mailer: Sylpheed 2.4.1 (GTK+ 2.8.17; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Sep 2007 06:18:21 +0100 (BST)
+Received: from srv5.dvmed.net ([207.36.208.214]:2193 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S20022757AbXI2FSM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 29 Sep 2007 06:18:12 +0100
+Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
+	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
+	id 1IbUfK-0007e7-UT; Sat, 29 Sep 2007 05:15:00 +0000
+Message-ID: <46FDDF52.1020607@pobox.com>
+Date:	Sat, 29 Sep 2007 01:14:58 -0400
+From:	Jeff Garzik <jgarzik@pobox.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070727)
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+CC:	Ralf Baechle <ralf@linux-mips.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sb1250-mac.c: De-typedef, de-volatile, de-etc...
+References: <Pine.LNX.4.64N.0709101310030.25038@blysk.ds.pg.gda.pl> <46E8B56E.7060705@pobox.com> <Pine.LNX.4.64N.0709131506040.31069@blysk.ds.pg.gda.pl> <20070913151452.GB29665@linux-mips.org> <46E95C7F.1050302@pobox.com> <Pine.LNX.4.64N.0709141135290.1926@blysk.ds.pg.gda.pl> <46F1F2CE.7020300@pobox.com> <Pine.LNX.4.64N.0709201354320.30788@blysk.ds.pg.gda.pl> <46F2A779.2040904@pobox.com> <Pine.LNX.4.64N.0709201829290.30788@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0709201829290.30788@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.185 $
-X-Scanned-By: MIMEDefang 2.53 on 207.189.120.14
-Return-Path: <akpm@linux-foundation.org>
+Return-Path: <jgarzik@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16734
+X-archive-position: 16735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: jgarzik@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 28 Sep 2007 19:53:35 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Fri, Sep 28, 2007 at 11:45:26AM -0700, Andrew Morton wrote:
+Maciej W. Rozycki wrote:
+>  Remove typedefs, volatiles and convert kmalloc()/memset() pairs to
+> kcalloc().  Also reformat the surrounding clutter.
 > 
-> > 
-> > > The virtual address space argument of clear_user_highpage is supposed to
-> > > be the virtual address where the page being cleared will eventually be
-> > > mapped. This allows architectures with virtually indexed caches a few
-> > > clever tricks.  That sort of trick falls over in painful ways if the
-> > > virtual address argument is wrong.
-> > 
-> > yeah, but only if you're using a weird CPU architecture ;)
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> ---
+> On Thu, 20 Sep 2007, Jeff Garzik wrote:
 > 
-> I guess once I convinced your employer that weird CPU architectures
-> deliver more punch for the watt they stop being so weird ;-)
-
-<wonders what you've gone and done this time>
-
-> > > 
-> > > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > > index 84c795e..eab8c42 100644
-> > > --- a/mm/hugetlb.c
-> > > +++ b/mm/hugetlb.c
-> > > @@ -42,7 +42,7 @@ static void clear_huge_page(struct page *page, unsigned long addr)
-> > >  	might_sleep();
-> > >  	for (i = 0; i < (HPAGE_SIZE/PAGE_SIZE); i++) {
-> > >  		cond_resched();
-> > > -		clear_user_highpage(page + i, addr);
-> > > +		clear_user_highpage(page + i, addr + i * PAGE_SIZE);
-> > >  	}
-> > >  }
-> > >  
-> > 
-> > I'll add this to the 2.6.23 queue.  Is it needed in 2.6.22.x?
+>> Remove the "linux-" prefix.
 > 
-> It's totally theoretical atm, MIPS doesn't support hugetlb and I'm not
-> even working on it.  I just happened to spot the issue.
+>  Hmm, it looks like a bad application of `sed' by myself.  Sorry for the 
+> noise.
+> 
+>   Maciej
 
-sparc64 might care about this bug.
-
-Anyway, I'll plop it in 2.6.23.
+applied

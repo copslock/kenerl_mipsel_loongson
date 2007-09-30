@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Sep 2007 10:55:14 +0100 (BST)
-Received: from mail.windriver.com ([147.11.1.11]:64767 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S20025704AbXI3JzG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 30 Sep 2007 10:55:06 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Sep 2007 10:55:44 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:19072 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S20025708AbXI3JzS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 30 Sep 2007 10:55:18 +0100
 Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id l8U9swE4009331;
-	Sun, 30 Sep 2007 02:54:58 -0700 (PDT)
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id l8U9tAve009399;
+	Sun, 30 Sep 2007 02:55:10 -0700 (PDT)
 Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 30 Sep 2007 02:54:57 -0700
+	 Sun, 30 Sep 2007 02:55:10 -0700
 Received: from [128.224.162.179] ([128.224.162.179]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 30 Sep 2007 02:54:57 -0700
-Message-ID: <46FF7262.9060802@windriver.com>
-Date:	Sun, 30 Sep 2007 17:54:42 +0800
+	 Sun, 30 Sep 2007 02:55:09 -0700
+Message-ID: <46FF726E.4020200@windriver.com>
+Date:	Sun, 30 Sep 2007 17:54:54 +0800
 From:	Mark Zhan <rongkai.zhan@windriver.com>
 User-Agent: Thunderbird 1.5.0.13 (X11/20070824)
 MIME-Version: 1.0
@@ -18,16 +18,15 @@ To:	i2c@lm-sensors.org, linux-mips@linux-mips.org,
 	rtc-linux@googlegroups.com
 CC:	ralf@linux-mips.org, a.zummo@towertech.it,
 	rongkai.zhan@windriver.com
-Subject: [PATCH 1/4] i2c sibyte adapter driver is rewritten with 2.6.x style
- binding model
+Subject: [PATCH 2/4] RTC: make m41t80 driver can work with the SMBus adapters
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 30 Sep 2007 09:54:57.0686 (UTC) FILETIME=[F5869B60:01C80347]
+X-OriginalArrivalTime: 30 Sep 2007 09:55:09.0824 (UTC) FILETIME=[FCC2B800:01C80347]
 Return-Path: <rongkai.zhan@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16741
+X-archive-position: 16742
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,220 +34,217 @@ X-original-sender: rongkai.zhan@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch re-writes the sibyte i2c adapter driver with 2.6.x style
-binding model.
+This patch makes m41t80 RTC driver also can work with the SMBus adapters,
+which doesn't i2c_transfer() method.
 
 Signed-off-by: Mark Zhan <rongkai.zhan@windriver.com>
 ---
-  drivers/i2c/busses/i2c-sibyte.c |  150 ++++++++++++++--------------------------
-  1 file changed, 55 insertions(+), 95 deletions(-)
+  drivers/rtc/rtc-m41t80.c |  118 ++++++++++++++++++++++++-----------------------
+  1 file changed, 62 insertions(+), 56 deletions(-)
 
---- a/drivers/i2c/busses/i2c-sibyte.c
-+++ b/drivers/i2c/busses/i2c-sibyte.c
-@@ -1,4 +1,5 @@
-  /*
-+ * Copyright (C) 2007 Wind River Inc. Mark Zhan <rongkai.zhan@windriver.com>
-   * Copyright (C) 2004 Steven J. Hill
-   * Copyright (C) 2001,2002,2003 Broadcom Corporation
-   * Copyright (C) 1995-2000 Simon G. Vogl
-@@ -22,34 +23,18 @@
-  #include <linux/module.h>
-  #include <linux/init.h>
-  #include <linux/i2c.h>
--#include <asm/io.h>
-+#include <linux/io.h>
-+#include <linux/platform_device.h>
-  #include <asm/sibyte/sb1250_regs.h>
-  #include <asm/sibyte/sb1250_smbus.h>
+--- a/drivers/rtc/rtc-m41t80.c
++++ b/drivers/rtc/rtc-m41t80.c
+@@ -105,6 +105,51 @@ struct m41t80_data {
+  	struct rtc_device *rtc;
+  };
 
-+#define SMB_REG_BASE(p_adap)	(CKSEG1 + A_SMB_BASE(p_adap->nr))
-+#define SMB_CSR(p_adap,r)	((long)(SMB_REG_BASE(p_adap) + r))
-
--struct i2c_algo_sibyte_data {
--	void *data;		/* private data */
--	int   bus;		/* which bus */
--	void *reg_base;		/* CSR base */
--};
--
--/* ----- global defines ----------------------------------------------- */
--#define SMB_CSR(a,r) ((long)(a->reg_base + r))
--
--/* ----- global variables --------------------------------------------- */
--
--/* module parameters:
-- */
--static int bit_scan;	/* have a look at what's hanging 'round */
--module_param(bit_scan, int, 0);
--MODULE_PARM_DESC(bit_scan, "Scan for active chips on the bus");
--
--
--static int smbus_xfer(struct i2c_adapter *i2c_adap, u16 addr,
--		      unsigned short flags, char read_write,
--		      u8 command, int size, union i2c_smbus_data * data)
-+static int sibyte_smbus_xfer(struct i2c_adapter *adap, u16 addr,
-+			unsigned short flags, char read_write,
-+			u8 command, int size, union i2c_smbus_data * data)
++static int m41t80_i2c_read(struct i2c_client *client, struct i2c_msg *msgs, int num)
++{
++	int i, rc;
++	u8 dt_addr = msgs[0].buf[0];
++
++	if (num < 2)
++		return -1;
++
++	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C) &&
++		i2c_transfer(client->adapter, msgs, 2) < 0) {
++		dev_err(&client->dev, "read error\n");
++		return -EIO;
++	} else {
++		for (i = 0; i < msgs[1].len; i++) {
++			rc = i2c_smbus_read_byte_data(client, dt_addr + i);
++			if (rc < 0)
++				return -EIO;
++			msgs[1].buf[i] = (u8)rc;
++		}
++	}
++
++	return 0;
++}
++
++static int m41t80_i2c_write(struct i2c_client *client, struct i2c_msg *msg)
++{
++	int i, rc;
++	u8 *wbuf = msg->buf;
++	u8 *buf = wbuf + 1;
++
++	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C) &&
++	    i2c_transfer(client->adapter, msg, 1) < 0) {
++		dev_err(&client->dev, "write error\n");
++		return -EIO;
++	} else {
++		for (i = 0; i < msg[0].len - 1; i++) {
++			rc = i2c_smbus_write_byte_data(client, wbuf[0]+i, buf[i]);
++			if (rc < 0)
++				return -EIO;
++		}
++	}
++
++	return 0;
++}
++
+  static int m41t80_get_datetime(struct i2c_client *client,
+  			       struct rtc_time *tm)
   {
--	struct i2c_algo_sibyte_data *adap = i2c_adap->algo_data;
-  	int data_bytes = 0;
-  	int error;
+@@ -124,10 +169,8 @@ static int m41t80_get_datetime(struct i2
+  		},
+  	};
 
-@@ -93,11 +78,9 @@ static int smbus_xfer(struct i2c_adapter
-  				  SMB_CSR(adap, R_SMB_START));
-  			data_bytes = 2;
-  		} else {
--			csr_out32(V_SMB_LB(data->word & 0xff),
--				  SMB_CSR(adap, R_SMB_DATA));
--			csr_out32(V_SMB_MB(data->word >> 8),
-+			csr_out32(V_SMB_LB(data->word & 0xff) | V_SMB_MB(data->word >> 8),
-  				  SMB_CSR(adap, R_SMB_DATA));
--			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_WR2BYTE),
-+			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_WR3BYTE),
-  				  SMB_CSR(adap, R_SMB_START));
-  		}
-  		break;
-@@ -123,99 +106,76 @@ static int smbus_xfer(struct i2c_adapter
+-	if (i2c_transfer(client->adapter, msgs, 2) < 0) {
+-		dev_err(&client->dev, "read error\n");
++	if (m41t80_i2c_read(client, msgs, 2))
+  		return -EIO;
+-	}
+
+  	tm->tm_sec = BCD2BIN(buf[M41T80_REG_SEC] & 0x7f);
+  	tm->tm_min = BCD2BIN(buf[M41T80_REG_MIN] & 0x7f);
+@@ -171,10 +214,8 @@ static int m41t80_set_datetime(struct i2
+  	};
+
+  	/* Read current reg values into buf[1..7] */
+-	if (i2c_transfer(client->adapter, msgs_in, 2) < 0) {
+-		dev_err(&client->dev, "read error\n");
++	if (m41t80_i2c_read(client, msgs_in, 2))
+  		return -EIO;
+-	}
+
+  	wbuf[0] = 0; /* offset into rtc's regs */
+  	/* Merge time-data and register flags into buf[0..7] */
+@@ -194,10 +235,9 @@ static int m41t80_set_datetime(struct i2
+  	/* assume 20YY not 19YY */
+  	buf[M41T80_REG_YEAR] = BIN2BCD(tm->tm_year % 100);
+
+-	if (i2c_transfer(client->adapter, msgs, 1) != 1) {
+-		dev_err(&client->dev, "write error\n");
++	if (m41t80_i2c_write(client, msgs))
+  		return -EIO;
+-	}
++
   	return 0;
   }
 
--static u32 bit_func(struct i2c_adapter *adap)
-+static u32 sibyte_functionality(struct i2c_adapter *adap)
-  {
-  	return (I2C_FUNC_SMBUS_QUICK | I2C_FUNC_SMBUS_BYTE |
-  		I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA);
-  }
+@@ -295,10 +335,9 @@ static int m41t80_rtc_set_alarm(struct d
+  		 },
+  	};
 
--
--/* -----exported algorithm data: -------------------------------------	*/
--
--static const struct i2c_algorithm i2c_sibyte_algo = {
--	.smbus_xfer	= smbus_xfer,
--	.functionality	= bit_func,
-+static const struct i2c_algorithm sibyte_i2c_algo = {
-+	.smbus_xfer	= sibyte_smbus_xfer,
-+	.functionality	= sibyte_functionality,
-  };
-
--/*
-- * registering functions to load algorithms at runtime
-- */
--int i2c_sibyte_add_bus(struct i2c_adapter *i2c_adap, int speed)
-+static int __devinit sibyte_i2c_probe(struct platform_device *pdev)
-  {
--	int i;
--	struct i2c_algo_sibyte_data *adap = i2c_adap->algo_data;
-+	struct i2c_adapter *adap;
-
--	/* register new adapter to i2c module... */
--	i2c_adap->algo = &i2c_sibyte_algo;
-+	adap = kzalloc(sizeof(struct i2c_adapter), GFP_KERNEL);
-+	if (!adap)
-+		return -ENOMEM;
-+
-+	memcpy(adap->name, pdev->name, strlen(pdev->name));
-+	adap->id = I2C_HW_SIBYTE;
-+	adap->class = I2C_CLASS_HWMON;
-+	adap->owner = THIS_MODULE;
-+	adap->nr = pdev->id;
-+	adap->algo = &sibyte_i2c_algo;
-+	adap->algo_data = NULL;
-
--	/* Set the frequency to 100 kHz */
--	csr_out32(speed, SMB_CSR(adap,R_SMB_FREQ));
--	csr_out32(0, SMB_CSR(adap,R_SMB_CONTROL));
-+	platform_set_drvdata(pdev, adap);
-
--	/* scan bus */
--	if (bit_scan) {
--		union i2c_smbus_data data;
--		int rc;
--		printk(KERN_INFO " i2c-algo-sibyte.o: scanning bus %s.\n",
--		       i2c_adap->name);
--		for (i = 0x00; i < 0x7f; i++) {
--			/* XXXKW is this a realistic probe? */
--			rc = smbus_xfer(i2c_adap, i, 0, I2C_SMBUS_READ, 0,
--					I2C_SMBUS_BYTE_DATA, &data);
--			if (!rc) {
--				printk("(%02x)",i);
--			} else
--				printk(".");
--		}
--		printk("\n");
+-	if (i2c_transfer(client->adapter, msgs_in, 2) < 0) {
+-		dev_err(&client->dev, "read error\n");
++	if (m41t80_i2c_read(client, msgs_in, 2))
+  		return -EIO;
 -	}
-+	/* Set the frequency to 100 kHz */
-+	if (adap->nr == 0)
-+		csr_out32(K_SMB_FREQ_100KHZ, SMB_CSR(adap, R_SMB_FREQ));
-+	else
-+		csr_out32(K_SMB_FREQ_400KHZ, SMB_CSR(adap, R_SMB_FREQ));
-+	csr_out32(0, SMB_CSR(adap, R_SMB_CONTROL));
++
+  	reg[M41T80_REG_ALARM_MON] &= ~(0x1f | M41T80_ALMON_AFE);
+  	reg[M41T80_REG_ALARM_DAY] = 0;
+  	reg[M41T80_REG_ALARM_HOUR] &= ~(0x3f | 0x80);
+@@ -319,10 +358,8 @@ static int m41t80_rtc_set_alarm(struct d
+  	else
+  		reg[M41T80_REG_ALARM_DAY] |= 0x40;
 
--	return i2c_add_adapter(i2c_adap);
-+	pr_debug("%s %d registered\n", adap->name, adap->nr);
-+	return i2c_add_numbered_adapter(adap);
-  }
+-	if (i2c_transfer(client->adapter, msgs, 1) != 1) {
+-		dev_err(&client->dev, "write error\n");
++	if (m41t80_i2c_write(client, msgs))
+  		return -EIO;
+-	}
 
-+static int __devexit sibyte_i2c_remove(struct platform_device *pdev)
-+{
-+	struct i2c_adapter *adap = platform_get_drvdata(pdev);
+  	if (t->enabled) {
+  		reg[M41T80_REG_ALARM_MON] |= M41T80_ALMON_AFE;
+@@ -356,10 +393,9 @@ static int m41t80_rtc_read_alarm(struct
+  		},
+  	};
 
--static struct i2c_algo_sibyte_data sibyte_board_data[2] = {
--	{ NULL, 0, (void *) (CKSEG1+A_SMB_BASE(0)) },
--	{ NULL, 1, (void *) (CKSEG1+A_SMB_BASE(1)) }
--};
-+	platform_set_drvdata(pdev, NULL);
-+	i2c_del_adapter(adap);
-+	return 0;
-+}
-
--static struct i2c_adapter sibyte_board_adapter[2] = {
--	{
--		.owner		= THIS_MODULE,
--		.id		= I2C_HW_SIBYTE,
--		.class		= I2C_CLASS_HWMON,
--		.algo		= NULL,
--		.algo_data	= &sibyte_board_data[0],
--		.name		= "SiByte SMBus 0",
--	},
--	{
--		.owner		= THIS_MODULE,
--		.id		= I2C_HW_SIBYTE,
--		.class		= I2C_CLASS_HWMON,
--		.algo		= NULL,
--		.algo_data	= &sibyte_board_data[1],
--		.name		= "SiByte SMBus 1",
-+static struct platform_driver sibyte_i2c_driver = {
-+	.probe		= sibyte_i2c_probe,
-+	.remove		= __devexit_p(sibyte_i2c_remove),
-+	.driver		= {
-+		.name	= "i2c-sibyte",
-+		.owner	= THIS_MODULE,
-  	},
-  };
-
--static int __init i2c_sibyte_init(void)
-+static int __init sibyte_i2c_init(void)
+-	if (i2c_transfer(client->adapter, msgs, 2) < 0) {
+-		dev_err(&client->dev, "read error\n");
++	if (m41t80_i2c_read(client, msgs, 2))
+  		return -EIO;
+-	}
++
+  	t->time.tm_sec = -1;
+  	t->time.tm_min = -1;
+  	t->time.tm_hour = -1;
+@@ -516,14 +552,7 @@ static int boot_flag;
+  static void wdt_ping(void)
   {
--	printk("i2c-swarm.o: i2c SMBus adapter module for SiByte board\n");
--	if (i2c_sibyte_add_bus(&sibyte_board_adapter[0], K_SMB_FREQ_100KHZ) < 0)
--		return -ENODEV;
--	if (i2c_sibyte_add_bus(&sibyte_board_adapter[1], K_SMB_FREQ_400KHZ) < 0)
--		return -ENODEV;
--	return 0;
-+	return platform_driver_register(&sibyte_i2c_driver);
+  	unsigned char i2c_data[2];
+-	struct i2c_msg msgs1[1] = {
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= 0,
+-			.len	= 2,
+-			.buf	= i2c_data,
+-		},
+-	};
++
+  	i2c_data[0] = 0x09;		/* watchdog register */
+
+  	if (wdt_margin > 31)
+@@ -534,7 +563,7 @@ static void wdt_ping(void)
+  		 */
+  		i2c_data[1] = wdt_margin<<2 | 0x82;
+
+-	i2c_transfer(save_client->adapter, msgs1, 1);
++	i2c_smbus_write_byte_data(save_client, i2c_data[0], i2c_data[1]);
   }
 
--static void __exit i2c_sibyte_exit(void)
-+static void __exit sibyte_i2c_exit(void)
+  /**
+@@ -544,36 +573,14 @@ static void wdt_ping(void)
+   */
+  static void wdt_disable(void)
   {
--	i2c_del_adapter(&sibyte_board_adapter[0]);
--	i2c_del_adapter(&sibyte_board_adapter[1]);
-+	platform_driver_unregister(&sibyte_i2c_driver);
+-	unsigned char i2c_data[2], i2c_buf[0x10];
+-	struct i2c_msg msgs0[2] = {
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= 0,
+-			.len	= 1,
+-			.buf	= i2c_data,
+-		},
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= I2C_M_RD,
+-			.len	= 1,
+-			.buf	= i2c_buf,
+-		},
+-	};
+-	struct i2c_msg msgs1[1] = {
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= 0,
+-			.len	= 2,
+-			.buf	= i2c_data,
+-		},
+-	};
++	unsigned char i2c_data[2];
+
+-	i2c_data[0] = 0x09;
+-	i2c_transfer(save_client->adapter, msgs0, 2);
++	i2c_data[0] = 0x09; /* watchdog register */
++	i2c_data[1] = i2c_smbus_read_byte_data(save_client, i2c_data[0]);
+
+-	i2c_data[0] = 0x09;
++	/* write 0x00 to disable WDT until it is programmed again. */
+  	i2c_data[1] = 0x00;
+-	i2c_transfer(save_client->adapter, msgs1, 1);
++	i2c_smbus_read_byte_datasave_client, i2c_data[0], i2c_data[1]);
   }
 
--module_init(i2c_sibyte_init);
--module_exit(i2c_sibyte_exit);
-+module_init(sibyte_i2c_init);
-+module_exit(sibyte_i2c_exit);
+  /**
+@@ -764,8 +771,7 @@ static int m41t80_probe(struct i2c_clien
+  	const struct m41t80_chip_info *chip;
+  	struct m41t80_data *clientdata = NULL;
 
-  MODULE_AUTHOR("Kip Walker (Broadcom Corp.), Steven J. Hill <sjhill@realitydiluted.com>");
-  MODULE_DESCRIPTION("SMBus adapter routines for SiByte boards");
+-	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C
+-				     | I2C_FUNC_SMBUS_BYTE_DATA)) {
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA)) {
+  		rc = -ENODEV;
+  		goto exit;
+  	}

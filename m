@@ -1,70 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 10:23:16 +0100 (BST)
-Received: from ananke.telenet-ops.be ([195.130.137.78]:38632 "EHLO
-	ananke.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20022064AbXJAJXH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Oct 2007 10:23:07 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by ananke.telenet-ops.be (Postfix) with SMTP id 60738392442;
-	Mon,  1 Oct 2007 11:23:06 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by ananke.telenet-ops.be (Postfix) with ESMTP id 426C13923D0;
-	Mon,  1 Oct 2007 11:23:06 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l919N5Ys020958
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 1 Oct 2007 11:23:05 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l919N5mA020955;
-	Mon, 1 Oct 2007 11:23:05 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Mon, 1 Oct 2007 11:23:05 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	veerasena reddy <veerasena_b@yahoo.co.in>
-cc:	linux-mips <linux-mips@linux-mips.org>,
-	"linux-kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: linux cache routines for Write-back cache policy on  MIPS24KE
-In-Reply-To: <119374.35234.qm@web8401.mail.in.yahoo.com>
-Message-ID: <Pine.LNX.4.64.0710011121300.20679@anakin>
-References: <119374.35234.qm@web8401.mail.in.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 11:24:41 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:8862 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022158AbXJAKYj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 Oct 2007 11:24:39 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l91AOZv3023296;
+	Mon, 1 Oct 2007 11:24:35 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l91AOXAv023295;
+	Mon, 1 Oct 2007 11:24:33 +0100
+Date:	Mon, 1 Oct 2007 11:24:33 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	Fuxin Zhang <fxzhang@ict.ac.cn>, linux-mips@linux-mips.org
+Subject: Re: cmpxchg broken in some situation
+Message-ID: <20071001102433.GA20219@linux-mips.org>
+References: <46FF7BC2.5050905@ict.ac.cn> <20071001025340.GA7091@linux-mips.org> <47007003.2050905@avtrex.com> <4700708B.8070708@avtrex.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4700708B.8070708@avtrex.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16753
+X-archive-position: 16754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 1 Oct 2007, veerasena reddy wrote:
-> I have ported Linux-2.6.18 kernel on MIPS24KE
-> processor. I am using write back cache policy.
+On Sun, Sep 30, 2007 at 08:59:07PM -0700, David Daney wrote:
+
+> David Daney wrote:
+> >Ralf Baechle wrote:
+> >>+    } else if (cpu_has_llsc) {                    \
+> >>+        __asm__ __volatile__(                    \
+> >>+        "    .set    push                \n"    \
+> >>+        "    .set    noat                \n"    \
+> >>+        "    .set    mips3                \n"    \
+> >>+        "1:    " ld "    %0, %2        # __cmpxchg_u32    \n"    \
+> >>+        "    bne    %0, %z3, 2f            \n"    \
+> >>+        "    .set    mips0                \n"    \
+> >>+        "    move    $1, %z4                \n"    \
+> >>+        "    .set    mips3                \n"    \
+> >>+        "    " st "    $1, %1                \n"    \
+> >>+        "    beqz    $1, 3f                \n"    \
+> >>+        "2:                        \n"    \
+> >>+        "    .subsection 2                \n"    \
+> >>+        "3:    b    1b                \n"    \
+> >>+        "    .previous                \n"    \
+> >>+        "    .set    pop                \n"    \
+> >>+        : "=&r" (__ret), "=R" (*m)                \
+> >>+        : "R" (*m), "Jr" (old), "Jr" (new)            \
+> >>+        : "memory");                        \
+> >>  
+> >Is a 'sync' needed after the 'sc'?
+> >
+> >According to this message:
+> >http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20070919084515.GM9972%40networkno.de 
+> >
+> >it would seem so.
 > 
-> Could you please guide me under what cases the below
-> cache API's are being used:
-> - dma_cache_wback_inv() : Could you explain  what
-> exactly this function does
+> Drat, I probably posted too soon.  That is the smp_llsc_mb(); isn't it.
 
-It does both write back and invalidate.
+Yes - and the answer to your original question is a clear and definate
+maybe ;-)
 
-> - dma_cache_wback() : This function write back the
-> cache data to memory
-> - dma_cache_inv  : This function invalidate the cache
-> tags. so subsequent access will fetch from memory.
+In the kernel we can afford to optimize for every piece of silicon on earth.
+In userspace we can't make that sort of compile time choices as easily so
+it's a better idea to just litter a few SYNCs over the code.
 
-Note that 2.6.18 is old. The above functions are intended to be removed.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

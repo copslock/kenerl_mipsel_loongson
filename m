@@ -1,73 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 04:59:55 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:20156 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20021445AbXJAD7q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Oct 2007 04:59:46 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id D07CE309B4B;
-	Mon,  1 Oct 2007 03:59:10 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Mon,  1 Oct 2007 03:59:10 +0000 (UTC)
-Received: from [192.168.7.224] ([192.168.7.224]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 30 Sep 2007 20:59:08 -0700
-Message-ID: <4700708B.8070708@avtrex.com>
-Date:	Sun, 30 Sep 2007 20:59:07 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 10:11:48 +0100 (BST)
+Received: from n6.bullet.mud.yahoo.com ([216.252.100.57]:36949 "HELO
+	n6.bullet.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20022052AbXJAJLj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 Oct 2007 10:11:39 +0100
+Received: from [68.142.194.244] by n6.bullet.mud.yahoo.com with NNFMP; 01 Oct 2007 09:10:17 -0000
+Received: from [209.191.119.163] by t2.bullet.mud.yahoo.com with NNFMP; 01 Oct 2007 09:10:17 -0000
+Received: from [127.0.0.1] by omp102.mail.mud.yahoo.com with NNFMP; 01 Oct 2007 09:10:17 -0000
+X-Yahoo-Newman-Property: ymail-3
+X-Yahoo-Newman-Id: 130687.14103.bm@omp102.mail.mud.yahoo.com
+Received: (qmail 35417 invoked by uid 60001); 1 Oct 2007 09:04:33 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=lUVapiL1EKJnQozhcUV8Go1a4BzqxjAdmJst7d0WMrogji9z0oVMERAXx+UfrPvswLbvpLf0XOZ+w1tVryHaTjv8c3sM6Zv/onTj/4igs0/ESJNfAOBRkcDZNRbsLhMZpz2WEjS1p0SEIvzxLxc4AnKs0gM6tTACvHc1QatGQFg=;
+X-YMail-OSG: OvqjJSIVM1k_lSVRAynBOP_A43iN1H_VzB1zKuh_Bsd6U_rNdd8hCJ7YDDBBBSvEl6mpv3CG8S3CblaZVZjTJfBgdqq9I4fWKvzRWeEnf3bX9SghKLoaIpCUk2P1HQ--
+Received: from [199.239.167.162] by web8401.mail.in.yahoo.com via HTTP; Mon, 01 Oct 2007 10:04:32 BST
+Date:	Mon, 1 Oct 2007 10:04:32 +0100 (BST)
+From:	veerasena reddy <veerasena_b@yahoo.co.in>
+Subject: linux cache routines for Write-back cache policy on  MIPS24KE
+To:	linux-mips <linux-mips@linux-mips.org>,
+	"linux-kernel.org" <linux-kernel@vger.kernel.org>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Fuxin Zhang <fxzhang@ict.ac.cn>, linux-mips@linux-mips.org
-Subject: Re: cmpxchg broken in some situation
-References: <46FF7BC2.5050905@ict.ac.cn> <20071001025340.GA7091@linux-mips.org> <47007003.2050905@avtrex.com>
-In-Reply-To: <47007003.2050905@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 01 Oct 2007 03:59:08.0231 (UTC) FILETIME=[6AAC0D70:01C803DF]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID: <119374.35234.qm@web8401.mail.in.yahoo.com>
+Return-Path: <veerasena_b@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16751
+X-archive-position: 16752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: veerasena_b@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> Ralf Baechle wrote:
->> +    } else if (cpu_has_llsc) {                    \
->> +        __asm__ __volatile__(                    \
->> +        "    .set    push                \n"    \
->> +        "    .set    noat                \n"    \
->> +        "    .set    mips3                \n"    \
->> +        "1:    " ld "    %0, %2        # __cmpxchg_u32    \n"    \
->> +        "    bne    %0, %z3, 2f            \n"    \
->> +        "    .set    mips0                \n"    \
->> +        "    move    $1, %z4                \n"    \
->> +        "    .set    mips3                \n"    \
->> +        "    " st "    $1, %1                \n"    \
->> +        "    beqz    $1, 3f                \n"    \
->> +        "2:                        \n"    \
->> +        "    .subsection 2                \n"    \
->> +        "3:    b    1b                \n"    \
->> +        "    .previous                \n"    \
->> +        "    .set    pop                \n"    \
->> +        : "=&r" (__ret), "=R" (*m)                \
->> +        : "R" (*m), "Jr" (old), "Jr" (new)            \
->> +        : "memory");                        \
->>   
-> Is a 'sync' needed after the 'sc'?
->
-> According to this message:
-> http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20070919084515.GM9972%40networkno.de 
->
-> it would seem so.
+Hi,
 
-Drat, I probably posted too soon.  That is the smp_llsc_mb(); isn't it.
+I have ported Linux-2.6.18 kernel on MIPS24KE
+processor. I am using write back cache policy.
 
-David Daney
+Could you please guide me under what cases the below
+cache API's are being used:
+- dma_cache_wback_inv() : Could you explain  what
+exactly this function does
+- dma_cache_wback() : This function write back the
+cache data to memory
+- dma_cache_inv  : This function invalidate the cache
+tags. so subsequent access will fetch from memory.
+
+Once I looked the above function definitions in
+linux-2.6.18/arch/mips/mm/c-r4k.c.
+All these function's implemetation are same except
+bc_wbak_inv() is called in both dma_cache_wback-inv()
+and dma_cache_wback(), where as bc_inv() is called in
+case of dma_cache_inv.
+
+Also, bc_inv()/bc_wbak_inv are define as null
+implementation for R4000.
+That means all three functions are doing same
+functionality in case of R4000.
+
+What are the difference between these three functions.
+Under what cases these functions are used. 
+
+Please guide me if you have any links which will
+explain these API's.
+Thanks in advance.
+
+Regards,
+Veerasena.
+
+
+      Forgot the famous last words? Access your message archive online at http://in.messenger.yahoo.com/webmessengerpromo.php

@@ -1,143 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 15:00:18 +0100 (BST)
-Received: from smtp-101-monday.nerim.net ([62.4.16.101]:64481 "EHLO
-	kraid.nerim.net") by ftp.linux-mips.org with ESMTP
-	id S20023988AbXJAOAJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Oct 2007 15:00:09 +0100
-Received: from hyperion.delvare (jdelvare.pck.nerim.net [62.212.121.182])
-	by kraid.nerim.net (Postfix) with ESMTP id 7026ACF0A7;
-	Mon,  1 Oct 2007 15:59:38 +0200 (CEST)
-Date:	Mon, 1 Oct 2007 15:59:38 +0200
-From:	Jean Delvare <khali@linux-fr.org>
-To:	Mark Zhan <rongkai.zhan@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 16:04:49 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:46033 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20024075AbXJAPEl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2007 16:04:41 +0100
+Received: from localhost (p1055-ipad306funabasi.chiba.ocn.ne.jp [123.217.171.55])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 41665F169; Tue,  2 Oct 2007 00:04:35 +0900 (JST)
+Date:	Tue, 02 Oct 2007 00:06:16 +0900 (JST)
+Message-Id: <20071002.000616.31638007.anemo@mba.ocn.ne.jp>
+To:	rongkai.zhan@windriver.com
 Cc:	i2c@lm-sensors.org, linux-mips@linux-mips.org,
-	rtc-linux@googlegroups.com, a.zummo@towertech.it,
-	ralf@linux-mips.org
-Subject: Re: [i2c] [PATCH 3/4] RTC: add Xicor 1241 driver
-Message-ID: <20071001155938.0590fc3a@hyperion.delvare>
-In-Reply-To: <46FF7279.3020102@windriver.com>
-References: <46FF7279.3020102@windriver.com>
-X-Mailer: Sylpheed-Claws 2.5.5 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+	rtc-linux@googlegroups.com, ralf@linux-mips.org,
+	a.zummo@towertech.it
+Subject: Re: [PATCH 2/4] RTC: make m41t80 driver can work with the SMBus
+ adapters
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <46FF726E.4020200@windriver.com>
+References: <46FF726E.4020200@windriver.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16770
+X-archive-position: 16771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Mark,
+On Sun, 30 Sep 2007 17:54:54 +0800, Mark Zhan <rongkai.zhan@windriver.com> wrote:
+> This patch makes m41t80 RTC driver also can work with the SMBus adapters,
+> which doesn't i2c_transfer() method.
+> 
+> Signed-off-by: Mark Zhan <rongkai.zhan@windriver.com>
 
-On Sun, 30 Sep 2007 17:55:05 +0800, Mark Zhan wrote:
-> This patch add the Xicor 1241 RTC driver which is used in
-> MIPS Sibyte 1250/1480 boards.
+As Jean already said, your mailer corrupted your patch.
+Also, please keep in mind the 80 column rule.
 
-So this chip is using two-byte register addressing, which isn't
-compatible with SMBus. Which explains why the register reads and writes
-in your driver look strange. I don't think it's quite correct.
-
-> +/*
-> + * Register Offset
-> + */
-> +#define X1241_SEC	0x30		/* Seconds */
-> +#define X1241_MIN	0x31		/* Minutes */
-> +#define X1241_HOUR	0x32		/* Hours */
-> +#define X1241_MDAY	0x33		/* Day of month */
-> +#define X1241_MON	0x34		/* Month */
-> +#define X1241_YEAR	0x35		/* Year */
-> +#define X1241_WDAY	0x36		/* Day of Week */
-> +#define X1241_Y2K	0x37		/* Year 2K */
-> +#define X1241_SR	0x3F		/* Status register */
-> +
-> +DEFINE_SPINLOCK(xicor1241_lock);
-> +
-> +static int xicor1241_get_time(struct device *dev, struct rtc_time *tm)
+> +static int m41t80_i2c_read(struct i2c_client *client, struct i2c_msg *msgs, int num)
 > +{
-> +	struct i2c_client *client = to_i2c_client(dev);
-> +	unsigned int y2k, year, mon, mday, wday, hour, min, sec;
-> +	unsigned long flags;
+> +	int i, rc;
+> +	u8 dt_addr = msgs[0].buf[0];
 > +
-> +	spin_lock_irqsave(&xicor1241_lock, flags);
+> +	if (num < 2)
+> +		return -1;
 > +
-> +	i2c_smbus_write_byte_data(client, X1241_SEC, X1241_SEC);
-
-If I read the datasheet properly, this should be:
-
-	i2c_smbus_write_byte_data(client, 0, X1241_SEC);
-
-The SC register is at 0x0030, not 0x3030.
-
-> +	sec = i2c_smbus_read_byte_data(client, X1241_SEC);
-> +	min = i2c_smbus_read_byte_data(client, X1241_MIN);
-> +	hour = i2c_smbus_read_byte_data(client, X1241_HOUR);
-> +	mday = i2c_smbus_read_byte_data(client, X1241_MDAY);
-> +	mon = i2c_smbus_read_byte_data(client, X1241_MON);
-> +	year = i2c_smbus_read_byte_data(client, X1241_YEAR);
-> +	wday = i2c_smbus_read_byte_data(client, X1241_WDAY);
-> +	y2k = i2c_smbus_read_byte_data(client, X1241_Y2K);
-
-You are using the "Current Address Read" mode here, right? If so, you
-aren't supposed to send any address information at all, i.e. you should
-use i2c_smbus_read_byte() instead of i2c_smbus_read_byte_data(). You
-are probably just lucky that the chip ignores the extra byte you're
-sending.
-
-> (...)
-> +static int xicor1241_set_time(struct device *dev, struct rtc_time *tm)
-> +{
-> (...)
-> +	/* unlock writes to the CCR */
-> +	i2c_smbus_write_word_data(client, X1241_SR,
-> +			(X1241_SR_WEL << 8) | X1241_SR);
-> +	i2c_smbus_write_word_data(client, X1241_SR,
-> +			((X1241_SR_WEL | X1241_SR_RWEL) << 8) | X1241_SR);
+> +	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C) &&
+> +		i2c_transfer(client->adapter, msgs, 2) < 0) {
+> +		dev_err(&client->dev, "read error\n");
+> +		return -EIO;
+> +	} else {
+> +		for (i = 0; i < msgs[1].len; i++) {
+> +			rc = i2c_smbus_read_byte_data(client, dt_addr + i);
+> +			if (rc < 0)
+> +				return -EIO;
+> +			msgs[1].buf[i] = (u8)rc;
+> +		}
+> +	}
 > +
-> +	i2c_smbus_write_word_data(client, X1241_SEC, (sec << 8) | X1241_SEC);
-> +	i2c_smbus_write_word_data(client, X1241_MIN, (min << 8) | X1241_MIN);
-> +	i2c_smbus_write_word_data(client, X1241_HOUR, (hour << 8) | X1241_HOUR);
-> +	i2c_smbus_write_word_data(client, X1241_MDAY, (mday << 8) | X1241_MDAY);
-> +	i2c_smbus_write_word_data(client, X1241_WDAY, (wday << 8) | X1241_WDAY);
-> +	i2c_smbus_write_word_data(client, X1241_MON, (mon << 8) | X1241_MON);
-> +	i2c_smbus_write_word_data(client, X1241_YEAR, (year << 8) | X1241_YEAR);
-> +	i2c_smbus_write_word_data(client, X1241_Y2K, (y2k << 8) | X1241_Y2K);
-> +
-> +	i2c_smbus_write_word_data(client, X1241_SR, (0 << 8) | X1241_SR);
-
-Here again I am surprised. I expected:
-
-	i2c_smbus_write_word_data(client, 0, (sec << 8) | X1241_SEC);
-
-So that you write to register 0x0030, not 0x3030. Same for all the
-other register writes. Or am I misreading the datasheet?
-
-> +
-> +	spin_unlock_irqrestore(&xicor1241_lock, flags);
 > +	return 0;
 > +}
-> +
-> +static const struct rtc_class_ops xicor1241_rtc_ops = {
-> +	.read_time = xicor1241_get_time,
-> +	.set_time  = xicor1241_set_time,
-> +};
-> +
-> +static int __devinit xicor1241_rtc_probe(struct i2c_client *client)
+
+You must ensure time values are consistent.  The RTC might update its
+time data between each I2C transfer.
+
+It seems the original rtc_m41t81.c:m41t81_get_time() tries to solve
+this issue by reading sec/min in loop, but it would not be enough.
+For example, if the function was called at 23:59:59, the sec (and min)
+might wrap just before reading the hour, then you might get 00:59:59.
+
+The old m41t00 i2c driver once did it right with smbus, but current
+m41t00 driver (and rtc-m41t80 driver) dropped that feature a while
+ago.  You can see the old code at:
+
+http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob;f=drivers/i2c/chips/m41t00.c;hb=e931b8d8a428f87e6ea488d2fd80007bb66b3ea8
+
+> +static int m41t80_i2c_write(struct i2c_client *client, struct i2c_msg *msg)
 > +{
-> +	struct rtc_device *rtc;
+> +	int i, rc;
+> +	u8 *wbuf = msg->buf;
+> +	u8 *buf = wbuf + 1;
 > +
-> +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA)) {
-> +		dev_dbg(&client->dev, "I2C adapter function check failure!\n");
-> +		return -ENODEV;
+> +	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C) &&
+> +	    i2c_transfer(client->adapter, msg, 1) < 0) {
+> +		dev_err(&client->dev, "write error\n");
+> +		return -EIO;
+> +	} else {
+> +		for (i = 0; i < msg[0].len - 1; i++) {
+> +			rc = i2c_smbus_write_byte_data(client, wbuf[0]+i, buf[i]);
+> +			if (rc < 0)
+> +				return -EIO;
+> +		}
 > +	}
+> +
+> +	return 0;
+> +}
 
-This check isn't sufficient, you must check for
-I2C_FUNC_SMBUS_WRITE_WORD_DATA as well, and possibly
-I2C_FUNC_SMBUS_READ_BYTE if my comment above is correct.
+Writing to the RTC by multiple I2C transfers might have same
+consistency problem.  But it would not be a real problem if you wrote
+the sec register first.  Here is a comment in
+rtc_m41t81.c:m41t81_set_time():
 
--- 
-Jean Delvare
+	/*
+	 * Note the write order matters as it ensures the correctness.
+	 * When we write sec, 10th sec is clear.  It is reasonable to
+	 * believe we should finish writing min within a second.
+	 */
+
+I think this comment is worth to import.
+
+Other parts looks good for me.
+
+---
+Atsushi Nemoto

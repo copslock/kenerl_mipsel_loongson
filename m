@@ -1,76 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 10:11:48 +0100 (BST)
-Received: from n6.bullet.mud.yahoo.com ([216.252.100.57]:36949 "HELO
-	n6.bullet.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20022052AbXJAJLj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Oct 2007 10:11:39 +0100
-Received: from [68.142.194.244] by n6.bullet.mud.yahoo.com with NNFMP; 01 Oct 2007 09:10:17 -0000
-Received: from [209.191.119.163] by t2.bullet.mud.yahoo.com with NNFMP; 01 Oct 2007 09:10:17 -0000
-Received: from [127.0.0.1] by omp102.mail.mud.yahoo.com with NNFMP; 01 Oct 2007 09:10:17 -0000
-X-Yahoo-Newman-Property: ymail-3
-X-Yahoo-Newman-Id: 130687.14103.bm@omp102.mail.mud.yahoo.com
-Received: (qmail 35417 invoked by uid 60001); 1 Oct 2007 09:04:33 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=lUVapiL1EKJnQozhcUV8Go1a4BzqxjAdmJst7d0WMrogji9z0oVMERAXx+UfrPvswLbvpLf0XOZ+w1tVryHaTjv8c3sM6Zv/onTj/4igs0/ESJNfAOBRkcDZNRbsLhMZpz2WEjS1p0SEIvzxLxc4AnKs0gM6tTACvHc1QatGQFg=;
-X-YMail-OSG: OvqjJSIVM1k_lSVRAynBOP_A43iN1H_VzB1zKuh_Bsd6U_rNdd8hCJ7YDDBBBSvEl6mpv3CG8S3CblaZVZjTJfBgdqq9I4fWKvzRWeEnf3bX9SghKLoaIpCUk2P1HQ--
-Received: from [199.239.167.162] by web8401.mail.in.yahoo.com via HTTP; Mon, 01 Oct 2007 10:04:32 BST
-Date:	Mon, 1 Oct 2007 10:04:32 +0100 (BST)
-From:	veerasena reddy <veerasena_b@yahoo.co.in>
-Subject: linux cache routines for Write-back cache policy on  MIPS24KE
-To:	linux-mips <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 10:23:16 +0100 (BST)
+Received: from ananke.telenet-ops.be ([195.130.137.78]:38632 "EHLO
+	ananke.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20022064AbXJAJXH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 Oct 2007 10:23:07 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by ananke.telenet-ops.be (Postfix) with SMTP id 60738392442;
+	Mon,  1 Oct 2007 11:23:06 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by ananke.telenet-ops.be (Postfix) with ESMTP id 426C13923D0;
+	Mon,  1 Oct 2007 11:23:06 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l919N5Ys020958
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 1 Oct 2007 11:23:05 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l919N5mA020955;
+	Mon, 1 Oct 2007 11:23:05 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Mon, 1 Oct 2007 11:23:05 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	veerasena reddy <veerasena_b@yahoo.co.in>
+cc:	linux-mips <linux-mips@linux-mips.org>,
 	"linux-kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: linux cache routines for Write-back cache policy on  MIPS24KE
+In-Reply-To: <119374.35234.qm@web8401.mail.in.yahoo.com>
+Message-ID: <Pine.LNX.4.64.0710011121300.20679@anakin>
+References: <119374.35234.qm@web8401.mail.in.yahoo.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <119374.35234.qm@web8401.mail.in.yahoo.com>
-Return-Path: <veerasena_b@yahoo.co.in>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16752
+X-archive-position: 16753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: veerasena_b@yahoo.co.in
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Mon, 1 Oct 2007, veerasena reddy wrote:
+> I have ported Linux-2.6.18 kernel on MIPS24KE
+> processor. I am using write back cache policy.
+> 
+> Could you please guide me under what cases the below
+> cache API's are being used:
+> - dma_cache_wback_inv() : Could you explain  what
+> exactly this function does
 
-I have ported Linux-2.6.18 kernel on MIPS24KE
-processor. I am using write back cache policy.
+It does both write back and invalidate.
 
-Could you please guide me under what cases the below
-cache API's are being used:
-- dma_cache_wback_inv() : Could you explain  what
-exactly this function does
-- dma_cache_wback() : This function write back the
-cache data to memory
-- dma_cache_inv  : This function invalidate the cache
-tags. so subsequent access will fetch from memory.
+> - dma_cache_wback() : This function write back the
+> cache data to memory
+> - dma_cache_inv  : This function invalidate the cache
+> tags. so subsequent access will fetch from memory.
 
-Once I looked the above function definitions in
-linux-2.6.18/arch/mips/mm/c-r4k.c.
-All these function's implemetation are same except
-bc_wbak_inv() is called in both dma_cache_wback-inv()
-and dma_cache_wback(), where as bc_inv() is called in
-case of dma_cache_inv.
+Note that 2.6.18 is old. The above functions are intended to be removed.
 
-Also, bc_inv()/bc_wbak_inv are define as null
-implementation for R4000.
-That means all three functions are doing same
-functionality in case of R4000.
+Gr{oetje,eeting}s,
 
-What are the difference between these three functions.
-Under what cases these functions are used. 
+						Geert
 
-Please guide me if you have any links which will
-explain these API's.
-Thanks in advance.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Regards,
-Veerasena.
-
-
-      Forgot the famous last words? Access your message archive online at http://in.messenger.yahoo.com/webmessengerpromo.php
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

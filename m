@@ -1,168 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 11:50:57 +0100 (BST)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:11025 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022268AbXJAKuq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2007 11:50:46 +0100
-Received: by mo.po.2iij.net (mo31) id l91AnS44099021; Mon, 1 Oct 2007 19:49:28 +0900 (JST)
-Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox301) id l91AnOQ5021292
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 1 Oct 2007 19:49:25 +0900
-Date:	Mon, 1 Oct 2007 19:45:05 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp,
-	linux-mips <linux-mips@linux-mips.org>,
-	Richard Purdie <rpurdie@rpsys.net>
-Subject: [PATCH][1/3] add Cobalt Raq LED platform register and power off
- trigger
-Message-Id: <20071001194505.979185df.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 11:59:59 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:56012 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022280AbXJAK74 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 Oct 2007 11:59:56 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l91AxtPV013546;
+	Mon, 1 Oct 2007 11:59:55 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l91AxsUN013495;
+	Mon, 1 Oct 2007 11:59:54 +0100
+Date:	Mon, 1 Oct 2007 11:59:54 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	veerasena reddy <veerasena_b@yahoo.co.in>
+Cc:	linux-mips <linux-mips@linux-mips.org>,
+	"linux-kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: linux cache routines for Write-back cache policy on  MIPS24KE
+Message-ID: <20071001105954.GB23647@linux-mips.org>
+References: <119374.35234.qm@web8401.mail.in.yahoo.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <119374.35234.qm@web8401.mail.in.yahoo.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16759
+X-archive-position: 16760
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Mon, Oct 01, 2007 at 10:04:32AM +0100, veerasena reddy wrote:
 
-The Cobalt LED drivers have already been queued for 2.6.24.
-Please queue these patches too.
+> I have ported Linux-2.6.18 kernel on MIPS24KE
+> processor. I am using write back cache policy.
+> 
+> Could you please guide me under what cases the below
+> cache API's are being used:
+> - dma_cache_wback_inv() : Could you explain  what
+> exactly this function does
+> - dma_cache_wback() : This function write back the
+> cache data to memory
+> - dma_cache_inv  : This function invalidate the cache
+> tags. so subsequent access will fetch from memory.
+> 
+> Once I looked the above function definitions in
+> linux-2.6.18/arch/mips/mm/c-r4k.c.
+> All these function's implemetation are same except
+> bc_wbak_inv() is called in both dma_cache_wback-inv()
+> and dma_cache_wback(), where as bc_inv() is called in
+> case of dma_cache_inv.
+> 
+> Also, bc_inv()/bc_wbak_inv are define as null
+> implementation for R4000.
+> That means all three functions are doing same
+> functionality in case of R4000.
+> 
+> What are the difference between these three functions.
+> Under what cases these functions are used. 
 
-Yoichi
----
+An internal only interface to be used with I/O cache coherency.
 
-Add Cobalt Raq LED platform register and power off trigger.
+> Please guide me if you have any links which will
+> explain these API's.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Easy answer, don't use them, for 2.6.24 I've queued a patch to kill this
+API.  Documentation/DMA-API.txt documents how to properly deal with I/O
+coherency in Linux.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/Makefile mips/arch/mips/cobalt/Makefile
---- mips-orig/arch/mips/cobalt/Makefile	2007-09-21 10:24:16.864636000 +0900
-+++ mips/arch/mips/cobalt/Makefile	2007-09-21 11:25:43.384914000 +0900
-@@ -2,7 +2,7 @@
- # Makefile for the Cobalt micro systems family specific parts of the kernel
- #
- 
--obj-y := buttons.o irq.o reset.o rtc.o serial.o setup.o
-+obj-y := buttons.o irq.o led.o reset.o rtc.o serial.o setup.o
- 
- obj-$(CONFIG_PCI)		+= pci.o
- obj-$(CONFIG_EARLY_PRINTK)	+= console.o
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/led.c mips/arch/mips/cobalt/led.c
---- mips-orig/arch/mips/cobalt/led.c	1970-01-01 09:00:00.000000000 +0900
-+++ mips/arch/mips/cobalt/led.c	2007-09-21 11:26:18.519109750 +0900
-@@ -0,0 +1,56 @@
-+/*
-+ *  Registration of Cobalt LED platform device.
-+ *
-+ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-+ */
-+#include <linux/errno.h>
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/platform_device.h>
-+
-+static struct resource cobalt_led_resource __initdata = {
-+	.start	= 0x1c000000,
-+	.end	= 0x1c000000,
-+	.flags	= IORESOURCE_MEM,
-+};
-+
-+static __init int cobalt_led_add(void)
-+{
-+	struct platform_device *pdev;
-+	int retval;
-+
-+	pdev = platform_device_alloc("cobalt-raq-leds", -1);
-+
-+	if (!pdev)
-+		return -ENOMEM;
-+
-+	retval = platform_device_add_resources(pdev, &cobalt_led_resource, 1);
-+	if (retval)
-+		goto err_free_device;
-+
-+	retval = platform_device_add(pdev);
-+	if (retval)
-+		goto err_free_device;
-+
-+	return 0;
-+
-+err_free_device:
-+	platform_device_put(pdev);
-+
-+	return retval;
-+}
-+device_initcall(cobalt_led_add);
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/reset.c mips/arch/mips/cobalt/reset.c
---- mips-orig/arch/mips/cobalt/reset.c	2007-09-21 10:24:16.864636000 +0900
-+++ mips/arch/mips/cobalt/reset.c	2007-09-21 11:25:43.616928500 +0900
-@@ -8,31 +8,37 @@
-  * Copyright (C) 1995, 1996, 1997 by Ralf Baechle
-  * Copyright (C) 2001 by Liam Davies (ldavies@agile.tv)
-  */
-+#include <linux/init.h>
- #include <linux/jiffies.h>
--
--#include <asm/io.h>
--#include <asm/reboot.h>
-+#include <linux/leds.h>
- 
- #include <cobalt.h>
- 
-+DEFINE_LED_TRIGGER(power_off_led_trigger);
-+
-+static int __init ledtrig_power_off_init(void)
-+{
-+	led_trigger_register_simple("power-off", &power_off_led_trigger);
-+	return 0;
-+}
-+device_initcall(ledtrig_power_off_init);
-+
- void cobalt_machine_halt(void)
- {
- 	int state, last, diff;
- 	unsigned long mark;
- 
- 	/*
--	 * turn off bar on Qube, flash power off LED on RaQ (0.5Hz)
-+	 * turn on power off LED on RaQ
- 	 *
- 	 * restart if ENTER and SELECT are pressed
- 	 */
- 
- 	last = COBALT_KEY_PORT;
- 
--	for (state = 0;;) {
--
--		state ^= COBALT_LED_POWER_OFF;
--		COBALT_LED_PORT = state;
-+	led_trigger_event(power_off_led_trigger, LED_FULL);
- 
-+	for (state = 0;;) {
- 		diff = COBALT_KEY_PORT ^ last;
- 		last ^= diff;
- 
+  Ralf

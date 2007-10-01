@@ -1,62 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 20:09:42 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:25275 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021799AbXJATJe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Oct 2007 20:09:34 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D6492400A9;
-	Mon,  1 Oct 2007 21:09:05 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id hOPhRCtRomdI; Mon,  1 Oct 2007 21:08:59 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 893F840040;
-	Mon,  1 Oct 2007 21:08:59 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l91J92iJ006517;
-	Mon, 1 Oct 2007 21:09:03 +0200
-Date:	Mon, 1 Oct 2007 20:08:55 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	rongkai.zhan@windriver.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, rtc-linux@googlegroups.com,
-	ralf@linux-mips.org, a.zummo@towertech.it
-Subject: Re: [PATCH 4/4] MIPS: Remove the legacy RTC codes of MIPS sibyte
- boards
-In-Reply-To: <20071002.003020.21363605.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64N.0710012001300.27280@blysk.ds.pg.gda.pl>
-References: <46FF7283.7050702@windriver.com> <Pine.LNX.4.64N.0710011608130.27280@blysk.ds.pg.gda.pl>
- <20071002.003020.21363605.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 21:33:39 +0100 (BST)
+Received: from n7.bullet.mud.yahoo.com ([216.252.100.58]:39785 "HELO
+	n7.bullet.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20021983AbXJAUda (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 Oct 2007 21:33:30 +0100
+Received: from [68.142.194.244] by n7.bullet.mud.yahoo.com with NNFMP; 01 Oct 2007 20:33:23 -0000
+Received: from [209.191.119.153] by t2.bullet.mud.yahoo.com with NNFMP; 01 Oct 2007 20:33:23 -0000
+Received: from [127.0.0.1] by omp100.mail.mud.yahoo.com with NNFMP; 01 Oct 2007 20:08:15 -0000
+X-Yahoo-Newman-Property: ymail-3
+X-Yahoo-Newman-Id: 842743.27969.bm@omp100.mail.mud.yahoo.com
+Received: (qmail 48437 invoked by uid 60001); 1 Oct 2007 12:10:59 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.in;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=JFI93gjpzOHlXrYO0qKiBrK2exRN0OUN5mgune/EHusbnjKGeS2+sEvK9Tn0eMPo1KvwogV0XtXLOa8+OtabFNg6kjPzE6/DBzH/XSkEeYxjkQACFOyyLaFoaEyO6w9yo/TykbbTHV1rzLQEClIKfNh61EHkhDIwEPLSFCcJVpE=;
+X-YMail-OSG: 2Ig8bTcVM1nO9td6myIxXt9.FpWVrwmpuK_jDH2VK_Z13tLNAiMLCRCEa2vgXw9UmqssKi2L8wJOBb2MetWIWOxLM0VENOwBoLeO8r.4zPTX.bC6fUVqfh4iVQ--
+Received: from [199.239.167.162] by web8403.mail.in.yahoo.com via HTTP; Mon, 01 Oct 2007 13:10:59 BST
+Date:	Mon, 1 Oct 2007 13:10:59 +0100 (BST)
+From:	veerasena reddy <veerasena_b@yahoo.co.in>
+Subject: Re: linux cache routines for Write-back cache policy on  MIPS24KE
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips <linux-mips@linux-mips.org>,
+	"linux-kernel.org" <linux-kernel@vger.kernel.org>
+In-Reply-To: <20071001105954.GB23647@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4445/Mon Oct  1 10:32:46 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID: <535696.48077.qm@web8403.mail.in.yahoo.com>
+Return-Path: <veerasena_b@yahoo.co.in>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16779
+X-archive-position: 16780
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: veerasena_b@yahoo.co.in
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2 Oct 2007, Atsushi Nemoto wrote:
+Hi Ralf,
 
-> >  Is the system time still set correctly from the RTC chip upon bootstrap 
-> > with your changes?  I cannot immediately infer it from the patches and my 
-> > suspicion is it may not anymore.
+Thanks for the reply.
+
+Is there any problem if we use the below API's in
+linxu-2.6.18 
+  - dma_cache_wback_inv()
+  - dma_cache_wback()
+  - dma_cache_inv()
+
+functionality wise, especially in r4k.c i dont see any
+difference between the implementation of these APIs.
+
+Can we apply the 2.6.24 patch to kill these APIs on
+2.6.18 kernel? In this case what APIs i can use for
+writeback, invalidation or both?
+
+I couldn't find any info. related to the above API in
+DMA-API.txt. Could you please give some pointers on
+the usage/working of these APIs.
+
+Regards,
+Veerasena.
+
+--- Ralf Baechle <ralf@linux-mips.org> wrote:
+
+> On Mon, Oct 01, 2007 at 10:04:32AM +0100, veerasena
+> reddy wrote:
 > 
-> CONFIG_RTC_HCTOSYS=y can do it, isn't it?
+> > I have ported Linux-2.6.18 kernel on MIPS24KE
+> > processor. I am using write back cache policy.
+> > 
+> > Could you please guide me under what cases the
+> below
+> > cache API's are being used:
+> > - dma_cache_wback_inv() : Could you explain  what
+> > exactly this function does
+> > - dma_cache_wback() : This function write back the
+> > cache data to memory
+> > - dma_cache_inv  : This function invalidate the
+> cache
+> > tags. so subsequent access will fetch from memory.
+> > 
+> > Once I looked the above function definitions in
+> > linux-2.6.18/arch/mips/mm/c-r4k.c.
+> > All these function's implemetation are same except
+> > bc_wbak_inv() is called in both
+> dma_cache_wback-inv()
+> > and dma_cache_wback(), where as bc_inv() is called
+> in
+> > case of dma_cache_inv.
+> > 
+> > Also, bc_inv()/bc_wbak_inv are define as null
+> > implementation for R4000.
+> > That means all three functions are doing same
+> > functionality in case of R4000.
+> > 
+> > What are the difference between these three
+> functions.
+> > Under what cases these functions are used. 
+> 
+> An internal only interface to be used with I/O cache
+> coherency.
+> 
+> > Please guide me if you have any links which will
+> > explain these API's.
+> 
+> Easy answer, don't use them, for 2.6.24 I've queued
+> a patch to kill this
+> API.  Documentation/DMA-API.txt documents how to
+> properly deal with I/O
+> coherency in Linux.
+> 
+>   Ralf
+> 
 
- Hmm, I wonder whether this shouldn't be enabled via a reverse dependency.  
-Or even unconditionally perhaps -- if the initial system time gets set 
-from incorrect RTC time (e.g. because it is not battery-backed) it does 
-not get less correct than it would be otherwise, does it?
 
- Any reason for not doing either of these?
 
-  Maciej
+      Save all your chat conversations. Find them online at http://in.messenger.yahoo.com/webmessengerpromo.php

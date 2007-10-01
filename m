@@ -1,47 +1,168 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 11:50:26 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:51114 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022277AbXJAKuF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Oct 2007 11:50:05 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l91Ao45W031932;
-	Mon, 1 Oct 2007 11:50:04 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l91Ao3MJ031931;
-	Mon, 1 Oct 2007 11:50:03 +0100
-Date:	Mon, 1 Oct 2007 11:50:03 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	KokHow.Teh@infineon.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Linux-2.6.20 malta board build with GCC-4.0.0 build error
-Message-ID: <20071001105003.GA23647@linux-mips.org>
-References: <31E09F73562D7A4D82119D7F6C17298602667FE0@sinse303.ap.infineon.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <31E09F73562D7A4D82119D7F6C17298602667FE0@sinse303.ap.infineon.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Oct 2007 11:50:57 +0100 (BST)
+Received: from mo31.po.2iij.NET ([210.128.50.54]:11025 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20022268AbXJAKuq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Oct 2007 11:50:46 +0100
+Received: by mo.po.2iij.net (mo31) id l91AnS44099021; Mon, 1 Oct 2007 19:49:28 +0900 (JST)
+Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox301) id l91AnOQ5021292
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 1 Oct 2007 19:49:25 +0900
+Date:	Mon, 1 Oct 2007 19:45:05 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp,
+	linux-mips <linux-mips@linux-mips.org>,
+	Richard Purdie <rpurdie@rpsys.net>
+Subject: [PATCH][1/3] add Cobalt Raq LED platform register and power off
+ trigger
+Message-Id: <20071001194505.979185df.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16758
+X-archive-position: 16759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Sep 30, 2007 at 05:18:39PM +0800, KokHow.Teh@infineon.com wrote:
+Hi Ralf,
 
-> 	I am using eldk-4.1 with gcc-4.0.0 to build linux-2.6.20 for
-> Malta board little-endian. I bump into following build error with
-> mipsel-linux-ld:
+The Cobalt LED drivers have already been queued for 2.6.24.
+Please queue these patches too.
 
-Odd.  All I can tell you is the linuxel-mips target of SDE and the vanilla
-GNU toolchain builds are working right out of the box.  But keepfiners
-away from binutils 2.18 which will produce a bad executable, something I
-still haven't managed to enquire.
+Yoichi
+---
 
-  Ralf
+Add Cobalt Raq LED platform register and power off trigger.
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/Makefile mips/arch/mips/cobalt/Makefile
+--- mips-orig/arch/mips/cobalt/Makefile	2007-09-21 10:24:16.864636000 +0900
++++ mips/arch/mips/cobalt/Makefile	2007-09-21 11:25:43.384914000 +0900
+@@ -2,7 +2,7 @@
+ # Makefile for the Cobalt micro systems family specific parts of the kernel
+ #
+ 
+-obj-y := buttons.o irq.o reset.o rtc.o serial.o setup.o
++obj-y := buttons.o irq.o led.o reset.o rtc.o serial.o setup.o
+ 
+ obj-$(CONFIG_PCI)		+= pci.o
+ obj-$(CONFIG_EARLY_PRINTK)	+= console.o
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/led.c mips/arch/mips/cobalt/led.c
+--- mips-orig/arch/mips/cobalt/led.c	1970-01-01 09:00:00.000000000 +0900
++++ mips/arch/mips/cobalt/led.c	2007-09-21 11:26:18.519109750 +0900
+@@ -0,0 +1,56 @@
++/*
++ *  Registration of Cobalt LED platform device.
++ *
++ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++#include <linux/errno.h>
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/platform_device.h>
++
++static struct resource cobalt_led_resource __initdata = {
++	.start	= 0x1c000000,
++	.end	= 0x1c000000,
++	.flags	= IORESOURCE_MEM,
++};
++
++static __init int cobalt_led_add(void)
++{
++	struct platform_device *pdev;
++	int retval;
++
++	pdev = platform_device_alloc("cobalt-raq-leds", -1);
++
++	if (!pdev)
++		return -ENOMEM;
++
++	retval = platform_device_add_resources(pdev, &cobalt_led_resource, 1);
++	if (retval)
++		goto err_free_device;
++
++	retval = platform_device_add(pdev);
++	if (retval)
++		goto err_free_device;
++
++	return 0;
++
++err_free_device:
++	platform_device_put(pdev);
++
++	return retval;
++}
++device_initcall(cobalt_led_add);
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/reset.c mips/arch/mips/cobalt/reset.c
+--- mips-orig/arch/mips/cobalt/reset.c	2007-09-21 10:24:16.864636000 +0900
++++ mips/arch/mips/cobalt/reset.c	2007-09-21 11:25:43.616928500 +0900
+@@ -8,31 +8,37 @@
+  * Copyright (C) 1995, 1996, 1997 by Ralf Baechle
+  * Copyright (C) 2001 by Liam Davies (ldavies@agile.tv)
+  */
++#include <linux/init.h>
+ #include <linux/jiffies.h>
+-
+-#include <asm/io.h>
+-#include <asm/reboot.h>
++#include <linux/leds.h>
+ 
+ #include <cobalt.h>
+ 
++DEFINE_LED_TRIGGER(power_off_led_trigger);
++
++static int __init ledtrig_power_off_init(void)
++{
++	led_trigger_register_simple("power-off", &power_off_led_trigger);
++	return 0;
++}
++device_initcall(ledtrig_power_off_init);
++
+ void cobalt_machine_halt(void)
+ {
+ 	int state, last, diff;
+ 	unsigned long mark;
+ 
+ 	/*
+-	 * turn off bar on Qube, flash power off LED on RaQ (0.5Hz)
++	 * turn on power off LED on RaQ
+ 	 *
+ 	 * restart if ENTER and SELECT are pressed
+ 	 */
+ 
+ 	last = COBALT_KEY_PORT;
+ 
+-	for (state = 0;;) {
+-
+-		state ^= COBALT_LED_POWER_OFF;
+-		COBALT_LED_PORT = state;
++	led_trigger_event(power_off_led_trigger, LED_FULL);
+ 
++	for (state = 0;;) {
+ 		diff = COBALT_KEY_PORT ^ last;
+ 		last ^= diff;
+ 

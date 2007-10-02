@@ -1,66 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Oct 2007 21:37:48 +0100 (BST)
-Received: from hall.aurel32.net ([88.191.38.19]:27089 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20023069AbXJBUhk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 2 Oct 2007 21:37:40 +0100
-Received: from volta.aurel32.net ([2001:618:400:fc13:216:d3ff:fe17:fd00])
-	by hall.aurel32.net with esmtpsa (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.63)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1IcoUp-0006Ad-66; Tue, 02 Oct 2007 22:37:35 +0200
-Received: from localhost.localdomain ([127.0.0.1] ident=aurel32)
-	by volta.aurel32.net with esmtp (Exim 4.67)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1IcoUq-0004sY-AR; Tue, 02 Oct 2007 22:37:36 +0200
-Message-ID: <4702AC0F.1000906@aurel32.net>
-Date:	Tue, 02 Oct 2007 22:37:35 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
-User-Agent: IceDove 1.5.0.10 (X11/20070328)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Oct 2007 21:41:49 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.184]:21971 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023078AbXJBUlj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 2 Oct 2007 21:41:39 +0100
+Received: by fk-out-0910.google.com with SMTP id f40so4292502fka
+        for <linux-mips@linux-mips.org>; Tue, 02 Oct 2007 13:41:22 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        bh=2s0FBm7boKqIqrmxJG+LhChC1OOrUoPRgmDNf27IYWw=;
+        b=fdm5Oy4qjiHi3nimyixydx8LIP37N/sGXWpikrNB+rYcI/94hCbPQN0d9jeuSsbERC8pNsZ2IeoUAeYXAI4YBnemh+PE0twnny06fJm3XvUbkXie/Fnxoxp1LpcPcuyKxNpsPaTIaldfEFRlkJ08W60eytb+zkOSIifddsaBEDY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=odnS2l3aecbNXw2FL9N4zZJ3Fpqv0UyA5EsuKbYjeKZ3yOKxLma0H+8AYo/oSn2S/EcDYyN7L93/I9MGAexTA4KVxVqSx+wGCXdF3HYN2EZykCznPjCBLnAjuGM094cW0zOjPTNv2NTn1EB5GsrPH5aD0aw203Y581f5tEka2n8=
+Received: by 10.82.189.6 with SMTP id m6mr11803830buf.1191357681235;
+        Tue, 02 Oct 2007 13:41:21 -0700 (PDT)
+Received: by 10.141.129.12 with HTTP; Tue, 2 Oct 2007 13:41:21 -0700 (PDT)
+Message-ID: <41370a610710021341g749742dejec06b3a38477fd47@mail.gmail.com>
+Date:	Tue, 2 Oct 2007 15:41:21 -0500
+From:	"Ed Stafford" <ed.stafford@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: What is the current state of the Octane/IP30 support?
 MIME-Version: 1.0
-To:	qemu-devel@nongnu.org
-CC:	linux-mips@linux-mips.org
-Subject: Re: [Qemu-devel] QEMU/MIPS & dyntick kernel
-References: <20071002200644.GA19140@hall.aurel32.net> <4702A99B.7020008@qumranet.com>
-In-Reply-To: <4702A99B.7020008@qumranet.com>
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <aurelien@aurel32.net>
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Return-Path: <ed.stafford@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16804
+X-archive-position: 16805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: ed.stafford@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Avi Kivity a écrit :
-> Aurelien Jarno wrote:
->> Hi,
->>
->> As announced by Ralf Baechle, dyntick is now available on MIPS. I gave a
->> try on QEMU/MIPS, and unfortunately it doesn't work correctly.
->>
->> In some cases the kernel schedules an event very near in the future, 
->> which means the timer is scheduled a few cycles only from its current
->> value. Unfortunately under QEMU, the timer runs too fast compared to the
->> speed at which instructions are execution.
-> 
-> Sounds like a kernel bug.  Can't there conceivably exist real hardware 
-> (or a real timeout) that exhibits the same timing?
-> 
-> Especially today with variable clock frequencies, I don't see how the 
-> kernel can rely on exact timing.
-> 
+I have a single-proc Octane at home that I've decided should be
+running with Linux, but I have been reading up online about the
+Experimental nature of the kernel in relation to the hardware.  Since
+most of the info I found was dated 2006, I wanted to ask your (as a
+group) opinion on how stable / usable the Octane is today with the
+current kernel.
 
-Well on real hardware, the instruction rate and the timer are linked:
-the timer run at half the speed of the CPU. As the corresponding
-assembly code is very small, only uses registers and is run in kernel
-mode, you know for sure that 48 cycles is more than enough.
+I'm not adverse to bleeding edge, I just want to know whether or not
+I'll be struggling on something that just doesn't have enough drivers
+written for it to make it usable.
 
--- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+Just in case anyone asks, I'll probably be using Gentoo, but I'm not
+glued to that distro.  (I'm very agnostic and just prefer it to work
+the best vs. distro-warring..)
+
+Thanks a bunch!
+
+Ed

@@ -1,63 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Oct 2007 02:00:56 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:36320 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20024228AbXJCBAy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 Oct 2007 02:00:54 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9310r1u025772;
-	Wed, 3 Oct 2007 02:00:53 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9310r6s025771;
-	Wed, 3 Oct 2007 02:00:53 +0100
-Date:	Wed, 3 Oct 2007 02:00:53 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-Message-ID: <20071003010053.GA25603@linux-mips.org>
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <Pine.LNX.4.64N.0710021651490.32726@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Oct 2007 07:07:06 +0100 (BST)
+Received: from alnrmhc12.comcast.net ([204.127.225.92]:14776 "EHLO
+	alnrmhc12.comcast.net") by ftp.linux-mips.org with ESMTP
+	id S20022205AbXJCGG5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 3 Oct 2007 07:06:57 +0100
+Received: from [192.168.1.4] (c-69-140-18-238.hsd1.md.comcast.net[69.140.18.238])
+          by comcast.net (alnrmhc12) with ESMTP
+          id <20071003060614b1200m1ra0e>; Wed, 3 Oct 2007 06:06:14 +0000
+Message-ID: <47033156.7090703@gentoo.org>
+Date:	Wed, 03 Oct 2007 02:06:14 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0710021651490.32726@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	Ed Stafford <ed.stafford@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: What is the current state of the Octane/IP30 support?
+References: <41370a610710021341g749742dejec06b3a38477fd47@mail.gmail.com>
+In-Reply-To: <41370a610710021341g749742dejec06b3a38477fd47@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16815
+X-archive-position: 16816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 02, 2007 at 05:08:05PM +0100, Maciej W. Rozycki wrote:
+Ed Stafford wrote:
+> I have a single-proc Octane at home that I've decided should be
+> running with Linux, but I have been reading up online about the
+> Experimental nature of the kernel in relation to the hardware.  Since
+> most of the info I found was dated 2006, I wanted to ask your (as a
+> group) opinion on how stable / usable the Octane is today with the
+> current kernel.
+> 
+> I'm not adverse to bleeding edge, I just want to know whether or not
+> I'll be struggling on something that just doesn't have enough drivers
+> written for it to make it usable.
+> 
+> Just in case anyone asks, I'll probably be using Gentoo, but I'm not
+> glued to that distro.  (I'm very agnostic and just prefer it to work
+> the best vs. distro-warring..)
+> 
+> Thanks a bunch!
 
-> > I have a patch which makes the generated code accessible through a
-> > procfs file.  That can easily be converted back into a .o file and then
-> > be disassembled.  So it's now a question of which variant is preferable.
-> 
->  There is no need to go through such hassle even:
-> 
-> $ objdump -b binary -m mips:4000 -d /proc/foo
-> 
-> or suchlike should work (the program seems to be sensitive to the file 
-> size though, so it better be non-zero).
-> 
-> > I don't mind - it's just that I've never been a friend of leaving much
-> > debugging code or features around.  99% of the time it is just make the
-> > code harder to read and maintain.
-> 
->  In this case I would let these bits stay in though.  The bootstrap log 
-> always works and can be captured with the serial console or read from the 
-> screen, and if there is a subtle breakage in these generated bits then the 
-> system may never get far enough for procfs to be accessible.  It is these 
-> moments it matters the most.
+Right now, Gentoo does have the best support for them (mine is running 
+2.6.23-rc5 about 3.5ft from me as I type).  But I do believe the debian guys 
+have been working on a debian install image for them too (tbm/ths, am I right on 
+this?)
 
-I originally wrote my variant as a tool for optimization.
+For the most part, Impact-based systems run great.  You get X, unaccelerated, no 
+3D, and a framebuffer.  VPro, framebuffer, but no X.  USB kinda weorks if you 
+have a PCI-Card Cage and a OHCI chipsets (UHCI is dead last I checked), and I 
+think EHCI works fine.  Haven't tried much else beyond those PCI devices.
 
-Anyway, queued for 2.6.24.  That is if 2.6.23 is ever released ;-)
+A lot of the other XIO Boards, outside of the Impact or Vpro boards, are wholly 
+untested, and likely won't work at all.  Nor do I think dual head will work if 
+you have a second Impact card kicking around.
 
-  Ralf
+For gentoo, we have an "RC6" livecd.  I've played with building an RC7 several 
+times, but that got sidetracked about 2-3 months ago.  I hope to resume work on 
+it soon.  You can find that and the current netboots on your local gentoo 
+mirror, in the experimental/mips sub-folders.
+
+Further gentoo questions regarding this system should be directed to the 
+gentoo-mips ML; linux-mips here is more for distro-agnostic development.
+
+Have fun!  (and what Proc, btw?)
+
+
+--Kumba
+
+-- 
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

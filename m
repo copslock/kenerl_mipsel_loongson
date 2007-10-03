@@ -1,75 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Oct 2007 14:42:02 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:23981 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021491AbXJCNmA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 Oct 2007 14:42:00 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l93DfxVY028851;
-	Wed, 3 Oct 2007 14:41:59 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l93DfwY7028850;
-	Wed, 3 Oct 2007 14:41:58 +0100
-Date:	Wed, 3 Oct 2007 14:41:58 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Thiemo Seufer <ths@networkno.de>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Oct 2007 14:51:25 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:25504 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021528AbXJCNvR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 3 Oct 2007 14:51:17 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id DB734400A8;
+	Wed,  3 Oct 2007 15:51:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id geuztPUpQRF2; Wed,  3 Oct 2007 15:51:10 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 9DF9B400D8;
+	Wed,  3 Oct 2007 15:51:10 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l93DpECn029224;
+	Wed, 3 Oct 2007 15:51:14 +0200
+Date:	Wed, 3 Oct 2007 14:51:10 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-Message-ID: <20071003134158.GA28742@linux-mips.org>
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com>
+In-Reply-To: <20071003131158.GL16772@networkno.de>
+Message-ID: <Pine.LNX.4.64N.0710031418580.6611@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
+ <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org>
+ <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47038874.9050704@gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4461/Wed Oct  3 10:50:48 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16825
+X-archive-position: 16826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 03, 2007 at 02:17:56PM +0200, Franck Bui-Huu wrote:
+On Wed, 3 Oct 2007, Thiemo Seufer wrote:
 
-> Ralf Baechle wrote:
-> > I don't mind - it's just that I've never been a friend of leaving much
-> > debugging code or features around.  99% of the time it is just make the
-> > code harder to read and maintain.
-> > 
-> 
-> Yeah this kind of code is really hard to follow and therefore hard to
-> maintain I guess.
-> 
-> I'm wondering if we couldn't try to implement such code generator by
-> using a tools/scripts during the build process. This tool could emit
-> the assembler code during the early phase of the build into an
-> assembler file and then it could compiled like any other one. I see a
-> 3 main benefits:
-> 
->   - It would simplify a lot the kernel code.
->   - Decrease the size of the kernel
->   - Easy to read the generated disassembly
-> 
-> One issue to deal with is that some instructions need to be emitted
-> according to the type of the cpu which can only be determined at run
-> time. In this case we could leave some rooms into the generated code
-> for additional instructions which could be filled/patched during the
-> boot time by using a 'patch table'. If the cpu doesn't need to patch
-> the generated code then the useless space would be discarded when
-> installing the handler in its final place.
-> 
-> Just a thought but I'm probably missing something.
+> Then you have the worst of both approaches: The nicely readable
+> disassembly will change under you feet, and you still need relocation
+> annotations etc. for CPU-specific fixups. The end-result is likely
+> more complicated and opaque than what we have now.
 
-We went for the runtime generation because this is about the only sane
-way we can get support for the widest range of cores yet not compromise
-on performance.  Maintaining the previous generation of that code which
-was like a dozen variants of page clearing, copying and TLB exception
-handlers was definately more tedious than this.
+ Well, to be honest what we have now is very good.  One trouble at the 
+beginning, just after we switched from the old approach, was limited 
+ability to get at what really is generated and therefore tough time to 
+determine what was going on if something was wrong.  With these debug 
+dumps in place it is gone now too.
 
-  Ralf
+ There is one limitation though -- unlike with ready-writted assembly to 
+debug this code you typically need to have a specific system that shows a 
+problem.  If you do not have one chances are you can miss a condition 
+somewhere and therefore the problem.  Once you have the right piece of 
+hardware, debugging is easy -- it took me half of a day if not less to 
+sort out all the issues with the R3000 TLB handlers that we had once I got 
+my hands on a suitable system.
+
+ And as with everything, there is still room for improvement though.  For 
+example I have noticed for the 64-bit TLB refill handler the path for 
+vmalloc()ed pages may fit entirely in half of the space available.  Which 
+means whatever is emitted after "eret" may be shifted to the TLB refill 
+space at 0x80000000 saving the branch from the XTLB space at its end.  
+That is probably doable with reasonably little effort given that we have 
+support for "relocations".
+
+  Maciej

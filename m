@@ -1,83 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 11:36:07 +0100 (BST)
-Received: from host191-212-dynamic.8-87-r.retail.telecomitalia.it ([87.8.212.191]:58349
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S20024695AbXJDKf7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 Oct 2007 11:35:59 +0100
-Received: from giuseppe by eppesuigoccas.homedns.org with local (Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1IdO0a-0000n7-Cg; Thu, 04 Oct 2007 12:32:44 +0200
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] enable PCI bridges in MIPS ip32
-Cc:	linux-mips@linux-mips.org
-Message-Id: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-Date:	Thu, 04 Oct 2007 12:32:44 +0200
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 13:16:02 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:50561 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20026000AbXJDMP6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Oct 2007 13:15:58 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l94CFvr7005417;
+	Thu, 4 Oct 2007 13:15:58 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l94CFvo2005416;
+	Thu, 4 Oct 2007 13:15:57 +0100
+Date:	Thu, 4 Oct 2007 13:15:57 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Thiemo Seufer <ths@networkno.de>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+Message-ID: <20071004121557.GA28928@linux-mips.org>
+References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <47049734.6050802@gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16836
+X-archive-position: 16837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Oct 04, 2007 at 09:33:08AM +0200, Franck Bui-Huu wrote:
 
-Use bus numbering when addressing device with MACE chipset
-in order to support PCI bridges.
-Changes in chkslot() and mkaddr() #defines.
+> Not really, I would say it's just an idea to remove tlbex.c from the
+> kernel code and to make it a tool called during compile time to
+> generate a handler skeleton which would be finalized by the kernel.
 
-Signed-off-by: Giuseppe Sacco <eppesuig@debian.org>
----
+IRIX was assembling its TLB exception handler from a few such skeletons
+or rather a few fractions.  That works reasonably well as long as there are
+not too many variants - but Linux supports about anything on earth.
+Another disadvantage of the IRIX approach was that the fragments are
+written in assembler but the tacking together happens in C code so the
+code is split in a somewhat unnatural way over a few files.
 
-Hi Ralf,
-I managed to create a patch against current 2.6.23-rc9 git tree
-for supporting PCI bridges on SGI ip32 machines.
-This is my first kernel patch, so I am usure about the correct way
-to send a patch. Please let me know if anything is wrong.
-
-Bye,
-Giuseppe
-
-diff --git a/arch/mips/pci/ops-mace.c b/arch/mips/pci/ops-mace.c
-index 8008e31..18a7159 100644
---- a/arch/mips/pci/ops-mace.c
-+++ b/arch/mips/pci/ops-mace.c
-@@ -31,20 +31,21 @@
- 
- #define chkslot(_bus,_devfn)					\
- do {							        \
--	if ((_bus)->number > 0 || PCI_SLOT (_devfn) < 1	\
--	    || PCI_SLOT (_devfn) > 3)			        \
-+	if ((_bus)->number > 1 ||                               \
-+		((_bus)->number == 0 && (PCI_SLOT (_devfn) < 1  \
-+	    	|| PCI_SLOT (_devfn) > 3)))		        \
- 		return PCIBIOS_DEVICE_NOT_FOUND;		\
- } while (0)
- 
--#define mkaddr(_devfn, _reg) \
--((((_devfn) & 0xffUL) << 8) | ((_reg) & 0xfcUL))
-+#define mkaddr(_bus, _devfn, _reg) \
-+((((_bus)->number & 0xffUL) << 16) | (((_devfn) & 0xffUL) << 8) | ((_reg) & 0xfcUL))
- 
- static int
- mace_pci_read_config(struct pci_bus *bus, unsigned int devfn,
- 		     int reg, int size, u32 *val)
- {
- 	chkslot(bus, devfn);
--	mace->pci.config_addr = mkaddr(devfn, reg);
-+	mace->pci.config_addr = mkaddr(bus, devfn, reg);
- 	switch (size) {
- 	case 1:
- 		*val = mace->pci.config_data.b[(reg & 3) ^ 3];
-@@ -67,7 +68,7 @@ mace_pci_write_config(struct pci_bus *bus, unsigned int devfn,
- 		      int reg, int size, u32 val)
- {
- 	chkslot(bus, devfn);
--	mace->pci.config_addr = mkaddr(devfn, reg);
-+	mace->pci.config_addr = mkaddr(bus, devfn, reg);
- 	switch (size) {
- 	case 1:
- 		mace->pci.config_data.b[(reg & 3) ^ 3] = val;
+  Ralf

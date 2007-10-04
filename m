@@ -1,51 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 13:16:02 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:50561 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20026000AbXJDMP6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 Oct 2007 13:15:58 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l94CFvr7005417;
-	Thu, 4 Oct 2007 13:15:58 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l94CFvo2005416;
-	Thu, 4 Oct 2007 13:15:57 +0100
-Date:	Thu, 4 Oct 2007 13:15:57 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Thiemo Seufer <ths@networkno.de>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-Message-ID: <20071004121557.GA28928@linux-mips.org>
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 13:26:13 +0100 (BST)
+Received: from [203.94.56.252] ([203.94.56.252]:59520 "EHLO
+	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
+	id S20022366AbXJDM0E (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Oct 2007 13:26:04 +0100
+Received: (qmail 7132 invoked from network); 4 Oct 2007 12:24:55 -0000
+Received: from unknown (HELO ?IPv6:2001:388:c116:1:2e0:4dff:fe01:536?) (2001:388:c116:1:2e0:4dff:fe01:536)
+  by 2001:388:c116:1::1 with ESMTPS (DHE-RSA-AES256-SHA encrypted); 4 Oct 2007 12:24:55 -0000
+Message-ID: <4704DB98.1070905@gentoo.org>
+Date:	Thu, 04 Oct 2007 22:24:56 +1000
+From:	Stuart Longland <redhatter@gentoo.org>
+User-Agent: Thunderbird 2.0.0.0 (X11/20070512)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47049734.6050802@gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+CC:	Kumba <kumba@gentoo.org>, Ed Stafford <ed.stafford@gmail.com>,
+	linux-mips@linux-mips.org
+Subject: Re: What is the current state of the Octane/IP30 support?
+References: <41370a610710021341g749742dejec06b3a38477fd47@mail.gmail.com> <47033156.7090703@gentoo.org> <Pine.LNX.4.64.0710030902110.14583@anakin>
+In-Reply-To: <Pine.LNX.4.64.0710030902110.14583@anakin>
+X-Enigmail-Version: 0.95.0
+OpenPGP: id=63264AB9;
+	url=http://dev.gentoo.org/%7Eredhatter/gpgkey.asc
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="------------enig9CDA26EDC92FD680444C5095"
+Return-Path: <redhatter@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16837
+X-archive-position: 16838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: redhatter@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 04, 2007 at 09:33:08AM +0200, Franck Bui-Huu wrote:
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig9CDA26EDC92FD680444C5095
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-> Not really, I would say it's just an idea to remove tlbex.c from the
-> kernel code and to make it a tool called during compile time to
-> generate a handler skeleton which would be finalized by the kernel.
+Geert Uytterhoeven wrote:
+> On Wed, 3 Oct 2007, Kumba wrote:
+>> For the most part, Impact-based systems run great.  You get X, unaccel=
+erated,
+>> no 3D, and a framebuffer.  VPro, framebuffer, but no X.  USB kinda weo=
+rks if
+>                                    ^^^^^^^^^^^^^^^^^^^^^
+> What's the reason for not having X? X doesn't support the frame buffer =
+layout?
+>=20
+> Gr{oetje,eeting}s,
 
-IRIX was assembling its TLB exception handler from a few such skeletons
-or rather a few fractions.  That works reasonably well as long as there are
-not too many variants - but Linux supports about anything on earth.
-Another disadvantage of the IRIX approach was that the fragments are
-written in assembler but the tacking together happens in C code so the
-code is split in a somewhat unnatural way over a few files.
+My understanding, is there are two problems:
 
-  Ralf
+o VPro (and IMPACT) have its own dedicated memory separate from the
+system memory, thus one cannot use fbdev to run X.  ("framebuffer"
+perhaps is bad terminology)
+o No-one except SGI seems to know how to load images into the video
+memory using DMA.  Thus the shadowfb approach used to construct the
+IMPACT X11 driver, isn't possible for VPro.
+
+If someone could figure the latter problem out... we could have full
+VPro support, including OpenGL, which would be sweet.  But apparently
+this has been less than trivial to achieve.  Certainly well beyond my
+limited skills. ;-)
+
+Regards,
+--=20
+Stuart Longland (aka Redhatter)              .'''.
+Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
+=2E . . . . . . . . . . . . . . . . . . . . .   .'.'
+http://dev.gentoo.org/~redhatter             :.'
+
+I haven't lost my mind...
+  ...it's backed up on a tape somewhere.
+
+
+--------------enig9CDA26EDC92FD680444C5095
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFHBNuZuarJ1mMmSrkRCt9dAJ4zmNzbgrJ8SMgq6mPT+vp/k0OEcQCeL9z5
+5xXuzwslmOQohgUlgWC99x4=
+=DJXO
+-----END PGP SIGNATURE-----
+
+--------------enig9CDA26EDC92FD680444C5095--

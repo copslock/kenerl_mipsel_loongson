@@ -1,56 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 16:28:10 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:21192 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20026256AbXJDP2B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 Oct 2007 16:28:01 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id B03AE400A8;
-	Thu,  4 Oct 2007 17:28:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id rxmxG2Udf8BZ; Thu,  4 Oct 2007 17:27:58 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id A879D40095;
-	Thu,  4 Oct 2007 17:27:58 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l94FS2Ps032729;
-	Thu, 4 Oct 2007 17:28:02 +0200
-Date:	Thu, 4 Oct 2007 16:27:57 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] enable PCI bridges in MIPS ip32
-In-Reply-To: <20071004151951.GD6897@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0710041624450.10573@blysk.ds.pg.gda.pl>
-References: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
- <Pine.LNX.4.64N.0710041316000.10573@blysk.ds.pg.gda.pl>
- <20071004130318.GC28928@linux-mips.org> <1191508413.10050.26.camel@scarafaggio>
- <20071004151951.GD6897@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 16:30:11 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:40934 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20026288AbXJDPaJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Oct 2007 16:30:09 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l94FU8tr010473;
+	Thu, 4 Oct 2007 16:30:08 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l94FU8ir010472;
+	Thu, 4 Oct 2007 16:30:08 +0100
+Date:	Thu, 4 Oct 2007 16:30:08 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+Message-ID: <20071004153008.GE6897@linux-mips.org>
+References: <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4471/Thu Oct  4 15:22:27 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16849
+X-archive-position: 16850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 4 Oct 2007, Ralf Baechle wrote:
+On Thu, Oct 04, 2007 at 04:23:42PM +0100, Maciej W. Rozycki wrote:
 
-> The entire testing done by chkslot() is probably not needed, so I suggest
-> you try to simply dump the thing entirely and test.
+>  The existence of the definitions in <asm/war.h> is there so that 
+> workarounds for CPU bugs are optimised away at the kernel build time if 
+> not activated.
+> 
+>  I agree the inclusion both R3k and R4k handlers at the same time even 
+> though any configuration predetermines which of the two is only going to 
+> be needed is a bit suboptimal indeed.
 
- Exactly what I wrote too. :-)  Though I would imagine it was introduced 
-for a reason, like a bug in the host bridge or something, as already 
-suggested.  Otherwise what would the point have been?
+I guess one of the goals was to slowly clean up the stuff that forces us
+to have different kernels for R2000 and R4000 class TLBs.
 
-  Maciej
+  Ralf

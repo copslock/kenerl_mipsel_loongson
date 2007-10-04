@@ -1,58 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 11:30:29 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:38345 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20024745AbXJDKaU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 Oct 2007 11:30:20 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id B0B4E400A8;
-	Thu,  4 Oct 2007 12:30:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id STB2gi5AeZY3; Thu,  4 Oct 2007 12:30:16 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 92759400C8;
-	Thu,  4 Oct 2007 12:30:16 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l94AUJjf007694;
-	Thu, 4 Oct 2007 12:30:19 +0200
-Date:	Thu, 4 Oct 2007 11:30:15 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-cc:	Thiemo Seufer <ths@networkno.de>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-In-Reply-To: <47049734.6050802@gmail.com>
-Message-ID: <Pine.LNX.4.64N.0710041120250.10573@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
- <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org>
- <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de>
- <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de>
- <47049734.6050802@gmail.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4469/Thu Oct  4 08:56:38 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 11:36:07 +0100 (BST)
+Received: from host191-212-dynamic.8-87-r.retail.telecomitalia.it ([87.8.212.191]:58349
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20024695AbXJDKf7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Oct 2007 11:35:59 +0100
+Received: from giuseppe by eppesuigoccas.homedns.org with local (Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1IdO0a-0000n7-Cg; Thu, 04 Oct 2007 12:32:44 +0200
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] enable PCI bridges in MIPS ip32
+Cc:	linux-mips@linux-mips.org
+Message-Id: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Date:	Thu, 04 Oct 2007 12:32:44 +0200
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16835
+X-archive-position: 16836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 4 Oct 2007, Franck Bui-Huu wrote:
 
-> Not really, I would say it's just an idea to remove tlbex.c from the
-> kernel code and to make it a tool called during compile time to
-> generate a handler skeleton which would be finalized by the kernel.
+Use bus numbering when addressing device with MACE chipset
+in order to support PCI bridges.
+Changes in chkslot() and mkaddr() #defines.
 
- Thanks for volunteering.  When you finally come up with an implementation 
-of a solution that is much better than the current one I am absolutely 
-sure it will be accepted eagerly.
+Signed-off-by: Giuseppe Sacco <eppesuig@debian.org>
+---
 
-  Maciej
+Hi Ralf,
+I managed to create a patch against current 2.6.23-rc9 git tree
+for supporting PCI bridges on SGI ip32 machines.
+This is my first kernel patch, so I am usure about the correct way
+to send a patch. Please let me know if anything is wrong.
+
+Bye,
+Giuseppe
+
+diff --git a/arch/mips/pci/ops-mace.c b/arch/mips/pci/ops-mace.c
+index 8008e31..18a7159 100644
+--- a/arch/mips/pci/ops-mace.c
++++ b/arch/mips/pci/ops-mace.c
+@@ -31,20 +31,21 @@
+ 
+ #define chkslot(_bus,_devfn)					\
+ do {							        \
+-	if ((_bus)->number > 0 || PCI_SLOT (_devfn) < 1	\
+-	    || PCI_SLOT (_devfn) > 3)			        \
++	if ((_bus)->number > 1 ||                               \
++		((_bus)->number == 0 && (PCI_SLOT (_devfn) < 1  \
++	    	|| PCI_SLOT (_devfn) > 3)))		        \
+ 		return PCIBIOS_DEVICE_NOT_FOUND;		\
+ } while (0)
+ 
+-#define mkaddr(_devfn, _reg) \
+-((((_devfn) & 0xffUL) << 8) | ((_reg) & 0xfcUL))
++#define mkaddr(_bus, _devfn, _reg) \
++((((_bus)->number & 0xffUL) << 16) | (((_devfn) & 0xffUL) << 8) | ((_reg) & 0xfcUL))
+ 
+ static int
+ mace_pci_read_config(struct pci_bus *bus, unsigned int devfn,
+ 		     int reg, int size, u32 *val)
+ {
+ 	chkslot(bus, devfn);
+-	mace->pci.config_addr = mkaddr(devfn, reg);
++	mace->pci.config_addr = mkaddr(bus, devfn, reg);
+ 	switch (size) {
+ 	case 1:
+ 		*val = mace->pci.config_data.b[(reg & 3) ^ 3];
+@@ -67,7 +68,7 @@ mace_pci_write_config(struct pci_bus *bus, unsigned int devfn,
+ 		      int reg, int size, u32 val)
+ {
+ 	chkslot(bus, devfn);
+-	mace->pci.config_addr = mkaddr(devfn, reg);
++	mace->pci.config_addr = mkaddr(bus, devfn, reg);
+ 	switch (size) {
+ 	case 1:
+ 		mace->pci.config_data.b[(reg & 3) ^ 3] = val;

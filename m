@@ -1,51 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 16:32:20 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:59352 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20026236AbXJDPcR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 Oct 2007 16:32:17 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l94FWHIA010546;
-	Thu, 4 Oct 2007 16:32:17 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l94FWHft010545;
-	Thu, 4 Oct 2007 16:32:17 +0100
-Date:	Thu, 4 Oct 2007 16:32:17 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] enable PCI bridges in MIPS ip32
-Message-ID: <20071004153217.GF6897@linux-mips.org>
-References: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org> <Pine.LNX.4.64N.0710041316000.10573@blysk.ds.pg.gda.pl> <20071004130318.GC28928@linux-mips.org> <1191508413.10050.26.camel@scarafaggio> <20071004151951.GD6897@linux-mips.org> <Pine.LNX.4.64N.0710041624450.10573@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 16:36:45 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:47840 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20026310AbXJDPgN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Oct 2007 16:36:13 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 44CD2400A8;
+	Thu,  4 Oct 2007 17:35:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id VwSTIO4Kfaxq; Thu,  4 Oct 2007 17:35:40 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 30CFA40095;
+	Thu,  4 Oct 2007 17:35:40 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l94FZiaG001655;
+	Thu, 4 Oct 2007 17:35:44 +0200
+Date:	Thu, 4 Oct 2007 16:35:39 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+In-Reply-To: <20071004153008.GE6897@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0710041631080.10573@blysk.ds.pg.gda.pl>
+References: <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org>
+ <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de>
+ <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de>
+ <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org>
+ <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
+ <20071004153008.GE6897@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0710041624450.10573@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4471/Thu Oct  4 15:22:27 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16851
+X-archive-position: 16852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 04, 2007 at 04:27:57PM +0100, Maciej W. Rozycki wrote:
+On Thu, 4 Oct 2007, Ralf Baechle wrote:
 
-> On Thu, 4 Oct 2007, Ralf Baechle wrote:
+> >  I agree the inclusion both R3k and R4k handlers at the same time even 
+> > though any configuration predetermines which of the two is only going to 
+> > be needed is a bit suboptimal indeed.
 > 
-> > The entire testing done by chkslot() is probably not needed, so I suggest
-> > you try to simply dump the thing entirely and test.
-> 
->  Exactly what I wrote too. :-)  Though I would imagine it was introduced 
-> for a reason, like a bug in the host bridge or something, as already 
-> suggested.  Otherwise what would the point have been?
+> I guess one of the goals was to slowly clean up the stuff that forces us
+> to have different kernels for R2000 and R4000 class TLBs.
 
-I suspect cut-and-paste-o-mania, probably originally started by the
-necessity of doing so for the Galileo chips.
+ Well, we had a plan to support multiple systems with a "generic" kernel 
+too; at least ones that have a compatible load address.  Which would help 
+distributions create their bootstrap disks for example.  I have thought 
+all of this got abandoned at one point, mostly due to the maintenance 
+effort required to keep it going long-term.  The Alpha port did it many 
+years ago, but they have a compatible bootstrap environment and their 
+number of system variations is limited, especially as compared to ours.
 
-  Ralf
+  Maciej

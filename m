@@ -1,94 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 13:26:13 +0100 (BST)
-Received: from [203.94.56.252] ([203.94.56.252]:59520 "EHLO
-	longlandclan.hopto.org") by ftp.linux-mips.org with ESMTP
-	id S20022366AbXJDM0E (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 Oct 2007 13:26:04 +0100
-Received: (qmail 7132 invoked from network); 4 Oct 2007 12:24:55 -0000
-Received: from unknown (HELO ?IPv6:2001:388:c116:1:2e0:4dff:fe01:536?) (2001:388:c116:1:2e0:4dff:fe01:536)
-  by 2001:388:c116:1::1 with ESMTPS (DHE-RSA-AES256-SHA encrypted); 4 Oct 2007 12:24:55 -0000
-Message-ID: <4704DB98.1070905@gentoo.org>
-Date:	Thu, 04 Oct 2007 22:24:56 +1000
-From:	Stuart Longland <redhatter@gentoo.org>
-User-Agent: Thunderbird 2.0.0.0 (X11/20070512)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Oct 2007 13:28:00 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:56202 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20022366AbXJDM1w (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Oct 2007 13:27:52 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C2B27400AA;
+	Thu,  4 Oct 2007 14:27:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id 3-h0JOB6wWsp; Thu,  4 Oct 2007 14:27:48 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 902C5400A8;
+	Thu,  4 Oct 2007 14:27:48 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l94CRpoN031582;
+	Thu, 4 Oct 2007 14:27:51 +0200
+Date:	Thu, 4 Oct 2007 13:27:47 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] enable PCI bridges in MIPS ip32
+In-Reply-To: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
+Message-ID: <Pine.LNX.4.64N.0710041316000.10573@blysk.ds.pg.gda.pl>
+References: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
 MIME-Version: 1.0
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-CC:	Kumba <kumba@gentoo.org>, Ed Stafford <ed.stafford@gmail.com>,
-	linux-mips@linux-mips.org
-Subject: Re: What is the current state of the Octane/IP30 support?
-References: <41370a610710021341g749742dejec06b3a38477fd47@mail.gmail.com> <47033156.7090703@gentoo.org> <Pine.LNX.4.64.0710030902110.14583@anakin>
-In-Reply-To: <Pine.LNX.4.64.0710030902110.14583@anakin>
-X-Enigmail-Version: 0.95.0
-OpenPGP: id=63264AB9;
-	url=http://dev.gentoo.org/%7Eredhatter/gpgkey.asc
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="------------enig9CDA26EDC92FD680444C5095"
-Return-Path: <redhatter@gentoo.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4469/Thu Oct  4 08:56:38 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16838
+X-archive-position: 16839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enig9CDA26EDC92FD680444C5095
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+On Thu, 4 Oct 2007, Giuseppe Sacco wrote:
 
-Geert Uytterhoeven wrote:
-> On Wed, 3 Oct 2007, Kumba wrote:
->> For the most part, Impact-based systems run great.  You get X, unaccel=
-erated,
->> no 3D, and a framebuffer.  VPro, framebuffer, but no X.  USB kinda weo=
-rks if
->                                    ^^^^^^^^^^^^^^^^^^^^^
-> What's the reason for not having X? X doesn't support the frame buffer =
-layout?
->=20
-> Gr{oetje,eeting}s,
+> I managed to create a patch against current 2.6.23-rc9 git tree
+> for supporting PCI bridges on SGI ip32 machines.
+> This is my first kernel patch, so I am usure about the correct way
+> to send a patch. Please let me know if anything is wrong.
 
-My understanding, is there are two problems:
+ I am glad you have succeeded.  A couple of minor notes below.
 
-o VPro (and IMPACT) have its own dedicated memory separate from the
-system memory, thus one cannot use fbdev to run X.  ("framebuffer"
-perhaps is bad terminology)
-o No-one except SGI seems to know how to load images into the video
-memory using DMA.  Thus the shadowfb approach used to construct the
-IMPACT X11 driver, isn't possible for VPro.
+> @@ -31,20 +31,21 @@
+>  
+>  #define chkslot(_bus,_devfn)					\
+>  do {							        \
+> -	if ((_bus)->number > 0 || PCI_SLOT (_devfn) < 1	\
+> -	    || PCI_SLOT (_devfn) > 3)			        \
+> +	if ((_bus)->number > 1 ||                               \
+> +		((_bus)->number == 0 && (PCI_SLOT (_devfn) < 1  \
+> +	    	|| PCI_SLOT (_devfn) > 3)))		        \
+>  		return PCIBIOS_DEVICE_NOT_FOUND;		\
 
-If someone could figure the latter problem out... we could have full
-VPro support, including OpenGL, which would be sweet.  But apparently
-this has been less than trivial to achieve.  Certainly well beyond my
-limited skills. ;-)
+ I think you should allow any bus numbers, not only 0 and 1 -- while 
+possibly unlikely, you may have a tree of bridges on an option card.  The 
+generic code should handle it fine -- you need not care.
 
-Regards,
---=20
-Stuart Longland (aka Redhatter)              .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-=2E . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
+> -#define mkaddr(_devfn, _reg) \
+> -((((_devfn) & 0xffUL) << 8) | ((_reg) & 0xfcUL))
+> +#define mkaddr(_bus, _devfn, _reg) \
+> +((((_bus)->number & 0xffUL) << 16) | (((_devfn) & 0xffUL) << 8) | ((_reg) & 0xfcUL))
 
-I haven't lost my mind...
-  ...it's backed up on a tape somewhere.
+ Please fit your lines in 80 characters.
 
+> -	mace->pci.config_addr = mkaddr(devfn, reg);
+> +	mace->pci.config_addr = mkaddr(bus, devfn, reg);
 
---------------enig9CDA26EDC92FD680444C5095
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+ It may be more consistent if you pass just "bus->number".  You may neatly 
+avoid the line wrap above this way too.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.7 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+ Have you run your change through `scripts/checkpatch.pl'?
 
-iD8DBQFHBNuZuarJ1mMmSrkRCt9dAJ4zmNzbgrJ8SMgq6mPT+vp/k0OEcQCeL9z5
-5xXuzwslmOQohgUlgWC99x4=
-=DJXO
------END PGP SIGNATURE-----
-
---------------enig9CDA26EDC92FD680444C5095--
+  Maciej

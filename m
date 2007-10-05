@@ -1,62 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2007 13:10:50 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:59786 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20021515AbXJEMKl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 5 Oct 2007 13:10:41 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 46A5B400CD;
-	Fri,  5 Oct 2007 14:10:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id NA7PDFyOvYot; Fri,  5 Oct 2007 14:10:33 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D0F2740095;
-	Fri,  5 Oct 2007 14:10:33 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l95CAaiF004885;
-	Fri, 5 Oct 2007 14:10:36 +0200
-Date:	Fri, 5 Oct 2007 13:10:33 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] enable PCI bridges in MIPS ip32
-In-Reply-To: <20071004165546.GA23610@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0710051257230.17849@blysk.ds.pg.gda.pl>
-References: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
- <Pine.LNX.4.64N.0710041316000.10573@blysk.ds.pg.gda.pl>
- <20071004130318.GC28928@linux-mips.org> <Pine.LNX.4.64N.0710041459270.10573@blysk.ds.pg.gda.pl>
- <20071004165546.GA23610@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2007 13:18:46 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:41102 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021857AbXJEMSn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 Oct 2007 13:18:43 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l95CIgdk022302;
+	Fri, 5 Oct 2007 13:18:42 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l95CIfoq022301;
+	Fri, 5 Oct 2007 13:18:41 +0100
+Date:	Fri, 5 Oct 2007 13:18:41 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	"Steven J. Hill" <sjhill@realitydiluted.com>,
+	veerasena reddy <veerasena_b@yahoo.co.in>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: unresoved symbol _gp_disp
+Message-ID: <20071005121841.GC1404@linux-mips.org>
+References: <230962.51223.qm@web8408.mail.in.yahoo.com> <20071004173928.GA32033@real.realitydiluted.com> <4705272D.7050801@avtrex.com> <20071004175305.GB32033@real.realitydiluted.com> <470531DB.6090507@avtrex.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4475/Fri Oct  5 10:56:58 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <470531DB.6090507@avtrex.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16868
+X-archive-position: 16869
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 4 Oct 2007, Ralf Baechle wrote:
+On Thu, Oct 04, 2007 at 11:32:59AM -0700, David Daney wrote:
 
-> It's documented somewhere in their specs.  Whatever, it ends crashing
-> the system so device 31 is hands off.
+> Steven J. Hill wrote:
+> >>Unless you compile your code with -msoft-float *and* also have a version 
+> >>of libgcc compiled with -mlong-calls -mno-abicalls -G0.  If you do it 
+> >>that way, floating point works fine in the kernel (as long as you don't 
+> >>try to call sprintf with floating point parameters).
+> >>
+> >I won't even concede that solution. It's bad practice and design to have
+> >floating point in the kernel.
+> 
+> I agree that floating point in the kernel is bad practice.  However 
+> under some circumstances, the most expedient solution does not conform 
+> to best practice.
 
- OK, found it -- it is the GT-64120A erratum FEr#19 leading to a hang of 
-the device; perhaps we should mention it briefly in the source code.
+I also feel deeply unfriendly if I send somebody along a path that's
+full of interesting corner cases ...
 
- While the PCI spec says reads from the device #31, function #7 for host 
-bridges implementing the recommended special cycle generation mechanism 
-have undefined results, this behaviour is certainly "undefined" in a very 
-silly way and then, according to the spec, it must not happen for the 
-function #0, which is the only one probed by Linux by default for 
-single-function devices.
-
-  Maciej
+  Ralf

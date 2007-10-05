@@ -1,81 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2007 12:51:56 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:62100 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20027228AbXJELvx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 5 Oct 2007 12:51:53 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l95Bppeg019142;
-	Fri, 5 Oct 2007 12:51:51 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l95Bppds019131;
-	Fri, 5 Oct 2007 12:51:51 +0100
-Date:	Fri, 5 Oct 2007 12:51:51 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Thiemo Seufer <ths@networkno.de>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-Message-ID: <20071005115151.GA16145@linux-mips.org>
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2007 12:54:16 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:50609 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20027229AbXJELyG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 Oct 2007 12:54:06 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 28C53400CD;
+	Fri,  5 Oct 2007 13:54:07 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id J0zcmgbW69np; Fri,  5 Oct 2007 13:53:58 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 0AF6E40095;
+	Fri,  5 Oct 2007 13:53:58 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l95Bs0Sl002637;
+	Fri, 5 Oct 2007 13:54:00 +0200
+Date:	Fri, 5 Oct 2007 12:53:56 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] enable PCI bridges in MIPS ip32
+In-Reply-To: <20071005073349.4a95ac75.giuseppe@eppesuigoccas.homedns.org>
+Message-ID: <Pine.LNX.4.64N.0710051223330.17849@blysk.ds.pg.gda.pl>
+References: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
+ <Pine.LNX.4.64N.0710041316000.10573@blysk.ds.pg.gda.pl>
+ <20071004130318.GC28928@linux-mips.org> <1191508413.10050.26.camel@scarafaggio>
+ <20071004151951.GD6897@linux-mips.org> <Pine.LNX.4.64N.0710041624450.10573@blysk.ds.pg.gda.pl>
+ <20071004153217.GF6897@linux-mips.org> <20071005073349.4a95ac75.giuseppe@eppesuigoccas.homedns.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4705004C.5000705@gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4475/Fri Oct  5 10:56:58 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16866
+X-archive-position: 16867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 04, 2007 at 05:01:32PM +0200, Franck Bui-Huu wrote:
+On Fri, 5 Oct 2007, Giuseppe Sacco wrote:
 
-(Hitting the send key now so nobody notices I wrote this email at 3am ;-)
+> After removing the chkslot() call, I get these errors when booting:
+> [...]
+> SCSI subsystem initialized
+> MACEPCI: Master abort at 0x00000000 (C)
+> MACEPCI: Master abort at 0x00008000 (C)
+> MACEPCI: Master abort at 0x00010000 (C)
+[...]
 
-> It's just a bit sad to see my TLB handler generated at each boot and
-> to embed the whole tlbex generator inside the kernel which is quite
-> big:
+ Well, these are not errors in this context even though they seem to be 
+reported as such -- these Master Aborts are expected to happen for non 
+occupied slots (device numbers).  And reporting them to the user in this 
+context seems silly (unless debugging).
+
+ I can see the are coming from the MACE error interrupt handler -- either 
+the Master-Abort interrupt should be masked for the duration of the 
+configuration space access or, if impossible or the way to do so is 
+unknown, the handler should recognise the context and silently ack the 
+interrupt and pass the error up somehow.  It is up to code handling the 
+host bridge in question to get it right -- see 
+arch/mips/pci/ops-bonito64.c for an example.
+
+> PCI: Bridge: 0000:00:03.0
+>   IO window: 1000-1fff
+>   MEM window: 80000000-800fffff
+>   PREFETCH window: 80100000-801fffff
+> PCI: Enabling device 0000:00:03.0 (0000 -> 0003)
+> [...]
 > 
->    $ mipsel-linux-size arch/mips/mm/tlbex.o
->       text    data     bss     dec     hex filename
->      10116    3904    1568   15588    3ce4 arch/mips/mm/tlbex.o
-> 
-> specially if my cpu doesn't have any bugs.
+> It seems all probes to devfn=0 fails. There is even a call on bus=2, 
+> that I really don't understand. the current lspci output is:
 
-So I did a few experiments.  This is the size of tlbex for a malta_defconfig
-build with gcc 4.2.1:
+ Well, perhaps the initial setup of the PCI-to-PCI bridge reports the 
+subordinate bus to be 2 or something.  If you post the whole PCI probe 
+log, someone may be able to provide an explanation.
 
-   text    data     bss     dec     hex filename
-  10468    3904    1568   15940    3e44 arch/mips/mm/tlbex.o
+ And devfn=0 failing probably means the host bridge does not want to 
+report itself in the PCI configuration space; that is a valid approach 
+(seen with the Alphas too, for example), although personally I do not like 
+it very much.
 
-After replacing current_cpu_data.cputype with a new macro current_cpu_type
-that expands to the constant CPU type value, I picked CPU_4KC:
+> So probably, the test was correct.  Should I restore the same check or 
+> only check for devfn==0?
 
-   text    data     bss     dec     hex filename
-   6088    3904    1568   11560    2d28 arch/mips/mm/tlbex.o
+ The handling of Master Aborts should be fixed instead.  It looks like 
+MACEPCI_CONTROL_MAR_INT might be the right mask bit -- do we have a spec 
+for the chip anywhere or is <asm-mips/ip32/mace.h> the only source?
 
-And after also changing r45k_bvahwbug, r4k_250MHZhwbug, bcm1250_m3_war,
-r10000_llsc_war and m4kc_tlbp_war into inline functions:
-
-   text    data     bss     dec     hex filename
-   5608    3904    1568   11080    2b48 arch/mips/mm/tlbex.o
-
-So I applied the inlining change to the queue tree and came up with a
-generalized version of the current_cpu_type.   This are the sizes I get
-for a malta kernel without and with hardwiring the CPU type to 4Kc:
-
-     text    data     bss     dec     hex filename
-  3273876  142324  140944 3557144  364718 vmlinux
-  3267048  142324  140944 3550316  362c6c vmlinux
-
-6828 bytes isn't totally amazing but since the optimization is reasonable
-clean I'm going to queue this one also.
-
-  Ralf
+  Maciej

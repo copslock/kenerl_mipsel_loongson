@@ -1,107 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2007 06:34:11 +0100 (BST)
-Received: from host160-223-dynamic.15-87-r.retail.telecomitalia.it ([87.15.223.160]:9370
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S20022347AbXJEFeD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 5 Oct 2007 06:34:03 +0100
-Received: from localhost ([127.0.0.1] helo=sgi)
-	by eppesuigoccas.homedns.org with smtp (Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1Idfou-000151-P8; Fri, 05 Oct 2007 07:33:54 +0200
-Date:	Fri, 5 Oct 2007 07:33:49 +0200
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] enable PCI bridges in MIPS ip32
-Message-Id: <20071005073349.4a95ac75.giuseppe@eppesuigoccas.homedns.org>
-In-Reply-To: <20071004153217.GF6897@linux-mips.org>
-References: <E1IdO0a-0000n7-Cg@eppesuigoccas.homedns.org>
-	<Pine.LNX.4.64N.0710041316000.10573@blysk.ds.pg.gda.pl>
-	<20071004130318.GC28928@linux-mips.org>
-	<1191508413.10050.26.camel@scarafaggio>
-	<20071004151951.GD6897@linux-mips.org>
-	<Pine.LNX.4.64N.0710041624450.10573@blysk.ds.pg.gda.pl>
-	<20071004153217.GF6897@linux-mips.org>
-X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; mips-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Oct 2007 09:04:21 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.186]:38611 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023400AbXJEIEN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 Oct 2007 09:04:13 +0100
+Received: by nf-out-0910.google.com with SMTP id c10so368840nfd
+        for <linux-mips@linux-mips.org>; Fri, 05 Oct 2007 01:03:55 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=qf2OZ+ojxHJa5g4iqPXY3ldH/5iWER/ReDlCpN5YiW4=;
+        b=Gkjir32f8jtH9Iz0OrxV739i4uwZcbRdDDEB7JdqOg011S9zgUxlkukUOx3v/Rc1XyJuPJLXBY1mQNs4xtnikL2JcPzUDgZalEXX8i6wsuojH61cU5CR91DZOua4LoxjG5oED0oMBbYCqDngvkV1volo1RsE7XvHdu5UDW/FDlA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=W5t4TbPFd70ncXMApXZ3ITxj0jk+fn9rD5VarW5dIcVZ+7BZ4s0HYOW3Wknlw888Vz6EegxMxKBKfTLP6LB+PKa4uQ+XsjqmenR2kDZO+tWjHkEdK83VAxqBAiCLy8kNkDCV9OzWb9Dm/A516Pr29KzJTTysKl3T6ziE4Kf+yDI=
+Received: by 10.86.62.3 with SMTP id k3mr2245479fga.1191571435220;
+        Fri, 05 Oct 2007 01:03:55 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id f31sm4979063fkf.2007.10.05.01.03.53
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 05 Oct 2007 01:03:54 -0700 (PDT)
+Message-ID: <4705EFE5.7090704@gmail.com>
+Date:	Fri, 05 Oct 2007 10:03:49 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+CC:	Ralf Baechle <ralf@linux-mips.org>,
+	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
+In-Reply-To: <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16862
+X-archive-position: 16863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 4 Oct 2007 16:32:17 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Thu, Oct 04, 2007 at 04:27:57PM +0100, Maciej W. Rozycki wrote:
-> > On Thu, 4 Oct 2007, Ralf Baechle wrote:
-> > > The entire testing done by chkslot() is probably not needed, so I suggest
-> > > you try to simply dump the thing entirely and test.
-> > 
-> >  Exactly what I wrote too. :-)  Though I would imagine it was introduced 
-> > for a reason, like a bug in the host bridge or something, as already 
-> > suggested.  Otherwise what would the point have been?
+Maciej W. Rozycki wrote:
+> On Thu, 4 Oct 2007, Franck Bui-Huu wrote:
 > 
-> I suspect cut-and-paste-o-mania, probably originally started by the
-> necessity of doing so for the Galileo chips.
+>> It's just a bit sad to see my TLB handler generated at each boot and
+>> to embed the whole tlbex generator inside the kernel which is quite
+>> big:
+>>
+>>    $ mipsel-linux-size arch/mips/mm/tlbex.o
+>>       text    data     bss     dec     hex filename
+>>      10116    3904    1568   15588    3ce4 arch/mips/mm/tlbex.o
+>>
+>> specially if my cpu doesn't have any bugs.
+> 
+>  Well, most systems are there to work and not to be rebooted repeatedly 
+> all the time. ;-)  All of tlbex.o is discarded after bootstrap.
+> 
 
-After removing the chkslot() call, I get these errors when booting:
-[...]
-SCSI subsystem initialized
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00008000 (C)
-MACEPCI: Master abort at 0x00010000 (C)
-MACEPCI: Master abort at 0x00020000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-MACEPCI: Master abort at 0x00000000 (C)
-PCI: Bridge: 0000:00:03.0
-  IO window: 1000-1fff
-  MEM window: 80000000-800fffff
-  PREFETCH window: 80100000-801fffff
-PCI: Enabling device 0000:00:03.0 (0000 -> 0003)
-[...]
+Yes, but some systems out there have some constraints on their boot time
+and others have ones on their persistent storage device size.
 
-It seems all probes to devfn=0 fails. There is even a call on bus=2, that I really don't understand. the current lspci output is:
+>> Maybe having, 2 default implementations in tlbex-r3k.S, tlbex-r4k.S
+>> for good cpus (the ones which needn't any fixups at all) and otherwise
+>> the tlbex.c is used. And with luck the majority of the cpus are
+>> good...
+> 
+>  Well, most of the differences are not due to CPU bugs, but different cp0 
+> hazards.  The MIPS32r2 and MIPS64r2 architecture specs introduce the "ehb" 
+> and "jr.hb" instructions to sort them out, but most of the processors we 
+> support predate them.
+> 
+>  The existence of the definitions in <asm/war.h> is there so that 
+> workarounds for CPU bugs are optimised away at the kernel build time if 
+> not activated.
+> 
 
-00:01.0 SCSI storage controller: Adaptec AIC-7880U
-00:02.0 SCSI storage controller: Adaptec AIC-7880U
-00:03.0 PCI bridge: NetMos Technology Unknown device 9250 (rev 01)
-01:08.0 USB Controller: NEC Corporation USB (rev 43)
-01:08.1 USB Controller: NEC Corporation USB (rev 43)
-01:08.2 USB Controller: NEC Corporation USB 2.0 (rev 04)
-01:09.0 FireWire (IEEE 1394): Agere Systems FW323 (rev 61)
-01:0a.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL-8169 Gigabit Ethernet (rev 10)
+Just to be sure I haven't missed anything, it seems that we _could_ generate
+the whole tlb handler at compile time since the CPU type is known at that
+time, no need to have any fixups at runtime, isn't it ?
 
-So probably, the test was correct.  Should I restore the same check or only check for devfn==0?
-
-Bye,
-Giueppe
+		Franck
+ 

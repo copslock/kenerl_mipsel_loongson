@@ -1,145 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2007 14:58:54 +0100 (BST)
-Received: from n7.bullet.mud.yahoo.com ([216.252.100.58]:7507 "HELO
-	n7.bullet.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20021379AbXJHN6o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 8 Oct 2007 14:58:44 +0100
-Received: from [68.142.194.244] by n7.bullet.mud.yahoo.com with NNFMP; 08 Oct 2007 13:58:38 -0000
-Received: from [209.191.119.184] by t2.bullet.mud.yahoo.com with NNFMP; 08 Oct 2007 13:58:38 -0000
-Received: from [127.0.0.1] by omp107.mail.mud.yahoo.com with NNFMP; 08 Oct 2007 13:58:38 -0000
-X-Yahoo-Newman-Property: ymail-3
-X-Yahoo-Newman-Id: 148456.87901.bm@omp107.mail.mud.yahoo.com
-Received: (qmail 89963 invoked by uid 60001); 8 Oct 2007 13:58:32 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=zWL3Bv8aPMxsYEpXcvgJVbyUyTKfLiHMelCx6s0gyx0GdusxEQZGbSOWHa7uWVTRttVzcoslZfpJkxFZ/vwIO/DouxPOj1BvBCoz9zuZHZrxQOwsUbSf2PqXVEeMdwctGazCHTkQgbsnfD68dztvncRV/uC0K84SbinIS8K14PY=;
-X-YMail-OSG: o.WehNUVM1nCqtNo2s_FEJxt3stXJhD4Xp27Yc9bA1mQfkb2hN2WldYED82ZO_LlKoJ7uzMeiDsm4REqm5x97a4PFTKXfb_biPwZLzQg.II.oH8BplM7fL0BbQ--
-Received: from [199.239.167.162] by web8402.mail.in.yahoo.com via HTTP; Mon, 08 Oct 2007 14:58:31 BST
-Date:	Mon, 8 Oct 2007 14:58:31 +0100 (BST)
-From:	veerasena reddy <veerasena_b@yahoo.co.in>
-Subject: Re: linux cache routines for Write-back cache policy on  MIPS24KE
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>,
-	"linux-kernel.org" <linux-kernel@vger.kernel.org>
-In-Reply-To: <20071003105751.GD29244@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2007 15:12:27 +0100 (BST)
+Received: from nf-out-0910.google.com ([64.233.182.189]:40602 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021488AbXJHOMS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 8 Oct 2007 15:12:18 +0100
+Received: by nf-out-0910.google.com with SMTP id c10so937810nfd
+        for <linux-mips@linux-mips.org>; Mon, 08 Oct 2007 07:12:01 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=jyNnqhqwmVhGNOlWKsvHm68xu0pghzIrJOi2NGT66gk=;
+        b=OI18PudzGevWRBMyUIlTWqvxubZ5Eu0TCr2mLBXjpY85FYLEa0bTwFOUQ3DHsZ3GuOUolbpOAYBepkRjFnA3CFB6CBk5R3JKwwv1I+uHKsmca4ISQf0TB3prohoHD7pCtwNdgSCsbMFoF/ILc6sG1Pde/hd330ATOawVb5f2Pxg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=s445rPReu+ZfJt7qsewhTtgmt0qlXsZYrhdHbWyzq7Elxi1xhxp5yJbOk4Sn/k354dBAL9K6Yc8WyZKFKGgd7H+bXz5vU7Uf4d58NXhSg+kxVEEBsf8BFgHGlUBtFNUkKDnL5knBwXLGNkLOdVaB/Rfufgo9FIM5PuBD1iBo5gI=
+Received: by 10.86.50.8 with SMTP id x8mr5163746fgx.1191852721089;
+        Mon, 08 Oct 2007 07:12:01 -0700 (PDT)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id p38sm11604050fke.2007.10.08.07.11.58
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 08 Oct 2007 07:11:58 -0700 (PDT)
+Message-ID: <470A3AA7.7030700@gmail.com>
+Date:	Mon, 08 Oct 2007 16:11:51 +0200
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <953878.89810.qm@web8402.mail.in.yahoo.com>
-Return-Path: <veerasena_b@yahoo.co.in>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Thiemo Seufer <ths@networkno.de>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <20071005115151.GA16145@linux-mips.org>
+In-Reply-To: <20071005115151.GA16145@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16883
+X-archive-position: 16884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: veerasena_b@yahoo.co.in
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
-
-thanks for the detailed information.
-> Anyway, it would be much easier to help you if we
-> knew what you are trying
-> to achieve with these functions.
-
-Basically our target has a MIPS24KE host processor on
-which Linux runs and a networking processor (NP) which
-sits between the EMAC contoller and the host processor
-to receive/transmit the data/packets.
-
-This peripheral networking processor uses the physical
-addresses only. We are using write-back caching policy
-on MIPS24KE. So,
-1. when we want to transmit the packet from the host
-to peripheral processor, we need to convert packet
-buffer into physical address (CPHYSADDR) and put it
-into the NP's Tx queue, which will be sent to EMAC.
-Before converting into physical address we need to
-flush the corresponding cache entries.
-Which API should be used to achieve the above
-functionlaity in Linux-2.6.18 kernel?
-
-2.Similarly in receivng path, the peripheral processor
-gives the physical address of the buffer containing
-the received packet. So, on host we need to convert
-this physical address into cached address (KSEG0ADDR).
-Before converting to cached address we need to
-invalidate the corresponding cache entries.
-
-Which API should be used to achieve the above
-functionlaity in Linux-2.6.18 kernel?
-
-currently we are using dma_cache_wback_inv() to
-achieve above two functionalities. 
-Could you please suggest us the right API to be used?
-
-Thanks in advance.
-
-Regards,
-Veerasena.
-
---- Ralf Baechle <ralf@linux-mips.org> wrote:
-
-> On Mon, Oct 01, 2007 at 01:10:59PM +0100, veerasena
-> reddy wrote:
-> 
-> > Is there any problem if we use the below API's in
-> > linxu-2.6.18 
-> >   - dma_cache_wback_inv()
-> >   - dma_cache_wback()
-> >   - dma_cache_inv()
-> > 
-> > functionality wise, especially in r4k.c i dont see
-> any
-> > difference between the implementation of these
-> APIs.
-> > 
-> > Can we apply the 2.6.24 patch to kill these APIs
-> on
-> > 2.6.18 kernel? In this case what APIs i can use
-> for
-> > writeback, invalidation or both?
-> > 
-> > I couldn't find any info. related to the above API
-> in
-> > DMA-API.txt. Could you please give some pointers
-> on
-> > the usage/working of these APIs.
-> 
-> dma_cache_* were never documented.  They respresent
-> the earliest attempt
-> at coming up with an API that enables portable
-> drivers and it has a few
-> shortcomings and like so many early things it was
-> never formally documented,
-> so don't expect any well defined semantics.  The
-> functions never got
-> formally retired probably because it somehow managed
-> to stay under the
-> radar.
-> 
-> Any drivers should use the APIs documented in
-> Documentation/DMA-API.txt
-> only.  The almost equivalent operation for
-> dma_cache_* would be
-> dma_sync_single and dma_sync_sg.
-> 
-> Don't even dream about using dma_cache_* for
-> anything but DMA coherency.
-> They're all internal low level APIs which know
-> nothing about Linux's
-> virtual memory system.
-> 
-> Anyway, it would be much easier to help you if we
-> knew what you are trying
-> to achieve with these functions.
-> 
->   Ralf
+Ralf Baechle wrote:
+> 6828 bytes isn't totally amazing but since the optimization is reasonable
+> clean I'm going to queue this one also.
 > 
 
+Yes and maybe it worths to queue this on top of your patch ?
 
+--- 8< ---
 
-      Chat on a cool, new interface. No download required. Go to http://in.messenger.yahoo.com/webmessengerpromo.php
+From: Franck Bui-Huu <fbuihuu@gmail.com>
+Subject: [PATCH] Verify CPU type when it's hardwiring
+
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
+ arch/mips/kernel/cpu-probe.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 06448a9..cf0b566 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -817,6 +817,14 @@ __init void cpu_probe(void)
+ 	default:
+ 		c->cputype = CPU_UNKNOWN;
+ 	}
++
++	/*
++	 * Platform code can force the cpu type to optimize code
++	 * generation. In that case be sure the cpu type is correctly
++	 * manually setup otherwise it could trigger some nasty bugs.
++	 */
++	BUG_ON(current_cpu_type() != c->cputype);
++
+ 	if (c->options & MIPS_CPU_FPU) {
+ 		c->fpu_id = cpu_get_fpu_id();
+ 
+-- 
+1.5.3.3

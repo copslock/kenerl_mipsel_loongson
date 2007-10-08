@@ -1,54 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Oct 2007 21:27:30 +0100 (BST)
-Received: from mailrelay003.isp.belgacom.be ([195.238.6.53]:48570 "EHLO
-	mailrelay003.isp.belgacom.be") by ftp.linux-mips.org with ESMTP
-	id S20024774AbXJGU1W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 7 Oct 2007 21:27:22 +0100
-X-Belgacom-Dynamic: yes
-Received: from 150.2-200-80.adsl-dyn.isp.belgacom.be (HELO infomag.iguana.be) ([80.200.2.150])
-  by relay.skynet.be with ESMTP; 07 Oct 2007 22:26:15 +0200
-Received: from infomag.iguana.be (localhost.localdomain [127.0.0.1])
-	by infomag.iguana.be (8.13.8/8.12.11) with ESMTP id l97KVuRq003439;
-	Sun, 7 Oct 2007 22:31:56 +0200
-Received: (from wim@localhost)
-	by infomag.iguana.be (8.13.8/8.13.8/Submit) id l97KVrxN003438;
-	Sun, 7 Oct 2007 22:31:53 +0200
-Date:	Sun, 7 Oct 2007 22:31:53 +0200
-From:	Wim Van Sebroeck <wim@iguana.be>
-To:	Matteo Croce <technoboy85@gmail.com>
-Cc:	linux-mips@linux-mips.org, Nicolas Thill <nico@openwrt.org>,
-	Enrik Berkhan <Enrik.Berkhan@akk.org>,
-	Christer Weinigel <wingel@nano-system.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH][MIPS][5/7] AR7: watchdog timer
-Message-ID: <20071007203153.GA2666@infomag.infomag.iguana.be>
-References: <200709201728.10866.technoboy85@gmail.com> <200709201806.41942.technoboy85@gmail.com> <20071003192414.GA7543@infomag.infomag.iguana.be> <40101cc30710031317n360ea4c7y6491f549c62e3edb@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <40101cc30710031317n360ea4c7y6491f549c62e3edb@mail.gmail.com>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <wim@iguana.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Oct 2007 14:27:20 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:3228 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20030010AbXJHN1L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 8 Oct 2007 14:27:11 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id DE5D74023B;
+	Mon,  8 Oct 2007 15:27:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id LzVxHPelrcR0; Mon,  8 Oct 2007 15:27:05 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 695564023F;
+	Mon,  8 Oct 2007 15:27:05 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l98DR81P027902;
+	Mon, 8 Oct 2007 15:27:08 +0200
+Date:	Mon, 8 Oct 2007 14:27:04 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH]v2 mips/ip32: enable PCI bridges
+In-Reply-To: <E1IeDrj-0002u6-2B@eppesuigoccas.homedns.org>
+Message-ID: <Pine.LNX.4.64N.0710081422290.8873@blysk.ds.pg.gda.pl>
+References: <E1IeDrj-0002u6-2B@eppesuigoccas.homedns.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4502/Mon Oct  8 03:52:34 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16881
+X-archive-position: 16882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Matteo,
+On Sat, 6 Oct 2007, Giuseppe Sacco wrote:
 
-> > If you want I'll add it to the linux-2.6-watchdog-mm tree with
-> > the above mentioned changes.
-> Yes, please
+> @@ -33,7 +33,7 @@ static inline int mkaddr(struct pci_bus *bus, unsigned int devfn,
+>  	unsigned int reg)
+>  {
+>  	return ((bus->number & 0xff) << 16) |
+> -		(devfn & 0xff) << 8) |
+> +		((devfn & 0xff) << 8) |
+>  		(reg & 0xfc);
+>  }
 
-It's in the linux-2.6-watchdog-mm tree. I added an extra iounmap in the
-errorhandling of the init procedure.
+ Bad formatting -- using correct one would make the typo more obvious 
+(ditto about the function's header).
 
-Please test.
-
-Thanks,
-Wim.
+  Maciej

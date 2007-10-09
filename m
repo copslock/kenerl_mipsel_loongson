@@ -1,66 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 10:18:43 +0100 (BST)
-Received: from adicia.telenet-ops.be ([195.130.132.56]:46753 "EHLO
-	adicia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20025583AbXJIJSf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 9 Oct 2007 10:18:35 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by adicia.telenet-ops.be (Postfix) with SMTP id 75D44230114;
-	Tue,  9 Oct 2007 11:18:34 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by adicia.telenet-ops.be (Postfix) with ESMTP id 48D47230111;
-	Tue,  9 Oct 2007 11:18:34 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l999IYWP025930
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 9 Oct 2007 11:18:34 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l999IXFB025927;
-	Tue, 9 Oct 2007 11:18:34 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Tue, 9 Oct 2007 11:18:33 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	kaka <share.kt@gmail.com>
-Cc:	linux-mips@linux-mips.org, linux-git@linux-mips.org
-Subject: Re: Fwd: Error opening framebuffer device
-In-Reply-To: <eea8a9c90710082344r1beebc2bh507a0ba741efd364@mail.gmail.com>
-Message-ID: <Pine.LNX.4.64.0710091117180.25748@anakin>
-References: <eea8a9c90710082258y5bbfc987h83f00d2b48d96fc6@mail.gmail.com>
- <eea8a9c90710082344r1beebc2bh507a0ba741efd364@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 10:58:50 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:42465 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20029986AbXJIJ6s (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 9 Oct 2007 10:58:48 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l999wmCL029254;
+	Tue, 9 Oct 2007 10:58:48 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l999wibe029253;
+	Tue, 9 Oct 2007 10:58:44 +0100
+Date:	Tue, 9 Oct 2007 10:58:44 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: a garbage character in syscall.c
+Message-ID: <20071009095844.GA20698@linux-mips.org>
+References: <20071009160743.5cba9b34.yoichi_yuasa@tripeaks.co.jp>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071009160743.5cba9b34.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16900
+X-archive-position: 16901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 9 Oct 2007, kaka wrote:
-> # insmod brcmstfb.ko
-> brcmstfb: Unknown symbol unregister_framebuffer
+On Tue, Oct 09, 2007 at 04:07:43PM +0900, Yoichi Yuasa wrote:
 
-Try `modprobe brcmstfb', which will also load the modules it depends on.
+> linux-queue.git:
+> http://www.linux-mips.org/git?p=linux-queue.git;a=commit;h=81c6bb39250146e5db5365f843ed9c4b7604f3bd
+> 
+> Please remove it from your patch, or apply this patch.
 
-> brcmstfb: Unknown symbol printf
+Thanks, fixed.
 
-Ugh, printf()? There's no printf() in our kernel.
+For the -queue branch I usually prefer to fold fixes into the patches that
+did introduce them.
 
-> brcmstfb: Unknown symbol malloc
-
-There's no malloc() in our kernel.
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

@@ -1,114 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 10:05:21 +0100 (BST)
-Received: from smtp2.int-evry.fr ([157.159.10.45]:40156 "EHLO
-	smtp2.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20029463AbXJIJFN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 9 Oct 2007 10:05:13 +0100
-Received: from meteor.local (unknown [157.159.47.35])
-	by smtp2.int-evry.fr (Postfix) with ESMTP id E591D3EF3F8;
-	Tue,  9 Oct 2007 11:05:05 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 10:18:43 +0100 (BST)
+Received: from adicia.telenet-ops.be ([195.130.132.56]:46753 "EHLO
+	adicia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20025583AbXJIJSf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 9 Oct 2007 10:18:35 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by adicia.telenet-ops.be (Postfix) with SMTP id 75D44230114;
+	Tue,  9 Oct 2007 11:18:34 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by adicia.telenet-ops.be (Postfix) with ESMTP id 48D47230111;
+	Tue,  9 Oct 2007 11:18:34 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l999IYWP025930
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 9 Oct 2007 11:18:34 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l999IXFB025927;
+	Tue, 9 Oct 2007 11:18:34 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Tue, 9 Oct 2007 11:18:33 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
 To:	kaka <share.kt@gmail.com>
-Subject: Re: Error opening framebuffer device
-Date:	Tue, 9 Oct 2007 11:07:49 +0200
-User-Agent: KMail/1.9.6
-Cc:	linux-mips@linux-mips.org
-References: <eea8a9c90710082258y5bbfc987h83f00d2b48d96fc6@mail.gmail.com> <eea8a9c90710090145mb65a89dr4244050b58a0eea7@mail.gmail.com>
-In-Reply-To: <eea8a9c90710090145mb65a89dr4244050b58a0eea7@mail.gmail.com>
+Cc:	linux-mips@linux-mips.org, linux-git@linux-mips.org
+Subject: Re: Fwd: Error opening framebuffer device
+In-Reply-To: <eea8a9c90710082344r1beebc2bh507a0ba741efd364@mail.gmail.com>
+Message-ID: <Pine.LNX.4.64.0710091117180.25748@anakin>
+References: <eea8a9c90710082258y5bbfc987h83f00d2b48d96fc6@mail.gmail.com>
+ <eea8a9c90710082344r1beebc2bh507a0ba741efd364@mail.gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200710091107.49453.florian.fainelli@telecomint.eu>
-X-int-MailScanner-Information: Please contact the ISP for more information
-X-int-MailScanner: Found to be clean
-X-int-MailScanner-SpamCheck: 
-X-int-MailScanner-From:	florian.fainelli@telecomint.eu
-Return-Path: <florian.fainelli@telecomint.eu>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16899
+X-archive-position: 16900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-On Tuesday 09 October 2007 10:45:43 kaka wrote:
-> *Hi All,*
->
-> *While running  the cross compiled directFB example on MIPS chip,*
->
-> *
-> We tried to install the framebuffer driver(command given at the
-> bottom) and we have already created the node fb0.*
-
-Looking at the insmod below, I think the framebuffer did not register 
-correctly, so creating the device will not help if the driver is not 
-registered.
-
+On Tue, 9 Oct 2007, kaka wrote:
 > # insmod brcmstfb.ko
 > brcmstfb: Unknown symbol unregister_framebuffer
-> brcmstfb: Unknown symbol BKNI_EnterCriticalSection_tagged
+
+Try `modprobe brcmstfb', which will also load the modules it depends on.
+
 > brcmstfb: Unknown symbol printf
-> brcmstfb: Unknown symbol BKNI_DestroyEventGroup
-> brcmstfb: Unknown symbol BKNI_WaitForEvent_tagged
-> brcmstfb: Unknown symbol BKNI_Printf
-> brcmstfb: Unknown symbol __divsf3
-> brcmstfb: Unknown symbol BKNI_Vprintf
-> brcmstfb: Unknown symbol BKNI_Memset
-> brcmstfb: Unknown symbol bnetif_dma_data
-> brcmstfb: Unknown symbol bnetif_dma_delete_filter
-> brcmstfb: Unknown symbol cleanup_bnetif_dma
-> brcmstfb: Unknown symbol BKNI_AcquireMutex_tagged
+
+Ugh, printf()? There's no printf() in our kernel.
+
 > brcmstfb: Unknown symbol malloc
-> brcmstfb: Unknown symbol BKNI_DestroyMutex
-> brcmstfb: Unknown symbol framebuffer_alloc
-> brcmstfb: Unknown symbol BKNI_RemoveEventGroup
-> brcmstfb: Unknown symbol BKNI_Malloc_tagged
-> brcmstfb: Unknown symbol BKNI_CreateEventGroup
-> brcmstfb: Unknown symbol BKNI_WaitForGroup
-> brcmstfb: Unknown symbol __extendsfdf2
-> brcmstfb: Unknown symbol BKNI_SetEvent_tagged
-> brcmstfb: Unknown symbol BKNI_Memcpy
-> brcmstfb: Unknown symbol BKNI_LinuxKernel_SetIsrTasklet
-> brcmstfb: Unknown symbol BKNI_Memcmp
-> brcmstfb: Unknown symbol fb_find_mode
-> brcmstfb: Unknown symbol fb_dealloc_cmap
-> brcmstfb: Unknown symbol bnetif_dma_stop
-> brcmstfb: Unknown symbol BKNI_ResetEvent_tagged
-> brcmstfb: Unknown symbol BKNI_CreateMutex
-> brcmstfb: Unknown symbol BKNI_CreateEvent_tagged
-> brcmstfb: Unknown symbol __floatsisf
-> brcmstfb: Unknown symbol brcm_dir_entry
-> brcmstfb: Unknown symbol register_framebuffer
-> brcmstfb: Unknown symbol BKNI_Fail
-> brcmstfb: Unknown symbol fb_alloc_cmap
-> brcmstfb: Unknown symbol BKNI_Snprintf
-> brcmstfb: Unknown symbol BKNI_Delay_tagged
-> brcmstfb: Unknown symbol BKNI_LeaveCriticalSection_tagged
-> brcmstfb: Unknown symbol BKNI_Sleep_tagged
-> brcmstfb: Unknown symbol bnetif_dma_add_filter
-> brcmstfb: Unknown symbol BKNI_Free_tagged
-> brcmstfb: Unknown symbol BKNI_DestroyEvent_tagged
-> brcmstfb: Unknown symbol init_bnetif_dma
-> brcmstfb: Unknown symbol framebuffer_release
-> brcmstfb: Unknown symbol BKNI_AddEventGroup
-> brcmstfb: Unknown symbol BKNI_ReleaseMutex_tagged
-> brcmstfb: Unknown symbol __addsf3
-> brcmstfb: Unknown symbol free
-> insmod: cannot insert `brcmstfb.ko': Unknown symbol in module (2): No
-> such file or directory
-> #
 
-Did you compile framebuffer support for your kernel ? Because if yes, most 
-symbols (I did not check all) used by your drivers seems to be exported with 
-EXPORT_SYMBOL, and not EXPORT_SYMBOL_GPL, so your driver, even with a 
-proprietary license should be able to access them.
+There's no malloc() in our kernel.
 
-I would recommend you mention your linux version, and the relevant kernel 
-configuration parts.
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

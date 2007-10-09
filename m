@@ -1,58 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 21:20:50 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.188]:38049 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022087AbXJIUUm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 9 Oct 2007 21:20:42 +0100
-Received: by nf-out-0910.google.com with SMTP id c10so1323819nfd
-        for <linux-mips@linux-mips.org>; Tue, 09 Oct 2007 13:20:24 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=CW3hLTrKrKfGQAFKGRXrvTOOhS1usIbfwtC6yXxO9oo=;
-        b=jN7uOUGr94tYTMd3APfSxFSjEb3mi7LafFNOFOYiuyC31HDXA8iQwsUWFUnaaaG8OGOnUHIDEplkI7MVZZw1HunnuZdH5z/U6MMmX7gGTpIUIOI0un1Ey95bLhNtYkxQnSk8tcXfKLON7GHyw1Zw/M56xdVsBHcml5ZZP9nDT0Q=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=qF4UgqB/ZR2dveetDMfiA1yzhk6BYDXxQ5gP/JevWyI2eVLQmEB+lHjw0OJcEQnpCRtpx62L/SjKW5R5OTekont2dBa4SXWKDoxs2v7tZS/rqshwxT8rW4zWL2xIBVmOyqyI0ySftmG44hnkP1c/sl1qiQn4AzxFCLyYFg68sm4=
-Received: by 10.86.80.5 with SMTP id d5mr6295224fgb.1191961224532;
-        Tue, 09 Oct 2007 13:20:24 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id 22sm14366850fkr.2007.10.09.13.20.23
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 09 Oct 2007 13:20:23 -0700 (PDT)
-Message-ID: <470BE276.8050200@gmail.com>
-Date:	Tue, 09 Oct 2007 22:20:06 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-CC:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl> <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl> <4705EFE5.7090704@gmail.com> <Pine.LNX.4.64.0710051102300.32066@anakin> <470A4673.30604@gmail.com> <Pine.LNX.4.64.0710081720550.1416@anakin>
-In-Reply-To: <Pine.LNX.4.64.0710081720550.1416@anakin>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 21:27:34 +0100 (BST)
+Received: from mail.onstor.com ([66.201.51.107]:45713 "EHLO mail.onstor.com")
+	by ftp.linux-mips.org with ESMTP id S20022131AbXJIU1Z (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 9 Oct 2007 21:27:25 +0100
+Received: from onstor-exch02.onstor.net ([66.201.51.106]) by mail.onstor.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 9 Oct 2007 13:26:57 -0700
+Received: from ripper.onstor.net ([10.0.0.42]) by onstor-exch02.onstor.net with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 9 Oct 2007 13:26:57 -0700
+Date:	Tue, 9 Oct 2007 13:26:57 -0700
+From:	Andrew Sharp <andy.sharp@onstor.com>
+To:	linux-mips@linux-mips.org
+Subject: paging problem with ide-cs driver
+Message-ID: <20071009132657.64ec9158@ripper.onstor.net>
+Organization: Onstor
+X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+X-OriginalArrivalTime: 09 Oct 2007 20:26:57.0426 (UTC) FILETIME=[BD2B7F20:01C80AB2]
+Return-Path: <andy.sharp@onstor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16910
+X-archive-position: 16911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: andy.sharp@onstor.com
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
-> Can't you currently compile a kernel that run on e.g. all O2s,
-> irrespective of the actual CPU type?
-> 
 
-It seems so, I've just been teached about it actually. So I think
-we just have to stick with tlbex.c and perhaps make it smaller...
+I'm having a problem with paging through the ide-cs driver.  As best
+I can tell right now, the kernel thinks the data is present and valid
+when it actually isn't.  This is lmo 2.6.22.3, on a sibyte 1125H, but
+I had the same problem with 2.6.20.something on an R9k based machine.
 
-Thanks,
-		Franck
+I can make a filesystem (ext3) on the CF card, mount it, read and write
+to it.  But I can't chroot to it, can't set LD_LIBRARY_PATH to it,
+can't use it as the root filesystem.
+
+The chroot failure is the most telling.  When I try to chroot to it, I
+get various segfault, bus error, illegal instruction, etc.  But if I
+continue to try it, after 10-12 tries, it succeeds.  This tells me
+that the data eventually arrives, it's just that the kernel tries to
+use a page before the data is valid.
+
+Before I dive into this, does any of this ring a bell for anyone?
+I'm using the ide-cs driver, TI yenta cardbus adapter driver, and sibyte
+everything else.
+
+I can provide kernel output if anyone is interested in that.  But there
+isn't any kernel output when the failure occurs, the thread just dies
+with one of the various mentioned errors.
+
+coolcat:~# cat /etc/fstab
+proc /proc proc defaults 0 0
+10.0.0.42:/var/nfsroot/cougar / nfs defaults 0 0
+tmpfs /tmp tmpfs defaults,size=12m 0 0
+coolcat:~# chroot /mnt
+Illegal instruction
+coolcat:~# chroot /mnt
+Illegal instruction
+coolcat:~# chroot /mnt
+Segmentation fault
+coolcat:~# chroot /mnt
+Segmentation fault
+coolcat:~# chroot /mnt
+Illegal instruction
+coolcat:~# chroot /mnt
+Illegal instruction
+coolcat:~# chroot /mnt
+Illegal instruction
+coolcat:~# chroot /mnt
+Segmentation fault
+coolcat:~# chroot /mnt
+Segmentation fault
+coolcat:~# chroot /mnt
+coolcat:/# 
+coolcat:/# cat /etc/fstab
+Segmentation fault
+coolcat:/# cat /etc/fstab
+proc /proc proc defaults 0 0
+/dev/hda2 / ext3 defaults 0 0
+tmpfs /tmp tmpfs defaults,size=12m 0 0
+coolcat:/# exit

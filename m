@@ -1,49 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 14:35:06 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:39365 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022564AbXJINfD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 9 Oct 2007 14:35:03 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l99DZ3pD001879;
-	Tue, 9 Oct 2007 14:35:03 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l99DZ3gi001878;
-	Tue, 9 Oct 2007 14:35:03 +0100
-Date:	Tue, 9 Oct 2007 14:35:03 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Johannes Dickgreber <tanzy@gmx.de>
-Cc:	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] arch/mips/pci/ioc3.c
-Message-ID: <20071009133503.GA1788@linux-mips.org>
-References: <47093583.6010407@gmx.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47093583.6010407@gmx.de>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Oct 2007 16:02:59 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:49941 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20023308AbXJIPCu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 9 Oct 2007 16:02:50 +0100
+Received: by mo.po.2iij.net (mo31) id l99F1VVB062109; Wed, 10 Oct 2007 00:01:31 +0900 (JST)
+Received: from delta (221.25.30.125.dy.iij4u.or.jp [125.30.25.221])
+	by mbox.po.2iij.net (po-mbox303) id l99F1PTx018407
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 10 Oct 2007 00:01:25 +0900
+Date:	Wed, 10 Oct 2007 00:01:24 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: fix cpu_type_enum
+Message-Id: <20071010000124.c1f995bc.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.0 (GTK+ 2.10.11; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16904
+X-archive-position: 16905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Oct 07, 2007 at 09:37:39PM +0200, Johannes Dickgreber wrote:
-> From: Johannes Dickgreber <tanzy@gmx.de>
-> Date: Sun, 07 Oct 2007 21:37:39 +0200
-> To: Ralf Baechle <ralf@linux-mips.org>
-> CC: Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
-> Subject: [PATCH] arch/mips/pci/ioc3.c 
-> Content-Type: text/plain; charset=UTF-8
+Hi Ralf,
 
-Kumba,
+You forgot a colon after CPU_BCM4710.
 
-are you collecting Johannes' Octane patches?  They don't apply to the
-main MIPS tree.
+http://www.linux-mips.org/git?p=linux-queue.git;a=commit;h=74b4db70cfaa5809eb684bccd5e57150e5149b1d
 
-  Ralf
+Yoichi

@@ -1,79 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 11:02:07 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.183]:14131 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022052AbXJJKB6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Oct 2007 11:01:58 +0100
-Received: by py-out-1112.google.com with SMTP id p76so282951pyb
-        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 03:01:36 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=SJWwjpylsBmkv/FrwH874el0pwsFER/AGTiVBQQE3GU=;
-        b=WVerdxmSlfGUvMPPbZVyYmGSXwoBdOsq5s9BZ3eMHBxo8CnSKhw57Gm+X/S1LyE/KyJ/gDd9f03CQyFViHD5UTVbd57ZltJgjKbjzx4scmsKQnF+DmgcB9LOxt4jptNTSImbQxK//5A42AcZ+IGRabWWu+50fC/9ZAq8d9MYmlk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=txieATFF3KwZVRPuuyRP/8bIcq6LIjPodIFV5XFBQS3dk+TJWeoJZIIFUAty4m0xCRGBTqVg3ajqkVpuRLS6WA74FVxWyG5Ihk8GGtGyCjRnqiDJvqXDYUlkNOiM+09bL0XV/rmpqmXXE7YpgPa+dCFtxOeYwJurARYf5VKoG1w=
-Received: by 10.35.109.2 with SMTP id l2mr626763pym.1192010494573;
-        Wed, 10 Oct 2007 03:01:34 -0700 (PDT)
-Received: by 10.35.39.19 with HTTP; Wed, 10 Oct 2007 03:01:34 -0700 (PDT)
-Message-ID: <eea8a9c90710100301k391adf0bt6b6ff4f5803b0ecd@mail.gmail.com>
-Date:	Wed, 10 Oct 2007 15:31:34 +0530
-From:	kaka <share.kt@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: cross compiling kernel image for MIPS platform in Linux Intel box
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 11:23:57 +0100 (BST)
+Received: from tool.snarl.nl ([82.95.241.19]:31755 "EHLO tool.snarl.nl")
+	by ftp.linux-mips.org with ESMTP id S20021989AbXJJKXt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2007 11:23:49 +0100
+Received: from localhost (tool.local.snarl.nl [127.0.0.1])
+	by tool.snarl.nl (Postfix) with ESMTP id E39495E1E6;
+	Wed, 10 Oct 2007 12:23:42 +0200 (CEST)
+Received: from tool.snarl.nl ([127.0.0.1])
+	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id SuFaY+teJ+u8; Wed, 10 Oct 2007 12:23:42 +0200 (CEST)
+Received: by tool.snarl.nl (Postfix, from userid 1000)
+	id 293365DFD5; Wed, 10 Oct 2007 12:23:42 +0200 (CEST)
+Date:	Wed, 10 Oct 2007 12:23:42 +0200
+From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+To:	kaka <share.kt@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: cross compiling kernel image for MIPS platform in Linux Intel
+	box
+Message-ID: <20071010102341.GN22574@dusktilldawn.nl>
+References: <eea8a9c90710100301k391adf0bt6b6ff4f5803b0ecd@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_53617_628129.1192010494573"
-Return-Path: <share.kt@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="+2GlJm56SCtLHYlr"
+Content-Disposition: inline
+In-Reply-To: <eea8a9c90710100301k391adf0bt6b6ff4f5803b0ecd@mail.gmail.com>
+X-User-Agent-Feature: All mail clients suck. This one just sucks less.
+X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <freddy@dusktilldawn.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16924
+X-archive-position: 16925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: share.kt@gmail.com
+X-original-sender: freddy@dusktilldawn.nl
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_53617_628129.1192010494573
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+
+--+2GlJm56SCtLHYlr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Kaka,
+
+On Wed, Oct 10, 2007 at 03:31:34PM +0530, kaka wrote:
+> 1.  Could not load vmlinuz:I/O error
+
+This can be a problem of all kind. Please be more specific. How
+do you load the image? What is your environment? For instance, an
+objcopy step is needed for loading with yamon. Because yamon
+needs an srec file to load.
+
+
+> 2. The size of the image is huge.
+
+Try to use modules.
+
+
+--=20
+$ cat ~/.signature
+Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
+GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+
+--+2GlJm56SCtLHYlr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 Content-Disposition: inline
 
-Hi All,
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
 
-I have cross compiled kernel image for MIPS platform in Linux Intel box.
-But when i am booting the image in the MIPS board.
-There are 2 problems.
-1.  Could not load vmlinuz:I/O error
-2. The size of the image is huge.
+iD8DBQFHDKgtbxf9XXlB0eERAmLmAKCZ9tkIHPyejsUb4Jk3YzUFRT9VbgCg5hhA
+f06IUdlU2V87B7EwDVCrz4U=
+=Hh7b
+-----END PGP SIGNATURE-----
 
-Can somebody help in this regard?
-If somebody have proper config file or steps for building the kernel image
-for MIPS, then please mail me.
-Thanks in advance.
-
--- 
-Thanks & Regards,
-kaka
-
-------=_Part_53617_628129.1192010494573
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<div>Hi All,</div>
-<div>&nbsp;</div>
-<div>I have cross compiled kernel image for MIPS platform in Linux Intel box.</div>
-<div>But when i am booting the image in the MIPS board.</div>
-<div>There are 2 problems.</div>
-<div>1.&nbsp; Could not load vmlinuz:I/O error</div>
-<div>2. The size of the image is huge.</div>
-<div>&nbsp;</div>
-<div>Can somebody help in this regard?</div>
-<div>If somebody have proper config file or steps for building the kernel image for MIPS, then please mail me.</div>
-<div>Thanks in advance.<br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka </div>
-
-------=_Part_53617_628129.1192010494573--
+--+2GlJm56SCtLHYlr--

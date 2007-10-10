@@ -1,109 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 04:40:05 +0100 (BST)
-Received: from post1.wesleyan.edu ([129.133.6.131]:30886 "EHLO
-	post1.wesleyan.edu") by ftp.linux-mips.org with ESMTP
-	id S20021700AbXJJDjz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Oct 2007 04:39:55 +0100
-Received: from webmail.wesleyan.edu (pony1.wesleyan.edu [129.133.6.192])
-	by courier1.wesleyan.edu (8.13.6/8.13.6) with ESMTP id l9A3dk4E013524
-	for <linux-mips@linux-mips.org>; Tue, 9 Oct 2007 23:39:46 -0400
-Received: from 129.133.92.31
-        (SquirrelMail authenticated user sknauert)
-        by webmail.wesleyan.edu with HTTP;
-        Tue, 9 Oct 2007 23:39:46 -0400 (EDT)
-Message-ID: <33485.129.133.92.31.1191987586.squirrel@webmail.wesleyan.edu>
-Date:	Tue, 9 Oct 2007 23:39:46 -0400 (EDT)
-Subject: PCI video on SGI O2
-From:	sknauert@wesleyan.edu
-To:	linux-mips@linux-mips.org
-User-Agent: SquirrelMail/1.4.10a
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 10:54:30 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:1229 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021828AbXJJJy2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 Oct 2007 10:54:28 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9A8rhcS000315;
+	Wed, 10 Oct 2007 09:53:44 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9A8rhca000314;
+	Wed, 10 Oct 2007 09:53:43 +0100
+Date:	Wed, 10 Oct 2007 09:53:43 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+Message-ID: <20071010085343.GA31184@linux-mips.org>
+References: <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl> <4705EFE5.7090704@gmail.com> <Pine.LNX.4.64N.0710051312490.17849@blysk.ds.pg.gda.pl> <470A4349.9090301@gmail.com> <Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: text/plain;charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-Wesleyan-MailScanner-Information: Please contact the ISP for more information
-X-Wesleyan-MailScanner:	Found to be clean
-X-MailScanner-From: sknauert@wesleyan.edu
-Return-Path: <sknauert@wesleyan.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16922
+X-archive-position: 16923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sknauert@wesleyan.edu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Okay, sorry to bring this up yet again, but I recently found out the PCI
-legacy offset for the O2 was 0x8000000 and so I tried my original patch as
-posted here: 
-http://www.linux-mips.org/archives/linux-mips/2007-06/msg00164.html
-again with the proper offset. Atsushi had made some suggestions (you can
-browse the thread), but when I tried them the /sysfs files no longer
-appeared. Sadly, I don't know why, his comments seemed reasonable.
+On Mon, Oct 08, 2007 at 04:39:38PM +0100, Maciej W. Rozycki wrote:
 
-Anyway... I got some results, X.org seemed to see the video card, its ROM,
-and some registers. I still can't get it initialized, but maybe someone
-here might be able to tell if this is a kernel or X.org/ Int10 problem.
+> > Well, having all cpu variations in Kconfig should be technically
+> > possible. The user needs to know what exact cpu is running on which
+> > doesn't sound impossible and we could add some sanity checkings to
+> > ensure he doesn't messed up its configuration.
+> 
+>  As long as the user is indeed capable of knowing what the exact CPU type 
+> is.  I have been told replacing R4X00 with a choice like R4000, R4400, 
+> R4600, R4700 may already be too much of a hassle.
 
-I do understand that in theory /dev/mem does provides enough access to
-POST the card but X.org doesn't seem to use that API, while it does use
-the sysfs one. Thus, if there is an easy way to get X on Linux MIPS by
-just adding a kernel API that exists on other platforms, it seems like
-something reasonable to try.
+Four choices is too much; after all these four marketing names are really
+just 4 variants of two fairly similar processors.  Doable?  Yes.  A useful
+improvment?  I doubt, otoh users of those old machines count every cycle
+by hand still ;-)
 
-Here is the relevant part of my Xorg.0.log:
+Another problem with the enormous and continuously growing number of
+processors is that few users know about all the compatibility issues
+between the choices offered in Kconfig.  Alot of bug reports were caused
+for example because users took MIPS32 to mean 32-bit MIPS - but R3000
+processors clearly disagree with that view ;-)
 
-[(II) ATI:  Candidate "Device" section "Generic Video Card".
-(--) Chipset ATI Radeon 7500 QW (AGP/PCI) found
-(II) resource ranges after xf86ClaimFixedResources() call:
-        [0] -1  0       0x00100000 - 0x3fffffff (0x3ff00000) MX[B]E(B)
-        [1] -1  0       0x000f0000 - 0x000fffff (0x10000) MX[B]
-        [2] -1  0       0x000c0000 - 0x000effff (0x30000) MX[B]
-        [3] -1  0       0x00000000 - 0x0009ffff (0xa0000) MX[B]
-        [4] -1  0       0x0000ffff - 0x0000ffff (0x1) IX[B]
-        [5] -1  0       0x00000000 - 0x000000ff (0x100) IX[B]
-        [6] -1  0       0x00001400 - 0x000014ff (0x100) IX[B]
-        [7] -1  0       0x00001000 - 0x000010ff (0x100) IX[B]
-        [8] -1  0       0x00001800 - 0x000018ff (0x100) IX[B](B)
-(II) Loading sub module "radeon"
-(II) LoadModule: "radeon"
-(II) Loading /usr/lib/xorg/modules/drivers/radeon_drv.so
-(II) Module radeon: vendor="X.Org Foundation"
-        compiled for 7.1.1, module version = 4.2.0
-        Module class: X.Org Video Driver
-        ABI class: X.Org Video Driver, version 1.0
-(EE) end of block range 0xfef < begin 0xfffffff0
-(EE) end of block range 0xfef < begin 0xfffffff0
-(EE) end of block range 0xffef < begin 0xfffffff0
-(EE) end of block range 0x7ffffef < begin 0xfffffff0
-(EE) end of block range 0xffef < begin 0xfffffff0
-(EE) end of block range 0xffef < begin 0xfffffff0
-(II) resource ranges after probing:
-        [0] -1  0       0x00100000 - 0x3fffffff (0x3ff00000) MX[B]E(B)
-        [1] -1  0       0x000f0000 - 0x000fffff (0x10000) MX[B]
-        [2] -1  0       0x000c0000 - 0x000effff (0x30000) MX[B]
-        [3] -1  0       0x00000000 - 0x0009ffff (0xa0000) MX[B]
-        [4] 0   0       0x000a0000 - 0x000affff (0x10000) MS[B]
-        [5] 0   0       0x000b0000 - 0x000b7fff (0x8000) MS[B]
-        [6] 0   0       0x000b8000 - 0x000bffff (0x8000) MS[B]
-        [7] -1  0       0x0000ffff - 0x0000ffff (0x1) IX[B]
-        [8] -1  0       0x00000000 - 0x000000ff (0x100) IX[B]
-        [9] -1  0       0x00001400 - 0x000014ff (0x100) IX[B]
-        [10] -1 0       0x00001000 - 0x000010ff (0x100) IX[B]
-        [11] -1 0       0x00001800 - 0x000018ff (0x100) IX[B](B)
-        [12] 0  0       0x000003b0 - 0x000003bb (0xc) IS[B]
-        [13] 0  0       0x000003c0 - 0x000003df (0x20) IS[B]
-(II) Setting vga for screen 0.
-(**) RADEON(0): RADEONPreInit
-(II) RADEON(0): MMIO registers at 0x88040000: size 64KB
+One of the things I'm trying to achieve is to get rid of all the use of
+CONFIG_CPU_MIPS32_R1 and similar processor symbols in code coming to a
+point where selection of one of those symbols in Kconfig only means to
+optimize a kernel for the selected core without sacrificing compatibility.
 
-Fatal server error:
-xf86MapVidMem: Could not mmap framebuffer (0xfffffff0,0x10000) (Value too
-large for defined data type)
+(But of course the few machines that support processors with multiple ISAs
+spoil that plan a little ..)
 
-Any comments or suggestions would be helpful.
-Thanks in advance,
-- Scott
+>  Frankly I am not entirely confident much choice beyond the ISA level is 
+> actually a good idea.  We do have it, because lots of bits depend on 
+> preprocessor conditionals even though they not necessarily should.  There 
+> are probably some historical reasons too.  But essentially we have about 
+> eight ISA variations (I - IV and four MIPS Architecture ISAs) and about 
+> four privileged resource architecture variations (R2000, R6000, R4000, 
+> R8000); not all combinations making sense and some of the choices actually 
+> not supported at all.
+> 
+>  CPU variations matter performance-wise, but the use of "-mtune=" is 
+> irrelevant in this context.
+> 
+> > BTW, we could pass more cpu compiler options for optimization this
+> > way. For example, when using a '4ksd' cpu, we currently can't pass
+> > '-march=4ksd' to gcc since the cpu type used for it is 'mips32r2'. And
+> > I guess it's true for all cpu types which cover a range of slightly
+> > different processors (r4x00 comes in mind).
+> 
+>  What would be the gain for the kernel from using "-march=4ksd" rather 
+> than "-march=mips32r2"?
+
+One looks fancier ;-)
+
+> > OTOH, I don't know if it can work on SMP: if the system needs 2
+> > different implementations of the handler (I don't know if it can
+> > happen though), we must be able to select 2 different cpu types in
+> > Kconfig...
+> 
+>  I do not think we happen to handle this scenario -- the more interesting 
+> configurations that could benefit do not support the cp0.ebase register 
+> making per-CPU handlers quite a challenge (i.e. the cost would exceed the 
+> benefit).
+
+It's doable but there is little point.  Ebase is an R2 feature and who
+on earth would mix pre-R2 and R2 cores in a SOC now that R2 is established
+for a few years?
+
+> > Do you see any other points that we should consider before trying to
+> > use static handlers ? Some other cpu features influencing the tlb
+> > handler generations and that can be found only at runtime ?
+> 
+>  What if you want to run a single kernel image regardless of the CPU 
+> installed in the system.  Rebuilding the kernel (or having to keep a large 
+> collection of binaries) just because you want to swap the CPU does not 
+> seem like a terribly attractive idea.  Some systems come with their CPU(s) 
+> on a daughtercard (each), you know...
+
+Or an FPGAs.  I can swap CPUs on my Malta from the other side of earth in
+few seconds by downloading another bitfile.  And it's damn useful to be
+able to use the same kernel binary, keeps another 10min from going down
+the drain for just a rebuild.
+
+  Ralf

@@ -1,59 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 20:59:49 +0100 (BST)
-Received: from fk-out-0910.google.com ([209.85.128.189]:22069 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20030337AbXJJT7k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Oct 2007 20:59:40 +0100
-Received: by fk-out-0910.google.com with SMTP id f40so295950fka
-        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 12:59:23 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:x-enigmail-version:content-type:content-transfer-encoding;
-        bh=742hgTHZyqZEaHYqWIcMnWI+kyryZhI9IYXAEMApRLs=;
-        b=aKLJ0vk9x6XoXHaYk1MV1PVd8xdFMPKl1ZTJ8ECR1yEef0ttNeGREmqa1I2FzMjUKuwfE26oq3pSUEUaK7qTrMfn+XkVCpgvGsAGzt9HAqw+aiJ5XGehUaJQ3tUY6CmhgpIrUduqZINjFm9oki9EqDbUqWvob8iPwhW8ByMUibY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:x-enigmail-version:content-type:content-transfer-encoding;
-        b=eTEAmgpY2YvMo/tWTa61GOOYmhQtyVx4YJy5oQELvtSrgF1/t6JYPpU4WfyWe5khs79YheAAuVzyaV9TZUg0Yqs9r+1bNlUw8YxOoWvx21MAq7w78Nlf2s8Gor+SzDN1B4SY7G35re4IDqcEMgTuADGj+r5MK66oHE/UltXZ/Xk=
-Received: by 10.82.165.13 with SMTP id n13mr2279012bue.1192046362869;
-        Wed, 10 Oct 2007 12:59:22 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id w5sm2628465mue.2007.10.10.12.59.19
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 10 Oct 2007 12:59:20 -0700 (PDT)
-Message-ID: <470D2F03.10406@gmail.com>
-Date:	Wed, 10 Oct 2007 21:58:59 +0200
-From:	Franck Bui-Huu <fbuihuu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 21:53:26 +0100 (BST)
+Received: from unassigned-81-90-243-194.ujezd.net ([81.90.243.194]:30167 "EHLO
+	skerikoff.satca.net") by ftp.linux-mips.org with ESMTP
+	id S20030184AbXJJUxS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 Oct 2007 21:53:18 +0100
+Received: from localhost (unknown [127.0.0.1])
+	by skerikoff.satca.net (Postfix) with ESMTP id 1488CE410B8;
+	Wed, 10 Oct 2007 20:29:58 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at satca.net
+Received: from skerikoff.satca.net ([127.0.0.1])
+	by localhost (skerikoff.satca.net [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id kQaBHKriK5MX; Wed, 10 Oct 2007 22:29:56 +0200 (CEST)
+Received: from [10.1.1.70] (unknown [192.168.51.95])
+	by skerikoff.satca.net (Postfix) with ESMTP id 5BCB3E41090;
+	Wed, 10 Oct 2007 20:29:56 +0000 (UTC)
+Message-ID: <470D3A94.9090401@satca.net>
+Date:	Wed, 10 Oct 2007 22:48:20 +0200
+From:	Marian Jancar <m.jancar@satca.net>
 User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/6] tlbex.c: Remove relocs[] and labels[] from the init.data
- section
-References: <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <20071005115151.GA16145@linux-mips.org> <470BE58A.9070709@gmail.com> <470BE61F.5020108@gmail.com> <20071010142755.GA9325@linux-mips.org> <Pine.LNX.4.64N.0710101715380.9821@blysk.ds.pg.gda.pl> <20071010164236.GB10243@linux-mips.org> <Pine.LNX.4.64.0710101854260.23818@anakin>
-In-Reply-To: <Pine.LNX.4.64.0710101854260.23818@anakin>
+To:	linux-mips@linux-mips.org
+CC:	juhosg@openwrt.org
+Subject: Linux 2.6.22 on ADM5120
 X-Enigmail-Version: 0.95.2
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Return-Path: <fbuihuu@gmail.com>
+Return-Path: <m.jancar@satca.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16946
+X-archive-position: 16947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fbuihuu@gmail.com
+X-original-sender: m.jancar@satca.net
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
-> Or e.g. static struct label labels[128] __initdata = { 0, };
-> Cfr. the old rule `always initialize initdata, even if it must be 0'.
-> 
+Hi,
 
-I also noticed that init data aren't initialized as they should be,
-but they're still part of initdata not bss.
+I'm trying to boot current Linux kernel with patches from OpenWRT on
+an Infineon Easy5120-RT but without the LZMA loader. Hence I
+mimic what patches from
+http://nano.gmxhome.de/linux-2.6.17.11-adm5120-patch.diff.gz
+and
+http://www.student.tue.nl/Q/t.f.a.wilms/adm5120/files/linux-2.6.12-rc1-adm.diff
 
-		Franck
+(I have verified myself that the later boots, as also the 2.6.22 with
+the LZMA does) do - use 0x80002000 as LOADDADD instead of 0x80001000, and
+fill to 0x6d8 + jump to kernel_entry in head.S, but the resulting vmlinuz
+doesn't boot. There is some info at
+http://www.linux-mips.org/wiki/Adm5120#Linux_Support
+
+diff -urNdp linux-2.6.22.9-vanilla/arch/mips/Makefile linux-2.6.22.9/arch/mips/Makefile
+--- linux-2.6.22.9-vanilla/arch/mips/Makefile   2007-09-26 20:03:01.000000000 +0200
++++ linux-2.6.22.9/arch/mips/Makefile   2007-10-10 20:44:24.000000000 +0200
+@@ -165,6 +165,13 @@ cflags-$(CONFIG_MACH_JAZZ) += -Iinclude/
+ load-$(CONFIG_MACH_JAZZ)       += 0xffffffff80080000
+
+ #
++# ADMtek 5120
++#
++
++core-$(CONFIG_MIPS_ADM5120)    += arch/mips/adm5120/
++load-$(CONFIG_MIPS_ADM5120)    += 0xffffffff80002000
++
++#
+ # Common Alchemy Au1x00 stuff
+ #
+ core-$(CONFIG_SOC_AU1X00)      += arch/mips/au1000/common/
+
+
+diff -urNdp linux-2.6.22.9-vanilla/arch/mips/kernel/head.S linux-2.6.22.9/arch/mips/kernel/head.S
+--- linux-2.6.22.9-vanilla/arch/mips/kernel/head.S      2007-09-26 20:03:01.000000000 +0200
++++ linux-2.6.22.9/arch/mips/kernel/head.S      2007-10-10 20:44:24.000000000 +0200
+@@ -134,6 +134,11 @@
+         * Necessary for machines which link their kernels at KSEG0.
+         */
+        .fill   0x400
++#ifdef CONFIG_MIPS_ADM5120
++       /* ADM5120 bootloader jumps to 0x6d8 */
++       .fill   0x2d8
++       j kernel_entry
++#endif
+
+ EXPORT(stext)                                  # used for profiling
+ EXPORT(_stext)
+
+
+Any clues what I am missing or what I do wrong?
+
+Marian

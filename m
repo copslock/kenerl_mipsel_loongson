@@ -1,87 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 13:45:59 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.182]:35238 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022181AbXJJMpv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Oct 2007 13:45:51 +0100
-Received: by py-out-1112.google.com with SMTP id p76so349758pyb
-        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 05:45:30 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=CQyB/BzZ7Y6tIhEq0r9aEiqZ14Dpywy7BB4Z9IBzPjg=;
-        b=K8Thad1Dm5rhUdAH1cUqhGWOuSfe1RGGYcrQg0nInDnYENhmfN45wfG9bNVKqsiUbJ1arE+fhA6S1GAksxLDBIjRqt2G7+EA4uMCfk1+YgI/3OBfyWl5SfssdYYvPl8W6BIaD8dSWu7zIQLMem6xxrPQk4dfXxbIuaS7lKMFXX4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=XmmkZNgovwFpkYlbMl0VivecW5Ov0NoY4WulYGwOZ34izxj+W9QB7wFGMZ2GL3ZO0p6b8fc6egmHmyTpWm7VnFSUap8QJah8IXEM9X5MdwTvZKeNXUSysDyokKDTUIDgXystieK5zvZxVFLfpbXHRyod4ciDyBoC7KBfbzpGX2k=
-Received: by 10.35.96.11 with SMTP id y11mr798761pyl.1192020330039;
-        Wed, 10 Oct 2007 05:45:30 -0700 (PDT)
-Received: by 10.35.39.19 with HTTP; Wed, 10 Oct 2007 05:45:29 -0700 (PDT)
-Message-ID: <eea8a9c90710100545y35d69e0ck96787609a935a889@mail.gmail.com>
-Date:	Wed, 10 Oct 2007 18:15:29 +0530
-From:	kaka <share.kt@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Unknown symbol errors in insmod <driver name>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 13:56:36 +0100 (BST)
+Received: from NaN.false.org ([208.75.86.248]:31164 "EHLO nan.false.org")
+	by ftp.linux-mips.org with ESMTP id S20021877AbXJJM41 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2007 13:56:27 +0100
+Received: from nan.false.org (localhost [127.0.0.1])
+	by nan.false.org (Postfix) with ESMTP id C9A079833B;
+	Wed, 10 Oct 2007 12:55:54 +0000 (GMT)
+Received: from caradoc.them.org (22.svnf5.xdsl.nauticom.net [209.195.183.55])
+	by nan.false.org (Postfix) with ESMTP id B1E3298339;
+	Wed, 10 Oct 2007 12:55:54 +0000 (GMT)
+Received: from drow by caradoc.them.org with local (Exim 4.68)
+	(envelope-from <drow@caradoc.them.org>)
+	id 1Ifb6P-00052U-Ma; Wed, 10 Oct 2007 08:55:53 -0400
+Date:	Wed, 10 Oct 2007 08:55:53 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Ricardo Mendoza <ricmm@kanux.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: O2 KGDB problem
+Message-ID: <20071010125553.GA18207@caradoc.them.org>
+References: <470C8F8E.3010301@kanux.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_54036_31414549.1192020330030"
-Return-Path: <share.kt@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <470C8F8E.3010301@kanux.com>
+User-Agent: Mutt/1.5.15 (2007-04-09)
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16932
+X-archive-position: 16933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: share.kt@gmail.com
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_54036_31414549.1192020330030
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Wed, Oct 10, 2007 at 04:38:38AM -0400, Ricardo Mendoza wrote:
+> Been messing around with the O2 and KGDB and well, theres a problem that
+> I don't quite know how to tackle, when building a 64-bit kernel with
+> mips64 target toolchain and with CONFIG_BUILD_ELF64 and then trying to
+> start remote gdb with that image I get a Segfault from gdb. What do you
+> think is the cause of this?
+> 
+> I guess its just file format mixup confusing gdb? any pointer from a gdb
+> guru
+> towards making this work?
 
-Hi All,
-
-WHile installing framebuffer driver for BCM chip in MIPS platform(cross
-compiled in intel 86).
-I am getting the following error.
-Can somebody help in this regard?
-Thanks in Advance.
-
-# insmod brcmstfb.ko
-brcmstfb: Unknown symbol unregister_framebuffer
-brcmstfb: Unknown symbol printf
-brcmstfb: Unknown symbol __make_dp
-brcmstfb: Unknown symbol malloc
-brcmstfb: Unknown symbol framebuffer_alloc
-brcmstfb: Unknown symbol fb_find_mode
-brcmstfb: Unknown symbol fb_dealloc_cmap
-brcmstfb: Unknown symbol brcm_dir_entry
-brcmstfb: Unknown symbol register_framebuffer
-brcmstfb: Unknown symbol fb_alloc_cmap
-brcmstfb: Unknown symbol framebuffer_release
-brcmstfb: Unknown symbol free
+I believe a CVS snapshot of GDB will "work" but refuse to show you
+line numbers, and if you use a CVS snapshot of gas too then things
+will work OK.  gas was doing something horribly wrong to the
+.debug_line sections it generated.
 
 -- 
-Thanks & Regards,
-kaka
-
-------=_Part_54036_31414549.1192020330030
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<div>Hi All,</div>
-<div>&nbsp;</div>
-<div>WHile installing framebuffer driver for BCM chip in MIPS platform(cross compiled in intel 86).</div>
-<div>I am getting the following error.</div>
-<div>Can somebody help in this regard?</div>
-<div>Thanks in Advance.</div>
-<div>&nbsp;</div>
-<div># insmod brcmstfb.ko<br>brcmstfb: Unknown symbol unregister_framebuffer<br>brcmstfb: Unknown symbol printf<br>brcmstfb: Unknown symbol __make_dp<br>brcmstfb: Unknown symbol malloc<br>brcmstfb: Unknown symbol framebuffer_alloc 
-<br>brcmstfb: Unknown symbol fb_find_mode<br>brcmstfb: Unknown symbol fb_dealloc_cmap<br>brcmstfb: Unknown symbol brcm_dir_entry<br>brcmstfb: Unknown symbol register_framebuffer<br>brcmstfb: Unknown symbol fb_alloc_cmap<br>
-brcmstfb: Unknown symbol framebuffer_release<br>brcmstfb: Unknown symbol free<br><br>-- <br>Thanks &amp; Regards,<br>kaka </div>
-
-------=_Part_54036_31414549.1192020330030--
+Daniel Jacobowitz
+CodeSourcery

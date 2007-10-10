@@ -1,82 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 11:23:57 +0100 (BST)
-Received: from tool.snarl.nl ([82.95.241.19]:31755 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S20021989AbXJJKXt (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2007 11:23:49 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id E39495E1E6;
-	Wed, 10 Oct 2007 12:23:42 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id SuFaY+teJ+u8; Wed, 10 Oct 2007 12:23:42 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 293365DFD5; Wed, 10 Oct 2007 12:23:42 +0200 (CEST)
-Date:	Wed, 10 Oct 2007 12:23:42 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 12:19:11 +0100 (BST)
+Received: from vervifontaine.sonytel.be ([80.88.33.193]:60607 "EHLO
+	vervifontaine.sonycom.com") by ftp.linux-mips.org with ESMTP
+	id S20022066AbXJJLTC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 Oct 2007 12:19:02 +0100
+Received: from pademelon.sonytel.be (piraat.sonytel.be [43.221.60.197])
+	by vervifontaine.sonycom.com (Postfix) with ESMTP id 9E92B58ABD;
+	Wed, 10 Oct 2007 13:18:22 +0200 (MEST)
+Date:	Wed, 10 Oct 2007 13:18:22 +0200 (CEST)
+From:	Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
 To:	kaka <share.kt@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: cross compiling kernel image for MIPS platform in Linux Intel
-	box
-Message-ID: <20071010102341.GN22574@dusktilldawn.nl>
+cc:	CE Linux Developers List <celinux-dev@tree.celinuxforum.org>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	debian-mips@lists.debian.org
+Subject: Re: [Celinux-dev] cross compiling kernel image for MIPS platform in
+ Linux Intel box
+In-Reply-To: <eea8a9c90710100302h35df686bmae20051eff8e6ce5@mail.gmail.com>
+Message-ID: <Pine.LNX.4.62.0710101315130.29913@pademelon.sonytel.be>
 References: <eea8a9c90710100301k391adf0bt6b6ff4f5803b0ecd@mail.gmail.com>
+ <eea8a9c90710100302h35df686bmae20051eff8e6ce5@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+2GlJm56SCtLHYlr"
-Content-Disposition: inline
-In-Reply-To: <eea8a9c90710100301k391adf0bt6b6ff4f5803b0ecd@mail.gmail.com>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <freddy@dusktilldawn.nl>
+Content-Type: MULTIPART/MIXED; BOUNDARY="-584337861-854486875-1192015102=:29913"
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16925
+X-archive-position: 16926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: Geert.Uytterhoeven@sonycom.com
 Precedence: bulk
 X-list: linux-mips
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
---+2GlJm56SCtLHYlr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+---584337861-854486875-1192015102=:29913
+Content-Type: TEXT/PLAIN; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-Hi Kaka,
+On Wed, 10 Oct 2007, kaka wrote:
+> Hi All,
 
-On Wed, Oct 10, 2007 at 03:31:34PM +0530, kaka wrote:
-> 1.  Could not load vmlinuz:I/O error
+Please do not post all your questions to multiple individual mailing lists.
+Just choose the one (or two, using CC) that's most appropriate.
 
-This can be a problem of all kind. Please be more specific. How
-do you load the image? What is your environment? For instance, an
-objcopy step is needed for loading with yamon. Because yamon
-needs an srec file to load.
+Thanks!
 
+With kind regards,
+ 
+Geert Uytterhoeven
+Software Architect
 
-> 2. The size of the image is huge.
-
-Try to use modules.
-
-
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
-
---+2GlJm56SCtLHYlr
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFHDKgtbxf9XXlB0eERAmLmAKCZ9tkIHPyejsUb4Jk3YzUFRT9VbgCg5hhA
-f06IUdlU2V87B7EwDVCrz4U=
-=Hh7b
------END PGP SIGNATURE-----
-
---+2GlJm56SCtLHYlr--
+Sony Network and Software Technology Center Europe
+The Corporate Village · Da Vincilaan 7-D1 · B-1935 Zaventem · Belgium
+ 
+Phone:    +32 (0)2 700 8453	
+Fax:      +32 (0)2 700 8622	
+E-mail:   Geert.Uytterhoeven@sonycom.com	
+Internet: http://www.sony-europe.com/
+ 	
+Sony Network and Software Technology Center Europe	
+A division of Sony Service Centre (Europe) N.V.	
+Registered office: Technologielaan 7 · B-1840 Londerzeel · Belgium	
+VAT BE 0413.825.160 · RPR Brussels	
+Fortis Bank Zaventem · Swift GEBABEBB08A · IBAN BE39001382358619
+---584337861-854486875-1192015102=:29913--

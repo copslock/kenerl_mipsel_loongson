@@ -1,56 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 13:56:36 +0100 (BST)
-Received: from NaN.false.org ([208.75.86.248]:31164 "EHLO nan.false.org")
-	by ftp.linux-mips.org with ESMTP id S20021877AbXJJM41 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2007 13:56:27 +0100
-Received: from nan.false.org (localhost [127.0.0.1])
-	by nan.false.org (Postfix) with ESMTP id C9A079833B;
-	Wed, 10 Oct 2007 12:55:54 +0000 (GMT)
-Received: from caradoc.them.org (22.svnf5.xdsl.nauticom.net [209.195.183.55])
-	by nan.false.org (Postfix) with ESMTP id B1E3298339;
-	Wed, 10 Oct 2007 12:55:54 +0000 (GMT)
-Received: from drow by caradoc.them.org with local (Exim 4.68)
-	(envelope-from <drow@caradoc.them.org>)
-	id 1Ifb6P-00052U-Ma; Wed, 10 Oct 2007 08:55:53 -0400
-Date:	Wed, 10 Oct 2007 08:55:53 -0400
-From:	Daniel Jacobowitz <dan@debian.org>
-To:	Ricardo Mendoza <ricmm@kanux.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: O2 KGDB problem
-Message-ID: <20071010125553.GA18207@caradoc.them.org>
-References: <470C8F8E.3010301@kanux.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 14:05:56 +0100 (BST)
+Received: from mx1.minet.net ([157.159.40.25]:9698 "EHLO mx1.minet.net")
+	by ftp.linux-mips.org with ESMTP id S20022194AbXJJNFr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2007 14:05:47 +0100
+Received: from localhost (unknown [192.168.1.97])
+	by mx1.minet.net (Postfix) with ESMTP id 84BCF5CD1C
+	for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 15:04:59 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new using ClamAV at minet.net
+Received: from smtp.minet.net (imap.minet.net [192.168.1.27])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.minet.net (Postfix) with ESMTP id 5BD375CD25
+	for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 14:55:42 +0200 (CEST)
+Received: from [157.159.47.53] (unknown [157.159.47.53])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: florian)
+	by smtp.minet.net (Postfix) with ESMTP id AF17BD338
+	for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 04:11:13 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Date:	Wed, 10 Oct 2007 14:55:55 +0200
+Subject: [PATCH] Add missing generic GPIO option support for au1000
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <470C8F8E.3010301@kanux.com>
-User-Agent: Mutt/1.5.15 (2007-04-09)
-Return-Path: <drow@false.org>
+X-UID:	104
+X-Length: 1275
+Content-Type: Multipart/Mixed;
+  boundary="Boundary-00=_evMDHXZ9IbR0RL6"
+Message-Id: <200710101455.58249.florian.fainelli@telecomint.eu>
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16933
+X-archive-position: 16934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@debian.org
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 10, 2007 at 04:38:38AM -0400, Ricardo Mendoza wrote:
-> Been messing around with the O2 and KGDB and well, theres a problem that
-> I don't quite know how to tackle, when building a 64-bit kernel with
-> mips64 target toolchain and with CONFIG_BUILD_ELF64 and then trying to
-> start remote gdb with that image I get a Segfault from gdb. What do you
-> think is the cause of this?
-> 
-> I guess its just file format mixup confusing gdb? any pointer from a gdb
-> guru
-> towards making this work?
+This is a multi-part message in MIME format.
+--Boundary-00=_evMDHXZ9IbR0RL6
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-I believe a CVS snapshot of GDB will "work" but refuse to show you
-line numbers, and if you use a CVS snapshot of gas too then things
-will work OK.  gas was doing something horribly wrong to the
-.debug_line sections it generated.
+With the generic GPIO support for au1000, we do not
+select it in the kernel configuration.
 
--- 
-Daniel Jacobowitz
-CodeSourcery
+Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
+---
+ arch/mips/au1000/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+--Boundary-00=_evMDHXZ9IbR0RL6
+Content-Type: text/plain;
+  charset="utf-8";
+  name="8dea23a2b6dae52267b3a969e715d3f0753acf47.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename="8dea23a2b6dae52267b3a969e715d3f0753acf47.diff"
+
+diff --git a/arch/mips/au1000/Kconfig b/arch/mips/au1000/Kconfig
+index 29c95d9..f03b2eb 100644
+--- a/arch/mips/au1000/Kconfig
++++ b/arch/mips/au1000/Kconfig
+@@ -141,3 +141,4 @@ config SOC_AU1X00
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_APM_EMULATION
+ 	select SYS_SUPPORTS_KGDB
++	select GENERIC_GPIO
+
+--Boundary-00=_evMDHXZ9IbR0RL6--

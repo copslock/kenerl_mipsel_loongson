@@ -1,77 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 15:07:02 +0100 (BST)
-Received: from mx1.minet.net ([157.159.40.25]:4782 "EHLO mx1.minet.net")
-	by ftp.linux-mips.org with ESMTP id S20023306AbXJJOGx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Oct 2007 15:06:53 +0100
-Received: by mx1.minet.net (Postfix, from userid 101)
-	id 389405CD39; Wed, 10 Oct 2007 16:05:48 +0200 (CEST)
-Received: from smtp.minet.net (imap.minet.net [192.168.1.27])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.minet.net (Postfix) with ESMTP id 9D4E45CD94
-	for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 15:55:18 +0200 (CEST)
-Received: from [157.159.47.53] (unknown [157.159.47.53])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: florian)
-	by smtp.minet.net (Postfix) with ESMTP id 446A3D338
-	for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 05:10:50 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-Date:	Wed, 10 Oct 2007 15:55:44 +0200
-Subject: [PATCH] Remove select GENERIC_GPIO for PNX8550
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 15:27:59 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:23736 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20024151AbXJJO14 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 Oct 2007 15:27:56 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9AERtns009436;
+	Wed, 10 Oct 2007 15:27:55 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9AERtJc009435;
+	Wed, 10 Oct 2007 15:27:55 +0100
+Date:	Wed, 10 Oct 2007 15:27:55 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <fbuihuu@gmail.com>
+Cc:	Thiemo Seufer <ths@networkno.de>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/6] tlbex.c: Remove relocs[] and labels[] from the
+	init.data section
+Message-ID: <20071010142755.GA9325@linux-mips.org>
+References: <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <20071005115151.GA16145@linux-mips.org> <470BE58A.9070709@gmail.com> <470BE61F.5020108@gmail.com>
 MIME-Version: 1.0
-X-UID:	107
-X-Length: 1290
-To:	linux-mips@linux-mips.org
-Content-Type: Multipart/Mixed;
-  boundary="Boundary-00=_gnNDHpT6Aotx6ka"
-Message-Id: <200710101555.44586.florian.fainelli@telecomint.eu>
-Return-Path: <florian.fainelli@telecomint.eu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <470BE61F.5020108@gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16937
+X-archive-position: 16938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---Boundary-00=_gnNDHpT6Aotx6ka
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Tue, Oct 09, 2007 at 10:35:43PM +0200, Franck Bui-Huu wrote:
 
-This patch removes the selection of GENERIC_GPIO
-for PNX8550 which was accidentally introduced with
-commit 524022f507c1158adbcc2259671af01e6117dd5e
+> This patch reduces the kernel image size by making these 2 arrays
+> automatic variables.
+> 
+> 	tlbex.o~old  =>  tlbex.o
+> 	 text:     9840     9812      -28  0%
+> 	 data:     3904     1344    -2560 -65%
+> 	  bss:     1568     1568        0  0%
+> 	total:    15312    12724    -2588 -16%
+> 
+> It increases the stack pressure a lot (more than 2500 bytes) but
+> at this stage in the boot process, it shouldn't matter.
 
-Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
----
- arch/mips/Kconfig |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+Even more for 64-bit kernel - and I would really like to keep reduce
+the kernel stack for 64-bit kernels, THREAD_SIZE_ORDER 2 is already
+slightly painful when memory becomes fragmented.
 
---Boundary-00=_gnNDHpT6Aotx6ka
-Content-Type: text/plain;
-  charset="utf-8";
-  name="cb644a00b290a2671730c98666d60e130f8be7e2.diff"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename="cb644a00b290a2671730c98666d60e130f8be7e2.diff"
+The other issue is that with CPU plugging (halfbreed patches to add that
+to MIPS are around) this code can be called at any time, not only during
+early startup when at most a timer interrupt may strike.  Bootmem maybe?
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f775d8c..6c67fec 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -860,7 +860,6 @@ config SOC_PNX8550
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select GENERIC_HARDIRQS_NO__DO_IRQ
- 	select SYS_SUPPORTS_KGDB
--	select GENERIC_GPIO
- 
- config SWAP_IO_SPACE
- 	bool
-
---Boundary-00=_gnNDHpT6Aotx6ka--
+  Ralf

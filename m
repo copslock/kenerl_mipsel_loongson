@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 10:53:45 +0100 (BST)
-Received: from mu-out-0910.google.com ([209.85.134.190]:17729 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 10:55:03 +0100 (BST)
+Received: from mu-out-0910.google.com ([209.85.134.191]:54853 "EHLO
 	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021470AbXJKJxP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Oct 2007 10:53:15 +0100
-Received: by mu-out-0910.google.com with SMTP id w1so569111mue
-        for <linux-mips@linux-mips.org>; Thu, 11 Oct 2007 02:52:58 -0700 (PDT)
+	id S20021525AbXJKJyz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 10:54:55 +0100
+Received: by mu-out-0910.google.com with SMTP id w1so569561mue
+        for <linux-mips@linux-mips.org>; Thu, 11 Oct 2007 02:54:37 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
-        bh=w2ThYS9RQI6HuRrAWw6Ha9mrJISrzZ5HulZc/31dcFY=;
-        b=DS5HZHkSdnpevxA9rHz9BXyokilD1VX8YBmWGDt6UsNitDfTU6HZQaL/Ft4CtZNdyPBO/3bUMU7THkkX/Hf2B0u3f7Gn9Vg4qSYO3fkaK3uwTf+WhYs9YNZaxgyNPMo4l+mhUDaTRNXW3TSLm0yxrBxRzoXQPtJ66O6KaDaVIiE=
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=2EKZZqxR/gAYwzGTd1koyw5PhBuGixGo1v05dD8kGxM=;
+        b=sCtl9AzrWd1rOwVXRXQB1lxps+6+7MR9BijJ1Nj46hEmg7sRyxisKrkhNjati6I53ojwGdl5aN6A4fdvuYmQIM9msiS7cxPd12ylpBuA/BSQ9PDV53alek6i7kWh+LL6eITknaZhI8qH6lSjE7NVe2AJewkuRZ9+d8OIS9LRKac=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
-        b=OFlvwu1nX4QGZoXMd/D7D0l07RAw5YjOMWKuEaH0Gk9AGoQ8YUuogdFStAna7uIF6XKZr63j9tIx53piaK+NH26UTDq9IRxSUIjLvLBpkcpMCQG9uQDXXfXSTCROtP83+Jol+jQFA4m76ONE7jqwNW5IQl5SC2kVBQDhEy7DX1M=
-Received: by 10.82.175.17 with SMTP id x17mr3456886bue.1192096377515;
-        Thu, 11 Oct 2007 02:52:57 -0700 (PDT)
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=esdUQgKN7HBmwZekJG4tj7Fua4YAiWibc0Re8tL3RsEKcnq5PYIlNqeL70H8PBzrCDEB6UjakWRUqsOPUU7YdmM0dYHZmgBZeVjdFrKOcjCSaApv0djG5ZhMI48idZzslQzPWOPyKMf8pK4kksWf5+Uw8nFvKAk/tUnbs24Y6C4=
+Received: by 10.82.162.14 with SMTP id k14mr3474975bue.1192096477289;
+        Thu, 11 Oct 2007 02:54:37 -0700 (PDT)
 Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id g1sm4040270muf.2007.10.11.02.52.55
+        by mx.google.com with ESMTPS id e8sm4046074muf.2007.10.11.02.54.36
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 11 Oct 2007 02:52:55 -0700 (PDT)
-Message-ID: <470DF25E.60009@gmail.com>
-Date:	Thu, 11 Oct 2007 11:52:30 +0200
+        Thu, 11 Oct 2007 02:54:36 -0700 (PDT)
+Message-ID: <470DF2C4.8050604@gmail.com>
+Date:	Thu, 11 Oct 2007 11:54:12 +0200
 From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
 User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
@@ -29,14 +29,16 @@ To:	Ralf Baechle <ralf@linux-mips.org>,
 	"Maciej W. Rozycki" <macro@linux-mips.org>,
 	Geert Uytterhoeven <geert@linux-m68k.org>
 CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [RFC] Add __initbss section
+Subject: [PATCH 1/2] Add .init.bss section 
+References: <470DF25E.60009@gmail.com>
+In-Reply-To: <470DF25E.60009@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16955
+X-archive-position: 16956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,57 +46,76 @@ X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+This patch creates a new init section called .init.bss.
 
-As discussed previously, it seems a good idea to create a new init
-section .init.bss that store uninitialized data used only at boot
-time. That way, we can avoid to embed these uninitialized data in the
-Linux image since it's totaly useless.
+This section is similar to .init.data but doesn't consume
+any space in the vmlinux image.
 
-As a good candidate for using this, is tlbex.c. This file allocates a
-couple of big arrays that don't need to be part of the init data
-section since they're not initialized and they're currently only used
-at boot time.
+All data marked as part of this section must not be initialized,
+of course.
 
-So this patchset does this but the result looks weird: I tried to
-apply this patch on top of the patchset:
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
+ include/linux/init.h |   24 ++++++++++++++++--------
+ 1 files changed, 16 insertions(+), 8 deletions(-)
 
----8<---
-
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index a61246d..8271eab 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -743,11 +743,11 @@ il_bgez(u32 **p, struct reloc **r, unsigned int reg, enum label_id l)
-  * We deliberately chose a buffer size of 128, so we won't scribble
-  * over anything important on overflow before we panic.
-  */
--static __initdata u32 tlb_handler[128];
-+static __initbss u32 tlb_handler[128];
+diff --git a/include/linux/init.h b/include/linux/init.h
+index 74b1f43..9fda0ec 100644
+--- a/include/linux/init.h
++++ b/include/linux/init.h
+@@ -43,6 +43,8 @@
+ #define __init		__attribute__ ((__section__ (".init.text"))) __cold
+ #define __initdata	__attribute__ ((__section__ (".init.data")))
+ #define __exitdata	__attribute__ ((__section__(".exit.data")))
++#define __initbss	__attribute__ ((__section__ (".init.bss")))
++#define __exitbss	__attribute__ ((__section__ (".exit.bss")))
+ #define __exit_call	__attribute_used__ __attribute__ ((__section__ (".exitcall.exit")))
  
- /* simply assume worst case size for labels and relocs */
--static __initdata struct label labels[128];
--static __initdata struct reloc relocs[128];
-+static __initbss struct label labels[128];
-+static __initbss struct reloc relocs[128];
-
---->8---
-
-and the kernel image is bigger after the patch is applied !
-
-$ ls -l vmlinux*
--rwxrwxr-x 1 fbuihuu fbuihuu 2503324 2007-10-11 11:41 vmlinux*
--rwxrwxr-x 1 fbuihuu fbuihuu 2503264 2007-10-11 11:41 vmlinux~old*
-
-Could anybody explain me why ? The time is missing and I probably
-couldn't investigate into this until this weekend. 
-
-Also not that with the current patchset applied, there are now 2
-segments that need to be loaded, hopefully it won't cause any issues
-with any bootloaders out there that would assume that an image has
-only one segment...
-
-Other question: I noticed that the exit.data section is not
-discarded. Could anybody give me the reason why ?
-
-		Franck
+ /* modpost check for section mismatches during the kernel build.
+@@ -257,10 +259,12 @@ void __init parse_early_param(void);
+ #define __devexit
+ #define __devexitdata
+ #else
+-#define __devinit __init
+-#define __devinitdata __initdata
+-#define __devexit __exit
+-#define __devexitdata __exitdata
++#define __devinit	__init
++#define __devinitdata	__initdata
++#define __devinitbss	__initbss
++#define __devexit	__exit
++#define __devexitdata	__exitdata
++#define __devexitbss	__exitbss
+ #endif
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+@@ -270,9 +274,11 @@ void __init parse_early_param(void);
+ #define __cpuexitdata
+ #else
+ #define __cpuinit	__init
+-#define __cpuinitdata __initdata
+-#define __cpuexit __exit
++#define __cpuinitdata	__initdata
++#define __cpuinitbss	__initbss
++#define __cpuexit	__exit
+ #define __cpuexitdata	__exitdata
++#define __cpuexitbss	__exitbss
+ #endif
+ 
+ #if defined(CONFIG_MEMORY_HOTPLUG) || defined(CONFIG_ACPI_HOTPLUG_MEMORY) \
+@@ -283,9 +289,11 @@ void __init parse_early_param(void);
+ #define __memexitdata
+ #else
+ #define __meminit	__init
+-#define __meminitdata __initdata
+-#define __memexit __exit
++#define __meminitdata	__initdata
++#define __meminitbss	__meminitbss
++#define __memexit	__exit
+ #define __memexitdata	__exitdata
++#define __memexitbss	__exitbss
+ #endif
+ 
+ /* Functions marked as __devexit may be discarded at kernel link time, depending
+-- 
+1.5.3.3

@@ -1,92 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Oct 2007 21:53:26 +0100 (BST)
-Received: from unassigned-81-90-243-194.ujezd.net ([81.90.243.194]:30167 "EHLO
-	skerikoff.satca.net") by ftp.linux-mips.org with ESMTP
-	id S20030184AbXJJUxS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Oct 2007 21:53:18 +0100
-Received: from localhost (unknown [127.0.0.1])
-	by skerikoff.satca.net (Postfix) with ESMTP id 1488CE410B8;
-	Wed, 10 Oct 2007 20:29:58 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at satca.net
-Received: from skerikoff.satca.net ([127.0.0.1])
-	by localhost (skerikoff.satca.net [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id kQaBHKriK5MX; Wed, 10 Oct 2007 22:29:56 +0200 (CEST)
-Received: from [10.1.1.70] (unknown [192.168.51.95])
-	by skerikoff.satca.net (Postfix) with ESMTP id 5BCB3E41090;
-	Wed, 10 Oct 2007 20:29:56 +0000 (UTC)
-Message-ID: <470D3A94.9090401@satca.net>
-Date:	Wed, 10 Oct 2007 22:48:20 +0200
-From:	Marian Jancar <m.jancar@satca.net>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 01:49:03 +0100 (BST)
+Received: from wx-out-0506.google.com ([66.249.82.238]:30266 "EHLO
+	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021373AbXJKAsy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 01:48:54 +0100
+Received: by wx-out-0506.google.com with SMTP id h30so378468wxd
+        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 17:48:36 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:from:to:subject:date:user-agent:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
+        bh=TsyJmUrjpSlKhbulh0yzMN1aXMmK2mXfuiFPv0UW1XI=;
+        b=QpwkQ2fn4xHfrr8w18B5O6GJq+9xdSwAihpjTQ2mGI0dfeJlWjm52FQFT04AwF2J+TZVg88yIS2gFNt+gztNu8xkVQjQJ8P24QnnJT3osYM8ifmb3p3633Ip9pPp3cQAK07LdDpEw3VrESsr863vY1OfAdZaXn8bpqELliVLqUg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:from:to:subject:date:user-agent:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
+        b=GJMs1eOnEiJWLGChOmSBvpWaRbpHMuJZeUOqebnTHt2qP2WPGcrcrMy+nc+iKzlJpOpvoLE0DY0XtejFXW07Fxa+Bbhq72L8Txjz3PVdPbjth7uGTuiOlBbkv7uzYDHStHUwfmaMEEGlhDRcCJlYuL+UzgC6UlUb+blGFmjPtag=
+Received: by 10.70.9.8 with SMTP id 8mr2184552wxi.1192063715932;
+        Wed, 10 Oct 2007 17:48:35 -0700 (PDT)
+Received: from ?192.168.0.3? ( [87.18.114.61])
+        by mx.google.com with ESMTPS id h10sm1796768wxd.2007.10.10.17.48.32
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 10 Oct 2007 17:48:34 -0700 (PDT)
+From:	Matteo Croce <technoboy85@gmail.com>
 To:	linux-mips@linux-mips.org
-CC:	juhosg@openwrt.org
-Subject: Linux 2.6.22 on ADM5120
-X-Enigmail-Version: 0.95.2
-Content-Type: text/plain; charset=UTF-8
+Subject: [PATCH][MIPS][0/6] AR7: AR7 strikes back
+Date:	Thu, 11 Oct 2007 02:48:32 +0200
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	nico@openwrt.org, nbd@openwrt.org, florian@openwrt.org,
+	openwrt-devel@lists.openwrt.org,
+	Andrew Morton <akpm@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <m.jancar@satca.net>
+Content-Disposition: inline
+Message-Id: <200710110248.33028.technoboy85@gmail.com>
+Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16947
+X-archive-position: 16948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m.jancar@satca.net
+X-original-sender: technoboy85@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-I'm trying to boot current Linux kernel with patches from OpenWRT on
-an Infineon Easy5120-RT but without the LZMA loader. Hence I
-mimic what patches from
-http://nano.gmxhome.de/linux-2.6.17.11-adm5120-patch.diff.gz
-and
-http://www.student.tue.nl/Q/t.f.a.wilms/adm5120/files/linux-2.6.12-rc1-adm.diff
-
-(I have verified myself that the later boots, as also the 2.6.22 with
-the LZMA does) do - use 0x80002000 as LOADDADD instead of 0x80001000, and
-fill to 0x6d8 + jump to kernel_entry in head.S, but the resulting vmlinuz
-doesn't boot. There is some info at
-http://www.linux-mips.org/wiki/Adm5120#Linux_Support
-
-diff -urNdp linux-2.6.22.9-vanilla/arch/mips/Makefile linux-2.6.22.9/arch/mips/Makefile
---- linux-2.6.22.9-vanilla/arch/mips/Makefile   2007-09-26 20:03:01.000000000 +0200
-+++ linux-2.6.22.9/arch/mips/Makefile   2007-10-10 20:44:24.000000000 +0200
-@@ -165,6 +165,13 @@ cflags-$(CONFIG_MACH_JAZZ) += -Iinclude/
- load-$(CONFIG_MACH_JAZZ)       += 0xffffffff80080000
-
- #
-+# ADMtek 5120
-+#
-+
-+core-$(CONFIG_MIPS_ADM5120)    += arch/mips/adm5120/
-+load-$(CONFIG_MIPS_ADM5120)    += 0xffffffff80002000
-+
-+#
- # Common Alchemy Au1x00 stuff
- #
- core-$(CONFIG_SOC_AU1X00)      += arch/mips/au1000/common/
-
-
-diff -urNdp linux-2.6.22.9-vanilla/arch/mips/kernel/head.S linux-2.6.22.9/arch/mips/kernel/head.S
---- linux-2.6.22.9-vanilla/arch/mips/kernel/head.S      2007-09-26 20:03:01.000000000 +0200
-+++ linux-2.6.22.9/arch/mips/kernel/head.S      2007-10-10 20:44:24.000000000 +0200
-@@ -134,6 +134,11 @@
-         * Necessary for machines which link their kernels at KSEG0.
-         */
-        .fill   0x400
-+#ifdef CONFIG_MIPS_ADM5120
-+       /* ADM5120 bootloader jumps to 0x6d8 */
-+       .fill   0x2d8
-+       j kernel_entry
-+#endif
-
- EXPORT(stext)                                  # used for profiling
- EXPORT(_stext)
-
-
-Any clues what I am missing or what I do wrong?
-
-Marian
+Here are the new patches made against latest 2.6.23 git tree

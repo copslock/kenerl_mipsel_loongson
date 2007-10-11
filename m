@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 01:56:26 +0100 (BST)
-Received: from wx-out-0506.google.com ([66.249.82.234]:29005 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 01:57:34 +0100 (BST)
+Received: from wx-out-0506.google.com ([66.249.82.230]:53071 "EHLO
 	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021451AbXJKA4Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Oct 2007 01:56:16 +0100
-Received: by wx-out-0506.google.com with SMTP id h30so379802wxd
-        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 17:55:58 -0700 (PDT)
+	id S20021451AbXJKA5Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 01:57:25 +0100
+Received: by wx-out-0506.google.com with SMTP id h30so380128wxd
+        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 17:57:24 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:from:to:subject:date:user-agent:references:in-reply-to:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        bh=tsFtNtWhb89WEXQM3iaOOHp2vmJU1wIum+gtmEEa35M=;
-        b=WqE6947X5duM8iIsXshNbKpVr/Euf4XpDIG4epS9Pum6mR0/LigB53H2Xz6nnSRxKK8GJz7nfeIqmn3WpvGPpFKEZaoJCo7dcR0zLlko0sddqj6FWC8Khifk21LiCW5fjnH7/3/1upbY9BHD5nFdlRdeXUuGQaE40UMj4Ln3fo8=
+        bh=Llj4yJz+loDgyPdyPq7hGB7tGbm7Rvu1ZAk8lLAR7k8=;
+        b=bQfWQhDma/BDlJLTYgncKSkep+LADK7pzPifRMgOcVLlj16ubBCR7P/w35kC2t+kaZXmcCR08+vKELuth12X2FLpnNEwNn8qZXHeoa8QCmoM7urUy1yP/96BHV4sxc4Ie2vGcC22EHYZ9GB+UA2Xh8QbXIcDlO2t1HsW9q7oBoI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:from:to:subject:date:user-agent:references:in-reply-to:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=ot8Il3cNF40WP/k08SB6anXJXONi+SuVOYdhrrhncNqcIqwbNC2BPET7bTktkjx35pabVo/zsAsOYf57U5Us3sKninEyGAj92rSQ0eEjMrHdW9eoAJX2lB0cQQNuR4f4C6UmMnUl5sh1k7PCj3bVE6kFXJXZKTeJrgIu541au80=
-Received: by 10.70.17.16 with SMTP id 16mr2139347wxq.1192064158517;
-        Wed, 10 Oct 2007 17:55:58 -0700 (PDT)
+        b=bl8E29MtB3DHXUh2beJzOdKtlF2wXdJfmRqnQCBme2fX0xVKlYlspFeJL2czBHxt5VgaX6SlwVGXTFCMODeVpWKNc28rKQbkRU40uksR0VvlnxFUDzqs1yFaWXETCLCOsrFoq3vVU4FXMzbfBkOydsYWYLVHqn8B0dm8C7DnTPg=
+Received: by 10.70.31.8 with SMTP id e8mr2178139wxe.1192064244447;
+        Wed, 10 Oct 2007 17:57:24 -0700 (PDT)
 Received: from ?192.168.0.3? ( [87.18.114.61])
-        by mx.google.com with ESMTPS id h7sm1789268wxd.2007.10.10.17.55.55
+        by mx.google.com with ESMTPS id h8sm1814538wxd.2007.10.10.17.57.22
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 10 Oct 2007 17:55:57 -0700 (PDT)
+        Wed, 10 Oct 2007 17:57:23 -0700 (PDT)
 From:	Matteo Croce <technoboy85@gmail.com>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH][MIPS][3/6] AR7: mtd partition map
-Date:	Thu, 11 Oct 2007 02:55:55 +0200
+Subject: [PATCH][MIPS][4/6] AR7: gpio char device
+Date:	Thu, 11 Oct 2007 02:57:22 +0200
 User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
 References: <200710110248.33028.technoboy85@gmail.com>
 In-Reply-To: <200710110248.33028.technoboy85@gmail.com>
-Cc:	Felix Fietkau <nbd@openwrt.org>, Eugene Konev <ejka@imfi.kspu.ru>,
-	dwmw2@infradead.org, linux-mtd@lists.infradead.org,
+Cc:	Nicolas Thill <nico@openwrt.org>,
 	Andrew Morton <akpm@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200710110255.55917.technoboy85@gmail.com>
+Message-Id: <200710110257.22750.technoboy85@gmail.com>
 Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16950
+X-archive-position: 16951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,46 +48,48 @@ Precedence: bulk
 X-list: linux-mips
 
 Signed-off-by: Matteo Croce <technoboy85@gmail.com>
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
-Signed-off-by: Eugene Konev <ejka@imfi.kspu.ru>
+Signed-off-by: Nicolas Thill <nico@openwrt.org>
 
-diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index fbec8cd..c1b2508 100644
---- a/drivers/mtd/Kconfig
-+++ b/drivers/mtd/Kconfig
-@@ -150,6 +150,12 @@ config MTD_AFS_PARTS
- 	  for your particular device. It won't happen automatically. The
- 	  'armflash' map driver (CONFIG_MTD_ARMFLASH) does this, for example.
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index b391776..b98aedf 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -928,6 +928,15 @@ config MWAVE
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called mwave.
  
-+config MTD_AR7_PARTS
-+	tristate "TI AR7 partitioning support"
-+	depends on MTD_PARTITIONS
-+	---help---
-+	  TI AR7 partitioning support
++config AR7_GPIO
++	tristate "TI AR7 GPIO Support"
++	depends on AR7
++	help
++	  Give userspace access to the GPIO pins on the Texas Instruments AR7 
++	  processors.
 +
- comment "User Modules And Translation Layers"
- 
- config MTD_CHAR
-diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
-index 6d958a4..8451c64 100644
---- a/drivers/mtd/Makefile
-+++ b/drivers/mtd/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_MTD_CONCAT)	+= mtdconcat.o
- obj-$(CONFIG_MTD_REDBOOT_PARTS) += redboot.o
- obj-$(CONFIG_MTD_CMDLINE_PARTS) += cmdlinepart.o
- obj-$(CONFIG_MTD_AFS_PARTS)	+= afs.o
-+obj-$(CONFIG_MTD_AR7_PARTS)	+= ar7part.o
- 
- # 'Users' - code which presents functionality to userspace.
- obj-$(CONFIG_MTD_CHAR)		+= mtdchar.o
-diff --git a/drivers/mtd/ar7part.c b/drivers/mtd/ar7part.c
++	  If compiled as a module, it will be called ar7_gpio.
++
+ config SCx200_GPIO
+ 	tristate "NatSemi SCx200 GPIO Support"
+ 	depends on SCx200
+diff --git a/drivers/char/Makefile b/drivers/char/Makefile
+index c78ff26..3d7c2af 100644
+--- a/drivers/char/Makefile
++++ b/drivers/char/Makefile
+@@ -89,6 +89,7 @@ obj-$(CONFIG_COBALT_LCD)	+= lcd.o
+ obj-$(CONFIG_PPDEV)		+= ppdev.o
+ obj-$(CONFIG_NWBUTTON)		+= nwbutton.o
+ obj-$(CONFIG_NWFLASH)		+= nwflash.o
++obj-$(CONFIG_AR7_GPIO)		+= ar7_gpio.o
+ obj-$(CONFIG_SCx200_GPIO)	+= scx200_gpio.o
+ obj-$(CONFIG_PC8736x_GPIO)	+= pc8736x_gpio.o
+ obj-$(CONFIG_NSC_GPIO)		+= nsc_gpio.o
+diff --git a/drivers/char/ar7_gpio.c b/drivers/char/ar7_gpio.c
 new file mode 100644
-index 0000000..3d160d4
+index 0000000..16460cd
 --- /dev/null
-+++ b/drivers/mtd/ar7part.c
-@@ -0,0 +1,146 @@
++++ b/drivers/char/ar7_gpio.c
+@@ -0,0 +1,158 @@
 +/*
-+ * Copyright (C) 2007 Eugene Konev <ejka@openwrt.org>
++ * Copyright (C) 2007 Nicolas Thill <nico@openwrt.org>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -103,133 +104,145 @@ index 0000000..3d160d4
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
 + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-+ *
-+ * TI AR7 flash partition table.
-+ * Based on ar7 map by Felix Fietkau <nbd@openwrt.org>
-+ *
 + */
 +
++#include <linux/device.h>
++#include <linux/fs.h>
++#include <linux/module.h>
++#include <linux/errno.h>
 +#include <linux/kernel.h>
-+#include <linux/slab.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/uaccess.h>
++#include <linux/io.h>
++#include <linux/types.h>
++#include <linux/cdev.h>
++#include <gpio.h>
 +
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/partitions.h>
-+#include <linux/bootmem.h>
-+#include <linux/magic.h>
++#define DRVNAME "ar7_gpio"
++#define LONGNAME "TI AR7 GPIOs Driver"
 +
-+#define AR7_PARTS	4
-+#define ROOT_OFFSET	0xe0000
-+
-+#define LOADER_MAGIC1	le32_to_cpu(0xfeedfa42)
-+#define LOADER_MAGIC2	le32_to_cpu(0xfeed1281)
-+
-+struct ar7_bin_rec {
-+	unsigned int checksum;
-+	unsigned int length;
-+	unsigned int address;
-+};
-+
-+static struct mtd_partition ar7_parts[AR7_PARTS];
-+
-+static int create_mtd_partitions(struct mtd_info *master,
-+				 struct mtd_partition **pparts,
-+				 unsigned long origin)
-+{
-+	struct ar7_bin_rec header;
-+	unsigned int offset, len;
-+	unsigned int pre_size = master->erasesize, post_size = 0;
-+	unsigned int root_offset = ROOT_OFFSET;
-+
-+	int retries = 10;
-+
-+	ar7_parts[0].name = "loader";
-+	ar7_parts[0].offset = 0;
-+	ar7_parts[0].size = master->erasesize;
-+	ar7_parts[0].mask_flags = MTD_WRITEABLE;
-+
-+	ar7_parts[1].name = "config";
-+	ar7_parts[1].offset = 0;
-+	ar7_parts[1].size = master->erasesize;
-+	ar7_parts[1].mask_flags = 0;
-+
-+	do { /* Try 10 blocks starting from master->erasesize */
-+		offset = pre_size;
-+		master->read(master, offset,
-+			sizeof(header), &len, (u8 *)&header);
-+		if (!strncmp((char *)&header, "TIENV0.8", 8))
-+			ar7_parts[1].offset = pre_size;
-+		if (header.checksum == LOADER_MAGIC1)
-+			break;
-+		if (header.checksum == LOADER_MAGIC2)
-+			break;
-+		pre_size += master->erasesize;
-+	} while (retries--);
-+
-+	pre_size = offset;
-+
-+	if (!ar7_parts[1].offset) {
-+		ar7_parts[1].offset = master->size - master->erasesize;
-+		post_size = master->erasesize;
-+	}
-+
-+	switch (header.checksum) {
-+	case LOADER_MAGIC1:
-+		while (header.length) {
-+			offset += sizeof(header) + header.length;
-+			master->read(master, offset, sizeof(header),
-+				     &len, (u8 *)&header);
-+		}
-+		root_offset = offset + sizeof(header) + 4;
-+		break;
-+	case LOADER_MAGIC2:
-+		while (header.length) {
-+			offset += sizeof(header) + header.length;
-+			master->read(master, offset, sizeof(header),
-+				     &len, (u8 *)&header);
-+		}
-+		root_offset = offset + sizeof(header) + 4 + 0xff;
-+		root_offset &= ~(u32)0xff;
-+		break;
-+	default:
-+		printk(KERN_WARNING "Unknown magic: %08x\n", header.checksum);
-+		break;
-+	}
-+
-+	master->read(master, root_offset,
-+		sizeof(header), &len, (u8 *)&header);
-+	if (header.checksum != SQUASHFS_MAGIC) {
-+		root_offset += master->erasesize - 1;
-+		root_offset &= ~(master->erasesize - 1);
-+	}
-+
-+	ar7_parts[2].name = "linux";
-+	ar7_parts[2].offset = pre_size;
-+	ar7_parts[2].size = master->size - pre_size - post_size;
-+	ar7_parts[2].mask_flags = 0;
-+
-+	ar7_parts[3].name = "rootfs";
-+	ar7_parts[3].offset = root_offset;
-+	ar7_parts[3].size = master->size - root_offset - post_size;
-+	ar7_parts[3].mask_flags = 0;
-+
-+	*pparts = ar7_parts;
-+	return AR7_PARTS;
-+}
-+
-+static struct mtd_part_parser ar7_parser = {
-+	.owner = THIS_MODULE,
-+	.parse_fn = create_mtd_partitions,
-+	.name = "ar7part",
-+};
-+
-+static int __init ar7_parser_init(void)
-+{
-+	return register_mtd_parser(&ar7_parser);
-+}
-+
-+module_init(ar7_parser_init);
-+
++MODULE_AUTHOR("Nicolas Thill <nico@openwrt.org>");
++MODULE_DESCRIPTION(LONGNAME);
 +MODULE_LICENSE("GPL");
-+MODULE_AUTHOR(	"Felix Fietkau <nbd@openwrt.org>, "
-+		"Eugene Konev <ejka@openwrt.org>");
-+MODULE_DESCRIPTION("MTD partitioning for TI AR7");
++
++static int ar7_gpio_major;
++
++static ssize_t ar7_gpio_write(struct file *file, const char __user *buf,
++	size_t len, loff_t *ppos)
++{
++	int pin = iminor(file->f_dentry->d_inode);
++	size_t i;
++
++	for (i = 0; i < len; ++i) {
++		char c;
++		if (get_user(c, buf + i))
++			return -EFAULT;
++		switch (c) {
++		case '0':
++			gpio_set_value(pin, 0);
++			break;
++		case '1':
++			gpio_set_value(pin, 1);
++			break;
++		case 'd':
++		case 'D':
++			ar7_gpio_disable(pin);
++			break;
++		case 'e':
++		case 'E':
++			ar7_gpio_enable(pin);
++			break;
++		case 'i':
++		case 'I':
++		case '<':
++			gpio_direction_input(pin);
++			break;
++		case 'o':
++		case 'O':
++		case '>':
++			gpio_direction_output(pin, 0);
++			break;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	return len;
++}
++
++static ssize_t ar7_gpio_read(struct file *file, char __user *buf,
++	size_t len, loff_t *ppos)
++{
++	int pin = iminor(file->f_dentry->d_inode);
++	int value;
++
++	value = gpio_get_value(pin);
++	if (put_user(value ? '1' : '0', buf))
++		return -EFAULT;
++
++	return 1;
++}
++
++static int ar7_gpio_open(struct inode *inode, struct file *file)
++{
++	int m = iminor(inode);
++
++	if (m >= AR7_GPIO_MAX)
++		return -EINVAL;
++
++	return nonseekable_open(inode, file);
++}
++
++static int ar7_gpio_release(struct inode *inode, struct file *file)
++{
++	return 0;
++}
++
++static const struct file_operations ar7_gpio_fops = {
++	.owner   = THIS_MODULE,
++	.write   = ar7_gpio_write,
++	.read    = ar7_gpio_read,
++	.open    = ar7_gpio_open,
++	.release = ar7_gpio_release,
++	.llseek  = no_llseek,
++};
++
++static struct platform_device *ar7_gpio_device;
++
++static int __init ar7_gpio_init(void)
++{
++	int rc;
++
++	ar7_gpio_device = platform_device_alloc(DRVNAME, -1);
++	if (!ar7_gpio_device)
++		return -ENOMEM;
++
++	rc = platform_device_add(ar7_gpio_device);
++	if (rc < 0)
++		goto out_put;
++
++	rc = register_chrdev(ar7_gpio_major, DRVNAME, &ar7_gpio_fops);
++	if (rc < 0)
++		goto out_put;
++
++	ar7_gpio_major = rc;
++
++	rc = 0;
++
++	goto out;
++
++out_put:
++	platform_device_put(ar7_gpio_device);
++out:
++	return rc;
++}
++
++static void __exit ar7_gpio_exit(void)
++{
++	unregister_chrdev(ar7_gpio_major, DRVNAME);
++	platform_device_unregister(ar7_gpio_device);
++}
++
++module_init(ar7_gpio_init);
++module_exit(ar7_gpio_exit);

@@ -1,67 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 17:17:34 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:734 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20023236AbXJKQRZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Oct 2007 17:17:25 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 892AF400B9;
-	Thu, 11 Oct 2007 18:16:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id 0kC1jBTsWp8s; Thu, 11 Oct 2007 18:16:46 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id BD69B40095;
-	Thu, 11 Oct 2007 18:16:46 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9BGGoll026536;
-	Thu, 11 Oct 2007 18:16:51 +0200
-Date:	Thu, 11 Oct 2007 17:16:45 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Thiemo Seufer <ths@networkno.de>
-cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [RFC] Add __initbss section
-In-Reply-To: <20071011152615.GE3379@networkno.de>
-Message-ID: <Pine.LNX.4.64N.0710111707010.16370@blysk.ds.pg.gda.pl>
-References: <470DF25E.60009@gmail.com> <20071011152615.GE3379@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 17:18:10 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:57267 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023353AbXJKQSI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 17:18:08 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9BGHKuM025928;
+	Thu, 11 Oct 2007 17:17:20 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9BGGsS0025584;
+	Thu, 11 Oct 2007 17:16:54 +0100
+Date:	Thu, 11 Oct 2007 17:16:54 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <fbuihuu@gmail.com>
+Cc:	Thiemo Seufer <ths@networkno.de>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/6] tlbex.c: Cleanup __init usages.
+Message-ID: <20071011161654.GB12782@linux-mips.org>
+References: <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <20071005115151.GA16145@linux-mips.org> <470BE58A.9070709@gmail.com> <470BE5D2.50101@gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4529/Thu Oct 11 08:54:06 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <470BE5D2.50101@gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16971
+X-archive-position: 16972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 11 Oct 2007, Thiemo Seufer wrote:
+On Tue, Oct 09, 2007 at 10:34:26PM +0200, Franck Bui-Huu wrote:
 
-> > Also not that with the current patchset applied, there are now 2
-> > segments that need to be loaded, hopefully it won't cause any issues
-> > with any bootloaders out there that would assume that an image has
-> > only one segment...
-> 
-> This breaks at least conversion to ECOFF as used on DECstations.
+> Subject: [PATCH 1/6] tlbex.c: Cleanup __init usages.  
 
- Indeed, thanks for pointing it out -- I use ELF over MOP and keep 
-forgetting about people preferring TFTP, sigh.  I wonder whether `objcopy' 
-might be doing a better job than `elf2ecoff' these days though.  It may be 
-worth checking...
+So I applied this one only while we sort out the .init.bss stuff.
 
- It all boils down to padding out what cannot be expressed in a less 
-capable format after all.  That's what I did in `mopd' for ELF support too 
--- holes between segments are transmitted as zeroes.  Though MOP clients 
-may actually support discontiguous images as each MOP "downline load" 
-packet has its designated memory load address included in the header (it 
-just shows how reasonable a bootstrap protocol it is!).
+Thanks!
 
-  Maciej
+  Ralf

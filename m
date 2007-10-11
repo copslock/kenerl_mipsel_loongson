@@ -1,63 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 13:44:35 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:62387 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20030447AbXJKMod (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Oct 2007 13:44:33 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9BCiW2g024857;
-	Thu, 11 Oct 2007 13:44:32 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9BCiAqo024843;
-	Thu, 11 Oct 2007 13:44:10 +0100
-Date:	Thu, 11 Oct 2007 13:44:10 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 14:19:19 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:27543 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20030439AbXJKNTJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 14:19:09 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 2AA03400A4;
+	Thu, 11 Oct 2007 15:19:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id qfCR-O5NWLGY; Thu, 11 Oct 2007 15:19:03 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D3C6C40095;
+	Thu, 11 Oct 2007 15:19:03 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9BDJ7eL024056;
+	Thu, 11 Oct 2007 15:19:07 +0200
+Date:	Thu, 11 Oct 2007 14:19:02 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+cc:	Ralf Baechle <ralf@linux-mips.org>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
 	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [RFC] Add __initbss section
-Message-ID: <20071011124410.GA17202@linux-mips.org>
+In-Reply-To: <470DF25E.60009@gmail.com>
+Message-ID: <Pine.LNX.4.64N.0710111307180.16370@blysk.ds.pg.gda.pl>
 References: <470DF25E.60009@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <470DF25E.60009@gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4529/Thu Oct 11 08:54:06 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16959
+X-archive-position: 16960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 11, 2007 at 11:52:30AM +0200, Franck Bui-Huu wrote:
+On Thu, 11 Oct 2007, Franck Bui-Huu wrote:
 
-> Other question: I noticed that the exit.data section is not
-> discarded. Could anybody give me the reason why ?
+> and the kernel image is bigger after the patch is applied !
+> 
+> $ ls -l vmlinux*
+> -rwxrwxr-x 1 fbuihuu fbuihuu 2503324 2007-10-11 11:41 vmlinux*
+> -rwxrwxr-x 1 fbuihuu fbuihuu 2503264 2007-10-11 11:41 vmlinux~old*
+> 
+> Could anybody explain me why ? The time is missing and I probably
+> couldn't investigate into this until this weekend. 
 
-.exit.data and .exit.text may reference each other.  __exit functions
-generally get compiled into .exit.text but some constructs such as jump
-tables for switch() constructs may be compiled into address tables which
-gcc unfortunately will put into .rodata, so .rodata will end up
-referencing function addresses in .exit.text which makes ld unhappy if
-.exit.text was discarded.  So until this is fixed in gcc we can't
-discard exit code, unfortunately.
+ I guess for a bss-type section you want to use something like:
 
-It's actually an issue which doesn't strike very often, so users who are
-desparate for shrinking the kernel down could try to undo patchsets:
+	.section .init.bss,"aw",@nobits
 
-  6f0b1e5d266fb1d0da019c07b56ccc02c3a4f53a
-  ca7402fed2a76cd5a417ac4d375a5539dcb2b6de
+> Also not that with the current patchset applied, there are now 2
+> segments that need to be loaded, hopefully it won't cause any issues
+> with any bootloaders out there that would assume that an image has
+> only one segment...
 
-and see if they can get away with it.  If the final kernel link succeeds,
-the build would be ok.
+ Well, there should be no need for an extra segment -- just rearrange the 
+order of the sections in the linker script appropriately.  You should 
+probably add __exitbss for consistency too.  You can make all the three 
+sections adjacent so that no separate initialisation is required.
 
-I think gcc should probably put the jump table into a .subsection if
-a section was explicitly requested, at least for non-PIC code.
+ Another place for optimisation are inline string literals referred to 
+from .init.text or .exit.text only, which is a bit more complicated to 
+handle, but sounds interesting enough to me I shall give it a try in the 
+next few days.  I have an idea how to do it.
 
-  Ralf
+  Maciej

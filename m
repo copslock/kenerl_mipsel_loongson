@@ -1,98 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 10:59:07 +0100 (BST)
-Received: from fk-out-0910.google.com ([209.85.128.190]:47125 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021541AbXJKJ66 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Oct 2007 10:58:58 +0100
-Received: by fk-out-0910.google.com with SMTP id f40so463275fka
-        for <linux-mips@linux-mips.org>; Thu, 11 Oct 2007 02:58:41 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=bXdWnIVSZf5Wr9uM1h5+u09n28FDRK8YJGcNe5IEh9w=;
-        b=dMHw1EfVEPHauulzL1caQbndf6UmtZWkSaah4opse7le7F+rcib03Jp4jHnWptv2EjXS7cRq79wGDlGBXwZtXvM/Rkx0iDeuBhqxz9n78uCcJQTBLpRE83NkkaTW2+HDg0XqjqR3CqTLoeaEbXpqFAfhkn8lbjcuHy2BxKJ534w=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=Lyc06QKAUD4wuF/HijSYUBTUhjnJmcYw/gRK4bav+1olMsgeVNROE+G1o+FMG7pmujyvWnUcxX2XknrMofuh6m8WHgPUblvdVaF9tT5pIQoj73WEy08+Z1wl2qygu1i802V2thTS841RKX80Dvfk1gp83nt+CEF9UyJ51SDmiWg=
-Received: by 10.82.182.1 with SMTP id e1mr2733838buf.1192096721015;
-        Thu, 11 Oct 2007 02:58:41 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id y6sm4065486mug.2007.10.11.02.58.40
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 11 Oct 2007 02:58:40 -0700 (PDT)
-Message-ID: <470DF3B8.6060804@gmail.com>
-Date:	Thu, 11 Oct 2007 11:58:16 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 13:01:43 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:27623 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20030387AbXJKMBe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 13:01:34 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id E9A6C400A4;
+	Thu, 11 Oct 2007 14:01:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id dR5QVdDMRK70; Thu, 11 Oct 2007 14:01:28 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 4DE4240095;
+	Thu, 11 Oct 2007 14:01:28 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9BC1U3l009966;
+	Thu, 11 Oct 2007 14:01:31 +0200
+Date:	Thu, 11 Oct 2007 13:01:26 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Nigel Stephens <nigel@mips.com>
+cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: [SPAM?]  Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+In-Reply-To: <470CC0CE.9080303@mips.com>
+Message-ID: <Pine.LNX.4.64N.0710111242530.16370@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
+ <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org>
+ <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de>
+ <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de>
+ <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org>
+ <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
+ <4705EFE5.7090704@gmail.com> <Pine.LNX.4.64N.0710051312490.17849@blysk.ds.pg.gda.pl>
+ <470A4349.9090301@gmail.com> <Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl>
+ <470BE1F4.3070800@gmail.com> <Pine.LNX.4.64N.0710101231290.9821@blysk.ds.pg.gda.pl>
+ <470CC0CE.9080303@mips.com>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2/2] Add .init.bss section for MIPS
-References: <470DF25E.60009@gmail.com>
-In-Reply-To: <470DF25E.60009@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4529/Thu Oct 11 08:54:06 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16957
+X-archive-position: 16958
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, 10 Oct 2007, Nigel Stephens wrote:
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/kernel/head.S        |    5 +++++
- arch/mips/kernel/vmlinux.lds.S |    7 ++++++-
- 2 files changed, 11 insertions(+), 1 deletions(-)
+> Actually the -march=4ksd option will allow gcc to use of the SmartMIPS lwxs
+> (indexed load) instruction, which could save a few instructions here and
+> there.
 
-diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
-index e46782b..e8245cd 100644
---- a/arch/mips/kernel/head.S
-+++ b/arch/mips/kernel/head.S
-@@ -183,6 +183,11 @@ NESTED(kernel_entry, 16, sp)			# kernel entry point
- 	LONG_S		zero, (t0)
- 	bne		t0, t1, 1b
- 
-+	PTR_LA		a0, _sinitbss
-+	PTR_LA		a1, _einitbss
-+	PTR_SUBU	a1, a0
-+	jal		__bzero
-+
- 	LONG_S		a0, fw_arg0		# firmware arguments
- 	LONG_S		a1, fw_arg1
- 	LONG_S		a2, fw_arg2
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 84f9a4c..30e0d65 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -100,7 +100,7 @@ SECTIONS
- 	_edata =  .;			/* End of data section */
- 
- 	/* will be freed after init */
--	. = ALIGN(_PAGE_SIZE);		/* Init code and data */
-+	. = ALIGN(_PAGE_SIZE);		/* Init code, data and bss */
- 	__init_begin = .;
- 	.init.text : {
- 		_sinittext = .;
-@@ -110,6 +110,11 @@ SECTIONS
- 	.init.data : {
- 		*(.init.data)
- 	}
-+	.init.bss (NOLOAD) : {
-+		_sinitbss = .;
-+		*(.init.bss)
-+		_einitbss = .;
-+	}
- 	. = ALIGN(16);
- 	.init.setup : {
- 		__setup_start = .;
--- 
-1.5.3.3
+ Good point, but if we decide the lone instruction is worth the hassle, 
+then we should use "-msmartmips" on top of the base ISA selection.  
+Likewise with "lwx" and "-mdsp".
+
+ Though either way I am not sure these would have to be put in Kconfig or 
+Makefile anywhere.  A generic way should be enough for the insistent as 
+the potentially useful options may proliferate; we have the CFLAGS_KERNEL 
+and CFLAGS_MODULE Makefile variables that would suit for setting upon 
+`make' invocation.
+
+  Maciej

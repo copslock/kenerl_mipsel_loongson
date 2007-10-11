@@ -1,47 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 14:57:04 +0100 (BST)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:55611 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20021594AbXJKN44 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 11 Oct 2007 14:56:56 +0100
-Received: by mo.po.2iij.net (mo31) id l9BDurwX031963; Thu, 11 Oct 2007 22:56:53 +0900 (JST)
-Received: from delta (221.25.30.125.dy.iij4u.or.jp [125.30.25.221])
-	by mbox.po.2iij.net (po-mbox301) id l9BDulea030735
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 11 Oct 2007 22:56:48 +0900
-Date:	Thu, 11 Oct 2007 22:56:47 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] add select I8253 to MIPS Atlas
-Message-Id: <20071011225647.1ac5ed27.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.0 (GTK+ 2.10.11; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 15:00:30 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:34515 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021626AbXJKOA2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 15:00:28 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9BE0Rvv005913;
+	Thu, 11 Oct 2007 15:00:27 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9BE06gE005901;
+	Thu, 11 Oct 2007 15:00:06 +0100
+Date:	Thu, 11 Oct 2007 15:00:06 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [RFC] Add __initbss section
+Message-ID: <20071011140006.GA2828@linux-mips.org>
+References: <470DF25E.60009@gmail.com> <20071011124410.GA17202@linux-mips.org> <Pine.LNX.4.64N.0710111420030.16370@blysk.ds.pg.gda.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64N.0710111420030.16370@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16963
+X-archive-position: 16964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Add "select I8253" to MIPS Atlas
+On Thu, Oct 11, 2007 at 02:35:20PM +0100, Maciej W. Rozycki wrote:
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> > I think gcc should probably put the jump table into a .subsection if
+> > a section was explicitly requested, at least for non-PIC code.
+> 
+>  Has anybody filed a bug report?  The GCC maintainers may well not be 
+> aware of the problem and some arcane ways of use exercised by Linux.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/Kconfig mips/arch/mips/Kconfig
---- mips-orig/arch/mips/Kconfig	2007-10-11 01:18:44.178964500 +0900
-+++ mips/arch/mips/Kconfig	2007-10-11 09:52:57.598382750 +0900
-@@ -173,6 +173,7 @@ config MIPS_ATLAS
- 	select SYS_HAS_EARLY_PRINTK
- 	select IRQ_CPU
- 	select HW_HAS_PCI
-+	select I8253
- 	select MIPS_BOARDS_GEN
- 	select MIPS_BONITO64
- 	select PCI_GT64XXX_PCI0
+Beofore applying the previously mentioned fixes I spoke to them but they
+were not very inclined to consider the gcc behaviour a bug.
+
+  Ralf

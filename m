@@ -1,43 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 15:35:57 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:17080 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021759AbXJKOfy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Oct 2007 15:35:54 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9BEZ77X015883;
-	Thu, 11 Oct 2007 15:35:07 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9BEYt4N015874;
-	Thu, 11 Oct 2007 15:34:55 +0100
-Date:	Thu, 11 Oct 2007 15:34:55 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] fix wrong variable in rtc_mips_set_time() for
-	yosemite
-Message-ID: <20071011143455.GA15861@linux-mips.org>
-References: <20071011230115.2e2b86df.yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 15:50:42 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:39573 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20021774AbXJKOud (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 15:50:33 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 22797400A4;
+	Thu, 11 Oct 2007 16:50:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id 4IxzO1bWX+Lb; Thu, 11 Oct 2007 16:49:57 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C905640095;
+	Thu, 11 Oct 2007 16:49:57 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9BEo10D010141;
+	Thu, 11 Oct 2007 16:50:01 +0200
+Date:	Thu, 11 Oct 2007 15:49:56 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [RFC] Add __initbss section
+In-Reply-To: <20071011140006.GA2828@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0710111548160.16370@blysk.ds.pg.gda.pl>
+References: <470DF25E.60009@gmail.com> <20071011124410.GA17202@linux-mips.org>
+ <Pine.LNX.4.64N.0710111420030.16370@blysk.ds.pg.gda.pl>
+ <20071011140006.GA2828@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071011230115.2e2b86df.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4529/Thu Oct 11 08:54:06 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16966
+X-archive-position: 16967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 11, 2007 at 11:01:15PM +0900, Yoichi Yuasa wrote:
+On Thu, 11 Oct 2007, Ralf Baechle wrote:
 
-> Fix wrong variable in rtc_mips_set_time() for yosemite.
+> Beofore applying the previously mentioned fixes I spoke to them but they
+> were not very inclined to consider the gcc behaviour a bug.
 
-Thanks, applied.
+ This may qualify as the lack of a feature indeed.  So I guess the 
+ultimate solution is waiting for somebody to get inclined enough to 
+implement it. ;-)
 
-  Ralf
+  Maciej

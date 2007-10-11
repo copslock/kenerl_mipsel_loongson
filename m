@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 02:00:22 +0100 (BST)
-Received: from wx-out-0506.google.com ([66.249.82.236]:20818 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Oct 2007 02:02:01 +0100 (BST)
+Received: from wx-out-0506.google.com ([66.249.82.226]:4951 "EHLO
 	wx-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021460AbXJKBAN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Oct 2007 02:00:13 +0100
-Received: by wx-out-0506.google.com with SMTP id h30so380518wxd
-        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 17:59:55 -0700 (PDT)
+	id S20021460AbXJKBBx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Oct 2007 02:01:53 +0100
+Received: by wx-out-0506.google.com with SMTP id h30so380839wxd
+        for <linux-mips@linux-mips.org>; Wed, 10 Oct 2007 18:01:35 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=beta;
         h=domainkey-signature:received:received:from:to:subject:date:user-agent:references:in-reply-to:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        bh=XQSJQXJGlCK4ddcGdT67jUX5oae5ZQ93Ujm0pms90Ww=;
-        b=WxibhXNm4ZvizWKNQHiQYHhCJZrpR2o/Z54b07zvVtLb7jdKdINPKDrdMqqDoK/30Rnt2ngypTBLeK/7ZpudQdHeeblaD0hefhJ16XCaMWXQFFflxKKx1JEmiETr/dSjU1lDxffRlrg41PP3GkPidIm6VDTa8pW4LNgfW2F/Obk=
+        bh=UrLYN2qwcSd9xJ8OLjxx1yFSkLhNRmnFS+cniSKNbUo=;
+        b=IkToxRUeEg7y117Gvj8+m4ef1DlyOVN/s5qO8p6SpmBh6wqftnqM7zKI23TVQp84BWR/bPMwGese2+ODt/lvhJr0GkjAWA4LcsNWnQNU6yNBkaU3GiJ2uZhvwTMrd4ERPpwAL+nsDjsoavjT4ylzC9B9Y1UftbsrCh003YxqNcY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
         h=received:from:to:subject:date:user-agent:references:in-reply-to:cc:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=tLAgwXop8UGXuWZi5iqke4fABHusp4qCY4rGpz8quCvf19741FLNcnMJv0yNwc92m6J4Qb8+2ghbasEqLA9o6rWxTo+g3qF7/ViHOlHND7MM0BSipLrllmPu04Ez4m2uLtqnggW37/hMErU+wNn3sVUT8Odfu/gdYZKPYOQXJXU=
-Received: by 10.70.18.11 with SMTP id 11mr2151442wxr.1192064394366;
-        Wed, 10 Oct 2007 17:59:54 -0700 (PDT)
+        b=dSj5jSj9pKvGyNW9hwI+E8a3qJi3xvMmoZAnfUExgbHWjCm4j47NkN576GUXgaKFY/KYl/ltmokGzG64SJ0Ge8ibWenwm9dy5cq4srI1uK5ltIip4gz5EHodJX6KvOzZgdrWduwV7xqNilFGGUxbjfjDWSyYP4LIDgIzZCI5Ogc=
+Received: by 10.70.118.4 with SMTP id q4mr2170590wxc.1192064494717;
+        Wed, 10 Oct 2007 18:01:34 -0700 (PDT)
 Received: from ?192.168.0.3? ( [87.18.114.61])
-        by mx.google.com with ESMTPS id h8sm1817106wxd.2007.10.10.17.59.51
+        by mx.google.com with ESMTPS id h12sm1801849wxd.2007.10.10.18.01.30
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 10 Oct 2007 17:59:53 -0700 (PDT)
+        Wed, 10 Oct 2007 18:01:34 -0700 (PDT)
 From:	Matteo Croce <technoboy85@gmail.com>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH][MIPS][5/6] AR7: serial hack
-Date:	Thu, 11 Oct 2007 02:59:52 +0200
+Subject: Re: [PATCH][MIPS][6/6] AR7: leds driver
+Date:	Thu, 11 Oct 2007 03:01:30 +0200
 User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
 References: <200710110248.33028.technoboy85@gmail.com>
 In-Reply-To: <200710110248.33028.technoboy85@gmail.com>
-Cc:	Florian Fainelli <florian@openwrt.org>,
-	Felix Fietkau <nbd@openwrt.org>,
-	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
+Cc:	Eugene Konev <ejka@imfi.kspu.ru>, netdev@vger.kernel.org,
+	davem@davemloft.net, kuznet@ms2.inr.ac.ru, pekkas@netcore.fi,
+	jmorris@namei.org, yoshfuji@linux-ipv6.org, kaber@coreworks.de,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jeff Garzik <jgarzik@pobox.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200710110259.52498.technoboy85@gmail.com>
+Message-Id: <200710110301.31223.technoboy85@gmail.com>
 Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16953
+X-archive-position: 16954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,65 +50,144 @@ X-original-sender: technoboy85@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+The new led driver, uses leds-gpio now
+
 Signed-off-by: Matteo Croce <technoboy85@gmail.com>
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Signed-off-by: Nicolas Thill <nico@openwrt.org>
 
-diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-index f94109c..94253b7 100644
---- a/drivers/serial/8250.c
-+++ b/drivers/serial/8250.c
-@@ -267,6 +267,13 @@ static const struct serial8250_config uart_config[] = {
- 		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
- 		.flags		= UART_CAP_FIFO,
- 	},
-+	[PORT_AR7] = {
-+		.name		= "TI-AR7",
-+		.fifo_size	= 16,
-+		.tx_loadsz	= 16,
-+		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_00,
-+		.flags		= UART_CAP_FIFO | UART_CAP_AFE,
+diff --git a/drivers/leds/leds-ar7.c b/drivers/leds/leds-ar7.c
+new file mode 100644
+index 0000000..72b958a
+--- /dev/null
++++ b/drivers/leds/leds-ar7.c
+@@ -0,0 +1,130 @@
++/*
++ * Copyright (C) 2007 Nicolas Thill <nico@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/leds.h>
++#include <linux/err.h>
++#include <linux/io.h>
++#include <gpio.h>
++
++#define DRVNAME "ar7-leds"
++#define LONGNAME "TI AR7 LEDs driver"
++#define AR7_GPIO_BIT_STATUS_LED 8
++
++MODULE_AUTHOR("Nicolas Thill <nico@openwrt.org>");
++MODULE_DESCRIPTION(LONGNAME);
++MODULE_LICENSE("GPL");
++
++static void ar7_status_led_set(struct led_classdev *pled,
++		enum led_brightness value)
++{
++	gpio_set_value(AR7_GPIO_BIT_STATUS_LED, value ? 0 : 1);
++}
++
++static struct led_classdev ar7_status_led = {
++	.name		= "ar7:status",
++	.brightness_set	= ar7_status_led_set,
++};
++
++#ifdef CONFIG_PM
++static int ar7_leds_suspend(struct platform_device *dev,
++		pm_message_t state)
++{
++	led_classdev_suspend(&ar7_status_led);
++	return 0;
++}
++
++static int ar7_leds_resume(struct platform_device *dev)
++{
++	led_classdev_resume(&ar7_status_led);
++	return 0;
++}
++#else /* CONFIG_PM */
++#define ar7_leds_suspend NULL
++#define ar7_leds_resume NULL
++#endif /* CONFIG_PM */
++
++static int ar7_leds_probe(struct platform_device *pdev)
++{
++	int rc;
++
++	rc = led_classdev_register(&pdev->dev, &ar7_status_led);
++	if (rc < 0)
++		goto out;
++
++	ar7_gpio_enable(AR7_GPIO_BIT_STATUS_LED);
++	gpio_direction_output(AR7_GPIO_BIT_STATUS_LED, 0);
++
++out:
++	return rc;
++}
++
++static int ar7_leds_remove(struct platform_device *pdev)
++{
++	led_classdev_unregister(&ar7_status_led);
++
++	return 0;
++}
++
++static struct platform_device *ar7_leds_device;
++
++static struct platform_driver ar7_leds_driver = {
++	.probe		= ar7_leds_probe,
++	.remove		= ar7_leds_remove,
++	.suspend	= ar7_leds_suspend,
++	.resume		= ar7_leds_resume,
++	.driver		= {
++		.name		= DRVNAME,
 +	},
- };
- 
- #if defined (CONFIG_SERIAL_8250_AU1X00)
-@@ -2453,7 +2460,11 @@ static void serial8250_console_putchar(struct uart_port *port, int ch)
- {
- 	struct uart_8250_port *up = (struct uart_8250_port *)port;
- 
-+#ifdef CONFIG_AR7
-+	wait_for_xmitr(up, BOTH_EMPTY);
-+#else
- 	wait_for_xmitr(up, UART_LSR_THRE);
-+#endif
- 	serial_out(up, UART_TX, ch);
- }
- 
-diff --git a/include/linux/serialP.h b/include/linux/serialP.h
-index e811a61..cf71de9 100644
---- a/include/linux/serialP.h
-+++ b/include/linux/serialP.h
-@@ -135,6 +135,10 @@ struct rs_multiport_struct {
-  * the interrupt line _up_ instead of down, so if we register the IRQ
-  * while the UART is in that state, we die in an IRQ storm. */
- #define ALPHA_KLUDGE_MCR (UART_MCR_OUT2)
-+#elif defined(CONFIG_AR7)
-+/* This is how it is set up by bootloader... */
-+#define ALPHA_KLUDGE_MCR (UART_MCR_OUT2 | UART_MCR_OUT1 \
-+			| UART_MCR_RTS | UART_MCR_DTR)
- #else
- #define ALPHA_KLUDGE_MCR 0
- #endif
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 09d17b0..8ad2c3b 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -40,6 +40,7 @@
- #define PORT_NS16550A	14
- #define PORT_XSCALE	15
- #define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
-+#define PORT_AR7	16
- #define PORT_MAX_8250	16	/* max port ID */
- 
- /*
++};
++
++static int __init ar7_leds_init(void)
++{
++	int rc;
++
++	ar7_leds_device = platform_device_alloc(DRVNAME, -1);
++	if (!ar7_leds_device)
++		return -ENOMEM;
++
++	rc = platform_device_add(ar7_leds_device);
++	if (rc < 0)
++		goto out_put;
++
++	rc = platform_driver_register(&ar7_leds_driver);
++	if (rc < 0)
++		goto out_put;
++
++	goto out;
++
++out_put:
++	platform_device_put(ar7_leds_device);
++out:
++	return rc;
++}
++
++static void __exit ar7_leds_exit(void)
++{
++	platform_driver_unregister(&ar7_leds_driver);
++	platform_device_unregister(ar7_leds_device);
++}
++
++module_init(ar7_leds_init);
++module_exit(ar7_leds_exit);

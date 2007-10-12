@@ -1,75 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2007 18:12:28 +0100 (BST)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:42447 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20030689AbXJLRMS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 12 Oct 2007 18:12:18 +0100
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 5B6DF48BCA;
-	Fri, 12 Oct 2007 19:11:12 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.67)
-	(envelope-from <ths@networkno.de>)
-	id 1IgO2j-0007kH-1U; Fri, 12 Oct 2007 18:11:21 +0100
-Date:	Fri, 12 Oct 2007 18:11:21 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Franck Bui-Huu <fbuihuu@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 3/4] tlbex.c: cleanup debug code
-Message-ID: <20071012171120.GI3379@networkno.de>
-References: <470F16B9.7030406@gmail.com> <470F1775.7090807@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2007 18:19:22 +0100 (BST)
+Received: from emailhub.stusta.mhn.de ([141.84.69.5]:26018 "EHLO
+	mailhub.stusta.mhn.de") by ftp.linux-mips.org with ESMTP
+	id S20030717AbXJLRTO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 12 Oct 2007 18:19:14 +0100
+Received: from r063144.stusta.swh.mhn.de (r063144.stusta.swh.mhn.de [10.150.63.144])
+	by mailhub.stusta.mhn.de (Postfix) with ESMTP id 8411E1B56C3;
+	Fri, 12 Oct 2007 19:19:52 +0200 (CEST)
+Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
+	id C8E443CE3E5; Fri, 12 Oct 2007 19:19:38 +0200 (CEST)
+Date:	Fri, 12 Oct 2007 19:19:38 +0200
+From:	Adrian Bunk <bunk@kernel.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-arch@vger.kernel.org,
+	linux-mips@linux-mips.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Discardable strings for init and exit sections
+Message-ID: <20071012171938.GB6476@stusta.de>
+References: <Pine.LNX.4.64N.0710121711120.21684@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <470F1775.7090807@gmail.com>
+In-Reply-To: <Pine.LNX.4.64N.0710121711120.21684@blysk.ds.pg.gda.pl>
 User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16991
+X-archive-position: 16992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
+On Fri, Oct 12, 2007 at 05:50:01PM +0100, Maciej W. Rozycki wrote:
+
+>  We currently have infrastructure for discardable text and data, but no 
+> such thing for strings.  This is especially notable for inline strings 
+> such as ones used by printk() which are left behind resident in the memory 
+> throughout the life of the system even though code referring to them has 
+> been removed.
 > 
-> Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
-> ---
->  arch/mips/mm/tlbex.c |   83 +++++++++++++++----------------------------------
->  1 files changed, 26 insertions(+), 57 deletions(-)
-> 
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 923515e..4775e4c 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -705,6 +705,22 @@ il_bgez(u32 **p, struct reloc **r, unsigned int reg, enum label_id l)
->  	i_bgez(p, reg, 0);
->  }
->  
-> +/*
-> + * For debug purposes.
-> + */
-> +static inline void dump_handler(const u32 *handler, int count)
-> +{
-> +	int i;
-> +
-> +	pr_debug("\t.set push\n");
-> +	pr_debug("\t.set noreorder\n");
-> +
-> +	for (i = 0; i < count; i++)
-> +		pr_debug("\t%p\t.word 0x%08x\n", &handler[i], handler[i]);
-> +
-> +	pr_debug("\t.set pop\n");
-> +}
+>  Following a short discussion at the linux-mips list, here is a proposed 
+> implementation for discardable strings.  It adds __initstr and __exitstr 
+> plus most of the usual variations, but most importantly it adds wrapper 
+> macros that may be used for inline strings that make them be put in
+> separate sections which may then be discarded, while still preserving the 
+> usual merging property of sections containing strings.  The macros are 
+> called _i() and _e(), with the other alternatives adding at most two 
+> letters each.  This has been inspired by how the GNU gettext handles 
+> localised strings in a way that does not add too much clutter and the 
+> result is still reasonably well readable.  Some use examples have been 
+> included in <linux/init.h>.
+>...
 
-I don't like this patch. I wrote the code to
-a) print the handler before the (potentially fatal) memcpy. Touching
-   EBASE for the first time is a place where things like to go wrong.
-b) avoid printing leading nops which are never executed. The trailing
-   nops have less potential for confusion.
+I have an objection against this approach:
 
+Our __*init*/__*exit* annotations are already a constant source of bugs, 
+and adding more pifalls (e.g. forgotten removal of _i()/_e() when a 
+function is no longer __*init*/__*exit*) doesn't sound like a good plan.
 
-Thiemo
+Shouldn't it be possible to automatically determine where to put the 
+strings? I don't know enough gcc/ld voodoo for being able to tell 
+whether it is currently possible, and if yes how, but doing it 
+automatically sounds like the only solution that wouldn't result in an
+unmaintainable mess.
+
+Ideally, even the current annotations might one day no longer be 
+required and replaced with some way to express things like "everything 
+only required by module_init() can be __init".
+
+cu
+Adrian
+
+BTW: Please add diffstat output when sending patches.
+
+-- 
+
+       "Is there not promise of rain?" Ling Tan asked suddenly out
+        of the darkness. There had been need of rain for many days.
+       "Only a promise," Lao Er said.
+                                       Pearl S. Buck - Dragon Seed

@@ -1,79 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2007 07:44:32 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.191]:48924 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023434AbXJLGoY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 12 Oct 2007 07:44:24 +0100
-Received: by nf-out-0910.google.com with SMTP id c10so687607nfd
-        for <linux-mips@linux-mips.org>; Thu, 11 Oct 2007 23:44:22 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:x-enigmail-version:content-type:content-transfer-encoding;
-        bh=QyfWubqm/JHlV8uzTRfAYgwSZKgdrVm16XI76DUEzIE=;
-        b=TBxitdK5OJ0h4tAdpmB7Nvo1dieFnde78e7bH96jKK+zj7+RYd2Vvfw0zBxoRvaMhf5WPvSLoNG/8o9VLD2kxN2Tv0QieJ74Nwa6BBeW5QMfouQfIjiAkmQOtTwWGEu362qX1JaIBuGaCpbFrC5RYd/VKRoTMOWFEyBFlLVVwFg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:x-enigmail-version:content-type:content-transfer-encoding;
-        b=acQ15gZVZ6saEmU+4+6Z3TjPwVEbgbDWdwjQcUzacjbsJJ5aCcIQceW3OQyO5boPhcGN+LGSUg4OgjDqQqtXc/Po/3/Ij0OQDLzqEuKGdBjQFZkGVFLQjSHNjWe4rqedLvRxZfuhF6TLbSoBuHxY8H4pasYMJCIsFLpS9B35NFk=
-Received: by 10.86.79.19 with SMTP id c19mr2110501fgb.1192171461827;
-        Thu, 11 Oct 2007 23:44:21 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id 28sm616876fkx.2007.10.11.23.44.19
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 11 Oct 2007 23:44:19 -0700 (PDT)
-Message-ID: <470F17A5.7080905@gmail.com>
-Date:	Fri, 12 Oct 2007 08:43:49 +0200
-From:	Franck Bui-Huu <fbuihuu@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 4/4] tlbex.c: use __cacheline_aligned instead of __tlb_handler_align
- attribute
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2007 10:07:57 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:42921 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20023656AbXJLJHt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 12 Oct 2007 10:07:49 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 12 Oct 2007 18:07:47 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 8837242AEB;
+	Fri, 12 Oct 2007 18:07:43 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 743F1429AC;
+	Fri, 12 Oct 2007 18:07:43 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l9C97gAF032655;
+	Fri, 12 Oct 2007 18:07:43 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 12 Oct 2007 18:07:42 +0900 (JST)
+Message-Id: <20071012.180742.59650681.nemoto@toshiba-tops.co.jp>
+To:	fbuihuu@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/4] tlbex.c: Cleanup __init usages.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <470F170E.1060303@gmail.com>
 References: <470F16B9.7030406@gmail.com>
-In-Reply-To: <470F16B9.7030406@gmail.com>
-X-Enigmail-Version: 0.95.2
-Content-Type: text/plain; charset=ISO-8859-1
+	<470F170E.1060303@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <fbuihuu@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16982
+X-archive-position: 16983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fbuihuu@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/mm/tlbex.c |    9 +++------
- 1 files changed, 3 insertions(+), 6 deletions(-)
+On Fri, 12 Oct 2007 08:41:18 +0200, Franck Bui-Huu <fbuihuu@gmail.com> wrote:
+>  #define I_0(op)							\
+> -	static inline void __init i##op(u32 **buf)		\
+> +	static inline void i##op(u32 **buf)		\
+>  	{							\
+>  		build_insn(buf, insn##op);			\
+>  	}
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 4775e4c..f8b21b3 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1371,18 +1371,15 @@ static void __init build_r4000_tlb_refill_handler(void)
- extern void tlb_do_page_fault_0(void);
- extern void tlb_do_page_fault_1(void);
- 
--#define __tlb_handler_align \
--	__attribute__((__aligned__(1 << CONFIG_MIPS_L1_CACHE_SHIFT)))
--
- /*
-  * 128 instructions for the fastpath handler is generous and should
-  * never be exceeded.
-  */
- #define FASTPATH_SIZE 128
- 
--u32 __tlb_handler_align handle_tlbl[FASTPATH_SIZE];
--u32 __tlb_handler_align handle_tlbs[FASTPATH_SIZE];
--u32 __tlb_handler_align handle_tlbm[FASTPATH_SIZE];
-+u32 handle_tlbl[FASTPATH_SIZE] __cacheline_aligned;
-+u32 handle_tlbs[FASTPATH_SIZE] __cacheline_aligned;
-+u32 handle_tlbm[FASTPATH_SIZE] __cacheline_aligned;
- 
- static void __init
- iPTE_LW(u32 **p, struct label **l, unsigned int pte, unsigned int ptr)
+This causes section mismatches, since i_tlbwr and i_tlbwi can not be
+inlined (see head of build_tlb_write_entry()).
+
+Maybe __init __maybe_unused is preferred?
+
+---
+Atsushi Nemoto

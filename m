@@ -1,244 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2007 18:00:14 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:52111 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20030678AbXJLRAF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 12 Oct 2007 18:00:05 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 27446400E2;
-	Fri, 12 Oct 2007 18:59:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id kl3Tky3u4vdo; Fri, 12 Oct 2007 18:59:26 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id F359B40095;
-	Fri, 12 Oct 2007 18:59:25 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9CGxUPF006446;
-	Fri, 12 Oct 2007 18:59:30 +0200
-Date:	Fri, 12 Oct 2007 17:59:25 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-arch@vger.kernel.org,
-	linux-mips@linux-mips.org
-cc:	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] defxx: Discardable strings for init and exit sections
-Message-ID: <Pine.LNX.4.64N.0710121751220.21684@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Oct 2007 18:12:28 +0100 (BST)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:42447 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20030689AbXJLRMS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 12 Oct 2007 18:12:18 +0100
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 5B6DF48BCA;
+	Fri, 12 Oct 2007 19:11:12 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.67)
+	(envelope-from <ths@networkno.de>)
+	id 1IgO2j-0007kH-1U; Fri, 12 Oct 2007 18:11:21 +0100
+Date:	Fri, 12 Oct 2007 18:11:21 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Franck Bui-Huu <fbuihuu@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 3/4] tlbex.c: cleanup debug code
+Message-ID: <20071012171120.GI3379@networkno.de>
+References: <470F16B9.7030406@gmail.com> <470F1775.7090807@gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4533/Fri Oct 12 12:59:29 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <470F1775.7090807@gmail.com>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 16990
+X-archive-position: 16991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
- Move strings eligible for discarding to their respective sections.
+Franck Bui-Huu wrote:
+> 
+> Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+> ---
+>  arch/mips/mm/tlbex.c |   83 +++++++++++++++----------------------------------
+>  1 files changed, 26 insertions(+), 57 deletions(-)
+> 
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index 923515e..4775e4c 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -705,6 +705,22 @@ il_bgez(u32 **p, struct reloc **r, unsigned int reg, enum label_id l)
+>  	i_bgez(p, reg, 0);
+>  }
+>  
+> +/*
+> + * For debug purposes.
+> + */
+> +static inline void dump_handler(const u32 *handler, int count)
+> +{
+> +	int i;
+> +
+> +	pr_debug("\t.set push\n");
+> +	pr_debug("\t.set noreorder\n");
+> +
+> +	for (i = 0; i < count; i++)
+> +		pr_debug("\t%p\t.word 0x%08x\n", &handler[i], handler[i]);
+> +
+> +	pr_debug("\t.set pop\n");
+> +}
 
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
----
- This patch together with the string discarding infrastructure sent 
-separately is an example of how resulting code looks like.  It builds (for 
-MIPS), it works, saving about 500 bytes of run-time memory.
+I don't like this patch. I wrote the code to
+a) print the handler before the (potentially fatal) memcpy. Touching
+   EBASE for the first time is a place where things like to go wrong.
+b) avoid printing leading nops which are never executed. The trailing
+   nops have less potential for confusion.
 
-  Maciej
 
-patch-mips-2.6.23-rc5-20070904-defxx-inexitstr-3
-diff -up --recursive --new-file linux-mips-2.6.23-rc5-20070904.macro/drivers/net/defxx.c linux-mips-2.6.23-rc5-20070904/drivers/net/defxx.c
---- linux-mips-2.6.23-rc5-20070904.macro/drivers/net/defxx.c	2007-09-04 04:55:41.000000000 +0000
-+++ linux-mips-2.6.23-rc5-20070904/drivers/net/defxx.c	2007-10-12 09:45:01.000000000 +0000
-@@ -228,7 +228,7 @@
- #define DRV_VERSION "v1.10"
- #define DRV_RELDATE "2006/12/14"
- 
--static char version[] __devinitdata =
-+static const char version[] __devinitstr =
- 	DRV_NAME ": " DRV_VERSION " " DRV_RELDATE
- 	"  Lawrence V. Stefani and others\n";
- 
-@@ -527,14 +527,16 @@ static int __devinit dfx_register(struct
- 
- 	dev = alloc_fddidev(sizeof(*bp));
- 	if (!dev) {
--		printk(KERN_ERR "%s: Unable to allocate fddidev, aborting\n",
-+		printk(_di(KERN_ERR
-+			   "%s: Unable to allocate fddidev, aborting\n"),
- 		       print_name);
- 		return -ENOMEM;
- 	}
- 
- 	/* Enable PCI device. */
- 	if (dfx_bus_pci && pci_enable_device(to_pci_dev(bdev))) {
--		printk(KERN_ERR "%s: Cannot enable PCI device, aborting\n",
-+		printk(_di(KERN_ERR
-+			   "%s: Cannot enable PCI device, aborting\n"),
- 		       print_name);
- 		goto err_out;
- 	}
-@@ -553,8 +555,8 @@ static int __devinit dfx_register(struct
- 	else
- 		region = request_region(bar_start, bar_len, print_name);
- 	if (!region) {
--		printk(KERN_ERR "%s: Cannot reserve I/O resource "
--		       "0x%lx @ 0x%lx, aborting\n",
-+		printk(_di(KERN_ERR "%s: Cannot reserve I/O resource "
-+			   "0x%lx @ 0x%lx, aborting\n"),
- 		       print_name, (long)bar_len, (long)bar_start);
- 		err = -EBUSY;
- 		goto err_out_disable;
-@@ -564,7 +566,8 @@ static int __devinit dfx_register(struct
- 	if (dfx_use_mmio) {
- 		bp->base.mem = ioremap_nocache(bar_start, bar_len);
- 		if (!bp->base.mem) {
--			printk(KERN_ERR "%s: Cannot map MMIO\n", print_name);
-+			printk(_di(KERN_ERR "%s: Cannot map MMIO\n"),
-+			       print_name);
- 			err = -ENOMEM;
- 			goto err_out_region;
- 		}
-@@ -594,7 +597,7 @@ static int __devinit dfx_register(struct
- 	if (err)
- 		goto err_out_kfree;
- 
--	printk("%s: registered as %s\n", print_name, dev->name);
-+	printk(_di("%s: registered as %s\n"), print_name, dev->name);
- 	return 0;
- 
- err_out_kfree:
-@@ -670,7 +673,7 @@ static void __devinit dfx_bus_init(struc
- 	int dfx_use_mmio = DFX_MMIO || dfx_bus_tc;
- 	u8 val;
- 
--	DBG_printk("In dfx_bus_init...\n");
-+	DBG_printk(_di("In dfx_bus_init...\n"));
- 
- 	/* Initialize a pointer back to the net_device struct */
- 	bp->dev = dev;
-@@ -814,7 +817,7 @@ static void __devinit dfx_bus_uninit(str
- 	int dfx_bus_eisa = DFX_BUS_EISA(bdev);
- 	u8 val;
- 
--	DBG_printk("In dfx_bus_uninit...\n");
-+	DBG_printk(_de("In dfx_bus_uninit...\n"));
- 
- 	/* Uninitialize adapter based on bus type */
- 
-@@ -870,7 +873,7 @@ static void __devinit dfx_bus_config_che
- 	int	status;				/* return code from adapter port control call */
- 	u32	host_data;			/* LW data returned from port control call */
- 
--	DBG_printk("In dfx_bus_config_check...\n");
-+	DBG_printk(_di("In dfx_bus_config_check...\n"));
- 
- 	/* Configuration check only valid for EISA adapter */
- 
-@@ -973,9 +976,9 @@ static int __devinit dfx_driver_init(str
- 	char *top_v, *curr_v;		/* virtual addrs into memory block */
- 	dma_addr_t top_p, curr_p;	/* physical addrs into memory block */
- 	u32 data, le32;			/* host data register value */
--	char *board_name = NULL;
-+	const char *board_name = NULL;
- 
--	DBG_printk("In dfx_driver_init...\n");
-+	DBG_printk(_di("In dfx_driver_init...\n"));
- 
- 	/* Initialize bus-specific hardware registers */
- 
-@@ -1018,8 +1021,8 @@ static int __devinit dfx_driver_init(str
- 
- 	if (dfx_hw_port_ctrl_req(bp, PI_PCTRL_M_MLA, PI_PDATA_A_MLA_K_LO, 0,
- 				 &data) != DFX_K_SUCCESS) {
--		printk("%s: Could not read adapter factory MAC address!\n",
--		       print_name);
-+		printk(_di("%s: Could not read "
-+			   "adapter factory MAC address!\n"), print_name);
- 		return(DFX_K_FAILURE);
- 	}
- 	le32 = cpu_to_le32(data);
-@@ -1027,8 +1030,8 @@ static int __devinit dfx_driver_init(str
- 
- 	if (dfx_hw_port_ctrl_req(bp, PI_PCTRL_M_MLA, PI_PDATA_A_MLA_K_HI, 0,
- 				 &data) != DFX_K_SUCCESS) {
--		printk("%s: Could not read adapter factory MAC address!\n",
--		       print_name);
-+		printk(_di("%s: Could not read "
-+			   "adapter factory MAC address!\n"), print_name);
- 		return(DFX_K_FAILURE);
- 	}
- 	le32 = cpu_to_le32(data);
-@@ -1043,14 +1046,14 @@ static int __devinit dfx_driver_init(str
- 
- 	memcpy(dev->dev_addr, bp->factory_mac_addr, FDDI_K_ALEN);
- 	if (dfx_bus_tc)
--		board_name = "DEFTA";
-+		board_name = _di("DEFTA");
- 	if (dfx_bus_eisa)
--		board_name = "DEFEA";
-+		board_name = _di("DEFEA");
- 	if (dfx_bus_pci)
--		board_name = "DEFPA";
--	pr_info("%s: %s at %saddr = 0x%llx, IRQ = %d, "
--		"Hardware addr = %02X-%02X-%02X-%02X-%02X-%02X\n",
--		print_name, board_name, dfx_use_mmio ? "" : "I/O ",
-+		board_name = _di("DEFPA");
-+	printk(_di(KERN_INFO "%s: %s at %saddr = 0x%llx, IRQ = %d, "
-+		   "Hardware addr = %02X-%02X-%02X-%02X-%02X-%02X\n"),
-+		print_name, board_name, dfx_use_mmio ? "" : _di("I/O "),
- 		(long long)bar_start, dev->irq,
- 		dev->dev_addr[0], dev->dev_addr[1], dev->dev_addr[2],
- 		dev->dev_addr[3], dev->dev_addr[4], dev->dev_addr[5]);
-@@ -1072,8 +1075,8 @@ static int __devinit dfx_driver_init(str
- 						   &bp->kmalloced_dma,
- 						   GFP_ATOMIC);
- 	if (top_v == NULL) {
--		printk("%s: Could not allocate memory for host buffers "
--		       "and structures!\n", print_name);
-+		printk(_di("%s: Could not allocate memory for host buffers "
-+			   "and structures!\n"), print_name);
- 		return(DFX_K_FAILURE);
- 	}
- 	memset(top_v, 0, alloc_size);	/* zero out memory before continuing */
-@@ -1132,17 +1135,26 @@ static int __devinit dfx_driver_init(str
- 
- 	/* Display virtual and physical addresses if debug driver */
- 
--	DBG_printk("%s: Descriptor block virt = %0lX, phys = %0X\n",
-+	DBG_printk(_di("%s: Descriptor block "
-+		       "virt = %0lX, phys = %0X\n"),
- 		   print_name,
- 		   (long)bp->descr_block_virt, bp->descr_block_phys);
--	DBG_printk("%s: Command Request buffer virt = %0lX, phys = %0X\n",
--		   print_name, (long)bp->cmd_req_virt, bp->cmd_req_phys);
--	DBG_printk("%s: Command Response buffer virt = %0lX, phys = %0X\n",
--		   print_name, (long)bp->cmd_rsp_virt, bp->cmd_rsp_phys);
--	DBG_printk("%s: Receive buffer block virt = %0lX, phys = %0X\n",
--		   print_name, (long)bp->rcv_block_virt, bp->rcv_block_phys);
--	DBG_printk("%s: Consumer block virt = %0lX, phys = %0X\n",
--		   print_name, (long)bp->cons_block_virt, bp->cons_block_phys);
-+	DBG_printk(_di("%s: Command Request buffer "
-+		       "virt = %0lX, phys = %0X\n"),
-+		   print_name,
-+		   (long)bp->cmd_req_virt, bp->cmd_req_phys);
-+	DBG_printk(_di("%s: Command Response buffer "
-+		       "virt = %0lX, phys = %0X\n"),
-+		   print_name,
-+		   (long)bp->cmd_rsp_virt, bp->cmd_rsp_phys);
-+	DBG_printk(_di("%s: Receive buffer block "
-+		       "virt = %0lX, phys = %0X\n"),
-+		   print_name,
-+		   (long)bp->rcv_block_virt, bp->rcv_block_phys);
-+	DBG_printk(_di("%s: Consumer block "
-+		       "virt = %0lX, phys = %0X\n"),
-+		   print_name,
-+		   (long)bp->cons_block_virt, bp->cons_block_phys);
- 
- 	return(DFX_K_SUCCESS);
- }
+Thiemo

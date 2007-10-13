@@ -1,29 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2007 11:51:19 +0100 (BST)
-Received: from smtp.nildram.co.uk ([195.149.33.74]:16564 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2007 11:53:46 +0100 (BST)
+Received: from smtp.nildram.co.uk ([195.112.4.54]:37646 "EHLO
 	smtp.nildram.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20026286AbXJMKvK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 13 Oct 2007 11:51:10 +0100
+	id S20026479AbXJMKxg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 13 Oct 2007 11:53:36 +0100
 Received: from firetop.home (85-211-25-104.dyn.gotadsl.co.uk [85.211.25.104])
-	by smtp.nildram.co.uk (Postfix) with ESMTP id 47C862DE924;
-	Sat, 13 Oct 2007 11:51:03 +0100 (BST)
+	by smtp.nildram.co.uk (Postfix) with ESMTP
+	id 77DBD2BD858; Sat, 13 Oct 2007 11:53:19 +0100 (BST)
 Received: from richard by firetop.home with local (Exim 4.63)
 	(envelope-from <rsandifo@nildram.co.uk>)
-	id 1IgeaG-000368-IL; Sat, 13 Oct 2007 11:51:04 +0100
+	id 1IgecT-000374-3r; Sat, 13 Oct 2007 11:53:21 +0100
 From:	Richard Sandiford <rsandifo@nildram.co.uk>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,Martin Michlmayr <tbm@cyrius.com>,  David Daney <ddaney@avtrex.com>,  MIPS Linux List <linux-mips@linux-mips.org>, rsandifo@nildram.co.uk
-Cc:	Martin Michlmayr <tbm@cyrius.com>, David Daney <ddaney@avtrex.com>,
-	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: Gcc 4.2.2 broken for kernel builds
-References: <20071012172254.GA10835@linux-mips.org>
-	<470FB386.6080709@avtrex.com> <20071012175317.GB1110@linux-mips.org>
-	<470FBE08.8090004@avtrex.com> <20071012184909.GA4832@linux-mips.org>
-	<20071012191446.GK3163@deprecation.cyrius.com>
-	<20071012191645.GB4832@linux-mips.org>
-Date:	Sat, 13 Oct 2007 11:51:04 +0100
-In-Reply-To: <20071012191645.GB4832@linux-mips.org> (Ralf Baechle's message of
-	"Fri\, 12 Oct 2007 20\:16\:45 +0100")
-Message-ID: <87d4vj9tk7.fsf@firetop.home>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Mail-Followup-To: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	Nigel Stephens <nigel@mips.com>,
+	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>, Thiemo Seufer <ths@networkno.de>,
+	linux-mips@linux-mips.org, rsandifo@nildram.co.uk
+Cc:	Nigel Stephens <nigel@mips.com>,
+	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
+Subject: Re: [SPAM?]  Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
+	<20071002141125.GC16772@networkno.de>
+	<20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com>
+	<20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com>
+	<20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com>
+	<20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com>
+	<Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
+	<4705EFE5.7090704@gmail.com>
+	<Pine.LNX.4.64N.0710051312490.17849@blysk.ds.pg.gda.pl>
+	<470A4349.9090301@gmail.com>
+	<Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl>
+	<470BE1F4.3070800@gmail.com>
+	<Pine.LNX.4.64N.0710101231290.9821@blysk.ds.pg.gda.pl>
+	<470CC0CE.9080303@mips.com>
+	<Pine.LNX.4.64N.0710111242530.16370@blysk.ds.pg.gda.pl>
+Date:	Sat, 13 Oct 2007 11:53:21 +0100
+In-Reply-To: <Pine.LNX.4.64N.0710111242530.16370@blysk.ds.pg.gda.pl> (Maciej
+	W. Rozycki's message of "Thu\, 11 Oct 2007 13\:01\:26 +0100 \(BST\)")
+Message-ID: <878x679tge.fsf@firetop.home>
 User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -31,7 +47,7 @@ Return-Path: <rsandifo@nildram.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17010
+X-archive-position: 17011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,18 +55,17 @@ X-original-sender: rsandifo@nildram.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle <ralf@linux-mips.org> writes:
-> On Fri, Oct 12, 2007 at 09:14:46PM +0200, Martin Michlmayr wrote:
->> > For the moment the receipe to reproduce is to checkout
->> > 7b94a571d6f31ac6303d62c2aafcae40b66f24a3 from the linux-mips.org kernel
->> > tree (that's on linux-2.6.18-stable) and build malta_defconfig with
->> > gcc 4.2.2 and binutils 2.17 or 2.18, both configured for mipsel-linux.
->> 
->> Okay, I can see it.  I'll submit a testcase.
+"Maciej W. Rozycki" <macro@linux-mips.org> writes:
+> On Wed, 10 Oct 2007, Nigel Stephens wrote:
+>> Actually the -march=4ksd option will allow gcc to use of the SmartMIPS lwxs
+>> (indexed load) instruction, which could save a few instructions here and
+>> there.
 >
-> Thanks :-)
+>  Good point, but if we decide the lone instruction is worth the hassle, 
+> then we should use "-msmartmips" on top of the base ISA selection.  
+> Likewise with "lwx" and "-mdsp".
 
-FWIW, I've added some notes about the underlying cause.  I think this
-could in principle happen with any gcc release.
+For the record, although that's true of SDE, it isn't (yet) true of
+FSF GCC; you need -msmartmips for that.
 
 Richard

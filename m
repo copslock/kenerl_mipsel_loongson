@@ -1,69 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2007 13:03:56 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.182]:41526 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20033024AbXJMMDs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 13 Oct 2007 13:03:48 +0100
-Received: by py-out-1112.google.com with SMTP id p76so2158226pyb
-        for <linux-mips@linux-mips.org>; Sat, 13 Oct 2007 05:03:47 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=9OmZdcBVtdiOFe5+RcBK7Ocn0rOO4UGoQK162NkSPwo=;
-        b=d1lkjkK3fcS3/rbY9zK8tCgkBU8qki/Rio3Hbe+vfoMIkAH4GHn7TKtZSwMsJkQdQcoWl6F6jlPRfwMC8/VTn/UdrSakuizHktkbYIJlmZXd+0dcjdVv/kqBqBpmxMUJ6xOLyonnU8CKEmkp5yhmNM+lYlBeJfk3KffG3AlsHlk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=gaHOT0t7g7Z/rEa0MaBOclWglF1y/9quKy9mqvU2beztTVCix+Qs9K0SfbcSb0yDnMPccCaj7Sv9A8pRL0qbaiq11aYRP07xNIg5mvOkr+bar6GZcOkxRr5IL00ErFNetkCYfuRi4aic4mJnPmuhU2Ylry8oPfQugaeit7MIZAo=
-Received: by 10.65.233.16 with SMTP id k16mr8617935qbr.1192277026888;
-        Sat, 13 Oct 2007 05:03:46 -0700 (PDT)
-Received: by 10.35.39.19 with HTTP; Sat, 13 Oct 2007 05:03:46 -0700 (PDT)
-Message-ID: <eea8a9c90710130503g5b601660l24fb02d718123f79@mail.gmail.com>
-Date:	Sat, 13 Oct 2007 17:33:46 +0530
-From:	kaka <share.kt@gmail.com>
-To:	celinux-dev@tree.celinuxforum.org, linux-mips@linux-mips.org
-Subject: insmod:unknown symbol
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2007 18:48:24 +0100 (BST)
+Received: from tool.snarl.nl ([82.95.241.19]:50959 "EHLO tool.snarl.nl")
+	by ftp.linux-mips.org with ESMTP id S20033490AbXJMRsQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Oct 2007 18:48:16 +0100
+Received: from localhost (tool.local.snarl.nl [127.0.0.1])
+	by tool.snarl.nl (Postfix) with ESMTP id 199395DFAF;
+	Sat, 13 Oct 2007 19:47:41 +0200 (CEST)
+Received: from tool.snarl.nl ([127.0.0.1])
+	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 1-wiJMJsEC4A; Sat, 13 Oct 2007 19:47:40 +0200 (CEST)
+Received: by tool.snarl.nl (Postfix, from userid 1000)
+	id 91E2B5DFAB; Sat, 13 Oct 2007 19:47:40 +0200 (CEST)
+Date:	Sat, 13 Oct 2007 19:47:40 +0200
+From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
+To:	kaka <share.kt@gmail.com>
+Cc:	celinux-dev@tree.celinuxforum.org, linux-mips@linux-mips.org
+Subject: Re: insmod:unknown symbol
+Message-ID: <20071013174740.GD7271@dusktilldawn.nl>
+References: <eea8a9c90710130503g5b601660l24fb02d718123f79@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_66766_33080198.1192277026874"
-Return-Path: <share.kt@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="M38YqGLZlgb6RLPS"
+Content-Disposition: inline
+In-Reply-To: <eea8a9c90710130503g5b601660l24fb02d718123f79@mail.gmail.com>
+X-User-Agent-Feature: All mail clients suck. This one just sucks less.
+X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <freddy@dusktilldawn.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17012
+X-archive-position: 17013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: share.kt@gmail.com
+X-original-sender: freddy@dusktilldawn.nl
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_66766_33080198.1192277026874
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+
+--M38YqGLZlgb6RLPS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Kaka,
+
+On Sat, Oct 13, 2007 at 05:33:46PM +0530, kaka wrote:
+> <name> Cannot insert <name> unknown symbol in module(8) no such file or
+> directory
+
+I expect that the <name> module tries to insert an unknown
+symbol. Some things in live are uncertain, most are unnamed. :)
+
+
+> Can anybody help in this regard?
+
+I'm afraid no man alive can help you in this regard. Please
+provide more information. :)
+
+
+--=20
+$ cat ~/.signature
+Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
+GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+
+--M38YqGLZlgb6RLPS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 Content-Disposition: inline
 
-Hi All,
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
 
-While installing Framebuffer Device Driver using insmod <name>,
-I am getting the following error.
+iD8DBQFHEQS8bxf9XXlB0eERAql2AJ9LhdYFMDh+TTT5ZNjT6y3IvTaTeACfSkPG
+nbNOMHzDjxUkdF0jzBirD5Q=
+=xlX6
+-----END PGP SIGNATURE-----
 
-<name> Cannot insert <name> unknown symbol in module(8) no such file or
-directory
-
-Can anybody help in this regard?
-
-Thanks in Advance.
-
--- 
-Thanks & Regards,
-kaka
-
-------=_Part_66766_33080198.1192277026874
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<span>Hi All, <br><br>While installing Framebuffer Device Driver using insmod &lt;name&gt;, <br>I am getting the following error. <br><br>&lt;name&gt; Cannot insert &lt;name&gt; unknown symbol in module(8) no such file or directory 
-<br><br>Can anybody help in this regard? <br><br>Thanks in Advance.</span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka 
-
-------=_Part_66766_33080198.1192277026874--
+--M38YqGLZlgb6RLPS--

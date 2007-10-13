@@ -1,71 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2007 11:53:46 +0100 (BST)
-Received: from smtp.nildram.co.uk ([195.112.4.54]:37646 "EHLO
-	smtp.nildram.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20026479AbXJMKxg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 13 Oct 2007 11:53:36 +0100
-Received: from firetop.home (85-211-25-104.dyn.gotadsl.co.uk [85.211.25.104])
-	by smtp.nildram.co.uk (Postfix) with ESMTP
-	id 77DBD2BD858; Sat, 13 Oct 2007 11:53:19 +0100 (BST)
-Received: from richard by firetop.home with local (Exim 4.63)
-	(envelope-from <rsandifo@nildram.co.uk>)
-	id 1IgecT-000374-3r; Sat, 13 Oct 2007 11:53:21 +0100
-From:	Richard Sandiford <rsandifo@nildram.co.uk>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Nigel Stephens <nigel@mips.com>,
-	Franck Bui-Huu <vagabon.xyz@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>, Thiemo Seufer <ths@networkno.de>,
-	linux-mips@linux-mips.org, rsandifo@nildram.co.uk
-Cc:	Nigel Stephens <nigel@mips.com>,
-	Franck Bui-Huu <vagabon.xyz@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: [SPAM?]  Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
-	<20071002141125.GC16772@networkno.de>
-	<20071002154918.GA11312@linux-mips.org> <47038874.9050704@gmail.com>
-	<20071003131158.GL16772@networkno.de> <4703F155.4000301@gmail.com>
-	<20071003201800.GP16772@networkno.de> <47049734.6050802@gmail.com>
-	<20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com>
-	<Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
-	<4705EFE5.7090704@gmail.com>
-	<Pine.LNX.4.64N.0710051312490.17849@blysk.ds.pg.gda.pl>
-	<470A4349.9090301@gmail.com>
-	<Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl>
-	<470BE1F4.3070800@gmail.com>
-	<Pine.LNX.4.64N.0710101231290.9821@blysk.ds.pg.gda.pl>
-	<470CC0CE.9080303@mips.com>
-	<Pine.LNX.4.64N.0710111242530.16370@blysk.ds.pg.gda.pl>
-Date:	Sat, 13 Oct 2007 11:53:21 +0100
-In-Reply-To: <Pine.LNX.4.64N.0710111242530.16370@blysk.ds.pg.gda.pl> (Maciej
-	W. Rozycki's message of "Thu\, 11 Oct 2007 13\:01\:26 +0100 \(BST\)")
-Message-ID: <878x679tge.fsf@firetop.home>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2007 13:03:56 +0100 (BST)
+Received: from py-out-1112.google.com ([64.233.166.182]:41526 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20033024AbXJMMDs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 13 Oct 2007 13:03:48 +0100
+Received: by py-out-1112.google.com with SMTP id p76so2158226pyb
+        for <linux-mips@linux-mips.org>; Sat, 13 Oct 2007 05:03:47 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=9OmZdcBVtdiOFe5+RcBK7Ocn0rOO4UGoQK162NkSPwo=;
+        b=d1lkjkK3fcS3/rbY9zK8tCgkBU8qki/Rio3Hbe+vfoMIkAH4GHn7TKtZSwMsJkQdQcoWl6F6jlPRfwMC8/VTn/UdrSakuizHktkbYIJlmZXd+0dcjdVv/kqBqBpmxMUJ6xOLyonnU8CKEmkp5yhmNM+lYlBeJfk3KffG3AlsHlk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=gaHOT0t7g7Z/rEa0MaBOclWglF1y/9quKy9mqvU2beztTVCix+Qs9K0SfbcSb0yDnMPccCaj7Sv9A8pRL0qbaiq11aYRP07xNIg5mvOkr+bar6GZcOkxRr5IL00ErFNetkCYfuRi4aic4mJnPmuhU2Ylry8oPfQugaeit7MIZAo=
+Received: by 10.65.233.16 with SMTP id k16mr8617935qbr.1192277026888;
+        Sat, 13 Oct 2007 05:03:46 -0700 (PDT)
+Received: by 10.35.39.19 with HTTP; Sat, 13 Oct 2007 05:03:46 -0700 (PDT)
+Message-ID: <eea8a9c90710130503g5b601660l24fb02d718123f79@mail.gmail.com>
+Date:	Sat, 13 Oct 2007 17:33:46 +0530
+From:	kaka <share.kt@gmail.com>
+To:	celinux-dev@tree.celinuxforum.org, linux-mips@linux-mips.org
+Subject: insmod:unknown symbol
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@nildram.co.uk>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_66766_33080198.1192277026874"
+Return-Path: <share.kt@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17011
+X-archive-position: 17012
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@nildram.co.uk
+X-original-sender: share.kt@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-"Maciej W. Rozycki" <macro@linux-mips.org> writes:
-> On Wed, 10 Oct 2007, Nigel Stephens wrote:
->> Actually the -march=4ksd option will allow gcc to use of the SmartMIPS lwxs
->> (indexed load) instruction, which could save a few instructions here and
->> there.
->
->  Good point, but if we decide the lone instruction is worth the hassle, 
-> then we should use "-msmartmips" on top of the base ISA selection.  
-> Likewise with "lwx" and "-mdsp".
+------=_Part_66766_33080198.1192277026874
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-For the record, although that's true of SDE, it isn't (yet) true of
-FSF GCC; you need -msmartmips for that.
+Hi All,
 
-Richard
+While installing Framebuffer Device Driver using insmod <name>,
+I am getting the following error.
+
+<name> Cannot insert <name> unknown symbol in module(8) no such file or
+directory
+
+Can anybody help in this regard?
+
+Thanks in Advance.
+
+-- 
+Thanks & Regards,
+kaka
+
+------=_Part_66766_33080198.1192277026874
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+<span>Hi All, <br><br>While installing Framebuffer Device Driver using insmod &lt;name&gt;, <br>I am getting the following error. <br><br>&lt;name&gt; Cannot insert &lt;name&gt; unknown symbol in module(8) no such file or directory 
+<br><br>Can anybody help in this regard? <br><br>Thanks in Advance.</span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka 
+
+------=_Part_66766_33080198.1192277026874--

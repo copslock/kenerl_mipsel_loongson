@@ -1,92 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Oct 2007 19:01:35 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.177]:44006 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20033512AbXJMSB0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 13 Oct 2007 19:01:26 +0100
-Received: by py-out-1112.google.com with SMTP id p76so2283666pyb
-        for <linux-mips@linux-mips.org>; Sat, 13 Oct 2007 11:01:07 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=n6IeUvlsTHKyzj5LJLdO8c6bCPG7NQYDwVgFndkQ3HM=;
-        b=q3vlxSad1xGgxcLdxEnPpMO4KOGzHxYjE3BObdOgbVzsD1Obd3eMJ/BgVvT6jSF4h1NX2E1GK7cSCvy+1Y3BtuXrp3lqJzBISn7pXEatOpyTSW/zlnRsSdfuqPg6fjiAi4ifHYkiBaFWY1hNS2oyGBFMQx/fQclZBb/q5oSKGEM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=BMMBFVMZsddRbVdq385Mq32+nH1KejzDtkQPHTgou8cTPCBzZ2vNEp2DaC9r5suK1h/gwllHEiumXAvObKNnK2Dr6nOem+cz4hEbB3TTL+B5CMDQUqkWJsy1OgeZQNAOFKfr1Z5hV/a7U+D8Xc91YB63GzhW/2ja6GVs0mEq1aE=
-Received: by 10.35.83.20 with SMTP id k20mr5288918pyl.1192298467520;
-        Sat, 13 Oct 2007 11:01:07 -0700 (PDT)
-Received: by 10.35.39.19 with HTTP; Sat, 13 Oct 2007 11:01:07 -0700 (PDT)
-Message-ID: <eea8a9c90710131101r2a8690f5t80ef21dc756dd50c@mail.gmail.com>
-Date:	Sat, 13 Oct 2007 23:31:07 +0530
-From:	kaka <share.kt@gmail.com>
-To:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org.
-Subject: insmod: unknown symbol error(updated)
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_67213_21852137.1192298467513"
-Return-Path: <share.kt@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2007 09:11:42 +0100 (BST)
+Received: from host99-201-dynamic.16-79-r.retail.telecomitalia.it ([79.16.201.99]:4040
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20026744AbXJNILd convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 14 Oct 2007 09:11:33 +0100
+Received: from [192.168.2.51]
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1IgyZL-0004aH-EW
+	for linux-mips@linux-mips.org; Sun, 14 Oct 2007 10:11:29 +0200
+Subject: Compile problems with latest GIT kernel version
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Date:	Sun, 14 Oct 2007 10:12:41 +0200
+Message-Id: <1192349561.17182.11.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
+Content-Transfer-Encoding: 8BIT
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17014
+X-archive-position: 17015
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: share.kt@gmail.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_67213_21852137.1192298467513
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Hi *,
+I am investigating a new problem (already reported in this list by
+Martin Michlmayr) about the serial device on the SGI O2. While
+recompiling the latest kernel I get this error:
 
-Hi All,
+make[1]: Entering directory `/usr/local/src/kernel/linux-2.6.23'
+  CHK     include/linux/version.h
+  CHK     include/linux/utsrelease.h
+  Checking missing-syscalls for N32
+  CALL    scripts/checksyscalls.sh
+  Checking missing-syscalls for O32
+  CALL    scripts/checksyscalls.sh
+  CALL    scripts/checksyscalls.sh
+  CHK     include/linux/compile.h
+  CC      arch/mips/kernel/time.o
+arch/mips/kernel/time.c: In function ‘mips_clockevent_init’:
+arch/mips/kernel/time.c:399: error: ‘MIPS_CPU_IRQ_BASE’ undeclared (first use in this function)
+arch/mips/kernel/time.c:399: error: (Each undeclared identifier is reported only once
+arch/mips/kernel/time.c:399: error: for each function it appears in.)
+make[2]: *** [arch/mips/kernel/time.o] Error 1
+make[1]: *** [arch/mips/kernel] Error 2
+make[1]: Leaving directory `/usr/local/src/kernel/linux-2.6.23'
+make: *** [debian/stamp-build-kernel] Error 2
 
-Actually we have wriitten a framebuffer driver for MIPS platform(cross
-compiled at intel86 linux box).
-We are installing it by insmod command.
-Then we are getting the following error.
-<name> Cannot insert <name> unknown symbol in module(8) no such file or
-directory
-Also it has some code and function for propertiary graphics code.
-For that i have we have added supplementary <supp.ko> file to be linked with
-the main frame buffer driver
-in the makefile to provide the reference for the symbols for the propertiary
-graphics code.
-We have added the line LICENCE_MODULE(GPL) in main frame buffer driver
-code(<name>)
+But I don't know what to do. Is this a #define missing for ip32?
 
-Can anybody help in this regard?
-Thanks in advance.
-
-
-
--- 
-Thanks & Regards,
-kaka
-
--- 
-Thanks & Regards,
-kaka
-
-------=_Part_67213_21852137.1192298467513
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<div>Hi All,</div>
-<div>&nbsp;</div>
-<div>Actually we have wriitten a framebuffer driver for MIPS platform(cross compiled at intel86 linux box).</div>
-<div>We are installing it by insmod command.</div>
-<div>Then we are getting the following error.</div>
-<div>&lt;name&gt; Cannot insert &lt;name&gt; unknown symbol in module(8) no such file or directory<br>Also it has some code and function for propertiary graphics code.</div>
-<div>For that i have we have added supplementary &lt;supp.ko&gt; file to be linked with the main frame buffer driver </div>
-<div>in the makefile to provide the reference for the symbols for the propertiary graphics code.</div>
-<div>We have added the line LICENCE_MODULE(GPL) in main frame buffer driver code(&lt;name&gt;)</div>
-<div>&nbsp;</div>
-<div>Can anybody help in this regard?</div>
-<div>Thanks in advance.<br>&nbsp;</div><br clear="all"><br>-- <br>Thanks &amp; Regards,<br><span>kaka </span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka 
-
-------=_Part_67213_21852137.1192298467513--
+Bye,
+Giuseppe

@@ -1,80 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2007 11:49:28 +0100 (BST)
-Received: from tool.snarl.nl ([82.95.241.19]:33037 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S20027042AbXJNKtU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 14 Oct 2007 11:49:20 +0100
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id 3403A5DF8D;
-	Sun, 14 Oct 2007 12:49:14 +0200 (CEST)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id RUNdiejAwT13; Sun, 14 Oct 2007 12:49:13 +0200 (CEST)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id AFFDF5DF2B; Sun, 14 Oct 2007 12:49:13 +0200 (CEST)
-Date:	Sun, 14 Oct 2007 12:49:13 +0200
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	kaka <share.kt@gmail.com>
-Cc:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org
-Subject: Re: insmod: unknown symbol error(updated)
-Message-ID: <20071014104913.GF7271@dusktilldawn.nl>
-References: <eea8a9c90710131101r2a8690f5t80ef21dc756dd50c@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Oct 2007 14:20:02 +0100 (BST)
+Received: from emailhub.stusta.mhn.de ([141.84.69.5]:6334 "EHLO
+	mailhub.stusta.mhn.de") by ftp.linux-mips.org with ESMTP
+	id S20034480AbXJNNTw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 14 Oct 2007 14:19:52 +0100
+Received: from r063144.stusta.swh.mhn.de (r063144.stusta.swh.mhn.de [10.150.63.144])
+	by mailhub.stusta.mhn.de (Postfix) with ESMTP id CA45B182DD4;
+	Sun, 14 Oct 2007 15:20:10 +0200 (CEST)
+Received: by r063144.stusta.swh.mhn.de (Postfix, from userid 1000)
+	id 8A3403CE30F; Sun, 14 Oct 2007 15:19:48 +0200 (CEST)
+Date:	Sun, 14 Oct 2007 15:19:48 +0200
+From:	Adrian Bunk <bunk@kernel.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: -git mips defconfig compile error
+Message-ID: <20071014131948.GF4211@stusta.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/aVve/J9H4Wl5yVO"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <eea8a9c90710131101r2a8690f5t80ef21dc756dd50c@mail.gmail.com>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
 User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <freddy@dusktilldawn.nl>
+Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17016
+X-archive-position: 17017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
+Commit 05dc8c02bf40090e9ed23932b1980ead48eb8870 causes the following 
+compile error with the mips defconfig:
 
---/aVve/J9H4Wl5yVO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+<--  snip  -->
 
-Hi Kaka,
+...
+  CC      drivers/video/logo/logo.o
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c: In function 'fb_find_logo':
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: 'mips_machgroup' undeclared (first use in this function)
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: (Each undeclared identifier is reported only once
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: for each function it appears in.)
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: 'MACH_GROUP_SGI' undeclared (first use in this function)
+make[4]: *** [drivers/video/logo/logo.o] Error 1
 
-On Sat, Oct 13, 2007 at 11:31:07PM +0530, kaka wrote:
-> For that i have we have added supplementary <supp.ko> file to be linked w=
-ith
-> the main frame buffer driver
-> in the makefile to provide the reference for the symbols for the properti=
-ary
-> graphics code.
+<--  snip  -->
 
-If I was you I would look at how other kernel modules export
-their to be exported symbols. Try to understand the mechanism by
-adding new symbols and use them.
+It seems the drivers/net/jazzsonic.c and drivers/video/logo/logo.c parts 
+that are part of the corresponding commit in the mips git tree got lost
+somewhere.
 
+cu
+Adrian
 
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+-- 
 
---/aVve/J9H4Wl5yVO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFHEfQpbxf9XXlB0eERAhl/AKD5gjYDxZdboaq+sP4vIp5cWVqKoQCg17GP
-pb1gQkpMMRaSmiPfG8J8wPk=
-=3cYn
------END PGP SIGNATURE-----
-
---/aVve/J9H4Wl5yVO--
+       "Is there not promise of rain?" Ling Tan asked suddenly out
+        of the darkness. There had been need of rain for many days.
+       "Only a promise," Lao Er said.
+                                       Pearl S. Buck - Dragon Seed

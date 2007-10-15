@@ -1,60 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 17:01:14 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:65474 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20036890AbXJOQBL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 17:01:11 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9FG19Df018028;
-	Mon, 15 Oct 2007 17:01:09 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9FG19r5018027;
-	Mon, 15 Oct 2007 17:01:09 +0100
-Date:	Mon, 15 Oct 2007 17:01:09 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [RFC] Add __initbss section
-Message-ID: <20071015160109.GA11048@linux-mips.org>
-References: <470DF25E.60009@gmail.com> <20071011124410.GA17202@linux-mips.org> <47127110.4060206@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 17:19:58 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:40341 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20036632AbXJOQTt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 17:19:49 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C44EC400DE;
+	Mon, 15 Oct 2007 18:19:50 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id L4pDNVUa0VAT; Mon, 15 Oct 2007 18:19:45 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 4E56240085;
+	Mon, 15 Oct 2007 18:19:45 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9FGJn5O025026;
+	Mon, 15 Oct 2007 18:19:49 +0200
+Date:	Mon, 15 Oct 2007 17:19:43 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Adrian Bunk <bunk@kernel.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: -git mips defconfig compile error
+In-Reply-To: <20071015095535.GB9896@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0710151715200.16262@blysk.ds.pg.gda.pl>
+References: <20071014131948.GF4211@stusta.de> <20071015095535.GB9896@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47127110.4060206@gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4540/Sun Oct 14 03:43:55 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17042
+X-archive-position: 17043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Oct 14, 2007 at 09:42:08PM +0200, Franck Bui-Huu wrote:
+On Mon, 15 Oct 2007, Ralf Baechle wrote:
 
-> > .exit.data and .exit.text may reference each other.  __exit functions
-> > generally get compiled into .exit.text but some constructs such as jump
-> > tables for switch() constructs may be compiled into address tables which
-> > gcc unfortunately will put into .rodata, so .rodata will end up
-> > referencing function addresses in .exit.text which makes ld unhappy if
-> > .exit.text was discarded.  So until this is fixed in gcc we can't
-> > discard exit code, unfortunately.
-> > 
-> 
-> Thanks for the details.
-> 
-> I actually don't see any point to move these tables in .rodata since
-> they're part of the code...
+> The logo.c bit I've sent out a few weeks ago so I'm just waiting for that
+> patch to resurface at the other end of the wormhole.
 
-As I recall the argumentation was they should go there because that section
-can be marked no-exec.  Which isn't terribly useful on MIPS where only
-very few processors have the no-exec capability.
+ Hmm, I would have waited for this to happen before committing the change 
+depending on it not to keep things known-broken then...  That's what I do 
+with my bits, e.g. I have an update to platform code waiting till 
+sb1250-mac.c changes come over here.
 
-Anyway, I guess it takes somebody to cook a patch :-)
-
-  Ralf
+  Maciej

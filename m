@@ -1,113 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 08:35:12 +0100 (BST)
-Received: from py-out-1112.google.com ([64.233.166.179]:14812 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20027085AbXJOHfC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 08:35:02 +0100
-Received: by py-out-1112.google.com with SMTP id p76so2977666pyb
-        for <linux-mips@linux-mips.org>; Mon, 15 Oct 2007 00:34:40 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=UqZEJ8/VVh9sN/kZSHeuK+QYrjUZ0CpyNRB6UBZA+Q4=;
-        b=PA0Y4OPN1Ou/+JLNz/Id4YOzU0Ce/w4n+qPtLK2z3G4gHQuZNo9AGQNTmglTEQ1n807BOu7vOnE/Gtk+pRENlcd8zOqo8AQ+WH0/RV6KQHe0raurF9XAuxV/5eHtpcPaFcjVlnO/tT+IEcedi9UhvOGzfYruDDfdhKYv5w5l/ts=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:mime-version:content-type;
-        b=kQT/bZwXr5tdrcm4Je2VRVv9RVBaq5IGhAtQEdImrhTLvfLxPcQEQgZshbP+qPjinvMQ2/DDuENAOjF+a/RiZTZguLo9HvCE5FC6jZF8oROGYnFPaBBKRPhyGWSP0ydc60NyvE2Kewp4aixTSaDi1buDNHWuUBPKUIqg2O7lt4Q=
-Received: by 10.35.49.4 with SMTP id b4mr7359816pyk.1192433680516;
-        Mon, 15 Oct 2007 00:34:40 -0700 (PDT)
-Received: by 10.35.39.19 with HTTP; Mon, 15 Oct 2007 00:34:40 -0700 (PDT)
-Message-ID: <eea8a9c90710150034m40be367cmae5a42c028592c8c@mail.gmail.com>
-Date:	Mon, 15 Oct 2007 13:04:40 +0530
-From:	kaka <share.kt@gmail.com>
-To:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org, 
-	linux-fbdev-users@lists.sourceforge.net.
-Subject: insmod: Cannot insert Framebuffer_Driver.ko unknown symbol in module(urgent)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 10:55:40 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:20195 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20034501AbXJOJzi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 10:55:38 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9F9taYn028989;
+	Mon, 15 Oct 2007 10:55:36 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9F9ta7s028983;
+	Mon, 15 Oct 2007 10:55:36 +0100
+Date:	Mon, 15 Oct 2007 10:55:36 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Adrian Bunk <bunk@kernel.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: -git mips defconfig compile error
+Message-ID: <20071015095535.GB9896@linux-mips.org>
+References: <20071014131948.GF4211@stusta.de>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_1216_32461206.1192433680503"
-Return-Path: <share.kt@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071014131948.GF4211@stusta.de>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17030
+X-archive-position: 17031
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: share.kt@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_1216_32461206.1192433680503
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Sun, Oct 14, 2007 at 03:19:48PM +0200, Adrian Bunk wrote:
 
-Hi All,
+> Commit 05dc8c02bf40090e9ed23932b1980ead48eb8870 causes the following 
+> compile error with the mips defconfig:
+> 
+> <--  snip  -->
+> 
+> ...
+>   CC      drivers/video/logo/logo.o
+> /home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c: In function 'fb_find_logo':
+> /home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: 'mips_machgroup' undeclared (first use in this function)
+> /home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: (Each undeclared identifier is reported only once
+> /home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: for each function it appears in.)
+> /home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/video/logo/logo.c:91: error: 'MACH_GROUP_SGI' undeclared (first use in this function)
+> make[4]: *** [drivers/video/logo/logo.o] Error 1
+> 
+> <--  snip  -->
+> 
+> It seems the drivers/net/jazzsonic.c and drivers/video/logo/logo.c parts 
+> that are part of the corresponding commit in the mips git tree got lost
+> somewhere.
 
-we have wriitten a framebuffer driver for MIPS platform(cross compiled at
-intel86 linux box).
-We are installing it by insmod command.
-Then we are getting the following error.
-Framebuffer_Driver.ko  Cannot insert Framebuffer_Driverko unknown symbol in
-module(8) no such file or directory
-Also it has some code and function for propertiary graphics code.
-For that i have we have added supplementary <supp.ko> file to be linked with
-the main frame buffer driver (Framebuffer_Driver.ko )
-in the makefile to provide the reference for the symbols for the propertiary
-graphics code.
-We have added the line LICENCE_MODULE(GPL) in main frame buffer driver
-code(Framebuffer_Driver.ko ).
+The logo.c bit I've sent out a few weeks ago so I'm just waiting for that
+patch to resurface at the other end of the wormhole.
 
-It is giving error that multiple definition of init_module function.
-i guess 1 for Framebuffer_Driver.ko  and the other supplementary <supp.ko>
-which is linked in the make file.
+The jazzsonic breakage was caused by the not very well done "[NET]:
+Introduce and use print_mac() and DECLARE_MAC_BUF()" patch aka
+0795af5729b18218767fab27c44b1384f72dc9ad.
 
-Could anybody please help to resolve the error?
-Thanks in advance.
+(No need to mail me about build failures of default configurations; there
+is an autobuilder building them regularly ...)
 
-Regards,
-kaka
-
-
--- 
-Thanks & Regards,
-kaka
-
--- 
-Thanks & Regards,
-kaka
-
--- 
-Thanks & Regards,
-kaka
-
--- 
-Thanks & Regards,
-kaka
-
-------=_Part_1216_32461206.1192433680503
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<div>Hi All,</div>
-<div>&nbsp;</div>
-<div>we have wriitten a framebuffer driver for MIPS platform(cross compiled at intel86 linux box).</div>
-<div>We are installing it by insmod command.</div>
-<div>Then we are getting the following error.</div>
-<div>Framebuffer_Driver.ko &nbsp;Cannot insert Framebuffer_Driverko unknown symbol in module(8) no such file or directory<br>Also it has some code and function for propertiary graphics code.</div>
-<div>For that i have we have added supplementary &lt;supp.ko&gt; file to be linked with the main frame buffer driver (Framebuffer_Driver.ko )</div>
-<div>in the makefile to provide the reference for the symbols for the propertiary graphics code.</div>
-<div>We have added the line LICENCE_MODULE(GPL) in main frame buffer driver code(Framebuffer_Driver.ko ).</div>
-<div>&nbsp;</div>
-<div>It is&nbsp;giving error&nbsp;that multiple definition of init_module function.</div>
-<div>i guess 1 for Framebuffer_Driver.ko&nbsp; and the other supplementary &lt;supp.ko&gt; which is linked in the make file.</div>
-<div>&nbsp;</div>
-<div>Could&nbsp;anybody please help to resolve the error?</div>
-<div>Thanks in advance.<br>&nbsp;</div>
-<div>Regards,</div>
-<div>kaka</div><br clear="all"><br>-- <br>Thanks &amp; Regards,<br><span>kaka </span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br><span>kaka </span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br><span class="sg">
-kaka </span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka 
-
-------=_Part_1216_32461206.1192433680503--
+  Ralf

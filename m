@@ -1,31 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 14:18:21 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:49645 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 14:27:34 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:53705 "EHLO
 	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20036617AbXJONSN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 14:18:13 +0100
+	id S20036629AbXJON10 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 14:27:26 +0100
 Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id DF26D400E0;
-	Mon, 15 Oct 2007 15:17:43 +0200 (CEST)
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 93DAB400E0;
+	Mon, 15 Oct 2007 15:26:56 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
 Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
 	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id bUFV2a+KQGxf; Mon, 15 Oct 2007 15:17:36 +0200 (CEST)
+	with ESMTP id soL+YVr66cWM; Mon, 15 Oct 2007 15:26:49 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 9D4A540085;
-	Mon, 15 Oct 2007 15:17:36 +0200 (CEST)
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D68D440085;
+	Mon, 15 Oct 2007 15:26:49 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9FDHcQc015035;
-	Mon, 15 Oct 2007 15:17:38 +0200
-Date:	Mon, 15 Oct 2007 14:17:33 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9FDQrwB017046;
+	Mon, 15 Oct 2007 15:26:53 +0200
+Date:	Mon, 15 Oct 2007 14:26:49 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Richard Sandiford <rsandifo@nildram.co.uk>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
 cc:	Nigel Stephens <nigel@mips.com>,
-	Franck Bui-Huu <vagabon.xyz@gmail.com>,
 	Ralf Baechle <ralf@linux-mips.org>,
 	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
 Subject: Re: [SPAM?]  Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-In-Reply-To: <878x679tge.fsf@firetop.home>
-Message-ID: <Pine.LNX.4.64N.0710151350330.16262@blysk.ds.pg.gda.pl>
+In-Reply-To: <47126FEE.5000400@gmail.com>
+Message-ID: <Pine.LNX.4.64N.0710151419150.16262@blysk.ds.pg.gda.pl>
 References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
  <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org>
  <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de>
@@ -36,7 +35,7 @@ References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
  <470A4349.9090301@gmail.com> <Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl>
  <470BE1F4.3070800@gmail.com> <Pine.LNX.4.64N.0710101231290.9821@blysk.ds.pg.gda.pl>
  <470CC0CE.9080303@mips.com> <Pine.LNX.4.64N.0710111242530.16370@blysk.ds.pg.gda.pl>
- <878x679tge.fsf@firetop.home>
+ <47126FEE.5000400@gmail.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.91.2/4540/Sun Oct 14 03:43:55 2007 on piorun.ds.pg.gda.pl
@@ -45,7 +44,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17037
+X-archive-position: 17038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,16 +52,28 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 13 Oct 2007, Richard Sandiford wrote:
+On Sun, 14 Oct 2007, Franck Bui-Huu wrote:
 
-> >  Good point, but if we decide the lone instruction is worth the hassle, 
-> > then we should use "-msmartmips" on top of the base ISA selection.  
-> > Likewise with "lwx" and "-mdsp".
+> >  Though either way I am not sure these would have to be put in Kconfig or 
+> > Makefile anywhere.  A generic way should be enough for the insistent as 
+> > the potentially useful options may proliferate; we have the CFLAGS_KERNEL 
+> > and CFLAGS_MODULE Makefile variables that would suit for setting upon 
+> > `make' invocation.
 > 
-> For the record, although that's true of SDE, it isn't (yet) true of
-> FSF GCC; you need -msmartmips for that.
+> In that case very few people would use this optimization.
 
- Ah, another argument in favour to the generic approach...  Thanks for the 
-point.
+ It's their problem then, isn't it?
+
+> We could just have one new Kconfig option in kernel hacking submenu:
+> 
+> config EXTRA_CFLAGS
+> 	string
+> 	help
+> 	  If you want to pass additionnal option to GCC
+> 	  for optimization purpose for example, use this.
+
+ I don't think we want to see clueless reports from people who have not 
+bothered themselves to understand how `make' works and happened to put 
+some rubbish into CONFIG_EXTRA_CFLAGS.  Do we?
 
   Maciej

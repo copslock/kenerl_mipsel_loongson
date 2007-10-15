@@ -1,61 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 02:42:51 +0100 (BST)
-Received: from alnrmhc15.comcast.net ([204.127.225.95]:31367 "EHLO
-	alnrmhc15.comcast.net") by ftp.linux-mips.org with ESMTP
-	id S20026988AbXJOBmm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 02:42:42 +0100
-Received: from [192.168.1.4] (c-69-140-18-238.hsd1.md.comcast.net[69.140.18.238])
-          by comcast.net (alnrmhc15) with ESMTP
-          id <20071015014158b1500hu6sde>; Mon, 15 Oct 2007 01:41:58 +0000
-Message-ID: <4712C55F.8060107@gentoo.org>
-Date:	Sun, 14 Oct 2007 21:41:51 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 08:35:12 +0100 (BST)
+Received: from py-out-1112.google.com ([64.233.166.179]:14812 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20027085AbXJOHfC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 08:35:02 +0100
+Received: by py-out-1112.google.com with SMTP id p76so2977666pyb
+        for <linux-mips@linux-mips.org>; Mon, 15 Oct 2007 00:34:40 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=UqZEJ8/VVh9sN/kZSHeuK+QYrjUZ0CpyNRB6UBZA+Q4=;
+        b=PA0Y4OPN1Ou/+JLNz/Id4YOzU0Ce/w4n+qPtLK2z3G4gHQuZNo9AGQNTmglTEQ1n807BOu7vOnE/Gtk+pRENlcd8zOqo8AQ+WH0/RV6KQHe0raurF9XAuxV/5eHtpcPaFcjVlnO/tT+IEcedi9UhvOGzfYruDDfdhKYv5w5l/ts=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=kQT/bZwXr5tdrcm4Je2VRVv9RVBaq5IGhAtQEdImrhTLvfLxPcQEQgZshbP+qPjinvMQ2/DDuENAOjF+a/RiZTZguLo9HvCE5FC6jZF8oROGYnFPaBBKRPhyGWSP0ydc60NyvE2Kewp4aixTSaDi1buDNHWuUBPKUIqg2O7lt4Q=
+Received: by 10.35.49.4 with SMTP id b4mr7359816pyk.1192433680516;
+        Mon, 15 Oct 2007 00:34:40 -0700 (PDT)
+Received: by 10.35.39.19 with HTTP; Mon, 15 Oct 2007 00:34:40 -0700 (PDT)
+Message-ID: <eea8a9c90710150034m40be367cmae5a42c028592c8c@mail.gmail.com>
+Date:	Mon, 15 Oct 2007 13:04:40 +0530
+From:	kaka <share.kt@gmail.com>
+To:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org, 
+	linux-fbdev-users@lists.sourceforge.net.
+Subject: insmod: Cannot insert Framebuffer_Driver.ko unknown symbol in module(urgent)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Johannes Dickgreber <tanzy@gmx.de>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] arch/mips/pci/ioc3.c
-References: <47093583.6010407@gmx.de> <20071009133503.GA1788@linux-mips.org>
-In-Reply-To: <20071009133503.GA1788@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_1216_32461206.1192433680503"
+Return-Path: <share.kt@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17029
+X-archive-position: 17030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: share.kt@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Sun, Oct 07, 2007 at 09:37:39PM +0200, Johannes Dickgreber wrote:
->> From: Johannes Dickgreber <tanzy@gmx.de>
->> Date: Sun, 07 Oct 2007 21:37:39 +0200
->> To: Ralf Baechle <ralf@linux-mips.org>
->> CC: Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
->> Subject: [PATCH] arch/mips/pci/ioc3.c 
->> Content-Type: text/plain; charset=UTF-8
-> 
-> Kumba,
-> 
-> are you collecting Johannes' Octane patches?  They don't apply to the
-> main MIPS tree.
-> 
->   Ralf
-> 
+------=_Part_1216_32461206.1192433680503
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Yup, just haven't had enough free time to format them to apply and test.  This 
-will probably take care of the ioc3 metadriver issue until you get your 
-re-written one done.
+Hi All,
 
+we have wriitten a framebuffer driver for MIPS platform(cross compiled at
+intel86 linux box).
+We are installing it by insmod command.
+Then we are getting the following error.
+Framebuffer_Driver.ko  Cannot insert Framebuffer_Driverko unknown symbol in
+module(8) no such file or directory
+Also it has some code and function for propertiary graphics code.
+For that i have we have added supplementary <supp.ko> file to be linked with
+the main frame buffer driver (Framebuffer_Driver.ko )
+in the makefile to provide the reference for the symbols for the propertiary
+graphics code.
+We have added the line LICENCE_MODULE(GPL) in main frame buffer driver
+code(Framebuffer_Driver.ko ).
 
---Kumba
+It is giving error that multiple definition of init_module function.
+i guess 1 for Framebuffer_Driver.ko  and the other supplementary <supp.ko>
+which is linked in the make file.
+
+Could anybody please help to resolve the error?
+Thanks in advance.
+
+Regards,
+kaka
+
 
 -- 
-Gentoo/MIPS Team Lead
+Thanks & Regards,
+kaka
 
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+-- 
+Thanks & Regards,
+kaka
+
+-- 
+Thanks & Regards,
+kaka
+
+-- 
+Thanks & Regards,
+kaka
+
+------=_Part_1216_32461206.1192433680503
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+<div>Hi All,</div>
+<div>&nbsp;</div>
+<div>we have wriitten a framebuffer driver for MIPS platform(cross compiled at intel86 linux box).</div>
+<div>We are installing it by insmod command.</div>
+<div>Then we are getting the following error.</div>
+<div>Framebuffer_Driver.ko &nbsp;Cannot insert Framebuffer_Driverko unknown symbol in module(8) no such file or directory<br>Also it has some code and function for propertiary graphics code.</div>
+<div>For that i have we have added supplementary &lt;supp.ko&gt; file to be linked with the main frame buffer driver (Framebuffer_Driver.ko )</div>
+<div>in the makefile to provide the reference for the symbols for the propertiary graphics code.</div>
+<div>We have added the line LICENCE_MODULE(GPL) in main frame buffer driver code(Framebuffer_Driver.ko ).</div>
+<div>&nbsp;</div>
+<div>It is&nbsp;giving error&nbsp;that multiple definition of init_module function.</div>
+<div>i guess 1 for Framebuffer_Driver.ko&nbsp; and the other supplementary &lt;supp.ko&gt; which is linked in the make file.</div>
+<div>&nbsp;</div>
+<div>Could&nbsp;anybody please help to resolve the error?</div>
+<div>Thanks in advance.<br>&nbsp;</div>
+<div>Regards,</div>
+<div>kaka</div><br clear="all"><br>-- <br>Thanks &amp; Regards,<br><span>kaka </span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br><span>kaka </span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br><span class="sg">
+kaka </span><br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka 
+
+------=_Part_1216_32461206.1192433680503--

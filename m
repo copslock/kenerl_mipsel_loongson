@@ -1,71 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 17:20:46 +0100 (BST)
-Received: from smtp.nildram.co.uk ([195.112.4.54]:43535 "EHLO
-	smtp.nildram.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20036896AbXJOQUi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 17:20:38 +0100
-Received: from firetop.home (85-211-25-104.dyn.gotadsl.co.uk [85.211.25.104])
-	by smtp.nildram.co.uk (Postfix) with ESMTP
-	id BBB3D2B8A98; Mon, 15 Oct 2007 17:19:15 +0100 (BST)
-Received: from richard by firetop.home with local (Exim 4.63)
-	(envelope-from <rsandifo@nildram.co.uk>)
-	id 1IhSf0-0007BR-5G; Mon, 15 Oct 2007 17:19:18 +0100
-From:	Richard Sandiford <rsandifo@nildram.co.uk>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Mail-Followup-To: "Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Martin Michlmayr <tbm@cyrius.com>, David Daney <ddaney@avtrex.com>,
-	MIPS Linux List <linux-mips@linux-mips.org>, rsandifo@nildram.co.uk
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Martin Michlmayr <tbm@cyrius.com>,
-	David Daney <ddaney@avtrex.com>,
-	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: Gcc 4.2.2 broken for kernel builds
-References: <20071012172254.GA10835@linux-mips.org>
-	<470FB386.6080709@avtrex.com> <20071012175317.GB1110@linux-mips.org>
-	<470FBE08.8090004@avtrex.com> <20071012184909.GA4832@linux-mips.org>
-	<20071012191446.GK3163@deprecation.cyrius.com>
-	<20071012191645.GB4832@linux-mips.org> <87d4vj9tk7.fsf@firetop.home>
-	<Pine.LNX.4.64N.0710151553200.16262@blysk.ds.pg.gda.pl>
-Date:	Mon, 15 Oct 2007 17:19:18 +0100
-In-Reply-To: <Pine.LNX.4.64N.0710151553200.16262@blysk.ds.pg.gda.pl> (Maciej
-	W. Rozycki's message of "Mon\, 15 Oct 2007 15\:59\:51 +0100 \(BST\)")
-Message-ID: <87ve98ic55.fsf@firetop.home>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 17:21:28 +0100 (BST)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:31905 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20036897AbXJOQVU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 17:21:20 +0100
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	by relay01.mx.bawue.net (Postfix) with ESMTP id EF65A48C0D;
+	Mon, 15 Oct 2007 18:19:47 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.67)
+	(envelope-from <ths@networkno.de>)
+	id 1IhSfs-0000Yu-8F; Mon, 15 Oct 2007 17:20:12 +0100
+Date:	Mon, 15 Oct 2007 17:20:12 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org,
+	qemu-devel@nongnu.org
+Subject: Re: [Qemu-devel] QEMU/MIPS & dyntick kernel
+Message-ID: <20071015162012.GW3379@networkno.de>
+References: <20071002200644.GA19140@hall.aurel32.net> <20071015150514.GV3379@networkno.de> <20071015155847.GA17912@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@nildram.co.uk>
+Content-Disposition: inline
+In-Reply-To: <20071015155847.GA17912@linux-mips.org>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17044
+X-archive-position: 17045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@nildram.co.uk
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-"Maciej W. Rozycki" <macro@linux-mips.org> writes:
-> On Sat, 13 Oct 2007, Richard Sandiford wrote:
->> FWIW, I've added some notes about the underlying cause.  I think this
->> could in principle happen with any gcc release.
->
->  It has been seen with GCC 3.4 and IIRC SDE has a hack in binutils to 
-> disable this error as a workaround.  I guess the problem has always been 
-> there since explicit relocs were added to GCC; it is just it hardly ever 
-> happens.
+Ralf Baechle wrote:
+> On Mon, Oct 15, 2007 at 04:05:14PM +0100, Thiemo Seufer wrote:
+> 
+> > I found Qemu/MIPS locks up in the emulated kernel's calibrate_delay
+> > function. Switching the kernel option off works around the problem.
+> 
+> I still haven't patched up the issue which was causing the problem for
+> Aurel.  Is the slow execution of the emulator also the cause of what
+> you're seeing?
 
-Agreed.  And in options-speak, "explicit relocs" means both -mexplicit-relocs
-and -msplit-addresses.  The associated gas warning was disabled in the
-initial revision of sourceware binutils:
+I haven't analysed it further.
 
-1.1          (rth      03-May-99): #if 0 /* GCC code motion plus incomplete dead code elimination
-1.1          (rth      03-May-99):       can leave a %hi without a %lo.  */
-1.1          (rth      03-May-99):        if (pass == 1)
-1.1          (rth      03-May-99):          as_warn_where (l->fixp->fx_file, l->fixp->fx_line,
-1.1          (rth      03-May-99):                         _("Unmatched %%hi reloc"));
-1.1          (rth      03-May-99): #endif
 
-so I think this problem has been seen with GCC 2 as well as 3 and 4.
-
-Richard
+Thiemo

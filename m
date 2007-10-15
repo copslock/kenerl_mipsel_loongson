@@ -1,41 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 14:27:34 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:53705 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 16:00:36 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:52397 "EHLO
 	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20036629AbXJON10 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 14:27:26 +0100
+	id S20036822AbXJOPA1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 16:00:27 +0100
 Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 93DAB400E0;
-	Mon, 15 Oct 2007 15:26:56 +0200 (CEST)
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C555E400E0;
+	Mon, 15 Oct 2007 16:59:58 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
 Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
 	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id soL+YVr66cWM; Mon, 15 Oct 2007 15:26:49 +0200 (CEST)
+	with ESMTP id fCC3gg5go2ad; Mon, 15 Oct 2007 16:59:53 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D68D440085;
-	Mon, 15 Oct 2007 15:26:49 +0200 (CEST)
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 2787340085;
+	Mon, 15 Oct 2007 16:59:53 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9FDQrwB017046;
-	Mon, 15 Oct 2007 15:26:53 +0200
-Date:	Mon, 15 Oct 2007 14:26:49 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9FExu6G005827;
+	Mon, 15 Oct 2007 16:59:56 +0200
+Date:	Mon, 15 Oct 2007 15:59:51 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-cc:	Nigel Stephens <nigel@mips.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thiemo Seufer <ths@networkno.de>, linux-mips@linux-mips.org
-Subject: Re: [SPAM?]  Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-In-Reply-To: <47126FEE.5000400@gmail.com>
-Message-ID: <Pine.LNX.4.64N.0710151419150.16262@blysk.ds.pg.gda.pl>
-References: <Pine.LNX.4.64N.0710021447470.32726@blysk.ds.pg.gda.pl>
- <20071002141125.GC16772@networkno.de> <20071002154918.GA11312@linux-mips.org>
- <47038874.9050704@gmail.com> <20071003131158.GL16772@networkno.de>
- <4703F155.4000301@gmail.com> <20071003201800.GP16772@networkno.de>
- <47049734.6050802@gmail.com> <20071004121557.GA28928@linux-mips.org>
- <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl>
- <4705EFE5.7090704@gmail.com> <Pine.LNX.4.64N.0710051312490.17849@blysk.ds.pg.gda.pl>
- <470A4349.9090301@gmail.com> <Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl>
- <470BE1F4.3070800@gmail.com> <Pine.LNX.4.64N.0710101231290.9821@blysk.ds.pg.gda.pl>
- <470CC0CE.9080303@mips.com> <Pine.LNX.4.64N.0710111242530.16370@blysk.ds.pg.gda.pl>
- <47126FEE.5000400@gmail.com>
+To:	Richard Sandiford <rsandifo@nildram.co.uk>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Martin Michlmayr <tbm@cyrius.com>,
+	David Daney <ddaney@avtrex.com>,
+	MIPS Linux List <linux-mips@linux-mips.org>
+Subject: Re: Gcc 4.2.2 broken for kernel builds
+In-Reply-To: <87d4vj9tk7.fsf@firetop.home>
+Message-ID: <Pine.LNX.4.64N.0710151553200.16262@blysk.ds.pg.gda.pl>
+References: <20071012172254.GA10835@linux-mips.org> <470FB386.6080709@avtrex.com>
+ <20071012175317.GB1110@linux-mips.org> <470FBE08.8090004@avtrex.com>
+ <20071012184909.GA4832@linux-mips.org> <20071012191446.GK3163@deprecation.cyrius.com>
+ <20071012191645.GB4832@linux-mips.org> <87d4vj9tk7.fsf@firetop.home>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.91.2/4540/Sun Oct 14 03:43:55 2007 on piorun.ds.pg.gda.pl
@@ -44,7 +38,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17038
+X-archive-position: 17039
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,28 +46,14 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 14 Oct 2007, Franck Bui-Huu wrote:
+On Sat, 13 Oct 2007, Richard Sandiford wrote:
 
-> >  Though either way I am not sure these would have to be put in Kconfig or 
-> > Makefile anywhere.  A generic way should be enough for the insistent as 
-> > the potentially useful options may proliferate; we have the CFLAGS_KERNEL 
-> > and CFLAGS_MODULE Makefile variables that would suit for setting upon 
-> > `make' invocation.
-> 
-> In that case very few people would use this optimization.
+> FWIW, I've added some notes about the underlying cause.  I think this
+> could in principle happen with any gcc release.
 
- It's their problem then, isn't it?
-
-> We could just have one new Kconfig option in kernel hacking submenu:
-> 
-> config EXTRA_CFLAGS
-> 	string
-> 	help
-> 	  If you want to pass additionnal option to GCC
-> 	  for optimization purpose for example, use this.
-
- I don't think we want to see clueless reports from people who have not 
-bothered themselves to understand how `make' works and happened to put 
-some rubbish into CONFIG_EXTRA_CFLAGS.  Do we?
+ It has been seen with GCC 3.4 and IIRC SDE has a hack in binutils to 
+disable this error as a workaround.  I guess the problem has always been 
+there since explicit relocs were added to GCC; it is just it hardly ever 
+happens.
 
   Maciej

@@ -1,66 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 13:19:53 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:8607 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20036514AbXJOMTp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 13:19:45 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 9753940085;
-	Mon, 15 Oct 2007 14:19:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id CAZhX-dqV93X; Mon, 15 Oct 2007 14:19:40 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 217D3400E0;
-	Mon, 15 Oct 2007 14:19:40 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9FCJgLE022766;
-	Mon, 15 Oct 2007 14:19:42 +0200
-Date:	Mon, 15 Oct 2007 13:19:39 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [RFC] Add __initbss section
-In-Reply-To: <4712738A.5000703@gmail.com>
-Message-ID: <Pine.LNX.4.64N.0710151311350.16262@blysk.ds.pg.gda.pl>
-References: <470DF25E.60009@gmail.com> <Pine.LNX.4.64N.0710111307180.16370@blysk.ds.pg.gda.pl>
- <4712738A.5000703@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 13:59:09 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:48784 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20036581AbXJOM7H (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 13:59:07 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9FCx6IE011874;
+	Mon, 15 Oct 2007 13:59:06 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9FCx5md011873;
+	Mon, 15 Oct 2007 13:59:05 +0100
+Date:	Mon, 15 Oct 2007 13:59:05 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Compile problems with latest GIT kernel version
+Message-ID: <20071015125905.GA11725@linux-mips.org>
+References: <1192349561.17182.11.camel@scarafaggio>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4540/Sun Oct 14 03:43:55 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1192349561.17182.11.camel@scarafaggio>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17035
+X-archive-position: 17036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 14 Oct 2007, Franck Bui-Huu wrote:
+On Sun, Oct 14, 2007 at 10:12:41AM +0200, Giuseppe Sacco wrote:
 
-> >  I guess for a bss-type section you want to use something like:
-> > 
-> > 	.section .init.bss,"aw",@nobits
-> > 
-> 
-> Sorry but I'm missing your point here. This indeed should be added
-> for assembler code but I don't see how it's related with the kernel
-> image size difference I was seeing.
+> Hi *,
+> I am investigating a new problem (already reported in this list by
+> Martin Michlmayr) about the serial device on the SGI O2. While
+> recompiling the latest kernel I get this error:
 
- Well, otherwise the section is marked as containing data and therefore 
-taking space in the image.  Compare the output of `readelf -S' and/or 
-`objdump -h' with and without the directive above.
+I fixed that issue even before reading your email.  But the fix is untested
+beyond mere compilation so I'd apreciate if you could test the latest
+tree and report.
 
- What do you mean by "assembler code" in this context, BTW?  Everything is 
-assembler code, be it handwritten or GCC-generated.  Have a look at how 
-GCC sets flags for your section, by running `gcc -S' and examining the 
-output.
+Thanks,
 
-  Maciej
+  Ralf

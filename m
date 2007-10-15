@@ -1,77 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 21:07:28 +0100 (BST)
-Received: from fk-out-0910.google.com ([209.85.128.187]:13579 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037645AbXJOUHS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 21:07:18 +0100
-Received: by fk-out-0910.google.com with SMTP id f40so1771118fka
-        for <linux-mips@linux-mips.org>; Mon, 15 Oct 2007 13:07:17 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=oKdYBCPtTrHmuCzka+Wi2GAT3LB1CbLgEtQSkuaMddY=;
-        b=aH5agP1DX4dUxBw8REGtA+49/m/ZS6wr6qXZtKU+ZOcSxUvCH07/n16+wPs3b2nYB+H0z7GDmk2OQfGOKPz7SvKO7ECorQZYUEsMQ/0mHDRmF6O1mcZju3mOqkmgaD0NY/13cT4OfmtDgs/hbYJaPcRfT0QCqIPgHyna/4dSu58=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=Se6w1K71fNsEHw1EPdIT2WisY5AdA78CjHEkLgB1bFcSY9AAIzXrxcfpUqsQHTAcQgD2TXOpJy9mqvRvD0S8c5hqfcGv2WYYwFI9EIZdrehU/MdQnz6nz+/87eiM/iHkvTsZjBqSGtscDzyX2Hd+/4jSxYl4PMdXDgNnJKXmUXY=
-Received: by 10.82.178.11 with SMTP id a11mr11970306buf.1192478837664;
-        Mon, 15 Oct 2007 13:07:17 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id j9sm8721565mue.2007.10.15.13.07.16
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 15 Oct 2007 13:07:16 -0700 (PDT)
-Message-ID: <4713C840.8080206@gmail.com>
-Date:	Mon, 15 Oct 2007 22:06:24 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 21:14:53 +0100 (BST)
+Received: from dmz.mips-uk.com ([194.74.144.194]:37125 "EHLO dmz.mips-uk.com")
+	by ftp.linux-mips.org with ESMTP id S20037654AbXJOUOp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 15 Oct 2007 21:14:45 +0100
+Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
+	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
+	id 1IhWHa-0001Lw-00; Mon, 15 Oct 2007 21:11:22 +0100
+Received: from ukcvpn18.mips-uk.com ([192.168.193.18])
+	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1IhWHN-0002xz-00; Mon, 15 Oct 2007 21:11:10 +0100
+Message-ID: <4713C958.8080805@mips.com>
+Date:	Mon, 15 Oct 2007 21:11:04 +0100
+From:	Nigel Stephens <nigel@mips.com>
+User-Agent: IceDove 1.5.0.12 (X11/20070607)
 MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [RFC] Add __initbss section
-References: <470DF25E.60009@gmail.com> <Pine.LNX.4.64N.0710111307180.16370@blysk.ds.pg.gda.pl> <4712738A.5000703@gmail.com> <Pine.LNX.4.64N.0710151311350.16262@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0710151311350.16262@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+CC:	Thiemo Seufer <ths@networkno.de>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+References: <20071004121557.GA28928@linux-mips.org> <4705004C.5000705@gmail.com> <Pine.LNX.4.64N.0710041616570.10573@blysk.ds.pg.gda.pl> <4705EFE5.7090704@gmail.com> <Pine.LNX.4.64N.0710051312490.17849@blysk.ds.pg.gda.pl> <470A4349.9090301@gmail.com> <Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl> <470BE1F4.3070800@gmail.com> <Pine.LNX.4.64N.0710101231290.9821@blysk.ds.pg.gda.pl> <47126EDC.1060305@gmail.com> <20071014195324.GT3379@networkno.de> <4713C11F.3010903@gmail.com>
+In-Reply-To: <4713C11F.3010903@gmail.com>
+X-Enigmail-Version: 0.94.2.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+X-MIPS-Technologies-UK-MailScanner: Found to be clean
+X-MIPS-Technologies-UK-MailScanner-From: nigel@mips.com
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17056
+X-archive-position: 17057
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Sun, 14 Oct 2007, Franck Bui-Huu wrote:
-> 
->>>  I guess for a bss-type section you want to use something like:
->>>
->>> 	.section .init.bss,"aw",@nobits
->>>
->> Sorry but I'm missing your point here. This indeed should be added
->> for assembler code but I don't see how it's related with the kernel
->> image size difference I was seeing.
-> 
->  Well, otherwise the section is marked as containing data and therefore 
-> taking space in the image.
 
-Well, since .init.bss is declared as follow:
 
-	.init.bss (NOLOAD) : {
-		...
-	}
+Franck Bui-Huu wrote:
+> Thiemo Seufer wrote:
+>   
+>> Could you check what "-march=mips32r2 -smartmips -mtune=4ksd" does?
+>> I expect it to have the same result than "-march=4ksd".
+>>
+>>     
+>
+> OK, I give it a try and here are some figures:
+>
+> $ mipsel-linux-size mipssde-6.05.00-20061023/vmlinux~*
+>    text    data     bss     dec     hex filename
+> 1446130   58456   93056 1597642  1860ca mipssde-6.05.00-20061023/vmlinux~4ksd
+> 1472034   58456   93056 1623546  18c5fa mipssde-6.05.00-20061023/vmlinux~mips32r2-smartmips
+> 1446130   58456   93056 1597642  1860ca mipssde-6.05.00-20061023/vmlinux~mips32r2-smartmips-mtune4ksd
+>
+> So you're right "-march=mips32r2 -smartmips -mtune=4ksd" gives the
+> same result as "-march=4ksd"
+>
+>   
 
-data should not take any space in the image...
+IIRC that should be -msmartmips, not -smartmips.
 
-> 
->  What do you mean by "assembler code" in this context, BTW?
+> And the extra space given by "-march=mips32r2 -smartmips" is coming
+> from some additional nop instructions:
+>
+> $ mipsel-linux-objdump -D vmlinux~mips32r2-smartmips > vmlinux~mips32r2-smartmips.S
+> $ mipsel-linux-objdump -D vmlinux~4ksd > vmlinux~4ksd.S
+> $ grep -c nop *.S
+> vmlinux~4ksd.S:18708
+> vmlinux~mips32r2-smartmips.S:27895
+>
+> It seems that these extra nops are used for load delays. For example:
+>
+> vmlinux~4ksd.S:
+> --------------
+> <snip>
+> c00008b4:      8fa40040        lw      a0,64(sp)
+> c00008b8:      27a40018        addiu   a0,sp,24
+> c00008bc:      0c000148        jal     c0000520 <try_name>
+> <snip>
+>
+> vmlinux~mips32r2-smartmips.S:
+> ---------------------------
+> c00008b8:      8fa40040        lw      a0,64(sp)
+> c00008bc:      00000000        nop
+> c00008c0:      27a40018        addiu   a0,sp,24
+> c00008c4:      0c000148        jal     c0000520 <try_name>
+>
+>   
 
-I meant to be able to put data into .init.bss section from assembly
-code (*.S files) like __INITDATA does for .init.data section.
+That's weird: load delay slots should only be required by -march=mips1 
+(or no -march)
 
-		Franck
+Are you sure that the -march=mips32r2 option is really getting passed to 
+the compiler and assembler?
+
+Nigel

@@ -1,59 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 16:00:36 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:52397 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20036822AbXJOPA1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 16:00:27 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C555E400E0;
-	Mon, 15 Oct 2007 16:59:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id fCC3gg5go2ad; Mon, 15 Oct 2007 16:59:53 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 2787340085;
-	Mon, 15 Oct 2007 16:59:53 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9FExu6G005827;
-	Mon, 15 Oct 2007 16:59:56 +0200
-Date:	Mon, 15 Oct 2007 15:59:51 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Richard Sandiford <rsandifo@nildram.co.uk>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Martin Michlmayr <tbm@cyrius.com>,
-	David Daney <ddaney@avtrex.com>,
-	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: Gcc 4.2.2 broken for kernel builds
-In-Reply-To: <87d4vj9tk7.fsf@firetop.home>
-Message-ID: <Pine.LNX.4.64N.0710151553200.16262@blysk.ds.pg.gda.pl>
-References: <20071012172254.GA10835@linux-mips.org> <470FB386.6080709@avtrex.com>
- <20071012175317.GB1110@linux-mips.org> <470FBE08.8090004@avtrex.com>
- <20071012184909.GA4832@linux-mips.org> <20071012191446.GK3163@deprecation.cyrius.com>
- <20071012191645.GB4832@linux-mips.org> <87d4vj9tk7.fsf@firetop.home>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 16:06:01 +0100 (BST)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:38817 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20036832AbXJOPFx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Oct 2007 16:05:53 +0100
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	by relay01.mx.bawue.net (Postfix) with ESMTP id DCC5348C0D;
+	Mon, 15 Oct 2007 17:04:50 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.67)
+	(envelope-from <ths@networkno.de>)
+	id 1IhRVK-0007Q3-3o; Mon, 15 Oct 2007 16:05:14 +0100
+Date:	Mon, 15 Oct 2007 16:05:14 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Aurelien Jarno <aurelien@aurel32.net>
+Cc:	linux-mips@linux-mips.org, qemu-devel@nongnu.org
+Subject: Re: [Qemu-devel] QEMU/MIPS & dyntick kernel
+Message-ID: <20071015150514.GV3379@networkno.de>
+References: <20071002200644.GA19140@hall.aurel32.net>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4540/Sun Oct 14 03:43:55 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071002200644.GA19140@hall.aurel32.net>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17039
+X-archive-position: 17040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 13 Oct 2007, Richard Sandiford wrote:
+Aurelien Jarno wrote:
+> Hi,
+> 
+> As announced by Ralf Baechle, dyntick is now available on MIPS. I gave a
+> try on QEMU/MIPS, and unfortunately it doesn't work correctly.
+> 
+> In some cases the kernel schedules an event very near in the future, 
+> which means the timer is scheduled a few cycles only from its current
+> value. Unfortunately under QEMU, the timer runs too fast compared to the
+> speed at which instructions are execution. This causes a lockup of the
+> kernel. This can be triggered by running hwclock --hctosys in the guest
+> (which is run at boot time by most distributions). Until now, I haven't 
+> found any other way to trigger the bug.
 
-> FWIW, I've added some notes about the underlying cause.  I think this
-> could in principle happen with any gcc release.
+I found Qemu/MIPS locks up in the emulated kernel's calibrate_delay
+function. Switching the kernel option off works around the problem.
 
- It has been seen with GCC 3.4 and IIRC SDE has a hack in binutils to 
-disable this error as a workaround.  I guess the problem has always been 
-there since explicit relocs were added to GCC; it is just it hardly ever 
-happens.
+> The problematic code in the kernel from arch/mips/kernel/time.c is the
+> following:
+> 
+>         cnt = read_c0_count();
+>         cnt += delta;
+>         write_c0_compare(cnt);
+>         res = ((long)(read_c0_count() - cnt ) > 0) ? -ETIME : 0;
+> 
+> Note that there is a minimum value for delta (currently set to 48) to 
+> avoid lockup.
+> 
+> In QEMU, the emulated kernel runs at 100 MHz, ie very fast, which means
+> that more than 48 timer cycles happen between the two calls of
+> read_c0_count(). The code returns -ETIME, and the routine is called
+> again with 48 and so on.
+> 
+> I have tried to reduce the speed of the timer, the problem disappears
+> when running at 1MHz (on my machine).
+> 
+> Here are a few proposed ways to fix the problem (they are not exclusive):
+> 
+> 1) Improve the emulation speed for timer instructions. This is what I
+> did with the attached patch. I see no obvious reason of stopping the
+> translation after a write to CP0_Compare, so I removed that part.
 
-  Maciej
+The write could trigger an exception.
+
+
+Thiemo

@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 17:21:28 +0100 (BST)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:31905 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20036897AbXJOQVU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Oct 2007 17:21:20 +0100
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	by relay01.mx.bawue.net (Postfix) with ESMTP id EF65A48C0D;
-	Mon, 15 Oct 2007 18:19:47 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.67)
-	(envelope-from <ths@networkno.de>)
-	id 1IhSfs-0000Yu-8F; Mon, 15 Oct 2007 17:20:12 +0100
-Date:	Mon, 15 Oct 2007 17:20:12 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org,
-	qemu-devel@nongnu.org
-Subject: Re: [Qemu-devel] QEMU/MIPS & dyntick kernel
-Message-ID: <20071015162012.GW3379@networkno.de>
-References: <20071002200644.GA19140@hall.aurel32.net> <20071015150514.GV3379@networkno.de> <20071015155847.GA17912@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071015155847.GA17912@linux-mips.org>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Oct 2007 18:31:07 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:39388 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20036935AbXJORa7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 15 Oct 2007 18:30:59 +0100
+Received: from localhost (p8150-ipad303funabasi.chiba.ocn.ne.jp [123.217.154.150])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 975419BDF; Tue, 16 Oct 2007 02:29:38 +0900 (JST)
+Date:	Tue, 16 Oct 2007 02:31:25 +0900 (JST)
+Message-Id: <20071016.023125.59033711.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Re: [MIPS] Fix aliasing bug in copy_user_highpage, take 2.
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <S20036863AbXJOPrf/20071015154735Z+80955@ftp.linux-mips.org>
+References: <S20036863AbXJOPrf/20071015154735Z+80955@ftp.linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17045
+X-archive-position: 17046
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Mon, Oct 15, 2007 at 04:05:14PM +0100, Thiemo Seufer wrote:
+On Mon, 15 Oct 2007 16:47:30 +0100, linux-mips@linux-mips.org wrote:
+> Turns out 6a36458d9348265327d074bdd40bfb1c5b6fb2cb  wasn't quite right.
+> When called for a page that isn't marked dirty it would artificially
+> create an alias instead of doing the obvious thing and access the page
+> via KSEG0.
 > 
-> > I found Qemu/MIPS locks up in the emulated kernel's calibrate_delay
-> > function. Switching the kernel option off works around the problem.
-> 
-> I still haven't patched up the issue which was causing the problem for
-> Aurel.  Is the slow execution of the emulator also the cause of what
-> you're seeing?
+> The same issue also exists in copy_to_user_page and copy_from_user_page
+> which was causing the machine to die under rare circumstances for example
+> when running ps if the BUG_ON() assertion added by the earlier fix was
+> getting triggered.
 
-I haven't analysed it further.
+This commit added a SetPageDcacheDirty() call for both
+copy_to_user_page() and copy_from_user_page().  The call in
+copy_from_user_page() is really needed?
 
-
-Thiemo
+---
+Atsushi Nemoto

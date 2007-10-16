@@ -1,55 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2007 09:35:00 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.191]:28233 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024143AbXJPIew (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Oct 2007 09:34:52 +0100
-Received: by nf-out-0910.google.com with SMTP id c10so1505786nfd
-        for <linux-mips@linux-mips.org>; Tue, 16 Oct 2007 01:34:52 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=sbYqCETdlURg+aGW1XHySGj0bIrpmc4e2RLVhrj0J1Y=;
-        b=ViOnDnrRH9SJvF1FVMsNBNnYRs1g05ULBzs+jBSsvKsPaBmq278R4NGFqisqO7xctn/Q4lKaOqzjaDup69c0UpKD/QJLQgd7CN+x3eYaSBxHMRTayRUvqcWXPlc4HPXLaRlXg8VLlPZ7Nyd8dkC6b9FPXUqhaOBxV9JFJIPs9uA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=cxippUc1qniBvyaC4luRvFEiR4dJcJQmR57CpAJZ/dCQF+k1GaiFN6CnA+RX3+I8fD0K8TTulLvYsVaU2iwNpm6ZYUiAhe07ZIxMnLQ1GzFHDBt4Q0ynVnmLJ2h7BuY+1jxaqWt4yiBjetZfv++CroPQo64QBvL/1eUqDkuVvFE=
-Received: by 10.86.33.10 with SMTP id g10mr5723454fgg.1192523691845;
-        Tue, 16 Oct 2007 01:34:51 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id p9sm9720936fkb.2007.10.16.01.34.44
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 16 Oct 2007 01:34:50 -0700 (PDT)
-Message-ID: <4714776E.2010903@gmail.com>
-Date:	Tue, 16 Oct 2007 10:33:50 +0200
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Oct 2007 11:30:43 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:39331 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20039751AbXJPKae (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 16 Oct 2007 11:30:34 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 0AF7A4011C;
+	Tue, 16 Oct 2007 12:30:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id gIXsutQNyTrP; Tue, 16 Oct 2007 12:29:51 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id E2BF940085;
+	Tue, 16 Oct 2007 12:29:51 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9GATsL8030506;
+	Tue, 16 Oct 2007 12:29:54 +0200
+Date:	Tue, 16 Oct 2007 11:29:50 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
 	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [RFC] Add __initbss section
-References: <470DF25E.60009@gmail.com> <20071011124410.GA17202@linux-mips.org> <47127110.4060206@gmail.com> <20071015160109.GA11048@linux-mips.org>
-In-Reply-To: <20071015160109.GA11048@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+In-Reply-To: <4713C840.8080206@gmail.com>
+Message-ID: <Pine.LNX.4.64N.0710161123110.22596@blysk.ds.pg.gda.pl>
+References: <470DF25E.60009@gmail.com> <Pine.LNX.4.64N.0710111307180.16370@blysk.ds.pg.gda.pl>
+ <4712738A.5000703@gmail.com> <Pine.LNX.4.64N.0710151311350.16262@blysk.ds.pg.gda.pl>
+ <4713C840.8080206@gmail.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4540/Sun Oct 14 03:43:55 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17059
+X-archive-position: 17060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> As I recall the argumentation was they should go there because that section
-> can be marked no-exec.
+On Mon, 15 Oct 2007, Franck Bui-Huu wrote:
 
-Are these switch tables really different from ELF .plt or .got ?
+> Well, since .init.bss is declared as follow:
+> 
+> 	.init.bss (NOLOAD) : {
+> 		...
+> 	}
+> 
+> data should not take any space in the image...
 
-		Franck
+ The above only marks it as unloadable (cf. e.g. debugging information).  
+It is still there.
+
+> I meant to be able to put data into .init.bss section from assembly
+> code (*.S files) like __INITDATA does for .init.data section.
+
+ That does not differ from what has to be done for any other language -- 
+ultimately `gas', which is responsible for such arrangements, has to see 
+an appropriate ".section" directive.
+
+  Maciej

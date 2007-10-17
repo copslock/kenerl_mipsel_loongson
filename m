@@ -1,68 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 18:40:16 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:19162 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20040205AbXJQRkN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 Oct 2007 18:40:13 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9HHeDPi011407;
-	Wed, 17 Oct 2007 18:40:13 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9HHeCxl011406;
-	Wed, 17 Oct 2007 18:40:12 +0100
-Date:	Wed, 17 Oct 2007 18:40:12 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: plat_timer_setup, mips_timer_ack, etc.
-Message-ID: <20071017174012.GA11079@linux-mips.org>
-References: <20071017.005211.108739735.anemo@mba.ocn.ne.jp> <20071016163610.GA25794@linux-mips.org> <20071017.020113.63743059.anemo@mba.ocn.ne.jp> <20071017162837.GA5491@linux-mips.org> <471639AC.8080301@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 18:44:35 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:39297 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20040238AbXJQRo0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 Oct 2007 18:44:26 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 32C80400E8;
+	Wed, 17 Oct 2007 19:44:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id d3Ta26RpjHR9; Wed, 17 Oct 2007 19:44:21 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 2B822400A5;
+	Wed, 17 Oct 2007 19:44:21 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9HHiPW1025477;
+	Wed, 17 Oct 2007 19:44:25 +0200
+Date:	Wed, 17 Oct 2007 18:44:19 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Subject: Re: [MIPS] Probe for usability of cp0 compare interrupt.
+In-Reply-To: <20071017172345.GA7313@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0710171838510.28993@blysk.ds.pg.gda.pl>
+References: <S20022491AbXJQLKE/20071017111004Z+82239@ftp.linux-mips.org>
+ <20071018.011033.115643462.anemo@mba.ocn.ne.jp> <20071017164636.GC5491@linux-mips.org>
+ <Pine.LNX.4.64N.0710171756450.28993@blysk.ds.pg.gda.pl>
+ <20071017172345.GA7313@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <471639AC.8080301@ru.mvista.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4542/Tue Oct 16 22:31:56 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17104
+X-archive-position: 17105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 17, 2007 at 08:34:52PM +0400, Sergei Shtylyov wrote:
+On Wed, 17 Oct 2007, Ralf Baechle wrote:
 
-> >>$ git-grep mips_timer_ack arch/mips
-> >>arch/mips/dec/time.c:   mips_timer_ack = dec_timer_ack;
-> >>arch/mips/jmr3927/rbhma3100/setup.c:    mips_timer_ack = 
-> >>jmr3927_timer_ack;
-> 
->    TX3927 has three channel timer of which only channel 0 is used to 
-> implement a clocksource -- however, clocksource code whould also need to be 
-> changed since it's now jiffy-based and HRT doesn't tolerate this -- of 
-> course, if anybody still cared about this boards
-> 
-> >>arch/mips/philips/pnx8550/common/time.c:        mips_timer_ack = 
-> >>timer_ack;
-> 
->    Here we have a case of a vendor abusing the count/compare register and 
-> also adding 3 more of them. One pair can be used for clockevents, the other 
-> for clocksource (its compare reg. being programmed to all ones).
+> Ah.  I noticed there was something like white writing on white background
+> matching when I searched the PDF for keywords.  So I guess it would be
+> nice if somebody could regenerate a PS or PDF file.  I also seem to be
+> missing information on the later R4400 versions.
 
-Well, the TX3900 series is a bit of a frankenprocessor series.  Like take
-32-bits from here, a limb from the R3000 and TLB from that other processor
-and at the end shock it all well - at TTL levels that is ;-)  So it's not
-quite obvious what to expect from that beast.
+ Done; at ftp://ftp3.ds.pg.gda.pl/people/macro/MIPS/ now.
 
-My question was mostly about the jmr3927 build failing with an undefined
-reference to MIPS_CPU_IRQ_BASE.  For most other systems failing with the
-same issue it made sense to glue that by converting the platform to
-irq_cpu.  But if no device including the cp0 compare interrupt is directly
-wired to the cp0 interrupt controller then enabling that doesn't make too
-much sense.  So I guess jmr3927 and a hand full of other systems want a
-different fix.
-
-  Ralf
+  Maciej

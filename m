@@ -1,77 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 15:34:36 +0100 (BST)
-Received: from host238-171-dynamic.0-79-r.retail.telecomitalia.it ([79.0.171.238]:20379
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S20029309AbXJQOe0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 Oct 2007 15:34:26 +0100
-Received: from eppesuig3 ([192.168.2.50])
-	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1Ii9vQ-0004Xr-Nb
-	for linux-mips@linux-mips.org; Wed, 17 Oct 2007 16:31:10 +0200
-Subject: Re: Problems writing to USB devices
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 16:55:33 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:52677 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20035764AbXJQPzZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2007 16:55:25 +0100
+Received: from localhost (p2023-ipad307funabasi.chiba.ocn.ne.jp [123.217.180.23])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 9D2C29A61; Thu, 18 Oct 2007 00:55:19 +0900 (JST)
+Date:	Thu, 18 Oct 2007 00:57:07 +0900 (JST)
+Message-Id: <20071018.005707.82350767.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.64.0710170853090.22402@pixie.tetracon-eng.net>
-References: <20071017100803.7794bb87.giuseppe@eppesuigoccas.homedns.org>
-	 <Pine.LNX.4.64.0710170853090.22402@pixie.tetracon-eng.net>
-Content-Type: text/plain
-Date:	Wed, 17 Oct 2007 16:31:09 +0200
-Message-Id: <1192631469.7948.16.camel@scarafaggio>
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix typo in sibyte clockevent drivers
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.10.3 
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17091
+X-archive-position: 17092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Il giorno mer, 17/10/2007 alle 09.14 -0400, J. Scott Kasten ha scritto:
-> On Wed, 17 Oct 2007, Giuseppe Sacco wrote:
-> 
-> > Hi all, I am still testing new kernels on the ip32 platform (and 
-> > learning kernel structure :-)). Currently I found problems in writing to 
-> > USB block devices. I may read from a pendrive without problem, but when 
-> > I try to write the process stop. This is the last part of a transcript 
-> > of strace output for "pvcreate /dev/sdc" command:
-> >
-> 
-> A few questions...
-> 
-> * Which USB card, or more precisely, which chipset is on the USB card you 
-> picked?
-> 
-> I've had great luck with NEC and ALI chips thus far.
+Fix some typo introduced on clockevent conversion.
 
-giuseppe@sgi:~$ (lspci;lspci -n)| sort | grep ^01.08.02
-01:08.2 0c03: 1033:00e0 (rev 04)
-01:08.2 USB Controller: NEC Corporation USB 2.0 (rev 04)
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/sibyte/bcm1480/time.c |    2 +-
+ arch/mips/sibyte/sb1250/time.c  |    8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-> * Which driver was loaded for the USB controller, OHCI, UHCI, EHCI?
-
-giuseppe@sgi:~$ lsusb
-Bus 003 Device 001: ID 0000:0000  
-Bus 002 Device 001: ID 0000:0000  
-Bus 001 Device 003: ID 067b:2517 Prolific Technology, Inc. Flash Disk Mass Storage Device
-Bus 001 Device 002: ID 067b:2515 Prolific Technology, Inc. Flash Disk Embedded Hub
-Bus 001 Device 001: ID 0000:0000
-
-giuseppe@sgi:~$ dmesg | grep 0000:01:08
-PCI: Enabling device 0000:01:08.2 (0000 -> 0002)
-ehci_hcd 0000:01:08.2: EHCI Host Controller
-ehci_hcd 0000:01:08.2: new USB bus registered, assigned bus number 1
-ehci_hcd 0000:01:08.2: irq 15, io mem 0x280003000
-ehci_hcd 0000:01:08.2: USB 2.0 started, EHCI 1.00, driver 10 Dec 2004
-
-So, I think that PCI device 0000:01:08.2 is managed by ehci and its
-assigned USB bus #001.
-
-Bye,
-Giuseppe
+diff --git a/arch/mips/sibyte/bcm1480/time.c b/arch/mips/sibyte/bcm1480/time.c
+index 40d7126..5b4bfbb 100644
+--- a/arch/mips/sibyte/bcm1480/time.c
++++ b/arch/mips/sibyte/bcm1480/time.c
+@@ -84,7 +84,7 @@ static void sibyte_set_mode(enum clock_event_mode mode,
+ 	void __iomem *timer_cfg, *timer_init;
+ 
+ 	timer_cfg = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
+-	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
++	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_INIT));
+ 
+ 	switch (mode) {
+ 	case CLOCK_EVT_MODE_PERIODIC:
+diff --git a/arch/mips/sibyte/sb1250/time.c b/arch/mips/sibyte/sb1250/time.c
+index 38199ad..fe11fed 100644
+--- a/arch/mips/sibyte/sb1250/time.c
++++ b/arch/mips/sibyte/sb1250/time.c
+@@ -83,7 +83,7 @@ static void sibyte_set_mode(enum clock_event_mode mode,
+ 	void __iomem *timer_cfg, *timer_init;
+ 
+ 	timer_cfg = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
+-	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
++	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_INIT));
+ 
+ 	switch(mode) {
+ 	case CLOCK_EVT_MODE_PERIODIC:
+@@ -111,7 +111,7 @@ sibyte_next_event(unsigned long delta, struct clock_event_device *evt)
+ 	void __iomem *timer_cfg, *timer_init;
+ 
+ 	timer_cfg = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
+-	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
++	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_INIT));
+ 
+ 	__raw_writeq(0, timer_cfg);
+ 	__raw_writeq(delta, timer_init);
+@@ -155,7 +155,7 @@ static void sibyte_set_mode(enum clock_event_mode mode,
+ 	void __iomem *timer_cfg, *timer_init;
+ 
+ 	timer_cfg = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
+-	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
++	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_INIT));
+ 
+ 	switch (mode) {
+ 	case CLOCK_EVT_MODE_PERIODIC:
+@@ -183,7 +183,7 @@ sibyte_next_event(unsigned long delta, struct clock_event_device *evt)
+ 	void __iomem *timer_cfg, *timer_init;
+ 
+ 	timer_cfg = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
+-	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_CFG));
++	timer_init = IOADDR(A_SCD_TIMER_REGISTER(cpu, R_SCD_TIMER_INIT));
+ 
+ 	__raw_writeq(0, timer_cfg);
+ 	__raw_writeq(delta, timer_init);

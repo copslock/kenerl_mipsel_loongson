@@ -1,54 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 15:09:25 +0100 (BST)
-Received: from mx3.mail.elte.hu ([157.181.1.138]:57805 "EHLO mx3.mail.elte.hu")
-	by ftp.linux-mips.org with ESMTP id S20029190AbXJQOJP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2007 15:09:15 +0100
-Received: from elvis.elte.hu ([157.181.1.14])
-	by mx3.mail.elte.hu with esmtp (Exim)
-	id 1Ii9aE-0000J0-Po
-	from <mingo@elte.hu>; Wed, 17 Oct 2007 16:09:14 +0200
-Received: by elvis.elte.hu (Postfix, from userid 1004)
-	id A7E473E2160; Wed, 17 Oct 2007 16:09:07 +0200 (CEST)
-Date:	Wed, 17 Oct 2007 16:09:11 +0200
-From:	Ingo Molnar <mingo@elte.hu>
-To:	Dhaval Giani <dhaval@linux.vnet.ibm.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, torvalds@linux-foundation.org,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	Srivatsa Vaddagiri <vatsa@linux.vnet.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] Fix build breakage if !SYSFS
-Message-ID: <20071017140911.GA4798@elte.hu>
-References: <20071016130231.GA10778@linux-mips.org> <20071016174016.GC5693@linux.vnet.ibm.com> <20071016190044.GA24696@linux-mips.org> <20071017051611.GA11422@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071017051611.GA11422@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Received-SPF: neutral (mx3: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
-X-ELTE-VirusStatus: clean
-X-ELTE-SpamScore: -1.5
-X-ELTE-SpamLevel: 
-X-ELTE-SpamCheck: no
-X-ELTE-SpamVersion: ELTE 2.0 
-X-ELTE-SpamCheck-Details: score=-1.5 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.1.7-deb
-	-1.5 BAYES_00               BODY: Bayesian spam probability is 0 to 1%
-	[score: 0.0000]
-Return-Path: <mingo@elte.hu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 15:34:36 +0100 (BST)
+Received: from host238-171-dynamic.0-79-r.retail.telecomitalia.it ([79.0.171.238]:20379
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20029309AbXJQOe0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 Oct 2007 15:34:26 +0100
+Received: from eppesuig3 ([192.168.2.50])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1Ii9vQ-0004Xr-Nb
+	for linux-mips@linux-mips.org; Wed, 17 Oct 2007 16:31:10 +0200
+Subject: Re: Problems writing to USB devices
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.64.0710170853090.22402@pixie.tetracon-eng.net>
+References: <20071017100803.7794bb87.giuseppe@eppesuigoccas.homedns.org>
+	 <Pine.LNX.4.64.0710170853090.22402@pixie.tetracon-eng.net>
+Content-Type: text/plain
+Date:	Wed, 17 Oct 2007 16:31:09 +0200
+Message-Id: <1192631469.7948.16.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17090
+X-archive-position: 17091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@elte.hu
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
+Il giorno mer, 17/10/2007 alle 09.14 -0400, J. Scott Kasten ha scritto:
+> On Wed, 17 Oct 2007, Giuseppe Sacco wrote:
+> 
+> > Hi all, I am still testing new kernels on the ip32 platform (and 
+> > learning kernel structure :-)). Currently I found problems in writing to 
+> > USB block devices. I may read from a pendrive without problem, but when 
+> > I try to write the process stop. This is the last part of a transcript 
+> > of strace output for "pvcreate /dev/sdc" command:
+> >
+> 
+> A few questions...
+> 
+> * Which USB card, or more precisely, which chipset is on the USB card you 
+> picked?
+> 
+> I've had great luck with NEC and ALI chips thus far.
 
-* Dhaval Giani <dhaval@linux.vnet.ibm.com> wrote:
+giuseppe@sgi:~$ (lspci;lspci -n)| sort | grep ^01.08.02
+01:08.2 0c03: 1033:00e0 (rev 04)
+01:08.2 USB Controller: NEC Corporation USB 2.0 (rev 04)
 
-> Could you please include this patch to fix the build breakage?
+> * Which driver was loaded for the USB controller, OHCI, UHCI, EHCI?
 
-thanks - i've added this to the scheduler patch-queue.
+giuseppe@sgi:~$ lsusb
+Bus 003 Device 001: ID 0000:0000  
+Bus 002 Device 001: ID 0000:0000  
+Bus 001 Device 003: ID 067b:2517 Prolific Technology, Inc. Flash Disk Mass Storage Device
+Bus 001 Device 002: ID 067b:2515 Prolific Technology, Inc. Flash Disk Embedded Hub
+Bus 001 Device 001: ID 0000:0000
 
-	Ingo
+giuseppe@sgi:~$ dmesg | grep 0000:01:08
+PCI: Enabling device 0000:01:08.2 (0000 -> 0002)
+ehci_hcd 0000:01:08.2: EHCI Host Controller
+ehci_hcd 0000:01:08.2: new USB bus registered, assigned bus number 1
+ehci_hcd 0000:01:08.2: irq 15, io mem 0x280003000
+ehci_hcd 0000:01:08.2: USB 2.0 started, EHCI 1.00, driver 10 Dec 2004
+
+So, I think that PCI device 0000:01:08.2 is managed by ehci and its
+assigned USB bus #001.
+
+Bye,
+Giuseppe

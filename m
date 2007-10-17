@@ -1,185 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 06:24:32 +0100 (BST)
-Received: from E23SMTP06.au.ibm.com ([202.81.18.175]:10207 "EHLO
-	e23smtp06.au.ibm.com") by ftp.linux-mips.org with ESMTP
-	id S20024910AbXJQFYX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 Oct 2007 06:24:23 +0100
-Received: from sd0109e.au.ibm.com (d23rh905.au.ibm.com [202.81.18.225])
-	by e23smtp06.au.ibm.com (8.13.1/8.13.1) with ESMTP id l9H5O0fk024643;
-	Wed, 17 Oct 2007 15:24:00 +1000
-Received: from d23av04.au.ibm.com (d23av04.au.ibm.com [9.190.235.139])
-	by sd0109e.au.ibm.com (8.13.8/8.13.8/NCO v8.5) with ESMTP id l9H5RZhB208996;
-	Wed, 17 Oct 2007 15:27:35 +1000
-Received: from d23av04.au.ibm.com (loopback [127.0.0.1])
-	by d23av04.au.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id l9H5NiBX018360;
-	Wed, 17 Oct 2007 15:23:45 +1000
-Received: from gondor.in.ibm.com ([9.124.35.74])
-	by d23av04.au.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id l9H5NfS0018019;
-	Wed, 17 Oct 2007 15:23:42 +1000
-Received: from gondor.in.ibm.com (gondor.in.ibm.com [127.0.0.1])
-	by gondor.in.ibm.com (Postfix) with ESMTP id EDC3B245958;
-	Wed, 17 Oct 2007 10:46:22 +0530 (IST)
-Received: (from dhaval@localhost)
-	by gondor.in.ibm.com (8.14.1/8.14.1/Submit) id l9H5GBu5015952;
-	Wed, 17 Oct 2007 10:46:11 +0530
-Date:	Wed, 17 Oct 2007 10:46:11 +0530
-From:	Dhaval Giani <dhaval@linux.vnet.ibm.com>
-To:	Ralf Baechle <ralf@linux-mips.org>, torvalds@linux-foundation.org
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	Srivatsa Vaddagiri <vatsa@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@elte.hu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] Fix build breakage if !SYSFS
-Message-ID: <20071017051611.GA11422@linux.vnet.ibm.com>
-Reply-To: Dhaval Giani <dhaval@linux.vnet.ibm.com>
-References: <20071016130231.GA10778@linux-mips.org> <20071016174016.GC5693@linux.vnet.ibm.com> <20071016190044.GA24696@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071016190044.GA24696@linux-mips.org>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <dhaval@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 07:03:47 +0100 (BST)
+Received: from host108-219-dynamic.8-87-r.retail.telecomitalia.it ([87.8.219.108]:27581
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20026705AbXJQGDh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 Oct 2007 07:03:37 +0100
+Received: from localhost ([127.0.0.1] helo=sgi)
+	by eppesuigoccas.homedns.org with smtp (Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1Ii1x8-0004dV-NQ
+	for linux-mips@linux-mips.org; Wed, 17 Oct 2007 08:00:24 +0200
+Date:	Wed, 17 Oct 2007 08:00:20 +0200
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+Subject: Re: Compile problems with latest GIT kernel version
+Message-Id: <20071017080020.765e4f57.giuseppe@eppesuigoccas.homedns.org>
+In-Reply-To: <20071015125905.GA11725@linux-mips.org>
+References: <1192349561.17182.11.camel@scarafaggio>
+	<20071015125905.GA11725@linux-mips.org>
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; mips-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17078
+X-archive-position: 17079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhaval@linux.vnet.ibm.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 16, 2007 at 08:00:44PM +0100, Ralf Baechle wrote:
-> On Tue, Oct 16, 2007 at 11:10:16PM +0530, Dhaval Giani wrote:
+Hi Ralf,
+
+On Mon, 15 Oct 2007 13:59:05 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Sun, Oct 14, 2007 at 10:12:41AM +0200, Giuseppe Sacco wrote:
+> > Hi *,
+> > I am investigating a new problem (already reported in this list by
+> > Martin Michlmayr) about the serial device on the SGI O2. While
+> > recompiling the latest kernel I get this error:
 > 
-> > On Tue, Oct 16, 2007 at 02:02:31PM +0100, Ralf Baechle wrote:
-> > > Changeset 5cb350baf580017da38199625b7365b1763d7180 causes build breakage
-> > > if sysfs support is disabled:
-> > > 
-> > > kernel/built-in.o: In function `uids_kobject_init':
-> > > (.init.text+0x1488): undefined reference to `kernel_subsys'
-> > > kernel/built-in.o: In function `uids_kobject_init':
-> > > (.init.text+0x1490): undefined reference to `kernel_subsys'
-> > > kernel/built-in.o: In function `uids_kobject_init':
-> > > (.init.text+0x1480): undefined reference to `kernel_subsys'
-> > > kernel/built-in.o: In function `uids_kobject_init':
-> > > (.init.text+0x1494): undefined reference to `kernel_subsys'
-> > > 
-> > > This breaks for example mipssim_defconfig.
-> > > 
-> > >   Ralf
-> > 
-> > Hi Ralf,
-> > 
-> > Can you try this and confirm if it works?
-> 
-> Yes, this solves the issue.
+> I fixed that issue even before reading your email.  But the fix is untested
+> beyond mere compilation so I'd apreciate if you could test the latest
+> tree and report.
 
-Hi,
+Yes, now it compile.
 
-Could you please include this patch to fix the build breakage?
-
-thanks
-Dhaval
-
---
-
-When CONFIG_SYSFS is not set, CONFIG_FAIR_USER_SCHED fails to build
-with
-
-kernel/built-in.o: In function `uids_kobject_init':
-(.init.text+0x1488): undefined reference to `kernel_subsys'
-kernel/built-in.o: In function `uids_kobject_init':
-(.init.text+0x1490): undefined reference to `kernel_subsys'
-kernel/built-in.o: In function `uids_kobject_init':
-(.init.text+0x1480): undefined reference to `kernel_subsys'
-kernel/built-in.o: In function `uids_kobject_init':
-(.init.text+0x1494): undefined reference to `kernel_subsys'
-
-This patch fixes this build error.
-
-Signed-off-by: Srivatsa Vaddagiri <vatsa@linux.vnet.ibm.com>
-Signed-off-by: Dhaval Giani <dhaval@linux.vnet.ibm.com>
-
----
- include/linux/sched.h |    2 ++
- kernel/user.c         |   23 +++++++++++++++--------
- 2 files changed, 17 insertions(+), 8 deletions(-)
-
-Index: current/include/linux/sched.h
-===================================================================
---- current.orig/include/linux/sched.h
-+++ current/include/linux/sched.h
-@@ -602,10 +602,12 @@ struct user_struct {
- 
- #ifdef CONFIG_FAIR_USER_SCHED
- 	struct task_group *tg;
-+#ifdef CONFIG_SYSFS
- 	struct kset kset;
- 	struct subsys_attribute user_attr;
- 	struct work_struct work;
- #endif
-+#endif
- };
- 
- #ifdef CONFIG_FAIR_USER_SCHED
-Index: current/kernel/user.c
-===================================================================
---- current.orig/kernel/user.c
-+++ current/kernel/user.c
-@@ -87,9 +87,6 @@ static inline struct user_struct *uid_ha
- 
- #ifdef CONFIG_FAIR_USER_SCHED
- 
--static struct kobject uids_kobject; /* represents /sys/kernel/uids directory */
--static DEFINE_MUTEX(uids_mutex);
--
- static void sched_destroy_user(struct user_struct *up)
- {
- 	sched_destroy_group(up->tg);
-@@ -111,6 +108,19 @@ static void sched_switch_user(struct tas
- 	sched_move_task(p);
- }
- 
-+#else	/* CONFIG_FAIR_USER_SCHED */
-+
-+static void sched_destroy_user(struct user_struct *up) { }
-+static int sched_create_user(struct user_struct *up) { return 0; }
-+static void sched_switch_user(struct task_struct *p) { }
-+
-+#endif	/* CONFIG_FAIR_USER_SCHED */
-+
-+#if defined(CONFIG_FAIR_USER_SCHED) && defined(CONFIG_SYSFS)
-+
-+static struct kobject uids_kobject; /* represents /sys/kernel/uids directory */
-+static DEFINE_MUTEX(uids_mutex);
-+
- static inline void uids_mutex_lock(void)
- {
- 	mutex_lock(&uids_mutex);
-@@ -257,11 +267,8 @@ static inline void free_user(struct user
- 	schedule_work(&up->work);
- }
- 
--#else	/* CONFIG_FAIR_USER_SCHED */
-+#else	/* CONFIG_FAIR_USER_SCHED && CONFIG_SYSFS */
- 
--static void sched_destroy_user(struct user_struct *up) { }
--static int sched_create_user(struct user_struct *up) { return 0; }
--static void sched_switch_user(struct task_struct *p) { }
- static inline int user_kobject_create(struct user_struct *up) { return 0; }
- static inline void uids_mutex_lock(void) { }
- static inline void uids_mutex_unlock(void) { }
-@@ -280,7 +287,7 @@ static inline void free_user(struct user
- 	kmem_cache_free(uid_cachep, up);
- }
- 
--#endif	/* CONFIG_FAIR_USER_SCHED */
-+#endif
- 
- /*
-  * Locate the user_struct for the passed UID.  If found, take a ref on it.  The
-
--- 
-regards,
-Dhaval
+Thanks,
+Giuseppe

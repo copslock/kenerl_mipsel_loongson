@@ -1,60 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 17:58:48 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:2956 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20036706AbXJQQ6q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 Oct 2007 17:58:46 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9HGwkEe007134;
-	Wed, 17 Oct 2007 17:58:46 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9HGwj6M007133;
-	Wed, 17 Oct 2007 17:58:45 +0100
-Date:	Wed, 17 Oct 2007 17:58:45 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: plat_timer_setup, mips_timer_ack, etc.
-Message-ID: <20071017165844.GA7065@linux-mips.org>
-References: <20071017.005211.108739735.anemo@mba.ocn.ne.jp> <20071016163610.GA25794@linux-mips.org> <20071017.020113.63743059.anemo@mba.ocn.ne.jp> <20071017162837.GA5491@linux-mips.org> <471639AC.8080301@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 18:04:23 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:54737 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20037573AbXJQREO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 Oct 2007 18:04:14 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 0E6FF400A5;
+	Wed, 17 Oct 2007 19:03:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id jOxjaETMIUdr; Wed, 17 Oct 2007 19:03:37 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 7F46B400A4;
+	Wed, 17 Oct 2007 19:03:37 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9HH3fnL013685;
+	Wed, 17 Oct 2007 19:03:41 +0200
+Date:	Wed, 17 Oct 2007 18:03:35 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Subject: Re: [MIPS] Probe for usability of cp0 compare interrupt.
+In-Reply-To: <20071017164636.GC5491@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0710171756450.28993@blysk.ds.pg.gda.pl>
+References: <S20022491AbXJQLKE/20071017111004Z+82239@ftp.linux-mips.org>
+ <20071018.011033.115643462.anemo@mba.ocn.ne.jp> <20071017164636.GC5491@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <471639AC.8080301@ru.mvista.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4542/Tue Oct 16 22:31:56 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17099
+X-archive-position: 17100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 17, 2007 at 08:34:52PM +0400, Sergei Shtylyov wrote:
+On Wed, 17 Oct 2007, Ralf Baechle wrote:
 
-> Ralf Baechle wrote:
+> The two things are a know lose end.  There is a bug in some old MIPS
+> processors where reading one of the compare or count registers in exactly
+> the moment when both have identical values in the interrupt getting lost.
 > 
-> >>$ git-grep mips_timer_ack arch/mips
-> >>arch/mips/dec/time.c:   mips_timer_ack = dec_timer_ack;
-> >>arch/mips/jmr3927/rbhma3100/setup.c:    mips_timer_ack = 
-> >>jmr3927_timer_ack;
-> 
->    TX3927 has three channel timer of which only channel 0 is used to 
-> implement a clocksource -- however, clocksource code whould also need to be 
-> changed since it's now jiffy-based and HRT doesn't tolerate this -- of 
-> course, if anybody still cared about this boards
+> Will have to dig up the details on that one again before I can implement
+> a proper workaround ...
 
-Well, getting rid of the code where there are no users left is always the
-other solution.
+ This is the erratum #53 of the R4000PC/SC processor and it triggers if 
+the Count register is read.  Conveniently, in the errata sheet as 
+distributed, the text is covered by a figure (Figure 1a on page 13), so 
+you can only reach the page with some PostScript magic.  I did it a while 
+ago and now have a separate document available which provides the text of 
+page 13 with the figure removed.  I can provide it if there is interest.
 
-> >>arch/mips/philips/pnx8550/common/time.c:        mips_timer_ack = 
-> >>timer_ack;
-> 
->    Here we have a case of a vendor abusing the count/compare register and 
-> also adding 3 more of them. One pair can be used for clockevents, the other 
-> for clocksource (its compare reg. being programmed to all ones).
-
-  Ralf
+  Maciej

@@ -1,70 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 14:24:24 +0100 (BST)
-Received: from smtp104.plus.mail.re1.yahoo.com ([69.147.102.67]:54104 "HELO
-	smtp104.plus.mail.re1.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20028989AbXJQNYO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 Oct 2007 14:24:14 +0100
-Received: (qmail 218 invoked from network); 17 Oct 2007 13:23:08 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Received:X-YMail-OSG:Date:From:X-X-Sender:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
-  b=BxlCIPSxmWYroWFJvf6aVplGYTXYWUxHfyjQLmKgkFlF61/zSGlqPJmv8UdOgw9aoTjAGRqAoi2AN+dLVQ56xgXxQCrN5zqZuzSDD6CXKuVCwUtDvnWJ/Qg1/5F9DfebOWI2apz0VXdkw8gjUl8T5hP15hGVcOHsN5vQ4oFUo0g=  ;
-Received: from unknown (HELO ?192.168.254.6?) (jscottkasten@72.185.69.24 with login)
-  by smtp104.plus.mail.re1.yahoo.com with SMTP; 17 Oct 2007 13:23:08 -0000
-X-YMail-OSG: 52SaslcVM1nvF060jCkmltVZdYRytQHZ14vy3qMc4X52GwgOJ_2ivBuwHiFQnw8sqrFFqVDqWQ--
-Date:	Wed, 17 Oct 2007 09:14:08 -0400 (EDT)
-From:	"J. Scott Kasten" <jscottkasten@yahoo.com>
-X-X-Sender: jsk@pixie.tetracon-eng.net
-To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: Problems writing to USB devices
-In-Reply-To: <20071017100803.7794bb87.giuseppe@eppesuigoccas.homedns.org>
-Message-ID: <Pine.LNX.4.64.0710170853090.22402@pixie.tetracon-eng.net>
-References: <20071017100803.7794bb87.giuseppe@eppesuigoccas.homedns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 14:28:53 +0100 (BST)
+Received: from dmz.mips-uk.com ([194.74.144.194]:56070 "EHLO dmz.mips-uk.com")
+	by ftp.linux-mips.org with ESMTP id S20029148AbXJQN2p (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2007 14:28:45 +0100
+Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
+	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
+	id 1Ii8ty-0001lx-00; Wed, 17 Oct 2007 14:25:34 +0100
+Received: from [192.168.192.25] (helo=[127.0.0.1])
+	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
+	id 1Ii8tj-0006IT-00; Wed, 17 Oct 2007 14:25:19 +0100
+Message-ID: <47160D31.5080201@mips.com>
+Date:	Wed, 17 Oct 2007 14:25:05 +0100
+From:	Nigel Stephens <nigel@mips.com>
+User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
-Return-Path: <jscottkasten@yahoo.com>
+To:	Thiemo Seufer <ths@networkno.de>
+CC:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
+References: <Pine.LNX.4.64N.0710081611460.8873@blysk.ds.pg.gda.pl> <470BE1F4.3070800@gmail.com> <Pine.LNX.4.64N.0710101231290.9821@blysk.ds.pg.gda.pl> <47126EDC.1060305@gmail.com> <20071014195324.GT3379@networkno.de> <4713C11F.3010903@gmail.com> <4713C958.8080805@mips.com> <47147551.1010004@gmail.com> <4714B58E.8020005@mips.com> <4715C039.7090603@gmail.com> <20071017123046.GY3379@networkno.de>
+In-Reply-To: <20071017123046.GY3379@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MIPS-Technologies-UK-MailScanner: Found to be clean
+X-MIPS-Technologies-UK-MailScanner-From: nigel@mips.com
+Return-Path: <nigel@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17087
+X-archive-position: 17088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jscottkasten@yahoo.com
+X-original-sender: nigel@mips.com
 Precedence: bulk
 X-list: linux-mips
 
 
-On Wed, 17 Oct 2007, Giuseppe Sacco wrote:
 
-> Hi all, I am still testing new kernels on the ip32 platform (and 
-> learning kernel structure :-)). Currently I found problems in writing to 
-> USB block devices. I may read from a pendrive without problem, but when 
-> I try to write the process stop. This is the last part of a transcript 
-> of strace output for "pvcreate /dev/sdc" command:
+Thiemo Seufer wrote:
+> Franck Bui-Huu wrote:
+>   
+>> Nigel Stephens wrote:
+>>     
+>>> Could you run that gcc command manually, adding the options "-v
+>>> --save-temps", and post the resulting output messages, and the user.s file.
+>>>
+>>>       
+>> Ok, I did it except I used init/do_mounts.c file since it has at least
+>> one nop load delay slot (cf label $L50 in do_mount.s)
+>>     
 >
+> I only see a nop after the final LW, this is alignment for the next label.
+>
+>   
 
-A few questions...
+Aha, that probably explains it. Franck is using the "SDE for Linux 
+v6.05" toolchain, and in that version of GCC -march=mips32r2 implies a 
+default of -mtune=24k. Tuning for 24K implies -falign-loops=8 
+-falign-jumps=8 and -falign-functions=8. This is undoubtedly why code 
+compiled with "-march=mips32r2 -msmartmips" contains more nops than 
+"-march=4ksd".nIn theory the extra nops should also disappear if you 
+compile with -Os instead of -O2.
 
-* Which USB card, or more precisely, which chipset is on the USB card you 
-picked?
-
-I've had great luck with NEC and ALI chips thus far.
-
-* Which driver was loaded for the USB controller, OHCI, UHCI, EHCI?
-
-If you have a USB 2.0 controller, the system will probably try to load 
-both EHCI and UHCI.  I did run into problems there, for one, the system 
-crashed when I pulled the thumb drive out.  It sometimes behaved strangely 
-when it was in.  I eventually figured out that removing UHCI and running 
-EHCI only was the solution for me.  The UHCI module seemed to be probing 
-the hardware incorrectly.  It was reporting 6 ports on the bridge when 
-there were only 2.  The EHCI module was reporting the correct number as I 
-recall.  Once it was EHCI only, I've never had a problem since.
-
-That was originally under 2.6.17 from gentoo.  I've since been using the 
-debian patched 2.6.18.  I'm afraid I haven't yet reached sufficient 
-motivation to move into the 20's like the rest of you.  I tend to like my 
-box working...  :)  Just joking.....it's on the todo list.
-
--S-
+Nigel

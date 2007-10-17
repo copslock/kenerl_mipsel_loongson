@@ -1,53 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 17:08:58 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:20978 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20037631AbXJQQIt (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Oct 2007 17:08:49 +0100
-Received: from localhost (p2023-ipad307funabasi.chiba.ocn.ne.jp [123.217.180.23])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 78B5D993B; Thu, 18 Oct 2007 01:08:45 +0900 (JST)
-Date:	Thu, 18 Oct 2007 01:10:33 +0900 (JST)
-Message-Id: <20071018.011033.115643462.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [MIPS] Probe for usability of cp0 compare interrupt.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <S20022491AbXJQLKE/20071017111004Z+82239@ftp.linux-mips.org>
-References: <S20022491AbXJQLKE/20071017111004Z+82239@ftp.linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Oct 2007 17:22:40 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:22726 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20036065AbXJQQWa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 17 Oct 2007 17:22:30 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 385FF30A218;
+	Wed, 17 Oct 2007 16:22:03 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Wed, 17 Oct 2007 16:22:02 +0000 (UTC)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 17 Oct 2007 09:21:44 -0700
+Message-ID: <47163697.9020904@avtrex.com>
+Date:	Wed, 17 Oct 2007 09:21:43 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
+MIME-Version: 1.0
+To:	veerasena reddy <veerasena_b@yahoo.co.in>
+Cc:	"linux-kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Linux-2.6.18.8 compilation errors with GCC-4.2.1 and binutils-2.17
+ on MIPS
+References: <304090.76321.qm@web8411.mail.in.yahoo.com>
+In-Reply-To: <304090.76321.qm@web8411.mail.in.yahoo.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-OriginalArrivalTime: 17 Oct 2007 16:21:44.0099 (UTC) FILETIME=[CEA5F730:01C810D9]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17094
+X-archive-position: 17095
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 17 Oct 2007 12:09:59 +0100, linux-mips@linux-mips.org wrote:
-> Author: Ralf Baechle <ralf@linux-mips.org> Tue Oct 16 23:20:48 2007 +0100
-> Commit: b2c9797919e6997e284e30a1e6e443543eb7a1e1
-> Gitweb: http://www.linux-mips.org/g/linux/b2c97979
-> Branch: master
+veerasena reddy wrote:
+> Hi,
 > 
-> Some processors offer the option of using the interrupt on which
-> normally the count / compare interrupt would be signaled as a normal
-> interupt pin.  Previously this required some ugly hackery for each
-> system which is much easier done by a quick and simple probe.
+> I tried to compile Linux-2.6.18.8 for MIPS24KE
+> processor using cross-compiler built from gcc-4.2.1,
+> binutils-2.17 and uClibc-0.9.27. But, the compilation
+> failed with below error message ("mips-linux-ld: final
+> link failed: Bad value"):
+> ================================
 
-It seems write_c0_compare(0) will not work as expected if c0_count was
-near 0xffffffff.  How about write_c0_compare(read_c0_compare()) (or
-c0_timer_ack()) ?
+The likely cause is:
 
-Also something calculated from mips_hpt_frequency would be better than
-the magic number 0x300000.
+http://gcc.gnu.org/bugzilla/show_bug.cgi?id=33755
 
----
-Atsushi Nemoto
+As indicated in the PR, Richard has a patch that he is testing.  I would 
+think that by the time gcc-4.2.3 is released that it would be fixed.
+
+I would recommend using a non-4.2.x version of gcc until the problem is 
+fixed.
+
+David Daney

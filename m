@@ -1,75 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2007 08:27:09 +0100 (BST)
-Received: from hu-out-0506.google.com ([72.14.214.235]:50323 "EHLO
-	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20026831AbXJRH1B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Oct 2007 08:27:01 +0100
-Received: by hu-out-0506.google.com with SMTP id 31so112284huc
-        for <linux-mips@linux-mips.org>; Thu, 18 Oct 2007 00:26:51 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=uZW4U0XP5+LW043WKSPpgH/+ntqjW3uAVrLfPz1IZSk=;
-        b=ts6vjk0/5ti/Xs2pYfATAatyOXDDQ0bQ+8W0fzTmMk9kUko+Y238Lnbr5PXhBlcWIvbYWtH7ygf7TXxxO8WDQfuytwwenYjPxq0YHjlO9F+5NS/GK4QLqlFo0Val7BngJ/NsshrsAz+VvbHZFVfLTEul28ITb2XFjc+7LLTCQE8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=WKh1N577QrU3OgUdIZBKivoDElEhPGU2rhBqKBc73sGFB+KKdcWp4HDVjg4/08tLM7DFSXGiIBvydB7ZQyEWADCDsgDag1j5ClnJXgJYr+gC847jABaWA9RDWc5lAZkpLK9qcLi5bxv1mJPFqyX50DTUWvimeB/XVqr/AiFdPmM=
-Received: by 10.86.26.11 with SMTP id 11mr198759fgz.1192691558707;
-        Thu, 18 Oct 2007 00:12:38 -0700 (PDT)
-Received: from localhost ( [82.235.205.153])
-        by mx.google.com with ESMTPS id m1sm814856fke.2007.10.18.00.12.36
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 18 Oct 2007 00:12:37 -0700 (PDT)
-From:	Franck Bui-Huu <fbuihuu@gmail.com>
-To:	ralf@linux-mips.org
-Cc:	anemo@mba.ocn.ne.jp, ths@networkno.de, linux-mips@linux-mips.org
-Subject: [PATCH 2/4] tlbex.c: cleanup include files
-Date:	Thu, 18 Oct 2007 09:11:15 +0200
-Message-Id: <1192691477-4675-3-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.5.3.4
-In-Reply-To: <1192691477-4675-1-git-send-email-fbuihuu@gmail.com>
-References: <1192691477-4675-1-git-send-email-fbuihuu@gmail.com>
-Return-Path: <fbuihuu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2007 09:19:12 +0100 (BST)
+Received: from smtp2.int-evry.fr ([157.159.10.45]:44454 "EHLO
+	smtp2.int-evry.fr") by ftp.linux-mips.org with ESMTP
+	id S20029445AbXJRITD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 18 Oct 2007 09:19:03 +0100
+Received: from meteor.local (unknown [157.159.47.35])
+	by smtp2.int-evry.fr (Postfix) with ESMTP id 818343EE481;
+	Thu, 18 Oct 2007 10:18:55 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+To:	Matteo Croce <technoboy85@gmail.com>
+Subject: Re: [PATCH][MIPS][0/6] AR7: AR7 strikes back
+Date:	Thu, 18 Oct 2007 10:22:09 +0200
+User-Agent: KMail/1.9.6
+Cc:	linux-mips@linux-mips.org, nico@openwrt.org, nbd@openwrt.org,
+	openwrt-devel@lists.openwrt.org,
+	Andrew Morton <akpm@linux-foundation.org>
+References: <200710110248.33028.technoboy85@gmail.com>
+In-Reply-To: <200710110248.33028.technoboy85@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200710181022.11385.florian.fainelli@telecomint.eu>
+X-int-MailScanner-Information: Please contact the ISP for more information
+X-int-MailScanner: Found to be clean
+X-int-MailScanner-SpamCheck: 
+X-int-MailScanner-From:	florian.fainelli@telecomint.eu
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17113
+X-archive-position: 17114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fbuihuu@gmail.com
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
- arch/mips/mm/tlbex.c |    9 ---------
- 1 files changed, 0 insertions(+), 9 deletions(-)
+Hi all,
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 7f60e9c..aa14343 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -19,20 +19,11 @@
-  * (Condolences to Napoleon XIV)
-  */
- 
--#include <stdarg.h>
--
--#include <linux/mm.h>
- #include <linux/kernel.h>
--#include <linux/types.h>
--#include <linux/string.h>
--#include <linux/init.h>
- 
--#include <asm/pgtable.h>
--#include <asm/cacheflush.h>
- #include <asm/mmu_context.h>
- #include <asm/inst.h>
- #include <asm/elf.h>
--#include <asm/smp.h>
- #include <asm/war.h>
- 
- static inline int r45k_bvahwbug(void)
--- 
-1.5.3.4
+Jeff Garzik merged the AR7 ethernet driver and Wim Van Sebroeck merged the 
+watchdog driver.
+
+Is there anything that needs some cleanup for a linux-mips inclusion ?
+
+On Thursday 11 October 2007 02:48:32 Matteo Croce wrote:
+> Here are the new patches made against latest 2.6.23 git tree

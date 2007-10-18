@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2007 08:17:24 +0100 (BST)
-Received: from fk-out-0910.google.com ([209.85.128.185]:25289 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20025806AbXJRHRP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Oct 2007 08:17:15 +0100
-Received: by fk-out-0910.google.com with SMTP id f40so74206fka
-        for <linux-mips@linux-mips.org>; Thu, 18 Oct 2007 00:12:29 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2007 08:27:09 +0100 (BST)
+Received: from hu-out-0506.google.com ([72.14.214.235]:50323 "EHLO
+	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20026831AbXJRH1B (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 18 Oct 2007 08:27:01 +0100
+Received: by hu-out-0506.google.com with SMTP id 31so112284huc
+        for <linux-mips@linux-mips.org>; Thu, 18 Oct 2007 00:26:51 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:cc:subject:date:message-id:x-mailer;
-        bh=OKzzsChmEgpQjbrNFghdkFXLV3oCogB4kjccVzc7MSw=;
-        b=dLT02G2I95Rv23/jWnTm8jiK1TS8Le6F6cv48TfR/FeuyPlTJWmMxJy+D1IHiIZfbYMrWFcS5jwbxeWDloCZUmnmHGFgTQKwHv7P13Ww3MDGjeN+Fo02BwUE85Gbqh9Zkk+ELQz0Di36NL73sKPfphKBnviWwaCoD1Os6GyelPc=
+        h=domainkey-signature:received:received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=uZW4U0XP5+LW043WKSPpgH/+ntqjW3uAVrLfPz1IZSk=;
+        b=ts6vjk0/5ti/Xs2pYfATAatyOXDDQ0bQ+8W0fzTmMk9kUko+Y238Lnbr5PXhBlcWIvbYWtH7ygf7TXxxO8WDQfuytwwenYjPxq0YHjlO9F+5NS/GK4QLqlFo0Val7BngJ/NsshrsAz+VvbHZFVfLTEul28ITb2XFjc+7LLTCQE8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:from:to:cc:subject:date:message-id:x-mailer;
-        b=GVabKL48VMQK4lEJswfGLVJlqx2gJqo5M/ocGsNw0p+9vbNR9i20LfSNY9FNu2xR5kNLCoBMrSmqoxS48+T+6+4pQGT8SRyzlPyByzmfYoUvZwYU5LI+kpkBkURjbMpzfY3eXXZuEiAVVFyLcWLvqsyUY21+qorsJ5NgpC1iZ/I=
-Received: by 10.82.182.1 with SMTP id e1mr395260buf.1192691548934;
-        Thu, 18 Oct 2007 00:12:28 -0700 (PDT)
+        h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=WKh1N577QrU3OgUdIZBKivoDElEhPGU2rhBqKBc73sGFB+KKdcWp4HDVjg4/08tLM7DFSXGiIBvydB7ZQyEWADCDsgDag1j5ClnJXgJYr+gC847jABaWA9RDWc5lAZkpLK9qcLi5bxv1mJPFqyX50DTUWvimeB/XVqr/AiFdPmM=
+Received: by 10.86.26.11 with SMTP id 11mr198759fgz.1192691558707;
+        Thu, 18 Oct 2007 00:12:38 -0700 (PDT)
 Received: from localhost ( [82.235.205.153])
-        by mx.google.com with ESMTPS id e9sm1099026muf.2007.10.18.00.12.26
+        by mx.google.com with ESMTPS id m1sm814856fke.2007.10.18.00.12.36
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 18 Oct 2007 00:12:27 -0700 (PDT)
+        Thu, 18 Oct 2007 00:12:37 -0700 (PDT)
 From:	Franck Bui-Huu <fbuihuu@gmail.com>
 To:	ralf@linux-mips.org
 Cc:	anemo@mba.ocn.ne.jp, ths@networkno.de, linux-mips@linux-mips.org
-Subject: [PATCH 0/4] tlbex.c: trivial cleanup [take #2]
-Date:	Thu, 18 Oct 2007 09:11:13 +0200
-Message-Id: <1192691477-4675-1-git-send-email-fbuihuu@gmail.com>
+Subject: [PATCH 2/4] tlbex.c: cleanup include files
+Date:	Thu, 18 Oct 2007 09:11:15 +0200
+Message-Id: <1192691477-4675-3-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.5.3.4
+In-Reply-To: <1192691477-4675-1-git-send-email-fbuihuu@gmail.com>
+References: <1192691477-4675-1-git-send-email-fbuihuu@gmail.com>
 Return-Path: <fbuihuu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17112
+X-archive-position: 17113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,19 +41,35 @@ X-original-sender: fbuihuu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
-
-I'm resending this patchset because this version fixes the
-section mismatch warning noticed by Atsushi.
-
-Moreover, Thiemo doesn't seem to be happy with the patch that
-clean up the debug code. So it is now the last one of
-the serie therfore you can easily drop it if you want to.
-
-Thanks
-		Franck
-
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
 ---
+ arch/mips/mm/tlbex.c |    9 ---------
+ 1 files changed, 0 insertions(+), 9 deletions(-)
 
- arch/mips/mm/tlbex.c |  199 ++++++++++++++++++++------------------------------
- 1 files changed, 78 insertions(+), 121 deletions(-)
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 7f60e9c..aa14343 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -19,20 +19,11 @@
+  * (Condolences to Napoleon XIV)
+  */
+ 
+-#include <stdarg.h>
+-
+-#include <linux/mm.h>
+ #include <linux/kernel.h>
+-#include <linux/types.h>
+-#include <linux/string.h>
+-#include <linux/init.h>
+ 
+-#include <asm/pgtable.h>
+-#include <asm/cacheflush.h>
+ #include <asm/mmu_context.h>
+ #include <asm/inst.h>
+ #include <asm/elf.h>
+-#include <asm/smp.h>
+ #include <asm/war.h>
+ 
+ static inline int r45k_bvahwbug(void)
+-- 
+1.5.3.4

@@ -1,37 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2007 22:13:59 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.186]:64521 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20043413AbXJRVNv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Oct 2007 22:13:51 +0100
-Received: by nf-out-0910.google.com with SMTP id c10so259827nfd
-        for <linux-mips@linux-mips.org>; Thu, 18 Oct 2007 14:13:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2007 22:14:28 +0100 (BST)
+Received: from hu-out-0506.google.com ([72.14.214.231]:63751 "EHLO
+	hu-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20043395AbXJRVN6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 18 Oct 2007 22:13:58 +0100
+Received: by hu-out-0506.google.com with SMTP id 31so415546huc
+        for <linux-mips@linux-mips.org>; Thu, 18 Oct 2007 14:13:57 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:cc:subject:date:message-id:x-mailer;
-        bh=tbdf1sMFGedltSx3wO9p+d1EAbiA5LEF3qeyVSqjskY=;
-        b=gujCpFxeVbWK9Jtau+RWa0cSdDPon/24TzUcNmLcFoEOtBr720XXUzoOWamBvo9BhJRNLGmhzDZehkTtvikTvltfYk2e6txPHi6Ktibp1fbp7J4Ba46Zb2HxavLP3d0aqbOjMJsFRCmV69SE6+L0CmuthEpBuenVq7FmZfRF8qc=
+        h=domainkey-signature:received:received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=j6CZUNFUlYxeJ8VeNMAU+w2QvTdScPurkP9IFGBBBa8=;
+        b=Y3Z4QrFkEXjaCgYKcb7JV9X04Z1aeDrez1eIwP1uPiC58IJYanQjtCuv3TywJq8X79YPMXc3HuH+p8d2Xxn5e8iYgxuj6HstgwjHoSdPx1oDZO/kqG4oJKAbld1LeY6jlmuONUS2kF/baYvpUxjXMYxlVz6XyBDyq9wUipmpdxM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=beta;
-        h=received:from:to:cc:subject:date:message-id:x-mailer;
-        b=WLWm1RrP45Pd0FkFTzo2j9LwyRdoxP0fRcbQtXFALz0K5+C/Hm6oQyNMa3/U43fGge1YG4dfROQ2soGg6U9kQJLLvVldhL3C4PJvBSMfl1VvcloEqKyXK6h/JcKWUBMVrxIw+qO+iL7aowtK96r9Ws00ghqxRFm+pRjDfTVichg=
-Received: by 10.86.66.1 with SMTP id o1mr777451fga.1192742030982;
-        Thu, 18 Oct 2007 14:13:50 -0700 (PDT)
+        h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=uHWI0yYKGrtHflvS+uxgkASCWQYplwmOsYgReSTMvDSS66H8HtAOAtHbiLvbhzTsjGneibb9np0V/XjwvJ4qHDHuwx8tzMWQlwAvpuWKb+Dhlu7rZp5p4o36xZzOnJ94MzB7KyexLw9ltlD/GyqT7vxqkwVR9+8z7mdTtYifuIA=
+Received: by 10.86.4.2 with SMTP id 2mr736961fgd.1192742037287;
+        Thu, 18 Oct 2007 14:13:57 -0700 (PDT)
 Received: from localhost ( [82.235.205.153])
-        by mx.google.com with ESMTPS id f31sm2432825fkf.2007.10.18.14.13.49
+        by mx.google.com with ESMTPS id d13sm2439875fka.2007.10.18.14.13.55
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 18 Oct 2007 14:13:50 -0700 (PDT)
+        Thu, 18 Oct 2007 14:13:56 -0700 (PDT)
 From:	Franck Bui-Huu <fbuihuu@gmail.com>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org, macro@linux-mips.org
-Subject: [RFC] Add .bss.{init,exit} sections [take #2]
-Date:	Thu, 18 Oct 2007 23:12:29 +0200
-Message-Id: <1192741953-7040-1-git-send-email-fbuihuu@gmail.com>
+Subject: [PATCH 2/4] Add .init.bss section for MIPS
+Date:	Thu, 18 Oct 2007 23:12:31 +0200
+Message-Id: <1192741953-7040-3-git-send-email-fbuihuu@gmail.com>
 X-Mailer: git-send-email 1.5.3.4
+In-Reply-To: <1192741953-7040-1-git-send-email-fbuihuu@gmail.com>
+References: <1192741953-7040-1-git-send-email-fbuihuu@gmail.com>
 Return-Path: <fbuihuu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17119
+X-archive-position: 17120
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,13 +41,58 @@ X-original-sender: fbuihuu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+---
+ arch/mips/kernel/vmlinux.lds.S |   24 ++++++++++++++++--------
+ 1 files changed, 16 insertions(+), 8 deletions(-)
 
-It seems to magically work fine now. The init.bss section have been
-renamed into .bss.init so GCC makes that section with nobits attribute.
-
-I'm really not confident with these changes so if someone could
-double check that would be great. Maybe it's time for asking some
-advices to binutils mailing list ?
-
-		Franck
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 84f9a4c..e0a4dc0 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -100,7 +100,7 @@ SECTIONS
+ 	_edata =  .;			/* End of data section */
+ 
+ 	/* will be freed after init */
+-	. = ALIGN(_PAGE_SIZE);		/* Init code and data */
++	. = ALIGN(_PAGE_SIZE);		/* Init code, data and bss */
+ 	__init_begin = .;
+ 	.init.text : {
+ 		_sinittext = .;
+@@ -148,19 +148,27 @@ SECTIONS
+ 	}
+ #endif
+ 	PERCPU(_PAGE_SIZE)
+-	. = ALIGN(_PAGE_SIZE);
+-	__init_end = .;
+-	/* freed after init ends here */
+ 
+-	__bss_start = .;	/* BSS */
+-	.sbss  : {
+-		*(.sbss)
+-		*(.scommon)
++	/*
++	 * Note that .bss.exit is also discarded at runtime for the
++	 * same reason as above.
++	 */
++	.bss.exit : {
++		*(.bss.exit)
+ 	}
++	__bss_start = .;	/* BSS */
+ 	.bss : {
++		*(.bss.init)
++		. = ALIGN(_PAGE_SIZE);
++		__init_end = .;		/* freed after init ends here */
++
+ 		*(.bss)
+ 		*(COMMON)
+ 	}
++	.sbss : {
++		*(.sbss)
++		*(.scommon)
++	}
+ 	__bss_stop = .;
+ 
+ 	_end = . ;
+-- 
+1.5.3.4

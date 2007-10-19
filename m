@@ -1,86 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2007 13:39:58 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:44236 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20044267AbXJSMjt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 19 Oct 2007 13:39:49 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 0B4B0400A4;
-	Fri, 19 Oct 2007 14:39:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id bJD6xWGyO56S; Fri, 19 Oct 2007 14:39:14 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id ADD6440083;
-	Fri, 19 Oct 2007 14:39:14 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9JCdHLb002455;
-	Fri, 19 Oct 2007 14:39:17 +0200
-Date:	Fri, 19 Oct 2007 13:39:14 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Wolfgang Denk <wd@denx.de>, linux-mips@linux-mips.org
-Subject: Re: MIPS Makefile not picking up CROSS_COMPILE from environment
- setting
-In-Reply-To: <20071019111823.GB30767@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0710191323060.13279@blysk.ds.pg.gda.pl>
-References: <20071018184636.48637242E9@gemini.denx.de> <20071019111823.GB30767@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4545/Wed Oct 17 23:05:57 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2007 16:26:57 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:38882 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20044703AbXJSP0t (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Oct 2007 16:26:49 +0100
+Received: from localhost (p3184-ipad306funabasi.chiba.ocn.ne.jp [123.217.173.184])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id F16CF9A35; Sat, 20 Oct 2007 00:26:43 +0900 (JST)
+Date:	Sat, 20 Oct 2007 00:28:33 +0900 (JST)
+Message-Id: <20071020.002833.93018600.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix calculation in clockevent_set_clock()
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Received-SPF: none (mfgw104.ocn.ad.jp: 202.230.225.126 is neither permitted
+ nor denied by domain of toshiba-tops.co.jp) client-ip=202.230.225.126;
+ envelope-from=nemoto@toshiba-tops.co.jp; helo=topsns2.toshiba-tops.co.jp;
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17130
+X-archive-position: 17131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 19 Oct 2007, Ralf Baechle wrote:
-
-> The idea of passing CROSS_COMPILE from the environment always seemed to
-> be wrong to me - I keep jumping between all sorts of weird different
-> kernel configurations so no single setting of an environment variable
-> would cut it.
-
- Yes, picking stuff from the environment tends to lead to surprising 
-behaviour some time later when one has already forgotten they have got 
-that setting put there.  However, for the insistent, it is always possible 
-to override the variable at the make's command line, so you can say e.g.:
-
-$ make "CROSS_COMPILE=mips64el-linux-" vmlinux
-
-which is what I actually do, or, for the hard-liners:
-
-$ make "CROSS_COMPILE=$CROSS_COMPILE" vmlinux
-
-;-)
-
-> What I'd really like to see is a properly working CONFIG_MYARCH option
-> selectable in Kconfig.  Then the makefiles should figure out if it's a
-> native or crosscompile and add the right tool prefix.  The user should
-> not need to know that sort of stuff unless he wants to.
-
- Well, the tool prefix cannot be figured out automatically anyway, as, 
-assuming 32-bit little-endian MIPS for example, it can be one of:
-
-mipsel-linux-
-mipsel-unknown-linux-gnu-
-mipsel-dec-linux-
-...
-
--- essentially any remotely sane setting that whoever configured the 
-toolchain considered would suit them best.
-
- Also at one point I plan to implement that long-standing (and 
-long-ago-agreed-upon) idea of encoding the default ABI in the canonical 
-system name, which will help people with a 64-bit kernel getting their 
-userland builds pick the right ABI of their choice with just `./configure; 
-make', but which will make the choice of tool prefixes yet richer.
-
-  Maciej
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index c4e6866..6c6849a 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -195,8 +195,8 @@ void __cpuinit clockevent_set_clock(struct clock_event_device *cd,
+ 
+ 	/* Find a shift value */
+ 	for (shift = 32; shift > 0; shift--) {
+-		temp = (u64) NSEC_PER_SEC << shift;
+-		do_div(temp, clock);
++		temp = (u64) clock << shift;
++		do_div(temp, NSEC_PER_SEC);
+ 		if ((temp >> 32) == 0)
+ 			break;
+ 	}

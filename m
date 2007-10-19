@@ -1,75 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2007 03:47:33 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:51243 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20044071AbXJSCrX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 19 Oct 2007 03:47:23 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 19 Oct 2007 11:47:22 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 1A67A42A88;
-	Fri, 19 Oct 2007 11:47:18 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 06BE042A26;
-	Fri, 19 Oct 2007 11:47:18 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l9J2lHAF063848;
-	Fri, 19 Oct 2007 11:47:17 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 19 Oct 2007 11:47:16 +0900 (JST)
-Message-Id: <20071019.114716.08075245.nemoto@toshiba-tops.co.jp>
-To:	wd@denx.de
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2007 08:16:29 +0100 (BST)
+Received: from asia.telenet-ops.be ([195.130.137.74]:62634 "EHLO
+	asia.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20022610AbXJSHQT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 19 Oct 2007 08:16:19 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by asia.telenet-ops.be (Postfix) with SMTP id EC867D41AF;
+	Fri, 19 Oct 2007 09:16:08 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by asia.telenet-ops.be (Postfix) with ESMTP id AEF07D418B;
+	Fri, 19 Oct 2007 09:16:08 +0200 (CEST)
+Received: from anakin.of.borg (geert@localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l9J7G85U006289
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 19 Oct 2007 09:16:08 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l9J7G8qF006286;
+	Fri, 19 Oct 2007 09:16:08 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Fri, 19 Oct 2007 09:16:08 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Wolfgang Denk <wd@denx.de>
 Cc:	linux-mips@linux-mips.org
 Subject: Re: MIPS Makefile not picking up CROSS_COMPILE from environment
  setting
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 In-Reply-To: <20071018184636.48637242E9@gemini.denx.de>
+Message-ID: <Pine.LNX.4.64.0710190915130.23164@anakin>
 References: <20071018184636.48637242E9@gemini.denx.de>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17124
+X-archive-position: 17125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 18 Oct 2007 20:46:36 +0200, Wolfgang Denk <wd@denx.de> wrote:
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 08355eb..caa04a0 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -43,7 +43,7 @@ UTS_MACHINE		:= mips64
->  endif
->  
->  ifdef CONFIG_CROSSCOMPILE
-> -CROSS_COMPILE		:= $(tool-prefix)
-> +CROSS_COMPILE		?= $(tool-prefix)
->  endif
->  
->  ifdef CONFIG_32BIT
+On Thu, 18 Oct 2007, Wolfgang Denk wrote:
+> I noticed that, unlike for other architectures like ARM  or  PowerPC,
+> the  MIPS Makefile does not pick up the settings from a CROSS_COMPILE
+> environment variable, at least not with many (all?) default  configu-
+> rations.
+> 
+> This makes no sense to me - is there an intention behind it?
+> 
+> Or should I submit a patch  to  use  an  environment  setting  if  it
+> exists, i. e. somthing like this:
 
-This would not work as expected if CROSS_COMPILE environment variable
-did not exist.  The toplevel Makefile always assigns an empty string
-to CROSS_COMPILE before this, so $(tool-prefix) would not be used at
-all.
+BTW, currently there's a discussion about such things on lkml under the
+subject `Make m68k cross compile like every other architecture.'.
 
-If we needed to keep CONFIG_CROSSCOMPILE as is and needed
-CROSS_COMPILE environment variable, something like this might work.
+As you can probably guess, MIPS is unlike every other architecture, too ;-)
 
-ifdef CONFIG_CROSSCOMPILE
-ifndef CROSS_COMPILE
-CROSS_COMPILE		:= $(tool-prefix)
-endif
-endif
+Gr{oetje,eeting}s,
 
----
-Atsushi Nemoto
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

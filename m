@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2007 20:58:08 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:36825 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2007 21:18:17 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:60343 "EHLO
 	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20045661AbXJST6A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 19 Oct 2007 20:58:00 +0100
+	id S20045593AbXJSUSI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 19 Oct 2007 21:18:08 +0100
 Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id DA141400A4;
-	Fri, 19 Oct 2007 21:58:01 +0200 (CEST)
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 83BDF400A4;
+	Fri, 19 Oct 2007 22:18:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
 Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
 	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id WWZUAjXNz9ws; Fri, 19 Oct 2007 21:57:55 +0200 (CEST)
+	with ESMTP id tNRJtS8vTVXH; Fri, 19 Oct 2007 22:18:05 +0200 (CEST)
 Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 0FFAF40091;
-	Fri, 19 Oct 2007 21:57:55 +0200 (CEST)
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 26FFC40091;
+	Fri, 19 Oct 2007 22:18:05 +0200 (CEST)
 Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9JJw0Jx017923;
-	Fri, 19 Oct 2007 21:58:00 +0200
-Date:	Fri, 19 Oct 2007 20:57:53 +0100 (BST)
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9JKI9xt021640;
+	Fri, 19 Oct 2007 22:18:10 +0200
+Date:	Fri, 19 Oct 2007 21:18:03 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Andrew Morton <akpm@linux-foundation.org>
 cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] dz.h: Remove useless unused module junk
-Message-ID: <Pine.LNX.4.64N.0710192055090.13279@blysk.ds.pg.gda.pl>
+Subject: [PATCH] dz.c: Always check if it is safe to console_putchar()
+Message-ID: <Pine.LNX.4.64N.0710192059530.13279@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 X-Virus-Scanned: ClamAV 0.91.2/4545/Wed Oct 17 23:05:57 2007 on piorun.ds.pg.gda.pl
@@ -31,7 +31,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17137
+X-archive-position: 17138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,26 +39,45 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
- Remove unused module function prototypes that would not even build if
-enabled.
+ Polled transmission is tricky enough with the DZ11 design.  While "loop" 
+is set to a high value, conceptually you are not allowed to transmit 
+without checking whether the device offers the right transmission line 
+(yes, it is the device that selects the line -- the driver has no control 
+over it other than disabling the transmitter offered if it is the wrong 
+one), so the loop has to be run at least once.
+
+ Well, the '1977 or PDP11 view of how serial lines should be handled...  
+Except that the serial interface used to be quite an impressive board back 
+then rather than chip.
 
 Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 ---
- Please apply under the obviously-correct rule.
+ Tested with checkpatch.pl and at the run-time -- MIPS/Linux on a 
+DECstation 5000/200.
+
+ Please apply,
 
   Maciej
 
-patch-mips-2.6.18-20060920-dz-junk-0
-diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/serial/dz.h linux-mips-2.6.18-20060920/drivers/serial/dz.h
---- linux-mips-2.6.18-20060920.macro/drivers/serial/dz.h	2003-06-11 23:26:46.000000000 +0000
-+++ linux-mips-2.6.18-20060920/drivers/serial/dz.h	2007-01-07 19:06:02.000000000 +0000
-@@ -110,9 +110,4 @@
- #define DZ_XMIT_SIZE   4096                 /* buffer size */
- #define DZ_WAKEUP_CHARS   DZ_XMIT_SIZE/4
+patch-mips-2.6.18-20060920-dz-putchar-0
+diff -up --recursive --new-file linux-mips-2.6.18-20060920.macro/drivers/serial/dz.c linux-mips-2.6.18-20060920/drivers/serial/dz.c
+--- linux-mips-2.6.18-20060920.macro/drivers/serial/dz.c	2006-11-23 05:17:01.000000000 +0000
++++ linux-mips-2.6.18-20060920/drivers/serial/dz.c	2007-01-14 00:07:02.000000000 +0000
+@@ -686,7 +686,7 @@ static void dz_console_putchar(struct ua
+ 	iob();
+ 	spin_unlock_irqrestore(&dport->port.lock, flags);
  
--#ifdef MODULE
--int init_module (void)
--void cleanup_module (void)
--#endif
--
- #endif /* DZ_SERIAL_H */
+-	while (loops--) {
++	do {
+ 		trdy = dz_in(dport, DZ_CSR);
+ 		if (!(trdy & DZ_TRDY))
+ 			continue;
+@@ -697,7 +697,7 @@ static void dz_console_putchar(struct ua
+ 		dz_out(dport, DZ_TCR, mask);
+ 		iob();
+ 		udelay(2);
+-	}
++	} while (loops--);
+ 
+ 	if (loops)				/* Cannot send otherwise. */
+ 		dz_out(dport, DZ_TDR, ch);

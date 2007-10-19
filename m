@@ -1,124 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Oct 2007 22:15:55 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.190]:7432 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20043426AbXJRVOL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Oct 2007 22:14:11 +0100
-Received: by nf-out-0910.google.com with SMTP id c10so259839nfd
-        for <linux-mips@linux-mips.org>; Thu, 18 Oct 2007 14:13:54 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=Z7wAIc2szSEKBpJtAoodXpBXWMjiST3m9QRSuNSHvNE=;
-        b=c9d4OUNUyuzzsoycK63bz8LRh9YEeGznB5R+vGdZsgnHskC/zbVcLiylX1AxsA4TZC13gv/taSsFJO6IL1WfAScjXYY3x9s1qCgRilFxLXNUUzp4d1b9IHgJcSU4lF/jM6NElXNHsfoCVQDUYV/ViPVGDObPshlcD/W3ACL6md8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=QijigNswnqY1WJjWN0MMNA9KVpIsXi0/hwlgqCnqBd+6c/OuwYkYi5nTP+8eZjlQvsZRCbJdkVxkmGBIXlBVs3RRzcwy3iEo7NIGMGLv2rEX6mgqakC2D13XDgdnyzD7SIrxVTlhhrv8b07jvCyfEaqJu290fXoL47RsFVOpIio=
-Received: by 10.86.84.5 with SMTP id h5mr769659fgb.1192742034438;
-        Thu, 18 Oct 2007 14:13:54 -0700 (PDT)
-Received: from localhost ( [82.235.205.153])
-        by mx.google.com with ESMTPS id j12sm2455317fkf.2007.10.18.14.13.52
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 18 Oct 2007 14:13:53 -0700 (PDT)
-From:	Franck Bui-Huu <fbuihuu@gmail.com>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, macro@linux-mips.org
-Subject: [PATCH 1/4] Add .bss.{init,exit} sections
-Date:	Thu, 18 Oct 2007 23:12:30 +0200
-Message-Id: <1192741953-7040-2-git-send-email-fbuihuu@gmail.com>
-X-Mailer: git-send-email 1.5.3.4
-In-Reply-To: <1192741953-7040-1-git-send-email-fbuihuu@gmail.com>
-References: <1192741953-7040-1-git-send-email-fbuihuu@gmail.com>
-Return-Path: <fbuihuu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Oct 2007 03:47:33 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:51243 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20044071AbXJSCrX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 19 Oct 2007 03:47:23 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 19 Oct 2007 11:47:22 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 1A67A42A88;
+	Fri, 19 Oct 2007 11:47:18 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 06BE042A26;
+	Fri, 19 Oct 2007 11:47:18 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l9J2lHAF063848;
+	Fri, 19 Oct 2007 11:47:17 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 19 Oct 2007 11:47:16 +0900 (JST)
+Message-Id: <20071019.114716.08075245.nemoto@toshiba-tops.co.jp>
+To:	wd@denx.de
+Cc:	linux-mips@linux-mips.org
+Subject: Re: MIPS Makefile not picking up CROSS_COMPILE from environment
+ setting
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20071018184636.48637242E9@gemini.denx.de>
+References: <20071018184636.48637242E9@gemini.denx.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17123
+X-archive-position: 17124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fbuihuu@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-This patch creates a new init section called .bss.init.
+On Thu, 18 Oct 2007 20:46:36 +0200, Wolfgang Denk <wd@denx.de> wrote:
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index 08355eb..caa04a0 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -43,7 +43,7 @@ UTS_MACHINE		:= mips64
+>  endif
+>  
+>  ifdef CONFIG_CROSSCOMPILE
+> -CROSS_COMPILE		:= $(tool-prefix)
+> +CROSS_COMPILE		?= $(tool-prefix)
+>  endif
+>  
+>  ifdef CONFIG_32BIT
 
-This section is similar to .init.data but doesn't consume
-any space in the vmlinux image.
+This would not work as expected if CROSS_COMPILE environment variable
+did not exist.  The toplevel Makefile always assigns an empty string
+to CROSS_COMPILE before this, so $(tool-prefix) would not be used at
+all.
 
-All data marked as part of this section must not be initialized,
-of course.
+If we needed to keep CONFIG_CROSSCOMPILE as is and needed
+CROSS_COMPILE environment variable, something like this might work.
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
+ifdef CONFIG_CROSSCOMPILE
+ifndef CROSS_COMPILE
+CROSS_COMPILE		:= $(tool-prefix)
+endif
+endif
+
 ---
- include/linux/init.h |   25 +++++++++++++++++--------
- 1 files changed, 17 insertions(+), 8 deletions(-)
-
-diff --git a/include/linux/init.h b/include/linux/init.h
-index 74b1f43..0febf3e 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -43,6 +43,8 @@
- #define __init		__attribute__ ((__section__ (".init.text"))) __cold
- #define __initdata	__attribute__ ((__section__ (".init.data")))
- #define __exitdata	__attribute__ ((__section__(".exit.data")))
-+#define __initbss	__attribute__ ((__section__ (".bss.init")))
-+#define __exitbss	__attribute__ ((__section__ (".bss.exit")))
- #define __exit_call	__attribute_used__ __attribute__ ((__section__ (".exitcall.exit")))
- 
- /* modpost check for section mismatches during the kernel build.
-@@ -68,6 +70,7 @@
- #define __INIT		.section	".init.text","ax"
- #define __FINIT		.previous
- #define __INITDATA	.section	".init.data","aw"
-+#define __INITBSS	.section	".bss.init","aw",@nobits
- 
- #ifndef __ASSEMBLY__
- /*
-@@ -257,10 +260,12 @@ void __init parse_early_param(void);
- #define __devexit
- #define __devexitdata
- #else
--#define __devinit __init
--#define __devinitdata __initdata
--#define __devexit __exit
--#define __devexitdata __exitdata
-+#define __devinit	__init
-+#define __devinitdata	__initdata
-+#define __devinitbss	__initbss
-+#define __devexit	__exit
-+#define __devexitdata	__exitdata
-+#define __devexitbss	__exitbss
- #endif
- 
- #ifdef CONFIG_HOTPLUG_CPU
-@@ -270,9 +275,11 @@ void __init parse_early_param(void);
- #define __cpuexitdata
- #else
- #define __cpuinit	__init
--#define __cpuinitdata __initdata
--#define __cpuexit __exit
-+#define __cpuinitdata	__initdata
-+#define __cpuinitbss	__initbss
-+#define __cpuexit	__exit
- #define __cpuexitdata	__exitdata
-+#define __cpuexitbss	__exitbss
- #endif
- 
- #if defined(CONFIG_MEMORY_HOTPLUG) || defined(CONFIG_ACPI_HOTPLUG_MEMORY) \
-@@ -283,9 +290,11 @@ void __init parse_early_param(void);
- #define __memexitdata
- #else
- #define __meminit	__init
--#define __meminitdata __initdata
--#define __memexit __exit
-+#define __meminitdata	__initdata
-+#define __meminitbss	__meminitbss
-+#define __memexit	__exit
- #define __memexitdata	__exitdata
-+#define __memexitbss	__exitbss
- #endif
- 
- /* Functions marked as __devexit may be discarded at kernel link time, depending
--- 
-1.5.3.4
+Atsushi Nemoto

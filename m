@@ -1,70 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Oct 2007 15:30:32 +0100 (BST)
-Received: from ananke.telenet-ops.be ([195.130.137.78]:40867 "EHLO
-	ananke.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20024689AbXJVOaY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 22 Oct 2007 15:30:24 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by ananke.telenet-ops.be (Postfix) with SMTP id BDC6A392413;
-	Mon, 22 Oct 2007 16:30:23 +0200 (CEST)
-Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
-	by ananke.telenet-ops.be (Postfix) with ESMTP id 949FE3923E4;
-	Mon, 22 Oct 2007 16:30:23 +0200 (CEST)
-Received: from anakin.of.borg (geert@localhost [127.0.0.1])
-	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id l9MEUNGW003437
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 22 Oct 2007 16:30:23 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id l9MEUN6j003434;
-	Mon, 22 Oct 2007 16:30:23 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Mon, 22 Oct 2007 16:30:23 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Wolfgang Denk <wd@denx.de>, linux-mips@linux-mips.org
-Subject: Re: MIPS Makefile not picking up CROSS_COMPILE from environment
- setting
-In-Reply-To: <20071022132131.GA31311@linux-mips.org>
-Message-ID: <Pine.LNX.4.64.0710221630050.30734@anakin>
-References: <20071018184636.48637242E9@gemini.denx.de>
- <Pine.LNX.4.64.0710190915130.23164@anakin> <Pine.LNX.4.64.0710211036540.6155@anakin>
- <20071022132131.GA31311@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Oct 2007 15:37:10 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:46826 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20024769AbXJVOhC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Oct 2007 15:37:02 +0100
+Received: from localhost (p4177-ipad307funabasi.chiba.ocn.ne.jp [123.217.182.177])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8019DA8BC; Mon, 22 Oct 2007 23:35:40 +0900 (JST)
+Date:	Mon, 22 Oct 2007 23:37:33 +0900 (JST)
+Message-Id: <20071022.233733.35469871.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, ths@networkno.de
+Subject: Re: [PATCH] Make c0_compare_int_usable more bullet proof
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20071022093139.GA5588@linux-mips.org>
+References: <20071020.005445.75183929.anemo@mba.ocn.ne.jp>
+	<20071022093139.GA5588@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17153
+X-archive-position: 17154
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 22 Oct 2007, Ralf Baechle wrote:
-> On Sun, Oct 21, 2007 at 10:37:29AM +0200, Geert Uytterhoeven wrote:
-> > > BTW, currently there's a discussion about such things on lkml under the
-> > > subject `Make m68k cross compile like every other architecture.'.
-> > > 
-> > > As you can probably guess, MIPS is unlike every other architecture, too ;-)
-> > 
-> > cc-cross-prefix got into mainline:
-> > 910b40468a9ce3f2f5d48c5d260329c27d45adb5
+On Mon, 22 Oct 2007 10:31:39 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > Use write_c0_compare(read_c0_count()) to clear interrupt.
+> > And use delta value based on its speed for faster probing.
 > 
-> So then here is a followup patch also unlike any other ;-)
-> 
-> As a convenience for MIPS hacking I keep ARCH hardweired to mips though.
+> Hmm...  This one makes c0_compare_int_usable() fails when I run a malta
+> kernel on last week's qemu.
 
-Of course, same here for m68k ;-)
+Well, with my qemu-system-mips (0.9.0 and cvs),
+c0_compare_int_usable() always return 0 with/without my patch.
 
-Gr{oetje,eeting}s,
+But if I made c0_compare_int_usable() always return 1, it works fine
+with c0 counter interrupt.  Quite strange...
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+---
+Atsushi Nemoto

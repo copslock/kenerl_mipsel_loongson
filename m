@@ -1,56 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Oct 2007 18:48:46 +0100 (BST)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:18590 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20025819AbXJVRsh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 22 Oct 2007 18:48:37 +0100
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 86662400A9;
-	Mon, 22 Oct 2007 19:48:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id P7rhTNcAsXFM; Mon, 22 Oct 2007 19:48:02 +0200 (CEST)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C2BB740085;
-	Mon, 22 Oct 2007 19:48:02 +0200 (CEST)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9MHm7vJ021685;
-	Mon, 22 Oct 2007 19:48:07 +0200
-Date:	Mon, 22 Oct 2007 18:48:01 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] add GT641xx timer0 clockevent
-In-Reply-To: <20071022173208.GA29726@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0710221842210.988@blysk.ds.pg.gda.pl>
-References: <20071022194315.f75738ba.yoichi_yuasa@tripeaks.co.jp>
- <20071022121451.GA31041@linux-mips.org> <Pine.LNX.4.64N.0710221605380.988@blysk.ds.pg.gda.pl>
- <20071022173208.GA29726@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Oct 2007 20:28:05 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:54682 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20026047AbXJVT2D (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 22 Oct 2007 20:28:03 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9MJQN4m020111;
+	Mon, 22 Oct 2007 20:26:24 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9MJQNrg020110;
+	Mon, 22 Oct 2007 20:26:23 +0100
+Date:	Mon, 22 Oct 2007 20:26:23 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Make c0_compare_int_usable more bullet proof
+Message-ID: <20071022192623.GA20038@linux-mips.org>
+References: <20071023.011406.31449235.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4559/Mon Oct 22 06:02:57 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071023.011406.31449235.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17161
+X-archive-position: 17162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 22 Oct 2007, Ralf Baechle wrote:
+On Tue, Oct 23, 2007 at 01:14:06AM +0900, Atsushi Nemoto wrote:
 
-> We could.  The other question is of course if it is a good idea.  It isn't
-> always, there might be a better timer available.
+> Use write_c0_compare(read_c0_count()) to clear interrupt.
 
- The interrupt is shared with other sources internally in the system 
-controller -- that may complicate handling and affect accuracy.  That does 
-not mean making a note of it and possibly investigating at leisure might 
-not be a reasonable idea.
+Applied, thanks.
 
-  Maciej
+  Ralf

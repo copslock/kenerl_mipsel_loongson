@@ -1,52 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Oct 2007 18:33:35 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:12260 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20025782AbXJVRdd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 22 Oct 2007 18:33:33 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9MHW9hI004677;
-	Mon, 22 Oct 2007 18:32:09 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9MHW8Be004676;
-	Mon, 22 Oct 2007 18:32:08 +0100
-Date:	Mon, 22 Oct 2007 18:32:08 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Oct 2007 18:48:46 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:18590 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20025819AbXJVRsh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 22 Oct 2007 18:48:37 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 86662400A9;
+	Mon, 22 Oct 2007 19:48:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id P7rhTNcAsXFM; Mon, 22 Oct 2007 19:48:02 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id C2BB740085;
+	Mon, 22 Oct 2007 19:48:02 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9MHm7vJ021685;
+	Mon, 22 Oct 2007 19:48:07 +0200
+Date:	Mon, 22 Oct 2007 18:48:01 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
 	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [PATCH][MIPS] add GT641xx timer0 clockevent
-Message-ID: <20071022173208.GA29726@linux-mips.org>
-References: <20071022194315.f75738ba.yoichi_yuasa@tripeaks.co.jp> <20071022121451.GA31041@linux-mips.org> <Pine.LNX.4.64N.0710221605380.988@blysk.ds.pg.gda.pl>
+In-Reply-To: <20071022173208.GA29726@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0710221842210.988@blysk.ds.pg.gda.pl>
+References: <20071022194315.f75738ba.yoichi_yuasa@tripeaks.co.jp>
+ <20071022121451.GA31041@linux-mips.org> <Pine.LNX.4.64N.0710221605380.988@blysk.ds.pg.gda.pl>
+ <20071022173208.GA29726@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0710221605380.988@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4559/Mon Oct 22 06:02:57 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17160
+X-archive-position: 17161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 22, 2007 at 04:06:55PM +0100, Maciej W. Rozycki wrote:
+On Mon, 22 Oct 2007, Ralf Baechle wrote:
 
-> > > Add GT641xx timer0 clockevent.
-> > 
-> > Thanks, applied.
-> 
->  Ah, we could use this one with the Malta and some CoreLV cards too. ;-)
+> We could.  The other question is of course if it is a good idea.  It isn't
+> always, there might be a better timer available.
 
-We could.  The other question is of course if it is a good idea.  It isn't
-always, there might be a better timer available.
+ The interrupt is shared with other sources internally in the system 
+controller -- that may complicate handling and affect accuracy.  That does 
+not mean making a note of it and possibly investigating at leisure might 
+not be a reasonable idea.
 
-Honestly, no idea about the Cobalt.  Afair the compare interrupt was usable
-there so cevt-gt641xx.c isn't necessarily needed or a good idea there.
-Too long :-)
-
-  Ralf
+  Maciej

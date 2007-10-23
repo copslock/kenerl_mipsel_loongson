@@ -1,162 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Oct 2007 22:11:31 +0100 (BST)
-Received: from smtp-out2.libero.it ([212.52.84.42]:13456 "EHLO
-	smtp-out2.libero.it") by ftp.linux-mips.org with ESMTP
-	id S20021616AbXJVVLX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 22 Oct 2007 22:11:23 +0100
-Received: from MailRelay10.libero.it (192.168.32.119) by smtp-out2.libero.it (7.3.120)
-        id 4688F31B0C53C62A for linux-mips@linux-mips.org; Mon, 22 Oct 2007 23:08:08 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AgAAAA6uHEeXP4U8/2dsb2JhbAAMkDA
-Received: from unknown (HELO [192.168.1.2]) ([151.63.133.60])
-  by outrelay-b10.libero.it with ESMTP; 22 Oct 2007 23:08:08 +0200
-From:	Bemipefe <bemipefe@libero.it>
-To:	linux-mips@linux-mips.org
-Subject: Compiling for MIPS  - Problem with "mips-linux-ld" address exeption in run time
-Date:	Mon, 22 Oct 2007 23:07:51 +0200
-User-Agent: KMail/1.9.4
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2007 01:56:00 +0100 (BST)
+Received: from mo32.po.2iij.net ([210.128.50.17]:57157 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20025810AbXJWAzw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2007 01:55:52 +0100
+Received: by mo.po.2iij.net (mo32) id l9N0sXd1096388; Tue, 23 Oct 2007 09:54:33 +0900 (JST)
+Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox301) id l9N0sVv7031267
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 23 Oct 2007 09:54:32 +0900
+Message-Id: <200710230054.l9N0sVv7031267@po-mbox301.hop.2iij.net>
+Date:	Tue, 23 Oct 2007 09:55:55 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH][MIPS] add GT641xx timer0 clockevent
+In-Reply-To: <20071022.234755.45745247.anemo@mba.ocn.ne.jp>
+References: <20071022194315.f75738ba.yoichi_yuasa@tripeaks.co.jp>
+	<20071022.234755.45745247.anemo@mba.ocn.ne.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200710222307.51600.bemipefe@libero.it>
-Return-Path: <bemipefe@libero.it>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17164
+X-archive-position: 17165
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bemipefe@libero.it
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi to all mips programmers!
-First i want sorry for my bad english ... i'm working for upgrade :-D 
+On Mon, 22 Oct 2007 23:47:55 +0900 (JST)
+Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
 
-So i want to submit any question:
+> On Mon, 22 Oct 2007 19:43:15 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
+> > +static int gt641xx_timer0_set_next_event(unsigned long delta,
+> > +					 struct clock_event_device *evt)
+> > +{
+> > +	unsigned long flags;
+> > +	u32 ctrl;
+> > +
+> > +	spin_lock_irqsave(&gt641xx_timer_lock, flags);
+> > +
+> > +	ctrl = GT_READ(GT_TC_CONTROL_OFS);
+> > +	ctrl &= ~(GT_TC_CONTROL_ENTC0_MSK | GT_TC_CONTROL_SELTC0_MSK);
+> > +	ctrl |= GT_TC_CONTROL_ENTC0_MSK;
+> > +
+> > +	GT_WRITE(GT_TC0_OFS, delta);
+> > +	GT_WRITE(GT_TC_CONTROL_OFS, ctrl);
+> > +
+> > +	spin_unlock_irqrestore(&gt641xx_timer_lock, flags);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static void gt641xx_timer0_set_mode(enum clock_event_mode mode,
+> > +				    struct clock_event_device *evt)
+> > +{
+> > +	unsigned long flags;
+> > +	u32 ctrl;
+> > +
+> > +	spin_lock_irqsave(&gt641xx_timer_lock, flags);
+> > +
+> > +	ctrl = GT_READ(GT_TC_CONTROL_OFS);
+> > +	ctrl &= ~(GT_TC_CONTROL_ENTC0_MSK | GT_TC_CONTROL_SELTC0_MSK);
+> > +
+> > +	switch (mode) {
+> > +	case CLOCK_EVT_MODE_PERIODIC:
+> > +		ctrl |= GT_TC_CONTROL_ENTC0_MSK | GT_TC_CONTROL_SELTC0_MSK;
+> > +		break;
+> > +	case CLOCK_EVT_MODE_ONESHOT:
+> > +		ctrl |= GT_TC_CONTROL_ENTC0_MSK;
+> > +		break;
+> > +	default:
+> > +		break;
+> > +	}
+> > +
+> > +	GT_WRITE(GT_TC_CONTROL_OFS, ctrl);
+> > +
+> > +	spin_unlock_irqrestore(&gt641xx_timer_lock, flags);
+> > +}
+> 
+> These clockevent routines are always called with interrupt disabled,
+> so I suppose those spin_lock_irqsave/spin_unlock_irqrestore pairs can
+> be omitted. (or this timer can be used on SMP?)
 
-I'm compiling with mips compiler gcc (mips-linux-gcc from tools mips-2007 iso 
-image ) and all GNU tools and i have any problems.
+Yes, it can be used on Malta(SMP).
 
-I succeed to compile the program demo "hello_mips.c" from gxemul sample in 
-this way:
+> > +	cd = &gt641xx_timer0_clockevent;
+> > +	cd->rating = 200 + gt641xx_base_clock / 10000000;
+> > +	cd->max_delta_ns = clockevent_delta2ns(0x7fffffff, cd);
+> > +	cd->min_delta_ns = clockevent_delta2ns(0x300, cd);
+> > +	clockevent_set_clock(cd, gt641xx_base_clock);
+> 
+> clockevent_delta2ns() use shift and mult value.  So you should call
+> clockevent_set_clock() first.
 
+Thank you for your comment.
+I'll fix it up.
 
-____________________________________________________________________
-____________________________________________________________________
-
-$mips-linux-gcc -I../../src/include/testmachine -g -DMIPS 
-hello.c -mips1 -mabi=32 -c -o hello_mips32.o
-
-$mips-linux-ld -T /home/bemipefe/Programs/mipstools/usr/lib/ldscripts/elf32btsmip.x  -e 
-f hello_mips32.o -o hello_mips32                         
-
-
-____________________________________________________________________
-____________________________________________________________________
-
-As you see i must specify the script for linking because option "-Ttext 
-0x80030000" supplied from gxemul README don't work.
-
-So i have modified the script changing "0x1000000" in "0x10000000" in that is:
-
-PROVIDE (__executable_start = 0x10000000); . = 0x10000000 + SIZEOF_HEADERS;
- 
-I have also added "SIZEOF_HEADERS" that (at first "0") . Now the linker don't 
-claim any message but if i test the binary, occur a exeption in run time:
-____________________________________________________________________
-____________________________________________________________________
-
-[bemipefe@M-Parallelmind hello]$  ../../gxemul -V -E testmips -C 
-R3000 ./hello_mips32
-GXemul 0.4.4    Copyright (C) 2003-2007  Anders Gavare
-Read the source code and/or documentation for other Copyright messages.
-
-Simple setup...
-    net: simulating 10.0.0.0/8 (max outgoing: TCP=100, UDP=100)
-        simulated gateway: 10.0.0.254 (60:50:40:30:20:10)
-            using nameserver 192.168.1.1
-    machine "default":
-        memory: 32 MB
-        cpu0: R3000 (I+D = 4+4 KB)
-        machine: MIPS test machine
-        loading ./hello_mips32
-        starting cpu0 at 0x100001ac
--------------------------------------------------------------------------------
-
-GXemul> step
-[ exception TLBL <tlb> vaddr=0x100001ac pc=0x100001ac ]
-80000000: 00000000      nop
- 
-
-____________________________________________________________________
-____________________________________________________________________
-
-
-If I change "0x10000000" in "0x80000000" and also the section:
-
-____________________________________________________________________
-____________________________________________________________________
-
- /* Adjust the address for the data segment.  We want to adjust up to
-     the same address within the page on the next page up.  */
-  . = 0x80000000;
-
-____________________________________________________________________
-____________________________________________________________________
-
-In the same way from "0x10000000" to "0x80000000". Now i do run the program 
-with gxemul and i still down in trap of "exeption" in TLBL:
-
-____________________________________________________________________
-____________________________________________________________________
-
-[bemipefe@M-Parallelmind hello]$  ../../gxemul -V -E testmips -C 
-R3000 ./hello_mips32
-GXemul 0.4.4    Copyright (C) 2003-2007  Anders Gavare
-Read the source code and/or documentation for other Copyright messages.
-
-Simple setup...
-    net: simulating 10.0.0.0/8 (max outgoing: TCP=100, UDP=100)
-        simulated gateway: 10.0.0.254 (60:50:40:30:20:10)
-            using nameserver 192.168.1.1
-    machine "default":
-        memory: 32 MB
-        cpu0: R3000 (I+D = 4+4 KB)
-        machine: MIPS test machine
-        loading ./hello_mips32
-        starting cpu0 at 0x800001ac
--------------------------------------------------------------------------------
-
-GXemul> step
-800001ac: 3c1c0000      lui     gp,0x0
-GXemul> step
-800001b0: 279c7e44      addiu   gp,gp,32324
-GXemul> step
-800001b4: 0399e021      addu    gp,gp,t9
-GXemul> step
-800001b8: 27bdffe0      addiu   sp,sp,-32
-GXemul> step
-800001bc: afbf001c      sw      ra,28(sp)       [0xa0007efc]
-GXemul> step
-800001c0: afbe0018      sw      fp,24(sp)       [0xa0007ef8]
-GXemul> step
-800001c4: 03a0f021      move    fp,sp
-GXemul> step
-800001c8: afbc0010      sw      gp,16(sp)       [0xa0007ef0]
-GXemul> step
-800001cc: 8f828018      lw      v0,-32744(gp)   [0xfffffe5c]
-[ exception TLBL <tlb> vaddr=0xfffffe5c pc=0x800001cc ]
-
-____________________________________________________________________
-____________________________________________________________________
-
-But in this time i see any executed istruction.
-
-
-The ask is: How can fix it ? The problem is in the linker ? How can find 
-documentation from ELF format ?
-
-Thank you and Good Work!  
+Yoichi

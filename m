@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2007 15:59:45 +0100 (BST)
-Received: from smtp1.int-evry.fr ([157.159.10.44]:52360 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2007 17:56:13 +0100 (BST)
+Received: from smtp1.int-evry.fr ([157.159.10.44]:26529 "EHLO
 	smtp1.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20031285AbXJWO7g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 Oct 2007 15:59:36 +0100
+	id S20031449AbXJWQ4F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Oct 2007 17:56:05 +0100
 Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp1.int-evry.fr (Postfix) with ESMTP id 311888E8A6A
-	for <linux-mips@linux-mips.org>; Tue, 23 Oct 2007 16:58:18 +0200 (CEST)
+	by smtp1.int-evry.fr (Postfix) with ESMTP id EF8428E80F0
+	for <linux-mips@linux-mips.org>; Tue, 23 Oct 2007 18:55:55 +0200 (CEST)
 Received: from ibook (unknown [77.192.17.88])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id DD502D0E317
-	for <linux-mips@linux-mips.org>; Tue, 23 Oct 2007 16:58:17 +0200 (CEST)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id A9C82D0E317
+	for <linux-mips@linux-mips.org>; Tue, 23 Oct 2007 18:55:55 +0200 (CEST)
 From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-Date:	Tue, 23 Oct 2007 16:58:15 +0200
-Subject: [PATCH] MTX-1 : register platform devices
+Date:	Tue, 23 Oct 2007 18:55:55 +0200
+Subject: [PATCH] [MTX1 try 2] Register platform devices
 MIME-Version: 1.0
-X-UID:	127
-X-Length: 3818
+X-UID:	128
+X-Length: 3832
 To:	linux-mips@linux-mips.org
 Content-Disposition: inline
-Message-Id: <200710231658.15776.florian.fainelli@telecomint.eu>
+Message-Id: <200710231855.55605.florian.fainelli@telecomint.eu>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -31,7 +31,7 @@ Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17183
+X-archive-position: 17184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,6 +41,8 @@ X-list: linux-mips
 
 This patch separates the platform devices registration
 for the MTX-1 specific devices : GPIO leds and watchdog.
+
+Changes from first try: Suppress whitespaces and make checkpatch happy
 
 Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
 ---
@@ -62,7 +64,7 @@ index 764bf9f..afa7007 100644
 diff --git a/arch/mips/au1000/mtx-1/platform.c 
 b/arch/mips/au1000/mtx-1/platform.c
 new file mode 100644
-index 0000000..82a90ea
+index 0000000..f7d84f6
 --- /dev/null
 +++ b/arch/mips/au1000/mtx-1/platform.c
 @@ -0,0 +1,82 @@
@@ -70,17 +72,17 @@ index 0000000..82a90ea
 + * MTX-1 platform devices registration
 + *
 + * Copyright (C) 2007, Florian Fainelli <florian@openwrt.org>
-+ * 
++ *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
 + * the Free Software Foundation; either version 2 of the License, or
 + * (at your option) any later version.
-+ * 
++ *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
-+ *  
++ *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
 + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -96,19 +98,19 @@ index 0000000..82a90ea
 +
 +static struct resource mtx1_wdt_res[] = {
 +	[0] = {
-+		.start 	= 15,
-+		.end 	= 15,
-+		.name 	= "mtx1-wdt-gpio",
-+		.flags 	= IORESOURCE_IRQ,
++		.start	= 15,
++		.end	= 15,
++		.name	= "mtx1-wdt-gpio",
++		.flags	= IORESOURCE_IRQ,
 +	}
 +};
 +
 +static struct resource mtx1_sys_btn[] = {
 +	[0] = {
-+		.start 	= 7,
-+		.end 	= 7,
-+		.name 	= "mtx1-sys-btn-gpio",
-+		.flags 	= IORESOURCE_IRQ,
++		.start	= 7,
++		.end	= 7,
++		.name	= "mtx1-sys-btn-gpio",
++		.flags	= IORESOURCE_IRQ,
 +	}
 +};
 +
@@ -120,7 +122,7 @@ index 0000000..82a90ea
 +};
 +
 +static struct gpio_led default_leds[] = {
-+        { .name = "mtx1:green", .gpio = 211, },
++	{ .name	= "mtx1:green", .gpio = 211, },
 +	{ .name = "mtx1:red", .gpio = 212, },
 +};
 +
@@ -130,14 +132,14 @@ index 0000000..82a90ea
 +};
 +
 +static struct platform_device mtx1_gpio_leds = {
-+        .name = "leds-gpio",
-+        .id = -1,
-+        .dev = {
-+                .platform_data = &mtx1_led_data,
-+        }
++	.name = "leds-gpio",
++	.id = -1,
++	.dev = {
++		.platform_data = &mtx1_led_data,
++	}
 +};
 +
-+static struct __initdata platform_device *mtx1_devs[] = {
++static struct __initdata platform_device * mtx1_devs[] = {
 +	&mtx1_gpio_leds,
 +	&mtx1_wdt
 +};

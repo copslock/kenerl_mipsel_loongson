@@ -1,150 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2007 18:13:43 +0100 (BST)
-Received: from rn-out-0910.google.com ([64.233.170.190]:45939 "EHLO
-	rn-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S20031527AbXJWRNe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 Oct 2007 18:13:34 +0100
-Received: by rn-out-0102.google.com with SMTP id e25so699581rng
-        for <linux-mips@linux-mips.org>; Tue, 23 Oct 2007 10:12:33 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        bh=jSNVkfsWnN0ek4z9gHaBgH51C5OakJdCp2qCCPmQfqg=;
-        b=nKUvvuH6c2JwAYH/JlkKo8RY2cIO6Dtwat9QpiTXpmyKPzDxJC4YP4hY3kHpZX+lm3k1uslggm4gfDS7ANiAAW624hNresZo3hNU2pmUOdOkK4mUqseUUeIBXEnpL6aStr0z75Gw8q64utGg+itAoXBT4eaNF7+p7JkvoCmusTs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=DbtAaP4zk4VvHb3UOPnZVAbVgjx4O2j1iIa3UhvfDFFGDvqfuL0vpXmhPi9ADa1Ltvl8knGG2ctGdCp6jaSIdoUfJQxCSOjnaVAWo+JMkVFK3CSzWPY1PujE6BmMCfos4Cid59C/J6crxMgxTG78JWHepsZxuAhD8e0cCoBIeVE=
-Received: by 10.142.97.20 with SMTP id u20mr2067870wfb.1193159552574;
-        Tue, 23 Oct 2007 10:12:32 -0700 (PDT)
-Received: from ?192.168.0.3? ( [80.117.125.149])
-        by mx.google.com with ESMTPS id m6sm8654017wrm.2007.10.23.10.12.26
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 23 Oct 2007 10:12:30 -0700 (PDT)
-From:	Matteo Croce <technoboy85@gmail.com>
-To:	Jeff Garzik <jgarzik@pobox.com>
-Subject: Re: [PATCH][MIPS] AR7 ethernet
-Date:	Tue, 23 Oct 2007 19:12:22 +0200
-User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
-Cc:	linux-mips@linux-mips.org, Eugene Konev <ejka@imfi.kspu.ru>,
-	netdev@vger.kernel.org, davem@davemloft.net, kuznet@ms2.inr.ac.ru,
-	pekkas@netcore.fi, jmorris@namei.org, yoshfuji@linux-ipv6.org,
-	kaber@coreworks.de, Andrew Morton <akpm@linux-foundation.org>
-References: <200710141810.13752.technoboy85@gmail.com> <4713B055.802@pobox.com>
-In-Reply-To: <4713B055.802@pobox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2007 18:23:48 +0100 (BST)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:146 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20031466AbXJWRXj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Oct 2007 18:23:39 +0100
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D8D01400A5;
+	Tue, 23 Oct 2007 19:23:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id lW3BEV73adwI; Tue, 23 Oct 2007 19:23:34 +0200 (CEST)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 29FED40085;
+	Tue, 23 Oct 2007 19:23:34 +0200 (CEST)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id l9NHNcsi030602;
+	Tue, 23 Oct 2007 19:23:39 +0200
+Date:	Tue, 23 Oct 2007 18:23:33 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Sam Ravnborg <sam@ravnborg.org>
+cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-arch@vger.kernel.org,
+	linux-mips@linux-mips.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Discardable strings for init and exit sections
+In-Reply-To: <20071012174507.GA21193@uranus.ravnborg.org>
+Message-ID: <Pine.LNX.4.64N.0710231758070.8693@blysk.ds.pg.gda.pl>
+References: <Pine.LNX.4.64N.0710121711120.21684@blysk.ds.pg.gda.pl>
+ <20071012174507.GA21193@uranus.ravnborg.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200710231912.23446.technoboy85@gmail.com>
-Return-Path: <technoboy85@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4573/Tue Oct 23 14:01:01 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17187
+X-archive-position: 17188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: technoboy85@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Il Monday 15 October 2007 20:24:21 Jeff Garzik ha scritto:
-> applied
+On Fri, 12 Oct 2007, Sam Ravnborg wrote:
 
-Small update to the driver, please apply
+> What is the actual benefit here expressed in real numbers?
+> For the __init/__exit notation that is yet only partially correct
+> we often see corner cases where one ask if it is really worth it.
+> Adding the discard functionality for strings seems like a logical extension
+> but there is a benefit/pain ratio to consider.
+> 
+> So real numbers please.
 
-Signed-off-by: Matteo Croce <technoboy85@gmail.com>
-Signed-off-by: Eugene Konev <ejka@imfi.kspu.ru>
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+ I have quoted some -- if you need more (I have left out all the 
+non-allocatable sections for clarity):
 
-diff --git a/drivers/net/cpmac.c b/drivers/net/cpmac.c
-index ae41973..57541d2 100644
---- a/drivers/net/cpmac.c
-+++ b/drivers/net/cpmac.c
-@@ -460,18 +460,11 @@ static int cpmac_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct cpmac_desc *desc;
- 	struct cpmac_priv *priv = netdev_priv(dev);
- 
--	if (unlikely(skb_padto(skb, ETH_ZLEN))) {
--		if (netif_msg_tx_err(priv) && net_ratelimit())
--			printk(KERN_WARNING
--			       "%s: tx: padding failed, dropping\n", dev->name);
--		spin_lock(&priv->lock);
--		dev->stats.tx_dropped++;
--		spin_unlock(&priv->lock);
--		return -ENOMEM;
--	}
-+	if (unlikely(skb_padto(skb, ETH_ZLEN)))
-+		return NETDEV_TX_OK;
- 
- 	len = max(skb->len, ETH_ZLEN);
--	queue = skb_get_queue_mapping(skb);
-+	queue = skb->queue_mapping;
- #ifdef CONFIG_NETDEVICES_MULTIQUEUE
- 	netif_stop_subqueue(dev, queue);
- #else
-@@ -481,13 +474,9 @@ static int cpmac_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	desc = &priv->desc_ring[queue];
- 	if (unlikely(desc->dataflags & CPMAC_OWN)) {
- 		if (netif_msg_tx_err(priv) && net_ratelimit())
--			printk(KERN_WARNING "%s: tx dma ring full, dropping\n",
-+			printk(KERN_WARNING "%s: tx dma ring full\n",
- 			       dev->name);
--		spin_lock(&priv->lock);
--		dev->stats.tx_dropped++;
--		spin_unlock(&priv->lock);
--		dev_kfree_skb_any(skb);
--		return -ENOMEM;
-+		return NETDEV_TX_BUSY;
- 	}
- 
- 	spin_lock(&priv->lock);
-@@ -509,7 +498,7 @@ static int cpmac_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		cpmac_dump_skb(dev, skb);
- 	cpmac_write(priv->regs, CPMAC_TX_PTR(queue), (u32)desc->mapping);
- 
--	return 0;
-+	return NETDEV_TX_OK;
- }
- 
- static void cpmac_end_xmit(struct net_device *dev, int queue)
-@@ -646,12 +635,14 @@ static void cpmac_clear_tx(struct net_device *dev)
- 	int i;
- 	if (unlikely(!priv->desc_ring))
- 		return;
--	for (i = 0; i < CPMAC_QUEUES; i++)
-+	for (i = 0; i < CPMAC_QUEUES; i++) {
-+		priv->desc_ring[i].dataflags = 0;
- 		if (priv->desc_ring[i].skb) {
- 			dev_kfree_skb_any(priv->desc_ring[i].skb);
- 			if (netif_subqueue_stopped(dev, i))
- 			    netif_wake_subqueue(dev, i);
- 		}
-+	}
- }
- 
- static void cpmac_hw_error(struct work_struct *work)
-@@ -727,11 +718,13 @@ static void cpmac_tx_timeout(struct net_device *dev)
- #ifdef CONFIG_NETDEVICES_MULTIQUEUE
- 	for (i = 0; i < CPMAC_QUEUES; i++)
- 		if (priv->desc_ring[i].skb) {
-+			priv->desc_ring[i].dataflags = 0;
- 			dev_kfree_skb_any(priv->desc_ring[i].skb);
- 			netif_wake_subqueue(dev, i);
- 			break;
- 		}
- #else
-+	priv->desc_ring[0].dataflags = 0;
- 	if (priv->desc_ring[0].skb)
- 		dev_kfree_skb_any(priv->desc_ring[0].skb);
- 	netif_wake_queue(dev);
-@@ -794,7 +787,7 @@ static int cpmac_set_ringparam(struct net_device *dev, struct ethtool_ringparam*
- {
- 	struct cpmac_priv *priv = netdev_priv(dev);
- 
--	if (dev->flags && IFF_UP)
-+	if (netif_running(dev))
- 		return -EBUSY;
- 	priv->ring_size = ring->rx_pending;
- 	return 0;
+$ mipsel-linux-readelf -S drivers/net/defxx.o
+There are 26 section headers, starting at offset 0x3484:
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 1] .text             PROGBITS        00000000 000040 0022a0 00  AX  0   0 16
+  [ 3] .data             PROGBITS        00000000 0022e0 0000f0 00  WA  0   0 16
+  [ 5] .bss              NOBITS          00000000 0023d0 000010 00  WA  0   0 16
+  [ 6] .reginfo          MIPS_REGINFO    00000000 0023d0 000018 18   A  0   0  4
+  [10] .exit.text        PROGBITS        00000000 002748 0000ec 00  AX  0   0  4
+  [12] .init.text        PROGBITS        00000000 002834 000460 00  AX  0   0  4
+  [14] .rodata.str1.4    PROGBITS        00000000 002c94 0004a4 01 AMS  0   0  4
+  [15] .rodata           PROGBITS        00000000 003140 000080 00   A  0   0 16
+  [17] .exitcall.exit    PROGBITS        00000000 0031c0 000004 00  WA  0   0  4
+  [19] .initcall6.init   PROGBITS        00000000 0031c4 000004 00  WA  0   0  4
+  [21] .init.str1        PROGBITS        00000000 0031c8 0001e0 01 AMS  0   0  4
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  I (info), L (link order), G (group), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
+
+So with a quick calculation (`size' unfortunately gives confusing 
+numbers): text is 10220 (init 1120, exit 236), data is 2044 and bss is 16 
+bytes.  What you gain with this change is the space occupied by the 
+.init.str1 section, worth 480 bytes, which would otherwise be resident.
+
+> 1) We want to consolidate this in include/asm-generic/vmlinux*
+> somehow and this should be doen as a separate step.
+
+ Arguably all the existing linker scripts should be made more consistent I 
+suppose.  Currently all the {init,exit} annotations are handled separately 
+by each architecture, so this would be no exception.  If you have a 
+proposal as to how to do it cleanly, people will certainly appreciate it.
+
+> 2) If we introduce discardable strings then we shall in parallel
+> add build time checks so we catch strings marked as discardable
+> which is used outside a discardable compatible function.
+
+ Well, `modpost' should already be taking care of this -- __init_begin and 
+__init_end are defined for this purpose.
+
+  Maciej

@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2007 18:26:22 +0100 (BST)
-Received: from pasmtpb.tele.dk ([80.160.77.98]:48065 "EHLO pasmtpB.tele.dk")
-	by ftp.linux-mips.org with ESMTP id S20031442AbXJWR0N (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2007 18:26:13 +0100
-Received: from ravnborg.org (0x535d98d8.vgnxx8.adsl-dhcp.tele.dk [83.93.152.216])
-	by pasmtpB.tele.dk (Postfix) with ESMTP id 1D4EDE3101A;
-	Tue, 23 Oct 2007 19:26:12 +0200 (CEST)
-Received: by ravnborg.org (Postfix, from userid 500)
-	id CAC8A580D2; Tue, 23 Oct 2007 19:27:47 +0200 (CEST)
-Date:	Tue, 23 Oct 2007 19:27:47 +0200
-From:	Sam Ravnborg <sam@ravnborg.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Franck Bui-Huu <vagabon.xyz@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-arch@vger.kernel.org,
-	linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Discardable strings for init and exit sections
-Message-ID: <20071023172747.GB26345@uranus.ravnborg.org>
-References: <Pine.LNX.4.64N.0710121711120.21684@blysk.ds.pg.gda.pl> <20071012174507.GA21193@uranus.ravnborg.org> <Pine.LNX.4.64N.0710231758070.8693@blysk.ds.pg.gda.pl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0710231758070.8693@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <sam@ravnborg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Oct 2007 21:56:15 +0100 (BST)
+Received: from atlrel7.hp.com ([156.153.255.213]:45446 "EHLO atlrel7.hp.com")
+	by ftp.linux-mips.org with ESMTP id S20031721AbXJWU4F (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Oct 2007 21:56:05 +0100
+Received: from smtp2.fc.hp.com (smtp.fc.hp.com [15.11.136.114])
+	by atlrel7.hp.com (Postfix) with ESMTP id 24C6534B0E;
+	Tue, 23 Oct 2007 16:55:17 -0400 (EDT)
+Received: from ldl.fc.hp.com (ldl.fc.hp.com [15.11.146.30])
+	by smtp2.fc.hp.com (Postfix) with ESMTP id E7DC223C6F4;
+	Tue, 23 Oct 2007 20:55:16 +0000 (UTC)
+Received: from localhost (ldl.fc.hp.com [127.0.0.1])
+	by ldl.fc.hp.com (Postfix) with ESMTP id B8398134006;
+	Tue, 23 Oct 2007 14:55:16 -0600 (MDT)
+X-Virus-Scanned: Debian amavisd-new at ldl.fc.hp.com
+Received: from ldl.fc.hp.com ([127.0.0.1])
+	by localhost (ldl.fc.hp.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id WVNnxDcdyWJW; Tue, 23 Oct 2007 14:55:15 -0600 (MDT)
+Received: from localhost.localdomain (lart.fc.hp.com [15.11.146.31])
+	by ldl.fc.hp.com (Postfix) with ESMTP id B6931134002;
+	Tue, 23 Oct 2007 14:55:15 -0600 (MDT)
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 72A3C13F7D5; Tue, 23 Oct 2007 14:55:15 -0600 (MDT)
+Message-Id: <20071023204843.442608289@ldl.fc.hp.com>
+User-Agent: quilt/0.45-1
+Date:	Tue, 23 Oct 2007 14:48:43 -0600
+From:	Bjorn Helgaas <bjorn.helgaas@hp.com>
+To:	Alessandro Zummo <a.zummo@towertech.it>
+Cc:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	linux-kernel@vger.kernel.org
+Cc:	linux-mips@linux-mips.org
+Subject: [patch 0/2] RTC fixes
+Return-Path: <helgaas@ldl.fc.hp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17190
+X-archive-position: 17191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
+X-original-sender: bjorn.helgaas@hp.com
 Precedence: bulk
 X-list: linux-mips
 
-> 
->  Arguably all the existing linker scripts should be made more consistent I 
-> suppose.  Currently all the {init,exit} annotations are handled separately 
-> by each architecture, so this would be no exception.  If you have a 
-> proposal as to how to do it cleanly, people will certainly appreciate it.
+Here are two fixes:
 
-Patches appreciated. I have made many of the linekr scripts use same
-format now - so it is easier to see what is equal and can be consolidated.
+  - Minor bugfix on error path for mips.
+  - If resource request fails, fall back to requesting only the
+    ioports we actually use.  This is not a problem yet, but it
+    will be if the PNP core claims resources before drivers attach.
 
-	Sam
+--

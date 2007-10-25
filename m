@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2007 15:09:53 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:61320 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022621AbXJYOJv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 25 Oct 2007 15:09:51 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9PE9fKv023563;
-	Thu, 25 Oct 2007 15:09:41 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9PE9e4L023562;
-	Thu, 25 Oct 2007 15:09:40 +0100
-Date:	Thu, 25 Oct 2007 15:09:40 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jan Nikitenko <jan.nikitenko@gmail.com>
-Cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH] serial: fix au1xxx UART0 irq setup
-Message-ID: <20071025140940.GC23398@linux-mips.org>
-References: <4720A11E.5060101@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2007 15:10:23 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:21681 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20022628AbXJYOKK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Oct 2007 15:10:10 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 457463EC9; Thu, 25 Oct 2007 07:09:37 -0700 (PDT)
+Message-ID: <4720A3AB.7070307@ru.mvista.com>
+Date:	Thu, 25 Oct 2007 18:09:47 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+To:	Jan Nikitenko <jan.nikitenko@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-serial@vger.kernel.org
+Subject: Re: [PATCH] serial: fix au1xxx UART0 irq setup
+References: <4720A11E.5060101@gmail.com>
 In-Reply-To: <4720A11E.5060101@gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17210
+X-archive-position: 17211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 25, 2007 at 03:58:54PM +0200, Jan Nikitenko wrote:
+Jan Nikitenko wrote:
 
 > UART0 on Alchemy mips platforms (au1xxx) does not use real uart's hw
 > irq, causing 'ttyS0: 1 input overrun(s)' kernel message with data loss,
 > when more characters than uart's fifo size were to be received by the uart.
-> 
+
 > This problem can be experienced for example when uart0 is used as a
 > serial console on au1550 and more than 16 characters are pasted from
 > clipboard to the console.
@@ -56,17 +55,31 @@ On Thu, Oct 25, 2007 at 03:58:54PM +0200, Jan Nikitenko wrote:
 > and fixes the overrun problem.
 > 
 > Signed-off-by: Jan Nikitenko <jan.nikitenko@gmail.com>
+> 
+> ---
+> 
+>  include/asm-mips/serial.h |    5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> 
+> ------------------------------------------------------------------------
+> 
+> diff --git a/include/asm-mips/serial.h b/include/asm-mips/serial.h
+> index c07ebd8..526bd2e 100644
+> --- a/include/asm-mips/serial.h
+> +++ b/include/asm-mips/serial.h
+> @@ -19,4 +19,9 @@
+>   */
+>  #define BASE_BAUD (1843200 / 16)
+>  
+> +#ifdef CONFIG_SERIAL_8250_AU1X00
+> +#undef is_real_interrupt
+> +#define is_real_interrupt(irq)  (1)
+> +#endif
+> +
+>  #endif /* _ASM_SERIAL_H */
 
-Fairly unelegent imho but anyway, for 2.6.24 I've added support for
-tickless to MIPS which in turn required a bit of a cleanup on the Alchemy
-code so I renumbered the Alchemy interrupt numbers, so what used to be
-IRQ 0 is now IRQ 8 which means your patch is no longer needed for master.
+     I wonder why such patch hasn't still been checked, despite being 
+suggested several times...
 
-That said, irq 0 is imho totally valid (take the good old PIT timer
-interrupt of the PC as the classic example) and treating it as an invalid 
-interrupt number is broken.
-
-It's however equally pretty crude hack to undefine a symbol in a file other
-than the one defining it ...
-
-  Ralf
+WBR, Sergei

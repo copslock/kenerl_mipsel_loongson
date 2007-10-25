@@ -1,43 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Oct 2007 20:47:40 +0100 (BST)
-Received: from sorrow.cyrius.com ([65.19.161.204]:18954 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S20032633AbXJXTrc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 24 Oct 2007 20:47:32 +0100
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 6C1CCD8E1; Wed, 24 Oct 2007 19:46:50 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 5D236543EA; Wed, 24 Oct 2007 21:46:36 +0200 (CEST)
-Date:	Wed, 24 Oct 2007 21:46:36 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	David Daney <ddaney@avtrex.com>,
-	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: Gcc 4.2.2 broken for kernel builds
-Message-ID: <20071024194636.GA672@deprecation.cyrius.com>
-References: <20071012172254.GA10835@linux-mips.org> <470FB386.6080709@avtrex.com> <20071012175317.GB1110@linux-mips.org> <470FBE08.8090004@avtrex.com> <20071012184909.GA4832@linux-mips.org> <20071012191446.GK3163@deprecation.cyrius.com> <20071012191645.GB4832@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071012191645.GB4832@linux-mips.org>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <tbm@cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2007 03:13:34 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:44072 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20022210AbXJYCN0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 25 Oct 2007 03:13:26 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Thu, 25 Oct 2007 11:13:24 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id BD91D42BEB;
+	Thu, 25 Oct 2007 11:12:54 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id B2F3242BE2;
+	Thu, 25 Oct 2007 11:12:54 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id l9P2CjAF091071;
+	Thu, 25 Oct 2007 11:12:52 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 25 Oct 2007 11:12:44 +0900 (JST)
+Message-Id: <20071025.111244.126572117.nemoto@toshiba-tops.co.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] txx9tmr clockevent/clocksource driver (take 2)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <471F9655.2010702@ru.mvista.com>
+References: <20071025.013409.26096880.anemo@mba.ocn.ne.jp>
+	<471F9655.2010702@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17202
+X-archive-position: 17203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-* Ralf Baechle <ralf@linux-mips.org> [2007-10-12 20:16]:
-> > Okay, I can see it.  I'll submit a testcase.
-> Thanks :-)
+On Wed, 24 Oct 2007 23:00:37 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > +	if (tx4927_ccfgptr->ccfg & TX4927_CCFG_TINTDIS)
+> > +		txx9_clockevent_init(TX4927_TMR_REG(0) & 0xfffffffffULL,
+> > +				     TXX9_IRQ_BASE + 17,
+> > +				     50000000);
+> 
+>     Wait, you're not registering TXx9 clocksource anyway, so it's only taking 
+> space indeed.  Maybe we should register clock source/event regardless of the 
+> value of CCFG.TINTDIS, and let them be selected according to rating?
 
-Note that Richard fixed the bug in SVN today, so it will be in the next
-release of gcc 4.2.
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+Yes, I did not intentionally.  If new board developers wanted to use
+txx9_clocksource (for some mysterious reason), he can register it.
+
+For existing tx49 platform, no good reason to use txx9_clocksource.
+The standard mips_clocksource can be used regardless of TINTDIS, and
+mips_clocksource is _always_ has higher precision (and lightweight)
+than txx9_clocksource.
+
+And if you only registered txx9 clock source/event and did not use
+them, those timer modules cannot be used for other purpose (for
+example, pulse generator) anymore.  It looks overkill for me.
+
+---
+Atsushi Nemoto

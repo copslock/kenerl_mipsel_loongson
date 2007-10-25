@@ -1,69 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2007 19:18:09 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:33038 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20024014AbXJYSSB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 25 Oct 2007 19:18:01 +0100
-Received: (qmail 30169 invoked by uid 1000); 25 Oct 2007 20:18:00 +0200
-Date:	Thu, 25 Oct 2007 20:18:00 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: 2.6.24-rc1: au1xxx and clocksource
-Message-ID: <20071025181800.GA30134@roarinelk.homelinux.net>
-References: <20071024183135.GA23096@roarinelk.homelinux.net> <20071025175914.GB27616@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2007 20:10:22 +0100 (BST)
+Received: from mx1.minet.net ([157.159.40.25]:26055 "EHLO mx1.minet.net")
+	by ftp.linux-mips.org with ESMTP id S20024546AbXJYTKO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Oct 2007 20:10:14 +0100
+Received: from localhost (unknown [192.168.1.97])
+	by mx1.minet.net (Postfix) with ESMTP id 6ADC65CD87
+	for <linux-mips@linux-mips.org>; Thu, 25 Oct 2007 21:09:22 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new using ClamAV at minet.net
+Received: from smtp.minet.net (imap.minet.net [192.168.1.27])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.minet.net (Postfix) with ESMTP id 944345CD20
+	for <linux-mips@linux-mips.org>; Thu, 25 Oct 2007 21:08:50 +0200 (CEST)
+Received: from [192.168.254.22] (vpn1.minet.net [192.168.1.251])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: florian)
+	by smtp.minet.net (Postfix) with ESMTP id 4C059D951
+	for <linux-mips@linux-mips.org>; Thu, 25 Oct 2007 10:24:34 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Date:	Thu, 25 Oct 2007 21:08:42 +0200
+Subject: [PATCH][au1000] Remove useless EXTRA_CFLAGS
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+X-UID:	134
+X-Length: 1256
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20071025175914.GB27616@linux-mips.org>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+Message-Id: <200710252108.43357.florian.fainelli@telecomint.eu>
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17230
+X-archive-position: 17231
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-> > > So time to check how your favorite platform is doing and fix what broke!
-> > 
-> > I let it loose on my Au1200, but unfortunately the new time code is b0rked
-> > ina way I don't understand.
-> > 
-> > Following call chain:
-> > 
-> > start_kernel()
-> >  time_init()
-> >   init_mips_clocksource()
-> >   mips_clockevent_init()
-> >    clockevents_register_device()
-> >     clockevents_do_notify()
-> >      notifier_call_chain():
-> > 
-> >       It dies here, line 69, in kernel/notifier.c:
-> >       ret = nb->notifier_call(nb, val, v);
-> 
-> What sort of death?  Please describe all sympthoms of the patient.
+Remove the EXTRA_CFLAGS because it is useless (code compiles without warnings).
 
-Well it does nothing. Unfortunately the only JTAG probe we have 
-is always in use by the WinCE people so can't be more specific than that.
+Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
+---
+diff --git a/arch/mips/au1000/common/Makefile b/arch/mips/au1000/common/Makefile
+index 90e2d7a..4c35525 100644
+--- a/arch/mips/au1000/common/Makefile
++++ b/arch/mips/au1000/common/Makefile
+@@ -12,5 +12,3 @@ obj-y += prom.o irq.o puts.o time.o reset.o \
  
-> > Maybe my debug method is faulty (homebrew putstring() with au1200 uart
-> >  banging) but the last debug output is before this line.
-> 
-> It is consistent with another bug report on IP27.
-> 
-> The function tick_notify has been installed as notifier, so that is what
-> I think nb->notifier_call() should be pointing at.  So it should be
-> called like this:
-> 
->   tick_notify(&tick_notifier, CLOCK_EVT_NOTIFY_ADD, dev)
-
-That's a great hint, I'll debug it some more.
-
-Thank you!
-
-	Manuel Lauss
+ obj-$(CONFIG_KGDB)		+= dbg_io.o
+ obj-$(CONFIG_PCI)		+= pci.o
+-
+-EXTRA_CFLAGS += -Werror

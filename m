@@ -1,127 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Oct 2007 22:47:20 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.185]:13787 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20027288AbXJYVqu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 25 Oct 2007 22:46:50 +0100
-Received: by nf-out-0910.google.com with SMTP id c10so587887nfd
-        for <linux-mips@linux-mips.org>; Thu, 25 Oct 2007 14:46:39 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        bh=2cjMj2VsWWzLqtCgT9jxqZH0jN+0vPN9Xlh5RqJ8iUY=;
-        b=Kbob0ODjaByFi3Nl2C5VgCyI8T7WQBBaheIB7fq/xrSKy3tyciwN9vkNMq80RxPGuNa9wtcs/MPq5JLUPj2QLWIXZjcJgwXAAz4wWzDvZILM9D6w6LSUF+1qaUIhzCe6FOJzBkjDNhi1xw895FqLuuCXxKEQqE3LsQ1re78p8aU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:message-id;
-        b=BAWX9FXrl84JfN44g8yscyzn7scJhsoIzBZ2ovbPO2c/53mEyX+TNDJ7IDbjO2JXz+UdbX6kwg3KrcVjvEHn88VHlQMuyqtvL7eb6QMfp/Sen2p4Z0mYgaAS+isNlO7aWylKXj7msRFbxEC5L3+2KJ/qSlXgZ2l0kgP4GlFdqyY=
-Received: by 10.86.89.4 with SMTP id m4mr1666608fgb.1193348799329;
-        Thu, 25 Oct 2007 14:46:39 -0700 (PDT)
-Received: from ?192.168.123.7? ( [89.78.229.67])
-        by mx.google.com with ESMTPS id e9sm5432117muf.2007.10.25.14.46.38
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 25 Oct 2007 14:46:38 -0700 (PDT)
-From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Oct 2007 07:19:45 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:13587 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20024000AbXJZGTg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 26 Oct 2007 07:19:36 +0100
+Received: (qmail 1314 invoked by uid 1000); 26 Oct 2007 08:18:35 +0200
+Date:	Fri, 26 Oct 2007 08:18:35 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [IDE] Fix build bug
-Date:	Thu, 25 Oct 2007 23:41:38 +0200
-User-Agent: KMail/1.9.7
-Cc:	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-mips@linux-mips.org,
-	Martijn Uffing <mp3project@sarijopen.student.utwente.nl>
-References: <20071025135334.GA23272@linux-mips.org>
-In-Reply-To: <20071025135334.GA23272@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: 2.6.24-rc1: au1xxx and clocksource
+Message-ID: <20071026061835.GA1267@roarinelk.homelinux.net>
+References: <20071024183135.GA23096@roarinelk.homelinux.net> <20071025175914.GB27616@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200710252341.38902.bzolnier@gmail.com>
-Return-Path: <bzolnier@gmail.com>
+In-Reply-To: <20071025175914.GB27616@linux-mips.org>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17238
+X-archive-position: 17239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bzolnier@gmail.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
+Hi Ralf,
 
-Hi,
+On Thu, Oct 25, 2007 at 06:59:14PM +0100, Ralf Baechle wrote:
+> On Wed, Oct 24, 2007 at 08:31:35PM +0200, Manuel Lauss wrote:
+> > start_kernel()
+> >  time_init()
+> >   init_mips_clocksource()
+> >   mips_clockevent_init()
+> >    clockevents_register_device()
+> >     clockevents_do_notify()
+> >      notifier_call_chain():
+> > 
+> >       It dies here, line 69, in kernel/notifier.c:
+> >       ret = nb->notifier_call(nb, val, v);
 
-On Thursday 25 October 2007, Ralf Baechle wrote:
->   CC      drivers/ide/pci/generic.o
-> drivers/ide/pci/generic.c:52: error: __setup_str_ide_generic_all_on causes a
-> +section type conflict
+>   tick_notify(&tick_notifier, CLOCK_EVT_NOTIFY_ADD, dev)
 > 
-> This sort of build error is becoming a regular issue.  Either all or non
-> of the elements that go into a particular section of a compilation unit
-> need to be const.  Or an error may result such as in this case if
-> CONFIG_HOTPLUG is unset.
-> 
-> Maybe worth a check in checkpatch.pl - but certainly gcc's interolerance
-> is also being less than helpful here.
-> 
-> ---
->  drivers/ide/pci/generic.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ide/pci/generic.c b/drivers/ide/pci/generic.c
-> index f44d708..0047684 100644
-> --- a/drivers/ide/pci/generic.c
-> +++ b/drivers/ide/pci/generic.c
-> @@ -67,7 +67,7 @@ MODULE_PARM_DESC(all_generic_ide, "IDE generic will claim all unknown PCI IDE st
->  		.udma_mask	= ATA_UDMA6, \
->  	}
->  
-> -static const struct ide_port_info generic_chipsets[] __devinitdata = {
-> +static struct ide_port_info generic_chipsets[] __devinitdata = {
->  	/*  0 */ DECLARE_GENERIC_PCI_DEV("Unknown",	0),
->  
->  	{	/* 1 */
+> So things are likely going wrong somewhere in there.
 
-I would prefer to not remove const from generic_chipsets[] so:
+starting in nb->notifier_call:
+tick_notify()
+ tick_check_new_device()
+  tick_setup_device()
+   tick_setup_periodic():
 
-[PATCH] drivers/ide/pci/generic: fix build for CONFIG_HOTPLUG=n
+   it seems to enternally loop in here:
 
-It turns out that const and __{dev}initdata cannot be mixed currently
-and that generic IDE PCI host driver is also affected by the same issue:
+123                 for (;;) {
+124                         if (!clockevents_program_event(dev, next, ktime_get()))
+125                                 return;
+126                         next = ktime_add(next, tick_period);
+127                 }
 
-On Thursday 25 October 2007, Ralf Baechle wrote:
->   CC      drivers/ide/pci/generic.o
-> drivers/ide/pci/generic.c:52: error: __setup_str_ide_generic_all_on causes a
-> +section type conflict
+I think it's waiting for a timer irq which never happens.  The code in
+cevt-r4k.c assigns IRQ 7 as the timer irq which is a GPIO according to
+the manual. Actually, there is no real requestable() timer irq mentioned
+in the manual (RTC and TOY aside).
 
-[ Also reported by Martijn Uffing <mp3project@sarijopen.student.utwente.nl>. ]
-
-This patch workarounds the problem in a bit hackish way but without
-removing const from generic_chipsets[] (it adds const to __setup() so
-__setup_str_ide_generic_all becomes const).
-
-Now all __{dev}initdata data in generic IDE PCI host driver are read-only
-so it builds again (driver's .init.data section gets marked as READONLY).
-
-Cc: Martijn Uffing <mp3project@sarijopen.student.utwente.nl>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
----
- drivers/ide/pci/generic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-Index: b/drivers/ide/pci/generic.c
-===================================================================
---- a/drivers/ide/pci/generic.c
-+++ b/drivers/ide/pci/generic.c
-@@ -49,7 +49,7 @@ static int __init ide_generic_all_on(cha
- 	printk(KERN_INFO "IDE generic will claim all unknown PCI IDE storage controllers.\n");
- 	return 1;
- }
--__setup("all-generic-ide", ide_generic_all_on);
-+const __setup("all-generic-ide", ide_generic_all_on);
- #endif
- module_param_named(all_generic_ide, ide_generic_all, bool, 0444);
- MODULE_PARM_DESC(all_generic_ide, "IDE generic will claim all unknown PCI IDE storage controllers.");
+Thanks!
+	Manuel Lauss

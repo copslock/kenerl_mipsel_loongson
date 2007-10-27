@@ -1,41 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Oct 2007 08:12:00 +0100 (BST)
-Received: from host182-219-dynamic.8-87-r.retail.telecomitalia.it ([87.8.219.182]:15325
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S20023413AbXJ0HLv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 27 Oct 2007 08:11:51 +0100
-Received: from eppesuig3 ([192.168.2.50])
-	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1Ilfpj-0001fr-5L
-	for linux-mips@linux-mips.org; Sat, 27 Oct 2007 09:11:48 +0200
-Subject: 2.6.24-rc1 does not boot on SGI [was: 2.4.24-rc1 does not boot on
-	SGI]
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-To:	linux-mips@linux-mips.org
-In-Reply-To: <1193468825.7474.6.camel@scarafaggio>
-References: <1193468825.7474.6.camel@scarafaggio>
-Content-Type: text/plain
-Date:	Sat, 27 Oct 2007 09:12:06 +0200
-Message-Id: <1193469126.7474.9.camel@scarafaggio>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.10.3 
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Oct 2007 13:02:42 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:12550 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20029768AbXJ0MCd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 27 Oct 2007 13:02:33 +0100
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 8F87B3ECB; Sat, 27 Oct 2007 05:02:00 -0700 (PDT)
+Message-ID: <472328C2.4000002@ru.mvista.com>
+Date:	Sat, 27 Oct 2007 16:02:10 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Roel Kluin <12o3l@tiscali.nl>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix post-fence error
+References: <47228018.8020202@tiscali.nl>
+In-Reply-To: <47228018.8020202@tiscali.nl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17251
+X-archive-position: 17252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Il giorno sab, 27/10/2007 alle 09.07 +0200, Giuseppe Sacco ha scritto:
-> This is quick note about a problem with the latest kernel (yesterday
-> snapshot from linux-mips git repository).
-[...]
+Hello.
 
-Oops, of course I meant 2.6.24-rc1 and not to 2.4.24-rc1.
+Roel Kluin wrote:
+
+> In the same file:
+
+> typedef struct {
+>         unsigned long sig[4];
+> } irix_sigset_t;
+> ---
+> diff --git a/arch/mips/kernel/irixsig.c b/arch/mips/kernel/irixsig.c
+> index a0a9105..d65c51c 100644
+> --- a/arch/mips/kernel/irixsig.c
+> +++ b/arch/mips/kernel/irixsig.c
+> @@ -527,7 +527,7 @@ asmlinkage int irix_sigpoll_sys(unsigned long __user *set,
+>  
+>  		expire = schedule_timeout_interruptible(expire);
+>  
+> -		for (i=0; i<=4; i++)
+> +		for (i=0; i<4; i++)
+
+    Could also add spaces between the operands and operators (like 
+above/below), while at it...
+
+>  			tmp |= (current->pending.signal.sig[i] & kset.sig[i]);
+
+WBR, Sergei

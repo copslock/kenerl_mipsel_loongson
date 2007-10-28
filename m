@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 15:05:34 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:5835 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022491AbXJ1PFY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 28 Oct 2007 15:05:24 +0000
-Received: from localhost (p8247-ipad201funabasi.chiba.ocn.ne.jp [222.146.71.247])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 05DC99C4A; Mon, 29 Oct 2007 00:05:18 +0900 (JST)
-Date:	Mon, 29 Oct 2007 00:07:13 +0900 (JST)
-Message-Id: <20071029.000713.59464443.anemo@mba.ocn.ne.jp>
-To:	giuseppe@eppesuigoccas.homedns.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: 2.4.24-rc1 does not boot on SGI
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <1193468825.7474.6.camel@scarafaggio>
-References: <1193468825.7474.6.camel@scarafaggio>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 15:25:31 +0000 (GMT)
+Received: from web37907.mail.mud.yahoo.com ([209.191.91.169]:58556 "HELO
+	web37907.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20022959AbXJ1PZX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 28 Oct 2007 15:25:23 +0000
+Received: (qmail 38253 invoked by uid 60001); 28 Oct 2007 15:24:15 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=Y9uZm06KOWljJVNIG7YcgfrjNVzx/gAorVq4BqrAI/ghKNY6AWMNUgwCm8rx/ty279lnsfgrZHB/+bT8lcdXtx5pps44OxDSZXwYcEWmQJERGsOFQX0WtBzz0l/biQkVa/xSmXgRthFmsHXURnRcofj2fAozxrI9FBq9fHoZoyY=;
+X-YMail-OSG: WXkfYQUVM1m9PWJudqabjaW63X0DbGCue2Bz0nX9gknBTKUimf49wu.B9.cDgxSvqS6p.wYUNQrcVEB.zKheYzzv62wDh_eAZBZKFDYSIRbwcMBtLWE-
+Received: from [71.202.41.244] by web37907.mail.mud.yahoo.com via HTTP; Sun, 28 Oct 2007 08:24:15 PDT
+Date:	Sun, 28 Oct 2007 08:24:15 -0700 (PDT)
+From:	Binod Roay <binodroay@yahoo.com>
+Subject: Question related to Linux Kernel and MIPS
+To:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID: <423926.37963.qm@web37907.mail.mud.yahoo.com>
+Return-Path: <binodroay@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17260
+X-archive-position: 17261
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: binodroay@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 27 Oct 2007 09:07:05 +0200, Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org> wrote:
-> The new kernel once again does not boot on SGI O2. What happens is that
-> arcboot write its messages and nothing more is displayed on the screen.
-> The last message is "Starting ELF64 kernel". The previous running kernel
-> were 2.6.23 from linux-mips.org and 2.6.23.1 from kernel.org.
-> 
-> Does anyone have a suggestion about what to look for? I will start
-> looking at all diffs in arch/mips/sgi-ip32.
+Hi,
 
-Could you try this one?
+Could I please know is it possible run the Linux
+Kernel on MIPS from KUSEG ?
 
-http://www.linux-mips.org/archives/linux-mips/2007-10/msg00431.html
+Thanks,
+Binod
 
-I suppose currently all 64-bit platforms which use cevt-r4k.c are
-broken.
 
----
-Atsushi Nemoto
+
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 

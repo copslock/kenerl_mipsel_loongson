@@ -1,59 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 17:02:13 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:55984 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023072AbXJ1RCL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 28 Oct 2007 17:02:11 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9T0PLVc019081;
-	Mon, 29 Oct 2007 00:25:21 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9T0PHCP019080;
-	Mon, 29 Oct 2007 00:25:17 GMT
-Date:	Mon, 29 Oct 2007 00:25:17 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] Fix/Rewrite of the mipsnet driver
-Message-ID: <20071029002517.GB16913@linux-mips.org>
-References: <20071028043846.GM29176@networkno.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071028043846.GM29176@networkno.de>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 19:17:18 +0000 (GMT)
+Received: from host62-210-dynamic.14-87-r.retail.telecomitalia.it ([87.14.210.62]:43501
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20023403AbXJ1TRJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 28 Oct 2007 19:17:09 +0000
+Received: from eppesuig3 ([192.168.2.50])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1ImDd4-00015F-1B
+	for linux-mips@linux-mips.org; Sun, 28 Oct 2007 20:17:01 +0100
+Subject: 2.6.24-rc1 does not boot on SGI [was: Re: 2.4.24-rc1 does not boot
+	on SGI]
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <20071029.000713.59464443.anemo@mba.ocn.ne.jp>
+References: <1193468825.7474.6.camel@scarafaggio>
+	 <20071029.000713.59464443.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain
+Date:	Sun, 28 Oct 2007 20:17:11 +0100
+Message-Id: <1193599031.14874.1.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17263
+X-archive-position: 17264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Oct 28, 2007 at 04:38:46AM +0000, Thiemo Seufer wrote:
-
-> Hello All,
+Il giorno lun, 29/10/2007 alle 00.07 +0900, Atsushi Nemoto ha scritto:
+> On Sat, 27 Oct 2007 09:07:05 +0200, Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org> wrote:
+[...]
+> > Does anyone have a suggestion about what to look for? I will start
+> > looking at all diffs in arch/mips/sgi-ip32.
 > 
-> currently the mipsnet driver fails after transmitting a number of
-> packages because SKBs are allocated but never freed. I fixed that
-> and coudn't refrain from removing the most egregious warts.
+> Could you try this one?
 > 
-> - mipsnet.h folded into mipsnet.c, as it doesn't provide any
->   useful external interface.
-> - Free SKB after transmission.
-> - Call free_irq in mipsnet_close, to balance the request_irq in
->   mipsnet_open.
-> - Removed duplicate read of rxDataCount.
-> - Some identifiers are now less verbose.
-> - Removed dead and/or unnecessarily complex code.
-> - Code formatting fixes.
+> http://www.linux-mips.org/archives/linux-mips/2007-10/msg00431.html
 > 
-> Tested on Qemu's mipssim emulation, with this patch it can boot a
-> Debian NFSroot.
+> I suppose currently all 64-bit platforms which use cevt-r4k.c are
+> broken.
 
-The patch does no longer apply to a recent tree, can you respin it?
-
-  Ralf
+Nothing changed using this patch: the system does not boot. Currently I
+suspect the reason is the change the IRQ handling because it is the main
+change in arch/mips/sg-ip32.

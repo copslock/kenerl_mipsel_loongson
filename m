@@ -1,46 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 15:25:31 +0000 (GMT)
-Received: from web37907.mail.mud.yahoo.com ([209.191.91.169]:58556 "HELO
-	web37907.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20022959AbXJ1PZX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 28 Oct 2007 15:25:23 +0000
-Received: (qmail 38253 invoked by uid 60001); 28 Oct 2007 15:24:15 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=Y9uZm06KOWljJVNIG7YcgfrjNVzx/gAorVq4BqrAI/ghKNY6AWMNUgwCm8rx/ty279lnsfgrZHB/+bT8lcdXtx5pps44OxDSZXwYcEWmQJERGsOFQX0WtBzz0l/biQkVa/xSmXgRthFmsHXURnRcofj2fAozxrI9FBq9fHoZoyY=;
-X-YMail-OSG: WXkfYQUVM1m9PWJudqabjaW63X0DbGCue2Bz0nX9gknBTKUimf49wu.B9.cDgxSvqS6p.wYUNQrcVEB.zKheYzzv62wDh_eAZBZKFDYSIRbwcMBtLWE-
-Received: from [71.202.41.244] by web37907.mail.mud.yahoo.com via HTTP; Sun, 28 Oct 2007 08:24:15 PDT
-Date:	Sun, 28 Oct 2007 08:24:15 -0700 (PDT)
-From:	Binod Roay <binodroay@yahoo.com>
-Subject: Question related to Linux Kernel and MIPS
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 16:16:37 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:44502 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20023031AbXJ1QQf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 28 Oct 2007 16:16:35 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9SNdgR0016621;
+	Sun, 28 Oct 2007 23:39:42 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9SNdfSV016620;
+	Sun, 28 Oct 2007 23:39:41 GMT
+Date:	Sun, 28 Oct 2007 23:39:41 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Use a sensible tlbex default for unknown CPUs
+Message-ID: <20071028233941.GA16471@linux-mips.org>
+References: <20071025155912.GD3994@networkno.de> <Pine.LNX.4.64N.0710251707170.24086@blysk.ds.pg.gda.pl> <20071025205654.GF3994@networkno.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <423926.37963.qm@web37907.mail.mud.yahoo.com>
-Return-Path: <binodroay@yahoo.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071025205654.GF3994@networkno.de>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17261
+X-archive-position: 17262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: binodroay@yahoo.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, Oct 25, 2007 at 09:56:54PM +0100, Thiemo Seufer wrote:
 
-Could I please know is it possible run the Linux
-Kernel on MIPS from KUSEG ?
+> > > currently the kernel panics when it boots on an unknown CPU model
+> > > (with an unknown PRID). Based on the assumption that the majority
+> > > of newly supported CPU will conform to Release 2 standard, I wrote
+> > > the appended patch which handles unknown CPUs as R2. It isn't
+> > > completely bulletproof, as (yet unsupported) non-R1/R2 CPUs may
+> > > use the AT config bits for different purposes. I still think this
+> > > is good enough a test.
+> > 
+> >  Good idea in general, but do we have to rely on the undefined?  How 
+> > about this:
+> > 
+> > > +		/* Panic if this isn't a Release 2 CPU. */
+> > > +		if (!((read_c0_config() & MIPS_CONF_AT) >> 13)) {
+> > 
+> > 	if (!(current_cpu_data.isa_level &
+> > 	      (MIPS_CPU_ISA_M64R2 | MIPS_CPU_ISA_M32R2))) {
+> > 
+> > instead for example?
+> 
+> This is circular, as isa_level won't be initialized for a unknown CPU.
+> The *_r2 check suggested by Ralf has the same problem AFAICS, so it
+> looks like we have to stick with the original solution.
 
-Thanks,
-Binod
+The ISA level is determined earlier by another probe.  If it cannot be
+determined the kernel will already have paniced so the cleaner variant is
+ok.
 
-
-
-__________________________________________________
-Do You Yahoo!?
-Tired of spam?  Yahoo! Mail has the best spam protection around 
-http://mail.yahoo.com 
+  Ralf

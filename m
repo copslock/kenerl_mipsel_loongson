@@ -1,558 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 04:39:49 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:24747 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20023521AbXJ1Ejk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 28 Oct 2007 04:39:40 +0000
-Received: from lagash (88-106-176-50.dynamic.dsl.as9105.com [88.106.176.50])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 5D93248F41;
-	Sun, 28 Oct 2007 05:03:41 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1IlzvC-0005Qz-AZ; Sun, 28 Oct 2007 04:38:46 +0000
-Date:	Sun, 28 Oct 2007 04:38:46 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, netdev@vger.kernel.org
-Subject: [PATCH] Fix/Rewrite of the mipsnet driver
-Message-ID: <20071028043846.GM29176@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Oct 2007 06:11:10 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:33234 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20021892AbXJ1GLC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 28 Oct 2007 06:11:02 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 1683330F1A0
+	for <linux-mips@linux-mips.org>; Sun, 28 Oct 2007 06:10:27 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Sun, 28 Oct 2007 06:10:26 +0000 (UTC)
+Received: from [192.168.7.221] ([192.168.7.221]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sat, 27 Oct 2007 23:10:21 -0700
+Message-ID: <472427CC.4000406@avtrex.com>
+Date:	Sat, 27 Oct 2007 23:10:20 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Add len and addr validation for MAP_FIXED mappings.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 28 Oct 2007 06:10:21.0477 (UTC) FILETIME=[38A54D50:01C81929]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17258
+X-archive-position: 17259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello All,
+From: David Daney  <ddaney@avtrex.com>
 
-currently the mipsnet driver fails after transmitting a number of
-packages because SKBs are allocated but never freed. I fixed that
-and coudn't refrain from removing the most egregious warts.
+mmap with MAP_FIXED was not validating the addr and len parameters.
+This leads to the failure of GCC's gcc.c-torture/execute/loop-2[fg].c
+testcases when using the o32 ABI on a 64 bit kernel.
 
-- mipsnet.h folded into mipsnet.c, as it doesn't provide any
-  useful external interface.
-- Free SKB after transmission.
-- Call free_irq in mipsnet_close, to balance the request_irq in
-  mipsnet_open.
-- Removed duplicate read of rxDataCount.
-- Some identifiers are now less verbose.
-- Removed dead and/or unnecessarily complex code.
-- Code formatting fixes.
+These testcases try to mmap 65536 bytes at 0x7fff8000 and then access
+all the memory.  In 2.6.18 and 2.6.23.1 (and likely other versions as
+well) the kernel maps the requested memory, but since half of it is
+above 0x80000000 a SIGBUS is generated when it is accessed.
 
-Tested on Qemu's mipssim emulation, with this patch it can boot a
-Debian NFSroot.
+This patch moves the len validation above the MAP_FIXED processing so
+that it is always validated.  It also adds validation to the addr
+parameter for MAP_FIXED mappings.
 
+The patch is against 2.6.23.1 from kernel.org and was tested in a 64
+bit big-endian kernel.
 
-Thiemo
-
-
-Signed-off-by: Thiemo Seufer <ths@networkno.de>
+Signed-off-by: David Daney  <ddaney@avtrex.com>
 ---
-diff --git a/drivers/net/mipsnet.c b/drivers/net/mipsnet.c
-index 9853c74..28c66c1 100644
---- a/drivers/net/mipsnet.c
-+++ b/drivers/net/mipsnet.c
-@@ -4,8 +4,6 @@
-  * for more details.
-  */
+--- ../linux-2.6.23.1-clean/arch/mips/kernel/syscall.c	2007-10-12 09:43:44.000000000 -0700
++++ arch/mips/kernel/syscall.c	2007-10-25 23:10:23.000000000 -0700
+@@ -73,7 +73,14 @@ unsigned long arch_get_unmapped_area(str
  
--#define DEBUG
--
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -16,11 +14,93 @@
- #include <asm/io.h>
- #include <asm/mips-boards/simint.h>
+ 	task_size = STACK_TOP;
  
--#include "mipsnet.h"		/* actual device IO mapping */
-+#define MIPSNET_VERSION "2007-10-28"
++	if (len > task_size)
++		return -ENOMEM;
 +
-+/*
-+ * Net status/control block as seen by sw in the core.
-+ */
-+struct MIPS_T_NetControl {
-+	/*
-+	 * Device info for probing, reads as MIPSNET%d where %d is some
-+	 * form of version.
-+	 */
-+	uint64_t devId;		/*0x00 */
+ 	if (flags & MAP_FIXED) {
++		/* Even MAP_FIXED mappings must reside within task_size.  */
++		if (task_size - len < addr)
++			return -EINVAL;
 +
-+	/*
-+	 * read only busy flag.
-+	 * Set and cleared by the Net Device to indicate that an rx or a tx
-+	 * is in progress.
-+	 */
-+	uint32_t busy;		/*0x08 */
-+
-+	/*
-+	 * Set by the Net Device.
-+	 * The device will set it once data has been received.
-+	 * The value is the number of bytes that should be read from
-+	 * rxDataBuffer.  The value will decrease till 0 until all the data
-+	 * from rxDataBuffer has been read.
-+	 */
-+	uint32_t rxDataCount;	/*0x0c */
-+#define MIPSNET_MAX_RXTX_DATACOUNT (1<<16)
-+
-+	/*
-+	 * Settable from the MIPS core, cleared by the Net Device.
-+	 * The core should set the number of bytes it wants to send,
-+	 * then it should write those bytes of data to txDataBuffer.
-+	 * The device will clear txDataCount has been processed (not
-+	 * necessarily sent).
-+	 */
-+	uint32_t txDataCount;	/*0x10 */
- 
--#define MIPSNET_VERSION "2005-06-20"
-+	/*
-+	 * Interrupt control
-+	 *
-+	 * Used to clear the interrupted generated by this dev.
-+	 * Write a 1 to clear the interrupt. (except bit31).
-+	 *
-+	 * Bit0 is set if it was a tx-done interrupt.
-+	 * Bit1 is set when new rx-data is available.
-+	 *    Until this bit is cleared there will be no other RXs.
-+	 *
-+	 * Bit31 is used for testing, it clears after a read.
-+	 *    Writing 1 to this bit will cause an interrupt to be generated.
-+	 *    To clear the test interrupt, write 0 to this register.
-+	 */
-+	uint32_t interruptControl;	/*0x14 */
-+#define MIPSNET_INTCTL_TXDONE     ((uint32_t)(1 << 0))
-+#define MIPSNET_INTCTL_RXDONE     ((uint32_t)(1 << 1))
-+#define MIPSNET_INTCTL_TESTBIT    ((uint32_t)(1 << 31))
- 
--#define mipsnet_reg_address(dev, field) (dev->base_addr + field_offset(field))
-+	/*
-+	 * Readonly core-specific interrupt info for the device to signal
-+	 * the core. The meaning of the contents of this field might change.
-+	 */
-+	/* XXX: the whole memIntf interrupt scheme is messy: the device
-+	 * should have no control what so ever of what VPE/register set is
-+	 * being used.
-+	 * The MemIntf should only expose interrupt lines, and something in
-+	 * the config should be responsible for the line<->core/vpe bindings.
-+	 */
-+	uint32_t interruptInfo;	/*0x18 */
-+
-+	/*
-+	 * This is where the received data is read out.
-+	 * There is more data to read until rxDataReady is 0.
-+	 * Only 1 byte at this regs offset is used.
-+	 */
-+	uint32_t rxDataBuffer;	/*0x1c */
-+
-+	/*
-+	 * This is where the data to transmit is written.
-+	 * Data should be written for the amount specified in the
-+	 * txDataCount register.
-+	 * Only 1 byte at this regs offset is used.
-+	 */
-+	uint32_t txDataBuffer;	/*0x20 */
-+};
-+
-+#define regaddr(dev, field) \
-+  (dev->base_addr + offsetof(MIPS_T_NetControl, field))
- 
- struct mipsnet_priv {
- 	struct net_device_stats stats;
-@@ -34,18 +114,13 @@ static char mipsnet_string[] = "mipsnet";
- static int ioiocpy_frommipsnet(struct net_device *dev, unsigned char *kdata,
- 			int len)
- {
--	uint32_t available_len = inl(mipsnet_reg_address(dev, rxDataCount));
--	if (available_len < len)
--		return -EFAULT;
-+	for (; len > 0; len--, kdata++)
-+		*kdata = inb(regaddr(dev, rxDataBuffer));
- 
--	for (; len > 0; len--, kdata++) {
--		*kdata = inb(mipsnet_reg_address(dev, rxDataBuffer));
--	}
--
--	return inl(mipsnet_reg_address(dev, rxDataCount));
-+	return inl(regaddr(dev, rxDataCount));
- }
- 
--static inline ssize_t mipsnet_put_todevice(struct net_device *dev,
-+static inline void mipsnet_put_todevice(struct net_device *dev,
- 	struct sk_buff *skb)
- {
- 	int count_to_go = skb->len;
-@@ -55,19 +130,19 @@ static inline ssize_t mipsnet_put_todevice(struct net_device *dev,
- 	pr_debug("%s: %s(): telling MIPSNET txDataCount(%d)\n",
- 	         dev->name, __FUNCTION__, skb->len);
- 
--	outl(skb->len, mipsnet_reg_address(dev, txDataCount));
-+	outl(skb->len, regaddr(dev, txDataCount));
- 
- 	pr_debug("%s: %s(): sending data to MIPSNET txDataBuffer(%d)\n",
- 	         dev->name, __FUNCTION__, skb->len);
- 
- 	for (; count_to_go; buf_ptr++, count_to_go--) {
--		outb(*buf_ptr, mipsnet_reg_address(dev, txDataBuffer));
-+		outb(*buf_ptr, regaddr(dev, txDataBuffer));
+ 		/*
+ 		 * We do not accept a shared mapping if it would violate
+ 		 * cache aliasing constraints.
+@@ -83,8 +90,6 @@ unsigned long arch_get_unmapped_area(str
+ 		return addr;
  	}
  
- 	mp->stats.tx_packets++;
- 	mp->stats.tx_bytes += skb->len;
- 
--	return skb->len;
-+	dev_kfree_skb(skb);
- }
- 
- static int mipsnet_xmit(struct sk_buff *skb, struct net_device *dev)
-@@ -75,7 +150,8 @@ static int mipsnet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	pr_debug("%s:%s(): transmitting %d bytes\n",
- 	         dev->name, __FUNCTION__, skb->len);
- 
--	/* Only one packet at a time. Once TXDONE interrupt is serviced, the
-+	/*
-+	 * Only one packet at a time. Once TXDONE interrupt is serviced, the
- 	 * queue will be restarted.
- 	 */
- 	netif_stop_queue(dev);
-@@ -84,17 +160,19 @@ static int mipsnet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return 0;
- }
- 
--static inline ssize_t mipsnet_get_fromdev(struct net_device *dev, size_t count)
-+static inline ssize_t mipsnet_get_fromdev(struct net_device *dev, size_t len)
- {
- 	struct sk_buff *skb;
--	size_t len = count;
- 	struct mipsnet_priv *mp = netdev_priv(dev);
- 
--	if (!(skb = alloc_skb(len + 2, GFP_KERNEL))) {
-+	if (!len)
-+		return len;
-+
-+	skb = dev_alloc_skb(len + 2);
-+	if (!skb) {
- 		mp->stats.rx_dropped++;
- 		return -ENOMEM;
- 	}
--
- 	skb_reserve(skb, 2);
- 	if (ioiocpy_frommipsnet(dev, skb_put(skb, len), len))
- 		return -EFAULT;
-@@ -103,70 +181,65 @@ static inline ssize_t mipsnet_get_fromdev(struct net_device *dev, size_t count)
- 	skb->ip_summed = CHECKSUM_UNNECESSARY;
- 
- 	pr_debug("%s:%s(): pushing RXed data to kernel\n",
--	         dev->name, __FUNCTION__);
-+		 dev->name, __FUNCTION__);
- 	netif_rx(skb);
- 
- 	mp->stats.rx_packets++;
- 	mp->stats.rx_bytes += len;
- 
--	return count;
-+	return len;
- }
- 
- static irqreturn_t mipsnet_interrupt(int irq, void *dev_id)
- {
- 	struct net_device *dev = dev_id;
--
--	irqreturn_t retval = IRQ_NONE;
--	uint64_t interruptFlags;
--
--	if (irq == dev->irq) {
--		pr_debug("%s:%s(): irq %d for device\n",
--		         dev->name, __FUNCTION__, irq);
--
--		retval = IRQ_HANDLED;
--
--		interruptFlags =
--		    inl(mipsnet_reg_address(dev, interruptControl));
--		pr_debug("%s:%s(): intCtl=0x%016llx\n", dev->name,
--		         __FUNCTION__, interruptFlags);
--
--		if (interruptFlags & MIPSNET_INTCTL_TXDONE) {
--			pr_debug("%s:%s(): got TXDone\n",
--			         dev->name, __FUNCTION__);
--			outl(MIPSNET_INTCTL_TXDONE,
--			     mipsnet_reg_address(dev, interruptControl));
--			// only one packet at a time, we are done.
--			netif_wake_queue(dev);
--		} else if (interruptFlags & MIPSNET_INTCTL_RXDONE) {
--			pr_debug("%s:%s(): got RX data\n",
--			         dev->name, __FUNCTION__);
--			mipsnet_get_fromdev(dev,
--			            inl(mipsnet_reg_address(dev, rxDataCount)));
--			pr_debug("%s:%s(): clearing RX int\n",
--			         dev->name, __FUNCTION__);
--			outl(MIPSNET_INTCTL_RXDONE,
--			     mipsnet_reg_address(dev, interruptControl));
--
--		} else if (interruptFlags & MIPSNET_INTCTL_TESTBIT) {
--			pr_debug("%s:%s(): got test interrupt\n",
--			         dev->name, __FUNCTION__);
--			// TESTBIT is cleared on read.
--			//    And takes effect after a write with 0
--			outl(0, mipsnet_reg_address(dev, interruptControl));
--		} else {
--			pr_debug("%s:%s(): no valid fags 0x%016llx\n",
--			         dev->name, __FUNCTION__, interruptFlags);
--			// Maybe shared IRQ, just ignore, no clearing.
--			retval = IRQ_NONE;
--		}
--
-+	struct mipsnet_priv *mp = netdev_priv(dev);
-+	u32 int_flags;
-+	int ret = IRQ_NONE;
-+
-+	if (irq != dev->irq)
-+		goto out_badirq;
-+
-+	/* TESTBIT is cleared on read. */
-+	int_flags = inl(regaddr(dev, interruptControl));
-+	pr_debug("%s:%s(): irq %d intCtl=0x%x\n", dev->name,
-+		 __FUNCTION__, irq, int_flags);
-+
-+	if (int_flags & MIPSNET_INTCTL_TESTBIT) {
-+		pr_debug("%s:%s(): got test interrupt\n",
-+			 dev->name, __FUNCTION__);
-+		/* TESTBIT takes effect after a write with 0. */
-+		outl(0, regaddr(dev, interruptControl));
-+		ret = IRQ_HANDLED;
-+	} else if (int_flags & MIPSNET_INTCTL_TXDONE) {
-+		pr_debug("%s:%s(): got TXDone\n",
-+			 dev->name, __FUNCTION__);
-+		/* Only one packet at a time, we are done. */
-+		mp->stats.tx_packets++;
-+		netif_wake_queue(dev);
-+		pr_debug("%s:%s(): clearing TX int\n",
-+			 dev->name, __FUNCTION__);
-+		outl(MIPSNET_INTCTL_TXDONE,
-+		     regaddr(dev, interruptControl));
-+		ret = IRQ_HANDLED;
-+	} else if (int_flags & MIPSNET_INTCTL_RXDONE) {
-+		pr_debug("%s:%s(): got RX data\n", dev->name, __FUNCTION__);
-+		mipsnet_get_fromdev(dev, inl(regaddr(dev, rxDataCount)));
-+		pr_debug("%s:%s(): clearing RX int\n",
-+			 dev->name, __FUNCTION__);
-+		outl(MIPSNET_INTCTL_RXDONE, regaddr(dev, interruptControl));
-+		ret = IRQ_HANDLED;
- 	} else {
--		printk(KERN_INFO "%s: %s(): irq %d for unknown device\n",
--		       dev->name, __FUNCTION__, irq);
--		retval = IRQ_NONE;
-+		pr_debug("%s:%s(): no valid flags 0x%x\n",
-+			 dev->name, __FUNCTION__, int_flags);
- 	}
--	return retval;
--}				//mipsnet_interrupt()
-+	return ret;
-+
-+out_badirq:
-+	printk(KERN_INFO "%s: %s(): irq %d for unknown device\n",
-+	       dev->name, __FUNCTION__, irq);
-+	return ret;
-+}
- 
- static int mipsnet_open(struct net_device *dev)
- {
-@@ -179,7 +252,7 @@ static int mipsnet_open(struct net_device *dev)
- 	if (err) {
- 		pr_debug("%s: %s(): can't get irq %d\n",
- 		         dev->name, __FUNCTION__, dev->irq);
--		release_region(dev->base_addr, MIPSNET_IO_EXTENT);
-+		release_region(dev->base_addr, sizeof(MIPS_T_NetControl));
- 		return err;
- 	}
- 
-@@ -189,9 +262,9 @@ static int mipsnet_open(struct net_device *dev)
- 
- 	netif_start_queue(dev);
- 
--	// test interrupt handler
-+	/* test interrupt handler */
- 	outl(MIPSNET_INTCTL_TESTBIT,
--	     mipsnet_reg_address(dev, interruptControl));
-+	     regaddr(dev, interruptControl));
- 
- 
- 	return 0;
-@@ -201,6 +274,7 @@ static int mipsnet_close(struct net_device *dev)
- {
- 	pr_debug("%s: %s()\n", dev->name, __FUNCTION__);
- 	netif_stop_queue(dev);
-+	free_irq(dev->irq, dev);
- 	return 0;
- }
- 
-@@ -213,7 +287,7 @@ static struct net_device_stats *mipsnet_get_stats(struct net_device *dev)
- 
- static void mipsnet_set_mclist(struct net_device *dev)
- {
--	// we don't do anything
-+	/* we don't do anything */
- 	return;
- }
- 
-@@ -241,13 +315,15 @@ static int __init mipsnet_probe(struct device *dev)
- 	 */
- 	netdev->base_addr = 0x4200;
- 	netdev->irq = MIPS_CPU_IRQ_BASE + MIPSCPU_INT_MB0 +
--	              inl(mipsnet_reg_address(netdev, interruptInfo));
-+		      inl(regaddr(netdev, interruptInfo));
- 
--	// Get the io region now, get irq on open()
--	if (!request_region(netdev->base_addr, MIPSNET_IO_EXTENT, "mipsnet")) {
-+	/* Get the io region now, get irq on open() */
-+	if (!request_region(netdev->base_addr, sizeof(MIPS_T_NetControl),
-+			    "mipsnet")) {
- 		pr_debug("%s: %s(): IO region {start: 0x%04lux, len: %d} "
--		         "for dev is not availble.\n", netdev->name,
--		         __FUNCTION__, netdev->base_addr, MIPSNET_IO_EXTENT);
-+			 "for dev is not availble.\n", netdev->name,
-+			 __FUNCTION__, netdev->base_addr,
-+			 sizeof(MIPS_T_NetControl));
- 		err = -EBUSY;
- 		goto out_free_netdev;
- 	}
-@@ -267,7 +343,7 @@ static int __init mipsnet_probe(struct device *dev)
- 	return 0;
- 
- out_free_region:
--	release_region(netdev->base_addr, MIPSNET_IO_EXTENT);
-+	release_region(netdev->base_addr, sizeof(MIPS_T_NetControl));
- 
- out_free_netdev:
- 	free_netdev(netdev);
-@@ -281,7 +357,7 @@ static int __devexit mipsnet_device_remove(struct device *device)
- 	struct net_device *dev = dev_get_drvdata(device);
- 
- 	unregister_netdev(dev);
--	release_region(dev->base_addr, MIPSNET_IO_EXTENT);
-+	release_region(dev->base_addr, sizeof(MIPS_T_NetControl));
- 	free_netdev(dev);
- 	dev_set_drvdata(device, NULL);
- 
-diff --git a/drivers/net/mipsnet.h b/drivers/net/mipsnet.h
-deleted file mode 100644
-index 026c732..0000000
---- a/drivers/net/mipsnet.h
-+++ /dev/null
-@@ -1,107 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- */
--#ifndef __MIPSNET_H
--#define __MIPSNET_H
--
--/*
-- *  Id of this Net device, as seen by the core.
-- */
--#define MIPS_NET_DEV_ID ((uint64_t)           \
--	                     ((uint64_t)'M'<< 0)| \
--	                     ((uint64_t)'I'<< 8)| \
--	                     ((uint64_t)'P'<<16)| \
--	                     ((uint64_t)'S'<<24)| \
--	                     ((uint64_t)'N'<<32)| \
--	                     ((uint64_t)'E'<<40)| \
--	                     ((uint64_t)'T'<<48)| \
--	                     ((uint64_t)'0'<<56))
--
--/*
-- * Net status/control block as seen by sw in the core.
-- * (Why not use bit fields? can't be bothered with cross-platform struct
-- *  packing.)
-- */
--typedef struct _net_control_block {
--	/// dev info for probing
--	///  reads as MIPSNET%d where %d is some form of version
--	uint64_t devId;		/*0x00 */
--
--	/*
--	 * read only busy flag.
--	 * Set and cleared by the Net Device to indicate that an rx or a tx
--	 * is in progress.
--	 */
--	uint32_t busy;		/*0x08 */
--
--	/*
--	 * Set by the Net Device.
--	 * The device will set it once data has been received.
--	 * The value is the number of bytes that should be read from
--	 * rxDataBuffer.  The value will decrease till 0 until all the data
--	 * from rxDataBuffer has been read.
--	 */
--	uint32_t rxDataCount;	/*0x0c */
--#define MIPSNET_MAX_RXTX_DATACOUNT (1<<16)
--
--	/*
--	 * Settable from the MIPS core, cleared by the Net Device.
--	 * The core should set the number of bytes it wants to send,
--	 *   then it should write those bytes of data to txDataBuffer.
--	 * The device will clear txDataCount has been processed (not necessarily sent).
--	 */
--	uint32_t txDataCount;	/*0x10 */
--
--	/*
--	 * Interrupt control
--	 *
--	 * Used to clear the interrupted generated by this dev.
--	 * Write a 1 to clear the interrupt. (except bit31).
--	 *
--	 * Bit0 is set if it was a tx-done interrupt.
--	 * Bit1 is set when new rx-data is available.
--	 *      Until this bit is cleared there will be no other RXs.
--	 *
--	 * Bit31 is used for testing, it clears after a read.
--	 *    Writing 1 to this bit will cause an interrupt to be generated.
--	 *    To clear the test interrupt, write 0 to this register.
--	 */
--	uint32_t interruptControl;	/*0x14 */
--#define MIPSNET_INTCTL_TXDONE     ((uint32_t)(1<< 0))
--#define MIPSNET_INTCTL_RXDONE     ((uint32_t)(1<< 1))
--#define MIPSNET_INTCTL_TESTBIT    ((uint32_t)(1<<31))
--#define MIPSNET_INTCTL_ALLSOURCES (MIPSNET_INTCTL_TXDONE|MIPSNET_INTCTL_RXDONE|MIPSNET_INTCTL_TESTBIT)
--
--	/*
--	 * Readonly core-specific interrupt info for the device to signal the core.
--	 * The meaning of the contents of this field might change.
--	 */
--	/*###\todo: the whole memIntf interrupt scheme is messy: the device should have
--	 *  no control what so ever of what VPE/register set is being used.
--	 *  The MemIntf should only expose interrupt lines, and something in the
--	 *  config should be responsible for the line<->core/vpe bindings.
--	 */
--	uint32_t interruptInfo;	/*0x18 */
--
--	/*
--	 *  This is where the received data is read out.
--	 *  There is more data to read until rxDataReady is 0.
--	 *  Only 1 byte at this regs offset is used.
--	 */
--	uint32_t rxDataBuffer;	/*0x1c */
--
--	/*
--	 * This is where the data to transmit is written.
--	 * Data should be written for the amount specified in the txDataCount register.
--	 *  Only 1 byte at this regs offset is used.
--	 */
--	uint32_t txDataBuffer;	/*0x20 */
--} MIPS_T_NetControl;
--
--#define MIPSNET_IO_EXTENT 0x40	/* being generous */
--
--#define field_offset(field) ((int)&((MIPS_T_NetControl*)(0))->field)
--
--#endif /* __MIPSNET_H */
+-	if (len > task_size)
+-		return -ENOMEM;
+ 	do_color_align = 0;
+ 	if (filp || (flags & MAP_SHARED))
+ 		do_color_align = 1;

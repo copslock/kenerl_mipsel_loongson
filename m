@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 20:05:59 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:42313 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28574399AbXJ2UFu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Oct 2007 20:05:50 +0000
-Received: from [192.168.1.248] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 85D0A3ECB; Mon, 29 Oct 2007 13:05:46 -0700 (PDT)
-Message-ID: <47263D22.80208@ru.mvista.com>
-Date:	Mon, 29 Oct 2007 23:05:54 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 20:53:41 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:32173 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28574403AbXJ2Uxj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Oct 2007 20:53:39 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9TKrcl0002148;
+	Mon, 29 Oct 2007 20:53:38 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9TKrbEh002147;
+	Mon, 29 Oct 2007 20:53:37 GMT
+Date:	Mon, 29 Oct 2007 20:53:37 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Binod Roay <binodroay@yahoo.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Question related to Linux Kernel and MIPS
+Message-ID: <20071029205337.GB2075@linux-mips.org>
+References: <423926.37963.qm@web37907.mail.mud.yahoo.com>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Roel Kluin <12o3l@tiscali.nl>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] fix post-fence error
-References: <47228018.8020202@tiscali.nl> <472328C2.4000002@ru.mvista.com> <47232C2D.8010002@tiscali.nl> <20071029150233.GA4165@linux-mips.org> <4725FDE5.70407@ru.mvista.com> <20071029191807.GA14710@linux-mips.org>
-In-Reply-To: <20071029191807.GA14710@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <423926.37963.qm@web37907.mail.mud.yahoo.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17300
+X-archive-position: 17301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Sun, Oct 28, 2007 at 08:24:15AM -0700, Binod Roay wrote:
 
->>   I'm afraid this new patch is wrong...
+> Could I please know is it possible run the Linux
+> Kernel on MIPS from KUSEG ?
 
-> Indeed.  Thanks for proofreading, even if after the fact ...
+You'd have to port UML to MIPS for something like this.
 
-    You were too quick with commit. :-)
-    Could also convert all of this construct to a proper kernel style:
-
-         for (i = 0; i < _IRIX_NSIG_BPW; i++)
-
->   Ralf
-
-WBR, Sergei
+  Ralf

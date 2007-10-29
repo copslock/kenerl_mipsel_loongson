@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 15:06:44 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:7359 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 15:10:29 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:44480 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28574244AbXJ2PGm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Oct 2007 15:06:42 +0000
+	id S28573971AbXJ2PK1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Oct 2007 15:10:27 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9TF6aSM004253;
-	Mon, 29 Oct 2007 15:06:36 GMT
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9TFALDI004327;
+	Mon, 29 Oct 2007 15:10:21 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9TF6Pqf004252;
-	Mon, 29 Oct 2007 15:06:25 GMT
-Date:	Mon, 29 Oct 2007 15:06:25 +0000
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9TFAAhN004326;
+	Mon, 29 Oct 2007 15:10:10 GMT
+Date:	Mon, 29 Oct 2007 15:10:10 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	Florian Fainelli <florian.fainelli@telecomint.eu>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: 2.6.24-rc1 does not boot on SGI [was: Re: 2.4.24-rc1 does not
-	boot on SGI]
-Message-ID: <20071029150625.GB4165@linux-mips.org>
-References: <1193468825.7474.6.camel@scarafaggio> <20071029.000713.59464443.anemo@mba.ocn.ne.jp> <1193599031.14874.1.camel@scarafaggio>
+Subject: Re: [PATCH][au1000] Remove useless EXTRA_CFLAGS
+Message-ID: <20071029151010.GA3953@linux-mips.org>
+References: <200710252108.43357.florian.fainelli@telecomint.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1193599031.14874.1.camel@scarafaggio>
+In-Reply-To: <200710252108.43357.florian.fainelli@telecomint.eu>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17287
+X-archive-position: 17288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,15 +33,11 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Oct 28, 2007 at 08:17:11PM +0100, Giuseppe Sacco wrote:
+On Thu, Oct 25, 2007 at 09:08:42PM +0200, Florian Fainelli wrote:
 
-> Nothing changed using this patch: the system does not boot. Currently I
-> suspect the reason is the change the IRQ handling because it is the main
-> change in arch/mips/sg-ip32.
+> Remove the EXTRA_CFLAGS because it is useless (code compiles without warnings).
 
-All the patch was meant to is to renumber interrupts so interrupts 0 ... 7
-become available for use with cpu_irq.c.  Irq 7 is the cp0 compare interrupt
-which on IP32 is used as the clockevent device that is the source of
-timer interrupts.
+And to ensure it will stay that way I'll keep -Werror.  It seems only
+little PITAs like this keep everybody on their toes :-)
 
   Ralf

@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 15:03:02 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:14248 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 15:06:44 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:7359 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28574252AbXJ2PDA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Oct 2007 15:03:00 +0000
+	id S28574244AbXJ2PGm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Oct 2007 15:06:42 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9TF2sja004184;
-	Mon, 29 Oct 2007 15:02:54 GMT
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9TF6aSM004253;
+	Mon, 29 Oct 2007 15:06:36 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9TF2XMQ004183;
-	Mon, 29 Oct 2007 15:02:33 GMT
-Date:	Mon, 29 Oct 2007 15:02:33 +0000
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9TF6Pqf004252;
+	Mon, 29 Oct 2007 15:06:25 GMT
+Date:	Mon, 29 Oct 2007 15:06:25 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Roel Kluin <12o3l@tiscali.nl>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] fix post-fence error
-Message-ID: <20071029150233.GA4165@linux-mips.org>
-References: <47228018.8020202@tiscali.nl> <472328C2.4000002@ru.mvista.com> <47232C2D.8010002@tiscali.nl>
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: 2.6.24-rc1 does not boot on SGI [was: Re: 2.4.24-rc1 does not
+	boot on SGI]
+Message-ID: <20071029150625.GB4165@linux-mips.org>
+References: <1193468825.7474.6.camel@scarafaggio> <20071029.000713.59464443.anemo@mba.ocn.ne.jp> <1193599031.14874.1.camel@scarafaggio>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <47232C2D.8010002@tiscali.nl>
+In-Reply-To: <1193599031.14874.1.camel@scarafaggio>
 User-Agent: Mutt/1.5.14 (2007-02-12)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17286
+X-archive-position: 17287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,54 +34,15 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Oct 27, 2007 at 02:16:45PM +0200, Roel Kluin wrote:
+On Sun, Oct 28, 2007 at 08:17:11PM +0100, Giuseppe Sacco wrote:
 
-> Sergei Shtylyov wrote:
-> > 
-> >    Could also add spaces between the operands and operators (like
-> > above/below), while at it...
-> > 
-> like this?
+> Nothing changed using this patch: the system does not boot. Currently I
+> suspect the reason is the change the IRQ handling because it is the main
+> change in arch/mips/sg-ip32.
 
-Thanks. I didn't like the magic numbers in the code so I went for below
-patch instead.
-
-Cheers,
+All the patch was meant to is to renumber interrupts so interrupts 0 ... 7
+become available for use with cpu_irq.c.  Irq 7 is the cp0 compare interrupt
+which on IP32 is used as the clockevent device that is the source of
+timer interrupts.
 
   Ralf
-
-From: Ralf Baechle <ralf@linux-mips.org>
-
-[MIPS] IRIX: Fix off-by-one error in signal compat code.
-
-Based on original patch by Roel Kluin <12o3l@tiscali.nl>.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/kernel/irixsig.c b/arch/mips/kernel/irixsig.c
-index a0a9105..5052f47 100644
---- a/arch/mips/kernel/irixsig.c
-+++ b/arch/mips/kernel/irixsig.c
-@@ -24,8 +24,12 @@
- 
- #define _BLOCKABLE (~(_S(SIGKILL) | _S(SIGSTOP)))
- 
-+#define _IRIX_NSIG		128
-+#define _IRIX_NSIG_BPW		BITS_PER_LONG
-+#define _IRIX_NSIG_WORDS	(_IRIX_NSIG / _IRIX_NSIG_BPW)
-+
- typedef struct {
--	unsigned long sig[4];
-+	unsigned long sig[_IRIX_NSIG_WORDS];
- } irix_sigset_t;
- 
- struct sigctx_irix5 {
-@@ -527,7 +531,7 @@ asmlinkage int irix_sigpoll_sys(unsigned long __user *set,
- 
- 		expire = schedule_timeout_interruptible(expire);
- 
--		for (i=0; i<=4; i++)
-+		for (i=0; i < _IRIX_NSIG_BPW; i++)
- 			tmp |= (current->pending.signal.sig[i] & kset.sig[i]);
- 
- 		if (tmp)

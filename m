@@ -1,51 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 11:27:01 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:2434 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28573949AbXJ2LZY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Oct 2007 11:25:24 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9T8xMRf032502;
-	Mon, 29 Oct 2007 08:59:22 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9T8xMIj032501;
-	Mon, 29 Oct 2007 08:59:22 GMT
-Date:	Mon, 29 Oct 2007 08:59:22 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 11:44:53 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:38335 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20022236AbXJ2Loo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Oct 2007 11:44:44 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 6804048FB7;
+	Mon, 29 Oct 2007 11:56:17 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.68)
+	(envelope-from <ths@networkno.de>)
+	id 1ImT2M-0006i0-NR; Mon, 29 Oct 2007 11:44:06 +0000
+Date:	Mon, 29 Oct 2007 11:44:06 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] R4000/R4400 errata workarounds
-Message-ID: <20071029085922.GC28580@linux-mips.org>
-References: <Pine.LNX.4.64N.0710221906540.988@blysk.ds.pg.gda.pl>
+Subject: Re: Fix (workaround?) for BCM Bigsur
+Message-ID: <20071029114406.GB18384@networkno.de>
+References: <20071028202249.GC22287@networkno.de> <20071028204328.GB16898@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0710221906540.988@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20071028204328.GB16898@linux-mips.org>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17281
+X-archive-position: 17282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 23, 2007 at 12:43:11PM +0100, Maciej W. Rozycki wrote:
-
->  This is the gereric part of R4000/R4400 errata workarounds.  They include 
-> compiler and assembler support as well as some source code modifications 
-> to address the problems with some combinations of multiply/divide+shift 
-> instructions as well as the daddi and daddiu instructions.
+Ralf Baechle wrote:
+> On Sun, Oct 28, 2007 at 08:22:49PM +0000, Thiemo Seufer wrote:
 > 
->  Changes included are as follows:
+> > Hello All,
+> > 
+> > the appended patchlet allows to boot current HEAD on a BCM1480.
+> > Without it the kernel dies in an unhandled interrupt loop.
+> 
+> I think it's a bugfix.  The whole {sb1250,bcm1250}_steal_irq() irq seems
+> to be a hack papering needed only to paper over other implementation
+> issues.
 
-Can be considered a bug fix but is intrusive enough to be a potencial
-source of bugs and I'd rather burn the time on fixing the time stuff,
-so I've queued this for 2.6.25.
+FYI, I removed all the *_steal_irq stuff in my tree, the resulting
+kernel works fine on a BCM1480.
 
-Thanks,
 
-  Ralf
+Thiemo

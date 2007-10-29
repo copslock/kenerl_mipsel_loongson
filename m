@@ -1,58 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 19:23:59 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:64480 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023001AbXJ2TX5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Oct 2007 19:23:57 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9TJNnFI020827;
-	Mon, 29 Oct 2007 19:23:49 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9TJNiwf020826;
-	Mon, 29 Oct 2007 19:23:44 GMT
-Date:	Mon, 29 Oct 2007 19:23:44 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] sb1250-swarm_defconfig: Enable GenBus IDE
-Message-ID: <20071029192344.GA20818@linux-mips.org>
-References: <Pine.LNX.4.64N.0710121641150.21684@blysk.ds.pg.gda.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 20:05:59 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:42313 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28574399AbXJ2UFu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Oct 2007 20:05:50 +0000
+Received: from [192.168.1.248] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 85D0A3ECB; Mon, 29 Oct 2007 13:05:46 -0700 (PDT)
+Message-ID: <47263D22.80208@ru.mvista.com>
+Date:	Mon, 29 Oct 2007 23:05:54 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0710121641150.21684@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Roel Kluin <12o3l@tiscali.nl>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix post-fence error
+References: <47228018.8020202@tiscali.nl> <472328C2.4000002@ru.mvista.com> <47232C2D.8010002@tiscali.nl> <20071029150233.GA4165@linux-mips.org> <4725FDE5.70407@ru.mvista.com> <20071029191807.GA14710@linux-mips.org>
+In-Reply-To: <20071029191807.GA14710@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17299
+X-archive-position: 17300
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 12, 2007 at 04:46:56PM +0100, Maciej W. Rozycki wrote:
+Ralf Baechle wrote:
 
->  Enable the onboard GenBus IDE interface in the default configuration.
+>>   I'm afraid this new patch is wrong...
 
-Indeed, that's sort of useful ;-)
+> Indeed.  Thanks for proofreading, even if after the fact ...
 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> ---
->  I see no reason to keep it disabled; I think the onboard devices deserve 
-> some automatic build-time testing -- at least ones for which drivers are 
-> known to be in a reasonable shape.
+    You were too quick with commit. :-)
+    Could also convert all of this construct to a proper kernel style:
 
-It got disabled when some IDE maintainer went out of control and removed the
-driver entirely.
+         for (i = 0; i < _IRIX_NSIG_BPW; i++)
 
->  As a side note, this configuration template has not been regenerated for 
-> a long time and is thus severely outdated.  I am tempted to do this, 
-> obviously setting any new options to my liking -- I'll send another patch 
-> for it unless somebody objects.
+>   Ralf
 
-Feel free.
-
-  Ralf
+WBR, Sergei

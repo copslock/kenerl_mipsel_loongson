@@ -1,189 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2007 20:04:37 +0000 (GMT)
-Received: from py-out-1112.google.com ([64.233.166.179]:45637 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S28575286AbXJ3UEM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 30 Oct 2007 20:04:12 +0000
-Received: by py-out-1112.google.com with SMTP id p76so4054751pyb
-        for <linux-mips@linux-mips.org>; Tue, 30 Oct 2007 13:04:00 -0700 (PDT)
-Received: by 10.64.241.3 with SMTP id o3mr16128512qbh.1193774638875;
-        Tue, 30 Oct 2007 13:03:58 -0700 (PDT)
-Received: by 10.65.123.7 with HTTP; Tue, 30 Oct 2007 13:03:58 -0700 (PDT)
-Message-ID: <dd7dc2bc0710301303j6006a53cp1dffd45d00cf635@mail.gmail.com>
-Date:	Wed, 31 Oct 2007 05:03:58 +0900
-From:	"Hyon Lim" <alex@alexlab.net>
-To:	"Uhler, Mike" <uhler@mips.com>
-Subject: Re: implementation of software suspend on MIPS.
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <692AB3595F5D76428B34B9BEFE20BC1FDD0219@Exchange.mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2007 20:24:49 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.191]:23338 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S28575274AbXJ3UYl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 30 Oct 2007 20:24:41 +0000
+Received: by nf-out-0910.google.com with SMTP id c10so1648651nfd
+        for <linux-mips@linux-mips.org>; Tue, 30 Oct 2007 13:24:39 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-disposition:message-id:content-type:content-transfer-encoding;
+        bh=fUZHEmFP0LbLg0T3VSy1MOY6j7+xPptKppR+ePecfoU=;
+        b=nGjN8MqBrlMcpTqOAlAnOA2kz/oN7of9/cZZeuNnM2KPjPKoAR0JuhV4WYeWsM0GJT6crXbFPdqeeXMddtw4y/K50r1sH+ffQiaciHpq1BtbiBAlqVBvQ+P1X64DDAr1IfzIFy9h+HoH+JTFvZtL2mOFqqdMPgeocjz46rQ2E4o=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-disposition:message-id:content-type:content-transfer-encoding;
+        b=Tug9g7am+ZFgp5pEfoRHOqsvZfgJQ50CE4EiKHlNaPvxxv1DeVaVGLopsl/iaC9HIdjEeJ5tVTkCkgK249WupKZC6yo1ad8ddbHvVhr7kzgz7Sjnm7kV9MuIzMD+V6X2pW99Sv7yQYv54zCJa3WYErMX26tVXwEl/Vn5tPxtUSU=
+Received: by 10.86.49.13 with SMTP id w13mr5978951fgw.1193775879557;
+        Tue, 30 Oct 2007 13:24:39 -0700 (PDT)
+Received: from ?192.168.123.7? ( [89.78.229.67])
+        by mx.google.com with ESMTPS id p38sm15481169fke.2007.10.30.13.24.38
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 30 Oct 2007 13:24:39 -0700 (PDT)
+From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [IDE] Fix build bug
+Date:	Tue, 30 Oct 2007 21:30:55 +0100
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	Denys Vlasenko <vda.linux@googlemail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-mips@linux-mips.org,
+	Martijn Uffing <mp3project@sarijopen.student.utwente.nl>
+References: <20071025135334.GA23272@linux-mips.org> <200710301134.30087.vda.linux@googlemail.com> <20071030124155.GA7582@linux-mips.org>
+In-Reply-To: <20071030124155.GA7582@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_503_26428855.1193774638869"
-References: <dd7dc2bc0710301212s7b364392n39a149764a4117cf@mail.gmail.com>
-	 <692AB3595F5D76428B34B9BEFE20BC1FDD0219@Exchange.mips.com>
-Return-Path: <alex@alexlab.net>
+Content-Disposition: inline
+Message-Id: <200710302130.55225.bzolnier@gmail.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Return-Path: <bzolnier@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17321
+X-archive-position: 17322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alexlab.net
+X-original-sender: bzolnier@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_503_26428855.1193774638869
-Content-Type: text/plain; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
 
-VGhhbmsgeW91IHZlcnkgbXVjaC4gSSB0aGluayBteSB3b3JrIGlzIGZpcnN0IGNvbnRyaWJ1dGlv
-biBhYm91dCBzb2Z0d2FyZQpzdXNwZW5kIG9uIG1pcHMuCkkgY2Fubm90IGZpbmQgYW55IGhpc3Rv
-cnkgcmVsYXRlZCB0byBteSB3b3JrIG9uIHRoaXMgbGlzdC4KSSdtIGxvb2tpbmcgZm9yd2FyZCB0
-byByZWNlaXZpbmcgeW91ciBhbnN3ZXIuCgpPbiAxMC8zMS8wNywgVWhsZXIsIE1pa2UgPHVobGVy
-QG1pcHMuY29tPiB3cm90ZToKPgo+ICBJJ3ZlIGFza2VkIG91ciBzb2Z0d2FyZSB0ZWFtIHRvIGZv
-bGxvdyB1cCB3aXRoIHlvdSBvbiB5b3VyIHF1ZXN0aW9ucy4KPgo+Cj4gL2dtdQo+IC0tLQo+IE1p
-Y2hhZWwgVWhsZXIsIFZQIEFyY2hpdGVjdHVyZSwgU29mdHdhcmUgYW5kIFBsYXRmb3JtIEVuZ2lu
-ZWVyaW5nCj4gTUlQUyBUZWNobm9sb2dpZXMsIEluYy4gICBFbWFpbDogdWhsZXIgQVQgbWlwcy5j
-b20KPiAxMjI1IENoYXJsZXN0b24gUm9hZCAgICAgIFZvaWNlOiAgKDY1MCk1NjctNTAyNQo+IE1v
-dW50YWluIFZpZXcsIENBIDk0MDQzCj4KPgo+Cj4KPiAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tCj4gKkZyb206KiBsaW51eC1taXBzLWJvdW5jZUBsaW51eC1taXBzLm9yZyBbbWFpbHRv
-Ogo+IGxpbnV4LW1pcHMtYm91bmNlQGxpbnV4LW1pcHMub3JnXSAqT24gQmVoYWxmIE9mICpIeW9u
-IExpbQo+ICpTZW50OiogVHVlc2RheSwgT2N0b2JlciAzMCwgMjAwNyAxMjoxMyBQTQo+ICpUbzoq
-IGxpbnV4LW1pcHNAbGludXgtbWlwcy5vcmcKPiAqU3ViamVjdDoqICBpbXBsZW1lbnRhdGlvbiBv
-ZiBzb2Z0d2FyZSBzdXNwZW5kIG9uIE1JUFMuCj4gKkltcG9ydGFuY2U6KiBMb3cKPgo+Cj4gIEhl
-bGxvLiAgSSBuZWVkIGEgaGVscCBmb3IgbXkgaW1wbGVtZW50YXRpb24gd29yayBvbiBNSVBTIHNv
-ZnR3YXJlCj4gc3VzcGVuZC4KPiBGcm9tIDNtb250aCBhZ28sIEkndmUgYmVlbiBjb2Rpbmcgc29m
-dHdhcmUgc3VzcGVuZChzd3N1c3ApIG9uIE1JUFMgYXJjaC4KPiBJJ20gZGV2ZWxvcGluZyB3aXRo
-IE1JUFMzMiA0S0VjIGVtYmVkZGVkIHByb2Nlc3NvciBmb3IgZGlnaXRhbCBhcHBsaWFuY2UuCj4K
-PiBTd3N1c3AgaGFzIHR3byBwcm9jZWR1cmUuIHRoZSBvbmUgaXMgc3VzcGVuZGluZyBwcm9jZWR1
-cmUgYW5kIG90aGVyIG9uZSBpcwo+IHJlc3VtZSBwcm9jZWR1cmUuCj4gWWVzdGVyZGF5LCBJIGNv
-bmZpcm1lZCBzdXNwZW5kaW5nIHByb2NlZHVyZSB3b3JraW5nLgo+IFRoaXMgaXMgYSBwb3J0aW5n
-IGd1aWRlIG9mIHN3c3VzcCAoCj4gaHR0cDovL3RyZWUuY2VsaW51eGZvcnVtLm9yZy9DZWxmUHVi
-V2lraS9Td1N1c3BlbmRQb3J0aW5nTm90ZXMpCj4gSSByZWZlcmVkIHRoaXMgYXJ0aWNsZS4KPgo+
-IFRoZSBwcm9ibGVtIEkgZmFjZWQgaXMgYXNzZW1ibHkgbGFuZ3VhZ2UgZm9yIE1JUFMuCj4gT2Yg
-Y291cnNlLCB0aGVyZSBhcmUgbWFueSBtYW51YWxzIGZvciB0aGlzIHdvcmsgYnV0LCBJIG5lZWQg
-YSBoZWxwIGZyb20KPiBNSVBTIGV4cGVydC4KPgo+IFRoaXMgcHNldWRvIGNvZGUgc2hvdWxkIGJl
-IGltcGxlbWVudGVkIGJ5IE1JUFMgYXNtLgo+Cj4gICAgICAgICBmb3IgKGogPSBucl9jb3B5X3Bh
-Z2VzOyBqPjA7IGotLSkgewo+ICAgICAgICAgICAgIHNyYyA9IHBhZ2VkaXJfbm9zYXZlW2pdLnNy
-YzsKPiAgICAgICAgICAgICBkc3QgPSBwYWdlZGlyX25vc2F2ZVtqXS5kc3Q7Cj4gICAgICAgICAg
-ICAgZm9yIChpPTA7aTwxMDI0O2krKykgewo+ICAgICAgICAgICAgICAgICAqZHN0KysgPSAqc3Jj
-Kys7Cj4gICAgICAgICAgICAgfQo+ICAgICAgICAgfQo+Cj4gbnJfY29weV9wYWdlcyBpcyB1bnNp
-Z25lZCBsb25nIHZhcmlhYmxlLgo+IGFuZCBwYWdlZGlyX25vc2F2ZSBpcyBhIHN1c3BlbmRfcGFn
-ZWRpcl90PGh0dHA6Ly9seHIubGludXgubm8vc291cmNlL2tlcm5lbC9wb3dlci9pZGVudD92PTIu
-Ni4xMDtpPXN1c3BlbmRfcGFnZWRpcl90PnR5cGUgc3RydWN0dXJlIGFycmF5KHBvaW50ZXIpLiAo
-eW91IGNhbiByZWZlciBmb2xsb3dpbmcgdXJsLiBMaW5lIDEwMS4gOgo+IGh0dHA6Ly9seHIubGlu
-dXgubm8vc291cmNlL2tlcm5lbC9wb3dlci9zd3N1c3AuYz92PTIuNi4xMCkKPiBjb2RlIHNrZWxl
-dG9uIG9yIHVzZWZ1bCBtYXRlcmlhbCB3aWxsIGJlIHdlbGNvbWVkLiAod2hhdGV2ZXIgeW91IGhh
-dmUuKQo+Cj4gVGhlIHNlY29uZCBwcm9ibGVtIGlzCj4gIiB3aGljaCByZWdpc3RlciBzaG91bGQg
-YmUgcHJldmVudGVkPyAiCj4KPiBJIHNhdmVkICR2MC12MS4gJGEwLSRhMy4gJHQwLXQ3LiAkczAt
-czcuICR0OC10OS4gJGdwLHNwLGZwLHJhLgo+Cj4gLS0KPiBIeW9uIExpbSAowNPH9ikKPiBNb2Jp
-bGUuIDAxMC04MjEyLTEyNDAgKEludGwnIENhbGwgOiArODItMTAtODIxMi0xMjQwKQo+IEZheC4g
-MDMyLTIzMi0wNTc4IChJbnRsJyBBdmFpbGFibGUpCj4gSG9tZXBhZ2UgOiBodHRwOi8vd3d3LmFs
-ZXhsYWIubmV0Cj4gQmxvZyA6IGh0dHA6Ly93d3cuYWxleGxhYi5uZXQvYmxvZwo+Cj4KCgotLSAK
-SHlvbiBMaW0gKMDTx/YpCk1vYmlsZS4gMDEwLTgyMTItMTI0MCAoSW50bCcgQ2FsbCA6ICs4Mi0x
-MC04MjEyLTEyNDApCkZheC4gMDMyLTIzMi0wNTc4IChJbnRsJyBBdmFpbGFibGUpCkhvbWVwYWdl
-IDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldApCbG9nIDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9i
-bG9nCg==
-------=_Part_503_26428855.1193774638869
-Content-Type: text/html; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+On Tuesday 30 October 2007, Ralf Baechle wrote:
+> On Tue, Oct 30, 2007 at 11:34:29AM +0000, Denys Vlasenko wrote:
+> 
+> > On Thursday 25 October 2007 22:41, Bartlomiej Zolnierkiewicz wrote:
+> > > > -static const struct ide_port_info generic_chipsets[] __devinitdata = {
+> > > > +static struct ide_port_info generic_chipsets[] __devinitdata = {
+> > > >  	/*  0 */ DECLARE_GENERIC_PCI_DEV("Unknown",	0),
+> > > >  
+> > > >  	{	/* 1 */
+> > > 
+> > > I would prefer to not remove const from generic_chipsets[] so:
+> > > 
+> > > [PATCH] drivers/ide/pci/generic: fix build for CONFIG_HOTPLUG=n
+> > > 
+> > > It turns out that const and __{dev}initdata cannot be mixed currently
+> > > and that generic IDE PCI host driver is also affected by the same issue:
+> > > 
+> > > On Thursday 25 October 2007, Ralf Baechle wrote:
+> > > >   CC      drivers/ide/pci/generic.o
+> > > > drivers/ide/pci/generic.c:52: error: __setup_str_ide_generic_all_on causes a
+> > > > +section type conflict
+> > > 
+> > > [ Also reported by Martijn Uffing <mp3project@sarijopen.student.utwente.nl>. ]
+> > > 
+> > > This patch workarounds the problem in a bit hackish way but without
+> > > removing const from generic_chipsets[] (it adds const to __setup() so
+> > > __setup_str_ide_generic_all becomes const).
+> > 
+> > You wouldn't believe how much const data is not marked as const because
+> > we don't have __constinitdata etc. Literally megabytes.
+> 
+> The gain from marking it const is very little and once any non-const
+> __initdata object is added to a compilation unit all other const declarations
+> will have to be removed.  Bad tradeoff.
 
-PGRpdj5UaGFuayB5b3UgdmVyeSBtdWNoLiBJIHRoaW5rIG15IHdvcmsgaXMgZmlyc3QgY29udHJp
-YnV0aW9uIGFib3V0IHNvZnR3YXJlIHN1c3BlbmQgb24gbWlwcy48L2Rpdj4KPGRpdj5JIGNhbm5v
-dCBmaW5kIGFueSBoaXN0b3J5IHJlbGF0ZWQgdG8gbXkgd29yayBvbiB0aGlzIGxpc3QuPC9kaXY+
-CjxkaXY+SSYjMzk7bSBsb29raW5nIGZvcndhcmQgdG8gcmVjZWl2aW5nIHlvdXIgYW5zd2VyLjxi
-cj4mbmJzcDs8L2Rpdj4KPGRpdj48c3BhbiBjbGFzcz0iZ21haWxfcXVvdGUiPk9uIDEwLzMxLzA3
-LCA8YiBjbGFzcz0iZ21haWxfc2VuZGVybmFtZSI+VWhsZXIsIE1pa2U8L2I+ICZsdDs8YSBocmVm
-PSJtYWlsdG86dWhsZXJAbWlwcy5jb20iPnVobGVyQG1pcHMuY29tPC9hPiZndDsgd3JvdGU6PC9z
-cGFuPgo8YmxvY2txdW90ZSBjbGFzcz0iZ21haWxfcXVvdGUiIHN0eWxlPSJQQURESU5HLUxFRlQ6
-IDFleDsgTUFSR0lOOiAwcHggMHB4IDBweCAwLjhleDsgQk9SREVSLUxFRlQ6ICNjY2MgMXB4IHNv
-bGlkIj4KPGRpdj4KPGRpdiBkaXI9Imx0ciIgYWxpZ249ImxlZnQiPjxmb250IGZhY2U9IkFyaWFs
-IiBjb2xvcj0iIzAwMDBmZiIgc2l6ZT0iMiI+PHNwYW4+SSYjMzk7dmUgYXNrZWQgb3VyIHNvZnR3
-YXJlIHRlYW0gdG8gZm9sbG93IHVwIHdpdGggeW91IG9uIHlvdXIgcXVlc3Rpb25zLjwvc3Bhbj48
-L2ZvbnQ+PC9kaXY+CjxkaXY+PGZvbnQgc2l6ZT0iMiI+PC9mb250PiZuYnNwOzwvZGl2Pgo8ZGl2
-Pjxmb250IHNpemU9IjIiPgo8cD48Zm9udCBzaXplPSIyIj4vZ211PGJyPi0tLTxicj5NaWNoYWVs
-IFVobGVyLCBWUCBBcmNoaXRlY3R1cmUsIFNvZnR3YXJlIGFuZCBQbGF0Zm9ybSBFbmdpbmVlcmlu
-Zzxicj5NSVBTIFRlY2hub2xvZ2llcywgSW5jLiZuYnNwOyZuYnNwOyBFbWFpbDogdWhsZXIgQVQg
-PGEgb25jbGljaz0icmV0dXJuIHRvcC5qcy5PcGVuRXh0TGluayh3aW5kb3csZXZlbnQsdGhpcyki
-IGhyZWY9Imh0dHA6Ly9taXBzLmNvbS8iIHRhcmdldD0iX2JsYW5rIj4KbWlwcy5jb208L2E+PGJy
-PjEyMjUgQ2hhcmxlc3RvbiBSb2FkJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IFZvaWNl
-OiZuYnNwOyAoNjUwKTU2Ny01MDI1PGJyPk1vdW50YWluIFZpZXcsIENBIDk0MDQzPGJyPiZuYnNw
-OzwvZm9udD4mbmJzcDs8L3A+PC9mb250Pjxicj4mbmJzcDs8L2Rpdj4KPGJsb2NrcXVvdGUgZGly
-PSJsdHIiIHN0eWxlPSJQQURESU5HLUxFRlQ6IDVweDsgTUFSR0lOLUxFRlQ6IDVweDsgQk9SREVS
-LUxFRlQ6ICMwMDAwZmYgMnB4IHNvbGlkOyBNQVJHSU4tUklHSFQ6IDBweCI+CjxkaXYgbGFuZz0i
-ZW4tdXMiIGRpcj0ibHRyIiBhbGlnbj0ibGVmdCI+Cjxocj4KPGZvbnQgZmFjZT0iVGFob21hIiBz
-aXplPSIyIj48Yj5Gcm9tOjwvYj4gPGEgb25jbGljaz0icmV0dXJuIHRvcC5qcy5PcGVuRXh0TGlu
-ayh3aW5kb3csZXZlbnQsdGhpcykiIGhyZWY9Im1haWx0bzpsaW51eC1taXBzLWJvdW5jZUBsaW51
-eC1taXBzLm9yZyIgdGFyZ2V0PSJfYmxhbmsiPmxpbnV4LW1pcHMtYm91bmNlQGxpbnV4LW1pcHMu
-b3JnPC9hPiBbbWFpbHRvOjxhIG9uY2xpY2s9InJldHVybiB0b3AuanMuT3BlbkV4dExpbmsod2lu
-ZG93LGV2ZW50LHRoaXMpIiBocmVmPSJtYWlsdG86bGludXgtbWlwcy1ib3VuY2VAbGludXgtbWlw
-cy5vcmciIHRhcmdldD0iX2JsYW5rIj4KbGludXgtbWlwcy1ib3VuY2VAbGludXgtbWlwcy5vcmc8
-L2E+XSA8Yj5PbiBCZWhhbGYgT2YgPC9iPkh5b24gTGltPGJyPjxiPlNlbnQ6PC9iPiBUdWVzZGF5
-LCBPY3RvYmVyIDMwLCAyMDA3IDEyOjEzIFBNPGJyPjxiPlRvOjwvYj4gPGEgb25jbGljaz0icmV0
-dXJuIHRvcC5qcy5PcGVuRXh0TGluayh3aW5kb3csZXZlbnQsdGhpcykiIGhyZWY9Im1haWx0bzps
-aW51eC1taXBzQGxpbnV4LW1pcHMub3JnIiB0YXJnZXQ9Il9ibGFuayI+CmxpbnV4LW1pcHNAbGlu
-dXgtbWlwcy5vcmc8L2E+PGJyPjxiPlN1YmplY3Q6PC9iPiZuYnNwOyBpbXBsZW1lbnRhdGlvbiBv
-ZiBzb2Z0d2FyZSBzdXNwZW5kIG9uIE1JUFMuPGJyPjxiPkltcG9ydGFuY2U6PC9iPiBMb3c8YnI+
-PC9mb250Pjxicj4mbmJzcDs8L2Rpdj4KPGRpdj48c3BhbiBjbGFzcz0iZSIgaWQ9InFfMTE1ZjI3
-Yzc3ZjQwYWZmMF8xIj4KPGRpdj48L2Rpdj4KPGRpdj5IZWxsby4mbmJzcDsgSSBuZWVkIGEgaGVs
-cCBmb3IgbXkgaW1wbGVtZW50YXRpb24gd29yayBvbiBNSVBTIHNvZnR3YXJlIHN1c3BlbmQuPC9k
-aXY+CjxkaXY+RnJvbSAzbW9udGggYWdvLCBJJiMzOTt2ZSBiZWVuIGNvZGluZyBzb2Z0d2FyZSBz
-dXNwZW5kKHN3c3VzcCkgb24gTUlQUyBhcmNoLjwvZGl2Pgo8ZGl2PkkmIzM5O20gZGV2ZWxvcGlu
-ZyB3aXRoIE1JUFMzMiA0S0VjIGVtYmVkZGVkIHByb2Nlc3NvciBmb3IgZGlnaXRhbCBhcHBsaWFu
-Y2UuPC9kaXY+CjxkaXY+Jm5ic3A7PC9kaXY+CjxkaXY+U3dzdXNwIGhhcyB0d28gcHJvY2VkdXJl
-LiB0aGUgb25lIGlzIHN1c3BlbmRpbmcgcHJvY2VkdXJlIGFuZCBvdGhlciBvbmUgaXMgcmVzdW1l
-IHByb2NlZHVyZS48L2Rpdj4KPGRpdj5ZZXN0ZXJkYXksIEkgY29uZmlybWVkIHN1c3BlbmRpbmcg
-cHJvY2VkdXJlIHdvcmtpbmcuPC9kaXY+CjxkaXY+VGhpcyBpcyBhIHBvcnRpbmcgZ3VpZGUgb2Yg
-c3dzdXNwICg8YSBvbmNsaWNrPSJyZXR1cm4gdG9wLmpzLk9wZW5FeHRMaW5rKHdpbmRvdyxldmVu
-dCx0aGlzKSIgaHJlZj0iaHR0cDovL3RyZWUuY2VsaW51eGZvcnVtLm9yZy9DZWxmUHViV2lraS9T
-d1N1c3BlbmRQb3J0aW5nTm90ZXMiIHRhcmdldD0iX2JsYW5rIj5odHRwOi8vdHJlZS5jZWxpbnV4
-Zm9ydW0ub3JnL0NlbGZQdWJXaWtpL1N3U3VzcGVuZFBvcnRpbmdOb3Rlcwo8L2E+KTwvZGl2Pgo8
-ZGl2PkkgcmVmZXJlZCB0aGlzIGFydGljbGUuPC9kaXY+CjxkaXY+Jm5ic3A7PC9kaXY+CjxkaXY+
-VGhlIHByb2JsZW0gSSBmYWNlZCBpcyBhc3NlbWJseSBsYW5ndWFnZSBmb3IgTUlQUy48L2Rpdj4K
-PGRpdj5PZiBjb3Vyc2UsIHRoZXJlIGFyZSBtYW55IG1hbnVhbHMgZm9yIHRoaXMgd29yayBidXQs
-IEkgbmVlZCBhIGhlbHAgZnJvbSBNSVBTIGV4cGVydC48L2Rpdj4KPGRpdj4mbmJzcDs8L2Rpdj4K
-PGRpdj5UaGlzIHBzZXVkbyBjb2RlIHNob3VsZCBiZSBpbXBsZW1lbnRlZCBieSBNSVBTIGFzbS48
-L2Rpdj4KPGRpdj4mbmJzcDs8L2Rpdj4KPGRpdj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDsgZm9yIChqID0gbnJfY29weV9wYWdlczsgaiZndDswOyBqLS0pIHsgPGJy
-PiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyBzcmMgPSBwYWdlZGlyX25vc2F2ZVtqXS5zcmM7IDxicj4mbmJzcDsmbmJzcDsm
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgZHN0
-ID0gcGFnZWRpcl9ub3NhdmVbal0uZHN0OyA8YnI+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IGZvciAoaT0wO2kmbHQ7MTAy
-NDtpKyspIHsgPGJyPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyAqZHN0KysgPSAq
-c3JjKys7IAo8YnI+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IH0gPGJyPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwOyB9IDxicj4mbmJzcDs8L2Rpdj4KPGRpdj5ucl9jb3B5X3BhZ2VzIGlzIHVu
-c2lnbmVkIGxvbmcgdmFyaWFibGUuPC9kaXY+CjxkaXY+YW5kIHBhZ2VkaXJfbm9zYXZlIGlzIGEg
-PGEgb25jbGljaz0icmV0dXJuIHRvcC5qcy5PcGVuRXh0TGluayh3aW5kb3csZXZlbnQsdGhpcyki
-IGhyZWY9Imh0dHA6Ly9seHIubGludXgubm8vc291cmNlL2tlcm5lbC9wb3dlci9pZGVudD92PTIu
-Ni4xMDtpPXN1c3BlbmRfcGFnZWRpcl90IiB0YXJnZXQ9Il9ibGFuayI+c3VzcGVuZF9wYWdlZGly
-X3Q8L2E+IHR5cGUgc3RydWN0dXJlIGFycmF5KHBvaW50ZXIpLiAoeW91IGNhbiByZWZlciBmb2xs
-b3dpbmcgdXJsLiBMaW5lIDEwMS4mbmJzcDs6IAo8YSBvbmNsaWNrPSJyZXR1cm4gdG9wLmpzLk9w
-ZW5FeHRMaW5rKHdpbmRvdyxldmVudCx0aGlzKSIgaHJlZj0iaHR0cDovL2x4ci5saW51eC5uby9z
-b3VyY2Uva2VybmVsL3Bvd2VyL3N3c3VzcC5jP3Y9Mi42LjEwIiB0YXJnZXQ9Il9ibGFuayI+aHR0
-cDovL2x4ci5saW51eC5uby9zb3VyY2Uva2VybmVsL3Bvd2VyL3N3c3VzcC5jP3Y9Mi42LjEwPC9h
-Pik8L2Rpdj4KPGRpdj5jb2RlIHNrZWxldG9uIG9yIHVzZWZ1bCBtYXRlcmlhbCB3aWxsIGJlIHdl
-bGNvbWVkLiAod2hhdGV2ZXIgeW91IGhhdmUuKTwvZGl2Pgo8ZGl2PiZuYnNwOzwvZGl2Pgo8ZGl2
-PlRoZSBzZWNvbmQgcHJvYmxlbSBpczwvZGl2Pgo8ZGl2PiZxdW90OyB3aGljaCByZWdpc3RlciBz
-aG91bGQgYmUgcHJldmVudGVkPyAmcXVvdDs8L2Rpdj4KPGRpdj4mbmJzcDs8L2Rpdj4KPGRpdj5J
-IHNhdmVkICR2MC12MS4gJGEwLSRhMy4gJHQwLXQ3LiAkczAtczcuICR0OC10OS4gJGdwLHNwLGZw
-LHJhLjwvZGl2Pgo8ZGl2Pjxicj4tLSA8YnI+SHlvbiBMaW0gKMDTx/YpPGJyPk1vYmlsZS4gMDEw
-LTgyMTItMTI0MCAoSW50bCYjMzk7IENhbGwgOiArODItMTAtODIxMi0xMjQwKTxicj5GYXguIDAz
-Mi0yMzItMDU3OCAoSW50bCYjMzk7IEF2YWlsYWJsZSk8YnI+SG9tZXBhZ2UgOiA8YSBvbmNsaWNr
-PSJyZXR1cm4gdG9wLmpzLk9wZW5FeHRMaW5rKHdpbmRvdyxldmVudCx0aGlzKSIgaHJlZj0iaHR0
-cDovL3d3dy5hbGV4bGFiLm5ldC8iIHRhcmdldD0iX2JsYW5rIj4KaHR0cDovL3d3dy5hbGV4bGFi
-Lm5ldDwvYT48YnI+QmxvZyA6IDxhIG9uY2xpY2s9InJldHVybiB0b3AuanMuT3BlbkV4dExpbmso
-d2luZG93LGV2ZW50LHRoaXMpIiBocmVmPSJodHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2ciIHRh
-cmdldD0iX2JsYW5rIj5odHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2c8L2E+IDwvZGl2Pjwvc3Bh
-bj48L2Rpdj48L2Jsb2NrcXVvdGU+PC9kaXY+PC9ibG9ja3F1b3RlPgo8L2Rpdj48YnI+PGJyIGNs
-ZWFyPSJhbGwiPjxicj4tLSA8YnI+SHlvbiBMaW0gKMDTx/YpPGJyPk1vYmlsZS4gMDEwLTgyMTIt
-MTI0MCAoSW50bCYjMzk7IENhbGwgOiArODItMTAtODIxMi0xMjQwKTxicj5GYXguIDAzMi0yMzIt
-MDU3OCAoSW50bCYjMzk7IEF2YWlsYWJsZSk8YnI+SG9tZXBhZ2UgOiA8YSBocmVmPSJodHRwOi8v
-d3d3LmFsZXhsYWIubmV0Ij5odHRwOi8vd3d3LmFsZXhsYWIubmV0CjwvYT48YnI+QmxvZyA6IDxh
-IGhyZWY9Imh0dHA6Ly93d3cuYWxleGxhYi5uZXQvYmxvZyI+aHR0cDovL3d3dy5hbGV4bGFiLm5l
-dC9ibG9nPC9hPiAK
-------=_Part_503_26428855.1193774638869--
+In this case (struct ide_port_info) and probably few others having const
+is important (maybe even more important than having __{dev}initdata since
+majority of people use CONFIG_HOTPLUG=y) because it allows developers to
+catch subtle yet hard to find bugs very early in the development process.
+
+We had a few such cases in IDE - struct ide_port_info _template_ was being
+modified because some quirk was needed for one version of the hardware which
+was of course incorrect if another version of the hardware was also present
+in the system.
+
+Some other potential gains of using const like the better optimized code
+or the protection of read-only kernel data are only an extra bonuses. :)
+
+I agree that we need __const{dev}initdata but until then the workaround
+that all __{dev}initdata must be const is an acceptable temporary solution
+for IDE host drivers.
+
+Thanks,
+Bart
